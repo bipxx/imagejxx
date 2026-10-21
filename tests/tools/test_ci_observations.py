@@ -80,5 +80,57 @@ class TiffCaptureInputs(unittest.TestCase):
         self.assertTrue((self.output / "reports/float32-tiff/case/case.json").is_file())
 
 
+class LegacyEditorCaptureInputs(unittest.TestCase):
+    """Transport/envelope checks only; these mocks supply no UI evidence."""
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name).resolve()
+        self.output = self.root / "observations"
+
+    def invoke(self, group, report):
+        flag, contract = capture.EDITOR_READERS[group]
+        def observer(argv, **kwargs):
+            actual = Path(argv[-1]); actual.mkdir()
+            self.raw = (json.dumps(report, indent=2) + "\n").encode()
+            (actual / "case.json").write_bytes(self.raw)
+            return subprocess.CompletedProcess(argv, 0)
+        with patch.object(capture, "cases", return_value=iter([(group, "legacy", [flag])])):
+            with patch.object(capture.subprocess, "run", side_effect=observer):
+                return capture.capture(self.output, sys.executable, self.root)
+
+    def rgb(self):
+        return dict(context="imgui_cpp", frames=[{}], controls=[{}], preview={},
+                    pixels=[1], indexed_type_conversion={}, error="")
+
+    def test_legacy_rgb_report_is_preserved_without_inventing_an_envelope(self):
+        environment = self.invoke("rgb-dataset", self.rgb())
+        report = Path(environment["IMAGEJXX_RGB_CPP_REPORT"])
+        self.assertEqual(report.read_bytes(), self.raw)
+        self.assertNotIn("state", json.loads(report.read_bytes()))
+        self.assertNotIn("acceptance_claim", json.loads(report.read_bytes()))
+        receipt = json.loads((self.output / "receipt.json").read_bytes())
+        self.assertFalse(receipt["acceptance_claim"])
+        self.assertTrue(receipt["cases"][0]["legacy_probe_envelope"])
+
+    def test_incomplete_legacy_rgb_report_is_refused(self):
+        report = self.rgb(); del report["indexed_type_conversion"]
+        with self.assertRaisesRegex(ValueError, "Legacy editor probe did not finish"):
+            self.invoke("rgb-dataset", report)
+        self.assertFalse((self.output / "reports/rgb-dataset/legacy").exists())
+        self.assertEqual(json.loads((self.output / "receipt.json").read_bytes())["state"], "failed")
+
+    def test_legacy_probe_cannot_claim_acceptance(self):
+        report = self.rgb(); report["acceptance_claim"] = True
+        with self.assertRaisesRegex(ValueError, "Legacy editor probe did not finish"):
+            self.invoke("rgb-dataset", report)
+
+    def test_scientific_process_requires_its_original_completed_contract(self):
+        report = dict(context="imgui_cpp", frames=[{}], controls=[{}], before=[], recorded={},
+                      state="running", contract="scientific-process-review.ui.001")
+        with self.assertRaisesRegex(ValueError, "Legacy editor probe did not finish"):
+            self.invoke("scientific-process", report)
+
+
 if __name__ == "__main__":
     unittest.main()

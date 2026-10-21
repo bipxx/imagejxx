@@ -130,6 +130,7 @@ Json planarAnnotationToolsUiCase(Window &window,const std::string &context,const
   Json report{{"contract","p06p.planar-tools.ui.001"},{"context",context},{"acceptance_claim",false},
       {"frames",Json::array()},{"controls",Json::array()},{"states",{{"before",state(window)}}},
       {"api_fixture_actions",{"dataset/ROI attachment","session Save/Open"}}};
+  struct Failure {Json &r;fs::path p;bool done=false;~Failure(){if(!done)try{r["state"]="failed";writeJson((p/"failure.json").u8string(),r);}catch(...){}}} failure{report,directory};
   HeadlessInputSession session(window);Json last;
   auto frame=[&](const Json &events=Json::array()){
     require(report["frames"].size()<512,"Planar annotation UI frame bound");last=session.frame(events);
@@ -201,8 +202,10 @@ Json planarAnnotationToolsUiCase(Window &window,const std::string &context,const
   auto scroll_point=record_control.at("point");scroll_point[1]=scroll_point[1].get<double>()+65;
   frame(Json::array({{{"type","position"},{"space","screen"},{"point",scroll_point}}}));
   frame(Json::array({{{"type","wheel"},{"x",0},{"y",-8}}}));frame();
-  click(last.at("host_controls").at("workflow.planar.2.replay"),"workflow.planar.replay");
-  report["states"]["replayed"]=state(window);
+  click(last.at("host_controls").at("workflow.planar.1.replay"),"workflow.planar.replay");
+  report["replay_refusal"]=last.at("error_modal");
+  report["states"]["replay_refused"]=state(window);
+  click(last.at("error_modal").at("controls").at("ok"),"workflow.planar.replay_refusal.ok");
   click(control("go_to"),"annotation.go_to");report["states"]["positioned"]=state(window);
   click(control("multipoint"),"annotation.multipoint");
   vertex(0,2,2);vertex(0,5,2);report["drafts"].push_back(panel());
@@ -246,7 +249,7 @@ Json planarAnnotationToolsUiCase(Window &window,const std::string &context,const
   report["states"]["reopened"]=state(reopened);
   report["state"]="observed";report["error"]=window.error();
   require(report.dump().size()<=64*1024*1024,"Planar annotation report byte bound");
-  writeJson((directory/"case.json").u8string(),report);return report;
+  writeJson((directory/"case.json").u8string(),report);failure.done=true;return report;
 }
 Json planarAnnotationRebindUiCase(Window &window,const std::string &context,const std::string &fresh_directory) {
   namespace fs=std::filesystem;const auto directory=fs::absolute(fs::u8path(fresh_directory));

@@ -180007,6 +180007,29 @@
         "total": 3624
       },
       "scope": "Animated demo:48 actual observations/19133 frames/2684 effects,3624 selected tests per platform; full family and hosted acceptance remain open."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-21",
+      "id": "p09n.ci-editors.functional.001",
+      "identity": {
+        "qualification": {
+          "bytes": 7398,
+          "path": "docs/parity/reviews/p09n-ci-editors001.json",
+          "sha256": "b055c5b5b4310d027a832aaf28b978585b1d70c44b4a17c59677bbab97c0dfec"
+        }
+      },
+      "platform": "Windows/Linux installed C++ and Python Dear ImGui hosts",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 1117,
+        "report": "build/p09n-ci-editors001/windows-python003/pytest.xml",
+        "skipped": 0,
+        "total": 1117
+      },
+      "scope": "21 new portable capture groups,32 reader modules,106 raw UI reports/35549 frames and1117 selected tests per platform; complete hosted Python and feature parity remain open."
     }
   ]
 }

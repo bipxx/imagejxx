@@ -1,0 +1,208 @@
+{
+  "state": "qualified_ci_increment",
+  "objective_complete": false,
+  "scope": "Twenty existing single-report editors plus scientific-threshold T10 now supply their standalone observations to the complete-suite readers. Existing processing/editor behavior is retained.",
+  "all99": {
+    "in_progress": 43,
+    "open": 56,
+    "complete": 0
+  },
+  "feature": [
+    "Provision RGB/indexed/color conversions, scientific processing/recording, bare edits, ROI import/export/worker controls, planar/display annotations, scientific ROI management and slicing/subset/resizing/spacing.",
+    "Preserve legacy RGB/scientific-process report bytes and validate their specific completion envelopes. Require ordinary observed/no-acceptance reports elsewhere.",
+    "Supply installed desktop-extension and Python UI-adapter hashes to the complete-suite environment.",
+    "Repair the planar-tools observer for changed-only recording: no-op scope/vertex/box changes leave the entire state unchanged; captured changed-row replay refuses stale revisions, then the real OK button dismisses the error.",
+    "Poll large ROI limit workers every 20 ms with the original timeout of 30 seconds and cap of 2,500 frames. Preserve original failures and diagnostic captures."
+  ],
+  "tests": {
+    "windows": {
+      "passed": 1117,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "modules": 32
+    },
+    "linux": {
+      "passed": 1117,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "modules": 32
+    }
+  },
+  "identical_case_ids": true,
+  "transport_checks": {
+    "passed_per_platform": 8,
+    "platforms": [
+      "Windows",
+      "Linux"
+    ],
+    "scope": "Mocked capture/envelope/fixture transport, not actual UI proof."
+  },
+  "actual_ui": {
+    "observations": 106,
+    "frames": 35549,
+    "cpp_cases_per_platform": 21,
+    "profiles": {
+      "windows": {
+        "state": "passed",
+        "tests": 1117,
+        "cpp_cases": 21,
+        "observations": 53,
+        "frames": 17684,
+        "contexts": {
+          "imgui_cpp": 21,
+          "imgui_python": 32
+        }
+      },
+      "linux": {
+        "state": "passed",
+        "tests": 1117,
+        "cpp_cases": 21,
+        "observations": 53,
+        "frames": 17865,
+        "contexts": {
+          "imgui_cpp": 21,
+          "imgui_python": 32
+        }
+      }
+    },
+    "os_input_or_gpu_equivalence_claim": false
+  },
+  "ci": {
+    "state": "passed",
+    "previous_cases_preserved": 1013,
+    "new_cases": 21,
+    "default_total": 1034,
+    "unique_cases": true,
+    "new_groups": [
+      "axis-spacing",
+      "bare-edit",
+      "display-annotation",
+      "import-limits",
+      "mixed-export",
+      "mixed-import",
+      "planar-annotation",
+      "planar-rebind",
+      "planar-tools",
+      "rgb-dataset",
+      "roi-browse",
+      "roi-import",
+      "roi-jobs",
+      "roi-manager",
+      "roi-queue",
+      "roi-rebind",
+      "roi-zip",
+      "scientific-process",
+      "slicer-resize",
+      "z-subset",
+      "scientific-threshold"
+    ]
+  },
+  "products": {
+    "public_headers": 66,
+    "python_modules": 12,
+    "native_catalog_operations": 92,
+    "installed_sources_match": true,
+    "final_prefixes": {
+      "windows": "build/p09n-ci-editors001/windows-build003/installed",
+      "linux": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/install-p09n004"
+    }
+  },
+  "commercial": {
+    "state": "reviewed_dependency_inventory_passed",
+    "new_dependencies": [],
+    "review_log": {
+      "path": "build/p09n-ci-editors001/licenses001.log",
+      "bytes": 53,
+      "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+    }
+  },
+  "hosted_baseline": {
+    "run": 39593119086,
+    "url": "https://github.com/bipxx/imagejxx/actions/runs/39593119086",
+    "commit": "5429f793a52bdce79d2a290b61ebdbf492122270",
+    "state_when_read": "in_progress",
+    "native_sdk": {
+      "windows": "passed",
+      "linux": "passed",
+      "macos": "passed"
+    },
+    "complete_python_acceptance": false,
+    "note": "Previous commit5429f79: generic Windows/macOS Python jobs fail; both Linux complete Python jobs were still running when read. Current increment still needs hosted confirmation."
+  },
+  "cleanup": {
+    "state": "passed",
+    "removed_bytes": 6861156777,
+    "removed_files": 1753,
+    "crc_and_every_member_sha256_verified": true,
+    "archives": {
+      "windows": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09n-ci-editors001\\windows-scratch001.zip",
+        "bytes": 445774701,
+        "sha256": "a832b36e4945bb2f519679fcd50143e639d47b4b1c323104800090854fdf5fb1"
+      },
+      "linux": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09n-ci-editors001/linux-scratch001.zip",
+        "bytes": 422568582,
+        "sha256": "6efd5e0aae096fcc3b19eb3f019da9fa3988296dd43b091fc406a4c981092b40"
+      }
+    },
+    "preserved": "Final Windows build003 and Linux install-p09n004 products, useful source/build/dependency caches, JUnit and compact evidence, raw failed and passing reports in verified archives."
+  },
+  "inputs": [
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 22800,
+      "sha256": "06a21bd5267bf915d6ad36814988744b0b88e13437e3087d01b921c0ff812e80"
+    },
+    {
+      "path": "scripts/ci_python_suite.py",
+      "bytes": 7796,
+      "sha256": "5ca595975ecd1d488dd73c1c4b984b0b8f37f5242965dff5e0b23ff965b09a10"
+    },
+    {
+      "path": "src/desktop/planar_annotation_ui_probe.cpp",
+      "bytes": 25112,
+      "sha256": "fdeac6987aa094c333a4662276da5de4fc55820a98c65c85f612ba8c3956eb54"
+    },
+    {
+      "path": "src/desktop/roi_import_limits_ui_probe.cpp",
+      "bytes": 17526,
+      "sha256": "85b8a5fde4567ff95065b5f6402b210c56291e8cee0a3ae195036848ec937694"
+    },
+    {
+      "path": "tests/python/test_planar_annotation_tools_ui.py",
+      "bytes": 5614,
+      "sha256": "050d2df041d9d4a4240b2f3b48450078b973013de3e0a90378c52c74f6498ca0"
+    },
+    {
+      "path": "tests/tools/test_ci_observations.py",
+      "bytes": 7046,
+      "sha256": "cb1e291ef0e757fd66040ffaa31b5f53393eb16947d6ee99abc6b355a8b1a8ea"
+    },
+    {
+      "path": "docs/CI.md",
+      "bytes": 10343,
+      "sha256": "5f489f171fc4de4bcdaec303ab671cf0a51355f1abdd9557a8d0ecc2d915ec69"
+    }
+  ],
+  "receipts": "build/p09n-ci-editors001",
+  "remaining": [
+    "Complete hosted Python/IO/UI integration; remaining standalone capture contracts and actual UI failures.",
+    "Reviewed full Windows/macOS feature builds; Linux results do not qualify those feature profiles.",
+    "Stale historical Auto Contrast source fingerprints still block the full plan validator.",
+    "All broader ImageJ/commercially usable Fiji requirements and96 partial format variants remain open."
+  ],
+  "plan_check": {
+    "state": "failed_preexisting",
+    "message": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed",
+    "first_mismatch": {
+      "path": "include/imagejxx/application.hpp",
+      "expected": "aad7b9c9e54f21ef59fdca02d8c3da2fcc5d5eeaf53f056d32615b4fa728fe09",
+      "current": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072",
+      "previous_commit": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    },
+    "action": "Retain historical byte pins; refresh the original complete Auto Contrast evidence separately."
+  }
+}

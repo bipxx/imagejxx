@@ -144,7 +144,7 @@ Json roiImportLimitsUiCase(Window &w, const std::string &context,
     while (panel().at("worker_active").get<bool>()) {
       require(std::chrono::steady_clock::now() < deadline,
               "Maximum UI worker timeout");
-      std::this_thread::sleep_for(std::chrono::milliseconds(3));
+      std::this_thread::sleep_for(std::chrono::milliseconds(20));
       frame();
     }
     frame();

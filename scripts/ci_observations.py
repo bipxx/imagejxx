@@ -83,6 +83,31 @@ TIFF_READERS = {
 }
 
 
+# Existing one-report editors; every report is copied without rewriting paths.
+EDITOR_READERS = {
+    "rgb-dataset": ("--rgb-dataset-ui-case", "IMAGEJXX_RGB_CPP_REPORT"),
+    "scientific-process": ("--scientific-process-ui-case", "IMAGEJXX_SCIENTIFIC_PROCESS_CPP_REPORT"),
+    "bare-edit": ("--bare-edit-ui-case", "IMAGEJXX_BARE_EDIT_CPP_REPORT"),
+    "mixed-import": ("--mixed-import-ui-case", "IMAGEJXX_MIXED_IMPORT_CPP_REPORT"),
+    "roi-import": ("--roi-import-ui-case", "IMAGEJXX_ROI_IMPORT_CPP_REPORT"),
+    "display-annotation": ("--display-annotation-ui-case", "IMAGEJXX_DISPLAY_CPP_REPORT"),
+    "roi-zip": ("--roi-zip-export-ui-case", "IMAGEJXX_ROI_ZIP_CPP_REPORT"),
+    "mixed-export": ("--mixed-export-ui-case", "IMAGEJXX_MIXED_EXPORT_CPP_REPORT"),
+    "import-limits": ("--roi-import-limits-ui-case", "IMAGEJXX_IMPORT_LIMITS_CPP_REPORT"),
+    "roi-rebind": ("--roi-import-rebind-ui-case", "IMAGEJXX_ROI_REBIND_CPP_REPORT"),
+    "roi-jobs": ("--roi-import-jobs-ui-case", "IMAGEJXX_ROI_JOBS_CPP_REPORT"),
+    "roi-browse": ("--roi-import-browse-ui-case", "IMAGEJXX_ROI_BROWSE_CPP_REPORT"),
+    "roi-queue": ("--roi-import-queue-ui-case", "IMAGEJXX_ROI_QUEUE_CPP_REPORT"),
+    "planar-annotation": ("--planar-annotation-ui-case", "IMAGEJXX_PLANAR_CPP_REPORT"),
+    "planar-rebind": ("--planar-annotation-rebind-ui-case", "IMAGEJXX_PLANAR_REBIND_CPP_REPORT"),
+    "planar-tools": ("--planar-annotation-tools-ui-case", "IMAGEJXX_PLANAR_TOOLS_CPP_REPORT"),
+    "z-subset": ("--z-subset-ui-case", "IMAGEJXX_Z_SUBSET_CPP_REPORT"),
+    "axis-spacing": ("--axis-spacing-ui-case", "IMAGEJXX_SPACING_CPP_REPORT"),
+    "slicer-resize": ("--slicer-resize-ui-case", "IMAGEJXX_SLICER_CPP_REPORT"),
+    "roi-manager": ("--scientific-roi-manager-ui-case", "IMAGEJXX_ROI_MANAGER_CPP_REPORT"),
+}
+
+
 def tiff_cases():
     """Input gestures and fixture paths for the existing independent TIFF readers."""
     def scientific(group, case, folder, filename):
@@ -173,6 +198,8 @@ def cases():
         ("native-workflow", "--native-workflow-ui-case", [None]),
         ("native-batch", "--native-workflow-batch-ui-case", [None]),
     ]
+    groups.extend((group, flag, [None]) for group, (flag, _) in EDITOR_READERS.items())
+    groups.append(("scientific-threshold", "--manual-threshold-ui-case", ["T10"]))
     for group, flag, variants in groups:
         for variant in variants:
             yield group, variant or "legacy", [flag] + ([variant] if variant else [])
@@ -206,6 +233,9 @@ def reader_environment(output):
         "IMAGEJXX_NATIVE_BATCH_CPP_REPORT": reports / "native-batch/legacy/case.json",
         "IMAGEJXX_VARIANCE_CPP_REPORT": reports / "rank/R14/case.json",
     }
+    environment["IMAGEJXX_THRESHOLD_CPP_REPORT"] = reports / "scientific-threshold/T10/case.json"
+    for group, (_, name) in EDITOR_READERS.items():
+        environment[name] = reports / group / "legacy/case.json"
     for group, (name, _) in TIFF_READERS.items():
         environment[name] = reports / group
     for name in ("NONBYTE", "THRESHOLD", "CHANNEL_VARIANCE", "DESPECKLE",
@@ -303,6 +333,20 @@ def capture(output, executable, root, environment=None):
                         or observation.get("acceptance_claim", False) is not False):
                     raise ValueError(f"IEEE probe did not finish: {report}")
                 item["legacy_probe_state"] = "passed"
+            elif group in ("rgb-dataset", "scientific-process"):
+                # These two existing probes predate the acceptance_claim field.
+                # Validate their distinct envelopes, preserve raw bytes, and let
+                # the independent readers establish numerical/UI behavior.
+                required = ("preview", "pixels", "indexed_type_conversion", "error") if group == "rgb-dataset" else ("before", "recorded")
+                if (observation.get("context") != "imgui_cpp"
+                        or not observation.get("frames") or not observation.get("controls")
+                        or not all(key in observation for key in required)
+                        or observation.get("acceptance_claim", False) is not False
+                        or (group == "scientific-process" and (
+                            observation.get("state") != "observed"
+                            or observation.get("contract") != "scientific-process-review.ui.001"))):
+                    raise ValueError(f"Legacy editor probe did not finish: {report}")
+                item["legacy_probe_envelope"] = True
             else:
                 if observation.get("observation_state", observation.get("state")) != "observed":
                     raise ValueError(f"C++ observation did not finish: {report}")

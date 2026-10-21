@@ -60,7 +60,7 @@ package. The Linux codec audit rejects exposed static codec APIs that could bind
 to a different library already loaded by Python. Missing bindings or providers,
 failures, collection errors and skipped cases leave the complete profile failing.
 The runner first invokes `scripts/ci_observations.py` against the installed C++
-application. Its 1,001-case matrix captures rank filters, rounded creation
+application. Its 1,034-case matrix captures rank filters, rounded creation
 and saved selections, ROI import/export, saved-selection budget behavior, and
 resize/rotate/move modifiers and directional shadows. The planar selection matrix
 covers 621 creation/edit/recovery cases across XY, XZ and YZ, including every
@@ -82,8 +82,9 @@ Float32 finite/quiet-NaN/IEEE failure and recovery. They retain each reader's
 flat or nested paths. Input hashes are mandatory; manifest byte counts are also
 enforced when present, and captures refuse fixture files over 64 MiB. Older
 SHA-only manifests record the measured size without changing the committed
-fixture metadata. Four standard-library runner checks cover both manifest
-schemas, corruption refusal and Float32 argument/transport ordering. The native
+fixture metadata. Eight standard-library runner checks cover both manifest
+schemas, corruption refusal, Float32 argument/transport ordering and legacy editor
+envelope preservation/refusal. The native
 workflow jobs run these checks on every operating system before building C++.
 Eight scientific shadow captures additionally check the actual direction editor,
 private linked preview, all-Z Apply, retained workflow rows and Undo/Redo through
@@ -91,6 +92,23 @@ the same C++ host consumed by the independent Python tests.
 A further 29 preset cases cover all eight direct entries on single images,
 legacy stacks and scientific datasets, four disabled-source cases and visible
 atomic refusal of a direct asynchronous Float32 overflow.
+Twelve Shadows Demo cases cover complete playback, interruption, source changes,
+resource-limit refusal, overflow and unsupported images.
+Twenty existing single-report editors and scientific manual-threshold T10 now
+feed their independent readers: scientific processing/recording, RGB/indexed/color
+conversion, bare edits, ROI import/export and worker controls, planar/display
+annotations, scientific ROI management, Z subsets and slicing/resizing/spacing.
+RGB and scientific-process probes predate the common report envelope. Their raw
+reports remain unchanged; the runner checks their specific completion fields and
+records the legacy format without inventing an acceptance claim. Other probes
+still require an explicit observed state and false acceptance claim.
+Planar tools record changed annotation edits only: no-op scope/vertex/box updates
+leave revisions, history and workflow unchanged. Their replay probe uses the
+last recorded changed update, checks its stale-revision refusal, and acknowledges
+the error through the actual dialog. The large ROI import-limit observer polls workers
+every 20 ms, retaining its 30-second worker deadline and 2,500-frame cap.
+The complete-suite runner supplies hashes of the installed desktop extension and
+Python UI adapter, alongside the existing installed-executable identity.
 Each process gets private preferences. Byte-identical copies supply the readers
 with stable group/case paths; original artifacts remain available for absolute
 paths embedded in reports. The executable hash must remain unchanged. Reports

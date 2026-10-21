@@ -77,6 +77,9 @@ def run(output: Path, root: Path):
         environment = os.environ.copy()
         environment.update(IMAGEJXX_RENDER_TESTS="1", IMAGEJXX_REQUIRE_RENDER_TESTS="1",
                            PYTHONDONTWRITEBYTECODE="1", PYTEST_DISABLE_PLUGIN_AUTOLOAD="1")
+        environment["IMAGEJXX_DESKTOP_MODULE_SHA256"] = receipt["modules"]["imagejxx._desktop"]["sha256"]
+        receipt["python_ui_adapter"] = pin(expected_package / "ui/app.py")
+        environment["IMAGEJXX_UI_APP_MODULE_SHA256"] = receipt["python_ui_adapter"]["sha256"]
         suffix = sysconfig.get_config_var("EXT_SUFFIX")
         providers = list((root / "build/wheel").rglob("_imagejxx_test_saved_roi_source" + suffix))
         if len(providers) != 1:
