@@ -17,6 +17,14 @@ import sysconfig
 import pytest
 
 
+def _stream_sha256(stream):
+    """Hash remaining binary stream bytes with bounded memory on Python 3.10+."""
+    digest = hashlib.sha256()
+    for block in iter(lambda: stream.read(1024 * 1024), b""):
+        digest.update(block)
+    return digest.hexdigest()
+
+
 GROUP = "P02a.shared_ui.01.session-default-focus"
 CONTEXTS = ("imgui_cpp", "imgui_python")
 SUFFIXES = ("menu-open-cancel", "keyboard-enter-default", "no-image-disabled")
@@ -88,7 +96,7 @@ def pinned_input(key, expected, *, hash_key):
     path = Path(name).resolve(strict=True)
     assert path.is_file()
     with path.open("rb") as stream:
-        assert hashlib.file_digest(stream, "sha256").hexdigest() == expected
+        assert _stream_sha256(stream) == expected
     return path
 
 

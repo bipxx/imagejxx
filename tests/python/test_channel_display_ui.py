@@ -24,6 +24,14 @@ import zlib
 import pytest
 
 
+def _stream_sha256(stream):
+    """Hash remaining binary stream bytes with bounded memory on Python 3.10+."""
+    digest = hashlib.sha256()
+    for block in iter(lambda: stream.read(1024 * 1024), b""):
+        digest.update(block)
+    return digest.hexdigest()
+
+
 CONTRACT = "p06c.channel-display-ui.001"
 CASES = ("C01A", "C01B", "C01C", "C02A", "C02B", "C03A", "C03B",
          "C04A", "C04B", "C04C", "C05A", "C05B", "C05C",
@@ -176,7 +184,7 @@ def installed_cpp_executable():
     if expected:
         assert len(expected) == 64
         with path.open("rb") as stream:
-            assert hashlib.file_digest(stream, "sha256").hexdigest() == expected
+            assert _stream_sha256(stream) == expected
     return path
 
 

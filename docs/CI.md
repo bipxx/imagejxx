@@ -118,6 +118,15 @@ metadata-edit stopping and unknown-unit refusal. Both hosts use actual timing
 and direction controls; independent readers check literal UInt16 samples and
 position traces. Public Python API checks additionally reject calibrated C and
 scientific Z across singleton/multiple T and C shapes.
+The file/ZIP identity readers use streaming SHA-256 on Python 3.10 and later,
+with reads capped at 1 MiB. The expected hashes and all identity assertions are
+retained. `python -m pytest tests/python/test_stream_hash_compat.py` checks the
+real modules against known vectors, short nonseekable reads, read errors and ZIP
+CRC failures, and verifies that wrong/corrupted executable-shaped artifacts are
+still rejected. Those synthetic files prove identity guards only; installed C++
+UI runs provide the behavioral evidence. Historical generator hashes are not
+updated automatically when tooling changes; exact original source binding and
+full reference/hosted acceptance remain separate requirements.
 The single-ROI export observer polls active file workers every 20 ms while
 retaining its 550-frame cap and 10-second worker deadline. It records actual
 poll counts and elapsed waits. Both ordinary and rounded export readers verify

@@ -14,6 +14,14 @@ import shutil
 import subprocess
 import zipfile
 
+def _stream_sha256(stream):
+    """Hash remaining binary stream bytes with bounded memory on Python 3.10+."""
+    digest = hashlib.sha256()
+    for block in iter(lambda: stream.read(1024 * 1024), b""):
+        digest.update(block)
+    return digest.hexdigest()
+
+
 ROOT = Path(__file__).resolve().parents[1]
 COMMIT = "62db90a269cccc1ac79f658e4602043214ed055b"
 IMAGEJ_SHA = "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665"
@@ -99,7 +107,7 @@ public class BinaryReference {
 
 def digest(path):
     with path.open("rb") as stream:
-        return hashlib.file_digest(stream, "sha256").hexdigest()
+        return _stream_sha256(stream)
 
 
 def verified(path, expected):

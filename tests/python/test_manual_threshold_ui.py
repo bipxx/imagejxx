@@ -19,6 +19,14 @@ import time
 import pytest
 
 
+def _stream_sha256(stream):
+    """Hash remaining binary stream bytes with bounded memory on Python 3.10+."""
+    digest = hashlib.sha256()
+    for block in iter(lambda: stream.read(1024 * 1024), b""):
+        digest.update(block)
+    return digest.hexdigest()
+
+
 CONTRACT = "p05k.manual-threshold-ui.001"
 CASES = tuple(f"T{i:02d}" for i in range(1, 10))
 CONTEXTS = ("imgui_cpp", "imgui_python")
@@ -77,7 +85,7 @@ def installed_cpp_executable():
     expected = os.environ.get("IMAGEJXX_CPP_EXE_SHA256")
     if expected:
         with path.open("rb") as stream:
-            assert hashlib.file_digest(stream, "sha256").hexdigest() == expected
+            assert _stream_sha256(stream) == expected
     return path
 
 

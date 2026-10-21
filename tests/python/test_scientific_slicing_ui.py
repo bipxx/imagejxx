@@ -22,6 +22,14 @@ import zlib
 import pytest
 
 
+def _stream_sha256(stream):
+    """Hash remaining binary stream bytes with bounded memory on Python 3.10+."""
+    digest = hashlib.sha256()
+    for block in iter(lambda: stream.read(1024 * 1024), b""):
+        digest.update(block)
+    return digest.hexdigest()
+
+
 CONTRACT = "p06e.scientific-slicing-ui.001"
 CASES = tuple(f"E{index:02d}" for index in range(1, 11))
 CONTEXTS = ("imgui_cpp", "imgui_python")
@@ -159,7 +167,7 @@ def installed_cpp_executable():
     if expected:
         assert len(expected) == 64
         with path.open("rb") as stream:
-            assert hashlib.file_digest(stream, "sha256").hexdigest() == expected
+            assert _stream_sha256(stream) == expected
     return path
 
 

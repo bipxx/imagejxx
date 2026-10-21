@@ -20,6 +20,14 @@ import time
 from capture_roi_boolean_reference import ROOT, _run
 
 
+def _stream_sha256(stream):
+    """Hash remaining binary stream bytes with bounded memory on Python 3.10+."""
+    digest = hashlib.sha256()
+    for block in iter(lambda: stream.read(1024 * 1024), b""):
+        digest.update(block)
+    return digest.hexdigest()
+
+
 CONTRACT = "p06c2.channel-display-projection-ui.001"
 CASES = tuple(f"M{i:02d}" for i in range(1, 11))
 MIN_CONTRACT = "p06c3.channel-display-min-ui.001"
@@ -41,7 +49,7 @@ def _reject_links(path: Path) -> None:
 
 def _sha(path: Path) -> str:
     with path.open("rb") as stream:
-        return hashlib.file_digest(stream, "sha256").hexdigest()
+        return _stream_sha256(stream)
 
 
 def _pin(path: Path) -> dict:

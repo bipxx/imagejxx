@@ -10,6 +10,14 @@ import subprocess
 import zipfile
 from capture_binary_reference import ROOT, COMMIT, IMAGEJ_SHA, FIJI_SHA, JDK_PREFIX, digest, verified, extract
 
+def _stream_sha256(stream):
+    """Hash remaining binary stream bytes with bounded memory on Python 3.10+."""
+    digest = hashlib.sha256()
+    for block in iter(lambda: stream.read(1024 * 1024), b""):
+        digest.update(block)
+    return digest.hexdigest()
+
+
 WORK = ROOT / 'build/p06zs-color-stack001/reference003'
 DRIVER = r'''
 import ij.*;
@@ -116,7 +124,7 @@ def main():
         for m in z.infolist():
             if not m.is_dir() and m.filename.startswith(JDK_PREFIX):
                 name=m.filename[len(JDK_PREFIX):];p=runtime/name
-                with z.open(m) as f:sha=hashlib.file_digest(f,'sha256').hexdigest()
+                with z.open(m) as f:sha=_stream_sha256(f)
                 assert p.stat().st_size==m.file_size and digest(p)==sha,name
                 pins.append(dict(name=name,bytes=m.file_size,sha256=sha))
     sources=WORK/'sources001';classes=WORK/'classes001';classes.mkdir()

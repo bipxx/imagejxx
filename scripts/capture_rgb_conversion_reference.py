@@ -13,6 +13,14 @@ import zipfile
 
 from capture_binary_reference import ROOT, COMMIT, IMAGEJ_SHA, FIJI_SHA, JDK_PREFIX, digest, verified, extract
 
+def _stream_sha256(stream):
+    """Hash remaining binary stream bytes with bounded memory on Python 3.10+."""
+    digest = hashlib.sha256()
+    for block in iter(lambda: stream.read(1024 * 1024), b""):
+        digest.update(block)
+    return digest.hexdigest()
+
+
 WORK = ROOT / 'build/p06zn-rgb-conversion001/reference001'
 DRIVER = r'''
 import ij.process.*;
@@ -86,7 +94,7 @@ def main():
                 name = member.filename[len(JDK_PREFIX):]
                 path = runtime / name
                 with z.open(member) as stream:
-                    expected = hashlib.file_digest(stream, 'sha256').hexdigest()
+                    expected = _stream_sha256(stream)
                 assert path.is_file() and path.stat().st_size == member.file_size and digest(path) == expected, name
                 runtime_pins.append(dict(name=name, bytes=member.file_size, sha256=expected))
     sources, classes = WORK / 'sources001', WORK / 'classes001'

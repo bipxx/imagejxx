@@ -1,5 +1,22 @@
 # ImageJ and Fiji gap closure plan
 
+**Python 3.10 evidence-reader checkpoint, 2026-10-21 (work in progress):**
+17 unsupported file_digest calls across 15 scripts/readers now use bounded
+streaming SHA256. Expected hashes, comparison assertions and all other code
+remain unchanged by AST audit. Real Python 3.10/3.12 profiles on Windows/Linux
+each pass 158 hash/identity checks plus 30 installed C++ UI reader checks.
+78 distinct captures cover 5,506 frames; the 42 target/slicing captures are shared
+between versions and 36 navigation/session captures are fresh. No Python UI or
+complete hosted acceptance is claimed. Verified archives reclaim
+829,020,360 scratch bytes. See [the scoped receipt](parity/reviews/p09x-python310-hashes001.json).
+Initial harness failures and the full reference-inventory failure are retained.
+Its historical-copy test lacks source freezes and still expects four fixtures
+where the manifest now has twelve. It remains unchanged. Modified capture
+scripts also require historical source binding; old pins were not repinned and
+exact preimages remain retained. The stale Auto Contrast gate, missing evidence,
+movie export and every broader feature obligation remain open. All99 stays
+44 in progress / 55 open / 0 complete; all 96 format variants remain partial.
+
 **Ordinary Z time-series playback checkpoint, 2026-10-21 (work in progress):**
 ordinary stacks (one T and one scientific channel) now offer explicit calibrated
 time pacing along Z in both Dear ImGui hosts. Forward, stride, reverse and

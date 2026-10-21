@@ -19,6 +19,14 @@ import tempfile
 import xml.etree.ElementTree as ET
 import zipfile
 
+def _stream_sha256(stream):
+    """Hash remaining binary stream bytes with bounded memory on Python 3.10+."""
+    digest = hashlib.sha256()
+    for block in iter(lambda: stream.read(1024 * 1024), b""):
+        digest.update(block)
+    return digest.hexdigest()
+
+
 ROOT = Path(__file__).resolve().parents[1]
 METADATA_LIMIT = 32 * 1024**2
 JAR_LIMIT = 256 * 1024**2
@@ -30,7 +38,7 @@ MANIFEST_VOLATILE = {
 
 def sha256_file(path):
     with Path(path).open("rb") as stream:
-        return hashlib.file_digest(stream, "sha256").hexdigest()
+        return _stream_sha256(stream)
 
 
 def verify_archive(path, expected):
@@ -230,7 +238,7 @@ def jar_metadata(payload, component, path):
             evidence = {"archive_member": path, "jar_member": name, "entry_occurrence": occurrence}
             if not info.is_dir() and not name.endswith(".class"):
                 with jar.open(info) as stream:
-                    digest = hashlib.file_digest(stream, "sha256").hexdigest()
+                    digest = _stream_sha256(stream)
                 resources.append({"member": name, "entry_occurrence": occurrence,
                                   "bytes": info.file_size, "sha256": digest,
                                   "license_review": "pending"})
@@ -308,7 +316,7 @@ def build_inventory(fiji_archive, imagej_archive, pins):
             name = info.filename
             relative = name.removeprefix(prefix)
             with fiji.open(info) as stream:
-                digest = hashlib.file_digest(stream, "sha256").hexdigest()
+                digest = _stream_sha256(stream)
             record = {"id": "fiji:" + relative, "path": relative, "bytes": info.file_size,
                       "sha256": digest, "kind": "file", "updater_record": updater.get(relative),
                       "commercial_review": {"decision": "pending", "code": "pending",

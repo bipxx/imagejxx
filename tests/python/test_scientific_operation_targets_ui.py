@@ -24,6 +24,14 @@ import zlib
 import pytest
 
 
+def _stream_sha256(stream):
+    """Hash remaining binary stream bytes with bounded memory on Python 3.10+."""
+    digest = hashlib.sha256()
+    for block in iter(lambda: stream.read(1024 * 1024), b""):
+        digest.update(block)
+    return digest.hexdigest()
+
+
 CONTRACT = "p06d1.scientific-operation-targets-ui.001"
 CASES = ("D01", "D02", "D03", "D03M", "D03E", "D04", "D04X", "D05", "D05T", "D06", "D07")
 CONTEXTS = ("imgui_cpp", "imgui_python")
@@ -87,7 +95,7 @@ def installed_cpp_executable():
     if expected:
         assert len(expected) == 64
         with executable.open("rb") as stream:
-            assert hashlib.file_digest(stream, "sha256").hexdigest() == expected
+            assert _stream_sha256(stream) == expected
     return executable
 
 

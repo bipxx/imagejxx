@@ -1,0 +1,618 @@
+{
+  "state": "qualified_tooling_compatibility_increment",
+  "objective_complete": false,
+  "scope": "Python 3.10-compatible bounded SHA256 for 17 file/ZIP identity call sites in 15 existing capture scripts and independent readers. No native feature or runtime dependency changes.",
+  "change": "Each independent module uses hashlib.sha256 with reads bounded at 1 MiB until EOF. Stream ownership, expected SHA256 literals, all comparison assertions and all other code are unchanged by AST comparison. No global hashlib monkeypatch or fallback that accepts mismatched bytes.",
+  "checks": "158 new checks per profile: published empty/abc/million-a vectors, bounded nonseekable short reads, current stream position, stored/deflated ZIP streams, read failures, corrupt ZIP CRC, text rejection and eight actual reader identity guards with matching, wrong and corrupted artifact bytes. Synthetic executable-shaped files establish hash guard behavior only. 30 further actual installed C++ UI reader checks per profile cover scientific navigation, session, operation targets and slicing.",
+  "profiles": {
+    "windows-310": {
+      "python": "3.10.16 (main, Dec 19 2024, 14:31:40) [MSC v.1942 64 bit (AMD64)]",
+      "tests": 188,
+      "unit": 158,
+      "cpp": 30,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "has_stdlib_file_digest": false,
+      "receipts": [
+        {
+          "junit": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09x-python310-hashes001\\windows-python310003\\unit.xml",
+            "bytes": 23223,
+            "sha256": "4dc88670a633bd018a30042dce1408614c91d0aaa565d23780eb78c9dac3e8a6"
+          },
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09x-python310-hashes001\\windows-python310003\\unit-receipt.json",
+            "bytes": 2020,
+            "sha256": "3845ebc9b7b125a50c9566a42f7bf6f919533acc256361e12aa08aef2066c2b8"
+          }
+        },
+        {
+          "junit": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09x-python310-hashes001\\windows-python310005\\unit.xml",
+            "bytes": 4522,
+            "sha256": "7e5471b0af8b08b382bcba334c4a457cb8b3f29dfcbfae035f9a9cfcee334c15"
+          },
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09x-python310-hashes001\\windows-python310005\\unit-receipt.json",
+            "bytes": 2221,
+            "sha256": "1aefd7cc9c3edd251a5b2291c8d6715eac31a8a3b91ac5030bedd4981266c56c"
+          }
+        }
+      ]
+    },
+    "windows-312": {
+      "python": "3.12.8 (main, Dec 19 2024, 14:41:01) [MSC v.1942 64 bit (AMD64)]",
+      "tests": 188,
+      "unit": 158,
+      "cpp": 30,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "has_stdlib_file_digest": true,
+      "receipts": [
+        {
+          "junit": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09x-python310-hashes001\\windows-python312003\\unit.xml",
+            "bytes": 23223,
+            "sha256": "1260552e0302de4db16f58ad8fb68b86cb6232581fdf6e1ed0549e9d5dea1249"
+          },
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09x-python310-hashes001\\windows-python312003\\unit-receipt.json",
+            "bytes": 2018,
+            "sha256": "016a73fe1deed7b0f4e54da6d0400933341044b5e23486717755214286287f6e"
+          }
+        },
+        {
+          "junit": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09x-python310-hashes001\\windows-python312005\\unit.xml",
+            "bytes": 4522,
+            "sha256": "0d8871026d5deb01413bcfa5e38d5cb06f152f93253b613fa7038c9c9510d508"
+          },
+          "receipt": {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09x-python310-hashes001\\windows-python312005\\unit-receipt.json",
+            "bytes": 2219,
+            "sha256": "70c83550e927e77ea9ca278d20ea9bf0e919d96de4fbcbd82bfda115d722b05b"
+          }
+        }
+      ]
+    },
+    "linux-310": {
+      "python": "3.10.19 (main, Feb 12 2026, 00:42:18) [Clang 21.1.4 ]",
+      "tests": 188,
+      "unit": 158,
+      "cpp": 30,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "has_stdlib_file_digest": false,
+      "receipts": [
+        {
+          "junit": {
+            "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09x-python310-hashes001/linux-python310003/unit.xml",
+            "bytes": 23223,
+            "sha256": "be853e6dc997aadf6ba4c5f444e3213d56dfe90b7077cd8274835eaa47f3ce07"
+          },
+          "receipt": {
+            "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09x-python310-hashes001/linux-python310003/unit-receipt.json",
+            "bytes": 2008,
+            "sha256": "12c9b203c956590327127a8a40cbbfeed30ab4bf106353dc5fa44271a64597be"
+          }
+        },
+        {
+          "junit": {
+            "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09x-python310-hashes001/linux-python310005/unit.xml",
+            "bytes": 4523,
+            "sha256": "76a6a73c1f57ae7deccb5254c9eccaffb6c9c115b1ecb1bce54d219982115353"
+          },
+          "receipt": {
+            "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09x-python310-hashes001/linux-python310005/unit-receipt.json",
+            "bytes": 2176,
+            "sha256": "6b8b8c8b89d3a8d590cc2014b93ef21ae0c67df089115b94b626bedf6289a899"
+          }
+        }
+      ]
+    },
+    "linux-312": {
+      "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+      "tests": 188,
+      "unit": 158,
+      "cpp": 30,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "has_stdlib_file_digest": true,
+      "receipts": [
+        {
+          "junit": {
+            "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09x-python310-hashes001/linux-python312003/unit.xml",
+            "bytes": 23223,
+            "sha256": "07cfdbe0bf9d20f36e48c0fba26338cb0c76e55576b030d978582c7cf31bb92a"
+          },
+          "receipt": {
+            "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09x-python310-hashes001/linux-python312003/unit-receipt.json",
+            "bytes": 2003,
+            "sha256": "adb8d85b1c4517d1c28414568c485ceef0f10123ef465aa922776df6bc0f4910"
+          }
+        },
+        {
+          "junit": {
+            "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09x-python310-hashes001/linux-python312005/unit.xml",
+            "bytes": 4523,
+            "sha256": "57af0d89536e169c0567e46af36abb79db06c0b06aedc5d66260f7fa070bfd32"
+          },
+          "receipt": {
+            "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09x-python310-hashes001/linux-python312005/unit-receipt.json",
+            "bytes": 2171,
+            "sha256": "3f7085d79eb3d0bdf3cfa7469ef4b010aff4456e1117b198ebbad38f5a63e949"
+          }
+        }
+      ]
+    }
+  },
+  "observations": {
+    "unique_capture_artifacts": 78,
+    "frames": 5506,
+    "shared_target_slicing_artifacts": 42,
+    "fresh_navigation_session_artifacts": 36,
+    "contexts": [
+      "imgui_cpp"
+    ],
+    "python_ui_qualification": false
+  },
+  "source": [
+    {
+      "path": "scripts/capture_binary_reference.py",
+      "calls": 1,
+      "before": "65ac94eef8b0d165f29cfb1a971a511a07975478de3e92c49de20d5514f301db",
+      "after": "f2a9dc58e12144163d93ad9b413811c471ebebb0c2292e69b7c6b945e3ad5916",
+      "preimage_commit": "ea1a502bd5b00d5a9e0c4eb06acb883db3f7c1bb",
+      "current": {
+        "path": "scripts/capture_binary_reference.py",
+        "bytes": 9374,
+        "sha256": "f2a9dc58e12144163d93ad9b413811c471ebebb0c2292e69b7c6b945e3ad5916"
+      },
+      "retained_preimage": {
+        "path": "build/p09x-python310-hashes001/preimages001/scripts/capture_binary_reference.py",
+        "bytes": 9138,
+        "sha256": "65ac94eef8b0d165f29cfb1a971a511a07975478de3e92c49de20d5514f301db"
+      }
+    },
+    {
+      "path": "scripts/capture_channel_display_projection_ui.py",
+      "calls": 1,
+      "before": "5dbe2be19be1c1486d4f93916594a7fae948a68cdb13ea34d5efb53cf8a6b3e3",
+      "after": "c42e8bd73918a3bc1a908a30659a22ad053d201f1c005086c343894b0d609ba8",
+      "preimage_commit": "ea1a502bd5b00d5a9e0c4eb06acb883db3f7c1bb",
+      "current": {
+        "path": "scripts/capture_channel_display_projection_ui.py",
+        "bytes": 13623,
+        "sha256": "c42e8bd73918a3bc1a908a30659a22ad053d201f1c005086c343894b0d609ba8"
+      },
+      "retained_preimage": {
+        "path": "build/p09x-python310-hashes001/preimages001/scripts/capture_channel_display_projection_ui.py",
+        "bytes": 13387,
+        "sha256": "5dbe2be19be1c1486d4f93916594a7fae948a68cdb13ea34d5efb53cf8a6b3e3"
+      }
+    },
+    {
+      "path": "scripts/capture_color_stack_reference.py",
+      "calls": 1,
+      "before": "54cad8e7776acc6b4c8f26ceb0ece23886a942ab7d0be67aab247f046e4fd7f0",
+      "after": "4a355db1895533d8cfbf15527c04ae500e01394279eb28a852daa91c9304a3f3",
+      "preimage_commit": "ea1a502bd5b00d5a9e0c4eb06acb883db3f7c1bb",
+      "current": {
+        "path": "scripts/capture_color_stack_reference.py",
+        "bytes": 12002,
+        "sha256": "4a355db1895533d8cfbf15527c04ae500e01394279eb28a852daa91c9304a3f3"
+      },
+      "retained_preimage": {
+        "path": "build/p09x-python310-hashes001/preimages001/scripts/capture_color_stack_reference.py",
+        "bytes": 11757,
+        "sha256": "54cad8e7776acc6b4c8f26ceb0ece23886a942ab7d0be67aab247f046e4fd7f0"
+      }
+    },
+    {
+      "path": "scripts/capture_rgb_conversion_reference.py",
+      "calls": 1,
+      "before": "f28f8476013440e08d0e888efffc0400d8f4f0e24fb1597462b24cee71dc7e0b",
+      "after": "9b5053116584657ed99e1803f7cc53a712b2b5a2449bed71c628d33d469d452a",
+      "preimage_commit": "ea1a502bd5b00d5a9e0c4eb06acb883db3f7c1bb",
+      "current": {
+        "path": "scripts/capture_rgb_conversion_reference.py",
+        "bytes": 7351,
+        "sha256": "9b5053116584657ed99e1803f7cc53a712b2b5a2449bed71c628d33d469d452a"
+      },
+      "retained_preimage": {
+        "path": "build/p09x-python310-hashes001/preimages001/scripts/capture_rgb_conversion_reference.py",
+        "bytes": 7115,
+        "sha256": "f28f8476013440e08d0e888efffc0400d8f4f0e24fb1597462b24cee71dc7e0b"
+      }
+    },
+    {
+      "path": "scripts/reference_inventory.py",
+      "calls": 3,
+      "before": "8957ab04fe319bfcf1d822d3fc5b30034adc36bbdd7c28c14b80c2b37acdb2df",
+      "after": "e07d4cbc7578c3eee6fe32f2e08e2bda42356ca5019c55f65cb09769992b2ca1",
+      "preimage_commit": "ea1a502bd5b00d5a9e0c4eb06acb883db3f7c1bb",
+      "current": {
+        "path": "scripts/reference_inventory.py",
+        "bytes": 23857,
+        "sha256": "e07d4cbc7578c3eee6fe32f2e08e2bda42356ca5019c55f65cb09769992b2ca1"
+      },
+      "retained_preimage": {
+        "path": "build/p09x-python310-hashes001/preimages001/scripts/reference_inventory.py",
+        "bytes": 23675,
+        "sha256": "8957ab04fe319bfcf1d822d3fc5b30034adc36bbdd7c28c14b80c2b37acdb2df"
+      }
+    },
+    {
+      "path": "tests/python/test_channel_display_ui.py",
+      "calls": 1,
+      "before": "2efae0c352c0800f92b24180fb15759db59571a382807bcea76b7a416c7932e5",
+      "after": "b9d29ddeea10f739e4507bf35f450dbea92370dbe69d3ff9c46f837c67a5f069",
+      "preimage_commit": "ea1a502bd5b00d5a9e0c4eb06acb883db3f7c1bb",
+      "current": {
+        "path": "tests/python/test_channel_display_ui.py",
+        "bytes": 98796,
+        "sha256": "b9d29ddeea10f739e4507bf35f450dbea92370dbe69d3ff9c46f837c67a5f069"
+      },
+      "retained_preimage": {
+        "path": "build/p09x-python310-hashes001/preimages001/tests/python/test_channel_display_ui.py",
+        "bytes": 98560,
+        "sha256": "2efae0c352c0800f92b24180fb15759db59571a382807bcea76b7a416c7932e5"
+      }
+    },
+    {
+      "path": "tests/python/test_gaussian_controls_ui.py",
+      "calls": 1,
+      "before": "62723115a5c0f6e6289263ab437cf37172badf7a5899f3008e88da7422775fe9",
+      "after": "d3bc9e1ce05eeb0696533cecc6a2fb3d67a0705f97b73b17d57796ce25176ffc",
+      "preimage_commit": "ea1a502bd5b00d5a9e0c4eb06acb883db3f7c1bb",
+      "current": {
+        "path": "tests/python/test_gaussian_controls_ui.py",
+        "bytes": 33788,
+        "sha256": "d3bc9e1ce05eeb0696533cecc6a2fb3d67a0705f97b73b17d57796ce25176ffc"
+      },
+      "retained_preimage": {
+        "path": "build/p09x-python310-hashes001/preimages001/tests/python/test_gaussian_controls_ui.py",
+        "bytes": 33552,
+        "sha256": "62723115a5c0f6e6289263ab437cf37172badf7a5899f3008e88da7422775fe9"
+      }
+    },
+    {
+      "path": "tests/python/test_gaussian_roi_ui.py",
+      "calls": 1,
+      "before": "cc1f297f0b9aa7cdb40f3bde269d2bb0684a920220f6bd3fb0c6c03b3031eee6",
+      "after": "24ec0e4a273e0ac1ce238c869c93b1ee9ce205e882fc74de3dd473848e861342",
+      "preimage_commit": "ea1a502bd5b00d5a9e0c4eb06acb883db3f7c1bb",
+      "current": {
+        "path": "tests/python/test_gaussian_roi_ui.py",
+        "bytes": 38836,
+        "sha256": "24ec0e4a273e0ac1ce238c869c93b1ee9ce205e882fc74de3dd473848e861342"
+      },
+      "retained_preimage": {
+        "path": "build/p09x-python310-hashes001/preimages001/tests/python/test_gaussian_roi_ui.py",
+        "bytes": 38600,
+        "sha256": "cc1f297f0b9aa7cdb40f3bde269d2bb0684a920220f6bd3fb0c6c03b3031eee6"
+      }
+    },
+    {
+      "path": "tests/python/test_manual_threshold_ui.py",
+      "calls": 1,
+      "before": "569a198fe9b5385c6371b57c4abdfffb86f01b8a66a94c6624b4cd54e3ec54ee",
+      "after": "1a9786c78e00f13e5bce3fd07d88585c997b7670799306cdc786793648352bb7",
+      "preimage_commit": "ea1a502bd5b00d5a9e0c4eb06acb883db3f7c1bb",
+      "current": {
+        "path": "tests/python/test_manual_threshold_ui.py",
+        "bytes": 20428,
+        "sha256": "1a9786c78e00f13e5bce3fd07d88585c997b7670799306cdc786793648352bb7"
+      },
+      "retained_preimage": {
+        "path": "build/p09x-python310-hashes001/preimages001/tests/python/test_manual_threshold_ui.py",
+        "bytes": 20192,
+        "sha256": "569a198fe9b5385c6371b57c4abdfffb86f01b8a66a94c6624b4cd54e3ec54ee"
+      }
+    },
+    {
+      "path": "tests/python/test_roi_boolean_ui.py",
+      "calls": 1,
+      "before": "8621c8fe7bde0d81c1edae73b2345e7a2a7b14d5cf9e182d6872f774d1118025",
+      "after": "5ff3da13f75913cfcb2ae0608431d402b3c41440cecaa26922512070e04fc1a0",
+      "preimage_commit": "ea1a502bd5b00d5a9e0c4eb06acb883db3f7c1bb",
+      "current": {
+        "path": "tests/python/test_roi_boolean_ui.py",
+        "bytes": 24445,
+        "sha256": "5ff3da13f75913cfcb2ae0608431d402b3c41440cecaa26922512070e04fc1a0"
+      },
+      "retained_preimage": {
+        "path": "build/p09x-python310-hashes001/preimages001/tests/python/test_roi_boolean_ui.py",
+        "bytes": 24209,
+        "sha256": "8621c8fe7bde0d81c1edae73b2345e7a2a7b14d5cf9e182d6872f774d1118025"
+      }
+    },
+    {
+      "path": "tests/python/test_scientific_navigation_ui.py",
+      "calls": 1,
+      "before": "69cf654568c66ff5377faea4763a711b7a870d9dba4472d214a792cdfe492a8d",
+      "after": "2ff2bebf013016a837c54151fa04878b28a4637a2016f272c77f3bdf5ac65d78",
+      "preimage_commit": "ea1a502bd5b00d5a9e0c4eb06acb883db3f7c1bb",
+      "current": {
+        "path": "tests/python/test_scientific_navigation_ui.py",
+        "bytes": 29591,
+        "sha256": "2ff2bebf013016a837c54151fa04878b28a4637a2016f272c77f3bdf5ac65d78"
+      },
+      "retained_preimage": {
+        "path": "build/p09x-python310-hashes001/preimages001/tests/python/test_scientific_navigation_ui.py",
+        "bytes": 29355,
+        "sha256": "69cf654568c66ff5377faea4763a711b7a870d9dba4472d214a792cdfe492a8d"
+      }
+    },
+    {
+      "path": "tests/python/test_scientific_operation_targets_ui.py",
+      "calls": 1,
+      "before": "ce5f52afab954a34c4e268facccc6b7cbee52d8a8a65c4be3ab681ead585b29a",
+      "after": "49fab32cc2cc3f58b71e3070811602d4ea28e1d6c329a08a90d4fa4c1d3d6c52",
+      "preimage_commit": "ea1a502bd5b00d5a9e0c4eb06acb883db3f7c1bb",
+      "current": {
+        "path": "tests/python/test_scientific_operation_targets_ui.py",
+        "bytes": 52303,
+        "sha256": "49fab32cc2cc3f58b71e3070811602d4ea28e1d6c329a08a90d4fa4c1d3d6c52"
+      },
+      "retained_preimage": {
+        "path": "build/p09x-python310-hashes001/preimages001/tests/python/test_scientific_operation_targets_ui.py",
+        "bytes": 52067,
+        "sha256": "ce5f52afab954a34c4e268facccc6b7cbee52d8a8a65c4be3ab681ead585b29a"
+      }
+    },
+    {
+      "path": "tests/python/test_scientific_session_ui.py",
+      "calls": 1,
+      "before": "79503e2deab960e5639fa67f014dd02e2f4660377701a5c7b5d3cfcc91d16226",
+      "after": "7489d276b52fb9b01ca768af80d238b93b2662ac19a6100b90afbc292ee84fc5",
+      "preimage_commit": "ea1a502bd5b00d5a9e0c4eb06acb883db3f7c1bb",
+      "current": {
+        "path": "tests/python/test_scientific_session_ui.py",
+        "bytes": 19364,
+        "sha256": "7489d276b52fb9b01ca768af80d238b93b2662ac19a6100b90afbc292ee84fc5"
+      },
+      "retained_preimage": {
+        "path": "build/p09x-python310-hashes001/preimages001/tests/python/test_scientific_session_ui.py",
+        "bytes": 19128,
+        "sha256": "79503e2deab960e5639fa67f014dd02e2f4660377701a5c7b5d3cfcc91d16226"
+      }
+    },
+    {
+      "path": "tests/python/test_scientific_slicing_ui.py",
+      "calls": 1,
+      "before": "60dfbd0c21c71d02740d4368dde32802f15c606643b1eb47578b00c7cd48da42",
+      "after": "3645dc2cb8c3b125e165618cea4cbb18f8e9e77e4fac74e37a42e69a0950c8af",
+      "preimage_commit": "ea1a502bd5b00d5a9e0c4eb06acb883db3f7c1bb",
+      "current": {
+        "path": "tests/python/test_scientific_slicing_ui.py",
+        "bytes": 54428,
+        "sha256": "3645dc2cb8c3b125e165618cea4cbb18f8e9e77e4fac74e37a42e69a0950c8af"
+      },
+      "retained_preimage": {
+        "path": "build/p09x-python310-hashes001/preimages001/tests/python/test_scientific_slicing_ui.py",
+        "bytes": 54192,
+        "sha256": "60dfbd0c21c71d02740d4368dde32802f15c606643b1eb47578b00c7cd48da42"
+      }
+    },
+    {
+      "path": "tests/python/test_selection_creation_ui.py",
+      "calls": 1,
+      "before": "e750912033a1903f95b5d95412d3b82adcf4f522226a8b6935d2d8aa8c78c4fa",
+      "after": "e95d51beef49714223e6c80ce182f3931b0cf5db9bea61f963967a60abc94b85",
+      "preimage_commit": "ea1a502bd5b00d5a9e0c4eb06acb883db3f7c1bb",
+      "current": {
+        "path": "tests/python/test_selection_creation_ui.py",
+        "bytes": 95040,
+        "sha256": "e95d51beef49714223e6c80ce182f3931b0cf5db9bea61f963967a60abc94b85"
+      },
+      "retained_preimage": {
+        "path": "build/p09x-python310-hashes001/preimages001/tests/python/test_selection_creation_ui.py",
+        "bytes": 94804,
+        "sha256": "e750912033a1903f95b5d95412d3b82adcf4f522226a8b6935d2d8aa8c78c4fa"
+      }
+    }
+  ],
+  "new_tests": {
+    "path": "tests/python/test_stream_hash_compat.py",
+    "bytes": 5114,
+    "sha256": "1092ce97dc411edb4aafc94480e3863e3c2f416808497b930bf34ccc5e4a9276"
+  },
+  "ast_audit": {
+    "path": "build/p09x-python310-hashes001/ast-audit001.json",
+    "bytes": 2796,
+    "sha256": "5fe106f71b39a4a6b54b19bd6fc15be9e9509d690925917e22f18261ede29a0f"
+  },
+  "ci": {
+    "default_native_launches": 1137,
+    "unchanged": true,
+    "new_tests_automatically_collected": true,
+    "complete_hosted_acceptance": false
+  },
+  "license_check": {
+    "path": "build/p09x-python310-hashes001/licenses001.log",
+    "bytes": 53,
+    "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+  },
+  "commercial_scope": "No new dependencies, plugins, licensing decisions or third-party runtime/source incorporation.",
+  "plan_gate": {
+    "state": "failed_preexisting",
+    "message": "Plan inventory check failed: histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed",
+    "application_header_unchanged_from_head": true
+  },
+  "initial_failures": [
+    {
+      "profile": "windows-310",
+      "run": "001",
+      "tests": 3,
+      "failed": 0,
+      "errors": 1,
+      "junit": {
+        "path": "build/p09x-python310-hashes001/windows-python310001/unit.xml",
+        "bytes": 1001509,
+        "sha256": "77e80faee0c732f724560c045da3d3dadb1229e594e2d167a2328c823e0ee4af"
+      }
+    },
+    {
+      "profile": "windows-312",
+      "run": "001",
+      "tests": 3,
+      "failed": 0,
+      "errors": 1,
+      "junit": {
+        "path": "build/p09x-python310-hashes001/windows-python312001/unit.xml",
+        "bytes": 1004689,
+        "sha256": "2985ec40ef6ed5e2dbbdb5832c8794cc31096b0acc423102fcac79197bdac1bc"
+      }
+    },
+    {
+      "profile": "windows-310",
+      "run": "002",
+      "tests": 177,
+      "failed": 1,
+      "errors": 0,
+      "junit": {
+        "path": "build/p09x-python310-hashes001/windows-python310002/unit.xml",
+        "bytes": 27059,
+        "sha256": "06f66f42d9dde4be840fa28c20f6bce1edb4462784f0fbe6282ee0282d447c59"
+      }
+    },
+    {
+      "profile": "windows-312",
+      "run": "002",
+      "tests": 177,
+      "failed": 1,
+      "errors": 0,
+      "junit": {
+        "path": "build/p09x-python310-hashes001/windows-python312002/unit.xml",
+        "bytes": 27218,
+        "sha256": "8461658fdbf1a03c8fc5ead8b65d8a6b5fdb1253881b35cc695a820d0b620486"
+      }
+    },
+    {
+      "profile": "linux-310",
+      "run": "001",
+      "tests": 151,
+      "failed": 0,
+      "errors": 1,
+      "junit": {
+        "path": "build/p09x-python310-hashes001/linux-python310001/unit.xml",
+        "bytes": 15025237,
+        "sha256": "53759226e89cd5324ad6bccfe849bd78c37c3140f9e6194773755fc41561dde0"
+      }
+    },
+    {
+      "profile": "linux-312",
+      "run": "001",
+      "tests": 151,
+      "failed": 0,
+      "errors": 1,
+      "junit": {
+        "path": "build/p09x-python310-hashes001/linux-python312001/unit.xml",
+        "bytes": 15025167,
+        "sha256": "e4a03a95cb6e3650c722d3c08c94d351076d0ddde823055a3c471df2ed1018f1"
+      }
+    },
+    {
+      "profile": "linux-310",
+      "run": "002",
+      "tests": 177,
+      "failed": 1,
+      "errors": 0,
+      "junit": {
+        "path": "build/p09x-python310-hashes001/linux-python310002/unit.xml",
+        "bytes": 27047,
+        "sha256": "3f1a42190cad5ac5473b738d6b1e3ed9b2bcf79aa2dbc00f2e04084fa9f20188"
+      }
+    },
+    {
+      "profile": "linux-312",
+      "run": "002",
+      "tests": 177,
+      "failed": 1,
+      "errors": 0,
+      "junit": {
+        "path": "build/p09x-python310-hashes001/linux-python312002/unit.xml",
+        "bytes": 27203,
+        "sha256": "45983284760da4d9ca40417a05400a4f09d148083dd02965115483e20f63dcd4"
+      }
+    }
+  ],
+  "historical_generator_sources": {
+    "policy": "Original reference hashes and accepted pins are unchanged; no historical generation or acceptance is re-certified.",
+    "changed": [
+      "scripts/capture_binary_reference.py",
+      "scripts/capture_channel_display_projection_ui.py",
+      "scripts/capture_color_stack_reference.py",
+      "scripts/capture_rgb_conversion_reference.py"
+    ],
+    "consequence": "Current generator source bytes now differ from their earlier pins. Exact original sources remain in the parent Git commit and retained preimages. Binding historical reference evidence to those immutable sources remains required."
+  },
+  "remaining": [
+    "Complete hosted Python acceptance and Python UI/platform qualification",
+    "Historical evidence/reference artifacts and source-freeze availability",
+    "Historical generator source binding after compatible tooling edits",
+    "Movie export and every remaining ImageJ/commercial Fiji feature"
+  ],
+  "all99": {
+    "in_progress": 44,
+    "open": 55,
+    "complete": 0
+  },
+  "format_variants": "All 96 remain partial",
+  "evidence": {
+    "windows": {
+      "compact": {
+        "path": "build/p09x-python310-hashes001/windows-evidence001.json",
+        "bytes": 60844,
+        "sha256": "6e899a18cddfea3666169aeff24a545a90372f2a1d216fee241f18465eb04623"
+      },
+      "cleanup": {
+        "removed_bytes": 414959043,
+        "removed_files": 983,
+        "archive": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09x-python310-hashes001\\windows-scratch001.zip",
+          "bytes": 89520145,
+          "sha256": "4c0885dd8bf753d89f0f9d4b9dca3be14efcae54f3b22784c200ea0b21e18157"
+        },
+        "receipt": {
+          "path": "build/p09x-python310-hashes001/windows-cleanup001.json",
+          "bytes": 383492,
+          "sha256": "fdab7c038fb0a44b92ff53ad827288973d0829ff3f7c16d3d0b4c3b40e955a97"
+        }
+      }
+    },
+    "linux": {
+      "compact": {
+        "path": "build/p09x-python310-hashes001/linux-evidence001.json",
+        "bytes": 59572,
+        "sha256": "6d9b6fbfbb864e70705d845f063f746723f67f7328fd16d8d4ff9c75e9bfe2ca"
+      },
+      "cleanup": {
+        "removed_bytes": 414061317,
+        "removed_files": 993,
+        "archive": {
+          "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09x-python310-hashes001/linux-scratch001.zip",
+          "bytes": 89137058,
+          "sha256": "01c6c4ac952bce14ad8662471b3db6805495d1c14721cbdfcdc35683773bfb14"
+        },
+        "receipt": {
+          "path": "build/p09x-python310-hashes001/linux-cleanup001.json",
+          "bytes": 366488,
+          "sha256": "496fc15bffd1f0af60bd1383757ada9134f027a1d65e01b252bec2e1da9a4fc1"
+        }
+      }
+    }
+  },
+  "failure_explanation": [
+    "Initial vector IDs exceeded the Windows environment limit; compact explicit IDs corrected the test harness.",
+    "Initial Linux temp parent was missing; the runner now creates its owned parent.",
+    "The full reference-inventory attempt reached the existing historical-copy test and failed because its temporary copy lacks accepted source-freeze bytes. That test also still expects four fixtures while the live manifest contains twelve. It remains unchanged and failing; no full reference-inventory pass is claimed.",
+    "A private C++ reader runner replacement also changed its own source-pin statement and failed before tests. It was corrected in a fresh run; logs retained."
+  ],
+  "cleanup_removed_bytes": 829020360
+}

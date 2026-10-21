@@ -180291,6 +180291,29 @@
         "total": 298
       },
       "scope": "298 selected playback/desktop/session/preferences checks per platform; 168 UI observations / 10336 frames, plus six source/axis/metadata refusal artifacts. Native playback/preferences, existing installed SDK example and 15 transport checks per platform. Full family/hosted acceptance remains open."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-21",
+      "id": "p09x.python310-evidence.functional.001",
+      "identity": {
+        "qualification": {
+          "path": "docs/parity/reviews/p09x-python310-hashes001.json",
+          "bytes": 25980,
+          "sha256": "77d68a24262c696e90c29c03e8c3094805dc531c8c2a5892f617ebfc679bd288"
+        }
+      },
+      "platform": "Windows/Linux Python 3.10 and 3.12 readers of the installed C++ Dear ImGui host",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 158,
+        "report": "build/p09x-python310-hashes001/windows-python310003/unit.xml",
+        "skipped": 0,
+        "total": 158
+      },
+      "scope": "Each of four profiles passes 158 hash/identity checks plus 30 actual C++ UI reader checks (two JUnit files per profile are bound in qualification). 78 distinct C++ capture artifacts / 5506 frames. Python UI/full hosted/reference acceptance remain open."
     }
   ]
 }

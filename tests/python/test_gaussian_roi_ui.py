@@ -17,6 +17,14 @@ import sysconfig
 import pytest
 
 
+def _stream_sha256(stream):
+    """Hash remaining binary stream bytes with bounded memory on Python 3.10+."""
+    digest = hashlib.sha256()
+    for block in iter(lambda: stream.read(1024 * 1024), b""):
+        digest.update(block)
+    return digest.hexdigest()
+
+
 GROUP = "P02a.shared_ui.19.roi-exact-bounds"
 CONTEXTS = ("imgui_cpp", "imgui_python")
 CONTRACT_SHA = "2652bcf1c0665e997fb1bbe55c7f616071359e6b99293b875b2b8555ff045255"
@@ -62,7 +70,7 @@ def digest(data):
 
 def file_digest(path):
     with path.open("rb") as stream:
-        return hashlib.file_digest(stream, "sha256").hexdigest()
+        return _stream_sha256(stream)
 
 
 def unique_object(pairs):
