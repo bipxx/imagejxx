@@ -144,9 +144,20 @@ std::size_t allocation_run(bool policy, std::size_t fail_at,
   }
   return count;
 }
+// Return the control block across a non-inlined boundary. An unused local
+// make_shared can be allocation-elided by optimized Clang/libc++, bypassing
+// this executable's replacement operator new and invalidating calibration.
+#if defined(_MSC_VER)
+__declspec(noinline)
+#elif defined(__GNUC__) || defined(__clang__)
+__attribute__((noinline))
+#endif
+std::shared_ptr<const int> calibration_token() {
+  return std::make_shared<const int>(0);
+}
 void allocation_failures() {
   ordinal = 0; observe = true;
-  const auto token = std::make_shared<const int>(0);
+  const auto token = calibration_token();
   observe = false;
   check(ordinal == 1, "Activation token calibration must be one allocation");
   const auto token_bytes = sizes[0];
