@@ -8,22 +8,23 @@ namespace {
 void require(bool value,const char *message){if(!value)throw std::runtime_error(message);}
 Json state(Window &window,const std::shared_ptr<imagejxx::Document> &owner){
   const auto s=owner->snapshot();Json pixels=Json::array();for(int z=0;z<2;++z)pixels.push_back(s.data().dataset.plane({0,0,z})->pixels);
-  Json mask=nullptr;if(s.data().selection)mask=s.data().selection->mask(16,16).pixels;
+  Json mask=nullptr;if(s.data().selection)mask=s.data().selection->mask(s.data().dataset.shape().x,s.data().dataset.shape().y).pixels;
   const auto threshold=manual_threshold_state(s.display(),s.data().dataset.shape());
   return {{"pixels",pixels},{"selection_mask",mask},{"dirty",s.dirty()},{"undo",owner->undo_steps()},{"redo",owner->redo_steps()},
     {"pixels_revision",s.revisions().pixels},{"metadata_revision",s.revisions().metadata},{"selection_revision",s.revisions().selection},
     {"display_revision",s.revisions().display},{"properties",metadataJson(s.display().properties)},{"workflow",window.workflow},
-    {"threshold",threshold?Json{{"lower",threshold->range.lower},{"upper",threshold->range.upper},{"position",{threshold->position.t,threshold->position.c,threshold->position.z}}}:Json(nullptr)}};
+    {"threshold",threshold?Json{{"lower",threshold->range.lower},{"upper",threshold->range.upper},{"position",{threshold->position.t,threshold->position.c,threshold->position.z}},{"all_z",threshold->all_z}}:Json(nullptr)}};
 }
 }
 Json automaticDisplayUiCase(Window &window,const std::string &id,const std::string &host,const std::string &fresh){
   namespace fs=std::filesystem;const auto root=fs::absolute(fs::u8path(fresh));require(!fs::exists(root)&&window.documents().empty(),"Fresh automatic display fixture required");fs::create_directories(root);
   const auto split=id.rfind('-');const auto method=id.substr(0,split);const auto mode=split==std::string::npos?"bright":id.substr(split+1);
-  const bool bright=mode!="dark",both=mode=="both";require(mode=="bright"||mode=="dark"||mode=="both","Unknown display fixture");
-  Stack planes;for(int z=0;z<2;++z){Image im(16,16,1,PixelType::UInt8);for(int i=0;i<256;++i)im.pixels[i]=z?200:i;planes.push_back(std::move(im));}
+  const bool pooled=mode.rfind("pool",0)==0,bright=mode!="dark"&&mode!="pooldark",both=mode=="both"||mode=="poolboth";require(mode=="bright"||mode=="dark"||mode=="both"||mode=="pool"||mode=="pooldark"||mode=="poolboth","Unknown display fixture");
+  Stack planes;for(int z=0;z<2;++z){Image im(16,pooled?8:16,1,PixelType::UInt8);for(int i=0;i<(pooled?128:256);++i)im.pixels[i]=pooled?2*i+z:z?200:i;planes.push_back(std::move(im));}
   auto owner=std::make_shared<imagejxx::Document>(DocumentData{Dataset::from_stack(std::move(planes))});
   auto view=owner->snapshot().display();view.properties["display_range"]=metadata_array({0,255});view.properties["lut"]=std::string("gray");owner->set_display(view);window.addNativeDocument(owner);window.recording=true;
   Json report{{"contract","p10c.automatic-display.ui.001"},{"case_id",id},{"context",host},{"acceptance_claim",false},{"state","running"},{"frames",Json::array()},{"controls",Json::array()},{"states",{{"before",state(window,owner)}}}};
+  if(pooled)report["contract"]="p10e.pooled-display.ui.001";
   report["settings_before"]=window.preferencesJson();
   struct Failure{Json &r;fs::path root;bool done=false;~Failure(){if(!done)try{r["state"]="failed";writeJson((root/"failure.json").u8string(),r);}catch(...){}}}failure{report,root};
   HeadlessInputSession session(window);Json last;
@@ -41,9 +42,15 @@ Json automaticDisplayUiCase(Window &window,const std::string &id,const std::stri
   click("panel.auto.method");
   const auto point=last.at("threshold_panel").at("controls").at("auto.method.choice.otsu");frame(Json::array({{{"type","position"},{"space","screen"},{"point",point}}}));frame(Json::array({{{"type","wheel"},{"x",0},{"y",-12}}}));frame();frame();
   click("panel.auto.method.choice."+method);
-  for(const auto &flag:std::vector<std::pair<std::string,bool>>{{"bright",bright},{"ignore_black",both},{"ignore_white",both}})
+  for(const auto &flag:std::vector<std::pair<std::string,bool>>{{"bright",bright},{"ignore_black",both},{"ignore_white",both},{"stack_histogram",pooled}})
     if(last.at("threshold_panel").at("automatic").at(flag.first).get<bool>()!=flag.second)click("panel.auto."+flag.first);
   click("panel.auto");frame();report["automatic"]=last.at("threshold_panel");report["overlay"]=last.at("ordinary_pixels").at("readback");report["states"]["automatic"]=state(window,owner);report["settings_after_auto"]=window.preferencesJson();
+  if(pooled){
+    auto display=owner->snapshot().display();display.crosshair[2]=1;owner->set_display(display);frame();frame();
+    report["navigation"]={{"kind","native_display_set"},{"z",1}};
+    report["overlay_z1"]=last.at("ordinary_pixels").at("readback");
+    display.crosshair[2]=0;owner->set_display(display);frame();frame();
+  }
   click("panel.reset");report["states"]["reset"]=state(window,owner);
   click("panel.auto");click("panel.cancel");report["states"]["cancelled"]=state(window,owner);report["settings_after_cancel"]=window.preferencesJson();
   click("menu.Process");click("menu.manual_threshold");click("panel.auto");click("panel.to_selection");report["states"]["selection"]=state(window,owner);

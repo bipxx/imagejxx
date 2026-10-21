@@ -152,7 +152,7 @@ PreparedAxisRemap prepare_z_axis_remap(const DocumentSnapshot &source,const ZSub
   display.crosshair[2]=map.nearest_output(display.crosshair[2]);
   if(threshold) {
     const auto mapped=map.output_index(threshold->position.z);
-    if(mapped) {auto state=*threshold;state.position.z=*mapped;set_manual_threshold_state(display,output_shape,state);}
+    if(mapped || threshold->all_z) {auto state=*threshold;state.position.z=mapped?*mapped:map.nearest_output(threshold->position.z);set_manual_threshold_state(display,output_shape,state);}
     else reset_manual_threshold_state(display);
   }
   edit.set_axis_remap_display(display);

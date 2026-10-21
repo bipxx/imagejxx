@@ -1,5 +1,27 @@
 # ImageJ and Fiji gap closure plan
 
+**Pooled display checkpoint, 2026-10-21 (work in progress):**
+Pooled Auto now estimates every Z at captured T/C. The shared Threshold panel
+retains that scope, displays the common overlay across Z navigation, and applies
+numeric bounds to the same frozen stack with the active 2D ROI repeated. To
+Selection uses the captured plane. All-Z display and multi-plane command records
+are versioned; existing single-plane records remain unchanged. Sessions, subset
+remapping and typed replay/rebind preserve the captured scope.
+Windows/Linux each pass 5,369 regression checks plus eight additional
+non-anchor variance/top-hat scope/history checks, without skips (5,377 total).
+The regression suite includes 259 new pooled checks. Independent readers inspect 336 threshold reports / 26,784 frames,
+including 72 pooled display reports. Fresh installed SDK consumers prove zero
+reads on cap refusal, three scans for histogram-based display, exact six-method
+levels, and all-Z display/command state. The 1,225-case registration preserves
+all previous cases; commercial-use inventory passes without new dependencies.
+Verified archives remove 1,296,561,462 scratch bytes while retaining final builds/evidence.
+See [the scoped receipt](parity/reviews/p10e-pooled-display001.json) and
+[scope/resource/record contracts](THRESHOLDING.md). Next are scientific T/C/range
+and histogram ROI controls, then remaining defaults/recording and asynchronous
+execution. Full reference/resource/platform acceptance and the existing Auto
+Contrast fingerprint gate remain open. All99 stays 46 in progress / 53 open /
+0 complete; all 96 format variants remain partial.
+
 **Threshold preference checkpoint, 2026-10-21 (work in progress):**
 The shared native Settings schema now retains the last Auto display method,
 bright/dark direction and endpoint exclusions. Both ImGui hosts restore them

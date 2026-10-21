@@ -381,3 +381,11 @@ assert len(again.documents) == 1
 These scientific records are usable through headless C++ and Python. Passing
 them to the desktop remains subject to the editor's current axis/display
 admission policy.
+
+The manual threshold display property additionally accepts version two with
+`version`, `lower`, `upper`, `t`, `c`, `z` and Boolean `all_z`. All-Z state applies
+at the recorded T/C across every Z; `z` retains its captured anchor. Version one
+remains the six-field single-plane representation. This is a nested display
+property version, independent of the session archive envelope. Unknown fields,
+non-Boolean scope flags and unsupported versions refuse. See
+[threshold scopes and record compatibility](THRESHOLDING.md).

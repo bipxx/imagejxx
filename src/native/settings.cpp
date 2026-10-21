@@ -215,6 +215,9 @@ const std::vector<SettingDefinition> &Settings::schema() {
                methods.push_back(std::get<std::string>(choice));
          return methods;
        }()},
+      {"threshold_stack_histogram", "Threshold", "Use all Z slices",
+       "Auto estimates over all Z at captured T/C, and Apply targets those slices.",
+       SettingKind::Boolean, false},
       {"threshold_bright", "Threshold", "Bright objects",
        "Auto selects values above the threshold; otherwise selects at or below it.",
        SettingKind::Boolean, true},

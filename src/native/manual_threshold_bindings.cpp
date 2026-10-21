@@ -105,7 +105,8 @@ void bind_manual_threshold(py::module_ &m) {
       });
   py::class_<ManualThresholdState>(m, "ManualThresholdState")
       .def_property_readonly("range", [](const ManualThresholdState &s) { return s.range; })
-      .def_property_readonly("position", [](const ManualThresholdState &s) { return s.position; });
+      .def_property_readonly("position", [](const ManualThresholdState &s) { return s.position; })
+      .def_readonly("all_z", &ManualThresholdState::all_z);
   m.def("estimate_manual_threshold", [](const Dataset &source,
           PlanePosition position, const ManualThresholdLimits &limits) {
     return estimate_manual_threshold(source.shape(), source.pixel_type(), position, limits);
@@ -145,11 +146,11 @@ void bind_manual_threshold(py::module_ &m) {
     return manual_threshold_state(display, source.shape());
   }, py::arg("display"), py::arg("source"));
   m.def("set_manual_threshold_state", [](DisplayState display, const Dataset &source,
-          ManualThresholdRange range, PlanePosition position) {
-    set_manual_threshold_state(display, source.shape(), {range, position});
+          ManualThresholdRange range, PlanePosition position,bool all_z) {
+    set_manual_threshold_state(display, source.shape(), {range, position,all_z});
     return display;
   }, py::arg("display"), py::arg("source"), py::arg("range"),
-     py::arg("position")=PlanePosition{});
+     py::arg("position")=PlanePosition{},py::kw_only(),py::arg("all_z").noconvert()=false);
   m.def("reset_manual_threshold_state", [](DisplayState display) {
     reset_manual_threshold_state(display);
     return display;

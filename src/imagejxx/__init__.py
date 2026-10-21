@@ -32,6 +32,7 @@ from ._native import (
 from ._native import Settings as Settings
 from ._native import auto_threshold_histogram_imagej as auto_threshold_histogram_imagej
 from ._native import pooled_auto_threshold as pooled_auto_threshold, PooledThresholdResult as PooledThresholdResult
+from ._native import pooled_automatic_threshold_display as pooled_automatic_threshold_display
 from ._native import automatic_threshold_display as automatic_threshold_display, AutomaticThresholdDisplayResult as AutomaticThresholdDisplayResult
 from ._native import PlaybackSequence as PlaybackSequence
 from ._native import playback_interval_seconds as playback_interval_seconds

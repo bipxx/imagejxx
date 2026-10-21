@@ -4,7 +4,7 @@
 #include <imagejxx/targets.hpp>
 
 namespace imagejxx {
-// One captured scalar XY plane. Navigation is independent of this immutable
+// Captured scalar XY planes. Navigation is independent of this immutable
 // intent. The target owns its source snapshot, including the active selection.
 class ResolvedManualThresholdCommand {
 public:
@@ -22,7 +22,7 @@ private:
   ResolvedTarget target_;
 };
 
-// CurrentPlane or exactly one explicit Position; in-place plane execution,
+// CurrentPlane, AllZ, Ranges or explicit Positions; in-place plane execution,
 // active selection or whole plane. Eager, finite-only scalar sources only.
 ResolvedManualThresholdCommand resolve_manual_threshold_command(
     const DocumentSnapshot &, ManualThresholdRange, const TargetRequest & = {});

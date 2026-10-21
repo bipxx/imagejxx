@@ -205,7 +205,7 @@ background-worker and large-image latency qualification remain open. Scratch
 estimates cover analysis, histogram tables and the empty-interval bitmap; source
 storage, provider caches, callbacks and process allocation overhead are external.
 
-This does not yet supply pooled automatic display, full scientific/ROI histogram
+This does not yet supply complete scientific/ROI histogram
 controls or method-level nonpixel workflow recording.
 Apply records the existing numeric manual threshold when recording is enabled.
 Reference, resource, accessibility and full platform qualification remain open.
@@ -226,3 +226,49 @@ previous remembered values. Saving options and publishing a display are separate
 resources: a concurrent revision conflict can reject display publication after
 options have reached disk. General automatic-mask form defaults and options for
 other plugins remain separate unfinished configuration work.
+
+## Pooled display and all-Z scope
+
+**Use all Z slices (captured T/C)** in the Threshold panel computes one Auto
+threshold over every Z slice at the captured time and channel. It uses whole
+planes for estimation. The resulting overlay follows Z navigation within that
+T/C. Other times/channels remain untinted. Manual Set uses the chosen scope.
+Apply targets the same captured Z stack, with the active 2D selection repeated
+on each slice; To Selection still derives a 2D selection from the captured plane.
+The Apply caption shows this distinction and its effective output type.
+
+The scope preference `threshold_stack_histogram` defaults to false and is saved
+with the other last-used Auto options. An existing threshold display state takes
+precedence when reopening its panel. Scripting can pass `stack_histogram=True`
+to `auto_manual_threshold`. The standalone C++/Python
+`pooled_automatic_threshold_display(target, method, ...)` also supports frozen
+explicit positions/ranges and existing target ROI policies. It returns the
+common level, inclusive range, selected sample count and matched ROI-member
+count. The range remains valid for all samples on the target planes, including
+pixels outside histogram ROIs. Source providers must be immutable across reads.
+
+Pooled display admits the total target plane pixels against `max_pixels`
+(default 16 Mi pixels), including pixels outside ROIs, and bounds working scratch
+(default 128 MiB). Preflight failures acquire no source plane. Histogram methods
+use two pooled scans and one range/membership scan; constant/raw-mean shortcuts
+can use fewer. No stack-sized pixel array is formed. At the largest finite
+Float64 threshold an N+1-byte occupancy bitmap finds a finite absent singleton
+for an empty bright interval; its admission is included even when not allocated.
+The estimate also includes plane/mask, histogram and analysis scratch. Provider
+caches, captured geometry/bookkeeping, source/history, allocator overhead and
+whole-process memory remain external.
+
+Single-plane display records retain version one. All-Z display uses version two
+with a Boolean `all_z`, scoped to the recorded T/C and an anchor Z. Session save
+and reopen retain this scope; Z subsets preserve it even if the old anchor is
+removed. Typed manual threshold commands now accept captured plane ranges or
+positions. Multi-plane command records use `manual_raw_inclusive_v2` and schema
+version two; existing single-position records retain version one. Strict replay
+still checks source identity, data revisions and canonical selection. Explicit
+rebind chooses the new destination scope; it does not silently reuse navigation
+from the old source. Apply resets the overlay and produces one pixel undo step.
+
+The UI currently offers current-plane or all-Z-at-captured-T/C scope. Full
+scientific T/C/range/ROI controls, method-level nonpixel recording, background
+worker behavior and complete reference/resource/platform/accessibility gates
+remain open. Pooled histogram display does not certify large-data responsiveness.

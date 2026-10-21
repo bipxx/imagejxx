@@ -8,6 +8,15 @@
 #include <numeric>
 
 namespace imagejxx {
+std::size_t detail::pooled_threshold_working_bytes(const ResolvedTarget &target,int count) {
+  if(count<2 || count>65536)throw std::invalid_argument("Pooled threshold requires 2..65536 bins");
+  const auto shape=target.source().data().dataset.shape();
+  const auto pixels=std::size_t(shape.x)*shape.y;
+  const auto rounded=detail::target_rounded_mask_workspace(target);
+  if(rounded>SIZE_MAX-65536 || pixels>(SIZE_MAX-rounded-65536)/ (2*sizeof(double)) || std::size_t(count+1)>(SIZE_MAX-rounded-65536-pixels*2*sizeof(double))/(24*sizeof(double)))
+    throw std::invalid_argument("Pooled threshold workspace overflows size_t");
+  return rounded+65536+pixels*2*sizeof(double)+std::size_t(count+1)*24*sizeof(double);
+}
 PooledThresholdResult pooled_auto_threshold(const ResolvedTarget &requested,const std::string &method,int bins,bool ignore_black,bool ignore_white,std::size_t cap,const ExecutionControl &control) {
   // Freeze every caller-owned argument before the first execution callback.
   const auto target=requested;const std::string name=method;const auto captured=control;
@@ -18,11 +27,7 @@ PooledThresholdResult pooled_auto_threshold(const ResolvedTarget &requested,cons
   (void)normalized;
   const int count=bins==0?256:bins;
   if(count<2 || count>65536)throw std::invalid_argument("Pooled threshold requires 2..65536 bins");
-  const auto pixels=std::size_t(shape.x)*shape.y;
-  const auto rounded=detail::target_rounded_mask_workspace(target);
-  if(rounded>SIZE_MAX-65536 || pixels>(SIZE_MAX-rounded-65536)/ (2*sizeof(double)) || std::size_t(count+1)>(SIZE_MAX-rounded-65536-pixels*2*sizeof(double))/(24*sizeof(double)))
-    throw std::invalid_argument("Pooled threshold workspace overflows size_t");
-  const auto working=rounded+65536+pixels*2*sizeof(double)+std::size_t(count+1)*24*sizeof(double);
+  const auto working=detail::pooled_threshold_working_bytes(target,count);
   if(working>cap)throw std::invalid_argument("Pooled threshold exceeds working-byte limit");
   if(captured.cancellation && captured.cancellation->canceled())throw OperationCancelled();
   ExecutionScope scope(captured);kernel_checkpoint();

@@ -20,9 +20,9 @@ void request_valid(const TargetRequest &request) {
   if (request.mode != ExecutionMode::Planes ||
       request.destination != OutputDestination::InPlace ||
       (request.roi != RoiPolicy::ActiveSelection && request.roi != RoiPolicy::WholePlane) ||
-      !((request.scope == TargetScope::CurrentPlane) ||
-        (request.scope == TargetScope::Positions && request.positions.size() == 1)))
-    throw std::invalid_argument("Manual threshold requires one in-place captured plane and active or whole-plane ROI");
+      (request.scope!=TargetScope::CurrentPlane && request.scope!=TargetScope::AllZ &&
+       request.scope!=TargetScope::Ranges && request.scope!=TargetScope::Positions))
+    throw std::invalid_argument("Manual threshold requires in-place captured planes and active or whole-plane ROI");
 }
 void source_valid(const DocumentSnapshot &source) {
   const auto &dataset = source.data().dataset;
@@ -39,8 +39,9 @@ Record decode(const MetadataObject &record) {
   validate_metadata(record);
   const auto value = codec::to_json(record);
   fields(value, {"schema_version", "operation", "profile", "lower", "upper", "target", "selection"});
-  if (!value["schema_version"].is_number_integer() || value["schema_version"] != 1 ||
-      value["operation"] != "threshold" || value["profile"] != "manual_raw_inclusive_v1")
+  const bool v1=value["schema_version"]==1 && value["profile"]=="manual_raw_inclusive_v1";
+  const bool v2=value["schema_version"]==2 && value["profile"]=="manual_raw_inclusive_v2";
+  if (!value["schema_version"].is_number_integer() || (!v1 && !v2) || value["operation"]!="threshold")
     throw std::invalid_argument("Unsupported manual threshold command record");
   // Accept only lossless real bounds, including JSON integers. Booleans and
   // large integers must not silently become a different threshold.
@@ -63,7 +64,7 @@ Record decode(const MetadataObject &record) {
   range.validate();
   auto target = detail::decode_target_record(codec::object_from_json(value["target"]));
   request_valid(target.request);
-  if (target.source_shape.s != 1 || target.request.scope != TargetScope::Positions)
+  if (target.source_shape.s != 1 || (v1 && (target.request.scope != TargetScope::Positions || target.request.positions.size()!=1)))
     throw std::invalid_argument("Threshold record requires a captured scalar position");
   std::optional<Selection> selection;
   if (!value["selection"].is_null()) {
@@ -86,8 +87,9 @@ OperationParameters ResolvedManualThresholdCommand::parameters() const {
 }
 MetadataObject ResolvedManualThresholdCommand::record() const {
   const auto &selection = target_.source().data().selection;
-  return {{"schema_version", 1}, {"operation", std::string("threshold")},
-      {"profile", std::string("manual_raw_inclusive_v1")},
+  const bool single=target_.scope()==TargetScope::Positions && target_.position_count()==1;
+  return {{"schema_version", single?1:2}, {"operation", std::string("threshold")},
+      {"profile", std::string(single?"manual_raw_inclusive_v1":"manual_raw_inclusive_v2")},
       {"lower", range_.lower}, {"upper", range_.upper},
       {"target", metadata_object(target_.record())},
       {"selection", target_.roi_policy() == RoiPolicy::ActiveSelection && selection

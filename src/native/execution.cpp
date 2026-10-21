@@ -2219,7 +2219,7 @@ PreparedOperation prepare_operation(const std::string &operation,
     if (stretched) {
       const auto threshold = manual_threshold_state(display, dataset.shape());
       if (threshold && threshold->position.t == active_plane.t &&
-          threshold->position.c == active_plane.c && threshold->position.z == active_plane.z)
+          threshold->position.c == active_plane.c && (threshold->all_z || threshold->position.z == active_plane.z))
         reset_manual_threshold_state(display);
     }
     edit.set_axis_remap_display(display);
@@ -2238,7 +2238,7 @@ PreparedOperation prepare_operation(const std::string &operation,
     if(effects.reset_threshold) {
       const auto threshold=manual_threshold_state(display,dataset.shape());
       if(threshold && threshold->position.t==active_plane.t && threshold->position.c==active_plane.c &&
-          threshold->position.z==active_plane.z)reset_manual_threshold_state(display);
+          (threshold->all_z || threshold->position.z==active_plane.z))reset_manual_threshold_state(display);
     }
     edit.set_axis_remap_display(display);
   }

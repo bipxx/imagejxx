@@ -224,6 +224,7 @@ def cases():
                                                   "cal-invalid", "cal-edit", "cal-unit",
                                                   "cal-legacy", "cal-legacy-step", "cal-legacy-reverse",
                                                   "cal-legacy-ping", "cal-legacy-edit", "cal-legacy-unit"]),
+        ("pooled-display", "--animation-ui-case", ["auto-display-"+m+"-"+mode for m in ["default","ij_isodata","huang","huang2","renyi_entropy","shanbhag"] for mode in ["pool","pooldark","poolboth"]]),
         ("automatic-display", "--animation-ui-case", ["auto-display-"+m+"-"+mode for m in ["default","ij_isodata","huang","huang2","renyi_entropy","shanbhag"] for mode in ["bright","dark","both"]]),
         ("pooled-threshold", "--animation-ui-case", ["threshold-"+m+o+"-pool" for m in ["default","ij_isodata","huang","huang2","renyi_entropy","shanbhag"] for o in ["","-ignore-both"]]),
         ("threshold-options", "--animation-ui-case", ["threshold-"+m+"-ignore-"+o for m in ["default","ij_isodata","huang","huang2","renyi_entropy","shanbhag"] for o in ["black","white","both"]]),
@@ -275,6 +276,7 @@ def reader_environment(output):
         "IMAGEJXX_THRESHOLD_CPP_ROOT": reports / "auto-threshold",
         "IMAGEJXX_THRESHOLD_OPTIONS_CPP_ROOT": reports / "threshold-options",
         "IMAGEJXX_POOLED_THRESHOLD_CPP_ROOT": reports / "pooled-threshold",
+        "IMAGEJXX_POOLED_DISPLAY_CPP_ROOT": reports / "pooled-display",
         "IMAGEJXX_AUTOMATIC_DISPLAY_CPP_ROOT": reports / "automatic-display",
     }
     environment["IMAGEJXX_THRESHOLD_CPP_REPORT"] = reports / "scientific-threshold/T10/case.json"

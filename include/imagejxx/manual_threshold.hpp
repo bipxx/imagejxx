@@ -60,9 +60,11 @@ inline constexpr const char *manual_threshold_property = "manual_threshold";
 struct ManualThresholdState {
   ManualThresholdRange range;
   PlanePosition position;
+  bool all_z = false;
 };
 // Absent property means disabled. A present property is an exact version-one
-// object with version/lower/upper/t/c/z; malformed values are rejected.
+// object with version/lower/upper/t/c/z. Version two adds Boolean all_z for
+// every Z at the captured T/C. Malformed values are rejected.
 std::optional<ManualThresholdState>
 manual_threshold_state(const DisplayState &display, DatasetShape shape);
 void set_manual_threshold_state(DisplayState &display, DatasetShape shape,

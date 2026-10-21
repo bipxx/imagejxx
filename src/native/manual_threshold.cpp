@@ -270,11 +270,13 @@ manual_threshold_state(const DisplayState &display, DatasetShape shape) {
   for (const auto *key : {"version", "lower", "upper", "t", "c", "z"})
     if (record.find(key) == record.end())
       throw std::invalid_argument("Manual threshold display property has missing fields");
-  if (record.size() != 6 || integer(record.at("version")) != 1)
+  const auto version=integer(record.at("version"));
+  if (!((version==1 && record.size()==6) || (version==2 && record.size()==7 && record.count("all_z") && std::get_if<bool>(&record.at("all_z")))))
     throw std::invalid_argument("Unsupported manual threshold display schema");
   ManualThresholdState state{{numeric(record.at("lower")), numeric(record.at("upper"))},
                              {integer(record.at("t")), integer(record.at("c")),
                               integer(record.at("z"))}};
+  if(version==2)state.all_z=std::get<bool>(record.at("all_z"));
   state.range.validate();
   if (shape.s != 1)
     throw std::invalid_argument("Manual threshold display requires a scalar dataset");
@@ -288,10 +290,12 @@ void set_manual_threshold_state(DisplayState &display, DatasetShape shape,
   if (shape.s != 1)
     throw std::invalid_argument("Manual threshold display requires a scalar dataset");
   validate_position(shape, state.position);
-  display.properties[manual_threshold_property] = metadata_object({
-      {"version", std::int64_t(1)}, {"lower", state.range.lower},
+  MetadataObject record{
+      {"version", std::int64_t(state.all_z?2:1)}, {"lower", state.range.lower},
       {"upper", state.range.upper}, {"t", std::int64_t(state.position.t)},
-      {"c", std::int64_t(state.position.c)}, {"z", std::int64_t(state.position.z)}});
+      {"c", std::int64_t(state.position.c)}, {"z", std::int64_t(state.position.z)}};
+  if(state.all_z)record["all_z"]=true;
+  display.properties[manual_threshold_property]=metadata_object(std::move(record));
 }
 void reset_manual_threshold_state(DisplayState &display) {
   display.properties.erase(manual_threshold_property);

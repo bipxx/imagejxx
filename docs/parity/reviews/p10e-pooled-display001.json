@@ -1,0 +1,315 @@
+{
+  "state": "qualified_functional_increment",
+  "objective_complete": false,
+  "scope": "Pooled automatic display calculation in C++/Python, all-Z-at-captured-T/C overlay and Apply in both ImGui hosts, scoped state/session/remapping and multi-plane typed manual threshold records.",
+  "behavior": "All-Z scope estimates whole planes, renders the same inclusive interval on every Z at the captured T/C, and applies the numeric bounds to that frozen stack with the active 2D ROI repeated per plane. To Selection uses the captured plane. Scope is a consumed native preference. Typed API targets also accept ranges/positions and histogram ROI policies. Matched counts describe ROI members; ranges remain valid outside ROIs.",
+  "compatibility": "Single-plane display and single-position command records retain version one. All-Z display adds version-two Boolean all_z. Multi-plane/range commands use schema two/manual_raw_inclusive_v2. Replay retains source/revision/selection validation and requires explicit destination rebinding. Z subsets preserve all-Z scope when the old anchor is removed. Variance/top-hat threshold reset recognizes an active non-anchor Z covered by all-Z state.",
+  "resources": "Total target plane pixels including outside ROIs fit max_pixels (default 16 Mi pixels), not a per-plane multiplier. Scratch cap defaults to 128 MiB. Histogram calculation uses two scans and range/membership one more; legacy constant/mean shortcuts can use fewer. No concatenated pixel buffer. N+1-byte empty-result occupancy bitmap is admitted for Float64 max; plane/mask/histogram/manual-analysis scratch is included. Source/provider caches, captured geometry/bookkeeping, history, allocator overhead and process RSS remain external. Providers must remain immutable across reads.",
+  "reference": {
+    "fixtures": [
+      {
+        "path": "tests/fixtures/auto-threshold-imagej154r.json",
+        "bytes": 116881,
+        "sha256": "e8f76e8e82c0cbcce98307bf9374e175439bef531ae17a2f3a0de3289ae70db8"
+      },
+      {
+        "path": "tests/fixtures/auto-threshold-options-imagej154r.json",
+        "bytes": 485227,
+        "sha256": "03543d3a9f0eeb82a2653ed51c61510ae615d2f84ba2472a5fe33aea0a9d3bd3"
+      }
+    ],
+    "scope": "Retained upstream uniform counts split across source planes; dtype bin-center, interval membership, cross-Z RGB tint, ROI preservation and output arrays derived independently. Eighteen-method compatibility checks are not new independent upstream oracle coverage. Navigation in the pooled observer is an explicitly recorded native display mutation; scope/Auto/Reset/Cancel/To Selection/Apply use actual input."
+  },
+  "profiles": {
+    "windows": {
+      "tests": 5369,
+      "new_pooled_checks": 259,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "observations": 168,
+      "frames": 13392,
+      "pooled_display_reports": 36,
+      "contexts": [
+        "imgui_cpp",
+        "imgui_python"
+      ],
+      "evidence": {
+        "path": "build/p10e-pooled-display001/windows-evidence001.json",
+        "bytes": 671961,
+        "sha256": "0f08aa7302763dfe0116a2a704f629d6c4abf4d4cd227f14e8927ff8fbb153b2"
+      },
+      "junit": {
+        "path": "build/p10e-pooled-display001/windows-python001/pytest.xml",
+        "bytes": 786871,
+        "sha256": "19e4e1b933fc17ba1c8ca90b3f3f08fe137e67372eec040d6d0c88dfa875a1c7"
+      },
+      "products": {
+        "path": "build/p10e-pooled-display001/windows-products001.json",
+        "bytes": 13077,
+        "sha256": "bee2dd999a330ea27aad5699ac128c8137b3a63add97e4ef774bd7b1709929dd"
+      },
+      "sdk": {
+        "path": "build/p10e-pooled-display001/windows-sdk001/receipt.json",
+        "bytes": 1252,
+        "sha256": "c32c7d1b2aa5c63ad7fe6d93a310ead17d99460e9951bad31804c4ca283dbb5d"
+      },
+      "pooled_display_sdk": {
+        "path": "build/p10e-pooled-display001/windows-sdk-pooled-display001/receipt.json",
+        "bytes": 510,
+        "sha256": "bf75fce4109e318c1347031d9243a8ef67d9fbc47cfc02fc785ef40c105d315d"
+      },
+      "commercial_use": {
+        "path": "build/p10e-pooled-display001/windows-gates001.log",
+        "bytes": 53,
+        "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+      },
+      "cleanup": {
+        "path": "build/p10e-pooled-display001/windows-cleanup001.json",
+        "bytes": 462135,
+        "sha256": "f8cc36d069526e022c0004b4072e163f717c9cc8797f7b4554bb225c8ea5846a"
+      },
+      "removed_bytes": 624969486,
+      "supplementary_scope_checks": 8,
+      "total_checks": 5377,
+      "supplementary_junit": {
+        "path": "build/p10e-pooled-display001/windows-effects001/pytest.xml",
+        "bytes": 1461,
+        "sha256": "997e47a0932d1367ae5266b31e14a804bfd2b93238683b2be253b91e55229944"
+      }
+    },
+    "linux": {
+      "tests": 5369,
+      "new_pooled_checks": 259,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "observations": 168,
+      "frames": 13392,
+      "pooled_display_reports": 36,
+      "contexts": [
+        "imgui_cpp",
+        "imgui_python"
+      ],
+      "evidence": {
+        "path": "build/p10e-pooled-display001/linux-evidence001.json",
+        "bytes": 666983,
+        "sha256": "9c0b0fdb257c9c0f4f2837a0005bb84f3698875501dc9a6c795a4e74488bade4"
+      },
+      "junit": {
+        "path": "build/p10e-pooled-display001/linux-python001/pytest.xml",
+        "bytes": 786871,
+        "sha256": "c416f790da34778bc484a58a8454a7a31aa9971944e10f2646a3bad9465e9d18"
+      },
+      "products": {
+        "path": "build/p10e-pooled-display001/linux-products001.json",
+        "bytes": 12668,
+        "sha256": "8b9da3d3046e2afe55debcdef413a1ddd7998fb47d2e631c434c93e00178000a"
+      },
+      "sdk": {
+        "path": "build/p10e-pooled-display001/linux-sdk001/receipt.json",
+        "bytes": 1149,
+        "sha256": "8f1331f780c7316225a22a87b407563c3024ef5813d3bc00a4ea9dca58dd661d"
+      },
+      "pooled_display_sdk": {
+        "path": "build/p10e-pooled-display001/linux-sdk-pooled-display001/receipt.json",
+        "bytes": 429,
+        "sha256": "a5d461c2f03c99c5405dbbeec375b8950065494e546258cad430479baf109486"
+      },
+      "commercial_use": {
+        "path": "build/p10e-pooled-display001/linux-gates001.log",
+        "bytes": 53,
+        "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+      },
+      "cleanup": {
+        "path": "build/p10e-pooled-display001/linux-cleanup001.json",
+        "bytes": 589859,
+        "sha256": "f64512f41f9e6c653a97b7bad7652a8aad4d13e9de622712cd67d47de878b005"
+      },
+      "removed_bytes": 671591976,
+      "supplementary_scope_checks": 8,
+      "total_checks": 5377,
+      "supplementary_junit": {
+        "path": "build/p10e-pooled-display001/linux-effects001/pytest.xml",
+        "bytes": 1461,
+        "sha256": "512cf8386bf59bb4feaccfb148ac8ce2cb0bf54fdfe9cf406e8185e481e73da1"
+      }
+    }
+  },
+  "source": [
+    {
+      "path": "include/imagejxx/automatic_threshold_display.hpp",
+      "bytes": 1479,
+      "sha256": "9602a1da42a268b01b9ce982c9da64127e7c6369f967cf94b58668066ffc4de9"
+    },
+    {
+      "path": "include/imagejxx/manual_threshold.hpp",
+      "bytes": 3433,
+      "sha256": "d18e8ac7466405142999fdc3410d3700c3b1820a6acdb01e9bbfbc4d4ffae884"
+    },
+    {
+      "path": "include/imagejxx/manual_threshold_command.hpp",
+      "bytes": 1868,
+      "sha256": "fc8d82cac69629421affafe279598044db216ca818ac22c8b5565b4926331e25"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 31936,
+      "sha256": "716c58daa6bc97a5c0795f6147c431247a9864ad5130bd3aacc8473fedee1990"
+    },
+    {
+      "path": "src/desktop/automatic_display_ui_probe.cpp",
+      "bytes": 6119,
+      "sha256": "b98afddc231525fdbd9fa0766156df1d98714af176dc017f3604de407503b066"
+    },
+    {
+      "path": "src/desktop/rendering.cpp",
+      "bytes": 36206,
+      "sha256": "c7bc1d4ad63b585cb1801f8b60a3ee0e756164fd593b7efe67c9a2fab692eddf"
+    },
+    {
+      "path": "src/desktop/threshold_panel.cpp",
+      "bytes": 21498,
+      "sha256": "4080794fca7ff9f9808ace5043e449f42ff063a1abccb82a454721b144895388"
+    },
+    {
+      "path": "src/desktop/threshold_panel.hpp",
+      "bytes": 2996,
+      "sha256": "f72e6ab9aace7a965decdfc03177ae5a97ebc8b525f1f440742a86e30da05af6"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 660758,
+      "sha256": "4ed3aa204d88299267d48affe7da708d696f5e4d671f9e2abbe564772ff9bb44"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 71205,
+      "sha256": "c5199608136c5111eb21cc1e43c9784ecaac896cb358e3925bf7acc97ae644ac"
+    },
+    {
+      "path": "src/native/auto_threshold_bindings.cpp",
+      "bytes": 5272,
+      "sha256": "f284febb21b37ba49fc265db0efc70e1b694b124270b9f6204f497b797c2aae9"
+    },
+    {
+      "path": "src/native/auto_threshold_internal.hpp",
+      "bytes": 483,
+      "sha256": "ea22be84418ed1506b2cf76fe637ada2cadfac9e63abb5eee3eacfb6777183bf"
+    },
+    {
+      "path": "src/native/auto_threshold_stack.cpp",
+      "bytes": 5504,
+      "sha256": "3966ebe94d055270c52f0ceb609432767edefece348963ce80128bc672d21959"
+    },
+    {
+      "path": "src/native/automatic_threshold_display.cpp",
+      "bytes": 8166,
+      "sha256": "1d80bb842a4d5b42147255ad7af99b04ce9fc7779adab63057175723bff12e5c"
+    },
+    {
+      "path": "src/native/axis_remap.cpp",
+      "bytes": 8880,
+      "sha256": "8c01e2d20718fc23a2eb7ffcaadc0207092f1ae509c8d41bd4941d52d5279418"
+    },
+    {
+      "path": "src/native/execution.cpp",
+      "bytes": 125900,
+      "sha256": "314cb7fcd7bed3253b1e89e65c14f4ea783d71780b2f101d621df36400a82f3a"
+    },
+    {
+      "path": "src/native/manual_threshold.cpp",
+      "bytes": 15002,
+      "sha256": "4739a41b266e570f32aa567f59ed1995e59f311b3fe4965db7d665dfd1bd078d"
+    },
+    {
+      "path": "src/native/manual_threshold_bindings.cpp",
+      "bytes": 8690,
+      "sha256": "03f1dd98fb2458c6a0f222addaf3824d1a05568a43aeb043ebdfdbddd5b8890f"
+    },
+    {
+      "path": "src/native/manual_threshold_command.cpp",
+      "bytes": 6898,
+      "sha256": "d2392b0acf94664d9bafbefa9b05db1962a3c732220f2fab331de6b59ab8a85c"
+    },
+    {
+      "path": "src/native/settings.cpp",
+      "bytes": 20381,
+      "sha256": "ebb272f75c3aebf9156a677890ded78d39f8c845e6b9b66b093aed66a3918560"
+    },
+    {
+      "path": "tests/python/test_pooled_display.py",
+      "bytes": 11163,
+      "sha256": "c89c680cf14a2ca0d2174c9e6d1da820ff6196f28d9e04c61e242806e423aa27"
+    },
+    {
+      "path": "tests/python/test_pooled_display_ui.py",
+      "bytes": 2922,
+      "sha256": "582e6b0a0a17ccd21d306c3ce78040e46651670d0cd00005eb56380a538540a5"
+    },
+    {
+      "path": "tests/python/test_threshold_preferences.py",
+      "bytes": 7702,
+      "sha256": "7ad2a708192062dc4c7190190ec30c3c84ec6faa895a585f056d90b3bf179041"
+    },
+    {
+      "path": "tests/python/test_pooled_display_effects.py",
+      "bytes": 1548,
+      "sha256": "76d2cf12e06e0ad75e9063710f68effb15702574e5783b937b41fed661c1dfb9"
+    }
+  ],
+  "registration": {
+    "path": "build/p10e-pooled-display001/registration001.json",
+    "bytes": 3035,
+    "sha256": "0e0f749c3a167919ae1621eb0db7adc2fb1e76807793b2d34a5cbc5a4d9cc142"
+  },
+  "sdk_sources": [
+    {
+      "path": "build/p10e-pooled-display001/sdk-pooled-display-source001/CMakeLists.txt",
+      "bytes": 215,
+      "sha256": "aded58239769c62745bbd034e75734d5125758062998ddcb29bbe53008b8b943"
+    },
+    {
+      "path": "build/p10e-pooled-display001/sdk-pooled-display-source001/main.cpp",
+      "bytes": 2256,
+      "sha256": "2282d8dea16a0163b113a6e5f7672db41a38eea3f5dd6b60c9abc5ff5dac22d9"
+    }
+  ],
+  "initial_failures": [
+    {
+      "report": {
+        "path": "build/p10e-pooled-display001/linux-smoke001/pytest.xml",
+        "bytes": 36237,
+        "sha256": "0a744906d1ac6921aece83b344d7c4142734bbe24930dc1aaafb58f30d5eea7a"
+      },
+      "reason": "New rebind test reused AllZ after moving the camera to a different T/C while expecting the old destination. Corrected to an explicit frozen-position destination; product rebinding correctly follows the supplied new request. Changed test bounds to include both matching and nonmatching samples."
+    }
+  ],
+  "remaining": [
+    "Complete scientific T/C/range/histogram ROI controls in the desktop, remaining automatic-mask/plugin form defaults and method-level nonpixel workflow recording.",
+    "Full upstream edge/tie/overflow and legacy-method oracle coverage, formal interface/reference binding and all platform/accessibility qualification.",
+    "Desktop Auto remains bounded synchronous work; background execution, large-data responsiveness, end-to-end resource/RSS and cancellation UI qualification remain open.",
+    "New display/command schemas have bounded functional session/replay checks, not whole-format or whole-workflow certification. Existing 96 format variants remain partial.",
+    "Pre-existing Auto Contrast producer-source fingerprint gate remains unresolved; no fingerprint repinning."
+  ],
+  "counts": {
+    "in_progress": 46,
+    "open": 53,
+    "complete": 0,
+    "format_variants_partial": 96
+  },
+  "plan_gate": {
+    "state": "pre_existing_failure",
+    "evidence": {
+      "path": "build/p10e-pooled-display001/plan-check001.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    },
+    "message": "Plan inventory check failed: histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed",
+    "unchanged_producer_source": {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 14135,
+      "sha256": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    }
+  }
+}

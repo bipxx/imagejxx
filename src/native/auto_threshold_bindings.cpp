@@ -28,6 +28,8 @@ void bind_auto_threshold(py::module_ &m) {
     .def_readonly("matched_count",&imagejxx::AutomaticThresholdDisplayResult::matched_count)
     .def_readonly("working_bytes",&imagejxx::AutomaticThresholdDisplayResult::working_bytes)
     .def_readonly("method",&imagejxx::AutomaticThresholdDisplayResult::method)
+    .def_readonly("stack_histogram",&imagejxx::AutomaticThresholdDisplayResult::stack_histogram)
+    .def_readonly("selected_samples",&imagejxx::AutomaticThresholdDisplayResult::selected_samples)
     .def_readonly("bright",&imagejxx::AutomaticThresholdDisplayResult::bright)
     .def_readonly("ignore_black",&imagejxx::AutomaticThresholdDisplayResult::ignore_black)
     .def_readonly("ignore_white",&imagejxx::AutomaticThresholdDisplayResult::ignore_white);
@@ -36,6 +38,13 @@ void bind_auto_threshold(py::module_ &m) {
     const auto control=axis_range_python_control(std::move(token),std::move(progress),std::move(checkpoint));
     py::gil_scoped_release release;return imagejxx::automatic_threshold_display(data,p,method,bins,bright,black,white,{pixels,bytes},control);
   },py::arg("source"),py::arg("method")="default",py::kw_only(),py::arg("position")=py::none(),py::arg("bins")=0,
+    py::arg("bright").noconvert()=true,py::arg("ignore_black").noconvert()=false,py::arg("ignore_white").noconvert()=false,
+    py::arg("max_pixels")=16ULL*1024*1024,py::arg("max_working_bytes")=128ULL*1024*1024,py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none());
+
+  m.def("pooled_automatic_threshold_display",[](const imagejxx::ResolvedTarget &target,const std::string &method,int bins,bool bright,bool black,bool white,std::size_t pixels,std::size_t bytes,std::shared_ptr<imagejxx::CancellationToken> token,py::object progress,py::object checkpoint){
+    const auto control=axis_range_python_control(std::move(token),std::move(progress),std::move(checkpoint));
+    py::gil_scoped_release release;return imagejxx::pooled_automatic_threshold_display(target,method,bins,bright,black,white,{pixels,bytes},control);
+  },py::arg("target"),py::arg("method")="default",py::kw_only(),py::arg("bins")=0,
     py::arg("bright").noconvert()=true,py::arg("ignore_black").noconvert()=false,py::arg("ignore_white").noconvert()=false,
     py::arg("max_pixels")=16ULL*1024*1024,py::arg("max_working_bytes")=128ULL*1024*1024,py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none());
 

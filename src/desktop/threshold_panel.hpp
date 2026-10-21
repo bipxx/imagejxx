@@ -24,7 +24,8 @@ public:
     RangeAction to_selection;
     RangeAction apply;
     Action cancel;
-    std::function<AutomaticThresholdDisplayResult(const std::string &,bool,bool,bool)> automatic;
+    std::function<AutomaticThresholdDisplayResult(const std::string &,bool,bool,bool,bool)> automatic;
+    Action scope_changed;
   };
 
   void show(const DocumentSnapshot &source, ManualThresholdSummary summary);
@@ -41,11 +42,12 @@ public:
   void rebase(const DocumentSnapshot &source);
   // The executor supplies its actual effective result type and target extent.
   void setApplyPreview(PixelType result_type, std::string extent);
+  bool stackHistogram() const { return stackHistogram_; }
   bool visible() const { return open_; }
   Json diagnostics() const;
 
 private:
-  enum class Pending { None, Set, Reset, ToSelection, Apply, Cancel, Automatic };
+  enum class Pending { None, Set, Reset, ToSelection, Apply, Cancel, Automatic, Scope };
   void rebuildDraft();
   void resetControls();
   void control(const char *name, bool enabled = true,
@@ -64,6 +66,7 @@ private:
   std::string exitReason_, applyExtent_;
   std::optional<PixelType> applyType_;
   std::string automaticMethod_="default";
+  bool stackHistogram_=false;
   bool automaticBright_=true, ignoreBlack_=false, ignoreWhite_=false;
   std::optional<AutomaticThresholdDisplayResult> automaticResult_;
   Json controls_ = Json::object(), controlRects_ = Json::object();

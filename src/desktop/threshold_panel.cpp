@@ -96,7 +96,7 @@ void ThresholdPanel::show(const DocumentSnapshot &source,
   ManualThresholdRange range{summary.minimum, summary.maximum};
   const auto saved = manual_threshold_state(source.display(),
                                             source.data().dataset.shape());
-  if (saved && samePosition(saved->position, position))
+  if (saved && saved->position.t==position.t && saved->position.c==position.c && (saved->all_z || samePosition(saved->position, position)))
     range = saved->range;
   range.validate();
   auto lower = boundText(range.lower), upper = boundText(range.upper);
@@ -129,12 +129,14 @@ void ThresholdPanel::setAutomaticOptions(const Settings &settings) {
   automaticBright_ = settings.boolean("threshold_bright");
   ignoreBlack_ = settings.boolean("threshold_ignore_black");
   ignoreWhite_ = settings.boolean("threshold_ignore_white");
+  stackHistogram_=settings.boolean("threshold_stack_histogram") && source_->data().dataset.shape().z>1;
+  if(const auto saved=manual_threshold_state(source_->display(),source_->data().dataset.shape()))stackHistogram_=saved->all_z;
   automaticResult_.reset();
 }
 void ThresholdPanel::setAutomaticResult(const AutomaticThresholdDisplayResult &result) {
   automaticMethod_=result.method;automaticBright_=result.bright;ignoreBlack_=result.ignore_black;ignoreWhite_=result.ignore_white;
   result.range.validate();lowerText_=boundText(result.range.lower);upperText_=boundText(result.range.upper);
-  draft_=result.range;error_.clear();actionError_.clear();automaticResult_=result;
+  stackHistogram_=result.stack_histogram;draft_=result.range;error_.clear();actionError_.clear();automaticResult_=result;
 }
 void ThresholdPanel::rebuildDraft() {
   draft_.reset();
@@ -341,6 +343,10 @@ void ThresholdPanel::draw(const std::optional<DocumentSnapshot> &current,
 
 
     ImGui::BeginDisabled(!editable);
+    const bool canPool=editable && source_ && source_->data().dataset.shape().z>1;
+    ImGui::BeginDisabled(!canPool);
+    if(ImGui::Checkbox("Use all Z slices (captured T/C)",&stackHistogram_)){automaticResult_.reset();pending=Pending::Scope;}
+    control("auto.stack_histogram",canPool);ImGui::EndDisabled();
     if(ImGui::BeginCombo("Auto method",automaticMethod_.c_str())) {
       const auto &spec=operation_spec("auto_mask");
       const auto field=std::find_if(spec.parameters.begin(),spec.parameters.end(),[](const auto &p){return p.name=="method";});
@@ -355,7 +361,8 @@ void ThresholdPanel::draw(const std::optional<DocumentSnapshot> &current,
     const bool canAuto=editable && bool(callbacks.automatic);
     ImGui::BeginDisabled(!canAuto);if(ImGui::Button("Auto"))pending=Pending::Automatic;control("auto",canAuto);ImGui::EndDisabled();
     ImGui::EndDisabled();
-    ImGui::TextUnformatted("Auto uses this plane's whole image histogram (256 bins).");
+    ImGui::TextUnformatted(stackHistogram_ ? "Auto and Apply: all Z at captured T/C; To Selection: captured plane." : "Auto and Apply: captured plane; histogram uses the whole plane.");
+    ImGui::TextUnformatted("Auto uses 256 histogram bins.");
     if(automaticResult_)ImGui::Text("Auto level %.17g; %llu matching pixels",automaticResult_->threshold,static_cast<unsigned long long>(automaticResult_->matched_count));
     const bool canSet = editable && draft_ && bool(callbacks.set);
     ImGui::BeginDisabled(!canSet);
@@ -413,8 +420,11 @@ void ThresholdPanel::draw(const std::optional<DocumentSnapshot> &current,
   }
   try {
     switch (pending) {
+    case Pending::Scope:
+      if(callbacks.scope_changed)callbacks.scope_changed();
+      break;
     case Pending::Automatic:
-      setAutomaticResult(callbacks.automatic(automaticMethod_,automaticBright_,ignoreBlack_,ignoreWhite_));
+      setAutomaticResult(callbacks.automatic(automaticMethod_,automaticBright_,ignoreBlack_,ignoreWhite_,stackHistogram_));
       break;
     case Pending::Set:
       callbacks.set(*draft_);
@@ -452,7 +462,8 @@ Json ThresholdPanel::diagnostics() const {
                      {"sample_count", summary_.sample_count},
                      {"bins", summary_.histogram.counts.size()}};
   Json automatic={{"method",automaticMethod_},{"bright",automaticBright_},{"ignore_black",ignoreBlack_},{"ignore_white",ignoreWhite_}};
-  if(automaticResult_) {automatic["level"]=automaticResult_->threshold;automatic["matched_count"]=automaticResult_->matched_count;}
+  automatic["stack_histogram"]=stackHistogram_;
+  if(automaticResult_) {automatic["selected_samples"]=automaticResult_->selected_samples;automatic["level"]=automaticResult_->threshold;automatic["matched_count"]=automaticResult_->matched_count;}
   return {{"automatic",automatic},{"open", open_},
           {"visible", open_},
           {"draft_valid", bool(draft_)},

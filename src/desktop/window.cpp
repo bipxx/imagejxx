@@ -2912,21 +2912,26 @@ struct Window::Impl {
     const auto source = checkedThresholdSource();
     auto display = owner.nativeSnapshot(source.id()).display();
     set_manual_threshold_state(display, source.data().dataset.shape(),
-                                {range, thresholdPosition()});
+                                {range, thresholdPosition(),thresholdPanel.stackHistogram()});
     owner.setNativeDisplay(std::move(display), source.id());
   }
-  AutomaticThresholdDisplayResult thresholdAutomatic(const std::string &method,bool bright,bool black,bool white) {
+  AutomaticThresholdDisplayResult thresholdAutomatic(const std::string &method,bool bright,bool black,bool white,bool pooled) {
     if(owner.busy())throw std::invalid_argument("Wait for the current edit");
     const auto source=checkedThresholdSource();const auto live=owner.nativeSnapshot(source.id());
     if(!live.revisions().matches(source.revisions(),Change::Data))throw RevisionConflict();
-    const auto result=automatic_threshold_display(source.data().dataset,thresholdPosition(),method,0,bright,black,white,thresholdLimits());
-    auto display=live.display();set_manual_threshold_state(display,source.data().dataset.shape(),{result.range,thresholdPosition()});
+    const auto result=[&] {
+      if(!pooled)return automatic_threshold_display(source.data().dataset,thresholdPosition(),method,0,bright,black,white,thresholdLimits());
+      TargetRequest request;request.scope=TargetScope::AllZ;request.roi=RoiPolicy::WholePlane;
+      const auto target=resolve_target(source,request,"threshold");
+      return pooled_automatic_threshold_display(target,method,0,bright,black,white,thresholdLimits());
+    }();
+    auto display=live.display();set_manual_threshold_state(display,source.data().dataset.shape(),{result.range,thresholdPosition(),pooled});
     auto remembered = preferenceState;
     remembered.settings = owner.settings();
     remembered.extras = preferences;
     remembered.settings.update({{"threshold_method", method},
         {"threshold_bright", bright}, {"threshold_ignore_black", black},
-        {"threshold_ignore_white", white}});
+        {"threshold_ignore_white", white},{"threshold_stack_histogram",pooled}});
     // Implicit saves preserve newer/corrupt-file write protection. A disk
     // failure leaves both the display and remembered settings unchanged.
     remembered.save(preferencesPath);
@@ -2964,7 +2969,7 @@ struct Window::Impl {
   void thresholdApplyPreview() {
     const auto source = checkedThresholdSource();
     const auto shape = source.data().dataset.shape();
-    bool complete = shape.t == 1 && shape.c == 1 && shape.z == 1;
+    bool complete = shape.t == 1 && shape.c == 1 && (shape.z == 1 || thresholdPanel.stackHistogram());
     if (complete && source.data().selection) {
       const auto mask = source.data().selection->mask(shape.x, shape.y);
       complete = std::all_of(mask.pixels.begin(), mask.pixels.end(),
@@ -2974,7 +2979,7 @@ struct Window::Impl {
         complete ? PixelType::UInt8 : source.data().dataset.pixel_type(),
         "Captured T " + std::to_string(thresholdPosition().t + 1) +
           ", C " + std::to_string(thresholdPosition().c + 1) +
-          ", Z " + std::to_string(thresholdPosition().z + 1) +
+          (thresholdPanel.stackHistogram()?", all Z":", Z " + std::to_string(thresholdPosition().z + 1)) +
           (source.data().selection ? "; active selection" : "; whole plane"));
   }
   void showThreshold(std::uint64_t id = 0) {
@@ -3024,15 +3029,15 @@ struct Window::Impl {
     const auto source = checkedThresholdSource();
     range.validate();
     TargetRequest request;
-    request.scope = TargetScope::Positions;
-    request.positions = {thresholdPosition()};
+    request.scope = thresholdPanel.stackHistogram()?TargetScope::AllZ:TargetScope::Positions;
+    if(request.scope==TargetScope::Positions)request.positions = {thresholdPosition()};
     const auto command = resolve_manual_threshold_command(source, range, request);
     Json step = owner.recording ? Json{{"operation", "threshold"},
         {"parameters", {{"lower", range.lower}, {"upper", range.upper}}},
-        {"all_slices", false}, {"slice_index", thresholdPosition().z},
+        {"all_slices", thresholdPanel.stackHistogram()}, {"slice_index", thresholdPosition().z},
         {"selection", source.data().selection ? selectionJson(*source.data().selection) : Json()},
         {"dataset_policy", "preserve_untargeted"}} : Json();
-    if (owner.recording && owner.documentById(source.id())->scientific())
+    if (owner.recording && (thresholdPanel.stackHistogram() || owner.documentById(source.id())->scientific()))
       step = metadataJson(command.record());
     submitThreshold(command, std::move(step), cancelEpoch);
   }
@@ -6136,10 +6141,10 @@ void Window::action(const std::string &name, const Json &p) {
   }
   if(name=="auto_manual_threshold") {
     if(targetId && impl->thresholdSource && targetId!=impl->thresholdSource->id())throw std::invalid_argument("Automatic display target differs from captured owner");
-    for(const auto &entry:p.items())if(entry.key()!="method" && entry.key()!="bright" && entry.key()!="ignore_black" && entry.key()!="ignore_white" && entry.key()!="document_id")throw std::invalid_argument("Unknown automatic display parameter");
-    for(const auto key:{"bright","ignore_black","ignore_white"})if(p.contains(key) && !p.at(key).is_boolean())throw std::invalid_argument("Automatic display flags must be Boolean");
+    for(const auto &entry:p.items())if(entry.key()!="method" && entry.key()!="bright" && entry.key()!="ignore_black" && entry.key()!="ignore_white" && entry.key()!="stack_histogram" && entry.key()!="document_id")throw std::invalid_argument("Unknown automatic display parameter");
+    for(const auto key:{"bright","ignore_black","ignore_white","stack_histogram"})if(p.contains(key) && !p.at(key).is_boolean())throw std::invalid_argument("Automatic display flags must be Boolean");
     const auto defaults = settings();
-    const auto result=impl->thresholdAutomatic(p.value("method",defaults.text("threshold_method")),p.value("bright",defaults.boolean("threshold_bright")),p.value("ignore_black",defaults.boolean("threshold_ignore_black")),p.value("ignore_white",defaults.boolean("threshold_ignore_white")));
+    const auto result=impl->thresholdAutomatic(p.value("method",defaults.text("threshold_method")),p.value("bright",defaults.boolean("threshold_bright")),p.value("ignore_black",defaults.boolean("threshold_ignore_black")),p.value("ignore_white",defaults.boolean("threshold_ignore_white")),p.value("stack_histogram",defaults.boolean("threshold_stack_histogram") && impl->checkedThresholdSource().data().dataset.shape().z>1));
     impl->thresholdPanel.setAutomaticResult(result);return;
   }
   if (name == "replay_manual_threshold") {
@@ -9310,7 +9315,7 @@ void Window::Impl::recorder() {
       ImGui::PopID();
     }
     if (get(step, "operation") == "threshold" && step.contains("schema_version") &&
-        get(step, "profile") == "manual_raw_inclusive_v1") {
+        (get(step, "profile") == "manual_raw_inclusive_v1" || get(step, "profile") == "manual_raw_inclusive_v2")) {
       ImGui::PushID(static_cast<int>(i));
       ImGui::BeginDisabled(owner.documents_.empty() || owner.busy() ||
                           !actionAllowed("replay_manual_threshold"));
@@ -11436,7 +11441,8 @@ void Window::Impl::draw() {
          [this](ManualThresholdRange range) { thresholdToSelection(range); },
          [this](ManualThresholdRange range) { thresholdApply(range); },
          [this] { thresholdCancel(); },
-           [this](const std::string &method,bool bright,bool black,bool white) { return thresholdAutomatic(method,bright,black,white); }});
+           [this](const std::string &method,bool bright,bool black,bool white,bool pooled) { return thresholdAutomatic(method,bright,black,white,pooled); },
+           [this] { thresholdApplyPreview(); }});
     // A closed floating panel can retain NavWindow/ActiveId for a frame and
     // suppress document shortcuts. Hand focus to the current document on the
     // next canvas submission, including when it differs from the capture owner.

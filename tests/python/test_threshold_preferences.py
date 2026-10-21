@@ -7,11 +7,11 @@ import imagejxx as ij
 import numpy as np
 import pytest
 
-KEYS = ("threshold_method", "threshold_bright", "threshold_ignore_black", "threshold_ignore_white")
+KEYS = ("threshold_method", "threshold_bright", "threshold_ignore_black", "threshold_ignore_white", "threshold_stack_histogram")
 METHODS = ("default", "ij_isodata", "huang", "huang2", "renyi_entropy", "shanbhag")
 
-def options(method="default", bright=True, black=False, white=False):
-    return dict(zip(KEYS, (method, bright, black, white)))
+def options(method="default", bright=True, black=False, white=False, pooled=False):
+    return dict(zip(KEYS, (method, bright, black, white, pooled)))
 
 def test_schema_matches_registered_methods_and_defaults():
     row = next(d for d in ij.Settings.schema() if d["name"] == "threshold_method")
@@ -69,7 +69,7 @@ def test_actual_auto_cancel_and_restart_restore_options(context,method,mode,tmp_
     second = observe(2)
     assert {k:second["settings_before"]["values"][k] for k in KEYS} == expected
     opened = next(f["rendered"]["threshold_panel"]["automatic"] for f in second["frames"] if f["rendered"]["threshold_panel"]["visible"])
-    assert opened == dict(method=method,bright=mode!="dark",ignore_black=mode=="both",ignore_white=mode=="both")
+    assert opened == dict(method=method,bright=mode!="dark",ignore_black=mode=="both",ignore_white=mode=="both",stack_histogram=False)
     assert second["states"]["automatic"]["pixels"] == second["states"]["before"]["pixels"]
     assert not second["states"]["automatic"]["dirty"]
     assert second["states"]["automatic"]["undo"] == 0
