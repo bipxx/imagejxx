@@ -132,5 +132,71 @@ class LegacyEditorCaptureInputs(unittest.TestCase):
             self.invoke("scientific-process", report)
 
 
+class IndexedCaptureInputs(unittest.TestCase):
+    """Index transport only; raw UI behavior belongs to the installed readers."""
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name).resolve()
+        self.output = self.root / "observations"
+        self.group = "auto-contrast"
+        self.flag, self.environment, self.contract, self.cases = capture.INDEXED_READERS[self.group]
+
+    def invoke(self, cases=None, wrong_identity=False):
+        def observer(argv, **kwargs):
+            case = argv[-2]; actual = Path(argv[-1]); actual.mkdir()
+            report = dict(contract_id=self.contract, case_id="wrong" if wrong_identity else case,
+                          context="imgui_cpp", observation_state="observed", acceptance_claim=False,
+                          frames=[{"requested_events": [{"type": "text", "value": str(actual / "typed.ijx")}]}])
+            (actual / "case.json").write_text(json.dumps(report), encoding="utf-8")
+            return subprocess.CompletedProcess(argv, 0)
+        selected = [(self.group, case, [self.flag, case]) for case in (self.cases if cases is None else cases)]
+        with patch.object(capture, "cases", return_value=iter(selected)):
+            with patch.object(capture.subprocess, "run", side_effect=observer):
+                return capture.capture(self.output, sys.executable, self.root)
+
+    def test_complete_path_only_index_preserves_raw_bytes_and_hashes(self):
+        environment = self.invoke()
+        index_path = Path(environment[self.environment]); index = json.loads(index_path.read_bytes())
+        self.assertEqual(index["contract_id"], self.contract)
+        self.assertEqual(index["case_count"], 8); self.assertFalse(index["acceptance_claim"])
+        self.assertEqual([row["case_id"] for row in index["cases"]], list(self.cases))
+        for row in index["cases"]:
+            self.assertEqual(set(row), {"case_id", "id", "relative_path", "byte_count", "sha256"})
+            actual = self.output / "private" / self.group / row["case_id"] / "capture/case.json"
+            indexed = index_path.parent / row["relative_path"]
+            self.assertEqual(indexed, actual)
+            copied = self.output / "reports" / self.group / row["case_id"] / "case.json"
+            self.assertEqual(copied.read_bytes(), indexed.read_bytes())
+            typed = json.loads(indexed.read_bytes())["frames"][0]["requested_events"][0]["value"]
+            self.assertEqual(typed, str(indexed.parent / "typed.ijx"))
+            self.assertEqual(row["byte_count"], copied.stat().st_size)
+            self.assertEqual(row["sha256"], hashlib.sha256(copied.read_bytes()).hexdigest())
+        receipt = json.loads((self.output / "receipt.json").read_bytes())
+        self.assertEqual(receipt["indices"][self.group]["sha256"], hashlib.sha256(index_path.read_bytes()).hexdigest())
+
+    def test_incomplete_group_has_no_index_and_a_failed_receipt(self):
+        with self.assertRaisesRegex(ValueError, "Incomplete indexed observation group"):
+            self.invoke(self.cases[:-1])
+        self.assertFalse((self.output / (self.group + "-index.json")).exists())
+        self.assertEqual(json.loads((self.output / "receipt.json").read_bytes())["state"], "failed")
+
+    def test_wrong_case_identity_is_refused_before_copy(self):
+        with self.assertRaisesRegex(ValueError, "Unexpected indexed observation identity"):
+            self.invoke(wrong_identity=True)
+        self.assertFalse((self.output / "reports" / self.group).exists())
+
+    def test_changed_raw_report_is_refused_before_index_publication(self):
+        self.invoke()
+        receipt = json.loads((self.output / "receipt.json").read_bytes())
+        items = receipt["cases"]; index = self.output / (self.group + "-index.json")
+        index.unlink()  # This test owns the temporary fixture.
+        report = Path(items[0]["actual"]) / "case.json"
+        raw = report.read_bytes(); report.write_bytes(b" " + raw[1:])
+        with self.assertRaisesRegex(ValueError, "Indexed report changed after capture"):
+            capture.write_case_index(self.output, self.group, items, 0.5)
+        self.assertFalse(index.exists())
+
+
 if __name__ == "__main__":
     unittest.main()

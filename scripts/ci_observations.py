@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import shutil
@@ -80,6 +81,22 @@ TIFF_READERS = {
     "packbits-lzw-tiles-float": ("IMAGEJXX_PACKBITS_LZW_TILES_FLOAT_CPP_DIR", True),
     "predicted-tiles": ("IMAGEJXX_PREDICTED_TILES_CPP_DIR", True),
     "predicted-tiles-float": ("IMAGEJXX_PREDICTED_TILES_FLOAT_CPP_DIR", True),
+}
+
+
+# These existing readers consume path-only indices, never inline UI results.
+INDEXED_READERS = {
+    "auto-contrast": ("--auto-contrast-ui-case", "IMAGEJXX_AUTO_CONTRAST_CPP_REPORT",
+                      "p06c4.auto-contrast-ui.001", tuple(f"U{i:02d}" for i in range(1, 9))),
+    "channel-display": ("--channel-display-ui-case", "IMAGEJXX_CHANNEL_DISPLAY_CPP_REPORT",
+                        "p06c.channel-display-ui.001",
+                        ("C01A", "C01B", "C01C", "C02A", "C02B", "C03A", "C03B",
+                         "C04A", "C04B", "C04C", "C05A", "C05B", "C05C",
+                         "C06A", "C06B", "C06C", "C06D", "C06E")),
+    "channel-max": ("--channel-display-ui-case", "IMAGEJXX_CHANNEL_DISPLAY_PROJECTION_CPP_REPORT",
+                    "p06c2.channel-display-projection-ui.001", tuple(f"M{i:02d}" for i in range(1, 11))),
+    "channel-min": ("--channel-display-ui-case", "IMAGEJXX_CHANNEL_DISPLAY_MIN_CPP_REPORT",
+                    "p06c3.channel-display-min-ui.001", tuple(f"N{i:02d}" for i in range(1, 11))),
 }
 
 
@@ -198,6 +215,7 @@ def cases():
         ("native-workflow", "--native-workflow-ui-case", [None]),
         ("native-batch", "--native-workflow-batch-ui-case", [None]),
     ]
+    groups.extend((group, flag, variants) for group, (flag, _, _, variants) in INDEXED_READERS.items())
     groups.extend((group, flag, [None]) for group, (flag, _) in EDITOR_READERS.items())
     groups.append(("scientific-threshold", "--manual-threshold-ui-case", ["T10"]))
     for group, flag, variants in groups:
@@ -234,6 +252,8 @@ def reader_environment(output):
         "IMAGEJXX_VARIANCE_CPP_REPORT": reports / "rank/R14/case.json",
     }
     environment["IMAGEJXX_THRESHOLD_CPP_REPORT"] = reports / "scientific-threshold/T10/case.json"
+    for group, (_, name, _, _) in INDEXED_READERS.items():
+        environment[name] = Path(output).resolve() / (group + "-index.json")
     for group, (_, name) in EDITOR_READERS.items():
         environment[name] = reports / group / "legacy/case.json"
     for group, (name, _) in TIFF_READERS.items():
@@ -259,6 +279,38 @@ def inventory(directory):
     return result
 
 
+def write_case_index(output, group, items, elapsed):
+    """Index complete raw captures with byte identities and relative paths only."""
+    _, _, contract, expected = INDEXED_READERS[group]
+    if (tuple(item["case"] for item in items) != expected
+            or any(item["state"] != "observed" for item in items)
+            or not math.isfinite(elapsed) or not 0 <= elapsed <= 60):
+        raise ValueError(f"Incomplete or out-of-bounds indexed capture: {group}")
+    parent = Path(output).resolve()
+    group_root = parent / "private" / group
+    entries = []
+    for item in items:
+        path = Path(item["actual"]) / item["report"]
+        if path.is_symlink() or not path.resolve(strict=True).is_relative_to(group_root):
+            raise ValueError(f"Indexed report is outside its group: {path}")
+        identity = pin(path)
+        original = next(row for row in item["files"] if row["member"] == item["report"])
+        if identity != {key: original[key] for key in ("bytes", "sha256")}:
+            raise ValueError(f"Indexed report changed after capture: {path}")
+        if not 0 < identity["bytes"] <= 16 * 1024 * 1024:
+            raise ValueError(f"Indexed report exceeds its reader budget: {path}")
+        entries.append({"case_id": item["case"], "id": item["case"],
+                        "relative_path": path.relative_to(parent).as_posix(),
+                        "byte_count": identity["bytes"], "sha256": identity["sha256"]})
+    index = {"contract_id": contract, "context": "imgui_cpp", "case_count": len(entries),
+             "observation_state": "observed", "acceptance_claim": False,
+             "elapsed_seconds": elapsed, "cases": entries}
+    path = parent / (group + "-index.json")
+    with path.open("x", encoding="utf-8", newline="\n") as stream:
+        stream.write(json.dumps(index, indent=2) + "\n")
+    return {"path": str(path), **pin(path)}
+
+
 def capture(output, executable, root, environment=None):
     output = Path(output).resolve()
     executable = Path(executable).resolve(strict=True)
@@ -276,8 +328,11 @@ def capture(output, executable, root, environment=None):
         (output / "receipt.json").write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
 
     save()
+    indexed_starts = {}
     try:
         for group, case, arguments in cases():
+            if group in INDEXED_READERS and group not in indexed_starts:
+                indexed_starts[group] = time.monotonic()
             # main.cpp places preferences next to the capture directory. Sharing
             # that parent across cases would leak settings between probes.
             private = output / "private" / group / case
@@ -352,6 +407,11 @@ def capture(output, executable, root, environment=None):
                     raise ValueError(f"C++ observation did not finish: {report}")
                 if observation.get("acceptance_claim") is not False:
                     raise ValueError(f"C++ observation must not claim acceptance: {report}")
+            if group in INDEXED_READERS:
+                if (observation.get("contract_id") != INDEXED_READERS[group][2]
+                        or observation.get("case_id") != case
+                        or observation.get("context") != "imgui_cpp"):
+                    raise ValueError(f"Unexpected indexed observation identity: {report}")
             item["report"] = report.name
             item["files"] = inventory(actual)
             # Do not link captures: hard links change file identity/link counts,
@@ -360,7 +420,14 @@ def capture(output, executable, root, environment=None):
             if inventory(transport) != item["files"]:
                 raise ValueError(f"C++ observation copy changed bytes: {transport}")
             item["state"] = "observed"
+            if group in INDEXED_READERS and case == INDEXED_READERS[group][3][-1]:
+                identity = write_case_index(output, group,
+                    [row for row in receipt["cases"] if row["group"] == group],
+                    time.monotonic() - indexed_starts[group])
+                receipt.setdefault("indices", {})[group] = identity
             save()
+        if set(indexed_starts) != set(receipt.get("indices", {})):
+            raise ValueError("Incomplete indexed observation group")
         if pin(executable) != original_pin:
             raise ValueError("C++ application changed during observation capture")
         receipt["state"] = "observed"

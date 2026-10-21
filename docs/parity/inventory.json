@@ -180030,6 +180030,29 @@
         "total": 1117
       },
       "scope": "21 new portable capture groups,32 reader modules,106 raw UI reports/35549 frames and1117 selected tests per platform; complete hosted Python and feature parity remain open."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-21",
+      "id": "p09o.ci-display.functional.001",
+      "identity": {
+        "qualification": {
+          "bytes": 8678,
+          "path": "docs/parity/reviews/p09o-ci-display001.json",
+          "sha256": "cf8cbaca52a77674d202c4c6b2a85fcbd8ecb6bd7dd72b90c7712ee72462e9bc"
+        }
+      },
+      "platform": "Windows/Linux installed C++ and isolated Python Dear ImGui hosts",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 92,
+        "report": "build/p09o-ci-display001/windows-python002/pytest.xml",
+        "skipped": 0,
+        "total": 92
+      },
+      "scope": "46 indexed display/Auto C++ cases per platform,184 raw UI reports/13440 frames and92 selected tests per platform; complete hosted and family acceptance remain open."
     }
   ]
 }

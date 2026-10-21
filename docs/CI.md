@@ -60,7 +60,7 @@ package. The Linux codec audit rejects exposed static codec APIs that could bind
 to a different library already loaded by Python. Missing bindings or providers,
 failures, collection errors and skipped cases leave the complete profile failing.
 The runner first invokes `scripts/ci_observations.py` against the installed C++
-application. Its 1,034-case matrix captures rank filters, rounded creation
+application. Its 1,080-case matrix captures rank filters, rounded creation
 and saved selections, ROI import/export, saved-selection budget behavior, and
 resize/rotate/move modifiers and directional shadows. The planar selection matrix
 covers 621 creation/edit/recovery cases across XY, XZ and YZ, including every
@@ -82,9 +82,10 @@ Float32 finite/quiet-NaN/IEEE failure and recovery. They retain each reader's
 flat or nested paths. Input hashes are mandatory; manifest byte counts are also
 enforced when present, and captures refuse fixture files over 64 MiB. Older
 SHA-only manifests record the measured size without changing the committed
-fixture metadata. Eight standard-library runner checks cover both manifest
+fixture metadata. Twelve standard-library runner checks cover both manifest
 schemas, corruption refusal, Float32 argument/transport ordering and legacy editor
-envelope preservation/refusal. The native
+envelope preservation/refusal, and complete path-only index membership, identities
+and corruption refusal. The native
 workflow jobs run these checks on every operating system before building C++.
 Eight scientific shadow captures additionally check the actual direction editor,
 private linked preview, all-Z Apply, retained workflow rows and Undo/Redo through
@@ -107,6 +108,18 @@ leave revisions, history and workflow unchanged. Their replay probe uses the
 last recorded changed update, checks its stale-revision refusal, and acknowledges
 the error through the actual dialog. The large ROI import-limit observer polls workers
 every 20 ms, retaining its 30-second worker deadline and 2,500-frame cap.
+Four path-only indices additionally supply the existing Auto Contrast and
+channel-display readers: eight Auto cases, 18 display cases, ten Max projection
+cases and ten Min projection cases. Each index carries only ordered case IDs,
+relative report paths, byte counts and SHA-256 hashes. Raw report identities must
+match the requested contract/case/host, copied reports must still match their
+captured hashes, and every case must finish before the index is published. An
+incomplete group fails capture. Index elapsed time measures the actual group
+capture and copy work and retains the readers' 60-second bound. Reports and
+associated files remain byte-identical; no inline frames or pixels enter an index.
+Indexed entries point to original capture directories, preserving the absolute
+paths typed during the observed file dialogs. Reader copies remain in the archive;
+reports and raw input events are never rewritten to match a copy location.
 The complete-suite runner supplies hashes of the installed desktop extension and
 Python UI adapter, alongside the existing installed-executable identity.
 Each process gets private preferences. Byte-identical copies supply the readers

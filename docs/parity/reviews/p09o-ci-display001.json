@@ -1,0 +1,222 @@
+{
+  "state": "qualified_ci_increment",
+  "objective_complete": false,
+  "scope": "Portable path-only C++ indices for Auto Contrast, channel display and Max/Min projection, consumed by the existing independent installed readers.",
+  "all99": {
+    "in_progress": 43,
+    "open": 56,
+    "complete": 0
+  },
+  "behavior": [
+    "Capture eight Auto Contrast, 18 channel display, ten Max and ten Min cases with their existing standalone probes.",
+    "Publish each complete index with ordered case IDs, relative report paths, exact byte counts, SHA-256 and real elapsed group time within the existing bound of 60 seconds.",
+    "Require exact case/contract/host identity, completed observations and unchanged raw bytes before index publication; incomplete groups fail.",
+    "Point indices to original capture directories so physical file-dialog paths remain exact. Preserve byte-identical report/artifact copies and all prior failed captures without rewriting input events."
+  ],
+  "tests": {
+    "windows": {
+      "passed": 92,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "modules": 4
+    },
+    "linux": {
+      "passed": 92,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "modules": 4
+    }
+  },
+  "identical_case_ids": true,
+  "transport_checks": {
+    "passed_per_platform": 12,
+    "platforms": [
+      "Windows",
+      "Linux"
+    ],
+    "scope": "Mocked fixture/envelope/index transport only; includes incomplete and corrupt index refusal and exact typed-path preservation."
+  },
+  "actual_ui": {
+    "observations": 184,
+    "frames": 13440,
+    "cpp_cases_per_platform": 46,
+    "profiles": {
+      "windows": {
+        "state": "passed",
+        "tests": 92,
+        "observations": 92,
+        "frames": 6720,
+        "contexts": {
+          "imgui_cpp": 46,
+          "imgui_python": 46
+        },
+        "installed_environment": {
+          "state": "passed",
+          "package": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09o-ci-display001\\windows-environment001\\Lib\\site-packages\\imagejxx",
+          "byte_identical_files": 43,
+          "desktop": {
+            "_desktop.cp312-win_amd64.pyd": {
+              "bytes": 14878208,
+              "sha256": "e7b22377b356b12443423909ce33f14838d7720e77c6e2c5ffacf94ecb4d4475"
+            }
+          }
+        },
+        "indices": {
+          "auto-contrast": {
+            "elapsed_seconds": 2.422000000020489,
+            "bytes": 2120,
+            "sha256": "b4bc39e7decc7747290ec50bbcb63ee07d09cc81e875576e06e3acd0e6d05bd3"
+          },
+          "channel-display": {
+            "elapsed_seconds": 6.5,
+            "bytes": 4578,
+            "sha256": "919d4e44bdf92d5069906218786a1a046e6afb560a3ec84f4c2ca93d5b76b0e5"
+          },
+          "channel-max": {
+            "elapsed_seconds": 7.859000000054948,
+            "bytes": 2592,
+            "sha256": "75d6d2a497c66dc39a0bae284549adbb4bcbf4a19ca932160df308a5401c98d4"
+          },
+          "channel-min": {
+            "elapsed_seconds": 13.047000000020489,
+            "bytes": 2586,
+            "sha256": "97b9bbe31514332f208874c64d22fcabb811b8a3098050dd55fe6e641b216ef8"
+          }
+        }
+      },
+      "linux": {
+        "state": "passed",
+        "tests": 92,
+        "observations": 92,
+        "frames": 6720,
+        "contexts": {
+          "imgui_cpp": 46,
+          "imgui_python": 46
+        },
+        "installed_environment": {
+          "state": "passed",
+          "package": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p09o-linux-environment001/lib/python3.12/site-packages/imagejxx",
+          "byte_identical_files": 36,
+          "desktop": {
+            "_desktop.cpython-312-x86_64-linux-gnu.so": {
+              "bytes": 28489112,
+              "sha256": "42b7526acc0305f5c561dbec5eaff5dde485d4cfd93e041a86f3b5f119ca6b35"
+            }
+          }
+        },
+        "indices": {
+          "auto-contrast": {
+            "elapsed_seconds": 1.9898092790000135,
+            "bytes": 2121,
+            "sha256": "fcc76a69b96a0b707625de15d8932dadce9489daac6c1fead0e45900b7524a10"
+          },
+          "channel-display": {
+            "elapsed_seconds": 5.008442094999992,
+            "bytes": 4592,
+            "sha256": "b2d3471e8368dce60018be1c055a776ad6012e1d11c593600d58a9a5f0cfeb6e"
+          },
+          "channel-max": {
+            "elapsed_seconds": 5.780256092000002,
+            "bytes": 2592,
+            "sha256": "77e77b47fc6ba6618755fb94c5e2dc93c9513f7962dff1ae0ee5839a2024faae"
+          },
+          "channel-min": {
+            "elapsed_seconds": 9.256825435999986,
+            "bytes": 2585,
+            "sha256": "6dd643428ebf01264769261dad999b7db4e2b7791df4f1207e834a9f9e489b59"
+          }
+        }
+      }
+    },
+    "os_input_or_gpu_equivalence_claim": false
+  },
+  "ci": {
+    "state": "passed",
+    "previous_cases_preserved": 1034,
+    "new_cases": 46,
+    "default_total": 1080,
+    "unique_cases": true
+  },
+  "products": {
+    "source": "Qualified P09n installed C++ application and Python package.",
+    "environments": "Isolated CPython3.12 environments with package bytes equal to the qualified installed package before and after execution; runtime modules load from their actual sysconfig site-packages."
+  },
+  "commercial": {
+    "state": "reviewed_dependency_inventory_passed",
+    "new_dependencies": [],
+    "review_log": {
+      "path": "build/p09o-ci-display001/licenses001.log",
+      "bytes": 53,
+      "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+    }
+  },
+  "hosted_baseline": {
+    "run": 39596535249,
+    "url": "https://github.com/bipxx/imagejxx/actions/runs/39596535249",
+    "commit": "7bfadcef066ecfa32a3779987f0345d4bd3f4366",
+    "state_when_read": "in_progress",
+    "native_sdk": {
+      "Complete headless C++ and installed SDK (windows-latest)": "success",
+      "Complete headless C++ and installed SDK (macos-latest)": "success",
+      "Complete headless C++ and installed SDK (ubuntu-latest)": "success"
+    },
+    "complete_python_acceptance": false,
+    "note": "Previous commit7bfadce: generic Windows/macOS Python jobs fail; complete Linux Python jobs were still running when read. This increment still needs hosted confirmation."
+  },
+  "cleanup": {
+    "state": "passed",
+    "removed_bytes": 2833871962,
+    "removed_files": 1019,
+    "crc_and_every_member_sha256_verified": true,
+    "archives": {
+      "windows": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09o-ci-display001\\windows-scratch001.zip",
+        "bytes": 286598362,
+        "sha256": "d85e7407ac7d4fd80225f2f1364108eed03b3d28acd11a78ef14143b4039f96e"
+      },
+      "linux": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09o-ci-display001/linux-scratch001.zip",
+        "bytes": 304539241,
+        "sha256": "009a352a662cdfa4c3599ded19ca91657c14c38cae557abc3b21ec3d7d5400ce"
+      }
+    },
+    "preserved": "P09n final installed products and useful native/dependency caches, JUnit, compact observations and every passing/failed raw capture in verified archives."
+  },
+  "inputs": [
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 26974,
+      "sha256": "e074b3ea460ed3a5b987be5fc93e5fd9b94c754be477c3fcdcee7cb39e05a7bf"
+    },
+    {
+      "path": "tests/tools/test_ci_observations.py",
+      "bytes": 11366,
+      "sha256": "fed9aa695e6fc65d77fba6dc5e6e403c2b8a34d1d991cec809707e9959b0523e"
+    },
+    {
+      "path": "docs/CI.md",
+      "bytes": 11376,
+      "sha256": "c4b815fe48bed7edff56c849faf42957805f342cecb443217a65ae121706b07a"
+    }
+  ],
+  "receipts": "build/p09o-ci-display001",
+  "remaining": [
+    "Remaining C++ observation contracts and complete hosted Python/IO/UI integration.",
+    "Reviewed full Windows/macOS feature builds and independent platform qualification.",
+    "Complete Auto Contrast consumer evidence refresh; stale historical fingerprints still block the plan validator.",
+    "All broader ImageJ/commercially usable Fiji requirements and 96 partial format variants remain open."
+  ],
+  "plan_check": {
+    "state": "failed_preexisting",
+    "message": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed",
+    "first_mismatch": {
+      "path": "include/imagejxx/application.hpp",
+      "expected": "aad7b9c9e54f21ef59fdca02d8c3da2fcc5d5eeaf53f056d32615b4fa728fe09",
+      "current": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072",
+      "previous_commit": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    },
+    "action": "Keep historical byte identities; refresh complete Auto Contrast consumer evidence separately."
+  }
+}
