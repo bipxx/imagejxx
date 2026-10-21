@@ -1,5 +1,19 @@
 # ImageJ and Fiji gap closure plan
 
+**Histogram command checkpoint, 2026-10-21 (work in progress):**
+C++ and Python now capture immutable histogram intent with strict source-bound
+replay and explicit destination rebinding. Records freeze target, binning, storage
+policy and log presentation without sample arrays or file paths. Metadata/record
+admission, cancellation and detached results preserve readonly analysis behavior.
+Windows/Linux each pass 272 selected Python checks (106 new), four native suites
+and fresh installed core-only SDK consumers; both ImGui products build. Verified
+cleanup removes 187,484,983 scratch bytes, retaining final products and evidence.
+See [usage](HISTOGRAM.md) and
+[the scoped receipt](parity/reviews/p10l-histogram-command001.json).
+Panel recorder/workflow integration, async execution, remaining histogram domains
+and full qualification remain open. All99 remains 47 in progress / 52 open /
+0 complete; the existing Auto Contrast producer fingerprint gate still fails.
+
 **Histogram defaults checkpoint, 2026-10-21 (work in progress):**
 Both ImGui launchers consume eight native Histogram defaults. Successful
 calculation remembers used options; raw mode preserves the last custom range,

@@ -36,7 +36,7 @@ target_sources(imagejxx_core PRIVATE
   src/native/saved_roi_geometry_application.cpp
   src/native/float32_display.cpp
   src/native/channel_display.cpp src/native/channel_display_command.cpp
-  src/native/dataset_histogram.cpp
+  src/native/dataset_histogram.cpp src/native/histogram_command.cpp
   src/native/auto_contrast.cpp src/native/auto_contrast_job.cpp
   src/native/selection_creation.cpp
   src/native/selection_creation_geometry.cpp
@@ -717,6 +717,10 @@ if(BUILD_TESTING)
   target_link_libraries(imagejxx_histogram_defaults_tests PRIVATE imagejxx::core)
   add_test(NAME native_histogram_defaults COMMAND imagejxx_histogram_defaults_tests)
   set_tests_properties(native_histogram_defaults PROPERTIES TIMEOUT 30)
+  add_executable(imagejxx_histogram_command_tests tests/native/test_histogram_command.cpp)
+  target_link_libraries(imagejxx_histogram_command_tests PRIVATE imagejxx::core)
+  add_test(NAME native_histogram_command COMMAND imagejxx_histogram_command_tests)
+  set_tests_properties(native_histogram_command PROPERTIES TIMEOUT 30)
   add_executable(imagejxx_target_histogram_tests tests/native/test_target_histogram.cpp)
   target_link_libraries(imagejxx_target_histogram_tests PRIVATE imagejxx::core)
   add_test(NAME native_target_histogram COMMAND imagejxx_target_histogram_tests)

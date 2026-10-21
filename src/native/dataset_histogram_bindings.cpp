@@ -1,5 +1,6 @@
 #include <imagejxx/dataset_histogram.hpp>
 #include <imagejxx/target_histogram.hpp>
+#include <imagejxx/histogram_command.hpp>
 #include "binding_metadata.hpp"
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
@@ -250,4 +251,35 @@ void bind_dataset_histogram(py::module_ &m) {
   },py::arg("target"),py::arg("options")=TargetHistogramOptions{},py::arg("limits")=DatasetHistogramLimits{},py::kw_only(),py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none(),
   "Pool captured native C/T/Z plane/area targets without a concatenated stack. Python captures/getter copies and source/cache/RSS costs are external.");
   m.def("target_histogram_csv",[](const TargetHistogramResult &v){py::gil_scoped_release release;return target_histogram_csv(v);},py::arg("result"));
+  py::class_<HistogramCommandLimits>(m,"HistogramCommandLimits")
+      .def(py::init<>()).def(py::init<const HistogramCommandLimits &>())
+      .def_readwrite("processing",&HistogramCommandLimits::processing)
+      .def_property("max_record_bytes",[](const HistogramCommandLimits &v){return v.max_record_bytes;},[](HistogramCommandLimits &v,py::handle x){v.max_record_bytes=integer<std::size_t>(x);});
+  py::class_<ResolvedHistogramCommand>(m,"ResolvedHistogramCommand")
+      .def_property_readonly("target",[](const ResolvedHistogramCommand &v){return v.target();})
+      .def_property_readonly("options",&ResolvedHistogramCommand::options)
+      .def_property_readonly("log_counts",&ResolvedHistogramCommand::log_counts)
+      .def("record",[](const ResolvedHistogramCommand &v){return bindings::metadata_python(v.record());});
+  m.def("resolve_histogram_command",[](DocumentSnapshot source,TargetHistogramOptions options,TargetRequest request,py::object log,HistogramCommandLimits limits){
+    if(!PyBool_Check(log.ptr()))throw py::type_error("Histogram log_counts requires a Boolean");
+    const bool logarithmic=log.cast<bool>();py::gil_scoped_release release;
+    return resolve_histogram_command(source,options,request,logarithmic,limits);
+  },py::arg("source"),py::arg("options")=TargetHistogramOptions{},py::arg("request")=TargetRequest{},py::arg("log_counts")=false,py::arg("limits")=HistogramCommandLimits{},
+  "Capture immutable histogram intent without reading planes. Python metadata conversions and getter copies are outside native budgets.");
+  m.def("validate_histogram_command_record",[](py::dict record,py::handle requested_budget){
+    const auto budget=integer<std::size_t>(requested_budget);
+    const auto value=bindings::metadata_object_value(record);py::gil_scoped_release release;validate_histogram_command_record(value,budget);
+  },py::arg("record"),py::arg("max_record_bytes")=8ULL*1024*1024);
+  m.def("histogram_command_from_record",[](DocumentSnapshot source,py::dict record,HistogramCommandLimits limits){
+    const auto value=bindings::metadata_object_value(record);py::gil_scoped_release release;return histogram_command_from_record(source,value,limits);
+  },py::arg("source"),py::arg("record"),py::arg("limits")=HistogramCommandLimits{});
+  m.def("rebind_histogram_command",[](DocumentSnapshot source,py::dict record,TargetRequest request,HistogramCommandLimits limits){
+    const auto value=bindings::metadata_object_value(record);py::gil_scoped_release release;return rebind_histogram_command(source,value,request,limits);
+  },py::arg("source"),py::arg("record"),py::arg("request"),py::arg("limits")=HistogramCommandLimits{});
+  m.def("estimate_histogram_command",[](ResolvedHistogramCommand command,HistogramCommandLimits limits){py::gil_scoped_release release;return estimate_histogram_command(command,limits);},py::arg("command"),py::arg("limits")=HistogramCommandLimits{});
+  m.def("execute_histogram_command",[](ResolvedHistogramCommand command,HistogramCommandLimits limits,std::shared_ptr<CancellationToken> token,py::object progress,py::object checkpoint){
+    const auto control=axis_range_python_control(std::move(token),std::move(progress),std::move(checkpoint));
+    py::gil_scoped_release release;return execute_histogram_command(command,limits,control);
+  },py::arg("command"),py::arg("limits")=HistogramCommandLimits{},py::kw_only(),py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none());
+
 }

@@ -1,0 +1,162 @@
+{
+  "state": "qualified_functional_increment",
+  "objective_complete": false,
+  "baseline_commit": "53aa740443e12d83238d8a731601e52f62a2cf26",
+  "scope": "Immutable source-bound C++ histogram intent and typed Python capture, strict JSON replay and explicit destination rebinding.",
+  "semantics": "V1 strict schema freezes target, scalar storage policy, raw/custom binning and presentation log flag. Strict replay checks relevant revisions and identity; navigation is independent. Explicit rebind validates the original first, uses destination geometry and retains numeric options. Commands retain immutable source snapshots; results retain no source handles. No source/history/preferences/file publication.",
+  "resources": "Metadata-only target admission reserves an additional bounded record allowance before serialization. Record decoding performs a bounded recursive traversal before schema decoding. Existing target accumulation limits/cancellation apply. Frontend conversion/getters, source/cache, allocator overhead, opaque callbacks, CSV and RSS remain external.",
+  "verification": "272 selected Python checks per OS including 106 new command checks, four native executable suites and fresh installed SDK consumers. Both desktop products build; no new UI functionality or physical-input parity claim in this increment.",
+  "profiles": {
+    "windows": {
+      "python_cases": 272,
+      "new_command_cases": 106,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_test_executables": 4,
+      "sdk": "fresh installed core-only command consumer passed",
+      "removed_scratch_bytes": 91166337,
+      "evidence": [
+        {
+          "path": "build/p10l-histogram-command001/windows-build002/receipt.json",
+          "bytes": 1179,
+          "sha256": "e656af1722b60185cc70b1252c2a8089f776945233e9156fa0c39d39665f43d2"
+        },
+        {
+          "path": "build/p10l-histogram-command001/windows-build002/native.xml",
+          "bytes": 2275,
+          "sha256": "173a2a7f3f24d6bbc11a6b490e16893f1c3a2ec6e0768ca95d0305fab919b552"
+        },
+        {
+          "path": "build/p10l-histogram-command001/windows-python002/receipt.json",
+          "bytes": 1335,
+          "sha256": "6f35ec79174cf5f9f3f68dbb58549cd7d91dbc8a1cf0086f29b8317ae3671faf"
+        },
+        {
+          "path": "build/p10l-histogram-command001/windows-python002/pytest.xml",
+          "bytes": 38373,
+          "sha256": "7f4ad08fa1f0a88c53c81cc31a147f2211137b765bfb51c3a7dc30beb74054ad"
+        },
+        {
+          "path": "build/p10l-histogram-command001/windows-sdk001/receipt.json",
+          "bytes": 384,
+          "sha256": "502ac890b2a512d31abba564383b70a53b455a571b81066cfcb78e51d7ae1fe7"
+        },
+        {
+          "path": "build/p10l-histogram-command001/windows-cleanup001.json",
+          "bytes": 82207,
+          "sha256": "10a244cfcb7b25fd1c4c4f07f69425e40f9ce79373bfcf474e02a6fd4c42840a"
+        }
+      ],
+      "archive": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p10l-histogram-command001\\windows-scratch001.zip",
+        "bytes": 29143574,
+        "sha256": "8f6153116ee65a5eb9917f7660eafaa513528fa8505c3760ed5d6339263efe1d"
+      }
+    },
+    "linux": {
+      "python_cases": 272,
+      "new_command_cases": 106,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_test_executables": 4,
+      "sdk": "fresh installed core-only command consumer passed",
+      "removed_scratch_bytes": 96318646,
+      "evidence": [
+        {
+          "path": "build/p10l-histogram-command001/linux-build002/receipt.json",
+          "bytes": 1147,
+          "sha256": "75c81348a1c7a4edefcb84162c04edc7915898d12eff553a51555c9cc53ce3e5"
+        },
+        {
+          "path": "build/p10l-histogram-command001/linux-build002/native.xml",
+          "bytes": 2221,
+          "sha256": "3ccbf07688a90f4230d59a405eefcd655921e52e9979fd0cb400c7464f9e79bc"
+        },
+        {
+          "path": "build/p10l-histogram-command001/linux-python002/receipt.json",
+          "bytes": 1246,
+          "sha256": "0df984f79d7afd17f7e843aed141cb768579d287dc1a63712d000b7033ffd0bd"
+        },
+        {
+          "path": "build/p10l-histogram-command001/linux-python002/pytest.xml",
+          "bytes": 38374,
+          "sha256": "e1a90eb5dd020ad623a4c3d9601ba09d7e706475af7dd26111f744e08f4bee88"
+        },
+        {
+          "path": "build/p10l-histogram-command001/linux-sdk001/receipt.json",
+          "bytes": 333,
+          "sha256": "f0cecaa30a7e0369a647f42ff47230f4f24b79b2b7ba0b4db492d6cfccb1d69a"
+        },
+        {
+          "path": "build/p10l-histogram-command001/linux-cleanup001.json",
+          "bytes": 54190,
+          "sha256": "3b17e112c45ed5b9e3777d2738a4062751da15cd52ff9b44658c4a983a40f91f"
+        }
+      ],
+      "archive": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p10l-histogram-command001/linux-scratch001.zip",
+        "bytes": 41603887,
+        "sha256": "049b89c60e7580aa2f1b225c6eeaeff3423880dd139d2efbb634ed26bb85d4a9"
+      }
+    }
+  },
+  "cleanup_bytes": 187484983,
+  "license_check": {
+    "path": "build/p10l-histogram-command001/licenses002.log",
+    "bytes": 53,
+    "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+  },
+  "plan_gate": {
+    "state": "known_failure",
+    "log": {
+      "path": "build/p10l-histogram-command001/plan-gate001.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    },
+    "reason": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api producer_source byte fingerprint changed",
+    "producer_unchanged_from_baseline": true,
+    "producer": {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 14135,
+      "sha256": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    }
+  },
+  "remaining": [
+    "Panel recorder/workflow strict replay and explicit rebind UI integration",
+    "Background histogram job execution, cancellation and publication",
+    "Calibrated/color/remaining numeric domains and upstream histogram statistical/presentation/default conventions",
+    "Complete independent source/reference/resource/platform qualification; full 99-feature objective remains open"
+  ],
+  "source": [
+    {
+      "path": "CMakeLists.txt",
+      "sha256": "a055f7fc398b7fbd2fe4e8c41f606f85dc599d35a201af8ed07542ab26885ee4"
+    },
+    {
+      "path": "include/imagejxx/histogram_command.hpp",
+      "sha256": "ed2b33e126dca56c724d829309c549dea799914a3d90aceb98b231127241ce3c"
+    },
+    {
+      "path": "src/native/histogram_command.cpp",
+      "sha256": "a6632efd51f5b1298e6afb9ae04973e12a66bb21eb889842f85f4e1beb92b1f5"
+    },
+    {
+      "path": "src/native/dataset_histogram_bindings.cpp",
+      "sha256": "4d97ca4c44dc421d9ba4ed64db3e0ed97b1726a3aae08a608f7fe855ff28b610"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "sha256": "a712a58e4d95ae3bbfb4d1fc21e22dc9b2028d0d08bda144691dc332f57e2aef"
+    },
+    {
+      "path": "tests/native/test_histogram_command.cpp",
+      "sha256": "06f4f381d3a99b433ad962528799bb88b821265ecc4060396cd99d16f51e48c0"
+    },
+    {
+      "path": "tests/python/test_histogram_command.py",
+      "sha256": "82be125d762cf519e2c4c82cffbe0a8241d592c2edd382bd93609b03266bb821"
+    }
+  ]
+}

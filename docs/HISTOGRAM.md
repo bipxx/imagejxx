@@ -222,3 +222,58 @@ still update. Unknown preference values, extra data and root extensions survive
 normal saves. Result publication after saving uses allocation-free ownership
 moves, including on Windows. This is a functional preference/result boundary,
 not a transaction across external source providers or a complete memory/RSS cap.
+
+## Captured native histogram commands
+
+`imagejxx/histogram_command.hpp` and the Python API capture histogram intent
+without reading source planes. The immutable command retains a source snapshot,
+resolved T/C/Z target, ROI policy, raw/custom binning and a log-count presentation
+flag. Record V1 uses schema `imagejxx.histogram-command` and profile
+`raw_target_histogram_v1`. It contains no sample arrays, CSV path or preferences.
+
+```python
+import json
+import imagejxx as ij
+
+request = ij.TargetRequest(ij.TargetScope.ALL_Z,
+                           roi=ij.RoiPolicy.POSITIONED_ROIS)
+options = ij.TargetHistogramOptions()
+command = ij.resolve_histogram_command(owner.snapshot(), options, request,
+                                       log_counts=True)
+saved = json.loads(json.dumps(command.record()))
+replay = ij.histogram_command_from_record(owner.snapshot(), saved)
+result = ij.execute_histogram_command(replay)
+csv_text = ij.target_histogram_csv(result)
+```
+
+Strict replay requires the recorded document identity, source shape, scalar
+pixel type and floating sample policy, plus target-dependent data revisions.
+Display navigation does not change the frozen plane positions. Active-selection
+and positioned-ROI targets depend on selection revisions; whole-plane targets
+do not. Records are revision-bound intent, not portable ROI geometry files or
+pixel-content attestations. The original source must still be available for
+strict replay. A captured live command can execute its retained immutable
+snapshot even after the owning document changes.
+
+`rebind_histogram_command(destination.snapshot(), saved, new_request)` first
+validates the entire original record, then captures the explicitly supplied
+destination target and its ROI geometry. Original numeric binning and log choices
+are retained; defaults are never consulted and numeric ranges are not converted
+between storage types. A rebound command has a new source-bound record.
+
+`HistogramCommandLimits.processing` applies the existing target histogram pixel
+and working limits. `max_record_bytes` defaults to 8 MiB and bounds conservative
+metadata traversal/wire storage. Admission reserves target-record storage plus
+64 KiB for command fields, before creating a record. Decoding walks metadata
+under a byte/depth budget before schema decoding. `estimate_histogram_command`
+includes this additional record allowance in its working estimate; the result's
+own estimate describes the lower-level target accumulation. Python conversion
+and getter copies, source/cache storage, allocator overhead, opaque callbacks,
+CSV formatting and total process RSS remain external. Results retain no source
+handles. Cancellation and callback failures discard work without source edits,
+history changes, preference saves or file writes. Log affects presentation intent
+only; it does not transform histogram counts.
+
+The panel recorder, workflow replay controls and background execution still need
+integration with this contract. These APIs alone do not complete histogram UI
+recording or full ImageJ/Fiji histogram parity.
