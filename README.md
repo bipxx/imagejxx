@@ -4,6 +4,8 @@ Native C++17 image editing and scientific processing with a NumPy Python interfa
 Includes a standalone **Dear ImGui C++ desktop** and an optional **Python interface
 to the same native UI**. Both expose 92 native image operations and broad
 ImageJ-style desktop workflows. [Desktop coverage and remaining parity work](docs/DESKTOP.md).
+The [AVI movie exporter](docs/DESKTOP.md#avi-movie-export) adds native grayscale/RGB streaming,
+Python callbacks/cancellation and shared ImGui range/timing controls.
 The [editor completeness audit](docs/DESKTOP.md#editor-completeness-audit-2026-10-09)
 tracks configuration, selection editing, slicing, linked XY/XZ/YZ views,
 C/Z/T hyperstacks, 3D viewing and the broader Fiji workflow backlog.

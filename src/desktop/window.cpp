@@ -14,6 +14,8 @@
 #endif
 #include "../native/native_workflow_program_internal.hpp"
 #include "roi_export_panel.hpp"
+#include "movie_export_panel.hpp"
+#include "movie_export_ui_probe.hpp"
 #include "display_annotation_panel.hpp"
 #include "display_annotation_renderer.hpp"
 #include "roi_import_preview.hpp"
@@ -811,7 +813,7 @@ struct Window::Impl {
         startupUserOpened || !owner.documents_.empty() || owner.busy() ||
         dialog.open || browser.open || pendingClose || closingApp ||
         settingsPanel.visible() || selectionPanel.visible() ||
-        gaussianPanel.visible() || rankPanel.visible() || planarAnnotationRebind.visible() || (roiImportPanel.visible() || roiExportPanel.visible() || displayAnnotationPanel.visible()) || thresholdPanel.visible() ||
+        gaussianPanel.visible() || rankPanel.visible() || planarAnnotationRebind.visible() || (movieExportPanel.visible() || roiImportPanel.visible() || roiExportPanel.visible() || displayAnnotationPanel.visible()) || thresholdPanel.visible() ||
         channelDisplayPanel.inputActive() || savedRoiEdit.active())
       return false;
     if (const auto *gui = ImGui::GetCurrentContext()) {
@@ -1009,6 +1011,7 @@ struct Window::Impl {
   bool scientificIoPublishing = false;
 #endif
   RoiExportPanel roiExportPanel;
+  MovieExportPanel movieExportPanel;
   DisplayAnnotationPanel displayAnnotationPanel;
   SavedRoiEdit savedRoiEdit;
   std::string savedRoiCancelReason;
@@ -1224,6 +1227,7 @@ struct Window::Impl {
         scientificIoPanel(w.controller_->job_scheduler()),
 #endif
         roiExportPanel(w.controller_->job_scheduler()),
+        movieExportPanel(w.controller_->job_scheduler()),
         preferencesPath(std::filesystem::absolute(std::filesystem::u8path(
             path.empty() ? configPath() : path)).lexically_normal().u8string()) {
     preferenceState = PreferencesState::load(preferencesPath);
@@ -1484,7 +1488,7 @@ struct Window::Impl {
     if (owner.documents_.empty() && !id)
       return true; // Preserve the existing no-document validation.
     const auto source = owner.documentById(id);
-    if (action == "show_animation_options")
+    if (action == "show_animation_options" || action == "show_movie_export")
       return !owner.busy() && owner.controller_->active_document_id() == source->id;
     if (action == "animation")
       return owner.controller_->active_document_id() == source->id;
@@ -2030,7 +2034,7 @@ struct Window::Impl {
     indexedColorPanel.tick(owner.documents_.empty()?std::optional<DocumentSnapshot>{}:std::optional<DocumentSnapshot>{owner.nativeSnapshot()},rgbCap(),
       [this](const auto &command,auto &prepared,bool recorded){std::visit([&](const auto &c){publishRgb(c,prepared,recorded);},command);});
   }
-  bool workflowOtherBusy() const { return shadowDemo.active() || indexedColorPanel.visible() || indexedColorPanel.working() || colorStackPanel.visible() || colorStackPanel.working() || rgbDatasetPanel.visible() || rgbDatasetPanel.working() || legacyBusy() || gaussianJobs.apply_busy() || bool(thresholdJob) || bool(autoJob); }
+  bool workflowOtherBusy() const { return movieExportPanel.working() || shadowDemo.active() || indexedColorPanel.visible() || indexedColorPanel.working() || colorStackPanel.visible() || colorStackPanel.working() || rgbDatasetPanel.visible() || rgbDatasetPanel.working() || legacyBusy() || gaussianJobs.apply_busy() || bool(thresholdJob) || bool(autoJob); }
   bool legacyBusy() const {
     return job.valid() && job.info().state != JobState::Publishing;
   }
@@ -5726,7 +5730,7 @@ void Window::action(const std::string &name, const Json &p) {
     documentById(targetId); // Validate explicit targets before global side effects.
   }
   static const std::set<std::string> targeted{
-      "view", "fit_selection", "close_document", "combine_rois", "undo", "redo",
+      "show_movie_export", "view", "fit_selection", "close_document", "combine_rois", "undo", "redo",
       "show_manual_threshold", "set_manual_threshold", "reset_manual_threshold",
       "manual_threshold_to_selection", "apply_manual_threshold",
       "replay_manual_threshold",
@@ -5759,6 +5763,18 @@ void Window::action(const std::string &name, const Json &p) {
     impl->requireAction(name, 0, operationId);
   if (name == "animation") {
     impl->configureAnimation(p);
+    return;
+  }
+  if(name=="show_movie_export") {
+    if(busy())throw std::invalid_argument("Wait for the current edit");
+    for(const auto &field:p.items())if(field.key()!="document_id")throw std::invalid_argument("Movie export accepts only its source ID");
+    impl->stopAnimation("movie_export");
+    Json movieDisplay=Json::object();
+    const auto &movieMetadata=documentById(targetId)->state().metadata;
+    for(const char *key:{"display_range","lut","labels","custom_lut"})if(movieMetadata.contains(key))movieDisplay[key]=movieMetadata[key];
+    impl->movieExportPanel.show(nativeSnapshot(),std::move(movieDisplay),
+        impl->animationAxis,impl->animationFirst,impl->animationLast,impl->animationStep,
+        impl->animationMode,impl->animationTiming,impl->fps);
     return;
   }
   if (name == "show_animation_options") {
@@ -7749,8 +7765,10 @@ bool Window::cancelJob(std::uint64_t jobId) {
   if (accepted) impl->roiExportPanel.poll();
   return accepted;
 }
+void MovieExportUiProbeAccess::worker_gate(Window &window,std::function<void()> gate){window.checkThread();window.impl->movieExportPanel.worker_gate(std::move(gate));}
 void Window::poll() {
   checkThread();
+  impl->movieExportPanel.poll(documents_.empty()?std::optional<DocumentSnapshot>{}:std::optional<DocumentSnapshot>{nativeSnapshot()},impl->rgbCap());
   impl->shadowDemo.poll(documents_.empty()?std::optional<DocumentSnapshot>{}:std::optional<DocumentSnapshot>{nativeSnapshot()}, impl->rgbCap());
   impl->pollRgb();
   impl->pollColorStack();
@@ -7827,6 +7845,7 @@ void Window::poll() {
 }
 void Window::wait() {
   checkThread();
+  impl->movieExportPanel.wait();
   impl->shadowDemo.wait();
 #ifdef IMAGEJXX_HAS_SCIENTIFIC_IO
   impl->scientificIoPanel.wait();
@@ -8056,6 +8075,8 @@ void Window::Impl::menu() {
       guard([&] { invokeShellCommand("file.open"); });
     observeControl("menu.file.open", shortcutAvailable("file.open"),
                    shortcutLabel("file.open"), "file.open");
+    if(ImGui::MenuItem("Export movie (AVI)...",nullptr,false,!owner.documents_.empty()))guard([&]{owner.action("show_movie_export");});
+    observeControl("menu.file.movie_export",!owner.documents_.empty());
 #ifdef IMAGEJXX_HAS_SCIENTIFIC_IO
     if(ImGui::MenuItem("Open scientific TIFF..."))guard([&]{owner.action("show_scientific_open");});
     observeControl("menu.file.scientific_open");
@@ -11438,6 +11459,7 @@ void Window::Impl::draw() {
   guard([&] {
     auto cap=static_cast<std::size_t>(preferenceState.settings.integer("processing_memory_mb"))*1024*1024;
     if(!cap)cap=256*1048576;
+    movieExportPanel.draw(owner.documents_.empty()?std::optional<DocumentSnapshot>{}:std::optional<DocumentSnapshot>{owner.nativeSnapshot()},cap);
     roiExportPanel.draw(owner.documents_.empty()?std::optional<DocumentSnapshot>{}:std::optional<DocumentSnapshot>{owner.nativeSnapshot()},owner.busy(),cap,
       [this]{browseRoiExport();},
       [this](const PlanarAnnotation &row){
@@ -11789,6 +11811,7 @@ Json Window::Impl::headlessReport() {
       {"accepted",startupTiffs?startupTiffs->next:0},{"tiff_count",startupTiffs?startupTiffs->entries.size():0}};
 #endif
     result["roi_export"] = roiExportPanel.diagnostics();
+    result["movie_export"] = movieExportPanel.diagnostics();
     result["threshold_panel"] = thresholdPanel.diagnostics();
     result["channel_display_panel"] = channelDisplayPanel.diagnostics();
     result["auto_contrast"] = {{"busy", bool(autoJob)}, {"owner_id", autoOwner},

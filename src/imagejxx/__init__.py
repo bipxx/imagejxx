@@ -8,6 +8,7 @@ or (Z, H, W, 3/4). Functions return new arrays and never mutate inputs.
 from __future__ import annotations
 
 from typing import Callable, Sequence
+from os import fspath as _fspath
 import numpy as np
 from . import _native
 from ._native import Dataset as Dataset, SpatialCalibration as SpatialCalibration
@@ -31,6 +32,32 @@ from ._native import (
 from ._native import Settings as Settings
 from ._native import PlaybackSequence as PlaybackSequence
 from ._native import playback_interval_seconds as playback_interval_seconds
+
+
+def write_avi(path, frames, *, fps=8, replace_existing=False,
+              max_file_bytes=1024**3, max_working_bytes=512*1024**2,
+              cancellation=None, progress=None, checkpoint=None):
+    """Export an immutable UInt8 Z Dataset or (Z,Y,X[,3]) array as AVI.
+
+    Arrays are copied into native owned storage before writing. RGB output is
+    uncompressed BGR24; grayscale has an 8-bit gray palette. Existing files
+    require explicit replacement. No source samples or document state change.
+    """
+    path_text = _fspath(path)
+    if isinstance(path_text, bytes):
+        path_text = path_text.decode("utf-8")
+    if isinstance(frames, Dataset):
+        data = frames
+    else:
+        array = np.asarray(frames)
+        if array.ndim not in (3, 4):
+            raise ValueError("AVI frames need shape (Z,Y,X) or (Z,Y,X,3)")
+        data = Dataset(array, axes="ZYX" if array.ndim == 3 else "ZYXS")
+    return _native.write_avi_dataset(path_text, data, fps=fps,
+        replace_existing=replace_existing, max_file_bytes=max_file_bytes,
+        max_working_bytes=max_working_bytes, cancellation=cancellation,
+        progress=progress, checkpoint=checkpoint)
+
 from ._native import (
     shortcut_registry_version as shortcut_registry_version,
     ShortcutPlatform as ShortcutPlatform,

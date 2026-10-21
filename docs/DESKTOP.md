@@ -1268,6 +1268,64 @@ interval that cannot be represented as finite positive seconds.
 
 Movie export and complete hosted/platform qualification remain open.
 
+## AVI movie export
+
+Choose **File > Export movie (AVI)...** in either ImGui host. The form starts
+with the playback axis, inclusive range, stride, direction and timing choices.
+Choose an output `.avi` path and press **Export movie**. Changing axis resets
+the valid range entries; malformed numeric drafts stay visible until corrected
+and refuse export. Other C/T/Z positions and display colors are captured when the form
+opens. **Gray8** writes a gray palette and requires every rendered frame to be
+grayscale; a colored frame refuses the whole export. RGB output retains LUT and
+scientific channel-composite colors. The frames cover one cycle: forward and
+reverse emit each selected position once; ping-pong emits the return leg without
+repeating either endpoint. Single-frame movies are permitted.
+
+Calibrated timing uses the dataset frame interval times the selected stride for
+T or an ordinary Z time-series stack. FPS is otherwise explicit. AVI rates are
+rounded to six decimal places and must be 0.001 through 1000 fps. AVI contains
+8-bit display frames; keep dataset/session files for raw scientific values and
+metadata. This exporter currently omits overlays, threshold tint and audio.
+
+Writing runs on a worker. **Cancel export** and **Close** discard its private
+stage. The captured owner and pixel/metadata/display revisions are checked on
+the UI thread before publication; changing them refuses the old export. Existing
+files require **Replace an existing file**. Paths are frozen before worker
+callbacks. An exclusive sibling is streamed, flushed and atomically published;
+failure, cancellation and rejected publication clean up its owned stage. The UI
+uses a 1 GiB file cap and the processing-memory preference for declared frame/
+rendering scratch. Provider caches and process allocations are outside this
+working estimate. No document, selection, history or workflow mutation is made
+by export. Movie workflow recording/replay remains open.
+
+The Python API accepts an immutable UInt8 Z `Dataset` or a `(Z,Y,X)` /
+`(Z,Y,X,3)` array. Arrays are copied to native immutable storage before encoding:
+
+```python
+import imagejxx as ij
+import numpy as np
+frames = np.zeros((10, 64, 64, 3), dtype=np.uint8)
+token = ij.CancellationToken()
+ij.write_avi("movie.avi", frames, fps=12, cancellation=token,
+             progress=lambda done, total: print(done, total))
+```
+
+`replace_existing`, `max_file_bytes`, `max_working_bytes` and `checkpoint` are
+explicit options. Progress and checkpoint callbacks finish before publication;
+callback exceptions and cancellation retain the previous destination. Another
+thread can cancel the token while the native call releases the GIL. The public
+C++ SDK exposes `AviMovieSpec`, `estimate_avi_movie`, `stage_avi_movie` /
+`StagedAviMovie::publish`, `write_avi_movie` with a sequential frame provider,
+and `write_avi_dataset`. Classic RIFF size/dimension bounds are checked before
+provider calls or file creation. Core working memory is one returned image,
+one padded wire row and 16 KiB of header/index scratch (including palette
+construction); no movie-sized buffer or
+frame-index vector is allocated.
+
+PNG/JPEG AVI compression, animated GIF, color-indexed palettes, OpenDML large
+movies, overlay options, workflow replay and complete platform qualification
+remain required. No additional video codec/runtime dependency is shipped.
+
 ## Calibrated range reslicing
 
 Choose **Image > Stacks > Reslice oriented range…** in either launch mode.

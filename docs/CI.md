@@ -65,7 +65,7 @@ The runner records these measurements and supplies both axis-range memory-check
 contracts. These values come from the independent fixture, rather than from the
 operation's working-set estimate; the readers retain their exact byte formulas.
 The runner first invokes `scripts/ci_observations.py` against the installed C++
-application. Its 1,137-launch matrix captures rank filters, rounded creation
+application. Its 1,153-launch matrix captures rank filters, rounded creation
 and saved selections, ROI import/export, saved-selection budget behavior, and
 resize/rotate/move modifiers and directional shadows. The planar selection matrix
 covers 621 creation/edit/recovery cases across XY, XZ and YZ, including every
@@ -127,6 +127,15 @@ still rejected. Those synthetic files prove identity guards only; installed C++
 UI runs provide the behavioral evidence. Historical generator hashes are not
 updated automatically when tooling changes; exact original source binding and
 full reference/hosted acceptance remain separate requirements.
+Sixteen movie captures additionally use the File menu and movie form to export
+Z/C/T ranges, reversed/ping-pong sequences, RGB/channel composites, fixed-range
+Float32/IEEE displays and Gray8. They cover overwrite refusal/consent, invalid
+options, malformed draft retention across axis changes, color refusal, actual cancellation and a source edit while the real
+worker is held at its first-frame provider. Independent readers parse the full
+RIFF/DIB/index structure and compare literal frame pixels. The observer gate is
+declared test preparation and is not a product action. Core tests additionally
+check byte/file limits, path freezing, callbacks and cancellation. These checks
+establish scoped export behavior; full movie/reference/hosted parity stays open.
 The single-ROI export observer polls active file workers every 20 ms while
 retaining its 550-frame cap and 10-second worker deadline. It records actual
 poll counts and elapsed waits. Both ordinary and rounded export readers verify

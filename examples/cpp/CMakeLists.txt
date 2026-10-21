@@ -201,3 +201,11 @@ if(BUILD_TESTING)
   add_test(NAME imagejxx_shadow_example COMMAND imagejxx_shadow_example)
   set_tests_properties(imagejxx_shadow_example PROPERTIES TIMEOUT 30)
 endif()
+
+add_executable(imagejxx_avi_movie_example avi_movie.cpp)
+target_link_libraries(imagejxx_avi_movie_example PRIVATE imagejxx::core)
+
+if(BUILD_TESTING)
+  add_test(NAME imagejxx_avi_movie_example COMMAND imagejxx_avi_movie_example "${CMAKE_CURRENT_BINARY_DIR}/sdk-movie.avi")
+  set_tests_properties(imagejxx_avi_movie_example PROPERTIES TIMEOUT 30)
+endif()

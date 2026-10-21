@@ -1,0 +1,400 @@
+{
+  "state": "qualified_functional_increment",
+  "objective_complete": false,
+  "scope": "Uncompressed single-stream AVI movie export in the C++ core, installed C++ SDK, Python API and both Dear ImGui hosts. Gray8 or RGB24; one bounded cycle along Z/C/T with inclusive range/stride, forward/reverse/ping-pong and explicit FPS or supported calibrated time.",
+  "behavior": "UI exports rendered 8-bit display colors while preserving source sample bits, calibration, history and workflow. No implicit conversion of scientific source samples in the core Dataset adapter. Typed drafts are validated completely and retained when malformed. Explicit overwrite, staged atomic publication, cancellation, source/display revision checks and memory/file preflight protect output.",
+  "limits": "Classic RIFF AVI, dimensions 1..32767, finite FPS 0.001..1000 rounded to six decimals; default 1 GiB file and 512 MiB core working limit. UI uses the processing-memory cap plus conservative display reservation. One frame, padded row and fixed 16 KiB header/index allowance; no complete movie/index buffer. The caller owns the source Dataset and any frame-provider allocations.",
+  "profiles": {
+    "windows": {
+      "tests": 371,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "observations": 116,
+      "frames": 6460,
+      "movie_observations": 32,
+      "movie_frames": 1292,
+      "animation_observations": 68,
+      "animation_frames": 4784,
+      "native": [
+        "preferences",
+        "playback",
+        "AVI"
+      ],
+      "sdk": "Fresh installed C++ consumer writes SDK AVI successfully",
+      "product_counts": {
+        "headers": 68,
+        "python_modules": 12,
+        "catalog_operations": 92
+      },
+      "source_freeze": [
+        {
+          "path": "CMakeLists.txt",
+          "sha256": "63f12e9d86e895040a5408ff1eec4f426f264becaaf893175209b5ee1f02cf4e"
+        },
+        {
+          "path": "examples/cpp/CMakeLists.txt",
+          "sha256": "094881aa59d1e0c7dd2dbabba81c8c0f9c852be57cc15f4312365056392b55ac"
+        },
+        {
+          "path": "examples/cpp/avi_movie.cpp",
+          "sha256": "4517434a486f36bfbc095a129f2ef8985731638b3d36a0315152d7de1955e26d"
+        },
+        {
+          "path": "include/imagejxx/avi_movie.hpp",
+          "sha256": "c5c525dbe16525cbea3e538a9a2f98fb0d4ac7b24f7eb76857d1ba04394d42fd"
+        },
+        {
+          "path": "src/native/avi_movie.cpp",
+          "sha256": "ebe57ccc68ac00cd5ed80ec3ee9be5695bc2e10de0f383c5d5e8a558a9fbbac9"
+        },
+        {
+          "path": "src/native/avi_movie_bindings.cpp",
+          "sha256": "97be3d246d277f7f814e39d88a5d374c74f733c792c19bb71ab911a7a2831075"
+        },
+        {
+          "path": "src/native/bindings.cpp",
+          "sha256": "3451b32db02f898d1af82c7fc8b99237697dc32f30e8f35b508b37658bf25a27"
+        },
+        {
+          "path": "src/imagejxx/__init__.py",
+          "sha256": "b9f2bc8655e711404fdb077eb2a2673420a9bfa6e64fa213f1ac6f4006e58a00"
+        },
+        {
+          "path": "src/desktop/window.cpp",
+          "sha256": "6019c00a8b5efb0b92cec7d776ff22677c8bbeea72fd3443d5d0a04bf382d522"
+        },
+        {
+          "path": "src/desktop/window.hpp",
+          "sha256": "ee72d07ca3e00e2d8b96e3a456481f3da5492dc4075b12faef81cb5d7c0c21c9"
+        },
+        {
+          "path": "src/desktop/movie_export_panel.hpp",
+          "sha256": "27fdd09ca9d1046f787a19432624916058bb02442801eb19416c5030fdaff5f1"
+        },
+        {
+          "path": "src/desktop/movie_export_panel.cpp",
+          "sha256": "fe1e7c45d460b4227ccff355ed0bd9c3d3e5f8530078764ade433c4f0e47a266"
+        },
+        {
+          "path": "src/desktop/movie_export_ui_probe.hpp",
+          "sha256": "4fb6956700b38f04a4cd1377768129c8f12343c2c0a04218b712bc553ac79ed9"
+        },
+        {
+          "path": "src/desktop/movie_export_ui_probe.cpp",
+          "sha256": "8ee6c23b765e09a6b03c47735923e208a033d553393a7b1bd3c80954f1b755ae"
+        },
+        {
+          "path": "src/desktop/animation_ui_probe.cpp",
+          "sha256": "4a26a68c0f304fdbcf71b4ef9987b7c0e5e687c10307648275ceada36b12eda3"
+        },
+        {
+          "path": "tests/native/test_avi_movie.cpp",
+          "sha256": "8589ab17a15d0d71915d6c9eb99b4e0ae1010894fd100701b1525fa466add946"
+        }
+      ],
+      "evidence": {
+        "windows-build009/receipt.json": {
+          "path": "build/p09y-avi-movie001/windows-build009/receipt.json",
+          "bytes": 2619,
+          "sha256": "3a1aef41d005bce39fec991eb7f2bcdaa918e060acc3c0857a12b0fc268394f7"
+        },
+        "windows-build009/native.log": {
+          "path": "build/p09y-avi-movie001/windows-build009/native.log",
+          "bytes": 97,
+          "sha256": "b677cc74ac9c55e3c2d83d44b16bc4af3154ef1d028a448518b910e63afb92d8"
+        },
+        "windows-build009/playback.log": {
+          "path": "build/p09y-avi-movie001/windows-build009/playback.log",
+          "bytes": 66,
+          "sha256": "3f112da1d11c464eb83890439ec3b98bb2beffa2ee9c92a1b88a2123caedf782"
+        },
+        "windows-build009/avi.log": {
+          "path": "build/p09y-avi-movie001/windows-build009/avi.log",
+          "bytes": 73,
+          "sha256": "779669d727788e5f72666b85fdd5d33de9f730581da2387c5e701229fa479063"
+        },
+        "windows-python004/pytest.xml": {
+          "path": "build/p09y-avi-movie001/windows-python004/pytest.xml",
+          "bytes": 48867,
+          "sha256": "0827db656474a9b2ca77fcd777ff75e9bebe79d8ba3973002323e179db27a97c"
+        },
+        "windows-python004/receipt.json": {
+          "path": "build/p09y-avi-movie001/windows-python004/receipt.json",
+          "bytes": 1008,
+          "sha256": "e966fbd2689c0c04b979d9241907b5670389a73b44253f158563f2304c933263"
+        },
+        "windows-evidence003.json": {
+          "path": "build/p09y-avi-movie001/windows-evidence003.json",
+          "bytes": 83072,
+          "sha256": "6a17db3ed046423a24caa020db79d7ba68d11fdb88404f5ca451b3fe5998e82f"
+        },
+        "windows-products004.json": {
+          "path": "build/p09y-avi-movie001/windows-products004.json",
+          "bytes": 12593,
+          "sha256": "e31e2dae3821459f72611abdd869e709c6942ff081f52885cc27289b4e0add84"
+        },
+        "windows-sdk003/receipt.json": {
+          "path": "build/p09y-avi-movie001/windows-sdk003/receipt.json",
+          "bytes": 502,
+          "sha256": "0a5057cc52b16941525659317a0051b4e85d0602b6375a41f8b8aaecad932c1f"
+        },
+        "windows-interop-input003.json": {
+          "path": "build/p09y-avi-movie001/windows-interop-input003.json",
+          "bytes": 13010,
+          "sha256": "f0aedf96a88d96a8ce3f3e9a2866349b928954406feadba3013a9752a6cf2d05"
+        },
+        "windows-cleanup001.json": {
+          "path": "build/p09y-avi-movie001/windows-cleanup001.json",
+          "bytes": 896591,
+          "sha256": "f1a7f0930c3e7f17a5e548ce90d831729f052ff1368c67b0987d1908b82761ff"
+        },
+        "windows-cleanup002.json": {
+          "path": "build/p09y-avi-movie001/windows-cleanup002.json",
+          "bytes": 1056786,
+          "sha256": "9f94d50e194d4b25e898f234fdf24d918cacc1eb123494e338f2a026b83c27ea"
+        }
+      }
+    },
+    "linux": {
+      "tests": 371,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "observations": 116,
+      "frames": 6460,
+      "movie_observations": 32,
+      "movie_frames": 1292,
+      "animation_observations": 68,
+      "animation_frames": 4784,
+      "native": [
+        "preferences",
+        "playback",
+        "AVI"
+      ],
+      "sdk": "Fresh installed C++ consumer writes SDK AVI successfully",
+      "product_counts": {
+        "headers": 68,
+        "python_modules": 12,
+        "catalog_operations": 92
+      },
+      "source_freeze": [
+        {
+          "path": "CMakeLists.txt",
+          "sha256": "63f12e9d86e895040a5408ff1eec4f426f264becaaf893175209b5ee1f02cf4e"
+        },
+        {
+          "path": "examples/cpp/CMakeLists.txt",
+          "sha256": "094881aa59d1e0c7dd2dbabba81c8c0f9c852be57cc15f4312365056392b55ac"
+        },
+        {
+          "path": "examples/cpp/avi_movie.cpp",
+          "sha256": "4517434a486f36bfbc095a129f2ef8985731638b3d36a0315152d7de1955e26d"
+        },
+        {
+          "path": "include/imagejxx/avi_movie.hpp",
+          "sha256": "c5c525dbe16525cbea3e538a9a2f98fb0d4ac7b24f7eb76857d1ba04394d42fd"
+        },
+        {
+          "path": "src/native/avi_movie.cpp",
+          "sha256": "ebe57ccc68ac00cd5ed80ec3ee9be5695bc2e10de0f383c5d5e8a558a9fbbac9"
+        },
+        {
+          "path": "src/native/avi_movie_bindings.cpp",
+          "sha256": "97be3d246d277f7f814e39d88a5d374c74f733c792c19bb71ab911a7a2831075"
+        },
+        {
+          "path": "src/native/bindings.cpp",
+          "sha256": "3451b32db02f898d1af82c7fc8b99237697dc32f30e8f35b508b37658bf25a27"
+        },
+        {
+          "path": "src/imagejxx/__init__.py",
+          "sha256": "b9f2bc8655e711404fdb077eb2a2673420a9bfa6e64fa213f1ac6f4006e58a00"
+        },
+        {
+          "path": "src/desktop/window.cpp",
+          "sha256": "6019c00a8b5efb0b92cec7d776ff22677c8bbeea72fd3443d5d0a04bf382d522"
+        },
+        {
+          "path": "src/desktop/window.hpp",
+          "sha256": "ee72d07ca3e00e2d8b96e3a456481f3da5492dc4075b12faef81cb5d7c0c21c9"
+        },
+        {
+          "path": "src/desktop/movie_export_panel.hpp",
+          "sha256": "27fdd09ca9d1046f787a19432624916058bb02442801eb19416c5030fdaff5f1"
+        },
+        {
+          "path": "src/desktop/movie_export_panel.cpp",
+          "sha256": "fe1e7c45d460b4227ccff355ed0bd9c3d3e5f8530078764ade433c4f0e47a266"
+        },
+        {
+          "path": "src/desktop/movie_export_ui_probe.hpp",
+          "sha256": "4fb6956700b38f04a4cd1377768129c8f12343c2c0a04218b712bc553ac79ed9"
+        },
+        {
+          "path": "src/desktop/movie_export_ui_probe.cpp",
+          "sha256": "8ee6c23b765e09a6b03c47735923e208a033d553393a7b1bd3c80954f1b755ae"
+        },
+        {
+          "path": "src/desktop/animation_ui_probe.cpp",
+          "sha256": "4a26a68c0f304fdbcf71b4ef9987b7c0e5e687c10307648275ceada36b12eda3"
+        },
+        {
+          "path": "tests/native/test_avi_movie.cpp",
+          "sha256": "8589ab17a15d0d71915d6c9eb99b4e0ae1010894fd100701b1525fa466add946"
+        }
+      ],
+      "evidence": {
+        "linux-build009/receipt.json": {
+          "path": "build/p09y-avi-movie001/linux-build009/receipt.json",
+          "bytes": 2518,
+          "sha256": "75ffcdad8d2a85617ffee18f1b32f522cf94fd99a8d4526b86edf143d7fc1724"
+        },
+        "linux-build009/native.log": {
+          "path": "build/p09y-avi-movie001/linux-build009/native.log",
+          "bytes": 96,
+          "sha256": "52786ae4c9cf61ed4741bbd792b53c4ff2f956092a510861b9461067a5ef21b5"
+        },
+        "linux-build009/playback.log": {
+          "path": "build/p09y-avi-movie001/linux-build009/playback.log",
+          "bytes": 65,
+          "sha256": "66ae4886b8f75179d32c77e8c34274d522e6b5ff27e578a133c7abe5ff570827"
+        },
+        "linux-build009/avi.log": {
+          "path": "build/p09y-avi-movie001/linux-build009/avi.log",
+          "bytes": 72,
+          "sha256": "918310365941c95553bd21b7416932051e1eaaf60f9ec0341613a6f5bf242897"
+        },
+        "linux-python004/pytest.xml": {
+          "path": "build/p09y-avi-movie001/linux-python004/pytest.xml",
+          "bytes": 48867,
+          "sha256": "f106bc70aa825be08382d78a68699f5f424182fe5da9a3c65bcacff8f94d6e0d"
+        },
+        "linux-python004/receipt.json": {
+          "path": "build/p09y-avi-movie001/linux-python004/receipt.json",
+          "bytes": 994,
+          "sha256": "2c95b3a0bd543f258322e85cab9132c5c505bd62cd37159bc19161793451040d"
+        },
+        "linux-evidence003.json": {
+          "path": "build/p09y-avi-movie001/linux-evidence003.json",
+          "bytes": 80263,
+          "sha256": "8c082d2d712014a7abed01625e73e5baf9f8a7535bb7a774fb24752c0b080d98"
+        },
+        "linux-products004.json": {
+          "path": "build/p09y-avi-movie001/linux-products004.json",
+          "bytes": 12206,
+          "sha256": "24362d20245af35d1ef0c569ea1f53eaa7eaf6ba68e3cb9e0794898e1a441a84"
+        },
+        "linux-sdk003/receipt.json": {
+          "path": "build/p09y-avi-movie001/linux-sdk003/receipt.json",
+          "bytes": 440,
+          "sha256": "f67ccfeb6697bab5782330881c39002325c262e866ac57688b906a71bd329c9a"
+        },
+        "linux-interop-input003.json": {
+          "path": "build/p09y-avi-movie001/linux-interop-input003.json",
+          "bytes": 12231,
+          "sha256": "a462b57ad6026432b27f0984c0ae2ecd8800d142da1c60910a8c8d47f44ebd53"
+        },
+        "linux-cleanup001.json": {
+          "path": "build/p09y-avi-movie001/linux-cleanup001.json",
+          "bytes": 1121059,
+          "sha256": "1eb5ae89b29d97f681da678085c39919de59a87dc6ce785a09da64d12db387f2"
+        },
+        "linux-cleanup002.json": {
+          "path": "build/p09y-avi-movie001/linux-cleanup002.json",
+          "bytes": 1175268,
+          "sha256": "11a9f834bc6f3627c7747b9d811029d47972b1cd4304c46bd5aad79f96664dd0"
+        }
+      }
+    }
+  },
+  "interop": {
+    "files": 54,
+    "scope": "Windows FFmpeg/ffprobe independently decode exact verified Windows/Linux UI and SDK AVI copies; dimensions/rate/frame count/pixel bytes match independent RIFF parser. External QA only; no bundled codec or dependency.",
+    "evidence": {
+      "path": "build/p09y-avi-movie001/interop003.json",
+      "bytes": 58856,
+      "sha256": "8952661edc82813e28407378895b4705e2c61a66098f1473415c8644999d3437"
+    }
+  },
+  "registration": {
+    "path": "build/p09y-avi-movie001/registration002.json",
+    "bytes": 1995,
+    "sha256": "370ac81ea13c474943c77aeb5a23f8cb607520ead3d9bb4dbb57f481c80b0950"
+  },
+  "commercial_scope": "No new dependencies, Qt or Java. Reviewed commercial-use dependency inventory passes on Windows and Linux. Existing 92-operation catalog unchanged.",
+  "checks": "41 core/API checks plus 32 movie UI checks and 298 selected playback/desktop/session/preferences regression checks per OS. 116 distinct standard input observation reports per OS, including 32 movie and 68 animation reports, plus three options guard artifacts. Native preferences/playback/AVI tests, installed SDK example, and 15 capture transport tests per OS pass. Full hosted acceptance is not claimed.",
+  "source_review": "Added Float32/IEEE source-bit coverage, grayscale color refusal, callback/path semantics, strict malformed draft retention across axis changes, and small-image header scratch preflight. No existing expected reference fingerprints or acceptance gates were relaxed.",
+  "initial_failures": [
+    "Initial compile used JobContext.control(); corrected to execution_control().",
+    "Initial Linux SDK target on 9P refused unsupported atomic no-replace; final SDK runs on native Linux filesystem and verifies copied bytes.",
+    "Initial observer could not locate grouped numeric widget; final controls use strict InputText drafts.",
+    "First final ancillary harness attempt lacked packaging/pytest search paths; second registration harness lacked __file__. Corrected harnesses; failure logs retained."
+  ],
+  "ancillary_evidence": [
+    {
+      "path": "build/p09y-avi-movie001/licenses002.log",
+      "bytes": 227,
+      "sha256": "b438da21411c3ec1235bd163c165123fa097f50734d407d8fa0bec5b20394c9a"
+    },
+    {
+      "path": "build/p09y-avi-movie001/transport002.log",
+      "bytes": 1060,
+      "sha256": "bc516707db60f12a0b91ad9bf30d67910a9e58ff7d59fa3375e0ea0e48bf4a7a"
+    },
+    {
+      "path": "build/p09y-avi-movie001/licenses003.log",
+      "bytes": 400,
+      "sha256": "a669760a081dfb02ba75f15f95cfb1d68ebed6e4fa36f24b034ea5933db33103"
+    },
+    {
+      "path": "build/p09y-avi-movie001/licenses-linux003.log",
+      "bytes": 404,
+      "sha256": "fa7e1e82ce22e430ca9016c4c40c3d0ca1cd20c7a2d8d4ea59af1bbda0bd541f"
+    },
+    {
+      "path": "build/p09y-avi-movie001/licenses004.log",
+      "bytes": 53,
+      "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+    },
+    {
+      "path": "build/p09y-avi-movie001/licenses-linux004.log",
+      "bytes": 53,
+      "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+    },
+    {
+      "path": "build/p09y-avi-movie001/transport003.log",
+      "bytes": 1630,
+      "sha256": "ecd5ee2e6be55b22b3e79e5fff137c7f97ac257ca3dcb7c22dcb50165200cc10"
+    },
+    {
+      "path": "build/p09y-avi-movie001/transport-linux003.log",
+      "bytes": 1630,
+      "sha256": "f5385d71f0c0e092abb6f85679f064efb83bd08fecea1dc6fa7fe377f2ff14b8"
+    }
+  ],
+  "plan_gate": {
+    "state": "failed_preexisting",
+    "message": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed",
+    "gate_unchanged": true,
+    "evidence": {
+      "path": "build/p09y-avi-movie001/plan-check002.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    },
+    "application_header_unchanged_from_head": true
+  },
+  "remaining": [
+    "Compressed AVI/video, GIF, indexed-color palette options, OpenDML, audio and overlays/workflow integration",
+    "Numbered image sequences, raw/text pixels, FITS and compression/quality settings",
+    "Formal AVI format-option/reference inventory, full hosted/platform/UI acceptance and missing historical source/reference artifacts",
+    "Every remaining ImageJ and commercially usable Fiji requirement"
+  ],
+  "all99": {
+    "in_progress": 45,
+    "open": 54,
+    "complete": 0
+  },
+  "format_variants": "Existing 96 variants remain partial; AVI reference/options coverage is still required.",
+  "cleanup_removed_bytes": 4852665309
+}

@@ -1,5 +1,23 @@
 # ImageJ and Fiji gap closure plan
 
+**AVI movie export checkpoint, 2026-10-21 (work in progress):**
+The C++ core, installed SDK, Python API and both Dear ImGui hosts now export
+uncompressed Gray8/RGB24 AVI. The UI supports Z/C/T, inclusive range/stride,
+forward/reverse/ping-pong, FPS and supported calibrated time. Export preserves
+source samples and uses bounded staging, explicit replacement, cancellation,
+revision checks and strict editable drafts. Both installed Windows/Linux profiles
+pass 371 selected checks without skips, native AVI/playback/preferences tests,
+a fresh installed SDK AVI example and 15 transport checks. 232 input reports
+cover 12,920 frames plus six options guard artifacts; FFmpeg independently decodes
+54 generated files with exact dimensions, timing, frame count and pixel bytes.
+No new dependencies; reviewed commercial-use inventory passes on both platforms.
+Verified archives reclaim 4,852,665,309 scratch bytes across this increment.
+See [the scoped receipt](parity/reviews/p09y-avi-movie001.json). Compressed video,
+GIF, overlays/workflow, formal AVI format/reference coverage and full hosted
+qualification remain open. The pre-existing Auto Contrast source-fingerprint
+gate is unchanged. G079 moves to in progress; All99 is 45 in progress / 54 open /
+0 complete. Existing 96 format variants remain partial.
+
 **Python 3.10 evidence-reader checkpoint, 2026-10-21 (work in progress):**
 17 unsupported file_digest calls across 15 scripts/readers now use bounded
 streaming SHA256. Expected hashes, comparison assertions and all other code

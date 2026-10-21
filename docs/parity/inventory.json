@@ -1464,7 +1464,8 @@
           "docs/parity/reviews/p09s-animation001.json",
           "docs/parity/reviews/p09u-animation-ranges001.json",
           "docs/parity/reviews/p09v-calibrated-playback001.json",
-          "docs/parity/reviews/p09w-legacy-time001.json"
+          "docs/parity/reviews/p09w-legacy-time001.json",
+          "docs/parity/reviews/p09y-avi-movie001.json"
         ],
         "implementation": [
           "src/desktop/window.cpp",
@@ -1473,7 +1474,13 @@
           "include/imagejxx/playback.hpp",
           "src/native/playback.cpp",
           "src/native/playback_bindings.cpp",
-          "src/desktop/animation_ui_probe.cpp"
+          "src/desktop/animation_ui_probe.cpp",
+          "include/imagejxx/avi_movie.hpp",
+          "src/native/avi_movie.cpp",
+          "src/native/avi_movie_bindings.cpp",
+          "src/desktop/movie_export_panel.cpp",
+          "src/desktop/movie_export_ui_probe.cpp",
+          "src/imagejxx/__init__.py"
         ],
         "tests": [
           "tests/python/test_animation_ui.py",
@@ -1482,7 +1489,11 @@
           "tests/python/test_animation_ranges_ui.py",
           "tests/python/test_playback_timing.py",
           "tests/python/test_animation_timing_ui.py",
-          "tests/python/test_animation_legacy_time_ui.py"
+          "tests/python/test_animation_legacy_time_ui.py",
+          "tests/native/test_avi_movie.cpp",
+          "tests/python/test_avi_movie.py",
+          "tests/python/test_movie_export_ui.py",
+          "examples/cpp/avi_movie.cpp"
         ]
       },
       "id": "G037",
@@ -1493,7 +1504,7 @@
       ],
       "name": "Animation",
       "remaining": [
-        "Movie export and full hosted/platform/UI parity remain required."
+        "Advanced video/compression, GIF, palette/overlay/workflow options, formal AVI reference/options binding and full hosted/platform/UI qualification remain required."
       ],
       "required_work": "Partial: global FPS and forward looping; add start/end/step, direction, ping-pong, calibrated time and movie export",
       "status": "in_progress",
@@ -1501,7 +1512,8 @@
         "p09s.animation.functional.001",
         "p09u.animation-ranges.functional.001",
         "p09v.calibrated-time.functional.001",
-        "p09w.legacy-calibrated-time.functional.001"
+        "p09w.legacy-calibrated-time.functional.001",
+        "p09y.avi-movie.functional.001"
       ]
     },
     {
@@ -2805,9 +2817,25 @@
     },
     {
       "evidence": {
-        "documentation": [],
-        "implementation": [],
-        "tests": []
+        "documentation": [
+          "docs/parity/reviews/p09y-avi-movie001.json",
+          "docs/DESKTOP.md",
+          "docs/CI.md"
+        ],
+        "implementation": [
+          "include/imagejxx/avi_movie.hpp",
+          "src/native/avi_movie.cpp",
+          "src/native/avi_movie_bindings.cpp",
+          "src/desktop/movie_export_panel.cpp",
+          "src/desktop/movie_export_ui_probe.cpp",
+          "src/imagejxx/__init__.py"
+        ],
+        "tests": [
+          "tests/native/test_avi_movie.cpp",
+          "tests/python/test_avi_movie.py",
+          "tests/python/test_movie_export_ui.py",
+          "examples/cpp/avi_movie.cpp"
+        ]
       },
       "id": "G079",
       "milestones": [
@@ -2817,11 +2845,13 @@
       ],
       "name": "Additional exports",
       "remaining": [
-        "Numbered image sequences, raw/text pixels, FITS/video/GIF workflows and compression/quality settings"
+        "Numbered image sequences, raw/text pixels, FITS/GIF, advanced video compression/quality and formal AVI reference/options/full-platform qualification remain required."
       ],
       "required_work": "Numbered image sequences, raw/text pixels, FITS/video/GIF workflows and compression/quality settings",
-      "status": "open",
-      "verification": []
+      "status": "in_progress",
+      "verification": [
+        "p09y.avi-movie.functional.001"
+      ]
     },
     {
       "evidence": {
@@ -3749,7 +3779,7 @@
       "date": "2026-10-10",
       "id": "m1-document-records-windows-2026-10-10",
       "limits": [
-        "The desktop still owns its eager Z-only State and JSON metadata. Authoritative shared controller ownership and removal of parallel mutable state remain delivery 2b–2d.",
+        "The desktop still owns its eager Z-only State and JSON metadata. Authoritative shared controller ownership and removal of parallel mutable state remain delivery 2b\u20132d.",
         "Annotation attributes and overlay records retain values; specialized ROI/overlay interaction, stable ROI identities, full styles/options, positioned desktop C/T editing and binary ImageJ interchange remain required.",
         "Recursive metadata storage does not interpret scientific-format schemas or intensity calibration; scientific metadata/effects, source readers and v3 session policies remain required.",
         "Desktop native display control accepts existing range/LUT/custom-LUT records only. Full histogram/threshold/channel controls and palettes/editor/interchange remain M5/M6/M8 work.",
@@ -3785,7 +3815,7 @@
       "date": "2026-10-10",
       "id": "m1-application-controller-windows-2026-10-10",
       "limits": [
-        "The desktop still owns its separate eager-Z state/history behind native adapters; delivery 2c–2d must adopt the native controller for actions, jobs, views and Python live handles.",
+        "The desktop still owns its separate eager-Z state/history behind native adapters; delivery 2c\u20132d must adopt the native controller for actions, jobs, views and Python live handles.",
         "Document(snapshot) and Application.duplicate create independent clean owners with shared immutable storage; importing a desktop snapshot does not attach its live window.",
         "Closing application membership rejects later access/publication through that controller; externally owned adopted documents and retained snapshots remain usable.",
         "History budgets/statistics count unique eager working-plane buffers owned by a document and its history, excluding external readers, spectra, reader caches and scratch; lazy sources report incomplete accounting without pixel reads.",
@@ -4720,8 +4750,8 @@
           "raster-uint8-4.png": "01c48dece3b0935233fad145819874d255c4dcf542e9e251f992d0b18b400dd5",
           "roi-style-input.ijx": "301215d3932ae3f47e0497362a667405684a02102f71dc3f5bfe555511607436",
           "roi-style-input.json": "d1fa7445dcc0c13095c15391dc1581be31ff322e4a8d8c25b7f35254347d864b",
-          "µ-日本.pgm": "9b0afc11a2a60f7d40ff86840f7ebb1b712b18591bbc40ac111a2bb023421930",
-          "µ-日本.tif": "0e5205da4255d7747c196dba884c6d509db9a33b73150749b10e02ed3833a8a9"
+          "\u00b5-\u65e5\u672c.pgm": "9b0afc11a2a60f7d40ff86840f7ebb1b712b18591bbc40ac111a2bb023421930",
+          "\u00b5-\u65e5\u672c.tif": "0e5205da4255d7747c196dba884c6d509db9a33b73150749b10e02ed3833a8a9"
         },
         "executable": "build\\plan-implementation\\p05a-roi-styles-001\\desktop-003\\bin\\imagejxx.exe",
         "executable_sha256": "82a54ad454ad98e57a8354ceb2da541b7f55b68f65915354b4c0bf32ea2470de",
@@ -180314,6 +180344,29 @@
         "total": 158
       },
       "scope": "Each of four profiles passes 158 hash/identity checks plus 30 actual C++ UI reader checks (two JUnit files per profile are bound in qualification). 78 distinct C++ capture artifacts / 5506 frames. Python UI/full hosted/reference acceptance remain open."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-21",
+      "id": "p09y.avi-movie.functional.001",
+      "identity": {
+        "qualification": {
+          "path": "docs/parity/reviews/p09y-avi-movie001.json",
+          "bytes": 17700,
+          "sha256": "ae305f0efc705fa40ce9d3207ac64dd1e15511c18b7ab4ef8cddc03396fce51d"
+        }
+      },
+      "platform": "Windows/Linux installed C++ and isolated Python Dear ImGui hosts",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 371,
+        "report": "build/p09y-avi-movie001/windows-python004/pytest.xml",
+        "skipped": 0,
+        "total": 371
+      },
+      "scope": "371 selected checks per OS, 232 input observation reports / 12920 frames plus six guard artifacts. Native AVI/playback/preferences, fresh installed SDK AVI examples, 54 independently decoded AVI files, and 15 transport checks per OS. Full family/hosted acceptance remains open."
     }
   ]
 }

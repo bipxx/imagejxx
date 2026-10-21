@@ -224,6 +224,7 @@ def cases():
                                                   "cal-invalid", "cal-edit", "cal-unit",
                                                   "cal-legacy", "cal-legacy-step", "cal-legacy-reverse",
                                                   "cal-legacy-ping", "cal-legacy-edit", "cal-legacy-unit"]),
+        ("movie", "--animation-ui-case", ["movie-z", "movie-t", "movie-c", "movie-reverse", "movie-ping", "movie-rgb", "movie-composite", "movie-existing", "movie-stale", "movie-cancel", "movie-invalid", "movie-f32", "movie-ieee", "movie-gray8", "movie-gray-refuse", "movie-draft"]),
         ("planar-matrix", "--planar-annotation-matrix-ui-case", planar_cases()),
         ("ieee-viewing", "--ieee-viewing-ui-case", [f"IEEE{i:02d}" for i in range(1, 5)]),
         ("native-workflow", "--native-workflow-ui-case", [None]),
@@ -266,6 +267,7 @@ def reader_environment(output):
         "IMAGEJXX_NATIVE_BATCH_CPP_REPORT": reports / "native-batch/legacy/case.json",
         "IMAGEJXX_VARIANCE_CPP_REPORT": reports / "rank/R14/case.json",
         "IMAGEJXX_ANIMATION_CPP_ROOT": reports / "animation",
+        "IMAGEJXX_MOVIE_CPP_ROOT": reports / "movie",
     }
     environment["IMAGEJXX_THRESHOLD_CPP_REPORT"] = reports / "scientific-threshold/T10/case.json"
     # Session rows bind their absolute capture directory. Readers must use the

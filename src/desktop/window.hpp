@@ -24,6 +24,7 @@ class AxisRangeOrientationUiProbeAccess;
 class RankRuntimeProbe;
 class RankRuntimeProbeAccess;
 class SavedRoiGeometryPythonAccess;
+class MovieExportUiProbeAccess;
 struct RunOptions {
   bool hidden = false;
   int frames = 0;
@@ -254,6 +255,7 @@ private:
   friend class AxisRangeOrientationUiProbeAccess;
   friend class RankRuntimeProbeAccess;
   friend class SavedRoiGeometryPythonAccess;
+  friend class MovieExportUiProbeAccess;
   friend Json roiImportQueueUiCase(Window &, const std::string &,
                                    const std::string &);
   std::shared_ptr<imagejxx::Application> controller_ =
