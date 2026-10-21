@@ -1,0 +1,218 @@
+{
+  "state": "qualified_functional_increment",
+  "objective_complete": false,
+  "scope": "Standalone native histogram panel in both shared ImGui hosts, selecting one captured scientific T/C/Z plane and optional active area ROI.",
+  "behavior": "Opening admits metadata without reading samples. One-based T/C/Z, processor-raw/default and explicit bin/range fields are drafts; invalid drafts disable calculation while preserving the last successful result. Live display navigation does not retarget the draft. Source data/metadata/selection edits or foreign/closed owners disable calculation. The panel retains detached results for export after source closure and releases all captures on close.",
+  "presentation": "Log1p count heights leave raw histogram arrays unchanged. Plot hover shows raw intervals/counts. Statistics include visited/finite/NaN/in-range/underflow/overflow, unbinned finite-ROI mean/population SD/min/max/sum, and the first largest-count bin interval. This binned mode is not an exact continuous raw-value mode.",
+  "publication": "Export last result CSV freezes native raw CSV text before opening the shared browser. The existing atomic writer/overwrite prompt publishes it. Invalid drafts, log toggles or source edits do not recompute that frozen text. The API also exports detached last results; no analysis pixel/history/workflow record is created.",
+  "compatibility": "Legacy Histogram menu/action behavior remains available for legacy types outside the native scalar UInt8/UInt16/Float32 service. New scientific calculation supports the service finite/quiet-NaN policies; broader domains remain open.",
+  "verification": "776 selected checks per OS, including 17 new controller/API cases and 18 new UI cases (9 standalone C++/9 Python). Independent literal/formula readers check counts, edges, raw statistics, log heights, saved CSV, draft preservation, navigation capture, invalidation and closure. 36 reports / 4980 actual input frames. Three native executable suites per OS and fresh installed core-only SDK consumers pass. Headless software ImGui interaction does not certify real GPU/platform visual acceptance.",
+  "profiles": {
+    "windows": {
+      "python_cases": 776,
+      "new_ui_cases": 18,
+      "new_api_cases": 17,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "reports": 18,
+      "frames": 2490,
+      "native_test_executables": 3,
+      "sdk": "installed core-only consumer passed",
+      "removed_scratch_bytes": 392987762,
+      "evidence": [
+        {
+          "path": "build/p10h-histogram-ui001/windows-build004/receipt.json",
+          "bytes": 1148,
+          "sha256": "09d4af152db152c5dfde5f7e56aad0b4661c070704f1eff3fabf7b685b420af6"
+        },
+        {
+          "path": "build/p10h-histogram-ui001/windows-build004/native.xml",
+          "bytes": 3031,
+          "sha256": "ec9225084ddaaf7b4068eae4e0e9ea4f42e774ed35f4167ceabbad754b2e0b05"
+        },
+        {
+          "path": "build/p10h-histogram-ui001/windows-python002/receipt.json",
+          "bytes": 2524,
+          "sha256": "695d3d6108c75ae415fbc926cc511ba76ed0ef5f3ddd08610d1e5a19c03311a8"
+        },
+        {
+          "path": "build/p10h-histogram-ui001/windows-python002/pytest.xml",
+          "bytes": 117249,
+          "sha256": "8b2a54fda10f53d9ee5f2d236eefd5e2900b44703b5df074d5e27445106b8f75"
+        },
+        {
+          "path": "build/p10h-histogram-ui001/windows-capture004.json",
+          "bytes": 12945,
+          "sha256": "b33b599d2ce85a1ec1ed5dab895aded239887ea5733ca655f1f0f1a4f8c35a12"
+        },
+        {
+          "path": "build/p10h-histogram-ui001/windows-evidence001.json",
+          "bytes": 11868,
+          "sha256": "bc652d5a29db7984fdb791bebd82565d1ed5163959e99f1cac4c871ee2b190ee"
+        },
+        {
+          "path": "build/p10h-histogram-ui001/windows-sdk001/receipt.json",
+          "bytes": 374,
+          "sha256": "91267142851a61c59f30b5a13753a335a92c759855d527846e66442dc8f0e2dc"
+        },
+        {
+          "path": "build/p10h-histogram-ui001/windows-cleanup001.json",
+          "bytes": 277047,
+          "sha256": "004a214811e03ec6d042e817197f1ea60d7eef1afcb2097509995a8439320cc9"
+        },
+        {
+          "path": "build/p10h-histogram-ui001/windows-products001.json",
+          "bytes": 2458,
+          "sha256": "325ccd7587f6e5e7fcf8e4d52892fcf17e896e8b15ee8825fd9d333af9b0ccba"
+        }
+      ]
+    },
+    "linux": {
+      "python_cases": 776,
+      "new_ui_cases": 18,
+      "new_api_cases": 17,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "reports": 18,
+      "frames": 2490,
+      "native_test_executables": 3,
+      "sdk": "installed core-only consumer passed",
+      "removed_scratch_bytes": 324652939,
+      "evidence": [
+        {
+          "path": "build/p10h-histogram-ui001/linux-build004/receipt.json",
+          "bytes": 1121,
+          "sha256": "de32277a8c2f71e0ee70776eff1db5c8463ebcdda86e8b6ab0df979b881b7834"
+        },
+        {
+          "path": "build/p10h-histogram-ui001/linux-build004/native.xml",
+          "bytes": 2976,
+          "sha256": "5482316f828dad19bd0d0dfcb5c505bee874881dc3c8c4caf2c810a724523386"
+        },
+        {
+          "path": "build/p10h-histogram-ui001/linux-python002/receipt.json",
+          "bytes": 2371,
+          "sha256": "e26115c0ef3abaeb04aa8273eb9cd3803e1a7e2ccb0c32e173ab448f9e9478c1"
+        },
+        {
+          "path": "build/p10h-histogram-ui001/linux-python002/pytest.xml",
+          "bytes": 117250,
+          "sha256": "c4eeca36342dd9473a820ed0130f2b22edd69130692856e13ffb0a4c0451e00b"
+        },
+        {
+          "path": "build/p10h-histogram-ui001/linux-capture004.json",
+          "bytes": 11108,
+          "sha256": "1973f3bfac899257e553027712072bf4ea32445591e8b6ad3a3d429c5f04f39d"
+        },
+        {
+          "path": "build/p10h-histogram-ui001/linux-evidence001.json",
+          "bytes": 10923,
+          "sha256": "534a2be10c4f86d9c0631b7f9f189a2f4e0b0c321855c962f7c6212888da24a0"
+        },
+        {
+          "path": "build/p10h-histogram-ui001/linux-sdk001/receipt.json",
+          "bytes": 328,
+          "sha256": "4fc3f2a4732b6674887a708be7085ec89c22a693c298f8379174ce4b3fe74167"
+        },
+        {
+          "path": "build/p10h-histogram-ui001/linux-cleanup001.json",
+          "bytes": 176283,
+          "sha256": "bdb4674d7bc3fdaa7b2732c78d923d9927c1641d3c1615b957afe431d4dfb2e2"
+        },
+        {
+          "path": "build/p10h-histogram-ui001/linux-products001.json",
+          "bytes": 2309,
+          "sha256": "170ac307d7b78663f57728d6d175dbe184506c0e2eebff6bf85afd5c9d45e524"
+        }
+      ]
+    }
+  },
+  "commercial": {
+    "result": "Reviewed commercial-use dependency inventory passed; no new dependencies.",
+    "evidence": {
+      "path": "build/p10h-histogram-ui001/licenses001.log",
+      "bytes": 53,
+      "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+    }
+  },
+  "registration": {
+    "path": "build/p10h-histogram-ui001/registration001.json",
+    "bytes": 1411,
+    "sha256": "3b30c46f61403b37e4faf869313e7c2401acc15d77f0834040c00d64bc5337af"
+  },
+  "initial_observation": "The first input run exposed a missing scientific-menu allowlist route. The route was fixed and all final captures/readers rerun. Initial failure reports and earlier captures are retained in verified archives. Documentation keeps the original G069 required_work text.",
+  "plan_gate": {
+    "state": "existing_failure_preserved",
+    "message": "Plan inventory check failed: histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed",
+    "evidence": {
+      "path": "build/p10h-histogram-ui001/plan-gate002.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    },
+    "unchanged_producer_source": {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 14135,
+      "sha256": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    }
+  },
+  "remaining": [
+    "Pooled standalone C/T/Z grid/stack targeting and positioned ROIs.",
+    "Calibrated/color/other numeric domains and complete source/reference statistics conventions.",
+    "Saved histogram defaults, analysis recording, asynchronous execution and full resource/platform qualification.",
+    "All remaining ImageJ/commercial Fiji inventory and original gates; no whole-family closure."
+  ],
+  "source": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 101771,
+      "sha256": "9d37238857b4140016da406eed6e01df5c1352f88102e0748104d2052a12d1f6"
+    },
+    {
+      "path": "src/desktop/histogram_panel.hpp",
+      "bytes": 1256,
+      "sha256": "e683e53e845551f320b65c04fd139b232305def208f9f5f940b2fb8e08ff35d5"
+    },
+    {
+      "path": "src/desktop/histogram_panel.cpp",
+      "bytes": 12683,
+      "sha256": "bc64e35c0696f4e8530ae3ddb861874b5fcaee03a2b3eb9a8744011975b500a0"
+    },
+    {
+      "path": "src/desktop/histogram_ui_probe.hpp",
+      "bytes": 175,
+      "sha256": "dc9aff7c73dc7a2adc6bdc7f709e2adc59e5293de9ac9dbcffc1f62ff11c9752"
+    },
+    {
+      "path": "src/desktop/histogram_ui_probe.cpp",
+      "bytes": 5892,
+      "sha256": "ba2adc200fb8f9dbec8d17b173ad1ed6ea8a1164c7c1025acef2b3827d2dd0d1"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 666412,
+      "sha256": "693bafc5175d9e4baf4e8433f2514dbfef6b488ec17adcd50283ef292817ce8d"
+    },
+    {
+      "path": "src/desktop/animation_ui_probe.cpp",
+      "bytes": 13810,
+      "sha256": "31931736e0d5e698f5b9a99893c4bd3bf1d5dbe5944ea518b723fdfe349a7752"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 32459,
+      "sha256": "548cf9b929dc0a3c39652e21b12a61ff81bbf62ebde52533e5cb0cac53c9dbcb"
+    },
+    {
+      "path": "tests/python/test_histogram_ui.py",
+      "bytes": 3966,
+      "sha256": "1efb6db0ee4e97a1718bd08356af46b6d6aab105e92267bf306569f4b483968c"
+    },
+    {
+      "path": "tests/python/test_histogram_desktop_api.py",
+      "bytes": 2956,
+      "sha256": "f984ce5d7769c3a2956fc17d5e293378bd654c9d033fed8f79891cc58affce04"
+    }
+  ]
+}

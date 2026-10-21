@@ -1181,6 +1181,16 @@ planning, session loading, activation and refusal through `imagejxx::core`.
 The [P06j active card](packets/P06j-saved-workspace-startup.md#current-execution-card)
 owns current qualification and remaining scope.
 
+## Standalone histogram
+
+Choose **Analyze > Histogram...** for a captured single T/C/Z plane, whole-plane
+or active-area ROI, processor-raw/custom binning, inclusive raw range, log1p count
+display, sample statistics and raw CSV export in either ImGui launcher. Drafts
+and the last calculated result are distinguished; navigation does not retarget
+calculation, and source edits invalidate it. The save browser publishes a frozen
+raw CSV snapshot using the existing atomic writer. See [usage and remaining
+scope](HISTOGRAM.md). Pooled scientific grids and positioned ROIs remain open.
+
 ## Manual threshold display
 
 Choose **Process > Threshold display...** in either launch mode. The panel
@@ -1204,7 +1214,7 @@ source/ROI checks. Sessions preserve single-plane, all-Z and range-grid overlays
 
 Both hosts support finite eager scalar UInt8/UInt16/Float32/Float64 datasets.
 Auto remains synchronous and bounded. Color/nonfinite/volume/lazy policies,
-standalone histogram controls/export, additional output/convention choices and
+pooled standalone histogram targeting, additional output/convention choices and
 full reference/resource/platform/accessibility acceptance remain open. See
 [threshold contracts](THRESHOLDING.md) and the
 [scoped functional receipt](parity/reviews/p10f-scientific-threshold001.json).
@@ -1721,7 +1731,7 @@ Upstream reference: [Analyze workflows](https://imagej.net/ij/docs/guide/146-30.
 | Image/ROI measurements | Partial: fixed pixel statistics, area, bounds, line length and angle | Set Measurements controls, calibrated centroid/shape/Feret statistics, threshold-limited/redirected intensity and precision/labels |
 | Particle analysis | Partial: connected components, area limits and basic shape/intensity rows | Circularity limits, exclude-edge/include-hole policies, summary, outlines/masks/ROI outputs, measurement choices and stack/C/T processing |
 | Scale and calibration | Partial: XY/Z spacing, units and frame interval; line-based scale | Origins, intensity calibration, global calibration, aspect-ratio display and consistent preservation through every derived operation |
-| Histogram | Partial: current image or ROI and bin count | Stack/channel targeting, range/bin/log controls, statistics display and numerical export |
+| Histogram | Partial: shared native single T/C/Z and active-area controls; raw/custom bins/range, log1p display, statistics and raw CSV | Stack/channel targeting, range/bin/log controls, statistics display and numerical export |
 | Profiles | Partial: calibrated line/polyline sampling | Thick-line and rectangular averages, configurable interpolation/sampling, live profiles, Z/T profiles and fixed plot axes |
 | Results and tables | Partial: measurement rows, clear and CSV export | Table/CSV import, sorting/filtering, editing/copy, configurable columns and summaries |
 | Annotation utilities | Partial: text and geometric overlays | Calibrated scale/color bars, grids, measurement labels, arrow options and coordinate export |

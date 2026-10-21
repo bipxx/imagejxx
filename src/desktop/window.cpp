@@ -36,6 +36,7 @@
 #include "rank_panel.hpp"
 #include "rank_runtime_probe.hpp"
 #include "threshold_panel.hpp"
+#include "histogram_panel.hpp"
 #include "channel_display_panel.hpp"
 #include "channel_display_sources.hpp"
 #include <imagejxx/manual_threshold.hpp>
@@ -813,7 +814,7 @@ struct Window::Impl {
         startupUserOpened || !owner.documents_.empty() || owner.busy() ||
         dialog.open || browser.open || pendingClose || closingApp ||
         settingsPanel.visible() || selectionPanel.visible() ||
-        gaussianPanel.visible() || rankPanel.visible() || planarAnnotationRebind.visible() || (movieExportPanel.visible() || roiImportPanel.visible() || roiExportPanel.visible() || displayAnnotationPanel.visible()) || thresholdPanel.visible() ||
+        gaussianPanel.visible() || rankPanel.visible() || planarAnnotationRebind.visible() || (movieExportPanel.visible() || roiImportPanel.visible() || roiExportPanel.visible() || displayAnnotationPanel.visible()) || thresholdPanel.visible() || histogramPanel.visible() ||
         channelDisplayPanel.inputActive() || savedRoiEdit.active())
       return false;
     if (const auto *gui = ImGui::GetCurrentContext()) {
@@ -840,6 +841,7 @@ struct Window::Impl {
   GaussianPanel gaussianPanel;
   RankPanel rankPanel;
   ThresholdPanel thresholdPanel;
+  HistogramPanel histogramPanel;
   ChannelDisplayPanel channelDisplayPanel;
   std::optional<MetadataObject> channelDisplayRebind;
   std::optional<std::uint64_t> channelDisplayRebindOwner;
@@ -1488,6 +1490,12 @@ struct Window::Impl {
     if (owner.documents_.empty() && !id)
       return true; // Preserve the existing no-document validation.
     const auto source = owner.documentById(id);
+    if(action=="show_histogram") {
+      const auto captured=source->nativeSnapshot();const auto &data=captured.data().dataset;
+      return !owner.busy() && data.shape().s==1 &&
+        (data.pixel_type()==PixelType::UInt8 || data.pixel_type()==PixelType::UInt16 || data.pixel_type()==PixelType::Float32) &&
+        (data.sample_policy()==FloatingSamplePolicy::FiniteOnly || data.sample_policy()==FloatingSamplePolicy::PreserveQuietNaNFloat32);
+    }
     if (action == "show_animation_options" || action == "show_movie_export")
       return !owner.busy() && owner.controller_->active_document_id() == source->id;
     if (action == "animation")
@@ -3561,6 +3569,7 @@ struct Window::Impl {
       return;
     size_t index = it - owner.documents_.begin();
     cancelCreation(panes[index], "owner_closed");
+    histogramPanel.sourceClosed(d->id);
     if (autoJob && autoOwner == d->id) autoJob->cancel();
     if (thresholdSource && thresholdSource->id() == d->id) {
       thresholdPanel.source_closed();
@@ -5591,6 +5600,26 @@ void Window::clearError() {
 }
 void Window::action(const std::string &name, const Json &p) {
   checkThread();
+  if(name=="show_histogram") {
+    if(!p.is_object() || !p.empty())throw std::invalid_argument("Show Histogram accepts no parameters");
+    if(busy())throw std::invalid_argument("Wait for the current edit");
+    DatasetHistogramLimits limits;const auto histogramCap=static_cast<std::size_t>(impl->preferenceState.settings.integer("processing_memory_mb"))*1024*1024;
+    if(histogramCap)limits.max_working_bytes=std::min(limits.max_working_bytes,histogramCap);
+    impl->histogramPanel.show(nativeSnapshot(),limits);impl->animating=false;return;
+  }
+  if(name=="configure_histogram"){impl->histogramPanel.configure(p);return;}
+  if(name=="calculate_histogram") {
+    if(!p.is_object() || !p.empty())throw std::invalid_argument("Calculate Histogram accepts no parameters");
+    impl->histogramPanel.calculate(documents_.empty()?std::nullopt:std::optional<DocumentSnapshot>{nativeSnapshot()},busy());return;
+  }
+  if(name=="close_histogram") {
+    if(!p.is_object() || !p.empty())throw std::invalid_argument("Close Histogram accepts no parameters");
+    impl->histogramPanel.cancel();return;
+  }
+  if(name=="export_histogram_csv") {
+    if(!p.is_object() || p.size()!=1 || !p.contains("path") || !p.at("path").is_string())throw std::invalid_argument("Histogram CSV export requires only a path");
+    const auto text=impl->histogramPanel.csv();writeBytes(p.at("path").get<std::string>(),{text.begin(),text.end()});return;
+  }
   if(name=="show_rgb_dataset" || name=="review_rgb_dataset") {
     if(!p.is_object())throw std::invalid_argument("RGB review requires an object");
     for(const auto &v:p.items())if(v.key()!="record" && v.key()!="document_id")throw std::invalid_argument("Unknown RGB review parameter");
@@ -8372,7 +8401,9 @@ void Window::Impl::menu() {
   if (analyzeMenuOpen) {
     item("Measure", "measure", "M");
     item("Measure ROIs", "measure_rois");
-    form("Histogram...", "histogram", {{"bins", 256}});
+    if(actionAllowed("show_histogram"))item("Histogram...", "show_histogram");
+    else form("Histogram...", "histogram", {{"bins",256}});
+    observeControl("menu.histogram");
     item("Line profile", "profile");
     form("Analyze particles...", "particles",
          {{"min_area", 0.0}, {"max_area", nullptr}, {"connectivity", 8}});
@@ -11445,6 +11476,13 @@ void Window::Impl::draw() {
         });
   });
   guard([&] {
+    const bool visible=histogramPanel.visible();
+    histogramPanel.draw(owner.documents_.empty()?std::nullopt:std::optional<DocumentSnapshot>{owner.nativeSnapshot()},owner.busy(),
+      [this](std::string text){file("Export histogram CSV",true,[text=std::move(text)](std::string path){writeBytes(path,{text.begin(),text.end()});},"histogram.csv");});
+    if(visible && !histogramPanel.visible() && !owner.documents_.empty())
+      for(auto &pane:panes)if(pane.doc && pane.doc->id==owner.controller_->active_document_id())pane.requestOrdinaryFocus=true;
+  });
+  guard([&] {
     const bool wasVisible = thresholdPanel.visible();
     thresholdPanel.draw(thresholdCurrent(), owner.busy(),
         {[this](ManualThresholdRange range) { thresholdSet(range); },
@@ -11867,6 +11905,7 @@ Json Window::Impl::headlessReport() {
     result["roi_export"] = roiExportPanel.diagnostics();
     result["movie_export"] = movieExportPanel.diagnostics();
     result["threshold_panel"] = thresholdPanel.diagnostics();
+    result["histogram_panel"] = histogramPanel.diagnostics();
     result["channel_display_panel"] = channelDisplayPanel.diagnostics();
     result["auto_contrast"] = {{"busy", bool(autoJob)}, {"owner_id", autoOwner},
         {"divisor", owner.controller_->auto_contrast_divisor()},

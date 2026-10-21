@@ -1,5 +1,20 @@
 # ImageJ and Fiji gap closure plan
 
+**Standalone histogram UI checkpoint, 2026-10-21 (work in progress):**
+Both ImGui hosts now provide captured single T/C/Z and active-area ROI controls,
+processor-raw/custom bins and inclusive range, log1p display, raw statistics,
+mode-bin intervals and lossless CSV through the shared save browser. Invalid
+drafts retain the last result; source edits invalidate calculation and closure
+releases its source capture. Legacy histogram routes remain available.
+Windows/Linux each pass 776 selected checks (35 new), three native executable
+suites and fresh installed SDK consumers. Independent readers verify 36 UI
+reports / 4,980 physical-input frames. Verified cleanup removes 717,640,701
+scratch bytes; final products and evidence remain. See [usage/limits](HISTOGRAM.md)
+and [the scoped receipt](parity/reviews/p10h-histogram-ui001.json).
+Pooled standalone grids, positioned ROIs, remaining domains/defaults/recording/
+async and full qualification stay open. The existing Auto Contrast fingerprint
+gate remains; all99 stays 47 in progress / 52 open / 0 complete.
+
 **Native histogram statistics checkpoint, 2026-10-21 (work in progress):**
 The standalone Dataset histogram service now returns unbinned finite-ROI mean,
 population standard deviation and sum, independently of bin range. Raw CSV
