@@ -1161,7 +1161,9 @@
         "documentation": [
           "docs/packets/P06n-scientific-physical-spacing.md",
           "docs/packets/P06o-scientific-bilinear-slicing.md",
-          "docs/packets/P06p-planar-annotations.md"
+          "docs/packets/P06p-planar-annotations.md",
+          "docs/parity/reviews/p09p-scientific-ui001.json",
+          "docs/CI.md"
         ],
         "implementation": [
           "CMakeLists.txt",
@@ -1236,7 +1238,8 @@
           "tests/python/test_planar_annotation_rebind_ui.py",
           "tests/python/test_planar_annotation_tools_ui.py",
           "tests/python/test_planar_annotations.py",
-          "tests/python/test_planar_annotations_ui.py"
+          "tests/python/test_planar_annotations_ui.py",
+          "tests/python/test_orientation_draft_retention_ui.py"
         ]
       },
       "id": "G029",
@@ -1256,7 +1259,8 @@
       "verification": [
         "p06n.physical-spacing.functional.001",
         "p06o.bilinear.functional.001",
-        "p06p.planar.functional.001"
+        "p06p.planar.functional.001",
+        "p09p.scientific-ui.functional.001"
       ]
     },
     {
@@ -1283,7 +1287,9 @@
         "documentation": [
           "docs/IMPLEMENTATION.md",
           "docs/SESSION_FORMAT.md",
-          "docs/packets/P06a-scientific-session-codec.md"
+          "docs/packets/P06a-scientific-session-codec.md",
+          "docs/parity/reviews/p09p-scientific-ui001.json",
+          "docs/CI.md"
         ],
         "implementation": [
           "include/imagejxx/dataset.hpp",
@@ -1333,7 +1339,8 @@
       "status": "in_progress",
       "verification": [
         "m1-m3-foundation-windows-2026-10-10",
-        "m1-document-transactions-windows-2026-10-10"
+        "m1-document-transactions-windows-2026-10-10",
+        "p09p.scientific-ui.functional.001"
       ]
     },
     {
@@ -180053,6 +180060,29 @@
         "total": 92
       },
       "scope": "46 indexed display/Auto C++ cases per platform,184 raw UI reports/13440 frames and92 selected tests per platform; complete hosted and family acceptance remain open."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-21",
+      "id": "p09p.scientific-ui.functional.001",
+      "identity": {
+        "qualification": {
+          "bytes": 9897,
+          "path": "docs/parity/reviews/p09p-scientific-ui001.json",
+          "sha256": "7c55b504aa987f53b31d5ca69c00f55bf8bb5e1ef5b6c12d5ba43f8990e2aea7"
+        }
+      },
+      "platform": "Windows/Linux installed C++ and isolated Python Dear ImGui hosts",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 142,
+        "report": "build/p09p-ci-scientific001/windows-composed001.xml",
+        "skipped": 0,
+        "total": 142
+      },
+      "scope": "140 passing main cases plus 2 targeted passing reruns per platform, 284 raw reports/17972 frames. Original two reader failures retained; only the new reader changed between runs. Full hosted/family acceptance remains open."
     }
   ]
 }

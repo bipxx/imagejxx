@@ -348,7 +348,7 @@ def _archive(row, directory):
     assert len(data) == declared and stream.eof and not stream.unused_data and not stream.unconsumed_tail
     root = _decode(data)
     assert root["format"] == "imagejxx-session" and root["version"] == 3
-    assert root["results"] == root["workflow"] == [] and root["extensions"] == {}
+    assert root["results"] == root["workflow"] == [] and root["extensions"] == {"imagejxx_workspace": {"version": 1, "active_index": 0}}
     assert len(root["documents"]) == 1
     document = root["documents"][0]
     assert document["axes"] == "TCZYXS" and document["shape"] == SHAPE
@@ -485,9 +485,13 @@ def _assert_case(row, case_id, context, directory):
         assert [observation["name"] for observation in observations] == [
             "fill", "select_all", "delete_slice", "split_channels", "threshold", "operation", "begin_edit"]
         for observation in observations:
-            assert observation["accepted"] is False and observation["error_type"] == "invalid_argument"
-            assert "scientific" in observation["error"].lower() and observation["error"]
+            if observation["name"] == "threshold":
+                assert observation["accepted"] is True and "error" not in observation
+            else:
+                assert observation["accepted"] is False and observation["error_type"] == "invalid_argument"
+                assert "scientific" in observation["error"].lower() and observation["error"]
             assert observation["before"] == observation["after"] == initial
+        assert _frame(row, "dispatch_guards")["rendered"]["threshold_panel"]["open"] is True
         disabled = [observation["selector"] for observation in row["control_observations"] if observation["disabled_attempt"]]
         assert disabled == ["menu.action.fill", "tools.tool.brush"]
         controls = _frame(row, "disabled_tool_attempt")["rendered"]["host_controls"]

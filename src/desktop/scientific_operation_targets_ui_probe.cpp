@@ -312,6 +312,12 @@ private:
       for (const auto &tab : last_.at("document_tabs")) if (tab.at("document_id") == id) return tab;
       throw std::runtime_error("Scientific operation target document tab unavailable");
     }
+    if(selector=="review.cancel")return last_.at("native_workflow").at("controls").at("cancel");
+    if(selector.rfind("threshold.",0)==0) {
+      const auto key=selector.substr(10);const auto &panel=last_.at("threshold_panel");
+      auto result=panel.at("control_states").at(key);result["point"]=panel.at("controls").at(key);
+      result["rect"]=panel.at("control_rects").at(key);return result;
+    }
     if (selector.rfind("gaussian.", 0) == 0 || selector.rfind("target.", 0) == 0) {
       const bool target = selector.rfind("target.", 0) == 0;
       const auto key = selector.substr(target ? 7 : 9);
@@ -590,14 +596,19 @@ private:
   }
   void eagerRegression(HeadlessInputSession &session) {
     click(session, "menu.Process"); click(session, "menu.Process.Filters");
-    click(session, "menu.command.gaussian_blur", true);
+    click(session, "menu.command.gaussian_blur");checkpoint(session,"generic_review");
+    click(session,"review.cancel");checkpoint(session,"generic_canceled");
+    click(session,"menu.Process");click(session,"menu.Process.Filters");
     click(session, "menu.command.gaussian_blur_imagej"); frame(session, "enabled_gaussian_open");
     text(session, "gaussian.sigma", "12", "guard.large_sigma");
     preview(session, "guard.large_preview"); checkpoint(session, "scientific_large_preview");
     click(session, "gaussian.cancel");
     click(session, "menu.Edit"); click(session, "menu.action.fill", true); pulse(session, "Escape", "guard.dismiss_edit");
     click(session, "tools.tool.brush", true);
-    for (const auto name : {"fill", "show_manual_threshold", "run_workflow"})
+    api("open_supported_threshold", {{"method","Window.action"},{"action","show_manual_threshold"}},
+        [&](Json &){window_.action("show_manual_threshold");});
+    checkpoint(session,"supported_threshold");click(session,"threshold.cancel");checkpoint(session,"threshold_canceled");
+    for (const auto name : {"fill", "run_workflow"})
       api(std::string("guard_") + name, {{"method", "Window.action"}, {"action", name}},
           [&](Json &) { window_.action(name); });
     api("guard_generic_operation", {{"method", "Window.applyOperation"}, {"operation", "add"}, {"value", 2}},

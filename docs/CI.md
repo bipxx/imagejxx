@@ -60,7 +60,7 @@ package. The Linux codec audit rejects exposed static codec APIs that could bind
 to a different library already loaded by Python. Missing bindings or providers,
 failures, collection errors and skipped cases leave the complete profile failing.
 The runner first invokes `scripts/ci_observations.py` against the installed C++
-application. Its 1,080-case matrix captures rank filters, rounded creation
+application. Its 1,102-case matrix captures rank filters, rounded creation
 and saved selections, ROI import/export, saved-selection budget behavior, and
 resize/rotate/move modifiers and directional shadows. The planar selection matrix
 covers 621 creation/edit/recovery cases across XY, XZ and YZ, including every
@@ -120,6 +120,20 @@ associated files remain byte-identical; no inline frames or pixels enter an inde
 Indexed entries point to original capture directories, preserving the absolute
 paths typed during the observed file dialogs. Reader copies remain in the archive;
 reports and raw input events are never rewritten to match a copy location.
+Two further indices cover eleven scientific Gaussian target cases and ten
+scientific slicing cases. They retain frozen T/C/Z targets, masks and positioned
+ROIs, committed-data exports beside pending previews, derived-image persistence,
+replay, explicit rebind and cancellation. Current scientific Gaussian/threshold
+and oriented/spacing/bilinear forms are observed as supported controls; legacy
+pixel-edit guards remain. Cancellation checks retain document/history/recording
+invariants. Session readers check the exact workspace active-index extension
+alongside retained opaque extensions. Invalid orientation ranges are refused by
+the disabled Apply control before publication; stale/busy/closed-source checks
+retain their separate error paths and numerical/affine oracles.
+An additional scientific draft case checks partial First/Last/Step text across
+plane changes and explicit correction. A new plane resets a valid ordinary
+orientation range to its full extent and step one, retaining orientation flags.
+Partial/invalid text and explicit rebind drafts remain available for correction.
 The complete-suite runner supplies hashes of the installed desktop extension and
 Python UI adapter, alongside the existing installed-executable identity.
 Each process gets private preferences. Byte-identical copies supply the readers

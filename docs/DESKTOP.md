@@ -1197,6 +1197,11 @@ owns current verification status; implementation alone does not certify parity.
 ## Calibrated range reslicing
 
 Choose **Image > Stacks > Reslice oriented range…** in either launch mode.
+Changing Plane resets a valid range to the new axis’s full extent with Step 1,
+while retaining reverse, flip and transpose choices. Selecting the same plane
+retains the range. Partial or invalid numeric text remains visible for correction
+across plane changes; explicit rebind drafts also retain their requested range.
+Apply stays disabled until the draft is valid.
 The dialog captures the source document and shows inclusive **First**, **Last**
 and **Step**, the emitted count, effective endpoints and signed output axes.
 Dialog endpoints are one-based; C++ and Python API endpoints are zero-based.

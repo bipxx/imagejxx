@@ -354,7 +354,7 @@ def _assert_case(row, case_id, context, directory):
         _same_content(original, legacy["documents"][1])
         _fresh(legacy["documents"][1])
         assert _typed(legacy["session_extensions"]) == _typed(OPAQUE)
-        assert _typed(upgraded["session_extensions"]) == _typed(OPAQUE)
+        assert _typed(upgraded["session_extensions"]) == _typed({**OPAQUE, "imagejxx_workspace": {"version": 1, "active_index": 1}})
         legacy_original = _file(row, directory, "legacy_original")
         legacy_extended = _file(row, directory, "legacy_extended")
         assert legacy_original["version"] == legacy_extended["version"] == 2
@@ -362,7 +362,7 @@ def _assert_case(row, case_id, context, directory):
         assert _typed({k: legacy_extended[k] for k in OPAQUE}) == _typed(OPAQUE)
         wire = _file(row, directory, "upgraded")
         assert wire["version"] == 3 and len(wire["documents"]) == 2
-        assert _typed(wire["extensions"]) == _typed(OPAQUE)
+        assert _typed(wire["extensions"]) == _typed({**OPAQUE, "imagejxx_workspace": {"version": 1, "active_index": 1}})
         assert _typed(wire["results"]) == _typed(before["results"])
         assert _typed(wire["workflow"]) == _typed(before["workflow"])
         assert all(doc["dirty"] is False for doc in upgraded["documents"])

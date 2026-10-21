@@ -86,6 +86,13 @@ TIFF_READERS = {
 
 # These existing readers consume path-only indices, never inline UI results.
 INDEXED_READERS = {
+    "orientation-draft": ("--scientific-orientation-ui-case", "IMAGEJXX_ORIENTATION_DRAFT_CPP_REPORT",
+                          "p06i.scientific-orientation-ui.001", ("O06",)),
+    "scientific-targets": ("--scientific-operation-targets-ui-case", "IMAGEJXX_SCIENTIFIC_TARGETS_CPP_REPORT",
+                           "p06d1.scientific-operation-targets-ui.001",
+                           ("D01", "D02", "D03", "D03M", "D03E", "D04", "D04X", "D05", "D05T", "D06", "D07")),
+    "scientific-slicing": ("--scientific-slicing-ui-case", "IMAGEJXX_SCIENTIFIC_SLICING_CPP_REPORT",
+                           "p06e.scientific-slicing-ui.001", tuple(f"E{i:02d}" for i in range(1, 11))),
     "auto-contrast": ("--auto-contrast-ui-case", "IMAGEJXX_AUTO_CONTRAST_CPP_REPORT",
                       "p06c4.auto-contrast-ui.001", tuple(f"U{i:02d}" for i in range(1, 9))),
     "channel-display": ("--channel-display-ui-case", "IMAGEJXX_CHANNEL_DISPLAY_CPP_REPORT",

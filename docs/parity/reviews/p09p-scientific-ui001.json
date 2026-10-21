@@ -1,0 +1,261 @@
+{
+  "state": "qualified_feature_and_ci_increment",
+  "objective_complete": false,
+  "scope": "Oriented range defaults repair, scientific target/slicing CI indices, current capability/session/preflight readers, and guarded invalid-draft retention.",
+  "all99": {
+    "in_progress": 43,
+    "open": 56,
+    "complete": 0
+  },
+  "feature": [
+    "A new plane resets a valid ordinary oriented range to its full extent and Step 1 while retaining reverse/flip/transpose. The same plane retains edits.",
+    "Partial/invalid numeric text survives plane changes for explicit correction; captured rebind drafts retain their complete requested range.",
+    "Current scientific Gaussian and manual-threshold reviews and oriented/physical/bilinear forms open and cancel without source pixel/history/recording publication; unsupported legacy editing stays guarded.",
+    "Readers check the exact owned workspace active-index extension alongside preserved opaque fields, and distinguish disabled invalid-range preflight from stale/busy/closed-source refusal.",
+    "All prior numerical, complete-affine, owner, lifecycle, publication and raw-input assertions remain active."
+  ],
+  "tests": {
+    "windows": {
+      "passed": 142,
+      "main_passed": 140,
+      "targeted_passed": 2,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "modules": 7,
+      "evidence_kind": "composition of actually executed passing cases",
+      "original_main": {
+        "exit_code": 1,
+        "passed": 140,
+        "failed": 2,
+        "preserved": true
+      },
+      "targeted_rerun": {
+        "exit_code": 0,
+        "passed": 2
+      },
+      "source_change_between_runs": [
+        "tests/python/test_orientation_draft_retention_ui.py"
+      ]
+    },
+    "linux": {
+      "passed": 142,
+      "main_passed": 140,
+      "targeted_passed": 2,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "modules": 7,
+      "evidence_kind": "composition of actually executed passing cases",
+      "original_main": {
+        "exit_code": 1,
+        "passed": 140,
+        "failed": 2,
+        "preserved": true
+      },
+      "targeted_rerun": {
+        "exit_code": 0,
+        "passed": 2
+      },
+      "source_change_between_runs": [
+        "tests/python/test_orientation_draft_retention_ui.py"
+      ]
+    }
+  },
+  "identical_case_ids": true,
+  "actual_ui": {
+    "observations": 284,
+    "frames": 17972,
+    "indexed_cpp_cases_per_platform": 22,
+    "profiles": {
+      "windows": {
+        "state": "passed_composed_cases",
+        "observations": 142,
+        "frames": 8986,
+        "contexts": {
+          "imgui_cpp": 71,
+          "imgui_python": 71
+        },
+        "installed_package_matches": true,
+        "source_changes_since_main": [
+          "tests/python/test_orientation_draft_retention_ui.py"
+        ]
+      },
+      "linux": {
+        "state": "passed_composed_cases",
+        "observations": 142,
+        "frames": 8986,
+        "contexts": {
+          "imgui_cpp": 71,
+          "imgui_python": 71
+        },
+        "installed_package_matches": true,
+        "source_changes_since_main": [
+          "tests/python/test_orientation_draft_retention_ui.py"
+        ]
+      }
+    },
+    "os_input_or_gpu_equivalence_claim": false
+  },
+  "ci": {
+    "state": "passed",
+    "previous_cases_preserved": 1080,
+    "new_cases": 22,
+    "default_total": 1102,
+    "unique_cases": true
+  },
+  "transport_checks": {
+    "passed_per_platform": 12,
+    "platforms": [
+      "Windows",
+      "Linux"
+    ],
+    "scope": "Mocked transport only; actual UI proofs come from the independent readers."
+  },
+  "products": {
+    "public_headers": 66,
+    "python_modules": 12,
+    "native_catalog_operations": 92,
+    "installed_sources_match": true,
+    "final_prefixes": {
+      "windows": "build/p09p-ci-scientific001/windows-build004/installed",
+      "linux": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/install-p09p004"
+    }
+  },
+  "commercial": {
+    "state": "reviewed_dependency_inventory_passed",
+    "new_dependencies": [],
+    "review_log": {
+      "path": "build/p09p-ci-scientific001/licenses001.log",
+      "bytes": 53,
+      "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+    }
+  },
+  "hosted_baseline": {
+    "run": 39598592846,
+    "url": "https://github.com/bipxx/imagejxx/actions/runs/39598592846",
+    "commit": "b26e0db8d9f398a1b3f4bfd95c4a1d4d07796788",
+    "state_when_read": "in_progress",
+    "native_sdk": {
+      "Complete headless C++ and installed SDK (ubuntu-latest)": "success",
+      "Complete headless C++ and installed SDK (windows-latest)": "success",
+      "Complete headless C++ and installed SDK (macos-latest)": "success"
+    },
+    "complete_python_acceptance": false,
+    "note": "Baseline b26e0db; current increment still requires hosted confirmation. Generic Windows/macOS feature packaging and complete Linux Python acceptance remain open."
+  },
+  "cleanup": {
+    "state": "passed",
+    "removed_bytes": 11119032997,
+    "removed_files": 40526,
+    "crc_and_every_member_sha256_verified": true,
+    "archives": {
+      "windows-old": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09p-ci-scientific001\\windows-old-scratch001.zip",
+        "bytes": 671768583,
+        "sha256": "ba275a134f4d205ebb87cfa981069fe5b92793122b530b2da131928871840f58"
+      },
+      "windows-current": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09p-ci-scientific001\\windows-current-scratch001.zip",
+        "bytes": 267566817,
+        "sha256": "4a5ec6151b7b34f68ae539394a1b01f6189f3ceb5351e9e500fa3c8ba32c096c"
+      },
+      "linux-old": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09p-ci-scientific001/linux-old-scratch001.zip",
+        "bytes": 775612295,
+        "sha256": "02bcbfdfc53dd24f27839c1c1ab6cbc3deb7b59297e65cf791b079f6eaae84fb"
+      },
+      "linux-current": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09p-ci-scientific001/linux-current-scratch001.zip",
+        "bytes": 285174892,
+        "sha256": "daeb41871738f258e74e933b1368908a66f765593eb590f0c907692af9b84afb"
+      }
+    },
+    "preserved": "Final Windows build004/Linux install-p09p004 products, useful caches, actual JUnit/compact evidence and all raw attempts in verified archives; old products and copied test environments are archived."
+  },
+  "inputs": [
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 642486,
+      "sha256": "8661e6de70353e1dd2796dc7ca54c304eaffc28d32b40c74d6d413aecfcbe78f"
+    },
+    {
+      "path": "src/desktop/axis_range_orientation_ui_probe.cpp",
+      "bytes": 47906,
+      "sha256": "90873d57ccf7d2498a1ea329bac35485b8aa1b81e00908ff2ef1db1acccafeaf"
+    },
+    {
+      "path": "src/desktop/scientific_operation_targets_ui_probe.cpp",
+      "bytes": 43349,
+      "sha256": "a337b3f6bb56c0421e37bf16986104a4fbff83375e11caecb9dd0102489745c1"
+    },
+    {
+      "path": "src/desktop/scientific_slicing_ui_probe.cpp",
+      "bytes": 41119,
+      "sha256": "0d27eed1cbc10f10eaea298e86847808c889686a92d0873e752bf0704afc1beb"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 27651,
+      "sha256": "7dc4805748826fe283fc7c0c22197cfb60bf168131b29485f292cf99c485bb38"
+    },
+    {
+      "path": "tests/python/test_axis_range_orientation_ui.py",
+      "bytes": 63177,
+      "sha256": "de543b6ece9069dfed6fd1c876feafe60f8d328d5375bda20abfa0e8e25530f1"
+    },
+    {
+      "path": "tests/python/test_scientific_operation_targets_ui.py",
+      "bytes": 52067,
+      "sha256": "ce5f52afab954a34c4e268facccc6b7cbee52d8a8a65c4be3ab681ead585b29a"
+    },
+    {
+      "path": "tests/python/test_scientific_slicing_ui.py",
+      "bytes": 54192,
+      "sha256": "60dfbd0c21c71d02740d4368dde32802f15c606643b1eb47578b00c7cd48da42"
+    },
+    {
+      "path": "tests/python/test_scientific_navigation_ui.py",
+      "bytes": 29355,
+      "sha256": "69cf654568c66ff5377faea4763a711b7a870d9dba4472d214a792cdfe492a8d"
+    },
+    {
+      "path": "tests/python/test_scientific_session_ui.py",
+      "bytes": 19128,
+      "sha256": "79503e2deab960e5639fa67f014dd02e2f4660377701a5c7b5d3cfcc91d16226"
+    },
+    {
+      "path": "tests/python/test_orientation_draft_retention_ui.py",
+      "bytes": 3006,
+      "sha256": "cfce8e16ef1d37c6c056c28ea9b373d3bbaf870dbe4cc7afdd452cc4970588e2"
+    },
+    {
+      "path": "docs/CI.md",
+      "bytes": 12480,
+      "sha256": "4666d920e579ae082b1817d53f094cbbac5a2be5204197af99d5cf7b10af17ee"
+    },
+    {
+      "path": "docs/DESKTOP.md",
+      "bytes": 153143,
+      "sha256": "9dd0e4ec8b73317f0af424c9f90d5ab6ea25df59a6385edc545dec7fbf54eada"
+    }
+  ],
+  "receipts": "build/p09p-ci-scientific001",
+  "remaining": [
+    "Full scientific orientation 24-case capture/consumer qualification is distinct from the new two-case invalid-draft regression.",
+    "Remaining C++ observation contracts, complete hosted Python/IO/UI integration, reviewed full Windows/macOS feature builds and independent platform qualification.",
+    "Complete Auto Contrast consumer evidence refresh; stale historical source fingerprints still block the plan validator.",
+    "All broader ImageJ/commercially usable Fiji requirements and 96 partial format variants remain open."
+  ],
+  "plan_check": {
+    "state": "failed_preexisting",
+    "message": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed",
+    "first_mismatch": {
+      "path": "include/imagejxx/application.hpp",
+      "expected": "aad7b9c9e54f21ef59fdca02d8c3da2fcc5d5eeaf53f056d32615b4fa728fe09",
+      "current": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072",
+      "previous_commit": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    },
+    "action": "Keep historical source identities; refresh complete affected Auto Contrast consumer evidence separately."
+  }
+}

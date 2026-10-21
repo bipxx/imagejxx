@@ -10320,9 +10320,24 @@ void Window::Impl::dialogs() {
                 dialog.text["last"] = std::to_string(extent);
                 dialog.text["step"] = "1";
               }
+              const auto resetOrientationRange = [&] {
+                if (!dialog.extractionRebindRecord.is_null()) return false;
+                if (!dialog.orientationRangeEdited) return true;
+                // An explicit plane change resets a valid range to that axis.
+                // Retain partial/invalid text until the user corrects it.
+                try {
+                  const auto first = Json::parse(dialog.text.at("first"));
+                  const auto last = Json::parse(dialog.text.at("last"));
+                  const auto step = Json::parse(dialog.text.at("step"));
+                  if (!first.is_number_integer() || !last.is_number_integer() || !step.is_number_integer()) return false;
+                  const auto shape = dialog.axisRangeOrientationSource->data().dataset.shape();
+                  const auto oldPlane = parse_plane(current);
+                  const auto extent = oldPlane == Plane::XY ? shape.z : oldPlane == Plane::XZ ? shape.y : shape.x;
+                  return first >= 1 && first <= last && last <= extent && step >= 1 && step <= INT32_MAX;
+                } catch (const std::exception &) { return false; }
+              };
               if (option != current && orientationRange && name == "plane" &&
-                  dialog.axisRangeOrientationSource && !dialog.orientationRangeEdited &&
-                  dialog.extractionRebindRecord.is_null()) {
+                  dialog.axisRangeOrientationSource && resetOrientationRange()) {
                 const auto plane = parse_plane(option);
                 const auto shape = dialog.axisRangeOrientationSource->data().dataset.shape();
                 const auto extent = plane == Plane::XY ? shape.z : plane == Plane::XZ ? shape.y : shape.x;

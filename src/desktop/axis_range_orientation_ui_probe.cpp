@@ -604,7 +604,16 @@ private:
   }
   void rejectSubmit(HeadlessInputSession &session,const char *label,const char *category) {
     checkpoint(session,"before_rejection"); const auto before = report_["states"]["before_rejection"];
-    const auto request = draftRequest(); click(session,"dialog.apply"); checkpoint(session,"after_rejection");
+    const auto request = draftRequest();
+    const bool preflight = number_ == 14;
+    click(session,"dialog.apply",preflight); checkpoint(session,"after_rejection");
+    if(preflight) {
+      report_["rejections"].push_back({{"label",label},{"expected_category",category},{"rejection_stage","preflight"},
+          {"captured_document_id",captured_->id()},{"captured_revisions",revisionsJson(captured_->revisions())},
+          {"request",request},{"before",before},{"after",report_["states"]["after_rejection"]},
+          {"error_message",last_.at("dialog").at("error")},{"dialog_after",last_.at("dialog")},
+          {"observed_frame_ordinal",frameOrdinal_}});return;
+    }
     report_["rejections"].push_back({{"label",label},{"expected_category",category},
         {"captured_document_id",captured_->id()},{"captured_revisions",revisionsJson(captured_->revisions())},
         {"request",request},{"before",before},{"after",report_["states"]["after_rejection"]},

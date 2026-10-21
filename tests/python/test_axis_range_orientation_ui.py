@@ -887,8 +887,8 @@ def _dialog(row,label,plane,first,last,step,source_id,flags=None):
     for key,label_text in (('first','First (1-based)'),('last','Last (inclusive, 1-based)'),('step','Step')):
         assert schema[key]['kind']=='int' and schema[key]['label']==label_text
         control=d['controls'][key];_actual_control(control)
-        assert control['identity_source']=='current_scoped_InputInt_text_label_id'
-        assert control['geometry_source']=='actual_InputInt_group_item_rect'
+        assert control['identity_source']=='current_scoped_InputText_text_label_id'
+        assert control['geometry_source']=='actual_InputText_item_rect'
     for key,label_text in (('reverse_order','Reverse selected planes'),('flip_vertical','Flip input vertical axis'),('transpose','Transpose axes (ImageJ Rotate90 output)')):
         assert schema[key]['kind']=='bool' and schema[key]['label']==label_text
         _actual_control(d['controls'][key])
@@ -905,9 +905,17 @@ def _dialog(row,label,plane,first,last,step,source_id,flags=None):
             'output_axis_order':['XYZ'[axis] for axis in axes],
             'output_axis_signs':[-1 if transpose and flip else 1,-1 if not transpose and flip else 1,-1 if reverse else 1],
             'emitted_plane_count':count,'flip_before_transpose':True}
-        assert d['orientation_preview']==preview
+        actual = d['orientation_preview']
+        assert set(actual) == set(preview) | {'can_apply', 'working_bytes', 'max_working_bytes'}
+        assert {k:v for k,v in actual.items() if k in preview} == preview
+        assert actual['can_apply'] is True and actual['max_working_bytes'] == 512*1024*1024
+        _integer(actual['working_bytes'], positive=True)
+        minimum = count * EXTENTS[a] * EXTENTS[b] * PROFILES[row['profile']][3] * 8
+        assert minimum <= actual['working_bytes'] <= actual['max_working_bytes']
         assert all(d[k]==v for k,v in preview.items())
-    else:assert d['orientation_preview']=={}
+    else:
+        assert d['orientation_preview'] == {'can_apply': False, 'error': 'Extraction indices and Step must be positive integers'}
+        assert d['can_apply'] is False
 
 def _typed_inputs(row):
     for frame in row['frames']:
@@ -1005,7 +1013,7 @@ def _scenario(row):
         assert rejected['before']['output'] is None and rejected['captured_document_id']==source_id
         assert rejected['captured_revisions']==states['source_ready']['source']['revisions']
         assert tuple(rejected['request'][k] for k in ('reverse_order','flip_vertical','transpose'))==FLAGS[case]
-        if case!='O17':
+        if case not in {'O14','O17'}:
             assert rejected['error_message'] and rejected['dialog_after']['open'] is True
             assert rejected['dialog_after']['opened_document_id']==source_id
             acknowledged=rejected['acknowledged']
@@ -1018,9 +1026,9 @@ def _scenario(row):
             _integer(rejected['acknowledged_frame_ordinal'],positive=True)
         else:
             assert 'acknowledged' not in rejected and 'acknowledged_frame_ordinal' not in rejected
-    error_frames=[f for f in row['frames'] if f['label']=='after_rejection']
+    error_frames=[f for f in row['frames'] if f['label']=='after_rejection' and case!='O14']
     ack_frames=[f for f in row['frames'] if f['label']=='error_acknowledged']
-    modal_count=len(rejections) if case!='O17' else 0
+    modal_count=len(rejections) if case not in {'O14','O17'} else 0
     assert len(error_frames)==len(ack_frames)==selectors.count('error_modal.ok')==modal_count
     for rejected,error,ack in zip(rejections,error_frames,ack_frames):
         assert error['rendered']['error_modal']['open'] is True
@@ -1041,9 +1049,16 @@ def _scenario(row):
         assert [r['request']['range'] for r in rejections]==[
             {'plane':'XZ','first':-1,'last':16,'step':1,'t':0,'c':0},
             {'plane':'XZ','first':1,'last':16,'step':0,'t':0,'c':0}]
-        assert rejections[0]['acknowledged_frame_ordinal']<rejections[1]['acknowledged_frame_ordinal']
-        _same(rejections[0]['acknowledged'],rejections[1]['before'])
-        _same(rejections[1]['acknowledged'],states['before_submit'])
+        for rejected in rejections:
+            assert rejected['rejection_stage'] == 'preflight' and rejected['error_message']
+            frame = row['frames'][rejected['observed_frame_ordinal']-1]
+            dialog = frame['rendered']['dialog']
+            assert not dialog['can_apply'] and not dialog['controls']['apply']['enabled']
+            assert dialog['error'] == rejected['error_message']
+            assert not frame['rendered']['window_error'] and not frame['rendered']['error_modal']['open']
+        assert rejections[0]['observed_frame_ordinal'] < rejections[1]['observed_frame_ordinal']
+        _same(rejections[0]['after'],rejections[1]['before'])
+        _same(rejections[1]['after'],states['before_submit'])
     if case=='O15':
         change=stimuli['pixel_edit'];_mutation(change['before']['source'],change['after']['source'],{'data_identity','undo_steps','redo_steps','dirty'},'pixels')
         assert change['after']['source']['data_identity']==2 and change['after']['source']['undo_steps']==0

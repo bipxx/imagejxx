@@ -175,6 +175,11 @@ def _control(rendered, selector):
         key = selector.removeprefix("target.")
         panel = rendered["gaussian_panel"]["operation_target"]
         return dict(panel["control_states"][key], point=panel["controls"][key], rect=panel["control_rects"][key])
+    if selector == "review.cancel":
+        return rendered["native_workflow"]["controls"]["cancel"]
+    if selector.startswith("threshold."):
+        key = selector.removeprefix("threshold."); panel = rendered["threshold_panel"]
+        return dict(panel["control_states"][key], point=panel["controls"][key], rect=panel["control_rects"][key])
     if selector == "error_modal.ok":
         return rendered["error_modal"]["controls"]["ok"]
     return rendered["host_controls"][selector]
@@ -848,7 +853,7 @@ def _replay(row, directory):
     raw = path.read_bytes()
     assert raw.hex() == file["hex"] and len(raw) == file["byte_count"]
     wire = _session(path)
-    assert wire["workflow"] == [record] and wire["results"] == [] and wire["extensions"] == {}
+    assert wire["workflow"] == [record] and wire["results"] == [] and wire["extensions"] == {"imagejxx_workspace": {"version": 1, "active_index": 0}}
     encoded, = wire["documents"]
     assert encoded["axes"] == "TCZYXS" and encoded["shape"] == SHAPE
     assert encoded["pixel_type"] == "float32" and encoded["storage"] == "Float64LE"
@@ -882,8 +887,13 @@ def _replay(row, directory):
 
 
 def _eager(row):
-    for label in ("scientific_large_preview", "scientific_guards", "scientific_tab"):
+    for label in ("generic_review", "generic_canceled", "scientific_large_preview", "supported_threshold"):
         _unchanged(_owner(row, "initial"), _owner(row, label))
+    for label in ("threshold_canceled", "scientific_guards", "scientific_tab"):
+        before, after = _owner(row, "initial"), _owner(row, label)
+        _unchanged(before, after, display=False)
+        assert {k:v for k,v in after["display"].items() if k != "revision"} == {k:v for k,v in before["display"].items() if k != "revision"}
+        assert after["revisions"]["display"] == after["display"]["revision"] == before["revisions"]["display"] + 1
     state, rendered = _state(row, "scientific_large_preview")
     panel = _panel(rendered)
     assert panel["sigma"] == 12 and panel["draft_valid"] is True
@@ -899,8 +909,18 @@ def _eager(row):
     assert all(math.isfinite(value) and min(source)-.02 <= value <= max(source)+.02 for value in large["pixels"])
     # Large-sigma ImageJ resampling is qualified by pinned API reference cases;
     # this UI assertion checks actual routing/readback, not a new numerical oracle.
-    for name in ("guard_fill", "guard_show_manual_threshold", "guard_run_workflow", "guard_generic_operation"):
+    for name in ("guard_fill", "guard_run_workflow", "guard_generic_operation"):
         _refused_api(row, name)
+    _, generic = _state(row, "generic_review")
+    review = generic["native_workflow"]
+    assert review["visible"] and not review["ready"] and not review["error"]
+    assert len(review["entries"]) == 1 and not review["entries"][0]["confirmed"]
+    assert not _state(row, "generic_canceled")[1]["native_workflow"]["visible"]
+    assert _api(row, "open_supported_threshold")["accepted"] is True
+    _, threshold = _state(row, "supported_threshold")
+    assert threshold["threshold_panel"]["open"] and not threshold["threshold_panel"]["error"]
+    assert not _state(row, "threshold_canceled")[1]["threshold_panel"]["open"]
+    _require_selectors(row, "review.cancel", "threshold.cancel")
     eager_id = row["eager_document_id"]
     original = _document(row["states"]["initial"], eager_id)
     _literal(original)
@@ -964,7 +984,7 @@ def _eager(row):
     _require_selectors(row, "menu.command.gaussian_blur_imagej", "menu.command.gaussian_blur", "menu.action.fill",
                        "tools.tool.brush", "document." + str(eager_id), "document." + str(row["source_document_id"]))
     for observation in row["control_observations"]:
-        if observation["selector"] in {"menu.command.gaussian_blur", "menu.action.fill", "tools.tool.brush"}:
+        if observation["selector"] in {"menu.action.fill", "tools.tool.brush"}:
             assert observation["disabled_attempt"] is True
 
 

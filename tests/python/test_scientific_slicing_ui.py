@@ -947,9 +947,13 @@ def _scenario(row, case_id, directory):
         assert fresh["undo_steps"] == fresh["redo_steps"] == 0
         _session_document(root["documents"][0], fresh)
         _refused(row, "guard_legacy_reslice")
-        disabled = {value["selector"] for value in row["control_observations"] if value["disabled_attempt"]}
-        assert {"menu.action.show_axis_range_orientation", "menu.action.show_axis_range_spacing",
-                "menu.action.show_axis_range_slicer_resize"} <= disabled
+        for action in ("show_axis_range_orientation", "show_axis_range_spacing", "show_axis_range_slicer_resize"):
+            opened, rendered = _state(row, action + ".opened")
+            assert rendered["dialog"]["open"] and not opened["busy"]
+            canceled, rendered = _state(row, action + ".canceled")
+            assert not rendered["dialog"]["open"]
+            _no_publication(opened, canceled)
+            _selectors(row, "menu.action." + action, "dialog.cancel")
     elif case_id == "E09":
         original = [_entry(row, label)["command_record"] for label in ("original.plane", "original.range")]
         assert _typed(row["original_records"]) == _typed(original)

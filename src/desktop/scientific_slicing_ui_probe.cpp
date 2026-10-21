@@ -494,10 +494,11 @@ private:
       [&](Json &) {window_.action("save_document",{{"path",path.u8string()}});});file("derived",path);
     api("open_derived_native",{{"method","Window.openFile"},{"path",path.u8string()}},[&](Json &) {window_.openFile(path.u8string());});
     checkpoint(session,"derived.reopened");tab(session,eager_);range(session,"XZ",2,5,2,"eager.range");tab(session,source_);
-    click(session,"menu.Image");click(session,"menu.Image.Stacks");
-    for(const auto action:{"show_axis_range_orientation","show_axis_range_spacing","show_axis_range_slicer_resize"})
-      click(session,std::string("menu.action.")+action,true);
-    key(session,"Escape","guards.menu_dismiss");
+    for(const auto action:{"show_axis_range_orientation","show_axis_range_spacing","show_axis_range_slicer_resize"}) {
+      click(session,"menu.Image");click(session,"menu.Image.Stacks");
+      click(session,std::string("menu.action.")+action);checkpoint(session,std::string(action)+".opened");
+      click(session,"dialog.cancel");checkpoint(session,std::string(action)+".canceled");
+    }
     api("guard_legacy_reslice",{{"method","Window.action"},{"action","reslice"}},[&](Json &) {window_.action("reslice");});
     checkpoint(session,"scientific.guards");
   }
