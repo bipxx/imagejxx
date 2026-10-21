@@ -1,6 +1,7 @@
 """Run the complete installed Python suite with explicit native build inputs.
 
-This does not manufacture C++ observation reports or accept missing features.
+C++ observations come from fresh installed application runs, then independent
+Python readers check them. Missing features are not accepted.
 Missing bindings, failed tests and skipped tests all leave this profile failing.
 The receipt records named environment contracts to guide portable fixture work.
 """
@@ -19,6 +20,8 @@ import subprocess
 import sys
 import sysconfig
 import xml.etree.ElementTree as ET
+
+from ci_observations import archive, capture
 
 
 def pin(path):
@@ -88,6 +91,8 @@ def run(output: Path, root: Path):
         receipt["cpp_application"] = pin(applications[0])
         environment["IMAGEJXX_CPP_EXE"] = str(applications[0])
         environment["IMAGEJXX_CPP_EXE_SHA256"] = receipt["cpp_application"]["sha256"]
+        environment.update(capture(output / "cpp-observations", applications[0], root, environment))
+        receipt["cpp_observations"] = str(output / "cpp-observations/receipt.json")
         tests = sorted((root / "tests/python").glob("test_*.py"))
         if not tests:
             raise ValueError("No Python test modules found")
@@ -120,6 +125,15 @@ def run(output: Path, root: Path):
         receipt.update(state="failed", error={"type": type(error).__name__, "message": str(error)})
         raise
     finally:
+        captures = output / "cpp-observations"
+        if captures.is_dir():
+            try:
+                receipt["cpp_observation_archive"] = archive(captures)
+            except Exception as error:
+                receipt["state"] = "failed"
+                receipt["archive_error"] = {"type": type(error).__name__, "message": str(error)}
+                save()
+                raise
         save()
 
 

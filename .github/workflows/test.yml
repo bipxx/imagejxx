@@ -111,6 +111,8 @@ jobs:
           path: |
             build/ci-python/receipt.json
             build/ci-python/pytest.xml
+            build/ci-python/cpp-observations/receipt.json
+            build/ci-python/cpp-observations.zip
           if-no-files-found: warn
   python:
     strategy:

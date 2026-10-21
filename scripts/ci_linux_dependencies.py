@@ -24,6 +24,34 @@ def pin(path):
     return {"bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}
 
 
+def check_tiff_imports(prefix, output, run):
+    """Link a consumer through every supported CMake config entry point."""
+    source = output / "source"
+    source.mkdir(parents=True)
+    (source / "CMakeLists.txt").write_text(
+        'cmake_minimum_required(VERSION 3.18)\nproject(TiffImports C)\n'
+        'find_package(${PACKAGE_NAME} 4.7.1 EXACT CONFIG REQUIRED CONFIGS ${CONFIG_FILE})\n'
+        'add_executable(consumer consumer.c)\n'
+        'target_link_libraries(consumer PRIVATE TIFF::tiff)\n', encoding="utf-8")
+    (source / "consumer.c").write_text(
+        '#include <tiffio.h>\n#include <string.h>\n'
+        'int main(void) {\n'
+        ' if (!strstr(TIFFGetVersion(), "LIBTIFF, Version 4.7.1")) return 1;\n'
+        ' TIFFCodec *codecs = TIFFGetConfiguredCODECs();\n'
+        ' if (!codecs) return 2;\n'
+        ' int empty = !codecs[0].name;\n'
+        ' _TIFFfree(codecs);\n return empty ? 3 : 0;\n}\n', encoding="utf-8")
+    for package, config in (("tiff", "tiff-config.cmake"),
+                            ("Tiff", "TiffConfig.cmake"), ("TIFF", "TIFFConfig.cmake")):
+        cache = output / package
+        label = "tiff-import-" + package
+        run(label + "-configure", ["cmake", "-S", source, "-B", cache, "-G", "Ninja",
+            "-DCMAKE_BUILD_TYPE=Release", "-DCMAKE_PREFIX_PATH=" + str(prefix),
+            "-DPACKAGE_NAME=" + package, "-DCONFIG_FILE=" + config])
+        run(label + "-build", ["cmake", "--build", cache, "--parallel", "2"])
+        run(label + "-run", [cache / "consumer"])
+
+
 def build(output: Path, *, archive_cache: Path | None = None,
           platform_include: Path | None = None, nasm: str | None = None):
     root = Path(__file__).resolve().parents[1]
@@ -157,8 +185,15 @@ def build(output: Path, *, archive_cache: Path | None = None,
         adapter += ('if(NOT TARGET CMath::CMath)\n add_library(CMath::CMath INTERFACE IMPORTED)\n'
             ' set_target_properties(CMath::CMath PROPERTIES INTERFACE_LINK_LIBRARIES m)\nendif()\n'
             'include("${CMAKE_CURRENT_LIST_DIR}/TiffTargets.cmake")\nset(tiff_FOUND TRUE)\nset(TIFF_FOUND TRUE)\n')
-        (config / "tiff-config.cmake").write_text(adapter, encoding="utf-8")
-        shutil.copyfile(config / "TiffConfigVersion.cmake", config / "tiff-config-version.cmake")
+        # FindTIFF uses different package-name spellings across CMake versions.
+        # Cover each config entry point so none can select upstream's incomplete
+        # static imports (notably TiffConfig.cmake with CMake 3.31).
+        version_config = (config / "TiffConfigVersion.cmake").read_bytes()
+        for spelling in ("tiff-config", "TiffConfig", "TIFFConfig"):
+            (config / (spelling + ".cmake")).write_text(adapter, encoding="utf-8")
+            version_name = spelling + ("-version" if spelling == "tiff-config" else "Version")
+            (config / (version_name + ".cmake")).write_bytes(version_config)
+        check_tiff_imports(prefix, output / "tiff-import-check", run)
         stb = source("stb")
         for header, expected in dependencies["stb"]["headers"].items():
             if pin(stb / header)["sha256"] != expected:

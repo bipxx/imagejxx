@@ -41,7 +41,10 @@ separately. It verifies every source archive's size and SHA-256 against
 `licenses/ci-linux-source-dependencies.json`, builds the selected static codecs
 and windowing libraries, installs the pinned stb headers and vendored JSON
 headers, and retains all selected license notices. It rejects an existing output
-prefix and tampered cached archives. No earlier SDK or local qualification folder
+prefix and tampered cached archives. Before publishing, it configures, links and
+runs a TIFF consumer through each supported CMake config name, including the
+`TiffConfig.cmake` entry point selected by newer FindTIFF modules. Each entry
+point provides the reviewed static codec imports. No earlier SDK or local qualification folder
 is an input. The optional NASM/header-path arguments select platform build tools
 and headers; they do not replace any selected codec or desktop library source.
 
@@ -56,8 +59,18 @@ identities and named environment contracts. Modules must come from the installed
 package. The Linux codec audit rejects exposed static codec APIs that could bind
 to a different library already loaded by Python. Missing bindings or providers,
 failures, collection errors and skipped cases leave the complete profile failing.
-This runner does not fabricate C++ observation reports; those still need portable
-producers for full hosted acceptance.
+The runner first invokes `scripts/ci_observations.py` against the installed C++
+application. Its initial 83-case matrix captures rank filters, rounded creation
+and saved selections, ROI import/export, and saved-selection budget behavior.
+Each process gets private preferences. Byte-identical copies supply the readers
+with stable group/case paths; original artifacts remain available for absolute
+paths embedded in reports. The executable hash must remain unchanged. Reports
+are observations with no acceptance claim; independent Python tests check them.
+
+The workflow retains the capture receipt and a compressed archive containing
+originals, reader copies, preferences and process logs, including failed attempts.
+Other C++ observation contracts remain to be provisioned; the complete Python
+suite stays enabled and failures or skips still fail the job.
 
 The Linux source profile does not admit different Windows TIFF binaries or
 replace the Windows runtime fingerprint boundary.
