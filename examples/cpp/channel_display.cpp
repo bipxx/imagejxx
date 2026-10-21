@@ -471,9 +471,19 @@ void persistence_and_shape() {
 
   Document future(fixture(PixelType::UInt16), "Opaque future display");
   auto future_view = view(future.snapshot().data().dataset);
-  const auto opaque = metadata_object({{"schema",std::string("imagejxx.channel-display")},{"version",3},
+  // V3 is now the recognized IEEE display schema. Keep this transport case
+  // genuinely unknown, and separately reject the malformed known V3 object.
+  const auto opaque = metadata_object({{"schema",std::string("imagejxx.channel-display")},{"version",37},
       {"future",metadata_object({{"exact",std::uint64_t(9007199254740993ULL)},
                                 {"nested",metadata_array({true,MetadataValue{},metadata_object({{"",std::string("retained")}})})}})}});
+  const auto unchanged_future = future.snapshot();
+  auto malformed_known = object(opaque); malformed_known["version"] = 3;
+  auto invalid_view = future_view;
+  invalid_view.properties["channel_display"] = metadata_object(std::move(malformed_known));
+  rejects([&]{future.set_display(invalid_view);}, "SDK malformed known V3 display was accepted");
+  require(future.snapshot().revisions().display == unchanged_future.revisions().display &&
+          future.snapshot().shares_data(unchanged_future),
+          "SDK malformed known V3 display changed the owner");
   future_view.properties["channel_display"] = opaque; future.set_display(future_view);
   const auto future_before = future.snapshot(); const auto future_history = future.history();
   const FrozenPixels future_pixels(future_before.data().dataset);
