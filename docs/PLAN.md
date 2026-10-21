@@ -1,5 +1,19 @@
 # ImageJ and Fiji gap closure plan
 
+**No-movement pointer checkpoint, 2026-10-21 (work in progress):** the existing
+fresh-budget release path now has explicit shared-ImGui input coverage. Adjacent
+mouse-down/up frames prove no motion was delivered. A one-MiB in-flight API
+budget drop refuses visibly and releases all draft memory; recovery retains an
+editable pointer/keyboard draft without history or workflow publication. The
+numeric panel stays closed by design. All four finite/IEEE, axis/rotated cases
+pass through C++ and Python hosts, source and installed, on Windows and Linux:
+32 independently checked observations over 8,480 frames. Each profile also passes
+the eight focused Numeric/pointer budget tests without skips. This observer-only
+increment does not rerun or extend the earlier full-regression claim. See
+[the receipt](parity/reviews/p09e-idle-pointer001.json). Resize/rotate and Alt/Ctrl,
+workflow/rebind/scientific-context and other feature gates remain open.
+All99 remains 42 in progress / 57 open / 0 complete; all 96 formats remain partial.
+
 **Saved-area pointer-budget checkpoint, 2026-10-20 (work in progress):**
 new pointer gestures and no-movement draft recreation now read current resource
 settings. A saved-area panel opened under a higher budget previously admitted a

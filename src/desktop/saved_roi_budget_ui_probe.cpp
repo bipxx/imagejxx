@@ -67,7 +67,7 @@ static Json savedRoiBudgetUiCaseImpl(Window &w,const std::string &variant,
   require(estimate.working_bytes>1048576 && high<=32,"Saved-area budget fixture estimate out of bounds");
   w.updateSettings({{"processing_memory_mb",1},{"processing_workers",1},{"show_rois",true}},false);
   w.addNativeDocument(owner);w.recording=true;
-  Json report{{"contract",pointer?"p08z.saved-area-pointer-budget.ui.001":"p08y.saved-area-budget.ui.001"},{"case_id",variant},
+  Json report{{"contract",pointer?"p08z.saved-area-pointer-budget.ui.002":"p08y.saved-area-budget.ui.001"},{"case_id",variant},
       {"context",context},{"acceptance_claim",false},{"estimate_bytes",estimate.working_bytes},
       {"high_mb",high},{"frames",Json::array()},{"controls",Json::array()},
       {"states",{{"before",state(owner,w)}}},
@@ -151,7 +151,13 @@ static Json savedRoiBudgetUiCaseImpl(Window &w,const std::string &variant,
     };
     const auto expose=[&] {
       auto panel=ImGui::FindWindowByName("Saved area geometry");
-      require(panel && panel->Active && !panel->Hidden,"Saved-area geometry panel not visible");
+      // A click without motion deliberately retains the keyboard/pointer draft
+      // while the numeric panel stays closed. There is then no panel to move.
+      if(!panel || !panel->Active || panel->Hidden) {
+        require(last.at("saved_roi_geometry").value("active",false) &&
+                !last.at("selection_properties").value("open",true),"Saved-area panel visibility mismatch");
+        return;
+      }
       const auto a=screen({16,12}),b=screen({18,13});
       const auto contains=[&](ImVec2 p) {
         for(const auto &v:{a,b})if(v[0]>=p.x && v[0]<p.x+panel->Size.x &&
@@ -172,15 +178,16 @@ static Json savedRoiBudgetUiCaseImpl(Window &w,const std::string &variant,
       require(!contains(panel->Pos) && last.at("saved_roi_geometry")==draft,"Moving panel changed saved-area draft or failed to expose canvas");
       report["panel_moves"].push_back({{"id",id},{"from",from},{"to",to}});
     };
-    const auto begin=[&](const std::string &label,bool accepted,bool shift=false) {
+    const auto begin=[&](const std::string &label,bool accepted,bool shift=false,bool move=true) {
       expose();if(shift)key("Shift",true);
-      const auto from=screen({16,12}),to=screen({18,13});
+      const auto from=screen({16,12}),to=move?screen({18,13}):from;
       position(from);button(true);
       report["gestures"].push_back({{"label",label},{"from_image",{16,12}},
-        {"to_image",{18,13}},{"from_screen",from},{"to_screen",to},{"shift",shift},
+        {"to_image",move?Json::array({18,13}):Json::array({16,12})},
+        {"from_screen",from},{"to_screen",to},{"shift",shift},{"motion_delivered",accepted && move},
         {"down_frame",report["frames"].size()},{"down_draft",last.at("saved_roi_geometry")}});
       require(last.at("saved_roi_geometry").value("pointer",false)==accepted,"Saved-area pointer admission ignored current budget");
-      if(accepted) {
+      if(accepted && move) {
         position(to);report["gestures"].back()["preview"]=last.at("saved_roi_geometry");
         require(last.at("saved_roi_geometry").value("pointer",false),"Saved-area pointer capture lost during preview");
       }
@@ -194,6 +201,21 @@ static Json savedRoiBudgetUiCaseImpl(Window &w,const std::string &variant,
       {"role","Explicit API transition while left mouse is held; no Preferences-input credit"}};
     button(false);frame();refused("release_refused");
     budget(high);click("roi_manager.row.0.edit_saved_area");
+    begin("idle_low_release",true,false,false);
+    report["states"]["idle_pointer_preview"]=state(owner,w);
+    require(last.at("saved_roi_geometry").at("candidate").is_null(),"Idle gesture staged geometry");
+    w.updateSettings({{"processing_memory_mb",1}},false);
+    report["idle_inflight_api_budget_change"]={{"memory_mb",w.settings().integer("processing_memory_mb")},
+      {"role","Explicit API transition while left mouse is held without delivered motion"}};
+    button(false);frame();refused("idle_release_refused");
+    budget(high);click("roi_manager.row.0.edit_saved_area");
+    begin("idle_recovered",true,false,false);button(false);frame();
+    report["states"]["idle_recovered"]=state(owner,w);
+    report["idle_recovered_draft"]=last.at("saved_roi_geometry");
+    report["idle_recovered_properties"]=last.at("selection_properties");
+    require(last.at("saved_roi_geometry").value("active",false) &&
+            !last.at("saved_roi_geometry").value("pointer",true) &&
+            owner->undo_steps()==0 && w.workflow.empty(),"Idle recovery published or lost the editable draft");
     begin("escape_cancel",true,true);key("Escape",true);key("Escape",false);
     button(false);key("Shift",false);frame();report["states"]["canceled"]=state(owner,w);
     require(!last.at("saved_roi_geometry").value("active",true) && owner->undo_steps()==0,"Escape retained or published saved-area pointer edit");

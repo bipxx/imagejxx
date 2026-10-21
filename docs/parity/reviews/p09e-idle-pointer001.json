@@ -1,0 +1,78 @@
+{
+  "state": "qualified_increment",
+  "scope": "No-movement saved-area pointer release, live-budget refusal and draft recovery",
+  "objective_complete": false,
+  "implementation": "Existing fresh-limit release path retained; extended the actual shared-ImGui observer and independent reader.",
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  },
+  "format_variants": "96 partial",
+  "contract": "p08z.saved-area-pointer-budget.ui.002",
+  "pytest": {
+    "cases_per_profile": 8,
+    "profiles": [
+      "windows-python001",
+      "windows-install001",
+      "linux-python-source001",
+      "linux-python-installed001"
+    ],
+    "skips": 0,
+    "failures": 0,
+    "scope": "Saved-area Numeric and pointer budget tests; the prior full regression set was not rerun for this observer-only change."
+  },
+  "final_reader": {
+    "observations": 32,
+    "frames": 8480,
+    "assertions": "The final independent reader rechecks every fresh C++/Python report, including adjacency of mouse-down and mouse-up input frames.",
+    "sha256": "1b317e55337d0fea778813e62c82ae1073e99549731e64113e4af127d92f13b7"
+  },
+  "native": {
+    "windows_groups": 17,
+    "linux": "No native rerun: core and editor implementation unchanged."
+  },
+  "actual_ui": {
+    "cases": [
+      "finite-axis",
+      "finite-rotated",
+      "ieee-axis",
+      "ieee-rotated"
+    ],
+    "hosts": [
+      "imgui_cpp",
+      "imgui_python"
+    ],
+    "platforms": [
+      "Windows",
+      "Linux"
+    ],
+    "profiles": [
+      "source",
+      "installed"
+    ],
+    "os_input_or_gpu_claim": false
+  },
+  "limitations": [
+    "The in-flight budget change is an explicit API action while the mouse is held; no Preferences-input credit is claimed for it.",
+    "Mouse-down/up without motion retains the pointer/keyboard draft while the numeric panel remains closed by design.",
+    "Resize/rotate, Alt/Ctrl, workflow/rebind and scientific-context gates remain open.",
+    "Hosted full-suite acceptance and reviewed Windows/macOS feature builds remain open."
+  ],
+  "source": [
+    {
+      "path": "src/desktop/saved_roi_budget_ui_probe.cpp",
+      "bytes": 15498,
+      "sha256": "c2f3bf648bffc40963af5abf5e04b2db41caa4ac3f1b664b2b1993f84c9e6c8e"
+    },
+    {
+      "path": "tests/python/test_saved_roi_pointer_budget_ui.py",
+      "bytes": 4851,
+      "sha256": "1b317e55337d0fea778813e62c82ae1073e99549731e64113e4af127d92f13b7"
+    }
+  ],
+  "receipts": "build/p09e-idle-pointer001",
+  "scratch_removed_bytes": 576873411,
+  "scratch_removed_files": 214,
+  "cleanup": "CRC and every archived member SHA-256 checked before removal; retained archive bytes verified."
+}
