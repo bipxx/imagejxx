@@ -60,7 +60,7 @@ package. The Linux codec audit rejects exposed static codec APIs that could bind
 to a different library already loaded by Python. Missing bindings or providers,
 failures, collection errors and skipped cases leave the complete profile failing.
 The runner first invokes `scripts/ci_observations.py` against the installed C++
-application. Its 716-case matrix captures rank filters, rounded creation
+application. Its 818-case matrix captures rank filters, rounded creation
 and saved selections, ROI import/export, saved-selection budget behavior, and
 resize/rotate/move modifiers and directional shadows. The planar selection matrix
 covers 621 creation/edit/recovery cases across XY, XZ and YZ, including every
@@ -68,6 +68,14 @@ resize handle and modifier combination, rotated profiles, invalid numeric edits
 and source/context changes. It supplies `IMAGEJXX_PLANAR_MATRIX_CPP_ROOT` to the
 existing independent readers. Each planar case runs in its own application
 process and preferences directory. This preserves the previous 95 captures.
+The additional scientific/workflow groups supply 96 finite edge BigTIFF cases,
+four IEEE Float32 viewing cases, workflow execution and workflow batch. BigTIFF
+inputs must match the committed manifest's byte size and SHA-256 before launch;
+reader paths retain the expected `capture001` subdirectory. The IEEE observer's
+legacy `report.json` and `passed` marker remain unchanged: that marker indicates
+probe completion, and the Python readers establish behavior independently.
+Workflow collision checks retain case-alias coverage on Windows and use a real
+lexical path alias on case-sensitive hosts.
 Each process gets private preferences. Byte-identical copies supply the readers
 with stable group/case paths; original artifacts remain available for absolute
 paths embedded in reports. The executable hash must remain unchanged. Reports

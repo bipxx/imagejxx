@@ -866,7 +866,13 @@ Json nativeWorkflowUiCase(Window &w, const std::string &context,
   press("cancel");
   open();
   review("alias", true);
+#ifdef _WIN32
   type("path", (dir / "ALIAS.ZIP").u8string());
+#else
+  // Case variants are distinct files on a case-sensitive filesystem.
+  // Use a lexical alias while retaining Windows case-alias coverage.
+  type("path", (dir / "." / "alias.zip").u8string());
+#endif
   press("confirm");
   press("prepare");
   settle();

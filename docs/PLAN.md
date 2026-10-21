@@ -1,5 +1,21 @@
 # ImageJ and Fiji gap closure plan
 
+**Portable scientific/workflow CI checkpoint, 2026-10-21 (work in progress):**
+the default capture matrix now includes 96 BigTIFF edge fixtures, four IEEE
+Float32 viewers, workflow execution and workflow batch, preserving the preceding
+716 cases for a total of 818. Fixture size/SHA checks happen before launch;
+reader copies preserve raw reports, artifacts and expected directory layouts.
+A Linux workflow probe incorrectly treated differently cased filenames as the
+same output. It now uses a genuine lexical alias on case-sensitive hosts while
+retaining the Windows case-alias check. Independent readers explicitly assert
+collision refusal and no publication. Windows and Linux installed packages each
+pass the same 256 tests without skips; 204 C++ observations cover 44,122 frames.
+Verified archives reclaim 9,961,751,133 bytes of owned scratch. See
+[the scoped receipt](parity/reviews/p09i-portable-io-workflow001.json).
+Full hosted acceptance, other missing contracts, remaining actual regressions
+and broader ImageJ/Fiji requirements remain open. All99 stays 43 in progress /
+56 open / 0 complete; all 96 format variants remain partial.
+
 **Portable planar CI checkpoint, 2026-10-21 (work in progress):** CI now
 provisions 621 fresh C++ planar-selection observations across XY/XZ/YZ. This
 addresses the largest missing-contract group in hosted run 39540986889 while

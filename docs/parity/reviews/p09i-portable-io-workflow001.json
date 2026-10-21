@@ -1,0 +1,126 @@
+{
+  "state": "qualified_ci_increment",
+  "objective_complete": false,
+  "scope": "Fresh BigTIFF, IEEE viewing, workflow execution and batch C++ reports plus a portable workflow collision probe; full ImageJ/Fiji objective remains open.",
+  "all99": {
+    "in_progress": 43,
+    "open": 56,
+    "complete": 0
+  },
+  "matrix": {
+    "previous_cases_preserved": 716,
+    "new_cases": 102,
+    "default_total": 818,
+    "unique_cases": 818
+  },
+  "tests": {
+    "windows": {
+      "passed": 256,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "linux": {
+      "passed": 256,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "identical_test_ids_on_both_platforms": true,
+  "baseline_module_case_ids_preserved": true,
+  "cpp_observations": {
+    "windows": {
+      "state": "passed",
+      "cases": 102,
+      "frames": 22157,
+      "groups": {
+        "ieee-viewing": 4,
+        "native-workflow": 1,
+        "native-batch": 1,
+        "bigtiff": 96
+      }
+    },
+    "linux": {
+      "state": "passed",
+      "cases": 102,
+      "frames": 21965,
+      "groups": {
+        "ieee-viewing": 4,
+        "native-workflow": 1,
+        "native-batch": 1,
+        "bigtiff": 96
+      }
+    }
+  },
+  "portability_fix": {
+    "before": "Linux workflow probe refused to finish because distinct case-sensitive filenames were assumed to alias.",
+    "after": "Non-Windows uses dir/./alias.zip; Windows retains ALIAS.ZIP case-alias test.",
+    "independent_assertions": "Collision error, unready state and no published files.",
+    "original_failure_preserved": "linux-cpp001; archived with all actual outputs"
+  },
+  "fixture_guard": {
+    "size_and_sha256_before_launch": true,
+    "negative_same_size_corruption_rejected_without_application_launch": true
+  },
+  "legacy_ieee_report": "Original report.json and passed marker retained byte for byte. Capture receipt treats it as observation completion, not acceptance.",
+  "script_line_endings": {
+    "state": "passed",
+    "change": "Restore original LF line endings after terminal captures; normalized bytes and AST identical.",
+    "capture_sha256": "c9db1f04b1410cbf1ea753e256eecd5bebf49761d5b2f42aa4b8e44f51afc86f",
+    "final_sha256": "e62d066a7800cf8d06a800d318813a05900a4773c96f2d86576c5bb874d2649c"
+  },
+  "products": {
+    "headers": 66,
+    "python_modules": 12,
+    "native_catalog_operations": 92,
+    "source_and_installed_match": true,
+    "new_product_dependencies": false
+  },
+  "inputs": [
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 13259,
+      "sha256": "e62d066a7800cf8d06a800d318813a05900a4773c96f2d86576c5bb874d2649c"
+    },
+    {
+      "path": "src/desktop/native_workflow_ui_probe.cpp",
+      "bytes": 79356,
+      "sha256": "e2e2050eef689e90f08e4d75c0e4516f2ca6f2217c8adca5c23d90f0ac37ba5a"
+    },
+    {
+      "path": "tests/python/test_native_workflow_ui.py",
+      "bytes": 32723,
+      "sha256": "036c031e7a09a36440c5ee79821cd7bff9a072a086e07c8bd823cc19ff4b2038"
+    },
+    {
+      "path": "tests/fixtures/scientific-bigtiff/SOURCE.json",
+      "bytes": 13154838,
+      "sha256": "855b54eceb85685cc42802553a9cd1f56a3ea5196e81f75e70e90e48391ffb01"
+    }
+  ],
+  "receipts": "build/p09i-portable-io-workflow001",
+  "limitations": [
+    "Full hosted CI acceptance remains open; a fresh default 818-case hosted run is still required.",
+    "Other missing reference/observation contracts and actual regressions remain to be repaired.",
+    "Windows/macOS full feature CI configurations, broader ImageJ/Fiji families and all 96 partial format variants remain open."
+  ],
+  "cleanup": {
+    "removed_bytes": 9961751133,
+    "removed_files": 8308,
+    "crc_and_every_member_sha256_verified": true,
+    "archives": {
+      "windows": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09i-portable-io-workflow001\\windows-scratch001.zip",
+        "bytes": 633838921,
+        "sha256": "d1c7141318063dcc487d688bf0377f72f89d162f733f91e4ed3a128571e0a6d3"
+      },
+      "linux": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09i-portable-io-workflow001/linux-scratch001.zip",
+        "bytes": 280021394,
+        "sha256": "d313092058347c5eac443e107ffd0450618487894b8a68dfe641c324e15c9704"
+      }
+    },
+    "preserved": "All qualified product prefixes, useful native source/build and dependency caches, copied observation receipts, JUnit reports, original Linux case-alias probe failure and hosted baseline evidence"
+  }
+}

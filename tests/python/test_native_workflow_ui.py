@@ -83,6 +83,9 @@ def test_no_overwrite_race_reports_partial_files_without_document_publication(re
 
 def test_cancel_reservation_stale_cap_and_unsupported_batch_leave_no_outputs(reports):
     for r in reports:
+        assert not r['alias_refusal']['ready']
+        assert 'same file' in r['alias_refusal']['error']
+        assert not any(f['published'] for f in r['alias_refusal']['files'])
         assert r['offthread_cancel']['error'] and not any(f['published'] for f in r['offthread_cancel']['files'])
         assert r['reservation_refusal']['error']
         assert not any(f['published'] for f in r['reservation_refusal']['files'])

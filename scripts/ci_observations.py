@@ -49,6 +49,17 @@ def planar_cases():
     return [f"{plane}.{operation}" for plane in ("XY", "XZ", "YZ") for operation in operations]
 
 
+def bigtiff_cases():
+    """Committed finite edge fixtures used by the independent BigTIFF reader."""
+    directory = Path(__file__).resolve().parents[1] / "tests/fixtures/scientific-bigtiff"
+    manifest = json.loads((directory / "SOURCE.json").read_bytes())
+    for row in manifest["files"]:
+        if row["valid"] and "-edges-" in row["file"] and row["pattern"] == "finite":
+            if Path(row["file"]).name != row["file"]:
+                raise ValueError("BigTIFF fixture must be a direct manifest member")
+            yield Path(row["file"]).stem, ["--scientific-tiff-ui-case", row["file"]]
+
+
 def cases():
     groups = [
         ("rank", "--rank-ui-case", [f"R{i:02d}" for i in range(1, 60)]),
@@ -68,10 +79,16 @@ def cases():
         ("shadows", "--shadow-ui-case",
          ["north", "northeast", "east", "southeast", "south", "southwest", "west", "northwest"]),
         ("planar-matrix", "--planar-annotation-matrix-ui-case", planar_cases()),
+        ("ieee-viewing", "--ieee-viewing-ui-case", [f"IEEE{i:02d}" for i in range(1, 5)]),
+        ("native-workflow", "--native-workflow-ui-case", [None]),
+        ("native-batch", "--native-workflow-batch-ui-case", [None]),
     ]
     for group, flag, variants in groups:
         for variant in variants:
             yield group, variant or "legacy", [flag] + ([variant] if variant else [])
+
+    for case, arguments in bigtiff_cases():
+        yield "bigtiff", case, arguments
 
 
 def reader_environment(output):
@@ -89,6 +106,10 @@ def reader_environment(output):
         "IMAGEJXX_SAVED_MODIFIERS_CPP_BASE": reports / "saved-modifiers",
         "IMAGEJXX_SHADOW_CPP_BASE": reports / "shadows",
         "IMAGEJXX_PLANAR_MATRIX_CPP_ROOT": reports / "planar-matrix",
+        "IMAGEJXX_IEEE_CPP_DIR": reports / "ieee-viewing",
+        "IMAGEJXX_BIGTIFF_CPP_DIR": reports / "bigtiff",
+        "IMAGEJXX_NATIVE_WORKFLOW_CPP_REPORT": reports / "native-workflow/legacy/case.json",
+        "IMAGEJXX_NATIVE_BATCH_CPP_REPORT": reports / "native-batch/legacy/case.json",
         "IMAGEJXX_VARIANCE_CPP_REPORT": reports / "rank/R14/case.json",
     }
     for name in ("NONBYTE", "THRESHOLD", "CHANNEL_VARIANCE", "DESPECKLE",
@@ -135,11 +156,25 @@ def capture(output, executable, root, environment=None):
             # that parent across cases would leak settings between probes.
             private = output / "private" / group / case
             private.mkdir(parents=True)
-            actual = private / "capture"
+            actual = private / ("capture001" if group == "bigtiff" else "capture")
             transport = output / "reports" / group / case
-            argv = [str(executable), *arguments, str(actual)]
+            if group == "bigtiff":
+                transport = transport / "capture001"
+                fixture = Path(root) / "tests/fixtures/scientific-bigtiff" / arguments[1]
+                manifest = fixture.parent / "SOURCE.json"
+                rows = json.loads(manifest.read_bytes())["files"]
+                row = next(row for row in rows if row["file"] == fixture.name)
+                fixture_pin = pin(fixture)
+                if fixture_pin != {"bytes": row["bytes"], "sha256": row["sha256"]}:
+                    raise ValueError(f"BigTIFF fixture changed: {fixture}")
+                argv = [str(executable), arguments[0], str(actual), str(fixture)]
+            else:
+                argv = [str(executable), *arguments, str(actual)]
             item = {"group": group, "case": case, "argv": argv, "state": "running",
                     "actual": str(actual), "transport": str(transport)}
+            if group == "bigtiff":
+                item["inputs"] = [{"path": str(fixture), **fixture_pin},
+                                  {"path": str(manifest), **pin(manifest)}]
             receipt["cases"].append(item)
             save()
             started = time.monotonic()
@@ -150,14 +185,25 @@ def capture(output, executable, root, environment=None):
             item.update(exit_code=process.returncode, elapsed_seconds=time.monotonic() - started)
             if process.returncode:
                 raise subprocess.CalledProcessError(process.returncode, argv)
-            report = actual / "case.json"
+            report = actual / ("report.json" if group == "ieee-viewing" else "case.json")
             if not report.is_file() or report.stat().st_size > 128 * 1024 * 1024:
                 raise ValueError(f"Missing or oversized observation report: {report}")
             observation = json.loads(report.read_bytes())
-            if observation.get("observation_state", observation.get("state")) != "observed":
-                raise ValueError(f"C++ observation did not finish: {report}")
-            if observation.get("acceptance_claim") is not False:
-                raise ValueError(f"C++ observation must not claim acceptance: {report}")
+            if group == "ieee-viewing":
+                # The existing IEEE probe predates the observation vocabulary.
+                # Preserve its raw report; its "passed" only means probe completion.
+                if (observation.get("state") != "passed" or observation.get("case_id") != case
+                        or observation.get("context") != "imgui_cpp"
+                        or not all(key in observation for key in ("frames", "captures", "source_words"))
+                        or observation.get("acceptance_claim", False) is not False):
+                    raise ValueError(f"IEEE probe did not finish: {report}")
+                item["legacy_probe_state"] = "passed"
+            else:
+                if observation.get("observation_state", observation.get("state")) != "observed":
+                    raise ValueError(f"C++ observation did not finish: {report}")
+                if observation.get("acceptance_claim") is not False:
+                    raise ValueError(f"C++ observation must not claim acceptance: {report}")
+            item["report"] = report.name
             item["files"] = inventory(actual)
             # Do not link captures: hard links change file identity/link counts,
             # and symlinks require privileges on some supported hosts.
