@@ -60,8 +60,9 @@ package. The Linux codec audit rejects exposed static codec APIs that could bind
 to a different library already loaded by Python. Missing bindings or providers,
 failures, collection errors and skipped cases leave the complete profile failing.
 The runner first invokes `scripts/ci_observations.py` against the installed C++
-application. Its initial 83-case matrix captures rank filters, rounded creation
-and saved selections, ROI import/export, and saved-selection budget behavior.
+application. Its 87-case matrix captures rank filters, rounded creation
+and saved selections, ROI import/export, saved-selection budget behavior, and
+resize/rotate/move modifiers.
 Each process gets private preferences. Byte-identical copies supply the readers
 with stable group/case paths; original artifacts remain available for absolute
 paths embedded in reports. The executable hash must remain unchanged. Reports

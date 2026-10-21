@@ -6,8 +6,8 @@ import numpy as np
 import pytest
 
 
-def check(report, case):
-    assert report['contract'] == 'p08z.saved-area-pointer-budget.ui.002'
+def check(report, case, contract="p08z.saved-area-pointer-budget.ui.002"):
+    assert report['contract'] == contract
     assert report['case_id'] == case and report['state'] == 'observed'
     assert not report['acceptance_claim'] and report['final_error'] == ''
     assert all(f['events'] == f['rendered']['input_frame']['raw_inputs'] for f in report['frames'])

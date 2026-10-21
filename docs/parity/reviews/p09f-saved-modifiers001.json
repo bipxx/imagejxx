@@ -1,0 +1,95 @@
+{
+  "state": "qualified_increment",
+  "scope": "Ordinary-XY saved rounded-area Ctrl-centered corner resize, Shift corner resize, Shift rotation and Alt movement",
+  "objective_complete": false,
+  "implementation": "Extended the actual shared-ImGui observer and independent mathematical/input assertions; existing editor geometry paths retained.",
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  },
+  "format_variants": "96 partial",
+  "contract": "p09f.saved-area-modifiers.ui.001",
+  "pytest": {
+    "cases_per_profile": 12,
+    "profiles": [
+      "windows-python002",
+      "windows-installed-recheck001",
+      "linux-python-source001",
+      "linux-python-installed001"
+    ],
+    "skips": 0,
+    "failures": 0,
+    "scope": "Four new modifier cases plus the eight existing Numeric/pointer budget cases; earlier full regression set not rerun for this observer-only change."
+  },
+  "actual_ui": {
+    "observations": 32,
+    "modifier_gestures": 128,
+    "frames": 13088,
+    "cases": [
+      "finite-axis-modifiers",
+      "finite-rotated-modifiers",
+      "ieee-axis-modifiers",
+      "ieee-rotated-modifiers"
+    ],
+    "hosts": [
+      "imgui_cpp",
+      "imgui_python"
+    ],
+    "platforms": [
+      "Windows",
+      "Linux"
+    ],
+    "profiles": [
+      "source",
+      "installed"
+    ],
+    "os_input_or_gpu_claim": false
+  },
+  "verified": [
+    "Actual rendered resize handle index 4 and rotation handle selected via physical input events.",
+    "Ctrl keeps the center fixed; Shift resize keeps the opposite corner and aspect ratio.",
+    "A requested 22-degree rotation snaps to 15 degrees with Shift.",
+    "Alt movement publishes geometry beyond the image bounds.",
+    "Preview does not publish; each changed Apply publishes one history transaction and version-2 workflow record.",
+    "Undo/Redo, literal IEEE samples, global/previous selections and row metadata remain exact.",
+    "Independent expected resize geometry uses the delivered cursor projected from captured ImGui screen coordinates; the 1e-4 geometry tolerance is unchanged."
+  ],
+  "ci": {
+    "cpp_cases": 87,
+    "added_environment": "IMAGEJXX_SAVED_MODIFIERS_CPP_BASE",
+    "hosted_full_suite": "Not accepted; earlier feature build reached the complete suite and remains running."
+  },
+  "limitations": [
+    "Only ordinary XY, one corner handle, and the named independent modifiers are qualified here.",
+    "All handles, combined modifiers, boundary and collapse cases, scientific contexts and explicit workflow/rebind UI gates remain open.",
+    "C++ and Python hosts use bounded shared-ImGui input sessions, not OS/DPI/accessibility qualification.",
+    "Windows/macOS reviewed hosted feature profiles and complete ImageJ/Fiji families remain open."
+  ],
+  "source": [
+    {
+      "path": "src/desktop/saved_roi_budget_ui_probe.cpp",
+      "bytes": 18758,
+      "sha256": "88eda819488310c7c38a478c3bf21dd783f1dd6de91138e1b3482fa19103c9b6"
+    },
+    {
+      "path": "tests/python/test_saved_roi_pointer_budget_ui.py",
+      "bytes": 4870,
+      "sha256": "f9e97d18d44a8694749f07b39819d79d6d3780647b44644af64c0f3959b48473"
+    },
+    {
+      "path": "tests/python/test_saved_roi_modifiers_ui.py",
+      "bytes": 5917,
+      "sha256": "64d24666db470718d39ee738f73ca4016858a4d88b260d8aa006ca3dc18cfbf3"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 8551,
+      "sha256": "2b3e7fbe6369608115428f1f40a1e47698399a228523dfdd7218406cf75b7c80"
+    }
+  ],
+  "receipts": "build/p09f-saved-modifiers001",
+  "scratch_removed_bytes": 1785282477,
+  "scratch_removed_files": 272,
+  "cleanup": "Every archived member checked with CRC and SHA-256 before deleting explicit owned scratch; retained archives verified."
+}

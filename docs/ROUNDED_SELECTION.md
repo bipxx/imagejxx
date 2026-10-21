@@ -1,5 +1,20 @@
 # Rounded rectangle selections
 
+**Saved-area modifier checkpoint, 2026-10-21 (work in progress):** ordinary XY
+now has explicit actual-input checks for Ctrl-centered corner resize,
+Shift aspect-preserving corner resize, Shift rotation snapping (22 degrees to
+15 degrees), and Alt movement beyond image bounds. Preview remains unpublished;
+Apply creates one history transaction and version-2 workflow record. Undo/Redo
+retain samples, selections and row metadata, including literal IEEE payloads.
+The four finite/IEEE, axis/rotated cases pass through both hosts, source and
+installed, on Windows and Linux: 32 observations, 128 modifier gestures and
+13,088 frames. All four profiles pass the twelve focused cases with no skips.
+CI now produces 87 C++ cases, including this matrix. See
+[the receipt](parity/reviews/p09f-saved-modifiers001.json). This observer-only
+increment retains the existing geometry implementation; all resize handles,
+combined modifiers, scientific contexts and workflow/rebind gates remain open.
+All99 stays 42 in progress / 57 open / 0 complete; all 96 formats remain partial.
+
 **No-movement pointer checkpoint, 2026-10-21 (work in progress):** the existing
 fresh-budget release path now has explicit shared-ImGui input coverage. Adjacent
 mouse-down/up frames prove no motion was delivered. A one-MiB in-flight API
