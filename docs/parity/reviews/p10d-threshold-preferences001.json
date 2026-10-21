@@ -1,0 +1,210 @@
+{
+  "state": "qualified_functional_increment",
+  "objective_complete": false,
+  "scope": "Persist last-used automatic display threshold options in the native settings/preferences schema and restore them in both Dear ImGui hosts.",
+  "behavior": "All eighteen registered methods plus bright/dark and first/last-bin exclusion flags share typed native settings. Opening a panel restores defaults. Successful Auto calculations implicitly save options; Reset and Cancel retain them. Omitted automation arguments use settings; explicit arguments override. Unknown compartments are preserved, invalid patches refuse atomically, Threshold group reset preserves other groups.",
+  "settings": [
+    "threshold_method",
+    "threshold_bright",
+    "threshold_ignore_black",
+    "threshold_ignore_white"
+  ],
+  "storage_policy": "Version-one envelope remains unchanged. Ordinary implicit saves honor recovery/newer-file write protection while remembering options for the current session. Disk-save exceptions preserve both display and in-memory remembered options. Saving preferences and publishing display are separate resources: a revision conflict can refuse display after options reached disk. Merely toggling a control without Auto does not save a last-used option.",
+  "profiles": {
+    "windows": {
+      "tests": 4322,
+      "new_preference_checks": 167,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "observations": 132,
+      "frames": 10728,
+      "restart_reports": 24,
+      "contexts": [
+        "imgui_cpp",
+        "imgui_python"
+      ],
+      "evidence": {
+        "path": "build/p10d-threshold-preferences001/windows-evidence001.json",
+        "bytes": 545023,
+        "sha256": "9cdce00d6455063a0f874913dd5e0c7974d446c8c6686a4cd4732653588d536d"
+      },
+      "junit": {
+        "path": "build/p10d-threshold-preferences001/windows-python004/pytest.xml",
+        "bytes": 637669,
+        "sha256": "fcc0ed62acbfa2ad242072bc786fd7314371d2d112d760fcd7aee12aea1de4cb"
+      },
+      "products": {
+        "path": "build/p10d-threshold-preferences001/windows-products001.json",
+        "bytes": 13090,
+        "sha256": "2e4b25ba1dc24c4b2b134e7fa894ae645db6483471c14eb3a7edae3590315dd9"
+      },
+      "sdk": {
+        "path": "build/p10d-threshold-preferences001/windows-sdk001/receipt.json",
+        "bytes": 1294,
+        "sha256": "6a9893fe64384353be9586351ca9adeb6f92724eb7066109550d09d53ea06bf8"
+      },
+      "preferences_sdk": {
+        "path": "build/p10d-threshold-preferences001/windows-sdk-preferences001/receipt.json",
+        "bytes": 534,
+        "sha256": "0fedb693435699c796488bb39a249dc4d8c64cdf13a4da723e24cc1a847fc374"
+      },
+      "commercial_use": {
+        "path": "build/p10d-threshold-preferences001/windows-licenses001.log",
+        "bytes": 53,
+        "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+      },
+      "cleanup": {
+        "path": "build/p10d-threshold-preferences001/windows-cleanup001.json",
+        "bytes": 610497,
+        "sha256": "e272c2cda73a9338e3c0c8de3fecde4236fb520012c97c488b6979c298c53fa7"
+      },
+      "removed_bytes": 595699345
+    },
+    "linux": {
+      "tests": 4322,
+      "new_preference_checks": 167,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "observations": 132,
+      "frames": 10728,
+      "restart_reports": 24,
+      "contexts": [
+        "imgui_cpp",
+        "imgui_python"
+      ],
+      "evidence": {
+        "path": "build/p10d-threshold-preferences001/linux-evidence001.json",
+        "bytes": 540119,
+        "sha256": "cfbe3376d8115466e705098d2807dd295fd10ee8c5e6ad084e083aacfd11866b"
+      },
+      "junit": {
+        "path": "build/p10d-threshold-preferences001/linux-python003/pytest.xml",
+        "bytes": 637669,
+        "sha256": "351d538409d838320f2e3b1877a02860c86a98c9f1c1718182ed368e944cdb66"
+      },
+      "products": {
+        "path": "build/p10d-threshold-preferences001/linux-products001.json",
+        "bytes": 12667,
+        "sha256": "643e45cca73ddc88eb91ba30037822968b89b47581d529aad930c2a123838b8c"
+      },
+      "sdk": {
+        "path": "build/p10d-threshold-preferences001/linux-sdk001/receipt.json",
+        "bytes": 1177,
+        "sha256": "8f3ad0ec97add6e3d5ee27c59cabc9bba10b43f79b2f830eb6585a7e4a6751a8"
+      },
+      "preferences_sdk": {
+        "path": "build/p10d-threshold-preferences001/linux-sdk-preferences001/receipt.json",
+        "bytes": 439,
+        "sha256": "d4da7945fa912da30c3543f59f5bc349897d58e325ae3e5f231980a6ea1ee38f"
+      },
+      "commercial_use": {
+        "path": "build/p10d-threshold-preferences001/linux-licenses001.log",
+        "bytes": 53,
+        "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+      },
+      "cleanup": {
+        "path": "build/p10d-threshold-preferences001/linux-cleanup001.json",
+        "bytes": 495202,
+        "sha256": "0b8ec3e6e309ce1d24dfe89fdca5eaeb0111356f79522b80eef3fd2aa359d2c0"
+      },
+      "removed_bytes": 509493188
+    }
+  },
+  "source": [
+    {
+      "path": "src/desktop/automatic_display_ui_probe.cpp",
+      "bytes": 5467,
+      "sha256": "5978e3833228b83696908a2932cb90a8413b4d815f1441092e58108228836944"
+    },
+    {
+      "path": "src/desktop/threshold_panel.cpp",
+      "bytes": 20447,
+      "sha256": "19c606587965b6bd9b78b44a579feef1a11215b98acfbdfa60bcd3984db95309"
+    },
+    {
+      "path": "src/desktop/threshold_panel.hpp",
+      "bytes": 2870,
+      "sha256": "c60c88ea21dd7f866c8149b593f404609acc1a1588dbeb4618bdce44f4d04d0f"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 659824,
+      "sha256": "d0e8c97bd3a04d814c8deae6420d2be5cf587310858f98537daec11e7ee29891"
+    },
+    {
+      "path": "src/native/settings.cpp",
+      "bytes": 20190,
+      "sha256": "309636daac2302c7d8dcb4f099396989929c483a53218cb62812aabd0f6d3c53"
+    },
+    {
+      "path": "tests/python/test_threshold_preferences.py",
+      "bytes": 7629,
+      "sha256": "80054b79c423b6746614c68a9f5caea402a4e54cb7a419def1f0e0d166b48055"
+    }
+  ],
+  "sdk_sources": [
+    {
+      "path": "build/p10d-threshold-preferences001/sdk-preferences-source001/CMakeLists.txt",
+      "bytes": 247,
+      "sha256": "31a113c27e3ed742ec926c622704cecb0140b29bcd6cfa96666af808c172e950"
+    },
+    {
+      "path": "build/p10d-threshold-preferences001/sdk-preferences-source001/main.cpp",
+      "bytes": 1981,
+      "sha256": "3844252ba24990f3b7ee13a5272fa993189cfa631aa10bed99bb33e4cceb9814"
+    }
+  ],
+  "initial_failures": [
+    {
+      "report": {
+        "path": "build/p10d-threshold-preferences001/windows-python001/pytest.xml",
+        "bytes": 24541,
+        "sha256": "4c30c57a831d348a84839451cc62368f1712114dae2779f71e9a35d5d153c602"
+      },
+      "reason": "Reader assumed an opened report field absent from the observer. It now inspects the first actual visible frame, preserving input evidence."
+    },
+    {
+      "report": {
+        "path": "build/p10d-threshold-preferences001/windows-python002/pytest.xml",
+        "bytes": 26629,
+        "sha256": "bc4fcb36bb59a74d866546ea63364aad230a82e57dfd5bb73609a4bf23d0e688"
+      },
+      "reason": "New tests called the Python facade document snapshot while expecting a native snapshot. Corrected to the existing native snapshot accessor."
+    },
+    {
+      "report": {
+        "path": "build/p10d-threshold-preferences001/windows-python003/pytest.xml",
+        "bytes": 26703,
+        "sha256": "c9e03e68a68ca4527c98ce2069efccc2d826260ca2ac5d23e8a6e53e7e432559"
+      },
+      "reason": "Python-created document is already dirty on import. Assertions now compare actual prior dirty/revision state; Auto is still required to preserve it."
+    }
+  ],
+  "remaining": [
+    "Persist complete automatic-mask/plugin form defaults (including bin/target/pooling controls), pooled automatic display, complete scientific/ROI histogram controls and method-level nonpixel workflow recording.",
+    "Threshold calculation remains synchronous and bounded; complete worker, resource/RSS, latency, accessibility, full reference and platform qualification remain open.",
+    "The pre-existing Auto Contrast producer-source fingerprint gate remains unresolved; no fingerprint repinning."
+  ],
+  "counts": {
+    "in_progress": 46,
+    "open": 53,
+    "complete": 0,
+    "format_variants_partial": 96
+  },
+  "plan_gate": {
+    "state": "pre_existing_failure",
+    "evidence": {
+      "path": "build/p10d-threshold-preferences001/plan-check001.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    },
+    "message": "Plan inventory check failed: histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed",
+    "unchanged_producer_source": {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 14135,
+      "sha256": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    }
+  }
+}

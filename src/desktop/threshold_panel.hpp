@@ -2,6 +2,7 @@
 
 #include "desktop.hpp"
 #include <imagejxx/manual_threshold.hpp>
+#include <imagejxx/settings.hpp>
 #include <imagejxx/automatic_threshold_display.hpp>
 #include <functional>
 #include <imgui.h>
@@ -30,6 +31,7 @@ public:
   void draw(const std::optional<DocumentSnapshot> &current, bool busy,
             const Callbacks &callbacks);
   void cancel(const Action &callback = {});
+  void setAutomaticOptions(const Settings &);
   void setAutomaticResult(const AutomaticThresholdDisplayResult &);
   // Keep the modeless controls visibly disabled after close without retaining
   // the source's pixel storage through a snapshot.

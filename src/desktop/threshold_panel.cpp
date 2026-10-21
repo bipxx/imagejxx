@@ -124,6 +124,13 @@ void ThresholdPanel::show(const DocumentSnapshot &source,
   resetControls();
 }
 
+void ThresholdPanel::setAutomaticOptions(const Settings &settings) {
+  automaticMethod_ = settings.text("threshold_method");
+  automaticBright_ = settings.boolean("threshold_bright");
+  ignoreBlack_ = settings.boolean("threshold_ignore_black");
+  ignoreWhite_ = settings.boolean("threshold_ignore_white");
+  automaticResult_.reset();
+}
 void ThresholdPanel::setAutomaticResult(const AutomaticThresholdDisplayResult &result) {
   automaticMethod_=result.method;automaticBright_=result.bright;ignoreBlack_=result.ignore_black;ignoreWhite_=result.ignore_white;
   result.range.validate();lowerText_=boundText(result.range.lower);upperText_=boundText(result.range.upper);

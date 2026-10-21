@@ -170,7 +170,7 @@ untargeted positions and ROI pixels; the ordinary desktop retains its legacy
 whole-stack type-conversion policy. Display-only navigation does not retarget a
 captured command. Pixel/metadata/selection changes invalidate publication under
 the existing target dependencies. Complete scientific target controls in the
-threshold UI, persistent options and reference/performance/platform
+threshold UI and reference/performance/platform
 qualification remain open.
 
 ## Automatic display range
@@ -181,7 +181,10 @@ plane with 256 histogram bins, then publishes the red threshold overlay without
 changing pixels or pixel history. Reset removes the overlay; Cancel restores the
 opening display state. To Selection and Apply use the computed numeric range.
 Apply follows the existing ROI, output type, undo and recording policies.
-Options persist while the panel instance lives; cross-restart settings remain open.
+Successful Auto calculations save the selected method, direction and endpoint
+flags in the shared native preferences file. A newly opened panel restores them,
+including after restart; Reset and Cancel retain the last-used options. Merely
+editing controls without running Auto does not save a new last-used value.
 
 C++ callers include `imagejxx/automatic_threshold_display.hpp`; Python callers use
 `imagejxx.automatic_threshold_display(dataset, "huang2", bright=True)`.
@@ -203,6 +206,23 @@ estimates cover analysis, histogram tables and the empty-interval bitmap; source
 storage, provider caches, callbacks and process allocation overhead are external.
 
 This does not yet supply pooled automatic display, full scientific/ROI histogram
-controls, persistent settings, or method-level nonpixel workflow recording.
+controls or method-level nonpixel workflow recording.
 Apply records the existing numeric manual threshold when recording is enabled.
 Reference, resource, accessibility and full platform qualification remain open.
+
+The **Threshold** group in Edit > Preferences also exposes these defaults:
+`threshold_method`, `threshold_bright`, `threshold_ignore_black`, and
+`threshold_ignore_white`. The method choices come from the registered operation,
+so all eighteen methods remain consistent between Settings and the panel.
+`auto_manual_threshold` automation uses current settings for omitted options;
+explicit arguments override them. The standalone core calculation remains pure.
+
+Preferences retain their version-one envelope and unknown plugin compartments.
+Invalid updates refuse atomically, and resetting the Threshold group preserves
+other groups. Auto uses an implicit atomic save: recovery-protected or newer
+files remain untouched, while last-used values are remembered for the current
+session. A filesystem save error refuses the Auto display publication and keeps
+previous remembered values. Saving options and publishing a display are separate
+resources: a concurrent revision conflict can reject display publication after
+options have reached disk. General automatic-mask form defaults and options for
+other plugins remain separate unfinished configuration work.

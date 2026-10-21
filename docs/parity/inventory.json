@@ -10,7 +10,9 @@
           "docs/PLAN.md",
           "docs/parity/README.md",
           "docs/parity/reviews/p09q-preferences-reslice001.json",
-          "docs/parity/reviews/p09r-editor-integration001.json"
+          "docs/parity/reviews/p09r-editor-integration001.json",
+          "docs/THRESHOLDING.md",
+          "docs/parity/reviews/p10d-threshold-preferences001.json"
         ],
         "implementation": [
           "include/imagejxx/settings.hpp",
@@ -28,7 +30,9 @@
           "src/native/operation_catalog.inc",
           "src/native/operation_kernel.inc",
           "src/desktop/smoke.cpp",
-          "src/imagejxx/__init__.py"
+          "src/imagejxx/__init__.py",
+          "src/desktop/threshold_panel.hpp",
+          "src/desktop/threshold_panel.cpp"
         ],
         "tests": [
           "tests/native/test_settings.cpp",
@@ -39,7 +43,8 @@
           "tests/python/test_binary_options.py",
           "tests/fixtures/binary-imagej154r.json",
           "scripts/capture_binary_reference.py",
-          "examples/cpp/binary.cpp"
+          "examples/cpp/binary.cpp",
+          "tests/python/test_threshold_preferences.py"
         ]
       },
       "id": "G001",
@@ -57,7 +62,8 @@
         "m2-settings-foundation-windows-2026-10-10",
         "m2-m6-binary-options-windows-2026-10-10",
         "p09q.preferences-reslice.functional.001",
-        "p09r.editor-integration.functional.001"
+        "p09r.editor-integration.functional.001",
+        "p10d.threshold-preferences.functional.001"
       ]
     },
     {
@@ -67,7 +73,9 @@
           "docs/COMPATIBILITY.md",
           "docs/DESKTOP.md",
           "docs/PLAN.md",
-          "docs/parity/README.md"
+          "docs/parity/README.md",
+          "docs/THRESHOLDING.md",
+          "docs/parity/reviews/p10d-threshold-preferences001.json"
         ],
         "implementation": [
           "include/imagejxx/settings.hpp",
@@ -85,7 +93,9 @@
           "src/native/operation_catalog.inc",
           "src/native/operation_kernel.inc",
           "src/desktop/smoke.cpp",
-          "src/imagejxx/__init__.py"
+          "src/imagejxx/__init__.py",
+          "src/desktop/threshold_panel.hpp",
+          "src/desktop/threshold_panel.cpp"
         ],
         "tests": [
           "tests/native/test_settings.cpp",
@@ -96,7 +106,8 @@
           "tests/python/test_binary_options.py",
           "tests/fixtures/binary-imagej154r.json",
           "scripts/capture_binary_reference.py",
-          "examples/cpp/binary.cpp"
+          "examples/cpp/binary.cpp",
+          "tests/python/test_threshold_preferences.py"
         ]
       },
       "id": "G002",
@@ -111,7 +122,8 @@
       "status": "in_progress",
       "verification": [
         "m2-settings-foundation-windows-2026-10-10",
-        "m2-m6-binary-options-windows-2026-10-10"
+        "m2-m6-binary-options-windows-2026-10-10",
+        "p10d.threshold-preferences.functional.001"
       ]
     },
     {
@@ -1866,7 +1878,8 @@
           "docs/parity/reviews/p09z-auto-threshold001.json",
           "docs/parity/reviews/p10a-threshold-options001.json",
           "docs/parity/reviews/p10b-pooled-threshold001.json",
-          "docs/parity/reviews/p10c-auto-display001.json"
+          "docs/parity/reviews/p10c-auto-display001.json",
+          "docs/parity/reviews/p10d-threshold-preferences001.json"
         ],
         "implementation": [
           "include/imagejxx/auto_threshold.hpp",
@@ -1887,7 +1900,8 @@
           "src/native/automatic_threshold_display.cpp",
           "src/desktop/threshold_panel.hpp",
           "src/desktop/threshold_panel.cpp",
-          "src/desktop/automatic_display_ui_probe.cpp"
+          "src/desktop/automatic_display_ui_probe.cpp",
+          "src/native/settings.cpp"
         ],
         "tests": [
           "tests/python/test_auto_threshold_imagej.py",
@@ -1905,7 +1919,8 @@
           "examples/cpp/pooled_threshold.cpp",
           "tests/python/test_automatic_threshold_display.py",
           "tests/python/test_automatic_display_ui.py",
-          "examples/cpp/automatic_threshold_display.cpp"
+          "examples/cpp/automatic_threshold_display.cpp",
+          "tests/python/test_threshold_preferences.py"
         ]
       },
       "id": "G047",
@@ -1914,7 +1929,7 @@
       ],
       "name": "Automatic global threshold",
       "remaining": [
-        "Complete upstream image-scaling/edge/tie/overflow and scientific/ROI target controls, pooled automatic display and persistent last-used plugin options.",
+        "Complete upstream image-scaling/edge/tie/overflow and scientific/ROI target controls, pooled automatic display and remaining automatic-mask/plugin form defaults.",
         "Complete reference coverage for existing twelve methods, formal fixture/interface binding, and full performance/resource/platform/accessibility qualification."
       ],
       "required_work": "Add ImageJ `Default`, `Huang`, `IJ_IsoData`, `RenyiEntropy`, `Shanbhag`; Fiji `Huang2`; reference histogram edge/tie/16-bit behavior",
@@ -1923,7 +1938,8 @@
         "p09z.auto-threshold.functional.001",
         "p10a.threshold-options.functional.001",
         "p10b.pooled-threshold.functional.001",
-        "p10c.automatic-display.functional.001"
+        "p10c.automatic-display.functional.001",
+        "p10d.threshold-preferences.functional.001"
       ]
     },
     {
@@ -180509,6 +180525,29 @@
         "total": 4062
       },
       "scope": "4062 selected checks per OS; 216 threshold input reports / 18384 frames including 72 automatic display reports; four installed SDK examples and 15 transport checks per OS. Full G047 acceptance remains open."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-21",
+      "id": "p10d.threshold-preferences.functional.001",
+      "identity": {
+        "qualification": {
+          "bytes": 8928,
+          "path": "docs/parity/reviews/p10d-threshold-preferences001.json",
+          "sha256": "759a539e9cdb4c0b2dd8170917ebdb73e7932081b0afe44c722878a0b200e87f"
+        }
+      },
+      "platform": "Windows/Linux installed SDK and standalone/Python Dear ImGui hosts",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 4322,
+        "report": "build/p10d-threshold-preferences001/windows-python004/pytest.xml",
+        "skipped": 0,
+        "total": 4322
+      },
+      "scope": "4322 checks per OS including 167 preference checks; 264 threshold reports / 21456 frames, including 48 restart reports; installed SDK consumers verify 144 method/direction/endpoint combinations per OS. Full G001/G002/G047 acceptance remains open."
     }
   ]
 }

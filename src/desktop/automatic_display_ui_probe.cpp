@@ -24,6 +24,7 @@ Json automaticDisplayUiCase(Window &window,const std::string &id,const std::stri
   auto owner=std::make_shared<imagejxx::Document>(DocumentData{Dataset::from_stack(std::move(planes))});
   auto view=owner->snapshot().display();view.properties["display_range"]=metadata_array({0,255});view.properties["lut"]=std::string("gray");owner->set_display(view);window.addNativeDocument(owner);window.recording=true;
   Json report{{"contract","p10c.automatic-display.ui.001"},{"case_id",id},{"context",host},{"acceptance_claim",false},{"state","running"},{"frames",Json::array()},{"controls",Json::array()},{"states",{{"before",state(window,owner)}}}};
+  report["settings_before"]=window.preferencesJson();
   struct Failure{Json &r;fs::path root;bool done=false;~Failure(){if(!done)try{r["state"]="failed";writeJson((root/"failure.json").u8string(),r);}catch(...){}}}failure{report,root};
   HeadlessInputSession session(window);Json last;
   auto frame=[&](const Json &events=Json::array()){
@@ -39,10 +40,12 @@ Json automaticDisplayUiCase(Window &window,const std::string &id,const std::stri
   frame();frame();frame();click("menu.Process");click("menu.manual_threshold");
   click("panel.auto.method");
   const auto point=last.at("threshold_panel").at("controls").at("auto.method.choice.otsu");frame(Json::array({{{"type","position"},{"space","screen"},{"point",point}}}));frame(Json::array({{{"type","wheel"},{"x",0},{"y",-12}}}));frame();frame();
-  click("panel.auto.method.choice."+method);if(!bright)click("panel.auto.bright");if(both){click("panel.auto.ignore_black");click("panel.auto.ignore_white");}
-  click("panel.auto");frame();report["automatic"]=last.at("threshold_panel");report["overlay"]=last.at("ordinary_pixels").at("readback");report["states"]["automatic"]=state(window,owner);
+  click("panel.auto.method.choice."+method);
+  for(const auto &flag:std::vector<std::pair<std::string,bool>>{{"bright",bright},{"ignore_black",both},{"ignore_white",both}})
+    if(last.at("threshold_panel").at("automatic").at(flag.first).get<bool>()!=flag.second)click("panel.auto."+flag.first);
+  click("panel.auto");frame();report["automatic"]=last.at("threshold_panel");report["overlay"]=last.at("ordinary_pixels").at("readback");report["states"]["automatic"]=state(window,owner);report["settings_after_auto"]=window.preferencesJson();
   click("panel.reset");report["states"]["reset"]=state(window,owner);
-  click("panel.auto");click("panel.cancel");report["states"]["cancelled"]=state(window,owner);
+  click("panel.auto");click("panel.cancel");report["states"]["cancelled"]=state(window,owner);report["settings_after_cancel"]=window.preferencesJson();
   click("menu.Process");click("menu.manual_threshold");click("panel.auto");click("panel.to_selection");report["states"]["selection"]=state(window,owner);
   click("panel.apply");window.wait();window.poll();frame();frame();report["states"]["applied"]=state(window,owner);
   session.close();report["state"]="observed";writeJson((root/"case.json").u8string(),report);failure.done=true;return report;

@@ -2921,7 +2921,18 @@ struct Window::Impl {
     if(!live.revisions().matches(source.revisions(),Change::Data))throw RevisionConflict();
     const auto result=automatic_threshold_display(source.data().dataset,thresholdPosition(),method,0,bright,black,white,thresholdLimits());
     auto display=live.display();set_manual_threshold_state(display,source.data().dataset.shape(),{result.range,thresholdPosition()});
-    owner.controller_->set_display_if_current(live,std::move(display));return result;
+    auto remembered = preferenceState;
+    remembered.settings = owner.settings();
+    remembered.extras = preferences;
+    remembered.settings.update({{"threshold_method", method},
+        {"threshold_bright", bright}, {"threshold_ignore_black", black},
+        {"threshold_ignore_white", white}});
+    // Implicit saves preserve newer/corrupt-file write protection. A disk
+    // failure leaves both the display and remembered settings unchanged.
+    remembered.save(preferencesPath);
+    owner.controller_->set_display_if_current(live,std::move(display));
+    swapPreferences(preferenceState, remembered);
+    return result;
   }
   void thresholdReset() {
     if (owner.busy())
@@ -2985,6 +2996,7 @@ struct Window::Impl {
     thresholdSource = source;
     thresholdOpeningState = manual_threshold_state(source.display(), shape);
     thresholdPanel.show(source, std::move(summary));
+    thresholdPanel.setAutomaticOptions(owner.settings());
     thresholdApplyPreview();
     headlessSessionReadback = true;
     animating = false;
@@ -6126,7 +6138,8 @@ void Window::action(const std::string &name, const Json &p) {
     if(targetId && impl->thresholdSource && targetId!=impl->thresholdSource->id())throw std::invalid_argument("Automatic display target differs from captured owner");
     for(const auto &entry:p.items())if(entry.key()!="method" && entry.key()!="bright" && entry.key()!="ignore_black" && entry.key()!="ignore_white" && entry.key()!="document_id")throw std::invalid_argument("Unknown automatic display parameter");
     for(const auto key:{"bright","ignore_black","ignore_white"})if(p.contains(key) && !p.at(key).is_boolean())throw std::invalid_argument("Automatic display flags must be Boolean");
-    const auto result=impl->thresholdAutomatic(p.value("method",std::string("default")),p.value("bright",true),p.value("ignore_black",false),p.value("ignore_white",false));
+    const auto defaults = settings();
+    const auto result=impl->thresholdAutomatic(p.value("method",defaults.text("threshold_method")),p.value("bright",defaults.boolean("threshold_bright")),p.value("ignore_black",defaults.boolean("threshold_ignore_black")),p.value("ignore_white",defaults.boolean("threshold_ignore_white")));
     impl->thresholdPanel.setAutomaticResult(result);return;
   }
   if (name == "replay_manual_threshold") {

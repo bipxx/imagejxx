@@ -1466,6 +1466,12 @@ and every remaining option remain assigned.
 
 ## Shared settings and preferences
 
+Auto threshold display now consumes the shared **Threshold** settings group.
+Successful Auto calculations save the method, bright/dark and endpoint flags;
+opening a panel restores them in both launch modes. Protected preference files
+remain untouched. See [threshold settings and limits](THRESHOLDING.md).
+
+
 `include/imagejxx/settings.hpp` supplies a headless C++ settings schema and atomic validated updates. The Python `imagejxx.Settings` type, native startup, both desktop launch modes and the searchable ImGui **Preferences** panel use that schema. The panel provides group filtering, editable drafts, Apply, Defaults, Revert, Import and Export. Rejected patches leave settings and their file unchanged.
 
 The current settings have consumers: theme, UI/font scale and display DPI; canvas background, initial physical-view zoom (specified in X screen pixels per image pixel) and display interpolation; foreground/background colors, independent brush/line/point sizes and annotation text size; ROI visibility and wand tolerance/connectivity; Z playback rate; undo step/pixel budgets and processing workers/workspace reservations; result column selection and decimal formatting, line-profile sample count; and PDF resolution/orientation. Result selection changes the table and CSV columns, rather than which measurements are computed. Formatting preserves full precision in native results. Display interpolation leaves image pixels unchanged.

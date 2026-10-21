@@ -1,5 +1,24 @@
 # ImageJ and Fiji gap closure plan
 
+**Threshold preference checkpoint, 2026-10-21 (work in progress):**
+The shared native Settings schema now retains the last Auto display method,
+bright/dark direction and endpoint exclusions. Both ImGui hosts restore them
+when opening the panel and after restart. Successful calculations save implicitly;
+Reset/Cancel retain last-used options. Unknown plugin data and protected newer
+files survive. A save failure leaves the overlay and remembered settings unchanged.
+Windows/Linux each pass 4,322 selected checks with no skips, including 167 new
+preference checks. Independent readers inspect 264 threshold reports / 21,456
+frames, including 48 restart reports. Installed C++ SDK consumers additionally
+verify all 144 method/direction/endpoint combinations and atomic group reset.
+Commercial-use inventory passes; verified archives remove
+1,105,192,533 temporary bytes, retaining final builds and evidence. See
+[the scoped receipt](parity/reviews/p10d-threshold-preferences001.json) and
+[settings behavior](THRESHOLDING.md). Next are pooled automatic display and
+complete scientific/ROI controls, plus remaining automatic-mask/plugin form
+defaults. Full reference/resource/platform acceptance and the pre-existing Auto
+Contrast fingerprint gate remain open. All99 stays 46 in progress / 53 open /
+0 complete; all 96 format variants remain partial.
+
 **Automatic threshold display checkpoint, 2026-10-21 (work in progress):**
 The manual Threshold panel now offers all eighteen Auto methods, bright/dark
 objects and endpoint exclusions. C++/Python expose exact inclusive display

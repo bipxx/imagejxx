@@ -2,6 +2,7 @@
 #include <cctype>
 #include <cmath>
 #include <imagejxx/settings.hpp>
+#include <imagejxx/operations.hpp>
 #include <imagejxx/shortcuts.hpp>
 #include <nlohmann/json.hpp>
 #include <limits>
@@ -204,6 +205,25 @@ const std::vector<SettingDefinition> &Settings::schema() {
        0,
        0,
        {"auto", "8", "10", "12", "14", "15", "16"}},
+      {"threshold_method", "Threshold", "Auto method",
+       "Last method used by Auto in the manual Threshold panel.",
+       SettingKind::Choice, std::string("default"), 0, 0, [] {
+         std::vector<std::string> methods;
+         for (const auto &field : operation_spec("auto_mask").parameters)
+           if (field.name == "method")
+             for (const auto &choice : field.choices)
+               methods.push_back(std::get<std::string>(choice));
+         return methods;
+       }()},
+      {"threshold_bright", "Threshold", "Bright objects",
+       "Auto selects values above the threshold; otherwise selects at or below it.",
+       SettingKind::Boolean, true},
+      {"threshold_ignore_black", "Threshold", "Ignore black",
+       "Exclude the first histogram bin when estimating an automatic threshold.",
+       SettingKind::Boolean, false},
+      {"threshold_ignore_white", "Threshold", "Ignore white",
+       "Exclude the last histogram bin when estimating an automatic threshold.",
+       SettingKind::Boolean, false},
       {"binary_iterations", "Binary processing", "Morphology iterations",
        "Repeat each erosion/dilation stage of the binary commands this many "
        "times.",

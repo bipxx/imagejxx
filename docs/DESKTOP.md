@@ -1006,7 +1006,7 @@ Both launch modes share all the following controls and behavior.
 | Overlays | Geometric/text annotations, flatten to new image and rendered export |
 | Fourier/segmentation | Forward/inverse FFT with retained complex data, marker watershed, binary commands |
 | Workflows | Record native pixel edits, JSON replay, scientific session batch with explicit document/target policy, per-file output status and cooperative preparation cancellation |
-| Preferences | Searchable grouped native settings, themes/scaling/DPI, drawing/wand/conversion/binary defaults, undo budgets, reset/import/export, opt-in saved-workspace startup, recent files and dock layout; see the partial consumption limits in [implementation progress](IMPLEMENTATION.md#shared-settings-and-preferences) |
+| Preferences | Searchable grouped native settings, themes/scaling/DPI, drawing/wand/conversion/binary/Auto threshold defaults, undo budgets, reset/import/export, opt-in saved-workspace startup, recent files and dock layout; see the partial consumption limits in [implementation progress](IMPLEMENTATION.md#shared-settings-and-preferences) |
 | Windows integration | System image clipboard and printer dialog with preview |
 
 Drag rectangles, ellipses and lines. Area corners snap to the pixel grid.
