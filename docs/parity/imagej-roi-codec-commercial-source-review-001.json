@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_owned_foundation",
+  "review_type": "Root authorship/integration attestation, not independent legal review",
+  "license": "Existing project MIT for new product/tool/test code; fixture bytes are outputs for owned test inputs",
+  "scope": "Original C++ binary format implementation informed by pinned public ImageJ format facts; no upstream Java implementation copied into product code",
+  "specification_sources": [
+    "https://raw.githubusercontent.com/imagej/ImageJ/62db90a269cccc1ac79f658e4602043214ed055b/ij/io/RoiDecoder.java",
+    "https://raw.githubusercontent.com/imagej/ImageJ/62db90a269cccc1ac79f658e4602043214ed055b/ij/io/RoiEncoder.java"
+  ],
+  "reference_runtime": "Existing pinned ImageJ/Fiji JDK used only under excluded build reference trees; no Java source/class/runtime added to shipping roots",
+  "new_dependencies": [],
+  "imported_third_party_product_code": [],
+  "imported_product_assets": [],
+  "restricted_features_added": false,
+  "source_archive_before": {
+    "bytes": 8843514,
+    "path": "build/p06p-shape-profiles-source001/imagejxx-0.2.0.tar.gz",
+    "sha256": "b4b22a60816989e44e71995cb46c69a4fcccc064a5ed78ce63650d53a04c128b"
+  },
+  "sources": [
+    {
+      "logical_path": "CMakeLists.txt",
+      "before": {
+        "path": "build/p06q-roi-codec001/held001/before/CMakeLists.txt",
+        "bytes": 56253,
+        "sha256": "c89922b486ccfcb7dd404f9dc5a928a72c2a049e10a2c77cdb34e28be6d295e3"
+      },
+      "after": {
+        "path": "build/p06q-roi-codec001/held001/after/CMakeLists.txt",
+        "bytes": 56575,
+        "sha256": "e70c64443be1f694fb7c26d7a149b3921622a0c71a3aaaebe6edec963d10de2f"
+      },
+      "current": {
+        "path": "CMakeLists.txt",
+        "bytes": 56575,
+        "sha256": "e70c64443be1f694fb7c26d7a149b3921622a0c71a3aaaebe6edec963d10de2f"
+      }
+    },
+    {
+      "logical_path": "include/imagejxx/imagej_roi.hpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-codec001/held001/after/include/imagejxx/imagej_roi.hpp",
+        "bytes": 1340,
+        "sha256": "4d35e8e3aaf0d52f0ae70e1348ac36adab4bf786ffbd0ad697f94c22d54fa021"
+      },
+      "current": {
+        "path": "include/imagejxx/imagej_roi.hpp",
+        "bytes": 1340,
+        "sha256": "4d35e8e3aaf0d52f0ae70e1348ac36adab4bf786ffbd0ad697f94c22d54fa021"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_roi.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-codec001/held001/after/src/native/imagej_roi.cpp",
+        "bytes": 18344,
+        "sha256": "a9aa6519f36e1a80c05623a610cab1b0092702e7e309f74fd4c16b0586b68790"
+      },
+      "current": {
+        "path": "src/native/imagej_roi.cpp",
+        "bytes": 18344,
+        "sha256": "a9aa6519f36e1a80c05623a610cab1b0092702e7e309f74fd4c16b0586b68790"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_roi_bindings.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-codec001/held001/after/src/native/imagej_roi_bindings.cpp",
+        "bytes": 2912,
+        "sha256": "a2485201764ce095be5799ac72b34c40b754745a46b5e0525fca48b8e241ee60"
+      },
+      "current": {
+        "path": "src/native/imagej_roi_bindings.cpp",
+        "bytes": 2912,
+        "sha256": "a2485201764ce095be5799ac72b34c40b754745a46b5e0525fca48b8e241ee60"
+      }
+    },
+    {
+      "logical_path": "src/native/bindings.cpp",
+      "before": {
+        "path": "build/p06q-roi-codec001/held001/before/src/native/bindings.cpp",
+        "bytes": 29399,
+        "sha256": "621accc8c4ac6f3b587ba483b4619f83dc3609b08b3052cf5d91128d9b6b5a05"
+      },
+      "after": {
+        "path": "build/p06q-roi-codec001/held001/after/src/native/bindings.cpp",
+        "bytes": 29466,
+        "sha256": "72dc44f898f6e6f8d67f0ee610e8c4ce832a666e99ddb1eb87c6f87c41dc8580"
+      },
+      "current": {
+        "path": "src/native/bindings.cpp",
+        "bytes": 29466,
+        "sha256": "72dc44f898f6e6f8d67f0ee610e8c4ce832a666e99ddb1eb87c6f87c41dc8580"
+      }
+    },
+    {
+      "logical_path": "src/imagejxx/__init__.py",
+      "before": {
+        "path": "build/p06q-roi-codec001/held001/before/src/imagejxx/__init__.py",
+        "bytes": 53976,
+        "sha256": "8a96598bf8ddccc5bb365dd9b1c65bc0aa374fca957b1826dfe1041ee123559a"
+      },
+      "after": {
+        "path": "build/p06q-roi-codec001/held001/after/src/imagejxx/__init__.py",
+        "bytes": 54136,
+        "sha256": "b79e834b1ac8709b7ccc3c51d1bb6887ca06ba4d046aa92c2de4dcb15a9190da"
+      },
+      "current": {
+        "path": "src/imagejxx/__init__.py",
+        "bytes": 54136,
+        "sha256": "b79e834b1ac8709b7ccc3c51d1bb6887ca06ba4d046aa92c2de4dcb15a9190da"
+      }
+    },
+    {
+      "logical_path": "tests/native/test_imagej_roi.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-codec001/held001/after/tests/native/test_imagej_roi.cpp",
+        "bytes": 2617,
+        "sha256": "5f333a3bc9bc01b1045189e45d5583366317932d12511cb862612ef9d1c3034b"
+      },
+      "current": {
+        "path": "tests/native/test_imagej_roi.cpp",
+        "bytes": 2617,
+        "sha256": "5f333a3bc9bc01b1045189e45d5583366317932d12511cb862612ef9d1c3034b"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_imagej_roi.py",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-codec001/held001/after/tests/python/test_imagej_roi.py",
+        "bytes": 6887,
+        "sha256": "2b1c0de0e2ccbaee2a54113c845711ba90160ffae6615071f308bd8d2d83bac8"
+      },
+      "current": {
+        "path": "tests/python/test_imagej_roi.py",
+        "bytes": 6887,
+        "sha256": "2b1c0de0e2ccbaee2a54113c845711ba90160ffae6615071f308bd8d2d83bac8"
+      }
+    },
+    {
+      "logical_path": "tests/fixtures/imagej-roi-imagej154r.json",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-codec001/held001/after/tests/fixtures/imagej-roi-imagej154r.json",
+        "bytes": 60205,
+        "sha256": "bb36cd8e2d5015ec7c15dad881a2a92d1ff364eb561493ebcd6fa9de1422b184"
+      },
+      "current": {
+        "path": "tests/fixtures/imagej-roi-imagej154r.json",
+        "bytes": 60205,
+        "sha256": "bb36cd8e2d5015ec7c15dad881a2a92d1ff364eb561493ebcd6fa9de1422b184"
+      }
+    }
+  ],
+  "whole_family_acceptance": false
+}

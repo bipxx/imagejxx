@@ -1,0 +1,63 @@
+{
+  "schema": "imagejxx.histogram-native-contract-amendment",
+  "schema_version": 1,
+  "id": "P06c4-histogram-adoption-002",
+  "state": "implementation_boundary_clarifications_adopted_before_native_gates",
+  "consumes": {
+    "path": "docs/parity/reviews/P06c4-histogram-adoption-001.json",
+    "bytes": 11661,
+    "sha256": "46b332807d1976828b54c7d4f271519a5e676e5758b587c33ea242603fb0d917"
+  },
+  "reason": "Concrete implementation review exposed UniformRange cancellation-of-scale precision and unmeasurable callable-copy storage; settle exact behavior before first execution. Generic guarded display publication supplies an existing Auto prerequisite without a new Document revision.",
+  "decisions": [
+    {
+      "id": "U01",
+      "scope": "UniformRange only; ProcessorRaw exact source operation order unchanged",
+      "membership": "Exact low endpoint maps bin0; exact high endpoint maps final bin. Interior values use half-open intervals of the actual finite nondecreasing rounded edges; equality chooses the rightmost repeated interior edge. Duplicate zero-width interior intervals are empty. Lower/upper endpoint exceptions remain explicit even if their rounded edge is repeated.",
+      "implementation_bound": "Use bounded binary search of at most65537edges, or a normalized candidate validated against edges followed by binary-search correction. No unbounded per-sample walk.",
+      "literal": {
+        "dtype": "float32",
+        "samples": [
+          -1,
+          0,
+          1
+        ],
+        "bounds": "[-DBL_MAX,+DBL_MAX]",
+        "bins": 2,
+        "edges": "[-DBL_MAX,0,+DBL_MAX]",
+        "counts": [
+          1,
+          2
+        ]
+      },
+      "reason": "Overflow-safe scaled normalization alone rounds all three fractions to0.5, losing their actual side of the central edge. Edge-consistent comparison preserves a meaningful uniform partition without overflow."
+    },
+    {
+      "id": "R01",
+      "scope": "native introspectable working estimate",
+      "included": "ExecutionControl/callable holder objects and every introspectable capture/request/selection/metadata/calibration/array/mask/raster scratch byte remain charged under the unchanged working limit.",
+      "excluded": "Opaque std::function target-copy internals are not measurable by the standard API. Later Python getter/representation copies and externally retained user callback objects are outside this native estimate, as are existing external source caches, allocator bookkeeping, GPU/history/processRSS.",
+      "rule": "Freeze callable owners by value before callbacks for lifetime/reentry correctness. State exclusions in public estimate and binding documentation; do not claim a total allocation/process cap or introspect concrete callable types. No new callback framework."
+    },
+    {
+      "id": "P01",
+      "scope": "generic Document/Application captured-revision display publication",
+      "API": "set_display_if_current(const DocumentSnapshot& expected, DisplayState display)",
+      "semantics": "Document checks exact owner identity and all Pixels/Metadata/Selection/Display revisions under its existing mutex before display/constraint validation and mutation. Application resolves the captured ID under its existing membership lock, then invokes that guarded setter. Closed/foreign/stale/invalid requests have no effects. Success advances Display exactlyonce even for equal state; data/history/save identity stay unchanged. Existing unconditional set_display retains behavior.",
+      "active_owner_boundary": "This generic API intentionally addresses a captured member even when another owner is active. The eventual Auto controller still requires its separate active-owner/transient-cycle-epoch/job-publication arbitration in the atomic admission lane. Do not infer that the generic primitive alone closes Auto publication.",
+      "verification": "Independent Document/Application native tests and required Python tests are implemented/prepared; not executed or qualified by this adoption."
+    }
+  ],
+  "preservation": "All original16/80/83/58/28/15 reference membership, physical/workload limits, scalar API names/types, raw histogram semantics and wider product requirements remain unchanged. No commercial or manifest decision changes.",
+  "remaining": "Finish scalar source holds/focused native/API gates; freeze final Auto record/fallback/settings/cycle contract and implement actual asynchronous shared consumer. One complete installed C++/Python/SDK/both-ImGui exit remains mandatory.",
+  "acceptance": {
+    "clarifications_adopted": true,
+    "native_verified": false,
+    "Auto_contract_final": false,
+    "whole_family": false,
+    "commercial_eligibility": false,
+    "platform": false,
+    "release": false,
+    "full_goal": false
+  }
+}

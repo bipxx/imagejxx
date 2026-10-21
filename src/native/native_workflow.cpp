@@ -1,0 +1,523 @@
+#include "imagej_annotation_export_internal.hpp"
+#include "imagej_annotation_import_internal.hpp"
+#include "imagej_roi_import_internal.hpp"
+#include "kernel_control.hpp"
+#include "operation_internal.hpp"
+#include "native_workflow_internal.hpp"
+#include "native_workflow_program_internal.hpp"
+#include "rgb_dataset_internal.hpp"
+#include "color_stack_internal.hpp"
+#include "indexed_dataset_internal.hpp"
+#include "indexed_rgb_internal.hpp"
+#include "workflow_stage_metadata.hpp"
+#include "session_metadata.hpp"
+#include <imagejxx/gaussian_command.hpp>
+#include <imagejxx/rank_command.hpp>
+#include <set>
+#include <type_traits>
+
+namespace imagejxx {
+namespace {
+void require(bool value, const char *message) {
+  if (!value)
+    throw std::invalid_argument(message);
+}
+struct Budget {
+  std::size_t cap, used = 0;
+  void add(std::size_t n) {
+    require(n <= cap - used, "Native workflow retained-byte limit");
+    used += n;
+  }
+  void product(std::size_t a, std::size_t b) {
+    require(!a || b <= (cap - used) / a, "Native workflow retained-byte limit");
+    add(a * b);
+  }
+  void record(const MetadataObject &r) {
+    add(detail::imagej_roi_record_bytes(r, cap - used));
+  }
+  void data(const DocumentSnapshot &s) {
+    const auto shape = s.data().dataset.shape();
+    product(shape.pixel_count(), sizeof(double));
+    record(s.data().metadata.extensions);
+    record(s.data().metadata.properties);
+    record(s.data().metadata.record_layout);
+    add(s.data().metadata.title.size());
+  }
+};
+void checkpoint(const ExecutionControl &c) {
+  if (c.cancellation && c.cancellation->canceled())
+    throw OperationCancelled();
+  if (c.checkpoint)
+    c.checkpoint();
+  if (c.cancellation && c.cancellation->canceled())
+    throw OperationCancelled();
+}
+bool calibration_equal(const SpatialCalibration &a,
+                       const SpatialCalibration &b) {
+  return a.spacing == b.spacing && a.origin == b.origin &&
+         a.direction == b.direction && a.unit == b.unit &&
+         a.frame_interval == b.frame_interval &&
+         a.time_origin == b.time_origin && a.time_unit == b.time_unit;
+}
+void parameters_budget(Budget &b, const OperationParameters &parameters) {
+  for (const auto &[key, value] : parameters) {
+    b.add(key.size() + sizeof(OperationValue));
+    std::visit(
+        [&](const auto &v) {
+          using T = std::decay_t<decltype(v)>;
+          if constexpr (std::is_same_v<T, std::string>)
+            b.add(v.size());
+          else if constexpr (std::is_same_v<T, NumericArray>) {
+            b.product(v.values.size(), sizeof(double));
+            b.product(v.shape.size(), sizeof(std::size_t));
+          } else if constexpr (std::is_same_v<T,
+                                              std::shared_ptr<const Image>>) {
+            require(bool(v), "Null workflow image parameter");
+            b.product(v->pixels.size(), sizeof(double));
+          }
+        },
+        value);
+  }
+}
+ResolvedRgbDatasetCommand workflow_rgb(const DocumentSnapshot &source,
+    const NativeWorkflowOperation &operation,std::size_t cap) {
+  detail::validate_native_workflow_operation_intent(operation);
+  const auto shape=source.data().dataset.shape();
+  require(*operation.target.t->stop==shape.t && *operation.target.c->stop==shape.c &&
+          *operation.target.z->stop==shape.z,"RGB workflow requires complete current-stage ranges");
+  (void)resolve_target(source,operation.target);
+  auto request=detail::rgb_dataset_request_from_record(*operation.original);
+  request.destination=OutputDestination::InPlace;
+  request.max_working_bytes=std::min(request.max_working_bytes,cap);
+  const auto position=detail::session_metadata::to_json(operation.original->at("view_position")).get<std::array<int,3>>();
+  auto view=source.display();view.t=position[0];view.c=position[1];view.crosshair[2]=position[2];
+  return resolve_rgb_dataset_command(source.with_display(std::move(view)),request);
+}
+ResolvedColorStackCommand workflow_color_stack(const DocumentSnapshot &source,
+    const NativeWorkflowOperation &operation,std::size_t cap) {
+  detail::validate_native_workflow_operation_intent(operation);
+  const auto shape=source.data().dataset.shape();
+  require(*operation.target.t->stop==shape.t && *operation.target.c->stop==shape.c &&
+          *operation.target.z->stop==shape.z,"Color stack workflow requires complete current-stage ranges");
+  (void)resolve_target(source,operation.target);
+  auto request=detail::color_stack_workflow_request(operation.parameters,*operation.original);
+  request.destination=OutputDestination::InPlace;
+  request.max_working_bytes=std::min(request.max_working_bytes,cap);
+  auto rendering=request.action==ColorStackAction::FlattenRgb && shape.s==1?detail::color_stack_rendering_options(*operation.original):std::nullopt;
+  if(!operation.parameters.empty())return resolve_color_stack_command(source,request,rendering);
+  const auto position=detail::session_metadata::to_json(operation.original->at("view_position")).get<std::array<int,3>>();
+  auto view=source.display();view.t=position[0];view.c=position[1];view.crosshair[2]=position[2];
+  return resolve_color_stack_command(source.with_display(std::move(view)),request,rendering);
+}
+template<class Resolve,class Request>
+auto workflow_indexed(const DocumentSnapshot &source,const NativeWorkflowOperation &operation,std::size_t cap,Request read,Resolve resolve) {
+  detail::validate_native_workflow_operation_intent(operation);
+  const auto shape=source.data().dataset.shape();
+  require(*operation.target.t->stop==shape.t && *operation.target.c->stop==shape.c && *operation.target.z->stop==shape.z,"Indexed workflow requires complete current-stage ranges");
+  (void)resolve_target(source,operation.target);
+  auto request=read(operation.parameters,*operation.original);
+  request.destination=OutputDestination::InPlace;request.max_working_bytes=std::min(request.max_working_bytes,cap);
+  if(!operation.parameters.empty())return resolve(source,request);
+  const auto position=detail::session_metadata::to_json(operation.original->at("view_position")).get<std::array<int,3>>();
+  auto view=source.display();view.t=position[0];view.c=position[1];view.crosshair[2]=position[2];
+  return resolve(source.with_display(std::move(view)),request);
+}
+ResolvedImageJAnnotationExport workflow_export(const DocumentSnapshot &source,
+                                               const NativeWorkflowExport &v) {
+  if(v.original && detail::native_workflow_original_schema(*v.original)=="imagejxx.imagej-annotation-export")
+    return v.zip?rebind_imagej_annotation_zip_export(source,*v.original,v.items,v.limits,v.compress)
+                :rebind_imagej_annotation_export(source,*v.original,v.items.at(0),v.limits);
+  return v.zip?resolve_imagej_annotation_zip_export(source,v.items,v.limits,v.compress)
+              :resolve_imagej_annotation_export(source,v.items.at(0),v.limits);
+}
+ResolvedImageJAnnotationImport workflow_import(const DocumentSnapshot &source,
+                                               const NativeWorkflowImport &v) {
+  return v.original && detail::native_workflow_original_schema(*v.original)=="imagejxx.imagej-annotation-import-command"
+      ?rebind_imagej_annotation_import(source,*v.original,v.items,v.mode,v.limits)
+      :resolve_imagej_annotation_import(source,v.items,v.mode,v.limits);
+}
+PixelType conversion_type(const OperationParameters &parameters) {
+  const auto &name=std::get<std::string>(parameters.at("dtype"));
+  if(name=="uint8")return PixelType::UInt8;
+  if(name=="uint16")return PixelType::UInt16;
+  if(name=="float32")return PixelType::Float32;
+  if(name=="float64")return PixelType::Float64;
+  throw std::invalid_argument("Invalid workflow conversion dtype");
+}
+void preflight(const DocumentSnapshot &initial,
+               const std::vector<detail::NativeWorkflowStepRef> &steps,
+               Budget &budget, const ExecutionControl &control) {
+  ExecutionScope scope(control);
+  auto source=initial;
+  std::set<std::string> names;
+  for (const auto &step : steps) {
+    checkpoint(control);
+    std::visit(
+        [&](const auto *pointer) {
+          const auto &v = *pointer;
+          using T = std::decay_t<decltype(v)>;
+          if (!v.enabled) {
+            if constexpr (std::is_same_v<T, NativeWorkflowExport>) {
+              require(!v.name.empty() && v.name.size() <= 240 &&
+                          v.name != "." && v.name != ".." &&
+                          v.name.find_first_of("/\\:\0", 0, 4) ==
+                              std::string::npos,
+                      "Workflow output requires a flat name");
+              require(names.insert(v.name).second,
+                      "Duplicate workflow output name");
+            }
+            ExecutionScope intent_scope(control);
+            budget.add(detail::validate_disabled_native_workflow_step(
+                step, budget.cap - budget.used));
+            return;
+          }
+          budget.add(sizeof(T));
+          if (v.original)
+            budget.record(*v.original);
+          if constexpr (std::is_same_v<T, NativeWorkflowOperation>) {
+            budget.add(v.operation.size());parameters_budget(budget,v.parameters);
+            budget.product(v.target.positions.size(),sizeof(PlanePosition));
+            if(v.operation=="rgb_dataset") {
+              auto command=workflow_rgb(source,v,budget.cap-budget.used);
+              budget.add(command.layout().working_bytes);budget.record(command.record());
+              source=detail::rgb_dataset_metadata_preview(command);return;
+            }
+            if(v.operation=="color_stack") {
+              auto command=workflow_color_stack(source,v,budget.cap-budget.used);
+              budget.add(command.layout().working_bytes);budget.record(command.record());
+              source=detail::color_stack_metadata_preview(command);return;
+            }
+            if(v.operation=="indexed_dataset") {
+              auto command=workflow_indexed(source,v,budget.cap-budget.used,detail::indexed_dataset_workflow_request,resolve_indexed_dataset_command);
+              budget.add(command.layout().working_bytes);budget.record(command.record());
+              source=detail::indexed_dataset_metadata_preview(command);return;
+            }
+            if(v.operation=="indexed_rgb") {
+              auto command=workflow_indexed(source,v,budget.cap-budget.used,detail::indexed_rgb_workflow_request,resolve_indexed_rgb_command);
+              budget.add(command.layout().working_bytes);budget.record(command.record());
+              source=detail::indexed_rgb_metadata_preview(command);return;
+            }
+            require(operation_spec(v.operation).geometry ==
+                        GeometryEffect::Preserve || v.operation == "convert_image",
+                    "Workflow geometry requires an explicit native remap step");
+            require(v.target.destination == OutputDestination::InPlace,
+                    "Workflow step requires in-place destination");
+            if (v.operation == "convert_image")
+              budget.record(source.display().properties);
+            const auto resolved=resolve_target(source, v.target, v.operation);
+            std::optional<OperationParameters> normalized;
+            if(!v.filter_options && !(v.original && detail::native_workflow_bound_operation_original(*v.original)))
+              normalized=validate_execution_parameters(v.operation,resolved,v.parameters,{});
+            // Reserve a conservative complete output backing before any kernel.
+            budget.data(source);
+            detail::validate_native_workflow_operation_intent(v);
+            if (v.operation == "convert_image") {
+              budget.add(1024*1024); // Palette/type metadata and fixed lookup workspace.
+              const auto shape = source.data().dataset.shape();
+              require(shape.s == 1 || (source.data().dataset.pixel_type() == PixelType::UInt8 &&
+                          (shape.s == 3 || shape.s == 4)),
+                      "Workflow conversion requires scalar or UInt8 RGB/RGBA input");
+              // Conversion retains scalar results and intermediate plane tables.
+              // Charge conservative double backing and per-plane bookkeeping
+              // before any processing reads, including for one-pixel planes.
+              budget.product(source.data().dataset.shape().pixel_count(),
+                             5 * sizeof(double));
+              budget.product(source.data().dataset.shape().plane_count(), 512);
+              const auto target = resolve_target(source, v.target, v.operation);
+              (void)validate_execution_parameters(v.operation, target, v.parameters, {});
+            }
+            if (v.filter_options)
+              std::visit(
+                  [&](const auto &options) {
+                    using O = std::decay_t<decltype(options)>;
+                    if constexpr (std::is_same_v<O, GaussianBlurCommandOptions>)
+                      (void)resolve_gaussian_command(source, v.target, options);
+                    else
+                      (void)resolve_rank_command(source, v.target, options);
+                  },
+                  *v.filter_options);
+            if (v.original) {
+              if (detail::native_workflow_bound_operation_original(
+                      *v.original) &&
+                  v.operation == "gaussian_blur_imagej") {
+                auto rebound = v.filter_options
+                                   ? resolve_gaussian_command(
+                                         source, v.target,
+                                         std::get<GaussianBlurCommandOptions>(
+                                             *v.filter_options))
+                                   : rebind_gaussian_command(
+                                         source, *v.original, v.target);
+                require(v.use_destination_calibration ||
+                            metadata_equal(v.original->at("calibration"),
+                                           rebound.record().at("calibration")),
+                        "Workflow Gaussian requires destination calibration "
+                        "consent");
+              } else if(detail::native_workflow_bound_operation_original(*v.original) && (v.operation=="rank_filter_imagej" || v.operation=="remove_outliers_imagej" || v.operation=="top_hat_imagej" || v.operation=="remove_nans_imagej"))
+                (void)rebind_rank_command(source,*v.original,v.target);
+            }
+            if(v.operation=="convert_image")source=detail::scalar_conversion_metadata_preview(source,conversion_type(*normalized));
+            else source=detail::workflow_filter_metadata_preview(source,v.operation,normalized?*normalized:v.parameters,resolved);
+          } else if constexpr (std::is_same_v<T, NativeWorkflowImport>) {
+            if (v.original)
+              detail::validate_native_workflow_import_original(*v.original);
+            detail::validate_imagej_annotation_import_limits(v.limits);
+            require(v.mode == ImageJRoiImportMode::Append ||
+                        v.mode == ImageJRoiImportMode::Replace,
+                    "Workflow import mode");
+            require(!v.items.empty() &&
+                        v.items.size() <= v.limits.batch.max_entries,
+                    "Workflow import entry count");
+            std::size_t wire = 0;
+            for (const auto &item : v.items) {
+              std::visit(
+                  [&](const auto &i) {
+                    require(i.data.size() <=
+                                v.limits.batch.max_total_bytes - wire,
+                            "Workflow import total byte limit");
+                    wire += i.data.size();
+                    budget.add(i.data.size());
+                    budget.add(i.name.size());
+                  },
+                  item);
+              // Admit each original, mapping and native replacement before
+              // kernels.
+              auto admitted =
+                  detail::admit_imagej_annotation_import_item(item, v.limits);
+              std::visit(
+                  [&](const auto &m) {
+                    using M = std::decay_t<decltype(m)>;
+                    if constexpr (std::is_same_v<M, MappedImageJRoi>)
+                      budget.record(
+                          {{"row", encode_planar_annotations(
+                                       m.target_extent(), {m.annotation()})}});
+                    else
+                      budget.record(
+                          {{"row", encode_planar_display_annotations(
+                                       m.target_extent(), {m.annotation()})}});
+                  },
+                  admitted);
+            }
+            const auto command=workflow_import(source,v);budget.record(command.record());
+            auto edit=prepare_imagej_annotation_import(command);source=edit.preview();
+          } else {
+            require(!v.name.empty() && v.name.size() <= 240 && v.name != "." &&
+                        v.name != ".." &&
+                        v.name.find_first_of("/\\:\0", 0, 4) ==
+                            std::string::npos,
+                    "Workflow output requires a flat name");
+            require(names.insert(v.name).second,
+                    "Duplicate workflow output name");
+            budget.add(v.name.size());
+            require(!v.items.empty() && (v.zip || v.items.size() == 1),
+                    "Workflow export member count");
+            if (v.original)
+              detail::validate_native_workflow_export_original(*v.original);
+            detail::validate_imagej_annotation_export_limits(v.limits);
+            std::size_t bytes = 0, nodes = 0;
+            for (const auto &i : v.items) {
+              budget.add(i.name.size());
+              detail::preflight_imagej_annotation_projection(
+                  i.standard_projection, v.limits, bytes, nodes);
+            }
+            budget.add(bytes);
+            const auto command=workflow_export(source,v);budget.record(command.record());
+            budget.add(command.data().size());for(const auto &member:command.members())budget.add(member.data.size());
+          }
+        },
+        step);
+  }
+}
+void extensions(DocumentTransaction &tx, const MetadataObject &before,
+                const MetadataObject &after, bool properties) {
+  for (const auto &[key, value] : before)
+    if (!after.count(key)) {
+      if (properties)
+        tx.remove_property(key);
+      else
+        tx.remove_extension(key);
+    }
+  for (const auto &[key, value] : after) {
+    auto found = before.find(key);
+    if (found == before.end() || !metadata_equal(value, found->second)) {
+      if (properties)
+        tx.set_property(key, value);
+      else
+        tx.set_extension(key, value);
+    }
+  }
+}
+} // namespace
+DocumentTransaction PreparedNativeWorkflow::begin_edit() const {
+  auto tx = source_.begin_edit(dependencies());
+  const auto &before = source_.data(), &after = preview_.data();
+  if (!after.dataset.shares_pixels(before.dataset))
+    tx.replace_dataset(after.dataset);
+  if (!calibration_equal(after.dataset.calibration(),
+                         before.dataset.calibration()))
+    tx.set_calibration(after.dataset.calibration());
+  if (after.metadata.title != before.metadata.title)
+    tx.set_title(after.metadata.title);
+  extensions(tx, before.metadata.properties, after.metadata.properties, true);
+  extensions(tx, before.metadata.extensions, after.metadata.extensions, false);
+  if (!metadata_equal(before.metadata.record_layout,
+                      after.metadata.record_layout))
+    tx.set_record_layout(after.metadata.record_layout);
+  if (before.selection != after.selection)
+    tx.select(after.selection);
+  if (before.previous_selection != after.previous_selection)
+    tx.set_previous_selection(after.previous_selection);
+  if (before.rois != after.rois)
+    tx.set_rois(after.rois);
+  bool overlays = before.overlays.size() != after.overlays.size();
+  for (std::size_t i = 0; !overlays && i < before.overlays.size(); ++i)
+    overlays = !metadata_equal(before.overlays[i], after.overlays[i]);
+  if (overlays)
+    tx.set_overlays(after.overlays);
+  if (before.spectrum != after.spectrum)
+    tx.set_spectrum(after.spectrum);
+  if (paired_display_)
+    tx.set_axis_remap_display(preview_.display());
+  return tx;
+}
+struct detail::NativeWorkflowAccess {
+  static PreparedNativeWorkflow make(DocumentSnapshot source,
+                                     DocumentSnapshot preview,
+                                     std::vector<NativeWorkflowOutput> outputs,
+                                     std::size_t completed, std::size_t bytes,
+                                     bool paired_display) {
+    return PreparedNativeWorkflow(std::move(source), std::move(preview),
+                                  std::move(outputs), completed, bytes, paired_display);
+  }
+};
+PreparedNativeWorkflow
+prepare_native_workflow(const DocumentSnapshot &source,
+                        const std::vector<NativeWorkflowStep> &steps,
+                        const NativeWorkflowLimits &limits,
+                        const ExecutionControl &control) {
+  require(steps.size() <= limits.max_steps, "Native workflow step limit");
+  std::vector<detail::NativeWorkflowStepRef> refs;
+  refs.reserve(steps.size());
+  for (const auto &step : steps)
+    std::visit([&](const auto &v) { refs.emplace_back(&v); }, step);
+  return detail::prepare_native_workflow_borrowed(source, refs, limits,
+                                                  control);
+}
+std::size_t detail::admit_native_workflow(
+    const DocumentSnapshot &source,
+    const std::vector<NativeWorkflowStepRef> &steps,
+    const NativeWorkflowLimits &limits, const ExecutionControl &control) {
+  require(limits.max_steps > 0 && limits.max_steps <= 4096 &&
+              steps.size() <= limits.max_steps,
+          "Native workflow step limit");
+  require(limits.max_retained_bytes > 0, "Native workflow retained-byte limit");
+  Budget budget{limits.max_retained_bytes};
+  budget.data(source);
+  preflight(source, steps, budget, control);
+  return budget.used;
+}
+PreparedNativeWorkflow detail::prepare_native_workflow_borrowed(
+    const DocumentSnapshot &source,
+    const std::vector<NativeWorkflowStepRef> &steps,
+    const NativeWorkflowLimits &limits, const ExecutionControl &control) {
+  const auto admitted = admit_native_workflow(source, steps, limits, control);
+  std::vector<NativeWorkflowOutput> outputs;
+  std::size_t completed = 0;
+  bool paired_display = false;
+  Document working(source);
+  working.set_history_policy(1);
+  for (std::size_t index = 0; index < steps.size(); ++index) {
+    checkpoint(control);
+    if (!std::visit([](const auto *v) { return v->enabled; }, steps[index])) {
+      if (control.stage_progress)
+        control.stage_progress("workflow", index + 1, steps.size());
+      checkpoint(control);
+      continue;
+    }
+    const auto current = working.snapshot();
+    std::visit(
+        [&](const auto *pointer) {
+          const auto &v = *pointer;
+          using T = std::decay_t<decltype(v)>;
+          if constexpr (std::is_same_v<T, NativeWorkflowOperation>) {
+            auto execute = [&](const ResolvedTarget &target,
+                               const OperationParameters &parameters) {
+              auto prepared = prepare_operation(v.operation, target, parameters,
+                                                {}, control);
+
+              auto edit = prepared.begin_edit();
+              paired_display = paired_display || bool(edit.axis_remap_display());
+              checkpoint(control);
+              working.commit(edit);
+            };
+            if(v.operation=="rgb_dataset") {
+              auto command=workflow_rgb(current,v,limits.max_retained_bytes);
+              auto prepared=prepare_rgb_dataset(command,control,limits.max_retained_bytes);
+              auto edit=prepared.begin_edit();
+              if(!edit.axis_remap_display())edit.set_axis_remap_display(prepared.preview().display());
+              paired_display=true;checkpoint(control);working.commit(edit);
+            } else if(v.operation=="color_stack") {
+              auto command=workflow_color_stack(current,v,limits.max_retained_bytes);
+              auto prepared=prepare_color_stack(command,control,limits.max_retained_bytes);
+              auto edit=prepared.begin_edit();paired_display=true;
+              checkpoint(control);working.commit(edit);
+            } else if(v.operation=="indexed_dataset") {
+              auto command=workflow_indexed(current,v,limits.max_retained_bytes,detail::indexed_dataset_workflow_request,resolve_indexed_dataset_command);
+              auto prepared=prepare_indexed_dataset(command,control,limits.max_retained_bytes);
+              auto edit=prepared.begin_edit();paired_display=true;checkpoint(control);working.commit(edit);
+            } else if(v.operation=="indexed_rgb") {
+              auto command=workflow_indexed(current,v,limits.max_retained_bytes,detail::indexed_rgb_workflow_request,resolve_indexed_rgb_command);
+              auto prepared=prepare_indexed_rgb(command,control,limits.max_retained_bytes);
+              auto edit=prepared.begin_edit();paired_display=true;checkpoint(control);working.commit(edit);
+            } else if (v.filter_options) {
+              std::visit(
+                  [&](const auto &options) {
+                    using O = std::decay_t<decltype(options)>;
+                    if constexpr (std::is_same_v<O,
+                                                 GaussianBlurCommandOptions>) {
+                      const auto command =
+                          resolve_gaussian_command(current, v.target, options);
+                      execute(command.target(), command.parameters());
+                    } else {
+                      const auto command =
+                          resolve_rank_command(current, v.target, options);
+                      execute(command.target(), command.parameters());
+                    }
+                  },
+                  *v.filter_options);
+            } else if (v.original &&
+                       detail::native_workflow_bound_operation_original(
+                           *v.original)) {
+              if (v.operation == "gaussian_blur_imagej") {
+                auto command =
+                    rebind_gaussian_command(current, *v.original, v.target);
+                execute(command.target(), command.parameters());
+              } else {
+                auto command =
+                    rebind_rank_command(current, *v.original, v.target);
+                execute(command.target(), command.parameters());
+              }
+            } else
+              execute(resolve_target(current, v.target, v.operation),
+                      v.parameters);
+          } else if constexpr (std::is_same_v<T, NativeWorkflowImport>) {
+            auto command=workflow_import(current,v);
+            auto edit = prepare_imagej_annotation_import(command);
+            checkpoint(control);
+            working.commit(edit);
+          } else {
+            auto command=workflow_export(current,v);
+            checkpoint(control);
+            outputs.push_back({index, v.name, std::move(command)});
+          }
+        },
+        steps[index]);
+    ++completed;
+    checkpoint(control);
+    if (control.stage_progress)
+      control.stage_progress("workflow", index + 1, steps.size());
+  }
+  checkpoint(control);
+  return NativeWorkflowAccess::make(source, working.snapshot(),
+                                    std::move(outputs), completed, admitted, paired_display);
+}
+} // namespace imagejxx

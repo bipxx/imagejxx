@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "id": "G042.rank.full-mapping.adoption003",
+  "state": "adopted_full_scope_coverage_index_with_explicit_residual_value_and_execution_gates",
+  "acceptance": false,
+  "complete_requirement_coverage": false,
+  "proposal": {
+    "path": "build/p06f-001/rank-full-mapping-prep002/proposal.json",
+    "bytes": 199980,
+    "sha256": "7f01b5341449057a22af470bb2c9714951b93347c4d623f654eacfac01851b01"
+  },
+  "historical_scoped_comparison_adoption": {
+    "path": "docs/parity/reviews/G042-rank-observation-mapping-adoption-002.json",
+    "bytes": 4533,
+    "sha256": "87f19dc01e1df56bfe70e57e9178add97d978bca0a71638445eb20f6ac890947"
+  },
+  "requirement_snapshots": [
+    {
+      "id": "G042.rank-imagej.profile-method-radius",
+      "row_sha256": "b24d02b71769403f2d524bc31321241c6c9f474caa14db31e0d825975aab23d7",
+      "clauses": 27
+    },
+    {
+      "id": "G042.rank-imagej.targets-roi",
+      "row_sha256": "2a3d4a56507b196b1e0daea0a72f712f59de1421f45bc5c2e4a95af993897c6b",
+      "clauses": 24
+    },
+    {
+      "id": "G042.rank-imagej.preview-publication",
+      "row_sha256": "4824974c21dbdb344bdb3d610cf331e48ed39de8e2b5c0bd39d59c3474e2ca2f",
+      "clauses": 25
+    },
+    {
+      "id": "G042.rank-imagej.lifecycle-resources",
+      "row_sha256": "88edce582984fdc358be682b359d983fd8f6ca2b8b48f3cbf8df3931d698f814",
+      "clauses": 27
+    },
+    {
+      "id": "G042.rank-imagej.record-replay-rebind",
+      "row_sha256": "c74f52d3c026856e00a4a1918029c43cfb81e4657b1572f8dd3ad9a5964b43f5",
+      "clauses": 25
+    },
+    {
+      "id": "G042.rank-imagej.persistence-surfaces",
+      "row_sha256": "3b65d268535779074dbcec9d44ae19209576a0d0926b8e75a97cef807c95675f",
+      "clauses": 26
+    }
+  ],
+  "coverage_index": {
+    "requirements": 6,
+    "clauses": 154,
+    "historical_F04_cases": 24,
+    "historical_F04_comparisons": 196,
+    "scope": "Clause/evidence index and precise residual queue; not154 new comparisons or complete per-surface evidence."
+  },
+  "reuse_rule": "Reuse exact unchanged kernel/reference assertions and their recorded consumed identities only. Direct Python/C++/shared-ImGui dispatch identity and actual input/typed output/cancel/record/persistence assertions remain separate checks. No remembered fractional radius or radius-zero output proves fractional arithmetic; no all-method/type fractional credit inferred. No old SDK artifact is relabeled as current ABI.",
+  "current_deltas": [
+    {
+      "gate": "fresh core-only SDK004",
+      "receipt": {
+        "path": "build/p06f-001/sdk-004.json",
+        "bytes": 24187,
+        "sha256": "f2fae38fe4fd8987c70c9962b52c71ef99326f2661fd157bec90e99840affdd8"
+      },
+      "scope": "31 originalcases/473checks, current28headers/library pair;55ID82rows. Distinct from historical SDK003/F04."
+    },
+    {
+      "gate": "provider order/exclusion",
+      "receipt": {
+        "path": "build/p06f-001/rank-provider-order-001.json",
+        "bytes": 6642,
+        "sha256": "5b41095824c128311f055aad625ee5fde9abf8bd6928273169d99fb810d87151"
+      },
+      "scope": "RJ05 six literal ranged positions and RJ19 three noncanonical Positions;30cases484checks. Broader variants/UI Last-step input stay open."
+    },
+    {
+      "gate": "typed rank allocation failure",
+      "receipt": {
+        "path": "build/p06f-001/rank-allocation-002.json",
+        "bytes": 22433,
+        "sha256": "1debcbf6b1b33b0a38769e3081e96080f5d700ea8ccfcda64fba71a22d366431"
+      },
+      "preserved_failure": {
+        "path": "build/p06f-001/rank-allocation-001.json",
+        "bytes": 3957,
+        "sha256": "ccf64c7db57427cca8cc2aef6a1d3327415ed3d538f6e88be4d77cae02c6cea5"
+      },
+      "scope": "4 original+8typed rank method/destination workflow-array prepublication refusals;413checks with actual calibration and before-assertion state. Other record/candidate allocation sites stay open."
+    },
+    {
+      "gate": "wheel/install preparation",
+      "receipts": [
+        {
+          "path": "build/p06f-001/wheel-build-001.json",
+          "bytes": 6894,
+          "sha256": "52839a05ae105477dedf7f715f2e276b472c0786409ccd13fbad1dc561565dd5"
+        },
+        {
+          "path": "build/p06f-001/install-ui-001.json",
+          "bytes": 30396,
+          "sha256": "da62350a58839994e1f232096aed227596cc155615562f9702c63a3c99b7c236"
+        }
+      ],
+      "scope": "Fresh exact matching package and origin/member preparation. Does not close installed functional assertions."
+    },
+    {
+      "gate": "toolchain metadata",
+      "receipt": {
+        "path": "build/p06f-001/toolchain-profile-001.json",
+        "bytes": 10360,
+        "sha256": "7bf706fc06baa707ff93bc2d839dfdf6572594df0aaf031664d4b8103c45b1c3"
+      },
+      "scope": "Actual core/SDK compiler/config/CL tracked FP metadata, scoped not all-TU strict, no performance verdict."
+    }
+  ],
+  "remaining_gates": [
+    {
+      "id": "M01",
+      "state": "ROOT_ADOPTION_REQUIRED",
+      "owner": "root qualification",
+      "action": "Adopt finite full-clause mapping and explicit reuse. Extend reader/schema only for named residual actual values; empty arrays/counts never become values."
+    },
+    {
+      "id": "M02",
+      "state": "BOUNDED_PROVIDER_GATE_PASSED_UI_EDGE_UNMAPPED",
+      "owner": "root targets qualification",
+      "action": "Consume E14 fresh exact ordered ledgers without rewriting E03. Freeze nonlanding Last/step physical input or explicitly limit that UI claim."
+    },
+    {
+      "id": "M03",
+      "state": "EXPLICIT_REUSE_DECISION_REQUIRED",
+      "owner": "root numerical/interface qualification",
+      "action": "Adopt source-bound numerical corpus reuse with thin-binding/dispatch equivalence, or freeze minimal fractional actual surface values before qualification."
+    },
+    {
+      "id": "M04",
+      "state": "STRONGER_CLAIM_UNSUPPORTED",
+      "owner": "root Python qualification",
+      "action": "Scope RAO03 to initial-progress GIL handoff/cancel. If full acceptance requires positive native work while GIL released, define genuine bounded observable boundary before execution."
+    },
+    {
+      "id": "M05",
+      "state": "NEW_RANK_GATE001_FAILED_REPAIR_PENDING",
+      "owner": "root allocation qualification/child",
+      "action": "Preserve failed first new typed case before any RPA PASS. Qualify repaired actual Window.applyRank workflow-array failure for four methods x InPlace/NewDocument at a fresh gate. Keep other record/candidate allocation points OPEN unless actually injected."
+    },
+    {
+      "id": "M06",
+      "state": "NAMED_OPEN_RUNTIME_BOUNDARY",
+      "owner": "root runtime contract",
+      "action": "Retain6 natural QUEUED ineligible attempts, original never-installed READY and5 unsampled private windows as OPEN; amend bounded protocol before another capture. No unchanged feasibility repeat."
+    },
+    {
+      "id": "M07",
+      "state": "MATCHING_INSTALLED_EDITORS_PENDING",
+      "owner": "root packaging",
+      "action": "Qualify current-ABI installed Python/editor/standalone exact products, module/member origins and both launchers. SDK004 fresh passed core-only client stays distinct."
+    },
+    {
+      "id": "M08",
+      "state": "COMMERCIAL_FINAL_BINDINGS_PENDING",
+      "owner": "root commercial adoption",
+      "action": "Bind final admitted rewrite/synthetic fixtures, licenses/notices, final source/archive/member hashes and matching products to scoped commercial review."
+    },
+    {
+      "id": "M09",
+      "state": "FORMAL_INCORPORATION_PENDING",
+      "owner": "root parity integration",
+      "action": "After accepted full mappings/artifacts/commercial binding add exact fixture/run/interface records to six rows; preserve unverified/fourpartial/twoopen until actual criteria met."
+    },
+    {
+      "id": "M10",
+      "state": "EXACT_CARRIER_NOT_ESTABLISHED",
+      "owner": "root persistence qualification",
+      "action": "Identify exact executed virtual-storage admission/refusal carrier or add minimal controlled public case. Eager scientific persistence is E06/E08. Do not wait for TIFF/general readers."
+    },
+    {
+      "id": "M11",
+      "state": "EXACT_EXECUTION_MAPPING_NOT_ESTABLISHED",
+      "owner": "root compatibility qualification",
+      "action": "Bind exact executed old native APIs/defaults/records and ndarray default assertions to origins; new-profile tests alone do not prove old entry points."
+    },
+    {
+      "id": "M12",
+      "state": "COMPONENT_COST_AND_STATIC_INVARIANT_MAPPING_INCOMPLETE",
+      "owner": "root source/qualification review",
+      "action": "Bind exact adopted component-cost arithmetic assertions and final-source review for shared-adapter/no-Python-math/no-new-durable-preference invariants. Actual acquired peak==declared proves reservation persistence, not correctness of every declared cost component or actual allocation census."
+    }
+  ],
+  "root_next_actions": [
+    "Execute exact frozen existing rank274 Python cases at fresh installed origins, then existing workflow/staged/jobs and actual-value/paired consumers; preserve their separate identities and no-skip membership. This is missing/current-ABI functional evidence, not repeated green development capture.",
+    "Finish precise old-entry compatibility, virtual-source admission, component-cost/static and positive-work Python GIL mappings or their minimal real cases; retain all explicit missing claims.",
+    "Reuse unchanged primary/dependency license evidence only with actual selected package/member/notice closure and fresh final source archive; root commercial and formal fixture/run/interface decisions remain separate."
+  ],
+  "forbidden_inferences": [
+    "empty arrays => typed values",
+    "PASS/count => actual comparison",
+    "callback/GIL handoff => positive kernel work",
+    "API calls => widgets",
+    "retained READY => never-installed READY",
+    "old SDK003 => current ABI",
+    "label/add injection => rank candidate/record failure",
+    "CPU render submit => OS/GPU presentation",
+    "proposed budgets/feasibility => performance acceptance",
+    "rank subset => full G042/ImageJ/Fiji/commercial eligibility"
+  ],
+  "formal_manifest_edits": false,
+  "all99_families_and_eligible_pinned_Fiji_remain_required": true,
+  "goal_complete": false
+}

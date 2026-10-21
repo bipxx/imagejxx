@@ -1,0 +1,257 @@
+{
+  "schema": "imagejxx.parity.auto-command-proposal",
+  "schema_version": 1,
+  "id": "P06c4.AutoCommand.proposal.001",
+  "state": "proposed_exact_contract_for_root_review_not_adopted",
+  "not_an_acceptance_manifest": true,
+  "scope": "The bounded scalar raw Auto command, immutable record and no-read replay/full explicit rebind contract within P06c4. Root owns final policy adoption, controller lifecycle, asynchronous admission/publication and every runtime/artifact gate. This proposal changes no source, manifest, implementation acceptance or eligibility decision.",
+  "consumed_inputs": [
+    {"path":"docs/parity/reviews/G033-histogram-auto-entry-001.json","bytes":53886,"sha256":"2f511fb6dcfc1f26c62060681eded31b6e21b025de37cd123777405b9d280c8e"},
+    {"path":"docs/parity/reviews/G033-histogram-auto-entry-002.json","bytes":9958,"sha256":"b623c9c42c7059a0d1eba6919a5917170fba00bdfd216c8621dbcca0e94f64b9"},
+    {"path":"docs/parity/reviews/G033-histogram-auto-entry-003.json","bytes":10771,"sha256":"4ebbf78efbab889d23c07221b2af07664a24952d679ba0e2df253aa8c9782f67"},
+    {"path":"docs/parity/reviews/P06c4-histogram-adoption-001.json","bytes":11661,"sha256":"46b332807d1976828b54c7d4f271519a5e676e5758b587c33ea242603fb0d917"},
+    {"path":"docs/parity/reviews/P06c4-histogram-adoption-002.json","bytes":4845,"sha256":"8d6640b9a26a352d96a54f86053304429a1c135c1638aaf2dc1347ce389bb756"},
+    {"path":"build/p06c4-001/reference-reader-004.json","bytes":4457,"sha256":"55312904bbf6f4b93ada5faa7b770c17f841b9bc93270921b4a19295d37aca77"},
+    {"path":"build/references/histogram-auto-imagej154r-001/capture-002/reference.stdout","bytes":2001040,"sha256":"f543bd2e6eed8bd3f0f81aabb37bafebb1fca449200bf30ed64fcf61c99b12eb"}
+  ],
+  "source_seams": [
+    {"path":"include/imagejxx/dataset_histogram.hpp","bytes":4743,"sha256":"bfc1a3a5829b6a876849500e52573acd1933fc374e76a0c9f024ded7ef4c4a4e","use":"Adopted raw accumulation, estimate, area/plane extrema and count fields; no second Auto counting loop."},
+    {"path":"include/imagejxx/channel_display_command.hpp","bytes":5313,"sha256":"380a2102d75352bde0ea42fdcbcc03b629e620f0044f3d77f0cd2feeba900f8f","use":"Existing immutable Set command, validation, source binding, resolved-state replay and display merge."},
+    {"path":"src/native/channel_display_command.cpp","bytes":33866,"sha256":"83aabffd1cde56d6f0581d65e6d2b5b12146266374cb9d6c3fdcb5047f45067d","anchors":"154-209,448-558,571-711","use":"Reuse the original private source grammar; add only a narrow core-private validated descriptor accessor if required by the Auto validator."},
+    {"path":"src/native/session_metadata.hpp","bytes":3027,"sha256":"66c4f538940e8ce65ff0740fae3e9880e70b9a793e0c11c9e96df90ae63f1d5f","use":"Existing core-private Selection/JSON and MetadataObject/JSON bridge declarations."},
+    {"path":"src/native/session_metadata.cpp","bytes":40011,"sha256":"bf97cd518eef07c968569b08ca6a4441c1b6be619470f5f1177ea50880fe236c","anchors":"244-264,296-333,450-533","use":"Reuse exact selection geometry/attributes/packed-mask and strict base64 encoding. Wrap its legacy defaults and allocations with command-specific upfront validation and bounds."},
+    {"path":"src/native/selection_creation.cpp","bytes":45211,"sha256":"7d9994888e434220e2d684a2fea8d5487e03e4c30c6e5c266344179f8ef4b6cc","anchors":"30-108,412-442,558-684,686-732,843-878","use":"Read-only precedent for checked byte charging, hidden-mask refusal, borrowed wire inspection and validate-original-before-rebind ordering; do not call selection algebra to validate Auto provenance."},
+    {"path":"src/native/document.cpp","bytes":44605,"sha256":"1bc5b98060c38a9e45ae4659fd5001112b1430de6184a89f42a6fe3ff73d7e14","anchors":"148-194,391-396,927-959","use":"Selection validation/equality and separately adopted generic all-revision guarded display primitive."},
+    {"path":"src/native/metadata.cpp","bytes":4486,"sha256":"87e3418d2dc2714d49a9608e0feb7972fc8d481b799d3f8afbf3a9c24521b333","use":"Finite immutable metadata and existing nesting rule; no duplicate source descriptor parser."}
+  ],
+  "reference_facts": [
+    "The accepted exact16 reference preserves80 original stages,3 comparison actions,58 real buttons,28 original source pairs and15 comparison candidates. No new capture is requested by this proposal.",
+    "Live Auto uses the256-bin raw area histogram. Valid absent/nonarea active Selection maps to whole XY; thresholds and spatial/density calibration do not change the raw samples or count rule.",
+    "The strict per-bin rule differs from recorded Enhance Contrast saturated=0.35; H16 GUI18..19 versus actual recorded-command18..21 is a deliberate replay discriminator.",
+    "No eligible bin invokes Java Reset and clears its divisor. Equal candidate bounds instead expand to area raw extrema and retain the used divisor.",
+    "H13 proves unsigned16 configured fallback and Java ordinary signed-density versus Composite differences. H15 proves Composite Shift copies active processor getter bounds, including U16 rounding, rather than calculating a histogram for each C.",
+    "H10 empty area and H12 no-finite data have Java sentinel/nonfinite/reset behavior. Adopted native scalar policy refuses those Auto operands rather than publishing fabricated native ranges.",
+    "Java picture-cache and singleton/JDK focus side effects do not define native logical display or controller lifecycle. Root must adopt its explicit reset/epoch events separately."
+  ],
+  "proposed_public_cpp_api": {
+    "header": "include/imagejxx/auto_contrast.hpp",
+    "enums": {
+      "AutoContrastScope": ["ActiveChannel", "CompositeAll"],
+      "AutoContrastRoiPolicy": ["ActiveSelection", "WholePlane"],
+      "AutoContrastOutcome": ["HistogramBounds", "AreaExtrema", "ResetFallback"]
+    },
+    "AutoContrastRequest": {
+      "previous_divisor": {"cpp_type":"int","default":0,"allowed":[0,5000,2500,1250,625,312,156,78,39,19,9]},
+      "scope": {"cpp_type":"AutoContrastScope","default":"ActiveChannel"},
+      "roi": {"cpp_type":"AutoContrastRoiPolicy","default":"ActiveSelection"},
+      "unsigned16_bits": {"cpp_type":"int","default":0,"allowed":[0,8,10,12,14,15,16]},
+      "position": "No duplicate request field: capture exact source.display().t/c/z. Headless callers choose the captured snapshot display position explicitly before resolving; low-level histogram retains its separately explicit PlanePosition API.",
+      "domain": "Raw only. There is no typed calibrated-domain request and no inference from arbitrary MetadataObject keys. Invalid enum casts are refused before work."
+    },
+    "AutoContrastLimits": {
+      "max_pixels": {"cpp_type":"std::size_t","default":16777216},
+      "max_working_bytes": {"cpp_type":"std::size_t","default":134217728},
+      "max_record_bytes": {"cpp_type":"std::size_t","default":16777216,"meaning":"Conservative retained native metadata charge, not JSON text length or process memory."},
+      "max_selection_vertices": {"cpp_type":"std::size_t","default":65536},
+      "metadata_depth": "At most128 recursive container levels across the complete Auto record, counting all nested effect/provenance containers. This is a fixed safety rule, not a caller-expandable limit.",
+      "rule": "Every caller-configurable limit must be positive. Desktop lowers max_working_bytes to its configured processing cap. The new record/vertex limits require root adoption; they do not change old Selection/session APIs."
+    },
+    "AutoContrastCycle": {
+      "fields": ["int previous", "int used", "int next"],
+      "rule": "Pure value provenance. Contains no controller ID, epoch, owner reference or persistent/global state."
+    },
+    "AutoContrastHistogramSummary": {
+      "fields": ["double origin", "double bin_size", "double minimum", "double maximum", "std::uint64_t visited_count", "std::uint64_t finite_count", "std::uint64_t nan_count", "double plane_minimum", "double plane_maximum", "std::uint64_t plane_finite_count", "std::uint64_t plane_nan_count"],
+      "fixed_values": "Raw ProcessorRaw256 is invariant, not a mutable output option. A successful command always has finite area/plane extrema and finite_count>0, so this command-only summary does not need the low-level histogram service's optional empty extrema."
+    },
+    "AutoContrastEstimate": {
+      "fields": ["DatasetHistogramEstimate histogram", "std::size_t selection_bytes", "std::size_t display_bytes", "std::size_t record_bytes", "std::size_t retained_bytes", "std::size_t working_bytes"],
+      "meaning": "Checked simultaneous native working bound. Component charges may deliberately overlap histogram's conservative capture accounting; the implementation must document that conservative overlap rather than subtract presumed sharing."
+    },
+    "ResolvedAutoContrastCommand": {
+      "construction": "Private constructor; no public mutation. Fresh resolution, strict replay and complete rebind are the only factories.",
+      "getters": ["const DocumentSnapshot& source() const", "const AutoContrastRequest& request() const", "PlanePosition position() const", "const std::optional<Selection>& selection_provenance() const", "std::uint64_t selection_dependency_revision() const", "std::uint64_t display_dependency_revision() const", "const ResolvedChannelDisplayCommand& effect() const", "const MetadataObject& record() const", "const AutoContrastCycle& cycle() const", "const AutoContrastHistogramSummary& histogram() const", "AutoContrastOutcome outcome() const", "const std::optional<std::array<int,2>>& indices() const", "const std::optional<std::array<double,2>>& candidate_range() const", "const std::vector<int>& channels() const", "const std::array<double,2>& resolved_range() const", "const std::array<double,2>& applied_range() const", "const AutoContrastEstimate& estimate() const", "bool requires_captured_state() const"],
+      "replay_getter_meaning": "position/selection_provenance/selection_dependency_revision/display_dependency_revision retain the historical original record values on replay; source() is the retained current replay owner after its strict Pixels/Metadata binding passes. requires_captured_state=false prevents accidentally treating historical Selection/Display provenance as a live replay precondition.",
+      "storage": "Own the frozen request, original provenance, complete nested Set effect, summary and normalized record. The resolved command need not retain256 counts/257edges after deriving its summary. A temporary DatasetHistogramResult is owned during fresh resolve only. Source snapshot ownership is explicit; no borrowed Selection, channel state or request reference survives."
+    },
+    "functions": [
+      "AutoContrastEstimate estimate_auto_contrast_command(const DocumentSnapshot&, const AutoContrastRequest& = {}, const AutoContrastLimits& = {})",
+      "ResolvedAutoContrastCommand resolve_auto_contrast_command(const DocumentSnapshot&, const AutoContrastRequest& = {}, const AutoContrastLimits& = {}, const ExecutionControl& = {})",
+      "void validate_auto_contrast_command_record(const MetadataObject&, const AutoContrastLimits& = {})",
+      "ResolvedAutoContrastCommand auto_contrast_command_from_record(const DocumentSnapshot&, const MetadataObject&, const AutoContrastLimits& = {})",
+      "ResolvedAutoContrastCommand rebind_auto_contrast_command(const DocumentSnapshot&, const MetadataObject& original_record, const AutoContrastRequest& complete_request, const AutoContrastLimits& = {}, const ExecutionControl& = {})",
+      "DisplayState command_display_state(const ResolvedAutoContrastCommand&, const DocumentSnapshot& current)"
+    ],
+    "errors": "Malformed request/record, unsupported dtype/domain and cap/empty/no-finite refusals throw std::invalid_argument; cancellation uses existing OperationCancelled; stale publication/binding uses existing RevisionConflict where applicable; provider/callback exceptions propagate. No refusal creates a successful command, record or live cycle transition."
+  },
+  "setting_and_intensity_contract": {
+    "key": "conversion_unsigned16_range",
+    "existing_definition": "src/native/settings.cpp:168-177; Settings::conversion_options():308-309",
+    "mapping": {"auto":0,"8":8,"10":10,"12":12,"14":14,"15":15,"16":16},
+    "capture": "UI/controller captures the existing validated setting once into request.unsigned16_bits before submission, alongside request/snapshot/cycle; callbacks or later settings mutation cannot change it. Headless resolve accepts the explicit typed value and does not read a process-global Settings singleton.",
+    "preservation": "No duplicate Auto preference key. Existing conversion/inversion meaning and legacy explicit overrides remain unchanged. The Auto consumer requires changed-default, explicit override, captured-default/reentry and persisted reopen assertions in C++/Python/both shared launches, using the already qualified preferences mechanisms.",
+    "native_model": "Dataset PixelType::UInt16 contains canonical unsigned raw values. SpatialCalibration describes only spatial/time fields; native Document/Dataset has no typed density-calibration function or signed16-calibration flag. Preserve opaque metadata unchanged and never guess signedness/calibration from arbitrary keys.",
+    "raw_support": "Raw Auto remains available on admitted UInt16/F32 regardless unrelated opaque calibration metadata; raw counts and bounds do not become density weighted or signed. A caller seeking calibrated-domain Auto is explicitly unsupported until a separate typed intensity-calibration contract exists.",
+    "signed_compatibility_difference": "Java ordinary ImagePlus signed16 calibration ignores configured fixed-range Reset; Java CompositeImage fixed-range Reset does not. The unsigned native model cannot claim that signed ordinary distinction. First Auto explicitly applies unsigned16_bits to native UInt16 fallback and claims raw unsigned behavior only; signed calibrated display conversion remains a separately required gap, not silently emulated."
+  },
+  "fresh_resolution_algorithm": {
+    "admission": "Require nonempty valid source snapshot, scalarS1 canonical UInt8/UInt16/Float32 and admitted floating policy; exact legal request values/positive limits; recognized complete V1/V2 channel display. Absent/unknown/malformed display state refuses; Auto does not implicitly Enable. Capture source display T/C/Z and preserve projection/version/LUTs/visibility.",
+    "selection": "WholePlane uses no area operand even when an active Selection exists. ActiveSelection captures the complete active Selection if present, validates and preserves it as provenance; recognized area kinds feed the histogram, valid line/polyline/angle/point/multipoint feed no area operand. Unknown/malformed geometry refuses; nonarea never becomes a pixel mask. Positioned saved ROIs are not implicit operands.",
+    "histogram": "Call adopted estimate_dataset_histogram then accumulate_dataset_histogram once with ProcessorRaw, bins256, no explicit range and the captured position/area operand. Reuse returned same-plane extrema/counts for fallback; never acquire another plane, all-C histogram or preview buffer.",
+    "empty": "If finite_count==0, refuse before deriving/publishing any effect, even if configured unsigned16_bits could provide finite fallback bounds. Empty packed area and all-quiet-NaN area therefore leave live display/cycle/record unchanged.",
+    "decision": [
+      "used = previous_divisor<10 ? 5000 : floor(previous_divisor/2). N = histogram.finite_count. limit=floor(N/10), threshold=floor(N/used), all exact unsigned integer arithmetic.",
+      "A bin qualifies iff its count<=limit AND its count>threshold. First/last qualifying indices are found over all256 bins. Dominant count>limit is ignored; equality to threshold does not qualify.",
+      "If indices exist, candidate_range=[histogram_origin+first*bin_size,histogram_origin+last*bin_size], preserving this source-derived operation order without FMA reassociation. If candidate endpoints are unequal, outcome=HistogramBounds and resolved_range=candidate_range. If equal, outcome=AreaExtrema and resolved_range=[minimum,maximum]. next=used in both cases.",
+      "If no indices qualify, outcome=ResetFallback, indices=null, candidate_range=null and next=0. U8 resolves[0,255]. U16 with unsigned16_bits>0 resolves[0,2^bits-1]; U16 bits0 and F32 resolve same acquired full-plane finite extrema. This is the Auto fallback path, not a call to the existing public Reset command.",
+      "All derived range endpoints must be finite and ordered; constant equal ranges are valid. A failed derivation refuses detached work without a command/cycle step."
+    ],
+    "channels": [
+      "Normally ActiveChannel selects only capturedC; CompositeAll selects all C in ascending order iff captured mode==Composite, otherwise only capturedC. Scientific C remains distinct from RGB samples.",
+      "Proposed configured-fallback exception: ResetFallback on UInt16 with unsigned16_bits>0 selects every stored C in ascending order, including Color/Grayscale, matching CompositeImage.resetDisplayRange's all-LUT reset for the recognized native channel-display model. C1 naturally remains one target. Root must explicitly adopt this source-dependent scope rule before implementation.",
+      "Only actual CompositeAll propagation copies processor-effective endpoints: U8/U16 each endpoint maps floor(x+0.5), F32 maps double(float(x)), all finite. This yields applied_range. Otherwise applied_range=resolved_range. Configured U16 fallback bounds are already exact integers. No processor-history cache is retained.",
+      "Copy captured complete channel state and replace each selected range with applied_range; preserve other channel entries, mode, projection and state version. Construct a complete existing ChannelDisplayAction::Set command from the captured source and this state. It is the sole source descriptor and replay effect in the Auto record."
+    ],
+    "capture_and_callbacks": "Descriptor/geometry/wire admission and complete working estimate precede copies, callbacks, mask allocations and plane reads. Freeze snapshot, request, settings value, Selection, recognized state, positive limits and ExecutionControl by value before the first callback. Valid precancellation invokes no callback/provider. Bounded checkpoints/cancellation cover metadata, selection codec and histogram/decision/record work. A callback's source/request mutation cannot retarget detached work; root arbitrates publication."
+  },
+  "record_wire": {
+    "schema_literal": "imagejxx.auto-contrast-command",
+    "version_literal": 1,
+    "exact_fields": ["schema","version","effect","roi","display_dependency","cycle","scope","unsigned16_bits","channels","histogram","decision"],
+    "types": {
+      "unsigned_integer": "Only exact int64>=0 or uint64 alternatives; never bool, double, numeric string, truncation or lossy coercion. IDs are positive; dimensions positive int32; indices within positive int32 descriptor extents.",
+      "number": "Finite native double or exact integer representable without loss as double; reject bool, null except explicitly nullable fields, nonfinite and lossy integer conversion. Normalized records encode scientific real fields as double.",
+      "array": "Recursive MetadataArray only, except the existing Python metadata empty-string-vector representation is accepted for an explicitly empty array where that field allows emptiness. No nonempty string vector acts as numeric/geometry array.",
+      "object": "Non-null immutable MetadataTree holding MetadataObject. Exact command/envelope field sets; extension data is permitted only in Selection attributes under the established selection wire rules."
+    },
+    "effect": {
+      "format": "One complete existing imagejxx.channel-display-command V1/V2 record with action=set, complete state, reset.channels=[], reset.empty_finite=[]; V2 display_dependency=null and navigation=null. Reject every non-Set action even if the generic validator accepts it.",
+      "validation": "Call validate_channel_display_command_record for the complete borrowed nested record after Auto's bounded metadata preflight. Reuse its source/position/type/policy/state grammar, not a second Auto SourceRecord parser.",
+      "descriptor": "A proposed narrow core-private accessor implemented beside decode_record may return validated ID, Pixels/Metadata revisions, shape, type, sample policy, captured position, action/version and parsed state. It must invoke/reuse the existing decoder; the original shape validates all outer ROI/count/target claims before comparing a current destination. This helper is not a new installed SDK schema/API.",
+      "canonical_binding": "No duplicate outer source or position fields. Nested source is the historical exact owner/Pixel+Metadata/shape/type/sample-policy binding. Nested position records historicalTCZ, not replay retargeting. V1 staysV1; V2 staysV2 including explicit Sum."
+    },
+    "roi": {
+      "exact_fields": ["policy","effective","selection_revision","selection"],
+      "policy": ["active_selection","whole_plane"],
+      "effective": ["whole_plane","whole_nonarea","area"],
+      "selection_revision": "Exact uint64 historical Selection revision, always captured even for WholePlane.",
+      "selection": "Null or bounded existing session Selection wire object, including complete attributes and packed mask. No source pixels or generated full-canvas mask is serialized.",
+      "consistency": "WholePlane requires effective=whole_plane and selection=null. ActiveSelection null requires whole_plane; valid nonarea Selection requires whole_nonarea; valid area Selection requires area. Empty area is representable provenance but cannot appear in a successful record whose finite_count>0; aggregate/count checks still apply."
+    },
+    "display_dependency": {"exact_fields":["revision"],"revision":"Exact uint64 historical Display revision; fresh execution dependency only, not a replay precondition."},
+    "cycle": {"exact_fields":["previous","used","next"],"previous":"One allowed divisor value.","used":"Exactly5000 when previous<10, otherwise floor(previous/2).","next":"Exactly0 iff outcome=reset_fallback, otherwise exactlyused. No epoch/controller/session identity is serialized."},
+    "scope": ["active_channel","composite_all"],
+    "unsigned16_bits": "Exact integer0/8/10/12/14/15/16; captured even for other dtypes where it has no numerical effect.",
+    "channels": "Nonempty unique ascending exact integer C indices. Derive the complete expected list from original descriptor C, captured position, effect state's mode, scope and configured-fallback exception; require equality, never silently sort/repair.",
+    "histogram": {
+      "exact_fields": ["domain","binning","bins","origin","bin_size","minimum","maximum","visited_count","finite_count","nan_count","plane_minimum","plane_maximum","plane_finite_count","plane_nan_count"],
+      "domain": "raw",
+      "binning": "processor_raw",
+      "bins": 256,
+      "origin": "Finite double; U8 exactly0, U16/F32 exactlyarea minimum.",
+      "bin_size": "Finite nonnegative double; U8 exactly1, U16 exactly(maximum-minimum+1)/256, F32 exactly(maximum-minimum)/256. Record validator preserves the frozen source-derived operation order.",
+      "extrema": "minimum/maximum and plane_minimum/plane_maximum are finite ordered doubles. Area extrema lie inside plane extrema; integer extrema are canonical unsigned and F32 extrema representable binary32.",
+      "counts": "Exact uint64. finite_count>0; visited_count=finite_count+nan_count<=XY; plane_finite_count+plane_nan_count=XY; finite_count<=plane_finite_count; nan_count<=plane_nan_count. Nonzero NaN counts require F32 PreserveQuietNaNFloat32. No area effective operand requires equality of area and plane counts/extrema.",
+      "scope": "This is provenance sufficient to validate aggregate/arithmetic/effect consistency. The omitted256 counts are never reconstructed, claimed as independent historical truth or used to execute replay. Fresh resolver alone observes first/last qualifying bins."
+    },
+    "decision": {
+      "exact_fields": ["outcome","indices","candidate_range","resolved_range","applied_range"],
+      "outcome": ["histogram_bounds","area_extrema","reset_fallback"],
+      "indices": "Null iff reset_fallback; otherwise exact integer pair0<=first<=last<=255.",
+      "candidate_range": "Null iff reset_fallback; otherwise exact finite pair computed origin+index*bin_size in the declared order. histogram_bounds requires unequal endpoints; area_extrema requires equal candidate endpoints.",
+      "resolved_range": "Finite ordered pair. histogram_bounds equals candidate_range; area_extrema equals histogram.minimum/maximum; reset_fallback equals the exact dtype/unsigned16_bits whole-plane/configured fallback rule.",
+      "applied_range": "Finite ordered pair equal resolved_range except actual CompositeAll propagation's declared getter rounding. Every target effect.state.channels[C].range must equal this pair exactly. Untargeted historical channel contents remain part of the validated complete Set effect; record validation does not invent a missing pre-Auto state."
+    },
+    "recording": "Native workflow recording appends exactly one normalized Auto record for every admitted successful Auto, including fallback and equal-state effects, iff recording is enabled. Upstream's missing Enhance line on fallback is observed history, not the native event policy. Recording disabled appends none. This record is never advertised as ImageJ Enhance Contrast text."
+  },
+  "selection_codec_boundary": {
+    "reuse": "Local Auto provenance wrapper may call detail::session_metadata::object_from_json(selection_to_json(selection)) and inverse selection_from_json(to_json(object)), followed by Selection::validate(originalX,originalY). The session codec remains private and its original permissive load behavior is unchanged.",
+    "before_encode": [
+      "Validate native Selection against source dimensions, its finite width/points/style/attributes and the allowed known area/nonarea kind. Refuse hidden private packed-mask payload when kind!=mask.",
+      "Check points.size<=max_selection_vertices, metadata depth/charge, XY multiplication, packed bytes=ceil(XY/8), expected base64 length=4*ceil(packedBytes/3), encoded point/tree overhead and simultaneous native+JSON+wire budget before copying or encoding. No rasterization."
+    ],
+    "before_decode": [
+      "Borrow the MetadataObject; require kind string, points array and width finite positive. Each point is exactlytwo finite losslessly represented numbers. Require known kind and its required point count as Selection::validate does; apply max_selection_vertices before points allocation.",
+      "Mask requires shape exact integer[Y,X] matching original nested effect dimensions and mask string with exact computed base64 length. Validate alphabet/padding/tail before allocating decoded bytes. Nonmask shape/mask keys remain ordinary retained attributes under existing session rules, but cannot hide actual packed native storage.",
+      "Charge the complete attribute subtree plus decoded geometry/mask, base64 text, JSON intermediates and bounded codec scratch before materialization. Reject absent/null geometry fields rather than accepting the session codec's legacy defaults. Preserve packed bytes including unused trailing mask bits; do not canonicalize the source selection.",
+      "After bounded decode, Selection::validate(originalX,originalY) settles style and geometry. No Selection::mask, selection algebra, image allocation or provider call occurs during provenance validation/replay."
+    ],
+    "genuinely_missing_helpers": ["A bounded local Selection provenance bridge; the existing session codec is reusable but not a bounded strict command validator.","A narrow existing-decoder descriptor view for original nested effect source metadata, allowing full original-shape validation without duplicating SourceRecord grammar."],
+    "not_required": "No public selection-creation validator call, generic source-parser extraction, replacement session serializer, new Document revision or metadata schema for controller epochs."
+  },
+  "bounds_and_estimates": {
+    "arithmetic": "Use checked size_t add/multiply and checked uint64 count sums before allocation/conversion. Borrowed metadata preflight visits and charges every occurrence, including shared immutable DAG subtrees, with depth<=128. Abort as soon as either record or working cap is exceeded; never materialize a large recursive expansion before charging it.",
+    "metadata_charge": "At least sizeof(MetadataObject/MetadataTree/MetadataValue) for containers/value holders, max(sizeof(MetadataObject::value_type)+8*sizeof(void*),160) per object entry, actual UTF8 string bytes+1, vector capacities conservatively at requested element count and all array elements. Include keys, repeated occurrences and string-vector elements. Borrowed original record charge must fit max_record_bytes and max_working_bytes before decoder copies.",
+    "selection_charge": "Charge native Selection/kind/point vector/attributes/packed retention; encoded selection tree with at least6 conservative metadata nodes per point; complete base64 storage and strict-decoder output; full JSON intermediate and traversal scratch, not only packed mask byte count. No unused geometry raster is charged as a required replay allocation because replay never builds it.",
+    "state_and_effect_charge": "Charge complete borrowed/captured display.properties tree, typed channel vector/names/custom tables, parsed and copied state, normalized nested effect and outer Auto envelope. Preserve every stored channel, including invisible channels. Recognized C>8 Color admission is governed by existing channel-display validation; working caps bound large C records.",
+    "fresh_working_formula": "Conservative sum: adopted histogram.working_bytes + three captured DisplayState/property copies + three typed channel-state copies + two complete worst-case normalized Auto/effect record charges + two selection-provenance native/wire/JSON charges + fixed16384byte codec scratch + all Auto request/result/summary/vector/control/value holder sizeof charges. Checked addition throughout. Deliberate overlap with histogram's own capture charge is allowed and documented; pre-existing image/cache allocations cannot be subtracted as guessed sharing.",
+    "fresh_record_preflight": "Compute a structural worst-case record charge from borrowed captured display/state and selection descriptors before histogram reads. Values for256-bin summary/decision have fixed-size envelopes; source dimensions/request choices determine all variable target/record storage. Actual final record charge must also be checked and cannot exceed the admitted preflight bound.",
+    "retained_formula": "Captured source DisplayState/property copy + final typed Set effect + final immutable Auto record + retained request/cycle/summary/target arrays and any independently retained ROI copy. Charge immutable nested storage per owned occurrence conservatively. Dataset handle/source calibration strings are accounted consistently with histogram; no full volume copy.",
+    "replay_formula": "Before decoding: borrowed whole-record charge plus bounded decoded ROI/JSON scratch, typed nested state, normalized result record copy, captured destination DisplayState/property copy and command/result holders. Replay must not call the histogram estimator or use max_pixels as an excuse to acquire/rasterize; metadata-only source descriptors still validate XY/count arithmetic and configured limits.",
+    "exclusions": "Allocator bookkeeping, pre-existing provider/source cache, pixel/history/GPU storage, processRSS, opaque std::function target-copy internals, externally retained callback owners and later Python/getter representation copies remain explicitly outside the native introspectable bound. This proposal claims no total process-memory cap."
+  },
+  "validation_replay_rebind_order": {
+    "whole_record_validation": [
+      "Validate positive caller limits and perform bounded borrowed traversal over the entire original Auto record, including every Selection attribute and nested effect, before recursive decoder copies.",
+      "Require exact outer/header fields and integer schema version; require exact subobjects/enums/types/mandatory fields and nested effect action Set.",
+      "Validate the complete nested effect using the existing channel-display decoder and obtain its validated original descriptor; reject unsupported scalar type/sample policy independently of any current destination.",
+      "Validate/decode complete original Selection provenance against original dimensions; validate ROI adaptation, original target list, unsigned16_bits, histogram aggregate/extrema/bin arithmetic, candidate/resolved/applied ranges and exact cycle outcome transition.",
+      "Require effect range/state consistency for every target and compute final checked record/result bounds. Only after all original claims pass may current-source binding or new explicit-request/destination work begin."
+    ],
+    "strict_replay": "After complete original validation, use channel_display_command_from_record(current_source,nested_effect). This enforces historical ID, Pixels/Metadata revisions, shape/type/sample policy. Preserve historical Auto record/ROI/Selection/Display/cycle provenance unchanged and set requires_captured_state=false. Current Selection, current navigation, camera and unrelated display properties may differ; command_display_state uses the existing Set merge and does not retarget C or read samples. Replay never consumes/restores/advances a live Auto cycle and never dispatches Enhance, histogram, Reset or callbacks.",
+    "fresh_state_guard": "Fresh resolve/rebind returns requires_captured_state=true. Before applying its full Set effect, require same retained source owner and all captured Pixels/Metadata/Selection/Display revisions. Standalone command_display_state validates the snapshot and returns a proposed display only; publication still needs root's atomic controller lane.",
+    "complete_rebind": "Validate the complete original record before inspecting/replacing its source claims or parsing a new explicit request. Then resolve a wholly new Auto command from the supplied destination snapshot and complete_request, including fresh previous_divisor/scope/roi/unsigned16_bits; recompute its one histogram and build a new source-bound record. Never silently borrow old resolved ranges, divisor, target list, state or settings as implicit defaults. An invalid original cannot be repaired by a convenient destination; an invalid replacement cannot publish anything.",
+    "atomicity_required_but_not_designed_here": "Root's live asynchronous admission/publication must compare exact active owner/membership, all four revisions and the captured transient cycle owner/epoch/previous value in one atomic arbitration lane. Only successful display/optional record publication advances that same live cycle. Canceled/stale/closed/foreign/inactive/cap/failed work has no display/history/record/cycle effects. This proposal does not choose scheduler cleanup, locks, Application ownership, Window lifecycle/reset events or epoch storage. Generic set_display_if_current alone does not establish active-owner/cycle atomicity.",
+    "persistence": "NativeV3 retains resolved display and original immutable action record at historical binding. Opening/reopening creates a new live owner/controller; normal strict replay to a new ID refuses and requires explicit complete rebind. Controller cycle/epoch is not serialized."
+  },
+  "independent_literal_assertion_inputs": {
+    "status": "Reviewable literal expectations for independent tests, not executed observations or acceptance. Cases are deliberately stated without invoking the implementation under test to generate expected values.",
+    "cycle_transitions": [[0,5000],[5000,2500],[2500,1250],[1250,625],[625,312],[312,156],[156,78],[78,39],[39,19],[19,9],[9,5000]],
+    "invalid_previous": [-1,1,10,4999,5001],
+    "configured_bits": [[0,null],[8,255],[10,1023],[12,4095],[14,16383],[15,32767],[16,65535]],
+    "invalid_bits": [-1,1,9,11,13,17],
+    "cases": [
+      {"id":"A01.strict_cycle","dtype":"uint8","samples":"4096 values:10x1,20x3,30x200,40x200,50x200,60x3492","autos":[{"previous":0,"used":5000,"next":5000,"range":[10,50]},{"previous":5000,"used":2500,"next":2500,"range":[20,50]},{"previous":2500,"used":1250,"next":1250,"range":[30,50]}]},
+      {"id":"A02.dominant_boundary","dtype":"uint8","samples":"100 values:1x1,2x10,3x11,4x78","previous":0,"used":5000,"dominant_limit":10,"threshold":0,"indices":[1,2],"outcome":"histogram_bounds","range":[1,2],"next":5000},
+      {"id":"A03.u8_fallback","dtype":"uint8","samples":"100 values all7","previous":0,"outcome":"reset_fallback","candidate_range":null,"range":[0,255],"next":0},
+      {"id":"A04.equal_candidate","dtype":"uint8","samples":"100 values:10x8,200x92","previous":0,"indices":[10,10],"candidate_range":[10,10],"outcome":"area_extrema","range":[10,200],"next":5000},
+      {"id":"A05.u16_auto_fallback","dtype":"uint16","samples":"100 values all7","unsigned16_bits":0,"outcome":"reset_fallback","range":[7,7],"next":0},
+      {"id":"A06.u16_configured_fallback","dtype":"uint16","samples":"100 values all7","unsigned16_bits":12,"outcome":"reset_fallback","range":[0,4095],"next":0,"settings_input":"conversion_unsigned16_range=12 captured before work"},
+      {"id":"A07.u16_all_configured_choices","dtype":"uint16","samples":"100 values all7","assertion":"For each nonzero configured_bits pair, range=[0,literalMaximum] and next0. For bits0 range=[7,7]. Configuration never changes the raw histogram origin/bin width/counts."},
+      {"id":"A08.roi_full_plane_fallback","dtype":"uint16","plane_samples":[1,7,7,7,7,7,7,99],"area":"Select only the six7-valued cells","unsigned16_bits":0,"outcome":"reset_fallback","area_extrema":[7,7],"range":[1,99],"reads":"Exactlyone capturedTCZ plane acquisition"},
+      {"id":"A09.empty_area_refusal","dtype":"uint16","plane_samples":[1,7,9,99],"area":"Explicit packed mask with no selected bits","unsigned16_bits":12,"assertion":"Refuse; no fallback command, display change, record or cycle advance, despite configured finite0..4095."},
+      {"id":"A10.no_finite_refusal","dtype":"float32","samples":"Only admitted quietNaN payloads in area","assertion":"Refuse; preserve exact payload bits and live state; no native sentinel/NaN range."},
+      {"id":"A11.u16_fractional","dtype":"uint16","samples":"16 values1000+257*i fori0..15","previous":0,"bin_size":15.0625,"indices":[0,255],"resolved_range":[1000,4840.9375],"active_applied_range":[1000,4840.9375],"composite_all_applied_range":[1000,4841]},
+      {"id":"A12.f32_fractional","dtype":"float32","samples":"16 values-2.5+0.5*i fori0..15","previous":0,"bin_size":0.029296875,"indices":[0,255],"range":[-2.5,4.970703125]},
+      {"id":"A13.shift_active_getter","dtype":"uint16","fixture":"H15 activeT1C1Z1,6x8,value75+2*y+x","resolved_range":[75,91.9453125],"composite_all_applied_range":[75,92],"assertion":"One activeC histogram; allC get75..92 only under actual CompositeAll. Color/Gray requestedCompositeAll remains activeC with fractional stored range unless configured fallback exception applies."},
+      {"id":"A14.configured_fallback_targets","dtype":"uint16","fixture":"ThreeC,all7,activeC1,distinct previous ranges; repeat Composite/Color/Grayscale","unsigned16_bits":12,"scope":"active_channel","proposed_channels":[0,1,2],"range":[0,4095],"assertion":"Source-dependent all-LUT Reset rule requires explicit root adoption; preserve mode/projection/LUTs/visibility/navigation."},
+      {"id":"A15.raw_domain","fixture":"Raw-identical admitted unsigned data with different spatial/time/opaque density metadata","assertion":"Identical raw histogram/candidate/fallback for same capturedbits; no signed/calibrated-domain parity claim. Preserve original calibration and opaque metadata."},
+      {"id":"A16.replay_not_enhance","fixture":"H16 initial source offset17","live_range":[18,19],"actual_upstream_recorded_enhance_range":[18,21],"assertion":"Native replay restores stored18..19 with zero provider reads and no cycle mutation; never dispatch Enhance."},
+      {"id":"A17.setting_capture_override","fixture":"Capture configured12 request, mutate originalSettings toauto in checkpoint; separately explicit requestbits10","expected_configured_fallback":[0,4095],"expected_explicit_fallback":[0,1023],"assertion":"Late mutation does not alter captured request; explicit typed headless value is not replaced from global Settings."},
+      {"id":"A18.record_integrity","fixture":"Mutate one record field at a time: missing/extra header, bool integer, fractional ID, invalid bits/divisor, contradictory cycle/outcome/indices/range, malformed Set/reset/navigation, ROI shape/base64/type, overflow/depth/cap","assertion":"Whole original refuses before owner mismatch or new rebind request, with zero provider reads/callbacks/record/cycle effects. Exercise original-invalid plus valid-new-source, and original-valid plus invalid-new-request separately."}
+    ],
+    "required_additional_dimensions": "Both state versions; Sum/Max/Min; Composite/Color/Grayscale and C1/>8Color; selected/nonselected channels; whole/area/holes/nonarea/quietNaN; strict threshold equality and dominant equality; all legal divisor transitions; settings persisted reopen; pre/mid cancellation/reentrant callbacks; exact cap boundary; original/destination binding mismatch; recording on/off/equal/fallback; all four revisions/owner/epoch and installed APIs/SDK/actual both-launch controls. Root freezes bounded runtime membership before execution."
+  },
+  "root_adoption_decisions": [
+    "Adopt or revise the exact proposed API/field names and the16MiB record/65536vertex safety defaults before implementation; no source code is authorized by this proposal itself.",
+    "Adopt configured UInt16 fallback and existing setting consumer in the first Auto exit; LiveXY-only omission is not an acceptable substitute. Settle the explicit all-stored-C configured-fallback scope recommendation against native recognized-state semantics.",
+    "Record the raw unsigned model's lack of Java ordinary signed-density fallback distinction. Do not infer a typed intensity contract from opaque metadata or quietly claim signed calibration parity.",
+    "Choose native cycle reset/epoch events and asynchronous ownership/publication/cleanup separately, retaining all-four-revision plus active-owner/epoch atomicity. This proposal freezes explicit divisor math/wire only.",
+    "Preserve all held scalar engine/binding/reference sources and qualified evidence; only root assigns implementation changes after adopting the consumed contract."
+  ],
+  "commercial_boundary": "Independently authored native contract only. No original Java/classes/JDK/macros/LUT assets, pending Fiji code, NC/research-only/unlicensed code/models/assets are incorporated. Reference facts grant no component eligibility approval.",
+  "acceptance": {
+    "proposal_written": true,
+    "root_adopted": false,
+    "Auto_contract_final": false,
+    "implementation_changed": false,
+    "runtime_executed": false,
+    "product_verified": false,
+    "commercial_eligibility": false,
+    "whole_family": false,
+    "platform": false,
+    "release": false,
+    "full_goal": false
+  },
+  "new_incorporated_materials": []
+}

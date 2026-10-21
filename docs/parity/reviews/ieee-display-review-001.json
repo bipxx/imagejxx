@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "state": "passed",
+  "scope": "Stateless read-only grayscale Float32 display profile; no desktop/channel/processing/IO admission claim",
+  "native_suites_per_platform": 20,
+  "native_display_checks_per_platform": 35293,
+  "actual_imagej_display_cases": 240,
+  "python_cases_per_source_installed_context": 3022,
+  "new_python_display_cases_per_context": 263,
+  "all_previous_2759_cases_retained": true,
+  "source_installed_inventory_equal": true,
+  "explicit_ui_exclusions": [
+    "tests/python/test_nan_python_v2.py::test_V22_installed_editor_roundtrip_preserves_policy[plane-detached]",
+    "tests/python/test_nan_python_v2.py::test_V22_installed_editor_roundtrip_preserves_policy[plane-native-owner]",
+    "tests/python/test_nan_python_v2.py::test_V22_installed_editor_roundtrip_preserves_policy[stack-detached]",
+    "tests/python/test_nan_python_v2.py::test_V22_installed_editor_roundtrip_preserves_policy[stack-native-owner]"
+  ],
+  "installed_cpp_sdk_consumer_passed": true,
+  "source_freeze_pins_verified": 4003,
+  "qualified_products": [
+    {
+      "path": "build/p07u-ieee-display001/installed002/python-prefix001/imagejxx/_native.cp312-win_amd64.pyd",
+      "bytes": 6270464,
+      "sha256": "db269a2a55842534b19e44ed25520eb8987abf374ad7814359d8f02220ac00d1"
+    },
+    {
+      "path": "build/p07u-ieee-display001/sdk002/sdk-prefix001/lib/imagejxx_core.lib",
+      "bytes": 45664972,
+      "sha256": "5fc52fe0383a2908e01ab579e3958ebdffa98b08f0989f9fbcc12356b2df0f20"
+    }
+  ],
+  "reference_fixture": {
+    "path": "tests/fixtures/ieee-display-imagej154r.json",
+    "bytes": 339556,
+    "sha256": "46606ff6b18c6b96df76fd5734e1297b5be7c4ffcdd79c3c8c9919bd0a1b676c"
+  },
+  "whitespace_checked": [
+    "CMakeLists.txt",
+    "docs/PLAN.md",
+    "docs/SOL_ULTRA.md",
+    "src/imagejxx/__init__.py",
+    "src/native/bindings.cpp"
+  ],
+  "cleanup_targets": 20,
+  "cleanup_net_bytes": 90659566,
+  "retained_failures": [
+    "First Windows native session test reused its prior artifact directory. A fresh per-run directory passed; the failed log is retained."
+  ],
+  "commercial_scope": "No new dependency; existing reviewed dependencies unchanged; reference JVM/ImageJ stays observation-only; no Qt or non-commercial component incorporated",
+  "remaining": [
+    "Shared ImGui and optional Python editor/channel admission and coherent full-host qualification",
+    "Restore the four explicitly deferred editor variants in the host gate",
+    "Full nonfinite Remove NaNs/rank processing and command/UI qualification",
+    "Float32 I/O, RGB rank and remaining ImageJ/Fiji/editor/release gaps"
+  ],
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  },
+  "goal_complete": false
+}

@@ -1,0 +1,160 @@
+{
+  "schema": "imagejxx.parity.histogram-auto-input-freeze",
+  "schema_version": 1,
+  "id": "G057.Auto.DatasetHistogram.entry.003",
+  "state": "input_and_observation_protocol_frozen_before_prepare",
+  "not_an_acceptance_manifest": true,
+  "recorded_utc": "2026-10-16T06:52:07.955280+00:00",
+  "consumed_entries": [
+    {
+      "path": "docs/parity/reviews/G033-histogram-auto-entry-001.json",
+      "bytes": 53886,
+      "sha256": "2f511fb6dcfc1f26c62060681eded31b6e21b025de37cd123777405b9d280c8e"
+    },
+    {
+      "path": "docs/parity/reviews/G033-histogram-auto-entry-002.json",
+      "bytes": 9958,
+      "sha256": "b623c9c42c7059a0d1eba6919a5917170fba00bdfd216c8621dbcca0e94f64b9"
+    }
+  ],
+  "scope": "One bounded headless Dataset/area-ROI histogram service delivered together with its first shared Dear ImGui Auto range consumer. C++ core, thin Python API, native launcher and Python launcher use the same accumulator and resolved action. No standalone-kernel exit or whole G033/G057/G069 claim.",
+  "case_ids": [
+    "H01",
+    "H02",
+    "H03",
+    "H04",
+    "H05",
+    "H06",
+    "H07",
+    "H08",
+    "H09",
+    "H10",
+    "H11",
+    "H12",
+    "H13",
+    "H14",
+    "H15",
+    "H16"
+  ],
+  "bounds": {
+    "case_count": 16,
+    "case_seconds": 5,
+    "prepare_parent_seconds": 120,
+    "capture_parent_seconds": 120,
+    "max_xy_pixels": 4096,
+    "max_scalar_samples_per_case": 65536,
+    "java_heap_mib": 256,
+    "combined_payload_bytes": 4194304,
+    "fresh_stage_bytes": 33554432,
+    "max_live_reference_hosts": 2
+  },
+  "source_archive": {
+    "path": "build/references/downloads/imagej-62db90a269cccc1ac79f658e4602043214ed055b.zip",
+    "bytes": 6146010,
+    "sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665"
+  },
+  "additional_source_members": [
+    {
+      "member": "ij/gui/ShapeRoi.java",
+      "bytes": 53123,
+      "sha256": "8ab4a507fed1ddd09391c5663d482350c9f035e17788d915b440915277fc419e"
+    },
+    {
+      "member": "ij/process/PolygonFiller.java",
+      "bytes": 9121,
+      "sha256": "2d6c43bb6fed5bf206fa552bf0f60883117436884fcd9869ec4b9474ef7c5968"
+    },
+    {
+      "member": "ij/WindowManager.java",
+      "bytes": 20383,
+      "sha256": "68dc7efb78b8c7fc446b5649a61ad8787366af6afc38f8fe62ae36ca5dddc2bf"
+    }
+  ],
+  "scalar_and_scientific_defaults": {
+    "ordinary_ImagePlus_semantics": [
+      "H01",
+      "H02",
+      "H03",
+      "H04",
+      "H05",
+      "H06",
+      "H11",
+      "H12"
+    ],
+    "scientific": "TCZYX fixtures use CompositeImage semantics except H13 explicitly ordinary variants. H07-H10 start zero-basedTCZ[1,2,1], Composite Sum, RGB LUTs, ranges[[1,201],[7,219],[11,241]], visibility[true,false,true]. H13/H14/H15/H16 keep their explicit positions/settings; H14 uses these same scientific display defaults. Ordinary fixtures retain normal original processor defaults; do not invent per-C LUTs. All unspecified threshold/overlay states are absent.",
+    "ROI": "H07 rectangle newRoi(1,1,6,4), pixel membership x1..6/y1..4. H08 ShapeRoi(newRoi(2,1,4,4)).not(newShapeRoi(newRoi(3,2,2,2))), membership12 pixels. H09 actual PointRoi(2,2), then Line(1,1,6,4). No area selection is an implicit whole volume."
+  },
+  "H10": {
+    "assignment": "ShapeRoi empty=new ShapeRoi(2,1,new java.awt.geom.Area()); imp.setRoi(empty,false);",
+    "source_prediction_only": "Roi constructor clamps extents: retained Composite area type9,bounds[2,1,1,1],empty underlying shape,zero vertices,1x1 zero mask. Actual observations decide whether this premise holds.",
+    "required": "Capture assigned/retained identity,isArea/type/bounds,underlying shape and float-polygon count,repeated ROI-mask identities/dimensions/bytes,processor ROI/mask and actual Auto raw statistics. Never substitute zero counts if assignment is discarded or runtime differs.",
+    "not_used": "Identical-ShapeRoi subtraction creates true0x0 bounds and is discarded; no override/fake ROI replaces the selected supported constructor."
+  },
+  "H14": {
+    "java_spacing_xyz": [
+      0.5,
+      1.25,
+      2.5
+    ],
+    "java_pixel_origins_xyz": [
+      11,
+      -7,
+      19
+    ],
+    "java_spatial_unit": "um",
+    "java_frame_interval": 0.75,
+    "java_time_unit": "s",
+    "intensity_variants": {
+      "raw": "No density calibration. One auto.raw action.",
+      "linear": "Calibration.STRAIGHT_LINE coefficients[5,2],value unit a.u.; one auto.intensity_calibrated action.",
+      "signed16": "Public Calibration.setSigned16BitCalibration(); one auto.intensity_calibrated action."
+    },
+    "boundary": "Pixel origins have Java pixel-coordinate convention. These numerical fields establish no native world-origin equivalence. Native direction/time_origin from001 remain separate preservation assertions, not fabricated Java fields."
+  },
+  "H13": "Each ordinary_unsigned/composite_unsigned/ordinary_signed16 variant begins with ImagePlus.setDefault16bitRange(0). After auto.automatic, complete a real Reset button under Automatic, then labeled API setDefault16bitRange(12), then auto.12bit. Observe both compound subevents, no hidden setup/update injection. Restore global range0 after the case.",
+  "H15": "For each five mode/projection variants, auto.active then labeled API restore_fixture of image mode/projection/LUTs/ranges/flags/TCZ/ROI only, followed by Shift Auto. Same owner/controller retains its actual cycle; never write divisor, call publicupdate or inject Reset. Latch actual Shift at activation and release after acknowledged completion. Color Balance All remains unclaimed in this fixed entry.",
+  "H16": {
+    "contexts": [
+      "Macro",
+      "Java"
+    ],
+    "mode_selection": "Create actual Recorder(false) after original/other hosts,ContrastAdjuster and original owner selection are ready. Find its real mode Choice, select context and deliver real SELECTED ItemEvent on EDT to original registered Recorder listener. No private/static mode-field writes.",
+    "timeline": "Retain exact14 entry action labels per context. Finish all13 original stages before comparison action; no comparison owner switches interleaved. Preserve raw Recorder text at every stage and complete original text before closing it.",
+    "area": "Labeled API imp.setRoi(newRoi(1,1,8,8),false).",
+    "set": "Labeled API imp.setDisplayRange(0,200), then separately labeled redraw subevent. No Set-button/dialog or public update.",
+    "public_update": "Only this explicit action calls ContrastAdjuster.update().",
+    "navigation": "Labeled API setPosition(3,1,1) = zero-basedTCZ[0,2,0], then labeled redraw. No publicupdate or manual setup; observe actual previous-image/type/slice fields.",
+    "activation": "API WindowManager.setCurrentWindow(other.window), then real ContrastAdjuster WINDOW_ACTIVATED with original.window as opposite; API setCurrentWindow(original.window), then real CA WINDOW_ACTIVATED with other.window opposite. Observe both activation steps.",
+    "reset": "Actual Reset button/event/worker completion.",
+    "comparisons": "After full original timeline/text, close Recorder/CA/hosts, then compare each actual recorded Auto Enhance Contrast delta on a fresh pre-Auto source/ROI/display/TCZ clone via real IJ.run(imp,Enhance Contrast,saturated=0.35), one host at a time. Preserve every Auto before/after pair. If fallback records no Auto command, emit that provenance and no fabricated recorded replay.",
+    "identifiability": "H02-based area can suppress all occupied bins, invoking real fallbackReset. Capture fields and setup/reset counters faithfully. Zero-to-zero divisor alone proves neither reset nor nonreset; no invented call or expected divisor hides this."
+  },
+  "observer_protocol": {
+    "allowed": "Presentation-only hidden window/dialog show overrides; package-local counters wrapping original setup/reset/autoAdjust/doUpdate with super exactly once. ImagePlus/CompositeImage getRawStatistics observer overrides call super once, clone actual returned observations and return the identical object; record original base/declaring-class origins. Actual ContrastPlot.setHistogram input can be cloned before original mutates it, then call super once. No replacement statistics or Auto algorithm.",
+    "readiness": "Hold the ContrastAdjuster monitor while observing original worker WAITING before EDT button dispatch. Assign sequence ID and deliver genuine Button ActionEvent to original listener. Ack only after original super.doUpdate returns; spurious/no-pending calls are separate. Capture pending flags,thread/EDT,event identity and source owner before/after.",
+    "deadlines_ms": {
+      "idle": 500,
+      "event_completion": 1000,
+      "worker_join": 500
+    },
+    "global_deadline": "Each nested wait is capped by remaining5secondcase deadline; all original limits remain. Close on EDT then explicitly join worker, preserving actual exceptions/timeouts. No automatic retry or limit growth.",
+    "numbers": "Strict finite JSON. Preserve actual nonfinite/sentinel floating values as explicit IEEE bit-tagged observations, not NaN/Infinity JSON tokens or expected finite replacements. Source typed/raw widened bits are captured before/after."
+  },
+  "prepare_only_probe": {
+    "kind": "environment_only_not_H_dispatch",
+    "fixture": "Independent small scalar scientific fixture; exact shape/values/TCZ freeze with producer source before prepare. It must differ from H01-H16 and remain inside original bounds.",
+    "exit": "Actual hidden StackWindow/original ImageCanvas/source processor binding,actual Auto button/listener/worker readiness+completion,actual offscreen paint,Recorder mode/access,close+join. No H case dispatch or numerical credit."
+  },
+  "native_implementation_follow_on": "After actual reference adoption, use shared scalar Dataset/ROI accumulation and generic scheduler with a narrow typed Auto result/publication lane. Resolve retained-result cleanup and guarded display publication (including equal-state Display+1) explicitly; no fake pixel PreparedOperation or new Document revision/schema for the transient cycle epoch.",
+  "pending": "Producer and independent reader must agree exact raw schema,complete input plan and cardinalities at write hold. Root reviews/freezes them before one prepare then exact16 capture. Actual empty/fallback/rounding/cycle/recording policy and final native contracts remain unadopted.",
+  "acceptance": {
+    "reference_runtime": false,
+    "product_implemented": false,
+    "product_verified": false,
+    "component_eligibility": false,
+    "family_complete": false,
+    "release": false,
+    "full_goal": false
+  },
+  "new_incorporated_materials": []
+}

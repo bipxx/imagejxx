@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "id": "G015-G022.positioned-xy.callback-clarification003",
+  "state": "narrow_contract_clarification_adopted_no_runtime_acceptance",
+  "parent": "docs/parity/reviews/G015-G022-positioned-xy-adoption-002.json",
+  "finding": "D02 requires existing Document commit machinery while broadly prohibiting callbacks under publication locks. Existing commit_impl calls validate_constraints, including leased Document::constrain validators, under the Document lock. Those public validators are documented as nonreentrant into the Document or controller.",
+  "decision": {
+    "forbidden_during_locked_publication": "ExecutionControl, cancellation/progress, UI, workflow and caller preparation callbacks. Capture caller-owned values before those callbacks; execute them outside Application/Document publication locks.",
+    "preserved_existing_exception": "Existing leased DocumentValidator capability/thread validators retain their current nonreentrant contract and execution inside commit_impl before mutation. Their rejection leaves document/history/publication unchanged. Do not bypass them, relocate them into an unlock/check/relock window, or introduce a new generic under-lock validation callback.",
+    "guard_implementation": "Use the adopted narrow typed saved-row guard inside the same commit lock and existing Application-to-Document lock order. Final owner/activation/Data/row/TCZ and optional Pointer Display checks remain atomic with mutation.",
+    "superseded_scope": "Only the blanket no-user-callback-under-lock wording in D02 is narrowed for the already-existing Document::constrain validators. All other D01-D03 behavior, resource limits, ownership and membership remain unchanged."
+  },
+  "source_evidence": [
+    {
+      "path": "include/imagejxx/document.hpp",
+      "bytes": 13563,
+      "sha256": "8b8f853eebd0a6a7bad032ba6ccda5e69a4a89c2f37bdcc176d967ca92534fde",
+      "lines": [269, 272]
+    },
+    {
+      "path": "src/native/document.cpp",
+      "bytes": 44605,
+      "sha256": "1bc5b98060c38a9e45ae4659fd5001112b1430de6184a89f42a6fe3ff73d7e14",
+      "lines": [868, 901, 961, 966]
+    }
+  ],
+  "assertion_owner": "P06g independent native assertions",
+  "assertion_placement": "Refine existing N14.callback_owned_capture_exception_midcancel to distinguish forbidden preparation callbacks from existing constraints and prove a rejecting retained constraint cannot be bypassed or partially publish. Keep exact 16/12/5/8/20 memberships; this adds no accepted observation.",
+  "runtime_qualification": false,
+  "family_accepted": false
+}

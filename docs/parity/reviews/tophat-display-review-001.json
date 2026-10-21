@@ -1,0 +1,517 @@
+{
+  "schema_version": 1,
+  "state": "passed",
+  "scope": "Finite scalar ImageJ Top Hat private final-display backend; command and UI remain open",
+  "upstream_observations": 936,
+  "new_channel_runner_cases": 144,
+  "direct_preview_flag_cases": 216,
+  "direct_preview_is_physical_ui": false,
+  "python_cases_per_context": 1406,
+  "previous_python_inventory_retained": true,
+  "native_suites_per_platform": 8,
+  "native_final_display_checks_per_platform": 7184,
+  "native_pixel_checks_per_platform": 7245,
+  "source_freeze_pins_verified": 2208,
+  "retained_failed_input_pins_verified": 1249,
+  "source_installed_inventory_equal": true,
+  "installed_python_origins_verified": true,
+  "source_installed_products_equal": true,
+  "installed_public_cpp_consumer_passed": true,
+  "retained_failures": [
+    "windows001 and linux001: automatic byte zero-range setter effect absent; initial 108-case preview corpus and all changed failure inputs retained"
+  ],
+  "retained_warnings": [
+    "Existing compiler diagnostics in unchanged rank-command/execution code retained in raw build logs"
+  ],
+  "owned_cleanup_bytes": 74965310,
+  "removed_scratch_trees": 14,
+  "receipt_pins": [
+    {
+      "path": "build/p07n-tophat-command001/api-worker001.py",
+      "bytes": 1060,
+      "sha256": "327ae4af9159f7f718d8c0ce55d6f27686ba87a3733903d7b70215ce727d82bb"
+    },
+    {
+      "path": "build/p07n-tophat-command001/before001.json",
+      "bytes": 2831,
+      "sha256": "509e420bf568b71cb866f54188744f00e7f4f954ad12a43f7221aedbe519542c"
+    },
+    {
+      "path": "build/p07n-tophat-command001/cleanup001.json",
+      "bytes": 655520,
+      "sha256": "051b76ec50476750c2371ca4c2d62c75a6c45aa49ce7375d6e3aefd635d8c553"
+    },
+    {
+      "path": "build/p07n-tophat-command001/cleanup001.py",
+      "bytes": 2229,
+      "sha256": "9cd0999590f8ec330a3237399c1f23b3c5cdd72e23f1a45d3202f9f051bb61e6"
+    },
+    {
+      "path": "build/p07n-tophat-command001/finalize001.py",
+      "bytes": 7244,
+      "sha256": "9597c273b886c1a1a929181630d6c4373fd0f73eb88b3c06cdbb21677222900e"
+    },
+    {
+      "path": "build/p07n-tophat-command001/install001/install-py.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07n-tophat-command001/install001/install-py.stdout",
+      "bytes": 4712,
+      "sha256": "7cd0e769309e4b76b3dd44b985fbfaeb700e34ea66d4e14b4041f7e02cd9fd34"
+    },
+    {
+      "path": "build/p07n-tophat-command001/install001/install-sdk.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07n-tophat-command001/install001/install-sdk.stdout",
+      "bytes": 12475,
+      "sha256": "78b35ffe5f353a701475fc677c337bda172446391c33b6fb0ddfdaf0866afbf8"
+    },
+    {
+      "path": "build/p07n-tophat-command001/install001/run001.json",
+      "bytes": 3078,
+      "sha256": "db54e55fec9c1d7321cca20a4b2acb3cd4e7f1a860a74a5965a58588da4492db"
+    },
+    {
+      "path": "build/p07n-tophat-command001/install001.py",
+      "bytes": 10020,
+      "sha256": "86eb23601606aab1d4c29fbf4975acacffc24f51cb7599b5f0a5ffa34203133f"
+    },
+    {
+      "path": "build/p07n-tophat-command001/installed-worker001.py",
+      "bytes": 1310,
+      "sha256": "e4156e3a0efa426b822a471750c3182d48eb40a2c64ca82c3457d22062211797"
+    },
+    {
+      "path": "build/p07n-tophat-command001/installed001/core-evidence001.json",
+      "bytes": 366,
+      "sha256": "783e992f44bb01673fc1d2c9b92f3b72230bf1b7660aee2251b72252a9bd1706"
+    },
+    {
+      "path": "build/p07n-tophat-command001/installed001/pytest.xml",
+      "bytes": 192769,
+      "sha256": "484a8e4e0d87afa7e07d1b9b830cd37b956634d66279dd4aa84d4efd8a3c31bb"
+    },
+    {
+      "path": "build/p07n-tophat-command001/installed001/python.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07n-tophat-command001/installed001/python.stdout",
+      "bytes": 1729,
+      "sha256": "808c69a5a17365f81dee8020d9620b6e2d1c3215c6ecbc8f9b3a73a219161d44"
+    },
+    {
+      "path": "build/p07n-tophat-command001/installed001/run001.json",
+      "bytes": 1699,
+      "sha256": "92ef4dab869f0a4566243b8c27a8747d5aebd90e13758f2c4f7ffbd862a3536d"
+    },
+    {
+      "path": "build/p07n-tophat-command001/linux-worker001.py",
+      "bytes": 4721,
+      "sha256": "ffc9407304ffad8c91f0a027333a24192d83a085cd5856d27792d69dfc8e20e3"
+    },
+    {
+      "path": "build/p07n-tophat-command001/linux-worker002.py",
+      "bytes": 3689,
+      "sha256": "dbfe0bd3e7bb5d3689235b18ef3798120aecb15f4c5178a79ba6cc573fe07cfd"
+    },
+    {
+      "path": "build/p07n-tophat-command001/linux001/cache-restore001.json",
+      "bytes": 823,
+      "sha256": "51078112aeaec0feea7e5232934c5fa664c55febccb2e10598d2c194bd7ab19d"
+    },
+    {
+      "path": "build/p07n-tophat-command001/linux001/ext4-scratch001.json",
+      "bytes": 263,
+      "sha256": "78edf8683f52693146b1194a778ac7b35c356c6c477d595428cde076df3560c3"
+    },
+    {
+      "path": "build/p07n-tophat-command001/linux001/native.xml",
+      "bytes": 3987,
+      "sha256": "c64d755eab5ab8f209ad61694f64309f21a2c0589609f708629f5d78409e00a7"
+    },
+    {
+      "path": "build/p07n-tophat-command001/linux001/run001.json",
+      "bytes": 935,
+      "sha256": "f48aaa38fdcf03ee9ba4342aad131a6a2e34bb5db47fa77293b9623101a085d5"
+    },
+    {
+      "path": "build/p07n-tophat-command001/linux001/source-freeze001.json",
+      "bytes": 46701,
+      "sha256": "ad3b766ce7bb455888460b3086c9bf77d485dbd153b093db295b9c5368d407c9"
+    },
+    {
+      "path": "build/p07n-tophat-command001/linux001/stderr.txt",
+      "bytes": 24716,
+      "sha256": "ec352dc2711f6b63c1490eb45a3241d4d6a325c0d8cd6ed69843fc18fa9e1980"
+    },
+    {
+      "path": "build/p07n-tophat-command001/linux001/stdout.txt",
+      "bytes": 3079,
+      "sha256": "b331e5be2d9ec92e27fab8b89fdce39039a0be8155cfd7463bcfc440d6ed93ff"
+    },
+    {
+      "path": "build/p07n-tophat-command001/linux001.py",
+      "bytes": 6134,
+      "sha256": "b0d917ecc35e19823573c4fa69caac2ce74b3dd637f9987d57a12d53557d88f3"
+    },
+    {
+      "path": "build/p07n-tophat-command001/linux002/cache-reuse001.json",
+      "bytes": 606,
+      "sha256": "75c6610cc00f3ed7a52e86b536d77b4ba6b624793ebead146315cb74ded7b0fd"
+    },
+    {
+      "path": "build/p07n-tophat-command001/linux002/ext4-scratch001.json",
+      "bytes": 263,
+      "sha256": "ed690808971698cc11b86add26e2098c82075eda1adaa2caf24a6693414d658c"
+    },
+    {
+      "path": "build/p07n-tophat-command001/linux002/native.xml",
+      "bytes": 3950,
+      "sha256": "4d1456e6a0225f5e1317e2ef3bbca59d0d173b1670134b8986e4bfce722c43ee"
+    },
+    {
+      "path": "build/p07n-tophat-command001/linux002/run001.json",
+      "bytes": 843,
+      "sha256": "914612e7ac6e91afbca05be0546dc1a39b9aaaef5101f749c5579676f2cf2e4e"
+    },
+    {
+      "path": "build/p07n-tophat-command001/linux002/source-freeze001.json",
+      "bytes": 46701,
+      "sha256": "1eca30995f0d1a9f85ba22958fe3a59ade1b6a56ab33e957518b1cb8fef2276b"
+    },
+    {
+      "path": "build/p07n-tophat-command001/linux002/stderr.txt",
+      "bytes": 23674,
+      "sha256": "03235f865c5c3646e1df3e7d4dab3fa579e2aa6c86b399a1b0630a3a37cd877f"
+    },
+    {
+      "path": "build/p07n-tophat-command001/linux002/stdout.txt",
+      "bytes": 2965,
+      "sha256": "1a61b6afdea4b03411115bd75540771d81df52a1d1df97562c17f0c49cbcf8c8"
+    },
+    {
+      "path": "build/p07n-tophat-command001/linux002.py",
+      "bytes": 6134,
+      "sha256": "7caf9f4d8842ecb5271b17ada0af827bfbc311744a5305391a53ac5c15004150"
+    },
+    {
+      "path": "build/p07n-tophat-command001/qualify001.py",
+      "bytes": 7796,
+      "sha256": "4ae480f63a609a9df47d860772bf7e8c50763b39d674dcf7c35d399adfa036ee"
+    },
+    {
+      "path": "build/p07n-tophat-command001/reference-channel001/IndexedTypeReference.java",
+      "bytes": 4589,
+      "sha256": "9bea81deee2c52c21beb1649855c921941696f4aa48a5b694255d1475e8f84de"
+    },
+    {
+      "path": "build/p07n-tophat-command001/reference-channel001/java.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07n-tophat-command001/reference-channel001/java.stdout",
+      "bytes": 215188,
+      "sha256": "fc41000f73a74d350c9ed1656602af3f17140958da9e164a7bbf8ef085db0312"
+    },
+    {
+      "path": "build/p07n-tophat-command001/reference-channel001/javac.stderr",
+      "bytes": 204,
+      "sha256": "331c8f15cd46f872e9ffd93613f08ea15ba10e1cc9ab63368b0f037769dd0f3f"
+    },
+    {
+      "path": "build/p07n-tophat-command001/reference-channel001/javac.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07n-tophat-command001/reference-channel001/reference001.json",
+      "bytes": 401585,
+      "sha256": "4a22e31be698a6cf9c4417a714de578ddf77cacb5d949137569959801ea1ec91"
+    },
+    {
+      "path": "build/p07n-tophat-command001/reference-preview001/fixture-before-processor001.json",
+      "bytes": 178517,
+      "sha256": "b4250bdc9c33431b3e25ca618ee5545e3c50d5bbd24bb2513d5bcb8e036949f5"
+    },
+    {
+      "path": "build/p07n-tophat-command001/reference-preview001/IndexedTypeReference.java",
+      "bytes": 2453,
+      "sha256": "00ab3018e9be6a2017d5c91b4e8c2132a75dc51c9f253169ba0a093c56959be3"
+    },
+    {
+      "path": "build/p07n-tophat-command001/reference-preview001/java.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07n-tophat-command001/reference-preview001/java.stdout",
+      "bytes": 48967,
+      "sha256": "4ba4b5ce1d4f34badf3df9f7a1b463071c5a704e60114890f1253fb5ad92fd7d"
+    },
+    {
+      "path": "build/p07n-tophat-command001/reference-preview001/javac.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07n-tophat-command001/reference-preview001/javac.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07n-tophat-command001/reference-preview001/reference001.json",
+      "bytes": 178517,
+      "sha256": "b4250bdc9c33431b3e25ca618ee5545e3c50d5bbd24bb2513d5bcb8e036949f5"
+    },
+    {
+      "path": "build/p07n-tophat-command001/reference-preview002/IndexedTypeReference.java",
+      "bytes": 2526,
+      "sha256": "6979bd17d909fde1dd44c968526b54364c03916a9ccc41b2502bdbf91ddad765"
+    },
+    {
+      "path": "build/p07n-tophat-command001/reference-preview002/java.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07n-tophat-command001/reference-preview002/java.stdout",
+      "bytes": 63619,
+      "sha256": "62ad5c6831537f2549dd83e94219f0eb974f60660908e7eb5d26826d85ecd753"
+    },
+    {
+      "path": "build/p07n-tophat-command001/reference-preview002/javac.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07n-tophat-command001/reference-preview002/javac.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07n-tophat-command001/reference-preview002/reference001.json",
+      "bytes": 194141,
+      "sha256": "35bddbec62f25c23677a8776aa54d864d186b673d88e61b2027038413479f6f5"
+    },
+    {
+      "path": "build/p07n-tophat-command001/reference-preview003/IndexedTypeReference.java",
+      "bytes": 2597,
+      "sha256": "a1c3d6577a19b86ac0f84e3901d0312cad8bf763afa508307956abba37d4df82"
+    },
+    {
+      "path": "build/p07n-tophat-command001/reference-preview003/java.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07n-tophat-command001/reference-preview003/java.stdout",
+      "bytes": 132559,
+      "sha256": "7a0d386d8302c199b6c30a25a8dc261647bb167b210a23d28346971761f0ec06"
+    },
+    {
+      "path": "build/p07n-tophat-command001/reference-preview003/javac.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07n-tophat-command001/reference-preview003/javac.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07n-tophat-command001/reference-preview003/reference001.json",
+      "bytes": 292431,
+      "sha256": "10456b36d043e83fc662652aeb2ef88b98b5dfd5f307d257050223d228a8e928"
+    },
+    {
+      "path": "build/p07n-tophat-command001/sdk-consumer.cpp",
+      "bytes": 655,
+      "sha256": "8605892f03aa6721695e723467ea8a0609d1e2080cea6570cdc1b5ecdcaff49a"
+    },
+    {
+      "path": "build/p07n-tophat-command001/sdk001/run001.json",
+      "bytes": 4182,
+      "sha256": "a3604601f999234f58c40dc079aea8c916623a5af0def20ef5df1089284e367f"
+    },
+    {
+      "path": "build/p07n-tophat-command001/sdk001/sdk-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07n-tophat-command001/sdk001/sdk-build.stdout",
+      "bytes": 462,
+      "sha256": "d33200d6acee1d9c4f187ece6903f0764e2e80ce9c5975167fe0a0eac20aea1c"
+    },
+    {
+      "path": "build/p07n-tophat-command001/sdk001/sdk-configure.stderr",
+      "bytes": 115,
+      "sha256": "03d38095766b425301057c85ef5f15d6dc4ca7d6ed363b2de3adcf2fabfc0648"
+    },
+    {
+      "path": "build/p07n-tophat-command001/sdk001/sdk-configure.stdout",
+      "bytes": 952,
+      "sha256": "9f48c71aa902852c932082b9e7a560ceca546aa677411819b58cddda75c05e8d"
+    },
+    {
+      "path": "build/p07n-tophat-command001/sdk001/sdk-project001/CMakeLists.txt",
+      "bytes": 223,
+      "sha256": "b4e676f5be2f2e84e612fdeebd6cb7cc53c410fce943e32281ce0e018e5b0430"
+    },
+    {
+      "path": "build/p07n-tophat-command001/sdk001/sdk-project001/main.cpp",
+      "bytes": 655,
+      "sha256": "8605892f03aa6721695e723467ea8a0609d1e2080cea6570cdc1b5ecdcaff49a"
+    },
+    {
+      "path": "build/p07n-tophat-command001/sdk001/sdk-run.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07n-tophat-command001/sdk001/sdk-run.stdout",
+      "bytes": 43,
+      "sha256": "62e115765f0933debefa8c80d8d7af0dc813b953f34173c89c0c844be25873f5"
+    },
+    {
+      "path": "build/p07n-tophat-command001/source-policy001.json",
+      "bytes": 1247,
+      "sha256": "363c23c82a22f43b92120e8b150acc7c39217448f2b2ccf2571c5602e3c5ed12"
+    },
+    {
+      "path": "build/p07n-tophat-command001/source001/pytest.xml",
+      "bytes": 192769,
+      "sha256": "218a4c40db2c3b095b76e2bcd12ce60c7d10fff8696b58ac06200591dd1fbe98"
+    },
+    {
+      "path": "build/p07n-tophat-command001/source001/python.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07n-tophat-command001/source001/python.stdout",
+      "bytes": 1726,
+      "sha256": "05ecf87816589a634c1ae93ffd1d1119cd3ee629018917207888f8cc1b8b9bb3"
+    },
+    {
+      "path": "build/p07n-tophat-command001/source001/run001.json",
+      "bytes": 1381,
+      "sha256": "fde393c7ca85d64c46cecc6c8e33fce55ab91f36e31a21e708be93d3baa7ecb5"
+    },
+    {
+      "path": "build/p07n-tophat-command001/source001/source-freeze001.json",
+      "bytes": 162928,
+      "sha256": "a86ff078e19251b44f029e610083b4fdd0999d13fc22c9989ccfee94e204fe10"
+    },
+    {
+      "path": "build/p07n-tophat-command001/windows001/configure.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07n-tophat-command001/windows001/configure.stdout",
+      "bytes": 605,
+      "sha256": "b8e67aade58a5af92624edc2c18925584a6339cddb5d150963d3a04f40fbca1c"
+    },
+    {
+      "path": "build/p07n-tophat-command001/windows001/core-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07n-tophat-command001/windows001/core-build.stdout",
+      "bytes": 3410,
+      "sha256": "3b31b33fbf8b2c0ee57c373527faec6a265f58d14924836a382e247ff7f2a882"
+    },
+    {
+      "path": "build/p07n-tophat-command001/windows001/native.stderr",
+      "bytes": 27,
+      "sha256": "18e00877dc1071c85cd4f479d451bebeef8309022e46cf8c63b0bed5151984a4"
+    },
+    {
+      "path": "build/p07n-tophat-command001/windows001/native.stdout",
+      "bytes": 1190,
+      "sha256": "69c8c489e6dcd7297a06c0880033293c559a4d3df469f0d9319ceaf455733746"
+    },
+    {
+      "path": "build/p07n-tophat-command001/windows001/native.xml",
+      "bytes": 4096,
+      "sha256": "3050d5c269f2a4bdd6f215ccf5d3975146d576ceac6e397dea36a8c71df26130"
+    },
+    {
+      "path": "build/p07n-tophat-command001/windows001/run001.json",
+      "bytes": 5159,
+      "sha256": "330df0d6f285efeb6ba50f60164d0006d2ca6fbe858530939aac5ae1e244a216"
+    },
+    {
+      "path": "build/p07n-tophat-command001/windows001/source-freeze001.json",
+      "bytes": 162928,
+      "sha256": "5e593304ac6cf235edacad1745e26c894aedf78dd972b0f65370e28f5a6bd070"
+    },
+    {
+      "path": "build/p07n-tophat-command001/windows002/configure.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07n-tophat-command001/windows002/configure.stdout",
+      "bytes": 605,
+      "sha256": "14854bbdd8c54681a33950b0712120dc1b78ff5bb7807bf7fb4a49adabf71df0"
+    },
+    {
+      "path": "build/p07n-tophat-command001/windows002/core-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07n-tophat-command001/windows002/core-build.stdout",
+      "bytes": 3340,
+      "sha256": "940465393e9fded7ab5a91f35fe5555f756f72b37e17a35865395fda1df26c89"
+    },
+    {
+      "path": "build/p07n-tophat-command001/windows002/native.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07n-tophat-command001/windows002/native.stdout",
+      "bytes": 1076,
+      "sha256": "d8bb3ad9f867c32d562b9975791dedd2f3ee6105dfd668791c90c0b0a2b2f8ea"
+    },
+    {
+      "path": "build/p07n-tophat-command001/windows002/native.xml",
+      "bytes": 4060,
+      "sha256": "7b58635af984edc33a70e9da5415c3d9e89d2bf1379cdfeebce1d07af822fd20"
+    },
+    {
+      "path": "build/p07n-tophat-command001/windows002/run001.json",
+      "bytes": 4957,
+      "sha256": "5664e8535f346497d79487d353e64e9f753439f0f72f1e2f453550da3bccd3a4"
+    },
+    {
+      "path": "build/p07n-tophat-command001/windows002/source-freeze001.json",
+      "bytes": 162928,
+      "sha256": "a86ff078e19251b44f029e610083b4fdd0999d13fc22c9989ccfee94e204fe10"
+    }
+  ],
+  "limitations": [
+    "No Top Hat editor command, workflow grammar or shared ImGui controls yet",
+    "Direct preview processor microreferences do not qualify physical UI behavior or stored channel LUT persistence",
+    "Scientific multi-plane lane selection, canonical zero/equal range representation, off-active threshold anchors and atomic publication need command tests"
+  ],
+  "next": "Typed immutable Top Hat intent/record, exact resource admission, guarded pixel/display preparation and explicit preview/apply execution phase; then shared controls and actual-input qualification",
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  },
+  "source901_changed": false
+}

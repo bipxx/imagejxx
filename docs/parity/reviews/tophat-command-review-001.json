@@ -1,0 +1,830 @@
+{
+  "schema_version": 1,
+  "state": "passed",
+  "scope": "Finite scalar ImageJ Top Hat apply command, registry and workflow replay; physical preview/UI remains open",
+  "runner_command_cases": 576,
+  "channel_command_cases": 144,
+  "python_cases_per_context": 2147,
+  "new_command_python_cases": 741,
+  "previous_1406_cases_retained": true,
+  "native_suites_per_platform": 10,
+  "native_command_checks_per_platform": 8535,
+  "native_final_display_checks_per_platform": 7184,
+  "native_pixel_checks_per_platform": 7245,
+  "source_freeze_pins_verified": 2504,
+  "source_installed_inventory_equal": true,
+  "installed_python_origins_verified": true,
+  "source_installed_products_equal": true,
+  "installed_public_cpp_consumer_passed": true,
+  "retained_failures": [
+    "source001: invalid empty rectangle fixture; source retained before correction",
+    "source003: nonexistent Python ExecutionControl wrapper; existing cancellation keyword used on rerun",
+    "Final audit caught Linux CTest display-suite selection omission; rebuilt archived executable verified and standalone suite passed in linux004"
+  ],
+  "retained_warnings": [
+    "Existing compiler shadowing and optional-range diagnostics in raw build logs"
+  ],
+  "owned_cleanup_bytes": 114261237,
+  "removed_scratch_trees": 28,
+  "receipt_pins": [
+    {
+      "path": "build/p07o-tophat-intent001/api-worker001.py",
+      "bytes": 1098,
+      "sha256": "55245fc2b792db4fb2622fca9e89bcc3b49bf736dca51264190d4964514ce8ca"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/before001.json",
+      "bytes": 2671,
+      "sha256": "a5548fba6836b5b545bb38555e2ef1c0629fccbcf5e17fd495e92dccb742c0a5"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/cleanup001.json",
+      "bytes": 346403,
+      "sha256": "4badec4bd7fb142eae4f642ef65d6c39b118f316fef22dc8160e254085a2fa9d"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/cleanup001.py",
+      "bytes": 2125,
+      "sha256": "01c7e64e88be69b328a883bbf1bee9ddc3d68ce9456b852e1ed5fc010fed36db"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/cleanup002.py",
+      "bytes": 2302,
+      "sha256": "7cf9490e8ec3d92fd5ca477b220fd6d2ae4ac6f00891ed2dc097dca21f458476"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/finalize001.py",
+      "bytes": 6817,
+      "sha256": "ad72243a987ff119233b1cae3bd682234694d7d7d027c02f585a983b63afcef1"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/followup-edits001.py",
+      "bytes": 3344,
+      "sha256": "6f77ad807c55813463a3962de389d4a89ad9a595519331fa3680d9af13913e06"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/install001/install-py.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/install001/install-py.stdout",
+      "bytes": 4676,
+      "sha256": "633b24eacb0b29bda8a1831634c6d5ab301e3f82c0dcbb7fb9e5776fa2ce95d5"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/install001/install-sdk.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/install001/install-sdk.stdout",
+      "bytes": 12384,
+      "sha256": "1387be87e0b8f31850004767d76ebf7d8411815950fd8c8343ed619c2acc00c8"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/install001/run001.json",
+      "bytes": 3071,
+      "sha256": "e06e85ca60b9b6e2d6f57a081efedc48e5aa7508dda9de09ae1a9f150c12080e"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/install001.py",
+      "bytes": 10020,
+      "sha256": "86eb23601606aab1d4c29fbf4975acacffc24f51cb7599b5f0a5ffa34203133f"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/install002/install-py.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/install002/install-py.stdout",
+      "bytes": 4676,
+      "sha256": "8df0dceefc23158424de2f02666bc9f4f19c1a7c28d2800c50dbede508833942"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/install002/install-sdk.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/install002/install-sdk.stdout",
+      "bytes": 12384,
+      "sha256": "bd2fd5cfd92bc12e03e3eee3df402a7903e7a744042f0521c18e74f1f243a5b7"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/install002/run001.json",
+      "bytes": 3071,
+      "sha256": "b0101119ea2e7f44b18c89fd494472c23cbbc35fabb939b7c7ec3f3b9af34212"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/install002.py",
+      "bytes": 10020,
+      "sha256": "1ce7af057338222432b7741081cfa8b80c4b3c4e503677b47c45aa83058cd362"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/installed-worker001.py",
+      "bytes": 1348,
+      "sha256": "3c1b359ecf11b89471c9b98809ca5434d67ce74c0fb3f8645cc9db1bfebde3cd"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/installed-worker002.py",
+      "bytes": 1348,
+      "sha256": "c44657e6816890d7c4d438f89aa90f2e9113ec3b7822ae9e249775d50444b8f9"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/installed001/core-evidence001.json",
+      "bytes": 364,
+      "sha256": "91bfc264214fed6da7d8cbef79779af9f38bc7fd8168e2c1379f0677e4dcaa00"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/installed001/pytest.xml",
+      "bytes": 294761,
+      "sha256": "65ef8935daabca41eb4e2481de5c05a3dbf859d366cd101becfca49a068acb69"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/installed001/python.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/installed001/python.stdout",
+      "bytes": 2538,
+      "sha256": "e306259bad0a1279b1e650f4cd3c303e349036368a7d9dbba244aa9b9a30a0fd"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/installed001/run001.json",
+      "bytes": 1691,
+      "sha256": "a3a42d87a1169e8c4045da437dd6dc2f5d78e15f296796577c1c64f59d876ad5"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/installed002/core-evidence001.json",
+      "bytes": 364,
+      "sha256": "e9b1fcdad2392f811b3ca544cf37685ae5ad62c3663e6e65620cfb8bcd26f5ee"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/installed002/pytest.xml",
+      "bytes": 294761,
+      "sha256": "be557a683a59102042d7e28d68d7d8bf2e0adf1dc222e050978ce8c773835d05"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/installed002/python.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/installed002/python.stdout",
+      "bytes": 2538,
+      "sha256": "b3a38fa758d1c2148c6bb0f8c27da5534ab61c3cccc9c4b3e31f5d18240cce5e"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/installed002/run001.json",
+      "bytes": 1679,
+      "sha256": "ba0c383141fe2fe4f07568b473cfd7e88515610d0ee51cd2cc723062ccd8decb"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux-worker001.py",
+      "bytes": 5062,
+      "sha256": "a44008ad3bc1e21fddbff47898bc76fa004bbbae0a69114b845c73445a703482"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux-worker002.py",
+      "bytes": 3860,
+      "sha256": "4565cf9c3d6aaa4dd342b8a61f839c0519e774b40d4029f34e8991ff3bb1e3e4"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux-worker003.py",
+      "bytes": 3711,
+      "sha256": "83c3f3e3157889a55f49df31f23baaa8d9879828970fa834de58fe8b501698be"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux-worker004.py",
+      "bytes": 3185,
+      "sha256": "21eade61867a8550b96dff723a98b7868c05ffffcc4ce80a3a5d6705aa66cdc6"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux001/cache-restore001.json",
+      "bytes": 1584,
+      "sha256": "34be4afd6dbcf62f5b330623ff335495b565a22acbe2baa3eed4c90590c9682c"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux001/ext4-scratch001.json",
+      "bytes": 262,
+      "sha256": "efd73f40164aa071d52581ab139cbda774ea9e13a3ffef32a708d56f7c574d74"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux001/native.xml",
+      "bytes": 4145,
+      "sha256": "de8245e2a837a28cee5b79a1bcea60daf070be21af3205a7da93d6f636f51473"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux001/run001.json",
+      "bytes": 844,
+      "sha256": "217327daff8f10d6973f46d07cea2f49a6e11ce4eb0487094040ebbe86be405f"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux001/source-freeze001.json",
+      "bytes": 46862,
+      "sha256": "f6c92f2ef2964f34403d37e0d247d3756d4b0a4a01ca048ef449504ee9523f36"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux001/stderr.txt",
+      "bytes": 24733,
+      "sha256": "8818a9860ece2118ffff0f48bfdb2a59ac897505ed94f67ae2e60550d845f535"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux001/stdout.txt",
+      "bytes": 4436,
+      "sha256": "f1aa87d7d6ab1b65854235c203fa98ca5a95af97c4834845bde5881dcf863ce0"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux001.py",
+      "bytes": 6196,
+      "sha256": "297da9b049e8554ec1b528ebbbfe600407817a834eea753b3ee2949d0a24d165"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux002/cache-reuse001.json",
+      "bytes": 1039,
+      "sha256": "dee031a5469ea18524c89447e094e3d6830589dd089d7f5b8df253db121c334b"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux002/ext4-scratch001.json",
+      "bytes": 262,
+      "sha256": "058951a1cc115713e92ce326e0d4ce0ac445d6a62736f9f32b2146736cac1faf"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux002/native.xml",
+      "bytes": 4154,
+      "sha256": "a3a1c4fd151aaa497c194541be817446d3f10adad6f509ec6a004720eb69c3c6"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux002/run001.json",
+      "bytes": 846,
+      "sha256": "f7dc66d3c3926877642c672ddbe9a7168a7036267f031238004823bd1c1ba9d3"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux002/source-freeze001.json",
+      "bytes": 46862,
+      "sha256": "9f6d19794afda52c7a98fccc1b026d385e27b93a139648be9bf2b238ccdeaf86"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux002/stderr.txt",
+      "bytes": 23674,
+      "sha256": "0d44398a7b3ec3a6222b45211d232fa15f712653595eb86f7e4fe3d267147f5c"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux002/stdout.txt",
+      "bytes": 3481,
+      "sha256": "6760ab57686fe2c664b136399c0f57d660ee2dc923013c5af4fb7ea9a89c2c01"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux002.py",
+      "bytes": 6196,
+      "sha256": "f70ab48136198ceafedffdc94b6a54ab4dfa5638dc5959e702e9bda1885d57ea"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux003/cache-reuse001.json",
+      "bytes": 470,
+      "sha256": "c3333e98e188c0064f29731a3add9fe0a18ec6b26f2cb239c4d0787071cf62b8"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux003/ext4-scratch001.json",
+      "bytes": 262,
+      "sha256": "4ba9c35c1acb23ed625eff0dd51fe7e6a6487f471da15632d99d70cba4319936"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux003/native.xml",
+      "bytes": 4154,
+      "sha256": "08a9d790a8ab803b8b5d18839329e7a1945aa790e2829025ee0f6884c1a5a0a7"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux003/run001.json",
+      "bytes": 842,
+      "sha256": "e5b9aaedbbdc6952af782e8cec1f37b39e397ce364bdd782456cff7ed9992b62"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux003/source-freeze001.json",
+      "bytes": 46862,
+      "sha256": "9b1d85880fbc105cb4ea37bcbdd3152108c3b0b06924f8b40b607015d135fa30"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux003/stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux003/stdout.txt",
+      "bytes": 3103,
+      "sha256": "40b85df963368258f5d53de3c5a0b36f653b1451fcfc7b035820b35e0dfe5108"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux003.py",
+      "bytes": 6196,
+      "sha256": "a1a4de4699572bea87c23a19185f5d81ea610532583a2b992e07babc34f3732a"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux004/ext4-scratch001.json",
+      "bytes": 411,
+      "sha256": "26249d92e27d2d2d8f23447c0c531a407bcf3082d3bb60c79e1190bb783e46af"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux004/native.xml",
+      "bytes": 257,
+      "sha256": "456a9ec3aa451127ec3cdd1ef1194c40e57b3cbce0f97ac7f920008adc42d31f"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux004/restored-executable001.json",
+      "bytes": 846,
+      "sha256": "0427620c9efa2ec777f93f48f4da45a6521e7849f27ef7db1a226b621f985ae5"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux004/run001.json",
+      "bytes": 837,
+      "sha256": "caa4781fb2401a70308cbd53067044e64e466341a9e00c51625c4770a712151d"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux004/source-freeze001.json",
+      "bytes": 46862,
+      "sha256": "9b1d85880fbc105cb4ea37bcbdd3152108c3b0b06924f8b40b607015d135fa30"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux004/stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux004/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux004/temp-cleanup001.json",
+      "bytes": 99,
+      "sha256": "2e3d2e029941da171c7709543ed24dab49565d144b52af0bc41ff95c35382bc0"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux004/test.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux004/test.stdout",
+      "bytes": 41,
+      "sha256": "107c7b33922e875bf36f9d0599ba11674264698cf32fcaa495e86b9b9bcd33f8"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/linux004.py",
+      "bytes": 6196,
+      "sha256": "2a36f883977cef3e300974ddf58b7ee89fca2dd6a8a502d120893f4634898dea"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/qualify001.py",
+      "bytes": 7885,
+      "sha256": "1e6af0a640e009736a94dcf358016e1ad07fd85ae1c237f909dc44427ebd078e"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/sdk-consumer.cpp",
+      "bytes": 964,
+      "sha256": "88498e9863247fafd7e19e4870a7640c455fbf432006b87744421094830c87d6"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/sdk001/run001.json",
+      "bytes": 4211,
+      "sha256": "c217316bce1c38cc8bbb7124ceb9467c7671ba615c893f456ae8dca642b99e1c"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/sdk001/sdk-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/sdk001/sdk-build.stdout",
+      "bytes": 459,
+      "sha256": "a2810472d9a97ba9b2435626fcf4e60ebad35b5a4fe8941add5f55e6bb4af9bb"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/sdk001/sdk-configure.stderr",
+      "bytes": 115,
+      "sha256": "03d38095766b425301057c85ef5f15d6dc4ca7d6ed363b2de3adcf2fabfc0648"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/sdk001/sdk-configure.stdout",
+      "bytes": 951,
+      "sha256": "000c44ce6fb9b08f9d33612f333af143f6eb3c0cee297aa836872e9c8926e23a"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/sdk001/sdk-project001/CMakeLists.txt",
+      "bytes": 223,
+      "sha256": "b4e676f5be2f2e84e612fdeebd6cb7cc53c410fce943e32281ce0e018e5b0430"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/sdk001/sdk-project001/main.cpp",
+      "bytes": 964,
+      "sha256": "88498e9863247fafd7e19e4870a7640c455fbf432006b87744421094830c87d6"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/sdk001/sdk-run.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/sdk001/sdk-run.stdout",
+      "bytes": 65,
+      "sha256": "93c854a76927cb02b46055b6d90720b5de02865677d9643c6e25e6620c1c074d"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/sdk002/run001.json",
+      "bytes": 4195,
+      "sha256": "1ed7a8a4ebc4013b94e5b4fc8e862437ae1811413d3049a19490ec10bf7a484d"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/sdk002/sdk-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/sdk002/sdk-build.stdout",
+      "bytes": 459,
+      "sha256": "579d0eec4f3c690bc48ee10937b1b6697360812ab64e60bf6200c0ddf58737ac"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/sdk002/sdk-configure.stderr",
+      "bytes": 115,
+      "sha256": "03d38095766b425301057c85ef5f15d6dc4ca7d6ed363b2de3adcf2fabfc0648"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/sdk002/sdk-configure.stdout",
+      "bytes": 951,
+      "sha256": "e12841ea439697d26852bce99cd84f8ae626e67697957f81ed7d3cf32737a61e"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/sdk002/sdk-project001/CMakeLists.txt",
+      "bytes": 223,
+      "sha256": "b4e676f5be2f2e84e612fdeebd6cb7cc53c410fce943e32281ce0e018e5b0430"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/sdk002/sdk-project001/main.cpp",
+      "bytes": 964,
+      "sha256": "88498e9863247fafd7e19e4870a7640c455fbf432006b87744421094830c87d6"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/sdk002/sdk-run.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/sdk002/sdk-run.stdout",
+      "bytes": 65,
+      "sha256": "93c854a76927cb02b46055b6d90720b5de02865677d9643c6e25e6620c1c074d"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source001/pytest.xml",
+      "bytes": 276556,
+      "sha256": "14f388038ff24d0af3e8e7f6e9ee274a486d939ebe80f9d65e02fdbe41dbe6dd"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source001/python.stderr",
+      "bytes": 199,
+      "sha256": "cc9fcc16120b638d256f27f204baad4402c766abeb91a1b6031ddf206eb9b1eb"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source001/python.stdout",
+      "bytes": 4002,
+      "sha256": "cc9a9daaddc8c9adc045d10aa7c184d9b2e3724538779274a5a9bf70a420208e"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source001/run001.json",
+      "bytes": 1579,
+      "sha256": "eb1d0535d7ea624817cb8617e85d3e663be7315af864b1b00760a4b2e0e1fbb0"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source001/source-freeze001.json",
+      "bytes": 163259,
+      "sha256": "d6cd07406a8f5679279d2ffc0b633e2b8b3698241755838a1ef986459df6c4a2"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source002/pytest.xml",
+      "bytes": 275428,
+      "sha256": "2fa5c11d12692e2328af666e316f257020db0535af37b7c13e8399c38a0746aa"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source002/python.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source002/python.stdout",
+      "bytes": 2373,
+      "sha256": "e53bc08167249bb8b10eef4dae37efbbcd5121cac71fd415315177eacf362b18"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source002/run001.json",
+      "bytes": 1378,
+      "sha256": "f02f0e5f99b27eebebc74271c2a71ac246224811432313cea8c8c5b29d6b9c1c"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source002/source-freeze001.json",
+      "bytes": 163259,
+      "sha256": "ed8e080077afe467f3166df4406d198d6c7941cb917eab6fcb92c12f106be25d"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source003/pytest.xml",
+      "bytes": 295792,
+      "sha256": "0cad581f6743e4f7520a97d2a1d394cb4cc9b7a8258d256a871822e3e3654509"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source003/python.stderr",
+      "bytes": 199,
+      "sha256": "cc9fcc16120b638d256f27f204baad4402c766abeb91a1b6031ddf206eb9b1eb"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source003/python.stdout",
+      "bytes": 4353,
+      "sha256": "017d99af66f958ed469971fbea506d0528ab756178e15ead62022d5742037048"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source003/run001.json",
+      "bytes": 1565,
+      "sha256": "41c9128fde1893e20b283b0fc48a0506a565e5b17668d718b451f736addf19fc"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source003/source-freeze001.json",
+      "bytes": 163260,
+      "sha256": "7ec140f1f7e94f9cd8fec9c2b28ec3bab3dd340473d651367a346a74343ce0cb"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source004/pytest.xml",
+      "bytes": 294235,
+      "sha256": "2a782d4c570460552a1f3c6fe2e2115ad697be5e02c77ced5888373ee3610fbd"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source004/python.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source004/python.stdout",
+      "bytes": 2535,
+      "sha256": "2ceee38dd146dfcf88e49e4f4c3413ed4de7dbda1d1675350cf5351c3157e906"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source004/run001.json",
+      "bytes": 1378,
+      "sha256": "c4488ebbdfc3acadbe3923da59560537f25aea5e10757003bfd9fcabea337db6"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source004/source-freeze001.json",
+      "bytes": 163260,
+      "sha256": "771c0eb72cef9439560ff1507b5f22374c8cbc8e26c60917c581bc567eed9c55"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source005/pytest.xml",
+      "bytes": 294761,
+      "sha256": "765ccde5d960264b52d5908f2b03ffbee4320fd5a1bfe693b2dbeb3462a8c2f2"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source005/python.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source005/python.stdout",
+      "bytes": 2535,
+      "sha256": "414f02e17e2af5be9f54cecb025483fcf411877cd605069ad2d8c0fa103af9de"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source005/run001.json",
+      "bytes": 1379,
+      "sha256": "fc304d50edbb488dc4865184056d6dad053d3e4c1ac6d486634b33deabd43e33"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source005/source-freeze001.json",
+      "bytes": 163260,
+      "sha256": "56676e1aa5468e7711417a6670ef8fcd23ccc26ddf11682b32a088f68d82f1ff"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source006/pytest.xml",
+      "bytes": 294761,
+      "sha256": "3a54be14bc98b1b2d709caf505b6fcab80ffb639340512a9ab27112d9b9b86ea"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source006/python.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source006/python.stdout",
+      "bytes": 2535,
+      "sha256": "edff84661fc61519bb9fffac5c04ae33da7057344c1d46526e73b2ae6a101550"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source006/run001.json",
+      "bytes": 1378,
+      "sha256": "67cb6143861e9e8bb4c1530073dbf5bc1c364d1990e483975df8606c3032af72"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/source006/source-freeze001.json",
+      "bytes": 163260,
+      "sha256": "56e334fd59275e18a3116ebb1ff50476639da99928ed3c0be90590487a61c628"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows001/configure.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows001/configure.stdout",
+      "bytes": 605,
+      "sha256": "f1d35759e1a152f63928f78d3e2939fa5744428bc64926c0175637e88fb6f889"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows001/core-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows001/core-build.stdout",
+      "bytes": 5097,
+      "sha256": "7f81bf9eabb0259bf5301a3a2473f30a0237842b3a9c097aabec02955302e279"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows001/native.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows001/native.stdout",
+      "bytes": 1182,
+      "sha256": "71fffee837b82c3e7272fa11a103094b066f09b36b533108ea94d80693ea54ea"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows001/native.xml",
+      "bytes": 4259,
+      "sha256": "39c15904be31b92e788922d18f09773dbd91c5f835460831c0c20ed70c3ca0a2"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows001/run001.json",
+      "bytes": 5026,
+      "sha256": "37a5f5e314da253bbec7d0cb567c021720494c536429165fd53059bec7ff264a"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows001/source-freeze001.json",
+      "bytes": 163259,
+      "sha256": "d6cd07406a8f5679279d2ffc0b633e2b8b3698241755838a1ef986459df6c4a2"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows002/configure.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows002/configure.stdout",
+      "bytes": 605,
+      "sha256": "21a651e4eb99912c64072cf75045d2c2f015555a64346386eecc17008e433221"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows002/core-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows002/core-build.stdout",
+      "bytes": 3674,
+      "sha256": "a2def0f228fa9ee046a4fc14d950a829d44fa5a23fc80a2d17e90bc22c15e153"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows002/native.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows002/native.stdout",
+      "bytes": 1343,
+      "sha256": "0c53ae8f2ce6e5146ff886e5149c73d5edb308a07b7154bd6a4669937470b4ba"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows002/native.xml",
+      "bytes": 4478,
+      "sha256": "5f9599f0d3769faf2385d3a9b15ff7ac6e8457ca406856a88094857458e5a896"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows002/run001.json",
+      "bytes": 5078,
+      "sha256": "1a854d6ec9e796d251c8d8ff59e3412e61caab69fd4215d00d7b401337b888b4"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows002/source-freeze001.json",
+      "bytes": 163260,
+      "sha256": "56676e1aa5468e7711417a6670ef8fcd23ccc26ddf11682b32a088f68d82f1ff"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows003/configure.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows003/configure.stdout",
+      "bytes": 605,
+      "sha256": "21a651e4eb99912c64072cf75045d2c2f015555a64346386eecc17008e433221"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows003/core-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows003/core-build.stdout",
+      "bytes": 3265,
+      "sha256": "70c6e0555d8212b8ae50644165a207536956e8f4cac1311a25907a5befcf1cd4"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows003/native.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows003/native.stdout",
+      "bytes": 1343,
+      "sha256": "b524d49daba088a1e76092b304ad2f31e44ce79aa813437085a2c6f2ae469bb4"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows003/native.xml",
+      "bytes": 4478,
+      "sha256": "55d338f2821c65915170f71e498108e646cca0e15fd3ac08c0898e290ee60345"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows003/run001.json",
+      "bytes": 5055,
+      "sha256": "cf2b53e455ed1f6ddace5923c33f219c2388c50afc8013697581fbfa015b748b"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows003/source-freeze001.json",
+      "bytes": 163260,
+      "sha256": "56676e1aa5468e7711417a6670ef8fcd23ccc26ddf11682b32a088f68d82f1ff"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows004/configure.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows004/configure.stdout",
+      "bytes": 605,
+      "sha256": "3ee7e2b76d55651125825c8a309740d17e443ac95addd5cbde9564e30db7b594"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows004/core-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows004/core-build.stdout",
+      "bytes": 4512,
+      "sha256": "4370a30a7174dac2349d3e1688354dec51d9e18fdb47321640b95bad6180c766"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows004/native.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows004/native.stdout",
+      "bytes": 1343,
+      "sha256": "82f3762173d60eef4162061ab94578e3b5f7c16b45ce19bec0f89a718bb336cd"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows004/native.xml",
+      "bytes": 4477,
+      "sha256": "7a29f103231c99af2b6f7eb831c09d5c44fcde09b460aec237f83966fc05ab28"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows004/run001.json",
+      "bytes": 5078,
+      "sha256": "f60a92023e2eec15f2e314b8ee1d67537573fff614bad6ac65f3ea5ba2060aa2"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/windows004/source-freeze001.json",
+      "bytes": 163260,
+      "sha256": "56e334fd59275e18a3116ebb1ff50476639da99928ed3c0be90590487a61c628"
+    },
+    {
+      "path": "build/p07o-tophat-intent001/workspace-fix001.py",
+      "bytes": 2507,
+      "sha256": "94569cee76f63c3e0d1a25cd474acd7fafdfda7259e2e4a1f8f724e7b9302a1f"
+    }
+  ],
+  "limitations": [
+    "No Top Hat dialog, desktop replay observation, explicit preview phase or physical input qualification",
+    "Coherent API/SDK prefix only; desktop hosts need full rebuild before new UI delivery",
+    "Single active target uses live lane, other scientific targets use detached lane; canonical active ranges persist as an owned editor policy",
+    "Implicit legacy range materialization can create a display-history step even when the effective byte default is unchanged",
+    "Finite scalar profile; RGB/nonfinite and indexed format family parity not added"
+  ],
+  "next": "Explicit preview/apply phase, shared RankPanel controls and command routing/record observation, coherent host rebuild, actual-input and installed qualification",
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  },
+  "source901_changed": false
+}

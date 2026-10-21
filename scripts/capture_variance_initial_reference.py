@@ -1,0 +1,72 @@
+"""Capture typed initial display range and constant/saturated variance retention.
+
+Uses the pinned ImageJ plugin runner. No upstream runtime ships.
+"""
+from pathlib import Path
+import hashlib,json,subprocess,zipfile
+from capture_binary_reference import ROOT,COMMIT,IMAGEJ_SHA,FIJI_SHA,digest,verified
+
+WORK = ROOT / 'build/p07g-variance-editor001/reference003'
+DRIVER = r'''
+
+import ij.*;
+import ij.process.*;
+import ij.plugin.filter.*;
+public class IndexedTypeReference {
+ public static void main(String[] args) {
+  Thread.currentThread().setName("Run$_initial-variance-reference");Prefs.setThreads(1);
+  for(int type=0;type<2;type++)for(int signal=0;signal<2;signal++)for(int choice=0;choice<4;choice++) {
+   ImageProcessor ip=type==0?new ShortProcessor(8,4):new FloatProcessor(8,4);
+   for(int i=0;i<32;i++)ip.setf(i,signal==0?7:type==0?(i%2)*65535:1000000);
+   ImagePlus imp=new ImagePlus("variance-initial",ip);
+   double low=choice==0?(type==0?7.5:.1):choice==1?0:choice==2?-1.5:7;
+   double high=choice==0?(type==0?2047.5:.3):choice==1?0:choice==2?5.5:7;
+   if(choice!=3)imp.setDisplayRange(low,high);
+   double initialLow=imp.getDisplayRangeMin(),initialHigh=imp.getDisplayRangeMax();
+   WindowManager.setTempCurrentImage(imp);Macro.setOptions("radius=0");new PlugInFilterRunner(new RankFilters(),"Variance...","variance");Macro.setOptions(null);
+   System.out.println("{\"dtype\":\""+(type==0?"uint16":"float32")+"\",\"signal\":"+signal+",\"choice\":"+choice+",\"requested\":["+low+","+high+"],\"initial\":["+initialLow+","+initialHigh+"],\"final\":["+imp.getDisplayRangeMin()+","+imp.getDisplayRangeMax()+"]}");
+   WindowManager.setTempCurrentImage(null);imp.close();
+  }System.exit(0);
+ }
+}
+
+''' 
+
+def main():
+ assert not WORK.exists();WORK.mkdir(parents=True)
+ held=json.loads((ROOT/'tests/fixtures/color-components-imagej154r.json').read_bytes());assert held['imagej_commit']==COMMIT and held['source_archive_sha256']==IMAGEJ_SHA and held['runtime_archive_sha256']==FIJI_SHA
+ archive=ROOT/'build/p06zs-color-stack001/reference003/classes001-scratch.zip'
+ cleanup=json.loads((ROOT/'build/p06zs-color-stack001/cleanup001.json').read_bytes())
+ def find(v):
+  if isinstance(v,dict):
+   if v.get('path')==archive.relative_to(ROOT).as_posix():return v
+   for x in v.values():
+    if (r:=find(x)):return r
+  elif isinstance(v,list):
+   for x in v:
+    if (r:=find(x)):return r
+ pin=find(cleanup);assert pin and archive.stat().st_size==pin['bytes'] and digest(archive)==pin['sha256']
+ runtime=ROOT/'build/references/binary-imagej154r/jdk'
+ for p in held['runtime_pins']:assert (runtime/p['name']).stat().st_size==p['bytes'] and digest(runtime/p['name'])==p['sha256']
+ upstream=verified(ROOT/'build/references/downloads'/f'imagej-{COMMIT}.zip',IMAGEJ_SHA)
+ members=[]
+ with zipfile.ZipFile(upstream) as z:
+  for name in ['ij/process/ImageConverter.java','ij/process/StackConverter.java','ij/process/ImageProcessor.java','ij/ImagePlus.java','ij/plugin/filter/PlugInFilterRunner.java','ij/plugin/filter/Filters.java','ij/plugin/filter/GaussianBlur.java','ij/plugin/filter/RankFilters.java','ij/plugin/LutLoader.java','ij/plugin/ContrastEnhancer.java','ij/process/ShortStatistics.java','ij/process/FloatStatistics.java','ij/process/FloatProcessor.java','ij/process/ShortProcessor.java','ij/Macro.java','ij/gui/GenericDialog.java']:
+   raw=z.read(f'ImageJ-{COMMIT}/'+name);assert raw==(ROOT/'build/references/binary-imagej154r/sources'/name).read_bytes();members.append(dict(name=name,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()))
+ classes=WORK/'classes001';classes.mkdir()
+ with zipfile.ZipFile(archive) as z:
+  assert z.testzip() is None
+  for item in z.infolist():
+   if item.filename.startswith('ij/') or item.filename.endswith('.txt'):
+    target=classes/item.filename;assert target.resolve().is_relative_to(classes.resolve())
+    if not item.is_dir():target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(z.read(item))
+ driver=WORK/'IndexedTypeReference.java';driver.write_text(DRIVER)
+ for name,args in [('javac',[runtime/'bin/javac.exe','-cp',classes,'-d',classes,driver]),('java',[runtime/'bin/java.exe','-Djava.awt.headless=false','-cp',classes,'IndexedTypeReference'])]:
+  with (WORK/(name+'.stdout')).open('w') as out,(WORK/(name+'.stderr')).open('w') as err:r=subprocess.run([str(x) for x in args],stdout=out,stderr=err,text=True,timeout=120)
+  r.check_returncode()
+ rows=[json.loads(line) for line in (WORK/'java.stdout').read_text().splitlines() if line.strip()];assert len(rows)==16
+ payload=dict(schema_version=1,imagej_version='1.54r',imagej_commit=COMMIT,source_archive_sha256=IMAGEJ_SHA,runtime_archive_sha256=FIJI_SHA,classes_archive=pin,source_members=members,runtime_pins=held['runtime_pins'],driver_sha256=digest(driver),generator='scripts/capture_variance_initial_reference.py',scope='Actual runner constant/saturated variance range retention: UInt16 rounding, Float32 narrowing, zero/zero reset and implicit default ranges.',cases=rows)
+ (WORK/'reference001.json').write_text(json.dumps(payload,indent=2)+'\n');print('Captured 16 typed initial-range cases')
+ target=ROOT/'tests/fixtures/variance-initial-range-imagej154r.json';assert not target.exists();target.write_bytes((WORK/'reference001.json').read_bytes())
+
+if __name__ == '__main__':main()

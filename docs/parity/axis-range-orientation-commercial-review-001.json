@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "id": "G029.axis-range-orientation.reference-commercial-review.001",
+  "recorded_at_utc": "2026-10-12T23:15:00.804849+00:00",
+  "reference_id": "imagej-1.54r-fiji-latest-20261007-1617-win64",
+  "candidate_id": "R-ae5429f985c7602cafecd8bb",
+  "decision": "eligible",
+  "scope": "96 actual finite pinned ImageJ1.54r XZ/YZ oriented integer-range observations: U8/U16/F32/RGB interior unaligned positive-stride ranges plus U8 full and upper-singleton ranges, all reverse/flip/transpose flag combinations. Slicer Top/Bottom/Left/Right unit-contiguous output followed by public ImageStack positive-stride selection; reverse ROI ends at last_selected. ImageJ Rotate90 is u/v transpose; vertical flip precedes transpose. Exact typed/sample bits, copied positive scalar spacing and source before/after/restoration are observed. Native signed full-affine/stride-world/time/XY/F64/RGBA/arbitrary-S/nonfinite/publication/UI remain owned.",
+  "reason": "Identity reuse of the same eligible 16 pinned ImageJ1.54r source/license members and independently authored MIT equivalent; no new incorporated components or product dependencies. Orientation-only held variant does not widen full Slicer, candidate options/runtime or Fiji1.54p eligibility.",
+  "code": "eligible_public_domain_reference_only_and_owned_MIT_equivalent",
+  "dependencies": "no_new_product_dependencies; JDK/AWT/ImageJ and derived classpathJAR remain excluded reference tools",
+  "models_assets": "none; independently authored synthetic typed image observations only",
+  "incorporated_components": [],
+  "archive": {
+    "path": "build/references/downloads/imagej-62db90a269cccc1ac79f658e4602043214ed055b.zip",
+    "sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+    "bytes": 6146010
+  },
+  "source_members": {
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/plugin/Slicer.java": {
+      "sha256": "7123c363d2cf0a1962e922a34d99ac61abcdc895a7b9e473604624d7eb4ff0bc",
+      "bytes": 23812
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/IJ_Props.txt": {
+      "sha256": "e1891ac12a42e8051b2c9ca64974cd6a4f6075dd906d73c86b1f2a7b1db57d19",
+      "bytes": 21847
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/LICENSE.txt": {
+      "sha256": "618725ff649e43605de0fec0a778b4aad24b28c6be9b3cde16295764022f668c",
+      "bytes": 512
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/pom.xml": {
+      "sha256": "cc95c64d2da10810f4dfbec191212cf9bfbcbfabec8633e3f0ad1ae4a81c67b3",
+      "bytes": 7884
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/measure/Calibration.java": {
+      "sha256": "2d44c799739c71b1fcdfcf6a5b42a86b65c46e4f6dca9b2cd29b6a479c67f07a",
+      "bytes": 14955
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/ImagePlus.java": {
+      "sha256": "477e3f5f913b9c42feb68ea35d21836d45fd56920cccbfc5719a06822cbcfab9",
+      "bytes": 108208
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/ImageStack.java": {
+      "sha256": "ec8d8110ce61f3d528ba8c758c864b8277aacd3e82b43f3d41e39580e8ff2bba",
+      "bytes": 20949
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/Roi.java": {
+      "sha256": "200ad9f501a5860fe1486a3d2a8ed6cf6f82f7c7562a81e11d91ee7b7a04497e",
+      "bytes": 90700
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/Line.java": {
+      "sha256": "49aa00dd002627b17b4a287927b5c198a7ee136a788284d6850dccff95ddb67e",
+      "bytes": 22027
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/NewImage.java": {
+      "sha256": "dfb17de6cbb83807e768d7bb30b1dc22ebbf6fbab881b545cb8b68ed6c9aca57",
+      "bytes": 14575
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ImageProcessor.java": {
+      "sha256": "f98e87d25eb6b1f2c5d8557b73dd33e36fef0494d903d6d250206371dccc279c",
+      "bytes": 95523
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/FloatProcessor.java": {
+      "sha256": "0f52a157fe99e9a48ce2c9356fc2c3c435dc74f48e45a575171e60deb694ccf5",
+      "bytes": 35354
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ByteProcessor.java": {
+      "sha256": "fc23c95778bd7154eba1ea56d9ea943e7d1d9ea568fe20cf9bf9c6db1db3ad94",
+      "bytes": 40502
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ShortProcessor.java": {
+      "sha256": "7484082e91c7095a3c79984c74b4dafa8b6d2912ed3b862e28dd331c8ba3024d",
+      "bytes": 40446
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ColorProcessor.java": {
+      "sha256": "23da704d928476adf42a2d562360eaa7c8b740ad02fba2728074be0bac490650",
+      "bytes": 43669
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/Prefs.java": {
+      "sha256": "5a35547eb3700613600fec474b78aa4d828e128c901dc5d401bdd6bbf06ece1c",
+      "bytes": 30479
+    }
+  },
+  "owned_code_license": {
+    "path": "LICENSE",
+    "sha256": "6496956d6060adfcd2617e553b7393c3b7fbea353a02f3c39d60051709d1ce5f",
+    "bytes": 1079
+  },
+  "primary_license_url": "https://imagej.net/ij/disclaimer.html",
+  "primary_license_checked_date": "2026-10-12",
+  "reference_capture": {
+    "path": "build/plan-implementation/p05f-axis-plane-export-001/next-range-orientation-reference-001/capture-001/corpus.json",
+    "sha256": "990734ef132a40aafbaf7c177b3c5950d5f11ea20125e4234471afb561db9f9d",
+    "bytes": 21527205
+  },
+  "candidate_full_option_inventory_complete": false,
+  "candidate_runtime_reconciliation_complete": false,
+  "fiji_1_54p_review_unchanged": true,
+  "product_implementation_verified": false,
+  "family_complete": false,
+  "full_goal_complete": false,
+  "state": "scoped_orientation_reference_review_adopted_no_product_acceptance",
+  "requirement_id": "G029.axis_range_orientation",
+  "fixture_id": "F.G029.axis-range-orientation.pixels",
+  "reused_scoped_review": {
+    "path": "docs/parity/axis-range-reslice-commercial-review-001.json",
+    "sha256": "e76564af14fbe2a36e0252780cee6b0c0d32140386518cd48bb0007e9f6a493f",
+    "bytes": 6173
+  },
+  "independent_formula_verification": {
+    "path": "build/plan-implementation/p05f-axis-plane-export-001/next-range-orientation-reference-001/formula-verification-001.json",
+    "sha256": "3f7ac4cabb1b8e64ab5eebc4c80485717899eba85c934cf803339a006a4d0fbf",
+    "bytes": 283922
+  },
+  "source_members_verified_count": 16,
+  "variant_adopted": true,
+  "root_adoption": {
+    "recorded_at_utc": "2026-10-12T23:22:39.110182+00:00",
+    "draft": {
+      "path": "build/plan-implementation/p05f-axis-plane-export-001/next-range-orientation-reference-001/commercial-review-draft-001.json",
+      "sha256": "68e74a4b62394c373505742deb37c06356efca5cb5754acb6d1ef2d20f346b8d",
+      "bytes": 6387
+    },
+    "handoff": {
+      "path": "build/plan-implementation/p05f-axis-plane-export-001/next-range-orientation-reference-001/execution-and-registration-handoff-001.json",
+      "sha256": "446086d8a0cccca675d332e474d65647fd5140fdcf5bf36e1bffcf263e040ef6",
+      "bytes": 8278
+    },
+    "primary_license_rechecked_url": "https://imagej.net/ij/disclaimer.html",
+    "primary_license_rechecked_date": "2026-10-12",
+    "source_closure_members_checked": 16,
+    "product_acceptance_granted": false
+  }
+}

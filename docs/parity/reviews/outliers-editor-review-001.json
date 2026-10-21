@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "state": "scoped_editor_gates_passed",
+  "scope": "Finite UInt8/UInt16/Float32 Remove Outliers command, records, C++/Python API and both shared ImGui hosts",
+  "pixel_runner_cases_retained": 288,
+  "additional_processor_lut_observations": 60,
+  "python_checks_per_common_context": 5921,
+  "new_editor_checks": 394,
+  "pixel_profile_checks": 391,
+  "prior_5136_case_inventory_retained": true,
+  "focused_api_checks": 1050,
+  "strict_genuine_installed_projection_checks": 120,
+  "windows_native_suites": 43,
+  "linux_native_suites": 22,
+  "native_command_checks_per_platform": 4883,
+  "native_pixel_checks_per_platform": 3792,
+  "native_variance_checks_per_platform": 7949,
+  "shared_rank_panel_cases": 38,
+  "actual_input_cases": [
+    "R32",
+    "R33",
+    "R34",
+    "R35",
+    "R36",
+    "R37"
+  ],
+  "hosts": [
+    "source C++ ImGui",
+    "installed C++ ImGui",
+    "source Python ImGui",
+    "installed Python ImGui"
+  ],
+  "installed_public_sdk": "passed",
+  "new_document_ui_and_atomic_adoption": "passed",
+  "window_cpp_changed": true,
+  "rank_pixel_kernel_unchanged": true,
+  "runtime_dependencies_added": false,
+  "noncommercial_plugins_added": false,
+  "existing_rank_option_layout_unchanged": true,
+  "resolved_rank_command_private_layout_changed": true,
+  "coherent_header_core_host_extension_sdk_rebuild_verified": true,
+  "old_rank_record_grammar_unchanged": true,
+  "new_operation": "remove_outliers_imagej",
+  "policy": "Capture active base processor LUT polarity without dataset reads. Grayscale uses Grays; color/composite use active channel LUT. Ignore threshold coloring. Freeze numeric direction across replay and explicit rebind. Keep display/LUT/threshold state exact; no-op in-place edits add no history/record.",
+  "owned_extensions": [
+    "Numeric parameter inputs instead of statistics-dependent sliders",
+    "Window-scoped accepted memory independent of Median/Despeckle",
+    "One captured active polarity across scientific C/Z/T/ROI targets",
+    "Frozen numeric direction on replay and explicit rebind"
+  ],
+  "diagnostics": [
+    "api001 was a reduced subset; precise test selection restored actual reference-case membership in api002 and later runs",
+    "linux001 test compiled a temporary transaction into a non-const reference; corrected to a named transaction without changing production API",
+    "api002: 12 V2 fixture cases used uppercase MAX; corrected to existing lowercase max schema",
+    "rank-cpp001 R33: popup moved during first layout frame; added the existing picker-style layout settle frame, preserving control ID/position/raw-input assertions",
+    "source001/installed001: exactly three new-document cases failed on the old-operation-only staging guard. Extended only that guard to this validated rank-family operation, added 12 native checks and physical new-image case R37 with independent source/output/history assertions. Final source/installed suites retain all prior case membership plus R37."
+  ],
+  "remaining": [
+    "Top Hat compound passes/ROI boundaries/background/subtraction and final display policy",
+    "Remove NaNs and RGB/nonfinite rank profiles",
+    "Indexed formats",
+    "Wider editor/release qualification"
+  ],
+  "release_counts": {
+    "all99_in_progress": 42,
+    "all99_open": 57,
+    "all99_complete": 0,
+    "source901": "unchanged"
+  }
+}

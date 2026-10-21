@@ -1,0 +1,417 @@
+{
+  "schema_version": 1,
+  "id": "G042.rank.numerical-reuse.adoption004",
+  "state": "source_bound_finite_profile_and_thin_dispatch_reuse_adopted",
+  "M03_reuse_decision": true,
+  "acceptance": false,
+  "complete_requirement_coverage": false,
+  "formal_manifest_edits": false,
+  "scope": "Adopt exact existing finite-scalar numerical/geometry evidence through unchanged shared C++ implementation and thin native/Python/shared-panel dispatch. This is an equivalence/reuse decision, not a new all-radius or per-surface numerical execution.",
+  "contract": {
+    "path": "docs/parity/reviews/G042-rank-native-adoption-001.json",
+    "bytes": 7007,
+    "sha256": "6a8510e57e6c04139e03258c6f4d63e69349e96024d71a121b654d5f43a46796"
+  },
+  "coverage_index": {
+    "path": "docs/parity/reviews/G042-rank-full-mapping-adoption-003.json",
+    "bytes": 10459,
+    "sha256": "4afe00888754a61b0e466ee0aebc6390e7d7d50ac80df5970eee3b4b777b0f9c"
+  },
+  "core_sources_unchanged_since017a": [
+    {
+      "path": "src/native/rank.cpp",
+      "bytes": 15320,
+      "sha256": "3bc4ed55efa8064d89c3bd97dc7056d7fae002d3cb648b96e1684c252e455d1f"
+    },
+    {
+      "path": "include/imagejxx/rank.hpp",
+      "bytes": 1891,
+      "sha256": "d9b77a99ba9be0fd1e19302d25f7d7c31e251a62ecec24e0828bb884845dd88f"
+    },
+    {
+      "path": "src/native/kernel_control.hpp",
+      "bytes": 5848,
+      "sha256": "10a0c5be469081e6136f8826506117e1f4f814be86e2a858f833ebf099bca8b5"
+    },
+    {
+      "path": "src/native/rank_command.cpp",
+      "bytes": 8018,
+      "sha256": "53ce3cfe571e4508e7834ee668cb7aa7405255726f31e292d4e460dd7c05d312"
+    },
+    {
+      "path": "src/native/operation_kernel.inc",
+      "bytes": 13038,
+      "sha256": "664d5001474bdd8cf3ee9ce70c69ce70f080c10699bc552842bb70ad80c96aed"
+    },
+    {
+      "path": "src/native/operations.cpp",
+      "bytes": 36225,
+      "sha256": "3e51c5f8999da58e79f3e2566a824ddaca144722dc382437de10a41c6bda6667"
+    },
+    {
+      "path": "src/native/rank_command_bindings.cpp",
+      "bytes": 9190,
+      "sha256": "0e2fb5de615f69abc75cd6cef8a17d1f66e36a1e0bda515feec655209339a6e7"
+    },
+    {
+      "path": "src/native/execution.cpp",
+      "bytes": 100611,
+      "sha256": "7d77ab4d77bf411ccabc6fae6eb680eb9cf414ff9ef62235b6742895f9a58a3b"
+    },
+    {
+      "path": "src/native/application.cpp",
+      "bytes": 16925,
+      "sha256": "9ccf1b9acad4621f2965841fa525181169f6ab214dd9d4652f67c14a4ba323d2"
+    }
+  ],
+  "bound_interface_sources": [
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 45731,
+      "sha256": "37ba3038b3ed15d125323c457ca4378876d022e53863bd578099dbaeafe328a6"
+    },
+    {
+      "path": "src/desktop/rank_panel.cpp",
+      "bytes": 21774,
+      "sha256": "9be10d2685e1bd52027026d94682fceb76597601e665dc7b4934179cc678d81e"
+    },
+    {
+      "path": "src/desktop/gaussian_jobs.cpp",
+      "bytes": 18877,
+      "sha256": "d561dd4419daf00fe3fcc0c2c8fe9c37271427a45add4249b6decab217ddd3f1"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 433449,
+      "sha256": "958efda6f328432228920185a0812328aa95ab76e0e93a52ca9788c768ef51ea"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 27343,
+      "sha256": "aa695bc3b165d13f2117c014af509ccc2b39e1cb94663bc1a77294a564a6b0c6"
+    },
+    {
+      "path": "src/imagejxx/ui/app.py",
+      "bytes": 21466,
+      "sha256": "b93cc83ed2902d0ccd0708cbcb2145bcfa3b8a9f8d4c09ad5b4b0e46ba53ca67"
+    },
+    {
+      "path": "src/imagejxx/ui/workflows.py",
+      "bytes": 6640,
+      "sha256": "34c73f5276e2e8762d2a2171b5b528785123de7693076026a5b8f0fbaa52705e"
+    }
+  ],
+  "core_library": {
+    "path": "build/p06a-native001/Release/imagejxx_core.lib",
+    "bytes": 21781614,
+    "sha256": "3a536909d3327613a7ad0ff04ea90125c8761865d23bbb164caec0f7fba873ca"
+  },
+  "evidence": {
+    "fixture": {
+      "path": "tests/fixtures/rank_imagej_154r_001.json",
+      "bytes": 311070,
+      "sha256": "121d1688e9a26c20818fbebfe88cbc4d1704ad26d330bfff5bdcc4d8e11694e5"
+    },
+    "API_execution": {
+      "path": "build/p06f-001/installed-rank-api-001.json",
+      "bytes": 13509,
+      "sha256": "5b1942904627b84cc07b797dea099d0dd7e9dc4b1fb21b3470bc195e74b31541"
+    },
+    "exact_collection": {
+      "path": "build/p06f-001/installed-rank-api001/collection.json",
+      "bytes": 50789,
+      "sha256": "15de248b3505655f616e957746b59143d617deb8ffda73e027f98808989124cd"
+    },
+    "junit": {
+      "path": "build/p06f-001/installed-rank-api001/results.xml",
+      "bytes": 38648,
+      "sha256": "fc802581b2301eee757dc280e85f93f0c1f71cf82bbddd1e89a5c2d4ff290d7d"
+    },
+    "host_ImGui_API_execution": {
+      "path": "build/p06f-001/installed-rank-surfaces-001.json",
+      "bytes": 69772,
+      "sha256": "ff952cae524c852ad355a57e7376754da1630e39d72237ff91c5e98651d650b6"
+    },
+    "paired_execution": {
+      "path": "build/p06f-001/installed-paired-reader-001.json",
+      "bytes": 16978,
+      "sha256": "d63937b52c21706c0d96e91737b12faecbbe32380ed6de46ed6f32b10c749648"
+    },
+    "current_SDK": {
+      "path": "build/p06f-001/sdk-004.json",
+      "bytes": 24187,
+      "sha256": "f2fae38fe4fd8987c70c9962b52c71ef99326f2661fd157bec90e99840affdd8"
+    },
+    "package_delta": {
+      "path": "build/p06f-001/install-ui-002.json",
+      "bytes": 26088,
+      "sha256": "108404cc415c142ab1690a891b6b9a5ef6ddb28fa79bc48949b4f83ecceb1e68"
+    },
+    "toolchain": {
+      "path": "build/p06f-001/toolchain-profile-001.json",
+      "bytes": 10360,
+      "sha256": "7bf706fc06baa707ff93bc2d839dfdf6572594df0aaf031664d4b8103c45b1c3"
+    }
+  },
+  "actual_numerical_scope": {
+    "selected_runs": 161,
+    "original_selected": 158,
+    "signed_zero_supplement": 3,
+    "geometry_probes": 10,
+    "method_dtype_counts": {
+      "minimum/uint8": 10,
+      "minimum/uint16": 17,
+      "minimum/float32": 11,
+      "maximum/uint8": 10,
+      "maximum/uint16": 17,
+      "maximum/float32": 11,
+      "median/uint8": 10,
+      "median/uint16": 25,
+      "median/float32": 11,
+      "mean/uint8": 10,
+      "mean/uint16": 18,
+      "mean/float32": 11
+    },
+    "fractional_actual_pixel_runs": [
+      {
+        "id": "K06/radius.0.5",
+        "radius": 0.5,
+        "method": "median",
+        "dtype": "uint16"
+      },
+      {
+        "id": "K06/radius.1.5",
+        "radius": 1.5,
+        "method": "median",
+        "dtype": "uint16"
+      },
+      {
+        "id": "K06/radius.1.75",
+        "radius": 1.75,
+        "method": "median",
+        "dtype": "uint16"
+      },
+      {
+        "id": "K06/radius.2.5",
+        "radius": 2.5,
+        "method": "median",
+        "dtype": "uint16"
+      },
+      {
+        "id": "K06/radius.2.85",
+        "radius": 2.85,
+        "method": "median",
+        "dtype": "uint16"
+      }
+    ],
+    "numerical_case_names": [
+      "test_observed_imagej_finite_scalar_pixels[K02/uint8]",
+      "test_observed_imagej_finite_scalar_pixels[K02/uint16]",
+      "test_observed_imagej_finite_scalar_pixels[K02/float32]",
+      "test_observed_imagej_finite_scalar_pixels[K03/uint8]",
+      "test_observed_imagej_finite_scalar_pixels[K03/uint16]",
+      "test_observed_imagej_finite_scalar_pixels[K03/float32]",
+      "test_observed_imagej_finite_scalar_pixels[K04/uint8]",
+      "test_observed_imagej_finite_scalar_pixels[K04/uint16]",
+      "test_observed_imagej_finite_scalar_pixels[K04/float32]",
+      "test_observed_imagej_finite_scalar_pixels[K05/uint8]",
+      "test_observed_imagej_finite_scalar_pixels[K05/uint16]",
+      "test_observed_imagej_finite_scalar_pixels[K05/float32]",
+      "test_observed_imagej_finite_scalar_pixels[K06/radius.0]",
+      "test_observed_imagej_finite_scalar_pixels[K06/radius.0.5]",
+      "test_observed_imagej_finite_scalar_pixels[K06/radius.1.5]",
+      "test_observed_imagej_finite_scalar_pixels[K06/radius.1.75]",
+      "test_observed_imagej_finite_scalar_pixels[K06/radius.2]",
+      "test_observed_imagej_finite_scalar_pixels[K06/radius.2.5]",
+      "test_observed_imagej_finite_scalar_pixels[K06/radius.2.85]",
+      "test_observed_imagej_finite_scalar_pixels[K06/radius.3]",
+      "test_observed_imagej_finite_scalar_pixels[K07/integer_rounding]",
+      "test_observed_imagej_finite_scalar_pixels[K08/incremental_cancellation]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.1x1.minimum.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.1x1.minimum.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.1x1.minimum.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.1x1.maximum.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.1x1.maximum.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.1x1.maximum.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.1x1.median.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.1x1.median.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.1x1.median.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.1x1.mean.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.1x1.mean.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.1x1.mean.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.1x7.minimum.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.1x7.minimum.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.1x7.minimum.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.1x7.maximum.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.1x7.maximum.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.1x7.maximum.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.1x7.median.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.1x7.median.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.1x7.median.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.1x7.mean.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.1x7.mean.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.1x7.mean.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.7x1.minimum.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.7x1.minimum.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.7x1.minimum.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.7x1.maximum.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.7x1.maximum.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.7x1.maximum.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.7x1.median.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.7x1.median.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.7x1.median.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.7x1.mean.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.7x1.mean.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint8.7x1.mean.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.1x1.minimum.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.1x1.minimum.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.1x1.minimum.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.1x1.maximum.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.1x1.maximum.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.1x1.maximum.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.1x1.median.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.1x1.median.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.1x1.median.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.1x1.mean.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.1x1.mean.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.1x1.mean.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.1x7.minimum.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.1x7.minimum.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.1x7.minimum.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.1x7.maximum.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.1x7.maximum.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.1x7.maximum.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.1x7.median.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.1x7.median.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.1x7.median.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.1x7.mean.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.1x7.mean.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.1x7.mean.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.7x1.minimum.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.7x1.minimum.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.7x1.minimum.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.7x1.maximum.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.7x1.maximum.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.7x1.maximum.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.7x1.median.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.7x1.median.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.7x1.median.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.7x1.mean.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.7x1.mean.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/uint16.7x1.mean.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.1x1.minimum.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.1x1.minimum.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.1x1.minimum.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.1x1.maximum.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.1x1.maximum.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.1x1.maximum.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.1x1.median.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.1x1.median.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.1x1.median.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.1x1.mean.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.1x1.mean.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.1x1.mean.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.1x7.minimum.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.1x7.minimum.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.1x7.minimum.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.1x7.maximum.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.1x7.maximum.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.1x7.maximum.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.1x7.median.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.1x7.median.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.1x7.median.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.1x7.mean.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.1x7.mean.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.1x7.mean.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.7x1.minimum.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.7x1.minimum.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.7x1.minimum.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.7x1.maximum.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.7x1.maximum.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.7x1.maximum.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.7x1.median.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.7x1.median.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.7x1.median.2]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.7x1.mean.0]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.7x1.mean.1]",
+      "test_observed_imagej_finite_scalar_pixels[K09/float32.7x1.mean.2]",
+      "test_observed_imagej_finite_scalar_pixels[K10/rectangle.minimum]",
+      "test_observed_imagej_finite_scalar_pixels[K10/rectangle.maximum]",
+      "test_observed_imagej_finite_scalar_pixels[K10/rectangle.median]",
+      "test_observed_imagej_finite_scalar_pixels[K10/rectangle.mean]",
+      "test_observed_imagej_finite_scalar_pixels[K10/hole.minimum]",
+      "test_observed_imagej_finite_scalar_pixels[K10/hole.maximum]",
+      "test_observed_imagej_finite_scalar_pixels[K10/hole.median]",
+      "test_observed_imagej_finite_scalar_pixels[K10/hole.mean]",
+      "test_observed_imagej_finite_scalar_pixels[K11/absent.minimum]",
+      "test_observed_imagej_finite_scalar_pixels[K11/absent.maximum]",
+      "test_observed_imagej_finite_scalar_pixels[K11/absent.median]",
+      "test_observed_imagej_finite_scalar_pixels[K11/absent.mean]",
+      "test_observed_imagej_finite_scalar_pixels[K11/point.minimum]",
+      "test_observed_imagej_finite_scalar_pixels[K11/point.maximum]",
+      "test_observed_imagej_finite_scalar_pixels[K11/point.median]",
+      "test_observed_imagej_finite_scalar_pixels[K11/point.mean]",
+      "test_observed_imagej_finite_scalar_pixels[K11/line.minimum]",
+      "test_observed_imagej_finite_scalar_pixels[K11/line.maximum]",
+      "test_observed_imagej_finite_scalar_pixels[K11/line.median]",
+      "test_observed_imagej_finite_scalar_pixels[K11/line.mean]",
+      "test_observed_imagej_finite_scalar_pixels[K14/current.minimum]",
+      "test_observed_imagej_finite_scalar_pixels[K14/current.maximum]",
+      "test_observed_imagej_finite_scalar_pixels[K14/current.median]",
+      "test_observed_imagej_finite_scalar_pixels[K14/current.mean]",
+      "test_observed_imagej_finite_scalar_pixels[K14/all_stack.minimum]",
+      "test_observed_imagej_finite_scalar_pixels[K14/all_stack.maximum]",
+      "test_observed_imagej_finite_scalar_pixels[K14/all_stack.median]",
+      "test_observed_imagej_finite_scalar_pixels[K14/all_stack.mean]",
+      "test_observed_imagej_finite_scalar_pixels[SZ01/minimum.radius2.signedzero]",
+      "test_observed_imagej_finite_scalar_pixels[SZ01/maximum.radius2.signedzero]",
+      "test_observed_imagej_finite_scalar_pixels[SZ01/median.radius2.signedzero]"
+    ],
+    "geometry_case_names": [
+      "test_observed_imagej_kernel_geometry[K01/0.0]",
+      "test_observed_imagej_kernel_geometry[K01/0.5]",
+      "test_observed_imagej_kernel_geometry[K01/1.0]",
+      "test_observed_imagej_kernel_geometry[K01/1.5]",
+      "test_observed_imagej_kernel_geometry[K01/1.75]",
+      "test_observed_imagej_kernel_geometry[K01/2.0]",
+      "test_observed_imagej_kernel_geometry[K01/2.5]",
+      "test_observed_imagej_kernel_geometry[K01/2.85]",
+      "test_observed_imagej_kernel_geometry[K01/3.0]",
+      "test_observed_imagej_kernel_geometry[K01/10.0]"
+    ]
+  },
+  "reviewed_reuse_arguments": [
+    {
+      "id": "N01",
+      "finding": "All four methods call one rank_filter_kernel_imagej(radius) before method dispatch. The kernel consumes only radius and no pixel type or method. Genuine footprint probes cover fractional transition geometry.",
+      "limit": "Common geometry is source evidence, not twelve independently observed fractional numerical combinations."
+    },
+    {
+      "id": "N02",
+      "finding": "Same rank.cpp validates canonical finite U8/U16/F32 and chooses per-type output_sample after method aggregation. Method/type and signed-zero numerical predicates retain exact selected fixture/ABI scope.",
+      "limit": "Five observed fractional pixel runs are U16 Median only; no all-method/type fractional matrix or RGB/nonfinite/promoted/XYZ profile acceptance."
+    },
+    {
+      "id": "N03",
+      "finding": "Native resolved command retains double radius unchanged in parameters and record. Dataset executor and registry dispatch call the same rank_filter_imagej C++ function with the normalized double and extent.",
+      "limit": "ROI/target/publication/lifecycle correctness consumes its own executed command/host/API predicates, not numerical source equivalence alone."
+    },
+    {
+      "id": "N04",
+      "finding": "Python ndarray entry is a single return of _native.rank_filter_imagej(_array(image), method, radius, extent). Binding captures numeric options and calls the native function. Python Editor invokes native Window.applyRank; workflows prepare/publish the typed native operation.",
+      "limit": "Array ingestion, metadata/axis adaptation and output conversion are boundary work, not an independent Python filtering algorithm."
+    },
+    {
+      "id": "N05",
+      "finding": "Shared ImGui RankPanel parses double text, resolves the same native command and submits through shared variant lanes/Application. Existing exact parameter/record readbacks prove forwarding; unchanged code consumes the qualified core.",
+      "limit": "Remembered fractional radii and radius-zero GUI outputs receive parameter/lifecycle credit only, no new fractional pixel claim."
+    },
+    {
+      "id": "N06",
+      "finding": "Current core library and installed native code retain qualified identities; rank/execution translation units have recorded strict FP flags. Wheel002 changed tooling JSON/RECORD only.",
+      "limit": "No global strict-TU, platform, GPU or performance acceptance. Future changed consumed math/binding/core inputs require affected requalification."
+    }
+  ],
+  "remaining": "Physical nonlanding Last/step, other candidate/record failures, exact commercial/source/archive/formal binding and separately owned performance/platform/full-family obligations remain required. R13 compiled observer work is independent; no new UI-product byte identity is implied by this decision.",
+  "goal_complete": false
+}

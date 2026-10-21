@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "G016.selection-creation.reference-commercial-review.001",
+  "recorded_at_utc": "2026-10-16T01:22:49.357987+00:00",
+  "reference_id": "imagej-1.54r-fiji-latest-20261007-1617-win64",
+  "packet": "docs/packets/P05l-selection-creation-combinations.md",
+  "parent_families": [
+    "G013",
+    "G015",
+    "G016"
+  ],
+  "decision": "eligible",
+  "scope": "Pinned ImageJ1.54r creation-tool behavior as reference and independently authored native C++ equivalent. Reference-only source-bound incremental review; no ImageJ/Java/JDK code, runtime or assets enter product. Does not approve Fiji1.54p, non-area Boolean compatibility, all tool options or platform/accessibility parity.",
+  "reason": "The exact pinned source archive declares ImageJ public domain in LICENSE.txt. Newly authored native core, bindings and shared ImGui adapters use the repository MIT license. Synthetic input geometry/bytes are authored for this project. No third-party implementation, model, font, icon, weights or other asset is added to product.",
+  "code": "eligible_public_domain_reference_only_and_owned_MIT_equivalent",
+  "dependencies": "No new product dependency. Pinned JDK/AWT/ImageJ and generated reference driver remain excluded reference tooling; existing shipped dependencies retain their separate reviews.",
+  "models_assets": "none; owned synthetic image/geometry inputs and raw reference observations only",
+  "incorporated_components": [],
+  "archive": {
+    "path": "build/references/downloads/imagej-62db90a269cccc1ac79f658e4602043214ed055b.zip",
+    "sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+    "bytes": 6146010
+  },
+  "source_members": {
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/LICENSE.txt": {
+      "sha256": "618725ff649e43605de0fec0a778b4aad24b28c6be9b3cde16295764022f668c",
+      "bytes": 512
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/pom.xml": {
+      "sha256": "cc95c64d2da10810f4dfbec191212cf9bfbcbfabec8633e3f0ad1ae4a81c67b3",
+      "bytes": 7884
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/ImageCanvas.java": {
+      "sha256": "ab27a57aa060ca8e297d59b09e478406ebd7a3bbd5d6a741bc1ab56c7cc553ab",
+      "bytes": 55868
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/ImageWindow.java": {
+      "sha256": "ca2cf35410411d8b53a02747ad2a5314598b9e79d201c9e632fef4b7aef5810b",
+      "bytes": 23195
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/Roi.java": {
+      "sha256": "200ad9f501a5860fe1486a3d2a8ed6cf6f82f7c7562a81e11d91ee7b7a04497e",
+      "bytes": 90700
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/OvalRoi.java": {
+      "sha256": "f065f9a82d7e7d9de5c84615e8885465071f41076f872941f1b4259f93d76a38",
+      "bytes": 11947
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/PolygonRoi.java": {
+      "sha256": "1c5b398b5423c7f763144f12b95cfa23e08ef9e1cc07a93ba9873411f0f76038",
+      "bytes": 52637
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/FreehandRoi.java": {
+      "sha256": "c190ec16c3b027b50906d08926fc6ee7b8c0f6845e974b3a974ecc8c3accaba8",
+      "bytes": 2331
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/ShapeRoi.java": {
+      "sha256": "8ab4a507fed1ddd09391c5663d482350c9f035e17788d915b440915277fc419e",
+      "bytes": 53123
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/Toolbar.java": {
+      "sha256": "baa59de05416ca3bd574f43aff67b86902a3c5dd0579a3ece95515f07f453c14",
+      "bytes": 65241
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/ImagePlus.java": {
+      "sha256": "477e3f5f913b9c42feb68ea35d21836d45fd56920cccbfc5719a06822cbcfab9",
+      "bytes": 108208
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/ImageJ.java": {
+      "sha256": "e043a86f66cbb32c2ab2866502b0e37436b639171697ee706bcab92219d26a59",
+      "bytes": 30456
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/Line.java": {
+      "sha256": "49aa00dd002627b17b4a287927b5c198a7ee136a788284d6850dccff95ddb67e",
+      "bytes": 22027
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/PointRoi.java": {
+      "sha256": "f77398d2822dc2235c06c4340f84ed4a2a7d8d5b7d573fe2870325990a16fd77",
+      "bytes": 32160
+    }
+  },
+  "owned_code_license": {
+    "path": "LICENSE",
+    "sha256": "6496956d6060adfcd2617e553b7393c3b7fbea353a02f3c39d60051709d1ce5f",
+    "bytes": 1079
+  },
+  "primary_license_evidence": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/LICENSE.txt",
+  "related_review": "docs/parity/roi-boolean-commercial-review-001.json",
+  "reference_environment_receipt": "build/references/selection-creation-imagej154r-001/prepare-001/prepared.json",
+  "fiji_1_54p_review_unchanged": true,
+  "candidate_full_option_inventory_complete": false,
+  "candidate_runtime_reconciliation_complete": false,
+  "product_implementation_verified": false,
+  "family_complete": false,
+  "full_goal_complete": false
+}

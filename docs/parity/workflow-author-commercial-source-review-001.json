@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_owned_increment",
+  "review_type": "Root authorship/integration attestation, not independent legal review",
+  "license": "Existing project MIT for original private workflow-prefix and nested choice-editor integration",
+  "new_dependencies": [],
+  "restricted_features_added": false,
+  "imported_third_party_product_code": [],
+  "new_fonts": [],
+  "sources": [
+    {
+      "logical_path": "src/desktop/native_workflow_panel.cpp",
+      "before": {
+        "path": "build/p06q-workflow-author001/before001/src/desktop/native_workflow_panel.cpp",
+        "bytes": 40723,
+        "sha256": "000d810fb66d5cecd9dcfb35edb0b2023fd2d23eb23cfca9cd45ec7eff6dd06e"
+      },
+      "after": {
+        "path": "build/p06q-workflow-author001/after001/src/desktop/native_workflow_panel.cpp",
+        "bytes": 52560,
+        "sha256": "07fcd79099341681f0c4619c2d20e1884aa60a67d9b5a6afd34fd01fdc74dcd2"
+      },
+      "current": {
+        "path": "src/desktop/native_workflow_panel.cpp",
+        "bytes": 52560,
+        "sha256": "07fcd79099341681f0c4619c2d20e1884aa60a67d9b5a6afd34fd01fdc74dcd2"
+      }
+    },
+    {
+      "logical_path": "src/desktop/native_workflow_ui_probe.cpp",
+      "before": {
+        "path": "build/p06q-workflow-author001/before001/src/desktop/native_workflow_ui_probe.cpp",
+        "bytes": 17535,
+        "sha256": "c3b047a448779696127120a65d11289b63f4949327ed902ddfcb0eafbab72562"
+      },
+      "after": {
+        "path": "build/p06q-workflow-author001/after001/src/desktop/native_workflow_ui_probe.cpp",
+        "bytes": 26113,
+        "sha256": "086ec6b2ca974a6380732fd98510c80aa4314744669e46bf4c65ff397268a224"
+      },
+      "current": {
+        "path": "src/desktop/native_workflow_ui_probe.cpp",
+        "bytes": 26113,
+        "sha256": "086ec6b2ca974a6380732fd98510c80aa4314744669e46bf4c65ff397268a224"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_panel.cpp",
+      "before": {
+        "path": "build/p06q-workflow-author001/before001/src/desktop/roi_import_panel.cpp",
+        "bytes": 49409,
+        "sha256": "7da7c21169ed3f26eda87d938743eb2da987c1bcc876b1135c818379ffd7f54f"
+      },
+      "after": {
+        "path": "build/p06q-workflow-author001/after001/src/desktop/roi_import_panel.cpp",
+        "bytes": 49799,
+        "sha256": "1180f1d9cbf773be16ba1548f2a840089ee6f101b56862b77a20a368cccecd01"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_panel.cpp",
+        "bytes": 49799,
+        "sha256": "1180f1d9cbf773be16ba1548f2a840089ee6f101b56862b77a20a368cccecd01"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_panel.hpp",
+      "before": {
+        "path": "build/p06q-workflow-author001/before001/src/desktop/roi_import_panel.hpp",
+        "bytes": 1770,
+        "sha256": "10890583e9fdf0d5bc33bf2fb1b7724a0317c78413694bebe77b5fa20daa6c63"
+      },
+      "after": {
+        "path": "build/p06q-workflow-author001/after001/src/desktop/roi_import_panel.hpp",
+        "bytes": 1959,
+        "sha256": "6073b831a6dbd607d173ee812f8631912f09412f5cbce91beaa7279c7087add5"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_panel.hpp",
+        "bytes": 1959,
+        "sha256": "6073b831a6dbd607d173ee812f8631912f09412f5cbce91beaa7279c7087add5"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_mixed_export_panel.cpp",
+      "before": {
+        "path": "build/p06q-workflow-author001/before001/src/desktop/roi_mixed_export_panel.cpp",
+        "bytes": 42106,
+        "sha256": "463d9e4d00edfb3d704124c526df46922c93caaf23d7492aa04ab499c42dd6ba"
+      },
+      "after": {
+        "path": "build/p06q-workflow-author001/after001/src/desktop/roi_mixed_export_panel.cpp",
+        "bytes": 44522,
+        "sha256": "7acb460c2fe02a4559459f9d42041861d53c159fb82567fc5b5b1b72ab7720e3"
+      },
+      "current": {
+        "path": "src/desktop/roi_mixed_export_panel.cpp",
+        "bytes": 44522,
+        "sha256": "7acb460c2fe02a4559459f9d42041861d53c159fb82567fc5b5b1b72ab7720e3"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_mixed_export_panel.hpp",
+      "before": {
+        "path": "build/p06q-workflow-author001/before001/src/desktop/roi_mixed_export_panel.hpp",
+        "bytes": 1583,
+        "sha256": "66c12477534e819be90ffd7da3dfb2ac9e4b5e2ffb20ae6d37cef050a5c7b275"
+      },
+      "after": {
+        "path": "build/p06q-workflow-author001/after001/src/desktop/roi_mixed_export_panel.hpp",
+        "bytes": 1883,
+        "sha256": "df76d1ce610b917435ee9632d630da305258d2668aa41cc40a2fc4b8a4cf087a"
+      },
+      "current": {
+        "path": "src/desktop/roi_mixed_export_panel.hpp",
+        "bytes": 1883,
+        "sha256": "df76d1ce610b917435ee9632d630da305258d2668aa41cc40a2fc4b8a4cf087a"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_native_workflow_ui.py",
+      "before": {
+        "path": "build/p06q-workflow-author001/before001/tests/python/test_native_workflow_ui.py",
+        "bytes": 6437,
+        "sha256": "4e55c054577f6a4e7556d76db81bf5d9ec0380110fc443117469634c923de4ad"
+      },
+      "after": {
+        "path": "build/p06q-workflow-author001/after001/tests/python/test_native_workflow_ui.py",
+        "bytes": 10407,
+        "sha256": "a1f432199640b876660ff0f008f395277a0870fab6e4e2608e509d7f35d19ff2"
+      },
+      "current": {
+        "path": "tests/python/test_native_workflow_ui.py",
+        "bytes": 10407,
+        "sha256": "a1f432199640b876660ff0f008f395277a0870fab6e4e2608e509d7f35d19ff2"
+      }
+    }
+  ],
+  "handoff": {
+    "path": "build/p06q-workflow-author001/workflow-author-handoff001.json",
+    "bytes": 11013,
+    "sha256": "7afbbd9de92f4fa5b70ee6e176c31f74be49a4b7668747c21ceb82457fb21dd5"
+  }
+}

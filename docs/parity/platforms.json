@@ -1,0 +1,80 @@
+{
+  "enumeration_status": "partial",
+  "platforms": [
+    {
+      "architecture": "AMD64 / x86_64; observed 64-bit OS, PE32+ machine0x8664 and CPython pointer size64",
+      "checks": [
+        "WIN01.machine-inventory",
+        "WIN02.python-abi",
+        "WIN03.product-byte-identity",
+        "WIN04.backend-and-toolchain",
+        "WIN05.scoped-child-reuse",
+        "WIN06.keyboard-and-focus",
+        "WIN07.live-graphics",
+        "WIN08.monitor-and-dpi",
+        "WIN09.accessibility",
+        "WIN10.clipboard-dialog-print",
+        "WIN11.performance-and-memory",
+        "WIN12.loaded-runtime-and-compiler"
+      ],
+      "compiler": "Recorded desktop MSBuild17.14.40+3e7442088; native PE linker14.44. Preserved qualified SDK identifies MSVC19.44.35225.0/v143. Exact historic desktop cl invocation is not separately bound.",
+      "evidence_candidate": "docs/parity/reviews/windows-platform-entry-001.json",
+      "evidence_scope": "Hardware/product entry plus one actual bounded external W01/W03/W04/W06 subset in both qualified Min launches. Four visible windows, owned fallback shutdown, main-window UIA and module/memory observations only; no platform/accessibility/performance acceptance.",
+      "graphics": "Source-configured Dear ImGui/GLFW/OpenGL; actual visible products report DPI96/awareness2 and loaded GLFW/opengl32/NVIDIA module identities. Active application adapter/negotiated GL context and mixed-monitor correctness remain unobserved.",
+      "id": "P.windows-x64-p05l-001",
+      "observed_workload": {
+        "first_subset_only": true,
+        "id": "windows-workload.actual-subset.001",
+        "platform_accepted": false,
+        "raw_index": {
+          "bytes": 9862,
+          "path": "build/windows-workload-001/visible-supervised001/output/index.json",
+          "sha256": "e05ff26c23a00dc02a4960a235b91e08f06392db997559ddc8561efc74bdc732"
+        },
+        "raw_report": {
+          "bytes": 49732,
+          "path": "build/windows-workload-001/visible-supervised001/output/run.final.json",
+          "sha256": "51687c72b2a34d774f8e7ccc4ba6944580c40d28c253b06ec778f81a4f99318f"
+        },
+        "summary": {
+          "bytes": 2587,
+          "path": "build/windows-workload-001/visible-supervised001/observation-summary.json",
+          "sha256": "8742c47a82f460b286e2e33860f4a6f00b687dc7919dbe299bf252016bdb0fd8"
+        },
+        "supervision": {
+          "bytes": 4694,
+          "path": "build/windows-workload-001/visible-supervised001/supervision.json",
+          "sha256": "868cbd38deb66b1cf9de3d54dd5787bae6614b6d182511344e0c90d4f357ac11"
+        }
+      },
+      "os": "Microsoft Windows 11 Pro 25H2, version10.0.26200, build26200.9711 (observed inventory)",
+      "products": [
+        "standalone-cpp-desktop-win64-release",
+        "python-core-cp312-win_amd64",
+        "python-imgui-desktop-cp312-win_amd64",
+        "core-only-cpp-sdk-win64-release"
+      ],
+      "python_abis": [
+        "cp312-cp312-win_amd64"
+      ],
+      "remaining": [
+        "Complete actual owned-foreground/input, native modal, rendered readiness and physical keyboard shutdown in both launch modes. The first subset created four visible windows but foreground checks blocked input/capture/movement; all products closed via labeled owned WM_CLOSE fallback.",
+        "Observe the negotiated OpenGL vendor/renderer/version and active adapter for each visible launch; inventory and source configuration alone do not identify the application graphics context.",
+        "Complete per-monitor window relocation, DPI transitions, fonts and hit targets. Three-monitor topology and product DPI96/awareness2 were observed; no move branch or mixed-DPI correctness ran.",
+        "Provide accessible widget names/roles/values/focus and execute remaining UI states plus Narrator. Both actual nontruncated UIA main-window inventories exposed only one GLFW root and no semantic children; accessibility acceptance remains false.",
+        "Execute owned clipboard and native file-dialog roundtrips plus printing/Print-to-PDF feasibility; distinguish an absent command from an executed platform result.",
+        "Declare and execute an identified navigation/preview workload with latency, process peak/private memory and graphics memory attribution; no performance budget or resource gate is passed here.",
+        "Bind exact desktop compiler invocation and active negotiated graphics/runtime attribution. Loaded module paths/hashes are now observed for all four launches; they identify neither historical compiler flags nor the active GPU/GL context."
+      ],
+      "status": "partial",
+      "verification_run_ids": []
+    }
+  ],
+  "reference_id": "imagej-1.54r-fiji-latest-20261007-1617-win64",
+  "remaining": [
+    "Complete platforms enumeration and the owning certification gates.",
+    "Windows entry P.windows-x64-p05l-001 has partial inventory and an actual first bounded external subset with explicit foreground/accessibility limits; full declared OS/graphics/accessibility/performance acceptance remains open.",
+    "Enumerate and execute remaining Windows hardware/toolchain/ABI configurations and Linux/macOS entries independently; this one Windows machine certifies none of them."
+  ],
+  "schema_version": 1
+}

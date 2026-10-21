@@ -1,0 +1,31 @@
+{
+  "id": "P06c4-auto-controller-adoption-002",
+  "state": "adopted_for_implementation_only",
+  "extends": "P06c4-auto-controller-adoption-001",
+  "scope": "Atomic display publication and explicit Auto-cycle reset for the existing ResetRange consumer; no product or family acceptance",
+  "cause": "Resetting the cycle before display publication changes it on publication failure. Resetting afterward permits an allocation failure or an interleaving after display mutation.",
+  "cpp_api": "void Application::set_display_and_reset_auto_contrast(const DocumentSnapshot& expected, DisplayState display)",
+  "python_api": "Application.set_display_and_reset_auto_contrast(expected, display) -> None",
+  "publication": [
+    "Allocate the prospective controller and replacement opaque epoch before taking the Application membership lock or mutating display.",
+    "Resolve expected's exact registered owner and use Document::set_display_if_current for identity and all-four-revision validation under the existing locks.",
+    "Successful equal-state publication advances Display exactly once. Preserve Pixels/Metadata/Selection, pixel/data/save identity, history/dirty state and supplied unrelated display state.",
+    "If the captured owner is active at publication, clear the Auto key/divisor and replace its epoch without allocation or callbacks after display mutation.",
+    "If the captured owner is inactive, publish only its display. Preserve the active owner's Auto key/divisor/epoch and pending work. This retains existing inactive-owner display editing without resetting an unrelated active workflow.",
+    "Stale, foreign, closed, invalid-display and constraint failures change neither display nor cycle. No pixel/provider acquisition is required."
+  ],
+  "consumers": [
+    "Window prepares OutputPublication and the proposed ResetRange display before calling this seam. Append the record only after successful native publication.",
+    "Ordinary numeric Set and recorded Auto replay preserve the live cycle. Explicit zero-argument reset_auto_contrast_cycle remains available without a display edit.",
+    "Both shared Dear ImGui launch modes and the Python API consume the same native implementation."
+  ],
+  "required_assertions": [
+    "First-controller and equal-display success; exactly one Display revision and no history/data/dirty effects",
+    "Successful active reset invalidates a preexisting READY Auto capture",
+    "Each failed guard preserves cycle and leaves otherwise valid pending Auto work publishable",
+    "Inactive-owner reset preserves the active owner's cycle and READY Auto publication",
+    "All four stale revisions, foreign identity, closed membership, invalid display and constraint refusal",
+    "No source reads; C++ API, Python API, installed SDK and both actual shared controls"
+  ],
+  "unchanged": "Original command arithmetic/wire, all six prior Application methods, resource limits, replay/rebind and complete family/platform/release obligations remain required."
+}

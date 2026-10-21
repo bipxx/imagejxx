@@ -1,0 +1,1388 @@
+{
+  "schema": "imagejxx.scientific-tiff-entry",
+  "schema_version": 1,
+  "id": "scientific-tiff-u16-entry-001",
+  "state": "bounded_entry_candidate_pending_root_adoption_and_implementation",
+  "reference_id": "imagej-1.54r-fiji-latest-20261007-1617-win64",
+  "format_id": "F.G080.tiff-imagej-u16-uncompressed-ifd-czt-v1",
+  "acceptance": {
+    "implemented": false,
+    "runtime_qualified": false,
+    "format_accepted": false,
+    "new_dependency_approved": false,
+    "new_reference_capture": false,
+    "manifest_changed": false
+  },
+  "outcome": "One native single-series UInt16 uncompressed-strip TIFF read/write service with explicit CZT interpretation, calibrated Dataset results and shared consumers; this is not full TIFF/OME/series or scientific-file closure.",
+  "consumed_files": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 36682,
+      "sha256": "2919b0263652ec6d2d213e224ae21c04f48341c25072a30426bad9e76415db7f"
+    },
+    {
+      "path": "src/desktop/io.cpp",
+      "bytes": 22783,
+      "sha256": "d5856e7d43b995a63c143696cf123e1e590d1fc39bc32343add8541563fb6794"
+    },
+    {
+      "path": "src/desktop/desktop.hpp",
+      "bytes": 11819,
+      "sha256": "00d65fa5a91c4df8f1e09c8cfef2bf6c9c43d87ca3d957eec0836cff3ec3be76"
+    },
+    {
+      "path": "src/imagejxx/io.py",
+      "bytes": 2584,
+      "sha256": "42c81216b11797311965e918f6e16f5409e12d21730a45112d0439802b7eb91a"
+    },
+    {
+      "path": "pyproject.toml",
+      "bytes": 2051,
+      "sha256": "7f628c87796fa28104be56561e45761103d3b633aeae60e57355f009b62aa8cc"
+    },
+    {
+      "path": "include/imagejxx/dataset.hpp",
+      "bytes": 8015,
+      "sha256": "4744b8097ac2794b358d4e625d996a06d3c1a9aa348c3f121a6b7b3ab9182eb7"
+    },
+    {
+      "path": "src/native/dataset.cpp",
+      "bytes": 30555,
+      "sha256": "6597614b32f015c5cb6ffb8fa1fcc7811c5e5c61b6dcdbbba5a2a249d1abdea5"
+    },
+    {
+      "path": "include/imagejxx/metadata.hpp",
+      "bytes": 2687,
+      "sha256": "597db35e1a06eb46375fff977c3c95dd30c846b13c8e27c91a611396a719a2f0"
+    },
+    {
+      "path": "include/imagejxx/execution.hpp",
+      "bytes": 11635,
+      "sha256": "502715065b57c9b5d2ba5515cecfd2cb70fd45cdeeb0f7a3274f153dba21935a"
+    },
+    {
+      "path": "include/imagejxx/session.hpp",
+      "bytes": 3685,
+      "sha256": "18aaf0e967cff64c20d9e8135ed47f9e8d7d59f13d14a0e615c5758974e69ee7"
+    },
+    {
+      "path": "licenses/desktop-dependencies.json",
+      "bytes": 5236,
+      "sha256": "9b5aa27fbdc98780f7eb93aa6a290bea9eb0894cce5f89b5d22d081b15ed55f3"
+    },
+    {
+      "path": "licenses/native-dependencies.json",
+      "bytes": 1917,
+      "sha256": "b649aa7e93fc45941fb5f8092e9bebede34cab5c797f7bba95658a1da17d027d"
+    },
+    {
+      "path": "licenses/dependencies.json",
+      "bytes": 4516,
+      "sha256": "436d924a8d501a7139f09e65441c46b6944e1d4c63b12d56eb1fd43290dd0a67"
+    },
+    {
+      "path": "licenses/libtiff.txt",
+      "bytes": 2416,
+      "sha256": "0e27c2382d7b8147972bbb746e04059a1152c8d0fda9d03ef1399d1a433c4ade"
+    },
+    {
+      "path": "licenses/libjpeg-turbo.txt",
+      "bytes": 5620,
+      "sha256": "2189dc45a8fe96204069f8124caa53a148dfdc193f50f584c6ca7849a6072872"
+    },
+    {
+      "path": "licenses/libjpeg-IJG.txt",
+      "bytes": 12799,
+      "sha256": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6"
+    },
+    {
+      "path": "licenses/liblzma.txt",
+      "bytes": 3119,
+      "sha256": "616a3ad264ce29b8f1cb97e53037b139d406899ca8d1f799651e17bfa09830b8"
+    },
+    {
+      "path": "licenses/liblzma-0bsd.txt",
+      "bytes": 607,
+      "sha256": "0b01625d853911cd0e2e088dcfb743261034a091bb379246cb25a14cc4c74bf1"
+    },
+    {
+      "path": "licenses/zlib.txt",
+      "bytes": 1002,
+      "sha256": "845efc77857d485d91fb3e0b884aaa929368c717ae8186b66fe1ed2495753243"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "bytes": 4201,
+      "sha256": "9793a0e9272d9c7f8aa1ea97712a38f1ff186ecbd379f3a71c16ae273167bff9"
+    },
+    {
+      "path": "scripts/parity_schema.py",
+      "bytes": 24164,
+      "sha256": "be67b4a85e72bee6581bdb0673374e2b808d94955019a930d6ecf8a96934d913"
+    },
+    {
+      "path": "docs/parity/SCHEMA.md",
+      "bytes": 40784,
+      "sha256": "d7fbdedc1e32fa57c19773494d527dad882d19393e8039b2993dba3bf5da5f13"
+    },
+    {
+      "path": "docs/parity/formats.json",
+      "bytes": 237,
+      "sha256": "be49a4e393b242171953228372c39aaf5df23169e2cad13d3b9c20d24ba05504"
+    },
+    {
+      "path": "docs/parity/references.json",
+      "bytes": 757915,
+      "sha256": "d750de9e7b74e4fd5f6a5f05e7068becc3b67bf61ac8ddc76853e421335754c8"
+    },
+    {
+      "path": ".tools/imgui-sdk/installed-packages.json",
+      "bytes": 1254,
+      "sha256": "df7a2417dc743624914301ce4e967f8d0b9d8c4ace9440a3c044fc0d11036fc3"
+    },
+    {
+      "path": ".tools/imgui-sdk/include/tiff.h",
+      "bytes": 59948,
+      "sha256": "ff8668357867cefdb31d7807a441fea04422bcff929303be09e16d99c7528fa6"
+    },
+    {
+      "path": ".tools/imgui-sdk/include/tiffio.h",
+      "bytes": 29438,
+      "sha256": "a277ca92dd3962012db24d1c38df68565e045290be43f0a84ad0edbfc8051ee1"
+    },
+    {
+      "path": ".tools/imgui-sdk/include/tiffvers.h",
+      "bytes": 1446,
+      "sha256": "ee044792a8d4fb9021a83094518ad9f09c132029d74b5a12f93840d15dac87f0"
+    },
+    {
+      "path": ".tools/imgui-sdk/include/tiffconf.h",
+      "bytes": 4078,
+      "sha256": "96d58371f4dd3b7ab966cf284c00e4bb4fa2a2e6244ed8ef3c6014f31f0a58b7"
+    },
+    {
+      "path": ".tools/imgui-sdk/share/tiff/vcpkg.spdx.json",
+      "bytes": 13196,
+      "sha256": "e8059d9dbe667f38b6f63847ba534bbbf0861e9310798ac65235e3fb3808cb83"
+    },
+    {
+      "path": ".tools/imgui-sdk/share/tiff/vcpkg_abi_info.txt",
+      "bytes": 1912,
+      "sha256": "559dbf885b49ccc95f7c52626a708ca40e48305319de0b032d49131ae60dbf0b"
+    },
+    {
+      "path": ".tools/imgui-sdk/share/tiff/copyright",
+      "bytes": 2416,
+      "sha256": "0e27c2382d7b8147972bbb746e04059a1152c8d0fda9d03ef1399d1a433c4ade"
+    },
+    {
+      "path": ".tools/imgui-sdk/share/tiff/vcpkg-cmake-wrapper.cmake",
+      "bytes": 5610,
+      "sha256": "8b90f3fa14e67ef9a108ed4033bb38acfe1f4d41b4744af6de66dad36ec49835"
+    },
+    {
+      "path": ".tools/imgui-sdk/share/libjpeg-turbo/vcpkg.spdx.json",
+      "bytes": 20623,
+      "sha256": "fca136be4920e1962f5ee8536e5344425953e5372c1978013e95593c09db22ad"
+    },
+    {
+      "path": ".tools/imgui-sdk/share/liblzma/vcpkg.spdx.json",
+      "bytes": 30001,
+      "sha256": "bece39459a64b943db55bfc416cc8ed61d58a5f3305e569c04e1d5ea41514927"
+    },
+    {
+      "path": ".tools/imgui-sdk/lib/pkgconfig/libtiff-4.pc",
+      "bytes": 307,
+      "sha256": "33aa05b3af4057d5d097395505b2ca089e7d37ae09cf2335d4e3ed330b1631b5"
+    },
+    {
+      "path": ".tools/imgui-sdk/bin/tiff.dll",
+      "bytes": 468992,
+      "sha256": "cf4a9d2a74f3370983bef5aacb8bb93db00328906da8e2c26cfed8d744fd9b07"
+    },
+    {
+      "path": ".tools/imgui-sdk/bin/jpeg62.dll",
+      "bytes": 685568,
+      "sha256": "874283fd82bab9e0a572c78befea478827bfddacb0310f9bc23382bb7b8becba"
+    },
+    {
+      "path": ".tools/imgui-sdk/bin/liblzma.dll",
+      "bytes": 188928,
+      "sha256": "a9a275c360d80013b8304b5ebde3a05a82aee4c2ccdc41dd3ee9cf6acb3d433c"
+    },
+    {
+      "path": ".tools/imgui-sdk/bin/zlib1.dll",
+      "bytes": 90112,
+      "sha256": "0389d9547623b8b05e576f01229a2b37f1a0709fac02a8a50b2da723da5ca514"
+    },
+    {
+      "path": "build/references/downloads/imagej-62db90a269cccc1ac79f658e4602043214ed055b.zip",
+      "bytes": 6146010,
+      "sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665"
+    },
+    {
+      "path": ".tools/imgui-sdk/share/zlib/vcpkg.spdx.json",
+      "bytes": 12698,
+      "sha256": "b8e435cf801fb4dbadf31bfcf301fe88e19f2567772b49692f8048ab2e7b5514"
+    },
+    {
+      "path": ".tools/imgui-sdk/share/zlib/vcpkg_abi_info.txt",
+      "bytes": 1501,
+      "sha256": "3de348fede9dcd918192a0ced02c8ab2926df6b19986e131e455c25b69fc89c9"
+    }
+  ],
+  "consumed_reference": {
+    "component": "imagej-core",
+    "version": "1.54r",
+    "commit": "62db90a269cccc1ac79f658e4602043214ed055b",
+    "archive": "build/references/downloads/imagej-62db90a269cccc1ac79f658e4602043214ed055b.zip",
+    "archive_sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+    "members": [
+      {
+        "member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/io/FileSaver.java",
+        "sha256": "0e7165c5d230b4c877b45211703b07670820591e0bf45039ed34100d13eaa8ea",
+        "anchors": [
+          715,
+          718,
+          720,
+          723,
+          726,
+          729,
+          736,
+          751,
+          758,
+          765
+        ]
+      },
+      {
+        "member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/io/TiffDecoder.java",
+        "sha256": "2740feb42614f85a4b80446b132904526adcc49dc99ae6d3eda1165f61bf05e1",
+        "anchors": [
+          201,
+          209,
+          214,
+          471,
+          475,
+          555,
+          833,
+          352
+        ]
+      },
+      {
+        "member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/io/TiffEncoder.java",
+        "sha256": "efc4852785a35b760e3792c75d8764e17bcfd513751f3b4fce4d48c7df393b98",
+        "anchors": [
+          110,
+          129,
+          137,
+          298,
+          300,
+          337
+        ]
+      },
+      {
+        "member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/io/FileOpener.java",
+        "sha256": "983e1ac77a11f94da0d5b705a7f1010b7e99fa50d19673b85ea9de88e6c7aca7",
+        "anchors": [
+          439,
+          447,
+          470,
+          477,
+          605,
+          610,
+          638,
+          641
+        ]
+      },
+      {
+        "member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/io/Opener.java",
+        "sha256": "63eca0ccf5452b3178e2ac804e4be21af0515ae6a3db7af2c7335f4b387b4ff3",
+        "anchors": [
+          817,
+          821,
+          914,
+          915,
+          919
+        ]
+      },
+      {
+        "member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/ImagePlus.java",
+        "sha256": "477e3f5f913b9c42feb68ea35d21836d45fd56920cccbfc5719a06822cbcfab9",
+        "anchors": [
+          1916,
+          1923
+        ]
+      }
+    ],
+    "use": "Behavior/protocol inspection only; no Java source, JAR, library source or new assets incorporated. The pinned Fiji bundle uses ImageJ1.54p and is not covered by a1.54r runtime claim.",
+    "runtime_match": "Unexecuted for this entry; exact fixture obligations TU08 remain."
+  },
+  "primary_documentation_corroboration": [
+    {
+      "url": "https://libtiff.gitlab.io/libtiff/functions/TIFFOpen.html",
+      "title": "TIFFOpen",
+      "observed_documentation_version": "4.7.2",
+      "scope": "Corroborates explicit read options for disabling mmap and strip chopping, ordinary TIFF defaults, and per-open options. This live documentation does not pin4.7.1 source or qualify its runtime; local4.7.1 headers/SPDX are the consumed product identities."
+    },
+    {
+      "url": "https://libtiff.gitlab.io/libtiff/specification/coverage.html",
+      "title": "LibTIFF Coverage of the TIFF6.0 Specification",
+      "observed_documentation_version": "4.7.2",
+      "scope": "TIFF tag/specification cross-check only; no new source dependency or tested behavior claim."
+    }
+  ],
+  "present_boundary": {
+    "native": {
+      "shape": "DatasetShape is TCZYXS with positive native-int extents; scalar scientific channels are C, never S.",
+      "plane_table_index": "((t*C)+c)*Z+z",
+      "sample_storage": "Image pixels are doubles tagged UInt16; exact integer canonicality is a write admission condition.",
+      "calibration": "SpatialCalibration stores XYZ spacing/origin/direction/unit plus frame_interval/time_origin/time_unit."
+    },
+    "desktop": {
+      "source": "src/desktop/io.cpp:171-243/248-310",
+      "read": "Current readTiff decodes into Stack, supports multiple types/S counts and orientation flips, applies MINISWHITE inversion, and ignores scientific dimensions/series/calibration metadata.",
+      "write": "Current writeTiff canonicalizes/copies each Image, writes uncompressed pages, then reads the whole temp into bytes before writeBytes. It is not the proposed bounded scientific service.",
+      "dependency_link": "CMakeLists.txt:295/335-337 finds optional libtiff4.7.1 only inside desktop configuration."
+    },
+    "python": {
+      "source": "src/imagejxx/io.py:20-25/55-60",
+      "behavior": "Existing imread/imwrite use optional tifffile2024.12.12 and ndarray/codec kwargs; no scientific Dataset metadata service. Preserve this compatibility contract until matching-variant adapters are independently qualified."
+    }
+  },
+  "profile": {
+    "container": {
+      "magic": 42,
+      "read_byte_orders": [
+        "II",
+        "MM"
+      ],
+      "write_byte_order": "II",
+      "offsets": "Classic unsigned32 offsets; every referenced range checked within file; no BigTIFF.",
+      "series_count": 1,
+      "subifds": false,
+      "pyramids": false,
+      "plane_kind": "homogeneous XY scalar UInt16",
+      "sample_policy": "FiniteOnly",
+      "image_origin": "TOPLEFT",
+      "samples_per_pixel": 1,
+      "compression": 1,
+      "planar_configuration": 1
+    },
+    "series_admission": "Traverse every explicit linked IFD before decoding a sample. One homogeneous set is the entire admitted series; do not guess groups from changing sizes/types. Reject SubIFDs/reduced/mask/EXIF/GPS/OME/vendor series structures and any mismatch. Only series_index0 is valid.",
+    "accepted_tags": [
+      {
+        "tag": 254,
+        "name": "NewSubfileType",
+        "types": [
+          "LONG"
+        ],
+        "count": 1,
+        "read": "Absent or0; reduced/mask/subfile variants refuse.",
+        "write": 0
+      },
+      {
+        "tag": 256,
+        "name": "ImageWidth",
+        "types": [
+          "SHORT",
+          "LONG"
+        ],
+        "count": 1,
+        "read": "Positive native-int X; same every IFD.",
+        "write": "LONG X"
+      },
+      {
+        "tag": 257,
+        "name": "ImageLength",
+        "types": [
+          "SHORT",
+          "LONG"
+        ],
+        "count": 1,
+        "read": "Positive native-int Y; same every IFD.",
+        "write": "LONG Y"
+      },
+      {
+        "tag": 258,
+        "name": "BitsPerSample",
+        "types": [
+          "SHORT"
+        ],
+        "count": 1,
+        "read": "Required16.",
+        "write": 16
+      },
+      {
+        "tag": 259,
+        "name": "Compression",
+        "types": [
+          "SHORT"
+        ],
+        "count": 1,
+        "read": "Absent(default1) or1 only.",
+        "write": 1
+      },
+      {
+        "tag": 262,
+        "name": "PhotometricInterpretation",
+        "types": [
+          "SHORT"
+        ],
+        "count": 1,
+        "read": "Required1(MINISBLACK); no automatic inversion.",
+        "write": 1
+      },
+      {
+        "tag": 266,
+        "name": "FillOrder",
+        "types": [
+          "SHORT"
+        ],
+        "count": 1,
+        "read": "Absent(default1) or1.",
+        "write": "omit"
+      },
+      {
+        "tag": 269,
+        "name": "DocumentName",
+        "types": [
+          "ASCII"
+        ],
+        "count": "bounded NUL-terminated",
+        "read": "Optional ASCII text; retained in read metadata.",
+        "write": "optional supplied document_name"
+      },
+      {
+        "tag": 270,
+        "name": "ImageDescription",
+        "types": [
+          "ASCII"
+        ],
+        "count": "bounded NUL-terminated",
+        "read": "First IFD required; exact grammar below. Later IFDs absent or byte-identical.",
+        "write": "first IFD only; canonical description; deliberately no images= field"
+      },
+      {
+        "tag": 273,
+        "name": "StripOffsets",
+        "types": [
+          "SHORT",
+          "LONG"
+        ],
+        "count": "ceil(Y/effective_rows_per_strip)",
+        "read": "Every referenced uncompressed byte interval must be in file and disjoint from pixels of other strips and all metadata.",
+        "write": "LONG offsets"
+      },
+      {
+        "tag": 274,
+        "name": "Orientation",
+        "types": [
+          "SHORT"
+        ],
+        "count": 1,
+        "read": "Absent(default1) or1(TOPLEFT). Other orientations are unsupported for this first variant.",
+        "write": 1
+      },
+      {
+        "tag": 277,
+        "name": "SamplesPerPixel",
+        "types": [
+          "SHORT"
+        ],
+        "count": 1,
+        "read": "Absent(default1) or1; scientific C remains page axis.",
+        "write": 1
+      },
+      {
+        "tag": 278,
+        "name": "RowsPerStrip",
+        "types": [
+          "SHORT",
+          "LONG"
+        ],
+        "count": 1,
+        "read": "Positive; absent/infinite default means one strip; effective=min(value,Y).",
+        "write": "min(Y,64)"
+      },
+      {
+        "tag": 279,
+        "name": "StripByteCounts",
+        "types": [
+          "SHORT",
+          "LONG"
+        ],
+        "count": "same as StripOffsets",
+        "read": "Required; exact2*X*rows_in_this_strip, including the final partial strip.",
+        "write": "LONG exact byte counts"
+      },
+      {
+        "tag": 282,
+        "name": "XResolution",
+        "types": [
+          "RATIONAL"
+        ],
+        "count": 1,
+        "read": "Absent together with YResolution or positive uint32 numerator/denominator; spacingX=denominator/numerator.",
+        "write": "explicit positive uint32 pair under rational_precision_policy"
+      },
+      {
+        "tag": 283,
+        "name": "YResolution",
+        "types": [
+          "RATIONAL"
+        ],
+        "count": 1,
+        "read": "Absent together with XResolution or positive uint32 numerator/denominator; spacingY=denominator/numerator.",
+        "write": "explicit positive uint32 pair under rational_precision_policy"
+      },
+      {
+        "tag": 284,
+        "name": "PlanarConfiguration",
+        "types": [
+          "SHORT"
+        ],
+        "count": 1,
+        "read": "Absent or1(CONTIG).",
+        "write": 1
+      },
+      {
+        "tag": 296,
+        "name": "ResolutionUnit",
+        "types": [
+          "SHORT"
+        ],
+        "count": 1,
+        "read": "With X/Y resolutions requires explicit1(no absolute unit);2/3 require a separate unit-conversion variant. Without X/Y, absent or1 accepted,2/3 refused.",
+        "write": 1
+      },
+      {
+        "tag": 297,
+        "name": "PageNumber",
+        "types": [
+          "SHORT"
+        ],
+        "count": 2,
+        "read": "Absent or[p,P] with zero-based p and exact IFD countP.",
+        "write": "omit"
+      },
+      {
+        "tag": 305,
+        "name": "Software",
+        "types": [
+          "ASCII"
+        ],
+        "count": "bounded NUL-terminated",
+        "read": "Optional; retained as source_software.",
+        "write": "imagejxx plus actual package version; not copied source producer identity"
+      },
+      {
+        "tag": 306,
+        "name": "DateTime",
+        "types": [
+          "ASCII"
+        ],
+        "count": "bounded NUL-terminated",
+        "read": "Optional opaque ASCII text; retained.",
+        "write": "optional supplied date_time; no current-time default"
+      },
+      {
+        "tag": 315,
+        "name": "Artist",
+        "types": [
+          "ASCII"
+        ],
+        "count": "bounded NUL-terminated",
+        "read": "Optional opaque ASCII text; retained.",
+        "write": "optional supplied artist"
+      },
+      {
+        "tag": 317,
+        "name": "Predictor",
+        "types": [
+          "SHORT"
+        ],
+        "count": 1,
+        "read": "Absent or1; compression transforms not admitted.",
+        "write": "omit"
+      },
+      {
+        "tag": 338,
+        "name": "ExtraSamples",
+        "types": [
+          "SHORT"
+        ],
+        "count": 0,
+        "read": "Absent only.",
+        "write": "omit"
+      },
+      {
+        "tag": 339,
+        "name": "SampleFormat",
+        "types": [
+          "SHORT"
+        ],
+        "count": 1,
+        "read": "Absent(defaultUINT) or1(UINT).",
+        "write": 1
+      }
+    ],
+    "other_tag_policy": "Any tag outside the exact allowlist refuses this first variant, including tile tags, ColorMap/ICC, private ImageJ metadata/LUT/overlay blocks50838/50839 and unknown pointer-bearing tags. This is explicit unsupported required scope, not a commercial exclusion.",
+    "ifd_validation": "Require unique ascending tag IDs per IFD, bounded valid TIFF field types/counts and in-file value extents; follow next pointers with a bounded visited set, rejecting loops/duplicates/truncation. Metadata may share only an exactly matching typed value interval; pixel intervals never overlap each other or metadata. Gaps/unreferenced padding do not become pixels. Optional descriptive text is first-IFD-only or byte-identical on later pages; varying per-page text refuses rather than losing labels. Later-page calibration tags are absent as a group or reproduce the first page's normalized values; partial/conflicting declarations refuse. Canonical writer emits identical calibration tags on every page.",
+    "strip_policy": "Read any positive effective rows-per-strip and exact count/byte lengths under caps. Writer fixes rows-per-strip=min(Y,64); there is no compressor, tile, alpha, inversion, scaling or orientation conversion.",
+    "writer_layout": "Write one linked IFD per XY page, first description only, explicit classic little-endian tags and no ImageJ images= hint. Directory/payload interleaving is permitted because readers follow IFDs. Do not promise byte-identical output or an ImageJ native FileSaver layout.",
+    "explicitly_remaining": [
+      "BigTIFF/hidden contiguous single-IFD stacks",
+      "OME/vendor XML and multiple series/pyramids",
+      "compression/tiled/packed/signed/float/RGB/RGBA/palette variants",
+      "reflected/rotated orientation and nonzero origins/directions",
+      "intensity calibration and additional unit conversions",
+      "ImageJ labels/LUTs/overlays/private metadata and full display interchange"
+    ]
+  },
+  "axis_contract": {
+    "file_page_order": "C fastest, thenZ, thenT; p=((t*Z)+z)*C+c, all indices zero-based.",
+    "inverse": "c=p%C; z=(p/C)%Z; t=p/(C*Z).",
+    "native_mapping": "Assign each decoded page to native index((t*C)+c)*Z+z; never reinterpret the page vector directly as Dataset's table.",
+    "dimensions": "C/Z/T each positive native int; checked P=C*Z*T equals complete explicit IFD count; S=1. Y/X come from every IFD and must agree.",
+    "singleton_policy": "All six axes remain explicit in Dataset/inspection; no rank inference or C/S merging.",
+    "description_grammar": {
+      "encoding": "Bounded ASCII with exactly one terminal NUL and no interior NUL; LF or CRLF input; key=value lines; blank lines permitted; duplicate keys/escapes/unknown keys refuse.",
+      "allowlist": [
+        "ImageJ",
+        "images",
+        "channels",
+        "slices",
+        "frames",
+        "hyperstack",
+        "unit",
+        "spacing",
+        "finterval",
+        "tunit",
+        "xorigin",
+        "yorigin",
+        "zorigin",
+        "yunit",
+        "zunit"
+      ],
+      "ImageJ": "Required nonempty bounded ASCII version marker. Product output marker is ImageJ=1.54r for this compatibility profile; Software identifies imagejxx rather than claiming ImageJ authored it.",
+      "counts": "Decimal unsigned positive integers only; no bool/float coercion, signs, hex or overflow. Omitted counts default1. If all three axis keys are absent, use legacy Z=IFDcount,C=T=1 and explicitly record that default; otherwise their product must match exactly.",
+      "images": "Optional read-only hint; if present must equal full explicit IFD count. Never synthesize hidden pages and never stop IFD inspection from this hint. Canonical writer omits it.",
+      "hyperstack": "Absent/false permitted for C=T=1; literaltrue required for C>1 orT>1. Writer emits literaltrue with all channels/slices/frames keys, including singleton counts.",
+      "order": "No order= override admitted; default pinned ImageJ C-fast mapping only.",
+      "numeric_fields": "Finite decimal floating grammar parsed in C locale; no NaN/Inf/hex/locale comma. spacing/finterval positive; origin values onlyzero.",
+      "canonical_writer_fields": [
+        "ImageJ=1.54r",
+        "channels=C",
+        "slices=Z",
+        "frames=T",
+        "hyperstack=true",
+        "unit=canonical spatial token",
+        "spacing=Zspacing using max_digits10",
+        "finterval=frame_interval using max_digits10",
+        "tunit=canonical time token"
+      ],
+      "source_basis": "Pinned FileSaver715-765, TiffDecoder201-215/833-834, FileOpener470-480/605-645, Opener817-822/914-927 and ImagePlus1916-1923. Source facts are not TU08 runtime qualification."
+    }
+  },
+  "calibration_contract": {
+    "spatial_direction": [
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1
+    ],
+    "origin": [
+      0,
+      0,
+      0
+    ],
+    "time_origin": 0,
+    "spatial_units": {
+      "pixel": "px",
+      "px": "px",
+      "um": "um",
+      "mm": "mm"
+    },
+    "time_units": {
+      "sec": "s",
+      "s": "s",
+      "ms": "ms"
+    },
+    "writer_unit_tokens": {
+      "px": "pixel",
+      "um": "um",
+      "mm": "mm",
+      "s": "sec",
+      "ms": "ms"
+    },
+    "xy": "Both resolutions absent -> spacingX=spacingY=1 with default observations. Otherwise both positive RATIONALs plus explicit ResolutionUnit1 required; spacing=denominator/numerator in description unit. Never apply TIFF default inches to description units.",
+    "z": "Description spacing positive finite, otherwise1 with default observation. yunit/zunit, if present, must normalize to the same spatial unit; no mixed-axis units.",
+    "time": "T>1 requires explicit positive finite finterval. For T1 only, absent finterval ->1 with default observation. tunit absent means sec. Present zero/negative intervals refuse rather than invent scientific timing.",
+    "origins": "Missing or numericzero xorigin/yorigin/zorigin only. Writer refuses any nonzero native origin, nonidentity direction or nonzero time_origin instead of dropping it.",
+    "rational_precision_policy": {
+      "wire_type": "Unsigned TIFF RATIONAL: numerator and denominator in[1,4294967295]. A stored reciprocal resolutionn/d decodes spacingd/n in binary64.",
+      "admitted_write_spacing_interval": [
+        2.3283064370807974e-10,
+        4294967295
+      ],
+      "admission": "Every requested X/Y spacing must be positive finite and within the positive RATIONAL interval. A writer must produce an integer pair whose decoded spacing satisfies relative_error<=1e-6; do not restrict admission to dyadic grids or silently cast/round the input metadata.",
+      "relative_error_max": 1e-06,
+      "absolute_error_rule": "abs(decoded-requested)<=1e-6*abs(requested), evaluated in binary64 with an8-ULP comparison allowance only at the threshold; report actual absolute and relative errors.",
+      "pair_choice": "Any positive uint32 pair meeting the numeric policy is conforming; exact numerator/denominator bytes are not promised. Prefer an exact small reduced rational when available. Independent fixtures cover0.5,1.25,2.5 and nonbinary positive spacings.",
+      "estimate": "Metadata-only estimate reports the actual selected wire pairs, decoded output calibration and per-axis error before any source plane read/temp creation/user callback. Write must use those frozen pairs; no recomputation with a different library conversion.",
+      "libtiff_prerequisite": "TIFFSetField RATIONAL ingestion may quantize through float storage. Implement an explicit bounded rational encoder/tag path, or prove the pinned libtiff path admits every requested spacing under this policy. Any failure is an implementation gap to repair, not permission to narrow the declared profile or claim bitwise spacing retention.",
+      "roundtrip": "Pixels/shape exact; XY calibration is bounded-loss at the declared1ppm relative tolerance and reported before export. Z spacing and frame interval use max_digits10 decimal and must recover identical finite binary64 values. Origins/direction/unit tokens normalize under this contract."
+    }
+  },
+  "metadata_policy": {
+    "preserve_exact": [
+      "Every UInt16 integer sample0..65535",
+      "Explicit TCZYXS sizes and C-fast page interpretation",
+      "Z spacing/frame interval finite binary64 via max_digits10 text",
+      "Supported canonical spatial/time units",
+      "Optional DocumentName,Artist,DateTime text through supplied typed write metadata"
+    ],
+    "canonicalize_or_report": [
+      "Raw description line order/newline/version/defaults are normalized, not byte-preserved",
+      "XY rational calibration under rational_precision_policy",
+      "Source Software retained as provenance in read result; output Software identifies actual imagejxx version",
+      "Omitted axis/calibration fields reported in a defaulted_fields array",
+      "Zero origin signed-zero/text spelling normalizes to numericzero"
+    ],
+    "refuse": [
+      "Unknown description keys or semantic/private tags",
+      "Unrepresentable/insufficient-precision calibration",
+      "Noncanonical UInt16-tagged native sample(fractional/nonfinite/outside0..65535)",
+      "Arbitrary supplied writer metadata keys/types",
+      "Nonzero origins/time origin/nonidentity direction or unsupported units"
+    ],
+    "read_result_metadata": "Existing MetadataObject only: exact keys source_description(string),source_imagej_version(string),source_software(optionalstring),document_name(optionalstring),artist(optionalstring),date_time(optionalstring),defaulted_fields(stringarray),format_id(string). Bound total text/metadata; no executable properties or public JSON dependency.",
+    "write_metadata": "Accept document_name/artist/date_time ASCII string fields with no interior NUL and the exact bounded read-result provenance/default fields declared above. Validate their types; Dataset shape/calibration are authoritative. Report source_description/source_imagej_version/source_software/defaulted_fields as canonicalized_fields in the estimate, without replaying their contents as output tags or hidden extensions. Unknown keys refuse. This permits write_image_series(path,result.dataset,result.metadata) with explicit reported canonicalization rather than silent metadata loss.",
+    "document_boundary": "This is Dataset file interchange, not native Save Document. Native sessions retain owner IDs/actions/annotations/history/display. Desktop TIFF export explicitly reports unsupported document state and uses its declared pixel-export policy; it cannot silently label TIFF as a no-loss native save or mark newer snapshots saved.",
+    "import_boundary": "Construct a new clean native owner only after full successful read; new identity/revisions/history, no inherited selection/ROIs/overlays/workflow/results or interpreted channel-display state. Preserve the prior live source/preview until accepted new-owner activation."
+  },
+  "native_api_boundary": {
+    "state": "Proposed exact first-service declarations for root adoption; not existing public symbols.",
+    "ownership": "Headless native C++ implementation shared by consumers. Prefer an optional exported imagejxx::io target depending on imagejxx::core and reviewed TIFF closure; neither Python nor ImGui may be required. Root chooses/registers the actual CMake option/export without expanding unchanged core dependencies implicitly.",
+    "public_header": "include/imagejxx/io.hpp",
+    "declarations": [
+      "enum class ImageFileFormat { ScientificTiffU16V1 };",
+      "enum class FileReplacePolicy { FailIfExists, ReplaceExisting };",
+      "struct ImageFileLimits { size_t max_file_bytes=536870912,max_ifds=4096,max_ifd_entries_per_page=64,max_metadata_bytes=1048576,max_total_samples=33554432,max_plane_samples=16777216,max_codec_bytes=67108864,max_working_bytes=536870912,max_output_file_bytes=134217728; };",
+      "struct ImageSeriesInfo { size_t index=0; DatasetShape shape; PixelType pixel_type=PixelType::UInt16; FloatingSamplePolicy sample_policy=FloatingSamplePolicy::FiniteOnly; SpatialCalibration calibration; MetadataObject metadata; };",
+      "struct ImageFileInspection { ImageFileFormat format=ImageFileFormat::ScientificTiffU16V1; size_t file_bytes=0,metadata_bytes=0; std::vector<ImageSeriesInfo> series; };",
+      "struct ImageReadRequest { size_t series_index=0; };",
+      "struct ImageReadResult { Dataset dataset; MetadataObject metadata; };",
+      "struct ImageWriteRequest { ImageFileFormat format=ImageFileFormat::ScientificTiffU16V1; FileReplacePolicy replace=FileReplacePolicy::FailIfExists; };",
+      "struct ImageWriteEstimate { size_t planes=0,samples=0,metadata_bytes=0,encoded_upper_bound=0,working_bytes=0; SpatialCalibration encoded_calibration; std::array<std::array<uint32_t,2>,2> xy_resolution{}; std::array<double,2> xy_absolute_error{},xy_relative_error{}; std::vector<std::string> canonicalized_fields; };",
+      "ImageFileInspection inspect_image_file(const std::string& path,const ImageFileLimits& limits={},const ExecutionControl& control={});",
+      "ImageReadResult read_image_series(const std::string& path,const ImageReadRequest& request={},const ImageFileLimits& limits={},const ExecutionControl& control={});",
+      "ImageWriteEstimate estimate_image_write(const Dataset& source,const MetadataObject& metadata={},const ImageWriteRequest& request={},const ImageFileLimits& limits={});",
+      "void write_image_series(const std::string& path,const Dataset& source,const MetadataObject& metadata={},const ImageWriteRequest& request={},const ImageFileLimits& limits={},const ExecutionControl& control={});"
+    ],
+    "inspection": "Metadata/file-range reads only, never decoded sample reads or Image/Document allocation. One admitted series. Inspection is informational; read reopens/reinspects under the same policy and does not trust a stale caller descriptor.",
+    "read": "Return eager Dataset with shared immutable planes; finite UInt16 samples widen exactly to native doubles and are inserted using explicit TCZ mapping. No hidden caching/virtual admission.",
+    "write": "Capture immutable Dataset handle, UTF8 path bytes, request, metadata, calibration/pairs, limits and control before callbacks; source planes remain borrowed immutable. Validate a returned plane's dimensions/type/policy and every canonical integer sample before writing that plane. Inspect/read likewise freeze path/request/limits/control before callbacks; a callback cannot redirect a call by mutating supplied objects.",
+    "errors": "std::invalid_argument for malformed/unsupported profile/request/metadata; std::length_error for checked overflow/resource cap; std::out_of_range for series_index!=0; OperationCancelled for cancellation; std::runtime_error for filesystem/codec/short-read/write failure. Preserve callback exception type.",
+    "python": "Expose the same typed inspection/result/limits/requests; strict integer indices reject bool/float and overflow. Python callbacks are retained/captured under GIL and invoked with GIL, native work may release it; exceptions/cancel publish no partial output.",
+    "compatibility": "Do not change legacy imread/imwrite ndarray ranks, singleton squeezing, kwargs or broad codecs implicitly. Freeze matching-profile array adapter expectations before rerouting those calls. The new scientific Dataset API is explicit and must use C++."
+  },
+  "inspection_resources_and_execution": {
+    "defaults": {
+      "max_file_bytes": 536870912,
+      "max_ifds": 4096,
+      "max_ifd_entries_per_page": 64,
+      "max_metadata_bytes": 1048576,
+      "max_total_samples": 33554432,
+      "max_plane_samples": 16777216,
+      "max_codec_bytes": 67108864,
+      "max_working_bytes": 536870912,
+      "max_output_file_bytes": 134217728
+    },
+    "all_caps_joint": "Positive caps apply together; all shape/product/count/add/multiply/offset conversions use checked size_t/uint64 arithmetic before allocation/seek/int cast. A nominal individual maximum does not promise the complete combination fits.",
+    "inspection_order": [
+      "Validate request/limits and check precancellation before user callbacks or side effects.",
+      "Open one read-only random-access source; record identity/size/change tokens; cap size and read classic header.",
+      "Bound raw IFD/tag counts/value extents/strip tables and aggregate metadata before libtiff allocation or sample decode; scan all IFDs and validate one homogeneous series and description/axis/calibration mapping. This admission scan polls the cancellation token directly and emits no user callbacks.",
+      "Compute aggregate native output, metadata/descriptor, row/strip and codec bound; refuse before Image allocation/sample reads.",
+      "For read, hold the opened source through decode, recheck observable identity/size/change tokens before returning; a changed source fails without owner publication."
+    ],
+    "mutable_file_precondition": "The input file must remain unchanged during one call. Inspect does not authenticate future contents. Observe handle/file identity,size and change tokens before/after; reject observable changes. No cryptographic snapshot guarantee against a noncooperative in-place writer is claimed by this first service.",
+    "memory_mapping": "Disable mmap and strip chopping explicitly(e.g reviewed rmc mode); raw IFD tables define the admitted strip contract. Use per-handle libtiff error/warning callbacks and TIFFOpenOptions single/cumulated allocation limits; do not mutate global libtiff handlers.",
+    "estimate_symbols": {
+      "N": "total logical scalar samples",
+      "P": "explicit IFD count",
+      "W": "X extent",
+      "A": "maximum XY plane samples",
+      "S": "maximum source strip samples",
+      "M": "charged metadata bytes including all out-of-line tag values/strings/strip tables plus owned UTF8 path/request/text copies; validate sizes before cloning",
+      "E": "sum of raw IFD entry counts",
+      "K": "sum of strip counts",
+      "L": "max_codec_bytes"
+    },
+    "read_working_upper_bound": "checked(8*N +2*W +2*S +4*M +512*P +64*E +128*K +L +65536)",
+    "write_working_upper_bound": "checked(8*A +2*W +4*M +512*P +64*E +128*K +L +65536); borrowed retained source storage excluded, conservative one-provider-plane8*A included.",
+    "inspection_working_upper_bound": "checked(4*M +512*P +64*E +128*K +L +65536); no decoded output or volume copy.",
+    "estimate_notes": "These are conservative owned service/codec workspace estimates, excluding borrowed source buffers, OS page cache, allocator bookkeeping, caller callback allocations and unrelated process/GPU allocations. Metadata descriptor access is permitted; provider plane/region reads are not part of estimate. Validate and charge all borrowed metadata/path lengths before cloning mutable input. No whole encoded input/output buffer or TCZ volume copy. Confirm real native allocations against this bound during implementation rather than relabelling uncounted storage.",
+    "callbacks": "Estimate and metadata admission have no user callbacks or provider plane/region reads; descriptor metadata access only. Valid precancel throws before callbacks. Complete structural/resource admission before emitting any user callback, so admission/budget refusals have zero callbacks. A successful inspect emits only its coarse progress(0,1)/(1,1) pair after admission, not fabricated per-IFD execution events. Admitted read/write emit one coarse pair plus checkpoints at bounded row/plane boundaries and stage progress only with a declared fixed total. Nested inspection does not create a second progress pair. Callback exceptions/self-cancel abort. No user callback under Document/application locks. Freeze valid UTF8/no-NUL path bytes and check actual platform/temporary path length before opening output.",
+    "cancellation": "Poll before/after bounded IFD metadata steps, every scanline or at most65536samples of raw transfer, between planes and immediately before output replacement. No claim of interruption inside a blocking OS call.",
+    "writer_atomicity": [
+      "Complete metadata/type/shape/rational/resource preflight before callbacks/provider reads/temp creation.",
+      "Create one unique sibling temp exclusively; never open/truncate the destination for codec writing. Failure to create is terminal, not an arbitrary retry loop.",
+      "Write bounded scanlines/IFDs, checking all codec and OS return values; close/flush successfully, independently verify written tag/rational/description descriptors match the frozen plan, and prepare any return data before publication.",
+      "Run final cancellation/checkpoint/completion callback before commit; any exception leaves existing destination byte-identical and removes only the owned temp.",
+      "Commit once by same-filesystem atomic rename/replace under explicit FailIfExists or ReplaceExisting policy; a lost race fails without overwriting under FailIfExists. No fallible user callbacks after replacement.",
+      "Atomic replacement is not a claim of power-loss durability or whole-process resource certification. Export itself never mutates source data/history/display/annotations/dirty/saved revisions."
+    ]
+  },
+  "consumers_and_evidence": {
+    "desktop": "Recognize this exact profile via native inspection, read into Dataset and atomically add one clean owner after success. Shared open/export controls in both launch modes call the same native service. Retain other TIFF legacy behavior until its own migrated contract; no all-reader migration prerequisite.",
+    "python": "New typed Dataset series API uses the native service. Matching-profile legacy ndarray adapters require exact compatibility fixtures before rerouting; do not infer axes from rank or delegate scientific processing to tifffile.",
+    "sdk": "Installed C++ consumer links only the exported headless I/O/core targets plus declared native codec dependencies. It reads TU02, verifies literal TCZ pixels/world metadata and writes/reopens TU04 without Python/ImGui.",
+    "settings_recording": "Freeze file-dialog defaults/last directory and explicit overwrite/export-loss policy with consumers. Any recorded read/export action captures exact selected series/format/options/path and a declared file-identity/replay policy; loading a file never executes stored commands. Filename/metadata/tag data are not code. Native Save Document recording remains separate.",
+    "qualification": "First metadata/core/API/SDK focused checks; then one settled source/product integration and both installed physical launch variants plus affected legacy TIFF/NPY/session regressions. No wheel per tag/calibration option. Independently validate every produced TIFF; do not use a product roundtrip as the only oracle."
+  },
+  "independent_fixture_obligations": [
+    {
+      "id": "TU01",
+      "kind": "independent_binary",
+      "cases": [
+        "II-single-strip",
+        "MM-single-strip"
+      ],
+      "literal": {
+        "u16_row_major": [
+          0,
+          1,
+          255,
+          256,
+          32768,
+          65535
+        ],
+        "shape_tczyxs": [
+          1,
+          1,
+          1,
+          2,
+          3,
+          1
+        ]
+      },
+      "oracle": "Independent stdlib TIFF builder/reader using struct, not product writer or tifffile. Assert both byte orders decode exact integers."
+    },
+    {
+      "id": "TU02",
+      "kind": "independent_binary",
+      "cases": [
+        "C3-Z2-T2-full-IFD"
+      ],
+      "literal": {
+        "sample_formula": "10000*t+1000*c+100*z+10*y+x",
+        "native_plane_to_file_page": [
+          0,
+          3,
+          1,
+          4,
+          2,
+          5,
+          6,
+          9,
+          7,
+          10,
+          8,
+          11
+        ],
+        "shape_tczyxs": [
+          2,
+          3,
+          2,
+          2,
+          3,
+          1
+        ]
+      },
+      "oracle": "Enumerate every native t/c/z/y/x from the literal formula; assert C-fast file pages and Z-fast native table separately, not inverse-only roundtrip."
+    },
+    {
+      "id": "TU03",
+      "kind": "independent_binary",
+      "cases": [
+        "Y3-rowsperstrip1",
+        "Y3-rowsperstrip2",
+        "Y3-rowsperstrip-at-leastY"
+      ],
+      "literal": {
+        "x": 5,
+        "y": 3,
+        "rows_per_strip_2_bytecounts": [
+          20,
+          10
+        ]
+      },
+      "oracle": "Check exact strip intervals/counts/final partial rows and cap admission; do not rely on libtiff's synthetic strip chopping."
+    },
+    {
+      "id": "TU04",
+      "kind": "independent_calibration",
+      "cases": [
+        "half-one-and-quarter-two-and-half",
+        "anisotropic-decimal",
+        "large-small-representable",
+        "rational-boundaries"
+      ],
+      "literal": {
+        "spacing_example": [
+          0.5,
+          1.25,
+          2.5
+        ],
+        "x_resolution_example": [
+          2,
+          1
+        ],
+        "y_resolution_example": [
+          4,
+          5
+        ],
+        "time_interval_example": 2.5,
+        "time_unit": "ms",
+        "unit": "um",
+        "world_voxel_2_1_1": [
+          1,
+          1.25,
+          2.5
+        ]
+      },
+      "oracle": "Read raw uint32 RATIONAL pairs independently; compare actual decoded calibration to source using frozen relative tolerance, and test positivity/zero denominators/underflow/overflow. Include arbitrary positive nonbinary spacing, e.g0.108,pi/10,1.23456789; expected precision is numeric policy, never a product-generated expected rational."
+    },
+    {
+      "id": "TU05",
+      "kind": "independent_metadata",
+      "cases": [
+        "description-omitted-dims-singletons",
+        "legacy-ImageJ-Z-fallback",
+        "description-images-fullIFD",
+        "canonical-writer-omits-images",
+        "per-page-description-agreement",
+        "metadata-default-ledger"
+      ],
+      "oracle": "Assert literal parsing/default rules, unit aliases and exact preservation/canonicalization/refusal ledger; demonstrate missing time interval is defaulted only for T1."
+    },
+    {
+      "id": "TU06",
+      "kind": "malformed_and_unsupported",
+      "cases": [
+        "header-endian-magic",
+        "BigTIFF",
+        "IFD-cycle-duplicate",
+        "IFD-entry-overflow",
+        "truncated-tag-value",
+        "strip-count-and-bytecount",
+        "strip-overlap",
+        "IFD-or-tag-overlap-pixel",
+        "duplicate-description-key",
+        "shape-product-mismatch",
+        "hidden-pages",
+        "multiple-series-SubIFDs",
+        "heterogeneous-pages",
+        "compressed-tiled-palette-RGB-signed-float",
+        "orientation-other",
+        "unknown-semantic-tags",
+        "nonzero-origin-direction-policy",
+        "unsupported-unit-or-intensity-calibration"
+      ],
+      "oracle": "Refuse before sample decode/Document creation where metadata is decisive; independently instrument raw file/provider access, not only exception text."
+    },
+    {
+      "id": "TU07",
+      "kind": "resources_callbacks_atomicity",
+      "cases": [
+        "precancel",
+        "invalid-budget-zero-callback",
+        "inspect-limit",
+        "aggregate-output-limit",
+        "codec-limit",
+        "progress-start-throws",
+        "checkpoint-throws",
+        "row-cancel",
+        "between-plane-cancel",
+        "before-replace-cancel",
+        "short-read",
+        "disk-write-failure",
+        "existing-target-preserved",
+        "exclusive-temp-collision",
+        "observable-input-change"
+      ],
+      "oracle": "Raw before/after target bytes and directory membership, source pixels/calibration/metadata/history/dirty/display, read/callback counters and retained lifecycle; no-output on failure. Valid write consumes source one plane at a time."
+    },
+    {
+      "id": "TU08",
+      "kind": "source_reference_runtime",
+      "cases": [
+        "pinned-ImageJ1.54r-export-to-native",
+        "native-to-pinned-ImageJ1.54r-reopen"
+      ],
+      "oracle": "Actual pinned ImageJ process with literal C3/Z2/T2 values, anisotropic calibration, singleton cases and canonical images=-omitting output. Use the declared plain ImagePlus/default-display/no-overlay/no-LUT/no-density-calibration input subset for FileSaver export; preserve the exact exported bytes and all tags. If FileSaver still emits an unsupported field, report that real compatibility blocker instead of stripping it to manufacture a passing export. Assert ImagePlus dimensions/getStackIndex, each U16 pixel, units/spacing/time interval; preserve handler/source/artifact identities. Source inspection alone is not this pass."
+    },
+    {
+      "id": "TU09",
+      "kind": "installed_interfaces",
+      "cases": [
+        "core-only-SDK",
+        "native-C++API",
+        "installed-Python-DatasetAPI",
+        "standalone-ImGui-open-export",
+        "Python-ImGui-open-export",
+        "legacy-TIFF-regression"
+      ],
+      "oracle": "Fresh source-identified core-only SDK requires no Python/ImGui, same native I/O service in both launch modes and Python; real dialog/action inputs and independent file reader, exact controls/recording/history/owner publication. Legacy ndarray shape/options/origin checks are separate explicit compatibility fixtures."
+    }
+  ],
+  "dependency_scope": {
+    "existing_review": "licenses/desktop-dependencies.json and THIRD_PARTY_NOTICES.md already record libtiff4.7.1 and tested codec versions/notices for optional desktop. Preserve those decisions; this candidate does not falsely reset them to unknown or extend them to a new headless distribution.",
+    "selected_dependency": "libtiff4.7.1, vcpkg x64-windows ABI559dbf885b49ccc95f7c52626a708ca40e48305319de0b032d49131ae60dbf0b; exact header/SPDX/port/notice/DLL pins in consumed_files.",
+    "source_descriptors": [
+      {
+        "spdx_path": ".tools/imgui-sdk/share/tiff/vcpkg.spdx.json",
+        "packages": [
+          {
+            "name": "tiff",
+            "SPDXID": "SPDXRef-port",
+            "versionInfo": "4.7.1",
+            "downloadLocation": "git+https://github.com/Microsoft/vcpkg@9391305288677bb3959bf22a08218a61ffec0be0",
+            "homepage": "https://libtiff.gitlab.io/libtiff/",
+            "licenseConcluded": "libtiff",
+            "licenseDeclared": "NOASSERTION",
+            "copyrightText": "NOASSERTION",
+            "description": "A library that supports the manipulation of TIFF image files",
+            "comment": "This is the port (recipe) consumed by vcpkg."
+          },
+          {
+            "name": "tiff:x64-windows",
+            "SPDXID": "SPDXRef-binary",
+            "versionInfo": "559dbf885b49ccc95f7c52626a708ca40e48305319de0b032d49131ae60dbf0b",
+            "downloadLocation": "NONE",
+            "licenseConcluded": "libtiff",
+            "licenseDeclared": "NOASSERTION",
+            "copyrightText": "NOASSERTION",
+            "comment": "This is a binary package built by vcpkg."
+          },
+          {
+            "SPDXID": "SPDXRef-resource-0",
+            "name": "libtiff/libtiff",
+            "downloadLocation": "git+https://gitlab.com/libtiff/libtiff@v4.7.1",
+            "licenseConcluded": "NOASSERTION",
+            "licenseDeclared": "NOASSERTION",
+            "copyrightText": "NOASSERTION",
+            "checksums": [
+              {
+                "algorithm": "SHA512",
+                "checksumValue": "dcdabe2598db33a973d06f0009dd528aa1f38813bd6015e2595097b838a42240f9ccbe7524b5235ea2f4207a10d5d706339c7a6f4772b531e00a20281a00f67b"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "spdx_path": ".tools/imgui-sdk/share/libjpeg-turbo/vcpkg.spdx.json",
+        "packages": [
+          {
+            "name": "libjpeg-turbo",
+            "SPDXID": "SPDXRef-port",
+            "versionInfo": "3.1.3",
+            "downloadLocation": "git+https://github.com/Microsoft/vcpkg@89f73b6dea674235727ec80355b894a688d06726",
+            "homepage": "https://github.com/libjpeg-turbo/libjpeg-turbo",
+            "licenseConcluded": "BSD-3-Clause",
+            "licenseDeclared": "NOASSERTION",
+            "copyrightText": "NOASSERTION",
+            "description": "libjpeg-turbo is a JPEG image codec that uses SIMD instructions (MMX, SSE2, NEON, AltiVec) to accelerate baseline JPEG compression and decompression on x86, x86-64, ARM, and PowerPC systems.",
+            "comment": "This is the port (recipe) consumed by vcpkg."
+          },
+          {
+            "name": "libjpeg-turbo:x64-windows",
+            "SPDXID": "SPDXRef-binary",
+            "versionInfo": "f1d67828161e3f3426386b6b35db63268acf5e77e622346af09186283ea3e12b",
+            "downloadLocation": "NONE",
+            "licenseConcluded": "BSD-3-Clause",
+            "licenseDeclared": "NOASSERTION",
+            "copyrightText": "NOASSERTION",
+            "comment": "This is a binary package built by vcpkg."
+          },
+          {
+            "SPDXID": "SPDXRef-resource-0",
+            "name": "libjpeg-turbo/libjpeg-turbo",
+            "downloadLocation": "git+https://github.com/libjpeg-turbo/libjpeg-turbo@3.1.3",
+            "licenseConcluded": "NOASSERTION",
+            "licenseDeclared": "NOASSERTION",
+            "copyrightText": "NOASSERTION",
+            "checksums": [
+              {
+                "algorithm": "SHA512",
+                "checksumValue": "d95bf0689fb2862ad5ea9e902b73724098d911d9c312aa69157bec9de77f32e4d5ac7dfa105d844110cc66dbdb0336056ba7f96781fcbc848b72fd0661604d50"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "spdx_path": ".tools/imgui-sdk/share/liblzma/vcpkg.spdx.json",
+        "packages": [
+          {
+            "name": "liblzma",
+            "SPDXID": "SPDXRef-port",
+            "versionInfo": "5.8.2#1",
+            "downloadLocation": "git+https://github.com/Microsoft/vcpkg@d161ccfe43a06cdb2a32d7a9e9fcbf92d67eb7ab",
+            "homepage": "https://tukaani.org/xz/",
+            "licenseConcluded": "LicenseRef-vcpkg-null",
+            "licenseDeclared": "NOASSERTION",
+            "copyrightText": "NOASSERTION",
+            "description": "Compression library with an API similar to that of zlib.",
+            "comment": "This is the port (recipe) consumed by vcpkg."
+          },
+          {
+            "name": "liblzma:x64-windows",
+            "SPDXID": "SPDXRef-binary",
+            "versionInfo": "56ca35251d90c1edcf361cd8c52afc9cf43ba88fd403c458e3ac998bb2b284cf",
+            "downloadLocation": "NONE",
+            "licenseConcluded": "LicenseRef-vcpkg-null",
+            "licenseDeclared": "NOASSERTION",
+            "copyrightText": "NOASSERTION",
+            "comment": "This is a binary package built by vcpkg."
+          },
+          {
+            "SPDXID": "SPDXRef-resource-0",
+            "name": "tukaani-project/xz",
+            "downloadLocation": "git+https://github.com/tukaani-project/xz@v5.8.2",
+            "licenseConcluded": "NOASSERTION",
+            "licenseDeclared": "NOASSERTION",
+            "copyrightText": "NOASSERTION",
+            "checksums": [
+              {
+                "algorithm": "SHA512",
+                "checksumValue": "a14c9d0a118c611d1156cd9a605269c706b976a752c048db7f2eea956e2bf717ce595f46186d951a6c4493e35658e08fa3fe4b256898c6ca08e3695c0ee7b0e5"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "spdx_path": ".tools/imgui-sdk/share/zlib/vcpkg.spdx.json",
+        "packages": [
+          {
+            "name": "zlib",
+            "SPDXID": "SPDXRef-port",
+            "versionInfo": "1.3.1",
+            "downloadLocation": "git+https://github.com/Microsoft/vcpkg@3f05e04b9aededb96786a911a16193cdb711f0c9",
+            "homepage": "https://www.zlib.net/",
+            "licenseConcluded": "Zlib",
+            "licenseDeclared": "NOASSERTION",
+            "copyrightText": "NOASSERTION",
+            "description": "A compression library",
+            "comment": "This is the port (recipe) consumed by vcpkg."
+          },
+          {
+            "name": "zlib:x64-windows",
+            "SPDXID": "SPDXRef-binary",
+            "versionInfo": "3de348fede9dcd918192a0ced02c8ab2926df6b19986e131e455c25b69fc89c9",
+            "downloadLocation": "NONE",
+            "licenseConcluded": "Zlib",
+            "licenseDeclared": "NOASSERTION",
+            "copyrightText": "NOASSERTION",
+            "comment": "This is a binary package built by vcpkg."
+          },
+          {
+            "SPDXID": "SPDXRef-resource-0",
+            "name": "madler/zlib",
+            "downloadLocation": "git+https://github.com/madler/zlib@v1.3.1",
+            "licenseConcluded": "NOASSERTION",
+            "licenseDeclared": "NOASSERTION",
+            "copyrightText": "NOASSERTION",
+            "checksums": [
+              {
+                "algorithm": "SHA512",
+                "checksumValue": "8c9642495bafd6fad4ab9fb67f09b268c69ff9af0f4f20cf15dfc18852ff1f312bd8ca41de761b3f8d8e90e77d79f2ccacd3d4c5b19e475ecf09d021fdfe9088"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "enabled_closure": "tiff vcpkg_abi_info features core;jpeg;lzma;zip; libtiff pkgconfig Requires.private zlib libjpeg liblzma. Uncompressed files do not remove the shared library's linked codec redistribution/runtime obligations.",
+    "notice_obligations": "Retain libtiff/Sam Leffler/SGI and included LZW notices, JPEG BSD/IJG/Zlib notices and attribution, liblzma library0BSD notices and zlib notice according to the existing reviewed component scopes. Do not incorporate tools/scripts/new sources or assume current SPDX NOASSERTION is eligibility approval.",
+    "unresolved_delta": [
+      "Approve exact core/headless scope, optional target/export strategy and actual platform runtime dependencies/redistribution before linking a new target.",
+      "Bind complete selected source archives/port patches and runtime transitive identities; vcpkg tag/download hash is pinned provenance, not independent license acceptance or proof every enabled component is covered.",
+      "Reconcile installed-packages metadata omitting liblzma despite TIFF ABI/pkgconfig dependency and containing two distinct zlib ABIs; select the exact consumed closure rather than name/version inference.",
+      "Keep optional Python tifffile/Pillow compatibility dependencies separate from native libtiff and all Fiji eligibility. No eligible claim is conferred by this candidate."
+    ]
+  },
+  "actual_blockers": [
+    {
+      "id": "T01",
+      "kind": "contract_adoption",
+      "state": "open",
+      "action": "Root freezes exact profile, precision/error rules, public declarations/export target and recorded file-action policy, then registers real owning requirements/dependency links."
+    },
+    {
+      "id": "T02",
+      "kind": "dependency_scope",
+      "state": "open",
+      "action": "Review the new headless distribution delta and resolve the exact codec/runtime/source/patch closure described above. Reuse unchanged reviewed desktop notices; incorporate no unresolved new material."
+    },
+    {
+      "id": "T03",
+      "kind": "implementation",
+      "state": "open",
+      "action": "Implement the missing core I/O service, bounded raw metadata admission, exact page mapping, rational encoding/reporting and atomic writer. Existing desktop functions are reusable mechanisms, not qualification."
+    },
+    {
+      "id": "T04",
+      "kind": "reference_and_compatibility",
+      "state": "open",
+      "action": "TU08 actual ImageJ reopen/export and TU09 legacy ndarray compatibility are not executed. Source-derived omission of images= must be qualified before advertising ImageJ interoperability."
+    },
+    {
+      "id": "T05",
+      "kind": "fixtures_and_gates",
+      "state": "open",
+      "action": "TU01-TU09 independent inputs/oracles, resource/callback/atomicity and installed interfaces remain unexecuted; fixture_ids/run IDs intentionally empty."
+    }
+  ],
+  "proposed_additive_format_patch": {
+    "target": "docs/parity/formats.json",
+    "format": "RFC6902 operations after explicit merge preconditions",
+    "merge_preconditions": {
+      "sha256": "be49a4e393b242171953228372c39aaf5df23169e2cad13d3b9c20d24ba05504",
+      "schema_version": 1,
+      "reference_id": "imagej-1.54r-fiji-latest-20261007-1617-win64",
+      "enumeration_status": "pending",
+      "format_count": 0,
+      "absent_format_id": "F.G080.tiff-imagej-u16-uncompressed-ifd-czt-v1",
+      "owner": "Root only; no manifest is written by this task."
+    },
+    "operations": [
+      {
+        "op": "add",
+        "path": "/formats/-",
+        "value": {
+          "id": "F.G080.tiff-imagej-u16-uncompressed-ifd-czt-v1",
+          "parent_id": "G080",
+          "name": "TIFF",
+          "variant": "Classic TIFF42; single-series scalar UInt16; uncompressed contiguous strips; explicit linked IFDs; ImageJ-compatible C-fast CZT description subset; top-left/identity/zero-origin calibration.",
+          "directions": [
+            "read",
+            "write"
+          ],
+          "axes": [
+            "T",
+            "C",
+            "Z",
+            "Y",
+            "X",
+            "S=1"
+          ],
+          "metadata": [
+            "Explicit C/Z/T page mapping and singleton axes",
+            "Positive XY TIFF RATIONAL spacing under declared1ppm write error policy",
+            "Positive Z spacing and frame interval; px/um/mm and s/ms subset",
+            "Identity direction, zero spatial/time origin",
+            "Bounded DocumentName/Artist/DateTime and source Software provenance; canonical description"
+          ],
+          "dependency_ids": [
+            "native:libtiff@4.7.1",
+            "native:libjpeg-turbo@3.1.3",
+            "native:liblzma@5.8.2",
+            "native:zlib@1.3.1"
+          ],
+          "fixture_ids": [],
+          "status": "open",
+          "remaining": [
+            "Root must adopt exact native I/O/API/format contract and register real requirement/dependency/fixture/run links; this candidate grants no implementation or eligibility acceptance.",
+            "Review the exact headless I/O link/export/runtime dependency delta, enabled codec closure and source/patch identities; existing desktop notices are narrower reviewed evidence.",
+            "Implement inspect-before-decode, rational encoding/precision reporting, bounded reads/writes, cancellation and atomic export through one native service.",
+            "Generate independent literal TIFF fixtures, qualify actual pinned ImageJ reopen and both SDK/API/desktop consumers, and preserve existing legacy ndarray/reader behavior.",
+            "Other TIFF/OME/BigTIFF/series/vendor/compression/dtype/orientation/calibration/display/annotation variants and all remaining G074-G081 requirements remain required."
+          ],
+          "contract_candidate": "docs/parity/reviews/scientific-tiff-u16-entry-001.json"
+        }
+      },
+      {
+        "op": "replace",
+        "path": "/enumeration_status",
+        "value": "partial"
+      },
+      {
+        "op": "add",
+        "path": "/remaining/-",
+        "value": "First scientific TIFF variant F.G080.tiff-imagej-u16-uncompressed-ifd-czt-v1 is registered open only; implementation, native dependency-scope review, independent fixtures/reference interoperability and installed gates remain required. Other TIFF/OME/vendor/series/format requirements are unchanged."
+      }
+    ],
+    "schema_scope": "Compatible with existing formats row schema; dependency_ids are proposed native closure identifiers, not falsely registered Fiji components. Empty fixture_ids avoid inventing captured evidence; root must later register actual fixtures and requirement links."
+  },
+  "validation": {
+    "state": "passed_structural_check_only",
+    "scope": "Strict owned JSON, consumed-file/member hashes and in-memory proposed formats merge through existing validate_documents; no acceptance/product/runtime/license gate.",
+    "manifest_writes": 0,
+    "validation_python": [
+      "import sys; sys.dont_write_bytecode = True",
+      "import copy, hashlib, importlib.util, json, pathlib, zipfile",
+      "p = pathlib.Path('docs/parity/reviews/scientific-tiff-u16-entry-001.json')",
+      "def strict_json(raw):",
+      "    def bad_constant(value): raise ValueError('nonfinite JSON: ' + value)",
+      "    def unique_object(pairs):",
+      "        out = {}",
+      "        for key, value in pairs:",
+      "            if key in out: raise ValueError('duplicate JSON key: ' + key)",
+      "            out[key] = value",
+      "        return out",
+      "    return json.loads(raw, parse_constant=bad_constant, object_pairs_hook=unique_object)",
+      "a = strict_json(p.read_text(encoding='utf-8'))",
+      "for pin in a['consumed_files']:",
+      "    raw = pathlib.Path(pin['path']).read_bytes()",
+      "    assert len(raw) == pin['bytes'] and hashlib.sha256(raw).hexdigest() == pin['sha256'], pin['path']",
+      "with zipfile.ZipFile(a['consumed_reference']['archive']) as archive:",
+      "    for member in a['consumed_reference']['members']:",
+      "        assert hashlib.sha256(archive.read(member['member'])).hexdigest() == member['sha256']",
+      "names = ['references.json','fiji-components.json','commands.json','formats.json','fixtures.json','benchmarks.json','platforms.json']",
+      "documents = {name: json.loads((pathlib.Path('docs/parity') / name).read_bytes()) for name in names}",
+      "spec = importlib.util.spec_from_file_location('scientific_tiff_entry_schema', 'scripts/parity_schema.py')",
+      "v = importlib.util.module_from_spec(spec); spec.loader.exec_module(v)",
+      "v.validate_documents(documents)",
+      "patch = a['proposed_additive_format_patch']; before = documents['formats.json']; pre = patch['merge_preconditions']",
+      "assert before['schema_version'] == pre['schema_version'] and before['reference_id'] == pre['reference_id']",
+      "assert before['enumeration_status'] == pre['enumeration_status'] and len(before['formats']) == pre['format_count']",
+      "assert pre['absent_format_id'] not in {row['id'] for row in before['formats']}",
+      "merged = copy.deepcopy(documents); target = merged['formats.json']",
+      "for op in patch['operations']:",
+      "    if op['op'] == 'add' and op['path'] == '/formats/-': target['formats'].append(copy.deepcopy(op['value']))",
+      "    elif op['op'] == 'add' and op['path'] == '/remaining/-': target['remaining'].append(op['value'])",
+      "    elif op['op'] == 'replace' and op['path'] == '/enumeration_status': target['enumeration_status'] = op['value']",
+      "    else: raise ValueError('unexpected patch operation')",
+      "v.validate_documents(merged)",
+      "assert all(merged[name] == documents[name] for name in names if name != 'formats.json')",
+      "assert target['remaining'][:len(before['remaining'])] == before['remaining']",
+      "row = target['formats'][0]; assert len(target['formats']) == 1 and row['status'] == 'open' and row['fixture_ids'] == []",
+      "assert target['enumeration_status'] == 'partial' and row['id'] == a['format_id']",
+      "fixtures = a['independent_fixture_obligations']; assert len(fixtures) == 9 and len({f['id'] for f in fixtures}) == 9",
+      "assert all(value is False for value in a['acceptance'].values())",
+      "assert len(a['profile']['accepted_tags']) == len({tag['tag'] for tag in a['profile']['accepted_tags']})",
+      "assert a['calibration_contract']['rational_precision_policy']['relative_error_max'] == 1e-6",
+      "print(json.dumps({'validation_only':'pass','baseline_formats':len(before['formats']),'proposed_formats':len(target['formats']),'status':row['status'],'consumed_files':len(a['consumed_files']),'reference_members':len(a['consumed_reference']['members']),'fixture_obligation_groups':len(fixtures),'manifest_writes':0,'runtime_gates':0}))"
+    ],
+    "result": {
+      "baseline_formats": 0,
+      "proposed_formats": 1,
+      "status": "open",
+      "consumed_files": 43,
+      "reference_members": 6,
+      "fixture_obligation_groups": 9,
+      "manifest_writes": 0,
+      "runtime_gates": 0
+    }
+  }
+}

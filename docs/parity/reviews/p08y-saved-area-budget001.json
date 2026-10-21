@@ -1,0 +1,141 @@
+{
+  "state": "qualified_increment",
+  "scope": "P08y actual shared-ImGui saved-area Numeric budget admission, live lowering, visible refusal and recovery",
+  "objective_complete": false,
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  },
+  "format_variants": "96 partial",
+  "tests": {
+    "state": "passed",
+    "cases": 5037,
+    "profiles": [
+      "windows-python001",
+      "windows-install001",
+      "linux-python-source001",
+      "linux-python-installed001"
+    ],
+    "previous_cases": 5033,
+    "previous_subset": true,
+    "case_id_sha256": "f1113a47c958ce4e90597b4d53af7e168f732a54161cd2be51f0fa0252e1b061"
+  },
+  "native_groups_per_platform": 17,
+  "actual_ui": {
+    "observations": 32,
+    "frames": 5344,
+    "cases": [
+      "finite-axis",
+      "finite-rotated",
+      "ieee-axis",
+      "ieee-rotated"
+    ],
+    "hosts": [
+      "imgui_cpp",
+      "imgui_python"
+    ],
+    "platforms": [
+      "Windows",
+      "Linux"
+    ],
+    "profiles": [
+      "source",
+      "installed"
+    ],
+    "os_input_or_gpu_claim": false
+  },
+  "fix": "Publish std::exception text through root lastError before cancelling and rethrowing; current fresh-budget preparation still refuses atomically",
+  "scratch_removed_bytes": 1557003829,
+  "source": [
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 636476,
+      "sha256": "895e0caf0386bfb638bb5f52b8ea76c7cc3f89e8cc7893d55165c560cb58f0a4"
+    },
+    {
+      "path": "src/desktop/saved_roi_budget_ui_probe.cpp",
+      "bytes": 8795,
+      "sha256": "906764ef4a9eb30bed2282b374a23cb0d4c622b12cb632b12f975de7021bfe60"
+    },
+    {
+      "path": "src/desktop/saved_roi_budget_ui_probe.hpp",
+      "bytes": 316,
+      "sha256": "ca452dad543c842550988a0fc2147495cbbf8583759123194e7a4268001c6190"
+    },
+    {
+      "path": "src/desktop/main.cpp",
+      "bytes": 44517,
+      "sha256": "534b417ce44b8ce5fd71ae5b17ab1bae01e0c24e84bf5cfaf453f7cba8707675"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 49652,
+      "sha256": "123056ed3ee0d0ebb9f6a8b0bf450c9d7d55547b16b11f454e3d1e109e92d90b"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 98043,
+      "sha256": "7c5dbda07451a019056e211d4cb5b9abf7449e0a1b8a39622ead9b9383d71b40"
+    },
+    {
+      "path": "tests/python/test_saved_roi_budget_ui.py",
+      "bytes": 2999,
+      "sha256": "31a531677d1d2dd9618c9ed88024e66ea52d2c8094af6f25976eedd4dce0faa7"
+    }
+  ],
+  "limits": [
+    "Only rounded saved-area Numeric resource UI is qualified by this increment",
+    "GUI rendering and observation may acquire planes; metadata no-read guarantees are covered by preceding API matrices",
+    "Pointer/modifier/replay/rebind/scientific-position resource UI remains open",
+    "No ImageJ/Fiji capability family or format variant is declared complete"
+  ],
+  "next": [
+    "Pointer release under a live budget change; cancellation and modifier variants",
+    "Workflow replay/rebind and scientific-context saved-area resource UI",
+    "Explicit rounded import promotion in remaining contexts",
+    "Continue the full ImageJ/Fiji inventory; no family marked complete"
+  ],
+  "receipts": [
+    {
+      "path": "build/p08y-saved-ui-budget001/test-identity001.json",
+      "bytes": 327,
+      "sha256": "c9ee6b53b581fe0561ee0b99ab500abe72ea2ac71f8701f823765c3990848c2e"
+    },
+    {
+      "path": "build/p08y-saved-ui-budget001/windows-observations001.json",
+      "bytes": 5926,
+      "sha256": "8c4385bec4c77abcc5dcd9c0d12da0f2531eb00026fc779b709975ef12c8a5df"
+    },
+    {
+      "path": "build/p08y-saved-ui-budget001/linux-observations001.json",
+      "bytes": 5559,
+      "sha256": "ef3b6548eea8f3a10ed5b9603b07ed611f7673440bc7fa67e778f1eb62ce9cd9"
+    },
+    {
+      "path": "build/p08y-saved-ui-budget001/windows-products-audit001.json",
+      "bytes": 2493,
+      "sha256": "c72bdba97a7e25c6d5afb1723b5f459f86d97938b0b52633bf4b09a46f44fe56"
+    },
+    {
+      "path": "build/p08y-saved-ui-budget001/linux-products-audit001.json",
+      "bytes": 2362,
+      "sha256": "673a2b5ac1c2a352e5abb22d51e40c21eb0bbedd3b2d3a79891dad224bce3f8e"
+    },
+    {
+      "path": "build/p08y-saved-ui-budget001/windows-cleanup001.json",
+      "bytes": 78186,
+      "sha256": "73a1250fbba1eac3df70f08303c64fb602f4b94bec6cdf2590e2731f2798529b"
+    },
+    {
+      "path": "build/p08y-saved-ui-budget001/linux-cleanup001.json",
+      "bytes": 102606,
+      "sha256": "f82ba8deaf54dde9e03037759b580c1915dfe3e92b94ae7edee501e024ab7a4a"
+    },
+    {
+      "path": "build/p08y-saved-ui-budget001/saved-ui-budget-audit001.json",
+      "bytes": 1226,
+      "sha256": "7b07b51f5e71637b94fe85eee4411c18d9d56ebec6f1bea18a0954772d9cbbad"
+    }
+  ]
+}

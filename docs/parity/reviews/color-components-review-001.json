@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "state": "scoped_color_component_processors_verified",
+  "api": [
+    "split_color_components",
+    "merge_color_components"
+  ],
+  "new_python_cases": 63,
+  "native_windows_suites": 21,
+  "linux_native_suites": 5,
+  "source_cases": 842,
+  "installed_cases": 842,
+  "reference_cases": 41,
+  "layout_observations": 30,
+  "reference_scope": "Exact RGB/HSB8/HSB32 processor arithmetic and observed upstream layouts; no native dataset remap or editor interchange certification",
+  "evidence": [
+    {
+      "path": "build/p06zs-color-stack001/build002/run001.json",
+      "bytes": 9544,
+      "sha256": "6f59b519b7fafa12c6bd20cb46293f6dbe6a7cffd2447c59e6fd888cda271d7b"
+    },
+    {
+      "path": "build/p06zs-color-stack001/source002/run001.json",
+      "bytes": 1376,
+      "sha256": "624132f60fb839ac4ab6f37ad872b69678fe5cdcd56ccd3ff91dfb0714c459f0"
+    },
+    {
+      "path": "build/p06zs-color-stack001/install001/run001.json",
+      "bytes": 7220,
+      "sha256": "be91b2195ab5d975ef932335e4c1ed7c44f6a5ae163dc07c3ba56c95ed05d556"
+    },
+    {
+      "path": "build/p06zs-color-stack001/installed-python001/run001.json",
+      "bytes": 1398,
+      "sha256": "9e2a7fc870b3bd3d2c0e32ec0192f5d3fce66645b6c84ac790aef76d55cbc066"
+    },
+    {
+      "path": "build/p06zs-color-stack001/sdk001/run001.json",
+      "bytes": 4082,
+      "sha256": "44a935007e1b45e4c358b935a845f4100c5a2667dcc2478d45719163b4df8c5e"
+    },
+    {
+      "path": "build/p06zs-color-stack001/linux001/run001.json",
+      "bytes": 836,
+      "sha256": "ecbf111425cd5c2d2a691bc422e8964818a60a5183dda7046b40e6b2b41452a2"
+    },
+    {
+      "path": "build/p06zs-color-stack001/build001/run001.json",
+      "bytes": 3936,
+      "sha256": "f31cbcdb2fdfa88d2d23a929e672cf7d8e05646e08c2a48f13698f3964c8b497"
+    },
+    {
+      "path": "build/p06zs-color-stack001/source001/run001.json",
+      "bytes": 1576,
+      "sha256": "3e8d78d45cf5654337388baba7bcf75769dca48f1bc5120d9ee7c60532ba3403"
+    },
+    {
+      "path": "build/p06zs-color-stack001/build002/native.xml",
+      "bytes": 6401,
+      "sha256": "91c7608036912d6f0c3f9c32feb2298f454bb646e8d5f8e425d3c59be42a2ccb"
+    },
+    {
+      "path": "build/p06zs-color-stack001/linux001/native.xml",
+      "bytes": 1334,
+      "sha256": "de5ddf10814e7218b09ccb8f1c0db378e0eafb1745060e2f32bc4ced6c3b3933"
+    },
+    {
+      "path": "build/p06zs-color-stack001/source002/pytest.xml",
+      "bytes": 124779,
+      "sha256": "77ddf98108f889efa2e84755c69eb062ad8dfeff2b6bbceb3dbfc92a910f0bc6"
+    },
+    {
+      "path": "build/p06zs-color-stack001/installed-python001/pytest.xml",
+      "bytes": 124779,
+      "sha256": "210a897950472a5f68651ab0543159d0bab312673088c5efc063c5c02b509aea"
+    },
+    {
+      "path": "tests/fixtures/color-components-imagej154r.json",
+      "bytes": 2108591,
+      "sha256": "253ea310e95396ce3a63bbe265f5f67d81ee3f378254f25619ee8b8c5cbc8549"
+    },
+    {
+      "path": "scripts/capture_color_stack_reference.py",
+      "bytes": 11757,
+      "sha256": "54cad8e7776acc6b4c8f26ceb0ece23886a942ab7d0be67aab247f046e4fd7f0"
+    },
+    {
+      "path": "build/p06zs-color-stack001/reference003/ColorStackReference.java",
+      "bytes": 8165,
+      "sha256": "8c13427a367e5bccf28431541027693d95841327e6fa46038c1ae42d714b8298"
+    },
+    {
+      "path": "build/p06zs-color-stack001/reference003/java.stdout",
+      "bytes": 782731,
+      "sha256": "7d07cff93bfc3d01f7291e06ab2e0c2153886f10164a15341587cc3243b17715"
+    },
+    {
+      "path": "build/p06zs-color-stack001/reference003/java.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p06zs-color-stack001/policy001.json",
+      "bytes": 427,
+      "sha256": "3d731d1bf93f553289d934a08139c9b37472e30dd46a2fbc0542f19152b97784"
+    },
+    {
+      "path": "build/p06zs-color-stack001/linux001/ext4-scratch001.json",
+      "bytes": 1774,
+      "sha256": "170ce76ac20167177615b3be1f7202242190861ac8f6770b43137b24c275d2dd"
+    },
+    {
+      "path": "build/p06zs-color-stack001/linux001/ext4-scratch001.zip",
+      "bytes": 6389,
+      "sha256": "40dfa84ef3e7c6b1b4e1dbcfbe059a52b1d36f53db650aff30c10cc4e123f886"
+    },
+    {
+      "path": "build/p06zs-color-stack001/cleanup001.json",
+      "bytes": 1032086,
+      "sha256": "c0374c95beca33c00ddb41b90b52831ba7d6947cec028b64997ebdbf48e8ad3b"
+    }
+  ],
+  "remaining": [
+    "Typed dataset component split/merge and explicit legacy flattening: metadata-only descriptors, calibrated Z/T policy, C-fast ImageJ versus native TCZ order, positioned ROI/annotation/label/table/display remaps, cap admission before samples",
+    "Shared ImGui component/flatten review, worker preview, captured workflow/session/batch support, one paired history transaction and stale-owner/cancel handling; actual source/installed C++ and Python input qualification",
+    "Indexed output with stable global palette and format/session round trips; full editor/reference/resource/platform/release checks",
+    "Historical fingerprint requalification; All99 remains42/57/0; Source901 unchanged"
+  ],
+  "no_new_runtime_dependencies": true,
+  "profile_accepted": false,
+  "family_completed": false,
+  "broad_goal": "active",
+  "full_plan_gate": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed"
+}

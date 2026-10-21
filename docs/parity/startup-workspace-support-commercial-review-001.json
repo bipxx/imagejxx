@@ -1,0 +1,254 @@
+{
+  "archived_member_enumeration_or_extraction": false,
+  "baseline_collector": {
+    "bytes": 138704,
+    "path": "build/p06i-001/source-final001.json",
+    "sha256": "70843f308f4ec40fc3dd637445694bfe8c27c34c9501daa2e9a14099f4c8c57e"
+  },
+  "decision": {
+    "basis": "Project-owned sources under existing root MIT license. Tests encode local synthetic fixtures; capture code reuses project helpers and the already selected product/tool dependency boundary. No added dependency, upstream Java/Fiji code, third-party image/model/font or non-commercial-only asset was incorporated.",
+    "commercial_use_eligible": true,
+    "scope": "Exactly14 current test/capture/validation/CMake helper source identities; no artifact composition or broader Fiji clearance."
+  },
+  "exact_old_members_requested": [
+    "scripts/parity_consumers.py",
+    "cmake/RunOwnedFixtureTest.cmake"
+  ],
+  "existing_source_diff": {
+    "bytes": 1858,
+    "path": "build/p06j-001/support-commercial-review001/existing-source.diff",
+    "sha256": "75d243d35c25e55b90cc5eb8fddac06e2c6023d10e8f5dd5c5bb85d99fc6caf6"
+  },
+  "id": "p06j.support-source-commercial-review.001",
+  "license": {
+    "bytes": 1079,
+    "path": "LICENSE",
+    "sha256": "6496956d6060adfcd2617e553b7393c3b7fbea353a02f3c39d60051709d1ce5f"
+  },
+  "notices": {
+    "bytes": 4201,
+    "path": "THIRD_PARTY_NOTICES.md",
+    "sha256": "9793a0e9272d9c7f8aa1ea97712a38f1ff186ecbd379f3a71c16ae273167bff9"
+  },
+  "review_limits": [
+    "Root is an integration author; this is source eligibility review, not a wholly independent legal audit.",
+    "Actual test/capture correctness and final source/member/notices artifact qualification are separate.",
+    "Build-stage-only packaging/projection tools are not distributed source members; their exact derivative script pins remain in execution receipts.",
+    "All earlier Fiji component decisions, NC exclusions and final-release obligations are preserved."
+  ],
+  "schema_version": 1,
+  "source_bytes": 222016,
+  "sources": [
+    {
+      "current": {
+        "bytes": 16817,
+        "path": "tests/python/startup_observation_reader.py",
+        "sha256": "435b41efc7b03f591a21d07c696ecd36dea54c4b81863d5fc2785ce6347faaf7"
+      },
+      "new_owned_source": true,
+      "provenance": "Project-owned P06j source authored/modified in this workspace; no retrieved upstream implementation or image assets.",
+      "snapshot": {
+        "bytes": 16817,
+        "path": "build/p06j-001/support-commercial-review001/current/tests/python/startup_observation_reader.py",
+        "sha256": "435b41efc7b03f591a21d07c696ecd36dea54c4b81863d5fc2785ce6347faaf7"
+      }
+    },
+    {
+      "current": {
+        "bytes": 10094,
+        "path": "tests/python/test_startup_editor.py",
+        "sha256": "0f574b5567e9553a03d0e5b6a4bd91f6f76d5b89dfb87055fd99bb699b1aa10e"
+      },
+      "new_owned_source": true,
+      "provenance": "Project-owned P06j source authored/modified in this workspace; no retrieved upstream implementation or image assets.",
+      "snapshot": {
+        "bytes": 10094,
+        "path": "build/p06j-001/support-commercial-review001/current/tests/python/test_startup_editor.py",
+        "sha256": "0f574b5567e9553a03d0e5b6a4bd91f6f76d5b89dfb87055fd99bb699b1aa10e"
+      }
+    },
+    {
+      "current": {
+        "bytes": 15086,
+        "path": "tests/python/test_startup_launchers.py",
+        "sha256": "2edd42ca8a1539403d646fac1c7638d373e6c28d4719acc220fc4896182e9108"
+      },
+      "new_owned_source": true,
+      "provenance": "Project-owned P06j source authored/modified in this workspace; no retrieved upstream implementation or image assets.",
+      "snapshot": {
+        "bytes": 15086,
+        "path": "build/p06j-001/support-commercial-review001/current/tests/python/test_startup_launchers.py",
+        "sha256": "2edd42ca8a1539403d646fac1c7638d373e6c28d4719acc220fc4896182e9108"
+      }
+    },
+    {
+      "current": {
+        "bytes": 14435,
+        "path": "tests/python/test_startup_policy.py",
+        "sha256": "9a5a72dc8f123d52b14a1dc8247b64b82b158295a71a4ae709787b7c53f5a754"
+      },
+      "new_owned_source": true,
+      "provenance": "Project-owned P06j source authored/modified in this workspace; no retrieved upstream implementation or image assets.",
+      "snapshot": {
+        "bytes": 14435,
+        "path": "build/p06j-001/support-commercial-review001/current/tests/python/test_startup_policy.py",
+        "sha256": "9a5a72dc8f123d52b14a1dc8247b64b82b158295a71a4ae709787b7c53f5a754"
+      }
+    },
+    {
+      "current": {
+        "bytes": 1258,
+        "path": "tests/python/test_startup_settings_export.py",
+        "sha256": "43204598642d4700af1ab98aa0b244ee7dfc49512e8fbec2acbebc4b0802ab71"
+      },
+      "new_owned_source": true,
+      "provenance": "Project-owned P06j source authored/modified in this workspace; no retrieved upstream implementation or image assets.",
+      "snapshot": {
+        "bytes": 1258,
+        "path": "build/p06j-001/support-commercial-review001/current/tests/python/test_startup_settings_export.py",
+        "sha256": "43204598642d4700af1ab98aa0b244ee7dfc49512e8fbec2acbebc4b0802ab71"
+      }
+    },
+    {
+      "current": {
+        "bytes": 19883,
+        "path": "tests/python/test_startup_ui.py",
+        "sha256": "78a1eb40bc9d6296f11d48e3b50fd99c90f9a4f5e791aa87b77699b409522608"
+      },
+      "new_owned_source": true,
+      "provenance": "Project-owned P06j source authored/modified in this workspace; no retrieved upstream implementation or image assets.",
+      "snapshot": {
+        "bytes": 19883,
+        "path": "build/p06j-001/support-commercial-review001/current/tests/python/test_startup_ui.py",
+        "sha256": "78a1eb40bc9d6296f11d48e3b50fd99c90f9a4f5e791aa87b77699b409522608"
+      }
+    },
+    {
+      "current": {
+        "bytes": 23020,
+        "path": "tests/python/test_startup_workspace.py",
+        "sha256": "c3244dfc387063b5a3b260203106e262cba21c77c0bf4b9be03e2ead411dd49f"
+      },
+      "new_owned_source": true,
+      "provenance": "Project-owned P06j source authored/modified in this workspace; no retrieved upstream implementation or image assets.",
+      "snapshot": {
+        "bytes": 23020,
+        "path": "build/p06j-001/support-commercial-review001/current/tests/python/test_startup_workspace.py",
+        "sha256": "c3244dfc387063b5a3b260203106e262cba21c77c0bf4b9be03e2ead411dd49f"
+      }
+    },
+    {
+      "current": {
+        "bytes": 8256,
+        "path": "tests/native/test_startup_adoption.cpp",
+        "sha256": "50bb3e8e271f950cb1b5273eb371b01821c67889d6bd792fa0887e61c4aca662"
+      },
+      "new_owned_source": true,
+      "provenance": "Project-owned P06j source authored/modified in this workspace; no retrieved upstream implementation or image assets.",
+      "snapshot": {
+        "bytes": 8256,
+        "path": "build/p06j-001/support-commercial-review001/current/tests/native/test_startup_adoption.cpp",
+        "sha256": "50bb3e8e271f950cb1b5273eb371b01821c67889d6bd792fa0887e61c4aca662"
+      }
+    },
+    {
+      "current": {
+        "bytes": 14427,
+        "path": "tests/native/test_startup_policy.cpp",
+        "sha256": "326618b02bf272ce93f28df9f9bf64514863dd82c9d5308cd7fd569240d64679"
+      },
+      "new_owned_source": true,
+      "provenance": "Project-owned P06j source authored/modified in this workspace; no retrieved upstream implementation or image assets.",
+      "snapshot": {
+        "bytes": 14427,
+        "path": "build/p06j-001/support-commercial-review001/current/tests/native/test_startup_policy.cpp",
+        "sha256": "326618b02bf272ce93f28df9f9bf64514863dd82c9d5308cd7fd569240d64679"
+      }
+    },
+    {
+      "current": {
+        "bytes": 27549,
+        "path": "tests/native/test_startup_window.cpp",
+        "sha256": "bce1e4d91d6f69f8e3b1bf14b9fcb27151bd59bd209bfe0c6f99195a17c0c459"
+      },
+      "new_owned_source": true,
+      "provenance": "Project-owned P06j source authored/modified in this workspace; no retrieved upstream implementation or image assets.",
+      "snapshot": {
+        "bytes": 27549,
+        "path": "build/p06j-001/support-commercial-review001/current/tests/native/test_startup_window.cpp",
+        "sha256": "bce1e4d91d6f69f8e3b1bf14b9fcb27151bd59bd209bfe0c6f99195a17c0c459"
+      }
+    },
+    {
+      "current": {
+        "bytes": 21870,
+        "path": "scripts/capture_startup_launchers.py",
+        "sha256": "800ac4f42a7f6775b0e8a15b25ab56eef4d107f08d069cebcdd17eb66eb9be77"
+      },
+      "new_owned_source": true,
+      "provenance": "Project-owned P06j source authored/modified in this workspace; no retrieved upstream implementation or image assets.",
+      "snapshot": {
+        "bytes": 21870,
+        "path": "build/p06j-001/support-commercial-review001/current/scripts/capture_startup_launchers.py",
+        "sha256": "800ac4f42a7f6775b0e8a15b25ab56eef4d107f08d069cebcdd17eb66eb9be77"
+      }
+    },
+    {
+      "current": {
+        "bytes": 3138,
+        "path": "scripts/capture_startup_workspace_ui.py",
+        "sha256": "d1cff2de0464a444803adb3b04dc8a9f35ed7c805ee49afbb829b235509c1c44"
+      },
+      "new_owned_source": true,
+      "provenance": "Project-owned P06j source authored/modified in this workspace; no retrieved upstream implementation or image assets.",
+      "snapshot": {
+        "bytes": 3138,
+        "path": "build/p06j-001/support-commercial-review001/current/scripts/capture_startup_workspace_ui.py",
+        "sha256": "d1cff2de0464a444803adb3b04dc8a9f35ed7c805ee49afbb829b235509c1c44"
+      }
+    },
+    {
+      "before": {
+        "bytes": 44726,
+        "path": "build/p06j-001/support-commercial-review001/before/scripts/parity_consumers.py",
+        "sha256": "ccbc9619c2036a0a8322fbfbdd119d9eadd514ad89eaccb7668d1ee90402602b"
+      },
+      "current": {
+        "bytes": 45101,
+        "path": "scripts/parity_consumers.py",
+        "sha256": "d314740e6defbf79893c2fa1496b65e9c7c9ac99ec541750e83266b56e7e3065"
+      },
+      "provenance": "Project-owned P06j source authored/modified in this workspace; no retrieved upstream implementation or image assets.",
+      "snapshot": {
+        "bytes": 45101,
+        "path": "build/p06j-001/support-commercial-review001/current/scripts/parity_consumers.py",
+        "sha256": "d314740e6defbf79893c2fa1496b65e9c7c9ac99ec541750e83266b56e7e3065"
+      }
+    },
+    {
+      "before": {
+        "bytes": 952,
+        "path": "build/p06j-001/support-commercial-review001/before/cmake/RunOwnedFixtureTest.cmake",
+        "sha256": "7c38b2f1c9dc1a8ff37d1a140c9705a4145a5355c8eb6ca251d38d58cf94b283"
+      },
+      "current": {
+        "bytes": 1082,
+        "path": "cmake/RunOwnedFixtureTest.cmake",
+        "sha256": "90fad11f62f99233d2d425681d7f6b2da2a9eb4c60f9f42cc5035e77c282becf"
+      },
+      "provenance": "Project-owned P06j source authored/modified in this workspace; no retrieved upstream implementation or image assets.",
+      "snapshot": {
+        "bytes": 1082,
+        "path": "build/p06j-001/support-commercial-review001/current/cmake/RunOwnedFixtureTest.cmake",
+        "sha256": "90fad11f62f99233d2d425681d7f6b2da2a9eb4c60f9f42cc5035e77c282becf"
+      }
+    }
+  ],
+  "state": "root_owned_source_eligibility_review",
+  "unresolved_source_origin_or_preimage_gaps": [],
+  "verified_archive": {
+    "bytes": 8530093,
+    "path": "build/p06i-source-final001/imagejxx-0.2.0.tar.gz",
+    "sha256": "54cc65364159b9041d914260720333f3148bc22c3fecebb932310939d7cdb14b"
+  }
+}

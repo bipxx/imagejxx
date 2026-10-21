@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_increment",
+  "review_type": "Root authorship/integration attestation, not independent legal review or full-family licensing acceptance",
+  "scope": "Owned audit-reader accessibility changes, exact project-owned historical data, scientific annotation diagnostic/reader changes and documentation",
+  "license": "Existing project MIT",
+  "changed_or_added_owned_members": [
+    {
+      "path": "docs/SOL_ULTRA.md",
+      "bytes": 57975,
+      "sha256": "9714abfd887695804e4057a01cd0e54e1026700e09fe7205bb1ccf6faa1beaeb",
+      "previous": {
+        "path": "docs/SOL_ULTRA.md",
+        "sha256": "319982322ec775e7f778537bfccc3bece60ae35b20619b0fc063b63a68514567",
+        "size": 56309
+      }
+    },
+    {
+      "path": "docs/packets/P01-historical-evidence-access.md",
+      "bytes": 5094,
+      "sha256": "9effa66f5b1b48e94e0e46c8d6d271ba289e06ce30daa8fe6bd4cddb0ed91d9d",
+      "previous": null
+    },
+    {
+      "path": "docs/packets/P06p-planar-annotations.md",
+      "bytes": 17543,
+      "sha256": "90b2752b993ad38ff5472ee809a374472ef38f8eef3e1358e5ffabf6daba2a42",
+      "previous": {
+        "path": "docs/packets/P06p-planar-annotations.md",
+        "sha256": "e04bb2e307b69fe998acdbb02b1b3b4b8e661ac9c559419f362251af3a91384f",
+        "size": 15105
+      }
+    },
+    {
+      "path": "docs/parity/planar-annotations-scientific-busy-source-review-001.json",
+      "bytes": 2420,
+      "sha256": "9e05b7c0df9e24627de4971bf391ad6379c9e4bd4eabcc9fae2f25772d03e87a",
+      "previous": null
+    },
+    {
+      "path": "scripts/parity_consumers.py",
+      "bytes": 45812,
+      "sha256": "2cd12aa324f1e35e719ac8cbc3456108bc73065496ad8cb7e3cda8f141011cfe",
+      "previous": {
+        "path": "scripts/parity_consumers.py",
+        "sha256": "d314740e6defbf79893c2fa1496b65e9c7c9ac99ec541750e83266b56e7e3065",
+        "size": 45101
+      }
+    },
+    {
+      "path": "scripts/parity_evidence.py",
+      "bytes": 27642,
+      "sha256": "57d69b4761db456f68195081d2432cb0a7392e3ee7af72d9590d90cbbcb73139",
+      "previous": {
+        "path": "scripts/parity_evidence.py",
+        "sha256": "3c2345351b65552b9dbbd5f6f5b5f511f57fbb101bb478519c37f2d9208f690d",
+        "size": 26112
+      }
+    },
+    {
+      "path": "scripts/parity_execution.py",
+      "bytes": 44289,
+      "sha256": "29ceaef8a28c5faa3d27eeb23f52b59375698a7ecdc30296ea9c2635217dba37",
+      "previous": {
+        "path": "scripts/parity_execution.py",
+        "sha256": "e8d32cb8bb559cab89fefb07db2da95bcb83b8d9cc228e4b465a0b5aa99afcc9",
+        "size": 41393
+      }
+    },
+    {
+      "path": "scripts/parity_fixtures.py",
+      "bytes": 268394,
+      "sha256": "343d721cef2655db0f3abe3df6ac4fbd7a8c64ab51ea95a32e557cd45a5aca32",
+      "previous": {
+        "path": "scripts/parity_fixtures.py",
+        "sha256": "bd26d2a3c5284f4c36aad38181c50ed9bafbdb7df22afdc2be79031d87df63ad",
+        "size": 268311
+      }
+    },
+    {
+      "path": "src/desktop/planar_annotation_matrix.cpp",
+      "bytes": 18717,
+      "sha256": "5e7dd43870451acca5ab46f543956074fd9a2188da240fbc5c0962968f6ede21",
+      "previous": {
+        "path": "src/desktop/planar_annotation_matrix.cpp",
+        "sha256": "70e935523cbfb06c2b6af2ff244db07c1bfe7022495c40ed9d2282f39b528701",
+        "size": 14948
+      }
+    },
+    {
+      "path": "tests/fixtures/settings-consumer-baseline-source.json",
+      "bytes": 515,
+      "sha256": "a12b5612fbc1a12af1e9ade77dbed5fac38eca16b7fa208bd057134dbc4997fa",
+      "previous": null
+    },
+    {
+      "path": "tests/fixtures/settings-consumer-baseline.cpp",
+      "bytes": 15435,
+      "sha256": "8f43e18718113d41a976dbed9336bde19f06c444bb0ba48b463ca362a50decf8",
+      "previous": null
+    },
+    {
+      "path": "tests/fixtures/tooling-preimages/3c2345351b65552b9dbbd5f6f5b5f511f57fbb101bb478519c37f2d9208f690d/SOURCE.json",
+      "bytes": 726,
+      "sha256": "582dcecca115b94f3a36d0b839eb2ccb1f68892e9011c1fe7147324c94e3f7de",
+      "previous": null
+    },
+    {
+      "path": "tests/fixtures/tooling-preimages/3c2345351b65552b9dbbd5f6f5b5f511f57fbb101bb478519c37f2d9208f690d/parity_evidence.py.txt",
+      "bytes": 26112,
+      "sha256": "3c2345351b65552b9dbbd5f6f5b5f511f57fbb101bb478519c37f2d9208f690d",
+      "previous": null
+    },
+    {
+      "path": "tests/python/test_parity_consumers.py",
+      "bytes": 68827,
+      "sha256": "66e78dd14845d935ab98ee59e69e1dbd8ead0de9db3396a8d3efeb1213294792",
+      "previous": {
+        "path": "tests/python/test_parity_consumers.py",
+        "sha256": "7ed503fbb5b5d032f505472a0b74c31bac7d64ec6c139f17816bdb76c2d90961",
+        "size": 67810
+      }
+    },
+    {
+      "path": "tests/python/test_parity_evidence.py",
+      "bytes": 44833,
+      "sha256": "d7f1a98de46769aa8c2fec057fec938629ea9b677577aa80e76e1de3365dddf0",
+      "previous": {
+        "path": "tests/python/test_parity_evidence.py",
+        "sha256": "a40a3b80d89fb05cdb628f4fa5fd402441065a9c272fcbb4dd6067736e46eadf",
+        "size": 41697
+      }
+    },
+    {
+      "path": "tests/python/test_parity_execution.py",
+      "bytes": 74568,
+      "sha256": "b8936f79aea9c58a022505fae17ac9914676bd15be64552982317fa405bce988",
+      "previous": {
+        "path": "tests/python/test_parity_execution.py",
+        "sha256": "c8bbf7f3220230af0239819428d16c750e2f783cb8744857aa4944b2ecfabf6b",
+        "size": 69819
+      }
+    },
+    {
+      "path": "tests/python/test_parity_fixtures.py",
+      "bytes": 171015,
+      "sha256": "21d16057cb16600ba1ebecc5d0e5a71103a233fe402a1dbca46ff9ba0e05580a",
+      "previous": {
+        "path": "tests/python/test_parity_fixtures.py",
+        "sha256": "0f8cfadac29f2b717ad6aae63287d064946c62e46619b8f8ee01ebce87997d3d",
+        "size": 169790
+      }
+    },
+    {
+      "path": "tests/python/test_planar_annotation_matrix_ui.py",
+      "bytes": 12440,
+      "sha256": "a08a4189a990b11492fff8f3534be3cc6ea66cc5b7db91e5d58c0c6a26fa000b",
+      "previous": {
+        "path": "tests/python/test_planar_annotation_matrix_ui.py",
+        "sha256": "9a3a539139ab458066dbf36b40b2022547797b243d37bdcb4489051e73fb98bf",
+        "size": 9768
+      }
+    }
+  ],
+  "original_source_receipt": {
+    "path": "build/p06p-edges001/source-final001.json",
+    "bytes": 156023,
+    "sha256": "1e58bacd77d416d46d9e9ffc8da1393b6675d2748864a821f92c81394e14a468"
+  },
+  "native_increment_review": {
+    "path": "docs/parity/planar-annotations-scientific-busy-source-review-001.json",
+    "bytes": 2420,
+    "sha256": "9e05b7c0df9e24627de4971bf391ad6379c9e4bd4eabcc9fae2f25772d03e87a"
+  },
+  "new_dependencies": [],
+  "imported_third_party_code": [],
+  "imported_assets": [],
+  "restricted_features_added": false
+}

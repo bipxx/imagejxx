@@ -1,0 +1,50 @@
+{
+  "state": "passed",
+  "scope": "Windows scientific Deflate TIFF API and shared ImGui export/open",
+  "audit": {
+    "path": "build/p08e-deflate-tiff001/final-audit001.json",
+    "bytes": 54713,
+    "sha256": "4032541e235b36fa7b6ceecf6dc5a6f5433613eecf88b78dc5d767f92a6d020e"
+  },
+  "contracts": [
+    "Original uncompressed profiles/defaults/ordinals retained",
+    "Deflate tags 8/32946, predictor 1, homogeneous layouts, exact decoded byte counts",
+    "Capped prefixed vendored zlib, strip buffers and read-free upper bounds",
+    "Actual compressed strips with finalized offset/count patching and atomic publication",
+    "Shared export selection invalidates consent; v5 records replay inertly"
+  ],
+  "qualification": {
+    "windows_suites": 76,
+    "source_python_cases": 9622,
+    "installed_python_cases": 9622,
+    "baseline_retained": 9468,
+    "new_cases": 154,
+    "imagej_observations": 96,
+    "physical_cases": 6,
+    "physical_contexts": 4,
+    "installed_io_sdk": "passed"
+  },
+  "test_only_freeze_amendment": {
+    "gate": "deflate-cpp001",
+    "file": "tests/python/test_deflate_tiff_editor.py",
+    "reason": "Native-only producer does not read Python tests; later correction checks missing estimate keys with .get; auditor reconstructs and hashes entire earlier LF test file. Final Python/SDK gates freeze current tests."
+  },
+  "retained_failures": [
+    "reference001: successful Java observations exceeded supervisor receipt 1 MiB; reference002 stores observations in a pinned separate file",
+    "python-focused002: new test assumed absent estimate key was present/null; corrected assertion",
+    "python-full001: copied worker referenced a missing historical variance report; corrected retained report path",
+    "install-attempt001: source freeze correctly refused stale windows001 checkpoint before mutation; install001 uses final windows003 freeze"
+  ],
+  "cleanup_net_bytes": 2117386832,
+  "dependencies_added": false,
+  "limitations": [
+    "Physical Float32 nonfinite Deflate controls remain to qualify",
+    "No Linux TIFF/product certification",
+    "Further codecs/predictors, tiles, BigTIFF, alpha/high-bit color and remaining ImageJ/Fiji/editor/release gaps remain open"
+  ],
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  }
+}

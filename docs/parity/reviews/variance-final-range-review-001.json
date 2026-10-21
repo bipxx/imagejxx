@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "state": "scoped_gates_passed",
+  "scope": "Private detached nonbyte variance final-range calculation; editor admission unchanged",
+  "runner_cases": 288,
+  "range_retention_cases": 36,
+  "new_native_checks_per_platform": 2471,
+  "windows_suites": 5,
+  "linux_suites": 11,
+  "linux_cache": "Verified prior archive restored; changed rank.cpp object explicitly rebuilt after restoration-mtime diagnostic",
+  "python_regression_checks_per_context": 1553,
+  "installed_public_sdk_regression": "passed",
+  "public_dto_layout_changes": false,
+  "runtime_dependency_changes": false,
+  "guard_status": "UInt8-only editor variance remains enforced",
+  "remaining": [
+    "Effective initial and equal-ended display range representation/rendering",
+    "Preview and off-current/empty targets",
+    "Threshold/channel-display policies",
+    "Pre-read histogram admission and paired data/display/history publication",
+    "Legacy/workflow/new-document adapters and actual input in both source/installed ImGui hosts",
+    "Broader filter, conversion, indexed formats and release gates"
+  ],
+  "diagnostics": [
+    "linux001: restored objects received new timestamps and skipped changed source; undefined private helper at link",
+    "linux002: cleanup guard assumed failed-run /tmp directory still existed; accepted absent owned directory in final run",
+    "linux003: both harness corrections applied; all 11 suites pass"
+  ],
+  "family_counts": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  },
+  "release": "Source901 unchanged"
+}

@@ -1,0 +1,203 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_owned_increment",
+  "review_type": "Root authorship/integration and exact selected dependency scope attestation, not independent legal review",
+  "license": "Existing project MIT for original CMake/Python policy integration; existing unchanged component licenses and notices for the exact selected runtime closure",
+  "new_dependency_versions": [],
+  "restricted_features_added": false,
+  "new_fonts": [],
+  "sources": [
+    {
+      "logical_path": "CMakeLists.txt",
+      "before": {
+        "path": "build/p06r-tiff-dependencies001/before001/CMakeLists.txt",
+        "bytes": 61035,
+        "sha256": "be0ce6018fd6e187d7c7c28ffe93465d1ba0bdcee76a540577c7d47c7ddd92ac"
+      },
+      "after": {
+        "path": "build/p06r-tiff-dependencies001/after001/CMakeLists.txt",
+        "bytes": 62029,
+        "sha256": "c8877b4812c8ef414832b337f03ff8deb7c0e872c0231422bf5d9b38af50301e"
+      },
+      "current": {
+        "path": "CMakeLists.txt",
+        "bytes": 62029,
+        "sha256": "c8877b4812c8ef414832b337f03ff8deb7c0e872c0231422bf5d9b38af50301e"
+      }
+    },
+    {
+      "logical_path": "THIRD_PARTY_NOTICES.md",
+      "before": {
+        "path": "build/p06r-tiff-dependencies001/before001/THIRD_PARTY_NOTICES.md",
+        "bytes": 4603,
+        "sha256": "7172e44c69c4e5935da78781365c194a9dade339b1911aa14b9afff0e3d71926"
+      },
+      "after": {
+        "path": "build/p06r-tiff-dependencies001/after001/THIRD_PARTY_NOTICES.md",
+        "bytes": 5495,
+        "sha256": "9276e3455758744d4ddaa1ecf3563b0f7db13fea719909e3214084e3f33a9c27"
+      },
+      "current": {
+        "path": "THIRD_PARTY_NOTICES.md",
+        "bytes": 5495,
+        "sha256": "9276e3455758744d4ddaa1ecf3563b0f7db13fea719909e3214084e3f33a9c27"
+      }
+    },
+    {
+      "logical_path": "cmake/imagejxxConfig.cmake.in",
+      "before": {
+        "path": "build/p06r-tiff-dependencies001/before001/cmake/imagejxxConfig.cmake.in",
+        "bytes": 170,
+        "sha256": "50d5f5758e54dc61381964de23bf8b46d876c185702d0afa28cb4544354a3984"
+      },
+      "after": {
+        "path": "build/p06r-tiff-dependencies001/after001/cmake/imagejxxConfig.cmake.in",
+        "bytes": 539,
+        "sha256": "248ebfd30b608526aeaa859b4478463789333915ed3a1f497aebc63e37e8eda9"
+      },
+      "current": {
+        "path": "cmake/imagejxxConfig.cmake.in",
+        "bytes": 539,
+        "sha256": "248ebfd30b608526aeaa859b4478463789333915ed3a1f497aebc63e37e8eda9"
+      }
+    },
+    {
+      "logical_path": "licenses/dependencies.json",
+      "before": {
+        "path": "build/p06r-tiff-dependencies001/before001/licenses/dependencies.json",
+        "bytes": 4516,
+        "sha256": "436d924a8d501a7139f09e65441c46b6944e1d4c63b12d56eb1fd43290dd0a67"
+      },
+      "after": {
+        "path": "build/p06r-tiff-dependencies001/after001/licenses/dependencies.json",
+        "bytes": 4766,
+        "sha256": "f95eea02051c316199f5e06b678b5a50ce58758dcb38e2f8bd3b501bd234f96c"
+      },
+      "current": {
+        "path": "licenses/dependencies.json",
+        "bytes": 4766,
+        "sha256": "f95eea02051c316199f5e06b678b5a50ce58758dcb38e2f8bd3b501bd234f96c"
+      }
+    },
+    {
+      "logical_path": "licenses/desktop-dependencies.json",
+      "before": {
+        "path": "build/p06r-tiff-dependencies001/before001/licenses/desktop-dependencies.json",
+        "bytes": 5520,
+        "sha256": "62fb5f480ee7b5dcfe30491d98737a30925732c1e26155a5d0a3de1cb45a1da5"
+      },
+      "after": {
+        "path": "build/p06r-tiff-dependencies001/after001/licenses/desktop-dependencies.json",
+        "bytes": 5773,
+        "sha256": "c8397607cea39402772b4cb8d242b0798045a3fa211d45d472d492ccb9e0a274"
+      },
+      "current": {
+        "path": "licenses/desktop-dependencies.json",
+        "bytes": 5773,
+        "sha256": "c8397607cea39402772b4cb8d242b0798045a3fa211d45d472d492ccb9e0a274"
+      }
+    },
+    {
+      "logical_path": "licenses/native-dependencies.json",
+      "before": {
+        "path": "build/p06r-tiff-dependencies001/before001/licenses/native-dependencies.json",
+        "bytes": 1917,
+        "sha256": "b649aa7e93fc45941fb5f8092e9bebede34cab5c797f7bba95658a1da17d027d"
+      },
+      "after": {
+        "path": "build/p06r-tiff-dependencies001/after001/licenses/native-dependencies.json",
+        "bytes": 2169,
+        "sha256": "50f389cadae70733f89a6df2f652edb1eb68071d1f359bf59d86882e3c26eed9"
+      },
+      "current": {
+        "path": "licenses/native-dependencies.json",
+        "bytes": 2169,
+        "sha256": "50f389cadae70733f89a6df2f652edb1eb68071d1f359bf59d86882e3c26eed9"
+      }
+    },
+    {
+      "logical_path": "scripts/check_licenses.py",
+      "before": {
+        "path": "build/p06r-tiff-dependencies001/before001/scripts/check_licenses.py",
+        "bytes": 14863,
+        "sha256": "b3d980bdbd7e670e758c9d049678985a28b6a0f17645eac7cce12400b4bdc635"
+      },
+      "after": {
+        "path": "build/p06r-tiff-dependencies001/after001/scripts/check_licenses.py",
+        "bytes": 19698,
+        "sha256": "850524b9f905c3e95222e6933def008b11715ff2559c3f52f77a9efc9ca9d16f"
+      },
+      "current": {
+        "path": "scripts/check_licenses.py",
+        "bytes": 19698,
+        "sha256": "850524b9f905c3e95222e6933def008b11715ff2559c3f52f77a9efc9ca9d16f"
+      }
+    },
+    {
+      "logical_path": "licenses/io-dependencies.json",
+      "before": null,
+      "after": {
+        "path": "build/p06r-tiff-dependencies001/after001/licenses/io-dependencies.json",
+        "bytes": 11763,
+        "sha256": "11440d29be831f541aca88d80180369cef3fa9dea3f6015b7178e87c0a496042"
+      },
+      "current": {
+        "path": "licenses/io-dependencies.json",
+        "bytes": 11763,
+        "sha256": "11440d29be831f541aca88d80180369cef3fa9dea3f6015b7178e87c0a496042"
+      }
+    },
+    {
+      "logical_path": "cmake/TiffRuntimeManifest.cmake",
+      "before": null,
+      "after": {
+        "path": "build/p06r-tiff-dependencies001/after001/cmake/TiffRuntimeManifest.cmake",
+        "bytes": 1096,
+        "sha256": "646d567f3532e5b129417439201c179ff4781b126ae6ab77cea9e1669d356d91"
+      },
+      "current": {
+        "path": "cmake/TiffRuntimeManifest.cmake",
+        "bytes": 1096,
+        "sha256": "646d567f3532e5b129417439201c179ff4781b126ae6ab77cea9e1669d356d91"
+      }
+    },
+    {
+      "logical_path": "cmake/ReviewedTiffRuntime.cmake",
+      "before": null,
+      "after": {
+        "path": "build/p06r-tiff-dependencies001/after001/cmake/ReviewedTiffRuntime.cmake",
+        "bytes": 3729,
+        "sha256": "1e45cc8a457771c343adb58ddbdc3e51b5329b1c43bb22e8c9676b7bb3e394ae"
+      },
+      "current": {
+        "path": "cmake/ReviewedTiffRuntime.cmake",
+        "bytes": 3729,
+        "sha256": "1e45cc8a457771c343adb58ddbdc3e51b5329b1c43bb22e8c9676b7bb3e394ae"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_tiff_runtime_policy.py",
+      "before": null,
+      "after": {
+        "path": "build/p06r-tiff-dependencies001/after001/tests/python/test_tiff_runtime_policy.py",
+        "bytes": 6375,
+        "sha256": "40b44bd8fee2aae0f618c4d3a9539f20c40e12446b7c0de12a48231d13aeca78"
+      },
+      "current": {
+        "path": "tests/python/test_tiff_runtime_policy.py",
+        "bytes": 6375,
+        "sha256": "40b44bd8fee2aae0f618c4d3a9539f20c40e12446b7c0de12a48231d13aeca78"
+      }
+    }
+  ],
+  "dependency_review": {
+    "path": "docs/parity/reviews/scientific-tiff-u16-dependency-closure-003.json",
+    "bytes": 3955,
+    "sha256": "88f0bc9d9f46d64ca5fdba8a8f0bc0ac4139ba4bd7649aecf8f658b52e837f71"
+  },
+  "handoff": {
+    "path": "build/p06r-tiff-dependencies001/tiff-dependency-handoff001.json",
+    "bytes": 19972,
+    "sha256": "a95659993710976050d21e51e2b44798c89cc808b47e2ff1cdebf11f15c58d4d"
+  }
+}

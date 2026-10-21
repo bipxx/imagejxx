@@ -1,0 +1,41 @@
+{
+  "state": "passed",
+  "scope": "Native scientific RGB8 TIFF API, explicit component layout, shared editor and pinned ImageJ interoperability",
+  "audit": "build/p08c-rgb-tiff001/final-audit001.json",
+  "audit_sha256": "9f76f96aed35a4665cd977ede31adbd281b1d5d8bdd160c884306fa5741323dc",
+  "format_id": "F.G080.tiff-imagej-rgb8-uncompressed-ifd-czt-v1",
+  "contracts": [
+    "RGB components S=3 are distinct from C/Z/T planes; C=1 and C=2 verified",
+    "Both input byte orders; interleaved UInt8 samples, uniform RGB field arrays and finite-only policy",
+    "Resource/sample accounting includes all components; atomic staging and mid-row cancellation retained",
+    "Version 4 explicit dtype/policy/components; scalar producer versions 1/2/3 unchanged",
+    "Physical ordinary/scientific open, flat consent, startup, append, linked views, export/cancel and inert replay"
+  ],
+  "independent_carriers": {
+    "admitted": 10,
+    "malformed": 10
+  },
+  "imagej_carriers": 4,
+  "imagej_native_export_observations": 16,
+  "windows_suites": 74,
+  "python_cases_per_package": 9468,
+  "previous_cases_retained": 9390,
+  "new_cases": 78,
+  "installed_public_io_sdk": "passed",
+  "cleanup": {
+    "targets": 32,
+    "net_bytes_freed": 1159647489
+  },
+  "limitations": [
+    "No Linux TIFF/product certification claim",
+    "Compressed/tiled, high-bit RGB, alpha, BigTIFF and broader metadata profiles remain open",
+    "Remaining ImageJ/Fiji/editor/release requirements remain open"
+  ],
+  "dependencies_added": [],
+  "commercial_scope": "Original native profile implementation and independent fixtures using the existing reviewed Windows TIFF closure; no reference Java classes/runtime in application products",
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  }
+}

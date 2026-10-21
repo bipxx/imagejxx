@@ -1,0 +1,849 @@
+{
+  "schema": "imagejxx.p04c.malformed-table.v1",
+  "status": "SOURCE_ONLY_WRITE_HOLD",
+  "base_fixture_order": [
+    "empty",
+    "range",
+    "nulls",
+    "named",
+    "custom"
+  ],
+  "cases": [
+    {
+      "id": "marker-null",
+      "path": [
+        "native_document_state"
+      ],
+      "operation": "set",
+      "value": null,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "marker-array",
+      "path": [
+        "native_document_state"
+      ],
+      "operation": "set",
+      "value": [],
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "version-zero",
+      "path": [
+        "native_document_state",
+        "version"
+      ],
+      "operation": "set",
+      "value": 0,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "version-two",
+      "path": [
+        "native_document_state",
+        "version"
+      ],
+      "operation": "set",
+      "value": 2,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "version-bool",
+      "path": [
+        "native_document_state",
+        "version"
+      ],
+      "operation": "set",
+      "value": true,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "version-null",
+      "path": [
+        "native_document_state",
+        "version"
+      ],
+      "operation": "set",
+      "value": null,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "version-text",
+      "path": [
+        "native_document_state",
+        "version"
+      ],
+      "operation": "set",
+      "value": "1",
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "version-u64max",
+      "path": [
+        "native_document_state",
+        "version"
+      ],
+      "operation": "set",
+      "value": 18446744073709551615,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "marker-extra",
+      "path": [
+        "native_document_state",
+        "unexpected"
+      ],
+      "operation": "set",
+      "value": true,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "marker-missing-version",
+      "path": [
+        "native_document_state",
+        "version"
+      ],
+      "operation": "delete",
+      "value": null,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "marker-missing-documents",
+      "path": [
+        "native_document_state",
+        "documents"
+      ],
+      "operation": "delete",
+      "value": null,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "documents-null",
+      "path": [
+        "native_document_state",
+        "documents"
+      ],
+      "operation": "set",
+      "value": null,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "documents-object",
+      "path": [
+        "native_document_state",
+        "documents"
+      ],
+      "operation": "set",
+      "value": {},
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "count-short",
+      "path": [
+        "native_document_state",
+        "documents"
+      ],
+      "operation": "pop",
+      "value": null,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "count-long",
+      "path": [
+        "native_document_state",
+        "documents"
+      ],
+      "operation": "duplicate-last",
+      "value": null,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "entry-null",
+      "path": [
+        "native_document_state",
+        "documents",
+        0
+      ],
+      "operation": "set",
+      "value": null,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "entry-array",
+      "path": [
+        "native_document_state",
+        "documents",
+        0
+      ],
+      "operation": "set",
+      "value": [],
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "entry-empty",
+      "path": [
+        "native_document_state",
+        "documents",
+        0
+      ],
+      "operation": "set",
+      "value": {},
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "entry-extra",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "unexpected"
+      ],
+      "operation": "set",
+      "value": true,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "entry-missing-display",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "display_properties"
+      ],
+      "operation": "delete",
+      "value": null,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "entry-missing-metadata",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "metadata"
+      ],
+      "operation": "delete",
+      "value": null,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "keys-null",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "display_properties"
+      ],
+      "operation": "set",
+      "value": null,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "keys-object",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "display_properties"
+      ],
+      "operation": "set",
+      "value": {},
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "keys-bool",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "display_properties"
+      ],
+      "operation": "set",
+      "value": [
+        true
+      ],
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "keys-unknown",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "display_properties"
+      ],
+      "operation": "set",
+      "value": [
+        "unsupported"
+      ],
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "keys-duplicate",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "display_properties"
+      ],
+      "operation": "set",
+      "value": [
+        "lut",
+        "lut"
+      ],
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "keys-presence",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "display_properties"
+      ],
+      "operation": "set",
+      "value": [
+        "lut"
+      ],
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "keys-order",
+      "path": [
+        "native_document_state",
+        "documents",
+        2,
+        "display_properties"
+      ],
+      "operation": "set",
+      "value": [
+        "lut",
+        "display_range",
+        "custom_lut"
+      ],
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "metadata-null",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "metadata"
+      ],
+      "operation": "set",
+      "value": null,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "metadata-array",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "metadata"
+      ],
+      "operation": "set",
+      "value": [],
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "metadata-empty",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "metadata"
+      ],
+      "operation": "set",
+      "value": {},
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "title-type",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "metadata",
+        "title"
+      ],
+      "operation": "set",
+      "value": 1,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "properties-type",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "metadata",
+        "properties"
+      ],
+      "operation": "set",
+      "value": [],
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "extensions-type",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "metadata",
+        "extensions"
+      ],
+      "operation": "set",
+      "value": false,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "layout-type",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "metadata",
+        "record_layout"
+      ],
+      "operation": "set",
+      "value": null,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "metadata-missing-title",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "metadata",
+        "title"
+      ],
+      "operation": "delete",
+      "value": null,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "metadata-extra",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "metadata",
+        "unexpected"
+      ],
+      "operation": "set",
+      "value": true,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "property-empty-name",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "metadata",
+        "properties",
+        ""
+      ],
+      "operation": "set",
+      "value": "invalid",
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "layout-root-bool",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "metadata",
+        "record_layout",
+        "root_fields"
+      ],
+      "operation": "set",
+      "value": [
+        true
+      ],
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "extension-reserved",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "metadata",
+        "extensions",
+        "lut"
+      ],
+      "operation": "set",
+      "value": "shadow",
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "title-contradiction",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "metadata",
+        "title"
+      ],
+      "operation": "set",
+      "value": "contradiction",
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "property-contradiction",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "metadata",
+        "properties",
+        "unknown_property"
+      ],
+      "operation": "set",
+      "value": "contradiction",
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "extension-contradiction",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "metadata",
+        "extensions",
+        "vendor"
+      ],
+      "operation": "set",
+      "value": "contradiction",
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "layout-contradiction",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "metadata",
+        "record_layout",
+        "root_fields"
+      ],
+      "operation": "set",
+      "value": [],
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection",
+      "additional_edits": [
+        {
+          "path": [
+            "documents",
+            0,
+            "selection"
+          ],
+          "operation": "set",
+          "value": null
+        },
+        {
+          "path": [
+            "documents",
+            0,
+            "previous_selection"
+          ],
+          "operation": "set",
+          "value": null
+        }
+      ]
+    },
+    {
+      "id": "marker-uint-float",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "metadata",
+        "properties",
+        "unknown_property",
+        "unsigned"
+      ],
+      "operation": "set",
+      "value": 1.8446744073709552e+19,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "wire-uint-float",
+      "path": [
+        "documents",
+        0,
+        "native_properties",
+        "unknown_property",
+        "unsigned"
+      ],
+      "operation": "set",
+      "value": 1.8446744073709552e+19,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "marker-int-float",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "metadata",
+        "properties",
+        "unknown_property",
+        "signed"
+      ],
+      "operation": "set",
+      "value": 17.0,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "wire-int-float",
+      "path": [
+        "documents",
+        0,
+        "native_properties",
+        "unknown_property",
+        "signed"
+      ],
+      "operation": "set",
+      "value": 17.0,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "marker-zero-sign",
+      "path": [
+        "native_document_state",
+        "documents",
+        0,
+        "metadata",
+        "properties",
+        "unknown_property",
+        "negative_zero"
+      ],
+      "operation": "set",
+      "value": 0.0,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "wire-zero-sign",
+      "path": [
+        "documents",
+        0,
+        "native_properties",
+        "unknown_property",
+        "negative_zero"
+      ],
+      "operation": "set",
+      "value": 0.0,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "display-contradiction",
+      "path": [
+        "documents",
+        0,
+        "lut"
+      ],
+      "operation": "set",
+      "value": "Grays",
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "range-missing",
+      "path": [
+        "documents",
+        1,
+        "display_range"
+      ],
+      "operation": "delete",
+      "value": null,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "slice-camera-contradiction",
+      "path": [
+        "documents",
+        0,
+        "slice_index"
+      ],
+      "operation": "set",
+      "value": 0,
+      "detached_reject": true,
+      "native_reject": true,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "root-version-bool",
+      "path": [
+        "version"
+      ],
+      "operation": "set",
+      "value": true,
+      "detached_reject": true,
+      "native_reject": false,
+      "expected": "atomic rejection"
+    },
+    {
+      "id": "root-format-type",
+      "path": [
+        "format"
+      ],
+      "operation": "set",
+      "value": 1,
+      "detached_reject": true,
+      "native_reject": false,
+      "expected": "atomic rejection"
+    }
+  ],
+  "raw_json_cases": [
+    {
+      "id": "duplicate-root-marker",
+      "location": "root",
+      "key": "native_document_state",
+      "detached_reject": true,
+      "native_reject": false
+    },
+    {
+      "id": "duplicate-marker-version",
+      "location": "marker",
+      "key": "version",
+      "detached_reject": true,
+      "native_reject": false
+    },
+    {
+      "id": "duplicate-property-key",
+      "location": "property",
+      "key": "signed",
+      "detached_reject": true,
+      "native_reject": false
+    },
+    {
+      "id": "integer-above-u64",
+      "location": "numeric",
+      "token": "18446744073709551616",
+      "detached_reject": true,
+      "native_reject": false
+    },
+    {
+      "id": "integer-below-i64",
+      "location": "numeric",
+      "token": "-9223372036854775809",
+      "detached_reject": true,
+      "native_reject": false
+    },
+    {
+      "id": "unpaired-surrogate",
+      "location": "string",
+      "token": "\\ud800",
+      "detached_reject": true,
+      "native_reject": false
+    }
+  ]
+}

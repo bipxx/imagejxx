@@ -1,0 +1,122 @@
+{
+  "decision": "Use explicit native Document/Application policy for C++/Python and live Window-owned global history policy for both ImGui contexts. Reuse existing history/settings consumers; do not model these as frozen kernel options or detached_options.",
+  "defaults_and_units": {
+    "history_limit": {
+      "default": 8,
+      "range": [
+        1,
+        128
+      ]
+    },
+    "history_memory_mb": {
+      "bytes_per_unit": 1048576,
+      "default": 0,
+      "range": [
+        0,
+        1048576
+      ],
+      "zero": "No obsolete-pixel byte cap; step cap still applies."
+    }
+  },
+  "family_accepted": false,
+  "formal_consumer_assignments_added": 0,
+  "id": "G010.history-settings-ownership.001",
+  "limits": "Existing source tests supply reusable predicates only; no historical test execution identity was reviewed or promoted here.",
+  "minimal_effect_contract": [
+    "Fresh8/0 plus ten changed edits retains8 undo states.",
+    "Lower steps to2 immediately; exact pixels/revisions/dirty unchanged, then Undo restores exact prior pixels.",
+    "128x256 eager double planes:1MiB retains four obsolete262144-byte planes; steps2 retains524288 bytes.",
+    "Detached Settings mutation does not affect native owners until explicit application; Window live policy has no per-command frozen override.",
+    "Persist3/1 and reopen/new/session-owner adoption yields3/1048576 with empty reopened history.",
+    "Both actual ImGui launches edit the two integer fields and Apply; Defaults/Revert/draft close have independent commit assertions."
+  ],
+  "next_owned_output": "Add the two complete typed requirement/consumer assignments after the live-policy/failure disposition is frozen, implement the two atomicity repairs, then bind genuine effect/reopen/physical-UI assertions. No repeated25-key inventory or existing-predicate pass assumption.",
+  "observed_source_semantics": [
+    "Applying a native policy prunes immediately without pixel/revision/dirty edits; undo/redo step caps apply separately.",
+    "Obsolete eager double pixel buffers are deduplicated; byte pruning removes oldest undo then redo. External snapshots are outside policy ownership and virtual accounting can be incomplete.",
+    "Window reapplies both live preferences on every consumeSettings call to open/new/reopened/staged-output owners, overriding any direct per-document policy.",
+    "Session reopen yields clean owners/empty history; Window supplies its current policy. History stacks/policy are not restored from sessions."
+  ],
+  "owning_family": "G010",
+  "proposed_child_ids": [
+    "G010.history.step_limit",
+    "G010.history.pixel_budget"
+  ],
+  "required_repairs_before_atomic_claims": [
+    {
+      "exit": "Prepare all document policy/pruning effects before committing preferences and owners, with bounded injected-failure atomicity checks.",
+      "gap": "updateSettings may persist/assign preferences before sequential policy pruning throws, allowing partial application.",
+      "owner": "root settings/history integrator",
+      "source": "src/desktop/window.cpp:2710"
+    },
+    {
+      "exit": "Prepare adoption/policy effects and publish atomically; failed adoption leaves supplied histories/owners unchanged.",
+      "gap": "addDocument/addSessionDocuments may prune caller-owned unattached documents before later adoption allocation succeeds.",
+      "owner": "root settings/history integrator",
+      "source": "src/desktop/window.cpp:2742"
+    }
+  ],
+  "runtime_qualification": false,
+  "schema_version": 1,
+  "settings_keys": [
+    "history_limit",
+    "history_memory_mb"
+  ],
+  "source_evidence": [
+    {
+      "bytes": 15468,
+      "path": "src/native/settings.cpp",
+      "sha256": "1cf49dbfab752483aead535a6ba6eb80a204c0cd13f5d0ebf2415b85e46f18a0"
+    },
+    {
+      "bytes": 44605,
+      "path": "src/native/document.cpp",
+      "sha256": "1bc5b98060c38a9e45ae4659fd5001112b1430de6184a89f42a6fe3ff73d7e14"
+    },
+    {
+      "bytes": 433449,
+      "path": "src/desktop/window.cpp",
+      "sha256": "958efda6f328432228920185a0812328aa95ab76e0e93a52ca9788c768ef51ea"
+    },
+    {
+      "bytes": 13563,
+      "path": "include/imagejxx/document.hpp",
+      "sha256": "8b8f853eebd0a6a7bad032ba6ccda5e69a4a89c2f37bdcc176d967ca92534fde"
+    },
+    {
+      "bytes": 3685,
+      "path": "include/imagejxx/session.hpp",
+      "sha256": "18aaf0e967cff64c20d9e8135ed47f9e8d7d59f13d14a0e615c5758974e69ee7"
+    },
+    {
+      "bytes": 61078,
+      "path": "src/native/session.cpp",
+      "sha256": "8a6ff6aa1549f646fda560bf7797a9f9689868f853413360afb0d8bd1b4d72ab"
+    },
+    {
+      "bytes": 16925,
+      "path": "src/native/application.cpp",
+      "sha256": "9ccf1b9acad4621f2965841fa525181169f6ab214dd9d4652f67c14a4ba323d2"
+    },
+    {
+      "bytes": 17465,
+      "path": "tests/native/test_application.cpp",
+      "sha256": "ed38c4d3052fee0dfbbe4debb8c891a5550cebbc9d624db426547e77e24958be"
+    },
+    {
+      "bytes": 15070,
+      "path": "tests/python/test_application.py",
+      "sha256": "506e3e23d030708dd108b35828445ced8d921c2ecbcd4e6d38095cb96cc30db3"
+    },
+    {
+      "bytes": 17374,
+      "path": "tests/python/test_settings.py",
+      "sha256": "81c0e4180f651878c1eb7752254129c6886258fcbe114c0876f6de4a9879b786"
+    }
+  ],
+  "state": "ownership_and_effect_contract_decision_adopted_effect_proofs_and_atomicity_repairs_pending",
+  "supporting_families": [
+    "G001",
+    "G002"
+  ]
+}

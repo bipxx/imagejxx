@@ -1,0 +1,2968 @@
+[
+  {
+    "id": "convert",
+    "title": "Convert type",
+    "menu": [
+      "Image",
+      "Type"
+    ],
+    "description": "Convert with saturating integer rounding; scale maps dtype color ranges.",
+    "parameters": [
+      {
+        "name": "dtype",
+        "label": "Dtype",
+        "default": "uint8",
+        "kind": "text",
+        "choices": [
+          "uint8",
+          "uint16",
+          "float32",
+          "float64"
+        ],
+        "optional": false
+      },
+      {
+        "name": "scale",
+        "label": "Scale",
+        "default": false,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "grayscale",
+    "title": "Grayscale",
+    "menu": [
+      "Image",
+      "Type"
+    ],
+    "description": "RGB luminance with weights .299/.587/.114; ignore alpha.",
+    "parameters": []
+  },
+  {
+    "id": "convert_image",
+    "title": "Convert grayscale type (ImageJ)",
+    "menu": [
+      "Image",
+      "Type"
+    ],
+    "description": "Uncalibrated whole-dataset type conversion with captured range and configurable RGB weights; ignores the active selection.",
+    "parameters": [
+      {
+        "name": "dtype",
+        "label": "Output type",
+        "default": "uint8",
+        "kind": "text",
+        "choices": [
+          "uint8",
+          "uint16",
+          "float32",
+          "float64"
+        ],
+        "optional": false
+      },
+      {
+        "name": "scale",
+        "label": "Scale when converting",
+        "default": true,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "weighted_rgb",
+        "label": "Weighted RGB conversion",
+        "default": false,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "red_weight",
+        "label": "Red weight",
+        "default": 0.299,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "green_weight",
+        "label": "Green weight",
+        "default": 0.587,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "blue_weight",
+        "label": "Blue weight",
+        "default": 0.114,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "range_policy",
+        "label": "Source range",
+        "default": "data",
+        "kind": "text",
+        "choices": [
+          "data",
+          "dtype",
+          "explicit"
+        ],
+        "optional": false
+      },
+      {
+        "name": "range_min",
+        "label": "Range minimum (explicit mode)",
+        "default": 0.0,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "range_max",
+        "label": "Range maximum (explicit mode)",
+        "default": 1.0,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "invert_uint16",
+    "title": "Invert 16-bit",
+    "menu": [
+      "Edit"
+    ],
+    "description": "Invert unsigned 16-bit pixels using observed extrema or the configured full bit range.",
+    "parameters": [
+      {
+        "name": "full_range_inversions",
+        "label": "Full-range inversion",
+        "default": false,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "unsigned16_bits",
+        "label": "Unsigned range (0=auto; bits)",
+        "default": 0,
+        "kind": "int",
+        "choices": [
+          0,
+          8,
+          10,
+          12,
+          14,
+          15,
+          16
+        ],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "adjust_brightness_contrast",
+    "title": "Adjust brightness contrast",
+    "menu": [
+      "Image",
+      "Adjust"
+    ],
+    "description": "Change actual pixels to (pixel-center)*contrast + center + brightness.",
+    "parameters": [
+      {
+        "name": "brightness",
+        "label": "Brightness",
+        "default": 0,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "contrast",
+        "label": "Contrast",
+        "default": 1,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "center",
+        "label": "Center",
+        "default": 0,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "normalize",
+    "title": "Enhance contrast",
+    "menu": [
+      "Image",
+      "Adjust"
+    ],
+    "description": "Stretch observed intensities; saturation is total percent clipped.",
+    "parameters": [
+      {
+        "name": "lower",
+        "label": "Lower",
+        "default": 0,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "upper",
+        "label": "Upper",
+        "default": null,
+        "kind": "float",
+        "choices": [],
+        "optional": true
+      },
+      {
+        "name": "saturation",
+        "label": "Saturation",
+        "default": 0,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "equalize_histogram",
+    "title": "Equalize histogram",
+    "menu": [
+      "Image",
+      "Adjust"
+    ],
+    "description": "Global grayscale CDF equalization with first occupied bin subtraction.",
+    "parameters": []
+  },
+  {
+    "id": "in_range",
+    "title": "Color threshold",
+    "menu": [
+      "Image",
+      "Adjust"
+    ],
+    "description": "Select pixels whose channels all satisfy their inclusive range bounds.",
+    "parameters": [
+      {
+        "name": "lower",
+        "label": "Lower",
+        "default": [
+          0
+        ],
+        "kind": "json",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "upper",
+        "label": "Upper",
+        "default": [
+          255
+        ],
+        "kind": "json",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "flip",
+    "title": "Flip",
+    "menu": [
+      "Image",
+      "Transform"
+    ],
+    "description": "Flip around horizontal and/or vertical axes.",
+    "parameters": [
+      {
+        "name": "horizontal",
+        "label": "Horizontal",
+        "default": false,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "vertical",
+        "label": "Vertical",
+        "default": false,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "rotate90",
+    "title": "Rotate 90 degrees",
+    "menu": [
+      "Image",
+      "Transform"
+    ],
+    "description": "Rotate counterclockwise by turns * 90 degrees, without interpolation.",
+    "parameters": [
+      {
+        "name": "turns",
+        "label": "Turns",
+        "default": 1,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "rotate",
+    "title": "Rotate",
+    "menu": [
+      "Image",
+      "Transform"
+    ],
+    "description": "Rotate counterclockwise about the image center.",
+    "parameters": [
+      {
+        "name": "degrees",
+        "label": "Degrees",
+        "default": 15,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "expand",
+        "label": "Expand",
+        "default": false,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "interpolation",
+        "label": "Interpolation",
+        "default": "linear",
+        "kind": "text",
+        "choices": [
+          "nearest",
+          "linear",
+          "cubic"
+        ],
+        "optional": false
+      },
+      {
+        "name": "cval",
+        "label": "Cval",
+        "default": 0,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "resize",
+    "title": "Resize",
+    "menu": [
+      "Image",
+      "Transform"
+    ],
+    "description": "Resize with pixel-center nearest, bilinear or Catmull-Rom bicubic sampling.\n\nThis resampler does not apply a downsampling antialias filter; use binning\nfor area aggregation or preblur before reducing resolution.",
+    "parameters": [
+      {
+        "name": "width",
+        "label": "Width",
+        "default": 256,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "height",
+        "label": "Height",
+        "default": 256,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "interpolation",
+        "label": "Interpolation",
+        "default": "linear",
+        "kind": "text",
+        "choices": [
+          "nearest",
+          "linear",
+          "cubic"
+        ],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "translate",
+    "title": "Translate",
+    "menu": [
+      "Image",
+      "Transform"
+    ],
+    "description": "Move pixels right by dx and down by dy.",
+    "parameters": [
+      {
+        "name": "dx",
+        "label": "Dx",
+        "default": 0,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "dy",
+        "label": "Dy",
+        "default": 0,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "interpolation",
+        "label": "Interpolation",
+        "default": "linear",
+        "kind": "text",
+        "choices": [
+          "nearest",
+          "linear",
+          "cubic"
+        ],
+        "optional": false
+      },
+      {
+        "name": "cval",
+        "label": "Cval",
+        "default": 0,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "affine_transform",
+    "title": "Affine transform",
+    "menu": [
+      "Image",
+      "Transform"
+    ],
+    "description": "Inverse-map output (x,y) to source with a 2x3 matrix; shape is (H,W).",
+    "parameters": [
+      {
+        "name": "inverse_matrix",
+        "label": "Inverse matrix",
+        "default": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ]
+        ],
+        "kind": "json",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "output_shape",
+        "label": "Output shape",
+        "default": null,
+        "kind": "json",
+        "choices": [],
+        "optional": true
+      },
+      {
+        "name": "interpolation",
+        "label": "Interpolation",
+        "default": "linear",
+        "kind": "text",
+        "choices": [
+          "nearest",
+          "linear",
+          "cubic"
+        ],
+        "optional": false
+      },
+      {
+        "name": "border",
+        "label": "Border",
+        "default": "constant",
+        "kind": "text",
+        "choices": [
+          "reflect",
+          "nearest",
+          "wrap",
+          "constant"
+        ],
+        "optional": false
+      },
+      {
+        "name": "cval",
+        "label": "Cval",
+        "default": 0,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "binning",
+    "title": "Binning",
+    "menu": [
+      "Image",
+      "Transform"
+    ],
+    "description": "Aggregate rectangular bins, including partial edge bins; pairs are (Y,X).",
+    "parameters": [
+      {
+        "name": "factor",
+        "label": "Factor",
+        "default": 2,
+        "kind": "json",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "method",
+        "label": "Method",
+        "default": "mean",
+        "kind": "text",
+        "choices": [
+          "mean",
+          "sum",
+          "minimum",
+          "maximum"
+        ],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "resize_canvas",
+    "title": "Resize canvas",
+    "menu": [
+      "Image",
+      "Transform"
+    ],
+    "description": "Change canvas size and paste the original at offset (x,y).",
+    "parameters": [
+      {
+        "name": "width",
+        "label": "Width",
+        "default": 256,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "height",
+        "label": "Height",
+        "default": 256,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "offset",
+        "label": "Offset",
+        "default": [
+          0,
+          0
+        ],
+        "kind": "json",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "value",
+        "label": "Value",
+        "default": 0,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "crop",
+    "title": "Crop",
+    "menu": [
+      "Image",
+      "Transform"
+    ],
+    "description": "Copy an in-bounds rectangle in (x,y,width,height) coordinates.",
+    "parameters": [
+      {
+        "name": "x",
+        "label": "X",
+        "default": 0,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "y",
+        "label": "Y",
+        "default": 0,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "width",
+        "label": "Width",
+        "default": 256,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "height",
+        "label": "Height",
+        "default": 256,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "rgb_to_hsv",
+    "title": "RGB to HSV",
+    "menu": [
+      "Image",
+      "Color"
+    ],
+    "description": "Convert RGB to float64 H,S,V in [0,1]; floating RGB must be in [0,1].",
+    "parameters": []
+  },
+  {
+    "id": "hsv_to_rgb",
+    "title": "HSV to RGB",
+    "menu": [
+      "Image",
+      "Color"
+    ],
+    "description": "Convert normalized H,S,V to the requested RGB dtype.",
+    "parameters": [
+      {
+        "name": "dtype",
+        "label": "Dtype",
+        "default": "uint8",
+        "kind": "text",
+        "choices": [
+          "uint8",
+          "uint16",
+          "float32",
+          "float64"
+        ],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "color_deconvolution",
+    "title": "Color deconvolution",
+    "menu": [
+      "Image",
+      "Color"
+    ],
+    "description": "Return optical-density concentrations for user-provided 3x3 stain rows.",
+    "parameters": [
+      {
+        "name": "stains",
+        "label": "Stains",
+        "default": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "kind": "json",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "apply_lut",
+    "title": "Apply lut",
+    "menu": [
+      "Image",
+      "Color"
+    ],
+    "description": "Map uint8/uint16 pixels through a 256/65536-entry lookup table.",
+    "parameters": [
+      {
+        "name": "lut",
+        "label": "Lut",
+        "default": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          74,
+          75,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88,
+          89,
+          90,
+          91,
+          92,
+          93,
+          94,
+          95,
+          96,
+          97,
+          98,
+          99,
+          100,
+          101,
+          102,
+          103,
+          104,
+          105,
+          106,
+          107,
+          108,
+          109,
+          110,
+          111,
+          112,
+          113,
+          114,
+          115,
+          116,
+          117,
+          118,
+          119,
+          120,
+          121,
+          122,
+          123,
+          124,
+          125,
+          126,
+          127,
+          128,
+          129,
+          130,
+          131,
+          132,
+          133,
+          134,
+          135,
+          136,
+          137,
+          138,
+          139,
+          140,
+          141,
+          142,
+          143,
+          144,
+          145,
+          146,
+          147,
+          148,
+          149,
+          150,
+          151,
+          152,
+          153,
+          154,
+          155,
+          156,
+          157,
+          158,
+          159,
+          160,
+          161,
+          162,
+          163,
+          164,
+          165,
+          166,
+          167,
+          168,
+          169,
+          170,
+          171,
+          172,
+          173,
+          174,
+          175,
+          176,
+          177,
+          178,
+          179,
+          180,
+          181,
+          182,
+          183,
+          184,
+          185,
+          186,
+          187,
+          188,
+          189,
+          190,
+          191,
+          192,
+          193,
+          194,
+          195,
+          196,
+          197,
+          198,
+          199,
+          200,
+          201,
+          202,
+          203,
+          204,
+          205,
+          206,
+          207,
+          208,
+          209,
+          210,
+          211,
+          212,
+          213,
+          214,
+          215,
+          216,
+          217,
+          218,
+          219,
+          220,
+          221,
+          222,
+          223,
+          224,
+          225,
+          226,
+          227,
+          228,
+          229,
+          230,
+          231,
+          232,
+          233,
+          234,
+          235,
+          236,
+          237,
+          238,
+          239,
+          240,
+          241,
+          242,
+          243,
+          244,
+          245,
+          246,
+          247,
+          248,
+          249,
+          250,
+          251,
+          252,
+          253,
+          254,
+          255
+        ],
+        "kind": "json",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "math",
+    "title": "Pixel math",
+    "menu": [
+      "Process",
+      "Math"
+    ],
+    "description": "Apply native scalar math. Integers saturate; floats keep signed results.",
+    "parameters": [
+      {
+        "name": "operation",
+        "label": "Operation",
+        "default": "add",
+        "kind": "text",
+        "choices": [
+          "invert",
+          "add",
+          "subtract",
+          "multiply",
+          "divide",
+          "minimum",
+          "maximum",
+          "set",
+          "abs",
+          "square",
+          "sqrt",
+          "log",
+          "log1p",
+          "exp",
+          "gamma",
+          "and",
+          "or",
+          "xor"
+        ],
+        "optional": false
+      },
+      {
+        "name": "value",
+        "label": "Value",
+        "default": 0,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "invert",
+    "title": "Invert",
+    "menu": [
+      "Process",
+      "Math"
+    ],
+    "description": "Invert around 255, 65535 or 1 for uint8, uint16 or floating images.",
+    "parameters": []
+  },
+  {
+    "id": "add",
+    "title": "Add",
+    "menu": [
+      "Process",
+      "Math"
+    ],
+    "description": "Add a scalar to every pixel.",
+    "parameters": [
+      {
+        "name": "value",
+        "label": "Value",
+        "default": 10,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "subtract",
+    "title": "Subtract",
+    "menu": [
+      "Process",
+      "Math"
+    ],
+    "description": "Subtract a scalar from every pixel.",
+    "parameters": [
+      {
+        "name": "value",
+        "label": "Value",
+        "default": 10,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "multiply",
+    "title": "Multiply",
+    "menu": [
+      "Process",
+      "Math"
+    ],
+    "description": "Multiply every pixel by a scalar.",
+    "parameters": [
+      {
+        "name": "value",
+        "label": "Value",
+        "default": 10,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "divide",
+    "title": "Divide",
+    "menu": [
+      "Process",
+      "Math"
+    ],
+    "description": "Divide pixels by a nonzero scalar.",
+    "parameters": [
+      {
+        "name": "value",
+        "label": "Value",
+        "default": 10,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "absolute",
+    "title": "Absolute",
+    "menu": [
+      "Process",
+      "Math"
+    ],
+    "description": "Take the absolute value of pixels.",
+    "parameters": []
+  },
+  {
+    "id": "square",
+    "title": "Square",
+    "menu": [
+      "Process",
+      "Math"
+    ],
+    "description": "Square pixels.",
+    "parameters": []
+  },
+  {
+    "id": "sqrt",
+    "title": "Sqrt",
+    "menu": [
+      "Process",
+      "Math"
+    ],
+    "description": "Take square roots of nonnegative pixels.",
+    "parameters": []
+  },
+  {
+    "id": "log",
+    "title": "Log",
+    "menu": [
+      "Process",
+      "Math"
+    ],
+    "description": "Natural logarithm of strictly positive pixels.",
+    "parameters": []
+  },
+  {
+    "id": "log1p",
+    "title": "Log1p",
+    "menu": [
+      "Process",
+      "Math"
+    ],
+    "description": "Natural logarithm of one plus each pixel.",
+    "parameters": []
+  },
+  {
+    "id": "exp",
+    "title": "Exp",
+    "menu": [
+      "Process",
+      "Math"
+    ],
+    "description": "Exponentiate pixels; non-finite results raise ValueError.",
+    "parameters": []
+  },
+  {
+    "id": "gamma",
+    "title": "Gamma",
+    "menu": [
+      "Process",
+      "Math"
+    ],
+    "description": "Apply max_value * (pixel / max_value)**value, with value > 0.",
+    "parameters": [
+      {
+        "name": "value",
+        "label": "Value",
+        "default": 10,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "clip",
+    "title": "Clip",
+    "menu": [
+      "Process",
+      "Math"
+    ],
+    "description": "Clamp pixel values to an inclusive interval.",
+    "parameters": [
+      {
+        "name": "lower",
+        "label": "Lower",
+        "default": 0,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "upper",
+        "label": "Upper",
+        "default": 255,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "smooth",
+    "title": "Smooth",
+    "menu": [
+      "Process",
+      "Filters"
+    ],
+    "description": "Square mean filter with an odd (2*radius+1) window.",
+    "parameters": [
+      {
+        "name": "radius",
+        "label": "Radius",
+        "default": 1,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "border",
+        "label": "Border",
+        "default": "reflect",
+        "kind": "text",
+        "choices": [
+          "reflect",
+          "nearest",
+          "wrap",
+          "constant"
+        ],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "sharpen",
+    "title": "Sharpen",
+    "menu": [
+      "Process",
+      "Filters"
+    ],
+    "description": "Apply the ImageJ-style 3x3 sharpening kernel.",
+    "parameters": [
+      {
+        "name": "border",
+        "label": "Border",
+        "default": "reflect",
+        "kind": "text",
+        "choices": [
+          "reflect",
+          "nearest",
+          "wrap",
+          "constant"
+        ],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "convolve",
+    "title": "Convolve",
+    "menu": [
+      "Process",
+      "Filters"
+    ],
+    "description": "True convolution with an odd 2D kernel; process each channel separately.",
+    "parameters": [
+      {
+        "name": "kernel",
+        "label": "Kernel",
+        "default": [
+          [
+            0,
+            -1,
+            0
+          ],
+          [
+            -1,
+            5,
+            -1
+          ],
+          [
+            0,
+            -1,
+            0
+          ]
+        ],
+        "kind": "json",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "normalize",
+        "label": "Normalize",
+        "default": false,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "border",
+        "label": "Border",
+        "default": "reflect",
+        "kind": "text",
+        "choices": [
+          "reflect",
+          "nearest",
+          "wrap",
+          "constant"
+        ],
+        "optional": false
+      },
+      {
+        "name": "cval",
+        "label": "Cval",
+        "default": 0,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "gaussian_blur_imagej",
+    "title": "Gaussian blur (ImageJ)",
+    "menu": [
+      "Process",
+      "Filters"
+    ],
+    "description": "ImageJ numerical profile with nearest edges and ROI-aware sampling; sigma pairs are (Y,X).",
+    "parameters": [
+      {
+        "name": "sigma",
+        "label": "Sigma",
+        "default": 2,
+        "kind": "json",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "gaussian_blur",
+    "title": "Gaussian blur",
+    "menu": [
+      "Process",
+      "Filters"
+    ],
+    "description": "Separable Gaussian with radius ceil(4*sigma); pairs are (sigma_y,sigma_x).",
+    "parameters": [
+      {
+        "name": "sigma",
+        "label": "Sigma",
+        "default": 1,
+        "kind": "json",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "border",
+        "label": "Border",
+        "default": "reflect",
+        "kind": "text",
+        "choices": [
+          "reflect",
+          "nearest",
+          "wrap",
+          "constant"
+        ],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "remove_nans_imagej",
+    "title": "Remove NaNs (ImageJ)",
+    "menu": [
+      "Process",
+      "Noise"
+    ],
+    "description": "ImageJ Float32 quiet-NaN replacement with a NaN-aware median; preserves finite samples and display.",
+    "parameters": [
+      {
+        "name": "radius",
+        "label": "Radius",
+        "default": 2.0,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "top_hat_imagej",
+    "title": "Top Hat (ImageJ)",
+    "menu": [
+      "Process",
+      "Filters"
+    ],
+    "description": "ImageJ finite scalar opening/closing with optional subtraction and paired final display.",
+    "parameters": [
+      {
+        "name": "radius",
+        "label": "Radius",
+        "default": 2.0,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "light_background",
+        "label": "Light Background",
+        "default": false,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "dont_subtract",
+        "label": "Don't Subtract",
+        "default": false,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "inverted_lut",
+        "label": "Captured LUT inversion",
+        "default": false,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "remove_outliers_imagej",
+    "title": "Remove Outliers (ImageJ)",
+    "menu": [
+      "Process",
+      "Noise"
+    ],
+    "description": "ImageJ finite scalar median replacement with strict threshold and captured LUT polarity.",
+    "parameters": [
+      {
+        "name": "radius",
+        "label": "Radius",
+        "default": 2.0,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "threshold",
+        "label": "Threshold",
+        "default": 50.0,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "which",
+        "label": "Which outliers",
+        "default": "bright",
+        "kind": "text",
+        "choices": [
+          "bright",
+          "dark"
+        ],
+        "optional": false
+      },
+      {
+        "name": "inverted_lut",
+        "label": "Captured LUT inversion",
+        "default": false,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "rank_filter_imagej",
+    "title": "Rank filter (ImageJ)",
+    "menu": [
+      "Process",
+      "Filters"
+    ],
+    "description": "ImageJ 1.54r circular minimum, maximum, median, mean or type-preserving variance; variance adjusts the display range for 16/32-bit images.",
+    "parameters": [
+      {
+        "name": "radius",
+        "label": "Radius",
+        "default": 2.0,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "method",
+        "label": "Method",
+        "default": "median",
+        "kind": "text",
+        "choices": [
+          "minimum",
+          "maximum",
+          "median",
+          "mean",
+          "variance"
+        ],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "rank_filter",
+    "title": "Rank filter",
+    "menu": [
+      "Process",
+      "Filters"
+    ],
+    "description": "Minimum, maximum, median, mean, variance or stddev in a disk/square.",
+    "parameters": [
+      {
+        "name": "radius",
+        "label": "Radius",
+        "default": 1,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "method",
+        "label": "Method",
+        "default": "median",
+        "kind": "text",
+        "choices": [
+          "median",
+          "mean",
+          "minimum",
+          "maximum",
+          "variance",
+          "stddev"
+        ],
+        "optional": false
+      },
+      {
+        "name": "footprint",
+        "label": "Footprint",
+        "default": "disk",
+        "kind": "text",
+        "choices": [
+          "disk",
+          "square"
+        ],
+        "optional": false
+      },
+      {
+        "name": "border",
+        "label": "Border",
+        "default": "reflect",
+        "kind": "text",
+        "choices": [
+          "reflect",
+          "nearest",
+          "wrap",
+          "constant"
+        ],
+        "optional": false
+      },
+      {
+        "name": "cval",
+        "label": "Cval",
+        "default": 0,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "median_filter",
+    "title": "Median filter",
+    "menu": [
+      "Process",
+      "Filters"
+    ],
+    "description": "Median filter; see rank_filter for footprint and border options.",
+    "parameters": [
+      {
+        "name": "radius",
+        "label": "Radius",
+        "default": 1,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "minimum_filter",
+    "title": "Minimum filter",
+    "menu": [
+      "Process",
+      "Filters"
+    ],
+    "description": "Local minimum filter.",
+    "parameters": [
+      {
+        "name": "radius",
+        "label": "Radius",
+        "default": 1,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "maximum_filter",
+    "title": "Maximum filter",
+    "menu": [
+      "Process",
+      "Filters"
+    ],
+    "description": "Local maximum filter.",
+    "parameters": [
+      {
+        "name": "radius",
+        "label": "Radius",
+        "default": 1,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "variance_filter",
+    "title": "Variance filter",
+    "menu": [
+      "Process",
+      "Filters"
+    ],
+    "description": "Population variance, returned as float64.",
+    "parameters": [
+      {
+        "name": "radius",
+        "label": "Radius",
+        "default": 1,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "unsharp_mask",
+    "title": "Unsharp mask",
+    "menu": [
+      "Process",
+      "Filters"
+    ],
+    "description": "Add amount times the difference from the Gaussian-smoothed image.",
+    "parameters": [
+      {
+        "name": "sigma",
+        "label": "Sigma",
+        "default": 1,
+        "kind": "json",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "amount",
+        "label": "Amount",
+        "default": 1,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "remove_outliers",
+    "title": "Remove outliers",
+    "menu": [
+      "Process",
+      "Filters"
+    ],
+    "description": "Replace bright/dark pixels differing from the local disk median by threshold.",
+    "parameters": [
+      {
+        "name": "radius",
+        "label": "Radius",
+        "default": 2,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "threshold",
+        "label": "Threshold",
+        "default": 50,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "bright",
+        "label": "Bright",
+        "default": true,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "find_edges",
+    "title": "Find edges",
+    "menu": [
+      "Process",
+      "Edges"
+    ],
+    "description": "Sobel gradient magnitude, returned as float64.",
+    "parameters": [
+      {
+        "name": "border",
+        "label": "Border",
+        "default": "reflect",
+        "kind": "text",
+        "choices": [
+          "reflect",
+          "nearest",
+          "wrap",
+          "constant"
+        ],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "laplacian",
+    "title": "Laplacian",
+    "menu": [
+      "Process",
+      "Edges"
+    ],
+    "description": "Four-neighbor Laplacian; float64 retains signed derivatives.",
+    "parameters": [
+      {
+        "name": "border",
+        "label": "Border",
+        "default": "reflect",
+        "kind": "text",
+        "choices": [
+          "reflect",
+          "nearest",
+          "wrap",
+          "constant"
+        ],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "difference_of_gaussians",
+    "title": "Difference of gaussians",
+    "menu": [
+      "Process",
+      "Edges"
+    ],
+    "description": "Difference of Gaussian blurs with signed float64 output.",
+    "parameters": [
+      {
+        "name": "sigma_small",
+        "label": "Sigma small",
+        "default": 1,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "sigma_large",
+        "label": "Sigma large",
+        "default": 2,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "local_maxima",
+    "title": "Local maxima",
+    "menu": [
+      "Process",
+      "Edges"
+    ],
+    "description": "Disk-neighborhood maxima with nonconstant neighborhoods, as 0/255.",
+    "parameters": [
+      {
+        "name": "radius",
+        "label": "Radius",
+        "default": 1,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "bilateral_filter",
+    "title": "Bilateral filter",
+    "menu": [
+      "Process",
+      "Denoise"
+    ],
+    "description": "Edge-preserving filter; sigma_range uses the input's intensity units.",
+    "parameters": [
+      {
+        "name": "radius",
+        "label": "Radius",
+        "default": 3,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "sigma_spatial",
+        "label": "Sigma spatial",
+        "default": 2,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "sigma_range",
+        "label": "Sigma range",
+        "default": 25,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "kuwahara_filter",
+    "title": "Kuwahara filter",
+    "menu": [
+      "Process",
+      "Denoise"
+    ],
+    "description": "Choose the lowest-variance quadrant's mean; color channels share a quadrant.",
+    "parameters": [
+      {
+        "name": "radius",
+        "label": "Radius",
+        "default": 2,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "anisotropic_diffusion",
+    "title": "Anisotropic diffusion",
+    "menu": [
+      "Process",
+      "Denoise"
+    ],
+    "description": "Four-neighbor Perona-Malik exponential diffusion, float64 output.",
+    "parameters": [
+      {
+        "name": "iterations",
+        "label": "Iterations",
+        "default": 10,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "kappa",
+        "label": "Kappa",
+        "default": 20,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "step",
+        "label": "Step",
+        "default": 0.2,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "threshold",
+    "title": "Threshold",
+    "menu": [
+      "Process",
+      "Threshold"
+    ],
+    "description": "Inclusive intensity interval as a uint8 0/255 grayscale mask.",
+    "parameters": [
+      {
+        "name": "lower",
+        "label": "Lower",
+        "default": 0,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "upper",
+        "label": "Upper",
+        "default": null,
+        "kind": "float",
+        "choices": [],
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "auto_mask",
+    "title": "Auto threshold",
+    "menu": [
+      "Process",
+      "Threshold"
+    ],
+    "description": "Threshold as pixel > level (bright) or pixel <= level (dark).",
+    "parameters": [
+      {
+        "name": "method",
+        "label": "Method",
+        "default": "otsu",
+        "kind": "text",
+        "choices": [
+          "otsu",
+          "mean",
+          "isodata",
+          "li",
+          "triangle",
+          "yen",
+          "max_entropy",
+          "percentile",
+          "intermodes",
+          "minimum",
+          "moments",
+          "min_error"
+        ],
+        "optional": false
+      },
+      {
+        "name": "bright",
+        "label": "Bright",
+        "default": true,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "bins",
+        "label": "Bins",
+        "default": 0,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "local_threshold",
+    "title": "Local threshold",
+    "menu": [
+      "Process",
+      "Threshold"
+    ],
+    "description": "Adaptive square-window threshold; return uint8 0/255.\n\nMethods are listed in LOCAL_THRESHOLD_METHODS. Float default ranges assume\n[0,1]; set dynamic_range when using floats in other intensity units.",
+    "parameters": [
+      {
+        "name": "method",
+        "label": "Method",
+        "default": "sauvola",
+        "kind": "text",
+        "choices": [
+          "mean",
+          "median",
+          "midgrey",
+          "niblack",
+          "sauvola",
+          "bernsen",
+          "phansalkar",
+          "contrast"
+        ],
+        "optional": false
+      },
+      {
+        "name": "radius",
+        "label": "Radius",
+        "default": 15,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "k",
+        "label": "K",
+        "default": null,
+        "kind": "float",
+        "choices": [],
+        "optional": true
+      },
+      {
+        "name": "offset",
+        "label": "Offset",
+        "default": 0,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "dynamic_range",
+        "label": "Dynamic range",
+        "default": null,
+        "kind": "float",
+        "choices": [],
+        "optional": true
+      },
+      {
+        "name": "contrast_threshold",
+        "label": "Contrast threshold",
+        "default": null,
+        "kind": "float",
+        "choices": [],
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "morphology",
+    "title": "Morphology",
+    "menu": [
+      "Process",
+      "Morphology"
+    ],
+    "description": "Grayscale erosion, dilation, opening, closing, gradient, top_hat or black_hat.",
+    "parameters": [
+      {
+        "name": "operation",
+        "label": "Operation",
+        "default": "erode",
+        "kind": "text",
+        "choices": [
+          "erode",
+          "dilate",
+          "open",
+          "close",
+          "gradient",
+          "top_hat",
+          "black_hat"
+        ],
+        "optional": false
+      },
+      {
+        "name": "radius",
+        "label": "Radius",
+        "default": 1,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "footprint",
+        "label": "Footprint",
+        "default": "disk",
+        "kind": "text",
+        "choices": [
+          "disk",
+          "square"
+        ],
+        "optional": false
+      },
+      {
+        "name": "border",
+        "label": "Border",
+        "default": "reflect",
+        "kind": "text",
+        "choices": [
+          "reflect",
+          "nearest",
+          "wrap",
+          "constant"
+        ],
+        "optional": false
+      },
+      {
+        "name": "cval",
+        "label": "Cval",
+        "default": 0,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "erode",
+    "title": "Erode",
+    "menu": [
+      "Process",
+      "Morphology"
+    ],
+    "description": "Grayscale erosion; set border='constant', cval=0 for a zero exterior.",
+    "parameters": [
+      {
+        "name": "radius",
+        "label": "Radius",
+        "default": 1,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "dilate",
+    "title": "Dilate",
+    "menu": [
+      "Process",
+      "Morphology"
+    ],
+    "description": "Grayscale dilation.",
+    "parameters": [
+      {
+        "name": "radius",
+        "label": "Radius",
+        "default": 1,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "opening",
+    "title": "Opening",
+    "menu": [
+      "Process",
+      "Morphology"
+    ],
+    "description": "Erode then dilate.",
+    "parameters": [
+      {
+        "name": "radius",
+        "label": "Radius",
+        "default": 1,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "closing",
+    "title": "Closing",
+    "menu": [
+      "Process",
+      "Morphology"
+    ],
+    "description": "Dilate then erode.",
+    "parameters": [
+      {
+        "name": "radius",
+        "label": "Radius",
+        "default": 1,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "top_hat",
+    "title": "Top hat",
+    "menu": [
+      "Process",
+      "Morphology"
+    ],
+    "description": "Subtract the morphological opening.",
+    "parameters": [
+      {
+        "name": "radius",
+        "label": "Radius",
+        "default": 1,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "black_hat",
+    "title": "Black hat",
+    "menu": [
+      "Process",
+      "Morphology"
+    ],
+    "description": "Subtract pixels from the morphological closing.",
+    "parameters": [
+      {
+        "name": "radius",
+        "label": "Radius",
+        "default": 1,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "subtract_background",
+    "title": "Subtract background",
+    "menu": [
+      "Process",
+      "Morphology"
+    ],
+    "description": "Disk opening/closing background subtraction; distinct from rolling ball.",
+    "parameters": [
+      {
+        "name": "radius",
+        "label": "Radius",
+        "default": 10,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "light_background",
+        "label": "Light background",
+        "default": false,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "rolling_ball_background",
+    "title": "Rolling ball background",
+    "menu": [
+      "Process",
+      "Morphology"
+    ],
+    "description": "Direct spherical non-flat opening/closing background, in raw pixel units.\n\nRuntime scales with radius squared. This implements the spherical model\nwithout ImageJ's image shrinking or sliding-paraboloid approximations.",
+    "parameters": [
+      {
+        "name": "radius",
+        "label": "Radius",
+        "default": 10,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "light_background",
+        "label": "Light background",
+        "default": false,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "subtract_rolling_ball",
+    "title": "Subtract rolling ball",
+    "menu": [
+      "Process",
+      "Morphology"
+    ],
+    "description": "Subtract the spherical background; light-background output is background-image.",
+    "parameters": [
+      {
+        "name": "radius",
+        "label": "Radius",
+        "default": 10,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "light_background",
+        "label": "Light background",
+        "default": false,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "fill_holes",
+    "title": "Fill holes",
+    "menu": [
+      "Process",
+      "Binary"
+    ],
+    "description": "Fill background regions disconnected from the image boundary.",
+    "parameters": [
+      {
+        "name": "connectivity",
+        "label": "Connectivity",
+        "default": 4,
+        "kind": "int",
+        "choices": [
+          4,
+          8
+        ],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "binary_erode",
+    "title": "Erode (binary)",
+    "menu": [
+      "Process",
+      "Binary"
+    ],
+    "description": "Eight-neighbor 0/255 morphology with explicit foreground and edge options.",
+    "parameters": [
+      {
+        "name": "iterations",
+        "label": "Iterations (1-100)",
+        "default": 1,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "neighbors",
+        "label": "Neighbor count (1-8)",
+        "default": 1,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "black_background",
+        "label": "Black background (foreground 255)",
+        "default": true,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "pad_edges",
+        "label": "Pad erosion edges with foreground",
+        "default": false,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "binary_dilate",
+    "title": "Dilate (binary)",
+    "menu": [
+      "Process",
+      "Binary"
+    ],
+    "description": "Eight-neighbor 0/255 morphology with explicit foreground and edge options.",
+    "parameters": [
+      {
+        "name": "iterations",
+        "label": "Iterations (1-100)",
+        "default": 1,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "neighbors",
+        "label": "Neighbor count (1-8)",
+        "default": 1,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "black_background",
+        "label": "Black background (foreground 255)",
+        "default": true,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "pad_edges",
+        "label": "Pad erosion edges with foreground",
+        "default": false,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "binary_open",
+    "title": "Open (binary)",
+    "menu": [
+      "Process",
+      "Binary"
+    ],
+    "description": "Eight-neighbor 0/255 morphology with explicit foreground and edge options.",
+    "parameters": [
+      {
+        "name": "iterations",
+        "label": "Iterations (1-100)",
+        "default": 1,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "neighbors",
+        "label": "Neighbor count (1-8)",
+        "default": 1,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "black_background",
+        "label": "Black background (foreground 255)",
+        "default": true,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "pad_edges",
+        "label": "Pad erosion edges with foreground",
+        "default": false,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "binary_close",
+    "title": "Close (binary)",
+    "menu": [
+      "Process",
+      "Binary"
+    ],
+    "description": "Eight-neighbor 0/255 morphology with explicit foreground and edge options.",
+    "parameters": [
+      {
+        "name": "iterations",
+        "label": "Iterations (1-100)",
+        "default": 1,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "neighbors",
+        "label": "Neighbor count (1-8)",
+        "default": 1,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "black_background",
+        "label": "Black background (foreground 255)",
+        "default": true,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "pad_edges",
+        "label": "Pad erosion edges with foreground",
+        "default": false,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "binary_outline",
+    "title": "Binary outline",
+    "menu": [
+      "Process",
+      "Binary"
+    ],
+    "description": "Eight-neighbor inner boundary of binary foreground.",
+    "parameters": []
+  },
+  {
+    "id": "skeletonize",
+    "title": "Skeletonize",
+    "menu": [
+      "Process",
+      "Binary"
+    ],
+    "description": "Zhang-Suen thinning with a zero exterior; return uint8 0/255.",
+    "parameters": []
+  },
+  {
+    "id": "remove_small_objects",
+    "title": "Remove small objects",
+    "menu": [
+      "Process",
+      "Binary"
+    ],
+    "description": "Keep components with at least min_size pixels.",
+    "parameters": [
+      {
+        "name": "min_size",
+        "label": "Min size",
+        "default": 64,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "connectivity",
+        "label": "Connectivity",
+        "default": 8,
+        "kind": "int",
+        "choices": [
+          4,
+          8
+        ],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "clear_border",
+    "title": "Clear border",
+    "menu": [
+      "Process",
+      "Binary"
+    ],
+    "description": "Remove components touching any image edge.",
+    "parameters": [
+      {
+        "name": "connectivity",
+        "label": "Connectivity",
+        "default": 8,
+        "kind": "int",
+        "choices": [
+          4,
+          8
+        ],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "distance_transform",
+    "title": "Distance transform",
+    "menu": [
+      "Process",
+      "Binary"
+    ],
+    "description": "Exact Euclidean distance to in-image zeros; all-foreground returns infinity.",
+    "parameters": [
+      {
+        "name": "spacing",
+        "label": "Spacing",
+        "default": [
+          1,
+          1
+        ],
+        "kind": "json",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "binary_watershed",
+    "title": "Binary watershed",
+    "menu": [
+      "Process",
+      "Binary"
+    ],
+    "description": "Separate binary objects using regional distance maxima and native flooding.\n\nA zero exterior is included. Every foreground component receives a seed;\nreturn int32 region labels, with no inserted separator lines.",
+    "parameters": [
+      {
+        "name": "maxima_radius",
+        "label": "Maxima radius",
+        "default": 1,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "connectivity",
+        "label": "Connectivity",
+        "default": 8,
+        "kind": "int",
+        "choices": [
+          4,
+          8
+        ],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "label",
+    "title": "Connected components",
+    "menu": [
+      "Process",
+      "Binary"
+    ],
+    "description": "Label nonzero foreground; background=0, labels=int32.",
+    "parameters": [
+      {
+        "name": "connectivity",
+        "label": "Connectivity",
+        "default": 8,
+        "kind": "int",
+        "choices": [
+          4,
+          8
+        ],
+        "optional": false
+      },
+      {
+        "name": "return_num",
+        "label": "Return num",
+        "default": false,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "add_noise",
+    "title": "Add noise",
+    "menu": [
+      "Process",
+      "Noise"
+    ],
+    "description": "Gaussian stddev, uniform half-width, or salt_pepper probability.\n\nSeeded output is repeatable within the same C++ standard library.",
+    "parameters": [
+      {
+        "name": "amount",
+        "label": "Amount",
+        "default": 10,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "kind",
+        "label": "Kind",
+        "default": "gaussian",
+        "kind": "text",
+        "choices": [
+          "gaussian",
+          "uniform",
+          "salt_pepper"
+        ],
+        "optional": false
+      },
+      {
+        "name": "seed",
+        "label": "Seed",
+        "default": 0,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "fft_bandpass",
+    "title": "Fft bandpass",
+    "menu": [
+      "Process",
+      "FFT"
+    ],
+    "description": "Gaussian frequency bandpass, in cycles/pixel; zero disables a cutoff.",
+    "parameters": [
+      {
+        "name": "low_cutoff",
+        "label": "Low cutoff",
+        "default": 0,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "high_cutoff",
+        "label": "High cutoff",
+        "default": 0,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "fill",
+    "title": "Fill",
+    "menu": [
+      "Edit",
+      "Paint"
+    ],
+    "description": "Fill all pixels, or only pixels selected by a nonzero 2D mask.",
+    "parameters": [
+      {
+        "name": "value",
+        "label": "Value",
+        "default": 10,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "draw_line",
+    "title": "Draw line",
+    "menu": [
+      "Edit",
+      "Paint"
+    ],
+    "description": "Draw a solid line between (x,y) pixel-center coordinates.",
+    "parameters": [
+      {
+        "name": "start",
+        "label": "Start",
+        "default": [
+          64,
+          128
+        ],
+        "kind": "json",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "end",
+        "label": "End",
+        "default": [
+          192,
+          128
+        ],
+        "kind": "json",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "value",
+        "label": "Value",
+        "default": 255,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "thickness",
+        "label": "Thickness",
+        "default": 1,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "clahe",
+    "title": "CLAHE local contrast",
+    "menu": [
+      "Process",
+      "Contrast"
+    ],
+    "description": "Tiled, bilinearly blended CLAHE for grayscale; tile pairs are (H,W).",
+    "parameters": [
+      {
+        "name": "tile_size",
+        "label": "Tile size",
+        "default": 64,
+        "kind": "json",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "clip_limit",
+        "label": "Clip limit",
+        "default": 2,
+        "kind": "float",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "calculate",
+    "title": "Image calculator",
+    "menu": [
+      "Process"
+    ],
+    "description": "Combine same-shaped images; dtype can retain values beyond integer range.\n\nOperations: add, subtract, multiply, divide, minimum, maximum, average,\ndifference, and, or, xor, copy. Division by a zero pixel yields zero.",
+    "parameters": [
+      {
+        "name": "other",
+        "label": "Other",
+        "default": [
+          [
+            0
+          ]
+        ],
+        "kind": "json",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "operation",
+        "label": "Operation",
+        "default": "add",
+        "kind": "text",
+        "choices": [
+          "add",
+          "subtract",
+          "multiply",
+          "divide",
+          "minimum",
+          "maximum",
+          "average",
+          "difference",
+          "and",
+          "or",
+          "xor",
+          "copy"
+        ],
+        "optional": false
+      },
+      {
+        "name": "dtype",
+        "label": "Dtype",
+        "default": "preserve",
+        "kind": "text",
+        "choices": [
+          "preserve",
+          "uint8",
+          "uint16",
+          "float32",
+          "float64"
+        ],
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "paint_stroke",
+    "title": "Brush stroke",
+    "menu": [
+      "Edit",
+      "Paint"
+    ],
+    "description": "Brush stroke",
+    "parameters": [
+      {
+        "name": "points",
+        "label": "Points",
+        "default": [
+          [
+            0,
+            0
+          ],
+          [
+            128,
+            128
+          ]
+        ],
+        "kind": "json",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "color",
+        "label": "Color",
+        "default": "#ffffff",
+        "kind": "text",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "width",
+        "label": "Width",
+        "default": 8,
+        "kind": "int",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  },
+  {
+    "id": "fill_color",
+    "title": "Fill with color",
+    "menu": [
+      "Edit",
+      "Paint"
+    ],
+    "description": "Fill with color",
+    "parameters": [
+      {
+        "name": "color",
+        "label": "Color",
+        "default": "#ffffff",
+        "kind": "text",
+        "choices": [],
+        "optional": false
+      }
+    ]
+  }
+]

@@ -1,0 +1,734 @@
+{
+  "schema_version": 1,
+  "id": "G015-G022.positioned-xy.adoption002",
+  "state": "D01_D02_D03_contracts_adopted_for_implementation",
+  "proposal": {
+    "path": "build/p06f-001/positioned-xy-prep001/adoption-proposal.json",
+    "bytes": 41952,
+    "sha256": "248ab60a97c0df17b09660787ec4428986d66290fe3005123334b384542251e4"
+  },
+  "held_entry": {
+    "path": "docs/parity/reviews/G015-G022-positioned-xy-entry-001.json",
+    "bytes": 29478,
+    "sha256": "cc2108555883dfdfd3b9d1c93d5deeafb0a053a46b0b3dc0f93450dd194a31ca"
+  },
+  "revalidation": {
+    "path": "build/p06f-001/positioned-xy-prep001/source-revalidation.json",
+    "bytes": 10122,
+    "sha256": "43b5a6f974dc1ec2f497f75785ea681aa145933987e6a05d173fc118f9a54390"
+  },
+  "source_pins_reverified": [
+    {
+      "path": "include/imagejxx/selection_edit.hpp",
+      "bytes": 2695,
+      "sha256": "3e5382e3c0de1a33c8821f022ec2e93b269b48064f685966647196f7afa1b1fd"
+    },
+    {
+      "path": "include/imagejxx/document.hpp",
+      "bytes": 13563,
+      "sha256": "8b8f853eebd0a6a7bad032ba6ccda5e69a4a89c2f37bdcc176d967ca92534fde"
+    },
+    {
+      "path": "src/native/selection_edit.cpp",
+      "bytes": 21317,
+      "sha256": "583f479108cbf5258c9db1356a4c94e2589a7ffa5b45f7b22d4dc562130d4267"
+    },
+    {
+      "path": "src/native/document.cpp",
+      "bytes": 44605,
+      "sha256": "1bc5b98060c38a9e45ae4659fd5001112b1430de6184a89f42a6fe3ff73d7e14"
+    },
+    {
+      "path": "src/native/targets.cpp",
+      "bytes": 18531,
+      "sha256": "7707fbb75b9376a2d856a578e9f290336c4dd2e835c428b6e8330c2ff69b37d5"
+    },
+    {
+      "path": "src/native/session.cpp",
+      "bytes": 61078,
+      "sha256": "8a6ff6aa1549f646fda560bf7797a9f9689868f853413360afb0d8bd1b4d72ab"
+    },
+    {
+      "path": "include/imagejxx/session.hpp",
+      "bytes": 3685,
+      "sha256": "18aaf0e967cff64c20d9e8135ed47f9e8d7d59f13d14a0e615c5758974e69ee7"
+    },
+    {
+      "path": "src/desktop/document.cpp",
+      "bytes": 66607,
+      "sha256": "9a264d74590ede976afaa93eda00fb7c07e504f49169a5892f5951bb26938ce2"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 433449,
+      "sha256": "958efda6f328432228920185a0812328aa95ab76e0e93a52ca9788c768ef51ea"
+    },
+    {
+      "path": "src/desktop/selection_panel.cpp",
+      "bytes": 13260,
+      "sha256": "024a1c94be92de24a72836cafcb528e9ef201238be042bd2ace2256d1a30f0bf"
+    },
+    {
+      "path": "src/desktop/orthogonal.cpp",
+      "bytes": 38045,
+      "sha256": "dd8655b1190b2e7b90bbd8ab300e25d26b0aef026eedd06b0e4bece886f1849c"
+    },
+    {
+      "path": "src/desktop/rendering.hpp",
+      "bytes": 2704,
+      "sha256": "d02c4f3b96d7cfeabd0b737fda4f3d224e65016a3c6804a0bac239e0cf31ffa3"
+    },
+    {
+      "path": "src/native/document_bindings.cpp",
+      "bytes": 26496,
+      "sha256": "bb536c94dc53d46651f638a28380efff5b6358b5cc7e8fca97776de4c3133859"
+    },
+    {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 7105,
+      "sha256": "aad7b9c9e54f21ef59fdca02d8c3da2fcc5d5eeaf53f056d32615b4fa728fe09"
+    },
+    {
+      "path": "src/native/application.cpp",
+      "bytes": 16925,
+      "sha256": "9ccf1b9acad4621f2965841fa525181169f6ab214dd9d4652f67c14a4ba323d2"
+    }
+  ],
+  "changed_consumed_seams_revalidated": {
+    "deltas": [
+      {
+        "prior_revalidation_pin": {
+          "path": "src/desktop/document.cpp",
+          "bytes": 66358,
+          "sha256": "c5ce3cbb41854b498327174e5c02f2650225fe74168dd24dddbf89b75113f5eb"
+        },
+        "current": {
+          "path": "src/desktop/document.cpp",
+          "bytes": 66607,
+          "sha256": "9a264d74590ede976afaa93eda00fb7c07e504f49169a5892f5951bb26938ce2"
+        }
+      },
+      {
+        "prior_revalidation_pin": {
+          "path": "src/desktop/window.cpp",
+          "bytes": 418719,
+          "sha256": "ab6558aea21393a6084f61d81c432ef600ef153e0cd073e334ec7a3ef4701a48"
+        },
+        "current": {
+          "path": "src/desktop/window.cpp",
+          "bytes": 433449,
+          "sha256": "958efda6f328432228920185a0812328aa95ab76e0e93a52ca9788c768ef51ea"
+        }
+      }
+    ],
+    "inspection": "Root inspected current saved-row visibility/global selection, manager/activation, action and canvas routes only after identity mismatch; no broad rediscovery.",
+    "facts": [
+      {
+        "path": "src/desktop/document.cpp",
+        "lines": [
+          532,
+          537,
+          731,
+          763
+        ],
+        "fact": "Scientific legacy guard persists; visibleRoiIndices preserves absent wildcard versus explicitzero TCZ; commitNative/select remain guarded global-selection paths."
+      },
+      {
+        "path": "src/desktop/window.cpp",
+        "lines": [
+          2270,
+          2832,
+          3946,
+          4562,
+          6723,
+          7007
+        ],
+        "fact": "Manager invalidates on owner/Metadata; activation resets inputs; edit_selection still changes global tool and disables orthogonal; select_roi still selects global selection. Existing drag publishes last valid preview into global selection. Private saved-row/linked adapter and atomic guarded metadata publication remain genuinely missing; D01-D03 are unchanged."
+      }
+    ]
+  },
+  "root_decisions": [
+    {
+      "id": "D01",
+      "decision": "adopt_as_proposed",
+      "contract_json_pointer": "/decisions/D01"
+    },
+    {
+      "id": "D02",
+      "decision": "adopt_as_proposed",
+      "contract_json_pointer": "/decisions/D02"
+    },
+    {
+      "id": "D03",
+      "decision": "adopt_as_proposed",
+      "contract_json_pointer": "/decisions/D03"
+    }
+  ],
+  "normative_decisions": {
+    "D01": {
+      "decision": "RECOMMEND_ADOPT_EXPLICIT_SAVED_ROW_PRIVATE_DRAFT",
+      "user_path": "A new per-row Edit Saved Area affordance targets the row directly. Existing label/select_roi behavior stays unchanged. The new action never calls native select(), never replaces current/previous global selection, and never disables linked viewing.",
+      "entry_callback": "Window::beginSavedRoiGeometryEdit(row_index) validates one admitted saved area/native owner and resource metadata, focuses only that row, navigates each explicitly constrained t/c/z once (wildcards retain current values), then captures the native active-owner context. Navigation is a separate Display effect observed before edit capture.",
+      "target_and_visibility": "Show Saved area, owner, one-based row/name and exact T/C/Z constraints (* wildcard; explicit0 displayed as1). Indices/positions remain zero-based in core/records. Editing does not modify name/t/c/z/row attributes. No durable ROI UUID or new session field.",
+      "private_geometry": "Construct existing SelectionEditor from captured row.selection, shape and calibrated XY metric. Draft/handles/vertex focus stay separate from global selection/creation editors. Only original XY and linked XY accept input; XZ/YZ remain read-only. Do not use d->frame()/legacy State/global selection as geometry source.",
+      "geometry_scope": "Retain all entry area kinds: rectangle, ellipse, rotated_rectangle, rotated_ellipse, polygon, freehand and mask. Reuse box local axes/handle indices, metric hit testing, Shift/Ctrl edit modifiers and Shift15degree rotation. Polygon/freehand vertex insert/delete/nudge uses existing native rules. Mask move/rotate retains packed holes; no invented mask resize/vertices.",
+      "attributes": "This child changes geometry only. Replacement width and complete selection attributes must equal original; row name/optionalTCZ/row attributes and all other rows remain identical. Existing recognized style and opaque/future attributes are preserved. New saved-row style editing remains an explicit later consumer, not silently enabled by the adapter.",
+      "accept": "A valid changed pointer preview accepts on release using the LAST delivered drag, without regrowing from release coordinates. Numeric Apply accepts the current valid draft. One complete acceptance ends/releases that private draft; manager focus remains on the accepted row and another edit captures a fresh context.",
+      "invalid_cancel_noop": "Partial/nonfinite/invalid numeric input disables Apply and clears publishable preview, preserving raw text for correction. Invalid transform/exception/Escape/Cancel clears the entire active gesture; later release cannot resurrect old valid geometry. Exact unchanged geometry publishes no transaction and appends no workflow. Empty native masks remain valid and have no handles; unchanged transforms are no-op.",
+      "manager_reselection": "Stage new singleton focus/index/expected complete accepted row before publication. After changed commit install manager focus by no-throw swap at the new Metadata revision, clearing old multiselection/range anchors; never call native select. Undo/redo always invalidates capture, then preserves index only if exact expected restored Roi is known/present, otherwise clears focus. Any unrelated Metadata/owner/reorder/delete/load clears old row tokens.",
+      "rendering": "During valid private preview substitute only the targeted saved-row drawing, not native metadata; avoid drawing its old outline plus draft twice. Current global selection/other rows remain visible per existing policy. After commit/undo/redo, observe current committed generation in linked panes; XY outline changes, XZ/YZ raw pixels/calibration/crosshair/channel mapping stay exact. No XY ROI projection into XZ/YZ is claimed.",
+      "ui_callbacks": {
+        "row_action": "edit_saved_roi_geometry(row_index) -> beginSavedRoiGeometryEdit; stable observed ID roi_manager.row.<zero_based_index>.edit_saved_area; action parameters strict nonbool integer index.",
+        "pointer": "SavedRoiEdit.begin_pointer(capture,actual_canvas_transform,hit); update_pointer(last_delivered_image_point,modifiers) stages only private candidate; release(last_preview) prepares and publishes using original capture. Cancel invalidates the capture; no release-time recapture.",
+        "numeric": "Reuse SelectionPanel target adapter; geometry callbacks stage complete replacement; Apply calls Window::applySavedRoiGeometry(capture,request,Numeric), Cancel discards only draft. Known width/style/attributes controls are disabled for this geometry-only target, with unchanged values visible.",
+        "workflow": "Window::replaySavedRoiGeometry(record,complete_rebind_request=nullopt) dispatches exact action schema. Rebind opens row chooser plus complete geometry controls, never auto-selects/copies old result; cancel no native state. Stable row selectors workflow.saved_roi_geometry.<index>.replay/.rebind; geometry Apply/Cancel controls expose actual IDs/rects/focus, not API-labeled inputs.",
+        "desktop_api": "Expose apply_saved_roi_geometry(request) and replay_saved_roi_geometry(record,complete_rebind_request=None) on native desktop binding and optional Python Editor as thin forwards to this same Window/controller; public core factories/Application remain separately usable without ImGui."
+      }
+    },
+    "D02": {
+      "decision": "RECOMMEND_ADOPT_TYPED_REPLACEMENT_AND_SINGLE_ATOMIC_CONTROLLER_PUBLICATION",
+      "public_types": {
+        "SavedRoiGeometryRequest": "Explicit constructor(row_index:size_t,replacement:Selection); no default row or implicit borrowed replacement.",
+        "SavedRoiGeometryLimits": {
+          "max_xy_pixels": 16777216,
+          "max_vertices": 65536,
+          "max_working_bytes": 268435456,
+          "max_record_bytes": 16777216,
+          "metadata_depth": 128
+        },
+        "ResolvedSavedRoiGeometryCommand": "Immutable owned source snapshot, exact original Roi/index, replacement Selection and normalized record. Const C++ getters; Python returns detached values. No raw mutable owner/selection borrow.",
+        "SavedRoiGeometryCapture": "Opaque Application-minted active-owner/activation capture with source Data identity/revisions and TCZ. Capture is not constructible from numeric IDs and never serialized.",
+        "SavedRoiGeometryInteraction": [
+          "Numeric",
+          "Pointer"
+        ],
+        "PreparedSavedRoiGeometryEdit": "Move-only staged transaction/normalized record/resource lease plus original capture. No native mutation in preparation.",
+        "SavedRoiGeometryPublication": "Small no-throw result {document_id:uint64,changed:bool}; snapshots/getter copies are separate post-operation calls, not a fallible publication result constructor."
+      },
+      "pure_core_functions": [
+        "estimate_saved_roi_geometry(source,request,limits)",
+        "resolve_saved_roi_geometry(source,request,limits,control)",
+        "validate_saved_roi_geometry_record(record,limits)",
+        "saved_roi_geometry_from_record(source,record,limits,control)",
+        "rebind_saved_roi_geometry(destination,original_record,complete_new_request,limits,control)"
+      ],
+      "application_functions": [
+        "capture_saved_roi_geometry() -> SavedRoiGeometryCapture for current active owner, after explicit row navigation",
+        "prepare_saved_roi_geometry(capture,resolved_command,interaction=Numeric,limits,control) -> PreparedSavedRoiGeometryEdit",
+        "publish_saved_roi_geometry(prepared) -> SavedRoiGeometryPublication",
+        "Window/public desktop apply_saved_roi_geometry(request), replay_saved_roi_geometry(record,complete_rebind_request=nullopt): thin guarded capture/prepare/publish entry, returns detached normalized record/publication information staged before mutation"
+      ],
+      "capture_and_prepare": "Fresh resolve requires admitted area row visible at captured TCZ and creates a command bound to that exact owner/Data/row. Capture must precede callbacks/gesture lifetime; preparation cannot mint a new activation token after an away/back event. A command may refresh Display-only source state while retaining the same owner/Data/TCZ; pointer command source records actual mouse-down Display revision/transform. All caller-owned values/control/limits/records are captured before callbacks.",
+      "atomic_lane": "Under Application membership mutex check exact retained owner pointer plus numeric ID, current active owner and SAME captured activation_identity_. Under the same operation acquire Document mutex and check captured Data(Pixels/Metadata/Selection), shape/type/policy, exact row/index equality and current TCZ. Check optional Pointer Display revision too. Only then enter existing transaction commit machinery. App membership->Document is existing lock order. No user callback or unlock/check/relock window between final checks and mutation.",
+      "minimal_document_change": "Root adds a narrow private Document::commit_saved_roi_geometry_guarded transaction adapter, or an optional internal saved-row guard consumed INSIDE the existing commit_impl lock. It checks expected Data/row/position before mutation and preserves fresh Display. Do not implement the TCZ check in Window followed by ordinary Application.commit, introduce a generic validation callback under locks, new Document revision or serialized epoch.",
+      "camera_and_position_rules": "Numeric publication permits fresh camera/pan/XY-crosshair/unrelated Display state while current TCZ remains equal. Pointer publication additionally requires mouse-down Display revision unchanged (conservative cancellation on any Display change during the drag) and the same captured XY transform; never reinterpret screen coordinates. UI TCZ actions cancel the draft before changing position. Native atomic guard is current-TCZ equality, not a TCZ-event-history epoch: a direct headless position roundtrip ending at the original TCZ is allowed if Data/activation still match; no hidden navigation-history guarantee is claimed. Owner away/back always stales through the existing activation token.",
+      "busy_rule": "Shared UI disables entry/Apply and cancels private draft on its actual busy transition. No new generic core prohibition on unrelated pending work: normal source revision guards cause conflicting queued operations to refuse.",
+      "no_read_and_admission": "Metadata-only; all supported valid native Dataset type/sample layouts may preserve pixels without acquiring any plane/strip/window. First physical fixtures use admitted scientific U16/F32/U8 views. No new desktop viewer/type/legacy export admission is implied. Full original record structural/bounds validation precedes owner lookup/rebind; callbacks never run under owner locks.",
+      "record": {
+        "exact_top_fields": [
+          "schema",
+          "version",
+          "operation",
+          "source",
+          "position",
+          "original",
+          "replacement"
+        ],
+        "schema": "imagejxx.saved-roi-geometry-command",
+        "version": 1,
+        "operation": "replace_saved_roi_geometry",
+        "source_exact_fields": [
+          "id",
+          "pixels_revision",
+          "metadata_revision",
+          "selection_revision",
+          "shape",
+          "type",
+          "sample_policy",
+          "roi_count"
+        ],
+        "source_types": "id/revisions strict uint64 integers, shape6 strictly positive supportedTCZYXS integers, type exactly uint8|uint16|float32|float64, sample_policy exactly finite_only|preserve_quiet_nan_float32 under existing valid Dataset rules; reject bool/lossy/overflow/unknown enums. selection_revision is provenance for strict replay, not a historical dependency. roi_count is a strict positive size_t-compatible integer, equal to the captured saved-row count; checked count/row-storage arithmetic must fit limits without allocating by that untrusted claim.",
+        "position_exact_fields": [
+          "t",
+          "c",
+          "z"
+        ],
+        "position_types": "Strict zero-based nonbool bounded ints in original shape. Fresh record position must satisfy original optional Roi position constraints.",
+        "original_exact_fields": [
+          "index",
+          "roi"
+        ],
+        "original_roi": "Complete canonical NativeV3 Roi representation at held session source pin (name, selection, explicit nullable t/c/z, attributes). No stripping or separate ROI format. index strict nonbool size_t-compatible and strictly less than source.roi_count; row identity is transient index+Metadata+complete value, not UUID.",
+        "replacement": "Complete canonical NativeV3 Selection using the existing variant grammar at held session/selection pins. Reuse/extract its encoder and bounded strict parser; do not invent a second points/style/mask schema. Exact known variant keys/numbers/packed lengths/tail bits validated; unknown semantic attributes remain opaque/preserved. Original/result selection must be admitted areas and width/attributes exactly unchanged. No authenticated pointer/drag-equation claim.",
+        "unknown_fields": "Reject unknown top/source/position/original/Roi/known Selection variant fields and malformed null/enum/numeric alternatives; preserve opaque attribute subtrees under existing NativeV3 policy. NativeV3 always encodes t/c/z keys, null wildcard and explicit0 distinctly."
+      },
+      "strict_replay": "Validate whole record first, then bind original owner plus original Pixels/Metadata, shape/type/policy, row/index and complete original Roi. Preserve current global current/previous selection and current navigation. Build replay command against a FRESH capture of current Selection/activation/TCZ, retaining original record source.selection_revision/position as provenance. Historical Selection/Display need not match; any further Data/TCZ/activation change during preparation/publication refuses. A successful saved-row write advances Metadata, so the same record replayed again is stale. Historical saved-position visibility is not reimposed on fresh navigation: replay can edit the bound row while viewing another TCZ. Fresh TCZ is a publication guard only; fresh interactive resolve/full rebind still requires explicit visible-row capture. Verify actual saved-row count equals record source.roi_count before binding; no record-only cardinality claim is trusted as allocation authority.",
+      "full_rebind": "Validate the complete old record BEFORE replacement parsing/owner lookup. Require explicit new row_index AND complete replacement Selection. Resolve against new owner/row/current-position capture; copy no old row/index/position/result by default. Reopened owner identity always requires this route.",
+      "history_recording": "Changed row updates native Metadata+Selection exactly once, one undo/redo-clear/dirty data identity advance, Pixels/Display unchanged. Preserve current+previous global selections. Exact no-op creates no transaction/history/dirty/record. Window preallocates exact record append/focus/output/status before native publication, appends only after changed success and without allocation/callbacks. Recording off alters append only. On failure native/document/workflow/history remain unchanged; invalid private captures release.",
+      "publication_staging": "The normalized record is owned by command/prepared handles before publish; Window reserves workflow capacity, manager focus and success diagnostic payload before entering native publish. The publication return contains only document_id/changed. Post-publication adapter work is no-throw installation; getter copies are separate optional queries and cannot masquerade as failure of an already committed action."
+    },
+    "D03": {
+      "decision": "RECOMMEND_ADOPT_BOUNDED_INDEPENDENT_MEMBERSHIP_AND_METADATA_ONLY_RESOURCE_MODEL",
+      "membership_policy": "The following named memberships are proposed frozen at root adoption, not executions. Each surface declares exact collected IDs before its first gate. Assertions may share test-owned pure transport helpers, but expected geometry/membership never comes from SelectionEditor, product processing or producer output. No new ImageJ reference capture is prerequisite for this owned workflow; reuse of unchanged geometry is source-identity scoped, not upstream pointer/OS parity.",
+      "fixtures": {
+        "scientific_shape_tczyxs": [
+          2,
+          3,
+          3,
+          10,
+          12,
+          1
+        ],
+        "samples": {
+          "uint16": "1000*t+100*c+10*z+2*y+x",
+          "float32": "(1000*t+100*c+10*z+2*y+x)/4, exactly representable",
+          "uint8": "(1000*t+100*c+10*z+2*y+x)%256"
+        },
+        "calibration": {
+          "spacing": [
+            0.5,
+            1.25,
+            2.5
+          ],
+          "origin": [
+            11,
+            -7,
+            19
+          ],
+          "direction": [
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            1
+          ],
+          "unit": "um",
+          "frame_interval": 0.75,
+          "time_origin": 2.25,
+          "time_unit": "s"
+        },
+        "positions": {
+          "wildcard": [
+            null,
+            null,
+            null
+          ],
+          "explicit_zero": [
+            0,
+            0,
+            0
+          ],
+          "mixed": [
+            1,
+            null,
+            2
+          ]
+        },
+        "source_state": "Labeled API fixture setup only: distinguishable current rectangle and previous line; at least three saved rows including non-target metadata/positions; overlays, spectrum and unrelated nested metadata; width2.5 and opaque selection attributes on edited rows; row name/attributes markers; one prior edit followed by undo to retain populated redo and clean source baseline. Snapshot every exact actual value before capture; setup grants no physical-input credit.",
+        "rectangle": {
+          "points": [
+            [
+              2,
+              2
+            ],
+            [
+              8,
+              7
+            ]
+          ],
+          "move_delta": [
+            1,
+            -1
+          ],
+          "moved_points": [
+            [
+              3,
+              1
+            ],
+            [
+              9,
+              6
+            ]
+          ],
+          "east_handle_index": 3,
+          "east_pointer": [
+            10,
+            4.5
+          ],
+          "east_result": [
+            [
+              2,
+              2
+            ],
+            [
+              10,
+              7
+            ]
+          ],
+          "numeric_center": [
+            6,
+            5
+          ],
+          "numeric_size": [
+            4,
+            4
+          ],
+          "numeric_result": [
+            [
+              4,
+              3
+            ],
+            [
+              8,
+              7
+            ]
+          ],
+          "shift_delta": [
+            3,
+            1
+          ],
+          "shift_result": [
+            [
+              5,
+              2
+            ],
+            [
+              11,
+              7
+            ]
+          ],
+          "shift_note": "Calibrated aspectY2.5 keeps X for this delta; editing modifiers are distinct from creation Boolean modifiers."
+        },
+        "ellipse": {
+          "points": [
+            [
+              2,
+              2
+            ],
+            [
+              8,
+              8
+            ]
+          ],
+          "move_delta": [
+            -1,
+            1
+          ],
+          "moved_points": [
+            [
+              1,
+              3
+            ],
+            [
+              7,
+              9
+            ]
+          ]
+        },
+        "vertices": {
+          "base": [
+            [
+              2,
+              2
+            ],
+            [
+              8,
+              2
+            ],
+            [
+              8,
+              7
+            ],
+            [
+              2,
+              7
+            ]
+          ],
+          "move_vertex": {
+            "index": 1,
+            "point": [
+              9,
+              3
+            ]
+          },
+          "insert": {
+            "before_index": 2,
+            "point": [
+              9,
+              5
+            ]
+          },
+          "delete": "Delete inserted vertex restores exact previous vertex list; deletion at three vertices refuses atomically."
+        },
+        "mask": {
+          "width": 12,
+          "height": 10,
+          "packed_order": "MSB-first; zero unused tail bits",
+          "base": "outer2<=x<10,2<=y<8 minus4<=x<8,4<=y<6 (40 cells)",
+          "translate_1_minus1": "outer3<=x<11,1<=y<7 minus5<=x<9,3<=y<5 (40 cells)",
+          "rotate_90_pivot_6_5": "outer3<=x<9,1<=y<9 minus5<=x<7,3<=y<7 (40 cells)",
+          "translate_5_0_clipped": "outer7<=x<12,2<=y<8 minus9<=x<12,4<=y<6 (24 cells), explicitly unclamped/Alt input",
+          "empty": "12x10 all-zero packed mask; no handles, unchanged transform is no-op"
+        },
+        "rotated_shapes": "Literal semantic center[6,5],size[6,4],angle30 degrees, then numeric angle0/90 and local handle move. Independent assertions derive membership by documented inverse image-coordinate rotation at pixel centers, compare native points/semantic center/size/angle within declared finite tolerance, and preserve exact width/attributes. No native geometry function is used to calculate expected points.",
+        "core_only_no_read": "Valid native Float64/S3/S4 and reviewed Float32 quiet-NaN datasets use counting/throwing plane/strip/window providers. Every metadata action succeeds or refuses without acquiring any pixels; no new desktop rendering admission is claimed."
+      },
+      "native_cases": [
+        "N01.area_kinds_and_literal_geometry",
+        "N02.mask_translate_rotate_clip_empty",
+        "N03.row_positions_zero_null_and_original_validation",
+        "N04.current_previous_and_other_rows_preserved",
+        "N05.changed_history_dirty_and_noop",
+        "N06.strict_record_integer_field_variant_grammar",
+        "N07.strict_replay_before_publication_and_stale_repeat",
+        "N08.full_rebind_original_validation_and_reopened_owner",
+        "N09.activation_foreign_closed_and_metadata_stale",
+        "N10.pixels_selection_and_tcz_atomic_guards",
+        "N11.pointer_display_stale_numeric_camera_fresh",
+        "N12.owner_roundtrip_stale_tcz_roundtrip_end_guard",
+        "N13.preflight_limits_overflow_precancel_zero_read",
+        "N14.callback_owned_capture_exception_midcancel",
+        "N15.all_native_types_quiet_policy_zero_provider_reads",
+        "N16.native_v3_positions_attributes_masks_workflow_roundtrip"
+      ],
+      "python_api_cases": [
+        "A01.typed_request_detached_values",
+        "A02.area_geometry_and_row_preservation",
+        "A03.bool_lossy_overflow_unknown_refusal",
+        "A04.private_prepare_no_mutation_and_exact_noop",
+        "A05.atomic_active_owner_capture",
+        "A06.stale_all_data_and_tcz",
+        "A07.pointer_display_numeric_camera",
+        "A08.strict_record_replay_and_stale_repeat",
+        "A09.full_rebind_invalid_original",
+        "A10.reopen_owner_and_native_v3",
+        "A11.control_limits_callback_and_zero_reads",
+        "A12.desktop_binding_wrapper_same_controller_recording"
+      ],
+      "core_only_sdk_markers": [
+        "S01.literal_row_geometry_and_zero_read",
+        "S02.prepared_publication_atomic_guards",
+        "S03.strict_record_replay_then_stale_repeat",
+        "S04.explicit_rebind_and_v3_reopen",
+        "S05.caps_cancel_noop_and_source_preservation"
+      ],
+      "host_cases": [
+        "H01.explicit_row_entry_keeps_global_selection",
+        "H02.target_navigation_zero_wildcard_and_capture",
+        "H03.private_valid_invalid_escape_last_drag",
+        "H04.metadata_selection_history_recording_and_reselection",
+        "H05.ordinary_and_linked_xy_target_render_generation",
+        "H06.stale_activation_tcz_display_busy_close",
+        "H07.workflow_matching_replay_stale_repeat_complete_rebind",
+        "H08.native_v3_fresh_owner_and_legacy_guards"
+      ],
+      "paired_cases": [
+        {
+          "id": "PX01",
+          "fixture": "U16, wildcard rectangle",
+          "sequence": "Actual Edit Saved Area row action; interior move(1,-1), E-handle local resize, numeric center/size Apply. Each acceptance starts a fresh row capture; verify target/width/attributes/global selections and exact before/preview/after state.",
+          "budget_frames_upper": 140
+        },
+        {
+          "id": "PX02",
+          "fixture": "U8 ellipse plus explicit-zero and wildcard rows",
+          "sequence": "Edit explicit0/0/0 row while another TCZ is active; observe actual navigation before capture and one-based labels. Move ellipse(-1,1). Then wildcard row preserves current TCZ; wrong TCZ constrained-row entry cannot produce hidden draft.",
+          "budget_frames_upper": 120
+        },
+        {
+          "id": "PX03",
+          "fixture": "F32 rotated rectangle/ellipse",
+          "sequence": "Actual local-axis resize/rotation and numeric angle0/90, preserving style/opaque attributes. Assert captured metric/transform and semantic geometry.",
+          "budget_frames_upper": 150
+        },
+        {
+          "id": "PX04",
+          "fixture": "U16 polygon/freehand",
+          "sequence": "Vertex move, Alt nearest-segment insert, Delete, arrow nudge and numeric vertex coordinates through real controls; minimum-three refusal is distinctly API-prepared if not reached physically inside budget.",
+          "budget_frames_upper": 170
+        },
+        {
+          "id": "PX05",
+          "fixture": "U16 packed holed and empty masks",
+          "sequence": "Physical interior translate(1,-1), rotation90 around(6,5), and unclamped/Alt clipping translate(5,0) on fresh source rows; empty row has no interactive handles and numeric unchanged action is no-op. Assert full literal packed memberships.",
+          "budget_frames_upper": 170
+        },
+        {
+          "id": "PX06",
+          "fixture": "U16 rectangle",
+          "sequence": "Type partial/nonfinite/invalid numeric drafts; Apply disabled with raw text retained. Stage valid pointer preview then invalid/Cancel/Escape; release cannot resurrect geometry. Fresh exact-noop Apply changes no native/workflow/history state.",
+          "budget_frames_upper": 160
+        },
+        {
+          "id": "PX07",
+          "fixture": "U16 rectangle plus second owner",
+          "sequence": "Actual private draft then TCZ/tool/busy/owner switch and return/close boundaries; separately labeled API captures/mutations exercise all Data revisions and foreign identity without pointer credit. Require zero retained draft resources after every terminal refusal/cancel.",
+          "budget_frames_upper": 170
+        },
+        {
+          "id": "PX08",
+          "fixture": "U16 target row, unrelated current+previous, populated redo",
+          "sequence": "Recording on changed accept, recording off changed accept, exact-noop, preserving global selections/other rows/pixels/calibration/display. Changed row advances Metadata+Selection once and clears redo exactly once; noop/cancel preserves history and dirty identity.",
+          "budget_frames_upper": 130
+        },
+        {
+          "id": "PX09",
+          "fixture": "F32 linked views with positioned rectangle",
+          "sequence": "Actual linked XY edit, Undo, Redo. Observe current committed generation and visible saved-row outline in XY exactly once; XZ/YZ raw samples/calibration/channel mapping/crosshair unchanged. No unprojected XY overlay on XZ/YZ.",
+          "budget_frames_upper": 140
+        },
+        {
+          "id": "PX10",
+          "fixture": "U16 wildcard saved row; native-V3 reopened fresh owner",
+          "sequence": "Labeled API resolves a valid unpublished record at matching Pixels/Metadata and prepares workflow entry without publishing metadata. Change only Display navigation physically, then actual Workflow Replay publishes stored replacement while preserving fresh global selections/navigation. The same record repeat refuses stale Metadata. Save/Open retains original record binding; fresh owner strict replay refuses, actual Rebind requires explicit new row and complete replacement, then publishes. A malformed original refuses even with otherwise valid complete replacement. Never use undo to pretend revision reset.",
+          "budget_frames_upper": 180
+        }
+      ],
+      "paired_membership": {
+        "contexts": [
+          "imgui_cpp",
+          "imgui_python"
+        ],
+        "count": 20,
+        "order": "PX01 through PX10, context-minor; exact parameterized collection IDs frozen by the independent reader before first execution",
+        "common_observations": "actual ID/rect/point/focus/active/hover/disabled, raw pointer/key/text frames and transform; captured owner/revisions/TCZ; complete current/previous/saved geometry and actual membership, private candidate/preview; retained count/owned reservation bytes; full source bits/calibration/display/history/workflow before/after; frame/source generation; API preparations distinct from actual inputs",
+        "limits": {
+          "frames_per_case": 180,
+          "seconds_per_case": 15,
+          "report_bytes_per_case": 16777216,
+          "archive_bytes": 33554432,
+          "documents": 16,
+          "parent_seconds_per_context": 60,
+          "bounded_wait_ms": 5000
+        },
+        "observation_transport": "Path-only raw case index; numerical full readbacks at named checkpoints, metadata/control/input ledger every frame. Preserve all source inputs/failure logs; no producer expected values or PASS oracles. Per-case path/bytes/SHA bound to final matching installed products."
+      },
+      "resource_estimate": {
+        "rule": "A documented conservative logical native working estimate, not process RSS. Every addition/multiplication/count conversion checked before allocation. Validate dimensions, area kind, packed lengths/tail bits, depth, row_count/index and metadata cardinalities before cloning/callbacks. No plane/strip/window acquisition at any phase.",
+        "symbols": {
+          "N": "checked source XY area; independent of TCZ volume and channel/sample count",
+          "D": "owned nonpixel source/transaction data and display payload: metadata/calibration strings, current+previous selections, overlay/spectrum storage, scalar containers and descriptors; exclude saved-row vector counted separately and retained immutable source pixel buffers",
+          "R": "complete saved-row vector storage and recursive name/Selection/attributes owned bytes, including every row because existing set_rois/transaction may copy the collection",
+          "So_Sn": "complete original/replacement Selection values, point vectors, strings, attributes, packed bytes and descriptors",
+          "C": "typed normalized command-record owned metadata storage upper bound obtained by structural traversal before materialization",
+          "W": "conservative normalized wire bytes: checked punctuation/key/scalar bounds and escaped string bound<=6*UTF8_bytes; no unbounded formatter to discover size; W<=max_record_bytes",
+          "V": "original+replacement point count with each<=max_vertices",
+          "H": "sizeof all live snapshot/capture/request/limits/control/prepared/transaction/history/manager-focus/record holders and fixed geometry scratch; count shared-payload owner/control holders without charging retained pixel volume as new allocation"
+        },
+        "working_bytes_upper_bound": "16KiB +4*D +4*R +6*So +6*Sn +3*C +3*W +H +2*(V+16)*sizeof(SelectionHandle) + (mask_operation ? 2*N*sizeof(double) : 0). The deliberately conservative multiplicities cover simultaneously live capture/editor/command/transaction/history/workflow staging. The implementation documents any tightened exact liveness sum before its first gate; it may not omit a whole copied collection or hidden record copy.",
+        "limits": "Use D02 limits and effective UI cap=min(native max_working_bytes, configured nonzero processing_memory_mb converted with checked arithmetic). Large native shapes can be rejected under the cap; max_xy_pixels is admission ceiling, not a promise that every admitted mask fits max_working_bytes.",
+        "controlled_geometry_required_change": "The pinned SelectionEditor API currently has NO ExecutionControl parameters. Add narrow opt-in controlled construction/moved/rotated mask overloads or an equivalent private adapter that polls before allocations and at bounded raster/vertex stages. Preserve existing uncontrolled signatures and exact qualified geometry. No callbacks under owner locks, no new geometry algorithm/job framework, and no assertion that nonexistent old hooks already cover cancellation.",
+        "callbacks": "Deterministic malformed/limit/overflow and valid precancel refusal precede user callbacks. Capture source/request/control/limits before the first checkpoint. Bounded kernel checkpoints/stage reports may throw or cancel before commit; initial callback reentry must not change captured caller values. No callback between final guard and publication. UI clears canceled/failed draft leases; active retained count/bytes become zero.",
+        "external": "Allocator bookkeeping/opaque std::function target internals, Python/getter representation copies, provider caches, rendering/GPU storage and process RSS remain external to this native logical estimate; no latency, heap or benchmark pass is claimed."
+      },
+      "compatibility_and_exit": {
+        "reuse": "Keep the unchanged SelectionEditor/session/targets/native commit source pins from source-revalidation.json. Reuse existing qualified area geometry semantics and existing native-V3 transport assertions only by their exact source/evidence identities. No claim that this proposal re-executed them. Controlled overloads invalidate only their directly affected native geometry/cancel compatibility tests.",
+        "first_gate": "After root adoption and source-only implementation holds, one focused native action/controller + affected geometry compatibility build/gate. Then thin Python API, fresh installed public-only SDK, host tests, both20 actual-input observations, exact independent reader, affected regressions, and final matching archive/license/manifest binding. Broad regressions/final products run after source settles, not after every small patch.",
+        "closure": "Scoped saved-row scientific XY is complete only when native/Python/SDK/host/both shared ImGui assertions bind exact final installed products, source, fixture, record, session and commercial provenance. Family/whole-editor acceptance remains unchanged. Read-only XZ/YZ projection, XZ/YZ edits, positioned creation, saved-row style editing, full ROI-manager/ZIP and axis remapping remain required follow-ons."
+      },
+      "exact_collection_contract": {
+        "native": "test_saved_roi_geometry executable, default no-arg all16 N01-N16 named cases, concise completed membership/check count; root may select existing-style named groups only if membership is unchanged.",
+        "python_api": "tests/python/test_saved_roi_geometry.py::test_saved_roi_geometry[<A01..A12 exact string in python_api_cases>], count12; required installed gate has no missing-module skip/fallback.",
+        "host": "test_saved_roi_geometry_host executable,8 H01-H08 named cases, same existing headless context and <=60s gate convention; API setup never grants physical input credit.",
+        "sdk": "examples/cpp/saved_roi_geometry.cpp, bounded no-arg installed core-only consumer with exact S01-S05 marker names; public headers only.",
+        "paired": "tests/python/test_saved_roi_geometry_ui.py::test_installed_saved_roi_geometry[PX01-imgui_cpp] through [PX10-imgui_python], case-major/context-minor, count20; exact EXPECTED_COLLECTION_COUNT/IDS declared before first installed execution."
+      }
+    }
+  },
+  "clarifications": {
+    "archive_bytes_scope": "The unchanged33554432 bound applies per paired case transport, alongside the16777216 report bound. Whole-run supervisors additionally declare cumulative stage bounds before execution.",
+    "pointer_guard": "Core checks captured Display revision under its publication lock; shared UI also checks its actual captured XY canvas transform before submission. No authenticated gesture claim or serialized UI transform is introduced.",
+    "publication_result": "The small result construction/postcommit installation is no-throw; failed final guards may refuse before mutation.",
+    "python_rebind_order": "Validate the complete original record before replacement parsing/casting and owner lookup; ordinary eager pybind argument casting must not invert this order."
+  },
+  "frozen_membership": {
+    "native": [
+      "N01.area_kinds_and_literal_geometry",
+      "N02.mask_translate_rotate_clip_empty",
+      "N03.row_positions_zero_null_and_original_validation",
+      "N04.current_previous_and_other_rows_preserved",
+      "N05.changed_history_dirty_and_noop",
+      "N06.strict_record_integer_field_variant_grammar",
+      "N07.strict_replay_before_publication_and_stale_repeat",
+      "N08.full_rebind_original_validation_and_reopened_owner",
+      "N09.activation_foreign_closed_and_metadata_stale",
+      "N10.pixels_selection_and_tcz_atomic_guards",
+      "N11.pointer_display_stale_numeric_camera_fresh",
+      "N12.owner_roundtrip_stale_tcz_roundtrip_end_guard",
+      "N13.preflight_limits_overflow_precancel_zero_read",
+      "N14.callback_owned_capture_exception_midcancel",
+      "N15.all_native_types_quiet_policy_zero_provider_reads",
+      "N16.native_v3_positions_attributes_masks_workflow_roundtrip"
+    ],
+    "python_api": [
+      "A01.typed_request_detached_values",
+      "A02.area_geometry_and_row_preservation",
+      "A03.bool_lossy_overflow_unknown_refusal",
+      "A04.private_prepare_no_mutation_and_exact_noop",
+      "A05.atomic_active_owner_capture",
+      "A06.stale_all_data_and_tcz",
+      "A07.pointer_display_numeric_camera",
+      "A08.strict_record_replay_and_stale_repeat",
+      "A09.full_rebind_invalid_original",
+      "A10.reopen_owner_and_native_v3",
+      "A11.control_limits_callback_and_zero_reads",
+      "A12.desktop_binding_wrapper_same_controller_recording"
+    ],
+    "sdk": [
+      "S01.literal_row_geometry_and_zero_read",
+      "S02.prepared_publication_atomic_guards",
+      "S03.strict_record_replay_then_stale_repeat",
+      "S04.explicit_rebind_and_v3_reopen",
+      "S05.caps_cancel_noop_and_source_preservation"
+    ],
+    "host": [
+      "H01.explicit_row_entry_keeps_global_selection",
+      "H02.target_navigation_zero_wildcard_and_capture",
+      "H03.private_valid_invalid_escape_last_drag",
+      "H04.metadata_selection_history_recording_and_reselection",
+      "H05.ordinary_and_linked_xy_target_render_generation",
+      "H06.stale_activation_tcz_display_busy_close",
+      "H07.workflow_matching_replay_stale_repeat_complete_rebind",
+      "H08.native_v3_fresh_owner_and_legacy_guards"
+    ],
+    "paired": [
+      "PX01-imgui_cpp",
+      "PX01-imgui_python",
+      "PX02-imgui_cpp",
+      "PX02-imgui_python",
+      "PX03-imgui_cpp",
+      "PX03-imgui_python",
+      "PX04-imgui_cpp",
+      "PX04-imgui_python",
+      "PX05-imgui_cpp",
+      "PX05-imgui_python",
+      "PX06-imgui_cpp",
+      "PX06-imgui_python",
+      "PX07-imgui_cpp",
+      "PX07-imgui_python",
+      "PX08-imgui_cpp",
+      "PX08-imgui_python",
+      "PX09-imgui_cpp",
+      "PX09-imgui_python",
+      "PX10-imgui_cpp",
+      "PX10-imgui_python"
+    ]
+  },
+  "ownership": {
+    "root": "Application/Document atomic guarded publication, canonical codec extraction assignment, public bindings/CMake/Window/Workflow/manager integration and gates",
+    "native_worker": "New saved_roi_geometry.hpp/.cpp; controlled SelectionEditor overloads only when explicitly assigned",
+    "independent_assertions": "New native/API/SDK literal geometry, strict grammar, counting-provider and lifecycle assertions",
+    "ui_worker": "New private saved_roi_edit adapter only after native prerequisites; root serializes shared panel/routing",
+    "producer_reader": "Separately owned exact20 paired producer and independent reader after control contract freeze"
+  },
+  "entry_rule": "This adoption makes the native implementation contract ready. Start its shared integration after the required rank functional/source/commercial/interface handoff; do not wait for unrelated full G033/TIFF/volume/performance closure.",
+  "acceptance": false,
+  "runtime_executed": false,
+  "shipping_files_changed": false,
+  "formal_manifest_edits": false,
+  "whole_family_closure": false
+}

@@ -1,0 +1,309 @@
+{
+  "schema_version": 1,
+  "state": "scoped_color_stack_workflow_verified",
+  "new_python_cases": 76,
+  "source_cases": 976,
+  "installed_cases": 976,
+  "native_windows_suites": 22,
+  "linux_native_suites": 6,
+  "scope": "Closed color_stack native workflow/program/batch intent and shared ImGui parameter authoring; metadata-only evolving layout and filter dtype admission, immutable original capture, one paired guarded owner transaction. Standalone Image > Type UI remains pending.",
+  "evidence": [
+    {
+      "path": "build/p06zu-color-workflow001/build007/run001.json",
+      "bytes": 9571,
+      "sha256": "3afc9eff1c61ece56e9c2d4e1bcc5cf5e2820e18944f6d4cea637ea1fa97d9fe"
+    },
+    {
+      "path": "build/p06zu-color-workflow001/source005/run001.json",
+      "bytes": 1396,
+      "sha256": "b4aeff245ad4e92e050458c271acf99f340b8849272f6cc950142de3f63f5a3b"
+    },
+    {
+      "path": "build/p06zu-color-workflow001/install001/run001.json",
+      "bytes": 7254,
+      "sha256": "beb2d1c393b4ae11b0b538aa9e838fab5aa9b663640a1fce3027155ccdcbbce6"
+    },
+    {
+      "path": "build/p06zu-color-workflow001/installed-python001/run001.json",
+      "bytes": 1425,
+      "sha256": "4bc077eeba9411630e288980d9908f461337573ed6e81b72175b33f01d8af332"
+    },
+    {
+      "path": "build/p06zu-color-workflow001/sdk001/run001.json",
+      "bytes": 4133,
+      "sha256": "48391e60755e97b00c0e1a5b95b52132140e8d7502d3f32f2a2f9656d33fa6de"
+    },
+    {
+      "path": "build/p06zu-color-workflow001/linux002/run001.json",
+      "bytes": 842,
+      "sha256": "de20db6ec217e6e1af0a1859070f36905363ae8fb6f3e60e7544482a06209cc3"
+    },
+    {
+      "path": "build/p06zu-color-workflow001/baseline001/run001.json",
+      "bytes": 1390,
+      "sha256": "c3105d0c78cfc18efca058df0447bdaa843ea1f6c911d1d1c6752d46bf5c09f0"
+    },
+    {
+      "path": "build/p06zu-color-workflow001/rgb-cpp005/run001.json",
+      "bytes": 1264,
+      "sha256": "63ae1f1a16249be643cb60c745352bbba5c45afecd56fe1c26c5698607c4bbdc"
+    },
+    {
+      "path": "build/p06zu-color-workflow001/rgb-installed-cpp001/run001.json",
+      "bytes": 1312,
+      "sha256": "e6e5b53223a52e4b60e368e68bacd2f564c45d03911f61dfbe9edf5fb73d5076"
+    },
+    {
+      "path": "build/p06zu-color-workflow001/threshold-fixed001/run001.json",
+      "bytes": 1410,
+      "sha256": "69b0791363ee70c46ecd347853ef3ad6f2f5947cdd9707bf53cec10da2acecd7"
+    },
+    {
+      "path": "build/p06zu-color-workflow001/build007/native.xml",
+      "bytes": 6605,
+      "sha256": "c1e9f7e4f581f42646200ce5ac17f1d4218a79576315c9466ce6bf74d58e0832"
+    },
+    {
+      "path": "build/p06zu-color-workflow001/linux002/native.xml",
+      "bytes": 1529,
+      "sha256": "b6b6505c87902300d309393147dc2282e6819e8ab8187f5139ad86614d27fa24"
+    },
+    {
+      "path": "build/p06zu-color-workflow001/source005/pytest.xml",
+      "bytes": 144007,
+      "sha256": "4e41b573fabc98d54fa0f09613c2d7eb534e98b857fc1381d8e5deaeefe8b789"
+    },
+    {
+      "path": "build/p06zu-color-workflow001/installed-python001/pytest.xml",
+      "bytes": 144007,
+      "sha256": "a6dba300b23ba88f94d172d5efd9f549643cdccc010ff28ffce23e5a895b78b3"
+    },
+    {
+      "path": "build/p06zu-color-workflow001/baseline001/baseline001.json",
+      "bytes": 725,
+      "sha256": "b04172acaa25eeccfa2a7476e1faf5101a35944828d7ad997755c5cc3cb69c4d"
+    },
+    {
+      "path": "tests/fixtures/color-components-imagej154r.json",
+      "bytes": 2108591,
+      "sha256": "253ea310e95396ce3a63bbe265f5f67d81ee3f378254f25619ee8b8c5cbc8549"
+    },
+    {
+      "path": "build/p06zu-color-workflow001/policy001.json",
+      "bytes": 427,
+      "sha256": "3d731d1bf93f553289d934a08139c9b37472e30dd46a2fbc0542f19152b97784"
+    },
+    {
+      "path": "build/p06zu-color-workflow001/linux001/ext4-scratch001.json",
+      "bytes": 1777,
+      "sha256": "815701dec82aca3961f54cf4cc1665838bc7b1a1f803a61a236a1436cb010d5a"
+    },
+    {
+      "path": "build/p06zu-color-workflow001/linux001/ext4-scratch001.zip",
+      "bytes": 6387,
+      "sha256": "d98b23dee490ab85dd961be396d8832eae7793d7e783f60ee157e1b56558fc32"
+    },
+    {
+      "path": "build/p06zu-color-workflow001/linux002/ext4-scratch001.json",
+      "bytes": 1768,
+      "sha256": "d23fa126ba65ff53c3cd3c060d8236d2fa13b5751453e5b5ca1387b19605488c"
+    },
+    {
+      "path": "build/p06zu-color-workflow001/linux002/ext4-scratch001.zip",
+      "bytes": 6370,
+      "sha256": "66de432668bf5fdd82839d1fcce91361d8186bf5e4b8e598dabc03ba2851c047"
+    },
+    {
+      "path": "build/p06zu-color-workflow001/cleanup001.json",
+      "bytes": 330639,
+      "sha256": "8f403e88c178ef1e3187543f82e8cc2489edc6c928a4648afb2eab6ed10f23cd"
+    },
+    {
+      "path": "build/p06zu-color-workflow001/threshold-probe001/observed001.json",
+      "bytes": 236,
+      "sha256": "14f4fb4d0adc6cb89a42c3b70773a4fde7aa7d4f2a6894fc68b5e6226d1b9391"
+    },
+    {
+      "path": "build/p06zu-color-workflow001/threshold-fixed001/observed001.json",
+      "bytes": 195,
+      "sha256": "41cc4132ebbb53ffacfab2e10e76d109cf20145e71b3e564dc52d654be2696c5"
+    },
+    {
+      "path": "build/p06zu-color-workflow001/rgb-cpp005/capture001/case.json",
+      "bytes": 20141345,
+      "sha256": "f0fc8a0dd54162af293d505a9e3203218005113fb9228947192a5e8c720ac2b1"
+    },
+    {
+      "path": "build/p06zu-color-workflow001/rgb-installed-cpp001/capture001/case.json",
+      "bytes": 20144765,
+      "sha256": "a43a9553373490301348395a450602e7971d374f392ae0d6b95c380534af1ed9"
+    },
+    {
+      "path": "build/p06zu-color-workflow001/source005/core-evidence001.json",
+      "bytes": 42,
+      "sha256": "fb8b80a560cc4ad7702ecf2bd627d71af5da07db200d2521be668e608096909f"
+    },
+    {
+      "path": "build/p06zu-color-workflow001/installed-python001/core-evidence001.json",
+      "bytes": 42,
+      "sha256": "fb8b80a560cc4ad7702ecf2bd627d71af5da07db200d2521be668e608096909f"
+    }
+  ],
+  "superseded_diagnostics": [
+    {
+      "run": {
+        "path": "build/p06zu-color-workflow001/build001/run001.json",
+        "bytes": 9620,
+        "sha256": "51935f6e0cce718f7199731d31daa610dadd035444f15ce63dea92c802d9a954"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zu-color-workflow001/build002/run001.json",
+        "bytes": 9614,
+        "sha256": "804127edeb2292a8723ce55ab9cdd705b1e21df1764ff0fca487eea752a8f2aa"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zu-color-workflow001/build003/run001.json",
+        "bytes": 9602,
+        "sha256": "58054275617acfb9543dfff847cd153a3115508b0bfbe4c29f9dec8555a6acc1"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zu-color-workflow001/build004/run001.json",
+        "bytes": 9599,
+        "sha256": "6b04f566f9df0822273925b67a8bd726adedfe60d264c1908038c7ba3a7e9dda"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zu-color-workflow001/build005/run001.json",
+        "bytes": 9629,
+        "sha256": "248479c54c40d08a59873cf79f3883e28a37c6298480b12ba94dc45a17465be3"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zu-color-workflow001/build006/run001.json",
+        "bytes": 9613,
+        "sha256": "220008b95fff2c13efcfd5f80933561a742c57ec19f41df193789c636583b076"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zu-color-workflow001/linux001/run001.json",
+        "bytes": 848,
+        "sha256": "363f21398fa36d3521bacf3f9254e5ec35e29a95345ec0b5aad918441cb348cc"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zu-color-workflow001/source001/run001.json",
+        "bytes": 1388,
+        "sha256": "9aa55da742b8e730cf416a5c8ae56cdb7a94f7af2603e396718525d4f691d180"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zu-color-workflow001/source002/run001.json",
+        "bytes": 1597,
+        "sha256": "364d2abaf373af1fe94612b5e9d4dcbd57f9f05dcf5028674ed1f5ef610eee53"
+      },
+      "state": "failed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zu-color-workflow001/source003/run001.json",
+        "bytes": 1395,
+        "sha256": "e5625a6033fd9977d72aed14dbccb87fffcfd3e212b3d26e605e4a05085af467"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zu-color-workflow001/source004/run001.json",
+        "bytes": 1597,
+        "sha256": "baa47d79b7c2085c990629ad5a57c449a48a271d30f7b48a0a1365cddc2d7338"
+      },
+      "state": "failed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zu-color-workflow001/rgb-cpp001/run001.json",
+        "bytes": 1464,
+        "sha256": "790d88d8aa7656cef7211564530ce99e59a9528b4ff643e7111eaa756778f292"
+      },
+      "state": "failed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zu-color-workflow001/rgb-cpp002/run001.json",
+        "bytes": 1264,
+        "sha256": "90fee7f69531b9cc98e6b169aa35e19eca909d32f55f549a6a9149d3e85f10d5"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zu-color-workflow001/rgb-cpp003/run001.json",
+        "bytes": 1264,
+        "sha256": "6afaaa0da0adfc7574aaf503fd605ac61a73d215c0448536ec746ba4c3d99dab"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zu-color-workflow001/rgb-cpp004/run001.json",
+        "bytes": 1264,
+        "sha256": "2a5c15d599e27ead8969c39eed43b3041092bdde779b30aeba13af65bc56d06f"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zu-color-workflow001/threshold-probe001/run001.json",
+        "bytes": 1423,
+        "sha256": "2271e536628dc1a5655fe1b1b6e71080315a5c42de04389eb66f61c485051931"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    }
+  ],
+  "remaining": [
+    "Shared standalone Image > Type component/legacy-layout menu, review, preview and recording with both-host raw-input qualification",
+    "Compound scalar-to-RGB legacy flattening with captured stack range/LUT semantics; current FlattenRgb accepts existing UInt8 RGB only",
+    "Indexed/global-palette output and remaining ImageJ/Fiji editor/reference/resource/platform/release obligations",
+    "Historical source fingerprint requalification; All99 remains42 in progress /57 open /0 complete and Source901 remains the last full source release"
+  ],
+  "no_new_runtime_dependencies": true,
+  "profile_accepted": false,
+  "family_completed": false,
+  "broad_goal": "active",
+  "full_plan_gate": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed"
+}

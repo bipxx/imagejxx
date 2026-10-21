@@ -1,0 +1,981 @@
+{
+  "schema_version": 1,
+  "id": "G029.scientific-axis-range-orientation.owned-source-commercial-review.001",
+  "state": "scoped_owned_source_eligibility_adopted",
+  "decision": "eligible",
+  "decision_is_proposed": false,
+  "owner": "root commercial/source adoption",
+  "applies_to_requirements": [
+    "G029.scientific_axis_range_orientation"
+  ],
+  "scope": "Current independently authored V2 captured-T/C exact integer orientation adapter, thin Python forwards, shared ImGui/controller integration and owned SDK/test/actual-observation/capture sources only",
+  "reason": "Project-owned MIT implementation/integration over the unchanged selected dependency/reference boundary; all27 current scoped sources are explicitly pinned. This proposed source-only decision does not accept runtime products, distributions, reference numerical assertions, full G029 or Fiji components.",
+  "owned_code_license": {
+    "path": "LICENSE",
+    "bytes": 1079,
+    "sha256": "6496956d6060adfcd2617e553b7393c3b7fbea353a02f3c39d60051709d1ce5f",
+    "selected_license": "MIT",
+    "obligation": "Retain the project copyright and permission notice in copies or substantial portions."
+  },
+  "owned_source_pins": [
+    {
+      "path": "include/imagejxx/execution.hpp",
+      "bytes": 13185,
+      "sha256": "f9811529d86ad0f34b3b4e5573a760148204fd331439558b6edb1b709e2363e4",
+      "role": "native_core",
+      "classification": "owned_project_code_or_owned_integration",
+      "selected_license": "MIT",
+      "source_status": "modified_owned_source",
+      "p06h_source_member": {
+        "path": "include/imagejxx/execution.hpp",
+        "bytes": 12558,
+        "sha256": "3d18312ab8e3d45a2409f2ba4b0914a8660ee0e1aba1ed689709d5328b6c6d85"
+      },
+      "changed_from_parent": true
+    },
+    {
+      "path": "src/native/execution.cpp",
+      "bytes": 101338,
+      "sha256": "d0d9b0f970da1962d4fa763b6e7e668cdcdb2face7053b4a4fc8c509f744bef4",
+      "role": "native_core",
+      "classification": "owned_project_code_or_owned_integration",
+      "selected_license": "MIT",
+      "source_status": "modified_owned_source",
+      "p06h_source_member": {
+        "path": "src/native/execution.cpp",
+        "bytes": 100611,
+        "sha256": "7d77ab4d77bf411ccabc6fae6eb680eb9cf414ff9ef62235b6742895f9a58a3b"
+      },
+      "changed_from_parent": true
+    },
+    {
+      "path": "include/imagejxx/axis_orientation_command.hpp",
+      "bytes": 2776,
+      "sha256": "18e3462c6862a53f7b676278f9bef7ebdfae76e953ed6e24beb73b638c929bac",
+      "role": "native_core",
+      "classification": "owned_project_code_or_owned_integration",
+      "selected_license": "MIT",
+      "source_status": "new_owned_source"
+    },
+    {
+      "path": "src/native/axis_orientation_command.cpp",
+      "bytes": 6728,
+      "sha256": "d10fd7a09eb729b992c4be51835ec52739594dd3ed6d9ce580db90acdeaa3572",
+      "role": "native_core",
+      "classification": "owned_project_code_or_owned_integration",
+      "selected_license": "MIT",
+      "source_status": "new_owned_source"
+    },
+    {
+      "path": "src/native/axis_extraction_command.cpp",
+      "bytes": 8088,
+      "sha256": "23b10a819f1042ef8dea1426c9b3310d71e088e7870d2614233f276f2008888d",
+      "role": "native_core",
+      "classification": "owned_project_code_or_owned_integration",
+      "selected_license": "MIT",
+      "source_status": "modified_owned_source",
+      "p06h_source_member": {
+        "path": "src/native/axis_extraction_command.cpp",
+        "bytes": 22261,
+        "sha256": "8dbd334c0078c4be796ba668a9901a9bf32758987ec8895626e37bfe41ad64a1"
+      },
+      "changed_from_parent": true
+    },
+    {
+      "path": "src/native/axis_command_record.hpp",
+      "bytes": 1556,
+      "sha256": "f85f3f3a8494983934b23408e3adb8b43ce7fe2dce04e5f9207b0bb07eb29640",
+      "role": "native_core",
+      "classification": "owned_project_code_or_owned_integration",
+      "selected_license": "MIT",
+      "source_status": "new_owned_source"
+    },
+    {
+      "path": "src/native/axis_command_record.cpp",
+      "bytes": 14221,
+      "sha256": "6d1bb1d03188414ee2d9d23bc072f8f8ba350016f8534317c719c4de2e78a525",
+      "role": "native_core",
+      "classification": "owned_project_code_or_owned_integration",
+      "selected_license": "MIT",
+      "source_status": "new_owned_source"
+    },
+    {
+      "path": "src/native/axis_orientation_command_bindings.cpp",
+      "bytes": 6137,
+      "sha256": "737d6441f7f635e8f72967ecdc46f514aacb50e64c85c1d460a4f3650c62bd02",
+      "role": "native_python_binding",
+      "classification": "owned_project_code_or_owned_integration",
+      "selected_license": "MIT",
+      "source_status": "new_owned_source"
+    },
+    {
+      "path": "src/native/bindings.cpp",
+      "bytes": 28479,
+      "sha256": "fd29a19e96a955b3285a605a80f70784f75c646da5da8ccd0ba75fa95c785f1c",
+      "role": "native_python_binding",
+      "classification": "owned_project_code_or_owned_integration",
+      "selected_license": "MIT",
+      "source_status": "modified_owned_source",
+      "p06h_source_member": {
+        "path": "src/native/bindings.cpp",
+        "bytes": 28384,
+        "sha256": "60c05835923db2d0eb33daca0370e6ee90a4c1d5e98166c6f721034cfe3d3ee6"
+      },
+      "changed_from_parent": true
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 48708,
+      "sha256": "5baf47ebba936640e65e9c63f8ec2b1e89bca653b51b9ff2e4c2c073553cf737",
+      "role": "native_python_binding",
+      "classification": "owned_project_code_or_owned_integration",
+      "selected_license": "MIT",
+      "source_status": "modified_owned_source",
+      "p06h_source_member": {
+        "path": "src/imagejxx/__init__.py",
+        "bytes": 48165,
+        "sha256": "e9a94b65eae7d52f993172e3c7b417a622d3a83612833c3107e89283adc832c4"
+      },
+      "changed_from_parent": true
+    },
+    {
+      "path": "src/desktop/window.hpp",
+      "bytes": 12023,
+      "sha256": "1d9e96aa087f173ae5f73a6613437e53cbd494466b487b40469bcf6f44e64613",
+      "role": "shared_imgui_integration",
+      "classification": "owned_project_code_or_owned_integration",
+      "selected_license": "MIT",
+      "source_status": "modified_owned_source",
+      "p06h_source_member": {
+        "path": "src/desktop/window.hpp",
+        "bytes": 11314,
+        "sha256": "f048d5ae92bd41055d6765998b19726913a62d6e440971731b68696831516727"
+      },
+      "changed_from_parent": true
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 500534,
+      "sha256": "75dcc962519dae27b6ea9ac571e7cf3fb0eda6ca08a7556f3582b5a324719b23",
+      "role": "shared_imgui_integration",
+      "classification": "owned_project_code_or_owned_integration",
+      "selected_license": "MIT",
+      "source_status": "modified_owned_source",
+      "p06h_source_member": {
+        "path": "src/desktop/window.cpp",
+        "bytes": 486069,
+        "sha256": "39f330dcd49f5bc1e0e29acbfc3537659d0db86bc7ada03ad3d80178bcb745e0"
+      },
+      "changed_from_parent": true
+    },
+    {
+      "path": "src/desktop/document.cpp",
+      "bytes": 66867,
+      "sha256": "addbb9f1c1e2c4925ba42afd9a5a14f10a5ac66f1032b93cbef19a47c98afda6",
+      "role": "shared_imgui_integration",
+      "classification": "owned_project_code_or_owned_integration",
+      "selected_license": "MIT",
+      "source_status": "modified_owned_source",
+      "p06h_source_member": {
+        "path": "src/desktop/document.cpp",
+        "bytes": 66607,
+        "sha256": "9a264d74590ede976afaa93eda00fb7c07e504f49169a5892f5951bb26938ce2"
+      },
+      "changed_from_parent": true
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 32664,
+      "sha256": "ac439cc2a3c5d48792f123ded31a9afb40faca471a7eb59dd83f6c8df4f81f4a",
+      "role": "shared_imgui_integration",
+      "classification": "owned_project_code_or_owned_integration",
+      "selected_license": "MIT",
+      "source_status": "modified_owned_source",
+      "p06h_source_member": {
+        "path": "src/desktop/python.cpp",
+        "bytes": 31331,
+        "sha256": "2410a6511adfe82fc38b58b93d2afd381c6f8077f238a70940a286b5197e3077"
+      },
+      "changed_from_parent": true
+    },
+    {
+      "path": "src/imagejxx/ui/app.py",
+      "bytes": 22444,
+      "sha256": "88cb810d70ff2a724fc5aa5db6f0aba565ac56b60689037533032fc5d0f2aebb",
+      "role": "shared_imgui_integration",
+      "classification": "owned_project_code_or_owned_integration",
+      "selected_license": "MIT",
+      "source_status": "modified_owned_source",
+      "p06h_source_member": {
+        "path": "src/imagejxx/ui/app.py",
+        "bytes": 22134,
+        "sha256": "387e4a0c66bdcc4dd30e03f8cf20b146caffdfec944ea13238779e6dbaabe7b6"
+      },
+      "changed_from_parent": true
+    },
+    {
+      "path": "src/desktop/main.cpp",
+      "bytes": 24410,
+      "sha256": "e035e11940b371052ba239b838ef43d6c96299b52e1eece67855f1b6d65d189a",
+      "role": "shared_imgui_integration",
+      "classification": "owned_project_code_or_owned_integration",
+      "selected_license": "MIT",
+      "source_status": "modified_owned_source",
+      "p06h_source_member": {
+        "path": "src/desktop/main.cpp",
+        "bytes": 23770,
+        "sha256": "09ea64a021fdd6160ef1fcf71d50faa54d5cc7068c53def87dd1d4c699568c37"
+      },
+      "changed_from_parent": true
+    },
+    {
+      "path": "src/desktop/scientific_orientation_ui_probe.hpp",
+      "bytes": 470,
+      "sha256": "a78ce3df94bd905e9a6f8be7e6e4de54d21c4b55847719102e7e16f4ba70e3e8",
+      "role": "owned_observation_producers",
+      "classification": "owned_project_code_or_owned_integration",
+      "selected_license": "MIT",
+      "source_status": "new_owned_source"
+    },
+    {
+      "path": "src/desktop/scientific_orientation_ui_probe.cpp",
+      "bytes": 54005,
+      "sha256": "c709e5a702d74bd8f7bad63efb3b63e0720562ced2126d909fa7cf81e9515a0f",
+      "role": "owned_observation_producers",
+      "classification": "owned_project_code_or_owned_integration",
+      "selected_license": "MIT",
+      "source_status": "new_owned_source"
+    },
+    {
+      "path": "tests/python/scientific_orientation_api_observations.py",
+      "bytes": 15670,
+      "sha256": "585b3bbbe1d23fc863ea74c6395f570201667b5d35179b25cb215191d4036012",
+      "role": "owned_observation_producers",
+      "classification": "owned_project_code_or_owned_integration",
+      "selected_license": "MIT",
+      "source_status": "new_owned_source"
+    },
+    {
+      "path": "examples/cpp/scientific_axis_orientation.cpp",
+      "bytes": 36777,
+      "sha256": "45c6b96dba34a3d80caa39a0f2acf3a8a550eab0e436348dfe172ac64935b481",
+      "role": "owned_sdk_tests_and_capture",
+      "classification": "owned_project_code_or_owned_integration",
+      "selected_license": "MIT",
+      "source_status": "new_owned_source"
+    },
+    {
+      "path": "tests/native/test_scientific_axis_orientation_command.cpp",
+      "bytes": 40875,
+      "sha256": "b3ed878f5729aaa8156bd9da5c1fdd4c9e229ee9d129750ce6c039a52a8a4be1",
+      "role": "owned_sdk_tests_and_capture",
+      "classification": "owned_project_code_or_owned_integration",
+      "selected_license": "MIT",
+      "source_status": "new_owned_source"
+    },
+    {
+      "path": "tests/native/test_scientific_axis_orientation_window.cpp",
+      "bytes": 54117,
+      "sha256": "bb00152bf3a31718d942407bfb162ec8689a71ee563b8a1770193bd076147e7e",
+      "role": "owned_sdk_tests_and_capture",
+      "classification": "owned_project_code_or_owned_integration",
+      "selected_license": "MIT",
+      "source_status": "new_owned_source"
+    },
+    {
+      "path": "tests/python/test_scientific_axis_orientation_command.py",
+      "bytes": 38902,
+      "sha256": "9276349851506410801c6b301bcc1072050da3cecd50c88e0bf1b720b5535650",
+      "role": "owned_sdk_tests_and_capture",
+      "classification": "owned_project_code_or_owned_integration",
+      "selected_license": "MIT",
+      "source_status": "new_owned_source"
+    },
+    {
+      "path": "tests/python/test_scientific_orientation_ui.py",
+      "bytes": 111948,
+      "sha256": "93f218edad01601b7d80be2377b8110c79c95ee51a5dd6a13fdf2aa953f31dfa",
+      "role": "owned_sdk_tests_and_capture",
+      "classification": "owned_project_code_or_owned_integration",
+      "selected_license": "MIT",
+      "source_status": "new_owned_source"
+    },
+    {
+      "path": "scripts/capture_shortcuts_history_ui.py",
+      "bytes": 34591,
+      "sha256": "4323493c03ee7b9bdbbadec53638224ae2f595802f591eee8685d29d9e3cf1c0",
+      "role": "owned_sdk_tests_and_capture",
+      "classification": "owned_project_code_or_owned_integration",
+      "selected_license": "MIT",
+      "source_status": "modified_owned_source",
+      "p06h_source_member": {
+        "path": "scripts/capture_shortcuts_history_ui.py",
+        "bytes": 28857,
+        "sha256": "4c7175b7a0f260871ed8767e600dab71a3fbf3b5402cf932691ac2245e2fd871"
+      },
+      "changed_from_parent": true
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 51195,
+      "sha256": "29f09aadea6e6a9511af63d36cc3bbd07cd6f699dae44bf63f8bf2bd0329fbb8",
+      "role": "build_integration",
+      "classification": "owned_project_code_or_owned_integration",
+      "selected_license": "MIT",
+      "source_status": "modified_owned_source",
+      "p06h_source_member": {
+        "path": "CMakeLists.txt",
+        "bytes": 48868,
+        "sha256": "c72dad3b775d2ade49af841a507762c638f8f58579ac91f29d2c039373a996d7"
+      },
+      "changed_from_parent": true
+    },
+    {
+      "path": "examples/cpp/CMakeLists.txt",
+      "bytes": 12126,
+      "sha256": "daf0ebbdc4c5fe3dcc21007a45134ef5afe2709a136de1d3674d7b1079876680",
+      "role": "build_integration",
+      "classification": "owned_project_code_or_owned_integration",
+      "selected_license": "MIT",
+      "source_status": "modified_owned_source",
+      "p06h_source_member": {
+        "path": "examples/cpp/CMakeLists.txt",
+        "bytes": 11736,
+        "sha256": "a6db28beaa106a27d5dda4956b2bb3e62120ae718b632eee1598767ca3a3f030"
+      },
+      "changed_from_parent": true
+    }
+  ],
+  "source_union": {
+    "current_unique": 27,
+    "new_owned_files": 13,
+    "modified_owned_files": 14,
+    "current_bytes": 1340834,
+    "final_reader_hold": {
+      "path": "build/p06i-001/scientific-orientation-ui-reader-repair001/source-hold002.json",
+      "bytes": 3220,
+      "sha256": "bef1781fc33f5bc3d4e35472826b659d64fd5329f552f8f25e0073d53a33454a"
+    },
+    "source_only": true
+  },
+  "source_authoring_and_derivation": {
+    "native": "Independently authored additive V2 command sibling and metadata-only descriptor; private shared V1 source/layout helpers factored from existing owned implementation. Existing integer sampler/affine implementation and closed public two-type V1 contract remain existing project material; no upstream Java algorithm/source incorporated.",
+    "python": "Thin native forwards reuse existing callback/GIL bridge; exports only additive native entry points. New fresh canonical consumer uses passed actual installed modules and DTOs; NumPy constructs owned inputs and serializes actual declared bytes only.",
+    "shared_ui": "Owned shared ImGui form/current-source capture/admission/recording/replay/rebind/staged-attachment integration. Desktop legacy workflow validates V2 then retains explicit typed-workflow refusal. No Qt or second Python geometry implementation.",
+    "sdk_and_tests": "Owned analytic TCZYXS formula, literal typed/quiet-bit/calibration/world/refusal fixtures, SDK actual-value serializer, native/host/API/paired readers and disclosed API setup. Public-only SDK uses project headers+stdlib; no expected/PASS-backed actual values.",
+    "observation_and_capture": "Adapted existing owned HeadlessInputSession/publication probe/lossless transport/SHA/Win32-owned-process facilities. O12 real scientific Gaussian busy setup and candidate failure setup are explicitly scoped diagnostic stimuli. Additive bounded capture profile retains old profiles; no external reference asset/model/font or new package.",
+    "reference": "Reuse exact adopted orientation reference review identity; do not reopen ImageJ source/license/archive/JAR/classpath. Its reference-only tools,16 reviewed members and96 observation scope are unchanged; owned affine/time/XY/F64/RGBA/adapter/UI claims remain owned.",
+    "qualified_reader_repair": {
+      "changed_functions": [
+        "_inputs",
+        "_workflow_rebind_case"
+      ],
+      "added_functions": [
+        "_reader_source_repair"
+      ],
+      "added_stdlib_imports": [
+        "ast",
+        "base64",
+        "xml.etree.ElementTree as ET"
+      ],
+      "wire_boundary": "NativeV3 stores canonical base64 F64LE planes; actual observation stores F64LE hex. Decode actual saved-wire base64, enforce30x504-byte bounds, compare all bytes against independently observed source bytes. No pixel processing, expected-value rewrite or tolerance change.",
+      "origin_guard": "Explicitly admit exact original captured source plus qualified live source through pinned repair manifest. Original origin reader_source names logical live path; its retained bytes/hash are checked against captured old bytes rather than rereading intentionally changed live bytes.",
+      "preserved": "Original22 case assertion ASTs, global constants/dispatch/membership and O09 unchanged prefix/suffix preserved; only exact wire encoding comparison and source guard changed.",
+      "incorporated_material": "Owned pure reader and metadata/byte decoding over existing project/nativeV3 format; only Python stdlib modules added, no new dependency/runtime/model/font/image/Java/source material."
+    }
+  },
+  "parent_accepted_reviews": [
+    {
+      "path": "docs/parity/shortcuts-commercial-review-001.json",
+      "bytes": 55390,
+      "sha256": "d782267dfe90a07cc94a288bff064e1048720b4c5ce8c17a0c66671c82563109"
+    },
+    {
+      "path": "docs/parity/axis-range-orientation-commercial-review-001.json",
+      "bytes": 7233,
+      "sha256": "a356c64ab528f203457f5841040c49fc81a34528979faa742fc45bfbe4805734"
+    },
+    {
+      "path": "docs/parity/axis-range-reslice-commercial-review-001.json",
+      "bytes": 6173,
+      "sha256": "e76564af14fbe2a36e0252780cee6b0c0d32140386518cd48bb0007e9f6a493f"
+    }
+  ],
+  "selected_notice_and_declaration_pins": [
+    {
+      "path": "LICENSE",
+      "bytes": 1079,
+      "sha256": "6496956d6060adfcd2617e553b7393c3b7fbea353a02f3c39d60051709d1ce5f"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "bytes": 4201,
+      "sha256": "9793a0e9272d9c7f8aa1ea97712a38f1ff186ecbd379f3a71c16ae273167bff9"
+    },
+    {
+      "path": "licenses/dependencies.json",
+      "bytes": 4516,
+      "sha256": "436d924a8d501a7139f09e65441c46b6944e1d4c63b12d56eb1fd43290dd0a67"
+    },
+    {
+      "path": "licenses/desktop-dependencies.json",
+      "bytes": 5236,
+      "sha256": "9b5aa27fbdc98780f7eb93aa6a290bea9eb0894cce5f89b5d22d081b15ed55f3"
+    },
+    {
+      "path": "licenses/glfw3.txt",
+      "bytes": 904,
+      "sha256": "149704059b5d0bf551637e50042dd4de9c2cae921021f6636298911e3a5f9462"
+    },
+    {
+      "path": "licenses/imgui.txt",
+      "bytes": 1083,
+      "sha256": "c80c5789748d955c4a650562baa0d750494e2c7128c2ca66aaebe2e3c4e198bf"
+    },
+    {
+      "path": "licenses/libjpeg-IJG.txt",
+      "bytes": 12799,
+      "sha256": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6"
+    },
+    {
+      "path": "licenses/libjpeg-turbo.txt",
+      "bytes": 5620,
+      "sha256": "2189dc45a8fe96204069f8124caa53a148dfdc193f50f584c6ca7849a6072872"
+    },
+    {
+      "path": "licenses/liblzma-0bsd.txt",
+      "bytes": 607,
+      "sha256": "0b01625d853911cd0e2e088dcfb743261034a091bb379246cb25a14cc4c74bf1"
+    },
+    {
+      "path": "licenses/liblzma.txt",
+      "bytes": 3119,
+      "sha256": "616a3ad264ce29b8f1cb97e53037b139d406899ca8d1f799651e17bfa09830b8"
+    },
+    {
+      "path": "licenses/libpng.txt",
+      "bytes": 5345,
+      "sha256": "16d9daaafbf63a31a5bdc91d4600972548fef5aaa1244202393288dbd079c49a"
+    },
+    {
+      "path": "licenses/libtiff.txt",
+      "bytes": 2416,
+      "sha256": "0e27c2382d7b8147972bbb746e04059a1152c8d0fda9d03ef1399d1a433c4ade"
+    },
+    {
+      "path": "licenses/native-dependencies.json",
+      "bytes": 1917,
+      "sha256": "b649aa7e93fc45941fb5f8092e9bebede34cab5c797f7bba95658a1da17d027d"
+    },
+    {
+      "path": "licenses/nlohmann-json.txt",
+      "bytes": 1076,
+      "sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+    },
+    {
+      "path": "licenses/proggy-clean.txt",
+      "bytes": 1109,
+      "sha256": "0b6e79fc26dcd9ec87d0e3f2ff383abd403ea58b855368960f2a2643c7744211"
+    },
+    {
+      "path": "licenses/pybind11.txt",
+      "bytes": 1684,
+      "sha256": "83965b843b98f670d3a85bd041ed4b372c8ec50d7b4a5995a83ac697ba675dcb"
+    },
+    {
+      "path": "licenses/stb.txt",
+      "bytes": 2510,
+      "sha256": "bebfe904b14301657e4e5d655c811d51fd31b97c455b9cc2d8600d6bac6cff63"
+    },
+    {
+      "path": "licenses/zlib.txt",
+      "bytes": 1002,
+      "sha256": "845efc77857d485d91fb3e0b884aaa929368c717ae8186b66fe1ed2495753243"
+    },
+    {
+      "path": "third_party/nlohmann_json/SOURCE.json",
+      "bytes": 6553,
+      "sha256": "c0edbd13965b5b3926e275f4e5260fa8a070c82a741c32fe3012f7511c0be843"
+    },
+    {
+      "path": "third_party/zlib/SOURCE.json",
+      "bytes": 2649,
+      "sha256": "165f7bad405b23d0d73aa6fe9fbde44f317cc0670d7505d2dc15fa38e61a5db8"
+    }
+  ],
+  "native_vendor_member_pins": [
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/adl_serializer.hpp",
+      "bytes": 2281,
+      "sha256": "80742b0081e0ac5094ad4d7a3549e969b004bb7ed86807911a8177c843701262"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/byte_container_with_subtype.hpp",
+      "bytes": 3535,
+      "sha256": "2b75a051d2f82fd95f613c70472b85a281d085f1973791c1118244099bf38942"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/abi_macros.hpp",
+      "bytes": 4121,
+      "sha256": "cebb5441f1ce851444f47a7d8ea0446339ee499df83215ebd873c8347a191bd7"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/conversions/from_json.hpp",
+      "bytes": 21391,
+      "sha256": "40af785ecd909d2ca3abea3e9a3b8d8b8973e66a3c9ff7820b06bb6898783f64"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/conversions/to_chars.hpp",
+      "bytes": 38578,
+      "sha256": "20b9bc4469ee490bc626d8dbcdee060a494292473df4bdbcecfe2f2145ed562d"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/conversions/to_json.hpp",
+      "bytes": 17205,
+      "sha256": "a0aadb543a4c2009564aee738b0adaabfa6275e9f4d3e08b6b11e4005bb6fb12"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/exceptions.hpp",
+      "bytes": 10590,
+      "sha256": "5c9b21e0a13ac0bab8dea676b9804d739dfd2adc24f036f97ab243ef70e2aae7"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/hash.hpp",
+      "bytes": 4018,
+      "sha256": "a025807281c5d92fdfddcc993b2b2a9658146435cc10b003723b130698445c80"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/input/binary_reader.hpp",
+      "bytes": 104932,
+      "sha256": "9e617825317910352f2a2025bb8749898287fa3003e81ce22a57b52c535d0eab"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/input/input_adapters.hpp",
+      "bytes": 19635,
+      "sha256": "01fa7af8fdd1ba7b1c12089bf92783f70d09a93db7564e4df70544fc85304de6"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/input/json_sax.hpp",
+      "bytes": 31133,
+      "sha256": "0ed6fdb0ef91f163cca312b7ffd6e0842f12e1b8340204ab2d0c05277e0d1f18"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/input/lexer.hpp",
+      "bytes": 55523,
+      "sha256": "a8b73e55242731375c088133f3a355af7b1bb82d6b9531678cb20560d3733c1d"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/input/parser.hpp",
+      "bytes": 19712,
+      "sha256": "b4a762967b174de0c43896b465e4a7c8c92c3a8636f669debdec836050f7912a"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/input/position_t.hpp",
+      "bytes": 960,
+      "sha256": "0239037872b622a5f3f42fa1b453d201f977d21829b2dc4a19abe2594515eada"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/iterators/internal_iterator.hpp",
+      "bytes": 1073,
+      "sha256": "bf015623518c5aab4762d9a4d21af0e85a26cdcb3fc6e69e464c8575a3b87aba"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/iterators/iter_impl.hpp",
+      "bytes": 24869,
+      "sha256": "c6f0664c4965287154505837dde4ae13e7625978745e8876951fc90da61b5068"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/iterators/iteration_proxy.hpp",
+      "bytes": 8073,
+      "sha256": "3c562f1783e1fc9476ed53d8054bc50309caa425d993996a9ddf9194fb2129cc"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/iterators/iterator_traits.hpp",
+      "bytes": 1751,
+      "sha256": "960d1fefbe7cb220292b07e4ec047bfa9a3ccbd753adaf62e5d583f746e71e47"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/iterators/json_reverse_iterator.hpp",
+      "bytes": 3863,
+      "sha256": "6f072fb2b9e151ad9645cb03a9aa23231480bf447e53b2e0ecb41f45fb7503e1"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/iterators/primitive_iterator.hpp",
+      "bytes": 3229,
+      "sha256": "40a03177d519ba378e59bed0a53a9be8022fd3d0ee701409781c0e856d5bf510"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/json_custom_base_class.hpp",
+      "bytes": 1180,
+      "sha256": "e622910868b019ba09460c96a6092c1018ed501f34cce4ed633641400c2d2500"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/json_pointer.hpp",
+      "bytes": 37199,
+      "sha256": "9c5b54a455e96c63788c157d914b70cde6a3f36ef1e5df037f4fc17bb92f235d"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/json_ref.hpp",
+      "bytes": 1813,
+      "sha256": "5d133945d0859acaa82c50c1a044b1e1f806c0a38107eae24bf07ff5944fc1e3"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/macro_scope.hpp",
+      "bytes": 51847,
+      "sha256": "76012b860dc76e7c28efead61311d588596417f5b476fc20f762b1ad81858ae0"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/macro_unscope.hpp",
+      "bytes": 1281,
+      "sha256": "626b7e10290a2bb558634b8bbfbc5118b5ce696151b5bc87418142c578bd501e"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/meta/call_std/begin.hpp",
+      "bytes": 455,
+      "sha256": "4629b547aa6b6629c266b1b474f576cbde5ce898c96502c828a72d99212b9f34"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/meta/call_std/end.hpp",
+      "bytes": 453,
+      "sha256": "e09dd80f2263ff192d60bad19bdbdc5402866d0b0c8caeb9c2759b26ba864a39"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/meta/cpp_future.hpp",
+      "bytes": 5173,
+      "sha256": "71e606c586174ff875f5996a00bc6e84a49e0919eafd6fb38c7cb928dfdf5795"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/meta/detected.hpp",
+      "bytes": 2111,
+      "sha256": "d144ac2ab6bb92be35bfda7eec560b9d030760e4330b7f951a2aca63469488a1"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/meta/identity_tag.hpp",
+      "bytes": 528,
+      "sha256": "37ff788879d4b14ffa2e79bdc75b470d2c2ca5ebadafef649312f653455d45fa"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/meta/is_sax.hpp",
+      "bytes": 6962,
+      "sha256": "e60398b282767374747db20ab06101804c7345eea0761a313a298bf87b913f91"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/meta/std_fs.hpp",
+      "bytes": 791,
+      "sha256": "257716f0958e9fd6c1dc3f0335716d779550353c58bc929e8dda1c79bd336701"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/meta/type_traits.hpp",
+      "bytes": 29415,
+      "sha256": "d5da966796c089fa89cba5474309fd2124b083d99adf17991084a6a532fdf55d"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/meta/void_t.hpp",
+      "bytes": 599,
+      "sha256": "c340e7b148543b0abfd719ddbc3759e23c2feffc63656136a15fd80b98ca8bf8"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/output/binary_writer.hpp",
+      "bytes": 71657,
+      "sha256": "cdf56265d14b80505796dfb94d79896a226e8888e4f730ff6e92c31a2b891cd1"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/output/output_adapters.hpp",
+      "bytes": 4069,
+      "sha256": "3322dce8f63e69930806bd8691c2cd9ece8a76b54b34f617641329c44559bbb5"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/output/serializer.hpp",
+      "bytes": 40155,
+      "sha256": "4c079acb8f6936c4f787fd5706a52c77a1751dd34787a821705845698ec8540e"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/string_concat.hpp",
+      "bytes": 5953,
+      "sha256": "fb30fb50c325a1b5610a62a9061a1966b4e850dd964635c1ad1c4c9da48f7daa"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/string_escape.hpp",
+      "bytes": 2170,
+      "sha256": "cb12b0e5903b1ec90aaa96a4a71e0cf7106440ca9cedcff6495677d01f244733"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/string_utils.hpp",
+      "bytes": 840,
+      "sha256": "85e2fbdfe07f1a44b90d5422ee1b951d1053f32e429dc4aee36274fb03fd9354"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/value_t.hpp",
+      "bytes": 4328,
+      "sha256": "67ed7b164db48556bb4ae409a645401faba459081570f9b9f9ff977fd32c6114"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/json.hpp",
+      "bytes": 201924,
+      "sha256": "88d7eb42b19599cab48856576dd4ea52538df72ad7c57200c50de98bda246458"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/json_fwd.hpp",
+      "bytes": 2543,
+      "sha256": "8777a878c20a412dd04c8011c87c3d72d74e48a4dda5e52f7948e26dd2168931"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/ordered_map.hpp",
+      "bytes": 11686,
+      "sha256": "2d4e2d9f6e6a0c2d2adadcb620da1f49585fa4e54e54cfa16b6d20e01d857d61"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/thirdparty/hedley/hedley.hpp",
+      "bytes": 86072,
+      "sha256": "1547b367895f8be9f8283ae21f583182db572ad990236220002b632a15238712"
+    },
+    {
+      "path": "third_party/nlohmann_json/include/nlohmann/thirdparty/hedley/hedley_undef.hpp",
+      "bytes": 5502,
+      "sha256": "ddf06784ca9448b4899db96a409ec1cbc65a0f682db9c966c011f00b77ae75c4"
+    },
+    {
+      "path": "third_party/zlib/adler32.c",
+      "bytes": 4964,
+      "sha256": "9cd1443a24ff2a3053961695bd432035c58347386a420d3388232376ebabe211"
+    },
+    {
+      "path": "third_party/zlib/compress.c",
+      "bytes": 2613,
+      "sha256": "86f802c16a965e7a28737e3730b4e576c5ba40981753967e3e30916f4dc1b4b1"
+    },
+    {
+      "path": "third_party/zlib/crc32.c",
+      "bytes": 31605,
+      "sha256": "8fd16f0a7714d51c89c2eb37eb98ec15e8a4dc57ba343e7b7398b19144039fda"
+    },
+    {
+      "path": "third_party/zlib/crc32.h",
+      "bytes": 591749,
+      "sha256": "9a2223575183ac2ee8a247f20bf3ac066e8bd0140369556bdbdffc777435749e"
+    },
+    {
+      "path": "third_party/zlib/deflate.c",
+      "bytes": 81731,
+      "sha256": "3b956337350f94c34987750f785587ef33d9c89ceaebb7c2afb189c956360cbe"
+    },
+    {
+      "path": "third_party/zlib/deflate.h",
+      "bytes": 14041,
+      "sha256": "48baf016326d8d5e3e32ac8153cc7e22f854b8e6834830b167b998a7fb1e7989"
+    },
+    {
+      "path": "third_party/zlib/gzguts.h",
+      "bytes": 6676,
+      "sha256": "716fa648aca1bb06c219d7b97ad4846d8479206143bc39557bfd8283f5783e04"
+    },
+    {
+      "path": "third_party/zlib/infback.c",
+      "bytes": 22669,
+      "sha256": "62df9a6dd3eef126f1d81d0ad7a534504610dec44482b0a472b61c93cbab6554"
+    },
+    {
+      "path": "third_party/zlib/inffast.c",
+      "bytes": 12924,
+      "sha256": "e6ef64ce5dc0a4cd5c7ad08ceeb2b2a698b8447f6bd156057caeb2edab68c0cb"
+    },
+    {
+      "path": "third_party/zlib/inffast.h",
+      "bytes": 422,
+      "sha256": "05cc5dc9ff1da7b8b52a4bd8bda0d8a5c236a2f39efe84b941516ea13857e6c5"
+    },
+    {
+      "path": "third_party/zlib/inffixed.h",
+      "bytes": 6332,
+      "sha256": "237ba710f090e432b62ebf963bee8b302867e9691406b2d3f8ee89ee7bfef9b0"
+    },
+    {
+      "path": "third_party/zlib/inflate.c",
+      "bytes": 55519,
+      "sha256": "34c998ce0037c0537c04b03b276f680b945f9b2c9d1e01b287605bd6879f7fd2"
+    },
+    {
+      "path": "third_party/zlib/inflate.h",
+      "bytes": 6683,
+      "sha256": "e8d4a51b07694bf48cb91979c19974cf6a5ab0b8a09d26ec0d14df349230673e"
+    },
+    {
+      "path": "third_party/zlib/inftrees.c",
+      "bytes": 13024,
+      "sha256": "5d4f335221d2dc76f17abd2577d92c2d7baf68fa6d7f23373b360830493d1563"
+    },
+    {
+      "path": "third_party/zlib/inftrees.h",
+      "bytes": 2920,
+      "sha256": "0a0fcaf2ae2fae57426bdc06637270e9bba974f35202cadbdba479d946e6409d"
+    },
+    {
+      "path": "third_party/zlib/trees.c",
+      "bytes": 40937,
+      "sha256": "f63c68c16c05fcd196050529d1a0e7657960e4136b9987d90a6ac3e58a964b0f"
+    },
+    {
+      "path": "third_party/zlib/trees.h",
+      "bytes": 8472,
+      "sha256": "bb0a9d3ca88ee00c81adb7c636e73b97085f6ef1b52d6d58edbe2b6dc3adeb4d"
+    },
+    {
+      "path": "third_party/zlib/uncompr.c",
+      "bytes": 2911,
+      "sha256": "04dca5e31b3b8a17d1806426f66f0c539f4184d657e149d40be07070c6227b52"
+    },
+    {
+      "path": "third_party/zlib/zconf.h",
+      "bytes": 16500,
+      "sha256": "f5134250a67d57459234b63858f0d9d3ef8dcc48e9e1028d3f4fdcf6eae677ae"
+    },
+    {
+      "path": "third_party/zlib/zlib.h",
+      "bytes": 96829,
+      "sha256": "8a5579af72ea4f427ff00a4150f0ccb3fc5c1e4379f726e101133b1ab9fc600c"
+    },
+    {
+      "path": "third_party/zlib/zutil.c",
+      "bytes": 7179,
+      "sha256": "8ced40d8c88588811edd2bdb35b7439983d5e1f8e9e32b8a3b244731f3c317b7"
+    },
+    {
+      "path": "third_party/zlib/zutil.h",
+      "bytes": 6677,
+      "sha256": "dddb2dc7a1dc339ecf2c8e089b366f08bb731c0839c7110240d17ce731bb4fea"
+    }
+  ],
+  "dependency_reuse": {
+    "selected_notice_and_declaration_count": 20,
+    "native_vendor_count": 68,
+    "identity_changed_count": 0,
+    "new_incorporated_third_party_components": [],
+    "new_product_packages": [],
+    "new_models_fonts_external_assets": [],
+    "new_java_or_jdk_product_runtime_edges": [],
+    "new_external_link_dependencies": [],
+    "selected_dependency_obligations": "Retain existing selected full ImGui/ProggyClean/GLFW, JSON, pybind11, codec/compression and runtime/test declarations/notices in their already reviewed scopes. Private native prefixed zlib stays distinct from desktop codec zlib. CMake and pyproject introduce no new dependency declaration or external link selection.",
+    "unchanged_reused_context": [
+      {
+        "path": "pyproject.toml",
+        "bytes": 2051,
+        "sha256": "7f628c87796fa28104be56561e45761103d3b633aeae60e57355f009b62aa8cc"
+      },
+      {
+        "path": "src/desktop/desktop.hpp",
+        "bytes": 11984,
+        "sha256": "474dae5d51012d4b5295ac19860764f99f253fb5e08903749bc79578c3e9546f"
+      },
+      {
+        "path": "src/desktop/actual_observation_transport.hpp",
+        "bytes": 8234,
+        "sha256": "95ec15363fbdd14efc7edf674d6117880426e848a3ab940a914cc203c1f1d47e"
+      },
+      {
+        "path": "src/native/operation_job_probe_internal.hpp",
+        "bytes": 1813,
+        "sha256": "72f7c737f5b1d8f754d0794c0033aeebc819ffc4c25b6497dac6507f16360e05"
+      },
+      {
+        "path": "src/desktop/headless_session_internal.hpp",
+        "bytes": 1240,
+        "sha256": "8171fef27522d25c622217768407e434a40a7bec82e389efd7826764795235dc"
+      },
+      {
+        "path": "src/native/operation_bindings.cpp",
+        "bytes": 48292,
+        "sha256": "14becd169c7a11dde6808a22beb78c8f8e711131187443555a0aca38390b4f7b"
+      }
+    ],
+    "artifact_identity_or_notice_members_verified": false,
+    "scope_limits": [
+      "Actual final runtime DLL/member/notices identities require the separate product gate.",
+      "Prior57 direct desktop inputs remain historical reviewed evidence, not newly rehashed products here.",
+      "Keep private prefixed and desktop external zlib distinct.",
+      "Preserve prior cached libpng/zlib ABI metadata discrepancy; no rebuilt package closure claimed.",
+      "External Windows/OpenGL/MSVC/Python runtimes, drivers and system fonts retain existing scopes."
+    ]
+  },
+  "root_preimage_and_parent_inventory": {
+    "parent_archive": {
+      "path": "build/shortcuts-source-final001/imagejxx-0.2.0.tar.gz",
+      "bytes": 8372045,
+      "sha256": "e8ec1806f67fdd3afe705a5c866539783510b78ef42ae9b0da31aa6a0c697dec"
+    },
+    "parent_member_receipt": {
+      "path": "build/shortcuts-001/source-final001.json",
+      "bytes": 135960,
+      "sha256": "e8a48d4529f576d7c520c77d1de4a538b62b8a0c372ab92770c24e99bf59b859"
+    },
+    "root_preimage_index": {
+      "path": "build/p06i-001/root-source001/preimages001.json",
+      "bytes": 2280,
+      "sha256": "c3108af20d811cd336a5e264384fbe61a00af34a784586b4a9df327aeb29c83d"
+    },
+    "exact_root_preimages_verified": 8,
+    "source_archive_members_opened_or_extracted": 0,
+    "root_build_diff": "Owned native/binding/private producer/test/SDK registration and reuse of existing runtime-file copying only; no new find_package, FetchContent, dependency declarations, compiler policy or external link packages"
+  },
+  "preserved_scope": {
+    "families": 99,
+    "family_promotions": 0,
+    "fiji_decision_changes": 0,
+    "pending_fiji_components": 1437,
+    "old_orientation_requirement_and_reference_review_unchanged": true,
+    "NC_research_only_unlicensed_unreviewed_incorporation": "excluded",
+    "copyleft_alone_is_not_NC": true
+  },
+  "metadata_and_documentation_policy": "Live commands/card/plan/adoption/proof metadata remain outside code-pin list. This review contains no currentcommands digest or self-pin. Settle includedmetadata once, then safe source/archive freeze; final distribution acceptance lives only in excluded buildreceipt.",
+  "remaining_final_gates": [
+    "Root independently reviews this proposal and rechecks all27 exact sourcepins plus finalreaderhold and unchanged88 dependency/member pins before source-only adoption. Any changed source requires narrow delta review.",
+    "Genuine installed API10/new canonical consumer, full paired24 and independent formal assertion/proof gates remain separate; source intentions and source eligibility do not substitute for execution.",
+    "Match exact current core/_native/_desktop/standalone/wheel/SDK/source members and selected LICENSE/notices/declarations in final artifact gate, retaining original failures and all product origins.",
+    "Preserve existing codec ABI provenance, reference/owned distinction, Windows/OpenGL/MSVC/Python/driver/system-font boundaries and full remaining ImageJ/commercial Fiji scope."
+  ],
+  "final_distribution_accepted": false,
+  "runtime_acceptance": false,
+  "family_complete": false,
+  "full_goal_complete": false,
+  "reader_repair_evidence": {
+    "reader_hold": {
+      "path": "build/p06i-001/scientific-orientation-ui-reader-repair001/source-hold002.json",
+      "bytes": 3220,
+      "sha256": "bef1781fc33f5bc3d4e35472826b659d64fd5329f552f8f25e0073d53a33454a"
+    },
+    "source_comparison": {
+      "path": "build/p06i-001/scientific-orientation-ui-reader-repair001/source-comparison002.json",
+      "bytes": 3258,
+      "sha256": "f2ca52797cc3b051fa56e040b6450e246cdc738d711d9dd86f8f974e1de28bff"
+    },
+    "repair_manifest": {
+      "path": "build/p06i-001/paired-reader-repair002/repair001.json",
+      "bytes": 2481,
+      "sha256": "79db1cdd4ef33de7ce16723bffb8d3d46c206a87a67bd09bec1c87ada5b7e21a"
+    },
+    "actual_repair_run": {
+      "path": "build/p06i-001/paired-reader-repair002/run001.json",
+      "bytes": 3156,
+      "sha256": "0105ba15020b6d566c0a145ee3b87adee24597d0df747912bb932849526a368c"
+    },
+    "actual_composition": {
+      "path": "build/p06i-001/paired-reader-repair002/composition001.json",
+      "bytes": 8096,
+      "sha256": "32da365c7d48b0cb3e505b81ad2543c35540c4491f4629f17710ae75e901ebe5"
+    }
+  },
+  "root_review": {
+    "date": "2026-10-17",
+    "scope": "Exact27 owned MIT sources; reviewed narrow reader decoding/provenance repair; unchanged20 notice/declaration and68 vendor identities. No newly incorporated third-party material.",
+    "proposal": {
+      "path": "build/p06i-001/commercial-review-proposal001/proposal.json",
+      "bytes": 43831,
+      "sha256": "44dde5d443ccda7834e465929db74f5ec11d7ce2b70a5bbfa1e301a095de0023"
+    },
+    "reader_refresh": {
+      "path": "build/p06i-001/commercial-review-proposal001/reader-repair-refresh002.json",
+      "bytes": 9709,
+      "sha256": "ae4e3c3a1491dea39b90b772a529f8ed116d7c27a984b87f4a079e59c44450d7"
+    },
+    "runtime_and_distribution_gates_separate": true
+  }
+}

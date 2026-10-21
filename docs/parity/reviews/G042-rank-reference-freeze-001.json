@@ -1,0 +1,2759 @@
+{
+  "schema": "imagejxx.parity.rank-reference-freeze-proposal",
+  "schema_version": 1,
+  "id": "G042-rank-reference-freeze-001",
+  "state": "SOURCE_WRITE_HOLD_ROOT_ADOPTION_REQUIRED_BEFORE_PREPARE",
+  "not_an_acceptance_manifest": true,
+  "scope": "Exact held16-case ImageJ1.54r rank reference prepare/capture/read proposal. Reuses entry001 decisions and existing producer/independent reader. No new fixture, source preparation framework, numerical policy adoption, product implementation or runtime acceptance.",
+  "consumed_inputs": [
+    {
+      "path": "docs/parity/reviews/G042-rank-editor-entry-001.json",
+      "bytes": 29815,
+      "sha256": "7b4e4edd133d34431f8e763fbc8db82d215d4e6e5b546402ea6203fcb43b0b02"
+    },
+    {
+      "path": "scripts/capture_rank_filter_reference.py",
+      "bytes": 41595,
+      "sha256": "3a09dd255d2bc28d8b18e5bfbef93b3c931fa878def7e6e9c3769dc532773ca9"
+    },
+    {
+      "path": "tests/reference/test_rank_filter_reference_reader.py",
+      "bytes": 37669,
+      "sha256": "826a5e69b704b2f84a118de5e35c7e42ab82df754614b7a4a5a5c5ee1b8edd9b"
+    },
+    {
+      "path": "scripts/capture_composite_min_reference.py",
+      "bytes": 62549,
+      "sha256": "84e355ed4a509c1e95ae63f8736cddf3f23a68c6ce2bad0bbe91e0fb37e8f16a"
+    },
+    {
+      "path": "scripts/capture_roi_boolean_reference.py",
+      "bytes": 28903,
+      "sha256": "3c8ff4700ef86cdd930c7ab8ec424d4a207b26a1672d1d1cc49811af5c3a4653"
+    },
+    {
+      "path": "scripts/capture_binary_reference.py",
+      "bytes": 9138,
+      "sha256": "65ac94eef8b0d165f29cfb1a971a511a07975478de3e92c49de20d5514f301db"
+    },
+    {
+      "path": "scripts/capture_composite_max_reference.py",
+      "bytes": 65651,
+      "sha256": "210cb868a858857a37a579fc69674eeaab2bc03b7780cc4e1086d18c788b1ef0"
+    },
+    {
+      "path": "docs/parity/reviews/G033-select-min-entry-001.json",
+      "bytes": 48102,
+      "sha256": "2ca9846870223d9189c9819d4ad581d5ddcfc9055ff16162103c8a63b5f7482f"
+    },
+    {
+      "path": "build/p06c-001/channel-display-entry-001.json",
+      "bytes": 755840,
+      "sha256": "5360efa8a9f605d845aec107d6d9e1ee940e9732d0bdafdbd07a4c213d1bb471"
+    }
+  ],
+  "pin_status": "Local tool/entry/member hashes read during this source-only task. Historical archive/runtime/class qualification is consumed by identity; fresh full-tree verification and runtime feasibility occur only in the future bounded prepare. Do not describe this document as a new archive/class/runtime verification.",
+  "reference": {
+    "version": "ImageJ1.54r",
+    "commit": "62db90a269cccc1ac79f658e4602043214ed055b",
+    "distinct_from_fiji": "Pinned Fiji bundled ImageJ1.54p is not the standalone1.54r numerical reference. The Fiji archive supplies the inherited JDK only for this capture.",
+    "archives": [
+      {
+        "path": "build/references/downloads/imagej-62db90a269cccc1ac79f658e4602043214ed055b.zip",
+        "bytes": 6146010,
+        "sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+        "basis": "Reused pinned identity; consumed members byte-compared to archive."
+      },
+      {
+        "path": "build/references/downloads/fiji-latest-20261007-1617-win64-jdk.zip",
+        "bytes": 705099776,
+        "sha256": "8e33a11c7e79eb02c055bcee40de806d16e59f0b42e58c4689bd23eb47d990bb"
+      }
+    ],
+    "runtime_expectation": {
+      "java_version": "21.0.7",
+      "vendor": "Azul Systems, Inc.",
+      "os": "Windows",
+      "awt_headless": false,
+      "heap_mib": 256
+    },
+    "reused_original_classes": "build/p06c-001/capture-001/classes",
+    "reused_original_source_root": "build/references/roi-style-imagej154r/sources",
+    "reused_jdk_root": "build/references/roi-style-imagej154r/jdk",
+    "behavioral_source_members": [
+      {
+        "member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/plugin/filter/RankFilters.java",
+        "local": {
+          "path": "build/references/roi-style-imagej154r/sources/ij/plugin/filter/RankFilters.java",
+          "bytes": 41961,
+          "sha256": "284e7647e6619a3cc62887c57992056ccfd1dd99661868571fff005afff7d6b7"
+        },
+        "entry_anchor": "24-45,73-85,116-197,242-284,528-581,599-663,755-775,848-889"
+      },
+      {
+        "member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/plugin/filter/PlugInFilterRunner.java",
+        "local": {
+          "path": "build/references/roi-style-imagej154r/sources/ij/plugin/filter/PlugInFilterRunner.java",
+          "bytes": 25665,
+          "sha256": "71e9965a1984feafc184b336f1a575f7644e057631ce1d66fdd2deea7c10df4f"
+        },
+        "entry_anchor": "53-81,101-114,205-225,235-274"
+      },
+      {
+        "member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ImageProcessor.java",
+        "local": {
+          "path": "build/references/roi-style-imagej154r/sources/ij/process/ImageProcessor.java",
+          "bytes": 95523,
+          "sha256": "f98e87d25eb6b1f2c5d8557b73dd33e36fef0494d903d6d250206371dccc279c"
+        },
+        "entry_anchor": "900-911"
+      },
+      {
+        "member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/ImagePlus.java",
+        "local": {
+          "path": "build/references/roi-style-imagej154r/sources/ij/ImagePlus.java",
+          "bytes": 108208,
+          "sha256": "477e3f5f913b9c42feb68ea35d21836d45fd56920cccbfc5719a06822cbcfab9"
+        },
+        "entry_anchor": "2048-2085"
+      },
+      {
+        "member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/Roi.java",
+        "local": {
+          "path": "build/references/roi-style-imagej154r/sources/ij/gui/Roi.java",
+          "bytes": 90700,
+          "sha256": "200ad9f501a5860fe1486a3d2a8ed6cf6f82f7c7562a81e11d91ee7b7a04497e"
+        },
+        "entry_anchor": "isArea/mask contract"
+      },
+      {
+        "member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/GenericDialog.java",
+        "local": {
+          "path": "build/references/roi-style-imagej154r/sources/ij/gui/GenericDialog.java",
+          "bytes": 67447,
+          "sha256": "6905cc76a35f47c554d2d7ac5e6fd0b7bea6f3376d9a8af18f28a123a7051b20"
+        },
+        "entry_anchor": "producer EXTRA_SOURCE_PINS39-46; reader SOURCE_PINS40-52"
+      },
+      {
+        "member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/NonBlockingGenericDialog.java",
+        "local": {
+          "path": "build/references/roi-style-imagej154r/sources/ij/gui/NonBlockingGenericDialog.java",
+          "bytes": 2865,
+          "sha256": "ccb7b8dfb91521d1067d0412a14f0b5845ee8e2e03cbc28916705abc529f6a2a"
+        },
+        "entry_anchor": "producer EXTRA_SOURCE_PINS39-46; reader SOURCE_PINS40-52"
+      },
+      {
+        "member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/GUI.java",
+        "local": {
+          "path": "build/references/roi-style-imagej154r/sources/ij/gui/GUI.java",
+          "bytes": 10312,
+          "sha256": "d30af7deca53018b0aaec7398f99d24dd47022e067d1888c0c6e57969226f512"
+        },
+        "entry_anchor": "producer EXTRA_SOURCE_PINS39-46; reader SOURCE_PINS40-52"
+      },
+      {
+        "member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/Prefs.java",
+        "local": {
+          "path": "build/references/roi-style-imagej154r/sources/ij/Prefs.java",
+          "bytes": 30479,
+          "sha256": "5a35547eb3700613600fec474b78aa4d828e128c901dc5d401bdd6bbf06ece1c"
+        },
+        "entry_anchor": "producer EXTRA_SOURCE_PINS39-46; reader SOURCE_PINS40-52"
+      },
+      {
+        "member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/Macro.java",
+        "local": {
+          "path": "build/references/roi-style-imagej154r/sources/ij/Macro.java",
+          "bytes": 4798,
+          "sha256": "fab8720b69b9cd02700a90e192c9d46d411d8badaa68945623042cd9944152aa"
+        },
+        "entry_anchor": "producer EXTRA_SOURCE_PINS39-46; reader SOURCE_PINS40-52"
+      },
+      {
+        "member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ColorProcessor.java",
+        "local": {
+          "path": "build/references/roi-style-imagej154r/sources/ij/process/ColorProcessor.java",
+          "bytes": 43669,
+          "sha256": "23da704d928476adf42a2d562360eaa7c8b740ad02fba2728074be0bac490650"
+        },
+        "entry_anchor": "producer EXTRA_SOURCE_PINS39-46; reader SOURCE_PINS40-52"
+      }
+    ],
+    "full_tree_guard": "lineage.inputs verifies exact source/runtime/class maps against channel-display-entry-001, both archives, inherited Min entry and Max host-source pins. Rank additionally verifies11 behavioral members and existence of original RankFilters/PlugInFilterRunner/GenericDialog/ColorProcessor classes. Never repair/recompile that shared cache in this packet."
+  },
+  "frozen_contract": {
+    "contract_id": "g042.rank-filter-reference.001",
+    "class_name": "ij.plugin.filter.RankFilterReference",
+    "ordered_case_ids": [
+      "K01",
+      "K02",
+      "K03",
+      "K04",
+      "K05",
+      "K06",
+      "K07",
+      "K08",
+      "K09",
+      "K10",
+      "K11",
+      "K12",
+      "K13",
+      "K14",
+      "K15",
+      "K16"
+    ],
+    "methods": [
+      "minimum",
+      "maximum",
+      "median",
+      "mean"
+    ],
+    "bounds": {
+      "case_count": 16,
+      "max_pixels_per_fixture": 4096,
+      "max_scalar_samples_per_case": 131072,
+      "case_seconds": 5,
+      "prepare_parent_seconds": 120,
+      "capture_parent_seconds": 120,
+      "java_heap_mib": 256,
+      "combined_payload_bytes": 8388608,
+      "fresh_stage_bytes": 33554432,
+      "max_live_hosts": 2
+    },
+    "case_run_counts": [
+      0,
+      3,
+      3,
+      3,
+      3,
+      8,
+      1,
+      1,
+      108,
+      8,
+      12,
+      4,
+      12,
+      8,
+      0,
+      0
+    ],
+    "numerical_runs": 174,
+    "kernel_probes": 10,
+    "dialog_sessions": 12,
+    "preview_timeline_stages": 5,
+    "reader_required_cases": "All16 always remain required, including all K12 RGB and K13 nonfinite rows. Classification changes only first-editor adoption selectors; no case/test drop or unconditional bypass.",
+    "reference_events_are_not_OS_input": "Numerical direct API or actual original AWT component TextEvent/ItemEvent/ActionEvent dispatch on EDT, with unchanged inherited handlers/runner and reflective readback. No visible OS interaction, product GUI or latency certification."
+  },
+  "fixture_encoding": {
+    "shape_tczyx_order": [
+      "T",
+      "C",
+      "Z",
+      "Y",
+      "X"
+    ],
+    "ordinary_shape_tczyx": [
+      1,
+      1,
+      1,
+      7,
+      9
+    ],
+    "ordinary_position_tcz": [
+      0,
+      0,
+      0
+    ],
+    "plane_array_order": "for t; for z; for c",
+    "stack_index_1": "1+c+C*z+C*Z*t",
+    "plane_sample_order": "row-major y then x",
+    "byte_order": "little-endian",
+    "dtype_storage": {
+      "uint8": "unsigned byte",
+      "uint16": "unsigned16",
+      "float32": "raw binary32 bits or exactly binary32-packed finite float",
+      "rgb24": "32-bit packed integer0x00RRGGBB"
+    },
+    "no_infinity_JSON": "Nonfinite fixture values are represented by raw uint32 hex input words, not nonfinite JSON tokens. No input canonicalization."
+  },
+  "fixtures": {
+    "base": {
+      "xy": [
+        9,
+        7
+      ],
+      "dtype": "uint16",
+      "recipe": "1000+31*y+7*x",
+      "roi": null
+    },
+    "typed_impulse": {
+      "xy": [
+        9,
+        7
+      ],
+      "dtypes": [
+        "uint8",
+        "uint16",
+        "float32"
+      ],
+      "recipe": "11+7*y+3*x; row-major sample0=0; sample31=(x4,y3) replaced by200(U8),60000(U16),-17.5(F32); F32 values packed as binary32"
+    },
+    "fractional": {
+      "xy": [
+        9,
+        7
+      ],
+      "dtype": "uint16",
+      "recipe": "1000+31*y+7*x; sample31=60000"
+    },
+    "rounding": {
+      "xy": [
+        25,
+        25
+      ],
+      "dtype": "uint16",
+      "recipe": "60001 if x<12 or(x==12 and y<12), otherwise60000"
+    },
+    "cancellation": {
+      "xy": [
+        25,
+        25
+      ],
+      "dtype": "float32",
+      "repeat_raw_u32_hex": [
+        "60ad78ec",
+        "e0ad78ec",
+        "3f800000",
+        "bf800000"
+      ],
+      "recipe": "Repeat words by linear index modulo4,625 samples"
+    },
+    "thin": {
+      "xy_choices": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          7,
+          1
+        ]
+      ],
+      "dtypes": [
+        "uint8",
+        "uint16",
+        "float32"
+      ],
+      "recipe": "row-major1..W*H, exactly typed"
+    },
+    "area": {
+      "rectangle": {
+        "kind": "rectangle",
+        "xywh": [
+          1,
+          1,
+          7,
+          5
+        ]
+      },
+      "hole": {
+        "kind": "holed_area",
+        "outer_xywh": [
+          1,
+          1,
+          7,
+          5
+        ],
+        "hole_xywh": [
+          3,
+          2,
+          3,
+          3
+        ]
+      },
+      "geometry": "Original Roi rectangle and original ShapeRoi outer.not(hole) under actual runner masking/restoration"
+    },
+    "nonarea": {
+      "absent": null,
+      "point": {
+        "kind": "point",
+        "xy": [
+          2,
+          2
+        ]
+      },
+      "line": {
+        "kind": "line",
+        "xyxy": [
+          1,
+          1,
+          7,
+          5
+        ]
+      }
+    },
+    "rgb": {
+      "xy": [
+        9,
+        7
+      ],
+      "dtype": "rgb24",
+      "red": "11+7*y+3*x",
+      "green": "200-5*y-2*x",
+      "blue": "13*x+9*y",
+      "packing": "(R<<16)|(G<<8)|B"
+    },
+    "nonfinite": {
+      "xy": [
+        9,
+        7
+      ],
+      "dtype": "float32",
+      "repeat_raw_u32_hex": {
+        "mixed_qnan_zero": [
+          "7fc12345",
+          "ffc23456",
+          "80000000",
+          "00000000",
+          "3f800000",
+          "bf800000",
+          "40000000"
+        ],
+        "all_qnan": [
+          "7fc12345"
+        ],
+        "reference_only_infinity": [
+          "7fc12345",
+          "ff800000",
+          "7f800000",
+          "80000000",
+          "00000000",
+          "3f800000",
+          "bf800000"
+        ]
+      },
+      "recipe": "Repeat each pattern modulo its length for63 samples"
+    },
+    "hyperstack": {
+      "shape_tczyx": [
+        2,
+        3,
+        4,
+        7,
+        9
+      ],
+      "position_tcz": [
+        1,
+        2,
+        3
+      ],
+      "dtype": "uint16",
+      "recipe": "1000+100*t+30*c+5*z+2*y+x"
+    },
+    "dialog": {
+      "same_as": "base",
+      "roi": null
+    },
+    "preview": {
+      "same_as": "base",
+      "roi": "area.hole"
+    },
+    "prepare_probe_only": {
+      "name": "environment_probe_not_K",
+      "shape_tczyx": [
+        1,
+        1,
+        1,
+        2,
+        2
+      ],
+      "position_tcz": [
+        0,
+        0,
+        0
+      ],
+      "dtype": "uint16",
+      "bits_hex": "0100020003000400",
+      "method": "mean",
+      "not_a_K_case": true
+    }
+  },
+  "expanded_cases": [
+    {
+      "id": "K01",
+      "kind": "kernels",
+      "fixture": null,
+      "dispatch": "read-only reflection RankFilters.makeLineRadii(double)",
+      "editor_acceptance_selector": "required_finite_profile_footprint",
+      "ordered_runs": [],
+      "radii": [
+        0,
+        0.5,
+        1,
+        1.5,
+        1.75,
+        2,
+        2.5,
+        2.85,
+        3,
+        10
+      ],
+      "kernel_observation_count": 10
+    },
+    {
+      "id": "K02",
+      "kind": "runs",
+      "fixture": "typed_impulse",
+      "dispatch": "direct RankFilters.rank",
+      "editor_acceptance_selector": "required_finite_scalar_profile",
+      "ordered_runs": [
+        {
+          "name": "uint8",
+          "dtype": "uint8",
+          "method": "minimum",
+          "radius": 1
+        },
+        {
+          "name": "uint16",
+          "dtype": "uint16",
+          "method": "minimum",
+          "radius": 1
+        },
+        {
+          "name": "float32",
+          "dtype": "float32",
+          "method": "minimum",
+          "radius": 1
+        }
+      ]
+    },
+    {
+      "id": "K03",
+      "kind": "runs",
+      "fixture": "typed_impulse",
+      "dispatch": "direct RankFilters.rank",
+      "editor_acceptance_selector": "required_finite_scalar_profile",
+      "ordered_runs": [
+        {
+          "name": "uint8",
+          "dtype": "uint8",
+          "method": "maximum",
+          "radius": 1
+        },
+        {
+          "name": "uint16",
+          "dtype": "uint16",
+          "method": "maximum",
+          "radius": 1
+        },
+        {
+          "name": "float32",
+          "dtype": "float32",
+          "method": "maximum",
+          "radius": 1
+        }
+      ]
+    },
+    {
+      "id": "K04",
+      "kind": "runs",
+      "fixture": "typed_impulse",
+      "dispatch": "direct RankFilters.rank",
+      "editor_acceptance_selector": "required_finite_scalar_profile",
+      "ordered_runs": [
+        {
+          "name": "uint8",
+          "dtype": "uint8",
+          "method": "median",
+          "radius": 1
+        },
+        {
+          "name": "uint16",
+          "dtype": "uint16",
+          "method": "median",
+          "radius": 1
+        },
+        {
+          "name": "float32",
+          "dtype": "float32",
+          "method": "median",
+          "radius": 1
+        }
+      ]
+    },
+    {
+      "id": "K05",
+      "kind": "runs",
+      "fixture": "typed_impulse",
+      "dispatch": "direct RankFilters.rank",
+      "editor_acceptance_selector": "required_finite_scalar_profile",
+      "ordered_runs": [
+        {
+          "name": "uint8",
+          "dtype": "uint8",
+          "method": "mean",
+          "radius": 1
+        },
+        {
+          "name": "uint16",
+          "dtype": "uint16",
+          "method": "mean",
+          "radius": 1
+        },
+        {
+          "name": "float32",
+          "dtype": "float32",
+          "method": "mean",
+          "radius": 1
+        }
+      ]
+    },
+    {
+      "id": "K06",
+      "kind": "runs",
+      "fixture": "fractional",
+      "dispatch": "direct RankFilters.rank",
+      "editor_acceptance_selector": "required_finite_profile_footprint",
+      "ordered_runs": [
+        {
+          "name": "radius.0",
+          "dtype": "uint16",
+          "method": "median",
+          "radius": 0
+        },
+        {
+          "name": "radius.0.5",
+          "dtype": "uint16",
+          "method": "median",
+          "radius": 0.5
+        },
+        {
+          "name": "radius.1.5",
+          "dtype": "uint16",
+          "method": "median",
+          "radius": 1.5
+        },
+        {
+          "name": "radius.1.75",
+          "dtype": "uint16",
+          "method": "median",
+          "radius": 1.75
+        },
+        {
+          "name": "radius.2",
+          "dtype": "uint16",
+          "method": "median",
+          "radius": 2
+        },
+        {
+          "name": "radius.2.5",
+          "dtype": "uint16",
+          "method": "median",
+          "radius": 2.5
+        },
+        {
+          "name": "radius.2.85",
+          "dtype": "uint16",
+          "method": "median",
+          "radius": 2.85
+        },
+        {
+          "name": "radius.3",
+          "dtype": "uint16",
+          "method": "median",
+          "radius": 3
+        }
+      ]
+    },
+    {
+      "id": "K07",
+      "kind": "runs",
+      "fixture": "rounding",
+      "dispatch": "direct RankFilters.rank",
+      "editor_acceptance_selector": "required_finite_mean_precision",
+      "ordered_runs": [
+        {
+          "name": "integer_rounding",
+          "dtype": "uint16",
+          "method": "mean",
+          "radius": 10
+        }
+      ]
+    },
+    {
+      "id": "K08",
+      "kind": "runs",
+      "fixture": "cancellation",
+      "dispatch": "direct RankFilters.rank",
+      "editor_acceptance_selector": "required_finite_mean_precision",
+      "ordered_runs": [
+        {
+          "name": "incremental_cancellation",
+          "dtype": "float32",
+          "method": "mean",
+          "radius": 3
+        }
+      ],
+      "naming_note": "Cancellation here means numerical cancellation in sums, not a user cancellation/job lifecycle test."
+    },
+    {
+      "id": "K09",
+      "kind": "runs",
+      "fixture": "thin",
+      "dispatch": "direct RankFilters.rank",
+      "editor_acceptance_selector": "required_finite_border_and_radius_zero",
+      "ordered_runs": [
+        {
+          "name": "uint8.1x1.minimum.0",
+          "dtype": "uint8",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "minimum",
+          "radius": 0
+        },
+        {
+          "name": "uint8.1x1.minimum.1",
+          "dtype": "uint8",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "minimum",
+          "radius": 1
+        },
+        {
+          "name": "uint8.1x1.minimum.2",
+          "dtype": "uint8",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "minimum",
+          "radius": 2
+        },
+        {
+          "name": "uint8.1x1.maximum.0",
+          "dtype": "uint8",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "maximum",
+          "radius": 0
+        },
+        {
+          "name": "uint8.1x1.maximum.1",
+          "dtype": "uint8",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "maximum",
+          "radius": 1
+        },
+        {
+          "name": "uint8.1x1.maximum.2",
+          "dtype": "uint8",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "maximum",
+          "radius": 2
+        },
+        {
+          "name": "uint8.1x1.median.0",
+          "dtype": "uint8",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "median",
+          "radius": 0
+        },
+        {
+          "name": "uint8.1x1.median.1",
+          "dtype": "uint8",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "median",
+          "radius": 1
+        },
+        {
+          "name": "uint8.1x1.median.2",
+          "dtype": "uint8",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "median",
+          "radius": 2
+        },
+        {
+          "name": "uint8.1x1.mean.0",
+          "dtype": "uint8",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "mean",
+          "radius": 0
+        },
+        {
+          "name": "uint8.1x1.mean.1",
+          "dtype": "uint8",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "mean",
+          "radius": 1
+        },
+        {
+          "name": "uint8.1x1.mean.2",
+          "dtype": "uint8",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "mean",
+          "radius": 2
+        },
+        {
+          "name": "uint8.1x7.minimum.0",
+          "dtype": "uint8",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "minimum",
+          "radius": 0
+        },
+        {
+          "name": "uint8.1x7.minimum.1",
+          "dtype": "uint8",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "minimum",
+          "radius": 1
+        },
+        {
+          "name": "uint8.1x7.minimum.2",
+          "dtype": "uint8",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "minimum",
+          "radius": 2
+        },
+        {
+          "name": "uint8.1x7.maximum.0",
+          "dtype": "uint8",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "maximum",
+          "radius": 0
+        },
+        {
+          "name": "uint8.1x7.maximum.1",
+          "dtype": "uint8",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "maximum",
+          "radius": 1
+        },
+        {
+          "name": "uint8.1x7.maximum.2",
+          "dtype": "uint8",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "maximum",
+          "radius": 2
+        },
+        {
+          "name": "uint8.1x7.median.0",
+          "dtype": "uint8",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "median",
+          "radius": 0
+        },
+        {
+          "name": "uint8.1x7.median.1",
+          "dtype": "uint8",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "median",
+          "radius": 1
+        },
+        {
+          "name": "uint8.1x7.median.2",
+          "dtype": "uint8",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "median",
+          "radius": 2
+        },
+        {
+          "name": "uint8.1x7.mean.0",
+          "dtype": "uint8",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "mean",
+          "radius": 0
+        },
+        {
+          "name": "uint8.1x7.mean.1",
+          "dtype": "uint8",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "mean",
+          "radius": 1
+        },
+        {
+          "name": "uint8.1x7.mean.2",
+          "dtype": "uint8",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "mean",
+          "radius": 2
+        },
+        {
+          "name": "uint8.7x1.minimum.0",
+          "dtype": "uint8",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "minimum",
+          "radius": 0
+        },
+        {
+          "name": "uint8.7x1.minimum.1",
+          "dtype": "uint8",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "minimum",
+          "radius": 1
+        },
+        {
+          "name": "uint8.7x1.minimum.2",
+          "dtype": "uint8",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "minimum",
+          "radius": 2
+        },
+        {
+          "name": "uint8.7x1.maximum.0",
+          "dtype": "uint8",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "maximum",
+          "radius": 0
+        },
+        {
+          "name": "uint8.7x1.maximum.1",
+          "dtype": "uint8",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "maximum",
+          "radius": 1
+        },
+        {
+          "name": "uint8.7x1.maximum.2",
+          "dtype": "uint8",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "maximum",
+          "radius": 2
+        },
+        {
+          "name": "uint8.7x1.median.0",
+          "dtype": "uint8",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "median",
+          "radius": 0
+        },
+        {
+          "name": "uint8.7x1.median.1",
+          "dtype": "uint8",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "median",
+          "radius": 1
+        },
+        {
+          "name": "uint8.7x1.median.2",
+          "dtype": "uint8",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "median",
+          "radius": 2
+        },
+        {
+          "name": "uint8.7x1.mean.0",
+          "dtype": "uint8",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "mean",
+          "radius": 0
+        },
+        {
+          "name": "uint8.7x1.mean.1",
+          "dtype": "uint8",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "mean",
+          "radius": 1
+        },
+        {
+          "name": "uint8.7x1.mean.2",
+          "dtype": "uint8",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "mean",
+          "radius": 2
+        },
+        {
+          "name": "uint16.1x1.minimum.0",
+          "dtype": "uint16",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "minimum",
+          "radius": 0
+        },
+        {
+          "name": "uint16.1x1.minimum.1",
+          "dtype": "uint16",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "minimum",
+          "radius": 1
+        },
+        {
+          "name": "uint16.1x1.minimum.2",
+          "dtype": "uint16",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "minimum",
+          "radius": 2
+        },
+        {
+          "name": "uint16.1x1.maximum.0",
+          "dtype": "uint16",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "maximum",
+          "radius": 0
+        },
+        {
+          "name": "uint16.1x1.maximum.1",
+          "dtype": "uint16",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "maximum",
+          "radius": 1
+        },
+        {
+          "name": "uint16.1x1.maximum.2",
+          "dtype": "uint16",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "maximum",
+          "radius": 2
+        },
+        {
+          "name": "uint16.1x1.median.0",
+          "dtype": "uint16",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "median",
+          "radius": 0
+        },
+        {
+          "name": "uint16.1x1.median.1",
+          "dtype": "uint16",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "median",
+          "radius": 1
+        },
+        {
+          "name": "uint16.1x1.median.2",
+          "dtype": "uint16",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "median",
+          "radius": 2
+        },
+        {
+          "name": "uint16.1x1.mean.0",
+          "dtype": "uint16",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "mean",
+          "radius": 0
+        },
+        {
+          "name": "uint16.1x1.mean.1",
+          "dtype": "uint16",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "mean",
+          "radius": 1
+        },
+        {
+          "name": "uint16.1x1.mean.2",
+          "dtype": "uint16",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "mean",
+          "radius": 2
+        },
+        {
+          "name": "uint16.1x7.minimum.0",
+          "dtype": "uint16",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "minimum",
+          "radius": 0
+        },
+        {
+          "name": "uint16.1x7.minimum.1",
+          "dtype": "uint16",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "minimum",
+          "radius": 1
+        },
+        {
+          "name": "uint16.1x7.minimum.2",
+          "dtype": "uint16",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "minimum",
+          "radius": 2
+        },
+        {
+          "name": "uint16.1x7.maximum.0",
+          "dtype": "uint16",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "maximum",
+          "radius": 0
+        },
+        {
+          "name": "uint16.1x7.maximum.1",
+          "dtype": "uint16",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "maximum",
+          "radius": 1
+        },
+        {
+          "name": "uint16.1x7.maximum.2",
+          "dtype": "uint16",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "maximum",
+          "radius": 2
+        },
+        {
+          "name": "uint16.1x7.median.0",
+          "dtype": "uint16",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "median",
+          "radius": 0
+        },
+        {
+          "name": "uint16.1x7.median.1",
+          "dtype": "uint16",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "median",
+          "radius": 1
+        },
+        {
+          "name": "uint16.1x7.median.2",
+          "dtype": "uint16",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "median",
+          "radius": 2
+        },
+        {
+          "name": "uint16.1x7.mean.0",
+          "dtype": "uint16",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "mean",
+          "radius": 0
+        },
+        {
+          "name": "uint16.1x7.mean.1",
+          "dtype": "uint16",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "mean",
+          "radius": 1
+        },
+        {
+          "name": "uint16.1x7.mean.2",
+          "dtype": "uint16",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "mean",
+          "radius": 2
+        },
+        {
+          "name": "uint16.7x1.minimum.0",
+          "dtype": "uint16",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "minimum",
+          "radius": 0
+        },
+        {
+          "name": "uint16.7x1.minimum.1",
+          "dtype": "uint16",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "minimum",
+          "radius": 1
+        },
+        {
+          "name": "uint16.7x1.minimum.2",
+          "dtype": "uint16",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "minimum",
+          "radius": 2
+        },
+        {
+          "name": "uint16.7x1.maximum.0",
+          "dtype": "uint16",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "maximum",
+          "radius": 0
+        },
+        {
+          "name": "uint16.7x1.maximum.1",
+          "dtype": "uint16",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "maximum",
+          "radius": 1
+        },
+        {
+          "name": "uint16.7x1.maximum.2",
+          "dtype": "uint16",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "maximum",
+          "radius": 2
+        },
+        {
+          "name": "uint16.7x1.median.0",
+          "dtype": "uint16",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "median",
+          "radius": 0
+        },
+        {
+          "name": "uint16.7x1.median.1",
+          "dtype": "uint16",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "median",
+          "radius": 1
+        },
+        {
+          "name": "uint16.7x1.median.2",
+          "dtype": "uint16",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "median",
+          "radius": 2
+        },
+        {
+          "name": "uint16.7x1.mean.0",
+          "dtype": "uint16",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "mean",
+          "radius": 0
+        },
+        {
+          "name": "uint16.7x1.mean.1",
+          "dtype": "uint16",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "mean",
+          "radius": 1
+        },
+        {
+          "name": "uint16.7x1.mean.2",
+          "dtype": "uint16",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "mean",
+          "radius": 2
+        },
+        {
+          "name": "float32.1x1.minimum.0",
+          "dtype": "float32",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "minimum",
+          "radius": 0
+        },
+        {
+          "name": "float32.1x1.minimum.1",
+          "dtype": "float32",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "minimum",
+          "radius": 1
+        },
+        {
+          "name": "float32.1x1.minimum.2",
+          "dtype": "float32",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "minimum",
+          "radius": 2
+        },
+        {
+          "name": "float32.1x1.maximum.0",
+          "dtype": "float32",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "maximum",
+          "radius": 0
+        },
+        {
+          "name": "float32.1x1.maximum.1",
+          "dtype": "float32",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "maximum",
+          "radius": 1
+        },
+        {
+          "name": "float32.1x1.maximum.2",
+          "dtype": "float32",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "maximum",
+          "radius": 2
+        },
+        {
+          "name": "float32.1x1.median.0",
+          "dtype": "float32",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "median",
+          "radius": 0
+        },
+        {
+          "name": "float32.1x1.median.1",
+          "dtype": "float32",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "median",
+          "radius": 1
+        },
+        {
+          "name": "float32.1x1.median.2",
+          "dtype": "float32",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "median",
+          "radius": 2
+        },
+        {
+          "name": "float32.1x1.mean.0",
+          "dtype": "float32",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "mean",
+          "radius": 0
+        },
+        {
+          "name": "float32.1x1.mean.1",
+          "dtype": "float32",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "mean",
+          "radius": 1
+        },
+        {
+          "name": "float32.1x1.mean.2",
+          "dtype": "float32",
+          "xy": [
+            1,
+            1
+          ],
+          "method": "mean",
+          "radius": 2
+        },
+        {
+          "name": "float32.1x7.minimum.0",
+          "dtype": "float32",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "minimum",
+          "radius": 0
+        },
+        {
+          "name": "float32.1x7.minimum.1",
+          "dtype": "float32",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "minimum",
+          "radius": 1
+        },
+        {
+          "name": "float32.1x7.minimum.2",
+          "dtype": "float32",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "minimum",
+          "radius": 2
+        },
+        {
+          "name": "float32.1x7.maximum.0",
+          "dtype": "float32",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "maximum",
+          "radius": 0
+        },
+        {
+          "name": "float32.1x7.maximum.1",
+          "dtype": "float32",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "maximum",
+          "radius": 1
+        },
+        {
+          "name": "float32.1x7.maximum.2",
+          "dtype": "float32",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "maximum",
+          "radius": 2
+        },
+        {
+          "name": "float32.1x7.median.0",
+          "dtype": "float32",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "median",
+          "radius": 0
+        },
+        {
+          "name": "float32.1x7.median.1",
+          "dtype": "float32",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "median",
+          "radius": 1
+        },
+        {
+          "name": "float32.1x7.median.2",
+          "dtype": "float32",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "median",
+          "radius": 2
+        },
+        {
+          "name": "float32.1x7.mean.0",
+          "dtype": "float32",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "mean",
+          "radius": 0
+        },
+        {
+          "name": "float32.1x7.mean.1",
+          "dtype": "float32",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "mean",
+          "radius": 1
+        },
+        {
+          "name": "float32.1x7.mean.2",
+          "dtype": "float32",
+          "xy": [
+            1,
+            7
+          ],
+          "method": "mean",
+          "radius": 2
+        },
+        {
+          "name": "float32.7x1.minimum.0",
+          "dtype": "float32",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "minimum",
+          "radius": 0
+        },
+        {
+          "name": "float32.7x1.minimum.1",
+          "dtype": "float32",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "minimum",
+          "radius": 1
+        },
+        {
+          "name": "float32.7x1.minimum.2",
+          "dtype": "float32",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "minimum",
+          "radius": 2
+        },
+        {
+          "name": "float32.7x1.maximum.0",
+          "dtype": "float32",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "maximum",
+          "radius": 0
+        },
+        {
+          "name": "float32.7x1.maximum.1",
+          "dtype": "float32",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "maximum",
+          "radius": 1
+        },
+        {
+          "name": "float32.7x1.maximum.2",
+          "dtype": "float32",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "maximum",
+          "radius": 2
+        },
+        {
+          "name": "float32.7x1.median.0",
+          "dtype": "float32",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "median",
+          "radius": 0
+        },
+        {
+          "name": "float32.7x1.median.1",
+          "dtype": "float32",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "median",
+          "radius": 1
+        },
+        {
+          "name": "float32.7x1.median.2",
+          "dtype": "float32",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "median",
+          "radius": 2
+        },
+        {
+          "name": "float32.7x1.mean.0",
+          "dtype": "float32",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "mean",
+          "radius": 0
+        },
+        {
+          "name": "float32.7x1.mean.1",
+          "dtype": "float32",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "mean",
+          "radius": 1
+        },
+        {
+          "name": "float32.7x1.mean.2",
+          "dtype": "float32",
+          "xy": [
+            7,
+            1
+          ],
+          "method": "mean",
+          "radius": 2
+        }
+      ]
+    },
+    {
+      "id": "K10",
+      "kind": "runs",
+      "fixture": "base with rectangle or holed_area",
+      "dispatch": "original PlugInFilterRunner",
+      "editor_acceptance_selector": "required_finite_area_and_mask_restoration",
+      "ordered_runs": [
+        {
+          "name": "rectangle.minimum",
+          "roi": "rectangle",
+          "dtype": "uint16",
+          "method": "minimum",
+          "radius": 1,
+          "all_stack": false
+        },
+        {
+          "name": "rectangle.maximum",
+          "roi": "rectangle",
+          "dtype": "uint16",
+          "method": "maximum",
+          "radius": 1,
+          "all_stack": false
+        },
+        {
+          "name": "rectangle.median",
+          "roi": "rectangle",
+          "dtype": "uint16",
+          "method": "median",
+          "radius": 1,
+          "all_stack": false
+        },
+        {
+          "name": "rectangle.mean",
+          "roi": "rectangle",
+          "dtype": "uint16",
+          "method": "mean",
+          "radius": 1,
+          "all_stack": false
+        },
+        {
+          "name": "hole.minimum",
+          "roi": "hole",
+          "dtype": "uint16",
+          "method": "minimum",
+          "radius": 1,
+          "all_stack": false
+        },
+        {
+          "name": "hole.maximum",
+          "roi": "hole",
+          "dtype": "uint16",
+          "method": "maximum",
+          "radius": 1,
+          "all_stack": false
+        },
+        {
+          "name": "hole.median",
+          "roi": "hole",
+          "dtype": "uint16",
+          "method": "median",
+          "radius": 1,
+          "all_stack": false
+        },
+        {
+          "name": "hole.mean",
+          "roi": "hole",
+          "dtype": "uint16",
+          "method": "mean",
+          "radius": 1,
+          "all_stack": false
+        }
+      ]
+    },
+    {
+      "id": "K11",
+      "kind": "runs",
+      "fixture": "base with absent/point/line",
+      "dispatch": "original PlugInFilterRunner",
+      "editor_acceptance_selector": "required_finite_absent_nonarea_policy_evidence",
+      "ordered_runs": [
+        {
+          "name": "absent.minimum",
+          "roi": "absent",
+          "dtype": "uint16",
+          "method": "minimum",
+          "radius": 1,
+          "all_stack": false
+        },
+        {
+          "name": "absent.maximum",
+          "roi": "absent",
+          "dtype": "uint16",
+          "method": "maximum",
+          "radius": 1,
+          "all_stack": false
+        },
+        {
+          "name": "absent.median",
+          "roi": "absent",
+          "dtype": "uint16",
+          "method": "median",
+          "radius": 1,
+          "all_stack": false
+        },
+        {
+          "name": "absent.mean",
+          "roi": "absent",
+          "dtype": "uint16",
+          "method": "mean",
+          "radius": 1,
+          "all_stack": false
+        },
+        {
+          "name": "point.minimum",
+          "roi": "point",
+          "dtype": "uint16",
+          "method": "minimum",
+          "radius": 1,
+          "all_stack": false
+        },
+        {
+          "name": "point.maximum",
+          "roi": "point",
+          "dtype": "uint16",
+          "method": "maximum",
+          "radius": 1,
+          "all_stack": false
+        },
+        {
+          "name": "point.median",
+          "roi": "point",
+          "dtype": "uint16",
+          "method": "median",
+          "radius": 1,
+          "all_stack": false
+        },
+        {
+          "name": "point.mean",
+          "roi": "point",
+          "dtype": "uint16",
+          "method": "mean",
+          "radius": 1,
+          "all_stack": false
+        },
+        {
+          "name": "line.minimum",
+          "roi": "line",
+          "dtype": "uint16",
+          "method": "minimum",
+          "radius": 1,
+          "all_stack": false
+        },
+        {
+          "name": "line.maximum",
+          "roi": "line",
+          "dtype": "uint16",
+          "method": "maximum",
+          "radius": 1,
+          "all_stack": false
+        },
+        {
+          "name": "line.median",
+          "roi": "line",
+          "dtype": "uint16",
+          "method": "median",
+          "radius": 1,
+          "all_stack": false
+        },
+        {
+          "name": "line.mean",
+          "roi": "line",
+          "dtype": "uint16",
+          "method": "mean",
+          "radius": 1,
+          "all_stack": false
+        }
+      ]
+    },
+    {
+      "id": "K12",
+      "kind": "runs",
+      "fixture": "rgb",
+      "dispatch": "direct RankFilters.rank",
+      "editor_acceptance_selector": "observational_rgb_required_reader_not_first_scalar_editor_acceptance",
+      "ordered_runs": [
+        {
+          "name": "minimum",
+          "dtype": "rgb24",
+          "method": "minimum",
+          "radius": 1
+        },
+        {
+          "name": "maximum",
+          "dtype": "rgb24",
+          "method": "maximum",
+          "radius": 1
+        },
+        {
+          "name": "median",
+          "dtype": "rgb24",
+          "method": "median",
+          "radius": 1
+        },
+        {
+          "name": "mean",
+          "dtype": "rgb24",
+          "method": "mean",
+          "radius": 1
+        }
+      ],
+      "restriction": "All four packed RGB rows remain mandatory reference assertions. They do not qualify native scalarS1, S3/S4 alpha or a scientific RGB editor. RGB workflow remains required separately."
+    },
+    {
+      "id": "K13",
+      "kind": "runs",
+      "fixture": "nonfinite patterns",
+      "dispatch": "direct RankFilters.rank",
+      "editor_acceptance_selector": "observational_nonfinite_required_reader_not_finite_editor_acceptance",
+      "ordered_runs": [
+        {
+          "name": "mixed_qnan_zero.minimum",
+          "pattern": "mixed_qnan_zero",
+          "dtype": "float32",
+          "method": "minimum",
+          "radius": 1
+        },
+        {
+          "name": "mixed_qnan_zero.maximum",
+          "pattern": "mixed_qnan_zero",
+          "dtype": "float32",
+          "method": "maximum",
+          "radius": 1
+        },
+        {
+          "name": "mixed_qnan_zero.median",
+          "pattern": "mixed_qnan_zero",
+          "dtype": "float32",
+          "method": "median",
+          "radius": 1
+        },
+        {
+          "name": "mixed_qnan_zero.mean",
+          "pattern": "mixed_qnan_zero",
+          "dtype": "float32",
+          "method": "mean",
+          "radius": 1
+        },
+        {
+          "name": "all_qnan.minimum",
+          "pattern": "all_qnan",
+          "dtype": "float32",
+          "method": "minimum",
+          "radius": 1
+        },
+        {
+          "name": "all_qnan.maximum",
+          "pattern": "all_qnan",
+          "dtype": "float32",
+          "method": "maximum",
+          "radius": 1
+        },
+        {
+          "name": "all_qnan.median",
+          "pattern": "all_qnan",
+          "dtype": "float32",
+          "method": "median",
+          "radius": 1
+        },
+        {
+          "name": "all_qnan.mean",
+          "pattern": "all_qnan",
+          "dtype": "float32",
+          "method": "mean",
+          "radius": 1
+        },
+        {
+          "name": "reference_only_infinity.minimum",
+          "pattern": "reference_only_infinity",
+          "dtype": "float32",
+          "method": "minimum",
+          "radius": 1
+        },
+        {
+          "name": "reference_only_infinity.maximum",
+          "pattern": "reference_only_infinity",
+          "dtype": "float32",
+          "method": "maximum",
+          "radius": 1
+        },
+        {
+          "name": "reference_only_infinity.median",
+          "pattern": "reference_only_infinity",
+          "dtype": "float32",
+          "method": "median",
+          "radius": 1
+        },
+        {
+          "name": "reference_only_infinity.mean",
+          "pattern": "reference_only_infinity",
+          "dtype": "float32",
+          "method": "mean",
+          "radius": 1
+        }
+      ],
+      "restriction": "All12 rows remain mandatory, including reference-only Infinity. Keep exact input payload/sign/zero bits; reader permits any output NaN payload where arithmetic yields NaN. No admission of infinities/quiet-NaN execution into the proposed finite-first editor follows."
+    },
+    {
+      "id": "K14",
+      "kind": "runs",
+      "fixture": "hyperstack",
+      "dispatch": "original PlugInFilterRunner",
+      "editor_acceptance_selector": "required_finite_current_and_original_flattened_stack",
+      "ordered_runs": [
+        {
+          "name": "current.minimum",
+          "scope": "current",
+          "dtype": "uint16",
+          "method": "minimum",
+          "radius": 1,
+          "all_stack": false
+        },
+        {
+          "name": "current.maximum",
+          "scope": "current",
+          "dtype": "uint16",
+          "method": "maximum",
+          "radius": 1,
+          "all_stack": false
+        },
+        {
+          "name": "current.median",
+          "scope": "current",
+          "dtype": "uint16",
+          "method": "median",
+          "radius": 1,
+          "all_stack": false
+        },
+        {
+          "name": "current.mean",
+          "scope": "current",
+          "dtype": "uint16",
+          "method": "mean",
+          "radius": 1,
+          "all_stack": false
+        },
+        {
+          "name": "all_stack.minimum",
+          "scope": "all_stack",
+          "dtype": "uint16",
+          "method": "minimum",
+          "radius": 1,
+          "all_stack": true
+        },
+        {
+          "name": "all_stack.maximum",
+          "scope": "all_stack",
+          "dtype": "uint16",
+          "method": "maximum",
+          "radius": 1,
+          "all_stack": true
+        },
+        {
+          "name": "all_stack.median",
+          "scope": "all_stack",
+          "dtype": "uint16",
+          "method": "median",
+          "radius": 1,
+          "all_stack": true
+        },
+        {
+          "name": "all_stack.mean",
+          "scope": "all_stack",
+          "dtype": "uint16",
+          "method": "mean",
+          "radius": 1,
+          "all_stack": true
+        }
+      ],
+      "plane_contract": "24 planes in T then Z then C order; captured T1C2Z3 is stack index24 (one-based). Current processes that captured plane; all_stack traverses original24-plane runner sequence. Native arbitrary per-axis ranges/positioned unions remain owned extension gates."
+    },
+    {
+      "id": "K15",
+      "kind": "dialogs",
+      "fixture": "dialog/base",
+      "dispatch": "original GenericDialog component events and PlugInFilterRunner",
+      "editor_acceptance_selector": "required_dialog_default_remember_cancel_evidence",
+      "ordered_runs": [],
+      "dialog_sessions": [
+        {
+          "method": "minimum",
+          "label": "fresh.accept2",
+          "radius": 2,
+          "accept": true
+        },
+        {
+          "method": "minimum",
+          "label": "reopen.cancel3",
+          "radius": 3,
+          "accept": false
+        },
+        {
+          "method": "minimum",
+          "label": "reopen.after_cancel",
+          "radius": null,
+          "accept": false
+        },
+        {
+          "method": "maximum",
+          "label": "fresh.accept2",
+          "radius": 2,
+          "accept": true
+        },
+        {
+          "method": "maximum",
+          "label": "reopen.cancel3",
+          "radius": 3,
+          "accept": false
+        },
+        {
+          "method": "maximum",
+          "label": "reopen.after_cancel",
+          "radius": null,
+          "accept": false
+        },
+        {
+          "method": "median",
+          "label": "fresh.accept2",
+          "radius": 2,
+          "accept": true
+        },
+        {
+          "method": "median",
+          "label": "reopen.cancel3",
+          "radius": 3,
+          "accept": false
+        },
+        {
+          "method": "median",
+          "label": "reopen.after_cancel",
+          "radius": null,
+          "accept": false
+        },
+        {
+          "method": "mean",
+          "label": "fresh.accept2",
+          "radius": 2,
+          "accept": true
+        },
+        {
+          "method": "mean",
+          "label": "reopen.cancel3",
+          "radius": 3,
+          "accept": false
+        },
+        {
+          "method": "mean",
+          "label": "reopen.after_cancel",
+          "radius": null,
+          "accept": false
+        }
+      ],
+      "dialog_session_count": 12,
+      "reader_expectation_not_observed": "Each new method observes radius2 while its initial lastRadius memory is0; accepted2 persists, canceled3 does not replace memory2; next reopen remains2. Null radius step dispatches no TextEvent. These are held reader checks, not runtime facts."
+    },
+    {
+      "id": "K16",
+      "kind": "preview",
+      "fixture": "preview/base with holed_area",
+      "dispatch": "original runner preview thread and actual GenericDialog events",
+      "editor_acceptance_selector": "required_preview_disable_cancel_fresh_accept_evidence",
+      "ordered_runs": [],
+      "method": "median",
+      "initial_checkpoint": "initial",
+      "stages": [
+        {
+          "label": "preview.enable",
+          "operation": "preview",
+          "value": true
+        },
+        {
+          "label": "preview.radius3",
+          "operation": "radius",
+          "value": 3
+        },
+        {
+          "label": "preview.disable",
+          "operation": "preview",
+          "value": false
+        },
+        {
+          "label": "preview.cancel",
+          "operation": "cancel"
+        },
+        {
+          "label": "fresh.accept2",
+          "operation": "fresh_accept",
+          "radius": 2
+        }
+      ],
+      "preview_stage_count": 5,
+      "reader_expectation_not_observed": "Initial/reopened radius2; enable observes acknowledged WAITING preview at2, radius change acknowledges same preview thread at3; disable restores source; cancel joins/disposes; a new session explicitly accepts2. All actual image/ROI/thread/event identities are checked; no emulated preview or OS pointer credit."
+    }
+  ],
+  "dialog_preview_transport": {
+    "source_anchors": {
+      "producer": "157-183",
+      "reader": "334-443,515-524"
+    },
+    "host": "Original unhosted ImagePlus with ImageJ(ImageJ.NO_SHOW),gui_scale1,Prefs threads1, autoContrast=false,useInvertingLut=false. ImageJ remains not visible/showing; original dialogs are displayable/visible in AWT.",
+    "radius": "Original TextField0 setText then TextEvent.TEXT_VALUE_CHANGED900 dispatched on EDT; reader requires event/source identities and original GenericDialog/ObservedRank listener delivery.",
+    "preview": "Original preview Checkbox setState then ItemEvent701 dispatched on EDT; wait until original previewThread alive/WAITING and at least one additional original run completed, before bytes are observed.",
+    "finish": "Actual button0 OK or1 Cancel ActionEvent1001 dispatched on EDT; join original runner≤500ms, require complete/no worker error; observe dialog hidden, preview thread null and live host count0. All image/ROI identity/mask/typed plane observations retained.",
+    "step_deadlines_ms": {
+      "session_ready": 500,
+      "preview_ack_waiting": 500,
+      "runner_finish_join": 500
+    },
+    "late_or_failed_transport": "Preserve actual failure; no source-algorithm imitation, invented acknowledgement, case drop, automatic retry or widened caps. Root may authorize a separately named concrete transport repair before any new attempt."
+  },
+  "execution_proposal": {
+    "working_directory": "workspace root for Python supervisor; each Java process cwd is its fresh stage",
+    "python_executable_candidate": {
+      "path": "build/plan-implementation/p02a-gaussian-command-001/e10-env001/Scripts/python.exe",
+      "bytes": 257536,
+      "sha256": "4025e2a6d8fc90d053a8405e81f008cbd8ee45b582e2d77480341501f4aeda73"
+    },
+    "python_choice": "Root rechecks/pins executable+pytest/toolchain identity; no Python/runtime import or execution occurred in this task.",
+    "root_adoption_preconditions": [
+      "Adopt this exact proposal and unchanged entry001/tool identities; all prior stages preserved.",
+      "Choose fresh children beneath build/references/rank-filter-imagej154r-001; stage root itself/existing/outside path refuses.",
+      "Use existing inherited archive/source/JDK/classes; no network, original-source compilation or cache repair.",
+      "Confirm combined resource budget with any concurrent root work; serialize preparation/capture sharing reference outputs."
+    ],
+    "prepare": {
+      "argv": [
+        "build/plan-implementation/p02a-gaussian-command-001/e10-env001/Scripts/python.exe",
+        "-B",
+        "scripts/capture_rank_filter_reference.py",
+        "--prepare",
+        "--stage",
+        "build/references/rank-filter-imagej154r-001/prepare-001"
+      ],
+      "parent_seconds": 120,
+      "subprocess_seconds": {
+        "javac": 60,
+        "java_version": 10,
+        "environment_probe": 15
+      },
+      "compile_flags": [
+        "-J-Xmx256m",
+        "-encoding",
+        "UTF-8",
+        "-proc:none",
+        "-implicit:none",
+        "-sourcepath",
+        "<fresh empty-sourcepath>",
+        "-classpath",
+        "<reused original classes>",
+        "-d",
+        "<fresh classes>"
+      ],
+      "new_classes_exact": [
+        "ij/plugin/filter/RankFilterReference.class",
+        "ij/plugin/filter/RankFilterReference$ObservedRank.class",
+        "ij/plugin/filter/RankFilterReference$Session.class"
+      ],
+      "probe_actions": [
+        "open mean dialog on2x2 fixture",
+        "observe actual dialog",
+        "preview on actual Checkbox ItemEvent",
+        "wait for original preview acknowledged WAITING",
+        "preview off actual ItemEvent",
+        "Cancel actual button event",
+        "runner join/dispose and no preview thread"
+      ],
+      "successful_state": "prepared_environment_only_K01_K16_not_executed",
+      "receipt": "build/references/rank-filter-imagej154r-001/prepare-001/prepared.json",
+      "root_decision_after_terminal_prepare": "Inspect actual probe/cleanup and frozen driver/input/classes identities before separately invoking capture. A preparation pass executes no K case."
+    },
+    "capture": {
+      "argv": [
+        "build/plan-implementation/p02a-gaussian-command-001/e10-env001/Scripts/python.exe",
+        "-B",
+        "scripts/capture_rank_filter_reference.py",
+        "--capture",
+        "--prepared",
+        "build/references/rank-filter-imagej154r-001/prepare-001",
+        "--stage",
+        "build/references/rank-filter-imagej154r-001/capture-001"
+      ],
+      "parent_seconds": 120,
+      "java_process_seconds": 90,
+      "java_loop_seconds": 85,
+      "case_seconds": 5,
+      "receipt": "build/references/rank-filter-imagej154r-001/capture-001/capture.json",
+      "raw": "build/references/rank-filter-imagej154r-001/capture-001/reference.stdout",
+      "successful_state": "raw_observations_only_no_numerical_or_product_acceptance",
+      "guards": "Exact prepared/harness/driver/input/source/runtime/classes pins before and after; exact ordered16 IDs; matching echoed inputs; each≤5000ms; all live_reference_hosts0. policy_decisions remains[]."
+    },
+    "read": {
+      "environment": {
+        "IMAGEJXX_RANK_FILTER_REFERENCE": "<absolute workspace>/build/references/rank-filter-imagej154r-001/capture-001/reference.stdout"
+      },
+      "argv": [
+        "build/plan-implementation/p02a-gaussian-command-001/e10-env001/Scripts/python.exe",
+        "-I",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "-o",
+        "addopts=",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "build/references/rank-filter-imagej154r-001/reader-001/temp",
+        "--junitxml",
+        "build/references/rank-filter-imagej154r-001/reader-001/results.xml",
+        "tests/reference/test_rank_filter_reference_reader.py"
+      ],
+      "supervisor_parent_seconds_proposed": 120,
+      "reader_output_budget_proposed_bytes": 8388608,
+      "expected_collection": [
+        "tests/reference/test_rank_filter_reference_reader.py::test_rank_filter_reference[K01]",
+        "tests/reference/test_rank_filter_reference_reader.py::test_rank_filter_reference[K02]",
+        "tests/reference/test_rank_filter_reference_reader.py::test_rank_filter_reference[K03]",
+        "tests/reference/test_rank_filter_reference_reader.py::test_rank_filter_reference[K04]",
+        "tests/reference/test_rank_filter_reference_reader.py::test_rank_filter_reference[K05]",
+        "tests/reference/test_rank_filter_reference_reader.py::test_rank_filter_reference[K06]",
+        "tests/reference/test_rank_filter_reference_reader.py::test_rank_filter_reference[K07]",
+        "tests/reference/test_rank_filter_reference_reader.py::test_rank_filter_reference[K08]",
+        "tests/reference/test_rank_filter_reference_reader.py::test_rank_filter_reference[K09]",
+        "tests/reference/test_rank_filter_reference_reader.py::test_rank_filter_reference[K10]",
+        "tests/reference/test_rank_filter_reference_reader.py::test_rank_filter_reference[K11]",
+        "tests/reference/test_rank_filter_reference_reader.py::test_rank_filter_reference[K12]",
+        "tests/reference/test_rank_filter_reference_reader.py::test_rank_filter_reference[K13]",
+        "tests/reference/test_rank_filter_reference_reader.py::test_rank_filter_reference[K14]",
+        "tests/reference/test_rank_filter_reference_reader.py::test_rank_filter_reference[K15]",
+        "tests/reference/test_rank_filter_reference_reader.py::test_rank_filter_reference[K16]"
+      ],
+      "result_rule": "Exactly16 cases,zero failures/errors/skips; genuine receipt/report/tool identities and all raw assertions. Reader imports neither producer nor imagejxx. No reference rerun merely for JUnit passed-output truncation; preserve complete supervisor stdout.",
+      "separate_root_work": "Root creates a fresh reader parent/output stage and supervisor receipt; this proposal creates no runnable framework or scripts."
+    },
+    "artifacts": {
+      "prepare": [
+        "attempt.json",
+        "verified-inputs.json",
+        "input-plan.json",
+        "RankFilterReference.java",
+        "execution-inputs.json",
+        "classes exact3",
+        "tool-sources exact4",
+        "javac/version/probe commands and stdout/stderr",
+        "prepared.json or failure.json"
+      ],
+      "capture": [
+        "attempt.json",
+        "input-plan.json",
+        "execution-inputs.json",
+        "command.json",
+        "reference.command.json",
+        "reference.stdout",
+        "reference.stderr",
+        "capture.json or failure.json"
+      ],
+      "reader": [
+        "exact collection catalogue",
+        "complete stdout/stderr",
+        "results.xml",
+        "terminal supervisor receipt with source/input/class/runtime/report pins"
+      ]
+    },
+    "preservation_and_cleanup": "Never overwrite an existing stage. Bounded helper clears inherited JAVA_TOOL_OPTIONS/JDK_JAVA_OPTIONS/_JAVA_OPTIONS/CLASSPATH, launches shell=false with closed stdin, bounds streamed output, kills failed/timed-out child and waits/joins readers≤10seconds. Preserve raw commands/stdout/stderr/failure receipts. No deletion/cleanup was run here.",
+    "script_import_boundary": "Prepare/capture invoke the held script without Python -I because its explicit local lineage imports require the script directory on sys.path. All imported helper bytes are pinned/rechecked; Java environment/classpath still use the qualified supervisor. The self-contained pytest reader may retain -I."
+  },
+  "post_auto_consumed_seam_reconciliation": {
+    "scope": "Only entry001 consumed paths whose byte identity changed, plus the callback dispatcher used under the changed ExecutionControl comment; no new feature/source-family audit.",
+    "changed": [
+      {
+        "path": "include/imagejxx/document.hpp",
+        "entry_preimage": {
+          "bytes": 13148,
+          "sha256": "abafa9bece292df8fc1ddc46dcf4cfbd70a3890504325507778bfcab54522d98"
+        },
+        "reviewed_current_preimage": {
+          "path": "include/imagejxx/document.hpp",
+          "bytes": 13563,
+          "sha256": "8b8f853eebd0a6a7bad032ba6ccda5e69a4a89c2f37bdcc176d967ca92534fde"
+        },
+        "current_anchors": "25-29,257-270",
+        "bounded_reconciliation": "Auto adds exact-all4 guarded Display publication; rank remains a pixel operation using captured Pixels/Metadata/Selection and preserves concurrent display/navigation. Do not copy the Display-dependent Auto guard."
+      },
+      {
+        "path": "include/imagejxx/execution.hpp",
+        "entry_preimage": {
+          "bytes": 11635,
+          "sha256": "502715065b57c9b5d2ba5515cecfd2cb70fd45cdeeb0f7a3274f153dba21935a"
+        },
+        "reviewed_current_preimage": {
+          "path": "include/imagejxx/execution.hpp",
+          "bytes": 11853,
+          "sha256": "5fd51ba8c724e07a63019c23107af582d486567dc4a7d0123e1562e860deae22"
+        },
+        "current_anchors": "31-43,196-265",
+        "bounded_reconciliation": "ExecutionControl now documents same-scope callback suppression while retaining cancellation and explicit child scopes. Reuse this control contract; PreparedOperation remains the rank pixel path."
+      },
+      {
+        "path": "include/imagejxx/application.hpp",
+        "entry_preimage": {
+          "bytes": 5240,
+          "sha256": "53d9c802a138cadf95665f6ebbc0a7da4308fc0a298871e6bc1b6abdb6c09977"
+        },
+        "reviewed_current_preimage": {
+          "path": "include/imagejxx/application.hpp",
+          "bytes": 7105,
+          "sha256": "aad7b9c9e54f21ef59fdca02d8c3da2fcc5d5eeaf53f056d32615b4fa728fe09"
+        },
+        "current_anchors": "30-54,79-110",
+        "bounded_reconciliation": "Auto command/jobs/reset declarations are additive. Reuse submit/prepare/publish OperationJob for rank; Auto transient cycle/Display publication is not a rank prerequisite."
+      },
+      {
+        "path": "src/native/application.cpp",
+        "entry_preimage": {
+          "bytes": 15740,
+          "sha256": "c617e3ae63970e0d18d0ad16bf785f5974d5d8866123de00cbc6437a2c9a8714"
+        },
+        "reviewed_current_preimage": {
+          "path": "src/native/application.cpp",
+          "bytes": 16925,
+          "sha256": "9ccf1b9acad4621f2965841fa525181169f6ab214dd9d4652f67c14a4ba323d2"
+        },
+        "current_anchors": "18-126,295-305,348-357",
+        "bounded_reconciliation": "Operation submission preflights/reserves staged/workspace/extra storage, captures target, admits scheduler outside Application lock and retains result resources. The current probe wrapper remains optional; its presence does not require histogram/Auto math or a new framework."
+      },
+      {
+        "path": "include/imagejxx/jobs.hpp",
+        "entry_preimage": {
+          "bytes": 5111,
+          "sha256": "0454f11364cd1ff020e02445b4ea96f40a6c453683197a6a44135056fc7070db"
+        },
+        "reviewed_current_preimage": {
+          "path": "include/imagejxx/jobs.hpp",
+          "bytes": 5419,
+          "sha256": "5333e35cb567fa20b7e6a5cdee150059e33d5bd1dc44e110d082699e731e3ef6"
+        },
+        "current_anchors": "26-43,73-82,101-117",
+        "bounded_reconciliation": "Use current retained-result resource guard/accounting and cleanup contracts; no independent rank scheduler."
+      },
+      {
+        "path": "src/native/jobs.cpp",
+        "entry_preimage": {
+          "bytes": 20642,
+          "sha256": "84857cc962622552541e2b0641c3bf58a5d139602aee422b529e5952b737776f"
+        },
+        "reviewed_current_preimage": {
+          "path": "src/native/jobs.cpp",
+          "bytes": 20994,
+          "sha256": "7aaa54f1f2c32df9d7c24ac0c89bed53ea061f167054371b32c50c2e5d02a1e7"
+        },
+        "current_anchors": "267-309,327-359,452-542",
+        "bounded_reconciliation": "Current reservation is charged at dispatch and retained while result aliases live; queued resource declarations are not equal to running reserved usage. Preserve scheduler/callback cleanup semantics in new rank assertions."
+      },
+      {
+        "path": "src/desktop/window.cpp",
+        "entry_preimage": {
+          "bytes": 400358,
+          "sha256": "a6debcd25c3b9a7baacf254bb5c207fae0fb3ac64113ed5c47bf194731ee8930"
+        },
+        "reviewed_current_preimage": {
+          "path": "src/desktop/window.cpp",
+          "bytes": 411262,
+          "sha256": "02d3408e85c8a82261e4e5874a68de989ea70807755c679413eab3b65472b838"
+        },
+        "current_anchors": "1047-1081,1374-1467,1649-1670,2965-3003,3116-3120",
+        "bounded_reconciliation": "Auto adds its own nonpixel job and busy/publication path; Gaussian still owns scientific processing lane/target/previews. Rank needs the already-planned minimal second-consumer lane adapter and narrow capability route, not copied Auto cycle/reset semantics or blanket SCI guard removal."
+      },
+      {
+        "path": "src/imagejxx/__init__.py",
+        "entry_preimage": {
+          "bytes": 43237,
+          "sha256": "2eae59300a2f03ab9d60fa324400a42d60a21fb1a2ed716a28d58201c5c2221a"
+        },
+        "reviewed_current_preimage": {
+          "path": "src/imagejxx/__init__.py",
+          "bytes": 44593,
+          "sha256": "f8bcbe0f4a1fee2d2a38e6667c61bfecfff945b3ad57f743597e541d6f069079"
+        },
+        "current_anchors": "75-94,573-609",
+        "bounded_reconciliation": "Histogram/Auto reexports are additive; existing rank_filter native/default dispatcher remains unchanged. New ImageJ profile must be explicit and preserve old API/record meaning."
+      },
+      {
+        "path": "docs/PLAN.md",
+        "entry_preimage": {
+          "bytes": 203940,
+          "sha256": "92932c3dc4d8a133f39ca8125c0a7aa075bcb7eff60166caba318963aaebe4ca"
+        },
+        "reviewed_current_preimage": {
+          "path": "docs/PLAN.md",
+          "bytes": 217339,
+          "sha256": "4cb363dc5d1cefdd77d6a1251f0b7069ab0b7c37ba17b06598c55c115903f9a4"
+        },
+        "current_anchors": "128,144-146,365-395",
+        "bounded_reconciliation": "Scheduling prose now records post-Auto rank/XY order and required ImageJ profile. Documentation change is not a reference/runtime/algorithm prerequisite."
+      }
+    ],
+    "unchanged": [
+      {
+        "path": "include/imagejxx/image.hpp",
+        "bytes": 7892,
+        "sha256": "ea5994381ec1226fba24ab447d89313770b44bba43b3fb0dcad531f36683a9c3"
+      },
+      {
+        "path": "src/native/filters.cpp",
+        "bytes": 27716,
+        "sha256": "104cd82e37ff4fc15d58b8874f89d5c3dc3494b7c646c529a104c999bcf527a1"
+      },
+      {
+        "path": "src/native/image.cpp",
+        "bytes": 19621,
+        "sha256": "4d7b41262da1b597a694a4a53ce45c2417c26f7311c17f8ae6b945d8a1c8c19f"
+      },
+      {
+        "path": "src/native/operation_catalog.inc",
+        "bytes": 82242,
+        "sha256": "fabd7b5dd633637e014f48437662d9914932e3a468f05f52a2059e1cecb0d614"
+      },
+      {
+        "path": "src/native/operation_kernel.inc",
+        "bytes": 12866,
+        "sha256": "880b38227181942d0f4236beb9928bab4d0e4ef7f653bc4132e9b68c24926e09"
+      },
+      {
+        "path": "src/native/operations.cpp",
+        "bytes": 34633,
+        "sha256": "4fe2366ebaad0193a4388012fc73845d3f265144f9729eab3180d8258fa575c5"
+      },
+      {
+        "path": "include/imagejxx/operations.hpp",
+        "bytes": 5348,
+        "sha256": "f59a18caa1efa0e3b4fc1d019f5077add476e17002f32c55256a5f749496d0bb"
+      },
+      {
+        "path": "include/imagejxx/dataset.hpp",
+        "bytes": 8015,
+        "sha256": "4744b8097ac2794b358d4e625d996a06d3c1a9aa348c3f121a6b7b3ab9182eb7"
+      },
+      {
+        "path": "include/imagejxx/targets.hpp",
+        "bytes": 4070,
+        "sha256": "2407f136a3d2ea0030a300c20ee2001d29b635a07487e77ca61d1fe03dd5d3c9"
+      },
+      {
+        "path": "src/native/targets.cpp",
+        "bytes": 18531,
+        "sha256": "7707fbb75b9376a2d856a578e9f290336c4dd2e835c428b6e8330c2ff69b37d5"
+      },
+      {
+        "path": "src/native/execution.cpp",
+        "bytes": 94083,
+        "sha256": "4d81bc112c03db7d7ec35dbc043c2eccc1f135195160174044533058f1e0e3a5"
+      },
+      {
+        "path": "include/imagejxx/gaussian_command.hpp",
+        "bytes": 3404,
+        "sha256": "e165849c92e3b144ad5732356907a7856db4944ac4fd03a0d9db25cac978025c"
+      },
+      {
+        "path": "src/desktop/operation_target_panel.hpp",
+        "bytes": 2474,
+        "sha256": "0f1179f662971dc4bc625513c18e7fb11fb77c9534ba18311ad1a1ebced66a39"
+      },
+      {
+        "path": "src/desktop/operation_target_panel.cpp",
+        "bytes": 15695,
+        "sha256": "dd0434e277b388435685b5ea0769c3ca11b0c752cba88f2bea107f732081b84e"
+      },
+      {
+        "path": "src/desktop/gaussian_jobs.hpp",
+        "bytes": 4234,
+        "sha256": "b9ba1a3585b5e259671c305e134e6887d6668480725e96fb5824cf7603089330"
+      },
+      {
+        "path": "src/desktop/gaussian_jobs.cpp",
+        "bytes": 16350,
+        "sha256": "be4336792d518eb76cb37845b18b0e3360ab106f033c7742a7de6add25df2e89"
+      },
+      {
+        "path": "src/desktop/gaussian_panel.hpp",
+        "bytes": 2944,
+        "sha256": "70dedb41b7e53f26e5ad467b3c1ba13a89cd8c35bfd1c20ebfc032bbbb8fbc29"
+      }
+    ],
+    "additional_callback_dispatch_pins": [
+      {
+        "path": "src/native/kernel_control.hpp",
+        "bytes": 5848,
+        "sha256": "10a0c5be469081e6136f8826506117e1f4f814be86e2a858f833ebf099bca8b5"
+      },
+      {
+        "path": "src/native/kernel_control.cpp",
+        "bytes": 2159,
+        "sha256": "59a8362ab58fbc4c9c4a51450a10bc0e63d355a18082a52fe4cc9759dc7acb9c"
+      }
+    ],
+    "reference_run_dependency": "None of the product Auto changes alters these excluded pinned Java reference inputs. Keep prepare independent of installed Auto qualification; root controls shared resource concurrency.",
+    "implementation_dependency": "Native ImageJ profile/mean work and narrow shared Gaussian processing adapter remain missing. Reuse existing target/operation/job/controller primitives; do not substitute the display-only Auto path or require histogram/whole measurement/IO/promotion."
+  },
+  "post_reader_adoption_decisions": [
+    {
+      "id": "R01.profile",
+      "entry_decision": "D01",
+      "required_freeze": "Explicit ImageJ/native discriminator and exact request/record field sets. New editor chooses source circular fractional/default2/edge duplicate/per-method memory; native existing integer radius/default1/disk/square/reflect/Cval meanings and old records stay unchanged. Radius0 behavior comes from K01/K06/K09, never assumed identity."
+    },
+    {
+      "id": "R02.mean",
+      "entry_decision": "D02",
+      "required_freeze": "Rank mean only, not smooth/box_blur. Adopt kernel line-radii/special intervals and actual source intermediate/accumulation/integer+0.5f/F32 output conversion from K05/K07/K08. No numerical outcome is adopted by this source freeze."
+    },
+    {
+      "id": "R03.finite",
+      "entry_decision": "D03",
+      "required_freeze": "Canonical finite scalarS1 UInt8/UInt16/Float32 first. Choose metadata refusal for quiet-NaN policy and detached refusal of actual noncanonical/nonfinite custom-provider values, without mutating originals or tightening existing generic native inputs. Keep K12/K13 observations and RGB/S4/F64/quiet/nonfinite follow-ons required."
+    },
+    {
+      "id": "R04.nonarea",
+      "entry_decision": "D04",
+      "required_freeze": "Adopt exact absent/point/line behavior from K11 for ImageJ profile, maintaining captured Selection dependency; distinguish whole-plane/nonarea fallback from explicit empty area and positioned-union no-match. Existing generic native masks remain compatibility. No silent whole-plane substitution for explicitly empty or unmatched native area targets."
+    },
+    {
+      "id": "R05.request_record",
+      "required_freeze": "Exact immutable profile/method/radius/footprint/border/Cval plus resolved target schema/API, strict bool/nonfinite/overflow/unknown-field validation; full original validation before identity/replay/rebind. Freeze source-derived ImageJ method radius limits against entry001 sources, not arbitrary tested maximum10; old native radius0..4096 remains independent. Pixels/Metadata/Selection binding and fresh-display/navigation preservation, no copied all4 Auto guard."
+    },
+    {
+      "id": "R06.noop",
+      "required_freeze": "Determine exact no-op/empty/actually unchanged accepted operation recording policy and redo behavior. One changed Apply creates one undo/dirty edit; no manufactured edit for unchanged results. ImageJ radius0 is decided from actual footprint/results, not native radius0 assumption."
+    },
+    {
+      "id": "R07.lifecycle",
+      "required_freeze": "Minimal shared Gaussian plane-operation lane adapter, complete-target Apply/contained-plane preview, stale/generation/cancel/reservation/record-publication ordering; preserve Gaussian and Auto behavior. Freeze per-method panel remember/reset/cancel/reopen separately from preferences persistence and bind processing worker/memory consumers."
+    },
+    {
+      "id": "R08.resources_storage",
+      "required_freeze": "One checked profile-specific footprint/mean/median/cache/ROI/record/READY estimate under existing16Mpx/128MiB candidate and configured cap. Qualify type-preserving eager scientific Save/Open and state/calibration/untouched planes. No general reader/virtual/session/Float64 promotion prerequisite; declare actual unsupported storage boundary honestly."
+    }
+  ],
+  "next_root_action": "Review/adopt this exact bounded prepare/capture/read contract, then run environment-only prepare once in a fresh stage. Inspect terminal feasibility before capture. All16 reader results precede a separately explicit numerical/profile/request/record policy adoption and product implementation.",
+  "acceptance": {
+    "reference_runtime_executed": false,
+    "reference_numerical_match": false,
+    "policy_adopted": false,
+    "public_api_adopted": false,
+    "product_implemented": false,
+    "installed_or_ui_qualified": false,
+    "commercial_eligibility_or_incorporation": false,
+    "family_complete": false,
+    "release": false
+  },
+  "preservation": {
+    "only_new_document_written": true,
+    "entry_producer_reader_unchanged": true,
+    "manifests_product_shared_docs_unchanged": true,
+    "new_incorporated_materials": [],
+    "build_import_test_capture_network_cleanup_executed": false
+  }
+}

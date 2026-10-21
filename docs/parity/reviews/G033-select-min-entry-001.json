@@ -1,0 +1,1279 @@
+{
+  "schema": "imagejxx.g033-select-min-reference-entry",
+  "schema_version": 1,
+  "id": "G033.channel-display.select-min.entry.001",
+  "date": "2026-10-16",
+  "status": "ready_for_supervisor_review",
+  "scope": "Standalone SelectMin transition reference entry only: eight finite U8/C3 hosted cases using the unchanged pinned ImageJ 1.54r handler and macro. Existing Min state/compositor remains adopted; this document neither redesigns representation nor adopts a new product action.",
+  "claims": {
+    "source_review_completed": true,
+    "new_capture_executed": false,
+    "new_reader_executed": false,
+    "product_implemented": false,
+    "product_verified": false,
+    "family_complete": false,
+    "incorporated_component_added": false,
+    "commercial_or_distribution_eligibility_conclusion": false,
+    "real_OS_input_claim": false
+  },
+  "primary_source": {
+    "version": "1.54r",
+    "commit": "62db90a269cccc1ac79f658e4602043214ed055b",
+    "archive": {
+      "path": "build/references/downloads/imagej-62db90a269cccc1ac79f658e4602043214ed055b.zip",
+      "bytes": 6146010,
+      "sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+      "verification_in_this_review": "Archive bytes and consumed member hashes checked read-only."
+    },
+    "members": {
+      "ij/plugin/frame/Channels.java": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/plugin/frame/Channels.java",
+        "bytes": 11531,
+        "sha256": "172f378b8ece0839559f7c291dfcf98c6c9ec619f4055d3303282ba92ffd1ccc"
+      },
+      "ij/CompositeImage.java": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/CompositeImage.java",
+        "bytes": 21489,
+        "sha256": "7f97ef93b52967cfadda37fb8c26513de283787a93a918d3e54260e43e432a7f"
+      },
+      "ij/ImagePlus.java": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/ImagePlus.java",
+        "bytes": 108208,
+        "sha256": "477e3f5f913b9c42feb68ea35d21836d45fd56920cccbfc5719a06822cbcfab9"
+      },
+      "ij/IJ.java": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/IJ.java",
+        "bytes": 88477,
+        "sha256": "8c620842fedd63392268b4fee191e4f6e9ef749ce96bf14a3e9f936e7cea06b4"
+      },
+      "ij/WindowManager.java": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/WindowManager.java",
+        "bytes": 20383,
+        "sha256": "68dc7efb78b8c7fc446b5649a61ad8787366af6afc38f8fe62ae36ca5dddc2bf"
+      },
+      "ij/gui/StackWindow.java": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/StackWindow.java",
+        "bytes": 11082,
+        "sha256": "333063c0a94206e656c1a67d72e7482397336644c911fc659f73539067146b57"
+      },
+      "ij/gui/ImageWindow.java": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/ImageWindow.java",
+        "bytes": 23195,
+        "sha256": "ca2cf35410411d8b53a02747ad2a5314598b9e79d201c9e632fef4b7aef5810b"
+      },
+      "ij/gui/ImageCanvas.java": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/ImageCanvas.java",
+        "bytes": 55868,
+        "sha256": "ab27a57aa060ca8e297d59b09e478406ebd7a3bbd5d6a741bc1ab56c7cc553ab"
+      },
+      "ij/plugin/Macro_Runner.java": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/plugin/Macro_Runner.java",
+        "bytes": 11634,
+        "sha256": "b9598bffa5b1bbbe851cbafdc31e43680176214020dbb53d6eea3d0665e9346b"
+      },
+      "ij/macro/Interpreter.java": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/macro/Interpreter.java",
+        "bytes": 63893,
+        "sha256": "a851bee634ce4d85a450b9cd10060104e397e5b5de80e4d85344db30546c7a57"
+      },
+      "ij/macro/Functions.java": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/macro/Functions.java",
+        "bytes": 246755,
+        "sha256": "fca5c8063c646a49f8b89ca5f4420f6cdbc00b1e28994aedec01ae0d0451c853"
+      },
+      "ij/process/ImageProcessor.java": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ImageProcessor.java",
+        "bytes": 95523,
+        "sha256": "f98e87d25eb6b1f2c5d8557b73dd33e36fef0494d903d6d250206371dccc279c"
+      },
+      "ij/process/ByteProcessor.java": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ByteProcessor.java",
+        "bytes": 40502,
+        "sha256": "fc23c95778bd7154eba1ea56d9ea943e7d1d9ea568fe20cf9bf9c6db1db3ad94"
+      },
+      "ij/process/ShortProcessor.java": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ShortProcessor.java",
+        "bytes": 40446,
+        "sha256": "7484082e91c7095a3c79984c74b4dafa8b6d2912ed3b862e28dd331c8ba3024d"
+      },
+      "ij/process/FloatProcessor.java": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/FloatProcessor.java",
+        "bytes": 35354,
+        "sha256": "0f52a157fe99e9a48ce2c9356fc2c3c435dc74f48e45a575171e60deb694ccf5"
+      },
+      "ij/process/LUT.java": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/LUT.java",
+        "bytes": 4198,
+        "sha256": "c3e13b697521012d9bf132efd663c5b73350a09a2be07c95a48c4c105d5631ff"
+      },
+      "ij/measure/Calibration.java": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/measure/Calibration.java",
+        "bytes": 14955,
+        "sha256": "2d44c799739c71b1fcdfcf6a5b42a86b65c46e4f6dca9b2cd29b6a479c67f07a"
+      },
+      "macros/InvertAllLuts.txt": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/macros/InvertAllLuts.txt",
+        "bytes": 2279,
+        "sha256": "266c77ef8ebae429260b4aca090e43854953630b637e870cb81a71521ad237cb"
+      }
+    }
+  },
+  "consumed_identities": [
+    {
+      "path": "docs/parity/reviews/P06c2-v01-adoption-002.json",
+      "bytes": 11023,
+      "sha256": "032858e479defcc0cf20eed0fcea74dc435a067544a8bf11e3d4e5ccb8296540",
+      "role": "Existing Sum/Max/Min representation and deterministic compositor policy; not standalone SelectMin adoption."
+    },
+    {
+      "path": "docs/parity/reviews/P06c2-v01-contract.json",
+      "bytes": 51187,
+      "sha256": "1d14863aada83995799e4ee58088d9eaa35cdc517d560ad357c4ae88eb6d3326",
+      "role": "Immutable base contract, subordinate to adoption002."
+    },
+    {
+      "path": "scripts/capture_composite_max_reference.py",
+      "bytes": 65651,
+      "sha256": "210cb868a858857a37a579fc69674eeaab2bc03b7780cc4e1086d18c788b1ef0",
+      "role": "Qualified observer/hidden StackWindow-Canvas-Choice host seam to reuse by verified identity; remains unchanged."
+    },
+    {
+      "path": "tests/python/test_composite_max_reference.py",
+      "bytes": 45146,
+      "sha256": "17954cda6ae9a0ac7bff699785961923ab4ac5b30b58d87667c4d4958c8d3e61",
+      "role": "Qualified independent Max-entry reader/schema; remains unchanged, never imported as a product oracle."
+    },
+    {
+      "path": "build/p06c2-001/reference-prepare-003.json",
+      "bytes": 3057,
+      "sha256": "0d8c5ccfe292e4502c00748b589d90eef0441827eafc332a2250f3beb24e0bf4",
+      "role": "Successful hidden-host preparation receipt; zero R-case dispatches at prepare."
+    },
+    {
+      "path": "build/references/composite-max-imagej154r-001/prepare-003/prepared.json",
+      "bytes": 48364,
+      "sha256": "81dcb4d599b2aeb673eebc3f942727e6132607485ba750f863c3a97194919640",
+      "role": "Prepared observer, class/resource and probe identities."
+    },
+    {
+      "path": "build/references/composite-max-imagej154r-001/prepare-003/verified-inputs.json",
+      "bytes": 4286,
+      "sha256": "89f80d7309e4279199040751500835292c43659d9354bca163b59388e33d679c",
+      "role": "Prior source/runtime/tree/class lineage; runtime bytes are not newly executed or reverified by this review."
+    },
+    {
+      "path": "build/p06c2-001/reference-capture-002.json",
+      "bytes": 4202,
+      "sha256": "e8e45900e39d0d8dc1eb450a4c95800127a88065771e1578ae4a35fc0328ec88",
+      "role": "Qualified hosted R12-R18 capture membership and provenance."
+    },
+    {
+      "path": "build/p06c2-001/reference-reader-002.json",
+      "bytes": 5677,
+      "sha256": "fac9d32f4fc77f6b49300aa0cd658a24ef049760e6b246a7bed6120337b96da3",
+      "role": "Eighteen independent reference-entry assertions passed; no product/OS/commercial acceptance."
+    },
+    {
+      "path": "build/references/composite-max-imagej154r-001/capture-002/reference.stdout",
+      "bytes": 1673896,
+      "sha256": "775cc9eebe75d0b9938504226a9b6747504c8e4b9b88979cbc7e92cfaf394adf",
+      "role": "Actual previous 18/74/62/22/8 observations; reused only within the limited scopes stated below."
+    }
+  ],
+  "source_rules": [
+    {
+      "member": "ij/plugin/frame/Channels.java",
+      "lines": [
+        197,
+        259
+      ],
+      "rule": "Choice index5 is Composite Min. The unchanged inherited itemStateChanged sets CompositeProjection=Min before testing inversion, invokes ij.jar:InvertAllLuts iff Min and the actual active processor is not inverted, then calls setMode(COMPOSITE) and updateAndDraw."
+    },
+    {
+      "member": "ij/process/ImageProcessor.java",
+      "lines": [
+        294,
+        322
+      ],
+      "rule": "isInvertedLut caches the result and returns inverted iff there is no RGB-sum increase from i-1 to i for i=1..254. The 254-to255 pair is excluded; constant tables are inverted. Observe the actual processor/base table and cache-sensitive changes, not a guessed current-channel table."
+    },
+    {
+      "member": "ij/ImagePlus.java",
+      "lines": [
+        1688,
+        1689,
+        1850,
+        1874,
+        1966,
+        2024
+      ],
+      "rule": "ImagePlus.isInvertedLut reads its ip. Displayed hyperstack setPosition delegates to StackWindow; setSlice installs the selected stored LUT only while the current mode is COMPOSITE."
+    },
+    {
+      "member": "ij/gui/StackWindow.java",
+      "lines": [
+        294,
+        316
+      ],
+      "rule": "Selector C/Z/T and imp.position update before setSlice, preserving correct source binding on each macro Stack.setChannel."
+    },
+    {
+      "member": "ij/macro/Functions.java",
+      "lines": [
+        1989,
+        2040,
+        4868,
+        4869,
+        5365,
+        5367
+      ],
+      "rule": "getLut on a composite reads the stored current channel LUT; setLut updates CompositeImage then updateAndDraw; is(\"Inverting LUT\") reads ImagePlus.ip; Stack.setChannel delegates to ImagePlus.setPosition. Stored channel tables and active processor color model must be recorded independently."
+    },
+    {
+      "member": "macros/InvertAllLuts.txt",
+      "lines": [
+        9,
+        44,
+        46,
+        75
+      ],
+      "rule": "The exact bundled macro transforms every stored channel table through its original HSV double arithmetic and round, retains per-channel ranges through setChannelLut, then deliberately selects channel1 (native C0). With requested Min it leaves Min if the final actual processor classifies inverted; otherwise it changes the property to Max. Do not replace macro execution with a host-computed table or algebraic shortcut."
+    },
+    {
+      "member": "ij/CompositeImage.java",
+      "lines": [
+        193,
+        201,
+        225,
+        252,
+        267,
+        338,
+        517,
+        543,
+        643,
+        659
+      ],
+      "rule": "A real bound window makes updateAndDraw execute updateImage. Color/Gray and singleton paths differ from multi-channel composition. Entering Composite from another mode resets flags true; staying Composite retains them. setChannelLut resets current-channel tracking and installs the supplied LUT on ip. Gray navigation does not install the stored current-channel LUT."
+    },
+    {
+      "member": "ij/IJ.java",
+      "lines": [
+        175,
+        177
+      ],
+      "rule": "runMacroFile directly calls Macro_Runner on the current thread."
+    },
+    {
+      "member": "ij/plugin/Macro_Runner.java",
+      "lines": [
+        65,
+        73,
+        157,
+        176,
+        212,
+        239
+      ],
+      "rule": "Macro file/resource loading and Interpreter.run complete synchronously before the handler returns; record the returned/aborted macro state and do not add an arbitrary sleep as a completion oracle."
+    },
+    {
+      "member": "ij/gui/ImageCanvas.java",
+      "lines": [
+        212,
+        246
+      ],
+      "rule": "Offscreen real paint may update/get the image and therefore affect caches. Preserve handler-before-readback state separately from after-paint state."
+    }
+  ],
+  "fixture_contract": {
+    "images_per_case": 1,
+    "image_name": "main",
+    "dtype": "uint8",
+    "shape_tczyx": [
+      2,
+      3,
+      4,
+      3,
+      5
+    ],
+    "samples_per_pixel": 1,
+    "sample_recipe": "40*t+30*c+5*z+2*y+x",
+    "bits_encoding": "little_endian_scalar_bits",
+    "range_per_channel": [
+      [
+        1,
+        201
+      ],
+      [
+        7,
+        219
+      ],
+      [
+        11,
+        241
+      ]
+    ],
+    "calibration": {
+      "spacing_xyz": [
+        0.5,
+        1.25,
+        2.5
+      ],
+      "origin_xyz": [
+        11,
+        -7,
+        19
+      ],
+      "unit_requested": "um",
+      "unit_observed": "\u00b5m",
+      "frame_interval": 0.75,
+      "time_unit": "s"
+    },
+    "tables": {
+      "red": "[i,0,0]",
+      "yellow": "[i,i,0]",
+      "cyan": "[0,i,i]",
+      "inverted_red": "[255-i,255,255]",
+      "inverted_yellow": "[255-i,255-i,255]",
+      "inverted_cyan": "[255,255-i,255-i]",
+      "custom_a": "[(3*i+7)%256,(5*i+11)%256,(7*i+13)%256]",
+      "custom_b": "[(11*i+23)%256,(2*i+101)%256,(13*i+3)%256]",
+      "custom_c": "[(i*i+41)%256,(17*i+5)%256,255-i]",
+      "constant": "[37,91,143] at every i",
+      "last_step_only": "i0..254: [200-i//2,160-i//3,120-i//4]; i255: [250,240,230]"
+    },
+    "table_domain": "i=0..255 inclusive. Freeze every generated RGB table byte and every raw source plane byte in input-plan.json before compile/probe/capture. These formulas specify input fixtures only.",
+    "default_projection": null,
+    "projection_null_meaning": "No CompositeProjection property; normal Sum baseline. Explicit per-case Max is a real input property, not an action result.",
+    "warm_visibility_rule": "The setup.warmed readback may change Color/Gray flags. The following labeled programmatic before stage restores exactly the declared flags without a paint, as qualified Max-entry setup does."
+  },
+  "membership": {
+    "case_ids": [
+      "N01",
+      "N02",
+      "N03",
+      "N04",
+      "N05",
+      "N06",
+      "N07",
+      "N08"
+    ],
+    "cases": 8,
+    "stage_counts": [
+      7,
+      4,
+      7,
+      4,
+      4,
+      4,
+      7,
+      4
+    ],
+    "stages": 41,
+    "RGB_readbacks": 33,
+    "source_pairs": 8,
+    "Channels_dispatches": 11,
+    "choice_index": 5,
+    "choice_item": "Composite Min",
+    "no_extra_programmatic_projection_cases": true
+  },
+  "cases": [
+    {
+      "id": "N01",
+      "title": "Ascending Composite Min entry and stable repeated selection",
+      "image": "main",
+      "fixture_overrides": {
+        "table_names": [
+          "red",
+          "yellow",
+          "cyan"
+        ],
+        "mode": "composite",
+        "projection": null,
+        "position_tcz": [
+          1,
+          1,
+          2
+        ],
+        "visibility": [
+          true,
+          false,
+          true
+        ]
+      },
+      "stages": [
+        {
+          "label": "setup.warmed",
+          "operation": "observe",
+          "render": true,
+          "role": "Labeled programmatic setup/warm readback, no Choice delivery."
+        },
+        {
+          "label": "before",
+          "operation": "visibility",
+          "render": false,
+          "role": "Restore exact declared flags after warm rendering; retain actual pre-handler state."
+        },
+        {
+          "label": "choice.min",
+          "operation": "channels_choice",
+          "index": 5,
+          "render": true,
+          "role": "Actual inherited Channels ItemEvent; retain state immediately after synchronous handler and before this readback paint."
+        },
+        {
+          "label": "after.redraw",
+          "operation": "observe",
+          "render": true,
+          "role": "One further real offscreen paint/readback; no second handler invocation."
+        },
+        {
+          "label": "choice.min.repeated",
+          "operation": "channels_choice",
+          "index": 5,
+          "render": true,
+          "role": "Deliver the same real Choice action again without intervening state replacement."
+        },
+        {
+          "label": "after.repeated.redraw",
+          "operation": "observe",
+          "render": true
+        },
+        {
+          "label": "after.repeated.redraw2",
+          "operation": "observe",
+          "render": true
+        }
+      ],
+      "source_derived_pre_capture_hypothesis": {
+        "status": "Primary-source prediction to test, never an observed result or native adoption.",
+        "pre_handler_is_inverted_lut": [
+          false,
+          true
+        ],
+        "macro_invoked_per_dispatch": [
+          true,
+          false
+        ],
+        "resolved_projection_per_dispatch": [
+          "Min",
+          "Min"
+        ],
+        "channel_effect_per_dispatch": [
+          {
+            "c": 0
+          },
+          null
+        ],
+        "final_visibility": "retain the declared flags"
+      },
+      "distinct_obligation": "Opposite Max predicate; transform every channel, including hidden active C1; macro deliberately selects C0. Repeated Min must not transform again once the active processor is inverted."
+    },
+    {
+      "id": "N02",
+      "title": "Uniform inverted entry preserves a nonzero active channel",
+      "image": "main",
+      "fixture_overrides": {
+        "table_names": [
+          "inverted_red",
+          "inverted_yellow",
+          "inverted_cyan"
+        ],
+        "mode": "composite",
+        "projection": "Max",
+        "position_tcz": [
+          1,
+          2,
+          2
+        ],
+        "visibility": [
+          true,
+          false,
+          true
+        ]
+      },
+      "stages": [
+        {
+          "label": "setup.warmed",
+          "operation": "observe",
+          "render": true,
+          "role": "Labeled programmatic setup/warm readback, no Choice delivery."
+        },
+        {
+          "label": "before",
+          "operation": "visibility",
+          "render": false,
+          "role": "Restore exact declared flags after warm rendering; retain actual pre-handler state."
+        },
+        {
+          "label": "choice.min",
+          "operation": "channels_choice",
+          "index": 5,
+          "render": true,
+          "role": "Actual inherited Channels ItemEvent; retain state immediately after synchronous handler and before this readback paint."
+        },
+        {
+          "label": "after.redraw",
+          "operation": "observe",
+          "render": true,
+          "role": "One further real offscreen paint/readback; no second handler invocation."
+        }
+      ],
+      "source_derived_pre_capture_hypothesis": {
+        "status": "Primary-source prediction to test, never an observed result or native adoption.",
+        "pre_handler_is_inverted_lut": [
+          true
+        ],
+        "macro_invoked_per_dispatch": [
+          false
+        ],
+        "resolved_projection_per_dispatch": [
+          "Min"
+        ],
+        "channel_effect_per_dispatch": [
+          null
+        ],
+        "final_visibility": "retain the declared flags"
+      },
+      "distinct_obligation": "No macro means no implicit C0 assignment. Distinguishes SelectMin semantics from the existing SelectMax Min/C0 coupled-record invariant."
+    },
+    {
+      "id": "N03",
+      "title": "Mixed tables yield faithful Max, then repeated Min yields Min",
+      "image": "main",
+      "fixture_overrides": {
+        "table_names": [
+          "inverted_red",
+          "yellow",
+          "custom_c"
+        ],
+        "mode": "composite",
+        "projection": "Max",
+        "position_tcz": [
+          1,
+          1,
+          2
+        ],
+        "visibility": [
+          true,
+          false,
+          true
+        ]
+      },
+      "stages": [
+        {
+          "label": "setup.warmed",
+          "operation": "observe",
+          "render": true,
+          "role": "Labeled programmatic setup/warm readback, no Choice delivery."
+        },
+        {
+          "label": "before",
+          "operation": "visibility",
+          "render": false,
+          "role": "Restore exact declared flags after warm rendering; retain actual pre-handler state."
+        },
+        {
+          "label": "choice.min",
+          "operation": "channels_choice",
+          "index": 5,
+          "render": true,
+          "role": "Actual inherited Channels ItemEvent; retain state immediately after synchronous handler and before this readback paint."
+        },
+        {
+          "label": "after.redraw",
+          "operation": "observe",
+          "render": true,
+          "role": "One further real offscreen paint/readback; no second handler invocation."
+        },
+        {
+          "label": "choice.min.repeated",
+          "operation": "channels_choice",
+          "index": 5,
+          "render": true,
+          "role": "Deliver the same real Choice action again without intervening state replacement."
+        },
+        {
+          "label": "after.repeated.redraw",
+          "operation": "observe",
+          "render": true
+        },
+        {
+          "label": "after.repeated.redraw2",
+          "operation": "observe",
+          "render": true
+        }
+      ],
+      "source_derived_pre_capture_hypothesis": {
+        "status": "Primary-source prediction to test, never an observed result or native adoption.",
+        "pre_handler_is_inverted_lut": [
+          false,
+          false
+        ],
+        "macro_invoked_per_dispatch": [
+          true,
+          true
+        ],
+        "resolved_projection_per_dispatch": [
+          "Max",
+          "Min"
+        ],
+        "channel_effect_per_dispatch": [
+          {
+            "c": 0
+          },
+          {
+            "c": 0
+          }
+        ],
+        "final_visibility": "retain the declared flags"
+      },
+      "distinct_obligation": "The active C1 is ascending but transformed C0 is ascending after first macro, so the macro rewrites requested Min to Max. A second actual Min intent transforms all tables again and is not a no-op even when a projection label repeats."
+    },
+    {
+      "id": "N04",
+      "title": "Constant active table is classified inverted",
+      "image": "main",
+      "fixture_overrides": {
+        "table_names": [
+          "red",
+          "constant",
+          "custom_b"
+        ],
+        "mode": "composite",
+        "projection": null,
+        "position_tcz": [
+          1,
+          1,
+          2
+        ],
+        "visibility": [
+          true,
+          false,
+          true
+        ]
+      },
+      "stages": [
+        {
+          "label": "setup.warmed",
+          "operation": "observe",
+          "render": true,
+          "role": "Labeled programmatic setup/warm readback, no Choice delivery."
+        },
+        {
+          "label": "before",
+          "operation": "visibility",
+          "render": false,
+          "role": "Restore exact declared flags after warm rendering; retain actual pre-handler state."
+        },
+        {
+          "label": "choice.min",
+          "operation": "channels_choice",
+          "index": 5,
+          "render": true,
+          "role": "Actual inherited Channels ItemEvent; retain state immediately after synchronous handler and before this readback paint."
+        },
+        {
+          "label": "after.redraw",
+          "operation": "observe",
+          "render": true,
+          "role": "One further real offscreen paint/readback; no second handler invocation."
+        }
+      ],
+      "source_derived_pre_capture_hypothesis": {
+        "status": "Primary-source prediction to test, never an observed result or native adoption.",
+        "pre_handler_is_inverted_lut": [
+          true
+        ],
+        "macro_invoked_per_dispatch": [
+          false
+        ],
+        "resolved_projection_per_dispatch": [
+          "Min"
+        ],
+        "channel_effect_per_dispatch": [
+          null
+        ],
+        "final_visibility": "retain the declared flags"
+      },
+      "distinct_obligation": "Constant intensity-sum table has no ascending step. Retain C1 and flags; do not infer inversion from C0 or the visible contributor set."
+    },
+    {
+      "id": "N05",
+      "title": "Only 254-to-255 ascending step is excluded",
+      "image": "main",
+      "fixture_overrides": {
+        "table_names": [
+          "red",
+          "last_step_only",
+          "custom_a"
+        ],
+        "mode": "composite",
+        "projection": null,
+        "position_tcz": [
+          1,
+          1,
+          2
+        ],
+        "visibility": [
+          true,
+          false,
+          true
+        ]
+      },
+      "stages": [
+        {
+          "label": "setup.warmed",
+          "operation": "observe",
+          "render": true,
+          "role": "Labeled programmatic setup/warm readback, no Choice delivery."
+        },
+        {
+          "label": "before",
+          "operation": "visibility",
+          "render": false,
+          "role": "Restore exact declared flags after warm rendering; retain actual pre-handler state."
+        },
+        {
+          "label": "choice.min",
+          "operation": "channels_choice",
+          "index": 5,
+          "render": true,
+          "role": "Actual inherited Channels ItemEvent; retain state immediately after synchronous handler and before this readback paint."
+        },
+        {
+          "label": "after.redraw",
+          "operation": "observe",
+          "render": true,
+          "role": "One further real offscreen paint/readback; no second handler invocation."
+        }
+      ],
+      "source_derived_pre_capture_hypothesis": {
+        "status": "Primary-source prediction to test, never an observed result or native adoption.",
+        "pre_handler_is_inverted_lut": [
+          true
+        ],
+        "macro_invoked_per_dispatch": [
+          false
+        ],
+        "resolved_projection_per_dispatch": [
+          "Min"
+        ],
+        "channel_effect_per_dispatch": [
+          null
+        ],
+        "final_visibility": "retain the declared flags"
+      },
+      "distinct_obligation": "ImageProcessor.isInvertedLut excludes the final 254-to-255 step. SelectMin must take the no-macro branch despite that final increase."
+    },
+    {
+      "id": "N06",
+      "title": "Color entry with macro resets visibility on Composite entry",
+      "image": "main",
+      "fixture_overrides": {
+        "table_names": [
+          "red",
+          "yellow",
+          "cyan"
+        ],
+        "mode": "color",
+        "projection": "Max",
+        "position_tcz": [
+          1,
+          1,
+          2
+        ],
+        "visibility": [
+          false,
+          true,
+          false
+        ]
+      },
+      "stages": [
+        {
+          "label": "setup.warmed",
+          "operation": "observe",
+          "render": true,
+          "role": "Labeled programmatic setup/warm readback, no Choice delivery."
+        },
+        {
+          "label": "before",
+          "operation": "visibility",
+          "render": false,
+          "role": "Restore exact declared flags after warm rendering; retain actual pre-handler state."
+        },
+        {
+          "label": "choice.min",
+          "operation": "channels_choice",
+          "index": 5,
+          "render": true,
+          "role": "Actual inherited Channels ItemEvent; retain state immediately after synchronous handler and before this readback paint."
+        },
+        {
+          "label": "after.redraw",
+          "operation": "observe",
+          "render": true,
+          "role": "One further real offscreen paint/readback; no second handler invocation."
+        }
+      ],
+      "source_derived_pre_capture_hypothesis": {
+        "status": "Primary-source prediction to test, never an observed result or native adoption.",
+        "pre_handler_is_inverted_lut": [
+          false
+        ],
+        "macro_invoked_per_dispatch": [
+          true
+        ],
+        "resolved_projection_per_dispatch": [
+          "Min"
+        ],
+        "channel_effect_per_dispatch": [
+          {
+            "c": 0
+          }
+        ],
+        "final_visibility": "all true after entering Composite from Color/Grayscale"
+      },
+      "distinct_obligation": "Run the real macro while still in Color, then real setMode(Composite); preserve source T/Z and ranges, observe C0 and all flags true."
+    },
+    {
+      "id": "N07",
+      "title": "Gray processor classifier and stored-C0 divergence with repeat",
+      "image": "main",
+      "fixture_overrides": {
+        "table_names": [
+          "red",
+          "inverted_yellow",
+          "custom_c"
+        ],
+        "mode": "grayscale",
+        "projection": "Max",
+        "position_tcz": [
+          1,
+          1,
+          2
+        ],
+        "visibility": [
+          true,
+          false,
+          true
+        ]
+      },
+      "stages": [
+        {
+          "label": "setup.warmed",
+          "operation": "observe",
+          "render": true,
+          "role": "Labeled programmatic setup/warm readback, no Choice delivery."
+        },
+        {
+          "label": "before",
+          "operation": "visibility",
+          "render": false,
+          "role": "Restore exact declared flags after warm rendering; retain actual pre-handler state."
+        },
+        {
+          "label": "choice.min",
+          "operation": "channels_choice",
+          "index": 5,
+          "render": true,
+          "role": "Actual inherited Channels ItemEvent; retain state immediately after synchronous handler and before this readback paint."
+        },
+        {
+          "label": "after.redraw",
+          "operation": "observe",
+          "render": true,
+          "role": "One further real offscreen paint/readback; no second handler invocation."
+        },
+        {
+          "label": "choice.min.repeated",
+          "operation": "channels_choice",
+          "index": 5,
+          "render": true,
+          "role": "Deliver the same real Choice action again without intervening state replacement."
+        },
+        {
+          "label": "after.repeated.redraw",
+          "operation": "observe",
+          "render": true
+        },
+        {
+          "label": "after.repeated.redraw2",
+          "operation": "observe",
+          "render": true
+        }
+      ],
+      "source_derived_pre_capture_hypothesis": {
+        "status": "Primary-source prediction to test, never an observed result or native adoption.",
+        "pre_handler_is_inverted_lut": [
+          false,
+          false
+        ],
+        "macro_invoked_per_dispatch": [
+          true,
+          true
+        ],
+        "resolved_projection_per_dispatch": [
+          "Max",
+          "Max"
+        ],
+        "channel_effect_per_dispatch": [
+          {
+            "c": 0
+          },
+          {
+            "c": 0
+          }
+        ],
+        "final_visibility": "all true after entering Composite from Color/Grayscale"
+      },
+      "distinct_obligation": "Initial active processor is gray and ascending despite the stored inverted active-C LUT. During the first macro Gray does not reinstall channel LUTs on navigation, so the last transformed C2 processor table can remain when C0 is selected. Its ascending-step classification differs from transformed stored C0. Retain full processor tables before/after paint and on repeat; a state-derived C0 shortcut would choose the wrong first branch. These are source predictions requiring new hosted observations before any product policy decision."
+    },
+    {
+      "id": "N08",
+      "title": "Color no-macro entry resets flags without changing C",
+      "image": "main",
+      "fixture_overrides": {
+        "table_names": [
+          "red",
+          "inverted_yellow",
+          "custom_c"
+        ],
+        "mode": "color",
+        "projection": "Max",
+        "position_tcz": [
+          1,
+          1,
+          2
+        ],
+        "visibility": [
+          false,
+          true,
+          false
+        ]
+      },
+      "stages": [
+        {
+          "label": "setup.warmed",
+          "operation": "observe",
+          "render": true,
+          "role": "Labeled programmatic setup/warm readback, no Choice delivery."
+        },
+        {
+          "label": "before",
+          "operation": "visibility",
+          "render": false,
+          "role": "Restore exact declared flags after warm rendering; retain actual pre-handler state."
+        },
+        {
+          "label": "choice.min",
+          "operation": "channels_choice",
+          "index": 5,
+          "render": true,
+          "role": "Actual inherited Channels ItemEvent; retain state immediately after synchronous handler and before this readback paint."
+        },
+        {
+          "label": "after.redraw",
+          "operation": "observe",
+          "render": true,
+          "role": "One further real offscreen paint/readback; no second handler invocation."
+        }
+      ],
+      "source_derived_pre_capture_hypothesis": {
+        "status": "Primary-source prediction to test, never an observed result or native adoption.",
+        "pre_handler_is_inverted_lut": [
+          true
+        ],
+        "macro_invoked_per_dispatch": [
+          false
+        ],
+        "resolved_projection_per_dispatch": [
+          "Min"
+        ],
+        "channel_effect_per_dispatch": [
+          null
+        ],
+        "final_visibility": "all true after entering Composite from Color/Grayscale"
+      },
+      "distinct_obligation": "Separates real setMode flag reset from macro channel cycling. All channels become visible, while active C1 and all tables remain unchanged."
+    }
+  ],
+  "host_and_delivery": {
+    "base_host_identity": {
+      "prepared": "build/references/composite-max-imagej154r-001/prepare-003/prepared.json",
+      "capture": "build/references/composite-max-imagej154r-001/capture-002/reference.stdout"
+    },
+    "reuse": "Reuse the qualified original ImageCanvas plus presentation-only hidden StackWindow/Channels subclasses. Do not override position, geometry, processor, paint, itemStateChanged or visibility-query APIs. Observe actual visibility/showing fields.",
+    "setup_order": [
+      "construct_base_CompositeImage",
+      "observe_before_attachment",
+      "construct_original_ImageCanvas",
+      "construct_hidden_StackWindow",
+      "bind_current_window_and_temporary_image",
+      "observe_after_attachment",
+      "apply_fixture_channel_tables_and_ranges",
+      "setPosition_through_StackWindow",
+      "set_current_channel_LUT",
+      "setDisplayRange",
+      "set_projection_if_present",
+      "setMode",
+      "set_visibility",
+      "set_canvas_source_rect",
+      "set_canvas_drawing_size",
+      "set_canvas_magnification_last",
+      "observe_configured"
+    ],
+    "canvas": {
+      "magnification": 8,
+      "source_rect_xywh": [
+        0,
+        0,
+        5,
+        3
+      ],
+      "drawing_wh": [
+        40,
+        24
+      ],
+      "surface_wh": [
+        40,
+        24
+      ],
+      "paint_method": "ImageCanvas.paint(Graphics2D) on private BufferedImage.TYPE_INT_RGB"
+    },
+    "position_and_identity": "Before every dispatch and after its handler and readback, require the same source ImagePlus, original canvas, bound StackWindow, current/temp image, displayed-hyperstack true, selectors and actual C/T/Z/current stack index, processor pixels identity and selected raw source-plane bits.",
+    "event": "On the AWT EDT select the actual Channels Choice index5 and deliver ItemEvent.SELECTED to the registered real inherited Channels listener. Retain actual Choice identity/items/listeners/handler declaring class/event/item/selected index/count. No direct setMode/setProp/macro invocation substitutes for this action.",
+    "order": "Observe stage.before -> deliver inherited handler synchronously -> retain dispatch.state_after_handler_before_readback -> one actual offscreen paint for the declared RGB stage -> retain stage.after. Observe later redraws without re-delivery; no extra state replacements.",
+    "visibility": "Top-level ImageJ/StackWindow/Channels remain actually hidden; retain actual child flags and do not infer OS visibility from one child flag.",
+    "macro_resource": "Copy only verified macros/InvertAllLuts.txt bytes from the pinned archive to a new excluded build/reference classpath resource directory. Preserve its member/archive hashes and provenance before execution; never embed/copy this third-party macro into tracked script/product source.",
+    "transport": "Lossless JSON escaping for all non-ASCII UTF-16 code units, including surrogate code units, plus existing control escaping. Preserve normalized micro sign and byte-exact fields."
+  },
+  "observation_contract": {
+    "contract_id": "g033.composite-min-entry-reference.001",
+    "format": "case-major JSONL, one bounded row per fixed case, existing qualified Max host schema with contract/id/input differences only",
+    "root_fields": [
+      "contract",
+      "id",
+      "input_contract",
+      "host_setup",
+      "stages",
+      "source_before",
+      "source_after",
+      "elapsed_ms",
+      "environment"
+    ],
+    "stage_fields": [
+      "label",
+      "input",
+      "before",
+      "dispatch",
+      "after",
+      "rgb",
+      "elapsed_ms"
+    ],
+    "state_fields": [
+      "image_id",
+      "mode",
+      "mode_integer",
+      "projection",
+      "channel_count",
+      "position_tcz",
+      "active_flags",
+      "calibration",
+      "channel_state",
+      "active_processor",
+      "cache",
+      "host"
+    ],
+    "channel_state_fields": [
+      "channel",
+      "effective_range",
+      "rgb_interleaved_hex"
+    ],
+    "active_processor_fields": [
+      "class",
+      "range",
+      "rgb_interleaved_hex",
+      "is_inverted_lut"
+    ],
+    "cache_fields": [
+      "channel_processors_present",
+      "current_channel",
+      "current_frame",
+      "current_slice",
+      "image_present",
+      "rgb_pixels_present",
+      "single_channel"
+    ],
+    "dispatch_fields": [
+      "method",
+      "requested_index",
+      "event_id",
+      "event_item",
+      "source_identity",
+      "current_image_id",
+      "before",
+      "after",
+      "state_after_handler_before_readback",
+      "state_change"
+    ],
+    "host_fields": [
+      "window/canvas/image identities and reciprocal bindings",
+      "actual window/canvas visibility/showing/displayable",
+      "open_as_hyperstack/displayed_hyperstack/window_hyperstack",
+      "actual selector C/Z/T, position T/C/Z, current slice/stack index",
+      "processor identity/pixels_are_source/source pixel identity/scalar bits",
+      "canvas source rectangle/drawing size/magnification",
+      "offscreen paint count/method/label/surface dimensions"
+    ],
+    "source_fields": "Retain every original T/C/Z plane position, declared raw scalar bits, bit depth, dimensions and stack index before/after; never infer source preservation from display-only readbacks.",
+    "RGB_fields": [
+      "method",
+      "shape_yx",
+      "rgb_interleaved_hex"
+    ],
+    "prohibited_fields": [
+      "producer pass or acceptance verdict",
+      "expected state/LUT/RGB",
+      "host-computed replacement transition",
+      "synthetic processor/C navigation state"
+    ],
+    "independent_reader": "A new separately owned reader freezes eight IDs and all counts before capture, independently derives input bytes/classification/macro tables/ranges/projection/C/flags/processor state and exact RGB from pinned source and qualified processors. It consumes raw observations and never uses the product to compute expected results. No skips, tolerance-only RGB, omitted pixel0, or fixture changes after seeing output."
+  },
+  "reuse_without_recapture": [
+    {
+      "evidence": "Qualified R01-R04/R10 processor mapping/custom/quiet-source rows and R11 integer-plane orientation",
+      "scope": "Reuse unchanged processor arithmetic/input-layout oracles where byte/type/range identities match. Do not rerun the full mapping/type/XYZ matrix merely to change Choice index."
+    },
+    {
+      "evidence": "Hosted R12-R18 hidden StackWindow/Canvas/Choice delivery and raw source-binding schema",
+      "scope": "Reuse setup/transport and source-qualified diagnostics only after verifying unchanged source/runtime/class/resource identities. Newly compiled observer/probe bytes still need their own frozen prepare receipt."
+    },
+    {
+      "evidence": "Hosted R16-R18 actual Min output at their exact U8 fixtures and adopted first-contributor/empty-black native policy",
+      "scope": "Min state/compositor exists already. Reuse owned numerical/persistence implementation contracts and matching prior evidence; do not label existing SelectMax dispatches as SelectMin evidence or extend U8 reference results to unobserved U16/F32/empty/cache cases."
+    },
+    {
+      "evidence": "Pinned InvertAllLuts full transformed-table bytes on identical qualified input tables",
+      "scope": "Reuse identical fixed-table numerical expectations where justified, while still capturing all actual table bytes for each new Min transition. Repeated custom-C transforms and Gray processor history are new observations, not covered merely because the macro member is unchanged."
+    }
+  ],
+  "genuinely_new_observations": [
+    "Eleven real inherited Choice-index5 deliveries, including repeated selections",
+    "The opposite macro-admission predicate and legitimate no-macro retained C1/C2",
+    "All-channel LUT transforms/range retention and final property Max or Min after requested Min",
+    "Color/Gray mode-entry flag resets versus Composite flag retention",
+    "Gray actual-processor versus stored-C0 classification and repeat sequence",
+    "Before-handler, after-handler-before-paint and after-paint source/processor/cache bindings for these exact new inputs"
+  ],
+  "adoption_boundaries": {
+    "representation": "Keep adopted V1 Sum and V2 Sum/Max/Min exact field sets and compositor/empty/singleton policies. No representation revision is needed for this reference entry.",
+    "action_record": "No SelectMin request/action/record/UI control is adopted here. After independent capture, freeze a separate explicit intent contract. A Min result with null navigation is legitimate for no-macro SelectMin; retain the existing SelectMax-only Min-requires-C0 invariant unchanged.",
+    "classifier_context": "Do not assume the adopted native state-derived SelectMax classifier is exact for Gray SelectMin history. N07 deliberately tests actual processor/C0 divergence; choose a documented owned policy, scoped exclusion or faithful behavior only after evidence, not by adding hidden cache state to the current record.",
+    "not_in_this_entry": [
+      "Composite Invert",
+      "standalone Invert LUTs or LUT-edit workflows",
+      "checkbox active-channel policy",
+      "singleton/C8/C9 SelectMin entry",
+      "new U16/F32 mapping matrix",
+      "OS input/accessibility/supported-platform certification",
+      "family registration or commercial/distribution eligibility"
+    ]
+  },
+  "prerequisites": [
+    {
+      "id": "P01",
+      "requirement": "Supervisor reviews/freezes this exact eight-case contract before observer/reader implementation or capture.",
+      "state": "pending_root_review"
+    },
+    {
+      "id": "P02",
+      "requirement": "Assign disjoint new observer and independent-reader ownership; preserve all held Max/product/UI sources unchanged.",
+      "state": "not_authorized_by_this_review"
+    },
+    {
+      "id": "P03",
+      "requirement": "Fresh excluded prepare stage freezes input-plan complete bytes and canonical hash, tool/helper/Java source, archive/member pins, macro resource, loaded class paths/hashes, runtime tree, output membership and bounded argv before any execution. Add explicit Functions.java/Interpreter.java pins consumed above.",
+      "state": "required_before_prepare"
+    },
+    {
+      "id": "P04",
+      "requirement": "Compile and one setup-only host probe in a fresh prepare stage under root supervision; zero N dispatches. Assert actual scale8, source5x3, drawing40x24, source/StackWindow/Canvas binding, initial T1/C1/Z2, actual processor bits and hidden top-level windows. Constructor reset artifacts must remain separately observed, never repaired after press/dispatch.",
+      "state": "required_before_capture"
+    },
+    {
+      "id": "P05",
+      "requirement": "Freeze independent reader source/expected eight IDs and exact41/33/8/11 counts; execute one bounded capture from the verified prepared stage. Preserve each failed attempt and its exact source preimage.",
+      "state": "required_before_capture"
+    },
+    {
+      "id": "P06",
+      "requirement": "Read actual capture independently. Any mismatch remains a concrete source/context/transport question; do not force Min, suppress tables, replace handler, accept both outcomes or relabel windowless data as displayed-host evidence.",
+      "state": "required_before_native_adoption"
+    }
+  ],
+  "bounds": {
+    "maximum_case_ids": 8,
+    "maximum_images_per_case": 1,
+    "maximum_shape_tczyx": [
+      2,
+      3,
+      4,
+      3,
+      5
+    ],
+    "maximum_case_seconds": 5,
+    "capture_parent_seconds": 60,
+    "raw_payload_bytes": 2097152,
+    "receipt_or_report_bytes": 2097152,
+    "prepare_parent_seconds": 120,
+    "compile_seconds": 60,
+    "probe_seconds": 20,
+    "excluded_stage_bytes": 33554432,
+    "archive_inputs": "Reuse pinned read-only archives; no download, shared-cache mutation or new incorporation in this task.",
+    "fresh_paths_required": true,
+    "automatic_retry_or_matrix_expansion": false
+  },
+  "future_output_membership": {
+    "prepare": [
+      "input-plan.json",
+      "verified-inputs.json",
+      "execution-inputs.json",
+      "tool.py snapshot",
+      "observer Java source",
+      "observer classes and archive-derived macros/InvertAllLuts.txt in excluded classpath",
+      "javac/version/probe stdout+stderr",
+      "probe command/receipt",
+      "prepared.json"
+    ],
+    "capture": [
+      "input-plan.json copy",
+      "command.json",
+      "reference.stdout",
+      "reference.stderr",
+      "capture.json"
+    ],
+    "reader": [
+      "frozen expected/collected eight IDs",
+      "assertion stdout+stderr/XML/JSON receipt"
+    ],
+    "preservation": "Fresh immutable numbered stages only. Keep original windowless and hosted Max attempts and all N failures; no overwrite, cleanup or acceptance manifest mutation.",
+    "planned_stage_root": "build/references/composite-min-imagej154r-001",
+    "initial_prepare_stage": "build/references/composite-min-imagej154r-001/prepare-001",
+    "initial_capture_stage": "build/references/composite-min-imagej154r-001/capture-001"
+  },
+  "next_action": {
+    "owner": "root/reference supervisor",
+    "action": "Review/freeze this JSON, then assign a new bounded SelectMin observer and independent reader using the qualified hidden-host seam. Root alone performs fresh setup-only preparation, freezes source/probe/input/reader identities, and then supervises one exact N01-N08 capture.",
+    "blocked_on_product_milestone": false,
+    "not_required_first": [
+      "new state/compositor design",
+      "new TIFF/series service",
+      "scientific ROI editing",
+      "filter or slicing expansion",
+      "another full Max numerical/reference capture"
+    ],
+    "capture_performed_in_this_task": false,
+    "new_observer_path": "scripts/capture_composite_min_reference.py",
+    "new_independent_reader_path": "tests/python/test_composite_min_reference.py"
+  }
+}

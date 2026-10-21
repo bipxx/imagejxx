@@ -1,0 +1,276 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_owned_increment",
+  "review_type": "Root authorship/integration attestation, not independent legal review",
+  "license": "Existing project MIT for original shared native display editor, renderer, restricted publication and tests",
+  "new_dependencies": [],
+  "restricted_features_added": false,
+  "imported_third_party_product_code": [],
+  "new_fonts": [],
+  "sources": [
+    {
+      "logical_path": "CMakeLists.txt",
+      "before": {
+        "path": "build/p06q-display-ui001/before001/CMakeLists.txt",
+        "bytes": 58209,
+        "sha256": "d4928428913245f84924f2bd3ece448c029e77e286b7333000b6a5e57b450c74"
+      },
+      "after": {
+        "path": "build/p06q-display-ui001/held001/after/CMakeLists.txt",
+        "bytes": 58348,
+        "sha256": "667b6c3ff4c5172aa6ad93744ee4bf2e1537830a4f624dc17df6e4e3221d04da"
+      },
+      "current": {
+        "path": "CMakeLists.txt",
+        "bytes": 58348,
+        "sha256": "667b6c3ff4c5172aa6ad93744ee4bf2e1537830a4f624dc17df6e4e3221d04da"
+      }
+    },
+    {
+      "logical_path": "src/desktop/desktop.hpp",
+      "before": {
+        "path": "build/p06q-display-ui001/before001/src/desktop/desktop.hpp",
+        "bytes": 12386,
+        "sha256": "99b2ed189c2f20452b53845c0e74b79535fc6210a91b20651db8775d1b83b7b6"
+      },
+      "after": {
+        "path": "build/p06q-display-ui001/held001/after/src/desktop/desktop.hpp",
+        "bytes": 12453,
+        "sha256": "2299b827547356dc17fcacbb5767ad9d31ce461350910d71959bfc1090734076"
+      },
+      "current": {
+        "path": "src/desktop/desktop.hpp",
+        "bytes": 12453,
+        "sha256": "2299b827547356dc17fcacbb5767ad9d31ce461350910d71959bfc1090734076"
+      }
+    },
+    {
+      "logical_path": "src/desktop/display_annotation_panel.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-display-ui001/held001/after/src/desktop/display_annotation_panel.cpp",
+        "bytes": 17132,
+        "sha256": "0459e318b21519dd5086013c6b9af6ff91da4afe7f23373cc04aea4cb1cdb35d"
+      },
+      "current": {
+        "path": "src/desktop/display_annotation_panel.cpp",
+        "bytes": 17132,
+        "sha256": "0459e318b21519dd5086013c6b9af6ff91da4afe7f23373cc04aea4cb1cdb35d"
+      }
+    },
+    {
+      "logical_path": "src/desktop/display_annotation_panel.hpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-display-ui001/held001/after/src/desktop/display_annotation_panel.hpp",
+        "bytes": 657,
+        "sha256": "268048636572675f15ca40c4c6d5ffbea7c7db02e74755c4d4998fa8e8e70ba5"
+      },
+      "current": {
+        "path": "src/desktop/display_annotation_panel.hpp",
+        "bytes": 657,
+        "sha256": "268048636572675f15ca40c4c6d5ffbea7c7db02e74755c4d4998fa8e8e70ba5"
+      }
+    },
+    {
+      "logical_path": "src/desktop/display_annotation_renderer.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-display-ui001/held001/after/src/desktop/display_annotation_renderer.cpp",
+        "bytes": 11365,
+        "sha256": "77ed00c33b6a0f32e3f1993ac2e371411942c716daebc4246fef888f720dfc9c"
+      },
+      "current": {
+        "path": "src/desktop/display_annotation_renderer.cpp",
+        "bytes": 11365,
+        "sha256": "77ed00c33b6a0f32e3f1993ac2e371411942c716daebc4246fef888f720dfc9c"
+      }
+    },
+    {
+      "logical_path": "src/desktop/display_annotation_renderer.hpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-display-ui001/held001/after/src/desktop/display_annotation_renderer.hpp",
+        "bytes": 894,
+        "sha256": "47ce8a72875562a5a1e653244bb85186721e5e6c9315de3416759fd0fbb73b30"
+      },
+      "current": {
+        "path": "src/desktop/display_annotation_renderer.hpp",
+        "bytes": 894,
+        "sha256": "47ce8a72875562a5a1e653244bb85186721e5e6c9315de3416759fd0fbb73b30"
+      }
+    },
+    {
+      "logical_path": "src/desktop/display_annotation_ui_probe.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-display-ui001/held001/after/src/desktop/display_annotation_ui_probe.cpp",
+        "bytes": 11481,
+        "sha256": "af8402d5d42e5dff87509add9ac505564ed6082737693556169401eea31dff7a"
+      },
+      "current": {
+        "path": "src/desktop/display_annotation_ui_probe.cpp",
+        "bytes": 11481,
+        "sha256": "af8402d5d42e5dff87509add9ac505564ed6082737693556169401eea31dff7a"
+      }
+    },
+    {
+      "logical_path": "src/desktop/document.cpp",
+      "before": {
+        "path": "build/p06q-display-ui001/before001/src/desktop/document.cpp",
+        "bytes": 69149,
+        "sha256": "93f465e175ee48de693d990fe3875e15c58211f6016900b00219cac88d78a069"
+      },
+      "after": {
+        "path": "build/p06q-display-ui001/held001/after/src/desktop/document.cpp",
+        "bytes": 70359,
+        "sha256": "2bb4fbb65d7dada7ed80978ad7ac68ff88429077cb1046eb48a428e58b20f30a"
+      },
+      "current": {
+        "path": "src/desktop/document.cpp",
+        "bytes": 70359,
+        "sha256": "2bb4fbb65d7dada7ed80978ad7ac68ff88429077cb1046eb48a428e58b20f30a"
+      }
+    },
+    {
+      "logical_path": "src/desktop/main.cpp",
+      "before": {
+        "path": "build/p06q-display-ui001/before001/src/desktop/main.cpp",
+        "bytes": 36780,
+        "sha256": "9fc871df4539098e2a1ed8ca37d62379dc70552ff71f6c271f71950b4313d17f"
+      },
+      "after": {
+        "path": "build/p06q-display-ui001/held001/after/src/desktop/main.cpp",
+        "bytes": 37246,
+        "sha256": "1b39048b463c215f86473cbe79e27efec4283220ef445500f6f6cccd9f3efb48"
+      },
+      "current": {
+        "path": "src/desktop/main.cpp",
+        "bytes": 37246,
+        "sha256": "1b39048b463c215f86473cbe79e27efec4283220ef445500f6f6cccd9f3efb48"
+      }
+    },
+    {
+      "logical_path": "src/desktop/orthogonal.cpp",
+      "before": {
+        "path": "build/p06q-display-ui001/before001/src/desktop/orthogonal.cpp",
+        "bytes": 57574,
+        "sha256": "70353f646c377dd77a2767a8c022aeafabda57efed06352c679c8002620007b0"
+      },
+      "after": {
+        "path": "build/p06q-display-ui001/held001/after/src/desktop/orthogonal.cpp",
+        "bytes": 57856,
+        "sha256": "63c5341574b58cbd8db5821684e27cd549cb08a340f60998b14ebf26457601da"
+      },
+      "current": {
+        "path": "src/desktop/orthogonal.cpp",
+        "bytes": 57856,
+        "sha256": "63c5341574b58cbd8db5821684e27cd549cb08a340f60998b14ebf26457601da"
+      }
+    },
+    {
+      "logical_path": "src/desktop/orthogonal.hpp",
+      "before": {
+        "path": "build/p06q-display-ui001/before001/src/desktop/orthogonal.hpp",
+        "bytes": 5209,
+        "sha256": "f5600343dd7f89ed80b3d9c0464a205eadcf77e89eb9924e466edeca944cf271"
+      },
+      "after": {
+        "path": "build/p06q-display-ui001/held001/after/src/desktop/orthogonal.hpp",
+        "bytes": 5325,
+        "sha256": "6940816b6ac0f5e7b22f4142e00f3bbbbd19175a0c505d527cccd13d55a3c041"
+      },
+      "current": {
+        "path": "src/desktop/orthogonal.hpp",
+        "bytes": 5325,
+        "sha256": "6940816b6ac0f5e7b22f4142e00f3bbbbd19175a0c505d527cccd13d55a3c041"
+      }
+    },
+    {
+      "logical_path": "src/desktop/python.cpp",
+      "before": {
+        "path": "build/p06q-display-ui001/before001/src/desktop/python.cpp",
+        "bytes": 40846,
+        "sha256": "63fdad5b6b77ad3dcf688de1aeca7699fd1bf3de58dd372d102e2eb87d9d8740"
+      },
+      "after": {
+        "path": "build/p06q-display-ui001/held001/after/src/desktop/python.cpp",
+        "bytes": 41060,
+        "sha256": "b09743e2620a871538f93c4ee08e5394b4812c9898bcd51b1664e25dd244e110"
+      },
+      "current": {
+        "path": "src/desktop/python.cpp",
+        "bytes": 41060,
+        "sha256": "b09743e2620a871538f93c4ee08e5394b4812c9898bcd51b1664e25dd244e110"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_ui_probe.hpp",
+      "before": {
+        "path": "build/p06q-display-ui001/before001/src/desktop/roi_import_ui_probe.hpp",
+        "bytes": 1069,
+        "sha256": "7d501fcc79e34264b35240ca1dd934b1d1f3d436ad349ec2afc1b39075be9dda"
+      },
+      "after": {
+        "path": "build/p06q-display-ui001/held001/after/src/desktop/roi_import_ui_probe.hpp",
+        "bytes": 1171,
+        "sha256": "9747073b0379d28d20f146e8a3814d2dccc6b03fae4c1db291b9d934eaebe62e"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_ui_probe.hpp",
+        "bytes": 1171,
+        "sha256": "9747073b0379d28d20f146e8a3814d2dccc6b03fae4c1db291b9d934eaebe62e"
+      }
+    },
+    {
+      "logical_path": "src/desktop/window.cpp",
+      "before": {
+        "path": "build/p06q-display-ui001/before001/src/desktop/window.cpp",
+        "bytes": 566822,
+        "sha256": "f6021f0160b862374ae4f8deb96419c4840aab30054f595c5455fb86ae3986bc"
+      },
+      "after": {
+        "path": "build/p06q-display-ui001/held001/after/src/desktop/window.cpp",
+        "bytes": 572449,
+        "sha256": "d52eeb70311e095583a77f1c1b0f7c0fa54823100f973771be236ddbfaa9f551"
+      },
+      "current": {
+        "path": "src/desktop/window.cpp",
+        "bytes": 572449,
+        "sha256": "d52eeb70311e095583a77f1c1b0f7c0fa54823100f973771be236ddbfaa9f551"
+      }
+    },
+    {
+      "logical_path": "tests/native/test_planar_annotation_host.cpp",
+      "before": {
+        "path": "build/p06q-display-ui001/before001/tests/native/test_planar_annotation_host.cpp",
+        "bytes": 6731,
+        "sha256": "d3b513dd72309f91d4848173aabf4b68b074a6fa8ac3fce3b8c6e1b57b8b8e3f"
+      },
+      "after": {
+        "path": "build/p06q-display-ui001/held001/after/tests/native/test_planar_annotation_host.cpp",
+        "bytes": 7881,
+        "sha256": "7935f253155ae3658714d4eb59e76d10cd03d9c78a2ef1011e771699447adede"
+      },
+      "current": {
+        "path": "tests/native/test_planar_annotation_host.cpp",
+        "bytes": 7881,
+        "sha256": "7935f253155ae3658714d4eb59e76d10cd03d9c78a2ef1011e771699447adede"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_display_annotations_ui.py",
+      "before": null,
+      "after": {
+        "path": "build/p06q-display-ui001/held001/after/tests/python/test_display_annotations_ui.py",
+        "bytes": 8669,
+        "sha256": "00b283086249a07a949fadd56939d22259fa59c6b962e09d0b4933eab5047d4c"
+      },
+      "current": {
+        "path": "tests/python/test_display_annotations_ui.py",
+        "bytes": 8669,
+        "sha256": "00b283086249a07a949fadd56939d22259fa59c6b962e09d0b4933eab5047d4c"
+      }
+    }
+  ]
+}

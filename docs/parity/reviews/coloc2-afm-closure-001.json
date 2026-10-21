@@ -1,0 +1,429 @@
+{
+  "schema": "imagejxx.coloc2-afm-resource-closure",
+  "schema_version": 1,
+  "id": "coloc2-afm-closure-001",
+  "state": "held_exact_afm_permission_source_association_established",
+  "recorded_at_utc": "2026-10-16T07:39:47.555056+00:00",
+  "scope": "Only exact iText5.5.13.4 shipped14AFM metrics and accompanying mustRead permission. Supporting edge evidence, not component/workflow approval or permission to incorporate material now.",
+  "candidate_id": "R-7a864ddce4217b0c98d20c66",
+  "root_component_id": "fiji:plugins/Colocalisation_Analysis-3.1.0.jar",
+  "dependency_component_id": "fiji:jars/itextpdf-5.5.13.4.jar",
+  "consumed_held_reports": [
+    {
+      "path": "docs/parity/reviews/coloc2-commercial-closure-001.json",
+      "bytes": 163685,
+      "sha256": "054446ce316e4e52621ca814dff68c4ddbf68902b6c02f1cc51fb4f1773bece8"
+    },
+    {
+      "path": "docs/parity/reviews/coloc2-glyphlist-closure-001.json",
+      "bytes": 13493,
+      "sha256": "f783e62a9220995ddea49f52215367e84f284e580e8afc440b49de4db59b58fa"
+    }
+  ],
+  "bounded_research": {
+    "declared_limits": {
+      "urls": 2,
+      "download_bytes": 4194304,
+      "fetch_seconds": 60,
+      "total_investigation_seconds": 120
+    },
+    "primary_urls_used": 2,
+    "network_artifact_bytes_saved": 2350837,
+    "browser_corroboration_bytes": "Web tool text view; source-equivalent933-byte notice retained from official artifact",
+    "artifact_fetch_seconds": 0.2381605000118725,
+    "product_runtime_executed": false,
+    "stop": "Concrete edge proof obtained. No additional source, graph or leaf investigation."
+  },
+  "raw_evidence": {
+    "directory": "build/references/coloc2-afm-closure-001",
+    "source_artifact": {
+      "path": "build/references/coloc2-afm-closure-001/itextpdf-5.5.13.4-sources.jar",
+      "bytes": 2350837,
+      "sha256": "2844df41d9b391af8e6fcaa380e77fa661abdbf1def7207955271315c2f4b933"
+    },
+    "request": {
+      "path": "build/references/coloc2-afm-closure-001/request.json",
+      "bytes": 373,
+      "sha256": "79d924cc4fa0c7819f982fba814df8b93a6b0946c5b8c288949e470ea02ed8d0"
+    },
+    "fetch_receipt": {
+      "path": "build/references/coloc2-afm-closure-001/fetch-001.json",
+      "bytes": 1366,
+      "sha256": "92185aad22f62ff54260481e2ffd9cf57044a0823687e301e80522336275bd36"
+    },
+    "exact_permission_member_copy": {
+      "path": "build/references/coloc2-afm-closure-001/mustRead-from-source.html",
+      "bytes": 933,
+      "sha256": "9cab6f4ff74315819cbc50c81f2a2d240edb3ef24626795aded4ab1f7c4dfe06"
+    },
+    "preservation": "Full source archive and HTTP receipt are retained outside product; no AFM files extracted/copied into product. No failed fetch occurred."
+  },
+  "primary_sources": [
+    {
+      "id": "P01",
+      "url": "https://repo.maven.apache.org/maven2/com/itextpdf/itextpdf/5.5.13.4/itextpdf-5.5.13.4-sources.jar",
+      "role": "Official versioned release source artifact, matching all15 binary resource bytes and POM",
+      "pin": {
+        "path": "build/references/coloc2-afm-closure-001/itextpdf-5.5.13.4-sources.jar",
+        "bytes": 2350837,
+        "sha256": "2844df41d9b391af8e6fcaa380e77fa661abdbf1def7207955271315c2f4b933"
+      }
+    },
+    {
+      "id": "P02",
+      "url": "https://raw.githubusercontent.com/itext/itextpdf/5.5.13.4/itext/src/main/resources/com/itextpdf/text/pdf/fonts/mustRead.html",
+      "role": "Official iText version-tag permission corroboration, browser view lines4,11-12",
+      "scope": "Same14AFM accompanying-file permission. Version-tag view is corroboration; immutable byte identity is P01. No git commit/reproducible-build claim."
+    }
+  ],
+  "binary_source_binding": {
+    "archive": "build/references/downloads/fiji-latest-20261007-1617-win64-jdk.zip",
+    "archive_sha256": "8e33a11c7e79eb02c055bcee40de806d16e59f0b42e58c4689bd23eb47d990bb",
+    "archive_hash_basis": "Reused pinned archive identity; exact embedded JAR rehashed this task",
+    "jar_member": "Fiji/jars/itextpdf-5.5.13.4.jar",
+    "jar_bytes": 2334415,
+    "jar_sha256": "6504ed81b34d1b4913d6cf16964b131cd8b10f54fc6c18390bb6dc5f64ea5079",
+    "source_coordinates": "com.itextpdf:itextpdf:5.5.13.4:sources",
+    "embedded_POM": {
+      "member": "META-INF/maven/com.itextpdf/itextpdf/pom.xml",
+      "bytes": 11446,
+      "sha256": "ed3fcf26ad90adbb8805cc20607597b6d1ed478aee23788d4197fa0c2d1a8f62"
+    },
+    "source_binary_POM_equal": true,
+    "source_properties_version": "5.5.13.4",
+    "AFM_member_sets_exact_equal": true,
+    "AFM_count": 14,
+    "permission_count": 1,
+    "all_AFMs_and_permission_equal_source_binary_prior_inventory": true
+  },
+  "AFM_members": [
+    {
+      "member": "com/itextpdf/text/pdf/fonts/Courier-Bold.afm",
+      "bytes": 15333,
+      "sha256": "b080c323e07cd956770b4988fe61c5213099ecf567dfb00860cbf50ab1d7e2c1",
+      "font_name": "Courier-Bold",
+      "format": "StartFontMetrics 4.1",
+      "source_binary_held_pin_equal": true,
+      "copyright_holder": "Adobe Systems Incorporated",
+      "copyright_years": [
+        1989,
+        1990,
+        1991,
+        1993,
+        1997
+      ],
+      "copyright_header_line": 2,
+      "copyright_header_sha256": "7ff4a4fd8899e0cb26e4c5888eef5ce3961d0fc6aebe6cdd4c4b1202817dc04e"
+    },
+    {
+      "member": "com/itextpdf/text/pdf/fonts/Courier-BoldOblique.afm",
+      "bytes": 15399,
+      "sha256": "ce0eb54286c3dd853d5017c25e6be684135a14a9e8fb18fcb18d1bd91a607cbc",
+      "font_name": "Courier-BoldOblique",
+      "format": "StartFontMetrics 4.1",
+      "source_binary_held_pin_equal": true,
+      "copyright_holder": "Adobe Systems Incorporated",
+      "copyright_years": [
+        1989,
+        1990,
+        1991,
+        1993,
+        1997
+      ],
+      "copyright_header_line": 2,
+      "copyright_header_sha256": "7ff4a4fd8899e0cb26e4c5888eef5ce3961d0fc6aebe6cdd4c4b1202817dc04e"
+    },
+    {
+      "member": "com/itextpdf/text/pdf/fonts/Courier-Oblique.afm",
+      "bytes": 15441,
+      "sha256": "bd1426e63d6c4d4378862713d4f71567d3fd0d34d41e11337cf5ea514cd56611",
+      "font_name": "Courier-Oblique",
+      "format": "StartFontMetrics 4.1",
+      "source_binary_held_pin_equal": true,
+      "copyright_holder": "Adobe Systems Incorporated",
+      "copyright_years": [
+        1989,
+        1990,
+        1991,
+        1992,
+        1993,
+        1997
+      ],
+      "copyright_header_line": 2,
+      "copyright_header_sha256": "afcd822c57915fc4bdbd7a411b1c67f3bbca83e76355d28fe32daf4d3662053d"
+    },
+    {
+      "member": "com/itextpdf/text/pdf/fonts/Courier.afm",
+      "bytes": 15335,
+      "sha256": "31d72adad79910126b22a5579ec9e179eee86674ecebe3fcff6f76916193af0e",
+      "font_name": "Courier",
+      "format": "StartFontMetrics 4.1",
+      "source_binary_held_pin_equal": true,
+      "copyright_holder": "Adobe Systems Incorporated",
+      "copyright_years": [
+        1989,
+        1990,
+        1991,
+        1992,
+        1993,
+        1997
+      ],
+      "copyright_header_line": 2,
+      "copyright_header_sha256": "afcd822c57915fc4bdbd7a411b1c67f3bbca83e76355d28fe32daf4d3662053d"
+    },
+    {
+      "member": "com/itextpdf/text/pdf/fonts/Helvetica-Bold.afm",
+      "bytes": 69269,
+      "sha256": "8b697881c8ee617a177f6f2e2bbc88570b9fd2b9f0e89ecfc0f5507878f988fc",
+      "font_name": "Helvetica-Bold",
+      "format": "StartFontMetrics 4.1",
+      "source_binary_held_pin_equal": true,
+      "copyright_holder": "Adobe Systems Incorporated",
+      "copyright_years": [
+        1985,
+        1987,
+        1989,
+        1990,
+        1997
+      ],
+      "copyright_header_line": 2,
+      "copyright_header_sha256": "b1d9cc7ce0f1967a6f76a90446053be753a8af81d55fcdb291e12a577c9f4083"
+    },
+    {
+      "member": "com/itextpdf/text/pdf/fonts/Helvetica-BoldOblique.afm",
+      "bytes": 69365,
+      "sha256": "526e4eeaa2b5d435cbb7cba3ff42285a473ce132aa1caddb39b48a52cc10aaf6",
+      "font_name": "Helvetica-BoldOblique",
+      "format": "StartFontMetrics 4.1",
+      "source_binary_held_pin_equal": true,
+      "copyright_holder": "Adobe Systems Incorporated",
+      "copyright_years": [
+        1985,
+        1987,
+        1989,
+        1990,
+        1997
+      ],
+      "copyright_header_line": 2,
+      "copyright_header_sha256": "b1d9cc7ce0f1967a6f76a90446053be753a8af81d55fcdb291e12a577c9f4083"
+    },
+    {
+      "member": "com/itextpdf/text/pdf/fonts/Helvetica-Oblique.afm",
+      "bytes": 74392,
+      "sha256": "8556038366f9da4aad6d5782ce68afdb96d6d7261da64652f8b5e519110dd91b",
+      "font_name": "Helvetica-Oblique",
+      "format": "StartFontMetrics 4.1",
+      "source_binary_held_pin_equal": true,
+      "copyright_holder": "Adobe Systems Incorporated",
+      "copyright_years": [
+        1985,
+        1987,
+        1989,
+        1990,
+        1997
+      ],
+      "copyright_header_line": 2,
+      "copyright_header_sha256": "b1d9cc7ce0f1967a6f76a90446053be753a8af81d55fcdb291e12a577c9f4083"
+    },
+    {
+      "member": "com/itextpdf/text/pdf/fonts/Helvetica.afm",
+      "bytes": 74292,
+      "sha256": "db772f2830fb6d000907791d8d26a12524d96943a9a739e520ee855c6b25c96f",
+      "font_name": "Helvetica",
+      "format": "StartFontMetrics 4.1",
+      "source_binary_held_pin_equal": true,
+      "copyright_holder": "Adobe Systems Incorporated",
+      "copyright_years": [
+        1985,
+        1987,
+        1989,
+        1990,
+        1997
+      ],
+      "copyright_header_line": 2,
+      "copyright_header_sha256": "b1d9cc7ce0f1967a6f76a90446053be753a8af81d55fcdb291e12a577c9f4083"
+    },
+    {
+      "member": "com/itextpdf/text/pdf/fonts/Symbol.afm",
+      "bytes": 9740,
+      "sha256": "3f951aa17af8cb4aa1e1288c6b9baa8a30d3e990ebdbe8cf9a3d5acabcb9f771",
+      "font_name": "Symbol",
+      "format": "StartFontMetrics 4.1",
+      "source_binary_held_pin_equal": true,
+      "copyright_holder": "Adobe Systems Incorporated",
+      "copyright_years": [
+        1985,
+        1987,
+        1989,
+        1990,
+        1997
+      ],
+      "copyright_header_line": 2,
+      "copyright_header_sha256": "0fdead43eb0c9fefb3af2dee5d3d0ec9dd2191fb8f59d5587cd1d9351d393665"
+    },
+    {
+      "member": "com/itextpdf/text/pdf/fonts/Times-Bold.afm",
+      "bytes": 64251,
+      "sha256": "7104e6af62c53f029013fb0641a81e31c98589c8f27b5ea6289b25b092c74321",
+      "font_name": "Times-Bold",
+      "format": "StartFontMetrics 4.1",
+      "source_binary_held_pin_equal": true,
+      "copyright_holder": "Adobe Systems Incorporated",
+      "copyright_years": [
+        1985,
+        1987,
+        1989,
+        1990,
+        1993,
+        1997
+      ],
+      "copyright_header_line": 2,
+      "copyright_header_sha256": "8d48d93f16507cff2dd36b5d3494eb43d84c88b31cab9b7b0c0e2300f2b1c4eb"
+    },
+    {
+      "member": "com/itextpdf/text/pdf/fonts/Times-BoldItalic.afm",
+      "bytes": 59642,
+      "sha256": "a7358e772726e91aa87015a001563926ad33dc5a7b2eea9680b34cc78aba385c",
+      "font_name": "Times-BoldItalic",
+      "format": "StartFontMetrics 4.1",
+      "source_binary_held_pin_equal": true,
+      "copyright_holder": "Adobe Systems Incorporated",
+      "copyright_years": [
+        1985,
+        1987,
+        1989,
+        1990,
+        1993,
+        1997
+      ],
+      "copyright_header_line": 2,
+      "copyright_header_sha256": "8d48d93f16507cff2dd36b5d3494eb43d84c88b31cab9b7b0c0e2300f2b1c4eb"
+    },
+    {
+      "member": "com/itextpdf/text/pdf/fonts/Times-Italic.afm",
+      "bytes": 66328,
+      "sha256": "6cae69b92329193fd85082f0c89ad7a318df8fb5c939d7efe5343f88ab09473c",
+      "font_name": "Times-Italic",
+      "format": "StartFontMetrics 4.1",
+      "source_binary_held_pin_equal": true,
+      "copyright_holder": "Adobe Systems Incorporated",
+      "copyright_years": [
+        1985,
+        1987,
+        1989,
+        1990,
+        1993,
+        1997
+      ],
+      "copyright_header_line": 2,
+      "copyright_header_sha256": "8d48d93f16507cff2dd36b5d3494eb43d84c88b31cab9b7b0c0e2300f2b1c4eb"
+    },
+    {
+      "member": "com/itextpdf/text/pdf/fonts/Times-Roman.afm",
+      "bytes": 60460,
+      "sha256": "86136b527a5acee0c3283d56a6b68fc6a3d60982eb3bb0fb6cc54e83ecc8d77a",
+      "font_name": "Times-Roman",
+      "format": "StartFontMetrics 4.1",
+      "source_binary_held_pin_equal": true,
+      "copyright_holder": "Adobe Systems Incorporated",
+      "copyright_years": [
+        1985,
+        1987,
+        1989,
+        1990,
+        1993,
+        1997
+      ],
+      "copyright_header_line": 2,
+      "copyright_header_sha256": "8d48d93f16507cff2dd36b5d3494eb43d84c88b31cab9b7b0c0e2300f2b1c4eb"
+    },
+    {
+      "member": "com/itextpdf/text/pdf/fonts/ZapfDingbats.afm",
+      "bytes": 9527,
+      "sha256": "66e3a6b7d19c2a87e374eabc92a84f86d00884ec242f6ad3253999c408c56a40",
+      "font_name": "ZapfDingbats",
+      "format": "StartFontMetrics 4.1",
+      "source_binary_held_pin_equal": true,
+      "copyright_holder": "Adobe Systems Incorporated",
+      "copyright_years": [
+        1985,
+        1987,
+        1988,
+        1989,
+        1997
+      ],
+      "copyright_header_line": 2,
+      "copyright_header_sha256": "607583ff86779c2634fa10d6aee0188c61ab2343d4acda0ba4b9a314b746af25"
+    }
+  ],
+  "permission": {
+    "member": "com/itextpdf/text/pdf/fonts/mustRead.html",
+    "bytes": 933,
+    "sha256": "9cab6f4ff74315819cbc50c81f2a2d240edb3ef24626795aded4ab1f7c4dfe06",
+    "title": "Core14AFM Files - ReadMe",
+    "exact_source_binary_equal": true,
+    "notice_paragraph_line": 12,
+    "association": "In the same fonts directory, exactly14AFM members accompany mustRead in both matching source and shipped JAR. The permission explicitly covers its accompanying14AFM files. Complete membership and all resource hashes are bound above.",
+    "short_verbatim_grant": "used, copied, and distributed for any purpose and without charge",
+    "summary": "The notice permits the accompanying metrics and notice to be used/copied/distributed, including modifications. It requires retaining copyrights, keeping this notice with AFM distributions, prominently marking modifications and leaving the permission paragraph unchanged. Adobe disclaims a support obligation.",
+    "pricing_wording_limit": "Retain the actual any-purpose/without-charge wording; this report does not rewrite it into an additional standalone-font-sale grant.",
+    "inference": "The exact14metric edge has an any-purpose, notice-conditioned use/distribution route. Commercial use is not stated as excluded. This is a resource-level interpretation of the identified text, not a new broad license decision."
+  },
+  "obligations": [
+    {
+      "id": "O01",
+      "required": "Retain all original AFM copyright notices; exact headers remain in the retained source bytes and their per-file hashes/locations are bound above."
+    },
+    {
+      "id": "O02",
+      "required": "Distribute the accompanying mustRead file whenever any of these AFM files are distributed; preserve its permission paragraph unchanged."
+    },
+    {
+      "id": "O03",
+      "required": "Prominently identify modifications within modified AFM or notice files, in addition to retaining the required paragraph/notices."
+    },
+    {
+      "id": "O04",
+      "required": "Do not imply Adobe support. This proof concerns metrics data, not font outlines, font programs, trademarks or unrelated assets."
+    },
+    {
+      "id": "O05",
+      "required": "Any incorporation of iText program code still consumes its separate AGPL/additional terms and remaining resource/dependency obligations; this AFM permission does not clear the program or erase that scope."
+    }
+  ],
+  "decision": {
+    "resource_edge": "source_and_accompanying_permission_bound_with_obligations",
+    "commercial_use_scope": "Any-purpose metric use is supported under the exact identified notice; root must adopt the intended distribution route and fulfill obligations before incorporation.",
+    "noncommercial_or_research_only_restriction_found": false,
+    "incorporation_authorized": false,
+    "whole_itext_status": "pending",
+    "whole_coloc2_status": "pending",
+    "manifest_patch": null
+  },
+  "unresolved_facts": {
+    "within_exact_14AFM_source_permission_association": [],
+    "outside_scope": [
+      "No independent Adobe historical release archive or original-author chain beyond the exact official iText source/binary notice was investigated; no such extra provenance claim is made.",
+      "No font-outline/program/trademark rights or unrelated leaf decision is supplied.",
+      "Whole iText/Coloc2 closure and actual product incorporation/notice packaging remain root-owned pending work."
+    ]
+  },
+  "checks": {
+    "strict_finite_unique_key_JSON": true,
+    "exact14AFM_plus_notice_membership": true,
+    "source_binary_prior_inventory_byte_and_hash_matches": true,
+    "source_binary_POM_version_binding": true,
+    "raw_permission_saved_from_pinned_source": true,
+    "prior_reports_unchanged": true,
+    "only_new_report_and_fresh_evidence_cache_written": true,
+    "no_product_build_test_capture_runtime": true
+  },
+  "acceptance": {
+    "whole_component": false,
+    "workflow": false,
+    "runtime_parity": false,
+    "platform": false,
+    "release": false,
+    "full_goal": false
+  }
+}

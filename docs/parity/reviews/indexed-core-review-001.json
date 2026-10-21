@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "state": "scoped_indexed_quantizer_verified",
+  "api": [
+    "indexed_color_working_bytes",
+    "quantize_indexed_color"
+  ],
+  "new_python_cases": 124,
+  "pinned_imagej_cases": 100,
+  "source_cases": 1385,
+  "installed_cases": 1385,
+  "native_windows_suites": 23,
+  "linux_native_suites": 7,
+  "scope": "Processor/global-stack ImageJ 1.54r median-cut palettes and indices, with independently expressed C++ arithmetic, Python arrays, admission/cancellation/callback ownership and installed headless SDK. No indexed dataset publication, metadata codec, menu, workflow opcode or indexed file-format certification in this increment.",
+  "evidence": [
+    {
+      "path": "build/p06zx-indexed-core001/build001/run001.json",
+      "bytes": 9663,
+      "sha256": "c0bf241e321a107b6d78dfe27934feee2b5c2ce920b10d237d433e79540b0be0"
+    },
+    {
+      "path": "build/p06zx-indexed-core001/source002/run001.json",
+      "bytes": 1376,
+      "sha256": "1f9c516726b603263d1422a0be4d357d8e0e125b3f321ba14b450046e0ecb5f5"
+    },
+    {
+      "path": "build/p06zx-indexed-core001/install001/run001.json",
+      "bytes": 7221,
+      "sha256": "3cf95755172d8016a079aac4ea7b827fa78c2993375ee26052c0bf3980a7d833"
+    },
+    {
+      "path": "build/p06zx-indexed-core001/installed-python001/run001.json",
+      "bytes": 1417,
+      "sha256": "c377d593caa03b3ef92e429281ea2b4ce6036c2486bad463d62af4d4da681a3e"
+    },
+    {
+      "path": "build/p06zx-indexed-core001/sdk001/run001.json",
+      "bytes": 4108,
+      "sha256": "c496be1cf3ec3ce8acc32ed298b740125ccd7f5120bd979a073454fd3b017aa2"
+    },
+    {
+      "path": "build/p06zx-indexed-core001/linux001/run001.json",
+      "bytes": 840,
+      "sha256": "7ef95ee48cbda6c518e45aef83a3a3a3b3148fb6621a27dd8ca0207d45499b61"
+    },
+    {
+      "path": "build/p06zx-indexed-core001/baseline001/run001.json",
+      "bytes": 1384,
+      "sha256": "57f3f100f189dca0416798c0cdfd5ab077dc8f196cc9b25848bae2100d3d14ec"
+    },
+    {
+      "path": "build/p06zx-indexed-core001/rgb-cpp001/run001.json",
+      "bytes": 1258,
+      "sha256": "0b335c611c005d7fb04df0416087fed5985f397d75c5aed87099fdfd4211c695"
+    },
+    {
+      "path": "build/p06zx-indexed-core001/rgb-installed-cpp001/run001.json",
+      "bytes": 1318,
+      "sha256": "7d5311006e03056b684bb15c494783aabee4deaf70606c594c67c97c4e43643b"
+    },
+    {
+      "path": "build/p06zx-indexed-core001/build001/native.xml",
+      "bytes": 6810,
+      "sha256": "c81dc643984d6802a30ba44eb0715a3a260a993c107a7d6f6c5b5c1bf8ad906e"
+    },
+    {
+      "path": "build/p06zx-indexed-core001/linux001/native.xml",
+      "bytes": 1735,
+      "sha256": "cf140f104fc8d7492ce1b3e5533bef17f86dde5d0ff4e90a22cd42d26658376c"
+    },
+    {
+      "path": "build/p06zx-indexed-core001/source002/pytest.xml",
+      "bytes": 204010,
+      "sha256": "a45c606398d0124c0c76b7545ba45d42e5c462792111a133e19deb8ef1cad8b3"
+    },
+    {
+      "path": "build/p06zx-indexed-core001/installed-python001/pytest.xml",
+      "bytes": 204010,
+      "sha256": "8a0decb59625b68f6a29ca6480b0a10acca35929e6d8add6f350e5be5b55f8cc"
+    },
+    {
+      "path": "build/p06zx-indexed-core001/baseline001/baseline001.json",
+      "bytes": 529,
+      "sha256": "c59b9e74d1bf7e12f42791dafdf319092bfebbe3f364add321d6a4c690d7138b"
+    },
+    {
+      "path": "tests/fixtures/indexed-color-imagej154r.json",
+      "bytes": 11022070,
+      "sha256": "257a8d4b32ada6c203e67de273d02f7125ba840a60a1cf0eaee6f2baef1dcbee"
+    },
+    {
+      "path": "build/p06zx-indexed-core001/policy001.json",
+      "bytes": 427,
+      "sha256": "3d731d1bf93f553289d934a08139c9b37472e30dd46a2fbc0542f19152b97784"
+    },
+    {
+      "path": "build/p06zx-indexed-core001/linux001/ext4-scratch001.json",
+      "bytes": 1775,
+      "sha256": "056740e0b1c9ca111748a27a1edf9f9e045d40a9b64ec487609e289a9d29b1b9"
+    },
+    {
+      "path": "build/p06zx-indexed-core001/linux001/ext4-scratch001.zip",
+      "bytes": 6387,
+      "sha256": "7a3ff37ac0731229419db3df3471bd20a881ed3ce074356d2197ff00f38e8125"
+    },
+    {
+      "path": "build/p06zx-indexed-core001/source-input-fix002.json",
+      "bytes": 745,
+      "sha256": "2421c97872aab8d555516df154f295f5ee75b96b48658f3cb57fc97a1b69663b"
+    },
+    {
+      "path": "build/p06zx-indexed-core001/reference-policy001.json",
+      "bytes": 1254,
+      "sha256": "a9233e950211d82c58471416125cdc276dd038b758687fca3fe1f13ed2a8dbb4"
+    },
+    {
+      "path": "build/p06zx-indexed-core001/imagej-pinned-readme001.txt",
+      "bytes": 2801,
+      "sha256": "1451ae55efe629709f5b3ebd211957db8284e99b8722e77acf60aa523561e919"
+    },
+    {
+      "path": "build/p06zx-indexed-core001/reference002/reference001.json",
+      "bytes": 11022070,
+      "sha256": "257a8d4b32ada6c203e67de273d02f7125ba840a60a1cf0eaee6f2baef1dcbee"
+    },
+    {
+      "path": "build/p06zx-indexed-core001/reference002/IndexedColorReference.java",
+      "bytes": 3224,
+      "sha256": "8eae007fc557876ec751e8b418d6f478cf14083926b4825259bdcd58abd48954"
+    },
+    {
+      "path": "build/p06zx-indexed-core001/reference002/java.stdout",
+      "bytes": 2002806,
+      "sha256": "21b0b5d96190be634d8e5d5d315834eba88192461cbba26ce5a420767ce677ac"
+    },
+    {
+      "path": "build/p06zx-indexed-core001/reference002/java.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p06zx-indexed-core001/reference002/javac.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p06zx-indexed-core001/reference002/javac.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p06zx-indexed-core001/cleanup001.json",
+      "bytes": 557679,
+      "sha256": "65471c5a663f7d2cc1bf7c9aade9c640e7bdf5984f9da3815b2cf8858098b692"
+    }
+  ],
+  "superseded_diagnostics": [
+    {
+      "run": {
+        "path": "build/p06zx-indexed-core001/source001/run001.json",
+        "bytes": 1390,
+        "sha256": "6dfad497b1c1292e536af0e015304a3450973d91179f0353976b752166999dcc"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    }
+  ],
+  "remaining": [
+    "Native indexed dataset command: metadata-only shape/dtype/byte admission, fixed algorithm intent, isolated global palette preparation, paired palette/display/data publication and replay",
+    "Canonical indexed palette metadata and validation, session roundtrip, palette-aware RGB reconstruction; define editing of unused indices and padded palette entries explicitly",
+    "Closed native workflow/program/Batch opcode and current-stage preflight; shared ImGui menu/review/worker preview, recording and both-host source/installed raw-input proof",
+    "True indexed raster/format export and roundtrip, including external palette tags and indices; do not count grayscale index bytes with only private metadata as indexed-file parity",
+    "Remaining editor/reference/resource/platform/release obligations and historical source fingerprint requalification. All99 stays42/57/0 and Source901 unchanged"
+  ],
+  "no_new_runtime_dependencies": true,
+  "profile_accepted": false,
+  "family_completed": false,
+  "broad_goal": "active",
+  "full_plan_gate": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed",
+  "reference_license": "Pinned ImageJ core README identifies public domain; official https://imagej.net/ij/disclaimer.html. No Java source/class/runtime shipped in product."
+}

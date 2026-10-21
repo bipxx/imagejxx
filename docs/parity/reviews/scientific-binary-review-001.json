@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "state": "scoped_scientific_binary_settings_adapter_verified",
+  "family_ids": [
+    "G008",
+    "G045",
+    "G052",
+    "G085"
+  ],
+  "previous_checkpoint": {
+    "path": "build/p06zi-process-record001/process-recording-handoff001.json",
+    "bytes": 15510,
+    "sha256": "157db80a35603373015cf5fed5cbf1b83654de64464133cf49c209a3558c5937"
+  },
+  "operations": [
+    "binary_erode",
+    "binary_dilate",
+    "binary_open",
+    "binary_close"
+  ],
+  "source_admission": "UInt8 single sample by metadata; targeted0/255 validation on worker",
+  "captured_settings": [
+    "iterations",
+    "neighbors",
+    "black_background",
+    "pad_edges"
+  ],
+  "explicit_overrides": true,
+  "new_focused_python_cases": 23,
+  "pinned_reference_cases": 8,
+  "reference_scope": "Direct full-plane ByteProcessor.erode/dilate with explicit background and Prefs.padEdges; open/close stage composition. Not Binary plugin LUT/ROI/UI/EDM certification.",
+  "evidence": [
+    {
+      "path": "build/p06zj-scientific-binary001/build003/run001.json",
+      "bytes": 9384,
+      "sha256": "d158f1d784f5339b5b0f34ec8490a57aa06e054196f547717b19151999aaf42a"
+    },
+    {
+      "path": "build/p06zj-scientific-binary001/process-cpp002/run001.json",
+      "bytes": 1292,
+      "sha256": "f2d5bc1f29b383030bf71f3968d0af47c63b66ce5276dd2cbc5b572c189623c0"
+    },
+    {
+      "path": "build/p06zj-scientific-binary001/process-installed-cpp001/run001.json",
+      "bytes": 1780,
+      "sha256": "da78d25bb4acc9f726644045bdc41a663a6ff8712c7aca84a17d18797a8b4461"
+    },
+    {
+      "path": "build/p06zj-scientific-binary001/binary-tests002/run001.json",
+      "bytes": 1412,
+      "sha256": "e3430d74e612a30a76bfbfb87618e21859bcf2af5863737cde338053abdb673b"
+    },
+    {
+      "path": "build/p06zj-scientific-binary001/source001/run001.json",
+      "bytes": 1411,
+      "sha256": "8d5d7a1f28d8c5efd234c6a35eb1dde1b92d23007a3e56943df4c2e08c2fbf16"
+    },
+    {
+      "path": "build/p06zj-scientific-binary001/install001/run001.json",
+      "bytes": 7315,
+      "sha256": "1675ea4b10ec85662e0e7a95c6f638ec158a7411c7d040d066bd037782711ae7"
+    },
+    {
+      "path": "build/p06zj-scientific-binary001/installed-cpp001/run001.json",
+      "bytes": 3156,
+      "sha256": "e2dfea04c8ad9e3c8cd5142a08b5123ec88fc1e4923583998a3384539227ad60"
+    },
+    {
+      "path": "build/p06zj-scientific-binary001/installed-python001/run001.json",
+      "bytes": 1746,
+      "sha256": "f7039c7874d625834d47fde94fa829093a1b7ca58fea2eb28d5137c0a0e56de2"
+    },
+    {
+      "path": "build/p06zj-scientific-binary001/launcher001/run001.json",
+      "bytes": 3437,
+      "sha256": "08d27b9a9b0da4f40cd691487aa4e5f37c5fe20216e8854ff7a163e036d114e2"
+    },
+    {
+      "path": "build/p06zj-scientific-binary001/api001/run001.json",
+      "bytes": 1374,
+      "sha256": "45c2c7ec99263109764534f7b516c9a2de6856e97fedac81c93f76f3545b2ada"
+    },
+    {
+      "path": "build/p06zj-scientific-binary001/regress001/run001.json",
+      "bytes": 18631,
+      "sha256": "f141774e88fa3bcc95a9b6fb642141f2768bb4177132f9d1d6bcddf99be03f32"
+    },
+    {
+      "path": "build/p06zj-scientific-binary001/paths-sdk001/run001.json",
+      "bytes": 4343,
+      "sha256": "fcf808156f81cd1e9892bc95b7d0439629a5c995d39d7d20378aec69503a5671"
+    },
+    {
+      "path": "build/p06zj-scientific-binary001/baseline001/run001.json",
+      "bytes": 1404,
+      "sha256": "69c7684c9dd3257161deabb7d0216c48e7a0144170d92a6a27a6b32cc841dfc1"
+    },
+    {
+      "path": "build/p06zj-scientific-binary001/binary-tests001/run001.json",
+      "bytes": 1629,
+      "sha256": "c388e4df6c479230c6cba5e9604992c23b6e6a541b67ca43507af40791f8fa04"
+    },
+    {
+      "path": "build/p06zj-scientific-binary001/test-before-pattern-fix001.py",
+      "bytes": 7617,
+      "sha256": "cbf6c46e1351cea4b7e7d975369d2b5ba4b79994892d9bc46963c9314e4e2998"
+    },
+    {
+      "path": "build/p06zj-scientific-binary001/explore001/observations001.json",
+      "bytes": 18873,
+      "sha256": "555b570cfdc423439f0c6e3d55bc94bd877d6947924e4f0af5b0916eae2c7fe4"
+    },
+    {
+      "path": "tests/fixtures/binary-imagej154r.json",
+      "bytes": 657415,
+      "sha256": "f5e6178a452a8b277577ff1c166c35be043e997553eb5d09f523c9111f132ddd"
+    },
+    {
+      "path": "build/p06zj-scientific-binary001/baseline001/baseline001.json",
+      "bytes": 326,
+      "sha256": "b353623423369023091389b238828016495134d7eb0c89ad02716cb533fa3110"
+    },
+    {
+      "path": "build/p06zj-scientific-binary001/process-cpp002/capture001/case.json",
+      "bytes": 12518090,
+      "sha256": "c0b3e8f9df0ca55fd509f9971ad9ac6cda436ed85e350f014372588722d823fe"
+    },
+    {
+      "path": "build/p06zj-scientific-binary001/process-installed-cpp001/capture001/case.json",
+      "bytes": 12521094,
+      "sha256": "140b480c3dee6b2e6e42da4082403ae83ba98ff4c75af031ee8a02156fbdb14c"
+    },
+    {
+      "path": "build/p06zj-scientific-binary001/source001/pytest.xml",
+      "bytes": 53439,
+      "sha256": "302775c6b7bf85cf9a0b27f85da381f49440c05457dc1061098073f3714e42ac"
+    },
+    {
+      "path": "build/p06zj-scientific-binary001/installed-python001/pytest.xml",
+      "bytes": 55869,
+      "sha256": "41e097ee92e7678097a26fd54cc2dbee3f8da4d410abb96b688f191e0e869c7e"
+    },
+    {
+      "path": "build/p06zj-scientific-binary001/binary-tests002/pytest.xml",
+      "bytes": 3847,
+      "sha256": "f2e10c6d5830d608e6f882819445125fd281aa58033d7adeca7ab48566704f80"
+    },
+    {
+      "path": "build/p06zj-scientific-binary001/policy001.json",
+      "bytes": 212,
+      "sha256": "816dd81a41c934b67f6d3691b8d492362c2705f72b1bd1621ee7f708c1398647"
+    },
+    {
+      "path": "build/p06zj-scientific-binary001/cleanup001.json",
+      "bytes": 35547,
+      "sha256": "3c883500a311d2a92febca1ef55c28235ee77b9fd9ff84eeeec904ec3c466e3b"
+    }
+  ],
+  "native_windows_suites": 17,
+  "source_cases": 369,
+  "installed_cases": 389,
+  "remaining": [
+    "Full Binary-plugin LUT/ROI/EDM/volume and per-option/reference/resource/platform/release qualification; this increment reuses ByteProcessor primitive behavior",
+    "Dedicated scientific geometry/conversion/auxiliary-image adapters and remaining binary/3D algorithms",
+    "Complete editor/configuration/selection/filter/slicing/viewing and commercially eligible Fiji scope, including prior filesystem obligations; All99 remains42/57/0, Source901 unchanged"
+  ],
+  "profile_accepted": false,
+  "family_completed": false,
+  "broad_goal": "active"
+}

@@ -1,0 +1,42 @@
+{
+  "state": "passed",
+  "scope": "Native scientific scalar UInt8 TIFF API, shared editor and pinned ImageJ interoperability",
+  "audit": "build/p08b-uint8-tiff001/final-audit001.json",
+  "audit_sha256": "25a8a0a9b71106eef610c42bd8f7b1c38e7dd3b27845b428e95a82085b7bf505",
+  "format_id": "F.G080.tiff-imagej-u8-uncompressed-ifd-czt-v1",
+  "contracts": [
+    "Finite-only scalar UInt8; C/Z/T and calibration preserved",
+    "Source-compatible explicit format enum appended after UInt16/Float32",
+    "Version 3 explicit scalar dtype/policy; existing producers retain versions 1/2",
+    "Read-free write planning and bounded sample/layout validation",
+    "Atomic overwrite and mid-row cancellation preserve prior destination",
+    "Physical ordinary/scientific, flat-consent, startup and ordered-append review controls"
+  ],
+  "independent_carriers": {
+    "admitted": 10,
+    "malformed": 9
+  },
+  "imagej_carriers": 2,
+  "imagej_native_export_observations": 8,
+  "windows_suites": 73,
+  "python_cases_per_package": 9390,
+  "previous_cases_retained": 9322,
+  "new_cases": 68,
+  "installed_public_io_sdk": "passed",
+  "cleanup": {
+    "targets": 29,
+    "net_bytes_freed": 1129110785
+  },
+  "limitations": [
+    "No Linux TIFF/product certification claim",
+    "RGB, compressed/tiled, BigTIFF and broader metadata profiles remain open",
+    "Remaining ImageJ/Fiji/editor/release requirements remain open"
+  ],
+  "dependencies_added": [],
+  "commercial_scope": "Original scalar implementation and independent fixtures using the existing reviewed Windows TIFF closure; no upstream Java runtime or classes in products",
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  }
+}

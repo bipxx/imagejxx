@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "id": "G057.histogram-auto.reference-commercial-review.001",
+  "recorded_at_utc": "2026-10-16T11:00:48.594970+00:00",
+  "reference_id": "imagej-1.54r-fiji-latest-20261007-1617-win64",
+  "packet": "docs/packets/P06c4-histogram-auto.md",
+  "decision": "eligible",
+  "scope": "Pinned ImageJ1.54r behavioral reference for independently authored native scalar histogram/Auto command, controller and shared ImGui/Python consumers. No Fiji component, JDK runtime, model, palette, font or asset is incorporated by this increment.",
+  "reason": "The exact previously reviewed ImageJ public-domain license and project MIT license are unchanged. This increment adds owned processing, UI and synthetic test code with no new third-party dependency. Numerical/runtime compatibility and installed-package license gates remain separate.",
+  "parent_review": {
+    "path": "docs/parity/channel-display-min-commercial-review-001.json",
+    "bytes": 2677,
+    "sha256": "59a64ddf0fd110c90e76fb978ba59fc51a47619123142023c88983210226dc45"
+  },
+  "primary_license_evidence": {
+    "archive": {
+      "path": "build/references/downloads/imagej-62db90a269cccc1ac79f658e4602043214ed055b.zip",
+      "sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+      "bytes": 6146010
+    },
+    "member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/LICENSE.txt",
+    "sha256": "618725ff649e43605de0fec0a778b4aad24b28c6be9b3cde16295764022f668c",
+    "bytes": 512
+  },
+  "owned_code_license": {
+    "path": "LICENSE",
+    "sha256": "6496956d6060adfcd2617e553b7393c3b7fbea353a02f3c39d60051709d1ce5f",
+    "bytes": 1079
+  },
+  "incorporated_components": [],
+  "dependencies": "Existing shipped dependency reviews apply only at their pinned identities; final installed extras/desktop license gate required. No JDK redistribution approval or pending Fiji incorporation.",
+  "models_assets": "Owned arithmetic scalar planes/generated masks and tables only.",
+  "reference_capture": {
+    "path": "build/p06c4-001/reference-capture-002.json",
+    "bytes": 4117,
+    "sha256": "8f197a68595462b545ae07fd3179f645341114f7d334b26a433278f3736b34ac"
+  },
+  "reference_reader": {
+    "path": "build/p06c4-001/reference-reader-004.json",
+    "bytes": 4457,
+    "sha256": "55312904bbf6f4b93ada5faa7b770c17f841b9bc93270921b4a19295d37aca77"
+  },
+  "adoptions": [
+    {
+      "path": "docs/parity/reviews/P06c4-histogram-adoption-001.json",
+      "bytes": 11661,
+      "sha256": "46b332807d1976828b54c7d4f271519a5e676e5758b587c33ea242603fb0d917"
+    },
+    {
+      "path": "docs/parity/reviews/P06c4-histogram-adoption-002.json",
+      "bytes": 4845,
+      "sha256": "8d6640b9a26a352d96a54f86053304429a1c135c1638aaf2dc1347ce389bb756"
+    },
+    {
+      "path": "docs/parity/reviews/P06c4-auto-adoption-001.json",
+      "bytes": 7651,
+      "sha256": "b4f2acd2999db66e97045e652def8b581a06c98151ec5a6343a99d6be4346944"
+    },
+    {
+      "path": "docs/parity/reviews/P06c4-auto-controller-adoption-001.json",
+      "bytes": 11682,
+      "sha256": "72fb494b36f35ee5611df6cd1299a5f221d6886cae6e47851b9fd3251c203af8"
+    },
+    {
+      "path": "docs/parity/reviews/P06c4-auto-controller-adoption-002.json",
+      "bytes": 3007,
+      "sha256": "afb2b8a460465b883ba5c8c86b27899967255f7a5185e47907f8a783e995f995"
+    }
+  ],
+  "owned_implementation": [
+    {
+      "path": "include/imagejxx/dataset_histogram.hpp",
+      "bytes": 4743,
+      "sha256": "bfc1a3a5829b6a876849500e52573acd1933fc374e76a0c9f024ded7ef4c4a4e"
+    },
+    {
+      "path": "src/native/dataset_histogram.cpp",
+      "bytes": 17942,
+      "sha256": "c3b5b159b95e1e94fd2f993204daee50a121cd57642b7481452c2aab8cd6be8b"
+    },
+    {
+      "path": "include/imagejxx/auto_contrast.hpp",
+      "bytes": 7879,
+      "sha256": "a0bb786c5be1d85c7453ddd7de7073eda9d8ace1ecd4e77349f8f88b8af96c11"
+    },
+    {
+      "path": "src/native/auto_contrast.cpp",
+      "bytes": 47599,
+      "sha256": "eca34b2e32c68bda252dd068671bc3b01940bc194580bcf8b1cc2511e01364b0"
+    },
+    {
+      "path": "src/native/auto_contrast_job.cpp",
+      "bytes": 20066,
+      "sha256": "771486d32e40829cca99e267d0eda6051f4293292bcff79cfb0e1bbbf0199f31"
+    },
+    {
+      "path": "src/native/auto_contrast_bindings.cpp",
+      "bytes": 13251,
+      "sha256": "738843bc02787838ce53872920e0d47e1aea54b99394a105c60ce7f45df6af3d"
+    },
+    {
+      "path": "src/desktop/auto_contrast_ui_probe.cpp",
+      "bytes": 41300,
+      "sha256": "0c2e8fa4c936632fffa9e2e81ce6a68fa29874af8434e0979f03a28270bc3b1d"
+    }
+  ],
+  "fiji_components": "All pinned component decisions unchanged/pending; non-commercial, research-only and unlicensed material is excluded.",
+  "product_implementation_verified": false,
+  "family_complete": false,
+  "full_goal_complete": false
+}

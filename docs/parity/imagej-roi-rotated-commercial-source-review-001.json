@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_owned_increment",
+  "review_type": "Root authorship/integration attestation, not independent legal review",
+  "license": "Existing project MIT for original product/test code; fixture bytes are outputs for owned inputs",
+  "specification_sources": [
+    "https://raw.githubusercontent.com/imagej/ImageJ/62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/RotatedRectRoi.java",
+    "https://raw.githubusercontent.com/imagej/ImageJ/62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/EllipseRoi.java"
+  ],
+  "new_dependencies": [],
+  "imported_third_party_product_code": [],
+  "restricted_features_added": false,
+  "reference_only": "Pinned ImageJ Java and existing JDK remain under excluded build trees",
+  "sources": [
+    {
+      "logical_path": "include/imagejxx/imagej_roi.hpp",
+      "before": {
+        "path": "build/p06q-rotated-roi001/held001/before/include/imagejxx/imagej_roi.hpp",
+        "bytes": 1340,
+        "sha256": "4d35e8e3aaf0d52f0ae70e1348ac36adab4bf786ffbd0ad697f94c22d54fa021"
+      },
+      "after": {
+        "path": "build/p06q-rotated-roi001/held001/after/include/imagejxx/imagej_roi.hpp",
+        "bytes": 1673,
+        "sha256": "9161531ec2bf3cb385aca4777f3eb001d124d3034e1a68f0152d0b521560b49d"
+      },
+      "current": {
+        "path": "include/imagejxx/imagej_roi.hpp",
+        "bytes": 1673,
+        "sha256": "9161531ec2bf3cb385aca4777f3eb001d124d3034e1a68f0152d0b521560b49d"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_roi.cpp",
+      "before": {
+        "path": "build/p06q-rotated-roi001/held001/before/src/native/imagej_roi.cpp",
+        "bytes": 18344,
+        "sha256": "a9aa6519f36e1a80c05623a610cab1b0092702e7e309f74fd4c16b0586b68790"
+      },
+      "after": {
+        "path": "build/p06q-rotated-roi001/held001/after/src/native/imagej_roi.cpp",
+        "bytes": 21967,
+        "sha256": "620a7db2704335dfb7fda56d1117bb3dd45441c3ce311b8ffc3230e4e7bb1048"
+      },
+      "current": {
+        "path": "src/native/imagej_roi.cpp",
+        "bytes": 21967,
+        "sha256": "620a7db2704335dfb7fda56d1117bb3dd45441c3ce311b8ffc3230e4e7bb1048"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_roi_bindings.cpp",
+      "before": {
+        "path": "build/p06q-rotated-roi001/held001/before/src/native/imagej_roi_bindings.cpp",
+        "bytes": 2912,
+        "sha256": "a2485201764ce095be5799ac72b34c40b754745a46b5e0525fca48b8e241ee60"
+      },
+      "after": {
+        "path": "build/p06q-rotated-roi001/held001/after/src/native/imagej_roi_bindings.cpp",
+        "bytes": 3091,
+        "sha256": "0347b185a0788267a6f0dcebe403d5910d1e5f87176a9357212b8380627236b9"
+      },
+      "current": {
+        "path": "src/native/imagej_roi_bindings.cpp",
+        "bytes": 3091,
+        "sha256": "0347b185a0788267a6f0dcebe403d5910d1e5f87176a9357212b8380627236b9"
+      }
+    },
+    {
+      "logical_path": "tests/native/test_imagej_roi.cpp",
+      "before": {
+        "path": "build/p06q-rotated-roi001/held001/before/tests/native/test_imagej_roi.cpp",
+        "bytes": 2617,
+        "sha256": "5f333a3bc9bc01b1045189e45d5583366317932d12511cb862612ef9d1c3034b"
+      },
+      "after": {
+        "path": "build/p06q-rotated-roi001/held001/after/tests/native/test_imagej_roi.cpp",
+        "bytes": 4277,
+        "sha256": "4f50e6332267c00ce45c18fdca8975eb9d2ee2680ef877efa0b6bf856d0c50df"
+      },
+      "current": {
+        "path": "tests/native/test_imagej_roi.cpp",
+        "bytes": 4277,
+        "sha256": "4f50e6332267c00ce45c18fdca8975eb9d2ee2680ef877efa0b6bf856d0c50df"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_imagej_roi.py",
+      "before": {
+        "path": "build/p06q-rotated-roi001/held001/before/tests/python/test_imagej_roi.py",
+        "bytes": 6887,
+        "sha256": "2b1c0de0e2ccbaee2a54113c845711ba90160ffae6615071f308bd8d2d83bac8"
+      },
+      "after": {
+        "path": "build/p06q-rotated-roi001/held001/after/tests/python/test_imagej_roi.py",
+        "bytes": 10738,
+        "sha256": "d62b13cd65d46d01b815b815b3b8338bb26ed6329ff182b205c5138a799aaf74"
+      },
+      "current": {
+        "path": "tests/python/test_imagej_roi.py",
+        "bytes": 10738,
+        "sha256": "d62b13cd65d46d01b815b815b3b8338bb26ed6329ff182b205c5138a799aaf74"
+      }
+    },
+    {
+      "logical_path": "tests/fixtures/imagej-roi-rotated-imagej154r.json",
+      "before": null,
+      "after": {
+        "path": "build/p06q-rotated-roi001/held001/after/tests/fixtures/imagej-roi-rotated-imagej154r.json",
+        "bytes": 6021,
+        "sha256": "5335bc570b23c280d9739d91ce3cfb97412ba9ad08277525532df0f7ad09100e"
+      },
+      "current": {
+        "path": "tests/fixtures/imagej-roi-rotated-imagej154r.json",
+        "bytes": 6021,
+        "sha256": "5335bc570b23c280d9739d91ce3cfb97412ba9ad08277525532df0f7ad09100e"
+      }
+    }
+  ]
+}

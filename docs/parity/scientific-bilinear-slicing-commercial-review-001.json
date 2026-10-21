@@ -1,0 +1,289 @@
+{
+  "author_and_reviewer": "Root implementation/integration review; independent legal review is not asserted",
+  "broader_pending_Fiji_decisions_and_NC_exclusions_unchanged": true,
+  "decision": "eligible",
+  "license": {
+    "bytes": 1079,
+    "path": "LICENSE",
+    "sha256": "6496956d6060adfcd2617e553b7393c3b7fbea353a02f3c39d60051709d1ce5f"
+  },
+  "new_third_party_code_assets_or_dependency": false,
+  "notices": {
+    "bytes": 4201,
+    "path": "THIRD_PARTY_NOTICES.md",
+    "sha256": "9793a0e9272d9c7f8aa1ea97712a38f1ff186ecbd379f3a71c16ae273167bff9"
+  },
+  "previous_source_archive": {
+    "bytes": 8744892,
+    "path": "build/p06n-source-final001/imagejxx-0.2.0.tar.gz",
+    "sha256": "79b51fa128ec8ea1af69ca9d08bb24d1abea726bcf4cf68a1ea219432c19f548"
+  },
+  "previous_source_receipt": {
+    "bytes": 149454,
+    "path": "build/p06n-001/source-final001.json",
+    "sha256": "cd17a51de6530006659472d3d5d7b9a0eded99c007ef2fbf7c908bab78bc65b4"
+  },
+  "schema_version": 1,
+  "scope": "Exactly15 owned scientific bilinear-slicing product/test sources; unchanged dependency set.",
+  "sources": [
+    {
+      "current": {
+        "bytes": 55024,
+        "path": "CMakeLists.txt",
+        "sha256": "bcf30e3ec2578fdb5ab6cdf56c877371b8e29a50b4dd9edd9b0cde63a5a546e9"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 54624,
+        "path": "CMakeLists.txt",
+        "sha256": "264871f7cea7b997b5e1513ad995c897102ac9fdf89ad569d8896c85eaf43592"
+      },
+      "snapshot": {
+        "bytes": 55024,
+        "path": "build/p06o-001/registration001/source-snapshots001/CMakeLists.txt",
+        "sha256": "bcf30e3ec2578fdb5ab6cdf56c877371b8e29a50b4dd9edd9b0cde63a5a546e9"
+      }
+    },
+    {
+      "current": {
+        "bytes": 2147,
+        "path": "include/imagejxx/slicer_resize_command.hpp",
+        "sha256": "642bdc9d0a87fded83971bcf4459985412551cef377a7885190060b86891ae13"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 2147,
+        "path": "build/p06o-001/registration001/source-snapshots001/include/imagejxx/slicer_resize_command.hpp",
+        "sha256": "642bdc9d0a87fded83971bcf4459985412551cef377a7885190060b86891ae13"
+      }
+    },
+    {
+      "current": {
+        "bytes": 106248,
+        "path": "src/native/execution.cpp",
+        "sha256": "eb8fbf6d7c4c6a667900597b35fa5bce82150a824c7633fdb0a8898679a030d9"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 103640,
+        "path": "src/native/execution.cpp",
+        "sha256": "0ca15af9b80df997b9d80701e3ebb626464b6123a3b2e9f43d0121475a0557f6"
+      },
+      "snapshot": {
+        "bytes": 106248,
+        "path": "build/p06o-001/registration001/source-snapshots001/src/native/execution.cpp",
+        "sha256": "eb8fbf6d7c4c6a667900597b35fa5bce82150a824c7633fdb0a8898679a030d9"
+      }
+    },
+    {
+      "current": {
+        "bytes": 6440,
+        "path": "src/native/slicer_resize_command.cpp",
+        "sha256": "e542d6020577be8b40a7baef6404b1d8d7be0b508dbf60681eff0a03adc91b38"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 6440,
+        "path": "build/p06o-001/registration001/source-snapshots001/src/native/slicer_resize_command.cpp",
+        "sha256": "e542d6020577be8b40a7baef6404b1d8d7be0b508dbf60681eff0a03adc91b38"
+      }
+    },
+    {
+      "current": {
+        "bytes": 3093,
+        "path": "src/native/slicer_resize_command_bindings.cpp",
+        "sha256": "23ccf70f3b3799a15c67392f102e8ada1d49a2cfe063e677f0e1a440ac7a7036"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 3093,
+        "path": "build/p06o-001/registration001/source-snapshots001/src/native/slicer_resize_command_bindings.cpp",
+        "sha256": "23ccf70f3b3799a15c67392f102e8ada1d49a2cfe063e677f0e1a440ac7a7036"
+      }
+    },
+    {
+      "current": {
+        "bytes": 29219,
+        "path": "src/native/bindings.cpp",
+        "sha256": "a21c8f7c066fa6f61091698e9aa8274fe6009341cff98a50638740437ed498cf"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 28759,
+        "path": "src/native/bindings.cpp",
+        "sha256": "dd1686ad3f8a2c5f3401dfd2d3a9cc6186a5afa02abb8f8634296d31811cc637"
+      },
+      "snapshot": {
+        "bytes": 29219,
+        "path": "build/p06o-001/registration001/source-snapshots001/src/native/bindings.cpp",
+        "sha256": "a21c8f7c066fa6f61091698e9aa8274fe6009341cff98a50638740437ed498cf"
+      }
+    },
+    {
+      "current": {
+        "bytes": 52904,
+        "path": "src/imagejxx/__init__.py",
+        "sha256": "a07d8585cbb66df08d01e7a1d213161c14409a1ab90fecffbe6168973be853cb"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 51089,
+        "path": "src/imagejxx/__init__.py",
+        "sha256": "571fcabb55c7c03fc285db5754e44af6ae191f79762b24639b63c087645b1d7e"
+      },
+      "snapshot": {
+        "bytes": 52904,
+        "path": "build/p06o-001/registration001/source-snapshots001/src/imagejxx/__init__.py",
+        "sha256": "a07d8585cbb66df08d01e7a1d213161c14409a1ab90fecffbe6168973be853cb"
+      }
+    },
+    {
+      "current": {
+        "bytes": 13571,
+        "path": "src/desktop/window.hpp",
+        "sha256": "3285c7b52d9a3082bb970ed79fbe1d53e2b4fc5ca536163f10f25c56ebabf978"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 13086,
+        "path": "src/desktop/window.hpp",
+        "sha256": "35e6330c236ca7d153379652f10dcde913cd65f0592854106f52e6025c14a8a6"
+      },
+      "snapshot": {
+        "bytes": 13571,
+        "path": "build/p06o-001/registration001/source-snapshots001/src/desktop/window.hpp",
+        "sha256": "3285c7b52d9a3082bb970ed79fbe1d53e2b4fc5ca536163f10f25c56ebabf978"
+      }
+    },
+    {
+      "current": {
+        "bytes": 544142,
+        "path": "src/desktop/window.cpp",
+        "sha256": "696dc9b1aca17ff9ed568eba10653254961bed52745e89b6b2ce9c57ccda098d"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 543312,
+        "path": "src/desktop/window.cpp",
+        "sha256": "92b834b0dfa85f386b64a5c6644332738b085ee1c05f7b38ae78ff9437dcd603"
+      },
+      "snapshot": {
+        "bytes": 544142,
+        "path": "build/p06o-001/registration001/source-snapshots001/src/desktop/window.cpp",
+        "sha256": "696dc9b1aca17ff9ed568eba10653254961bed52745e89b6b2ce9c57ccda098d"
+      }
+    },
+    {
+      "current": {
+        "bytes": 30709,
+        "path": "src/desktop/main.cpp",
+        "sha256": "51c5e8e4621590abd6fe6a908d0c34ebb69181438b2e5847f77fd7df286d8124"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 30219,
+        "path": "src/desktop/main.cpp",
+        "sha256": "cf05915277bf3d0a61c13e98c7c5993a8a77f19ec544810d4530e4c2a7d3c73e"
+      },
+      "snapshot": {
+        "bytes": 30709,
+        "path": "build/p06o-001/registration001/source-snapshots001/src/desktop/main.cpp",
+        "sha256": "51c5e8e4621590abd6fe6a908d0c34ebb69181438b2e5847f77fd7df286d8124"
+      }
+    },
+    {
+      "current": {
+        "bytes": 38105,
+        "path": "src/desktop/python.cpp",
+        "sha256": "35ee46b22b1f54ff3cc434742763a2dd58f7ed16b52ec1eaacd004fc8dbeeee6"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 37845,
+        "path": "src/desktop/python.cpp",
+        "sha256": "d9f1a79c4286ad697eec9f284b93457474b5daa9fa72e057b4aef64106ac712b"
+      },
+      "snapshot": {
+        "bytes": 38105,
+        "path": "build/p06o-001/registration001/source-snapshots001/src/desktop/python.cpp",
+        "sha256": "35ee46b22b1f54ff3cc434742763a2dd58f7ed16b52ec1eaacd004fc8dbeeee6"
+      }
+    },
+    {
+      "current": {
+        "bytes": 185,
+        "path": "src/desktop/slicer_resize_ui_probe.hpp",
+        "sha256": "f68e0f440f341a60345f6246b518d769f48d8fbbe0700c86600e7c1a6ee54b5c"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 185,
+        "path": "build/p06o-001/registration001/source-snapshots001/src/desktop/slicer_resize_ui_probe.hpp",
+        "sha256": "f68e0f440f341a60345f6246b518d769f48d8fbbe0700c86600e7c1a6ee54b5c"
+      }
+    },
+    {
+      "current": {
+        "bytes": 5580,
+        "path": "src/desktop/slicer_resize_ui_probe.cpp",
+        "sha256": "e812d05126c9d84e5bde34bcaf69c25a85b1f914fcef9225b7b705df5fde61e9"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 5580,
+        "path": "build/p06o-001/registration001/source-snapshots001/src/desktop/slicer_resize_ui_probe.cpp",
+        "sha256": "e812d05126c9d84e5bde34bcaf69c25a85b1f914fcef9225b7b705df5fde61e9"
+      }
+    },
+    {
+      "current": {
+        "bytes": 3130,
+        "path": "tests/native/test_slicer_resize_command.cpp",
+        "sha256": "27714f420ec85b45a72b2fb35ff30e23e2607a68e60ea6b4fe04f49065f33e13"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 3130,
+        "path": "build/p06o-001/registration001/source-snapshots001/tests/native/test_slicer_resize_command.cpp",
+        "sha256": "27714f420ec85b45a72b2fb35ff30e23e2607a68e60ea6b4fe04f49065f33e13"
+      }
+    },
+    {
+      "current": {
+        "bytes": 6270,
+        "path": "tests/python/test_slicer_resize_command.py",
+        "sha256": "d4e5bd43051baf689c06a80f4ba730d88a57ab4cfd43382a3fc458aab39f119f"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 6270,
+        "path": "build/p06o-001/registration001/source-snapshots001/tests/python/test_slicer_resize_command.py",
+        "sha256": "d4e5bd43051baf689c06a80f4ba730d88a57ab4cfd43382a3fc458aab39f119f"
+      }
+    }
+  ],
+  "unchanged_dependency_scope": true,
+  "unresolved_source_origin_or_preimage_gaps": []
+}

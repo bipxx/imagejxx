@@ -1,0 +1,218 @@
+{
+  "schema_version": 1,
+  "state": "scoped_scientific_conversion_review_verified",
+  "operation": "convert_image",
+  "source_admission": "Scalar or UInt8 RGB/RGBA; complete explicit TCZ ranges, WholePlane; conservative metadata-only memory admission",
+  "preferences_captured": true,
+  "explicit_scalar_overrides": true,
+  "display_range_capture": "Active recognized C range, legacy range, configured UInt16 bits, otherwise per-plane data",
+  "other_geometry_guard_retained": true,
+  "paired_display_history": true,
+  "all_revision_guard": true,
+  "portable_recording": true,
+  "parameter_form_actual_input": true,
+  "new_focused_python_cases": 31,
+  "pinned_menu_reference_cases": 8,
+  "reference_scope": "Direct uncalibrated ImageProcessor type conversions and unsigned ShortProcessor inversion; not density-calibrated/signed/LUT/threshold/stack/GUI or plugin certification. Float64/RGBA are native extensions outside this corpus.",
+  "evidence": [
+    {
+      "path": "build/p06zm-scientific-conversion001/build004/run001.json",
+      "bytes": 9510,
+      "sha256": "cefd05bcbdf7fcd993c9e82a7594389578bd27d18b52c9b6af0d3dcc50dcf20f"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/process-cpp001/run001.json",
+      "bytes": 1303,
+      "sha256": "43caf72a8e4706801a9e7808f4c327d4789701546ac1145121e02f932160ced1"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/process-installed-cpp001/run001.json",
+      "bytes": 1803,
+      "sha256": "ec4d4401caed2dd10d8fa34170f58f54f9deff7c58c00d0b480d64947ea31a8c"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/source002/run001.json",
+      "bytes": 1426,
+      "sha256": "57a8a3a39a50bb5bd56afd229bcfd4e93446ffc1e098ec23564ddfcf0335b57f"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/install001/run001.json",
+      "bytes": 7366,
+      "sha256": "e09f547decd4a693fdcfac22c152da68d4aed7f9c64e74a1b6d9e7838f168479"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/installed-cpp001/run001.json",
+      "bytes": 3196,
+      "sha256": "6b8eb7e6b2739896ceb4c0e20ffdeae325ee4e392b8e0fb83d12d2584cdaf69d"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/installed-python002/run001.json",
+      "bytes": 1772,
+      "sha256": "b8b54846cbc4c076c348bffd15c8cbce12586df355a912c8fcc1c84acf7cb00e"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/launcher001/run001.json",
+      "bytes": 3490,
+      "sha256": "5081568b794ab4cd65fd97ed08f0c60626115c62454e431835d087fc57bee202"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/api001/run001.json",
+      "bytes": 1403,
+      "sha256": "64d9fd316129e01db7a07f10b238d4ae171efb474a703471941be6d8022a298a"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/regress001/run001.json",
+      "bytes": 18858,
+      "sha256": "0cd3b606a854988400309e4337c92c5f321579fa49009d3f5c3a71ca17d68062"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/paths-sdk001/run001.json",
+      "bytes": 4373,
+      "sha256": "3dae47dc8fb34ed9d76406bb6edbb717f9a6bd48d3e5f5f593119b1ecc7b546b"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/workflow-sdk001/run001.json",
+      "bytes": 4419,
+      "sha256": "36246bedfe3fc834a759166f2067b8db36291514cd332eef01c656055ad4e3b8"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/conversion004/run001.json",
+      "bytes": 1432,
+      "sha256": "659f9c312df7352d0b531f5a768ca2b024af8bed098a4102c0679f4def97530c"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/baseline001/run001.json",
+      "bytes": 1419,
+      "sha256": "599886bde4478e2977069f6d8cf7087dfc166881f1e696a293febc8fe3e63efe"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/build001/run001.json",
+      "bytes": 3894,
+      "sha256": "329aa2b4196bf4e5c61acc311f8e196c0b9b8294a1df62de26e43d5038c7fe3a"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/conversion001/run001.json",
+      "bytes": 1637,
+      "sha256": "a2866c8268d31c4a2163f2b1d86182590553f9bf5801ebc637f6ec3d463d7953"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/conversion003/run001.json",
+      "bytes": 1637,
+      "sha256": "b2b4a928aa73234fa79511fafe68bd3b29c6f98a8ec03d0cefd8f5058003c173"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/linux001/run001.json",
+      "bytes": 962,
+      "sha256": "d1638da8e1a54d03226992b36aa198d1c36105ec15e5b4151e282a637c0524c9"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/linux002/run001.json",
+      "bytes": 967,
+      "sha256": "ddb2a5915eae93d24b08d21125cbc65609898aa42f525b53d508362ce470c384"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/linux003/run001.json",
+      "bytes": 878,
+      "sha256": "500ebbd4d0a0b2eef57969ffb579abc0e08fce81d359617b3c27d60b4ae8d8db"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/test-before-oracle-fix001.py",
+      "bytes": 11567,
+      "sha256": "3dba0569e4043736d4dfa6800410d9cfd85cbc9291262eb1a70522fb423cc001"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/test-before-popup-session-fix001.py",
+      "bytes": 12499,
+      "sha256": "4c72ccddd9c531667a2095bbcd5d91db2bc9e5c05e66c970186b989cfd9cd7e0"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/failed-build-source001/src/native/native_workflow.cpp",
+      "bytes": 20095,
+      "sha256": "7d1a0cbd2b4a17c08a88b7a523dd88c37f7bfd295fce88ea95b9f7e8482743c6"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/explore001/observations001.json",
+      "bytes": 43181,
+      "sha256": "54f182f94d99673bbaa0532e6a6403825dea4dd438689107e73c2dbd2bdd5e4b"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/build004/native.xml",
+      "bytes": 5909,
+      "sha256": "1dfa7c07190b05b4a7315f727fa2cd05b67054184566d546b8bd9bd0e3a42d85"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/linux003/native.xml",
+      "bytes": 851,
+      "sha256": "79d763ee469447f6f854bca9137c9209a49888f7bebad780dac5c6c4b9cf3bfc"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/source002/pytest.xml",
+      "bytes": 65069,
+      "sha256": "2f9fd40da487d7f43fe49e85f6890ac7f4c8057ae69f720480487af300065d04"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/installed-python002/pytest.xml",
+      "bytes": 67499,
+      "sha256": "32147ff7b98dcb70aa67e0b7e4e36774859d83f8b104b93f702a42172c82041c"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/conversion004/pytest.xml",
+      "bytes": 110449,
+      "sha256": "01bc530dea02b2818a9aebd0cb428f9aa4d1eb4e5f756fa3c59c8395f986feeb"
+    },
+    {
+      "path": "tests/fixtures/conversion-imagej154r.json",
+      "bytes": 229969,
+      "sha256": "eb177fe986754d379fa0389ddca91de495c83ad8a095e06ecc63664611db3bd1"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/baseline001/baseline001.json",
+      "bytes": 422,
+      "sha256": "807619514a3ddb021df7546b7e2e347413f10591cc84ca9e8473af0205701c0a"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/process-cpp001/capture001/case.json",
+      "bytes": 18507780,
+      "sha256": "926f32b11352592187f703aefc32bd2578ff0b8f8da1dc9a06ca96f2ac6b40d1"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/process-installed-cpp001/capture001/case.json",
+      "bytes": 18509650,
+      "sha256": "a34e21527a97bdb97dbcd1ceafaca46003222a0a781b289d8dec36e4135aaa6b"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/policy001.json",
+      "bytes": 216,
+      "sha256": "b02117e72fced907bf6e4095d26f5dd7701dcd5fcba847d46ddcd9c4d816bd0d"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/linux003/ext4-scratch001.json",
+      "bytes": 1784,
+      "sha256": "b989e9bb81b5e82487aa3da32021ee52c0581d480a05f360bc14c2a07286d72c"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/linux003/ext4-scratch001.zip",
+      "bytes": 6389,
+      "sha256": "2f118d9e0894eae2831db2a9d8155aa87908f6d1b44a2c501b9efcc3d0b76fdd"
+    },
+    {
+      "path": "build/p06zm-scientific-conversion001/cleanup001.json",
+      "bytes": 361042,
+      "sha256": "47da79bb4a796e482d427fb0ee68348c711465e2bef0c71802bc2f0da6b3f013"
+    }
+  ],
+  "native_windows_suites": 19,
+  "linux_native_suites": 3,
+  "source_cases": 444,
+  "installed_cases": 464,
+  "compatibility_arithmetic_cases": 692,
+  "remaining": [
+    "Standalone grayscale and RGB/indexed output commands; sample-aware annotations/metadata, density calibration, ImageJ LUT/display reference behavior",
+    "Geometry/auxiliary-image, binary/3D, complete target/resource/platform/release and historical source-fingerprint requalification",
+    "All ImageJ/commercial Fiji and prior filesystem obligations; All99 remains42/57/0, Source901 unchanged; 9P no-replace remains unsupported"
+  ],
+  "scientific_menu_enabled": true,
+  "profile_accepted": false,
+  "family_completed": false,
+  "broad_goal": "active"
+}

@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "state": "scoped_scientific_conversion_state_verified",
+  "operation": "convert_image",
+  "policy": "Whole dataset; recognized numeric display state reset atomically with converted pixels; paired history for in-place and NewDocument; unknown channel schema refuses before reads; no-op preserves state",
+  "new_focused_python_cases": 22,
+  "pinned_arithmetic_cases": 462,
+  "reference_scope": "Direct uncalibrated ImageProcessor type conversions and unsigned ShortProcessor inversion; not density-calibrated/signed/LUT/threshold/stack/GUI or plugin certification. Float64/RGBA are native extensions outside this corpus.",
+  "evidence": [
+    {
+      "path": "build/p06zl-conversion-state001/build003/run001.json",
+      "bytes": 9431,
+      "sha256": "81f5638b5eb8653676236ebaff7670e5e7990790276f9c4784cc7f2ffaf70ce9"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/process-cpp002/run001.json",
+      "bytes": 1290,
+      "sha256": "2e032823f499b03db08b212ececa8f40f9fd889ce46430ad66e077948e678211"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/process-installed-cpp002/run001.json",
+      "bytes": 1773,
+      "sha256": "8bb7238802f315a81269b2bd48d61b07bbbe689471847c3b7202d9551cb96670"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/source002/run001.json",
+      "bytes": 1406,
+      "sha256": "87badab1603185a34d70b5ed1a88b4eb7541cad14af9211454d6fdae542c0ad3"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/install002/run001.json",
+      "bytes": 7300,
+      "sha256": "79d072983f35a53912cdc77d621407b87d0a6f76fef8da0bc5dd86208024e8ec"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/installed-cpp002/run001.json",
+      "bytes": 3145,
+      "sha256": "21ed26b62e264aa945f4c88728b84017dd5a74a55e3cbf94b693bf987531bd3a"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/installed-python002/run001.json",
+      "bytes": 1741,
+      "sha256": "beab1b9f66e519c15f666ab462ff2fcd732039284b461bf1341a67bbb211dddd"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/launcher002/run001.json",
+      "bytes": 3424,
+      "sha256": "e1b8fc3efa57aca6902cf64e7486c54e4968d95de3b560ff797e4cc488938a33"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/api002/run001.json",
+      "bytes": 1383,
+      "sha256": "e8b9e2eff68485a81c44e9934609da635242d983ee291336ff1e4e552e61540e"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/regress002/run001.json",
+      "bytes": 18605,
+      "sha256": "a1aea79da6c416200543fd48ea2bbc14eabd06c6b642856c8698dcb4ae9ab95c"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/paths-sdk002/run001.json",
+      "bytes": 4330,
+      "sha256": "4442776b6673b647b4eb5ab8ec922ba81986649a5a9a876f0a75be4394b8e8a2"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/conversion-sdk002/run001.json",
+      "bytes": 4377,
+      "sha256": "9698df3dc7c84bd60126d6ec18ef62fa6abf60429ce4a0893f3f09d8b8837c38"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/conversion003/run001.json",
+      "bytes": 1411,
+      "sha256": "3d5f9e516438d92cd742b7656f67c13bbe04dcba01ccad13841680035b19a155"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/baseline001/run001.json",
+      "bytes": 1398,
+      "sha256": "10528c7c7bb943faebf5ca5226a04bbd388a966349af64b791e3816558e10b13"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/conversion001/run001.json",
+      "bytes": 1614,
+      "sha256": "1ff944570f228d5ee3f37a9261c7ac9ee391faa900e0fd82b5ff5b850922beee"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/conversion-newdoc-red001/run001.json",
+      "bytes": 1634,
+      "sha256": "4452da208c4f9babf91d891f47dfa6ba52cbe972a01b98779c6c59e9febf6dbf"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/test-before-float-oracle001.py",
+      "bytes": 5287,
+      "sha256": "49cf9ba34268203aed8d33e3609d268b965aaaf6967c260f673449bd7dafb768"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/linux002/run001.json",
+      "bytes": 855,
+      "sha256": "9fa90acadd911382d1cedf5096e94831ecd2f45a191bd220d2c0e3419dadd760"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/linux002/native.xml",
+      "bytes": 416,
+      "sha256": "a88dbc5601ff6de02ae9da4f9994f8fdf1dee1f207bd1ff602a543361298a865"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/conversion003/pytest.xml",
+      "bytes": 77342,
+      "sha256": "baaae8f175f5a3ad0e7c325bd77c3b445d5a8b15273a929a6030beb256bcacc1"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/plan-check001.json",
+      "bytes": 290,
+      "sha256": "962257b4707c700815c34ee179b6521f7b72768dc9047702ab420a5ff17758b3"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/requirements-preserved001.json",
+      "bytes": 189,
+      "sha256": "d7c5a229b0b3e35c6ba4bcf0f022c785ce14fc5d47fb1ac438ecb80223ae3db4"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/source002/pytest.xml",
+      "bytes": 60245,
+      "sha256": "0fc1911b3c7f5ec55d2dec38ab1faf321a7f7ece60b0ea0961e4df2960b23a63"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/installed-python002/pytest.xml",
+      "bytes": 62675,
+      "sha256": "2ecbbbddf3a248b07a5f37ebca33533ebb8b999efc1927b0b4c85af9aed3137e"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/build003/native.xml",
+      "bytes": 5679,
+      "sha256": "86215367a0f5db2d6c400b8523966a763bbb4b83af541c763652da2200e90eca"
+    },
+    {
+      "path": "tests/fixtures/conversion-imagej154r.json",
+      "bytes": 229969,
+      "sha256": "eb177fe986754d379fa0389ddca91de495c83ad8a095e06ecc63664611db3bd1"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/process-cpp002/capture001/case.json",
+      "bytes": 15322430,
+      "sha256": "8836af809ce358958b9b2f348564a986d6b5402bb34d9515398ba4c2026b160d"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/process-installed-cpp002/capture001/case.json",
+      "bytes": 15326556,
+      "sha256": "fe2c5d7ede4fe18fd55ed05f662bf90728daf4d5b951c0140b2609c1da49b6a8"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/baseline001/baseline001.json",
+      "bytes": 460,
+      "sha256": "697e667322d969a31e5e5c28effd0f9589a7f213fa11c2d52a99a95fbed1ea59"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/policy001.json",
+      "bytes": 210,
+      "sha256": "78c0ea807d6383a85f8ccd356c8c13ec2baf753c57c51b777b6b300bd1e4bd4b"
+    },
+    {
+      "path": "build/p06zl-conversion-state001/cleanup001.json",
+      "bytes": 404543,
+      "sha256": "a4a5073ef7ad2348597e3702963d4758460aa626303e19eadbf81abdde8c6349"
+    }
+  ],
+  "native_windows_suites": 18,
+  "linux_conversion_suite": true,
+  "source_cases": 413,
+  "installed_cases": 433,
+  "remaining": [
+    "Dedicated scientific conversion UI with whole-dataset resource admission, captured preferences/display range, preview, explicit reset review, recording and both-host menu proof",
+    "ImageJ density calibration/LUT/display-policy reference coverage, complete conversion/geometry/auxiliary-image/binary/3D/resource/platform/release qualification",
+    "Requalify stale historical source-fingerprint proof; all ImageJ/commercial Fiji scope and prior filesystem obligations remain open; All99 remains42/57/0, Source901 unchanged"
+  ],
+  "scientific_menu_enabled": false,
+  "profile_accepted": false,
+  "family_completed": false,
+  "broad_goal": "active"
+}

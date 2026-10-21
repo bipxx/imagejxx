@@ -1,0 +1,239 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_owned_increment",
+  "review_type": "Root authorship/integration attestation, not independent legal review",
+  "license": "Existing project MIT for original bare native import review and private shared payload editor integration",
+  "new_dependencies": [],
+  "restricted_features_added": false,
+  "imported_third_party_product_code": [],
+  "new_fonts": [],
+  "sources": [
+    {
+      "logical_path": "CMakeLists.txt",
+      "before": {
+        "path": "build/p06q-bare-edit-ui001/before001/CMakeLists.txt",
+        "bytes": 59917,
+        "sha256": "3a67cc057cfb08cb06017dd81359387e10195a026213baae46518cc42754fc11"
+      },
+      "after": {
+        "path": "build/p06q-bare-edit-ui001/after001/CMakeLists.txt",
+        "bytes": 59960,
+        "sha256": "10b6bdb1a08a5ae8a31c3339ecc9f614b46c606bfd62861d9f6aa9ab7c34a3d4"
+      },
+      "current": {
+        "path": "CMakeLists.txt",
+        "bytes": 59960,
+        "sha256": "10b6bdb1a08a5ae8a31c3339ecc9f614b46c606bfd62861d9f6aa9ab7c34a3d4"
+      }
+    },
+    {
+      "logical_path": "src/desktop/display_annotation_panel.cpp",
+      "before": {
+        "path": "build/p06q-bare-edit-ui001/before001/src/desktop/display_annotation_panel.cpp",
+        "bytes": 17132,
+        "sha256": "0459e318b21519dd5086013c6b9af6ff91da4afe7f23373cc04aea4cb1cdb35d"
+      },
+      "after": {
+        "path": "build/p06q-bare-edit-ui001/after001/src/desktop/display_annotation_panel.cpp",
+        "bytes": 18756,
+        "sha256": "770efc054ac9ea18bed3fbf5626e33d026473f91c8ffd66e5efa3618f0ab8e48"
+      },
+      "current": {
+        "path": "src/desktop/display_annotation_panel.cpp",
+        "bytes": 18756,
+        "sha256": "770efc054ac9ea18bed3fbf5626e33d026473f91c8ffd66e5efa3618f0ab8e48"
+      }
+    },
+    {
+      "logical_path": "src/desktop/display_annotation_panel.hpp",
+      "before": {
+        "path": "build/p06q-bare-edit-ui001/before001/src/desktop/display_annotation_panel.hpp",
+        "bytes": 657,
+        "sha256": "268048636572675f15ca40c4c6d5ffbea7c7db02e74755c4d4998fa8e8e70ba5"
+      },
+      "after": {
+        "path": "build/p06q-bare-edit-ui001/after001/src/desktop/display_annotation_panel.hpp",
+        "bytes": 781,
+        "sha256": "2644af33f508605cc5f4f0e2e127e00b96509ad9f43d75c3484e68106c8ae512"
+      },
+      "current": {
+        "path": "src/desktop/display_annotation_panel.hpp",
+        "bytes": 781,
+        "sha256": "2644af33f508605cc5f4f0e2e127e00b96509ad9f43d75c3484e68106c8ae512"
+      }
+    },
+    {
+      "logical_path": "src/desktop/main.cpp",
+      "before": {
+        "path": "build/p06q-bare-edit-ui001/before001/src/desktop/main.cpp",
+        "bytes": 38580,
+        "sha256": "65d7ead0388c6d1ef100fa60c6a97f86d0826d8ee2bff53222b06ed238c1a581"
+      },
+      "after": {
+        "path": "build/p06q-bare-edit-ui001/after001/src/desktop/main.cpp",
+        "bytes": 39016,
+        "sha256": "0537229920cf359864e09200d213814ddf6eb7a697ad516db08a908889896c15"
+      },
+      "current": {
+        "path": "src/desktop/main.cpp",
+        "bytes": 39016,
+        "sha256": "0537229920cf359864e09200d213814ddf6eb7a697ad516db08a908889896c15"
+      }
+    },
+    {
+      "logical_path": "src/desktop/python.cpp",
+      "before": {
+        "path": "build/p06q-bare-edit-ui001/before001/src/desktop/python.cpp",
+        "bytes": 41681,
+        "sha256": "0054798606d29ed3023b329f5953ba299717638cea2a7179ecb8540303a302a5"
+      },
+      "after": {
+        "path": "build/p06q-bare-edit-ui001/after001/src/desktop/python.cpp",
+        "bytes": 41880,
+        "sha256": "25d090d16ea5ae48bb29bdca953a066621c23b417a06dac4e6ca88fdff430914"
+      },
+      "current": {
+        "path": "src/desktop/python.cpp",
+        "bytes": 41880,
+        "sha256": "25d090d16ea5ae48bb29bdca953a066621c23b417a06dac4e6ca88fdff430914"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_display_replacement_editor.cpp",
+      "before": {
+        "path": "build/p06q-bare-edit-ui001/before001/src/desktop/roi_display_replacement_editor.cpp",
+        "bytes": 5761,
+        "sha256": "3b14e643459e39defa271005e0b7a2fc177b94e2c7f3312586836fe7ac886163"
+      },
+      "after": {
+        "path": "build/p06q-bare-edit-ui001/after001/src/desktop/roi_display_replacement_editor.cpp",
+        "bytes": 8468,
+        "sha256": "a9263d77496a24bc92e500df93d51e234b3df1ace9ed675024617ae5129387bc"
+      },
+      "current": {
+        "path": "src/desktop/roi_display_replacement_editor.cpp",
+        "bytes": 8468,
+        "sha256": "a9263d77496a24bc92e500df93d51e234b3df1ace9ed675024617ae5129387bc"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_display_replacement_editor.hpp",
+      "before": {
+        "path": "build/p06q-bare-edit-ui001/before001/src/desktop/roi_display_replacement_editor.hpp",
+        "bytes": 939,
+        "sha256": "3c263a7d20398b866e90009cf6ec06709be105feedfe685af7464403ed7b17fb"
+      },
+      "after": {
+        "path": "build/p06q-bare-edit-ui001/after001/src/desktop/roi_display_replacement_editor.hpp",
+        "bytes": 1482,
+        "sha256": "6c769db8f25c0f7acad6e20227d36fd93128b5d9c4e30df8ff69d11640f2d207"
+      },
+      "current": {
+        "path": "src/desktop/roi_display_replacement_editor.hpp",
+        "bytes": 1482,
+        "sha256": "6c769db8f25c0f7acad6e20227d36fd93128b5d9c4e30df8ff69d11640f2d207"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_panel.cpp",
+      "before": {
+        "path": "build/p06q-bare-edit-ui001/before001/src/desktop/roi_import_panel.cpp",
+        "bytes": 48591,
+        "sha256": "43ff0bb8790fb29b25d37e930e4a6ec66715b76269ff2a2250071da5f685fd87"
+      },
+      "after": {
+        "path": "build/p06q-bare-edit-ui001/after001/src/desktop/roi_import_panel.cpp",
+        "bytes": 49409,
+        "sha256": "7da7c21169ed3f26eda87d938743eb2da987c1bcc876b1135c818379ffd7f54f"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_panel.cpp",
+        "bytes": 49409,
+        "sha256": "7da7c21169ed3f26eda87d938743eb2da987c1bcc876b1135c818379ffd7f54f"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_replacement_editor.cpp",
+      "before": {
+        "path": "build/p06q-bare-edit-ui001/before001/src/desktop/roi_import_replacement_editor.cpp",
+        "bytes": 13651,
+        "sha256": "6a1cf467cfbbf394b960fe13e0c75a90599f792a2e5f4ed87357d31a09946a80"
+      },
+      "after": {
+        "path": "build/p06q-bare-edit-ui001/after001/src/desktop/roi_import_replacement_editor.cpp",
+        "bytes": 13849,
+        "sha256": "ac70540ea8121084ec7ef2e5164b365189130bac86f8580918983cebe5db7d14"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_replacement_editor.cpp",
+        "bytes": 13849,
+        "sha256": "ac70540ea8121084ec7ef2e5164b365189130bac86f8580918983cebe5db7d14"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_replacement_editor.hpp",
+      "before": {
+        "path": "build/p06q-bare-edit-ui001/before001/src/desktop/roi_import_replacement_editor.hpp",
+        "bytes": 1467,
+        "sha256": "56fcfa648cfe76537cf6a4900e15a0fd79c331e1100c3eb6e094d27a55500d43"
+      },
+      "after": {
+        "path": "build/p06q-bare-edit-ui001/after001/src/desktop/roi_import_replacement_editor.hpp",
+        "bytes": 1497,
+        "sha256": "14fb50424f30360825bbe4de509b5d04793b1863971570a4d91293ed30956f1d"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_replacement_editor.hpp",
+        "bytes": 1497,
+        "sha256": "14fb50424f30360825bbe4de509b5d04793b1863971570a4d91293ed30956f1d"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_ui_probe.hpp",
+      "before": {
+        "path": "build/p06q-bare-edit-ui001/before001/src/desktop/roi_import_ui_probe.hpp",
+        "bytes": 1448,
+        "sha256": "1422ff4eee2144736672cc54bda81c62f884706253405f4874ef112273b8568b"
+      },
+      "after": {
+        "path": "build/p06q-bare-edit-ui001/after001/src/desktop/roi_import_ui_probe.hpp",
+        "bytes": 1523,
+        "sha256": "56614edd01bbd7e801c75c859397940d009c779eab00d4cdf036f2b3d1979977"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_ui_probe.hpp",
+        "bytes": 1523,
+        "sha256": "56614edd01bbd7e801c75c859397940d009c779eab00d4cdf036f2b3d1979977"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_bare_edit_ui_probe.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-bare-edit-ui001/after001/src/desktop/roi_bare_edit_ui_probe.cpp",
+        "bytes": 18483,
+        "sha256": "61c36813ce33ad76726635ebd08b3d40a0e317c8d49523571fa10346ae4baa57"
+      },
+      "current": {
+        "path": "src/desktop/roi_bare_edit_ui_probe.cpp",
+        "bytes": 18483,
+        "sha256": "61c36813ce33ad76726635ebd08b3d40a0e317c8d49523571fa10346ae4baa57"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_imagej_bare_edit_ui.py",
+      "before": null,
+      "after": {
+        "path": "build/p06q-bare-edit-ui001/after001/tests/python/test_imagej_bare_edit_ui.py",
+        "bytes": 7877,
+        "sha256": "0b1062d0e27d48e4ca95f6fa84f63568e0b887cae530011a8405f6c4c5563a10"
+      },
+      "current": {
+        "path": "tests/python/test_imagej_bare_edit_ui.py",
+        "bytes": 7877,
+        "sha256": "0b1062d0e27d48e4ca95f6fa84f63568e0b887cae530011a8405f6c4c5563a10"
+      }
+    }
+  ],
+  "scope": "Shared bare mapped geometry/text/image edit controls; no whole-family or release acceptance"
+}

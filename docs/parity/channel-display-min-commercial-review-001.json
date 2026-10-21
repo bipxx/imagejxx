@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "id": "G033.composite-min.reference-commercial-review.001",
+  "recorded_at_utc": "2026-10-16T06:02:40.339756+00:00",
+  "reference_id": "imagej-1.54r-fiji-latest-20261007-1617-win64",
+  "packet": "docs/packets/P06c3-composite-min.md",
+  "decision": "eligible",
+  "scope": "Pinned ImageJ1.54r as excluded behavioral reference for independently authored native SelectMin and shared ImGui/Python consumers; no ImageJ/JDK/Java/macro implementation or third-party asset enters product.",
+  "reason": "Reuse the exact reviewed source/license/resource closure for Max: the pinned ImageJ LICENSE.txt is public domain, and the independently authored native equivalent/generated fixtures use project MIT. Min adds no dependency, palette, model, font or asset.",
+  "parent_review": {
+    "path": "docs/parity/channel-display-max-commercial-review-001.json",
+    "bytes": 6804,
+    "sha256": "d437d1a745cc53b25ded2f35f88dec1021a11c87c7ce2d82b4d42249777aa55a"
+  },
+  "primary_license_evidence": {
+    "archive": {
+      "path": "build/references/downloads/imagej-62db90a269cccc1ac79f658e4602043214ed055b.zip",
+      "sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+      "bytes": 6146010
+    },
+    "member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/LICENSE.txt",
+    "sha256": "618725ff649e43605de0fec0a778b4aad24b28c6be9b3cde16295764022f668c",
+    "bytes": 512
+  },
+  "owned_code_license": {
+    "path": "LICENSE",
+    "sha256": "6496956d6060adfcd2617e553b7393c3b7fbea353a02f3c39d60051709d1ce5f",
+    "bytes": 1079
+  },
+  "incorporated_components": [],
+  "dependencies": "Existing shipped dependency reviews retained by exact identity; final installed license gate remains required. No JDK redistribution approval.",
+  "models_assets": "Owned synthetic scalar planes/arithmetic tables only.",
+  "reference_capture": {
+    "path": "build/p06c3-001/reference-capture-001.json",
+    "bytes": 4580,
+    "sha256": "81af7a674c6f7f7696ec77f5826d6aab171869b8c0e66de49926735ce038f4a2"
+  },
+  "reference_reader": {
+    "path": "build/p06c3-001/reference-reader-001.json",
+    "bytes": 6000,
+    "sha256": "5551f441f5e0e537bd743e0084c8ff55781385edada713672d6625c1d24c9c32"
+  },
+  "adoption": {
+    "path": "docs/parity/reviews/P06c3-min-adoption-001.json",
+    "bytes": 12988,
+    "sha256": "7020850a0678b3110349543d419f9b5c530d4eff8c2f3f1055c2c80a64f6b77f"
+  },
+  "fiji_components_and_palettes": "Unchanged; held Coloc2 closure is pending and no Fiji material is incorporated.",
+  "product_implementation_verified": false,
+  "family_complete": false,
+  "full_goal_complete": false
+}

@@ -1,0 +1,74 @@
+{
+  "schema": "imagejxx.parity.rank-native-contract-adoption",
+  "schema_version": 1,
+  "id": "G042-rank-native-adoption-001",
+  "state": "numerical_and_command_contract_adopted_implementation_in_progress",
+  "not_an_acceptance_manifest": true,
+  "scope": "ImageJ1.54r minimum/maximum/median/mean complete type-preserving finiteS1 editor; existing native rank meanings retained. First code gate is numerical/command core, with Python/sharedImGui/SDK/installed lifecycle exits still required.",
+  "reference": [
+    {
+      "path": "build/references/rank-filter-imagej154r-001/freeze-adoption-002.json",
+      "bytes": 4056,
+      "sha256": "18d9834f80e2c12c86f9d3e391e33482da6a7bf19038f0f96dadd6fdffa40c7c"
+    },
+    {
+      "path": "build/references/rank-filter-imagej154r-001/capture-001/capture.json",
+      "bytes": 2870,
+      "sha256": "4ea2bdd48c786df03bdbd55d0f1dd488a02d9e8d0c4553d018395e4e2c7dd302"
+    },
+    {
+      "path": "build/references/rank-filter-imagej154r-001/reader-supervisor002.json",
+      "bytes": 4656,
+      "sha256": "1abb8570a287943079bb18c7319c63ae1e5f316f70f882b0c7bcb4e846da5227"
+    },
+    {
+      "path": "build/references/rank-filter-imagej154r-001/signed-zero-001/inspection-001.json",
+      "bytes": 2123,
+      "sha256": "e5ccbe9528003a00c31f78ea71dbd05ed74a2f32f1f5c16ae84c47d0f988bbe0"
+    }
+  ],
+  "decisions": {
+    "profile": "Separate rank_filter_imagej operation and typed record profile imagej_154r. Existing native rank_filter/minimum_filter/maximum_filter/median_filter IDs/parameters/defaults/records unchanged. New params ONLY method,radius; reject native-only border/footprint/Cval and unknown fields.",
+    "geometry": "Observed fractional circular footprint and nearestedge. Special intervals1.5<=r<1.75 use1.75;2.5<=r<2.85 use2.85. Radius0 is cross5, not identity. Default2. Pixelunits only, no scaled-radius option in this slice.",
+    "limits": "Finite radius0..1000, median0..100, exact4methods. New profile follows source dialog admission limits; generic direct Java rank unrestricted radius is not adopted.",
+    "arithmetic": "Originalsource float samples, top-to-bottom/left-to-right neighborhoods, ROI-left row start. Ordered double initial mean/delta accumulation then Float32 result and float+.5 integer cast. Incremental min/max equalitytie and source-ordered Hoare median preserve observed F32signedzero; no reassociation or fastmath.",
+    "source_admission": "MetadataS1 UInt8/UInt16/Float32 with FiniteOnly. Actual Image/provider plane samples must already be canonical finite encoded values; reject integerfraction/outofrange/negativezero and nonrepresentableFloat32, never silently round source. RGB/RGBA/F64/quietNaN/nonfinite remain separate required follow-ons and existing native APIs remain available.",
+    "targets": "CurrentPlane, AllZ at capturedT/C, explicit compactTCZ ranges/positions using existing targets. FullCZT is explicitranges, not AllZ. UIone-based input normalizes once; previewinsidecapturedtarget. Planes mode only, in-place or explicitnewdocument.",
+    "regions": "Absent/point/line active selection means wholeplane with captured Selectiondependency. Area bounds phase filtering across complete boundingrectangle including holes; restore excludedpixels after. Explicitempty area and positionedno-match are zerowrite and never wholeplanefallback. Matching nonarea positioned intent follows existing qualified region planner.",
+    "record": "Exact schema_version:int1,operation:rank_filter_imagej,profile:imagej_154r,options:{method:exacttext,radius:exactfiniteNumber},target:strictsourceboundrecord. Validate entire originalrecord before identity/rebind. Explicitnewownerrebind requires fullnewTargetRequest. No copiedidentity fields and no calibration conversion; Metadata revision guards sourcecalibration.",
+    "publication": "Reuse OperationJob/prepare/publish. Captured PixelsMetadata and ROI-dependentSelection guard; freshDisplay/navigation preserved. ChangedApply is one atomicpixel edit/undo/dirty/redo-clear. Bit-onlyzero changes count as pixel edits. Unchanged/empty results create no edit, no rankworkflow append and preserve redo. Allocate/reserve append before publication; append only after successfulchangedcommit.",
+    "lifecycle": "One shared Gaussian-style plane-operation lane adapter; captured options/target, containedpreview, supersession/generations/cancel/stale/owner/close/READYretention, publicAPI/Python/sharedImGui C++andPython launches. Per-method acceptedradius memory starts2; Cancel/reset/reopen semantics explicit before UI qualification, distinct from durablepreferences.",
+    "resources": "Use checked shared conservative staged/plane workspace admission plus actual rank footprint rows and median2floatneighborhood buffers, vector/control allowances. No fullfloatcache required. RetainedREADY keeps reservation. Configured worker/memory cap authoritative; first bounded qualification fixture/case/storage/deadlines declared before run.16Mpx/128MiB candidate describes bounded workload/profile review, not a promise every suchsize fits generic conservative admission. Benchmark fixtures/endpoints/budgets registered before rankinstalled exit; no runtime/RSS claim from estimates.",
+    "persistence": "Type-preserving eager scientific dataset/session Save/Open retains geometry/calibration/CZT/ROIs/overlays/currentselection/previousselection and untargeted samples; publicSDK/Python/bothlaunch fixtures required. No TIFF/generalvirtual/promotion dependency."
+  },
+  "commercial": "OwnC++rewrite and ownedsyntheticfixtures; retained ImageJpublic-domain reference reviewed in prior own-code lineage. No new dependency/code/model/asset with pending/NC/research-only/unlicensed grant incorporated. FullFiji incorporation review remains separate.",
+  "current_sources": [
+    {
+      "path": "include/imagejxx/rank.hpp",
+      "bytes": 1891,
+      "sha256": "d9b77a99ba9be0fd1e19302d25f7d7c31e251a62ecec24e0828bb884845dd88f"
+    },
+    {
+      "path": "src/native/rank.cpp",
+      "bytes": 15320,
+      "sha256": "3bc4ed55efa8064d89c3bd97dc7056d7fae002d3cb648b96e1684c252e455d1f"
+    },
+    {
+      "path": "include/imagejxx/rank_command.hpp",
+      "bytes": 2808,
+      "sha256": "45b9228f6c671ee8f5433ae6693ce9816c02dd5a67cb2785ec1e76a38b350163"
+    },
+    {
+      "path": "src/native/rank_command.cpp",
+      "bytes": 8018,
+      "sha256": "53ce3cfe571e4508e7834ee668cb7aa7405255726f31e292d4e460dd7c05d312"
+    }
+  ],
+  "remaining": [
+    "Run focused numerical and typedcommand/affectedcore gates",
+    "Bind Python typed APIs and sharedplane-lane/editor interaction and replaydispatch",
+    "Register complete4method option/surface slice and first processingbenchmark",
+    "Qualify configuredsettings/jobs/resources/record/replay/persistence through C++PythonSDKbothinstalledlaunches",
+    "Retain fullG042family and broaderall99/eligibleFiji scope; no family/platform/release closure"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "id": "G042.rank.runtime-observer.adoption003",
+  "state": "adopted_verified_native_engine_pid_sampling_correction",
+  "acceptance": false,
+  "base": {
+    "path": "docs/parity/reviews/G042-rank-runtime-observer-adoption-002.json",
+    "bytes": 6664,
+    "sha256": "670e5e72c1df549e8a1ee913572931b356e173bf160ad8c8a119d2d2d7941170"
+  },
+  "original": {
+    "path": "build/p06f-001/runtime-feasibility-001.json",
+    "bytes": 817600,
+    "sha256": "e7b12491e0212ac1633c70194c233ffe2cfc8816ef242345b64dfd7b488195bd"
+  },
+  "observations": [
+    {
+      "context": "imgui_cpp",
+      "popen_pid": 32924,
+      "sampled_lifetime_private_peak": 154660864
+    },
+    {
+      "context": "imgui_python",
+      "popen_pid": 37900,
+      "sampled_lifetime_private_peak": 868352
+    }
+  ],
+  "correction": [
+    "Fresh run/process.json emitted before fixture preparation and GL includes actual native process_id, context, schema, producer_id and steady_ns. Raw product report carries matching process_id.",
+    "External sampler verifies the actual process marker and bounded Windows parent lineage to its retained live Popen PID; acquire/verify a query handle for that native engine PID.",
+    "Only actual engine samples count as product memory. Waiting-for-marker, first sample, errors, gaps and observed sample interval stay explicit. Close query handles during bounded cleanup.",
+    "Keep target10ms, existingcaps, workload, endpoints, physical preparation and pendingbudgetstatus unchanged.",
+    "The Python001 PopenPID samples maydescribe redirector only; they grant no editor memory credit. Neither context001 has a qualified per-widget preinputbaseline/delta comparison.",
+    "Do not assume cross-clock identity; per-widget baseline and memorywindow join remain owned open until explicit native/Windows clock correlation is adopted and executed."
+  ],
+  "formal_manifest_edits": false
+}

@@ -1,0 +1,546 @@
+{
+ "schema": "imagejxx.parity.rank-editor-entry",
+ "schema_version": 1,
+ "id": "G042.RankEditor.entry.001",
+ "state": "source_reviewed_reference_and_policy_adoption_required",
+ "not_an_acceptance_manifest": true,
+ "recorded_at_utc": "2026-10-16T07:06:28.064049+00:00",
+ "scope": "One specialized shared ImageJ-compatible minimum/maximum/median/mean scientific editor: fractional circular radii/source defaults, edge replication and qualified mean precision, captured current/all/ranged C/Z/T+ROI, preview/cancellable Apply/history/replay through C++/Python/both ImGui. Native mode remains compatibility. Candidate only; variance/stddev retain their separate promoted exit.",
+ "status": {
+  "existing": "Native four-method kernels/catalog, public Image/Python array APIs, ResolvedTarget and Application prepare/submit/publish are implemented. This is not runtime qualification of the new editor.",
+  "missing": "Required native ImageJ footprint/mean precision work, profile-discriminated immutable command/record, guarded scientific form and minimal Gaussian lane reuse. Existing native kernel availability alone does not close this workflow.",
+  "independent_prerequisites": "Histogram/Auto, TIFF ingestion, scientific ROI creation, whole measurements/calibration, volume execution and Float64 promotion are not prerequisites. Existing in-memory eager scientific sources suffice."
+ },
+ "consumed_source_pins": [
+  {
+   "path": "include/imagejxx/image.hpp",
+   "bytes": 7892,
+   "sha256": "ea5994381ec1226fba24ab447d89313770b44bba43b3fb0dcad531f36683a9c3",
+   "anchors": "12-25,64-69"
+  },
+  {
+   "path": "src/native/filters.cpp",
+   "bytes": 27716,
+   "sha256": "104cd82e37ff4fc15d58b8874f89d5c3dc3494b7c646c529a104c999bcf527a1",
+   "anchors": "135-195"
+  },
+  {
+   "path": "src/native/image.cpp",
+   "bytes": 19621,
+   "sha256": "4d7b41262da1b597a694a4a53ce45c2417c26f7311c17f8ae6b945d8a1c8c19f",
+   "anchors": "32-41,88-93,109-127"
+  },
+  {
+   "path": "src/native/operation_catalog.inc",
+   "bytes": 82242,
+   "sha256": "fabd7b5dd633637e014f48437662d9914932e3a468f05f52a2059e1cecb0d614",
+   "anchors": "1029-1157"
+  },
+  {
+   "path": "src/native/operation_kernel.inc",
+   "bytes": 12866,
+   "sha256": "880b38227181942d0f4236beb9928bab4d0e4ef7f653bc4132e9b68c24926e09",
+   "anchors": "94-110"
+  },
+  {
+   "path": "src/native/operations.cpp",
+   "bytes": 34633,
+   "sha256": "4fe2366ebaad0193a4388012fc73845d3f265144f9729eab3180d8258fa575c5",
+   "anchors": "173-191,446-471,648-663,758-770"
+  },
+  {
+   "path": "include/imagejxx/operations.hpp",
+   "bytes": 5348,
+   "sha256": "f59a18caa1efa0e3b4fc1d019f5077add476e17002f32c55256a5f749496d0bb",
+   "anchors": "public normalization/result API"
+  },
+  {
+   "path": "include/imagejxx/dataset.hpp",
+   "bytes": 8015,
+   "sha256": "4744b8097ac2794b358d4e625d996a06d3c1a9aa348c3f121a6b7b3ab9182eb7",
+   "anchors": "public Dataset/source API"
+  },
+  {
+   "path": "include/imagejxx/document.hpp",
+   "bytes": 13148,
+   "sha256": "abafa9bece292df8fc1ddc46dcf4cfbd70a3890504325507778bfcab54522d98",
+   "anchors": "12-29,145-207,247-270"
+  },
+  {
+   "path": "include/imagejxx/targets.hpp",
+   "bytes": 4070,
+   "sha256": "2407f136a3d2ea0030a300c20ee2001d29b635a07487e77ca61d1fe03dd5d3c9",
+   "anchors": "8-95"
+  },
+  {
+   "path": "src/native/targets.cpp",
+   "bytes": 18531,
+   "sha256": "7707fbb75b9376a2d856a578e9f290336c4dd2e835c428b6e8330c2ff69b37d5",
+   "anchors": "152-189"
+  },
+  {
+   "path": "include/imagejxx/execution.hpp",
+   "bytes": 11635,
+   "sha256": "502715065b57c9b5d2ba5515cecfd2cb70fd45cdeeb0f7a3274f153dba21935a",
+   "anchors": "20-41,PreparedOperation declarations"
+  },
+  {
+   "path": "src/native/execution.cpp",
+   "bytes": 94083,
+   "sha256": "4d81bc112c03db7d7ec35dbc043c2eccc1f135195160174044533058f1e0e3a5",
+   "anchors": "763+,1591-1815"
+  },
+  {
+   "path": "include/imagejxx/application.hpp",
+   "bytes": 5240,
+   "sha256": "53d9c802a138cadf95665f6ebbc0a7da4308fc0a298871e6bc1b6abdb6c09977",
+   "anchors": "25-38,prepare/publish declarations"
+  },
+  {
+   "path": "src/native/application.cpp",
+   "bytes": 15740,
+   "sha256": "c617e3ae63970e0d18d0ad16bf785f5974d5d8866123de00cbc6437a2c9a8714",
+   "anchors": "18-125,239-283"
+  },
+  {
+   "path": "include/imagejxx/jobs.hpp",
+   "bytes": 5111,
+   "sha256": "0454f11364cd1ff020e02445b4ea96f40a6c453683197a6a44135056fc7070db",
+   "anchors": "17-31,47-106"
+  },
+  {
+   "path": "src/native/jobs.cpp",
+   "bytes": 20642,
+   "sha256": "84857cc962622552541e2b0641c3bf58a5d139602aee422b529e5952b737776f",
+   "anchors": "125-213,323-392,448-548"
+  },
+  {
+   "path": "include/imagejxx/gaussian_command.hpp",
+   "bytes": 3404,
+   "sha256": "e165849c92e3b144ad5732356907a7856db4944ac4fd03a0d9db25cac978025c",
+   "anchors": "9-74"
+  },
+  {
+   "path": "src/desktop/operation_target_panel.hpp",
+   "bytes": 2474,
+   "sha256": "0f1179f662971dc4bc625513c18e7fb11fb77c9534ba18311ad1a1ebced66a39",
+   "anchors": "12-38"
+  },
+  {
+   "path": "src/desktop/operation_target_panel.cpp",
+   "bytes": 15695,
+   "sha256": "dd0434e277b388435685b5ea0769c3ca11b0c752cba88f2bea107f732081b84e",
+   "anchors": "54-65,169-180"
+  },
+  {
+   "path": "src/desktop/gaussian_jobs.hpp",
+   "bytes": 4234,
+   "sha256": "b9ba1a3585b5e259671c305e134e6887d6668480725e96fb5824cf7603089330",
+   "anchors": "15-70"
+  },
+  {
+   "path": "src/desktop/gaussian_jobs.cpp",
+   "bytes": 16350,
+   "sha256": "be4336792d518eb76cb37845b18b0e3360ab106f033c7742a7de6add25df2e89",
+   "anchors": "80-100,152-206,254-305"
+  },
+  {
+   "path": "src/desktop/gaussian_panel.hpp",
+   "bytes": 2944,
+   "sha256": "70dedb41b7e53f26e5ad467b3c1ba13a89cd8c35bfd1c20ebfc032bbbb8fbc29",
+   "anchors": "14-58"
+  },
+  {
+   "path": "src/desktop/window.cpp",
+   "bytes": 400358,
+   "sha256": "a6debcd25c3b9a7baacf254bb5c207fae0fb3ac64113ed5c47bf194731ee8930",
+   "anchors": "458-497,1385-1411,1597-1617,1652-1711,3022-3024,4654+"
+  },
+  {
+   "path": "src/imagejxx/__init__.py",
+   "bytes": 43237,
+   "sha256": "2eae59300a2f03ab9d60fa324400a42d60a21fb1a2ed716a28d58201c5c2221a",
+   "anchors": "541-580"
+  },
+  {
+   "path": "docs/PLAN.md",
+   "bytes": 203940,
+   "sha256": "92932c3dc4d8a133f39ca8125c0a7aa075bcb7eff60166caba318963aaebe4ca",
+   "anchors": "298,302,307-318,399"
+  }
+ ],
+ "reference": {
+  "version": "ImageJ1.54r",
+  "commit": "62db90a269cccc1ac79f658e4602043214ed055b",
+  "archive": {
+   "path": "build/references/downloads/imagej-62db90a269cccc1ac79f658e4602043214ed055b.zip",
+   "bytes": 6146010,
+   "sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+   "basis": "Reused pinned identity; consumed members byte-compared to archive."
+  },
+  "source_members": [
+   {
+    "member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/plugin/filter/RankFilters.java",
+    "bytes": 41961,
+    "sha256": "284e7647e6619a3cc62887c57992056ccfd1dd99661868571fff005afff7d6b7",
+    "anchors": "24-45,73-85,116-197,242-284,528-581,599-663,755-775,848-889",
+    "archive_byte_match": true
+   },
+   {
+    "member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/plugin/filter/PlugInFilterRunner.java",
+    "bytes": 25665,
+    "sha256": "71e9965a1984feafc184b336f1a575f7644e057631ce1d66fdd2deea7c10df4f",
+    "anchors": "53-81,101-114,205-225,235-274",
+    "archive_byte_match": true
+   },
+   {
+    "member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ImageProcessor.java",
+    "bytes": 95523,
+    "sha256": "f98e87d25eb6b1f2c5d8557b73dd33e36fef0494d903d6d250206371dccc279c",
+    "anchors": "900-911",
+    "archive_byte_match": true
+   },
+   {
+    "member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/ImagePlus.java",
+    "bytes": 108208,
+    "sha256": "477e3f5f913b9c42feb68ea35d21836d45fd56920cccbfc5719a06822cbcfab9",
+    "anchors": "2048-2085",
+    "archive_byte_match": true
+   },
+   {
+    "member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/Roi.java",
+    "bytes": 90700,
+    "sha256": "200ad9f501a5860fe1486a3d2a8ed6cf6f82f7c7562a81e11d91ee7b7a04497e",
+    "anchors": "isArea/mask contract",
+    "archive_byte_match": true
+   }
+  ],
+  "boundary": "Standalone1.54r is not Fiji bundled1.54p. Source behavior only; no original classes/source/macros/assets incorporated, fresh eligibility decision or runtime/capture executed."
+ },
+ "source_findings": [
+  {
+   "id": "S01",
+   "anchors": [
+    "filters.cpp135-195",
+    "operation_kernel.inc94-110"
+   ],
+   "fact": "Existing native minimum/maximum/median/mean preserve PixelType; variance/stddev set Float64. Mean must remain a rank-neighborhood method in each explicit profile, never smooth/box_blur. The new ImageJ profile still needs the footprint/precision work below."
+  },
+  {
+   "id": "S02",
+   "anchors": [
+    "operation_catalog.inc1029-1157",
+    "image.hpp67-69",
+    "__init__.py546-580"
+   ],
+   "fact": "Native defaults are integer radius1,median,disk,reflect,Cval0. Named catalog aliases expose radius only. Full native compatibility requests use rank_filter with explicit options. New ImageJ-profile dispatch must be explicit and preserve old operations/records; aliases cannot silently drop options."
+  },
+  {
+   "id": "S03",
+   "anchors": [
+    "filters.cpp146-154",
+    "image.cpp32-41,88-93,113-127"
+   ],
+   "fact": "Native disk dx^2+dy^2<=r^2; square full(2r+1)^2. Integer radius0..4096. Nearest clamps; reflect has period2*extent/repeated edge; wrap is periodic; constant inserts finite Cval."
+  },
+  {
+   "id": "S04",
+   "anchors": [
+    "RankFilters.java116-197,848-889"
+   ],
+   "fact": "ImageJ fresh dialog radius2, fractional pixels and per-method accepted interactive memory. Median limit100; min/max/mean1000. Circular mask uses floor(radius^2)+1 and special1.5..1.75/2.5..2.85 ranges. Source-derived r1=9/r2=21 offsets versus native disk5/13. Native r0 is identity; source makeLineRadii(0) describes5 offsets. These are source predictions, not runtime matches."
+  },
+  {
+   "id": "S05",
+   "anchors": [
+    "RankFilters.java528-581,599-663",
+    "operations.cpp648-663"
+   ],
+   "fact": "Source padding duplicates edge samples; float cache/output intermediates precede integer +0.5f conversion. Native selected borders/full double sums end in clamped floor(v+.5), or F32 narrowing. Incremental source means can differ from native repeated sums. Establish parity only for exact matching fixtures/footprints."
+  },
+  {
+   "id": "S06",
+   "anchors": [
+    "PlugInFilterRunner.java205-225,235-274",
+    "targets.cpp152-189",
+    "execution.cpp1655-1731"
+   ],
+   "fact": "Original runner maps absent/nonarea selection to whole plane and restores outside irregular masks after filtering. Direct RankFilters.rank does not prove runner restoration. Native generic active mask may rasterize nonarea geometry; new editor must normalize explicitly. Area/positioned masks gate writes, not neighborhood reads."
+  },
+  {
+   "id": "S07",
+   "anchors": [
+    "RankFilters.java562-580,670-679,755-775",
+    "operations.cpp185-191,764-769"
+   ],
+   "fact": "F32 source median is NaN-aware; min/max and mean have distinct nonfinite outcomes. Native canonical operation execution requires finite scanned samples. Storage admission or a direct raw rank_filter call does not establish quiet-NaN editing behavior."
+  },
+  {
+   "id": "S08",
+   "anchors": [
+    "window.cpp1385-1411,1652-1711",
+    "gaussian_jobs.hpp15-70"
+   ],
+   "fact": "Scientific specialized admission/preview is Gaussian-specific. Legacy generic start requires legacy-editable State. Reuse native scientific execution and extract repeated lane glue; do not simply enable every generic operation or implement math in Python."
+  }
+ ],
+ "numerical_candidate": {
+  "methods": [
+   "minimum",
+   "maximum",
+   "median",
+   "mean"
+  ],
+  "mean_variant": "Rank mean, not smooth/box_blur. Required ImageJ profile needs source float intermediate/integer conversion and qualified accumulation; existing native mean stays unchanged in its compatibility profile.",
+  "defaults": "New specialized UI defaults to ImageJ circular profile, fresh radius2 and edge-duplicate padding, with per-method interactive memory. Generic APIs/records remain1/disk/reflect/Cval0. Native disk/square/border/Cval controls remain explicit compatibility, never fallback from ImageJ profile.",
+  "request": "Freeze explicit ImageJ/native profile discriminator. ImageJ finite double radius0..100 median/0..1000 min-max-mean, source circular discretization/special intervals, nearest padding; radius0 not assumed identity. Native retains integer0..4096,disk/square,four borders,finite Cval0. New typed bool/overflow/enum/nonfinite refusal precedes reads; old APIs unchanged.",
+  "canonical_output": "Required ImageJ profile qualifies source float intermediates, integer +0.5f conversion and F32 accumulation/output; native rounding is not a substitute. Canonical execution may consume its already typed result. Native compatibility retains clamp+floor(v+.5)/F32 narrowing. Test high-U16 mean/extrema/ties/signed zero.",
+  "first_scientific_profile": "Proposed finite canonical scalarS1 UInt8/UInt16/Float32, no promotion. Quiet-NaN Dataset policy refusal is metadata-visible. Actual nonfinite/noncanonical custom FiniteOnly provider samples fail detached preparation. Root must freeze canonical-input admission; do not silently round/cast originals.",
+  "remaining_types": "Existing finite F64/S3/S4 headless and legacy RGB APIs remain unchanged with affected regression coverage. This first scalar consumer does not close RGB/S4-alpha/F64-input/quiet-NaN scientific editors; those remain required."
+ },
+ "compatibility_decisions": [
+  {
+   "id": "D01",
+   "gap": "Native integer disk/default1/reflect is not ImageJ fractional circular/default2/edge-duplicate.",
+   "decision_required": "First editor must implement explicit ImageJ circular/fractional profile with default2/edge replication and qualified radius0/special intervals. Freeze API/record discriminator after bounded reference. Preserve existing native mode/records; an owned-only exit is not a substitute."
+  },
+  {
+   "id": "D02",
+   "gap": "Source float intermediates/incremental mean versus native double/canonical rounding.",
+   "decision_required": "First editor requires source-compatible mean intermediate/output conversion and qualified accumulation. Capture discriminating integer/F32 rows before adoption. Any source correction requires a named review; existing native double rounding is not the default substitute."
+  },
+  {
+   "id": "D03",
+   "gap": "Source nonfinite behavior differs from native finite execution.",
+   "decision_required": "Freeze finite-first refusal and retain nonfinite work. Do not expose order-dependent raw NaN execution as a new contract."
+  },
+  {
+   "id": "D04",
+   "gap": "Source runner nonarea ROI differs from generic native mask.",
+   "decision_required": "ImageJ profile maps absent/nonarea active selection to whole plane with Selection dependency. Preserve generic native masks separately; positioned-area targets are a scientific extension."
+  }
+ ],
+ "target_command_candidate": {
+  "target": "Reuse immutable ResolvedTarget compact ranges/positions and owner/Pixels/Metadata/Selection guards. Current/all/range perC/Z/T; UI one-based conversion exactly once, coreT/C/Z zero-based half-open positive-step ranges. AllZ stays capturedT/C. Native arbitrary ranges are scientific extensions, not invented ImageJ controls.",
+  "roi": "Whole-plane, active area and positioned-area union with optional/wildcardTCZ; no match/explicit empty means no writes. Native loaded/API selections suffice; no creation-gesture prerequisite. Preserve selection/previous/ROI/overlays. D04 must be resolved.",
+  "command": "Immutable profile+method+typed radius/footprint/border/Cval and bound target. Exact signatures/schema/fields remain for adoption. Explicit profile prevents reinterpreting old native records. Validate full original before identity/rebind; no output-pixel oracle.",
+  "replay": "Strict replay retains target/complete parameters despite fresh UI defaults/navigation and reexecutes against the bound source. Rebind validates the original then resolves a fresh explicit request/target. NativeV3 reopened owner never silently rebinds historical IDs.",
+  "preview": "OperationTargetPanel chooses one contained preview plane from the complete Apply target. Same canonical method/parameters/ROI and committed source; never feed staged preview back into filtering. Supersede generations; stale completions cannot install/publish or redirect target.",
+  "history": "One changed Apply creates one undo step; untouched samples stay exact/shared. Native radius0 is identity; ImageJ radius0 may change pixels. Empty/actually unchanged output creates no manufactured edit. Freeze no-op recording; test on/off/populated redo.",
+  "display_session": "Preserve scalar type, calibration, channel state/version/projection/ranges and threshold/annotation policy; preserve fresh navigation through existing operation publication. Eager scientific nativeV3 Save/Open is in the exit. Virtual selected-plane read/override tests are separate; type preservation does not imply arbitrary virtual storage is eager/session-serializable. Name actual session admission/refusal without waiting for all readers."
+ },
+ "shared_lifecycle": {
+  "native": "Reuse Application/OperationJob staging/reservation/cancel/cleanup/publication. Dispatch explicit ImageJ profile separately or through reviewed profile-aware operation; never alter existing rank_filter defaults/records silently. Required numerical profile precedes editor acceptance.",
+  "desktop": "Reuse target panel and Gaussian owner/active/membership/generation/READY/cancel/creator-thread behavior. GaussianJobs is concrete Gaussian command/operation code; extract only repeated internal plane-operation lane mechanics or use a small rank adapter over the same native path. Preserve Gaussian facade/contracts; no new scheduler/framework/Python loop.",
+  "publication": "Narrow Window admission/apply/replay/poll/cancel/busy and specialized shared form. Legacy start is unsuitable for scientific targets. Allocate workflow/status/output reservation before native publish; append afterward without allocation/callbacks via OutputPublication.",
+  "settings": "Explicit per-method panel session defaults/remember/reset/cancel/reopen behavior; do not infer preference-file durability from remembered radius. Consume existing worker/processing-memory settings."
+ },
+ "limits_candidate": {
+  "max_xy_pixels": 16777216,
+  "max_working_bytes": 134217728,
+  "effective_desktop_cap": "No greater than nonzero configured processing cap and adopted native bound; freeze comparison against actual scheduler reservation once.",
+  "estimate": "Share checked Application staged/workspace and native scratch estimation. Add actual ImageJ compact line-radii/cache/mean/median scratch after adoption; bool-disk estimates do not cover new profile. Include ROI/capture/record/READY peaks; one estimator.",
+  "admission": "Preflight profile-specific radius/type/policy/target/ROI, finite options and checked products before reads/callbacks/footprint allocation. Source-valid radii do not bypass memory caps. Old native diagnostics stay unchanged; new typed admission refuses early.",
+  "control": "Existing footprint/pixel/sampling checkpoints and copied ExecutionControl. Pre-cancel precedes user callbacks/reads; exceptions/mid-cancel discard detached work/reservations. Freeze mutable inputs before callbacks; release GIL for native work, reacquire for callbacks only; hold no owner locks during processing.",
+  "cost": "Current work grows with target samples*neighborhood size plus median selection. Memory admission is not latency qualification; use existing async path and bound actual cancellation/UI workload."
+ },
+ "reference_candidate": {
+  "state": "unexecuted_requires_one_root_freeze",
+  "cases": [
+   {
+    "id": "K01",
+    "input": "Original makeLineRadii at0,.5,1,1.5,1.75,2,2.5,2.85,3,10.",
+    "observe": "Record actual offsets/counts/bounds. Fresh per-method defaults are separate source versus actual-dialog observations."
+   },
+   {
+    "id": "K02",
+    "input": "Minimum U8/U16/F32 9x7: v=11+7*y+3*x; center(4,3)=200/60000/-17.5 by type; corner(0,0)=0; radius1.",
+    "observe": "Full typed input/output; center and edges discriminate footprints."
+   },
+   {
+    "id": "K03",
+    "input": "Same exact fixtures asK02; maximum radius1.",
+    "observe": "Full typed results and extrema."
+   },
+   {
+    "id": "K04",
+    "input": "Same exact fixtures asK02; median radius1.",
+    "observe": "Full typed results and tied order statistics."
+   },
+   {
+    "id": "K05",
+    "input": "Same exact fixtures asK02; mean radius1.",
+    "observe": "Full integer values/F32 bits; no box-blur substitute."
+   },
+   {
+    "id": "K06",
+    "input": "U16 9x7 v=1000+31*y+7*x, center60000; median radii0,.5,1.5,1.75,2,2.5,2.85,3.",
+    "observe": "Fractional/special radius transitions and radius0 semantics, not assumed identity."
+   },
+   {
+    "id": "K07",
+    "input": "U16 25x25:60001 if x<12 or(x==12 and y<12), else60000; mean radius10.",
+    "observe": "High-valued rounding discriminator at center(12,12), actual kernel count and full output. Predictions stay unexecuted."
+   },
+   {
+    "id": "K08",
+    "input": "F32 25x25 cyclic raw bits[0x60ad78ec,0xe0ad78ec,0x3f800000,0xbf800000] by linear index; mean radius3.",
+    "observe": "Cancellation-sensitive sums, incremental/full-neighborhood arithmetic and F32 output bits."
+   },
+   {
+    "id": "K09",
+    "input": "U8/U16/F32 shapes1x1,1x7,7x1 with values1..7; all four methods at0,1,2.",
+    "observe": "Nearest-edge replication. Other borders/square are owned native cases, not ImageJ controls."
+   },
+   {
+    "id": "K10",
+    "input": "U16 9x7 v=1000+31*y+7*x; rectangle[1,1]-[8,6], then outer minus hole[3,2]-[6,5]; all four radius1.",
+    "observe": "Actual PlugInFilterRunner mask restoration and halo reads. Direct rank alone is insufficient."
+   },
+   {
+    "id": "K11",
+    "input": "Same source; absent selection, point(2,2), line(1,1)-(7,5); all four radius1.",
+    "observe": "Runner nonarea treatment and exact selection preservation."
+   },
+   {
+    "id": "K12",
+    "input": "U8 RGB 9x7:R=11+7*y+3*x,G=200-5*y-2*x,B=13*x+9*y; four methods radius1.",
+    "observe": "Independent channels/packed source; no S4-alpha or F64 parity claim."
+   },
+   {
+    "id": "K13",
+    "input": "F32 9x7 cyclic[0x7fc12345,0xffc23456,0x80000000,0,0x3f800000,0xbf800000,0x40000000]; all-qNaN and separate reference-only +/-Infinity fixtures; four methods radius1.",
+    "observe": "Observe NaN median/min/max/mean differences and signed zero; no source canonicalization."
+   },
+   {
+    "id": "K14",
+    "input": "U16 TCZYX[2,3,4,7,9],v=1000+100*t+30*c+5*z+2*y+x,T1C2Z3; current and actual all-stack dispatches.",
+    "observe": "Capture flattened Java plane identity. Native arbitrary ranges/positioned targets are separate owned extensions."
+   },
+   {
+    "id": "K15",
+    "input": "Fresh per-method state: accept radius2, reopen, cancel radius3, reopen.",
+    "observe": "Real default/remember/cancel dialog behavior only after bounded feasibility; API setup stays labeled."
+   },
+   {
+    "id": "K16",
+    "input": "U16 9x7 fixture/area asK10; original runner preview enable/change/disable/cancel and fresh accepted execution.",
+    "observe": "Actual preview lineage/bytes. Preserve failed transport feasibility instead of emulating source algorithm."
+   }
+  ],
+  "transport": "Original pinned RankFilters/processors. Numerical calls labeled API; masked command rows use actual PlugInFilterRunner restoration. Dialog/Preview claims require real listeners/runner after one bounded feasibility probe. Report observations, not expected native pixels; no OS-visible usability claim.",
+  "bounds": {
+   "cases": 16,
+   "max_pixels_per_fixture": 4096,
+   "max_scalar_samples_per_case": 131072,
+   "case_seconds": 5,
+   "prepare_parent_seconds": 120,
+   "capture_parent_seconds": 120,
+   "java_heap_mib": 256,
+   "combined_payload_bytes": 8388608,
+   "fresh_stage_bytes": 33554432,
+   "max_live_hosts": 2
+  },
+  "freeze": "Producer/independent reader freeze exact bits/ROI/radii/events/stage membership before execution. Preserve failed attempts. Declare splits before runs; never drop a method/type/ROI row or increase bounds after failure."
+ },
+ "independent_native_python_sdk": {
+  "owned_matrix": "Retain288 independent native compatibility rows(4methods*3types*2footprints*4borders*radii0/1/2). Add ImageJ literal rows from matching reference cases including fractional/radius0/default/mean boundaries. Freeze exact collection; no product output oracle.",
+  "scientific": "TCZYXS[2,3,4,7,9,1], captured nonzeroTCZ,current/all/per-axis ranges, area holes/positioned/no match. Check selected/untouched bits/addresses/type, calibration/metadata/display and history. Counting/throwing virtual sources prove selected nonempty planes only.",
+  "controls_records": "Strict fields/bools/overflow/foreign/stale/malformed-original-before-rebind; source/request/limits/callback/GIL lifetime; pre/mid cancel and READY release. Failure publishes nothing; accepted changed operation produces one history step and exact optional record append.",
+  "sdk": "Installed core-only consumer uses public command/target/Application/job APIs without desktop/ImGui/Python linkage. Installed thin Python and Editor dispatch the same C++ path. Preserve ndarray defaults/aliases."
+ },
+ "paired_ui_candidate": {
+  "contexts": [
+   "imgui_cpp",
+   "imgui_python"
+  ],
+  "cases": [
+   {
+    "id": "U01",
+    "exit": "Minimum currentT1C2Z3, navigate before Apply; captured target and exact untouched planes."
+   },
+   {
+    "id": "U02",
+    "exit": "Maximum allZ at capturedT/C; contained one-plane preview and Apply agreement."
+   },
+   {
+    "id": "U03",
+    "exit": "Median per-axisC/Z/T ranges, nonlanding Last/step and contained preview choice."
+   },
+   {
+    "id": "U04",
+    "exit": "Mean ImageJ circular/default/edge replication; explicit native disk/square/border/Cval compatibility; literal rounding/corners."
+   },
+   {
+    "id": "U05",
+    "exit": "Captured active rectangle/holes; neighborhood reads may cross ROI, writes may not."
+   },
+   {
+    "id": "U06",
+    "exit": "Positioned ROI union/wildcards, no match and explicit empty; no whole-plane substitution."
+   },
+   {
+    "id": "U07",
+    "exit": "Preview generations/parameter-target changes, READY install and selected-plane source."
+   },
+   {
+    "id": "U08",
+    "exit": "Cancel/close/inactive/foreign/stale/changed selection; no redirected publication/history/record."
+   },
+   {
+    "id": "U09",
+    "exit": "Caps/huge radius/bad text/bool/enum/Cval/pre-cancel; no pre-admission reads/callbacks."
+   },
+   {
+    "id": "U10",
+    "exit": "Recording on/off, changed Apply/undo/redo, radius0/empty/no-change record policy."
+   },
+   {
+    "id": "U11",
+    "exit": "Strict replay at fresh navigation, full original validation before rebind, foreign/reopened IDs."
+   },
+   {
+    "id": "U12",
+    "exit": "Eager scientific nativeV3 Save/Open, annotation/calibration/display preservation and XYZ redraw."
+   }
+  ],
+  "proposed_context_count": 24,
+  "bounds": "Existing180frames/15seconds/16MiB case report,32MiB archive,16documents,60second parent. Declare splits before runs. Path-only indexes; actual widget IDs/rect/focus/input ledgers; independent literal reader.",
+  "efficiency": "Numerical matrix once through native/API/SDK; twelve whole-workflow scenarios in each launcher. One coherent installation for all four methods, not one per option."
+ },
+ "delivery_order": [
+  "Freeze required ImageJ profile/default/precision and finite/type policies; adopt profile-discriminated command after bounded reference inputs pass. Histogram/IO/promotion are not numerical prerequisites.",
+  "Implement required ImageJ footprint/mean work and disjoint command/lane/form; independent assertions consume adopted literals. Preserve native compatibility/variance/stddev.",
+  "One source/build/install freeze for the entire four-method exit; focused native/API/SDK/paired widgets then one affected regression union.",
+  "Bind exact profile/options/targets/record/settings/source/product and distribution once. First-editor exit includes required ImageJ profile; other types/nonfinite/3D/promoted variants remain open."
+ ],
+ "actual_blockers": [
+  "Required ImageJ fractional/circular/default profile is absent. Existing bool-disk cannot express it; freeze radius0/special-interval literals and implement narrowly without changing native mode.",
+  "Required mean precision/rounding rows are unexecuted. Native double/canonical rounding is not a substitute. Original defaults/preview transport needs bounded feasibility.",
+  "Freeze canonical finite scalar admission,D04 nonarea policy, exact command/record fields, no-op record behavior and virtual/session boundary.",
+  "Identify minimal Gaussian lane extraction and one checked capture/ROI/record resource estimate; do not wait for unrelated whole services."
+ ],
+ "remaining_required": [
+  "Variance/stddev promoted output/storage/display/session exit",
+  "RGB/S4-alpha,F64-input and quiet/nonfinite scientific editors",
+  "True XYZ neighborhoods/physical radii",
+  "Other filter forms, full measurement/settings and eligible pinned Fiji work"
+ ],
+ "preservation": {
+  "only_new_report_written": true,
+  "code_shared_docs_manifests_changed": false,
+  "runtime_capture_download_build_test_install_cleanup": false,
+  "new_incorporated_materials": [],
+  "first_editor_must_include_ImageJ_profile": true
+ },
+ "acceptance": {
+  "reference_runtime": false,
+  "public_API_adopted": false,
+  "product_implemented": false,
+  "product_verified": false,
+  "commercial_eligibility": false,
+  "family_complete": false,
+  "release": false,
+  "full_goal": false
+ }
+}

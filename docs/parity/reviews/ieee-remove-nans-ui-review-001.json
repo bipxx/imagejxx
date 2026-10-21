@@ -1,0 +1,43 @@
+{
+  "state": "passed",
+  "scope": "Full IEEE Remove NaNs actual shared ImGui dialog input, source and installed C++/Python hosts",
+  "audit": "build/p07y-remove-nans-ui001/final-audit001.json",
+  "audit_sha256": "ace83dda39245f740fdf81a123b3820c586f752ef96283a4fe82fd2206596a06",
+  "cases": {
+    "R52": "current plane / stack No",
+    "R53": "all Z / stack Yes",
+    "R54": "scientific C/T selection",
+    "R55": "scientific new document",
+    "R56": "stack Cancel",
+    "R57": "canonical all-NaN no-op",
+    "R58": "polygon protection",
+    "R59": "signaling all-NaN canonicalization and history"
+  },
+  "contexts": [
+    "source C++",
+    "source Python",
+    "installed C++",
+    "installed Python"
+  ],
+  "windows_suites": 71,
+  "python_cases_per_context": 8979,
+  "previous_case_membership_retained": 8971,
+  "new_cases": 8,
+  "cleanup": {
+    "targets": 16,
+    "net_bytes_freed": 1051539894
+  },
+  "test_wiring_fix": "desktop_nan_document_display uses IMAGEJXX_SESSION_TEST_ARTIFACT_DIR; failed initial gate retained, corrected full gate passes",
+  "unchanged_core_reuse": "249 input pins checked against p07x; Linux/core SDK evidence reused, no new Linux desktop claim",
+  "limits": [
+    "Actual ImGui event and CPU cache/upload-input observations, not native OS input or GPU screenshot equivalence",
+    "Scientific file API remains UInt16-only until the next packet",
+    "Other IEEE rank operations retain their existing admission guards"
+  ],
+  "dependencies_added": [],
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  }
+}

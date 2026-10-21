@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "state": "scoped_gates_passed",
+  "scope": "Finite scalar UInt16/Float32 variance with recognized V1/V2 channel display",
+  "reference_runner_cases": 48,
+  "python_checks_per_common_context": 5046,
+  "strict_genuine_installed_projection_checks": 120,
+  "test_inventory_reallocated_without_loss": true,
+  "windows_regression_suites": 32,
+  "windows_channel_suites": 7,
+  "linux_native_suites": 19,
+  "native_display_checks_per_platform": 7949,
+  "actual_input_cases": [
+    "R23",
+    "R24",
+    "R25",
+    "R26"
+  ],
+  "hosts": [
+    "source C++ ImGui",
+    "installed C++ ImGui",
+    "source Python ImGui",
+    "installed Python ImGui"
+  ],
+  "installed_public_sdk": "passed",
+  "window_cpp_unchanged": true,
+  "runtime_dependencies_added": false,
+  "public_dto_layout_changes": false,
+  "record_schema_changed": false,
+  "policy": "Final whole-active-plane stretch updates only the active canonical channel range and conditionally resets its threshold. Other channel state and legacy flat bounds remain exact. Collapsed cutoffs retain requested fractional/equal/literal-zero channel bounds.",
+  "owned_extensions": [
+    "Persist the visible processor range in canonical state instead of stale ImageJ LUT bounds",
+    "Preserve that result across channel switches and sessions",
+    "Other-plane threshold retained",
+    "Empty write mask read-free",
+    "Off-current targets use active output plane",
+    "Preview shows prepared final result"
+  ],
+  "diagnostics": [
+    "reference001: explicit slice/stack macro options required; pilot retained",
+    "reference002/windows001/linux001: grayscale setup retained green processor LUT; public setMode correction changes only eight RGB observations, not pixels/ranges/thresholds",
+    "rank-cpp001: scientific target has no legacy stack dialog; physical driver corrected",
+    "linux002: expected temporary directory already absent; bounded creation/cleanup corrected",
+    "sdk001: ambiguous initializer-list metadata_equal overload in consumer; explicit MetadataObject arguments corrected",
+    "source001/installed001: strict projection suite requires genuine standard installed origins; all 120 cases moved to isolated virtual environment without changing assertions or losing membership",
+    "projection001: toolsite before site-packages selected old package; toolsite appended after product site, exact origins verified"
+  ],
+  "remaining": [
+    "Advanced rank/filter commands",
+    "Indexed formats",
+    "Wider editor/release qualification"
+  ],
+  "release_counts": {
+    "all99_in_progress": 42,
+    "all99_open": 57,
+    "all99_complete": 0,
+    "source901": "unchanged"
+  }
+}

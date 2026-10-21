@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_owned_increment",
+  "review_type": "Root authorship/integration attestation, not independent legal review",
+  "license": "Existing project MIT for original panel/worker/test code and owned ROI/ZIP observations",
+  "specification_sources": [
+    "Existing native ROI import/mapping/envelope API and shared Dear ImGui/native file browser/input patterns"
+  ],
+  "new_dependencies": [],
+  "restricted_features_added": false,
+  "imported_third_party_product_code": [],
+  "sources": [
+    {
+      "logical_path": "CMakeLists.txt",
+      "before": {
+        "path": "build/p06q-roi-panel001/before-integration001/CMakeLists.txt",
+        "bytes": 57010,
+        "sha256": "57b832b2540170ad53c9db2bc08b37da2dafbb0b0bd5454a374f00fa44c60979"
+      },
+      "after": {
+        "path": "build/p06q-roi-panel001/held001/after/CMakeLists.txt",
+        "bytes": 57084,
+        "sha256": "b8db0f316a1da2e9e0d9f7e55f8e6954234910105fb9082f03e072e8f42e93fc"
+      },
+      "current": {
+        "path": "CMakeLists.txt",
+        "bytes": 57084,
+        "sha256": "b8db0f316a1da2e9e0d9f7e55f8e6954234910105fb9082f03e072e8f42e93fc"
+      }
+    },
+    {
+      "logical_path": "src/desktop/window.cpp",
+      "before": {
+        "path": "build/p06q-roi-panel001/before-integration001/src/desktop/window.cpp",
+        "bytes": 552117,
+        "sha256": "06bbfb8fbf0ce719e29fa069df3f8802ee5d0a6be7e5d13cee9a1869f3b8f384"
+      },
+      "after": {
+        "path": "build/p06q-roi-panel001/held001/after/src/desktop/window.cpp",
+        "bytes": 553803,
+        "sha256": "753f4000e6dbc1fd77fcfddb55709511118301aa291aa65b3fe9cf7ba65dbadd"
+      },
+      "current": {
+        "path": "src/desktop/window.cpp",
+        "bytes": 553803,
+        "sha256": "753f4000e6dbc1fd77fcfddb55709511118301aa291aa65b3fe9cf7ba65dbadd"
+      }
+    },
+    {
+      "logical_path": "src/desktop/python.cpp",
+      "before": {
+        "path": "build/p06q-roi-panel001/before-integration001/src/desktop/python.cpp",
+        "bytes": 39150,
+        "sha256": "1baf3207e1bd13edb2019b8f493b89ba17693e711872c82073eae292d6efadb3"
+      },
+      "after": {
+        "path": "build/p06q-roi-panel001/held001/after/src/desktop/python.cpp",
+        "bytes": 39384,
+        "sha256": "5653ba188be13dad8e9e63f5b7edd3abf78b8e115a68eb7244e94c6917e67943"
+      },
+      "current": {
+        "path": "src/desktop/python.cpp",
+        "bytes": 39384,
+        "sha256": "5653ba188be13dad8e9e63f5b7edd3abf78b8e115a68eb7244e94c6917e67943"
+      }
+    },
+    {
+      "logical_path": "src/desktop/main.cpp",
+      "before": {
+        "path": "build/p06q-roi-panel001/before-integration001/src/desktop/main.cpp",
+        "bytes": 33091,
+        "sha256": "e6de4856c319f155f3cbf441d1e791c5363fb3672ec47687615d3ddc7fc5b62b"
+      },
+      "after": {
+        "path": "build/p06q-roi-panel001/held001/after/src/desktop/main.cpp",
+        "bytes": 33569,
+        "sha256": "a8f252a3dfe32807fbbf43b9aa47cbacaefe623acb3d4dfcbe78f70c6ad38a5e"
+      },
+      "current": {
+        "path": "src/desktop/main.cpp",
+        "bytes": 33569,
+        "sha256": "a8f252a3dfe32807fbbf43b9aa47cbacaefe623acb3d4dfcbe78f70c6ad38a5e"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_panel.hpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-panel001/held001/after/src/desktop/roi_import_panel.hpp",
+        "bytes": 638,
+        "sha256": "8b9ff8eeb51a3ad5c2342f6c8abd5a3bc820145d7d7ec4a2995284a4f54ef47f"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_panel.hpp",
+        "bytes": 638,
+        "sha256": "8b9ff8eeb51a3ad5c2342f6c8abd5a3bc820145d7d7ec4a2995284a4f54ef47f"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_panel.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-panel001/held001/after/src/desktop/roi_import_panel.cpp",
+        "bytes": 18130,
+        "sha256": "d9485c75e4ebe1fb3ceb64684487e060ad66e610062b270b84f717f049f0a0d8"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_panel.cpp",
+        "bytes": 18130,
+        "sha256": "d9485c75e4ebe1fb3ceb64684487e060ad66e610062b270b84f717f049f0a0d8"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_ui_probe.hpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-panel001/held001/after/src/desktop/roi_import_ui_probe.hpp",
+        "bytes": 230,
+        "sha256": "bdc8b66a6bc5e26e07a4c55a4893c9f748b7e9d1afdf4cff7e7270f591a610b8"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_ui_probe.hpp",
+        "bytes": 230,
+        "sha256": "bdc8b66a6bc5e26e07a4c55a4893c9f748b7e9d1afdf4cff7e7270f591a610b8"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_ui_probe.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-panel001/held001/after/src/desktop/roi_import_ui_probe.cpp",
+        "bytes": 10221,
+        "sha256": "5a8e6382edef834146affb1e0b9b403b29006661620a5463da12fa2ad3dbe7d6"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_ui_probe.cpp",
+        "bytes": 10221,
+        "sha256": "5a8e6382edef834146affb1e0b9b403b29006661620a5463da12fa2ad3dbe7d6"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_imagej_roi_import_ui.py",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-panel001/held001/after/tests/python/test_imagej_roi_import_ui.py",
+        "bytes": 6717,
+        "sha256": "5dd7da58b12e5f07f6d377b2363f298caa9a41d0554c894c34fd81d7ab6b1459"
+      },
+      "current": {
+        "path": "tests/python/test_imagej_roi_import_ui.py",
+        "bytes": 6717,
+        "sha256": "5dd7da58b12e5f07f6d377b2363f298caa9a41d0554c894c34fd81d7ab6b1459"
+      }
+    }
+  ]
+}

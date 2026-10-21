@@ -1,0 +1,557 @@
+{
+  "schema": "imagejxx.positioned-xy-entry",
+  "schema_version": 1,
+  "id": "G015-G022-positioned-xy-entry-001",
+  "date": "2026-10-16",
+  "state": "source_reviewed_candidate_requires_root_adoption",
+  "scope": "One existing or API/native-V3-loaded saved area ROI, explicitly targeted as Edit Saved Area, edited through scientific XY handles and numeric geometry. This is a candidate handoff, not a packet adoption, implementation, runtime result, eligibility decision or family closure.",
+  "families": [
+    {
+      "id": "G015",
+      "name": "Editing an existing ROI"
+    },
+    {
+      "id": "G022",
+      "name": "Slice positions"
+    }
+  ],
+  "source_identity_policy": "Pins identify the inspected product-source preimage, not a future build freeze. Revalidate changed consumed seams at adoption; unrelated new Auto wiring does not itself require recapturing unchanged selection math.",
+  "consumed_source_pins": [
+    {
+      "path": "include/imagejxx/selection_edit.hpp",
+      "bytes": 2695,
+      "sha256": "3e5382e3c0de1a33c8821f022ec2e93b269b48064f685966647196f7afa1b1fd",
+      "anchors": [
+        {
+          "anchor": "enum class SelectionHandleKind",
+          "line": 5
+        },
+        {
+          "anchor": "class SelectionEditor",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "include/imagejxx/document.hpp",
+      "bytes": 13563,
+      "sha256": "8b8f853eebd0a6a7bad032ba6ccda5e69a4a89c2f37bdcc176d967ca92534fde",
+      "anchors": [
+        {
+          "anchor": "struct Roi {",
+          "line": 81
+        },
+        {
+          "anchor": "class DocumentTransaction",
+          "line": 144
+        },
+        {
+          "anchor": "class Document {",
+          "line": 248
+        }
+      ]
+    },
+    {
+      "path": "src/native/selection_edit.cpp",
+      "bytes": 21317,
+      "sha256": "583f479108cbf5258c9db1356a4c94e2589a7ffa5b45f7b22d4dc562130d4267",
+      "anchors": [
+        {
+          "anchor": "SelectionEditor::SelectionEditor",
+          "line": 23
+        },
+        {
+          "anchor": "SelectionEditor::handles()",
+          "line": 60
+        },
+        {
+          "anchor": "SelectionEditor::moved(",
+          "line": 198
+        },
+        {
+          "anchor": "SelectionEditor::resized(",
+          "line": 242
+        },
+        {
+          "anchor": "SelectionEditor::rotated(",
+          "line": 378
+        },
+        {
+          "anchor": "SelectionEditor::box_geometry(",
+          "line": 456
+        }
+      ]
+    },
+    {
+      "path": "src/native/document.cpp",
+      "bytes": 44605,
+      "sha256": "1bc5b98060c38a9e45ae4659fd5001112b1430de6184a89f42a6fe3ff73d7e14",
+      "anchors": [
+        {
+          "anchor": "void Roi::validate",
+          "line": 397
+        },
+        {
+          "anchor": "Change document_changes",
+          "line": 554
+        },
+        {
+          "anchor": "void DocumentTransaction::select",
+          "line": 670
+        },
+        {
+          "anchor": "void DocumentTransaction::set_rois",
+          "line": 679
+        },
+        {
+          "anchor": "void Document::commit_impl",
+          "line": 869
+        },
+        {
+          "anchor": "void Document::undo",
+          "line": 985
+        }
+      ]
+    },
+    {
+      "path": "src/native/targets.cpp",
+      "bytes": 18531,
+      "sha256": "7707fbb75b9376a2d856a578e9f290336c4dd2e835c428b6e8330c2ff69b37d5",
+      "anchors": [
+        {
+          "anchor": "std::optional<Image> ResolvedTarget::mask",
+          "line": 171
+        }
+      ]
+    },
+    {
+      "path": "src/native/session.cpp",
+      "bytes": 61078,
+      "sha256": "8a6ff6aa1549f646fda560bf7797a9f9689868f853413360afb0d8bd1b4d72ab",
+      "anchors": [
+        {
+          "anchor": "roi.t ? Json(*roi.t)",
+          "line": 323
+        },
+        {
+          "anchor": "optional_index(item.at(\"t\"))",
+          "line": 336
+        }
+      ]
+    },
+    {
+      "path": "include/imagejxx/session.hpp",
+      "bytes": 3685,
+      "sha256": "18aaf0e967cff64c20d9e8135ed47f9e8d7d59f13d14a0e615c5758974e69ee7",
+      "anchors": [
+        {
+          "anchor": "struct DecodedSession",
+          "line": 37
+        },
+        {
+          "anchor": "std::vector<unsigned char> encode_session",
+          "line": 56
+        }
+      ]
+    },
+    {
+      "path": "src/desktop/document.cpp",
+      "bytes": 65048,
+      "sha256": "953170620ec663ec762ed98aa748cb7e510ccd49ac338a90b76ad9ef66185288",
+      "anchors": [
+        {
+          "anchor": "void Document::requireLegacyEditable",
+          "line": 528
+        },
+        {
+          "anchor": "std::vector<std::size_t> Document::visibleRoiIndices",
+          "line": 533
+        }
+      ]
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 411148,
+      "sha256": "ba87207e24ac98419dadce115ade177406c35b51a7c93f994b596576cc6efa30",
+      "anchors": [
+        {
+          "anchor": "bool actionAllowed(",
+          "line": 1046
+        },
+        {
+          "anchor": "void synchronizeRoiManager()",
+          "line": 2035
+        },
+        {
+          "anchor": "void Window::setActiveIndex",
+          "line": 2516
+        },
+        {
+          "anchor": "if (name == \"edit_selection\")",
+          "line": 3626
+        },
+        {
+          "anchor": "if (name == \"select_roi\" ||",
+          "line": 4241
+        },
+        {
+          "anchor": "auto commitSelection =",
+          "line": 6340
+        },
+        {
+          "anchor": "if (pane.selectionGesture)",
+          "line": 6571
+        }
+      ]
+    },
+    {
+      "path": "src/desktop/selection_panel.cpp",
+      "bytes": 13260,
+      "sha256": "024a1c94be92de24a72836cafcb528e9ef201238be042bd2ace2256d1a30f0bf",
+      "anchors": [
+        {
+          "anchor": "bool SelectionPanel::matches",
+          "line": 69
+        },
+        {
+          "anchor": "void SelectionPanel::rebuild",
+          "line": 73
+        },
+        {
+          "anchor": "void SelectionPanel::apply",
+          "line": 195
+        }
+      ]
+    },
+    {
+      "path": "src/desktop/orthogonal.cpp",
+      "bytes": 38045,
+      "sha256": "dd8655b1190b2e7b90bbd8ab300e25d26b0aef026eedd06b0e4bece886f1849c",
+      "anchors": [
+        {
+          "anchor": "XY annotations retain image coordinates",
+          "line": 508
+        }
+      ]
+    },
+    {
+      "path": "src/desktop/rendering.hpp",
+      "bytes": 2704,
+      "sha256": "d02c4f3b96d7cfeabd0b737fda4f3d224e65016a3c6804a0bac239e0cf31ffa3",
+      "anchors": [
+        {
+          "anchor": "void renderDisplayOverlays",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "src/native/document_bindings.cpp",
+      "bytes": 26496,
+      "sha256": "bb536c94dc53d46651f638a28380efff5b6358b5cc7e8fca97776de4c3133859",
+      "anchors": [
+        {
+          "anchor": "\"rois\", [](const DocumentSnapshot",
+          "line": 403
+        },
+        {
+          "anchor": "\"with_display\"",
+          "line": 421
+        }
+      ]
+    }
+  ],
+  "source_facts": [
+    {
+      "id": "SF01",
+      "fact": "SelectionEditor already stages immutable move, eight local-axis box resizes, rotation, vertices, numeric box geometry and properties. It has no owner/controller publication policy. Mask bounds, movement and rotation scan owned selection bits, not image samples.",
+      "refs": [
+        "include/imagejxx/selection_edit.hpp",
+        "src/native/selection_edit.cpp"
+      ]
+    },
+    {
+      "id": "SF02",
+      "fact": "Roi has name, selection, optional zero-based t/c/z and attributes. There is no durable ROI UUID field. Roi equality includes geometry, position and attributes.",
+      "refs": [
+        "include/imagejxx/document.hpp:struct Roi",
+        "src/native/document.cpp:Roi::validate/operator=="
+      ]
+    },
+    {
+      "id": "SF03",
+      "fact": "Manager membership captures owner plus Metadata revision and row indices; Metadata changes invalidate selection/range anchors. Existing update_roi refocuses a row after its metadata edit. These scoped row/widget identities are not persistent IDs.",
+      "refs": [
+        "src/desktop/window.cpp:synchronizeRoiManager/focusRoiManagerRow/update_roi"
+      ]
+    },
+    {
+      "id": "SF04",
+      "fact": "Native positioned mask resolution and desktop saved-ROI visibility test each optional coordinate by presence, so explicit zero is constrained and nullopt is wildcard.",
+      "refs": [
+        "src/native/targets.cpp:ResolvedTarget::mask",
+        "src/desktop/document.cpp:visibleRoiIndices"
+      ]
+    },
+    {
+      "id": "SF05",
+      "fact": "Changing rois advances both Metadata and Selection in document_changes. Metadata edits create one undo entry, clear redo and advance dirty data identity. Selection-only commits do not create pixel/metadata history. set_rois does not replace the global current or previous selection.",
+      "refs": [
+        "src/native/document.cpp:document_changes/Document::commit_impl/DocumentTransaction::set_rois"
+      ]
+    },
+    {
+      "id": "SF06",
+      "fact": "DocumentTransaction::select captures previous_selection once. The current ordinary editor commits the global active selection; its properties panel matches Data revisions but not a positioned row/TCZ/activation. edit_selection currently disables orthogonal viewing. Scientific generic edit/ROI actions remain guarded.",
+      "refs": [
+        "src/native/document.cpp:DocumentTransaction::select",
+        "src/desktop/window.cpp:actionAllowed/edit_selection/commitSelection",
+        "src/desktop/selection_panel.cpp:matches"
+      ]
+    },
+    {
+      "id": "SF07",
+      "fact": "The linked renderer intentionally paints saved/current selection annotations only in XY; it does not project XY ROIs into XZ/YZ. Native V3 preserves optional ROI positions, packed masks and complete attributes; reopening creates fresh owners and does not rebind action records.",
+      "refs": [
+        "src/desktop/orthogonal.cpp:XY annotations retain image coordinates",
+        "src/native/session.cpp",
+        "include/imagejxx/session.hpp:DecodedSession"
+      ]
+    }
+  ],
+  "proposed_user_exit": {
+    "entry": "Focus one saved area row and invoke an explicit Edit Saved Area action. Show the owner, row name/index and position constraints as the edit target; do not lift the broad scientific edit guard or silently select a different row.",
+    "position_resolution": "For explicit t/c/z, navigate that axis to the exact zero-based value; wildcard axes retain their current value. Navigation is a separately observable Display effect completed before the edit capture. Editing never changes the saved row position fields.",
+    "geometry_source": "Construct SelectionEditor from that captured row selection, not from the global current selection. Reuse the same adapter for ordinary XY and the XY pane in linked viewing. XZ/YZ are read-only for this consumer.",
+    "completion": "Pointer release with a valid changed draft, or numeric Apply, accepts one saved-row geometry replacement. Escape, panel Cancel, invalidated capture or invalid draft discards the entire private draft; releasing afterward cannot resurrect a last valid preview."
+  },
+  "identity_and_reselection": {
+    "token_fields": [
+      "retained native owner identity and numeric document_id",
+      "captured Metadata revision",
+      "zero-based row_index",
+      "complete captured Roi equality claim"
+    ],
+    "token_lifetime": "Private, transient target identity; never serialize a pointer, widget ID or invented durable UUID. Reorder/delete/load/replace of the ROI collection, owner replacement/close, or any Metadata revision invalidates it.",
+    "success": "After the atomic write, refocus exactly the accepted index under the fresh owner/Metadata revision and verify complete accepted row equality. Clear prior multiselection/range anchors. This reselection is manager focus only; it does not call select() or make a second document edit.",
+    "undo_redo": "Invalidate old target/draft immediately; rebuild row focus against the restored collection. Preserve the same index only when present and the expected complete restored row is known; otherwise clear focus and require explicit reselection. Never reuse a stale index against a reordered row.",
+    "new_owner": "Reopen has a new native owner. Clear live edit targets. Stored commands retain old IDs and require explicit full rebind."
+  },
+  "geometry_contract_proposal": {
+    "admission": "Saved area kinds rectangle, ellipse, rotated_rectangle, rotated_ellipse, polygon, freehand and mask; validated against the source XY extent. Dataset/sample policy is borrowed and unchanged; geometry editing needs no image-plane acquisition.",
+    "boxes": "Move by interior hit; Resize indices NW,N,NE,E,SE,S,SW,W using SelectionEditor local frame; Rotate handle offset24 logical GUI pixels with calibrated XY screen metric. Numeric center/size/angle use box_geometry. Keep existing Shift aspect, Ctrl center and Shift15-degree rotation behavior; these are edit modifiers, not P05l creation Boolean modifiers.",
+    "vertices": "Polygon/freehand expose vertex handles, whole-shape move/rotate, numeric vertex coordinates, Alt segment insertion and Delete of a focused vertex above the native three-vertex minimum. Reuse metric-aware insertion and existing Shift axis-constrained movement; do not add spline fitting.",
+    "masks": "A packed holed mask exposes interior Move and the existing Rotate handle; numeric translation/rotation are allowed. No resize or vertex handles are invented for masks. Movement uses the existing nearest inverse sample floor(x-dx+.5); rotation uses source-cell-center inverse sampling and floor. Out-of-canvas membership clips; holes/attributes/width survive according to those literal transforms. Do not vectorize or fill holes.",
+    "empty_masks": "Empty native masks remain valid transport/ROI values. They have no interactive bounds/handles; unchanged numeric transforms are no-ops. Do not infer emptiness from signed polygon area or weaken existing self-intersecting area validation.",
+    "preview": "SelectionEditor stages only a private row draft; invalid calculations clear the current gesture preview rather than retaining a publishable last-valid candidate. Metadata/row/capture admission precedes bounded copies and any callbacks."
+  },
+  "position_and_guard_proposal": {
+    "positions": "Native optional absent/nullopt and V3 null mean wildcard independently per axis; integer0 is a real constraint. V3 requires its canonical t/c/z keys. Do not infer native T/C from legacy rank or treat missing/native wildcard as zero. Legacy ROI/ZIP migration is separate work.",
+    "fresh_capture": [
+      "owner identity/membership and active-owner activation token",
+      "Pixels/Metadata/Selection revisions",
+      "source shape and exact original row",
+      "current T/C/Z after row navigation",
+      "XY pointer-to-image transform/metric for physical gestures"
+    ],
+    "fresh_commit": "The final native controller lane must atomically require membership/active activation, Data revisions, row equality and captured TCZ, then commit the exact saved-row transaction. A separate Window check followed by unguarded Application.commit is insufficient for concurrent navigation/away-back. Reuse the existing transient activation identity pattern; add no Document revision or serialized epoch.",
+    "display_policy": "Numeric Apply preserves fresh cameras and unrelated Display properties. For physical drags, changing zoom/pan/view transform cancels the gesture rather than reinterpreting its old pointer transform. TCZ navigation, owner switch/away-back, close, busy processing and tool change cancel/invalidates drafts; a foreign same-numeric-ID identity refuses.",
+    "publication_admission": "No source read or callback is needed for metadata-only admission. Geometry/mask cancellation may use existing ExecutionControl; all allocating record/output/history staging is before mutation and no user callback separates final guard and commit."
+  },
+  "revision_history_dirty_proposal": {
+    "private_preview": "No native revision, workflow append, history/redo, dirty state, source pixel or global-selection mutation.",
+    "explicit_global_selection_action": "If separately selecting a saved row into the global current selection, retain native select() semantics: Selection+1 only when changed and previous_selection captured once, no metadata/pixel history or dirty identity. This is distinct from Edit Saved Area.",
+    "accepted_saved_geometry": "set_rois replaces only targeted row.selection; retain row name/t/c/z/attributes and every other row. Preserve native current selection and previous_selection, pixels, calibration, metadata unrelated to ROI collection, overlays, spectra and full display. A changed row causes Metadata+1 and Selection+1, one undo entry/redo clear/dirty identity advance, with Pixels and Display unchanged.",
+    "noop": "If the complete replacement selection equals the captured row selection, call no transaction/publication and append no workflow event. Pointer down/up or numeric Apply alone is not a dirty edit.",
+    "undo_redo": "Use existing native history to restore row geometry and complete data identity. No second select() edit is introduced by focus refresh. Old edit captures are stale after undo/redo.",
+    "failure": "Invalid geometry/limits/callback/cancel/stale/foreign/closed/admission failure changes no native data, display, workflow or history. Clear invalid private drafts/target tokens; preserve manager focus only if its fresh row token still validates. Stage accepted focus/output changes before commit and finish without allocation afterward."
+  },
+  "linked_redraw_contract": {
+    "required": "After committed edit and undo/redo, observe a new frame from the current committed data generation in linked XY/XZ/YZ. XY saved-row outline reflects the committed/restored geometry and position matching. XZ/YZ sampled pixels, calibration, crosshair and channel-display mapping remain exact because this action edits no pixels.",
+    "cache": "Reuse existing revision/position-based renderer invalidation. Current-generation acknowledgement and correct frames are required; do not force a texture cache miss if immutable pixel reuse is valid.",
+    "separate_required_work": "Read-only positioned-ROI projections into XZ/YZ and editing from XZ/YZ remain required follow-ons. Do not draw unprojected XY coordinates on those panes, add a projection prerequisite to the first XY exit, or claim this exit covers either feature."
+  },
+  "minimal_native_and_frontend_seams": [
+    {
+      "owner": "native core",
+      "change": "A small immutable saved-row replacement command: typed request {row_index, replacement Selection}, source/row/position descriptor, bounded estimate, strict typed Metadata record, resolve/validate/from_record/full_rebind/prepare factories. Existing SelectionEditor composes drafts; do not serialize a command on each pointer frame or add public JSON dependencies."
+    },
+    {
+      "owner": "native Application",
+      "change": "One atomic active-owner/activation/TCZ guarded publication adapter for the prepared set_rois edit. Reuse DocumentTransaction and existing activation token, with callbacks outside locks. Standalone core/SDK preparation remains usable without a desktop."
+    },
+    {
+      "owner": "shared desktop",
+      "change": "A saved-row target overload/adapter for existing SelectionPanel and ordinary/linked XY gesture mapping, with row-derived geometry instead of source.data.selection. Add only narrow scientific capability admission for this explicit target; preserve generic guards."
+    },
+    {
+      "owner": "ROI manager",
+      "change": "Reuse owner/Metadata/index row tokens; explicit focus/reselection invalidation and position-aware Edit Saved Area admission. No durable-ID/schema project or whole-manager rewrite."
+    },
+    {
+      "owner": "Python/C++ SDK",
+      "change": "Thin request/immutable command/record/prepare/publication wrappers. Capture mutable values before GIL release; reject bool/lossy/overflow integer row indices and limits; return detached mutable getters. No geometry arithmetic in Python."
+    }
+  ],
+  "record_replay_rebind_proposal": {
+    "action": "replace_saved_roi_geometry; proposed separate version1 command schema, with exact field allowlists to freeze at adoption. Preserve all existing command/session versions.",
+    "record_contents": [
+      "complete source identity/shape/type/policy and Pixels/Metadata provenance",
+      "original row index and complete original Roi including optional positions/attributes",
+      "captured TCZ and global Selection provenance (provenance, not an unrelated edit target)",
+      "complete replacement Selection plus unchanged row metadata claims"
+    ],
+    "original_validation": "Bound/decode every field/geometry/mask/metadata subtree before destination lookup or replacement casting. This is a complete replacement action, not an authenticated pointer history; validate exact original/result row fields and allowed selection replacement rather than inventing a drag-equation proof.",
+    "strict_replay": "Bind original owner plus Pixels/Metadata and exact original row; publish the stored replacement without image reads or recomputing against the current global selection. Preserve current navigation/cameras/global selection. Because a saved-row write advances Metadata, replay of an already-applied historical command can correctly refuse as stale; do not silently rebind.",
+    "full_rebind": "Validate the whole old record first; require an explicit new row_index and complete replacement Selection against the destination snapshot. Recompute admission/record from the new owner/row/positions; borrow no old row index, saved position or result implicitly.",
+    "recording": "Stage exactly one normalized native event for a changed accepted edit when recording is on; recording off changes only append policy. Failure/cancel/noop append none. Add exact workflow dispatch for this schema in both launch modes; do not masquerade as a legacy unpositioned edit.",
+    "native_v3": "Roundtrip complete saved Roi and workflow through existing native V3, including zero/null positions, masks, attributes/styles and global selections. Reopen uses fresh owners, clean history and no live binding/replay/rebind; detached legacy JSON/V2 guards remain unchanged."
+  },
+  "bounded_entry_matrix_proposal": {
+    "membership_state": "Proposed fixtures and case allocation, not frozen collection or executed gates. Freeze exact IDs/inputs/independent oracles once before implementation.",
+    "fixtures": {
+      "scientific_shape_tczyxs": [
+        2,
+        3,
+        3,
+        10,
+        12,
+        1
+      ],
+      "samples": "1000*t+100*c+10*z+2*y+x for U16; canonical finite F32 quarter-scaled companion; U8 canonical modulo256 companion; core-only preservation includes valid Float64/S3/S4 and reviewed quiet-NaN source without reading samples",
+      "calibration": {
+        "spacing": [
+          0.5,
+          1.25,
+          2.5
+        ],
+        "origin": [
+          11,
+          -7,
+          19
+        ],
+        "unit": "um",
+        "frame_interval": 0.75,
+        "time_origin": 2.25
+      },
+      "positions": [
+        "all wildcard",
+        "explicit t=0/c=0/z=0",
+        "mixed t=1/c=null/z=2"
+      ],
+      "holed_mask": "12x10 packed MSB-first membership outer2<=x<10,2<=y<8 minus inner4<=x<8,4<=y<6; translate(1,-1) and rotate90 around(6,5) with independent literal masks"
+    },
+    "paired_input_cases": [
+      {
+        "id": "PX01",
+        "work": "Rectangle move/local resize and numeric center/size; ordinary XY saved-row acceptance."
+      },
+      {
+        "id": "PX02",
+        "work": "Ellipse and explicit zero TCZ reselection versus all-wildcard visibility; one-based labels only in UI."
+      },
+      {
+        "id": "PX03",
+        "work": "Rotated rectangle/ellipse local handles, calibrated rotation and numeric angle; preserved styles."
+      },
+      {
+        "id": "PX04",
+        "work": "Polygon/freehand vertex move/insertion/deletion/nudge and numeric points; minimum-vertex refusal."
+      },
+      {
+        "id": "PX05",
+        "work": "Holed mask translation/rotation, holes and clipping; no invented resize/vertex handles."
+      },
+      {
+        "id": "PX06",
+        "work": "Partial/invalid numeric and valid-preview then invalid/cancel/release-no-resurrection; exact no-op."
+      },
+      {
+        "id": "PX07",
+        "work": "Captured owner/TCZ/Data stale, busy, navigation, away-back, close and foreign identity; API preparations separately labeled."
+      },
+      {
+        "id": "PX08",
+        "work": "Accepted saved edit versus untouched global current/previous selection, redo/history/dirty and recording on/off."
+      },
+      {
+        "id": "PX09",
+        "work": "Linked XY acceptance plus undo/redo; current-generation XY/XZ/YZ readbacks, unchanged orthogonal pixels and calibrated crosshair."
+      },
+      {
+        "id": "PX10",
+        "work": "Exact native record dispatch, strict replay refusal/success at matching source, full explicit rebind and native-V3 save/open fresh-owner guard."
+      }
+    ],
+    "surface_obligations": "Independent native action/geometry assertions, required native Python API tests, fresh installed core-only SDK consumer, native host publication tests, and all PX01-PX10 through actual C++ and Python ImGui inputs. Proposed20 paired observations do not replace API/SDK gates or existing regressions.",
+    "budgets": {
+      "max_xy_pixels": 16777216,
+      "max_vertices": 65536,
+      "max_working_bytes": 268435456,
+      "max_record_bytes": 16777216,
+      "metadata_depth": 128,
+      "max_ui_frames_per_case": 180,
+      "max_ui_seconds_per_case": 15,
+      "max_ui_report_bytes": 16777216,
+      "max_archive_bytes": 33554432,
+      "max_bounded_wait_ms": 5000
+    },
+    "resource_boundary": "Checked arithmetic and metadata/vertex/packed-mask preflight precede copying/callbacks. Charge simultaneous row-vector/geometry/record/transaction/history copies and mask/handle scratch; no Dataset TCZ volume or source-plane reads. Mask kernels use existing cancellation/stage hooks. Getter/frontend copies, provider caches, renderer/GPU and total process RSS are separately measured, not covered by this native working cap."
+  },
+  "dependencies_and_remaining_work": {
+    "reuse_without_requalification_claim": [
+      "SelectionEditor geometry and P05e/P05l native area conventions at unchanged consumed identities",
+      "native positioned Roi/ResolvedTarget matching and native V3 representation",
+      "existing shared jobs/cancellation/history/ROI style and calibrated renderers"
+    ],
+    "not_prerequisites": [
+      "all scientific filters",
+      "whole-stack geometry/axis remapping",
+      "new native reader service",
+      "whole ROI manager or ROI/ZIP interchange",
+      "ROI projections or editing in XZ/YZ"
+    ],
+    "required_after_this_exit": [
+      "ordinary transient/global scientific XY selection creation and editing",
+      "saved-ROI creation and remaining manager operations/options",
+      "ImageJ ROI/ZIP and other required interchange",
+      "read-only positioned ROI projections",
+      "XZ/YZ selection/ROI editing",
+      "stack/derived-operation ROI and axis remapping"
+    ],
+    "concrete_missing_seams": [
+      "explicit saved-row target/private draft in SelectionPanel and canvas",
+      "narrow scientific saved-edit capability + linked XY input mapping without disabling orthogonal view",
+      "native atomic activation/TCZ guarded saved-row publication and exact typed record dispatch",
+      "post-commit/undo manager focus and linked-generation diagnostics"
+    ]
+  },
+  "unresolved_adoption_decisions": [
+    {
+      "id": "D01",
+      "decision": "Root must adopt the proposed explicit saved-row/private-draft publication policy (global current/previous selection preserved), visible target affordance and pointer-release/numeric-Apply acceptance together. It is not an existing legacy behavior claim."
+    },
+    {
+      "id": "D02",
+      "decision": "Freeze the minimal typed request/command field allowlist, strict replay provenance dependencies and atomic Application activation/TCZ guard seam before code changes; no new Document/session revision or durable ROI ID."
+    },
+    {
+      "id": "D03",
+      "decision": "Freeze the exact independent PX/API/SDK case membership, excerpt/pin compatibility reuse, resource estimator arithmetic and only genuinely missing reference discriminators. No new runtime or gesture parity is asserted by this entry."
+    }
+  ],
+  "one_next_root_action": "Adopt or amend D01-D03 once as a bounded entry freeze, assigning the existing native SelectionEditor/saved-row command, shared XY/SelectionPanel adapter and independent native/API/SDK/paired-input evidence. Then implement that vertical exit after the scheduled rank child; do not begin another whole-family audit.",
+  "acceptance": {
+    "candidate_source_review_only": true,
+    "adopted": false,
+    "implemented_by_this_entry": false,
+    "runtime_qualified": false,
+    "commercial_eligibility": false,
+    "materials_incorporated": false,
+    "formal_manifest_acceptance": false,
+    "family_complete": false,
+    "platform_accepted": false,
+    "release_accepted": false,
+    "full_goal_complete": false
+  }
+}

@@ -1,0 +1,1514 @@
+{
+  "schema": "imagejxx.coloc2-incorporation-route-proposal",
+  "schema_version": 1,
+  "id": "G098-coloc2-incorporation-route-proposal-001",
+  "state": "source_only_route_proposed_not_adopted",
+  "owner_family": "G098",
+  "milestone": "M11-G",
+  "scope": "Full commercially eligible Coloc2 native workflow equivalent under the pinned reference, including all three component menu descriptors. Route selection is separate from source eligibility, reference execution, implementation and delivery acceptance.",
+  "proposed_route": {
+    "id": "independently_authored_native_cpp_reference_only_java",
+    "recommendation": "Select independently authored native C++ processing/command/result services, shared ImGui UI and public Python bindings. Pinned upstream Java source/JAR identities are reference evidence only; do not copy, translate, link, bundle or execute them in the shipped product.",
+    "already_settled": false,
+    "existing_decision_basis": "The three consumed closure reports explicitly leave whole-Coloc2/whole-iText incorporation pending. PLAN and SOL_ULTRA request route selection before more dependency leaves; neither adopts a route.",
+    "upstream_incorporated_code_members": [],
+    "upstream_incorporated_resource_members": [],
+    "shipped_java_runtime_or_fiji_dependency_graph": [],
+    "required_upstream_incorporated_members": [],
+    "reason_no_required_incorporated_member": "The planned native equivalent does not require an upstream JAR, Java class, source translation, Groovy template, image fixture, glyph mapping, AFM/font asset or iText code. Equivalent algorithm/report behavior still must be implemented and qualified independently.",
+    "future_native_members": "Not created or approved by this proposal. The first implementation entry must enumerate exact new owned source, selected existing services/dependencies and every redistributed asset before incorporation review.",
+    "report_export_constraint": "Preserve the full applicable report/PDF workflow. Do not select iText implicitly or narrow to CSV/coefficient-only output to avoid a dependency decision.",
+    "commercial_status": "pending; no eligible or excluded component/requirement fields changed",
+    "derivation_limit": "Independent authorship is a proposed engineering route, not a clean-room or non-derivative legal finding. Source exposure, any transferred expression, algorithms/specification provenance and exact implementation diffs require the normal source/derivation review before shipment."
+  },
+  "consumed_records": [
+    {
+      "path": "docs/PLAN.md",
+      "bytes": 243317,
+      "sha256": "a9d558aeba95c017c2bcb03661f6a43fbbfe1790c8023e80a4c501334dd3aa4d"
+    },
+    {
+      "path": "docs/SOL_ULTRA.md",
+      "bytes": 47348,
+      "sha256": "8419201c233c60da78e832d4d4891cd9539bc72cc69651895c3248697ba4513b"
+    },
+    {
+      "path": "docs/parity/inventory.json",
+      "bytes": 9429651,
+      "sha256": "4779853bc820c116eb3ce32f635e44e8dd076709372f074cf14aa634aa4bbb23"
+    },
+    {
+      "path": "docs/parity/commands.json",
+      "bytes": 3895117,
+      "sha256": "2031220bc79a5f396378b2eac76e48cfbb7e4ac55546626b3719868f5adbacb7"
+    },
+    {
+      "path": "docs/parity/reviews/coloc2-commercial-closure-001.json",
+      "bytes": 163685,
+      "sha256": "054446ce316e4e52621ca814dff68c4ddbf68902b6c02f1cc51fb4f1773bece8"
+    },
+    {
+      "path": "docs/parity/reviews/coloc2-glyphlist-closure-001.json",
+      "bytes": 13493,
+      "sha256": "f783e62a9220995ddea49f52215367e84f284e580e8afc440b49de4db59b58fa"
+    },
+    {
+      "path": "docs/parity/reviews/coloc2-afm-closure-001.json",
+      "bytes": 17133,
+      "sha256": "102799b8fca6f5ad14616fe230afd2d97ed80e5f950079160b4e2f25631b29bf"
+    }
+  ],
+  "record_roles": {
+    "normative_retained_evidence": [
+      "docs/parity/reviews/coloc2-commercial-closure-001.json",
+      "docs/parity/reviews/coloc2-glyphlist-closure-001.json",
+      "docs/parity/reviews/coloc2-afm-closure-001.json"
+    ],
+    "current_scope_and_status_baselines": [
+      "docs/parity/inventory.json",
+      "docs/parity/commands.json"
+    ],
+    "scheduling_context_only": [
+      "docs/PLAN.md",
+      "docs/SOL_ULTRA.md"
+    ],
+    "baseline_drift_rule": "Subsequent PLAN/SOL_ULTRA or unrelated manifest edits do not grant acceptance or invalidate immutable upstream identities. Root must compare/adopt only intended selected-row/status changes against its then-current manifests; this proposal makes no patch."
+  },
+  "scope_baseline": {
+    "family": {
+      "evidence": {
+        "documentation": [],
+        "implementation": [],
+        "tests": []
+      },
+      "id": "G098",
+      "milestones": [
+        "M11-G"
+      ],
+      "name": "Coloc 2",
+      "remaining": [
+        "Channel correlation/colocalization metrics, masks, scatter plots and statistical controls"
+      ],
+      "required_work": "Channel correlation/colocalization metrics, masks, scatter plots and statistical controls",
+      "status": "open",
+      "verification": []
+    },
+    "descriptors": [
+      {
+        "assignment": null,
+        "commercial_review": "pending",
+        "component_id": "fiji:plugins/Colocalisation_Analysis-3.1.0.jar",
+        "descriptor": {
+          "invocation": "sc.fiji.coloc.Coloc_2",
+          "label": "Coloc 2",
+          "menu": "Analyze>Colocalization",
+          "raw": "Analyze>Colocalization, \"Coloc 2\", sc.fiji.coloc.Coloc_2"
+        },
+        "evidence": {
+          "archive_member": "Fiji/plugins/Colocalisation_Analysis-3.1.0.jar",
+          "entry_occurrence": 0,
+          "jar_member": "plugins.config"
+        },
+        "id": "R-7a864ddce4217b0c98d20c66",
+        "kind": "legacy_menu",
+        "option_inventory": null,
+        "runtime_reconciliation": "pending",
+        "source_key": "24",
+        "status": "candidate"
+      },
+      {
+        "assignment": null,
+        "commercial_review": "pending",
+        "component_id": "fiji:plugins/Colocalisation_Analysis-3.1.0.jar",
+        "descriptor": {
+          "invocation": "sc.fiji.coloc.Colocalisation_Test",
+          "label": "Colocalization Test",
+          "menu": "Analyze>Colocalization",
+          "raw": "Analyze>Colocalization, \"Colocalization Test\", sc.fiji.coloc.Colocalisation_Test"
+        },
+        "evidence": {
+          "archive_member": "Fiji/plugins/Colocalisation_Analysis-3.1.0.jar",
+          "entry_occurrence": 0,
+          "jar_member": "plugins.config"
+        },
+        "id": "R-c010986b86738ef79b0d5096",
+        "kind": "legacy_menu",
+        "option_inventory": null,
+        "runtime_reconciliation": "pending",
+        "source_key": "23",
+        "status": "candidate"
+      },
+      {
+        "assignment": null,
+        "commercial_review": "pending",
+        "component_id": "fiji:plugins/Colocalisation_Analysis-3.1.0.jar",
+        "descriptor": {
+          "invocation": "sc.fiji.coloc.Colocalisation_Threshold",
+          "label": "Colocalization Threshold",
+          "menu": "Analyze>Colocalization",
+          "raw": "Analyze>Colocalization, \"Colocalization Threshold\", sc.fiji.coloc.Colocalisation_Threshold"
+        },
+        "evidence": {
+          "archive_member": "Fiji/plugins/Colocalisation_Analysis-3.1.0.jar",
+          "entry_occurrence": 0,
+          "jar_member": "plugins.config"
+        },
+        "id": "R-f33958f69ee7ab7bac674a29",
+        "kind": "legacy_menu",
+        "option_inventory": null,
+        "runtime_reconciliation": "pending",
+        "source_key": "22",
+        "status": "candidate"
+      }
+    ],
+    "option_inventory_status": "All three option_inventory values are null, assignments null, runtime reconciliation pending and commercial_review pending at the consumed baseline.",
+    "descriptor_count_is_not_feature_count": true,
+    "full_scope_preserved": true
+  },
+  "retained_material_inventory": {
+    "interpretation": "Exact identity metadata reused from held evidence only. No archive/JAR/source/resource was reopened, copied into product, executed, re-reviewed or given new eligibility by this proposal.",
+    "reference_id": "imagej-1.54r-fiji-latest-20261007-1617-win64",
+    "root_source": {
+      "commit": "e4a92b537132b4e91fd47b428439973517309e93",
+      "tag_evidence": {
+        "key": "tag",
+        "url": "https://api.github.com/repos/fiji/Colocalisation_Analysis/git/ref/tags/Colocalisation_Analysis-3.1.0",
+        "bytes": 439,
+        "sha256": "44e5ce95d23b12c336c8290351fa2f7e7d593ee81e94022660452139be9ca4f7"
+      },
+      "archive": {
+        "url": "https://codeload.github.com/fiji/Colocalisation_Analysis/zip/e4a92b537132b4e91fd47b428439973517309e93",
+        "bytes": 1026392,
+        "sha256": "544c8c3066b854f37887754982cba4b3869b6dc86ad15cb0fdcefa18ba5c6a5e"
+      },
+      "license": "GPL-3.0-or-later, identified from exact release POM/plugin notice/source headers; this is not an NC license.",
+      "license_file": {
+        "path": "LICENSE.txt",
+        "bytes": 35149,
+        "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+      }
+    },
+    "source_members": {
+      "scope": "All88 exact archive members retained by source record; identities below are metadata, not redistributed upstream contents.",
+      "count": 88,
+      "main_java_count": 42,
+      "test_members_count": 36,
+      "other_members_count": 10,
+      "members": [
+        {
+          "path": ".github/build.sh",
+          "bytes": 113,
+          "sha256": "5cda0f53c355842f6290514e544d7271b0d0e8406277a9e25b7b4c1a67136de5"
+        },
+        {
+          "path": ".github/setup.sh",
+          "bytes": 143,
+          "sha256": "d2afbf35fa596bd305c037a2670655ac5cec88b9ff28ca785129bc878d7ecd92"
+        },
+        {
+          "path": ".github/workflows/build.yml",
+          "bytes": 822,
+          "sha256": "531e9ab27c194c555011525016b9d4158213bb89b954b7994a4d429f5ad170a0"
+        },
+        {
+          "path": ".gitignore",
+          "bytes": 88,
+          "sha256": "0410fba092fd948c806fa32a42bdad02a9c037c138299a37bd565cd3a98449f6"
+        },
+        {
+          "path": "LICENSE.txt",
+          "bytes": 35149,
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+        },
+        {
+          "path": "README.md",
+          "bytes": 872,
+          "sha256": "0197540ea339230f27819be3128e607fa16185a42899ec6539fd4abb208b0097"
+        },
+        {
+          "path": "pom.xml",
+          "bytes": 4833,
+          "sha256": "cb14676640c9904d32061a0d201e63e744c24bcca5efdd2ad193816d72cf304f"
+        },
+        {
+          "path": "release.properties",
+          "bytes": 1477,
+          "sha256": "119d3f60d22a933227d9f051c7039d7f6514de22169a742183b01fb166f98d57"
+        },
+        {
+          "path": "src/main/java/net/imglib2/PairIterator.java",
+          "bytes": 1426,
+          "sha256": "6e7b5f2ec80f81ae544f3b7471d1ec58a6b1f068824f6464ff2859b335b6350f"
+        },
+        {
+          "path": "src/main/java/net/imglib2/PredicateCursor.java",
+          "bytes": 3994,
+          "sha256": "401a40fc4c127b3fb6c109d37097f7ac4505dcc79ac07d339b33ee2a5144f52c"
+        },
+        {
+          "path": "src/main/java/net/imglib2/TwinCursor.java",
+          "bytes": 4136,
+          "sha256": "05d00da47dc1667766bb9152a41f50b3a1cc8e841ade9fc2bebc26c660c30337"
+        },
+        {
+          "path": "src/main/java/net/imglib2/algorithm/math/ImageStatistics.java",
+          "bytes": 8746,
+          "sha256": "29af9e7bfcf7b7ae39e3e60dd3689029f00f5078181e0ac60b0b6873430e19d5"
+        },
+        {
+          "path": "src/main/java/net/imglib2/predicate/MaskPredicate.java",
+          "bytes": 1047,
+          "sha256": "4538b910a9f7a228d54e44b6350ac6f1d2c0bdcc65c09b1987bf6d1327d6bf84"
+        },
+        {
+          "path": "src/main/java/net/imglib2/predicate/Predicate.java",
+          "bytes": 1082,
+          "sha256": "972c18ceec9f23156897ce8426a88a818ed7c09dfa758006e475a4ce27e50528"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/ColocImgLibGadgets.java",
+          "bytes": 5029,
+          "sha256": "deb350e1a7069d11279c7d15d3df8f5c2dd2ea26f80fba449795ff20c0e9c96e"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/Coloc_2.java",
+          "bytes": 30489,
+          "sha256": "7f6edeabaa23959bc663c4b84618f45f806d030160dfe5f322311652032a3276"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/Colocalisation_Test.java",
+          "bytes": 22756,
+          "sha256": "b0bfc60a30dee8092e93e3d025f58be218bdd55f27bf1a34fdb01d5f76ca4ad2"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/Colocalisation_Threshold.java",
+          "bytes": 29687,
+          "sha256": "92ba9c11821e59e7e5b3dfc9e499e132c885c09844514768c686f900d1a7927d"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/Accumulator.java",
+          "bytes": 2733,
+          "sha256": "171f19f701fa5340db5e94ec3f8edcbba63118c3694535bf1582da2dda49d69f"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/Algorithm.java",
+          "bytes": 2648,
+          "sha256": "23e535af1819f8ea964bfdf5ca68e3fd321182bac31eadb23132426932319ca0"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/AutoThresholdRegression.java",
+          "bytes": 12064,
+          "sha256": "389f9dd0daeb2a8aa7569aad13922ac0b8d658889855fed02ba1313e21b4ddce"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/BisectionStepper.java",
+          "bytes": 2766,
+          "sha256": "3f185ede38ef36e1187c68aa57d3cad75899ee4d8f2f39401255381f4221eb85"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/ChannelMapper.java",
+          "bytes": 1053,
+          "sha256": "f3d26c4f2a0e94d81274029cbb71b5971fbee11237fae20e6c1a37c0fe39e71f"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/CostesSignificanceTest.java",
+          "bytes": 15391,
+          "sha256": "d291a672382ed9b51944463a0644317611d26cdd7cf5f755706bfdc84aa5fe74"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/Histogram2D.java",
+          "bytes": 12392,
+          "sha256": "bc629b5e369eeb1a9647f409e202e784284ab8022c36f746625e401ea6a93d9c"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/InputCheck.java",
+          "bytes": 7835,
+          "sha256": "cd4a14231ed38d847214a4e6b06b8a2c739514de9460ce0cffa991f0715a264f"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/IntArraySorter.java",
+          "bytes": 3659,
+          "sha256": "e9e43d61245dffba14d9510a84c2359cd1426855a2cb217bd1b54c4d55f2fdce"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/IntComparator.java",
+          "bytes": 887,
+          "sha256": "53f7684ce0fc61a1a771f8f78e365195438586b4f1e38df73a88cea24096b0ab"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/KendallTauRankCorrelation.java",
+          "bytes": 10393,
+          "sha256": "8f6a9aea11bc164db8be5a4cfac3c48d28cdb6e1c2a8f104fac52df3dcf05bb3"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/LiHistogram2D.java",
+          "bytes": 5570,
+          "sha256": "5ea513a7ab6ff102bac05fd37e667ff64f49c53db435bca62f04c1bcd3b2e395"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/LiICQ.java",
+          "bytes": 3463,
+          "sha256": "dfeda765d14fefd8cab1d34c4fcf2c0748a9d3d9eaef1203b6b9fadabde94250"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/MandersColocalization.java",
+          "bytes": 12175,
+          "sha256": "339dec794e4f89da216f2c3debae3766abce9fa60488331154eacab8e1fc147d"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/MissingPreconditionException.java",
+          "bytes": 1329,
+          "sha256": "2618cd05c4f2270646ecf5e95a1398358b4e8a24dfd94b24bbed44592e26c95b"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/PearsonsCorrelation.java",
+          "bytes": 14570,
+          "sha256": "c6d420d0489b2ddb3b79aec1626d740eaea02162ccdda926950d50bfb981d5d9"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/SimpleStepper.java",
+          "bytes": 2426,
+          "sha256": "55dd1853d69170539a298e8c41b7d1fd5ca287b3a307eeb81998a580fa204d23"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/SpearmanRankCorrelation.java",
+          "bytes": 9374,
+          "sha256": "d6310b9c2fd90b2cce2f47bd286e68c60db2201b9644d6c78aca461748235d0a"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/Stepper.java",
+          "bytes": 1124,
+          "sha256": "e2a13bb6bebfcfd01ae2235dc9ed8c42da6f8c17e51af2b304b85536db691fd0"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/gadgets/Autoscaler.java",
+          "bytes": 1461,
+          "sha256": "6b7bb2b6fbfd67dc31f83a8fac94cbbcef3f4895f1216ee2a3057820d8b1e4c2"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/gadgets/DataContainer.java",
+          "bytes": 11881,
+          "sha256": "1e312ce4b4bc8129178045f47ab5e530273700e98804228f78fdeeb1628589d4"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/gadgets/MaskFactory.java",
+          "bytes": 7680,
+          "sha256": "114a4cca5c0888057e51d0178ea04fb15847f339a95e96c12a5515c5da55bf50"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/gadgets/Statistics.java",
+          "bytes": 3599,
+          "sha256": "321f9ec07e0cc519a50d19f1d16ab03458a2426d29ade85dc063186e1bbb267b"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/gadgets/ThresholdMode.java",
+          "bytes": 939,
+          "sha256": "7fbd4f8a699813ff9bb751320d8e3a733f62b80c7da6becfb700a678290a7ee1"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/results/AnalysisResults.java",
+          "bytes": 3610,
+          "sha256": "3bc7583f01e6f2bea49087497585abf98e71e9a6a4b3ddfd7053d314b83d6a74"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/results/EasyDisplay.java",
+          "bytes": 3948,
+          "sha256": "f4e41ff5e1d21b7dcc61ce9a9d3af8d649b9ae029e6ea6216fe497e83e0bc398"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/results/NamedContainer.java",
+          "bytes": 1166,
+          "sha256": "8e7d67b8266410a7ff355bdd2560a011dd867cf3a5b065c79b0b47156361cd39"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/results/PDFWriter.java",
+          "bytes": 11900,
+          "sha256": "774c0e779711c8bf8950b4bb709a115de55bffd911f74887fdd2ff061758f6b3"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/results/ResultHandler.java",
+          "bytes": 1770,
+          "sha256": "1eb35620156bd6413afc50a7a0048762479c1503572f331c99b9eb436be7da7f"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/results/SingleWindowDisplay.java",
+          "bytes": 24316,
+          "sha256": "30f2a0724cfb22eefe186e1f09e1aedd8162278dd145e29bcd221f727ea64850"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/results/ValueResult.java",
+          "bytes": 1373,
+          "sha256": "367191dc56d92eddbd1cc333a13b164f21d7b293a19404972706db9e2a9f2491"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/results/Warning.java",
+          "bytes": 1339,
+          "sha256": "e9fe05259f008d0829a491eb1ebbcf4d69ac74e4a7ca81eccb34517a9e5d8197"
+        },
+        {
+          "path": "src/main/resources/plugins.config",
+          "bytes": 999,
+          "sha256": "fb64fcfe2713e74a4b5921b6385337487f3c88ddfac137bd75421b14dab6e0fe"
+        },
+        {
+          "path": "src/main/resources/script_templates/Examples/Colocalisation.groovy",
+          "bytes": 1304,
+          "sha256": "bfb9a4ee95a283d0ad6cd3cebaae421d92f03efa24cd675ea357f11c50ca5019"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/Main.java",
+          "bytes": 3450,
+          "sha256": "b85224f73ce41cfc3b2e7dfdb51b1129c1846bb7d176c938b22e238603375116"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/AutoThresholdRegressionTest.java",
+          "bytes": 3554,
+          "sha256": "3f8a895fe180a9458b6e28b0ab57659543ee9aba04cc9ea59ef635ce1d3330c0"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/ColocalisationGUITest.java",
+          "bytes": 2228,
+          "sha256": "27bb57ccce3691bc33a5758bcad964d0e498c343d4cdcd053bcd13131033f20f"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/ColocalisationTest.java",
+          "bytes": 6523,
+          "sha256": "4a24b0243a126ad91dc90cc113e2e802c7d40b25d70329b1ad5f98e27e337e4c"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/CommutativityTest.java",
+          "bytes": 4211,
+          "sha256": "4f51d940bf0713ff39e2acf2a6931c97232244b84925a8822ff32d999038696b"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/CostesSignificanceTest.java",
+          "bytes": 4911,
+          "sha256": "1a4435f8239d1a2bca99caec7d48febb2e71a6e863577abec8602c054092809b"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/ImprovedNoise.java",
+          "bytes": 4015,
+          "sha256": "8c6d7168219f36be0f20cc3dade65a7cd545f4ec3e8432a989a12673b2638181"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/KendallTauTest.java",
+          "bytes": 4137,
+          "sha256": "eca1a589b2cba914ee72c3fcc968446605d713a145c5408f8e5c56e013a46f5b"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/LiICQTest.java",
+          "bytes": 2345,
+          "sha256": "461980225340573471baad0cd00f64c9b2e4d2c93ff1e7834a71c230c2b64f49"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/MandersColocalizationTest.java",
+          "bytes": 7468,
+          "sha256": "015ca8ef944599c2050fd70f42ceb6fab447a5edda0c9e5fcc63912104742821"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/MaskAndRoiTest.java",
+          "bytes": 14107,
+          "sha256": "919da670cbf885ffae16609481cb6332cdac5973ad08ed7678e8f2f2b456dc35"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/PearsonsCorrelationTest.java",
+          "bytes": 7819,
+          "sha256": "fb5257399aba47b89742b3c252c661c7c8fd2c3cd2670cc2d6fe13d66173de53"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/SpearmanRankTest.java",
+          "bytes": 4495,
+          "sha256": "b540a516564026d8785e2238905a3371a3cdea5a5d926cffb3f7b68a55d1226a"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/StatisticsTest.java",
+          "bytes": 3350,
+          "sha256": "39dfe94de7bd7a73e7fdda37ad7cce7cdc4e993c4704a48eafd4813326febb63"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/TestImageAccessor.java",
+          "bytes": 16789,
+          "sha256": "e96edfe9f2d44cb291d1298dd0f3461e351087fb6cf7a48106e31f96fa7d3099"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/TestInteractively.java",
+          "bytes": 1692,
+          "sha256": "2c5ca7e00e5002283a56470409c0b276e7184dc81444edc9af52962cd5a56600"
+        },
+        {
+          "path": "src/test/resources/SineXCosY.ijm",
+          "bytes": 1824,
+          "sha256": "60e4feddfb569f2ac4c50fa0c4f840b8ee180fb9356865ee7c0f7e8a792ba837"
+        },
+        {
+          "path": "src/test/resources/colocsample1b-green.tif",
+          "bytes": 870702,
+          "sha256": "a099913867fcc12494387661951585cfd90ae6dd37adf388c8e306bb064f437e"
+        },
+        {
+          "path": "src/test/resources/colocsample1b-mask.tif",
+          "bytes": 868207,
+          "sha256": "f71661c414f44a4a5d88b7e34a7a792a10277389f1e5ccf01e732695aafc99a6"
+        },
+        {
+          "path": "src/test/resources/colocsample1b-red.tif",
+          "bytes": 870702,
+          "sha256": "009a17105e71ad479bac2230ff3503fe514f9b75c9c5ebfbdfae57dd67aa8739"
+        },
+        {
+          "path": "src/test/resources/greenZstack.tif",
+          "bytes": 42273,
+          "sha256": "2e7f2d5dc2b71c77deb5e8eecabaffb256a9f525e52454ac3bbc125b3451960d"
+        },
+        {
+          "path": "src/test/resources/high_random_overlap1.tif",
+          "bytes": 164,
+          "sha256": "78db41d48c487bd37887f91ce7dc402703caef7739f2812c3abdc9e0c5001c47"
+        },
+        {
+          "path": "src/test/resources/high_random_overlap2.tif",
+          "bytes": 164,
+          "sha256": "a1d5783bbf5f5f15605f38d5f4ef6a8222e05a21f934a5bbddefc0de9d268882"
+        },
+        {
+          "path": "src/test/resources/mandersA.tiff",
+          "bytes": 9950,
+          "sha256": "55f0e233d0322cf360a243f433092f4498b62864825af3c7040ba50b13bb45e2"
+        },
+        {
+          "path": "src/test/resources/mandersB.tiff",
+          "bytes": 9986,
+          "sha256": "f013fac909a0d211894695abfab4068a8479350932f2f924bd2e9ffb7b80c6f9"
+        },
+        {
+          "path": "src/test/resources/mandersC.tiff",
+          "bytes": 9950,
+          "sha256": "12cc8512baae5e277930507e048cba119bfdb54e0b0dd3a7c14bca5cc3c4cada"
+        },
+        {
+          "path": "src/test/resources/mandersD.tiff",
+          "bytes": 10026,
+          "sha256": "a3c3946baf6f152e42e8248f67d12ffe5abb4c8f83915cfb68075b466a4aa27a"
+        },
+        {
+          "path": "src/test/resources/mandersE.tiff",
+          "bytes": 10014,
+          "sha256": "d6a618532f6a83b47da00660329fd62f4ebf4460b874bebe72b33da4f0112bdf"
+        },
+        {
+          "path": "src/test/resources/mandersF.tiff",
+          "bytes": 8496,
+          "sha256": "22a8104045fba4aa79721b1774653127ef72e31ea973631ee21dbd0ed980d045"
+        },
+        {
+          "path": "src/test/resources/mandersG.tiff",
+          "bytes": 5978,
+          "sha256": "7583635690ae1dceed2b1a5e36ce4fdcf38877e491a8d2ba9bad8182e54aabe6"
+        },
+        {
+          "path": "src/test/resources/mandersH.tiff",
+          "bytes": 4184,
+          "sha256": "a2db42b68a523a58c9b33ecf22375cbd35ef94c2712f2ef9812ec96889b374f2"
+        },
+        {
+          "path": "src/test/resources/mandersI.tiff",
+          "bytes": 2876,
+          "sha256": "7e9c4ae3405fc9c518f2dc8139be5adee2928a73ad2475c2f145d1868e3dc1ed"
+        },
+        {
+          "path": "src/test/resources/random-dots-smoothed.ijm",
+          "bytes": 1236,
+          "sha256": "697e30062d09ad78d5bde5ccbf7e4ef3d4e118ac80125635febfe5ff9c4eb4d1"
+        },
+        {
+          "path": "src/test/resources/redZstack.tif",
+          "bytes": 42273,
+          "sha256": "63cce3a2d92dd19a79bab227c47ad449d37017feb6613a72e1168dbb49dc4ec6"
+        },
+        {
+          "path": "src/test/resources/syntheticNegCh1.tif",
+          "bytes": 236,
+          "sha256": "3c875fac00c1cd909fb2ed5746865eaff4f1faa714f44861257104a528c70a0b"
+        },
+        {
+          "path": "src/test/resources/syntheticNegCh2.tif",
+          "bytes": 238,
+          "sha256": "e85128933b2af9566feb72b8ddebbb0a56030e321dae7c6661ab65724fd38051"
+        }
+      ],
+      "binding": {
+        "record": "docs/parity/reviews/coloc2-commercial-closure-001.json",
+        "json_pointer": "/source_evidence/1/source_members",
+        "canonical_json_sha256": "d1d194a2aaad105d21300abf74d8dcfb20e80de513e95ef61da0a3b2738764af"
+      },
+      "product_incorporation": false
+    },
+    "default_declared_java_closure": {
+      "nodes": 36,
+      "edges": 66,
+      "identity_graph": {
+        "record": "docs/parity/reviews/coloc2-commercial-closure-001.json",
+        "json_pointer": "/resolved_dependency_graph",
+        "canonical_json_sha256": "e53d5d445119f09231c470f7c64880c1ac0d59fa3b6acdb460c78ca4a284be91"
+      },
+      "jars": [
+        {
+          "component": "fiji:plugins/Colocalisation_Analysis-3.1.0.jar",
+          "bytes": 153303,
+          "sha256": "f686c152d99163ccb66e1964665c8c9a69c7fbfd37a687053c51d472b5cba88f"
+        },
+        {
+          "component": "fiji:jars/fiji-lib-2.1.3.jar",
+          "bytes": 91774,
+          "sha256": "35eeb0174b29db972b826c82e93482a88ea13f0a931597ab1ddc7222b36707c3"
+        },
+        {
+          "component": "fiji:jars/ij-1.54p.jar",
+          "bytes": 2586953,
+          "sha256": "2e1a09961dfb41cee66ddc821b2577a41a072566ce45a49bae69267099741e20"
+        },
+        {
+          "component": "fiji:jars/imglib2-8.0.0.jar",
+          "bytes": 1134914,
+          "sha256": "e48e487a307f4ca798d33ef6f413bafd2fb2357147e88d39c9ad4cda79e84f80"
+        },
+        {
+          "component": "fiji:jars/imglib2-algorithm-0.18.3.jar",
+          "bytes": 1223663,
+          "sha256": "ecfcd3fed8ba8783995378491c2bebb58288e86c87d8c91e3c1ed8956a0351fa"
+        },
+        {
+          "component": "fiji:jars/imglib2-ij-2.0.3.jar",
+          "bytes": 101529,
+          "sha256": "80ba903bbc58ce6a428fc96f0146276483266be465fe33d4550fc093b4db684f"
+        },
+        {
+          "component": "fiji:jars/itextpdf-5.5.13.4.jar",
+          "bytes": 2334415,
+          "sha256": "6504ed81b34d1b4913d6cf16964b131cd8b10f54fc6c18390bb6dc5f64ea5079"
+        },
+        {
+          "component": "fiji:jars/ij1-patcher-2.0.0.jar",
+          "bytes": 103622,
+          "sha256": "b68810263f9521ddb34bac272816613ebb71607775c1fc337079a0476c2b581a"
+        },
+        {
+          "component": "fiji:jars/imglib2-roi-0.15.2.jar",
+          "bytes": 303961,
+          "sha256": "3cccfa047c049eeb7170ef621926b320b1f57208a586cb3f9867d30ac05ef81f"
+        },
+        {
+          "component": "fiji:jars/imglib2-realtransform-4.0.5.jar",
+          "bytes": 131244,
+          "sha256": "c0395feade4e05f69f4dfca97b4671a48cff8993bd657680dca8cd71cf6fc1ad"
+        },
+        {
+          "component": "fiji:jars/imglib2-cache-1.0.0-beta-20.jar",
+          "bytes": 193981,
+          "sha256": "81e27d849b77690bf7a0394c70c38f1aa0cea02ff8b89672d1cafc4dfa1c6487"
+        },
+        {
+          "component": "fiji:jars/jama-1.0.3.jar",
+          "bytes": 37424,
+          "sha256": "c7325ee29be1aac1287ddac690f73671f1cd911ca9eca7c619990e86310556fd"
+        },
+        {
+          "component": "fiji:jars/trove4j-3.0.3.jar",
+          "bytes": 2523218,
+          "sha256": "3c8616203d61a12a7e3487e8b34f3c198c2b5ba9e90da0c7ea32d99cd4958012"
+        },
+        {
+          "component": "fiji:jars/ojalgo-45.1.1.jar",
+          "bytes": 1763194,
+          "sha256": "c7f075bae9585283eb6408cfc9fe724edc8013d28772b803dbd7a5a3488665f8"
+        },
+        {
+          "component": "fiji:jars/imagej-common-2.1.2.jar",
+          "bytes": 513347,
+          "sha256": "43c1a612a71b18a60993c6b5270b99db79dccf4f1bb6d05d27bacd8b305ad0e2"
+        },
+        {
+          "component": "fiji:jars/classgraph-4.8.181.jar",
+          "bytes": 572869,
+          "sha256": "62a6436d69710ef5fab6ec243781ce4c5b299047ed1841b5f92746ae852ce545"
+        },
+        {
+          "component": "fiji:jars/javassist-3.30.2-GA.jar",
+          "bytes": 794714,
+          "sha256": "eba37290994b5e4868f3af98ff113f6244a6b099385d9ad46881307d3cb01aaf"
+        },
+        {
+          "component": "fiji:jars/jitk-tps-3.0.4.jar",
+          "bytes": 19215,
+          "sha256": "929058aaf12151f563a25470f1bb218c736ee994ec676bb298746e10b91b3930"
+        },
+        {
+          "component": "fiji:jars/slf4j-api-2.0.17.jar",
+          "bytes": 69908,
+          "sha256": "7b751d952061954d5abfed7181c1f645d336091b679891591d63329c622eb832"
+        },
+        {
+          "component": "fiji:jars/caffeine-2.9.3.jar",
+          "bytes": 912143,
+          "sha256": "1e0a7bbef1dd791653143f3f05d0e489934bf5481e58a87c9e619cd46b68729b"
+        },
+        {
+          "component": "fiji:jars/scijava-optional-1.0.2.jar",
+          "bytes": 7528,
+          "sha256": "9f41b9bd4410b593177aa541a710f867118f0817038022c374b5774a779d19b7"
+        },
+        {
+          "component": "fiji:jars/scijava-common-2.101.0.jar",
+          "bytes": 952963,
+          "sha256": "815e9842ab75733c6cce6869c07d6170f395eaad9095ecb4cd21f7e1e647ee60"
+        },
+        {
+          "component": "fiji:jars/scijava-table-1.0.3.jar",
+          "bytes": 72543,
+          "sha256": "b18f303bf087f3bdd8cb0a7311105798249e826b15cbdb94c24a6d861d72fbe3"
+        },
+        {
+          "component": "fiji:jars/udunits-4.3.18.jar",
+          "bytes": 126892,
+          "sha256": "e392cd6b1829b5726da183f4060b54931bd384ce02ada37517c8b740fa4c41df"
+        },
+        {
+          "component": "fiji:jars/ejml-all-0.41.jar",
+          "bytes": 749,
+          "sha256": "75172c94331a214677d12dd6fbd1ff8bf24120f383da8eea4926e7739b62e50a"
+        },
+        {
+          "component": "fiji:jars/checker-qual-3.50.0.jar",
+          "bytes": 241487,
+          "sha256": "e268d1d5cb6029f06cfdff8fb638383ff22556039da25386a00c287da6a52dbe"
+        },
+        {
+          "component": "fiji:jars/error_prone_annotations-2.41.0.jar",
+          "bytes": 20389,
+          "sha256": "a56e782b5b50811ac204073a355a21d915a2107fce13ec711331ad036f660fcc"
+        },
+        {
+          "component": "fiji:jars/parsington-3.1.0.jar",
+          "bytes": 47987,
+          "sha256": "7943c91a1e62918ea47d0a08f6b5989a8b388e019216441002236528f769c72a"
+        },
+        {
+          "component": "fiji:jars/ejml-core-0.41.jar",
+          "bytes": 259045,
+          "sha256": "8d36469e8414d79c875defc0af3b980525d384761c9471d15a4f365b936dd1d5"
+        },
+        {
+          "component": "fiji:jars/ejml-fdense-0.41.jar",
+          "bytes": 406624,
+          "sha256": "0ec25b3bcd950c2ce1c7d5389f958e5507ebf9f4c7a209a2b4236a73740aa98e"
+        },
+        {
+          "component": "fiji:jars/ejml-ddense-0.41.jar",
+          "bytes": 408061,
+          "sha256": "355347e9cac7e96d5d724d331a9b04bb14a8a02e1d111f1ac51c79f25d937123"
+        },
+        {
+          "component": "fiji:jars/ejml-cdense-0.41.jar",
+          "bytes": 75427,
+          "sha256": "ad06ef87a0e1b4b8152ebcbf8fa204a17a394b7cb0625c9b36f78181590ff907"
+        },
+        {
+          "component": "fiji:jars/ejml-zdense-0.41.jar",
+          "bytes": 75780,
+          "sha256": "5d44c52c24e2d6e702c2f5f775707f62a71055fdbc655da21389beca4427c3f9"
+        },
+        {
+          "component": "fiji:jars/ejml-dsparse-0.41.jar",
+          "bytes": 94475,
+          "sha256": "278dbe323a3218697d687243da1a2ff0c88800825ebba02388274542519641ed"
+        },
+        {
+          "component": "fiji:jars/ejml-simple-0.41.jar",
+          "bytes": 183555,
+          "sha256": "f8989a6df897b32789d2bc590c7ddc020c8e269180150322c1e812522fce96a7"
+        },
+        {
+          "component": "fiji:jars/ejml-fsparse-0.41.jar",
+          "bytes": 93732,
+          "sha256": "8ddb3bfa0de174c16e57b7b08b60d0f324a4f99e574033c4fc77508e2516ce41"
+        }
+      ],
+      "historical_build_vs_pinned_bundle": "Keep root build Class-Path/managed versions separate from newer bundled component identities; neither is an observed JVM loader trace. Optional/provided/test/system/conditional edges remain in the retained graph.",
+      "selected_for_shipping": false,
+      "required_reference_loader_subset": "Unresolved until a bounded actual reference runner pins loaded classes/dependencies and JDK/tool identities. Do not default to distributing this36-node graph."
+    },
+    "root_binary_resources": {
+      "members": [
+        {
+          "member": "META-INF/MANIFEST.MF",
+          "bytes": 1282,
+          "sha256": "8946df61a40d9a68d4120977b89edd68e3df4d1bc8fc9cef4246173689617262"
+        },
+        {
+          "member": "plugins.config",
+          "bytes": 999,
+          "sha256": "fb64fcfe2713e74a4b5921b6385337487f3c88ddfac137bd75421b14dab6e0fe"
+        },
+        {
+          "member": "script_templates/Examples/Colocalisation.groovy",
+          "bytes": 1304,
+          "sha256": "bfb9a4ee95a283d0ad6cd3cebaae421d92f03efa24cd675ea357f11c50ca5019"
+        },
+        {
+          "member": "META-INF/maven/sc.fiji/Colocalisation_Analysis/pom.xml",
+          "bytes": 4833,
+          "sha256": "cb14676640c9904d32061a0d201e63e744c24bcca5efdd2ad193816d72cf304f"
+        },
+        {
+          "member": "META-INF/maven/sc.fiji/Colocalisation_Analysis/pom.properties",
+          "bytes": 65,
+          "sha256": "0db5b03cbdc74fd5acd0ab65da398ca3faa1c19034c9be4a69cd2da511928580"
+        }
+      ],
+      "binding": {
+        "record": "docs/parity/reviews/coloc2-commercial-closure-001.json",
+        "json_pointer": "/material_inventory/root_resources",
+        "canonical_json_sha256": "b137463db41b3b269bb421d28fb8981a7e6998d5bfcee3b8bcc6e228d5c23994"
+      },
+      "selected_for_shipping": false,
+      "limit": "Root JAR has no embedded model weights/fonts/image or data fixtures. Upstream source-test TIFFs have separate provenance and are not implicitly cleared for copying."
+    },
+    "itext_binary_resources": {
+      "component": "fiji:jars/itextpdf-5.5.13.4.jar",
+      "bytes": 2334415,
+      "sha256": "6504ed81b34d1b4913d6cf16964b131cd8b10f54fc6c18390bb6dc5f64ea5079",
+      "members": [
+        {
+          "member": "META-INF/MANIFEST.MF",
+          "bytes": 8659,
+          "sha256": "b6776ff3978c33586930bdee94dd3a148d631f93c233d40ae85de2d81160a225"
+        },
+        {
+          "member": "com/itextpdf/text/pdf/fonts/mustRead.html",
+          "bytes": 933,
+          "sha256": "9cab6f4ff74315819cbc50c81f2a2d240edb3ef24626795aded4ab1f7c4dfe06"
+        },
+        {
+          "member": "com/itextpdf/text/pdf/fonts/Helvetica-Oblique.afm",
+          "bytes": 74392,
+          "sha256": "8556038366f9da4aad6d5782ce68afdb96d6d7261da64652f8b5e519110dd91b"
+        },
+        {
+          "member": "com/itextpdf/text/pdf/fonts/Helvetica-Bold.afm",
+          "bytes": 69269,
+          "sha256": "8b697881c8ee617a177f6f2e2bbc88570b9fd2b9f0e89ecfc0f5507878f988fc"
+        },
+        {
+          "member": "com/itextpdf/text/pdf/fonts/Courier-BoldOblique.afm",
+          "bytes": 15399,
+          "sha256": "ce0eb54286c3dd853d5017c25e6be684135a14a9e8fb18fcb18d1bd91a607cbc"
+        },
+        {
+          "member": "com/itextpdf/text/pdf/fonts/Helvetica.afm",
+          "bytes": 74292,
+          "sha256": "db772f2830fb6d000907791d8d26a12524d96943a9a739e520ee855c6b25c96f"
+        },
+        {
+          "member": "com/itextpdf/text/pdf/fonts/Helvetica-BoldOblique.afm",
+          "bytes": 69365,
+          "sha256": "526e4eeaa2b5d435cbb7cba3ff42285a473ce132aa1caddb39b48a52cc10aaf6"
+        },
+        {
+          "member": "com/itextpdf/text/pdf/fonts/Times-Bold.afm",
+          "bytes": 64251,
+          "sha256": "7104e6af62c53f029013fb0641a81e31c98589c8f27b5ea6289b25b092c74321"
+        },
+        {
+          "member": "com/itextpdf/text/LICENSE.txt",
+          "bytes": 1918,
+          "sha256": "abf00687d6482774348535c0b24f758bc6ca8d2ff6660d349b06a8f28f1ab41f"
+        },
+        {
+          "member": "com/itextpdf/text/AGPL.txt",
+          "bytes": 34520,
+          "sha256": "57c8ff33c9c0cfc3ef00e650a1cc910d7ee479a8bc509f6c9209a7c2a11399d6"
+        },
+        {
+          "member": "META-INF/maven/com.itextpdf/itextpdf/pom.properties",
+          "bytes": 132,
+          "sha256": "b0da6db0974e95efd4c56e8768a19c8bfb4edf9ba6820b18af2ebc4354d6f15c"
+        },
+        {
+          "member": "META-INF/maven/com.itextpdf/itextpdf/pom.xml",
+          "bytes": 11446,
+          "sha256": "ed3fcf26ad90adbb8805cc20607597b6d1ed478aee23788d4197fa0c2d1a8f62"
+        },
+        {
+          "member": "com/itextpdf/text/pdf/fonts/glyphlist.txt",
+          "bytes": 95794,
+          "sha256": "b309c7c528447925beb95aed87c7658f45b5cdf506b8e4e10a6abfe0b3e2be08"
+        },
+        {
+          "member": "com/itextpdf/text/pdf/fonts/Courier-Oblique.afm",
+          "bytes": 15441,
+          "sha256": "bd1426e63d6c4d4378862713d4f71567d3fd0d34d41e11337cf5ea514cd56611"
+        },
+        {
+          "member": "com/itextpdf/text/pdf/fonts/Courier-Bold.afm",
+          "bytes": 15333,
+          "sha256": "b080c323e07cd956770b4988fe61c5213099ecf567dfb00860cbf50ab1d7e2c1"
+        },
+        {
+          "member": "com/itextpdf/text/pdf/fonts/Symbol.afm",
+          "bytes": 9740,
+          "sha256": "3f951aa17af8cb4aa1e1288c6b9baa8a30d3e990ebdbe8cf9a3d5acabcb9f771"
+        },
+        {
+          "member": "com/itextpdf/text/pdf/fonts/ZapfDingbats.afm",
+          "bytes": 9527,
+          "sha256": "66e3a6b7d19c2a87e374eabc92a84f86d00884ec242f6ad3253999c408c56a40"
+        },
+        {
+          "member": "com/itextpdf/text/l10n/error/en.lng",
+          "bytes": 51786,
+          "sha256": "0d7a080870fdc4d174416851c8d82281a58b3244305009ed80af0f12324584aa"
+        },
+        {
+          "member": "com/itextpdf/text/NOTICE.txt",
+          "bytes": 23283,
+          "sha256": "8645f60d9d59743d6b4b8763f5c2eeaf3503120fb2d39a1a6bfd4cf90504cb5c"
+        },
+        {
+          "member": "com/itextpdf/text/pdf/fonts/Courier.afm",
+          "bytes": 15335,
+          "sha256": "31d72adad79910126b22a5579ec9e179eee86674ecebe3fcff6f76916193af0e"
+        },
+        {
+          "member": "com/itextpdf/text/pdf/fonts/cmap_info.txt",
+          "bytes": 5197,
+          "sha256": "41ff5c860cef50803f75001554db0c00a844a7291281c39f77b5908a5c08a826"
+        },
+        {
+          "member": "com/itextpdf/text/pdf/fonts/Times-Italic.afm",
+          "bytes": 66328,
+          "sha256": "6cae69b92329193fd85082f0c89ad7a318df8fb5c939d7efe5343f88ab09473c"
+        },
+        {
+          "member": "com/itextpdf/text/pdf/fonts/Times-BoldItalic.afm",
+          "bytes": 59642,
+          "sha256": "a7358e772726e91aa87015a001563926ad33dc5a7b2eea9680b34cc78aba385c"
+        },
+        {
+          "member": "com/itextpdf/text/pdf/fonts/Times-Roman.afm",
+          "bytes": 60460,
+          "sha256": "86136b527a5acee0c3283d56a6b68fc6a3d60982eb3bb0fb6cc54e83ecc8d77a"
+        },
+        {
+          "member": "com/itextpdf/text/l10n/error/pt.lng",
+          "bytes": 329,
+          "sha256": "6a62eb3dcffc9a363f20faa7bd70a1260c572e7fe63e31f35f106d113b282b47"
+        },
+        {
+          "member": "com/itextpdf/text/l10n/error/nl.lng",
+          "bytes": 55215,
+          "sha256": "9d732463710681f100acbb90a78b1452c2884924a8ae836e4a2c2df410123097"
+        }
+      ],
+      "binding": {
+        "record": "docs/parity/reviews/coloc2-commercial-closure-001.json",
+        "json_pointer": "/material_inventory/itext_resources",
+        "canonical_json_sha256": "77442886a6274d24cdd0b60ecda3b3cefc3fc6b0455f30fa22fe0d122efc122e"
+      },
+      "selected_for_shipping": false
+    },
+    "new_materials_created_by_this_task": [
+      "Identity/proposal metadata in this JSON only; no source implementation, model, data fixture, font, Java binary or new dependency."
+    ]
+  },
+  "reuse_of_held_resource_and_dependency_decisions": {
+    "glyphlist": {
+      "record_id": "coloc2-glyphlist-closure-001",
+      "decision": {
+        "decision": "commercially_usable_with_obligations_for_this_resource_edge_only",
+        "confidence_scope": "Exact release resource/source identity and Adobe grant association are established. The modified release resource route consumes iText release-level AGPL terms.",
+        "not_noncommercial": true,
+        "exact_modified_file_standalone_bsd_clearance": false,
+        "agpl_covered_release_route_identified": true,
+        "incorporation_authorized": false,
+        "whole_itext_eligibility": "pending",
+        "whole_coloc2_eligibility": "pending",
+        "manifest_patch": null,
+        "approval_limit": "Supporting reviewed evidence only. Root may consume this exact edge without treating it as a component-level approval. No source, data file, font asset or implementation was copied into product."
+      },
+      "obligations_if_incorporated": [
+        {
+          "id": "O01",
+          "required": "Retain/reproduce the pinned Adobe AGL copyright, conditions and disclaimer in the distribution route appropriate to source versus binary; identify modified provenance.",
+          "evidence": [
+            "D05",
+            "D06"
+          ]
+        },
+        {
+          "id": "O02",
+          "required": "Do not use Adobe/contributor names as endorsement without permission.",
+          "evidence": [
+            "D05",
+            "D06"
+          ]
+        },
+        {
+          "id": "O03",
+          "required": "For the exact modified iText program/resource route, satisfy AGPLv3 and the pinned iText release notices/additional terms, including appropriate legal notices and any applicable PDF producer retention. Bind the selected incorporation/link/distribution route before product use.",
+          "evidence": [
+            "D01",
+            "com/itextpdf/text/LICENSE.txt",
+            "com/itextpdf/text/NOTICE.txt"
+          ]
+        },
+        {
+          "id": "O04",
+          "required": "Do not relabel the full modified file as unmodified Adobe data or strip the release-level copyleft scope on the basis of the common mapping rows. A newly authored/reconstructed alternative would require its own explicit review and is not proposed here.",
+          "evidence": [
+            "D01",
+            "D05",
+            "D06"
+          ]
+        }
+      ],
+      "selected_route_consumes_resource": false
+    },
+    "afm": {
+      "record_id": "coloc2-afm-closure-001",
+      "decision": {
+        "resource_edge": "source_and_accompanying_permission_bound_with_obligations",
+        "commercial_use_scope": "Any-purpose metric use is supported under the exact identified notice; root must adopt the intended distribution route and fulfill obligations before incorporation.",
+        "noncommercial_or_research_only_restriction_found": false,
+        "incorporation_authorized": false,
+        "whole_itext_status": "pending",
+        "whole_coloc2_status": "pending",
+        "manifest_patch": null
+      },
+      "obligations_if_incorporated": [
+        {
+          "id": "O01",
+          "required": "Retain all original AFM copyright notices; exact headers remain in the retained source bytes and their per-file hashes/locations are bound above."
+        },
+        {
+          "id": "O02",
+          "required": "Distribute the accompanying mustRead file whenever any of these AFM files are distributed; preserve its permission paragraph unchanged."
+        },
+        {
+          "id": "O03",
+          "required": "Prominently identify modifications within modified AFM or notice files, in addition to retaining the required paragraph/notices."
+        },
+        {
+          "id": "O04",
+          "required": "Do not imply Adobe support. This proof concerns metrics data, not font outlines, font programs, trademarks or unrelated assets."
+        },
+        {
+          "id": "O05",
+          "required": "Any incorporation of iText program code still consumes its separate AGPL/additional terms and remaining resource/dependency obligations; this AFM permission does not clear the program or erase that scope."
+        }
+      ],
+      "selected_route_consumes_resources": false
+    },
+    "reuse_rule": "Do not reopen unchanged leaf decisions. Retain their exact limitations and obligations for any later actual consumption; a reference-only native route does not turn pending leaves into resolved/eligible components.",
+    "license_boundary": "GPL-3.0-or-later/AGPL and notice-conditioned commercial use are not NC/research-only exclusions. Pending, NC, research-only or unlicensed material remains outside shipped product; no commercial agreement or proprietary exception is assumed."
+  },
+  "route_specific_disposition": [
+    {
+      "retained_edge": "C01",
+      "selected_native_route": "No iText code/resources incorporated, so remaining iText leaf/source/NOTICE work is not a prerequisite for independent native kernel implementation. Glyphlist/AFM facts are reused unchanged.",
+      "still_open": "Any actual iText incorporation, redistribution or reference-execution selection must consume exact version-specific source/resource/NOTICE obligations; root build5.5.13.3 must not be confused with bundled5.5.13.4."
+    },
+    {
+      "retained_edge": "C02",
+      "selected_native_route": "Record no copied/translated/linked Coloc2/iText material and review native source/derivation at exact implementation identities before eligibility.",
+      "still_open": "Any discovered incorporated expression or route change requires a new scoped GPL/AGPL/combined-work/source/network/notices assessment before product use; reference-only is not an automatic exemption finding."
+    },
+    {
+      "retained_edge": "C03",
+      "selected_native_route": "The Java36-node graph is retained reference evidence, not a native shipping dependency. Do not assign another generic Java leaf review absent an actual consumer.",
+      "still_open": "An external reference runner must declare the exact consumed loader subset. Any shipped dependency reuse requires its own exact existing/new source/license/notice decision; SLF4J/UDUNITS unresolved associations are not silently closed."
+    },
+    {
+      "retained_edge": "C04",
+      "selected_native_route": "Do not incorporate Groovy template; author a new native/Python workflow example only from the adopted typed contract.",
+      "still_open": "If template bytes or translated expression are later consumed, bind exact project/resource grant and notices; missing header does not establish NC or unlicensed status."
+    },
+    {
+      "retained_edge": "C05",
+      "selected_native_route": "No shipped JVM/Fiji/Groovy/Kotlin runtime. No blanket profile or Fiji/JDK/platform clearance follows.",
+      "still_open": "Reference-only execution needs exact selected JDK/classpath/profile/loaded-origin identities, bounded runner conditions and independent runtime reconciliation. Optional script workflow behavior remains in full discovery scope."
+    }
+  ],
+  "derivation_and_redistribution_obligations": [
+    {
+      "id": "D01",
+      "required": "Maintain an exact material ledger per implementation revision: independently authored native/ImGui/Python/example sources, specification/paper/public-reference IDs, source exposure, direct derivation, dependencies, reports/fonts/data/model assets, corresponding license/NOTICE obligations and distribution members. Empty upstream incorporation in this proposal is a requirement to verify, not evidence about future code."
+    },
+    {
+      "id": "D02",
+      "required": "Do not copy or mechanically translate upstream Java algorithms, dialogs, result/report text/layout assets, Groovy examples, test Java, TIFF fixtures, glyphlist or AFM data under the independently authored route. If any such use is needed, stop that material at the exact edge and review the alternate incorporation obligations; retain the rest of the workflow scope."
+    },
+    {
+      "id": "D03",
+      "required": "Freeze behavior and numeric contracts from pinned primary source contents, suitable mathematical references and independently executed reference outputs; keep owned independent fixtures and hand/literal expectations distinct from upstream code/assets. Record attribution/provenance for specifications without treating source inspection as a blanket license decision."
+    },
+    {
+      "id": "D04",
+      "required": "No runtime iText or other Java dependency may enter wheel/SDK/editor/source archive through a report/export convenience. Bind actual native dependency and asset members/notices before distribution; do not infer an existing exporter has needed capability or license coverage."
+    },
+    {
+      "id": "D05",
+      "required": "Reference JARs/source archives and captured outputs remain separately pinned evidence. No reference execution, tool/JDK approval, output redistribution right, reproduced UI artwork or source-copy permission is granted here. Review any reference-derived redistributed fixture independently."
+    }
+  ],
+  "full_remaining_workflow_and_options": [
+    {
+      "id": "W01",
+      "scope": "Three distinct command workflows",
+      "required": "Retain Coloc 2, Colocalization Test and Colocalization Threshold as distinct command/option inventories and usable native workflows; establish their candidate-to-G098 child assignments additively. One descriptor, coefficient or panel cannot stand in for the other two.",
+      "source_members": [
+        {
+          "path": "src/main/java/sc/fiji/coloc/Coloc_2.java",
+          "bytes": 30489,
+          "sha256": "7f6edeabaa23959bc663c4b84618f45f806d030160dfe5f322311652032a3276"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/Colocalisation_Test.java",
+          "bytes": 22756,
+          "sha256": "b0bfc60a30dee8092e93e3d025f58be218bdd55f27bf1a34fdb01d5f76ca4ad2"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/Colocalisation_Threshold.java",
+          "bytes": 29687,
+          "sha256": "92ba9c11821e59e7e5b3dfc9e499e132c885c09844514768c686f900d1a7927d"
+        }
+      ],
+      "remaining": "All three exact option inventories, defaults, types, enabled states, validation/failure behavior and runtime reconciliation are unregistered and unverified."
+    },
+    {
+      "id": "W02",
+      "scope": "Pairing, axes, types and calibration",
+      "required": "Freeze explicit two-channel/image selection, shape/axis compatibility, current/ranged/all-stack and applicable volume/time behavior, supported scalar types, sample order, spatial/time calibration and source/target ownership policies from each pinned workflow. Reject incompatible pairs before provider reads or publication; do not silently treat a volume as one XY plane.",
+      "source_members": [
+        {
+          "path": "src/main/java/sc/fiji/coloc/gadgets/DataContainer.java",
+          "bytes": 11881,
+          "sha256": "1e312ce4b4bc8129178045f47ab5e530273700e98804228f78fdeeb1628589d4"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/ColocImgLibGadgets.java",
+          "bytes": 5029,
+          "sha256": "deb350e1a7069d11279c7d15d3df8f5c2dd2ea26f80fba449795ff20c0e9c96e"
+        }
+      ],
+      "remaining": "Exact accepted types, dimensions, broadcasting or pairing restrictions and defaults require primary source contents and reference observations; filenames alone do not establish them."
+    },
+    {
+      "id": "W03",
+      "scope": "ROI and masks",
+      "required": "Deliver each eligible whole-image, ROI and mask mode, including positioned ROI/channel alignment, mask construction, inclusion/exclusion, holes, empty masks and result sampling counts. Preserve source pixels, global/saved selections, calibration and navigation unless the pinned action explicitly changes them.",
+      "source_members": [
+        {
+          "path": "src/main/java/sc/fiji/coloc/gadgets/MaskFactory.java",
+          "bytes": 7680,
+          "sha256": "114a4cca5c0888057e51d0178ea04fb15847f339a95e96c12a5515c5da55bf50"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/gadgets/DataContainer.java",
+          "bytes": 11881,
+          "sha256": "1e312ce4b4bc8129178045f47ab5e530273700e98804228f78fdeeb1628589d4"
+        }
+      ],
+      "remaining": "Exact mask controls, supported geometric shapes, combination rules and sample order remain to be frozen."
+    },
+    {
+      "id": "W04",
+      "scope": "Threshold/regression and input diagnostics",
+      "required": "Deliver the complete threshold/regression choices, user parameters, validation, warnings and threshold-dependent calculations exposed by each pinned command. Freeze tie, cutoff-inclusion, zero/negative/constant-input and empty-sample behavior rather than infer them from another threshold tool.",
+      "source_members": [
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/AutoThresholdRegression.java",
+          "bytes": 12064,
+          "sha256": "389f9dd0daeb2a8aa7569aad13922ac0b8d658889855fed02ba1313e21b4ddce"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/gadgets/ThresholdMode.java",
+          "bytes": 939,
+          "sha256": "7fbd4f8a699813ff9bb751320d8e3a733f62b80c7da6becfb700a678290a7ee1"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/InputCheck.java",
+          "bytes": 7835,
+          "sha256": "cd4a14231ed38d847214a4e6b06b8a2c739514de9460ce0cffa991f0715a264f"
+        }
+      ],
+      "remaining": "Exact option names/defaults, search and stopping rules, pathological-input outcomes and warnings require the pinned contents/oracle."
+    },
+    {
+      "id": "W05",
+      "scope": "Complete metric selection",
+      "required": "Independently implement every eligible exposed metric/mode and all associated outputs. Preserve the source inventory of Pearson, Manders, Li ICQ, Spearman and Kendall algorithms as discovery obligations; confirm exposed variants and defaults from the three entry points. No single correlation coefficient closes this group.",
+      "source_members": [
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/PearsonsCorrelation.java",
+          "bytes": 14570,
+          "sha256": "c6d420d0489b2ddb3b79aec1626d740eaea02162ccdda926950d50bfb981d5d9"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/MandersColocalization.java",
+          "bytes": 12175,
+          "sha256": "339dec794e4f89da216f2c3debae3766abce9fa60488331154eacab8e1fc147d"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/LiICQ.java",
+          "bytes": 3463,
+          "sha256": "dfeda765d14fefd8cab1d34c4fcf2c0748a9d3d9eaef1203b6b9fadabde94250"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/SpearmanRankCorrelation.java",
+          "bytes": 9374,
+          "sha256": "d6310b9c2fd90b2cce2f47bd286e68c60db2201b9644d6c78aca461748235d0a"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/KendallTauRankCorrelation.java",
+          "bytes": 10393,
+          "sha256": "8f6a9aea11bc164db8be5a4cfac3c48d28cdb6e1c2a8f104fac52df3dcf05bb3"
+        }
+      ],
+      "remaining": "Exposed metric variants, normalization, thresholded/unthresholded outputs, tie ranking, degeneracies and numeric precision/tolerances remain unqualified."
+    },
+    {
+      "id": "W06",
+      "scope": "Statistical significance and randomization",
+      "required": "Deliver every eligible statistical/significance control and iteration/block/randomization parameter; record seeds or a pinned reproducibility/accepted-variation rule. Separate deterministic numerical comparison from stochastic distribution/significance validation and retain failures/cancellation.",
+      "source_members": [
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/CostesSignificanceTest.java",
+          "bytes": 15391,
+          "sha256": "d291a672382ed9b51944463a0644317611d26cdd7cf5f755706bfdc84aa5fe74"
+        }
+      ],
+      "remaining": "Exact controls/defaults, random generator, seed accessibility, block/PSF assumptions, stopping rules and output variation need independent reference qualification."
+    },
+    {
+      "id": "W07",
+      "scope": "Scatter/histogram/diagnostic images",
+      "required": "Deliver scatter and 2D/Li histogram outputs, binning/range/scale controls and diagnostic visualizations exposed by the pinned workflows. Qualify scalar data independently from LUT/range/axes/titles/legend rendering.",
+      "source_members": [
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/Histogram2D.java",
+          "bytes": 12392,
+          "sha256": "bc629b5e369eeb1a9647f409e202e784284ab8022c36f746625e401ea6a93d9c"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/LiHistogram2D.java",
+          "bytes": 5570,
+          "sha256": "5ea513a7ab6ff102bac05fd37e667ff64f49c53db435bca62f04c1bcd3b2e395"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/results/SingleWindowDisplay.java",
+          "bytes": 24316,
+          "sha256": "30f2a0724cfb22eefe186e1f09e1aedd8162278dd145e29bcd221f727ea64850"
+        }
+      ],
+      "remaining": "Exact bins/scales/log options, thresholds/overlays and display defaults remain unresolved; source class presence is not an adopted option list."
+    },
+    {
+      "id": "W08",
+      "scope": "Results, warnings and reports",
+      "required": "Produce reproducible typed metric/result and warning tables, field units/names/order/precision, plot data, copy/save/export and applicable report/PDF behavior. Bind the native result schema to C++, Python and shared ImGui consumers; qualify saved/reopened content.",
+      "source_members": [
+        {
+          "path": "src/main/java/sc/fiji/coloc/results/AnalysisResults.java",
+          "bytes": 3610,
+          "sha256": "3bc7583f01e6f2bea49087497585abf98e71e9a6a4b3ddfd7053d314b83d6a74"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/results/ValueResult.java",
+          "bytes": 1373,
+          "sha256": "367191dc56d92eddbd1cc333a13b164f21d7b293a19404972706db9e2a9f2491"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/results/Warning.java",
+          "bytes": 1339,
+          "sha256": "e9fe05259f008d0829a491eb1ebbcf4d69ac74e4a7ca81eccb34517a9e5d8197"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/results/PDFWriter.java",
+          "bytes": 11900,
+          "sha256": "774c0e779711c8bf8950b4bb709a115de55bffd911f74887fdd2ff061758f6b3"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/results/SingleWindowDisplay.java",
+          "bytes": 24316,
+          "sha256": "30f2a0724cfb22eefe186e1f09e1aedd8162278dd145e29bcd221f727ea64850"
+        }
+      ],
+      "remaining": "Report schema/format fidelity and the native PDF/export implementation remain open. Avoiding iText does not remove report/PDF requirements; reuse an already reviewed suitable exporter only after capability/contract confirmation, otherwise review the selected new dependency/assets."
+    },
+    {
+      "id": "W09",
+      "scope": "Interactive UI and configuration",
+      "required": "Deliver specialized shared ImGui dialogs/panels, image/channel and mask selectors, metric/threshold/statistical controls, validation, progress, previews where present, plots/tables/report actions and help. Optional Python launcher and C++ launcher use the same native processing/command contracts. Persist consumed settings with correct defaults, migration/recovery and fresh-process behavior.",
+      "source_members": [
+        {
+          "path": "src/main/java/sc/fiji/coloc/Coloc_2.java",
+          "bytes": 30489,
+          "sha256": "7f6edeabaa23959bc663c4b84618f45f806d030160dfe5f322311652032a3276"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/Colocalisation_Test.java",
+          "bytes": 22756,
+          "sha256": "b0bfc60a30dee8092e93e3d025f58be218bdd55f27bf1a34fdb01d5f76ca4ad2"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/Colocalisation_Threshold.java",
+          "bytes": 29687,
+          "sha256": "92ba9c11821e59e7e5b3dfc9e499e132c885c09844514768c686f900d1a7927d"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/results/SingleWindowDisplay.java",
+          "bytes": 24316,
+          "sha256": "30f2a0724cfb22eefe186e1f09e1aedd8162278dd145e29bcd221f727ea64850"
+        }
+      ],
+      "remaining": "Physical control/focus/input/readback and launcher proofs, exact configuration ownership and all option-to-widget mappings are absent; API coverage cannot count as UI coverage."
+    },
+    {
+      "id": "W10",
+      "scope": "Automation, record/replay and interchange",
+      "required": "Expose complete typed C++/Python requests/results and versioned command records, exact target capture, deterministic replay/explicit rebind, batch invocation and result/report interchange. Preserve source history/redo/dirty/selection/navigation for read-only analysis and record only genuine changed effects where applicable. Replace the upstream example with an independently authored native/Python example when its workflow is specified.",
+      "source_members": [
+        {
+          "path": "src/main/java/sc/fiji/coloc/Coloc_2.java",
+          "bytes": 30489,
+          "sha256": "7f6edeabaa23959bc663c4b84618f45f806d030160dfe5f322311652032a3276"
+        }
+      ],
+      "remaining": "Versioned request/result/record schemas, replay defaults, all three descriptor routes, script-equivalent behavior and atomic failure/publication have no implementation/acceptance claim."
+    },
+    {
+      "id": "W11",
+      "scope": "Resources, concurrency, large data and failure",
+      "required": "Preflight checked pair/ROI/workspace/result costs before provider reads or large allocations; budget/cancel long statistical work, expose bounded progress and release all owners/reservations on terminal paths. Preserve atomic output/result/report publication, stale-source refusal and source immutability. Applicable streaming/volume variants remain required without making all M10 completion a blocker for bounded eager increments.",
+      "source_members": [
+        {
+          "path": "src/main/java/sc/fiji/coloc/gadgets/DataContainer.java",
+          "bytes": 11881,
+          "sha256": "1e312ce4b4bc8129178045f47ab5e530273700e98804228f78fdeeb1628589d4"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/CostesSignificanceTest.java",
+          "bytes": 15391,
+          "sha256": "d291a672382ed9b51944463a0644317611d26cdd7cf5f755706bfdc84aa5fe74"
+        }
+      ],
+      "remaining": "Resource formula/exclusions, streaming/halos/reductions, cancellation states, stale publication and failure-atomic tests need explicit native contracts and executed carriers."
+    }
+  ],
+  "exact_option_inventory_gate": {
+    "status": "OPEN; primary-content extraction not performed by this proposal",
+    "input": "The exact commit/archive/member identities above; retain all three distinct entry points and supporting algorithm/gadget/result sources.",
+    "required_rows": [
+      "per-descriptor menu/invocation and batch/script entry",
+      "every enabled and conditional option/control",
+      "literal name, type, enum/domain, default and persisted-key ownership",
+      "supported image type/axis/pair/ROI/mask/calibration combinations",
+      "validation/warnings/refusals and numeric edge rules",
+      "selected metric outputs, plots, tables, report/export and statistical controls",
+      "C++/Python/shared-ImGui consumer routes and applicable examples"
+    ],
+    "rule": "Source member names establish discovery obligations only. Do not invent defaults, declare an option implemented from an existing similar core primitive, or mark options N/A without a reviewed exact-source reason. All eligible options remain required.",
+    "exit": "One bounded versioned G098 workflow/option map with source member hashes plus exact line/span evidence, unresolved items explicit and proposed additive candidate/requirement links; no commercial/runtime acceptance."
+  },
+  "independent_reference_oracle_needs": {
+    "status": "OPEN; runtime_executions=0 reused from commercial handoff, none performed here",
+    "reference_identity": "Colocalisation_Analysis3.1.0 commit e4a92b537132b4e91fd47b428439973517309e93 / root JAR f686c152d99163ccb66e1964665c8c9a69c7fbfd37a687053c51d472b5cba88f",
+    "requirements": [
+      "Pin bounded external reference tool/JDK/executable/classpath and actual loaded Coloc2/dependency class origins, exact input/options and output/report schemas. Static POM closure is not actual runtime identity; root build dependencies and current Fiji bundle remain distinct.",
+      "Use independently owned literal/synthetic channel pairs and masks with independent source lineage; include disjoint/identical/known-affine/anticorrelated pairs, threshold boundaries/ties, constant/all-zero/negative inputs, empty/holed/positioned masks, unequal shapes, applicable XY/XYZ/CZT and every supported type. Exact finite/nonfinite acceptance is a frozen discovery result, not assumed here.",
+      "Capture actual upstream metric/regression/significance values, warnings, sample counts, histogram/scatter arrays and report data for each descriptor and every option branch. Native/Python kernels or expected literals cannot serve as the upstream oracle.",
+      "Freeze deterministic precision/order/tolerance rules and signed-zero/bit policies where meaningful. For stochastic tests pin actual RNG/seed if exposed; otherwise design reviewed repeated distribution/variation acceptance rather than manufacture deterministic values or loosen tolerances after failures.",
+      "Independently read back every actual output and compare against literal invariants/reference values; keep scalar data, UI display/rendering, report persistence, job/resource/failure and installed C++/Python/both-launch proofs separate.",
+      "Retain reference failures, unsupported controls and missing states. No coefficient-only fixture, graph identity review or standalone source license label closes the workflow."
+    ],
+    "reference_only_distribution_rule": "External retained reference evidence is not shipped product material. Any later redistributed reference images, reports, fonts, outputs or harness code needs an explicit exact material/provenance review."
+  },
+  "next_consumption": {
+    "root_decision": "Adopt or reject only the independently authored native route and zero-upstream-material shipping boundary; leave G098 open, all candidates pending and every existing report/decision unchanged.",
+    "next_owner": "One bounded G098 workflow-entry owner; root integrates only after option/specification and source/derivation review.",
+    "next_output": "Exact three-descriptor option map and a typed native pair/axis/ROI/mask/calibration/threshold/statistics/result/report contract with literal defaults and line-bound source evidence, resource/failure policies and independent owned reference input plan.",
+    "consumed_prerequisites": [
+      "M5 typed pair/channel/axis target and result publication contracts actually used",
+      "M6 selection/mask/threshold and calibrated statistics primitives actually used",
+      "M7 typed result/plot/report/record/replay contracts actually used"
+    ],
+    "not_a_blocker": "Do not wait for whole M5/M6/M7/M10/M11 completion or redo all36 Java dependency leaves to author bounded independent native contracts. Keep exact missing consumed prerequisite returning owners.",
+    "after_entry": "Qualify the external independent oracle and implement a bounded coherent channel-pair analysis slice with C++/Python/shared ImGui results. Deliver subsequent options to full workflow closure; first slice is partial, never the G098 exit.",
+    "alternate_route_trigger": "Only actual copied/translated/linked/distributed upstream material or an explicitly selected Java reference component triggers its remaining source/NOTICE/grant task. Reuse settled glyphlist/AFM decisions rather than repeating them."
+  },
+  "unresolved_edges": [
+    {
+      "id": "U01",
+      "gate": "Root route adoption",
+      "state": "proposed only"
+    },
+    {
+      "id": "U02",
+      "gate": "Exact primary-source option/default/type/axis/control inventory for all three descriptors",
+      "state": "missing; metadata/source identities only consumed"
+    },
+    {
+      "id": "U03",
+      "gate": "Native authored source/exposure/derivation/commercial review and exact dependency/asset members",
+      "state": "future implementation absent"
+    },
+    {
+      "id": "U04",
+      "gate": "Independent reference executor/JDK/actual loader subset and runtime reconciliation",
+      "state": "not qualified or executed"
+    },
+    {
+      "id": "U05",
+      "gate": "Owned test corpus and numeric/statistical comparator/report schema",
+      "state": "not frozen or executed"
+    },
+    {
+      "id": "U06",
+      "gate": "Native PDF/report implementation and assets/dependency decision",
+      "state": "open; full behavior retained"
+    },
+    {
+      "id": "U07",
+      "gate": "C++/Python/optional Python UI+C++ UI settings/persistence/installed/physical-control and failure/resource proofs",
+      "state": "no implementation or verification acceptance"
+    },
+    {
+      "id": "U08",
+      "gate": "C01-C05 alternate incorporated/reference material obligations",
+      "state": "retained pending where applicable; not resolved by non-consumption"
+    },
+    {
+      "id": "U09",
+      "gate": "Full-family and commercially eligible Fiji scope",
+      "state": "G098 and other families remain required; no status/count promotion"
+    }
+  ],
+  "checks_and_acceptance": {
+    "checks": "Strict duplicate-free finite JSON and local selected-record identity/count consistency only; no validator, dependency archive, source archive, product, reference or runtime execution.",
+    "new_network_requests": 0,
+    "builds": 0,
+    "product_imports": 0,
+    "reference_executions": 0,
+    "manifest_mutations": 0,
+    "shipping_source_or_asset_additions": 0,
+    "route_adopted": false,
+    "source_eligibility_accepted": false,
+    "component_commercial_accepted": false,
+    "runtime_accepted": false,
+    "workflow_accepted": false,
+    "full_family_accepted": false,
+    "full_goal_accepted": false,
+    "manifest_patch": null,
+    "preservation": "No existing manifest, plan, source, review, dependency decision, candidate assignment, resource decision or protected/build path was modified or reopened."
+  }
+}

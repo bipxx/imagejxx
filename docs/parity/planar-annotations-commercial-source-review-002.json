@@ -1,0 +1,692 @@
+{
+  "author_and_reviewer": "Root implementation/integration review; independent legal review is not asserted",
+  "broader_pending_Fiji_decisions_and_NC_exclusions_unchanged": true,
+  "decision": "eligible",
+  "license": {
+    "bytes": 1079,
+    "path": "LICENSE",
+    "sha256": "6496956d6060adfcd2617e553b7393c3b7fbea353a02f3c39d60051709d1ce5f"
+  },
+  "new_third_party_code_assets_or_dependency": false,
+  "notices": {
+    "bytes": 4201,
+    "path": "THIRD_PARTY_NOTICES.md",
+    "sha256": "9793a0e9272d9c7f8aa1ea97712a38f1ff186ecbd379f3a71c16ae273167bff9"
+  },
+  "previous_source_archive": {
+    "bytes": 8759056,
+    "path": "build/p06o-source-final001/imagejxx-0.2.0.tar.gz",
+    "sha256": "4887a2ac3039e98b782b16c1e452d560e2a547c071504d7e6cef1b491ac4d828"
+  },
+  "previous_source_receipt": {
+    "bytes": 151058,
+    "path": "build/p06o-001/source-final001.json",
+    "sha256": "95e580912a85e93717ec7b6864c903c6bbd56103a8454519c93a16484e71d7db"
+  },
+  "schema_version": 1,
+  "scope": "Exactly40 owned plane-native annotation product/test sources; unchanged dependency set.",
+  "sources": [
+    {
+      "current": {
+        "bytes": 56253,
+        "path": "CMakeLists.txt",
+        "sha256": "c89922b486ccfcb7dd404f9dc5a928a72c2a049e10a2c77cdb34e28be6d295e3"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 55024,
+        "path": "CMakeLists.txt",
+        "sha256": "bcf30e3ec2578fdb5ab6cdf56c877371b8e29a50b4dd9edd9b0cde63a5a546e9"
+      },
+      "snapshot": {
+        "bytes": 56253,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/CMakeLists.txt",
+        "sha256": "c89922b486ccfcb7dd404f9dc5a928a72c2a049e10a2c77cdb34e28be6d295e3"
+      }
+    },
+    {
+      "current": {
+        "bytes": 1901,
+        "path": "include/imagejxx/planar_annotation_command.hpp",
+        "sha256": "480f9a8be351aa790193210e12f1f4317c6d87b238dea37b9ea9969f140a7d24"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 1901,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/include/imagejxx/planar_annotation_command.hpp",
+        "sha256": "480f9a8be351aa790193210e12f1f4317c6d87b238dea37b9ea9969f140a7d24"
+      }
+    },
+    {
+      "current": {
+        "bytes": 2584,
+        "path": "include/imagejxx/planar_annotations.hpp",
+        "sha256": "fa26ddc0b913a8f4eb96c9a0857af1b618f7ebb56e6a7c9ff83537e1b2b33918"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 2584,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/include/imagejxx/planar_annotations.hpp",
+        "sha256": "fa26ddc0b913a8f4eb96c9a0857af1b618f7ebb56e6a7c9ff83537e1b2b33918"
+      }
+    },
+    {
+      "current": {
+        "bytes": 12133,
+        "path": "src/desktop/desktop.hpp",
+        "sha256": "7bd378b5debf828075927974d068b79e9b8b828ead8a2f2a87a7bec99fe7b3e3"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 11984,
+        "path": "src/desktop/desktop.hpp",
+        "sha256": "474dae5d51012d4b5295ac19860764f99f253fb5e08903749bc79578c3e9546f"
+      },
+      "snapshot": {
+        "bytes": 12133,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/src/desktop/desktop.hpp",
+        "sha256": "7bd378b5debf828075927974d068b79e9b8b828ead8a2f2a87a7bec99fe7b3e3"
+      }
+    },
+    {
+      "current": {
+        "bytes": 68049,
+        "path": "src/desktop/document.cpp",
+        "sha256": "243fff465a62bc3aec5a69c8a64c610179a1c76a1d452e048c2d709cb74f5bb7"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 66867,
+        "path": "src/desktop/document.cpp",
+        "sha256": "addbb9f1c1e2c4925ba42afd9a5a14f10a5ac66f1032b93cbef19a47c98afda6"
+      },
+      "snapshot": {
+        "bytes": 68049,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/src/desktop/document.cpp",
+        "sha256": "243fff465a62bc3aec5a69c8a64c610179a1c76a1d452e048c2d709cb74f5bb7"
+      }
+    },
+    {
+      "current": {
+        "bytes": 943,
+        "path": "src/desktop/geometry_number.hpp",
+        "sha256": "4fe2c4d23bb2065e9f3b6223ebd694bc73c5a3f9aac3f33c6e2d8e7d1d5e9b32"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 943,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/src/desktop/geometry_number.hpp",
+        "sha256": "4fe2c4d23bb2065e9f3b6223ebd694bc73c5a3f9aac3f33c6e2d8e7d1d5e9b32"
+      }
+    },
+    {
+      "current": {
+        "bytes": 1283,
+        "path": "src/desktop/headless_session_internal.hpp",
+        "sha256": "d6c5f1c4989b25eb54d064270e7359d0e5f402796ff5702e5ef0e48b872fb1c3"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 1240,
+        "path": "src/desktop/headless_session_internal.hpp",
+        "sha256": "8171fef27522d25c622217768407e434a40a7bec82e389efd7826764795235dc"
+      },
+      "snapshot": {
+        "bytes": 1283,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/src/desktop/headless_session_internal.hpp",
+        "sha256": "d6c5f1c4989b25eb54d064270e7359d0e5f402796ff5702e5ef0e48b872fb1c3"
+      }
+    },
+    {
+      "current": {
+        "bytes": 32840,
+        "path": "src/desktop/main.cpp",
+        "sha256": "4992dba647e64dc9f6c6f59e4d00a4578e72703d568b1539824e98798b8ea7af"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 30709,
+        "path": "src/desktop/main.cpp",
+        "sha256": "51c5e8e4621590abd6fe6a908d0c34ebb69181438b2e5847f77fd7df286d8124"
+      },
+      "snapshot": {
+        "bytes": 32840,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/src/desktop/main.cpp",
+        "sha256": "4992dba647e64dc9f6c6f59e4d00a4578e72703d568b1539824e98798b8ea7af"
+      }
+    },
+    {
+      "current": {
+        "bytes": 56297,
+        "path": "src/desktop/orthogonal.cpp",
+        "sha256": "64bdcccaf584b9018bf94469e20554f66c71b13129bb00c185130f777ba7e576"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 53789,
+        "path": "src/desktop/orthogonal.cpp",
+        "sha256": "c17d9e07f6e49dd22f5eacb09e711254bfa749f9962c03e6e79e383d0a5d8c9e"
+      },
+      "snapshot": {
+        "bytes": 56297,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/src/desktop/orthogonal.cpp",
+        "sha256": "64bdcccaf584b9018bf94469e20554f66c71b13129bb00c185130f777ba7e576"
+      }
+    },
+    {
+      "current": {
+        "bytes": 4878,
+        "path": "src/desktop/orthogonal.hpp",
+        "sha256": "4c1155ec6f1d537fb3b8e22b7799475081779c3a0bc9059d1ce0c92d8d93287b"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 4374,
+        "path": "src/desktop/orthogonal.hpp",
+        "sha256": "fce48fa5b1995d519aa8131fd14dd8cb95a7d8cf12259ad686581b2beda46f27"
+      },
+      "snapshot": {
+        "bytes": 4878,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/src/desktop/orthogonal.hpp",
+        "sha256": "4c1155ec6f1d537fb3b8e22b7799475081779c3a0bc9059d1ce0c92d8d93287b"
+      }
+    },
+    {
+      "current": {
+        "bytes": 14948,
+        "path": "src/desktop/planar_annotation_matrix.cpp",
+        "sha256": "70e935523cbfb06c2b6af2ff244db07c1bfe7022495c40ed9d2282f39b528701"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 14948,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/src/desktop/planar_annotation_matrix.cpp",
+        "sha256": "70e935523cbfb06c2b6af2ff244db07c1bfe7022495c40ed9d2282f39b528701"
+      }
+    },
+    {
+      "current": {
+        "bytes": 271,
+        "path": "src/desktop/planar_annotation_matrix.hpp",
+        "sha256": "7e54541106073384ba891aae30620a282ff7dc178fc5bba35ec1fcc1179135d3"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 271,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/src/desktop/planar_annotation_matrix.hpp",
+        "sha256": "7e54541106073384ba891aae30620a282ff7dc178fc5bba35ec1fcc1179135d3"
+      }
+    },
+    {
+      "current": {
+        "bytes": 30955,
+        "path": "src/desktop/planar_annotation_panel.cpp",
+        "sha256": "359c50ac80d738ff07e2af4a7fead268266dc52500e9e4b477756827804fa90e"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 30955,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/src/desktop/planar_annotation_panel.cpp",
+        "sha256": "359c50ac80d738ff07e2af4a7fead268266dc52500e9e4b477756827804fa90e"
+      }
+    },
+    {
+      "current": {
+        "bytes": 1493,
+        "path": "src/desktop/planar_annotation_panel.hpp",
+        "sha256": "33a1a265f4dd33a0c8e273cfd7dad07251bd9cb6a05c8fa16c4ec9126dd5e302"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 1493,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/src/desktop/planar_annotation_panel.hpp",
+        "sha256": "33a1a265f4dd33a0c8e273cfd7dad07251bd9cb6a05c8fa16c4ec9126dd5e302"
+      }
+    },
+    {
+      "current": {
+        "bytes": 12198,
+        "path": "src/desktop/planar_annotation_rebind.cpp",
+        "sha256": "4fafc8364bd8b85110dbd9e75b131e13986b010579ced9ba159f38c65607c23c"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 12198,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/src/desktop/planar_annotation_rebind.cpp",
+        "sha256": "4fafc8364bd8b85110dbd9e75b131e13986b010579ced9ba159f38c65607c23c"
+      }
+    },
+    {
+      "current": {
+        "bytes": 597,
+        "path": "src/desktop/planar_annotation_rebind.hpp",
+        "sha256": "04a0fe06a660f39844c48dd9c971cac709db8fd377c8c434e3d8f3babc9df649"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 597,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/src/desktop/planar_annotation_rebind.hpp",
+        "sha256": "04a0fe06a660f39844c48dd9c971cac709db8fd377c8c434e3d8f3babc9df649"
+      }
+    },
+    {
+      "current": {
+        "bytes": 24758,
+        "path": "src/desktop/planar_annotation_ui_probe.cpp",
+        "sha256": "9f60abaf454883e295d5c129135801d30e636733ce4827316dd972e2052652db"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 24758,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/src/desktop/planar_annotation_ui_probe.cpp",
+        "sha256": "9f60abaf454883e295d5c129135801d30e636733ce4827316dd972e2052652db"
+      }
+    },
+    {
+      "current": {
+        "bytes": 404,
+        "path": "src/desktop/planar_annotation_ui_probe.hpp",
+        "sha256": "765a4dad90f37af2e9a7a883bb316cdc057442e159ace9f91fbaf2184680b182"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 404,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/src/desktop/planar_annotation_ui_probe.hpp",
+        "sha256": "765a4dad90f37af2e9a7a883bb316cdc057442e159ace9f91fbaf2184680b182"
+      }
+    },
+    {
+      "current": {
+        "bytes": 848,
+        "path": "src/desktop/planar_annotation_visual.hpp",
+        "sha256": "6e0a889ee90b256a10537b643e7741bbeaf394bf08bcb8fedd5fa2e3410491d3"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 848,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/src/desktop/planar_annotation_visual.hpp",
+        "sha256": "6e0a889ee90b256a10537b643e7741bbeaf394bf08bcb8fedd5fa2e3410491d3"
+      }
+    },
+    {
+      "current": {
+        "bytes": 39150,
+        "path": "src/desktop/python.cpp",
+        "sha256": "1baf3207e1bd13edb2019b8f493b89ba17693e711872c82073eae292d6efadb3"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 38105,
+        "path": "src/desktop/python.cpp",
+        "sha256": "35ee46b22b1f54ff3cc434742763a2dd58f7ed16b52ec1eaacd004fc8dbeeee6"
+      },
+      "snapshot": {
+        "bytes": 39150,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/src/desktop/python.cpp",
+        "sha256": "1baf3207e1bd13edb2019b8f493b89ba17693e711872c82073eae292d6efadb3"
+      }
+    },
+    {
+      "current": {
+        "bytes": 23108,
+        "path": "src/desktop/selection_panel.cpp",
+        "sha256": "aa1c8cf0e4d29e173b49d9cfb1b7a4a594909752e74cd2d0135e18551ff12b00"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 23038,
+        "path": "src/desktop/selection_panel.cpp",
+        "sha256": "3f69d33f08a58d61f44a15d91bd7223bab15e3f6a0eb002f4e8a7029d289c782"
+      },
+      "snapshot": {
+        "bytes": 23108,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/src/desktop/selection_panel.cpp",
+        "sha256": "aa1c8cf0e4d29e173b49d9cfb1b7a4a594909752e74cd2d0135e18551ff12b00"
+      }
+    },
+    {
+      "current": {
+        "bytes": 549841,
+        "path": "src/desktop/window.cpp",
+        "sha256": "1fd607911fbf0a89f30d4f3719d3eecc1d46566f8aa27e0fae6a972a9c071103"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 544142,
+        "path": "src/desktop/window.cpp",
+        "sha256": "696dc9b1aca17ff9ed568eba10653254961bed52745e89b6b2ce9c57ccda098d"
+      },
+      "snapshot": {
+        "bytes": 549841,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/src/desktop/window.cpp",
+        "sha256": "1fd607911fbf0a89f30d4f3719d3eecc1d46566f8aa27e0fae6a972a9c071103"
+      }
+    },
+    {
+      "current": {
+        "bytes": 53976,
+        "path": "src/imagejxx/__init__.py",
+        "sha256": "8a96598bf8ddccc5bb365dd9b1c65bc0aa374fca957b1826dfe1041ee123559a"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 52904,
+        "path": "src/imagejxx/__init__.py",
+        "sha256": "a07d8585cbb66df08d01e7a1d213161c14409a1ab90fecffbe6168973be853cb"
+      },
+      "snapshot": {
+        "bytes": 53976,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/src/imagejxx/__init__.py",
+        "sha256": "8a96598bf8ddccc5bb365dd9b1c65bc0aa374fca957b1826dfe1041ee123559a"
+      }
+    },
+    {
+      "current": {
+        "bytes": 8811,
+        "path": "src/native/axis_remap.cpp",
+        "sha256": "7f7f1789a225772d7d20036ca32a33f0e4787dbf7410ae9aa6dde12f18cb97ea"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 6694,
+        "path": "src/native/axis_remap.cpp",
+        "sha256": "f52daf6e9d5cfc21739faad57666fb69bb961005e58a9e269dfcb34c9a42079f"
+      },
+      "snapshot": {
+        "bytes": 8811,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/src/native/axis_remap.cpp",
+        "sha256": "7f7f1789a225772d7d20036ca32a33f0e4787dbf7410ae9aa6dde12f18cb97ea"
+      }
+    },
+    {
+      "current": {
+        "bytes": 29399,
+        "path": "src/native/bindings.cpp",
+        "sha256": "621accc8c4ac6f3b587ba483b4619f83dc3609b08b3052cf5d91128d9b6b5a05"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 29219,
+        "path": "src/native/bindings.cpp",
+        "sha256": "a21c8f7c066fa6f61091698e9aa8274fe6009341cff98a50638740437ed498cf"
+      },
+      "snapshot": {
+        "bytes": 29399,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/src/native/bindings.cpp",
+        "sha256": "621accc8c4ac6f3b587ba483b4619f83dc3609b08b3052cf5d91128d9b6b5a05"
+      }
+    },
+    {
+      "current": {
+        "bytes": 51870,
+        "path": "src/native/document.cpp",
+        "sha256": "1399c397a4124499fd85a91cf67a7710a5ed359e36d2c13c418774d7bb23cdd8"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 51789,
+        "path": "src/native/document.cpp",
+        "sha256": "e89ac8b26726e5372a0605eb09f4cd1ac3cf2231e35ae19fc4f3162101270ebe"
+      },
+      "snapshot": {
+        "bytes": 51870,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/src/native/document.cpp",
+        "sha256": "1399c397a4124499fd85a91cf67a7710a5ed359e36d2c13c418774d7bb23cdd8"
+      }
+    },
+    {
+      "current": {
+        "bytes": 7560,
+        "path": "src/native/planar_annotation_command.cpp",
+        "sha256": "d600c4afbd43e9cc43fd24c4deaaa6e63c6da75a8658c752b3ac5752f73ea4b1"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 7560,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/src/native/planar_annotation_command.cpp",
+        "sha256": "d600c4afbd43e9cc43fd24c4deaaa6e63c6da75a8658c752b3ac5752f73ea4b1"
+      }
+    },
+    {
+      "current": {
+        "bytes": 3059,
+        "path": "src/native/planar_annotation_command_bindings.cpp",
+        "sha256": "244baa0a1c14ee5f450dbc8bd364902461b197c4a05db5950547a99ba5bdd8de"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 3059,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/src/native/planar_annotation_command_bindings.cpp",
+        "sha256": "244baa0a1c14ee5f450dbc8bd364902461b197c4a05db5950547a99ba5bdd8de"
+      }
+    },
+    {
+      "current": {
+        "bytes": 10551,
+        "path": "src/native/planar_annotations.cpp",
+        "sha256": "47bfd6b51899daa0c4eab843f240d05e53ee72a75d02d9d6fa3ed2fae586b6f6"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 10551,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/src/native/planar_annotations.cpp",
+        "sha256": "47bfd6b51899daa0c4eab843f240d05e53ee72a75d02d9d6fa3ed2fae586b6f6"
+      }
+    },
+    {
+      "current": {
+        "bytes": 3106,
+        "path": "src/native/planar_annotations_bindings.cpp",
+        "sha256": "8be9b8d4bc7cb977ec056dfabf35cd260a701cea9a25c8f5c50f1840c63e7d2a"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 3106,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/src/native/planar_annotations_bindings.cpp",
+        "sha256": "8be9b8d4bc7cb977ec056dfabf35cd260a701cea9a25c8f5c50f1840c63e7d2a"
+      }
+    },
+    {
+      "current": {
+        "bytes": 1938,
+        "path": "tests/native/test_planar_annotation_command.cpp",
+        "sha256": "aca0a2551771e27e0a853fe0ba1dd9bafbb2eba731883c81d86584ca3fa8c6b2"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 1938,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/tests/native/test_planar_annotation_command.cpp",
+        "sha256": "aca0a2551771e27e0a853fe0ba1dd9bafbb2eba731883c81d86584ca3fa8c6b2"
+      }
+    },
+    {
+      "current": {
+        "bytes": 3167,
+        "path": "tests/native/test_planar_annotation_host.cpp",
+        "sha256": "557935c06cbea59d6ab2e0f9f04e9180f2cf600c5b1ee495643f312206aed452"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 3167,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/tests/native/test_planar_annotation_host.cpp",
+        "sha256": "557935c06cbea59d6ab2e0f9f04e9180f2cf600c5b1ee495643f312206aed452"
+      }
+    },
+    {
+      "current": {
+        "bytes": 3814,
+        "path": "tests/native/test_planar_annotations.cpp",
+        "sha256": "219d451d5b0aa452dc0e7e69f9f15f7fa8a2dc1c2a30a9f69b492cc79bb0412e"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 3814,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/tests/native/test_planar_annotations.cpp",
+        "sha256": "219d451d5b0aa452dc0e7e69f9f15f7fa8a2dc1c2a30a9f69b492cc79bb0412e"
+      }
+    },
+    {
+      "current": {
+        "bytes": 77416,
+        "path": "tests/python/test_orthogonal.py",
+        "sha256": "b2a29f714c85da5c5e66eb6ee9a5e0ad5bc253565c382aa8fe04f7c25a2cd681"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 75627,
+        "path": "tests/python/test_orthogonal.py",
+        "sha256": "7d7cc58348cfe7171acbe96a4d9b383fd06f9c781ccc17a3738dca53f653643e"
+      },
+      "snapshot": {
+        "bytes": 77416,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/tests/python/test_orthogonal.py",
+        "sha256": "b2a29f714c85da5c5e66eb6ee9a5e0ad5bc253565c382aa8fe04f7c25a2cd681"
+      }
+    },
+    {
+      "current": {
+        "bytes": 5154,
+        "path": "tests/python/test_planar_annotation_command.py",
+        "sha256": "ac3f5a00b7b29f1f95a5423018dbdddb412fe915b5b7c70d80f2d6fe6a2728f8"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 5154,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/tests/python/test_planar_annotation_command.py",
+        "sha256": "ac3f5a00b7b29f1f95a5423018dbdddb412fe915b5b7c70d80f2d6fe6a2728f8"
+      }
+    },
+    {
+      "current": {
+        "bytes": 9768,
+        "path": "tests/python/test_planar_annotation_matrix_ui.py",
+        "sha256": "9a3a539139ab458066dbf36b40b2022547797b243d37bdcb4489051e73fb98bf"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 9768,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/tests/python/test_planar_annotation_matrix_ui.py",
+        "sha256": "9a3a539139ab458066dbf36b40b2022547797b243d37bdcb4489051e73fb98bf"
+      }
+    },
+    {
+      "current": {
+        "bytes": 5425,
+        "path": "tests/python/test_planar_annotation_rebind_ui.py",
+        "sha256": "63d5e214c807bee76928517c20ceb7108afbc141663d779497573199573d453d"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 5425,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/tests/python/test_planar_annotation_rebind_ui.py",
+        "sha256": "63d5e214c807bee76928517c20ceb7108afbc141663d779497573199573d453d"
+      }
+    },
+    {
+      "current": {
+        "bytes": 5253,
+        "path": "tests/python/test_planar_annotation_tools_ui.py",
+        "sha256": "d55d9928d9ce6b491ea0e0ef14d01531c3e8d393f7607f3205f558b5d4b63c5d"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 5253,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/tests/python/test_planar_annotation_tools_ui.py",
+        "sha256": "d55d9928d9ce6b491ea0e0ef14d01531c3e8d393f7607f3205f558b5d4b63c5d"
+      }
+    },
+    {
+      "current": {
+        "bytes": 5803,
+        "path": "tests/python/test_planar_annotations.py",
+        "sha256": "6062ea6f4f2ea722202c1c25cffba551c870224e09ce4b60e047c78153112672"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 5803,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/tests/python/test_planar_annotations.py",
+        "sha256": "6062ea6f4f2ea722202c1c25cffba551c870224e09ce4b60e047c78153112672"
+      }
+    },
+    {
+      "current": {
+        "bytes": 3221,
+        "path": "tests/python/test_planar_annotations_ui.py",
+        "sha256": "957086514eacf4aed24bcd2c76cace3273cfc4db8382a9ab891cb5dc9542e4a6"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 3221,
+        "path": "build/p06p-edges001/registration001/source-snapshots001/tests/python/test_planar_annotations_ui.py",
+        "sha256": "957086514eacf4aed24bcd2c76cace3273cfc4db8382a9ab891cb5dc9542e4a6"
+      }
+    }
+  ],
+  "unchanged_dependency_scope": true,
+  "unresolved_source_origin_or_preimage_gaps": []
+}

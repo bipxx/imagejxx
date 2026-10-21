@@ -1,0 +1,126 @@
+{
+  "state": "reviewed_and_qualified",
+  "scope": "Bounded predictor-free tiled Deflate for UInt16, UInt8, RGB8 and Float32; C++ service, Python API and both Dear ImGui hosts",
+  "qualification": {
+    "path": "build/p08n-deflate-tiles001/qualification001.json",
+    "bytes": 8725,
+    "sha256": "20e67a34fe468042b694dc3ee0092de54c340550d30a46832e4a17d20a20576f"
+  },
+  "implementation_review": [
+    "Ordinals 0..27 and old producers remain unchanged; append ordinals 28..31 and strict version 12 requiring tiled Deflate without prediction.",
+    "Checked tile geometry charges component/sample widths, raw and encoded bounds and codec allocations. Uncompressed row streaming remains unchanged.",
+    "Each compressed tile is one exact complete zlib stream; truncation, corruption, concatenation, trailing bytes and short/over-expansion are refused. Padding is ignored during sample admission.",
+    "Output fills full 64x64 tiles with zero padding, patches bounded offset/count fields and preserves canonical source words. Failures retain exclusive staging and atomic replacement.",
+    "Shared controls invalidate consent and estimates. Actual source/installed hosts preserve XYZ source words, IEEE failure/recovery and inactive replay.",
+    "Incremental native sources are byte-verified; old qualified products remain in their own install001 prefix. Registered CTest scratch is archived with symlinks stored literally before fresh runs."
+  ],
+  "validation": {
+    "native_suites": {
+      "windows": 87,
+      "linux": 238
+    },
+    "previous_python_ids_retained": 11170,
+    "new_python_cases": 1085,
+    "sdk_formats": 32,
+    "linux_cpp_scenarios_per_build": 157,
+    "new_ui_observations": 96,
+    "new_xyz_cpu_readbacks": 288,
+    "independent_libtiff_native_export_reads": 1856
+  },
+  "python": [
+    {
+      "stage": "windows-python-full001",
+      "cases": 12255,
+      "passed": 12255,
+      "windows_only_exemptions": 0,
+      "xml": {
+        "path": "build/p08n-deflate-tiles001/windows-python-full001/pytest.xml",
+        "bytes": 1814606,
+        "sha256": "34f1286a128d0640b48d1469811f5ffeb8e06dda14af179977a3626a33829367"
+      }
+    },
+    {
+      "stage": "windows-python-installed001",
+      "cases": 12255,
+      "passed": 12255,
+      "windows_only_exemptions": 0,
+      "xml": {
+        "path": "build/p08n-deflate-tiles001/windows-python-installed001/pytest.xml",
+        "bytes": 1814605,
+        "sha256": "1be43910fe127f8c5711a38096a59fbf33d8d32aef68b3f3125e6a05addd667a"
+      }
+    },
+    {
+      "stage": "python-source001",
+      "cases": 12255,
+      "passed": 12245,
+      "windows_only_exemptions": 10,
+      "xml": {
+        "path": "build/p08n-deflate-tiles001/python-source001/pytest.xml",
+        "bytes": 1816986,
+        "sha256": "e6e9eeb6148cc569173dd34c4e68e43e0a899e186c8845139f4be91b863c0f7a"
+      }
+    },
+    {
+      "stage": "python-installed001",
+      "cases": 12255,
+      "passed": 12245,
+      "windows_only_exemptions": 10,
+      "xml": {
+        "path": "build/p08n-deflate-tiles001/python-installed001/pytest.xml",
+        "bytes": 1816986,
+        "sha256": "5decf85a11436a4209636a11596729a93d56011f26ad00abffd9da493747d926"
+      }
+    }
+  ],
+  "input_oracle": {
+    "path": "build/p08n-deflate-tiles001/oracle002/evidence001.json",
+    "bytes": 1283,
+    "sha256": "356cd3ef69f0e2f5ec47bccee75ef8a0670ac8e53ee0b2108ca5bae2dc21bf98"
+  },
+  "windows_source_exports": {
+    "path": "build/p08n-deflate-tiles001/oracle-exports001/evidence001.json",
+    "bytes": 386387,
+    "sha256": "572358f5433cc2ad269fc33605542b55283a1a7684e02e4234492251ba57fd21"
+  },
+  "windows_installed_exports": {
+    "path": "build/p08n-deflate-tiles001/oracle-installed001/evidence001.json",
+    "bytes": 388474,
+    "sha256": "37bb3c05b0ebd8761c26f2b329c2937cfc1458e6ee4af9b3d4efacc81cfdf2af"
+  },
+  "linux_exports": {
+    "path": "build/p08n-deflate-tiles001/linux-oracle001/evidence001.json",
+    "bytes": 248744,
+    "sha256": "3aaf24b8cfc8c7ecf878e2c70d8243fb4ba7949e558ba203d79816b1962b445b"
+  },
+  "installed_isolation": {
+    "path": "build/p08n-deflate-tiles001/isolation001/evidence001.json",
+    "bytes": 783,
+    "sha256": "342a18f7cacee54c8609156f12bc2f6cfcde984a0fe108c512ca7a33d41629b6"
+  },
+  "benchmark": {
+    "path": "build/p08n-deflate-tiles001/benchmark001/evidence001.json",
+    "bytes": 12053,
+    "sha256": "a112305f60a3bd3df77f388e1c5a54da744b748cb195ad1d3c8f91253fd494fa"
+  },
+  "licensing": {
+    "dependency_versions_changed": false,
+    "noncommercial_components_added": false,
+    "qt_added": false,
+    "linux_delivery": {
+      "path": "build/p08n-deflate-tiles001/delivery001/evidence001.json",
+      "bytes": 37946,
+      "sha256": "bb73bebc9c608fc25f950949aaa42d60007aac2494ae592df924a8fbe64d4c77"
+    }
+  },
+  "reference_limit": "LibTIFF 4.7.1 and tifffile validate tiles; pinned ImageJ tiled rejection was observed in P08l. No ImageJ tiled reopening compatibility claim.",
+  "remaining": [
+    "PackBits/LZW tiles, tiled prediction, BigTIFF, broader metadata and additional sample layouts.",
+    "Formal reciprocal requirement/fixture/accepted-run registration and G080/release certification remain pending."
+  ],
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  }
+}

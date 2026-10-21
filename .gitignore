@@ -1,0 +1,17 @@
+.venv/
+.cache/
+.tools/
+build/
+dist/
+_skbuild/
+*.egg-info/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.pyc
+*.pyd
+*.so
+*.dylib
+/imgui.ini
+
+.tmp/

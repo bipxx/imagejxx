@@ -1,0 +1,94 @@
+{
+  "state": "reviewed_and_qualified",
+  "scope": "P08o bounded PackBits/LZW tiled UInt16/UInt8/RGB8/Float32 implementation; no family/release certification or ImageJ tiled reopening claim",
+  "qualification": {
+    "path": "build/p08o-packbits-lzw-tiles001/qualification001.json",
+    "bytes": 12620,
+    "sha256": "f6317af33c7f7035f5991390491f2011b847b0a5a6471137799d2e10b4ccbdc1"
+  },
+  "implementation_review": [
+    "Shared bounded codec dispatcher preserves PackBits tile-row encoding and existing strict LZW decoder.",
+    "Append-only ordinals 32..39 and strict version 13; versions 1..12 and strip defaults unchanged.",
+    "Logical sample admission excludes edge padding; exact source words, checked budgets and atomic replacement verified.",
+    "Deterministic queued admission repairs allocation-test calibration without weakening prefix/ordinal/atomicity assertions."
+  ],
+  "validation": {
+    "native_suites": {
+      "windows": 87,
+      "linux": 238
+    },
+    "previous_python_ids_retained": 12255,
+    "new_python_cases": 1765,
+    "sdk_formats": 40,
+    "linux_cpp_scenarios_per_build": 181,
+    "new_ui_observations": 192,
+    "new_xyz_cpu_readbacks": 576,
+    "independent_libtiff_native_export_reads": 2944
+  },
+  "python": [
+    {
+      "stage": "windows-python-full001",
+      "cases": 14020,
+      "passed": 14020,
+      "windows_only_exemptions": 0,
+      "xml": {
+        "path": "build/p08o-packbits-lzw-tiles001/windows-python-full001/pytest.xml",
+        "bytes": 2139231,
+        "sha256": "c88dff6e10403d64f4a900fb3effc840ebfcde6851cf0de85d549893f10cf42d"
+      }
+    },
+    {
+      "stage": "windows-python-installed001",
+      "cases": 14020,
+      "passed": 14020,
+      "windows_only_exemptions": 0,
+      "xml": {
+        "path": "build/p08o-packbits-lzw-tiles001/windows-python-installed001/pytest.xml",
+        "bytes": 2139231,
+        "sha256": "1f4a356d7dec9641d7cf6317b87b5b14ed8979fbf12729a75b1dd8160cfb5735"
+      }
+    },
+    {
+      "stage": "python-source001",
+      "cases": 14020,
+      "passed": 14010,
+      "windows_only_exemptions": 10,
+      "xml": {
+        "path": "build/p08o-packbits-lzw-tiles001/python-source001/pytest.xml",
+        "bytes": 2141612,
+        "sha256": "66fa6b061197a006be15383e236f08d1205f956aace6bd3ec51c2012c0b934f4"
+      }
+    },
+    {
+      "stage": "python-installed001",
+      "cases": 14020,
+      "passed": 14010,
+      "windows_only_exemptions": 10,
+      "xml": {
+        "path": "build/p08o-packbits-lzw-tiles001/python-installed001/pytest.xml",
+        "bytes": 2141612,
+        "sha256": "049998deee47bb0ebecb703efb1e37c186ce810e9bc794816df49f14fc2576f6"
+      }
+    }
+  ],
+  "input_oracle": {
+    "path": "build/p08o-packbits-lzw-tiles001/oracle002/evidence001.json",
+    "bytes": 1293,
+    "sha256": "e064f27d5d29c155397d9aeed1bcc1e1b288dcbc03183cadcc48da46bae18503"
+  },
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  },
+  "remaining": [
+    "Tiled prediction; BigTIFF and broader layouts/metadata.",
+    "Formal reciprocal fixture/accepted-run registration and family/release certification.",
+    "Remaining audited ImageJ/Fiji editor features."
+  ],
+  "historical_failures": [
+    "Focused initial corpus cut only a legal PackBits no-op; the short-expansion fixture now truncates data.",
+    "First Linux product run exposed nondeterministic allocation-test calibration; test-only scheduler admission gate fixes it.",
+    "First Windows standalone publication wrapper omitted runtime DLL search path; corrected wrapper passes ten repetitions."
+  ]
+}

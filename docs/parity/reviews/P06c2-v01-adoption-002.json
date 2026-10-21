@@ -1,0 +1,155 @@
+{
+  "schema": "imagejxx.p06c2-v01-adoption",
+  "schema_version": 1,
+  "id": "P06c2.V01.002",
+  "status": "frozen_for_implementation",
+  "date": "2026-10-16",
+  "scope": "Composite Max selection with faithful resolved Max or Min state; consumed Min compositor is explicitly added so observed Max-entry outputs are representable. This does not accept standalone SelectMin/Invert/LUT-edit workflows or a whole family.",
+  "base_proposal": {
+    "path": "docs/parity/reviews/P06c2-v01-contract.json",
+    "sha256": "1d14863aada83995799e4ee58088d9eaa35cdc517d560ad357c4ae88eb6d3326",
+    "bytes": 51187
+  },
+  "reference_inputs": [
+    {
+      "path": "build/p06c2-001/reference-prepare-003.json",
+      "sha256": "0d8c5ccfe292e4502c00748b589d90eef0441827eafc332a2250f3beb24e0bf4",
+      "bytes": 3057
+    },
+    {
+      "path": "build/p06c2-001/reference-capture-002.json",
+      "sha256": "e8e45900e39d0d8dc1eb450a4c95800127a88065771e1578ae4a35fc0328ec88",
+      "bytes": 4202
+    },
+    {
+      "path": "build/p06c2-001/reference-reader-002.json",
+      "sha256": "fac9d32f4fc77f6b49300aa0cd658a24ef049760e6b246a7bed6120337b96da3",
+      "bytes": 5677
+    },
+    {
+      "path": "build/references/composite-max-imagej154r-001/capture-002/reference.stdout",
+      "sha256": "775cc9eebe75d0b9938504226a9b6747504c8e4b9b88979cbc7e92cfaf394adf",
+      "bytes": 1673896
+    },
+    {
+      "path": "tests/python/test_composite_max_reference.py",
+      "sha256": "17954cda6ae9a0ac7bff699785961923ab4ac5b30b58d87667c4d4958c8d3e61",
+      "bytes": 45146
+    },
+    {
+      "path": "docs/parity/channel-display-max-commercial-review-001.json",
+      "sha256": "d437d1a745cc53b25ded2f35f88dec1021a11c87c7ce2d82b4d42249777aa55a",
+      "bytes": 6804
+    }
+  ],
+  "precedence": "All exact base-proposal contracts apply except the explicitly superseded fields below. This adoption is the effective implementation contract; the base remains an immutable reviewed proposal.",
+  "superseded": {
+    "state_contract.v2.projection.choices": [
+      "sum",
+      "max",
+      "min"
+    ],
+    "cpp_api.ChannelDisplayProjection": "enum class ChannelDisplayProjection { Sum, Max, Min };",
+    "request_dispatch.SelectMax.result": "Native resolves qualified transition once; complete V2 state has projection Max or Min, Composite for C<=8 or Color fallback above8; optional deliberate C0 navigation is separate.",
+    "action_contract.v2.select_max_consistency": "V2 state; projection Max or Min only, never Sum; mode Composite C<=8 or Color C>8; reset arrays empty; display_dependency nonnull; navigation null or explicit C0 only. No transform or reclassification during decode/replay.",
+    "transition_decision_table": "All R12-R18 hosted outcomes adopted at exact qualified input/table/position identities. No owned forced-Max correction or atomic refusal of observed Min outcomes.",
+    "ui_owned_contract.max_visibility": "Retain flags when starting Composite; when entering Composite from Color/Gray set all actual channels visible. Existing Color/Gray/ordinary Composite action behavior remains.",
+    "remaining_freeze_boundary": "Representation and transition policy settled by this adoption. Freeze exact implementation source and native/API/SDK/host/physical gate membership next; do not repeat qualified reference entry."
+  },
+  "select_max_algorithm": [
+    "Require a captured recognized V1/V2 channel state; no supplied state/reset channels; absent, future, malformed or unsupported state refuses.",
+    "Validate source/position and positive limits; checked preflight the C-dependent state/table/record working footprint before cloning/classification/transformation or callbacks. No source pixel/provider reads or Auto range scan.",
+    "Copy immutable consumed state before any callback. Classify a gray ascending processor table in Grayscale or singleton Composite; otherwise classify the active C stored named/custom table.",
+    "Source classifier is inverted exactly when no adjacent RGB-sum increase exists for indices1..254 inclusive; exclude the254-to255 step. Constant tables classify inverted.",
+    "Begin resolved projection Max. If active processor classifies inverted, transform every RGB entry using rgb[k]+255-min(rgb)-max(rgb), retain ranges, store explicit custom tables, and record deliberate navigation C0 even if original C0.",
+    "After transformation classify the resulting C0 table; if inverted the resolved projection is Min. Preserve captured T/Z and every unrelated display field.",
+    "If starting mode was not Composite set all actual channel flags true; otherwise retain all flags. Normalize requested Composite above8 to Color while retaining full state/version/projection.",
+    "Return immutable V2 complete state/action, historical captured display revision and optional C effect. Fresh publication checks Pixels/Metadata/Display; strict replay checks binding but applies stored resolved effects to fresh navigation without reclassification."
+  ],
+  "rendering": {
+    "admission": "Existing U8/U16/F32 scalar and quietNaN policy; all existing processor mapping/range defaults unchanged.",
+    "max": "Component-wise maximum of mapped visible C bytes.",
+    "min": "Component-wise minimum of mapped visible C bytes. Initialize from first actual contributor, then take minima; never seed Min accumulation with black.",
+    "owned_empty_policy": "No visible contributors returns fresh black for all projections with no provider reads. All pixels including pixel0 are deterministic; do not reproduce upstream stale-cache/empty artifacts.",
+    "inactive_projection": "Color/Grayscale ignore stored projection; singleton Composite retains existing gray rule. Preserve V2 projection/version during ordinary edits.",
+    "capture_before_callback": "Capture selected effective projection, contributing channels, tables and ranges before provider/checkpoint callbacks. Do not reread mutable caller state in kernel.",
+    "retained_limits": "Reuse16MiPixel/128MiB native compositor limits and configured clamp; no TCZ copies or total-process-memory claim."
+  },
+  "metadata_preflight": {
+    "new_intent": "SelectMax is metadata-only. Positive max_pixels/max_working_bytes required; max_pixels is not an image-area admission limit for this intent because no pixels are allocated/read. Bound source-derived C state/table/normalized record copies with checked arithmetic against max_working_bytes before cloning/callbacks; report/refuse oversized state.",
+    "old_actions": "Existing Set/Disable metadata-only callback behavior and Reset live-scan semantics unchanged.",
+    "cancellation_order": "Validate request/source and checked working preflight first. Valid pre-canceled SelectMax throws OperationCancelled before user checkpoint callbacks. Own the captured state/table inputs before the first user callback; poll existing cancellation/checkpoint at bounded metadata work boundaries and before return. No publication/record append is performed by resolver. Existing Set/Disable callbacks remain untouched.",
+    "above8": "SelectMax C>8 Color fallback and full-C flags/table transformation follow the explicitly owned normalization policy. R09 proves programmatic fallback only, not real Channels input; do not label this extension hosted transition parity."
+  },
+  "compatibility": [
+    "V1 exact bytes/fields/default SUM and old aggregate source spellings remain unchanged.",
+    "V2 SUM/Max/Min retention is explicit; future V3 headers remain opaque in generic native transport and refuse interpretation.",
+    "Appending state fields changes C++ layout: rebuild coherent core/headers/bindings/desktop/SDK; no mixed old/new ABI claim.",
+    "Strict full original validation before replay/rebind; replay never reruns LUT transforms/Reset; optional C0 effect preserves current T/Z.",
+    "Record navigation nonnull implies select_max and C0; resolved Max/Min state alone does not authenticate a historical transform.",
+    "Typed direct Set V2 Max/Min is distinct from source-derived SelectMax; no implied LUT/position changes.",
+    "Ordinary Composite UI explicitly selects SUM, retaining V2 identity; Max always queues one native intent even when already Max.",
+    "Panel displays Composite Min when the resolved state is Min; it does not silently label it Max or expose an unqualified standalone Min-entry intent."
+  ],
+  "native_gate": {
+    "new_files": [
+      "tests/native/test_channel_display_projection.cpp",
+      "tests/native/test_channel_display_command_v2.cpp"
+    ],
+    "groups": [
+      "projection.state",
+      "projection.mapping",
+      "projection.transition",
+      "command_v2.records",
+      "command_v2.resolve",
+      "command_v2.replay",
+      "command_v2.rebind",
+      "command_v2.limits"
+    ],
+    "per_group_seconds": 60,
+    "prior_regression_groups": [
+      "channel_display.state",
+      "channel_display.mapping",
+      "channel_display.ranges",
+      "channel_display.limits",
+      "channel_display_command.records",
+      "channel_display_command.replay",
+      "channel_display_command.mutations",
+      "channel_display_command.reset"
+    ],
+    "acceptance": "Exact independent membership frozen before first affected build. Developer native checks are intermediate; installed API/core-only SDK/public desktop bindings/host/paired physical/persistence/regression/artifact gates remain mandatory."
+  },
+  "implementation_owners": {
+    "root": [
+      "Window",
+      "panel",
+      "native Python bindings",
+      "CMake",
+      "build/install/source/gate integration",
+      "docs/manifests"
+    ],
+    "state_worker": [
+      "include/imagejxx/channel_display.hpp",
+      "src/native/channel_display.cpp"
+    ],
+    "command_worker": [
+      "include/imagejxx/channel_display_command.hpp",
+      "src/native/channel_display_command.cpp"
+    ],
+    "assertion_worker": [
+      "tests/native/test_channel_display_projection.cpp",
+      "tests/native/test_channel_display_command_v2.cpp"
+    ]
+  },
+  "acceptance": {
+    "product_verified": false,
+    "family_complete": false,
+    "goal_complete": false,
+    "no_new_incorporated_components": true
+  },
+  "classifier_context_policy": {
+    "authority": "Native intent classifies native state, not historical Java processor cache state. Grayscale and singleton Composite use gray; otherwise active stored LUT. This is a declared owned deterministic policy outside the qualified hosted rows.",
+    "qualified_matches": "R12-R18 first selections and R18 repeat use their exact observed state/table/position results.",
+    "not_claimed": "After R14 Gray-to-Composite, upstream can retain a gray processor base LUT while stored selected LUT is inverted; a later unobserved repeated click may differ from the native state-derived policy. No cache state is invented/persisted; retain this compatibility limitation for full G033 workflow review."
+  }
+}

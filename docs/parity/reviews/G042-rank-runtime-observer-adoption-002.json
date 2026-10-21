@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "id": "G042.rank.runtime-observer.adoption002",
+  "state": "adopted_bounded_untimed_viewport_preparation_only",
+  "acceptance": false,
+  "base": {
+    "path": "docs/parity/reviews/G042-rank-runtime-observer-adoption-001.json",
+    "bytes": 4235,
+    "sha256": "c6a9298e5249037ff77eb7d153a3bfc2b2f743ab4b535e999c692e6a67b61272"
+  },
+  "first_feasibility": {
+    "path": "build/p06f-001/runtime-feasibility-001.json",
+    "bytes": 817600,
+    "sha256": "e7b12491e0212ac1633c70194c233ffe2cfc8816ef242345b64dfd7b488195bd"
+  },
+  "observations": [
+    {
+      "context": "imgui_cpp",
+      "product_report": {
+        "path": "build\\p06f-001\\runtime-feasibility001\\imgui_cpp\\run\\rank-runtime.json",
+        "bytes": 389112,
+        "sha256": "635b8c9530fc0d1ac9342687f94d7a60243a7775bfbc0a07e4fc080c38cef372"
+      },
+      "preview_rect": [
+        68.0,
+        784.0,
+        143.0,
+        811.0
+      ],
+      "rank_ok_input_count": 0,
+      "apply_submit_count": 0,
+      "trials": [
+        {
+          "id": "C.G042.rank-imagej.processing-editor.001.imgui_cpp.uint8.minimum.preview.preview.not_submitted.cold.1.attempt1",
+          "endpoint": "preview",
+          "required_initial_state": "not_submitted",
+          "status": "observed",
+          "reason": "Required independently matching actual endpoint observed",
+          "eligible": true
+        },
+        {
+          "id": "C.G042.rank-imagej.processing-editor.001.imgui_cpp.uint8.minimum.apply.apply.not_submitted.cold.1.attempt1",
+          "endpoint": "apply",
+          "required_initial_state": "not_submitted",
+          "status": "timeout",
+          "reason": "Cell/trial deadline won before endpoint observation",
+          "eligible": false
+        },
+        {
+          "id": "C.G042.rank-imagej.processing-editor.001.imgui_cpp.uint8.minimum.cancel.apply.queued.cold.1.attempt1",
+          "endpoint": "cancel",
+          "required_initial_state": "queued",
+          "status": "timeout",
+          "reason": "Cell/trial deadline won before endpoint observation",
+          "eligible": false
+        },
+        {
+          "id": "C.G042.rank-imagej.processing-editor.001.imgui_cpp.uint8.minimum.cancel.apply.running.cold.1.attempt1",
+          "endpoint": "cancel",
+          "required_initial_state": "running",
+          "status": "timeout",
+          "reason": "Cell/trial deadline won before endpoint observation",
+          "eligible": false
+        },
+        {
+          "id": "C.G042.rank-imagej.processing-editor.001.imgui_cpp.uint8.minimum.cancel.preview.ready.cold.1.attempt1",
+          "endpoint": "cancel",
+          "required_initial_state": "ready",
+          "status": "observed",
+          "reason": "Required independently matching actual endpoint observed",
+          "eligible": true
+        }
+      ]
+    },
+    {
+      "context": "imgui_python",
+      "product_report": {
+        "path": "build\\p06f-001\\runtime-feasibility001\\imgui_python\\run\\rank-runtime.json",
+        "bytes": 389364,
+        "sha256": "774643d2b5090f4d5666aca288c79edf01c8565c55fd8b9a05b1ef0690701f1a"
+      },
+      "preview_rect": [
+        68.0,
+        784.0,
+        143.0,
+        811.0
+      ],
+      "rank_ok_input_count": 0,
+      "apply_submit_count": 0,
+      "trials": [
+        {
+          "id": "C.G042.rank-imagej.processing-editor.001.imgui_python.uint8.minimum.preview.preview.not_submitted.cold.1.attempt1",
+          "endpoint": "preview",
+          "required_initial_state": "not_submitted",
+          "status": "observed",
+          "reason": "Required independently matching actual endpoint observed",
+          "eligible": true
+        },
+        {
+          "id": "C.G042.rank-imagej.processing-editor.001.imgui_python.uint8.minimum.apply.apply.not_submitted.cold.1.attempt1",
+          "endpoint": "apply",
+          "required_initial_state": "not_submitted",
+          "status": "timeout",
+          "reason": "Cell/trial deadline won before endpoint observation",
+          "eligible": false
+        },
+        {
+          "id": "C.G042.rank-imagej.processing-editor.001.imgui_python.uint8.minimum.cancel.apply.queued.cold.1.attempt1",
+          "endpoint": "cancel",
+          "required_initial_state": "queued",
+          "status": "timeout",
+          "reason": "Trial deadline reached before its required observed endpoint",
+          "eligible": false
+        },
+        {
+          "id": "C.G042.rank-imagej.processing-editor.001.imgui_python.uint8.minimum.cancel.apply.running.cold.1.attempt1",
+          "endpoint": "cancel",
+          "required_initial_state": "running",
+          "status": "timeout",
+          "reason": "Cell/trial deadline won before endpoint observation",
+          "eligible": false
+        },
+        {
+          "id": "C.G042.rank-imagej.processing-editor.001.imgui_python.uint8.minimum.cancel.preview.ready.cold.1.attempt1",
+          "endpoint": "cancel",
+          "required_initial_state": "ready",
+          "status": "observed",
+          "reason": "Required independently matching actual endpoint observed",
+          "eligible": true
+        }
+      ]
+    }
+  ],
+  "diagnosis": "Both captures reached Preview near bottom of820px viewport, but no rank.ok input or Apply submission occurred. Missing queued/running states are not yet natural-state infeasibility evidence.",
+  "amendment": [
+    "After fixed range editing and before timed baseline/input, at most one untimed real drag of observed Rank title bar moves panel to viewport work top+8.",
+    "Use actual observed MoveID and enabled title rectangle; position/down/move/up occupy separate normal frames. Record actual input and resulting window motion; verify visible required control afterward.",
+    "No direct ImGui repositioning, poll/order/scheduler manipulation, workload expansion, sleeps, artificial jobs, altered deadlines or acceptance.",
+    "Retain original001timeouts and allfirstsource/products. Failed drag or inaccessible action stays explicit failed/incomplete, never natural-state ineligible."
+  ],
+  "unchanged_caps": {
+    "cell_seconds": 30,
+    "preview_seconds": 5,
+    "apply_seconds": 15,
+    "cancel_seconds": 5,
+    "cleanup_seconds": 10,
+    "attempts_per_cancel": 3
+  },
+  "remaining": [
+    "Actual per-widget private-byte baseline clock join remains unqualified; lifetime memory samples grant no delta comparison.",
+    "Full timedmatrix, original never-installedREADY proof, installedfunctional and commercial/formalclosure remain open."
+  ]
+}

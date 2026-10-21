@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "id": "G012.shortcuts.cpp_workflow_carrier.001",
+  "state": "adopted_carrier_scope_runtime_unverified",
+  "owner": "/root",
+  "date": "2026-10-16",
+  "scope": "Supplemental actual C++ desktop API carrier for one existing frozen assertion only; no new product, interface or family acceptance",
+  "assertion": {
+    "contract_id": "SC.G012.shortcuts.editor_atomicity",
+    "contract_sha256": "c981a9f558b789312203174f4096dc329583bb912d586dff47ce8d44b1439d30",
+    "context": "cpp_api",
+    "id": "config.workflow_delta",
+    "value_type": "integer",
+    "expected": 0
+  },
+  "decision": "Permit a separately identified direct C++ Window API carrier for config.workflow_delta. Window currently owns the actual recording flag and cumulative workflow log; the headless native Settings/Profile API has no workflow owner. Establish recording with a genuine accepted image action, then observe complete actual workflow state before and after applied shortcut configuration and a refused configuration.",
+  "narrow_exception": "The supplemental carrier may include the existing internal C++ desktop Window header and link the desktop library without creating an ImGui context or renderer. The public-only installed SDK S01-S04 must still exclude private, GUI and Python headers/dependencies. This exception does not apply to any other assertion or export desktop dependencies through imagejxx::core.",
+  "required_evidence": [
+    "Exactly one named CW01.configuration_workflow_no_effects API case, distinct from the existing seven Window groups and all H/K input scenarios",
+    "A real recording-enabled image edit produces a nonempty workflow record and an actual native pixel/history change before configuration",
+    "Actual complete workflow values, settings/profile, native identity/revisions/history and owned preferences before/after configuration",
+    "Typed config.workflow_delta derived from actual log lengths and complete log equality; no literal zero or surrogate metadata owner",
+    "Independent comparison to the unchanged frozen expected integer zero with exact test/source/executable/core/desktop provenance",
+    "Retained installed public-only SDK S01-S04 and all other 66 C++ assertions remain required at their original scope"
+  ],
+  "preservation": [
+    "All eight frozen shortcut contracts, 67 cpp_api assertions, previous requirements, proofs and manifest bytes remain unchanged",
+    "Do not relabel imgui_cpp input evidence as direct cpp_api execution",
+    "SessionCapture workflow codec data and arbitrary metadata do not provide a live recorder",
+    "The current native recording-ownership gap remains required under the full controller/automation plan"
+  ],
+  "acceptance_claim": false
+}

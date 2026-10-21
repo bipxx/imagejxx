@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_increment",
+  "review_type": "Root authorship/integration attestation, not independent legal review",
+  "scope": "Owned actual-input profile producers/readers and explicit bounded diagnostic batch routing",
+  "license": "Existing project MIT",
+  "new_dependencies": [],
+  "imported_third_party_code": [],
+  "imported_assets": [],
+  "restricted_features_added": false,
+  "source_archive_before": {
+    "bytes": 8839998,
+    "path": "build/p06p-geometry-source001/imagejxx-0.2.0.tar.gz",
+    "sha256": "5595f79bf5f7d0096ec0aece03dfbb5370106abd44132d4cae52fde386e8d60c"
+  },
+  "sources": [
+    {
+      "logical_path": "src/desktop/main.cpp",
+      "before": {
+        "path": "build/p06p-shape-profiles001/held001/before/src/desktop/main.cpp",
+        "bytes": 32902,
+        "sha256": "26908ea21636c3cda7d9df55e9d98279ce3cc66270a9052fd4063e19e80c8c1a"
+      },
+      "after": {
+        "path": "build/p06p-shape-profiles001/held001/after/src/desktop/main.cpp",
+        "bytes": 33091,
+        "sha256": "e6de4856c319f155f3cbf441d1e791c5363fb3672ec47687615d3ddc7fc5b62b"
+      },
+      "current": {
+        "path": "src/desktop/main.cpp",
+        "bytes": 33091,
+        "sha256": "e6de4856c319f155f3cbf441d1e791c5363fb3672ec47687615d3ddc7fc5b62b"
+      }
+    },
+    {
+      "logical_path": "src/desktop/planar_annotation_matrix.cpp",
+      "before": {
+        "path": "build/p06p-shape-profiles001/held001/before/src/desktop/planar_annotation_matrix.cpp",
+        "bytes": 22225,
+        "sha256": "5bcda90589869d7ce55cd212ce14b43833f71c20bbd51c50dc059430da0ebf1d"
+      },
+      "after": {
+        "path": "build/p06p-shape-profiles001/held001/after/src/desktop/planar_annotation_matrix.cpp",
+        "bytes": 23622,
+        "sha256": "11cb84edf6d068057be488c0930fb60a8b590d2526fcefb78144d94d460d5a61"
+      },
+      "current": {
+        "path": "src/desktop/planar_annotation_matrix.cpp",
+        "bytes": 23622,
+        "sha256": "11cb84edf6d068057be488c0930fb60a8b590d2526fcefb78144d94d460d5a61"
+      }
+    },
+    {
+      "logical_path": "src/desktop/planar_annotation_matrix.hpp",
+      "before": {
+        "path": "build/p06p-shape-profiles001/held001/before/src/desktop/planar_annotation_matrix.hpp",
+        "bytes": 296,
+        "sha256": "8e0a7c699ff88b686b116278cdc271726085aff653876058882e01f410b43099"
+      },
+      "after": {
+        "path": "build/p06p-shape-profiles001/held001/after/src/desktop/planar_annotation_matrix.hpp",
+        "bytes": 283,
+        "sha256": "0f1bc31bd2d0797e67740bc15fba6d527b5f301d3793d0df8f8dff951927cd85"
+      },
+      "current": {
+        "path": "src/desktop/planar_annotation_matrix.hpp",
+        "bytes": 283,
+        "sha256": "0f1bc31bd2d0797e67740bc15fba6d527b5f301d3793d0df8f8dff951927cd85"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_planar_annotation_matrix_ui.py",
+      "before": {
+        "path": "build/p06p-shape-profiles001/held001/before/tests/python/test_planar_annotation_matrix_ui.py",
+        "bytes": 14520,
+        "sha256": "19965284527c7acadbc4c2a20e92097a51cc40ed4e3ca7839cb2e2e21e3941af"
+      },
+      "after": {
+        "path": "build/p06p-shape-profiles001/held001/after/tests/python/test_planar_annotation_matrix_ui.py",
+        "bytes": 17819,
+        "sha256": "05bab53f7d88ad0902515ceeb99503b1b4702c5287f529adc6564a3ec7cd96cc"
+      },
+      "current": {
+        "path": "tests/python/test_planar_annotation_matrix_ui.py",
+        "bytes": 17819,
+        "sha256": "05bab53f7d88ad0902515ceeb99503b1b4702c5287f529adc6564a3ec7cd96cc"
+      }
+    }
+  ],
+  "whole_family_acceptance": false
+}

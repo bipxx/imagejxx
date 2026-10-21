@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "state": "passed",
+  "scope": "Explicit IEEE Float32 native channel V3 and commands: ranges/composition/scientific slices/replay/sessions; shared-host adapters remain pending",
+  "native_suites_per_platform": 35,
+  "native_ieee_channel_checks_per_platform": 11252,
+  "actual_imagej_channel_cases": 80,
+  "retained_float32_renderer_cases": 240,
+  "retained_float32_renderer_checks_per_platform": 35293,
+  "python_common_cases_per_source_installed_context": 3398,
+  "new_python_ieee_channel_cases_per_context": 149,
+  "all_previous_3022_cases_retained": true,
+  "source_installed_common_inventory_equal": true,
+  "explicit_deferred_editor_variants": [
+    "tests/python/test_nan_python_v2.py::test_V22_installed_editor_roundtrip_preserves_policy[plane-detached]",
+    "tests/python/test_nan_python_v2.py::test_V22_installed_editor_roundtrip_preserves_policy[plane-native-owner]",
+    "tests/python/test_nan_python_v2.py::test_V22_installed_editor_roundtrip_preserves_policy[stack-detached]",
+    "tests/python/test_nan_python_v2.py::test_V22_installed_editor_roundtrip_preserves_policy[stack-native-owner]"
+  ],
+  "genuine_venv_projection_cases": 180,
+  "genuine_venv_origin_bytes_archived_verified": true,
+  "installed_cpp_sdk_consumer_passed": true,
+  "source_freeze_pins_verified": 5075,
+  "qualified_processing_only_products": [
+    {
+      "path": "build/p07v-ieee-channel001/installed001/python-prefix001/imagejxx/_native.cp312-win_amd64.pyd",
+      "bytes": 6275072,
+      "sha256": "9ef0c7e334d4730c32fdaf1bbe039f6b526a17d0dc0987b40d18aef1752d9137"
+    },
+    {
+      "path": "build/p07v-ieee-channel001/sdk001/sdk-prefix001/lib/imagejxx_core.lib",
+      "bytes": 45702816,
+      "sha256": "8d5d7b926c164380617cabbab29b03d7460305bfba8e6af662c5159a328d012c"
+    }
+  ],
+  "fixture": {
+    "path": "tests/fixtures/ieee-display-imagej154r.json",
+    "bytes": 339556,
+    "sha256": "46606ff6b18c6b96df76fd5734e1297b5be7c4ffcdd79c3c8c9919bd0a1b676c"
+  },
+  "whitespace_checked": [
+    "CMakeLists.txt",
+    "docs/IEEE_DISPLAY.md",
+    "docs/IEEE_FLOAT32_SOURCE.md",
+    "docs/PLAN.md",
+    "docs/SOL_ULTRA.md",
+    "include/imagejxx/channel_display.hpp",
+    "src/native/channel_display.cpp",
+    "src/native/channel_display_bindings.cpp",
+    "src/native/channel_display_command.cpp",
+    "tests/native/test_channel_display_command_v2.cpp",
+    "tests/native/test_channel_display_projection.cpp",
+    "tests/native/test_channel_display_select_min.cpp"
+  ],
+  "cleanup_targets": 17,
+  "cleanup_net_bytes": 100548664,
+  "retained_failures": [
+    "First Windows regression used an older future-version-3 placeholder, now explicitly recognized. Updated opaque/refusal placeholders to version 4 in three existing native tests without removing assertions; complete native gates pass.",
+    "First common Python run had 180 setup-origin errors and no assertion failures: installed-only projection tests correctly refused source-prefix imports. Moved them to a genuine processing-only venv; all 180 pass there. Source/installed common inventories both pass 3398 cases."
+  ],
+  "commercial_scope": "No new dependency or non-commercial component; existing reviewed dependencies and licenses unchanged; reference JVM/ImageJ remains observation-only; no Qt",
+  "remaining": [
+    "Shared desktop/Python adapters, computed range override and nonfinite-safe LUT/threshold viewing",
+    "Orthogonal cache/diagnostics and channel controls without JSON null ranges or NaN cache churn",
+    "Coherent full-host rebuild, four deferred editor variants and actual-input/session/scientific gates",
+    "Full nonfinite rank/Remove NaNs, Float32 I/O, RGB rank and remaining ImageJ/Fiji/editor/release gaps"
+  ],
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  },
+  "goal_complete": false
+}

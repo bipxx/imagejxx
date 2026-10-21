@@ -1,0 +1,1476 @@
+{
+  "schema_version": 1,
+  "state": "case_audit_with_residual_gaps",
+  "contract": {
+    "path": "docs/parity/reviews/scientific-tiff-u16-entry-001.json",
+    "bytes": 69541,
+    "sha256": "b56b97945fc3f4a0271a29aa01dd84f603414c7b1bfce8283aeec7a846f5b478"
+  },
+  "meaning": "exercised identifies actual named checks; it does not imply the entire group oracle, profile, family or platform is accepted",
+  "groups": [
+    {
+      "id": "TU01",
+      "kind": "independent_binary",
+      "cases": [
+        {
+          "case": "II-single-strip",
+          "state": "exercised"
+        },
+        {
+          "case": "MM-single-strip",
+          "state": "exercised"
+        }
+      ],
+      "notes": "New independent II/MM inputs contain the exact six UInt16 literals; native and source/installed Python check all values.",
+      "evidence": [
+        {
+          "path": "tests/fixtures/scientific-tiff-acceptance/SOURCE.json",
+          "bytes": 2544,
+          "sha256": "d19d6ef772103fdee428a4dd500b64597192de413e55aed06b9a4ae2a54ee7fd"
+        },
+        {
+          "path": "build/p06u-tiff-acceptance001/native002/native.xml",
+          "bytes": 2252,
+          "sha256": "9ff7e6e74478f8a828b8ecefe060f1bcddd3de405474239dc158f2296c1a5ff1"
+        },
+        {
+          "path": "build/p06u-tiff-acceptance001/installed001/pytest.xml",
+          "bytes": 1392,
+          "sha256": "18633f74cec7841dd225963a4cd713d4aca65dee994f0dde37b1dd765e281f71"
+        }
+      ]
+    },
+    {
+      "id": "TU02",
+      "kind": "independent_binary",
+      "cases": [
+        {
+          "case": "C3-Z2-T2-full-IFD",
+          "state": "exercised"
+        }
+      ],
+      "notes": "New independent TCZYXS [2,3,2,2,3,1], 10*y equation, explicit native/file table and raw C-fast pages.",
+      "evidence": [
+        {
+          "path": "tests/fixtures/scientific-tiff-acceptance/SOURCE.json",
+          "bytes": 2544,
+          "sha256": "d19d6ef772103fdee428a4dd500b64597192de413e55aed06b9a4ae2a54ee7fd"
+        },
+        {
+          "path": "tests/native/test_tiff_acceptance.cpp",
+          "bytes": 8839,
+          "sha256": "fceeb106c243e578c7d44d14a4309dba8209f2a84e39626057ba9b508c430b1a"
+        },
+        {
+          "path": "tests/python/test_tiff_acceptance.py",
+          "bytes": 4144,
+          "sha256": "58042869dfc80ce9ca477bfd2162afb569fe85244f6f3e0a3b6f88f3553bde3c"
+        },
+        {
+          "path": "build/p06u-tiff-acceptance001/source002/python-evidence001.json",
+          "bytes": 1714,
+          "sha256": "045037e12f899ef482a699accfc9a0799a7c57e3cc685e8ae5fd5e690f762a2d"
+        }
+      ]
+    },
+    {
+      "id": "TU03",
+      "kind": "independent_binary",
+      "cases": [
+        {
+          "case": "Y3-rowsperstrip1",
+          "state": "exercised"
+        },
+        {
+          "case": "Y3-rowsperstrip2",
+          "state": "exercised"
+        },
+        {
+          "case": "Y3-rowsperstrip-at-leastY",
+          "state": "exercised"
+        }
+      ],
+      "notes": "New independent rows-per-strip 1/2/9; raw row-2 byte counts exactly [20,10]. Existing budget refusal remains separate.",
+      "evidence": [
+        {
+          "path": "tests/fixtures/scientific-tiff-acceptance/SOURCE.json",
+          "bytes": 2544,
+          "sha256": "d19d6ef772103fdee428a4dd500b64597192de413e55aed06b9a4ae2a54ee7fd"
+        },
+        {
+          "path": "build/p06u-tiff-acceptance001/installed001/pytest.xml",
+          "bytes": 1392,
+          "sha256": "18633f74cec7841dd225963a4cd713d4aca65dee994f0dde37b1dd765e281f71"
+        }
+      ]
+    },
+    {
+      "id": "TU04",
+      "kind": "independent_calibration",
+      "cases": [
+        {
+          "case": "half-one-and-quarter-two-and-half",
+          "state": "exercised"
+        },
+        {
+          "case": "anisotropic-decimal",
+          "state": "exercised"
+        },
+        {
+          "case": "large-small-representable",
+          "state": "exercised"
+        },
+        {
+          "case": "rational-boundaries",
+          "state": "exercised"
+        }
+      ],
+      "notes": "Independent positive and zero RATIONAL numerator/denominator carriers, invalid finite/positive Z/time values including decimal underflow/overflow, eight outside XY representability plans, just-inside boundary raw outputs and invalid Dataset calibration construction controls now pass in native/source/installed contexts. Native/Python raw outputs remain independently checked; no full profile acceptance follows.",
+      "evidence": [
+        {
+          "path": "build/p06u-tiff-acceptance001/source002/python-evidence001.json",
+          "bytes": 1714,
+          "sha256": "045037e12f899ef482a699accfc9a0799a7c57e3cc685e8ae5fd5e690f762a2d"
+        },
+        {
+          "path": "tests/native/test_scientific_tiff.cpp",
+          "bytes": 15949,
+          "sha256": "dda1080453ab89c3ad097541f3440829ae477d3d9c89e8666ef89c2a28a1a769"
+        },
+        {
+          "path": "tests/fixtures/scientific-tiff-metadata/SOURCE.json",
+          "bytes": 16210,
+          "sha256": "a00eddfd3beb90174c27ede0fcc9cd37569f23e6e70c69568c16774e56dc8e33"
+        },
+        {
+          "path": "tests/native/test_tiff_metadata.cpp",
+          "bytes": 14652,
+          "sha256": "0e3e6811576e8349e9395187c4f8c392ceb5aee25d9e8896378bd10753fe2820"
+        },
+        {
+          "path": "tests/python/test_tiff_metadata.py",
+          "bytes": 7891,
+          "sha256": "e60050a422bde6255d24ec5d4463b7a9873efe92443e7a2f7fb182a04b499583"
+        },
+        {
+          "path": "build/p06v-tiff-metadata001/native003/native.xml",
+          "bytes": 2729,
+          "sha256": "b072dfe34b4005fd0fba76ee647753d33b5dbd9bc8888b9dfb522bae998bcb97"
+        },
+        {
+          "path": "build/p06v-tiff-metadata001/source003/python-evidence001.json",
+          "bytes": 2673,
+          "sha256": "fafda86063fd782f168bbeb2f665160af665f15b53370ed5155e06c1226405b8"
+        },
+        {
+          "path": "build/p06v-tiff-metadata001/installed002/python-evidence001.json",
+          "bytes": 2868,
+          "sha256": "768849498f07f4c612bdc6c2f6324db4432a547002bd09fb82793ffbe9056ee0"
+        }
+      ]
+    },
+    {
+      "id": "TU05",
+      "kind": "independent_metadata",
+      "cases": [
+        {
+          "case": "description-omitted-dims-singletons",
+          "state": "exercised"
+        },
+        {
+          "case": "legacy-ImageJ-Z-fallback",
+          "state": "exercised"
+        },
+        {
+          "case": "description-images-fullIFD",
+          "state": "exercised"
+        },
+        {
+          "case": "canonical-writer-omits-images",
+          "state": "exercised"
+        },
+        {
+          "case": "per-page-description-agreement",
+          "state": "exercised"
+        },
+        {
+          "case": "metadata-default-ledger",
+          "state": "exercised"
+        }
+      ],
+      "notes": "Exact ordered default ledgers cover legacy Z and explicit singletons, missing finterval T1 versus T2 refusal, valid repeated CRLF descriptions, escaped spatial/time aliases and direct writer alias canonicalization. Exact source-description preservation and canonicalization ledgers plus independent output tag/pixel checks pass. Earlier images/full-IFD fixtures and canonical omission checks remain exercised.",
+      "evidence": [
+        {
+          "path": "tests/fixtures/scientific-tiff-u16/SOURCE.json",
+          "bytes": 12400,
+          "sha256": "b776eb562930d90c4e7afe4e84755a79fb29df26cd55f853a7114e4de8122aae"
+        },
+        {
+          "path": "tests/python/test_scientific_tiff_io.py",
+          "bytes": 12299,
+          "sha256": "e7ab9831dcba1dd37adb5d9bfd54bfd3d85fea6f195c034fd869a79e7d5cfb13"
+        },
+        {
+          "path": "build/p06u-tiff-acceptance001/native002/native.xml",
+          "bytes": 2252,
+          "sha256": "9ff7e6e74478f8a828b8ecefe060f1bcddd3de405474239dc158f2296c1a5ff1"
+        },
+        {
+          "path": "tests/fixtures/scientific-tiff-metadata/SOURCE.json",
+          "bytes": 16210,
+          "sha256": "a00eddfd3beb90174c27ede0fcc9cd37569f23e6e70c69568c16774e56dc8e33"
+        },
+        {
+          "path": "tests/native/test_tiff_metadata.cpp",
+          "bytes": 14652,
+          "sha256": "0e3e6811576e8349e9395187c4f8c392ceb5aee25d9e8896378bd10753fe2820"
+        },
+        {
+          "path": "tests/python/test_tiff_metadata.py",
+          "bytes": 7891,
+          "sha256": "e60050a422bde6255d24ec5d4463b7a9873efe92443e7a2f7fb182a04b499583"
+        },
+        {
+          "path": "build/p06v-tiff-metadata001/native003/native.xml",
+          "bytes": 2729,
+          "sha256": "b072dfe34b4005fd0fba76ee647753d33b5dbd9bc8888b9dfb522bae998bcb97"
+        },
+        {
+          "path": "build/p06v-tiff-metadata001/source003/python-evidence001.json",
+          "bytes": 2673,
+          "sha256": "fafda86063fd782f168bbeb2f665160af665f15b53370ed5155e06c1226405b8"
+        },
+        {
+          "path": "build/p06v-tiff-metadata001/installed002/python-evidence001.json",
+          "bytes": 2868,
+          "sha256": "768849498f07f4c612bdc6c2f6324db4432a547002bd09fb82793ffbe9056ee0"
+        },
+        {
+          "path": "docs/parity/reviews/scientific-tiff-u16-runtime-amendment-005.json",
+          "bytes": 5180,
+          "sha256": "41c0f1d78f2a81d194f6dcef8bed7adb8091677af81ed2007533c16fa283c02a"
+        },
+        {
+          "path": "build/p06x-tiff-runtime001/build001/native.xml",
+          "bytes": 2758,
+          "sha256": "e5afb34f4d55c0ee766595764d1ec3f1c6e87dacb5ea99f93e07d64541915733"
+        }
+      ]
+    },
+    {
+      "id": "TU06",
+      "kind": "malformed_and_unsupported",
+      "cases": [
+        {
+          "case": "header-endian-magic",
+          "state": "exercised"
+        },
+        {
+          "case": "BigTIFF",
+          "state": "exercised"
+        },
+        {
+          "case": "IFD-cycle-duplicate",
+          "state": "exercised"
+        },
+        {
+          "case": "IFD-entry-overflow",
+          "state": "exercised"
+        },
+        {
+          "case": "truncated-tag-value",
+          "state": "exercised"
+        },
+        {
+          "case": "strip-count-and-bytecount",
+          "state": "exercised"
+        },
+        {
+          "case": "strip-overlap",
+          "state": "exercised"
+        },
+        {
+          "case": "IFD-or-tag-overlap-pixel",
+          "state": "exercised"
+        },
+        {
+          "case": "duplicate-description-key",
+          "state": "exercised"
+        },
+        {
+          "case": "shape-product-mismatch",
+          "state": "exercised"
+        },
+        {
+          "case": "hidden-pages",
+          "state": "exercised"
+        },
+        {
+          "case": "multiple-series-SubIFDs",
+          "state": "exercised"
+        },
+        {
+          "case": "heterogeneous-pages",
+          "state": "exercised"
+        },
+        {
+          "case": "compressed-tiled-palette-RGB-signed-float",
+          "state": "exercised"
+        },
+        {
+          "case": "orientation-other",
+          "state": "exercised"
+        },
+        {
+          "case": "unknown-semantic-tags",
+          "state": "exercised"
+        },
+        {
+          "case": "nonzero-origin-direction-policy",
+          "state": "exercised"
+        },
+        {
+          "case": "unsupported-unit-or-intensity-calibration",
+          "state": "exercised"
+        }
+      ],
+      "notes": "All 18 named malformed/unsupported case families now have concrete exercised carriers. Thirty added carriers cover bad headers, bounded IFD/tag counts, truncated tables, strip mismatch/out-of-file/required tags, hidden pages, SubIFDs and multiple document names, complete tiled/palette/RGB/signed/Float32/PackBits/BigTIFF layouts, nonzero origin/direction and unsupported units/density/private metadata. Native guards lock actual sample payloads for all 81 malformed/unsupported inputs (34 original +17 calibration +30 new), with separate raw-read and valid-file controls. Independent tifffile controls decode the complete excluded layouts; an original packet decoder checks PackBits. Five writer calibration refusals preserve bytes with no hooks/provider reads. This is Windows-scoped refusal proof, not support for the excluded formats or full profile/platform acceptance.",
+      "evidence": [
+        {
+          "path": "tests/fixtures/scientific-tiff-u16/SOURCE.json",
+          "bytes": 12400,
+          "sha256": "b776eb562930d90c4e7afe4e84755a79fb29df26cd55f853a7114e4de8122aae"
+        },
+        {
+          "path": "scripts/generate_scientific_tiff_fixtures.py",
+          "bytes": 9226,
+          "sha256": "d500a76be5dba39cc5b47d7d64e9692b6a67ffd4bc3a73d8f8fe487efc7e7237"
+        },
+        {
+          "path": "build/p06u-tiff-acceptance001/native002/native.xml",
+          "bytes": 2252,
+          "sha256": "9ff7e6e74478f8a828b8ecefe060f1bcddd3de405474239dc158f2296c1a5ff1"
+        },
+        {
+          "path": "tests/fixtures/scientific-tiff-metadata/SOURCE.json",
+          "bytes": 16210,
+          "sha256": "a00eddfd3beb90174c27ede0fcc9cd37569f23e6e70c69568c16774e56dc8e33"
+        },
+        {
+          "path": "tests/native/test_tiff_metadata.cpp",
+          "bytes": 14652,
+          "sha256": "0e3e6811576e8349e9395187c4f8c392ceb5aee25d9e8896378bd10753fe2820"
+        },
+        {
+          "path": "tests/python/test_tiff_metadata.py",
+          "bytes": 7891,
+          "sha256": "e60050a422bde6255d24ec5d4463b7a9873efe92443e7a2f7fb182a04b499583"
+        },
+        {
+          "path": "build/p06v-tiff-metadata001/native003/native.xml",
+          "bytes": 2729,
+          "sha256": "b072dfe34b4005fd0fba76ee647753d33b5dbd9bc8888b9dfb522bae998bcb97"
+        },
+        {
+          "path": "build/p06v-tiff-metadata001/source003/python-evidence001.json",
+          "bytes": 2673,
+          "sha256": "fafda86063fd782f168bbeb2f665160af665f15b53370ed5155e06c1226405b8"
+        },
+        {
+          "path": "build/p06v-tiff-metadata001/installed002/python-evidence001.json",
+          "bytes": 2868,
+          "sha256": "768849498f07f4c612bdc6c2f6324db4432a547002bd09fb82793ffbe9056ee0"
+        },
+        {
+          "path": "scripts/generate_tiff_refusal_fixtures.py",
+          "bytes": 9804,
+          "sha256": "4d8402b7dd7647d1c987e8c2f97925b684c8fe3466cfaf68bd4a724504f47af5"
+        },
+        {
+          "path": "tests/fixtures/scientific-tiff-refusals/SOURCE.json",
+          "bytes": 12760,
+          "sha256": "1defe3e51d07e55dd8b10da572a7c14a95e0dc9a072fe1f682e8d579d0bf1df5"
+        },
+        {
+          "path": "tests/native/test_tiff_metadata.cpp",
+          "bytes": 14652,
+          "sha256": "0e3e6811576e8349e9395187c4f8c392ceb5aee25d9e8896378bd10753fe2820"
+        },
+        {
+          "path": "tests/python/test_tiff_refusals.py",
+          "bytes": 4941,
+          "sha256": "ed2479c9b98ae1cd947cab7428fcbce58fadebc1dab13d75269a2c854935611d"
+        },
+        {
+          "path": "build/p06w-tiff-refusals001/native002/native.xml",
+          "bytes": 2760,
+          "sha256": "5e6fb9fe2bd14e6c92ce6eac8cd2acfc770dae16c3c230446d93af76ddc54834"
+        },
+        {
+          "path": "build/p06w-tiff-refusals001/source002/python-evidence001.json",
+          "bytes": 2674,
+          "sha256": "c6ac1fd88de2342d958b07d768f199a79ef959770c3f7c21cb1aed53aeae7191"
+        },
+        {
+          "path": "build/p06w-tiff-refusals001/installed002/pytest.xml",
+          "bytes": 14705,
+          "sha256": "6c573592f6315308759abbd018c85fedbd89f88801c45753f6a8a65f6ed3ff06"
+        },
+        {
+          "path": "docs/parity/reviews/scientific-tiff-u16-runtime-amendment-005.json",
+          "bytes": 5180,
+          "sha256": "41c0f1d78f2a81d194f6dcef8bed7adb8091677af81ed2007533c16fa283c02a"
+        },
+        {
+          "path": "build/p06x-tiff-runtime001/build001/native.xml",
+          "bytes": 2758,
+          "sha256": "e5afb34f4d55c0ee766595764d1ec3f1c6e87dacb5ea99f93e07d64541915733"
+        }
+      ]
+    },
+    {
+      "id": "TU07",
+      "kind": "resources_callbacks_atomicity",
+      "cases": [
+        {
+          "case": "precancel",
+          "state": "exercised"
+        },
+        {
+          "case": "invalid-budget-zero-callback",
+          "state": "exercised"
+        },
+        {
+          "case": "inspect-limit",
+          "state": "exercised"
+        },
+        {
+          "case": "aggregate-output-limit",
+          "state": "exercised"
+        },
+        {
+          "case": "codec-limit",
+          "state": "exercised"
+        },
+        {
+          "case": "progress-start-throws",
+          "state": "exercised"
+        },
+        {
+          "case": "checkpoint-throws",
+          "state": "exercised"
+        },
+        {
+          "case": "row-cancel",
+          "state": "exercised"
+        },
+        {
+          "case": "between-plane-cancel",
+          "state": "exercised"
+        },
+        {
+          "case": "before-replace-cancel",
+          "state": "exercised"
+        },
+        {
+          "case": "short-read",
+          "state": "exercised"
+        },
+        {
+          "case": "disk-write-failure",
+          "state": "exercised"
+        },
+        {
+          "case": "existing-target-preserved",
+          "state": "exercised"
+        },
+        {
+          "case": "exclusive-temp-collision",
+          "state": "exercised"
+        },
+        {
+          "case": "observable-input-change",
+          "state": "exercised"
+        },
+        {
+          "case": "Windows private flush/close boundary54 with both old handle leaks reproduced",
+          "state": "exercised"
+        },
+        {
+          "case": "Linux private flush/close boundary42 with unrelated fd reuse",
+          "state": "exercised"
+        },
+        {
+          "case": "Linux deterministic POSIX stage/parent substitution90 with controls12 and actual descriptor exhaustion3",
+          "state": "exercised"
+        },
+        {
+          "case": "Linux normal CMake compiled-core ownership/fault/session path integration",
+          "state": "exercised"
+        }
+      ],
+      "notes": "All nine zero limits now refuse inspect/read/write before callbacks, provider reads or staging. Prior actual short-read, Windows locked-byte write, exact-name collision, cancellation and target/source preservation proofs remain. Disk-full/flush/close faults and other platforms remain broader obligations; a write lock does not qualify them. Legacy TIFF encoding/publication now preserves a pre-existing fixed-suffix file, checked by a real failing regression before repair. Memory encoding removes the predictable sibling and disk readback; shared byte publication uses the existing exclusive atomic helper. This does not qualify disk-full/flush/close or POSIX ownership faults. The shared panel now revalidates held input identity after a read worker is ready and before publication. An actual changed-file regression fails against the prior installed product and passes after repair. This does not qualify remaining disk-full/flush/close or POSIX faults. A reproduced Windows/Linux callback-CWD destination-redirection bug is repaired in immediate/deferred/streaming helpers. Session input/output freeze paths before user hooks, and empty/NUL paths refuse before callbacks. Eight new Python path cases plus the existing native session atomicity case pass in source/installed contexts; native14 includes the new helper and existing session IO suite. Installed core-only C++ SDK verifies session paths without TIFF/GUI/Python imports. Test-only Linux production-helper builds now qualify actual ENOSPC in an isolated exactly1MiB tmpfs (independent raw control errno28 after1044480bytes), target/source/directory preservation through all three writers, and process-scoped file-size-limit cases. These are helper-level Linux checks, not Linux TIFF/package or Windows disk-full acceptance. Flush/close failure qualification, POSIX pathname substitution ownership and remaining instrumentation remain open. P06ze adds Windows54/Linux42 private boundary cases and repairs two Windows close-failure handle leaks. Protected-handle close and read-only/pipe flush are genuine kernel-denied controls with substituted arguments. Injected errors/release/reuse are explicit; no actual device flush/close failure claim. Windows recovery compares volume/nonzero file ID, preserving original close error and committed output. Unsupported identity providers/persistent denial, POSIX pathname ownership, actual device faults, Windows disk-full and remaining instrumentation remain open. P06zf pins the POSIX parent directory and original inode; final no-follow ownership and parent checks protect deterministic callback/detached-stage substitutions. Actual Linux native-filesystem matrix90 plus positive controls12 and retained-descriptor EMFILE3 pass. Both old stage and parent redirection failures are retained. Normal CMake compiled core passes ownership/fault/session-path checks; real tmpfs ENOSPC and file-limit checks are re-executed for the changed helper. Concurrent check-to-rename/link/unlink races remain open, as do actual device durability/close, Windows disk-full, other platforms/instrumentation and matching full releases. No Linux TIFF/desktop/product acceptance.",
+      "evidence": [
+        {
+          "path": "tests/native/test_tiff_acceptance.cpp",
+          "bytes": 8839,
+          "sha256": "fceeb106c243e578c7d44d14a4309dba8209f2a84e39626057ba9b508c430b1a"
+        },
+        {
+          "path": "tests/native/test_staged_tiff.cpp",
+          "bytes": 7677,
+          "sha256": "ed99a03b974c070ba14d5e9a6b2476a81a87a2ffd0755af4518623cad86438b9"
+        },
+        {
+          "path": "tests/native/test_scientific_tiff.cpp",
+          "bytes": 15949,
+          "sha256": "dda1080453ab89c3ad097541f3440829ae477d3d9c89e8666ef89c2a28a1a769"
+        },
+        {
+          "path": "build/p06u-tiff-acceptance001/native002/native.xml",
+          "bytes": 2252,
+          "sha256": "9ff7e6e74478f8a828b8ecefe060f1bcddd3de405474239dc158f2296c1a5ff1"
+        },
+        {
+          "path": "build/p06s-atomic-ownership001/ownership-handoff001.json",
+          "bytes": 9528,
+          "sha256": "a8decad80dd73b67631bdeb970db9175c8aaa60f4984a539388ea77bed1971a4"
+        },
+        {
+          "path": "tests/fixtures/scientific-tiff-metadata/SOURCE.json",
+          "bytes": 16210,
+          "sha256": "a00eddfd3beb90174c27ede0fcc9cd37569f23e6e70c69568c16774e56dc8e33"
+        },
+        {
+          "path": "tests/native/test_tiff_metadata.cpp",
+          "bytes": 14652,
+          "sha256": "0e3e6811576e8349e9395187c4f8c392ceb5aee25d9e8896378bd10753fe2820"
+        },
+        {
+          "path": "tests/python/test_tiff_metadata.py",
+          "bytes": 7891,
+          "sha256": "e60050a422bde6255d24ec5d4463b7a9873efe92443e7a2f7fb182a04b499583"
+        },
+        {
+          "path": "build/p06v-tiff-metadata001/native003/native.xml",
+          "bytes": 2729,
+          "sha256": "b072dfe34b4005fd0fba76ee647753d33b5dbd9bc8888b9dfb522bae998bcb97"
+        },
+        {
+          "path": "build/p06v-tiff-metadata001/source003/python-evidence001.json",
+          "bytes": 2673,
+          "sha256": "fafda86063fd782f168bbeb2f665160af665f15b53370ed5155e06c1226405b8"
+        },
+        {
+          "path": "build/p06v-tiff-metadata001/installed002/python-evidence001.json",
+          "bytes": 2868,
+          "sha256": "768849498f07f4c612bdc6c2f6324db4432a547002bd09fb82793ffbe9056ee0"
+        },
+        {
+          "path": "src/desktop/io.cpp",
+          "bytes": 25644,
+          "sha256": "062ea5c9019450568218f40d2f6154f84b78986a3784ca0d93d1d09bbd43d79f"
+        },
+        {
+          "path": "src/desktop/util.cpp",
+          "bytes": 3419,
+          "sha256": "fd219402df0585f6037b317d9ae677fd0c9bdd4bb31795bbef8f88e7777ba7c8"
+        },
+        {
+          "path": "tests/native/test_legacy_tiff_io.cpp",
+          "bytes": 5037,
+          "sha256": "4403e980a7e65ba4edcd54539a67e222acd05a685c18c9b85d9aa83983c6d454"
+        },
+        {
+          "path": "tests/python/test_legacy_tiff_io.py",
+          "bytes": 5166,
+          "sha256": "681c28d37307a386f24bfe44a66696aaf6dcdf08c05f4371cc63495d347608fd"
+        },
+        {
+          "path": "build/p06y-legacy-tiff001/build001/native.xml",
+          "bytes": 3135,
+          "sha256": "665d62a9a5d90261fafcf00c28bd45b796b8d524750c628ef11ba434bc9bd2c2"
+        },
+        {
+          "path": "build/p06y-legacy-tiff001/installed-python002/pytest.xml",
+          "bytes": 24077,
+          "sha256": "8f3b63a11f0c788cc49e3b9b1ee6502a9cdab1436b4ef040ce51f79c5771e756"
+        },
+        {
+          "path": "build/p06y-legacy-tiff001/oracle001/oracle-evidence001.json",
+          "bytes": 4944,
+          "sha256": "65cce9e074e34cb88a1377309e789f4b9808188aff18c52755a6051d26a95863"
+        },
+        {
+          "path": "src/desktop/window.cpp",
+          "bytes": 610909,
+          "sha256": "bc12b6fbf10f8c260a9ad2f055ab4ad49cd044cc86b6c0005783b24274dbeac3"
+        },
+        {
+          "path": "src/desktop/scientific_io_panel.cpp",
+          "bytes": 44477,
+          "sha256": "d8362b1e29259267e9b0cca780b01e957a729a25b063c4b8d806d8f0312e9d30"
+        },
+        {
+          "path": "src/desktop/scientific_io_panel.hpp",
+          "bytes": 1889,
+          "sha256": "b9ad465993450e18050eb4b47b01d7e40b21b46f4563b3ce768fd1e244e76589"
+        },
+        {
+          "path": "src/desktop/scientific_io_ui_probe.cpp",
+          "bytes": 18633,
+          "sha256": "c8bc18c27f1be7b55a4cf8094f6134b4dc992746e63e2dc4799494c0496681b0"
+        },
+        {
+          "path": "tests/native/test_startup_tiff.cpp",
+          "bytes": 3834,
+          "sha256": "a6d7ce22020857dd8f1ba2bb32341f214becab4a63840a92b8d6b12e8f15b38d"
+        },
+        {
+          "path": "tests/python/test_startup_tiff_review.py",
+          "bytes": 8973,
+          "sha256": "c6dfe62a7dc0104b1d9265104b4c6a57276287ba2cedd5a858822cbd0901ce4c"
+        },
+        {
+          "path": "build/p06zb-startup-tiff001/build002/native.xml",
+          "bytes": 3769,
+          "sha256": "eeb8680a28d4e9eaeff74ce15d8e78c4a412f24e5471b1f055383ad61039e272"
+        },
+        {
+          "path": "build/p06zb-startup-tiff001/source002/pytest.xml",
+          "bytes": 30993,
+          "sha256": "b1f5df705f68f41409548da85840a530f84aeefbe44a37c5596c405ad6b6b3c1"
+        },
+        {
+          "path": "build/p06zb-startup-tiff001/installed-python001/pytest.xml",
+          "bytes": 33423,
+          "sha256": "7b77e1547db3454aa8ee8fcd72bb7691fd8e85a5ced07a5bcf5889a7f9a54335"
+        },
+        {
+          "path": "build/p06zb-startup-tiff001/installed-cpp001/assertions001.json",
+          "bytes": 204,
+          "sha256": "90a3de6b959b745b945557bbeec3573712d870874eaa11cf869b4d24809a2956"
+        },
+        {
+          "path": "build/p06zb-startup-tiff001/installed-python001/installed-evidence001.json",
+          "bytes": 2853,
+          "sha256": "d5395c5837311aba71138b86360c325886c8822f64d5a12c71279f1b0895a3a2"
+        },
+        {
+          "path": "build/p06zb-startup-tiff001/launcher001/launcher-evidence001.json",
+          "bytes": 690,
+          "sha256": "51e71354539d8137ce12aa5c55876dc00cb2123fd098fce9b2942975545be22a"
+        },
+        {
+          "path": "build/p06zb-startup-tiff001/regress002/run001.json",
+          "bytes": 18318,
+          "sha256": "2006c1f161c4ee2a9b80c7579655c36bc4dce42e658c3d39040697d098a3fe05"
+        },
+        {
+          "path": "build/p06zb-startup-tiff001/red001/red-evidence001.json",
+          "bytes": 471,
+          "sha256": "638c7527f402e39438b1ed553ba51dcb1d25309ed97fa70b8694707d62d78010"
+        },
+        {
+          "path": "build/p06zd-atomic-faults001/after001/src/native/atomic_file.cpp",
+          "bytes": 13899,
+          "sha256": "3b82eb0b60bc8a56127ff3f60fb93decc0ecb1aafa41e76711485aefd27c3f06"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/before001/src/native/atomic_file.hpp",
+          "bytes": 3055,
+          "sha256": "76f2360ab359fadddf7e103448d95b86e5bcd2a3e19e690ca3c6c8431d71c98e"
+        },
+        {
+          "path": "src/native/session_io.cpp",
+          "bytes": 4892,
+          "sha256": "3ca12ff2f95897a0669982966770952779610003781f1d4b56cb9e610a9243cd"
+        },
+        {
+          "path": "tests/native/test_atomic_file_faults.cpp",
+          "bytes": 11959,
+          "sha256": "45452a1927986e2cf69b9b7a599a7d1dbe160c8f6e2308f6116ee1f855d7b2df"
+        },
+        {
+          "path": "tests/python/test_atomic_path_freeze.py",
+          "bytes": 3148,
+          "sha256": "f0426dde517f3b3145fed31954d4174b37295cb8b87d963c4fc94465aedfd4e9"
+        },
+        {
+          "path": "build/p06zd-atomic-faults001/build001/native.xml",
+          "bytes": 4711,
+          "sha256": "3db66244af113ddda9dbd142be9ec57d7ddbf869ed7467476eb40db1b5eca889"
+        },
+        {
+          "path": "build/p06zd-atomic-faults001/source001/pytest.xml",
+          "bytes": 41852,
+          "sha256": "f30bb09f0591d109fad652d376b85160618ab1953f70eab425dd08f83045c132"
+        },
+        {
+          "path": "build/p06zd-atomic-faults001/installed-python001/pytest.xml",
+          "bytes": 44282,
+          "sha256": "c110285af426c609f4d828c8ed1c1bf87b53177689a8ab9774cb794384bdc5eb"
+        },
+        {
+          "path": "build/p06zd-atomic-faults001/linux-build001/run001.json",
+          "bytes": 1315,
+          "sha256": "1b801f9c21e8abd504b6d851201c7e6def5b2139093c4b81dd890bcfeaac8b5c"
+        },
+        {
+          "path": "build/p06zd-atomic-faults001/linux-basic001/run001.json",
+          "bytes": 872,
+          "sha256": "620c0725d8f9fb2b6255411f171358a62722b202ea08ed71886745e0b21eb8d7"
+        },
+        {
+          "path": "build/p06zd-atomic-faults001/linux-quota001/run001.json",
+          "bytes": 909,
+          "sha256": "1d4363b38bc5e0394ffbfcd9fbfbf08929bf3adeb0a8748cd0cd6708ec7ebc60"
+        },
+        {
+          "path": "build/p06zd-atomic-faults001/linux-fsize001/run001.json",
+          "bytes": 872,
+          "sha256": "c3db0a25e538c37570bf4a9ad5eba85b113c04face57fdfb691293c7e028a4b5"
+        },
+        {
+          "path": "build/p06zd-atomic-faults001/oracle-evidence001.json",
+          "bytes": 3123,
+          "sha256": "6e1e2f977a116fd576c5af539fefbc6187f3ffd5eeead8283550ffa08977c690"
+        },
+        {
+          "path": "build/p06zd-atomic-faults001/linux-environment001.json",
+          "bytes": 534,
+          "sha256": "c4a7c6227f7c2929dd149ca6adc2b29d9d3b056339940b54ceec12877400cfbd"
+        },
+        {
+          "path": "build/p06zd-atomic-faults001/paths-sdk001/run001.json",
+          "bytes": 4291,
+          "sha256": "f57525377a1bc0acb8e09f362a1b3c5d1354abfdbcdd2a5a264c38f475f63a81"
+        },
+        {
+          "path": "build/p06ze-flush-close001/windows-green001/run001.json",
+          "bytes": 3980,
+          "sha256": "fa35b6e5ee122b6b7ea2ce69f39521ae309d30d18b9160138d0bd5cf6f69614e"
+        },
+        {
+          "path": "build/p06ze-flush-close001/build001/run001.json",
+          "bytes": 9230,
+          "sha256": "3424a707c8c4cb4dcc4c4cf2f93667f5c968033c50e65d31d8a42729903a6456"
+        },
+        {
+          "path": "build/p06ze-flush-close001/source001/run001.json",
+          "bytes": 1386,
+          "sha256": "cc0543430ab1523b4df4be7c6c51408842c6f3956529f0dc9f97946624f8f8fe"
+        },
+        {
+          "path": "build/p06ze-flush-close001/install001/run001.json",
+          "bytes": 7207,
+          "sha256": "c49167534a34c5e1cdf5836ad89a037a13a52a86594695cea4d69ab6c5960145"
+        },
+        {
+          "path": "build/p06ze-flush-close001/installed-cpp001/run001.json",
+          "bytes": 3096,
+          "sha256": "85a7441c23787b8094b6ceadebea2c9ff5a98e06a45ed29ce74b67e9887f0a13"
+        },
+        {
+          "path": "build/p06ze-flush-close001/installed-python001/run001.json",
+          "bytes": 1710,
+          "sha256": "1499a45a04e369893e03360d177b2298c670ca555bff8a53aaf5f7b011e457b1"
+        },
+        {
+          "path": "build/p06ze-flush-close001/launcher001/run001.json",
+          "bytes": 3359,
+          "sha256": "0a398edc2ff39f7a5ff9015fea3f57184dacd8b99db8a2029af3b6d9abdf2df3"
+        },
+        {
+          "path": "build/p06ze-flush-close001/api001/run001.json",
+          "bytes": 1348,
+          "sha256": "a2b948d437d62a5ad9f1c6435689912a5926f5f6951118be62bea7a7ea191e2d"
+        },
+        {
+          "path": "build/p06ze-flush-close001/regress001/run001.json",
+          "bytes": 18356,
+          "sha256": "5d76de1bb0fb587eb6039ceb0278baf7b8da96a1da32308c3f90fb8d03157223"
+        },
+        {
+          "path": "build/p06ze-flush-close001/paths-sdk001/run001.json",
+          "bytes": 4261,
+          "sha256": "992f1b6f45d07c09d223413f01b3ccf8cfc7ae0e4d6f0ce840d78cca51dc7bba"
+        },
+        {
+          "path": "build/p06ze-flush-close001/linux-build001/run001.json",
+          "bytes": 1266,
+          "sha256": "7935d9a794d17397e4ead328d0172b9c4a1af1ae7484f94b4c8be563b10c6421"
+        },
+        {
+          "path": "build/p06ze-flush-close001/linux-build002/run001.json",
+          "bytes": 1273,
+          "sha256": "bda8c64faae5eb9911e2b1d70cabf2731771e5064ed90d3c9247f93fcab0481c"
+        },
+        {
+          "path": "build/p06ze-flush-close001/linux-green001/run001.json",
+          "bytes": 849,
+          "sha256": "0b4efb36b0ff084cb99b9b23dd277cd8b26b536a4bf9134aafdaf4f2b27d9b9d"
+        },
+        {
+          "path": "build/p06ze-flush-close001/linux-baseline001/run001.json",
+          "bytes": 1320,
+          "sha256": "0cb3fe074379522eee6c0136bb5f2b65657ffec498674f2b85f9f6d65c7d4c85"
+        },
+        {
+          "path": "build/p06ze-flush-close001/windows-red001/run001.json",
+          "bytes": 4148,
+          "sha256": "3ae269f184e579df1a6e7df9b0c6e079dc1a56b3bca5100a4a589cea40d769bb"
+        },
+        {
+          "path": "build/p06ze-flush-close001/windows-red001/focused.stderr",
+          "bytes": 101,
+          "sha256": "2fcc69fecd8ed0b09590730ce3a10ecb3c51ccceaf6f3538f1a4de7aa1092794"
+        },
+        {
+          "path": "build/p06ze-flush-close001/windows-red001/atomic_flush_close.exe",
+          "bytes": 99840,
+          "sha256": "a22d3c85e6beabe4903bc57ab19e635519a59bf57fa03326edc1d95dafaab00c"
+        },
+        {
+          "path": "build/p06ze-flush-close001/windows-publication-red001/run001.json",
+          "bytes": 4263,
+          "sha256": "db69bdf7b40985a7c96e436cb93114da5e3f0412d1c970655e19d95cad4718c8"
+        },
+        {
+          "path": "build/p06ze-flush-close001/windows-publication-red001/focused.stderr",
+          "bytes": 101,
+          "sha256": "aeb8c6f92aedab9f1535893197c004f713bec5856a5d93775ff27992181322b1"
+        },
+        {
+          "path": "build/p06ze-flush-close001/windows-publication-red001/atomic_flush_close.exe",
+          "bytes": 99840,
+          "sha256": "a22d3c85e6beabe4903bc57ab19e635519a59bf57fa03326edc1d95dafaab00c"
+        },
+        {
+          "path": "build/p06ze-flush-close001/linux-identity001.json",
+          "bytes": 1590,
+          "sha256": "5eb49eb2fcba5e3a73aa8ccea63b0b3d7a02413bc9773ed1056303a8ea9de459"
+        },
+        {
+          "path": "build/p06ze-flush-close001/policy001.json",
+          "bytes": 174,
+          "sha256": "cfa1be0066dfa4040a755bef7e8e64a3b23ad5f2595ea564a5dff7a4fca6fb62"
+        },
+        {
+          "path": "build/p06ze-flush-close001/cleanup001.json",
+          "bytes": 34739,
+          "sha256": "99517f27bd3543355bb3ebd3639d66c1e19f095a5d35d5f2b693c7077e34d980"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/build001/run001.json",
+          "bytes": 9294,
+          "sha256": "fb58db98d4295d28f37da5782f52241db9c52df099f1277461930dac9941717e"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/source001/run001.json",
+          "bytes": 1402,
+          "sha256": "691111c390497cd5e83b505cdcb1c36b11209368b60ff64c8b7c614ba3a4b35a"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/install001/run001.json",
+          "bytes": 7282,
+          "sha256": "7aef10757e211bb00cba7e1d1fdae8ee4bd1519f898773c75fac4c04203d10f6"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/installed-cpp001/run001.json",
+          "bytes": 3136,
+          "sha256": "7d633d2579c5b0f0aaa1b1f30a763b093fcc4e5a6fc4c6d4959c9a37559d26b4"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/installed-python001/run001.json",
+          "bytes": 1733,
+          "sha256": "2a4bf5b95825993c8ce858443a20a050222ba58ebbe5f99b77aec2ccf4b68e1e"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/launcher001/run001.json",
+          "bytes": 3412,
+          "sha256": "5b46a601ad9cdc0187e9f06a0cfe4278ba1ffafb207050d1b859c8d40c177d5b"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/api001/run001.json",
+          "bytes": 1379,
+          "sha256": "e31c1e97b26e7253b6f415a4dc7b39eba51187aa44ad809395f5c527d6a1fc1a"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/regress001/run001.json",
+          "bytes": 18555,
+          "sha256": "8d7de9ef39779831962ebd35b56e012439fbc0d3b78dd9007e7865158aadd94d"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/paths-sdk001/run001.json",
+          "bytes": 4302,
+          "sha256": "495f7e63646d5ebc789202334015d4f70f5d95aad0f371e0ba483ac62706d54f"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/linux-build003/run001.json",
+          "bytes": 1292,
+          "sha256": "b60a4ded862d57c60ee8acbf855772e5ddd17fab797dc9928705131f526e192d"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/linux-native003/run001.json",
+          "bytes": 987,
+          "sha256": "bf4a8ed04c2e382fa472ac7b33eb6b93270042d3025a9f2495baf79f6dba09a5"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/linux-flush-build002/run001.json",
+          "bytes": 1339,
+          "sha256": "232a3038d5d7d0537c78b31e1fa295d6870d66171cfcf7c18225f959d8930a32"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/linux-flush002/run001.json",
+          "bytes": 872,
+          "sha256": "090edd694bb3d95ed51be6bf8c50b93b308a501e0915f16f650452e3a6a45136"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/linux-helper-build001/run001.json",
+          "bytes": 1353,
+          "sha256": "81587b66f308ea23f763e008758a8895ff9213e94ceff7ddc7e377c285f7c3c1"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/linux-basic001/run001.json",
+          "bytes": 887,
+          "sha256": "b9bda4030778cc2ce920903f68ed34537c4124cca4b20d672e231f108abe13e9"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/linux-quota001/run001.json",
+          "bytes": 926,
+          "sha256": "152f6b7d5a9f3853ab51602b5a7d7903ddcb5ca5817e315e43de76ddfcd68655"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/linux-fsize001/run001.json",
+          "bytes": 887,
+          "sha256": "a203c13c52f8cc6f29aa801f47b12a75632c28e218f2204c6ac5efa9d297ae7b"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/linux-cmake001/run001.json",
+          "bytes": 883,
+          "sha256": "da84a6caa14df39248ad0a13d7d03eab7642448cfec8b22a55843a7591d44530"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/linux-native-red001/run001.json",
+          "bytes": 1108,
+          "sha256": "0c9f59a88688ca8243dd548e22d001d26419de7e32c82098d238f142c04b5a3e"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/linux-native-red001/stderr.txt",
+          "bytes": 67,
+          "sha256": "fb3eed76298d0a45870994bea670bd6cdd60d53dfa8d97143d43b96d865375d3"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/linux-native-red001/native-artifacts001.json",
+          "bytes": 927,
+          "sha256": "b7d1ef03f99234a935ce4adfdeb43d88aef679b4d6e0ebbf591db3f55d8a6cdf"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/linux-parent-native-red001/run001.json",
+          "bytes": 1139,
+          "sha256": "e260102c104c8bf799a67f2881841943fef505c2c2b9fe8032cbc693cb796d2c"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/linux-parent-native-red001/stderr.txt",
+          "bytes": 67,
+          "sha256": "6be408b08f336b3391e6956bb473033fa0ee0ecfaf160aa21e99d947ffc959e9"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/linux-parent-native-red001/native-artifacts001.json",
+          "bytes": 949,
+          "sha256": "c4ddb813a755f2955fee506ecab3c832935bb84eb8d11e873211473cfbe62511"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/linux-red-native-build001/atomic_faults",
+          "bytes": 102696,
+          "sha256": "5b53892479ae5f686ca23c5b5cf1d6c16b323749f374cc6e031272b280eb9e66"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/linux-native003/native-artifacts001.json",
+          "bytes": 60340,
+          "sha256": "fd5962aaa88147dae88f21e628701a4b9bf1c4055bda2c5ab767c9c6ad1b0357"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/linux-native003/native-artifacts001.zip",
+          "bytes": 86858,
+          "sha256": "2bfb40f0ac1c6c1270c1140f115a36215eab2d0060354806f5250b8529a94a99"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/linux-native-red001/native-artifacts001.json",
+          "bytes": 927,
+          "sha256": "b7d1ef03f99234a935ce4adfdeb43d88aef679b4d6e0ebbf591db3f55d8a6cdf"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/linux-native-red001/native-artifacts001.zip",
+          "bytes": 945,
+          "sha256": "cc38feb02218f47d6587dbb22828efe49d90b50aeb87fd5dd9271227d1a77e14"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/linux-parent-native-red001/native-artifacts001.json",
+          "bytes": 949,
+          "sha256": "c4ddb813a755f2955fee506ecab3c832935bb84eb8d11e873211473cfbe62511"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/linux-parent-native-red001/native-artifacts001.zip",
+          "bytes": 1093,
+          "sha256": "e7cfe10d45a53f1f31722c48381b8c4fee99796b1c6fec3546418a8155691d1a"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/linux-cmake001/native-artifacts001.json",
+          "bytes": 60339,
+          "sha256": "1fbd54ab51433fef3b22253b22ccdf952bc512848c34beb833a759ebb4750dc1"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/linux-cmake001/native-artifacts001.zip",
+          "bytes": 86858,
+          "sha256": "f520603521939375b6e207529a372c712b00b0b394ab8e9e6e9b93c790ae737d"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/policy001.json",
+          "bytes": 136,
+          "sha256": "6b871647f88848a844e32a474acfa4761db6dc7744b7888c0c9d4dfb48cfda8d"
+        },
+        {
+          "path": "build/p06zf-posix-ownership001/cleanup001.json",
+          "bytes": 338827,
+          "sha256": "871810c0dd2a4f06a1a6d8f69f933265f61c595c139c9472bf94105bd7a4fa00"
+        }
+      ]
+    },
+    {
+      "id": "TU08",
+      "kind": "source_reference_runtime",
+      "cases": [
+        {
+          "case": "pinned-ImageJ1.54r-export-to-native",
+          "state": "exercised"
+        },
+        {
+          "case": "native-to-pinned-ImageJ1.54r-reopen",
+          "state": "exercised"
+        }
+      ],
+      "notes": "Actual pinned ImageJ1.54r checks every singleton/non-singleton C/Z/T combination (T1/2,C1/3,Z1/2): native installed SDK and installed Python exports reopen with literal unsigned pixels, getStackIndex and anisotropic/time calibration. Untouched FileSaver outputs are imported by installed SDK/Python and open as eight clean reviewed editor owners. The runtime exposed and qualified the narrow single-axis omitted-hyperstack amendment. One-plane FileSaver depth omission is retained and explicitly defaulted, never sanitized.",
+      "evidence": [
+        {
+          "path": "build/p06r-tiff-service001/TiffInterop.java",
+          "bytes": 2516,
+          "sha256": "af59c33d51c3da90cc3850f1abb4a3a2f2326b4aba4fc890ba0fe2793f79554c"
+        },
+        {
+          "path": "build/p06r-tiff-python001/interop001/run001.json",
+          "bytes": 4783,
+          "sha256": "44e1f76a2e1e74750a059c77bedbaeae103bf31e4dadaba32adeb5559bb67d13"
+        },
+        {
+          "path": "docs/parity/reviews/scientific-tiff-u16-runtime-amendment-005.json",
+          "bytes": 5180,
+          "sha256": "41c0f1d78f2a81d194f6dcef8bed7adb8091677af81ed2007533c16fa283c02a"
+        },
+        {
+          "path": "build/p06x-tiff-runtime001/build001/native.xml",
+          "bytes": 2758,
+          "sha256": "e5afb34f4d55c0ee766595764d1ec3f1c6e87dacb5ea99f93e07d64541915733"
+        },
+        {
+          "path": "build/p06x-tiff-runtime001/runtime004/run001.json",
+          "bytes": 109670,
+          "sha256": "2ff4a29ddae086cb4c9fb96f05bea3071ccae4c00886d44549053b6a86cb745a"
+        },
+        {
+          "path": "build/p06x-tiff-runtime001/runtime004/after-evidence001.json",
+          "bytes": 11778,
+          "sha256": "18e06acbce317c4314e856e352b28952beb081c67a660bc3f38d8719e58bb4e9"
+        }
+      ]
+    },
+    {
+      "id": "TU09",
+      "kind": "installed_interfaces",
+      "cases": [
+        {
+          "case": "core-only-SDK",
+          "state": "exercised"
+        },
+        {
+          "case": "native-C++API",
+          "state": "exercised"
+        },
+        {
+          "case": "installed-Python-DatasetAPI",
+          "state": "exercised"
+        },
+        {
+          "case": "standalone-ImGui-open-export",
+          "state": "exercised"
+        },
+        {
+          "case": "Python-ImGui-open-export",
+          "state": "exercised"
+        },
+        {
+          "case": "legacy-TIFF-regression",
+          "state": "partial"
+        }
+      ],
+      "notes": "Normal interactive Open/Recent/drop and Python paths-only startup require scientific/flat consent; startup remains one atomic batch with retained accepted-source guards. Mixed Python paths/arrays/UI-Document launch now captures an ordered native append queue, freezes relative paths, retains owned future data after caller mutation/GC and requires fresh fixed-path TIFF review. Cancel/budget changes and file failures keep accepted prefixes and discard the suffix. Session append tables remain inert. Thirty-eight new mixed cases and29 existing owner/record checks supplement the preceding TIFF/legacy/PNM/startup cases. Native12/source286/installed306, both installed physical hosts, both normal launchers, the actual Python mixed convenience launcher, all ten prior startup cases and desktop/API/IO SDK pass. The previous installed mixed fallback is retained as a failing regression. Native-owner mixed launch, general TIFF/OME, broader faults/platforms and complete release/editor certification remain open; existing explicit legacy and native-owner attachment APIs are unchanged.",
+      "evidence": [
+        {
+          "path": "build/p06t-replay-validation001/replay-handoff001.json",
+          "bytes": 8873,
+          "sha256": "55df91c90023d0a18908f6d4d6d0e80476562f509e782908e31873df2997797c"
+        },
+        {
+          "path": "tests/python/test_scientific_tiff_io.py",
+          "bytes": 12299,
+          "sha256": "e7ab9831dcba1dd37adb5d9bfd54bfd3d85fea6f195c034fd869a79e7d5cfb13"
+        },
+        {
+          "path": "build/p06x-tiff-runtime001/installed-cpp001/run001.json",
+          "bytes": 3080,
+          "sha256": "e9e4101008baff5c2554add8acfd303b948bb8d12e95a47631a316944d21a7df"
+        },
+        {
+          "path": "build/p06x-tiff-runtime001/installed-python001/installed-evidence001.json",
+          "bytes": 2843,
+          "sha256": "57a145654e2fdeba2d4c5d4d4452f07624ad9c0cd92b30764c229ce62f532390"
+        },
+        {
+          "path": "build/p06x-tiff-runtime001/regress001/run001.json",
+          "bytes": 9097,
+          "sha256": "9c41b9d91ef97cd96689597c9ca19a4382d641e8383cb73cacc3b2d67ba9a8f6"
+        },
+        {
+          "path": "src/desktop/io.cpp",
+          "bytes": 25644,
+          "sha256": "062ea5c9019450568218f40d2f6154f84b78986a3784ca0d93d1d09bbd43d79f"
+        },
+        {
+          "path": "src/desktop/util.cpp",
+          "bytes": 3419,
+          "sha256": "fd219402df0585f6037b317d9ae677fd0c9bdd4bb31795bbef8f88e7777ba7c8"
+        },
+        {
+          "path": "tests/native/test_legacy_tiff_io.cpp",
+          "bytes": 5037,
+          "sha256": "4403e980a7e65ba4edcd54539a67e222acd05a685c18c9b85d9aa83983c6d454"
+        },
+        {
+          "path": "tests/python/test_legacy_tiff_io.py",
+          "bytes": 5166,
+          "sha256": "681c28d37307a386f24bfe44a66696aaf6dcdf08c05f4371cc63495d347608fd"
+        },
+        {
+          "path": "build/p06y-legacy-tiff001/build001/native.xml",
+          "bytes": 3135,
+          "sha256": "665d62a9a5d90261fafcf00c28bd45b796b8d524750c628ef11ba434bc9bd2c2"
+        },
+        {
+          "path": "build/p06y-legacy-tiff001/installed-python002/pytest.xml",
+          "bytes": 24077,
+          "sha256": "8f3b63a11f0c788cc49e3b9b1ee6502a9cdab1436b4ef040ce51f79c5771e756"
+        },
+        {
+          "path": "build/p06y-legacy-tiff001/oracle001/oracle-evidence001.json",
+          "bytes": 4944,
+          "sha256": "65cce9e074e34cb88a1377309e789f4b9808188aff18c52755a6051d26a95863"
+        },
+        {
+          "path": "build/p06y-legacy-tiff001/regress001/run001.json",
+          "bytes": 9075,
+          "sha256": "d85e529bc8a239434ca80df45db147aebc0b240ee379b050290f9597c9ac1295"
+        },
+        {
+          "path": "build/p06y-legacy-tiff001/installed-cpp001/run001.json",
+          "bytes": 3084,
+          "sha256": "fbf112b6b7974a3f17e8e21aa70809ddfa47bfce516a898d3732e2bf799e9fdd"
+        },
+        {
+          "path": "src/desktop/window.cpp",
+          "bytes": 610909,
+          "sha256": "bc12b6fbf10f8c260a9ad2f055ab4ad49cd044cc86b6c0005783b24274dbeac3"
+        },
+        {
+          "path": "src/desktop/window.hpp",
+          "bytes": 14517,
+          "sha256": "b32712a7a53debd12813d3a41024d4202524018e20eee3fe7b50ee0ccb6b22ea"
+        },
+        {
+          "path": "src/desktop/python.cpp",
+          "bytes": 45793,
+          "sha256": "d9885a7b54e6f1a5da1b767c95e996971b3754ebfe99bbcc548b3d34277a00c3"
+        },
+        {
+          "path": "src/desktop/scientific_io_panel.cpp",
+          "bytes": 44477,
+          "sha256": "d8362b1e29259267e9b0cca780b01e957a729a25b063c4b8d806d8f0312e9d30"
+        },
+        {
+          "path": "src/desktop/scientific_io_panel.hpp",
+          "bytes": 1889,
+          "sha256": "b9ad465993450e18050eb4b47b01d7e40b21b46f4563b3ce768fd1e244e76589"
+        },
+        {
+          "path": "src/desktop/scientific_io_ui_probe.cpp",
+          "bytes": 18633,
+          "sha256": "c8bc18c27f1be7b55a4cf8094f6134b4dc992746e63e2dc4799494c0496681b0"
+        },
+        {
+          "path": "src/imagejxx/ui/app.py",
+          "bytes": 28376,
+          "sha256": "16baa273a142a57eb51a1da04db0bec3933286d8ef2986642a885759bcbbf0fb"
+        },
+        {
+          "path": "src/imagejxx/ui/__init__.py",
+          "bytes": 1493,
+          "sha256": "0a6ebc547cdc21f908cc8a76ded3cdb8282ee72095547fa5d02948d5e1646754"
+        },
+        {
+          "path": "tests/python/test_normal_tiff_open.py",
+          "bytes": 7152,
+          "sha256": "d29d720f3334ea31e4e6117fb0943a12d668afcb59ca73bf0ecb4344b14a76fd"
+        },
+        {
+          "path": "tests/native/test_scientific_io_panel.cpp",
+          "bytes": 10422,
+          "sha256": "047669f99dd62dde21eebe92cf4b550254600354e1dd86a4925e84ad7bc128db"
+        },
+        {
+          "path": "build/p06z-normal-open001/build002/native.xml",
+          "bytes": 3134,
+          "sha256": "d6fa873472c70073d1733ea6ad3695e9770fb930715266b173069f7e9dcea2e1"
+        },
+        {
+          "path": "build/p06z-normal-open001/source003/pytest.xml",
+          "bytes": 23514,
+          "sha256": "4ef0383bc0336d0c2bceeaa28555e5dbf7b1539f311e9ac2fc945498e755d119"
+        },
+        {
+          "path": "build/p06z-normal-open001/installed-python002/pytest.xml",
+          "bytes": 25944,
+          "sha256": "d6d2700af62f5846ea8744058946c544bde1f27422dd402bc10ea7f7c0354c65"
+        },
+        {
+          "path": "build/p06z-normal-open001/installed-cpp001/assertions001.json",
+          "bytes": 204,
+          "sha256": "90a3de6b959b745b945557bbeec3573712d870874eaa11cf869b4d24809a2956"
+        },
+        {
+          "path": "build/p06z-normal-open001/installed-python002/installed-evidence001.json",
+          "bytes": 2833,
+          "sha256": "1c6e7e757aac0345a091685911d954a37770343a942729db7473906c99915622"
+        },
+        {
+          "path": "build/p06z-normal-open001/regress001/run001.json",
+          "bytes": 9019,
+          "sha256": "c372fdd089ae504cc8b55a4b227ad9bccf91c519cee3fa3df668a844dd7dd5d0"
+        },
+        {
+          "path": "src/native/image.cpp",
+          "bytes": 20619,
+          "sha256": "aa8f30cf2e868ab1ead2ff745ccbe93a78c57fbcc145c6abc7b03c2847f1aae4"
+        },
+        {
+          "path": "src/desktop/io.cpp",
+          "bytes": 25644,
+          "sha256": "062ea5c9019450568218f40d2f6154f84b78986a3784ca0d93d1d09bbd43d79f"
+        },
+        {
+          "path": "tests/native/test_pnm_io.cpp",
+          "bytes": 6077,
+          "sha256": "2d4fab416f393402854041772058c6266673366ebadf94a63a336047fb41aa11"
+        },
+        {
+          "path": "tests/python/test_pnm_publication.py",
+          "bytes": 3528,
+          "sha256": "e08839f5a47b0cd996e7905dfa1d0c8bc06f9f6e9adae626bd18993300565fa1"
+        },
+        {
+          "path": "build/p06za-pnm-ownership001/build001/native.xml",
+          "bytes": 3484,
+          "sha256": "004cd1eeb37996942a21c8624507461afdb1d5f3e523e9ba0354833475677d62"
+        },
+        {
+          "path": "build/p06za-pnm-ownership001/source001/pytest.xml",
+          "bytes": 28062,
+          "sha256": "3ea4764c58c93d1c733d7eb5b8ef09ec7ae0b756df99d63137b2c33b2eb84e3d"
+        },
+        {
+          "path": "build/p06za-pnm-ownership001/installed-python001/pytest.xml",
+          "bytes": 30492,
+          "sha256": "ccc05ec0ecd44d3247b760d020fb4d7992e2c8ddba2b2002c67f4cc06a321ac2"
+        },
+        {
+          "path": "build/p06za-pnm-ownership001/red003/red-evidence001.json",
+          "bytes": 1406,
+          "sha256": "3f4cc27664066996383fc734e4fe62b55df429d684fcfad03f83102898f1ff3a"
+        },
+        {
+          "path": "build/p06za-pnm-ownership001/oracle-evidence001.json",
+          "bytes": 1383,
+          "sha256": "00b5deea9536398ba89f06dc4e6ab7e6dd0067dbcd1b756b4a3a9914a3220a0b"
+        },
+        {
+          "path": "src/desktop/window.cpp",
+          "bytes": 610909,
+          "sha256": "bc12b6fbf10f8c260a9ad2f055ab4ad49cd044cc86b6c0005783b24274dbeac3"
+        },
+        {
+          "path": "src/desktop/scientific_io_panel.cpp",
+          "bytes": 44477,
+          "sha256": "d8362b1e29259267e9b0cca780b01e957a729a25b063c4b8d806d8f0312e9d30"
+        },
+        {
+          "path": "src/desktop/scientific_io_panel.hpp",
+          "bytes": 1889,
+          "sha256": "b9ad465993450e18050eb4b47b01d7e40b21b46f4563b3ce768fd1e244e76589"
+        },
+        {
+          "path": "src/desktop/scientific_io_ui_probe.cpp",
+          "bytes": 18633,
+          "sha256": "c8bc18c27f1be7b55a4cf8094f6134b4dc992746e63e2dc4799494c0496681b0"
+        },
+        {
+          "path": "tests/native/test_startup_tiff.cpp",
+          "bytes": 3834,
+          "sha256": "a6d7ce22020857dd8f1ba2bb32341f214becab4a63840a92b8d6b12e8f15b38d"
+        },
+        {
+          "path": "tests/python/test_startup_tiff_review.py",
+          "bytes": 8973,
+          "sha256": "c6dfe62a7dc0104b1d9265104b4c6a57276287ba2cedd5a858822cbd0901ce4c"
+        },
+        {
+          "path": "build/p06zb-startup-tiff001/build002/native.xml",
+          "bytes": 3769,
+          "sha256": "eeb8680a28d4e9eaeff74ce15d8e78c4a412f24e5471b1f055383ad61039e272"
+        },
+        {
+          "path": "build/p06zb-startup-tiff001/source002/pytest.xml",
+          "bytes": 30993,
+          "sha256": "b1f5df705f68f41409548da85840a530f84aeefbe44a37c5596c405ad6b6b3c1"
+        },
+        {
+          "path": "build/p06zb-startup-tiff001/installed-python001/pytest.xml",
+          "bytes": 33423,
+          "sha256": "7b77e1547db3454aa8ee8fcd72bb7691fd8e85a5ced07a5bcf5889a7f9a54335"
+        },
+        {
+          "path": "build/p06zb-startup-tiff001/installed-cpp001/assertions001.json",
+          "bytes": 204,
+          "sha256": "90a3de6b959b745b945557bbeec3573712d870874eaa11cf869b4d24809a2956"
+        },
+        {
+          "path": "build/p06zb-startup-tiff001/installed-python001/installed-evidence001.json",
+          "bytes": 2853,
+          "sha256": "d5395c5837311aba71138b86360c325886c8822f64d5a12c71279f1b0895a3a2"
+        },
+        {
+          "path": "build/p06zb-startup-tiff001/launcher001/launcher-evidence001.json",
+          "bytes": 690,
+          "sha256": "51e71354539d8137ce12aa5c55876dc00cb2123fd098fce9b2942975545be22a"
+        },
+        {
+          "path": "build/p06zb-startup-tiff001/regress002/run001.json",
+          "bytes": 18318,
+          "sha256": "2006c1f161c4ee2a9b80c7579655c36bc4dce42e658c3d39040697d098a3fe05"
+        },
+        {
+          "path": "build/p06zb-startup-tiff001/red001/red-evidence001.json",
+          "bytes": 471,
+          "sha256": "638c7527f402e39438b1ed553ba51dcb1d25309ed97fa70b8694707d62d78010"
+        },
+        {
+          "path": "src/desktop/window.cpp",
+          "bytes": 610909,
+          "sha256": "bc12b6fbf10f8c260a9ad2f055ab4ad49cd044cc86b6c0005783b24274dbeac3"
+        },
+        {
+          "path": "src/imagejxx/ui/app.py",
+          "bytes": 28376,
+          "sha256": "16baa273a142a57eb51a1da04db0bec3933286d8ef2986642a885759bcbbf0fb"
+        },
+        {
+          "path": "src/imagejxx/ui/__init__.py",
+          "bytes": 1493,
+          "sha256": "0a6ebc547cdc21f908cc8a76ded3cdb8282ee72095547fa5d02948d5e1646754"
+        },
+        {
+          "path": "src/desktop/scientific_io_ui_probe.cpp",
+          "bytes": 18633,
+          "sha256": "c8bc18c27f1be7b55a4cf8094f6134b4dc992746e63e2dc4799494c0496681b0"
+        },
+        {
+          "path": "tests/native/test_launch_append.cpp",
+          "bytes": 3758,
+          "sha256": "a909372145b32e0642b36c143f314dcc922bac666837ed7890679451ac977656"
+        },
+        {
+          "path": "tests/python/test_mixed_launch_review.py",
+          "bytes": 12186,
+          "sha256": "e16781f454b51a96ed41f3a23bbb01899225b83b093f32403b7037b37edb1910"
+        },
+        {
+          "path": "build/p06zc-mixed-launch001/build001/native.xml",
+          "bytes": 4040,
+          "sha256": "ad58ef58575f6b710ac1ad0d6b92242fcc78aa48231e9f9d331e32ab522527fb"
+        },
+        {
+          "path": "build/p06zc-mixed-launch001/source002/pytest.xml",
+          "bytes": 40549,
+          "sha256": "3cfc9cadbb5d81b2d2c1b7d5af804c6e14353a167d09d62714c4c852883aa023"
+        },
+        {
+          "path": "build/p06zc-mixed-launch001/installed-python001/pytest.xml",
+          "bytes": 42979,
+          "sha256": "4b8192b2c5e147cb94734074fde578ae800f7c76db7c83dd285df9c3f973032e"
+        },
+        {
+          "path": "build/p06zc-mixed-launch001/installed-cpp001/assertions001.json",
+          "bytes": 204,
+          "sha256": "90a3de6b959b745b945557bbeec3573712d870874eaa11cf869b4d24809a2956"
+        },
+        {
+          "path": "build/p06zc-mixed-launch001/installed-python001/installed-evidence001.json",
+          "bytes": 2853,
+          "sha256": "51750efee9204f57c3ec60fc690cc909a591244dee0125965e99658a152eeb02"
+        },
+        {
+          "path": "build/p06zc-mixed-launch001/launcher001/launcher-evidence001.json",
+          "bytes": 1388,
+          "sha256": "40f8388c59023664f4f38cc156aa27ec22398e48ac0e4b65ed1f682d23948088"
+        },
+        {
+          "path": "build/p06zc-mixed-launch001/regress001/run001.json",
+          "bytes": 18321,
+          "sha256": "0f8dc4eb301d19ee9264866d204b759ff007c1c874cf840b38b5db618f6854d1"
+        },
+        {
+          "path": "build/p06zc-mixed-launch001/red001/red-evidence001.json",
+          "bytes": 237,
+          "sha256": "d04211ecf8daf379d6b4fb6b397222ecf39f2c2407284b0fd99450eed0a8082e"
+        },
+        {
+          "path": "build/p06zc-mixed-launch001/investigate001/investigation001.json",
+          "bytes": 367,
+          "sha256": "94b9538876989a5ae5abc6621e9a7d706ab5d8f50c1eda9e2b605dce3042cae9"
+        }
+      ]
+    }
+  ],
+  "next_actions": [
+    "Resolve remaining concurrent POSIX check-to-rename/link/unlink mutation limits; evaluate private staging/anonymous-inode publication without overstating guarantees",
+    "Supply actual device flush/close, Windows disk-full and remaining platform/instrumentation proof, then matching complete release products",
+    "Continue full editor/configuration/selection/filter/slicing/viewing and commercially eligible Fiji inventory; All99 remains42/57/0, Source901 unchanged"
+  ],
+  "profile_accepted": false,
+  "family_completed": false,
+  "broad_goal": "active",
+  "previous_audit": {
+    "path": "docs/parity/reviews/scientific-tiff-u16-coverage-015.json",
+    "bytes": 54185,
+    "sha256": "1b84ce9a9b18edaa9cd06c3b4b54906be1a167ae433eded05f78bf1a82cd6bcf"
+  },
+  "platform_scope": "Windows guarded refusal evidence for 81 carriers; portable typed tests executed here on Windows"
+}

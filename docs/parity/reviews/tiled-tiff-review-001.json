@@ -1,0 +1,101 @@
+{
+  "state": "reviewed_and_qualified",
+  "scope": "First classic uncompressed scalar UInt16 tiled TIFF profile, C++/Python and both ImGui hosts",
+  "audit": {
+    "path": "build/p08l-tiled-tiff001/final-audit001.json",
+    "bytes": 8898,
+    "sha256": "1412082dcef10178b89213d85373f9e901bcfdbc788289c97299c445858ce82a"
+  },
+  "implementation_review": [
+    "Append-only ordinal 24 and strict version 10 records preserve all prior format values, defaults and producers.",
+    "Complete tile tag sets, homogeneous positive geometry, exact payload byte counts and overlap/budget checks precede pixel reads or callbacks.",
+    "Logical row segments preserve endian order and ignore edge padding; fixed 64x64 output tiles have deterministic zero padding and exact preflight bounds.",
+    "Provider samples are validated before serialization; streaming failures retain exclusive staging and atomic publication boundaries.",
+    "Explicit flat tiled import reserves its temporary copy and revalidates held identity before publication.",
+    "Shared controls invalidate estimates/consent; replay remains inert. Actual source/installed hosts preserve exact XY/XZ/YZ words."
+  ],
+  "validation": {
+    "windows_suites": 87,
+    "linux_suites": 238,
+    "windows_python_passed": 10602,
+    "linux_python_passed": 10592,
+    "windows_only_exemptions": 10,
+    "previous_python_cases_retained": 10436,
+    "new_python_cases": 166,
+    "sdk_formats": 25,
+    "linux_cpp_cases_per_build": 139,
+    "independent_native_export_reads": 210
+  },
+  "reference": {
+    "libtiff_version": "4.7.1",
+    "input_oracle": {
+      "path": "build/p08l-tiled-tiff001/oracle002/evidence001.json",
+      "bytes": 1278,
+      "sha256": "5f77349c828254b77567c82e18a0129ae07e433b897b72f980b5b2a5e5e7d972"
+    },
+    "windows_exports": {
+      "path": "build/p08l-tiled-tiff001/oracle-exports001/evidence001.json",
+      "bytes": 1070,
+      "sha256": "314dce989a57f62b2b73992df4412dae069d23764da0fb5d4359517e2c909e0b"
+    },
+    "linux_exports": {
+      "path": "build/p08l-tiled-tiff001/linux-oracle002/evidence001.json",
+      "bytes": 27824,
+      "sha256": "62842c4d29850cc13a09f1c18614b6dabcf3dad217a380db99bff28b3e3a6c6f"
+    },
+    "imagej_probe": {
+      "path": "build/p08l-tiled-tiff001/imagej002/evidence001.json",
+      "bytes": 100521,
+      "sha256": "21f7b491af997e813af5e1186ab56230fdb47db9e0b54b0e26833c5970bc9904"
+    }
+  },
+  "commercial_scope": "Original C++ tile IO; previously reviewed dependencies and versions reused; no non-commercial component or Qt/JVM runtime introduced.",
+  "cleanup": {
+    "targets": 54,
+    "net_bytes_freed": 9486111776,
+    "receipts": [
+      {
+        "path": "build/p08l-tiled-tiff001/partial-cleanup001.json",
+        "bytes": 860891,
+        "sha256": "09bccf200db6b257e07e472b13bf71b955baf76ce639059ce2386f29c281ecb4"
+      },
+      {
+        "path": "build/p08l-tiled-tiff001/failed-full-cleanup001.json",
+        "bytes": 360856,
+        "sha256": "dc43bf5e8f692661455716cb35518129cf36f3762da0261e2b9bf1e0f1cb00ac"
+      },
+      {
+        "path": "build/p08l-tiled-tiff001/windows-cleanup001.json",
+        "bytes": 1192662,
+        "sha256": "dfee0476a6f1d55f864e49d968740d058438bcad396372d021483964be6a0fe4"
+      },
+      {
+        "path": "build/p08l-tiled-tiff001/archive-old001/evidence001.json",
+        "bytes": 945179,
+        "sha256": "175246589ab986e78e6c86a22150aaa5641b15596c21e48ff3256f647a575647"
+      },
+      {
+        "path": "build/p08l-tiled-tiff001/cleanup001/evidence001.json",
+        "bytes": 5969126,
+        "sha256": "b0b1035014234d52ddea68a3eebbcdc58e63c524e334bc9eaac37fa62c1b100d"
+      },
+      {
+        "path": "build/p08l-tiled-tiff001/source-archive-cleanup001.json",
+        "bytes": 754,
+        "sha256": "b0425ccc960da4f37bd67be4cb84d4dd235a7aeb44ff0dd63f8db81e32998811"
+      }
+    ]
+  },
+  "remaining": [
+    "Pinned ImageJ 1.54r cannot open tiled TIFFs; libtiff is the IO oracle",
+    "Only scalar UInt16 uncompressed classic TIFF tiles; other tile samples/codecs, BigTIFF and broader metadata remain open",
+    "Actual ImGui event streams and CPU readbacks, without an OS-input/GPU equivalence claim",
+    "Remaining ImageJ/Fiji/editor/release requirements remain open",
+    "The partial format registry still needs reconciliation with the implemented profiles and real variant/fixture/run links; this review does not declare G080 or matching-release acceptance."
+  ],
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  }
+}

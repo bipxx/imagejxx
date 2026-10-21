@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_owned_increment",
+  "review_type": "Root authorship/integration attestation, not independent legal review",
+  "license": "Existing project MIT for original heterogeneous import/archive/command and bindings/tests",
+  "new_dependencies": [],
+  "restricted_features_added": false,
+  "imported_third_party_product_code": [],
+  "new_fonts": [],
+  "sources": [
+    {
+      "logical_path": "CMakeLists.txt",
+      "before": {
+        "path": "build/p06q-mixed-import001/before001/CMakeLists.txt",
+        "bytes": 58761,
+        "sha256": "725b93a59beb7f01827c2699c18d63aec504eeb01493530832802ff2d816811c"
+      },
+      "after": {
+        "path": "build/p06q-mixed-import001/held001/after/CMakeLists.txt",
+        "bytes": 59181,
+        "sha256": "796cc1b347773606f250e9ef498a3e1aa8177a0b872f3d5484e9119312bd4420"
+      },
+      "current": {
+        "path": "CMakeLists.txt",
+        "bytes": 59181,
+        "sha256": "796cc1b347773606f250e9ef498a3e1aa8177a0b872f3d5484e9119312bd4420"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_roi_import.cpp",
+      "before": {
+        "path": "build/p06q-mixed-import001/before001/src/native/imagej_roi_import.cpp",
+        "bytes": 28223,
+        "sha256": "5561c47239df96679cc0c31d147cba4ead49819ffb7603b64f705192ed9892d9"
+      },
+      "after": {
+        "path": "build/p06q-mixed-import001/held001/after/src/native/imagej_roi_import.cpp",
+        "bytes": 29936,
+        "sha256": "c74ee2e3b55d2bb56fc1b5f438d6cf67a4358175d4b847c6587d8b4b0565ac84"
+      },
+      "current": {
+        "path": "src/native/imagej_roi_import.cpp",
+        "bytes": 29936,
+        "sha256": "c74ee2e3b55d2bb56fc1b5f438d6cf67a4358175d4b847c6587d8b4b0565ac84"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_roi_import_internal.hpp",
+      "before": {
+        "path": "build/p06q-mixed-import001/before001/src/native/imagej_roi_import_internal.hpp",
+        "bytes": 3310,
+        "sha256": "542104d1b8f857939b9107a23ffeb6958435ff7eae52123494b67c30da9f0b5d"
+      },
+      "after": {
+        "path": "build/p06q-mixed-import001/held001/after/src/native/imagej_roi_import_internal.hpp",
+        "bytes": 3893,
+        "sha256": "21b86028bc360f74bcf3498d36124bb0ae6a37faa081b65144ac062e961f4caa"
+      },
+      "current": {
+        "path": "src/native/imagej_roi_import_internal.hpp",
+        "bytes": 3893,
+        "sha256": "21b86028bc360f74bcf3498d36124bb0ae6a37faa081b65144ac062e961f4caa"
+      }
+    },
+    {
+      "logical_path": "src/native/bindings.cpp",
+      "before": {
+        "path": "build/p06q-mixed-import001/before001/src/native/bindings.cpp",
+        "bytes": 29818,
+        "sha256": "6d9795b16fc6f8201e307bf1b285d0e4d2e8681933225633ddeba6ea716074a2"
+      },
+      "after": {
+        "path": "build/p06q-mixed-import001/held001/after/src/native/bindings.cpp",
+        "bytes": 29913,
+        "sha256": "4a5d2d0a46c31abc4415bf7727b4b86e058001944fbb5aae848b9ee98fa73120"
+      },
+      "current": {
+        "path": "src/native/bindings.cpp",
+        "bytes": 29913,
+        "sha256": "4a5d2d0a46c31abc4415bf7727b4b86e058001944fbb5aae848b9ee98fa73120"
+      }
+    },
+    {
+      "logical_path": "src/imagejxx/__init__.py",
+      "before": {
+        "path": "build/p06q-mixed-import001/before001/src/imagejxx/__init__.py",
+        "bytes": 60198,
+        "sha256": "e3a9b8646babab809b6ee35a02f0471654adcece5de6d7fa7c406ffa14f9365f"
+      },
+      "after": {
+        "path": "build/p06q-mixed-import001/held001/after/src/imagejxx/__init__.py",
+        "bytes": 61108,
+        "sha256": "79f7f6919aae373a4805468a63d55c29b4253d87ef96f519869009bc1b380c4e"
+      },
+      "current": {
+        "path": "src/imagejxx/__init__.py",
+        "bytes": 61108,
+        "sha256": "79f7f6919aae373a4805468a63d55c29b4253d87ef96f519869009bc1b380c4e"
+      }
+    },
+    {
+      "logical_path": "include/imagejxx/imagej_annotation_import.hpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-mixed-import001/held001/after/include/imagejxx/imagej_annotation_import.hpp",
+        "bytes": 3959,
+        "sha256": "27133c40c6a56c92f7b09bb4e71c0679d58b94a7d451cac71d3392fc91c3b8dc"
+      },
+      "current": {
+        "path": "include/imagejxx/imagej_annotation_import.hpp",
+        "bytes": 3959,
+        "sha256": "27133c40c6a56c92f7b09bb4e71c0679d58b94a7d451cac71d3392fc91c3b8dc"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_annotation_import.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-mixed-import001/held001/after/src/native/imagej_annotation_import.cpp",
+        "bytes": 24814,
+        "sha256": "1cbbc12d78e5823b5e67531ab75cba9273ee6f31aa0c12e520bd9957ea98783c"
+      },
+      "current": {
+        "path": "src/native/imagej_annotation_import.cpp",
+        "bytes": 24814,
+        "sha256": "1cbbc12d78e5823b5e67531ab75cba9273ee6f31aa0c12e520bd9957ea98783c"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_annotation_import_bindings.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-mixed-import001/held001/after/src/native/imagej_annotation_import_bindings.cpp",
+        "bytes": 10620,
+        "sha256": "6abbf02be5353091a18d60076376ed3d67a7e4181f51f27be8c5615d74ff2893"
+      },
+      "current": {
+        "path": "src/native/imagej_annotation_import_bindings.cpp",
+        "bytes": 10620,
+        "sha256": "6abbf02be5353091a18d60076376ed3d67a7e4181f51f27be8c5615d74ff2893"
+      }
+    },
+    {
+      "logical_path": "tests/native/test_imagej_annotation_import.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-mixed-import001/held001/after/tests/native/test_imagej_annotation_import.cpp",
+        "bytes": 3735,
+        "sha256": "29bd778c08ca1cdb1836262e2d5b944af6c3512f39056b65d8258c86b7803e28"
+      },
+      "current": {
+        "path": "tests/native/test_imagej_annotation_import.cpp",
+        "bytes": 3735,
+        "sha256": "29bd778c08ca1cdb1836262e2d5b944af6c3512f39056b65d8258c86b7803e28"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_imagej_annotation_import.py",
+      "before": null,
+      "after": {
+        "path": "build/p06q-mixed-import001/held001/after/tests/python/test_imagej_annotation_import.py",
+        "bytes": 18770,
+        "sha256": "686fd22d73b38d8144e345f416c86b011deb1a8f96c2a6f7c411495c9602657e"
+      },
+      "current": {
+        "path": "tests/python/test_imagej_annotation_import.py",
+        "bytes": 18770,
+        "sha256": "686fd22d73b38d8144e345f416c86b011deb1a8f96c2a6f7c411495c9602657e"
+      }
+    }
+  ],
+  "scope": "Mixed import API; no mixed editor queue or new release acceptance"
+}

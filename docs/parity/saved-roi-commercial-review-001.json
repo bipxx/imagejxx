@@ -1,0 +1,2411 @@
+{
+  "schema_version": 1,
+  "id": "G015.saved-roi.source-commercial-adoption.001",
+  "recorded_at_utc": "2026-10-17T00:18:23.165057+00:00",
+  "state": "adopted_owned_source_and_unchanged_selected_dependencies",
+  "decision": "eligible",
+  "decision_is_proposed": false,
+  "final_distribution_accepted": false,
+  "scope": "Exact independently authored saved-row scientific XY geometry commands, strict selection codec/application publication, C++/Python/shared Dear ImGui forwards, owned SDK/tests/literal fixtures and product-free qualification sources pinned below. Selected unchanged dependencies/notices are reused at exact rank/current artifact identities. This is source-commercial eligibility proposal only; no package, whole-option/family/platform/performance/Fiji or release acceptance.",
+  "applies_to_requirements": [
+    "G015.saved-roi-geometry.geometry",
+    "G015.saved-roi-geometry.targets",
+    "G015.saved-roi-geometry.publication",
+    "G015.saved-roi-geometry.resources",
+    "G015.saved-roi-geometry.record-replay-rebind",
+    "G015.saved-roi-geometry.persistence-surfaces"
+  ],
+  "reason": "New and modified processing/state/UI/API/qualification files are owned project code under the unchanged project MIT license. Their imports/includes use standard platform facilities and existing reviewed imagejxx, pybind11, NumPy, ImGui/GLFW/JSON/zlib/test dependencies. The ten fixtures explicitly declare owned deterministic origin and no reference execution. No upstream Java/Fiji code, external font/image/data/model/weights or new third-party package is incorporated. Full existing notices remain present and byte-identical in the inspected wheel scope.",
+  "owned_code_license": {
+    "path": "LICENSE",
+    "bytes": 1079,
+    "sha256": "6496956d6060adfcd2617e553b7393c3b7fbea353a02f3c39d60051709d1ce5f"
+  },
+  "parent_accepted_scope": {
+    "terminal_receipt": {
+      "path": "build/p06f-001/final-distribution-001.json",
+      "bytes": 6418,
+      "sha256": "61386d148c660d6c7b43b98903bff8bb74e69471beace396531d166ec75b8b53"
+    },
+    "state": "declared_four_method_functional_source_member_license_handoff_passed",
+    "distribution_accepted_for_declared_scope": true,
+    "full_six_options": false,
+    "new_P06g_source_approval_inherited": false,
+    "reason": "Reuse prior selected dependency/license/notice obligations and unchanged inputs only; P06g-owned additions require this separate root adoption."
+  },
+  "owned_source_scope": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 45342,
+      "sha256": "6cde3b89df1e123f670eb7ec28d7aa67b7a2129640cbd2e3ad24588f3855c907",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "examples/cpp/CMakeLists.txt",
+      "bytes": 10301,
+      "sha256": "210082840efc5e02c991c185ab32fc6f03bb2fbd8b27e6146d9e2b0b8f2f3bba",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "examples/cpp/saved_roi_geometry.cpp",
+      "bytes": 47012,
+      "sha256": "4a929850129ebdc113f720dbc08d2e79131000596d9726788d7d428f4cede92a",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "examples/cpp/saved_roi_geometry_observations.hpp",
+      "bytes": 5023,
+      "sha256": "b87e97f550e1a351a2719932710c8b1df35af376f0536a8d4780095a2d2e7a31",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 10094,
+      "sha256": "4ac07df4ae55e85e9891e8df56b6b12a85e9ae24867f550b605f64a704a95732",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "include/imagejxx/document.hpp",
+      "bytes": 14673,
+      "sha256": "5113dcddd647f25ee4dc90d10241015570ae8afcb8dcf255f2ea6209c03ff4c6",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "include/imagejxx/saved_roi_geometry.hpp",
+      "bytes": 3773,
+      "sha256": "f297a8e88c9ce2451f17a28bed5499803f755089859cd792d3d24f73469dca60",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "include/imagejxx/selection_edit.hpp",
+      "bytes": 5643,
+      "sha256": "a2c3b9cf0156c33dde3dfb298690ee0872732997cf178b759b11b4a942e0e0e2",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "scripts/capture_saved_roi_geometry_ui.py",
+      "bytes": 14431,
+      "sha256": "32ecb659c0e7ade13e842229fb49dc65425543089f03f66c3840f1bd173f7231",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "scripts/export_saved_roi_geometry_fixture.py",
+      "bytes": 8406,
+      "sha256": "3bc3c86f6327b1dd9b5855d570ede2aaed0263d827c6ea4afd474b2823dcfba0",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/main.cpp",
+      "bytes": 22717,
+      "sha256": "7c9be2b327f753edbe53e61034d4672fc9d7a1776cf35baebe8f41f00829e715",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/orthogonal.cpp",
+      "bytes": 53789,
+      "sha256": "c17d9e07f6e49dd22f5eacb09e711254bfa749f9962c03e6e79e383d0a5d8c9e",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/orthogonal.hpp",
+      "bytes": 4374,
+      "sha256": "fce48fa5b1995d519aa8131fd14dd8cb95a7d8cf12259ad686581b2beda46f27",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 30083,
+      "sha256": "1cecd2006123ff77e19723ae20b97d709f5e286fc54fd5d9e173c274209a6f51",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/saved_roi_edit.cpp",
+      "bytes": 15609,
+      "sha256": "aa9056367d28cbfce05b143bd732f931ec4470539712bae583ca88ec3248feec",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/saved_roi_edit.hpp",
+      "bytes": 3960,
+      "sha256": "af6c1ff774f6a6d910ff5a43894e4dd1fcf8e579605889cb856457fc97954259",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/saved_roi_geometry_dependencies.cpp",
+      "bytes": 21218,
+      "sha256": "64c0fd59455a732ede22c4eee9baf08bbacb7e707002cabf48549b76158573b5",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/saved_roi_geometry_dependencies.hpp",
+      "bytes": 475,
+      "sha256": "af082d38ea80f1327da12abc8659b3d5289993b430d1c2d3b022cb1fc44ba62c",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/saved_roi_geometry_ui_probe.cpp",
+      "bytes": 63862,
+      "sha256": "960dc2f8dd0f47f573ec4acb75ecea7a54160050f1fe86aead3a74d7e620ba4b",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/saved_roi_geometry_ui_probe.hpp",
+      "bytes": 868,
+      "sha256": "41d69f194c220cce1836dc9774613a0bc442553621bab6cba76fe7c38edb8706",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/selection_panel.cpp",
+      "bytes": 23038,
+      "sha256": "3f69d33f08a58d61f44a15d91bd7223bab15e3f6a0eb002f4e8a7029d289c782",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/selection_panel.hpp",
+      "bytes": 2569,
+      "sha256": "1324d72eb88c3acd41d7d32fce7d5cc2514e583c624f00f304faf2f184ba2414",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 471255,
+      "sha256": "c00b0508e8ce082d14fb6b8217b119bfc5de8fef387cc85e055aa061b1f0cdca",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/window.hpp",
+      "bytes": 11237,
+      "sha256": "52a9bcc45bbe9e01d3c788bb64f24e8eda9a83b65c35ce98985d6088838c685f",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 46580,
+      "sha256": "d3e03a30faf1ffc9f1ae839c0ee5d533bd70bf4a6d65d148f8ed917a4d6b7145",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/imagejxx/ui/app.py",
+      "bytes": 21961,
+      "sha256": "203b92c7cc8fb43ba87f7c0a47a6cfcbe7394d6b94307c8b5f80945b08cc28b3",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/native/application_bindings.cpp",
+      "bytes": 15328,
+      "sha256": "53f1d92de3186343c393773afa54d9ed419ea5fbb85298980f057e522493caad",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/native/bindings.cpp",
+      "bytes": 28319,
+      "sha256": "278a1480ae2ed4a47051e735c92066b047cce1dafd1070dc7bc785f28c60b6f2",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/native/document.cpp",
+      "bytes": 48380,
+      "sha256": "449bd492db671c01107054fc06f1c702d1325adaa3f6b0534f1aad001c42c65f",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/native/document_bindings.cpp",
+      "bytes": 27852,
+      "sha256": "2966a42fa0ecec573d51ba3fdd6d80e116e381a0276e664d7cf913b2299d59bc",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/native/saved_roi_geometry.cpp",
+      "bytes": 35052,
+      "sha256": "e441b92f923bd161390bae499b10453ed3cd0e7175b2b19a893e77d9870533c7",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/native/saved_roi_geometry_application.cpp",
+      "bytes": 8343,
+      "sha256": "8825d10368cf35c6c8496b09a5482f8c7c86be88acc8b355e0888a6f552e48bd",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/native/saved_roi_geometry_bindings.cpp",
+      "bytes": 14610,
+      "sha256": "a81edccc1bb025ee928e408543c60a4d6e98ad3cc944f0cb40e95dd6202aaa67",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/native/saved_roi_geometry_internal.hpp",
+      "bytes": 613,
+      "sha256": "899621ad18c891ccea032b9f48683d91830e0e1c9aed89fc7b7551a878dab87a",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/native/selection_codec.cpp",
+      "bytes": 5909,
+      "sha256": "09e57ebec32d1d10539f07b452a85a9ff15ab425ae291fa316cdc61828cef354",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/native/selection_codec.hpp",
+      "bytes": 731,
+      "sha256": "1fe8dc1d82fa4b035983bf03bc995b9c167cf6b25cb622f839b1d8d36ee4b8a8",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/native/selection_edit.cpp",
+      "bytes": 35682,
+      "sha256": "ae11e0423d70795d27512a680b72bcf9c47585be3d732f4192fcb6034a11320a",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/native/session.cpp",
+      "bytes": 60425,
+      "sha256": "e799fd657dc3578ffcc16a15884f49057b6c0b45b3c0fe9434e41ddfc310f640",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "tests/fixtures/saved_roi_geometry_owned_cases.json",
+      "bytes": 102293,
+      "sha256": "4364cf3ef2e241ba69541d4d55ed629372f6773265f7e7dab9cc9ed9f84b4c01",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "tests/native/saved_roi_python_source.cpp",
+      "bytes": 6123,
+      "sha256": "e08eda02f3bfe05a86de9a061451fe994bda7a189f7b3b0a82f2cc14d185a2bf",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "tests/native/test_saved_roi_geometry.cpp",
+      "bytes": 69467,
+      "sha256": "5dad3ed8d4a4bde8f3c6fec253ddd44b501546a6e7f0644e9cadfb9ca975cf3b",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "tests/native/test_saved_roi_geometry_host.cpp",
+      "bytes": 41866,
+      "sha256": "c08bede95d0fe81ff1ed1b19a7bdb111661355998b3906d48ca833017dc78ea8",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "tests/python/saved_roi_geometry_observations.py",
+      "bytes": 2879,
+      "sha256": "ab5fa1ca906523ceca9c135b03cc17607fe64c033cce82094d3b3e15988ad7cc",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "tests/python/test_saved_roi_geometry.py",
+      "bytes": 56370,
+      "sha256": "e0c25f8c889350a1b9a1a24c5c31a696ee47f1b1d4a248b7a1950f5d1da6c4ef",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "tests/python/test_saved_roi_geometry_ui.py",
+      "bytes": 61413,
+      "sha256": "da0d8f52fa477a6ecea543196b56de680959687d6d4621e253da57aa8e8b76c6",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    }
+  ],
+  "additional_owned_qualification_scope": [
+    {
+      "path": "scripts/extract_saved_roi_geometry_surfaces.py",
+      "bytes": 21889,
+      "sha256": "ad839bb1fddbf1647222f5730d1e663b6caa7a91bb5964f220a771f76b450e39",
+      "classification": "owned_product_free_qualification_source",
+      "compiled_product_change": false
+    },
+    {
+      "path": "scripts/extract_saved_roi_geometry_ui_surfaces.py",
+      "bytes": 69435,
+      "sha256": "e01147a622cdc60b498c2a91c1815c5124967bdd0a49cd2a19ba0205a499ae45",
+      "classification": "owned_product_free_qualification_source",
+      "compiled_product_change": false
+    },
+    {
+      "path": "tests/qualification/test_saved_roi_geometry_surface_reader.py",
+      "bytes": 33310,
+      "sha256": "2418987533fe29c1ff1fed03a3d70a9c26483bb1e3eebe44ebe23a1b98a4312f",
+      "classification": "owned_product_free_qualification_source",
+      "compiled_product_change": false
+    }
+  ],
+  "reused_owned_support_helpers": [
+    {
+      "path": "scripts/parity_fixtures.py",
+      "bytes": 268311,
+      "sha256": "bd26d2a3c5284f4c36aad38181c50ed9bafbdb7df22afdc2be79031d87df63ad",
+      "classification": "unchanged_reviewed_owned_helper",
+      "same_as_rank_source": true
+    },
+    {
+      "path": "scripts/check_plan.py",
+      "bytes": 14223,
+      "sha256": "44b03a1cfe869213e074548ecc9dc421022c18d6222b835ada2f801b63445c6e",
+      "classification": "unchanged_reviewed_owned_helper",
+      "same_as_rank_source": true
+    },
+    {
+      "path": "scripts/build_source_distribution.py",
+      "bytes": 21913,
+      "sha256": "0d0bca2362d51940a8f65c8e4c984b27b4850658a1c381d3e1cf4ea848b7f083",
+      "classification": "unchanged_reviewed_owned_helper",
+      "same_as_rank_source": true
+    }
+  ],
+  "owned_fixture": {
+    "pin": {
+      "path": "tests/fixtures/saved_roi_geometry_owned_cases.json",
+      "bytes": 102293,
+      "sha256": "4364cf3ef2e241ba69541d4d55ed629372f6773265f7e7dab9cc9ed9f84b4c01"
+    },
+    "origin": "owned_deterministic",
+    "reference_execution": false,
+    "case_count": 10,
+    "formats": "owned_cases_v1 literals, geometry, masks, metadata, actions and expected state; not third-party image/model data",
+    "fixture_acceptance": "Separate root fixture/trace adoption; this source-license review grants none."
+  },
+  "metadata_and_documentation_policy": {
+    "decision": "Exclude live metadata/docs/adoption records from this code-pin list; collect and freeze their final bytes after fixture and source-commercial adoption, in the final safe source/archive binding. No self-hash cycle.",
+    "excluded_compile_freeze_metadata_paths": [
+      "README.md",
+      "docs/COMPATIBILITY.md",
+      "docs/DESKTOP.md",
+      "docs/FEATURES.md",
+      "docs/IMPLEMENTATION.md",
+      "docs/PLAN.md",
+      "docs/SESSION_FORMAT.md",
+      "docs/SOL_ULTRA.md",
+      "docs/SOL_ULTRA_WINDOWS.md",
+      "docs/SOL_ULTRA_WORKSTREAMS.md",
+      "docs/packets/P00-conversion.md",
+      "docs/packets/P01a-schemas.md",
+      "docs/packets/P01b-evidence.md",
+      "docs/packets/P01b1-links.md",
+      "docs/packets/P01b2a-settings-export.md",
+      "docs/packets/P01b2b-surfaces.md",
+      "docs/packets/P01b2c1-consumers.md",
+      "docs/packets/P01b2c2-binary-iterations.md",
+      "docs/packets/P01b2c2a-native-preferences.md",
+      "docs/packets/P01c1-fixtures.md",
+      "docs/packets/P02a-gaussian-command.md",
+      "docs/packets/P04a-atomic-session-save.md",
+      "docs/packets/P04b-session-metadata-projection.md",
+      "docs/packets/P04c-marked-session-interchange.md",
+      "docs/packets/P05a-roi-styles.md",
+      "docs/packets/P05b-xyz-keyboard.md",
+      "docs/packets/P05c-binary-pad-edges.md",
+      "docs/packets/P05d-xyz-numeric-zoom.md",
+      "docs/packets/P05e-roi-boolean-selection.md",
+      "docs/packets/P05f-axis-plane-export.md",
+      "docs/packets/P05g-integer-range-reslice.md",
+      "docs/packets/P05h-axis-range-orientation.md",
+      "docs/packets/P05i-physical-inplane-spacing.md",
+      "docs/packets/P05j-slicer-bilinear-resize.md",
+      "docs/packets/P05k-manual-threshold-display.md",
+      "docs/packets/P05l-selection-creation-combinations.md",
+      "docs/packets/P06a-scientific-session-codec.md",
+      "docs/packets/P06b-scientific-navigation.md",
+      "docs/packets/P06c-scientific-channel-display.md",
+      "docs/packets/P06c2-composite-max.md",
+      "docs/packets/P06c3-composite-min.md",
+      "docs/packets/P06c4-histogram-auto.md",
+      "docs/packets/P06d1-scientific-operation-targets.md",
+      "docs/packets/P06e-scientific-slicing.md",
+      "docs/packets/P06f-rank-editor.md",
+      "docs/packets/P06g-positioned-scientific-xy.md",
+      "docs/parity/README.md",
+      "docs/parity/SCHEMA.md",
+      "docs/parity/axis-plane-export-commercial-review-001.json",
+      "docs/parity/axis-range-orientation-commercial-review-001.json",
+      "docs/parity/axis-range-reslice-commercial-review-001.json",
+      "docs/parity/benchmarks.json",
+      "docs/parity/channel-display-max-commercial-review-001.json",
+      "docs/parity/channel-display-min-commercial-review-001.json",
+      "docs/parity/commands.json",
+      "docs/parity/fiji-components.json",
+      "docs/parity/fixtures.json",
+      "docs/parity/formats.json",
+      "docs/parity/histogram-auto-commercial-review-001.json",
+      "docs/parity/inventory.json",
+      "docs/parity/kernel-paths.json",
+      "docs/parity/platforms.json",
+      "docs/parity/rank-commercial-review-001.json",
+      "docs/parity/rank-commercial-review-002.json",
+      "docs/parity/rank-commercial-review-003.json",
+      "docs/parity/reference-pins.json",
+      "docs/parity/references.json",
+      "docs/parity/reviews/G010-history-settings-ownership-001.json",
+      "docs/parity/reviews/G013-G022-execution-gaps-001.json",
+      "docs/parity/reviews/G015-G022-positioned-xy-adoption-002.json",
+      "docs/parity/reviews/G015-G022-positioned-xy-callback-clarification-003.json",
+      "docs/parity/reviews/G015-G022-positioned-xy-entry-001.json",
+      "docs/parity/reviews/G015-saved-roi-registration-001.json",
+      "docs/parity/reviews/G033-channel-display-checklist.md",
+      "docs/parity/reviews/G033-histogram-auto-entry-001.json",
+      "docs/parity/reviews/G033-histogram-auto-entry-002.json",
+      "docs/parity/reviews/G033-histogram-auto-entry-003.json",
+      "docs/parity/reviews/G033-option-assignments.json",
+      "docs/parity/reviews/G033-ready-registration-patch.json",
+      "docs/parity/reviews/G033-select-min-entry-001.json",
+      "docs/parity/reviews/G042-G045-options-proposal-001.json",
+      "docs/parity/reviews/G042-rank-editor-entry-001.json",
+      "docs/parity/reviews/G042-rank-full-mapping-adoption-003.json",
+      "docs/parity/reviews/G042-rank-native-adoption-001.json",
+      "docs/parity/reviews/G042-rank-numerical-reuse-adoption-004.json",
+      "docs/parity/reviews/G042-rank-observation-mapping-adoption-002.json",
+      "docs/parity/reviews/G042-rank-reference-freeze-001.json",
+      "docs/parity/reviews/G042-rank-registration-001.json",
+      "docs/parity/reviews/G042-rank-runtime-observer-adoption-001.json",
+      "docs/parity/reviews/G042-rank-runtime-observer-adoption-002.json",
+      "docs/parity/reviews/G042-rank-runtime-observer-adoption-003.json",
+      "docs/parity/reviews/G042-rank-runtime-observer-adoption-004.json",
+      "docs/parity/reviews/P05j-evidence-adoption-001.json",
+      "docs/parity/reviews/P05j-interface-evidence-proposal-001.json",
+      "docs/parity/reviews/P06c2-v01-adoption-002.json",
+      "docs/parity/reviews/P06c2-v01-contract.json",
+      "docs/parity/reviews/P06c3-min-adoption-001.json",
+      "docs/parity/reviews/P06c3-min-adoption-002.json",
+      "docs/parity/reviews/P06c4-auto-adoption-001.json",
+      "docs/parity/reviews/P06c4-auto-command-proposal-001.json",
+      "docs/parity/reviews/P06c4-auto-contract-materialization-001.json",
+      "docs/parity/reviews/P06c4-auto-contract-materialization-002.json",
+      "docs/parity/reviews/P06c4-auto-controller-adoption-001.json",
+      "docs/parity/reviews/P06c4-auto-controller-adoption-002.json",
+      "docs/parity/reviews/P06c4-auto-option-settings-registration-001.json",
+      "docs/parity/reviews/P06c4-histogram-adoption-001.json",
+      "docs/parity/reviews/P06c4-histogram-adoption-002.json",
+      "docs/parity/reviews/coloc2-afm-closure-001.json",
+      "docs/parity/reviews/coloc2-commercial-closure-001.json",
+      "docs/parity/reviews/coloc2-glyphlist-closure-001.json",
+      "docs/parity/reviews/scientific-tiff-u16-dependency-decision-002.json",
+      "docs/parity/reviews/scientific-tiff-u16-entry-001.json",
+      "docs/parity/reviews/windows-platform-entry-001.json",
+      "docs/parity/reviews/windows-platform-workload-contract-001.json",
+      "docs/parity/roi-boolean-commercial-review-001.json",
+      "docs/parity/selection-creation-commercial-review-001.json"
+    ],
+    "adoption_record_prefixes_not_pinned_as_code": [
+      "docs/parity/",
+      "docs/packets/"
+    ],
+    "pending_new_metadata": "Later G015 fixture/source-commercial records, commands/inventory updates and final active-card prose belong to final collection, not a compiled-product invalidation by themselves.",
+    "new_code_after_this_proposal": "Any later owned tooling/test/source delta requires a narrow addendum before final freeze; changed compiled sources additionally invalidate affected product gates."
+  },
+  "current_compiled_products": {
+    "build_receipt": {
+      "path": "build/p06g-001/ui-build006/run006.json",
+      "bytes": 3037,
+      "sha256": "6faf93a4a76351a2bb1cb1e5c43d0ad6840f8dc55e069c7597d9234d232c8acf"
+    },
+    "compile_freeze": {
+      "path": "build/p06g-001/ui-build006/freeze.json",
+      "bytes": 129385,
+      "sha256": "6b7390fb856a8d3e8c7ef1714348c3cec25d8a4fabc33e17d0223891fd672288"
+    },
+    "compile_source_count": 719,
+    "products": [
+      {
+        "path": "build/p06a-native001/Release/imagejxx_core.lib",
+        "bytes": 22873070,
+        "sha256": "5a743192c199c5c1c19631527e8df9375a7973beba266260f6b2a0fa59372ba0"
+      },
+      {
+        "path": "build/p06a-native001/Release/imagejxx_desktop.lib",
+        "bytes": 124438314,
+        "sha256": "dc820d8e329824b085d815acc3b9b3a26e975c0e5a0b2d62cae057fe1aaae59a"
+      },
+      {
+        "path": "build/p06a-native001/Release/imagejxx.exe",
+        "bytes": 9630720,
+        "sha256": "50d5dd4640c18ccdf0a910847112efefb99089f3387f825b584e71ae630e99e2"
+      },
+      {
+        "path": "build/p06a-native001/Release/_native.cp312-win_amd64.pyd",
+        "bytes": 3704832,
+        "sha256": "ae04ff9cd78fa458965db150298e7087fb44437bf3a3f13e240a7995d98d55f7"
+      },
+      {
+        "path": "build/p06a-native001/Release/_desktop.cp312-win_amd64.pyd",
+        "bytes": 9435136,
+        "sha256": "9fa4a2b4799b4db31e7258ccc7f06a4be8acad4522b438f792559358ee3b0203"
+      }
+    ],
+    "unchanged_core_native": true,
+    "unchanged_core_native_scope": "Only equality to the immediately preceding P06g consumed products; core/_native differ from pre-P06g rank and are covered by P06g gates, not claimed byte-identical to rank."
+  },
+  "current_distribution_inputs": {
+    "delivery_receipt": {
+      "path": "build/p06g-001/delivery-build006/run006.json",
+      "bytes": 10143,
+      "sha256": "5e3e097a7c3cbab76b7581d9cfd5675493caac1ea079c42c5de327fb1c6882f8"
+    },
+    "wheel": {
+      "path": "build/p06g-dist-ui006/imagejxx-0.2.0-cp312-cp312-win_amd64.whl",
+      "bytes": 15127337,
+      "sha256": "9a84179567baa0ab6ca5c8f7c5846e2f8ed4a01f1c8135b8693c99d200243924"
+    },
+    "wheel_member_count": 103,
+    "wheel_member_inventory": {
+      "path": "build/p06g-001/delivery-build006/wheel-members.json",
+      "bytes": 16560,
+      "sha256": "c18d4d048738d474a3823bbe06f874b0923bd0deae3612391c9fb8acebee90dc"
+    },
+    "installed_origins": {
+      "path": "build/p06g-001/delivery-build006/origins.json",
+      "bytes": 1313,
+      "sha256": "adbad1d3ad4f5e0780bb068b623b4369cc40156eb04e61b44fa3db15bc32150d"
+    },
+    "standalone": {
+      "path": "build/p06g-install005/bin/imagejxx.exe",
+      "bytes": 9630720,
+      "sha256": "50d5dd4640c18ccdf0a910847112efefb99089f3387f825b584e71ae630e99e2"
+    },
+    "status": "Matching product/member inputs for reuse only; no final P06g source archive/member acceptance."
+  },
+  "selected_dependency_and_notice_pins": [
+    {
+      "path": "LICENSE",
+      "bytes": 1079,
+      "sha256": "6496956d6060adfcd2617e553b7393c3b7fbea353a02f3c39d60051709d1ce5f",
+      "same_as_accepted_rank_source": true
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "bytes": 4201,
+      "sha256": "9793a0e9272d9c7f8aa1ea97712a38f1ff186ecbd379f3a71c16ae273167bff9",
+      "same_as_accepted_rank_source": true
+    },
+    {
+      "path": "licenses/dependencies.json",
+      "bytes": 4516,
+      "sha256": "436d924a8d501a7139f09e65441c46b6944e1d4c63b12d56eb1fd43290dd0a67",
+      "same_as_accepted_rank_source": true
+    },
+    {
+      "path": "licenses/desktop-dependencies.json",
+      "bytes": 5236,
+      "sha256": "9b5aa27fbdc98780f7eb93aa6a290bea9eb0894cce5f89b5d22d081b15ed55f3",
+      "same_as_accepted_rank_source": true
+    },
+    {
+      "path": "licenses/glfw3.txt",
+      "bytes": 904,
+      "sha256": "149704059b5d0bf551637e50042dd4de9c2cae921021f6636298911e3a5f9462",
+      "same_as_accepted_rank_source": true
+    },
+    {
+      "path": "licenses/imgui.txt",
+      "bytes": 1083,
+      "sha256": "c80c5789748d955c4a650562baa0d750494e2c7128c2ca66aaebe2e3c4e198bf",
+      "same_as_accepted_rank_source": true
+    },
+    {
+      "path": "licenses/libjpeg-IJG.txt",
+      "bytes": 12799,
+      "sha256": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6",
+      "same_as_accepted_rank_source": true
+    },
+    {
+      "path": "licenses/libjpeg-turbo.txt",
+      "bytes": 5620,
+      "sha256": "2189dc45a8fe96204069f8124caa53a148dfdc193f50f584c6ca7849a6072872",
+      "same_as_accepted_rank_source": true
+    },
+    {
+      "path": "licenses/liblzma-0bsd.txt",
+      "bytes": 607,
+      "sha256": "0b01625d853911cd0e2e088dcfb743261034a091bb379246cb25a14cc4c74bf1",
+      "same_as_accepted_rank_source": true
+    },
+    {
+      "path": "licenses/liblzma.txt",
+      "bytes": 3119,
+      "sha256": "616a3ad264ce29b8f1cb97e53037b139d406899ca8d1f799651e17bfa09830b8",
+      "same_as_accepted_rank_source": true
+    },
+    {
+      "path": "licenses/libpng.txt",
+      "bytes": 5345,
+      "sha256": "16d9daaafbf63a31a5bdc91d4600972548fef5aaa1244202393288dbd079c49a",
+      "same_as_accepted_rank_source": true
+    },
+    {
+      "path": "licenses/libtiff.txt",
+      "bytes": 2416,
+      "sha256": "0e27c2382d7b8147972bbb746e04059a1152c8d0fda9d03ef1399d1a433c4ade",
+      "same_as_accepted_rank_source": true
+    },
+    {
+      "path": "licenses/native-dependencies.json",
+      "bytes": 1917,
+      "sha256": "b649aa7e93fc45941fb5f8092e9bebede34cab5c797f7bba95658a1da17d027d",
+      "same_as_accepted_rank_source": true
+    },
+    {
+      "path": "licenses/nlohmann-json.txt",
+      "bytes": 1076,
+      "sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+      "same_as_accepted_rank_source": true
+    },
+    {
+      "path": "licenses/proggy-clean.txt",
+      "bytes": 1109,
+      "sha256": "0b6e79fc26dcd9ec87d0e3f2ff383abd403ea58b855368960f2a2643c7744211",
+      "same_as_accepted_rank_source": true
+    },
+    {
+      "path": "licenses/pybind11.txt",
+      "bytes": 1684,
+      "sha256": "83965b843b98f670d3a85bd041ed4b372c8ec50d7b4a5995a83ac697ba675dcb",
+      "same_as_accepted_rank_source": true
+    },
+    {
+      "path": "licenses/stb.txt",
+      "bytes": 2510,
+      "sha256": "bebfe904b14301657e4e5d655c811d51fd31b97c455b9cc2d8600d6bac6cff63",
+      "same_as_accepted_rank_source": true
+    },
+    {
+      "path": "licenses/zlib.txt",
+      "bytes": 1002,
+      "sha256": "845efc77857d485d91fb3e0b884aaa929368c717ae8186b66fe1ed2495753243",
+      "same_as_accepted_rank_source": true
+    },
+    {
+      "path": "third_party/nlohmann_json/SOURCE.json",
+      "bytes": 6553,
+      "sha256": "c0edbd13965b5b3926e275f4e5260fa8a070c82a741c32fe3012f7511c0be843",
+      "same_as_accepted_rank_source": true
+    },
+    {
+      "path": "third_party/zlib/SOURCE.json",
+      "bytes": 2649,
+      "sha256": "165f7bad405b23d0d73aa6fe9fbde44f317cc0670d7505d2dc15fa38e61a5db8",
+      "same_as_accepted_rank_source": true
+    }
+  ],
+  "native_vendor_identity_reuse": [
+    {
+      "name": "nlohmann-json",
+      "reviewed_version": "3.12.0",
+      "selected_license": "MIT",
+      "manifest": {
+        "path": "third_party/nlohmann_json/SOURCE.json",
+        "bytes": 6553,
+        "sha256": "c0edbd13965b5b3926e275f4e5260fa8a070c82a741c32fe3012f7511c0be843"
+      },
+      "members": [
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/adl_serializer.hpp",
+          "bytes": 2281,
+          "sha256": "80742b0081e0ac5094ad4d7a3549e969b004bb7ed86807911a8177c843701262"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/byte_container_with_subtype.hpp",
+          "bytes": 3535,
+          "sha256": "2b75a051d2f82fd95f613c70472b85a281d085f1973791c1118244099bf38942"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/abi_macros.hpp",
+          "bytes": 4121,
+          "sha256": "cebb5441f1ce851444f47a7d8ea0446339ee499df83215ebd873c8347a191bd7"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/conversions/from_json.hpp",
+          "bytes": 21391,
+          "sha256": "40af785ecd909d2ca3abea3e9a3b8d8b8973e66a3c9ff7820b06bb6898783f64"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/conversions/to_chars.hpp",
+          "bytes": 38578,
+          "sha256": "20b9bc4469ee490bc626d8dbcdee060a494292473df4bdbcecfe2f2145ed562d"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/conversions/to_json.hpp",
+          "bytes": 17205,
+          "sha256": "a0aadb543a4c2009564aee738b0adaabfa6275e9f4d3e08b6b11e4005bb6fb12"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/exceptions.hpp",
+          "bytes": 10590,
+          "sha256": "5c9b21e0a13ac0bab8dea676b9804d739dfd2adc24f036f97ab243ef70e2aae7"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/hash.hpp",
+          "bytes": 4018,
+          "sha256": "a025807281c5d92fdfddcc993b2b2a9658146435cc10b003723b130698445c80"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/input/binary_reader.hpp",
+          "bytes": 104932,
+          "sha256": "9e617825317910352f2a2025bb8749898287fa3003e81ce22a57b52c535d0eab"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/input/input_adapters.hpp",
+          "bytes": 19635,
+          "sha256": "01fa7af8fdd1ba7b1c12089bf92783f70d09a93db7564e4df70544fc85304de6"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/input/json_sax.hpp",
+          "bytes": 31133,
+          "sha256": "0ed6fdb0ef91f163cca312b7ffd6e0842f12e1b8340204ab2d0c05277e0d1f18"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/input/lexer.hpp",
+          "bytes": 55523,
+          "sha256": "a8b73e55242731375c088133f3a355af7b1bb82d6b9531678cb20560d3733c1d"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/input/parser.hpp",
+          "bytes": 19712,
+          "sha256": "b4a762967b174de0c43896b465e4a7c8c92c3a8636f669debdec836050f7912a"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/input/position_t.hpp",
+          "bytes": 960,
+          "sha256": "0239037872b622a5f3f42fa1b453d201f977d21829b2dc4a19abe2594515eada"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/iterators/internal_iterator.hpp",
+          "bytes": 1073,
+          "sha256": "bf015623518c5aab4762d9a4d21af0e85a26cdcb3fc6e69e464c8575a3b87aba"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/iterators/iter_impl.hpp",
+          "bytes": 24869,
+          "sha256": "c6f0664c4965287154505837dde4ae13e7625978745e8876951fc90da61b5068"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/iterators/iteration_proxy.hpp",
+          "bytes": 8073,
+          "sha256": "3c562f1783e1fc9476ed53d8054bc50309caa425d993996a9ddf9194fb2129cc"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/iterators/iterator_traits.hpp",
+          "bytes": 1751,
+          "sha256": "960d1fefbe7cb220292b07e4ec047bfa9a3ccbd753adaf62e5d583f746e71e47"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/iterators/json_reverse_iterator.hpp",
+          "bytes": 3863,
+          "sha256": "6f072fb2b9e151ad9645cb03a9aa23231480bf447e53b2e0ecb41f45fb7503e1"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/iterators/primitive_iterator.hpp",
+          "bytes": 3229,
+          "sha256": "40a03177d519ba378e59bed0a53a9be8022fd3d0ee701409781c0e856d5bf510"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/json_custom_base_class.hpp",
+          "bytes": 1180,
+          "sha256": "e622910868b019ba09460c96a6092c1018ed501f34cce4ed633641400c2d2500"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/json_pointer.hpp",
+          "bytes": 37199,
+          "sha256": "9c5b54a455e96c63788c157d914b70cde6a3f36ef1e5df037f4fc17bb92f235d"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/json_ref.hpp",
+          "bytes": 1813,
+          "sha256": "5d133945d0859acaa82c50c1a044b1e1f806c0a38107eae24bf07ff5944fc1e3"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/macro_scope.hpp",
+          "bytes": 51847,
+          "sha256": "76012b860dc76e7c28efead61311d588596417f5b476fc20f762b1ad81858ae0"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/macro_unscope.hpp",
+          "bytes": 1281,
+          "sha256": "626b7e10290a2bb558634b8bbfbc5118b5ce696151b5bc87418142c578bd501e"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/meta/call_std/begin.hpp",
+          "bytes": 455,
+          "sha256": "4629b547aa6b6629c266b1b474f576cbde5ce898c96502c828a72d99212b9f34"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/meta/call_std/end.hpp",
+          "bytes": 453,
+          "sha256": "e09dd80f2263ff192d60bad19bdbdc5402866d0b0c8caeb9c2759b26ba864a39"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/meta/cpp_future.hpp",
+          "bytes": 5173,
+          "sha256": "71e606c586174ff875f5996a00bc6e84a49e0919eafd6fb38c7cb928dfdf5795"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/meta/detected.hpp",
+          "bytes": 2111,
+          "sha256": "d144ac2ab6bb92be35bfda7eec560b9d030760e4330b7f951a2aca63469488a1"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/meta/identity_tag.hpp",
+          "bytes": 528,
+          "sha256": "37ff788879d4b14ffa2e79bdc75b470d2c2ca5ebadafef649312f653455d45fa"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/meta/is_sax.hpp",
+          "bytes": 6962,
+          "sha256": "e60398b282767374747db20ab06101804c7345eea0761a313a298bf87b913f91"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/meta/std_fs.hpp",
+          "bytes": 791,
+          "sha256": "257716f0958e9fd6c1dc3f0335716d779550353c58bc929e8dda1c79bd336701"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/meta/type_traits.hpp",
+          "bytes": 29415,
+          "sha256": "d5da966796c089fa89cba5474309fd2124b083d99adf17991084a6a532fdf55d"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/meta/void_t.hpp",
+          "bytes": 599,
+          "sha256": "c340e7b148543b0abfd719ddbc3759e23c2feffc63656136a15fd80b98ca8bf8"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/output/binary_writer.hpp",
+          "bytes": 71657,
+          "sha256": "cdf56265d14b80505796dfb94d79896a226e8888e4f730ff6e92c31a2b891cd1"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/output/output_adapters.hpp",
+          "bytes": 4069,
+          "sha256": "3322dce8f63e69930806bd8691c2cd9ece8a76b54b34f617641329c44559bbb5"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/output/serializer.hpp",
+          "bytes": 40155,
+          "sha256": "4c079acb8f6936c4f787fd5706a52c77a1751dd34787a821705845698ec8540e"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/string_concat.hpp",
+          "bytes": 5953,
+          "sha256": "fb30fb50c325a1b5610a62a9061a1966b4e850dd964635c1ad1c4c9da48f7daa"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/string_escape.hpp",
+          "bytes": 2170,
+          "sha256": "cb12b0e5903b1ec90aaa96a4a71e0cf7106440ca9cedcff6495677d01f244733"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/string_utils.hpp",
+          "bytes": 840,
+          "sha256": "85e2fbdfe07f1a44b90d5422ee1b951d1053f32e429dc4aee36274fb03fd9354"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/detail/value_t.hpp",
+          "bytes": 4328,
+          "sha256": "67ed7b164db48556bb4ae409a645401faba459081570f9b9f9ff977fd32c6114"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/json.hpp",
+          "bytes": 201924,
+          "sha256": "88d7eb42b19599cab48856576dd4ea52538df72ad7c57200c50de98bda246458"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/json_fwd.hpp",
+          "bytes": 2543,
+          "sha256": "8777a878c20a412dd04c8011c87c3d72d74e48a4dda5e52f7948e26dd2168931"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/ordered_map.hpp",
+          "bytes": 11686,
+          "sha256": "2d4e2d9f6e6a0c2d2adadcb620da1f49585fa4e54e54cfa16b6d20e01d857d61"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/thirdparty/hedley/hedley.hpp",
+          "bytes": 86072,
+          "sha256": "1547b367895f8be9f8283ae21f583182db572ad990236220002b632a15238712"
+        },
+        {
+          "path": "third_party/nlohmann_json/include/nlohmann/thirdparty/hedley/hedley_undef.hpp",
+          "bytes": 5502,
+          "sha256": "ddf06784ca9448b4899db96a409ec1cbc65a0f682db9c966c011f00b77ae75c4"
+        },
+        {
+          "path": "third_party/nlohmann_json/LICENSE.MIT",
+          "bytes": 1076,
+          "sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+        }
+      ],
+      "member_count": 47,
+      "all_current_bytes_match_accepted_rank_inputs": true
+    },
+    {
+      "name": "zlib",
+      "reviewed_version": "1.3.1",
+      "selected_license": "Zlib",
+      "manifest": {
+        "path": "third_party/zlib/SOURCE.json",
+        "bytes": 2649,
+        "sha256": "165f7bad405b23d0d73aa6fe9fbde44f317cc0670d7505d2dc15fa38e61a5db8"
+      },
+      "members": [
+        {
+          "path": "third_party/zlib/LICENSE",
+          "bytes": 1002,
+          "sha256": "845efc77857d485d91fb3e0b884aaa929368c717ae8186b66fe1ed2495753243"
+        },
+        {
+          "path": "third_party/zlib/README",
+          "bytes": 5317,
+          "sha256": "d106dcdb2a0b3087cb3a2380b9f00a0bbadc7eb835cd80408f94a2d78d69727d"
+        },
+        {
+          "path": "third_party/zlib/adler32.c",
+          "bytes": 4964,
+          "sha256": "9cd1443a24ff2a3053961695bd432035c58347386a420d3388232376ebabe211"
+        },
+        {
+          "path": "third_party/zlib/compress.c",
+          "bytes": 2613,
+          "sha256": "86f802c16a965e7a28737e3730b4e576c5ba40981753967e3e30916f4dc1b4b1"
+        },
+        {
+          "path": "third_party/zlib/crc32.c",
+          "bytes": 31605,
+          "sha256": "8fd16f0a7714d51c89c2eb37eb98ec15e8a4dc57ba343e7b7398b19144039fda"
+        },
+        {
+          "path": "third_party/zlib/crc32.h",
+          "bytes": 591749,
+          "sha256": "9a2223575183ac2ee8a247f20bf3ac066e8bd0140369556bdbdffc777435749e"
+        },
+        {
+          "path": "third_party/zlib/deflate.c",
+          "bytes": 81731,
+          "sha256": "3b956337350f94c34987750f785587ef33d9c89ceaebb7c2afb189c956360cbe"
+        },
+        {
+          "path": "third_party/zlib/deflate.h",
+          "bytes": 14041,
+          "sha256": "48baf016326d8d5e3e32ac8153cc7e22f854b8e6834830b167b998a7fb1e7989"
+        },
+        {
+          "path": "third_party/zlib/gzguts.h",
+          "bytes": 6676,
+          "sha256": "716fa648aca1bb06c219d7b97ad4846d8479206143bc39557bfd8283f5783e04"
+        },
+        {
+          "path": "third_party/zlib/infback.c",
+          "bytes": 22669,
+          "sha256": "62df9a6dd3eef126f1d81d0ad7a534504610dec44482b0a472b61c93cbab6554"
+        },
+        {
+          "path": "third_party/zlib/inffast.c",
+          "bytes": 12924,
+          "sha256": "e6ef64ce5dc0a4cd5c7ad08ceeb2b2a698b8447f6bd156057caeb2edab68c0cb"
+        },
+        {
+          "path": "third_party/zlib/inffast.h",
+          "bytes": 422,
+          "sha256": "05cc5dc9ff1da7b8b52a4bd8bda0d8a5c236a2f39efe84b941516ea13857e6c5"
+        },
+        {
+          "path": "third_party/zlib/inffixed.h",
+          "bytes": 6332,
+          "sha256": "237ba710f090e432b62ebf963bee8b302867e9691406b2d3f8ee89ee7bfef9b0"
+        },
+        {
+          "path": "third_party/zlib/inflate.c",
+          "bytes": 55519,
+          "sha256": "34c998ce0037c0537c04b03b276f680b945f9b2c9d1e01b287605bd6879f7fd2"
+        },
+        {
+          "path": "third_party/zlib/inflate.h",
+          "bytes": 6683,
+          "sha256": "e8d4a51b07694bf48cb91979c19974cf6a5ab0b8a09d26ec0d14df349230673e"
+        },
+        {
+          "path": "third_party/zlib/inftrees.c",
+          "bytes": 13024,
+          "sha256": "5d4f335221d2dc76f17abd2577d92c2d7baf68fa6d7f23373b360830493d1563"
+        },
+        {
+          "path": "third_party/zlib/inftrees.h",
+          "bytes": 2920,
+          "sha256": "0a0fcaf2ae2fae57426bdc06637270e9bba974f35202cadbdba479d946e6409d"
+        },
+        {
+          "path": "third_party/zlib/trees.c",
+          "bytes": 40937,
+          "sha256": "f63c68c16c05fcd196050529d1a0e7657960e4136b9987d90a6ac3e58a964b0f"
+        },
+        {
+          "path": "third_party/zlib/trees.h",
+          "bytes": 8472,
+          "sha256": "bb0a9d3ca88ee00c81adb7c636e73b97085f6ef1b52d6d58edbe2b6dc3adeb4d"
+        },
+        {
+          "path": "third_party/zlib/uncompr.c",
+          "bytes": 2911,
+          "sha256": "04dca5e31b3b8a17d1806426f66f0c539f4184d657e149d40be07070c6227b52"
+        },
+        {
+          "path": "third_party/zlib/zconf.h",
+          "bytes": 16500,
+          "sha256": "f5134250a67d57459234b63858f0d9d3ef8dcc48e9e1028d3f4fdcf6eae677ae"
+        },
+        {
+          "path": "third_party/zlib/zlib.h",
+          "bytes": 96829,
+          "sha256": "8a5579af72ea4f427ff00a4150f0ccb3fc5c1e4379f726e101133b1ab9fc600c"
+        },
+        {
+          "path": "third_party/zlib/zutil.c",
+          "bytes": 7179,
+          "sha256": "8ced40d8c88588811edd2bdb35b7439983d5e1f8e9e32b8a3b244731f3c317b7"
+        },
+        {
+          "path": "third_party/zlib/zutil.h",
+          "bytes": 6677,
+          "sha256": "dddb2dc7a1dc339ecf2c8e089b366f08bb731c0839c7110240d17ce731bb4fea"
+        }
+      ],
+      "member_count": 24,
+      "all_current_bytes_match_accepted_rank_inputs": true
+    }
+  ],
+  "direct_desktop_dependency_input_reuse": {
+    "prior_proof": {
+      "path": "build/p06f-001/rank-artifact-dependencies001/pins.json",
+      "bytes": 30399,
+      "sha256": "680a7211ad93cf4be4474bf0aa93360baec3556d44666b92151e364c4a59ed22"
+    },
+    "selected_input_count": 57,
+    "all_current_bytes_match": true,
+    "inputs": [
+      {
+        "path": ".tools/imgui-sdk/bin/glfw3.dll",
+        "bytes": 233984,
+        "sha256": "a53079499276e3e55ec402f3716a3168d927b7adba20ed1135d0d9177b0c6c43"
+      },
+      {
+        "path": ".tools/imgui-sdk/bin/jpeg62.dll",
+        "bytes": 685568,
+        "sha256": "874283fd82bab9e0a572c78befea478827bfddacb0310f9bc23382bb7b8becba"
+      },
+      {
+        "path": ".tools/imgui-sdk/bin/liblzma.dll",
+        "bytes": 188928,
+        "sha256": "a9a275c360d80013b8304b5ebde3a05a82aee4c2ccdc41dd3ee9cf6acb3d433c"
+      },
+      {
+        "path": ".tools/imgui-sdk/bin/libpng16.dll",
+        "bytes": 196608,
+        "sha256": "d2261dd90f253d711fbced99bc4a22c2350173a0aa15f342a25f9c14985c237c"
+      },
+      {
+        "path": ".tools/imgui-sdk/bin/tiff.dll",
+        "bytes": 468992,
+        "sha256": "cf4a9d2a74f3370983bef5aacb8bb93db00328906da8e2c26cfed8d744fd9b07"
+      },
+      {
+        "path": ".tools/imgui-sdk/bin/zlib1.dll",
+        "bytes": 90112,
+        "sha256": "0389d9547623b8b05e576f01229a2b37f1a0709fac02a8a50b2da723da5ca514"
+      },
+      {
+        "path": ".tools/imgui-sdk/include/GLFW/glfw3.h",
+        "bytes": 241826,
+        "sha256": "aa370985f6b493bbe0358a36ab49f5780a6397c0209c6d98a62143dea595b73c"
+      },
+      {
+        "path": ".tools/imgui-sdk/include/imconfig.h",
+        "bytes": 11579,
+        "sha256": "0884061cc43e27e1d346fe18dcd1425792eb2532d3d16610a82eb5ac751f7594"
+      },
+      {
+        "path": ".tools/imgui-sdk/include/imgui_internal.h",
+        "bytes": 299530,
+        "sha256": "a18df97203a9ba6a812f35eadd9f5861a0c8d558a59b96c14b68898272fe9e83"
+      },
+      {
+        "path": ".tools/imgui-sdk/include/imgui.h",
+        "bytes": 409424,
+        "sha256": "2840241b6101d629b5804dedff698a25414ee102959120314c6a0299ca25ef9a"
+      },
+      {
+        "path": ".tools/imgui-sdk/include/lzma/version.h",
+        "bytes": 3872,
+        "sha256": "504a3ace4e5a4420bac57648ac3d0afc27aec79018c8f8cfe43d431f771de5df"
+      },
+      {
+        "path": ".tools/imgui-sdk/include/nlohmann/json.hpp",
+        "bytes": 201924,
+        "sha256": "88d7eb42b19599cab48856576dd4ea52538df72ad7c57200c50de98bda246458"
+      },
+      {
+        "path": ".tools/imgui-sdk/include/png.h",
+        "bytes": 148212,
+        "sha256": "3c3b27f3e9b3030f7d234cb491b524fcc765345ced5a5dbce9e882cc35a1167f"
+      },
+      {
+        "path": ".tools/imgui-sdk/include/stb_image_write.h",
+        "bytes": 71221,
+        "sha256": "cbd5f0ad7a9cf4468affb36354a1d2338034f2c12473cf1a8e32053cb6914a05"
+      },
+      {
+        "path": ".tools/imgui-sdk/include/stb_image.h",
+        "bytes": 283010,
+        "sha256": "594c2fe35d49488b4382dbfaec8f98366defca819d916ac95becf3e75f4200b3"
+      },
+      {
+        "path": ".tools/imgui-sdk/include/stb_truetype.h",
+        "bytes": 199192,
+        "sha256": "ecd30b05e0dd4fea3a13c26810dd9e1992dc379049482c393d5a19e6b5090aab"
+      },
+      {
+        "path": ".tools/imgui-sdk/include/tiffvers.h",
+        "bytes": 1446,
+        "sha256": "ee044792a8d4fb9021a83094518ad9f09c132029d74b5a12f93840d15dac87f0"
+      },
+      {
+        "path": ".tools/imgui-sdk/include/zlib.h",
+        "bytes": 96829,
+        "sha256": "8a5579af72ea4f427ff00a4150f0ccb3fc5c1e4379f726e101133b1ab9fc600c"
+      },
+      {
+        "path": ".tools/imgui-sdk/lib/glfw3dll.lib",
+        "bytes": 31378,
+        "sha256": "e6d73a6a3862c3ca7c4baaeed1afc9b89efd49905ccdcddcadfde153772bef19"
+      },
+      {
+        "path": ".tools/imgui-sdk/lib/imgui.lib",
+        "bytes": 9945234,
+        "sha256": "6dc3dcd9a2cd1cd033ff66cb07c23cf7996258ed55f35943f31523f14ae672b1"
+      },
+      {
+        "path": ".tools/imgui-sdk/lib/libpng16.lib",
+        "bytes": 57874,
+        "sha256": "35d449af22977f414e8fc26db8d8677591f628eaac27305984d63cd6bc82477c"
+      },
+      {
+        "path": ".tools/imgui-sdk/lib/tiff.lib",
+        "bytes": 42590,
+        "sha256": "c95759a8456083da99b200f9d8a1632409c0c69ec8bb61329e88f29043ce82ff"
+      },
+      {
+        "path": ".tools/imgui-sdk/lib/zlib.lib",
+        "bytes": 16746,
+        "sha256": "e9952455e8d0773f2aa89eeea802b85af8b9f814fe10e6b8c892bf849f2a9a4b"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/glfw3/copyright",
+        "bytes": 904,
+        "sha256": "149704059b5d0bf551637e50042dd4de9c2cae921021f6636298911e3a5f9462"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/glfw3/glfw3Config.cmake",
+        "bytes": 118,
+        "sha256": "61954bf45d80ef4079d5d356d16fbe49cbfd81addc6f26588e5b1a0c2b3ecc79"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/glfw3/glfw3ConfigVersion.cmake",
+        "bytes": 2827,
+        "sha256": "9adb5b067558cb1a39ec5fa9104f20e3e13ada5707f3162e8ef9664d0c83eee8"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/glfw3/glfw3Targets-release.cmake",
+        "bytes": 858,
+        "sha256": "cb48082ff0dec4a993f0479c55b65cb563cd23e9b583a392c5ecec3bdd8bd44c"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/glfw3/vcpkg_abi_info.txt",
+        "bytes": 1169,
+        "sha256": "88fc5936461f93ac92fd208ca64bdabc366ab860d51ca9e72214a1bd39ae9877"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/glfw3/vcpkg.spdx.json",
+        "bytes": 4605,
+        "sha256": "fb0b7c4e740e0b0e02171dfdf7ffabfc5bb6a698db1cd34beeb4135e2f232213"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/imgui/copyright",
+        "bytes": 1083,
+        "sha256": "c80c5789748d955c4a650562baa0d750494e2c7128c2ca66aaebe2e3c4e198bf"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/imgui/imgui-config.cmake",
+        "bytes": 1510,
+        "sha256": "0c051bfeecffb5648495869b4706ca87a2d6c1893bce93ea6b8c1e2081faadbe"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/imgui/imgui-targets-release.cmake",
+        "bytes": 848,
+        "sha256": "4fafb99bc6d1cebe40becf9d2263b19440d327af89f5d6cf9f7cd751f17153ba"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/imgui/imgui-targets.cmake",
+        "bytes": 4230,
+        "sha256": "39d5a074a405104ed210282e036fbaec5fe7eb8f8e0a47a7981604d50da25292"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/imgui/vcpkg_abi_info.txt",
+        "bytes": 1628,
+        "sha256": "1d86404a433f9b9627d96ca023cd7a65904521f3d7f33d2e1e7e94a7f2a7f23d"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/imgui/vcpkg.spdx.json",
+        "bytes": 5844,
+        "sha256": "5dc16a9be0073332e4f9a6d63a7d3fb0ac368d76899b22600c58c4aa99570e29"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/libjpeg-turbo/copyright",
+        "bytes": 5620,
+        "sha256": "2189dc45a8fe96204069f8124caa53a148dfdc193f50f584c6ca7849a6072872"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/libjpeg-turbo/vcpkg_abi_info.txt",
+        "bytes": 1999,
+        "sha256": "f1d67828161e3f3426386b6b35db63268acf5e77e622346af09186283ea3e12b"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/libjpeg-turbo/vcpkg.spdx.json",
+        "bytes": 20623,
+        "sha256": "fca136be4920e1962f5ee8536e5344425953e5372c1978013e95593c09db22ad"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/liblzma/copyright",
+        "bytes": 3119,
+        "sha256": "616a3ad264ce29b8f1cb97e53037b139d406899ca8d1f799651e17bfa09830b8"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/liblzma/vcpkg_abi_info.txt",
+        "bytes": 1591,
+        "sha256": "56ca35251d90c1edcf361cd8c52afc9cf43ba88fd403c458e3ac998bb2b284cf"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/liblzma/vcpkg.spdx.json",
+        "bytes": 30001,
+        "sha256": "bece39459a64b943db55bfc416cc8ed61d58a5f3305e569c04e1d5ea41514927"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/libpng/copyright",
+        "bytes": 5345,
+        "sha256": "16d9daaafbf63a31a5bdc91d4600972548fef5aaa1244202393288dbd079c49a"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/libpng/vcpkg_abi_info.txt",
+        "bytes": 2175,
+        "sha256": "1bca88fb612d1115bae8fa0b204c17d62bd6118ef4a1dddf67d2d44d1493eb22"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/libpng/vcpkg.spdx.json",
+        "bytes": 20544,
+        "sha256": "4c72ec02069c9f2e7cc6bbc6dd4f7d0cc63b1c1361435445d54ffd0c2e05be66"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/nlohmann_json/nlohmann_jsonConfigVersion.cmake",
+        "bytes": 696,
+        "sha256": "a7e9420a8ed15d2b96c28f85b8810b9d4a48f5e7e1d3fcd2b85a44b0dcb85b4e"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/nlohmann-json/copyright",
+        "bytes": 1076,
+        "sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/nlohmann-json/vcpkg_abi_info.txt",
+        "bytes": 1265,
+        "sha256": "1d960b5e899aa8793a0b06ce0fe6aa9924ac1cd4211b61852eab2cd4193fed9c"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/nlohmann-json/vcpkg.spdx.json",
+        "bytes": 32381,
+        "sha256": "8a0f7dd4430225cc53073ebe45c5fa0311af49487cde12a1128f328502dc5bed"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/stb/copyright",
+        "bytes": 2510,
+        "sha256": "bebfe904b14301657e4e5d655c811d51fd31b97c455b9cc2d8600d6bac6cff63"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/stb/vcpkg_abi_info.txt",
+        "bytes": 1004,
+        "sha256": "3e5e714cd565a8d4afbd837e93de1583a15bb44339bd733d2aab33275fbadca5"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/stb/vcpkg.spdx.json",
+        "bytes": 17814,
+        "sha256": "944e9a111939a7cde0eb0d5e16053bd89b80678245c40220e777af28fe34b922"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/tiff/copyright",
+        "bytes": 2416,
+        "sha256": "0e27c2382d7b8147972bbb746e04059a1152c8d0fda9d03ef1399d1a433c4ade"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/tiff/vcpkg_abi_info.txt",
+        "bytes": 1912,
+        "sha256": "559dbf885b49ccc95f7c52626a708ca40e48305319de0b032d49131ae60dbf0b"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/tiff/vcpkg.spdx.json",
+        "bytes": 13196,
+        "sha256": "e8059d9dbe667f38b6f63847ba534bbbf0861e9310798ac65235e3fb3808cb83"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/zlib/copyright",
+        "bytes": 1002,
+        "sha256": "845efc77857d485d91fb3e0b884aaa929368c717ae8186b66fe1ed2495753243"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/zlib/vcpkg_abi_info.txt",
+        "bytes": 1501,
+        "sha256": "3de348fede9dcd918192a0ced02c8ab2926df6b19986e131e455c25b69fc89c9"
+      },
+      {
+        "path": ".tools/imgui-sdk/share/zlib/vcpkg.spdx.json",
+        "bytes": 12698,
+        "sha256": "b8e435cf801fb4dbadf31bfcf301fe88e19f2567772b49692f8048ab2e7b5514"
+      }
+    ],
+    "scope": "Exactly 57 previously reviewed direct SDK header/static-library/config/runtime/notice inputs; no dependency tree search or new fetch. Not a historical Auto-era header/font identity claim."
+  },
+  "reused_binary_notice_members": [
+    {
+      "member": "bin/glfw3.dll",
+      "bytes": 233984,
+      "sha256": "a53079499276e3e55ec402f3716a3168d927b7adba20ed1135d0d9177b0c6c43",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "selected_runtime_DLL"
+    },
+    {
+      "member": "bin/jpeg62.dll",
+      "bytes": 685568,
+      "sha256": "874283fd82bab9e0a572c78befea478827bfddacb0310f9bc23382bb7b8becba",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "selected_runtime_DLL"
+    },
+    {
+      "member": "bin/liblzma.dll",
+      "bytes": 188928,
+      "sha256": "a9a275c360d80013b8304b5ebde3a05a82aee4c2ccdc41dd3ee9cf6acb3d433c",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "selected_runtime_DLL"
+    },
+    {
+      "member": "bin/libpng16.dll",
+      "bytes": 196608,
+      "sha256": "d2261dd90f253d711fbced99bc4a22c2350173a0aa15f342a25f9c14985c237c",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "selected_runtime_DLL"
+    },
+    {
+      "member": "bin/tiff.dll",
+      "bytes": 468992,
+      "sha256": "cf4a9d2a74f3370983bef5aacb8bb93db00328906da8e2c26cfed8d744fd9b07",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "selected_runtime_DLL"
+    },
+    {
+      "member": "bin/zlib1.dll",
+      "bytes": 90112,
+      "sha256": "0389d9547623b8b05e576f01229a2b37f1a0709fac02a8a50b2da723da5ca514",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "selected_runtime_DLL"
+    },
+    {
+      "member": "imagejxx/glfw3.dll",
+      "bytes": 233984,
+      "sha256": "a53079499276e3e55ec402f3716a3168d927b7adba20ed1135d0d9177b0c6c43",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "selected_runtime_DLL"
+    },
+    {
+      "member": "imagejxx/jpeg62.dll",
+      "bytes": 685568,
+      "sha256": "874283fd82bab9e0a572c78befea478827bfddacb0310f9bc23382bb7b8becba",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "selected_runtime_DLL"
+    },
+    {
+      "member": "imagejxx/liblzma.dll",
+      "bytes": 188928,
+      "sha256": "a9a275c360d80013b8304b5ebde3a05a82aee4c2ccdc41dd3ee9cf6acb3d433c",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "selected_runtime_DLL"
+    },
+    {
+      "member": "imagejxx/libpng16.dll",
+      "bytes": 196608,
+      "sha256": "d2261dd90f253d711fbced99bc4a22c2350173a0aa15f342a25f9c14985c237c",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "selected_runtime_DLL"
+    },
+    {
+      "member": "imagejxx/licenses/dependencies.json",
+      "bytes": 4516,
+      "sha256": "436d924a8d501a7139f09e65441c46b6944e1d4c63b12d56eb1fd43290dd0a67",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "imagejxx/licenses/desktop-dependencies.json",
+      "bytes": 5236,
+      "sha256": "9b5aa27fbdc98780f7eb93aa6a290bea9eb0894cce5f89b5d22d081b15ed55f3",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "imagejxx/licenses/glfw3.txt",
+      "bytes": 904,
+      "sha256": "149704059b5d0bf551637e50042dd4de9c2cae921021f6636298911e3a5f9462",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "imagejxx/licenses/imgui.txt",
+      "bytes": 1083,
+      "sha256": "c80c5789748d955c4a650562baa0d750494e2c7128c2ca66aaebe2e3c4e198bf",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "imagejxx/licenses/libjpeg-IJG.txt",
+      "bytes": 12799,
+      "sha256": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "imagejxx/licenses/libjpeg-turbo.txt",
+      "bytes": 5620,
+      "sha256": "2189dc45a8fe96204069f8124caa53a148dfdc193f50f584c6ca7849a6072872",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "imagejxx/licenses/liblzma-0bsd.txt",
+      "bytes": 607,
+      "sha256": "0b01625d853911cd0e2e088dcfb743261034a091bb379246cb25a14cc4c74bf1",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "imagejxx/licenses/liblzma.txt",
+      "bytes": 3119,
+      "sha256": "616a3ad264ce29b8f1cb97e53037b139d406899ca8d1f799651e17bfa09830b8",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "imagejxx/licenses/libpng.txt",
+      "bytes": 5345,
+      "sha256": "16d9daaafbf63a31a5bdc91d4600972548fef5aaa1244202393288dbd079c49a",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "imagejxx/licenses/libtiff.txt",
+      "bytes": 2416,
+      "sha256": "0e27c2382d7b8147972bbb746e04059a1152c8d0fda9d03ef1399d1a433c4ade",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "imagejxx/licenses/LICENSE",
+      "bytes": 1079,
+      "sha256": "6496956d6060adfcd2617e553b7393c3b7fbea353a02f3c39d60051709d1ce5f",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "imagejxx/licenses/native-dependencies.json",
+      "bytes": 1917,
+      "sha256": "b649aa7e93fc45941fb5f8092e9bebede34cab5c797f7bba95658a1da17d027d",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "imagejxx/licenses/nlohmann-json.txt",
+      "bytes": 1076,
+      "sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "imagejxx/licenses/proggy-clean.txt",
+      "bytes": 1109,
+      "sha256": "0b6e79fc26dcd9ec87d0e3f2ff383abd403ea58b855368960f2a2643c7744211",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "imagejxx/licenses/pybind11.txt",
+      "bytes": 1684,
+      "sha256": "83965b843b98f670d3a85bd041ed4b372c8ec50d7b4a5995a83ac697ba675dcb",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "imagejxx/licenses/stb.txt",
+      "bytes": 2510,
+      "sha256": "bebfe904b14301657e4e5d655c811d51fd31b97c455b9cc2d8600d6bac6cff63",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "imagejxx/licenses/THIRD_PARTY_NOTICES.md",
+      "bytes": 4201,
+      "sha256": "9793a0e9272d9c7f8aa1ea97712a38f1ff186ecbd379f3a71c16ae273167bff9",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "imagejxx/licenses/zlib.txt",
+      "bytes": 1002,
+      "sha256": "845efc77857d485d91fb3e0b884aaa929368c717ae8186b66fe1ed2495753243",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "imagejxx/tiff.dll",
+      "bytes": 468992,
+      "sha256": "cf4a9d2a74f3370983bef5aacb8bb93db00328906da8e2c26cfed8d744fd9b07",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "selected_runtime_DLL"
+    },
+    {
+      "member": "imagejxx/zlib1.dll",
+      "bytes": 90112,
+      "sha256": "0389d9547623b8b05e576f01229a2b37f1a0709fac02a8a50b2da723da5ca514",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "selected_runtime_DLL"
+    },
+    {
+      "member": "share/imagejxx/licenses/dependencies.json",
+      "bytes": 4516,
+      "sha256": "436d924a8d501a7139f09e65441c46b6944e1d4c63b12d56eb1fd43290dd0a67",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "share/imagejxx/licenses/desktop-dependencies.json",
+      "bytes": 5236,
+      "sha256": "9b5aa27fbdc98780f7eb93aa6a290bea9eb0894cce5f89b5d22d081b15ed55f3",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "share/imagejxx/licenses/glfw3.txt",
+      "bytes": 904,
+      "sha256": "149704059b5d0bf551637e50042dd4de9c2cae921021f6636298911e3a5f9462",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "share/imagejxx/licenses/imgui.txt",
+      "bytes": 1083,
+      "sha256": "c80c5789748d955c4a650562baa0d750494e2c7128c2ca66aaebe2e3c4e198bf",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "share/imagejxx/licenses/libjpeg-IJG.txt",
+      "bytes": 12799,
+      "sha256": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "share/imagejxx/licenses/libjpeg-turbo.txt",
+      "bytes": 5620,
+      "sha256": "2189dc45a8fe96204069f8124caa53a148dfdc193f50f584c6ca7849a6072872",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "share/imagejxx/licenses/liblzma-0bsd.txt",
+      "bytes": 607,
+      "sha256": "0b01625d853911cd0e2e088dcfb743261034a091bb379246cb25a14cc4c74bf1",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "share/imagejxx/licenses/liblzma.txt",
+      "bytes": 3119,
+      "sha256": "616a3ad264ce29b8f1cb97e53037b139d406899ca8d1f799651e17bfa09830b8",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "share/imagejxx/licenses/libpng.txt",
+      "bytes": 5345,
+      "sha256": "16d9daaafbf63a31a5bdc91d4600972548fef5aaa1244202393288dbd079c49a",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "share/imagejxx/licenses/libtiff.txt",
+      "bytes": 2416,
+      "sha256": "0e27c2382d7b8147972bbb746e04059a1152c8d0fda9d03ef1399d1a433c4ade",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "share/imagejxx/licenses/LICENSE",
+      "bytes": 1079,
+      "sha256": "6496956d6060adfcd2617e553b7393c3b7fbea353a02f3c39d60051709d1ce5f",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "share/imagejxx/licenses/native-dependencies.json",
+      "bytes": 1917,
+      "sha256": "b649aa7e93fc45941fb5f8092e9bebede34cab5c797f7bba95658a1da17d027d",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "share/imagejxx/licenses/nlohmann-json.txt",
+      "bytes": 1076,
+      "sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "share/imagejxx/licenses/proggy-clean.txt",
+      "bytes": 1109,
+      "sha256": "0b6e79fc26dcd9ec87d0e3f2ff383abd403ea58b855368960f2a2643c7744211",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "share/imagejxx/licenses/pybind11.txt",
+      "bytes": 1684,
+      "sha256": "83965b843b98f670d3a85bd041ed4b372c8ec50d7b4a5995a83ac697ba675dcb",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "share/imagejxx/licenses/stb.txt",
+      "bytes": 2510,
+      "sha256": "bebfe904b14301657e4e5d655c811d51fd31b97c455b9cc2d8600d6bac6cff63",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "share/imagejxx/licenses/THIRD_PARTY_NOTICES.md",
+      "bytes": 4201,
+      "sha256": "9793a0e9272d9c7f8aa1ea97712a38f1ff186ecbd379f3a71c16ae273167bff9",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "share/imagejxx/licenses/zlib.txt",
+      "bytes": 1002,
+      "sha256": "845efc77857d485d91fb3e0b884aaa929368c717ae8186b66fe1ed2495753243",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    },
+    {
+      "member": "imagejxx-0.2.0.dist-info/licenses/LICENSE",
+      "bytes": 1079,
+      "sha256": "6496956d6060adfcd2617e553b7393c3b7fbea353a02f3c39d60051709d1ce5f",
+      "same_as_rank_member": true,
+      "wheel006_actual_member_stream_checked": true,
+      "role": "license_notice_or_review_manifest"
+    }
+  ],
+  "reused_binary_notice_summary": {
+    "total": 49,
+    "runtime_DLL_copies": 12,
+    "notice_review_license_copies": 37,
+    "actual_current_wheel_stream_checked": true,
+    "accepted_rank_member_map": {
+      "path": "build/p06f-001/final-members001/member-map.json",
+      "bytes": 56661,
+      "sha256": "77653159cfaf97aad9daf74672df05fc1904e86a29089d69b971e289df151a99"
+    },
+    "missing_selected_notices": []
+  },
+  "python_dependency_scope": {
+    "declared_wheel_fields": [
+      "Requires-Python: >=3.10",
+      "Requires-Dist: numpy==2.2.6",
+      "Requires-Dist: Pillow==12.2.0; extra == \"io\"",
+      "Requires-Dist: tifffile==2024.12.12; extra == \"io\"",
+      "Requires-Dist: pytest==8.4.2; extra == \"test\"",
+      "Requires-Dist: scipy==1.15.3; extra == \"test\"",
+      "Requires-Dist: packaging==25.0; extra == \"test\"",
+      "Requires-Dist: iniconfig==2.1.0; extra == \"test\"",
+      "Requires-Dist: pluggy==1.6.0; extra == \"test\"",
+      "Requires-Dist: Pygments==2.20.0; extra == \"test\"",
+      "Requires-Dist: colorama==0.4.6; sys_platform == \"win32\" and extra == \"test\"",
+      "Requires-Dist: tomli==2.2.1; python_version < \"3.11\" and extra == \"test\"",
+      "Requires-Dist: exceptiongroup==1.3.0; python_version < \"3.11\" and extra == \"test\"",
+      "Requires-Dist: typing-extensions==4.15.0; python_version < \"3.11\" and extra == \"test\"",
+      "Requires-Dist: Pillow==12.2.0; extra == \"dev\"",
+      "Requires-Dist: tifffile==2024.12.12; extra == \"dev\"",
+      "Requires-Dist: pytest==8.4.2; extra == \"dev\"",
+      "Requires-Dist: scipy==1.15.3; extra == \"dev\"",
+      "Requires-Dist: packaging==25.0; extra == \"dev\"",
+      "Requires-Dist: pybind11==3.0.4; extra == \"dev\"",
+      "Requires-Dist: scikit-build-core==0.11.6; extra == \"dev\"",
+      "Requires-Dist: pathspec==1.1.1; extra == \"dev\"",
+      "Requires-Dist: iniconfig==2.1.0; extra == \"dev\"",
+      "Requires-Dist: pluggy==1.6.0; extra == \"dev\"",
+      "Requires-Dist: Pygments==2.20.0; extra == \"dev\"",
+      "Requires-Dist: colorama==0.4.6; sys_platform == \"win32\" and extra == \"dev\"",
+      "Requires-Dist: tomli==2.2.1; python_version < \"3.11\" and extra == \"dev\"",
+      "Requires-Dist: exceptiongroup==1.3.0; python_version < \"3.11\" and extra == \"dev\"",
+      "Requires-Dist: typing-extensions==4.15.0; python_version < \"3.11\" and extra == \"dev\""
+    ],
+    "actual_version_source": {
+      "path": "build/p06g-001/delivery-build006/origins.json",
+      "bytes": 1313,
+      "sha256": "adbad1d3ad4f5e0780bb068b623b4369cc40156eb04e61b44fa3db15bc32150d"
+    },
+    "runtime_numpy_version": "2.2.6",
+    "new_dependency_declared": false,
+    "additional_asset_backends_incorporated": false,
+    "limits": "External Python packages keep their separate reviewed licenses/platform-wheel notices. No independent NumPy/Pillow/tifffile/SciPy distribution is bundled or newly approved by this wheel member comparison."
+  },
+  "reference_and_incorporation_boundary": {
+    "incorporated_upstream_source": [],
+    "incorporated_components": [],
+    "new_external_assets": [],
+    "reference_material_incorporated": false,
+    "ImageJ_Fiji_source_or_JAR_shipped": false,
+    "reference_source_archive_reopened": false,
+    "new_primary_legal_fact_required": false,
+    "reason": "This is an owned saved-row interaction/geometry contract with owned literal expectations. Existing reference-only eligibility remains at prior exact reviews; no fresh upstream numerical equivalence or incorporation approval follows.",
+    "fiji_components_promoted": 0,
+    "whole_Fiji_eligibility": false,
+    "NC_research_only_unlicensed_unreviewed_incorporation": "excluded"
+  },
+  "required_obligations": [
+    "Retain unchanged project MIT permission/copyright notice in all source/wheel/SDK/app copies.",
+    "Retain full selected ImGui/ProggyClean/GLFW/stb/JSON/pybind11/zlib/libpng/libtiff/libjpeg-turbo/IJG/liblzma notices and the existing IJG/XZ acknowledgments. P06g adds no new third-party notice.",
+    "Private nlohmann/json and prefixed zlib sources/manifests remain exact reviewed selections; keep their licenses in source, installed SDK and wheel notices. Do not add zlib gzip/minizip/tools, xz/TurboJPEG tools or external font files under this scope.",
+    "Carry existing optional Python/tool dependency obligations separately; do not interpret project MIT as relicensing third-party code.",
+    "Any new dependency/version/component/asset or changed licensed input requires its own exact review; copyleft alone is not a non-commercial restriction."
+  ],
+  "preserved_identity_limits": [
+    {
+      "id": "cached_zlib_package_ABI_metadata",
+      "detail": "Prior libpng ABI metadata names a cached zlib package ABI different from current zlib metadata. Current libpng/zlib DLL bytes remain exact accepted rank bytes. Preserve the provenance mismatch; do not claim a rebuilt package closure or infer C ABI incompatibility from the cache hash alone."
+    },
+    {
+      "id": "private_vs_desktop_zlib",
+      "detail": "Headless codec privately compiles unchanged Z_PREFIX zlib1.3.1; optional desktop codecs use the reviewed external zlib1 DLL. These are distinct identity/obligation edges, both retained."
+    },
+    {
+      "id": "historical_header_font_identity",
+      "detail": "Old Auto-era proofs lacked direct SDK/static/header/font pins. This review rechecks57 current inputs against accepted rank pins; it does not retroactively prove Auto-era byte identity."
+    },
+    {
+      "id": "external_platform_runtime",
+      "detail": "Windows/OpenGL/MSVC/Python runtime and drivers remain external; no new redistribution/platform/assistive-technology acceptance is granted."
+    },
+    {
+      "id": "no_general_resource_or_volume_claim",
+      "detail": "Saved-row declared limits and actual functional gates do not establish allocator/RSS/GPU/global resource accounting, volume execution, full G015 or all99-family acceptance."
+    }
+  ],
+  "remaining_final_gates": [
+    {
+      "owner": "root fixture/adoption",
+      "action": "Join adopted genuine ten-case owned fixture/trace transport and24-context/200-value surface evidence at original source/product origins. Source eligibility does not create fixture/reference/runtime credit."
+    },
+    {
+      "owner": "root commercial adoption",
+      "action": "Review/adopt the exact proposed owned-source/dependency scope and six selected commercial fields; keep implementation/verification partial and preserve all earlier failure/origin evidence."
+    },
+    {
+      "owner": "root source freeze",
+      "action": "After metadata/docs/fixture/commercial changes settle, run the existing safe explicit-root source collector once. Include complete applicable .github/.gitignore/cmake roots/configs and all new product-free scripts/tests/fixtures. The719 compile-source set is not a complete source-archive manifest."
+    },
+    {
+      "owner": "root final distribution",
+      "action": "Bind generated PKG-INFO/backend pins and all frozen source members to one new sdist; verify source-to-wheel members, every wheel member/RECORD, actual installed package/standalone/SDK members, public saved-ROI header/core package config, notices and declared dependency/origin data. Match wheel006 or an explicitly qualified later delta; do not rebuild unchanged products for prose/test-only adoption."
+    },
+    {
+      "owner": "root final license/member qualification",
+      "action": "Recheck selected reviewed input identities and applicable installed license checker result at consumed artifacts. Retain cached-zlib metadata and external-runtime limits. This49-member comparison is not the final all-member installed/source/package gate."
+    },
+    {
+      "owner": "root scoped handoff",
+      "action": "Issue one excluded-build terminal receipt after actual required checks, recording final archive/source/member/report hashes, exact residual clauses, preserved failures and the next shortcuts owner. Do not promote whole-family/Fiji/platform/performance/release scope."
+    }
+  ],
+  "evidence_pins": [
+    {
+      "path": "build/p06f-001/final-distribution-001.json",
+      "bytes": 6418,
+      "sha256": "61386d148c660d6c7b43b98903bff8bb74e69471beace396531d166ec75b8b53"
+    },
+    {
+      "path": "build/p06f-001/final-members001/member-map.json",
+      "bytes": 56661,
+      "sha256": "77653159cfaf97aad9daf74672df05fc1904e86a29089d69b971e289df151a99"
+    },
+    {
+      "path": "build/p06f-001/source-final002.json",
+      "bytes": 121986,
+      "sha256": "e90a62b8cfbe47da188a16685a27dc8bcb6236d6b81e4f6334a1741d6416033c"
+    },
+    {
+      "path": "docs/parity/rank-commercial-review-001.json",
+      "bytes": 41440,
+      "sha256": "628721ddf23d4ddb304257e5dff729930f0524d2aff65d4d3da746794ea08f7a"
+    },
+    {
+      "path": "docs/parity/rank-commercial-review-002.json",
+      "bytes": 21241,
+      "sha256": "f8febcbbd689ef632b9507683d3a0a8ce4792fc5eb52b5e6f40ae993d06ff2e7"
+    },
+    {
+      "path": "docs/parity/rank-commercial-review-003.json",
+      "bytes": 3178,
+      "sha256": "115f454d19e68818ceb81d136cc968beccca52fdb2d115ff1c92558db3a2d553"
+    },
+    {
+      "path": "build/p06f-001/rank-commercial-prep002/dependency-reuse-proof002.json",
+      "bytes": 22705,
+      "sha256": "166bd56deb4b39feba627aa2257e405450694766a76b605a3412d71e0607e9c7"
+    },
+    {
+      "path": "build/p06f-001/rank-artifact-dependencies001/comparison.json",
+      "bytes": 8118,
+      "sha256": "60f589730166615a1340df6ed4bd93d0ba6ed9c6e6789ef5996c0b1712f7c38e"
+    },
+    {
+      "path": "build/p06f-001/rank-artifact-dependencies001/pins.json",
+      "bytes": 30399,
+      "sha256": "680a7211ad93cf4be4474bf0aa93360baec3556d44666b92151e364c4a59ed22"
+    },
+    {
+      "path": "build/p06g-001/ui-build006/run006.json",
+      "bytes": 3037,
+      "sha256": "6faf93a4a76351a2bb1cb1e5c43d0ad6840f8dc55e069c7597d9234d232c8acf"
+    },
+    {
+      "path": "build/p06g-001/ui-build006/freeze.json",
+      "bytes": 129385,
+      "sha256": "6b7390fb856a8d3e8c7ef1714348c3cec25d8a4fabc33e17d0223891fd672288"
+    },
+    {
+      "path": "build/p06g-001/delivery-build006/run006.json",
+      "bytes": 10143,
+      "sha256": "5e3e097a7c3cbab76b7581d9cfd5675493caac1ea079c42c5de327fb1c6882f8"
+    },
+    {
+      "path": "build/p06g-001/delivery-build006/wheel-members.json",
+      "bytes": 16560,
+      "sha256": "c18d4d048738d474a3823bbe06f874b0923bd0deae3612391c9fb8acebee90dc"
+    },
+    {
+      "path": "build/p06g-001/delivery-build006/origins.json",
+      "bytes": 1313,
+      "sha256": "adbad1d3ad4f5e0780bb068b623b4369cc40156eb04e61b44fa3db15bc32150d"
+    }
+  ],
+  "adopted_utc": "2026-10-17T00:27:06.344215+00:00",
+  "owner": "root",
+  "proposal": {
+    "path": "build/p06g-001/commercial-prep001/review-proposed.json",
+    "bytes": 87802,
+    "sha256": "49d2fab670be36fd190f7692d34cae09dad8a09cf6beafec512d62ba6641608c"
+  },
+  "owned_source_pins": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 45342,
+      "sha256": "6cde3b89df1e123f670eb7ec28d7aa67b7a2129640cbd2e3ad24588f3855c907",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "examples/cpp/CMakeLists.txt",
+      "bytes": 10301,
+      "sha256": "210082840efc5e02c991c185ab32fc6f03bb2fbd8b27e6146d9e2b0b8f2f3bba",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "examples/cpp/saved_roi_geometry.cpp",
+      "bytes": 47012,
+      "sha256": "4a929850129ebdc113f720dbc08d2e79131000596d9726788d7d428f4cede92a",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "examples/cpp/saved_roi_geometry_observations.hpp",
+      "bytes": 5023,
+      "sha256": "b87e97f550e1a351a2719932710c8b1df35af376f0536a8d4780095a2d2e7a31",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 10094,
+      "sha256": "4ac07df4ae55e85e9891e8df56b6b12a85e9ae24867f550b605f64a704a95732",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "include/imagejxx/document.hpp",
+      "bytes": 14673,
+      "sha256": "5113dcddd647f25ee4dc90d10241015570ae8afcb8dcf255f2ea6209c03ff4c6",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "include/imagejxx/saved_roi_geometry.hpp",
+      "bytes": 3773,
+      "sha256": "f297a8e88c9ce2451f17a28bed5499803f755089859cd792d3d24f73469dca60",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "include/imagejxx/selection_edit.hpp",
+      "bytes": 5643,
+      "sha256": "a2c3b9cf0156c33dde3dfb298690ee0872732997cf178b759b11b4a942e0e0e2",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "scripts/capture_saved_roi_geometry_ui.py",
+      "bytes": 14431,
+      "sha256": "32ecb659c0e7ade13e842229fb49dc65425543089f03f66c3840f1bd173f7231",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "scripts/export_saved_roi_geometry_fixture.py",
+      "bytes": 8406,
+      "sha256": "3bc3c86f6327b1dd9b5855d570ede2aaed0263d827c6ea4afd474b2823dcfba0",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/main.cpp",
+      "bytes": 22717,
+      "sha256": "7c9be2b327f753edbe53e61034d4672fc9d7a1776cf35baebe8f41f00829e715",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/orthogonal.cpp",
+      "bytes": 53789,
+      "sha256": "c17d9e07f6e49dd22f5eacb09e711254bfa749f9962c03e6e79e383d0a5d8c9e",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/orthogonal.hpp",
+      "bytes": 4374,
+      "sha256": "fce48fa5b1995d519aa8131fd14dd8cb95a7d8cf12259ad686581b2beda46f27",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 30083,
+      "sha256": "1cecd2006123ff77e19723ae20b97d709f5e286fc54fd5d9e173c274209a6f51",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/saved_roi_edit.cpp",
+      "bytes": 15609,
+      "sha256": "aa9056367d28cbfce05b143bd732f931ec4470539712bae583ca88ec3248feec",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/saved_roi_edit.hpp",
+      "bytes": 3960,
+      "sha256": "af6c1ff774f6a6d910ff5a43894e4dd1fcf8e579605889cb856457fc97954259",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/saved_roi_geometry_dependencies.cpp",
+      "bytes": 21218,
+      "sha256": "64c0fd59455a732ede22c4eee9baf08bbacb7e707002cabf48549b76158573b5",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/saved_roi_geometry_dependencies.hpp",
+      "bytes": 475,
+      "sha256": "af082d38ea80f1327da12abc8659b3d5289993b430d1c2d3b022cb1fc44ba62c",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/saved_roi_geometry_ui_probe.cpp",
+      "bytes": 63862,
+      "sha256": "960dc2f8dd0f47f573ec4acb75ecea7a54160050f1fe86aead3a74d7e620ba4b",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/saved_roi_geometry_ui_probe.hpp",
+      "bytes": 868,
+      "sha256": "41d69f194c220cce1836dc9774613a0bc442553621bab6cba76fe7c38edb8706",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/selection_panel.cpp",
+      "bytes": 23038,
+      "sha256": "3f69d33f08a58d61f44a15d91bd7223bab15e3f6a0eb002f4e8a7029d289c782",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/selection_panel.hpp",
+      "bytes": 2569,
+      "sha256": "1324d72eb88c3acd41d7d32fce7d5cc2514e583c624f00f304faf2f184ba2414",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 471255,
+      "sha256": "c00b0508e8ce082d14fb6b8217b119bfc5de8fef387cc85e055aa061b1f0cdca",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/desktop/window.hpp",
+      "bytes": 11237,
+      "sha256": "52a9bcc45bbe9e01d3c788bb64f24e8eda9a83b65c35ce98985d6088838c685f",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 46580,
+      "sha256": "d3e03a30faf1ffc9f1ae839c0ee5d533bd70bf4a6d65d148f8ed917a4d6b7145",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/imagejxx/ui/app.py",
+      "bytes": 21961,
+      "sha256": "203b92c7cc8fb43ba87f7c0a47a6cfcbe7394d6b94307c8b5f80945b08cc28b3",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/native/application_bindings.cpp",
+      "bytes": 15328,
+      "sha256": "53f1d92de3186343c393773afa54d9ed419ea5fbb85298980f057e522493caad",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/native/bindings.cpp",
+      "bytes": 28319,
+      "sha256": "278a1480ae2ed4a47051e735c92066b047cce1dafd1070dc7bc785f28c60b6f2",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/native/document.cpp",
+      "bytes": 48380,
+      "sha256": "449bd492db671c01107054fc06f1c702d1325adaa3f6b0534f1aad001c42c65f",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/native/document_bindings.cpp",
+      "bytes": 27852,
+      "sha256": "2966a42fa0ecec573d51ba3fdd6d80e116e381a0276e664d7cf913b2299d59bc",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/native/saved_roi_geometry.cpp",
+      "bytes": 35052,
+      "sha256": "e441b92f923bd161390bae499b10453ed3cd0e7175b2b19a893e77d9870533c7",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/native/saved_roi_geometry_application.cpp",
+      "bytes": 8343,
+      "sha256": "8825d10368cf35c6c8496b09a5482f8c7c86be88acc8b355e0888a6f552e48bd",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/native/saved_roi_geometry_bindings.cpp",
+      "bytes": 14610,
+      "sha256": "a81edccc1bb025ee928e408543c60a4d6e98ad3cc944f0cb40e95dd6202aaa67",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/native/saved_roi_geometry_internal.hpp",
+      "bytes": 613,
+      "sha256": "899621ad18c891ccea032b9f48683d91830e0e1c9aed89fc7b7551a878dab87a",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/native/selection_codec.cpp",
+      "bytes": 5909,
+      "sha256": "09e57ebec32d1d10539f07b452a85a9ff15ab425ae291fa316cdc61828cef354",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/native/selection_codec.hpp",
+      "bytes": 731,
+      "sha256": "1fe8dc1d82fa4b035983bf03bc995b9c167cf6b25cb622f839b1d8d36ee4b8a8",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/native/selection_edit.cpp",
+      "bytes": 35682,
+      "sha256": "ae11e0423d70795d27512a680b72bcf9c47585be3d732f4192fcb6034a11320a",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "src/native/session.cpp",
+      "bytes": 60425,
+      "sha256": "e799fd657dc3578ffcc16a15884f49057b6c0b45b3c0fe9434e41ddfc310f640",
+      "classification": "modified_owned_integration_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "tests/fixtures/saved_roi_geometry_owned_cases.json",
+      "bytes": 102293,
+      "sha256": "4364cf3ef2e241ba69541d4d55ed629372f6773265f7e7dab9cc9ed9f84b4c01",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "tests/native/saved_roi_python_source.cpp",
+      "bytes": 6123,
+      "sha256": "e08eda02f3bfe05a86de9a061451fe994bda7a189f7b3b0a82f2cc14d185a2bf",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "tests/native/test_saved_roi_geometry.cpp",
+      "bytes": 69467,
+      "sha256": "5dad3ed8d4a4bde8f3c6fec253ddd44b501546a6e7f0644e9cadfb9ca975cf3b",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "tests/native/test_saved_roi_geometry_host.cpp",
+      "bytes": 41866,
+      "sha256": "c08bede95d0fe81ff1ed1b19a7bdb111661355998b3906d48ca833017dc78ea8",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "tests/python/saved_roi_geometry_observations.py",
+      "bytes": 2879,
+      "sha256": "ab5fa1ca906523ceca9c135b03cc17607fe64c033cce82094d3b3e15988ad7cc",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "tests/python/test_saved_roi_geometry.py",
+      "bytes": 56370,
+      "sha256": "e0c25f8c889350a1b9a1a24c5c31a696ee47f1b1d4a248b7a1950f5d1da6c4ef",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "tests/python/test_saved_roi_geometry_ui.py",
+      "bytes": 61413,
+      "sha256": "da0d8f52fa477a6ecea543196b56de680959687d6d4621e253da57aa8e8b76c6",
+      "classification": "new_owned_P06g_source",
+      "scope": "Product/build/API/SDK/test/owned-fixture source; no upstream processing implementation or external asset added."
+    },
+    {
+      "path": "scripts/extract_saved_roi_geometry_surfaces.py",
+      "bytes": 21889,
+      "sha256": "ad839bb1fddbf1647222f5730d1e663b6caa7a91bb5964f220a771f76b450e39",
+      "classification": "owned_product_free_qualification_source",
+      "compiled_product_change": false
+    },
+    {
+      "path": "scripts/extract_saved_roi_geometry_ui_surfaces.py",
+      "bytes": 69435,
+      "sha256": "e01147a622cdc60b498c2a91c1815c5124967bdd0a49cd2a19ba0205a499ae45",
+      "classification": "owned_product_free_qualification_source",
+      "compiled_product_change": false
+    },
+    {
+      "path": "tests/qualification/test_saved_roi_geometry_surface_reader.py",
+      "bytes": 33310,
+      "sha256": "2418987533fe29c1ff1fed03a3d70a9c26483bb1e3eebe44ebe23a1b98a4312f",
+      "classification": "owned_product_free_qualification_source",
+      "compiled_product_change": false
+    },
+    {
+      "path": "scripts/parity_fixtures.py",
+      "bytes": 268311,
+      "sha256": "bd26d2a3c5284f4c36aad38181c50ed9bafbdb7df22afdc2be79031d87df63ad",
+      "classification": "unchanged_reviewed_owned_helper",
+      "same_as_rank_source": true
+    },
+    {
+      "path": "scripts/check_plan.py",
+      "bytes": 14223,
+      "sha256": "44b03a1cfe869213e074548ecc9dc421022c18d6222b835ada2f801b63445c6e",
+      "classification": "unchanged_reviewed_owned_helper",
+      "same_as_rank_source": true
+    },
+    {
+      "path": "scripts/build_source_distribution.py",
+      "bytes": 21913,
+      "sha256": "0d0bca2362d51940a8f65c8e4c984b27b4850658a1c381d3e1cf4ea848b7f083",
+      "classification": "unchanged_reviewed_owned_helper",
+      "same_as_rank_source": true
+    }
+  ],
+  "root_checks": {
+    "held_gate": {
+      "path": "build/p06g-001/commercial-adoption001/check001.json",
+      "bytes": 586,
+      "sha256": "e2072e2b05e0ade4d9162f73153877521240d823b0a8cfd40d3449b126da57fd"
+    },
+    "fresh_recheck": {
+      "schema_version": 1,
+      "result": "PASS",
+      "finished_utc": "2026-10-17T00:27:05.911119+00:00",
+      "scope": "51 exact owned sources, unchanged selected dependency/source/license inputs,49 actual retained wheel DLL/notice members; source eligibility only",
+      "proposal": {
+        "path": "build/p06g-001/commercial-prep001/review-proposed.json",
+        "bytes": 87802,
+        "sha256": "49d2fab670be36fd190f7692d34cae09dad8a09cf6beafec512d62ba6641608c"
+      },
+      "input_pin_checks": 215,
+      "binary_notice_members": 49,
+      "product_or_build_execution": false,
+      "protected_paths_inspected": false
+    },
+    "static": {
+      "requirements": 64,
+      "additions": 0,
+      "formats": 1,
+      "fixtures": 12,
+      "benchmarks": 1,
+      "platforms": 1
+    }
+  },
+  "metadata_adoption": "Only six existing requirement commercial fields change; frozen contracts, fixture/runtime decisions, prior candidates/components and all other fields remain intact.",
+  "workspace_effects_of_original_proposal": {
+    "new_owned_outputs": [
+      "build/p06g-001/commercial-prep001/review-proposed.json",
+      "build/p06g-001/commercial-prep001/README.md"
+    ],
+    "live_code_manifest_docs_edits": false,
+    "build_product_execution": false,
+    "new_product_build": false,
+    "archive_extraction_to_disk": false,
+    "new_dependency_download": false,
+    "build_root_recursion": false,
+    "protected_cleanup_targets_inspected_or_retried": false
+  }
+}

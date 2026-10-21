@@ -1,0 +1,38 @@
+{
+  "state": "passed",
+  "scope": "Float32 Deflate actual file-policy, linked-view, processing and export controls",
+  "audit": {
+    "path": "build/p08f-deflate-float-ui001/final-audit001.json",
+    "bytes": 49522,
+    "sha256": "e2df632f7d52637518c5fbf3b985f238a9fb85a4259fa118934d96c258e30f35"
+  },
+  "production_change": "Private Float32 ImGui producer now observes compressed export/replay and linked views when input is Deflate; no processing/core/IO/public API change",
+  "qualification": {
+    "windows_suites": 76,
+    "source_python_cases": 9634,
+    "installed_python_cases": 9634,
+    "baseline_retained": 9622,
+    "new_cases": 12,
+    "physical_cases": 6,
+    "physical_contexts": 4,
+    "imagej_fixture_filter_observations": 6,
+    "imagej_gui_export_observations": 16
+  },
+  "reuse": {
+    "core_io_public_source_inputs": 264,
+    "exact_sdk_files": 104,
+    "receipt": "build/p08f-deflate-float-ui001/sdk-reuse001.json"
+  },
+  "cleanup_net_bytes": 1411749759,
+  "dependencies_added": false,
+  "limitations": [
+    "No OS-input or GPU equivalence claim; actual ImGui events and CPU cache/upload-input values observed",
+    "No Linux TIFF/product qualification",
+    "PackBits/LZW/predictors, tiled/BigTIFF, broader metadata/high-bit/alpha and remaining ImageJ/Fiji/editor/release gaps remain open"
+  ],
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  }
+}

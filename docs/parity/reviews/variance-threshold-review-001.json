@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "state": "scoped_gates_passed",
+  "scope": "Finite scalar UInt16/Float32 variance with a manual threshold",
+  "reference_runner_cases": 72,
+  "reference_threshold_resets": 60,
+  "reference_threshold_retained": 12,
+  "python_checks_per_context": 4660,
+  "windows_native_suites": 32,
+  "linux_native_suites": 12,
+  "native_display_checks_per_platform": 3531,
+  "actual_input_cases": [
+    "R19",
+    "R20",
+    "R21",
+    "R22"
+  ],
+  "hosts": [
+    "source C++ ImGui",
+    "installed C++ ImGui",
+    "source Python ImGui",
+    "installed Python ImGui"
+  ],
+  "installed_public_sdk": "passed",
+  "window_cpp_unchanged": true,
+  "runtime_dependencies_added": false,
+  "public_dto_layout_changes": false,
+  "record_schema_changed": false,
+  "policy": "Thresholds do not select samples. A noncollapsed final histogram clears only the active plane threshold, even for numerically unchanged bounds; collapsed cutoffs retain it. Publication pairs pixels/display/threshold.",
+  "owned_extensions": [
+    "Other-plane threshold retained",
+    "Empty write mask read-free and threshold unchanged",
+    "Off-current targets use active output plane",
+    "Preview shows prepared final result"
+  ],
+  "diagnostics": [
+    "api001: opaque display property refused by existing legacy adapter; native opaque-property assertions retained, adapter fixtures use supported properties",
+    "source001/installed001: one malformed-threshold assertion each placed after existing set_display schema admission; corrected boundary without production schema changes"
+  ],
+  "remaining": [
+    "Channel-display variance",
+    "Advanced rank/filter features",
+    "Indexed formats",
+    "Wider editor/release qualification"
+  ],
+  "release_counts": {
+    "all99_in_progress": 42,
+    "all99_open": 57,
+    "all99_complete": 0,
+    "source901": "unchanged"
+  }
+}

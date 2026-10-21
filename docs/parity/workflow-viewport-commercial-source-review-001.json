@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_owned_increment",
+  "review_type": "Root authorship/integration attestation, not independent legal review",
+  "license": "Existing project MIT for original private prepared workflow viewport and shared rendering integration",
+  "new_dependencies": [],
+  "restricted_features_added": false,
+  "imported_third_party_product_code": [],
+  "new_fonts": [],
+  "sources": [
+    {
+      "logical_path": "CMakeLists.txt",
+      "before": {
+        "path": "build/p06q-workflow-viewport001/before001/CMakeLists.txt",
+        "bytes": 60895,
+        "sha256": "7980501d4bde2e2989791f8d2b2d416e6c9b9cc4549825a19efc5f4db03fd3b3"
+      },
+      "after": {
+        "path": "build/p06q-workflow-viewport001/after001/CMakeLists.txt",
+        "bytes": 60941,
+        "sha256": "abb9c91ac1d1e8d93f97e81e6a3ae5dbf461f7de4810b5c47305250fc06da081"
+      },
+      "current": {
+        "path": "CMakeLists.txt",
+        "bytes": 60941,
+        "sha256": "abb9c91ac1d1e8d93f97e81e6a3ae5dbf461f7de4810b5c47305250fc06da081"
+      }
+    },
+    {
+      "logical_path": "src/desktop/native_workflow_panel.cpp",
+      "before": {
+        "path": "build/p06q-workflow-viewport001/before001/src/desktop/native_workflow_panel.cpp",
+        "bytes": 59685,
+        "sha256": "47f490064ae1a741c2588b7e8b30f15ff22c17c189cc20e11d8c3f312df7fb52"
+      },
+      "after": {
+        "path": "build/p06q-workflow-viewport001/after001/src/desktop/native_workflow_panel.cpp",
+        "bytes": 63694,
+        "sha256": "2b1765d93620a50d60fe2d3d72f6728b7ada9f586cc4113f31cb53b095739d87"
+      },
+      "current": {
+        "path": "src/desktop/native_workflow_panel.cpp",
+        "bytes": 63694,
+        "sha256": "2b1765d93620a50d60fe2d3d72f6728b7ada9f586cc4113f31cb53b095739d87"
+      }
+    },
+    {
+      "logical_path": "src/desktop/native_workflow_panel.hpp",
+      "before": {
+        "path": "build/p06q-workflow-viewport001/before001/src/desktop/native_workflow_panel.hpp",
+        "bytes": 1957,
+        "sha256": "8c9286b2f4d40929f46a0f5111f04bcf233b9d38fc9457d3a0a3e3799a20cfbb"
+      },
+      "after": {
+        "path": "build/p06q-workflow-viewport001/after001/src/desktop/native_workflow_panel.hpp",
+        "bytes": 2036,
+        "sha256": "2806e654317c90e56736337d94dc5795c9b288cc06b9c11634bcb8c8d703d0c4"
+      },
+      "current": {
+        "path": "src/desktop/native_workflow_panel.hpp",
+        "bytes": 2036,
+        "sha256": "2806e654317c90e56736337d94dc5795c9b288cc06b9c11634bcb8c8d703d0c4"
+      }
+    },
+    {
+      "logical_path": "src/desktop/native_workflow_ui_probe.cpp",
+      "before": {
+        "path": "build/p06q-workflow-viewport001/before001/src/desktop/native_workflow_ui_probe.cpp",
+        "bytes": 38267,
+        "sha256": "d8ba55ccc24ef540793a16da4377d103f6cfcfe7f044758a4398cdd09176bdcf"
+      },
+      "after": {
+        "path": "build/p06q-workflow-viewport001/after001/src/desktop/native_workflow_ui_probe.cpp",
+        "bytes": 45011,
+        "sha256": "26bf243f2397fa9be46a51f0b72c52d6a849387aed4848cbd71b1d5ab4312fb1"
+      },
+      "current": {
+        "path": "src/desktop/native_workflow_ui_probe.cpp",
+        "bytes": 45011,
+        "sha256": "26bf243f2397fa9be46a51f0b72c52d6a849387aed4848cbd71b1d5ab4312fb1"
+      }
+    },
+    {
+      "logical_path": "src/desktop/orthogonal.cpp",
+      "before": {
+        "path": "build/p06q-workflow-viewport001/before001/src/desktop/orthogonal.cpp",
+        "bytes": 58997,
+        "sha256": "f2406b4d03a308486edec205cc87dc106982de39f68bf65bd094e328f43e7373"
+      },
+      "after": {
+        "path": "build/p06q-workflow-viewport001/after001/src/desktop/orthogonal.cpp",
+        "bytes": 59124,
+        "sha256": "53f3ad2f5498909b04d1428206f1feece2a7d7dee5629e3389b68d03726dcd7b"
+      },
+      "current": {
+        "path": "src/desktop/orthogonal.cpp",
+        "bytes": 59124,
+        "sha256": "53f3ad2f5498909b04d1428206f1feece2a7d7dee5629e3389b68d03726dcd7b"
+      }
+    },
+    {
+      "logical_path": "src/desktop/orthogonal.hpp",
+      "before": {
+        "path": "build/p06q-workflow-viewport001/before001/src/desktop/orthogonal.hpp",
+        "bytes": 5325,
+        "sha256": "6940816b6ac0f5e7b22f4142e00f3bbbbd19175a0c505d527cccd13d55a3c041"
+      },
+      "after": {
+        "path": "build/p06q-workflow-viewport001/after001/src/desktop/orthogonal.hpp",
+        "bytes": 5351,
+        "sha256": "37df2eaeff974846f594390f158ca1b3b7619a0f3e9dd6b7a1a6c03c290f260b"
+      },
+      "current": {
+        "path": "src/desktop/orthogonal.hpp",
+        "bytes": 5351,
+        "sha256": "37df2eaeff974846f594390f158ca1b3b7619a0f3e9dd6b7a1a6c03c290f260b"
+      }
+    },
+    {
+      "logical_path": "src/desktop/window.cpp",
+      "before": {
+        "path": "build/p06q-workflow-viewport001/before001/src/desktop/window.cpp",
+        "bytes": 584711,
+        "sha256": "ada51a0bb52a2f2ec3772c539e9273bfc115b8d817409cb1c86abdcd50800176"
+      },
+      "after": {
+        "path": "build/p06q-workflow-viewport001/after001/src/desktop/window.cpp",
+        "bytes": 584787,
+        "sha256": "6cf7f029d03cf279efd27d38dc3170fc5c4cace454d0069bdf7dd2fd07fa066b"
+      },
+      "current": {
+        "path": "src/desktop/window.cpp",
+        "bytes": 584787,
+        "sha256": "6cf7f029d03cf279efd27d38dc3170fc5c4cace454d0069bdf7dd2fd07fa066b"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_native_workflow_ui.py",
+      "before": {
+        "path": "build/p06q-workflow-viewport001/before001/tests/python/test_native_workflow_ui.py",
+        "bytes": 15567,
+        "sha256": "431f3fb08c79db7bb88c901bfd7125b07625b8dcd5c2e096a2a97ccfa871a408"
+      },
+      "after": {
+        "path": "build/p06q-workflow-viewport001/after001/tests/python/test_native_workflow_ui.py",
+        "bytes": 20678,
+        "sha256": "8b069dae8f67a46f857edb6a9ef2d586e61a7f760906f9a11d8b11eecc7a02f8"
+      },
+      "current": {
+        "path": "tests/python/test_native_workflow_ui.py",
+        "bytes": 20678,
+        "sha256": "8b069dae8f67a46f857edb6a9ef2d586e61a7f760906f9a11d8b11eecc7a02f8"
+      }
+    },
+    {
+      "logical_path": "src/desktop/native_workflow_viewport.hpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-workflow-viewport001/after001/src/desktop/native_workflow_viewport.hpp",
+        "bytes": 635,
+        "sha256": "56844f8960250fc7fd28880fd3eeb8a1bddecc9d33c1b3d8c9392819497d4d1e"
+      },
+      "current": {
+        "path": "src/desktop/native_workflow_viewport.hpp",
+        "bytes": 635,
+        "sha256": "56844f8960250fc7fd28880fd3eeb8a1bddecc9d33c1b3d8c9392819497d4d1e"
+      }
+    },
+    {
+      "logical_path": "src/desktop/native_workflow_viewport.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-workflow-viewport001/after001/src/desktop/native_workflow_viewport.cpp",
+        "bytes": 8074,
+        "sha256": "f371dd14bd1d7a220d3c9ca4f1d6ebe19cc1e0ba2ed16b783d00b97b2298f5ee"
+      },
+      "current": {
+        "path": "src/desktop/native_workflow_viewport.cpp",
+        "bytes": 8074,
+        "sha256": "f371dd14bd1d7a220d3c9ca4f1d6ebe19cc1e0ba2ed16b783d00b97b2298f5ee"
+      }
+    }
+  ],
+  "handoff": {
+    "path": "build/p06q-workflow-viewport001/workflow-viewport-handoff001.json",
+    "bytes": 12365,
+    "sha256": "823b8ae2f1a8eaf97c7fe3f3e06396c66f44c0c1f6477fbd7ad4c646464d32fe"
+  }
+}

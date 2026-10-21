@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "state": "scoped_gates_passed",
+  "scope": "Finite scalar UInt16/Float32 ImageJ variance editor integration",
+  "reference_runner_cases": 288,
+  "additional_initial_range_cases": 16,
+  "equal_range_display_cases": 8,
+  "python_checks_per_context": 4502,
+  "windows_native_suites": 32,
+  "linux_native_suites": 13,
+  "native_range_checks_per_platform": 2509,
+  "installed_public_sdk": "passed",
+  "runtime_dependencies_added": false,
+  "public_dto_layout_changes": false,
+  "record_schema_changed": false,
+  "observations": {
+    "rank-cpp002": {
+      "R15": {
+        "frames": 50,
+        "states": 8,
+        "raw_inputs_verified": true
+      },
+      "R16": {
+        "frames": 50,
+        "states": 8,
+        "raw_inputs_verified": true
+      },
+      "R17": {
+        "frames": 50,
+        "states": 8,
+        "raw_inputs_verified": true
+      },
+      "R18": {
+        "frames": 50,
+        "states": 8,
+        "raw_inputs_verified": true
+      }
+    },
+    "rank-installed-cpp001": {
+      "R15": {
+        "frames": 50,
+        "states": 8,
+        "raw_inputs_verified": true
+      },
+      "R16": {
+        "frames": 50,
+        "states": 8,
+        "raw_inputs_verified": true
+      },
+      "R17": {
+        "frames": 50,
+        "states": 8,
+        "raw_inputs_verified": true
+      },
+      "R18": {
+        "frames": 50,
+        "states": 8,
+        "raw_inputs_verified": true
+      }
+    },
+    "python-ui-source002": {
+      "R15": {
+        "frames": 50,
+        "states": 8,
+        "raw_inputs_verified": true
+      },
+      "R16": {
+        "frames": 50,
+        "states": 8,
+        "raw_inputs_verified": true
+      },
+      "R17": {
+        "frames": 50,
+        "states": 8,
+        "raw_inputs_verified": true
+      },
+      "R18": {
+        "frames": 50,
+        "states": 8,
+        "raw_inputs_verified": true
+      }
+    },
+    "python-ui-installed001": {
+      "R15": {
+        "frames": 50,
+        "states": 8,
+        "raw_inputs_verified": true
+      },
+      "R16": {
+        "frames": 50,
+        "states": 8,
+        "raw_inputs_verified": true
+      },
+      "R17": {
+        "frames": 50,
+        "states": 8,
+        "raw_inputs_verified": true
+      },
+      "R18": {
+        "frames": 50,
+        "states": 8,
+        "raw_inputs_verified": true
+      }
+    }
+  },
+  "owned_policies": [
+    "Empty writes are read-free and do not adjust history/presentation",
+    "Off-current targets use the active untouched plane for final statistics",
+    "Preview presents the prepared final Apply result after restoring masks",
+    "Paired display-only edits support Undo/Redo; unchanged repeats are no-ops"
+  ],
+  "remaining": [
+    "Threshold/channel-display variance combinations",
+    "Bounds requiring UInt16 wraparound or nonfinite Float32 display endpoints",
+    "Upstream intermediate-preview timing if required",
+    "Remaining advanced rank/filter/palette policies and indexed TIFF/PNG",
+    "Wider editor/release and historical producer-fingerprint requalification"
+  ],
+  "diagnostics": [
+    "api001: copied getter dictionary and omitted workflow target in test fixtures; corrected without pixel changes",
+    "windows002/linux003: new native test missed detail namespace qualification; production code unchanged by correction",
+    "rank-cpp001: actual constant case exposed strict desktop equal-range admission; corrected ingestion/transport/detached rendering and requalified",
+    "source001: five pre-existing workspace-root assertions reproduced with prior p07d installed modules; adopted exact literal extension and explicit consumption",
+    "linux001: cache changed-input inventory omitted the catalog description; stopped before restoration and corrected inventory"
+  ],
+  "baseline_workspace_cases": 5,
+  "workspace_window_unchanged": true,
+  "family_counts": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  },
+  "release": "Source901 unchanged",
+  "net_scratch_bytes_cleaned": 1419485254
+}

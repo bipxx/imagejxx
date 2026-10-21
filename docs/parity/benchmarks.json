@@ -1,0 +1,66 @@
+{
+  "benchmarks": [
+    {
+      "id": "B.G042.rank-imagej.processing-editor.001",
+      "requirement_ids": [
+        "G042.rank-imagej.profile-method-radius",
+        "G042.rank-imagej.targets-roi",
+        "G042.rank-imagej.preview-publication",
+        "G042.rank-imagej.lifecycle-resources",
+        "G042.rank-imagej.record-replay-rebind",
+        "G042.rank-imagej.persistence-surfaces"
+      ],
+      "workload": "PLANNED ONLY. TCZYXS[2,3,4,128,192,1], canonical UInt8/UInt16/Float32. q=(37*t+29*c+11*z+3*y+5*x+(x*y)%17)%251; U8=q,U16=1000+257*q,F32=(q-125)/8.0. All four methods minimum/maximum/median/mean, radius2, profile imagej_154r/nearest-edge. Explicit T[0,2),C[0,3),Z[0,4),step1,Planes,InPlace; captured/preview TCZ[1,1,2]. Area x[16,176),y[12,116) minus hole x[64,96),y[40,72); original-source halos. Both shared ImGui launches,12cells/context,2warmups+10measured repetitions/endpoint; per-cell/state nearest-rank p95. Actual Preview input->current-view render; Apply input->native changed publication AND current-view render; Cancel input->acknowledged terminal ticket and complete reservation release, state-stratified. No kernel-return/READY/estimated-memory surrogate. Exact fixture/reset/endpoints/observer/load/caps are in the review proposal measurement protocol; source-only, not executed.",
+      "fixture_ids": [],
+      "hardware": "Required first host:12thGenIntelCorei7-12700K,12cores20threads,Windows11; actual OS build/RAM/power/5second CPU+memory/current foreground load/process tree must be observed immediately before measurement. No idle/loaded baseline claimed here.",
+      "build": "Required VS2022 x64 Release strictFP(/fp:strict), no fastmath; exact toolchain/flags/source+installed binaries pinned. Effective workers1,processing_memory_mb128 for this synthetic workload; product defaults unchanged. Capture actual settings and load.",
+      "metrics": [
+        {
+          "name": "preview_input_to_current_view_p95",
+          "unit": "ms",
+          "budget": 250,
+          "budget_status": "proposed"
+        },
+        {
+          "name": "apply_input_to_published_current_view_p95",
+          "unit": "ms",
+          "budget": 1500,
+          "budget_status": "proposed"
+        },
+        {
+          "name": "cancel_input_to_terminal_resource_release_p95_by_initial_state",
+          "unit": "ms",
+          "budget": 150,
+          "budget_status": "proposed"
+        },
+        {
+          "name": "product_peak_private_bytes_delta_from_preinput",
+          "unit": "bytes",
+          "budget": 268435456,
+          "budget_status": "proposed"
+        },
+        {
+          "name": "peak_declared_processing_reservation",
+          "unit": "bytes",
+          "budget": 134217728,
+          "budget_status": "proposed"
+        }
+      ],
+      "verification_run_ids": [],
+      "status": "open",
+      "remaining": [
+        "Planned workload and all metric budgets proposed, unratified and unmeasured; no processing/platform/performance pass.",
+        "Materialize/hash fixtures, concrete actual input/render/publication/cancel observer and load/toolchain/product pins before measurement; preserve all failed/ineligible trials.",
+        "Require genuine preview/render, changed publication and state-stratified cancellation release; missing nonterminal/run observations remain missing, never0ms.",
+        "Honor600s parent,300s/context,30s/cell,64MiB artifacts and10s owned cleanup; no limit enlargement or unowned process/global setting mutation.",
+        "Qualify separately per dtype/method/launch. FullG042, other workloads/types/radii/targets and other platforms remain required."
+      ]
+    }
+  ],
+  "enumeration_status": "partial",
+  "reference_id": "imagej-1.54r-fiji-latest-20261007-1617-win64",
+  "remaining": [
+    "Complete benchmarks enumeration and the owning certification gates."
+  ],
+  "schema_version": 1
+}

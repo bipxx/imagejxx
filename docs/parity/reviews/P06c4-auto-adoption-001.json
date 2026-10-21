@@ -1,0 +1,71 @@
+{
+  "schema": "imagejxx.auto-command-adoption",
+  "schema_version": 1,
+  "id": "P06c4-auto-adoption-001",
+  "state": "native_command_contract_adopted_controller_integration_still_required",
+  "scope": "Adopt the complete proposed scalar raw Auto command/API/wire and bounded replay/rebind contract, with explicit native policies below. This is an implementation contract inside the full Auto consumer, not a service-only product exit.",
+  "consumes": {
+    "path": "docs/parity/reviews/P06c4-auto-command-proposal-001.json",
+    "bytes": 43614,
+    "sha256": "2c7dd549c2f768e91140fffd85e6be7ce100225d0b20a209fcbe98b876f9ebb5"
+  },
+  "development_foundations": [
+    {
+      "path": "build/p06c4-001/callback-reentry-development-001.json",
+      "bytes": 9086,
+      "sha256": "28bc66bd99cf4e8d631105a0366a5a6b4c0b98abc1169b34de273f15c11dd95b"
+    },
+    {
+      "path": "build/p06c4-001/python-development-002.json",
+      "bytes": 8188,
+      "sha256": "2917173e803ba5a1bf1c230ed23c33e1d230cba1af646d32eac1fe8826ca6eec"
+    }
+  ],
+  "adopted": {
+    "api_and_wire": "Adopt proposed_public_cpp_api, exact record_wire, selection_codec_boundary, bounds_and_estimates and validation_replay_rebind_order from the pinned proposal, except the clarifications below. Preserve all required fresh resolver, strict full-record validation, no-read replay and full explicit rebind functions.",
+    "limits": "Adopt max_pixels16777216, max_working_bytes134217728, max_record_bytes16777216 and max_selection_vertices65536, positive caller-configurable caps with checked arithmetic; depth128 fixed across complete nested record. These bound this consumer, not all upstream formats or total process memory. Desktop lowers the working cap using existing processing_memory_mb.",
+    "unsigned16": "Required first-exit unsigned16_bits choices0/8/10/12/14/15/16, default0. Capture existing conversion_unsigned16_range, with no duplicate key. Constant unsigned all7: auto gives7..7; configured12 gives0..4095. Include changed-default/frozen/override/reopen evidence with the actual consumer.",
+    "configured_fallback_scope": "Adopt all stored C, in ascending order, for UInt16 ResetFallback with bits>0 in every recognized Composite/Color/Grayscale mode, including an ActiveChannel request. This preserves the source-backed CompositeImage all-LUT Reset scope. Other fallback requests follow requested active/CompositeAll mode scope.",
+    "raw_domain": "Raw canonical U8/U16/F32 and the reviewed quiet-NaN policy only. Native has no typed signed-density or intensity transfer-function state; never infer it from opaque metadata. Preserve raw samples and spatial/time/opaque metadata. Ordinary Java signed16 fixed-range Reset exceptions and calibrated-domain editing remain separately required G057/CD16/intensity-calibration work. No signed-calibrated parity claim.",
+    "canonical_native_state": "Adopt current recognized native logical state, consistent with prior channel-display adoption. CompositeAll applies getter-rounded endpoints only when captured mode==Composite, including singleton Composite. Color/Grayscale keep active-C requested endpoints except configured fixed-U16 fallback. H15 Color/Gray original repeated action additionally incurs Java setupNewImage, rounded active LUT and divisor0; retain that observed difference explicitly rather than reproduce hidden processor/setup cache state. Native changes neither mode nor C as a side effect of Auto and does not manufacture that setup reset.",
+    "selection_and_empty": "ActiveSelection captures full validated active geometry/attributes; known nonarea uses whole XY. WholePlane is explicit and retains Selection dependency. Empty/no-finite area refuses, including configured U16, without display/record/cycle publication. No Java sentinel or fallback substitution.",
+    "recording": "One normalized native Auto record per successful admitted Auto when recording is enabled, including equal and fallback effects. Replay applies the resolved nested Set effect, never ImageJ Enhance text or a histogram; it neither restores nor advances a live cycle. Retain original record on strict replay; full explicit rebind recomputes from complete new request."
+  },
+  "implementation_ownership": {
+    "auto_record_reuse": [
+      "include/imagejxx/auto_contrast.hpp",
+      "src/native/auto_contrast.cpp"
+    ],
+    "p06e_api_sdk": [
+      "tests/native/test_auto_contrast.cpp"
+    ],
+    "root": [
+      "src/native/channel_display_command_internal.hpp",
+      "narrow validated existing-decoder descriptor implementation in src/native/channel_display_command.cpp",
+      "CMake/binding registration/reexports",
+      "Application typed Auto job/cycle/membership admission and shared Window/ImGui integration",
+      "all builds/runtime/installed/evidence/manifest qualification"
+    ]
+  },
+  "controller_required_not_yet_implemented": {
+    "owner": "Application owns transient cycle and typed Auto result lifecycle; Window consumes it. No new Document revision or serialized controller/schema field.",
+    "reset_key": "Fresh submission derives current divisor from exact owner, activation generation (away/back invalidates even when final ID equals original), TCZ and Pixels/Metadata revisions. Selection and numeric Display-only mutations preserve divisor; explicit public Update/Reset and reopened/new controller reset0. Mode/range/LUT property edits do not implicitly emulate Java hidden setup state.",
+    "admission": "Before publication require exact Application membership/active owner/activation generation, captured transient cycle epoch/value and all four captured Document revisions under one atomic arbitration lane. Job.complete arbitrates cancel-versus-publication; reserve every throwing UI record/status allocation first. No callbacks between final checks, display mutation, noexcept cycle advance and staged record append.",
+    "epochs": "Use checked generations or opaque retained identities; no wrapping equality or serialized pointer values. Allocate replacement generation/cycle storage before mutation, preserving strong exception safety and an allocation-free final publication lane.",
+    "cleanup": "Typed detached result cell must release READY/off-thread-canceled resources, retain reservations honestly across escaped result aliases and clean terminal failures. Reuse scheduler tagged admission/cancel/cleanup rather than fabricate pixel PreparedOperation.",
+    "remaining_contract": "Root must freeze exact typed job/Application/binding API and reset/publication tests before that integration. This adoption is final for the command layer only."
+  },
+  "required_gates": "Independent literal thresholds/cycle/fallback/getter/ROI/record mutation/resource/cancel/reentry native checks; thin Python and core-only installed SDK; actual Auto/Shift/repeated-click/cancel/owner/navigation/replay/rebind/SaveOpen/settings/recording in both ImGui launches; affected installed regressions and final source/package/commercial checks. Retain whole broader requirements.",
+  "preservation": "All99 families and eligible pinned Fiji remain required. No original Java/classes/JDK/macros/LUT assets, pending Fiji material or NC/research-only/unlicensed material incorporated. Manifests and commercial decisions unchanged.",
+  "acceptance": {
+    "command_contract_adopted": true,
+    "controller_contract_final": false,
+    "Auto_implemented": false,
+    "product_verified": false,
+    "whole_family": false,
+    "commercial_eligibility": false,
+    "platform": false,
+    "release": false,
+    "full_goal": false
+  }
+}

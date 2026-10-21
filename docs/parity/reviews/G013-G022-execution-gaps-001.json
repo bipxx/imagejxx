@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "id": "G013-G022.execution-gaps.001",
+  "state": "root_reviewed_bounded_source_discovery_only",
+  "acceptance": false,
+  "scope": "Eight dependency/behavior findings within G013-G022; not a complete option inventory and not a third prepared product candidate",
+  "entry": {
+    "path": "docs/parity/reviews/G015-G022-positioned-xy-entry-001.json",
+    "bytes": 29478,
+    "sha256": "cc2108555883dfdfd3b9d1c93d5deeafb0a053a46b0b3dc0f93450dd194a31ca"
+  },
+  "inventory": {
+    "path": "docs/parity/inventory.json",
+    "bytes": 8971222,
+    "sha256": "25faee75b1879f067c4d1728f93e882b27bf407b6484252a87287b8f812c7770"
+  },
+  "sources": [
+    {
+      "path": "include/imagejxx/selection_edit.hpp",
+      "bytes": 2695,
+      "sha256": "3e5382e3c0de1a33c8821f022ec2e93b269b48064f685966647196f7afa1b1fd"
+    },
+    {
+      "path": "src/desktop/document.cpp",
+      "bytes": 66607,
+      "sha256": "9a264d74590ede976afaa93eda00fb7c07e504f49169a5892f5951bb26938ce2"
+    },
+    {
+      "path": "src/desktop/orthogonal.cpp",
+      "bytes": 38045,
+      "sha256": "dd8655b1190b2e7b90bbd8ab300e25d26b0aef026eedd06b0e4bece886f1849c"
+    },
+    {
+      "path": "src/desktop/selection_panel.cpp",
+      "bytes": 13260,
+      "sha256": "024a1c94be92de24a72836cafcb528e9ef201238be042bd2ace2256d1a30f0bf"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 432962,
+      "sha256": "b558b864c2a20f95bc0ad9935bb1b4a2c1b9c7e393cb0682f7c4b7fdddf9936f"
+    },
+    {
+      "path": "src/native/application.cpp",
+      "bytes": 16925,
+      "sha256": "9ccf1b9acad4621f2965841fa525181169f6ab214dd9d4652f67c14a4ba323d2"
+    },
+    {
+      "path": "src/native/document.cpp",
+      "bytes": 44605,
+      "sha256": "1bc5b98060c38a9e45ae4659fd5001112b1430de6184a89f42a6fe3ff73d7e14"
+    },
+    {
+      "path": "src/native/manual_threshold.cpp",
+      "bytes": 13015,
+      "sha256": "8ea2f6e95623d3a9d362ee75d7aaf67b9b32ef2969a0a7c16411bc1b00629825"
+    },
+    {
+      "path": "src/native/selection_edit.cpp",
+      "bytes": 21317,
+      "sha256": "583f479108cbf5258c9db1356a4c94e2589a7ffa5b45f7b22d4dc562130d4267"
+    }
+  ],
+  "findings": [
+    {
+      "id": "saved-row-atomic-publication",
+      "sources": [
+        "src/native/document.cpp",
+        "src/native/application.cpp"
+      ],
+      "remaining": "Add atomic saved-row activation/Data/TCZ/complete-row validation before geometry publication; current set_rois preserves global selections.",
+      "acceptance_workflow": "One changed captured row/one undo; stale row/navigation/away-back activation, cancellation and no-op must leave owner/history/workflow unchanged."
+    },
+    {
+      "id": "scientific-saved-row-ui",
+      "sources": [
+        "src/desktop/selection_panel.cpp",
+        "src/desktop/window.cpp"
+      ],
+      "remaining": "Bind existing numeric panel and handles to an explicit saved row; ordinary and linked scientific XY paths still guard or edit the global selection.",
+      "acceptance_workflow": "Rectangle/rotated box/polygon/holed-mask edit through both launchers, preserving global current/previous selections and cameras."
+    },
+    {
+      "id": "bounded-selection-preparation",
+      "sources": [
+        "src/native/selection_edit.cpp",
+        "include/imagejxx/selection_edit.hpp"
+      ],
+      "remaining": "Reuse existing mask transform kernels with controlled cancellation and pre-copy working limits before UI adapter.",
+      "acceptance_workflow": "Over-limit refusal and cancellation during mask work leave owner/history/workflow unchanged."
+    },
+    {
+      "id": "full-tcz-roi-workflow",
+      "sources": [
+        "src/desktop/document.cpp",
+        "src/desktop/window.cpp"
+      ],
+      "remaining": "Visibility already recognizes independent optional TCZ including zero; manager Add/Select still need complete create/store/reselect/edit position workflow.",
+      "acceptance_workflow": "Wildcard/zero/mixed TCZ, position controls and safe row/reorder/delete/undo/reopen invalidation and stack remapping."
+    },
+    {
+      "id": "manager-operations",
+      "sources": [
+        "src/desktop/window.cpp"
+      ],
+      "remaining": "Reuse existing Ctrl/Shift multi-select, Select All and four area Booleans; complete groups/sort/interpolation/scientific cross-position measurement.",
+      "acceptance_workflow": "Exact selected-row membership, holes/disconnected regions and measurement TCZ remain explicit."
+    },
+    {
+      "id": "external-roi-interchange",
+      "sources": [
+        "src/desktop/window.cpp"
+      ],
+      "remaining": "Current ROI import/export is owned JSON v1; binary ImageJ .roi, ROI ZIP and coordinate interchange remain separate native codecs and UI consumers.",
+      "acceptance_workflow": "External file to positioned styled row, edit, export/reimport; preserve supported geometry/holes/names/attributes/positions and refuse unsupported variants explicitly."
+    },
+    {
+      "id": "transforms-and-conversions",
+      "sources": [
+        "include/imagejxx/selection_edit.hpp",
+        "src/native/manual_threshold.cpp"
+      ],
+      "remaining": "Move/resize/rotate/vertex and scalar threshold-to-selection already exist; complete flip/interpolation/fitting/hull/bounds and general mask/area/line/band/image conversions by exact contracts.",
+      "acceptance_workflow": "Freeze individual geometry/options and qualify exact native/API/shared-UI effects before thin adapters."
+    },
+    {
+      "id": "tool-and-calibrated-input-coverage",
+      "sources": [
+        "src/desktop/selection_panel.cpp",
+        "src/desktop/orthogonal.cpp"
+      ],
+      "remaining": "Reuse stroke/fill/zero-stroke controls and existing Boolean/style fixtures; missing bulk coordinates, additional tool options and calibrated raster/reference/input cases stay visible.",
+      "acceptance_workflow": "Collect only missing discriminators and real input. XZ/YZ ROI projection/editing stay outside first XY prerequisite chain but remain required."
+    }
+  ],
+  "delivery_order": [
+    "After settled rank functional checkpoint: positioned saved-area scientific XY with atomic activation/parser/cancellation prerequisites.",
+    "Then configurable shortcuts; only these two product successors are prepared.",
+    "Full TCZ manager workflows/ROI interchange/transforms retain later bounded exits under the full plan."
+  ],
+  "preservation": "All G013-G022 required_work and all99 families remain unchanged; existing implementations are reused rather than counted as missing.",
+  "formal_manifest_edits": false
+}

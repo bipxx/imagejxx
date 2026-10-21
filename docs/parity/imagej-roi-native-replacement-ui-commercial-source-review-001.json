@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_owned_increment",
+  "review_type": "Root authorship/integration attestation, not independent legal review",
+  "license": "Existing project MIT for original shared Dear ImGui replacement form, integration and bounded input regressions",
+  "new_dependencies": [],
+  "restricted_features_added": false,
+  "imported_third_party_product_code": [],
+  "sources": [
+    {
+      "logical_path": "CMakeLists.txt",
+      "before": {
+        "path": "build/p06q-roi-replacement-ui001/before001/CMakeLists.txt",
+        "bytes": 57304,
+        "sha256": "57f70a996629ee46fda6501057c3aab96caa796527fa24b9d458110985a3efd7"
+      },
+      "after": {
+        "path": "build/p06q-roi-replacement-ui001/held001/after/CMakeLists.txt",
+        "bytes": 57408,
+        "sha256": "cd6bdefd0f3a200516adcca88559c1e30b8cbca32d0cbfebe47038ab9c7efbc5"
+      },
+      "current": {
+        "path": "CMakeLists.txt",
+        "bytes": 57408,
+        "sha256": "cd6bdefd0f3a200516adcca88559c1e30b8cbca32d0cbfebe47038ab9c7efbc5"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_panel.cpp",
+      "before": {
+        "path": "build/p06q-roi-replacement-ui001/before001/src/desktop/roi_import_panel.cpp",
+        "bytes": 27404,
+        "sha256": "e65a32ce3af19e16fc98c1aafa091cb08f1a49d5dc484ac0ae301b2ce38bff74"
+      },
+      "after": {
+        "path": "build/p06q-roi-replacement-ui001/held001/after/src/desktop/roi_import_panel.cpp",
+        "bytes": 30839,
+        "sha256": "83eb45e88ad36c3ac5cf94e62c2fd38d27f1d631a108a4ac9c6755f6c8c217fe"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_panel.cpp",
+        "bytes": 30839,
+        "sha256": "83eb45e88ad36c3ac5cf94e62c2fd38d27f1d631a108a4ac9c6755f6c8c217fe"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_replacement_editor.hpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-replacement-ui001/held001/after/src/desktop/roi_import_replacement_editor.hpp",
+        "bytes": 1467,
+        "sha256": "56fcfa648cfe76537cf6a4900e15a0fd79c331e1100c3eb6e094d27a55500d43"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_replacement_editor.hpp",
+        "bytes": 1467,
+        "sha256": "56fcfa648cfe76537cf6a4900e15a0fd79c331e1100c3eb6e094d27a55500d43"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_replacement_editor.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-replacement-ui001/held001/after/src/desktop/roi_import_replacement_editor.cpp",
+        "bytes": 13651,
+        "sha256": "6a1cf467cfbbf394b960fe13e0c75a90599f792a2e5f4ed87357d31a09946a80"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_replacement_editor.cpp",
+        "bytes": 13651,
+        "sha256": "6a1cf467cfbbf394b960fe13e0c75a90599f792a2e5f4ed87357d31a09946a80"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_replacement_ui_probe.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-replacement-ui001/held001/after/src/desktop/roi_import_replacement_ui_probe.cpp",
+        "bytes": 11334,
+        "sha256": "7217a4a0c4f6224993ab580a47c32c6ef973ec71cce38ed1e07af15b75112d9f"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_replacement_ui_probe.cpp",
+        "bytes": 11334,
+        "sha256": "7217a4a0c4f6224993ab580a47c32c6ef973ec71cce38ed1e07af15b75112d9f"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_ui_probe.hpp",
+      "before": {
+        "path": "build/p06q-roi-replacement-ui001/before001/src/desktop/roi_import_ui_probe.hpp",
+        "bytes": 740,
+        "sha256": "30b908435b071bf24fa56f9754d820601abd1345fa3d6331d404577a6d1dc8b0"
+      },
+      "after": {
+        "path": "build/p06q-roi-replacement-ui001/held001/after/src/desktop/roi_import_ui_probe.hpp",
+        "bytes": 878,
+        "sha256": "a9e81f796bee29b4591b0fa4a7e21653da55cd2de74d91f8c556b801130148c6"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_ui_probe.hpp",
+        "bytes": 878,
+        "sha256": "a9e81f796bee29b4591b0fa4a7e21653da55cd2de74d91f8c556b801130148c6"
+      }
+    },
+    {
+      "logical_path": "src/desktop/main.cpp",
+      "before": {
+        "path": "build/p06q-roi-replacement-ui001/before001/src/desktop/main.cpp",
+        "bytes": 35408,
+        "sha256": "5dbd3dd477d736d8a04d9befa9ac61b8df3d0c5144807d278fff71a27712f771"
+      },
+      "after": {
+        "path": "build/p06q-roi-replacement-ui001/held001/after/src/desktop/main.cpp",
+        "bytes": 35885,
+        "sha256": "00da707aeebb316eb2a2055c148e38038ad921827a25fca843476c7950fb51e8"
+      },
+      "current": {
+        "path": "src/desktop/main.cpp",
+        "bytes": 35885,
+        "sha256": "00da707aeebb316eb2a2055c148e38038ad921827a25fca843476c7950fb51e8"
+      }
+    },
+    {
+      "logical_path": "src/desktop/python.cpp",
+      "before": {
+        "path": "build/p06q-roi-replacement-ui001/before001/src/desktop/python.cpp",
+        "bytes": 40222,
+        "sha256": "f14f4c0ef09e68c0b88e4daec8b0b400716b67797249d03b74f9c18a180311ae"
+      },
+      "after": {
+        "path": "build/p06q-roi-replacement-ui001/held001/after/src/desktop/python.cpp",
+        "bytes": 40443,
+        "sha256": "b217270de0c310eeb9fa4d03478c6a17eb69be771d8dbbc923de0d9fa511d720"
+      },
+      "current": {
+        "path": "src/desktop/python.cpp",
+        "bytes": 40443,
+        "sha256": "b217270de0c310eeb9fa4d03478c6a17eb69be771d8dbbc923de0d9fa511d720"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_imagej_roi_import_replacement_ui.py",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-replacement-ui001/held001/after/tests/python/test_imagej_roi_import_replacement_ui.py",
+        "bytes": 5718,
+        "sha256": "37d0e9d226241c501febb9a76832a5b53fce9ab83db31702387a92668f127c7e"
+      },
+      "current": {
+        "path": "tests/python/test_imagej_roi_import_replacement_ui.py",
+        "bytes": 5718,
+        "sha256": "37d0e9d226241c501febb9a76832a5b53fce9ab83db31702387a92668f127c7e"
+      }
+    }
+  ]
+}

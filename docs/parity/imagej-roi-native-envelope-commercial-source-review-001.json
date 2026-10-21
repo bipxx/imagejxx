@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_owned_increment",
+  "review_type": "Root authorship/integration attestation, not independent legal review",
+  "license": "Existing project MIT for original native/test code; fixture bytes are owned input/output observations",
+  "specification_sources": [
+    "https://raw.githubusercontent.com/imagej/ImageJ/62db90a269cccc1ac79f658e4602043214ed055b/ij/io/RoiEncoder.java",
+    "https://raw.githubusercontent.com/imagej/ImageJ/62db90a269cccc1ac79f658e4602043214ed055b/ij/io/RoiDecoder.java"
+  ],
+  "new_dependencies": [],
+  "restricted_features_added": false,
+  "imported_third_party_product_code": [],
+  "sources": [
+    {
+      "logical_path": "CMakeLists.txt",
+      "before": {
+        "path": "build/p06q-roi-native-envelope001/held001/before/CMakeLists.txt",
+        "bytes": 56808,
+        "sha256": "f9ddcfe6b3c0d1bba589b2aaf1140013c84ee5cf665c0eb4279a7af6dcc718c8"
+      },
+      "after": {
+        "path": "build/p06q-roi-native-envelope001/held001/after/CMakeLists.txt",
+        "bytes": 56853,
+        "sha256": "934057c8f0867499b318142e62ba0ea2a0927fd3f3f17e782f494481e9893fda"
+      },
+      "current": {
+        "path": "CMakeLists.txt",
+        "bytes": 56853,
+        "sha256": "934057c8f0867499b318142e62ba0ea2a0927fd3f3f17e782f494481e9893fda"
+      }
+    },
+    {
+      "logical_path": "include/imagejxx/imagej_roi_mapping.hpp",
+      "before": {
+        "path": "build/p06q-roi-native-envelope001/held001/before/include/imagejxx/imagej_roi_mapping.hpp",
+        "bytes": 3522,
+        "sha256": "8cd3a2724ce4441f3ff20e7f304a4fa7adcdc7bbd65061e1dbaee36498dab685"
+      },
+      "after": {
+        "path": "build/p06q-roi-native-envelope001/held001/after/include/imagejxx/imagej_roi_mapping.hpp",
+        "bytes": 4291,
+        "sha256": "57bc57d6d903945c212812b065bb00e5ae1df17795590a33e16a9dc7d4f184c4"
+      },
+      "current": {
+        "path": "include/imagejxx/imagej_roi_mapping.hpp",
+        "bytes": 4291,
+        "sha256": "57bc57d6d903945c212812b065bb00e5ae1df17795590a33e16a9dc7d4f184c4"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_roi_envelope.cpp",
+      "before": {
+        "path": "build/p06q-roi-native-envelope001/held001/before/src/native/imagej_roi_envelope.cpp",
+        "bytes": 6343,
+        "sha256": "6240217187d56df322e9850c632c22ac0e3503b143f1d54a94ad5f0731784f70"
+      },
+      "after": {
+        "path": "build/p06q-roi-native-envelope001/held001/after/src/native/imagej_roi_envelope.cpp",
+        "bytes": 6517,
+        "sha256": "f8d659e2c4dee6881454f739c29e8936726247fbfdb98bde6a755af6da3c7375"
+      },
+      "current": {
+        "path": "src/native/imagej_roi_envelope.cpp",
+        "bytes": 6517,
+        "sha256": "f8d659e2c4dee6881454f739c29e8936726247fbfdb98bde6a755af6da3c7375"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_roi_native_envelope.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-native-envelope001/held001/after/src/native/imagej_roi_native_envelope.cpp",
+        "bytes": 8159,
+        "sha256": "81e1b2b41f1ed180ff203f6128ef2d6ee847585a5bf95b702e2cae4262adb846"
+      },
+      "current": {
+        "path": "src/native/imagej_roi_native_envelope.cpp",
+        "bytes": 8159,
+        "sha256": "81e1b2b41f1ed180ff203f6128ef2d6ee847585a5bf95b702e2cae4262adb846"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_roi_bindings.cpp",
+      "before": {
+        "path": "build/p06q-roi-native-envelope001/held001/before/src/native/imagej_roi_bindings.cpp",
+        "bytes": 22906,
+        "sha256": "a413f434cbf6cefe83bea79defc202a0c4efe2c70e9e9d93e926dfa39b3419ce"
+      },
+      "after": {
+        "path": "build/p06q-roi-native-envelope001/held001/after/src/native/imagej_roi_bindings.cpp",
+        "bytes": 24144,
+        "sha256": "fd517bb4aefeff8d1ac6831e9d54b4f47859490a537c8ea9265dd0d47bde8079"
+      },
+      "current": {
+        "path": "src/native/imagej_roi_bindings.cpp",
+        "bytes": 24144,
+        "sha256": "fd517bb4aefeff8d1ac6831e9d54b4f47859490a537c8ea9265dd0d47bde8079"
+      }
+    },
+    {
+      "logical_path": "src/imagejxx/__init__.py",
+      "before": {
+        "path": "build/p06q-roi-native-envelope001/held001/before/src/imagejxx/__init__.py",
+        "bytes": 55482,
+        "sha256": "2e2d026324395b8af40942193a87c0b4b8114775bcf0c82f1a91fd8f7b26cefa"
+      },
+      "after": {
+        "path": "build/p06q-roi-native-envelope001/held001/after/src/imagejxx/__init__.py",
+        "bytes": 55636,
+        "sha256": "3041ba7636b412cc9d220bd5ed4fdc2d8f3d381a49f2eacfefba57296ba4d7db"
+      },
+      "current": {
+        "path": "src/imagejxx/__init__.py",
+        "bytes": 55636,
+        "sha256": "3041ba7636b412cc9d220bd5ed4fdc2d8f3d381a49f2eacfefba57296ba4d7db"
+      }
+    },
+    {
+      "logical_path": "tests/native/test_imagej_roi.cpp",
+      "before": {
+        "path": "build/p06q-roi-native-envelope001/held001/before/tests/native/test_imagej_roi.cpp",
+        "bytes": 14104,
+        "sha256": "ca6137a49fd6522054a228d07c1dcf5ce8bebbd1e9321a9051feb473f54d22e2"
+      },
+      "after": {
+        "path": "build/p06q-roi-native-envelope001/held001/after/tests/native/test_imagej_roi.cpp",
+        "bytes": 14726,
+        "sha256": "cf63f6eadc2e671af74605a3d405a0007524510eced62d882161d724273b17b7"
+      },
+      "current": {
+        "path": "tests/native/test_imagej_roi.cpp",
+        "bytes": 14726,
+        "sha256": "cf63f6eadc2e671af74605a3d405a0007524510eced62d882161d724273b17b7"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_imagej_roi_native_envelope.py",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-native-envelope001/held001/after/tests/python/test_imagej_roi_native_envelope.py",
+        "bytes": 9246,
+        "sha256": "67b9820196ed58f681c98883aa515917b7f149406c7f0a7dd22a2a6518af432f"
+      },
+      "current": {
+        "path": "tests/python/test_imagej_roi_native_envelope.py",
+        "bytes": 9246,
+        "sha256": "67b9820196ed58f681c98883aa515917b7f149406c7f0a7dd22a2a6518af432f"
+      }
+    },
+    {
+      "logical_path": "tests/fixtures/imagej-roi-native-envelope-imagej154r.json",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-native-envelope001/held001/after/tests/fixtures/imagej-roi-native-envelope-imagej154r.json",
+        "bytes": 749045,
+        "sha256": "8c896a5744d0eebcf58f54c125930d0037105619e9f96a8c249970889fe7cffa"
+      },
+      "current": {
+        "path": "tests/fixtures/imagej-roi-native-envelope-imagej154r.json",
+        "bytes": 749045,
+        "sha256": "8c896a5744d0eebcf58f54c125930d0037105619e9f96a8c249970889fe7cffa"
+      }
+    }
+  ]
+}

@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_owned_increment",
+  "review_type": "Root authorship/integration attestation, not independent legal review",
+  "license": "Existing project MIT for original import limits editor, immutable wire sharing, maximum-payload probes and tests",
+  "new_dependencies": [],
+  "restricted_features_added": false,
+  "imported_third_party_product_code": [],
+  "new_fonts": [],
+  "sources": [
+    {
+      "logical_path": "CMakeLists.txt",
+      "before": {
+        "path": "build/p06q-import-limits-ui001/before001/CMakeLists.txt",
+        "bytes": 59830,
+        "sha256": "e0a96655c5b699ec645e40858b9a2b73594425d6087f93a1ff2990679bb5e1bf"
+      },
+      "after": {
+        "path": "build/p06q-import-limits-ui001/held001/after/CMakeLists.txt",
+        "bytes": 59917,
+        "sha256": "3a67cc057cfb08cb06017dd81359387e10195a026213baae46518cc42754fc11"
+      },
+      "current": {
+        "path": "CMakeLists.txt",
+        "bytes": 59917,
+        "sha256": "3a67cc057cfb08cb06017dd81359387e10195a026213baae46518cc42754fc11"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_panel.cpp",
+      "before": {
+        "path": "build/p06q-import-limits-ui001/before001/src/desktop/roi_import_panel.cpp",
+        "bytes": 45407,
+        "sha256": "9e416ee6ad438a992100dfdfbc57949ade2aa2c0c8fdaf61b0511e4d3e7c0069"
+      },
+      "after": {
+        "path": "build/p06q-import-limits-ui001/held001/after/src/desktop/roi_import_panel.cpp",
+        "bytes": 48569,
+        "sha256": "559e774a124b4554f4012ee0ba2cc3dec926823e451c0690be2bf69e22928e76"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_panel.cpp",
+        "bytes": 48569,
+        "sha256": "559e774a124b4554f4012ee0ba2cc3dec926823e451c0690be2bf69e22928e76"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_ui_probe.hpp",
+      "before": {
+        "path": "build/p06q-import-limits-ui001/before001/src/desktop/roi_import_ui_probe.hpp",
+        "bytes": 1369,
+        "sha256": "c66e73a8fad46a73189666f1906add1287e138d9e90d9e09b8129cbf5c9f3abf"
+      },
+      "after": {
+        "path": "build/p06q-import-limits-ui001/held001/after/src/desktop/roi_import_ui_probe.hpp",
+        "bytes": 1448,
+        "sha256": "1422ff4eee2144736672cc54bda81c62f884706253405f4874ef112273b8568b"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_ui_probe.hpp",
+        "bytes": 1448,
+        "sha256": "1422ff4eee2144736672cc54bda81c62f884706253405f4874ef112273b8568b"
+      }
+    },
+    {
+      "logical_path": "src/desktop/main.cpp",
+      "before": {
+        "path": "build/p06q-import-limits-ui001/before001/src/desktop/main.cpp",
+        "bytes": 38130,
+        "sha256": "462ad5b1d546b0f74a72363b805baa213361b60d4968f84032c39a91b69609b2"
+      },
+      "after": {
+        "path": "build/p06q-import-limits-ui001/held001/after/src/desktop/main.cpp",
+        "bytes": 38580,
+        "sha256": "65d7ead0388c6d1ef100fa60c6a97f86d0826d8ee2bff53222b06ed238c1a581"
+      },
+      "current": {
+        "path": "src/desktop/main.cpp",
+        "bytes": 38580,
+        "sha256": "65d7ead0388c6d1ef100fa60c6a97f86d0826d8ee2bff53222b06ed238c1a581"
+      }
+    },
+    {
+      "logical_path": "src/desktop/python.cpp",
+      "before": {
+        "path": "build/p06q-import-limits-ui001/before001/src/desktop/python.cpp",
+        "bytes": 41470,
+        "sha256": "7429ab1599daa93142a943695a78232245e2a93f9f223e2578fba6efc24425e4"
+      },
+      "after": {
+        "path": "build/p06q-import-limits-ui001/held001/after/src/desktop/python.cpp",
+        "bytes": 41681,
+        "sha256": "0054798606d29ed3023b329f5953ba299717638cea2a7179ecb8540303a302a5"
+      },
+      "current": {
+        "path": "src/desktop/python.cpp",
+        "bytes": 41681,
+        "sha256": "0054798606d29ed3023b329f5953ba299717638cea2a7179ecb8540303a302a5"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_limits.hpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-import-limits-ui001/held001/after/src/desktop/roi_import_limits.hpp",
+        "bytes": 691,
+        "sha256": "faf7e072cbbfeeaf3d5c6ffc8afd7207895ca126cb9827efd277ada62fc195f2"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_limits.hpp",
+        "bytes": 691,
+        "sha256": "faf7e072cbbfeeaf3d5c6ffc8afd7207895ca126cb9827efd277ada62fc195f2"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_limits.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-import-limits-ui001/held001/after/src/desktop/roi_import_limits.cpp",
+        "bytes": 7147,
+        "sha256": "b2c79350db3ace5e19a6c6c50c59515402a4b0974a007fff726e9b2f9a461314"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_limits.cpp",
+        "bytes": 7147,
+        "sha256": "b2c79350db3ace5e19a6c6c50c59515402a4b0974a007fff726e9b2f9a461314"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_limits_ui_probe.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-import-limits-ui001/held001/after/src/desktop/roi_import_limits_ui_probe.cpp",
+        "bytes": 17525,
+        "sha256": "0ff4ee2d83389ad4bd87b8ab55c196ed262bede578e0fbe6ccb210dba94f70f0"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_limits_ui_probe.cpp",
+        "bytes": 17525,
+        "sha256": "0ff4ee2d83389ad4bd87b8ab55c196ed262bede578e0fbe6ccb210dba94f70f0"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_imagej_import_limits_ui.py",
+      "before": null,
+      "after": {
+        "path": "build/p06q-import-limits-ui001/held001/after/tests/python/test_imagej_import_limits_ui.py",
+        "bytes": 4760,
+        "sha256": "cef5586c27d836998e264def2ceb64a808149e10c83a2724c36a9d764d843f84"
+      },
+      "current": {
+        "path": "tests/python/test_imagej_import_limits_ui.py",
+        "bytes": 4760,
+        "sha256": "cef5586c27d836998e264def2ceb64a808149e10c83a2724c36a9d764d843f84"
+      }
+    }
+  ],
+  "scope": "Explicit per-import limits and declared maximum 1Mi-pixel embedded annotation ROI/ZIP paths only; no full family/release qualification"
+}

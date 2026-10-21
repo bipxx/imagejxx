@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "state": "scoped_indexed_workflow_verified",
+  "scope": "Current-stage indexed palette expansion, typed C++/Python APIs, native programs/session Batch and shared ImGui workflow authoring. No standalone indexed menu or indexed file-format/filter-family certification.",
+  "new_python_cases": 47,
+  "source_cases": 1673,
+  "installed_cases": 1673,
+  "native_windows_suites": 23,
+  "linux_native_suites": 7,
+  "evidence": [
+    {
+      "path": "build/p06zz-indexed-workflow001/windows002/run001.json",
+      "bytes": 9745,
+      "sha256": "cb967952d0ab77d4ad486a43470dea720b992f566991e9063142e9d003ebaa73"
+    },
+    {
+      "path": "build/p06zz-indexed-workflow001/focused002/run001.json",
+      "bytes": 1396,
+      "sha256": "7d06372781fed847a0394c457421f92afdd3b542caa8e6ae1ef7ec35d9b99b76"
+    },
+    {
+      "path": "build/p06zz-indexed-workflow001/source001/run001.json",
+      "bytes": 1405,
+      "sha256": "e8eca9b550aee5d738b31bb24019d36643f9c21957d28d4b8c896656cf23b04e"
+    },
+    {
+      "path": "build/p06zz-indexed-workflow001/install002/run001.json",
+      "bytes": 7285,
+      "sha256": "2d027c2754b4de15af844ee9a7f257e5aee7ccbe935bf7961ce7cc83e8c34121"
+    },
+    {
+      "path": "build/p06zz-indexed-workflow001/sdk001/run001.json",
+      "bytes": 4194,
+      "sha256": "f188808bfb13b4d2f06491299efb74fe8c1f516708f742a884a51f7c00bedaa1"
+    },
+    {
+      "path": "build/p06zz-indexed-workflow001/installed001/run001.json",
+      "bytes": 1722,
+      "sha256": "6065cc16e0cf1837c2f373be4624b639becf627d44e3680a0ded5f31a298a831"
+    },
+    {
+      "path": "build/p06zz-indexed-workflow001/rgb-cpp002/run001.json",
+      "bytes": 1257,
+      "sha256": "5ace5d9bcbee2224240ee0e0c5171a10888f6fab7c876bd7a3d61aed997109e8"
+    },
+    {
+      "path": "build/p06zz-indexed-workflow001/rgb-installed-cpp001/run001.json",
+      "bytes": 1334,
+      "sha256": "0518860d6086a9c74e871f271f1ba6ae06e07c4b05d2dfe8d11d15a54d8b7d54"
+    },
+    {
+      "path": "build/p06zz-indexed-workflow001/linux002/run001.json",
+      "bytes": 867,
+      "sha256": "d16eb754efbfa43e1e3ce3b9528ea563cac290597f15d006b949b6be9b801ab5"
+    },
+    {
+      "path": "build/p06zz-indexed-workflow001/windows002/native.xml",
+      "bytes": 6814,
+      "sha256": "90bee0c38eccfb0e746866b69d8a76d07aca6a6a6864d8bf0e39a13e9f215635"
+    },
+    {
+      "path": "build/p06zz-indexed-workflow001/linux002/native.xml",
+      "bytes": 1733,
+      "sha256": "0e08a99beb3bf3906eedd901d3c967985a22f80829fc354541e3074545496419"
+    },
+    {
+      "path": "build/p06zz-indexed-workflow001/source001/pytest.xml",
+      "bytes": 248134,
+      "sha256": "f7ce591304b3e2c44fa2effd19d99b8a99919906d637a3d484c6c7386096bb6f"
+    },
+    {
+      "path": "build/p06zz-indexed-workflow001/installed001/pytest.xml",
+      "bytes": 248134,
+      "sha256": "7b529ad17763c6d1f0b9c387a1f494eacbe2590006b3b51b36af8b24687b9608"
+    },
+    {
+      "path": "build/p06zz-indexed-workflow001/windows002/source-freeze001.json",
+      "bytes": 152847,
+      "sha256": "fb2380fce0ccde57b2b8786e45c5808b7b43ba075bd4c44b9ff0fe45d51eabb4"
+    },
+    {
+      "path": "build/p06zz-indexed-workflow001/linux001/source-freeze001.json",
+      "bytes": 39232,
+      "sha256": "74e716b6d989df00be4a336bd9b91e6670c94cf1f389fd26044d50383e08bd34"
+    },
+    {
+      "path": "build/p06zz-indexed-workflow001/rgb-cpp002/capture001/case.json",
+      "bytes": 42257875,
+      "sha256": "46249b7178a8d0f09d07b142cd615d5df688b8a425080de427e4d890d992e3de"
+    },
+    {
+      "path": "build/p06zz-indexed-workflow001/rgb-installed-cpp001/capture001/case.json",
+      "bytes": 42255965,
+      "sha256": "c9c778b96665bdabb75e6862c90cc08be9b571e85164bbc784cb9205ad85324f"
+    },
+    {
+      "path": "build/p06zz-indexed-workflow001/policy001.json",
+      "bytes": 376,
+      "sha256": "1cc98baf390f5207f0d6901a71ed7a79e1980c0c44df4ec295d59964a70340fd"
+    },
+    {
+      "path": "build/p06zz-indexed-workflow001/linux002/ext4-scratch001.json",
+      "bytes": 1788,
+      "sha256": "a2bc3c4fbe05597905653e593304a0841b7729088a7c637aca7f7ad530d56278"
+    },
+    {
+      "path": "build/p06zz-indexed-workflow001/linux002/ext4-scratch001.zip",
+      "bytes": 6406,
+      "sha256": "e5f9fc9cd14d7012e7108600aab494a6b41b75f52dd63917836e15d2af8d45f3"
+    },
+    {
+      "path": "build/p06zz-indexed-workflow001/linux-timeout-cleanup001.json",
+      "bytes": 138,
+      "sha256": "0a147f5f99545704e7ccc0d54bd47c6c2b21ecbdd79601d8598a8073aabf22bd"
+    },
+    {
+      "path": "build/p06zz-indexed-workflow001/linux-empty-scratch-cleanup001.json",
+      "bytes": 149,
+      "sha256": "aba149ea24e897f30478ba52ebf98803aff2d9be14c9321e1d57ca856e730cb2"
+    },
+    {
+      "path": "build/p06zz-indexed-workflow001/cleanup001.json",
+      "bytes": 337281,
+      "sha256": "186acb131ca926b2db4e349b27b1a916d794e4bce962256e4ab81b2bccfb2afb"
+    }
+  ],
+  "remaining": [
+    "Dedicated indexed ImGui Image > Type review/menu/worker preview/recording and both-host input proof",
+    "Reference-qualified indexed type/filter dispatch and palette retention/expansion/retirement",
+    "True indexed TIFF/PNG raster/tag encoding and external palette interpretation",
+    "Broader editor/resource/platform/release checks and historical source fingerprint requalification"
+  ],
+  "no_new_runtime_dependencies": true,
+  "no_existing_dto_layout_change": true,
+  "family_completed": false,
+  "broad_goal": "active",
+  "family_status": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  },
+  "last_full_source_release": "Source901",
+  "full_plan_gate": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed",
+  "superseded_linux_diagnostic": {
+    "run": {
+      "path": "build/p06zz-indexed-workflow001/linux001/run001.json",
+      "bytes": 1147,
+      "sha256": "ec2ee6f92071611fb1edab27bc88e4d9c23b7ed49f4138c13d25da616b46b0e0"
+    },
+    "accepted_as_final": false,
+    "recovery": "linux002 passed seven suites using completed cache; original group verified absent before resume",
+    "cleanup": {
+      "path": "build/p06zz-indexed-workflow001/linux-timeout-cleanup001.json",
+      "bytes": 138,
+      "sha256": "0a147f5f99545704e7ccc0d54bd47c6c2b21ecbdd79601d8598a8073aabf22bd"
+    }
+  }
+}

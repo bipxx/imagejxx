@@ -1,0 +1,92 @@
+{
+  "state": "reviewed_and_qualified",
+  "scope": "P08p bounded Predicted Deflate/LZW tiled UInt16/UInt8/RGB8/Float32 implementation; no family/release certification or ImageJ tiled reopening claim",
+  "qualification": {
+    "path": "build/p08p-predicted-tiles001/qualification001.json",
+    "bytes": 15644,
+    "sha256": "a31076fe92115751548332ed7dcd11539b4724ad0b3c73b118eb58eb27ef6160"
+  },
+  "implementation_review": [
+    "Prediction reuses existing typed row transforms and bounded codecs. Inverse prediction uses full padded tile row width before logical word admission.",
+    "Floating scratch is charged at tile width rather than logical X; no Float32 arithmetic occurs.",
+    "Append-only ordinals 40..47 and strict version 14; versions 1..13 and predictor-free versions 12/13 stay unchanged.",
+    "Actual shared ImGui prediction controls, estimates/consent, atomic failures, XYZ and IEEE recovery are exercised in both hosts."
+  ],
+  "validation": {
+    "native_suites": {
+      "windows": 87,
+      "linux": 238
+    },
+    "previous_python_ids_retained": 14020,
+    "new_python_cases": 2658,
+    "sdk_formats": 48,
+    "linux_cpp_scenarios_per_build": 217,
+    "new_ui_observations": 288,
+    "new_xyz_cpu_readbacks": 864,
+    "independent_libtiff_native_export_reads": 4408
+  },
+  "python": [
+    {
+      "stage": "windows-python-full001",
+      "cases": 16678,
+      "passed": 16678,
+      "windows_only_exemptions": 0,
+      "xml": {
+        "path": "build/p08p-predicted-tiles001/windows-python-full001/pytest.xml",
+        "bytes": 2613348,
+        "sha256": "aa74e39a1f1899941e1d9902ce4e84effc4f412d8728fb77951eef39cee3f296"
+      }
+    },
+    {
+      "stage": "windows-python-installed001",
+      "cases": 16678,
+      "passed": 16678,
+      "windows_only_exemptions": 0,
+      "xml": {
+        "path": "build/p08p-predicted-tiles001/windows-python-installed001/pytest.xml",
+        "bytes": 2613348,
+        "sha256": "29d80c390477c22a3c4c95f93c2080ab130ee55d876a7c0112407e2397337a66"
+      }
+    },
+    {
+      "stage": "python-source001",
+      "cases": 16678,
+      "passed": 16668,
+      "windows_only_exemptions": 10,
+      "xml": {
+        "path": "build/p08p-predicted-tiles001/python-source001/pytest.xml",
+        "bytes": 2615729,
+        "sha256": "83b1b09a70b78b1f521625d47a9bf424373acb5afb17085df53cbdb833af3fc9"
+      }
+    },
+    {
+      "stage": "python-installed001",
+      "cases": 16678,
+      "passed": 16668,
+      "windows_only_exemptions": 10,
+      "xml": {
+        "path": "build/p08p-predicted-tiles001/python-installed001/pytest.xml",
+        "bytes": 2615729,
+        "sha256": "edcde55df1a69569e892603ada2766fa5eb383560d761443aa6c6cf154683189"
+      }
+    }
+  ],
+  "input_oracle": {
+    "path": "build/p08p-predicted-tiles001/oracle001/evidence001.json",
+    "bytes": 1290,
+    "sha256": "eb5dc84340a840849a6d4599143de4ce23eaaf46e46a3209bdd0d9df715abb73"
+  },
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  },
+  "remaining": [
+    "BigTIFF, broader layouts/metadata and large-data admission.",
+    "Formal reciprocal fixture/accepted-run registration and family/release certification.",
+    "All remaining audited ImageJ/Fiji editor requirements."
+  ],
+  "historical_failures": [
+    "The initial focused run preserved a legacy negative case that now requests a supported feature. The UInt16 test now requests incompatible floating prediction; all four old IDs remain, and final full suites pass."
+  ]
+}

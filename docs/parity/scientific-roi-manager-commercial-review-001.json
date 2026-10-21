@@ -1,0 +1,300 @@
+{
+  "author_and_reviewer": "Root implementation/integration review; independent legal review is not asserted",
+  "broader_pending_Fiji_decisions_and_NC_exclusions_unchanged": true,
+  "decision": "eligible",
+  "license": {
+    "bytes": 1079,
+    "path": "LICENSE",
+    "sha256": "6496956d6060adfcd2617e553b7393c3b7fbea353a02f3c39d60051709d1ce5f"
+  },
+  "new_third_party_code_assets_or_dependency": false,
+  "notices": {
+    "bytes": 4201,
+    "path": "THIRD_PARTY_NOTICES.md",
+    "sha256": "9793a0e9272d9c7f8aa1ea97712a38f1ff186ecbd379f3a71c16ae273167bff9"
+  },
+  "previous_source_archive": {
+    "bytes": 8674391,
+    "path": "build/p06j-source-final001/imagejxx-0.2.0.tar.gz",
+    "sha256": "eb9a3b82d4fd102f4c4c7f4f37f24907b18dd2b0740daeede5d6517f716d2a42"
+  },
+  "previous_source_receipt": {
+    "bytes": 142650,
+    "path": "build/p06j-001/source-final001.json",
+    "sha256": "45be90ad4c978fd9cd2ef2c9f65fffaae42ec2da30361d00aecba91e4df8d9e1"
+  },
+  "schema_version": 1,
+  "scope": "Exactly16 owned manager source identities; no new third-party dependency or asset.",
+  "sources": [
+    {
+      "current": {
+        "bytes": 53419,
+        "path": "CMakeLists.txt",
+        "sha256": "42e4bee740a6948c5b5bdbaf54e5bdbd282ca2f919fc9c24fd733be06ce15844"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation/test/example or extension of existing owned MIT source; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 52971,
+        "path": "CMakeLists.txt",
+        "sha256": "df31d759d33b5400867aa72aa9c7eb38436104a7b272e7e718c370d1437853ad"
+      },
+      "snapshot": {
+        "bytes": 53419,
+        "path": "build/p06k-001/registration001/source-snapshots001/CMakeLists.txt",
+        "sha256": "42e4bee740a6948c5b5bdbaf54e5bdbd282ca2f919fc9c24fd733be06ce15844"
+      }
+    },
+    {
+      "current": {
+        "bytes": 1665,
+        "path": "include/imagejxx/roi_manager.hpp",
+        "sha256": "92e9b6ee5414023f51a612ed8a7deccb54149ce5c5c98b71c1b26e6ec024c24a"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation/test/example or extension of existing owned MIT source; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 1665,
+        "path": "build/p06k-001/registration001/source-snapshots001/include/imagejxx/roi_manager.hpp",
+        "sha256": "92e9b6ee5414023f51a612ed8a7deccb54149ce5c5c98b71c1b26e6ec024c24a"
+      }
+    },
+    {
+      "current": {
+        "bytes": 4000,
+        "path": "src/native/roi_manager.cpp",
+        "sha256": "1e23f8c7736ab6fd62bd6b0d6ae89d196b0889869b4867deef176da3f6f8935b"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation/test/example or extension of existing owned MIT source; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 4000,
+        "path": "build/p06k-001/registration001/source-snapshots001/src/native/roi_manager.cpp",
+        "sha256": "1e23f8c7736ab6fd62bd6b0d6ae89d196b0889869b4867deef176da3f6f8935b"
+      }
+    },
+    {
+      "current": {
+        "bytes": 2523,
+        "path": "src/native/roi_manager_bindings.cpp",
+        "sha256": "f00b2a2ec6e6482d4c91c4bf34408585ce7e96dc1e1af39d8df25ef3cfcbbe67"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation/test/example or extension of existing owned MIT source; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 2523,
+        "path": "build/p06k-001/registration001/source-snapshots001/src/native/roi_manager_bindings.cpp",
+        "sha256": "f00b2a2ec6e6482d4c91c4bf34408585ce7e96dc1e1af39d8df25ef3cfcbbe67"
+      }
+    },
+    {
+      "current": {
+        "bytes": 28609,
+        "path": "src/native/bindings.cpp",
+        "sha256": "978ab6327f1d093afada212fc9b19628fcd081f7dfe92a37e13a037f03dd09f8"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation/test/example or extension of existing owned MIT source; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 28540,
+        "path": "src/native/bindings.cpp",
+        "sha256": "fe9d526a508719865ef65f5acb8d22ad1837cced3f415e47342a0ce3ae037171"
+      },
+      "snapshot": {
+        "bytes": 28609,
+        "path": "build/p06k-001/registration001/source-snapshots001/src/native/bindings.cpp",
+        "sha256": "978ab6327f1d093afada212fc9b19628fcd081f7dfe92a37e13a037f03dd09f8"
+      }
+    },
+    {
+      "current": {
+        "bytes": 49825,
+        "path": "src/imagejxx/__init__.py",
+        "sha256": "e203bb9d52cb576f9954d959266fd3a488b10e564f22a92c9b9b66fc4f32e3b1"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation/test/example or extension of existing owned MIT source; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 49489,
+        "path": "src/imagejxx/__init__.py",
+        "sha256": "fc1617ea441d576e08ab0ea63ceae45963d597d23988237123b6188ee0f4c15c"
+      },
+      "snapshot": {
+        "bytes": 49825,
+        "path": "build/p06k-001/registration001/source-snapshots001/src/imagejxx/__init__.py",
+        "sha256": "e203bb9d52cb576f9954d959266fd3a488b10e564f22a92c9b9b66fc4f32e3b1"
+      }
+    },
+    {
+      "current": {
+        "bytes": 532857,
+        "path": "src/desktop/window.cpp",
+        "sha256": "f8f35ba98ec519684bd579518495100ec2d5d903c86625fa51861a4bc861f5f5"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation/test/example or extension of existing owned MIT source; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 522357,
+        "path": "src/desktop/window.cpp",
+        "sha256": "47d265ba2e23ef74576b7b48d28a727db041caf77f907c214a969dbcec81142b"
+      },
+      "snapshot": {
+        "bytes": 532857,
+        "path": "build/p06k-001/registration001/source-snapshots001/src/desktop/window.cpp",
+        "sha256": "f8f35ba98ec519684bd579518495100ec2d5d903c86625fa51861a4bc861f5f5"
+      }
+    },
+    {
+      "current": {
+        "bytes": 28732,
+        "path": "src/desktop/main.cpp",
+        "sha256": "323c81a5e7481cf6726daf975c8414517354c878c8848c9f4e4a93689cec15dd"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation/test/example or extension of existing owned MIT source; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 28193,
+        "path": "src/desktop/main.cpp",
+        "sha256": "b6985d8fcc62e1e5ecc2e82bf6f7111c896ae5d25db18adfd90140366f8606c8"
+      },
+      "snapshot": {
+        "bytes": 28732,
+        "path": "build/p06k-001/registration001/source-snapshots001/src/desktop/main.cpp",
+        "sha256": "323c81a5e7481cf6726daf975c8414517354c878c8848c9f4e4a93689cec15dd"
+      }
+    },
+    {
+      "current": {
+        "bytes": 36643,
+        "path": "src/desktop/python.cpp",
+        "sha256": "36cc8fde91cfc742215fef1b240842c85f9a8feae9ade93d048c3f1c0ec3f091"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation/test/example or extension of existing owned MIT source; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 36365,
+        "path": "src/desktop/python.cpp",
+        "sha256": "53378e6e02aca39f6cd61e4f5d71f45e89328e886917ffca5cef5f052e77bb3d"
+      },
+      "snapshot": {
+        "bytes": 36643,
+        "path": "build/p06k-001/registration001/source-snapshots001/src/desktop/python.cpp",
+        "sha256": "36cc8fde91cfc742215fef1b240842c85f9a8feae9ade93d048c3f1c0ec3f091"
+      }
+    },
+    {
+      "current": {
+        "bytes": 220,
+        "path": "src/desktop/scientific_roi_manager_ui_probe.hpp",
+        "sha256": "8819f8ce4f331a92a2d8062a5d2205a3422e3c65ea97c365c8c2ce3d2f045dc4"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation/test/example or extension of existing owned MIT source; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 220,
+        "path": "build/p06k-001/registration001/source-snapshots001/src/desktop/scientific_roi_manager_ui_probe.hpp",
+        "sha256": "8819f8ce4f331a92a2d8062a5d2205a3422e3c65ea97c365c8c2ce3d2f045dc4"
+      }
+    },
+    {
+      "current": {
+        "bytes": 8458,
+        "path": "src/desktop/scientific_roi_manager_ui_probe.cpp",
+        "sha256": "83ead2dc929ca0ebbc5afadabd43f4995cb7a63d5a41dc0a06493b534f642b5e"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation/test/example or extension of existing owned MIT source; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 8458,
+        "path": "build/p06k-001/registration001/source-snapshots001/src/desktop/scientific_roi_manager_ui_probe.cpp",
+        "sha256": "83ead2dc929ca0ebbc5afadabd43f4995cb7a63d5a41dc0a06493b534f642b5e"
+      }
+    },
+    {
+      "current": {
+        "bytes": 5226,
+        "path": "tests/native/test_roi_manager.cpp",
+        "sha256": "f97e50e2e4d4cce9d884a840c626a1e680c7ea4169bae485504a244b612e2f63"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation/test/example or extension of existing owned MIT source; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 5226,
+        "path": "build/p06k-001/registration001/source-snapshots001/tests/native/test_roi_manager.cpp",
+        "sha256": "f97e50e2e4d4cce9d884a840c626a1e680c7ea4169bae485504a244b612e2f63"
+      }
+    },
+    {
+      "current": {
+        "bytes": 42504,
+        "path": "tests/native/test_saved_roi_geometry_host.cpp",
+        "sha256": "0d33a09ca3d8706d8b3155ba8039966cb3b62a8dea6d4a0fa3c126c7a0ad9d74"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation/test/example or extension of existing owned MIT source; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 41866,
+        "path": "tests/native/test_saved_roi_geometry_host.cpp",
+        "sha256": "c08bede95d0fe81ff1ed1b19a7bdb111661355998b3906d48ca833017dc78ea8"
+      },
+      "snapshot": {
+        "bytes": 42504,
+        "path": "build/p06k-001/registration001/source-snapshots001/tests/native/test_saved_roi_geometry_host.cpp",
+        "sha256": "0d33a09ca3d8706d8b3155ba8039966cb3b62a8dea6d4a0fa3c126c7a0ad9d74"
+      }
+    },
+    {
+      "current": {
+        "bytes": 6133,
+        "path": "tests/python/test_scientific_roi_manager.py",
+        "sha256": "4f4e18cc53fa48ea3ebfb49c75c8bd4cd90bfa1ac4b0e3881728d34466e3ce1f"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation/test/example or extension of existing owned MIT source; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 6133,
+        "path": "build/p06k-001/registration001/source-snapshots001/tests/python/test_scientific_roi_manager.py",
+        "sha256": "4f4e18cc53fa48ea3ebfb49c75c8bd4cd90bfa1ac4b0e3881728d34466e3ce1f"
+      }
+    },
+    {
+      "current": {
+        "bytes": 3427,
+        "path": "tests/python/test_scientific_roi_manager_ui.py",
+        "sha256": "d5e9f52c2bbdc09cf45e93a98f242c482d49f0646a4ad655f3038f93caa10c66"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation/test/example or extension of existing owned MIT source; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 3427,
+        "path": "build/p06k-001/registration001/source-snapshots001/tests/python/test_scientific_roi_manager_ui.py",
+        "sha256": "d5e9f52c2bbdc09cf45e93a98f242c482d49f0646a4ad655f3038f93caa10c66"
+      }
+    },
+    {
+      "current": {
+        "bytes": 1774,
+        "path": "examples/roi_manager.cpp",
+        "sha256": "91d439f34fa8fb742a12acd1e388dc4a25de8219d41071bd1b35b62f2141e7a2"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation/test/example or extension of existing owned MIT source; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 1774,
+        "path": "build/p06k-001/registration001/source-snapshots001/examples/roi_manager.cpp",
+        "sha256": "91d439f34fa8fb742a12acd1e388dc4a25de8219d41071bd1b35b62f2141e7a2"
+      }
+    }
+  ],
+  "unchanged_dependency_scope": true,
+  "unresolved_source_origin_or_preimage_gaps": []
+}

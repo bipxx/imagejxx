@@ -1,0 +1,43 @@
+{
+  "state": "passed",
+  "scope": "Scientific Float32 TIFF actual ImGui file controls in four host contexts and bidirectional pinned ImageJ interoperability",
+  "audit": "build/p08a-float32-tiff-ui001/final-audit001.json",
+  "audit_sha256": "92a7af7d60dcd47a43381aa12bf6303ef7c2483071d2687a97912a7e97503302",
+  "physical_cases": {
+    "TF01": "finite policy changes, preview/process/export",
+    "TF02": "quiet-NaN file and policy",
+    "TF03": "full IEEE file and policy",
+    "TF04": "finite refusal and explicit IEEE recovery",
+    "TF05": "policy change and cancel without publication",
+    "TF06": "file identity replacement across policy change; no publication"
+  },
+  "contexts": [
+    "source C++",
+    "source Python",
+    "installed C++",
+    "installed Python"
+  ],
+  "windows_suites": 72,
+  "python_cases_per_package": 9322,
+  "previous_cases_retained": 9310,
+  "new_cases": 12,
+  "imagej_saved_carriers": 6,
+  "imagej_native_export_observations": 16,
+  "source_word_oracle": "Actual ImageJ raw source bytes cross-checked against independent stdlib carriers; no signaling-NaN canonicalization observed in transport",
+  "failed_reference_handling": "Preliminary headless/macro processing captures retained; final capture sets macro thread name, non-headless AWT mode, one worker and checks effective radius 1",
+  "cleanup": {
+    "targets": 28,
+    "net_bytes_freed": 1160902092
+  },
+  "limits": [
+    "No OS-input/GPU equivalence or Linux TIFF certification claim",
+    "Broader scalar/RGB, compressed/tiled and BigTIFF profiles remain open",
+    "Additional IEEE rank processors and broader ImageJ/Fiji/editor/release gaps remain open"
+  ],
+  "dependencies_added": [],
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  }
+}

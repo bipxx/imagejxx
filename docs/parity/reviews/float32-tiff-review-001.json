@@ -1,0 +1,42 @@
+{
+  "state": "passed",
+  "scope": "Scientific scalar Float32 TIFF native processing, public C++/Python APIs and shared editor review/export",
+  "audit": "build/p07z-float32-tiff001/final-audit001.json",
+  "audit_sha256": "fbecf48df4e7c03457b392b69effcc4ffa6d839ed04dea71c8de87dbb95cc573",
+  "public_api": [
+    "ImageFileFormat::ScientificTiffFloat32V1",
+    "ImageReadRequest::sample_policy",
+    "Python SCIENTIFIC_TIFF_FLOAT32_V1 and float32_format_id"
+  ],
+  "contracts": [
+    "Finite-only default; explicit quiet or full IEEE source admission",
+    "Inspection does not decode samples or prove finiteness",
+    "Byte-exact input/output words; C-fast file pages to TCZYXS Dataset coordinates",
+    "Atomic staged publication and source identity guards",
+    "Float32 scientific file record v2; UInt16 v1 retained",
+    "Policy changes retain inspected descriptors/identity but renew consent"
+  ],
+  "windows_suites": 72,
+  "full_python_cases_per_package": 9308,
+  "supplemental_cases_per_package": 2,
+  "new_float32_cases": 101,
+  "previous_cases_retained": 8979,
+  "installed_public_io_sdk": "passed",
+  "cleanup": {
+    "targets": 37,
+    "net_bytes_freed": 1066309932
+  },
+  "limitations": [
+    "Dedicated actual-input file-policy selector cases remain pending",
+    "Linux TIFF/product certification remains open",
+    "Compressed/tiled/BigTIFF/RGB and broader metadata profiles remain open",
+    "Other IEEE rank processors remain separately guarded"
+  ],
+  "dependencies_added": [],
+  "commercial_scope": "Original implementation and independent fixtures using the existing reviewed Windows libtiff 4.7.1 dependency closure; no additional third-party code/runtime or Fiji eligibility decision",
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  }
+}

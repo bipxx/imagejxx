@@ -1,0 +1,1048 @@
+{
+  "schema": "imagejxx.p06c2-v01-contract",
+  "schema_version": 1,
+  "prepared_on": "2026-10-16",
+  "status": "exact_representation_proposal_ready_for_root_freeze_owned_Min_outcome_policy_pending",
+  "root_freeze_required": true,
+  "not_an_acceptance_manifest": true,
+  "scope": "Compatible V2 state/action/public typed API for bounded Composite Max. Actual StackWindow reference entry is qualified18/18. Owned policy for observed Min outcomes remains pending. No product/manifest edits, captures/tests/builds by this worker, product runtime match, eligibility or family acceptance.",
+  "consumed_sources": [
+    {
+      "path": "docs/packets/P06c2-composite-max.md",
+      "sha256": "5ef68fd6e91f52b9e87d5c850f6eb54498ede95be48c23ce4c63d178c8f6e4d3",
+      "identity_role": "reviewed_preimage_before_root_adds_contract_link_or_status",
+      "drift_rule": "Root may add this contract link/status after hold. Review that docs-only delta explicitly; do not chase a self-referential hash or reinterpret it as changed core/reference behavior."
+    },
+    {
+      "path": "docs/packets/P06c-scientific-channel-display.md",
+      "sha256": "b6b79cf15ff339dafd94cf3f7e2104fcae3995bbe31b0e69d49490e01e7725e3"
+    },
+    {
+      "path": "docs/parity/reviews/G033-channel-display-checklist.md",
+      "sha256": "800973c1b171f7897fa3473e7e0c6dd57e9bb4d1e0065e50f3356d4a39f4629a"
+    },
+    {
+      "path": "include/imagejxx/channel_display.hpp",
+      "sha256": "f8d0c80f659339ef74e75967475b97ea238c6f57f100b15830c672f5fb2ceb69"
+    },
+    {
+      "path": "include/imagejxx/channel_display_command.hpp",
+      "sha256": "a828d6f9c744a04c7fb1d9a4be632943de11c333ab02f947ba97fbd93aca6232"
+    },
+    {
+      "path": "include/imagejxx/dataset.hpp",
+      "sha256": "4744b8097ac2794b358d4e625d996a06d3c1a9aa348c3f121a6b7b3ab9182eb7"
+    },
+    {
+      "path": "include/imagejxx/document.hpp",
+      "sha256": "abafa9bece292df8fc1ddc46dcf4cfbd70a3890504325507778bfcab54522d98"
+    },
+    {
+      "path": "include/imagejxx/execution.hpp",
+      "sha256": "502715065b57c9b5d2ba5515cecfd2cb70fd45cdeeb0f7a3274f153dba21935a"
+    },
+    {
+      "path": "src/native/channel_display.cpp",
+      "sha256": "fb20bf111721ce7ee52efecf96e6cb808be94325586dc62a0a5b7c595cfc01d3"
+    },
+    {
+      "path": "src/native/channel_display_command.cpp",
+      "sha256": "52a96e7ee885a811d89b795820650282efd61707f4997310e16718e0f2404533"
+    },
+    {
+      "path": "src/native/channel_display_bindings.cpp",
+      "sha256": "719e6eb3b030ea41f6a6c4c859d560353c770ecbba87c0e0ba9129b5a556784e"
+    },
+    {
+      "path": "src/native/document.cpp",
+      "sha256": "329cf066c2d3cb3b608b2d7e9ea0502d435baac5a782687d96d89a5f0e01cdef"
+    },
+    {
+      "path": "src/native/session.cpp",
+      "sha256": "8a6ff6aa1549f646fda560bf7797a9f9689868f853413360afb0d8bd1b4d72ab"
+    },
+    {
+      "path": "src/desktop/window.hpp",
+      "sha256": "c940414b3a97055d7acf986e6b9096b190b4b30706b52959725cb7c99e03a684"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "sha256": "f1d8a83097ca181a8e6a4a3b70a473cc5c82d328a8561517e6bcd8f8f9952ba4"
+    },
+    {
+      "path": "src/desktop/document.cpp",
+      "sha256": "953170620ec663ec762ed98aa748cb7e510ccd49ac338a90b76ad9ef66185288"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "sha256": "d572d255b4d72fb3d4b105b400b43ef20fdf4f52f926bd2faf0b54813ea5b0de"
+    },
+    {
+      "path": "src/desktop/channel_display_panel.hpp",
+      "sha256": "625d37ec3770317c84c0f22a99bca530596c93ca08fcf988260841ac4638a64b"
+    },
+    {
+      "path": "src/desktop/channel_display_panel.cpp",
+      "sha256": "50c535dc7dd22fc060b20fd479c4bf4b7ddb197d297b41911f816222264bdc5e"
+    },
+    {
+      "path": "src/desktop/channel_display_sources.hpp",
+      "sha256": "0554abba7657fc86816f9bae2f28e096183c1d316a3d31b8ba2160e0a00dfad4"
+    },
+    {
+      "path": "src/desktop/channel_display_sources.cpp",
+      "sha256": "e16e2320bce62617fc52b1bc4747eb4d3ac36cb633651409e4957e1936e15505"
+    },
+    {
+      "path": "src/desktop/rendering.hpp",
+      "sha256": "d02c4f3b96d7cfeabd0b737fda4f3d224e65016a3c6804a0bac239e0cf31ffa3"
+    },
+    {
+      "path": "src/desktop/rendering.cpp",
+      "sha256": "d5bf3dd3904671440a328ac8028f0775898f3e26c597464a4ba1ac282aa5d01b"
+    },
+    {
+      "path": "src/desktop/orthogonal.hpp",
+      "sha256": "aa59ed26bcacb8557811f24f3fd1b9b752fd78d07abd15f855ccf69cb45af3cb"
+    },
+    {
+      "path": "src/desktop/orthogonal.cpp",
+      "sha256": "dd8655b1190b2e7b90bbd8ab300e25d26b0aef026eedd06b0e4bece886f1849c"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "sha256": "2eae59300a2f03ab9d60fa324400a42d60a21fb1a2ed716a28d58201c5c2221a"
+    },
+    {
+      "path": "src/imagejxx/ui/app.py",
+      "sha256": "f3ac361affb2af26dabf0a3a3171614d8aa6c529a808025fb8f689ddab73cea5"
+    },
+    {
+      "path": "src/imagejxx/ui/persistence.py",
+      "sha256": "66121dd53523c90b164babd2fc4b2fdd9c410565c550c7c826bd5061ebd3ffc4"
+    },
+    {
+      "path": "scripts/capture_composite_max_reference.py",
+      "sha256": "210cb868a858857a37a579fc69674eeaab2bc03b7780cc4e1086d18c788b1ef0"
+    },
+    {
+      "path": "tests/python/test_composite_max_reference.py",
+      "sha256": "17954cda6ae9a0ac7bff699785961923ab4ac5b30b58d87667c4d4958c8d3e61"
+    },
+    {
+      "path": "build/p06c2-001/reference-prepare-003.json",
+      "sha256": "0d8c5ccfe292e4502c00748b589d90eef0441827eafc332a2250f3beb24e0bf4"
+    },
+    {
+      "path": "build/p06c2-001/reference-capture-002.json",
+      "sha256": "e8e45900e39d0d8dc1eb450a4c95800127a88065771e1578ae4a35fc0328ec88"
+    },
+    {
+      "path": "build/p06c2-001/reference-reader-002.json",
+      "sha256": "fac9d32f4fc77f6b49300aa0cd658a24ef049760e6b246a7bed6120337b96da3"
+    },
+    {
+      "path": "build/references/composite-max-imagej154r-001/prepare-003/prepared.json",
+      "sha256": "81dcb4d599b2aeb673eebc3f942727e6132607485ba750f863c3a97194919640"
+    },
+    {
+      "path": "build/references/composite-max-imagej154r-001/prepare-003/input-plan.json",
+      "sha256": "5e6474ef7617f8407e38813acff59686ea9201627d5fd6c15ba899289389b85a"
+    },
+    {
+      "path": "build/references/composite-max-imagej154r-001/capture-002/capture.json",
+      "sha256": "22ae269538a21fdf6a56c7e60f64faecb2475e24d2258f79b63677d3534e6511"
+    },
+    {
+      "path": "build/references/composite-max-imagej154r-001/capture-002/reference.stdout",
+      "sha256": "775cc9eebe75d0b9938504226a9b6747504c8e4b9b88979cbc7e92cfaf394adf"
+    },
+    {
+      "path": "build/p06c2-001/reader002/tests.xml",
+      "sha256": "87724783547399406b3054289fd33a7b48db656adc852164fd95db58a4b563ef"
+    },
+    {
+      "path": "build/p06c2-001/reader002/collected.json",
+      "sha256": "7d550eb3c46a20b47f67f3e32d01922a43299de38ad872f3c4ba67c46a7e020b"
+    }
+  ],
+  "reference_boundary": {
+    "imagej": "Standalone ImageJ1.54r commit62db90a269cccc1ac79f658e4602043214ed055b; archive09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665.",
+    "fiji": "Bundled ImageJ1.54p remains a separate runtime/commercial boundary; no incorporation.",
+    "numeric_reuse": "Existing63+8+1 mapper/default/range observations retain only their matching scope. They do not settle Max transitions.",
+    "transition_context": "Terminal prepare003/capture002/reader002 qualify the actual hidden StackWindow/ImageCanvas and real Channels Choice context for all18 cases,74stages/62RGB/22sourcepairs/8dispatches, with zero reader failures/errors/skips. The old windowless14pass/fourfail attempt remains preserved and is not the hosted transition oracle. This contract consumes those receipts, not a new execution.",
+    "qualified_reference_entry": {
+      "prepare": "build/p06c2-001/reference-prepare-003.json",
+      "capture": "build/p06c2-001/reference-capture-002.json",
+      "reader": "build/p06c2-001/reference-reader-002.json",
+      "producer_sha256": "210cb868a858857a37a579fc69674eeaab2bc03b7780cc4e1086d18c788b1ef0",
+      "reader_sha256": "17954cda6ae9a0ac7bff699785961923ab4ac5b30b58d87667c4d4958c8d3e61",
+      "passed": 18,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "product_acceptance": false
+    }
+  },
+  "chosen_representation": {
+    "property": "channel_display",
+    "state_schema": "imagejxx.channel-display",
+    "action_schema": "imagejxx.channel-display-command",
+    "state_versions": [
+      1,
+      2
+    ],
+    "action_versions": [
+      1,
+      2
+    ],
+    "v1_projection": "sum",
+    "v2_sum_is_legal_and_retained": true,
+    "default_creation": "Existing default_channel_display and first Enable create V1/SUM. No global preference or implicit migration.",
+    "source_compatibility": "Append state fields after mode/channels. Preserve existing signatures/defaults and three-field Request aggregate. Existing {mode,channels} initializers remain V1/SUM.",
+    "binary_boundary": "Appending public struct fields changes layout. Rebuild coherent core/headers/bindings/desktop/SDK products. Source compatibility and V1 wire preservation do not permit mixing old/new C++ binary layouts.",
+    "rejected": [
+      "Optional projection in V1",
+      "mode=max",
+      "Separate projection property",
+      "Legacy flat-field inference",
+      "Encoding every SUM as V1"
+    ]
+  },
+  "state_contract": {
+    "dispatch": "Choose exact field set by exact schema and integer version. Unknown fields remain errors for each supported version.",
+    "v1": {
+      "required_exact_fields": [
+        "schema",
+        "version",
+        "mode",
+        "channels"
+      ],
+      "version": 1,
+      "in_memory_projection": "Sum only",
+      "projection_wire": "Absent; reject a projection key.",
+      "example": {
+        "schema": "imagejxx.channel-display",
+        "version": 1,
+        "mode": "composite",
+        "channels": [
+          {
+            "visible": true,
+            "range": [
+              0,
+              255
+            ],
+            "lut": {
+              "name": "Red"
+            }
+          }
+        ]
+      }
+    },
+    "v2": {
+      "required_exact_fields": [
+        "schema",
+        "version",
+        "mode",
+        "projection",
+        "channels"
+      ],
+      "version": 2,
+      "projection": {
+        "type": "string",
+        "choices": [
+          "sum",
+          "max"
+        ],
+        "required": true,
+        "default": "No missing-field default; explicitV2 SUM must specify sum."
+      },
+      "sum_example": {
+        "schema": "imagejxx.channel-display",
+        "version": 2,
+        "mode": "composite",
+        "channels": [
+          {
+            "visible": true,
+            "range": [
+              0,
+              255
+            ],
+            "lut": {
+              "name": "Red"
+            }
+          }
+        ],
+        "projection": "sum"
+      },
+      "max_example": {
+        "schema": "imagejxx.channel-display",
+        "version": 2,
+        "mode": "composite",
+        "channels": [
+          {
+            "visible": true,
+            "range": [
+              0,
+              255
+            ],
+            "lut": {
+              "name": "Red"
+            }
+          }
+        ],
+        "projection": "max"
+      }
+    },
+    "shared_fields": {
+      "schema": {
+        "type": "string",
+        "value": "imagejxx.channel-display"
+      },
+      "version": {
+        "type": "exact integer",
+        "rule": "Signed/unsigned Metadata integer1or2; reject Boolean, floating1.0/2.0 and unsupported versions for interpretation."
+      },
+      "mode": {
+        "type": "string",
+        "choices": [
+          "color",
+          "grayscale",
+          "composite"
+        ]
+      },
+      "channels": {
+        "type": "array",
+        "rule": "Exactly DatasetShape.c entries in native C order; no truncation, permutation or selected-C field."
+      },
+      "channel": {
+        "required_exact_fields": [
+          "visible",
+          "range",
+          "lut"
+        ],
+        "visible": {
+          "type": "bool",
+          "default": true,
+          "rule": "Actual Boolean; fresh native initializer true. UI loads the current value."
+        },
+        "range": {
+          "type": "array[2] of numbers",
+          "native_initializer": [
+            0,
+            255
+          ],
+          "rule": "Finite exactly convertible double endpoints low<=high; no Boolean/lossy integer conversion. Equal endpoints including[0,0] are literal, never Reset. GUI loads captured current range, not a universal fixed default."
+        },
+        "lut": {
+          "alternatives": [
+            {
+              "required_exact_fields": [
+                "name"
+              ],
+              "name": {
+                "type": "string",
+                "choices": [
+                  "Grays",
+                  "Red",
+                  "Green",
+                  "Blue",
+                  "White",
+                  "Cyan",
+                  "Magenta",
+                  "Yellow"
+                ]
+              }
+            },
+            {
+              "required_exact_fields": [
+                "table"
+              ],
+              "table": {
+                "type": "array[256][3] of exact integer bytes",
+                "rule": "Each0..255. Reject Boolean/float bytes, wrong lengths and extra fields. Typed custom LUT requires empty name."
+              }
+            }
+          ],
+          "exclusive": true
+        }
+      },
+      "admission": {
+        "pixel_types": [
+          "UInt8",
+          "UInt16",
+          "Float32"
+        ],
+        "samples": 1,
+        "policies": [
+          "FiniteOnly",
+          "PreserveQuietNaNFloat32 only with Float32/S1"
+        ],
+        "legacy": "Recognized Float64/S3/S4 remains refused; separate legacy viewing unchanged."
+      }
+    },
+    "semantics": [
+      "Typed V1+Max is invalid. validate/encode/normalize never upgrade it; caller must explicitly select V2.",
+      "Color/Grayscale retain version/projection, ignore projection when rendering and show active C independently of visibility.",
+      "Composite uses SUM or independent mapped-byte component Max. Singleton gray rule remains. No contributors means fresh black and no channel-provider reads.",
+      "Stored Composite C>8 rejects in both versions. Requested normalization changes only mode toColor, retaining fullC/version/projection; V2Max fallback remains V2Max.",
+      "Range/LUT/visibility edits, live-XY Reset and mode-only typed edits retain V2/projection.",
+      "Requested endpoint doubles, processor-specific mapping, quiet-NaN entry0 and owned wide-finite extensions remain unchanged."
+    ]
+  },
+  "cpp_api": {
+    "new_declarations": [
+      "enum class ChannelDisplayProjection { Sum, Max };",
+      "enum class ChannelDisplayVersion : std::uint8_t { V1 = 1, V2 = 2 };",
+      "struct ChannelDisplayState {",
+      "  ChannelDisplayMode mode = ChannelDisplayMode::Composite;",
+      "  std::vector<ChannelDisplayChannel> channels;",
+      "  ChannelDisplayProjection projection = ChannelDisplayProjection::Sum;",
+      "  ChannelDisplayVersion version = ChannelDisplayVersion::V1;",
+      "};",
+      "// Append SelectMax; preserve existing ordinal values.",
+      "enum class ChannelDisplayAction { Set, ResetRange, Disable, SelectMax };",
+      "// Existing ChannelDisplayRequest fields remain action/state/reset_channels.",
+      "// Add immutable ResolvedChannelDisplayCommand accessors:",
+      "ChannelDisplayVersion version() const;",
+      "std::optional<int> navigation_channel() const;",
+      "std::optional<std::uint64_t> display_dependency_revision() const;",
+      "bool requires_captured_display() const;"
+    ],
+    "unchanged_action_signatures": [
+      "ResolvedChannelDisplayCommand resolve_channel_display_command(const DocumentSnapshot&, const ChannelDisplayRequest&, const ChannelDisplayLimits& = {}, const ExecutionControl& = {});",
+      "void validate_channel_display_command_record(const MetadataObject&);",
+      "ResolvedChannelDisplayCommand channel_display_command_from_record(const DocumentSnapshot&, const MetadataObject&);",
+      "ResolvedChannelDisplayCommand rebind_channel_display_command(const DocumentSnapshot&, const MetadataObject&, const ChannelDisplayRequest& explicit_request, const ChannelDisplayLimits& = {}, const ExecutionControl& = {});",
+      "DisplayState command_display_state(const ResolvedChannelDisplayCommand&, const DocumentSnapshot& current_snapshot);"
+    ],
+    "unchanged_state_renderer_signatures": "All existing validate/parse/parse_requested/encode/known/recognized/normalize/with/default/reset/effective_range/estimate/compose signatures remain exactly as consumed channel_display.hpp. No new request struct, overload family, compositor or raw JSON dependency.",
+    "resolved_accessors": {
+      "version": "Wire action version even when state is null.",
+      "navigation_channel": "Explicit resolved C assignment or nullopt. Preserve deliberate assignment even if equal to original C.",
+      "display_dependency_revision": "Historical captured display revision or nullopt; retained in replay record.",
+      "requires_captured_display": "Private execution provenance exposed read-only, not serialized: true only on fresh SelectMax; false on strict record replay and complete-state actions."
+    },
+    "defaults": "New state members default Sum/V1. Existing mode, channel defaults, limits, named palettes, provider/estimate types and request defaults unchanged."
+  },
+  "python_api": {
+    "signatures": [
+      "resolve_channel_display_command(source, state=None, action=\"set\", channels=(), limits=ChannelDisplayLimits(), *, cancellation=None, checkpoint=None)",
+      "validate_channel_display_command_record(record)",
+      "channel_display_command_from_record(source, record)",
+      "rebind_channel_display_command(source, record, state=None, action=\"set\", channels=(), limits=ChannelDisplayLimits(), *, cancellation=None, checkpoint=None)",
+      "command_display_state(command, current)",
+      "imagejxx.ui.app.Editor.apply_channel_display(request, *, document_id=0)",
+      "imagejxx.ui.app.Editor.replay_channel_display(record, *, rebind_request=None, document_id=0)"
+    ],
+    "state_transport": "Existing dict API. V2 adds required projection and integer version2; no Python pixel implementation.",
+    "new_action": "action=\"select_max\", state=None, channels=(). Direct supplied V2Max Set remains action=\"set\" with no implicit transition.",
+    "resolved_readonly_properties": {
+      "version": "int1or2",
+      "navigation_channel": "int orNone",
+      "display_dependency_revision": "exact nonnegative int orNone",
+      "requires_captured_display": "bool"
+    },
+    "existing_properties": "source/action/state/record() remain defensive owned values; action additionally returns select_max.",
+    "gil": "Capture mutable request/state/record/index inputs under GIL; native owns copies before release. Rebind validates complete original before parsing/resolving replacement. Preserve current callback lifetimes and no Python borrow across release.",
+    "Editor_request_exact_fields": [
+      "action",
+      "state",
+      "channels"
+    ],
+    "Editor_SelectMax_request": {
+      "action": "select_max",
+      "state": null,
+      "channels": []
+    },
+    "Editor_request_rule": "Existing exact three-field JSON request transport is unchanged; no top-level request version/projection/dependency field. Projection/version are fields of supplied state or native resolved output only."
+  },
+  "request_dispatch": [
+    {
+      "request": "Set",
+      "admission": "Complete state; empty reset_channels.",
+      "result": "Normalize only explicit requested >8 mode; retain supplied version/projection.",
+      "wire": "V1 state->exact actionV1; V2 state->actionV2. Null display_dependency/navigation."
+    },
+    {
+      "request": "ResetRange",
+      "admission": "Complete state; existing unique subset/all-C rules.",
+      "result": "Live committed XY at capturedT/Z, never preview; preserve supplied version/projection; record resolved ranges/empty flags.",
+      "wire": "V1 state->actionV1; V2 state->actionV2. Null display_dependency/navigation; current source dependency unchanged."
+    },
+    {
+      "request": "Disable",
+      "admission": "No state/reset_channels. Never interpret existing property.",
+      "result": "Remove only channel_display; retain navigation/legacy fields.",
+      "wire": "Fresh resolve preserves exact historical actionV1, even removing V2/future state. Valid V2 Disable can be decoded/replayed unchanged. Explicit rebind Disable intentionally resolves historicalV1 because no state encoding remains."
+    },
+    {
+      "request": "SelectMax",
+      "admission": "No supplied state/reset_channels. Require captured recognized supported V1/V2 state; absent/unknown/malformed refuses with no autoEnable/reset/scan.",
+      "result": "Native resolves later-frozen R12–R18 policy once from captured state/effective active-C context. Final complete state is V2Max, Composite whenC<=8 orColor fallback above8; explicit C effect separate.",
+      "wire": "Always V2/select_max, nonnull display_dependency, optional navigation. Unsupported Min/Invert outcome needs a frozen ownedMax correction or atomic refusal; never expand renderer silently."
+    }
+  ],
+  "action_contract": {
+    "source": {
+      "required_exact_fields": [
+        "id",
+        "pixels_revision",
+        "metadata_revision",
+        "shape",
+        "type",
+        "sample_policy"
+      ],
+      "types": {
+        "id": "positive uint64-compatible exact integer",
+        "pixels_revision": "nonnegative uint64-compatible exact integer",
+        "metadata_revision": "nonnegative uint64-compatible exact integer",
+        "shape": "six positive native-int TCZYXS extents",
+        "type": "existing uint8/uint16/float32/float64 spelling",
+        "sample_policy": "existing finite_only/preserve_quiet_nan_float32 spelling"
+      },
+      "rule": "Existing source validation unchanged; state-bearing actions additionally require scalar U8/U16/F32."
+    },
+    "position": {
+      "required_exact_fields": [
+        "t",
+        "c",
+        "z"
+      ],
+      "types": "exact zero-based native integers inside source shape",
+      "meaning": "Resolution context, not an unconditional replay navigation target."
+    },
+    "reset": {
+      "required_exact_fields": [
+        "channels",
+        "empty_finite"
+      ],
+      "rule": "Existing unique in-bounds explicit resolved C list+actual Boolean flags for reset_range. Other actions require two empty arrays. Existing quiet-F32/[0,1] empty-finite consistency unchanged."
+    },
+    "v1": {
+      "required_exact_fields": [
+        "schema",
+        "version",
+        "action",
+        "source",
+        "position",
+        "state",
+        "reset"
+      ],
+      "actions": [
+        "set",
+        "reset_range",
+        "disable"
+      ],
+      "state": "Set/reset require strictV1 state; Disable null.",
+      "reject": "V2 state, select_max action, projection additions and dependency/navigation fields.",
+      "behavior": "Exact canonical fields/Metadata alternatives/encoding, original validation order, source binding, navigation preservation and record retention unchanged.",
+      "example": {
+        "schema": "imagejxx.channel-display-command",
+        "version": 1,
+        "action": "set",
+        "source": {
+          "id": 23,
+          "pixels_revision": 4,
+          "metadata_revision": 5,
+          "shape": [
+            2,
+            1,
+            4,
+            3,
+            5,
+            1
+          ],
+          "type": "uint8",
+          "sample_policy": "finite_only"
+        },
+        "position": {
+          "t": 1,
+          "c": 0,
+          "z": 2
+        },
+        "state": {
+          "schema": "imagejxx.channel-display",
+          "version": 1,
+          "mode": "composite",
+          "channels": [
+            {
+              "visible": true,
+              "range": [
+                0,
+                255
+              ],
+              "lut": {
+                "name": "Red"
+              }
+            }
+          ]
+        },
+        "reset": {
+          "channels": [],
+          "empty_finite": []
+        }
+      }
+    },
+    "v2": {
+      "required_exact_fields": [
+        "schema",
+        "version",
+        "action",
+        "source",
+        "position",
+        "state",
+        "reset",
+        "display_dependency",
+        "navigation"
+      ],
+      "actions": [
+        "set",
+        "reset_range",
+        "disable",
+        "select_max"
+      ],
+      "state": "Set/reset/select_max require strictV2 state; Disable null. Explicit V2SUM staysV2.",
+      "display_dependency": {
+        "alternatives": [
+          null,
+          {
+            "required_exact_fields": [
+              "revision"
+            ],
+            "revision": "exact nonnegative uint64-compatible integer"
+          }
+        ],
+        "rule": "Nonnull exactly for select_max; null for Set/reset/disable. Historical Revisions.display, enforced only on original fresh intent publication."
+      },
+      "navigation": {
+        "alternatives": [
+          null,
+          {
+            "required_exact_fields": [
+              "c"
+            ],
+            "c": "exact zero-based native integer inside sourceC"
+          }
+        ],
+        "rule": "Only select_max may carry a nonnull effect. A deliberate assignment remains present even if equal to capturedC. Null preserves fresh navigation; effect changes onlyC and preserves freshT/Z/crosshairXY/cameras. position.c is never applied implicitly."
+      },
+      "select_max_consistency": "Projection max; Composite forC<=8 orColor forC>8; reset empty; display_dependency nonnull. Complete resolved ranges/tables/flags are stored. No current inversion classification or transform during decoder/replay.",
+      "historical_semantics": "Like current resolved Reset records, this is validated executable output, not authenticated historical input provenance. No before-state payload/pixel read or recomputation against current display is introduced merely to validate a record. Fresh native resolver owns the frozen transition; replay owns applying stored output.",
+      "example_with_deliberate_same_channel_effect": {
+        "schema": "imagejxx.channel-display-command",
+        "version": 2,
+        "action": "select_max",
+        "source": {
+          "id": 23,
+          "pixels_revision": 4,
+          "metadata_revision": 5,
+          "shape": [
+            2,
+            1,
+            4,
+            3,
+            5,
+            1
+          ],
+          "type": "uint8",
+          "sample_policy": "finite_only"
+        },
+        "position": {
+          "t": 1,
+          "c": 0,
+          "z": 2
+        },
+        "state": {
+          "schema": "imagejxx.channel-display",
+          "version": 2,
+          "mode": "composite",
+          "channels": [
+            {
+              "visible": true,
+              "range": [
+                0,
+                255
+              ],
+              "lut": {
+                "name": "Red"
+              }
+            }
+          ],
+          "projection": "max"
+        },
+        "reset": {
+          "channels": [],
+          "empty_finite": []
+        },
+        "display_dependency": {
+          "revision": 7
+        },
+        "navigation": {
+          "c": 0
+        }
+      }
+    },
+    "dispatch": "Choose exact supported integer record version before the corresponding exact field set/action/state branch. No loose action-name fallback.",
+    "validation_and_binding_order": [
+      "Validate complete original schema/version/action/fields/source/position/state/reset/dependency/navigation.",
+      "Owner mismatch -> std::invalid_argument.",
+      "Pixels/Metadata revision mismatch -> RevisionConflict.",
+      "Same-revision shape/type/policy mismatch -> std::invalid_argument.",
+      "Original fresh SelectMax publication only: captured Display revision mismatch -> RevisionConflict."
+    ],
+    "unknown_records": "Generic nativeV3 workflow metadata may transport unknown versions opaquely. Explicit validate/replay/dispatch refuses unsupported schema/version/action."
+  },
+  "execution": {
+    "fresh_SelectMax": [
+      "Capture immutable source snapshot, recognized current display, effective activeC context, position and Display revision.",
+      "Before cloning/callbacks, checked working preflight includes returned state, transformed tables, normalized record and temporary copies. No pixel/provider read, autoEnable or GUIAuto.",
+      "Resolve frozen transition once. Preserve ranges/source/nonconsumed display. Store every changed table as full256xRGB, without collapsing custom/table identity to a named alias.",
+      "Create immutable V2 state/effect/record with requires_captured_display=true.",
+      "At publication check retained owner, Pixels/Metadata and capturedDisplay. Derive one final DisplayState from fresh current state, apply resolved channel state+optionalC together, validate and preflight workflow append before native publication.",
+      "Publish one display result and one accepted normalized row if recording; no throwing frontend allocation/callback after native publication."
+    ],
+    "strict_replay": [
+      "Validate complete original record before binding and retain the exact original MetadataObject, version/state/effect values.",
+      "Never rerun classification/LUT transform/Reset or source pixel reads. Current display/selection revisions may differ.",
+      "Set requires_captured_display=false even though record retains its original historical dependency.",
+      "Apply explicit C target to fresh current T/Z; null preserves freshC too. Stored position is context only.",
+      "NativeV3 reopen preserves old record source IDs; new owner requires explicit rebind, never auto-rebinding."
+    ],
+    "full_rebind": [
+      "Validate complete original before replacement request interpretation/new-source work.",
+      "Resolve the complete explicit request against new source; no implicit inherited old projection/LUT/navigation effect.",
+      "New SelectMax uses new captured display/dependency; new Set/reset retain supplied version; new Disable keeps historicalV1."
+    ],
+    "Window_admission": "Preserve per-path guards: panel captured active owner; explicit native/Editor target IDs stay bound without redirection; busy/closed/stale/foreign checks apply. Do not incidentally make old explicit-owner actions active-only.",
+    "preserved": [
+      "pixels/rawbits",
+      "Data identity",
+      "pixel undo/redo/dirty/save semantics",
+      "calibration/metadata",
+      "selection/previous",
+      "savedROIs/overlays",
+      "legacy flat display fields",
+      "READY preview ownership/reservations except existing explicit lifecycle rules"
+    ],
+    "callbacks_limits": "Existing Set/Disable metadata-only no-user-callback behavior remains. SelectMax checks admission/working bounds before clone/callbacks, then cooperatively checks existing cancellation/checkpoint at bounded metadata work boundaries and before return. Refusal/cancel/exception publishes/appends nothing. Retain16MiPixel/128MiB compositor defaults/configured nonzero processing-memory clamp; include new state/record/table copies without claiming total renderer/GPU/process accounting."
+  },
+  "ui_owned_contract": {
+    "existing_selectors": "Keep channel_display.mode.color/.grayscale/.composite and all existing range/visibility/LUT/reset IDs.",
+    "max_selector": "channel_display.mode.composite_max",
+    "max_label": "Composite Max",
+    "max_request": "Queue {SelectMax,nullopt,{}} after scopes close; no inline classifier/table/C mutation.",
+    "repeat": "Do not drop a real Max click merely because mode/projection already match. Pass one intent; R18 policy determines its resolved/no-change effect; preserve accepted-action recording policy.",
+    "mode_only_typed": "Direct Set copyingV2 and changing onlymode retains projection/version/flags.",
+    "Color_Gray": "Existing owned mode-action visibility behavior remains; retainV2 projection/version, inactive during these modes.",
+    "ordinary_Composite": "Existing Composite choice explicitly selects SUM. PreserveV1 behavior. V2 retains version2 and selects sum; accepted entry/change uses existing owned Composite-entry all-visible policy. Already CompositeSUM keeps existing no-action behavior. This declared owned policy is not new reference transition evidence.",
+    "max_visibility": "Native SelectMax owns pending R12/R13 flags; do not reuse/infer the ordinary panel Composite-entry loop.",
+    "draft_lifecycle": "Preserve invalid range drafts, owner/C/source-range rebase, successful Apply/Reset rebase, one pending action/frame, real input diagnostics and lifecycle guards."
+  },
+  "persistence_and_no_loss": {
+    "known_hooks": "Recognize only exact schema+integer1or2. Validate known structure/count/canonical projection/mode; Dataset overload validates dtype/policy. Foreign/future/missing/noninteger headers remain opaque to generic native transport.",
+    "interpretation": "Any present unsupported/malformed state refuses desktop/API interpretation. No SUM/legacy fallback or silent projection loss.",
+    "native_V3": "No file framing/version3 change. Save/Open transports state/actions without render-time rewrite/migration. Dispatch actions by exact schema+integer version. Historical source IDs stay historical.",
+    "old_V1_runtime": "Its known hook does not recognizeV2: generic native transport must preserveV2 opaquely while explicit viewing refuses. Check actual old product; new parser alone is no compatibility proof.",
+    "legacy_detached": "Retain current display whitelist/no-loss refusal forV1/V2/future channel property before dropping anything. Never flatten Max into range/LUT fields.",
+    "axis_changes": "RecognizedV2 C-count edits need complete remapping/replacement or refusal. Existing opaque-future C-shape-change refusal remains; no compositor permutation shortcut.",
+    "settings": "Projection is document display state; no new global setting. SUM/V1 defaults persist. NativeV3 state persistence is not restart-preference consumer evidence."
+  },
+  "render_cache_diagnostics": {
+    "authority": "Version-preserving encode_channel_display is the sole state representation; no second projection property.",
+    "ordinary": "channelDisplayDiagnostics.state includes V2 version/projection/full state; V1 diagnostic object remainsV1.",
+    "XYZ": "Existing channelDisplayKey includes full encoded state, finalT/C/crosshairZ, plane coordinate, data identity and all-contributor preview provenance/generation. V1SUM/V2SUM/V2Max are distinct keys even if current RGB matches.",
+    "numeric": "Reuse byte mapper/provider/estimate; change only accumulator SUM versus componentMax into fresh zero RGB. No Z intensity projection, second compositor, Python loop or TCZ copy.",
+    "readbacks": "Retain activeC raw scalar samples, exact requested ranges and contributor preview_z/source attribution; projection/version explicit in encoded state even inColor fallback.",
+    "layers": "Live activeC XY threshold once only when contributing/positioned; annotations onceXY; no XY layers onXZ/YZ. Keep finalZ per-C preview gate and untargeted live strips."
+  },
+  "required_affected_sites": [
+    {
+      "path": "include/imagejxx/channel_display.hpp",
+      "symbols": [
+        "ChannelDisplayState",
+        "new enums"
+      ],
+      "change": "Append typed members; document version retention/defaults; retain old aggregate spellings."
+    },
+    {
+      "path": "src/native/channel_display.cpp",
+      "symbols": [
+        "read_state",
+        "known_record",
+        "validate/encode/normalize",
+        "default/reset",
+        "compose"
+      ],
+      "change": "Exact version branches, retainedV2SUM/defaultV1 and existing post-mapper Max. NoV1/admission relaxation."
+    },
+    {
+      "path": "include/imagejxx/channel_display_command.hpp",
+      "symbols": [
+        "ChannelDisplayAction",
+        "ResolvedChannelDisplayCommand"
+      ],
+      "change": "Append action/accessors; keep request and all old signatures."
+    },
+    {
+      "path": "src/native/channel_display_command.cpp",
+      "symbols": [
+        "decode_record",
+        "resolve/from_record/rebind",
+        "command_display_state"
+      ],
+      "change": "ExactV2 record/effect/dependency and original-intent versus replay execution provenance."
+    },
+    {
+      "path": "src/native/channel_display_bindings.cpp",
+      "symbols": [
+        "state/action/request",
+        "bind_channel_display"
+      ],
+      "change": "ExactV2/new action/read-only properties; defensive/GIL/old defaults unchanged."
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "symbols": [
+        "channelDisplayRequest",
+        "applyChannelPanel",
+        "publishChannelDisplay",
+        "workflow/refreshTexture"
+      ],
+      "change": "Native intent routing, one atomic state+C publication/append, exact record-version dispatch."
+    },
+    {
+      "path": "src/desktop/channel_display_panel.cpp",
+      "symbols": [
+        "draw",
+        "modeName",
+        "diagnostics"
+      ],
+      "change": "Physical Max intent choice and preserved old controls/drafts; no inline transform."
+    },
+    {
+      "path": "src/desktop/rendering.cpp",
+      "symbols": [
+        "channelDisplayDiagnostics"
+      ],
+      "change": "Full retained version/projection state in existing diagnostics/cache inputs."
+    },
+    {
+      "path": "src/desktop/orthogonal.cpp",
+      "symbols": [
+        "draw",
+        "channelDisplayKey",
+        "readbacks"
+      ],
+      "change": "FullV2 key/native composition; retain final-coordinate/per-C/layer semantics."
+    },
+    {
+      "path": "src/native/document.cpp",
+      "symbols": [
+        "DisplayState::validate",
+        "snapshot/constraints/commit"
+      ],
+      "change": "Shared knownV2 hooks, unknown transport and C-count guard."
+    },
+    {
+      "path": "src/native/session.cpp",
+      "symbols": [
+        "encode/decode",
+        "project_legacy_document"
+      ],
+      "change": "No framing rewrite; qualify knownV2/opaque transport and unchanged no-loss refusal."
+    },
+    {
+      "path": "src/desktop/document.cpp",
+      "symbols": [
+        "setNativeDisplay",
+        "execute_workflow",
+        "display projection"
+      ],
+      "change": "KnownV2 interpretation; generic pixel workflow still refuses typed display records/legacy loss."
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "symbols": [
+        "apply_channel_display",
+        "replay_channel_display"
+      ],
+      "change": "Reuse owned metadata transport/native dispatch; no second parser/UI."
+    },
+    {
+      "path": "src/imagejxx/ui/app.py",
+      "symbols": [
+        "Editor.apply/replay_channel_display"
+      ],
+      "change": "Thin forwarding preserved."
+    },
+    {
+      "path": "src/imagejxx/ui/persistence.py",
+      "symbols": [
+        "serialize/deserialize"
+      ],
+      "change": "Retain explicit native display no-loss guard, never flattenV2."
+    }
+  ],
+  "compatibility_oracles": [
+    {
+      "id": "V01-C01",
+      "expected": "Old two-field State/three-field Request aggregates compile unchanged; defaultsSum/V1. Installed SDK links matching rebuilt headers/core."
+    },
+    {
+      "id": "V01-C02",
+      "expected": "Frozen canonicalV1 typed state and normalized Set/Reset/Disable encodings have identical fields/Metadata alternatives/serialized bytes under same encoder. No projection/dependency/navigation additions."
+    },
+    {
+      "id": "V01-C03",
+      "expected": "V1 rejects projection, unknown fields/enums, Boolean/float versions, typedV1Max, V1action containingV2 state/select_max. Preserve legitimate signed/unsigned integer semantics."
+    },
+    {
+      "id": "V01-C04",
+      "expected": "ExplicitV2SUM staysV2 through parse/encode/Set/reset/LUT/range/visibility/Color/Gray/nativeV3. No render/navigation/SaveOpen downcast."
+    },
+    {
+      "id": "V01-C05",
+      "expected": "Old V1 callbacks/binding/replay/navigation behavior unchanged; Disable still removes unknown property without interpreting it."
+    },
+    {
+      "id": "V01-C06",
+      "expected": "V2 exact9field action rejects missing/extra fields, wrong state version, illegal/missing dependency/navigation, nonMax select_max and malformed original before owner/new request work."
+    },
+    {
+      "id": "V01-C07",
+      "expected": "DirectV2MaxSet does not transform LUTs/changeC. FreshSelectMax rejects interveningDisplay changes; replay tolerates currentDisplay/Selection differences without reclassification."
+    },
+    {
+      "id": "V01-C08",
+      "expected": "Record navigationC0 even if originalC0. Replay against currentC2 setsC0 and preserves freshT/Z. Null preserves all fresh navigation. Never apply position.c implicitly."
+    },
+    {
+      "id": "V01-C09",
+      "expected": "RequestedCompositeC>8 changes onlymodeColor, retains allC andV1Sum/V2Sum/V2Max. StoredComposite>8/unsupportedtypes/policies reject."
+    },
+    {
+      "id": "V01-C10",
+      "expected": "Independent literal Max RGB for cold/warm/repeated/allhidden/singleton/customentry0; source/mapper bits unchanged. Only matchingR01–R11 observations can become evidence."
+    },
+    {
+      "id": "V01-C11",
+      "expected": "Ordinary/XYZ keys/readbacks distinguish versions/projections and retain nonactiveREADY/finalZ/rawactiveC/once-onlyXY layer semantics."
+    },
+    {
+      "id": "V01-C12",
+      "expected": "KnownV2 malformed state refuses; generic nativeV3 keeps unknown headers opaque but viewing refuses. Actual oldV1 product preservesV2 opaquely/refuses viewing."
+    },
+    {
+      "id": "V01-C13",
+      "expected": "NativeV3 preserves complete records/state/effects and historical IDs; no autorebind. Legacy/detached refuses before state loss."
+    },
+    {
+      "id": "V01-C14",
+      "expected": "Recording-on one atomic state+C result/one row; off same result/no row. Malformedworkflow/stale/foreign/closed/busy/cancel/exception preserve source/display/navigation/preview resources."
+    },
+    {
+      "id": "V01-C15",
+      "expected": "Rebind validates complete original first, then uses fresh explicit request/version/dependency. No silent oldMax/C inheritance."
+    },
+    {
+      "id": "V01-C16",
+      "expected": "Affected native/Python/host/coreSDK/bothImGui/session/package gates run matching rebuilt identities. Contract/oracle existence and old72 captures grant no new runtime acceptance."
+    }
+  ],
+  "transition_decision_table": [
+    {
+      "id": "R12",
+      "context": "Real StackWindow CompositeSUM->Max, non-inverting active processor, hidden flags/nonzeroC/T/Z",
+      "freeze": "Root adopts the qualified input/output identity and records the chosen owned behavior/limitation before implementation.",
+      "observation_state": "qualified_actual_StackWindow_reference_context",
+      "evidence": "build/p06c2-001/reference-reader-002.json; exact fixture/checkpoints in hashed input-plan/reference.stdout",
+      "observed_summary": "Composite Max; original T/C/Z retained.",
+      "observed_position_tcz": [
+        1,
+        1,
+        2
+      ],
+      "remaining_owned_decision": "Adopt exact qualified full output/flag/table effects into native intent policy; retain separately declared old P06c mode-action behavior. No reference recapture is required."
+    },
+    {
+      "id": "R13",
+      "context": "Real StackWindow Color->Max with retainedMax property/differingvisibility",
+      "freeze": "Root adopts the qualified input/output identity and records the chosen owned behavior/limitation before implementation.",
+      "observation_state": "qualified_actual_StackWindow_reference_context",
+      "evidence": "build/p06c2-001/reference-reader-002.json; exact fixture/checkpoints in hashed input-plan/reference.stdout",
+      "observed_summary": "Composite Max; original T/C/Z retained.",
+      "remaining_owned_decision": "Adopt exact qualified full output/flag/table effects into native intent policy; retain separately declared old P06c mode-action behavior. No reference recapture is required."
+    },
+    {
+      "id": "R14",
+      "context": "Real StackWindow Grayscale->Max, inverted storedtables",
+      "freeze": "Root adopts the qualified input/output identity and records the chosen owned behavior/limitation before implementation.",
+      "observation_state": "qualified_actual_StackWindow_reference_context",
+      "evidence": "build/p06c2-001/reference-reader-002.json; exact fixture/checkpoints in hashed input-plan/reference.stdout",
+      "observed_summary": "Composite Max; original T/C/Z retained. R14 distinguishes displayed gray processor classification from stored inverted channel tables.",
+      "remaining_owned_decision": "Adopt exact qualified full output/flag/table effects into native intent policy; retain separately declared old P06c mode-action behavior. No reference recapture is required."
+    },
+    {
+      "id": "R15",
+      "context": "Real StackWindow uniform inverse tables, initialC2/C3",
+      "freeze": "Root adopts the qualified input/output identity and records the chosen owned behavior/limitation before implementation.",
+      "observation_state": "qualified_actual_StackWindow_reference_context",
+      "evidence": "build/p06c2-001/reference-reader-002.json; exact fixture/checkpoints in hashed input-plan/reference.stdout",
+      "observed_summary": "All-channel macro transformation, Composite Max, C0; T/Z retained.",
+      "observed_position_tcz": [
+        1,
+        0,
+        2
+      ],
+      "remaining_owned_decision": "Freeze the consumed exact all-C transform and deliberate C0 effect from qualified bytes. Preserve that effect even if an original case already startsC0."
+    },
+    {
+      "id": "R16",
+      "context": "Real StackWindow active inverse/C1ascending/mixedcustom",
+      "freeze": "Root adopts the qualified input/output identity and records the chosen owned behavior/limitation before implementation.",
+      "observation_state": "qualified_actual_StackWindow_reference_context",
+      "evidence": "build/p06c2-001/reference-reader-002.json; exact fixture/checkpoints in hashed input-plan/reference.stdout",
+      "observed_summary": "First Max selection transforms all channel tables and ends Composite Min atC0; T/Z retained.",
+      "remaining_owned_decision": "Root must choose explicit owned correctedMax or atomic refusal for this input class. Max-only V2 cannot encode Min; neither silently add Min nor call correctedMax equivalent to this observed result."
+    },
+    {
+      "id": "R17",
+      "context": "Real StackWindow constantcustom table andMax choice",
+      "freeze": "Root adopts the qualified input/output identity and records the chosen owned behavior/limitation before implementation.",
+      "observation_state": "qualified_actual_StackWindow_reference_context",
+      "evidence": "build/p06c2-001/reference-reader-002.json; exact fixture/checkpoints in hashed input-plan/reference.stdout",
+      "observed_summary": "First Max selection transforms all channel tables and ends Composite Min atC0; T/Z retained.",
+      "remaining_owned_decision": "Root must choose explicit owned correctedMax or atomic refusal for this input class. Max-only V2 cannot encode Min; neither silently add Min nor call correctedMax equivalent to this observed result."
+    },
+    {
+      "id": "R18",
+      "context": "Real StackWindow soleascending254->255, repeatedchoice/redraw",
+      "freeze": "Root adopts the qualified input/output identity and records the chosen owned behavior/limitation before implementation.",
+      "observation_state": "qualified_actual_StackWindow_reference_context",
+      "evidence": "build/p06c2-001/reference-reader-002.json; exact fixture/checkpoints in hashed input-plan/reference.stdout",
+      "observed_summary": "First Max selection transforms all channel tables and ends Composite Min atC0; T/Z retained. The repeated Max selection from that observed Min result ends Max atC0.",
+      "remaining_owned_decision": "Root must choose explicit owned correctedMax or atomic refusal for this input class. Max-only V2 cannot encode Min; neither silently add Min nor call correctedMax equivalent to this observed result. If first selection is refused, the reference repeat-from-Min state is unreachable in the owned Max-only path; do not assert its repeated-click equivalence. A correctedMax policy must explicitly define subsequent intent behavior from its own different state."
+    }
+  ],
+  "remaining_freeze_boundary": {
+    "ready": "Exact representation/defaults/API/record/effect/dependency/replay/rebind/persistence/cache authority chosen above; root must approve before integration.",
+    "blocked_policy": "Actual-host observations are qualified; do not repeat them. Root must settle/adopt the owned R12–R18 mapping, especially R16/R17/R18-first Min outcomes and R18 repeated-selection reachability, before SelectMax implementation. Qualified observations retain T/Z; optional C effect is sufficient for this declared context.",
+    "scope": "Min/Invert/GUIAuto/LUTeditor/order/splitmerge/platform/globalresource remain existing follow-ons. Not a registration/acceptance/family-closure artifact."
+  },
+  "validation": {
+    "scope": "Owned JSON structure/example-field consistency and consumed-hash identity only; no product execution/tests/builds/captures.",
+    "status": "passed_structure_and_consumed_identity_only",
+    "checks": [
+      "Strict JSON parse/encoding",
+      "ExactV1/V2 state example fields4/5",
+      "ExactV1/V2 action example fields7/9",
+      "Exactly16 unique compatibility oracles",
+      "ExactlyR12–R18 qualified observation/pending-owned-policy rows",
+      "Exactly39 unique consumed files with hashes; card hash labeled reviewed preimage",
+      "Affected paths resolve to consumed files",
+      "Deliberate same-channel navigation preserved",
+      "Terminal reference membership18/74/62/22/8 and reader18PASS; no product acceptance"
+    ]
+  }
+}

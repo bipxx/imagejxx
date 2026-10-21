@@ -1,0 +1,660 @@
+{
+  "schema_version": 1,
+  "id": "G012.shortcuts-adoption.001",
+  "state": "adopted_entry_only",
+  "owner": "root",
+  "adopted_utc": "2026-10-16T23:50:49.063611+00:00",
+  "scope": "S01-S08 entry for configurable native command registry and dedicated shared Dear ImGui shortcut editor; no implementation, execution, commercial, platform or family acceptance",
+  "proposal": {
+    "path": "build/p06f-001/shortcuts-entry001/entry-proposal.json",
+    "bytes": 40050,
+    "sha256": "967723852d9b43d8b1aeea46b434a9b74c5bf12eb3225e6c8c73442b4b800ccd"
+  },
+  "baseline_source_pins": [
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 421541,
+      "sha256": "6fd63aedb36d3e4050b0f830683280ba8b26c688a7eef6e95e1da8e36f536210"
+    },
+    {
+      "path": "src/desktop/window.hpp",
+      "bytes": 10059,
+      "sha256": "a908a5e838efdf65e1b3fd17197d90c35f88f81fa189cd35779144803511e93d"
+    },
+    {
+      "path": "src/desktop/settings_panel.cpp",
+      "bytes": 12909,
+      "sha256": "3642f3ddd8282ad5d458644be94796595f7b6cdfc0f07b63168261e99714f15b"
+    },
+    {
+      "path": "src/desktop/settings_panel.hpp",
+      "bytes": 1017,
+      "sha256": "662d5ce72f1c9db930add1c2ef743aa1fc631ab6b6e153a6cdd146c90f3cbddd"
+    },
+    {
+      "path": "src/desktop/settings_io.cpp",
+      "bytes": 3164,
+      "sha256": "565e21a5f5d6ca4cf00794873b6cfdf0e98c69cf9136aeb6d9a79ca873683b90"
+    },
+    {
+      "path": "src/desktop/settings_io.hpp",
+      "bytes": 705,
+      "sha256": "0c203626fe51ca0eaa788fc96fa0742ef0f8d0d70f23b24d07ceceef0332ae1b"
+    },
+    {
+      "path": "src/imagejxx/ui/app.py",
+      "bytes": 21466,
+      "sha256": "b93cc83ed2902d0ccd0708cbcb2145bcfa3b8a9f8d4c09ad5b4b0e46ba53ca67"
+    },
+    {
+      "path": "src/imagejxx/ui/persistence.py",
+      "bytes": 34402,
+      "sha256": "66121dd53523c90b164babd2fc4b2fdd9c410565c550c7c826bd5061ebd3ffc4"
+    },
+    {
+      "path": "docs/parity/inventory.json",
+      "bytes": 8971222,
+      "sha256": "25faee75b1879f067c4d1728f93e882b27bf407b6484252a87287b8f812c7770"
+    },
+    {
+      "path": "docs/parity/commands.json",
+      "bytes": 3160933,
+      "sha256": "b568af585ad8880b9dc111ebaec5675102fce5010d96d321c53fd6d40371be70"
+    }
+  ],
+  "current_consumed_source_pins": [
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 471255,
+      "sha256": "c00b0508e8ce082d14fb6b8217b119bfc5de8fef387cc85e055aa061b1f0cdca"
+    },
+    {
+      "path": "src/desktop/window.hpp",
+      "bytes": 11237,
+      "sha256": "52a9bcc45bbe9e01d3c788bb64f24e8eda9a83b65c35ce98985d6088838c685f"
+    },
+    {
+      "path": "src/desktop/settings_panel.cpp",
+      "bytes": 12909,
+      "sha256": "3642f3ddd8282ad5d458644be94796595f7b6cdfc0f07b63168261e99714f15b"
+    },
+    {
+      "path": "src/desktop/settings_panel.hpp",
+      "bytes": 1017,
+      "sha256": "662d5ce72f1c9db930add1c2ef743aa1fc631ab6b6e153a6cdd146c90f3cbddd"
+    },
+    {
+      "path": "src/desktop/settings_io.cpp",
+      "bytes": 3164,
+      "sha256": "565e21a5f5d6ca4cf00794873b6cfdf0e98c69cf9136aeb6d9a79ca873683b90"
+    },
+    {
+      "path": "src/desktop/settings_io.hpp",
+      "bytes": 705,
+      "sha256": "0c203626fe51ca0eaa788fc96fa0742ef0f8d0d70f23b24d07ceceef0332ae1b"
+    },
+    {
+      "path": "src/imagejxx/ui/app.py",
+      "bytes": 21961,
+      "sha256": "203b92c7cc8fb43ba87f7c0a47a6cfcbe7394d6b94307c8b5f80945b08cc28b3"
+    },
+    {
+      "path": "src/imagejxx/ui/persistence.py",
+      "bytes": 34402,
+      "sha256": "66121dd53523c90b164babd2fc4b2fdd9c410565c550c7c826bd5061ebd3ffc4"
+    },
+    {
+      "path": "docs/parity/inventory.json",
+      "bytes": 9182003,
+      "sha256": "02ec3dc2b633248676cbb19419f621f78cdc5ca30d1ccc2ab941b6a144c2ed72"
+    },
+    {
+      "path": "docs/parity/commands.json",
+      "bytes": 3453850,
+      "sha256": "dc25ed967ce3978f29ced0a3a70db3ab519f494047507f20e7f659bd5612d26f"
+    },
+    {
+      "path": "include/imagejxx/settings.hpp",
+      "bytes": 1961,
+      "sha256": "3b96957068c74adb5c60064ed9505d21d73c2518e0daf99790a4720bd0a789b0"
+    },
+    {
+      "path": "src/native/settings.cpp",
+      "bytes": 15468,
+      "sha256": "1cf49dbfab752483aead535a6ba6eb80a204c0cd13f5d0ebf2415b85e46f18a0"
+    },
+    {
+      "path": "include/imagejxx/preferences.hpp",
+      "bytes": 1757,
+      "sha256": "b32c2f2543e4c763f72115bc636294c889fa9a8afa78ffc636842a563b98c9a9"
+    },
+    {
+      "path": "src/native/preferences.cpp",
+      "bytes": 10766,
+      "sha256": "8f13c109f36224fb2d7a4fe4f75c2f21afa95bfe030e31940a155787afedc44a"
+    },
+    {
+      "path": "src/desktop/saved_roi_edit.hpp",
+      "bytes": 3960,
+      "sha256": "af6c1ff774f6a6d910ff5a43894e4dd1fcf8e579605889cb856457fc97954259"
+    },
+    {
+      "path": "src/desktop/saved_roi_edit.cpp",
+      "bytes": 15609,
+      "sha256": "aa9056367d28cbfce05b143bd732f931ec4470539712bae583ca88ec3248feec"
+    }
+  ],
+  "normative_decisions": {
+    "S01_registry": {
+      "decision": "Adopt stable initial18 editable command IDs, ten default chords and eight initially unbound existing consumers.",
+      "registry_version": 1,
+      "commands": [
+        {
+          "id": "file.open",
+          "label": "Open image or session",
+          "default_chord": "Primary+O",
+          "scope": "shell",
+          "desktop_callback": "existing file(Open image or session,false,owner.openFile) helper",
+          "admission": "idle; no document required"
+        },
+        {
+          "id": "file.save",
+          "label": "Save document",
+          "default_chord": "Primary+S",
+          "scope": "document",
+          "desktop_callback": "existing Save document file helper -> owner.action(save_document,path)",
+          "admission": "idle, active admitted owner; preserve native session/path suggestion"
+        },
+        {
+          "id": "file.close",
+          "label": "Close image",
+          "default_chord": "Primary+W",
+          "scope": "document",
+          "desktop_callback": "existing requestClose(active document)",
+          "admission": "idle, active owner; existing dirty confirmation, never forced close"
+        },
+        {
+          "id": "edit.undo",
+          "label": "Undo",
+          "default_chord": "Primary+Z",
+          "scope": "document",
+          "desktop_callback": "owner.action(undo)",
+          "admission": "idle; actionAllowed and undoSteps>0"
+        },
+        {
+          "id": "edit.redo",
+          "label": "Redo",
+          "default_chord": "Primary+Y",
+          "scope": "document",
+          "desktop_callback": "owner.action(redo)",
+          "admission": "idle; actionAllowed and redoSteps>0"
+        },
+        {
+          "id": "edit.copy",
+          "label": "Copy",
+          "default_chord": "Primary+C",
+          "scope": "document",
+          "desktop_callback": "owner.action(copy)",
+          "admission": "idle; existing source/selection/clipboard admission"
+        },
+        {
+          "id": "edit.cut",
+          "label": "Cut",
+          "default_chord": "Primary+X",
+          "scope": "document",
+          "desktop_callback": "owner.action(cut)",
+          "admission": "idle; existing source/selection/clipboard admission"
+        },
+        {
+          "id": "edit.paste",
+          "label": "Paste",
+          "default_chord": "Primary+V",
+          "scope": "document",
+          "desktop_callback": "owner.action(paste)",
+          "admission": "idle; existing source/clipboard admission"
+        },
+        {
+          "id": "edit.select_all",
+          "label": "Select all image",
+          "default_chord": "Primary+A",
+          "scope": "document",
+          "desktop_callback": "owner.action(select_all)",
+          "admission": "idle; existing source admission; focused ROI manager local claim shadows"
+        },
+        {
+          "id": "analysis.measure",
+          "label": "Measure",
+          "default_chord": "M",
+          "scope": "document",
+          "desktop_callback": "owner.action(measure)",
+          "admission": "idle; existing source/selection admission"
+        },
+        {
+          "id": "app.preferences",
+          "label": "Preferences",
+          "default_chord": null,
+          "scope": "shell",
+          "desktop_callback": "owner.action(show_preferences)",
+          "admission": "same menu admission; permitted while busy if no modal/capture"
+        },
+        {
+          "id": "app.jobs",
+          "label": "Jobs",
+          "default_chord": null,
+          "scope": "shell",
+          "desktop_callback": "owner.action(show_jobs,{visible:true})",
+          "admission": "same menu admission; permitted while busy; cancellation stays existing control"
+        },
+        {
+          "id": "view.channel_display",
+          "label": "Channel display",
+          "default_chord": null,
+          "scope": "document",
+          "desktop_callback": "owner.action(show_channel_display)",
+          "admission": "same current menu/source/busy admission; opening never silently enables"
+        },
+        {
+          "id": "image.auto_contrast",
+          "label": "Auto display range",
+          "default_chord": null,
+          "scope": "document",
+          "desktop_callback": "owner.action(auto_contrast,{})",
+          "admission": "same current active-owner/scalar/Auto options/job lifecycle"
+        },
+        {
+          "id": "image.extract_plane",
+          "label": "Export plane",
+          "default_chord": null,
+          "scope": "document",
+          "desktop_callback": "owner.action(show_axis_plane_export)",
+          "admission": "same scientific/native extraction dialog admission; no invented export parameters"
+        },
+        {
+          "id": "view.orthogonal",
+          "label": "Toggle XY/XZ/YZ",
+          "default_chord": null,
+          "scope": "document",
+          "desktop_callback": "owner.action(view,{orthogonal:!current.orthogonal})",
+          "admission": "same menu/view admission and actual draft cancellation"
+        },
+        {
+          "id": "filter.gaussian_imagej",
+          "label": "Gaussian blur",
+          "default_chord": null,
+          "scope": "document",
+          "desktop_callback": "owner.action(show_operation,{operation:gaussian_blur_imagej})",
+          "admission": "same gaussianSourceAllowed/panel rules; no new kernel"
+        },
+        {
+          "id": "filter.rank_imagej",
+          "label": "Rank filter",
+          "default_chord": null,
+          "scope": "document",
+          "desktop_callback": "owner.action(show_operation,{operation:rank_filter_imagej})",
+          "admission": "same rankSourceAllowed/panel rules; no new kernel"
+        }
+      ],
+      "compatibility": "The ten source-visible Ctrl base chords retain their logical Windows/Linux defaults through Primary=Ctrl; M remains M. Existing runtime qualification is Windows-scoped where separately evidenced; Linux here is source-level policy only, with no new platform run. Exact matching intentionally removes accidental extra-modifier behavior: Ctrl+Shift+Z is no longer Undo and is not silently made Redo. Primary+Y stays Redo; Primary+Shift+Z is unbound unless assigned. No upstream ImageJ keyboard parity is asserted.",
+      "macos_owned_policy": "Primary=Super/Command on unverified macOS is a named new portable policy, not unchanged existing Ctrl defaults or platform acceptance. Explicit Ctrl remains representable. This child does not remap Ctrl/Alt/Shift geometry modifiers, Ctrl+wheel zoom or creation tool semantics.",
+      "evolution": "Append commands only with real admitted consumers. Stable IDs/defaults become compatibility commitments; changed defaults need migration review. Unknown IDs never become arbitrary Window::action strings."
+    },
+    "S02_chords": {
+      "key_tokens": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W",
+        "X",
+        "Y",
+        "Z",
+        "Digit0",
+        "Digit1",
+        "Digit2",
+        "Digit3",
+        "Digit4",
+        "Digit5",
+        "Digit6",
+        "Digit7",
+        "Digit8",
+        "Digit9",
+        "F1",
+        "F2",
+        "F3",
+        "F4",
+        "F5",
+        "F6",
+        "F7",
+        "F8",
+        "F9",
+        "F10",
+        "F11",
+        "F12",
+        "F13",
+        "F14",
+        "F15",
+        "F16",
+        "F17",
+        "F18",
+        "F19",
+        "F20",
+        "F21",
+        "F22",
+        "F23",
+        "F24",
+        "Escape",
+        "Enter",
+        "Tab",
+        "Space",
+        "Backspace",
+        "Delete",
+        "Insert",
+        "Home",
+        "End",
+        "PageUp",
+        "PageDown",
+        "Left",
+        "Right",
+        "Up",
+        "Down",
+        "Minus",
+        "Equal",
+        "LeftBracket",
+        "RightBracket",
+        "Backslash",
+        "Semicolon",
+        "Apostrophe",
+        "Grave",
+        "Comma",
+        "Period",
+        "Slash"
+      ],
+      "modifier_tokens": [
+        "Primary",
+        "Ctrl",
+        "Alt",
+        "Shift",
+        "Super"
+      ],
+      "canonical_grammar": "ASCII one named nonmodifier key, zero or more distinct modifiers, '+' separators. Canonical order Primary,Ctrl,Alt,Shift,Super,key; no whitespace. Primary cannot coexist with Ctrl/Super. Explicit Ctrl+Super may parse but must pass all platform policies. No modifier-only/mouse/wheel/scan-code/multi-stroke/arbitrary Unicode binding.",
+      "parser": "Trim outer ASCII whitespace. Case-insensitive aliases Control->Ctrl, Cmd/Command/Meta->Super, CtrlOrCmd->Primary, letter names->A..Z; closed key tokens are case-insensitive. Emit only canonical spellings. Literal '+' is not a key token; Shift+Equal expresses that named-key combination. Reject empty/trailing segments, repeated modifiers, unknown names and non-string inputs.",
+      "physical_resolution": {
+        "Windows": "Primary->Ctrl",
+        "Linux": "Primary->Ctrl",
+        "MacOS": "Primary->Super"
+      },
+      "matching": "Exact named key and exact resolved modifier set; extra modifiers prevent matching. Dispatch only on an actual down edge, never text characters/modifier changes/held repeat. No heuristic stripping.",
+      "layout_limit": "Backend/ImGui named-key identity is distinct from a physical US key or emitted text. Punctuation/dead keys/AltGr/IME/layout differences need real OS proof, not simulated platform enums."
+    },
+    "S03_storage_conflicts": {
+      "settings_key": "shortcut_bindings",
+      "setting_kind": "StringList STORAGE for dedicated native-validated profile and editor",
+      "group": "Shortcuts",
+      "default": [],
+      "grammar": "<command_id>=<canonical_chord>; empty RHS explicitly unbinds, absent override inherits registry default. [] inherits all defaults. Command IDs match [a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+, ASCII <=96bytes. Duplicate IDs refuse even if identical. Known entries canonicalize in stable registry order; unknown values/relative order remain intact.",
+      "unknowns": "Syntactically valid unknown IDs are inactive and preserved losslessly on ordinary save/export/reopen, with nonfatal inactive diagnostics. Their bounded printable-ASCII or empty RHS is opaque; never parse it as a future command or dispatch arbitrary actions. A newly registered ID is fully revalidated before activation. Invalid newly known content recovers with a blocked-write warning, never partial execution.",
+      "validation": "Apply complete defaults+override map. Reject duplicate resolved known globals on ANY Windows/Linux/MacOS table; this first profile is portable, without platform-specific overrides. Unknown inactive rows do not collide with active commands. Invalid current-platform-only profiles are deliberately outside this first child.",
+      "conflicts": "Return both command IDs/chord/platforms. Never first/last-wins, silent stealing or partial application. UI explicit Reassign stages clear-victim plus assign-target in the SAME draft.",
+      "limits": {
+        "max_override_entries": 1024,
+        "max_entry_bytes": 256,
+        "max_total_entry_bytes": 262144,
+        "max_command_id_bytes": 96,
+        "max_chord_bytes": 96,
+        "max_registry_commands": 4096,
+        "max_native_working_bytes": 4194304
+      },
+      "resources": "Checked additions/counts before copies/materialization. Charge canonical/input strings, all3 tables, diagnostics and immutable holders. No image/provider/callback/thread/disk needed. Allocator internals, later Python copies and RSS are external; limits are ceilings, not measured acceptance.",
+      "explicit_platform_limit": "Because this first profile is portable and Windows/Linux deny resolved Super, an explicit Super global assignment cannot activate across all3 tables. Use Primary for the platform primary modifier. Capture shows this validation result; platform-specific profiles remain a named follow-on, not an implicit coercion."
+    },
+    "S04_reservations": {
+      "policy": "Conservative OWNED validation deny-list, not a claim that these exactly exhaust actual OS interception. Deny a known assignment if its resolved chord is denied on any platform. No OS registration/global settings change.",
+      "all": "Unmodified Escape/Enter/Tab/Space/Backspace/Delete/Insert/Home/End/PageUp/PageDown/arrows remain local and cannot be global commands. Other bare letters/digits/F-keys require workspace/canvas admission.",
+      "Windows_Linux": "Any resolved Super combination; Alt+Tab; Alt+F4; Linux Alt+F2; all Ctrl+Alt combinations conservatively reserved for OS/AltGr/locale safety.",
+      "MacOS": "Super+Tab, Super+Space, Super+Alt+Escape, Super+Q/H/M; Ctrl+Space and Ctrl+arrows. This is an owned conservative deny-list, not sourced OS acceptance. Additional system/user interception remains unknown.",
+      "local": "Text conventions, modal Enter/Escape/Tab, canvas navigation/edit/completion/cancel and ROI-manager Primary+A shadow globals only while their context owns the key. Show context shadowing separately from unconditional conflict. Clearing/reassigning globals never removes local tools.",
+      "precision": "Exact modifier matching applies unless an explicit family such as all Ctrl+Alt was stated. These are visible validation errors, not silently ignored imports."
+    },
+    "S05_focus_dispatch": {
+      "priority": [
+        "Actual product window unfocused or input rearming -> no global dispatch.",
+        "Shortcut capture control owns candidate keys; Escape cancels capture only.",
+        "Topmost modal/file browser/menu/popup owns keyboard; no global dispatch.",
+        "Active/focused text or numeric editor, focused protected modeless panel or other active widget owns keyboard, including invalid partial text.",
+        "Active canvas creation/geometry/paint/pan gesture owns local completion/cancel/navigation; global blocked.",
+        "Focused ROI-manager Primary+A selects saved rows only, even if the global chord was reassigned.",
+        "Existing ordinary/linked canvas local key owner consumes its claimed key.",
+        "Remaining admitted workspace/canvas context resolves one exact registered command, checks current availability, then invokes existing callback."
+      ],
+      "current_frame": "Move the single global dispatcher AFTER current-frame menu/document/floating-panel focus and key ownership is established, BEFORE frame completion. Replace old hardcoded block; do not run both or use stale panel visibility. WantTextInput blocks; WantCaptureKeyboard is diagnostic, not a blanket rejection of intended workspace keyboard input.",
+      "edges": "No global repeat. After focus loss, Apply/import/reset, modal/capture handoff or owner-context change, clear pending state and require involved keys/modifiers released. Holding through configuration must not fire newly bound commands. If multiple distinct global command keys arrive in one frame, deny that ambiguous global frame rather than executing several actions in registry order.",
+      "admission": "Availability uses the SAME current predicate as corresponding menu/control, and invocation rechecks normal source/owner/job guards. A binding cannot bypass busy/no-document/unsupported-scientific/no-history/closed guards. Unknown/unavailable events neither open nor enqueue/mutate/record.",
+      "busy": "Ten defaults retain busy blocking. Configured app.preferences/jobs use their existing permitted shell path while busy. Other commands obey actual menu/control admission; this entry does not widen operation/source support. Changing a profile does not cancel or replay a job.",
+      "one_callback": "One invokeShellCommand(command_id) table supplies menu hints, shared admission and actual callback for initial18 commands. Consume the successful key through existing ImGui ownership; no local/global/menu double execution or duplicate numeric processing."
+    },
+    "S06_editor_atomic_apply": {
+      "location": "Dedicated Shortcuts group inside existing shared Preferences. Invoke its module before the column-specific StringList widget. Search, stable command/default/current chord, context shadowing and inactive unknown rows are visible.",
+      "controls": [
+        "search",
+        "command_row.<id>",
+        "capture",
+        "use_portable_primary",
+        "assign",
+        "reassign_conflict",
+        "clear",
+        "reset_command",
+        "defaults",
+        "revert",
+        "apply",
+        "cancel_capture",
+        "close"
+      ],
+      "capture": "Actual pointer focuses Capture; record actual down/up/modifiers. Portable toggle maps current platform primary to Primary; off keeps explicit Ctrl/Super. Native parser supplies canonical candidate. Modifier-only stays pending; Escape cancels capture, explicit Clear unbinds. Assign stages valid candidate only; Reassign is explicit. No image action consumes capture events.",
+      "draft": "Assign/Clear/Reset/Defaults/Revert affect only detached draft. Clear is empty RHS; Reset removes row override; Defaults [] removes all overrides including visibly listed unknowns only when subsequently applied. Revert discards pending changes. Close/cancel discards unapplied state; raw invalid capture never becomes active.",
+      "apply": "Validate and compile complete proposed Settings/profile/labels/diagnostics BEFORE scheduler or persistence side effects. Native Preferences atomically publishes file; only success installs prepared settings/profile by noexcept swap and rearms input. Invalid/cap/file failure leaves active map/settings/file and editable draft intact. persist=False swaps live map without touching disk.",
+      "minimal_transaction": "Use existing updateSettings/import policy; no generic settings redesign. Stage all new shortcut allocation before commit and add no fallible shortcut work after file publication. Verify narrow existing consume ordering so new-profile failure cannot look like rollback after committed file.",
+      "recording": "Config edits cause no Document revision/history/dirty/workflow/session schema change and serialize no keypress. Invoked image commands keep their own existing native record/noop/lifecycle semantics, with no surrogate shortcut record."
+    },
+    "S07_persistence_startup": {
+      "format": "Existing imagejxx-preferences version1, values.shortcut_bindings only. Registry version1 is public metadata, not a new Preferences or session version. No new standalone JSON/profile codec in desktop/Python/public header.",
+      "import": "Reuse existing full Preferences Import: explicit committed operation, not an unapplied assignment draft. Strict load/whole profile validation/compile before save/install; success rebases editor, failure preserves map/file/draft. Reject conflicts/reserved/malformed known entries as a whole; no salvage prefix.",
+      "export": "Reuse existing Export and expose that it exports APPLIED settings, excluding unapplied capture/draft. Preserve opaque compartments/inactive unknown strings. No scripts/shell commands loaded by bindings.",
+      "migration": "Missing key->[]->defaults. Previously unknown values.shortcut_bindings becomes known only under this grammar; extras homonyms remain opaque/inactive. Invalid known startup value recovers default key with warning/write-blocked original under existing policy, explicit recovery backup only. Valid unknown IDs remain nonfatal inactive diagnostics and lossless.",
+      "precedence": [
+        "Compiled registry defaults and native Settings defaults.",
+        "One existing selected path: explicit Window/Editor Preferences path; otherwise IMAGEJXX_CONFIG_DIR/preferences.json, then existing native OS config path; legacy fallback only under existing missing-current/no-explicit-path/config rules. Never merge several preference files.",
+        "Load/recover selected file and compile complete profile before first input; invalid recovery means safe defaults/warning, no partial dispatch.",
+        "Explicit subsequent Apply/import/update overrides live settings; persist=False is Window-local and disappears on reopen.",
+        "Native V3 document/workspace load never changes global shortcuts or replays config."
+      ],
+      "instances": "Each Window owns a profile; no watcher/hot reload/global hotkey/cross-window merge. Fresh Window reads persisted file. A supplied Python Preferences object supplies its path, not unsaved implicit values.",
+      "remaining": "Complete startup scripts/macros/plugins/automatic opens/platform controls and full G012/macro/tool options stay required follow-ons."
+    },
+    "S08_native_public_contract": {
+      "header": "NEW include/imagejxx/shortcuts.hpp; no ImGui/GLFW/Python/OS/public JSON dependency",
+      "types": {
+        "ShortcutPlatform": "closed Windows,Linux,MacOS enum",
+        "ShortcutKey": "closed S02 tokens",
+        "ShortcutChord": "owned named key and logical modifier bits; abstract Primary",
+        "ShortcutCommand": "immutable id,label,scope,optional default",
+        "ShortcutProfile": "immutable owned canonical overrides/inactive rows/all3 tables/diagnostics; detached getters",
+        "ShortcutEvent": "named key, physical ctrl/alt/shift/super booleans, down_edge,repeat; no character text",
+        "ShortcutContext": "typed focus None|Workspace|Canvas|ROIManager|Control|Text|Modal|Capture; window_focused/local_key_claimed/gesture_active/rearmed; explicit per-command availability. No callbacks/owner pointers; missing availability denies. Availability values must be actual bools for known registry IDs; unknown keys/type alternatives refuse. This pure decision API cannot bypass callback re-admission.",
+        "ShortcutDecision": "optional stable command_id, exact reason enum and consumed disposition; no image/OS execution",
+        "ShortcutLimits": "S03 checked caps"
+      },
+      "functions": [
+        "shortcut_commands()",
+        "parse_shortcut_chord(text)",
+        "format_shortcut_chord(chord)",
+        "resolve_shortcut_chord(chord,platform)",
+        "compile_shortcuts(override_lines,limits={}) -> immutable profile",
+        "evaluate_shortcut(profile,platform,event,context) -> decision"
+      ],
+      "settings": "One dedicated native validator canonicalizes/compiles shortcut_bindings through Settings::update/reset/migrate. PreferencesDocument owns files/opaque/recovery. No second settings map or parser.",
+      "desktop": "One DesktopShortcutController maps actual backend/ImGui focus/key state to evaluate; one invokeShellCommand table maps allowed stable IDs to current callbacks. No retained raw owner borrow across frames or off-thread Window calls.",
+      "python": "Thin native bindings with strict string/list/bool/enum parsing and detached copies. Base imagejxx requires no desktop. Optional Editor returns detached profile/diagnostics and uses existing update_settings(shortcut_bindings=...,persist=...). No Python matching/geometry or fake OS-delivery API.",
+      "sdk": "Fresh installed public-only core consumer for registry/three-platform literals/conflicts/Preferences/decisions; no Window, ImGui or Python.",
+      "no_action_schema": "Configuration persistence uses the one existing typed Settings key. No new image action record/session field; any invoked operation records its existing native command. Observed dispatch is diagnostics, not replayable arbitrary input."
+    }
+  },
+  "independent_membership": {
+    "fixtures": "Fresh private Preferences dirs; eager U8 Z2/Y6/X8 scalar7*z+3*y+x with history/metadata; scientific T2/C3/Z2/Y6/X8 U16=40*t+30*c+5*z+2*y+x for admitted/refused shell paths. No user/global settings, OS clipboard/printer or files touched. Profile-only actions read no planes and mutate no document state.",
+    "native_cases": [
+      "N01.canonical_parse_format_aliases",
+      "N02.primary_three_platforms_exact_modifiers",
+      "N03.registry18_defaults10_ids",
+      "N04.inherit_clear_reset_unknown_preservation",
+      "N05.complete_map_conflicts_no_partial_apply",
+      "N06.conservative_reserved_policy",
+      "N07.focus_priority_context_shadowing",
+      "N08.edge_repeat_rearm_ambiguity",
+      "N09.strict_types_enums_grammar_limits",
+      "N10.settings_update_reset_atomicity",
+      "N11.preferences_v1_legacy_unknown_roundtrip",
+      "N12.recovered_write_blocked_backup",
+      "N13.availability_busy_source_history",
+      "N14.roi_primary_a_canvas_local_claim",
+      "N15.owned_inputs_detached_values",
+      "N16.no_callbacks_pixels_os_side_effects"
+    ],
+    "python_api_cases": [
+      "A01.base_registry_no_desktop",
+      "A02.chord_platform_literals",
+      "A03.strict_types_atomic_bad_profile",
+      "A04.detached_values",
+      "A05.settings_inherit_clear_reset",
+      "A06.preferences_future_roundtrip",
+      "A07.recovery_import_export_atomic",
+      "A08.focus_admission_literals",
+      "A09.editor_persist_false_reopen",
+      "A10.binding_wrapper_same_profile"
+    ],
+    "sdk_markers": [
+      "S01.registry_platform_defaults",
+      "S02.conflicts_focus_exact_match",
+      "S03.preferences_future_recovery",
+      "S04.owned_caps_no_side_effects"
+    ],
+    "host_cases": [
+      "H01.defaults_callbacks_menu_hints",
+      "H02.text_modal_panel_focus",
+      "H03.canvas_roi_no_double_dispatch",
+      "H04.busy_shell_exceptions",
+      "H05.capture_assign_clear_reset_apply_cancel",
+      "H06.import_file_failure_atomic",
+      "H07.rearm_focus_profile_no_repeat",
+      "H08.scientific_same_admission_callbacks"
+    ],
+    "paired_cases": [
+      {
+        "id": "K01",
+        "work": "Default18/ten-binding hints; actual Open/Close and dirty-close Cancel; never forced close."
+      },
+      {
+        "id": "K02",
+        "work": "Actual default Undo/Redo/Copy/Cut/Paste/SelectAll/M from admitted canvas, one existing command/state/history/record effect per down edge; no held repeat."
+      },
+      {
+        "id": "K03",
+        "work": "Actual Capture Primary+K for Measure/Assign/Apply; old M inactive. Conflict with inherited Save exposes both IDs; no bad apply. Explicit two-row Reassign/Clear/Reset."
+      },
+      {
+        "id": "K04",
+        "work": "Actual search/invalid numeric/text retains keys. Modal/file/menu/panel blocks globals. Capture Escape affects capture only, not canvas/global close."
+      },
+      {
+        "id": "K05",
+        "work": "ROI-manager Primary+A selects rows only even when global reassigned; ordinary/linked navigation/edit/creation local ownership retained; active gesture blocks global and canceled release cannot resurrect."
+      },
+      {
+        "id": "K06",
+        "work": "API-labeled genuine queued job; actual disabled mutation/open/save/close keys do nothing. Configured Jobs/Preferences follow permitted shell path, real Jobs cancel lifecycle."
+      },
+      {
+        "id": "K07",
+        "work": "Actual Apply/Cancel/Defaults/Revert plus existing Import/Export dialogs roundtrip applied profile. API-labeled malformed/conflict/failing-destination preparation grants no pointer credit and proves atomic refusal/opaque preservation."
+      },
+      {
+        "id": "K08",
+        "work": "Persist/reopen profile, explicit path/env/legacy precedence and persistFalse Window-only. Fresh native Editor setup disclosed as fresh instance, not OS relaunch."
+      },
+      {
+        "id": "K09",
+        "work": "Actual assigned keys open/dispatch channel/Auto/plane/XYZ/Gaussian/rank consumers with same admission/menu callback. Some profile setup may be explicitly API; no new broad numeric parity claim."
+      },
+      {
+        "id": "K10",
+        "work": "Exact-modifier mismatch/reserved-invalid imports/inactive unknowns and owner/popup/profile change with held keys; no duplicate/latent/arbitrary action. Both launches use one map."
+      }
+    ],
+    "collection": "Proposed frozen16 native/10 required Python API/4 SDK markers/8 host/K01-K10 x imgui_cpp,imgui_python=20 paired. Reader declares exact EXPECTED_COLLECTION_COUNT/IDS case-major/context-minor before first gate; no optional missing-module skip/fallback. These are proposed memberships, not executed assertion counts.",
+    "bounds": {
+      "frames_per_case": 180,
+      "seconds_per_case": 15,
+      "raw_report_bytes_per_case": 16777216,
+      "archive_bytes": 33554432,
+      "documents": 16,
+      "parent_seconds_per_context": 60,
+      "bounded_wait_ms": 5000,
+      "native_test_seconds": 60,
+      "sdk_seconds": 30
+    },
+    "observations": "Path-only raw case index; actual key/pointer/text frames/IDs/rect/focus/key owners/modifiers; raw draft/effective profile/menu hints; dispatch attempt actual command/source/admission/error/callback result; full before/after state/history/workflow/settings bytes. Producer emits no expected/PASS. Test-owned literals calculate expected chords/priority/commands. All input/control metadata retained; large readbacks at named checkpoints. ImGui delivery is not OS input credit.",
+    "qualification_order": "Root adoption -> disjoint native/profile/Settings + independent assertions -> sole-owner shared dispatcher/editor -> thin API/fresh installed SDK/host/paired20 -> settled-source affected regressions/final artifact/license binding. Reuse green image kernels by source/evidence identity; do not recapture them when a chord only opens their existing panels."
+  },
+  "root_clarifications": [
+    {
+      "id": "C01.saved-row-focus",
+      "decision": "S05 protects P06g saved-row Numeric text/private draft, Pointer gestures, ordinary/linked canvas key ownership and rebind chooser using current-frame actual focus. No duplicate global dispatcher or bypass of existing native action capability checks. Explicit shortcut configuration must not resurrect or apply a saved-row draft."
+    },
+    {
+      "id": "C02.source-identity",
+      "decision": "Proposal pins are historical entry facts, not a hold on P06g. Current consumed source pins above include the added saved-row forwards/guards and current inventory64. Do not repeat settled discovery or claim new runtime from this entry; qualify changed source with exact consumed contracts."
+    },
+    {
+      "id": "C03.atomic-install",
+      "decision": "Compile/canonicalize the complete shortcut map and stage all fallible shortcut work before Preferences publication. Install live map/settings/labels with nonthrowing ownership swaps only after successful persistence. Repair any consumed existing preference/settings/history failure ordering needed for S06 within the serialized configuration integration; full G010 closure is not a prerequisite."
+    },
+    {
+      "id": "C04.portable-policy",
+      "decision": "The three-platform resolver/reservation table is an owned validation policy. Source-level simulated-platform decisions do not establish OS keyboard delivery, macOS behavior, accessibility, layout/AltGr/IME or ImageJ shortcut parity. Those applicable checks remain explicitly required."
+    }
+  ],
+  "execution": {
+    "ready_disjoint_work": "Native public registry/chord/profile/evaluation implementation and independent assertions may start after their concrete header/signature hold. No shared Window integration while P06g qualifies.",
+    "next_integrator": "root after P06g finite delivery; one shared Settings/Preferences/Window/CMake/binding integration",
+    "second_successor": "scientific integer orientation using existing native extraction services",
+    "not_prerequisites": [
+      "complete G033",
+      "histogram family closure",
+      "TIFF service",
+      "volume viewer",
+      "full history family"
+    ]
+  },
+  "acceptance_preservation": {
+    "acceptance_manifests_modified": false,
+    "families_complete": 0,
+    "fiji_component_decisions": "unchanged pending; no material incorporated by entry adoption",
+    "remaining_scope": "Bounded first G012 child only. Full pinned keyboard/macro/tool options, complete startup behavior, dynamic plugins, platform controls/global hotkeys, per-platform profile overrides and multi-stroke sequences remain open. This source-only proposal promotes no family/candidate/fixture/run/interface status."
+  }
+}

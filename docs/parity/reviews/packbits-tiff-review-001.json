@@ -1,0 +1,47 @@
+{
+  "state": "passed",
+  "scope": "Windows scientific PackBits IO and both shared ImGui hosts including full-IEEE Float32",
+  "audit": {
+    "path": "build/p08g-packbits-tiff001/final-audit001.json",
+    "bytes": 63480,
+    "sha256": "3d3a1147313202ea924ef335f1c08c05a5eb1b3302ba788f7135917e1b3e69cb"
+  },
+  "contracts": [
+    "Original bounded PackBits codec; no copied plugin implementation or new dependency",
+    "Row-wise output, checked worst-case bounds, exact decoded strip sizes and bounded cancellation",
+    "Append-only enum values 8-11 and separate format identities; older defaults/producers retained",
+    "Shared codec selection requires renewed consent; version 6 replay remains inert",
+    "Legacy complete PackBits admission promoted without dropping case IDs"
+  ],
+  "qualification": {
+    "windows_suites": 77,
+    "source_python_cases": 9752,
+    "installed_python_cases": 9752,
+    "baseline_retained": 9634,
+    "new_cases": 118,
+    "focused_cases": 309,
+    "physical_cases": 12,
+    "physical_contexts": 4,
+    "imagej_reads": 94,
+    "imagej_filters": 6,
+    "installed_io_sdk": "RGB and full-IEEE consumers passed"
+  },
+  "fixture_fix": {
+    "failed_gate": "float-cpp001",
+    "reason": "Original Float32 carrier generator wrote tag 8 around PackBits payload; decoder correctly refused it",
+    "correction": "Tag 32773; final float-cpp002 and all source/installed gates pass",
+    "unrelated_freeze": "packbits-cpp001 generator-only amendment verified by exact earlier-byte reconstruction"
+  },
+  "cleanup_net_bytes": 1682045831,
+  "dependencies_added": false,
+  "limitations": [
+    "No OS-input/GPU equivalence claim; actual ImGui inputs and CPU readbacks observed",
+    "No Linux TIFF/product qualification",
+    "LZW/predictors, tiles/BigTIFF, broader metadata/high-bit/alpha and remaining ImageJ/Fiji/editor/release gaps remain open"
+  ],
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  }
+}

@@ -1,0 +1,1115 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-10",
+  "plan_task": "3c.2",
+  "scope": "All 86 current XY-plane registry dispatch paths; excludes other API/3D/file/batch operations and does not replace M0 commands.json.",
+  "completion": "No path is certified complete. Finish common stages, additional helpers, individual options, measured cancellation and real UI checks before changing capability flags.",
+  "common_remaining": [
+    "Argument freezing, image copies and standard allocations remain indivisible and need budget admission/gates.",
+    "Dataset/source reads, ROI masking, geometry staging and publication are additional paths outside the primary kernel.",
+    "Full option/type/ROI/axis cancellation and measured latency coverage remain required; capability flags stay uncertified."
+  ],
+  "source_sha256": {
+    "src/desktop/io.cpp": "d5856e7d43b995a63c143696cf123e1e590d1fc39bc32343add8541563fb6794",
+    "src/native/analysis.cpp": "a59ccc54da3db518a02dfd6181969b1a59f5bacde9eb553cf01ba66a3de37a1a",
+    "src/native/dataset.cpp": "64080ce5ae1688177a35b379159b2bc12f76a4cdc577ada6e500f3e1b87951b3",
+    "src/native/execution.cpp": "f4d07bd700e542b9b70b14c22022e7ee02d42f34c7b8af93958d8d36c2c00348",
+    "src/native/filters.cpp": "104cd82e37ff4fc15d58b8874f89d5c3dc3494b7c646c529a104c999bcf527a1",
+    "src/native/frequency.cpp": "bd2dcf983e6efa49a6c584df8b52c390d193ddecbd69bcb5ae61abb9929bea09",
+    "src/native/image.cpp": "4d7b41262da1b597a694a4a53ce45c2417c26f7311c17f8ae6b945d8a1c8c19f",
+    "src/native/kernel_control.cpp": "c647178f4bf74a002a50b941d675ff6f567552c455a8fee4af15afb92ce3dfa1",
+    "src/native/kernel_control.hpp": "0291c5a8a7f47eeaf10b436ebe723f906eb4b63cb59d66a10e91d7ee1c2f21af",
+    "src/native/operation_kernel.inc": "38e2892bc33d08dee5e409ea826ba06f28f6a295fa32cc18703c7de017d655be",
+    "src/native/operations.cpp": "9f28b42da0d7b7e39d0289b5735a00d5ccb73e7aad1ae7dc0f5ef228db2bb10d",
+    "src/native/segmentation.cpp": "f345561a4470086bdca3c621080b4f8c6f3510a8adf5e020db68459e44a327eb",
+    "src/native/transforms.cpp": "4346c343407d574ea2a1a8d6975028434f043a1f1894d20718d76465112c60fd",
+    "src/native/binary.cpp": "ae6a10e0e8160c63a1df5fb525feb69c5a7cc189240d1fce8f41f4e4036464be",
+    "src/native/conversion.cpp": "7d1623195c2a72d8f8c732a9a270a5ab89943e82e9d92ba75394ed97e2b16aae",
+    "src/native/targets.cpp": "dba6aaf8fda860ceb895bbf648a5ee9eafc8e5453a8fa39e8e4b1c3905e6279f"
+  },
+  "operations": [
+    {
+      "operation": "convert",
+      "primary_entrypoint": "convert",
+      "primary_source": "src/native/image.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "grayscale",
+      "primary_entrypoint": "grayscale",
+      "primary_source": "src/native/transforms.cpp",
+      "status": "needs_loop_audit",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "Audit direct geometry, color, channel splitting/merging and drawing loops as well as sampled interpolation."
+      ]
+    },
+    {
+      "operation": "adjust_brightness_contrast",
+      "primary_entrypoint": "linear",
+      "primary_source": "src/native/image.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "normalize",
+      "primary_entrypoint": "normalize",
+      "primary_source": "src/native/image.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "equalize_histogram",
+      "primary_entrypoint": "equalize_histogram",
+      "primary_source": "src/native/analysis.cpp",
+      "status": "needs_loop_audit",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "Audit histogram/threshold/equalization scans, sorts, reductions and iterative methods."
+      ]
+    },
+    {
+      "operation": "in_range",
+      "primary_entrypoint": "in_range",
+      "primary_source": "src/native/image.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "flip",
+      "primary_entrypoint": "flip",
+      "primary_source": "src/native/transforms.cpp",
+      "status": "needs_loop_audit",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "Audit direct geometry, color, channel splitting/merging and drawing loops as well as sampled interpolation."
+      ]
+    },
+    {
+      "operation": "rotate90",
+      "primary_entrypoint": "rotate90",
+      "primary_source": "src/native/transforms.cpp",
+      "status": "needs_loop_audit",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "Audit direct geometry, color, channel splitting/merging and drawing loops as well as sampled interpolation."
+      ]
+    },
+    {
+      "operation": "rotate",
+      "primary_entrypoint": "rotate",
+      "primary_source": "src/native/transforms.cpp",
+      "status": "needs_loop_audit",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "Audit direct geometry, color, channel splitting/merging and drawing loops as well as sampled interpolation."
+      ]
+    },
+    {
+      "operation": "resize",
+      "primary_entrypoint": "resize",
+      "primary_source": "src/native/transforms.cpp",
+      "status": "needs_loop_audit",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "Audit direct geometry, color, channel splitting/merging and drawing loops as well as sampled interpolation."
+      ]
+    },
+    {
+      "operation": "translate",
+      "primary_entrypoint": "affine_transform",
+      "primary_source": "src/native/transforms.cpp",
+      "status": "needs_loop_audit",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "Audit direct geometry, color, channel splitting/merging and drawing loops as well as sampled interpolation."
+      ]
+    },
+    {
+      "operation": "affine_transform",
+      "primary_entrypoint": "affine_transform",
+      "primary_source": "src/native/transforms.cpp",
+      "status": "needs_loop_audit",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "Audit direct geometry, color, channel splitting/merging and drawing loops as well as sampled interpolation."
+      ]
+    },
+    {
+      "operation": "binning",
+      "primary_entrypoint": "bin",
+      "primary_source": "src/native/transforms.cpp",
+      "status": "needs_loop_audit",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "Audit direct geometry, color, channel splitting/merging and drawing loops as well as sampled interpolation."
+      ]
+    },
+    {
+      "operation": "resize_canvas",
+      "primary_entrypoint": "resize_canvas",
+      "primary_source": "src/native/transforms.cpp",
+      "status": "needs_loop_audit",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "Audit direct geometry, color, channel splitting/merging and drawing loops as well as sampled interpolation."
+      ]
+    },
+    {
+      "operation": "crop",
+      "primary_entrypoint": "crop",
+      "primary_source": "src/native/transforms.cpp",
+      "status": "needs_loop_audit",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "Audit direct geometry, color, channel splitting/merging and drawing loops as well as sampled interpolation."
+      ]
+    },
+    {
+      "operation": "rgb_to_hsv",
+      "primary_entrypoint": "rgb_to_hsv",
+      "primary_source": "src/native/transforms.cpp",
+      "status": "needs_loop_audit",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "Audit direct geometry, color, channel splitting/merging and drawing loops as well as sampled interpolation."
+      ]
+    },
+    {
+      "operation": "hsv_to_rgb",
+      "primary_entrypoint": "hsv_to_rgb",
+      "primary_source": "src/native/transforms.cpp",
+      "status": "needs_loop_audit",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "Audit direct geometry, color, channel splitting/merging and drawing loops as well as sampled interpolation."
+      ]
+    },
+    {
+      "operation": "color_deconvolution",
+      "primary_entrypoint": "color_deconvolution",
+      "primary_source": "src/native/transforms.cpp",
+      "status": "needs_loop_audit",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "Audit direct geometry, color, channel splitting/merging and drawing loops as well as sampled interpolation."
+      ]
+    },
+    {
+      "operation": "apply_lut",
+      "primary_entrypoint": "apply_lut",
+      "primary_source": "src/native/image.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "math",
+      "primary_entrypoint": "point",
+      "primary_source": "src/native/image.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "invert",
+      "primary_entrypoint": "point",
+      "primary_source": "src/native/image.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "add",
+      "primary_entrypoint": "point",
+      "primary_source": "src/native/image.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "subtract",
+      "primary_entrypoint": "point",
+      "primary_source": "src/native/image.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "multiply",
+      "primary_entrypoint": "point",
+      "primary_source": "src/native/image.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "divide",
+      "primary_entrypoint": "point",
+      "primary_source": "src/native/image.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "absolute",
+      "primary_entrypoint": "point",
+      "primary_source": "src/native/image.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "square",
+      "primary_entrypoint": "point",
+      "primary_source": "src/native/image.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "sqrt",
+      "primary_entrypoint": "point",
+      "primary_source": "src/native/image.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "log",
+      "primary_entrypoint": "point",
+      "primary_source": "src/native/image.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "log1p",
+      "primary_entrypoint": "point",
+      "primary_source": "src/native/image.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "exp",
+      "primary_entrypoint": "point",
+      "primary_source": "src/native/image.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "gamma",
+      "primary_entrypoint": "point",
+      "primary_source": "src/native/image.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "clip",
+      "primary_entrypoint": "point",
+      "primary_source": "src/native/image.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "smooth",
+      "primary_entrypoint": "box_blur",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "sharpen",
+      "primary_entrypoint": "convolve",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "convolve",
+      "primary_entrypoint": "convolve",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp",
+        "tests/native/test_jobs.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "gaussian_blur",
+      "primary_entrypoint": "gaussian_blur",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp",
+        "tests/native/test_jobs.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "rank_filter",
+      "primary_entrypoint": "rank_filter",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "median_filter",
+      "primary_entrypoint": "rank_filter",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp",
+        "tests/native/test_jobs.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "minimum_filter",
+      "primary_entrypoint": "rank_filter",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "maximum_filter",
+      "primary_entrypoint": "rank_filter",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "variance_filter",
+      "primary_entrypoint": "rank_filter",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "unsharp_mask",
+      "primary_entrypoint": "unsharp_mask",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "remove_outliers",
+      "primary_entrypoint": "remove_outliers",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "find_edges",
+      "primary_entrypoint": "sobel",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "laplacian",
+      "primary_entrypoint": "convolve",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "difference_of_gaussians",
+      "primary_entrypoint": "gaussian_blur",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "local_maxima",
+      "primary_entrypoint": "local_maxima",
+      "primary_source": "src/native/segmentation.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "Nested rank preparation and segmentation loops are instrumented; all options, peak/plateau fixtures and measured cancellation remain required.",
+        "Scans, queues, distance envelopes, skeleton passes and watershed plateaus are instrumented. Finish all option/type fixtures, queue allocation admission and measured workloads."
+      ]
+    },
+    {
+      "operation": "bilateral_filter",
+      "primary_entrypoint": "bilateral_filter",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "kuwahara_filter",
+      "primary_entrypoint": "kuwahara_filter",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "anisotropic_diffusion",
+      "primary_entrypoint": "anisotropic_diffusion",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "threshold",
+      "primary_entrypoint": "threshold",
+      "primary_source": "src/native/image.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "auto_mask",
+      "primary_entrypoint": "auto_mask",
+      "primary_source": "src/native/analysis.cpp",
+      "status": "needs_loop_audit",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "Audit histogram/threshold/equalization scans, sorts, reductions and iterative methods."
+      ]
+    },
+    {
+      "operation": "local_threshold",
+      "primary_entrypoint": "local_threshold",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "Shared box/rank/square/output loops are instrumented; every method's option/type/cancellation fixture coverage remains required."
+      ]
+    },
+    {
+      "operation": "morphology",
+      "primary_entrypoint": "morphology",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "erode",
+      "primary_entrypoint": "morphology",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "dilate",
+      "primary_entrypoint": "morphology",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "opening",
+      "primary_entrypoint": "morphology",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "closing",
+      "primary_entrypoint": "morphology",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "top_hat",
+      "primary_entrypoint": "morphology",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "black_hat",
+      "primary_entrypoint": "morphology",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "subtract_background",
+      "primary_entrypoint": "subtract_background",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "rolling_ball_background",
+      "primary_entrypoint": "rolling_ball_background",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "subtract_rolling_ball",
+      "primary_entrypoint": "subtract_rolling_ball",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "fill_holes",
+      "primary_entrypoint": "fill_holes",
+      "primary_source": "src/native/segmentation.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp",
+        "tests/python/test_jobs.py"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "Scans, queues, distance envelopes, skeleton passes and watershed plateaus are instrumented. Finish all option/type fixtures, queue allocation admission and measured workloads."
+      ]
+    },
+    {
+      "operation": "binary_outline",
+      "primary_entrypoint": "binary_outline",
+      "primary_source": "src/native/segmentation.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "Scans, queues, distance envelopes, skeleton passes and watershed plateaus are instrumented. Finish all option/type fixtures, queue allocation admission and measured workloads."
+      ]
+    },
+    {
+      "operation": "skeletonize",
+      "primary_entrypoint": "skeletonize",
+      "primary_source": "src/native/segmentation.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp",
+        "tests/python/test_jobs.py"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "Scans, queues, distance envelopes, skeleton passes and watershed plateaus are instrumented. Finish all option/type fixtures, queue allocation admission and measured workloads."
+      ]
+    },
+    {
+      "operation": "remove_small_objects",
+      "primary_entrypoint": "remove_small_objects",
+      "primary_source": "src/native/segmentation.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "Scans, queues, distance envelopes, skeleton passes and watershed plateaus are instrumented. Finish all option/type fixtures, queue allocation admission and measured workloads."
+      ]
+    },
+    {
+      "operation": "clear_border",
+      "primary_entrypoint": "clear_border",
+      "primary_source": "src/native/segmentation.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "Scans, queues, distance envelopes, skeleton passes and watershed plateaus are instrumented. Finish all option/type fixtures, queue allocation admission and measured workloads."
+      ]
+    },
+    {
+      "operation": "distance_transform",
+      "primary_entrypoint": "distance_transform",
+      "primary_source": "src/native/segmentation.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "Scans, queues, distance envelopes, skeleton passes and watershed plateaus are instrumented. Finish all option/type fixtures, queue allocation admission and measured workloads."
+      ]
+    },
+    {
+      "operation": "binary_watershed",
+      "primary_entrypoint": "binary_watershed",
+      "primary_source": "src/native/segmentation.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "Nested rank preparation and segmentation loops are instrumented; all options, peak/plateau fixtures and measured cancellation remain required.",
+        "Scans, queues, distance envelopes, skeleton passes and watershed plateaus are instrumented. Finish all option/type fixtures, queue allocation admission and measured workloads."
+      ]
+    },
+    {
+      "operation": "label",
+      "primary_entrypoint": "connected_components",
+      "primary_source": "src/native/segmentation.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp",
+        "tests/python/test_jobs.py"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "Scans, queues, distance envelopes, skeleton passes and watershed plateaus are instrumented. Finish all option/type fixtures, queue allocation admission and measured workloads."
+      ]
+    },
+    {
+      "operation": "add_noise",
+      "primary_entrypoint": "add_noise",
+      "primary_source": "src/native/image.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "fft_bandpass",
+      "primary_entrypoint": "fft_bandpass",
+      "primary_source": "src/native/frequency.cpp",
+      "status": "needs_loop_audit",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "Audit Fourier setup, transforms and frequency-mask loops and temporary allocations."
+      ]
+    },
+    {
+      "operation": "fill",
+      "primary_entrypoint": "fill",
+      "primary_source": "src/native/image.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "draw_line",
+      "primary_entrypoint": "draw_line",
+      "primary_source": "src/native/transforms.cpp",
+      "status": "needs_loop_audit",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "Audit direct geometry, color, channel splitting/merging and drawing loops as well as sampled interpolation."
+      ]
+    },
+    {
+      "operation": "clahe",
+      "primary_entrypoint": "clahe",
+      "primary_source": "src/native/filters.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "calculate",
+      "primary_entrypoint": "calculate",
+      "primary_source": "src/native/image.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": []
+    },
+    {
+      "operation": "paint_stroke",
+      "primary_entrypoint": "draw_line",
+      "primary_source": "src/native/transforms.cpp",
+      "status": "needs_loop_audit",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "split_channels/merge_channels and the dispatch's channel/point loops remain unaudited.",
+        "Audit direct geometry, color, channel splitting/merging and drawing loops as well as sampled interpolation."
+      ]
+    },
+    {
+      "operation": "fill_color",
+      "primary_entrypoint": "fill",
+      "primary_source": "src/native/image.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_kernel_control.cpp"
+      ],
+      "evidence_limit": "Linked test files cover selected helpers/fixtures, not every option of this command.",
+      "remaining": [
+        "split_channels/merge_channels and the dispatch's channel/point loops remain unaudited."
+      ]
+    },
+    {
+      "operation": "binary_erode",
+      "primary_entrypoint": "binary_morphology",
+      "primary_source": "src/native/binary.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_binary.cpp",
+        "tests/python/test_binary_options.py"
+      ],
+      "evidence_limit": "Direct native validation/erosion/dilation phases and selected shared execution/UI checks; no full latency/ROI/axis/allocation certification.",
+      "remaining": [
+        "Measured cancellation and complete preparation/ROI/publication/allocation and supported-platform coverage"
+      ]
+    },
+    {
+      "operation": "binary_dilate",
+      "primary_entrypoint": "binary_morphology",
+      "primary_source": "src/native/binary.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_binary.cpp",
+        "tests/python/test_binary_options.py"
+      ],
+      "evidence_limit": "Direct native validation/erosion/dilation phases and selected shared execution/UI checks; no full latency/ROI/axis/allocation certification.",
+      "remaining": [
+        "Measured cancellation and complete preparation/ROI/publication/allocation and supported-platform coverage"
+      ]
+    },
+    {
+      "operation": "binary_open",
+      "primary_entrypoint": "binary_morphology",
+      "primary_source": "src/native/binary.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_binary.cpp",
+        "tests/python/test_binary_options.py"
+      ],
+      "evidence_limit": "Direct native validation/erosion/dilation phases and selected shared execution/UI checks; no full latency/ROI/axis/allocation certification.",
+      "remaining": [
+        "Measured cancellation and complete preparation/ROI/publication/allocation and supported-platform coverage"
+      ]
+    },
+    {
+      "operation": "binary_close",
+      "primary_entrypoint": "binary_morphology",
+      "primary_source": "src/native/binary.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_binary.cpp",
+        "tests/python/test_binary_options.py"
+      ],
+      "evidence_limit": "Direct native validation/erosion/dilation phases and selected shared execution/UI checks; no full latency/ROI/axis/allocation certification.",
+      "remaining": [
+        "Measured cancellation and complete preparation/ROI/publication/allocation and supported-platform coverage"
+      ]
+    },
+    {
+      "operation": "convert_image",
+      "primary_entrypoint": "convert_image",
+      "primary_source": "src/native/conversion.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_conversion.cpp",
+        "tests/python/test_conversion_options.py",
+        "tests/native/test_desktop.cpp"
+      ],
+      "evidence_limit": "Named validation/range/pixel phases and selected synchronous/queued/held-preview/publication/UI checks; no full latency/ROI/axis/allocation certification",
+      "remaining": [
+        "Measured cancellation and complete preparation/ROI/publication/allocation and supported-platform coverage"
+      ]
+    },
+    {
+      "operation": "invert_uint16",
+      "primary_entrypoint": "invert_uint16",
+      "primary_source": "src/native/conversion.cpp",
+      "status": "partial_instrumentation",
+      "registry_cancellation_certified": false,
+      "instrumentation_evidence": [
+        "tests/native/test_conversion.cpp",
+        "tests/python/test_conversion_options.py",
+        "tests/native/test_desktop.cpp"
+      ],
+      "evidence_limit": "Named validation/range/pixel phases and selected synchronous/queued/held-preview/publication/UI checks; no full latency/ROI/axis/allocation certification",
+      "remaining": [
+        "Measured cancellation and complete preparation/ROI/publication/allocation and supported-platform coverage"
+      ]
+    }
+  ]
+}

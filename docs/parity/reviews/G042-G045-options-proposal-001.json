@@ -1,0 +1,1404 @@
+{
+  "schema_version": 1,
+  "id": "G042-G045-options-proposal-001",
+  "state": "root_reviewed_partial_option_map_discovery_only",
+  "acceptance_claim": false,
+  "scope": "One bounded option map for G042 Standard 2D filters, G043 True 3D filters, G044 Filter dialogs and previews and G045 Processing extent. Reuse the six existing rank requirements and owned services. This document changes no requirement, candidate assignment, verification, incorporation or family decision.",
+  "classification_policy": {
+    "reused_implemented_subset": "A concrete owned source route exists; its exact qualified scope remains separate from whole-family or upstream compatibility.",
+    "missing_behavior": "The required user outcome is absent or incomplete in the inspected owned route.",
+    "unregistered": "No matching option-child requirement is registered; an existing kernel or discovery descriptor does not supply that contract.",
+    "explicit_refusal": "The current adapter intentionally rejects the stated request; preserve the refusal until an independent extension is adopted.",
+    "eligibility_pending": "The current candidate commercial review remains pending. Descriptor names and public-domain core lineage do not approve a Fiji component.",
+    "unresolved_discovery": "The pinned descriptor or family requirement exists, but exact implementation/dialog/runtime contents were not available through the consumed reviewed primary-source links. Do not invent options or defaults.",
+    "counting": "Descriptors, separators, aliases, methods, option children and executable user workflows are different objects. No descriptor count in this proposal is a feature/completion count. G044 and G045 are crosscutting obligations on operations, not duplicate commands."
+  },
+  "primary_source_boundary": {
+    "reference": "Standalone ImageJ1.54r commit62db90a269cccc1ac79f658e4602043214ed055b, distinct from Fiji-bundled1.54p.",
+    "reviewed_link_chain": [
+      "docs/parity/reviews/G042-rank-reference-freeze-001.json: reference.reused_original_source_root and behavioral_source_members",
+      "docs/parity/reviews/G042-rank-native-adoption-001.json: exact finite scalar profile and preserved compatibility",
+      "Current commands.json candidate evidence: exact IJ_Props.txt archive member, line and SHA256"
+    ],
+    "contents_read": [
+      "build/references/roi-style-imagej154r/sources/ij/plugin/filter/RankFilters.java",
+      "build/references/roi-style-imagej154r/sources/ij/plugin/filter/PlugInFilterRunner.java",
+      "build/references/roi-style-imagej154r/sources/IJ_Props.txt"
+    ],
+    "identity_check": "The three local member hashes match the exact reviewed/candidate member identities; no source-tree scan, archive extraction, Java compilation, capture or cache repair occurred.",
+    "not_consumed": "Convolver, GaussianBlur, UnsharpMask, Filters3D, GaussianBlur3D and Fiji plugin implementation sources were not opened: no exact individual primary-file pin/path was consumed from the reviewed records for them. Their descriptor routes are recorded; upstream option defaults/types/axes/ROI behavior remain unresolved. Owned equivalents below are not substituted as upstream evidence."
+  },
+  "option_groups": [
+    {
+      "id": "G042.existing-finite-rank-profile",
+      "families": [
+        "G042",
+        "G044",
+        "G045"
+      ],
+      "classification": [
+        "reused_implemented_subset"
+      ],
+      "preserved_contract_ids": [
+        "G042.rank-imagej.profile-method-radius",
+        "G042.rank-imagej.targets-roi",
+        "G042.rank-imagej.preview-publication",
+        "G042.rank-imagej.lifecycle-resources",
+        "G042.rank-imagej.record-replay-rebind",
+        "G042.rank-imagej.persistence-surfaces"
+      ],
+      "owned_route": "rank_filter_imagej; RankFilterMethod/RankFilterCommandOptions/ResolvedRankFilterCommand; Application prepare/submit/publish; public Python wrappers; shared RankPanel/Window; strict replay/full explicit rebind; current P06f evidence remains separately bound.",
+      "methods": [
+        "minimum",
+        "maximum",
+        "median",
+        "mean"
+      ],
+      "options": [
+        {
+          "name": "method",
+          "type": "exact lowercase string or typed enum",
+          "default": "median"
+        },
+        {
+          "name": "radius",
+          "type": "finite real",
+          "default": 2.0,
+          "units": "pixels",
+          "minimum": 0.0,
+          "maximum": "Median100; Minimum/Maximum/Mean1000",
+          "radius_zero": "five-point cross, not identity"
+        }
+      ],
+      "types": "Canonical finite scalar S1 UInt8/UInt16/Float32; source shape/type preserved. Scientific C is distinct from interleaved samples.",
+      "axes_roi": "Independent XY at captured TCZ; current/all-Z-at-captured-TC/compact TCZ ranges/ordered positions; WholePlane, ActiveSelection or positioned ROI union. Area bounds set numerical phase, original halo remains readable, holes/exterior restore original bits, explicit empty/unmatched means no writes.",
+      "ui": "Process > Filters > Rank filter (ImageJ); method combo, numeric radius text, Preview checkbox, Create new image, Apply/OK/Cancel and applicable scientific target controls. Parameter changes resubmit while Preview is enabled. Session radius memory is adopted owned policy, not a new durable preference.",
+      "primary_anchors": "RankFilters.java:24-45,73-197,242-304,562-590,866-889; PlugInFilterRunner.java:205-274",
+      "explicit_refusals": "Volume, RGB/RGBA, Float64, quiet-NaN metadata policy/nonfinite/noncanonical providers, native-only border/footprint/cval and unknown fields. Do not relax these to cover missing siblings.",
+      "remaining": "Existing six registered rows keep their current unverified/pending decisions and empty formal bindings. Complete their source/artifact/installed interface obligations without reopening unchanged finite numerical evidence."
+    },
+    {
+      "id": "G042.native-rank-compatibility",
+      "families": [
+        "G042"
+      ],
+      "classification": [
+        "reused_implemented_subset"
+      ],
+      "owned_route": "rank_filter and median_filter/minimum_filter/maximum_filter/variance_filter aliases in native catalog/kernel, Image API and Python.",
+      "methods": [
+        "minimum",
+        "maximum",
+        "median",
+        "mean",
+        "variance",
+        "stddev"
+      ],
+      "options": [
+        {
+          "name": "radius",
+          "type": "integer",
+          "default": 1,
+          "bounds": "Owned require_radius policy0..4096; distinct from upstream fractional radius"
+        },
+        {
+          "name": "method",
+          "type": "string",
+          "default": "median"
+        },
+        {
+          "name": "footprint",
+          "type": "string",
+          "default": "disk",
+          "choices": [
+            "disk",
+            "square"
+          ]
+        },
+        {
+          "name": "border",
+          "type": "string",
+          "default": "reflect",
+          "choices": [
+            "reflect",
+            "nearest",
+            "wrap",
+            "constant"
+          ]
+        },
+        {
+          "name": "cval",
+          "type": "real",
+          "default": 0.0
+        }
+      ],
+      "types_axes": "Image kernel loops interleaved channels; first four methods retain declared Image type, variance/stddev return Float64. Integer disk uses dx*dx+dy*dy<=radius*radius. This is owned compatibility, not an ImageJ1.54r type/arithmetic claim or a scientific desktop adapter.",
+      "preservation": "Keep existing IDs/defaults/records/border/footprint/mean and promoted variance/stddev semantics unchanged. Never replace legacy rank with rank_filter_imagej globally."
+    },
+    {
+      "id": "G042.remaining-rankfilters-siblings",
+      "families": [
+        "G042",
+        "G044",
+        "G045"
+      ],
+      "classification": [
+        "missing_behavior",
+        "unregistered",
+        "eligibility_pending"
+      ],
+      "primary_methods": [
+        {
+          "name": "Variance",
+          "route": "Process/Filters filters08 -> RankFilters(variance)",
+          "controls": "Radius initially2 or last positive per-method value; finite dialog range0..1000; Preview; stack setup. Same processor layout is retained, variance is source-ordered sum-of-squares minus square-of-sum divided by point count, clipped to0/maxValue. U16/Float32 final/preview display stretches histogram0.5; byte/RGB skip that display change.",
+          "owned_subset": "Legacy native variance/stddev Float64 kernels exist; an independently specified promoted scientific child and an exact ImageJ variance compatibility profile are different policies."
+        },
+        {
+          "name": "Despeckle",
+          "route": "Process/Noise noise05 -> RankFilters(despeckle)",
+          "controls": "No rank parameter dialog; converts to Median radius1, then stack setup. Source fractional footprint is not the old native integer-disk radius1.",
+          "owned_subset": "Median kernels exist; no specifically registered Despeckle workflow/preset."
+        },
+        {
+          "name": "Remove Outliers",
+          "route": "Process/Noise noise06 -> RankFilters(outliers)",
+          "controls": "Per-method radius initially2; radius slider0.5..25 step0.5, while listener accepts0..100; threshold initially50, slider max max(2*lastThreshold, rawStdDev), listener threshold>=0; Bright/Dark choice initially Bright; Preview; stack setup. Interactive accept remembers radius/threshold/choice; macro options do not.",
+          "owned_subset": "Owned remove_outliers has integer radius2, threshold50, bright=true and native median semantics; it is not an adopted source-compatible profile."
+        },
+        {
+          "name": "Remove NaNs",
+          "route": "Process/Noise noise07 -> RankFilters(nan)",
+          "controls": "Source setup requires32-bit image. Radius initially2/last positive value, accepted0..100, Preview and stack setup. NaN-aware median replaces NaNs.",
+          "owned_subset": "Current finite rank profile explicitly refuses this input policy; keep refusal and define a separate nonfinite contract."
+        },
+        {
+          "name": "Top Hat",
+          "route": "Process/Filters filters09 -> RankFilters(tophat)",
+          "controls": "Radius initially2/last positive value, accepted0..1000; Light Background initiallyfalse; Don't subtract (grayscale open) initiallyfalse; Preview; stack setup. Accept remembers those interactive options. Subtraction changes final display policy; no-subtract preserves it.",
+          "owned_subset": "Owned morphology/background functions are only reusable kernels; no exact linked Top Hat option-child/profile/UI qualification is registered."
+        },
+        {
+          "name": "Show Circular Masks",
+          "route": "Process/Filters filters18 -> RankFilters(masks)",
+          "controls": "Source utility builds150x150 Float32 masks for radii0.5 through49.5 step0.5, labels radius/size, and displays a stack. This is a diagnostic/viewing route, not an extra filtering method.",
+          "owned_subset": "Public rank_filter_kernel_imagej exposes footprint metadata; no equivalent masks-view command is registered."
+        }
+      ],
+      "api_only_discovery": "RankFilters constants OPEN/CLOSE and compound-filter code exist, but setup has no separate open/close command argument in the consumed source. Keep API/menu-route discovery distinct; do not manufacture two menu features.",
+      "types_roi_boundary": "Primary RankFilters advertises DOES_ALL/SUPPORTS_MASKING/KEEP_PREVIEW and processes processor channels. Remove NaNs has its explicit32-bit restriction. Shared source runner sets only area ROIs and restores irregular-mask exterior. Full sibling-specific RGB/nonfinite/arithmetic/stack behavior remains unqualified; finite S1 acceptance is not extended by these source observations."
+    },
+    {
+      "id": "G042.other-standard-filter-leads",
+      "families": [
+        "G042",
+        "G044",
+        "G045"
+      ],
+      "classification": [
+        "reused_implemented_subset",
+        "unregistered",
+        "unresolved_discovery",
+        "eligibility_pending"
+      ],
+      "primary_descriptor_routes": [
+        "Process/Filters Convolve... -> ij.plugin.filter.Convolver",
+        "Process/Filters Gaussian Blur... -> ij.plugin.filter.GaussianBlur",
+        "Process/Filters Unsharp Mask... -> ij.plugin.filter.UnsharpMask"
+      ],
+      "owned_options_only": [
+        "convolve: numeric kernel; border reflect/nearest/wrap/constant; cval0; normalize control. Existing catalog/kernel and Image/Python entry points are available.",
+        "gaussian_blur: sigma1 scalar/(Y,X), reflect border default. gaussian_blur_imagej typed command: raw sigma2/scaled_units=false, captured target/calibration and nearest-edge profile. These are distinct preserved APIs.",
+        "unsharp_mask: sigma1 and amount1; owned Gaussian-difference arithmetic. Existing route is not proof of ImageJ weight/radius/UI defaults.",
+        "Other owned familiar presets smooth(radius1 square mean), sharpen(3x3 kernel) and find_edges(Sobel Float64) exist in catalog/Python; current descriptor query produced no core candidate for these labels. Their pinned builtin menu/algorithm mapping remains discovery work, not a claim they are absent upstream."
+      ],
+      "unresolved": "Exact upstream numeric controls/defaults/types/axes/ROI/dialog/replay semantics require individually pinned Convolver/GaussianBlur/UnsharpMask primary sources and independent fixtures. Do not fill these from familiar ImageJ recollection or owned defaults."
+    },
+    {
+      "id": "G043.volume-filter-contract",
+      "families": [
+        "G043",
+        "G044",
+        "G045"
+      ],
+      "classification": [
+        "reused_implemented_subset",
+        "missing_behavior",
+        "unregistered",
+        "explicit_refusal",
+        "unresolved_discovery",
+        "eligibility_pending"
+      ],
+      "primary_descriptor_routes": [
+        "Gaussian Blur 3D -> GaussianBlur3D",
+        "Median/Mean/Minimum/Maximum/Variance 3D -> Filters3D(median/mean/min/max/var)"
+      ],
+      "owned_subset": "analysis.cpp gaussian_blur3d(Stack,sx,sy,sz,border) performs separable XYZ Gaussian; Python sigma defaults1 scalar/(Z,Y,X), border reflect, channels independent. Legacy Window gaussian3d uses eager Z frames, sigma_x/y/z defaults1, reflect, and restores an XY write mask per slice. Scientific C/T volume targeting is not provided by that legacy route.",
+      "missing": "True XYZ median/mean/min/max/variance neighborhoods, calibrated radii, scientific C/T targeting, volume ROI semantics, halo/cache/scratch admission, cancellation/progress, typed records/replay, complete Python/shared ImGui controls and independent expected fixtures.",
+      "explicit_refusal": "Current generic prepared executor requires Planes; current typed rank/Gaussian and target panel remain scoped plane operations. An ExecutionMode::Volume enum is not a working volume executor.",
+      "unresolved": "Pinned descriptors establish names/arguments only. Exact Filters3D/GaussianBlur3D dialog radii/sigma defaults, units, types, boundaries, ROI and calibration handling remain unresolved because their individually pinned implementation sources were not consumed. Four VIB descriptor leads are included only for later review; two maximum labels share one invocation. No Fiji eligibility is inferred."
+    },
+    {
+      "id": "G044.shared-dialog-consumers",
+      "families": [
+        "G044"
+      ],
+      "classification": [
+        "reused_implemented_subset",
+        "missing_behavior",
+        "unregistered"
+      ],
+      "owned_subset": "GaussianPanel and RankPanel share one GaussianJobs preview/Apply pair, operation-specific generations, captured source/target/parameters, supersession, cancel/stale/close cleanup, explicit Preview enable and parameter-change resubmission while enabled; rank adds accepted per-method radius memory and NewDocument. Reuse these services rather than another scheduler/dialog framework.",
+      "missing": "Required sliders where appropriate, linked histogram/display feedback, reusable user presets and specialized controls for remaining filter options; automatic preview admission/latency/resource policy and preview/Apply parameter/target agreement for every consumed filter.",
+      "primary_boundary": "Rank source provides a nonblocking radius field, special outlier sliders and per-command Preview callbacks; it does not establish all-filter controls or a linked-histogram requirement. G044's full inventory required_work remains unchanged."
+    },
+    {
+      "id": "G045.shared-target-consumers",
+      "families": [
+        "G045"
+      ],
+      "classification": [
+        "reused_implemented_subset",
+        "missing_behavior",
+        "unregistered",
+        "explicit_refusal"
+      ],
+      "owned_options": [
+        {
+          "name": "scope",
+          "default": "CurrentPlane",
+          "choices": [
+            "CurrentPlane",
+            "AllZ at captured T/C",
+            "Ranges",
+            "ordered unique Positions"
+          ]
+        },
+        {
+          "name": "t/c/z ranges",
+          "default": "captured position if omitted",
+          "semantics": "zero-based half-open positive-step ranges; UI normalizes one-based entries once"
+        },
+        {
+          "name": "roi",
+          "default": "ActiveSelection",
+          "choices": [
+            "WholePlane",
+            "ActiveSelection",
+            "PositionedRois union"
+          ]
+        },
+        {
+          "name": "mode",
+          "default": "Planes",
+          "choices": [
+            "Planes",
+            "Volume"
+          ],
+          "availability": "Volume enum/validation exists; prepared execution remains plane-only"
+        },
+        {
+          "name": "destination",
+          "default": "InPlace",
+          "choices": [
+            "InPlace",
+            "NewDocument"
+          ],
+          "availability": "Core target contract; rank supports staged NewDocument, Gaussian desktop requires InPlace"
+        }
+      ],
+      "owned_subset": "Native/Python target resolution is metadata-only, captured and immutable. Matching positioned ROIs union; no match remains empty. Shared OperationTargetPanel emits ranges/ROI with Planes/InPlace; rank separately applies its destination control. Contained preview chooses a member of the captured Apply target.",
+      "missing": "Complete target/destination controls for remaining processing paths, real volume neighborhoods and calibrated/ROI effects, full kernel/provider cancellation/resource contracts and consistent preview/Apply/Python/record/replay behavior. Source stack Yes/No is not scientific full-CZT targeting.",
+      "primary_boundary": "PlugInFilterRunner area selection/mask restoration and RankFilters stack setup are observed source contracts. Native scientific TCZ/positioned/destination controls are explicit owned equivalents; no upstream full-axis UI equivalence is inferred."
+    }
+  ],
+  "new_pinned_compatibility_gaps": [
+    {
+      "id": "G042.UI.zero-radius-reopen",
+      "classification": "unresolved_compatibility_decision",
+      "primary": "RankFilters.java:121 chooses lastRadius[filterType]<=0 ? 2 : lastRadius[filterType]; :149-154 only interactive acceptance saves radius. Accepted zero therefore reopens at2 in this source dialog.",
+      "owned": "RankPanel::remembered_options/show (rank_panel.cpp:95-109) reloads the exact accepted per-method radius, including0; accept stores it. Existing G042.rank-imagej.profile-method-radius and G042-rank-native-adoption-001 lifecycle policy remain adopted.",
+      "action": "Before full ImageJ UI parity, root explicitly chooses/document-tests this as owned session-memory extension or creates a narrow compatibility repair. Do not silently change the settled profile, claim full UI equivalence or recapture unchanged old numerical references."
+    },
+    {
+      "id": "G042.variance-output-policy",
+      "classification": "independent_child_required",
+      "primary": "RankFilters.java:562-574 retains processor type and clips variance; :843-847 applies0.5 histogram stretch to U16/Float32 after variance/top-hat. The source has no STDDEV RankFilters method.",
+      "owned": "filters.cpp:142-144 promotes existing native variance/stddev to Float64, using its preserved integer disk/square and double arithmetic. These existing APIs and old records remain compatibility.",
+      "action": "The next promoted variance/stddev child must freeze output/arithmetic/display policy independently, explicitly distinguish ImageJ's type-preserving Variance, and consume typed scientific publication/persistence. Do not widen the four-method finite profile or infer a pinned upstream stddev command."
+    }
+  ],
+  "unresolved_items": [
+    "No current formal G043/G044/G045 children; root must assign actual option contracts before implementation/qualification, preserving each full family required_work.",
+    "Individual primary implementations/options for Convolver, GaussianBlur, UnsharpMask, Filters3D and GaussianBlur3D are not consumed; descriptor names/default recollection are insufficient.",
+    "Full Fiji discovery/runtime reconciliation and concrete code/dependency/model/asset licenses remain pending, including VIB aliases; no descriptor is promoted by this proposal.",
+    "Remaining standard-filter builtins/presets and sibling-specific RGB/nonfinite/type/axes/ROI/display behavior need bounded source/runtime reconciliation and independent fixtures.",
+    "Per-method accepted-zero UI policy and type-preserving versus promoted variance need explicit root decisions before corresponding full compatibility claims.",
+    "Existing six rank rows retain their own source/artifact/SDK/Python/shared-UI/settings/persistence/performance/commercial obligations; this map grants no acceptance."
+  ],
+  "next_consumed_contracts_and_owners": [
+    {
+      "order": 1,
+      "owner": "root integration/evidence owner",
+      "action": "Adopt/amend this bounded map once as planning evidence; preserve the exact four family snapshots and six rank rows, and assign one named next entry owner. No manifest/eligibility changes are implied by adopting the map."
+    },
+    {
+      "order": 2,
+      "owner": "next promoted-filter contract worker, assigned by root",
+      "action": "Prepare one finite variance/stddev entry: preserve native F64 compatibility; distinguish source Variance behavior; freeze explicit output/arithmetic/display/ROI/target/history/replay/persistence/resource contracts and literal/reference discriminators before code. Reuse existing target/jobs/preview/publication services; no new framework.",
+      "readiness": "Queued for a free prepared-candidate slot; no extra active candidate or integration."
+    },
+    {
+      "order": 3,
+      "owner": "root's current single Window integration owner",
+      "action": "Keep positioned scientific XY then shortcuts in the existing integration order. Filter option preparation can proceed independently; no whole G033, TIFF or volume prerequisite is introduced."
+    },
+    {
+      "order": 4,
+      "owner": "subsequent volume entry owner, assigned when a prepared-candidate slot opens",
+      "action": "After exact primary implementation pins are available through reviewed records, define one bounded XYZ neighborhood/cross-TC target/ROI/calibrated radius/output/resource contract. Reuse source/cursor/target abstractions; do not treat existing Gaussian Stack blur or Volume enum as full G043 closure."
+    }
+  ],
+  "preservation": {
+    "only_new_document_written": true,
+    "existing_product_tests_manifests_inventory_decisions_unchanged": true,
+    "rank_six_rows_and_native_compatibility_retained": true,
+    "all_family_required_work_retained": true,
+    "new_incorporated_components": [],
+    "NC_research_only_unlicensed_unreviewed_exclusions_retained": true,
+    "runtime_build_import_collection_network_or_capture": false,
+    "protected_path_or_alternate_API_access": false
+  },
+  "family_snapshots_preserved": [
+    {
+      "id": "G042",
+      "name": "Standard 2D filters",
+      "status": "in_progress",
+      "milestones": [
+        "M6"
+      ],
+      "required_work": "Confirm agreed border/radius/ROI/type behavior; add familiar presets and descriptive controls",
+      "remaining": [
+        "Shared plane-operation contracts and cross-type/layout legacy-kernel regressions now exist. Complete pinned upstream border/radius/ROI/type fixtures, familiar presets and descriptive controls remain required."
+      ],
+      "existing_verification_ids": [
+        "m1-native-operations-windows-2026-10-10"
+      ]
+    },
+    {
+      "id": "G043",
+      "name": "True 3D filters",
+      "status": "open",
+      "milestones": [
+        "M5",
+        "M6"
+      ],
+      "required_work": "XYZ median/mean/min/max/variance, calibrated radii, 3D neighborhoods, C/T targeting and matching Python/UI controls",
+      "remaining": [
+        "XYZ median/mean/min/max/variance, calibrated radii, 3D neighborhoods, C/T targeting and matching Python/UI controls"
+      ],
+      "existing_verification_ids": []
+    },
+    {
+      "id": "G044",
+      "name": "Filter dialogs and previews",
+      "status": "in_progress",
+      "milestones": [
+        "M1",
+        "M6"
+      ],
+      "required_work": "Sliders, linked histogram/display feedback, automatic cancellable preview, reusable presets and preview/apply consistency",
+      "remaining": [
+        "Complete specialized filter controls, sliders, linked histogram/display feedback, presets and automatic UI previews using admitted keyed supersession.",
+        "Verify every pinned dialog option and preview/Apply target/default agreement, remaining kernel/reader cancellation and resource/performance contracts."
+      ],
+      "existing_verification_ids": [
+        "m1-native-operations-windows-2026-10-10",
+        "m1-desktop-native-owner-windows-2026-10-10",
+        "m1-dataset-execution-windows-2026-10-10",
+        "m1-jobs-feedback-windows-2026-10-10",
+        "m1-job-resource-lifecycle-windows-2026-10-10",
+        "m1-kernel-phases-windows-2026-10-10"
+      ]
+    },
+    {
+      "id": "G045",
+      "name": "Processing extent",
+      "status": "in_progress",
+      "milestones": [
+        "M1",
+        "M4",
+        "M5",
+        "M6"
+      ],
+      "required_work": "Slice/channel/time ranges, per-position ROI targeting and a clear distinction between per-plane and volume operations",
+      "remaining": [
+        "Extend accepted native plane/ROI execution and publication to true volume methods and complete shape/axis/calibration/ROI effects.",
+        "Expose complete target/ROI/destination controls in shared ImGui and preserve identical preview, Apply, Python and recorded/replayed semantics through scientific desktop integration.",
+        "Finish every processing path's phase progress/cancellation, managed resource accounting and pinned method/option reference fixtures."
+      ],
+      "existing_verification_ids": [
+        "m1-target-resolution-windows-2026-10-10",
+        "m1-dataset-execution-windows-2026-10-10",
+        "m1-jobs-feedback-windows-2026-10-10",
+        "m1-job-resource-lifecycle-windows-2026-10-10",
+        "m1-kernel-phases-windows-2026-10-10"
+      ]
+    }
+  ],
+  "existing_requirement_snapshots_preserved": [
+    {
+      "id": "G042.rank-imagej.profile-method-radius",
+      "parent_id": "G042",
+      "title": "ImageJ finite scalar four-method profile and fractional radius",
+      "kind": "command",
+      "required_work": "Deliver all minimum/maximum/median/mean operations with exact method/default/fractional-radius/limits and adopted source arithmetic through every applicable surface.",
+      "remaining": [
+        "Freeze exact requirement surface assertions and actual-value carriers before corresponding interface qualification; no retroactive pass-marker contracts.",
+        "Bind real native/Python/installed core-only SDK/shared ImGui C++/Python evidence and typed fixtures; fixture_ids and verification_run_ids remain empty here.",
+        "Retain all existing native rank semantics and all unadmitted G042/Fiji/99-family work; no family/platform/performance/release closure.",
+        "Fresh typed default Median/radius2. Each UI method starts radius2; accepted per-method session radius memory and Cancel/reset/reopen behavior must be frozen before physical qualification. No new durable preference key. Exact operation fields method,radius only; schema/profile belong to the command record, not extra operation parameters."
+      ],
+      "candidate_ids": [
+        "R-1d5dcfd2183de287dcc7b5fc",
+        "R-edbfa22b8e4833e50ab57b2e",
+        "R-be9edf79a3ba8cde73ac8c48",
+        "R-7033f073711681ce5fd1b1ec"
+      ],
+      "implementation_status": "partial",
+      "verification_status": "unverified",
+      "commercial": {
+        "decision": "pending",
+        "reason": "Owned C++ equivalent with no incorporated upstream code/plugin/resource. Existing native/reference lineage does not promote raw candidate or Fiji component incorporation decisions; root must bind exact scope/license review. Non-commercial, research-only, unlicensed or otherwise pending third-party material is not incorporated.",
+        "evidence": []
+      },
+      "fixture_ids": [],
+      "verification_run_ids": []
+    },
+    {
+      "id": "G042.rank-imagej.targets-roi",
+      "parent_id": "G042",
+      "title": "Captured scientific rank targets and area write semantics",
+      "kind": "target",
+      "required_work": "Qualify CurrentPlane, AllZ, compact per-axis ranges/positions, contained preview and active/positioned ROI behavior without loading untouched planes.",
+      "remaining": [
+        "Freeze exact requirement surface assertions and actual-value carriers before corresponding interface qualification; no retroactive pass-marker contracts.",
+        "Bind real native/Python/installed core-only SDK/shared ImGui C++/Python evidence and typed fixtures; fixture_ids and verification_run_ids remain empty here.",
+        "Retain all existing native rank semantics and all unadmitted G042/Fiji/99-family work; no family/platform/performance/release closure.",
+        "Core indices zero-based; UIone-based values normalize once. Nonlanding Last/step, positioned wildcards/union/no-match, holes, empty masks and original-source halo semantics require exact bit/source-read evidence. Existing target services are consumed, not reimplemented."
+      ],
+      "candidate_ids": [],
+      "implementation_status": "partial",
+      "verification_status": "unverified",
+      "commercial": {
+        "decision": "pending",
+        "reason": "Owned C++ equivalent with no incorporated upstream code/plugin/resource. Existing native/reference lineage does not promote raw candidate or Fiji component incorporation decisions; root must bind exact scope/license review. Non-commercial, research-only, unlicensed or otherwise pending third-party material is not incorporated.",
+        "evidence": []
+      },
+      "fixture_ids": [],
+      "verification_run_ids": []
+    },
+    {
+      "id": "G042.rank-imagej.preview-publication",
+      "parent_id": "G042",
+      "title": "Preview generations and atomic changed/no-op publication",
+      "kind": "interaction",
+      "required_work": "Qualify source-captured preview and changed Apply, no-op, undo/redo, fresh-display and output-attachment atomicity.",
+      "remaining": [
+        "Freeze exact requirement surface assertions and actual-value carriers before corresponding interface qualification; no retroactive pass-marker contracts.",
+        "Bind real native/Python/installed core-only SDK/shared ImGui C++/Python evidence and typed fixtures; fixture_ids and verification_run_ids remain empty here.",
+        "Retain all existing native rank semantics and all unadmitted G042/Fiji/99-family work; no family/platform/performance/release closure.",
+        "Preview and Apply use identical canonical method/radius/ROI against committed source; never refilter a staged preview. Captured Pixels/Metadata and ROI-dependent Selection guard publication; changed Apply including sign-zero-only bits makes exactly one undo/dirty/redo-clear edit and one optional recorded action. Empty/bitwise-unchanged output preserves redo/history and appends no rank workflow. Reserve all append/output state before publication; stale/error/cancel never publishes."
+      ],
+      "candidate_ids": [],
+      "implementation_status": "partial",
+      "verification_status": "unverified",
+      "commercial": {
+        "decision": "pending",
+        "reason": "Owned C++ equivalent with no incorporated upstream code/plugin/resource. Existing native/reference lineage does not promote raw candidate or Fiji component incorporation decisions; root must bind exact scope/license review. Non-commercial, research-only, unlicensed or otherwise pending third-party material is not incorporated.",
+        "evidence": []
+      },
+      "fixture_ids": [],
+      "verification_run_ids": []
+    },
+    {
+      "id": "G042.rank-imagej.lifecycle-resources",
+      "parent_id": "G042",
+      "title": "Shared rank lane cancellation, settings and retained resources",
+      "kind": "interaction",
+      "required_work": "Consume existing scheduling/settings and qualify preview supersession/READY retention/cancel/close/owner changes, resource preflight and failure cleanup.",
+      "remaining": [
+        "Freeze exact requirement surface assertions and actual-value carriers before corresponding interface qualification; no retroactive pass-marker contracts.",
+        "Bind real native/Python/installed core-only SDK/shared ImGui C++/Python evidence and typed fixtures; fixture_ids and verification_run_ids remain empty here.",
+        "Retain all existing native rank semantics and all unadmitted G042/Fiji/99-family work; no family/platform/performance/release closure.",
+        "One small rank adapter over shared plane-operation mechanics; no scheduler/framework or Python loop. Validate radius/type/policy/target/checked products before providers/callbacks/footprint allocation. Charge adopted actual footprint/median scratch plus shared staged/plane/control/record/ROI/READY costs. Pre/mid cancel and callback exception release every reservation; mutable caller values captured before callbacks and GIL behavior qualified. 16Mpixel/128MiB entry candidates are bounded-review settings, not universal public API caps or latency/RSS claims."
+      ],
+      "candidate_ids": [],
+      "implementation_status": "open",
+      "verification_status": "unverified",
+      "commercial": {
+        "decision": "pending",
+        "reason": "Owned C++ equivalent with no incorporated upstream code/plugin/resource. Existing native/reference lineage does not promote raw candidate or Fiji component incorporation decisions; root must bind exact scope/license review. Non-commercial, research-only, unlicensed or otherwise pending third-party material is not incorporated.",
+        "evidence": []
+      },
+      "fixture_ids": [],
+      "verification_run_ids": []
+    },
+    {
+      "id": "G042.rank-imagej.record-replay-rebind",
+      "parent_id": "G042",
+      "title": "Strict rank records and complete explicit target rebinding",
+      "kind": "command",
+      "required_work": "Freeze exact schema1 rank_filter_imagej profile imagej_154r options/target record validation and native/Python/Workflow dispatch.",
+      "remaining": [
+        "Freeze exact requirement surface assertions and actual-value carriers before corresponding interface qualification; no retroactive pass-marker contracts.",
+        "Bind real native/Python/installed core-only SDK/shared ImGui C++/Python evidence and typed fixtures; fixture_ids and verification_run_ids remain empty here.",
+        "Retain all existing native rank semantics and all unadmitted G042/Fiji/99-family work; no family/platform/performance/release closure.",
+        "Validate whole original record, exact numeric types/fields/profile/method/radius and target claims before identity lookup or rebind. Strict replay tolerates fresh navigation only while recorded data/ROI dependencies still match; a prior changed Apply normally makes its old source revision stale. Successful strict replay uses a still-matching captured record, not silently rewritten history. Reopened/foreign/new owners require explicit complete new TargetRequest; retain original method/radius and reject malformed originals first."
+      ],
+      "candidate_ids": [],
+      "implementation_status": "partial",
+      "verification_status": "unverified",
+      "commercial": {
+        "decision": "pending",
+        "reason": "Owned C++ equivalent with no incorporated upstream code/plugin/resource. Existing native/reference lineage does not promote raw candidate or Fiji component incorporation decisions; root must bind exact scope/license review. Non-commercial, research-only, unlicensed or otherwise pending third-party material is not incorporated.",
+        "evidence": []
+      },
+      "fixture_ids": [],
+      "verification_run_ids": []
+    },
+    {
+      "id": "G042.rank-imagej.persistence-surfaces",
+      "parent_id": "G042",
+      "title": "Installed rank SDK, sessions and both shared ImGui paths",
+      "kind": "interaction",
+      "required_work": "Close a coherent installed four-method vertical delivery through native/Python APIs, public core-only SDK and actual widgets in both launch modes, including eager scientific nativeV3 Save/Open.",
+      "remaining": [
+        "Freeze exact requirement surface assertions and actual-value carriers before corresponding interface qualification; no retroactive pass-marker contracts.",
+        "Bind real native/Python/installed core-only SDK/shared ImGui C++/Python evidence and typed fixtures; fixture_ids and verification_run_ids remain empty here.",
+        "Retain all existing native rank semantics and all unadmitted G042/Fiji/99-family work; no family/platform/performance/release closure.",
+        "Preserve source/raw bits outside targets and complete geometry/calibration/TCZ/current+previous selection/ROIs/overlays/channel display/metadata across sessions. Historical records retain original owner binding on reopen; no implicit rebind. Explicitly test eager scientific persistence; name virtual storage admission/refusal without waiting for TIFF/general readers. SDK is a required independently executed cpp_api client obligation, not inferred from native unit tests. Both ImGui contexts require independent real input traces/results."
+      ],
+      "candidate_ids": [],
+      "implementation_status": "open",
+      "verification_status": "unverified",
+      "commercial": {
+        "decision": "pending",
+        "reason": "Owned C++ equivalent with no incorporated upstream code/plugin/resource. Existing native/reference lineage does not promote raw candidate or Fiji component incorporation decisions; root must bind exact scope/license review. Non-commercial, research-only, unlicensed or otherwise pending third-party material is not incorporated.",
+        "evidence": []
+      },
+      "fixture_ids": [],
+      "verification_run_ids": []
+    }
+  ],
+  "bounded_candidate_descriptor_snapshots": [
+    {
+      "id": "R-0094b4db3503432be7febf35",
+      "kind": "imagej_property",
+      "component_id": "imagej-core",
+      "source_key": "filters14",
+      "descriptor": {
+        "menu_context": "Plugins installed in the Process/Filters submenu",
+        "property": "filters14",
+        "value": "\"Minimum 3D...\",ij.plugin.Filters3D(\"min\")"
+      },
+      "evidence": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/IJ_Props.txt",
+        "line": 336,
+        "sha256": "e1891ac12a42e8051b2c9ca64974cd6a4f6075dd906d73c86b1f2a7b1db57d19"
+      },
+      "current_assignment": null,
+      "option_inventory": null,
+      "runtime_reconciliation": "pending",
+      "commercial_review": "pending",
+      "status": "candidate",
+      "proposal_only_classification": "pinned_core_menu_descriptor_option_contract_separate"
+    },
+    {
+      "id": "R-030468f05b9c775f81668b40",
+      "kind": "legacy_menu",
+      "component_id": "fiji:plugins/VIB_-4.0.0.jar",
+      "source_key": "83",
+      "descriptor": {
+        "invocation": "process3d.Maximum_",
+        "label": "Max (3D)",
+        "menu": "Plugins>Process",
+        "raw": "Plugins>Process, \"Max (3D)\", process3d.Maximum_"
+      },
+      "evidence": {
+        "archive_member": "Fiji/plugins/VIB_-4.0.0.jar",
+        "entry_occurrence": 0,
+        "jar_member": "plugins.config"
+      },
+      "current_assignment": null,
+      "option_inventory": null,
+      "runtime_reconciliation": "pending",
+      "commercial_review": "pending",
+      "status": "candidate",
+      "proposal_only_classification": "unresolved_Fiji_discovery_eligibility_pending"
+    },
+    {
+      "id": "R-1d5dcfd2183de287dcc7b5fc",
+      "kind": "imagej_property",
+      "component_id": "imagej-core",
+      "source_key": "filters05",
+      "descriptor": {
+        "menu_context": "Plugins installed in the Process/Filters submenu",
+        "property": "filters05",
+        "value": "\"Minimum...\",ij.plugin.filter.RankFilters(\"min\")"
+      },
+      "evidence": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/IJ_Props.txt",
+        "line": 327,
+        "sha256": "e1891ac12a42e8051b2c9ca64974cd6a4f6075dd906d73c86b1f2a7b1db57d19"
+      },
+      "current_assignment": null,
+      "option_inventory": null,
+      "runtime_reconciliation": "pending",
+      "commercial_review": "pending",
+      "status": "candidate",
+      "proposal_only_classification": "pinned_core_menu_descriptor_option_contract_separate"
+    },
+    {
+      "id": "R-2d25d1cb23a293f0e0c28b18",
+      "kind": "imagej_property",
+      "component_id": "imagej-core",
+      "source_key": "filters13",
+      "descriptor": {
+        "menu_context": "Plugins installed in the Process/Filters submenu",
+        "property": "filters13",
+        "value": "\"Mean 3D...\",ij.plugin.Filters3D(\"mean\")"
+      },
+      "evidence": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/IJ_Props.txt",
+        "line": 335,
+        "sha256": "e1891ac12a42e8051b2c9ca64974cd6a4f6075dd906d73c86b1f2a7b1db57d19"
+      },
+      "current_assignment": null,
+      "option_inventory": null,
+      "runtime_reconciliation": "pending",
+      "commercial_review": "pending",
+      "status": "candidate",
+      "proposal_only_classification": "pinned_core_menu_descriptor_option_contract_separate"
+    },
+    {
+      "id": "R-35fa1e2042222de5df0deb6a",
+      "kind": "legacy_menu",
+      "component_id": "fiji:plugins/VIB_-4.0.0.jar",
+      "source_key": "81",
+      "descriptor": {
+        "invocation": "process3d.Maximum_",
+        "label": "Maximum (3D)",
+        "menu": "Plugins>Process",
+        "raw": "Plugins>Process, \"Maximum (3D)\", process3d.Maximum_"
+      },
+      "evidence": {
+        "archive_member": "Fiji/plugins/VIB_-4.0.0.jar",
+        "entry_occurrence": 0,
+        "jar_member": "plugins.config"
+      },
+      "current_assignment": null,
+      "option_inventory": null,
+      "runtime_reconciliation": "pending",
+      "commercial_review": "pending",
+      "status": "candidate",
+      "proposal_only_classification": "unresolved_Fiji_discovery_eligibility_pending"
+    },
+    {
+      "id": "R-3d0b58c4f87a1f52b868b34d",
+      "kind": "imagej_property",
+      "component_id": "imagej-core",
+      "source_key": "filters02",
+      "descriptor": {
+        "menu_context": "Plugins installed in the Process/Filters submenu",
+        "property": "filters02",
+        "value": "\"Gaussian Blur...\",ij.plugin.filter.GaussianBlur"
+      },
+      "evidence": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/IJ_Props.txt",
+        "line": 324,
+        "sha256": "e1891ac12a42e8051b2c9ca64974cd6a4f6075dd906d73c86b1f2a7b1db57d19"
+      },
+      "current_assignment": null,
+      "option_inventory": null,
+      "runtime_reconciliation": "pending",
+      "commercial_review": "pending",
+      "status": "candidate",
+      "proposal_only_classification": "pinned_core_menu_descriptor_option_contract_separate"
+    },
+    {
+      "id": "R-5009d0d2416f607e5a0e8d2e",
+      "kind": "imagej_property",
+      "component_id": "imagej-core",
+      "source_key": "filters01",
+      "descriptor": {
+        "menu_context": "Plugins installed in the Process/Filters submenu",
+        "property": "filters01",
+        "value": "\"Convolve...\",ij.plugin.filter.Convolver"
+      },
+      "evidence": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/IJ_Props.txt",
+        "line": 323,
+        "sha256": "e1891ac12a42e8051b2c9ca64974cd6a4f6075dd906d73c86b1f2a7b1db57d19"
+      },
+      "current_assignment": null,
+      "option_inventory": null,
+      "runtime_reconciliation": "pending",
+      "commercial_review": "pending",
+      "status": "candidate",
+      "proposal_only_classification": "pinned_core_menu_descriptor_option_contract_separate"
+    },
+    {
+      "id": "R-518bd66b23b008a3da409314",
+      "kind": "imagej_property",
+      "component_id": "imagej-core",
+      "source_key": "filters12",
+      "descriptor": {
+        "menu_context": "Plugins installed in the Process/Filters submenu",
+        "property": "filters12",
+        "value": "\"Median 3D...\",ij.plugin.Filters3D(\"median\")"
+      },
+      "evidence": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/IJ_Props.txt",
+        "line": 334,
+        "sha256": "e1891ac12a42e8051b2c9ca64974cd6a4f6075dd906d73c86b1f2a7b1db57d19"
+      },
+      "current_assignment": null,
+      "option_inventory": null,
+      "runtime_reconciliation": "pending",
+      "commercial_review": "pending",
+      "status": "candidate",
+      "proposal_only_classification": "pinned_core_menu_descriptor_option_contract_separate"
+    },
+    {
+      "id": "R-58e77fe516bb5fcb9c8baf1e",
+      "kind": "imagej_property",
+      "component_id": "imagej-core",
+      "source_key": "filters11",
+      "descriptor": {
+        "menu_context": "Plugins installed in the Process/Filters submenu",
+        "property": "filters11",
+        "value": "\"Gaussian Blur 3D...\",ij.plugin.GaussianBlur3D"
+      },
+      "evidence": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/IJ_Props.txt",
+        "line": 333,
+        "sha256": "e1891ac12a42e8051b2c9ca64974cd6a4f6075dd906d73c86b1f2a7b1db57d19"
+      },
+      "current_assignment": null,
+      "option_inventory": null,
+      "runtime_reconciliation": "pending",
+      "commercial_review": "pending",
+      "status": "candidate",
+      "proposal_only_classification": "pinned_core_menu_descriptor_option_contract_separate"
+    },
+    {
+      "id": "R-5c62641b4f0d44500fbf3a95",
+      "kind": "imagej_property",
+      "component_id": "imagej-core",
+      "source_key": "filters10",
+      "descriptor": {
+        "menu_context": "Plugins installed in the Process/Filters submenu",
+        "property": "filters10",
+        "value": "-"
+      },
+      "evidence": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/IJ_Props.txt",
+        "line": 332,
+        "sha256": "e1891ac12a42e8051b2c9ca64974cd6a4f6075dd906d73c86b1f2a7b1db57d19"
+      },
+      "current_assignment": null,
+      "option_inventory": null,
+      "runtime_reconciliation": "pending",
+      "commercial_review": "pending",
+      "status": "candidate",
+      "proposal_only_classification": "separator_not_command_or_feature"
+    },
+    {
+      "id": "R-66f3f0887ce4495441d91dc6",
+      "kind": "imagej_property",
+      "component_id": "imagej-core",
+      "source_key": "filters15",
+      "descriptor": {
+        "menu_context": "Plugins installed in the Process/Filters submenu",
+        "property": "filters15",
+        "value": "\"Maximum 3D...\",ij.plugin.Filters3D(\"max\")"
+      },
+      "evidence": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/IJ_Props.txt",
+        "line": 337,
+        "sha256": "e1891ac12a42e8051b2c9ca64974cd6a4f6075dd906d73c86b1f2a7b1db57d19"
+      },
+      "current_assignment": null,
+      "option_inventory": null,
+      "runtime_reconciliation": "pending",
+      "commercial_review": "pending",
+      "status": "candidate",
+      "proposal_only_classification": "pinned_core_menu_descriptor_option_contract_separate"
+    },
+    {
+      "id": "R-6d5f40004811e0ded6bcc93f",
+      "kind": "imagej_property",
+      "component_id": "imagej-core",
+      "source_key": "noise06",
+      "descriptor": {
+        "menu_context": "Plug-ins installed in the Process/Noise submenu",
+        "property": "noise06",
+        "value": "\"Remove Outliers...\",ij.plugin.filter.RankFilters(\"outliers\")"
+      },
+      "evidence": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/IJ_Props.txt",
+        "line": 252,
+        "sha256": "e1891ac12a42e8051b2c9ca64974cd6a4f6075dd906d73c86b1f2a7b1db57d19"
+      },
+      "current_assignment": null,
+      "option_inventory": null,
+      "runtime_reconciliation": "pending",
+      "commercial_review": "pending",
+      "status": "candidate",
+      "proposal_only_classification": "pinned_core_menu_descriptor_option_contract_separate"
+    },
+    {
+      "id": "R-7033f073711681ce5fd1b1ec",
+      "kind": "imagej_property",
+      "component_id": "imagej-core",
+      "source_key": "filters04",
+      "descriptor": {
+        "menu_context": "Plugins installed in the Process/Filters submenu",
+        "property": "filters04",
+        "value": "\"Mean...\",ij.plugin.filter.RankFilters(\"mean\")"
+      },
+      "evidence": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/IJ_Props.txt",
+        "line": 326,
+        "sha256": "e1891ac12a42e8051b2c9ca64974cd6a4f6075dd906d73c86b1f2a7b1db57d19"
+      },
+      "current_assignment": null,
+      "option_inventory": null,
+      "runtime_reconciliation": "pending",
+      "commercial_review": "pending",
+      "status": "candidate",
+      "proposal_only_classification": "pinned_core_menu_descriptor_option_contract_separate"
+    },
+    {
+      "id": "R-756b539b5706c9ab6cadb57f",
+      "kind": "imagej_property",
+      "component_id": "imagej-core",
+      "source_key": "filters07",
+      "descriptor": {
+        "menu_context": "Plugins installed in the Process/Filters submenu",
+        "property": "filters07",
+        "value": "\"Unsharp Mask...\",ij.plugin.filter.UnsharpMask"
+      },
+      "evidence": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/IJ_Props.txt",
+        "line": 329,
+        "sha256": "e1891ac12a42e8051b2c9ca64974cd6a4f6075dd906d73c86b1f2a7b1db57d19"
+      },
+      "current_assignment": null,
+      "option_inventory": null,
+      "runtime_reconciliation": "pending",
+      "commercial_review": "pending",
+      "status": "candidate",
+      "proposal_only_classification": "pinned_core_menu_descriptor_option_contract_separate"
+    },
+    {
+      "id": "R-8ae2c3e6bd6f2f56684bfa88",
+      "kind": "imagej_property",
+      "component_id": "imagej-core",
+      "source_key": "noise05",
+      "descriptor": {
+        "menu_context": "Plug-ins installed in the Process/Noise submenu",
+        "property": "noise05",
+        "value": "\"Despeckle\",ij.plugin.filter.RankFilters(\"despeckle\")"
+      },
+      "evidence": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/IJ_Props.txt",
+        "line": 251,
+        "sha256": "e1891ac12a42e8051b2c9ca64974cd6a4f6075dd906d73c86b1f2a7b1db57d19"
+      },
+      "current_assignment": null,
+      "option_inventory": null,
+      "runtime_reconciliation": "pending",
+      "commercial_review": "pending",
+      "status": "candidate",
+      "proposal_only_classification": "pinned_core_menu_descriptor_option_contract_separate"
+    },
+    {
+      "id": "R-8de6eba3d30684e6b5a3eff5",
+      "kind": "imagej_property",
+      "component_id": "imagej-core",
+      "source_key": "noise07",
+      "descriptor": {
+        "menu_context": "Plug-ins installed in the Process/Noise submenu",
+        "property": "noise07",
+        "value": "\"Remove NaNs...\",ij.plugin.filter.RankFilters(\"nan\")"
+      },
+      "evidence": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/IJ_Props.txt",
+        "line": 253,
+        "sha256": "e1891ac12a42e8051b2c9ca64974cd6a4f6075dd906d73c86b1f2a7b1db57d19"
+      },
+      "current_assignment": null,
+      "option_inventory": null,
+      "runtime_reconciliation": "pending",
+      "commercial_review": "pending",
+      "status": "candidate",
+      "proposal_only_classification": "pinned_core_menu_descriptor_option_contract_separate"
+    },
+    {
+      "id": "R-998b90b3ba23e4bb96d708ce",
+      "kind": "imagej_property",
+      "component_id": "imagej-core",
+      "source_key": "filters09",
+      "descriptor": {
+        "menu_context": "Plugins installed in the Process/Filters submenu",
+        "property": "filters09",
+        "value": "\"Top Hat...\",ij.plugin.filter.RankFilters(\"tophat\")"
+      },
+      "evidence": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/IJ_Props.txt",
+        "line": 331,
+        "sha256": "e1891ac12a42e8051b2c9ca64974cd6a4f6075dd906d73c86b1f2a7b1db57d19"
+      },
+      "current_assignment": null,
+      "option_inventory": null,
+      "runtime_reconciliation": "pending",
+      "commercial_review": "pending",
+      "status": "candidate",
+      "proposal_only_classification": "pinned_core_menu_descriptor_option_contract_separate"
+    },
+    {
+      "id": "R-a47f8d23a1916a7db0b56b20",
+      "kind": "imagej_property",
+      "component_id": "imagej-core",
+      "source_key": "filters18",
+      "descriptor": {
+        "menu_context": "Plugins installed in the Process/Filters submenu",
+        "property": "filters18",
+        "value": "\"Show Circular Masks...\",ij.plugin.filter.RankFilters(\"masks\")"
+      },
+      "evidence": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/IJ_Props.txt",
+        "line": 340,
+        "sha256": "e1891ac12a42e8051b2c9ca64974cd6a4f6075dd906d73c86b1f2a7b1db57d19"
+      },
+      "current_assignment": null,
+      "option_inventory": null,
+      "runtime_reconciliation": "pending",
+      "commercial_review": "pending",
+      "status": "candidate",
+      "proposal_only_classification": "pinned_core_menu_descriptor_option_contract_separate"
+    },
+    {
+      "id": "R-ac2b224028b5c50ce0786ab1",
+      "kind": "imagej_property",
+      "component_id": "imagej-core",
+      "source_key": "filters16",
+      "descriptor": {
+        "menu_context": "Plugins installed in the Process/Filters submenu",
+        "property": "filters16",
+        "value": "\"Variance 3D...\",ij.plugin.Filters3D(\"var\")"
+      },
+      "evidence": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/IJ_Props.txt",
+        "line": 338,
+        "sha256": "e1891ac12a42e8051b2c9ca64974cd6a4f6075dd906d73c86b1f2a7b1db57d19"
+      },
+      "current_assignment": null,
+      "option_inventory": null,
+      "runtime_reconciliation": "pending",
+      "commercial_review": "pending",
+      "status": "candidate",
+      "proposal_only_classification": "pinned_core_menu_descriptor_option_contract_separate"
+    },
+    {
+      "id": "R-be9ae99b2098626b39366c63",
+      "kind": "legacy_menu",
+      "component_id": "fiji:plugins/VIB_-4.0.0.jar",
+      "source_key": "85",
+      "descriptor": {
+        "invocation": "process3d.Minimum_",
+        "label": "Minimum (3D)",
+        "menu": "Plugins>Process",
+        "raw": "Plugins>Process, \"Minimum (3D)\", process3d.Minimum_"
+      },
+      "evidence": {
+        "archive_member": "Fiji/plugins/VIB_-4.0.0.jar",
+        "entry_occurrence": 0,
+        "jar_member": "plugins.config"
+      },
+      "current_assignment": null,
+      "option_inventory": null,
+      "runtime_reconciliation": "pending",
+      "commercial_review": "pending",
+      "status": "candidate",
+      "proposal_only_classification": "unresolved_Fiji_discovery_eligibility_pending"
+    },
+    {
+      "id": "R-be9edf79a3ba8cde73ac8c48",
+      "kind": "imagej_property",
+      "component_id": "imagej-core",
+      "source_key": "filters03",
+      "descriptor": {
+        "menu_context": "Plugins installed in the Process/Filters submenu",
+        "property": "filters03",
+        "value": "\"Median...\",ij.plugin.filter.RankFilters(\"median\")"
+      },
+      "evidence": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/IJ_Props.txt",
+        "line": 325,
+        "sha256": "e1891ac12a42e8051b2c9ca64974cd6a4f6075dd906d73c86b1f2a7b1db57d19"
+      },
+      "current_assignment": null,
+      "option_inventory": null,
+      "runtime_reconciliation": "pending",
+      "commercial_review": "pending",
+      "status": "candidate",
+      "proposal_only_classification": "pinned_core_menu_descriptor_option_contract_separate"
+    },
+    {
+      "id": "R-e516893bfb228c40c0c9fcbf",
+      "kind": "imagej_property",
+      "component_id": "imagej-core",
+      "source_key": "filters08",
+      "descriptor": {
+        "menu_context": "Plugins installed in the Process/Filters submenu",
+        "property": "filters08",
+        "value": "\"Variance...\",ij.plugin.filter.RankFilters(\"variance\")"
+      },
+      "evidence": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/IJ_Props.txt",
+        "line": 330,
+        "sha256": "e1891ac12a42e8051b2c9ca64974cd6a4f6075dd906d73c86b1f2a7b1db57d19"
+      },
+      "current_assignment": null,
+      "option_inventory": null,
+      "runtime_reconciliation": "pending",
+      "commercial_review": "pending",
+      "status": "candidate",
+      "proposal_only_classification": "pinned_core_menu_descriptor_option_contract_separate"
+    },
+    {
+      "id": "R-e59cc91b52d04d5bab363696",
+      "kind": "legacy_menu",
+      "component_id": "fiji:plugins/VIB_-4.0.0.jar",
+      "source_key": "84",
+      "descriptor": {
+        "invocation": "process3d.Median_",
+        "label": "Median (3D)",
+        "menu": "Plugins>Process",
+        "raw": "Plugins>Process, \"Median (3D)\", process3d.Median_"
+      },
+      "evidence": {
+        "archive_member": "Fiji/plugins/VIB_-4.0.0.jar",
+        "entry_occurrence": 0,
+        "jar_member": "plugins.config"
+      },
+      "current_assignment": null,
+      "option_inventory": null,
+      "runtime_reconciliation": "pending",
+      "commercial_review": "pending",
+      "status": "candidate",
+      "proposal_only_classification": "unresolved_Fiji_discovery_eligibility_pending"
+    },
+    {
+      "id": "R-edbfa22b8e4833e50ab57b2e",
+      "kind": "imagej_property",
+      "component_id": "imagej-core",
+      "source_key": "filters06",
+      "descriptor": {
+        "menu_context": "Plugins installed in the Process/Filters submenu",
+        "property": "filters06",
+        "value": "\"Maximum...\",ij.plugin.filter.RankFilters(\"max\")"
+      },
+      "evidence": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/IJ_Props.txt",
+        "line": 328,
+        "sha256": "e1891ac12a42e8051b2c9ca64974cd6a4f6075dd906d73c86b1f2a7b1db57d19"
+      },
+      "current_assignment": null,
+      "option_inventory": null,
+      "runtime_reconciliation": "pending",
+      "commercial_review": "pending",
+      "status": "candidate",
+      "proposal_only_classification": "pinned_core_menu_descriptor_option_contract_separate"
+    },
+    {
+      "id": "R-f46f0b8e8b2e3bcf55970f90",
+      "kind": "imagej_property",
+      "component_id": "imagej-core",
+      "source_key": "filters17",
+      "descriptor": {
+        "menu_context": "Plugins installed in the Process/Filters submenu",
+        "property": "filters17",
+        "value": "-"
+      },
+      "evidence": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/IJ_Props.txt",
+        "line": 339,
+        "sha256": "e1891ac12a42e8051b2c9ca64974cd6a4f6075dd906d73c86b1f2a7b1db57d19"
+      },
+      "current_assignment": null,
+      "option_inventory": null,
+      "runtime_reconciliation": "pending",
+      "commercial_review": "pending",
+      "status": "candidate",
+      "proposal_only_classification": "separator_not_command_or_feature"
+    }
+  ],
+  "candidate_deduplication": {
+    "scope": "Selected25 descriptor records only:21 core properties including2 separators and4 VIB label leads. This is not full family assignment, option completeness, capability count or eligibility.",
+    "separators": [
+      "R-5c62641b4f0d44500fbf3a95",
+      "R-f46f0b8e8b2e3bcf55970f90"
+    ],
+    "alias_group": {
+      "candidate_ids": [
+        "R-030468f05b9c775f81668b40",
+        "R-35fa1e2042222de5df0deb6a"
+      ],
+      "labels": [
+        "Max (3D)",
+        "Maximum (3D)"
+      ],
+      "invocation": "process3d.Maximum_",
+      "treatment": "Preserve both descriptors, reconcile one invocation; no count as two implemented features."
+    },
+    "no_matching_builtin_candidates_in_this_query": "Core candidate descriptor query for Smooth/Sharpen/Find Edges returned no records; exact builtin mapping remains unresolved, not declared absent upstream.",
+    "all2810_discovery_objects": "At this snapshot every candidate assignment and option_inventory remains null. Raw candidate commercial/runtime pending fields are retained; no promotion from linked rank requirements."
+  },
+  "consumed_source_pins": [
+    {
+      "path": "docs/parity/inventory.json",
+      "bytes": 8971222,
+      "sha256": "25faee75b1879f067c4d1728f93e882b27bf407b6484252a87287b8f812c7770"
+    },
+    {
+      "path": "docs/parity/commands.json",
+      "bytes": 3160933,
+      "sha256": "b568af585ad8880b9dc111ebaec5675102fce5010d96d321c53fd6d40371be70"
+    },
+    {
+      "path": "docs/parity/reviews/G042-rank-reference-freeze-001.json",
+      "bytes": 83339,
+      "sha256": "a9544888eb486072f4d2f2094dee8c2238c7ca16b2df19d2121f6e0073d67248"
+    },
+    {
+      "path": "docs/parity/reviews/G042-rank-editor-entry-001.json",
+      "bytes": 29815,
+      "sha256": "7b4e4edd133d34431f8e763fbc8db82d215d4e6e5b546402ea6203fcb43b0b02"
+    },
+    {
+      "path": "docs/parity/reviews/G042-rank-native-adoption-001.json",
+      "bytes": 7007,
+      "sha256": "6a8510e57e6c04139e03258c6f4d63e69349e96024d71a121b654d5f43a46796"
+    },
+    {
+      "path": "docs/parity/reviews/G042-rank-registration-001.json",
+      "bytes": 4081,
+      "sha256": "ca1d251c3d03fe418479708e5f4b9eee29275d943d76513ff2c7778923e2d75f"
+    },
+    {
+      "path": "include/imagejxx/image.hpp",
+      "bytes": 7892,
+      "sha256": "ea5994381ec1226fba24ab447d89313770b44bba43b3fb0dcad531f36683a9c3"
+    },
+    {
+      "path": "include/imagejxx/operations.hpp",
+      "bytes": 5348,
+      "sha256": "f59a18caa1efa0e3b4fc1d019f5077add476e17002f32c55256a5f749496d0bb"
+    },
+    {
+      "path": "include/imagejxx/targets.hpp",
+      "bytes": 4070,
+      "sha256": "2407f136a3d2ea0030a300c20ee2001d29b635a07487e77ca61d1fe03dd5d3c9"
+    },
+    {
+      "path": "include/imagejxx/rank.hpp",
+      "bytes": 1891,
+      "sha256": "d9b77a99ba9be0fd1e19302d25f7d7c31e251a62ecec24e0828bb884845dd88f"
+    },
+    {
+      "path": "include/imagejxx/rank_command.hpp",
+      "bytes": 2808,
+      "sha256": "45b9228f6c671ee8f5433ae6693ce9816c02dd5a67cb2785ec1e76a38b350163"
+    },
+    {
+      "path": "include/imagejxx/gaussian_command.hpp",
+      "bytes": 3404,
+      "sha256": "e165849c92e3b144ad5732356907a7856db4944ac4fd03a0d9db25cac978025c"
+    },
+    {
+      "path": "src/native/rank.cpp",
+      "bytes": 15320,
+      "sha256": "3bc4ed55efa8064d89c3bd97dc7056d7fae002d3cb648b96e1684c252e455d1f"
+    },
+    {
+      "path": "src/native/rank_command.cpp",
+      "bytes": 8018,
+      "sha256": "53ce3cfe571e4508e7834ee668cb7aa7405255726f31e292d4e460dd7c05d312"
+    },
+    {
+      "path": "src/native/filters.cpp",
+      "bytes": 27716,
+      "sha256": "104cd82e37ff4fc15d58b8874f89d5c3dc3494b7c646c529a104c999bcf527a1"
+    },
+    {
+      "path": "src/native/image.cpp",
+      "bytes": 19621,
+      "sha256": "4d7b41262da1b597a694a4a53ce45c2417c26f7311c17f8ae6b945d8a1c8c19f"
+    },
+    {
+      "path": "src/native/analysis.cpp",
+      "bytes": 14316,
+      "sha256": "a59ccc54da3db518a02dfd6181969b1a59f5bacde9eb553cf01ba66a3de37a1a"
+    },
+    {
+      "path": "src/native/operations.cpp",
+      "bytes": 36225,
+      "sha256": "3e51c5f8999da58e79f3e2566a824ddaca144722dc382437de10a41c6bda6667"
+    },
+    {
+      "path": "src/native/operation_catalog.inc",
+      "bytes": 82919,
+      "sha256": "d51ad1784b0c1b89406a38dff51b12920e98ad1453320833fd1b7e4f8caa9f25"
+    },
+    {
+      "path": "src/native/operation_kernel.inc",
+      "bytes": 13038,
+      "sha256": "664d5001474bdd8cf3ee9ce70c69ce70f080c10699bc552842bb70ad80c96aed"
+    },
+    {
+      "path": "src/native/execution.cpp",
+      "bytes": 100611,
+      "sha256": "7d77ab4d77bf411ccabc6fae6eb680eb9cf414ff9ef62235b6742895f9a58a3b"
+    },
+    {
+      "path": "src/native/targets.cpp",
+      "bytes": 18531,
+      "sha256": "7707fbb75b9376a2d856a578e9f290336c4dd2e835c428b6e8330c2ff69b37d5"
+    },
+    {
+      "path": "src/native/bindings.cpp",
+      "bytes": 28236,
+      "sha256": "ac6a478d72af68b0182990e674b743e4b5feaafea6e9d9f8562673531632be0c"
+    },
+    {
+      "path": "src/native/target_bindings.cpp",
+      "bytes": 6005,
+      "sha256": "412abc140772f97d93c69042faffaf9812e0f428a0bb33f1c8adefaec8065e73"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 422125,
+      "sha256": "72d15072900d9fe09a19ec8a53a63ae5d006404e7db4260fc7837cc78197703c"
+    },
+    {
+      "path": "src/desktop/document.cpp",
+      "bytes": 66607,
+      "sha256": "9a264d74590ede976afaa93eda00fb7c07e504f49169a5892f5951bb26938ce2"
+    },
+    {
+      "path": "src/desktop/commands.cpp",
+      "bytes": 6238,
+      "sha256": "465c21913c137e12d05e1158ee0f25e7176960720fb0efd175ef8b28f7c34d8c"
+    },
+    {
+      "path": "src/desktop/rank_panel.hpp",
+      "bytes": 3396,
+      "sha256": "1c986a21b8891cfa12a18025a62b96478a0461d96353a942c3a35bf8b903ea36"
+    },
+    {
+      "path": "src/desktop/rank_panel.cpp",
+      "bytes": 21774,
+      "sha256": "9be10d2685e1bd52027026d94682fceb76597601e665dc7b4934179cc678d81e"
+    },
+    {
+      "path": "src/desktop/gaussian_panel.cpp",
+      "bytes": 18600,
+      "sha256": "0ca918eaa17714b06eef87582229fbfe9ed48ba06451786b443ee95ed1089277"
+    },
+    {
+      "path": "src/desktop/gaussian_jobs.hpp",
+      "bytes": 5408,
+      "sha256": "7ef07da00978dfe1781108f05776156eb6697195f3c5ba4214321e1fb1c60260"
+    },
+    {
+      "path": "src/desktop/gaussian_jobs.cpp",
+      "bytes": 18744,
+      "sha256": "25d08656111d9ceefb8fd6bac5abd9aa8712161ac76e06599cb938d17da4a23c"
+    },
+    {
+      "path": "src/desktop/operation_target_panel.hpp",
+      "bytes": 2474,
+      "sha256": "0f1179f662971dc4bc625513c18e7fb11fb77c9534ba18311ad1a1ebced66a39"
+    },
+    {
+      "path": "src/desktop/operation_target_panel.cpp",
+      "bytes": 15695,
+      "sha256": "dd0434e277b388435685b5ea0769c3ca11b0c752cba88f2bea107f732081b84e"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 45731,
+      "sha256": "37ba3038b3ed15d125323c457ca4378876d022e53863bd578099dbaeafe328a6"
+    },
+    {
+      "path": "build/references/rank-filter-imagej154r-001/capture-001/capture.json",
+      "bytes": 2870,
+      "sha256": "4ea2bdd48c786df03bdbd55d0f1dd488a02d9e8d0c4553d018395e4e2c7dd302"
+    },
+    {
+      "path": "build/references/rank-filter-imagej154r-001/prepare-002/prepared.json",
+      "bytes": 19710,
+      "sha256": "b6128f6ffa6a8afaefa311a0f48964682466094204e7fecfbdff0922543471a4"
+    },
+    {
+      "path": "build/references/rank-filter-imagej154r-001/prepare-002/verified-inputs.json",
+      "bytes": 6995,
+      "sha256": "0219aa5790d49120916d916dc27fa2e5ac8678443b8f6074f446db4aa77944d1"
+    },
+    {
+      "path": "build/references/rank-filter-imagej154r-001/capture-001/execution-inputs.json",
+      "bytes": 1577,
+      "sha256": "5bd642c6720ff28059769757a82123c51a521576e0ec0829421c198953a750d8"
+    },
+    {
+      "path": "build/references/roi-style-imagej154r/sources/ij/plugin/filter/RankFilters.java",
+      "bytes": 41961,
+      "sha256": "284e7647e6619a3cc62887c57992056ccfd1dd99661868571fff005afff7d6b7"
+    },
+    {
+      "path": "build/references/roi-style-imagej154r/sources/ij/plugin/filter/PlugInFilterRunner.java",
+      "bytes": 25665,
+      "sha256": "71e9965a1984feafc184b336f1a575f7644e057631ce1d66fdd2deea7c10df4f"
+    },
+    {
+      "path": "build/references/roi-style-imagej154r/sources/IJ_Props.txt",
+      "bytes": 21847,
+      "sha256": "e1891ac12a42e8051b2c9ca64974cd6a4f6075dd906d73c86b1f2a7b1db57d19"
+    }
+  ],
+  "static_validation": {
+    "family_count": 4,
+    "existing_rank_children": 6,
+    "new_registered_children": 0,
+    "bounded_descriptor_records": 25,
+    "source_pins": 42,
+    "all_three_primary_member_hashes_match": true,
+    "source_review_only": true,
+    "formal_runtime_or_commercial_acceptance": false
+  },
+  "root_review": {
+    "date": "2026-10-16",
+    "decision": "Adopt this bounded map as partial source/discovery planning evidence only, with explicit unresolved primary implementations and no runtime/reference/interface/commercial/family acceptance.",
+    "source_pins_revalidated": 42,
+    "family_snapshots_revalidated": 4,
+    "existing_rank_rows_revalidated": 6,
+    "preserved_original": "build/p06f-001/source-history/before-observations-status001/G042-G045-options-proposal-001.json",
+    "preserved_original_sha256": "28ffed4f43699d23620f0a5b7b400916fce48fc01f0f2aea8ecc5372f13e8ce2",
+    "candidate_slot_amendment": "Promoted variance/stddev contract is queued for a free preparation slot. Active rank retains positioned XY and shortcuts as its only next two prepared successors; do not start a third detailed candidate or second Window integration.",
+    "compatibility_amendment": "Keep pinned zero-radius reopen-to2 versus owned accepted-zero memory, and source type-preserving/clipped Variance versus nativeF64 variance/stddev, explicit before any full upstream UI/method claim. No settled profile/compatibility behavior changed."
+  }
+}

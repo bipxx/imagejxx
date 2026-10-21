@@ -1,0 +1,81 @@
+{
+  "state": "reviewed_and_qualified",
+  "scope": "Windows Float32 Predictor 3 for Deflate/LZW, C++/Python and both shared ImGui hosts",
+  "audit": {
+    "path": "build/p08j-floating-tiff001/final-audit001.json",
+    "bytes": 64685,
+    "sha256": "b2539113d9117ca5c4fce64b7607fd8eabc7a500daaa926a7ee2b57c9c88adff"
+  },
+  "implementation_review": [
+    "Two append-only Float32 formats preserve enum ordinals 0-21, default export and prior predictor-1/2 producers",
+    "Predictor 3 shuffles byte significance planes independently of file endian, then differences the entire row; decoding restores declared-endian sample words without Float32 arithmetic",
+    "One reused row scratch buffer is charged by read/write preflight; checked sizes, checkpoints, codec bounds and atomic finalization remain in force",
+    "Version 9 requires floating prediction with supported codec, scalar Float32 and explicit sample policy; integer and mixed contracts refuse",
+    "Shared ImGui choices invalidate estimates/consent and replay renews review; finite defaults and explicit IEEE admission remain"
+  ],
+  "validation": {
+    "windows_suites": 80,
+    "source_python_cases": 10436,
+    "installed_python_cases": 10436,
+    "previous_python_ids_retained": 10133,
+    "new_python_cases": 303,
+    "focused_cases": 307,
+    "independent_carriers": 78,
+    "libtiff_carriers": 78,
+    "refused_carriers": 6,
+    "actual_ui_cases": 12,
+    "contexts": 4,
+    "libtiff_reads": 278,
+    "sdk_profiles": 2,
+    "orthogonal_views": "Exact XY/XZ/YZ source words in all successful current UI captures"
+  },
+  "reference": {
+    "path": "build/p08j-floating-tiff001/oracle-all001/evidence001.json",
+    "bytes": 1760,
+    "sha256": "4142f209e39104e4f0891520cfe06a1384e4b6239b69f31c585d9f810d3ecc24"
+  },
+  "reference_limitations": [
+    "Pinned ImageJ does not implement Predictor 3; libtiff 4.7.1 is the compression/prediction oracle",
+    "UI filter words inherit actual pinned ImageJ Float32 source/filter expectations",
+    "LibTIFF fixture resolution argument is rounded to binary32 before its rational; tests assert that exact calibration and exact pixel words"
+  ],
+  "commercial_scope": "Original native transform; no dependency added; exact previously reviewed libtiff runtime/source archive pinned as reference; no non-commercial component introduced",
+  "failed_attempts": [
+    {
+      "path": "build/p08j-floating-tiff001/focused001/run001.json",
+      "bytes": 1588,
+      "sha256": "40f6a20b01d3891d913d7c51316e9dfd7907ce10313a173047548b5e7a7ab61d"
+    },
+    {
+      "path": "build/p08j-floating-tiff001/focused002/run001.json",
+      "bytes": 1593,
+      "sha256": "3419aa6fc14f34296b612a2b3332286929ce123ae9ff7058cde996e328a34f5e"
+    },
+    {
+      "path": "build/p08j-floating-tiff001/python-full001/recovery001.json",
+      "bytes": 536,
+      "sha256": "bb4caff4742fc4a0c05f1fc631e17733bdccd910d9d45a1d0c4c92ee683905fb"
+    },
+    {
+      "path": "build/p08j-floating-tiff001/python-installed001/recovery001.json",
+      "bytes": 366,
+      "sha256": "09992efd5de221f525b8d3c66f08b93b6d227dc2f17a5c2273c8b9faf9dc9b63"
+    }
+  ],
+  "cleanup": {
+    "path": "build/p08j-floating-tiff001/cleanup001.json",
+    "bytes": 2040582,
+    "sha256": "ef9701cf9765d0d278a3646646db0a27390637daf76bcfc75ba6f8718ae3ff83"
+  },
+  "remaining": [
+    "Pinned ImageJ does not implement Predictor 3; libtiff is the compression/prediction oracle; filter words are inherited from the pinned ImageJ corpus",
+    "Actual ImGui event streams and CPU readbacks; no OS-input/GPU equivalence claim",
+    "No Linux TIFF/product certification",
+    "Legacy variants, tiles/BigTIFF, broader metadata/high-bit/alpha and remaining ImageJ/Fiji/editor/release gaps remain open"
+  ],
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  }
+}

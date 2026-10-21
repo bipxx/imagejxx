@@ -1,0 +1,484 @@
+{
+  "profiles": [
+    {
+      "ordinal": 0,
+      "enum_name": "SCIENTIFIC_TIFF_U16_V1",
+      "format_id": "F.G080.tiff-imagej-u16-uncompressed-ifd-czt-v1",
+      "dtype": "uint16",
+      "components": 1,
+      "storage": "strips",
+      "compression": 1,
+      "predictor": 1
+    },
+    {
+      "ordinal": 1,
+      "enum_name": "SCIENTIFIC_TIFF_FLOAT32_V1",
+      "format_id": "F.G080.tiff-imagej-float32-uncompressed-ifd-czt-v1",
+      "dtype": "float32",
+      "components": 1,
+      "storage": "strips",
+      "compression": 1,
+      "predictor": 1
+    },
+    {
+      "ordinal": 2,
+      "enum_name": "SCIENTIFIC_TIFF_U8_V1",
+      "format_id": "F.G080.tiff-imagej-u8-uncompressed-ifd-czt-v1",
+      "dtype": "uint8",
+      "components": 1,
+      "storage": "strips",
+      "compression": 1,
+      "predictor": 1
+    },
+    {
+      "ordinal": 3,
+      "enum_name": "SCIENTIFIC_TIFF_RGB8_V1",
+      "format_id": "F.G080.tiff-imagej-rgb8-uncompressed-ifd-czt-v1",
+      "dtype": "uint8",
+      "components": 3,
+      "storage": "strips",
+      "compression": 1,
+      "predictor": 1
+    },
+    {
+      "ordinal": 4,
+      "enum_name": "SCIENTIFIC_TIFF_U16_DEFLATE_V1",
+      "format_id": "F.G080.tiff-imagej-u16-deflate-ifd-czt-v1",
+      "dtype": "uint16",
+      "components": 1,
+      "storage": "strips",
+      "compression": 8,
+      "predictor": 1
+    },
+    {
+      "ordinal": 5,
+      "enum_name": "SCIENTIFIC_TIFF_FLOAT32_DEFLATE_V1",
+      "format_id": "F.G080.tiff-imagej-float32-deflate-ifd-czt-v1",
+      "dtype": "float32",
+      "components": 1,
+      "storage": "strips",
+      "compression": 8,
+      "predictor": 1
+    },
+    {
+      "ordinal": 6,
+      "enum_name": "SCIENTIFIC_TIFF_U8_DEFLATE_V1",
+      "format_id": "F.G080.tiff-imagej-u8-deflate-ifd-czt-v1",
+      "dtype": "uint8",
+      "components": 1,
+      "storage": "strips",
+      "compression": 8,
+      "predictor": 1
+    },
+    {
+      "ordinal": 7,
+      "enum_name": "SCIENTIFIC_TIFF_RGB8_DEFLATE_V1",
+      "format_id": "F.G080.tiff-imagej-rgb8-deflate-ifd-czt-v1",
+      "dtype": "uint8",
+      "components": 3,
+      "storage": "strips",
+      "compression": 8,
+      "predictor": 1
+    },
+    {
+      "ordinal": 8,
+      "enum_name": "SCIENTIFIC_TIFF_U16_PACKBITS_V1",
+      "format_id": "F.G080.tiff-imagej-u16-packbits-ifd-czt-v1",
+      "dtype": "uint16",
+      "components": 1,
+      "storage": "strips",
+      "compression": 32773,
+      "predictor": 1
+    },
+    {
+      "ordinal": 9,
+      "enum_name": "SCIENTIFIC_TIFF_FLOAT32_PACKBITS_V1",
+      "format_id": "F.G080.tiff-imagej-float32-packbits-ifd-czt-v1",
+      "dtype": "float32",
+      "components": 1,
+      "storage": "strips",
+      "compression": 32773,
+      "predictor": 1
+    },
+    {
+      "ordinal": 10,
+      "enum_name": "SCIENTIFIC_TIFF_U8_PACKBITS_V1",
+      "format_id": "F.G080.tiff-imagej-u8-packbits-ifd-czt-v1",
+      "dtype": "uint8",
+      "components": 1,
+      "storage": "strips",
+      "compression": 32773,
+      "predictor": 1
+    },
+    {
+      "ordinal": 11,
+      "enum_name": "SCIENTIFIC_TIFF_RGB8_PACKBITS_V1",
+      "format_id": "F.G080.tiff-imagej-rgb8-packbits-ifd-czt-v1",
+      "dtype": "uint8",
+      "components": 3,
+      "storage": "strips",
+      "compression": 32773,
+      "predictor": 1
+    },
+    {
+      "ordinal": 12,
+      "enum_name": "SCIENTIFIC_TIFF_U16_LZW_V1",
+      "format_id": "F.G080.tiff-imagej-u16-lzw-ifd-czt-v1",
+      "dtype": "uint16",
+      "components": 1,
+      "storage": "strips",
+      "compression": 5,
+      "predictor": 1
+    },
+    {
+      "ordinal": 13,
+      "enum_name": "SCIENTIFIC_TIFF_FLOAT32_LZW_V1",
+      "format_id": "F.G080.tiff-imagej-float32-lzw-ifd-czt-v1",
+      "dtype": "float32",
+      "components": 1,
+      "storage": "strips",
+      "compression": 5,
+      "predictor": 1
+    },
+    {
+      "ordinal": 14,
+      "enum_name": "SCIENTIFIC_TIFF_U8_LZW_V1",
+      "format_id": "F.G080.tiff-imagej-u8-lzw-ifd-czt-v1",
+      "dtype": "uint8",
+      "components": 1,
+      "storage": "strips",
+      "compression": 5,
+      "predictor": 1
+    },
+    {
+      "ordinal": 15,
+      "enum_name": "SCIENTIFIC_TIFF_RGB8_LZW_V1",
+      "format_id": "F.G080.tiff-imagej-rgb8-lzw-ifd-czt-v1",
+      "dtype": "uint8",
+      "components": 3,
+      "storage": "strips",
+      "compression": 5,
+      "predictor": 1
+    },
+    {
+      "ordinal": 16,
+      "enum_name": "SCIENTIFIC_TIFF_U16_DEFLATE_HORIZONTAL_V1",
+      "format_id": "F.G080.tiff-imagej-u16-deflate-horizontal-ifd-czt-v1",
+      "dtype": "uint16",
+      "components": 1,
+      "storage": "strips",
+      "compression": 8,
+      "predictor": 2
+    },
+    {
+      "ordinal": 17,
+      "enum_name": "SCIENTIFIC_TIFF_U8_DEFLATE_HORIZONTAL_V1",
+      "format_id": "F.G080.tiff-imagej-u8-deflate-horizontal-ifd-czt-v1",
+      "dtype": "uint8",
+      "components": 1,
+      "storage": "strips",
+      "compression": 8,
+      "predictor": 2
+    },
+    {
+      "ordinal": 18,
+      "enum_name": "SCIENTIFIC_TIFF_RGB8_DEFLATE_HORIZONTAL_V1",
+      "format_id": "F.G080.tiff-imagej-rgb8-deflate-horizontal-ifd-czt-v1",
+      "dtype": "uint8",
+      "components": 3,
+      "storage": "strips",
+      "compression": 8,
+      "predictor": 2
+    },
+    {
+      "ordinal": 19,
+      "enum_name": "SCIENTIFIC_TIFF_U16_LZW_HORIZONTAL_V1",
+      "format_id": "F.G080.tiff-imagej-u16-lzw-horizontal-ifd-czt-v1",
+      "dtype": "uint16",
+      "components": 1,
+      "storage": "strips",
+      "compression": 5,
+      "predictor": 2
+    },
+    {
+      "ordinal": 20,
+      "enum_name": "SCIENTIFIC_TIFF_U8_LZW_HORIZONTAL_V1",
+      "format_id": "F.G080.tiff-imagej-u8-lzw-horizontal-ifd-czt-v1",
+      "dtype": "uint8",
+      "components": 1,
+      "storage": "strips",
+      "compression": 5,
+      "predictor": 2
+    },
+    {
+      "ordinal": 21,
+      "enum_name": "SCIENTIFIC_TIFF_RGB8_LZW_HORIZONTAL_V1",
+      "format_id": "F.G080.tiff-imagej-rgb8-lzw-horizontal-ifd-czt-v1",
+      "dtype": "uint8",
+      "components": 3,
+      "storage": "strips",
+      "compression": 5,
+      "predictor": 2
+    },
+    {
+      "ordinal": 22,
+      "enum_name": "SCIENTIFIC_TIFF_FLOAT32_DEFLATE_FLOATING_V1",
+      "format_id": "F.G080.tiff-float32-deflate-floating-ifd-czt-v1",
+      "dtype": "float32",
+      "components": 1,
+      "storage": "strips",
+      "compression": 8,
+      "predictor": 3
+    },
+    {
+      "ordinal": 23,
+      "enum_name": "SCIENTIFIC_TIFF_FLOAT32_LZW_FLOATING_V1",
+      "format_id": "F.G080.tiff-float32-lzw-floating-ifd-czt-v1",
+      "dtype": "float32",
+      "components": 1,
+      "storage": "strips",
+      "compression": 5,
+      "predictor": 3
+    },
+    {
+      "ordinal": 24,
+      "enum_name": "SCIENTIFIC_TIFF_U16_TILED_V1",
+      "format_id": "F.G080.tiff-u16-uncompressed-tiled-ifd-czt-v1",
+      "dtype": "uint16",
+      "components": 1,
+      "storage": "tiled",
+      "compression": 1,
+      "predictor": 1
+    },
+    {
+      "ordinal": 25,
+      "enum_name": "SCIENTIFIC_TIFF_U8_TILED_V1",
+      "format_id": "F.G080.tiff-u8-uncompressed-tiled-ifd-czt-v1",
+      "dtype": "uint8",
+      "components": 1,
+      "storage": "tiled",
+      "compression": 1,
+      "predictor": 1
+    },
+    {
+      "ordinal": 26,
+      "enum_name": "SCIENTIFIC_TIFF_RGB8_TILED_V1",
+      "format_id": "F.G080.tiff-rgb8-uncompressed-tiled-ifd-czt-v1",
+      "dtype": "uint8",
+      "components": 3,
+      "storage": "tiled",
+      "compression": 1,
+      "predictor": 1
+    },
+    {
+      "ordinal": 27,
+      "enum_name": "SCIENTIFIC_TIFF_FLOAT32_TILED_V1",
+      "format_id": "F.G080.tiff-float32-uncompressed-tiled-ifd-czt-v1",
+      "dtype": "float32",
+      "components": 1,
+      "storage": "tiled",
+      "compression": 1,
+      "predictor": 1
+    },
+    {
+      "ordinal": 28,
+      "enum_name": "SCIENTIFIC_TIFF_U16_DEFLATE_TILED_V1",
+      "format_id": "F.G080.tiff-u16-deflate-tiled-ifd-czt-v1",
+      "dtype": "uint16",
+      "components": 1,
+      "storage": "tiled",
+      "compression": 8,
+      "predictor": 1
+    },
+    {
+      "ordinal": 29,
+      "enum_name": "SCIENTIFIC_TIFF_U8_DEFLATE_TILED_V1",
+      "format_id": "F.G080.tiff-u8-deflate-tiled-ifd-czt-v1",
+      "dtype": "uint8",
+      "components": 1,
+      "storage": "tiled",
+      "compression": 8,
+      "predictor": 1
+    },
+    {
+      "ordinal": 30,
+      "enum_name": "SCIENTIFIC_TIFF_RGB8_DEFLATE_TILED_V1",
+      "format_id": "F.G080.tiff-rgb8-deflate-tiled-ifd-czt-v1",
+      "dtype": "uint8",
+      "components": 3,
+      "storage": "tiled",
+      "compression": 8,
+      "predictor": 1
+    },
+    {
+      "ordinal": 31,
+      "enum_name": "SCIENTIFIC_TIFF_FLOAT32_DEFLATE_TILED_V1",
+      "format_id": "F.G080.tiff-float32-deflate-tiled-ifd-czt-v1",
+      "dtype": "float32",
+      "components": 1,
+      "storage": "tiled",
+      "compression": 8,
+      "predictor": 1
+    },
+    {
+      "ordinal": 32,
+      "enum_name": "SCIENTIFIC_TIFF_U16_PACKBITS_TILED_V1",
+      "format_id": "F.G080.tiff-u16-packbits-tiled-ifd-czt-v1",
+      "dtype": "uint16",
+      "components": 1,
+      "storage": "tiled",
+      "compression": 32773,
+      "predictor": 1
+    },
+    {
+      "ordinal": 33,
+      "enum_name": "SCIENTIFIC_TIFF_U8_PACKBITS_TILED_V1",
+      "format_id": "F.G080.tiff-u8-packbits-tiled-ifd-czt-v1",
+      "dtype": "uint8",
+      "components": 1,
+      "storage": "tiled",
+      "compression": 32773,
+      "predictor": 1
+    },
+    {
+      "ordinal": 34,
+      "enum_name": "SCIENTIFIC_TIFF_RGB8_PACKBITS_TILED_V1",
+      "format_id": "F.G080.tiff-rgb8-packbits-tiled-ifd-czt-v1",
+      "dtype": "uint8",
+      "components": 3,
+      "storage": "tiled",
+      "compression": 32773,
+      "predictor": 1
+    },
+    {
+      "ordinal": 35,
+      "enum_name": "SCIENTIFIC_TIFF_FLOAT32_PACKBITS_TILED_V1",
+      "format_id": "F.G080.tiff-float32-packbits-tiled-ifd-czt-v1",
+      "dtype": "float32",
+      "components": 1,
+      "storage": "tiled",
+      "compression": 32773,
+      "predictor": 1
+    },
+    {
+      "ordinal": 36,
+      "enum_name": "SCIENTIFIC_TIFF_U16_LZW_TILED_V1",
+      "format_id": "F.G080.tiff-u16-lzw-tiled-ifd-czt-v1",
+      "dtype": "uint16",
+      "components": 1,
+      "storage": "tiled",
+      "compression": 5,
+      "predictor": 1
+    },
+    {
+      "ordinal": 37,
+      "enum_name": "SCIENTIFIC_TIFF_U8_LZW_TILED_V1",
+      "format_id": "F.G080.tiff-u8-lzw-tiled-ifd-czt-v1",
+      "dtype": "uint8",
+      "components": 1,
+      "storage": "tiled",
+      "compression": 5,
+      "predictor": 1
+    },
+    {
+      "ordinal": 38,
+      "enum_name": "SCIENTIFIC_TIFF_RGB8_LZW_TILED_V1",
+      "format_id": "F.G080.tiff-rgb8-lzw-tiled-ifd-czt-v1",
+      "dtype": "uint8",
+      "components": 3,
+      "storage": "tiled",
+      "compression": 5,
+      "predictor": 1
+    },
+    {
+      "ordinal": 39,
+      "enum_name": "SCIENTIFIC_TIFF_FLOAT32_LZW_TILED_V1",
+      "format_id": "F.G080.tiff-float32-lzw-tiled-ifd-czt-v1",
+      "dtype": "float32",
+      "components": 1,
+      "storage": "tiled",
+      "compression": 5,
+      "predictor": 1
+    },
+    {
+      "ordinal": 40,
+      "enum_name": "SCIENTIFIC_TIFF_U16_DEFLATE_HORIZONTAL_TILED_V1",
+      "format_id": "F.G080.tiff-u16-deflate-horizontal-tiled-ifd-czt-v1",
+      "dtype": "uint16",
+      "components": 1,
+      "storage": "tiled",
+      "compression": 8,
+      "predictor": 2
+    },
+    {
+      "ordinal": 41,
+      "enum_name": "SCIENTIFIC_TIFF_U8_DEFLATE_HORIZONTAL_TILED_V1",
+      "format_id": "F.G080.tiff-u8-deflate-horizontal-tiled-ifd-czt-v1",
+      "dtype": "uint8",
+      "components": 1,
+      "storage": "tiled",
+      "compression": 8,
+      "predictor": 2
+    },
+    {
+      "ordinal": 42,
+      "enum_name": "SCIENTIFIC_TIFF_RGB8_DEFLATE_HORIZONTAL_TILED_V1",
+      "format_id": "F.G080.tiff-rgb8-deflate-horizontal-tiled-ifd-czt-v1",
+      "dtype": "uint8",
+      "components": 3,
+      "storage": "tiled",
+      "compression": 8,
+      "predictor": 2
+    },
+    {
+      "ordinal": 43,
+      "enum_name": "SCIENTIFIC_TIFF_U16_LZW_HORIZONTAL_TILED_V1",
+      "format_id": "F.G080.tiff-u16-lzw-horizontal-tiled-ifd-czt-v1",
+      "dtype": "uint16",
+      "components": 1,
+      "storage": "tiled",
+      "compression": 5,
+      "predictor": 2
+    },
+    {
+      "ordinal": 44,
+      "enum_name": "SCIENTIFIC_TIFF_U8_LZW_HORIZONTAL_TILED_V1",
+      "format_id": "F.G080.tiff-u8-lzw-horizontal-tiled-ifd-czt-v1",
+      "dtype": "uint8",
+      "components": 1,
+      "storage": "tiled",
+      "compression": 5,
+      "predictor": 2
+    },
+    {
+      "ordinal": 45,
+      "enum_name": "SCIENTIFIC_TIFF_RGB8_LZW_HORIZONTAL_TILED_V1",
+      "format_id": "F.G080.tiff-rgb8-lzw-horizontal-tiled-ifd-czt-v1",
+      "dtype": "uint8",
+      "components": 3,
+      "storage": "tiled",
+      "compression": 5,
+      "predictor": 2
+    },
+    {
+      "ordinal": 46,
+      "enum_name": "SCIENTIFIC_TIFF_FLOAT32_DEFLATE_FLOATING_TILED_V1",
+      "format_id": "F.G080.tiff-float32-deflate-floating-tiled-ifd-czt-v1",
+      "dtype": "float32",
+      "components": 1,
+      "storage": "tiled",
+      "compression": 8,
+      "predictor": 3
+    },
+    {
+      "ordinal": 47,
+      "enum_name": "SCIENTIFIC_TIFF_FLOAT32_LZW_FLOATING_TILED_V1",
+      "format_id": "F.G080.tiff-float32-lzw-floating-tiled-ifd-czt-v1",
+      "dtype": "float32",
+      "components": 1,
+      "storage": "tiled",
+      "compression": 5,
+      "predictor": 3
+    }
+  ]
+}

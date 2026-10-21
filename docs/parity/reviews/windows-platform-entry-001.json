@@ -1,0 +1,846 @@
+{
+  "schema": "imagejxx.windows-platform-entry",
+  "schema_version": 1,
+  "id": "windows-platform-entry-001",
+  "status": "partial_candidate_for_parent_manifest_review",
+  "reference_id": "imagej-1.54r-fiji-latest-20261007-1617-win64",
+  "observed_at_utc": "2026-10-16T04:45:44.8191640Z",
+  "scope": "One observed Windows x64 machine and the preserved qualified P05l executable, installed CPython environment and core-only SDK consumer. This is an additive platform-entry candidate, not an acceptance manifest.",
+  "acceptance": {
+    "platform_accepted": false,
+    "platform_certified": false,
+    "release_accepted": false,
+    "new_ui_launches": 0,
+    "new_product_gates": 0,
+    "new_benchmarks": 0,
+    "verification_run_ids_policy": "Empty: this task has no registered platform verification run. Preserved child receipts remain linked as narrower evidence and are not relabelled as platform certification.",
+    "commercial_eligibility_effect": "None. Hardware inventory and platform identification grant no upstream commercial-eligibility or dependency-incorporation approval."
+  },
+  "consumed_files": [
+    {
+      "path": "docs/parity/platforms.json",
+      "bytes": 241,
+      "sha256": "9226be606ce68d6b60e13864f201f367bfb01519b703718c8bfdce72580ce776"
+    },
+    {
+      "path": "docs/parity/SCHEMA.md",
+      "bytes": 40784,
+      "sha256": "d7fbdedc1e32fa57c19773494d527dad882d19393e8039b2993dba3bf5da5f13"
+    },
+    {
+      "path": "scripts/parity_schema.py",
+      "bytes": 24164,
+      "sha256": "be67b4a85e72bee6581bdb0673374e2b808d94955019a930d6ecf8a96934d913"
+    },
+    {
+      "path": "docs/parity/references.json",
+      "bytes": 757915,
+      "sha256": "d750de9e7b74e4fd5f6a5f05e7068becc3b67bf61ac8ddc76853e421335754c8"
+    },
+    {
+      "path": "docs/parity/fiji-components.json",
+      "bytes": 8945367,
+      "sha256": "5f2ad3f617c354189759d5e1c81d16e1ed977ac730461c80987d1581998e17a1"
+    },
+    {
+      "path": "docs/parity/commands.json",
+      "bytes": 3079707,
+      "sha256": "3b17ae800e4b2732a7ab4e23dcd3101a1f9fd9970c6917afc81dbd2a5c908808"
+    },
+    {
+      "path": "docs/parity/formats.json",
+      "bytes": 237,
+      "sha256": "be49a4e393b242171953228372c39aaf5df23169e2cad13d3b9c20d24ba05504"
+    },
+    {
+      "path": "docs/parity/fixtures.json",
+      "bytes": 2091819,
+      "sha256": "437b96793af979a013330d5f0f16932599bfd4c2644f6c94371c0c613bebc762"
+    },
+    {
+      "path": "docs/parity/benchmarks.json",
+      "bytes": 243,
+      "sha256": "327c152e1c06006f309592320f99494e342e65dc4db9bf9468146b8502286c63"
+    },
+    {
+      "path": "build/p05l-001/local-exit-002.json",
+      "bytes": 9323,
+      "sha256": "83a3cc2345f4affdfa44a1cbb2ff32b1e097cb4f3625654ed6a6285b79f42645"
+    },
+    {
+      "path": "build/p05l-001/source-inputs-002.json",
+      "bytes": 98734,
+      "sha256": "f5034c25cfd5e2d9033a41a09b31fceb90bd05ba3661b9ec975f9fdcb5ae47a9"
+    },
+    {
+      "path": "build/p05l-001/desktop-build-003.json",
+      "bytes": 30695,
+      "sha256": "ab1a3081e2dcd097ac8519f2696fe3fe840c65e92626daf8ad963e124d45d8e0"
+    },
+    {
+      "path": "build/p05l-001/desktop-build-003.stdout",
+      "bytes": 1455,
+      "sha256": "0ddf2f466b3bb7589c341363bc0821d96ee805ddf42d0b2690ce95efee96d5a7"
+    },
+    {
+      "path": "build/p05l-001/distribution-002.json",
+      "bytes": 4710,
+      "sha256": "e7fa795880dd65da72f84418116cac27fd87ba40da4db6233ad96fbc5098dae7"
+    },
+    {
+      "path": "build/p05l-001/install-ui-001.json",
+      "bytes": 23921,
+      "sha256": "651129f1e6a11a1fa8d870e078779882e5ac36f4d8a65c1371ba284ea663fbbc"
+    },
+    {
+      "path": "build/p05l-001/sdk-bound-002.json",
+      "bytes": 2325,
+      "sha256": "63a0001f491e030dd2b4ae59b9c68fdb022b44440caad234266e100667b70f90"
+    },
+    {
+      "path": "build/p05l-001/sdk-configure-002.stdout",
+      "bytes": 215,
+      "sha256": "fdd3032db8c5ead3382b7853306e9aefe3c41cc30fd56b3b59fd4cb74e4b0c2f"
+    },
+    {
+      "path": "build/p05l-sdk001/CMakeFiles/3.31.6-msvc6/CMakeCXXCompiler.cmake",
+      "bytes": 6372,
+      "sha256": "1cace6da0658f19518005a37cf63c91f2023283f5eec85b6ad1bfc84bf82c0d7"
+    },
+    {
+      "path": "build/p05l-dist-ui003/imagejxx-0.2.0-cp312-cp312-win_amd64.whl",
+      "bytes": 13147097,
+      "sha256": "e5d76093ccdadd4afd8647223f3787afe768a9d3c32efe4549a97d90fd0fceff"
+    },
+    {
+      "path": "build/p05l-sdist002/imagejxx-0.2.0.tar.gz",
+      "bytes": 6373348,
+      "sha256": "284448f7db30d9d5e6793a4a3c83a0dd9e7ff7a7dbd16472fae90bb92f08482e"
+    },
+    {
+      "path": "build/p05l-install001/bin/imagejxx.exe",
+      "bytes": 8103936,
+      "sha256": "556c210e2cff411e5b3ce6fbe525b45695a43420558536c394f27e50cb14f560"
+    },
+    {
+      "path": "build/p05l-env-ui001/Scripts/python.exe",
+      "bytes": 257536,
+      "sha256": "4025e2a6d8fc90d053a8405e81f008cbd8ee45b582e2d77480341501f4aeda73"
+    },
+    {
+      "path": "build/p05l-env-ui001/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+      "bytes": 3259392,
+      "sha256": "a2905e73c31401fb9a82ec3e047e1510fd80e763984a9e69a9f61d18b784fd52"
+    },
+    {
+      "path": "build/p05l-env-ui001/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+      "bytes": 7905792,
+      "sha256": "0d85108180111f3b01df9a925d31c448aa69a8ab0b1bddb1cbc27fdc750a50d7"
+    },
+    {
+      "path": "build/p05l-env-ui001/Lib/site-packages/imagejxx/glfw3.dll",
+      "bytes": 233984,
+      "sha256": "a53079499276e3e55ec402f3716a3168d927b7adba20ed1135d0d9177b0c6c43"
+    },
+    {
+      "path": "build/p05l-env-ui001/Lib/site-packages/imagejxx-0.2.0.dist-info/WHEEL",
+      "bytes": 106,
+      "sha256": "721a9e2e13c1b4f76b3a8ade477e1831ca1f4a4df258342192bb032769f8f0b5"
+    },
+    {
+      "path": "build/p05l-sdk001/Release/imagejxx_selection_creation_example.exe",
+      "bytes": 807424,
+      "sha256": "eca8ba135aa8f3114d9d5ba74be6fdfbe9ca56a3b762f5647927a63d0aec57ad"
+    }
+  ],
+  "observation_methods": {
+    "machine_query": {
+      "api": "PowerShell Get-CimInstance Win32_OperatingSystem/Win32_Processor/Win32_ComputerSystem/Win32_VideoController; Get-ItemProperty for the two registry paths below",
+      "registry_paths": [
+        "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion",
+        "HKCU:\\Control Panel\\Desktop"
+      ],
+      "effects": "Read-only inventory; no UI or graphics context created."
+    },
+    "python_query": {
+      "command": "build/p05l-env-ui001/Scripts/python.exe -I -X utf8 -B -",
+      "imports": [
+        "sys",
+        "json",
+        "importlib.metadata",
+        "platform",
+        "struct",
+        "sysconfig"
+      ],
+      "effects": "stdlib-only query of the pinned environment; no product module import, UI creation, install or bytecode cache."
+    },
+    "product_query": {
+      "method": "Read file bytes with Python pathlib; SHA256/size; decode PE headers/import directory; compare four installed files directly with matching wheel ZIP members; read two exact qualified sdist members in memory.",
+      "effects": "No extraction, binary execution, build/cache access or current product-source substitution."
+    },
+    "compiler_query": {
+      "method": "Read the preserved SDK CMakeCXXCompiler.cmake, SDK configure stdout and desktop build stdout; read installed cl.exe file-version metadata/hash without invoking the compiler.",
+      "effects": "No compiler execution and no primary build-cache inspection."
+    }
+  },
+  "machine_observation": {
+    "dpi_registry_preferences": {
+      "Win8DpiScaling": 0,
+      "LogPixels": null
+    },
+    "os": {
+      "update_build_revision": 9711,
+      "edition_id": "Professional",
+      "display_version": "25H2",
+      "version": "10.0.26200",
+      "caption": "Microsoft Windows 11 Pro",
+      "architecture": "64-bit",
+      "build_number": "26200"
+    },
+    "observed_at_utc": "2026-10-16T04:45:44.8191640Z",
+    "system": {
+      "hypervisor_present": true,
+      "manufacturer": "ASUS",
+      "model": "System Product Name"
+    },
+    "cpu": [
+      {
+        "Manufacturer": "GenuineIntel",
+        "Name": "12th Gen Intel(R) Core(TM) i7-12700K",
+        "NumberOfCores": 12,
+        "NumberOfLogicalProcessors": 20,
+        "MaxClockSpeed": 3600
+      }
+    ],
+    "graphics": [
+      {
+        "Name": "Intel(R) UHD Graphics 770",
+        "AdapterCompatibility": "Intel Corporation",
+        "DriverVersion": "32.0.101.7088",
+        "DriverDate": "2026-06-16T20:00:00-04:00",
+        "VideoProcessor": "Intel(R) UHD Graphics Family",
+        "CurrentHorizontalResolution": 1920,
+        "CurrentVerticalResolution": 1080,
+        "CurrentBitsPerPixel": 32,
+        "CurrentRefreshRate": 60,
+        "Status": "OK",
+        "AdapterRAM": 2147479552
+      },
+      {
+        "Name": "NVIDIA GeForce RTX 4090",
+        "AdapterCompatibility": "NVIDIA",
+        "DriverVersion": "32.0.16.1088",
+        "DriverDate": "2026-07-21T20:00:00-04:00",
+        "VideoProcessor": "NVIDIA GeForce RTX 4090",
+        "CurrentHorizontalResolution": 2560,
+        "CurrentVerticalResolution": 1440,
+        "CurrentBitsPerPixel": 32,
+        "CurrentRefreshRate": 59,
+        "Status": "OK",
+        "AdapterRAM": 4293918720
+      }
+    ],
+    "memory": {
+      "physical_bytes": 137167814656,
+      "free_physical_kib_at_query": 99998256,
+      "visible_kib": 133952944
+    }
+  },
+  "machine_observation_limits": [
+    "CIM AdapterRAM is the reported uint32 field; it is not verified dedicated VRAM capacity, especially for the RTX4090.",
+    "Reported adapter display modes are not a verified physical-monitor topology, effective scaling, application adapter choice or negotiated OpenGL context.",
+    "Free physical memory is point-in-time inventory, not application working set, peak memory, graphics allocation or a memory/performance gate.",
+    "Reported CPU MaxClockSpeed is not a measured operating clock or throughput. HypervisorPresent does not establish whether this session is a virtual machine.",
+    "Registry Win8DpiScaling/LogPixels are preferences, not effective per-monitor DPI observations."
+  ],
+  "python_observation": {
+    "version": "3.12.8 (main, Dec 19 2024, 14:41:01) [MSC v.1942 64 bit (AMD64)]",
+    "implementation": "cpython",
+    "cache_tag": "cpython-312",
+    "pointer_bits": 64,
+    "platform_tag": "win-amd64",
+    "soabi": null,
+    "distribution": {
+      "name": "imagejxx",
+      "version": "0.2.0"
+    },
+    "wheel_metadata": "Wheel-Version: 1.0\nGenerator: scikit-build-core 0.11.6\nRoot-Is-Purelib: false\nTag: cp312-cp312-win_amd64\n\n",
+    "executable": "build/p05l-env-ui001/Scripts/python.exe",
+    "base_executable": "C:/Users/HEQ/AppData/Roaming/uv/python/cpython-3.12.8-windows-x86_64-none/python.exe",
+    "distribution_root": "build/p05l-env-ui001/Lib/site-packages",
+    "wheel_tag": "cp312-cp312-win_amd64",
+    "interpretation": "CPython reports MSCv.1942 for its own runtime build; that is not evidence of the imagejxx native product compiler."
+  },
+  "product_observations": {
+    "product_bindings": [
+      {
+        "id": "standalone-cpp-desktop-win64-release",
+        "path": "build/p05l-install001/bin/imagejxx.exe",
+        "identity": "consumed_files SHA256/size and wheel_identity_comparisons",
+        "execution_in_this_task": false
+      },
+      {
+        "id": "python-core-cp312-win_amd64",
+        "path": "build/p05l-env-ui001/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+        "identity": "consumed_files SHA256/size and wheel_identity_comparisons",
+        "execution_in_this_task": false
+      },
+      {
+        "id": "python-imgui-desktop-cp312-win_amd64",
+        "path": "build/p05l-env-ui001/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+        "identity": "consumed_files SHA256/size and wheel_identity_comparisons",
+        "execution_in_this_task": false
+      },
+      {
+        "id": "core-only-cpp-sdk-win64-release",
+        "path": "build/p05l-sdk001/Release/imagejxx_selection_creation_example.exe",
+        "identity": "consumed_files SHA256/size and preserved sdk-bound002",
+        "execution_in_this_task": false
+      }
+    ],
+    "pe_observations": [
+      {
+        "path": "build/p05l-install001/bin/imagejxx.exe",
+        "machine_hex": "0x8664",
+        "optional_magic_hex": "0x20b",
+        "linker_version": "14.44",
+        "static_import_names": [
+          "glfw3.dll",
+          "OPENGL32.dll",
+          "libpng16.dll",
+          "zlib1.dll",
+          "tiff.dll",
+          "COMDLG32.dll",
+          "GDI32.dll",
+          "KERNEL32.dll",
+          "USER32.dll",
+          "SHELL32.dll",
+          "MSVCP140.dll",
+          "MSVCP140_2.dll",
+          "IMM32.dll",
+          "VCRUNTIME140.dll",
+          "VCRUNTIME140_1.dll",
+          "api-ms-win-crt-runtime-l1-1-0.dll",
+          "api-ms-win-crt-heap-l1-1-0.dll",
+          "api-ms-win-crt-convert-l1-1-0.dll",
+          "api-ms-win-crt-string-l1-1-0.dll",
+          "api-ms-win-crt-math-l1-1-0.dll",
+          "api-ms-win-crt-stdio-l1-1-0.dll",
+          "api-ms-win-crt-locale-l1-1-0.dll",
+          "api-ms-win-crt-environment-l1-1-0.dll",
+          "api-ms-win-crt-filesystem-l1-1-0.dll",
+          "api-ms-win-crt-utility-l1-1-0.dll"
+        ]
+      },
+      {
+        "path": "build/p05l-env-ui001/Scripts/python.exe",
+        "machine_hex": "0x8664",
+        "optional_magic_hex": "0x20b",
+        "linker_version": "14.42",
+        "static_import_names": [
+          "VERSION.dll",
+          "KERNEL32.dll"
+        ]
+      },
+      {
+        "path": "build/p05l-env-ui001/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+        "machine_hex": "0x8664",
+        "optional_magic_hex": "0x20b",
+        "linker_version": "14.44",
+        "static_import_names": [
+          "python312.dll",
+          "KERNEL32.dll",
+          "MSVCP140.dll",
+          "MSVCP140_2.dll",
+          "VCRUNTIME140_1.dll",
+          "VCRUNTIME140.dll",
+          "api-ms-win-crt-runtime-l1-1-0.dll",
+          "api-ms-win-crt-string-l1-1-0.dll",
+          "api-ms-win-crt-heap-l1-1-0.dll",
+          "api-ms-win-crt-math-l1-1-0.dll",
+          "api-ms-win-crt-convert-l1-1-0.dll",
+          "api-ms-win-crt-stdio-l1-1-0.dll",
+          "api-ms-win-crt-filesystem-l1-1-0.dll",
+          "api-ms-win-crt-locale-l1-1-0.dll"
+        ]
+      },
+      {
+        "path": "build/p05l-env-ui001/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+        "machine_hex": "0x8664",
+        "optional_magic_hex": "0x20b",
+        "linker_version": "14.44",
+        "static_import_names": [
+          "python312.dll",
+          "glfw3.dll",
+          "OPENGL32.dll",
+          "libpng16.dll",
+          "zlib1.dll",
+          "tiff.dll",
+          "COMDLG32.dll",
+          "GDI32.dll",
+          "KERNEL32.dll",
+          "USER32.dll",
+          "SHELL32.dll",
+          "MSVCP140.dll",
+          "MSVCP140_2.dll",
+          "IMM32.dll",
+          "VCRUNTIME140_1.dll",
+          "VCRUNTIME140.dll",
+          "api-ms-win-crt-runtime-l1-1-0.dll",
+          "api-ms-win-crt-heap-l1-1-0.dll",
+          "api-ms-win-crt-math-l1-1-0.dll",
+          "api-ms-win-crt-convert-l1-1-0.dll",
+          "api-ms-win-crt-string-l1-1-0.dll",
+          "api-ms-win-crt-locale-l1-1-0.dll",
+          "api-ms-win-crt-stdio-l1-1-0.dll",
+          "api-ms-win-crt-environment-l1-1-0.dll",
+          "api-ms-win-crt-filesystem-l1-1-0.dll",
+          "api-ms-win-crt-utility-l1-1-0.dll"
+        ]
+      },
+      {
+        "path": "build/p05l-env-ui001/Lib/site-packages/imagejxx/glfw3.dll",
+        "machine_hex": "0x8664",
+        "optional_magic_hex": "0x20b",
+        "linker_version": "14.43",
+        "static_import_names": [
+          "KERNEL32.dll",
+          "USER32.dll",
+          "GDI32.dll",
+          "SHELL32.dll",
+          "VCRUNTIME140.dll",
+          "api-ms-win-crt-string-l1-1-0.dll",
+          "api-ms-win-crt-stdio-l1-1-0.dll",
+          "api-ms-win-crt-heap-l1-1-0.dll",
+          "api-ms-win-crt-convert-l1-1-0.dll",
+          "api-ms-win-crt-math-l1-1-0.dll",
+          "api-ms-win-crt-utility-l1-1-0.dll",
+          "api-ms-win-crt-runtime-l1-1-0.dll"
+        ]
+      },
+      {
+        "path": "build/p05l-sdk001/Release/imagejxx_selection_creation_example.exe",
+        "machine_hex": "0x8664",
+        "optional_magic_hex": "0x20b",
+        "linker_version": "14.44",
+        "static_import_names": [
+          "MSVCP140.dll",
+          "VCRUNTIME140.dll",
+          "VCRUNTIME140_1.dll",
+          "api-ms-win-crt-runtime-l1-1-0.dll",
+          "api-ms-win-crt-string-l1-1-0.dll",
+          "api-ms-win-crt-math-l1-1-0.dll",
+          "api-ms-win-crt-heap-l1-1-0.dll",
+          "api-ms-win-crt-convert-l1-1-0.dll",
+          "api-ms-win-crt-stdio-l1-1-0.dll",
+          "api-ms-win-crt-locale-l1-1-0.dll",
+          "KERNEL32.dll"
+        ]
+      }
+    ],
+    "pe_limits": "Import names are static dependency declarations, not resolved/loaded runtime DLL paths, versions or a redistribution test. PE linker version does not identify an exact compiler invocation.",
+    "wheel_identity_comparisons": [
+      {
+        "installed_path": "build/p05l-install001/bin/imagejxx.exe",
+        "wheel_member": "bin/imagejxx.exe",
+        "equal_bytes": true,
+        "sha256": "556c210e2cff411e5b3ce6fbe525b45695a43420558536c394f27e50cb14f560"
+      },
+      {
+        "installed_path": "build/p05l-env-ui001/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+        "wheel_member": "imagejxx/_native.cp312-win_amd64.pyd",
+        "equal_bytes": true,
+        "sha256": "a2905e73c31401fb9a82ec3e047e1510fd80e763984a9e69a9f61d18b784fd52"
+      },
+      {
+        "installed_path": "build/p05l-env-ui001/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+        "wheel_member": "imagejxx/_desktop.cp312-win_amd64.pyd",
+        "equal_bytes": true,
+        "sha256": "0d85108180111f3b01df9a925d31c448aa69a8ab0b1bddb1cbc27fdc750a50d7"
+      },
+      {
+        "installed_path": "build/p05l-env-ui001/Lib/site-packages/imagejxx/glfw3.dll",
+        "wheel_member": "imagejxx/glfw3.dll",
+        "equal_bytes": true,
+        "sha256": "a53079499276e3e55ec402f3716a3168d927b7adba20ed1135d0d9177b0c6c43"
+      }
+    ]
+  },
+  "qualified_backend_and_toolchain": {
+    "source_archive_members": [
+      {
+        "archive_path": "build/p05l-sdist002/imagejxx-0.2.0.tar.gz",
+        "member": "imagejxx-0.2.0/CMakeLists.txt",
+        "sha256": "e6480b6b671cd9372a35a4b97585ead1c56e1afefd6f15d068a5a2cab170d8db",
+        "source_path": "CMakeLists.txt",
+        "anchors": [
+          {
+            "line": 274,
+            "text": "find_package(glfw3 3.4.0 EXACT CONFIG REQUIRED)"
+          },
+          {
+            "line": 275,
+            "text": "find_package(imgui CONFIG REQUIRED)"
+          },
+          {
+            "line": 277,
+            "text": "find_package(OpenGL REQUIRED)"
+          }
+        ]
+      },
+      {
+        "archive_path": "build/p05l-sdist002/imagejxx-0.2.0.tar.gz",
+        "member": "imagejxx-0.2.0/src/desktop/window.cpp",
+        "sha256": "f1d8a83097ca181a8e6a4a3b70a473cc5c82d328a8561517e6bcd8f8f9952ba4",
+        "source_path": "src/desktop/window.cpp",
+        "anchors": [
+          {
+            "line": 8694,
+            "text": "glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);"
+          },
+          {
+            "line": 8695,
+            "text": "glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);"
+          },
+          {
+            "line": 8720,
+            "text": "bool platform = ImGui_ImplGlfw_InitForOpenGL(window, true),"
+          },
+          {
+            "line": 8721,
+            "text": "renderer = platform && ImGui_ImplOpenGL3_Init(\"#version 130\");"
+          }
+        ]
+      }
+    ],
+    "source_manifest": "build/p05l-001/source-inputs-002.json",
+    "backend": {
+      "ui": "Dear ImGui",
+      "platform": "GLFW3.4.0 EXACT required by qualified CMake source",
+      "renderer": "OpenGL",
+      "requested_context_major": 3,
+      "requested_context_minor": 0,
+      "imgui_glsl_string": "#version 130",
+      "imgui_exact_version": "Not established by the consumed bounded source/member observations.",
+      "actual_negotiated_context": null,
+      "active_application_adapter": null,
+      "interpretation": "Configured source behavior is identified; it is not runtime verification of context creation, renderer choice or driver stability."
+    },
+    "desktop_build_receipt": {
+      "path": "build/p05l-001/desktop-build-003.json",
+      "stdout": "build/p05l-001/desktop-build-003.stdout",
+      "msbuild_version": "17.14.40+3e7442088",
+      "configuration": "Release",
+      "exact_cl_invocation_separately_bound": false
+    },
+    "preserved_sdk_toolchain": {
+      "compiler_descriptor": "build/p05l-sdk001/CMakeFiles/3.31.6-msvc6/CMakeCXXCompiler.cmake",
+      "compiler_id": "MSVC",
+      "compiler_version": "19.44.35225.0",
+      "compiler_path": "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe",
+      "windows_sdk": "10.0.22621.0",
+      "target_os_reported_by_configure": "10.0.26200",
+      "scope": "Qualified core-only SDK compiler identity; do not promote this to an exact desktop compilation trace."
+    },
+    "currently_observed_compiler_file": {
+      "path": "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe",
+      "sha256": "824f0234b667847befd7e3ff258822bfe557b540959ff042caaec6844b709a11",
+      "file_version": "19.44.35225.0",
+      "product_version": "14.44.35225.0",
+      "scope": "Current file metadata/hash only; compiler was not invoked."
+    }
+  },
+  "preserved_product_evidence": {
+    "receipt": "build/p05l-001/local-exit-002.json",
+    "receipt_sha256": "83a3cc2345f4affdfa44a1cbb2ff32b1e097cb4f3625654ed6a6285b79f42645",
+    "state": "local_exit_verified",
+    "recorded_utc": "2026-10-16T03:58:49.174105+00:00",
+    "scope": "Ordinary eager-Z XY rectangle/ellipse/polygon/freehand creation with Replace/Add/Subtract/Intersect/XOR; captured preview/cancellation, strict typed API/record/replay/full rebind, native persistence and both installed shared ImGui launch contexts, as bounded by the preserved local-exit receipt.",
+    "interpretation": "Existing source/artifact-bound child evidence, not new platform verification. Installed headless native events and readbacks do not prove visible OS keyboard/focus/DPI/accessibility, usability, latency or process/GPU peak memory. No current P06c2 build is substituted."
+  },
+  "checks": [
+    {
+      "id": "WIN01.machine-inventory",
+      "state": "observed_read_only",
+      "evidence": "machine_observation",
+      "scope": "CIM operating system/CPU/memory/adapter inventory and Windows registry build/preferences at the recorded time; no application execution."
+    },
+    {
+      "id": "WIN02.python-abi",
+      "state": "observed_read_only",
+      "evidence": "python_observation",
+      "scope": "Qualified venv stdlib metadata query only; imagejxx and native/desktop modules were not imported by this task."
+    },
+    {
+      "id": "WIN03.product-byte-identity",
+      "state": "observed_read_only",
+      "evidence": "product_observations",
+      "scope": "SHA256/size, PE architecture and import-name inspection; four installed members equal their qualified wheel members byte for byte."
+    },
+    {
+      "id": "WIN04.backend-and-toolchain",
+      "state": "source_and_preserved_receipt_identified",
+      "evidence": "qualified_backend_and_toolchain",
+      "scope": "Qualified sdist source requests GLFW3.4.0/OpenGL3.0/GLSL130; SDK compiler metadata and desktop MSBuild receipt are identified. No live negotiated context or exact historic desktop cl invocation."
+    },
+    {
+      "id": "WIN05.scoped-child-reuse",
+      "state": "preserved_scoped_product_evidence_only",
+      "evidence": "preserved_product_evidence",
+      "scope": "P05l local-exit002 binds its declared child and installed headless interactions. This does not become an OS/platform/usability/accessibility/performance pass."
+    },
+    {
+      "id": "WIN06.keyboard-and-focus",
+      "state": "unexecuted",
+      "evidence": null,
+      "scope": "Execute visible OS-level keyboard, focus transfer, modal ownership and shutdown checks in both the standalone C++ and Python ImGui launch modes; preserved headless P05l frames do not establish these outcomes."
+    },
+    {
+      "id": "WIN07.live-graphics",
+      "state": "unexecuted",
+      "evidence": null,
+      "scope": "Observe the negotiated OpenGL vendor/renderer/version and active adapter for each visible launch; inventory and source configuration alone do not identify the application graphics context."
+    },
+    {
+      "id": "WIN08.monitor-and-dpi",
+      "state": "unexecuted",
+      "evidence": null,
+      "scope": "Measure effective per-monitor DPI, fonts, hit targets and window relocation on the actual available monitor configuration; registry preferences and reported adapter modes do not qualify scaling."
+    },
+    {
+      "id": "WIN09.accessibility",
+      "state": "unexecuted",
+      "evidence": null,
+      "scope": "Execute accessibility feasibility with Windows UI Automation and Narrator, including names, roles, values and focus; record unavailable product support as an open capability."
+    },
+    {
+      "id": "WIN10.clipboard-dialog-print",
+      "state": "unexecuted",
+      "evidence": null,
+      "scope": "Execute owned clipboard and native file-dialog roundtrips plus printing/Print-to-PDF feasibility; distinguish an absent command from an executed platform result."
+    },
+    {
+      "id": "WIN11.performance-and-memory",
+      "state": "unexecuted",
+      "evidence": null,
+      "scope": "Declare and execute an identified navigation/preview workload with latency, process peak/private memory and graphics memory attribution; no performance budget or resource gate is passed here."
+    },
+    {
+      "id": "WIN12.loaded-runtime-and-compiler",
+      "state": "partially_identified_not_executed",
+      "evidence": "qualified_backend_and_toolchain",
+      "scope": "Bind the exact desktop compiler invocation and observed loaded runtime DLL identities before a reproducible toolchain/runtime platform claim; PE linker versions and the preserved SDK compiler are narrower observations."
+    }
+  ],
+  "proposed_additive_patch": {
+    "target": "docs/parity/platforms.json",
+    "format": "RFC6902 JSON Patch operations applied only after the explicit merge preconditions",
+    "merge_preconditions": {
+      "sha256": "9226be606ce68d6b60e13864f201f367bfb01519b703718c8bfdce72580ce776",
+      "schema_version": 1,
+      "reference_id": "imagej-1.54r-fiji-latest-20261007-1617-win64",
+      "enumeration_status": "pending",
+      "platform_count": 0,
+      "absent_platform_id": "P.windows-x64-p05l-001",
+      "remaining_prefix": [
+        "Complete platforms enumeration and the owning certification gates."
+      ],
+      "owner": "Parent root alone may integrate the proposed patch; this task does not write any manifest."
+    },
+    "operations": [
+      {
+        "op": "add",
+        "path": "/platforms/-",
+        "value": {
+          "id": "P.windows-x64-p05l-001",
+          "os": "Microsoft Windows 11 Pro 25H2, version10.0.26200, build26200.9711 (observed inventory)",
+          "architecture": "AMD64 / x86_64; observed 64-bit OS, PE32+ machine0x8664 and CPython pointer size64",
+          "compiler": "Recorded desktop MSBuild17.14.40+3e7442088; native PE linker14.44. Preserved qualified SDK identifies MSVC19.44.35225.0/v143. Exact historic desktop cl invocation is not separately bound.",
+          "python_abis": [
+            "cp312-cp312-win_amd64"
+          ],
+          "products": [
+            "standalone-cpp-desktop-win64-release",
+            "python-core-cp312-win_amd64",
+            "python-imgui-desktop-cp312-win_amd64",
+            "core-only-cpp-sdk-win64-release"
+          ],
+          "graphics": "Source-configured Dear ImGui + GLFW3.4.0 + OpenGL3.0 (GLSL130); CIM Intel UHD770 and NVIDIA RTX4090 driver inventory. Active application adapter/negotiated context and effective DPI unobserved.",
+          "checks": [
+            "WIN01.machine-inventory",
+            "WIN02.python-abi",
+            "WIN03.product-byte-identity",
+            "WIN04.backend-and-toolchain",
+            "WIN05.scoped-child-reuse",
+            "WIN06.keyboard-and-focus",
+            "WIN07.live-graphics",
+            "WIN08.monitor-and-dpi",
+            "WIN09.accessibility",
+            "WIN10.clipboard-dialog-print",
+            "WIN11.performance-and-memory",
+            "WIN12.loaded-runtime-and-compiler"
+          ],
+          "verification_run_ids": [],
+          "status": "partial",
+          "remaining": [
+            "Execute visible OS-level keyboard, focus transfer, modal ownership and shutdown checks in both the standalone C++ and Python ImGui launch modes; preserved headless P05l frames do not establish these outcomes.",
+            "Observe the negotiated OpenGL vendor/renderer/version and active adapter for each visible launch; inventory and source configuration alone do not identify the application graphics context.",
+            "Measure effective per-monitor DPI, fonts, hit targets and window relocation on the actual available monitor configuration; registry preferences and reported adapter modes do not qualify scaling.",
+            "Execute accessibility feasibility with Windows UI Automation and Narrator, including names, roles, values and focus; record unavailable product support as an open capability.",
+            "Execute owned clipboard and native file-dialog roundtrips plus printing/Print-to-PDF feasibility; distinguish an absent command from an executed platform result.",
+            "Declare and execute an identified navigation/preview workload with latency, process peak/private memory and graphics memory attribution; no performance budget or resource gate is passed here.",
+            "Bind the exact desktop compiler invocation and observed loaded runtime DLL identities before a reproducible toolchain/runtime platform claim; PE linker versions and the preserved SDK compiler are narrower observations."
+          ],
+          "evidence_candidate": "docs/parity/reviews/windows-platform-entry-001.json",
+          "evidence_scope": "Hardware/product/source entry only; no platform acceptance or certification, no new product execution."
+        }
+      },
+      {
+        "op": "replace",
+        "path": "/enumeration_status",
+        "value": "partial"
+      },
+      {
+        "op": "add",
+        "path": "/remaining/-",
+        "value": "Windows entry P.windows-x64-p05l-001 is partial inventory/source/product identification only; complete its declared OS/graphics/accessibility/performance workload before platform acceptance."
+      },
+      {
+        "op": "add",
+        "path": "/remaining/-",
+        "value": "Enumerate and execute remaining Windows hardware/toolchain/ABI configurations and Linux/macOS entries independently; this one Windows machine certifies none of them."
+      }
+    ],
+    "preservation": "All existing fields and remaining entries retain their original values/order except the explicit pending-to-partial enumeration update. No command, inventory, fixture, format, benchmark, reference or eligibility manifest changes."
+  },
+  "next_execution_workload": {
+    "id": "windows-visible-feasibility-001-proposed",
+    "state": "unexecuted_requires_owner_frozen_inputs_and_observation_protocol",
+    "products": [
+      "standalone-cpp-desktop-win64-release",
+      "python-imgui-desktop-cp312-win_amd64"
+    ],
+    "product_identity_policy": "Use the exact qualified binaries/environment above or explicitly supersede every affected product/source pin before execution. Record both launch commands and loaded module paths; no build/install is requested by this artifact.",
+    "bounded_session": "One visible session per launch mode, at most15minutes each after fixture setup; unsupported capabilities or unavailable monitor configurations remain explicit open results rather than fabricated passes.",
+    "fixture": "One owned eager-Z scalar image for creation/filter/save interactions and one owned multichannel C/Z/T scientific fixture for navigation/XYZ. Pin literal samples, shape, calibration, filenames and hashes in the entry protocol before execution.",
+    "steps": [
+      {
+        "id": "W01",
+        "checks": [
+          "WIN06.keyboard-and-focus",
+          "WIN07.live-graphics"
+        ],
+        "action": "Launch visibly, record process/module identities and actual GL vendor/renderer/version/adapter, use OS focus transfer away/back, open/close a real modal and close/reopen the application normally.",
+        "required_observation": "OS events/focus owner and modal owner, visible captures and actual GL context facts. A headless input log or configured source version is insufficient."
+      },
+      {
+        "id": "W02",
+        "checks": [
+          "WIN06.keyboard-and-focus"
+        ],
+        "action": "Exercise menu accelerator, editable scalar text, canvas arrows and C/Z/T navigation with focus transferred between text/menu/canvas; perform one Gaussian preview cancel/apply and one selection creation.",
+        "required_observation": "Actual Windows key events, focused control/window, visible before/after native state and no unintended document action while text/modal owns focus. Existing algorithm tests may be referenced for numerical results only."
+      },
+      {
+        "id": "W03",
+        "checks": [
+          "WIN08.monitor-and-dpi"
+        ],
+        "action": "Identify physical displays and effective per-monitor scaling; resize and move the same window between the actually available scale configurations, inspecting text and pointer hit targets.",
+        "required_observation": "Actual monitor/work rectangles/effective DPI per position, visible font/layout and pointer/action correspondence. If only one scale is available, qualify only that configuration and leave mixed-DPI open."
+      },
+      {
+        "id": "W04",
+        "checks": [
+          "WIN09.accessibility"
+        ],
+        "action": "Inspect menu, text field, image canvas and modal using Windows UI Automation and Narrator in each launch mode.",
+        "required_observation": "Observed role/name/value/focus/announcement data or an explicit unsupported/missing-capability finding. No headless accessibility inference."
+      },
+      {
+        "id": "W05",
+        "checks": [
+          "WIN10.clipboard-dialog-print"
+        ],
+        "action": "Attempt documented copy/paste with an owned neutral external application, native open/save-dialog roundtrip using a temporary owned image, and Print-to-PDF feasibility without sending a physical print job.",
+        "required_observation": "Actual OS clipboard/dialog/print events, roundtrip artifact identities and content checks. An absent editor command remains an open product requirement; direct API calls do not substitute for it."
+      },
+      {
+        "id": "W06",
+        "checks": [
+          "WIN11.performance-and-memory",
+          "WIN12.loaded-runtime-and-compiler"
+        ],
+        "action": "Record resolved loaded runtime DLL paths/versions and timestamped process WorkingSet/PrivateBytes/peak plus graphics-memory attribution during fixed XY/XYZ/CZT navigation and Gaussian preview/cancel/apply repetitions.",
+        "required_observation": "Frozen workload/repetition count, metric definitions, instrumentation and raw timestamps/bytes; no latency/memory pass until benchmark-owner budgets are declared and ratified. UI-frame count, free-system-memory inventory or whole-machine VRAM guesses are insufficient."
+      }
+    ],
+    "success_scope": "Observed per-check feasibility and explicit defects/open coverage for this machine/products only; this workload alone does not certify all Windows configurations or full editor parity."
+  },
+  "structural_validation": {
+    "state": "passed_structural_validation_only",
+    "observed_result": {
+      "validation_only": "pass",
+      "baseline_platforms": 0,
+      "proposed_platforms": 1,
+      "status": "partial",
+      "manifest_writes": 0,
+      "product_executions": 0
+    },
+    "validator": "scripts/parity_schema.py::validate_documents",
+    "scope": "Strict JSON shape, consumed-file hashes, exact additive patch/preconditions, and existing partial-manifest schema validation for baseline and in-memory proposed merge only. This is not a product gate.",
+    "command": "Use the embedded validation_python with python -B; it prints validation-only results and writes no manifest or cache.",
+    "validation_python": [
+      "import sys; sys.dont_write_bytecode = True",
+      "import copy, hashlib, importlib.util, json, pathlib",
+      "p = pathlib.Path('docs/parity/reviews/windows-platform-entry-001.json')",
+      "def strict_json(raw):",
+      "    def bad_constant(value): raise ValueError('nonfinite JSON: ' + value)",
+      "    def unique_object(pairs):",
+      "        out = {}",
+      "        for key, value in pairs:",
+      "            if key in out: raise ValueError('duplicate JSON key: ' + key)",
+      "            out[key] = value",
+      "        return out",
+      "    return json.loads(raw, parse_constant=bad_constant, object_pairs_hook=unique_object)",
+      "a = strict_json(p.read_text(encoding='utf-8'))",
+      "for pin in a['consumed_files']:",
+      "    raw = pathlib.Path(pin['path']).read_bytes()",
+      "    assert len(raw) == pin['bytes'] and hashlib.sha256(raw).hexdigest() == pin['sha256'], pin['path']",
+      "compiler = a['qualified_backend_and_toolchain']['currently_observed_compiler_file']",
+      "assert hashlib.sha256(pathlib.Path(compiler['path']).read_bytes()).hexdigest() == compiler['sha256']",
+      "names = ['references.json','fiji-components.json','commands.json','formats.json','fixtures.json','benchmarks.json','platforms.json']",
+      "documents = {name: json.loads((pathlib.Path('docs/parity') / name).read_bytes()) for name in names}",
+      "spec = importlib.util.spec_from_file_location('platform_entry_parity_schema', 'scripts/parity_schema.py')",
+      "v = importlib.util.module_from_spec(spec); spec.loader.exec_module(v)",
+      "v.validate_documents(documents)",
+      "patch = a['proposed_additive_patch']; before = documents['platforms.json']; pre = patch['merge_preconditions']",
+      "assert before['schema_version'] == pre['schema_version'] and before['reference_id'] == pre['reference_id']",
+      "assert before['enumeration_status'] == pre['enumeration_status'] and len(before['platforms']) == pre['platform_count']",
+      "assert before['remaining'] == pre['remaining_prefix']",
+      "assert pre['absent_platform_id'] not in {row['id'] for row in before['platforms']}",
+      "merged = copy.deepcopy(documents); target = merged['platforms.json']",
+      "for op in patch['operations']:",
+      "    if op['op'] == 'add' and op['path'] == '/platforms/-': target['platforms'].append(copy.deepcopy(op['value']))",
+      "    elif op['op'] == 'add' and op['path'] == '/remaining/-': target['remaining'].append(op['value'])",
+      "    elif op['op'] == 'replace' and op['path'] == '/enumeration_status': target['enumeration_status'] = op['value']",
+      "    else: raise ValueError('unexpected operation')",
+      "v.validate_documents(merged)",
+      "assert all(merged[name] == documents[name] for name in names if name != 'platforms.json')",
+      "assert len(target['platforms']) == 1 and target['enumeration_status'] == 'partial'",
+      "row = target['platforms'][0]; assert row['status'] == 'partial' and row['verification_run_ids'] == []",
+      "assert target['remaining'][:len(before['remaining'])] == before['remaining']",
+      "assert row['checks'] == [check['id'] for check in a['checks']] and len(set(row['checks'])) == len(row['checks'])",
+      "assert row['products'] == [product['id'] for product in a['product_observations']['product_bindings']]",
+      "assert all(comparison['equal_bytes'] is True for comparison in a['product_observations']['wheel_identity_comparisons'])",
+      "assert a['acceptance']['platform_accepted'] is False and a['acceptance']['platform_certified'] is False",
+      "print(json.dumps({'validation_only':'pass','baseline_platforms':len(before['platforms']),'proposed_platforms':len(target['platforms']),'status':row['status'],'manifest_writes':0,'product_executions':0}))"
+    ]
+  },
+  "remaining_integration_decisions": [
+    "Parent review/merge of this exact additive candidate and its partial enumeration status; no schema extension is required.",
+    "Freeze the proposed visible feasibility workload, fixture identities, actual OS observation protocol and benchmark-owner metric/budget prerequisites before execution.",
+    "Register real platform verification run IDs only after owned execution receipts exist. Preserve scoped local-exit evidence separately.",
+    "Choose and enumerate remaining supported Windows/compiler/Python/GPU configurations and other operating systems; this candidate does not set the support matrix."
+  ]
+}

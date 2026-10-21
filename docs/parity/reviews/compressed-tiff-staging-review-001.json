@@ -1,0 +1,38 @@
+{
+  "state": "passed",
+  "scope": "Compressed TIFF prerequisite: bounded owned-file staging patches",
+  "audit": {
+    "path": "build/p08d-compressed-tiff001/final-audit001.json",
+    "bytes": 1833,
+    "sha256": "d80470c35a06eae41747124919da3b32785dfe3b298cfe2be88558615cb1b38f"
+  },
+  "production_files": [
+    "src/native/atomic_file.hpp",
+    "src/native/atomic_file.cpp"
+  ],
+  "contracts": [
+    "Patch only successfully appended bytes through held handle/descriptor",
+    "Preserve append position and file length",
+    "Reject overflowing ranges and null data before mutation",
+    "Poison stream on syscall/callback failures; refuse subsequent close/write/publication",
+    "Preserve existing identity-bound cleanup and replace policy"
+  ],
+  "qualification": {
+    "windows_suites": 75,
+    "focused_source_python_cases": 450,
+    "windows_patch_checks": 78,
+    "linux_patch_checks": 56
+  },
+  "retained_failure": "core001: test reader lacked Windows delete sharing; corrected in core002; no production amendment",
+  "cleanup_net_bytes": 1731955,
+  "limitations": [
+    "Compressed TIFF not yet enabled",
+    "Previous installed RGB products retain their prior qualification; no new installed release claimed",
+    "Linux qualification covers private staging primitive only"
+  ],
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  }
+}

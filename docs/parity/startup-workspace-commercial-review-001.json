@@ -1,0 +1,1248 @@
+{
+  "schema_version": 1,
+  "review_id": "p06j.startup-workspace-commercial-review.001",
+  "reviewed_on": "2026-10-17",
+  "state": "source_review_complete_root_adoption_pending",
+  "adopted_contract": {
+    "path": "build/p06j-001/entry-adoption001/contract.json",
+    "bytes": 23982,
+    "sha256": "5a22fb7872a9e505173d620657f5a66f3aa97d4d03c29d8677938cd94a27a014"
+  },
+  "decision": {
+    "owned_source_commercial_use_eligibility_recommended": true,
+    "basis": "Reviewed current owned source and all retained/retrieved preimage deltas under the project MIT license; no new upstream source, assets or dependency incorporation was found in this bounded review.",
+    "new_notice_required_by_reviewed_owned_delta": false,
+    "root_adoption": "pending",
+    "redistribution_or_final_artifact_acceptance": false,
+    "runtime_or_interface_acceptance": false
+  },
+  "scope": {
+    "source_count": 31,
+    "new_owned_sources": 8,
+    "includes": [
+      "native_startup_policy",
+      "native_settings_preferences",
+      "native_selected_activation",
+      "native_registration",
+      "build_integration",
+      "desktop_startup_execution",
+      "desktop_settings_and_recovery",
+      "compiled_owned_observer",
+      "python_public_exports_and_ui",
+      "public_sdk_example_source"
+    ],
+    "excludes": [
+      "tests/native and tests/python source eligibility",
+      "capture and staging script eligibility",
+      "existing qualified binary/archive/member inventory",
+      "final wheel/app/SDK distribution composition and notices",
+      "upstream dependency re-review",
+      "patent or whole-Fiji clearance"
+    ],
+    "independence": "This reviewer authored the native policy subset and identifies that prior ownership explicitly. Controller/Window/launcher/UI/exports/SDK deltas were read as another owner's source; this is not claimed to be a wholly independent peer audit of the reviewer's own native implementation.",
+    "authorship_limit": "Source inspection and retained implementation records support the owned-source recommendation; this is not an exhaustive external source-similarity or authorship warranty."
+  },
+  "findings": [
+    {
+      "id": "SR01",
+      "finding": "Native startup DTO/planner, strict Text/pair migration, bounded layout storage and reserved presentation child are original project policy/glue. They reuse private nlohmann/json and native session APIs; no public JSON dependency or new codec/frame implementation was added."
+    },
+    {
+      "id": "SR02",
+      "finding": "Selected incoming-owner activation extends the existing project Application staging transaction. Window planning/loading/publication and refusal/retry/reset are project-owned orchestration over existing readers and validators; saved workflows/results remain inert data."
+    },
+    {
+      "id": "SR03",
+      "finding": "ImGui panels, callbacks, diagnostics and compiled bounded observation probe use existing ImGui/internal/std::string APIs and project helpers. No new font, icon, image asset, Java/Fiji source, JAR, model or third-party package is incorporated."
+    },
+    {
+      "id": "SR04",
+      "finding": "Native/Python registration, public exports, strict constructor path/Boolean conversions, ordinary launcher routing and opaque Python layout compatibility add project glue using existing pybind11/Python/standard-library APIs."
+    },
+    {
+      "id": "SR05",
+      "finding": "Public SDK Text spelling and startup example use public imagejxx headers and the standard library. Pixel formulas and handcrafted V2 stored-block fixture bytes are owned synthetic test data/wire-format facts, not imported image assets or copied compression-library source."
+    },
+    {
+      "id": "SR06",
+      "finding": "CMake additions register owned sources/examples and checks using existing imagejxx targets. The reviewed delta adds no find_package, download, vendor source, external link dependency or enabled upstream component."
+    },
+    {
+      "id": "SR07",
+      "finding": "Desktop session.cpp changes only the stale eager-Z comment to describe already-supported C/Z/T facades; generic native V3 extension framing remains outside this change."
+    }
+  ],
+  "existing_dependencies_reused": [
+    {
+      "component": "nlohmann/json 3.12.0",
+      "selected_license": "MIT",
+      "record": "licenses/native-dependencies.json",
+      "notice": "licenses/nlohmann-json.txt",
+      "identity": {
+        "path": "third_party/nlohmann_json/SOURCE.json",
+        "bytes": 6553,
+        "sha256": "c0edbd13965b5b3926e275f4e5260fa8a070c82a741c32fe3012f7511c0be843"
+      }
+    },
+    {
+      "component": "Existing zlib 1.3.1 session codec",
+      "selected_license": "Zlib",
+      "record": "licenses/native-dependencies.json",
+      "notice": "licenses/zlib.txt",
+      "identity": {
+        "path": "third_party/zlib/SOURCE.json",
+        "bytes": 2649,
+        "sha256": "165f7bad405b23d0d73aa6fe9fbde44f317cc0670d7505d2dc15fa38e61a5db8"
+      },
+      "change": "No new zlib sources/components; existing codec reused."
+    },
+    {
+      "component": "Dear ImGui 1.91.9 docking and existing desktop dependencies",
+      "record": "licenses/desktop-dependencies.json",
+      "change": "Existing API/header use only; no version/component/assets added."
+    },
+    {
+      "component": "pybind11 3.0.4 and NumPy 2.2.6",
+      "record": "licenses/dependencies.json",
+      "change": "Existing bindings/runtime scopes; no new package/version."
+    }
+  ],
+  "notice_and_exclusion_requirements": [
+    "Retain the project MIT copyright/permission notice and all existing notices applicable to components actually shipped.",
+    "Non-commercial, research-only, unlicensed/missing-license and unreviewed components remain excluded.",
+    "No ImageJ Java source, Fiji plugin source, JARs or pretrained models are brought into this owned-source scope.",
+    "Fiji plugin discovery/startup lifecycle, individual plugin eligibility/dependency closures, startup macros/scripts and whole-Fiji commercial/parity gates remain pending or excluded under their existing records.",
+    "Qt/PySide remain outside the current native desktop dependency scope; system fonts and platform/compiler runtime obligations are unchanged.",
+    "Final source/archive/member/binary identity, actual shipped component notices, product/API/UI acceptance and distribution adoption remain root-owned work. This review does not infer them from source eligibility."
+  ],
+  "unresolved_source_origin_or_preimage_gaps": [],
+  "review_inputs": [
+    {
+      "path": "LICENSE",
+      "bytes": 1079,
+      "sha256": "6496956d6060adfcd2617e553b7393c3b7fbea353a02f3c39d60051709d1ce5f"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "bytes": 4201,
+      "sha256": "9793a0e9272d9c7f8aa1ea97712a38f1ff186ecbd379f3a71c16ae273167bff9"
+    },
+    {
+      "path": "licenses/native-dependencies.json",
+      "bytes": 1917,
+      "sha256": "b649aa7e93fc45941fb5f8092e9bebede34cab5c797f7bba95658a1da17d027d"
+    },
+    {
+      "path": "licenses/desktop-dependencies.json",
+      "bytes": 5236,
+      "sha256": "9b5aa27fbdc98780f7eb93aa6a290bea9eb0894cce5f89b5d22d081b15ed55f3"
+    },
+    {
+      "path": "licenses/dependencies.json",
+      "bytes": 4516,
+      "sha256": "436d924a8d501a7139f09e65441c46b6944e1d4c63b12d56eb1fd43290dd0a67"
+    },
+    {
+      "path": "third_party/nlohmann_json/SOURCE.json",
+      "bytes": 6553,
+      "sha256": "c0edbd13965b5b3926e275f4e5260fa8a070c82a741c32fe3012f7511c0be843"
+    },
+    {
+      "path": "third_party/zlib/SOURCE.json",
+      "bytes": 2649,
+      "sha256": "165f7bad405b23d0d73aa6fe9fbde44f317cc0670d7505d2dc15fa38e61a5db8"
+    },
+    {
+      "path": "build/p06j-001/entry-adoption001/contract.json",
+      "bytes": 23982,
+      "sha256": "5a22fb7872a9e505173d620657f5a66f3aa97d4d03c29d8677938cd94a27a014"
+    },
+    {
+      "path": "build/p06j-001/entry-adoption001/source-review001.json",
+      "bytes": 11703,
+      "sha256": "e3bc00a6dedfdfe6dca30ba05593ae1655e93defa3a1201be0f2120660002c9f"
+    },
+    {
+      "path": "build/p06j-001/native-policy-source001/hold.json",
+      "bytes": 7143,
+      "sha256": "326db1ef6146566c6f789df7363300c7f903d516e15dc72716ea6dd4228056fe"
+    },
+    {
+      "path": "build/p06j-001/ui-wrapper-source001/source-freeze.json",
+      "bytes": 3535,
+      "sha256": "70ea3404259860f2ddfa3675379c2ae8dd7a1fe333c9c58c2995b45984a3110b"
+    },
+    {
+      "path": "build/p06j-001/ui-wrapper-source001/preimages.json",
+      "bytes": 640,
+      "sha256": "2ca8fca9d1307dc30327cba534b1e7623b098483c4452d4f0851ad556f38fdf9"
+    },
+    {
+      "path": "build/p06j-001/ui-wrapper-source001/preimage-launch.json",
+      "bytes": 145,
+      "sha256": "afd4a5aeef7485f6ff1ede02024a744814bb900fc4617368c709c3907500116f"
+    },
+    {
+      "path": "build/p06j-001/startup-ui-producer-source002/source-freeze.json",
+      "bytes": 1403,
+      "sha256": "f96a1a89f057a3855c345b7b84a11cda7a12f3e3e14fa59cbc9b0b513dbcddfa"
+    },
+    {
+      "path": "build/p06j-001/development-build008/source-freeze001.json",
+      "bytes": 42814,
+      "sha256": "f4c3e3f940a0dc6799567f421f6fdab9605462f44166a0b8b9359b1d9951b9fb"
+    },
+    {
+      "path": "build/p06j-001/startup-commercial-review001/preimage-retrieval001.json",
+      "bytes": 3860,
+      "sha256": "a4626cacc2c5adc881ae02d790a0b7374e0303b997aa88789fdd978b325254a8"
+    },
+    {
+      "path": "build/p06j-001/startup-commercial-review001/preimage-retrieval002.json",
+      "bytes": 1765,
+      "sha256": "9fee90ea1281cb9f2de159a984fad435eb3af3c4fe72b77eae3fa5bdf798efd8"
+    }
+  ],
+  "historical_preimages": {
+    "exact_archive_members_retrieved": 8,
+    "authorization": "Root supplied the exact P06i archive pin and eight exact member names; only those getmember/extractfile results were retained. settings_panel.hpp and ui/__init__.py also match wrapper preimage hashes.",
+    "broad_archive_member_enumeration": false,
+    "broad_extraction": false
+  },
+  "sources": [
+    {
+      "logical_path": "include/imagejxx/startup.hpp",
+      "category": "native_startup_policy",
+      "current": {
+        "path": "include/imagejxx/startup.hpp",
+        "bytes": 3352,
+        "sha256": "389542517cd2d9349bbeb212e0c4a25e51399eeb58240e0a9a22dad60264267e"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/include/imagejxx/startup.hpp",
+        "bytes": 3352,
+        "sha256": "389542517cd2d9349bbeb212e0c4a25e51399eeb58240e0a9a22dad60264267e"
+      },
+      "preimage": null,
+      "preimage_provenance": {
+        "basis": "new_owned_project_source",
+        "preexisting_file": false
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/include/imagejxx/startup.hpp.diff",
+        "bytes": 3499,
+        "sha256": "18b6ad08b63d493560c0b50f528495c5288adaa3092fe20cefdc81106704041d"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "src/native/startup.cpp",
+      "category": "native_startup_policy",
+      "current": {
+        "path": "src/native/startup.cpp",
+        "bytes": 14551,
+        "sha256": "257957a1fc8f6f68f37a4e2d3634b24270cc54b3fac642e063f6f3fa57244be7"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/src/native/startup.cpp",
+        "bytes": 14551,
+        "sha256": "257957a1fc8f6f68f37a4e2d3634b24270cc54b3fac642e063f6f3fa57244be7"
+      },
+      "preimage": null,
+      "preimage_provenance": {
+        "basis": "new_owned_project_source",
+        "preexisting_file": false
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/src/native/startup.cpp.diff",
+        "bytes": 14912,
+        "sha256": "e17a6c8f93fc6ab48fb6ef343ca768cc7692d44e0b9c6b6bab12e63a3931c64f"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "src/native/startup_bindings.cpp",
+      "category": "native_startup_policy",
+      "current": {
+        "path": "src/native/startup_bindings.cpp",
+        "bytes": 10286,
+        "sha256": "7519ae387e83fbcf2613b3194f224e5e09cb4928e28fe5f506506f4eefa28c71"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/src/native/startup_bindings.cpp",
+        "bytes": 10286,
+        "sha256": "7519ae387e83fbcf2613b3194f224e5e09cb4928e28fe5f506506f4eefa28c71"
+      },
+      "preimage": null,
+      "preimage_provenance": {
+        "basis": "new_owned_project_source",
+        "preexisting_file": false
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/src/native/startup_bindings.cpp.diff",
+        "bytes": 10543,
+        "sha256": "31822de5f212a011915d25381dab19fc00ade592431a8604ab96344f775f7634"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "include/imagejxx/settings.hpp",
+      "category": "native_settings_preferences",
+      "current": {
+        "path": "include/imagejxx/settings.hpp",
+        "bytes": 2137,
+        "sha256": "13d186df5c2ea0d00975461215b68144e65ebf36d35dc8158a1292280e4a518e"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/include/imagejxx/settings.hpp",
+        "bytes": 2137,
+        "sha256": "13d186df5c2ea0d00975461215b68144e65ebf36d35dc8158a1292280e4a518e"
+      },
+      "preimage": {
+        "path": "build/p06j-001/native-policy-source001/before/include/imagejxx/settings.hpp",
+        "bytes": 2099,
+        "sha256": "9e44ff611a6f2fa5e17d855b2bcdb6f70f217ebd35b76d4628d4f5c7c2893295"
+      },
+      "preimage_provenance": {
+        "basis": "recorded_native_preimage"
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/include/imagejxx/settings.hpp.diff",
+        "bytes": 647,
+        "sha256": "391aa224c041a6a18510850d58c2d87c011bc28537ba26b9f0fc44e7da025021"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "src/native/settings.cpp",
+      "category": "native_settings_preferences",
+      "current": {
+        "path": "src/native/settings.cpp",
+        "bytes": 18459,
+        "sha256": "9665518e87c5a0bcab435b4cda4aac7a13ebc180dba31359c1ccfa36bd75e32f"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/src/native/settings.cpp",
+        "bytes": 18459,
+        "sha256": "9665518e87c5a0bcab435b4cda4aac7a13ebc180dba31359c1ccfa36bd75e32f"
+      },
+      "preimage": {
+        "path": "build/p06j-001/native-policy-source001/before/src/native/settings.cpp",
+        "bytes": 16380,
+        "sha256": "d1d3a43d997c1c2b51d9df34d49de5a71e531d4919e01a9b71bd2cf3bbd826d6"
+      },
+      "preimage_provenance": {
+        "basis": "recorded_native_preimage"
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/src/native/settings.cpp.diff",
+        "bytes": 4197,
+        "sha256": "9a669e5e6041f12aca636c9427245d64ae12ad6fbdc8c73793fa151f3e78f68e"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "src/native/settings_bindings.cpp",
+      "category": "native_settings_preferences",
+      "current": {
+        "path": "src/native/settings_bindings.cpp",
+        "bytes": 6716,
+        "sha256": "802c2447b97ce1ed2442d8fef5b7176366d1154c434758b3d2f4dc106a8d3fe7"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/src/native/settings_bindings.cpp",
+        "bytes": 6716,
+        "sha256": "802c2447b97ce1ed2442d8fef5b7176366d1154c434758b3d2f4dc106a8d3fe7"
+      },
+      "preimage": {
+        "path": "build/p06j-001/native-policy-source001/before/src/native/settings_bindings.cpp",
+        "bytes": 6515,
+        "sha256": "e9d439fdb94eb66c564d8ec75bc67cc8bcab38b6d598ac0336aefed972a4933f"
+      },
+      "preimage_provenance": {
+        "basis": "recorded_native_preimage"
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/src/native/settings_bindings.cpp.diff",
+        "bytes": 2086,
+        "sha256": "4d14ac64a18300b4ad87a0e180818e3b15dbd185e42c5788ffacb1e365173b8f"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "include/imagejxx/preferences.hpp",
+      "category": "native_settings_preferences",
+      "current": {
+        "path": "include/imagejxx/preferences.hpp",
+        "bytes": 1972,
+        "sha256": "218dcf589d0ec379e8624bdad6c2145b63055cc286204bbbcbd85239f5ee75eb"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/include/imagejxx/preferences.hpp",
+        "bytes": 1972,
+        "sha256": "218dcf589d0ec379e8624bdad6c2145b63055cc286204bbbcbd85239f5ee75eb"
+      },
+      "preimage": {
+        "path": "build/p06j-001/native-policy-source001/before/include/imagejxx/preferences.hpp",
+        "bytes": 1757,
+        "sha256": "b32c2f2543e4c763f72115bc636294c889fa9a8afa78ffc636842a563b98c9a9"
+      },
+      "preimage_provenance": {
+        "basis": "recorded_native_preimage"
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/include/imagejxx/preferences.hpp.diff",
+        "bytes": 566,
+        "sha256": "678045ac8aa21e2d0ec0f9333f645c3c65dcd00112bf62b0157e09e24a9dce42"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "src/native/preferences.cpp",
+      "category": "native_settings_preferences",
+      "current": {
+        "path": "src/native/preferences.cpp",
+        "bytes": 11379,
+        "sha256": "3177daac8df18a01f85930084ccec2efe820a4b4af222cdafe88e40dac20204c"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/src/native/preferences.cpp",
+        "bytes": 11379,
+        "sha256": "3177daac8df18a01f85930084ccec2efe820a4b4af222cdafe88e40dac20204c"
+      },
+      "preimage": {
+        "path": "build/p06j-001/native-policy-source001/before/src/native/preferences.cpp",
+        "bytes": 10766,
+        "sha256": "8f13c109f36224fb2d7a4fe4f75c2f21afa95bfe030e31940a155787afedc44a"
+      },
+      "preimage_provenance": {
+        "basis": "recorded_native_preimage"
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/src/native/preferences.cpp.diff",
+        "bytes": 1615,
+        "sha256": "07a0d1d00bf8afa99c5b92b4b38ec429070dd27a16aee652d27feb68dc87dc2c"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "src/native/preferences_bindings.cpp",
+      "category": "native_settings_preferences",
+      "current": {
+        "path": "src/native/preferences_bindings.cpp",
+        "bytes": 3090,
+        "sha256": "bbeb3d5d1d76001ed46b87c94427f686404b46190401b375cce5ad99462099e0"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/src/native/preferences_bindings.cpp",
+        "bytes": 3090,
+        "sha256": "bbeb3d5d1d76001ed46b87c94427f686404b46190401b375cce5ad99462099e0"
+      },
+      "preimage": {
+        "path": "build/p06j-001/native-policy-source001/before/src/native/preferences_bindings.cpp",
+        "bytes": 2668,
+        "sha256": "ccb446182683c401ea0fe500c94d0f931528a90f8e51f4589eae0330c76f66de"
+      },
+      "preimage_provenance": {
+        "basis": "recorded_native_preimage"
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/src/native/preferences_bindings.cpp.diff",
+        "bytes": 818,
+        "sha256": "99d36530c5a8727fb89d1f64550630f469a6a2b1db3445e529c8be66ba18f68d"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "include/imagejxx/application.hpp",
+      "category": "native_selected_activation",
+      "current": {
+        "path": "include/imagejxx/application.hpp",
+        "bytes": 14135,
+        "sha256": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/include/imagejxx/application.hpp",
+        "bytes": 14135,
+        "sha256": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+      },
+      "preimage": {
+        "path": "build/p06j-001/entry-adoption001/before/include/imagejxx/application.hpp",
+        "bytes": 13241,
+        "sha256": "d36a271e271e407ad1c878314b7859c041448535c5520e569334a1c426849b12"
+      },
+      "preimage_provenance": {
+        "basis": "adoption_before_snapshot"
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/include/imagejxx/application.hpp.diff",
+        "bytes": 2311,
+        "sha256": "4645402f7ba84d192eed245f8337735fb80f3227583bf2719b5fc4977facfafa"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "src/native/application.cpp",
+      "category": "native_selected_activation",
+      "current": {
+        "path": "src/native/application.cpp",
+        "bytes": 25033,
+        "sha256": "d44f7442767e7626e20ee70d8d60077b8ad1689c0771a60a433a1cd9f6473b9d"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/src/native/application.cpp",
+        "bytes": 25033,
+        "sha256": "d44f7442767e7626e20ee70d8d60077b8ad1689c0771a60a433a1cd9f6473b9d"
+      },
+      "preimage": {
+        "path": "build/p06j-001/entry-adoption001/before/src/native/application.cpp",
+        "bytes": 23451,
+        "sha256": "177509e15a104a904ff5b5512d91ed8459e9ab7f45297b50538df9e72945c5c4"
+      },
+      "preimage_provenance": {
+        "basis": "adoption_before_snapshot"
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/src/native/application.cpp.diff",
+        "bytes": 3168,
+        "sha256": "879b3bbd0fe1da45418fa952faa91c5d147471dd20af933c6b180040255ce359"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "src/native/bindings.cpp",
+      "category": "native_registration",
+      "current": {
+        "path": "src/native/bindings.cpp",
+        "bytes": 28540,
+        "sha256": "fe9d526a508719865ef65f5acb8d22ad1837cced3f415e47342a0ce3ae037171"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/src/native/bindings.cpp",
+        "bytes": 28540,
+        "sha256": "fe9d526a508719865ef65f5acb8d22ad1837cced3f415e47342a0ce3ae037171"
+      },
+      "preimage": {
+        "path": "build/p06j-001/startup-commercial-review001/preimages/src/native/bindings.cpp",
+        "bytes": 28479,
+        "sha256": "fd29a19e96a955b3285a605a80f70784f75c646da5da8ccd0ba75fa95c785f1c"
+      },
+      "preimage_provenance": {
+        "basis": "exact_authorized_qualified_source_member",
+        "qualified_member": {
+          "logical_path": "src/native/bindings.cpp",
+          "member": "imagejxx-0.2.0/src/native/bindings.cpp",
+          "archive": {
+            "path": "build/p06i-source-final001/imagejxx-0.2.0.tar.gz",
+            "bytes": 8530093,
+            "sha256": "54cc65364159b9041d914260720333f3148bc22c3fecebb932310939d7cdb14b"
+          },
+          "preimage": {
+            "path": "build/p06j-001/startup-commercial-review001/preimages/src/native/bindings.cpp",
+            "bytes": 28479,
+            "sha256": "fd29a19e96a955b3285a605a80f70784f75c646da5da8ccd0ba75fa95c785f1c"
+          }
+        }
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/src/native/bindings.cpp.diff",
+        "bytes": 615,
+        "sha256": "8dbc6183ffd3348c24ae6d64cadc11174b44f9e47ec2570b6eb248e2b7d5bc69"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "CMakeLists.txt",
+      "category": "build_integration",
+      "current": {
+        "path": "CMakeLists.txt",
+        "bytes": 52971,
+        "sha256": "df31d759d33b5400867aa72aa9c7eb38436104a7b272e7e718c370d1437853ad"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/CMakeLists.txt",
+        "bytes": 52971,
+        "sha256": "df31d759d33b5400867aa72aa9c7eb38436104a7b272e7e718c370d1437853ad"
+      },
+      "preimage": {
+        "path": "build/p06j-001/startup-commercial-review001/preimages/CMakeLists.txt",
+        "bytes": 51195,
+        "sha256": "29f09aadea6e6a9511af63d36cc3bbd07cd6f699dae44bf63f8bf2bd0329fbb8"
+      },
+      "preimage_provenance": {
+        "basis": "exact_authorized_qualified_source_member",
+        "qualified_member": {
+          "logical_path": "CMakeLists.txt",
+          "member": "imagejxx-0.2.0/CMakeLists.txt",
+          "archive": {
+            "path": "build/p06i-source-final001/imagejxx-0.2.0.tar.gz",
+            "bytes": 8530093,
+            "sha256": "54cc65364159b9041d914260720333f3148bc22c3fecebb932310939d7cdb14b"
+          },
+          "preimage": {
+            "path": "build/p06j-001/startup-commercial-review001/preimages/CMakeLists.txt",
+            "bytes": 51195,
+            "sha256": "29f09aadea6e6a9511af63d36cc3bbd07cd6f699dae44bf63f8bf2bd0329fbb8"
+          }
+        }
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/CMakeLists.txt.diff",
+        "bytes": 5617,
+        "sha256": "30091614e11d862a09f8dfc1eb05e5182863b6f62af2858fd9ba9a00594ee94c"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "src/desktop/window.hpp",
+      "category": "desktop_startup_execution",
+      "current": {
+        "path": "src/desktop/window.hpp",
+        "bytes": 12753,
+        "sha256": "eccd2b56ddd2f6a190379f3cda7934d815fc3081e3b37d8d60d6c63ec9404af5"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/src/desktop/window.hpp",
+        "bytes": 12753,
+        "sha256": "eccd2b56ddd2f6a190379f3cda7934d815fc3081e3b37d8d60d6c63ec9404af5"
+      },
+      "preimage": {
+        "path": "build/p06j-001/entry-adoption001/before/src/desktop/window.hpp",
+        "bytes": 12023,
+        "sha256": "1d9e96aa087f173ae5f73a6613437e53cbd494466b487b40469bcf6f44e64613"
+      },
+      "preimage_provenance": {
+        "basis": "adoption_before_snapshot"
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/src/desktop/window.hpp.diff",
+        "bytes": 1713,
+        "sha256": "2129083710669f5be966ed56f89f8eccaf7d4f61b41ba953ac11f7df139b1909"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "src/desktop/window.cpp",
+      "category": "desktop_startup_execution",
+      "current": {
+        "path": "src/desktop/window.cpp",
+        "bytes": 522357,
+        "sha256": "47d265ba2e23ef74576b7b48d28a727db041caf77f907c214a969dbcec81142b"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/src/desktop/window.cpp",
+        "bytes": 522357,
+        "sha256": "47d265ba2e23ef74576b7b48d28a727db041caf77f907c214a969dbcec81142b"
+      },
+      "preimage": {
+        "path": "build/p06j-001/entry-adoption001/before/src/desktop/window.cpp",
+        "bytes": 500534,
+        "sha256": "75dcc962519dae27b6ea9ac571e7cf3fb0eda6ca08a7556f3582b5a324719b23"
+      },
+      "preimage_provenance": {
+        "basis": "adoption_before_snapshot"
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/src/desktop/window.cpp.diff",
+        "bytes": 29721,
+        "sha256": "b1f305c927cb81ea4ffcdf19e8db01623349f36a3f1ddb121400df2b5364544b"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "src/desktop/main.cpp",
+      "category": "desktop_startup_execution",
+      "current": {
+        "path": "src/desktop/main.cpp",
+        "bytes": 28193,
+        "sha256": "b6985d8fcc62e1e5ecc2e82bf6f7111c896ae5d25db18adfd90140366f8606c8"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/src/desktop/main.cpp",
+        "bytes": 28193,
+        "sha256": "b6985d8fcc62e1e5ecc2e82bf6f7111c896ae5d25db18adfd90140366f8606c8"
+      },
+      "preimage": {
+        "path": "build/p06j-001/entry-adoption001/before/src/desktop/main.cpp",
+        "bytes": 24410,
+        "sha256": "e035e11940b371052ba239b838ef43d6c96299b52e1eece67855f1b6d65d189a"
+      },
+      "preimage_provenance": {
+        "basis": "adoption_before_snapshot"
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/src/desktop/main.cpp.diff",
+        "bytes": 6292,
+        "sha256": "01113b5382eb2c349c4c7a91b9370330ae69f0c0859fd680fb3851a52b2f59cc"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "src/desktop/python.cpp",
+      "category": "desktop_startup_execution",
+      "current": {
+        "path": "src/desktop/python.cpp",
+        "bytes": 36365,
+        "sha256": "53378e6e02aca39f6cd61e4f5d71f45e89328e886917ffca5cef5f052e77bb3d"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/src/desktop/python.cpp",
+        "bytes": 36365,
+        "sha256": "53378e6e02aca39f6cd61e4f5d71f45e89328e886917ffca5cef5f052e77bb3d"
+      },
+      "preimage": {
+        "path": "build/p06j-001/startup-commercial-review001/preimages/src/desktop/python.cpp",
+        "bytes": 32664,
+        "sha256": "ac439cc2a3c5d48792f123ded31a9afb40faca471a7eb59dd83f6c8df4f81f4a"
+      },
+      "preimage_provenance": {
+        "basis": "exact_authorized_qualified_source_member",
+        "qualified_member": {
+          "logical_path": "src/desktop/python.cpp",
+          "member": "imagejxx-0.2.0/src/desktop/python.cpp",
+          "archive": {
+            "path": "build/p06i-source-final001/imagejxx-0.2.0.tar.gz",
+            "bytes": 8530093,
+            "sha256": "54cc65364159b9041d914260720333f3148bc22c3fecebb932310939d7cdb14b"
+          },
+          "preimage": {
+            "path": "build/p06j-001/startup-commercial-review001/preimages/src/desktop/python.cpp",
+            "bytes": 32664,
+            "sha256": "ac439cc2a3c5d48792f123ded31a9afb40faca471a7eb59dd83f6c8df4f81f4a"
+          }
+        }
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/src/desktop/python.cpp.diff",
+        "bytes": 5119,
+        "sha256": "f237327d67d660bd6c0d4362c087e3c7b2759c5e2445075428bb5b96a939e66e"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "src/desktop/session.cpp",
+      "category": "desktop_startup_execution",
+      "current": {
+        "path": "src/desktop/session.cpp",
+        "bytes": 3010,
+        "sha256": "2c63171650d569558c93945a7a050afacac58b1d49ebfd05fa9b376565b421c3"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/src/desktop/session.cpp",
+        "bytes": 3010,
+        "sha256": "2c63171650d569558c93945a7a050afacac58b1d49ebfd05fa9b376565b421c3"
+      },
+      "preimage": {
+        "path": "build/p06j-001/entry-adoption001/before/src/desktop/session.cpp",
+        "bytes": 3008,
+        "sha256": "9018fda3ff6ad67479dce37ece13549d5aed880761367837eac76dc36f25e8c0"
+      },
+      "preimage_provenance": {
+        "basis": "adoption_before_snapshot"
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/src/desktop/session.cpp.diff",
+        "bytes": 726,
+        "sha256": "0a780252a6485d589f51d3ef381b84063a903d7d02d306e27efc364fbd3ba2ef"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "src/desktop/settings_panel.hpp",
+      "category": "desktop_settings_and_recovery",
+      "current": {
+        "path": "src/desktop/settings_panel.hpp",
+        "bytes": 1687,
+        "sha256": "b189fb88b5acbe12dcb28a65f657640ab7fd915c1395e3fef0178567fca285a7"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/src/desktop/settings_panel.hpp",
+        "bytes": 1687,
+        "sha256": "b189fb88b5acbe12dcb28a65f657640ab7fd915c1395e3fef0178567fca285a7"
+      },
+      "preimage": {
+        "path": "build/p06j-001/startup-commercial-review001/preimages/src/desktop/settings_panel.hpp",
+        "bytes": 1353,
+        "sha256": "5195835ba30201bb53b2a08477bd0f8c37abe33de3b7bbab42bc9a86b6f9daec"
+      },
+      "preimage_provenance": {
+        "basis": "exact_authorized_qualified_source_member",
+        "qualified_member": {
+          "logical_path": "src/desktop/settings_panel.hpp",
+          "member": "imagejxx-0.2.0/src/desktop/settings_panel.hpp",
+          "archive": {
+            "path": "build/p06i-source-final001/imagejxx-0.2.0.tar.gz",
+            "bytes": 8530093,
+            "sha256": "54cc65364159b9041d914260720333f3148bc22c3fecebb932310939d7cdb14b"
+          },
+          "preimage": {
+            "path": "build/p06j-001/startup-commercial-review001/preimages/src/desktop/settings_panel.hpp",
+            "bytes": 1353,
+            "sha256": "5195835ba30201bb53b2a08477bd0f8c37abe33de3b7bbab42bc9a86b6f9daec"
+          },
+          "matches_recorded_wrapper_preimage": true
+        }
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/src/desktop/settings_panel.hpp.diff",
+        "bytes": 925,
+        "sha256": "0d36a355ad080ec4e1d24f129d9f4de5f74364501a4ad8b85beb78f9cd1afce9"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "src/desktop/settings_panel.cpp",
+      "category": "desktop_settings_and_recovery",
+      "current": {
+        "path": "src/desktop/settings_panel.cpp",
+        "bytes": 21878,
+        "sha256": "e4b10052a3043e7e706cb70da3911713d3f68e1807f960a7e0e0c0f364b83217"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/src/desktop/settings_panel.cpp",
+        "bytes": 21878,
+        "sha256": "e4b10052a3043e7e706cb70da3911713d3f68e1807f960a7e0e0c0f364b83217"
+      },
+      "preimage": {
+        "path": "build/p06j-001/entry-adoption001/before/src/desktop/settings_panel.cpp",
+        "bytes": 18094,
+        "sha256": "9f67395cadea2d8858a74a7ab64d1b05652784e31fae2c448df1d1da6a15546c"
+      },
+      "preimage_provenance": {
+        "basis": "adoption_before_snapshot"
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/src/desktop/settings_panel.cpp.diff",
+        "bytes": 7348,
+        "sha256": "8487c604f368c344622bf8ae3f3dd238159b787356c8514b8cefefeb260218f3"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "src/desktop/startup_panel.hpp",
+      "category": "desktop_settings_and_recovery",
+      "current": {
+        "path": "src/desktop/startup_panel.hpp",
+        "bytes": 717,
+        "sha256": "ee3b5e3a94b9f50bfd7af06e9431a02d744099016ce1d42ae7e8cbac5b824ab3"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/src/desktop/startup_panel.hpp",
+        "bytes": 717,
+        "sha256": "ee3b5e3a94b9f50bfd7af06e9431a02d744099016ce1d42ae7e8cbac5b824ab3"
+      },
+      "preimage": null,
+      "preimage_provenance": {
+        "basis": "new_owned_project_source",
+        "preexisting_file": false
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/src/desktop/startup_panel.hpp.diff",
+        "bytes": 802,
+        "sha256": "715d67e991954cd2b2154ba847cd440336bbbdebbf3f2bf0b0029d61f28a5015"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "src/desktop/startup_panel.cpp",
+      "category": "desktop_settings_and_recovery",
+      "current": {
+        "path": "src/desktop/startup_panel.cpp",
+        "bytes": 2896,
+        "sha256": "2e0a96a46ccad40663c5ed3a5dab6cca99787e34938529f589f803169c707c9b"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/src/desktop/startup_panel.cpp",
+        "bytes": 2896,
+        "sha256": "2e0a96a46ccad40663c5ed3a5dab6cca99787e34938529f589f803169c707c9b"
+      },
+      "preimage": null,
+      "preimage_provenance": {
+        "basis": "new_owned_project_source",
+        "preexisting_file": false
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/src/desktop/startup_panel.cpp.diff",
+        "bytes": 3024,
+        "sha256": "dae21643a96dad3ac3e7b85ed130a26ce836dbd135c7c943b9eae607bdf93b66"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "src/desktop/startup_ui_probe.hpp",
+      "category": "compiled_owned_observer",
+      "current": {
+        "path": "src/desktop/startup_ui_probe.hpp",
+        "bytes": 615,
+        "sha256": "e27e6baeef8c41759afdd32732565f8da7b1fcb50d18e4a014eea99c8497267c"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/src/desktop/startup_ui_probe.hpp",
+        "bytes": 615,
+        "sha256": "e27e6baeef8c41759afdd32732565f8da7b1fcb50d18e4a014eea99c8497267c"
+      },
+      "preimage": null,
+      "preimage_provenance": {
+        "basis": "new_owned_project_source",
+        "preexisting_file": false
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/src/desktop/startup_ui_probe.hpp.diff",
+        "bytes": 697,
+        "sha256": "b17a730cbf695ded1b9c427d8b72751baa6831c2f45d0037b2d112afaa335ef4"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "src/desktop/startup_ui_probe.cpp",
+      "category": "compiled_owned_observer",
+      "current": {
+        "path": "src/desktop/startup_ui_probe.cpp",
+        "bytes": 35164,
+        "sha256": "84101a522bec36f52197c8a5c0a072c66797fdea46c913db6ea1d7a87512f36f"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/src/desktop/startup_ui_probe.cpp",
+        "bytes": 35164,
+        "sha256": "84101a522bec36f52197c8a5c0a072c66797fdea46c913db6ea1d7a87512f36f"
+      },
+      "preimage": null,
+      "preimage_provenance": {
+        "basis": "new_owned_project_source",
+        "preexisting_file": false
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/src/desktop/startup_ui_probe.cpp.diff",
+        "bytes": 35773,
+        "sha256": "76e2e2346848e3e48686bdcac9da05d06bb31216b3c33ac8013178560467624e"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "src/imagejxx/__init__.py",
+      "category": "python_public_exports_and_ui",
+      "current": {
+        "path": "src/imagejxx/__init__.py",
+        "bytes": 49489,
+        "sha256": "fc1617ea441d576e08ab0ea63ceae45963d597d23988237123b6188ee0f4c15c"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/src/imagejxx/__init__.py",
+        "bytes": 49489,
+        "sha256": "fc1617ea441d576e08ab0ea63ceae45963d597d23988237123b6188ee0f4c15c"
+      },
+      "preimage": {
+        "path": "build/p06j-001/startup-commercial-review001/preimages/src/imagejxx/__init__.py",
+        "bytes": 48708,
+        "sha256": "5baf47ebba936640e65e9c63f8ec2b1e89bca653b51b9ff2e4c2c073553cf737"
+      },
+      "preimage_provenance": {
+        "basis": "exact_authorized_qualified_source_member",
+        "qualified_member": {
+          "logical_path": "src/imagejxx/__init__.py",
+          "member": "imagejxx-0.2.0/src/imagejxx/__init__.py",
+          "archive": {
+            "path": "build/p06i-source-final001/imagejxx-0.2.0.tar.gz",
+            "bytes": 8530093,
+            "sha256": "54cc65364159b9041d914260720333f3148bc22c3fecebb932310939d7cdb14b"
+          },
+          "preimage": {
+            "path": "build/p06j-001/startup-commercial-review001/preimages/src/imagejxx/__init__.py",
+            "bytes": 48708,
+            "sha256": "5baf47ebba936640e65e9c63f8ec2b1e89bca653b51b9ff2e4c2c073553cf737"
+          }
+        }
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/src/imagejxx/__init__.py.diff",
+        "bytes": 1129,
+        "sha256": "869f57d35103d978def884582b1676b820cd780a988820debef3a1827771f646"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "src/imagejxx/ui/__init__.py",
+      "category": "python_public_exports_and_ui",
+      "current": {
+        "path": "src/imagejxx/ui/__init__.py",
+        "bytes": 1669,
+        "sha256": "cad006ad8d8aca7a4d9f12bd068f62c2bade3579a8a269ea76da9d14a7fe417d"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/src/imagejxx/ui/__init__.py",
+        "bytes": 1669,
+        "sha256": "cad006ad8d8aca7a4d9f12bd068f62c2bade3579a8a269ea76da9d14a7fe417d"
+      },
+      "preimage": {
+        "path": "build/p06j-001/startup-commercial-review001/preimages/src/imagejxx/ui/__init__.py",
+        "bytes": 944,
+        "sha256": "d315bc8c43cb8a43d2c8ab821648eb17ca904172084ea68123b721c60e817e8b"
+      },
+      "preimage_provenance": {
+        "basis": "exact_authorized_qualified_source_member",
+        "qualified_member": {
+          "logical_path": "src/imagejxx/ui/__init__.py",
+          "member": "imagejxx-0.2.0/src/imagejxx/ui/__init__.py",
+          "archive": {
+            "path": "build/p06i-source-final001/imagejxx-0.2.0.tar.gz",
+            "bytes": 8530093,
+            "sha256": "54cc65364159b9041d914260720333f3148bc22c3fecebb932310939d7cdb14b"
+          },
+          "preimage": {
+            "path": "build/p06j-001/startup-commercial-review001/preimages/src/imagejxx/ui/__init__.py",
+            "bytes": 944,
+            "sha256": "d315bc8c43cb8a43d2c8ab821648eb17ca904172084ea68123b721c60e817e8b"
+          },
+          "matches_recorded_wrapper_preimage": true
+        }
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/src/imagejxx/ui/__init__.py.diff",
+        "bytes": 1776,
+        "sha256": "6dc59f3f485bba039bc9be3a1858f5d1738487dc3904c5bc7816fafe74e2b35c"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "src/imagejxx/ui/app.py",
+      "category": "python_public_exports_and_ui",
+      "current": {
+        "path": "src/imagejxx/ui/app.py",
+        "bytes": 26759,
+        "sha256": "02fdba028353e9b1741d1cb324aad323a70b52a974dfecceb6153ca41923607c"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/src/imagejxx/ui/app.py",
+        "bytes": 26759,
+        "sha256": "02fdba028353e9b1741d1cb324aad323a70b52a974dfecceb6153ca41923607c"
+      },
+      "preimage": {
+        "path": "build/p06j-001/entry-adoption001/before/src/imagejxx/ui/app.py",
+        "bytes": 22444,
+        "sha256": "88cb810d70ff2a724fc5aa5db6f0aba565ac56b60689037533032fc5d0f2aebb"
+      },
+      "preimage_provenance": {
+        "basis": "adoption_before_snapshot"
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/src/imagejxx/ui/app.py.diff",
+        "bytes": 6695,
+        "sha256": "d206448d981fdac0a55216c133fa20739a75e7755eea7b8c222491e4c7e022c3"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "src/imagejxx/ui/persistence.py",
+      "category": "python_public_exports_and_ui",
+      "current": {
+        "path": "src/imagejxx/ui/persistence.py",
+        "bytes": 34494,
+        "sha256": "d02029cb63c82b9d67217aecf2694225fb077a08ad5bda8136c8edd5c5788cd3"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/src/imagejxx/ui/persistence.py",
+        "bytes": 34494,
+        "sha256": "d02029cb63c82b9d67217aecf2694225fb077a08ad5bda8136c8edd5c5788cd3"
+      },
+      "preimage": {
+        "path": "build/p06j-001/entry-adoption001/before/src/imagejxx/ui/persistence.py",
+        "bytes": 34402,
+        "sha256": "66121dd53523c90b164babd2fc4b2fdd9c410565c550c7c826bd5061ebd3ffc4"
+      },
+      "preimage_provenance": {
+        "basis": "adoption_before_snapshot"
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/src/imagejxx/ui/persistence.py.diff",
+        "bytes": 1488,
+        "sha256": "112633b674f4cb9c134b59d842b4bf392471bff9f3e8c825096ad76be97603b5"
+      },
+      "development_build008_source_identity_match": true,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "examples/cpp/settings_schema.cpp",
+      "category": "public_sdk_example_source",
+      "current": {
+        "path": "examples/cpp/settings_schema.cpp",
+        "bytes": 7832,
+        "sha256": "a8a179b3583c7d34fabe451896ec16f1b8ef2bc58bf9f296144171c7e310283e"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/examples/cpp/settings_schema.cpp",
+        "bytes": 7832,
+        "sha256": "a8a179b3583c7d34fabe451896ec16f1b8ef2bc58bf9f296144171c7e310283e"
+      },
+      "preimage": {
+        "path": "build/p06j-001/startup-commercial-review001/preimages/examples/cpp/settings_schema.cpp",
+        "bytes": 7787,
+        "sha256": "50220e31a4a3f41621ee07cebd2b7b815693a6dfa4185f94b8b019eb5fb0e59c"
+      },
+      "preimage_provenance": {
+        "basis": "exact_authorized_qualified_source_member",
+        "qualified_member": {
+          "logical_path": "examples/cpp/settings_schema.cpp",
+          "member": "imagejxx-0.2.0/examples/cpp/settings_schema.cpp",
+          "archive": {
+            "path": "build/p06i-source-final001/imagejxx-0.2.0.tar.gz",
+            "bytes": 8530093,
+            "sha256": "54cc65364159b9041d914260720333f3148bc22c3fecebb932310939d7cdb14b"
+          },
+          "preimage": {
+            "path": "build/p06j-001/startup-commercial-review001/preimages/examples/cpp/settings_schema.cpp",
+            "bytes": 7787,
+            "sha256": "50220e31a4a3f41621ee07cebd2b7b815693a6dfa4185f94b8b019eb5fb0e59c"
+          }
+        }
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/examples/cpp/settings_schema.cpp.diff",
+        "bytes": 338,
+        "sha256": "c78d3e30b0e6103bc925a9bed38af124072de8b38cfd66dc246dbe4bcafef462"
+      },
+      "development_build008_source_identity_match": null,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "examples/cpp/CMakeLists.txt",
+      "category": "public_sdk_example_source",
+      "current": {
+        "path": "examples/cpp/CMakeLists.txt",
+        "bytes": 12703,
+        "sha256": "7a91ad8e019894b8ff3a817c96a22410d1de52802f5093d1f2d7d274387003ba"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/examples/cpp/CMakeLists.txt",
+        "bytes": 12703,
+        "sha256": "7a91ad8e019894b8ff3a817c96a22410d1de52802f5093d1f2d7d274387003ba"
+      },
+      "preimage": {
+        "path": "build/p06j-001/startup-commercial-review001/preimages/examples/cpp/CMakeLists.txt",
+        "bytes": 12126,
+        "sha256": "daf0ebbdc4c5fe3dcc21007a45134ef5afe2709a136de1d3674d7b1079876680"
+      },
+      "preimage_provenance": {
+        "basis": "exact_authorized_qualified_source_member",
+        "qualified_member": {
+          "logical_path": "examples/cpp/CMakeLists.txt",
+          "member": "imagejxx-0.2.0/examples/cpp/CMakeLists.txt",
+          "archive": {
+            "path": "build/p06i-source-final001/imagejxx-0.2.0.tar.gz",
+            "bytes": 8530093,
+            "sha256": "54cc65364159b9041d914260720333f3148bc22c3fecebb932310939d7cdb14b"
+          },
+          "preimage": {
+            "path": "build/p06j-001/startup-commercial-review001/preimages/examples/cpp/CMakeLists.txt",
+            "bytes": 12126,
+            "sha256": "daf0ebbdc4c5fe3dcc21007a45134ef5afe2709a136de1d3674d7b1079876680"
+          }
+        }
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/examples/cpp/CMakeLists.txt.diff",
+        "bytes": 1006,
+        "sha256": "c6e293b70d094df10b4627f17e6c42c549ad94a9d0d04143c473eae75e3ebf4e"
+      },
+      "development_build008_source_identity_match": null,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    },
+    {
+      "logical_path": "examples/cpp/startup_workspace.cpp",
+      "category": "public_sdk_example_source",
+      "current": {
+        "path": "examples/cpp/startup_workspace.cpp",
+        "bytes": 24093,
+        "sha256": "858a5e3a34c4901f9732afe68839caee9baade38bc1dbde935033bda352dd45b"
+      },
+      "snapshot": {
+        "path": "build/p06j-001/startup-commercial-review001/sources/examples/cpp/startup_workspace.cpp",
+        "bytes": 24093,
+        "sha256": "858a5e3a34c4901f9732afe68839caee9baade38bc1dbde935033bda352dd45b"
+      },
+      "preimage": null,
+      "preimage_provenance": {
+        "basis": "new_owned_project_source",
+        "preexisting_file": false
+      },
+      "changed": true,
+      "diff": {
+        "path": "build/p06j-001/startup-commercial-review001/diffs/examples/cpp/startup_workspace.cpp.diff",
+        "bytes": 24553,
+        "sha256": "909c8cd799307b562359da77d691b97c634f634a22388e0069987e689faa0793"
+      },
+      "development_build008_source_identity_match": null,
+      "eligibility_recommendation": "owned_project_source_eligible_with_existing_notices"
+    }
+  ],
+  "execution": {
+    "performed": [
+      "Read source/preimage deltas, local license/notices/dependency records and source identity metadata",
+      "Root-authorized exact stdlib archive-source retrieval",
+      "Source snapshot/hash/diff/review JSON generation"
+    ],
+    "product_imported": false,
+    "product_run": false,
+    "built": false,
+    "tested": false,
+    "installed": false,
+    "upstream_browsed_or_downloaded": false,
+    "existing_qualified_artifact_inventory_performed": false
+  }
+}

@@ -1,0 +1,4245 @@
+{
+  "schema": "imagejxx.coloc2-commercial-closure",
+  "schema_version": 1,
+  "id": "coloc2-commercial-closure-001",
+  "state": "held_pending_commercial_closure",
+  "candidate_id": "R-7a864ddce4217b0c98d20c66",
+  "component_id": "fiji:plugins/Colocalisation_Analysis-3.1.0.jar",
+  "reference_id": "imagej-1.54r-fiji-latest-20261007-1617-win64",
+  "source_evidence": [
+    {
+      "key": "tag",
+      "url": "https://api.github.com/repos/fiji/Colocalisation_Analysis/git/ref/tags/Colocalisation_Analysis-3.1.0",
+      "bytes": 439,
+      "sha256": "44e5ce95d23b12c336c8290351fa2f7e7d593ee81e94022660452139be9ca4f7",
+      "json": {
+        "ref": "refs/tags/Colocalisation_Analysis-3.1.0",
+        "node_id": "MDM6UmVmMTY3NDU0NDU6cmVmcy90YWdzL0NvbG9jYWxpc2F0aW9uX0FuYWx5c2lzLTMuMS4w",
+        "url": "https://api.github.com/repos/fiji/Colocalisation_Analysis/git/refs/tags/Colocalisation_Analysis-3.1.0",
+        "object": {
+          "sha": "e4a92b537132b4e91fd47b428439973517309e93",
+          "type": "commit",
+          "url": "https://api.github.com/repos/fiji/Colocalisation_Analysis/git/commits/e4a92b537132b4e91fd47b428439973517309e93"
+        }
+      }
+    },
+    {
+      "key": "source",
+      "url": "https://codeload.github.com/fiji/Colocalisation_Analysis/zip/e4a92b537132b4e91fd47b428439973517309e93",
+      "bytes": 1026392,
+      "sha256": "544c8c3066b854f37887754982cba4b3869b6dc86ad15cb0fdcefa18ba5c6a5e",
+      "source_members": [
+        {
+          "path": ".github/build.sh",
+          "bytes": 113,
+          "sha256": "5cda0f53c355842f6290514e544d7271b0d0e8406277a9e25b7b4c1a67136de5"
+        },
+        {
+          "path": ".github/setup.sh",
+          "bytes": 143,
+          "sha256": "d2afbf35fa596bd305c037a2670655ac5cec88b9ff28ca785129bc878d7ecd92"
+        },
+        {
+          "path": ".github/workflows/build.yml",
+          "bytes": 822,
+          "sha256": "531e9ab27c194c555011525016b9d4158213bb89b954b7994a4d429f5ad170a0"
+        },
+        {
+          "path": ".gitignore",
+          "bytes": 88,
+          "sha256": "0410fba092fd948c806fa32a42bdad02a9c037c138299a37bd565cd3a98449f6"
+        },
+        {
+          "path": "LICENSE.txt",
+          "bytes": 35149,
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+        },
+        {
+          "path": "README.md",
+          "bytes": 872,
+          "sha256": "0197540ea339230f27819be3128e607fa16185a42899ec6539fd4abb208b0097"
+        },
+        {
+          "path": "pom.xml",
+          "bytes": 4833,
+          "sha256": "cb14676640c9904d32061a0d201e63e744c24bcca5efdd2ad193816d72cf304f"
+        },
+        {
+          "path": "release.properties",
+          "bytes": 1477,
+          "sha256": "119d3f60d22a933227d9f051c7039d7f6514de22169a742183b01fb166f98d57"
+        },
+        {
+          "path": "src/main/java/net/imglib2/PairIterator.java",
+          "bytes": 1426,
+          "sha256": "6e7b5f2ec80f81ae544f3b7471d1ec58a6b1f068824f6464ff2859b335b6350f"
+        },
+        {
+          "path": "src/main/java/net/imglib2/PredicateCursor.java",
+          "bytes": 3994,
+          "sha256": "401a40fc4c127b3fb6c109d37097f7ac4505dcc79ac07d339b33ee2a5144f52c"
+        },
+        {
+          "path": "src/main/java/net/imglib2/TwinCursor.java",
+          "bytes": 4136,
+          "sha256": "05d00da47dc1667766bb9152a41f50b3a1cc8e841ade9fc2bebc26c660c30337"
+        },
+        {
+          "path": "src/main/java/net/imglib2/algorithm/math/ImageStatistics.java",
+          "bytes": 8746,
+          "sha256": "29af9e7bfcf7b7ae39e3e60dd3689029f00f5078181e0ac60b0b6873430e19d5"
+        },
+        {
+          "path": "src/main/java/net/imglib2/predicate/MaskPredicate.java",
+          "bytes": 1047,
+          "sha256": "4538b910a9f7a228d54e44b6350ac6f1d2c0bdcc65c09b1987bf6d1327d6bf84"
+        },
+        {
+          "path": "src/main/java/net/imglib2/predicate/Predicate.java",
+          "bytes": 1082,
+          "sha256": "972c18ceec9f23156897ce8426a88a818ed7c09dfa758006e475a4ce27e50528"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/ColocImgLibGadgets.java",
+          "bytes": 5029,
+          "sha256": "deb350e1a7069d11279c7d15d3df8f5c2dd2ea26f80fba449795ff20c0e9c96e"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/Coloc_2.java",
+          "bytes": 30489,
+          "sha256": "7f6edeabaa23959bc663c4b84618f45f806d030160dfe5f322311652032a3276"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/Colocalisation_Test.java",
+          "bytes": 22756,
+          "sha256": "b0bfc60a30dee8092e93e3d025f58be218bdd55f27bf1a34fdb01d5f76ca4ad2"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/Colocalisation_Threshold.java",
+          "bytes": 29687,
+          "sha256": "92ba9c11821e59e7e5b3dfc9e499e132c885c09844514768c686f900d1a7927d"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/Accumulator.java",
+          "bytes": 2733,
+          "sha256": "171f19f701fa5340db5e94ec3f8edcbba63118c3694535bf1582da2dda49d69f"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/Algorithm.java",
+          "bytes": 2648,
+          "sha256": "23e535af1819f8ea964bfdf5ca68e3fd321182bac31eadb23132426932319ca0"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/AutoThresholdRegression.java",
+          "bytes": 12064,
+          "sha256": "389f9dd0daeb2a8aa7569aad13922ac0b8d658889855fed02ba1313e21b4ddce"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/BisectionStepper.java",
+          "bytes": 2766,
+          "sha256": "3f185ede38ef36e1187c68aa57d3cad75899ee4d8f2f39401255381f4221eb85"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/ChannelMapper.java",
+          "bytes": 1053,
+          "sha256": "f3d26c4f2a0e94d81274029cbb71b5971fbee11237fae20e6c1a37c0fe39e71f"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/CostesSignificanceTest.java",
+          "bytes": 15391,
+          "sha256": "d291a672382ed9b51944463a0644317611d26cdd7cf5f755706bfdc84aa5fe74"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/Histogram2D.java",
+          "bytes": 12392,
+          "sha256": "bc629b5e369eeb1a9647f409e202e784284ab8022c36f746625e401ea6a93d9c"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/InputCheck.java",
+          "bytes": 7835,
+          "sha256": "cd4a14231ed38d847214a4e6b06b8a2c739514de9460ce0cffa991f0715a264f"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/IntArraySorter.java",
+          "bytes": 3659,
+          "sha256": "e9e43d61245dffba14d9510a84c2359cd1426855a2cb217bd1b54c4d55f2fdce"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/IntComparator.java",
+          "bytes": 887,
+          "sha256": "53f7684ce0fc61a1a771f8f78e365195438586b4f1e38df73a88cea24096b0ab"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/KendallTauRankCorrelation.java",
+          "bytes": 10393,
+          "sha256": "8f6a9aea11bc164db8be5a4cfac3c48d28cdb6e1c2a8f104fac52df3dcf05bb3"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/LiHistogram2D.java",
+          "bytes": 5570,
+          "sha256": "5ea513a7ab6ff102bac05fd37e667ff64f49c53db435bca62f04c1bcd3b2e395"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/LiICQ.java",
+          "bytes": 3463,
+          "sha256": "dfeda765d14fefd8cab1d34c4fcf2c0748a9d3d9eaef1203b6b9fadabde94250"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/MandersColocalization.java",
+          "bytes": 12175,
+          "sha256": "339dec794e4f89da216f2c3debae3766abce9fa60488331154eacab8e1fc147d"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/MissingPreconditionException.java",
+          "bytes": 1329,
+          "sha256": "2618cd05c4f2270646ecf5e95a1398358b4e8a24dfd94b24bbed44592e26c95b"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/PearsonsCorrelation.java",
+          "bytes": 14570,
+          "sha256": "c6d420d0489b2ddb3b79aec1626d740eaea02162ccdda926950d50bfb981d5d9"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/SimpleStepper.java",
+          "bytes": 2426,
+          "sha256": "55dd1853d69170539a298e8c41b7d1fd5ca287b3a307eeb81998a580fa204d23"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/SpearmanRankCorrelation.java",
+          "bytes": 9374,
+          "sha256": "d6310b9c2fd90b2cce2f47bd286e68c60db2201b9644d6c78aca461748235d0a"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/algorithms/Stepper.java",
+          "bytes": 1124,
+          "sha256": "e2a13bb6bebfcfd01ae2235dc9ed8c42da6f8c17e51af2b304b85536db691fd0"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/gadgets/Autoscaler.java",
+          "bytes": 1461,
+          "sha256": "6b7bb2b6fbfd67dc31f83a8fac94cbbcef3f4895f1216ee2a3057820d8b1e4c2"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/gadgets/DataContainer.java",
+          "bytes": 11881,
+          "sha256": "1e312ce4b4bc8129178045f47ab5e530273700e98804228f78fdeeb1628589d4"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/gadgets/MaskFactory.java",
+          "bytes": 7680,
+          "sha256": "114a4cca5c0888057e51d0178ea04fb15847f339a95e96c12a5515c5da55bf50"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/gadgets/Statistics.java",
+          "bytes": 3599,
+          "sha256": "321f9ec07e0cc519a50d19f1d16ab03458a2426d29ade85dc063186e1bbb267b"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/gadgets/ThresholdMode.java",
+          "bytes": 939,
+          "sha256": "7fbd4f8a699813ff9bb751320d8e3a733f62b80c7da6becfb700a678290a7ee1"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/results/AnalysisResults.java",
+          "bytes": 3610,
+          "sha256": "3bc7583f01e6f2bea49087497585abf98e71e9a6a4b3ddfd7053d314b83d6a74"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/results/EasyDisplay.java",
+          "bytes": 3948,
+          "sha256": "f4e41ff5e1d21b7dcc61ce9a9d3af8d649b9ae029e6ea6216fe497e83e0bc398"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/results/NamedContainer.java",
+          "bytes": 1166,
+          "sha256": "8e7d67b8266410a7ff355bdd2560a011dd867cf3a5b065c79b0b47156361cd39"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/results/PDFWriter.java",
+          "bytes": 11900,
+          "sha256": "774c0e779711c8bf8950b4bb709a115de55bffd911f74887fdd2ff061758f6b3"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/results/ResultHandler.java",
+          "bytes": 1770,
+          "sha256": "1eb35620156bd6413afc50a7a0048762479c1503572f331c99b9eb436be7da7f"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/results/SingleWindowDisplay.java",
+          "bytes": 24316,
+          "sha256": "30f2a0724cfb22eefe186e1f09e1aedd8162278dd145e29bcd221f727ea64850"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/results/ValueResult.java",
+          "bytes": 1373,
+          "sha256": "367191dc56d92eddbd1cc333a13b164f21d7b293a19404972706db9e2a9f2491"
+        },
+        {
+          "path": "src/main/java/sc/fiji/coloc/results/Warning.java",
+          "bytes": 1339,
+          "sha256": "e9fe05259f008d0829a491eb1ebbcf4d69ac74e4a7ca81eccb34517a9e5d8197"
+        },
+        {
+          "path": "src/main/resources/plugins.config",
+          "bytes": 999,
+          "sha256": "fb64fcfe2713e74a4b5921b6385337487f3c88ddfac137bd75421b14dab6e0fe"
+        },
+        {
+          "path": "src/main/resources/script_templates/Examples/Colocalisation.groovy",
+          "bytes": 1304,
+          "sha256": "bfb9a4ee95a283d0ad6cd3cebaae421d92f03efa24cd675ea357f11c50ca5019"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/Main.java",
+          "bytes": 3450,
+          "sha256": "b85224f73ce41cfc3b2e7dfdb51b1129c1846bb7d176c938b22e238603375116"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/AutoThresholdRegressionTest.java",
+          "bytes": 3554,
+          "sha256": "3f8a895fe180a9458b6e28b0ab57659543ee9aba04cc9ea59ef635ce1d3330c0"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/ColocalisationGUITest.java",
+          "bytes": 2228,
+          "sha256": "27bb57ccce3691bc33a5758bcad964d0e498c343d4cdcd053bcd13131033f20f"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/ColocalisationTest.java",
+          "bytes": 6523,
+          "sha256": "4a24b0243a126ad91dc90cc113e2e802c7d40b25d70329b1ad5f98e27e337e4c"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/CommutativityTest.java",
+          "bytes": 4211,
+          "sha256": "4f51d940bf0713ff39e2acf2a6931c97232244b84925a8822ff32d999038696b"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/CostesSignificanceTest.java",
+          "bytes": 4911,
+          "sha256": "1a4435f8239d1a2bca99caec7d48febb2e71a6e863577abec8602c054092809b"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/ImprovedNoise.java",
+          "bytes": 4015,
+          "sha256": "8c6d7168219f36be0f20cc3dade65a7cd545f4ec3e8432a989a12673b2638181"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/KendallTauTest.java",
+          "bytes": 4137,
+          "sha256": "eca1a589b2cba914ee72c3fcc968446605d713a145c5408f8e5c56e013a46f5b"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/LiICQTest.java",
+          "bytes": 2345,
+          "sha256": "461980225340573471baad0cd00f64c9b2e4d2c93ff1e7834a71c230c2b64f49"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/MandersColocalizationTest.java",
+          "bytes": 7468,
+          "sha256": "015ca8ef944599c2050fd70f42ceb6fab447a5edda0c9e5fcc63912104742821"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/MaskAndRoiTest.java",
+          "bytes": 14107,
+          "sha256": "919da670cbf885ffae16609481cb6332cdac5973ad08ed7678e8f2f2b456dc35"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/PearsonsCorrelationTest.java",
+          "bytes": 7819,
+          "sha256": "fb5257399aba47b89742b3c252c661c7c8fd2c3cd2670cc2d6fe13d66173de53"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/SpearmanRankTest.java",
+          "bytes": 4495,
+          "sha256": "b540a516564026d8785e2238905a3371a3cdea5a5d926cffb3f7b68a55d1226a"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/StatisticsTest.java",
+          "bytes": 3350,
+          "sha256": "39dfe94de7bd7a73e7fdda37ad7cce7cdc4e993c4704a48eafd4813326febb63"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/TestImageAccessor.java",
+          "bytes": 16789,
+          "sha256": "e96edfe9f2d44cb291d1298dd0f3461e351087fb6cf7a48106e31f96fa7d3099"
+        },
+        {
+          "path": "src/test/java/sc/fiji/coloc/tests/TestInteractively.java",
+          "bytes": 1692,
+          "sha256": "2c5ca7e00e5002283a56470409c0b276e7184dc81444edc9af52962cd5a56600"
+        },
+        {
+          "path": "src/test/resources/SineXCosY.ijm",
+          "bytes": 1824,
+          "sha256": "60e4feddfb569f2ac4c50fa0c4f840b8ee180fb9356865ee7c0f7e8a792ba837"
+        },
+        {
+          "path": "src/test/resources/colocsample1b-green.tif",
+          "bytes": 870702,
+          "sha256": "a099913867fcc12494387661951585cfd90ae6dd37adf388c8e306bb064f437e"
+        },
+        {
+          "path": "src/test/resources/colocsample1b-mask.tif",
+          "bytes": 868207,
+          "sha256": "f71661c414f44a4a5d88b7e34a7a792a10277389f1e5ccf01e732695aafc99a6"
+        },
+        {
+          "path": "src/test/resources/colocsample1b-red.tif",
+          "bytes": 870702,
+          "sha256": "009a17105e71ad479bac2230ff3503fe514f9b75c9c5ebfbdfae57dd67aa8739"
+        },
+        {
+          "path": "src/test/resources/greenZstack.tif",
+          "bytes": 42273,
+          "sha256": "2e7f2d5dc2b71c77deb5e8eecabaffb256a9f525e52454ac3bbc125b3451960d"
+        },
+        {
+          "path": "src/test/resources/high_random_overlap1.tif",
+          "bytes": 164,
+          "sha256": "78db41d48c487bd37887f91ce7dc402703caef7739f2812c3abdc9e0c5001c47"
+        },
+        {
+          "path": "src/test/resources/high_random_overlap2.tif",
+          "bytes": 164,
+          "sha256": "a1d5783bbf5f5f15605f38d5f4ef6a8222e05a21f934a5bbddefc0de9d268882"
+        },
+        {
+          "path": "src/test/resources/mandersA.tiff",
+          "bytes": 9950,
+          "sha256": "55f0e233d0322cf360a243f433092f4498b62864825af3c7040ba50b13bb45e2"
+        },
+        {
+          "path": "src/test/resources/mandersB.tiff",
+          "bytes": 9986,
+          "sha256": "f013fac909a0d211894695abfab4068a8479350932f2f924bd2e9ffb7b80c6f9"
+        },
+        {
+          "path": "src/test/resources/mandersC.tiff",
+          "bytes": 9950,
+          "sha256": "12cc8512baae5e277930507e048cba119bfdb54e0b0dd3a7c14bca5cc3c4cada"
+        },
+        {
+          "path": "src/test/resources/mandersD.tiff",
+          "bytes": 10026,
+          "sha256": "a3c3946baf6f152e42e8248f67d12ffe5abb4c8f83915cfb68075b466a4aa27a"
+        },
+        {
+          "path": "src/test/resources/mandersE.tiff",
+          "bytes": 10014,
+          "sha256": "d6a618532f6a83b47da00660329fd62f4ebf4460b874bebe72b33da4f0112bdf"
+        },
+        {
+          "path": "src/test/resources/mandersF.tiff",
+          "bytes": 8496,
+          "sha256": "22a8104045fba4aa79721b1774653127ef72e31ea973631ee21dbd0ed980d045"
+        },
+        {
+          "path": "src/test/resources/mandersG.tiff",
+          "bytes": 5978,
+          "sha256": "7583635690ae1dceed2b1a5e36ce4fdcf38877e491a8d2ba9bad8182e54aabe6"
+        },
+        {
+          "path": "src/test/resources/mandersH.tiff",
+          "bytes": 4184,
+          "sha256": "a2db42b68a523a58c9b33ecf22375cbd35ef94c2712f2ef9812ec96889b374f2"
+        },
+        {
+          "path": "src/test/resources/mandersI.tiff",
+          "bytes": 2876,
+          "sha256": "7e9c4ae3405fc9c518f2dc8139be5adee2928a73ad2475c2f145d1868e3dc1ed"
+        },
+        {
+          "path": "src/test/resources/random-dots-smoothed.ijm",
+          "bytes": 1236,
+          "sha256": "697e30062d09ad78d5bde5ccbf7e4ef3d4e118ac80125635febfe5ff9c4eb4d1"
+        },
+        {
+          "path": "src/test/resources/redZstack.tif",
+          "bytes": 42273,
+          "sha256": "63cce3a2d92dd19a79bab227c47ad449d37017feb6613a72e1168dbb49dc4ec6"
+        },
+        {
+          "path": "src/test/resources/syntheticNegCh1.tif",
+          "bytes": 236,
+          "sha256": "3c875fac00c1cd909fb2ed5746865eaff4f1faa714f44861257104a528c70a0b"
+        },
+        {
+          "path": "src/test/resources/syntheticNegCh2.tif",
+          "bytes": 238,
+          "sha256": "e85128933b2af9566feb72b8ddebbb0a56030e321dae7c6661ab65724fd38051"
+        }
+      ],
+      "licenses": [
+        {
+          "path": "LICENSE.txt",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "prefix": "                    GNU GENERAL PUBLIC LICENSE\n                       Version 3, 29 June 2007\n\n Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>\n Everyone is permitted to copy and distribute verbatim copies\n of this license document, but changing it is not allowed.\n\n                            Preamble\n\n  The GNU General Public License is a free, copyleft license for\nsoftware a"
+        }
+      ],
+      "script": {
+        "path": "src/main/resources/script_templates/Examples/Colocalisation.groovy",
+        "sha256": "bfb9a4ee95a283d0ad6cd3cebaae421d92f03efa24cd675ea357f11c50ca5019",
+        "prefix": "// @ImagePlus imp1\n// @ImagePlus imp2\n\n// Colocalisation.groovy\n//\n// This script demonstrates programmatic usage of Fiji's Coloc 2 plugin,\n// including how to extract quantitative measurements after execution.\n\nimport sc.fiji.coloc.Coloc_2\ncoloc2 = "
+      },
+      "java_license_marker_counts": {
+        "GPLv3+": 58
+      }
+    },
+    {
+      "key": "parent",
+      "url": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava/38.0.1/pom-scijava-38.0.1.pom",
+      "bytes": 301241,
+      "sha256": "cb1fa36bde075fb7f771880a15eeee9803513736afc3c243ec88f8da6d13576f",
+      "parent": {
+        "groupId": "org.scijava",
+        "artifactId": "pom-scijava-base",
+        "version": "19.0.0",
+        "relativePath": null
+      },
+      "properties": {
+        "junit-benchmarks.version": "0.7.4-scijava",
+        "org.scijava.junit-benchmarks.version": "${junit-benchmarks.version}",
+        "imagej1.version": "1.54g",
+        "imglib2.version": "6.3.0",
+        "net.imglib2.imglib2.version": "${imglib2.version}",
+        "imglib2-algorithm.version": "0.14.0",
+        "net.imglib2.imglib2-algorithm.version": "${imglib2-algorithm.version}",
+        "imglib2-algorithm-fft.version": "0.2.1",
+        "net.imglib2.imglib2-algorithm-fft.version": "${imglib2-algorithm-fft.version}",
+        "imglib2-algorithm-gpl.version": "0.3.1",
+        "net.imglib2.imglib2-algorithm-gpl.version": "${imglib2-algorithm-gpl.version}",
+        "imglib2-cache.version": "1.0.0-beta-17",
+        "net.imglib2.imglib2-cache.version": "${imglib2-cache.version}",
+        "imglib2-ij.version": "2.0.1",
+        "net.imglib2.imglib2-ij.version": "${imglib2-ij.version}",
+        "imglib2-imglyb.version": "2.0.0",
+        "net.imglib2.imglib2-imglyb.version": "${imglib2-imglyb.version}",
+        "imglib2-mesh.version": "1.0.0",
+        "net.imglib2.imglib2-mesh.version": "${imglib2-mesh.version}",
+        "imglib2-realtransform.version": "4.0.2",
+        "net.imglib2.imglib2-realtransform.version": "${imglib2-realtransform.version}",
+        "imglib2-roi.version": "0.14.1",
+        "net.imglib2.imglib2-roi.version": "${imglib2-roi.version}",
+        "imglib2-unsafe.version": "1.0.0",
+        "net.imglib2.imglib2-unsafe.version": "${imglib2-unsafe.version}",
+        "fiji-lib.version": "2.1.3",
+        "sc.fiji.fiji-lib.version": "${fiji-lib.version}",
+        "imglib2-label-multisets.version": "0.14.0",
+        "net.imglib2.imglib2-label-multisets.version": "${imglib2-label-multisets.version}",
+        "n5-imglib2.version": "7.0.0",
+        "org.janelia.saalfeldlab.n5-imglib2.version": "${n5-imglib2.version}",
+        "groovy-test-junit5.version": "${groovy.version}",
+        "org.apache.groovy.groovy-test-junit5.version": "${groovy-test-junit5.version}",
+        "itextpdf.version": "5.5.13.3",
+        "com.itextpdf.itextpdf.version": "${itextpdf.version}",
+        "junit.version": "4.13.2",
+        "junit.junit.version": "${junit.version}",
+        "junit-jupiter.version": "5.10.2",
+        "junit-jupiter-api.version": "${junit-jupiter.version}",
+        "junit-jupiter-engine.version": "${junit-jupiter.version}",
+        "junit-jupiter-migrationsupport.version": "${junit-jupiter.version}",
+        "junit-jupiter-params.version": "${junit-jupiter.version}",
+        "junit-vintage-engine.version": "${junit-jupiter.version}",
+        "org.junit.jupiter.junit-jupiter-api.version": "${junit-jupiter-api.version}",
+        "org.junit.jupiter.junit-jupiter-engine.version": "${junit-jupiter-engine.version}",
+        "org.junit.jupiter.junit-jupiter-migrationsupport.version": "${junit-jupiter-migrationsupport.version}",
+        "org.junit.jupiter.junit-jupiter-params.version": "${junit-jupiter-params.version}",
+        "org.junit.jupiter.junit-jupiter.version": "${junit-jupiter.version}",
+        "org.junit.vintage.junit-vintage-engine.version": "${junit-vintage-engine.version}"
+      },
+      "selected_management": [
+        {
+          "groupId": "net.imagej",
+          "artifactId": "ij",
+          "version": "${net.imagej.ij.version}"
+        },
+        {
+          "groupId": "net.imglib2",
+          "artifactId": "imglib2",
+          "version": "${net.imglib2.imglib2.version}"
+        },
+        {
+          "groupId": "net.imglib2",
+          "artifactId": "imglib2-algorithm",
+          "version": "${net.imglib2.imglib2-algorithm.version}"
+        },
+        {
+          "groupId": "net.imglib2",
+          "artifactId": "imglib2-ij",
+          "version": "${net.imglib2.imglib2-ij.version}"
+        },
+        {
+          "groupId": "sc.fiji",
+          "artifactId": "fiji-lib",
+          "version": "${sc.fiji.fiji-lib.version}"
+        },
+        {
+          "groupId": "com.itextpdf",
+          "artifactId": "itextpdf",
+          "version": "${com.itextpdf.itextpdf.version}"
+        },
+        {
+          "groupId": "net.imglib2",
+          "artifactId": "imglib2",
+          "version": "${net.imglib2.imglib2.version}",
+          "classifier": "tests",
+          "scope": "test"
+        },
+        {
+          "groupId": "junit",
+          "artifactId": "junit",
+          "version": "${junit.junit.version}",
+          "scope": "test"
+        }
+      ]
+    }
+  ],
+  "alias_binary_proofs": [
+    {
+      "gav": "gov.nist.math:jama:1.0.3",
+      "component": "fiji:jars/jama-1.0.3.jar",
+      "binary_url": "https://repo.maven.apache.org/maven2/gov/nist/math/jama/1.0.3/jama-1.0.3.jar",
+      "binary_bytes": 37424,
+      "binary_sha256": "c7325ee29be1aac1287ddac690f73671f1cd911ca9eca7c619990e86310556fd",
+      "matches_pinned": true,
+      "pom_url": "https://repo.maven.apache.org/maven2/gov/nist/math/jama/1.0.3/jama-1.0.3.pom",
+      "pom_sha256": "bcdc2ab42e300087fae0a622a2144e90cad76a9eb92f75d05843a1e6b835a6c3",
+      "licenses": [
+        {
+          "name": "Public Domain",
+          "url": "http://creativecommons.org/licenses/publicdomain/",
+          "distribution": "repo"
+        }
+      ],
+      "dependencies": [],
+      "parent": null,
+      "source": {
+        "connection": "not available",
+        "url": "http://math.nist.gov/javanumerics/jama/Jama-1.0.3.tar.gz"
+      }
+    },
+    {
+      "gav": "net.sf.trove4j:trove4j:3.0.3",
+      "component": "fiji:jars/trove4j-3.0.3.jar",
+      "binary_url": "https://repo.maven.apache.org/maven2/net/sf/trove4j/trove4j/3.0.3/trove4j-3.0.3.jar",
+      "binary_bytes": 2523218,
+      "binary_sha256": "3c8616203d61a12a7e3487e8b34f3c198c2b5ba9e90da0c7ea32d99cd4958012",
+      "matches_pinned": true,
+      "pom_url": "https://repo.maven.apache.org/maven2/net/sf/trove4j/trove4j/3.0.3/trove4j-3.0.3.pom",
+      "pom_sha256": "11327b94615d0bf16d4e17334902de783c2022f5e909d51fbce993a7a9d7e1d8",
+      "licenses": [
+        {
+          "name": "GNU Lesser General Public License 2.1",
+          "url": "http://www.gnu.org/licenses/lgpl-2.1.txt",
+          "distribution": "repo"
+        }
+      ],
+      "dependencies": [],
+      "parent": null,
+      "source": {
+        "connection": "scm:svn:https://trove4j.svn.sourceforge.net/svnroot/trove4j",
+        "url": "https://trove4j.svn.sourceforge.net/svnroot/trove4j"
+      }
+    },
+    {
+      "gav": "com.github.ben-manes.caffeine:caffeine:2.9.3",
+      "component": "fiji:jars/caffeine-2.9.3.jar",
+      "binary_url": "https://repo.maven.apache.org/maven2/com/github/ben-manes/caffeine/caffeine/2.9.3/caffeine-2.9.3.jar",
+      "binary_bytes": 912143,
+      "binary_sha256": "1e0a7bbef1dd791653143f3f05d0e489934bf5481e58a87c9e619cd46b68729b",
+      "matches_pinned": true,
+      "pom_url": "https://repo.maven.apache.org/maven2/com/github/ben-manes/caffeine/caffeine/2.9.3/caffeine-2.9.3.pom",
+      "pom_sha256": "6fa4f1c10192806f8ef05b5d4be7bd9f5ce58b876f64364d4e90c3fc092323dc",
+      "licenses": [
+        {
+          "name": "Apache License, Version 2.0",
+          "url": "https://www.apache.org/licenses/LICENSE-2.0.txt",
+          "distribution": "repo"
+        }
+      ],
+      "dependencies": [
+        {
+          "groupId": "org.checkerframework",
+          "artifactId": "checker-qual",
+          "version": "3.19.0",
+          "scope": "compile"
+        },
+        {
+          "groupId": "com.google.errorprone",
+          "artifactId": "error_prone_annotations",
+          "version": "2.10.0",
+          "scope": "compile"
+        }
+      ],
+      "parent": null,
+      "source": {
+        "connection": "scm:git:https://github.com/ben-manes/caffeine.git",
+        "developerConnection": "scm:git:ssh://git@github.com/ben-manes/caffeine.git",
+        "url": "https://github.com/ben-manes/caffeine"
+      }
+    },
+    {
+      "gav": "org.ejml:ejml-all:0.41",
+      "component": "fiji:jars/ejml-all-0.41.jar",
+      "binary_url": "https://repo.maven.apache.org/maven2/org/ejml/ejml-all/0.41/ejml-all-0.41.jar",
+      "binary_bytes": 749,
+      "binary_sha256": "75172c94331a214677d12dd6fbd1ff8bf24120f383da8eea4926e7739b62e50a",
+      "matches_pinned": true,
+      "pom_url": "https://repo.maven.apache.org/maven2/org/ejml/ejml-all/0.41/ejml-all-0.41.pom",
+      "pom_sha256": "87941c3b793f3e05618968864890e2d1948647f86b9c713f9ecbf33d3bfcbc71",
+      "licenses": [
+        {
+          "name": "The Apache License, Version 2.0",
+          "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        }
+      ],
+      "dependencies": [
+        {
+          "groupId": "org.ejml",
+          "artifactId": "ejml-core",
+          "version": "0.41",
+          "scope": "compile"
+        },
+        {
+          "groupId": "org.ejml",
+          "artifactId": "ejml-fdense",
+          "version": "0.41",
+          "scope": "compile"
+        },
+        {
+          "groupId": "org.ejml",
+          "artifactId": "ejml-ddense",
+          "version": "0.41",
+          "scope": "compile"
+        },
+        {
+          "groupId": "org.ejml",
+          "artifactId": "ejml-cdense",
+          "version": "0.41",
+          "scope": "compile"
+        },
+        {
+          "groupId": "org.ejml",
+          "artifactId": "ejml-zdense",
+          "version": "0.41",
+          "scope": "compile"
+        },
+        {
+          "groupId": "org.ejml",
+          "artifactId": "ejml-dsparse",
+          "version": "0.41",
+          "scope": "compile"
+        },
+        {
+          "groupId": "org.ejml",
+          "artifactId": "ejml-simple",
+          "version": "0.41",
+          "scope": "compile"
+        }
+      ],
+      "parent": null,
+      "source": {
+        "connection": "scm:git:git://github.com/lessthanoptimal/ejml.git",
+        "developerConnection": "scm:git:git://github.com/lessthanoptimal/ejml.git",
+        "url": "https://github.com/lessthanoptimal/ejml"
+      }
+    },
+    {
+      "gav": "org.ejml:ejml-core:0.41",
+      "component": "fiji:jars/ejml-core-0.41.jar",
+      "binary_url": "https://repo.maven.apache.org/maven2/org/ejml/ejml-core/0.41/ejml-core-0.41.jar",
+      "binary_bytes": 259045,
+      "binary_sha256": "8d36469e8414d79c875defc0af3b980525d384761c9471d15a4f365b936dd1d5",
+      "matches_pinned": true,
+      "pom_url": "https://repo.maven.apache.org/maven2/org/ejml/ejml-core/0.41/ejml-core-0.41.pom",
+      "pom_sha256": "4b12034e3fda74997785c1a26dea6611c5d7f4b66c4b16603227a4c60ebd7f1e",
+      "licenses": [
+        {
+          "name": "The Apache License, Version 2.0",
+          "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        }
+      ],
+      "dependencies": [],
+      "parent": null,
+      "source": {
+        "connection": "scm:git:git://github.com/lessthanoptimal/ejml.git",
+        "developerConnection": "scm:git:git://github.com/lessthanoptimal/ejml.git",
+        "url": "https://github.com/lessthanoptimal/ejml"
+      }
+    },
+    {
+      "gav": "org.ejml:ejml-cdense:0.41",
+      "component": "fiji:jars/ejml-cdense-0.41.jar",
+      "binary_url": "https://repo.maven.apache.org/maven2/org/ejml/ejml-cdense/0.41/ejml-cdense-0.41.jar",
+      "binary_bytes": 75427,
+      "binary_sha256": "ad06ef87a0e1b4b8152ebcbf8fa204a17a394b7cb0625c9b36f78181590ff907",
+      "matches_pinned": true,
+      "pom_url": "https://repo.maven.apache.org/maven2/org/ejml/ejml-cdense/0.41/ejml-cdense-0.41.pom",
+      "pom_sha256": "b31415e346d4025115fb3d53f90b781899328fb0088f86d44206cb49a13ed594",
+      "licenses": [
+        {
+          "name": "The Apache License, Version 2.0",
+          "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        }
+      ],
+      "dependencies": [
+        {
+          "groupId": "org.ejml",
+          "artifactId": "ejml-core",
+          "version": "0.41",
+          "scope": "compile"
+        }
+      ],
+      "parent": null,
+      "source": {
+        "connection": "scm:git:git://github.com/lessthanoptimal/ejml.git",
+        "developerConnection": "scm:git:git://github.com/lessthanoptimal/ejml.git",
+        "url": "https://github.com/lessthanoptimal/ejml"
+      }
+    },
+    {
+      "gav": "org.ejml:ejml-ddense:0.41",
+      "component": "fiji:jars/ejml-ddense-0.41.jar",
+      "binary_url": "https://repo.maven.apache.org/maven2/org/ejml/ejml-ddense/0.41/ejml-ddense-0.41.jar",
+      "binary_bytes": 408061,
+      "binary_sha256": "355347e9cac7e96d5d724d331a9b04bb14a8a02e1d111f1ac51c79f25d937123",
+      "matches_pinned": true,
+      "pom_url": "https://repo.maven.apache.org/maven2/org/ejml/ejml-ddense/0.41/ejml-ddense-0.41.pom",
+      "pom_sha256": "356153abd26e92798bde8dadd5739418181772c4b647b20938bc54e1c3f4c5f2",
+      "licenses": [
+        {
+          "name": "The Apache License, Version 2.0",
+          "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        }
+      ],
+      "dependencies": [
+        {
+          "groupId": "org.ejml",
+          "artifactId": "ejml-core",
+          "version": "0.41",
+          "scope": "compile"
+        }
+      ],
+      "parent": null,
+      "source": {
+        "connection": "scm:git:git://github.com/lessthanoptimal/ejml.git",
+        "developerConnection": "scm:git:git://github.com/lessthanoptimal/ejml.git",
+        "url": "https://github.com/lessthanoptimal/ejml"
+      }
+    },
+    {
+      "gav": "org.ejml:ejml-dsparse:0.41",
+      "component": "fiji:jars/ejml-dsparse-0.41.jar",
+      "binary_url": "https://repo.maven.apache.org/maven2/org/ejml/ejml-dsparse/0.41/ejml-dsparse-0.41.jar",
+      "binary_bytes": 94475,
+      "binary_sha256": "278dbe323a3218697d687243da1a2ff0c88800825ebba02388274542519641ed",
+      "matches_pinned": true,
+      "pom_url": "https://repo.maven.apache.org/maven2/org/ejml/ejml-dsparse/0.41/ejml-dsparse-0.41.pom",
+      "pom_sha256": "fc19efd64b9dc16238dc27967c550b0053968b6ce72997cb29d639ec92bf3c89",
+      "licenses": [
+        {
+          "name": "The Apache License, Version 2.0",
+          "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        }
+      ],
+      "dependencies": [
+        {
+          "groupId": "org.ejml",
+          "artifactId": "ejml-core",
+          "version": "0.41",
+          "scope": "compile"
+        },
+        {
+          "groupId": "org.ejml",
+          "artifactId": "ejml-ddense",
+          "version": "0.41",
+          "scope": "compile"
+        }
+      ],
+      "parent": null,
+      "source": {
+        "connection": "scm:git:git://github.com/lessthanoptimal/ejml.git",
+        "developerConnection": "scm:git:git://github.com/lessthanoptimal/ejml.git",
+        "url": "https://github.com/lessthanoptimal/ejml"
+      }
+    },
+    {
+      "gav": "org.ejml:ejml-fdense:0.41",
+      "component": "fiji:jars/ejml-fdense-0.41.jar",
+      "binary_url": "https://repo.maven.apache.org/maven2/org/ejml/ejml-fdense/0.41/ejml-fdense-0.41.jar",
+      "binary_bytes": 406624,
+      "binary_sha256": "0ec25b3bcd950c2ce1c7d5389f958e5507ebf9f4c7a209a2b4236a73740aa98e",
+      "matches_pinned": true,
+      "pom_url": "https://repo.maven.apache.org/maven2/org/ejml/ejml-fdense/0.41/ejml-fdense-0.41.pom",
+      "pom_sha256": "a44000a8ca8e7b6976b8b3d9cba060f3ca46cf264bae2f55f7b632c386f1dbf5",
+      "licenses": [
+        {
+          "name": "The Apache License, Version 2.0",
+          "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        }
+      ],
+      "dependencies": [
+        {
+          "groupId": "org.ejml",
+          "artifactId": "ejml-core",
+          "version": "0.41",
+          "scope": "compile"
+        }
+      ],
+      "parent": null,
+      "source": {
+        "connection": "scm:git:git://github.com/lessthanoptimal/ejml.git",
+        "developerConnection": "scm:git:git://github.com/lessthanoptimal/ejml.git",
+        "url": "https://github.com/lessthanoptimal/ejml"
+      }
+    },
+    {
+      "gav": "org.ejml:ejml-fsparse:0.41",
+      "component": "fiji:jars/ejml-fsparse-0.41.jar",
+      "binary_url": "https://repo.maven.apache.org/maven2/org/ejml/ejml-fsparse/0.41/ejml-fsparse-0.41.jar",
+      "binary_bytes": 93732,
+      "binary_sha256": "8ddb3bfa0de174c16e57b7b08b60d0f324a4f99e574033c4fc77508e2516ce41",
+      "matches_pinned": true,
+      "pom_url": "https://repo.maven.apache.org/maven2/org/ejml/ejml-fsparse/0.41/ejml-fsparse-0.41.pom",
+      "pom_sha256": "a5985a0a7e2405200af3c50a728b419304b2bd29e973eda503ae5cbeb6a292c8",
+      "licenses": [
+        {
+          "name": "The Apache License, Version 2.0",
+          "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        }
+      ],
+      "dependencies": [
+        {
+          "groupId": "org.ejml",
+          "artifactId": "ejml-core",
+          "version": "0.41",
+          "scope": "compile"
+        },
+        {
+          "groupId": "org.ejml",
+          "artifactId": "ejml-fdense",
+          "version": "0.41",
+          "scope": "compile"
+        }
+      ],
+      "parent": null,
+      "source": {
+        "connection": "scm:git:git://github.com/lessthanoptimal/ejml.git",
+        "developerConnection": "scm:git:git://github.com/lessthanoptimal/ejml.git",
+        "url": "https://github.com/lessthanoptimal/ejml"
+      }
+    },
+    {
+      "gav": "org.ejml:ejml-simple:0.41",
+      "component": "fiji:jars/ejml-simple-0.41.jar",
+      "binary_url": "https://repo.maven.apache.org/maven2/org/ejml/ejml-simple/0.41/ejml-simple-0.41.jar",
+      "binary_bytes": 183555,
+      "binary_sha256": "f8989a6df897b32789d2bc590c7ddc020c8e269180150322c1e812522fce96a7",
+      "matches_pinned": true,
+      "pom_url": "https://repo.maven.apache.org/maven2/org/ejml/ejml-simple/0.41/ejml-simple-0.41.pom",
+      "pom_sha256": "ba5e03bc2fcfb3efa367740303ac3a3a8e26911ee0a361f9334a1708a5e31ff1",
+      "licenses": [
+        {
+          "name": "The Apache License, Version 2.0",
+          "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        }
+      ],
+      "dependencies": [
+        {
+          "groupId": "org.ejml",
+          "artifactId": "ejml-core",
+          "version": "0.41",
+          "scope": "compile"
+        },
+        {
+          "groupId": "org.ejml",
+          "artifactId": "ejml-fdense",
+          "version": "0.41",
+          "scope": "compile"
+        },
+        {
+          "groupId": "org.ejml",
+          "artifactId": "ejml-ddense",
+          "version": "0.41",
+          "scope": "compile"
+        },
+        {
+          "groupId": "org.ejml",
+          "artifactId": "ejml-cdense",
+          "version": "0.41",
+          "scope": "compile"
+        },
+        {
+          "groupId": "org.ejml",
+          "artifactId": "ejml-zdense",
+          "version": "0.41",
+          "scope": "compile"
+        },
+        {
+          "groupId": "org.ejml",
+          "artifactId": "ejml-dsparse",
+          "version": "0.41",
+          "scope": "compile"
+        },
+        {
+          "groupId": "org.ejml",
+          "artifactId": "ejml-fsparse",
+          "version": "0.41",
+          "scope": "compile"
+        }
+      ],
+      "parent": null,
+      "source": {
+        "connection": "scm:git:git://github.com/lessthanoptimal/ejml.git",
+        "developerConnection": "scm:git:git://github.com/lessthanoptimal/ejml.git",
+        "url": "https://github.com/lessthanoptimal/ejml"
+      }
+    },
+    {
+      "gav": "org.ejml:ejml-zdense:0.41",
+      "component": "fiji:jars/ejml-zdense-0.41.jar",
+      "binary_url": "https://repo.maven.apache.org/maven2/org/ejml/ejml-zdense/0.41/ejml-zdense-0.41.jar",
+      "binary_bytes": 75780,
+      "binary_sha256": "5d44c52c24e2d6e702c2f5f775707f62a71055fdbc655da21389beca4427c3f9",
+      "matches_pinned": true,
+      "pom_url": "https://repo.maven.apache.org/maven2/org/ejml/ejml-zdense/0.41/ejml-zdense-0.41.pom",
+      "pom_sha256": "17d5349629bcb226b1b6e980b6564d56e369e0c551b2da51b9e4c293f905269b",
+      "licenses": [
+        {
+          "name": "The Apache License, Version 2.0",
+          "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        }
+      ],
+      "dependencies": [
+        {
+          "groupId": "org.ejml",
+          "artifactId": "ejml-core",
+          "version": "0.41",
+          "scope": "compile"
+        }
+      ],
+      "parent": null,
+      "source": {
+        "connection": "scm:git:git://github.com/lessthanoptimal/ejml.git",
+        "developerConnection": "scm:git:git://github.com/lessthanoptimal/ejml.git",
+        "url": "https://github.com/lessthanoptimal/ejml"
+      }
+    }
+  ],
+  "manifest_patch": null,
+  "incorporated_materials": [],
+  "runtime_executions": 0,
+  "resolved_dependency_graph": {
+    "scope": "Declared default compile/runtime closure mapped to exact available pinned artifacts; not JVM loader/runtime reconciliation or arbitrary profile activation proof. Test/provided/system/optional edges retained separately.",
+    "nodes": [
+      {
+        "component": "fiji:plugins/Colocalisation_Analysis-3.1.0.jar",
+        "sha256": "f686c152d99163ccb66e1964665c8c9a69c7fbfd37a687053c51d472b5cba88f",
+        "pom_source": "Fiji/plugins/Colocalisation_Analysis-3.1.0.jar!/META-INF/maven/sc.fiji/Colocalisation_Analysis/pom.xml",
+        "pom_sha256": "cb14676640c9904d32061a0d201e63e744c24bcca5efdd2ad193816d72cf304f",
+        "coordinates": "sc.fiji:Colocalisation_Analysis:3.1.0",
+        "declared_licenses": [
+          {
+            "name": "GNU General Public License v3+",
+            "url": "http://www.gnu.org/licenses/gpl.html",
+            "distribution": "repo"
+          }
+        ],
+        "parent_chain": [
+          "org.scijava:pom-scijava-base:19.0.0",
+          "org.scijava:pom-scijava:38.0.1"
+        ],
+        "conditional_profile_refs": [
+          0
+        ]
+      },
+      {
+        "component": "fiji:jars/fiji-lib-2.1.3.jar",
+        "sha256": "35eeb0174b29db972b826c82e93482a88ea13f0a931597ab1ddc7222b36707c3",
+        "pom_source": "Fiji/jars/fiji-lib-2.1.3.jar!/META-INF/maven/sc.fiji/fiji-lib/pom.xml",
+        "pom_sha256": "7c3826ffc18e94efd2d82237de5fcca7feef45df4e6f6f9409cc5e4c4bc6287a",
+        "coordinates": "sc.fiji:fiji-lib:2.1.3",
+        "declared_licenses": [
+          {
+            "name": "GNU General Public License v3+",
+            "url": "https://www.gnu.org/licenses/gpl-3.0.html",
+            "distribution": "repo"
+          }
+        ],
+        "parent_chain": [
+          "org.scijava:pom-scijava-base:13.0.0",
+          "org.scijava:pom-scijava:31.0.0"
+        ],
+        "conditional_profile_refs": [
+          0
+        ]
+      },
+      {
+        "component": "fiji:jars/ij-1.54p.jar",
+        "sha256": "2e1a09961dfb41cee66ddc821b2577a41a072566ce45a49bae69267099741e20",
+        "pom_source": "Fiji/jars/ij-1.54p.jar!/META-INF/maven/net.imagej/ij/pom.xml",
+        "pom_sha256": "19180eac48f2a5fd43c7fde076bac1e032e731a651778ab886a076ba1a811ec2",
+        "coordinates": "net.imagej:ij:1.54p",
+        "declared_licenses": [
+          {
+            "name": "Public domain",
+            "url": "https://imagej.net/ij/disclaimer.html",
+            "distribution": "repo"
+          }
+        ],
+        "parent_chain": [
+          "org.scijava:pom-scijava-base:13.0.0",
+          "org.scijava:pom-scijava:31.1.0"
+        ],
+        "conditional_profile_refs": [
+          0
+        ]
+      },
+      {
+        "component": "fiji:jars/imglib2-8.0.0.jar",
+        "sha256": "e48e487a307f4ca798d33ef6f413bafd2fb2357147e88d39c9ad4cda79e84f80",
+        "pom_source": "Fiji/jars/imglib2-8.0.0.jar!/META-INF/maven/net.imglib2/imglib2/pom.xml",
+        "pom_sha256": "5d8d42e97094c6d28051d46e5d590684544b70be7964deff817b9e7fa2053bc4",
+        "coordinates": "net.imglib2:imglib2:8.0.0",
+        "declared_licenses": [
+          {
+            "name": "Simplified BSD License",
+            "distribution": "repo"
+          }
+        ],
+        "parent_chain": [
+          "org.scijava:pom-scijava-base:21.0.0",
+          "org.scijava:pom-scijava:41.0.0"
+        ],
+        "conditional_profile_refs": [
+          0
+        ]
+      },
+      {
+        "component": "fiji:jars/imglib2-algorithm-0.18.3.jar",
+        "sha256": "ecfcd3fed8ba8783995378491c2bebb58288e86c87d8c91e3c1ed8956a0351fa",
+        "pom_source": "Fiji/jars/imglib2-algorithm-0.18.3.jar!/META-INF/maven/net.imglib2/imglib2-algorithm/pom.xml",
+        "pom_sha256": "0552b564a99a4164d4a0d6523092033a6a83b2341632aa99ec247f9b4da794cf",
+        "coordinates": "net.imglib2:imglib2-algorithm:0.18.3",
+        "declared_licenses": [
+          {
+            "name": "Simplified BSD License",
+            "distribution": "repo"
+          }
+        ],
+        "parent_chain": [
+          "org.scijava:pom-scijava-base:21.1.0",
+          "org.scijava:pom-scijava:43.0.0"
+        ],
+        "conditional_profile_refs": [
+          0
+        ]
+      },
+      {
+        "component": "fiji:jars/imglib2-ij-2.0.3.jar",
+        "sha256": "80ba903bbc58ce6a428fc96f0146276483266be465fe33d4550fc093b4db684f",
+        "pom_source": "Fiji/jars/imglib2-ij-2.0.3.jar!/META-INF/maven/net.imglib2/imglib2-ij/pom.xml",
+        "pom_sha256": "874ff9e761b8fe57ccfa5d5b9146cde643df1e6666bc2c20bb55ede9d69fc06a",
+        "coordinates": "net.imglib2:imglib2-ij:2.0.3",
+        "declared_licenses": [
+          {
+            "name": "Simplified BSD License",
+            "distribution": "repo"
+          }
+        ],
+        "parent_chain": [
+          "org.scijava:pom-scijava-base:19.0.0",
+          "org.scijava:pom-scijava:38.0.1"
+        ],
+        "conditional_profile_refs": [
+          0
+        ]
+      },
+      {
+        "component": "fiji:jars/itextpdf-5.5.13.4.jar",
+        "sha256": "6504ed81b34d1b4913d6cf16964b131cd8b10f54fc6c18390bb6dc5f64ea5079",
+        "pom_source": "Fiji/jars/itextpdf-5.5.13.4.jar!/META-INF/maven/com.itextpdf/itextpdf/pom.xml",
+        "pom_sha256": "ed3fcf26ad90adbb8805cc20607597b6d1ed478aee23788d4197fa0c2d1a8f62",
+        "coordinates": "com.itextpdf:itextpdf:5.5.13.4",
+        "declared_licenses": [
+          {
+            "name": "GNU Affero General Public License v3",
+            "url": "http://www.fsf.org/licensing/licenses/agpl-3.0.html"
+          }
+        ],
+        "parent_chain": [
+          "com.itextpdf:itext-parent:1.0.0"
+        ]
+      },
+      {
+        "component": "fiji:jars/ij1-patcher-2.0.0.jar",
+        "sha256": "b68810263f9521ddb34bac272816613ebb71607775c1fc337079a0476c2b581a",
+        "pom_source": "Fiji/jars/ij1-patcher-2.0.0.jar!/META-INF/maven/net.imagej/ij1-patcher/pom.xml",
+        "pom_sha256": "c76ee184b4588c247124beedecb78fe38dbad3345729b95faf4b76e8af88ea8a",
+        "coordinates": "net.imagej:ij1-patcher:2.0.0",
+        "declared_licenses": [
+          {
+            "name": "Simplified BSD License",
+            "distribution": "repo"
+          }
+        ],
+        "parent_chain": [
+          "org.scijava:pom-scijava-base:21.0.0",
+          "org.scijava:pom-scijava:41.0.0"
+        ],
+        "conditional_profile_refs": [
+          0
+        ]
+      },
+      {
+        "component": "fiji:jars/imglib2-roi-0.15.2.jar",
+        "sha256": "3cccfa047c049eeb7170ef621926b320b1f57208a586cb3f9867d30ac05ef81f",
+        "pom_source": "Fiji/jars/imglib2-roi-0.15.2.jar!/META-INF/maven/net.imglib2/imglib2-roi/pom.xml",
+        "pom_sha256": "dbe809be11d641ec7e4f3b0c359f4ab1b13fffdad2a36ae23661af7065c73368",
+        "coordinates": "net.imglib2:imglib2-roi:0.15.2",
+        "declared_licenses": [
+          {
+            "name": "Simplified BSD License",
+            "distribution": "repo"
+          }
+        ],
+        "parent_chain": [
+          "org.scijava:pom-scijava-base:19.0.0",
+          "org.scijava:pom-scijava:39.0.0"
+        ],
+        "conditional_profile_refs": [
+          0
+        ]
+      },
+      {
+        "component": "fiji:jars/imglib2-realtransform-4.0.5.jar",
+        "sha256": "c0395feade4e05f69f4dfca97b4671a48cff8993bd657680dca8cd71cf6fc1ad",
+        "pom_source": "Fiji/jars/imglib2-realtransform-4.0.5.jar!/META-INF/maven/net.imglib2/imglib2-realtransform/pom.xml",
+        "pom_sha256": "c9ded8e2e37ad5fecb536d07180596c67c3c22a28989f626fb15182d49f0eaa3",
+        "coordinates": "net.imglib2:imglib2-realtransform:4.0.5",
+        "declared_licenses": [
+          {
+            "name": "Simplified BSD License",
+            "distribution": "repo"
+          }
+        ],
+        "parent_chain": [
+          "org.scijava:pom-scijava-base:21.1.0",
+          "org.scijava:pom-scijava:43.0.0"
+        ],
+        "conditional_profile_refs": [
+          0
+        ]
+      },
+      {
+        "component": "fiji:jars/imglib2-cache-1.0.0-beta-20.jar",
+        "sha256": "81e27d849b77690bf7a0394c70c38f1aa0cea02ff8b89672d1cafc4dfa1c6487",
+        "pom_source": "Fiji/jars/imglib2-cache-1.0.0-beta-20.jar!/META-INF/maven/net.imglib2/imglib2-cache/pom.xml",
+        "pom_sha256": "887a3b0d402f3f5948239f1e56864a83fc97fa2b7c17ba50ef2964529528b95e",
+        "coordinates": "net.imglib2:imglib2-cache:1.0.0-beta-20",
+        "declared_licenses": [
+          {
+            "name": "Simplified BSD License",
+            "distribution": "repo"
+          }
+        ],
+        "parent_chain": [
+          "org.scijava:pom-scijava-base:21.1.0",
+          "org.scijava:pom-scijava:42.0.0"
+        ],
+        "conditional_profile_refs": [
+          0
+        ]
+      },
+      {
+        "component": "fiji:jars/jama-1.0.3.jar",
+        "sha256": "c7325ee29be1aac1287ddac690f73671f1cd911ca9eca7c619990e86310556fd",
+        "pom_source": "https://repo.maven.apache.org/maven2/gov/nist/math/jama/1.0.3/jama-1.0.3.pom",
+        "pom_sha256": "bcdc2ab42e300087fae0a622a2144e90cad76a9eb92f75d05843a1e6b835a6c3",
+        "coordinates": "gov.nist.math:jama:1.0.3",
+        "declared_licenses": [
+          {
+            "name": "Public Domain",
+            "url": "http://creativecommons.org/licenses/publicdomain/",
+            "distribution": "repo"
+          }
+        ],
+        "parent_chain": []
+      },
+      {
+        "component": "fiji:jars/trove4j-3.0.3.jar",
+        "sha256": "3c8616203d61a12a7e3487e8b34f3c198c2b5ba9e90da0c7ea32d99cd4958012",
+        "pom_source": "https://repo.maven.apache.org/maven2/net/sf/trove4j/trove4j/3.0.3/trove4j-3.0.3.pom",
+        "pom_sha256": "11327b94615d0bf16d4e17334902de783c2022f5e909d51fbce993a7a9d7e1d8",
+        "coordinates": "net.sf.trove4j:trove4j:3.0.3",
+        "declared_licenses": [
+          {
+            "name": "GNU Lesser General Public License 2.1",
+            "url": "http://www.gnu.org/licenses/lgpl-2.1.txt",
+            "distribution": "repo"
+          }
+        ],
+        "parent_chain": []
+      },
+      {
+        "component": "fiji:jars/ojalgo-45.1.1.jar",
+        "sha256": "c7f075bae9585283eb6408cfc9fe724edc8013d28772b803dbd7a5a3488665f8",
+        "pom_source": "Fiji/jars/ojalgo-45.1.1.jar!/META-INF/maven/org.ojalgo/ojalgo/pom.xml",
+        "pom_sha256": "0bc3fde30a5536c4bdc25d3e21241b89d26f9a10b025145247cc9ba461be5613",
+        "coordinates": "org.ojalgo:ojalgo:45.1.1",
+        "declared_licenses": [
+          {
+            "name": "MIT",
+            "url": "http://ojalgo.org/license.txt"
+          }
+        ],
+        "parent_chain": []
+      },
+      {
+        "component": "fiji:jars/imagej-common-2.1.2.jar",
+        "sha256": "43c1a612a71b18a60993c6b5270b99db79dccf4f1bb6d05d27bacd8b305ad0e2",
+        "pom_source": "Fiji/jars/imagej-common-2.1.2.jar!/META-INF/maven/net.imagej/imagej-common/pom.xml",
+        "pom_sha256": "0c3d8cc628f562955055f4c4e3dfa9b7aae113bf97067a0bc9ce62703be14506",
+        "coordinates": "net.imagej:imagej-common:2.1.2",
+        "declared_licenses": [
+          {
+            "name": "Simplified BSD License",
+            "distribution": "repo"
+          }
+        ],
+        "parent_chain": [
+          "org.scijava:pom-scijava-base:22.0.0",
+          "org.scijava:pom-scijava:45.1.0"
+        ],
+        "conditional_profile_refs": [
+          0
+        ]
+      },
+      {
+        "component": "fiji:jars/classgraph-4.8.181.jar",
+        "sha256": "62a6436d69710ef5fab6ec243781ce4c5b299047ed1841b5f92746ae852ce545",
+        "pom_source": "Fiji/jars/classgraph-4.8.181.jar!/META-INF/maven/io.github.classgraph/classgraph/pom.xml",
+        "pom_sha256": "923e1baf49ac640790df4587b8ccf401f606f0bfc7059661f718551b6270f148",
+        "coordinates": "io.github.classgraph:classgraph:4.8.181",
+        "declared_licenses": [
+          {
+            "name": "The MIT License (MIT)",
+            "url": "http://opensource.org/licenses/MIT",
+            "distribution": "repo"
+          }
+        ],
+        "parent_chain": []
+      },
+      {
+        "component": "fiji:jars/javassist-3.30.2-GA.jar",
+        "sha256": "eba37290994b5e4868f3af98ff113f6244a6b099385d9ad46881307d3cb01aaf",
+        "pom_source": "Fiji/jars/javassist-3.30.2-GA.jar!/META-INF/maven/org.javassist/javassist/pom.xml",
+        "pom_sha256": "4227851cb70e43f73aced8bffe692de3ae4412c4a62dcdff055e513ee3d801a3",
+        "coordinates": "org.javassist:javassist:3.30.2-GA",
+        "declared_licenses": [
+          {
+            "name": "MPL 1.1",
+            "url": "https://www.mozilla.org/en-US/MPL/1.1/"
+          },
+          {
+            "name": "LGPL 2.1",
+            "url": "https://www.gnu.org/licenses/lgpl-2.1.html"
+          },
+          {
+            "name": "Apache License 2.0",
+            "url": "https://www.apache.org/licenses/LICENSE-2.0"
+          }
+        ],
+        "parent_chain": []
+      },
+      {
+        "component": "fiji:jars/jitk-tps-3.0.4.jar",
+        "sha256": "929058aaf12151f563a25470f1bb218c736ee994ec676bb298746e10b91b3930",
+        "pom_source": "Fiji/jars/jitk-tps-3.0.4.jar!/META-INF/maven/jitk/jitk-tps/pom.xml",
+        "pom_sha256": "a04648e82b62c27d93eee3231ae05c699f8771cb2eef8002e9ebd50bc8dc6a0f",
+        "coordinates": "jitk:jitk-tps:3.0.4",
+        "declared_licenses": [
+          {
+            "name": "Apache Software License, Version 2.0",
+            "url": "https://www.apache.org/licenses/LICENSE-2.0.txt",
+            "distribution": "repo"
+          }
+        ],
+        "parent_chain": [
+          "org.scijava:pom-scijava-base:18.0.0",
+          "org.scijava:pom-scijava:37.0.0"
+        ],
+        "conditional_profile_refs": [
+          0
+        ]
+      },
+      {
+        "component": "fiji:jars/slf4j-api-2.0.17.jar",
+        "sha256": "7b751d952061954d5abfed7181c1f645d336091b679891591d63329c622eb832",
+        "pom_source": "Fiji/jars/slf4j-api-2.0.17.jar!/META-INF/maven/org.slf4j/slf4j-api/pom.xml",
+        "pom_sha256": "150c40287f7cecdc21b9380caac98e928c4f33c023db6b348df1c5ac977026bf",
+        "coordinates": "org.slf4j:slf4j-api:2.0.17",
+        "declared_licenses": [],
+        "parent_chain": [
+          "org.slf4j:slf4j-bom:2.0.17",
+          "org.slf4j:slf4j-parent:2.0.17"
+        ]
+      },
+      {
+        "component": "fiji:jars/caffeine-2.9.3.jar",
+        "sha256": "1e0a7bbef1dd791653143f3f05d0e489934bf5481e58a87c9e619cd46b68729b",
+        "pom_source": "https://repo.maven.apache.org/maven2/com/github/ben-manes/caffeine/caffeine/2.9.3/caffeine-2.9.3.pom",
+        "pom_sha256": "6fa4f1c10192806f8ef05b5d4be7bd9f5ce58b876f64364d4e90c3fc092323dc",
+        "coordinates": "com.github.ben-manes.caffeine:caffeine:2.9.3",
+        "declared_licenses": [
+          {
+            "name": "Apache License, Version 2.0",
+            "url": "https://www.apache.org/licenses/LICENSE-2.0.txt",
+            "distribution": "repo"
+          }
+        ],
+        "parent_chain": []
+      },
+      {
+        "component": "fiji:jars/scijava-optional-1.0.2.jar",
+        "sha256": "9f41b9bd4410b593177aa541a710f867118f0817038022c374b5774a779d19b7",
+        "pom_source": "Fiji/jars/scijava-optional-1.0.2.jar!/META-INF/maven/org.scijava/scijava-optional/pom.xml",
+        "pom_sha256": "c2d970e51020ab69902ab3d564d53ac9ac95cabe31f8aa0d226871c8a93d39b6",
+        "coordinates": "org.scijava:scijava-optional:1.0.2",
+        "declared_licenses": [
+          {
+            "name": "Simplified BSD License",
+            "distribution": "repo"
+          }
+        ],
+        "parent_chain": [
+          "org.scijava:pom-scijava-base:22.0.0",
+          "org.scijava:pom-scijava:44.0.0"
+        ],
+        "conditional_profile_refs": [
+          0
+        ]
+      },
+      {
+        "component": "fiji:jars/scijava-common-2.101.0.jar",
+        "sha256": "815e9842ab75733c6cce6869c07d6170f395eaad9095ecb4cd21f7e1e647ee60",
+        "pom_source": "Fiji/jars/scijava-common-2.101.0.jar!/META-INF/maven/org.scijava/scijava-common/pom.xml",
+        "pom_sha256": "556865e15d3c82b273e6c8129608e300d522eb130a730973cb9467be2591289b",
+        "coordinates": "org.scijava:scijava-common:2.101.0",
+        "declared_licenses": [
+          {
+            "name": "Simplified BSD License",
+            "distribution": "repo"
+          }
+        ],
+        "parent_chain": [
+          "org.scijava:pom-scijava-base:22.0.0",
+          "org.scijava:pom-scijava:45.1.0"
+        ],
+        "conditional_profile_refs": [
+          0
+        ]
+      },
+      {
+        "component": "fiji:jars/scijava-table-1.0.3.jar",
+        "sha256": "b18f303bf087f3bdd8cb0a7311105798249e826b15cbdb94c24a6d861d72fbe3",
+        "pom_source": "Fiji/jars/scijava-table-1.0.3.jar!/META-INF/maven/org.scijava/scijava-table/pom.xml",
+        "pom_sha256": "cf46a7efebb006156589c58075d4e16aee9ccb4776246f01cae89e55dbfacd3b",
+        "coordinates": "org.scijava:scijava-table:1.0.3",
+        "declared_licenses": [
+          {
+            "name": "Simplified BSD License",
+            "distribution": "repo"
+          }
+        ],
+        "parent_chain": [
+          "org.scijava:pom-scijava-base:22.0.0",
+          "org.scijava:pom-scijava:44.0.0"
+        ],
+        "conditional_profile_refs": [
+          0
+        ]
+      },
+      {
+        "component": "fiji:jars/udunits-4.3.18.jar",
+        "sha256": "e392cd6b1829b5726da183f4060b54931bd384ce02ada37517c8b740fa4c41df",
+        "pom_source": "Fiji/jars/udunits-4.3.18.jar!/META-INF/maven/edu.ucar/udunits/pom.xml",
+        "pom_sha256": "10571442b1832ef4392a05dcec24a7ce2a1faa9e400cbc0132a2d8cb42e04318",
+        "coordinates": "edu.ucar:udunits:4.3.18",
+        "declared_licenses": [],
+        "parent_chain": [
+          "edu.ucar:thredds-parent:4.3.18"
+        ]
+      },
+      {
+        "component": "fiji:jars/ejml-all-0.41.jar",
+        "sha256": "75172c94331a214677d12dd6fbd1ff8bf24120f383da8eea4926e7739b62e50a",
+        "pom_source": "https://repo.maven.apache.org/maven2/org/ejml/ejml-all/0.41/ejml-all-0.41.pom",
+        "pom_sha256": "87941c3b793f3e05618968864890e2d1948647f86b9c713f9ecbf33d3bfcbc71",
+        "coordinates": "org.ejml:ejml-all:0.41",
+        "declared_licenses": [
+          {
+            "name": "The Apache License, Version 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+          }
+        ],
+        "parent_chain": []
+      },
+      {
+        "component": "fiji:jars/checker-qual-3.50.0.jar",
+        "sha256": "e268d1d5cb6029f06cfdff8fb638383ff22556039da25386a00c287da6a52dbe",
+        "pom_source": "https://repo.maven.apache.org/maven2/org/checkerframework/checker-qual/3.50.0/checker-qual-3.50.0.pom",
+        "pom_sha256": "530020be025863cbaa9c56fefcadbd1d9300ff19c8d2214c4db427ece432c7a8",
+        "coordinates": "org.checkerframework:checker-qual:3.50.0",
+        "declared_licenses": [
+          {
+            "name": "The MIT License",
+            "url": "http://opensource.org/licenses/MIT",
+            "distribution": "repo"
+          }
+        ],
+        "parent_chain": []
+      },
+      {
+        "component": "fiji:jars/error_prone_annotations-2.41.0.jar",
+        "sha256": "a56e782b5b50811ac204073a355a21d915a2107fce13ec711331ad036f660fcc",
+        "pom_source": "Fiji/jars/error_prone_annotations-2.41.0.jar!/META-INF/maven/com.google.errorprone/error_prone_annotations/pom.xml",
+        "pom_sha256": "a151df1e2e0b48618d8b06a180748a29b3abb39b1b2396f6a1c879a727488c6e",
+        "coordinates": "com.google.errorprone:error_prone_annotations:2.41.0",
+        "declared_licenses": [
+          {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+          }
+        ],
+        "parent_chain": [
+          "com.google.errorprone:error_prone_parent:2.41.0"
+        ]
+      },
+      {
+        "component": "fiji:jars/parsington-3.1.0.jar",
+        "sha256": "7943c91a1e62918ea47d0a08f6b5989a8b388e019216441002236528f769c72a",
+        "pom_source": "Fiji/jars/parsington-3.1.0.jar!/META-INF/maven/org.scijava/parsington/pom.xml",
+        "pom_sha256": "f6820ba9b5ad2a9c834911ecb14e0bbf8b3bc3b01dc2ae6d25caffb4c36888cb",
+        "coordinates": "org.scijava:parsington:3.1.0",
+        "declared_licenses": [
+          {
+            "name": "Simplified BSD License",
+            "distribution": "repo"
+          }
+        ],
+        "parent_chain": [
+          "org.scijava:pom-scijava-base:17.1.0",
+          "org.scijava:pom-scijava:34.0.0"
+        ],
+        "conditional_profile_refs": [
+          0
+        ]
+      },
+      {
+        "component": "fiji:jars/ejml-core-0.41.jar",
+        "sha256": "8d36469e8414d79c875defc0af3b980525d384761c9471d15a4f365b936dd1d5",
+        "pom_source": "https://repo.maven.apache.org/maven2/org/ejml/ejml-core/0.41/ejml-core-0.41.pom",
+        "pom_sha256": "4b12034e3fda74997785c1a26dea6611c5d7f4b66c4b16603227a4c60ebd7f1e",
+        "coordinates": "org.ejml:ejml-core:0.41",
+        "declared_licenses": [
+          {
+            "name": "The Apache License, Version 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+          }
+        ],
+        "parent_chain": []
+      },
+      {
+        "component": "fiji:jars/ejml-fdense-0.41.jar",
+        "sha256": "0ec25b3bcd950c2ce1c7d5389f958e5507ebf9f4c7a209a2b4236a73740aa98e",
+        "pom_source": "https://repo.maven.apache.org/maven2/org/ejml/ejml-fdense/0.41/ejml-fdense-0.41.pom",
+        "pom_sha256": "a44000a8ca8e7b6976b8b3d9cba060f3ca46cf264bae2f55f7b632c386f1dbf5",
+        "coordinates": "org.ejml:ejml-fdense:0.41",
+        "declared_licenses": [
+          {
+            "name": "The Apache License, Version 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+          }
+        ],
+        "parent_chain": []
+      },
+      {
+        "component": "fiji:jars/ejml-ddense-0.41.jar",
+        "sha256": "355347e9cac7e96d5d724d331a9b04bb14a8a02e1d111f1ac51c79f25d937123",
+        "pom_source": "https://repo.maven.apache.org/maven2/org/ejml/ejml-ddense/0.41/ejml-ddense-0.41.pom",
+        "pom_sha256": "356153abd26e92798bde8dadd5739418181772c4b647b20938bc54e1c3f4c5f2",
+        "coordinates": "org.ejml:ejml-ddense:0.41",
+        "declared_licenses": [
+          {
+            "name": "The Apache License, Version 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+          }
+        ],
+        "parent_chain": []
+      },
+      {
+        "component": "fiji:jars/ejml-cdense-0.41.jar",
+        "sha256": "ad06ef87a0e1b4b8152ebcbf8fa204a17a394b7cb0625c9b36f78181590ff907",
+        "pom_source": "https://repo.maven.apache.org/maven2/org/ejml/ejml-cdense/0.41/ejml-cdense-0.41.pom",
+        "pom_sha256": "b31415e346d4025115fb3d53f90b781899328fb0088f86d44206cb49a13ed594",
+        "coordinates": "org.ejml:ejml-cdense:0.41",
+        "declared_licenses": [
+          {
+            "name": "The Apache License, Version 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+          }
+        ],
+        "parent_chain": []
+      },
+      {
+        "component": "fiji:jars/ejml-zdense-0.41.jar",
+        "sha256": "5d44c52c24e2d6e702c2f5f775707f62a71055fdbc655da21389beca4427c3f9",
+        "pom_source": "https://repo.maven.apache.org/maven2/org/ejml/ejml-zdense/0.41/ejml-zdense-0.41.pom",
+        "pom_sha256": "17d5349629bcb226b1b6e980b6564d56e369e0c551b2da51b9e4c293f905269b",
+        "coordinates": "org.ejml:ejml-zdense:0.41",
+        "declared_licenses": [
+          {
+            "name": "The Apache License, Version 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+          }
+        ],
+        "parent_chain": []
+      },
+      {
+        "component": "fiji:jars/ejml-dsparse-0.41.jar",
+        "sha256": "278dbe323a3218697d687243da1a2ff0c88800825ebba02388274542519641ed",
+        "pom_source": "https://repo.maven.apache.org/maven2/org/ejml/ejml-dsparse/0.41/ejml-dsparse-0.41.pom",
+        "pom_sha256": "fc19efd64b9dc16238dc27967c550b0053968b6ce72997cb29d639ec92bf3c89",
+        "coordinates": "org.ejml:ejml-dsparse:0.41",
+        "declared_licenses": [
+          {
+            "name": "The Apache License, Version 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+          }
+        ],
+        "parent_chain": []
+      },
+      {
+        "component": "fiji:jars/ejml-simple-0.41.jar",
+        "sha256": "f8989a6df897b32789d2bc590c7ddc020c8e269180150322c1e812522fce96a7",
+        "pom_source": "https://repo.maven.apache.org/maven2/org/ejml/ejml-simple/0.41/ejml-simple-0.41.pom",
+        "pom_sha256": "ba5e03bc2fcfb3efa367740303ac3a3a8e26911ee0a361f9334a1708a5e31ff1",
+        "coordinates": "org.ejml:ejml-simple:0.41",
+        "declared_licenses": [
+          {
+            "name": "The Apache License, Version 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+          }
+        ],
+        "parent_chain": []
+      },
+      {
+        "component": "fiji:jars/ejml-fsparse-0.41.jar",
+        "sha256": "8ddb3bfa0de174c16e57b7b08b60d0f324a4f99e574033c4fc77508e2516ce41",
+        "pom_source": "https://repo.maven.apache.org/maven2/org/ejml/ejml-fsparse/0.41/ejml-fsparse-0.41.pom",
+        "pom_sha256": "a5985a0a7e2405200af3c50a728b419304b2bd29e973eda503ae5cbeb6a292c8",
+        "coordinates": "org.ejml:ejml-fsparse:0.41",
+        "declared_licenses": [
+          {
+            "name": "The Apache License, Version 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+          }
+        ],
+        "parent_chain": []
+      }
+    ],
+    "edges": [
+      {
+        "from": "fiji:plugins/Colocalisation_Analysis-3.1.0.jar",
+        "ga": "sc.fiji:fiji-lib",
+        "managed_requested_version": "2.1.3",
+        "scope": "compile",
+        "to": "fiji:jars/fiji-lib-2.1.3.jar"
+      },
+      {
+        "from": "fiji:plugins/Colocalisation_Analysis-3.1.0.jar",
+        "ga": "net.imagej:ij",
+        "managed_requested_version": "1.54g",
+        "scope": "compile",
+        "to": "fiji:jars/ij-1.54p.jar"
+      },
+      {
+        "from": "fiji:plugins/Colocalisation_Analysis-3.1.0.jar",
+        "ga": "net.imglib2:imglib2",
+        "managed_requested_version": "6.3.0",
+        "scope": "compile",
+        "to": "fiji:jars/imglib2-8.0.0.jar"
+      },
+      {
+        "from": "fiji:plugins/Colocalisation_Analysis-3.1.0.jar",
+        "ga": "net.imglib2:imglib2-algorithm",
+        "managed_requested_version": "0.14.0",
+        "scope": "compile",
+        "to": "fiji:jars/imglib2-algorithm-0.18.3.jar"
+      },
+      {
+        "from": "fiji:plugins/Colocalisation_Analysis-3.1.0.jar",
+        "ga": "net.imglib2:imglib2-ij",
+        "managed_requested_version": "2.0.1",
+        "scope": "compile",
+        "to": "fiji:jars/imglib2-ij-2.0.3.jar"
+      },
+      {
+        "from": "fiji:plugins/Colocalisation_Analysis-3.1.0.jar",
+        "ga": "com.itextpdf:itextpdf",
+        "managed_requested_version": "5.5.13.3",
+        "scope": "compile",
+        "to": "fiji:jars/itextpdf-5.5.13.4.jar"
+      },
+      {
+        "from": "fiji:jars/fiji-lib-2.1.3.jar",
+        "ga": "net.imagej:ij",
+        "managed_requested_version": "1.53f",
+        "scope": "compile",
+        "to": "fiji:jars/ij-1.54p.jar"
+      },
+      {
+        "from": "fiji:jars/fiji-lib-2.1.3.jar",
+        "ga": "net.imagej:ij1-patcher",
+        "managed_requested_version": "1.2.1",
+        "scope": "compile",
+        "to": "fiji:jars/ij1-patcher-2.0.0.jar"
+      },
+      {
+        "from": "fiji:jars/imglib2-algorithm-0.18.3.jar",
+        "ga": "net.imglib2:imglib2",
+        "managed_requested_version": "7.1.5",
+        "scope": "compile",
+        "to": "fiji:jars/imglib2-8.0.0.jar"
+      },
+      {
+        "from": "fiji:jars/imglib2-algorithm-0.18.3.jar",
+        "ga": "net.imglib2:imglib2-roi",
+        "managed_requested_version": "0.15.2",
+        "scope": "compile",
+        "to": "fiji:jars/imglib2-roi-0.15.2.jar"
+      },
+      {
+        "from": "fiji:jars/imglib2-algorithm-0.18.3.jar",
+        "ga": "net.imglib2:imglib2-realtransform",
+        "managed_requested_version": "4.0.4",
+        "scope": "compile",
+        "to": "fiji:jars/imglib2-realtransform-4.0.5.jar"
+      },
+      {
+        "from": "fiji:jars/imglib2-algorithm-0.18.3.jar",
+        "ga": "net.imglib2:imglib2-cache",
+        "managed_requested_version": "1.0.0-beta-19",
+        "scope": "compile",
+        "to": "fiji:jars/imglib2-cache-1.0.0-beta-20.jar"
+      },
+      {
+        "from": "fiji:jars/imglib2-algorithm-0.18.3.jar",
+        "ga": "gov.nist.math:jama",
+        "managed_requested_version": "1.0.3",
+        "scope": "compile",
+        "to": "fiji:jars/jama-1.0.3.jar"
+      },
+      {
+        "from": "fiji:jars/imglib2-algorithm-0.18.3.jar",
+        "ga": "net.sf.trove4j:trove4j",
+        "managed_requested_version": "3.0.3",
+        "scope": "compile",
+        "to": "fiji:jars/trove4j-3.0.3.jar"
+      },
+      {
+        "from": "fiji:jars/imglib2-algorithm-0.18.3.jar",
+        "ga": "org.ojalgo:ojalgo",
+        "managed_requested_version": "45.1.1",
+        "scope": "compile",
+        "to": "fiji:jars/ojalgo-45.1.1.jar"
+      },
+      {
+        "from": "fiji:jars/imglib2-ij-2.0.3.jar",
+        "ga": "net.imglib2:imglib2",
+        "managed_requested_version": "6.3.0",
+        "scope": "compile",
+        "to": "fiji:jars/imglib2-8.0.0.jar"
+      },
+      {
+        "from": "fiji:jars/imglib2-ij-2.0.3.jar",
+        "ga": "net.imglib2:imglib2-cache",
+        "managed_requested_version": "1.0.0-beta-17",
+        "scope": "compile",
+        "to": "fiji:jars/imglib2-cache-1.0.0-beta-20.jar"
+      },
+      {
+        "from": "fiji:jars/imglib2-ij-2.0.3.jar",
+        "ga": "net.imagej:ij",
+        "managed_requested_version": "1.54g",
+        "scope": "compile",
+        "to": "fiji:jars/ij-1.54p.jar"
+      },
+      {
+        "from": "fiji:jars/imglib2-ij-2.0.3.jar",
+        "ga": "net.imagej:imagej-common",
+        "managed_requested_version": "2.1.0",
+        "scope": "compile",
+        "to": "fiji:jars/imagej-common-2.1.2.jar"
+      },
+      {
+        "from": "fiji:jars/ij1-patcher-2.0.0.jar",
+        "ga": "net.imagej:ij",
+        "managed_requested_version": "1.54p",
+        "scope": "compile",
+        "to": "fiji:jars/ij-1.54p.jar"
+      },
+      {
+        "from": "fiji:jars/ij1-patcher-2.0.0.jar",
+        "ga": "io.github.classgraph:classgraph",
+        "managed_requested_version": "4.8.162",
+        "scope": "compile",
+        "to": "fiji:jars/classgraph-4.8.181.jar"
+      },
+      {
+        "from": "fiji:jars/ij1-patcher-2.0.0.jar",
+        "ga": "org.javassist:javassist",
+        "managed_requested_version": "3.30.2-GA",
+        "scope": "compile",
+        "to": "fiji:jars/javassist-3.30.2-GA.jar"
+      },
+      {
+        "from": "fiji:jars/imglib2-roi-0.15.2.jar",
+        "ga": "net.imglib2:imglib2",
+        "managed_requested_version": "7.1.2",
+        "scope": "compile",
+        "to": "fiji:jars/imglib2-8.0.0.jar"
+      },
+      {
+        "from": "fiji:jars/imglib2-roi-0.15.2.jar",
+        "ga": "net.imglib2:imglib2-realtransform",
+        "managed_requested_version": "4.0.3",
+        "scope": "compile",
+        "to": "fiji:jars/imglib2-realtransform-4.0.5.jar"
+      },
+      {
+        "from": "fiji:jars/imglib2-roi-0.15.2.jar",
+        "ga": "net.sf.trove4j:trove4j",
+        "managed_requested_version": "3.0.3",
+        "scope": "compile",
+        "to": "fiji:jars/trove4j-3.0.3.jar"
+      },
+      {
+        "from": "fiji:jars/imglib2-realtransform-4.0.5.jar",
+        "ga": "net.imglib2:imglib2",
+        "managed_requested_version": "7.1.5",
+        "scope": "compile",
+        "to": "fiji:jars/imglib2-8.0.0.jar"
+      },
+      {
+        "from": "fiji:jars/imglib2-realtransform-4.0.5.jar",
+        "ga": "gov.nist.math:jama",
+        "managed_requested_version": "1.0.3",
+        "scope": "compile",
+        "to": "fiji:jars/jama-1.0.3.jar"
+      },
+      {
+        "from": "fiji:jars/imglib2-realtransform-4.0.5.jar",
+        "ga": "jitk:jitk-tps",
+        "managed_requested_version": "3.0.4",
+        "scope": "compile",
+        "to": "fiji:jars/jitk-tps-3.0.4.jar"
+      },
+      {
+        "from": "fiji:jars/imglib2-realtransform-4.0.5.jar",
+        "ga": "org.slf4j:slf4j-api",
+        "managed_requested_version": "2.0.17",
+        "scope": "compile",
+        "to": "fiji:jars/slf4j-api-2.0.17.jar"
+      },
+      {
+        "from": "fiji:jars/imglib2-cache-1.0.0-beta-20.jar",
+        "ga": "net.imglib2:imglib2",
+        "managed_requested_version": "7.1.5",
+        "scope": "compile",
+        "to": "fiji:jars/imglib2-8.0.0.jar"
+      },
+      {
+        "from": "fiji:jars/imglib2-cache-1.0.0-beta-20.jar",
+        "ga": "com.github.ben-manes.caffeine:caffeine",
+        "managed_requested_version": "2.9.3",
+        "scope": "compile",
+        "to": "fiji:jars/caffeine-2.9.3.jar"
+      },
+      {
+        "from": "fiji:jars/imglib2-cache-1.0.0-beta-20.jar",
+        "ga": "org.scijava:scijava-optional",
+        "managed_requested_version": "1.0.1",
+        "scope": "compile",
+        "to": "fiji:jars/scijava-optional-1.0.2.jar"
+      },
+      {
+        "from": "fiji:jars/imagej-common-2.1.2.jar",
+        "ga": "net.imglib2:imglib2",
+        "managed_requested_version": "8.0.0",
+        "scope": "compile",
+        "to": "fiji:jars/imglib2-8.0.0.jar"
+      },
+      {
+        "from": "fiji:jars/imagej-common-2.1.2.jar",
+        "ga": "net.imglib2:imglib2-roi",
+        "managed_requested_version": "0.15.2",
+        "scope": "compile",
+        "to": "fiji:jars/imglib2-roi-0.15.2.jar"
+      },
+      {
+        "from": "fiji:jars/imagej-common-2.1.2.jar",
+        "ga": "org.scijava:scijava-common",
+        "managed_requested_version": "2.100.1",
+        "scope": "compile",
+        "to": "fiji:jars/scijava-common-2.101.0.jar"
+      },
+      {
+        "from": "fiji:jars/imagej-common-2.1.2.jar",
+        "ga": "org.scijava:scijava-table",
+        "managed_requested_version": "1.0.3",
+        "scope": "compile",
+        "to": "fiji:jars/scijava-table-1.0.3.jar"
+      },
+      {
+        "from": "fiji:jars/imagej-common-2.1.2.jar",
+        "ga": "edu.ucar:udunits",
+        "managed_requested_version": "4.3.18",
+        "scope": "compile",
+        "to": "fiji:jars/udunits-4.3.18.jar"
+      },
+      {
+        "from": "fiji:jars/jitk-tps-3.0.4.jar",
+        "ga": "org.ejml:ejml-all",
+        "managed_requested_version": "0.41",
+        "scope": "compile",
+        "to": "fiji:jars/ejml-all-0.41.jar"
+      },
+      {
+        "from": "fiji:jars/jitk-tps-3.0.4.jar",
+        "ga": "org.slf4j:slf4j-api",
+        "managed_requested_version": "1.7.36",
+        "scope": "compile",
+        "to": "fiji:jars/slf4j-api-2.0.17.jar"
+      },
+      {
+        "from": "fiji:jars/caffeine-2.9.3.jar",
+        "ga": "org.checkerframework:checker-qual",
+        "managed_requested_version": "3.19.0",
+        "scope": "compile",
+        "to": "fiji:jars/checker-qual-3.50.0.jar"
+      },
+      {
+        "from": "fiji:jars/caffeine-2.9.3.jar",
+        "ga": "com.google.errorprone:error_prone_annotations",
+        "managed_requested_version": "2.10.0",
+        "scope": "compile",
+        "to": "fiji:jars/error_prone_annotations-2.41.0.jar"
+      },
+      {
+        "from": "fiji:jars/scijava-common-2.101.0.jar",
+        "ga": "org.scijava:parsington",
+        "managed_requested_version": "3.1.0",
+        "scope": "compile",
+        "to": "fiji:jars/parsington-3.1.0.jar"
+      },
+      {
+        "from": "fiji:jars/scijava-table-1.0.3.jar",
+        "ga": "org.scijava:scijava-common",
+        "managed_requested_version": "2.99.2",
+        "scope": "compile",
+        "to": "fiji:jars/scijava-common-2.101.0.jar"
+      },
+      {
+        "from": "fiji:jars/scijava-table-1.0.3.jar",
+        "ga": "org.scijava:scijava-optional",
+        "managed_requested_version": "1.0.1",
+        "scope": "compile",
+        "to": "fiji:jars/scijava-optional-1.0.2.jar"
+      },
+      {
+        "from": "fiji:jars/ejml-all-0.41.jar",
+        "ga": "org.ejml:ejml-core",
+        "managed_requested_version": "0.41",
+        "scope": "compile",
+        "to": "fiji:jars/ejml-core-0.41.jar"
+      },
+      {
+        "from": "fiji:jars/ejml-all-0.41.jar",
+        "ga": "org.ejml:ejml-fdense",
+        "managed_requested_version": "0.41",
+        "scope": "compile",
+        "to": "fiji:jars/ejml-fdense-0.41.jar"
+      },
+      {
+        "from": "fiji:jars/ejml-all-0.41.jar",
+        "ga": "org.ejml:ejml-ddense",
+        "managed_requested_version": "0.41",
+        "scope": "compile",
+        "to": "fiji:jars/ejml-ddense-0.41.jar"
+      },
+      {
+        "from": "fiji:jars/ejml-all-0.41.jar",
+        "ga": "org.ejml:ejml-cdense",
+        "managed_requested_version": "0.41",
+        "scope": "compile",
+        "to": "fiji:jars/ejml-cdense-0.41.jar"
+      },
+      {
+        "from": "fiji:jars/ejml-all-0.41.jar",
+        "ga": "org.ejml:ejml-zdense",
+        "managed_requested_version": "0.41",
+        "scope": "compile",
+        "to": "fiji:jars/ejml-zdense-0.41.jar"
+      },
+      {
+        "from": "fiji:jars/ejml-all-0.41.jar",
+        "ga": "org.ejml:ejml-dsparse",
+        "managed_requested_version": "0.41",
+        "scope": "compile",
+        "to": "fiji:jars/ejml-dsparse-0.41.jar"
+      },
+      {
+        "from": "fiji:jars/ejml-all-0.41.jar",
+        "ga": "org.ejml:ejml-simple",
+        "managed_requested_version": "0.41",
+        "scope": "compile",
+        "to": "fiji:jars/ejml-simple-0.41.jar"
+      },
+      {
+        "from": "fiji:jars/ejml-fdense-0.41.jar",
+        "ga": "org.ejml:ejml-core",
+        "managed_requested_version": "0.41",
+        "scope": "compile",
+        "to": "fiji:jars/ejml-core-0.41.jar"
+      },
+      {
+        "from": "fiji:jars/ejml-ddense-0.41.jar",
+        "ga": "org.ejml:ejml-core",
+        "managed_requested_version": "0.41",
+        "scope": "compile",
+        "to": "fiji:jars/ejml-core-0.41.jar"
+      },
+      {
+        "from": "fiji:jars/ejml-cdense-0.41.jar",
+        "ga": "org.ejml:ejml-core",
+        "managed_requested_version": "0.41",
+        "scope": "compile",
+        "to": "fiji:jars/ejml-core-0.41.jar"
+      },
+      {
+        "from": "fiji:jars/ejml-zdense-0.41.jar",
+        "ga": "org.ejml:ejml-core",
+        "managed_requested_version": "0.41",
+        "scope": "compile",
+        "to": "fiji:jars/ejml-core-0.41.jar"
+      },
+      {
+        "from": "fiji:jars/ejml-dsparse-0.41.jar",
+        "ga": "org.ejml:ejml-core",
+        "managed_requested_version": "0.41",
+        "scope": "compile",
+        "to": "fiji:jars/ejml-core-0.41.jar"
+      },
+      {
+        "from": "fiji:jars/ejml-dsparse-0.41.jar",
+        "ga": "org.ejml:ejml-ddense",
+        "managed_requested_version": "0.41",
+        "scope": "compile",
+        "to": "fiji:jars/ejml-ddense-0.41.jar"
+      },
+      {
+        "from": "fiji:jars/ejml-simple-0.41.jar",
+        "ga": "org.ejml:ejml-core",
+        "managed_requested_version": "0.41",
+        "scope": "compile",
+        "to": "fiji:jars/ejml-core-0.41.jar"
+      },
+      {
+        "from": "fiji:jars/ejml-simple-0.41.jar",
+        "ga": "org.ejml:ejml-fdense",
+        "managed_requested_version": "0.41",
+        "scope": "compile",
+        "to": "fiji:jars/ejml-fdense-0.41.jar"
+      },
+      {
+        "from": "fiji:jars/ejml-simple-0.41.jar",
+        "ga": "org.ejml:ejml-ddense",
+        "managed_requested_version": "0.41",
+        "scope": "compile",
+        "to": "fiji:jars/ejml-ddense-0.41.jar"
+      },
+      {
+        "from": "fiji:jars/ejml-simple-0.41.jar",
+        "ga": "org.ejml:ejml-cdense",
+        "managed_requested_version": "0.41",
+        "scope": "compile",
+        "to": "fiji:jars/ejml-cdense-0.41.jar"
+      },
+      {
+        "from": "fiji:jars/ejml-simple-0.41.jar",
+        "ga": "org.ejml:ejml-zdense",
+        "managed_requested_version": "0.41",
+        "scope": "compile",
+        "to": "fiji:jars/ejml-zdense-0.41.jar"
+      },
+      {
+        "from": "fiji:jars/ejml-simple-0.41.jar",
+        "ga": "org.ejml:ejml-dsparse",
+        "managed_requested_version": "0.41",
+        "scope": "compile",
+        "to": "fiji:jars/ejml-dsparse-0.41.jar"
+      },
+      {
+        "from": "fiji:jars/ejml-simple-0.41.jar",
+        "ga": "org.ejml:ejml-fsparse",
+        "managed_requested_version": "0.41",
+        "scope": "compile",
+        "to": "fiji:jars/ejml-fsparse-0.41.jar"
+      },
+      {
+        "from": "fiji:jars/ejml-fsparse-0.41.jar",
+        "ga": "org.ejml:ejml-core",
+        "managed_requested_version": "0.41",
+        "scope": "compile",
+        "to": "fiji:jars/ejml-core-0.41.jar"
+      },
+      {
+        "from": "fiji:jars/ejml-fsparse-0.41.jar",
+        "ga": "org.ejml:ejml-fdense",
+        "managed_requested_version": "0.41",
+        "scope": "compile",
+        "to": "fiji:jars/ejml-fdense-0.41.jar"
+      }
+    ],
+    "excluded_scope_edges": [
+      {
+        "from": "fiji:plugins/Colocalisation_Analysis-3.1.0.jar",
+        "dependency": {
+          "groupId": "junit",
+          "artifactId": "junit",
+          "scope": "test",
+          "version": "4.13.2"
+        }
+      },
+      {
+        "from": "fiji:jars/fiji-lib-2.1.3.jar",
+        "dependency": {
+          "groupId": "junit",
+          "artifactId": "junit",
+          "scope": "test",
+          "version": "4.13.2"
+        }
+      },
+      {
+        "from": "fiji:jars/ij-1.54p.jar",
+        "dependency": {
+          "groupId": "junit",
+          "artifactId": "junit",
+          "scope": "test",
+          "version": "4.13.2"
+        }
+      },
+      {
+        "from": "fiji:jars/imglib2-8.0.0.jar",
+        "dependency": {
+          "groupId": "org.openjdk.jmh",
+          "artifactId": "jmh-core",
+          "scope": "test",
+          "version": "1.37"
+        }
+      },
+      {
+        "from": "fiji:jars/imglib2-8.0.0.jar",
+        "dependency": {
+          "groupId": "org.openjdk.jmh",
+          "artifactId": "jmh-generator-annprocess",
+          "scope": "test",
+          "version": "1.37"
+        }
+      },
+      {
+        "from": "fiji:jars/imglib2-8.0.0.jar",
+        "dependency": {
+          "groupId": "junit",
+          "artifactId": "junit",
+          "scope": "test",
+          "version": "4.13.2"
+        }
+      },
+      {
+        "from": "fiji:jars/imglib2-8.0.0.jar",
+        "dependency": {
+          "groupId": "gov.nist.math",
+          "artifactId": "jama",
+          "scope": "test",
+          "version": "1.0.3"
+        }
+      },
+      {
+        "from": "fiji:jars/imglib2-algorithm-0.18.3.jar",
+        "dependency": {
+          "groupId": "sc.fiji",
+          "artifactId": "bigdataviewer-core",
+          "scope": "test",
+          "version": "10.6.4"
+        }
+      },
+      {
+        "from": "fiji:jars/imglib2-algorithm-0.18.3.jar",
+        "dependency": {
+          "groupId": "net.imglib2",
+          "artifactId": "imglib2-ij",
+          "scope": "test",
+          "version": "2.0.3"
+        }
+      },
+      {
+        "from": "fiji:jars/imglib2-algorithm-0.18.3.jar",
+        "dependency": {
+          "groupId": "junit",
+          "artifactId": "junit",
+          "scope": "test",
+          "version": "4.13.2"
+        }
+      },
+      {
+        "from": "fiji:jars/imglib2-algorithm-0.18.3.jar",
+        "dependency": {
+          "groupId": "org.openjdk.jmh",
+          "artifactId": "jmh-core",
+          "scope": "test",
+          "version": "1.37"
+        }
+      },
+      {
+        "from": "fiji:jars/imglib2-algorithm-0.18.3.jar",
+        "dependency": {
+          "groupId": "org.openjdk.jmh",
+          "artifactId": "jmh-generator-annprocess",
+          "scope": "test",
+          "version": "1.37"
+        }
+      },
+      {
+        "from": "fiji:jars/imglib2-ij-2.0.3.jar",
+        "dependency": {
+          "groupId": "junit",
+          "artifactId": "junit",
+          "scope": "test",
+          "version": "4.13.2"
+        }
+      },
+      {
+        "from": "fiji:jars/imglib2-ij-2.0.3.jar",
+        "dependency": {
+          "groupId": "net.imglib2",
+          "artifactId": "imglib2",
+          "classifier": "tests",
+          "scope": "test",
+          "version": "6.3.0"
+        }
+      },
+      {
+        "from": "fiji:jars/imglib2-ij-2.0.3.jar",
+        "dependency": {
+          "groupId": "org.openjdk.jmh",
+          "artifactId": "jmh-core",
+          "scope": "test",
+          "version": "1.37"
+        }
+      },
+      {
+        "from": "fiji:jars/imglib2-ij-2.0.3.jar",
+        "dependency": {
+          "groupId": "org.openjdk.jmh",
+          "artifactId": "jmh-generator-annprocess",
+          "scope": "test",
+          "version": "1.37"
+        }
+      },
+      {
+        "from": "fiji:jars/itextpdf-5.5.13.4.jar",
+        "dependency": {
+          "groupId": "org.bouncycastle",
+          "artifactId": "bcprov-jdk15to18",
+          "version": "1.78.1",
+          "optional": "true"
+        }
+      },
+      {
+        "from": "fiji:jars/itextpdf-5.5.13.4.jar",
+        "dependency": {
+          "groupId": "org.bouncycastle",
+          "artifactId": "bcpkix-jdk15to18",
+          "version": "1.78.1",
+          "optional": "true"
+        }
+      },
+      {
+        "from": "fiji:jars/itextpdf-5.5.13.4.jar",
+        "dependency": {
+          "groupId": "junit",
+          "artifactId": "junit",
+          "version": "4.13.2",
+          "scope": "test"
+        }
+      },
+      {
+        "from": "fiji:jars/itextpdf-5.5.13.4.jar",
+        "dependency": {
+          "groupId": "org.apache.santuario",
+          "artifactId": "xmlsec",
+          "version": "1.5.8",
+          "optional": "true"
+        }
+      },
+      {
+        "from": "fiji:jars/ij1-patcher-2.0.0.jar",
+        "dependency": {
+          "groupId": "org.scijava",
+          "artifactId": "scijava-common",
+          "scope": "test",
+          "version": "2.99.2"
+        }
+      },
+      {
+        "from": "fiji:jars/ij1-patcher-2.0.0.jar",
+        "dependency": {
+          "groupId": "junit",
+          "artifactId": "junit",
+          "scope": "test",
+          "version": "4.13.2"
+        }
+      },
+      {
+        "from": "fiji:jars/imglib2-roi-0.15.2.jar",
+        "dependency": {
+          "groupId": "junit",
+          "artifactId": "junit",
+          "scope": "test",
+          "version": "4.13.2"
+        }
+      },
+      {
+        "from": "fiji:jars/imglib2-roi-0.15.2.jar",
+        "dependency": {
+          "groupId": "org.scijava",
+          "artifactId": "junit-benchmarks",
+          "scope": "test",
+          "version": "0.7.4-scijava"
+        }
+      },
+      {
+        "from": "fiji:jars/imglib2-roi-0.15.2.jar",
+        "dependency": {
+          "groupId": "org.openjdk.jmh",
+          "artifactId": "jmh-core",
+          "scope": "test",
+          "version": "1.37"
+        }
+      },
+      {
+        "from": "fiji:jars/imglib2-roi-0.15.2.jar",
+        "dependency": {
+          "groupId": "org.openjdk.jmh",
+          "artifactId": "jmh-generator-annprocess",
+          "scope": "test",
+          "version": "1.37"
+        }
+      },
+      {
+        "from": "fiji:jars/imglib2-realtransform-4.0.5.jar",
+        "dependency": {
+          "groupId": "junit",
+          "artifactId": "junit",
+          "scope": "test",
+          "version": "4.13.2"
+        }
+      },
+      {
+        "from": "fiji:jars/imglib2-realtransform-4.0.5.jar",
+        "dependency": {
+          "groupId": "org.openjdk.jmh",
+          "artifactId": "jmh-core",
+          "scope": "test",
+          "version": "1.37"
+        }
+      },
+      {
+        "from": "fiji:jars/imglib2-realtransform-4.0.5.jar",
+        "dependency": {
+          "groupId": "org.openjdk.jmh",
+          "artifactId": "jmh-generator-annprocess",
+          "scope": "test",
+          "version": "1.37"
+        }
+      },
+      {
+        "from": "fiji:jars/imglib2-cache-1.0.0-beta-20.jar",
+        "dependency": {
+          "groupId": "junit",
+          "artifactId": "junit",
+          "scope": "test",
+          "version": "4.13.2"
+        }
+      },
+      {
+        "from": "fiji:jars/ojalgo-45.1.1.jar",
+        "dependency": {
+          "groupId": "org.junit.jupiter",
+          "artifactId": "junit-jupiter-api",
+          "version": "5.1.0",
+          "scope": "test"
+        }
+      },
+      {
+        "from": "fiji:jars/ojalgo-45.1.1.jar",
+        "dependency": {
+          "groupId": "org.junit.jupiter",
+          "artifactId": "junit-jupiter-engine",
+          "version": "5.1.0",
+          "scope": "test"
+        }
+      },
+      {
+        "from": "fiji:jars/ojalgo-45.1.1.jar",
+        "dependency": {
+          "groupId": "org.junit.jupiter",
+          "artifactId": "junit-jupiter-params",
+          "version": "5.1.0",
+          "scope": "test"
+        }
+      },
+      {
+        "from": "fiji:jars/ojalgo-45.1.1.jar",
+        "dependency": {
+          "groupId": "org.junit.platform",
+          "artifactId": "junit-platform-launcher",
+          "version": "1.1.0",
+          "scope": "test"
+        }
+      },
+      {
+        "from": "fiji:jars/imagej-common-2.1.2.jar",
+        "dependency": {
+          "groupId": "junit",
+          "artifactId": "junit",
+          "scope": "test",
+          "version": "4.13.2"
+        }
+      },
+      {
+        "from": "fiji:jars/classgraph-4.8.181.jar",
+        "dependency": {
+          "groupId": "io.github.toolfactory",
+          "artifactId": "narcissus",
+          "version": "1.0.7",
+          "optional": "true"
+        }
+      },
+      {
+        "from": "fiji:jars/classgraph-4.8.181.jar",
+        "dependency": {
+          "groupId": "io.github.toolfactory",
+          "artifactId": "jvm-driver",
+          "version": "9.7.1",
+          "optional": "true"
+        }
+      },
+      {
+        "from": "fiji:jars/classgraph-4.8.181.jar",
+        "dependency": {
+          "groupId": "org.junit.jupiter",
+          "artifactId": "junit-jupiter",
+          "version": "5.10.2",
+          "scope": "test"
+        }
+      },
+      {
+        "from": "fiji:jars/classgraph-4.8.181.jar",
+        "dependency": {
+          "groupId": "org.openjdk.jmh",
+          "artifactId": "jmh-core",
+          "version": "1.37",
+          "scope": "test"
+        }
+      },
+      {
+        "from": "fiji:jars/classgraph-4.8.181.jar",
+        "dependency": {
+          "groupId": "org.openjdk.jmh",
+          "artifactId": "jmh-generator-annprocess",
+          "version": "1.37",
+          "scope": "test"
+        }
+      },
+      {
+        "from": "fiji:jars/classgraph-4.8.181.jar",
+        "dependency": {
+          "groupId": "org.assertj",
+          "artifactId": "assertj-core",
+          "version": "3.25.3",
+          "scope": "test"
+        }
+      },
+      {
+        "from": "fiji:jars/classgraph-4.8.181.jar",
+        "dependency": {
+          "groupId": "javax.enterprise",
+          "artifactId": "cdi-api",
+          "version": "2.0",
+          "scope": "test"
+        }
+      },
+      {
+        "from": "fiji:jars/classgraph-4.8.181.jar",
+        "dependency": {
+          "groupId": "org.ops4j.pax.url",
+          "artifactId": "pax-url-aether",
+          "version": "2.6.14",
+          "scope": "test"
+        }
+      },
+      {
+        "from": "fiji:jars/classgraph-4.8.181.jar",
+        "dependency": {
+          "groupId": "org.slf4j",
+          "artifactId": "slf4j-api",
+          "version": "2.0.13",
+          "scope": "test"
+        }
+      },
+      {
+        "from": "fiji:jars/classgraph-4.8.181.jar",
+        "dependency": {
+          "groupId": "org.slf4j",
+          "artifactId": "slf4j-jdk14",
+          "version": "2.0.13",
+          "scope": "test"
+        }
+      },
+      {
+        "from": "fiji:jars/classgraph-4.8.181.jar",
+        "dependency": {
+          "groupId": "org.hibernate.javax.persistence",
+          "artifactId": "hibernate-jpa-2.1-api",
+          "version": "1.0.2.Final",
+          "scope": "test"
+        }
+      },
+      {
+        "from": "fiji:jars/classgraph-4.8.181.jar",
+        "dependency": {
+          "groupId": "com.google.jimfs",
+          "artifactId": "jimfs",
+          "version": "1.3.0",
+          "scope": "test"
+        }
+      },
+      {
+        "from": "fiji:jars/classgraph-4.8.181.jar",
+        "dependency": {
+          "groupId": "jakarta.validation",
+          "artifactId": "jakarta.validation-api",
+          "version": "3.0.2",
+          "scope": "test"
+        }
+      },
+      {
+        "from": "fiji:jars/classgraph-4.8.181.jar",
+        "dependency": {
+          "groupId": "org.eclipse.jdt",
+          "artifactId": "org.eclipse.jdt.annotation",
+          "version": "2.3.0",
+          "scope": "provided"
+        }
+      },
+      {
+        "from": "fiji:jars/javassist-3.30.2-GA.jar",
+        "dependency": {
+          "groupId": "junit",
+          "artifactId": "junit",
+          "version": "[4.13.1,)",
+          "scope": "test"
+        }
+      },
+      {
+        "from": "fiji:jars/javassist-3.30.2-GA.jar",
+        "dependency": {
+          "groupId": "org.hamcrest",
+          "artifactId": "hamcrest-all",
+          "version": "1.3",
+          "scope": "test"
+        }
+      },
+      {
+        "from": "fiji:jars/jitk-tps-3.0.4.jar",
+        "dependency": {
+          "groupId": "junit",
+          "artifactId": "junit",
+          "scope": "test",
+          "version": "4.13.2"
+        }
+      },
+      {
+        "from": "fiji:jars/slf4j-api-2.0.17.jar",
+        "dependency": {
+          "groupId": "junit",
+          "artifactId": "junit",
+          "version": "4.13.1",
+          "scope": "test"
+        }
+      },
+      {
+        "from": "fiji:jars/scijava-optional-1.0.2.jar",
+        "dependency": {
+          "groupId": "junit",
+          "artifactId": "junit",
+          "scope": "test",
+          "version": "4.13.2"
+        }
+      },
+      {
+        "from": "fiji:jars/scijava-common-2.101.0.jar",
+        "dependency": {
+          "groupId": "junit",
+          "artifactId": "junit",
+          "scope": "test",
+          "version": "4.13.2"
+        }
+      },
+      {
+        "from": "fiji:jars/scijava-common-2.101.0.jar",
+        "dependency": {
+          "groupId": "org.mockito",
+          "artifactId": "mockito-core",
+          "scope": "test",
+          "version": "5.20.0"
+        }
+      },
+      {
+        "from": "fiji:jars/scijava-table-1.0.3.jar",
+        "dependency": {
+          "groupId": "junit",
+          "artifactId": "junit",
+          "scope": "test",
+          "version": "4.13.2"
+        }
+      },
+      {
+        "from": "fiji:jars/udunits-4.3.18.jar",
+        "dependency": {
+          "groupId": "junit",
+          "artifactId": "junit",
+          "scope": "test",
+          "version": "4.11"
+        }
+      },
+      {
+        "from": "fiji:jars/error_prone_annotations-2.41.0.jar",
+        "dependency": {
+          "groupId": "junit",
+          "artifactId": "junit",
+          "version": "4.13.2",
+          "scope": "test"
+        }
+      },
+      {
+        "from": "fiji:jars/parsington-3.1.0.jar",
+        "dependency": {
+          "groupId": "org.junit.jupiter",
+          "artifactId": "junit-jupiter-api",
+          "scope": "test",
+          "version": "5.9.1"
+        }
+      },
+      {
+        "from": "fiji:jars/parsington-3.1.0.jar",
+        "dependency": {
+          "groupId": "org.junit.jupiter",
+          "artifactId": "junit-jupiter-engine",
+          "scope": "test",
+          "version": "5.9.1"
+        }
+      }
+    ],
+    "additional_alias_binary_proofs": [
+      {
+        "component": "fiji:jars/checker-qual-3.50.0.jar",
+        "gav": "org.checkerframework:checker-qual:3.50.0",
+        "binary_url": "https://repo.maven.apache.org/maven2/org/checkerframework/checker-qual/3.50.0/checker-qual-3.50.0.jar",
+        "sha256": "e268d1d5cb6029f06cfdff8fb638383ff22556039da25386a00c287da6a52dbe",
+        "exact_match": true
+      }
+    ],
+    "errors": [],
+    "network_pins": [
+      {
+        "url": "https://repo.maven.apache.org/maven2/gov/nist/math/jama/1.0.3/jama-1.0.3.pom",
+        "bytes": 3543,
+        "sha256": "bcdc2ab42e300087fae0a622a2144e90cad76a9eb92f75d05843a1e6b835a6c3"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/net/sf/trove4j/trove4j/3.0.3/trove4j-3.0.3.pom",
+        "bytes": 1442,
+        "sha256": "11327b94615d0bf16d4e17334902de783c2022f5e909d51fbce993a7a9d7e1d8"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/com/github/ben-manes/caffeine/caffeine/2.9.3/caffeine-2.9.3.pom",
+        "bytes": 2071,
+        "sha256": "6fa4f1c10192806f8ef05b5d4be7bd9f5ce58b876f64364d4e90c3fc092323dc"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/ejml/ejml-all/0.41/ejml-all-0.41.pom",
+        "bytes": 2724,
+        "sha256": "87941c3b793f3e05618968864890e2d1948647f86b9c713f9ecbf33d3bfcbc71"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/ejml/ejml-core/0.41/ejml-core-0.41.pom",
+        "bytes": 1494,
+        "sha256": "4b12034e3fda74997785c1a26dea6611c5d7f4b66c4b16603227a4c60ebd7f1e"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/ejml/ejml-cdense/0.41/ejml-cdense-0.41.pom",
+        "bytes": 1700,
+        "sha256": "b31415e346d4025115fb3d53f90b781899328fb0088f86d44206cb49a13ed594"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/ejml/ejml-ddense/0.41/ejml-ddense-0.41.pom",
+        "bytes": 1700,
+        "sha256": "356153abd26e92798bde8dadd5739418181772c4b647b20938bc54e1c3f4c5f2"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/ejml/ejml-dsparse/0.41/ejml-dsparse-0.41.pom",
+        "bytes": 1872,
+        "sha256": "fc19efd64b9dc16238dc27967c550b0053968b6ce72997cb29d639ec92bf3c89"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/ejml/ejml-fdense/0.41/ejml-fdense-0.41.pom",
+        "bytes": 1700,
+        "sha256": "a44000a8ca8e7b6976b8b3d9cba060f3ca46cf264bae2f55f7b632c386f1dbf5"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/ejml/ejml-fsparse/0.41/ejml-fsparse-0.41.pom",
+        "bytes": 1872,
+        "sha256": "a5985a0a7e2405200af3c50a728b419304b2bd29e973eda503ae5cbeb6a292c8"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/ejml/ejml-simple/0.41/ejml-simple-0.41.pom",
+        "bytes": 2728,
+        "sha256": "ba5e03bc2fcfb3efa367740303ac3a3a8e26911ee0a361f9334a1708a5e31ff1"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/ejml/ejml-zdense/0.41/ejml-zdense-0.41.pom",
+        "bytes": 1700,
+        "sha256": "17d5349629bcb226b1b6e980b6564d56e369e0c551b2da51b9e4c293f905269b"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava/38.0.1/pom-scijava-38.0.1.pom",
+        "bytes": 301241,
+        "sha256": "cb1fa36bde075fb7f771880a15eeee9803513736afc3c243ec88f8da6d13576f"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava-base/19.0.0/pom-scijava-base-19.0.0.pom",
+        "bytes": 76973,
+        "sha256": "58a235a3f3f9eff36bbe3f0a5176458d4cfea5755e82bf775379b31dee4b926d"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava/31.0.0/pom-scijava-31.0.0.pom",
+        "bytes": 170539,
+        "sha256": "ebc1974dfea25f5c30993f3145719a885581c4be49b3a4b022e09639d66f1337"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava-base/13.0.0/pom-scijava-base-13.0.0.pom",
+        "bytes": 67081,
+        "sha256": "d11d07bf57ac1946899cb48d7171bcc3f4f991ccaf5f681a3a011b692b25c7f1"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava/31.1.0/pom-scijava-31.1.0.pom",
+        "bytes": 173415,
+        "sha256": "07e2c9459eac2dd3ecfc726fc9285c743194796786d184805ed62d730ba44a03"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava/41.0.0/pom-scijava-41.0.0.pom",
+        "bytes": 306328,
+        "sha256": "82e1e57b6c3f2b3b191b57043a46240cd5cc3deff45892032a623982cdc7ec22"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava-base/21.0.0/pom-scijava-base-21.0.0.pom",
+        "bytes": 70640,
+        "sha256": "ebc22948c29a98fd1764ac6cb48622108c927a93d036c91342f98377fb2a1d63"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava/43.0.0/pom-scijava-43.0.0.pom",
+        "bytes": 304480,
+        "sha256": "1893528d0f1161d4a9efa52411923ed2d3c6d15ba7f561223a6ac6a75113b331"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava-base/21.1.0/pom-scijava-base-21.1.0.pom",
+        "bytes": 71147,
+        "sha256": "e2954d06577bcaecab510729ee65ce61a32cf31734476488dc2839ee79de224c"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/com/itextpdf/itext-parent/1.0.0/itext-parent-1.0.0.pom",
+        "bytes": 3608,
+        "sha256": "18d00cc266f768b0e1a8c6b1242bcb9fad8dfa086cfb9c62a9e2974b049187b0"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava/39.0.0/pom-scijava-39.0.0.pom",
+        "bytes": 301515,
+        "sha256": "e09260d8dbcbd191ae710439a2073c8a7910851c8fb839d989fa115223d1d2ba"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava/42.0.0/pom-scijava-42.0.0.pom",
+        "bytes": 306371,
+        "sha256": "77fc43d7cbb3e8cc7ac6a8a0a88853fb74f1e0f6d2db2483d9e8a6b2054a5711"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava/45.1.0/pom-scijava-45.1.0.pom",
+        "bytes": 315981,
+        "sha256": "b4357cbad14635b5c7b6570e8d7a76339d00b201dbc4478d70967797c26a18f8"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava-base/22.0.0/pom-scijava-base-22.0.0.pom",
+        "bytes": 72391,
+        "sha256": "e97df155128b52196e2755c4ec75a852d850a00b45ca72462af95ae7ca424dc5"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava/37.0.0/pom-scijava-37.0.0.pom",
+        "bytes": 292806,
+        "sha256": "e5e58ab09726d3d7509a354877b9c4c5fef3f9e17055a8dedada52bcedd8a446"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava-base/18.0.0/pom-scijava-base-18.0.0.pom",
+        "bytes": 76175,
+        "sha256": "c89890bfcbd839aaa4326ee17b2eb7c45ac04b88b0baec2c533773e65f1c4c1f"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/slf4j/slf4j-parent/2.0.17/slf4j-parent-2.0.17.pom",
+        "bytes": 13366,
+        "sha256": "95cd71e852dfdb29126e58b7b939d57ec2b2e6024391852e0b545dee082bbf3b"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/slf4j/slf4j-bom/2.0.17/slf4j-bom-2.0.17.pom",
+        "bytes": 7308,
+        "sha256": "f78d27b642b4b886eb839fc102b5cd9fe7f30f37599ffe68185be4e1609031e9"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/checkerframework/checker-qual/3.50.0/checker-qual-3.50.0.jar",
+        "bytes": 241487,
+        "sha256": "e268d1d5cb6029f06cfdff8fb638383ff22556039da25386a00c287da6a52dbe"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/checkerframework/checker-qual/3.50.0/checker-qual-3.50.0.pom",
+        "bytes": 2094,
+        "sha256": "530020be025863cbaa9c56fefcadbd1d9300ff19c8d2214c4db427ece432c7a8"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava/44.0.0/pom-scijava-44.0.0.pom",
+        "bytes": 312361,
+        "sha256": "6c2eaf144d732a263b0af2ed2dd298a8587d17414c54ffdf772a2893cfa72b06"
+      },
+      {
+        "url": "https://maven.scijava.org/content/groups/public/edu/ucar/thredds-parent/4.3.18/thredds-parent-4.3.18.pom",
+        "bytes": 32235,
+        "sha256": "1296185143a67e1cdadd306699e7a6b76c6aca76d191c74cdd2b577455403101"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_parent/2.41.0/error_prone_parent-2.41.0.pom",
+        "bytes": 15920,
+        "sha256": "c538388d760a5c1c98dcf06f6ed3cfe5f11a651827db5cbd2ed8288c795cad42"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava/34.0.0/pom-scijava-34.0.0.pom",
+        "bytes": 284771,
+        "sha256": "e55e6b54dc795cf7e5028c3a63357d7715f12d7d5cebdd88e1852d1900f385c4"
+      },
+      {
+        "url": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava-base/17.1.0/pom-scijava-base-17.1.0.pom",
+        "bytes": 75964,
+        "sha256": "3390d5b1ce633a685df4a4295590de11aecd3070b61bcefcfb00eeeba6183787"
+      }
+    ],
+    "parent_poms": [
+      {
+        "gav": "gov.nist.math:jama:1.0.3",
+        "source": "https://repo.maven.apache.org/maven2/gov/nist/math/jama/1.0.3/jama-1.0.3.pom",
+        "sha256": "bcdc2ab42e300087fae0a622a2144e90cad76a9eb92f75d05843a1e6b835a6c3",
+        "parent": {},
+        "licenses": [
+          {
+            "name": "Public Domain",
+            "url": "http://creativecommons.org/licenses/publicdomain/",
+            "distribution": "repo"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "net.sf.trove4j:trove4j:3.0.3",
+        "source": "https://repo.maven.apache.org/maven2/net/sf/trove4j/trove4j/3.0.3/trove4j-3.0.3.pom",
+        "sha256": "11327b94615d0bf16d4e17334902de783c2022f5e909d51fbce993a7a9d7e1d8",
+        "parent": {},
+        "licenses": [
+          {
+            "name": "GNU Lesser General Public License 2.1",
+            "url": "http://www.gnu.org/licenses/lgpl-2.1.txt",
+            "distribution": "repo"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "com.github.ben-manes.caffeine:caffeine:2.9.3",
+        "source": "https://repo.maven.apache.org/maven2/com/github/ben-manes/caffeine/caffeine/2.9.3/caffeine-2.9.3.pom",
+        "sha256": "6fa4f1c10192806f8ef05b5d4be7bd9f5ce58b876f64364d4e90c3fc092323dc",
+        "parent": {},
+        "licenses": [
+          {
+            "name": "Apache License, Version 2.0",
+            "url": "https://www.apache.org/licenses/LICENSE-2.0.txt",
+            "distribution": "repo"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "org.ejml:ejml-all:0.41",
+        "source": "https://repo.maven.apache.org/maven2/org/ejml/ejml-all/0.41/ejml-all-0.41.pom",
+        "sha256": "87941c3b793f3e05618968864890e2d1948647f86b9c713f9ecbf33d3bfcbc71",
+        "parent": {},
+        "licenses": [
+          {
+            "name": "The Apache License, Version 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "org.ejml:ejml-core:0.41",
+        "source": "https://repo.maven.apache.org/maven2/org/ejml/ejml-core/0.41/ejml-core-0.41.pom",
+        "sha256": "4b12034e3fda74997785c1a26dea6611c5d7f4b66c4b16603227a4c60ebd7f1e",
+        "parent": {},
+        "licenses": [
+          {
+            "name": "The Apache License, Version 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "org.ejml:ejml-cdense:0.41",
+        "source": "https://repo.maven.apache.org/maven2/org/ejml/ejml-cdense/0.41/ejml-cdense-0.41.pom",
+        "sha256": "b31415e346d4025115fb3d53f90b781899328fb0088f86d44206cb49a13ed594",
+        "parent": {},
+        "licenses": [
+          {
+            "name": "The Apache License, Version 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "org.ejml:ejml-ddense:0.41",
+        "source": "https://repo.maven.apache.org/maven2/org/ejml/ejml-ddense/0.41/ejml-ddense-0.41.pom",
+        "sha256": "356153abd26e92798bde8dadd5739418181772c4b647b20938bc54e1c3f4c5f2",
+        "parent": {},
+        "licenses": [
+          {
+            "name": "The Apache License, Version 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "org.ejml:ejml-dsparse:0.41",
+        "source": "https://repo.maven.apache.org/maven2/org/ejml/ejml-dsparse/0.41/ejml-dsparse-0.41.pom",
+        "sha256": "fc19efd64b9dc16238dc27967c550b0053968b6ce72997cb29d639ec92bf3c89",
+        "parent": {},
+        "licenses": [
+          {
+            "name": "The Apache License, Version 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "org.ejml:ejml-fdense:0.41",
+        "source": "https://repo.maven.apache.org/maven2/org/ejml/ejml-fdense/0.41/ejml-fdense-0.41.pom",
+        "sha256": "a44000a8ca8e7b6976b8b3d9cba060f3ca46cf264bae2f55f7b632c386f1dbf5",
+        "parent": {},
+        "licenses": [
+          {
+            "name": "The Apache License, Version 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "org.ejml:ejml-fsparse:0.41",
+        "source": "https://repo.maven.apache.org/maven2/org/ejml/ejml-fsparse/0.41/ejml-fsparse-0.41.pom",
+        "sha256": "a5985a0a7e2405200af3c50a728b419304b2bd29e973eda503ae5cbeb6a292c8",
+        "parent": {},
+        "licenses": [
+          {
+            "name": "The Apache License, Version 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "org.ejml:ejml-simple:0.41",
+        "source": "https://repo.maven.apache.org/maven2/org/ejml/ejml-simple/0.41/ejml-simple-0.41.pom",
+        "sha256": "ba5e03bc2fcfb3efa367740303ac3a3a8e26911ee0a361f9334a1708a5e31ff1",
+        "parent": {},
+        "licenses": [
+          {
+            "name": "The Apache License, Version 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "org.ejml:ejml-zdense:0.41",
+        "source": "https://repo.maven.apache.org/maven2/org/ejml/ejml-zdense/0.41/ejml-zdense-0.41.pom",
+        "sha256": "17d5349629bcb226b1b6e980b6564d56e369e0c551b2da51b9e4c293f905269b",
+        "parent": {},
+        "licenses": [
+          {
+            "name": "The Apache License, Version 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "org.scijava:pom-scijava:38.0.1",
+        "source": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava/38.0.1/pom-scijava-38.0.1.pom",
+        "sha256": "cb1fa36bde075fb7f771880a15eeee9803513736afc3c243ec88f8da6d13576f",
+        "parent": {
+          "groupId": "org.scijava",
+          "artifactId": "pom-scijava-base",
+          "version": "19.0.0",
+          "relativePath": null
+        },
+        "licenses": [
+          {
+            "name": "Unlicense",
+            "url": "https://unlicense.org/",
+            "distribution": "repo"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "org.scijava:pom-scijava-base:19.0.0",
+        "source": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava-base/19.0.0/pom-scijava-base-19.0.0.pom",
+        "sha256": "58a235a3f3f9eff36bbe3f0a5176458d4cfea5755e82bf775379b31dee4b926d",
+        "parent": {},
+        "licenses": [
+          {
+            "name": "Unlicense",
+            "url": "https://unlicense.org/",
+            "distribution": "repo"
+          }
+        ],
+        "conditional_runtime_profiles": [
+          {
+            "id": "kotlin",
+            "activation": "<ns0:activation xmlns:ns0=\"http://maven.apache.org/POM/4.0.0\">\n\t\t\t\t<ns0:file>\n\t\t\t\t\t\n\t\t\t\t\t<ns0:exists>${basedir}/src/main/kotlin</ns0:exists>\n\t\t\t\t</ns0:file>\n\t\t\t</ns0:activation>\n\t\t\t",
+            "dependencies": [
+              {
+                "groupId": "org.jetbrains.kotlin",
+                "artifactId": "kotlin-stdlib-jdk8",
+                "version": "${kotlin.version}"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "gav": "org.scijava:pom-scijava:31.0.0",
+        "source": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava/31.0.0/pom-scijava-31.0.0.pom",
+        "sha256": "ebc1974dfea25f5c30993f3145719a885581c4be49b3a4b022e09639d66f1337",
+        "parent": {
+          "groupId": "org.scijava",
+          "artifactId": "pom-scijava-base",
+          "version": "13.0.0",
+          "relativePath": null
+        },
+        "licenses": [
+          {
+            "name": "Unlicense",
+            "url": "https://unlicense.org/",
+            "distribution": "repo"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "org.scijava:pom-scijava-base:13.0.0",
+        "source": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava-base/13.0.0/pom-scijava-base-13.0.0.pom",
+        "sha256": "d11d07bf57ac1946899cb48d7171bcc3f4f991ccaf5f681a3a011b692b25c7f1",
+        "parent": {},
+        "licenses": [
+          {
+            "name": "Unlicense",
+            "url": "https://unlicense.org/",
+            "distribution": "repo"
+          }
+        ],
+        "conditional_runtime_profiles": [
+          {
+            "id": "kotlin",
+            "activation": "<ns0:activation xmlns:ns0=\"http://maven.apache.org/POM/4.0.0\">\n\t\t\t\t<ns0:file>\n\t\t\t\t\t\n\t\t\t\t\t<ns0:exists>${basedir}/src/main/kotlin</ns0:exists>\n\t\t\t\t</ns0:file>\n\t\t\t</ns0:activation>\n\t\t\t",
+            "dependencies": [
+              {
+                "groupId": "org.jetbrains.kotlin",
+                "artifactId": "kotlin-stdlib-jdk8",
+                "version": "${kotlin.version}"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "gav": "org.scijava:pom-scijava:31.1.0",
+        "source": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava/31.1.0/pom-scijava-31.1.0.pom",
+        "sha256": "07e2c9459eac2dd3ecfc726fc9285c743194796786d184805ed62d730ba44a03",
+        "parent": {
+          "groupId": "org.scijava",
+          "artifactId": "pom-scijava-base",
+          "version": "13.0.0",
+          "relativePath": null
+        },
+        "licenses": [
+          {
+            "name": "Unlicense",
+            "url": "https://unlicense.org/",
+            "distribution": "repo"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "org.scijava:pom-scijava:41.0.0",
+        "source": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava/41.0.0/pom-scijava-41.0.0.pom",
+        "sha256": "82e1e57b6c3f2b3b191b57043a46240cd5cc3deff45892032a623982cdc7ec22",
+        "parent": {
+          "groupId": "org.scijava",
+          "artifactId": "pom-scijava-base",
+          "version": "21.0.0",
+          "relativePath": null
+        },
+        "licenses": [
+          {
+            "name": "Unlicense",
+            "url": "https://unlicense.org/",
+            "distribution": "repo"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "org.scijava:pom-scijava-base:21.0.0",
+        "source": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava-base/21.0.0/pom-scijava-base-21.0.0.pom",
+        "sha256": "ebc22948c29a98fd1764ac6cb48622108c927a93d036c91342f98377fb2a1d63",
+        "parent": {},
+        "licenses": [
+          {
+            "name": "Unlicense",
+            "url": "https://unlicense.org/",
+            "distribution": "repo"
+          }
+        ],
+        "conditional_runtime_profiles": [
+          {
+            "id": "kotlin",
+            "activation": "<ns0:activation xmlns:ns0=\"http://maven.apache.org/POM/4.0.0\">\n\t\t\t\t<ns0:file>\n\t\t\t\t\t\n\t\t\t\t\t<ns0:exists>${basedir}/src/main/kotlin</ns0:exists>\n\t\t\t\t</ns0:file>\n\t\t\t</ns0:activation>\n\t\t\t",
+            "dependencies": [
+              {
+                "groupId": "org.jetbrains.kotlin",
+                "artifactId": "kotlin-stdlib-jdk8",
+                "version": "${kotlin.version}"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "gav": "org.scijava:pom-scijava:43.0.0",
+        "source": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava/43.0.0/pom-scijava-43.0.0.pom",
+        "sha256": "1893528d0f1161d4a9efa52411923ed2d3c6d15ba7f561223a6ac6a75113b331",
+        "parent": {
+          "groupId": "org.scijava",
+          "artifactId": "pom-scijava-base",
+          "version": "21.1.0",
+          "relativePath": null
+        },
+        "licenses": [
+          {
+            "name": "Unlicense",
+            "url": "https://unlicense.org/",
+            "distribution": "repo"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "org.scijava:pom-scijava-base:21.1.0",
+        "source": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava-base/21.1.0/pom-scijava-base-21.1.0.pom",
+        "sha256": "e2954d06577bcaecab510729ee65ce61a32cf31734476488dc2839ee79de224c",
+        "parent": {},
+        "licenses": [
+          {
+            "name": "Unlicense",
+            "url": "https://unlicense.org/",
+            "distribution": "repo"
+          }
+        ],
+        "conditional_runtime_profiles": [
+          {
+            "id": "kotlin",
+            "activation": "<ns0:activation xmlns:ns0=\"http://maven.apache.org/POM/4.0.0\">\n\t\t\t\t<ns0:file>\n\t\t\t\t\t\n\t\t\t\t\t<ns0:exists>${basedir}/src/main/kotlin</ns0:exists>\n\t\t\t\t</ns0:file>\n\t\t\t</ns0:activation>\n\t\t\t",
+            "dependencies": [
+              {
+                "groupId": "org.jetbrains.kotlin",
+                "artifactId": "kotlin-stdlib-jdk8",
+                "version": "${kotlin.version}"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "gav": "com.itextpdf:itext-parent:1.0.0",
+        "source": "https://repo.maven.apache.org/maven2/com/itextpdf/itext-parent/1.0.0/itext-parent-1.0.0.pom",
+        "sha256": "18d00cc266f768b0e1a8c6b1242bcb9fad8dfa086cfb9c62a9e2974b049187b0",
+        "parent": {},
+        "licenses": [
+          {
+            "name": "GNU Affero General Public License v3",
+            "url": "http://www.fsf.org/licensing/licenses/agpl-3.0.html"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "org.scijava:pom-scijava:39.0.0",
+        "source": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava/39.0.0/pom-scijava-39.0.0.pom",
+        "sha256": "e09260d8dbcbd191ae710439a2073c8a7910851c8fb839d989fa115223d1d2ba",
+        "parent": {
+          "groupId": "org.scijava",
+          "artifactId": "pom-scijava-base",
+          "version": "19.0.0",
+          "relativePath": null
+        },
+        "licenses": [
+          {
+            "name": "Unlicense",
+            "url": "https://unlicense.org/",
+            "distribution": "repo"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "org.scijava:pom-scijava:42.0.0",
+        "source": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava/42.0.0/pom-scijava-42.0.0.pom",
+        "sha256": "77fc43d7cbb3e8cc7ac6a8a0a88853fb74f1e0f6d2db2483d9e8a6b2054a5711",
+        "parent": {
+          "groupId": "org.scijava",
+          "artifactId": "pom-scijava-base",
+          "version": "21.1.0",
+          "relativePath": null
+        },
+        "licenses": [
+          {
+            "name": "Unlicense",
+            "url": "https://unlicense.org/",
+            "distribution": "repo"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "org.scijava:pom-scijava:45.1.0",
+        "source": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava/45.1.0/pom-scijava-45.1.0.pom",
+        "sha256": "b4357cbad14635b5c7b6570e8d7a76339d00b201dbc4478d70967797c26a18f8",
+        "parent": {
+          "groupId": "org.scijava",
+          "artifactId": "pom-scijava-base",
+          "version": "22.0.0",
+          "relativePath": null
+        },
+        "licenses": [
+          {
+            "name": "Unlicense",
+            "url": "https://unlicense.org/",
+            "distribution": "repo"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "org.scijava:pom-scijava-base:22.0.0",
+        "source": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava-base/22.0.0/pom-scijava-base-22.0.0.pom",
+        "sha256": "e97df155128b52196e2755c4ec75a852d850a00b45ca72462af95ae7ca424dc5",
+        "parent": {},
+        "licenses": [
+          {
+            "name": "Unlicense",
+            "url": "https://unlicense.org/",
+            "distribution": "repo"
+          }
+        ],
+        "conditional_runtime_profiles": [
+          {
+            "id": "kotlin",
+            "activation": "<ns0:activation xmlns:ns0=\"http://maven.apache.org/POM/4.0.0\">\n\t\t\t\t<ns0:file>\n\t\t\t\t\t\n\t\t\t\t\t<ns0:exists>${basedir}/src/main/kotlin</ns0:exists>\n\t\t\t\t</ns0:file>\n\t\t\t</ns0:activation>\n\t\t\t",
+            "dependencies": [
+              {
+                "groupId": "org.jetbrains.kotlin",
+                "artifactId": "kotlin-stdlib-jdk8",
+                "version": "${kotlin.version}"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "gav": "org.scijava:pom-scijava:37.0.0",
+        "source": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava/37.0.0/pom-scijava-37.0.0.pom",
+        "sha256": "e5e58ab09726d3d7509a354877b9c4c5fef3f9e17055a8dedada52bcedd8a446",
+        "parent": {
+          "groupId": "org.scijava",
+          "artifactId": "pom-scijava-base",
+          "version": "18.0.0",
+          "relativePath": null
+        },
+        "licenses": [
+          {
+            "name": "Unlicense",
+            "url": "https://unlicense.org/",
+            "distribution": "repo"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "org.scijava:pom-scijava-base:18.0.0",
+        "source": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava-base/18.0.0/pom-scijava-base-18.0.0.pom",
+        "sha256": "c89890bfcbd839aaa4326ee17b2eb7c45ac04b88b0baec2c533773e65f1c4c1f",
+        "parent": {},
+        "licenses": [
+          {
+            "name": "Unlicense",
+            "url": "https://unlicense.org/",
+            "distribution": "repo"
+          }
+        ],
+        "conditional_runtime_profiles": [
+          {
+            "id": "kotlin",
+            "activation": "<ns0:activation xmlns:ns0=\"http://maven.apache.org/POM/4.0.0\">\n\t\t\t\t<ns0:file>\n\t\t\t\t\t\n\t\t\t\t\t<ns0:exists>${basedir}/src/main/kotlin</ns0:exists>\n\t\t\t\t</ns0:file>\n\t\t\t</ns0:activation>\n\t\t\t",
+            "dependencies": [
+              {
+                "groupId": "org.jetbrains.kotlin",
+                "artifactId": "kotlin-stdlib-jdk8",
+                "version": "${kotlin.version}"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "gav": "org.slf4j:slf4j-parent:2.0.17",
+        "source": "https://repo.maven.apache.org/maven2/org/slf4j/slf4j-parent/2.0.17/slf4j-parent-2.0.17.pom",
+        "sha256": "95cd71e852dfdb29126e58b7b939d57ec2b2e6024391852e0b545dee082bbf3b",
+        "parent": {
+          "groupId": "org.slf4j",
+          "artifactId": "slf4j-bom",
+          "version": "2.0.17",
+          "relativePath": "../pom.xml"
+        },
+        "licenses": [],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "org.slf4j:slf4j-bom:2.0.17",
+        "source": "https://repo.maven.apache.org/maven2/org/slf4j/slf4j-bom/2.0.17/slf4j-bom-2.0.17.pom",
+        "sha256": "f78d27b642b4b886eb839fc102b5cd9fe7f30f37599ffe68185be4e1609031e9",
+        "parent": {},
+        "licenses": [
+          {
+            "name": "MIT",
+            "url": "https://opensource.org/license/mit",
+            "distribution": "repo"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "org.checkerframework:checker-qual:3.50.0",
+        "source": "https://repo.maven.apache.org/maven2/org/checkerframework/checker-qual/3.50.0/checker-qual-3.50.0.pom",
+        "sha256": "530020be025863cbaa9c56fefcadbd1d9300ff19c8d2214c4db427ece432c7a8",
+        "parent": {},
+        "licenses": [
+          {
+            "name": "The MIT License",
+            "url": "http://opensource.org/licenses/MIT",
+            "distribution": "repo"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "org.scijava:pom-scijava:44.0.0",
+        "source": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava/44.0.0/pom-scijava-44.0.0.pom",
+        "sha256": "6c2eaf144d732a263b0af2ed2dd298a8587d17414c54ffdf772a2893cfa72b06",
+        "parent": {
+          "groupId": "org.scijava",
+          "artifactId": "pom-scijava-base",
+          "version": "22.0.0",
+          "relativePath": null
+        },
+        "licenses": [
+          {
+            "name": "Unlicense",
+            "url": "https://unlicense.org/",
+            "distribution": "repo"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "edu.ucar:thredds-parent:4.3.18",
+        "source": "https://maven.scijava.org/content/groups/public/edu/ucar/thredds-parent/4.3.18/thredds-parent-4.3.18.pom",
+        "sha256": "1296185143a67e1cdadd306699e7a6b76c6aca76d191c74cdd2b577455403101",
+        "parent": {},
+        "licenses": [
+          {
+            "name": "(MIT-style) netCDF C library license",
+            "url": "http://www.unidata.ucar.edu/software/netcdf/copyright.html",
+            "distribution": "repo"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "com.google.errorprone:error_prone_parent:2.41.0",
+        "source": "https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_parent/2.41.0/error_prone_parent-2.41.0.pom",
+        "sha256": "c538388d760a5c1c98dcf06f6ed3cfe5f11a651827db5cbd2ed8288c795cad42",
+        "parent": {},
+        "licenses": [
+          {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "org.scijava:pom-scijava:34.0.0",
+        "source": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava/34.0.0/pom-scijava-34.0.0.pom",
+        "sha256": "e55e6b54dc795cf7e5028c3a63357d7715f12d7d5cebdd88e1852d1900f385c4",
+        "parent": {
+          "groupId": "org.scijava",
+          "artifactId": "pom-scijava-base",
+          "version": "17.1.0",
+          "relativePath": null
+        },
+        "licenses": [
+          {
+            "name": "Unlicense",
+            "url": "https://unlicense.org/",
+            "distribution": "repo"
+          }
+        ],
+        "conditional_runtime_profiles": []
+      },
+      {
+        "gav": "org.scijava:pom-scijava-base:17.1.0",
+        "source": "https://repo.maven.apache.org/maven2/org/scijava/pom-scijava-base/17.1.0/pom-scijava-base-17.1.0.pom",
+        "sha256": "3390d5b1ce633a685df4a4295590de11aecd3070b61bcefcfb00eeeba6183787",
+        "parent": {},
+        "licenses": [
+          {
+            "name": "Unlicense",
+            "url": "https://unlicense.org/",
+            "distribution": "repo"
+          }
+        ],
+        "conditional_runtime_profiles": [
+          {
+            "id": "kotlin",
+            "activation": "<ns0:activation xmlns:ns0=\"http://maven.apache.org/POM/4.0.0\">\n\t\t\t\t<ns0:file>\n\t\t\t\t\t\n\t\t\t\t\t<ns0:exists>${basedir}/src/main/kotlin</ns0:exists>\n\t\t\t\t</ns0:file>\n\t\t\t</ns0:activation>\n\t\t\t",
+            "dependencies": [
+              {
+                "groupId": "org.jetbrains.kotlin",
+                "artifactId": "kotlin-stdlib-jdk8",
+                "version": "${kotlin.version}"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "conditional_profiles": [
+      {
+        "id": "kotlin",
+        "activation": "<ns0:activation xmlns:ns0=\"http://maven.apache.org/POM/4.0.0\">\n\t\t\t\t<ns0:file>\n\t\t\t\t\t\n\t\t\t\t\t<ns0:exists>${basedir}/src/main/kotlin</ns0:exists>\n\t\t\t\t</ns0:file>\n\t\t\t</ns0:activation>\n\t\t\t",
+        "dependencies": [
+          {
+            "groupId": "org.jetbrains.kotlin",
+            "artifactId": "kotlin-stdlib-jdk8",
+            "version": "${kotlin.version}"
+          }
+        ]
+      }
+    ]
+  },
+  "material_inventory": {
+    "closure_jars": [
+      {
+        "component": "fiji:plugins/Colocalisation_Analysis-3.1.0.jar",
+        "bytes": 153303,
+        "sha256": "f686c152d99163ccb66e1964665c8c9a69c7fbfd37a687053c51d472b5cba88f",
+        "class_count": 75,
+        "nonclass_resource_count": 5,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/fiji-lib-2.1.3.jar",
+        "bytes": 91774,
+        "sha256": "35eeb0174b29db972b826c82e93482a88ea13f0a931597ab1ddc7222b36707c3",
+        "class_count": 63,
+        "nonclass_resource_count": 4,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/ij-1.54p.jar",
+        "bytes": 2586953,
+        "sha256": "2e1a09961dfb41cee66ddc821b2577a41a072566ce45a49bae69267099741e20",
+        "class_count": 469,
+        "nonclass_resource_count": 31,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/imglib2-8.0.0.jar",
+        "bytes": 1134914,
+        "sha256": "e48e487a307f4ca798d33ef6f413bafd2fb2357147e88d39c9ad4cda79e84f80",
+        "class_count": 849,
+        "nonclass_resource_count": 3,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/imglib2-algorithm-0.18.3.jar",
+        "bytes": 1223663,
+        "sha256": "ecfcd3fed8ba8783995378491c2bebb58288e86c87d8c91e3c1ed8956a0351fa",
+        "class_count": 949,
+        "nonclass_resource_count": 3,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/imglib2-ij-2.0.3.jar",
+        "bytes": 101529,
+        "sha256": "80ba903bbc58ce6a428fc96f0146276483266be465fe33d4550fc093b4db684f",
+        "class_count": 52,
+        "nonclass_resource_count": 3,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/itextpdf-5.5.13.4.jar",
+        "bytes": 2334415,
+        "sha256": "6504ed81b34d1b4913d6cf16964b131cd8b10f54fc6c18390bb6dc5f64ea5079",
+        "class_count": 933,
+        "nonclass_resource_count": 26,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": [
+          {
+            "member": "com/itextpdf/text/LICENSE.txt",
+            "bytes": 1918,
+            "sha256": "abf00687d6482774348535c0b24f758bc6ca8d2ff6660d349b06a8f28f1ab41f"
+          },
+          {
+            "member": "com/itextpdf/text/NOTICE.txt",
+            "bytes": 23283,
+            "sha256": "8645f60d9d59743d6b4b8763f5c2eeaf3503120fb2d39a1a6bfd4cf90504cb5c"
+          }
+        ]
+      },
+      {
+        "component": "fiji:jars/ij1-patcher-2.0.0.jar",
+        "bytes": 103622,
+        "sha256": "b68810263f9521ddb34bac272816613ebb71607775c1fc337079a0476c2b581a",
+        "class_count": 39,
+        "nonclass_resource_count": 3,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/imglib2-roi-0.15.2.jar",
+        "bytes": 303961,
+        "sha256": "3cccfa047c049eeb7170ef621926b320b1f57208a586cb3f9867d30ac05ef81f",
+        "class_count": 231,
+        "nonclass_resource_count": 3,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/imglib2-realtransform-4.0.5.jar",
+        "bytes": 131244,
+        "sha256": "c0395feade4e05f69f4dfca97b4671a48cff8993bd657680dca8cd71cf6fc1ad",
+        "class_count": 77,
+        "nonclass_resource_count": 3,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/imglib2-cache-1.0.0-beta-20.jar",
+        "bytes": 193981,
+        "sha256": "81e27d849b77690bf7a0394c70c38f1aa0cea02ff8b89672d1cafc4dfa1c6487",
+        "class_count": 161,
+        "nonclass_resource_count": 3,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/jama-1.0.3.jar",
+        "bytes": 37424,
+        "sha256": "c7325ee29be1aac1287ddac690f73671f1cd911ca9eca7c619990e86310556fd",
+        "class_count": 9,
+        "nonclass_resource_count": 2,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/trove4j-3.0.3.jar",
+        "bytes": 2523218,
+        "sha256": "3c8616203d61a12a7e3487e8b34f3c198c2b5ba9e90da0c7ea32d99cd4958012",
+        "class_count": 1595,
+        "nonclass_resource_count": 1,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/ojalgo-45.1.1.jar",
+        "bytes": 1763194,
+        "sha256": "c7f075bae9585283eb6408cfc9fe724edc8013d28772b803dbd7a5a3488665f8",
+        "class_count": 1347,
+        "nonclass_resource_count": 3,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/imagej-common-2.1.2.jar",
+        "bytes": 513347,
+        "sha256": "43c1a612a71b18a60993c6b5270b99db79dccf4f1bb6d05d27bacd8b305ad0e2",
+        "class_count": 378,
+        "nonclass_resource_count": 45,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/classgraph-4.8.181.jar",
+        "bytes": 572869,
+        "sha256": "62a6436d69710ef5fab6ec243781ce4c5b299047ed1841b5f92746ae852ce545",
+        "class_count": 267,
+        "nonclass_resource_count": 4,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": [
+          {
+            "member": "LICENSE-ClassGraph.txt",
+            "bytes": 1081,
+            "sha256": "4107216e853eee237beca89fe7d460271baf03eb70713f796bea46226b568944"
+          }
+        ]
+      },
+      {
+        "component": "fiji:jars/javassist-3.30.2-GA.jar",
+        "bytes": 794714,
+        "sha256": "eba37290994b5e4868f3af98ff113f6244a6b099385d9ad46881307d3cb01aaf",
+        "class_count": 426,
+        "nonclass_resource_count": 3,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/jitk-tps-3.0.4.jar",
+        "bytes": 19215,
+        "sha256": "929058aaf12151f563a25470f1bb218c736ee994ec676bb298746e10b91b3930",
+        "class_count": 4,
+        "nonclass_resource_count": 3,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/slf4j-api-2.0.17.jar",
+        "bytes": 69908,
+        "sha256": "7b751d952061954d5abfed7181c1f645d336091b679891591d63329c622eb832",
+        "class_count": 56,
+        "nonclass_resource_count": 4,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": [
+          {
+            "member": "META-INF/LICENSE.txt",
+            "bytes": 1178,
+            "sha256": "4e7f90c86ab51278228bce153122f1d8df30149d13ce9ef524c8444a84c32dcc"
+          }
+        ]
+      },
+      {
+        "component": "fiji:jars/caffeine-2.9.3.jar",
+        "bytes": 912143,
+        "sha256": "1e0a7bbef1dd791653143f3f05d0e489934bf5481e58a87c9e619cd46b68729b",
+        "class_count": 692,
+        "nonclass_resource_count": 3,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": [
+          {
+            "member": "META-INF/LICENSE",
+            "bytes": 11358,
+            "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+          }
+        ]
+      },
+      {
+        "component": "fiji:jars/scijava-optional-1.0.2.jar",
+        "bytes": 7528,
+        "sha256": "9f41b9bd4410b593177aa541a710f867118f0817038022c374b5774a779d19b7",
+        "class_count": 6,
+        "nonclass_resource_count": 3,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/scijava-common-2.101.0.jar",
+        "bytes": 952963,
+        "sha256": "815e9842ab75733c6cce6869c07d6170f395eaad9095ecb4cd21f7e1e647ee60",
+        "class_count": 750,
+        "nonclass_resource_count": 7,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/scijava-table-1.0.3.jar",
+        "bytes": 72543,
+        "sha256": "b18f303bf087f3bdd8cb0a7311105798249e826b15cbdb94c24a6d861d72fbe3",
+        "class_count": 61,
+        "nonclass_resource_count": 4,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/udunits-4.3.18.jar",
+        "bytes": 126892,
+        "sha256": "e392cd6b1829b5726da183f4060b54931bd384ce02ada37517c8b740fa4c41df",
+        "class_count": 81,
+        "nonclass_resource_count": 4,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/ejml-all-0.41.jar",
+        "bytes": 749,
+        "sha256": "75172c94331a214677d12dd6fbd1ff8bf24120f383da8eea4926e7739b62e50a",
+        "class_count": 1,
+        "nonclass_resource_count": 1,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/checker-qual-3.50.0.jar",
+        "bytes": 241487,
+        "sha256": "e268d1d5cb6029f06cfdff8fb638383ff22556039da25386a00c287da6a52dbe",
+        "class_count": 386,
+        "nonclass_resource_count": 2,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": [
+          {
+            "member": "META-INF/LICENSE.txt",
+            "bytes": 1126,
+            "sha256": "e90eaa08dea089df10f2bf7f9dba63a5f6237c01562c4741e2e86773e78582d5"
+          }
+        ]
+      },
+      {
+        "component": "fiji:jars/error_prone_annotations-2.41.0.jar",
+        "bytes": 20389,
+        "sha256": "a56e782b5b50811ac204073a355a21d915a2107fce13ec711331ad036f660fcc",
+        "class_count": 30,
+        "nonclass_resource_count": 3,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/parsington-3.1.0.jar",
+        "bytes": 47987,
+        "sha256": "7943c91a1e62918ea47d0a08f6b5989a8b388e019216441002236528f769c72a",
+        "class_count": 29,
+        "nonclass_resource_count": 3,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/ejml-core-0.41.jar",
+        "bytes": 259045,
+        "sha256": "8d36469e8414d79c875defc0af3b980525d384761c9471d15a4f365b936dd1d5",
+        "class_count": 198,
+        "nonclass_resource_count": 1,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/ejml-fdense-0.41.jar",
+        "bytes": 406624,
+        "sha256": "0ec25b3bcd950c2ce1c7d5389f958e5507ebf9f4c7a209a2b4236a73740aa98e",
+        "class_count": 151,
+        "nonclass_resource_count": 1,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/ejml-ddense-0.41.jar",
+        "bytes": 408061,
+        "sha256": "355347e9cac7e96d5d724d331a9b04bb14a8a02e1d111f1ac51c79f25d937123",
+        "class_count": 151,
+        "nonclass_resource_count": 1,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/ejml-cdense-0.41.jar",
+        "bytes": 75427,
+        "sha256": "ad06ef87a0e1b4b8152ebcbf8fa204a17a394b7cb0625c9b36f78181590ff907",
+        "class_count": 31,
+        "nonclass_resource_count": 1,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/ejml-zdense-0.41.jar",
+        "bytes": 75780,
+        "sha256": "5d44c52c24e2d6e702c2f5f775707f62a71055fdbc655da21389beca4427c3f9",
+        "class_count": 31,
+        "nonclass_resource_count": 1,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/ejml-dsparse-0.41.jar",
+        "bytes": 94475,
+        "sha256": "278dbe323a3218697d687243da1a2ff0c88800825ebba02388274542519641ed",
+        "class_count": 35,
+        "nonclass_resource_count": 1,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/ejml-simple-0.41.jar",
+        "bytes": 183555,
+        "sha256": "f8989a6df897b32789d2bc590c7ddc020c8e269180150322c1e812522fce96a7",
+        "class_count": 146,
+        "nonclass_resource_count": 1,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      },
+      {
+        "component": "fiji:jars/ejml-fsparse-0.41.jar",
+        "bytes": 93732,
+        "sha256": "8ddb3bfa0de174c16e57b7b08b60d0f324a4f99e574033c4fc77508e2516ce41",
+        "class_count": 34,
+        "nonclass_resource_count": 1,
+        "kotlin_reference_class_count": 0,
+        "embedded_license_members": []
+      }
+    ],
+    "root_resources": [
+      {
+        "member": "META-INF/MANIFEST.MF",
+        "bytes": 1282,
+        "sha256": "8946df61a40d9a68d4120977b89edd68e3df4d1bc8fc9cef4246173689617262"
+      },
+      {
+        "member": "plugins.config",
+        "bytes": 999,
+        "sha256": "fb64fcfe2713e74a4b5921b6385337487f3c88ddfac137bd75421b14dab6e0fe"
+      },
+      {
+        "member": "script_templates/Examples/Colocalisation.groovy",
+        "bytes": 1304,
+        "sha256": "bfb9a4ee95a283d0ad6cd3cebaae421d92f03efa24cd675ea357f11c50ca5019"
+      },
+      {
+        "member": "META-INF/maven/sc.fiji/Colocalisation_Analysis/pom.xml",
+        "bytes": 4833,
+        "sha256": "cb14676640c9904d32061a0d201e63e744c24bcca5efdd2ad193816d72cf304f"
+      },
+      {
+        "member": "META-INF/maven/sc.fiji/Colocalisation_Analysis/pom.properties",
+        "bytes": 65,
+        "sha256": "0db5b03cbdc74fd5acd0ab65da398ca3faa1c19034c9be4a69cd2da511928580"
+      }
+    ],
+    "itext_resources": [
+      {
+        "member": "META-INF/MANIFEST.MF",
+        "bytes": 8659,
+        "sha256": "b6776ff3978c33586930bdee94dd3a148d631f93c233d40ae85de2d81160a225"
+      },
+      {
+        "member": "com/itextpdf/text/pdf/fonts/mustRead.html",
+        "bytes": 933,
+        "sha256": "9cab6f4ff74315819cbc50c81f2a2d240edb3ef24626795aded4ab1f7c4dfe06"
+      },
+      {
+        "member": "com/itextpdf/text/pdf/fonts/Helvetica-Oblique.afm",
+        "bytes": 74392,
+        "sha256": "8556038366f9da4aad6d5782ce68afdb96d6d7261da64652f8b5e519110dd91b"
+      },
+      {
+        "member": "com/itextpdf/text/pdf/fonts/Helvetica-Bold.afm",
+        "bytes": 69269,
+        "sha256": "8b697881c8ee617a177f6f2e2bbc88570b9fd2b9f0e89ecfc0f5507878f988fc"
+      },
+      {
+        "member": "com/itextpdf/text/pdf/fonts/Courier-BoldOblique.afm",
+        "bytes": 15399,
+        "sha256": "ce0eb54286c3dd853d5017c25e6be684135a14a9e8fb18fcb18d1bd91a607cbc"
+      },
+      {
+        "member": "com/itextpdf/text/pdf/fonts/Helvetica.afm",
+        "bytes": 74292,
+        "sha256": "db772f2830fb6d000907791d8d26a12524d96943a9a739e520ee855c6b25c96f"
+      },
+      {
+        "member": "com/itextpdf/text/pdf/fonts/Helvetica-BoldOblique.afm",
+        "bytes": 69365,
+        "sha256": "526e4eeaa2b5d435cbb7cba3ff42285a473ce132aa1caddb39b48a52cc10aaf6"
+      },
+      {
+        "member": "com/itextpdf/text/pdf/fonts/Times-Bold.afm",
+        "bytes": 64251,
+        "sha256": "7104e6af62c53f029013fb0641a81e31c98589c8f27b5ea6289b25b092c74321"
+      },
+      {
+        "member": "com/itextpdf/text/LICENSE.txt",
+        "bytes": 1918,
+        "sha256": "abf00687d6482774348535c0b24f758bc6ca8d2ff6660d349b06a8f28f1ab41f"
+      },
+      {
+        "member": "com/itextpdf/text/AGPL.txt",
+        "bytes": 34520,
+        "sha256": "57c8ff33c9c0cfc3ef00e650a1cc910d7ee479a8bc509f6c9209a7c2a11399d6"
+      },
+      {
+        "member": "META-INF/maven/com.itextpdf/itextpdf/pom.properties",
+        "bytes": 132,
+        "sha256": "b0da6db0974e95efd4c56e8768a19c8bfb4edf9ba6820b18af2ebc4354d6f15c"
+      },
+      {
+        "member": "META-INF/maven/com.itextpdf/itextpdf/pom.xml",
+        "bytes": 11446,
+        "sha256": "ed3fcf26ad90adbb8805cc20607597b6d1ed478aee23788d4197fa0c2d1a8f62"
+      },
+      {
+        "member": "com/itextpdf/text/pdf/fonts/glyphlist.txt",
+        "bytes": 95794,
+        "sha256": "b309c7c528447925beb95aed87c7658f45b5cdf506b8e4e10a6abfe0b3e2be08"
+      },
+      {
+        "member": "com/itextpdf/text/pdf/fonts/Courier-Oblique.afm",
+        "bytes": 15441,
+        "sha256": "bd1426e63d6c4d4378862713d4f71567d3fd0d34d41e11337cf5ea514cd56611"
+      },
+      {
+        "member": "com/itextpdf/text/pdf/fonts/Courier-Bold.afm",
+        "bytes": 15333,
+        "sha256": "b080c323e07cd956770b4988fe61c5213099ecf567dfb00860cbf50ab1d7e2c1"
+      },
+      {
+        "member": "com/itextpdf/text/pdf/fonts/Symbol.afm",
+        "bytes": 9740,
+        "sha256": "3f951aa17af8cb4aa1e1288c6b9baa8a30d3e990ebdbe8cf9a3d5acabcb9f771"
+      },
+      {
+        "member": "com/itextpdf/text/pdf/fonts/ZapfDingbats.afm",
+        "bytes": 9527,
+        "sha256": "66e3a6b7d19c2a87e374eabc92a84f86d00884ec242f6ad3253999c408c56a40"
+      },
+      {
+        "member": "com/itextpdf/text/l10n/error/en.lng",
+        "bytes": 51786,
+        "sha256": "0d7a080870fdc4d174416851c8d82281a58b3244305009ed80af0f12324584aa"
+      },
+      {
+        "member": "com/itextpdf/text/NOTICE.txt",
+        "bytes": 23283,
+        "sha256": "8645f60d9d59743d6b4b8763f5c2eeaf3503120fb2d39a1a6bfd4cf90504cb5c"
+      },
+      {
+        "member": "com/itextpdf/text/pdf/fonts/Courier.afm",
+        "bytes": 15335,
+        "sha256": "31d72adad79910126b22a5579ec9e179eee86674ecebe3fcff6f76916193af0e"
+      },
+      {
+        "member": "com/itextpdf/text/pdf/fonts/cmap_info.txt",
+        "bytes": 5197,
+        "sha256": "41ff5c860cef50803f75001554db0c00a844a7291281c39f77b5908a5c08a826"
+      },
+      {
+        "member": "com/itextpdf/text/pdf/fonts/Times-Italic.afm",
+        "bytes": 66328,
+        "sha256": "6cae69b92329193fd85082f0c89ad7a318df8fb5c939d7efe5343f88ab09473c"
+      },
+      {
+        "member": "com/itextpdf/text/pdf/fonts/Times-BoldItalic.afm",
+        "bytes": 59642,
+        "sha256": "a7358e772726e91aa87015a001563926ad33dc5a7b2eea9680b34cc78aba385c"
+      },
+      {
+        "member": "com/itextpdf/text/pdf/fonts/Times-Roman.afm",
+        "bytes": 60460,
+        "sha256": "86136b527a5acee0c3283d56a6b68fc6a3d60982eb3bb0fb6cc54e83ecc8d77a"
+      },
+      {
+        "member": "com/itextpdf/text/l10n/error/pt.lng",
+        "bytes": 329,
+        "sha256": "6a62eb3dcffc9a363f20faa7bd70a1260c572e7fe63e31f35f106d113b282b47"
+      },
+      {
+        "member": "com/itextpdf/text/l10n/error/nl.lng",
+        "bytes": 55215,
+        "sha256": "9d732463710681f100acbb90a78b1452c2884924a8ae836e4a2c2df410123097"
+      }
+    ],
+    "duplicate_class_owners": {},
+    "interpretation": "Byte/resource inventory and static class-name/reference inspection, not JVM execution or per-resource eligibility approval. Source-test fixtures are not part of the shipped root JAR."
+  },
+  "related_descriptors": [
+    {
+      "id": "R-7a864ddce4217b0c98d20c66",
+      "descriptor": {
+        "invocation": "sc.fiji.coloc.Coloc_2",
+        "label": "Coloc 2",
+        "menu": "Analyze>Colocalization",
+        "raw": "Analyze>Colocalization, \"Coloc 2\", sc.fiji.coloc.Coloc_2"
+      }
+    },
+    {
+      "id": "R-c010986b86738ef79b0d5096",
+      "descriptor": {
+        "invocation": "sc.fiji.coloc.Colocalisation_Test",
+        "label": "Colocalization Test",
+        "menu": "Analyze>Colocalization",
+        "raw": "Analyze>Colocalization, \"Colocalization Test\", sc.fiji.coloc.Colocalisation_Test"
+      }
+    },
+    {
+      "id": "R-f33958f69ee7ab7bac674a29",
+      "descriptor": {
+        "invocation": "sc.fiji.coloc.Colocalisation_Threshold",
+        "label": "Colocalization Threshold",
+        "menu": "Analyze>Colocalization",
+        "raw": "Analyze>Colocalization, \"Colocalization Threshold\", sc.fiji.coloc.Colocalisation_Threshold"
+      }
+    }
+  ],
+  "decision": {
+    "commercial_decision": "pending",
+    "code": "Matching root source/version and GPL-3.0-or-later declaration identified; no incorporation approval.",
+    "dependencies": "Default declared compile/runtime graph mapped to pinned artifacts; complete transitive source/license/resource and obligation review remains pending.",
+    "models_assets": "Root and dependency resource inventories are byte-identified; resource grants are not fully cleared.",
+    "incorporation": "blocked_until_review",
+    "eligible_claim": false,
+    "excluded_claim": false,
+    "noncommercial_claim": false,
+    "complete_closure_claim": false,
+    "reason": "Resolved metadata edges and identified copyleft licenses do not alone clear every exact source, embedded resource or combined-work obligation. Pending is not a non-commercial exclusion."
+  },
+  "handoff_scope": "Source preparation and bounded evidence handoff only. No component/candidate/requirement acceptance, runtime reconciliation, incorporation, redistribution or manifest mutation. Preserve all existing verified observations, including the distinction between published build dependencies and the newer pinned Fiji bundle.",
+  "verified_summary": {
+    "root_jar_sha256": "f686c152d99163ccb66e1964665c8c9a69c7fbfd37a687053c51d472b5cba88f",
+    "root_jar_bytes": 153303,
+    "source_commit": "e4a92b537132b4e91fd47b428439973517309e93",
+    "source_archive_sha256": "544c8c3066b854f37887754982cba4b3869b6dc86ad15cb0fdcefa18ba5c6a5e",
+    "matching_source_and_embedded_pom_sha256": "cb14676640c9904d32061a0d201e63e744c24bcca5efdd2ad193816d72cf304f",
+    "root_source_license": "GPL-3.0-or-later, identified from exact release POM/plugin notice/source headers; this is not an NC license.",
+    "root_source_license_file_sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+    "root_source_license_header_java_files": 58,
+    "root_nonclass_resources": 5,
+    "default_graph_nodes": 36,
+    "default_graph_edges": 66,
+    "metadata_resolution_errors": 0,
+    "excluded_scope_edges_retained": 61,
+    "binary_alias_proofs": 13,
+    "remote_parent_or_alias_poms": 36,
+    "itext_nonclass_resources": 26,
+    "duplicate_class_owners_within_selected_closure": {},
+    "graph_limit": "All counts describe this static default metadata closure only. They do not identify the actual JVM-selected implementation across the entire Fiji distribution or clear all component licenses."
+  },
+  "resolved_boundaries": [
+    "Root Maven coordinates sc.fiji:Colocalisation_Analysis:3.1.0 and official release tag resolve to the manifest build commit; root POM, plugins.config and Groovy template match the official source bytes.",
+    "Root POM inherits org.scijava:pom-scijava:38.0.1 then pom-scijava-base:19.0.0. Its managed direct dependency versions match the historical JAR Class-Path, not the newer bundled runtime versions. Both are retained separately.",
+    "Six non-test direct dependencies are fiji-lib,ij,imglib2,imglib2-algorithm,imglib2-ij,itextpdf. JUnit is test-only. Optional/provided/test/system and conditional profile edges remain visible and are not silently treated as mandatory shipped code.",
+    "Metadata-free Jama/Trove/Caffeine/EJML aliases have exact Maven Central binary equality evidence; inherited group/property/managed-version resolution and actual pinned component targets are retained in the resolved graph.",
+    "The three plugins.config commands are distinct descriptors, not aliases proving one another complete. No descriptor runtime or workflow acceptance follows from this license handoff.",
+    "Root binary contains no embedded model weights, fonts or image/data fixtures. Its only application resource beyond metadata/registration is the1304-byte Groovy example; source-test image fixtures are not shipped in this root JAR."
+  ],
+  "unresolved_items": [
+    {
+      "id": "C01",
+      "kind": "transitive_source_and_resource_grant",
+      "state": "pending",
+      "component": "fiji:jars/itextpdf-5.5.13.4.jar",
+      "sha256": "6504ed81b34d1b4913d6cf16964b131cd8b10f54fc6c18390bb6dc5f64ea5079",
+      "detail": "The actual bundled dependency is5.5.13.4, while the root build requested5.5.13.3. Exact embedded AGPL/license/NOTICE and26 resources are inventoried, including14 Adobe AFM metrics,mustRead.html,glyphlist.txt and additional code notices. Match the5.5.13.4 source release and each separate grant/notice to these bytes before dependency eligibility or an incorporation route is approved. A GPL/AGPL label alone is insufficient."
+    },
+    {
+      "id": "C02",
+      "kind": "combined_work_and_distribution_obligations",
+      "state": "pending",
+      "detail": "Coloc code declares GPL-3.0-or-later; iText declares AGPLv3 with additional legal-notice/PDF-producer retention language. Review the intended copied/linked versus independently authored native implementation and exact redistribution/source/network obligations. No commercial iText agreement was supplied, and no closed-source exception is assumed. Copyleft is not a non-commercial exclusion."
+    },
+    {
+      "id": "C03",
+      "kind": "remaining_shared_dependency_evidence",
+      "state": "pending",
+      "detail": "The36-node default graph resolves component identities but does not complete every source/grant/resource decision. Preserve its exact reusable hashes and edges; next review concrete leaves rather than regenerate the graph. SLF4J has an embedded MIT notice despite no child-POM license declaration; UDUNITS4.3.18 lacks an embedded license notice and needs its exact upstream/inherited grant/source binding. POM declarations and inherited metadata are evidence, not blanket component acceptance."
+    },
+    {
+      "id": "C04",
+      "kind": "root_resource_scope",
+      "state": "pending_resource_interpretation",
+      "resource": "script_templates/Examples/Colocalisation.groovy",
+      "sha256": "bfb9a4ee95a283d0ad6cd3cebaae421d92f03efa24cd675ea357f11c50ca5019",
+      "detail": "The exact source template matches the shipped bytes and the project declares GPLv3+. The POM excludes script_templates from license-header processing; this is not evidence of an NC restriction or an alternative license. Record the applicable project/resource grant and notice handling explicitly before resource clearance; do not infer unlicensed merely from the missing header."
+    },
+    {
+      "id": "C05",
+      "kind": "scope_and_profile_limits",
+      "state": "not_runtime_reconciled",
+      "detail": "The default declared graph is not a JVM loader trace. Parent Kotlin profile activation depends on src/main/kotlin; the root release has no such source and selected class bytes have no kotlin/ reference, but no arbitrary profile/runtime activation is certified. Groovy execution of the optional example requires the provided scripting environment, whose incorporation is not approved by reviewing the template. No full Fiji/JDK/platform clearance is claimed."
+    }
+  ],
+  "observed_license_and_resource_evidence": [
+    {
+      "component": "Colocalisation_Analysis3.1.0",
+      "scope": "GPL-3.0-or-later declaration and exact root source binding",
+      "evidence": [
+        "source_evidence[source].licenses",
+        "source_evidence[source].java_license_marker_counts",
+        "material_inventory.root_resources"
+      ],
+      "remaining": "Corresponding-source/license/notice obligations must be consumed if code is incorporated; root license identification is not full dependency closure."
+    },
+    {
+      "component": "itextpdf5.5.13.4",
+      "member": "com/itextpdf/text/LICENSE.txt",
+      "sha256": "abf00687d6482774348535c0b24f758bc6ca8d2ff6660d349b06a8f28f1ab41f",
+      "identified_terms": "AGPLv3, additional notice requirements and retention of iText producer line for PDFs; commercial-license alternative is separate and not assumed.",
+      "primary_corroboration": "https://itextpdf.com/how-buy/AGPLv3-license"
+    },
+    {
+      "component": "itextpdf5.5.13.4",
+      "member": "com/itextpdf/text/NOTICE.txt",
+      "sha256": "8645f60d9d59743d6b4b8763f5c2eeaf3503120fb2d39a1a6bfd4cf90504cb5c",
+      "identified_terms": "Multiple third-party code notices include Unicode,Adobe XMP,Apache,TIFF and other attribution/permission statements. Exact source/grant compatibility review remains open; this report does not collapse them into AGPL alone."
+    },
+    {
+      "component": "itextpdf5.5.13.4",
+      "member": "com/itextpdf/text/pdf/fonts/mustRead.html",
+      "sha256": "9cab6f4ff74315819cbc50c81f2a2d240edb3ef24626795aded4ab1f7c4dfe06",
+      "identified_terms": "Adobe AFM metrics permission permits use/copy/distribution for any purpose with copyright/readme retention and modification-notice conditions. These are metrics, not a general grant for arbitrary fonts.",
+      "remaining": "Preserve exact14 AFM/readme association and attribution if incorporated; do not extend this permission to glyphlist or other assets without evidence."
+    },
+    {
+      "component": "slf4j-api2.0.17",
+      "member": "META-INF/LICENSE.txt",
+      "sha256": "4e7f90c86ab51278228bce153122f1d8df30149d13ce9ef524c8444a84c32dcc",
+      "identified_terms": "Embedded MIT permission/notice identified; broader version/source and material review remains separately recorded."
+    }
+  ],
+  "next_dependency": {
+    "component": "fiji:jars/itextpdf-5.5.13.4.jar",
+    "component_sha256": "6504ed81b34d1b4913d6cf16964b131cd8b10f54fc6c18390bb6dc5f64ea5079",
+    "smallest_resource_edge": "Coloc PDF dependency -> iText5.5.13.4 -> com/itextpdf/text/pdf/fonts/glyphlist.txt",
+    "resource_bytes": 95794,
+    "resource_sha256": "b309c7c528447925beb95aed87c7658f45b5cdf506b8e4e10a6abfe0b3e2be08",
+    "missing_fact": "Exact version-specific Adobe Glyph List source/grant and notice association for these shipped bytes has not been verified; AFM mustRead permission does not automatically cover this distinct resource. This is a missing proof, not a finding that the data is unlicensed or NC.",
+    "concrete_action": "Match the shipped resource to the exact iText5.5.13.4 source artifact, trace its upstream Adobe Glyph List grant and required notices, then complete the remaining iText NOTICE/resource ledger under the already pinned JAR identity. Reuse this report graph and hashes; no broad Fiji rescan or code incorporation.",
+    "source_artifact_lookup": "https://repo.maven.apache.org/maven2/com/itextpdf/itextpdf/5.5.13.4/itextpdf-5.5.13.4-sources.jar",
+    "lookup_status": "Next-action URL derived from verified coordinates; source artifact was not fetched or verified in this turn."
+  },
+  "executable_closure_queue": [
+    {
+      "order": 1,
+      "work": "Resolve the exact iText glyphlist resource edge above, then the5.5.13.4 source/NOTICE/AFM association.",
+      "reuse": [
+        "next_dependency",
+        "material_inventory.itext_resources",
+        "resolved_dependency_graph"
+      ],
+      "stop": "Resource/source grant mapping is evidenced or the first unavailable fact is identified; no blanket eligible status."
+    },
+    {
+      "order": 2,
+      "work": "Resolve UDUNITS4.3.18 exact source/inherited grant and retain its notice; bind the existing SLF4J MIT evidence to its version/source.",
+      "reuse": [
+        "resolved_dependency_graph.nodes",
+        "resolved_dependency_graph.parent_poms",
+        "material_inventory.closure_jars"
+      ],
+      "stop": "Concrete source/notice decisions for these leaves; preserve version/hash identity."
+    },
+    {
+      "order": 3,
+      "work": "Finish the remaining exact shared-dependency source/resource ledgers from the resolved graph; assign one owner per immutable dependency identity and reuse the result across every consumer.",
+      "reuse": [
+        "alias_binary_proofs",
+        "resolved_dependency_graph.additional_alias_binary_proofs",
+        "resolved_dependency_graph.network_pins"
+      ],
+      "stop": "No pending transitive/material decision for the selected incorporation scope; independent runtime compatibility remains separate."
+    },
+    {
+      "order": 4,
+      "work": "Settle root Groovy-resource grant interpretation and selected GPL/AGPL/native-equivalent incorporation obligations, then review the whole bounded closure.",
+      "reuse": [
+        "source_evidence",
+        "related_descriptors",
+        "observed_license_and_resource_evidence"
+      ],
+      "stop": "Only a complete supported closure may produce the exact additive fiji-components commercial_review/resources patch. Otherwise keep decision pending and incorporation blocked."
+    }
+  ],
+  "evidence_reuse_policy": "Key reusable dependency decisions by exact component/source/archive/resource hashes and selected licensed scope. No already approved exact Fiji dependency decision was supplied by the current all-pending manifest. Native nlohmann/zlib/desktop reviews are different identities/scopes and do not clear these Java artifacts. Pinned standalone ImageJ1.54r source evidence does not automatically clear bundled ImageJ1.54p.",
+  "finalization": {
+    "kind": "write_hold_source_preparation_only",
+    "recorded_utc": "2026-10-16T05:52:31.873371+00:00",
+    "new_network_research_during_finalization": false,
+    "builds": 0,
+    "runtime_executions": 0,
+    "manifest_writes": 0,
+    "new_product_assets": 0,
+    "validation": "Strict finite JSON, unique keys, preserved existing source/graph/material facts, graph ID/link consistency and pending/no-patch guards only; no product or eligibility acceptance gate."
+  }
+}

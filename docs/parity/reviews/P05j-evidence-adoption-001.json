@@ -1,0 +1,677 @@
+{
+  "schema": "imagejxx.parity-evidence-adoption-patch",
+  "schema_version": 1,
+  "id": "P05j.evidence-adoption.001",
+  "status": "reviewable_exact_additive_patch_not_applied",
+  "root_integration_required": true,
+  "formal_adoption": false,
+  "scope": "Smallest complete fixture-evidence subset:240 actual ImageJ reference comparisons /1680 exact selectors matched to retained typed installed Python API observations; no interface-context relabeling.",
+  "base_manifests": [
+    {
+      "path": "docs/parity/commands.json",
+      "bytes": 3079707,
+      "sha256": "3b17ae800e4b2732a7ab4e23dcd3101a1f9fd9970c6917afc81dbd2a5c908808"
+    },
+    {
+      "path": "docs/parity/fixtures.json",
+      "bytes": 2091819,
+      "sha256": "437b96793af979a013330d5f0f16932599bfd4c2644f6c94371c0c613bebc762"
+    },
+    {
+      "path": "docs/parity/inventory.json",
+      "bytes": 9054939,
+      "sha256": "3ac466287aa0508c9b2cbebf503b1c2fafc1d7f48d703113e804e763d2aa319b"
+    }
+  ],
+  "application": "Verify all pinned base/input bytes, resolve value_from JSON by exact pin, apply operations in one in-memory graph, repeat validators, then root alone writes shared manifests.",
+  "preserved_frozen_identities": {
+    "requirement_id": "G029.slicer_bilinear_resize",
+    "requirement_snapshot_sha256": "0017ccdc1a577ad6d8f124e5e22ed321fc9322ec3fc06764b20ea5c6368ed3fe",
+    "fixture_id": "F.G029.slicer-bilinear.imagej240",
+    "contract_id": "FC.G029.slicer-bilinear.imagej240",
+    "contract_fingerprint": "d0feb38165ac2d773467434b30ae0f9b32c943aa2c0bd285cba422aa18b256e4",
+    "trace_id": "FT.G029.slicer-bilinear.imagej240.python_api.candidate",
+    "trace_producer_context": "python_api",
+    "trace_run_id_unchanged": "slicer-bilinear-retained-comparison-p05j-candidate-001"
+  },
+  "operations": [
+    {
+      "target": "docs/parity/fixtures.json",
+      "operation": "append",
+      "array": "fixtures",
+      "value": {
+        "id": "F.G029.slicer-bilinear.imagej240",
+        "path": "tests/fixtures/slicer-bilinear-imagej154r.json",
+        "sha256": "48488245f9488103cea30396d3582610df08665699d0707986fc459de3bf8b27",
+        "bytes": 387989,
+        "case_count": 240,
+        "reference_format": "imagej_slicer_bilinear_v1",
+        "generator": {
+          "path": "build/plan-implementation/p05f-axis-plane-export-001/next-slicer-bilinear-reference-preparation-002/capture_reference_001.py",
+          "sha256": "5fa0dce3daae1e3e107f63ebd46c17dd248f013b1a1f754f19192b7eb372bcab",
+          "bytes": 21660,
+          "driver_sha256": "dbb91c9360714d9482331213f7060d2df0b33be5133272f4c04ebd2401cf891b"
+        },
+        "reference": {
+          "archive_sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+          "component_id": "imagej-core",
+          "reference_id": "imagej-1.54r-fiji-latest-20261007-1617-win64",
+          "revision": "62db90a269cccc1ac79f658e4602043214ed055b",
+          "scope": "240 captured ImageJ1.54r finite canonical U8/U16/F32 S1 XZ/YZ range cases; five resize profiles and all R/F/T flags. Exact complete typed output bytes and three positive scalar spacings only. Copied ImageJ pixel offsets, native full affine/world/time, owners/history/publication/UI and whole-family equality are excluded.",
+          "source_members": [
+            {
+              "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/plugin/Slicer.java",
+              "sha256": "7123c363d2cf0a1962e922a34d99ac61abcdc895a7b9e473604624d7eb4ff0bc"
+            },
+            {
+              "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/IJ_Props.txt",
+              "sha256": "e1891ac12a42e8051b2c9ca64974cd6a4f6075dd906d73c86b1f2a7b1db57d19"
+            },
+            {
+              "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/LICENSE.txt",
+              "sha256": "618725ff649e43605de0fec0a778b4aad24b28c6be9b3cde16295764022f668c"
+            },
+            {
+              "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/pom.xml",
+              "sha256": "cc95c64d2da10810f4dfbec191212cf9bfbcbfabec8633e3f0ad1ae4a81c67b3"
+            },
+            {
+              "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/measure/Calibration.java",
+              "sha256": "2d44c799739c71b1fcdfcf6a5b42a86b65c46e4f6dca9b2cd29b6a479c67f07a"
+            },
+            {
+              "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/ImagePlus.java",
+              "sha256": "477e3f5f913b9c42feb68ea35d21836d45fd56920cccbfc5719a06822cbcfab9"
+            },
+            {
+              "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/ImageStack.java",
+              "sha256": "ec8d8110ce61f3d528ba8c758c864b8277aacd3e82b43f3d41e39580e8ff2bba"
+            },
+            {
+              "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/Roi.java",
+              "sha256": "200ad9f501a5860fe1486a3d2a8ed6cf6f82f7c7562a81e11d91ee7b7a04497e"
+            },
+            {
+              "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/Line.java",
+              "sha256": "49aa00dd002627b17b4a287927b5c198a7ee136a788284d6850dccff95ddb67e"
+            },
+            {
+              "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/NewImage.java",
+              "sha256": "dfb17de6cbb83807e768d7bb30b1dc22ebbf6fbab881b545cb8b68ed6c9aca57"
+            },
+            {
+              "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ImageProcessor.java",
+              "sha256": "f98e87d25eb6b1f2c5d8557b73dd33e36fef0494d903d6d250206371dccc279c"
+            },
+            {
+              "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/FloatProcessor.java",
+              "sha256": "0f52a157fe99e9a48ce2c9356fc2c3c435dc74f48e45a575171e60deb694ccf5"
+            },
+            {
+              "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ByteProcessor.java",
+              "sha256": "fc23c95778bd7154eba1ea56d9ea943e7d1d9ea568fe20cf9bf9c6db1db3ad94"
+            },
+            {
+              "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ShortProcessor.java",
+              "sha256": "7484082e91c7095a3c79984c74b4dafa8b6d2912ed3b862e28dd331c8ba3024d"
+            },
+            {
+              "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ColorProcessor.java",
+              "sha256": "23da704d928476adf42a2d562360eaa7c8b740ad02fba2728074be0bac490650"
+            },
+            {
+              "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/Prefs.java",
+              "sha256": "5a35547eb3700613600fec474b78aa4d828e128c901dc5d401bdd6bbf06ece1c"
+            }
+          ]
+        },
+        "requirement_ids": [
+          "G029.slicer_bilinear_resize"
+        ],
+        "comparison": {
+          "method": "exact",
+          "atol": 0,
+          "rtol": 0
+        },
+        "scope": "240 captured ImageJ1.54r finite canonical U8/U16/F32 S1 XZ/YZ range cases; five resize profiles and all R/F/T flags. Exact complete typed output bytes and three positive scalar spacings only. Copied ImageJ pixel offsets, native full affine/world/time, owners/history/publication/UI and whole-family equality are excluded.",
+        "capture_status": "captured",
+        "origin": "actual_imagej_reference",
+        "reference_execution": true,
+        "match_status": "matched",
+        "verification_run_ids": [
+          "slicer-bilinear-retained-comparison-p05j-candidate-001"
+        ],
+        "license": {
+          "decision": "eligible",
+          "reason": "Reuse of the same reviewed16 public-domain ImageJ source/license members and independently authored synthetic image observations; Java/JDK/classes remain reference-only and are not incorporated into the product. This fixture does not widen Fiji material eligibility.",
+          "evidence": [
+            "docs/parity/axis-range-orientation-commercial-review-001.json"
+          ]
+        },
+        "remaining": [
+          "C++ SDK and both ImGui executed interface trace bindings remain separate; this exact fixture proves only240 sample/scalar-metric comparisons in retained Python API observations."
+        ]
+      }
+    },
+    {
+      "target": "docs/parity/fixtures.json",
+      "operation": "append_from_pinned_json",
+      "array": "fixture_contracts",
+      "value_from": {
+        "path": "build/p05k-evidence-001/contract-imagej240-candidate.json",
+        "sha256": "20af1a5bb6fa27c594ec821f7019ae0c0c6061f9548295f85bf25c1a6959c452",
+        "bytes": 925289
+      },
+      "contract_fingerprint": "d0feb38165ac2d773467434b30ae0f9b32c943aa2c0bd285cba422aa18b256e4"
+    },
+    {
+      "target": "docs/parity/fixtures.json",
+      "operation": "append",
+      "array": "fixture_proofs",
+      "value": {
+        "id": "FP.G029.slicer-bilinear.imagej240.python_api",
+        "contract_id": "FC.G029.slicer-bilinear.imagej240",
+        "run_id": "slicer-bilinear-retained-comparison-p05j-candidate-001",
+        "trace_id": "FT.G029.slicer-bilinear.imagej240.python_api.candidate"
+      }
+    },
+    {
+      "target": "docs/parity/inventory.json",
+      "operation": "append",
+      "array": "verification_runs",
+      "value": {
+        "id": "slicer-bilinear-retained-comparison-p05j-candidate-001",
+        "date": "2026-10-15",
+        "platform": "Windows x64; retained installed CPython API observations from P05j Source002/native Source001; read-only comparison executed2026-10-15",
+        "scope": "One actual passing retained comparison test verifies240 genuine ImageJ1.54r cases and1680 exact typed-output/scalar-spacing selectors against preserved installed Python API outputs. No Java/product/SDK/UI was reexecuted by that comparison.",
+        "python": {
+          "passed": 1,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 0,
+          "total": 1,
+          "report": "build/p05k-evidence-001/comparison-tests-002.xml"
+        },
+        "upstream_reference": {
+          "commit": "62db90a269cccc1ac79f658e4602043214ed055b",
+          "fixture": "tests/fixtures/slicer-bilinear-imagej154r.json",
+          "fixture_sha256": "48488245f9488103cea30396d3582610df08665699d0707986fc459de3bf8b27",
+          "matched_cases": 240,
+          "mismatches": 0,
+          "reference_errors": 0
+        },
+        "identity": {
+          "normalization_validation": {
+            "path": "build/p05k-evidence-001/normalization-validation.json",
+            "bytes": 3185,
+            "sha256": "7c55bdda7f5cd52d18f2c9709a32131137eed8a8dadd37811c62766fe0749697"
+          },
+          "comparison_validation": {
+            "path": "build/p05k-evidence-001/comparison-validation.json",
+            "bytes": 4329,
+            "sha256": "aaab9ee9dc31ee75cae3d160d5becc8f0606def097afcb9cc5c97cc909a77c2b"
+          },
+          "retained_observation": {
+            "path": "build/plan-implementation/p02a-gaussian-command-001/e10-slicer-api-observe001/observations-001.json",
+            "bytes": 4373963,
+            "sha256": "0d0c87b1dd7669fca2b88d365d09aff0f5bcf75cbd9fc40302650202b1e41b99"
+          },
+          "source_freeze": {
+            "path": "build/plan-implementation/p02a-gaussian-command-001/p05j-source-freeze-002.json",
+            "bytes": 89475,
+            "sha256": "dbdab94aed7f70309442673e6dda4a5d95a678bfdbccbe977ef32666386855d7"
+          },
+          "native_compile_source_freeze": {
+            "path": "build/plan-implementation/p02a-gaussian-command-001/p05j-source-freeze-001.json",
+            "bytes": 88480,
+            "sha256": "3e580d83c42d2d1a41044d29e92b67fab2dcc1aabc4dec923466065c2c81e5a4"
+          },
+          "qualified_installed_origins": {
+            "path": "build/plan-implementation/p02a-gaussian-command-001/p05j-python-origins-004.json",
+            "bytes": 5121,
+            "sha256": "36df21c782feffb44708472ff991f3f206194a0944aa2b6e70c8ca0afe0deee5"
+          },
+          "retained_actual_imports": [
+            {
+              "module": "imagejxx",
+              "path": "build/plan-implementation/p02a-gaussian-command-001/e10-env001/Lib/site-packages/imagejxx/__init__.py",
+              "bytes": 39220,
+              "sha256": "0c1ef938f4e19c428115661f66997bdc63362a420b4337a70ed5a6caf9322a62"
+            },
+            {
+              "module": "_native",
+              "path": "build/plan-implementation/p02a-gaussian-command-001/e10-env001/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+              "bytes": 2574336,
+              "sha256": "f765b4c561445f1fee3d775affae8adcec88b84b4cf4812e5ea1d74c1ad82fc0"
+            },
+            {
+              "module": "_desktop",
+              "path": "build/plan-implementation/p02a-gaussian-command-001/e10-env001/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+              "bytes": 6198784,
+              "sha256": "9d93343ed3603fd122e4d69666c2b81c6ed6a347d2e5a453a55b1af99929141d"
+            },
+            {
+              "module": "app",
+              "path": "build/plan-implementation/p02a-gaussian-command-001/e10-env001/Lib/site-packages/imagejxx/ui/app.py",
+              "bytes": 17150,
+              "sha256": "c369d4aad06b013cbd1b7268496fa4cfec4ce2da7a7ed33e0e14463ce1b54698"
+            },
+            {
+              "module": "model",
+              "path": "build/plan-implementation/p02a-gaussian-command-001/e10-env001/Lib/site-packages/imagejxx/ui/model.py",
+              "bytes": 50319,
+              "sha256": "8b2f4bd65cc5ca1d400ae7be3da37b2c2f461f1012de03fe29fb3f81f5cf7eb9"
+            }
+          ]
+        },
+        "limits": [
+          "Context is python_api; a Python binding executing native processing is not a C++ SDK observation.",
+          "Reference expectations are genuine captured Java output; no owned_synthetic relabeling.",
+          "Exactly complete typed output bytes, shape/encoding/byte count and three binary64 scalar spacings; copied offsets/full affine/time/publication/UI and broad G029 remain outside this comparison.",
+          "Formal four-context surface assertion traces are not inferred from this fixture trace or JUnit."
+        ],
+        "fixture_evidence_schema_version": 1,
+        "fixture_traces": [
+          {
+            "id": "FT.G029.slicer-bilinear.imagej240.python_api.candidate",
+            "contract_id": "FC.G029.slicer-bilinear.imagej240",
+            "contract_sha256": "d0feb38165ac2d773467434b30ae0f9b32c943aa2c0bd285cba422aa18b256e4",
+            "producer": {
+              "id": "P.G029.slicer-bilinear.retained-python-api-comparison",
+              "context": "python_api",
+              "sources": [
+                {
+                  "path": "build/p05k-evidence-001/test_retained_slicer_candidates_002.py",
+                  "sha256": "d0db7064f3498022addc3529fed7df070a3e3f0c45b3bd60738a065aa2350ad6",
+                  "bytes": 13146
+                },
+                {
+                  "path": "build/plan-implementation/p05f-axis-plane-export-001/next-slicer-bilinear-api-observer-preparation-001/observe_api240_001.py",
+                  "bytes": 26809,
+                  "sha256": "6e81bdbce09678d77f4332a1869eb2da30001dc78572f7e03093fef488a9e106"
+                }
+              ],
+              "artifacts": [
+                {
+                  "path": "build/plan-implementation/p02a-gaussian-command-001/e10-slicer-api-observe001/observations-001.json",
+                  "sha256": "0d0c87b1dd7669fca2b88d365d09aff0f5bcf75cbd9fc40302650202b1e41b99",
+                  "bytes": 4373963
+                },
+                {
+                  "path": "build/plan-implementation/p05f-axis-plane-export-001/next-slicer-bilinear-api-cold-preparation-002/execution-001/verification-001.json",
+                  "sha256": "d53bcf876cf561e39b64dd8757ac787c3a3c2177d5b1083531c9f135b77ddecc",
+                  "bytes": 211765
+                },
+                {
+                  "path": "build/p05k-evidence-001/capture-receipt.json",
+                  "sha256": "3e1d4e0f0de0a7f4fed319976ae09d08c5b75e0d817bff6e900afd65be09b663",
+                  "bytes": 495902
+                },
+                {
+                  "path": "scripts/parity_fixtures.py",
+                  "sha256": "f97cc9fb55c1b898cba76e65d1757ada3657b9650653bf2cb764c3542fffcff5",
+                  "bytes": 241153
+                }
+              ]
+            },
+            "report_role": "python",
+            "report_case_identity": {
+              "suite": "slicer_retained_comparison",
+              "classname": "test_retained_slicer_candidates_002",
+              "name": "test_retained_api240_slicer_comparison"
+            },
+            "path": "build/p05k-evidence-001/trace-imagej240-python-api-candidate.json",
+            "sha256": "2bbd383bcdd81f0dde8c2536e2c8b52a2b6740113ffb7020dfd8db19392db0df",
+            "bytes": 210182
+          }
+        ]
+      }
+    },
+    {
+      "target": "docs/parity/commands.json",
+      "operation": "append",
+      "array": "run_bindings",
+      "value": {
+        "run_id": "slicer-bilinear-retained-comparison-p05j-candidate-001",
+        "inventory_run_sha256": "09c7375c7089a7f0ff42d9e549fc1295c9a24648c15402b560c5f322ea0a2067",
+        "reference": {
+          "commit": "62db90a269cccc1ac79f658e4602043214ed055b",
+          "fixture_path": "tests/fixtures/slicer-bilinear-imagej154r.json",
+          "fixture_sha256": "48488245f9488103cea30396d3582610df08665699d0707986fc459de3bf8b27",
+          "matched_cases": 240,
+          "mismatches": 0,
+          "reference_errors": 0
+        },
+        "reports": [
+          {
+            "role": "python",
+            "format": "pytest_junit_v1",
+            "path": "build/p05k-evidence-001/comparison-tests-002.xml",
+            "bytes": 380,
+            "sha256": "5bd55303e0f7f3a420d266d92befb0715b32b675d44153707075c21d0869baf5",
+            "totals": {
+              "errors": 0,
+              "total": 1,
+              "passed": 1,
+              "failed": 0,
+              "skipped": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "target": "docs/parity/commands.json",
+      "operation": "update_existing_requirement",
+      "id": "G029.slicer_bilinear_resize",
+      "append_unique": {
+        "fixture_ids": [
+          "F.G029.slicer-bilinear.imagej240"
+        ],
+        "verification_run_ids": [
+          "slicer-bilinear-retained-comparison-p05j-candidate-001"
+        ],
+        "interfaces.python.evidence": [
+          "build/p05k-evidence-001/comparison-tests-002.xml",
+          "build/p05k-evidence-001/trace-imagej240-python-api-candidate.json",
+          "build/plan-implementation/p02a-gaussian-command-001/e10-slicer-api-observe001/observations-001.json",
+          "build/plan-implementation/p02a-gaussian-command-001/p05j-python-origins-004.json"
+        ]
+      },
+      "set": {
+        "verification_status": "partial"
+      },
+      "replace_remaining_exact": {
+        "from": "actual240 independent reference sample/scalar comparison and fixture contract",
+        "to": "Complete broader reference contract beyond the adopted240 finite sample/scalar comparisons; formal C++ SDK/Python/paired ImGui surface-proof bindings remain required."
+      }
+    }
+  ],
+  "consumed_files_rehashed": [
+    {
+      "path": "docs/parity/references.json",
+      "bytes": 757915,
+      "sha256": "d750de9e7b74e4fd5f6a5f05e7068becc3b67bf61ac8ddc76853e421335754c8"
+    },
+    {
+      "path": "docs/parity/fiji-components.json",
+      "bytes": 8945367,
+      "sha256": "5f2ad3f617c354189759d5e1c81d16e1ed977ac730461c80987d1581998e17a1"
+    },
+    {
+      "path": "docs/parity/commands.json",
+      "bytes": 3079707,
+      "sha256": "3b17ae800e4b2732a7ab4e23dcd3101a1f9fd9970c6917afc81dbd2a5c908808"
+    },
+    {
+      "path": "docs/parity/formats.json",
+      "bytes": 2728,
+      "sha256": "1ee55783326cfb296b09ee14e0d3149d01de7888f94a01278d413b186decbd8e"
+    },
+    {
+      "path": "docs/parity/fixtures.json",
+      "bytes": 2091819,
+      "sha256": "437b96793af979a013330d5f0f16932599bfd4c2644f6c94371c0c613bebc762"
+    },
+    {
+      "path": "docs/parity/benchmarks.json",
+      "bytes": 243,
+      "sha256": "327c152e1c06006f309592320f99494e342e65dc4db9bf9468146b8502286c63"
+    },
+    {
+      "path": "docs/parity/platforms.json",
+      "bytes": 3803,
+      "sha256": "da853eb04ff16a2738c392218d52d7b49eb21d20841b80c13d2f01e0733e8378"
+    },
+    {
+      "path": "docs/parity/inventory.json",
+      "bytes": 9054939,
+      "sha256": "3ac466287aa0508c9b2cbebf503b1c2fafc1d7f48d703113e804e763d2aa319b"
+    },
+    {
+      "path": "build/p05k-evidence-001/comparison-validation.json",
+      "bytes": 4329,
+      "sha256": "aaab9ee9dc31ee75cae3d160d5becc8f0606def097afcb9cc5c97cc909a77c2b"
+    },
+    {
+      "path": "build/p05k-evidence-001/normalization-validation.json",
+      "bytes": 3185,
+      "sha256": "7c55bdda7f5cd52d18f2c9709a32131137eed8a8dadd37811c62766fe0749697"
+    },
+    {
+      "path": "build/p05k-evidence-001/fixture-imagej240-candidate.json",
+      "bytes": 4791,
+      "sha256": "e03ba005ec2c13345558da078f650158a6ba237f0a40ddd81784c353a95126ef"
+    },
+    {
+      "path": "build/p05k-evidence-001/contract-imagej240-candidate.json",
+      "bytes": 925289,
+      "sha256": "20af1a5bb6fa27c594ec821f7019ae0c0c6061f9548295f85bf25c1a6959c452"
+    },
+    {
+      "path": "build/p05k-evidence-001/trace-imagej240-python-api-candidate.json",
+      "bytes": 210182,
+      "sha256": "2bbd383bcdd81f0dde8c2536e2c8b52a2b6740113ffb7020dfd8db19392db0df"
+    },
+    {
+      "path": "build/p05k-evidence-001/trace-catalogue-imagej240-candidate.json",
+      "bytes": 2545,
+      "sha256": "e4659467dab644c511f7dae2f0d9791240336ca6a67e264fc13cdf41e146445c"
+    },
+    {
+      "path": "build/p05k-evidence-001/comparison-tests-002.xml",
+      "bytes": 380,
+      "sha256": "5bd55303e0f7f3a420d266d92befb0715b32b675d44153707075c21d0869baf5"
+    },
+    {
+      "path": "build/p05k-evidence-001/capture-receipt.json",
+      "bytes": 495902,
+      "sha256": "3e1d4e0f0de0a7f4fed319976ae09d08c5b75e0d817bff6e900afd65be09b663"
+    },
+    {
+      "path": "build/plan-implementation/p02a-gaussian-command-001/e10-slicer-api-observe001/observations-001.json",
+      "bytes": 4373963,
+      "sha256": "0d0c87b1dd7669fca2b88d365d09aff0f5bcf75cbd9fc40302650202b1e41b99"
+    },
+    {
+      "path": "build/p05k-evidence-001/test_retained_slicer_candidates_002.py",
+      "bytes": 13146,
+      "sha256": "d0db7064f3498022addc3529fed7df070a3e3f0c45b3bd60738a065aa2350ad6"
+    },
+    {
+      "path": "build/plan-implementation/p05f-axis-plane-export-001/next-slicer-bilinear-api-observer-preparation-001/observe_api240_001.py",
+      "bytes": 26809,
+      "sha256": "6e81bdbce09678d77f4332a1869eb2da30001dc78572f7e03093fef488a9e106"
+    },
+    {
+      "path": "build/plan-implementation/p05f-axis-plane-export-001/next-slicer-bilinear-api-cold-preparation-002/execution-001/verification-001.json",
+      "bytes": 211765,
+      "sha256": "d53bcf876cf561e39b64dd8757ac787c3a3c2177d5b1083531c9f135b77ddecc"
+    },
+    {
+      "path": "scripts/parity_fixtures.py",
+      "bytes": 241153,
+      "sha256": "f97cc9fb55c1b898cba76e65d1757ada3657b9650653bf2cb764c3542fffcff5"
+    },
+    {
+      "path": "build/plan-implementation/p02a-gaussian-command-001/p05j-source-freeze-002.json",
+      "bytes": 89475,
+      "sha256": "dbdab94aed7f70309442673e6dda4a5d95a678bfdbccbe977ef32666386855d7"
+    },
+    {
+      "path": "build/plan-implementation/p02a-gaussian-command-001/p05j-source-freeze-001.json",
+      "bytes": 88480,
+      "sha256": "3e580d83c42d2d1a41044d29e92b67fab2dcc1aabc4dec923466065c2c81e5a4"
+    },
+    {
+      "path": "build/plan-implementation/p02a-gaussian-command-001/p05j-python-origins-004.json",
+      "bytes": 5121,
+      "sha256": "36df21c782feffb44708472ff991f3f206194a0944aa2b6e70c8ca0afe0deee5"
+    },
+    {
+      "path": "build/plan-implementation/p02a-gaussian-command-001/p05j-wheel-installed-qualify-004.log",
+      "bytes": 50167,
+      "sha256": "0430bf05200d347f2a92ba73b91da41024c9cb684078858d0cbf1a4113b6e584"
+    },
+    {
+      "path": "build/plan-implementation/p05f-axis-plane-export-001/next-slicer-bilinear-api-observer-preparation-001/config-001.json",
+      "bytes": 4660,
+      "sha256": "4fce70ca286b9b7efe9b130bade64b1c43d6a8065a02938cbfca1a487a250100"
+    },
+    {
+      "path": "build/plan-implementation/p05f-axis-plane-export-001/next-slicer-bilinear-reference-preparation-001/input-recipe-240.json",
+      "bytes": 349040,
+      "sha256": "b5efcc5635e74625d5c7be9b2014471ffc169e902e29a60905c1e0f14d7e42c4"
+    },
+    {
+      "path": "tests/python/test_axis_range_slicer_reference.py",
+      "bytes": 12043,
+      "sha256": "a58b35bc5fa1893a96d123ada42b7f68b869e4aba72fb9dab110c27783135c89"
+    },
+    {
+      "path": "build/plan-implementation/p02a-gaussian-command-001/p05j-api-runtime-001-plan.json",
+      "bytes": 12927,
+      "sha256": "c64c6c440e27e08b0c7372b0f07dd461b8c3f6e374d8f8612d805a31fd5b85a7"
+    },
+    {
+      "path": "build/plan-implementation/p02a-gaussian-command-001/p05j-api-runtime-001.log.state.json",
+      "bytes": 1742,
+      "sha256": "6a52e48183b0eb7da3c4cf2fe224ff411b7665a9bc2c51a2297fe2f6c416d518"
+    },
+    {
+      "path": "build/plan-implementation/p02a-gaussian-command-001/p05j-api-runtime-001.xml",
+      "bytes": 135507,
+      "sha256": "aeaed8f0a02e940a73d5266cde90546647d84d2f7ff033285c336edb15aa72c9"
+    },
+    {
+      "path": "build/plan-implementation/p02a-gaussian-command-001/e10-env001/Lib/site-packages/imagejxx/__init__.py",
+      "bytes": 39220,
+      "sha256": "0c1ef938f4e19c428115661f66997bdc63362a420b4337a70ed5a6caf9322a62"
+    },
+    {
+      "path": "build/plan-implementation/p02a-gaussian-command-001/e10-env001/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+      "bytes": 2574336,
+      "sha256": "f765b4c561445f1fee3d775affae8adcec88b84b4cf4812e5ea1d74c1ad82fc0"
+    },
+    {
+      "path": "build/plan-implementation/p02a-gaussian-command-001/e10-env001/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+      "bytes": 6198784,
+      "sha256": "9d93343ed3603fd122e4d69666c2b81c6ed6a347d2e5a453a55b1af99929141d"
+    },
+    {
+      "path": "build/plan-implementation/p02a-gaussian-command-001/e10-env001/Lib/site-packages/imagejxx/ui/app.py",
+      "bytes": 17150,
+      "sha256": "c369d4aad06b013cbd1b7268496fa4cfec4ce2da7a7ed33e0e14463ce1b54698"
+    },
+    {
+      "path": "build/plan-implementation/p02a-gaussian-command-001/e10-env001/Lib/site-packages/imagejxx/ui/model.py",
+      "bytes": 50319,
+      "sha256": "8b2f4bd65cc5ca1d400ae7be3da37b2c2f461f1012de03fe29fb3f81f5cf7eb9"
+    },
+    {
+      "path": "docs/parity/axis-range-orientation-commercial-review-001.json",
+      "bytes": 7233,
+      "sha256": "a356c64ab528f203457f5841040c49fc81a34528979faa742fc45bfbe4805734"
+    }
+  ],
+  "validation": {
+    "performed": "In-memory merge and read-only byte/adapter/report validation; no product, Java, oracle, SDK, UI, build or installation execution.",
+    "full_merged_schema": {
+      "requirements": 51,
+      "additions": 0,
+      "formats": 1,
+      "fixtures": 10,
+      "benchmarks": 0,
+      "platforms": 1
+    },
+    "full_merged_evidence": {
+      "requirements": 51,
+      "bindings": 15,
+      "reports_verified": 25,
+      "unavailable_reports": []
+    },
+    "scoped_fixture_evidence": {
+      "fixtures_declared": 1,
+      "fixtures_required": 1,
+      "content_files_verified": 1,
+      "contracts_required": 1,
+      "contracts_validated": 1,
+      "required_case_assertions": 1680,
+      "verified_case_assertions": 1680,
+      "missing_contracts": [],
+      "missing_case_assertions": [],
+      "capture_gaps": [],
+      "unavailable_evidence": [],
+      "unsupported_methods": [],
+      "enumeration_gaps": [
+        {
+          "kind": "fixtures",
+          "reason": "Fixture enumeration must be frozen and nonempty"
+        }
+      ]
+    },
+    "scoped_interface_execution": {
+      "requirements": 1,
+      "required_contexts": 4,
+      "verified_contexts": 0,
+      "missing_proofs": [
+        {
+          "requirement_id": "G029.slicer_bilinear_resize",
+          "context": "cpp_api",
+          "reason": "Frozen contract and executed surface proof are missing"
+        },
+        {
+          "requirement_id": "G029.slicer_bilinear_resize",
+          "context": "imgui_cpp",
+          "reason": "Frozen contract and executed surface proof are missing"
+        },
+        {
+          "requirement_id": "G029.slicer_bilinear_resize",
+          "context": "imgui_python",
+          "reason": "Frozen contract and executed surface proof are missing"
+        },
+        {
+          "requirement_id": "G029.slicer_bilinear_resize",
+          "context": "python_api",
+          "reason": "Frozen contract and executed surface proof are missing"
+        }
+      ],
+      "unavailable_evidence": []
+    },
+    "elapsed_seconds": 3.73499999998603,
+    "missing_historical_paths": []
+  },
+  "interface_adoption": {
+    "python_api": {
+      "typed_installed_observation_and_fixture_comparison_bound": true,
+      "formal_surface_proof_added": false,
+      "reason": "Existing normalized fixture-comparison trace is not the distinct executed surface-assertion trace schema. Its actual python_api producer/context and exact passing report case are retained."
+    },
+    "cpp_api": {
+      "formal_surface_proof_added": false,
+      "reason": "The qualified16 SDK observations need their own report/origin/assertion binding; this Python API trace cannot stand in."
+    },
+    "imgui_cpp": {
+      "formal_surface_proof_added": false,
+      "reason": "The existing68 physical cases per launch and their raw reports need genuine per-context surface trace/report/origin binding."
+    },
+    "imgui_python": {
+      "formal_surface_proof_added": false,
+      "reason": "The existing68 physical cases per launch and their raw reports need genuine per-context surface trace/report/origin binding."
+    }
+  },
+  "unsupported_obligations": [
+    "Formal four-context interface contract/proof adoption, including Python API surface assertions beyond this fixture-comparison layer.",
+    "Qualified16 public SDK observations and139 paired/live-document UI observations are preserved historical checks, not adopted by this patch.",
+    "Complete ImageJ copied calibration/offsets; native full affine/world/time/publication are outside these240 comparisons.",
+    "Singleton resizeLinearly/M1, RGB/RGBA/Float64, nonfinite/bicubic/antialias and fractional fixed-axis/ROI/oblique/curved paths.",
+    "Full desktop C/Z/T, persistence/resources/platform/accessibility and commercially eligible Fiji/M0/all99-family scope."
+  ],
+  "acceptance": {
+    "fixture_subset_ready_for_root_review": true,
+    "shared_manifests_changed": false,
+    "family_complete": false,
+    "product_complete": false,
+    "release_complete": false
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "id": "G033.composite-max.reference-commercial-review.001",
+  "recorded_at_utc": "2026-10-16T04:02:39.381361+00:00",
+  "reference_id": "imagej-1.54r-fiji-latest-20261007-1617-win64",
+  "packet": "docs/packets/P06c2-composite-max.md",
+  "parent_families": [
+    "G033"
+  ],
+  "decision": "eligible",
+  "scope": "Pinned ImageJ 1.54r display, Channels, StackWindow and macro behavior as a reference for an independently authored native equivalent. No ImageJ, Java, JDK, macro implementation, model or asset enters the product. GUI, transition and runtime verification remain separate.",
+  "reason": "The verified pinned LICENSE.txt declares ImageJ public domain. Owned C++, Python and ImGui implementation and generated synthetic fixtures use the project MIT license. No new product dependency, model, font, weights or palette asset is introduced.",
+  "code": "eligible_public_domain_reference_only_and_owned_MIT_equivalent",
+  "dependencies": "Existing shipped dependency reviews remain unchanged. JDK/AWT/ImageJ/macro resource is excluded reference tooling; this record grants no JDK redistribution approval.",
+  "models_assets": "Owned synthetic scalar planes and arithmetic tables only; no third-party models/assets incorporated.",
+  "incorporated_components": [],
+  "archive": {
+    "path": "build/references/downloads/imagej-62db90a269cccc1ac79f658e4602043214ed055b.zip",
+    "sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+    "bytes": 6146010
+  },
+  "source_members": {
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/IJ.java": {
+      "sha256": "8c620842fedd63392268b4fee191e4f6e9ef749ce96bf14a3e9f936e7cea06b4",
+      "bytes": 88477
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/ImageJ.java": {
+      "sha256": "e043a86f66cbb32c2ab2866502b0e37436b639171697ee706bcab92219d26a59",
+      "bytes": 30456
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/ImagePlus.java": {
+      "sha256": "477e3f5f913b9c42feb68ea35d21836d45fd56920cccbfc5719a06822cbcfab9",
+      "bytes": 108208
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/WindowManager.java": {
+      "sha256": "68dc7efb78b8c7fc446b5649a61ad8787366af6afc38f8fe62ae36ca5dddc2bf",
+      "bytes": 20383
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/CompositeImage.java": {
+      "sha256": "7f97ef93b52967cfadda37fb8c26513de283787a93a918d3e54260e43e432a7f",
+      "bytes": 21489
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/plugin/frame/Channels.java": {
+      "sha256": "172f378b8ece0839559f7c291dfcf98c6c9ec619f4055d3303282ba92ffd1ccc",
+      "bytes": 11531
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/plugin/Macro_Runner.java": {
+      "sha256": "b9598bffa5b1bbbe851cbafdc31e43680176214020dbb53d6eea3d0665e9346b",
+      "bytes": 11634
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ImageProcessor.java": {
+      "sha256": "f98e87d25eb6b1f2c5d8557b73dd33e36fef0494d903d6d250206371dccc279c",
+      "bytes": 95523
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ByteProcessor.java": {
+      "sha256": "fc23c95778bd7154eba1ea56d9ea943e7d1d9ea568fe20cf9bf9c6db1db3ad94",
+      "bytes": 40502
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ShortProcessor.java": {
+      "sha256": "7484082e91c7095a3c79984c74b4dafa8b6d2912ed3b862e28dd331c8ba3024d",
+      "bytes": 40446
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/FloatProcessor.java": {
+      "sha256": "0f52a157fe99e9a48ce2c9356fc2c3c435dc74f48e45a575171e60deb694ccf5",
+      "bytes": 35354
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/LUT.java": {
+      "sha256": "c3e13b697521012d9bf132efd663c5b73350a09a2be07c95a48c4c105d5631ff",
+      "bytes": 4198
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/measure/Calibration.java": {
+      "sha256": "2d44c799739c71b1fcdfcf6a5b42a86b65c46e4f6dca9b2cd29b6a479c67f07a",
+      "bytes": 14955
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/macros/InvertAllLuts.txt": {
+      "sha256": "266c77ef8ebae429260b4aca090e43854953630b637e870cb81a71521ad237cb",
+      "bytes": 2279
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/LICENSE.txt": {
+      "sha256": "618725ff649e43605de0fec0a778b4aad24b28c6be9b3cde16295764022f668c",
+      "bytes": 512
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/pom.xml": {
+      "sha256": "cc95c64d2da10810f4dfbec191212cf9bfbcbfabec8633e3f0ad1ae4a81c67b3",
+      "bytes": 7884
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/ImageCanvas.java": {
+      "sha256": "ab27a57aa060ca8e297d59b09e478406ebd7a3bbd5d6a741bc1ab56c7cc553ab",
+      "bytes": 55868
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/ImageWindow.java": {
+      "sha256": "ca2cf35410411d8b53a02747ad2a5314598b9e79d201c9e632fef4b7aef5810b",
+      "bytes": 23195
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/StackWindow.java": {
+      "sha256": "333063c0a94206e656c1a67d72e7482397336644c911fc659f73539067146b57",
+      "bytes": 11082
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/macro/Interpreter.java": {
+      "sha256": "a851bee634ce4d85a450b9cd10060104e397e5b5de80e4d85344db30546c7a57",
+      "bytes": 63893
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/macro/Functions.java": {
+      "sha256": "fca5c8063c646a49f8b89ca5f4420f6cdbc00b1e28994aedec01ae0d0451c853",
+      "bytes": 246755
+    }
+  },
+  "owned_code_license": {
+    "path": "LICENSE",
+    "sha256": "6496956d6060adfcd2617e553b7393c3b7fbea353a02f3c39d60051709d1ce5f",
+    "bytes": 1079
+  },
+  "primary_license_evidence": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/LICENSE.txt",
+  "related_review": "docs/parity/selection-creation-commercial-review-001.json",
+  "prior_dependency_verification": "build/p05l-001/artifact-entry-003.json",
+  "reference_resource_policy": {
+    "macro_source": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/macros/InvertAllLuts.txt",
+    "macro_sha256": "266c77ef8ebae429260b4aca090e43854953630b637e870cb81a71521ad237cb",
+    "copies_only_under_excluded_build_reference_staging": true,
+    "no_embedded_macro_implementation_in_tracked_capture_tool": true,
+    "source_archive_excludes_reference_binaries": true
+  },
+  "fiji_1_54p_review_unchanged": true,
+  "palette36_decisions_unchanged": true,
+  "candidate_full_option_inventory_complete": false,
+  "candidate_runtime_reconciliation_complete": false,
+  "product_implementation_verified": false,
+  "family_complete": false,
+  "full_goal_complete": false
+}

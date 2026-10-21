@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "reference_id": "imagej-1.54r-fiji-latest-20261007-1617-win64",
+  "acquired": "2026-10-10",
+  "imagej": {
+    "version": "1.54r",
+    "tag": "v1.54r",
+    "commit": "62db90a269cccc1ac79f658e4602043214ed055b",
+    "url": "https://codeload.github.com/imagej/ImageJ/zip/62db90a269cccc1ac79f658e4602043214ed055b",
+    "sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+    "tag_provenance": "https://api.github.com/repos/imagej/ImageJ/git/ref/tags/v1.54r",
+    "tag_response_sha256": "a68bf85ae22dfa7fddb22a13f547d7e2dd9b8994d1642587d6f28a85ea1879da"
+  },
+  "fiji": {
+    "build": "20261007-1617",
+    "variant": "latest-win64-jdk",
+    "root": "Fiji",
+    "url": "https://downloads.imagej.net/fiji/archive/latest/20261007-1617/fiji-latest-win64-jdk.zip",
+    "sha256": "8e33a11c7e79eb02c055bcee40de806d16e59f0b42e58c4689bd23eb47d990bb",
+    "checksum_provenance": "https://downloads.imagej.net/fiji/archive/latest/20261007-1617/fiji-latest-win64-jdk.zip.sha256",
+    "archive_index": "https://downloads.imagej.net/fiji/archive/latest/20261007-1617/",
+    "bundled_imagej": "1.54p",
+    "reference_runtime": "Azul Zulu 21.0.7; inspected reference only, not an imagejxx runtime dependency",
+    "updater_checksum_provenance": {
+      "artifact": "net.imagej:imagej-updater:2.0.3:sources",
+      "url": "https://maven.scijava.org/content/groups/public/net/imagej/imagej-updater/2.0.3/imagej-updater-2.0.3-sources.jar",
+      "sha256": "94e5dda5dad98ea8119df30deefe15aab6ebd883746c7d49027ea843c70c8a98",
+      "members": [
+        "net/imagej/updater/util/UpdaterUtil.java",
+        "net/imagej/updater/util/SkipHashedLines.java",
+        "net/imagej/updater/util/FilterManifest.java"
+      ],
+      "use": "Reference fingerprint format only; independent Python implementation, no Java source incorporated."
+    }
+  }
+}

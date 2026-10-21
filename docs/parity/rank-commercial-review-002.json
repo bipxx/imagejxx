@@ -1,0 +1,586 @@
+{
+  "applies_to_requirements": [
+    "G042.rank-imagej.profile-method-radius",
+    "G042.rank-imagej.targets-roi",
+    "G042.rank-imagej.preview-publication",
+    "G042.rank-imagej.lifecycle-resources",
+    "G042.rank-imagej.record-replay-rebind",
+    "G042.rank-imagej.persistence-surfaces"
+  ],
+  "decision": "eligible",
+  "decision_scope": "Exact owned four-method source, qualification-tooling delta and unchanged selected dependency/notice obligations only. Final distribution/member acceptance remains separately pending.",
+  "final_distribution_accepted": false,
+  "final_distribution_receipt": "build/p06f-001/final-distribution-001.json",
+  "id": "G042.rank.source-commercial-adoption.002",
+  "metadata_policy": {
+    "decision": "These owned coverage/card records changed for genuine current evidence. Their final bytes are frozen by the checked source collector after this adoption; including their own commercial decision hash here would create a cycle. No processing or dependency semantics are silently repinned.",
+    "paths": [
+      "docs/packets/P06f-rank-editor.md",
+      "docs/parity/commands.json"
+    ]
+  },
+  "native_codec_pair_gate": "build/p06f-001/installed-native-png-001.json",
+  "new_dependency_or_asset_incorporation": false,
+  "owned_tooling_test_addendum": [
+    {
+      "bytes": 21913,
+      "path": "scripts/build_source_distribution.py",
+      "sha256": "0d0bca2362d51940a8f65c8e4c984b27b4850658a1c381d3e1cf4ea848b7f083"
+    },
+    {
+      "bytes": 30211,
+      "path": "tests/tools/test_source_distribution.py",
+      "sha256": "0e045cf6b6fb1d08d7335bfad61b9ccf0f918efb15f9f0ee6448e466ef82ce72"
+    },
+    {
+      "bytes": 268311,
+      "path": "scripts/parity_fixtures.py",
+      "sha256": "bd26d2a3c5284f4c36aad38181c50ed9bafbdb7df22afdc2be79031d87df63ad"
+    },
+    {
+      "bytes": 41393,
+      "path": "scripts/parity_execution.py",
+      "sha256": "e8d32cb8bb559cab89fefb07db2da95bcb83b8d9cc228e4b465a0b5aa99afcc9"
+    },
+    {
+      "bytes": 20118,
+      "path": "scripts/observe_rank_fixture.py",
+      "sha256": "023a545c000418432f5a0ed7d199f467c0eb4198437b85b45e3c8db0a4e09750"
+    },
+    {
+      "bytes": 26515,
+      "path": "tests/qualification/test_rank_fixture_observations.py",
+      "sha256": "4e46d25955d49fcc58ed9862039392938c9bc6061df0f4fcd43d57a5593d428a"
+    },
+    {
+      "bytes": 27882,
+      "path": "tests/tools/test_rank_fixture_adapter.py",
+      "sha256": "4011e982aa5ae640d25f08a04f7820d77ea0a12d5f10b46ddee86a28d07a5f6d"
+    },
+    {
+      "bytes": 4839,
+      "path": "tests/tools/test_rank_trace_anchor.py",
+      "sha256": "496a7f095abcd1b41e781edd5f4a73fdcb024f0c24768b261815cec297212244"
+    },
+    {
+      "bytes": 27631,
+      "path": "tests/qualification/test_rank_current_surface_reader.py",
+      "sha256": "0445a147f16490e33243d25c93850c933569e1e5750d7f21663ba18894c6ca05"
+    },
+    {
+      "bytes": 12528,
+      "path": "tests/tools/test_rank_fixture_registration.py",
+      "sha256": "55c7d50565865ead59068dc789bb3a52bfb1e7550a130ca1b9920660d9ecd947"
+    },
+    {
+      "bytes": 169790,
+      "path": "tests/python/test_parity_fixtures.py",
+      "sha256": "0f8cfadac29f2b717ad6aae63287d064946c62e46619b8f8ee01ebce87997d3d"
+    },
+    {
+      "bytes": 74057,
+      "path": "scripts/capture_windows_platform_workload.py",
+      "sha256": "143068bccb64610036bcf5684e07cc68b47e5ce287041604dca465adec1869a7"
+    },
+    {
+      "bytes": 7795,
+      "path": "tests/tools/test_windows_prepared_receipt.py",
+      "sha256": "d287160386455960451009ad607230663e7677231371ba515947821554c48a1d"
+    }
+  ],
+  "parent_review": {
+    "bytes": 41440,
+    "path": "docs/parity/rank-commercial-review-001.json",
+    "sha256": "628721ddf23d4ddb304257e5dff729930f0524d2aff65d4d3da746794ea08f7a"
+  },
+  "primary_evidence_reuse": "Explicit unchanged parent adoption; no new reference-archive read or ImageJ/Fiji incorporation.",
+  "primary_license_evidence": {
+    "archive": {
+      "bytes": 6146010,
+      "path": "build/references/downloads/imagej-62db90a269cccc1ac79f658e4602043214ed055b.zip",
+      "sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665"
+    },
+    "bytes": 512,
+    "member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/LICENSE.txt",
+    "sha256": "618725ff649e43605de0fec0a778b4aad24b28c6be9b3cde16295764022f668c"
+  },
+  "reason": "Owned C++ equivalent, shared Dear ImGui/Python interfaces and owned qualification tools/tests remain under project MIT. Added tooling uses owned helpers and already reviewed development/runtime dependencies; no new third-party implementation/model/asset is incorporated.",
+  "schema_version": 1,
+  "selected_dependency_and_notice_pins": [
+    {
+      "bytes": 1079,
+      "path": "LICENSE",
+      "sha256": "6496956d6060adfcd2617e553b7393c3b7fbea353a02f3c39d60051709d1ce5f"
+    },
+    {
+      "bytes": 4201,
+      "path": "THIRD_PARTY_NOTICES.md",
+      "sha256": "9793a0e9272d9c7f8aa1ea97712a38f1ff186ecbd379f3a71c16ae273167bff9"
+    },
+    {
+      "bytes": 4516,
+      "path": "licenses/dependencies.json",
+      "sha256": "436d924a8d501a7139f09e65441c46b6944e1d4c63b12d56eb1fd43290dd0a67"
+    },
+    {
+      "bytes": 1917,
+      "path": "licenses/native-dependencies.json",
+      "sha256": "b649aa7e93fc45941fb5f8092e9bebede34cab5c797f7bba95658a1da17d027d"
+    },
+    {
+      "bytes": 5236,
+      "path": "licenses/desktop-dependencies.json",
+      "sha256": "9b5aa27fbdc98780f7eb93aa6a290bea9eb0894cce5f89b5d22d081b15ed55f3"
+    }
+  ],
+  "sequencing_supersession": "Root explicitly supersedes review001 sequencing that held six manifest fields until distribution adoption: source eligibility is adopted now, with final distribution acceptance pending in an excluded build receipt. Review001 itself remains immutable and never claimed final delivery.",
+  "source_distribution_tool_gate": "build/p06f-001/source-distribution-tool-003.json",
+  "unchanged_limits": [
+    "Retain exact codec/font/UI and separate Python dependency notices/obligations.",
+    "The reviewed loaded PNG/zlib pair is a bounded binary pairing; cached original zlib build/source ABI attestation remains limited.",
+    "All1437 Fiji component decisions remain pending; pending/NC/research-only/unlicensed material remains outside incorporation.",
+    "Eligibility grants no complete option/numerical/interface/performance/platform/family/release acceptance."
+  ],
+  "unchanged_original_scope_members": [
+    {
+      "bytes": 1891,
+      "path": "include/imagejxx/rank.hpp",
+      "sha256": "d9b77a99ba9be0fd1e19302d25f7d7c31e251a62ecec24e0828bb884845dd88f"
+    },
+    {
+      "bytes": 15320,
+      "path": "src/native/rank.cpp",
+      "sha256": "3bc4ed55efa8064d89c3bd97dc7056d7fae002d3cb648b96e1684c252e455d1f"
+    },
+    {
+      "bytes": 2808,
+      "path": "include/imagejxx/rank_command.hpp",
+      "sha256": "45b9228f6c671ee8f5433ae6693ce9816c02dd5a67cb2785ec1e76a38b350163"
+    },
+    {
+      "bytes": 8018,
+      "path": "src/native/rank_command.cpp",
+      "sha256": "53ce3cfe571e4508e7834ee668cb7aa7405255726f31e292d4e460dd7c05d312"
+    },
+    {
+      "bytes": 9190,
+      "path": "src/native/rank_command_bindings.cpp",
+      "sha256": "0e2fb5de615f69abc75cd6cef8a17d1f66e36a1e0bda515feec655209339a6e7"
+    },
+    {
+      "bytes": 12558,
+      "path": "include/imagejxx/execution.hpp",
+      "sha256": "3d18312ab8e3d45a2409f2ba4b0914a8660ee0e1aba1ed689709d5328b6c6d85"
+    },
+    {
+      "bytes": 100611,
+      "path": "src/native/execution.cpp",
+      "sha256": "7d77ab4d77bf411ccabc6fae6eb680eb9cf414ff9ef62235b6742895f9a58a3b"
+    },
+    {
+      "bytes": 16925,
+      "path": "src/native/application.cpp",
+      "sha256": "9ccf1b9acad4621f2965841fa525181169f6ab214dd9d4652f67c14a4ba323d2"
+    },
+    {
+      "bytes": 36225,
+      "path": "src/native/operations.cpp",
+      "sha256": "3e51c5f8999da58e79f3e2566a824ddaca144722dc382437de10a41c6bda6667"
+    },
+    {
+      "bytes": 28236,
+      "path": "src/native/bindings.cpp",
+      "sha256": "ac6a478d72af68b0182990e674b743e4b5feaafea6e9d9f8562673531632be0c"
+    },
+    {
+      "bytes": 48292,
+      "path": "src/native/operation_bindings.cpp",
+      "sha256": "14becd169c7a11dde6808a22beb78c8f8e711131187443555a0aca38390b4f7b"
+    },
+    {
+      "bytes": 1813,
+      "path": "src/native/operation_job_probe_internal.hpp",
+      "sha256": "72f7c737f5b1d8f754d0794c0033aeebc819ffc4c25b6497dac6507f16360e05"
+    },
+    {
+      "bytes": 2210,
+      "path": "src/native/retained_resource_internal.hpp",
+      "sha256": "2ebf0d4e64cc1f39d4b11d4c2f3a0026a0be79b66bae6efaad83af5b12ba3005"
+    },
+    {
+      "bytes": 30555,
+      "path": "src/native/dataset.cpp",
+      "sha256": "6597614b32f015c5cb6ffb8fa1fcc7811c5e5c61b6dcdbbba5a2a249d1abdea5"
+    },
+    {
+      "bytes": 44605,
+      "path": "src/native/document.cpp",
+      "sha256": "1bc5b98060c38a9e45ae4659fd5001112b1430de6184a89f42a6fe3ff73d7e14"
+    },
+    {
+      "bytes": 11984,
+      "path": "src/desktop/desktop.hpp",
+      "sha256": "474dae5d51012d4b5295ac19860764f99f253fb5e08903749bc79578c3e9546f"
+    },
+    {
+      "bytes": 66607,
+      "path": "src/desktop/document.cpp",
+      "sha256": "9a264d74590ede976afaa93eda00fb7c07e504f49169a5892f5951bb26938ce2"
+    },
+    {
+      "bytes": 10194,
+      "path": "src/desktop/window.hpp",
+      "sha256": "73daf96edd5a263c28fbcd45855cad062f031f849547c06aa89b22b338813c77"
+    },
+    {
+      "bytes": 433449,
+      "path": "src/desktop/window.cpp",
+      "sha256": "958efda6f328432228920185a0812328aa95ab76e0e93a52ca9788c768ef51ea"
+    },
+    {
+      "bytes": 5408,
+      "path": "src/desktop/gaussian_jobs.hpp",
+      "sha256": "7ef07da00978dfe1781108f05776156eb6697195f3c5ba4214321e1fb1c60260"
+    },
+    {
+      "bytes": 18877,
+      "path": "src/desktop/gaussian_jobs.cpp",
+      "sha256": "d561dd4419daf00fe3fcc0c2c8fe9c37271427a45add4249b6decab217ddd3f1"
+    },
+    {
+      "bytes": 3396,
+      "path": "src/desktop/rank_panel.hpp",
+      "sha256": "1c986a21b8891cfa12a18025a62b96478a0461d96353a942c3a35bf8b903ea36"
+    },
+    {
+      "bytes": 21774,
+      "path": "src/desktop/rank_panel.cpp",
+      "sha256": "9be10d2685e1bd52027026d94682fceb76597601e665dc7b4934179cc678d81e"
+    },
+    {
+      "bytes": 331,
+      "path": "src/desktop/rank_ui_probe.hpp",
+      "sha256": "14f121326cf23e577b46c26345b06a4ef5d226accac922656f3dbe85552d8f7b"
+    },
+    {
+      "bytes": 53524,
+      "path": "src/desktop/rank_ui_probe.cpp",
+      "sha256": "08ed3da260b5bb04e21965f5f57522eb7a7e209f9786b1e4fbd35ac8b071ad6a"
+    },
+    {
+      "bytes": 706,
+      "path": "src/desktop/gaussian_replay_policy.hpp",
+      "sha256": "2109601fbdff2b2cc59f4b715033280b33c248e7bdcffa4ae4f3a921883943c6"
+    },
+    {
+      "bytes": 3261,
+      "path": "src/desktop/gaussian_replay_policy.cpp",
+      "sha256": "0d738b77244ea16262814e1b231c217b52aa52ef382ec9df14b8de6b83e64b26"
+    },
+    {
+      "bytes": 27343,
+      "path": "src/desktop/python.cpp",
+      "sha256": "aa695bc3b165d13f2117c014af509ccc2b39e1cb94663bc1a77294a564a6b0c6"
+    },
+    {
+      "bytes": 21197,
+      "path": "src/desktop/main.cpp",
+      "sha256": "546871983ff3c24cbbf5c67ffd1dd962aaa94e2f85540d6f8f13d05960a28206"
+    },
+    {
+      "bytes": 1240,
+      "path": "src/desktop/headless_session_internal.hpp",
+      "sha256": "8171fef27522d25c622217768407e434a40a7bec82e389efd7826764795235dc"
+    },
+    {
+      "bytes": 2272,
+      "path": "src/desktop/gaussian_cancellation_internal.hpp",
+      "sha256": "d502ceb29731f08e54ff7205ecce87c79ae87b0f5c57873c12f6928ee88287fc"
+    },
+    {
+      "bytes": 45731,
+      "path": "src/imagejxx/__init__.py",
+      "sha256": "37ba3038b3ed15d125323c457ca4378876d022e53863bd578099dbaeafe328a6"
+    },
+    {
+      "bytes": 21466,
+      "path": "src/imagejxx/ui/app.py",
+      "sha256": "b93cc83ed2902d0ccd0708cbcb2145bcfa3b8a9f8d4c09ad5b4b0e46ba53ca67"
+    },
+    {
+      "bytes": 23397,
+      "path": "tests/native/test_rank_imagej.cpp",
+      "sha256": "455c3cd5d926076aafc95e083c3c7c8485f8797bdeef008df0da30657670500e"
+    },
+    {
+      "bytes": 66665,
+      "path": "tests/native/test_rank_command.cpp",
+      "sha256": "4109a257fcefaf5f5394a03dcdfe949e997986e7b24006959cfa31006a7df409"
+    },
+    {
+      "bytes": 50165,
+      "path": "tests/native/test_rank_preview_jobs.cpp",
+      "sha256": "a3863243b983937e9532fd301e3507ec7ba792b6c91e83234de5e7492105cdb1"
+    },
+    {
+      "bytes": 35557,
+      "path": "tests/native/test_rank_panel.cpp",
+      "sha256": "7b0a5c59ad268f3cfc43ed0ff87d7755d092af422472a3e297d705e2782a59b2"
+    },
+    {
+      "bytes": 42308,
+      "path": "tests/native/test_rank_host.cpp",
+      "sha256": "dab9d8e2ca87300c1d9f658c16d99355c114e66fcd24b3933f577df90f1ed627"
+    },
+    {
+      "bytes": 24739,
+      "path": "tests/native/test_rank_staged_output.cpp",
+      "sha256": "f1864e6bae02bb50f490dba3e1ad314f100cac363d2eb0f27dd9d656ab81bf8c"
+    },
+    {
+      "bytes": 18834,
+      "path": "tests/native/test_operation_job_probe.cpp",
+      "sha256": "f5c82354038055f4990df6e2c3a81dabb8f081bd18c59dd31c7e0760a479d7eb"
+    },
+    {
+      "bytes": 16431,
+      "path": "tests/native/test_desktop_resource_admission.cpp",
+      "sha256": "0658e3eaf0359298eca8c6f1b92f189a2e96b7c0b48c0ad8d5a3014d96dfd3df"
+    },
+    {
+      "bytes": 31775,
+      "path": "tests/python/test_rank_imagej.py",
+      "sha256": "aadb73e5aa1793ddf712c1e5964ff96240c8d88a6253f30467e6e21271f93e64"
+    },
+    {
+      "bytes": 21000,
+      "path": "tests/python/test_rank_workflows.py",
+      "sha256": "aa07c92cef4c045a20da61c9e6bb0045c1ceb8c0406270c284ddbc9dc9d2b317"
+    },
+    {
+      "bytes": 13083,
+      "path": "tests/python/test_rank_staged_output.py",
+      "sha256": "01b410ae094c89f5bbce6e6fc0118eeaff37bf1cc79a9e1705f09ba6084d133d"
+    },
+    {
+      "bytes": 17358,
+      "path": "tests/python/test_rank_editor_host.py",
+      "sha256": "58c306e93a53ffecace689330dc21bd0d7906734763b6db6bed2aba58b8cbe98"
+    },
+    {
+      "bytes": 33802,
+      "path": "tests/python/test_rank_editor_ui.py",
+      "sha256": "f90b9e892fde589d1a61c95185319031308626edbbcfe3593c7153f2144aff48"
+    },
+    {
+      "bytes": 76218,
+      "path": "tests/qualification/test_rank_paired_reader.py",
+      "sha256": "9e33eef0a090f77c629e9bab986bd344f68ba5da4128c8b6d8f91d027a5669bb"
+    },
+    {
+      "bytes": 16967,
+      "path": "tests/qualification/test_rank_benchmark_pixels.py",
+      "sha256": "e1e7c9655d5b3b266fb21d5022c20407a3b3ee0696089fdfdc74db2209c5f1d1"
+    },
+    {
+      "bytes": 311070,
+      "path": "tests/fixtures/rank_imagej_154r_001.json",
+      "sha256": "121d1688e9a26c20818fbebfe88cbc4d1704ad26d330bfff5bdcc4d8e11694e5"
+    },
+    {
+      "bytes": 9716,
+      "path": "tests/reference/extract_rank_imagej_fixture.py",
+      "sha256": "d8bffc6c4082c0e42e1a676f893d81a91f62fbb4ed6f634bd19c1524fd5bc181"
+    },
+    {
+      "bytes": 37673,
+      "path": "tests/reference/test_rank_filter_reference_reader.py",
+      "sha256": "090d6dff900332f1e9202ee85d45719cc2856c82ed326d9fdfcc25be7892fdc0"
+    },
+    {
+      "bytes": 42523,
+      "path": "scripts/capture_rank_filter_reference.py",
+      "sha256": "31b109277696b0715c8ae8912acf9d51a91c89fe7c2bbb84dcc1e7cd5ea284ee"
+    },
+    {
+      "bytes": 43361,
+      "path": "CMakeLists.txt",
+      "sha256": "80732b5ec244af6e0f8f88186e57e03477221c0763e352c7dd44c25fcc4ab933"
+    },
+    {
+      "bytes": 2051,
+      "path": "pyproject.toml",
+      "sha256": "7f628c87796fa28104be56561e45761103d3b633aeae60e57355f009b62aa8cc"
+    },
+    {
+      "bytes": 1079,
+      "path": "LICENSE",
+      "sha256": "6496956d6060adfcd2617e553b7393c3b7fbea353a02f3c39d60051709d1ce5f"
+    },
+    {
+      "bytes": 4201,
+      "path": "THIRD_PARTY_NOTICES.md",
+      "sha256": "9793a0e9272d9c7f8aa1ea97712a38f1ff186ecbd379f3a71c16ae273167bff9"
+    },
+    {
+      "bytes": 4516,
+      "path": "licenses/dependencies.json",
+      "sha256": "436d924a8d501a7139f09e65441c46b6944e1d4c63b12d56eb1fd43290dd0a67"
+    },
+    {
+      "bytes": 11853,
+      "path": "scripts/check_licenses.py",
+      "sha256": "843904e73d4c5fe447dc45e9b00e8792cbb6a416df59238921562dc7f82785a9"
+    },
+    {
+      "bytes": 7007,
+      "path": "docs/parity/reviews/G042-rank-native-adoption-001.json",
+      "sha256": "6a8510e57e6c04139e03258c6f4d63e69349e96024d71a121b654d5f43a46796"
+    },
+    {
+      "bytes": 4081,
+      "path": "docs/parity/reviews/G042-rank-registration-001.json",
+      "sha256": "ca1d251c3d03fe418479708e5f4b9eee29275d943d76513ff2c7778923e2d75f"
+    },
+    {
+      "bytes": 83339,
+      "path": "docs/parity/reviews/G042-rank-reference-freeze-001.json",
+      "sha256": "a9544888eb486072f4d2f2094dee8c2238c7ca16b2df19d2121f6e0073d67248"
+    },
+    {
+      "bytes": 29815,
+      "path": "docs/parity/reviews/G042-rank-editor-entry-001.json",
+      "sha256": "7b4e4edd133d34431f8e763fbc8db82d215d4e6e5b546402ea6203fcb43b0b02"
+    },
+    {
+      "bytes": 4896,
+      "path": "docs/parity/histogram-auto-commercial-review-001.json",
+      "sha256": "6dcf7b4ff71636119295dcb0725bbc41a841ff3f0df6c9006f5c1a6c13f761bb"
+    },
+    {
+      "bytes": 5015,
+      "path": "docs/parity/selection-creation-commercial-review-001.json",
+      "sha256": "182c1fcdbd58ee17437a06e151656c4b814c4a0fd2b8fc08882b561eee2fefe2"
+    },
+    {
+      "bytes": 2677,
+      "path": "docs/parity/channel-display-min-commercial-review-001.json",
+      "sha256": "59a64ddf0fd110c90e76fb978ba59fc51a47619123142023c88983210226dc45"
+    },
+    {
+      "bytes": 3883,
+      "path": "docs/parity/benchmarks.json",
+      "sha256": "c586788d74fac8119f751c5cbdb943a1c7ee06269e78635a54c7f1fafe4be60c"
+    },
+    {
+      "bytes": 5655,
+      "path": "include/imagejxx/jobs.hpp",
+      "sha256": "986de4cae73d807d36d0aaa756c636fa81eb0137da39d080bb27b8725172501d"
+    },
+    {
+      "bytes": 21166,
+      "path": "src/native/jobs.cpp",
+      "sha256": "2cd7c8695813e7b200bbfbba84c1ef6b0f7eb629499d6b8d0445b153a8dd53ba"
+    },
+    {
+      "bytes": 809,
+      "path": "src/desktop/jobs_panel.hpp",
+      "sha256": "870b9a97a4be902ead5d005be6692fd574fadce950a5f9da32d53974319f729a"
+    },
+    {
+      "bytes": 7672,
+      "path": "src/desktop/jobs_panel.cpp",
+      "sha256": "3b64adb067aba77331e035241b5875d4ed74755cf3e129dd9ec916b16327edc6"
+    },
+    {
+      "bytes": 1893,
+      "path": "src/desktop/rank_runtime_probe.hpp",
+      "sha256": "33d9241497fe06265c8794a4050df6541ab5b0017f906e6f92813cf328aabb3c"
+    },
+    {
+      "bytes": 75101,
+      "path": "src/desktop/rank_runtime_probe.cpp",
+      "sha256": "f4796d09aa7d3ece18c49be8f13515a2a968f9c49ddbdbca63cfcac0b5bb92d5"
+    },
+    {
+      "bytes": 44099,
+      "path": "scripts/run_rank_runtime_feasibility.py",
+      "sha256": "9996b9534af392dd1f27259040328b5a08863718df3d496836de43db57e91b8b"
+    },
+    {
+      "bytes": 32383,
+      "path": "tests/native/test_jobs.cpp",
+      "sha256": "7fe5161180124f6af38531bc115e9fec5f6000d39cb2076759ca69338763fb84"
+    },
+    {
+      "bytes": 39839,
+      "path": "tests/native/test_retained_jobs.cpp",
+      "sha256": "40c3366bcaaede9a761404537dfdb464c00463950b85a981afd7497566bc9c78"
+    },
+    {
+      "bytes": 8338,
+      "path": "tests/python/rank_observations.py",
+      "sha256": "4138d5457de2732bc66e9b18f62780f1de0a1fc0c3f60429f3ee21f2f3fe33b2"
+    },
+    {
+      "bytes": 25329,
+      "path": "tests/qualification/test_rank_api_observations.py",
+      "sha256": "be1a8fd06aa0ea802c10e77deb578ca50ac9a4b168f78015fd1a0edfe90dc77e"
+    },
+    {
+      "bytes": 45771,
+      "path": "tests/qualification/test_rank_surface_reader.py",
+      "sha256": "10a4f068c41f3ff0dfd0a4afa1bb4c9bb9e6da53e989cd1efe7f1796f40de43e"
+    },
+    {
+      "bytes": 53150,
+      "path": "examples/cpp/rank_command.cpp",
+      "sha256": "3c905920b5ac5d34afae693232aac3db665743666b6a710d64c780fc01375dd4"
+    },
+    {
+      "bytes": 9729,
+      "path": "examples/cpp/rank_observations.hpp",
+      "sha256": "6ff9b2167c27b695a842df1d2f4a52057959328a8c252653cc864839eec4a8f2"
+    },
+    {
+      "bytes": 6640,
+      "path": "src/imagejxx/ui/workflows.py",
+      "sha256": "34c73f5276e2e8762d2a2171b5b528785123de7693076026a5b8f0fbaa52705e"
+    },
+    {
+      "bytes": 34402,
+      "path": "src/imagejxx/ui/persistence.py",
+      "sha256": "66121dd53523c90b164babd2fc4b2fdd9c410565c550c7c826bd5061ebd3ffc4"
+    },
+    {
+      "bytes": 3008,
+      "path": "src/desktop/session.cpp",
+      "sha256": "9018fda3ff6ad67479dce37ece13549d5aed880761367837eac76dc36f25e8c0"
+    },
+    {
+      "bytes": 3685,
+      "path": "include/imagejxx/session.hpp",
+      "sha256": "18aaf0e967cff64c20d9e8135ed47f9e8d7d59f13d14a0e615c5758974e69ee7"
+    },
+    {
+      "bytes": 61078,
+      "path": "src/native/session.cpp",
+      "sha256": "8a6ff6aa1549f646fda560bf7797a9f9689868f853413360afb0d8bd1b4d72ab"
+    },
+    {
+      "bytes": 5848,
+      "path": "src/native/kernel_control.hpp",
+      "sha256": "10a0c5be469081e6136f8826506117e1f4f814be86e2a858f833ebf099bca8b5"
+    },
+    {
+      "bytes": 2159,
+      "path": "src/native/kernel_control.cpp",
+      "sha256": "59a8362ab58fbc4c9c4a51450a10bc0e63d355a18082a52fe4cc9759dc7acb9c"
+    },
+    {
+      "bytes": 43950,
+      "path": "tests/native/test_publication.cpp",
+      "sha256": "6cd95b51badafbaaa2236b8f0d8fe4dcff06b889080c69a294b8ae73009f5cea"
+    }
+  ]
+}

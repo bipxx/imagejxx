@@ -1,0 +1,88 @@
+{
+  "schema": "imagejxx.auto-controller-adoption",
+  "schema_version": 1,
+  "id": "P06c4-auto-controller-adoption-001",
+  "state": "typed_job_cycle_publication_contract_adopted_before_implementation",
+  "scope": "Exact Application/typed-job transient lifecycle consumed by the adopted Auto command and shared ImGui consumer. Independent native/Python/SDK/UI lifecycle gates remain required.",
+  "consumes": {
+    "path": "docs/parity/reviews/P06c4-auto-adoption-001.json",
+    "bytes": 7651,
+    "sha256": "b4f2acd2999db66e97045e652def8b581a06c98151ec5a6343a99d6be4346944"
+  },
+  "public_cpp_api": {
+    "header": "include/imagejxx/auto_contrast_job.hpp",
+    "AutoContrastOptions": "scope=ActiveChannel, roi=ActiveSelection, unsigned16_bits=0; same exact enum/bit admission as AutoContrastRequest, intentionally excludes previous_divisor because Application supplies its authoritative transient value.",
+    "AutoContrastJob": [
+      "JobInfo info() const",
+      "bool ready() const",
+      "bool cancel()",
+      "void wait() const",
+      "bool wait_for(std::chrono::milliseconds) const",
+      "ResolvedAutoContrastCommand resolved() const"
+    ],
+    "Application": [
+      "AutoContrastJob submit_auto_contrast(const AutoContrastOptions& = {}, const AutoContrastLimits& = {}, JobOptions = {})",
+      "AutoContrastJob submit_rebound_auto_contrast(const MetadataObject& original, const AutoContrastRequest& complete_request, const AutoContrastLimits& = {}, JobOptions = {})",
+      "ResolvedAutoContrastCommand publish_auto_contrast(AutoContrastJob&)",
+      "ResolvedAutoContrastCommand replay_auto_contrast(const MetadataObject&, const AutoContrastLimits& = {}, std::uint64_t id = 0)",
+      "int auto_contrast_divisor() const",
+      "void reset_auto_contrast_cycle()"
+    ],
+    "semantics": "Fresh submit and explicit rebound submit address the captured active owner only. Strict replay id0 addresses active; explicit nonzero id must also be active. Standalone command factories remain independently usable on captured Documents without an Application."
+  },
+  "cycle_state": {
+    "storage": "Application owns one private transient state; no Document revision, metadata/controller pointer or session schema addition. Public command record contains only previous/used/next divisor provenance.",
+    "key": "Last successfully published owner identity/ID, opaque activation identity, captured T/C/Z and Pixels/Metadata revisions. Current effective divisor is stored next iff all key fields match current active snapshot, otherwise0. Selection and numeric/display-property-only changes preserve divisor when TCZ is unchanged; no hidden Java setup cache.",
+    "nonmutating_submit": "Computing a prospective key/divisor and capturing epoch does not advance or replace last successful cycle. Preflight/admission/cancel/failure/stale refusals have no cycle publication. After changing contexts, effective divisor0 follows key mismatch even if old state is retained internally.",
+    "activation": "Every actual active-ID transition in adopt/adopt_all/activate/close receives a fresh retained identity, including away/back to the same ID. Repeated activation of the same ID is a no-op. Stage any allocation before membership/order/active publication so strong exception safety remains intact.",
+    "epoch": "Use private retained opaque identities for activation/cycle epochs, avoiding uint64 wrap and avoiding serializing addresses. Allocate replacement cycle epoch during admission, before any possible publication. Final assignments are noexcept.",
+    "reset": "reset_auto_contrast_cycle stages a new epoch then atomically clears last key/divisor0. Explicit Window public Update/Reset invokes it; numeric Set and command replay do not. New/reopened controllers naturally start0. Reset invalidates in-flight Auto publication through epoch mismatch; it never cancels unrelated jobs. UI cancels its own Auto handle when resetting."
+  },
+  "submission": {
+    "capture": "Validate exact options/request/positive limits, capture active membership/snapshot/activation/cycle epoch and effective divisor under Application mutex, then perform metadata-only command estimate outside locks. Snapshot/request/selection/state/settings/limits are immutable before worker callbacks. No preview or alternative active owner may retarget work.",
+    "explicit_rebind": "Validate the entire original record before looking up/replacing its source or consuming complete_request fields. Capture destination active owner/key. Require complete_request.previous_divisor equals its current effective native divisor; otherwise RevisionConflict. Recompute the new command using every explicitly supplied field; never borrow old request/effect/settings.",
+    "admission": "Reserve at least adopted working estimate plus introspectable typed-job/result/capture holders, checked without overflow, via existing tagged JobScheduler submit_with_cleanup. Set document_id to captured owner, default label/supersedes to auto_contrast, force retained result accounting for this typed job. Scheduler admission and capture destruction run outside Application locks; recheck captured membership/active identity/epoch/all4 revisions after admission and cancel+refuse changed sources.",
+    "worker": "Use resolve_auto_contrast_command once with JobContext execution control. Attach context.result_resource_guard() to a private command holder before storing into the result cell. No Python objects, frontend calls or direct document/display/cycle mutation occur in the worker."
+  },
+  "result_lifetime": {
+    "cell": "Typed result cell owns optional<ResolvedAutoContrastCommand> under its mutex; same scheduler terminal cleanup seam as retained OperationJob, not a fabricated pixel PreparedOperation. Store once. Cleanup swaps/destroys retained values outside locks. Last result-cell owner cancels pending work; scheduler/job closures use weak cleanup captures without ownership cycles.",
+    "aliases": "Add private shared_ptr<const void> resource_guard_ and Application friendship to ResolvedAutoContrastCommand. Whole command copies retain this guard; READY/off-thread cancel clears cell yet escaped whole-command aliases keep honest reservation until released. Holder bytes are charged. Explicit copied subobjects/getter representations and opaque callable targets remain named frontend exclusions, not a total process cap.",
+    "resolved": "Reject queued/running/unfinalized jobs, canceled jobs throw OperationCancelled, failed jobs rethrow original failure. Serialize getter versus cancellation/publication using Job state lock/finalization, then copy result. Completed/cleaned cell may no longer have a result; previously retained aliases remain valid. Do not silently return a canceled result."
+  },
+  "publication": {
+    "identity": "Reject foreign Application job handles before touching current owner/state. Job.complete arbitrates READY publication against cancellation and makes callback failure terminal Failed.",
+    "preparation": "Obtain immutable resolved command and stage every allocating result/status/workflow output and replacement cycle epoch before display mutation. Derive proposed display from the command source outside Application lock; fresh command requires all4 captured revisions.",
+    "atomic_lane": "Inside Job.complete, take Application membership mutex, require captured active owner and activation identity plus unchanged cycle epoch/effective previous value, then call the Document all4 guarded display setter on the exact captured snapshot. Closed/foreign/inactive/stale/invalid sources publish nothing. Successful equal-state display still advances Display exactlyonce. No user callback between final checks, display mutation and noexcept state-key/divisor/epoch replacement.",
+    "effects": "Only successful publication stores command.cycle.next and the new key/epoch. Preserve Pixels/Metadata/Selection revisions, pixel bits, undo/redo, save/dirty identity and unrelated display properties. Window stages OutputPublication first, then core publication, then noexcept record append once when recording is enabled.",
+    "failure": "Cancellation, supersession, stale all4/activation/cycle, close, invalid display constraints, caps or worker exceptions release detached resources per alias rules and change no display/cycle/history/record. A late cancel losing to Publishing must not retroactively reset successful state."
+  },
+  "strict_replay": {
+    "path": "Validate complete original bounded record before owner lookup. Capture the active member, use auto_contrast_command_from_record and existing Set merge, then all4 guard that current capture atomically. Historical Selection/Display revisions are provenance, not replay preconditions. Keep fresh navigation/cameras and record provenance.",
+    "effects": "No histogram/provider reads/callbacks and no live cycle/epoch advancement/restoration. Replaying a new loaded owner requires full explicit rebind; ordinary binding mismatch remains refusal. Frontend recording stages/publishes its historical Auto record exactly once under normal recording policy."
+  },
+  "shared_window_boundary": {
+    "owned_files": "Root owns Window/desktop binding/facade and ChannelDisplayPanel shared changes. Auto button and Shift/composite-all call the same native typed lane in both launch modes. Settings value is captured from existing Preferences before submission.",
+    "lifecycle": "Integrate native Auto handle into busy/jobInfo/jobs/poll/wait/close/cancel and global job-resource diagnostics. Capture off-thread cancellation epoch before submission, bind the handle under existing job mutex and cancel if epoch changed during admission. Never invoke ImGui off-thread. Navigation/selection/owner changes during work cause guarded refusal; callbacks do not scan pixels on the UI thread.",
+    "records": "Fresh and full-rebound commands stage recording output before publication. Strict replay stays metadata-only and cannot be dispatched as ImageJ Enhance text. Save/Open retains resolved display/original action provenance, not live epochs."
+  },
+  "independent_required_assertions": [
+    "queued/running/READY cancellation and off-thread Window cancellation before/after handle binding; last-handle destruction; alias-held reservation release",
+    "two same-capture publications have one winner; every Pixels/Metadata/Selection/Display dependency changed independently; explicit cycle reset race",
+    "owner activation away/back with same final ID; same-ID no-op activation; inactive/closed/foreign owner and foreign job",
+    "scope/TCZ/dtype and metadata reset key, Selection/numeric Display preservation, public Update/Reset0 and reopened controller0",
+    "equal/fallback success Display+1 and cycle transition, no pixel/history/dirty/redo changes, recording on/off and failure atomicity",
+    "strict replay with changed current Selection/Display/navigation: no reads/no cycle; malformed original before valid destination or request; full explicit rebind recomputes",
+    "resource estimate/cap pre-admission zero reads, worker/provider failures and inherited cancellation/reentry, supersession and scheduler accounting",
+    "C++/Python/core-only SDK and both actual ImGui launch controls; affected installed regressions/artifacts/licenses"
+  ],
+  "acceptance": {
+    "controller_contract_adopted": true,
+    "implementation_verified": false,
+    "full_Auto_consumer_verified": false,
+    "whole_family": false,
+    "commercial_eligibility": false,
+    "platform": false,
+    "release": false,
+    "full_goal": false
+  }
+}

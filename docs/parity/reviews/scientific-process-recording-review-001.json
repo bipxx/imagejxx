@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "state": "scoped_scientific_process_recording_verified",
+  "family_ids": [
+    "G085",
+    "G045",
+    "G056"
+  ],
+  "previous_checkpoint": {
+    "path": "build/p06zh-scientific-process001/scientific-process-handoff001.json",
+    "bytes": 17801,
+    "sha256": "613518d900875c13ac66c6d19357373b4064182b9264298f4ffe943c07655c51"
+  },
+  "evidence": [
+    {
+      "path": "build/p06zi-process-record001/build003/run001.json",
+      "bytes": 9273,
+      "sha256": "4e6e70cd4aff56ac4daa5a9b3f1577a8c261f38afb097b939a5d4196b221cdca"
+    },
+    {
+      "path": "build/p06zi-process-record001/process-cpp002/run001.json",
+      "bytes": 1282,
+      "sha256": "799cda9b7f17faa97f9e843973bc44921c9d154aebc65287c103ba2106a00272"
+    },
+    {
+      "path": "build/p06zi-process-record001/process-installed-cpp001/run001.json",
+      "bytes": 1761,
+      "sha256": "feb542f58a7fc45ac671fe0e87599cdd187bc9124ba6cfda8461b9527bd620b1"
+    },
+    {
+      "path": "build/p06zi-process-record001/record-tests002/run001.json",
+      "bytes": 1412,
+      "sha256": "785d8a424ee472e70b1535223e0517d1dc967e9779438659030b5eed76231507"
+    },
+    {
+      "path": "build/p06zi-process-record001/source001/run001.json",
+      "bytes": 1399,
+      "sha256": "0e16c60bc90bbd1c38583049dc00ac17ef61fd28e6e83f5996060fe6eef0cc54"
+    },
+    {
+      "path": "build/p06zi-process-record001/install001/run001.json",
+      "bytes": 7267,
+      "sha256": "c7a74b35f0dec99ed3cecb9ed5ae31c7e3063e9647caa50c3d1658f4187a512e"
+    },
+    {
+      "path": "build/p06zi-process-record001/installed-cpp001/run001.json",
+      "bytes": 3125,
+      "sha256": "071144f7a41369bf0e252e4712ad8f1e064f3e43178093bc6611cae6cb880e1a"
+    },
+    {
+      "path": "build/p06zi-process-record001/installed-python001/run001.json",
+      "bytes": 1717,
+      "sha256": "e22e242c46bf0017751c902c7a14a545383c1ba86f58752bee5c5e0dc7f9979d"
+    },
+    {
+      "path": "build/p06zi-process-record001/launcher001/run001.json",
+      "bytes": 3399,
+      "sha256": "cd63abf13ae3ef46043fc016279e766183dab8645396908447ed96095ff07c4a"
+    },
+    {
+      "path": "build/p06zi-process-record001/api001/run001.json",
+      "bytes": 1375,
+      "sha256": "87bc7f15b1fb12bde2383b250b54a47de11bbb67c314ffc0eb7afbd5943c0d91"
+    },
+    {
+      "path": "build/p06zi-process-record001/regress001/run001.json",
+      "bytes": 18525,
+      "sha256": "811c92408fb451bf61323a9f8893786bab58f4b4fd80485d422037d74ce45089"
+    },
+    {
+      "path": "build/p06zi-process-record001/paths-sdk001/run001.json",
+      "bytes": 4303,
+      "sha256": "d2790429ccb63c1e53f53c01e5412ecdd3365769ea4301fa3577681f0b985502"
+    },
+    {
+      "path": "build/p06zi-process-record001/baseline001/run001.json",
+      "bytes": 1391,
+      "sha256": "01f725136d30c4bcd8de3abb9240962f48af688445c80a2de7d36b9cdb40feb9"
+    },
+    {
+      "path": "build/p06zi-process-record001/record-tests001/run001.json",
+      "bytes": 1601,
+      "sha256": "aa8208200f56a56f1276618df4bf352ea8ddf31dfb795d58c489cb04fbbb8ea9"
+    },
+    {
+      "path": "build/p06zi-process-record001/test-before-api-fix001.py",
+      "bytes": 5502,
+      "sha256": "ed113846079f095906039d754837234f2acd066e4a346abbd896c14c88628c49"
+    },
+    {
+      "path": "build/p06zi-process-record001/baseline001/baseline001.json",
+      "bytes": 540,
+      "sha256": "866dea7138b7d51258c418d7f8b825dedb66671aaac7b48868da18e09e086606"
+    },
+    {
+      "path": "build/p06zi-process-record001/process-cpp002/capture001/case.json",
+      "bytes": 9320894,
+      "sha256": "1531957f4980105669ac1faa94151bcad1fcc52ded5f0fca1a00e243789e66e0"
+    },
+    {
+      "path": "build/p06zi-process-record001/process-cpp002/capture001/recorded-workflow.json",
+      "bytes": 1086,
+      "sha256": "62563c77f08a71573493210e17119ae9af4a7f7372bd8081898192a890679763"
+    },
+    {
+      "path": "build/p06zi-process-record001/process-installed-cpp001/capture001/case.json",
+      "bytes": 9323274,
+      "sha256": "4420df3cfae77449d21ac7e88865d12fcefdb67bcf5725d0fde9035540b29ee7"
+    },
+    {
+      "path": "build/p06zi-process-record001/process-installed-cpp001/capture001/recorded-workflow.json",
+      "bytes": 1086,
+      "sha256": "62563c77f08a71573493210e17119ae9af4a7f7372bd8081898192a890679763"
+    },
+    {
+      "path": "build/p06zi-process-record001/source001/pytest.xml",
+      "bytes": 49834,
+      "sha256": "2abc34c5998eca75ee9052e6baaf8ce4d4bed929bc961e1af5d01380ec7589eb"
+    },
+    {
+      "path": "build/p06zi-process-record001/installed-python001/pytest.xml",
+      "bytes": 52264,
+      "sha256": "37d19f935a5f0432f2868173a28d7de9ae3bef85a3c69df0af0e6b7a33ae0f64"
+    },
+    {
+      "path": "build/p06zi-process-record001/record-tests002/pytest.xml",
+      "bytes": 1626,
+      "sha256": "6b91d0ac07ab87f443c0c0ab7f03e69e1700c3caffe78fe8b40465ebd380125d"
+    },
+    {
+      "path": "build/p06zi-process-record001/policy001.json",
+      "bytes": 212,
+      "sha256": "816dd81a41c934b67f6d3691b8d492362c2705f72b1bd1621ee7f708c1398647"
+    },
+    {
+      "path": "build/p06zi-process-record001/cleanup001.json",
+      "bytes": 35152,
+      "sha256": "f6e8b734ec3432dbd69e1bf024273e6014ce8aac5cfe6e80df22f56e7b231266"
+    }
+  ],
+  "mixed_recorder_order": true,
+  "captured_tcz_ranges": true,
+  "aggregate_step_limit": 64,
+  "new_focused_python_cases": 9,
+  "native_windows_suites": 16,
+  "source_cases": 346,
+  "installed_cases": 366,
+  "remaining": [
+    "Complete operation/target/ROI/reference/resource/recording and platform/release qualification; captures are portable intent, not authentication or frozen ROI pixels",
+    "Dedicated scientific geometry/conversion/auxiliary-image/binary adapters, true volume workflows and all prior filesystem obligations",
+    "Continue complete editor/configuration/selection/filter/slicing/viewing and commercially eligible Fiji scope; All99 remains42/57/0 and Source901 unchanged"
+  ],
+  "profile_accepted": false,
+  "family_completed": false,
+  "broad_goal": "active"
+}

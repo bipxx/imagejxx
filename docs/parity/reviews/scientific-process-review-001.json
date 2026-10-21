@@ -1,0 +1,211 @@
+{
+  "schema_version": 1,
+  "state": "scoped_scientific_menu_review_adapter_verified",
+  "family_ids": [
+    "G042",
+    "G044",
+    "G045",
+    "G056"
+  ],
+  "eligible_operations": [
+    "math",
+    "invert",
+    "add",
+    "subtract",
+    "multiply",
+    "divide",
+    "absolute",
+    "square",
+    "sqrt",
+    "log",
+    "log1p",
+    "exp",
+    "gamma",
+    "clip",
+    "smooth",
+    "sharpen",
+    "convolve",
+    "gaussian_blur_imagej",
+    "gaussian_blur",
+    "rank_filter_imagej",
+    "rank_filter",
+    "median_filter",
+    "minimum_filter",
+    "maximum_filter",
+    "variance_filter",
+    "unsharp_mask",
+    "remove_outliers"
+  ],
+  "new_review_operations": [
+    "math",
+    "invert",
+    "add",
+    "subtract",
+    "multiply",
+    "divide",
+    "absolute",
+    "square",
+    "sqrt",
+    "log",
+    "log1p",
+    "exp",
+    "gamma",
+    "clip",
+    "smooth",
+    "sharpen",
+    "convolve",
+    "gaussian_blur",
+    "rank_filter",
+    "median_filter",
+    "minimum_filter",
+    "maximum_filter",
+    "variance_filter",
+    "unsharp_mask",
+    "remove_outliers"
+  ],
+  "evidence": [
+    {
+      "path": "build/p06zh-scientific-process001/build006/run001.json",
+      "bytes": 9322,
+      "sha256": "6d4d7a78ccccc0a4ff90b7404855a2a55ad687d41f7eb114bd4552ef7773fb26"
+    },
+    {
+      "path": "build/p06zh-scientific-process001/process-cpp003/run001.json",
+      "bytes": 1280,
+      "sha256": "042982144bccdd31412c50b641108c66bc005e44e9a0f61447dcb9a676ee7f2f"
+    },
+    {
+      "path": "build/p06zh-scientific-process001/process-installed-cpp001/run001.json",
+      "bytes": 1785,
+      "sha256": "214854774b85e840b506cc41027ece50d4b2580b9921d85dcc999ec68c3bd612"
+    },
+    {
+      "path": "build/p06zh-scientific-process001/process-tests002/run001.json",
+      "bytes": 1433,
+      "sha256": "6a0bd79f0caf39aef7b4a980a49cfd2cc67abfc8ac84860f71a550cf5d31c307"
+    },
+    {
+      "path": "build/p06zh-scientific-process001/source002/run001.json",
+      "bytes": 1414,
+      "sha256": "f2a80f06e26f6fb31c56b98588a5844a253c2eee67a713654c253294c5585923"
+    },
+    {
+      "path": "build/p06zh-scientific-process001/install001/run001.json",
+      "bytes": 7318,
+      "sha256": "538bdb3bac8ea5390838a637ebc422e527bd0843bd7d5e02a09529f016879767"
+    },
+    {
+      "path": "build/p06zh-scientific-process001/installed-cpp001/run001.json",
+      "bytes": 3165,
+      "sha256": "4ed3f13dbba5d5f6f03086058332f6a539e9a8c9e5d5a4d36e4dca31a8eeb4b4"
+    },
+    {
+      "path": "build/p06zh-scientific-process001/installed-python002/run001.json",
+      "bytes": 1753,
+      "sha256": "a14dbe1c2e8432be50dfd2ecac19918fb23a97666f0e7c1f895267aa82effd9c"
+    },
+    {
+      "path": "build/p06zh-scientific-process001/launcher001/run001.json",
+      "bytes": 3451,
+      "sha256": "71ef87bed4037fae8ca9f64ff4a4f321fac2cd1434537c9566cf1696ee96aebd"
+    },
+    {
+      "path": "build/p06zh-scientific-process001/api001/run001.json",
+      "bytes": 1391,
+      "sha256": "ae91a3e3699760fc7ff5101b5fff6a3061c039d7ad608b537f5c03774dc06d06"
+    },
+    {
+      "path": "build/p06zh-scientific-process001/regress001/run001.json",
+      "bytes": 18718,
+      "sha256": "bbe64678c28c296b478402dd9c0b7ef3ee98bf67c8d0d67f0b6795c03b3bc763"
+    },
+    {
+      "path": "build/p06zh-scientific-process001/paths-sdk001/run001.json",
+      "bytes": 4339,
+      "sha256": "753c3b101c835ac96543a7840290382b752044cfc6abd6014f019ff337d12c42"
+    },
+    {
+      "path": "build/p06zh-scientific-process001/registry001/run001.json",
+      "bytes": 1412,
+      "sha256": "26467b895e70d3447cac82cc8047a5f36a1fd7ccc135e94226f96698464686af"
+    },
+    {
+      "path": "build/p06zh-scientific-process001/baseline001/run001.json",
+      "bytes": 1408,
+      "sha256": "f1e42ca7be5f855b5d0a0b5b0773707d9be168280fccd0a49c9ce5d22b3258e0"
+    },
+    {
+      "path": "build/p06zh-scientific-process001/build002/run001.json",
+      "bytes": 3822,
+      "sha256": "ba5ffac8217c524002cbc6ad06229a6109329fb5824427b2296a08b7a2f13f19"
+    },
+    {
+      "path": "build/p06zh-scientific-process001/process-cpp001/run001.json",
+      "bytes": 1496,
+      "sha256": "369f2554caf1f21956ab4d887f516e4f886c26566ed57c0936dc9d1fe6a0da8d"
+    },
+    {
+      "path": "build/p06zh-scientific-process001/baseline001/baseline001.json",
+      "bytes": 274,
+      "sha256": "01dec4f244787769063064efa2c44baa7eab753f3cb2e818216510f0bea855dd"
+    },
+    {
+      "path": "build/p06zh-scientific-process001/registry001/registry001.json",
+      "bytes": 957,
+      "sha256": "19691a03c189a1fa60e5222c77d8e4b079fb9894433ddd057bdae2c9316f341c"
+    },
+    {
+      "path": "build/p06zh-scientific-process001/process-cpp003/capture001/case.json",
+      "bytes": 4277904,
+      "sha256": "71d5c1bd05c117fec88f398fdd74098707616e934e833898a9352f7ecdb45998"
+    },
+    {
+      "path": "build/p06zh-scientific-process001/process-installed-cpp001/capture001/case.json",
+      "bytes": 4279004,
+      "sha256": "b009a7e3f7f1075c433764895cacd58d2f183d986741539ce3e7eb87f650fcc8"
+    },
+    {
+      "path": "build/p06zh-scientific-process001/source002/pytest.xml",
+      "bytes": 48449,
+      "sha256": "241d7a03a2f189373185f20e97212d76ef42b84ba437ef066fdaf4ebeece7c3b"
+    },
+    {
+      "path": "build/p06zh-scientific-process001/installed-python002/pytest.xml",
+      "bytes": 50879,
+      "sha256": "33b36b4ddd671ff6365763947c805fa17f2307bcc1758422d43a380927e2bb9d"
+    },
+    {
+      "path": "build/p06zh-scientific-process001/process-tests002/pytest.xml",
+      "bytes": 6839,
+      "sha256": "ea7487d05b3ac27fe7909a8b05d3656b1087c148390ae1fcf4383b1e832c76e6"
+    },
+    {
+      "path": "build/p06zh-scientific-process001/policy001.json",
+      "bytes": 212,
+      "sha256": "816dd81a41c934b67f6d3691b8d492362c2705f72b1bd1621ee7f708c1398647"
+    },
+    {
+      "path": "build/p06zh-scientific-process001/cleanup001.json",
+      "bytes": 35679,
+      "sha256": "1bb67da2d9137189619c96b83c7e0f01ed5ba895e484fe309ac75fb8470a456b"
+    }
+  ],
+  "processing_core_unchanged": true,
+  "actual_paired_menu_operations": [
+    "add",
+    "smooth"
+  ],
+  "new_focused_python_cases": 42,
+  "native_windows_suites": 16,
+  "source_cases": 337,
+  "installed_cases": 357,
+  "remaining": [
+    "Automatic recorder append for direct scientific menu actions; explicit Keep edited program currently uses existing capture semantics",
+    "Dedicated scientific geometry/conversion/auxiliary-image/binary-settings adapters and true volume execution",
+    "Complete target/parameter/reference/resource/platform/recording/release coverage for each kernel and family; prior filesystem gaps remain assigned",
+    "Continue every editor/configuration/selection/filter/slicing/viewing and commercially eligible Fiji requirement; All99 remains42/57/0, Source901 unchanged"
+  ],
+  "profile_accepted": false,
+  "family_completed": false,
+  "broad_goal": "active"
+}

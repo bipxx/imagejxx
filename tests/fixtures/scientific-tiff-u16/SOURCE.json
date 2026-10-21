@@ -1,0 +1,593 @@
+{
+  "schema_version": 1,
+  "origin": "Original independent Python struct carriers; no ImageJ/Fiji code incorporated.",
+  "pixel_equation": "10000*t+1000*c+100*z+y*X+x",
+  "file_page_order": "((t*Z)+z)*C+c",
+  "files": [
+    {
+      "file": "little.tif",
+      "bytes": 3920,
+      "sha256": "f18d65370d4506b981595ed7a804bb30ff154df542152f0e9a244be4154e5618",
+      "valid": true,
+      "reason": "",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "big.tif",
+      "bytes": 3920,
+      "sha256": "9e0f6c73f0703b010781932964416bbe9fe71e28f37f07829f3b2f3ad1839821",
+      "valid": true,
+      "reason": "",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "defaults.tif",
+      "bytes": 116,
+      "sha256": "c5865779efc1945ed75db444d28f0545f8669dec7828bac8c53239d24fabbb64",
+      "valid": true,
+      "reason": "",
+      "shape": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ]
+    },
+    {
+      "file": "shared-values.tif",
+      "bytes": 3912,
+      "sha256": "d3b0bead254d40feda74b906381def52c7216d911732d23aa30c5f7fc62f876a",
+      "valid": true,
+      "reason": "",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "imagej-description.tif",
+      "bytes": 3952,
+      "sha256": "8637060e9e93d7fd507c1e7cd5d5e23af42082dc1edebdd7d97160b4f488c8e4",
+      "valid": true,
+      "reason": "",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "loop-true.tif",
+      "bytes": 3952,
+      "sha256": "9a809970acd66e9a390fc1f6ef3c6ae3cdcc26a9120bb90780665c93db1afc71",
+      "valid": false,
+      "reason": "loop-true",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "display-min-only.tif",
+      "bytes": 3944,
+      "sha256": "57db80a66997e6519ac02466b2c53edc01a6460c8737f9ce15ce09bf210eeb41",
+      "valid": false,
+      "reason": "display-min-only",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "display-max-only.tif",
+      "bytes": 3944,
+      "sha256": "1fb1f0f31ec8e83c42f5433dc2fdd1f3809810c229f61c1f643b0609a5f85e0a",
+      "valid": false,
+      "reason": "display-max-only",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "display-order.tif",
+      "bytes": 3954,
+      "sha256": "44a9e3883dcd4db57a3de5bfee9b97d40a68a5fa9aafc69ce90f2d29a76ada99",
+      "valid": false,
+      "reason": "display-order",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "display-nonfinite.tif",
+      "bytes": 3952,
+      "sha256": "870571e9a2c274a9b0d4efd10f3f1dd81a4aeba882a0112d3d4a2fe6d14197e1",
+      "valid": false,
+      "reason": "display-nonfinite",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "display-range.tif",
+      "bytes": 3954,
+      "sha256": "021afc2476bb16f5ffa06021c82cdedff959cfa1fab9b54cda25d66f996c5d54",
+      "valid": false,
+      "reason": "display-range",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "unit-escape.tif",
+      "bytes": 3952,
+      "sha256": "36b0ba6bc66e98a50da1f08157158dbfca1a2c2971cab317bfc05daf240ddaa9",
+      "valid": false,
+      "reason": "unit-escape",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "other-escape.tif",
+      "bytes": 3958,
+      "sha256": "973bb18479f9eeaa525aa1f19cce0e7c4c532a1aecebdd0a9fe0b2dc74f8feaa",
+      "valid": false,
+      "reason": "other-escape",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "bits.tif",
+      "bytes": 3920,
+      "sha256": "1b08660643b55cb687d0e5a752ade768e46466a4aa5e7ea8eef470b7fe10225b",
+      "valid": false,
+      "reason": "bits.tif",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "compression.tif",
+      "bytes": 3920,
+      "sha256": "dbc10b6e898321107553d41cd0049f47d29e573cb26b5de78da42abd7bb4f66f",
+      "valid": false,
+      "reason": "compression.tif",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "white.tif",
+      "bytes": 3920,
+      "sha256": "43ed8924b6288a87c9df9a3011b46d5c87cf40c0ebe3a1203ad3ae16b111bd51",
+      "valid": false,
+      "reason": "white.tif",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "orientation.tif",
+      "bytes": 3920,
+      "sha256": "ea1e9f20aeda8f9a6e3107f2e4bba722932bb9cc36c94667d01a7cb57548e5b0",
+      "valid": false,
+      "reason": "orientation.tif",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "rgb.tif",
+      "bytes": 3920,
+      "sha256": "ded292a0e3290f88f879ac0011f24abf89a9b75ae89e6b261dbe5733d95e93e5",
+      "valid": false,
+      "reason": "rgb.tif",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "planar.tif",
+      "bytes": 3920,
+      "sha256": "fc578fb5bfa608c3be80e90b5ab8dd815fdfd8880aebfd7243c42396940b3b6d",
+      "valid": false,
+      "reason": "planar.tif",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "float.tif",
+      "bytes": 3920,
+      "sha256": "07d54711595e5814328ebff318b45754cc6cd798038d6c2edad31e454f4eef9c",
+      "valid": false,
+      "reason": "float.tif",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "bigtiff.tif",
+      "bytes": 3920,
+      "sha256": "60f28667e80322dad449c340e4e5957d4d9ab204fd321ef7d7c1e763a4189507",
+      "valid": false,
+      "reason": "bigtiff.tif",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "unknown-tag.tif",
+      "bytes": 3920,
+      "sha256": "38b7af9e2ec5a271fdface0261322280d975a93a6390c9cdeccdb0581c481ca8",
+      "valid": false,
+      "reason": "unknown-tag.tif",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "ifd-loop.tif",
+      "bytes": 3920,
+      "sha256": "ba7c90dc1268f28e3d051e4bf7af2f0ab60ea0b71cca57dd45bf192f37500896",
+      "valid": false,
+      "reason": "ifd-loop.tif",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "truncated-value.tif",
+      "bytes": 3920,
+      "sha256": "48d923cdd3c3740d92eb262aa0a9e5bf10605f214fc00dc4571c166a15783e4d",
+      "valid": false,
+      "reason": "truncated-value.tif",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "unterminated.tif",
+      "bytes": 3920,
+      "sha256": "add10cb67021e0cb18cdee9c2202f333c58fc18259a5bf474d4ddbe799fa387b",
+      "valid": false,
+      "reason": "unterminated.tif",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "interior-nul.tif",
+      "bytes": 3920,
+      "sha256": "4cbd9f04ffda789d75ec140c1ad2e6d1d7cbfda73f41b0542fbaf8e1a990506e",
+      "valid": false,
+      "reason": "interior-nul.tif",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "zero-page-total.tif",
+      "bytes": 3920,
+      "sha256": "0acea00bd1aef5a31299584a95a43626583649f0d5930d902267094ef7d7ce46",
+      "valid": false,
+      "reason": "explicit PageNumber total zero",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "strip-byte-count.tif",
+      "bytes": 3920,
+      "sha256": "33afae0b6f890763f4603bdda668e4fd844292b5de925594b68b3e613ee1d98f",
+      "valid": false,
+      "reason": "strip-byte-count.tif",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "overlapping-pixels.tif",
+      "bytes": 3920,
+      "sha256": "9776eed97f5a568c7b6869e30ca2c47a7cd0c4cc51116b2e79a1d29d9fd32e3f",
+      "valid": false,
+      "reason": "overlapping-pixels.tif",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "pixels-in-metadata.tif",
+      "bytes": 3920,
+      "sha256": "038c19b14a6802e56758759e659c90bf00a0541eed764e46238db67ec254841c",
+      "valid": false,
+      "reason": "pixels-in-metadata.tif",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "heterogeneous.tif",
+      "bytes": 3920,
+      "sha256": "aa339181c2e1cdce49475dced3d7b372e2e2f443a850b6280a6ae6e956b5d723",
+      "valid": false,
+      "reason": "heterogeneous.tif",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "unknown-key.tif",
+      "bytes": 3828,
+      "sha256": "a87b91ababf07a77b24052232798b7f2e0bbd4a4dbdce922577ac4ad954b23d4",
+      "valid": false,
+      "reason": "unknown-key.tif",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "duplicate-key.tif",
+      "bytes": 3840,
+      "sha256": "6b63af5c1650220eea957959810e3048032a21590d8313c18e58b469bf73f88f",
+      "valid": false,
+      "reason": "duplicate-key.tif",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "dimensions.tif",
+      "bytes": 3876,
+      "sha256": "d2d82dd8652983a642e9aeb5a48c0ef8596ce650d53c8b7b90971ef034c1f9e2",
+      "valid": false,
+      "reason": "dimensions.tif",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "hidden-images.tif",
+      "bytes": 126,
+      "sha256": "de98d23099756347d76602510db0793a06a47b38dd6d2a42ba3a693ebb5a031f",
+      "valid": false,
+      "reason": "hidden-images.tif",
+      "shape": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ]
+    },
+    {
+      "file": "later-text.tif",
+      "bytes": 4066,
+      "sha256": "ac3a6f5c86712bdbd81f1aa27f6c261822017a7da68c738efa67a0fed9a63370",
+      "valid": false,
+      "reason": "later-text.tif",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "partial-calibration.tif",
+      "bytes": 3896,
+      "sha256": "c5e147f354b84269f8f05fd4c56292c0e5a1ed7dd0c003ed3edab4a242e9cbb6",
+      "valid": false,
+      "reason": "partial-calibration.tif",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "conflicting-calibration.tif",
+      "bytes": 3928,
+      "sha256": "e3e43f20432458f1f437497614eb6bc3c8a76fa2608444dfcd54487cca85f8af",
+      "valid": false,
+      "reason": "conflicting-calibration.tif",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    },
+    {
+      "file": "typed-overlap.tif",
+      "bytes": 3920,
+      "sha256": "a5f6aac4f9040f574b61574ec6ddad9f96ee967c0bb519aa2dedd6317bd657e3",
+      "valid": false,
+      "reason": "typed-overlap.tif",
+      "shape": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        1
+      ]
+    }
+  ]
+}

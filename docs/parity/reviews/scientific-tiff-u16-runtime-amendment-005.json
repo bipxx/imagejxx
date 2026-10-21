@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "id": "scientific-tiff-u16-runtime-amendment-005",
+  "format_id": "F.G080.tiff-imagej-u16-uncompressed-ifd-czt-v1",
+  "state": "adopted_runtime_qualified_installed",
+  "reason": "Untouched plain ImageJ1.54r FileSaver channel-only/time-only stacks omit hyperstack=true; original strict reader refused two actual exports that ImageJ itself reopens with the declared axes.",
+  "supersedes_clauses": [
+    "entry-001 axis_contract.description_grammar.hyperstack only"
+  ],
+  "admission": "For C>1 or T>1: explicit hyperstack=true remains valid; an absent flag is also valid only when exactly one of C/Z/T is non-singleton. Explicit false for C/T remains refused, as does absence with multiple non-singleton axes. Explicit dimensions and full IFD-count agreement remain mandatory; missing singleton dimensions still enter the existing default ledger.",
+  "retained_constraints": "All tag/sample/layout/count/range/metadata/resource/source-identity checks unchanged. No C/S merging, hidden-page expansion or inference from sample payloads. Writer still emits hyperstack=true and every C/Z/T count.",
+  "provenance": "Original source_description preserved; absent hyperstack enters defaulted_fields. No mutation or sanitization of actual FileSaver bytes.",
+  "singleton_depth": "Actual FileSaver omits spacing for one-plane images even when its source pixelDepth is 2.5; both ImageJ reopening and native imports default it to 1. Native/Python canonical exports retain explicit 2.5 and ImageJ reads it. The input omission is exposed in the default ledger, not presented as preserved source metadata.",
+  "source_evidence": [
+    {
+      "path": "build/references/roi-style-imagej154r/sources/ij/ImagePlus.java",
+      "bytes": 108208,
+      "sha256": "477e3f5f913b9c42feb68ea35d21836d45fd56920cccbfc5719a06822cbcfab9"
+    },
+    {
+      "path": "build/references/roi-style-imagej154r/sources/ij/io/FileSaver.java",
+      "bytes": 25452,
+      "sha256": "0e7165c5d230b4c877b45211703b07670820591e0bf45039ed34100d13eaa8ea"
+    },
+    {
+      "path": "build/references/roi-style-imagej154r/sources/ij/io/FileOpener.java",
+      "bytes": 20633,
+      "sha256": "983e1ac77a11f94da0d5b705a7f1010b7e99fa50d19673b85ea9de88e6c7aca7"
+    }
+  ],
+  "source_anchors": [
+    "ImagePlus.isHyperStack/getNDimensions",
+    "FileSaver.getDescriptionString: hyperstack only if isHyperStack; spacing only if nImages>1"
+  ],
+  "original_failure": {
+    "path": "build/p06x-tiff-runtime001/runtime002/run001.json",
+    "bytes": 108692,
+    "sha256": "de2afbc829abfb2ea5d1463ae070b72e409266c6481252d25c7e9abc07c4cf76"
+  },
+  "original_exports": [
+    {
+      "path": "build/p06x-tiff-runtime001/runtime002/imagej001/t1-c3-z1.tif",
+      "bytes": 694,
+      "sha256": "a22a5286dc61fe2805673b15fee7134fef1a2973fc42bd6bdb1386d95c9a19f0"
+    },
+    {
+      "path": "build/p06x-tiff-runtime001/runtime002/imagej001/t2-c1-z1.tif",
+      "bytes": 506,
+      "sha256": "5ca0e7baab5b236ecdbea97d94937f2104e1d311ba9664fa49b81ed97401eaf7"
+    }
+  ],
+  "qualified_runtime": {
+    "path": "build/p06x-tiff-runtime001/runtime004/run001.json",
+    "bytes": 109670,
+    "sha256": "2ff4a29ddae086cb4c9fb96f05bea3071ccae4c00886d44549053b6a86cb745a"
+  },
+  "qualified_exports": [
+    {
+      "path": "build/p06x-tiff-runtime001/runtime004/imagej001/t1-c1-z1.tif",
+      "bytes": 282,
+      "sha256": "8f55662bc8f9d2ed50fc52e9f00ac85ceb6043e829783f5bac095d2e9899e75f"
+    },
+    {
+      "path": "build/p06x-tiff-runtime001/runtime004/imagej001/t1-c1-z2.tif",
+      "bytes": 506,
+      "sha256": "336e4c900ffa40150ef753e7340c3649057206c3498f92ffe588cdc87ec88580"
+    },
+    {
+      "path": "build/p06x-tiff-runtime001/runtime004/imagej001/t1-c3-z1.tif",
+      "bytes": 694,
+      "sha256": "a22a5286dc61fe2805673b15fee7134fef1a2973fc42bd6bdb1386d95c9a19f0"
+    },
+    {
+      "path": "build/p06x-tiff-runtime001/runtime004/imagej001/t1-c3-z2.tif",
+      "bytes": 1277,
+      "sha256": "0501a62a16186ede9f41464d751cc770648216d744db5bb0fd6aecbecb08177d"
+    },
+    {
+      "path": "build/p06x-tiff-runtime001/runtime004/imagej001/t2-c1-z1.tif",
+      "bytes": 506,
+      "sha256": "5ca0e7baab5b236ecdbea97d94937f2104e1d311ba9664fa49b81ed97401eaf7"
+    },
+    {
+      "path": "build/p06x-tiff-runtime001/runtime004/imagej001/t2-c1-z2.tif",
+      "bytes": 903,
+      "sha256": "a2f88038f410dd9c1ce6fbdb2dfbbc8980e39a482e5ba42341498e8dcdfa5469"
+    },
+    {
+      "path": "build/p06x-tiff-runtime001/runtime004/imagej001/t2-c3-z1.tif",
+      "bytes": 1277,
+      "sha256": "10a68dfc87c229363094202b9c26f4eca55b1c2bfafbb1d710d96e5714275f1d"
+    },
+    {
+      "path": "build/p06x-tiff-runtime001/runtime004/imagej001/t2-c3-z2.tif",
+      "bytes": 2403,
+      "sha256": "66270e139e9047ac7691999ed5d50880724d90d28f90cbab151526a495add0ec"
+    }
+  ],
+  "native_boundaries": {
+    "path": "tests/fixtures/scientific-tiff-single-axis/SOURCE.json",
+    "bytes": 2594,
+    "sha256": "cc3ac5c3b715705a906d6b9924ae55789c302af8e9eafa5d96714968dac67882"
+  },
+  "profile_accepted": false,
+  "family_completed": false
+}

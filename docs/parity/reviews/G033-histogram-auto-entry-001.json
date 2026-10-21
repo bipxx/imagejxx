@@ -1,0 +1,777 @@
+{
+  "schema": "imagejxx.parity.histogram-auto-entry",
+  "schema_version": 1,
+  "id": "G057.Auto.DatasetHistogram.entry.001",
+  "state": "source_reviewed_reference_and_policy_adoption_required",
+  "not_an_acceptance_manifest": true,
+  "scope": "One bounded headless Dataset/area-ROI histogram service delivered together with its first shared Dear ImGui Auto range consumer. C++ core, thin Python API, native launcher and Python launcher use the same accumulator and resolved action. No standalone-kernel exit or whole G033/G057/G069 claim.",
+  "ownership": {
+    "primary_family": "G057",
+    "g033_consumer": "CD13 GUI Auto-contrast",
+    "supporting_families": [
+      "G069",
+      "G007",
+      "G085"
+    ],
+    "existing_assignment": "docs/parity/reviews/G033-option-assignments.json#/assignments/12",
+    "adjacent_obligations_retained": [
+      "CD12 complete Reset/unsigned16 contexts",
+      "CD14 histogram/log/slider and W&L workflows",
+      "CD15 Color Balance",
+      "CD16 calibrated Set/propagation/unsigned16 preferences",
+      "CD37 recording",
+      "CD38 settings lifetimes",
+      "CD40 limits"
+    ]
+  },
+  "consumed_documents": [
+    {
+      "path": "docs/parity/reviews/G033-channel-display-checklist.md",
+      "bytes": 46451,
+      "sha256": "800973c1b171f7897fa3473e7e0c6dd57e9bb4d1e0065e50f3356d4a39f4629a"
+    },
+    {
+      "path": "docs/parity/reviews/G033-option-assignments.json",
+      "bytes": 380963,
+      "sha256": "a9ee15695757ce9cac90dd3741ab9c88ef91cd404e3ca4935d52f5b3ef9493f7"
+    },
+    {
+      "path": "docs/parity/reviews/P06c3-min-adoption-001.json",
+      "bytes": 12988,
+      "sha256": "7020850a0678b3110349543d419f9b5c530d4eff8c2f3f1055c2c80a64f6b77f"
+    },
+    {
+      "path": "docs/parity/reviews/P06c3-min-adoption-002.json",
+      "bytes": 2304,
+      "sha256": "3af40f5c27c7747727752c9f45f831da3e7a963e3b39ba05f720b93e7d9c24f4"
+    },
+    {
+      "path": "docs/packets/P05k-manual-threshold-display.md",
+      "bytes": 13183,
+      "sha256": "6f4c578ba308c6d8681c7c0dddd7b61b86c4023fb4fc83a85a814ae6dda97e6e"
+    },
+    {
+      "path": "build/references/composite-min-imagej154r-001/prepare-001/verified-inputs.json",
+      "bytes": 4966,
+      "sha256": "ec881a3086de2afeea2815422893fac6cb523fe15b6cd322a528d036d434b3ce"
+    },
+    {
+      "path": "scripts/capture_composite_max_reference.py",
+      "bytes": 65651,
+      "sha256": "210cb868a858857a37a579fc69674eeaab2bc03b7780cc4e1086d18c788b1ef0"
+    }
+  ],
+  "consumed_native_seams": [
+    {
+      "path": "include/imagejxx/dataset.hpp",
+      "bytes": 8015,
+      "sha256": "4744b8097ac2794b358d4e625d996a06d3c1a9aa348c3f121a6b7b3ab9182eb7"
+    },
+    {
+      "path": "include/imagejxx/document.hpp",
+      "bytes": 13148,
+      "sha256": "abafa9bece292df8fc1ddc46dcf4cfbd70a3890504325507778bfcab54522d98"
+    },
+    {
+      "path": "include/imagejxx/targets.hpp",
+      "bytes": 4070,
+      "sha256": "2407f136a3d2ea0030a300c20ee2001d29b635a07487e77ca61d1fe03dd5d3c9"
+    },
+    {
+      "path": "src/native/targets.cpp",
+      "bytes": 18531,
+      "sha256": "7707fbb75b9376a2d856a578e9f290336c4dd2e835c428b6e8330c2ff69b37d5"
+    },
+    {
+      "path": "include/imagejxx/image.hpp",
+      "bytes": 7892,
+      "sha256": "ea5994381ec1226fba24ab447d89313770b44bba43b3fb0dcad531f36683a9c3"
+    },
+    {
+      "path": "src/native/analysis.cpp",
+      "bytes": 14316,
+      "sha256": "a59ccc54da3db518a02dfd6181969b1a59f5bacde9eb553cf01ba66a3de37a1a"
+    },
+    {
+      "path": "include/imagejxx/manual_threshold.hpp",
+      "bytes": 3344,
+      "sha256": "c4ddc32237b42a8b9b904a8d2ef7c927a2a3c59475de9b4cee7bf4e43888465a"
+    },
+    {
+      "path": "src/native/manual_threshold.cpp",
+      "bytes": 13015,
+      "sha256": "8ea2f6e95623d3a9d362ee75d7aaf67b9b32ef2969a0a7c16411bc1b00629825"
+    },
+    {
+      "path": "include/imagejxx/channel_display.hpp",
+      "bytes": 8083,
+      "sha256": "b38d0d74d418a8ad3d01e3b9ddc113da6d1cf4dbef1f9dc53bd975ad8309ca25"
+    },
+    {
+      "path": "src/native/channel_display.cpp",
+      "bytes": 35598,
+      "sha256": "3183c0f82aec87eda7f402997d8a44cafce6f3e2d0a48033f456e2ec4fdd5cd4"
+    },
+    {
+      "path": "include/imagejxx/channel_display_command.hpp",
+      "bytes": 5313,
+      "sha256": "380a2102d75352bde0ea42fdcbcc03b629e620f0044f3d77f0cd2feeba900f8f"
+    },
+    {
+      "path": "src/native/channel_display_command.cpp",
+      "bytes": 33866,
+      "sha256": "83aabffd1cde56d6f0581d65e6d2b5b12146266374cb9d6c3fdcb5047f45067d"
+    },
+    {
+      "path": "src/native/channel_display_bindings.cpp",
+      "bytes": 15745,
+      "sha256": "ab6ab45361dea12c2285dd5dd07fa8e939f0d1984a128eaa95b214a608fb08da"
+    },
+    {
+      "path": "src/desktop/channel_display_panel.hpp",
+      "bytes": 2209,
+      "sha256": "dcda06e614655b743d51121144205db545455030b4151214eca11cc30987f940"
+    },
+    {
+      "path": "src/desktop/channel_display_panel.cpp",
+      "bytes": 20113,
+      "sha256": "742b5968fb1157655122d93f60e0d1e340e7a6a2407d8d052d2379e668b23c24"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 400358,
+      "sha256": "a6debcd25c3b9a7baacf254bb5c207fae0fb3ac64113ed5c47bf194731ee8930"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 43237,
+      "sha256": "2eae59300a2f03ab9d60fa324400a42d60a21fb1a2ed716a28d58201c5c2221a"
+    },
+    {
+      "path": "src/imagejxx/ui/app.py",
+      "bytes": 20812,
+      "sha256": "f3ac361affb2af26dabf0a3a3171614d8aa6c529a808025fb8f689ddab73cea5"
+    }
+  ],
+  "reference": {
+    "version": "1.54r",
+    "commit": "62db90a269cccc1ac79f658e4602043214ed055b",
+    "archive": {
+      "path": "build/references/downloads/imagej-62db90a269cccc1ac79f658e4602043214ed055b.zip",
+      "bytes": 6146010,
+      "sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665"
+    },
+    "member_prefix": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/",
+    "source_members": [
+      {
+        "relative_path": "ij/plugin/frame/ContrastAdjuster.java",
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/plugin/frame/ContrastAdjuster.java",
+        "bytes": 42982,
+        "sha256": "e6cc033f00052659b530cbba144afd6d312721ba01ae39080fcb3700befb0de2",
+        "inspected_local_copy": "build/references/binary-imagej154r/sources/ij/plugin/frame/ContrastAdjuster.java",
+        "local_archive_byte_match": true
+      },
+      {
+        "relative_path": "ij/plugin/ContrastEnhancer.java",
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/plugin/ContrastEnhancer.java",
+        "bytes": 10280,
+        "sha256": "38f818fbfb56d2a515251edc281326b7491d12d338dee49d5d7a015a3b3ba101",
+        "inspected_local_copy": "build/references/binary-imagej154r/sources/ij/plugin/ContrastEnhancer.java",
+        "local_archive_byte_match": true
+      },
+      {
+        "relative_path": "ij/process/ImageStatistics.java",
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ImageStatistics.java",
+        "bytes": 8827,
+        "sha256": "061da4222f69750416d0df49a9d9b7f1323420fa0eb7eb4173df5e6d922cfa76",
+        "inspected_local_copy": "build/references/binary-imagej154r/sources/ij/process/ImageStatistics.java",
+        "local_archive_byte_match": true
+      },
+      {
+        "relative_path": "ij/process/ByteStatistics.java",
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ByteStatistics.java",
+        "bytes": 5124,
+        "sha256": "cfdd0a947fe4e4826382bef13f4a20a629960b510abc39ec6b9604f11356f5f7",
+        "inspected_local_copy": "build/references/binary-imagej154r/sources/ij/process/ByteStatistics.java",
+        "local_archive_byte_match": true
+      },
+      {
+        "relative_path": "ij/process/ShortStatistics.java",
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ShortStatistics.java",
+        "bytes": 6375,
+        "sha256": "18d8f1b5f65ab22aee4d94fec328fc72618701b58ec2ec7c2cf27948cc5598a2",
+        "inspected_local_copy": "build/references/binary-imagej154r/sources/ij/process/ShortStatistics.java",
+        "local_archive_byte_match": true
+      },
+      {
+        "relative_path": "ij/process/FloatStatistics.java",
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/FloatStatistics.java",
+        "bytes": 7057,
+        "sha256": "3f8617365532a1cac096ef4509180274c2391a3df3a85e431c7ed533601180f3",
+        "inspected_local_copy": "build/references/binary-imagej154r/sources/ij/process/FloatStatistics.java",
+        "local_archive_byte_match": true
+      },
+      {
+        "relative_path": "ij/process/ImageProcessor.java",
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ImageProcessor.java",
+        "bytes": 95523,
+        "sha256": "f98e87d25eb6b1f2c5d8557b73dd33e36fef0494d903d6d250206371dccc279c",
+        "inspected_local_copy": "build/references/binary-imagej154r/sources/ij/process/ImageProcessor.java",
+        "local_archive_byte_match": true
+      },
+      {
+        "relative_path": "ij/process/ByteProcessor.java",
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ByteProcessor.java",
+        "bytes": 40502,
+        "sha256": "fc23c95778bd7154eba1ea56d9ea943e7d1d9ea568fe20cf9bf9c6db1db3ad94",
+        "inspected_local_copy": "build/references/binary-imagej154r/sources/ij/process/ByteProcessor.java",
+        "local_archive_byte_match": true
+      },
+      {
+        "relative_path": "ij/process/ShortProcessor.java",
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ShortProcessor.java",
+        "bytes": 40446,
+        "sha256": "7484082e91c7095a3c79984c74b4dafa8b6d2912ed3b862e28dd331c8ba3024d",
+        "inspected_local_copy": "build/references/binary-imagej154r/sources/ij/process/ShortProcessor.java",
+        "local_archive_byte_match": true
+      },
+      {
+        "relative_path": "ij/process/FloatProcessor.java",
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/FloatProcessor.java",
+        "bytes": 35354,
+        "sha256": "0f52a157fe99e9a48ce2c9356fc2c3c435dc74f48e45a575171e60deb694ccf5",
+        "inspected_local_copy": "build/references/binary-imagej154r/sources/ij/process/FloatProcessor.java",
+        "local_archive_byte_match": true
+      },
+      {
+        "relative_path": "ij/ImagePlus.java",
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/ImagePlus.java",
+        "bytes": 108208,
+        "sha256": "477e3f5f913b9c42feb68ea35d21836d45fd56920cccbfc5719a06822cbcfab9",
+        "inspected_local_copy": "build/references/binary-imagej154r/sources/ij/ImagePlus.java",
+        "local_archive_byte_match": true
+      },
+      {
+        "relative_path": "ij/CompositeImage.java",
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/CompositeImage.java",
+        "bytes": 21489,
+        "sha256": "7f97ef93b52967cfadda37fb8c26513de283787a93a918d3e54260e43e432a7f",
+        "inspected_local_copy": "build/references/binary-imagej154r/sources/ij/CompositeImage.java",
+        "local_archive_byte_match": true
+      },
+      {
+        "relative_path": "ij/measure/Calibration.java",
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/measure/Calibration.java",
+        "bytes": 14955,
+        "sha256": "2d44c799739c71b1fcdfcf6a5b42a86b65c46e4f6dca9b2cd29b6a479c67f07a",
+        "inspected_local_copy": "build/references/binary-imagej154r/sources/ij/measure/Calibration.java",
+        "local_archive_byte_match": true
+      },
+      {
+        "relative_path": "ij/gui/Roi.java",
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/Roi.java",
+        "bytes": 90700,
+        "sha256": "200ad9f501a5860fe1486a3d2a8ed6cf6f82f7c7562a81e11d91ee7b7a04497e",
+        "inspected_local_copy": "build/references/binary-imagej154r/sources/ij/gui/Roi.java",
+        "local_archive_byte_match": true
+      },
+      {
+        "relative_path": "ij/gui/ImageCanvas.java",
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/ImageCanvas.java",
+        "bytes": 55868,
+        "sha256": "ab27a57aa060ca8e297d59b09e478406ebd7a3bbd5d6a741bc1ab56c7cc553ab",
+        "inspected_local_copy": "build/references/binary-imagej154r/sources/ij/gui/ImageCanvas.java",
+        "local_archive_byte_match": true
+      },
+      {
+        "relative_path": "ij/gui/ImageWindow.java",
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/ImageWindow.java",
+        "bytes": 23195,
+        "sha256": "ca2cf35410411d8b53a02747ad2a5314598b9e79d201c9e632fef4b7aef5810b",
+        "inspected_local_copy": "build/references/binary-imagej154r/sources/ij/gui/ImageWindow.java",
+        "local_archive_byte_match": true
+      },
+      {
+        "relative_path": "ij/gui/StackWindow.java",
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/StackWindow.java",
+        "bytes": 11082,
+        "sha256": "333063c0a94206e656c1a67d72e7482397336644c911fc659f73539067146b57",
+        "inspected_local_copy": "build/references/binary-imagej154r/sources/ij/gui/StackWindow.java",
+        "local_archive_byte_match": true
+      },
+      {
+        "relative_path": "ij/plugin/frame/Recorder.java",
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/plugin/frame/Recorder.java",
+        "bytes": 34262,
+        "sha256": "fe00d53a44792d545d491f1d5f8d469ee42cff3e782190f5b085fe9f0db3fdfb",
+        "inspected_local_copy": "build/references/binary-imagej154r/sources/ij/plugin/frame/Recorder.java",
+        "local_archive_byte_match": true
+      }
+    ],
+    "reused_environment": {
+      "identity_source": "build/references/composite-min-imagej154r-001/prepare-001/verified-inputs.json",
+      "source_tree": {
+        "members": 519,
+        "bytes": 17648082,
+        "canonical_sha256": "e2e5b329add657c1aedcd84a348a4906f8ea1539e8d093b7886ee9eef21f82fa"
+      },
+      "runtime_archive_sha256": "8e33a11c7e79eb02c055bcee40de806d16e59f0b42e58c4689bd23eb47d990bb",
+      "runtime_tree": {
+        "members": 581,
+        "bytes": 351340146,
+        "canonical_sha256": "4b6ec914bf69cd13f10b85d4bc84ea905a05daa69a612f6cba3457f9568ca5e7"
+      },
+      "qualified_classes": {
+        "members": 471,
+        "bytes": 4152285,
+        "canonical_sha256": "641185b9b829ace48500be8f23653396ad52905831b8d3bfe4349a7fed69be71"
+      },
+      "reuse_boundary": "Rehash consumed classes, loaded origins and java/javac executables before a new excluded prepare. Reuse their established identities, not their runtime acceptance for this new consumer. No download or shared class/cache mutation. Hidden StackWindow/ImageCanvas mechanics may be reused from the pinned Max host observer; a real ContrastAdjuster/Recorder event loop is new feasibility work."
+    },
+    "commercial_boundary": "Read-only source-derived behavior is not incorporation or fresh commercial approval. Reuse the reviewed ImageJ reference provenance only within its existing scope. Independently authored native code must pass the ordinary source/dependency/package review. No Java source, macro, class, LUT asset or Fiji plugin is added to shipped product by this entry. Noncommercial/research-only/unlicensed/incompatible incorporation remains excluded; pending Fiji review is not acceptance.",
+    "new_runtime_or_capture_in_this_entry": false
+  },
+  "source_observations": [
+    {
+      "id": "S01.raw-and-roi",
+      "anchors": [
+        "ij/plugin/frame/ContrastAdjuster.java:839-888",
+        "ij/ImagePlus.java:1107-1117"
+      ],
+      "fact": "Auto calls getRawStatistics on the current processor. Area ROI is applied; absent or non-area ROI resets to the whole processor plane. The statistics call supplies null intensity calibration and excludes LIMIT, so display LUTs, calibrated value labels and current threshold do not filter its raw samples. Spatial calibration does not weight histogram counts."
+    },
+    {
+      "id": "S02.auto-decision",
+      "anchors": [
+        "ij/plugin/frame/ContrastAdjuster.java:22",
+        "ij/plugin/frame/ContrastAdjuster.java:839-879"
+      ],
+      "fact": "Use 256 bins. Let N be raw statistics pixelCount, limit=floor(N/10), and divisor be5000 when previous divisor<10, otherwise floor(previous/2). Threshold=floor(N/divisor). A bin with count>limit is treated as0; a boundary bin qualifies only when the remaining count>threshold. Scan low from0 and high from255. Candidate range is histMin+[hmin,hmax]*binSize. Equal candidates use stats.min/max; hmax<hmin invokes Reset and returns. This is a per-bin rule, not cumulative percentile clipping.",
+      "divisor_cycle": [
+        0,
+        5000,
+        2500,
+        1250,
+        625,
+        312,
+        156,
+        78,
+        39,
+        19,
+        9,
+        5000
+      ]
+    },
+    {
+      "id": "S03.byte-short-float-bins",
+      "anchors": [
+        "ij/process/ImageStatistics.java:59-60,117-142",
+        "ij/process/ByteStatistics.java:16-39",
+        "ij/process/ShortStatistics.java:35-45,66-115",
+        "ij/process/FloatStatistics.java:49-108"
+      ],
+      "fact": "U8 raw histogram is256 exact unsigned integer bins with histMin0/binSize1. U16 raw statistics first obtains unsigned integer occupancy, then normally spans observed ROI min..max using binSize=(max-min+1)/256 and truncating positive scaled indices; upper indices clamp to255. F32 normally spans observed ROI finite min..max with binSize=(max-min)/256, includes both endpoints and clamps the final bin. F32 comparisons exclude NaN and infinities under default finite thresholds. Constant and no-finite source paths need actual observations before native adoption. These are not manual threshold's fixed full-U16256-bin semantics."
+    },
+    {
+      "id": "S04.repetition-lifetime",
+      "anchors": [
+        "ij/plugin/frame/ContrastAdjuster.java:337-349,352-429,609-626,1184-1210,1247-1259"
+      ],
+      "fact": "Repeated state is the ContrastAdjuster instance autoThreshold. Reset and setupNewImage set it0. setupNewImage is selected by changed image ID/type/linear currentSlice; public update or image-window activation can force it by clearing previousImageID. ROI-only changes and numeric/LUT edits are not an explicit autoThreshold assignment in these methods. Do not infer precise user-event resets from source alone; observe setup invocations, previous fields and actual divisor before/after. Closing/reopening a tool creates a new cycle."
+    },
+    {
+      "id": "S05.raw-range-vs-display",
+      "anchors": [
+        "ij/CompositeImage.java:683-707",
+        "ij/process/ShortProcessor.java:267-285",
+        "ij/process/FloatProcessor.java:123-141"
+      ],
+      "fact": "ContrastAdjuster computes double candidate bounds. Composite LUTs retain passed raw doubles while integer range getters round; U16 processors round endpoints, F32 processor endpoints narrow to binary32. Capture candidate fields, stored LUT bounds, processor bounds and reported range independently. Native requested double ranges and existing renderer endpoint policies must not be conflated with displayed labels."
+    },
+    {
+      "id": "S06.target-propagation",
+      "anchors": [
+        "ij/plugin/frame/ContrastAdjuster.java:1173-1179",
+        "ij/CompositeImage.java:112-119,311-320"
+      ],
+      "fact": "Normal Auto adjusts current C at current T/Z. Shift or Color Balance All requests updateAllChannelsAndDraw. In Composite mode the sync path copies the active computed processor min/max to every C; it does not independently histogram each channel. Color/Gray mode uses active-channel redraw. Full mode/projection timing and rounded bounds require hosted observations."
+    },
+    {
+      "id": "S07.unsigned16-and-calibration",
+      "anchors": [
+        "ij/plugin/frame/ContrastAdjuster.java:368-378,609-626,652-657,890-925",
+        "ij/ImagePlus.java:3157-3169",
+        "ij/CompositeImage.java:710-725"
+      ],
+      "fact": "Unsigned16 process range settings can affect histogram plotting and fallback Reset; they do not replace Auto's getRawStatistics call. Ordinary ImagePlus Reset distinguishes signed16 calibration; Composite Reset with nonzero default16 range can set every C to0..2^bits-1. Auto's accumulation is raw even when labels/Set use intensity calibration. Raw/signed storage, intensity mapping and spatial calibration are separate. The existing native live-XY Reset is an owned different policy and cannot silently stand in for every upstream fallback."
+    },
+    {
+      "id": "S08.recorded-dispatch-is-different",
+      "anchors": [
+        "ij/plugin/frame/ContrastAdjuster.java:882-887",
+        "ij/plugin/ContrastEnhancer.java:100-123,132-205"
+      ],
+      "fact": "Successful GUI Auto records run Enhance Contrast saturated=0.35 (or the equivalent script call), not its actual divisor/range. Enhance Contrast accumulates tail counts with threshold=floor(N*0.35/200); U16 can use histogram16 for full raw resolution. Its normalize/equalize/stack options and destructive behavior are distinct. Native normalized Auto replay must apply its recorded resolved effect, never dispatch the recorded ImageJ text as if algorithmically identical."
+    },
+    {
+      "id": "S09.scalar-publication-boundary",
+      "anchors": [
+        "ij/plugin/frame/ContrastAdjuster.java:1142-1181",
+        "src/desktop/window.cpp:2878-2918",
+        "src/native/document.cpp:set_display"
+      ],
+      "fact": "Source adjustment refuses a calibration-bar overlay and has separate RGB snapshot/mask mutation paths. First native consumer is scalar U8/U16/F32. Preserve existing native display publication: every successful executed action advances Display once and records once iff recording is enabled, including equal logical state; no pixel/metadata/selection revision, data identity, dirty or undo/redo change."
+    }
+  ],
+  "proposed_vertical_contract": {
+    "state": "proposal_to_adopt_after_targeted_observations_not_an_implemented_public_API",
+    "delivery_unit": "The new accumulation service and actual Channels-panel Auto button ship/qualify together. Headless histogram correctness alone cannot close this child.",
+    "histogram_service": {
+      "proposed_header": "include/imagejxx/dataset_histogram.hpp",
+      "proposed_functions": [
+        "estimate_dataset_histogram(Dataset descriptor, request, limits)",
+        "accumulate_dataset_histogram(Dataset, request, limits, ExecutionControl)"
+      ],
+      "request": {
+        "position": "Exact zero-based t/c/z; one committed live XY plane only. Explicit arguments in headless API; Window captures actual current T/C/Z once. No all-Z/all-T, projection, preview provider, volume or full-stack prerequisite.",
+        "area_roi": "Optional owned native Selection. Omitted means whole plane; explicit empty packed area means zero samples. Service accepts validated area geometry/masks. Auto adapter maps an absent/non-area active selection to whole plane, matching raw-statistics semantics. Do not reinterpret line/point as a one-pixel mask. Active selection is transient Selection revision; positioned stored ROIs are not an implicit Auto operand.",
+        "binning": "Explicit enum ProcessorRaw or UniformRange. ProcessorRaw is first Auto's fixed256 mode: U8 exact integer bins; U16 observed raw min/max +1 span; F32 observed finite raw span. UniformRange specifies finite low<high plus exact integer bins1..65536, final upper endpoint inclusive; values outside the interval are counted separately. No implicit fallback from malformed explicit range.",
+        "intensity_domain": "Raw only in this child. Intensity calibration is never inferred from arbitrary metadata or spatial calibration. Explicit calibrated-domain requests refuse until the separate typed intensity-calibration consumer is adopted. Source signed16 calibration is observed to demonstrate raw Auto invariance; no new signed native storage type is introduced.",
+        "samples": "Scalar S1 U8/U16/F32. Tagged integer samples must be canonical unsigned integers; F32 must be representable widened binary32. PreserveQuietNaNFloat32 excludes quiet NaNs from finite counts and reports them; infinities, signaling/noncanonical samples and other sample/type policies refuse atomically. F64 and S3/S4 remain explicit unsupported first-Auto paths; old Image histogram remains unchanged."
+      },
+      "result": [
+        "detached uint64 counts[bins] and double edges[bins+1]",
+        "histogram_origin and bin_size (not inferred from legacy edge defaults)",
+        "visited ROI count, finite included count, quiet-NaN count and explicit underflow/overflow counts",
+        "optional finite raw minimum/maximum plus empty_finite flag",
+        "resolved position and immutable request provenance; actual read/working estimates are diagnostics, never expected-output labels"
+      ],
+      "constant_empty_proposal": "Constant finite ProcessorRaw data uses bin0 and finite equal edges (U16 retains +1 bin span); result min/max remain exact. No-finite data returns zero counts with empty_finite and absent extrema using a documented finite0..1 presentation range. Auto refuses this result without publication/cycle advance. These owned empty/nonfinite choices require the targeted observation/adoption step below; do not copy Java NaN/sentinel bounds into a valid native range.",
+      "implementation_reuse": "One new checked accumulation engine supplies Dataset/ROI histograms and Auto. Reuse existing targets/Selection.mask and kernel control/checkpoint primitives where their semantics match. Preserve histogram(Image,bins=0) U16 default65536, Python ij.histogram defaults and existing fixed256 eager manual-threshold behavior byte-for-byte. A matching explicit-policy adapter may reuse the shared loop; no mandatory migration of unrelated threshold/analysis consumers and no second Auto counting loop."
+    },
+    "auto_action": {
+      "proposed_header": "include/imagejxx/auto_contrast.hpp",
+      "proposed_functions": [
+        "resolve_auto_contrast_command(DocumentSnapshot, AutoContrastRequest, limits, control)",
+        "validate_auto_contrast_command_record(record)",
+        "auto_contrast_command_from_record(snapshot, record)",
+        "rebind_auto_contrast_command(snapshot, original_record, complete_request, limits, control)",
+        "command_display_state(auto_command, current_snapshot)"
+      ],
+      "request": {
+        "previous_divisor": "Exact integer member of0,5000,2500,1250,625,312,156,78,39,19,9; explicit state input, not a native process global.",
+        "scope": "ActiveChannel or CompositeAll. Compute exactly one active-C histogram; CompositeAll copies the one resolved effective range to all C only in Composite mode. Color/Gray remains active-C. UI uses captured Shift on the actual Auto action; no hidden all-C default.",
+        "roi": "Captured active area selection or explicit whole-plane policy, normalized once before reads. Recognized full V1/V2 channel state is captured; retain version/projection/LUTs/visibility and update only resolved target ranges. First shared Channels consumer requires recognized state; Enable remains explicit."
+      },
+      "resolved_result": "Own captured source, optional copied area operand, histogram summary, exact used/next divisor, requested/resolved channel targets, candidate raw bounds, committed requested bounds, fallback classification and complete resolved channel state. No publication in core. No source/provider is retained beyond its explicit immutable Dataset/snapshot lifetime.",
+      "record_proposal": {
+        "schema": "imagejxx.auto-contrast-command",
+        "version": 1,
+        "exact_fields_to_freeze_before_implementation": [
+          "schema",
+          "version",
+          "source",
+          "position",
+          "roi",
+          "cycle",
+          "scope",
+          "channels",
+          "histogram",
+          "range",
+          "state",
+          "display_dependency"
+        ],
+        "source": "Existing strict owner/Pixels+Metadata/shapeTCZYXS/type/sample_policy binding. Fresh execution additionally guards captured Selection and Display; source selection revision/normalized area operand are retained under roi for provenance. All integer/enum/unknown/bool/lossy/overflow validation precedes binding comparison or new rebind work.",
+        "histogram": "Fixed binning ID/count/origin/bin_size and included/NaN sample counts sufficient for provenance; do not duplicate every histogram bin in every workflow record. Store resolved effect explicitly. Any omitted counts are not reconstructed or used as a replay oracle.",
+        "cycle": "previous,used,next exact divisor and fallback outcome. Strictly validate legal transition and outcome consistency without re-reading pixels. Replay does not advance or restore the live panel cycle; complete rebind requires a fresh explicit previous_divisor and recomputes.",
+        "state": "Full valid captured-state version preserved (V1 staysV1, V2 Sum/Max/Min staysV2); resolved ranges finite and low<=high. No new field in strict channel-display V1/V2. Do not label an Auto action as an ImageJ Enhance Contrast replay.",
+        "replay": "Validate whole original before source binding or replacement parsing; apply recorded state/ranges without histogram reads, range resets or cycle reinterpretation. Pixels+Metadata binding remains strict; current transient selection, T/Z/C/cameras/unrelated properties may change. Preserve fresh navigation and do not retarget C. Reopened owner requires explicit full rebind; historical record binding stays unchanged in nativeV3."
+      },
+      "cycle_lifetime_proposal": "Controller/panel owns a transient cycle, never channel-display metadata or a global singleton. Initial/open/reopen/Reset resets0; successful Auto commits next divisor only after atomic publication. Failure/cancel/stale/busy leaves previous state untouched. Capture/observe source image/type/CZT and public setup/update/activation resets first; then freeze the minimal native owner/position/source-revision reset key in one adoption. ROI-only/manual-range/LUT changes must not accidentally reset because an unrelated Display revision changed. Save/Open preserves resolved display and records, while a newly opened controller cycle starts0.",
+      "fallback_and_settings_blocker": "Observe fallback Reset for automatic and configured unsigned16 ranges, ordinary versus Composite and signed-calibrated U16. Adopt either exact typed fallback settings or a named owned live-XY fallback policy, with explicit discrepancy. Do not silently reuse current Reset, invent preference-file durability, or require the whole settings catalog before this first Auto. No-finite/empty ROI refusal is separately proposed above.",
+      "publication": "Use existing Window display-action preflight/output reservation/atomic record publication. Fresh command validates source owner/Pixels+Metadata+Selection and captured Display before applying full state. Preserve data identity/raw bits/addresses, calibration, native metadata, ROIs/overlays/threshold properties, selection/previous, dirty and populated undo/redo. One successful action advances Display exactly once and appends exactly one normalized record iff recording, even unchanged range. Results/plots/jobs remain unchanged. Refused/canceled/stale actions append nothing and do not consume a cycle step."
+    },
+    "python_and_shared_ui": {
+      "python": "Thin bindings for the same typed service/request/result/resolved record and controller apply/replay/rebind. No NumPy/Python histogram, extrema or Auto math. Required installed tests import actual installed _native/_desktop and Editor wrappers without optional skip or source fallback.",
+      "existing_panel_seam": "Add Auto range adjacent to existing Reset current/all in src/desktop/channel_display_panel.*; stable control channel_display.auto. Reuse current active-C selector, recognized state, captured T/Z, busy/error handling and existing complete-state publication. Auto is a distinct control/action; Reset is not renamed. Physical Shift intent is latched at activation. Success rebases raw range drafts; failure preserves them. Controller cycle is independent of the draft rebase key and camera/LUT/visibility updates.",
+      "scientific_roi": "Use native loaded/API-supplied active area Selection on scientific documents today; creation gestures on scientific panes are not an entry prerequisite. Physical tests must create Auto actions through real widgets; any ROI/session/previews/setup prepared through APIs stays explicitly labeled setup.",
+      "render_and_preview": "Always committed live XY at captured T/C/Z, never Gaussian staged source or displayed XY/XZ/YZ buffers. The resulting range must invalidate ordinary and linked XYZ color caches and affect all admitted current/future slices for its channel(s). Test preview/live attribution with a genuine READY preview; Auto scans committed data while the existing preview compositor continues its declared per-C display-source policy. Threshold/annotations remain applied exactly once; Auto does not create a threshold as a side effect in this first owned range action.",
+      "calibration_bar_boundary": "Reference refuses an Overlay carrying its typed calibration-bar flag. Reuse an existing native typed calibration-bar marker if one is available; otherwise record this as an explicit unsupported annotation-consumer context, preserve opaque overlays unchanged and do not guess from text or arbitrary unknown fields. This does not justify a new generic overlay framework in this child."
+    }
+  },
+  "reference_protocol": {
+    "state": "frozen_input_membership_candidate_missing_actual_observations",
+    "case_ids": [
+      "H01",
+      "H02",
+      "H03",
+      "H04",
+      "H05",
+      "H06",
+      "H07",
+      "H08",
+      "H09",
+      "H10",
+      "H11",
+      "H12",
+      "H13",
+      "H14",
+      "H15",
+      "H16"
+    ],
+    "host": "Use pinned actual processors/statistics and original ImageCanvas plus real hidden StackWindow for scientific fixtures. A presentation-only hidden ContrastAdjuster subclass must retain actual button listeners and worker doUpdate/autoAdjust path. Deliver genuine AWT ActionEvent to Auto/Reset buttons; observe worker entry/exit, input source identity and actual call sequence. A package-local observation override may wrap super.doUpdate without replacing its decision logic. Label all API setup and calls to public ContrastAdjuster.update separately. No OS-input/visible-window claim. No copied production algorithm as a reference producer oracle.",
+    "preparation_exit": "One bounded environment-only probe: original image/window/canvas/processor binding, hidden ContrastAdjuster buttons and real event-worker completion, offscreen paint, recorder access feasibility, then actual close/worker join. No H case runs in prepare. Freeze exact producer+independent reader/input timeline before the16-case capture; preserve failed probe sources/logs rather than repeatedly widening the harness.",
+    "cases": [
+      {
+        "id": "H01",
+        "fixture": "U8 row-major64x64: value10 repeated1,20 repeated3,30/40/50 repeated200 each,60 repeated3492",
+        "actions": [
+          "auto.1",
+          "auto.2",
+          "auto.3",
+          "reset",
+          "auto.after_reset"
+        ],
+        "source_prediction": "N4096: limits409; first three thresholds0/1/3 should yield10..50,20..50,30..50. Reset restores cycle0. Predictions remain unexecuted."
+      },
+      {
+        "id": "H02",
+        "fixture": "U8 row-major10x10:1 repeated1,2 repeated10,3 repeated11,4 repeated78; fresh equal source for recorded command",
+        "actions": [
+          "auto",
+          "recorded_enhance_contrast.saturated_0_35"
+        ],
+        "source_prediction": "GUI qualifies counts<=10 and>0, giving1..2. Cumulative Enhance Contrast threshold0 gives1..4. Observe actual command dispatch and preserve independent before/after pairs."
+      },
+      {
+        "id": "H03",
+        "fixture": "U8 10x10 all7",
+        "actions": [
+          "auto",
+          "auto.repeated"
+        ],
+        "question": "All occupied bins exceed N/10. Observe actual fallback Reset range, divisor0, recording output and repeat; do not infer equal-candidate behavior."
+      },
+      {
+        "id": "H04",
+        "fixture": "U8 10x10:10 repeated8 and200 repeated92",
+        "actions": [
+          "auto"
+        ],
+        "source_prediction": "Only bin10 qualifies; equal candidate expands to raw stats10..200 without entering failed-bounds Reset. Observe divisor and recorded text."
+      },
+      {
+        "id": "H05",
+        "fixture": "U16 16x1 values1000+257*i for i0..15",
+        "actions": [
+          "auto",
+          "redraw"
+        ],
+        "question": "Observed-min/max +1 U16 bins, fractional candidate upper endpoint, stored LUT double versus rounded processor/getter. Capture every256 count and origin/bin size."
+      },
+      {
+        "id": "H06",
+        "fixture": "F32 16x1 values-2.5+0.5*i for i0..15",
+        "actions": [
+          "auto",
+          "redraw"
+        ],
+        "question": "F32 observed-span bins, maximum in last bin, candidate-double versus binary32 processor storage; source bits retained."
+      },
+      {
+        "id": "H07",
+        "fixture": "U16 TCZYX[2,3,2,6,8],value40*t+30*c+5*z+2*y+x;T1C2Z1;area rectangle[1,1]-[7,5]",
+        "actions": [
+          "auto",
+          "navigate_t0c0z0",
+          "auto.after_navigation"
+        ],
+        "question": "Current TCZ, active-area ROI and no volume scan; exact full source landmarks before/after and setup/cycle transitions."
+      },
+      {
+        "id": "H08",
+        "fixture": "Same scientific source; packed area x2..5/y1..4 excluding x3..4/y2..3 (12 cells)",
+        "actions": [
+          "auto"
+        ],
+        "question": "Actual nonrectangular mask/holes, full bounds and exact membership; no rectangular-bounding-box substitution."
+      },
+      {
+        "id": "H09",
+        "fixture": "Same scientific source; non-area point[2,2], then line[1,1]-[6,4]",
+        "actions": [
+          "auto.point",
+          "reset",
+          "set_line_roi",
+          "auto.line"
+        ],
+        "question": "Raw statistics uses whole plane for non-area selections; preserve actual selection and distinguish labeled API ROI setup."
+      },
+      {
+        "id": "H10",
+        "fixture": "Same scientific source with explicit empty packed area mask",
+        "actions": [
+          "auto"
+        ],
+        "question": "Observe raw statistics/sentinel/exception/fallback faithfully. Proposed native action instead refuses zero finite ROI without publication or cycle step; requires explicit adoption."
+      },
+      {
+        "id": "H11",
+        "fixture": "F32 16x1 raw bits: quietNaN0x7fc12345,quietNaN0xffc23456,-0,+0,-5,-4,-3,-2,-1,1,2,3,4,5,6,7",
+        "actions": [
+          "auto",
+          "redraw"
+        ],
+        "question": "NaN exclusion, signed-zero raw bits, actual pixelCount/binning and finite raw range; no source canonicalization by the observer."
+      },
+      {
+        "id": "H12",
+        "fixture": "F32 main16x1 allquietNaN0x7fc12345; second raw-statistics-only4x1 fixture [quietNaN0x7fc12345,-Infinity,+Infinity,7] (reference-only unsupported native storage)",
+        "actions": [
+          "statistics",
+          "auto"
+        ],
+        "question": "Keep any real failure as evidence. Native no-finite action refuses; infinity storage remains unadmitted. Do not replace source empty/sentinel output with an expected finite range."
+      },
+      {
+        "id": "H13",
+        "fixture": "Three fixtures: ordinary_unsigned U16 10x10 all7; composite_unsigned TCZYX[2,3,2,10,10] all7,T1C1Z1; ordinary_signed16 U16 10x10 all7 with calibration raw-32768. Automatic unsigned16 range0, then12-bit range. Composite initial per-C ranges[1,201],[7,219],[11,241],RGB LUTs,TFT flags.",
+        "actions": [
+          "auto.automatic",
+          "reset_cycle_and_set_12bit",
+          "auto.12bit"
+        ],
+        "question": "Capture plot statistics versus raw Auto statistics and fallback Reset; Composite all-C effects and signed calibration exceptions. This is a bounded settings consumer, not proof of preference durability."
+      },
+      {
+        "id": "H14",
+        "fixture": "Three raw-identical U16 TCZYX[2,3,2,6,8] fixtures,value40*t+30*c+5*z+2*y+x,T1C2Z1,whole plane: no intensity calibration,linear intensity2*raw+5,signed16 intensityraw-32768. Spatial spacing[.5,1.25,2.5],origin[11,-7,19],direction[-1,.25,.5,0,1,.5,.5,0,1],unitum,frame_interval.75,time_origin2.25s.",
+        "actions": [
+          "auto.raw",
+          "auto.intensity_calibrated"
+        ],
+        "question": "Raw Auto ranges/counts must be observed separately from calibrated labels. No new calibrated accumulation or density-weighted count behavior inferred."
+      },
+      {
+        "id": "H15",
+        "fixture": "Five U16 TCZYX[2,3,2,6,8] fixtures,value40*t+30*c+5*z+2*y+x,T1C1Z1,whole plane,Automatic unsigned16 range: Composite Sum/Max/Min,Color Max,Gray Max. Initial per-C ranges[1,201],[7,219],[11,241],RGB LUTs,TFT visibility. Restore exact fixture between active and Shift-all actions; Shift false then true.",
+        "actions": [
+          "auto.active",
+          "restore_fixture",
+          "auto.shift_all"
+        ],
+        "question": "Compute active histogram once; capture mode/projection-dependent all-C range sync, requested/effective rounded bounds, flags/LUTs and C/T/Z retention. Color Balance All remains a separately labeled equivalent dispatch if real selector feasibility is confirmed."
+      },
+      {
+        "id": "H16",
+        "fixture": "Run exact timeline in Recorder macro then script mode on fresh separate original/replay owners: U8 TCZYX[2,3,2,10,10],each plane row-major H02 distribution+5*t+10*c+2*z,T1C1Z1,CompositeSum,RGB LUTs,[0,255] ranges,TFT flags,whole plane. Other owner same data+40. Area change rectangle[1,1]-[9,9]; numeric Set[0,200]; navigationT0C2Z0; owner activation delivered as real WindowEvent with original bound ImageWindow opposite. Each recorded replay uses a fresh pre-Auto source and actual IJ.run Enhance Contrast saturated=0.35.",
+        "actions": [
+          "auto.initial",
+          "change_area_roi",
+          "auto.after_roi",
+          "set_numeric_range",
+          "auto.after_set",
+          "public_update",
+          "auto.after_update",
+          "navigate_czt",
+          "auto.after_navigation",
+          "owner_away_back",
+          "auto.after_activation",
+          "reset",
+          "auto.after_reset",
+          "recorded_enhance_contrast_on_fresh_owner"
+        ],
+        "question": "Observe every real setup/reset trigger and divisor. Capture exact Recorder output, synchronous recorded Enhance Contrast execution, original versus replayed range divergence, metadata/raw bits/history and original UI state. API navigation/setup is never mislabeled physical input."
+      }
+    ],
+    "required_raw_fields": [
+      "exact input contract and ordered delivered events/real source and button IDs",
+      "before/after source typed and double-backed bits including NaN payloads",
+      "actual area geometry/mask and selected TCZ/linear slice",
+      "256 histogram counts, raw pixel count/min/max/histMin/binSize and plot statistics separately",
+      "ContrastAdjuster previous image/type/slice, autoThreshold, candidate min/max and actual setup/reset invocation counters",
+      "stored per-C LUT min/max, processor min/max, range getters, mode/projection/visibility and before/after all-C effect",
+      "ActionEvent handler/worker completion before paint, then actual redraw/readback",
+      "raw Recorder macro/script text and actual Enhance Contrast dispatch provenance",
+      "bound image/window/canvas/processor/source addresses/class origins, hidden status, elapsed/cleanup and raw failures"
+    ],
+    "bounds": {
+      "case_count": 16,
+      "case_seconds": 5,
+      "prepare_parent_seconds": 120,
+      "capture_parent_seconds": 120,
+      "max_xy_pixels": 4096,
+      "max_scalar_samples_per_case": 65536,
+      "java_heap_mib": 256,
+      "combined_payload_bytes": 4194304,
+      "fresh_stage_bytes": 33554432,
+      "max_live_reference_hosts": 2
+    },
+    "missing_observations": [
+      "No actual Auto handler or histogram reference case has run in this entry.",
+      "Real hidden ContrastAdjuster/Recorder worker feasibility is unqualified; Max/Min's real Channels Choice host does not prove it.",
+      "Candidate/effective range rounding, constant/empty/nonfinite handling, configured unsigned16 fallback, all-C sync and setup-triggered cycles require the listed actual rows.",
+      "Native empty/fallback/cycle choices and final exact API/record fields must be adopted once from these results before implementation. No repeated full G033 audit or unrelated architecture freeze is required."
+    ]
+  },
+  "resource_and_lifecycle_exit": {
+    "preflight": "Validate descriptors/TCZ/type/S/policy/selection geometry/bin count/range/positive limits and checked integer byte arithmetic before pixel/provider reads or user callbacks. Include returned bins/edges, raw/statistics scratch, owned selection/mask peak, retained source fallback plane/strip, copied channel state and normalized record peak. Default first-service bounds max_pixels16Mi and max_working_bytes128Mi, lowered by current desktop configured processing cap. Borrowed reader caches, allocator overhead/GPU/history/process RSS are outside this estimate and must be named; do not claim a total process bound.",
+    "reads": "Only the captured committed live XY plane for active C; at most one provider plane acquisition retained across the two accumulation passes. Empty explicit ROI may finish with zero source reads after metadata/mask validation. No full TCZ materialization, no preview provider, no histogram-per-output-C when propagating. Instrument throwing/counting virtual sources and ensure malformed/tight-cap/pre-cancel requests do not read.",
+    "control": "Bounded kernel checkpoints during validation/mask/scan/bin work. Precancellation and cap refusal precede callbacks/reads; callback exception and mid-cancel discard detached work. Capture immutable source/request/selection/channel state/cycle/limits/control before callback reentry; Python callbacks reacquire GIL and retain lifetimes without blocking independent Python work. No frontend/document locks held during processing callbacks.",
+    "host": "Use existing jobs/capture/admission and atomic publication seams. Busy/inactive/closed/stale owners must refuse visibly; changing active owner while a job is live cannot publish to another owner. Cycle/reservations/temporary masks are released on failure, cancel, close and shutdown. Synchronous small implementation is acceptable only within measured UI input budget; larger admitted work uses existing cancellable job infrastructure, not a new framework."
+  },
+  "bounded_delivery_order": [
+    {
+      "step": 1,
+      "deliverable": "Root reviews this entry once, fixes remaining input/event protocol and assigns a producer plus independent reference reader. Run one hidden handler feasibility probe, then exact16 capture/reader; reuse pinned archive/JDK/class identities.",
+      "exit": "Raw successful/failing observations are preserved; adopt source-to-native choices for fallback/empty/rounding/cycle/recording. No product completion claim."
+    },
+    {
+      "step": 2,
+      "deliverable": "Parallel disjoint native histogram+resolved-action implementation, independent literal/native/Python/SDK tests and shared panel/controller adapter from the settled contract. Reuse legacy tests unchanged; all GUI math stays in C++.",
+      "exit": "Focused source build and meaningful histogram/action/host tests pass. Both launchers have the real Auto control, explicit replay/rebind and atomic cycle handling. No standalone service-only acceptance."
+    },
+    {
+      "step": 3,
+      "deliverable": "Freeze matching installed wheel/prefix/source once; execute fixed typed API/public desktop API/core-only SDK and independent paired actual-widget cases, then one affected regression union.",
+      "exit": "Every required context passes with exact source/product identity and no skipped required cases. Real widget evidence includes repeated Auto, Shift/all, live-vs-preview, current TCZ/ROI, Reset/cancel/refusal, recording-on/off, strict replay/full rebind and Save/Open."
+    },
+    {
+      "step": 4,
+      "deliverable": "Bind exact fixture/contract/interface/trace/run/settings-consumer identities, verify final wheel/prefix/sdist/license payloads once, preserve raw failures/qualified evidence and clean disposable products.",
+      "exit": "Only the scoped shared service+first Auto consumer obtains a local exit. CD14/full calibrated settings/RGB/destructive Enhance Contrast/full G033/G057/G069 and platform requirements remain enumerated; proceed to the ready type-preserving rank editor rather than re-enumerate this family."
+    }
+  ],
+  "acceptance_required_not_yet_executed": {
+    "native": [
+      "literal U8/U16/F32 bins/endpoints/counts and currentTCZ/area-mask holes/empty semantics",
+      "Auto strict threshold/dominant-bin boundary/divisor cycle/equal-vs-failed fallback",
+      "requested/effective bounds and Active/CompositeAll target behavior",
+      "raw intensity calibration invariance and unsupported calibrated requests",
+      "no-provider-read preflight, uint64 count/byte overflow and callback/cancel immutability",
+      "fresh Selection+Display guards, strict stored replay and malformed-original full rebind"
+    ],
+    "installed_python_and_sdk": "Fixed independent collection under cpp_api/python_api plus installed core-only SDK; provider and full source-bit/history checks; thin wrapper strict parsing and real controller state. Reuse prior generic collection/origin supervision by import where compatible; do not fork a new qualification harness.",
+    "shared_imgui": "Freeze bounded case membership before execution in both imgui_cpp/imgui_python. Reuse path-only report indexes and actual widget rect/ID/focus/input ledgers. Existing per-case180frames/15s/16MiB report,32MiB archive,16document and60s parent bounds; split a genuinely oversized scenario before first execution. Producer observations contain no expected counts/ranges/PASS oracle. Independent reader derives all literal membership and cycle effects.",
+    "persistence_recording": "NativeV3 preserves resolved V1/V2 state, raw bits and historical Auto record binding; fresh loaded owner needs explicit rebind; UI cycle resets0. Strict replay applies stored result without reads or invoking ImageJ's text recording. Capture recording-enabled append exactlyonce/offappendnone plus failure atomicity and populated redo preservation.",
+    "legacy_preservation": "Existing histogram(Image)/Python array defaults, auto_threshold bin/tie behavior, manual-threshold256-bin eager contract, Reset behavior and Max/Min/reference files remain unchanged unless a separately reviewed matching adapter is explicitly adopted. Do not expand this child into full automatic-threshold/measurement/filter settings.",
+    "licensing_platform": "Current source/dependency/license/installed artifact checks apply; no new incorporation is preapproved. Paired headless actual ImGui inputs do not certify OS presentation, GPU/platform dialogs or a supported-platform manifest. Those remain actual release obligations."
+  },
+  "cleanup": "Use one fresh excluded build/references/histogram-auto-imagej154r-001 stage with immutable prepare/capture sources/inputs/raw outputs/receipts. Preserve failed attempts and accepted identity inputs. Delete only owned disposable compiler/cache/intermediate products after consumers are bound; never delete the sole qualified source/classes/JDK or failed evidence. No build, capture, installation, cleanup or old evidence mutation occurred in this entry task.",
+  "root_next_action": "Review/adopt the16-case input candidate and the proposed scalar raw service boundary, then assign the bounded real ContrastAdjuster/Recorder feasibility producer and independent reader. The only new execution prerequisite is that handler/recording transport plus the explicitly listed policy observations; do not wait for all analysis, scientific selection creation, full-stack I/O, a volume renderer or all preferences.",
+  "acceptance": {
+    "reference_runtime": false,
+    "product_implemented": false,
+    "product_verified": false,
+    "family_complete": false,
+    "release": false,
+    "full_goal": false
+  },
+  "preservation": {
+    "shared_manifests_changed": false,
+    "shared_plan_files_changed": false,
+    "current_min_sources_changed": false,
+    "reference_readers_changed": false,
+    "new_incorporated_components": []
+  }
+}

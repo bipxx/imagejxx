@@ -1,0 +1,602 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_increment",
+  "review_type": "Root source/provenance attestation, not independent legal review",
+  "owned_changes_license": "Existing project MIT for original chooser binding, UI integration, build/policy changes and tests",
+  "upstream_payload": {
+    "name": "Dear ImGui",
+    "version": "1.91.9-docking",
+    "license": "MIT",
+    "modified_files": [],
+    "manifest": {
+      "path": "third_party/imgui/SOURCE.json",
+      "bytes": 2863,
+      "sha256": "eb8876d4594cd455defc7b751925d15af1dfeba6e0e4cd2df273bbff6d6f3465"
+    },
+    "complete_pins": {
+      "path": "third_party/imgui/SHA256SUMS",
+      "bytes": 1633,
+      "sha256": "28c3331ba11cd8d7ecbed7c9e21dcc2d72df0e77110fee4baa52f83eafb3cff7"
+    },
+    "original_notice": {
+      "path": "third_party/imgui/LICENSE.txt",
+      "bytes": 1083,
+      "sha256": "c80c5789748d955c4a650562baa0d750494e2c7128c2ca66aaebe2e3c4e198bf"
+    },
+    "retained_notice": {
+      "path": "licenses/imgui.txt",
+      "bytes": 1083,
+      "sha256": "c80c5789748d955c4a650562baa0d750494e2c7128c2ca66aaebe2e3c4e198bf"
+    }
+  },
+  "additional_font_assets": [],
+  "restricted_features_added": false,
+  "sources": [
+    {
+      "logical_path": "CMakeLists.txt",
+      "before": {
+        "path": "build/p06q-roi-browse001/before001/CMakeLists.txt",
+        "bytes": 57218,
+        "sha256": "e7f63df16df0f7d5df5d8b8fdb749208b94acbd515532d902aa2daf15ec3d3d8"
+      },
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/CMakeLists.txt",
+        "bytes": 57257,
+        "sha256": "b522265c21825e7757c507cd15330b426d052df9f782e44e2c1cb55fcb04d165"
+      },
+      "current": {
+        "path": "CMakeLists.txt",
+        "bytes": 57257,
+        "sha256": "b522265c21825e7757c507cd15330b426d052df9f782e44e2c1cb55fcb04d165"
+      }
+    },
+    {
+      "logical_path": "pyproject.toml",
+      "before": {
+        "path": "build/p06q-roi-browse001/before001/pyproject.toml",
+        "bytes": 2051,
+        "sha256": "7f628c87796fa28104be56561e45761103d3b633aeae60e57355f009b62aa8cc"
+      },
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/pyproject.toml",
+        "bytes": 2076,
+        "sha256": "7b59d3e3c8b48134242a24f4fffca331db2656c97cbe2b8320b7095724feaf38"
+      },
+      "current": {
+        "path": "pyproject.toml",
+        "bytes": 2076,
+        "sha256": "7b59d3e3c8b48134242a24f4fffca331db2656c97cbe2b8320b7095724feaf38"
+      }
+    },
+    {
+      "logical_path": "cmake/ImGui.cmake",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/cmake/ImGui.cmake",
+        "bytes": 2731,
+        "sha256": "80010c5dea71694149cdbe8f0bd1f16af7d30c74de00d7ea70fb7a5efbe673e9"
+      },
+      "current": {
+        "path": "cmake/ImGui.cmake",
+        "bytes": 2731,
+        "sha256": "80010c5dea71694149cdbe8f0bd1f16af7d30c74de00d7ea70fb7a5efbe673e9"
+      }
+    },
+    {
+      "logical_path": "scripts/check_licenses.py",
+      "before": {
+        "path": "build/p06q-roi-browse001/before001/scripts/check_licenses.py",
+        "bytes": 11853,
+        "sha256": "843904e73d4c5fe447dc45e9b00e8792cbb6a416df59238921562dc7f82785a9"
+      },
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/scripts/check_licenses.py",
+        "bytes": 14863,
+        "sha256": "b3d980bdbd7e670e758c9d049678985a28b6a0f17645eac7cce12400b4bdc635"
+      },
+      "current": {
+        "path": "scripts/check_licenses.py",
+        "bytes": 14863,
+        "sha256": "b3d980bdbd7e670e758c9d049678985a28b6a0f17645eac7cce12400b4bdc635"
+      }
+    },
+    {
+      "logical_path": "THIRD_PARTY_NOTICES.md",
+      "before": {
+        "path": "build/p06q-roi-browse001/before001/THIRD_PARTY_NOTICES.md",
+        "bytes": 4201,
+        "sha256": "9793a0e9272d9c7f8aa1ea97712a38f1ff186ecbd379f3a71c16ae273167bff9"
+      },
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/THIRD_PARTY_NOTICES.md",
+        "bytes": 4603,
+        "sha256": "7172e44c69c4e5935da78781365c194a9dade339b1911aa14b9afff0e3d71926"
+      },
+      "current": {
+        "path": "THIRD_PARTY_NOTICES.md",
+        "bytes": 4603,
+        "sha256": "7172e44c69c4e5935da78781365c194a9dade339b1911aa14b9afff0e3d71926"
+      }
+    },
+    {
+      "logical_path": "licenses/desktop-dependencies.json",
+      "before": {
+        "path": "build/p06q-roi-browse001/before001/licenses/desktop-dependencies.json",
+        "bytes": 5236,
+        "sha256": "9b5aa27fbdc98780f7eb93aa6a290bea9eb0894cce5f89b5d22d081b15ed55f3"
+      },
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/licenses/desktop-dependencies.json",
+        "bytes": 5520,
+        "sha256": "62fb5f480ee7b5dcfe30491d98737a30925732c1e26155a5d0a3de1cb45a1da5"
+      },
+      "current": {
+        "path": "licenses/desktop-dependencies.json",
+        "bytes": 5520,
+        "sha256": "62fb5f480ee7b5dcfe30491d98737a30925732c1e26155a5d0a3de1cb45a1da5"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_panel.hpp",
+      "before": {
+        "path": "build/p06q-roi-browse001/before001/src/desktop/roi_import_panel.hpp",
+        "bytes": 1070,
+        "sha256": "3316f32126d9511bda9b3ffaecdf9c47d0e27624aa9515193cd72d7613d04eb7"
+      },
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/src/desktop/roi_import_panel.hpp",
+        "bytes": 1438,
+        "sha256": "fa7fe73f28a6d7f7f1259cc724416b7a7286c6cc9fa08e1182be6218e117469d"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_panel.hpp",
+        "bytes": 1438,
+        "sha256": "fa7fe73f28a6d7f7f1259cc724416b7a7286c6cc9fa08e1182be6218e117469d"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_panel.cpp",
+      "before": {
+        "path": "build/p06q-roi-browse001/before001/src/desktop/roi_import_panel.cpp",
+        "bytes": 25793,
+        "sha256": "a06fbdfa01202baf2f7eec48bb61d7c6107d2c69f688ba82a1eef11c3c844a29"
+      },
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/src/desktop/roi_import_panel.cpp",
+        "bytes": 26872,
+        "sha256": "3d47c2314bea2b963bec30424e913237c0e69f3cd05d2d1aaf19fb923f0168fc"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_panel.cpp",
+        "bytes": 26872,
+        "sha256": "3d47c2314bea2b963bec30424e913237c0e69f3cd05d2d1aaf19fb923f0168fc"
+      }
+    },
+    {
+      "logical_path": "src/desktop/window.cpp",
+      "before": {
+        "path": "build/p06q-roi-browse001/before001/src/desktop/window.cpp",
+        "bytes": 557401,
+        "sha256": "b0941bf7cc2167694f0da7b46cb28b265ad66d5806fe72a8dcf3c7cfb578122f"
+      },
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/src/desktop/window.cpp",
+        "bytes": 560099,
+        "sha256": "d21b8fc0de5ef2666b92870f0eb1103c93d0dd4950502276dc4551569a0ce39e"
+      },
+      "current": {
+        "path": "src/desktop/window.cpp",
+        "bytes": 560099,
+        "sha256": "d21b8fc0de5ef2666b92870f0eb1103c93d0dd4950502276dc4551569a0ce39e"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_browse_ui_probe.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/src/desktop/roi_import_browse_ui_probe.cpp",
+        "bytes": 11067,
+        "sha256": "192552da65c7c265bcea258d68f0e4a5f8a72a755b4334eda106094a8f0d8ac5"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_browse_ui_probe.cpp",
+        "bytes": 11067,
+        "sha256": "192552da65c7c265bcea258d68f0e4a5f8a72a755b4334eda106094a8f0d8ac5"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_ui_probe.hpp",
+      "before": {
+        "path": "build/p06q-roi-browse001/before001/src/desktop/roi_import_ui_probe.hpp",
+        "bytes": 484,
+        "sha256": "0c21f465d883a8b76eb373616e426003b66d0f28d0f9f980f59d47dddf1d4162"
+      },
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/src/desktop/roi_import_ui_probe.hpp",
+        "bytes": 613,
+        "sha256": "dd846d991a89979612dc1875ea090f60d001b74f473bc0e486992a8cf765499c"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_ui_probe.hpp",
+        "bytes": 613,
+        "sha256": "dd846d991a89979612dc1875ea090f60d001b74f473bc0e486992a8cf765499c"
+      }
+    },
+    {
+      "logical_path": "src/desktop/main.cpp",
+      "before": {
+        "path": "build/p06q-roi-browse001/before001/src/desktop/main.cpp",
+        "bytes": 34487,
+        "sha256": "2b0d5437e1cd3f2a5fd773b5b68a54cb365c51b92b6158fdc2c05860d246d836"
+      },
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/src/desktop/main.cpp",
+        "bytes": 34949,
+        "sha256": "e8a675ae88a27578abe53ae344f03839533fd1c74fb253d93316a5759c767aad"
+      },
+      "current": {
+        "path": "src/desktop/main.cpp",
+        "bytes": 34949,
+        "sha256": "e8a675ae88a27578abe53ae344f03839533fd1c74fb253d93316a5759c767aad"
+      }
+    },
+    {
+      "logical_path": "src/desktop/python.cpp",
+      "before": {
+        "path": "build/p06q-roi-browse001/before001/src/desktop/python.cpp",
+        "bytes": 39802,
+        "sha256": "7311e74cac7216eb4f62b577422d41c0e1612500a095514062b44dcd1de9ff90"
+      },
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/src/desktop/python.cpp",
+        "bytes": 40013,
+        "sha256": "1c637c85b363fb7afd013f263befc04e3ee3c85b1dc736ebafc4435143ec0b5f"
+      },
+      "current": {
+        "path": "src/desktop/python.cpp",
+        "bytes": 40013,
+        "sha256": "1c637c85b363fb7afd013f263befc04e3ee3c85b1dc736ebafc4435143ec0b5f"
+      }
+    },
+    {
+      "logical_path": "tests/native/test_planar_annotation_host.cpp",
+      "before": {
+        "path": "build/p06q-roi-browse001/before001/tests/native/test_planar_annotation_host.cpp",
+        "bytes": 5276,
+        "sha256": "aa43367a9452542d8352d83f7dc73cf3b0d2dd64639e3ab45c1b5bd28eb9dec4"
+      },
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/tests/native/test_planar_annotation_host.cpp",
+        "bytes": 6731,
+        "sha256": "d3b513dd72309f91d4848173aabf4b68b074a6fa8ac3fce3b8c6e1b57b8b8e3f"
+      },
+      "current": {
+        "path": "tests/native/test_planar_annotation_host.cpp",
+        "bytes": 6731,
+        "sha256": "d3b513dd72309f91d4848173aabf4b68b074a6fa8ac3fce3b8c6e1b57b8b8e3f"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_imagej_roi_import_browse_ui.py",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/tests/python/test_imagej_roi_import_browse_ui.py",
+        "bytes": 7048,
+        "sha256": "7374972af34870c88ac6fd7aef706296aa4baeeb47ec21770fe9c0e76e6c2d64"
+      },
+      "current": {
+        "path": "tests/python/test_imagej_roi_import_browse_ui.py",
+        "bytes": 7048,
+        "sha256": "7374972af34870c88ac6fd7aef706296aa4baeeb47ec21770fe9c0e76e6c2d64"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_imgui_vendor.py",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/tests/python/test_imgui_vendor.py",
+        "bytes": 1980,
+        "sha256": "cd25acb41dbaf54932c5bb50180a1acbc703d9b1ce1f08ab85bf8055c00d0acc"
+      },
+      "current": {
+        "path": "tests/python/test_imgui_vendor.py",
+        "bytes": 1980,
+        "sha256": "cd25acb41dbaf54932c5bb50180a1acbc703d9b1ce1f08ab85bf8055c00d0acc"
+      }
+    },
+    {
+      "logical_path": "third_party/imgui/imconfig.h",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/third_party/imgui/imconfig.h",
+        "bytes": 11579,
+        "sha256": "0884061cc43e27e1d346fe18dcd1425792eb2532d3d16610a82eb5ac751f7594"
+      },
+      "current": {
+        "path": "third_party/imgui/imconfig.h",
+        "bytes": 11579,
+        "sha256": "0884061cc43e27e1d346fe18dcd1425792eb2532d3d16610a82eb5ac751f7594"
+      }
+    },
+    {
+      "logical_path": "third_party/imgui/imgui.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/third_party/imgui/imgui.cpp",
+        "bytes": 1190400,
+        "sha256": "4af906e69f7e7649f66449200a0bee531bcd3dbf5aeb09ad261518a88c635101"
+      },
+      "current": {
+        "path": "third_party/imgui/imgui.cpp",
+        "bytes": 1190400,
+        "sha256": "4af906e69f7e7649f66449200a0bee531bcd3dbf5aeb09ad261518a88c635101"
+      }
+    },
+    {
+      "logical_path": "third_party/imgui/imgui.h",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/third_party/imgui/imgui.h",
+        "bytes": 409424,
+        "sha256": "2840241b6101d629b5804dedff698a25414ee102959120314c6a0299ca25ef9a"
+      },
+      "current": {
+        "path": "third_party/imgui/imgui.h",
+        "bytes": 409424,
+        "sha256": "2840241b6101d629b5804dedff698a25414ee102959120314c6a0299ca25ef9a"
+      }
+    },
+    {
+      "logical_path": "third_party/imgui/imgui_demo.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/third_party/imgui/imgui_demo.cpp",
+        "bytes": 577467,
+        "sha256": "500bfc00e64f93cbcc2d5cf352f07050b6485a44f93dde10221272dc816b7863"
+      },
+      "current": {
+        "path": "third_party/imgui/imgui_demo.cpp",
+        "bytes": 577467,
+        "sha256": "500bfc00e64f93cbcc2d5cf352f07050b6485a44f93dde10221272dc816b7863"
+      }
+    },
+    {
+      "logical_path": "third_party/imgui/imgui_draw.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/third_party/imgui/imgui_draw.cpp",
+        "bytes": 260638,
+        "sha256": "7fc58d765ba97813c751ba7022393fe2c67f0f51198a388edc7ebd4fcf7b86d3"
+      },
+      "current": {
+        "path": "third_party/imgui/imgui_draw.cpp",
+        "bytes": 260638,
+        "sha256": "7fc58d765ba97813c751ba7022393fe2c67f0f51198a388edc7ebd4fcf7b86d3"
+      }
+    },
+    {
+      "logical_path": "third_party/imgui/imgui_internal.h",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/third_party/imgui/imgui_internal.h",
+        "bytes": 299530,
+        "sha256": "a18df97203a9ba6a812f35eadd9f5861a0c8d558a59b96c14b68898272fe9e83"
+      },
+      "current": {
+        "path": "third_party/imgui/imgui_internal.h",
+        "bytes": 299530,
+        "sha256": "a18df97203a9ba6a812f35eadd9f5861a0c8d558a59b96c14b68898272fe9e83"
+      }
+    },
+    {
+      "logical_path": "third_party/imgui/imgui_tables.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/third_party/imgui/imgui_tables.cpp",
+        "bytes": 247576,
+        "sha256": "d7582d149df53bf625c2706e3313596935add7e0b283d1112edc30db4a7d8e4e"
+      },
+      "current": {
+        "path": "third_party/imgui/imgui_tables.cpp",
+        "bytes": 247576,
+        "sha256": "d7582d149df53bf625c2706e3313596935add7e0b283d1112edc30db4a7d8e4e"
+      }
+    },
+    {
+      "logical_path": "third_party/imgui/imgui_widgets.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/third_party/imgui/imgui_widgets.cpp",
+        "bytes": 525279,
+        "sha256": "1943c04da4e9abf6ca1ba36134fec708ff12f80eaf1c62bb992b72adaef2a091"
+      },
+      "current": {
+        "path": "third_party/imgui/imgui_widgets.cpp",
+        "bytes": 525279,
+        "sha256": "1943c04da4e9abf6ca1ba36134fec708ff12f80eaf1c62bb992b72adaef2a091"
+      }
+    },
+    {
+      "logical_path": "third_party/imgui/imstb_rectpack.h",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/third_party/imgui/imstb_rectpack.h",
+        "bytes": 20344,
+        "sha256": "2efa3d5f7d003c19743b15155dad9f46d9f9fc783a18893d703b431d3c990972"
+      },
+      "current": {
+        "path": "third_party/imgui/imstb_rectpack.h",
+        "bytes": 20344,
+        "sha256": "2efa3d5f7d003c19743b15155dad9f46d9f9fc783a18893d703b431d3c990972"
+      }
+    },
+    {
+      "logical_path": "third_party/imgui/imstb_textedit.h",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/third_party/imgui/imstb_textedit.h",
+        "bytes": 57128,
+        "sha256": "77010e494caf72c178b573569612aec409d24380409676325a31d02de0ec64b7"
+      },
+      "current": {
+        "path": "third_party/imgui/imstb_textedit.h",
+        "bytes": 57128,
+        "sha256": "77010e494caf72c178b573569612aec409d24380409676325a31d02de0ec64b7"
+      }
+    },
+    {
+      "logical_path": "third_party/imgui/imstb_truetype.h",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/third_party/imgui/imstb_truetype.h",
+        "bytes": 199485,
+        "sha256": "87f08919ae8e7223451d0e9d06b62829075d3e920c9e6ad436db9d7e7427ffce"
+      },
+      "current": {
+        "path": "third_party/imgui/imstb_truetype.h",
+        "bytes": 199485,
+        "sha256": "87f08919ae8e7223451d0e9d06b62829075d3e920c9e6ad436db9d7e7427ffce"
+      }
+    },
+    {
+      "logical_path": "third_party/imgui/LICENSE.txt",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/third_party/imgui/LICENSE.txt",
+        "bytes": 1083,
+        "sha256": "c80c5789748d955c4a650562baa0d750494e2c7128c2ca66aaebe2e3c4e198bf"
+      },
+      "current": {
+        "path": "third_party/imgui/LICENSE.txt",
+        "bytes": 1083,
+        "sha256": "c80c5789748d955c4a650562baa0d750494e2c7128c2ca66aaebe2e3c4e198bf"
+      }
+    },
+    {
+      "logical_path": "third_party/imgui/SHA256SUMS",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/third_party/imgui/SHA256SUMS",
+        "bytes": 1633,
+        "sha256": "28c3331ba11cd8d7ecbed7c9e21dcc2d72df0e77110fee4baa52f83eafb3cff7"
+      },
+      "current": {
+        "path": "third_party/imgui/SHA256SUMS",
+        "bytes": 1633,
+        "sha256": "28c3331ba11cd8d7ecbed7c9e21dcc2d72df0e77110fee4baa52f83eafb3cff7"
+      }
+    },
+    {
+      "logical_path": "third_party/imgui/SOURCE.json",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/third_party/imgui/SOURCE.json",
+        "bytes": 2863,
+        "sha256": "eb8876d4594cd455defc7b751925d15af1dfeba6e0e4cd2df273bbff6d6f3465"
+      },
+      "current": {
+        "path": "third_party/imgui/SOURCE.json",
+        "bytes": 2863,
+        "sha256": "eb8876d4594cd455defc7b751925d15af1dfeba6e0e4cd2df273bbff6d6f3465"
+      }
+    },
+    {
+      "logical_path": "third_party/imgui/backends/imgui_impl_glfw.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/third_party/imgui/backends/imgui_impl_glfw.cpp",
+        "bytes": 79239,
+        "sha256": "a836e7bd65976da5621a46679227158b4f5d4972dac282a20d411975b0d19fe1"
+      },
+      "current": {
+        "path": "third_party/imgui/backends/imgui_impl_glfw.cpp",
+        "bytes": 79239,
+        "sha256": "a836e7bd65976da5621a46679227158b4f5d4972dac282a20d411975b0d19fe1"
+      }
+    },
+    {
+      "logical_path": "third_party/imgui/backends/imgui_impl_glfw.h",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/third_party/imgui/backends/imgui_impl_glfw.h",
+        "bytes": 5165,
+        "sha256": "c9c66d372a7e2a211071e95c28e75e7d18e35c861affbd0c2b052411069ce040"
+      },
+      "current": {
+        "path": "third_party/imgui/backends/imgui_impl_glfw.h",
+        "bytes": 5165,
+        "sha256": "c9c66d372a7e2a211071e95c28e75e7d18e35c861affbd0c2b052411069ce040"
+      }
+    },
+    {
+      "logical_path": "third_party/imgui/backends/imgui_impl_opengl3.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/third_party/imgui/backends/imgui_impl_opengl3.cpp",
+        "bytes": 51922,
+        "sha256": "49dbceecb8dc31a87847469aae6986a200bbec2d2b5089bd1a6f4fad1dc1d943"
+      },
+      "current": {
+        "path": "third_party/imgui/backends/imgui_impl_opengl3.cpp",
+        "bytes": 51922,
+        "sha256": "49dbceecb8dc31a87847469aae6986a200bbec2d2b5089bd1a6f4fad1dc1d943"
+      }
+    },
+    {
+      "logical_path": "third_party/imgui/backends/imgui_impl_opengl3.h",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/third_party/imgui/backends/imgui_impl_opengl3.h",
+        "bytes": 3701,
+        "sha256": "8b41f2d0d8d388ef9aee9c7cb73171ecae202118be3217b80cc1d6743012daca"
+      },
+      "current": {
+        "path": "third_party/imgui/backends/imgui_impl_opengl3.h",
+        "bytes": 3701,
+        "sha256": "8b41f2d0d8d388ef9aee9c7cb73171ecae202118be3217b80cc1d6743012daca"
+      }
+    },
+    {
+      "logical_path": "third_party/imgui/backends/imgui_impl_opengl3_loader.h",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/third_party/imgui/backends/imgui_impl_opengl3_loader.h",
+        "bytes": 39149,
+        "sha256": "9d17b1679dc876e0ca693631030e70656c372c808c6767644c3b545834483e24"
+      },
+      "current": {
+        "path": "third_party/imgui/backends/imgui_impl_opengl3_loader.h",
+        "bytes": 39149,
+        "sha256": "9d17b1679dc876e0ca693631030e70656c372c808c6767644c3b545834483e24"
+      }
+    },
+    {
+      "logical_path": "third_party/imgui/misc/cpp/imgui_stdlib.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/third_party/imgui/misc/cpp/imgui_stdlib.cpp",
+        "bytes": 3412,
+        "sha256": "677bf60458e13c2eee00b0b49453c3ef0f1f73e38930b8dfe4bff92da75f1e18"
+      },
+      "current": {
+        "path": "third_party/imgui/misc/cpp/imgui_stdlib.cpp",
+        "bytes": 3412,
+        "sha256": "677bf60458e13c2eee00b0b49453c3ef0f1f73e38930b8dfe4bff92da75f1e18"
+      }
+    },
+    {
+      "logical_path": "third_party/imgui/misc/cpp/imgui_stdlib.h",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-browse001/held001/after/third_party/imgui/misc/cpp/imgui_stdlib.h",
+        "bytes": 1228,
+        "sha256": "36aa98f5b89470cf84fe4d548e42cce124fbd27e1f7e3481bbb972bc5a134585"
+      },
+      "current": {
+        "path": "third_party/imgui/misc/cpp/imgui_stdlib.h",
+        "bytes": 1228,
+        "sha256": "36aa98f5b89470cf84fe4d548e42cce124fbd27e1f7e3481bbb972bc5a134585"
+      }
+    }
+  ]
+}

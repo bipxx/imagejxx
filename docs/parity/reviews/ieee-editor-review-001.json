@@ -1,0 +1,466 @@
+{
+  "schema_version": 1,
+  "state": "passed",
+  "scope": "IEEE Float32 shared C++/Python desktop viewing, source readback, XYZ/channel controls, stable computed ranges and sessions; processing/IO profiles remain separately scoped",
+  "windows_native_desktop_suites": 70,
+  "additional_windows_source_suites": 3,
+  "linux_core_suites": 36,
+  "native_computed_range_checks_per_platform": 31046,
+  "desktop_display_checks": 13048,
+  "captured_computed_cases": 240,
+  "captured_desktop_mapping_cases": 80,
+  "python_cases_per_source_installed_context": 8621,
+  "new_ieee_viewing_python_cases_per_context": 113,
+  "previous_7799_full_and_3398_core_cases_retained": true,
+  "source_installed_inventory_equal": true,
+  "restored_editor_variants_per_context": 4,
+  "skipped_or_deselected_cases": 0,
+  "actual_input_cases": [
+    "IEEE01",
+    "IEEE02",
+    "IEEE03",
+    "IEEE04"
+  ],
+  "actual_input_contexts": [
+    "source_cpp",
+    "installed_cpp",
+    "source_python",
+    "installed_python"
+  ],
+  "actual_input_reports": [
+    {
+      "context": "source_cpp",
+      "case": "IEEE01",
+      "report": {
+        "path": "build/p07w-ieee-ui001/ieee-cpp001/IEEE01/report.json",
+        "bytes": 1781040,
+        "sha256": "04bde1c333dafbfb477409460f4cdb047932257351e13babfd8949432946182f"
+      },
+      "session": {
+        "path": "build/p07w-ieee-ui001/ieee-cpp001/IEEE01/viewing.ijx",
+        "bytes": 3033,
+        "sha256": "0180f42e20489373aa8aaf2861b085d7e88651d2d475ffc0c25aae977d5590b7"
+      }
+    },
+    {
+      "context": "source_cpp",
+      "case": "IEEE02",
+      "report": {
+        "path": "build/p07w-ieee-ui001/ieee-cpp001/IEEE02/report.json",
+        "bytes": 1783371,
+        "sha256": "54c4661135796c3b3aee6bc5959e63163519140ef32dbd66f21f380e3a64dde9"
+      },
+      "session": {
+        "path": "build/p07w-ieee-ui001/ieee-cpp001/IEEE02/viewing.ijx",
+        "bytes": 2984,
+        "sha256": "b209c3cd9b1b7f397f6f766b4554a210c18669013b41e63a6ade338ea4e2af30"
+      }
+    },
+    {
+      "context": "source_cpp",
+      "case": "IEEE03",
+      "report": {
+        "path": "build/p07w-ieee-ui001/ieee-cpp001/IEEE03/report.json",
+        "bytes": 1782696,
+        "sha256": "df3fb3f18f03f5cbaed912d75ecc7c74c3b10460006bf0485765431ad8dbfbd5"
+      },
+      "session": {
+        "path": "build/p07w-ieee-ui001/ieee-cpp001/IEEE03/viewing.ijx",
+        "bytes": 2932,
+        "sha256": "9fe30a62095cca76051604a8603993be6f2c53e5bad7d20b04d2e4c38d7a2e78"
+      }
+    },
+    {
+      "context": "source_cpp",
+      "case": "IEEE04",
+      "report": {
+        "path": "build/p07w-ieee-ui001/ieee-cpp001/IEEE04/report.json",
+        "bytes": 1777634,
+        "sha256": "8d250279b81f05b223bf52b8c07d35b47b19183c4663c61250fe2640123377c3"
+      },
+      "session": {
+        "path": "build/p07w-ieee-ui001/ieee-cpp001/IEEE04/viewing.ijx",
+        "bytes": 2936,
+        "sha256": "98612808f8f5c74031fe90ef34dcd5d65f30ab006d91011e4be813b85199b1a7"
+      }
+    },
+    {
+      "context": "installed_cpp",
+      "case": "IEEE01",
+      "report": {
+        "path": "build/p07w-ieee-ui001/ieee-installed-cpp001/IEEE01/report.json",
+        "bytes": 1781223,
+        "sha256": "668a6140cae3c1056972b7a3c2cf101b12fe6f16d7fa0738da3191351266041e"
+      },
+      "session": {
+        "path": "build/p07w-ieee-ui001/ieee-installed-cpp001/IEEE01/viewing.ijx",
+        "bytes": 3032,
+        "sha256": "8d522cb46472bab563965e70b1c5ec60c8ab4df975b89bf5a054cab4e1e5043b"
+      }
+    },
+    {
+      "context": "installed_cpp",
+      "case": "IEEE02",
+      "report": {
+        "path": "build/p07w-ieee-ui001/ieee-installed-cpp001/IEEE02/report.json",
+        "bytes": 1783605,
+        "sha256": "33a5791d13dc56185914a2ff5db1f40b6768f23b0017f5054349fa2ba5d33b0a"
+      },
+      "session": {
+        "path": "build/p07w-ieee-ui001/ieee-installed-cpp001/IEEE02/viewing.ijx",
+        "bytes": 2985,
+        "sha256": "b50c913a6d9eebdd94c62229e663fcdd8c81d2c2fcbf3f1217b004c19a61a18d"
+      }
+    },
+    {
+      "context": "installed_cpp",
+      "case": "IEEE03",
+      "report": {
+        "path": "build/p07w-ieee-ui001/ieee-installed-cpp001/IEEE03/report.json",
+        "bytes": 1782892,
+        "sha256": "1a22d4a2c05eed6b85922503afe0517ac9172cb8d42f57ec5a106d3cb885452f"
+      },
+      "session": {
+        "path": "build/p07w-ieee-ui001/ieee-installed-cpp001/IEEE03/viewing.ijx",
+        "bytes": 2931,
+        "sha256": "8c5c7f57847a51dcb3a4ee60a124a02b8306e8247759f88598efa0a676bd3434"
+      }
+    },
+    {
+      "context": "installed_cpp",
+      "case": "IEEE04",
+      "report": {
+        "path": "build/p07w-ieee-ui001/ieee-installed-cpp001/IEEE04/report.json",
+        "bytes": 1777856,
+        "sha256": "237e9821628bf511bfbc9ff09276f905695adde5a4daf3407b16ea0d8b65e5cf"
+      },
+      "session": {
+        "path": "build/p07w-ieee-ui001/ieee-installed-cpp001/IEEE04/viewing.ijx",
+        "bytes": 2936,
+        "sha256": "9b4dbdf74e5ec67f6abb5869d70d6844cb7e2d04a01e734883579f058d00bb8b"
+      }
+    },
+    {
+      "context": "source_python",
+      "case": "IEEE01",
+      "report": {
+        "path": "build/p07w-ieee-ui001/observations001/source-python/IEEE01/report.json",
+        "bytes": 1781715,
+        "sha256": "2e35ee85dc2b06c0ab5c27bc6a4e36e9efe5b091c5f844b0ad6048294fbf271d"
+      },
+      "session": {
+        "path": "build/p07w-ieee-ui001/observations001/source-python/IEEE01/viewing.ijx",
+        "bytes": 3033,
+        "sha256": "c4267281a3de689f77b9f1f99bb90ef5d86e82318164bdb83f1b29e6553b4493"
+      }
+    },
+    {
+      "context": "source_python",
+      "case": "IEEE02",
+      "report": {
+        "path": "build/p07w-ieee-ui001/observations001/source-python/IEEE02/report.json",
+        "bytes": 1784087,
+        "sha256": "c6252fd3b26bf98125b130af466fcf73b3c83bf3615a4630bdb2e3865d3ceedb"
+      },
+      "session": {
+        "path": "build/p07w-ieee-ui001/observations001/source-python/IEEE02/viewing.ijx",
+        "bytes": 2983,
+        "sha256": "43f966818fd41f5f6c463872bb375667792f11edcff6dc0f478fe764e919c610"
+      }
+    },
+    {
+      "context": "source_python",
+      "case": "IEEE03",
+      "report": {
+        "path": "build/p07w-ieee-ui001/observations001/source-python/IEEE03/report.json",
+        "bytes": 1783364,
+        "sha256": "de813798a9a7e7434da5791fc9c12407b8abba92eb9ad162c85529add7e44b6d"
+      },
+      "session": {
+        "path": "build/p07w-ieee-ui001/observations001/source-python/IEEE03/viewing.ijx",
+        "bytes": 2933,
+        "sha256": "64e9c053c392ecede2bb26e7eba6dbec39d27e5bf2fc0114f90dece3b3118876"
+      }
+    },
+    {
+      "context": "source_python",
+      "case": "IEEE04",
+      "report": {
+        "path": "build/p07w-ieee-ui001/observations001/source-python/IEEE04/report.json",
+        "bytes": 1778353,
+        "sha256": "04b8bf7be346e77545ce006b2eb849fe5707bdd5526e686bf5de8893d3d7ad52"
+      },
+      "session": {
+        "path": "build/p07w-ieee-ui001/observations001/source-python/IEEE04/viewing.ijx",
+        "bytes": 2938,
+        "sha256": "9f44e29d50db5287619a0c813e6fe19a0a5574b526a6cf2fcd11e06a9150e060"
+      }
+    },
+    {
+      "context": "installed_python",
+      "case": "IEEE01",
+      "report": {
+        "path": "build/p07w-ieee-ui001/observations001/installed-python/IEEE01/report.json",
+        "bytes": 1781762,
+        "sha256": "b253cad5ad7f859a5af602adb6709e162140e4009d75ce225ec8e6b0a62c26ad"
+      },
+      "session": {
+        "path": "build/p07w-ieee-ui001/observations001/installed-python/IEEE01/viewing.ijx",
+        "bytes": 3032,
+        "sha256": "54c82b505ff1fab60775961d78d6c85b3d9240220cad80a43d341b754b78cc99"
+      }
+    },
+    {
+      "context": "installed_python",
+      "case": "IEEE02",
+      "report": {
+        "path": "build/p07w-ieee-ui001/observations001/installed-python/IEEE02/report.json",
+        "bytes": 1784120,
+        "sha256": "f72ce6d44865d776c8621f62da27b6a9a9f4b20fd240c647a38576e575f2ba32"
+      },
+      "session": {
+        "path": "build/p07w-ieee-ui001/observations001/installed-python/IEEE02/viewing.ijx",
+        "bytes": 2984,
+        "sha256": "c41449e636d9cd9874a6f9c9b692d2efd9b07bbfef51c3b6531a03430f5e23ab"
+      }
+    },
+    {
+      "context": "installed_python",
+      "case": "IEEE03",
+      "report": {
+        "path": "build/p07w-ieee-ui001/observations001/installed-python/IEEE03/report.json",
+        "bytes": 1783433,
+        "sha256": "40fcd3e983eea7f8da3c833944a4ec4cec6e969beaeca882ed653afb1483eab8"
+      },
+      "session": {
+        "path": "build/p07w-ieee-ui001/observations001/installed-python/IEEE03/viewing.ijx",
+        "bytes": 2932,
+        "sha256": "e0c1a2f5e8d39d2fb511f64caa40a2b5207bdf974a32ab3d6b3995af5601505a"
+      }
+    },
+    {
+      "context": "installed_python",
+      "case": "IEEE04",
+      "report": {
+        "path": "build/p07w-ieee-ui001/observations001/installed-python/IEEE04/report.json",
+        "bytes": 1778340,
+        "sha256": "1c2f44e9a135efff6cac4f31bb6f8b03329f59d30862cc501ecd9b777e9f66d2"
+      },
+      "session": {
+        "path": "build/p07w-ieee-ui001/observations001/installed-python/IEEE04/viewing.ijx",
+        "bytes": 2936,
+        "sha256": "8f42fc493cb0db5d862ea2ebae48dbfcaebd4a50cfd28d6bdac30004884edda2"
+      }
+    }
+  ],
+  "old_rank_actual_input_cases": [
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51
+  ],
+  "old_rank_actual_input_cpp_contexts": [
+    "source",
+    "installed"
+  ],
+  "genuine_venv_projection_cases": 180,
+  "installed_cpp_sdk_consumer_passed": true,
+  "renderer_options_layout_rebuilt_coherently": true,
+  "coherent_installed_products": [
+    {
+      "path": "build/p07w-ieee-ui001/install001/python-prefix001/imagejxx/_native.cp312-win_amd64.pyd",
+      "bytes": 6280704,
+      "sha256": "bcddb262f16e8dc56025ada49c48cef6786059312f4e88b08c8237816b54470c"
+    },
+    {
+      "path": "build/p07w-ieee-ui001/install001/python-prefix001/imagejxx/_desktop.cp312-win_amd64.pyd",
+      "bytes": 14446592,
+      "sha256": "cfc5b1d070d113248962691aec51a630de2604c0cb7e2a83229d300232d904d1"
+    },
+    {
+      "path": "build/p07w-ieee-ui001/install001/python-prefix001/imagejxx/_scientific_io.cp312-win_amd64.pyd",
+      "bytes": 461312,
+      "sha256": "a3707ec83b7f613dc5a79a44df356faade5a77daf4684599fe332146155a249c"
+    },
+    {
+      "path": "build/p07w-ieee-ui001/install001/cpp-prefix001/bin/imagejxx.exe",
+      "bytes": 14610432,
+      "sha256": "29814dd61d5930c98731c9ed68289ef14ac644c1d33205f38d1f156c99c70a1f"
+    },
+    {
+      "path": "build/p07w-ieee-ui001/install001/sdk-prefix001/lib/imagejxx_core.lib",
+      "bytes": 45707436,
+      "sha256": "a6ac9a12fd12697dd816a8fa2dfdabbbb02a9d8887f73d40e37aba5ccd7a6287"
+    },
+    {
+      "path": "build/p07w-ieee-ui001/install001/sdk-prefix001/lib/imagejxx_io.lib",
+      "bytes": 1164516,
+      "sha256": "e4d28e57ffd1fafabc4a0e54393fa328e330dfc23380e95848b6ef092ebe6c5a"
+    }
+  ],
+  "source_freeze_pins_verified": 9976,
+  "nonconsuming_assertion_amendments": [
+    {
+      "gate": "native001",
+      "path": "tests/python/test_ieee_viewing.py",
+      "before_sha256": "85e93abf1792c8ac33045c341ee29ea367eee2612fa4bd5df8df04dfd6de8662",
+      "current_sha256": "0e2aac9fb7199ab7384dbf892bbb485356657e4d6e059a864b446128ebb26a91",
+      "scope": "Non-consuming Python assertions: exact extension call update or append-only public file/roundtrip tests"
+    },
+    {
+      "gate": "sdk001",
+      "path": "tests/python/test_ieee_viewing.py",
+      "before_sha256": "85e93abf1792c8ac33045c341ee29ea367eee2612fa4bd5df8df04dfd6de8662",
+      "current_sha256": "0e2aac9fb7199ab7384dbf892bbb485356657e4d6e059a864b446128ebb26a91",
+      "scope": "Non-consuming Python assertions: exact extension call update or append-only public file/roundtrip tests"
+    },
+    {
+      "gate": "sdk001",
+      "path": "tests/python/test_nan_python_v2.py",
+      "before_sha256": "f84bbc4e18aa0366e65d67b1d4ef3094e64e9de16ccea4ec82ecff310877f0d7",
+      "current_sha256": "ec6285d2d14013673bac2099bdaeafacc23f647b9c2675e5b1ff85b35fdda249",
+      "scope": "Non-consuming Python assertions: exact extension call update or append-only public file/roundtrip tests"
+    },
+    {
+      "gate": "venv001",
+      "path": "tests/python/test_ieee_viewing.py",
+      "before_sha256": "85e93abf1792c8ac33045c341ee29ea367eee2612fa4bd5df8df04dfd6de8662",
+      "current_sha256": "0e2aac9fb7199ab7384dbf892bbb485356657e4d6e059a864b446128ebb26a91",
+      "scope": "Non-consuming Python assertions: exact extension call update or append-only public file/roundtrip tests"
+    },
+    {
+      "gate": "rank-cpp001",
+      "path": "tests/python/test_ieee_viewing.py",
+      "before_sha256": "85e93abf1792c8ac33045c341ee29ea367eee2612fa4bd5df8df04dfd6de8662",
+      "current_sha256": "0e2aac9fb7199ab7384dbf892bbb485356657e4d6e059a864b446128ebb26a91",
+      "scope": "Non-consuming Python assertions: exact extension call update or append-only public file/roundtrip tests"
+    },
+    {
+      "gate": "rank-cpp001",
+      "path": "tests/python/test_nan_python_v2.py",
+      "before_sha256": "f84bbc4e18aa0366e65d67b1d4ef3094e64e9de16ccea4ec82ecff310877f0d7",
+      "current_sha256": "ec6285d2d14013673bac2099bdaeafacc23f647b9c2675e5b1ff85b35fdda249",
+      "scope": "Non-consuming Python assertions: exact extension call update or append-only public file/roundtrip tests"
+    },
+    {
+      "gate": "rank-installed-cpp001",
+      "path": "tests/python/test_ieee_viewing.py",
+      "before_sha256": "85e93abf1792c8ac33045c341ee29ea367eee2612fa4bd5df8df04dfd6de8662",
+      "current_sha256": "0e2aac9fb7199ab7384dbf892bbb485356657e4d6e059a864b446128ebb26a91",
+      "scope": "Non-consuming Python assertions: exact extension call update or append-only public file/roundtrip tests"
+    },
+    {
+      "gate": "rank-installed-cpp001",
+      "path": "tests/python/test_nan_python_v2.py",
+      "before_sha256": "f84bbc4e18aa0366e65d67b1d4ef3094e64e9de16ccea4ec82ecff310877f0d7",
+      "current_sha256": "ec6285d2d14013673bac2099bdaeafacc23f647b9c2675e5b1ff85b35fdda249",
+      "scope": "Non-consuming Python assertions: exact extension call update or append-only public file/roundtrip tests"
+    },
+    {
+      "gate": "ieee-cpp001",
+      "path": "tests/python/test_ieee_viewing.py",
+      "before_sha256": "85e93abf1792c8ac33045c341ee29ea367eee2612fa4bd5df8df04dfd6de8662",
+      "current_sha256": "0e2aac9fb7199ab7384dbf892bbb485356657e4d6e059a864b446128ebb26a91",
+      "scope": "Non-consuming Python assertions: exact extension call update or append-only public file/roundtrip tests"
+    },
+    {
+      "gate": "ieee-cpp001",
+      "path": "tests/python/test_nan_python_v2.py",
+      "before_sha256": "f84bbc4e18aa0366e65d67b1d4ef3094e64e9de16ccea4ec82ecff310877f0d7",
+      "current_sha256": "ec6285d2d14013673bac2099bdaeafacc23f647b9c2675e5b1ff85b35fdda249",
+      "scope": "Non-consuming Python assertions: exact extension call update or append-only public file/roundtrip tests"
+    },
+    {
+      "gate": "ieee-installed-cpp001",
+      "path": "tests/python/test_ieee_viewing.py",
+      "before_sha256": "85e93abf1792c8ac33045c341ee29ea367eee2612fa4bd5df8df04dfd6de8662",
+      "current_sha256": "0e2aac9fb7199ab7384dbf892bbb485356657e4d6e059a864b446128ebb26a91",
+      "scope": "Non-consuming Python assertions: exact extension call update or append-only public file/roundtrip tests"
+    },
+    {
+      "gate": "ieee-installed-cpp001",
+      "path": "tests/python/test_nan_python_v2.py",
+      "before_sha256": "f84bbc4e18aa0366e65d67b1d4ef3094e64e9de16ccea4ec82ecff310877f0d7",
+      "current_sha256": "ec6285d2d14013673bac2099bdaeafacc23f647b9c2675e5b1ff85b35fdda249",
+      "scope": "Non-consuming Python assertions: exact extension call update or append-only public file/roundtrip tests"
+    }
+  ],
+  "cleanup_targets": 30,
+  "cleanup_net_bytes": 3156055180,
+  "whitespace_checked": [
+    "CMakeLists.txt",
+    "docs/IEEE_CHANNEL_DISPLAY.md",
+    "docs/IEEE_DISPLAY.md",
+    "docs/IEEE_FLOAT32_SOURCE.md",
+    "docs/PLAN.md",
+    "docs/SOL_ULTRA.md",
+    "include/imagejxx/float32_display.hpp",
+    "src/desktop/channel_display_panel.cpp",
+    "src/desktop/document.cpp",
+    "src/desktop/main.cpp",
+    "src/desktop/orthogonal.cpp",
+    "src/desktop/python.cpp",
+    "src/desktop/rendering.cpp",
+    "src/desktop/rendering.hpp",
+    "src/desktop/window.cpp",
+    "src/imagejxx/__init__.py",
+    "src/native/channel_display.cpp",
+    "src/native/float32_display.cpp",
+    "src/native/float32_display_bindings.cpp",
+    "src/native/manual_threshold.cpp",
+    "src/native/manual_threshold_display_internal.hpp",
+    "src/imagejxx/ui/rendering.py",
+    "tests/python/test_nan_python_v2.py"
+  ],
+  "retained_failures": [
+    "Initial host link: two annotation declarations accidentally received computed-range arguments. Restored their original signatures; override remains on image renderers.",
+    "Second host build: typed readback policy argument attached to the template instead of its dispatch overload. Corrected both declarations; coherent hosts build and all gates pass.",
+    "First full Python run: four restored tests used a loader call predating explicit workspace-extension capture. Updated only the test calls and strengthened extension assertions; the extension-preservation product contract remains unchanged. Both complete inventories now pass without exclusions.",
+    "Extra public file-opening checks initially requested readbacks while their capture panel was closed. Opening the channel panel requests diagnostics explicitly; all four file-opening and both detached workspace routes pass."
+  ],
+  "commercial_scope": "Owned implementation with existing reviewed dependencies/licenses; no new dependency, Qt, non-commercial component or shipped reference Java/JDK",
+  "remaining": [
+    "Full IEEE Remove NaNs/rank processing and associated UI/history/replay gates",
+    "Float32 scientific IO, remaining RGB rank, ImageJ/Fiji/editor and release gaps"
+  ],
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  },
+  "goal_complete": false
+}

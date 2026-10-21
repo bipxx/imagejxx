@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_owned_increment",
+  "review_type": "Root authorship/integration attestation, not independent legal review",
+  "license": "Existing project MIT for original native/test code; fixture bytes are outputs for owned inputs",
+  "specification_sources": [
+    "https://raw.githubusercontent.com/imagej/ImageJ/62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/PolygonRoi.java",
+    "https://raw.githubusercontent.com/imagej/ImageJ/62db90a269cccc1ac79f658e4602043214ed055b/ij/measure/SplineFitter.java",
+    "https://raw.githubusercontent.com/imagej/ImageJ/62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/Arrow.java",
+    "https://raw.githubusercontent.com/imagej/ImageJ/62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/Roi.java",
+    "https://raw.githubusercontent.com/imagej/ImageJ/62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/ShapeRoi.java",
+    "https://raw.githubusercontent.com/imagej/ImageJ/62db90a269cccc1ac79f658e4602043214ed055b/ij/io/RoiDecoder.java"
+  ],
+  "new_dependencies": [],
+  "imported_third_party_product_code": [],
+  "restricted_features_added": false,
+  "reference_only": "Pinned ImageJ classes and existing JDK remain in excluded build trees",
+  "sources": [
+    {
+      "logical_path": "src/native/imagej_spline.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-spline-roi001/held001/after/src/native/imagej_spline.cpp",
+        "bytes": 8399,
+        "sha256": "5db63adfe7503a42e69ec60a22963786286918c7a145035f5514442f66f8b3c6"
+      },
+      "current": {
+        "path": "src/native/imagej_spline.cpp",
+        "bytes": 8399,
+        "sha256": "5db63adfe7503a42e69ec60a22963786286918c7a145035f5514442f66f8b3c6"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_arrow.cpp",
+      "before": {
+        "path": "build/p06q-spline-roi001/held001/before/src/native/imagej_arrow.cpp",
+        "bytes": 6259,
+        "sha256": "bfcaa5b87b5787884ceadea1cf4be6aa6a7a783e52849b3758d5cbc58673081f"
+      },
+      "after": {
+        "path": "build/p06q-spline-roi001/held001/after/src/native/imagej_arrow.cpp",
+        "bytes": 6259,
+        "sha256": "bfcaa5b87b5787884ceadea1cf4be6aa6a7a783e52849b3758d5cbc58673081f"
+      },
+      "current": {
+        "path": "src/native/imagej_arrow.cpp",
+        "bytes": 6259,
+        "sha256": "bfcaa5b87b5787884ceadea1cf4be6aa6a7a783e52849b3758d5cbc58673081f"
+      }
+    },
+    {
+      "logical_path": "CMakeLists.txt",
+      "before": {
+        "path": "build/p06q-spline-roi001/held001/before/CMakeLists.txt",
+        "bytes": 56637,
+        "sha256": "3010f0ada39048513d27ae9f4c5069258a8e46b625aa6703b78013c56dfb7442"
+      },
+      "after": {
+        "path": "build/p06q-spline-roi001/held001/after/CMakeLists.txt",
+        "bytes": 56669,
+        "sha256": "76684c4ed52b4d604d873afddb5daeb3d9bccc749c465d37bd6fea19cfdac627"
+      },
+      "current": {
+        "path": "CMakeLists.txt",
+        "bytes": 56669,
+        "sha256": "76684c4ed52b4d604d873afddb5daeb3d9bccc749c465d37bd6fea19cfdac627"
+      }
+    },
+    {
+      "logical_path": "include/imagejxx/imagej_roi.hpp",
+      "before": {
+        "path": "build/p06q-spline-roi001/held001/before/include/imagejxx/imagej_roi.hpp",
+        "bytes": 3172,
+        "sha256": "64c9966ff28b732c94a47153e3229df1dc332224247c272884d5275c21d570f5"
+      },
+      "after": {
+        "path": "build/p06q-spline-roi001/held001/after/include/imagejxx/imagej_roi.hpp",
+        "bytes": 3539,
+        "sha256": "0d2b0544696c53f1dd6281a696e9ca81718b3f551c5387751e1788eab0bf4616"
+      },
+      "current": {
+        "path": "include/imagejxx/imagej_roi.hpp",
+        "bytes": 3539,
+        "sha256": "0d2b0544696c53f1dd6281a696e9ca81718b3f551c5387751e1788eab0bf4616"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_roi.cpp",
+      "before": {
+        "path": "build/p06q-spline-roi001/held001/before/src/native/imagej_roi.cpp",
+        "bytes": 29564,
+        "sha256": "cf33610435ba1c53bfdb7853686f736edffb447dea2ffe07432b361c23f49952"
+      },
+      "after": {
+        "path": "build/p06q-spline-roi001/held001/after/src/native/imagej_roi.cpp",
+        "bytes": 32467,
+        "sha256": "883f66faeb6a0eba79d4d6fbac429cf16cb1cc3b12ab4137e11d9d2d8d35170b"
+      },
+      "current": {
+        "path": "src/native/imagej_roi.cpp",
+        "bytes": 32467,
+        "sha256": "883f66faeb6a0eba79d4d6fbac429cf16cb1cc3b12ab4137e11d9d2d8d35170b"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_shape.cpp",
+      "before": {
+        "path": "build/p06q-spline-roi001/held001/before/src/native/imagej_shape.cpp",
+        "bytes": 9527,
+        "sha256": "aa6fd3ef2fc6c02f1a5eca18e73cd391b4da564ce5e1281614e6a1c699a6af3f"
+      },
+      "after": {
+        "path": "build/p06q-spline-roi001/held001/after/src/native/imagej_shape.cpp",
+        "bytes": 9527,
+        "sha256": "aa6fd3ef2fc6c02f1a5eca18e73cd391b4da564ce5e1281614e6a1c699a6af3f"
+      },
+      "current": {
+        "path": "src/native/imagej_shape.cpp",
+        "bytes": 9527,
+        "sha256": "aa6fd3ef2fc6c02f1a5eca18e73cd391b4da564ce5e1281614e6a1c699a6af3f"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_roi_bindings.cpp",
+      "before": {
+        "path": "build/p06q-spline-roi001/held001/before/src/native/imagej_roi_bindings.cpp",
+        "bytes": 5360,
+        "sha256": "a5d72efe5547688201b91321fe929667a1f1eb9a249b674ae84f915884b90b87"
+      },
+      "after": {
+        "path": "build/p06q-spline-roi001/held001/after/src/native/imagej_roi_bindings.cpp",
+        "bytes": 6292,
+        "sha256": "28db243a933aa248281cd240af93ab02069cad5d5e68848ef7bd2a65f9d7446a"
+      },
+      "current": {
+        "path": "src/native/imagej_roi_bindings.cpp",
+        "bytes": 6292,
+        "sha256": "28db243a933aa248281cd240af93ab02069cad5d5e68848ef7bd2a65f9d7446a"
+      }
+    },
+    {
+      "logical_path": "src/imagejxx/__init__.py",
+      "before": {
+        "path": "build/p06q-spline-roi001/held001/before/src/imagejxx/__init__.py",
+        "bytes": 54328,
+        "sha256": "38df9850ad928563161d5bb94055f20299cca8440355979579325e7c4c9171b7"
+      },
+      "after": {
+        "path": "build/p06q-spline-roi001/held001/after/src/imagejxx/__init__.py",
+        "bytes": 54420,
+        "sha256": "b55c8be01d6212ecdaa185f4f70b9b2b4441bcc92ae0d5f411199dbe3e15a35c"
+      },
+      "current": {
+        "path": "src/imagejxx/__init__.py",
+        "bytes": 54420,
+        "sha256": "b55c8be01d6212ecdaa185f4f70b9b2b4441bcc92ae0d5f411199dbe3e15a35c"
+      }
+    },
+    {
+      "logical_path": "tests/native/test_imagej_roi.cpp",
+      "before": {
+        "path": "build/p06q-spline-roi001/held001/before/tests/native/test_imagej_roi.cpp",
+        "bytes": 7481,
+        "sha256": "e01135364349501b8215e7bf9f3786d5dc4f725cbe7d807461b63f9141824256"
+      },
+      "after": {
+        "path": "build/p06q-spline-roi001/held001/after/tests/native/test_imagej_roi.cpp",
+        "bytes": 8591,
+        "sha256": "d0a2060522bc0945ccefecc7b32566b7a6134bec21eb785e06d2ce063f57c671"
+      },
+      "current": {
+        "path": "tests/native/test_imagej_roi.cpp",
+        "bytes": 8591,
+        "sha256": "d0a2060522bc0945ccefecc7b32566b7a6134bec21eb785e06d2ce063f57c671"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_imagej_roi.py",
+      "before": {
+        "path": "build/p06q-spline-roi001/held001/before/tests/python/test_imagej_roi.py",
+        "bytes": 23680,
+        "sha256": "5121de0d5edf01ce934c9d42662ce7ece2e58f19899a22a8e3185589653ae618"
+      },
+      "after": {
+        "path": "build/p06q-spline-roi001/held001/after/tests/python/test_imagej_roi.py",
+        "bytes": 27181,
+        "sha256": "45e3c998d587a8d306f570df20cd92a59393152e20572d1075c848b8120a3b98"
+      },
+      "current": {
+        "path": "tests/python/test_imagej_roi.py",
+        "bytes": 27181,
+        "sha256": "45e3c998d587a8d306f570df20cd92a59393152e20572d1075c848b8120a3b98"
+      }
+    },
+    {
+      "logical_path": "tests/fixtures/imagej-roi-spline-imagej154r.json",
+      "before": null,
+      "after": {
+        "path": "build/p06q-spline-roi001/held001/after/tests/fixtures/imagej-roi-spline-imagej154r.json",
+        "bytes": 1147764,
+        "sha256": "416c1da40c9f6e9d67751489db3291703b0209563d88cf7146123f11e2a32852"
+      },
+      "current": {
+        "path": "tests/fixtures/imagej-roi-spline-imagej154r.json",
+        "bytes": 1147764,
+        "sha256": "416c1da40c9f6e9d67751489db3291703b0209563d88cf7146123f11e2a32852"
+      }
+    }
+  ]
+}

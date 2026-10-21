@@ -1,0 +1,3 @@
+# Reviewed fixtures and vendored sources carry byte-level SHA-256 pins.
+# Preserve their bytes on every checkout, including Windows.
+* -text

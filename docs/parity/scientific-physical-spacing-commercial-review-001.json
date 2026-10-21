@@ -1,0 +1,308 @@
+{
+  "author_and_reviewer": "Root implementation/integration review; independent legal review is not asserted",
+  "broader_pending_Fiji_decisions_and_NC_exclusions_unchanged": true,
+  "decision": "eligible",
+  "license": {
+    "bytes": 1079,
+    "path": "LICENSE",
+    "sha256": "6496956d6060adfcd2617e553b7393c3b7fbea353a02f3c39d60051709d1ce5f"
+  },
+  "new_third_party_code_assets_or_dependency": false,
+  "notices": {
+    "bytes": 4201,
+    "path": "THIRD_PARTY_NOTICES.md",
+    "sha256": "9793a0e9272d9c7f8aa1ea97712a38f1ff186ecbd379f3a71c16ae273167bff9"
+  },
+  "previous_source_archive": {
+    "bytes": 8734032,
+    "path": "build/p06m-source-final001/imagejxx-0.2.0.tar.gz",
+    "sha256": "ecac7763a8cc53d3f2d5541fd65cd19707989867cc108d94d9a38955782b1f96"
+  },
+  "previous_source_receipt": {
+    "bytes": 147857,
+    "path": "build/p06m-001/source-final001.json",
+    "sha256": "6ba31b7a4588d196fec0de7d7a6218270c0aa60e6c306e419fedad49a265159c"
+  },
+  "schema_version": 1,
+  "scope": "Exactly16 owned scientific physical-spacing product/test sources; unchanged dependency set.",
+  "sources": [
+    {
+      "current": {
+        "bytes": 54624,
+        "path": "CMakeLists.txt",
+        "sha256": "264871f7cea7b997b5e1513ad995c897102ac9fdf89ad569d8896c85eaf43592"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 54232,
+        "path": "CMakeLists.txt",
+        "sha256": "ad4e6604ae4b20af3c6b7fb7a9c0f9b11b9b1664bc0fbb315bfba7ff7a1c8408"
+      },
+      "snapshot": {
+        "bytes": 54624,
+        "path": "build/p06n-001/registration001/source-snapshots001/CMakeLists.txt",
+        "sha256": "264871f7cea7b997b5e1513ad995c897102ac9fdf89ad569d8896c85eaf43592"
+      }
+    },
+    {
+      "current": {
+        "bytes": 1996,
+        "path": "include/imagejxx/axis_spacing_command.hpp",
+        "sha256": "bf156c8d235a5503c1667a34b4370d64a10e2e9f61c2d0beb0fba5442d21f0ba"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 1996,
+        "path": "build/p06n-001/registration001/source-snapshots001/include/imagejxx/axis_spacing_command.hpp",
+        "sha256": "bf156c8d235a5503c1667a34b4370d64a10e2e9f61c2d0beb0fba5442d21f0ba"
+      }
+    },
+    {
+      "current": {
+        "bytes": 103640,
+        "path": "src/native/execution.cpp",
+        "sha256": "0ca15af9b80df997b9d80701e3ebb626464b6123a3b2e9f43d0121475a0557f6"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 102642,
+        "path": "src/native/execution.cpp",
+        "sha256": "031c9890da0b15fcbbe3b04aaffd337a76d0f6a3872cd174b4e850a93ebfb2c9"
+      },
+      "snapshot": {
+        "bytes": 103640,
+        "path": "build/p06n-001/registration001/source-snapshots001/src/native/execution.cpp",
+        "sha256": "0ca15af9b80df997b9d80701e3ebb626464b6123a3b2e9f43d0121475a0557f6"
+      }
+    },
+    {
+      "current": {
+        "bytes": 1667,
+        "path": "src/native/axis_command_record.hpp",
+        "sha256": "4bb83a0387225aa9c3daf224ac600b46b518c5cea55b72a751883a20bc4d6df4"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 1556,
+        "path": "src/native/axis_command_record.hpp",
+        "sha256": "f85f3f3a8494983934b23408e3adb8b43ce7fe2dce04e5f9207b0bb07eb29640"
+      },
+      "snapshot": {
+        "bytes": 1667,
+        "path": "build/p06n-001/registration001/source-snapshots001/src/native/axis_command_record.hpp",
+        "sha256": "4bb83a0387225aa9c3daf224ac600b46b518c5cea55b72a751883a20bc4d6df4"
+      }
+    },
+    {
+      "current": {
+        "bytes": 7770,
+        "path": "src/native/axis_spacing_command.cpp",
+        "sha256": "257f4cd42461fd323093a420e75a87548cb034dd1daa2eb3459b5f87a5abc3d7"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 7770,
+        "path": "build/p06n-001/registration001/source-snapshots001/src/native/axis_spacing_command.cpp",
+        "sha256": "257f4cd42461fd323093a420e75a87548cb034dd1daa2eb3459b5f87a5abc3d7"
+      }
+    },
+    {
+      "current": {
+        "bytes": 2980,
+        "path": "src/native/axis_spacing_command_bindings.cpp",
+        "sha256": "8a710ef0f734c5931aef067abef66b587e82d4c034e81b9eb6a1abba84859f28"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 2980,
+        "path": "build/p06n-001/registration001/source-snapshots001/src/native/axis_spacing_command_bindings.cpp",
+        "sha256": "8a710ef0f734c5931aef067abef66b587e82d4c034e81b9eb6a1abba84859f28"
+      }
+    },
+    {
+      "current": {
+        "bytes": 28759,
+        "path": "src/native/bindings.cpp",
+        "sha256": "dd1686ad3f8a2c5f3401dfd2d3a9cc6186a5afa02abb8f8634296d31811cc637"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 28672,
+        "path": "src/native/bindings.cpp",
+        "sha256": "df6b42bdf7a64c40a20ca11c31e3449b71da0709d74ce50ff53fa447453f2ccc"
+      },
+      "snapshot": {
+        "bytes": 28759,
+        "path": "build/p06n-001/registration001/source-snapshots001/src/native/bindings.cpp",
+        "sha256": "dd1686ad3f8a2c5f3401dfd2d3a9cc6186a5afa02abb8f8634296d31811cc637"
+      }
+    },
+    {
+      "current": {
+        "bytes": 51089,
+        "path": "src/imagejxx/__init__.py",
+        "sha256": "571fcabb55c7c03fc285db5754e44af6ae191f79762b24639b63c087645b1d7e"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 50647,
+        "path": "src/imagejxx/__init__.py",
+        "sha256": "50bb90ea053b882e71d39cf3b7cd99ffae8314c89e2d35fd91814caa0b604a0d"
+      },
+      "snapshot": {
+        "bytes": 51089,
+        "path": "build/p06n-001/registration001/source-snapshots001/src/imagejxx/__init__.py",
+        "sha256": "571fcabb55c7c03fc285db5754e44af6ae191f79762b24639b63c087645b1d7e"
+      }
+    },
+    {
+      "current": {
+        "bytes": 13086,
+        "path": "src/desktop/window.hpp",
+        "sha256": "35e6330c236ca7d153379652f10dcde913cd65f0592854106f52e6025c14a8a6"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 12865,
+        "path": "src/desktop/window.hpp",
+        "sha256": "477c993791e0cbebf767f6eb24882969c3ea45c24bc65ef4e06285000a1a28e1"
+      },
+      "snapshot": {
+        "bytes": 13086,
+        "path": "build/p06n-001/registration001/source-snapshots001/src/desktop/window.hpp",
+        "sha256": "35e6330c236ca7d153379652f10dcde913cd65f0592854106f52e6025c14a8a6"
+      }
+    },
+    {
+      "current": {
+        "bytes": 543312,
+        "path": "src/desktop/window.cpp",
+        "sha256": "92b834b0dfa85f386b64a5c6644332738b085ee1c05f7b38ae78ff9437dcd603"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 542234,
+        "path": "src/desktop/window.cpp",
+        "sha256": "e68dbc1863b918f8a8017e28f44663d3301cd9966aa068071a55e555936ac0d8"
+      },
+      "snapshot": {
+        "bytes": 543312,
+        "path": "build/p06n-001/registration001/source-snapshots001/src/desktop/window.cpp",
+        "sha256": "92b834b0dfa85f386b64a5c6644332738b085ee1c05f7b38ae78ff9437dcd603"
+      }
+    },
+    {
+      "current": {
+        "bytes": 30219,
+        "path": "src/desktop/main.cpp",
+        "sha256": "cf05915277bf3d0a61c13e98c7c5993a8a77f19ec544810d4530e4c2a7d3c73e"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 29195,
+        "path": "src/desktop/main.cpp",
+        "sha256": "6c7826984c1c30086b4d625039030f02d784bec05cc6689ac1b275534c3281c8"
+      },
+      "snapshot": {
+        "bytes": 30219,
+        "path": "build/p06n-001/registration001/source-snapshots001/src/desktop/main.cpp",
+        "sha256": "cf05915277bf3d0a61c13e98c7c5993a8a77f19ec544810d4530e4c2a7d3c73e"
+      }
+    },
+    {
+      "current": {
+        "bytes": 37845,
+        "path": "src/desktop/python.cpp",
+        "sha256": "d9f1a79c4286ad697eec9f284b93457474b5daa9fa72e057b4aef64106ac712b"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 36883,
+        "path": "src/desktop/python.cpp",
+        "sha256": "df469659e55996fa3f546a56c5da30ef8d1e4875bd00ea58964fa3f698b546dc"
+      },
+      "snapshot": {
+        "bytes": 37845,
+        "path": "build/p06n-001/registration001/source-snapshots001/src/desktop/python.cpp",
+        "sha256": "d9f1a79c4286ad697eec9f284b93457474b5daa9fa72e057b4aef64106ac712b"
+      }
+    },
+    {
+      "current": {
+        "bytes": 184,
+        "path": "src/desktop/axis_spacing_ui_probe.hpp",
+        "sha256": "429618655c5b20cbbf35e524fffe11b543bbdbaed443d9fcfbc1881d6f72e9c5"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 184,
+        "path": "build/p06n-001/registration001/source-snapshots001/src/desktop/axis_spacing_ui_probe.hpp",
+        "sha256": "429618655c5b20cbbf35e524fffe11b543bbdbaed443d9fcfbc1881d6f72e9c5"
+      }
+    },
+    {
+      "current": {
+        "bytes": 6008,
+        "path": "src/desktop/axis_spacing_ui_probe.cpp",
+        "sha256": "62f1f9bd6c31f9d4f2d11f0e43a1c675a65b6892e940df29a1f063905997eb56"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 6008,
+        "path": "build/p06n-001/registration001/source-snapshots001/src/desktop/axis_spacing_ui_probe.cpp",
+        "sha256": "62f1f9bd6c31f9d4f2d11f0e43a1c675a65b6892e940df29a1f063905997eb56"
+      }
+    },
+    {
+      "current": {
+        "bytes": 3140,
+        "path": "tests/native/test_axis_spacing_command.cpp",
+        "sha256": "44de3650c38dd467c71e4f45f6663e1b4b4b1b2787b89ee6c8d25bee6972a958"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 3140,
+        "path": "build/p06n-001/registration001/source-snapshots001/tests/native/test_axis_spacing_command.cpp",
+        "sha256": "44de3650c38dd467c71e4f45f6663e1b4b4b1b2787b89ee6c8d25bee6972a958"
+      }
+    },
+    {
+      "current": {
+        "bytes": 6537,
+        "path": "tests/python/test_axis_spacing_command.py",
+        "sha256": "1c0423d4d9bf50d657cd655494aa1751fce3fcb440e5c9659ac527eef8f39b46"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 6537,
+        "path": "build/p06n-001/registration001/source-snapshots001/tests/python/test_axis_spacing_command.py",
+        "sha256": "1c0423d4d9bf50d657cd655494aa1751fce3fcb440e5c9659ac527eef8f39b46"
+      }
+    }
+  ],
+  "unchanged_dependency_scope": true,
+  "unresolved_source_origin_or_preimage_gaps": []
+}

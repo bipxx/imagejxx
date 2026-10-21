@@ -1,0 +1,1840 @@
+{
+  "schema": "imagejxx.g033-ready-registration-patch",
+  "schema_version": 1,
+  "reference_id": "imagej-1.54r-fiji-latest-20261007-1617-win64",
+  "prepared_on": "2026-10-15",
+  "status": "proposed_exact_additive_patch_not_acceptance",
+  "root_integration_required": true,
+  "scope": "Two existing owned P06c scalar subcontracts only. Exact complete schema-valid proposed requirement records plus existing-schema commands.remaining additions account for all40 CD review rows/41 routes. This file is not a manifest, evidence run, source runtime match, commercial clearance or family-complete assertion.",
+  "consumed_sources": [
+    {
+      "path": "docs/parity/commands.json",
+      "sha256": "60040d17c5984d7846339e1094146cf5920414be397d72a67652a16420e04f64"
+    },
+    {
+      "path": "docs/parity/inventory.json",
+      "sha256": "3ac466287aa0508c9b2cbebf503b1c2fafc1d7f48d703113e804e763d2aa319b"
+    },
+    {
+      "path": "docs/parity/SCHEMA.md",
+      "sha256": "d7fbdedc1e32fa57c19773494d527dad882d19393e8039b2993dba3bf5da5f13"
+    },
+    {
+      "path": "docs/parity/references.json",
+      "sha256": "d750de9e7b74e4fd5f6a5f05e7068becc3b67bf61ac8ddc76853e421335754c8"
+    },
+    {
+      "path": "docs/parity/fiji-components.json",
+      "sha256": "5f2ad3f617c354189759d5e1c81d16e1ed977ac730461c80987d1581998e17a1"
+    },
+    {
+      "path": "docs/parity/reference-pins.json",
+      "sha256": "68116b0da051748e583dbe82b6e1df7e269056386d10fb4b66c7833d4f1996bc"
+    },
+    {
+      "path": "docs/parity/formats.json",
+      "sha256": "be49a4e393b242171953228372c39aaf5df23169e2cad13d3b9c20d24ba05504"
+    },
+    {
+      "path": "docs/parity/fixtures.json",
+      "sha256": "437b96793af979a013330d5f0f16932599bfd4c2644f6c94371c0c613bebc762"
+    },
+    {
+      "path": "docs/parity/platforms.json",
+      "sha256": "9226be606ce68d6b60e13864f201f367bfb01519b703718c8bfdce72580ce776"
+    },
+    {
+      "path": "docs/parity/benchmarks.json",
+      "sha256": "327c152e1c06006f309592320f99494e342e65dc4db9bf9468146b8502286c63"
+    },
+    {
+      "path": "docs/parity/reviews/G033-option-assignments.json",
+      "sha256": "a9ee15695757ce9cac90dd3741ab9c88ef91cd404e3ca4935d52f5b3ef9493f7"
+    },
+    {
+      "path": "docs/parity/reviews/G033-channel-display-checklist.md",
+      "sha256": "800973c1b171f7897fa3473e7e0c6dd57e9bb4d1e0065e50f3356d4a39f4629a"
+    },
+    {
+      "path": "docs/packets/P06c-scientific-channel-display.md",
+      "sha256": "b6b79cf15ff339dafd94cf3f7e2104fcae3995bbe31b0e69d49490e01e7725e3"
+    },
+    {
+      "path": "docs/packets/P06c2-composite-max.md",
+      "sha256": "a25914c0a5f008c0ceaf97078b92cf92d417c170ba424b414bf0436b5b87aa02"
+    },
+    {
+      "path": "include/imagejxx/channel_display.hpp",
+      "sha256": "f8d0c80f659339ef74e75967475b97ea238c6f57f100b15830c672f5fb2ceb69"
+    },
+    {
+      "path": "include/imagejxx/channel_display_command.hpp",
+      "sha256": "a828d6f9c744a04c7fb1d9a4be632943de11c333ab02f947ba97fbd93aca6232"
+    },
+    {
+      "path": "src/native/channel_display.cpp",
+      "sha256": "fb20bf111721ce7ee52efecf96e6cb808be94325586dc62a0a5b7c595cfc01d3"
+    },
+    {
+      "path": "src/native/channel_display_command.cpp",
+      "sha256": "52a96e7ee885a811d89b795820650282efd61707f4997310e16718e0f2404533"
+    },
+    {
+      "path": "src/native/channel_display_bindings.cpp",
+      "sha256": "719e6eb3b030ea41f6a6c4c859d560353c770ecbba87c0e0ba9129b5a556784e"
+    },
+    {
+      "path": "src/desktop/channel_display_panel.hpp",
+      "sha256": "625d37ec3770317c84c0f22a99bca530596c93ca08fcf988260841ac4638a64b"
+    },
+    {
+      "path": "src/desktop/channel_display_panel.cpp",
+      "sha256": "50c535dc7dd22fc060b20fd479c4bf4b7ddb197d297b41911f816222264bdc5e"
+    },
+    {
+      "path": "src/desktop/window.hpp",
+      "sha256": "c940414b3a97055d7acf986e6b9096b190b4b30706b52959725cb7c99e03a684"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "sha256": "f1d8a83097ca181a8e6a4a3b70a473cc5c82d328a8561517e6bcd8f8f9952ba4"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "sha256": "d572d255b4d72fb3d4b105b400b43ef20fdf4f52f926bd2faf0b54813ea5b0de"
+    },
+    {
+      "path": "src/desktop/document.cpp",
+      "sha256": "953170620ec663ec762ed98aa748cb7e510ccd49ac338a90b76ad9ef66185288"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "sha256": "2eae59300a2f03ab9d60fa324400a42d60a21fb1a2ed716a28d58201c5c2221a"
+    },
+    {
+      "path": "src/imagejxx/ui/app.py",
+      "sha256": "f3ac361affb2af26dabf0a3a3171614d8aa6c529a808025fb8f689ddab73cea5"
+    },
+    {
+      "path": "scripts/parity_schema.py",
+      "sha256": "be67b4a85e72bee6581bdb0673374e2b808d94955019a930d6ecf8a96934d913"
+    },
+    {
+      "path": "tests/python/test_parity_schema.py",
+      "sha256": "505e2003190e73b9ffadd9422ba5264f0c2fd66507530dc6dd132026d02a1c83"
+    }
+  ],
+  "merge_preconditions": {
+    "commands_sha256": "60040d17c5984d7846339e1094146cf5920414be397d72a67652a16420e04f64",
+    "inventory_sha256": "3ac466287aa0508c9b2cbebf503b1c2fafc1d7f48d703113e804e763d2aa319b",
+    "assignments_sha256": "a9ee15695757ce9cac90dd3741ab9c88ef91cd404e3ca4935d52f5b3ef9493f7",
+    "requirements_count": 49,
+    "candidates_count": 2810,
+    "families_count": 99,
+    "command_enumeration_status": "partial",
+    "new_requirement_ids_absent": [
+      "G033.channel-display.composite-contributor-visibility",
+      "G033.channel-display.explicit-channel-range"
+    ],
+    "exact_reference_id": "imagej-1.54r-fiji-latest-20261007-1617-win64",
+    "integration_owner": "root only; review scoped record defaults and routes before insertion",
+    "source_drift": "If a consumed identity differs, stop and review the changed contract; never silently regenerate/overwrite historical acceptance or reuse an obsolete source pin."
+  },
+  "merge_operation": {
+    "target": "docs/parity/commands.json",
+    "mode": "append_only_deep_copy_after_preconditions",
+    "append_requirements": [
+      {
+        "id": "G033.channel-display.composite-contributor-visibility",
+        "parent_id": "G033",
+        "milestones": [
+          "M5",
+          "M6"
+        ],
+        "kind": "interaction",
+        "title": "Composite per-channel contributor visibility (owned P06c scalar control)",
+        "required_work": "Register and formally bind the existing per-C Boolean visibility Set action and its Composite contributor effect through public core/Python, installed core-only SDK and both shared ImGui launch contexts. This scalar subcontract preserves CD04 full-workflow obligations: ImageJ Color/Grayscale checkbox-driven active-C selection and mode/navigation flag transitions are deferred, not implied by this control.",
+        "candidate_ids": [
+          "R-712fd9411eff4c5371dccf76"
+        ],
+        "reference": {
+          "reference_id": "imagej-1.54r-fiji-latest-20261007-1617-win64",
+          "component_id": "imagej-core",
+          "archive_sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+          "revision": "62db90a269cccc1ac79f658e4602043214ed055b",
+          "scope": "Consumed subset of CD04: pinned CompositeImage.updateImage uses per-C active flags as Composite SUM contributors; Channels.itemStateChanged toggles contributing flags in Composite. The owned P06c Channels checkbox changes only channels[c].visible in every mode and never selects C. Color/Grayscale consume the active C independently of visibility; active-C selection uses a separate navigation control. This record registers that explicit owned behavior, not reference equivalence of Color/Grayscale checkboxes, selected-C side effects or mode/navigation transitions. Those remaining source behaviors retain G033.channel-display.visibility-active-channel in the CD04 deferred route.",
+          "source_members": [
+            {
+              "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/plugin/frame/Channels.java",
+              "sha256": "172f378b8ece0839559f7c291dfcf98c6c9ec619f4055d3303282ba92ffd1ccc"
+            },
+            {
+              "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/CompositeImage.java",
+              "sha256": "7f97ef93b52967cfadda37fb8c26513de283787a93a918d3e54260e43e432a7f"
+            },
+            {
+              "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/StackWindow.java",
+              "sha256": "333063c0a94206e656c1a67d72e7482397336644c911fc659f73539067146b57"
+            }
+          ]
+        },
+        "interfaces": {
+          "cpp": {
+            "applicable": true,
+            "entry_points": [
+              "ChannelDisplayChannel",
+              "ChannelDisplayRequest{ChannelDisplayAction::Set, complete_state, {}}",
+              "resolve_channel_display_command",
+              "command_display_state",
+              "imagejxx::desktop::Window::applyChannelDisplay"
+            ],
+            "evidence": []
+          },
+          "python": {
+            "applicable": true,
+            "entry_points": [
+              "imagejxx.resolve_channel_display_command(source, state, action=\"set\")",
+              "imagejxx.command_display_state",
+              "imagejxx.ui.app.Editor.apply_channel_display(request, document_id=...)"
+            ],
+            "evidence": []
+          },
+          "imgui": {
+            "applicable": true,
+            "entry_points": [
+              "ChannelDisplayPanel::draw",
+              "channel_display.visible.<zero-based-c>",
+              "C++ standalone and Python launcher share the same Channels panel"
+            ],
+            "evidence": []
+          }
+        },
+        "settings_consumers": [],
+        "fixture_ids": [],
+        "verification_run_ids": [],
+        "implementation_status": "partial",
+        "verification_status": "unverified",
+        "commercial": {
+          "decision": "pending",
+          "evidence": [],
+          "reason": "Registration of an existing owned P06c scalar subcontract creates no commercial clearance. Exact product dependencies/resources and reference/fixture scope retain their current reviewed boundaries; upstream discovery candidates and Fiji resources remain pending."
+        },
+        "provenance": {
+          "implementation": "owned_native_equivalent",
+          "incorporated_components": []
+        },
+        "remaining": [
+          "Adopt exact existing P06c native/host/Python/SDK and paired physical UI observations into real requirement/fixture/run/surface bindings before any verified status; empty evidence lists are intentional.",
+          "CD04 broader source checkbox-driven C selection outside Composite and mode/navigation active-flag transitions remain deferred under G033.channel-display.visibility-active-channel; no source runtime equivalence is created by this registration.",
+          "Maintain real-platform, complete resource/accounting, commercial and whole-family closure obligations separately."
+        ],
+        "contract": {
+          "parameters": [
+            {
+              "name": "visible",
+              "type": "boolean",
+              "default": true,
+              "units": "",
+              "enabled_when": "Core Set requires a complete recognized imagejxx.channel-display integer-V1 state, exact C channel count, scalar S1 UInt8/UInt16/Float32 and valid sample policy. The shared panel additionally requires its captured active owner, a recognized supported state, no interpretation error, an idle Window and an apply callback. In one draw at most one state action is dispatched after ImGui scopes close; Close, titlebar close or focused Escape cancels it before callback. Checkbox values are loaded from the captured channel state, whose fresh native default is true; a click copies the complete state and changes only the selected channel visibility."
+            }
+          ],
+          "pixel_types": [
+            "UInt8",
+            "UInt16",
+            "Float32"
+          ],
+          "samples": [
+            "S1 scalar; scientific C is a separate axis; recognized Float64/RGB/RGBA state is refused"
+          ],
+          "axes": [
+            "C-indexed Boolean state shared across every Z/T; XY/XZ/YZ consumers",
+            "Composite C<=8; strict stored Composite C>8 refuses; explicit requested-state normalization above8 uses Color"
+          ],
+          "targets": [
+            "Exactly one UI-selected channel flag per checkbox action; no pixel/ROI/stack target mutation",
+            "Composite uses visible channels; no visible contributors returns fresh black output with no source plane reads",
+            "Color/Grayscale ignore visibility and use active C; singleton Composite uses gray for its sole contributing channel"
+          ],
+          "roi": [
+            "Full-plane display composition; visibility ignores selections/ROIs without changing them; existing threshold and XY annotation layers remain their own consumed contracts"
+          ],
+          "border": [
+            "No border sampling, padding, interpolation or geometric transformation; full in-bounds display plane"
+          ],
+          "nonfinite": "Range endpoints must be finite and low<=high, including literal equal endpoints. Typed JSON metadata rejects Boolean endpoints and lossy integer-to-double conversion. FiniteOnly source samples must be finite; PreserveQuietNaNFloat32 uses the existing canonical scalar F32 admission, maps admitted quiet NaNs to LUT entry0 and preserves source payloads. Noncanonical finite double storage under an admitted type tag uses the documented owned arithmetic extension, not an inferred upstream match. No type conversion or source writes occur.",
+          "geometry": "Display-only state is shared over all Z/T for each C; it never edits samples, shape, calibration, selection/previous, saved ROIs/overlays, metadata, pixel history/redo or source data identity. command_display_state preserves current navigation and unrelated/legacy flat display fields. Set resolves metadata-only with no sample/provider reads or user callbacks; complete strict V1 state and action records stay unchanged. Window checks owner and Pixels/Metadata revisions, preflights workflow publication before native display publication, and appends the accepted normalized Set record only when recording is on. Strict replay requires the recorded owner/source metadata; display/selection changes may differ; new-owner use needs explicit full rebind. Native V3 transports recognized state and action records, while detached v2 guards remain. These consumed publication/persistence services retain their own P06c evidence boundary; this registration creates no new acceptance.",
+          "default_semantics": {
+            "native_initializer": true,
+            "ui_initial_value": "Current captured state.channels[c].visible, not an unconditional reset to true.",
+            "unavailable_state": "No scalar checkbox is admitted until supported recognized state is enabled."
+          },
+          "ui_semantics": {
+            "widget": "ImGui::Checkbox",
+            "selector": "channel_display.visible.<zero-based-c>",
+            "label": "C followed by one-based C",
+            "submit": "A checkbox release queues Set; pending state action disables subsequent state actions in the same frame. Close, titlebar close or focused Escape can cancel that action before callback.",
+            "active_channel_effect": "None; retain current T/C/Z. Separate Active channel combo owns navigation."
+          }
+        }
+      },
+      {
+        "id": "G033.channel-display.explicit-channel-range",
+        "parent_id": "G033",
+        "milestones": [
+          "M5",
+          "M6"
+        ],
+        "kind": "option",
+        "title": "Explicit raw per-channel display range (owned P06c scalar Apply)",
+        "required_work": "Register and formally bind the existing finite per-C raw minimum/maximum draft and explicit Apply Set action, exact requested-state preservation and existing effective-range consumers across C++/Python/core-only SDK/both shared ImGui launches. Calibrated Set/propagation, GUI Auto and destructive Apply remain adjacent CD16/CD13/CD26 work.",
+        "candidate_ids": [
+          "R-712fd9411eff4c5371dccf76",
+          "R-45bfff1c253bf40ea440b456"
+        ],
+        "reference": {
+          "reference_id": "imagej-1.54r-fiji-latest-20261007-1617-win64",
+          "component_id": "imagej-core",
+          "archive_sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+          "revision": "62db90a269cccc1ac79f658e4602043214ed055b",
+          "scope": "`CompositeImage.setDisplayRange`/LUT setters/getters: ranges are channel display state shared across Z/T, not per-plane pixel edits. Integer processor endpoint conversion and F32 endpoint storage differ. Changing active-C LUT preserves its range. Owned/native scope and remaining differences: P06c scopes exact requested ranges, effective-range consumers, quiet-NaN mapping and source/history preservation. Keep intensity calibration (CD16) separate from spatial calibration, and retain legacy flat fields when recognized state is disabled. Registered scalar boundary: UI fields initialize from the current captured state, accept complete finite raw numbers with low<=high, retain invalid drafts, and submit only on explicit Apply. Native ChannelDisplayChannel default range[0,255] is an initializer, not a universal image-dependent GUI/reset range or an upstream default for every dtype. Equal requested ranges remain literal under the owned P06c policy; upstream setMinAndMax(0,0) reset semantics are not claimed.",
+          "source_members": [
+            {
+              "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/CompositeImage.java",
+              "sha256": "7f97ef93b52967cfadda37fb8c26513de283787a93a918d3e54260e43e432a7f"
+            },
+            {
+              "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/LUT.java",
+              "sha256": "c3e13b697521012d9bf132efd663c5b73350a09a2be07c95a48c4c105d5631ff"
+            },
+            {
+              "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ByteProcessor.java",
+              "sha256": "fc23c95778bd7154eba1ea56d9ea943e7d1d9ea568fe20cf9bf9c6db1db3ad94"
+            },
+            {
+              "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ShortProcessor.java",
+              "sha256": "7484082e91c7095a3c79984c74b4dafa8b6d2912ed3b862e28dd331c8ba3024d"
+            },
+            {
+              "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/FloatProcessor.java",
+              "sha256": "0f52a157fe99e9a48ce2c9356fc2c3c435dc74f48e45a575171e60deb694ccf5"
+            }
+          ]
+        },
+        "interfaces": {
+          "cpp": {
+            "applicable": true,
+            "entry_points": [
+              "ChannelDisplayChannel",
+              "ChannelDisplayRequest{ChannelDisplayAction::Set, complete_state, {}}",
+              "resolve_channel_display_command",
+              "command_display_state",
+              "imagejxx::desktop::Window::applyChannelDisplay",
+              "effective_channel_display_range",
+              "compose_channel_display"
+            ],
+            "evidence": []
+          },
+          "python": {
+            "applicable": true,
+            "entry_points": [
+              "imagejxx.resolve_channel_display_command(source, state, action=\"set\")",
+              "imagejxx.command_display_state",
+              "imagejxx.ui.app.Editor.apply_channel_display(request, document_id=...)",
+              "imagejxx.effective_channel_display_range",
+              "imagejxx.compose_channel_display"
+            ],
+            "evidence": []
+          },
+          "imgui": {
+            "applicable": true,
+            "entry_points": [
+              "ChannelDisplayPanel::draw",
+              "channel_display.minimum",
+              "channel_display.maximum",
+              "channel_display.apply",
+              "C++ standalone and Python launcher share the same Channels panel"
+            ],
+            "evidence": []
+          }
+        },
+        "settings_consumers": [],
+        "fixture_ids": [],
+        "verification_run_ids": [],
+        "implementation_status": "partial",
+        "verification_status": "unverified",
+        "commercial": {
+          "decision": "pending",
+          "evidence": [],
+          "reason": "Registration of an existing owned P06c scalar subcontract creates no commercial clearance. Exact product dependencies/resources and reference/fixture scope retain their current reviewed boundaries; upstream discovery candidates and Fiji resources remain pending."
+        },
+        "provenance": {
+          "implementation": "owned_native_equivalent",
+          "incorporated_components": []
+        },
+        "remaining": [
+          "Adopt exact existing P06c range/mapping/state/history/native/Python/SDK and paired physical UI observations into real requirement/fixture/run/surface bindings before any verified status; empty evidence lists are intentional.",
+          "GUI Auto contrast remains CD13/G057, intensity-calibrated Set/propagation remains CD16/G057, LUT/range destructive Apply remains the two CD26 routes, and first-enable/Reset/mode semantics remain separately assigned.",
+          "Maintain real-platform, complete resource/accounting, commercial and whole-family closure obligations separately."
+        ],
+        "contract": {
+          "parameters": [
+            {
+              "name": "minimum",
+              "type": "number",
+              "default": 0,
+              "units": "raw intensity",
+              "enabled_when": "Core Set requires a complete recognized imagejxx.channel-display integer-V1 state, exact C channel count, scalar S1 UInt8/UInt16/Float32 and valid sample policy. The shared panel additionally requires its captured active owner, a recognized supported state, no interpretation error, an idle Window and an apply callback. In one draw at most one state action is dispatched after ImGui scopes close; Close, titlebar close or focused Escape cancels it before callback. Numeric default0 is the C++ ChannelDisplayChannel.range[0] initializer only; the GUI text field loads the captured current channel range and is not seeded with0 unconditionally."
+            },
+            {
+              "name": "maximum",
+              "type": "number",
+              "default": 255,
+              "units": "raw intensity",
+              "enabled_when": "Core Set requires a complete recognized imagejxx.channel-display integer-V1 state, exact C channel count, scalar S1 UInt8/UInt16/Float32 and valid sample policy. The shared panel additionally requires its captured active owner, a recognized supported state, no interpretation error, an idle Window and an apply callback. In one draw at most one state action is dispatched after ImGui scopes close; Close, titlebar close or focused Escape cancels it before callback. Numeric default255 is the C++ ChannelDisplayChannel.range[1] initializer only; the GUI text field loads the captured current channel range and is not seeded with255 unconditionally. Apply additionally requires parsed finite minimum<=maximum."
+            }
+          ],
+          "pixel_types": [
+            "UInt8",
+            "UInt16",
+            "Float32"
+          ],
+          "samples": [
+            "S1 scalar; scientific C is a separate axis; recognized Float64/RGB/RGBA state is refused"
+          ],
+          "axes": [
+            "Exactly active C in the shared panel; the complete public Set state may specify every C",
+            "Requested per-C range shared across all Z/T; ordinary XY and linked XY/XZ/YZ renderers/effective-range consumers use the same state"
+          ],
+          "targets": [
+            "No pixel processing target: explicit Apply changes only active-C range in a copied complete state; retain other channel ranges, visibility, mode and LUTs",
+            "No implicit Reset/Auto/normalization from equality or image statistics; no sample reads in Set resolution/publication"
+          ],
+          "roi": [
+            "Raw display range is independent of selected ROI, mask or saved ROIs; no intensity calibration, threshold computation or redirect policy is implied"
+          ],
+          "border": [
+            "No range-setting border operation; existing in-bounds plane composition and no source resampling"
+          ],
+          "nonfinite": "Range endpoints must be finite and low<=high, including literal equal endpoints. Typed JSON metadata rejects Boolean endpoints and lossy integer-to-double conversion. FiniteOnly source samples must be finite; PreserveQuietNaNFloat32 uses the existing canonical scalar F32 admission, maps admitted quiet NaNs to LUT entry0 and preserves source payloads. Noncanonical finite double storage under an admitted type tag uses the documented owned arithmetic extension, not an inferred upstream match. No type conversion or source writes occur.",
+          "geometry": "Display-only state is shared over all Z/T for each C; it never edits samples, shape, calibration, selection/previous, saved ROIs/overlays, metadata, pixel history/redo or source data identity. command_display_state preserves current navigation and unrelated/legacy flat display fields. Set resolves metadata-only with no sample/provider reads or user callbacks; complete strict V1 state and action records stay unchanged. Window checks owner and Pixels/Metadata revisions, preflights workflow publication before native display publication, and appends the accepted normalized Set record only when recording is on. Strict replay requires the recorded owner/source metadata; display/selection changes may differ; new-owner use needs explicit full rebind. Native V3 transports recognized state and action records, while detached v2 guards remain. These consumed publication/persistence services retain their own P06c evidence boundary; this registration creates no new acceptance. Requested finite endpoint doubles persist unchanged. U8 maps from rounded low origin using original requested width without a rounded-high shortcut; U16 rounds both endpoints with denominator+1; F32 uses binary32-rounded endpoints when finite-representable, otherwise the owned raw-double extension. Clamp before integer casts and preserve strict literal equality behavior. These arithmetic rules consume existing scoped P06c mapping and do not claim GUI Auto or intensity-calibrated equivalence.",
+          "default_semantics": {
+            "native_channel_struct_range": [
+              0,
+              255
+            ],
+            "ui_initial_value": "Current captured state.channels[display.c].range; no fixed universal GUI default.",
+            "fresh_enable": "Existing P06c explicit first-enable inheritance/default reset policy supplies the state before these controls; its image-dependent defaults are not replaced.",
+            "public_set": "A complete admitted state is required; neither C++ resolve nor Python action=set fills omitted ranges from these parameter defaults."
+          },
+          "ui_semantics": {
+            "minimum_selector": "channel_display.minimum",
+            "maximum_selector": "channel_display.maximum",
+            "apply_selector": "channel_display.apply",
+            "parser": "Trim only space, tab, CR and LF, allow a single leading plus, parse complete general-format finite double; reject trailing text, nonfinite values and reversed endpoints.",
+            "draft": "Text is retained while the same owner/C/source range remains; invalid drafts remain visible and Apply disabled. Unrelated state updates do not discard it. Owner/C/source-range changes rebase; successful range Apply/Reset forces next-frame rebase.",
+            "submit": "Only explicit Apply, after scopes close; at most one state action per draw unless panel dismissal cancels it before callback; fields reflect captured current C.",
+            "reset_distinction": "Separate Reset current/all range actions; neither [0,0] nor other equal ranges request Reset or GUI Auto."
+          }
+        }
+      }
+    ],
+    "append_remaining": [
+      "CD01 route1: deferred typed contract G033.channels-tool.lifecycle-admission; owner=G033; next_child=channel-entry-lifecycle; dependencies=p06c-preserved,entry-conversion-policy,above-eight-channel-access; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/0/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD02 route1: deferred typed contract G031.make-composite.entry-conversion; owner=G031; next_child=channel-entry-conversion; dependencies=channel-axis-state-remapper,entry-conversion-policy,atomic-derived-publication; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/1/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD03 route1: deferred typed contract G033.channel-display.defaults-cardinality; owner=G033; next_child=channel-entry-lifecycle; dependencies=p06c-preserved,entry-conversion-policy,above-eight-channel-access; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/2/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD04 route1: registered owned Composite visibility subset G033.channel-display.composite-contributor-visibility; deferred full source workflow G033.channel-display.visibility-active-channel (Color/Grayscale checkbox C-selection and mode/navigation flag transitions); owner=G033; next_child=channel-mode-visibility-transitions; dependencies=p06c-preserved,p06b-navigation,mode-visibility-reference; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/3/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD05 route1: deferred typed contract G033.channel-display.mode-projection-transitions; owner=G033; next_child=composite-max; dependencies=p06c-preserved,projection-versioning,max-transition-reference,all-lut-transition-subcontract; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/4/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD06 route1: deferred typed contract G033.channel-display.sum-byte-mapping; owner=G033; next_child=preserve-p06c-bind-options; dependencies=p06c-preserved; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/5/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD07 route1: deferred typed contract G033.channel-display.composite-max; owner=G033; next_child=composite-max; dependencies=p06c-preserved,projection-versioning,max-transition-reference,all-lut-transition-subcontract; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/6/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD08 route1: deferred typed contract G033.channel-display.composite-min; owner=G033; next_child=composite-min; dependencies=projection-versioning,min-reference-policy,all-lut-transition-subcontract; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/7/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD09 route1: deferred typed contract G033.channel-display.composite-invert; owner=G033; next_child=composite-invert; dependencies=projection-versioning,invert-reference-policy,per-consumer-resource-preflight; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/8/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD10 route1: deferred typed contract G033.channel-display.invert-all-luts; owner=G033; next_child=all-channel-lut-inversion; dependencies=all-lut-transition-subcontract,projection-versioning,atomic-display-actions; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/9/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD11 route1: registered owned scalar range requirement G033.channel-display.explicit-channel-range; formal evidence adoption pending; calibrated/propagated Set, GUI Auto and destructive Apply retain their adjacent CD16/CD13/CD26 routes; owner=G033; next_child=preserve-p06c-bind-options; dependencies=p06c-preserved; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/10/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD12 route1: deferred typed contract G033.channel-display.live-range-reset; owner=G033; next_child=range-reset-lifetimes; dependencies=p06c-preserved,unsigned16-setting-consumer,range-action-lifetimes; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/11/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD13 route1: deferred typed contract G057.auto-contrast.live-and-recorded-dispatch; owner=G057; next_child=gui-auto-histogram; dependencies=dataset-roi-histogram,gui-auto-reference-policy,intensity-calibration,range-action-lifetimes; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/12/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD14 route1: deferred typed contract G057.adjustment.histogram-slider-consumers; owner=G057; next_child=gui-auto-histogram; dependencies=dataset-roi-histogram,intensity-calibration,atomic-display-actions; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/13/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD15 route1: deferred typed contract G058.color-balance.resolved-channel-targets; owner=G058; next_child=color-balance-targeting; dependencies=resolved-channel-targets,rgb-snapshot-pixel-policy,atomic-display-actions; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/14/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD16 route1: deferred typed contract G057.set-range.calibration-propagation-u16; owner=G057; next_child=range-level-propagation; dependencies=intensity-calibration,multi-owner-display-publication,unsigned16-setting-consumer,range-action-lifetimes; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/15/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD17 route1: deferred typed contract G057.window-level.calibrated-propagation; owner=G057; next_child=range-level-propagation; dependencies=intensity-calibration,multi-owner-display-publication,range-action-lifetimes; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/16/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD18 route1: deferred typed contract G059.luts.complete-built-in-selection; owner=G059; next_child=lut-catalog-consumers; dependencies=reviewed-palette-catalog,atomic-display-actions; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/17/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD19 route1: deferred typed contract G059.luts.assignment-loader-side-effects; owner=G059; next_child=lut-assignment-actions; dependencies=reviewed-palette-catalog,lut-loader-transition-policy,lut-file-formats; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/18/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD20 route1: deferred typed contract G059.luts.singular-index-reversal; owner=G059; next_child=lut-assignment-actions; dependencies=native-table-actions,atomic-display-actions; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/19/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD21 route1: deferred typed contract G059.luts.show-curve-list; owner=G059; next_child=lut-viewer-table; dependencies=native-lut-query,shared-results-plot-presentation; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/20/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD22 route1: deferred typed contract G059.luts.display-all-browser; owner=G059; next_child=lut-catalog-consumers; dependencies=reviewed-palette-catalog,palette-browser-lifecycle; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/21/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD23 route1: deferred typed contract G059.luts.editor-draft-accept-cancel; owner=G059; next_child=lut-editor-scaling; dependencies=native-table-actions,lut-editor-side-effect-policy,atomic-display-actions; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/22/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD24 route1: deferred typed contract G059.luts.map-size-scaling; owner=G059; next_child=lut-editor-scaling; dependencies=lut-map-representation,lut-scaling-reference; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/23/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD25 route1: deferred typed contract G080.luts.binary-text-interchange; owner=G080; next_child=lut-interchange; dependencies=lut-file-formats,bounded-lut-file-service,atomic-file-replacement; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/24/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD26 route1: deferred typed contract G059.luts.destructive-apply-route; owner=G059; next_child=lut-range-pixel-application; dependencies=native-processing-targets,rgb-snapshot-pixel-policy,threshold-application-routing,promoted-output-admission; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/25/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD26 route2: deferred typed contract G057.range.destructive-apply-route; owner=G057; next_child=lut-range-pixel-application; dependencies=native-processing-targets,rgb-snapshot-pixel-policy,threshold-application-routing,promoted-output-admission; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/25/commands_schema_mapping/proposed_requirements/1; source review is not runtime match or commercial clearance.",
+      "CD27 route1: deferred typed contract G032.channel-arrangement.full-order; owner=G032; next_child=channel-axis-arrangement; dependencies=channel-axis-state-remapper,arranger-reference-policy,atomic-derived-publication; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/26/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD28 route1: deferred typed contract G032.channel-arrangement.subset-reduction; owner=G032; next_child=channel-axis-arrangement; dependencies=channel-axis-state-remapper,removed-channel-policy,arranger-reference-policy; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/27/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD29 route1: deferred typed contract G032.channel-arrangement.thumbnail-palette-draft; owner=G032; next_child=channel-axis-arrangement; dependencies=channel-axis-state-remapper,arranger-reference-policy,reviewed-palette-catalog; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/28/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD30 route1: deferred typed contract G032.channels.full-axis-split; owner=G032; next_child=full-axis-split-merge; dependencies=channel-axis-state-remapper,multi-source-channel-policy,atomic-derived-publication; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/29/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD31 route1: deferred typed contract G032.channels.full-axis-merge; owner=G032; next_child=full-axis-split-merge; dependencies=channel-axis-state-remapper,multi-source-channel-policy,atomic-derived-publication; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/30/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD32 route1: deferred typed contract G060.composite.rendered-rgb-output; owner=G060; next_child=rendered-rgb-output; dependencies=rendered-rgb-target-output,atomic-derived-publication,annotation-output-policy; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/31/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD33 route1: deferred typed contract G033.channel-display.czt-xyz-consumers; owner=G033; next_child=preserve-p06c-bind-options; dependencies=p06c-preserved,p06b-navigation; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/32/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD34 route1: deferred typed contract G033.channel-display.preview-threshold-annotations; owner=G033; next_child=projection-shared-consumer-regression; dependencies=p06c-preserved,p06d1-preview-targets,p05k-threshold-state; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/33/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD35 route1: deferred typed contract G033.channel-display.native-state-persistence; owner=G033; next_child=projection-state-persistence; dependencies=p06c-preserved,p06a-native-session,projection-versioning,channel-axis-state-remapper; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/34/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD36 route1: deferred typed contract G080.tiff.channel-display-metadata; owner=G080; next_child=scientific-tiff-display-interchange; dependencies=core-file-service,scientific-tiff-format,scientific-tiff-dimension-mapping; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/35/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD37 route1: deferred typed contract G085.channel-display.normalized-action-replay; owner=G085; next_child=per-consumer-action-records; dependencies=p06c-preserved,atomic-display-actions,projection-versioning; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/36/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD38 route1: deferred typed contract G001.channel-workflow.setting-lifetimes; owner=G001; next_child=per-consumer-settings; dependencies=p06c-preserved,range-action-lifetimes,unsigned16-setting-consumer; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/37/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD39 route1: deferred typed contract G084.channel-workflow.platform-usability; owner=G084; next_child=platform-channel-workflows; dependencies=real-platform-feasibility,reviewed-palette-catalog; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/38/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "CD40 route1: deferred typed contract G010.channel-workflow.resources-ownership-types; owner=G010; next_child=per-consumer-resource-preflight; dependencies=p06c-preserved,large-data-source-accounting; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/39/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+      "G033 Fiji reconciliation: keep the four distinct descriptors R-08f5772a98f948d0c71aa445,R-b3f7157bda31483eda6d97f9,R-c6d5a481b299f6b3dd7cfaa0,R-e716904770fc301939053e40 runtime/commercial pending under bundled ImageJ1.54p; SpectralComposite remains a distinct additional workflow, not aliased to standalone ImageJ1.54r modes. Exact references=docs/parity/reviews/G033-option-assignments.json#/pending_fiji_descriptors.",
+      "G033 palette eligibility: all36 exact Fiji palette resources remain pending/blocked for incorporation until concrete code/dependency/asset review; built-in owned named tables do not clear the palette catalog. Exact resources=docs/parity/reviews/G033-option-assignments.json#/pending_fiji_palettes.",
+      "G033 Max next entry: CD05/CD07 remain deferred pending P06c2 V01 state/action representation decision and its targeted transition/Max reference inputs. Strict integer-V1 state/action remains unchanged and means SUM; this registration patch adds no projection field or Max evidence. Preserve all99 families, all2810 discovery candidates and the remaining unenumerated required options; full M0 option/format/platform/benchmark/eligibility closure remains required."
+    ],
+    "preserve": "All existing keys, exact49 requirement objects, all2810 discovery candidates including raw metadata/nonfinite SciJava priorities, existing run/settings/surface/fixture bindings and statuses; all99 inventory records; no added capability or eligibility mutation.",
+    "post_merge_expected": {
+      "requirements_count": 51,
+      "candidate_count": 2810,
+      "covered_parent_families": 9,
+      "enumeration_status": "partial",
+      "newly_verified_requirements": 0,
+      "newly_commercially_cleared_requirements": 0
+    },
+    "write_authority": "No write performed by this proposal or its validation code; root integrates once after review."
+  },
+  "review_route_assignments": [
+    {
+      "candidate_id": "CD01",
+      "title": "Tool lifecycle and admission",
+      "primary_family": "G033",
+      "cross_reference_families": [
+        "G031",
+        "G012",
+        "G084"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G033.channels-tool.lifecycle-admission",
+          "primary_family": "G033",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/0/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "channel-entry-lifecycle",
+          "dependency_ids": [
+            "p06c-preserved",
+            "entry-conversion-policy",
+            "above-eight-channel-access"
+          ],
+          "runtime_state": "scoped_runtime_qualified_remaining_pending",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD02",
+      "title": "Make Composite",
+      "primary_family": "G031",
+      "cross_reference_families": [
+        "G032",
+        "G033",
+        "G060",
+        "G062",
+        "G085"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G031.make-composite.entry-conversion",
+          "primary_family": "G031",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/1/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "channel-entry-conversion",
+          "dependency_ids": [
+            "channel-axis-state-remapper",
+            "entry-conversion-policy",
+            "atomic-derived-publication"
+          ],
+          "runtime_state": "pending_for_complete_candidate",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD03",
+      "title": "Defaults and C cardinality",
+      "primary_family": "G033",
+      "cross_reference_families": [
+        "G031",
+        "G032"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G033.channel-display.defaults-cardinality",
+          "primary_family": "G033",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/2/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "channel-entry-lifecycle",
+          "dependency_ids": [
+            "p06c-preserved",
+            "entry-conversion-policy",
+            "above-eight-channel-access"
+          ],
+          "runtime_state": "scoped_runtime_qualified_remaining_pending",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD04",
+      "title": "Visibility versus active C",
+      "primary_family": "G033",
+      "cross_reference_families": [
+        "G031",
+        "G027"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G033.channel-display.visibility-active-channel",
+          "primary_family": "G033",
+          "disposition": "deferred_source_workflow_with_registered_subset",
+          "registered_subset_requirement_ids": [
+            "G033.channel-display.composite-contributor-visibility"
+          ],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/3/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "channel-mode-visibility-transitions",
+          "dependency_ids": [
+            "p06c-preserved",
+            "p06b-navigation",
+            "mode-visibility-reference"
+          ],
+          "runtime_state": "scoped_runtime_qualified_remaining_pending",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD05",
+      "title": "Mode transitions",
+      "primary_family": "G033",
+      "cross_reference_families": [
+        "G059",
+        "G085"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G033.channel-display.mode-projection-transitions",
+          "primary_family": "G033",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/4/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "composite-max",
+          "dependency_ids": [
+            "p06c-preserved",
+            "projection-versioning",
+            "max-transition-reference",
+            "all-lut-transition-subcontract"
+          ],
+          "runtime_state": "scoped_runtime_qualified_remaining_pending",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD06",
+      "title": "SUM byte mapping and edge cases",
+      "primary_family": "G033",
+      "cross_reference_families": [
+        "G060",
+        "G010"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G033.channel-display.sum-byte-mapping",
+          "primary_family": "G033",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/5/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "preserve-p06c-bind-options",
+          "dependency_ids": [
+            "p06c-preserved"
+          ],
+          "runtime_state": "scoped_runtime_qualified_remaining_pending",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD07",
+      "title": "Composite Max",
+      "primary_family": "G033",
+      "cross_reference_families": [
+        "G059",
+        "G085"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G033.channel-display.composite-max",
+          "primary_family": "G033",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/6/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "composite-max",
+          "dependency_ids": [
+            "p06c-preserved",
+            "projection-versioning",
+            "max-transition-reference",
+            "all-lut-transition-subcontract"
+          ],
+          "runtime_state": "pending_for_complete_candidate",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD08",
+      "title": "Composite Min",
+      "primary_family": "G033",
+      "cross_reference_families": [
+        "G059",
+        "G085"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G033.channel-display.composite-min",
+          "primary_family": "G033",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/7/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "composite-min",
+          "dependency_ids": [
+            "projection-versioning",
+            "min-reference-policy",
+            "all-lut-transition-subcontract"
+          ],
+          "runtime_state": "pending_for_complete_candidate",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD09",
+      "title": "Composite Invert",
+      "primary_family": "G033",
+      "cross_reference_families": [
+        "G059",
+        "G085",
+        "G010"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G033.channel-display.composite-invert",
+          "primary_family": "G033",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/8/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "composite-invert",
+          "dependency_ids": [
+            "projection-versioning",
+            "invert-reference-policy",
+            "per-consumer-resource-preflight"
+          ],
+          "runtime_state": "pending_for_complete_candidate",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD10",
+      "title": "Invert all LUTs",
+      "primary_family": "G033",
+      "cross_reference_families": [
+        "G059",
+        "G031",
+        "G085"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G033.channel-display.invert-all-luts",
+          "primary_family": "G033",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/9/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "all-channel-lut-inversion",
+          "dependency_ids": [
+            "all-lut-transition-subcontract",
+            "projection-versioning",
+            "atomic-display-actions"
+          ],
+          "runtime_state": "pending_for_complete_candidate",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD11",
+      "title": "Explicit per-C range",
+      "primary_family": "G033",
+      "cross_reference_families": [
+        "G057",
+        "G060"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G033.channel-display.explicit-channel-range",
+          "primary_family": "G033",
+          "disposition": "registered_scoped_subcontract",
+          "registered_subset_requirement_ids": [
+            "G033.channel-display.explicit-channel-range"
+          ],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/10/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "preserve-p06c-bind-options",
+          "dependency_ids": [
+            "p06c-preserved"
+          ],
+          "runtime_state": "scoped_runtime_qualified_remaining_pending",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD12",
+      "title": "Reset range",
+      "primary_family": "G033",
+      "cross_reference_families": [
+        "G057",
+        "G007",
+        "G001",
+        "G085"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G033.channel-display.live-range-reset",
+          "primary_family": "G033",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/11/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "range-reset-lifetimes",
+          "dependency_ids": [
+            "p06c-preserved",
+            "unsigned16-setting-consumer",
+            "range-action-lifetimes"
+          ],
+          "runtime_state": "scoped_runtime_qualified_remaining_pending",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD13",
+      "title": "GUI Auto-contrast",
+      "primary_family": "G057",
+      "cross_reference_families": [
+        "G033",
+        "G069",
+        "G007",
+        "G085"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G057.auto-contrast.live-and-recorded-dispatch",
+          "primary_family": "G057",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/12/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "gui-auto-histogram",
+          "dependency_ids": [
+            "dataset-roi-histogram",
+            "gui-auto-reference-policy",
+            "intensity-calibration",
+            "range-action-lifetimes"
+          ],
+          "runtime_state": "pending_for_complete_candidate",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD14",
+      "title": "Histogram and interactive adjustment",
+      "primary_family": "G057",
+      "cross_reference_families": [
+        "G033",
+        "G069",
+        "G049"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G057.adjustment.histogram-slider-consumers",
+          "primary_family": "G057",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/13/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "gui-auto-histogram",
+          "dependency_ids": [
+            "dataset-roi-histogram",
+            "intensity-calibration",
+            "atomic-display-actions"
+          ],
+          "runtime_state": "pending_for_complete_candidate",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD15",
+      "title": "Color Balance targeting",
+      "primary_family": "G058",
+      "cross_reference_families": [
+        "G057",
+        "G033",
+        "G060"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G058.color-balance.resolved-channel-targets",
+          "primary_family": "G058",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/14/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "color-balance-targeting",
+          "dependency_ids": [
+            "resolved-channel-targets",
+            "rgb-snapshot-pixel-policy",
+            "atomic-display-actions"
+          ],
+          "runtime_state": "pending_for_complete_candidate",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD16",
+      "title": "Set range, propagation and unsigned16 setting",
+      "primary_family": "G057",
+      "cross_reference_families": [
+        "G033",
+        "G007",
+        "G001",
+        "G062",
+        "G068",
+        "G085"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G057.set-range.calibration-propagation-u16",
+          "primary_family": "G057",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/15/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "range-level-propagation",
+          "dependency_ids": [
+            "intensity-calibration",
+            "multi-owner-display-publication",
+            "unsigned16-setting-consumer",
+            "range-action-lifetimes"
+          ],
+          "runtime_state": "scoped_runtime_qualified_remaining_pending",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD17",
+      "title": "Set Window/Level",
+      "primary_family": "G057",
+      "cross_reference_families": [
+        "G033",
+        "G068",
+        "G085"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G057.window-level.calibrated-propagation",
+          "primary_family": "G057",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/16/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "range-level-propagation",
+          "dependency_ids": [
+            "intensity-calibration",
+            "multi-owner-display-publication",
+            "range-action-lifetimes"
+          ],
+          "runtime_state": "pending_for_complete_candidate",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD18",
+      "title": "Complete named table selection",
+      "primary_family": "G059",
+      "cross_reference_families": [
+        "G033",
+        "G080"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G059.luts.complete-built-in-selection",
+          "primary_family": "G059",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/17/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "lut-catalog-consumers",
+          "dependency_ids": [
+            "reviewed-palette-catalog",
+            "atomic-display-actions"
+          ],
+          "runtime_state": "scoped_runtime_qualified_remaining_pending",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD19",
+      "title": "Assign/import custom LUT",
+      "primary_family": "G059",
+      "cross_reference_families": [
+        "G033",
+        "G080",
+        "G085"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G059.luts.assignment-loader-side-effects",
+          "primary_family": "G059",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/18/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "lut-assignment-actions",
+          "dependency_ids": [
+            "reviewed-palette-catalog",
+            "lut-loader-transition-policy",
+            "lut-file-formats"
+          ],
+          "runtime_state": "scoped_runtime_qualified_remaining_pending",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD20",
+      "title": "Invert LUT, singular",
+      "primary_family": "G059",
+      "cross_reference_families": [
+        "G033",
+        "G085"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G059.luts.singular-index-reversal",
+          "primary_family": "G059",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/19/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "lut-assignment-actions",
+          "dependency_ids": [
+            "native-table-actions",
+            "atomic-display-actions"
+          ],
+          "runtime_state": "pending_for_complete_candidate",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD21",
+      "title": "Show LUT and List",
+      "primary_family": "G059",
+      "cross_reference_families": [
+        "G033",
+        "G071"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G059.luts.show-curve-list",
+          "primary_family": "G059",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/20/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "lut-viewer-table",
+          "dependency_ids": [
+            "native-lut-query",
+            "shared-results-plot-presentation"
+          ],
+          "runtime_state": "pending_for_complete_candidate",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD22",
+      "title": "Display all LUTs",
+      "primary_family": "G059",
+      "cross_reference_families": [
+        "G033",
+        "G071"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G059.luts.display-all-browser",
+          "primary_family": "G059",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/21/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "lut-catalog-consumers",
+          "dependency_ids": [
+            "reviewed-palette-catalog",
+            "palette-browser-lifecycle"
+          ],
+          "runtime_state": "pending_for_complete_candidate",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD23",
+      "title": "Edit LUT",
+      "primary_family": "G059",
+      "cross_reference_families": [
+        "G033",
+        "G080",
+        "G085"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G059.luts.editor-draft-accept-cancel",
+          "primary_family": "G059",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/22/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "lut-editor-scaling",
+          "dependency_ids": [
+            "native-table-actions",
+            "lut-editor-side-effect-policy",
+            "atomic-display-actions"
+          ],
+          "runtime_state": "pending_for_complete_candidate",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD24",
+      "title": "LUT map size and scaling",
+      "primary_family": "G059",
+      "cross_reference_families": [
+        "G033",
+        "G080"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G059.luts.map-size-scaling",
+          "primary_family": "G059",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/23/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "lut-editor-scaling",
+          "dependency_ids": [
+            "lut-map-representation",
+            "lut-scaling-reference"
+          ],
+          "runtime_state": "pending_for_complete_candidate",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD25",
+      "title": "LUT interchange",
+      "primary_family": "G080",
+      "cross_reference_families": [
+        "G059",
+        "G033",
+        "G081"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G080.luts.binary-text-interchange",
+          "primary_family": "G080",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/24/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "lut-interchange",
+          "dependency_ids": [
+            "lut-file-formats",
+            "bounded-lut-file-service",
+            "atomic-file-replacement"
+          ],
+          "runtime_state": "pending_for_complete_candidate",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD26",
+      "title": "Apply LUT / Apply range",
+      "primary_family": "G059",
+      "cross_reference_families": [
+        "G057",
+        "G060",
+        "G049",
+        "G045",
+        "G085"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G059.luts.destructive-apply-route",
+          "primary_family": "G059",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/25/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "lut-range-pixel-application",
+          "dependency_ids": [
+            "native-processing-targets",
+            "rgb-snapshot-pixel-policy",
+            "threshold-application-routing",
+            "promoted-output-admission"
+          ],
+          "runtime_state": "pending_for_complete_candidate",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        },
+        {
+          "proposed_requirement_id": "G057.range.destructive-apply-route",
+          "primary_family": "G057",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/25/commands_schema_mapping/proposed_requirements/1",
+          "next_child": "lut-range-pixel-application",
+          "dependency_ids": [
+            "native-processing-targets",
+            "rgb-snapshot-pixel-policy",
+            "threshold-application-routing",
+            "promoted-output-admission"
+          ],
+          "runtime_state": "pending_for_complete_candidate",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD27",
+      "title": "Arrange full channel order",
+      "primary_family": "G032",
+      "cross_reference_families": [
+        "G033",
+        "G031",
+        "G035",
+        "G062",
+        "G085"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G032.channel-arrangement.full-order",
+          "primary_family": "G032",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/26/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "channel-axis-arrangement",
+          "dependency_ids": [
+            "channel-axis-state-remapper",
+            "arranger-reference-policy",
+            "atomic-derived-publication"
+          ],
+          "runtime_state": "pending_for_complete_candidate",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD28",
+      "title": "Arrange subset/reduction",
+      "primary_family": "G032",
+      "cross_reference_families": [
+        "G033",
+        "G031",
+        "G063",
+        "G062",
+        "G085"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G032.channel-arrangement.subset-reduction",
+          "primary_family": "G032",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/27/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "channel-axis-arrangement",
+          "dependency_ids": [
+            "channel-axis-state-remapper",
+            "removed-channel-policy",
+            "arranger-reference-policy"
+          ],
+          "runtime_state": "pending_for_complete_candidate",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD29",
+      "title": "Arrange thumbnails and LUT popup",
+      "primary_family": "G032",
+      "cross_reference_families": [
+        "G033",
+        "G059",
+        "G084"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G032.channel-arrangement.thumbnail-palette-draft",
+          "primary_family": "G032",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/28/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "channel-axis-arrangement",
+          "dependency_ids": [
+            "channel-axis-state-remapper",
+            "arranger-reference-policy",
+            "reviewed-palette-catalog"
+          ],
+          "runtime_state": "pending_for_complete_candidate",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD30",
+      "title": "Split Channels",
+      "primary_family": "G032",
+      "cross_reference_families": [
+        "G031",
+        "G033",
+        "G060",
+        "G062",
+        "G085"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G032.channels.full-axis-split",
+          "primary_family": "G032",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/29/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "full-axis-split-merge",
+          "dependency_ids": [
+            "channel-axis-state-remapper",
+            "multi-source-channel-policy",
+            "atomic-derived-publication"
+          ],
+          "runtime_state": "pending_for_complete_candidate",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD31",
+      "title": "Merge Channels",
+      "primary_family": "G032",
+      "cross_reference_families": [
+        "G031",
+        "G033",
+        "G060",
+        "G062",
+        "G085"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G032.channels.full-axis-merge",
+          "primary_family": "G032",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/30/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "full-axis-split-merge",
+          "dependency_ids": [
+            "channel-axis-state-remapper",
+            "multi-source-channel-policy",
+            "atomic-derived-publication"
+          ],
+          "runtime_state": "pending_for_complete_candidate",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD32",
+      "title": "Create RGB / Stack to RGB",
+      "primary_family": "G060",
+      "cross_reference_families": [
+        "G031",
+        "G033",
+        "G062",
+        "G085"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G060.composite.rendered-rgb-output",
+          "primary_family": "G060",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/31/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "rendered-rgb-output",
+          "dependency_ids": [
+            "rendered-rgb-target-output",
+            "atomic-derived-publication",
+            "annotation-output-policy"
+          ],
+          "runtime_state": "pending_for_complete_candidate",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD33",
+      "title": "C/Z/T and XYZ consumers",
+      "primary_family": "G033",
+      "cross_reference_families": [
+        "G027",
+        "G028",
+        "G031"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G033.channel-display.czt-xyz-consumers",
+          "primary_family": "G033",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/32/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "preserve-p06c-bind-options",
+          "dependency_ids": [
+            "p06c-preserved",
+            "p06b-navigation"
+          ],
+          "runtime_state": "scoped_runtime_qualified_remaining_pending",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD34",
+      "title": "Preview, threshold and annotations",
+      "primary_family": "G033",
+      "cross_reference_families": [
+        "G044",
+        "G049",
+        "G025",
+        "G027"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G033.channel-display.preview-threshold-annotations",
+          "primary_family": "G033",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/33/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "projection-shared-consumer-regression",
+          "dependency_ids": [
+            "p06c-preserved",
+            "p06d1-preview-targets",
+            "p05k-threshold-state"
+          ],
+          "runtime_state": "scoped_runtime_qualified_remaining_pending",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD35",
+      "title": "Durable native state",
+      "primary_family": "G033",
+      "cross_reference_families": [
+        "G031",
+        "G062",
+        "G081",
+        "G085"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G033.channel-display.native-state-persistence",
+          "primary_family": "G033",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/34/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "projection-state-persistence",
+          "dependency_ids": [
+            "p06c-preserved",
+            "p06a-native-session",
+            "projection-versioning",
+            "channel-axis-state-remapper"
+          ],
+          "runtime_state": "scoped_runtime_qualified_remaining_pending",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD36",
+      "title": "TIFF display metadata",
+      "primary_family": "G080",
+      "cross_reference_families": [
+        "G074",
+        "G076",
+        "G031",
+        "G033",
+        "G062",
+        "G081"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G080.tiff.channel-display-metadata",
+          "primary_family": "G080",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/35/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "scientific-tiff-display-interchange",
+          "dependency_ids": [
+            "core-file-service",
+            "scientific-tiff-format",
+            "scientific-tiff-dimension-mapping"
+          ],
+          "runtime_state": "pending_for_complete_candidate",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD37",
+      "title": "Recording, strict replay and rebind",
+      "primary_family": "G085",
+      "cross_reference_families": [
+        "G033",
+        "G057",
+        "G059",
+        "G086"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G085.channel-display.normalized-action-replay",
+          "primary_family": "G085",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/36/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "per-consumer-action-records",
+          "dependency_ids": [
+            "p06c-preserved",
+            "atomic-display-actions",
+            "projection-versioning"
+          ],
+          "runtime_state": "scoped_runtime_qualified_remaining_pending",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD38",
+      "title": "Settings, defaults and draft lifetime",
+      "primary_family": "G001",
+      "cross_reference_families": [
+        "G002",
+        "G003",
+        "G007",
+        "G012",
+        "G032",
+        "G033",
+        "G059"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G001.channel-workflow.setting-lifetimes",
+          "primary_family": "G001",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/37/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "per-consumer-settings",
+          "dependency_ids": [
+            "p06c-preserved",
+            "range-action-lifetimes",
+            "unsigned16-setting-consumer"
+          ],
+          "runtime_state": "scoped_runtime_qualified_remaining_pending",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD39",
+      "title": "Physical and platform usability",
+      "primary_family": "G084",
+      "cross_reference_families": [
+        "G003",
+        "G012",
+        "G033",
+        "G059"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G084.channel-workflow.platform-usability",
+          "primary_family": "G084",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/38/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "platform-channel-workflows",
+          "dependency_ids": [
+            "real-platform-feasibility",
+            "reviewed-palette-catalog"
+          ],
+          "runtime_state": "scoped_runtime_qualified_remaining_pending",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    },
+    {
+      "candidate_id": "CD40",
+      "title": "Limits, ownership and type boundaries",
+      "primary_family": "G010",
+      "cross_reference_families": [
+        "G033",
+        "G041",
+        "G088"
+      ],
+      "routes": [
+        {
+          "proposed_requirement_id": "G010.channel-workflow.resources-ownership-types",
+          "primary_family": "G010",
+          "disposition": "deferred_source_contract",
+          "registered_subset_requirement_ids": [],
+          "source_assignment_pointer": "docs/parity/reviews/G033-option-assignments.json#/assignments/39/commands_schema_mapping/proposed_requirements/0",
+          "next_child": "per-consumer-resource-preflight",
+          "dependency_ids": [
+            "p06c-preserved",
+            "large-data-source-accounting"
+          ],
+          "runtime_state": "scoped_runtime_qualified_remaining_pending",
+          "formal_evidence_adoption": "pending",
+          "commercial": "pending_no_new_decision"
+        }
+      ]
+    }
+  ],
+  "typed_contract_freeze": {
+    "G033.channel-display.composite-contributor-visibility": {
+      "source_assignment": "CD04 scoped subset; broader proposal remains deferred",
+      "source_anchors": [
+        {
+          "path": "include/imagejxx/channel_display.hpp",
+          "lines": "24-29: visible=true and range initializer"
+        },
+        {
+          "path": "src/desktop/channel_display_panel.cpp",
+          "lines": "214-257: separate active-C navigation and exact Boolean checkbox copy/Set"
+        },
+        {
+          "path": "src/native/channel_display.cpp",
+          "lines": "580-627: mode-specific contributing channel estimate"
+        },
+        {
+          "path": "src/desktop/window.cpp",
+          "lines": "2876-2911: captured metadata/atomic display-record publication"
+        }
+      ],
+      "default_claim": "Only Boolean visible=true is the fresh native state initializer; UI reads current state. Checkbox selection behavior outside Composite is explicitly owned and broader reference behavior deferred."
+    },
+    "G033.channel-display.explicit-channel-range": {
+      "source_assignment": "CD11 raw scalar scope",
+      "source_anchors": [
+        {
+          "path": "include/imagejxx/channel_display.hpp",
+          "lines": "24-29: native range[0,255] initializer, not an API filling rule"
+        },
+        {
+          "path": "src/desktop/channel_display_panel.cpp",
+          "lines": "18-34,87-113,256-288: finite parser/current-state draft/explicit Apply"
+        },
+        {
+          "path": "src/native/channel_display.cpp",
+          "lines": "87-89,153-164,310-369: strict range and mapping arithmetic"
+        },
+        {
+          "path": "src/native/channel_display_bindings.cpp",
+          "lines": "218-225: state defaultNone but Set requires complete state"
+        },
+        {
+          "path": "src/native/channel_display_command.cpp",
+          "lines": "338-382: complete-state Set, no reset channels, normalized record"
+        }
+      ],
+      "default_claim": "Schema number defaults0/255 describe ChannelDisplayChannel initializer only. GUI defaults are explicitly current captured per-C range; public Set requires complete state. No fixed image-dependent GUI/reset range invented."
+    },
+    "complex_parameters": "No channel arrays, LUT tables or order vectors are encoded as scalar strings. Existing complete state is an admission prerequisite, not a fabricated primitive parameter. Complex table/order contracts remain in their deferred routes."
+  },
+  "missing_Max_V01": {
+    "status": "pending_not_part_of_patch",
+    "packet": "docs/packets/P06c2-composite-max.md",
+    "review_rows": [
+      "CD05",
+      "CD07"
+    ],
+    "decision": "Explicit compatible state/action version choice with strictV1 preserved; no projection key added toV1.",
+    "reference_gap": "Targeted Max/transition/mode/default/LUT effects required by the prepared packet remain uncaptured/unadopted here; existing63+8+1 numerical rows are not Max evidence."
+  },
+  "evidence_policy": {
+    "runtime_credit_created": false,
+    "commercial_credit_created": false,
+    "licensing_acceptance_created": false,
+    "family_completion_created": false,
+    "existing_p06c": "Scoped local exit remains bound to its original products/receipts. This patch proposes no fixture/run/interface proof bindings and sets both new requirement verification statuses unverified pending formal adoption.",
+    "contexts": [
+      "cpp_api",
+      "python_api",
+      "imgui_cpp",
+      "imgui_python"
+    ],
+    "additional_obligations": [
+      "Installed core-only C++ SDK",
+      "Actual supported-platform/DPI/accessibility/resource observations",
+      "Exact settings-consumer effects where later applicable"
+    ],
+    "fiji_descriptors_pending": [
+      "R-08f5772a98f948d0c71aa445",
+      "R-b3f7157bda31483eda6d97f9",
+      "R-c6d5a481b299f6b3dd7cfaa0",
+      "R-e716904770fc301939053e40"
+    ],
+    "fiji_palette_count_pending": 36,
+    "version_boundary": "Standalone ImageJ1.54r source behavior and Fiji bundled1.54p candidate reconciliation remain distinct."
+  },
+  "validation": {
+    "scope": "Structure/merge preservation only; no build, product execution, parity gate, capture or acceptance change.",
+    "result": {
+      "status": "passed_structure_and_in_memory_merged_schema_only",
+      "original_requirements": 49,
+      "proposed_requirements_added": 2,
+      "merged_requirements": 51,
+      "discovery_candidates_preserved": 2810,
+      "families_preserved": 99,
+      "review_rows_accounted": 40,
+      "source_routes_accounted": 41,
+      "remaining_strings_added": 44,
+      "pending_fiji_descriptors": 4,
+      "pending_fiji_palettes": 36,
+      "new_runtime_or_commercial_acceptance": 0,
+      "manifest_writes": 0
+    },
+    "code": [
+      "from pathlib import Path",
+      "import copy, hashlib, importlib.util, json, sys",
+      "sys.dont_write_bytecode = True",
+      "root = Path.cwd()",
+      "read = lambda p: json.loads((root / p).read_text(encoding=\"utf-8-sig\"))",
+      "patch = read(\"docs/parity/reviews/G033-ready-registration-patch.json\")",
+      "for item in patch[\"consumed_sources\"]:",
+      "    assert hashlib.sha256((root / item[\"path\"]).read_bytes()).hexdigest() == item[\"sha256\"], item[\"path\"]",
+      "spec = importlib.util.spec_from_file_location(\"parity_schema\", root / \"scripts/parity_schema.py\")",
+      "schema = importlib.util.module_from_spec(spec)",
+      "spec.loader.exec_module(schema)",
+      "names = (*schema.REFERENCE_FILES, *schema.COLLECTIONS)",
+      "documents = {name: read(\"docs/parity/\" + name) for name in names}",
+      "schema.validate_documents(documents)",
+      "before = copy.deepcopy(documents)",
+      "merged = copy.deepcopy(documents)",
+      "commands = merged[\"commands.json\"]",
+      "pre = patch[\"merge_preconditions\"]",
+      "assert commands[\"reference_id\"] == pre[\"exact_reference_id\"]",
+      "assert len(commands[\"requirements\"]) == pre[\"requirements_count\"] == 49",
+      "assert len(commands[\"candidates\"]) == pre[\"candidates_count\"] == 2810",
+      "inventory = read(\"docs/parity/inventory.json\")",
+      "assert len(inventory[\"capabilities\"]) == pre[\"families_count\"] == 99",
+      "old_ids = {r[\"id\"] for r in commands[\"requirements\"]}",
+      "new = patch[\"merge_operation\"][\"append_requirements\"]",
+      "assert len(new) == 2 and len({r[\"id\"] for r in new}) == 2",
+      "assert not old_ids.intersection(r[\"id\"] for r in new)",
+      "for row in new:",
+      "    assert row[\"implementation_status\"] == \"partial\"",
+      "    assert row[\"verification_status\"] == \"unverified\"",
+      "    assert row[\"commercial\"][\"decision\"] == \"pending\"",
+      "    assert not row[\"fixture_ids\"] and not row[\"verification_run_ids\"]",
+      "    assert all(not item[\"evidence\"] for item in row[\"interfaces\"].values())",
+      "commands[\"requirements\"].extend(copy.deepcopy(new))",
+      "commands[\"remaining\"].extend(patch[\"merge_operation\"][\"append_remaining\"])",
+      "schema.validate_documents(merged)",
+      "assert len(commands[\"requirements\"]) == 51",
+      "assert commands[\"requirements\"][:49] == before[\"commands.json\"][\"requirements\"]",
+      "assert commands[\"remaining\"][:len(before[\"commands.json\"][\"remaining\"])] == before[\"commands.json\"][\"remaining\"]",
+      "for key, value in before[\"commands.json\"].items():",
+      "    if key not in {\"requirements\", \"remaining\"}:",
+      "        assert commands[key] == value, key",
+      "for name in names:",
+      "    if name != \"commands.json\":",
+      "        assert merged[name] == before[name], name",
+      "assert len({r[\"parent_id\"] for r in commands[\"requirements\"]}) == 9",
+      "routes = patch[\"review_route_assignments\"]",
+      "assert [r[\"candidate_id\"] for r in routes] == [f\"CD{i:02d}\" for i in range(1, 41)]",
+      "assert sum(len(r[\"routes\"]) for r in routes) == 41",
+      "assert len(next(r for r in routes if r[\"candidate_id\"] == \"CD26\")[\"routes\"]) == 2",
+      "handoff = read(\"docs/parity/reviews/G033-option-assignments.json\")",
+      "for row, assigned in zip(routes, handoff[\"assignments\"]):",
+      "    assert row[\"primary_family\"] == assigned[\"ownership\"][\"primary_family\"]",
+      "    assert [r[\"proposed_requirement_id\"] for r in row[\"routes\"]] == [r[\"id\"] for r in assigned[\"commands_schema_mapping\"][\"proposed_requirements\"]]",
+      "    assert all(r[\"next_child\"] == assigned[\"next_child\"][\"key\"] for r in row[\"routes\"])",
+      "    for route in row[\"routes\"]:",
+      "        assert set(route[\"registered_subset_requirement_ids\"]) <= {r[\"id\"] for r in new}",
+      "        assert route[\"commercial\"] == \"pending_no_new_decision\"",
+      "        assert route[\"formal_evidence_adoption\"] == \"pending\"",
+      "        assert any(row[\"candidate_id\"] + \" route\" in entry and route[\"proposed_requirement_id\"] in entry for entry in patch[\"merge_operation\"][\"append_remaining\"])",
+      "assert sum(r[\"primary_family\"] == \"G033\" for r in routes) == 14",
+      "assert len(patch[\"evidence_policy\"][\"fiji_descriptors_pending\"]) == 4",
+      "assert patch[\"evidence_policy\"][\"fiji_palette_count_pending\"] == 36",
+      "assert all(c[\"commercial_review\"] == \"pending\" and c[\"runtime_reconciliation\"] == \"pending\" and c[\"assignment\"] is None and c[\"option_inventory\"] is None for c in commands[\"candidates\"])",
+      "assert all(f[\"commercial_review\"][\"decision\"] == \"pending\" for f in merged[\"fiji-components.json\"][\"files\"])",
+      "assert len(merged[\"fiji-components.json\"][\"files\"]) == 1437",
+      "assert patch[\"evidence_policy\"][\"runtime_credit_created\"] is False",
+      "print(\"STRUCTURE_ONLY_PASS: 2 proposed requirements; merged51/2810/99;40 CD rows/41 routes; pending4 descriptors/36 palettes; no writes\")"
+    ],
+    "invocation": "From repository root, load this JSON's validation.code, join with actual newlines, and execute with Python -B. The code only reads manifests and deep-copies the proposed merge in memory; it never writes commands.json.",
+    "command": "python -B -c \"import json; from pathlib import Path; p=json.loads(Path('docs/parity/reviews/G033-ready-registration-patch.json').read_text(encoding='utf-8')); exec(compile(chr(10).join(p['validation']['code']), '<G033 in-memory structural validation>', 'exec'))\""
+  },
+  "root_review_corrections": {
+    "review": "Independent source comparison of scalar contracts",
+    "prior_sha256": "cb0fb7366596f11ef311c9bbe129e4f342840d6296d42b08aad23c640cefe902",
+    "prior_path": "build/p05l-001/g033-registration-001/proposal-before-root-review.json",
+    "changes": [
+      "Parser trims exactly space/tab/CR/LF.",
+      "Panel Close/titlebar close/focused Escape can cancel a queued state action before callback."
+    ],
+    "source": "src/desktop/channel_display_panel.cpp",
+    "runtime_acceptance_created": false
+  }
+}

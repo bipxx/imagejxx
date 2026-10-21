@@ -1,0 +1,32 @@
+name: Test native and Python APIs
+on: [push, pull_request]
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python: ['3.10', '3.12']
+    runs-on: ${{ matrix.os }}
+    env:
+      CMAKE_GENERATOR: ${{ matrix.os == 'windows-latest' && 'Visual Studio 17 2022' || 'Ninja' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install and test Python wheel
+        run: |
+          python -m pip install '.[io,test]'
+          python -m pytest
+          python scripts/check_licenses.py --installed --extras io,test
+          python examples/pipeline.py
+      - name: Build and test standalone C++ API
+        run: |
+          cmake -S . -B build/native -DIMAGEJXX_BUILD_PYTHON=OFF -DBUILD_TESTING=ON
+          cmake --build build/native --config Release --parallel 2
+          ctest --test-dir build/native -C Release --output-on-failure
+          cmake --install build/native --config Release --prefix build/install
+          cmake -S examples/cpp -B build/example -DCMAKE_PREFIX_PATH=${{ github.workspace }}/build/install
+          cmake --build build/example --config Release --parallel 2
+          ctest --test-dir build/example -C Release --output-on-failure

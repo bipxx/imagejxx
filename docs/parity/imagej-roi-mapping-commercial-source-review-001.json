@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_owned_increment",
+  "review_type": "Root authorship/integration attestation, not independent legal review",
+  "license": "Existing project MIT for original native/test code; fixture bytes are owned input/output observations",
+  "specification_sources": [
+    "https://raw.githubusercontent.com/imagej/ImageJ/62db90a269cccc1ac79f658e4602043214ed055b/ij/ImagePlus.java"
+  ],
+  "new_dependencies": [],
+  "restricted_features_added": false,
+  "imported_third_party_product_code": [],
+  "sources": [
+    {
+      "logical_path": "CMakeLists.txt",
+      "before": {
+        "path": "build/p06q-roi-mapping001/held001/before/CMakeLists.txt",
+        "bytes": 56733,
+        "sha256": "6c666272c37622804f3751f474bffff0dccb02fb763e185deb25ffe3a98664fa"
+      },
+      "after": {
+        "path": "build/p06q-roi-mapping001/held001/after/CMakeLists.txt",
+        "bytes": 56770,
+        "sha256": "34cf27309f420eed3a29295a9b3d827c5ac881fa395f2df09d46d14b159bb3df"
+      },
+      "current": {
+        "path": "CMakeLists.txt",
+        "bytes": 56770,
+        "sha256": "34cf27309f420eed3a29295a9b3d827c5ac881fa395f2df09d46d14b159bb3df"
+      }
+    },
+    {
+      "logical_path": "include/imagejxx/imagej_roi_mapping.hpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-mapping001/held001/after/include/imagejxx/imagej_roi_mapping.hpp",
+        "bytes": 2840,
+        "sha256": "87c9bbda06b658eadc4aedc9b2940f40abcf8662e6665e8593f35027a11a3eec"
+      },
+      "current": {
+        "path": "include/imagejxx/imagej_roi_mapping.hpp",
+        "bytes": 2840,
+        "sha256": "87c9bbda06b658eadc4aedc9b2940f40abcf8662e6665e8593f35027a11a3eec"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_roi_mapping.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-mapping001/held001/after/src/native/imagej_roi_mapping.cpp",
+        "bytes": 6655,
+        "sha256": "b1b35a349309562d8d642ecad5c664423244f0d69bcc4ceef25b9fba61bc7481"
+      },
+      "current": {
+        "path": "src/native/imagej_roi_mapping.cpp",
+        "bytes": 6655,
+        "sha256": "b1b35a349309562d8d642ecad5c664423244f0d69bcc4ceef25b9fba61bc7481"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_roi_bindings.cpp",
+      "before": {
+        "path": "build/p06q-roi-mapping001/held001/before/src/native/imagej_roi_bindings.cpp",
+        "bytes": 16561,
+        "sha256": "2380e1eebbba173a6b75df36c392b8dad52da2a53292c370d826e395e5927108"
+      },
+      "after": {
+        "path": "build/p06q-roi-mapping001/held001/after/src/native/imagej_roi_bindings.cpp",
+        "bytes": 21777,
+        "sha256": "5973f41e86604831d89793cc1d1d9f421b00f1fb3a3452bbd41f1901158f5aa8"
+      },
+      "current": {
+        "path": "src/native/imagej_roi_bindings.cpp",
+        "bytes": 21777,
+        "sha256": "5973f41e86604831d89793cc1d1d9f421b00f1fb3a3452bbd41f1901158f5aa8"
+      }
+    },
+    {
+      "logical_path": "src/imagejxx/__init__.py",
+      "before": {
+        "path": "build/p06q-roi-mapping001/held001/before/src/imagejxx/__init__.py",
+        "bytes": 54918,
+        "sha256": "0ef52e226872d298c72d433c447b87058afec5620c3bf96a842636059397249c"
+      },
+      "after": {
+        "path": "build/p06q-roi-mapping001/held001/after/src/imagejxx/__init__.py",
+        "bytes": 55356,
+        "sha256": "ed777b6db9af33707c231ed1f6d7061c9ecac4f5a748e4a16dfb9ab7a8162674"
+      },
+      "current": {
+        "path": "src/imagejxx/__init__.py",
+        "bytes": 55356,
+        "sha256": "ed777b6db9af33707c231ed1f6d7061c9ecac4f5a748e4a16dfb9ab7a8162674"
+      }
+    },
+    {
+      "logical_path": "tests/native/test_imagej_roi.cpp",
+      "before": {
+        "path": "build/p06q-roi-mapping001/held001/before/tests/native/test_imagej_roi.cpp",
+        "bytes": 11623,
+        "sha256": "ad19599e4f5d3c0546b636a6bcb14ff89e59a16a985a6ed377abfc6002c32531"
+      },
+      "after": {
+        "path": "build/p06q-roi-mapping001/held001/after/tests/native/test_imagej_roi.cpp",
+        "bytes": 13278,
+        "sha256": "666e9d3b4e4b729821f41f3418d33eb8b8fdfbbb5246357abc2d486ed9f46d4a"
+      },
+      "current": {
+        "path": "tests/native/test_imagej_roi.cpp",
+        "bytes": 13278,
+        "sha256": "666e9d3b4e4b729821f41f3418d33eb8b8fdfbbb5246357abc2d486ed9f46d4a"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_imagej_roi_mapping.py",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-mapping001/held001/after/tests/python/test_imagej_roi_mapping.py",
+        "bytes": 7630,
+        "sha256": "151b7991017e4abb55f790d23ee167400660839d1ca2c3db2efb302011335ced"
+      },
+      "current": {
+        "path": "tests/python/test_imagej_roi_mapping.py",
+        "bytes": 7630,
+        "sha256": "151b7991017e4abb55f790d23ee167400660839d1ca2c3db2efb302011335ced"
+      }
+    },
+    {
+      "logical_path": "tests/fixtures/imagej-roi-hyperstack-index-imagej154r.json",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-mapping001/held001/after/tests/fixtures/imagej-roi-hyperstack-index-imagej154r.json",
+        "bytes": 24287,
+        "sha256": "9a00e1537e5ea9f46a056b30e66edce926570d45b93f1f817b9300cccfe6b43c"
+      },
+      "current": {
+        "path": "tests/fixtures/imagej-roi-hyperstack-index-imagej154r.json",
+        "bytes": 24287,
+        "sha256": "9a00e1537e5ea9f46a056b30e66edce926570d45b93f1f817b9300cccfe6b43c"
+      }
+    }
+  ]
+}

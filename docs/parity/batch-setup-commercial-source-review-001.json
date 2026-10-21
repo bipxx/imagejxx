@@ -1,0 +1,257 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_owned_increment",
+  "review_type": "Root authorship/integration attestation, not independent legal review",
+  "license": "Existing project MIT for original Batch setup codecs, shared UI and existing-browser replacement integration",
+  "new_dependencies": [],
+  "restricted_features_added": false,
+  "imported_third_party_product_code": [],
+  "new_fonts": [],
+  "sources": [
+    {
+      "logical_path": "CMakeLists.txt",
+      "before": {
+        "path": "build/p06q-batch-setup001/before001/CMakeLists.txt",
+        "bytes": 60989,
+        "sha256": "e279f24b99c5d84ca9b6667956c35109b8f1275ff5448a87d33761cbd72fe3a9"
+      },
+      "after": {
+        "path": "build/p06q-batch-setup001/after001/CMakeLists.txt",
+        "bytes": 61035,
+        "sha256": "be0ce6018fd6e187d7c7c28ffe93465d1ba0bdcee76a540577c7d47c7ddd92ac"
+      },
+      "current": {
+        "path": "CMakeLists.txt",
+        "bytes": 61035,
+        "sha256": "be0ce6018fd6e187d7c7c28ffe93465d1ba0bdcee76a540577c7d47c7ddd92ac"
+      }
+    },
+    {
+      "logical_path": "src/desktop/native_workflow_batch_ui_probe.cpp",
+      "before": {
+        "path": "build/p06q-batch-setup001/before001/src/desktop/native_workflow_batch_ui_probe.cpp",
+        "bytes": 18701,
+        "sha256": "17efeeaf0b2ae727f7558992109d47c46618422ce6c2a76d66c2ecedb0bd05aa"
+      },
+      "after": {
+        "path": "build/p06q-batch-setup001/after001/src/desktop/native_workflow_batch_ui_probe.cpp",
+        "bytes": 23839,
+        "sha256": "08cc441216ffe942ef59b0a2c24467abf231d02b180040da602481830a9d721a"
+      },
+      "current": {
+        "path": "src/desktop/native_workflow_batch_ui_probe.cpp",
+        "bytes": 23839,
+        "sha256": "08cc441216ffe942ef59b0a2c24467abf231d02b180040da602481830a9d721a"
+      }
+    },
+    {
+      "logical_path": "src/desktop/native_workflow_panel.cpp",
+      "before": {
+        "path": "build/p06q-batch-setup001/before001/src/desktop/native_workflow_panel.cpp",
+        "bytes": 85916,
+        "sha256": "8f48689df29bf7cb9228f7e81bc7e018e8e340a3163373b017768af87d6e24fe"
+      },
+      "after": {
+        "path": "build/p06q-batch-setup001/after001/src/desktop/native_workflow_panel.cpp",
+        "bytes": 93769,
+        "sha256": "94ad88ae1f276cb252f76a0fe5883e071ba4a5c66ad3e9f12958a2a4eae156fa"
+      },
+      "current": {
+        "path": "src/desktop/native_workflow_panel.cpp",
+        "bytes": 93769,
+        "sha256": "94ad88ae1f276cb252f76a0fe5883e071ba4a5c66ad3e9f12958a2a4eae156fa"
+      }
+    },
+    {
+      "logical_path": "src/desktop/native_workflow_panel.hpp",
+      "before": {
+        "path": "build/p06q-batch-setup001/before001/src/desktop/native_workflow_panel.hpp",
+        "bytes": 2161,
+        "sha256": "e2edc194c4ac02cb7c8103b8ef84a09b0eeb98a7484e5d72618c861e05606070"
+      },
+      "after": {
+        "path": "build/p06q-batch-setup001/after001/src/desktop/native_workflow_panel.hpp",
+        "bytes": 2205,
+        "sha256": "cb5b8fc336469560f5eb685a781bc882d1da553680468ea28abdfda9ca3e53ec"
+      },
+      "current": {
+        "path": "src/desktop/native_workflow_panel.hpp",
+        "bytes": 2205,
+        "sha256": "cb5b8fc336469560f5eb685a781bc882d1da553680468ea28abdfda9ca3e53ec"
+      }
+    },
+    {
+      "logical_path": "src/desktop/window.cpp",
+      "before": {
+        "path": "build/p06q-batch-setup001/before001/src/desktop/window.cpp",
+        "bytes": 584787,
+        "sha256": "6cf7f029d03cf279efd27d38dc3170fc5c4cace454d0069bdf7dd2fd07fa066b"
+      },
+      "after": {
+        "path": "build/p06q-batch-setup001/after001/src/desktop/window.cpp",
+        "bytes": 585315,
+        "sha256": "ff3dfb635b75d1bd10d90cd35cbb7eae2bf296a7175ccafe1d7865855868a8f2"
+      },
+      "current": {
+        "path": "src/desktop/window.cpp",
+        "bytes": 585315,
+        "sha256": "ff3dfb635b75d1bd10d90cd35cbb7eae2bf296a7175ccafe1d7865855868a8f2"
+      }
+    },
+    {
+      "logical_path": "src/imagejxx/__init__.py",
+      "before": {
+        "path": "build/p06q-batch-setup001/before001/src/imagejxx/__init__.py",
+        "bytes": 63349,
+        "sha256": "bc6e5c4401a4672d3da279fc560af82e7ff8628e6671d65930b13cb85eb6dd0a"
+      },
+      "after": {
+        "path": "build/p06q-batch-setup001/after001/src/imagejxx/__init__.py",
+        "bytes": 63496,
+        "sha256": "eff6aef1b72eb03c435596fe8ec8e64f0ce152686f4bcdbaee0ce633f0da8300"
+      },
+      "current": {
+        "path": "src/imagejxx/__init__.py",
+        "bytes": 63496,
+        "sha256": "eff6aef1b72eb03c435596fe8ec8e64f0ce152686f4bcdbaee0ce633f0da8300"
+      }
+    },
+    {
+      "logical_path": "src/native/native_workflow_bindings.cpp",
+      "before": {
+        "path": "build/p06q-batch-setup001/before001/src/native/native_workflow_bindings.cpp",
+        "bytes": 26038,
+        "sha256": "d37cadf1700c8a750c37a59c41a08580db88ade69ee67fa698178a41ab84bfee"
+      },
+      "after": {
+        "path": "build/p06q-batch-setup001/after001/src/native/native_workflow_bindings.cpp",
+        "bytes": 33262,
+        "sha256": "566063e211c3cabf0757fe4fceafbf0ac1ecf5e9e4cd920b0773813d390ba9c8"
+      },
+      "current": {
+        "path": "src/native/native_workflow_bindings.cpp",
+        "bytes": 33262,
+        "sha256": "566063e211c3cabf0757fe4fceafbf0ac1ecf5e9e4cd920b0773813d390ba9c8"
+      }
+    },
+    {
+      "logical_path": "src/native/native_workflow_program.cpp",
+      "before": {
+        "path": "build/p06q-batch-setup001/before001/src/native/native_workflow_program.cpp",
+        "bytes": 31107,
+        "sha256": "9c82cba45a5c1998d5e462978be5ec8e34c92ca85ae3189a3b501c35bbbf080d"
+      },
+      "after": {
+        "path": "build/p06q-batch-setup001/after001/src/native/native_workflow_program.cpp",
+        "bytes": 31900,
+        "sha256": "7ea19188d08421864952e4c6a097b56ab64c842503e40059a1d7acf4714336a8"
+      },
+      "current": {
+        "path": "src/native/native_workflow_program.cpp",
+        "bytes": 31900,
+        "sha256": "7ea19188d08421864952e4c6a097b56ab64c842503e40059a1d7acf4714336a8"
+      }
+    },
+    {
+      "logical_path": "src/native/native_workflow_program_internal.hpp",
+      "before": {
+        "path": "build/p06q-batch-setup001/before001/src/native/native_workflow_program_internal.hpp",
+        "bytes": 881,
+        "sha256": "f0170872c104fd91adfc5f04ad952949fdc04de0f27f3e86a42450e6b6d5aee5"
+      },
+      "after": {
+        "path": "build/p06q-batch-setup001/after001/src/native/native_workflow_program_internal.hpp",
+        "bytes": 1330,
+        "sha256": "f4d615e2838d97b0515bba2f3b2545ab78090c658d57595c53c90bfe7966b8a2"
+      },
+      "current": {
+        "path": "src/native/native_workflow_program_internal.hpp",
+        "bytes": 1330,
+        "sha256": "f4d615e2838d97b0515bba2f3b2545ab78090c658d57595c53c90bfe7966b8a2"
+      }
+    },
+    {
+      "logical_path": "tests/native/test_native_workflow_batch.cpp",
+      "before": {
+        "path": "build/p06q-batch-setup001/before001/tests/native/test_native_workflow_batch.cpp",
+        "bytes": 7825,
+        "sha256": "f8ed5eca64687565901a46f63d4bdd1490de6bb42fe2c1a9d8700e5ae33804ca"
+      },
+      "after": {
+        "path": "build/p06q-batch-setup001/after001/tests/native/test_native_workflow_batch.cpp",
+        "bytes": 10084,
+        "sha256": "8b4efb7be8b3d141e5bb17aece51beefe005397af8374a1ff56ae2c1984b08b3"
+      },
+      "current": {
+        "path": "tests/native/test_native_workflow_batch.cpp",
+        "bytes": 10084,
+        "sha256": "8b4efb7be8b3d141e5bb17aece51beefe005397af8374a1ff56ae2c1984b08b3"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_native_workflow_batch_ui.py",
+      "before": {
+        "path": "build/p06q-batch-setup001/before001/tests/python/test_native_workflow_batch_ui.py",
+        "bytes": 8065,
+        "sha256": "ca3e5cb9f8956bb901a479f31a58bbd6c59ec16356d8ac729b599f4e8a163abd"
+      },
+      "after": {
+        "path": "build/p06q-batch-setup001/after001/tests/python/test_native_workflow_batch_ui.py",
+        "bytes": 9988,
+        "sha256": "7e222aa273f2b2aa4eb8cde59c01f246f8eba3561e41d02a60bde0cd8f72896c"
+      },
+      "current": {
+        "path": "tests/python/test_native_workflow_batch_ui.py",
+        "bytes": 9988,
+        "sha256": "7e222aa273f2b2aa4eb8cde59c01f246f8eba3561e41d02a60bde0cd8f72896c"
+      }
+    },
+    {
+      "logical_path": "include/imagejxx/native_workflow_batch_setup.hpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-batch-setup001/after001/include/imagejxx/native_workflow_batch_setup.hpp",
+        "bytes": 2787,
+        "sha256": "b060b7cb524e8b9e034356be8b0684f02ac7692c5a8f84f03ee55a31bbde5831"
+      },
+      "current": {
+        "path": "include/imagejxx/native_workflow_batch_setup.hpp",
+        "bytes": 2787,
+        "sha256": "b060b7cb524e8b9e034356be8b0684f02ac7692c5a8f84f03ee55a31bbde5831"
+      }
+    },
+    {
+      "logical_path": "src/native/native_workflow_batch_setup.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-batch-setup001/after001/src/native/native_workflow_batch_setup.cpp",
+        "bytes": 12326,
+        "sha256": "1ed180343b834f53405b0a1e890d2a4b77f5888673c50ebc2a108187b9f101c3"
+      },
+      "current": {
+        "path": "src/native/native_workflow_batch_setup.cpp",
+        "bytes": 12326,
+        "sha256": "1ed180343b834f53405b0a1e890d2a4b77f5888673c50ebc2a108187b9f101c3"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_native_workflow_batch_setup.py",
+      "before": null,
+      "after": {
+        "path": "build/p06q-batch-setup001/after001/tests/python/test_native_workflow_batch_setup.py",
+        "bytes": 8815,
+        "sha256": "039ec512e4cbbf7ab5dcd01c9435abbfe48c28e4340db931ebfe36c1d174a301"
+      },
+      "current": {
+        "path": "tests/python/test_native_workflow_batch_setup.py",
+        "bytes": 8815,
+        "sha256": "039ec512e4cbbf7ab5dcd01c9435abbfe48c28e4340db931ebfe36c1d174a301"
+      }
+    }
+  ],
+  "handoff": {
+    "path": "build/p06q-batch-setup001/batch-setup-handoff001.json",
+    "bytes": 16824,
+    "sha256": "529253062650248a16274496eb7309ebe558bb594fee6fb0c7aa17590332a686"
+  }
+}

@@ -1,0 +1,336 @@
+{
+  "schema_version": 1,
+  "state": "scoped_scalar_rgb_flatten_verified",
+  "new_python_cases": 246,
+  "pinned_imagej_cases": 216,
+  "source_cases": 1261,
+  "installed_cases": 1261,
+  "native_windows_suites": 22,
+  "linux_native_suites": 6,
+  "scope": "Compound ordinary scalar U8/U16/F32 rendering and C-fast RGB flattening with frozen display range/LUT/channel intent, metadata-only V2 captures and preflight, direct native worker, paired metadata/history, native workflow/Batch, shared ImGui review and recording. Float64, owned legacy palettes and channel rendering are native extensions, separately tested. No whole editor, plugin or release certification.",
+  "evidence": [
+    {
+      "path": "build/p06zw-scalar-flatten001/build005/run001.json",
+      "bytes": 9617,
+      "sha256": "b3589f75f91e1e403b0aa1b3305dcdbbdce1d9c5bada8ef7f7598017003259cb"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/source003/run001.json",
+      "bytes": 1398,
+      "sha256": "17d41d79616a19dfaa27df11d179893acd83ade5fe6564c77c6c292941bcc84b"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/install002/run001.json",
+      "bytes": 7266,
+      "sha256": "9ba459369715d6d38be0fe3a03807f52fb5de14de855a81e9b31a646b3c6c957"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/installed-python002/run001.json",
+      "bytes": 1427,
+      "sha256": "a3ec11184eea712af34dc3e2048c02411ea96405a984d62334feed335920847a"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/sdk002/run001.json",
+      "bytes": 4135,
+      "sha256": "b69b3f9ee3197676f6197887a2620c6f6533061f478ab3ed3b5540f937cb6d3c"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/linux004/run001.json",
+      "bytes": 849,
+      "sha256": "cbf044da043dba8ffc733dc1e9cf4867952a32b68500451047117fc303772c88"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/baseline001/run001.json",
+      "bytes": 1391,
+      "sha256": "2a010e5ac0438406a3ef2c9896f6b18e2bc7fd92c8b0cb14aaaab71162c19252"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/rgb-cpp002/run001.json",
+      "bytes": 1264,
+      "sha256": "e93ff4475313df09dabfb4d19d760b8a188478c754e5ec4d7ac8fd6e921b6018"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/rgb-installed-cpp002/run001.json",
+      "bytes": 1326,
+      "sha256": "9f27f451cc81820b86f43fdb194228fafc1609b1cf398b98053c5f7d5688de80"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/build005/native.xml",
+      "bytes": 6598,
+      "sha256": "1340be4385b09c05a59a63b276df44e202d567d64165333bf27c396bee707b96"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/linux004/native.xml",
+      "bytes": 1527,
+      "sha256": "f8e9f8c267734aba3bc94df0d131e7abe638f9b28047569dff899ac10e5040ab"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/source003/pytest.xml",
+      "bytes": 187985,
+      "sha256": "e25ac3a35ce3f05ffe3975de2e522386ae50096de728c532049ff41cac9df815"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/installed-python002/pytest.xml",
+      "bytes": 187986,
+      "sha256": "b649d6eee18880dc4e15d455c2c36c7d0341f40b6305791d9e7c6cdb6ff3eca6"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/baseline001/baseline001.json",
+      "bytes": 621,
+      "sha256": "1e8d4e528cfdc3a670ee956e840abc37d7f5893cc3f25c4e21ef693f5ccb8469"
+    },
+    {
+      "path": "tests/fixtures/scalar-rgb-stack-imagej154r.json",
+      "bytes": 472035,
+      "sha256": "4d80b858f8e837a18fbc5821eef84dd71928e1e9b3341a0081fbb0b6fefd5af7"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/policy001.json",
+      "bytes": 427,
+      "sha256": "3d731d1bf93f553289d934a08139c9b37472e30dd46a2fbc0542f19152b97784"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/linux001/ext4-scratch001.json",
+      "bytes": 1777,
+      "sha256": "f93e6d135e32c2a3c4fff22c0ee2ab544b71c9001373312effbbd71ef4652f7e"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/linux001/ext4-scratch001.zip",
+      "bytes": 6387,
+      "sha256": "b1a6662ddfff2d5b1e9fdd0cde25231d5a739892297301669567ee0204bad757"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/linux002/ext4-scratch001.json",
+      "bytes": 1777,
+      "sha256": "87eb5dfc45253e91f316d95eca0c8a29aa7e1440cd1cabcadd07684e610f2df2"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/linux002/ext4-scratch001.zip",
+      "bytes": 6388,
+      "sha256": "c0f5d3df45df24cdd45bccd61e1f11cead5421476eb40b1d88f9381b9f8f99e6"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/linux003/ext4-scratch001.json",
+      "bytes": 1777,
+      "sha256": "f6337d49703a1be2c99e85c6ca9bedb6d83011e56e1b74a5723e22df44c1057c"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/linux003/ext4-scratch001.zip",
+      "bytes": 6387,
+      "sha256": "45d1c9dbf24be3a8ad7517926f4d8e1bfb36970f23725c595e6b7828e5bc0416"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/linux004/ext4-scratch001.json",
+      "bytes": 1777,
+      "sha256": "d6569862219172cc56a532b49b1c45d23f3200f86a5938af0077046b1148c002"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/linux004/ext4-scratch001.zip",
+      "bytes": 6389,
+      "sha256": "82df86585270f708bd4a6dfa17957911e65a33e81c84d27866c65e66975c79ee"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/source-input-fix006.json",
+      "bytes": 753,
+      "sha256": "06a6b1812df489c2d0d62244080dccd10457220025810f15bd6e7c000592cbcc"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/rgb-cpp002/capture001/case.json",
+      "bytes": 30796376,
+      "sha256": "c74932f602cbbff7c774c39fa33e109c7b2d000a5344c446d7ff651e30666aea"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/rgb-installed-cpp002/capture001/case.json",
+      "bytes": 30802320,
+      "sha256": "3afe9b192d17d68b0fd2fbbcab8cf67ec32c351307122cd9a19f58b3d45cc774"
+    },
+    {
+      "path": "scripts/capture_scalar_rgb_reference.py",
+      "bytes": 5762,
+      "sha256": "81ac08f31242a4b95642c2574f98ca5bd0c0ef8c24dcb1f19adadb4ca73d7762"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/reference002/reference001.json",
+      "bytes": 472035,
+      "sha256": "4d80b858f8e837a18fbc5821eef84dd71928e1e9b3341a0081fbb0b6fefd5af7"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/reference002/ScalarRgbReference.java",
+      "bytes": 2729,
+      "sha256": "22e4de1d56a4049f57e7325af74d36026e1e0f9011513835ea3251ef2021b589"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/reference002/java.stdout",
+      "bytes": 120246,
+      "sha256": "b2aa37e8ae6ff83138fbad733fb460e8abd8bb3ddfd6dcbf23448f4af5876fe3"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/reference002/java.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/reference002/javac.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/reference002/javac.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p06zw-scalar-flatten001/cleanup001.json",
+      "bytes": 619444,
+      "sha256": "e9cbf916812c7ac9800eedc732d0bfb82bef49d7cc473c98cb14a259684e285d"
+    }
+  ],
+  "superseded_diagnostics": [
+    {
+      "run": {
+        "path": "build/p06zw-scalar-flatten001/build001/run001.json",
+        "bytes": 9641,
+        "sha256": "9c936d67da020ff4fae2f42d6d584b327765fd3a15b30eaf18b1f7e6da3f101f"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zw-scalar-flatten001/build002/run001.json",
+        "bytes": 9645,
+        "sha256": "1714e333b34bbf8652df0e1e4ccfe2e4de84c26104b1924a0e49c27b3e3a3e84"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zw-scalar-flatten001/build003/run001.json",
+        "bytes": 9628,
+        "sha256": "e1f08e284277048fa26ee2d12932c9934aa5b1ce0a7f4b7aebd00c3628d5c18b"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zw-scalar-flatten001/build004/run001.json",
+        "bytes": 3986,
+        "sha256": "f9b4b54626ed54da9466a38475ba6c988f45b9c4c008eebe5d56a2d9dcf624f3"
+      },
+      "state": "failed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zw-scalar-flatten001/source001/run001.json",
+        "bytes": 1396,
+        "sha256": "ef1c1e9460f9c5f1ed5630a9bcb886e3bbf598e3cd39d7ad6bba3dc32865f3f4"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zw-scalar-flatten001/source002/run001.json",
+        "bytes": 1585,
+        "sha256": "9c59702f40e2a1e1861e77596fe5a4a051749cf5f48d7ee7b93a0b4b5289eaef"
+      },
+      "state": "failed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zw-scalar-flatten001/install001/run001.json",
+        "bytes": 7266,
+        "sha256": "84dd8084dbaea49e26acece0cce6044756a60c0e40cbae7ed0a0fd732d52535e"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zw-scalar-flatten001/installed-python001/run001.json",
+        "bytes": 1426,
+        "sha256": "5441893ce0f2c3f2929b2741a78dc4cb191a9a12ee544b33d26b015bc96fef83"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zw-scalar-flatten001/sdk001/run001.json",
+        "bytes": 4132,
+        "sha256": "8783e7952a4bcdffaf87e7f108051284d49bce7097d28255a013cf375ad730bb"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zw-scalar-flatten001/linux001/run001.json",
+        "bytes": 848,
+        "sha256": "d54972980901a32752e1103c329e994297c877f302a443fc9ff779aa93c95055"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zw-scalar-flatten001/linux002/run001.json",
+        "bytes": 843,
+        "sha256": "27d5086bd9b5e69e1f929d1cf1feebe73bb821bda5d61b1e9602ae6b07608439"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zw-scalar-flatten001/linux003/run001.json",
+        "bytes": 849,
+        "sha256": "d54749ccb0ab2a63a5215e7cb72e96a6181084397d4eddf18e9fca42a18aaa15"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zw-scalar-flatten001/rgb-cpp001/run001.json",
+        "bytes": 1264,
+        "sha256": "6687e2e53a64922f34f728e6a091ba8e4efddd927cdb80317778f42ef721caba"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zw-scalar-flatten001/rgb-installed-cpp001/run001.json",
+        "bytes": 1325,
+        "sha256": "61a8de36d1b3d7338ab816d850b0e611c336e2ec76118b1ede3129ffe9fa521e"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zw-scalar-flatten001/reference-check001/run001.json",
+        "bytes": 1408,
+        "sha256": "2ff5e2bf5145527b579647a09ffa07c87688265fdfb29ed332f6a0c83f075607"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    }
+  ],
+  "remaining": [
+    "Indexed/global-palette output and its complete ImageJ reference/worker/UI/workflow qualification",
+    "Remaining ImageJ/Fiji editor/reference/resource/platform/release obligations; historical source fingerprint requalification",
+    "This scalar flatten operation renders each plane before C-fast reindexing. Composite channel collapse remains the separate Convert dataset to RGB mode; no whole conversion/editor family completion or new full release credit. All99 stays42/57/0 and Source901 unchanged"
+  ],
+  "no_new_runtime_dependencies": true,
+  "no_dto_layout_change": true,
+  "profile_accepted": false,
+  "family_completed": false,
+  "broad_goal": "active",
+  "full_plan_gate": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed"
+}

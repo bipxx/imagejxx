@@ -1,0 +1,127 @@
+{
+  "schema": "imagejxx.p04c.independent-nonmask-opaque-literals.v1",
+  "status": "SOURCE_ONLY_WRITE_HOLD",
+  "native_source_admission": "Selection::validate reserves shape/mask attributes only for kind==mask; selection_from_json preserves both opaque attrs for line.",
+  "variants": [
+    {
+      "id": "storage-looking",
+      "attributes": {
+        "mask": "pw==",
+        "shape": [
+          2,
+          3
+        ],
+        "vendor_selection": {
+          "negative_zero": -0.0,
+          "unsigned": 18446744073709551615
+        }
+      },
+      "record": {
+        "mask": "pw==",
+        "shape": [
+          2,
+          3
+        ],
+        "vendor_selection": {
+          "negative_zero": -0.0,
+          "unsigned": 18446744073709551615
+        },
+        "kind": "line",
+        "points": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            2.0,
+            1.0
+          ]
+        ],
+        "width": 1.0
+      }
+    },
+    {
+      "id": "numeric-mask",
+      "attributes": {
+        "mask": 17,
+        "shape": "vendor-shape",
+        "vendor_selection": {
+          "negative_zero": -0.0,
+          "unsigned": 18446744073709551615
+        }
+      },
+      "record": {
+        "mask": 17,
+        "shape": "vendor-shape",
+        "vendor_selection": {
+          "negative_zero": -0.0,
+          "unsigned": 18446744073709551615
+        },
+        "kind": "line",
+        "points": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            2.0,
+            1.0
+          ]
+        ],
+        "width": 1.0
+      }
+    },
+    {
+      "id": "invalid-storage-looking",
+      "attributes": {
+        "mask": "vendor-mask-not-base64",
+        "shape": [
+          17,
+          19
+        ],
+        "vendor_selection": {
+          "negative_zero": -0.0,
+          "unsigned": 18446744073709551615
+        }
+      },
+      "record": {
+        "mask": "vendor-mask-not-base64",
+        "shape": [
+          17,
+          19
+        ],
+        "vendor_selection": {
+          "negative_zero": -0.0,
+          "unsigned": 18446744073709551615
+        },
+        "kind": "line",
+        "points": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            2.0,
+            1.0
+          ]
+        ],
+        "width": 1.0
+      }
+    }
+  ],
+  "effective_kind": "line",
+  "python_bitmap": null,
+  "independent_native_raster_yx": [
+    [
+      255,
+      255,
+      0
+    ],
+    [
+      0,
+      255,
+      255
+    ]
+  ],
+  "raster_derivation": "Segment (0,0)->(2,1), width1; middle-column pixel distances 1/sqrt(5)<0.5, opposite corners 2/sqrt(5)>0.5; endpoints included."
+}

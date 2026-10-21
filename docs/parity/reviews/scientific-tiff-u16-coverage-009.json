@@ -1,0 +1,756 @@
+{
+  "schema_version": 1,
+  "state": "case_audit_with_residual_gaps",
+  "contract": {
+    "path": "docs/parity/reviews/scientific-tiff-u16-entry-001.json",
+    "bytes": 69541,
+    "sha256": "b56b97945fc3f4a0271a29aa01dd84f603414c7b1bfce8283aeec7a846f5b478"
+  },
+  "meaning": "exercised identifies actual named checks; it does not imply the entire group oracle, profile, family or platform is accepted",
+  "groups": [
+    {
+      "id": "TU01",
+      "kind": "independent_binary",
+      "cases": [
+        {
+          "case": "II-single-strip",
+          "state": "exercised"
+        },
+        {
+          "case": "MM-single-strip",
+          "state": "exercised"
+        }
+      ],
+      "notes": "New independent II/MM inputs contain the exact six UInt16 literals; native and source/installed Python check all values.",
+      "evidence": [
+        {
+          "path": "tests/fixtures/scientific-tiff-acceptance/SOURCE.json",
+          "bytes": 2544,
+          "sha256": "d19d6ef772103fdee428a4dd500b64597192de413e55aed06b9a4ae2a54ee7fd"
+        },
+        {
+          "path": "build/p06u-tiff-acceptance001/native002/native.xml",
+          "bytes": 2252,
+          "sha256": "9ff7e6e74478f8a828b8ecefe060f1bcddd3de405474239dc158f2296c1a5ff1"
+        },
+        {
+          "path": "build/p06u-tiff-acceptance001/installed001/pytest.xml",
+          "bytes": 1392,
+          "sha256": "18633f74cec7841dd225963a4cd713d4aca65dee994f0dde37b1dd765e281f71"
+        }
+      ]
+    },
+    {
+      "id": "TU02",
+      "kind": "independent_binary",
+      "cases": [
+        {
+          "case": "C3-Z2-T2-full-IFD",
+          "state": "exercised"
+        }
+      ],
+      "notes": "New independent TCZYXS [2,3,2,2,3,1], 10*y equation, explicit native/file table and raw C-fast pages.",
+      "evidence": [
+        {
+          "path": "tests/fixtures/scientific-tiff-acceptance/SOURCE.json",
+          "bytes": 2544,
+          "sha256": "d19d6ef772103fdee428a4dd500b64597192de413e55aed06b9a4ae2a54ee7fd"
+        },
+        {
+          "path": "tests/native/test_tiff_acceptance.cpp",
+          "bytes": 8839,
+          "sha256": "fceeb106c243e578c7d44d14a4309dba8209f2a84e39626057ba9b508c430b1a"
+        },
+        {
+          "path": "tests/python/test_tiff_acceptance.py",
+          "bytes": 4144,
+          "sha256": "58042869dfc80ce9ca477bfd2162afb569fe85244f6f3e0a3b6f88f3553bde3c"
+        },
+        {
+          "path": "build/p06u-tiff-acceptance001/source002/python-evidence001.json",
+          "bytes": 1714,
+          "sha256": "045037e12f899ef482a699accfc9a0799a7c57e3cc685e8ae5fd5e690f762a2d"
+        }
+      ]
+    },
+    {
+      "id": "TU03",
+      "kind": "independent_binary",
+      "cases": [
+        {
+          "case": "Y3-rowsperstrip1",
+          "state": "exercised"
+        },
+        {
+          "case": "Y3-rowsperstrip2",
+          "state": "exercised"
+        },
+        {
+          "case": "Y3-rowsperstrip-at-leastY",
+          "state": "exercised"
+        }
+      ],
+      "notes": "New independent rows-per-strip 1/2/9; raw row-2 byte counts exactly [20,10]. Existing budget refusal remains separate.",
+      "evidence": [
+        {
+          "path": "tests/fixtures/scientific-tiff-acceptance/SOURCE.json",
+          "bytes": 2544,
+          "sha256": "d19d6ef772103fdee428a4dd500b64597192de413e55aed06b9a4ae2a54ee7fd"
+        },
+        {
+          "path": "build/p06u-tiff-acceptance001/installed001/pytest.xml",
+          "bytes": 1392,
+          "sha256": "18633f74cec7841dd225963a4cd713d4aca65dee994f0dde37b1dd765e281f71"
+        }
+      ]
+    },
+    {
+      "id": "TU04",
+      "kind": "independent_calibration",
+      "cases": [
+        {
+          "case": "half-one-and-quarter-two-and-half",
+          "state": "exercised"
+        },
+        {
+          "case": "anisotropic-decimal",
+          "state": "exercised"
+        },
+        {
+          "case": "large-small-representable",
+          "state": "exercised"
+        },
+        {
+          "case": "rational-boundaries",
+          "state": "exercised"
+        }
+      ],
+      "notes": "Independent positive and zero RATIONAL numerator/denominator carriers, invalid finite/positive Z/time values including decimal underflow/overflow, eight outside XY representability plans, just-inside boundary raw outputs and invalid Dataset calibration construction controls now pass in native/source/installed contexts. Native/Python raw outputs remain independently checked; no full profile acceptance follows.",
+      "evidence": [
+        {
+          "path": "build/p06u-tiff-acceptance001/source002/python-evidence001.json",
+          "bytes": 1714,
+          "sha256": "045037e12f899ef482a699accfc9a0799a7c57e3cc685e8ae5fd5e690f762a2d"
+        },
+        {
+          "path": "tests/native/test_scientific_tiff.cpp",
+          "bytes": 15949,
+          "sha256": "dda1080453ab89c3ad097541f3440829ae477d3d9c89e8666ef89c2a28a1a769"
+        },
+        {
+          "path": "tests/fixtures/scientific-tiff-metadata/SOURCE.json",
+          "bytes": 16210,
+          "sha256": "a00eddfd3beb90174c27ede0fcc9cd37569f23e6e70c69568c16774e56dc8e33"
+        },
+        {
+          "path": "tests/native/test_tiff_metadata.cpp",
+          "bytes": 14652,
+          "sha256": "0e3e6811576e8349e9395187c4f8c392ceb5aee25d9e8896378bd10753fe2820"
+        },
+        {
+          "path": "tests/python/test_tiff_metadata.py",
+          "bytes": 7891,
+          "sha256": "e60050a422bde6255d24ec5d4463b7a9873efe92443e7a2f7fb182a04b499583"
+        },
+        {
+          "path": "build/p06v-tiff-metadata001/native003/native.xml",
+          "bytes": 2729,
+          "sha256": "b072dfe34b4005fd0fba76ee647753d33b5dbd9bc8888b9dfb522bae998bcb97"
+        },
+        {
+          "path": "build/p06v-tiff-metadata001/source003/python-evidence001.json",
+          "bytes": 2673,
+          "sha256": "fafda86063fd782f168bbeb2f665160af665f15b53370ed5155e06c1226405b8"
+        },
+        {
+          "path": "build/p06v-tiff-metadata001/installed002/python-evidence001.json",
+          "bytes": 2868,
+          "sha256": "768849498f07f4c612bdc6c2f6324db4432a547002bd09fb82793ffbe9056ee0"
+        }
+      ]
+    },
+    {
+      "id": "TU05",
+      "kind": "independent_metadata",
+      "cases": [
+        {
+          "case": "description-omitted-dims-singletons",
+          "state": "exercised"
+        },
+        {
+          "case": "legacy-ImageJ-Z-fallback",
+          "state": "exercised"
+        },
+        {
+          "case": "description-images-fullIFD",
+          "state": "exercised"
+        },
+        {
+          "case": "canonical-writer-omits-images",
+          "state": "exercised"
+        },
+        {
+          "case": "per-page-description-agreement",
+          "state": "exercised"
+        },
+        {
+          "case": "metadata-default-ledger",
+          "state": "exercised"
+        }
+      ],
+      "notes": "Exact ordered default ledgers cover legacy Z and explicit singletons, missing finterval T1 versus T2 refusal, valid repeated CRLF descriptions, escaped spatial/time aliases and direct writer alias canonicalization. Exact source-description preservation and canonicalization ledgers plus independent output tag/pixel checks pass. Earlier images/full-IFD fixtures and canonical omission checks remain exercised.",
+      "evidence": [
+        {
+          "path": "tests/fixtures/scientific-tiff-u16/SOURCE.json",
+          "bytes": 12400,
+          "sha256": "b776eb562930d90c4e7afe4e84755a79fb29df26cd55f853a7114e4de8122aae"
+        },
+        {
+          "path": "tests/python/test_scientific_tiff_io.py",
+          "bytes": 12299,
+          "sha256": "e7ab9831dcba1dd37adb5d9bfd54bfd3d85fea6f195c034fd869a79e7d5cfb13"
+        },
+        {
+          "path": "build/p06u-tiff-acceptance001/native002/native.xml",
+          "bytes": 2252,
+          "sha256": "9ff7e6e74478f8a828b8ecefe060f1bcddd3de405474239dc158f2296c1a5ff1"
+        },
+        {
+          "path": "tests/fixtures/scientific-tiff-metadata/SOURCE.json",
+          "bytes": 16210,
+          "sha256": "a00eddfd3beb90174c27ede0fcc9cd37569f23e6e70c69568c16774e56dc8e33"
+        },
+        {
+          "path": "tests/native/test_tiff_metadata.cpp",
+          "bytes": 14652,
+          "sha256": "0e3e6811576e8349e9395187c4f8c392ceb5aee25d9e8896378bd10753fe2820"
+        },
+        {
+          "path": "tests/python/test_tiff_metadata.py",
+          "bytes": 7891,
+          "sha256": "e60050a422bde6255d24ec5d4463b7a9873efe92443e7a2f7fb182a04b499583"
+        },
+        {
+          "path": "build/p06v-tiff-metadata001/native003/native.xml",
+          "bytes": 2729,
+          "sha256": "b072dfe34b4005fd0fba76ee647753d33b5dbd9bc8888b9dfb522bae998bcb97"
+        },
+        {
+          "path": "build/p06v-tiff-metadata001/source003/python-evidence001.json",
+          "bytes": 2673,
+          "sha256": "fafda86063fd782f168bbeb2f665160af665f15b53370ed5155e06c1226405b8"
+        },
+        {
+          "path": "build/p06v-tiff-metadata001/installed002/python-evidence001.json",
+          "bytes": 2868,
+          "sha256": "768849498f07f4c612bdc6c2f6324db4432a547002bd09fb82793ffbe9056ee0"
+        },
+        {
+          "path": "docs/parity/reviews/scientific-tiff-u16-runtime-amendment-005.json",
+          "bytes": 5180,
+          "sha256": "41c0f1d78f2a81d194f6dcef8bed7adb8091677af81ed2007533c16fa283c02a"
+        },
+        {
+          "path": "build/p06x-tiff-runtime001/build001/native.xml",
+          "bytes": 2758,
+          "sha256": "e5afb34f4d55c0ee766595764d1ec3f1c6e87dacb5ea99f93e07d64541915733"
+        }
+      ]
+    },
+    {
+      "id": "TU06",
+      "kind": "malformed_and_unsupported",
+      "cases": [
+        {
+          "case": "header-endian-magic",
+          "state": "exercised"
+        },
+        {
+          "case": "BigTIFF",
+          "state": "exercised"
+        },
+        {
+          "case": "IFD-cycle-duplicate",
+          "state": "exercised"
+        },
+        {
+          "case": "IFD-entry-overflow",
+          "state": "exercised"
+        },
+        {
+          "case": "truncated-tag-value",
+          "state": "exercised"
+        },
+        {
+          "case": "strip-count-and-bytecount",
+          "state": "exercised"
+        },
+        {
+          "case": "strip-overlap",
+          "state": "exercised"
+        },
+        {
+          "case": "IFD-or-tag-overlap-pixel",
+          "state": "exercised"
+        },
+        {
+          "case": "duplicate-description-key",
+          "state": "exercised"
+        },
+        {
+          "case": "shape-product-mismatch",
+          "state": "exercised"
+        },
+        {
+          "case": "hidden-pages",
+          "state": "exercised"
+        },
+        {
+          "case": "multiple-series-SubIFDs",
+          "state": "exercised"
+        },
+        {
+          "case": "heterogeneous-pages",
+          "state": "exercised"
+        },
+        {
+          "case": "compressed-tiled-palette-RGB-signed-float",
+          "state": "exercised"
+        },
+        {
+          "case": "orientation-other",
+          "state": "exercised"
+        },
+        {
+          "case": "unknown-semantic-tags",
+          "state": "exercised"
+        },
+        {
+          "case": "nonzero-origin-direction-policy",
+          "state": "exercised"
+        },
+        {
+          "case": "unsupported-unit-or-intensity-calibration",
+          "state": "exercised"
+        }
+      ],
+      "notes": "All 18 named malformed/unsupported case families now have concrete exercised carriers. Thirty added carriers cover bad headers, bounded IFD/tag counts, truncated tables, strip mismatch/out-of-file/required tags, hidden pages, SubIFDs and multiple document names, complete tiled/palette/RGB/signed/Float32/PackBits/BigTIFF layouts, nonzero origin/direction and unsupported units/density/private metadata. Native guards lock actual sample payloads for all 81 malformed/unsupported inputs (34 original +17 calibration +30 new), with separate raw-read and valid-file controls. Independent tifffile controls decode the complete excluded layouts; an original packet decoder checks PackBits. Five writer calibration refusals preserve bytes with no hooks/provider reads. This is Windows-scoped refusal proof, not support for the excluded formats or full profile/platform acceptance.",
+      "evidence": [
+        {
+          "path": "tests/fixtures/scientific-tiff-u16/SOURCE.json",
+          "bytes": 12400,
+          "sha256": "b776eb562930d90c4e7afe4e84755a79fb29df26cd55f853a7114e4de8122aae"
+        },
+        {
+          "path": "scripts/generate_scientific_tiff_fixtures.py",
+          "bytes": 9226,
+          "sha256": "d500a76be5dba39cc5b47d7d64e9692b6a67ffd4bc3a73d8f8fe487efc7e7237"
+        },
+        {
+          "path": "build/p06u-tiff-acceptance001/native002/native.xml",
+          "bytes": 2252,
+          "sha256": "9ff7e6e74478f8a828b8ecefe060f1bcddd3de405474239dc158f2296c1a5ff1"
+        },
+        {
+          "path": "tests/fixtures/scientific-tiff-metadata/SOURCE.json",
+          "bytes": 16210,
+          "sha256": "a00eddfd3beb90174c27ede0fcc9cd37569f23e6e70c69568c16774e56dc8e33"
+        },
+        {
+          "path": "tests/native/test_tiff_metadata.cpp",
+          "bytes": 14652,
+          "sha256": "0e3e6811576e8349e9395187c4f8c392ceb5aee25d9e8896378bd10753fe2820"
+        },
+        {
+          "path": "tests/python/test_tiff_metadata.py",
+          "bytes": 7891,
+          "sha256": "e60050a422bde6255d24ec5d4463b7a9873efe92443e7a2f7fb182a04b499583"
+        },
+        {
+          "path": "build/p06v-tiff-metadata001/native003/native.xml",
+          "bytes": 2729,
+          "sha256": "b072dfe34b4005fd0fba76ee647753d33b5dbd9bc8888b9dfb522bae998bcb97"
+        },
+        {
+          "path": "build/p06v-tiff-metadata001/source003/python-evidence001.json",
+          "bytes": 2673,
+          "sha256": "fafda86063fd782f168bbeb2f665160af665f15b53370ed5155e06c1226405b8"
+        },
+        {
+          "path": "build/p06v-tiff-metadata001/installed002/python-evidence001.json",
+          "bytes": 2868,
+          "sha256": "768849498f07f4c612bdc6c2f6324db4432a547002bd09fb82793ffbe9056ee0"
+        },
+        {
+          "path": "scripts/generate_tiff_refusal_fixtures.py",
+          "bytes": 9804,
+          "sha256": "4d8402b7dd7647d1c987e8c2f97925b684c8fe3466cfaf68bd4a724504f47af5"
+        },
+        {
+          "path": "tests/fixtures/scientific-tiff-refusals/SOURCE.json",
+          "bytes": 12760,
+          "sha256": "1defe3e51d07e55dd8b10da572a7c14a95e0dc9a072fe1f682e8d579d0bf1df5"
+        },
+        {
+          "path": "tests/native/test_tiff_metadata.cpp",
+          "bytes": 14652,
+          "sha256": "0e3e6811576e8349e9395187c4f8c392ceb5aee25d9e8896378bd10753fe2820"
+        },
+        {
+          "path": "tests/python/test_tiff_refusals.py",
+          "bytes": 4941,
+          "sha256": "ed2479c9b98ae1cd947cab7428fcbce58fadebc1dab13d75269a2c854935611d"
+        },
+        {
+          "path": "build/p06w-tiff-refusals001/native002/native.xml",
+          "bytes": 2760,
+          "sha256": "5e6fb9fe2bd14e6c92ce6eac8cd2acfc770dae16c3c230446d93af76ddc54834"
+        },
+        {
+          "path": "build/p06w-tiff-refusals001/source002/python-evidence001.json",
+          "bytes": 2674,
+          "sha256": "c6ac1fd88de2342d958b07d768f199a79ef959770c3f7c21cb1aed53aeae7191"
+        },
+        {
+          "path": "build/p06w-tiff-refusals001/installed002/pytest.xml",
+          "bytes": 14705,
+          "sha256": "6c573592f6315308759abbd018c85fedbd89f88801c45753f6a8a65f6ed3ff06"
+        },
+        {
+          "path": "docs/parity/reviews/scientific-tiff-u16-runtime-amendment-005.json",
+          "bytes": 5180,
+          "sha256": "41c0f1d78f2a81d194f6dcef8bed7adb8091677af81ed2007533c16fa283c02a"
+        },
+        {
+          "path": "build/p06x-tiff-runtime001/build001/native.xml",
+          "bytes": 2758,
+          "sha256": "e5afb34f4d55c0ee766595764d1ec3f1c6e87dacb5ea99f93e07d64541915733"
+        }
+      ]
+    },
+    {
+      "id": "TU07",
+      "kind": "resources_callbacks_atomicity",
+      "cases": [
+        {
+          "case": "precancel",
+          "state": "exercised"
+        },
+        {
+          "case": "invalid-budget-zero-callback",
+          "state": "exercised"
+        },
+        {
+          "case": "inspect-limit",
+          "state": "exercised"
+        },
+        {
+          "case": "aggregate-output-limit",
+          "state": "exercised"
+        },
+        {
+          "case": "codec-limit",
+          "state": "exercised"
+        },
+        {
+          "case": "progress-start-throws",
+          "state": "exercised"
+        },
+        {
+          "case": "checkpoint-throws",
+          "state": "exercised"
+        },
+        {
+          "case": "row-cancel",
+          "state": "exercised"
+        },
+        {
+          "case": "between-plane-cancel",
+          "state": "exercised"
+        },
+        {
+          "case": "before-replace-cancel",
+          "state": "exercised"
+        },
+        {
+          "case": "short-read",
+          "state": "exercised"
+        },
+        {
+          "case": "disk-write-failure",
+          "state": "exercised"
+        },
+        {
+          "case": "existing-target-preserved",
+          "state": "exercised"
+        },
+        {
+          "case": "exclusive-temp-collision",
+          "state": "exercised"
+        },
+        {
+          "case": "observable-input-change",
+          "state": "exercised"
+        }
+      ],
+      "notes": "All nine zero limits now refuse inspect/read/write before callbacks, provider reads or staging. Prior actual short-read, Windows locked-byte write, exact-name collision, cancellation and target/source preservation proofs remain. Disk-full/flush/close faults and other platforms remain broader obligations; a write lock does not qualify them. Legacy TIFF encoding/publication now preserves a pre-existing fixed-suffix file, checked by a real failing regression before repair. Memory encoding removes the predictable sibling and disk readback; shared byte publication uses the existing exclusive atomic helper. This does not qualify disk-full/flush/close or POSIX ownership faults.",
+      "evidence": [
+        {
+          "path": "tests/native/test_tiff_acceptance.cpp",
+          "bytes": 8839,
+          "sha256": "fceeb106c243e578c7d44d14a4309dba8209f2a84e39626057ba9b508c430b1a"
+        },
+        {
+          "path": "tests/native/test_staged_tiff.cpp",
+          "bytes": 7677,
+          "sha256": "ed99a03b974c070ba14d5e9a6b2476a81a87a2ffd0755af4518623cad86438b9"
+        },
+        {
+          "path": "tests/native/test_scientific_tiff.cpp",
+          "bytes": 15949,
+          "sha256": "dda1080453ab89c3ad097541f3440829ae477d3d9c89e8666ef89c2a28a1a769"
+        },
+        {
+          "path": "build/p06u-tiff-acceptance001/native002/native.xml",
+          "bytes": 2252,
+          "sha256": "9ff7e6e74478f8a828b8ecefe060f1bcddd3de405474239dc158f2296c1a5ff1"
+        },
+        {
+          "path": "build/p06s-atomic-ownership001/ownership-handoff001.json",
+          "bytes": 9528,
+          "sha256": "a8decad80dd73b67631bdeb970db9175c8aaa60f4984a539388ea77bed1971a4"
+        },
+        {
+          "path": "tests/fixtures/scientific-tiff-metadata/SOURCE.json",
+          "bytes": 16210,
+          "sha256": "a00eddfd3beb90174c27ede0fcc9cd37569f23e6e70c69568c16774e56dc8e33"
+        },
+        {
+          "path": "tests/native/test_tiff_metadata.cpp",
+          "bytes": 14652,
+          "sha256": "0e3e6811576e8349e9395187c4f8c392ceb5aee25d9e8896378bd10753fe2820"
+        },
+        {
+          "path": "tests/python/test_tiff_metadata.py",
+          "bytes": 7891,
+          "sha256": "e60050a422bde6255d24ec5d4463b7a9873efe92443e7a2f7fb182a04b499583"
+        },
+        {
+          "path": "build/p06v-tiff-metadata001/native003/native.xml",
+          "bytes": 2729,
+          "sha256": "b072dfe34b4005fd0fba76ee647753d33b5dbd9bc8888b9dfb522bae998bcb97"
+        },
+        {
+          "path": "build/p06v-tiff-metadata001/source003/python-evidence001.json",
+          "bytes": 2673,
+          "sha256": "fafda86063fd782f168bbeb2f665160af665f15b53370ed5155e06c1226405b8"
+        },
+        {
+          "path": "build/p06v-tiff-metadata001/installed002/python-evidence001.json",
+          "bytes": 2868,
+          "sha256": "768849498f07f4c612bdc6c2f6324db4432a547002bd09fb82793ffbe9056ee0"
+        },
+        {
+          "path": "src/desktop/io.cpp",
+          "bytes": 25970,
+          "sha256": "bb7fd3739521ecad31b788d89cce292cc5dc3b69f51a9441943fd1c48848aa46"
+        },
+        {
+          "path": "src/desktop/util.cpp",
+          "bytes": 3419,
+          "sha256": "fd219402df0585f6037b317d9ae677fd0c9bdd4bb31795bbef8f88e7777ba7c8"
+        },
+        {
+          "path": "tests/native/test_legacy_tiff_io.cpp",
+          "bytes": 5033,
+          "sha256": "8052c384acd24c92ebca4c328985661ccb34e9a77018c637b1754f41a4dc5f12"
+        },
+        {
+          "path": "tests/python/test_legacy_tiff_io.py",
+          "bytes": 5042,
+          "sha256": "5b09d22944da108365261a0b42e55a7293472c0e5be436fc4323e2668715482d"
+        },
+        {
+          "path": "build/p06y-legacy-tiff001/build001/native.xml",
+          "bytes": 3135,
+          "sha256": "665d62a9a5d90261fafcf00c28bd45b796b8d524750c628ef11ba434bc9bd2c2"
+        },
+        {
+          "path": "build/p06y-legacy-tiff001/installed-python002/pytest.xml",
+          "bytes": 24077,
+          "sha256": "8f3b63a11f0c788cc49e3b9b1ee6502a9cdab1436b4ef040ce51f79c5771e756"
+        },
+        {
+          "path": "build/p06y-legacy-tiff001/oracle001/oracle-evidence001.json",
+          "bytes": 4944,
+          "sha256": "65cce9e074e34cb88a1377309e789f4b9808188aff18c52755a6051d26a95863"
+        }
+      ]
+    },
+    {
+      "id": "TU08",
+      "kind": "source_reference_runtime",
+      "cases": [
+        {
+          "case": "pinned-ImageJ1.54r-export-to-native",
+          "state": "exercised"
+        },
+        {
+          "case": "native-to-pinned-ImageJ1.54r-reopen",
+          "state": "exercised"
+        }
+      ],
+      "notes": "Actual pinned ImageJ1.54r checks every singleton/non-singleton C/Z/T combination (T1/2,C1/3,Z1/2): native installed SDK and installed Python exports reopen with literal unsigned pixels, getStackIndex and anisotropic/time calibration. Untouched FileSaver outputs are imported by installed SDK/Python and open as eight clean reviewed editor owners. The runtime exposed and qualified the narrow single-axis omitted-hyperstack amendment. One-plane FileSaver depth omission is retained and explicitly defaulted, never sanitized.",
+      "evidence": [
+        {
+          "path": "build/p06r-tiff-service001/TiffInterop.java",
+          "bytes": 2516,
+          "sha256": "af59c33d51c3da90cc3850f1abb4a3a2f2326b4aba4fc890ba0fe2793f79554c"
+        },
+        {
+          "path": "build/p06r-tiff-python001/interop001/run001.json",
+          "bytes": 4783,
+          "sha256": "44e1f76a2e1e74750a059c77bedbaeae103bf31e4dadaba32adeb5559bb67d13"
+        },
+        {
+          "path": "docs/parity/reviews/scientific-tiff-u16-runtime-amendment-005.json",
+          "bytes": 5180,
+          "sha256": "41c0f1d78f2a81d194f6dcef8bed7adb8091677af81ed2007533c16fa283c02a"
+        },
+        {
+          "path": "build/p06x-tiff-runtime001/build001/native.xml",
+          "bytes": 2758,
+          "sha256": "e5afb34f4d55c0ee766595764d1ec3f1c6e87dacb5ea99f93e07d64541915733"
+        },
+        {
+          "path": "build/p06x-tiff-runtime001/runtime004/run001.json",
+          "bytes": 109670,
+          "sha256": "2ff4a29ddae086cb4c9fb96f05bea3071ccae4c00886d44549053b6a86cb745a"
+        },
+        {
+          "path": "build/p06x-tiff-runtime001/runtime004/after-evidence001.json",
+          "bytes": 11778,
+          "sha256": "18e06acbce317c4314e856e352b28952beb081c67a660bc3f38d8719e58bb4e9"
+        }
+      ]
+    },
+    {
+      "id": "TU09",
+      "kind": "installed_interfaces",
+      "cases": [
+        {
+          "case": "core-only-SDK",
+          "state": "exercised"
+        },
+        {
+          "case": "native-C++API",
+          "state": "exercised"
+        },
+        {
+          "case": "installed-Python-DatasetAPI",
+          "state": "exercised"
+        },
+        {
+          "case": "standalone-ImGui-open-export",
+          "state": "exercised"
+        },
+        {
+          "case": "Python-ImGui-open-export",
+          "state": "exercised"
+        },
+        {
+          "case": "legacy-TIFF-regression",
+          "state": "partial"
+        }
+      ],
+      "notes": "Explicit legacy compatibility checks now cover UInt8/UInt16/Float32/Float64, S1/3/4, one/two planes, orientation1-4 and MINISWHITE, source identity/history preservation, PNG/NPY shared publication and failed output directories. Independent decoder verifies24 actual native outputs. Ordinary Window/Python open is still synchronous flat Z with pixel calibration, while explicit scientific open preserves TCZ/calibration after review. That baseline is frozen for a future reviewed ordinary-open migration, not accepted as full calibrated editor parity. Python ndarray APIs remain separate.",
+      "evidence": [
+        {
+          "path": "build/p06t-replay-validation001/replay-handoff001.json",
+          "bytes": 8873,
+          "sha256": "55df91c90023d0a18908f6d4d6d0e80476562f509e782908e31873df2997797c"
+        },
+        {
+          "path": "tests/python/test_scientific_tiff_io.py",
+          "bytes": 12299,
+          "sha256": "e7ab9831dcba1dd37adb5d9bfd54bfd3d85fea6f195c034fd869a79e7d5cfb13"
+        },
+        {
+          "path": "build/p06x-tiff-runtime001/installed-cpp001/run001.json",
+          "bytes": 3080,
+          "sha256": "e9e4101008baff5c2554add8acfd303b948bb8d12e95a47631a316944d21a7df"
+        },
+        {
+          "path": "build/p06x-tiff-runtime001/installed-python001/installed-evidence001.json",
+          "bytes": 2843,
+          "sha256": "57a145654e2fdeba2d4c5d4d4452f07624ad9c0cd92b30764c229ce62f532390"
+        },
+        {
+          "path": "build/p06x-tiff-runtime001/regress001/run001.json",
+          "bytes": 9097,
+          "sha256": "9c41b9d91ef97cd96689597c9ca19a4382d641e8383cb73cacc3b2d67ba9a8f6"
+        },
+        {
+          "path": "src/desktop/io.cpp",
+          "bytes": 25970,
+          "sha256": "bb7fd3739521ecad31b788d89cce292cc5dc3b69f51a9441943fd1c48848aa46"
+        },
+        {
+          "path": "src/desktop/util.cpp",
+          "bytes": 3419,
+          "sha256": "fd219402df0585f6037b317d9ae677fd0c9bdd4bb31795bbef8f88e7777ba7c8"
+        },
+        {
+          "path": "tests/native/test_legacy_tiff_io.cpp",
+          "bytes": 5033,
+          "sha256": "8052c384acd24c92ebca4c328985661ccb34e9a77018c637b1754f41a4dc5f12"
+        },
+        {
+          "path": "tests/python/test_legacy_tiff_io.py",
+          "bytes": 5042,
+          "sha256": "5b09d22944da108365261a0b42e55a7293472c0e5be436fc4323e2668715482d"
+        },
+        {
+          "path": "build/p06y-legacy-tiff001/build001/native.xml",
+          "bytes": 3135,
+          "sha256": "665d62a9a5d90261fafcf00c28bd45b796b8d524750c628ef11ba434bc9bd2c2"
+        },
+        {
+          "path": "build/p06y-legacy-tiff001/installed-python002/pytest.xml",
+          "bytes": 24077,
+          "sha256": "8f3b63a11f0c788cc49e3b9b1ee6502a9cdab1436b4ef040ce51f79c5771e756"
+        },
+        {
+          "path": "build/p06y-legacy-tiff001/oracle001/oracle-evidence001.json",
+          "bytes": 4944,
+          "sha256": "65cce9e074e34cb88a1377309e789f4b9808188aff18c52755a6051d26a95863"
+        },
+        {
+          "path": "build/p06y-legacy-tiff001/regress001/run001.json",
+          "bytes": 9075,
+          "sha256": "d85e529bc8a239434ca80df45db147aebc0b240ee379b050290f9597c9ac1295"
+        },
+        {
+          "path": "build/p06y-legacy-tiff001/installed-cpp001/run001.json",
+          "bytes": 3084,
+          "sha256": "fbf112b6b7974a3f17e8e21aa70809ddfa47bfce516a898d3732e2bf799e9fdd"
+        }
+      ]
+    }
+  ],
+  "next_actions": [
+    "Reviewed ordinary-open TIFF routing migration using the frozen generic/flat compatibility fixtures",
+    "Remaining TU07 filesystem/platform faults, including disk-full/flush/close and POSIX ownership",
+    "PNM fixed-suffix staging remains a separate known legacy format fix",
+    "Matching wheel/source/release and remaining full editor/ImageJ/commercial Fiji scope"
+  ],
+  "profile_accepted": false,
+  "family_completed": false,
+  "broad_goal": "active",
+  "previous_audit": {
+    "path": "docs/parity/reviews/scientific-tiff-u16-coverage-008.json",
+    "bytes": 25491,
+    "sha256": "16156e1524adc40af47dde28950049bd393fdd3fac3b9185422b73cd58bdc081"
+  },
+  "platform_scope": "Windows guarded refusal evidence for 81 carriers; portable typed tests executed here on Windows"
+}

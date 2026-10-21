@@ -1,0 +1,2106 @@
+{
+  "schema": "imagejxx.parity.auto-option-settings-registration-proposal",
+  "schema_version": 1,
+  "id": "P06c4-auto-option-settings-registration-001",
+  "prepared_on": "2026-10-16",
+  "state": "PROPOSED_WRITE_HOLD_ROOT_ADOPTION_AND_CURRENT_FREEZE_REQUIRED",
+  "not_an_acceptance_manifest": true,
+  "scope": "One additive CD13 registration reuses its planned G057 owner with G033 shared Channels/XYZ consumers and G069 histogram support plus existing unsigned16 consumer. No parallel G033 owner/new key/discovery framework/proof retrofit/widened runtime budget.",
+  "input_pins": [
+    {
+      "path": "docs/parity/commands.json",
+      "bytes": 2994384,
+      "sha256": "f6a73098b9ee8318dc19a2dab8910d9491abd804bf642bb1ff5bc2e3eab36307"
+    },
+    {
+      "path": "docs/parity/inventory.json",
+      "bytes": 8918899,
+      "sha256": "8e9e82b8de513d9868835b5dd54234d1478ae61ce66fb416a91be0b8eed06321"
+    },
+    {
+      "path": "docs/parity/SCHEMA.md",
+      "bytes": 40784,
+      "sha256": "d7fbdedc1e32fa57c19773494d527dad882d19393e8039b2993dba3bf5da5f13"
+    },
+    {
+      "path": "scripts/parity_schema.py",
+      "bytes": 24164,
+      "sha256": "be67b4a85e72bee6581bdb0673374e2b808d94955019a930d6ecf8a96934d913"
+    },
+    {
+      "path": "scripts/parity_execution.py",
+      "bytes": 41393,
+      "sha256": "e8d32cb8bb559cab89fefb07db2da95bcb83b8d9cc228e4b465a0b5aa99afcc9"
+    },
+    {
+      "path": "scripts/parity_consumers.py",
+      "bytes": 44726,
+      "sha256": "ccbc9619c2036a0a8322fbfbdd119d9eadd514ad89eaccb7668d1ee90402602b"
+    },
+    {
+      "path": "docs/parity/references.json",
+      "bytes": 757915,
+      "sha256": "d750de9e7b74e4fd5f6a5f05e7068becc3b67bf61ac8ddc76853e421335754c8"
+    },
+    {
+      "path": "docs/parity/reference-pins.json",
+      "bytes": 1903,
+      "sha256": "68116b0da051748e583dbe82b6e1df7e269056386d10fb4b66c7833d4f1996bc"
+    },
+    {
+      "path": "docs/parity/reviews/G033-option-assignments.json",
+      "bytes": 380963,
+      "sha256": "a9ee15695757ce9cac90dd3741ab9c88ef91cd404e3ca4935d52f5b3ef9493f7"
+    },
+    {
+      "path": "docs/parity/reviews/G033-histogram-auto-entry-001.json",
+      "bytes": 53886,
+      "sha256": "2f511fb6dcfc1f26c62060681eded31b6e21b025de37cd123777405b9d280c8e"
+    },
+    {
+      "path": "docs/parity/reviews/G033-histogram-auto-entry-002.json",
+      "bytes": 9958,
+      "sha256": "b623c9c42c7059a0d1eba6919a5917170fba00bdfd216c8621dbcca0e94f64b9"
+    },
+    {
+      "path": "docs/parity/reviews/G033-histogram-auto-entry-003.json",
+      "bytes": 10771,
+      "sha256": "4ebbf78efbab889d23c07221b2af07664a24952d679ba0e2df253aa8c9782f67"
+    },
+    {
+      "path": "docs/parity/reviews/P06c4-auto-adoption-001.json",
+      "bytes": 7651,
+      "sha256": "b4f2acd2999db66e97045e652def8b581a06c98151ec5a6343a99d6be4346944"
+    },
+    {
+      "path": "docs/parity/reviews/P06c4-auto-controller-adoption-001.json",
+      "bytes": 11682,
+      "sha256": "72fb494b36f35ee5611df6cd1299a5f221d6886cae6e47851b9fd3251c203af8"
+    },
+    {
+      "path": "docs/parity/reviews/P06c4-auto-controller-adoption-002.json",
+      "bytes": 3007,
+      "sha256": "afb2b8a460465b883ba5c8c86b27899967255f7a5185e47907f8a783e995f995"
+    }
+  ],
+  "current_manifest_state": {
+    "requirements": 51,
+    "surface_contracts": 7,
+    "surface_proofs": 28,
+    "settings_assignments": 2,
+    "settings_consumer_contracts": 2,
+    "settings_consumer_proofs": 8,
+    "native_setting_definitions": 37,
+    "discovery_candidates": 2810,
+    "all_existing_records_preserved": true
+  },
+  "ownership": {
+    "requirement_id": "G057.auto-contrast.live-and-recorded-dispatch",
+    "primary_family": "G057",
+    "g033_consumption": "CD13 GUI Auto: shared Channels physical Auto/Shift/ROI, Workflow replay/rebind and XY/XZ/YZ redraw",
+    "supporting_family": "G069 raw Dataset/area histogram consumed subcontract only",
+    "existing_route": "docs/parity/reviews/G033-option-assignments.json#/assignments/12",
+    "candidate": {
+      "assignment": null,
+      "commercial_review": "pending",
+      "component_id": "imagej-core",
+      "descriptor": {
+        "menu_context": "Plugins installed in the Image/Adjust submenu",
+        "property": "adjust01",
+        "value": "\"Brightness/Contrast...[C]\",ij.plugin.frame.ContrastAdjuster"
+      },
+      "evidence": {
+        "archive_member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/IJ_Props.txt",
+        "line": 121,
+        "sha256": "e1891ac12a42e8051b2c9ca64974cd6a4f6075dd906d73c86b1f2a7b1db57d19"
+      },
+      "id": "R-45bfff1c253bf40ea440b456",
+      "kind": "imagej_property",
+      "option_inventory": null,
+      "runtime_reconciliation": "pending",
+      "source_key": "adjust01",
+      "status": "candidate"
+    },
+    "candidate_link_reason": "Actual pinned IJ_Props adjust01 B&C descriptor owns ContrastAdjuster Auto. Window/Level adjust02, Color Balance adjust03, Composite Channels, histogram popup, Enhance Contrast and Fiji descriptors remain separate and are not aliased/completed."
+  },
+  "proposed_requirement": {
+    "id": "G057.auto-contrast.live-and-recorded-dispatch",
+    "parent_id": "G057",
+    "milestones": [
+      "M5",
+      "M6"
+    ],
+    "kind": "command",
+    "title": "GUI Auto-contrast: scalar raw live range, immutable replay and settings consumer",
+    "required_work": "GUI Auto-contrast: Freeze repeated Auto divisor state, histogram/ROI/nonfinite/calibrated rules and explicit resolved C/T/Z targeting; recorded Enhance Contrast is a separate dispatch. Register the adopted raw/native slice with G033 Channels/XYZ display consumption and G069 histogram service, both public APIs, installed core-only SDK and both shared ImGui launches. Preserve complete source workflow and remaining differences; partial raw implementation does not close calibrated/RGB/Enhance or entire-family scope.",
+    "candidate_ids": [
+      "R-45bfff1c253bf40ea440b456"
+    ],
+    "reference": {
+      "reference_id": "imagej-1.54r-fiji-latest-20261007-1617-win64",
+      "component_id": "imagej-core",
+      "archive_sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+      "revision": "62db90a269cccc1ac79f658e4602043214ed055b",
+      "scope": "CD13 GUI Auto source contract with explicit G033 Channels consumption and supporting G069 raw Dataset/area histogram. Registered implemented slice is adopted scalar raw UInt8/UInt16/Float32 Auto, native logical display state, typed settings choices, bounded async publication, resolved native replay/full rebind, and both shared ImGui launches. Reference includes repeated divisor/histogram/ROI/Reset and distinct recorded Enhance Contrast dispatch. Native Color/Grayscale retains fractional endpoints/cycle instead of Java hidden setup/getter-reset behavior; empty/no-finite area refuses; replay applies a frozen Set effect. RGB/signed-density/intensity-calibrated behavior, Java Enhance dispatch and complete family scope remain explicit obligations. No whole B&C candidate equivalence.",
+      "source_members": [
+        {
+          "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/plugin/frame/ContrastAdjuster.java",
+          "sha256": "e6cc033f00052659b530cbba144afd6d312721ba01ae39080fcb3700befb0de2"
+        },
+        {
+          "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ImageStatistics.java",
+          "sha256": "061da4222f69750416d0df49a9d9b7f1323420fa0eb7eb4173df5e6d922cfa76"
+        },
+        {
+          "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ByteStatistics.java",
+          "sha256": "cfdd0a947fe4e4826382bef13f4a20a629960b510abc39ec6b9604f11356f5f7"
+        },
+        {
+          "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ShortStatistics.java",
+          "sha256": "18d8f1b5f65ab22aee4d94fec328fc72618701b58ec2ec7c2cf27948cc5598a2"
+        },
+        {
+          "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/FloatStatistics.java",
+          "sha256": "3f8617365532a1cac096ef4509180274c2391a3df3a85e431c7ed533601180f3"
+        },
+        {
+          "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ImageProcessor.java",
+          "sha256": "f98e87d25eb6b1f2c5d8557b73dd33e36fef0494d903d6d250206371dccc279c"
+        },
+        {
+          "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ByteProcessor.java",
+          "sha256": "fc23c95778bd7154eba1ea56d9ea943e7d1d9ea568fe20cf9bf9c6db1db3ad94"
+        },
+        {
+          "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/ShortProcessor.java",
+          "sha256": "7484082e91c7095a3c79984c74b4dafa8b6d2912ed3b862e28dd331c8ba3024d"
+        },
+        {
+          "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/FloatProcessor.java",
+          "sha256": "0f52a157fe99e9a48ce2c9356fc2c3c435dc74f48e45a575171e60deb694ccf5"
+        },
+        {
+          "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/CompositeImage.java",
+          "sha256": "7f97ef93b52967cfadda37fb8c26513de283787a93a918d3e54260e43e432a7f"
+        },
+        {
+          "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/measure/Calibration.java",
+          "sha256": "2d44c799739c71b1fcdfcf6a5b42a86b65c46e4f6dca9b2cd29b6a479c67f07a"
+        },
+        {
+          "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/Roi.java",
+          "sha256": "200ad9f501a5860fe1486a3d2a8ed6cf6f82f7c7562a81e11d91ee7b7a04497e"
+        },
+        {
+          "path": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/IJ_Props.txt",
+          "sha256": "e1891ac12a42e8051b2c9ca64974cd6a4f6075dd906d73c86b1f2a7b1db57d19"
+        }
+      ]
+    },
+    "contract": {
+      "parameters": [
+        {
+          "name": "previous_divisor",
+          "type": "integer",
+          "default": 0,
+          "choices": [
+            0,
+            5000,
+            2500,
+            1250,
+            625,
+            312,
+            156,
+            78,
+            39,
+            19,
+            9
+          ],
+          "minimum": 0,
+          "maximum": 5000,
+          "units": "",
+          "enabled_when": "Resolver/full rebind only. Fresh Application derives authoritative transient divisor; replacement must equal current effective divisor."
+        },
+        {
+          "name": "scope",
+          "type": "string",
+          "default": "active_channel",
+          "choices": [
+            "active_channel",
+            "composite_all"
+          ],
+          "units": "",
+          "enabled_when": "GUI Auto is active; Shift+Auto requests all. Configured UInt16 fallback targets all stored C in every recognized mode."
+        },
+        {
+          "name": "roi",
+          "type": "string",
+          "default": "active_selection",
+          "choices": [
+            "active_selection",
+            "whole_plane"
+          ],
+          "units": "",
+          "enabled_when": "Shared Use area selection checkbox captures active geometry; nonarea means whole XY."
+        },
+        {
+          "name": "unsigned16_bits",
+          "type": "integer",
+          "default": 0,
+          "choices": [
+            0,
+            8,
+            10,
+            12,
+            14,
+            15,
+            16
+          ],
+          "minimum": 0,
+          "maximum": 16,
+          "units": "bits",
+          "enabled_when": "Captured for every request; configured UInt16 ResetFallback only. Desktop default comes from existing conversion_unsigned16_range; explicit API/rebind value overrides captured default."
+        },
+        {
+          "name": "max_pixels",
+          "type": "integer",
+          "default": 16777216,
+          "minimum": 1,
+          "units": "pixels",
+          "enabled_when": "Positive caller cap; metadata-only preflight before source reads."
+        },
+        {
+          "name": "max_working_bytes",
+          "type": "integer",
+          "default": 134217728,
+          "minimum": 1,
+          "units": "bytes",
+          "enabled_when": "Positive checked working reservation. Desktop lowers using existing processing_memory_mb when nonzero."
+        },
+        {
+          "name": "max_record_bytes",
+          "type": "integer",
+          "default": 16777216,
+          "minimum": 1,
+          "units": "bytes",
+          "enabled_when": "Positive checked complete Auto/nested Set/selection record cap including declared peak copies."
+        },
+        {
+          "name": "max_selection_vertices",
+          "type": "integer",
+          "default": 65536,
+          "minimum": 1,
+          "units": "vertices",
+          "enabled_when": "Positive bounded full selection capture; complete metadata depth fixed128."
+        }
+      ],
+      "pixel_types": [
+        "UInt8",
+        "UInt16",
+        "Float32"
+      ],
+      "samples": [
+        "S1 scalar only; scientific C distinct from sample components"
+      ],
+      "axes": [
+        "Captured active XY at explicit source T/C/Z; display ranges shared across Z/T",
+        "Read captured active-C plane plus documented whole-plane fallback; configured UInt16 fallback changes all stored display C"
+      ],
+      "targets": [
+        "Dataset/DocumentSnapshot resolver and Application typed async job; no fake pixel PreparedOperation",
+        "Fresh publication requires membership/active-owner generation/cycle epoch and all four Document revisions; stale work refuses atomically",
+        "Display-only publication once including equal/fallback; preserve source data/pixels/metadata/selection/history/dirty identity",
+        "Validate complete original before owner lookup/replacement. Replay binds Pixels+Metadata, applies exact nested Set with no histogram/pixel read or cycle advance; foreign owner needs full rebind"
+      ],
+      "roi": [
+        "Capture bounded full active area geometry/attributes and existing area raster semantics",
+        "Explicit WholePlane or known nonarea means whole XY; Selection dependency remains",
+        "Empty/no-finite area refuses without Java Reset substitution or publication/record/cycle advance"
+      ],
+      "border": [
+        "No spatial filtering/border extension; existing area rasterization selects pixel centers",
+        "ProcessorRaw256 histogram, strict count comparisons and finite extrema use captured plane only"
+      ],
+      "nonfinite": "FiniteOnly or existing PreserveQuietNaNFloat32 only; quiet NaNs excluded, no-finite selection/plane refuses. No Float64/RGB/signed-density/intensity-transfer-function support or inference from opaque metadata; preserve raw/opaque metadata.",
+      "geometry": "Preserve shape/calibration/TCZ/cameras/crosshair/LUT/visibility/mode/version/projection. Linked XY/XZ/YZ redraw consumes ranges and preserves raw resliced pixels/calibration/crosshair; no ROI projection or new slicing claim. Cycle used=previous<10?5000:floor(previous/2), fallback next0. Eligible bin count>floor(N/used) and <=floor(N/10). U8 fallback[0,255]; configured U16[0,2^bits-1] on all C/all modes; automatic U16/F32 whole-plane finite extrema. Equal candidate uses selected extrema. Color/Gray preserves active fractional endpoints/divisor; CompositeAll getter rounding only in actual Composite mode."
+    },
+    "interfaces": {
+      "cpp": {
+        "applicable": true,
+        "entry_points": [
+          "AutoContrastRequest / AutoContrastOptions / AutoContrastLimits / ResolvedAutoContrastCommand",
+          "estimate_auto_contrast_command / resolve_auto_contrast_command",
+          "validate_auto_contrast_command_record / auto_contrast_command_from_record / rebind_auto_contrast_command / command_display_state",
+          "Application::submit_auto_contrast / submit_rebound_auto_contrast / publish_auto_contrast / replay_auto_contrast",
+          "Application::auto_contrast_divisor / reset_auto_contrast_cycle / set_display_and_reset_auto_contrast",
+          "Settings::conversion_options / PreferencesDocument::save / PreferencesDocument::load"
+        ],
+        "evidence": []
+      },
+      "python": {
+        "applicable": true,
+        "entry_points": [
+          "imagejxx.AutoContrastRequest / AutoContrastOptions / AutoContrastLimits / ResolvedAutoContrastCommand",
+          "imagejxx.estimate_auto_contrast_command / resolve_auto_contrast_command / validate_auto_contrast_command_record",
+          "imagejxx.auto_contrast_command_from_record / rebind_auto_contrast_command / command_display_state",
+          "Application.submit_auto_contrast / submit_rebound_auto_contrast / publish_auto_contrast / replay_auto_contrast",
+          "Application.auto_contrast_divisor / reset_auto_contrast_cycle / set_display_and_reset_auto_contrast",
+          "Settings.conversion_options / PreferencesDocument.save / PreferencesDocument.load",
+          "imagejxx.ui.app.Editor.action(auto_contrast|replay_auto_contrast)"
+        ],
+        "evidence": []
+      },
+      "imgui": {
+        "applicable": true,
+        "entry_points": [
+          "Shared Channels: channel_display.auto with physical Shift modifier and channel_display.auto_roi",
+          "Shared Workflow: workflow.auto_contrast.<i>.replay / .rebind and Rebind Auto dialog",
+          "Shared Preferences: conversion_unsigned16_range choice/Apply/Close and persisted file reopened in fresh controller",
+          "Same native Window and Dear ImGui widgets in standalone C++ and optional Python launches"
+        ],
+        "evidence": []
+      }
+    },
+    "settings_consumers": [
+      {
+        "key": "conversion_unsigned16_range",
+        "consumer": "Settings::conversion_options unsigned16_bits captures existing preference into detached Auto request/options/rebind dialog; default/changed/frozen/explicit override and persisted configuration-file reopen effects required in cpp_api/python_api/imgui_cpp/imgui_python. No duplicate Auto setting."
+      }
+    ],
+    "fixture_ids": [],
+    "verification_run_ids": [],
+    "implementation_status": "partial",
+    "verification_status": "unverified",
+    "commercial": {
+      "decision": "pending",
+      "evidence": [],
+      "reason": "Owned native equivalent incorporates no upstream processing code/classes/JDK/macros/LUT assets. Registration grants no candidate/component/reference fixture/dependency/resource commercial clearance. Non-commercial, research-only and unlicensed material is excluded. Pending commercially usable Fiji material requires exact component/dependency/resource review before incorporation."
+    },
+    "provenance": {
+      "implementation": "owned_native_equivalent",
+      "incorporated_components": []
+    },
+    "remaining": [
+      "Bind held source/package identities, current passing report cases, genuine B2 traces and all five consumer scenarios in all four contexts. This proposal supplies no proof/run acceptance.",
+      "Retain full CD13 signed-density/intensity-calibrated/RGB behavior, Java empty Reset and Color/Gray hidden setup differences, and separate recorded Enhance Contrast dispatch. Native frozen replay is explicit, not that dispatch.",
+      "Retain CD12 complete Reset/unsigned16; CD14 histogram/log/slider/W&L; CD15 Color Balance; CD16 calibrated Set/propagation; CD37 recording breadth; CD38 other settings lifetimes; CD40 general limits.",
+      "G069 service does not close histogram GUI/statistics/domain/binning/stack workflows. Linked redraw does not close selection projection/slicing or complete XYZ/CZT workflows.",
+      "Keep G007.conversion-defaults.unsigned16_range and G060.invert_uint16.unsigned16_bits owners and every existing consumer obligation; this owner cannot replace them.",
+      "Retain all99 families/all2810 candidates, commercially eligible pinned Fiji workflows, all options/targets/formats/platforms/benchmarks and optional Python plus C++ shared UI. No family/platform/release/full-goal acceptance."
+    ]
+  },
+  "remaining_entry_replacement": {
+    "collection": "commands.remaining",
+    "old_value": "CD13 route1: deferred typed contract G057.auto-contrast.live-and-recorded-dispatch; owner=G057; next_child=gui-auto-histogram; dependencies=dataset-roi-histogram,gui-auto-reference-policy,intensity-calibration,range-action-lifetimes; exact source/remaining/evidence boundary=docs/parity/reviews/G033-option-assignments.json#/assignments/12/commands_schema_mapping/proposed_requirements/0; source review is not runtime match or commercial clearance.",
+    "new_value": "CD13 route1: register partial typed owner G057.auto-contrast.live-and-recorded-dispatch for adopted scalar raw/native Auto with explicit G033 consumer and G069 histogram support; formal B2/settings/reference/runtime/commercial adoption pending. Preserve full RGB/signed-density/intensity-calibrated/Java hidden setup and separate Enhance-dispatch obligations, adjacent CD12/CD14/CD15/CD16/CD37/CD38/CD40 routes and complete families. Original source=docs/parity/reviews/G033-option-assignments.json#/assignments/12; adopted boundary=P06c4-auto-adoption-001 and controller adoptions001/002. Registration is not runtime match or commercial clearance.",
+    "preservation": "Replace only this exact CD13 string after reviewing current commands pin. Keep every other remaining entry, candidate, requirement, status, proof and contract unchanged. Do not bulk update raw candidate assignment/status."
+  },
+  "proposed_settings_assignment": {
+    "materialization_state": "Exact fields below are a proposal, not an insertable schema row until source_refs is populated from final held source snapshot. No fabricated hash or empty source_refs.",
+    "missing_fields": [
+      "source_refs"
+    ],
+    "fields": {
+      "id": "A.G057.auto-contrast.live-and-recorded-dispatch.unsigned16_bits",
+      "definition_binding_id": "native-settings-export.p05c.windows.001",
+      "setting_key": "conversion_unsigned16_range",
+      "consumer": {
+        "api": "Settings::conversion_options -> AutoContrastRequest/AutoContrastOptions; Window::autoOptions and Rebind Auto capture the same existing setting",
+        "member": "unsigned16_bits",
+        "operation": "auto_contrast"
+      },
+      "requirement_ids": [
+        "G057.auto-contrast.live-and-recorded-dispatch"
+      ],
+      "consumption_mode": "detached_options",
+      "parameter_schema": {
+        "name": "unsigned16_bits",
+        "type": "integer",
+        "default": 0,
+        "choices": [
+          0,
+          8,
+          10,
+          12,
+          14,
+          15,
+          16
+        ],
+        "minimum": 0,
+        "maximum": 16,
+        "units": "bits",
+        "enabled_when": "Captured for every request; configured UInt16 ResetFallback only. Desktop default comes from existing conversion_unsigned16_range; explicit API/rebind value overrides captured default."
+      },
+      "parameter_conversion": {
+        "rule": "lookup",
+        "setting_key": "conversion_unsigned16_range",
+        "member": "unsigned16_bits",
+        "entries": [
+          {
+            "setting_value": "auto",
+            "effective_parameter_value": 0
+          },
+          {
+            "setting_value": "8",
+            "effective_parameter_value": 8
+          },
+          {
+            "setting_value": "10",
+            "effective_parameter_value": 10
+          },
+          {
+            "setting_value": "12",
+            "effective_parameter_value": 12
+          },
+          {
+            "setting_value": "14",
+            "effective_parameter_value": 14
+          },
+          {
+            "setting_value": "15",
+            "effective_parameter_value": 15
+          },
+          {
+            "setting_value": "16",
+            "effective_parameter_value": 16
+          }
+        ]
+      },
+      "contexts": {
+        "cpp_api": {
+          "scenarios": {
+            "default": {
+              "applicable": true
+            },
+            "changed": {
+              "applicable": true
+            },
+            "frozen": {
+              "applicable": true
+            },
+            "override": {
+              "applicable": true
+            },
+            "persisted": {
+              "applicable": true
+            }
+          }
+        },
+        "python_api": {
+          "scenarios": {
+            "default": {
+              "applicable": true
+            },
+            "changed": {
+              "applicable": true
+            },
+            "frozen": {
+              "applicable": true
+            },
+            "override": {
+              "applicable": true
+            },
+            "persisted": {
+              "applicable": true
+            }
+          }
+        },
+        "imgui_cpp": {
+          "scenarios": {
+            "default": {
+              "applicable": true
+            },
+            "changed": {
+              "applicable": true
+            },
+            "frozen": {
+              "applicable": true
+            },
+            "override": {
+              "applicable": true
+            },
+            "persisted": {
+              "applicable": true
+            }
+          }
+        },
+        "imgui_python": {
+          "scenarios": {
+            "default": {
+              "applicable": true
+            },
+            "changed": {
+              "applicable": true
+            },
+            "frozen": {
+              "applicable": true
+            },
+            "override": {
+              "applicable": true
+            },
+            "persisted": {
+              "applicable": true
+            }
+          }
+        }
+      }
+    }
+  },
+  "native_definition_binding": {
+    "reuse_id": "native-settings-export.p05c.windows.001",
+    "commands_pointer": "/settings_definition_bindings/1",
+    "export": {
+      "path": "build/plan-implementation/p05c-binary-pad-edges-001/native-settings-001.json",
+      "sha256": "eeb451cec0f7a08097adef651f97d65d94180e5030825315314b88645f78f57e"
+    },
+    "frozen_definition": {
+      "choices": [
+        "auto",
+        "8",
+        "10",
+        "12",
+        "14",
+        "15",
+        "16"
+      ],
+      "default": "auto",
+      "description": "Auto uses data extrema for display conversion and 16 bits for full-range inversion. Fixed choices set the maximum to 2^bits-1.",
+      "group": "Conversion",
+      "kind": "choice",
+      "label": "Unsigned 16-bit range (bits)",
+      "maximum": null,
+      "minimum": null,
+      "name": "conversion_unsigned16_range"
+    },
+    "preservation": "Retain full existing binding/frozen_export/all37 definitions and both bindings. Reusing this unchanged definition never reuses historical consumer execution."
+  },
+  "required_final_source_refs": [
+    "include/imagejxx/settings.hpp",
+    "src/native/settings.cpp",
+    "include/imagejxx/preferences.hpp",
+    "src/native/preferences.cpp",
+    "include/imagejxx/auto_contrast.hpp",
+    "include/imagejxx/auto_contrast_job.hpp",
+    "src/native/auto_contrast.cpp",
+    "src/native/auto_contrast_job.cpp",
+    "include/imagejxx/application.hpp",
+    "src/native/application.cpp",
+    "src/native/auto_contrast_bindings.cpp",
+    "src/native/settings_bindings.cpp",
+    "src/imagejxx/__init__.py",
+    "src/imagejxx/ui/app.py",
+    "src/desktop/window.cpp",
+    "src/desktop/channel_display_panel.cpp",
+    "src/desktop/settings_panel.cpp"
+  ],
+  "source_pin_policy": "Root must snapshot final held source bytes and populate source_refs with actual safe workspace-relative path/SHA pairs. Mutable root/probe/SDK bytes deliberately remain unfrozen here. Freeze producer/transitive-source/module/library/executable identities separately through the existing accepted-run mechanism; source refs alone grant no execution.",
+  "surface_contract_materialization": {
+    "id": "SC.G057.auto-contrast.live-and-recorded-dispatch",
+    "requirement_id": "G057.auto-contrast.live-and-recorded-dispatch",
+    "snapshot_rule": "Exact proposed_requirement.reference/contract and interface applicability/entry_points, excluding interface evidence/status as existing B2 requirement_snapshot. Preserve every typed option and all four contexts.",
+    "contexts": {
+      "cpp_api": {
+        "requirement_id": "G057.auto-contrast.live-and-recorded-dispatch",
+        "surface_contract_id": "SC.G057.auto-contrast.live-and-recorded-dispatch",
+        "surface_contract_sha256_state": "Compute only after full original behavior snapshot, final catalogue and actual persisted-file assertion are frozen.",
+        "scenarios": {
+          "default": {
+            "setting_value": "auto",
+            "current_setting_value": "auto",
+            "effective_parameter_value": 0,
+            "expected_range": [
+              7.0,
+              7.0
+            ],
+            "assertion_ids": {
+              "setting": "default.setting",
+              "current": "default.current",
+              "effective": "default.effective",
+              "effect": "default.range_high"
+            }
+          },
+          "changed": {
+            "setting_value": "12",
+            "current_setting_value": "12",
+            "effective_parameter_value": 12,
+            "expected_range": [
+              0.0,
+              4095.0
+            ],
+            "assertion_ids": {
+              "setting": "changed.setting",
+              "current": "changed.current",
+              "effective": "changed.effective",
+              "effect": "changed.range_high"
+            }
+          },
+          "frozen": {
+            "setting_value": "12",
+            "current_setting_value": "auto",
+            "effective_parameter_value": 12,
+            "captured_scenario": "changed",
+            "expected_range": [
+              0.0,
+              4095.0
+            ],
+            "assertion_ids": {
+              "setting": "frozen.setting",
+              "current": "frozen.current",
+              "effective": "frozen.effective",
+              "effect": "frozen.range_high"
+            }
+          },
+          "override": {
+            "setting_value": "12",
+            "current_setting_value": "auto",
+            "effective_parameter_value": 10,
+            "override_value": 10,
+            "expected_range": [
+              0.0,
+              1023.0
+            ],
+            "assertion_ids": {
+              "setting": "override.setting",
+              "current": "override.current",
+              "effective": "override.effective",
+              "effect": "override.range_high",
+              "override": "override.explicit"
+            }
+          },
+          "persisted": {
+            "setting_value": "12",
+            "current_setting_value": "12",
+            "effective_parameter_value": 12,
+            "expected_range": [
+              0.0,
+              4095.0
+            ],
+            "persistence_identity_state": "Missing until exact consumed changed12 configuration bytes are retained/pinned. Never substitute native-session bytes, JSON parse alone or invented path/hash.",
+            "assertion_ids": {
+              "setting": "persisted.setting",
+              "current": "persisted.current",
+              "effective": "persisted.effective",
+              "effect": "persisted.range_high",
+              "persistence_file": "persisted.file_sha256",
+              "reopened_setting": "persisted.reopened_setting"
+            }
+          }
+        },
+        "known_typed_assertions": [
+          {
+            "id": "default.setting",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "auto",
+            "observation": "identity"
+          },
+          {
+            "id": "default.current",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "auto",
+            "observation": "identity"
+          },
+          {
+            "id": "default.effective",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 0,
+            "observation": "identity"
+          },
+          {
+            "id": "default.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 7.0,
+            "observation": "behavior"
+          },
+          {
+            "id": "default.range_high",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 7.0,
+            "observation": "behavior"
+          },
+          {
+            "id": "default.cycle_next",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 0,
+            "observation": "behavior"
+          },
+          {
+            "id": "changed.setting",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "changed.current",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "changed.effective",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 12,
+            "observation": "identity"
+          },
+          {
+            "id": "changed.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 0.0,
+            "observation": "behavior"
+          },
+          {
+            "id": "changed.range_high",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 4095.0,
+            "observation": "behavior"
+          },
+          {
+            "id": "changed.cycle_next",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 0,
+            "observation": "behavior"
+          },
+          {
+            "id": "frozen.setting",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "frozen.current",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "auto",
+            "observation": "identity"
+          },
+          {
+            "id": "frozen.effective",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 12,
+            "observation": "identity"
+          },
+          {
+            "id": "frozen.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 0.0,
+            "observation": "behavior"
+          },
+          {
+            "id": "frozen.range_high",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 4095.0,
+            "observation": "behavior"
+          },
+          {
+            "id": "frozen.cycle_next",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 0,
+            "observation": "behavior"
+          },
+          {
+            "id": "override.setting",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "override.current",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "auto",
+            "observation": "identity"
+          },
+          {
+            "id": "override.effective",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 10,
+            "observation": "identity"
+          },
+          {
+            "id": "override.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 0.0,
+            "observation": "behavior"
+          },
+          {
+            "id": "override.range_high",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 1023.0,
+            "observation": "behavior"
+          },
+          {
+            "id": "override.cycle_next",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 0,
+            "observation": "behavior"
+          },
+          {
+            "id": "override.explicit",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 10,
+            "observation": "identity"
+          },
+          {
+            "id": "persisted.setting",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "persisted.current",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "persisted.effective",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 12,
+            "observation": "identity"
+          },
+          {
+            "id": "persisted.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 0.0,
+            "observation": "behavior"
+          },
+          {
+            "id": "persisted.range_high",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 4095.0,
+            "observation": "behavior"
+          },
+          {
+            "id": "persisted.cycle_next",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 0,
+            "observation": "behavior"
+          },
+          {
+            "id": "persisted.reopened_setting",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "cycle.first.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 10.0,
+            "observation": "behavior"
+          },
+          {
+            "id": "cycle.second.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 20.0,
+            "observation": "behavior"
+          },
+          {
+            "id": "cycle.third.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 30.0,
+            "observation": "behavior"
+          }
+        ],
+        "missing_assertion": {
+          "id": "persisted.file_sha256",
+          "rule": "sha256_equal",
+          "observation": "identity",
+          "expected_state": "Actual SHA256 of exact consumed changed12 file, also producer.artifacts identity. No placeholder digest."
+        }
+      },
+      "python_api": {
+        "requirement_id": "G057.auto-contrast.live-and-recorded-dispatch",
+        "surface_contract_id": "SC.G057.auto-contrast.live-and-recorded-dispatch",
+        "surface_contract_sha256_state": "Compute only after full original behavior snapshot, final catalogue and actual persisted-file assertion are frozen.",
+        "scenarios": {
+          "default": {
+            "setting_value": "auto",
+            "current_setting_value": "auto",
+            "effective_parameter_value": 0,
+            "expected_range": [
+              7.0,
+              7.0
+            ],
+            "assertion_ids": {
+              "setting": "default.setting",
+              "current": "default.current",
+              "effective": "default.effective",
+              "effect": "default.range_high"
+            }
+          },
+          "changed": {
+            "setting_value": "12",
+            "current_setting_value": "12",
+            "effective_parameter_value": 12,
+            "expected_range": [
+              0.0,
+              4095.0
+            ],
+            "assertion_ids": {
+              "setting": "changed.setting",
+              "current": "changed.current",
+              "effective": "changed.effective",
+              "effect": "changed.range_high"
+            }
+          },
+          "frozen": {
+            "setting_value": "12",
+            "current_setting_value": "auto",
+            "effective_parameter_value": 12,
+            "captured_scenario": "changed",
+            "expected_range": [
+              0.0,
+              4095.0
+            ],
+            "assertion_ids": {
+              "setting": "frozen.setting",
+              "current": "frozen.current",
+              "effective": "frozen.effective",
+              "effect": "frozen.range_high"
+            }
+          },
+          "override": {
+            "setting_value": "12",
+            "current_setting_value": "auto",
+            "effective_parameter_value": 10,
+            "override_value": 10,
+            "expected_range": [
+              0.0,
+              1023.0
+            ],
+            "assertion_ids": {
+              "setting": "override.setting",
+              "current": "override.current",
+              "effective": "override.effective",
+              "effect": "override.range_high",
+              "override": "override.explicit"
+            }
+          },
+          "persisted": {
+            "setting_value": "12",
+            "current_setting_value": "12",
+            "effective_parameter_value": 12,
+            "expected_range": [
+              0.0,
+              4095.0
+            ],
+            "persistence_identity_state": "Missing until exact consumed changed12 configuration bytes are retained/pinned. Never substitute native-session bytes, JSON parse alone or invented path/hash.",
+            "assertion_ids": {
+              "setting": "persisted.setting",
+              "current": "persisted.current",
+              "effective": "persisted.effective",
+              "effect": "persisted.range_high",
+              "persistence_file": "persisted.file_sha256",
+              "reopened_setting": "persisted.reopened_setting"
+            }
+          }
+        },
+        "known_typed_assertions": [
+          {
+            "id": "default.setting",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "auto",
+            "observation": "identity"
+          },
+          {
+            "id": "default.current",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "auto",
+            "observation": "identity"
+          },
+          {
+            "id": "default.effective",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 0,
+            "observation": "identity"
+          },
+          {
+            "id": "default.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 7.0,
+            "observation": "behavior"
+          },
+          {
+            "id": "default.range_high",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 7.0,
+            "observation": "behavior"
+          },
+          {
+            "id": "default.cycle_next",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 0,
+            "observation": "behavior"
+          },
+          {
+            "id": "changed.setting",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "changed.current",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "changed.effective",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 12,
+            "observation": "identity"
+          },
+          {
+            "id": "changed.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 0.0,
+            "observation": "behavior"
+          },
+          {
+            "id": "changed.range_high",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 4095.0,
+            "observation": "behavior"
+          },
+          {
+            "id": "changed.cycle_next",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 0,
+            "observation": "behavior"
+          },
+          {
+            "id": "frozen.setting",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "frozen.current",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "auto",
+            "observation": "identity"
+          },
+          {
+            "id": "frozen.effective",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 12,
+            "observation": "identity"
+          },
+          {
+            "id": "frozen.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 0.0,
+            "observation": "behavior"
+          },
+          {
+            "id": "frozen.range_high",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 4095.0,
+            "observation": "behavior"
+          },
+          {
+            "id": "frozen.cycle_next",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 0,
+            "observation": "behavior"
+          },
+          {
+            "id": "override.setting",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "override.current",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "auto",
+            "observation": "identity"
+          },
+          {
+            "id": "override.effective",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 10,
+            "observation": "identity"
+          },
+          {
+            "id": "override.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 0.0,
+            "observation": "behavior"
+          },
+          {
+            "id": "override.range_high",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 1023.0,
+            "observation": "behavior"
+          },
+          {
+            "id": "override.cycle_next",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 0,
+            "observation": "behavior"
+          },
+          {
+            "id": "override.explicit",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 10,
+            "observation": "identity"
+          },
+          {
+            "id": "persisted.setting",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "persisted.current",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "persisted.effective",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 12,
+            "observation": "identity"
+          },
+          {
+            "id": "persisted.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 0.0,
+            "observation": "behavior"
+          },
+          {
+            "id": "persisted.range_high",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 4095.0,
+            "observation": "behavior"
+          },
+          {
+            "id": "persisted.cycle_next",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 0,
+            "observation": "behavior"
+          },
+          {
+            "id": "persisted.reopened_setting",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "cycle.first.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 10.0,
+            "observation": "behavior"
+          },
+          {
+            "id": "cycle.second.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 20.0,
+            "observation": "behavior"
+          },
+          {
+            "id": "cycle.third.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 30.0,
+            "observation": "behavior"
+          }
+        ],
+        "missing_assertion": {
+          "id": "persisted.file_sha256",
+          "rule": "sha256_equal",
+          "observation": "identity",
+          "expected_state": "Actual SHA256 of exact consumed changed12 file, also producer.artifacts identity. No placeholder digest."
+        }
+      },
+      "imgui_cpp": {
+        "requirement_id": "G057.auto-contrast.live-and-recorded-dispatch",
+        "surface_contract_id": "SC.G057.auto-contrast.live-and-recorded-dispatch",
+        "surface_contract_sha256_state": "Compute only after full original behavior snapshot, final catalogue and actual persisted-file assertion are frozen.",
+        "scenarios": {
+          "default": {
+            "setting_value": "auto",
+            "current_setting_value": "auto",
+            "effective_parameter_value": 0,
+            "expected_range": [
+              7.0,
+              7.0
+            ],
+            "assertion_ids": {
+              "setting": "default.setting",
+              "current": "default.current",
+              "effective": "default.effective",
+              "effect": "default.range_high"
+            }
+          },
+          "changed": {
+            "setting_value": "12",
+            "current_setting_value": "12",
+            "effective_parameter_value": 12,
+            "expected_range": [
+              0.0,
+              4095.0
+            ],
+            "assertion_ids": {
+              "setting": "changed.setting",
+              "current": "changed.current",
+              "effective": "changed.effective",
+              "effect": "changed.range_high"
+            }
+          },
+          "frozen": {
+            "setting_value": "12",
+            "current_setting_value": "14",
+            "effective_parameter_value": 12,
+            "captured_scenario": "changed",
+            "expected_range": [
+              0.0,
+              4095.0
+            ],
+            "assertion_ids": {
+              "setting": "frozen.setting",
+              "current": "frozen.current",
+              "effective": "frozen.effective",
+              "effect": "frozen.range_high"
+            }
+          },
+          "override": {
+            "setting_value": "12",
+            "current_setting_value": "12",
+            "effective_parameter_value": 8,
+            "override_value": 8,
+            "expected_range": [
+              0.0,
+              255.0
+            ],
+            "assertion_ids": {
+              "setting": "override.setting",
+              "current": "override.current",
+              "effective": "override.effective",
+              "effect": "override.range_high",
+              "override": "override.explicit"
+            }
+          },
+          "persisted": {
+            "setting_value": "12",
+            "current_setting_value": "12",
+            "effective_parameter_value": 12,
+            "expected_range": [
+              0.0,
+              4095.0
+            ],
+            "persistence_identity_state": "Missing until exact consumed changed12 configuration bytes are retained/pinned. Never substitute native-session bytes, JSON parse alone or invented path/hash.",
+            "assertion_ids": {
+              "setting": "persisted.setting",
+              "current": "persisted.current",
+              "effective": "persisted.effective",
+              "effect": "persisted.range_high",
+              "persistence_file": "persisted.file_sha256",
+              "reopened_setting": "persisted.reopened_setting"
+            }
+          }
+        },
+        "known_typed_assertions": [
+          {
+            "id": "default.setting",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "auto",
+            "observation": "identity"
+          },
+          {
+            "id": "default.current",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "auto",
+            "observation": "identity"
+          },
+          {
+            "id": "default.effective",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 0,
+            "observation": "identity"
+          },
+          {
+            "id": "default.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 7.0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "default.range_high",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 7.0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "default.cycle_next",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "changed.setting",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "changed.current",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "changed.effective",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 12,
+            "observation": "identity"
+          },
+          {
+            "id": "changed.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 0.0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "changed.range_high",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 4095.0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "changed.cycle_next",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "frozen.setting",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "frozen.current",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "14",
+            "observation": "identity"
+          },
+          {
+            "id": "frozen.effective",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 12,
+            "observation": "identity"
+          },
+          {
+            "id": "frozen.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 0.0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "frozen.range_high",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 4095.0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "frozen.cycle_next",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "override.setting",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "override.current",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "override.effective",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 8,
+            "observation": "identity"
+          },
+          {
+            "id": "override.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 0.0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "override.range_high",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 255.0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "override.cycle_next",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "override.explicit",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 8,
+            "observation": "identity"
+          },
+          {
+            "id": "persisted.setting",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "persisted.current",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "persisted.effective",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 12,
+            "observation": "identity"
+          },
+          {
+            "id": "persisted.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 0.0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "persisted.range_high",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 4095.0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "persisted.cycle_next",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "persisted.reopened_setting",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "cycle.first.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 10.0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "cycle.second.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 20.0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "cycle.third.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 30.0,
+            "observation": "behavior",
+            "ui_state": true
+          }
+        ],
+        "missing_assertion": {
+          "id": "persisted.file_sha256",
+          "rule": "sha256_equal",
+          "observation": "identity",
+          "expected_state": "Actual SHA256 of exact consumed changed12 file, also producer.artifacts identity. No placeholder digest."
+        }
+      },
+      "imgui_python": {
+        "requirement_id": "G057.auto-contrast.live-and-recorded-dispatch",
+        "surface_contract_id": "SC.G057.auto-contrast.live-and-recorded-dispatch",
+        "surface_contract_sha256_state": "Compute only after full original behavior snapshot, final catalogue and actual persisted-file assertion are frozen.",
+        "scenarios": {
+          "default": {
+            "setting_value": "auto",
+            "current_setting_value": "auto",
+            "effective_parameter_value": 0,
+            "expected_range": [
+              7.0,
+              7.0
+            ],
+            "assertion_ids": {
+              "setting": "default.setting",
+              "current": "default.current",
+              "effective": "default.effective",
+              "effect": "default.range_high"
+            }
+          },
+          "changed": {
+            "setting_value": "12",
+            "current_setting_value": "12",
+            "effective_parameter_value": 12,
+            "expected_range": [
+              0.0,
+              4095.0
+            ],
+            "assertion_ids": {
+              "setting": "changed.setting",
+              "current": "changed.current",
+              "effective": "changed.effective",
+              "effect": "changed.range_high"
+            }
+          },
+          "frozen": {
+            "setting_value": "12",
+            "current_setting_value": "14",
+            "effective_parameter_value": 12,
+            "captured_scenario": "changed",
+            "expected_range": [
+              0.0,
+              4095.0
+            ],
+            "assertion_ids": {
+              "setting": "frozen.setting",
+              "current": "frozen.current",
+              "effective": "frozen.effective",
+              "effect": "frozen.range_high"
+            }
+          },
+          "override": {
+            "setting_value": "12",
+            "current_setting_value": "12",
+            "effective_parameter_value": 8,
+            "override_value": 8,
+            "expected_range": [
+              0.0,
+              255.0
+            ],
+            "assertion_ids": {
+              "setting": "override.setting",
+              "current": "override.current",
+              "effective": "override.effective",
+              "effect": "override.range_high",
+              "override": "override.explicit"
+            }
+          },
+          "persisted": {
+            "setting_value": "12",
+            "current_setting_value": "12",
+            "effective_parameter_value": 12,
+            "expected_range": [
+              0.0,
+              4095.0
+            ],
+            "persistence_identity_state": "Missing until exact consumed changed12 configuration bytes are retained/pinned. Never substitute native-session bytes, JSON parse alone or invented path/hash.",
+            "assertion_ids": {
+              "setting": "persisted.setting",
+              "current": "persisted.current",
+              "effective": "persisted.effective",
+              "effect": "persisted.range_high",
+              "persistence_file": "persisted.file_sha256",
+              "reopened_setting": "persisted.reopened_setting"
+            }
+          }
+        },
+        "known_typed_assertions": [
+          {
+            "id": "default.setting",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "auto",
+            "observation": "identity"
+          },
+          {
+            "id": "default.current",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "auto",
+            "observation": "identity"
+          },
+          {
+            "id": "default.effective",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 0,
+            "observation": "identity"
+          },
+          {
+            "id": "default.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 7.0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "default.range_high",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 7.0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "default.cycle_next",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "changed.setting",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "changed.current",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "changed.effective",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 12,
+            "observation": "identity"
+          },
+          {
+            "id": "changed.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 0.0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "changed.range_high",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 4095.0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "changed.cycle_next",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "frozen.setting",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "frozen.current",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "14",
+            "observation": "identity"
+          },
+          {
+            "id": "frozen.effective",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 12,
+            "observation": "identity"
+          },
+          {
+            "id": "frozen.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 0.0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "frozen.range_high",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 4095.0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "frozen.cycle_next",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "override.setting",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "override.current",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "override.effective",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 8,
+            "observation": "identity"
+          },
+          {
+            "id": "override.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 0.0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "override.range_high",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 255.0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "override.cycle_next",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "override.explicit",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 8,
+            "observation": "identity"
+          },
+          {
+            "id": "persisted.setting",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "persisted.current",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "persisted.effective",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 12,
+            "observation": "identity"
+          },
+          {
+            "id": "persisted.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 0.0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "persisted.range_high",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 4095.0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "persisted.cycle_next",
+            "rule": "scalar_equal",
+            "value_type": "integer",
+            "expected": 0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "persisted.reopened_setting",
+            "rule": "scalar_equal",
+            "value_type": "string",
+            "expected": "12",
+            "observation": "identity"
+          },
+          {
+            "id": "cycle.first.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 10.0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "cycle.second.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 20.0,
+            "observation": "behavior",
+            "ui_state": true
+          },
+          {
+            "id": "cycle.third.range_low",
+            "rule": "scalar_equal",
+            "value_type": "number",
+            "expected": 30.0,
+            "observation": "behavior",
+            "ui_state": true
+          }
+        ],
+        "missing_assertion": {
+          "id": "persisted.file_sha256",
+          "rule": "sha256_equal",
+          "observation": "identity",
+          "expected_state": "Actual SHA256 of exact consumed changed12 file, also producer.artifacts identity. No placeholder digest."
+        }
+      }
+    },
+    "incomplete_until": "Add actual persisted.file_sha256 rules, freeze every genuine required Auto behavior assertion from carriers below, then compute existing parity_execution.contract_fingerprint. known_typed_assertions are proposed expected rules, not executed traces or a complete inserted surface row. No digest for incomplete/fabricated bytes."
+  },
+  "consumer_contract_materialization": {
+    "id": "CC.G057.auto-contrast.live-and-recorded-dispatch.unsigned16_bits",
+    "assignment_id": "A.G057.auto-contrast.live-and-recorded-dispatch.unsigned16_bits",
+    "fields": "Existing-schema exact {id,assignment_id,assignment,definition_binding,definition,contexts,sha256}; full assignment includes final source_refs, full existing binding and definition retained.",
+    "context_rule": "Use matching scenario typed values/assertion_ids; omit proposal-only expected_range/persistence_identity_state, add actual persisted.persistence {path,sha256}. IDs distinct; effect is computed range_high, never setting/effective readback.",
+    "digest_rule": "Compute parity_consumers.contract_fingerprint only after assignment/source/surface/persistence freeze. Never insert this recipe/pending fields/invented report IDs/placeholder hashes into commands.",
+    "applicability": "All five scenarios apply in all four contexts. detached_options requires frozen+override; preference/reopen owner also requires persisted. No ordinary-button override widget does not excuse UI override; actual Rebind Auto dialog supplies it. API-only Window.action stays API evidence.",
+    "override_baseline_rule": "Existing validator uses frozen baseline. override.setting_value must equal frozen.setting_value12; explicit value/result differs from captured12/effect4095 and current effective. U07 auto->explicit12 cannot qualify beside U08 frozen12. Use real setting12/initial dialog12 -> physical explicit8, current12 unchanged. No validator weakening or invented captured value.",
+    "persisted_rule": "Persisted uses changed12/current12/effective12 and computed4095 after actual file reopen. Frozen12/currentauto-or14 cannot double as persisted. Native-session Save/Open and PreferencesDocument.parse cannot replace consumed config-file bytes."
+  },
+  "assertion_carriers": [
+    {
+      "context": "cpp_api",
+      "path": "tests/native/test_auto_contrast.cpp",
+      "case": "A17.setting_capture_override_reopen within native_auto_contrast (64 named cases before current hold)",
+      "genuine_existing": "Actual Settings::conversion_options default bits0 -> all7 UInt16[7,7]; changed12 PreferencesDocument.save/strict load exact bytes; callback frozen12/currentauto ->[0,4095]; explicit10 ->[0,1023]. Save/load amendment is in progress, not qualified.",
+      "required_bounded_amendment": "Retain independently observed changed12/current12 Auto effect and strict-loaded persisted12/current12 effect before mutation checkpoint; existing callback remains frozen. Configure IMAGEJXX_AUTO_SETTINGS_DIRECTORY to a fresh supervisor-owned child under the native artifact stage; helper exclusively creates that directory and retains preferences.json. Reuse original named case.",
+      "missing_proof": "Final source hold, actual retained file digest, computed typed B2 trace for actual passing report case, accepted immutable run binding. Stdout/count alone is not a trace catalogue."
+    },
+    {
+      "context": "python_api",
+      "path": "tests/python/test_auto_contrast.py",
+      "case": "test_existing_unsigned16_preference_reopen_capture_and_explicit_override (207 tests before current hold)",
+      "genuine_existing": "Actual default key->bits0/[7,7]; changed12 save/strict load via tmp_path; frozen12 after currentauto; explicit Application options10->[0,1023]. Amendment in progress.",
+      "required_bounded_amendment": "Reuse tmp_path/preferences.json. Observe actual changed12 and loaded12/current12 Auto effects before frozen mutation; retain exact file bytes/digest as producer artifact under supervised pytest base-temp stage. No new collection/fallback skip.",
+      "missing_proof": "Current installed source/report binding, retained file identity and genuine computed typed trace. Do not retrofit an earlier207 pass."
+    },
+    {
+      "context": "cpp_api_installed_sdk_additional",
+      "path": "examples/cpp/auto_contrast.cpp",
+      "case": "S01-S13 core-only SDK; settings-consumer block pending",
+      "genuine_existing": "Public Auto cycle/literals/replay/rebind/controller/reset/session behavior. Current source has no Settings/Preferences consumer scenario set.",
+      "required_bounded_amendment": "If selected as cpp_api settings proof carrier, add a bounded public Settings/Preferences section with supervisor-supplied fresh artifact directory. Reuse examples/cpp/binary_iterations.cpp --consumer-dir <fresh-directory> exclusive-directory pattern or supervised IMAGEJXX_AUTO_SETTINGS_DIRECTORY seam; bind exact owned directory/preferences.json. No working-directory or unretained generic TEMP writes. Otherwise native A17 is cpp_api settings carrier and installed SDK remains a separate API/install gate.",
+      "missing_proof": "Literal request.unsigned16_bits=12 and aggregate SDK checks cannot prove setting consumption. Final amendment002 source/package/report identities remain independently required."
+    },
+    {
+      "context": "python_desktop_api_only",
+      "path": "tests/python/test_auto_contrast_desktop_api.py",
+      "case": "test_auto_configured_defaults_overrides_and_frozen_settings[binding/wrapper] within32 tests",
+      "genuine_existing": "Window/Editor action default capture/frozen queued request/explicit override and lifecycle/replay/rebind/session API coverage.",
+      "required_bounded_amendment": "Retain as API regression. Current settings test uses persist=False and does not independently prove changed config-file reopen. No extra workflow framework.",
+      "missing_proof": "Never label these action calls physical ImGui activity; this file supplies neither imgui_cpp nor imgui_python pointer credit."
+    },
+    {
+      "context": "imgui_cpp and imgui_python",
+      "path": "src/desktop/auto_contrast_ui_probe.cpp",
+      "reader": "tests/python/test_auto_contrast_ui.py",
+      "case": "U08 settings plus U07 physical Workflow Rebind; eight fixed cases per launch (16 reader cases)",
+      "genuine_existing": "U08 actual Preferences choices/Apply/Close and physical Auto prove defaultauto/[7,7], changed12/[0,4095], queued frozen12/current14/[0,4095], changed14/[0,16383]. Separate API-only explicit8 and native-session Save/Open remain labelled. U07 Rebind dialog/choice/Apply is genuine control activity; original auto->choice12 does not satisfy frozen12 baseline.",
+      "required_bounded_amendment": "Parent owns U07 real preference12 setup, initial dialog12, physical choice8, unchanged current12 and [0,255]. Preserve original strict replay/no-read behavior. Parent/p06e own U08 actual changed12 file, fresh-controller strict reopen/declared fixture/physical Auto->[0,4095] and exact bytes. Keep API8 ledger explicitly API-only. Existing180-frame/15-second/16MiB-report/32MiB-archive bounds and aggregate case membership remain.",
+      "missing_proof": "Final producer/independent-reader holds, each launch actual source/executable/module/library/runtime identities, passing report/case/trace and consumed config identity. No pointer proof from API setup, accepted flags/control ledger alone/session bytes or fresh-controller readback without Auto effect."
+    }
+  ],
+  "behavior_carrier_scope": {
+    "native": [
+      "A01-A18 thresholds/divisors/fallback/all bit choices/ROI/no-finite/raw preservation/no-Enhance replay/full-original validation/settings",
+      "D state/version/projection/mode/singleton/C9/nonzeroTCZ/getter cases",
+      "Resource/preflight/callback/cancel/reentry/malformed byte/depth/selection cases",
+      "tests/native/test_auto_contrast_jobs.cpp membership/epoch/all4 stale/cancel/lifetime; tests/native/test_auto_contrast_display_reset.cpp atomic Reset amendment002"
+    ],
+    "python": [
+      "tests/python/test_auto_contrast.py typed bridge/literals/controller/callback/GIL/record/session",
+      "tests/python/test_auto_contrast_desktop_api.py facade/default capture/recording/wait/cancel/close/replay/full rebind/session APIs"
+    ],
+    "paired_ui": [
+      "U01 repeated physical Auto/Shift cycle and resulting rendered range",
+      "U02 UInt16/Float32 nonzeroTCZ and linked XY/XZ/YZ display consumption",
+      "U03 Shift all and configured U16 all-C Color/Gray fallback",
+      "U04 whole/area/nonarea controls and resulting ranges",
+      "U05 busy/cancel/reset/resource refusal; U06 all4 stale/awayback/closed atomicity",
+      "U07 physical recorded replay/full Rebind; U08 settings/frozen/changed-file reopen/native session"
+    ],
+    "limitation": "Source-grounded required carriers, not executed assertions. Final B2 catalogue must preserve required typed behavior and actual report-case mapping; range_high alone cannot close full Auto. Reference histogram capture/proofs, commercial, platform and benchmark remain separate gates."
+  },
+  "registration_sequence": [
+    "Review proposed requirement/candidate/ownership against pinned CD13/adoptions; preserve all existing records/obligations. Mutate only after current amendments hold.",
+    "Create fresh complete additive independent assignment snapshot with existing tooling: retain every current requirement owner/interface, both accepted assignments, all37 definitions and new Auto assignment. Bind fresh accepted inventory run/snapshot. Never append Auto to historical P05c snapshot/run or mutate its consumed bytes.",
+    "Materialize new partial requirement and corresponding complete surface/assignment/consumer contracts only after final fields are known. Existing51 requirements/7 surfaces/28 proofs/2 assignments/2 consumer contracts/8 consumer proofs remain, except reviewed CD13 remaining annotation. No historical run IDs/fixture links by inference.",
+    "Execute final held sources in existing bounded producer/test/SDK stages with retained changed12 files; freeze reports/computed typed observations/source/artifact/package/runtime identities using existing B2 traces. Final qualifier uses current source bytes after amendments.",
+    "After genuine fresh runs are accepted, add one exact existing-schema surface proof and linked consumer proof per new owner/context. Same trace catalogue for settings; no second consumer framework. Each persisted file identity must be in accepted producer.artifacts.",
+    "Run existing schema/surface/consumer validation and affected package/regression/source/commercial checks under root final qualifier. Missing evidence remains unverified/partial; scoped acceptance never clears full CD13/G033/G057/G069 or other setting owners."
+  ],
+  "acceptance": {
+    "proposal_only": true,
+    "manifest_mutated": false,
+    "runtime_executed": false,
+    "source_runtime_match": false,
+    "surface_proof": false,
+    "settings_consumer_proof": false,
+    "commercial_clearance": false,
+    "whole_family": false,
+    "platform": false,
+    "release": false,
+    "full_goal": false
+  },
+  "report_case_binding_seam": {
+    "rule": "Each requirement/context surface proof resolves one exact passing report case. Runtime trace case must contain the complete frozen assertion ID set; mapped settings assertions cannot be silently spliced from unrelated report cases.",
+    "current_gap": "U01 cycle, U07 override and U08 other settings are distinct paired reader cases; Python individual behavior tests are also distinct. A U08-only or A17-only report label cannot claim unrelated behavior execution.",
+    "smallest_carrier": "Within existing bounded final qualifier, one genuine option-consumer report case per context independently consumes the exact current passing source-bound observations from required cases and computes all mapped values. Freeze those input artifact identities and actual qualifier source/report case. Reuse existing B2 trace format/catalogue; no second framework, historic retrofit or fabricated all-pass marker. Alternatively place the complete stimulus/assertion set within one existing genuine case.",
+    "proof_state": "Pending root final qualifier design/source hold and genuine execution; no report identities invented here."
+  }
+}

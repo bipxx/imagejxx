@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_increment",
+  "review_type": "Root authorship/integration attestation, not independent legal review",
+  "scope": "Native collapsed resize distinction, shared planar gesture continuation and validated no-op workflow suppression; geometry producers/readers",
+  "license": "Existing project MIT",
+  "new_dependencies": [],
+  "imported_third_party_code": [],
+  "imported_assets": [],
+  "source_archive_before": {
+    "bytes": 8833327,
+    "path": "build/p06p-scientific-busy-source001/imagejxx-0.2.0.tar.gz",
+    "sha256": "bb72c66b6543e3791b3710776c17f992c51f0824619992c11956e73657ce404f"
+  },
+  "sources": [
+    {
+      "logical_path": "include/imagejxx/selection_edit.hpp",
+      "before": {
+        "path": "build/p06p-geometry001/held001/before/include/imagejxx/selection_edit.hpp",
+        "bytes": 5643,
+        "sha256": "a2c3b9cf0156c33dde3dfb298690ee0872732997cf178b759b11b4a942e0e0e2"
+      },
+      "after": {
+        "path": "build/p06p-geometry001/held001/after/include/imagejxx/selection_edit.hpp",
+        "bytes": 5953,
+        "sha256": "a92a778e7d8e9b8a7761621545e96306f3f19d519fb9c1f526c05799432d6781"
+      },
+      "current": {
+        "path": "include/imagejxx/selection_edit.hpp",
+        "bytes": 5953,
+        "sha256": "a92a778e7d8e9b8a7761621545e96306f3f19d519fb9c1f526c05799432d6781"
+      }
+    },
+    {
+      "logical_path": "src/native/selection_edit.cpp",
+      "before": {
+        "path": "build/p06p-geometry001/held001/before/src/native/selection_edit.cpp",
+        "bytes": 35682,
+        "sha256": "ae11e0423d70795d27512a680b72bcf9c47585be3d732f4192fcb6034a11320a"
+      },
+      "after": {
+        "path": "build/p06p-geometry001/held001/after/src/native/selection_edit.cpp",
+        "bytes": 35746,
+        "sha256": "33d3a783b6d48fa353ae38fc0b4794bc4aacae0934c0c9cb57b94250cf41cf74"
+      },
+      "current": {
+        "path": "src/native/selection_edit.cpp",
+        "bytes": 35746,
+        "sha256": "33d3a783b6d48fa353ae38fc0b4794bc4aacae0934c0c9cb57b94250cf41cf74"
+      }
+    },
+    {
+      "logical_path": "src/desktop/window.cpp",
+      "before": {
+        "path": "build/p06p-geometry001/held001/before/src/desktop/window.cpp",
+        "bytes": 549841,
+        "sha256": "1fd607911fbf0a89f30d4f3719d3eecc1d46566f8aa27e0fae6a972a9c071103"
+      },
+      "after": {
+        "path": "build/p06p-geometry001/held001/after/src/desktop/window.cpp",
+        "bytes": 550063,
+        "sha256": "930b4daa58b27d56873632c14bdaa32fe2e1ef808c9d263c7f74482960c65228"
+      },
+      "current": {
+        "path": "src/desktop/window.cpp",
+        "bytes": 550063,
+        "sha256": "930b4daa58b27d56873632c14bdaa32fe2e1ef808c9d263c7f74482960c65228"
+      }
+    },
+    {
+      "logical_path": "src/desktop/planar_annotation_panel.cpp",
+      "before": {
+        "path": "build/p06p-geometry001/held001/before/src/desktop/planar_annotation_panel.cpp",
+        "bytes": 30955,
+        "sha256": "359c50ac80d738ff07e2af4a7fead268266dc52500e9e4b477756827804fa90e"
+      },
+      "after": {
+        "path": "build/p06p-geometry001/held001/after/src/desktop/planar_annotation_panel.cpp",
+        "bytes": 31117,
+        "sha256": "1c73316b26af3cda46ecf50cd7afe6d014ef042b1a52fc1c9d63fd56223aaf14"
+      },
+      "current": {
+        "path": "src/desktop/planar_annotation_panel.cpp",
+        "bytes": 31117,
+        "sha256": "1c73316b26af3cda46ecf50cd7afe6d014ef042b1a52fc1c9d63fd56223aaf14"
+      }
+    },
+    {
+      "logical_path": "src/desktop/main.cpp",
+      "before": {
+        "path": "build/p06p-geometry001/held001/before/src/desktop/main.cpp",
+        "bytes": 32840,
+        "sha256": "4992dba647e64dc9f6c6f59e4d00a4578e72703d568b1539824e98798b8ea7af"
+      },
+      "after": {
+        "path": "build/p06p-geometry001/held001/after/src/desktop/main.cpp",
+        "bytes": 32902,
+        "sha256": "26908ea21636c3cda7d9df55e9d98279ce3cc66270a9052fd4063e19e80c8c1a"
+      },
+      "current": {
+        "path": "src/desktop/main.cpp",
+        "bytes": 32902,
+        "sha256": "26908ea21636c3cda7d9df55e9d98279ce3cc66270a9052fd4063e19e80c8c1a"
+      }
+    },
+    {
+      "logical_path": "src/desktop/planar_annotation_matrix.cpp",
+      "before": {
+        "path": "build/p06p-geometry001/held001/before/src/desktop/planar_annotation_matrix.cpp",
+        "bytes": 18717,
+        "sha256": "5e7dd43870451acca5ab46f543956074fd9a2188da240fbc5c0962968f6ede21"
+      },
+      "after": {
+        "path": "build/p06p-geometry001/held001/after/src/desktop/planar_annotation_matrix.cpp",
+        "bytes": 22225,
+        "sha256": "5bcda90589869d7ce55cd212ce14b43833f71c20bbd51c50dc059430da0ebf1d"
+      },
+      "current": {
+        "path": "src/desktop/planar_annotation_matrix.cpp",
+        "bytes": 22225,
+        "sha256": "5bcda90589869d7ce55cd212ce14b43833f71c20bbd51c50dc059430da0ebf1d"
+      }
+    },
+    {
+      "logical_path": "src/desktop/planar_annotation_matrix.hpp",
+      "before": {
+        "path": "build/p06p-geometry001/held001/before/src/desktop/planar_annotation_matrix.hpp",
+        "bytes": 271,
+        "sha256": "7e54541106073384ba891aae30620a282ff7dc178fc5bba35ec1fcc1179135d3"
+      },
+      "after": {
+        "path": "build/p06p-geometry001/held001/after/src/desktop/planar_annotation_matrix.hpp",
+        "bytes": 296,
+        "sha256": "8e0a7c699ff88b686b116278cdc271726085aff653876058882e01f410b43099"
+      },
+      "current": {
+        "path": "src/desktop/planar_annotation_matrix.hpp",
+        "bytes": 296,
+        "sha256": "8e0a7c699ff88b686b116278cdc271726085aff653876058882e01f410b43099"
+      }
+    },
+    {
+      "logical_path": "tests/native/test_selection_edit.cpp",
+      "before": {
+        "path": "build/p06p-geometry001/held001/before/tests/native/test_selection_edit.cpp",
+        "bytes": 6206,
+        "sha256": "897a628d9e941eaf5a38bb47050b7d0a9f6ddb4ccdbea9f5148085157a071b8e"
+      },
+      "after": {
+        "path": "build/p06p-geometry001/held001/after/tests/native/test_selection_edit.cpp",
+        "bytes": 7412,
+        "sha256": "60010495ccd6fb1668044c0be611f5b32263fcaad7c34efddd59d13ac845d4d3"
+      },
+      "current": {
+        "path": "tests/native/test_selection_edit.cpp",
+        "bytes": 7412,
+        "sha256": "60010495ccd6fb1668044c0be611f5b32263fcaad7c34efddd59d13ac845d4d3"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_selection_edit.py",
+      "before": {
+        "path": "build/p06p-geometry001/held001/before/tests/python/test_selection_edit.py",
+        "bytes": 21212,
+        "sha256": "2c0735a49f22d62a16534505dde82a2dcffce27affe1ce1135fd561b160424ab"
+      },
+      "after": {
+        "path": "build/p06p-geometry001/held001/after/tests/python/test_selection_edit.py",
+        "bytes": 22185,
+        "sha256": "c1d16c2e9f39470d71f6f30ee805234d2445dcdce42561e9a74d2015eb75b0fe"
+      },
+      "current": {
+        "path": "tests/python/test_selection_edit.py",
+        "bytes": 22185,
+        "sha256": "c1d16c2e9f39470d71f6f30ee805234d2445dcdce42561e9a74d2015eb75b0fe"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_planar_annotation_matrix_ui.py",
+      "before": {
+        "path": "build/p06p-geometry001/held001/before/tests/python/test_planar_annotation_matrix_ui.py",
+        "bytes": 12440,
+        "sha256": "a08a4189a990b11492fff8f3534be3cc6ea66cc5b7db91e5d58c0c6a26fa000b"
+      },
+      "after": {
+        "path": "build/p06p-geometry001/held001/after/tests/python/test_planar_annotation_matrix_ui.py",
+        "bytes": 14520,
+        "sha256": "19965284527c7acadbc4c2a20e92097a51cc40ed4e3ca7839cb2e2e21e3941af"
+      },
+      "current": {
+        "path": "tests/python/test_planar_annotation_matrix_ui.py",
+        "bytes": 14520,
+        "sha256": "19965284527c7acadbc4c2a20e92097a51cc40ed4e3ca7839cb2e2e21e3941af"
+      }
+    }
+  ],
+  "restricted_features_added": false,
+  "whole_family_acceptance": false
+}

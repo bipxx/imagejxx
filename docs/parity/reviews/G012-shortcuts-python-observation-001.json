@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "id": "G012.shortcuts-python-observation.001",
+  "state": "adopted_implementation_contract_no_runtime_acceptance",
+  "scope": "Complete the three genuinely unavailable Python assertions without weakening any existing67 shortcut assertions or changing default Dataset behavior",
+  "missing_assertions": [
+    {
+      "contract_id": "SC.G012.shortcuts.native_public_contract",
+      "assertion_id": "native.provider_plane_reads"
+    },
+    {
+      "contract_id": "SC.G012.shortcuts.native_public_contract",
+      "assertion_id": "native.provider_region_reads"
+    },
+    {
+      "contract_id": "SC.G012.shortcuts.storage_conflicts",
+      "assertion_id": "cap.working.refusal_type"
+    }
+  ],
+  "native_observer": {
+    "api": [
+      "DatasetReadCounts: plane_reads,region_reads,overflowed",
+      "DatasetReadObserver: shared native counter state; counts() returns detached values",
+      "Dataset.observe_reads(observer) returns an opt-in observed Dataset"
+    ],
+    "ownership": "C++17 owns fixed-size saturating atomic counters. Observer retains counters only, never Dataset/pixels/resource leases. Dataset/source wrappers retain their normal ownership.",
+    "counts": "Actual provider-boundary read_plane/read_region entries increment before delegation, including provider throws. Coordinates refused before provider entry do not increment. Constructor, shape/type/calibration/shared-state/count queries do not read pixels.",
+    "limits": "Saturate each uint64 counter at its maximum and report overflow; no reset. Quiescent snapshots after synchronous completion or joined workers are exact; a concurrently read pair is not a transactional snapshot.",
+    "scope_limit": "Not physical disk I/O, cache misses, RSS or inner fallback calls. A delegate default read_region may call its own read_plane without reentering the outer observer; do not claim both counters observe that inner call.",
+    "compatibility": [
+      "Keep Dataset object layout and PlaneSource vtable unchanged; existing constructors remain unobserved by default",
+      "Preserve eager/shared-plane detection and quiet-NaN admission through the decorator",
+      "Preserve with_plane/with_planes behavior, pixel identity/sharing and repeated-observer semantics without double counting",
+      "Preserve source resource ownership, lease detachment and history byte accounting; no hidden materialization"
+    ],
+    "python": "Expose the native observer/counts and opt-in Dataset method through _native/base package; no Python provider trampoline or public raw-source accessor"
+  },
+  "exception_category": {
+    "api": "Ordinary ValueError retains its message/type compatibility and gains native_category=length_error for a genuinely caught std::length_error in capped shortcut calls",
+    "implementation": "Binding-local wrapper around affected shortcut callables; preserve invalid_argument/TypeError and structured ShortcutProfileError. Do not install a module-wide catch-all translator or infer native class from text."
+  },
+  "qualification": [
+    "Positive plane/region calls; provider throw; pre-provider coordinate refusal; shared counter lifetime and concurrent completion",
+    "Eager/shared storage, quiet-NaN, pixels/calibration/identity/history and resource leases remain unchanged by observation",
+    "Actual real-Document shortcut operations produce zero measured provider deltas and unchanged revisions",
+    "Actual working-limit refusal exposes the native category; all67 existing Python assertion values independently compare",
+    "Build/install affected core/bindings/SDK and Python products once coherent; reuse unchanged qualified source/artifacts by exact identity and run required affected installed regressions/interaction gates"
+  ],
+  "preserve": [
+    "Current products001, installed API001+regression repair, paired001 and available Python64 observations remain immutable at their recorded identities",
+    "No family/format/Fiji/platform/commercial acceptance or numerical scope changes",
+    "No generated zero, exception-message parsing, private test hook or C++ observation relabeled as Python"
+  ],
+  "entry_sources": [
+    {
+      "path": "include/imagejxx/dataset.hpp",
+      "bytes": 8015,
+      "sha256": "4744b8097ac2794b358d4e625d996a06d3c1a9aa348c3f121a6b7b3ab9182eb7"
+    },
+    {
+      "path": "src/native/dataset.cpp",
+      "bytes": 30555,
+      "sha256": "6597614b32f015c5cb6ffb8fa1fcc7811c5e5c61b6dcdbbba5a2a249d1abdea5"
+    },
+    {
+      "path": "src/native/dataset_bindings.cpp",
+      "bytes": 20633,
+      "sha256": "29e4389edda4390d82f4bcca97732cd9f02292cea6ffb555f1505c3edfda9787"
+    },
+    {
+      "path": "src/native/shortcuts_bindings.cpp",
+      "bytes": 20540,
+      "sha256": "86a29c8367f1290c8f603c6cb0c1c5c413a7256f10d252432fd3c1efcc73e9b8"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 48048,
+      "sha256": "0bfe0b03a81b2a9979228bfe3d9027f8256b07cd26a425382f3da472cb4dc708"
+    },
+    {
+      "path": "tests/python/shortcut_api_observations.py",
+      "bytes": 31617,
+      "sha256": "a9c983269451e21fdc2fff54cb3f16fc936e89da688d4dfe86d874323a4612bd"
+    }
+  ],
+  "actual_missing_evidence": {
+    "path": "build/shortcuts-001/python-api-observations001/run001.json",
+    "bytes": 29439,
+    "sha256": "27bc94f816227c477bf34af93cccea7b478bde03f82d9d3d38648246e97209e1"
+  }
+}

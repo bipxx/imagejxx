@@ -1,0 +1,29 @@
+{
+  "state": "passed",
+  "scope": "IEEE Remove NaNs native processing and editor API qualification",
+  "audit": "build/p07x-remove-nans-ieee001/final-audit001.json",
+  "audit_sha256": "216812bf193a4d5aeb7e1bd83a27808c71f1c99fedb3bbfa86faae9b0ad3703d",
+  "checks": {
+    "all_108_reference_cases": true,
+    "legacy_and_scientific_commands": true,
+    "source_and_installed_python_cases": 8971,
+    "new_python_cases": 350,
+    "prior_case_membership_preserved": true,
+    "windows_native_desktop_suites": 71,
+    "linux_core_suites": 37,
+    "installed_public_sdk": true,
+    "owned_scratch_targets_removed": 22,
+    "net_bytes_freed": 1118934081
+  },
+  "limitations": [
+    "Add IEEE counterparts to R45-R51 physical dialog probes, including preview, stack Yes/No/Cancel and new document",
+    "Qualify additional IEEE rank operations individually before admission",
+    "Float32 scientific I/O and remaining ImageJ/Fiji/editor/release gaps"
+  ],
+  "dependencies_added": [],
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  }
+}

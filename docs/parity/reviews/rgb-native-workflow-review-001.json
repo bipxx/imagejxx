@@ -1,0 +1,259 @@
+{
+  "schema_version": 1,
+  "state": "scoped_mixed_rgb_workflow_verified",
+  "api": "NativeWorkflowOperation(rgb_dataset,{},complete_ranges,original=capture)",
+  "new_python_cases": 31,
+  "native_windows_suites": 20,
+  "linux_native_suites": 4,
+  "source_cases": 683,
+  "installed_cases": 703,
+  "focused_cases": 701,
+  "core_workflow_cases": 120,
+  "prior_workflow_ui_cases": 36,
+  "api_cases": 9,
+  "startup_cases": 10,
+  "reference_scope": "Native workflow staging/metadata/renderer semantics; no full ImageJ/Fiji macro or editor certification",
+  "evidence": [
+    {
+      "path": "build/p06zr-rgb-workflow001/build003/run001.json",
+      "bytes": 9509,
+      "sha256": "67def03382d857b2da118f71109f42d5c8edc3021ff7c4c1d0cf906f19b8f897"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/focused001/run001.json",
+      "bytes": 1381,
+      "sha256": "1902d61df429e9d74ad03f761328b3931b302908785b48d1a7c21ad5ccb401ac"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/rgb-cpp002/run001.json",
+      "bytes": 1257,
+      "sha256": "135e06d54a6cd7a3ab796dda3bd925065861c0a215c1f806e53f04f82abdcfcb"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/source001/run001.json",
+      "bytes": 1392,
+      "sha256": "b13707fe1b039d3949ea8a759ea6580ace43e2fd46929d07bfd9669634dfc4c9"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/install001/run001.json",
+      "bytes": 7220,
+      "sha256": "d99ced23952e50f0f5457e6c6a1393b8979145030e205a0c3db243ade55daa56"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/installed-cpp001/run001.json",
+      "bytes": 3106,
+      "sha256": "0ccd6b064947f69ae6c95b10c9344fbc4e25049a5f3eef4ab26e4cb62381a9bb"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/installed-python001/run001.json",
+      "bytes": 1719,
+      "sha256": "c1de254c8c31b8c4c77b1878932956d4ea1ef096d4f0e6ae18cbea626331ece4"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/launcher001/run001.json",
+      "bytes": 3360,
+      "sha256": "505977007eb100ae232738db3e40d9d3a98b3cec98605bbff7b615479cc1db79"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/api001/run001.json",
+      "bytes": 1353,
+      "sha256": "969b62845bc48f4785df096a087dbaf7595ea860366b9ac8e9bc4db741b86326"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/regress001/run001.json",
+      "bytes": 18390,
+      "sha256": "e0284435061c3479f10aabcb7c213486994a37dcb5aff9e3c7f543212c826371"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/process-cpp001/run001.json",
+      "bytes": 1277,
+      "sha256": "ae7c8417d7ffaf9ee25c9518c9c70a231f4e77f32406bf4f15a47c23c94cd836"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/process-installed-cpp001/run001.json",
+      "bytes": 1749,
+      "sha256": "99aaee1ac4abd6dde17fcdd0cc1b409b1b67ba3cfc10e135569f373c1ed429e5"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/rgb-installed-cpp001/run001.json",
+      "bytes": 1316,
+      "sha256": "0d11292ffa9d0bc8e3217ad0831253da094c75c058d4583ebc7fb8b4a907e3df"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/workflow-sdk001/run001.json",
+      "bytes": 4197,
+      "sha256": "b9d689b1c7cf671e5ff61504356d93563fb94cb0ed438fcb28b7b869081b9f30"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/baseline001/run001.json",
+      "bytes": 1384,
+      "sha256": "c1396035f4a257a072e24700209445b5c5933f6b8dc46399a2f426e110ebdd1c"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/linux003/run001.json",
+      "bytes": 839,
+      "sha256": "e8ec9cc22c52649ac74c98760b082e4563f51a7f05d6cba72db641e5abf993f6"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/core003/run001.json",
+      "bytes": 1371,
+      "sha256": "bfe71e12b1bca5cd4fd96bdc931b2f8dc19f3e5dcb61a0c7859863a48e52c6a2"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/workflow-ui001/run001.json",
+      "bytes": 1390,
+      "sha256": "a5414ea39b232dbbabcd11d95c4748ec75e68744aa700b4d864c005fb6bd08b0"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/workflow-cpp001/run001.json",
+      "bytes": 1266,
+      "sha256": "2ff77747e63b00a10043d1135aa18f9ef2f94d9f0634300c52288d50080c00a0"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/batch001/run001.json",
+      "bytes": 1372,
+      "sha256": "babacb7879e6caae386361a2a7e75bd193a8e746b1253fd20f77e5b8723e510e"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/installed-batch001/run001.json",
+      "bytes": 1692,
+      "sha256": "95fa0d2f1f00deb00ca08e939d4409a2049018ef4725b96831a32c798075fa0d"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/core001/run001.json",
+      "bytes": 1561,
+      "sha256": "1125215b9277daf48474899a90237e55b4305796eb61f7956c993ab274eea980"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/build003/native.xml",
+      "bytes": 6177,
+      "sha256": "f9493601f713b693c79ef2e8ba9573e41f7432a0be7be6b16a5e56d2c566445b"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/linux003/native.xml",
+      "bytes": 1115,
+      "sha256": "0032bcdce1cfee1bde1c064db9110b545f0bcdd5249c467bded0a13217fd295a"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/focused001/pytest.xml",
+      "bytes": 105268,
+      "sha256": "b944124c9c831b7e0c132fc9e42d7240a70e03aa5f041c2bbe42a4611e8e4a83"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/source001/pytest.xml",
+      "bytes": 96801,
+      "sha256": "ede5f55e057c12db8c16765e5e33bdbac088d1b54b2ffdd5763c8662bce4c3e9"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/installed-python001/pytest.xml",
+      "bytes": 99231,
+      "sha256": "85136567cf118558e20ec15d86f728df90539dbb964ae7dd14f60428b4e357b5"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/core003/pytest.xml",
+      "bytes": 19349,
+      "sha256": "5cc4ede01e685078669f497b13655fcb3ee2b993cf6d935458d213c6f94892ef"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/workflow-ui001/pytest.xml",
+      "bytes": 5674,
+      "sha256": "23ab002b1f67ef17ebb677e7734adb4ae4a2e392e0e5c734f401cf3817962e5e"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/rgb-cpp002/capture001/case.json",
+      "bytes": 8364116,
+      "sha256": "76fcbe904ff162524da0b7ad418424bb836b8f6548cd2580fd787ed56d71a690"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/rgb-installed-cpp001/capture001/case.json",
+      "bytes": 8366123,
+      "sha256": "4fcd636498101cea32de70334c6594367b7177785d42508e4b35504fdc2fb8a6"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/source001/pytest-temp001/test_actual_menu_and_buttons_i0/capture001/case.json",
+      "bytes": 8372425,
+      "sha256": "d3fa3e5441a81de0e8733b7e18a8b21891629f717f7cec584fcf6f5faab8cdcf"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/installed-python001/pytest-temp001/test_actual_menu_and_buttons_i0/capture001/case.json",
+      "bytes": 8374380,
+      "sha256": "5b74f1169a7a7aad2f756e4e19fe117a96ae4806d6607346b886cf69ea650cd0"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/baseline001/baseline001.json",
+      "bytes": 272,
+      "sha256": "9b03cc43a1babeec852016e4d660e3ad3d43ccde21857e6f8abc22cb0df07088"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/install001/python-prefix001/imagejxx/_native.cp312-win_amd64.pyd",
+      "bytes": 5826048,
+      "sha256": "a1021c4604f69e1cf1e66107a626d7eaca8265ef4aefd1cad278c6ea62b53ff9"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/policy001.json",
+      "bytes": 427,
+      "sha256": "3d731d1bf93f553289d934a08139c9b37472e30dd46a2fbc0542f19152b97784"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/linux001/ext4-scratch001.json",
+      "bytes": 1775,
+      "sha256": "2974a30eef8a3c191f712a59edfa1079161d81e0a84a0e9a6df4cde52b0de778"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/linux001/ext4-scratch001.zip",
+      "bytes": 6386,
+      "sha256": "cc148a5591d54f4320c34353f841d27766557f33f674e868ab1e3b179817fdc0"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/linux002/ext4-scratch001.json",
+      "bytes": 1775,
+      "sha256": "74c6cb61483c933264159bf095eb4f4e4c8904cb5c725e8a0509fa9051b380b3"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/linux002/ext4-scratch001.zip",
+      "bytes": 6388,
+      "sha256": "c84fa0ef6f4dc0c265464decb457025ca87e42f8ae035e5221fcc2aa03e1d98b"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/linux003/ext4-scratch001.json",
+      "bytes": 1766,
+      "sha256": "643db7956961ac2d9893dc5cda41b3c99b85af72bd7d94748eb6726dcfc52e2d"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/linux003/ext4-scratch001.zip",
+      "bytes": 6369,
+      "sha256": "a9d6e3f20cd59451f97eea79c9e25ba166996da9a820a5094c538476ceeb9320"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/cleanup001.json",
+      "bytes": 337697,
+      "sha256": "f8a11a77dd353c6e82bd1f889f632b7e4a9c5c20dba10a1ec0da64907a9f7140"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/batch001/batch-evidence001.json",
+      "bytes": 572,
+      "sha256": "87ed0e25b5fe303bbfda0e51985785743df5282a95100a8f25a788c9ee5bae2b"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/installed-batch001/batch-evidence001.json",
+      "bytes": 630,
+      "sha256": "f8bec316d43a661a181e63c9179c46675133909b0b1397386d8a79118c5c892e"
+    },
+    {
+      "path": "build/p06zr-rgb-workflow001/workflow-cpp001/capture001/case.json",
+      "bytes": 48491289,
+      "sha256": "bad4e8895dd54531eeb04ec2efdb1208eb3a23a17602c0061aa59f1f10e23782"
+    }
+  ],
+  "remaining": [
+    "Loss-aware C-to-Z flattening, RGB/HSB stack interchange and indexed output/global palette round trips, with pinned layout/reference cases and explicit calibration/metadata contracts",
+    "Full ImageJ editor/composite/annotation/density/threshold/LUT reference and resource/platform/release checks",
+    "Historical fingerprint requalification; All99 remains42/57/0; Source901 unchanged"
+  ],
+  "scientific_rgb_menu_enabled": true,
+  "mixed_rgb_workflows_enabled": true,
+  "profile_accepted": false,
+  "family_completed": false,
+  "broad_goal": "active",
+  "full_plan_gate": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed"
+}

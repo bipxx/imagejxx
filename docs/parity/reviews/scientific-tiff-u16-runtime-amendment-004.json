@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "scientific-tiff-u16-runtime-amendment-004",
+  "format_id": "F.G080.tiff-imagej-u16-uncompressed-ifd-czt-v1",
+  "state": "adopted_native_only_runtime_qualified",
+  "reason": "Untouched default scalar ImageJ1.54r FileSaver output adds escaped micrometer spelling and loop/min/max. Original entry grammar refused this real export; amend only the observed bounded description subset before full-profile acceptance.",
+  "supersedes_clauses": [
+    "entry-001 axis_contract.description_grammar escapes and allowlist only"
+  ],
+  "spatial_units": "Additional exact ASCII spelling \\u00B5m normalizes to um only for unit/yunit/zunit; no generic escape decoder.",
+  "description_fields": {
+    "loop": "Optional literal false only; retained provenance, not playback state.",
+    "min/max": "Both absent or paired finite decimal values with 0 <= min <= max <= 65535; retained provenance, not document display state or sample scaling."
+  },
+  "metadata": "Exact public metadata key set unchanged; source_description preserves raw fields and writer canonicalized_fields reports dropping it. Canonical writer continues using unit=um without display/loop fields.",
+  "remaining_refusals": "Unknown/duplicate keys, every other escape, looping playback, malformed/unpaired/nonfinite/reversed/out-of-range display extrema; all original TIFF tag/axis/limit constraints remain.",
+  "original_failure": {
+    "path": "build/p06r-tiff-service001/sdk002/run001.json",
+    "bytes": 114715,
+    "sha256": "e51af71df5115a9b8cfde3c14cf69bb135234be6710fc05134092e9abf49c115"
+  },
+  "untouched_original_export": {
+    "path": "build/p06r-tiff-service001/sdk002/imagej-export.tif",
+    "bytes": 2620,
+    "sha256": "f0b10fa4d466b33e622a624904608060b0df1090060003978ea157c9cab36579"
+  },
+  "qualified_export": {
+    "path": "build/p06r-tiff-service001/sdk003/imagej-export.tif",
+    "bytes": 2620,
+    "sha256": "f0b10fa4d466b33e622a624904608060b0df1090060003978ea157c9cab36579"
+  },
+  "runtime_evidence": {
+    "path": "build/p06r-tiff-service001/sdk003/run001.json",
+    "bytes": 114503,
+    "sha256": "b800f9969729fecbc2816eb8e57e0e7a5774de6d87c85f66f82e560d37c4f35b"
+  },
+  "native_evidence": {
+    "path": "build/p06r-tiff-service001/native005/run001.json",
+    "bytes": 5540,
+    "sha256": "1a30dd7b60dde79b075470955bef758ee1cea5fb46bf087f016a451d57d11723"
+  },
+  "profile_accepted": false,
+  "family_completed": false
+}

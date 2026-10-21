@@ -1,0 +1,225 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_owned_increment",
+  "review_type": "Root authorship/integration attestation, not independent legal review",
+  "license": "Existing project MIT for original V4 bare-source edit admission and bounded Python ownership consent",
+  "new_dependencies": [],
+  "restricted_features_added": false,
+  "imported_third_party_product_code": [],
+  "new_fonts": [],
+  "sources": [
+    {
+      "logical_path": "include/imagejxx/imagej_roi_import.hpp",
+      "before": {
+        "path": "build/p06q-bare-edit001/before001/include/imagejxx/imagej_roi_import.hpp",
+        "bytes": 4470,
+        "sha256": "3c000d53b9617cc6266493aac061c985192c7655337413707918b789c6b3e004"
+      },
+      "after": {
+        "path": "build/p06q-bare-edit001/held001/after/include/imagejxx/imagej_roi_import.hpp",
+        "bytes": 4624,
+        "sha256": "3ac2dd504e2458829256bf537ab9acf2ab879c4c7b83840ee8f1354ad3967468"
+      },
+      "current": {
+        "path": "include/imagejxx/imagej_roi_import.hpp",
+        "bytes": 4624,
+        "sha256": "3ac2dd504e2458829256bf537ab9acf2ab879c4c7b83840ee8f1354ad3967468"
+      }
+    },
+    {
+      "logical_path": "include/imagejxx/imagej_annotation_import.hpp",
+      "before": {
+        "path": "build/p06q-bare-edit001/before001/include/imagejxx/imagej_annotation_import.hpp",
+        "bytes": 3959,
+        "sha256": "27133c40c6a56c92f7b09bb4e71c0679d58b94a7d451cac71d3392fc91c3b8dc"
+      },
+      "after": {
+        "path": "build/p06q-bare-edit001/held001/after/include/imagejxx/imagej_annotation_import.hpp",
+        "bytes": 4193,
+        "sha256": "0e7b9b1f9daef08e349a388168d3f559722c759ce288484f6c21d8a5813d1c7c"
+      },
+      "current": {
+        "path": "include/imagejxx/imagej_annotation_import.hpp",
+        "bytes": 4193,
+        "sha256": "0e7b9b1f9daef08e349a388168d3f559722c759ce288484f6c21d8a5813d1c7c"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_roi_import.cpp",
+      "before": {
+        "path": "build/p06q-bare-edit001/before001/src/native/imagej_roi_import.cpp",
+        "bytes": 29936,
+        "sha256": "c74ee2e3b55d2bb56fc1b5f438d6cf67a4358175d4b847c6587d8b4b0565ac84"
+      },
+      "after": {
+        "path": "build/p06q-bare-edit001/held001/after/src/native/imagej_roi_import.cpp",
+        "bytes": 30126,
+        "sha256": "781361adc5c286182efd905bd9c2ca5bb1b5bd0ef4e13baaf3bc2ff5e75b2a8b"
+      },
+      "current": {
+        "path": "src/native/imagej_roi_import.cpp",
+        "bytes": 30126,
+        "sha256": "781361adc5c286182efd905bd9c2ca5bb1b5bd0ef4e13baaf3bc2ff5e75b2a8b"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_roi_import_internal.hpp",
+      "before": {
+        "path": "build/p06q-bare-edit001/before001/src/native/imagej_roi_import_internal.hpp",
+        "bytes": 3893,
+        "sha256": "21b86028bc360f74bcf3498d36124bb0ae6a37faa081b65144ac062e961f4caa"
+      },
+      "after": {
+        "path": "build/p06q-bare-edit001/held001/after/src/native/imagej_roi_import_internal.hpp",
+        "bytes": 4044,
+        "sha256": "e8ac55e7551a44239b8de7a4dc21ba44c49462f81b15d4964ba728fcdccc1530"
+      },
+      "current": {
+        "path": "src/native/imagej_roi_import_internal.hpp",
+        "bytes": 4044,
+        "sha256": "e8ac55e7551a44239b8de7a4dc21ba44c49462f81b15d4964ba728fcdccc1530"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_annotation_import.cpp",
+      "before": {
+        "path": "build/p06q-bare-edit001/before001/src/native/imagej_annotation_import.cpp",
+        "bytes": 25892,
+        "sha256": "345d21b70198a1ed3e719a97a6980986f7280668f03c5097d9d33bdb3e0568be"
+      },
+      "after": {
+        "path": "build/p06q-bare-edit001/held001/after/src/native/imagej_annotation_import.cpp",
+        "bytes": 26562,
+        "sha256": "4e3cd50ac82c92d5dc996cd4fd542576f0d9928d5664fc5abc4c74f0bfa1638c"
+      },
+      "current": {
+        "path": "src/native/imagej_annotation_import.cpp",
+        "bytes": 26562,
+        "sha256": "4e3cd50ac82c92d5dc996cd4fd542576f0d9928d5664fc5abc4c74f0bfa1638c"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_annotation_import_bindings.cpp",
+      "before": {
+        "path": "build/p06q-bare-edit001/before001/src/native/imagej_annotation_import_bindings.cpp",
+        "bytes": 10620,
+        "sha256": "6abbf02be5353091a18d60076376ed3d67a7e4181f51f27be8c5615d74ff2893"
+      },
+      "after": {
+        "path": "build/p06q-bare-edit001/held001/after/src/native/imagej_annotation_import_bindings.cpp",
+        "bytes": 10677,
+        "sha256": "7abbc7056d3da03ce1b13e13738343b59dd908420a16f8e23c3faf109a354254"
+      },
+      "current": {
+        "path": "src/native/imagej_annotation_import_bindings.cpp",
+        "bytes": 10677,
+        "sha256": "7abbc7056d3da03ce1b13e13738343b59dd908420a16f8e23c3faf109a354254"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_roi_import_bindings.cpp",
+      "before": {
+        "path": "build/p06q-bare-edit001/before001/src/native/imagej_roi_import_bindings.cpp",
+        "bytes": 18753,
+        "sha256": "2cae5e6cd4cc69b20f05cec4db9168ad86b21af2db5ee518a340327f09456ed2"
+      },
+      "after": {
+        "path": "build/p06q-bare-edit001/held001/after/src/native/imagej_roi_import_bindings.cpp",
+        "bytes": 19023,
+        "sha256": "37eae12b42cb8fdb796eac993f7eed4c92bf0a6d0708ff1a5e5e807d1e4ed0cc"
+      },
+      "current": {
+        "path": "src/native/imagej_roi_import_bindings.cpp",
+        "bytes": 19023,
+        "sha256": "37eae12b42cb8fdb796eac993f7eed4c92bf0a6d0708ff1a5e5e807d1e4ed0cc"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_panel.cpp",
+      "before": {
+        "path": "build/p06q-bare-edit001/before001/src/desktop/roi_import_panel.cpp",
+        "bytes": 48569,
+        "sha256": "559e774a124b4554f4012ee0ba2cc3dec926823e451c0690be2bf69e22928e76"
+      },
+      "after": {
+        "path": "build/p06q-bare-edit001/held001/after/src/desktop/roi_import_panel.cpp",
+        "bytes": 48591,
+        "sha256": "43ff0bb8790fb29b25d37e930e4a6ec66715b76269ff2a2250071da5f685fd87"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_panel.cpp",
+        "bytes": 48591,
+        "sha256": "43ff0bb8790fb29b25d37e930e4a6ec66715b76269ff2a2250071da5f685fd87"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_mixed_export_panel.cpp",
+      "before": {
+        "path": "build/p06q-bare-edit001/before001/src/desktop/roi_mixed_export_panel.cpp",
+        "bytes": 42096,
+        "sha256": "9f22d7eda873b21cbfbaea20be7313fcbb282b616cc29fb455500abd16d302f8"
+      },
+      "after": {
+        "path": "build/p06q-bare-edit001/held001/after/src/desktop/roi_mixed_export_panel.cpp",
+        "bytes": 42106,
+        "sha256": "463d9e4d00edfb3d704124c526df46922c93caaf23d7492aa04ab499c42dd6ba"
+      },
+      "current": {
+        "path": "src/desktop/roi_mixed_export_panel.cpp",
+        "bytes": 42106,
+        "sha256": "463d9e4d00edfb3d704124c526df46922c93caaf23d7492aa04ab499c42dd6ba"
+      }
+    },
+    {
+      "logical_path": "tests/native/test_imagej_annotation_import.cpp",
+      "before": {
+        "path": "build/p06q-bare-edit001/before001/tests/native/test_imagej_annotation_import.cpp",
+        "bytes": 3735,
+        "sha256": "29bd778c08ca1cdb1836262e2d5b944af6c3512f39056b65d8258c86b7803e28"
+      },
+      "after": {
+        "path": "build/p06q-bare-edit001/held001/after/tests/native/test_imagej_annotation_import.cpp",
+        "bytes": 5717,
+        "sha256": "164ec16b07bd17a3be3f4c8ed242b55e999b59a7d98424e02812f57f915a05e2"
+      },
+      "current": {
+        "path": "tests/native/test_imagej_annotation_import.cpp",
+        "bytes": 5717,
+        "sha256": "164ec16b07bd17a3be3f4c8ed242b55e999b59a7d98424e02812f57f915a05e2"
+      }
+    },
+    {
+      "logical_path": "tests/native/test_imagej_annotation_export.cpp",
+      "before": {
+        "path": "build/p06q-bare-edit001/before001/tests/native/test_imagej_annotation_export.cpp",
+        "bytes": 6104,
+        "sha256": "6194c5b6449b68c63928130363344bd8836c9daa5cdb35fa10696eefe34e7ea6"
+      },
+      "after": {
+        "path": "build/p06q-bare-edit001/held001/after/tests/native/test_imagej_annotation_export.cpp",
+        "bytes": 6975,
+        "sha256": "97e7a49b24c40caf88c2f84c65166cf5838e7d2aa47bc07a887a7effcc27ecb9"
+      },
+      "current": {
+        "path": "tests/native/test_imagej_annotation_export.cpp",
+        "bytes": 6975,
+        "sha256": "97e7a49b24c40caf88c2f84c65166cf5838e7d2aa47bc07a887a7effcc27ecb9"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_imagej_bare_native_edits.py",
+      "before": null,
+      "after": {
+        "path": "build/p06q-bare-edit001/held001/after/tests/python/test_imagej_bare_native_edits.py",
+        "bytes": 14746,
+        "sha256": "f671d3eae3ee07ea1e937d3c6274f6cd554822773413f6c6f17059413f508ba3"
+      },
+      "current": {
+        "path": "tests/python/test_imagej_bare_native_edits.py",
+        "bytes": 14746,
+        "sha256": "f671d3eae3ee07ea1e937d3c6274f6cd554822773413f6c6f17059413f508ba3"
+      }
+    }
+  ],
+  "scope": "C++/Python bare mapped source plus native edit API prerequisite only; authoring/review UI controls remain pending"
+}

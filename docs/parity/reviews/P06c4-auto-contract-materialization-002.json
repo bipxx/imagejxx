@@ -1,0 +1,399 @@
+{
+  "acceptance": {
+    "accepted_run": false,
+    "commercial": false,
+    "family": false,
+    "platform": false,
+    "proof": false,
+    "release": false,
+    "runtime_executed": false
+  },
+  "contract_digests": {
+    "consumer": "648b0a65aa3efedf3867820f69b557ea26e7f8984b179bf5f271dbfe2e7929f3",
+    "surface": "f7eb6398ae959f06b5487a5135197227b3cc74289a03cd7c95fe206da247f32a"
+  },
+  "counts": {
+    "applicable_scenarios_each_context": 5,
+    "consumer_contracts_validated": 3,
+    "current_registered_requirements": 52,
+    "global_enumeration_status": "partial",
+    "historical_snapshot_exact_bytes_preserved": true,
+    "native_definitions": 37,
+    "new_assertions_each_context": 36,
+    "new_contexts": 4,
+    "new_frozen_source_refs": 17,
+    "ownership_rows": 37,
+    "pending_known_owners": 34,
+    "preserved_historical_assignments": 2,
+    "preserved_historical_source_refs": 55,
+    "proposed_assignments": 3,
+    "shared_commands_exact_bytes_preserved": true,
+    "surface_contracts_validated": 8,
+    "unowned_exposed_definition_names": [
+      "animation_fps",
+      "auto_dpi",
+      "background",
+      "brush_width",
+      "canvas_background",
+      "default_zoom",
+      "foreground",
+      "history_limit",
+      "history_memory_mb",
+      "interpolation",
+      "line_width",
+      "measurement_precision",
+      "measurements",
+      "point_size",
+      "print_dpi",
+      "print_landscape",
+      "processing_memory_mb",
+      "processing_workers",
+      "profile_samples",
+      "show_rois",
+      "text_size",
+      "theme",
+      "ui_scale",
+      "wand_connectivity",
+      "wand_tolerance"
+    ]
+  },
+  "id": "P06c4-auto-contract-materialization-002",
+  "inputs": {
+    "commands": {
+      "path": "docs/parity/commands.json",
+      "sha256": "0f040855506f989e6c42e7ce6c2deb9a32fdd92285e097c75a669b48e78fe27f"
+    },
+    "held_source_input": {
+      "path": "build/p06c4-001/auto-inputs-010.json",
+      "sha256": "16dbba0c0b6c9b577d884dad0454a2bc7e489857f2d63385f22793ebcba9c723"
+    },
+    "historical_assignment_scope": {
+      "entries": [
+        {
+          "consumer": {
+            "api": "Settings::binary_options",
+            "member": "iterations",
+            "operation": "binary_erode"
+          },
+          "consumption_mode": "detached_options",
+          "contexts": {
+            "cpp_api": {
+              "scenarios": {
+                "changed": {
+                  "applicable": true
+                },
+                "default": {
+                  "applicable": true
+                },
+                "frozen": {
+                  "applicable": true
+                },
+                "override": {
+                  "applicable": true
+                },
+                "persisted": {
+                  "applicable": true
+                }
+              }
+            },
+            "imgui_cpp": {
+              "scenarios": {
+                "changed": {
+                  "applicable": true
+                },
+                "default": {
+                  "applicable": true
+                },
+                "frozen": {
+                  "applicable": true
+                },
+                "override": {
+                  "applicable": true
+                },
+                "persisted": {
+                  "applicable": true
+                }
+              }
+            },
+            "imgui_python": {
+              "scenarios": {
+                "changed": {
+                  "applicable": true
+                },
+                "default": {
+                  "applicable": true
+                },
+                "frozen": {
+                  "applicable": true
+                },
+                "override": {
+                  "applicable": true
+                },
+                "persisted": {
+                  "applicable": true
+                }
+              }
+            },
+            "python_api": {
+              "scenarios": {
+                "changed": {
+                  "applicable": true
+                },
+                "default": {
+                  "applicable": true
+                },
+                "frozen": {
+                  "applicable": true
+                },
+                "override": {
+                  "applicable": true
+                },
+                "persisted": {
+                  "applicable": true
+                }
+              }
+            }
+          },
+          "definition_binding_id": "native-settings-export.p01b2c2.windows.001",
+          "id": "A.G052.binary_erode.iterations",
+          "requirement_ids": [
+            "G052.binary_erode.iterations"
+          ],
+          "setting_key": "binary_iterations",
+          "source_refs": [
+            {
+              "path": "build/plan-implementation/p01b2c2-binary-iterations-001/source-snapshot-002/include/imagejxx/binary.hpp",
+              "sha256": "814dca9537a4b37e308f09ac543875ada82b644d18841ada520cbc453a624caa"
+            },
+            {
+              "path": "build/plan-implementation/p01b2c2-binary-iterations-001/source-snapshot-002/include/imagejxx/settings.hpp",
+              "sha256": "3b96957068c74adb5c60064ed9505d21d73c2518e0daf99790a4720bd0a789b0"
+            },
+            {
+              "path": "build/plan-implementation/p01b2c2-binary-iterations-001/source-snapshot-002/src/desktop/window.cpp",
+              "sha256": "8a01626061c9c4d83cbbedcc1f4fa291d476f48ccfe5125b5aa8ff12fd1a74fd"
+            },
+            {
+              "path": "build/plan-implementation/p01b2c2-binary-iterations-001/source-snapshot-002/src/imagejxx/__init__.py",
+              "sha256": "a2f16d580ec949f1618d6864159d8373dfa6944eb8f9a4bd9dd3633b9f3689a0"
+            },
+            {
+              "path": "build/plan-implementation/p01b2c2-binary-iterations-001/source-snapshot-002/src/native/settings.cpp",
+              "sha256": "8f43e18718113d41a976dbed9336bde19f06c444bb0ba48b463ca362a50decf8"
+            },
+            {
+              "path": "build/plan-implementation/p01b2c2-binary-iterations-001/source-snapshot-002/tests/python/test_binary_options.py",
+              "sha256": "f2c9ad616c34ad5c8b789f33798fc92ba3ea4ff5d16d7bc023c3dbb3df9266df"
+            }
+          ]
+        },
+        {
+          "consumer": {
+            "api": "Settings::binary_options",
+            "member": "pad_edges",
+            "operation": "binary_erode"
+          },
+          "consumption_mode": "detached_options",
+          "contexts": {
+            "cpp_api": {
+              "scenarios": {
+                "changed": {
+                  "applicable": true
+                },
+                "default": {
+                  "applicable": true
+                },
+                "frozen": {
+                  "applicable": true
+                },
+                "override": {
+                  "applicable": true
+                },
+                "persisted": {
+                  "applicable": true
+                }
+              }
+            },
+            "imgui_cpp": {
+              "scenarios": {
+                "changed": {
+                  "applicable": true
+                },
+                "default": {
+                  "applicable": true
+                },
+                "frozen": {
+                  "applicable": true
+                },
+                "override": {
+                  "applicable": true
+                },
+                "persisted": {
+                  "applicable": true
+                }
+              }
+            },
+            "imgui_python": {
+              "scenarios": {
+                "changed": {
+                  "applicable": true
+                },
+                "default": {
+                  "applicable": true
+                },
+                "frozen": {
+                  "applicable": true
+                },
+                "override": {
+                  "applicable": true
+                },
+                "persisted": {
+                  "applicable": true
+                }
+              }
+            },
+            "python_api": {
+              "scenarios": {
+                "changed": {
+                  "applicable": true
+                },
+                "default": {
+                  "applicable": true
+                },
+                "frozen": {
+                  "applicable": true
+                },
+                "override": {
+                  "applicable": true
+                },
+                "persisted": {
+                  "applicable": true
+                }
+              }
+            }
+          },
+          "definition_binding_id": "native-settings-export.p05c.windows.001",
+          "id": "A.G052.binary_erode.pad_edges",
+          "requirement_ids": [
+            "G052.binary_erode.pad_edges"
+          ],
+          "setting_key": "binary_pad_edges",
+          "source_refs": [
+            {
+              "path": "build/plan-implementation/p05c-binary-pad-edges-001/source-snapshot-001/include/imagejxx/settings.hpp",
+              "sha256": "3b96957068c74adb5c60064ed9505d21d73c2518e0daf99790a4720bd0a789b0"
+            },
+            {
+              "path": "build/plan-implementation/p05c-binary-pad-edges-001/source-snapshot-001/include/imagejxx/binary.hpp",
+              "sha256": "814dca9537a4b37e308f09ac543875ada82b644d18841ada520cbc453a624caa"
+            },
+            {
+              "path": "build/plan-implementation/p05c-binary-pad-edges-001/source-snapshot-001/src/native/settings.cpp",
+              "sha256": "8f43e18718113d41a976dbed9336bde19f06c444bb0ba48b463ca362a50decf8"
+            },
+            {
+              "path": "build/plan-implementation/p05c-binary-pad-edges-001/source-snapshot-001/src/native/settings_bindings.cpp",
+              "sha256": "e9d439fdb94eb66c564d8ec75bc67cc8bcab38b6d598ac0336aefed972a4933f"
+            },
+            {
+              "path": "build/plan-implementation/p05c-binary-pad-edges-001/source-snapshot-001/src/imagejxx/__init__.py",
+              "sha256": "a2f16d580ec949f1618d6864159d8373dfa6944eb8f9a4bd9dd3633b9f3689a0"
+            },
+            {
+              "path": "build/plan-implementation/p05c-binary-pad-edges-001/source-snapshot-001/src/desktop/window.cpp",
+              "sha256": "ac396ebce76c0a47bb9e75d2bb3ef669e7cfce80ab2750fc63e80b8222989481"
+            },
+            {
+              "path": "build/plan-implementation/p05c-binary-pad-edges-001/source-snapshot-001/src/desktop/settings_panel.cpp",
+              "sha256": "99211c26e2283d7e7eb790e547769c66f0b997cbc9c6d0796bccb6da94aca58a"
+            }
+          ]
+        }
+      ],
+      "run_id": "binary-pad-edges-consumer-p05c-windows-001",
+      "snapshot": {
+        "path": "build/plan-implementation/p05c-binary-pad-edges-001/consumer-contract-draft-001/output-002/consumer-assignments.json",
+        "sha256": "f6d112f172142690391730daa764dca4370602efadb9689beeb328a4af74a958"
+      }
+    },
+    "previous_materialization": {
+      "path": "docs/parity/reviews/P06c4-auto-contract-materialization-001.json",
+      "sha256": "c07e82bb32960bc578adc3eb3e9ba53af78b17b76436888ff744aed767550d10"
+    },
+    "proposal": {
+      "path": "docs/parity/reviews/P06c4-auto-option-settings-registration-001.json",
+      "sha256": "81205d6d741b8343829126ddfb547cbaa77f8a784fabfe60774d4da5b9c89454"
+    },
+    "registered_requirement_receipt": {
+      "path": "build/p06c4-001/auto-option-registration-001.json",
+      "sha256": "1e79339ef27a65bca86bf4b1f9aeb4e28094b8ceae4f45d8f647e36635726f06"
+    }
+  },
+  "missing_acceptance_fields": [
+    "New immutable accepted inventory run and matching commands.run_bindings identity.",
+    "Actual run.settings_consumer_assignment_snapshot equal prepared snapshot pin; add real run_id to assignment-scope-members only after acceptance.",
+    "Per-context real composed passing report role/case and full36-assertion runtime trace catalogue with exact producer sources/artifacts/context and runtime/package identities.",
+    "Surface proofs and linked consumer proofs; no accepted proof is produced here.",
+    "Every exact pinned persistence file must be genuinely consumed and included in accepted producer.artifacts. New final-stage paths/bytes require re-materialization and fresh contract digests before adoption.",
+    "Full unknown/native-owner settings backlog, source/reference/commercial/platform/whole-family gates remain."
+  ],
+  "objects": {
+    "all_current_requirements": {
+      "path": "build/p06c4-001/registration-prep002/current-requirements.json",
+      "sha256": "54d0b8460de839d06a5fd1f5791921f75897478d641fa72a5e11690df55a88b1"
+    },
+    "all_native_definitions": {
+      "path": "build/p06c4-001/registration-prep002/native-definitions.json",
+      "sha256": "eeb451cec0f7a08097adef651f97d65d94180e5030825315314b88645f78f57e"
+    },
+    "artifact_index": {
+      "path": "build/p06c4-001/registration-prep002/prepared-artifacts.json",
+      "sha256": "cd13a984c1146cbafa0f12b4b8e05996572d466b6146db7ae609e26fe20335cb"
+    },
+    "assignment_entries": {
+      "path": "build/p06c4-001/registration-prep002/assignment-entries.json",
+      "sha256": "3f82ca23fda2e4bed9a72bfc30f84f80268102ddc4906de9926969d9ad19291b"
+    },
+    "assignment_scope_without_accepted_run_id": {
+      "path": "build/p06c4-001/registration-prep002/assignment-scope-members.json",
+      "sha256": "3a0fd93bb14761bb05a763d3ab203282aeecbf8a778c19020c05dde3f581ed23"
+    },
+    "consumer_contract": {
+      "path": "build/p06c4-001/registration-prep002/consumer-contract.json",
+      "sha256": "684fa13c7660521d32bc2de434b507ad221813a538d75f15471fdcedcd1c0f65"
+    },
+    "independent_snapshot": {
+      "path": "build/p06c4-001/registration-prep002/consumer-assignments.json",
+      "sha256": "2d0707f6a345e7372d08d358864fbe087f33f7c66f4e34f2431e75b9d4e4021d"
+    },
+    "static_validation": {
+      "path": "build/p06c4-001/registration-prep002/static-validation.json",
+      "sha256": "fb2e1721554219640b73e926a57d551e17416b58679268ff57c698f2d0f6e5d9"
+    },
+    "surface_contract": {
+      "path": "build/p06c4-001/registration-prep002/surface-contract.json",
+      "sha256": "3e515d83f20582d22dce3a376fe642958108622e4a8322c9267cc47c6de09018"
+    },
+    "unknown_backlog": {
+      "path": "build/p06c4-001/registration-prep002/unknown-backlog.json",
+      "sha256": "8c38ceeadf715ba3ab441de5f1f19d3f426b010e7644ec3de310a763a861c61f"
+    }
+  },
+  "persistence_binding": "Exact consumed native/installed paths are frozen. Their hashes do not establish a passing whole run: the python_api preference case passed within a mixed358-pass/4-fail run. Root must bind genuine per-case consumption, passing report identities and these exact files in producer.artifacts before registration. Equal bytes at another path are not silently substituted.",
+  "prepared_on": "2026-10-16",
+  "preparer": {
+    "path": "build/p06c4-001/registration-prep002/materialize.py",
+    "sha256": "f04180acca101fbd4381d1400b485a03dc1418af897f36026775aab467020782"
+  },
+  "preservation": "No shared commands/inventory/cards, historical snapshot bytes, product source, runtime, build, capture or accepted proof changed. Non-commercial/research-only/unlicensed material stays excluded; eligible Fiji and full UI/editor scope remain required.",
+  "ready": [
+    "One Auto assignment with17 actual frozen source_refs and exact existing-key lookup/typed parameter.",
+    "One full existing-schema B2 surface contract: actual current requirement snapshot,4 contexts x36 assertions (proposal35 plus exact persisted-file SHA).",
+    "One full existing-schema consumer contract:4 contexts x5 typed scenarios and actual retained changed12 preference-file identities.",
+    "One independent partial-enumeration snapshot retaining all historical55 source refs/2 assignments plus current37 ownership rows drawn from52 requirements, all37 definitions and full unknown backlog."
+  ],
+  "schema": "imagejxx.parity.auto-contract-materialization",
+  "schema_version": 1,
+  "scope": "Fresh complete known ownership from current52 requirements/all37 native definitions; preserve partial unknown backlog and all historical assignments/contracts/proofs. Exact scalar raw Auto settings/surface objects only.",
+  "state": "WRITE_HOLD_MATERIALIZED_EXISTING_SCHEMA_OBJECTS_NO_ACCEPTANCE"
+}

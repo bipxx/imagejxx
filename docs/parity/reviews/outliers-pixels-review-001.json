@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "state": "scoped_pixel_gates_passed",
+  "scope": "Finite UInt8/UInt16/Float32 Remove Outliers pixel kernel and additive C++/Python APIs; editor command/UI not yet implemented",
+  "reference_runner_cases": 288,
+  "python_checks_per_context": 746,
+  "new_outlier_python_checks": 391,
+  "independent_sorted_oracle_combinations": 72,
+  "windows_native_suites": 21,
+  "linux_native_suites": 21,
+  "native_outlier_checks_per_platform": 3792,
+  "native_variance_regression_checks_per_platform": 7949,
+  "installed_public_sdk": "passed",
+  "ui_code_unchanged": true,
+  "old_operations_and_records_unchanged": true,
+  "runtime_dependencies_added": false,
+  "noncommercial_plugins_added": false,
+  "public_options_layout_changes": false,
+  "policy": "ImageJ fractional circular median, original-source halos, strict Float32 threshold comparisons, explicit Bright/Dark and inversion input, finite Float32 threshold range. No array mutation. Internal cancellation and progress reuse qualified kernel scope.",
+  "diagnostics": [
+    "reference001 pilot used different radii across inversion pairs; reference002 paired those radii",
+    "reference002 inverted-LUT setup changed detached stack processors. reference003 explicitly updates active/stack color models, asserts actual processor inversion and records observed state. 99 changed reference outputs, all inverted; no numerical implementation change.",
+    "windows001/linux001 failed only native_outliers_imagej against bad inversion reference; api001 had exactly 99 inverted reference failures. All other tests passed.",
+    "linux002 retry required a cleanup receipt for the failed ext4 scratch, which had already expired across WSL invocations. linux003 recreates the verified owned configured path; the successful artifacts were archived/verified inside that invocation. Failed-run XML/stdout/stderr retained; expired scratch contents cannot be verified.",
+    "installed001 origin assertion rejected incomplete Unspecified-only installation. install002 adds processing-python, and installed002 proves exact installed source/native origins without weakening assertions."
+  ],
+  "remaining": [
+    "Qualify editor LUT polarity for named/custom/channel display modes",
+    "Strict command/operation and resource admission",
+    "Both shared ImGui hosts: radius/threshold/Bright-Dark/preview/stack/targets",
+    "Replay/rebind, workflow/session, new-document and Undo/Redo qualification",
+    "Top Hat, Remove NaNs, RGB/nonfinite profiles and wider release gates"
+  ],
+  "release_counts": {
+    "all99_in_progress": 42,
+    "all99_open": 57,
+    "all99_complete": 0,
+    "source901": "unchanged"
+  }
+}

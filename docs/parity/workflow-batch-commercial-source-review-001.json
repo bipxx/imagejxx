@@ -1,0 +1,313 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_owned_increment",
+  "review_type": "Root authorship/integration attestation, not independent legal review",
+  "license": "Existing project MIT for original native scientific session batch and shared ImGui integration",
+  "new_dependencies": [],
+  "restricted_features_added": false,
+  "imported_third_party_product_code": [],
+  "new_fonts": [],
+  "sources": [
+    {
+      "logical_path": "CMakeLists.txt",
+      "before": {
+        "path": "build/p06q-workflow-batch001/before001/CMakeLists.txt",
+        "bytes": 60399,
+        "sha256": "219d0fdf10920cdca59dc39ee7f29fde3111f2feff88c400a9eafff332105a47"
+      },
+      "after": {
+        "path": "build/p06q-workflow-batch001/after001/CMakeLists.txt",
+        "bytes": 60808,
+        "sha256": "9b048218089638755eed94f01641a3e4742bb103d65b29af0d6961b381fefc36"
+      },
+      "current": {
+        "path": "CMakeLists.txt",
+        "bytes": 60808,
+        "sha256": "9b048218089638755eed94f01641a3e4742bb103d65b29af0d6961b381fefc36"
+      }
+    },
+    {
+      "logical_path": "src/desktop/main.cpp",
+      "before": {
+        "path": "build/p06q-workflow-batch001/before001/src/desktop/main.cpp",
+        "bytes": 39467,
+        "sha256": "67b35d7ff2636ded98a03d234aedff30f753ca128ee0c3fab70b9abac432d190"
+      },
+      "after": {
+        "path": "build/p06q-workflow-batch001/after001/src/desktop/main.cpp",
+        "bytes": 39935,
+        "sha256": "b31382148e37eb87c6327e628d5f7c8eebb60020211468058fc3f80489bf2f59"
+      },
+      "current": {
+        "path": "src/desktop/main.cpp",
+        "bytes": 39935,
+        "sha256": "b31382148e37eb87c6327e628d5f7c8eebb60020211468058fc3f80489bf2f59"
+      }
+    },
+    {
+      "logical_path": "src/desktop/native_workflow_panel.cpp",
+      "before": {
+        "path": "build/p06q-workflow-batch001/before001/src/desktop/native_workflow_panel.cpp",
+        "bytes": 30156,
+        "sha256": "f991f2813457b56186af5df0e71d4ddbffaab0f1ea10d05b3fd21aaff7a5bf05"
+      },
+      "after": {
+        "path": "build/p06q-workflow-batch001/after001/src/desktop/native_workflow_panel.cpp",
+        "bytes": 40723,
+        "sha256": "000d810fb66d5cecd9dcfb35edb0b2023fd2d23eb23cfca9cd45ec7eff6dd06e"
+      },
+      "current": {
+        "path": "src/desktop/native_workflow_panel.cpp",
+        "bytes": 40723,
+        "sha256": "000d810fb66d5cecd9dcfb35edb0b2023fd2d23eb23cfca9cd45ec7eff6dd06e"
+      }
+    },
+    {
+      "logical_path": "src/desktop/native_workflow_panel.hpp",
+      "before": {
+        "path": "build/p06q-workflow-batch001/before001/src/desktop/native_workflow_panel.hpp",
+        "bytes": 1483,
+        "sha256": "7b46201f20da3360d28517a70084f3a324f94b6688d5686a186da7f620dfc22f"
+      },
+      "after": {
+        "path": "build/p06q-workflow-batch001/after001/src/desktop/native_workflow_panel.hpp",
+        "bytes": 1733,
+        "sha256": "0b90be2dd432c33dc3c199b19206791e3f4ccc25b292ef34586bc9c15b7d018d"
+      },
+      "current": {
+        "path": "src/desktop/native_workflow_panel.hpp",
+        "bytes": 1733,
+        "sha256": "0b90be2dd432c33dc3c199b19206791e3f4ccc25b292ef34586bc9c15b7d018d"
+      }
+    },
+    {
+      "logical_path": "src/desktop/python.cpp",
+      "before": {
+        "path": "build/p06q-workflow-batch001/before001/src/desktop/python.cpp",
+        "bytes": 42088,
+        "sha256": "018d2bb357c6e8d9e108ac36193064f2c17c09ea44555bf3304712a5e535a0a6"
+      },
+      "after": {
+        "path": "build/p06q-workflow-batch001/after001/src/desktop/python.cpp",
+        "bytes": 42307,
+        "sha256": "a8ed9087a9509332dd8ecd93863569b0289357f642cd2ee7a48e3c4240433a22"
+      },
+      "current": {
+        "path": "src/desktop/python.cpp",
+        "bytes": 42307,
+        "sha256": "a8ed9087a9509332dd8ecd93863569b0289357f642cd2ee7a48e3c4240433a22"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_ui_probe.hpp",
+      "before": {
+        "path": "build/p06q-workflow-batch001/before001/src/desktop/roi_import_ui_probe.hpp",
+        "bytes": 1601,
+        "sha256": "da78ae5f6068ad152a5b8a52298a7ff53e040e5cfc31541fb55ef2eaf64c9784"
+      },
+      "after": {
+        "path": "build/p06q-workflow-batch001/after001/src/desktop/roi_import_ui_probe.hpp",
+        "bytes": 1684,
+        "sha256": "b3a1bfb3cd4f453c1108e70f2adcf191897e5664aea404c304b87a6e92388a46"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_ui_probe.hpp",
+        "bytes": 1684,
+        "sha256": "b3a1bfb3cd4f453c1108e70f2adcf191897e5664aea404c304b87a6e92388a46"
+      }
+    },
+    {
+      "logical_path": "src/desktop/window.cpp",
+      "before": {
+        "path": "build/p06q-workflow-batch001/before001/src/desktop/window.cpp",
+        "bytes": 581249,
+        "sha256": "23adb83d4b96ee3ad06324be8df879f602d31e8c21a963749efbb969692cd003"
+      },
+      "after": {
+        "path": "build/p06q-workflow-batch001/after001/src/desktop/window.cpp",
+        "bytes": 582730,
+        "sha256": "ecededdc1240b3fb1841b40fac4db1593122ef0f12ed00a8076e64c07d31ef35"
+      },
+      "current": {
+        "path": "src/desktop/window.cpp",
+        "bytes": 582730,
+        "sha256": "ecededdc1240b3fb1841b40fac4db1593122ef0f12ed00a8076e64c07d31ef35"
+      }
+    },
+    {
+      "logical_path": "src/imagejxx/__init__.py",
+      "before": {
+        "path": "build/p06q-workflow-batch001/before001/src/imagejxx/__init__.py",
+        "bytes": 62970,
+        "sha256": "d1c70d15502fd4f93372b420df98f94b529bf661fb6dc53b7278685b63fe7657"
+      },
+      "after": {
+        "path": "build/p06q-workflow-batch001/after001/src/imagejxx/__init__.py",
+        "bytes": 63158,
+        "sha256": "a3f0e62bba6f55617efdf1bd0e58de6001ab26d73fc39040ea7bcfa0dba4a97a"
+      },
+      "current": {
+        "path": "src/imagejxx/__init__.py",
+        "bytes": 63158,
+        "sha256": "a3f0e62bba6f55617efdf1bd0e58de6001ab26d73fc39040ea7bcfa0dba4a97a"
+      }
+    },
+    {
+      "logical_path": "src/native/bindings.cpp",
+      "before": {
+        "path": "build/p06q-workflow-batch001/before001/src/native/bindings.cpp",
+        "bytes": 30085,
+        "sha256": "86a106f14235e352806807343f7a6a6bc95dfcec561fe22d3e7f88366397fc26"
+      },
+      "after": {
+        "path": "build/p06q-workflow-batch001/after001/src/native/bindings.cpp",
+        "bytes": 30085,
+        "sha256": "86a106f14235e352806807343f7a6a6bc95dfcec561fe22d3e7f88366397fc26"
+      },
+      "current": {
+        "path": "src/native/bindings.cpp",
+        "bytes": 30085,
+        "sha256": "86a106f14235e352806807343f7a6a6bc95dfcec561fe22d3e7f88366397fc26"
+      }
+    },
+    {
+      "logical_path": "src/native/native_workflow_bindings.cpp",
+      "before": {
+        "path": "build/p06q-workflow-batch001/before001/src/native/native_workflow_bindings.cpp",
+        "bytes": 7494,
+        "sha256": "9f3cd9d68b4c7a43e716c9e4114b16bdc2799a66392404ef1f039b8dfe1ba3cb"
+      },
+      "after": {
+        "path": "build/p06q-workflow-batch001/after001/src/native/native_workflow_bindings.cpp",
+        "bytes": 14522,
+        "sha256": "c45a81cb7925154e65324d4f17db5bc162f8efa21790e5a51d6b28a443ebe989"
+      },
+      "current": {
+        "path": "src/native/native_workflow_bindings.cpp",
+        "bytes": 14522,
+        "sha256": "c45a81cb7925154e65324d4f17db5bc162f8efa21790e5a51d6b28a443ebe989"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_imagej_roi_zip_export_ui.py",
+      "before": {
+        "path": "build/p06q-workflow-batch001/before001/tests/python/test_imagej_roi_zip_export_ui.py",
+        "bytes": 6415,
+        "sha256": "150cf42f036acec3eabec91543684bad7c4cb20d5122853409a55447735e4862"
+      },
+      "after": {
+        "path": "build/p06q-workflow-batch001/after001/tests/python/test_imagej_roi_zip_export_ui.py",
+        "bytes": 6442,
+        "sha256": "cc828c823bb45774abf5fba0b6dad684c0c7a189152c385311cb946f86fb3d3b"
+      },
+      "current": {
+        "path": "tests/python/test_imagej_roi_zip_export_ui.py",
+        "bytes": 6442,
+        "sha256": "cc828c823bb45774abf5fba0b6dad684c0c7a189152c385311cb946f86fb3d3b"
+      }
+    },
+    {
+      "logical_path": "include/imagejxx/native_workflow_batch.hpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-workflow-batch001/after001/include/imagejxx/native_workflow_batch.hpp",
+        "bytes": 3161,
+        "sha256": "7581cce573ab80ce537be755ced043f9902ab62693582e3ae89d75ff3138fc24"
+      },
+      "current": {
+        "path": "include/imagejxx/native_workflow_batch.hpp",
+        "bytes": 3161,
+        "sha256": "7581cce573ab80ce537be755ced043f9902ab62693582e3ae89d75ff3138fc24"
+      }
+    },
+    {
+      "logical_path": "src/native/native_workflow_batch.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-workflow-batch001/after001/src/native/native_workflow_batch.cpp",
+        "bytes": 14609,
+        "sha256": "0c057b566d1f3b4a222d31faee2b86659b14b0fcce33a7f886a31bd02c618a4e"
+      },
+      "current": {
+        "path": "src/native/native_workflow_batch.cpp",
+        "bytes": 14609,
+        "sha256": "0c057b566d1f3b4a222d31faee2b86659b14b0fcce33a7f886a31bd02c618a4e"
+      }
+    },
+    {
+      "logical_path": "src/native/native_workflow_batch_internal.hpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-workflow-batch001/after001/src/native/native_workflow_batch_internal.hpp",
+        "bytes": 426,
+        "sha256": "acc4360b0fc7397aececc97d35132c88b8f8bcc9d642bad26f2e12d61e3c1eac"
+      },
+      "current": {
+        "path": "src/native/native_workflow_batch_internal.hpp",
+        "bytes": 426,
+        "sha256": "acc4360b0fc7397aececc97d35132c88b8f8bcc9d642bad26f2e12d61e3c1eac"
+      }
+    },
+    {
+      "logical_path": "src/desktop/native_workflow_batch_ui_probe.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-workflow-batch001/after001/src/desktop/native_workflow_batch_ui_probe.cpp",
+        "bytes": 13532,
+        "sha256": "81a7fcd8f3fc38308f41dfa3bd5be1858f0120c916f22e7516c1b0059514f651"
+      },
+      "current": {
+        "path": "src/desktop/native_workflow_batch_ui_probe.cpp",
+        "bytes": 13532,
+        "sha256": "81a7fcd8f3fc38308f41dfa3bd5be1858f0120c916f22e7516c1b0059514f651"
+      }
+    },
+    {
+      "logical_path": "tests/native/test_native_workflow_batch.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-workflow-batch001/after001/tests/native/test_native_workflow_batch.cpp",
+        "bytes": 6055,
+        "sha256": "53f62f177f7604a42323758352ec4f50a5ac39b4e77515a48c013118ec5eac4c"
+      },
+      "current": {
+        "path": "tests/native/test_native_workflow_batch.cpp",
+        "bytes": 6055,
+        "sha256": "53f62f177f7604a42323758352ec4f50a5ac39b4e77515a48c013118ec5eac4c"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_native_workflow_batch.py",
+      "before": null,
+      "after": {
+        "path": "build/p06q-workflow-batch001/after001/tests/python/test_native_workflow_batch.py",
+        "bytes": 10176,
+        "sha256": "c80833b195e6f57212fc79697cf4cce742e813960c42e4664a7289ae80a2e3e1"
+      },
+      "current": {
+        "path": "tests/python/test_native_workflow_batch.py",
+        "bytes": 10176,
+        "sha256": "c80833b195e6f57212fc79697cf4cce742e813960c42e4664a7289ae80a2e3e1"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_native_workflow_batch_ui.py",
+      "before": null,
+      "after": {
+        "path": "build/p06q-workflow-batch001/after001/tests/python/test_native_workflow_batch_ui.py",
+        "bytes": 5464,
+        "sha256": "bfc9c8e48a13eaadb9fdab8e0c0d07f9ab327b6132674e20bb275580f3e2f9b1"
+      },
+      "current": {
+        "path": "tests/python/test_native_workflow_batch_ui.py",
+        "bytes": 5464,
+        "sha256": "bfc9c8e48a13eaadb9fdab8e0c0d07f9ab327b6132674e20bb275580f3e2f9b1"
+      }
+    }
+  ],
+  "handoff": {
+    "path": "build/p06q-workflow-batch001/workflow-batch-handoff001.json",
+    "bytes": 16023,
+    "sha256": "9aafbd9ee9d152c2d44431fe5388b0627f483788ff623740e2784ca72b909e83"
+  }
+}

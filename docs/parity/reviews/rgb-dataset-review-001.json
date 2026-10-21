@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "state": "scoped_rgb_dataset_command_verified",
+  "api": "resolve_rgb_dataset_command / prepare_rgb_dataset",
+  "cpp_header": "imagejxx/rgb_dataset_command.hpp",
+  "modes": [
+    "per_plane_preserves_TCZ",
+    "composite_collapses_C_to_one"
+  ],
+  "annotation_policy": "All C-positioned annotations map to C0; wildcards retained; changed labels retained in provenance",
+  "reference_scope": "111 pinned ImageJ processor cases reused; composite axis/annotation policy is native and is not full ImageJ editor parity",
+  "new_python_cases": 35,
+  "native_windows_suites": 20,
+  "linux_native_suites": 4,
+  "source_cases": 617,
+  "installed_cases": 637,
+  "focused_conversion_cases": 635,
+  "selected_axis_regressions": 630,
+  "api_cases": 9,
+  "startup_cases": 10,
+  "evidence": [
+    {
+      "path": "build/p06zo-rgb-dataset001/build002/run001.json",
+      "bytes": 9483,
+      "sha256": "c9aaf0362693c0ba51cbfa1835d4413021e60934c4c01cd0d2674d25d829aa6a"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/focused003/run001.json",
+      "bytes": 1374,
+      "sha256": "e3a5495941ed596d022668dd631f64e916fc35039147e947ead0a0c6f5236836"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/axis003/run001.json",
+      "bytes": 1371,
+      "sha256": "e4eb4cf5ac87b20f277aeaff86a50891967b1b03c8b96db2f14fcda44bbb0b6e"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/source001/run001.json",
+      "bytes": 1387,
+      "sha256": "02d12a47b0909b6076980931f223e7143de3f7b881c6c9b5087e0d5a47d13b44"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/install001/run001.json",
+      "bytes": 7219,
+      "sha256": "7a60418f6b3665bdf1c6cbc73f0400ccdba1b023bd0cd5077b5f688f03366f26"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/installed-cpp001/run001.json",
+      "bytes": 3096,
+      "sha256": "f0b583dbd3b314630c6c45a41e163169eb0b7cb81b1849384312a0b017385824"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/installed-python001/run001.json",
+      "bytes": 1713,
+      "sha256": "5f84792595279a84d6be1b1975daf2f2ec4ab75072962e4a989727b2fc1ec26d"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/launcher001/run001.json",
+      "bytes": 3347,
+      "sha256": "2e8e8c1302abb8bf481e35fde850115d57c4e880084083d4661d4a8e651629dc"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/api001/run001.json",
+      "bytes": 1350,
+      "sha256": "d64553048757f9d51b4118fe2769e8d9e0b71ab9932143738977dd7c16b6b3ab"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/regress001/run001.json",
+      "bytes": 18378,
+      "sha256": "08d7450eb14cfb7f3b8c7b1bd2b6461ed20cf2388ccb4c551392228ad9392114"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/paths-sdk001/run001.json",
+      "bytes": 4262,
+      "sha256": "6fbb52a2197a3c2af7a60ce6046c56ef78b2be1095655a08fdc7e27397f077bd"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/dataset-sdk001/run001.json",
+      "bytes": 4269,
+      "sha256": "cd072f5b8f55555f6b1b4656c32575b9afa78dea1b973ef0c6c7107611414028"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/baseline001/run001.json",
+      "bytes": 1378,
+      "sha256": "628307e4480785071a9d3318406bd8c42a475c2e191aa1cc691ec737326047cc"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/process-cpp001/run001.json",
+      "bytes": 1274,
+      "sha256": "3126e29967b0e7b4f59206627e81bf1dc96e473ae87adb5b3f3012618ae25783"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/process-installed-cpp001/run001.json",
+      "bytes": 1729,
+      "sha256": "d8a340cb43bb153a4c42fa29d91d0cf8e0342e48456b1d18de2cd563c169195a"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/linux002/run001.json",
+      "bytes": 830,
+      "sha256": "208fd35b9ce69f72030f5c0fe4f2f3d4c9c62c6eb7c44614dd4ad5a0732c652f"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/focused001/run001.json",
+      "bytes": 1565,
+      "sha256": "02df2499ca1ecf31b6eecb329ba63ad54aca39d63fc6755dabda7b1756432397"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/focused002/run001.json",
+      "bytes": 1578,
+      "sha256": "67f2fdf9103c1e2c0bd5912e571e8d26e718fb44ebdc1fe43d327abc4740d585"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/axis001/run001.json",
+      "bytes": 1574,
+      "sha256": "e345556a80094e558dbd021181704370d118878123d553da99b0f04486bd15c4"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/build002/native.xml",
+      "bytes": 6159,
+      "sha256": "f77ed687d29f7866aefc2df297057227ad1d8f12a3ee2c232dd421b6143a0957"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/linux002/native.xml",
+      "bytes": 1096,
+      "sha256": "eb1ea0c5d48dc7c4c719c48e2dd2d657d43e95a45798ebc35a5380b981870125"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/source001/pytest.xml",
+      "bytes": 86385,
+      "sha256": "fed84bc42454a9942e7c75f34df3001a60846870276b8a7374be187c2a23afdd"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/installed-python001/pytest.xml",
+      "bytes": 88816,
+      "sha256": "e218a0f563bc71d27841957c0d98eba012727116dac4c3f76402cca05e7a3b65"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/focused003/pytest.xml",
+      "bytes": 94853,
+      "sha256": "0ec8da211ba2827bcdb08217e911389c344444a783c7ec3376b916e6e5893d8f"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/axis003/pytest.xml",
+      "bytes": 95853,
+      "sha256": "d89c8272be5e3575f1d2d41ba0bde37b65c26bbc5ed26c135f1029fda3cc9043"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/policy001.json",
+      "bytes": 425,
+      "sha256": "9097e72fe0554464f51df7a224c9a5ab44cdbd6bd8384ba3cd9dbd80e86dc986"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/linux001/ext4-scratch001.json",
+      "bytes": 1774,
+      "sha256": "01a3979842f82fd2927580dbf0476829e4eaf0bd048e9aec942ecb012a1da88f"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/linux001/ext4-scratch001.zip",
+      "bytes": 6389,
+      "sha256": "552d83cc8c716941400d1367e0a3daf49997a99e1af8ee1868d3943633c2fa2b"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/linux002/ext4-scratch001.json",
+      "bytes": 1765,
+      "sha256": "da7ff2a0537118da79b956313078c267351117ff7c26a334f220f20fcb6eb199"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/linux002/ext4-scratch001.zip",
+      "bytes": 6370,
+      "sha256": "8a26c373ae1e9b43babd9bd9063797082588061341433de5c0ef6b1994f82310"
+    },
+    {
+      "path": "build/p06zo-rgb-dataset001/cleanup001.json",
+      "bytes": 351652,
+      "sha256": "e5850e869aa8058f7f1d275ae70b5360fdd2b2953f725a2ccbeac0e8414e52ec"
+    }
+  ],
+  "remaining": [
+    "RGB scientific menu/review/preview/portable recording and both-host input proof",
+    "Separate loss-aware C-to-Z flattening; RGB/HSB stack interchange; indexed quantization/global palette and round trips",
+    "Full ImageJ composite/annotation/editor/density/threshold/LUT reference, resource/platform/release checks; historical fingerprint requalification",
+    "All99 remains42/57/0; Source901 unchanged"
+  ],
+  "scientific_rgb_menu_enabled": false,
+  "profile_accepted": false,
+  "family_completed": false,
+  "broad_goal": "active",
+  "full_plan_gate": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed"
+}

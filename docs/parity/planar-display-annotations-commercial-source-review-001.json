@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_owned_increment",
+  "review_type": "Root authorship/integration attestation, not independent legal review",
+  "license": "Existing project MIT for original typed display payloads, bounded persistence/commands, Python API and tests",
+  "new_dependencies": [],
+  "restricted_features_added": false,
+  "imported_third_party_product_code": [],
+  "sources": [
+    {
+      "logical_path": "CMakeLists.txt",
+      "before": {
+        "path": "build/p06q-display-annotations001/before001/CMakeLists.txt",
+        "bytes": 57726,
+        "sha256": "7f5b0bc17f474e1d6844a1a3a81bc1aa3b998ba0c3cfeedcf32a2a2e6658e9c4"
+      },
+      "after": {
+        "path": "build/p06q-display-annotations001/held001/after/CMakeLists.txt",
+        "bytes": 58209,
+        "sha256": "d4928428913245f84924f2bd3ece448c029e77e286b7333000b6a5e57b450c74"
+      },
+      "current": {
+        "path": "CMakeLists.txt",
+        "bytes": 58209,
+        "sha256": "d4928428913245f84924f2bd3ece448c029e77e286b7333000b6a5e57b450c74"
+      }
+    },
+    {
+      "logical_path": "include/imagejxx/planar_display_annotation_command.hpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-display-annotations001/held001/after/include/imagejxx/planar_display_annotation_command.hpp",
+        "bytes": 2311,
+        "sha256": "7a18a2c939e9768376f088ed3d20048c018c6fd073576e4ea3d2dde68b21ad48"
+      },
+      "current": {
+        "path": "include/imagejxx/planar_display_annotation_command.hpp",
+        "bytes": 2311,
+        "sha256": "7a18a2c939e9768376f088ed3d20048c018c6fd073576e4ea3d2dde68b21ad48"
+      }
+    },
+    {
+      "logical_path": "include/imagejxx/planar_display_annotations.hpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-display-annotations001/held001/after/include/imagejxx/planar_display_annotations.hpp",
+        "bytes": 2700,
+        "sha256": "e2d79b88a43570758ec06762f8d52e9a73765f049066caaad03d56a45e255a22"
+      },
+      "current": {
+        "path": "include/imagejxx/planar_display_annotations.hpp",
+        "bytes": 2700,
+        "sha256": "e2d79b88a43570758ec06762f8d52e9a73765f049066caaad03d56a45e255a22"
+      }
+    },
+    {
+      "logical_path": "src/imagejxx/__init__.py",
+      "before": {
+        "path": "build/p06q-display-annotations001/before001/src/imagejxx/__init__.py",
+        "bytes": 58202,
+        "sha256": "2d164b3abd475fa6078fd36fa2efef44572bdad73c755c7a6f015a85bda44dc7"
+      },
+      "after": {
+        "path": "build/p06q-display-annotations001/held001/after/src/imagejxx/__init__.py",
+        "bytes": 59407,
+        "sha256": "d6a297d1480166ddd7dc1ad7829365d54e247afa0bb97a1eebe3060c563a3a50"
+      },
+      "current": {
+        "path": "src/imagejxx/__init__.py",
+        "bytes": 59407,
+        "sha256": "d6a297d1480166ddd7dc1ad7829365d54e247afa0bb97a1eebe3060c563a3a50"
+      }
+    },
+    {
+      "logical_path": "src/native/bindings.cpp",
+      "before": {
+        "path": "build/p06q-display-annotations001/before001/src/native/bindings.cpp",
+        "bytes": 29636,
+        "sha256": "d82d0c554186a3775b2bae8613702a31a1369108f516194acc004dd51aaf0df0"
+      },
+      "after": {
+        "path": "build/p06q-display-annotations001/held001/after/src/native/bindings.cpp",
+        "bytes": 29735,
+        "sha256": "dd3a40797e3695d2d11cf026e52291c96fdbd24a6321d693a0c4bad5390bed85"
+      },
+      "current": {
+        "path": "src/native/bindings.cpp",
+        "bytes": 29735,
+        "sha256": "dd3a40797e3695d2d11cf026e52291c96fdbd24a6321d693a0c4bad5390bed85"
+      }
+    },
+    {
+      "logical_path": "src/native/display_annotation_internal.hpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-display-annotations001/held001/after/src/native/display_annotation_internal.hpp",
+        "bytes": 468,
+        "sha256": "668a701d9e58de280d04336350ac2479754700c0d695c4caf3a5d4a563de0bed"
+      },
+      "current": {
+        "path": "src/native/display_annotation_internal.hpp",
+        "bytes": 468,
+        "sha256": "668a701d9e58de280d04336350ac2479754700c0d695c4caf3a5d4a563de0bed"
+      }
+    },
+    {
+      "logical_path": "src/native/document.cpp",
+      "before": {
+        "path": "build/p06q-display-annotations001/before001/src/native/document.cpp",
+        "bytes": 51870,
+        "sha256": "1399c397a4124499fd85a91cf67a7710a5ed359e36d2c13c418774d7bb23cdd8"
+      },
+      "after": {
+        "path": "build/p06q-display-annotations001/held001/after/src/native/document.cpp",
+        "bytes": 51967,
+        "sha256": "5ceb678fe101b758572c909f55096d1f73a486b7d6376cf0f019c179c9ceaa04"
+      },
+      "current": {
+        "path": "src/native/document.cpp",
+        "bytes": 51967,
+        "sha256": "5ceb678fe101b758572c909f55096d1f73a486b7d6376cf0f019c179c9ceaa04"
+      }
+    },
+    {
+      "logical_path": "src/native/planar_display_annotation_command.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-display-annotations001/held001/after/src/native/planar_display_annotation_command.cpp",
+        "bytes": 9304,
+        "sha256": "77cc7225d1d3b0f627c052ebfbc8bfcdf18bdabded939ab7fbcc3a9b424bf162"
+      },
+      "current": {
+        "path": "src/native/planar_display_annotation_command.cpp",
+        "bytes": 9304,
+        "sha256": "77cc7225d1d3b0f627c052ebfbc8bfcdf18bdabded939ab7fbcc3a9b424bf162"
+      }
+    },
+    {
+      "logical_path": "src/native/planar_display_annotations.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-display-annotations001/held001/after/src/native/planar_display_annotations.cpp",
+        "bytes": 18248,
+        "sha256": "f410912bfedabdc2fcfbf645e4ae21a59fe658022abd4bee3b2872a2f6067a76"
+      },
+      "current": {
+        "path": "src/native/planar_display_annotations.cpp",
+        "bytes": 18248,
+        "sha256": "f410912bfedabdc2fcfbf645e4ae21a59fe658022abd4bee3b2872a2f6067a76"
+      }
+    },
+    {
+      "logical_path": "src/native/planar_display_annotations_bindings.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-display-annotations001/held001/after/src/native/planar_display_annotations_bindings.cpp",
+        "bytes": 14482,
+        "sha256": "d5ff0c02d2f88e51c800fa2f1bd16640289200a2cb864e13c9446946317258bf"
+      },
+      "current": {
+        "path": "src/native/planar_display_annotations_bindings.cpp",
+        "bytes": 14482,
+        "sha256": "d5ff0c02d2f88e51c800fa2f1bd16640289200a2cb864e13c9446946317258bf"
+      }
+    },
+    {
+      "logical_path": "tests/native/test_planar_display_annotations.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-display-annotations001/held001/after/tests/native/test_planar_display_annotations.cpp",
+        "bytes": 4190,
+        "sha256": "4b4c69bf70c918dc893d2517315f1ecc3e52d6cae1e8f5374f7225bc316e3e6d"
+      },
+      "current": {
+        "path": "tests/native/test_planar_display_annotations.cpp",
+        "bytes": 4190,
+        "sha256": "4b4c69bf70c918dc893d2517315f1ecc3e52d6cae1e8f5374f7225bc316e3e6d"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_planar_display_annotations.py",
+      "before": null,
+      "after": {
+        "path": "build/p06q-display-annotations001/held001/after/tests/python/test_planar_display_annotations.py",
+        "bytes": 12924,
+        "sha256": "52b034333d4c6fe4278aa07c8e286dca81ac0724557b4cf824db5b0d3cdd3533"
+      },
+      "current": {
+        "path": "tests/python/test_planar_display_annotations.py",
+        "bytes": 12924,
+        "sha256": "52b034333d4c6fe4278aa07c8e286dca81ac0724557b4cf824db5b0d3cdd3533"
+      }
+    }
+  ]
+}

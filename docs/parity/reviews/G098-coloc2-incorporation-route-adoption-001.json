@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "id": "G098-coloc2-incorporation-route-adoption-001",
+  "state": "adopted_engineering_route_no_commercial_or_runtime_acceptance",
+  "family_id": "G098",
+  "milestone": "M11-G",
+  "selected_route": "independently_authored_native_cpp_reference_only_java",
+  "proposal": {
+    "path": "docs/parity/reviews/G098-coloc2-incorporation-route-proposal-001.json",
+    "bytes": 73424,
+    "sha256": "e8ddf80c473adcd4366437067c044e7f1c8c4316080ffe4d6c83d8392bcf6b53"
+  },
+  "decision": "Implement the pinned Coloc2 workflow with independently authored C++ processing, commands, results and report services, the shared Dear ImGui panels and Python bindings. Upstream Java sources and JARs remain reference evidence only; do not copy, translate, link, bundle or execute them in the shipped product.",
+  "incorporated_upstream_code_members": [],
+  "incorporated_upstream_assets": [],
+  "shipped_java_runtime_or_fiji_dependency_graph": [],
+  "complete_scope_preserved": {
+    "candidate_ids": [
+      "R-7a864ddce4217b0c98d20c66",
+      "R-c010986b86738ef79b0d5096",
+      "R-f33958f69ee7ab7bac674a29"
+    ],
+    "workflow_groups": "All eleven W01-W11 groups in the pinned proposal, all commercially eligible discovered options and applicable C++/Python/shared ImGui interactions remain required.",
+    "reports": "Retain full applicable report/PDF behavior. Coefficient-only or CSV-only output cannot substitute for it."
+  },
+  "remaining_gates": [
+    "Extract the exact options, defaults and lifetimes of all three pinned descriptors; their option inventories are still null.",
+    "Settle the typed channel-pair, axis, ROI/mask, calibration, threshold, statistics, results, plots, report and replay contracts with literal expectations.",
+    "Qualify independent reference inputs and execution separately from incorporation and product distribution.",
+    "Review exact new owned implementations, derivation, native dependencies and redistributed assets before incorporation or shipment.",
+    "Deliver every retained workflow and option through applicable C++ API, Python API and both ImGui launch modes, including resource, history, persistence and release checks."
+  ],
+  "commercial_boundary": "Route selection is not a clean-room, non-derivative or legal eligibility finding. Preserve all existing root Coloc2, iText, glyphlist, AFM and transitive decisions at their original scope. Pending, NC, research-only and unlicensed incorporated material remains excluded; copyleft alone is not a non-commercial restriction.",
+  "alternate_route_trigger": "Any proposed copied, translated, linked or distributed upstream member requires a separately reviewed route/dependency/material decision before that member is incorporated.",
+  "next_action": "One bounded reference owner produces the complete three-descriptor option/default map and consumed native workflow contract. Reuse retained source/resource reviews; do not repeat unchanged Java dependency leaves or wait for unrelated whole-family completion.",
+  "manifest_status_changes": false,
+  "family_status_change": false,
+  "runtime_acceptance": false,
+  "source_eligibility_acceptance": false,
+  "distribution_acceptance": false
+}

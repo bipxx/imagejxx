@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "state": "scoped_indexed_dispatch_verified",
+  "scope": "Indexed numeric type classification/conversion, Gaussian/median LUT retention, desktop metadata-only publication, guarded history and workflow conversion. No arbitrary indexed-filter or format-family certification.",
+  "reference_cases": 360,
+  "new_python_cases": 373,
+  "source_cases": 2076,
+  "installed_cases": 2076,
+  "native_windows_suites": 23,
+  "native_linux_suites": 7,
+  "installed_cpp_sdk": "passed",
+  "evidence": [
+    {
+      "path": "build/p07b-indexed-dispatch001/windows003/run001.json",
+      "bytes": 9706,
+      "sha256": "f0c21ea3e1ec65af9d0b464d05e1d738047a21b06c446bcbaa2226243bf428bb"
+    },
+    {
+      "path": "build/p07b-indexed-dispatch001/focused005/run001.json",
+      "bytes": 1390,
+      "sha256": "8281e972619f55af440218f91df4827dc259432b79765972f918b28304d04771"
+    },
+    {
+      "path": "build/p07b-indexed-dispatch001/source002/run001.json",
+      "bytes": 1401,
+      "sha256": "139910887d803d2ab8d60013d72611713cfa4958ffdcaff4525558efd5ba9919"
+    },
+    {
+      "path": "build/p07b-indexed-dispatch001/install002/run001.json",
+      "bytes": 7270,
+      "sha256": "9c83e5af26785450867885685176c1361dcd612d505c40c66ed0d49fc4f9f49f"
+    },
+    {
+      "path": "build/p07b-indexed-dispatch001/installed002/run001.json",
+      "bytes": 1716,
+      "sha256": "9617d57e13ba3cf353e2265340a1126a1183858e3ed6107c7c166e557766dfb6"
+    },
+    {
+      "path": "build/p07b-indexed-dispatch001/sdk001/run001.json",
+      "bytes": 4251,
+      "sha256": "b7896e1691629fd74232459074a731edfb23b8de30990a6676b10b4bc1b1da16"
+    },
+    {
+      "path": "build/p07b-indexed-dispatch001/rgb-cpp003/run001.json",
+      "bytes": 1267,
+      "sha256": "b455969fc1487b8f38e52d1236c0477bb475773588a04b91b8b373dc02ed7a3a"
+    },
+    {
+      "path": "build/p07b-indexed-dispatch001/rgb-installed-cpp001/run001.json",
+      "bytes": 1329,
+      "sha256": "2c1d49db52e7df0ddffb7b8c950d0291cbefe2b2a0e8105239ca7640a086d15a"
+    },
+    {
+      "path": "build/p07b-indexed-dispatch001/linux001/run001.json",
+      "bytes": 854,
+      "sha256": "7e13887b1cda6ee29b23a8c0534cf43debd2343570582ca345277b360e75f4dc"
+    },
+    {
+      "path": "build/p07b-indexed-dispatch001/windows003/native.xml",
+      "bytes": 6816,
+      "sha256": "3fcbb6e1db0a7ee542605a59fab977a5ca03caa02afea8d60ca1f3ace550a7f8"
+    },
+    {
+      "path": "build/p07b-indexed-dispatch001/linux001/native.xml",
+      "bytes": 1730,
+      "sha256": "9788f7f0af91baf77a7332dd89302f01dcedb8831003133c71c06bb4db647894"
+    },
+    {
+      "path": "build/p07b-indexed-dispatch001/source002/pytest.xml",
+      "bytes": 312189,
+      "sha256": "b5d3e9dbc23278e5fa030c89ad7f3d1b988b36267e0cc8924ddaa61a5ad72f47"
+    },
+    {
+      "path": "build/p07b-indexed-dispatch001/installed002/pytest.xml",
+      "bytes": 312189,
+      "sha256": "f0209b35a3d8b38a08f80347596d470ee0f93bafee40493460987475ed73ee5a"
+    },
+    {
+      "path": "build/p07b-indexed-dispatch001/focused005/pytest.xml",
+      "bytes": 60200,
+      "sha256": "9fd7534a5e644abb004e78d356431b1dc2540bdc61c6606d9403f5fe84bff5b4"
+    },
+    {
+      "path": "build/p07b-indexed-dispatch001/source002/source-freeze001.json",
+      "bytes": 154187,
+      "sha256": "bdbd20bb69dd11aa69e0940b216a91dd3129d4b0fa1e941bfb2fabf500bcf19a"
+    },
+    {
+      "path": "build/p07b-indexed-dispatch001/windows003/source-freeze001.json",
+      "bytes": 154186,
+      "sha256": "5e2052123addc588a169ca048ff4fb686c7b73dc5480e52c0dc2672ab0f1936b"
+    },
+    {
+      "path": "build/p07b-indexed-dispatch001/linux001/source-freeze001.json",
+      "bytes": 39883,
+      "sha256": "0167eac2d45cf289454feb75f3efde8e4665684a4daf57cb452aa86e05193559"
+    },
+    {
+      "path": "tests/fixtures/indexed-type-imagej154r.json",
+      "bytes": 11117585,
+      "sha256": "5cc378aa0d1c6c6ce2ff4775787cb6f0507352d31eab597a4fb9f9d059675270"
+    },
+    {
+      "path": "build/p07b-indexed-dispatch001/reference004/reference001.json",
+      "bytes": 11117585,
+      "sha256": "5cc378aa0d1c6c6ce2ff4775787cb6f0507352d31eab597a4fb9f9d059675270"
+    },
+    {
+      "path": "build/p07b-indexed-dispatch001/rgb-cpp003/capture001/case.json",
+      "bytes": 61882202,
+      "sha256": "40b67f5089aa2008a0016a7162709376cca3aeb5804a54c68ada1539eef21706"
+    },
+    {
+      "path": "build/p07b-indexed-dispatch001/rgb-installed-cpp001/capture001/case.json",
+      "bytes": 61879710,
+      "sha256": "79ac36be5c478acee846096fa08ad594e3019535b972eaef06ac73454e099fd0"
+    },
+    {
+      "path": "build/p07b-indexed-dispatch001/python-ui-source001.json",
+      "bytes": 61927757,
+      "sha256": "20600be718c0e5ee6754d43fdf00322c6b447675ff9f18abc377663e7a022adb"
+    },
+    {
+      "path": "build/p07b-indexed-dispatch001/python-ui-installed001.json",
+      "bytes": 61906581,
+      "sha256": "9b5ca2f2b6881fa8b6ebab91401a9e2e9d6f9c5c0868ec0012c2f5f3e1146fb8"
+    },
+    {
+      "path": "build/p07b-indexed-dispatch001/policy001.json",
+      "bytes": 308,
+      "sha256": "ade407ecf97639b8a6d15665565d81be2fc847ede0237639a9a55e31931145ee"
+    },
+    {
+      "path": "build/p07b-indexed-dispatch001/linux001/ext4-scratch001.json",
+      "bytes": 1777,
+      "sha256": "a990885e7d47a5ee0fc92df88ec0b549922490020c1bd5a18fe973ea277e8da5"
+    },
+    {
+      "path": "build/p07b-indexed-dispatch001/linux001/ext4-scratch001.zip",
+      "bytes": 6386,
+      "sha256": "884dc91ed9c972c4bc981d85d9c2dd775458d6ea0855fdf50c36c601b8377e6e"
+    },
+    {
+      "path": "build/p07b-indexed-dispatch001/cleanup001.json",
+      "bytes": 828807,
+      "sha256": "2013b9d4726222b90384e7088bc2a34ba3e2a0b388a59915e5935e932535b947"
+    }
+  ],
+  "remaining": [
+    "Qualify other indexed filter eligibility, dtype-changing palette retention/retirement and workflow behavior",
+    "Reference-qualified active threshold and channel-display numeric conversions (currently explicitly refused)",
+    "Real indexed TIFF/PNG raster/tag encoding and external palette interpretation",
+    "Broader editor/resource/platform/release obligations and historical source fingerprint requalification"
+  ],
+  "no_new_runtime_dependencies": true,
+  "no_existing_dto_layout_change": true,
+  "family_completed": false,
+  "broad_goal": "active",
+  "family_status": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  },
+  "last_full_source_release": "Source901",
+  "full_plan_gate": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed"
+}

@@ -1,0 +1,1441 @@
+{
+  "schema_version": 1,
+  "format": "owned_cases_v1",
+  "origin": "owned_deterministic",
+  "generator": "scripts/generate_xyz_fixture.py",
+  "reference_execution": false,
+  "shape_zyx": [
+    9,
+    17,
+    32
+  ],
+  "dtype": "float32",
+  "encoding": "Float32LE-ZYX-no-header",
+  "formula": "10000*z+100*y+x",
+  "spacing_xyz": [
+    0.4,
+    1.2,
+    3.0
+  ],
+  "origin_xyz": [
+    10,
+    -5,
+    2
+  ],
+  "direction": [
+    [
+      0,
+      -1,
+      0
+    ],
+    [
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      1
+    ]
+  ],
+  "unit": "um",
+  "source_sha256": "b3e0f65e2f86dd2790085a5e7023ed9a336258c7bfb73e5a1820509ecc1ae51c",
+  "tolerances": {
+    "pixels": {
+      "method": "exact",
+      "atol": 0,
+      "rtol": 0
+    },
+    "indices": {
+      "method": "exact",
+      "atol": 0,
+      "rtol": 0
+    },
+    "world_xyz": {
+      "method": "float_tolerance",
+      "atol": 1e-12,
+      "rtol": 0
+    }
+  },
+  "cases": [
+    {
+      "id": "initial",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          5,
+          3
+        ]
+      },
+      "expected": {
+        "crosshair_xyz": [
+          7,
+          5,
+          3
+        ],
+        "landmark_value": 30507,
+        "world_xyz": [
+          4.0,
+          -2.2,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "28de57c30d6e32e46829805f59e7a3d211c8678100aeff5b9bdffa0753052b68",
+          "YZ": "ae1c1a123840804ff5fe4e860eec68f7d45b48d72eb5b086e690a6e5ffa51add"
+        }
+      }
+    },
+    {
+      "id": "plain-XY-Up",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          5,
+          3
+        ],
+        "plane": "XY",
+        "key": "Up",
+        "modifiers": []
+      },
+      "expected": {
+        "crosshair_xyz": [
+          7,
+          5,
+          4
+        ],
+        "landmark_value": 40507,
+        "world_xyz": [
+          4.0,
+          -2.2,
+          14.0
+        ],
+        "plane_sha256": {
+          "XY": "0fdead42fa575d0b71b25883fcb76dd1452d676e22e32d0275159c910a78c808",
+          "XZ": "28de57c30d6e32e46829805f59e7a3d211c8678100aeff5b9bdffa0753052b68",
+          "YZ": "ae1c1a123840804ff5fe4e860eec68f7d45b48d72eb5b086e690a6e5ffa51add"
+        }
+      }
+    },
+    {
+      "id": "plain-XY-PageUp",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          5,
+          3
+        ],
+        "plane": "XY",
+        "key": "PageUp",
+        "modifiers": []
+      },
+      "expected": {
+        "crosshair_xyz": [
+          7,
+          5,
+          4
+        ],
+        "landmark_value": 40507,
+        "world_xyz": [
+          4.0,
+          -2.2,
+          14.0
+        ],
+        "plane_sha256": {
+          "XY": "0fdead42fa575d0b71b25883fcb76dd1452d676e22e32d0275159c910a78c808",
+          "XZ": "28de57c30d6e32e46829805f59e7a3d211c8678100aeff5b9bdffa0753052b68",
+          "YZ": "ae1c1a123840804ff5fe4e860eec68f7d45b48d72eb5b086e690a6e5ffa51add"
+        }
+      }
+    },
+    {
+      "id": "plain-XY-Down",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          5,
+          3
+        ],
+        "plane": "XY",
+        "key": "Down",
+        "modifiers": []
+      },
+      "expected": {
+        "crosshair_xyz": [
+          7,
+          5,
+          2
+        ],
+        "landmark_value": 20507,
+        "world_xyz": [
+          4.0,
+          -2.2,
+          8.0
+        ],
+        "plane_sha256": {
+          "XY": "121886b2db58e993f861a02509f89a91938b87585e01018b86ab32359dc495df",
+          "XZ": "28de57c30d6e32e46829805f59e7a3d211c8678100aeff5b9bdffa0753052b68",
+          "YZ": "ae1c1a123840804ff5fe4e860eec68f7d45b48d72eb5b086e690a6e5ffa51add"
+        }
+      }
+    },
+    {
+      "id": "plain-XY-PageDown",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          5,
+          3
+        ],
+        "plane": "XY",
+        "key": "PageDown",
+        "modifiers": []
+      },
+      "expected": {
+        "crosshair_xyz": [
+          7,
+          5,
+          2
+        ],
+        "landmark_value": 20507,
+        "world_xyz": [
+          4.0,
+          -2.2,
+          8.0
+        ],
+        "plane_sha256": {
+          "XY": "121886b2db58e993f861a02509f89a91938b87585e01018b86ab32359dc495df",
+          "XZ": "28de57c30d6e32e46829805f59e7a3d211c8678100aeff5b9bdffa0753052b68",
+          "YZ": "ae1c1a123840804ff5fe4e860eec68f7d45b48d72eb5b086e690a6e5ffa51add"
+        }
+      }
+    },
+    {
+      "id": "shift-XY-Left",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          5,
+          3
+        ],
+        "plane": "XY",
+        "key": "Left",
+        "modifiers": [
+          "Shift"
+        ]
+      },
+      "expected": {
+        "crosshair_xyz": [
+          6,
+          5,
+          3
+        ],
+        "landmark_value": 30506,
+        "world_xyz": [
+          4.0,
+          -2.6,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "28de57c30d6e32e46829805f59e7a3d211c8678100aeff5b9bdffa0753052b68",
+          "YZ": "0f3321726e9d04fd70dbf1623dda4996fea1e783c14fd0b7a0216d05b3ae9581"
+        }
+      }
+    },
+    {
+      "id": "shift-XY-Right",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          5,
+          3
+        ],
+        "plane": "XY",
+        "key": "Right",
+        "modifiers": [
+          "Shift"
+        ]
+      },
+      "expected": {
+        "crosshair_xyz": [
+          8,
+          5,
+          3
+        ],
+        "landmark_value": 30508,
+        "world_xyz": [
+          4.0,
+          -1.8,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "28de57c30d6e32e46829805f59e7a3d211c8678100aeff5b9bdffa0753052b68",
+          "YZ": "cee45ccb19514516c2aeb97ba1193d1affe03e1a77e334ddee06aeae9b606121"
+        }
+      }
+    },
+    {
+      "id": "shift-XY-Up",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          5,
+          3
+        ],
+        "plane": "XY",
+        "key": "Up",
+        "modifiers": [
+          "Shift"
+        ]
+      },
+      "expected": {
+        "crosshair_xyz": [
+          7,
+          4,
+          3
+        ],
+        "landmark_value": 30407,
+        "world_xyz": [
+          5.2,
+          -2.2,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "d7bcd96b0be4838b4e3d4b8bff07dcfcf182448f9532b2d746521fe6b354e44d",
+          "YZ": "ae1c1a123840804ff5fe4e860eec68f7d45b48d72eb5b086e690a6e5ffa51add"
+        }
+      }
+    },
+    {
+      "id": "shift-XY-Down",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          5,
+          3
+        ],
+        "plane": "XY",
+        "key": "Down",
+        "modifiers": [
+          "Shift"
+        ]
+      },
+      "expected": {
+        "crosshair_xyz": [
+          7,
+          6,
+          3
+        ],
+        "landmark_value": 30607,
+        "world_xyz": [
+          2.8,
+          -2.2,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "6ccb46e2843894699e3d31330c973e58fa3c136404ad0e973a936717ae27caf1",
+          "YZ": "ae1c1a123840804ff5fe4e860eec68f7d45b48d72eb5b086e690a6e5ffa51add"
+        }
+      }
+    },
+    {
+      "id": "bound-plain-XY-Down",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          5,
+          0
+        ],
+        "plane": "XY",
+        "key": "Down",
+        "modifiers": []
+      },
+      "expected": {
+        "crosshair_xyz": [
+          7,
+          5,
+          0
+        ],
+        "landmark_value": 507,
+        "world_xyz": [
+          4.0,
+          -2.2,
+          2.0
+        ],
+        "plane_sha256": {
+          "XY": "464c54785873c71ed439e5c579c19a5e8480a68a15a6c89d4be6dfc6a8cab5c6",
+          "XZ": "28de57c30d6e32e46829805f59e7a3d211c8678100aeff5b9bdffa0753052b68",
+          "YZ": "ae1c1a123840804ff5fe4e860eec68f7d45b48d72eb5b086e690a6e5ffa51add"
+        }
+      }
+    },
+    {
+      "id": "bound-plain-XY-Up",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          5,
+          8
+        ],
+        "plane": "XY",
+        "key": "Up",
+        "modifiers": []
+      },
+      "expected": {
+        "crosshair_xyz": [
+          7,
+          5,
+          8
+        ],
+        "landmark_value": 80507,
+        "world_xyz": [
+          4.0,
+          -2.2,
+          26.0
+        ],
+        "plane_sha256": {
+          "XY": "53b2bc307b6566ef8d42ffa1a9e05b6448aa37c959f886a8895926382a5d5d32",
+          "XZ": "28de57c30d6e32e46829805f59e7a3d211c8678100aeff5b9bdffa0753052b68",
+          "YZ": "ae1c1a123840804ff5fe4e860eec68f7d45b48d72eb5b086e690a6e5ffa51add"
+        }
+      }
+    },
+    {
+      "id": "bound-shift-XY-Left",
+      "input": {
+        "crosshair_xyz": [
+          0,
+          5,
+          3
+        ],
+        "plane": "XY",
+        "key": "Left",
+        "modifiers": [
+          "Shift"
+        ]
+      },
+      "expected": {
+        "crosshair_xyz": [
+          0,
+          5,
+          3
+        ],
+        "landmark_value": 30500,
+        "world_xyz": [
+          4.0,
+          -5.0,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "28de57c30d6e32e46829805f59e7a3d211c8678100aeff5b9bdffa0753052b68",
+          "YZ": "41e850480c1281926172e057a8b56cea34e277e8afc88ee335cd9855d1abf489"
+        }
+      }
+    },
+    {
+      "id": "bound-shift-XY-Right",
+      "input": {
+        "crosshair_xyz": [
+          31,
+          5,
+          3
+        ],
+        "plane": "XY",
+        "key": "Right",
+        "modifiers": [
+          "Shift"
+        ]
+      },
+      "expected": {
+        "crosshair_xyz": [
+          31,
+          5,
+          3
+        ],
+        "landmark_value": 30531,
+        "world_xyz": [
+          4.0,
+          7.4,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "28de57c30d6e32e46829805f59e7a3d211c8678100aeff5b9bdffa0753052b68",
+          "YZ": "893eadc798bc5abeef9ca6896917974b324f2dfb19145918ebae509eed9cef2e"
+        }
+      }
+    },
+    {
+      "id": "bound-shift-XY-Up",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          0,
+          3
+        ],
+        "plane": "XY",
+        "key": "Up",
+        "modifiers": [
+          "Shift"
+        ]
+      },
+      "expected": {
+        "crosshair_xyz": [
+          7,
+          0,
+          3
+        ],
+        "landmark_value": 30007,
+        "world_xyz": [
+          10.0,
+          -2.2,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "4a9bb1abc2d479871ca4c3f620db9a1277d9d5eb3904758011869f49e9b4b132",
+          "YZ": "ae1c1a123840804ff5fe4e860eec68f7d45b48d72eb5b086e690a6e5ffa51add"
+        }
+      }
+    },
+    {
+      "id": "bound-shift-XY-Down",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          16,
+          3
+        ],
+        "plane": "XY",
+        "key": "Down",
+        "modifiers": [
+          "Shift"
+        ]
+      },
+      "expected": {
+        "crosshair_xyz": [
+          7,
+          16,
+          3
+        ],
+        "landmark_value": 31607,
+        "world_xyz": [
+          -9.2,
+          -2.2,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "3cb3f99a4d0c2d485e072057a0738bb40c649664b747d72a5309799d660acf35",
+          "YZ": "ae1c1a123840804ff5fe4e860eec68f7d45b48d72eb5b086e690a6e5ffa51add"
+        }
+      }
+    },
+    {
+      "id": "plain-XZ-Up",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          5,
+          3
+        ],
+        "plane": "XZ",
+        "key": "Up",
+        "modifiers": []
+      },
+      "expected": {
+        "crosshair_xyz": [
+          7,
+          6,
+          3
+        ],
+        "landmark_value": 30607,
+        "world_xyz": [
+          2.8,
+          -2.2,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "6ccb46e2843894699e3d31330c973e58fa3c136404ad0e973a936717ae27caf1",
+          "YZ": "ae1c1a123840804ff5fe4e860eec68f7d45b48d72eb5b086e690a6e5ffa51add"
+        }
+      }
+    },
+    {
+      "id": "plain-XZ-PageUp",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          5,
+          3
+        ],
+        "plane": "XZ",
+        "key": "PageUp",
+        "modifiers": []
+      },
+      "expected": {
+        "crosshair_xyz": [
+          7,
+          6,
+          3
+        ],
+        "landmark_value": 30607,
+        "world_xyz": [
+          2.8,
+          -2.2,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "6ccb46e2843894699e3d31330c973e58fa3c136404ad0e973a936717ae27caf1",
+          "YZ": "ae1c1a123840804ff5fe4e860eec68f7d45b48d72eb5b086e690a6e5ffa51add"
+        }
+      }
+    },
+    {
+      "id": "plain-XZ-Down",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          5,
+          3
+        ],
+        "plane": "XZ",
+        "key": "Down",
+        "modifiers": []
+      },
+      "expected": {
+        "crosshair_xyz": [
+          7,
+          4,
+          3
+        ],
+        "landmark_value": 30407,
+        "world_xyz": [
+          5.2,
+          -2.2,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "d7bcd96b0be4838b4e3d4b8bff07dcfcf182448f9532b2d746521fe6b354e44d",
+          "YZ": "ae1c1a123840804ff5fe4e860eec68f7d45b48d72eb5b086e690a6e5ffa51add"
+        }
+      }
+    },
+    {
+      "id": "plain-XZ-PageDown",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          5,
+          3
+        ],
+        "plane": "XZ",
+        "key": "PageDown",
+        "modifiers": []
+      },
+      "expected": {
+        "crosshair_xyz": [
+          7,
+          4,
+          3
+        ],
+        "landmark_value": 30407,
+        "world_xyz": [
+          5.2,
+          -2.2,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "d7bcd96b0be4838b4e3d4b8bff07dcfcf182448f9532b2d746521fe6b354e44d",
+          "YZ": "ae1c1a123840804ff5fe4e860eec68f7d45b48d72eb5b086e690a6e5ffa51add"
+        }
+      }
+    },
+    {
+      "id": "shift-XZ-Left",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          5,
+          3
+        ],
+        "plane": "XZ",
+        "key": "Left",
+        "modifiers": [
+          "Shift"
+        ]
+      },
+      "expected": {
+        "crosshair_xyz": [
+          6,
+          5,
+          3
+        ],
+        "landmark_value": 30506,
+        "world_xyz": [
+          4.0,
+          -2.6,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "28de57c30d6e32e46829805f59e7a3d211c8678100aeff5b9bdffa0753052b68",
+          "YZ": "0f3321726e9d04fd70dbf1623dda4996fea1e783c14fd0b7a0216d05b3ae9581"
+        }
+      }
+    },
+    {
+      "id": "shift-XZ-Right",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          5,
+          3
+        ],
+        "plane": "XZ",
+        "key": "Right",
+        "modifiers": [
+          "Shift"
+        ]
+      },
+      "expected": {
+        "crosshair_xyz": [
+          8,
+          5,
+          3
+        ],
+        "landmark_value": 30508,
+        "world_xyz": [
+          4.0,
+          -1.8,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "28de57c30d6e32e46829805f59e7a3d211c8678100aeff5b9bdffa0753052b68",
+          "YZ": "cee45ccb19514516c2aeb97ba1193d1affe03e1a77e334ddee06aeae9b606121"
+        }
+      }
+    },
+    {
+      "id": "shift-XZ-Up",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          5,
+          3
+        ],
+        "plane": "XZ",
+        "key": "Up",
+        "modifiers": [
+          "Shift"
+        ]
+      },
+      "expected": {
+        "crosshair_xyz": [
+          7,
+          4,
+          3
+        ],
+        "landmark_value": 30407,
+        "world_xyz": [
+          5.2,
+          -2.2,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "d7bcd96b0be4838b4e3d4b8bff07dcfcf182448f9532b2d746521fe6b354e44d",
+          "YZ": "ae1c1a123840804ff5fe4e860eec68f7d45b48d72eb5b086e690a6e5ffa51add"
+        }
+      }
+    },
+    {
+      "id": "shift-XZ-Down",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          5,
+          3
+        ],
+        "plane": "XZ",
+        "key": "Down",
+        "modifiers": [
+          "Shift"
+        ]
+      },
+      "expected": {
+        "crosshair_xyz": [
+          7,
+          6,
+          3
+        ],
+        "landmark_value": 30607,
+        "world_xyz": [
+          2.8,
+          -2.2,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "6ccb46e2843894699e3d31330c973e58fa3c136404ad0e973a936717ae27caf1",
+          "YZ": "ae1c1a123840804ff5fe4e860eec68f7d45b48d72eb5b086e690a6e5ffa51add"
+        }
+      }
+    },
+    {
+      "id": "bound-plain-XZ-Down",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          0,
+          3
+        ],
+        "plane": "XZ",
+        "key": "Down",
+        "modifiers": []
+      },
+      "expected": {
+        "crosshair_xyz": [
+          7,
+          0,
+          3
+        ],
+        "landmark_value": 30007,
+        "world_xyz": [
+          10.0,
+          -2.2,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "4a9bb1abc2d479871ca4c3f620db9a1277d9d5eb3904758011869f49e9b4b132",
+          "YZ": "ae1c1a123840804ff5fe4e860eec68f7d45b48d72eb5b086e690a6e5ffa51add"
+        }
+      }
+    },
+    {
+      "id": "bound-plain-XZ-Up",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          16,
+          3
+        ],
+        "plane": "XZ",
+        "key": "Up",
+        "modifiers": []
+      },
+      "expected": {
+        "crosshair_xyz": [
+          7,
+          16,
+          3
+        ],
+        "landmark_value": 31607,
+        "world_xyz": [
+          -9.2,
+          -2.2,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "3cb3f99a4d0c2d485e072057a0738bb40c649664b747d72a5309799d660acf35",
+          "YZ": "ae1c1a123840804ff5fe4e860eec68f7d45b48d72eb5b086e690a6e5ffa51add"
+        }
+      }
+    },
+    {
+      "id": "bound-shift-XZ-Left",
+      "input": {
+        "crosshair_xyz": [
+          0,
+          5,
+          3
+        ],
+        "plane": "XZ",
+        "key": "Left",
+        "modifiers": [
+          "Shift"
+        ]
+      },
+      "expected": {
+        "crosshair_xyz": [
+          0,
+          5,
+          3
+        ],
+        "landmark_value": 30500,
+        "world_xyz": [
+          4.0,
+          -5.0,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "28de57c30d6e32e46829805f59e7a3d211c8678100aeff5b9bdffa0753052b68",
+          "YZ": "41e850480c1281926172e057a8b56cea34e277e8afc88ee335cd9855d1abf489"
+        }
+      }
+    },
+    {
+      "id": "bound-shift-XZ-Right",
+      "input": {
+        "crosshair_xyz": [
+          31,
+          5,
+          3
+        ],
+        "plane": "XZ",
+        "key": "Right",
+        "modifiers": [
+          "Shift"
+        ]
+      },
+      "expected": {
+        "crosshair_xyz": [
+          31,
+          5,
+          3
+        ],
+        "landmark_value": 30531,
+        "world_xyz": [
+          4.0,
+          7.4,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "28de57c30d6e32e46829805f59e7a3d211c8678100aeff5b9bdffa0753052b68",
+          "YZ": "893eadc798bc5abeef9ca6896917974b324f2dfb19145918ebae509eed9cef2e"
+        }
+      }
+    },
+    {
+      "id": "bound-shift-XZ-Up",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          0,
+          3
+        ],
+        "plane": "XZ",
+        "key": "Up",
+        "modifiers": [
+          "Shift"
+        ]
+      },
+      "expected": {
+        "crosshair_xyz": [
+          7,
+          0,
+          3
+        ],
+        "landmark_value": 30007,
+        "world_xyz": [
+          10.0,
+          -2.2,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "4a9bb1abc2d479871ca4c3f620db9a1277d9d5eb3904758011869f49e9b4b132",
+          "YZ": "ae1c1a123840804ff5fe4e860eec68f7d45b48d72eb5b086e690a6e5ffa51add"
+        }
+      }
+    },
+    {
+      "id": "bound-shift-XZ-Down",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          16,
+          3
+        ],
+        "plane": "XZ",
+        "key": "Down",
+        "modifiers": [
+          "Shift"
+        ]
+      },
+      "expected": {
+        "crosshair_xyz": [
+          7,
+          16,
+          3
+        ],
+        "landmark_value": 31607,
+        "world_xyz": [
+          -9.2,
+          -2.2,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "3cb3f99a4d0c2d485e072057a0738bb40c649664b747d72a5309799d660acf35",
+          "YZ": "ae1c1a123840804ff5fe4e860eec68f7d45b48d72eb5b086e690a6e5ffa51add"
+        }
+      }
+    },
+    {
+      "id": "plain-YZ-Up",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          5,
+          3
+        ],
+        "plane": "YZ",
+        "key": "Up",
+        "modifiers": []
+      },
+      "expected": {
+        "crosshair_xyz": [
+          8,
+          5,
+          3
+        ],
+        "landmark_value": 30508,
+        "world_xyz": [
+          4.0,
+          -1.8,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "28de57c30d6e32e46829805f59e7a3d211c8678100aeff5b9bdffa0753052b68",
+          "YZ": "cee45ccb19514516c2aeb97ba1193d1affe03e1a77e334ddee06aeae9b606121"
+        }
+      }
+    },
+    {
+      "id": "plain-YZ-PageUp",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          5,
+          3
+        ],
+        "plane": "YZ",
+        "key": "PageUp",
+        "modifiers": []
+      },
+      "expected": {
+        "crosshair_xyz": [
+          8,
+          5,
+          3
+        ],
+        "landmark_value": 30508,
+        "world_xyz": [
+          4.0,
+          -1.8,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "28de57c30d6e32e46829805f59e7a3d211c8678100aeff5b9bdffa0753052b68",
+          "YZ": "cee45ccb19514516c2aeb97ba1193d1affe03e1a77e334ddee06aeae9b606121"
+        }
+      }
+    },
+    {
+      "id": "plain-YZ-Down",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          5,
+          3
+        ],
+        "plane": "YZ",
+        "key": "Down",
+        "modifiers": []
+      },
+      "expected": {
+        "crosshair_xyz": [
+          6,
+          5,
+          3
+        ],
+        "landmark_value": 30506,
+        "world_xyz": [
+          4.0,
+          -2.6,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "28de57c30d6e32e46829805f59e7a3d211c8678100aeff5b9bdffa0753052b68",
+          "YZ": "0f3321726e9d04fd70dbf1623dda4996fea1e783c14fd0b7a0216d05b3ae9581"
+        }
+      }
+    },
+    {
+      "id": "plain-YZ-PageDown",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          5,
+          3
+        ],
+        "plane": "YZ",
+        "key": "PageDown",
+        "modifiers": []
+      },
+      "expected": {
+        "crosshair_xyz": [
+          6,
+          5,
+          3
+        ],
+        "landmark_value": 30506,
+        "world_xyz": [
+          4.0,
+          -2.6,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "28de57c30d6e32e46829805f59e7a3d211c8678100aeff5b9bdffa0753052b68",
+          "YZ": "0f3321726e9d04fd70dbf1623dda4996fea1e783c14fd0b7a0216d05b3ae9581"
+        }
+      }
+    },
+    {
+      "id": "shift-YZ-Left",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          5,
+          3
+        ],
+        "plane": "YZ",
+        "key": "Left",
+        "modifiers": [
+          "Shift"
+        ]
+      },
+      "expected": {
+        "crosshair_xyz": [
+          6,
+          5,
+          3
+        ],
+        "landmark_value": 30506,
+        "world_xyz": [
+          4.0,
+          -2.6,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "28de57c30d6e32e46829805f59e7a3d211c8678100aeff5b9bdffa0753052b68",
+          "YZ": "0f3321726e9d04fd70dbf1623dda4996fea1e783c14fd0b7a0216d05b3ae9581"
+        }
+      }
+    },
+    {
+      "id": "shift-YZ-Right",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          5,
+          3
+        ],
+        "plane": "YZ",
+        "key": "Right",
+        "modifiers": [
+          "Shift"
+        ]
+      },
+      "expected": {
+        "crosshair_xyz": [
+          8,
+          5,
+          3
+        ],
+        "landmark_value": 30508,
+        "world_xyz": [
+          4.0,
+          -1.8,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "28de57c30d6e32e46829805f59e7a3d211c8678100aeff5b9bdffa0753052b68",
+          "YZ": "cee45ccb19514516c2aeb97ba1193d1affe03e1a77e334ddee06aeae9b606121"
+        }
+      }
+    },
+    {
+      "id": "shift-YZ-Up",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          5,
+          3
+        ],
+        "plane": "YZ",
+        "key": "Up",
+        "modifiers": [
+          "Shift"
+        ]
+      },
+      "expected": {
+        "crosshair_xyz": [
+          7,
+          4,
+          3
+        ],
+        "landmark_value": 30407,
+        "world_xyz": [
+          5.2,
+          -2.2,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "d7bcd96b0be4838b4e3d4b8bff07dcfcf182448f9532b2d746521fe6b354e44d",
+          "YZ": "ae1c1a123840804ff5fe4e860eec68f7d45b48d72eb5b086e690a6e5ffa51add"
+        }
+      }
+    },
+    {
+      "id": "shift-YZ-Down",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          5,
+          3
+        ],
+        "plane": "YZ",
+        "key": "Down",
+        "modifiers": [
+          "Shift"
+        ]
+      },
+      "expected": {
+        "crosshair_xyz": [
+          7,
+          6,
+          3
+        ],
+        "landmark_value": 30607,
+        "world_xyz": [
+          2.8,
+          -2.2,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "6ccb46e2843894699e3d31330c973e58fa3c136404ad0e973a936717ae27caf1",
+          "YZ": "ae1c1a123840804ff5fe4e860eec68f7d45b48d72eb5b086e690a6e5ffa51add"
+        }
+      }
+    },
+    {
+      "id": "bound-plain-YZ-Down",
+      "input": {
+        "crosshair_xyz": [
+          0,
+          5,
+          3
+        ],
+        "plane": "YZ",
+        "key": "Down",
+        "modifiers": []
+      },
+      "expected": {
+        "crosshair_xyz": [
+          0,
+          5,
+          3
+        ],
+        "landmark_value": 30500,
+        "world_xyz": [
+          4.0,
+          -5.0,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "28de57c30d6e32e46829805f59e7a3d211c8678100aeff5b9bdffa0753052b68",
+          "YZ": "41e850480c1281926172e057a8b56cea34e277e8afc88ee335cd9855d1abf489"
+        }
+      }
+    },
+    {
+      "id": "bound-plain-YZ-Up",
+      "input": {
+        "crosshair_xyz": [
+          31,
+          5,
+          3
+        ],
+        "plane": "YZ",
+        "key": "Up",
+        "modifiers": []
+      },
+      "expected": {
+        "crosshair_xyz": [
+          31,
+          5,
+          3
+        ],
+        "landmark_value": 30531,
+        "world_xyz": [
+          4.0,
+          7.4,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "28de57c30d6e32e46829805f59e7a3d211c8678100aeff5b9bdffa0753052b68",
+          "YZ": "893eadc798bc5abeef9ca6896917974b324f2dfb19145918ebae509eed9cef2e"
+        }
+      }
+    },
+    {
+      "id": "bound-shift-YZ-Left",
+      "input": {
+        "crosshair_xyz": [
+          0,
+          5,
+          3
+        ],
+        "plane": "YZ",
+        "key": "Left",
+        "modifiers": [
+          "Shift"
+        ]
+      },
+      "expected": {
+        "crosshair_xyz": [
+          0,
+          5,
+          3
+        ],
+        "landmark_value": 30500,
+        "world_xyz": [
+          4.0,
+          -5.0,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "28de57c30d6e32e46829805f59e7a3d211c8678100aeff5b9bdffa0753052b68",
+          "YZ": "41e850480c1281926172e057a8b56cea34e277e8afc88ee335cd9855d1abf489"
+        }
+      }
+    },
+    {
+      "id": "bound-shift-YZ-Right",
+      "input": {
+        "crosshair_xyz": [
+          31,
+          5,
+          3
+        ],
+        "plane": "YZ",
+        "key": "Right",
+        "modifiers": [
+          "Shift"
+        ]
+      },
+      "expected": {
+        "crosshair_xyz": [
+          31,
+          5,
+          3
+        ],
+        "landmark_value": 30531,
+        "world_xyz": [
+          4.0,
+          7.4,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "28de57c30d6e32e46829805f59e7a3d211c8678100aeff5b9bdffa0753052b68",
+          "YZ": "893eadc798bc5abeef9ca6896917974b324f2dfb19145918ebae509eed9cef2e"
+        }
+      }
+    },
+    {
+      "id": "bound-shift-YZ-Up",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          0,
+          3
+        ],
+        "plane": "YZ",
+        "key": "Up",
+        "modifiers": [
+          "Shift"
+        ]
+      },
+      "expected": {
+        "crosshair_xyz": [
+          7,
+          0,
+          3
+        ],
+        "landmark_value": 30007,
+        "world_xyz": [
+          10.0,
+          -2.2,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "4a9bb1abc2d479871ca4c3f620db9a1277d9d5eb3904758011869f49e9b4b132",
+          "YZ": "ae1c1a123840804ff5fe4e860eec68f7d45b48d72eb5b086e690a6e5ffa51add"
+        }
+      }
+    },
+    {
+      "id": "bound-shift-YZ-Down",
+      "input": {
+        "crosshair_xyz": [
+          7,
+          16,
+          3
+        ],
+        "plane": "YZ",
+        "key": "Down",
+        "modifiers": [
+          "Shift"
+        ]
+      },
+      "expected": {
+        "crosshair_xyz": [
+          7,
+          16,
+          3
+        ],
+        "landmark_value": 31607,
+        "world_xyz": [
+          -9.2,
+          -2.2,
+          11.0
+        ],
+        "plane_sha256": {
+          "XY": "00e642b096d4464a9be44cf649d867331f59532ef0aff46244ef65614f2f2091",
+          "XZ": "3cb3f99a4d0c2d485e072057a0738bb40c649664b747d72a5309799d660acf35",
+          "YZ": "ae1c1a123840804ff5fe4e860eec68f7d45b48d72eb5b086e690a6e5ffa51add"
+        }
+      }
+    }
+  ]
+}

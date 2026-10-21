@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "state": "scoped_deferred_composite_palette_verified",
+  "api": "resolve_rgb_dataset_command(mode=COMPOSITE,lut=...)",
+  "new_python_cases": 20,
+  "native_windows_suites": 20,
+  "linux_native_suites": 4,
+  "source_cases": 652,
+  "installed_cases": 672,
+  "focused_cases": 670,
+  "api_cases": 9,
+  "startup_cases": 10,
+  "reference_scope": "Existing native typed channel-renderer mappings/defaults; pinned processor corpus reused; no full ImageJ editor/composite certification",
+  "evidence": [
+    {
+      "path": "build/p06zq-rgb-palette001/build003/run001.json",
+      "bytes": 9479,
+      "sha256": "593db941d986626551ce6e9cdc12caca181b4823136c78dc2c631a729e0e8670"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/focused003/run001.json",
+      "bytes": 1377,
+      "sha256": "89bb4d38188e6a5bf4b5b6625eb2b5febbc4232e7ff3f91b2292ee9bfa3974bb"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/rgb-cpp002/run001.json",
+      "bytes": 1240,
+      "sha256": "ebe17f5f3924b8579cd43ff76588576030588f3bcec78d22666461a628e29627"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/source001/run001.json",
+      "bytes": 1389,
+      "sha256": "c7fbd2bba0a2c3228bdd9a3028eb48cad592b07c8395967cb35ba5bff7cac990"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/install001/run001.json",
+      "bytes": 7218,
+      "sha256": "c00f5fc716805722c3c3497837535055f64f105d0e92d2d3fb4df3e7b9cfe211"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/installed-cpp001/run001.json",
+      "bytes": 3082,
+      "sha256": "0f9094ea268508b80edcbad3d5acb7a22f2101efb7332f2abca4d4dfc90eb585"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/installed-python001/run001.json",
+      "bytes": 1713,
+      "sha256": "18108d0f1831066b1343fb8b2512b5576db110e192753b4841c3e12ca6184c66"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/launcher001/run001.json",
+      "bytes": 3345,
+      "sha256": "e0efbd08afa594cdf939938f44aec3ba322cdf5b09b394018b9b8ef69a6a75fb"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/api001/run001.json",
+      "bytes": 1350,
+      "sha256": "03080d8d27e8310e9440c075d68c89bb9cc738026dc9769bc22ef579f45581fb"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/regress001/run001.json",
+      "bytes": 18378,
+      "sha256": "5759033ccc0dbf135d74780646837c9148ebe1db440153f7c8299431934b6f7a"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/process-cpp001/run001.json",
+      "bytes": 1274,
+      "sha256": "ef73a8958fbcf6b6d2b1dc9130179654d8498914a6f917e7718f575f563cdab5"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/process-installed-cpp001/run001.json",
+      "bytes": 1743,
+      "sha256": "7ee03ee0c8c7eb5929cb4cea2dc4cf1c1decb1a5665fe8c4fd040b61217c2a37"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/rgb-installed-cpp001/run001.json",
+      "bytes": 1314,
+      "sha256": "a1d4c112bf640b4ea9f8d60deb42b4abc81a7fc904f11ef9568810255b366823"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/dataset-sdk001/run001.json",
+      "bytes": 4283,
+      "sha256": "58c36a05910392178e9ab0345d1d04671b3c443005168c5846dd7076e6c3ef7c"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/baseline001/run001.json",
+      "bytes": 1380,
+      "sha256": "11d0d8b873982846d2c7f45254cc19e772c0ac263a50149874151556e2adcead"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/linux002/run001.json",
+      "bytes": 830,
+      "sha256": "d3b493f0203e630e6060c798f0b0ae1d20251eb2204eee8bf982ce3b5ddf0183"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/focused001/run001.json",
+      "bytes": 1580,
+      "sha256": "b4c718aec939d8e85b3f4666acbc92fd5d220705960131f9df9765516d94273b"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/build003/native.xml",
+      "bytes": 6179,
+      "sha256": "fb0dc32e0645bab7e210dd4fa9579cf8272b730a7457c2c39119a6a58e5fb834"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/linux002/native.xml",
+      "bytes": 1114,
+      "sha256": "a3d504c8301d681db60ef0c4c34a1c30f60a2f9aa1a8d7483627591176772ee9"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/focused003/pytest.xml",
+      "bytes": 100309,
+      "sha256": "75d6d6fb7ddbf4c29710bebbaa6edfe6357efc4db79c0b309a32144cc03bb4be"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/source001/pytest.xml",
+      "bytes": 91842,
+      "sha256": "a669452741212d8beb922d99f50873fdc8c4d51c789640089bda079ef0c7f257"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/installed-python001/pytest.xml",
+      "bytes": 94272,
+      "sha256": "8253d2d4659c10e5d341f7add4d9d7d5301ad80de70d0307dfd0e14b9de5d759"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/rgb-cpp002/capture001/case.json",
+      "bytes": 5197817,
+      "sha256": "36816e427b9d54518d3395587dbb6085620f3e7801aab118224e0f597ff9b9b9"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/rgb-installed-cpp001/capture001/case.json",
+      "bytes": 5199006,
+      "sha256": "f94ffff0f440b14c2bc7cfe40d6dd5e15a55582ee12c6b3f64f9f36489eac475"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/source001/pytest-temp001/test_actual_menu_and_buttons_i0/capture001/case.json",
+      "bytes": 5203028,
+      "sha256": "b4d58fe9082b397113c0aa57a9906de5f635b243add94eb898c449afbf13402b"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/installed-python001/pytest-temp001/test_actual_menu_and_buttons_i0/capture001/case.json",
+      "bytes": 5204371,
+      "sha256": "b04a6ecd94c1c7537bbf900b6d04f627fd877c3fcd5b1ce17d5ba2649dc9e82d"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/baseline001/baseline001.json",
+      "bytes": 310,
+      "sha256": "c8caeaef79866ca01660cba34efc20754c209f2131a5e6c01ece69aaf7c399fd"
+    },
+    {
+      "path": "build/p06zp-rgb-review001/install001/python-prefix001/imagejxx/_native.cp312-win_amd64.pyd",
+      "bytes": 5823488,
+      "sha256": "3410853c1ddc1842891a2669a69d7324930b5b6ce2b7ae6d759039e6d7a919cd"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/policy001.json",
+      "bytes": 427,
+      "sha256": "3d731d1bf93f553289d934a08139c9b37472e30dd46a2fbc0542f19152b97784"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/linux001/ext4-scratch001.json",
+      "bytes": 1774,
+      "sha256": "93e185fb59515010ab7eea02612d25884ebd743f59473c6e8abdcc780acac70f"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/linux001/ext4-scratch001.zip",
+      "bytes": 6390,
+      "sha256": "9c956a417de55deda83f01e0e78ff9a0820fb3ff337acdd43b4ae34b0c1b8b4c"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/linux002/ext4-scratch001.json",
+      "bytes": 1765,
+      "sha256": "5f939839999606fae9fb14fed826dfe88e73fd9442da667d4d943b0752103151"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/linux002/ext4-scratch001.zip",
+      "bytes": 6369,
+      "sha256": "597b3fc5350b65d5dca89b074605683ad84888a7aa78bf26ab28c398b05b6601"
+    },
+    {
+      "path": "build/p06zq-rgb-palette001/cleanup001.json",
+      "bytes": 335450,
+      "sha256": "ea55352fe2119e7a3a580a477238aff793c84309ae943017efbcea959d9d25d2"
+    }
+  ],
+  "remaining": [
+    "Stage-aware mixed native RGB workflows: metadata-only evolving S/C/type, original intent, targets, budgets, import/export, paired publication and UI recording/review",
+    "Loss-aware C-to-Z flattening; RGB/HSB interchange; indexed quantization/global palette and round trips",
+    "Full ImageJ editor/composite/annotation/density/threshold/LUT reference and resource/platform/release checks",
+    "Historical fingerprint requalification; All99 remains42/57/0; Source901 unchanged"
+  ],
+  "scientific_rgb_menu_enabled": true,
+  "deferred_legacy_palette_composite_enabled": true,
+  "profile_accepted": false,
+  "family_completed": false,
+  "broad_goal": "active",
+  "full_plan_gate": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed"
+}

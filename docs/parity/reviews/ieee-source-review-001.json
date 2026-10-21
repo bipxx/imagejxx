@@ -1,0 +1,457 @@
+{
+  "schema_version": 1,
+  "state": "passed",
+  "scope": "Opt-in complete binary32 source-bit storage, Python transport, history and native/detached sessions; processing/display admission remains pending",
+  "policy": "PreserveIEEEFloat32 / PRESERVE_IEEE_FLOAT32 / preserve_ieee_float32",
+  "representative_patterns": 4096,
+  "independently_framed_v3_archive": true,
+  "native_suites_per_platform": 19,
+  "native_ieee_checks_per_platform": 40404,
+  "python_cases_per_source_installed_context": 2759,
+  "new_python_source_cases_per_context": 58,
+  "previous_2441_cases_retained": true,
+  "source_installed_inventory_equal": true,
+  "explicit_ui_exclusions": [
+    "tests/python/test_nan_python_v2.py::test_V22_installed_editor_roundtrip_preserves_policy[plane-detached]",
+    "tests/python/test_nan_python_v2.py::test_V22_installed_editor_roundtrip_preserves_policy[plane-native-owner]",
+    "tests/python/test_nan_python_v2.py::test_V22_installed_editor_roundtrip_preserves_policy[stack-detached]",
+    "tests/python/test_nan_python_v2.py::test_V22_installed_editor_roundtrip_preserves_policy[stack-native-owner]"
+  ],
+  "exclusion_reason": "These four old-policy Editor adapters require coherent desktop rebuild/qualification, intentionally batched with the upcoming IEEE display profile. This packet qualifies core/source/transport only and claims no UI parity.",
+  "installed_cpp_sdk_consumer_passed": true,
+  "qualified_products": [
+    {
+      "path": "build/p07t-ieee-float32-source001/installed001/python-prefix001/imagejxx/_native.cp312-win_amd64.pyd",
+      "bytes": 6252032,
+      "sha256": "298b9897eea5d17494735757b7877d702b61e03d7b060b5b6d32e6a71679a254"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/sdk001/sdk-prefix001/lib/imagejxx_core.lib",
+      "bytes": 45644742,
+      "sha256": "3420bd305b2a49d151d9048a0b55e7ccdedee15e5e6223106471c34ff8a928a3"
+    }
+  ],
+  "source_freeze_pins_verified": 4947,
+  "upstream_preparation": [
+    {
+      "fixture": {
+        "path": "tests/fixtures/remove-nans-ieee-imagej154r.json",
+        "bytes": 2761345,
+        "sha256": "95929dc35748379866fa15638a222e02377b3a6ea0530fdce063cc50f1f8ad57"
+      },
+      "cases": 108,
+      "scope": "Actual Remove NaNs plugin runner: Float32, four radius/scope variants, nine signals including signaling/quiet NaN payloads, signed zeros, subnormals, extreme finite values and infinities, whole/rectangular/polygon selections. No implementation or UI parity claim"
+    },
+    {
+      "fixture": {
+        "path": "tests/fixtures/ieee-display-imagej154r.json",
+        "bytes": 339556,
+        "sha256": "46606ff6b18c6b96df76fd5734e1297b5be7c4ffcdd79c3c8c9919bd0a1b676c"
+      },
+      "cases": 240,
+      "scope": "Actual FloatProcessor.createImage renderer: 10 source signals, auto/manual/equal ranges, normal/inverted LUTs, none/red/binary threshold display. Raw range bits include nonfinite endpoints. Source bits and RGB bytes are observations, with no implementation or UI parity claim"
+    }
+  ],
+  "reference_processing_or_ui_parity_claim": false,
+  "commercial_scope": "Owned source/fixture implementation; existing reviewed dependencies unchanged. Reference ImageJ/JDK remains observation-only and no Java/runtime, Qt or non-commercial component is incorporated.",
+  "retained_failures": [
+    "Windows001 compile: new test omitted the private metadata-validator declaration. Added the correct internal include/path; no assertion removed. The next runner also corrects the observer target name before that target was reached."
+  ],
+  "remaining": [
+    "IEEE-aware display/range/threshold admission and coherent host rebuild (240 pinned observations prepared)",
+    "IEEE-aware I/O and session/editor integration gates",
+    "Full nonfinite Remove NaNs/rank processing (108 pinned observations prepared)",
+    "RGB rank, remaining ImageJ/Fiji editor and release gaps"
+  ],
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  },
+  "goal_complete": false,
+  "cleanup_removed_targets": 13,
+  "net_scratch_bytes_cleaned": 91175048,
+  "diff_whitespace_checked": [
+    "CMakeLists.txt",
+    "docs/PLAN.md",
+    "docs/SOL_ULTRA.md",
+    "include/imagejxx/dataset.hpp",
+    "include/imagejxx/operations.hpp",
+    "src/native/binding_arrays.hpp",
+    "src/native/dataset.cpp",
+    "src/native/dataset_bindings.cpp",
+    "src/native/document_bindings.cpp",
+    "src/native/execution.cpp",
+    "src/native/operations.cpp",
+    "src/native/session.cpp",
+    "src/imagejxx/ui/model.py",
+    "src/imagejxx/ui/persistence.py"
+  ],
+  "receipt_pins": [
+    {
+      "path": "build/p07t-ieee-float32-source001/cleanup001.json",
+      "bytes": 336789,
+      "sha256": "e50980678e080642a5db7be0c2568b14e00253253977b9ef4f6532e33278ae2c"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/cleanup001.py",
+      "bytes": 2293,
+      "sha256": "2c57fade768333d3e70a797d93cfa4abd81e0d8e0fc8986d7070a0532f0c798a"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/finalize001.py",
+      "bytes": 8266,
+      "sha256": "5a4a06776a7c26552e5b052745bc7da34f3f98a6c489ba3a05c6441e97755631"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/focused001.py",
+      "bytes": 7737,
+      "sha256": "5a02d4f08ee01266e95eda4b4127991ebe703c1b2cbbb7ebb8cf82d0ead184e0"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/install001.py",
+      "bytes": 7938,
+      "sha256": "51978c047f159a701e6ead38db28d8af79dffaebd7467395dbf37eb2b9daa4ca"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/installed-worker001.py",
+      "bytes": 2585,
+      "sha256": "893341a1da7f530cefc1f88f1579759f50c67978ba8ff5abbd120bc145f0222b"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/linux-restore001.json",
+      "bytes": 123,
+      "sha256": "c27b73db0402a93b98b01d4f43cec317efbe5d66fb62354b9152abda3d33dded"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/linux-worker001.py",
+      "bytes": 3841,
+      "sha256": "c696e053a9a9397a2fd04e92df45978ec43fc9184271f446ce4fb1e726658d9d"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/linux001.py",
+      "bytes": 7324,
+      "sha256": "30b0bfcc34d639a437a68981b04af460f3a97ccb7915c73720f82f22d94a6d1e"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/python-worker001.py",
+      "bytes": 2323,
+      "sha256": "88d9c370158663ed44202187db49f4cf022549ee8a4499a364f331223307ffd2"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/qualify001.py",
+      "bytes": 7538,
+      "sha256": "b00ffbab85ef9c82de9b510f9b970d644f44204bd5c229f96cfe78a94ed74b66"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/qualify002.py",
+      "bytes": 7528,
+      "sha256": "38e1643bef385cf05bcd354f343d46be81e9e2bc10cf83b6bae76f3cab6e5e83"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/reference-cleanup001.json",
+      "bytes": 178900,
+      "sha256": "3a7c7e4fd7a5043f0909951dc26dfbaa0f9c944993418bb8afdc28092de06c38"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/sdk-consumer001.cpp",
+      "bytes": 1497,
+      "sha256": "d51a27f0b8ae0038e2a2056ca9b216c423fc5ff3502116a57ba76af0901c391f"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/installed001/core-evidence001.json",
+      "bytes": 773,
+      "sha256": "01a60df536564776a44fa635965e0220dc4c06de8248ed350bd4973f35dc0f73"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/installed001/install-processing.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/installed001/install-processing.stdout",
+      "bytes": 4964,
+      "sha256": "b28654108627b687264cd4a2067f6e27f02385b21dd12755aee5cc2ee19321ae"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/installed001/origins001.json",
+      "bytes": 304,
+      "sha256": "9e16180d53a92cd156b0f286f39b42ca76f0eebea316ef28270ba78ffc8f5213"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/installed001/pytest.xml",
+      "bytes": 375741,
+      "sha256": "96948e626fd3661a3a9c6a4fd4d2d45a32ae145e2cadacb877310de49b0b3bdd"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/installed001/python.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/installed001/python.stdout",
+      "bytes": 3273,
+      "sha256": "a68d36106b59fd97a07020fe1e148dc28d275b9476aca5213d9b0021477d765e"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/installed001/run001.json",
+      "bytes": 2852,
+      "sha256": "be93dd30382963f97f83c099fdf83ab46e13c502fc36ff57e80041b4084a7831"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/installed001/source-freeze001.json",
+      "bytes": 165125,
+      "sha256": "ddfbe0ca72cce3b56aa7f2ce527695580916bbebadf67e7f7ad1a1f20c103651"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/linux001/cache-reuse001.json",
+      "bytes": 115,
+      "sha256": "04136116fdd66a70d26ae846a3095e4c28d62dcca2358d845b5a2f51787a7ae1"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/linux001/ext4-scratch001.json",
+      "bytes": 576,
+      "sha256": "ca71296b0ac34732f688cee36b557a71da59a628b2376e0bb5f6307a87a8c804"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/linux001/native.xml",
+      "bytes": 8089,
+      "sha256": "aab09b3d46d8c6977041691b2b9be2c6933c31d0f283f4a0f3e3f65115eb63bb"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/linux001/run001.json",
+      "bytes": 864,
+      "sha256": "34996d620d9b25c7cd4bd43a93fa5f75c088247b7361a5d8a5d8d7da11befc98"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/linux001/source-freeze001.json",
+      "bytes": 50497,
+      "sha256": "f6a6b6d0123a89c58281ce528d116dbaae8a90b886aa98d80742c22d2d0bb1a3"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/linux001/stderr.txt",
+      "bytes": 88099,
+      "sha256": "0a9f18ef01a40a68270ec8cd0cbd793226107558fef581e459ec8a3c22b66dc2"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/linux001/stdout.txt",
+      "bytes": 15443,
+      "sha256": "60d45ff4d280e529d330470d5e96af14853340f2f6fd94c78509c50a41c3a5ba"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/native001/native.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/native001/native.stdout",
+      "bytes": 41,
+      "sha256": "1b86d609f57d864b97f27ae5c847de869bff93c8b7e263dd0ed55621c9c982d8"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/native001/run001.json",
+      "bytes": 1340,
+      "sha256": "f1b702fd70a80106299ceb8341d8ac1ba6be18a8a4195af65162d4fd0b01a8c0"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/native001/source-freeze001.json",
+      "bytes": 165994,
+      "sha256": "ac0f862dbdc958ace1ea793c0aab37848efaef77543a53d2773b71db988f8ef4"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/reference001/IndexedTypeReference.java",
+      "bytes": 4487,
+      "sha256": "66ef2ca98f7f00b4ef6b2a2c7de5805cad64c84cfce8e93e378a76d1ce78e5bc"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/reference001/java.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/reference001/java.stdout",
+      "bytes": 2622978,
+      "sha256": "069f3f1d454916126ae5afaa939cd3d4a91957400b781f84c06c77143c845634"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/reference001/javac.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/reference001/javac.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/reference001/reference001.json",
+      "bytes": 2761345,
+      "sha256": "95929dc35748379866fa15638a222e02377b3a6ea0530fdce063cc50f1f8ad57"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/sdk001/install-sdk.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/sdk001/install-sdk.stdout",
+      "bytes": 12566,
+      "sha256": "a851cc4c8bd2cfc4db91edce038487533d7f6dc532cf48fe5516e20ef4fc1722"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/sdk001/run001.json",
+      "bytes": 5345,
+      "sha256": "f82393327e3d27e58ca6e884ba7d27fa51058a2189a342fb756246dadb963093"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/sdk001/sdk-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/sdk001/sdk-build.stdout",
+      "bytes": 477,
+      "sha256": "d2b2f0f57ee8b0e2d370408403a1ae874659df31cf2df4a20a3a0712f23d289e"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/sdk001/sdk-configure.stderr",
+      "bytes": 115,
+      "sha256": "03d38095766b425301057c85ef5f15d6dc4ca7d6ed363b2de3adcf2fabfc0648"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/sdk001/sdk-configure.stdout",
+      "bytes": 957,
+      "sha256": "93c2960cbe86b3558fb7f8f38fe642a03873c3ec8ab94925d8bb5e7c6cdb1bc9"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/sdk001/sdk-run.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/sdk001/sdk-run.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/sdk001/source-freeze001.json",
+      "bytes": 165125,
+      "sha256": "ddfbe0ca72cce3b56aa7f2ce527695580916bbebadf67e7f7ad1a1f20c103651"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/source001/core-evidence001.json",
+      "bytes": 773,
+      "sha256": "01a60df536564776a44fa635965e0220dc4c06de8248ed350bd4973f35dc0f73"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/source001/pytest.xml",
+      "bytes": 375741,
+      "sha256": "83d68d983d9c24e6a9abf736ef93299fc35c254be75511614202fa1b37bc5333"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/source001/python.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/source001/python.stdout",
+      "bytes": 3270,
+      "sha256": "d9d57bb0f7c0944024c732f4f48add387e41120000e3fbd1ca0b42df93ad852e"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/source001/run001.json",
+      "bytes": 1411,
+      "sha256": "79290b011138fe0ddd5c59cdf4119591ff09b05ed26d22831a32df0a3a7bebf4"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/source001/source-freeze001.json",
+      "bytes": 165994,
+      "sha256": "ac0f862dbdc958ace1ea793c0aab37848efaef77543a53d2773b71db988f8ef4"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/windows001/configure.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/windows001/configure.stdout",
+      "bytes": 605,
+      "sha256": "21a651e4eb99912c64072cf75045d2c2f015555a64346386eecc17008e433221"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/windows001/core-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/windows001/core-build.stdout",
+      "bytes": 19545,
+      "sha256": "648352036df4b118d4d9db8e222361f9f7a1df0f4997602820e9424fb1f51b5b"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/windows001/run001.json",
+      "bytes": 3471,
+      "sha256": "f740ecabbe2357158a71dac7fa49ecae6b0fe2cadc3b1c9d7594829e239ebc62"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/windows001/source-freeze001.json",
+      "bytes": 124752,
+      "sha256": "f9516fc3efe67ac37a55cb3e3e867e9f51cc9d2f2be2291c32268fb2f4d55f57"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/windows002/configure.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/windows002/configure.stdout",
+      "bytes": 605,
+      "sha256": "f5ce40d9e8068503fe2044f56888f87e7893d43e0a533ee4db749efae7a79ceb"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/windows002/core-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/windows002/core-build.stdout",
+      "bytes": 7287,
+      "sha256": "060f35ecb0002112f1bf0e8ffc8b2e03a2e9bfe4642dcee5d84a7a0a6e290988"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/windows002/native.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/windows002/native.stdout",
+      "bytes": 2687,
+      "sha256": "e14d4b073cb8cec1c79b92a53681612f6c92595c3cdeffe83de4bafb3e0e5be6"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/windows002/native.xml",
+      "bytes": 8289,
+      "sha256": "216d0e5ca361e18ff6201421cceb6b915973f01ba1f6ee916ef042c426bdaf3f"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/windows002/run001.json",
+      "bytes": 4948,
+      "sha256": "6ce9662fe11898f90e7604e27272599d5189f0d63c09656c66102d13ebee1ec4"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/windows002/source-freeze001.json",
+      "bytes": 124752,
+      "sha256": "fcf02e97ed83d0021b847d8cce6f6f10c29c15dbec5517f1c5cb80b34222cfb5"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/sdk001/sdk-project001/CMakeLists.txt",
+      "bytes": 230,
+      "sha256": "d21c556e167f933389283d30534743bbf12263903490e59741414cc18df8f2f8"
+    },
+    {
+      "path": "build/p07t-ieee-float32-source001/sdk001/sdk-project001/main.cpp",
+      "bytes": 1497,
+      "sha256": "d51a27f0b8ae0038e2a2056ca9b216c423fc5ff3502116a57ba76af0901c391f"
+    }
+  ]
+}

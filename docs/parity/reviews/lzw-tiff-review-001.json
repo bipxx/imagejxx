@@ -1,0 +1,46 @@
+{
+  "state": "passed",
+  "scope": "Windows scientific LZW IO and both shared ImGui hosts including full-IEEE Float32",
+  "audit": {
+    "path": "build/p08h-lzw-tiff001/final-audit001.json",
+    "bytes": 62175,
+    "sha256": "bdedc9fce13763ff14ab2e2e0d008e8e2b09a9eb1472eb7e85fcebeafdbe4a66"
+  },
+  "contracts": [
+    "Original bounded modern MSB/early-change LZW codec with fixed dictionaries",
+    "Initial CLEAR, required EOI, strict decoded size/padding and checked output bounds",
+    "Width/reset/EOI/KwKwK/high-entropy data and mid-stream cancellation qualified",
+    "Append-only enum values 12-15 and version 7 inert records; older producers/defaults remain"
+  ],
+  "qualification": {
+    "windows_suites": 78,
+    "source_python_cases": 9910,
+    "installed_python_cases": 9910,
+    "baseline_retained": 9752,
+    "new_cases": 158,
+    "physical_cases": 12,
+    "physical_contexts": 4,
+    "imagej_reads": 134,
+    "imagej_filters": 6,
+    "installed_io_sdk": "RGB and high-entropy full-IEEE consumers passed"
+  },
+  "early_evidence": {
+    "focused_cases": 212,
+    "all_ids_retained_in_final_full": true,
+    "core_imagej_reads": 88,
+    "current_output_byte_identity": "build/p08h-lzw-tiff001/encoded-byte-reuse001.json"
+  },
+  "reference_harness_freeze": "Path-only edits in two native producer freezes reconstructed and hashed exactly; current runtime/full/SDK freezes are strict",
+  "cleanup_net_bytes": 1891916389,
+  "dependencies_added": false,
+  "limitations": [
+    "No OS-input/GPU equivalence claim; actual ImGui inputs and CPU readbacks observed",
+    "No Linux TIFF/product qualification",
+    "Predictors, legacy LZW variants, tiles/BigTIFF, broader metadata/high-bit/alpha and remaining ImageJ/Fiji/editor/release gaps remain open"
+  ],
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  }
+}

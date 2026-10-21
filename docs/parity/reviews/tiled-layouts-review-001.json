@@ -1,0 +1,115 @@
+{
+  "state": "reviewed_and_qualified",
+  "scope": "Classic uncompressed tiled UInt8 scalar, RGB8 interleaved and Float32 scalar; C++ IO, Python API and both Dear ImGui hosts",
+  "qualification": {
+    "path": "build/p08m-tiled-layouts001/qualification001.json",
+    "bytes": 7132,
+    "sha256": "20d2ddd73b12b0a243ec4bda77c3cb0381f7140da8853302475abb19e3288086"
+  },
+  "implementation_review": [
+    "Existing ordinals 0..24 and record producers remain unchanged; ordinals 25..27 and strict version 11 are append-only. Version 10 remains scalar UInt16 uncompressed tiling.",
+    "Checked tile byte counts and row strides include every component and sample byte. Decode ignores edge padding and uses the selected Float32 word policy. Output padding is deterministic zero.",
+    "Provider samples and preflight memory/file bounds are validated before streaming writes. Cancellation, callback failures and replacement retain the exclusive staging boundary.",
+    "Flat import reserves the temporary copy, preserves C-fast page order, carries the selected floating policy and revalidates the held file identity.",
+    "Storage controls reset incompatible compression/prediction choices, invalidate estimates and consent, and replay remains inactive. Existing source samples and undo/dirty state survive export and replay."
+  ],
+  "validation": {
+    "native_suites": {
+      "windows": 87,
+      "linux": 238
+    },
+    "previous_python_ids_retained": 10602,
+    "new_python_cases": 568,
+    "sdk_formats": 28,
+    "linux_cpp_scenarios_per_build": 145,
+    "new_ui_observations": 48,
+    "new_xyz_cpu_readbacks": 144,
+    "independent_libtiff_native_export_reads": 1034
+  },
+  "python": [
+    {
+      "stage": "windows-python-full001",
+      "cases": 11170,
+      "passed": 11170,
+      "windows_only_exemptions": 0,
+      "xml": {
+        "path": "build/p08m-tiled-layouts001/windows-python-full001/pytest.xml",
+        "bytes": 1625950,
+        "sha256": "c062fe18ffccb254505db7596f78be48fa4d1eab1f10bba7c16fe7f5fe39b33c"
+      }
+    },
+    {
+      "stage": "windows-python-installed001",
+      "cases": 11170,
+      "passed": 11170,
+      "windows_only_exemptions": 0,
+      "xml": {
+        "path": "build/p08m-tiled-layouts001/windows-python-installed001/pytest.xml",
+        "bytes": 1625950,
+        "sha256": "fcad366002419baeba9483ee779a36e55cdb91a9e06c368c859a730d9e96b890"
+      }
+    },
+    {
+      "stage": "python-source001",
+      "cases": 11170,
+      "passed": 11160,
+      "windows_only_exemptions": 10,
+      "xml": {
+        "path": "build/p08m-tiled-layouts001/python-source001/pytest.xml",
+        "bytes": 1628331,
+        "sha256": "c9a6564eb26b7023125bfb216b3d7f0fab7ceae12925c0782b5990bf35369f3a"
+      }
+    },
+    {
+      "stage": "python-installed001",
+      "cases": 11170,
+      "passed": 11160,
+      "windows_only_exemptions": 10,
+      "xml": {
+        "path": "build/p08m-tiled-layouts001/python-installed001/pytest.xml",
+        "bytes": 1628331,
+        "sha256": "80008959f1a7f100fce8d2e6bb582b49a8ec626cc3dd253541fad53f4a483095"
+      }
+    }
+  ],
+  "input_oracle": {
+    "path": "build/p08m-tiled-layouts001/oracle001/evidence001.json",
+    "bytes": 1280,
+    "sha256": "f302d8810c5049e0275dda7e4cbddc0165094517d8dc185b4ecd07a79294f32c"
+  },
+  "windows_exports": {
+    "path": "build/p08m-tiled-layouts001/oracle-exports001/evidence001.json",
+    "bytes": 432728,
+    "sha256": "1dc05838f72ceba145d78fdefc32728cff7a68c3eb6faab27cabbf7839903218"
+  },
+  "linux_exports": {
+    "path": "build/p08m-tiled-layouts001/linux-oracle001/evidence001.json",
+    "bytes": 136712,
+    "sha256": "cc56a0820cf1e2a4f196d30f630cc59daf58660a1e646c75fc8fa44f18919dea"
+  },
+  "installed_isolation": {
+    "path": "build/p08m-tiled-layouts001/isolation001/evidence001.json",
+    "bytes": 768,
+    "sha256": "fdcdba0774dba35a207318eba0c5c7cc0eed6b32a2f0c898f3d2b116464b8552"
+  },
+  "licensing": {
+    "dependency_versions_changed": false,
+    "noncommercial_components_added": false,
+    "qt_added": false,
+    "linux_static_libraries_and_notices": {
+      "path": "build/p08m-tiled-layouts001/delivery001/evidence001.json",
+      "bytes": 37941,
+      "sha256": "07170431b2fef1b096ce79748d0f1d2f551272cadd2eeb3883e0990a6cf896fc"
+    }
+  },
+  "reference_limit": "The pinned ImageJ 1.54r tiled rejection was observed in P08l. This packet uses libtiff 4.7.1 and tifffile as independent tile oracles and makes no ImageJ tiled-reopening claim.",
+  "remaining": [
+    "Compressed/predicted tiles, BigTIFF, additional sample layouts and broader metadata.",
+    "Formal reciprocal requirement/fixture/accepted-run registration, G080 family coverage and release certification remain pending."
+  ],
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  }
+}

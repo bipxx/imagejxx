@@ -1,0 +1,391 @@
+{
+  "author_and_reviewer": "Root implementation/integration review; independent legal review is not asserted",
+  "broader_pending_Fiji_decisions_and_NC_exclusions_unchanged": true,
+  "decision": "eligible",
+  "license": {
+    "bytes": 1079,
+    "path": "LICENSE",
+    "sha256": "6496956d6060adfcd2617e553b7393c3b7fbea353a02f3c39d60051709d1ce5f"
+  },
+  "new_third_party_code_assets_or_dependency": false,
+  "notices": {
+    "bytes": 4201,
+    "path": "THIRD_PARTY_NOTICES.md",
+    "sha256": "9793a0e9272d9c7f8aa1ea97712a38f1ff186ecbd379f3a71c16ae273167bff9"
+  },
+  "previous_source_archive": {
+    "bytes": 8711758,
+    "path": "build/p06l-source-final001/imagejxx-0.2.0.tar.gz",
+    "sha256": "5d1ed86272d0c5e8366314198ee0489e54f1b265dbaef5a660c66dbe49a1be33"
+  },
+  "previous_source_receipt": {
+    "bytes": 145843,
+    "path": "build/p06l-001/source-final001.json",
+    "sha256": "a1355d9dc12e6a40a7b4c980f9c614657b8af3d70dde1a5947f805278529fe17"
+  },
+  "schema_version": 1,
+  "scope": "Exactly21 owned regular Z-subset product/test sources; unchanged dependency set.",
+  "sources": [
+    {
+      "current": {
+        "bytes": 54232,
+        "path": "CMakeLists.txt",
+        "sha256": "ad4e6604ae4b20af3c6b7fb7a9c0f9b11b9b1664bc0fbb315bfba7ff7a1c8408"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 53831,
+        "path": "CMakeLists.txt",
+        "sha256": "c1542523d8bcc76c35c9838bad8839f63077c0e3b3cda55115f8a8521938687e"
+      },
+      "snapshot": {
+        "bytes": 54232,
+        "path": "build/p06m-001/registration001/source-snapshots001/CMakeLists.txt",
+        "sha256": "ad4e6604ae4b20af3c6b7fb7a9c0f9b11b9b1664bc0fbb315bfba7ff7a1c8408"
+      }
+    },
+    {
+      "current": {
+        "bytes": 15627,
+        "path": "include/imagejxx/document.hpp",
+        "sha256": "149500403b076d7bf9297f4b876de156b51ad435db231a0fbc6d8f40cd8e70fe"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 15230,
+        "path": "include/imagejxx/document.hpp",
+        "sha256": "d538ce987b303a231990834be0499a7d3086a2929646bc52ea7157797acd518e"
+      },
+      "snapshot": {
+        "bytes": 15627,
+        "path": "build/p06m-001/registration001/source-snapshots001/include/imagejxx/document.hpp",
+        "sha256": "149500403b076d7bf9297f4b876de156b51ad435db231a0fbc6d8f40cd8e70fe"
+      }
+    },
+    {
+      "current": {
+        "bytes": 51789,
+        "path": "src/native/document.cpp",
+        "sha256": "e89ac8b26726e5372a0605eb09f4cd1ac3cf2231e35ae19fc4f3162101270ebe"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 50827,
+        "path": "src/native/document.cpp",
+        "sha256": "ed98fcbbc3dd02f897492528a1c3557bbcb6229e05debb673cbfdc1f9fcb57f6"
+      },
+      "snapshot": {
+        "bytes": 51789,
+        "path": "build/p06m-001/registration001/source-snapshots001/src/native/document.cpp",
+        "sha256": "e89ac8b26726e5372a0605eb09f4cd1ac3cf2231e35ae19fc4f3162101270ebe"
+      }
+    },
+    {
+      "current": {
+        "bytes": 13317,
+        "path": "include/imagejxx/execution.hpp",
+        "sha256": "ecaeeb84d560e4fa909af6f299e2ceed3a5bce7e8c45b091dfd46eb6c4150d53"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 13185,
+        "path": "include/imagejxx/execution.hpp",
+        "sha256": "f9811529d86ad0f34b3b4e5573a760148204fd331439558b6edb1b709e2363e4"
+      },
+      "snapshot": {
+        "bytes": 13317,
+        "path": "build/p06m-001/registration001/source-snapshots001/include/imagejxx/execution.hpp",
+        "sha256": "ecaeeb84d560e4fa909af6f299e2ceed3a5bce7e8c45b091dfd46eb6c4150d53"
+      }
+    },
+    {
+      "current": {
+        "bytes": 102642,
+        "path": "src/native/execution.cpp",
+        "sha256": "031c9890da0b15fcbbe3b04aaffd337a76d0f6a3872cd174b4e850a93ebfb2c9"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 101338,
+        "path": "src/native/execution.cpp",
+        "sha256": "d0d9b0f970da1962d4fa763b6e7e668cdcdb2face7053b4a4fc8c509f744bef4"
+      },
+      "snapshot": {
+        "bytes": 102642,
+        "path": "build/p06m-001/registration001/source-snapshots001/src/native/execution.cpp",
+        "sha256": "031c9890da0b15fcbbe3b04aaffd337a76d0f6a3872cd174b4e850a93ebfb2c9"
+      }
+    },
+    {
+      "current": {
+        "bytes": 1533,
+        "path": "include/imagejxx/axis_remap.hpp",
+        "sha256": "2866bd3ce085e0dcac7eca2d9d4ba222a7d25d91a02c27c9ad61ae75a4a26406"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 1533,
+        "path": "build/p06m-001/registration001/source-snapshots001/include/imagejxx/axis_remap.hpp",
+        "sha256": "2866bd3ce085e0dcac7eca2d9d4ba222a7d25d91a02c27c9ad61ae75a4a26406"
+      }
+    },
+    {
+      "current": {
+        "bytes": 6694,
+        "path": "src/native/axis_remap.cpp",
+        "sha256": "f52daf6e9d5cfc21739faad57666fb69bb961005e58a9e269dfcb34c9a42079f"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 6694,
+        "path": "build/p06m-001/registration001/source-snapshots001/src/native/axis_remap.cpp",
+        "sha256": "f52daf6e9d5cfc21739faad57666fb69bb961005e58a9e269dfcb34c9a42079f"
+      }
+    },
+    {
+      "current": {
+        "bytes": 1069,
+        "path": "include/imagejxx/z_subset_command.hpp",
+        "sha256": "db4fc848e92e503140dee4c2610208e1f346b6a67d57d16ef944ed3ee3bf4b10"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 1069,
+        "path": "build/p06m-001/registration001/source-snapshots001/include/imagejxx/z_subset_command.hpp",
+        "sha256": "db4fc848e92e503140dee4c2610208e1f346b6a67d57d16ef944ed3ee3bf4b10"
+      }
+    },
+    {
+      "current": {
+        "bytes": 4283,
+        "path": "src/native/z_subset_command.cpp",
+        "sha256": "21d88e05113e1ff9d5b134d1cc0975ce0e7ef73784cbf9f8292309deefe6b8a0"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 4283,
+        "path": "build/p06m-001/registration001/source-snapshots001/src/native/z_subset_command.cpp",
+        "sha256": "21d88e05113e1ff9d5b134d1cc0975ce0e7ef73784cbf9f8292309deefe6b8a0"
+      }
+    },
+    {
+      "current": {
+        "bytes": 4062,
+        "path": "src/native/z_subset_bindings.cpp",
+        "sha256": "66c077c151e4f65ff71e63b33212ecacd8f6d3be85783899bb401cb9b5d6d81a"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 4062,
+        "path": "build/p06m-001/registration001/source-snapshots001/src/native/z_subset_bindings.cpp",
+        "sha256": "66c077c151e4f65ff71e63b33212ecacd8f6d3be85783899bb401cb9b5d6d81a"
+      }
+    },
+    {
+      "current": {
+        "bytes": 28672,
+        "path": "src/native/bindings.cpp",
+        "sha256": "df6b42bdf7a64c40a20ca11c31e3449b71da0709d74ce50ff53fa447453f2ccc"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 28609,
+        "path": "src/native/bindings.cpp",
+        "sha256": "978ab6327f1d093afada212fc9b19628fcd081f7dfe92a37e13a037f03dd09f8"
+      },
+      "snapshot": {
+        "bytes": 28672,
+        "path": "build/p06m-001/registration001/source-snapshots001/src/native/bindings.cpp",
+        "sha256": "df6b42bdf7a64c40a20ca11c31e3449b71da0709d74ce50ff53fa447453f2ccc"
+      }
+    },
+    {
+      "current": {
+        "bytes": 50647,
+        "path": "src/imagejxx/__init__.py",
+        "sha256": "50bb90ea053b882e71d39cf3b7cd99ffae8314c89e2d35fd91814caa0b604a0d"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 50213,
+        "path": "src/imagejxx/__init__.py",
+        "sha256": "c047a19f773b9d614006ffc6f870408f32027755563159efc742082637664c4f"
+      },
+      "snapshot": {
+        "bytes": 50647,
+        "path": "build/p06m-001/registration001/source-snapshots001/src/imagejxx/__init__.py",
+        "sha256": "50bb90ea053b882e71d39cf3b7cd99ffae8314c89e2d35fd91814caa0b604a0d"
+      }
+    },
+    {
+      "current": {
+        "bytes": 12865,
+        "path": "src/desktop/window.hpp",
+        "sha256": "477c993791e0cbebf767f6eb24882969c3ea45c24bc65ef4e06285000a1a28e1"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 12753,
+        "path": "src/desktop/window.hpp",
+        "sha256": "eccd2b56ddd2f6a190379f3cda7934d815fc3081e3b37d8d60d6c63ec9404af5"
+      },
+      "snapshot": {
+        "bytes": 12865,
+        "path": "build/p06m-001/registration001/source-snapshots001/src/desktop/window.hpp",
+        "sha256": "477c993791e0cbebf767f6eb24882969c3ea45c24bc65ef4e06285000a1a28e1"
+      }
+    },
+    {
+      "current": {
+        "bytes": 542234,
+        "path": "src/desktop/window.cpp",
+        "sha256": "e68dbc1863b918f8a8017e28f44663d3301cd9966aa068071a55e555936ac0d8"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 536349,
+        "path": "src/desktop/window.cpp",
+        "sha256": "baff2feceae1cf04f1184681c38f9d69e9347271845bb1deb7ee8d6921125eae"
+      },
+      "snapshot": {
+        "bytes": 542234,
+        "path": "build/p06m-001/registration001/source-snapshots001/src/desktop/window.cpp",
+        "sha256": "e68dbc1863b918f8a8017e28f44663d3301cd9966aa068071a55e555936ac0d8"
+      }
+    },
+    {
+      "current": {
+        "bytes": 29195,
+        "path": "src/desktop/main.cpp",
+        "sha256": "6c7826984c1c30086b4d625039030f02d784bec05cc6689ac1b275534c3281c8"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 28732,
+        "path": "src/desktop/main.cpp",
+        "sha256": "1aa6318dbd5b32fe76f2ff82375b1909c9e78447b797e8c4a0425f26e475951b"
+      },
+      "snapshot": {
+        "bytes": 29195,
+        "path": "build/p06m-001/registration001/source-snapshots001/src/desktop/main.cpp",
+        "sha256": "6c7826984c1c30086b4d625039030f02d784bec05cc6689ac1b275534c3281c8"
+      }
+    },
+    {
+      "current": {
+        "bytes": 36883,
+        "path": "src/desktop/python.cpp",
+        "sha256": "df469659e55996fa3f546a56c5da30ef8d1e4875bd00ea58964fa3f698b546dc"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 36643,
+        "path": "src/desktop/python.cpp",
+        "sha256": "36cc8fde91cfc742215fef1b240842c85f9a8feae9ade93d048c3f1c0ec3f091"
+      },
+      "snapshot": {
+        "bytes": 36883,
+        "path": "build/p06m-001/registration001/source-snapshots001/src/desktop/python.cpp",
+        "sha256": "df469659e55996fa3f546a56c5da30ef8d1e4875bd00ea58964fa3f698b546dc"
+      }
+    },
+    {
+      "current": {
+        "bytes": 174,
+        "path": "src/desktop/z_subset_ui_probe.hpp",
+        "sha256": "504422b48727d5819f85c5d618fd5673f65fa9ef846431ee22c679a2f468bb0c"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 174,
+        "path": "build/p06m-001/registration001/source-snapshots001/src/desktop/z_subset_ui_probe.hpp",
+        "sha256": "504422b48727d5819f85c5d618fd5673f65fa9ef846431ee22c679a2f468bb0c"
+      }
+    },
+    {
+      "current": {
+        "bytes": 5594,
+        "path": "src/desktop/z_subset_ui_probe.cpp",
+        "sha256": "28a83760ffd4751fe2ef32793bdf22c66db480bfddd3166a7a5f1896bf54e0b8"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 5594,
+        "path": "build/p06m-001/registration001/source-snapshots001/src/desktop/z_subset_ui_probe.cpp",
+        "sha256": "28a83760ffd4751fe2ef32793bdf22c66db480bfddd3166a7a5f1896bf54e0b8"
+      }
+    },
+    {
+      "current": {
+        "bytes": 4442,
+        "path": "tests/native/test_z_subset.cpp",
+        "sha256": "7dae3e8eb934ac763e805d68ba65d2890f5887f744c8b8c692300f83c5467b86"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 4442,
+        "path": "build/p06m-001/registration001/source-snapshots001/tests/native/test_z_subset.cpp",
+        "sha256": "7dae3e8eb934ac763e805d68ba65d2890f5887f744c8b8c692300f83c5467b86"
+      }
+    },
+    {
+      "current": {
+        "bytes": 10056,
+        "path": "tests/python/test_z_subset.py",
+        "sha256": "c2cc6a172844d904eb18fbffa91f70186fc9a9e2d4419bc099501475a3b898f1"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 10056,
+        "path": "build/p06m-001/registration001/source-snapshots001/tests/python/test_z_subset.py",
+        "sha256": "c2cc6a172844d904eb18fbffa91f70186fc9a9e2d4419bc099501475a3b898f1"
+      }
+    },
+    {
+      "current": {
+        "bytes": 2707,
+        "path": "tests/python/test_z_subset_ui.py",
+        "sha256": "c60ace00f0790fea1ffbdc5f5ea92bbede77fbf44271c97667c66cf4fddcd21b"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 2707,
+        "path": "build/p06m-001/registration001/source-snapshots001/tests/python/test_z_subset_ui.py",
+        "sha256": "c60ace00f0790fea1ffbdc5f5ea92bbede77fbf44271c97667c66cf4fddcd21b"
+      }
+    }
+  ],
+  "unchanged_dependency_scope": true,
+  "unresolved_source_origin_or_preimage_gaps": []
+}

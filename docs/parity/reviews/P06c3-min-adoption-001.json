@@ -1,0 +1,403 @@
+{
+  "schema": "imagejxx.parity.select-min-adoption",
+  "schema_version": 1,
+  "id": "P06c3.SelectMin.V01.001",
+  "state": "adopted_implementation_contract_pending_product_gates",
+  "recorded_at_utc": "2026-10-16T05:58:02.192186+00:00",
+  "scope": "Explicit SelectMin request/action/shared control. Existing V1/V2 state, compositor and SelectMax semantics retained. No product/family/release acceptance.",
+  "consumed": [
+    {
+      "path": "docs/parity/reviews/G033-select-min-entry-001.json",
+      "bytes": 48102,
+      "sha256": "2ca9846870223d9189c9819d4ad581d5ddcfc9055ff16162103c8a63b5f7482f"
+    },
+    {
+      "path": "docs/parity/reviews/P06c2-v01-adoption-002.json",
+      "bytes": 11023,
+      "sha256": "032858e479defcc0cf20eed0fcea74dc435a067544a8bf11e3d4e5ccb8296540"
+    },
+    {
+      "path": "build/p06c2-001/local-exit-001.json",
+      "bytes": 6037,
+      "sha256": "40447a52e5e51a189528227c58e9452b3a629c8cbe41a421ce394eef7b93a9c1"
+    },
+    {
+      "path": "build/p06c3-001/reference-entry-001.json",
+      "bytes": 4819,
+      "sha256": "9dfeb959789b4d0511daccf6bd623cd356fd469db4f881b14b0aff1f748a061b"
+    },
+    {
+      "path": "build/p06c3-001/reference-prepare-001.json",
+      "bytes": 4167,
+      "sha256": "5fa565a82f39f42f6e4dceb52e1ecbf075dfe20cea14baba21fd9ddf18dba81d"
+    },
+    {
+      "path": "build/p06c3-001/reference-capture-001.json",
+      "bytes": 4580,
+      "sha256": "81af7a674c6f7f7696ec77f5826d6aab171869b8c0e66de49926735ce038f4a2"
+    },
+    {
+      "path": "build/p06c3-001/reference-reader-001.json",
+      "bytes": 6000,
+      "sha256": "5551f441f5e0e537bd743e0084c8ff55781385edada713672d6625c1d24c9c32"
+    },
+    {
+      "path": "build/references/composite-min-imagej154r-001/capture-001/reference.stdout",
+      "bytes": 1102136,
+      "sha256": "a6b9b65d76a93b82eae84553c29b49b2629a83f8b8f0bd196795ec23e7a29bb9"
+    },
+    {
+      "path": "scripts/capture_composite_min_reference.py",
+      "bytes": 62549,
+      "sha256": "84e355ed4a509c1e95ae63f8736cddf3f23a68c6ce2bad0bbe91e0fb37e8f16a"
+    },
+    {
+      "path": "tests/python/test_composite_min_reference.py",
+      "bytes": 24184,
+      "sha256": "3ee07b8faf3324354153671e46045946b35fc09149fc498b24c84463596d4109"
+    },
+    {
+      "path": "include/imagejxx/channel_display_command.hpp",
+      "bytes": 5066,
+      "sha256": "07db39a01665f7e6cd43cec655e5c0a7ff6a91fad8b008e3c57b3d6eebcc6978"
+    },
+    {
+      "path": "src/native/channel_display_command.cpp",
+      "bytes": 32331,
+      "sha256": "e332d6d00c2da0c166937e76d4d7d89610e274a15661762b2302f99998f2d62f"
+    }
+  ],
+  "reference_membership": {
+    "cases": 8,
+    "stages": 41,
+    "RGB_readbacks": 33,
+    "source_pairs": 8,
+    "Channels_dispatches": 11,
+    "tests_passed": 8,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "reference_transitions": [
+    {
+      "case_id": "N01",
+      "actual_reference_effects": [
+        {
+          "label": "choice.min",
+          "projection": "Min",
+          "position_tcz": [
+            1,
+            0,
+            2
+          ],
+          "active_flags": [
+            true,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "label": "choice.min.repeated",
+          "projection": "Min",
+          "position_tcz": [
+            1,
+            0,
+            2
+          ],
+          "active_flags": [
+            true,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "N02",
+      "actual_reference_effects": [
+        {
+          "label": "choice.min",
+          "projection": "Min",
+          "position_tcz": [
+            1,
+            2,
+            2
+          ],
+          "active_flags": [
+            true,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "N03",
+      "actual_reference_effects": [
+        {
+          "label": "choice.min",
+          "projection": "Max",
+          "position_tcz": [
+            1,
+            0,
+            2
+          ],
+          "active_flags": [
+            true,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "label": "choice.min.repeated",
+          "projection": "Min",
+          "position_tcz": [
+            1,
+            0,
+            2
+          ],
+          "active_flags": [
+            true,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "N04",
+      "actual_reference_effects": [
+        {
+          "label": "choice.min",
+          "projection": "Min",
+          "position_tcz": [
+            1,
+            1,
+            2
+          ],
+          "active_flags": [
+            true,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "N05",
+      "actual_reference_effects": [
+        {
+          "label": "choice.min",
+          "projection": "Min",
+          "position_tcz": [
+            1,
+            1,
+            2
+          ],
+          "active_flags": [
+            true,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "N06",
+      "actual_reference_effects": [
+        {
+          "label": "choice.min",
+          "projection": "Min",
+          "position_tcz": [
+            1,
+            0,
+            2
+          ],
+          "active_flags": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "N07",
+      "actual_reference_effects": [
+        {
+          "label": "choice.min",
+          "projection": "Max",
+          "position_tcz": [
+            1,
+            0,
+            2
+          ],
+          "active_flags": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "label": "choice.min.repeated",
+          "projection": "Max",
+          "position_tcz": [
+            1,
+            0,
+            2
+          ],
+          "active_flags": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "N08",
+      "actual_reference_effects": [
+        {
+          "label": "choice.min",
+          "projection": "Min",
+          "position_tcz": [
+            1,
+            1,
+            2
+          ],
+          "active_flags": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      ]
+    }
+  ],
+  "native_intent": {
+    "enum": "append ChannelDisplayAction::SelectMin",
+    "action_string": "select_min",
+    "request": "No state and no reset channels; require captured recognized display. Metadata-only; zero pixel/provider reads. Reuse SelectMax checked metadata preflight, immutable capture, cancellation/checkpoint and captured-Display guard.",
+    "classifier": "From logical current state: gray table in Grayscale or singleton Composite; otherwise active stored channel LUT. Inverted iff no RGB-sum increase at steps1..254, excluding254->255; constant is inverted.",
+    "macro_condition": "SelectMin transforms all stored LUTs iff effective active table is NOT inverted. Reuse existing integer HSV-brightness transform: component +=255-min(rgb)-max(rgb). Preserve every display range.",
+    "effect": "Start projection Min. Without transform retain active C and resolvedMin. With transform record deliberate C0 (even if already0), then resolve Min iff transformed stored C0 LUT is inverted, otherwiseMax. Preserve captured T/Z in record; publication retains fresh T/Z/cameras and unrelated display properties.",
+    "mode_visibility": "Composite for C<=8, Color for C>8. Entering from Color/Gray makes every channel visible; already Composite retains flags. V2 state; existing deterministic compositor/empty/singleton behavior unchanged."
+  },
+  "gray_compatibility": {
+    "actual_reference": "N07 ends Max at C0 on both real Choice presses because the active Java processor table can retain the last transformed channel independently of stored C0. Handler-before-paint, rendered state and complete tables remain in the pinned raw reference.",
+    "owned_policy": "Use the same logical-state classification/final transformed-C0 rule as adopted native SelectMax. Native N07 first resolvesMin with transformed tables/C0; repeat resolvesMin without another transform. This explicit corrected behavior is deterministic across rendering, headless execution, replay and Save/Open.",
+    "reason": "Current V2 display state records no Java processor cache or cache provenance. Equal serialized logical states can have different Java cached processors. Do not add unrecorded history, infer cache provenance from projection/C0, emulate paint artifacts or broaden the state schema solely to retain this cache quirk.",
+    "assertion_rule": "Keep exact8 reference expectations including Java N07 Max/Max. Product tests independently assert the declared native N07 Min/Min and literal LUTs. Never claim exact N07 editor-transition parity. Independent policy review must finish before integration acceptance."
+  },
+  "record_contract": {
+    "version": 2,
+    "exact_fields": [
+      "schema",
+      "version",
+      "action",
+      "source",
+      "position",
+      "state",
+      "reset",
+      "display_dependency",
+      "navigation"
+    ],
+    "state": "Complete recognized V2 state with projectionMax|Min and canonical mode for C count. Existing strict fields/defaults unchanged.",
+    "display_dependency": "Required nonnull captured revision, including0. Fresh intent guardsDisplay; replay retains recorded dependency but applies resolved effect without requiring historicalDisplay.",
+    "navigation": "null or exact {c:0}; nonzero/bool/extra fields refused. SelectMin resolvedMax requires explicitC0; resolvedMin allows null orC0. Existing SelectMax resolvedMin still requires explicitC0.",
+    "reset": "Both arrays empty; V1 select_min refused. Other actions accept neither new effects nor altered versions.",
+    "replay_rebind": "Validate full original record before source binding or explicit rebind. Replay applies resolved table/projection/C effect without rerunning classifier. Explicit rebind recomputes SelectMin from new captured state."
+  },
+  "surface_contract": {
+    "control_id": "channel_display.mode.composite_min",
+    "label": "Composite Min",
+    "repeat": "Selection dispatches even when already selected; no redundant native publication if fully unchanged under existing no-op policy.",
+    "surfaces": [
+      "cpp_api",
+      "python_api",
+      "imgui_cpp",
+      "imgui_python"
+    ],
+    "integration": "Reuse shared panel and current channel-display CLI/private dispatcher. No second compositor/panel or new launcher.",
+    "required_cases": [
+      "ascending/inverted/mixed/constant/last-step tables",
+      "Color and explicit native Gray policy",
+      "repeated action",
+      "U8/U16/F32 and quiet-NaN mapping",
+      "all-hidden/singleton/C8/C9",
+      "ordinary and XYZ render/cache",
+      "preview/threshold attribution",
+      "strict record/replay/rebind",
+      "source/history/persistence",
+      "busy/inactive/closed/stale/cancel/resource guards"
+    ]
+  },
+  "preservation": [
+    "V1 default SUM and exact diagnostic/field behavior",
+    "V2 Sum/Max/Min encoding and existing compose/cache",
+    "strict SelectMax action and deliberate-C0 invariant",
+    "all original Max/reference failures and installed003 qualification",
+    "all99families and eligible pinned Fiji/M0/platform/release work"
+  ],
+  "acceptance": {
+    "product_runtime": false,
+    "whole_family": false,
+    "release": false,
+    "full_goal": false
+  }
+}

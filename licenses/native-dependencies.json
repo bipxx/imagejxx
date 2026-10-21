@@ -1,0 +1,32 @@
+{
+  "reviewed_on": "2026-10-15",
+  "scope": "Headless C++ core preferences and scientific session codecs. Reviewed JSON headers and zlib compression/decompression sources are privately compiled; neither is an exported installed SDK dependency or a new headless runtime DLL.",
+  "dependencies": {
+    "nlohmann-json": {
+      "tested_version": "3.12.0",
+      "selected_license": "MIT",
+      "commercial_use": true,
+      "source": "https://github.com/nlohmann/json/blob/v3.12.0/LICENSE.MIT",
+      "notice": "nlohmann-json.txt",
+      "vendor_manifest": "third_party/nlohmann_json/SOURCE.json",
+      "vendor_manifest_sha256": "c0edbd13965b5b3926e275f4e5260fa8a070c82a741c32fe3012f7511c0be843",
+      "scope": "Private native preferences and scientific session codecs; no public JSON types or exported installed SDK dependency.",
+      "obligations": "Retain the applicable copyright and permission notice; review changed versions or inputs before redistribution."
+    },
+    "zlib": {
+      "tested_version": "1.3.1",
+      "selected_license": "Zlib",
+      "commercial_use": true,
+      "source": "https://www.zlib.net/zlib_license.html",
+      "notice": "zlib.txt",
+      "vendor_manifest": "third_party/zlib/SOURCE.json",
+      "vendor_manifest_sha256": "165f7bad405b23d0d73aa6fe9fbde44f317cc0670d7505d2dc15fa38e61a5db8",
+      "scope": "Unmodified core compression/decompression sources and required internal headers from the pinned official 1.3.1 archive. Compiled privately with Z_PREFIX for native sessions; no gzip file API implementation, contrib/minizip, tools, public zlib types or exported SDK dependency.",
+      "obligations": "Retain the copyright and license notice; do not misrepresent origin. Plainly mark altered source versions and retain this notice in source distributions. Review changed versions, sources or enabled components before redistribution."
+    }
+  },
+  "optional_io_review": {
+    "manifest": "io-dependencies.json",
+    "scope": "Exact Windows x64 optional TIFF runtime closure; scientific IO service/export remains pending. No change to core-only dependencies or Python codec compatibility."
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "schema": "imagejxx.parity.histogram-auto-entry-amendment",
+  "schema_version": 1,
+  "id": "G057.Auto.DatasetHistogram.entry.002",
+  "state": "source_reviewed_reference_and_policy_adoption_required",
+  "not_an_acceptance_manifest": true,
+  "recorded_at_utc": "2026-10-16T06:38:02.800951+00:00",
+  "base": {
+    "path": "docs/parity/reviews/G033-histogram-auto-entry-001.json",
+    "bytes": 53886,
+    "sha256": "2f511fb6dcfc1f26c62060681eded31b6e21b025de37cd123777405b9d280c8e",
+    "relationship": "Additive only; consume001 in full.001 remains byte-identical. The five refinements below add no runtime acceptance."
+  },
+  "inherited_contract": {
+    "scope": "One bounded headless Dataset/area-ROI histogram service delivered together with its first shared Dear ImGui Auto range consumer. C++ core, thin Python API, native launcher and Python launcher use the same accumulator and resolved action. No standalone-kernel exit or whole G033/G057/G069 claim.",
+    "case_ids": [
+      "H01",
+      "H02",
+      "H03",
+      "H04",
+      "H05",
+      "H06",
+      "H07",
+      "H08",
+      "H09",
+      "H10",
+      "H11",
+      "H12",
+      "H13",
+      "H14",
+      "H15",
+      "H16"
+    ],
+    "bounds": {
+      "case_count": 16,
+      "case_seconds": 5,
+      "prepare_parent_seconds": 120,
+      "capture_parent_seconds": 120,
+      "max_xy_pixels": 4096,
+      "max_scalar_samples_per_case": 65536,
+      "java_heap_mib": 256,
+      "combined_payload_bytes": 4194304,
+      "fresh_stage_bytes": 33554432,
+      "max_live_reference_hosts": 2
+    },
+    "preservation": "All16 fixtures/actions/questions and unexecuted predictions remain required. Native/API/SDK/both ImGui, replay/rebind, lifecycle/resource/packaging exits remain. No calibrated accumulator, full measurement, whole-stack service, scientific selection gestures or full-preferences prerequisite is added."
+  },
+  "source_identity": {
+    "version": "1.54r",
+    "commit": "62db90a269cccc1ac79f658e4602043214ed055b",
+    "archive": {
+      "path": "build/references/downloads/imagej-62db90a269cccc1ac79f658e4602043214ed055b.zip",
+      "bytes": 6146010,
+      "sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665"
+    },
+    "member_path_rule": "Prepend001 reference.member_prefix. Member hashes below were checked against its inspected local copies.",
+    "members": [
+      {
+        "member": "ij/plugin/frame/ContrastAdjuster.java",
+        "bytes": 42982,
+        "sha256": "e6cc033f00052659b530cbba144afd6d312721ba01ae39080fcb3700befb0de2"
+      },
+      {
+        "member": "ij/process/ImageProcessor.java",
+        "bytes": 95523,
+        "sha256": "f98e87d25eb6b1f2c5d8557b73dd33e36fef0494d903d6d250206371dccc279c"
+      },
+      {
+        "member": "ij/ImagePlus.java",
+        "bytes": 108208,
+        "sha256": "477e3f5f913b9c42feb68ea35d21836d45fd56920cccbfc5719a06822cbcfab9"
+      },
+      {
+        "member": "ij/measure/Calibration.java",
+        "bytes": 14955,
+        "sha256": "2d44c799739c71b1fcdfcf6a5b42a86b65c46e4f6dca9b2cd29b6a479c67f07a"
+      },
+      {
+        "member": "ij/plugin/frame/Recorder.java",
+        "bytes": 34262,
+        "sha256": "fe00d53a44792d545d491f1d5f8d469ee42cff3e782190f5b085fe9f0db3fdfb"
+      }
+    ]
+  },
+  "amendments": [
+    {
+      "id": "A01.auto-cycle-epoch",
+      "anchors": [
+        "ContrastAdjuster.java:337-349,427,1195-1209,1247-1258",
+        "001 consumed_native_seams: document.hpp Change/Revisions; window.cpp:2878-2911"
+      ],
+      "issue": "Owner-away/back, Reset or tool reopen can invalidate a captured divisor without changing snapshot data/display revisions.",
+      "required": "The Auto consumer owns a transient cycle epoch. Capture its owner/controller identity, epoch and previous divisor with the immutable target. At atomic publication, compare that cycle state alongside owner/Pixels/Metadata/Selection/Display guards; publish display/optional record and advance the same cycle only after admission succeeds. A changed epoch refuses/cancels detached work with no record or cycle step.",
+      "boundary": "Only this consumer captured Auto-cycle state is guarded. Add no Document revision, channel-display/workflow schema field or session serializer prerequisite. Stored replay neither advances nor restores a live cycle. Root freezes reset/epoch events after observations; unrelated Display edits must not reset the cycle."
+    },
+    {
+      "id": "A02.H16-uninterrupted-original",
+      "anchors": [
+        "ContrastAdjuster.java:337-349,427,1142-1146,1195-1209",
+        "Recorder.java:49-109,895-903,999-1000"
+      ],
+      "issue": "Interleaved replay-owner switches can reset the singleton original cycle and contaminate the lifecycle timeline.",
+      "required": "For each fresh macro/script context, finish the complete original H16 timeline and capture text first. Run fresh pre-Auto-owner Enhance Contrast comparisons afterward or in an isolated host within existing limits. Preserve every before/after pair; never restore a guessed divisor to hide harness effects.",
+      "numeric_set": "Existing set_numeric_range means labeled API ImagePlus.setDisplayRange(0,200), not Set-button/GenericDialog dispatch. Label any redraw separately. Actual Auto/Reset events and public_update remain distinct; no Set dialog coverage is claimed.",
+      "pending": "Before prepare, freeze exact activation/redraw/setup order, real Recorder mode selection/event and replay ledger. Never inject public update just to produce a desired divisor."
+    },
+    {
+      "id": "A03.H14-calibration-representability",
+      "anchors": [
+        "Calibration.java:20-41,228-244",
+        "ImagePlus.java:1107-1116"
+      ],
+      "issue": "Java Calibration has spacing, pixel-origin fields and frameInterval, but no native3x3 direction or time_origin field. Pixel origin is not automatically native world origin.",
+      "required": "Keep all three raw-identical intensity fixtures. Java uses explicitly frozen pixelWidth/Height/Depth, x/y/zOrigin, units and frameInterval/time unit. Keep001 native origin[11,-7,19], direction[-1,.25,.5,0,1,.5,.5,0,1] and time_origin2.25 as separate native preservation assertions. Do not fabricate Java support or cross-representation equivalence.",
+      "pending": "Root freezes exact Java pixel-origin values/convention and time-unit setup before prepare. Raw accumulation remains uncalibrated; no calibrated accumulator or transform dependency is introduced."
+    },
+    {
+      "id": "A04.H10-retained-empty-premise",
+      "anchors": [
+        "ImagePlus.java:2048-2085,1107-1116",
+        "ImageProcessor.java:900-911"
+      ],
+      "issue": "setRoi can discard zero-width-and-height area geometry; absent ROI then means whole-plane raw statistics.",
+      "required": "Freeze the exact Java constructor/assignment. Observe retained getRoi identity, area/type, bounds, getMask dimensions/bytes and processor ROI/mask before asserting zero samples. If Java discards the ROI, record deletion and actual whole-plane/fallback behavior separately. Do not substitute a zero count or fabricate a retained mask.",
+      "pending": "Choose a supported retained-empty construction if available, or retain actual discarded-ROI behavior with an explicit native discrepancy. Native explicit empty packed area/no-finite refusal remains separately required; no dropped or added H case is implied."
+    },
+    {
+      "id": "A05.worker-readiness-ack",
+      "anchors": [
+        "ContrastAdjuster.java:228-235,257-262,323-334,1113-1120,1123-1181,1185-1192",
+        "Recorder.java:49-109,991-1000"
+      ],
+      "issue": "The worker starts before setup, waits unconditionally and listeners only notify; an event delivered before waiting can be lost. close notifies but does not join.",
+      "required": "Prepare proves original worker idle/wait readiness before dispatch, assigns event/completion sequence IDs and acknowledges completion only after real super.doUpdate returns. Observe actual source/button/listener, pending flags and thread/EDT provenance. Close and explicitly join before cleanup. Presentation-only hiding must not replace listener/worker/Auto logic.",
+      "recorder": "Use existing Recorder(false), real macro/script mode selection and getText(); no new recorder framework or visible-window claim.",
+      "bounds": "Freeze idle/completion/shutdown deadlines inside001 limits. Preserve genuine failures/timeouts; no retries, increased limits or H fixtures in prepare."
+    }
+  ],
+  "root_decisions_before_prepare": [
+    "Freeze H16 original-then-comparison schedule and separately labeled numeric API/redraw/activation/public-update events.",
+    "Freeze H14 Java-representable origin/time setup separately from native-only preservation.",
+    "Freeze H10 exact assignment/mask observations and discarded-ROI handling.",
+    "Freeze actual worker/Recorder readiness, completion and shutdown protocol; then execute only environment feasibility."
+  ],
+  "still_pending_after_reference": "Adopt fallback/empty/nonfinite/unsigned16 behavior and cycle arithmetic from actual H01-H16 results, naming owned discrepancies. Freeze native cycle reset/epoch events, atomic publication ordering and exact API/record fields before implementation. This amendment invents no observed values or final fallback/divisor policy.",
+  "validation": {
+    "strict_finite_json": true,
+    "five_source_member_hashes": true,
+    "exact_H01_H16_and_bounds": true,
+    "base_scope_and_bytes_preserved": true,
+    "maximum_bytes": 10240
+  },
+  "acceptance": {
+    "reference_runtime": false,
+    "product_implemented": false,
+    "product_verified": false,
+    "component_eligibility": false,
+    "family_complete": false,
+    "release": false,
+    "full_goal": false
+  },
+  "preservation": {
+    "new_materials_or_incorporation": [],
+    "new_code_or_captures": [],
+    "base_entry_changed": false,
+    "product_manifests_or_shared_docs_changed": false
+  }
+}

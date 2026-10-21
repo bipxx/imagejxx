@@ -1,0 +1,206 @@
+{
+  "schema_version": 1,
+  "state": "scoped_indexed_dataset_verified",
+  "api": [
+    "resolve_indexed_dataset_command",
+    "indexed_dataset_command_from_record",
+    "rebind_indexed_dataset_command",
+    "prepare_indexed_dataset",
+    "encode_indexed_palette",
+    "indexed_palette_from_record",
+    "indexed_palette"
+  ],
+  "new_python_cases": 241,
+  "pinned_imagej_cases_reused": 100,
+  "source_cases": 1626,
+  "installed_cases": 1626,
+  "native_windows_suites": 23,
+  "linux_native_suites": 7,
+  "scope": "Typed global indexed dataset publication, metadata-only request/replay, strict palette definition codec, paired display/metadata/history, RGB reconstruction/current display palettes and native session transport. Existing editor can view results and use its RGB review. No new indexed menu, workflow opcode, dynamic palette expansion or indexed file-format certification.",
+  "evidence": [
+    {
+      "path": "build/p06zy-indexed-dataset001/build003/run001.json",
+      "bytes": 9694,
+      "sha256": "c0e436bc8e9fe0ca917eb5e5e2ec629407d8953fd1cd218dcc76cf87ed808ea4"
+    },
+    {
+      "path": "build/p06zy-indexed-dataset001/source002/run001.json",
+      "bytes": 1403,
+      "sha256": "0a1c9ea56c5eb033e073f3d34c31d20836535d8e4f68b8c95e1fc78cce766695"
+    },
+    {
+      "path": "build/p06zy-indexed-dataset001/install002/run001.json",
+      "bytes": 7283,
+      "sha256": "33f74054f922a87eca06b764fa2068e91f005986b2864faaf0f3d186883d9b59"
+    },
+    {
+      "path": "build/p06zy-indexed-dataset001/installed-python001/run001.json",
+      "bytes": 1419,
+      "sha256": "a8b1c6b1c3b04f3dddbfbc538f06849fcef843db4c2163c333cd5b56b83c3d21"
+    },
+    {
+      "path": "build/p06zy-indexed-dataset001/sdk001/run001.json",
+      "bytes": 4146,
+      "sha256": "f7d0a4e2fe5f3adb5fc9b9549caa4706e3162f3ad2fb07a3a55b34fdf79e96cb"
+    },
+    {
+      "path": "build/p06zy-indexed-dataset001/linux001/run001.json",
+      "bytes": 852,
+      "sha256": "6d647fffbe08cab223ead2502559e065ce809d3868ef77f12152148cf6a1b385"
+    },
+    {
+      "path": "build/p06zy-indexed-dataset001/baseline001/run001.json",
+      "bytes": 1395,
+      "sha256": "2edff746a518ff978ab169d6926b7ef80e750f2af035f6816e955630352f2821"
+    },
+    {
+      "path": "build/p06zy-indexed-dataset001/rgb-cpp002/run001.json",
+      "bytes": 1267,
+      "sha256": "401155122de0c976f2b9b18afc0cc5ef901c78b44882723afae81452f53fc5b7"
+    },
+    {
+      "path": "build/p06zy-indexed-dataset001/rgb-installed-cpp002/run001.json",
+      "bytes": 1330,
+      "sha256": "bde4787dec12855f73d9317e7ff79ab95246f46734d8bc3c1314700b297bab5d"
+    },
+    {
+      "path": "build/p06zy-indexed-dataset001/build003/native.xml",
+      "bytes": 6807,
+      "sha256": "0e25ebde385db9a7d5c1bda0fa226d41c5256251ca05ecd1d7d0b5663b6c6e13"
+    },
+    {
+      "path": "build/p06zy-indexed-dataset001/linux001/native.xml",
+      "bytes": 1735,
+      "sha256": "77ccc6c00dab7d6f5057bf0993bed9adf2995a148245b4428f78dc6dc8af2c44"
+    },
+    {
+      "path": "build/p06zy-indexed-dataset001/source002/pytest.xml",
+      "bytes": 241712,
+      "sha256": "7d0e5ce3814811bda66cbc2457b44cf4a301cf59525fc80c4fa0c96bd502aa3b"
+    },
+    {
+      "path": "build/p06zy-indexed-dataset001/installed-python001/pytest.xml",
+      "bytes": 241712,
+      "sha256": "2f421465199a0033e5a9156961d9e8aaf3327f88ea388ab08543536ab064f261"
+    },
+    {
+      "path": "build/p06zy-indexed-dataset001/baseline001/baseline001.json",
+      "bytes": 560,
+      "sha256": "74864f62a8eea000b64b057c12f104730c189cbc162be3eafdb406c8b0cd62dc"
+    },
+    {
+      "path": "tests/fixtures/indexed-color-imagej154r.json",
+      "bytes": 11022070,
+      "sha256": "257a8d4b32ada6c203e67de273d02f7125ba840a60a1cf0eaee6f2baef1dcbee"
+    },
+    {
+      "path": "build/p06zy-indexed-dataset001/policy001.json",
+      "bytes": 427,
+      "sha256": "3d731d1bf93f553289d934a08139c9b37472e30dd46a2fbc0542f19152b97784"
+    },
+    {
+      "path": "build/p06zy-indexed-dataset001/linux001/ext4-scratch001.json",
+      "bytes": 1778,
+      "sha256": "ab026d33a3c8eb7ec1d94cdc3903d67382bda307f219aab4921267ee4efe2c16"
+    },
+    {
+      "path": "build/p06zy-indexed-dataset001/linux001/ext4-scratch001.zip",
+      "bytes": 6387,
+      "sha256": "e1d5af15b953369524661549407729eccc8fa34637355d32a6fb265533eff5f0"
+    },
+    {
+      "path": "build/p06zy-indexed-dataset001/rgb-cpp002/capture001/case.json",
+      "bytes": 30794960,
+      "sha256": "062f7d9eaecd5e8a577fc2a3d03f2f8b3f13d3fe3f089bda784a466e6c1d5e4f"
+    },
+    {
+      "path": "build/p06zy-indexed-dataset001/rgb-installed-cpp002/capture001/case.json",
+      "bytes": 30803873,
+      "sha256": "e4548d69fd35d97ea003240d510490f96728d2804fbd76d93277f436a990ce7b"
+    },
+    {
+      "path": "build/p06zy-indexed-dataset001/cleanup001.json",
+      "bytes": 378646,
+      "sha256": "3c8b7a68923c98d70d125b9c20119c3448e10959b11699d9709924c2d1ea9946"
+    }
+  ],
+  "superseded_diagnostics": [
+    {
+      "run": {
+        "path": "build/p06zy-indexed-dataset001/build001/run001.json",
+        "bytes": 9714,
+        "sha256": "0de18ea48b8d01a40db6799afccf460f5aaf54cf03f36e910f9781a109b24f3f"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zy-indexed-dataset001/build002/run001.json",
+        "bytes": 9694,
+        "sha256": "3c185432ce2cd8881bbe0dde4ecb843f15313b245ccef2d86fa04680fd6ee8a5"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zy-indexed-dataset001/focused001/run001.json",
+        "bytes": 1590,
+        "sha256": "1f9aa413050f4080eaf1bba95ba1b364e411dfcdf26143d78c5687154ad53bd8"
+      },
+      "state": "failed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zy-indexed-dataset001/focused002/run001.json",
+        "bytes": 1375,
+        "sha256": "09386bc9f6f4f46ad0908ddc592b8b787921db2873f656e6ea37ef8d87a9223c"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zy-indexed-dataset001/source001/run001.json",
+        "bytes": 1603,
+        "sha256": "c98479aea65a20390b950a29a6cd317b2cabf07541b0865788cdb8a96bc8e107"
+      },
+      "state": "failed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zy-indexed-dataset001/install001/run001.json",
+        "bytes": 7282,
+        "sha256": "800587f5432d32e2adb3323a4c1c3bc251b58ff36bf25a56a86926c733a1f7e7"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zy-indexed-dataset001/rgb-cpp001/run001.json",
+        "bytes": 1267,
+        "sha256": "4c0b73e39e14666723ec0ecc01f70378800bd3e431f22d5f51ac2b2e1fa7ebfb"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    }
+  ],
+  "remaining": [
+    "Define explicit current-stage indexed palette expansion for native programs/Batch. Existing RGB records freeze their captured LUT; replaying an older input LUT after a new quantization is not a dynamic inverse.",
+    "Native indexed workflow opcode/original grammar and metadata-only downstream preflight, with a deferred palette descriptor that cannot escape into publication or saved captures as a fake black palette",
+    "Shared ImGui indexed Image > Type menu/review/color-limit controls, worker preview, recording/replay and source/installed C++/Python raw-input qualification",
+    "Palette-aware type conversion and filter dispatch: byte indices are not grayscale intensities or expanded RGB; capture ImageJ indexed-color semantics and define palette retention/expansion/retirement before editor family credit.",
+    "True indexed raster formats and external palette/tag/RGB roundtrips; native sessions with private metadata are not indexed TIFF/PNG certification",
+    "Remaining editor/reference/resource/platform/release obligations and historical source fingerprint requalification. All99 stays42/57/0 and Source901 unchanged"
+  ],
+  "no_new_runtime_dependencies": true,
+  "no_existing_dto_layout_change": true,
+  "profile_accepted": false,
+  "family_completed": false,
+  "broad_goal": "active",
+  "full_plan_gate": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed"
+}

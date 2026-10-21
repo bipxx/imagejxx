@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "state": "scoped_indexed_filter_verified",
+  "scope": "Four Filters plugin exclusions, minimum/maximum/mean/median indexed rank pixel/LUT behavior, native non-byte palette retirement, workflow output-domain preflight and legacy editor recording/history. No all-filter arithmetic or format-family certification.",
+  "reference_cases": 288,
+  "new_python_cases": 304,
+  "source_cases": 2380,
+  "installed_cases": 2380,
+  "native_windows_suites": 23,
+  "native_linux_suites": 7,
+  "installed_cpp_sdk": "passed",
+  "evidence": [
+    {
+      "path": "build/p07c-indexed-filter001/windows001/run001.json",
+      "bytes": 9709,
+      "sha256": "617c27e7b6c35b670cfca17fb198ba77c6dac1bdf19cf11c203398c6c6a3d179"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/focused001/run001.json",
+      "bytes": 1369,
+      "sha256": "72d186c4d533c40cef4c20956b52e4670c70c18d79db99a38741a1c17ac739d0"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/source001/run001.json",
+      "bytes": 1393,
+      "sha256": "4c253574cfa4830ac2cfbc7701bb7280118592b00f7456c7866d15e61487df4e"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/install002/run001.json",
+      "bytes": 7250,
+      "sha256": "6923729e92fd94ea0122cde88b6decf66a3a0ab79808f5edd7eef105e893eadb"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/installed001/run001.json",
+      "bytes": 1704,
+      "sha256": "8d0afcf1ae5cfb4ad02745a04f0b05ade34ca8b75804e9a825a892ca134496d3"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/sdk001/run001.json",
+      "bytes": 4221,
+      "sha256": "027364d58b9e77de4346798d2474d008b8de42b649452acb0ff90e652114042a"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/rgb-cpp001/run001.json",
+      "bytes": 1261,
+      "sha256": "c2d05a192b60a55d1d5aff589b542a1961439964eb31fe1189c98bfe393fb295"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/rgb-installed-cpp001/run001.json",
+      "bytes": 1307,
+      "sha256": "162c680e1faccbaa3e7872337cf4219967407885c1ca60c0353503a147290784"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/linux001/run001.json",
+      "bytes": 850,
+      "sha256": "238b074cb0a3cc6c46d64ecfb56a6bec9144dae3944a7a48b15ac8c513adc59f"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/windows001/native.xml",
+      "bytes": 6805,
+      "sha256": "62042fae694205d271013b01763048ef7f5a7847a4d9cbc4ede9293ac1bb65ec"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/linux001/native.xml",
+      "bytes": 1735,
+      "sha256": "42bc00c844231d21d9c4eeebe8702c650666869644a3ab5e312d738e36856b7a"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/source001/pytest.xml",
+      "bytes": 358229,
+      "sha256": "dc1c1cbbb6a5250796db323dafdd855d76ec6b41e734dcaf8a586bda7c77c3d2"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/installed001/pytest.xml",
+      "bytes": 358229,
+      "sha256": "9d911685fb0dd81cd7843443a3310abe395f9c21c1dd600e8ab3f4b3b04ad7e9"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/focused001/pytest.xml",
+      "bytes": 46283,
+      "sha256": "6809764063a1a443e1a5c0e527b4e89dd0141dc5443e60e3da3a272a8954cf49"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/source001/source-freeze001.json",
+      "bytes": 154714,
+      "sha256": "e17112bb6dfc089ab2e0acedf7e357b846453772e0283de971a92ae12b93fd8d"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/windows001/source-freeze001.json",
+      "bytes": 154714,
+      "sha256": "e17112bb6dfc089ab2e0acedf7e357b846453772e0283de971a92ae12b93fd8d"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/linux001/source-freeze001.json",
+      "bytes": 40226,
+      "sha256": "783e83f3cf4dc87e157a8e899b4d81eee1d897a3efd5c8eb5c840e691c79f3d4"
+    },
+    {
+      "path": "tests/fixtures/indexed-filter-imagej154r.json",
+      "bytes": 8736262,
+      "sha256": "8b60e2dc42cf0460d9f67b043f735a195bb2da12b9d49e4eb630930954a85f14"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/reference001/reference001.json",
+      "bytes": 8736262,
+      "sha256": "8b60e2dc42cf0460d9f67b043f735a195bb2da12b9d49e4eb630930954a85f14"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/rgb-cpp001/capture001/case.json",
+      "bytes": 61879945,
+      "sha256": "4f45def02601e5d3b7def1a96842884636e9f3cbfd59a3c7f751f5666437e3d1"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/rgb-installed-cpp001/capture001/case.json",
+      "bytes": 61914886,
+      "sha256": "a7f5d19e7952f0efe14bddff48994ba1969ae5eb4f3931d5a5ae2018fcf7061c"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/python-ui-source001.json",
+      "bytes": 61923412,
+      "sha256": "f8af97555b903f0dd7583739236c92eb68c981ee5fe560f8de94f5cb662363dc"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/python-ui-installed001.json",
+      "bytes": 61929089,
+      "sha256": "6944e3382d7ea6b7e1c47b5e8dab28c71337a6d0ce35cf4bc3ef954e3122335c"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/policy001.json",
+      "bytes": 308,
+      "sha256": "ade407ecf97639b8a6d15665565d81be2fc847ede0237639a9a55e31931145ee"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/linux001/ext4-scratch001.json",
+      "bytes": 1775,
+      "sha256": "94abfad1b91275972fff37b487157e18e3ad1c7d6d8722adcfbda738b54f8df9"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/linux001/ext4-scratch001.zip",
+      "bytes": 6386,
+      "sha256": "61ca3da9676de719e629157ea5f45c4343adb4d66de1ec080b201815a4e23ccd"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/baseline001/run001.json",
+      "bytes": 1596,
+      "sha256": "77888ca877f09a6bc6a0e53272ffb3df0c8cd1cd2aaf632878b3f0f5af61ad2a"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/baseline001/pytest.xml",
+      "bytes": 21799,
+      "sha256": "b1f4f38b090aca6760b9fa5ac5e3cdadd72b6b5236d2621eafdfbaa4dd6d90f9"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/baseline001/python.stdout",
+      "bytes": 14233,
+      "sha256": "aece76945b83719d011c7c7a2089172918edf70a9560b8ce74a9c798a459d863"
+    },
+    {
+      "path": "build/p07c-indexed-filter001/cleanup001.json",
+      "bytes": 463462,
+      "sha256": "e471a9078f42106f5302d236f955cf0fd1aac2db437efaef92c393562a089167"
+    }
+  ],
+  "remaining": [
+    "Reference-qualified ImageJ rank variance and final display-range policy",
+    "Qualify other indexed filter eligibility, dtype-changing palette retention/retirement and workflow behavior",
+    "Reference-qualified active threshold and channel-display numeric conversions (currently explicitly refused)",
+    "Real indexed TIFF/PNG raster/tag encoding and external palette interpretation",
+    "Broader editor/resource/platform/release obligations and historical source fingerprint requalification"
+  ],
+  "no_new_runtime_dependencies": true,
+  "no_existing_dto_layout_change": true,
+  "family_completed": false,
+  "broad_goal": "active",
+  "family_status": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  },
+  "last_full_source_release": "Source901",
+  "full_plan_gate": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed"
+}

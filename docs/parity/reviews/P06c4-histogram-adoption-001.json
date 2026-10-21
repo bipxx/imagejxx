@@ -1,0 +1,169 @@
+{
+  "schema": "imagejxx.histogram-native-contract",
+  "schema_version": 1,
+  "id": "P06c4-histogram-adoption-001",
+  "state": "scalar_histogram_contract_adopted_for_implementation",
+  "scope": "Native shared Dataset/area-ROI accumulation service within P06c4. The packet still requires the real asynchronous Auto consumer and all applicable APIs/shared UI/artifact checks; this service is not a local exit.",
+  "reference": [
+    {
+      "path": "docs/parity/reviews/G033-histogram-auto-entry-001.json",
+      "bytes": 53886,
+      "sha256": "2f511fb6dcfc1f26c62060681eded31b6e21b025de37cd123777405b9d280c8e"
+    },
+    {
+      "path": "docs/parity/reviews/G033-histogram-auto-entry-002.json",
+      "bytes": 9958,
+      "sha256": "b623c9c42c7059a0d1eba6919a5917170fba00bdfd216c8621dbcca0e94f64b9"
+    },
+    {
+      "path": "docs/parity/reviews/G033-histogram-auto-entry-003.json",
+      "bytes": 10771,
+      "sha256": "4ebbf78efbab889d23c07221b2af07664a24952d679ba0e2df253aa8c9782f67"
+    },
+    {
+      "path": "build/p06c4-001/reference-entry-002.json",
+      "bytes": 3852,
+      "sha256": "0934a159a514df642fb3894e781a07b85bb19dcec19ccdbc0caf08e6c8b3d186"
+    },
+    {
+      "path": "build/p06c4-001/reference-prepare-002.json",
+      "bytes": 3405,
+      "sha256": "478866f05d14558b761a7c551345ada436c93ceebae2edede9d2001dcb69c0ff"
+    },
+    {
+      "path": "build/p06c4-001/probe-reader-003.json",
+      "bytes": 2512,
+      "sha256": "3fb260474fd95742c2e447e98b243ef673f0688d31330e614e608fc2f862b639"
+    },
+    {
+      "path": "build/p06c4-001/reference-capture-002.json",
+      "bytes": 4117,
+      "sha256": "8f197a68595462b545ae07fd3179f645341114f7d334b26a433278f3736b34ac"
+    },
+    {
+      "path": "build/p06c4-001/reference-reader-004.json",
+      "bytes": 4457,
+      "sha256": "55312904bbf6f4b93ada5faa7b770c17f841b9bc93270921b4a19295d37aca77"
+    },
+    {
+      "path": "build/references/histogram-auto-imagej154r-001/capture-002/reference.stdout",
+      "bytes": 2001040,
+      "sha256": "f543bd2e6eed8bd3f0f81aabb37bafebb1fca449200bf30ed64fcf61c99b12eb"
+    },
+    {
+      "path": "scripts/capture_histogram_auto_reference.py",
+      "bytes": 87207,
+      "sha256": "9544a9bec82fb8f836500e520964d09cd02e8a0a6b72a88534d9b70854b50c93"
+    },
+    {
+      "path": "tests/python/test_histogram_auto_reference.py",
+      "bytes": 94669,
+      "sha256": "51dd8eb28a1b453d5e2ee7b6d58b5736cc73afcb33dd60f51cafd44ab20e4dc8"
+    }
+  ],
+  "observations": {
+    "cases": 16,
+    "original_stages": 80,
+    "comparison_actions": 3,
+    "buttons": 58,
+    "source_pairs": 28,
+    "comparison_candidates": 15,
+    "reference_acceptance": "Exact16 provenance/numerical/event/record assertions pass. Preserve all prior cap/probe/reader failures and source preimages.",
+    "source_facts": [
+      "U8 uses256 integer bins with origin0/width1. U16 uses observed ROI finite minimum..maximum+1 across256 bins. F32 uses observed ROI finite minimum..maximum across256 bins.",
+      "Auto consumes raw area statistics; absent/nonarea uses whole XY. Intensity/spatial calibration and threshold do not weight/filter raw samples.",
+      "H10 genuinely retained empty area yields N0 and Java Reset to whole-plane105..122. H12 allNaN yields nonfinite getters and sentinel extrema. These outcomes are observed, not valid native range contracts.",
+      "H15 active U16 requested stored bounds75..91.9453125 have processor getter75..92. Composite Shift copies getter bounds to allC. Same Color/Gray restore preserves prior picture cache.",
+      "H16 records only first successful Auto per context; actual Enhance replay18..21 differs GUI18..19. Macro owner switches additionally record two selectImage lines; second same-dialog activation is swallowed by pinned JDK focus dispatch."
+    ]
+  },
+  "native_api": {
+    "header": "include/imagejxx/dataset_histogram.hpp",
+    "implementation": "src/native/dataset_histogram.cpp",
+    "HistogramBinning": [
+      "ProcessorRaw",
+      "UniformRange"
+    ],
+    "DatasetHistogramRequest": {
+      "position": "PlanePosition{} exact zero-based current t/c/z",
+      "area_roi": "std::optional<Selection>; absent is whole plane; present must be a validated area kind",
+      "binning": "HistogramBinning::ProcessorRaw",
+      "bins": "int=256",
+      "range": "std::optional<std::array<double,2>>; absent for ProcessorRaw, required finite low<high for UniformRange"
+    },
+    "DatasetHistogramLimits": {
+      "max_pixels": 16777216,
+      "max_working_bytes": 134217728
+    },
+    "DatasetHistogramEstimate": [
+      "std::size_t pixel_count",
+      "std::size_t working_bytes",
+      "std::size_t selection_bytes",
+      "std::size_t mask_bytes",
+      "std::size_t plane_bytes",
+      "std::size_t histogram_bytes"
+    ],
+    "DatasetHistogramResult": [
+      "Histogram histogram (counts/edges)",
+      "double histogram_origin",
+      "std::optional<double> bin_size",
+      "std::optional<double> minimum, maximum (all finite area samples, including UniformRange under/overflow)",
+      "std::uint64_t visited_count, finite_count, included_count, nan_count, underflow_count, overflow_count",
+      "std::optional<double> plane_minimum, plane_maximum",
+      "std::uint64_t plane_finite_count, plane_nan_count",
+      "bool empty_finite",
+      "DatasetHistogramRequest request (owned captured provenance)",
+      "DatasetHistogramEstimate estimate"
+    ],
+    "functions": [
+      "DatasetHistogramEstimate estimate_dataset_histogram(const Dataset&, const DatasetHistogramRequest& = {}, const DatasetHistogramLimits& = {})",
+      "DatasetHistogramResult accumulate_dataset_histogram(const Dataset&, const DatasetHistogramRequest& = {}, const DatasetHistogramLimits& = {}, const ExecutionControl& = {})"
+    ]
+  },
+  "semantics": {
+    "admission": "ScalarS1 U8/U16/F32 only. Canonical unsigned integer values and representable widened finite binary32 required throughout the acquired plane, including outside area membership. PreserveQuietNaNFloat32 admits only its exact reviewed quietNaN encoding policy; exclude/report them. Refuse infinities, signaling/noncanonical NaNs, bad extents/storage/types/policies. F64/S3/S4 remain explicit first-consumer gaps; old Image/manual-threshold APIs unchanged.",
+    "area": "rectangle,ellipse,rotated_rectangle,rotated_ellipse,polygon,freehand,mask use existing Selection validation/rasterization and preserve holes. Explicit packed empty mask is valid and yields zero area counts. Service refuses line/polyline/angle/point/multipoint/unknown; later Auto adapter separately maps valid nonarea selection to whole plane while retaining Selection dependency.",
+    "counts": "visited_count=finite_count+nan_count over area membership. finite_count=included_count+underflow_count+overflow_count. included_count=sum(histogram.counts). Plane extrema/counts span the same one acquired XY source and support Auto fallback without a second acquisition; they do not alter area extrema/counts.",
+    "processor_raw": "Require bins256 and absent explicit range. U8 edges0..256,origin0,width1. U16 edges from area min through max+1, bin_size=(max-min+1)/256; freeze scale=1/bin_size then index=int(scale*(v-int(min))), clamp last255. F32 bin_size=(max-min)/256; freeze scale=256/(max-min) then index=int(scale*(v-min)), clamp255 at upper endpoint. Do not reassociate the source-derived arithmetic. Constant F32 uses bin0, width0 and every edge equal the exact constant. No under/overflow.",
+    "no_finite": "Owned finite presentation edges0..1,origin0,width1/256 for no-finite ProcessorRaw; zero counts, empty_finite=true and absent area extrema. This intentionally replaces Java sentinel/nonfinite presentation. Later Auto MUST refuse empty/no-finite area without publication/cycle advance; never silently Reset to whole plane.",
+    "uniform_range": "Exact bins1..65536; finite low<high; final upper endpoint inclusive. Values below/above are separately counted; min/max retain all finite area values. Use overflow-safe normalization and finite monotonic edges, including finite bounds crossing double extremes. bin_size is the finite positive rounded width when representable; otherwise null for UniformRange overflow or underflow (e.g. bins1 across +/-DBL_MAX); never infinity, spurious zero or a clamped false width. ProcessorRaw bin_size is always present. Collapsed rounded UniformRange edges are allowed if finite and nondecreasing; explicit endpoint bin membership remains deterministic.",
+    "immutability": "Capture Dataset handle, full request/selection, positive limits and ExecutionControl by value before the first user callback. Reentrant callbacks may mutate original caller variables, never effective work. Preserve source/calibration/attributes/sample bits and document state. Return only detached counts/edges/provenance/extrema.",
+    "resources": "Estimator is descriptor/geometry/metadata only: no plane/provider sample reads, mask allocations or user callbacks. Validate malformed fields, checked arithmetic and positive caps before work. Include returned arrays, request/selection/attributes/packed retention, polygon raster scratch, full-canvas double mask when needed and one conservative XY double source/fallback plane. Exclude allocator bookkeeping, pre-existing source/cache/history/GPU/processRSS. Charge actual captured calibration unit/time-unit strings. All estimate fields are checked and working_bytes is the conservative simultaneous peak.",
+    "execution": "Pre-cancellation and estimate/cap refusal precede all callbacks/plane reads. One Dataset.plane acquisition at the exact captured TCZ; retain it across validation/extrema and histogram passes. Use existing bounded kernel checkpoints for validation/mask/scans/bin filling. Callback exceptions/mid-cancel discard detached work. Never scan unrelated T/C/Z or materialize a volume."
+  },
+  "implementation_ownership": {
+    "p06c_ui_assertions": [
+      "include/imagejxx/dataset_histogram.hpp",
+      "src/native/dataset_histogram.cpp"
+    ],
+    "gap_plan_review": [
+      "tests/native/test_dataset_histogram.cpp"
+    ],
+    "root": [
+      "CMakeLists.txt",
+      "bindings/API integration",
+      "async guarded publication and shared GUI consumer",
+      "runtime/build/install/review receipts"
+    ]
+  },
+  "next_required": "Implement the service and independent native checks now. Freeze Auto request/record/fallback/cycle policies from the accepted reference before its implementation; then complete shared C++/Python/both-ImGui vertical consumer. No service-only acceptance.",
+  "remaining": [
+    "Final Auto command/API/record and typed fallback settings adoption",
+    "asynchronous result cleanup, guarded display/cycle publication and shared Auto control",
+    "native/Python/coreSDK/both-launch actual input and lifecycle/persistence/replay/rebind gates",
+    "affected installed regression/source/package/commercial checks",
+    "all wider option/family/platform/release work"
+  ],
+  "commercial_boundary": "Independently authored native implementation only; no original ImageJ Java/classes/JDK/macros/LUT assets or pending Fiji material incorporated. Reference observation is not product-license approval.",
+  "acceptance": {
+    "histogram_contract_adopted": true,
+    "native_implementation": false,
+    "Auto_contract_final": false,
+    "product_verified": false,
+    "whole_family": false,
+    "commercial_eligibility": false,
+    "platform": false,
+    "release": false,
+    "full_goal": false
+  }
+}

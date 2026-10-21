@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "state": "scoped_indexed_editor_verified",
+  "scope": "Shared standalone quantization and indexed-palette RGB menus, worker palette previews, guarded publication, recording and explicit recorded-row review in C++/Python hosts. No indexed filter/format-family certification.",
+  "new_python_cases": 30,
+  "source_cases": 1703,
+  "installed_cases": 1703,
+  "native_windows_suites": 23,
+  "reused_linux_native_suites": 7,
+  "reused_sdk": "Exact core source/header/library checks against p06zz; no new Linux UI or SDK run claimed",
+  "evidence": [
+    {
+      "path": "build/p07a-indexed-ui001/windows002/run001.json",
+      "bytes": 9495,
+      "sha256": "88f30a597631c7f0e84ee3ff6da630974987a4ac1a887e6f9fa594ca9c11e3e5"
+    },
+    {
+      "path": "build/p07a-indexed-ui001/source002/run001.json",
+      "bytes": 1377,
+      "sha256": "8c1833a03cf47d70deaa56be2330c50605bd7ad00418b0289a2eaefcda5579a3"
+    },
+    {
+      "path": "build/p07a-indexed-ui001/focused003/run001.json",
+      "bytes": 1370,
+      "sha256": "5db5754748eed4e0c99e7687a7acf75b5e33fa79e14b9657eea42529c0b763d3"
+    },
+    {
+      "path": "build/p07a-indexed-ui001/install002/run001.json",
+      "bytes": 7185,
+      "sha256": "16cd8cc294b97029d2e28b405c305b34635ab00f983b015398b468c32f3f8ade"
+    },
+    {
+      "path": "build/p07a-indexed-ui001/installed001/run001.json",
+      "bytes": 1680,
+      "sha256": "6fd74581e498e644556b4220c188fbfe90c087c2951eed41761a6724dfa72da0"
+    },
+    {
+      "path": "build/p07a-indexed-ui001/rgb-cpp002/run001.json",
+      "bytes": 1249,
+      "sha256": "87f2a364759f5b7d0c3af0aa3affecad5d3b8ae85caf41fe2d854e49241dc8a3"
+    },
+    {
+      "path": "build/p07a-indexed-ui001/rgb-installed-cpp001/run001.json",
+      "bytes": 1305,
+      "sha256": "2fee9254e961ace9a1e8669f665f000009b2c465b7aa3f936615122b5716d6f2"
+    },
+    {
+      "path": "build/p07a-indexed-ui001/windows002/native.xml",
+      "bytes": 6805,
+      "sha256": "831ff02c9f8dbd8247c0733796a1ad5fe7b59968ceed265365515bf162237847"
+    },
+    {
+      "path": "build/p07a-indexed-ui001/source002/pytest.xml",
+      "bytes": 252083,
+      "sha256": "22296d3a25a20ae7ea43483e144caaada29e14d3a8835f18151c9b6350b05de6"
+    },
+    {
+      "path": "build/p07a-indexed-ui001/installed001/pytest.xml",
+      "bytes": 252083,
+      "sha256": "688e08aefe67dc2eda431f6b0fb98953a80e889df78a0358c3a53dfa0f1f387c"
+    },
+    {
+      "path": "build/p07a-indexed-ui001/focused003/pytest.xml",
+      "bytes": 4191,
+      "sha256": "835d3c6bea6265dfed7bd327e265fa4b6df9f9f5c6cd10ea07fb6ec1f30cc9b2"
+    },
+    {
+      "path": "build/p07a-indexed-ui001/source002/source-freeze001.json",
+      "bytes": 153343,
+      "sha256": "dbe01ad94b91b5697fc42d910c4ef245aeb20f594d25fffe6be838be4c9a0ce4"
+    },
+    {
+      "path": "build/p06zz-indexed-workflow001/linux002/run001.json",
+      "bytes": 867,
+      "sha256": "d16eb754efbfa43e1e3ce3b9528ea563cac290597f15d006b949b6be9b801ab5"
+    },
+    {
+      "path": "build/p06zz-indexed-workflow001/sdk001/run001.json",
+      "bytes": 4194,
+      "sha256": "f188808bfb13b4d2f06491299efb74fe8c1f516708f742a884a51f7c00bedaa1"
+    },
+    {
+      "path": "build/p07a-indexed-ui001/rgb-cpp002/capture001/case.json",
+      "bytes": 54396095,
+      "sha256": "3d56618d0f961f083a1d80be3a62fd1766c0f6f7bc55bc03edc2b002f79c720a"
+    },
+    {
+      "path": "build/p07a-indexed-ui001/rgb-installed-cpp001/capture001/case.json",
+      "bytes": 54404761,
+      "sha256": "2856883cc054f079f5bf1d522e989b07e1fa85c29df98ee66398808ba22da9a1"
+    },
+    {
+      "path": "build/p07a-indexed-ui001/python-ui-source001.json",
+      "bytes": 54436611,
+      "sha256": "bfbcb32bdbb72a27e2c7a3f4f8a844f7ba9cb4e8b63e22f95549983138e8774d"
+    },
+    {
+      "path": "build/p07a-indexed-ui001/python-ui-installed001.json",
+      "bytes": 54414813,
+      "sha256": "e9ffd334118a36948d161477d878c621b43b52b124218aa75bd7ffc237bc818c"
+    },
+    {
+      "path": "build/p07a-indexed-ui001/policy001.json",
+      "bytes": 60911,
+      "sha256": "db3ea284bf23201e0d09680d36d96f99efd6dff32fa072efa5329c59f6c623b9"
+    },
+    {
+      "path": "build/p07a-indexed-ui001/cleanup001.json",
+      "bytes": 16083,
+      "sha256": "e5ebb75d7b283541e67e7e83cfd886db46252a54ddd530f04a08eb5a7fddfb7c"
+    }
+  ],
+  "remaining": [
+    "Reference-qualified indexed Image > Type/filter dispatch and palette retention/expansion/retirement",
+    "True indexed TIFF/PNG raster/tag encoding and external palette interpretation",
+    "Broader editor/resource/platform/release obligations and historical source fingerprint requalification"
+  ],
+  "no_new_runtime_dependencies": true,
+  "no_existing_dto_layout_change": true,
+  "family_completed": false,
+  "broad_goal": "active",
+  "family_status": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  },
+  "last_full_source_release": "Source901",
+  "full_plan_gate": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed"
+}

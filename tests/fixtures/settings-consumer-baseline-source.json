@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "scope": "Immutable historical37-definition native settings source used by synthetic validator graphs; no current settings coverage or consumer acceptance claim",
+  "origin": "build/plan-implementation/p01b2c2-binary-iterations-001/source-snapshot-002/src/native/settings.cpp",
+  "sha256": "8f43e18718113d41a976dbed9336bde19f06c444bb0ba48b463ca362a50decf8",
+  "bytes": 15435,
+  "license": "Existing project MIT; repository-owned historical source, no imported third-party code"
+}

@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "state": "scoped_rgb_dataset_ui_verified",
+  "menu": "Image > Type > Convert dataset to RGB",
+  "new_python_cases": 15,
+  "native_windows_suites": 20,
+  "source_cases": 632,
+  "installed_cases": 652,
+  "focused_cases": 650,
+  "api_cases": 9,
+  "startup_cases": 10,
+  "reference_scope": "Native dataset command policy; pinned processor reference reused; no full ImageJ editor or dataset composite reference certification",
+  "evidence": [
+    {
+      "path": "build/p06zp-rgb-review001/build004/run001.json",
+      "bytes": 9456,
+      "sha256": "24e8fe3e0ec48301581803b4223125b09440c68d227f938f679e3843ed030033"
+    },
+    {
+      "path": "build/p06zp-rgb-review001/focused004/run001.json",
+      "bytes": 1372,
+      "sha256": "a83d03600f8b29bf43842c60420eed43a74155796affa378963133a63a9dc5c2"
+    },
+    {
+      "path": "build/p06zp-rgb-review001/rgb-cpp003/run001.json",
+      "bytes": 1237,
+      "sha256": "6d165f1f5129d351776a03f0c4bf8ae6652a80b3e5e830ca610173d91b75fc12"
+    },
+    {
+      "path": "build/p06zp-rgb-review001/source001/run001.json",
+      "bytes": 1384,
+      "sha256": "960564aef49a5f8e3b8cac7afdd2c2e53070cbb64f007bdd831d47a24d442fe1"
+    },
+    {
+      "path": "build/p06zp-rgb-review001/install001/run001.json",
+      "bytes": 7200,
+      "sha256": "29c8b9fa8a467a90014b555f4c8cf8fe9740f1abfa894f88adcff8f7e0952a99"
+    },
+    {
+      "path": "build/p06zp-rgb-review001/installed-cpp001/run001.json",
+      "bytes": 3085,
+      "sha256": "72a909baca8b1be49eed7a446ac0d26613f9e867b673f88cbb8c5170096f21cc"
+    },
+    {
+      "path": "build/p06zp-rgb-review001/installed-python001/run001.json",
+      "bytes": 1695,
+      "sha256": "b7e4468b0a5ddfc679da81848b2bba9fadd27a8fa05338851b97d0d312a899fb"
+    },
+    {
+      "path": "build/p06zp-rgb-review001/launcher001/run001.json",
+      "bytes": 3334,
+      "sha256": "5187dc9ff8474dec3bcc5755e7cae8034be7af79eb380824d987ef9f3c88b3e7"
+    },
+    {
+      "path": "build/p06zp-rgb-review001/api001/run001.json",
+      "bytes": 1358,
+      "sha256": "df2256ecbe1eacd56eacfe25657d1520a2424c0db2021110d155f0aa91db83a7"
+    },
+    {
+      "path": "build/p06zp-rgb-review001/regress001/run001.json",
+      "bytes": 18305,
+      "sha256": "9d7059c1b88c52d3185ed6962dcc0f945c0136d4123d86cffdfc94bb98421e9c"
+    },
+    {
+      "path": "build/p06zp-rgb-review001/process-cpp001/run001.json",
+      "bytes": 1270,
+      "sha256": "badcf77a855c5a4775cafc4c2cb927f2efe00fcf566e5808095f0e76e5a83ff1"
+    },
+    {
+      "path": "build/p06zp-rgb-review001/process-installed-cpp001/run001.json",
+      "bytes": 1737,
+      "sha256": "97e611adfc81d58a4c7789ff632c932b533da99c8fb5e0727b845c92d8eb427e"
+    },
+    {
+      "path": "build/p06zp-rgb-review001/rgb-installed-cpp001/run001.json",
+      "bytes": 1310,
+      "sha256": "ec56d6211f9a003c408b6e160fabf7aba775f9f5f95351f8f2a63b8ca31943f9"
+    },
+    {
+      "path": "build/p06zp-rgb-review001/focused001/run001.json",
+      "bytes": 1576,
+      "sha256": "75ace5b2845cae7c98114bc5bd442f40b52341c5ca23dca2cca80f8079063114"
+    },
+    {
+      "path": "build/p06zp-rgb-review001/focused002/run001.json",
+      "bytes": 1576,
+      "sha256": "ed07b45e55d71676d6237caa742c76a2f270d78054976037bcb4f2135ec12fab"
+    },
+    {
+      "path": "build/p06zp-rgb-review001/build004/native.xml",
+      "bytes": 6163,
+      "sha256": "37b3dcbb1c85bdb3a1be4b4c2b86c206e51b0e1ff17696bbd2d5eb6c0185ad73"
+    },
+    {
+      "path": "build/p06zp-rgb-review001/focused004/pytest.xml",
+      "bytes": 97006,
+      "sha256": "fe7b2a84d92f86b7b437dd681ffcea1ed1ebfa5c6c2a31458f774e424fb17cfb"
+    },
+    {
+      "path": "build/p06zp-rgb-review001/source001/pytest.xml",
+      "bytes": 88538,
+      "sha256": "8e53c84b210e207ae958ccbb2386d0c4050aa113ec71f69013f09ef3650865dc"
+    },
+    {
+      "path": "build/p06zp-rgb-review001/installed-python001/pytest.xml",
+      "bytes": 90969,
+      "sha256": "c6e88bcf9f138622e981da48e3542da48a5694fb83008c113174771acc22a7db"
+    },
+    {
+      "path": "build/p06zp-rgb-review001/rgb-cpp003/capture001/case.json",
+      "bytes": 2743401,
+      "sha256": "707de1e9722b81dbbe8f515723a2a76022c7409374c1fcf245ace468d4a999a8"
+    },
+    {
+      "path": "build/p06zp-rgb-review001/rgb-installed-cpp001/capture001/case.json",
+      "bytes": 2744155,
+      "sha256": "ea63dae8821e1be49ddda392d171a15e94a64525895610fd8d44b65552efea2d"
+    },
+    {
+      "path": "build/p06zp-rgb-review001/source001/pytest-temp001/test_actual_menu_and_buttons_i0/capture001/case.json",
+      "bytes": 2746427,
+      "sha256": "191b23bebd6492e14a99098a69aa62e30e377992cd52d2a3a85c7faf84ba28dd"
+    },
+    {
+      "path": "build/p06zp-rgb-review001/installed-python001/pytest-temp001/test_actual_menu_and_buttons_i0/capture001/case.json",
+      "bytes": 2747183,
+      "sha256": "dcfdc6d2abddd97a484105b8a8306e0ba13c313f76e31a51fdadd46842b57753"
+    },
+    {
+      "path": "build/p06zp-rgb-review001/policy001.json",
+      "bytes": 427,
+      "sha256": "3d731d1bf93f553289d934a08139c9b37472e30dd46a2fbc0542f19152b97784"
+    },
+    {
+      "path": "build/p06zp-rgb-review001/cleanup001.json",
+      "bytes": 18495,
+      "sha256": "34162d3956cc9a745c36923a813983ff540a5affd9278c5c22315739a62ddcb6"
+    }
+  ],
+  "remaining": [
+    "Deferred legacy palette Composite inheritance without stored range; mixed unattended RGB workflow execution",
+    "Loss-aware C-to-Z flattening; RGB/HSB stack interchange; indexed quantization/global palette and round trips",
+    "Full ImageJ editor/composite/annotation/density/threshold/LUT reference and resource/platform/release checks",
+    "Historical fingerprint requalification; All99 remains42/57/0; Source901 unchanged"
+  ],
+  "scientific_rgb_menu_enabled": true,
+  "profile_accepted": false,
+  "family_completed": false,
+  "broad_goal": "active",
+  "full_plan_gate": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed"
+}

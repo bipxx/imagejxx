@@ -1,0 +1,60 @@
+{
+  "all_product_code_and_other_reviewed_pins_unchanged": true,
+  "applies_to_requirements": [
+    "G042.rank-imagej.profile-method-radius",
+    "G042.rank-imagej.targets-roi",
+    "G042.rank-imagej.preview-publication",
+    "G042.rank-imagej.lifecycle-resources",
+    "G042.rank-imagej.record-replay-rebind",
+    "G042.rank-imagej.persistence-surfaces"
+  ],
+  "candidate_disposition": "Candidate001 passed exact source-byte/member verification but was never finally accepted; retain it and the original guard failure. Corrected candidate002 is required because an included test source changed.",
+  "decision": "eligible",
+  "decision_scope": "One owned registration-guard maintenance delta under unchanged project MIT; parent002 product/source/dependency scope remains unchanged. Final distribution remains separately pending.",
+  "final_distribution_accepted": false,
+  "final_distribution_receipt": "build/p06f-001/final-distribution-001.json",
+  "id": "G042.rank.source-commercial-test-delta.003",
+  "new_dependency_or_asset_incorporation": false,
+  "observed_red": {
+    "bytes": 786,
+    "path": "build/p06f-001/registration-current003/red-run003.json",
+    "sha256": "a4c85878749fff473391d92c498a0c1e4c290306ec8024838ec89996b1ce0e4e"
+  },
+  "parent_review": {
+    "bytes": 21241,
+    "path": "docs/parity/rank-commercial-review-002.json",
+    "sha256": "f8febcbbd689ef632b9507683d3a0a8ce4792fc5eb52b5e6f40ae993d06ff2e7"
+  },
+  "reason": "The numerical-only guard was obsolete after genuine current24/196 surface adoption and separate source eligibility adoption002. Its repair verifies exact current contract/proof/run fingerprint/report metadata and explicit source eligibility evidence without following historical/artifact paths. No product processing, dependency or asset change.",
+  "repaired_guard_gate": {
+    "bytes": 1571,
+    "path": "build/p06f-001/registration-current004/green-run004.json",
+    "sha256": "8de783665566498f7c98eb1afcee75abdd4310a5f99a293cd203fbe6c99b30e3"
+  },
+  "schema_version": 1,
+  "source_deltas": [
+    {
+      "after": {
+        "bytes": 19241,
+        "path": "tests/tools/test_rank_fixture_registration.py",
+        "sha256": "677a581c7e728c02f3642d48628a7873575691365afcd7e800144f6ef236d4b2"
+      },
+      "before": {
+        "bytes": 12528,
+        "path": "tests/tools/test_rank_fixture_registration.py",
+        "sha256": "55c7d50565865ead59068dc789bb3a52bfb1e7550a130ca1b9920660d9ecd947"
+      },
+      "preimage": {
+        "bytes": 12528,
+        "path": "build/p06f-001/source-history/before-rank-registration-current003/test_rank_fixture_registration.py",
+        "sha256": "55c7d50565865ead59068dc789bb3a52bfb1e7550a130ca1b9920660d9ecd947"
+      },
+      "scope": "Only test_only_two_partial_requirements_gain_fixture_links changed; every other AST node/read/allowlist remains unchanged. Current surface/source promotions require their independent provenance; original numerical contract/trace checks are preserved."
+    }
+  ],
+  "superseded_source_candidate": {
+    "bytes": 121809,
+    "path": "build/p06f-001/source-final001.json",
+    "sha256": "d073a39f8ac59cdce89c8303bcac4ffe11f6de370947d3d97b58a834047c48da"
+  }
+}

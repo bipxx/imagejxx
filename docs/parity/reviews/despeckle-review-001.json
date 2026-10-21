@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "state": "scoped_gates_passed",
+  "scope": "Finite UInt8/UInt16/Float32 Despeckle preset, public APIs and both shared ImGui hosts",
+  "reference_runner_cases": 72,
+  "python_checks_per_common_context": 5136,
+  "strict_genuine_installed_projection_checks": 120,
+  "windows_native_suites": 41,
+  "linux_native_suites": 20,
+  "native_despeckle_checks_per_platform": 1274,
+  "native_variance_regression_checks_per_platform": 7949,
+  "shared_rank_panel_cases": 36,
+  "actual_input_cases": [
+    "R27",
+    "R28",
+    "R29",
+    "R30",
+    "R31"
+  ],
+  "hosts": [
+    "source C++ ImGui",
+    "installed C++ ImGui",
+    "source Python ImGui",
+    "installed Python ImGui"
+  ],
+  "installed_public_sdk": "passed",
+  "window_cpp_changed": true,
+  "runtime_dependencies_added": false,
+  "public_options_layout_changes": false,
+  "record_schema_changed": false,
+  "policy": "Fixed nine-point 3x3 median radius 1, immediate single plane, stack Yes/No/Cancel; scientific target chooser is an owned extension. Preserve display/threshold and remembered Median radius. Canonical rank_filter_imagej record.",
+  "diagnostics": [
+    "sdk001: test consumer omitted execution.hpp; sdk002 explicitly includes the public header and passes. Production headers unchanged by this correction."
+  ],
+  "remaining": [
+    "Remove Outliers: radius/threshold/Bright-Dark and inverted LUT qualification",
+    "Top Hat",
+    "Remove NaNs and nonfinite/RGB profiles",
+    "Indexed formats",
+    "Wider editor/release qualification"
+  ],
+  "release_counts": {
+    "all99_in_progress": 42,
+    "all99_open": 57,
+    "all99_complete": 0,
+    "source901": "unchanged"
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "state": "scoped_scientific_invert_adapter_verified",
+  "operation": "invert_uint16",
+  "source_admission": "UInt16 single sample; metadata-only admission",
+  "captured_settings": [
+    "full_range_inversions",
+    "unsigned16_bits"
+  ],
+  "explicit_overrides": true,
+  "new_focused_python_cases": 22,
+  "pinned_reference_cases": 8,
+  "reference_scope": "Direct uncalibrated ImageProcessor type conversions and unsigned ShortProcessor inversion; not density-calibrated/signed/LUT/threshold/stack/GUI or plugin certification. Float64/RGBA are native extensions outside this corpus.",
+  "evidence": [
+    {
+      "path": "build/p06zk-scientific-invert001/build002/run001.json",
+      "bytes": 9396,
+      "sha256": "541809f986a2c9a485a04adb2be02ab25186312d9d247b3a26161891de438068"
+    },
+    {
+      "path": "build/p06zk-scientific-invert001/process-cpp001/run001.json",
+      "bytes": 1293,
+      "sha256": "c336286e802c1e8752d8643b8446ed1f4982426d94c15500d13b153ca032f1e4"
+    },
+    {
+      "path": "build/p06zk-scientific-invert001/process-installed-cpp001/run001.json",
+      "bytes": 1779,
+      "sha256": "85e8d2f412894bf0fe1e247ae70eeff57a705e6e867c102ffc00d96075f3c7cc"
+    },
+    {
+      "path": "build/p06zk-scientific-invert001/source002/run001.json",
+      "bytes": 1399,
+      "sha256": "c22065cf46084dd969670ae6aceca339da2f572ea0cd73d92aeffdc38ae9665a"
+    },
+    {
+      "path": "build/p06zk-scientific-invert001/install001/run001.json",
+      "bytes": 7316,
+      "sha256": "cea9fada7410750717fc315da4132085dedf2f506c88402171ac71398ed7c981"
+    },
+    {
+      "path": "build/p06zk-scientific-invert001/installed-cpp001/run001.json",
+      "bytes": 3156,
+      "sha256": "64cf56e711b83846d227d621ff01a97c361d0fc4c74f0f0523e074b1d8d72f76"
+    },
+    {
+      "path": "build/p06zk-scientific-invert001/installed-python001/run001.json",
+      "bytes": 1746,
+      "sha256": "f868a513e80cb4267e67553ccf6f796dd14d98d40fcdfa9ad44550f90f6e92ba"
+    },
+    {
+      "path": "build/p06zk-scientific-invert001/launcher001/run001.json",
+      "bytes": 3438,
+      "sha256": "800d2b47a2cb937363b9efe98ecba37ed04a003504af95be82b97213f96c624c"
+    },
+    {
+      "path": "build/p06zk-scientific-invert001/api001/run001.json",
+      "bytes": 1387,
+      "sha256": "7216bc170c3a5954d2685a8206c15ce9a753cbc9d3e467ce9230cb6fbbf9b7c1"
+    },
+    {
+      "path": "build/p06zk-scientific-invert001/regress001/run001.json",
+      "bytes": 18658,
+      "sha256": "74027f3b66f03f317d5003e9023839ec8f8b58cebf3db987e26804b1dd35ab1e"
+    },
+    {
+      "path": "build/p06zk-scientific-invert001/paths-sdk001/run001.json",
+      "bytes": 4344,
+      "sha256": "8823fe0e15c141b6be2ab8b98833993aed132b2477713e7c20cce686ba3c2bf9"
+    },
+    {
+      "path": "build/p06zk-scientific-invert001/baseline002/run001.json",
+      "bytes": 1403,
+      "sha256": "1dd223847d5bbdc70c46401b1f815088b42259d54afa04b9deb29d6cbb7d0b3e"
+    },
+    {
+      "path": "build/p06zk-scientific-invert001/source001/run001.json",
+      "bytes": 1614,
+      "sha256": "59a1aca1ffca67d8653be8f55d0b84bc64cbd36d4a3e680eb923c54b526bce0c"
+    },
+    {
+      "path": "build/p06zk-scientific-invert001/test-before-axis-fix001.py",
+      "bytes": 6720,
+      "sha256": "7b35064fcb5f4b207e000e0f7ef8cb3493320f9d7799c285c50052c6bee4e6d2"
+    },
+    {
+      "path": "build/p06zk-scientific-invert001/source002/pytest.xml",
+      "bytes": 56592,
+      "sha256": "a25b60e551d0ca5f1b85fc74dd0f718e979f9a35a214022182d6ceab125024b6"
+    },
+    {
+      "path": "build/p06zk-scientific-invert001/installed-python001/pytest.xml",
+      "bytes": 59022,
+      "sha256": "5cb430873208069cc075675b7abc7da6735fc070e1ec22bf8404f61424d14380"
+    },
+    {
+      "path": "build/p06zk-scientific-invert001/build002/native.xml",
+      "bytes": 5686,
+      "sha256": "d4c70b57c0d77bdc86eef4ff36f36d90c84c9bf9a947e1114a1abaea5a90a513"
+    },
+    {
+      "path": "tests/fixtures/conversion-imagej154r.json",
+      "bytes": 229969,
+      "sha256": "eb177fe986754d379fa0389ddca91de495c83ad8a095e06ecc63664611db3bd1"
+    },
+    {
+      "path": "build/p06zk-scientific-invert001/process-cpp001/capture001/case.json",
+      "bytes": 15322820,
+      "sha256": "3b04688fcd4020e33c280bf6abc09c7a7ce9d3b8ab457c6e291dd060ff6d5234"
+    },
+    {
+      "path": "build/p06zk-scientific-invert001/process-installed-cpp001/capture001/case.json",
+      "bytes": 15324105,
+      "sha256": "36851bd71062af39873d759fdb033266238f9827a2bbfc8b720a244db83c106e"
+    },
+    {
+      "path": "build/p06zk-scientific-invert001/baseline002/baseline001.json",
+      "bytes": 329,
+      "sha256": "e525442217b6aec98f35898a804edc5c2e706b04bce219f2883f698089129e4a"
+    },
+    {
+      "path": "build/p06zk-scientific-invert001/policy001.json",
+      "bytes": 212,
+      "sha256": "050d29f9ec634480afa83c512675556262efda99b92e60571ed3930be8c84814"
+    },
+    {
+      "path": "build/p06zk-scientific-invert001/cleanup001.json",
+      "bytes": 35499,
+      "sha256": "23095e3ef24f7da8659092266075d83a24c0736c258770f76664d21814ddc24e"
+    }
+  ],
+  "native_windows_suites": 18,
+  "source_cases": 391,
+  "installed_cases": 411,
+  "remaining": [
+    "Dedicated whole-dataset scientific convert_image adapter with coordinated display/threshold/channel and metadata policies",
+    "Full conversion, geometry/auxiliary-image and binary LUT/ROI/EDM/3D/reference/resource/platform/release qualification",
+    "All ImageJ and commercially eligible Fiji scope and prior filesystem obligations; All99 remains42/57/0, Source901 unchanged"
+  ],
+  "profile_accepted": false,
+  "family_completed": false,
+  "broad_goal": "active"
+}

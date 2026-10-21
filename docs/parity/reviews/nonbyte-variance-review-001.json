@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "state": "scoped_gates_passed",
+  "scope": "Direct UInt16/Float32 rank variance kernel only",
+  "reference_cases": 504,
+  "overflow_cases": 42,
+  "python_checks_per_context": 1553,
+  "extra_source_optional_desktop_checks": 2,
+  "windows_native_suites": 3,
+  "fresh_linux_native_suites": 9,
+  "installed_cpp_sdk": "passed",
+  "runtime_dependency_changes": false,
+  "public_dto_layout_changes": false,
+  "remaining": [
+    "Nonbyte final contrast stretch and paired display/history publication",
+    "Lift editor and workflow type guards after final-processing qualification",
+    "Actual nonbyte UI input observations in both hosts",
+    "Advanced filters, threshold/channel conversions, indexed TIFF/PNG",
+    "Broader release gates and historical producer fingerprint requalification"
+  ],
+  "diagnostics": [
+    "installed001: Unspecified component does not contain complete Python source package; corrected to processing-python",
+    "installed002: processing-only prefix was incorrectly assigned two optional desktop tests; corrected context selection, raw failures retained"
+  ],
+  "family_counts": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  },
+  "release": "Source901 unchanged"
+}

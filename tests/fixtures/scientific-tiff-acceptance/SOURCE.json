@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "origin": "Original struct carriers and independent wire checks; no product writer",
+  "tu01_literal": [
+    0,
+    1,
+    255,
+    256,
+    32768,
+    65535
+  ],
+  "tu02_equation": "10000*t+1000*c+100*z+10*y+x",
+  "native_plane_to_file_page": [
+    0,
+    3,
+    1,
+    4,
+    2,
+    5,
+    6,
+    9,
+    7,
+    10,
+    8,
+    11
+  ],
+  "files": [
+    {
+      "file": "literal-ii.tif",
+      "bytes": 484,
+      "sha256": "f7f8fcfdce35dc5a3ab1dfd3daebead39251934d4483ac217a3c63fe44efe6ba",
+      "shape": [
+        1,
+        1,
+        1,
+        2,
+        3,
+        1
+      ],
+      "rows_per_strip": 2,
+      "pages": 1,
+      "strip_byte_counts": [
+        12
+      ]
+    },
+    {
+      "file": "literal-mm.tif",
+      "bytes": 484,
+      "sha256": "ef46aece97142b3e375e598b29f0ebb58943392bc10b6c745037bb460372e7e5",
+      "shape": [
+        1,
+        1,
+        1,
+        2,
+        3,
+        1
+      ],
+      "rows_per_strip": 2,
+      "pages": 1,
+      "strip_byte_counts": [
+        12
+      ]
+    },
+    {
+      "file": "czt-exact.tif",
+      "bytes": 3586,
+      "sha256": "3d7db0536297472b2d3eeddd7d5a41c660c0a3a0725c062d7fe614699782383e",
+      "shape": [
+        2,
+        3,
+        2,
+        2,
+        3,
+        1
+      ],
+      "rows_per_strip": 2,
+      "pages": 12,
+      "strip_byte_counts": [
+        12
+      ]
+    },
+    {
+      "file": "rows-1.tif",
+      "bytes": 526,
+      "sha256": "e80ef876e0d3bbadb90a403744e8a6deb6ea93f24f7332468cf74ee1c62fc898",
+      "shape": [
+        1,
+        1,
+        1,
+        3,
+        5,
+        1
+      ],
+      "rows_per_strip": 1,
+      "pages": 1,
+      "strip_byte_counts": [
+        10,
+        10,
+        10
+      ]
+    },
+    {
+      "file": "rows-2.tif",
+      "bytes": 518,
+      "sha256": "7fb320424f301cebeaacf8661f7ac9d5ce28048cc5f72d70f31bb98a90ed0c40",
+      "shape": [
+        1,
+        1,
+        1,
+        3,
+        5,
+        1
+      ],
+      "rows_per_strip": 2,
+      "pages": 1,
+      "strip_byte_counts": [
+        20,
+        10
+      ]
+    },
+    {
+      "file": "rows-9.tif",
+      "bytes": 502,
+      "sha256": "79a86dc49a7856cb70a8cf8aa69e00a9aca130f0b7da3db225b2a36bc1b003f2",
+      "shape": [
+        1,
+        1,
+        1,
+        3,
+        5,
+        1
+      ],
+      "rows_per_strip": 9,
+      "pages": 1,
+      "strip_byte_counts": [
+        30
+      ]
+    }
+  ]
+}

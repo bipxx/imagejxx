@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "id": "G015.saved-roi-surfaces-adoption.001",
+  "state": "adopted_scoped_genuine_surfaces_partial_requirements",
+  "adopted_utc": "2026-10-17T00:11:25.379477+00:00",
+  "owner": "root",
+  "scope": "Six existing saved-row XY children;24 C++/Python/paired ImGui contexts and200 actual typed values",
+  "validation": {
+    "path": "build/p06g-001/surface-adoption003/validation001.json",
+    "bytes": 3321,
+    "sha256": "59b1ca4ae53fb56338aed72498d781f4b6d213f2d45067d4c7f799dc7155c0e2"
+  },
+  "payload": {
+    "path": "build/p06g-001/surface-binding-prep001/payload001/proposed-additions.json",
+    "bytes": 192486,
+    "sha256": "8ce487dbf36878a15a26480218f8ada08ef6c9e80671b715d371b2c6a1f6c66c"
+  },
+  "verification_run_id": "p06g.saved-roi-current-surface-comparison.001",
+  "requirement_ids": [
+    "G015.saved-roi-geometry.geometry",
+    "G015.saved-roi-geometry.persistence-surfaces",
+    "G015.saved-roi-geometry.publication",
+    "G015.saved-roi-geometry.record-replay-rebind",
+    "G015.saved-roi-geometry.resources",
+    "G015.saved-roi-geometry.targets"
+  ],
+  "declared_delta": {
+    "verification_runs_added": 1,
+    "run_bindings_added": 1,
+    "surface_proofs_added": 24,
+    "child_run_links_added": 6,
+    "child_verification_status": "unverified -> partial",
+    "implementation_status": "partial remains partial",
+    "parent_milestone_ownership": {
+      "id": "G015",
+      "before": [
+        "M4"
+      ],
+      "after": [
+        "M1",
+        "M4",
+        "M5"
+      ],
+      "reason": "Repair existing six-child M1/M4/M5 registration graph; preserve all adopted child obligations and the original M4 family obligation. This adds ownership, not completion."
+    }
+  },
+  "before": {
+    "inventory.json": {
+      "bytes": 9182003,
+      "sha256": "02ec3dc2b633248676cbb19419f621f78cdc5ca30d1ccc2ab941b6a144c2ed72"
+    },
+    "references.json": {
+      "bytes": 757915,
+      "sha256": "d750de9e7b74e4fd5f6a5f05e7068becc3b67bf61ac8ddc76853e421335754c8"
+    },
+    "fiji-components.json": {
+      "bytes": 8945367,
+      "sha256": "5f2ad3f617c354189759d5e1c81d16e1ed977ac730461c80987d1581998e17a1"
+    },
+    "commands.json": {
+      "bytes": 3453850,
+      "sha256": "dc25ed967ce3978f29ced0a3a70db3ab519f494047507f20e7f659bd5612d26f"
+    },
+    "formats.json": {
+      "bytes": 2728,
+      "sha256": "1ee55783326cfb296b09ee14e0d3149d01de7888f94a01278d413b186decbd8e"
+    },
+    "fixtures.json": {
+      "bytes": 3443779,
+      "sha256": "190010efbefe8f30de3d394cfd6c05576d68bbc754d6a3cb5f7bc7c684bc88e5"
+    },
+    "benchmarks.json": {
+      "bytes": 3883,
+      "sha256": "c586788d74fac8119f751c5cbdb943a1c7ee06269e78635a54c7f1fafe4be60c"
+    },
+    "platforms.json": {
+      "bytes": 5253,
+      "sha256": "da733623bb7bc4a3d8bb3ce1fc9ddd3077f86cb8f3befbb71bac6f91390faf68"
+    }
+  },
+  "after": {
+    "inventory.json": {
+      "bytes": 9429651,
+      "sha256": "4779853bc820c116eb3ce32f635e44e8dd076709372f074cf14aa634aa4bbb23"
+    },
+    "references.json": {
+      "bytes": 757915,
+      "sha256": "d750de9e7b74e4fd5f6a5f05e7068becc3b67bf61ac8ddc76853e421335754c8"
+    },
+    "fiji-components.json": {
+      "bytes": 8945367,
+      "sha256": "5f2ad3f617c354189759d5e1c81d16e1ed977ac730461c80987d1581998e17a1"
+    },
+    "commands.json": {
+      "bytes": 3474115,
+      "sha256": "740159102ed5fd0fd0dfbf7f4b2b8f0d424c58fd1608f67a8fa52e176b098a13"
+    },
+    "formats.json": {
+      "bytes": 2728,
+      "sha256": "1ee55783326cfb296b09ee14e0d3149d01de7888f94a01278d413b186decbd8e"
+    },
+    "fixtures.json": {
+      "bytes": 3443779,
+      "sha256": "190010efbefe8f30de3d394cfd6c05576d68bbc754d6a3cb5f7bc7c684bc88e5"
+    },
+    "benchmarks.json": {
+      "bytes": 3883,
+      "sha256": "c586788d74fac8119f751c5cbdb943a1c7ee06269e78635a54c7f1fafe4be60c"
+    },
+    "platforms.json": {
+      "bytes": 5253,
+      "sha256": "da733623bb7bc4a3d8bb3ce1fc9ddd3077f86cb8f3befbb71bac6f91390faf68"
+    }
+  },
+  "checks": {
+    "full_static_schema": {
+      "requirements": 64,
+      "additions": 0,
+      "formats": 1,
+      "fixtures": 11,
+      "benchmarks": 1,
+      "platforms": 1
+    },
+    "full_static_relationships": {
+      "requirements": 64,
+      "runs": 44,
+      "linked_runs": 20
+    },
+    "frozen_surface_contracts": 20,
+    "selected_report": {
+      "requirements": 6,
+      "bindings": 1,
+      "reports_verified": 1,
+      "unavailable_reports": []
+    },
+    "selected_execution": {
+      "requirements": 6,
+      "required_contexts": 24,
+      "verified_contexts": 24,
+      "missing_proofs": [],
+      "unavailable_evidence": []
+    },
+    "every_other_existing_field_preserved": true,
+    "unchanged_product_execution_repeated": false
+  },
+  "producer_scope": {
+    "cpp_api": "47 actual installed SDK values plus2 actual host values, with distinct original producers/cases; not SDK49",
+    "python_api": "49 actual values from installed A01-A12",
+    "imgui_cpp": "51 actual values from original paired checkpoints plus separate nine-value installed supplement",
+    "imgui_python": "51 actual values from original paired checkpoints plus separate nine-value installed supplement",
+    "comparison": "one genuine independent24-case JUnit, no skipped/failing/error cases"
+  },
+  "remaining": [
+    "Owned literal fixture/trace adoption",
+    "Scoped source/dependency commercial decisions",
+    "Final matching source/archive/member/notices delivery",
+    "All broader family options, scientific global/manager creation, XZ/YZ editing, platforms and performance"
+  ],
+  "not_claimed": [
+    "full historical runtime revalidation",
+    "fixture adoption",
+    "source/license/archive/member/notices gate",
+    "whole family completion",
+    "new product or OS/GPU execution"
+  ],
+  "preflight_failures": [
+    "build/p06g-001/surface-adoption001/failed001.json",
+    "build/p06g-001/surface-adoption002/failed002.json"
+  ]
+}

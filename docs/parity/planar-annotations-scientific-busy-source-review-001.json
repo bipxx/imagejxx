@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_increment",
+  "review_type": "root authorship/integration attestation; not independent legal review",
+  "scope": "Two owned diagnostic producer/reader files for scientific running-job annotation cancellation and recovery",
+  "license": "Existing project MIT",
+  "new_dependencies": [],
+  "imported_third_party_code": [],
+  "imported_assets": [],
+  "original_source_archive": {
+    "bytes": 8808972,
+    "path": "build/p06p-source-final001/imagejxx-0.2.0.tar.gz",
+    "sha256": "54433eddbdd012ea104944ad12239fb36df152109b34351b23cb22fc69a0338d"
+  },
+  "sources": [
+    {
+      "logical_path": "src/desktop/planar_annotation_matrix.cpp",
+      "before": {
+        "path": "build/p06p-scientific-busy001/held001/before/src/desktop/planar_annotation_matrix.cpp",
+        "bytes": 14948,
+        "sha256": "70e935523cbfb06c2b6af2ff244db07c1bfe7022495c40ed9d2282f39b528701"
+      },
+      "after": {
+        "path": "build/p06p-scientific-busy001/held001/after/src/desktop/planar_annotation_matrix.cpp",
+        "bytes": 18717,
+        "sha256": "5e7dd43870451acca5ab46f543956074fd9a2188da240fbc5c0962968f6ede21"
+      },
+      "current": {
+        "path": "src/desktop/planar_annotation_matrix.cpp",
+        "bytes": 18717,
+        "sha256": "5e7dd43870451acca5ab46f543956074fd9a2188da240fbc5c0962968f6ede21"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_planar_annotation_matrix_ui.py",
+      "before": {
+        "path": "build/p06p-scientific-busy001/held001/before/tests/python/test_planar_annotation_matrix_ui.py",
+        "bytes": 9768,
+        "sha256": "9a3a539139ab458066dbf36b40b2022547797b243d37bdcb4489051e73fb98bf"
+      },
+      "after": {
+        "path": "build/p06p-scientific-busy001/held001/after/tests/python/test_planar_annotation_matrix_ui.py",
+        "bytes": 12440,
+        "sha256": "a08a4189a990b11492fff8f3534be3cc6ea66cc5b7db91e5d58c0c6a26fa000b"
+      },
+      "current": {
+        "path": "tests/python/test_planar_annotation_matrix_ui.py",
+        "bytes": 12440,
+        "sha256": "a08a4189a990b11492fff8f3534be3cc6ea66cc5b7db91e5d58c0c6a26fa000b"
+      }
+    }
+  ],
+  "reused_internal_seam": "Existing ScopedOperationJobProbe; no public processing API or scheduler added",
+  "excluded_features_added": false,
+  "whole_family_or_reference_acceptance": false
+}

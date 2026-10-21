@@ -1,0 +1,466 @@
+{
+  "schema_version": 1,
+  "id": "G015.saved-roi-fixture-adoption.001",
+  "state": "adopted_owned10_content_capture_carrier_no_numerical_proof",
+  "adopted_utc": "2026-10-17T00:27:05.458106+00:00",
+  "owner": "root",
+  "fixture_id": "F.G015.saved-roi-geometry.owned10",
+  "contract_id": "FC.G015.saved-roi-geometry.owned10",
+  "ordered_case_ids": [
+    "PX01",
+    "PX02",
+    "PX03",
+    "PX04",
+    "PX05",
+    "PX06",
+    "PX07",
+    "PX08",
+    "PX09",
+    "PX10"
+  ],
+  "validation": {
+    "path": "build/p06g-001/fixture-adoption002/validation001.json",
+    "bytes": 19930,
+    "sha256": "2d70921a9967226b748e63123d6e901a96dbc29ad8744fd4c2ed80c5730f688c"
+  },
+  "payload": {
+    "path": "build/p06g-001/fixture-binding-prep001/prepared001/proposed-additions.json",
+    "bytes": 128193,
+    "sha256": "4a55eebdadc1dd0c2b3127e61c26eb7cf9707b4135798da94a84bba9401bb9b5"
+  },
+  "before": {
+    "references.json": {
+      "path": "docs/parity/references.json",
+      "bytes": 757915,
+      "sha256": "d750de9e7b74e4fd5f6a5f05e7068becc3b67bf61ac8ddc76853e421335754c8"
+    },
+    "fiji-components.json": {
+      "path": "docs/parity/fiji-components.json",
+      "bytes": 8945367,
+      "sha256": "5f2ad3f617c354189759d5e1c81d16e1ed977ac730461c80987d1581998e17a1"
+    },
+    "commands.json": {
+      "path": "docs/parity/commands.json",
+      "bytes": 3474115,
+      "sha256": "740159102ed5fd0fd0dfbf7f4b2b8f0d424c58fd1608f67a8fa52e176b098a13"
+    },
+    "formats.json": {
+      "path": "docs/parity/formats.json",
+      "bytes": 2728,
+      "sha256": "1ee55783326cfb296b09ee14e0d3149d01de7888f94a01278d413b186decbd8e"
+    },
+    "fixtures.json": {
+      "path": "docs/parity/fixtures.json",
+      "bytes": 3443779,
+      "sha256": "190010efbefe8f30de3d394cfd6c05576d68bbc754d6a3cb5f7bc7c684bc88e5"
+    },
+    "benchmarks.json": {
+      "path": "docs/parity/benchmarks.json",
+      "bytes": 3883,
+      "sha256": "c586788d74fac8119f751c5cbdb943a1c7ee06269e78635a54c7f1fafe4be60c"
+    },
+    "platforms.json": {
+      "path": "docs/parity/platforms.json",
+      "bytes": 5253,
+      "sha256": "da733623bb7bc4a3d8bb3ce1fc9ddd3077f86cb8f3befbb71bac6f91390faf68"
+    },
+    "inventory.json": {
+      "path": "docs/parity/inventory.json",
+      "bytes": 9429651,
+      "sha256": "4779853bc820c116eb3ce32f635e44e8dd076709372f074cf14aa634aa4bbb23"
+    }
+  },
+  "after": {
+    "references.json": {
+      "path": "docs/parity/references.json",
+      "bytes": 757915,
+      "sha256": "d750de9e7b74e4fd5f6a5f05e7068becc3b67bf61ac8ddc76853e421335754c8"
+    },
+    "fiji-components.json": {
+      "path": "docs/parity/fiji-components.json",
+      "bytes": 8945367,
+      "sha256": "5f2ad3f617c354189759d5e1c81d16e1ed977ac730461c80987d1581998e17a1"
+    },
+    "commands.json": {
+      "path": "docs/parity/commands.json",
+      "bytes": 3474421,
+      "sha256": "7c510d1f14c9d8e1c84442a4972e8ed9c80b382dc3302a93e013ea45a8c8900d"
+    },
+    "formats.json": {
+      "path": "docs/parity/formats.json",
+      "bytes": 2728,
+      "sha256": "1ee55783326cfb296b09ee14e0d3149d01de7888f94a01278d413b186decbd8e"
+    },
+    "fixtures.json": {
+      "path": "docs/parity/fixtures.json",
+      "bytes": 3602891,
+      "sha256": "920f9fda48e9adcf18a40b8ee4681b40466d70735cefc38c0d986232ed3d6696"
+    },
+    "benchmarks.json": {
+      "path": "docs/parity/benchmarks.json",
+      "bytes": 3883,
+      "sha256": "c586788d74fac8119f751c5cbdb943a1c7ee06269e78635a54c7f1fafe4be60c"
+    },
+    "platforms.json": {
+      "path": "docs/parity/platforms.json",
+      "bytes": 5253,
+      "sha256": "da733623bb7bc4a3d8bb3ce1fc9ddd3077f86cb8f3befbb71bac6f91390faf68"
+    },
+    "inventory.json": {
+      "path": "docs/parity/inventory.json",
+      "bytes": 9429651,
+      "sha256": "4779853bc820c116eb3ce32f635e44e8dd076709372f074cf14aa634aa4bbb23"
+    }
+  },
+  "fixture_proofs_added": 0,
+  "verification_runs_added": 0,
+  "run_bindings_added": 0,
+  "new_surface_proofs": 0,
+  "six_frozen_contracts_unchanged": true,
+  "requirements": [
+    "G015.saved-roi-geometry.geometry",
+    "G015.saved-roi-geometry.persistence-surfaces",
+    "G015.saved-roi-geometry.publication",
+    "G015.saved-roi-geometry.record-replay-rebind",
+    "G015.saved-roi-geometry.resources",
+    "G015.saved-roi-geometry.targets"
+  ],
+  "fixture_case_count": 10,
+  "numerical_fixture_proof_accepted": false,
+  "existing_semantic_evidence": {
+    "accepted_surface_run_id": "p06g.saved-roi-current-surface-comparison.001",
+    "paired_capture": {
+      "bytes": 21544,
+      "path": "build/p06g-001/paired-capture005/capture.json",
+      "sha256": "794f4e280fa128594bbacb82bb545495044dbd3c2b5fd638153e8f7cf5cc590c"
+    },
+    "paired_reader": {
+      "bytes": 3797,
+      "path": "build/p06g-001/paired-reader004/run004.json",
+      "sha256": "8600c8c6a84a7b6d832e06c2afadd74561d6e6fed92e3db318f395f1891538c3"
+    },
+    "passing_case_identities": [
+      {
+        "classname": "tests.python.test_saved_roi_geometry_ui",
+        "name": "test_installed_saved_roi_geometry[PX01-imgui_cpp]",
+        "suite": "pytest"
+      },
+      {
+        "classname": "tests.python.test_saved_roi_geometry_ui",
+        "name": "test_installed_saved_roi_geometry[PX01-imgui_python]",
+        "suite": "pytest"
+      },
+      {
+        "classname": "tests.python.test_saved_roi_geometry_ui",
+        "name": "test_installed_saved_roi_geometry[PX02-imgui_cpp]",
+        "suite": "pytest"
+      },
+      {
+        "classname": "tests.python.test_saved_roi_geometry_ui",
+        "name": "test_installed_saved_roi_geometry[PX02-imgui_python]",
+        "suite": "pytest"
+      },
+      {
+        "classname": "tests.python.test_saved_roi_geometry_ui",
+        "name": "test_installed_saved_roi_geometry[PX03-imgui_cpp]",
+        "suite": "pytest"
+      },
+      {
+        "classname": "tests.python.test_saved_roi_geometry_ui",
+        "name": "test_installed_saved_roi_geometry[PX03-imgui_python]",
+        "suite": "pytest"
+      },
+      {
+        "classname": "tests.python.test_saved_roi_geometry_ui",
+        "name": "test_installed_saved_roi_geometry[PX04-imgui_cpp]",
+        "suite": "pytest"
+      },
+      {
+        "classname": "tests.python.test_saved_roi_geometry_ui",
+        "name": "test_installed_saved_roi_geometry[PX04-imgui_python]",
+        "suite": "pytest"
+      },
+      {
+        "classname": "tests.python.test_saved_roi_geometry_ui",
+        "name": "test_installed_saved_roi_geometry[PX05-imgui_cpp]",
+        "suite": "pytest"
+      },
+      {
+        "classname": "tests.python.test_saved_roi_geometry_ui",
+        "name": "test_installed_saved_roi_geometry[PX05-imgui_python]",
+        "suite": "pytest"
+      },
+      {
+        "classname": "tests.python.test_saved_roi_geometry_ui",
+        "name": "test_installed_saved_roi_geometry[PX06-imgui_cpp]",
+        "suite": "pytest"
+      },
+      {
+        "classname": "tests.python.test_saved_roi_geometry_ui",
+        "name": "test_installed_saved_roi_geometry[PX06-imgui_python]",
+        "suite": "pytest"
+      },
+      {
+        "classname": "tests.python.test_saved_roi_geometry_ui",
+        "name": "test_installed_saved_roi_geometry[PX07-imgui_cpp]",
+        "suite": "pytest"
+      },
+      {
+        "classname": "tests.python.test_saved_roi_geometry_ui",
+        "name": "test_installed_saved_roi_geometry[PX07-imgui_python]",
+        "suite": "pytest"
+      },
+      {
+        "classname": "tests.python.test_saved_roi_geometry_ui",
+        "name": "test_installed_saved_roi_geometry[PX08-imgui_cpp]",
+        "suite": "pytest"
+      },
+      {
+        "classname": "tests.python.test_saved_roi_geometry_ui",
+        "name": "test_installed_saved_roi_geometry[PX08-imgui_python]",
+        "suite": "pytest"
+      },
+      {
+        "classname": "tests.python.test_saved_roi_geometry_ui",
+        "name": "test_installed_saved_roi_geometry[PX09-imgui_cpp]",
+        "suite": "pytest"
+      },
+      {
+        "classname": "tests.python.test_saved_roi_geometry_ui",
+        "name": "test_installed_saved_roi_geometry[PX09-imgui_python]",
+        "suite": "pytest"
+      },
+      {
+        "classname": "tests.python.test_saved_roi_geometry_ui",
+        "name": "test_installed_saved_roi_geometry[PX10-imgui_cpp]",
+        "suite": "pytest"
+      },
+      {
+        "classname": "tests.python.test_saved_roi_geometry_ui",
+        "name": "test_installed_saved_roi_geometry[PX10-imgui_python]",
+        "suite": "pytest"
+      }
+    ],
+    "raw_case_associations": [
+      {
+        "context": "imgui_cpp",
+        "raw_input": {
+          "bytes": 3266960,
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p06g-001\\paired-capture005\\imgui_cpp\\PX01\\run\\case.json",
+          "sha256": "b83cc5a77cb1156a9b5d36e3f7e97b760119206d2d2321b1d7094ba408738096"
+        },
+        "raw_producer_id": "p06g.saved-roi-geometry-ui.001.imgui_cpp",
+        "source_case_id": "PX01"
+      },
+      {
+        "context": "imgui_cpp",
+        "raw_input": {
+          "bytes": 2359614,
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p06g-001\\paired-capture005\\imgui_cpp\\PX02\\run\\case.json",
+          "sha256": "fa7cf5abaca01d35f8103a8453a1ee872f62698f2afa70d7ed92660a0ab0d186"
+        },
+        "raw_producer_id": "p06g.saved-roi-geometry-ui.001.imgui_cpp",
+        "source_case_id": "PX02"
+      },
+      {
+        "context": "imgui_cpp",
+        "raw_input": {
+          "bytes": 3794391,
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p06g-001\\paired-capture005\\imgui_cpp\\PX03\\run\\case.json",
+          "sha256": "fc392094c3089073c28d8da8bdd8cde4e4ce44b97f220a63cc765e9125cc999d"
+        },
+        "raw_producer_id": "p06g.saved-roi-geometry-ui.001.imgui_cpp",
+        "source_case_id": "PX03"
+      },
+      {
+        "context": "imgui_cpp",
+        "raw_input": {
+          "bytes": 4564875,
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p06g-001\\paired-capture005\\imgui_cpp\\PX04\\run\\case.json",
+          "sha256": "1f5114cf421cbbe94b3fe221b88db06338bbac5ddb172b21d656c91de4a17be1"
+        },
+        "raw_producer_id": "p06g.saved-roi-geometry-ui.001.imgui_cpp",
+        "source_case_id": "PX04"
+      },
+      {
+        "context": "imgui_cpp",
+        "raw_input": {
+          "bytes": 2971335,
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p06g-001\\paired-capture005\\imgui_cpp\\PX05\\run\\case.json",
+          "sha256": "be386ad0aa26feefd3da4192e7be86fc2cdd2b43db68444118dc4e2fabae15fb"
+        },
+        "raw_producer_id": "p06g.saved-roi-geometry-ui.001.imgui_cpp",
+        "source_case_id": "PX05"
+      },
+      {
+        "context": "imgui_cpp",
+        "raw_input": {
+          "bytes": 4308329,
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p06g-001\\paired-capture005\\imgui_cpp\\PX06\\run\\case.json",
+          "sha256": "2217377cc95029ecbae2e062a216fc747e54a70e4da07a1f8b393e7a6ff04f7e"
+        },
+        "raw_producer_id": "p06g.saved-roi-geometry-ui.001.imgui_cpp",
+        "source_case_id": "PX06"
+      },
+      {
+        "context": "imgui_cpp",
+        "raw_input": {
+          "bytes": 4506410,
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p06g-001\\paired-capture005\\imgui_cpp\\PX07\\run\\case.json",
+          "sha256": "9624069c1f605a9ba2913047a542173d54439cf9492147ad93f7de18222aa0c7"
+        },
+        "raw_producer_id": "p06g.saved-roi-geometry-ui.001.imgui_cpp",
+        "source_case_id": "PX07"
+      },
+      {
+        "context": "imgui_cpp",
+        "raw_input": {
+          "bytes": 3416265,
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p06g-001\\paired-capture005\\imgui_cpp\\PX08\\run\\case.json",
+          "sha256": "b08be8a89dd1436e095e54ca4af4136efd63a1cfda5b6ce0c8ca7e3b3cc0c207"
+        },
+        "raw_producer_id": "p06g.saved-roi-geometry-ui.001.imgui_cpp",
+        "source_case_id": "PX08"
+      },
+      {
+        "context": "imgui_cpp",
+        "raw_input": {
+          "bytes": 1692696,
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p06g-001\\paired-capture005\\imgui_cpp\\PX09\\run\\case.json",
+          "sha256": "40db433e504fb52918ead802207987232a8e4b5836e959eff6ad65a201bc240e"
+        },
+        "raw_producer_id": "p06g.saved-roi-geometry-ui.001.imgui_cpp",
+        "source_case_id": "PX09"
+      },
+      {
+        "context": "imgui_cpp",
+        "raw_input": {
+          "bytes": 5227836,
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p06g-001\\paired-capture005\\imgui_cpp\\PX10\\run\\case.json",
+          "sha256": "b850f87b7550f8f66843c7622ab61f5bc4a30bcdad4170a22b0cdeab27ecd76f"
+        },
+        "raw_producer_id": "p06g.saved-roi-geometry-ui.001.imgui_cpp",
+        "source_case_id": "PX10"
+      },
+      {
+        "context": "imgui_python",
+        "raw_input": {
+          "bytes": 3268229,
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p06g-001\\paired-capture005\\imgui_python\\PX01\\run\\case.json",
+          "sha256": "1dba83b3000796dd07806e05d1b435a63b7da076e2e1922a8349d39c43be9c6c"
+        },
+        "raw_producer_id": "p06g.saved-roi-geometry-ui.001.imgui_python",
+        "source_case_id": "PX01"
+      },
+      {
+        "context": "imgui_python",
+        "raw_input": {
+          "bytes": 2358975,
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p06g-001\\paired-capture005\\imgui_python\\PX02\\run\\case.json",
+          "sha256": "98b78e607e8009634b3b45ae43cb907ac55f369a7a8a4cfcf36ef984c546c9a8"
+        },
+        "raw_producer_id": "p06g.saved-roi-geometry-ui.001.imgui_python",
+        "source_case_id": "PX02"
+      },
+      {
+        "context": "imgui_python",
+        "raw_input": {
+          "bytes": 3794567,
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p06g-001\\paired-capture005\\imgui_python\\PX03\\run\\case.json",
+          "sha256": "ecc612dbde5934b01140e3f250128c17468917c39b10d0998fd3a7d6055981d1"
+        },
+        "raw_producer_id": "p06g.saved-roi-geometry-ui.001.imgui_python",
+        "source_case_id": "PX03"
+      },
+      {
+        "context": "imgui_python",
+        "raw_input": {
+          "bytes": 4571084,
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p06g-001\\paired-capture005\\imgui_python\\PX04\\run\\case.json",
+          "sha256": "902fc9f74f8260b182921d906c9abad643ebd09cc5b8264c96ad1d4aa8db8ae9"
+        },
+        "raw_producer_id": "p06g.saved-roi-geometry-ui.001.imgui_python",
+        "source_case_id": "PX04"
+      },
+      {
+        "context": "imgui_python",
+        "raw_input": {
+          "bytes": 2971498,
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p06g-001\\paired-capture005\\imgui_python\\PX05\\run\\case.json",
+          "sha256": "96c129821642acb6fc6f808335be9f86956ba37a232f7a5ed58bdb7c167c2b30"
+        },
+        "raw_producer_id": "p06g.saved-roi-geometry-ui.001.imgui_python",
+        "source_case_id": "PX05"
+      },
+      {
+        "context": "imgui_python",
+        "raw_input": {
+          "bytes": 4308630,
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p06g-001\\paired-capture005\\imgui_python\\PX06\\run\\case.json",
+          "sha256": "49123bce99870d8d4b28dcb10e910150ebb3ab0e0e1a996ff825f095ddfaecac"
+        },
+        "raw_producer_id": "p06g.saved-roi-geometry-ui.001.imgui_python",
+        "source_case_id": "PX06"
+      },
+      {
+        "context": "imgui_python",
+        "raw_input": {
+          "bytes": 4506719,
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p06g-001\\paired-capture005\\imgui_python\\PX07\\run\\case.json",
+          "sha256": "167c52af2b1b7f4195fef6a194b08e992a501e0f589554d74bd16f61b754e717"
+        },
+        "raw_producer_id": "p06g.saved-roi-geometry-ui.001.imgui_python",
+        "source_case_id": "PX07"
+      },
+      {
+        "context": "imgui_python",
+        "raw_input": {
+          "bytes": 3417539,
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p06g-001\\paired-capture005\\imgui_python\\PX08\\run\\case.json",
+          "sha256": "3d875e9dc9b92b0f06da5fc9a995ca4a559213fb3f37a64a4908b03c48ba7f99"
+        },
+        "raw_producer_id": "p06g.saved-roi-geometry-ui.001.imgui_python",
+        "source_case_id": "PX08"
+      },
+      {
+        "context": "imgui_python",
+        "raw_input": {
+          "bytes": 1692230,
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p06g-001\\paired-capture005\\imgui_python\\PX09\\run\\case.json",
+          "sha256": "e33fa5c57efef4d87d7b347632f045e9f41a7c2747d193c2b5c571e7814859ff"
+        },
+        "raw_producer_id": "p06g.saved-roi-geometry-ui.001.imgui_python",
+        "source_case_id": "PX09"
+      },
+      {
+        "context": "imgui_python",
+        "raw_input": {
+          "bytes": 5228270,
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p06g-001\\paired-capture005\\imgui_python\\PX10\\run\\case.json",
+          "sha256": "efed14974e3869209598d711a73031796100dc46f83518b644c5ad4bdd166e40"
+        },
+        "raw_producer_id": "p06g.saved-roi-geometry-ui.001.imgui_python",
+        "source_case_id": "PX10"
+      }
+    ],
+    "report": {
+      "bytes": 2952,
+      "path": "build/p06g-001/paired-reader004/results.xml",
+      "sha256": "746ae66f3656dee88310e3569bc424c780fe4b5c2a05810e67c09151c7d6e8e9"
+    },
+    "scope": "separate previously executed evidence; no new fixture proof inferred",
+    "surface_adoption": {
+      "bytes": 5891,
+      "path": "docs/parity/reviews/G015-saved-roi-surfaces-adoption-001.json",
+      "sha256": "d474e5b8dd34826e617bd668a9481e69745b91c3e233100587075bed74c495db"
+    }
+  },
+  "remaining": [
+    "Ten generic numerical assertions remain unverified; derive separate10/context delivered-input fixtures and compare genuine raw outputs using original1e-11 math, without rerunning products.",
+    "Scoped commercial decision and final matching source/archive/member/notices gate.",
+    "All broader ImageJ/commercially eligible pinned Fiji, platform/performance/full-family obligations."
+  ],
+  "status_policy": "Six children stay partial; fixture match unverified and license pending separate root source decision.",
+  "whole_family_accepted": false,
+  "product_test_reruns": 0
+}

@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "id": "G042.rank.observation-mapping.adoption002",
+  "state": "adopted_scoped_comparison_mapping_no_option_acceptance",
+  "acceptance": false,
+  "proposal": {
+    "path": "build/p06f-001/rank-surface-prep001/proposal.json",
+    "bytes": 245275,
+    "sha256": "bf9678bb4ca15befccdca3ca2851e1d2931c014864b24ec5eb80dd5229ed3b39"
+  },
+  "contracts": [
+    {
+      "id": "SC.G042.rank-imagej.profile-method-radius",
+      "requirement_id": "G042.rank-imagej.profile-method-radius",
+      "sha256": "6940e2c1dcd6f61211c139ac7372671ec9b1eec4f9950995a8a79da4e31ac80a"
+    },
+    {
+      "id": "SC.G042.rank-imagej.targets-roi",
+      "requirement_id": "G042.rank-imagej.targets-roi",
+      "sha256": "2b8ac6db13ee0a2a03f04ee7ede6ca58acc001cc4f14bd50890f852fb31aa9a7"
+    },
+    {
+      "id": "SC.G042.rank-imagej.preview-publication",
+      "requirement_id": "G042.rank-imagej.preview-publication",
+      "sha256": "01e684922eabcc5a1a20cee7a1ac2c8fe0dbd0265878c0dde97f68e4ec2fef8b"
+    },
+    {
+      "id": "SC.G042.rank-imagej.lifecycle-resources",
+      "requirement_id": "G042.rank-imagej.lifecycle-resources",
+      "sha256": "90a82e99ba3edbb373ca90e2d253093dfaf1881579e8b67da84a2beec28c5918"
+    },
+    {
+      "id": "SC.G042.rank-imagej.record-replay-rebind",
+      "requirement_id": "G042.rank-imagej.record-replay-rebind",
+      "sha256": "f06f1f95a9b7da4c4ab8cbb15a1f21bfad8b64110a003f11c1cda02e00b9b2ed"
+    },
+    {
+      "id": "SC.G042.rank-imagej.persistence-surfaces",
+      "requirement_id": "G042.rank-imagej.persistence-surfaces",
+      "sha256": "2e3b654fec3ed588514272dc996efd8f2bce0d0a12e6fd7551dbe5daa527edc2"
+    }
+  ],
+  "scope": {
+    "requirements": 6,
+    "contexts": 4,
+    "expected_assertions": 196,
+    "complete_requirement_coverage": false
+  },
+  "carriers": [
+    {
+      "path": "build/p06f-001/sdk-003.json",
+      "bytes": 10800,
+      "sha256": "1ef62e6bb8dd1e9689ec214955be31ae08463d208be0346bbdfafa2b86b301ad"
+    },
+    {
+      "path": "build/p06f-001/observer-runtime-001.json",
+      "bytes": 17544,
+      "sha256": "b7ec83dc1c0ba0ae1869144f2e5960dc1410dc1799b59748cc5184ecc500a554"
+    },
+    {
+      "path": "build/p06f-001/python-observations-002.json",
+      "bytes": 61991,
+      "sha256": "ce6688deb08e1ec8b92d4957389701edabae16817159d1cae441c5573d99408f"
+    },
+    {
+      "path": "build/p06f-001/paired-runtime-004.json",
+      "bytes": 67074,
+      "sha256": "8717f37f43c627631acf30b410dae17c7df1c984472a35f4b933d83edcdcf28c"
+    },
+    {
+      "path": "build/p06f-001/paired-reader-005.json",
+      "bytes": 16682,
+      "sha256": "5630ace3d3fe53e9ff8599d4488afce57ff205eecabcbc74cee1c8d9ab0d074f"
+    }
+  ],
+  "reader": {
+    "path": "tests/qualification/test_rank_surface_reader.py",
+    "input_environment": "IMAGEJXX_RANK_SURFACE_RUN_INPUTS",
+    "output_environment": "IMAGEJXX_RANK_SURFACE_OUTPUT_DIR",
+    "junit_suite": "p06f_rank_surfaces",
+    "junit_classname": "tests.qualification.test_rank_surface_reader",
+    "function": "test_rank_surface",
+    "parameter_id": "{requirement_stem}-{context}",
+    "contexts": [
+      "cpp_api",
+      "python_api",
+      "imgui_cpp",
+      "imgui_python"
+    ]
+  },
+  "constraints": [
+    "Actual SDK and desktop-host origins stay separate; combined C++ comparison is not an installed-core-only SDK assertion.",
+    "Required inputs fail when absent, never skip. Preserve actual typed values, byte hashes, producer/case/source/artifact identity and API versus physical-input attribution.",
+    "Empty SDK/host observation cases grant no additional coverage. Unsupported wheel schema grants no physical-wheel credit.",
+    "RAO03 proves enabled-GIL native handoff after initial progress only; no positive-work or first-neighborhood claim. Direct prepare zero reservations do not prove async charged lease release.",
+    "API Save/Open/close grant no physical widget credit. No expected or PASS-derived observations.",
+    "All six formal rows remain unverified, commercial decisions pending and manifests unchanged."
+  ],
+  "remaining_obligations": [
+    "Fractional/native arithmetic and inclusive admission limits outside the scoped 196 assertions.",
+    "Ordered provider reads/exclusion, signed zero, stale/foreign/closed owners and allocation-failure atomicity.",
+    "Running-rank cancellation, original never-installed READY Preview obligation and async retained-resource accounting.",
+    "Matching installed editors, exact commercial scope, formal fixture/run/interface bindings and performance."
+  ]
+}

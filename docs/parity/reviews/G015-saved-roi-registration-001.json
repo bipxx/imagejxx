@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "id": "G015.saved-roi-registration.001",
+  "state": "adopted_expected_contracts_only",
+  "adopted_utc": "2026-10-16T21:46:56.348243+00:00",
+  "owner": "root",
+  "scope": "Six additive G015 saved-row XY children,24 expected contexts/200 slots; no run/proof/verification/commercial/family promotion",
+  "proposal": {
+    "path": "build/p06g-001/registration-prep001/proposal.json",
+    "bytes": 41480,
+    "sha256": "1fcaf17c9c1ea63be5db06f5be89c0986403736187843aaeb2e1886e8f02b7c8"
+  },
+  "held_patch": {
+    "path": "build/p06g-001/registration-prep001/commands.patch.json",
+    "bytes": 183769,
+    "sha256": "cc9543d4643542fa506de9bd72ee57827f715252a49db4072c7f61154916a0f1"
+  },
+  "preimage": {
+    "path": "build/p06g-001/registration-adoption001/commands.preimage.json",
+    "bytes": 3273921,
+    "sha256": "9edaa2fb6012ffaefe86b921515644afef9bffc6b85ae8565a1c89c41ef5eae3"
+  },
+  "commands": {
+    "path": "docs/parity/commands.json",
+    "bytes": 3453850,
+    "sha256": "dc25ed967ce3978f29ced0a3a70db3ab519f494047507f20e7f659bd5612d26f"
+  },
+  "baseline_pins": [
+    {
+      "path": "docs/parity/commands.json",
+      "bytes": 3273921,
+      "sha256": "9edaa2fb6012ffaefe86b921515644afef9bffc6b85ae8565a1c89c41ef5eae3"
+    },
+    {
+      "path": "docs/parity/inventory.json",
+      "bytes": 9182003,
+      "sha256": "02ec3dc2b633248676cbb19419f621f78cdc5ca30d1ccc2ab941b6a144c2ed72"
+    },
+    {
+      "path": "docs/parity/references.json",
+      "bytes": 757915,
+      "sha256": "d750de9e7b74e4fd5f6a5f05e7068becc3b67bf61ac8ddc76853e421335754c8"
+    },
+    {
+      "path": "docs/parity/fiji-components.json",
+      "bytes": 8945367,
+      "sha256": "5f2ad3f617c354189759d5e1c81d16e1ed977ac730461c80987d1581998e17a1"
+    },
+    {
+      "path": "docs/parity/fixtures.json",
+      "bytes": 3443779,
+      "sha256": "190010efbefe8f30de3d394cfd6c05576d68bbc754d6a3cb5f7bc7c684bc88e5"
+    },
+    {
+      "path": "scripts/parity_schema.py",
+      "bytes": 24164,
+      "sha256": "be67b4a85e72bee6581bdb0673374e2b808d94955019a930d6ecf8a96934d913"
+    },
+    {
+      "path": "scripts/parity_execution.py",
+      "bytes": 41393,
+      "sha256": "e8d32cb8bb559cab89fefb07db2da95bcb83b8d9cc228e4b465a0b5aa99afcc9"
+    },
+    {
+      "path": "docs/parity/reviews/G015-G022-positioned-xy-adoption-002.json",
+      "bytes": 47216,
+      "sha256": "9623100ffe34d4cf5ca653b280f8e5ed87a921621b64e928ac85adc0c1e668a6"
+    },
+    {
+      "path": "docs/parity/reviews/G015-G022-positioned-xy-callback-clarification-003.json",
+      "bytes": 2581,
+      "sha256": "6d1d7cb24948c60825cba6e91a8625661612322b656b7b834d1d225ad036281b"
+    },
+    {
+      "path": "docs/parity/reviews/G015-G022-positioned-xy-entry-001.json",
+      "bytes": 29478,
+      "sha256": "cc2108555883dfdfd3b9d1c93d5deeafb0a053a46b0b3dc0f93450dd194a31ca"
+    }
+  ],
+  "root_amendments": [
+    {
+      "requirement_id": "G015.saved-roi-geometry.geometry",
+      "field": "remaining[0]",
+      "prior": "Native source implementation is partial/unexecuted; Python/UI/recording/integration remain pending. D01-D03/clarification003 clauses are complete requirements, not accepted observations.",
+      "adopted": "The scoped native007 development gate passes exact16/1600; full Python/UI/SDK/recording/integration qualification remains pending. D01-D03/clarification003 clauses remain complete requirements; no accepted option/surface observations are added here."
+    },
+    {
+      "requirement_id": "G015.saved-roi-geometry.targets",
+      "field": "remaining[0]",
+      "prior": "Native source implementation is partial/unexecuted; Python/UI/recording/integration remain pending. D01-D03/clarification003 clauses are complete requirements, not accepted observations.",
+      "adopted": "The scoped native007 development gate passes exact16/1600; full Python/UI/SDK/recording/integration qualification remains pending. D01-D03/clarification003 clauses remain complete requirements; no accepted option/surface observations are added here."
+    },
+    {
+      "requirement_id": "G015.saved-roi-geometry.publication",
+      "field": "remaining[0]",
+      "prior": "Native source implementation is partial/unexecuted; Python/UI/recording/integration remain pending. D01-D03/clarification003 clauses are complete requirements, not accepted observations.",
+      "adopted": "The scoped native007 development gate passes exact16/1600; full Python/UI/SDK/recording/integration qualification remains pending. D01-D03/clarification003 clauses remain complete requirements; no accepted option/surface observations are added here."
+    },
+    {
+      "requirement_id": "G015.saved-roi-geometry.resources",
+      "field": "remaining[0]",
+      "prior": "Native source implementation is partial/unexecuted; Python/UI/recording/integration remain pending. D01-D03/clarification003 clauses are complete requirements, not accepted observations.",
+      "adopted": "The scoped native007 development gate passes exact16/1600; full Python/UI/SDK/recording/integration qualification remains pending. D01-D03/clarification003 clauses remain complete requirements; no accepted option/surface observations are added here."
+    },
+    {
+      "requirement_id": "G015.saved-roi-geometry.record-replay-rebind",
+      "field": "remaining[0]",
+      "prior": "Native source implementation is partial/unexecuted; Python/UI/recording/integration remain pending. D01-D03/clarification003 clauses are complete requirements, not accepted observations.",
+      "adopted": "The scoped native007 development gate passes exact16/1600; full Python/UI/SDK/recording/integration qualification remains pending. D01-D03/clarification003 clauses remain complete requirements; no accepted option/surface observations are added here."
+    },
+    {
+      "requirement_id": "G015.saved-roi-geometry.persistence-surfaces",
+      "field": "remaining[0]",
+      "prior": "Native source implementation is partial/unexecuted; Python/UI/recording/integration remain pending. D01-D03/clarification003 clauses are complete requirements, not accepted observations.",
+      "adopted": "The scoped native007 development gate passes exact16/1600; full Python/UI/SDK/recording/integration qualification remains pending. D01-D03/clarification003 clauses remain complete requirements; no accepted option/surface observations are added here."
+    }
+  ],
+  "checks": {
+    "parity_schema_validate_documents": "passed",
+    "parity_execution_validate_contracts": "passed",
+    "all58_existing_requirements_unchanged": true,
+    "all14_existing_contracts_unchanged": true,
+    "all_other_original_command_keys_unchanged": true,
+    "all_other_baseline_inputs_unchanged": true,
+    "counts": {
+      "requirements": 64,
+      "parents_with_options": 12,
+      "surface_contracts": 20,
+      "surface_proofs": 56,
+      "run_bindings": 19,
+      "candidates": 2810,
+      "added_contexts": 24,
+      "added_expected_slots": 200
+    }
+  },
+  "implementation_status": "all_six_partial",
+  "verification_status": "all_six_unverified",
+  "commercial_decision": "all_six_pending",
+  "native_development_receipt": {
+    "path": "build/p06g-001/native-gate007/run007.json",
+    "bytes": 6985,
+    "sha256": "7f597d1ac1e18743ce2c404133ac6a1002a1e4514843140559fc80db40affa19"
+  },
+  "remaining": [
+    "Full Python API12 with actual installed origin and honest provider-read coverage",
+    "One installed core-only SDK consumer S01-S05",
+    "Shared private numeric/pointer UI, host8, paired20 and independent actual-value reader",
+    "Changed-only recording, strict Replay/full Rebind, NativeV3 persistence and affected regression",
+    "Matching final source/wheel/install/member/notices and exact scoped commercial adoption"
+  ]
+}

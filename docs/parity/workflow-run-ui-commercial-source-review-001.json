@@ -1,0 +1,231 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_owned_increment",
+  "review_type": "Root authorship/integration attestation, not independent legal review",
+  "license": "Existing project MIT for original shared workflow Run review and staged publication integration",
+  "new_dependencies": [],
+  "restricted_features_added": false,
+  "imported_third_party_product_code": [],
+  "new_fonts": [],
+  "sources": [
+    {
+      "logical_path": "CMakeLists.txt",
+      "before": {
+        "path": "build/p06q-workflow-run-ui001/before001/CMakeLists.txt",
+        "bytes": 60310,
+        "sha256": "fc03a96a5d14ad2b943bccf2f7615aa2897cbf05234ab9097b9dd32f61d5f6e5"
+      },
+      "after": {
+        "path": "build/p06q-workflow-run-ui001/after001/CMakeLists.txt",
+        "bytes": 60399,
+        "sha256": "219d0fdf10920cdca59dc39ee7f29fde3111f2feff88c400a9eafff332105a47"
+      },
+      "current": {
+        "path": "CMakeLists.txt",
+        "bytes": 60399,
+        "sha256": "219d0fdf10920cdca59dc39ee7f29fde3111f2feff88c400a9eafff332105a47"
+      }
+    },
+    {
+      "logical_path": "src/desktop/commands.cpp",
+      "before": {
+        "path": "build/p06q-workflow-run-ui001/before001/src/desktop/commands.cpp",
+        "bytes": 6238,
+        "sha256": "465c21913c137e12d05e1158ee0f25e7176960720fb0efd175ef8b28f7c34d8c"
+      },
+      "after": {
+        "path": "build/p06q-workflow-run-ui001/after001/src/desktop/commands.cpp",
+        "bytes": 6342,
+        "sha256": "e016d7f0c5827c9efbf9e8e72b98ea8d93694a574eacc8db32bfc28713ae12ff"
+      },
+      "current": {
+        "path": "src/desktop/commands.cpp",
+        "bytes": 6342,
+        "sha256": "e016d7f0c5827c9efbf9e8e72b98ea8d93694a574eacc8db32bfc28713ae12ff"
+      }
+    },
+    {
+      "logical_path": "src/desktop/desktop.hpp",
+      "before": {
+        "path": "build/p06q-workflow-run-ui001/before001/src/desktop/desktop.hpp",
+        "bytes": 12570,
+        "sha256": "2e89a3cd4976ed2497bb02e20fec9879fe6ee1e1e7b0682f7ffb22cfca3dcc09"
+      },
+      "after": {
+        "path": "build/p06q-workflow-run-ui001/after001/src/desktop/desktop.hpp",
+        "bytes": 12570,
+        "sha256": "2e89a3cd4976ed2497bb02e20fec9879fe6ee1e1e7b0682f7ffb22cfca3dcc09"
+      },
+      "current": {
+        "path": "src/desktop/desktop.hpp",
+        "bytes": 12570,
+        "sha256": "2e89a3cd4976ed2497bb02e20fec9879fe6ee1e1e7b0682f7ffb22cfca3dcc09"
+      }
+    },
+    {
+      "logical_path": "src/desktop/main.cpp",
+      "before": {
+        "path": "build/p06q-workflow-run-ui001/before001/src/desktop/main.cpp",
+        "bytes": 39016,
+        "sha256": "0537229920cf359864e09200d213814ddf6eb7a697ad516db08a908889896c15"
+      },
+      "after": {
+        "path": "build/p06q-workflow-run-ui001/after001/src/desktop/main.cpp",
+        "bytes": 39467,
+        "sha256": "67b35d7ff2636ded98a03d234aedff30f753ca128ee0c3fab70b9abac432d190"
+      },
+      "current": {
+        "path": "src/desktop/main.cpp",
+        "bytes": 39467,
+        "sha256": "67b35d7ff2636ded98a03d234aedff30f753ca128ee0c3fab70b9abac432d190"
+      }
+    },
+    {
+      "logical_path": "src/desktop/python.cpp",
+      "before": {
+        "path": "build/p06q-workflow-run-ui001/before001/src/desktop/python.cpp",
+        "bytes": 41880,
+        "sha256": "25d090d16ea5ae48bb29bdca953a066621c23b417a06dac4e6ca88fdff430914"
+      },
+      "after": {
+        "path": "build/p06q-workflow-run-ui001/after001/src/desktop/python.cpp",
+        "bytes": 42088,
+        "sha256": "018d2bb357c6e8d9e108ac36193064f2c17c09ea44555bf3304712a5e535a0a6"
+      },
+      "current": {
+        "path": "src/desktop/python.cpp",
+        "bytes": 42088,
+        "sha256": "018d2bb357c6e8d9e108ac36193064f2c17c09ea44555bf3304712a5e535a0a6"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_ui_probe.hpp",
+      "before": {
+        "path": "build/p06q-workflow-run-ui001/before001/src/desktop/roi_import_ui_probe.hpp",
+        "bytes": 1523,
+        "sha256": "56614edd01bbd7e801c75c859397940d009c779eab00d4cdf036f2b3d1979977"
+      },
+      "after": {
+        "path": "build/p06q-workflow-run-ui001/after001/src/desktop/roi_import_ui_probe.hpp",
+        "bytes": 1601,
+        "sha256": "da78ae5f6068ad152a5b8a52298a7ff53e040e5cfc31541fb55ef2eaf64c9784"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_ui_probe.hpp",
+        "bytes": 1601,
+        "sha256": "da78ae5f6068ad152a5b8a52298a7ff53e040e5cfc31541fb55ef2eaf64c9784"
+      }
+    },
+    {
+      "logical_path": "src/desktop/window.cpp",
+      "before": {
+        "path": "build/p06q-workflow-run-ui001/before001/src/desktop/window.cpp",
+        "bytes": 577112,
+        "sha256": "d700cc47fe4381fcc47922359f3b0bb6a6ac74edf92e99eeddfb511506ca706c"
+      },
+      "after": {
+        "path": "build/p06q-workflow-run-ui001/after001/src/desktop/window.cpp",
+        "bytes": 581249,
+        "sha256": "23adb83d4b96ee3ad06324be8df879f602d31e8c21a963749efbb969692cd003"
+      },
+      "current": {
+        "path": "src/desktop/window.cpp",
+        "bytes": 581249,
+        "sha256": "23adb83d4b96ee3ad06324be8df879f602d31e8c21a963749efbb969692cd003"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_imagej_roi_export_command.py",
+      "before": {
+        "path": "build/p06q-workflow-run-ui001/before001/tests/python/test_imagej_roi_export_command.py",
+        "bytes": 8630,
+        "sha256": "c18a30d7a93b95ba173d7a2baa601e72cbcec66a606c5d055f09f2cbbbe269c2"
+      },
+      "after": {
+        "path": "build/p06q-workflow-run-ui001/after001/tests/python/test_imagej_roi_export_command.py",
+        "bytes": 8785,
+        "sha256": "fb478e6e49cec8fb2e2a9f1924f322a30fd75a32662648712b5324b993f7e68e"
+      },
+      "current": {
+        "path": "tests/python/test_imagej_roi_export_command.py",
+        "bytes": 8785,
+        "sha256": "fb478e6e49cec8fb2e2a9f1924f322a30fd75a32662648712b5324b993f7e68e"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_imagej_roi_zip_export_ui.py",
+      "before": {
+        "path": "build/p06q-workflow-run-ui001/before001/tests/python/test_imagej_roi_zip_export_ui.py",
+        "bytes": 6198,
+        "sha256": "0c5f0880297511d51a724ee58f36f76271f37a4f1126cad9b168d88b5071efc0"
+      },
+      "after": {
+        "path": "build/p06q-workflow-run-ui001/after001/tests/python/test_imagej_roi_zip_export_ui.py",
+        "bytes": 6415,
+        "sha256": "150cf42f036acec3eabec91543684bad7c4cb20d5122853409a55447735e4862"
+      },
+      "current": {
+        "path": "tests/python/test_imagej_roi_zip_export_ui.py",
+        "bytes": 6415,
+        "sha256": "150cf42f036acec3eabec91543684bad7c4cb20d5122853409a55447735e4862"
+      }
+    },
+    {
+      "logical_path": "src/desktop/native_workflow_panel.hpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-workflow-run-ui001/after001/src/desktop/native_workflow_panel.hpp",
+        "bytes": 1483,
+        "sha256": "7b46201f20da3360d28517a70084f3a324f94b6688d5686a186da7f620dfc22f"
+      },
+      "current": {
+        "path": "src/desktop/native_workflow_panel.hpp",
+        "bytes": 1483,
+        "sha256": "7b46201f20da3360d28517a70084f3a324f94b6688d5686a186da7f620dfc22f"
+      }
+    },
+    {
+      "logical_path": "src/desktop/native_workflow_panel.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-workflow-run-ui001/after001/src/desktop/native_workflow_panel.cpp",
+        "bytes": 30156,
+        "sha256": "f991f2813457b56186af5df0e71d4ddbffaab0f1ea10d05b3fd21aaff7a5bf05"
+      },
+      "current": {
+        "path": "src/desktop/native_workflow_panel.cpp",
+        "bytes": 30156,
+        "sha256": "f991f2813457b56186af5df0e71d4ddbffaab0f1ea10d05b3fd21aaff7a5bf05"
+      }
+    },
+    {
+      "logical_path": "src/desktop/native_workflow_ui_probe.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-workflow-run-ui001/after001/src/desktop/native_workflow_ui_probe.cpp",
+        "bytes": 17535,
+        "sha256": "c3b047a448779696127120a65d11289b63f4949327ed902ddfcb0eafbab72562"
+      },
+      "current": {
+        "path": "src/desktop/native_workflow_ui_probe.cpp",
+        "bytes": 17535,
+        "sha256": "c3b047a448779696127120a65d11289b63f4949327ed902ddfcb0eafbab72562"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_native_workflow_ui.py",
+      "before": null,
+      "after": {
+        "path": "build/p06q-workflow-run-ui001/after001/tests/python/test_native_workflow_ui.py",
+        "bytes": 6437,
+        "sha256": "4e55c054577f6a4e7556d76db81bf5d9ec0380110fc443117469634c923de4ad"
+      },
+      "current": {
+        "path": "tests/python/test_native_workflow_ui.py",
+        "bytes": 6437,
+        "sha256": "4e55c054577f6a4e7556d76db81bf5d9ec0380110fc443117469634c923de4ad"
+      }
+    }
+  ],
+  "scope": "Confirmed captured mixed Run review and staged new-file output publication in both ImGui hosts; no full batch/authoring/family or release acceptance"
+}

@@ -1,0 +1,100 @@
+{
+  "added_commercial_acceptance": 0,
+  "added_fixture_links": 0,
+  "added_proofs": 0,
+  "added_runs": 0,
+  "commands_after": {
+    "bytes": 3895117,
+    "path": "docs/parity/commands.json",
+    "sha256": "2031220bc79a5f396378b2eac76e48cfbb7e4ac55546626b3719868f5adbacb7"
+  },
+  "commands_before": {
+    "bytes": 3474691,
+    "path": "docs/parity/commands.json",
+    "sha256": "3d222861ba7fcceee6f3f619fcf436e3d2bf67972af3ddc079f0443c39e58128"
+  },
+  "commands_preimage": {
+    "bytes": 3474691,
+    "path": "build/shortcuts-001/registration-adoption001/commands-preimage001.json",
+    "sha256": "3d222861ba7fcceee6f3f619fcf436e3d2bf67972af3ddc079f0443c39e58128"
+  },
+  "commercial_states": {
+    "eligible": 18,
+    "pending": 56
+  },
+  "consumer_assignments": "Two history assignment proposals and shortcut definition/consumer export remain unadopted pending fresh ownership/export/persisted-file evidence",
+  "families": 99,
+  "families_without_children": 85,
+  "family_states": {
+    "in_progress": 40,
+    "open": 59
+  },
+  "fixture_recipes": "The deterministic history step/budget expected recipes are admitted for future execution; this registration supplies no actual pixels,history counts,UI interaction or persisted file proof",
+  "full_scope": "All99 families, startup workspace/scripts/macros/plugins, eligible pinned Fiji/M0, platform/performance/installed/paired qualification remain required",
+  "id": "G012.shortcuts-registration.001",
+  "implementation_states": {
+    "open": 4,
+    "partial": 70
+  },
+  "owner": "root",
+  "parent_families_with_children": 14,
+  "preserved": "Every original command key/value,64 requirements,20 surface contracts,candidates,proofs,run bindings,consumer snapshots and other baseline manifest/source bytes",
+  "proposal": {
+    "bytes": 330970,
+    "path": "build/shortcuts-001/registration-prep001/proposed003/proposal.json",
+    "sha256": "46c934d504c8090ee3df4dadfe8774ba1407d53f7c9120db874ff359a9906268"
+  },
+  "relationship_counts": {
+    "linked_runs": 20,
+    "requirements": 74,
+    "runs": 44
+  },
+  "remaining": [
+    "Root source/contract review before adoption; no expected-only row implies verified",
+    "Source-only ABI/linkage/current-frame/transaction/no-throw clauses need matching review and failure-effect execution",
+    "Root approves separate deterministic history scenario recipes, companion step policy and physical UI checkpoint carriers before formal qualification",
+    "New ownership snapshot/native export/persistence pins needed before CC consumer rows can become live",
+    "Freeze exact SDK/host/paired source observers and assertion transport; proposed memberships alone are not executed evidence"
+  ],
+  "requirement_ids": [
+    "G012.shortcuts.registry",
+    "G012.shortcuts.chords",
+    "G012.shortcuts.storage_conflicts",
+    "G012.shortcuts.reservations",
+    "G012.shortcuts.focus_dispatch",
+    "G012.shortcuts.editor_atomicity",
+    "G012.shortcuts.persistence_startup",
+    "G012.shortcuts.native_public_contract",
+    "G010.history.step_limit",
+    "G010.history.pixel_budget"
+  ],
+  "requirements": 74,
+  "schema": {
+    "additions": 0,
+    "benchmarks": 1,
+    "fixtures": 12,
+    "formats": 1,
+    "platforms": 1,
+    "requirements": 74
+  },
+  "schema_version": 1,
+  "scope": "Eight complete consumed S01-S08 shortcut clauses and two history effect requirements; expected interfaces only, no product proof or eligibility promotion",
+  "state": "adopted_expected_requirements_only",
+  "surface_contract_ids": [
+    "SC.G012.shortcuts.registry",
+    "SC.G012.shortcuts.chords",
+    "SC.G012.shortcuts.storage_conflicts",
+    "SC.G012.shortcuts.reservations",
+    "SC.G012.shortcuts.focus_dispatch",
+    "SC.G012.shortcuts.editor_atomicity",
+    "SC.G012.shortcuts.persistence_startup",
+    "SC.G012.shortcuts.native_public_contract",
+    "SC.G010.history.step_limit",
+    "SC.G010.history.pixel_budget"
+  ],
+  "surface_contracts": 30,
+  "verification_states": {
+    "partial": 58,
+    "unverified": 16
+  }
+}

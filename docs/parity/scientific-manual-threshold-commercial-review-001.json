@@ -1,0 +1,259 @@
+{
+  "author_and_reviewer": "Root implementation/integration review; independent legal review is not asserted",
+  "broader_pending_Fiji_decisions_and_NC_exclusions_unchanged": true,
+  "decision": "eligible",
+  "license": {
+    "bytes": 1079,
+    "path": "LICENSE",
+    "sha256": "6496956d6060adfcd2617e553b7393c3b7fbea353a02f3c39d60051709d1ce5f"
+  },
+  "new_third_party_code_assets_or_dependency": false,
+  "notices": {
+    "bytes": 4201,
+    "path": "THIRD_PARTY_NOTICES.md",
+    "sha256": "9793a0e9272d9c7f8aa1ea97712a38f1ff186ecbd379f3a71c16ae273167bff9"
+  },
+  "previous_source_archive": {
+    "bytes": 8698769,
+    "path": "build/p06k-source-final001/imagejxx-0.2.0.tar.gz",
+    "sha256": "bbd175b51fc9374f49ee3bc822cc67a92d84e41c1fe5141c8d87e79c21378710"
+  },
+  "previous_source_receipt": {
+    "bytes": 144561,
+    "path": "build/p06k-001/source-final001.json",
+    "sha256": "e4b7f3f778b861812db45d74061c0c51df354f05f36f4d7b709fd37a9e57f8e2"
+  },
+  "schema_version": 1,
+  "scope": "Exactly13 owned scientific manual-threshold product/test sources; unchanged dependency set.",
+  "sources": [
+    {
+      "current": {
+        "bytes": 53831,
+        "path": "CMakeLists.txt",
+        "sha256": "c1542523d8bcc76c35c9838bad8839f63077c0e3b3cda55115f8a8521938687e"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 53419,
+        "path": "CMakeLists.txt",
+        "sha256": "42e4bee740a6948c5b5bdbaf54e5bdbd282ca2f919fc9c24fd733be06ce15844"
+      },
+      "snapshot": {
+        "bytes": 53831,
+        "path": "build/p06l-001/registration001/source-snapshots001/CMakeLists.txt",
+        "sha256": "c1542523d8bcc76c35c9838bad8839f63077c0e3b3cda55115f8a8521938687e"
+      }
+    },
+    {
+      "current": {
+        "bytes": 1868,
+        "path": "include/imagejxx/manual_threshold_command.hpp",
+        "sha256": "8dfa7d30a0853a04d59f4cf806bb725ae42051f6ee814da74e1772c256fde225"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 1868,
+        "path": "build/p06l-001/registration001/source-snapshots001/include/imagejxx/manual_threshold_command.hpp",
+        "sha256": "8dfa7d30a0853a04d59f4cf806bb725ae42051f6ee814da74e1772c256fde225"
+      }
+    },
+    {
+      "current": {
+        "bytes": 6579,
+        "path": "src/native/manual_threshold_command.cpp",
+        "sha256": "7d958f35a468609cb391ee64d92c1cb8db0a97b916222fc77572a6d68ffeec3b"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 6579,
+        "path": "build/p06l-001/registration001/source-snapshots001/src/native/manual_threshold_command.cpp",
+        "sha256": "7d958f35a468609cb391ee64d92c1cb8db0a97b916222fc77572a6d68ffeec3b"
+      }
+    },
+    {
+      "current": {
+        "bytes": 8565,
+        "path": "src/native/manual_threshold_bindings.cpp",
+        "sha256": "708ed4b5230133edf31a8b0fa146d08aa4d3efacd8875bd8f2906ccdd46e1b7e"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 6664,
+        "path": "src/native/manual_threshold_bindings.cpp",
+        "sha256": "108f9ed55d7bdff20da698184cd4d3218a1c4c3ef9a7e2617e4aa1ced1b1841e"
+      },
+      "snapshot": {
+        "bytes": 8565,
+        "path": "build/p06l-001/registration001/source-snapshots001/src/native/manual_threshold_bindings.cpp",
+        "sha256": "708ed4b5230133edf31a8b0fa146d08aa4d3efacd8875bd8f2906ccdd46e1b7e"
+      }
+    },
+    {
+      "current": {
+        "bytes": 50213,
+        "path": "src/imagejxx/__init__.py",
+        "sha256": "c047a19f773b9d614006ffc6f870408f32027755563159efc742082637664c4f"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 49825,
+        "path": "src/imagejxx/__init__.py",
+        "sha256": "e203bb9d52cb576f9954d959266fd3a488b10e564f22a92c9b9b66fc4f32e3b1"
+      },
+      "snapshot": {
+        "bytes": 50213,
+        "path": "build/p06l-001/registration001/source-snapshots001/src/imagejxx/__init__.py",
+        "sha256": "c047a19f773b9d614006ffc6f870408f32027755563159efc742082637664c4f"
+      }
+    },
+    {
+      "current": {
+        "bytes": 536349,
+        "path": "src/desktop/window.cpp",
+        "sha256": "baff2feceae1cf04f1184681c38f9d69e9347271845bb1deb7ee8d6921125eae"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 532857,
+        "path": "src/desktop/window.cpp",
+        "sha256": "f8f35ba98ec519684bd579518495100ec2d5d903c86625fa51861a4bc861f5f5"
+      },
+      "snapshot": {
+        "bytes": 536349,
+        "path": "build/p06l-001/registration001/source-snapshots001/src/desktop/window.cpp",
+        "sha256": "baff2feceae1cf04f1184681c38f9d69e9347271845bb1deb7ee8d6921125eae"
+      }
+    },
+    {
+      "current": {
+        "bytes": 17564,
+        "path": "src/desktop/threshold_panel.cpp",
+        "sha256": "2a0c0c4cadb810b9b8cfca1a764d470ace4af044a10e98a7e5253cfa55c16255"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 17502,
+        "path": "src/desktop/threshold_panel.cpp",
+        "sha256": "0eca0ac8348717453ac5b42072b0f2c7c1fae375ed5a992c34d006877b2eefbe"
+      },
+      "snapshot": {
+        "bytes": 17564,
+        "path": "build/p06l-001/registration001/source-snapshots001/src/desktop/threshold_panel.cpp",
+        "sha256": "2a0c0c4cadb810b9b8cfca1a764d470ace4af044a10e98a7e5253cfa55c16255"
+      }
+    },
+    {
+      "current": {
+        "bytes": 18970,
+        "path": "src/desktop/manual_threshold_ui_probe.cpp",
+        "sha256": "21d41429fefb9571de13f94b48a6a71d7e3d50da75fc6bc664772e64c858f540"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 16811,
+        "path": "src/desktop/manual_threshold_ui_probe.cpp",
+        "sha256": "7f489c86a68955f7389c586ae5f4a575e0e19dfe114a15b3c054fb547f23637f"
+      },
+      "snapshot": {
+        "bytes": 18970,
+        "path": "build/p06l-001/registration001/source-snapshots001/src/desktop/manual_threshold_ui_probe.cpp",
+        "sha256": "21d41429fefb9571de13f94b48a6a71d7e3d50da75fc6bc664772e64c858f540"
+      }
+    },
+    {
+      "current": {
+        "bytes": 28732,
+        "path": "src/desktop/main.cpp",
+        "sha256": "1aa6318dbd5b32fe76f2ff82375b1909c9e78447b797e8c4a0425f26e475951b"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 28732,
+        "path": "src/desktop/main.cpp",
+        "sha256": "323c81a5e7481cf6726daf975c8414517354c878c8848c9f4e4a93689cec15dd"
+      },
+      "snapshot": {
+        "bytes": 28732,
+        "path": "build/p06l-001/registration001/source-snapshots001/src/desktop/main.cpp",
+        "sha256": "1aa6318dbd5b32fe76f2ff82375b1909c9e78447b797e8c4a0425f26e475951b"
+      }
+    },
+    {
+      "current": {
+        "bytes": 3456,
+        "path": "tests/native/test_manual_threshold_command.cpp",
+        "sha256": "41d35ebc0c310f1c61fcd6c52fa7be388bc6c678530b3b964457abd17d4dd030"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 3456,
+        "path": "build/p06l-001/registration001/source-snapshots001/tests/native/test_manual_threshold_command.cpp",
+        "sha256": "41d35ebc0c310f1c61fcd6c52fa7be388bc6c678530b3b964457abd17d4dd030"
+      }
+    },
+    {
+      "current": {
+        "bytes": 8240,
+        "path": "tests/python/test_scientific_manual_threshold.py",
+        "sha256": "2cc6e3dab01d045a1fe51048e7772800a5c6113e0477e57084a89477fa5e38ae"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 8240,
+        "path": "build/p06l-001/registration001/source-snapshots001/tests/python/test_scientific_manual_threshold.py",
+        "sha256": "2cc6e3dab01d045a1fe51048e7772800a5c6113e0477e57084a89477fa5e38ae"
+      }
+    },
+    {
+      "current": {
+        "bytes": 3549,
+        "path": "tests/python/test_scientific_manual_threshold_ui.py",
+        "sha256": "76f2f02e3003b6404201656205ea5eb0d0da3fbd2f41f8e8b66289f02a5a7ac7"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": null,
+      "snapshot": {
+        "bytes": 3549,
+        "path": "build/p06l-001/registration001/source-snapshots001/tests/python/test_scientific_manual_threshold_ui.py",
+        "sha256": "76f2f02e3003b6404201656205ea5eb0d0da3fbd2f41f8e8b66289f02a5a7ac7"
+      }
+    },
+    {
+      "current": {
+        "bytes": 20192,
+        "path": "tests/python/test_manual_threshold_ui.py",
+        "sha256": "569a198fe9b5385c6371b57c4abdfffb86f01b8a66a94c6624b4cd54e3ec54ee"
+      },
+      "disposition": "eligible_under_existing_project_MIT_and_unchanged_notices",
+      "origin": "Owned original implementation or extension of existing owned MIT sources; no upstream code/assets incorporated",
+      "previous": {
+        "bytes": 19901,
+        "path": "tests/python/test_manual_threshold_ui.py",
+        "sha256": "031071c98a2f2eb96adfc15ffa3b3bfaa38433d29f3c6104938b26956d3fc6ed"
+      },
+      "snapshot": {
+        "bytes": 20192,
+        "path": "build/p06l-001/registration001/source-snapshots001/tests/python/test_manual_threshold_ui.py",
+        "sha256": "569a198fe9b5385c6371b57c4abdfffb86f01b8a66a94c6624b4cd54e3ec54ee"
+      }
+    }
+  ],
+  "unchanged_dependency_scope": true,
+  "unresolved_source_origin_or_preimage_gaps": []
+}

@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "origin": "Original independent struct carriers; no ImageJ code incorporated",
+  "files": [
+    {
+      "file": "channels-only.tif",
+      "bytes": 1016,
+      "sha256": "383b9d8772be40951ab8d7452c8ab9b0a7f9e1ceff428c8aa68f59e273abb5bd",
+      "valid": true,
+      "shape": [
+        1,
+        3,
+        1,
+        2,
+        3,
+        1
+      ],
+      "defaulted_fields": [
+        "slices",
+        "frames",
+        "hyperstack",
+        "xorigin",
+        "yorigin",
+        "zorigin"
+      ],
+      "pixel_interval": [
+        8,
+        36
+      ]
+    },
+    {
+      "file": "time-only.tif",
+      "bytes": 732,
+      "sha256": "6db83e3c8684ec15e6a6658f4bde42eb91755f95650dae68645b1261f1ec4ba9",
+      "valid": true,
+      "shape": [
+        2,
+        1,
+        1,
+        2,
+        3,
+        1
+      ],
+      "defaulted_fields": [
+        "channels",
+        "slices",
+        "hyperstack",
+        "xorigin",
+        "yorigin",
+        "zorigin"
+      ],
+      "pixel_interval": [
+        8,
+        24
+      ]
+    },
+    {
+      "file": "mixed-cz.tif",
+      "bytes": 1872,
+      "sha256": "be769f8d687d0c54cb58fdc551712111b78ec44f879d40885445ee45edb99dd6",
+      "valid": false,
+      "shape": [
+        1,
+        3,
+        2,
+        2,
+        3,
+        1
+      ],
+      "defaulted_fields": [],
+      "pixel_interval": [
+        8,
+        72
+      ]
+    },
+    {
+      "file": "mixed-ct.tif",
+      "bytes": 1872,
+      "sha256": "52d477f390f5b9d4c970d6600b251f166df95f5556f0ab3cff14d881795ad851",
+      "valid": false,
+      "shape": [
+        2,
+        3,
+        1,
+        2,
+        3,
+        1
+      ],
+      "defaulted_fields": [],
+      "pixel_interval": [
+        8,
+        72
+      ]
+    },
+    {
+      "file": "false-channels.tif",
+      "bytes": 1034,
+      "sha256": "e226a31b5fb212605b61069030ddd93464d79025b1891fff76ac4827a8898859",
+      "valid": false,
+      "shape": [
+        1,
+        3,
+        1,
+        2,
+        3,
+        1
+      ],
+      "defaulted_fields": [],
+      "pixel_interval": [
+        8,
+        36
+      ]
+    },
+    {
+      "file": "false-time.tif",
+      "bytes": 750,
+      "sha256": "1c56c92b29406a85df56976c37fb8c0f2c2ffd680816aa5c1bbd534782fc1004",
+      "valid": false,
+      "shape": [
+        2,
+        1,
+        1,
+        2,
+        3,
+        1
+      ],
+      "defaulted_fields": [],
+      "pixel_interval": [
+        8,
+        24
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1368 @@
+{
+  "adopted_utc": "2026-10-17T04:38:53.419140+00:00",
+  "applies_to_requirements": [
+    "G012.shortcuts.registry",
+    "G012.shortcuts.chords",
+    "G012.shortcuts.storage_conflicts",
+    "G012.shortcuts.reservations",
+    "G012.shortcuts.focus_dispatch",
+    "G012.shortcuts.editor_atomicity",
+    "G012.shortcuts.persistence_startup",
+    "G012.shortcuts.native_public_contract",
+    "G010.history.step_limit",
+    "G010.history.pixel_budget",
+    "G012.shortcuts.configuration_consumption",
+    "G010.history.step_limit.configuration_consumption",
+    "G010.history.pixel_budget.configuration_consumption"
+  ],
+  "current_addendum": {
+    "bytes": 26970,
+    "path": "build/shortcuts-001/commercial-observer-addendum001/addendum003/proposal003.json",
+    "sha256": "a2cd0cc7fcf1974a4860e8389d3ac45512b143eae74dfc46c34c7721f95d95f4"
+  },
+  "current_addendum_hold": {
+    "bytes": 5144,
+    "path": "build/shortcuts-001/commercial-observer-addendum001/addendum003/source-hold003.json",
+    "sha256": "7dec048283d152dea2737aebf89c448dad5fd565b46eccde970140e88140ac90"
+  },
+  "current_ui_addendum": {
+    "bytes": 45977,
+    "path": "build/shortcuts-001/commercial-ui-addendum001/proposal001.json",
+    "sha256": "270015c15e819851d43825fe50558748195ba0f91868af9015ce02ac08103fe3"
+  },
+  "decision": "eligible",
+  "decision_is_proposed": false,
+  "dependency_reuse": [
+    {
+      "bytes": 26830,
+      "path": "build/shortcuts-001/commercial-review001/dependency-reuse.json",
+      "sha256": "482459f9873713bad09df19a2c4e016999034b99c53fdf2f5fe14fd87a0cde57"
+    },
+    {
+      "bytes": 21423,
+      "path": "build/shortcuts-001/commercial-observer-addendum001/dependency-reuse.json",
+      "sha256": "a39a0a4e56937da8bd568c566ba5e57b704c780598e5303f075fd56d6332afee"
+    }
+  ],
+  "explicit_commands_preimage": {
+    "bytes": 4401876,
+    "path": "build/shortcuts-001/commercial-ui-addendum001/commands-preimage-input003.json",
+    "sha256": "d6aca2ebcc9964c9a044234e3ff8fcf1d229afdfd9e82fb5adb0f82ccc6639ea"
+  },
+  "final_distribution_accepted": false,
+  "id": "G012-G010.shortcuts-history.source-commercial-adoption.001",
+  "metadata_adoption": "Only13 existing command requirement commercial objects change. All frozen contracts, values, implementation/verification/family grades, candidates, assignments/delegations, proofs/runs,1437 Fiji decisions and all other fields remain intact.",
+  "metadata_and_documentation_policy": "Live commands/card/plan/adoption/proof metadata are outside this code-pin list. Freeze their final bytes after this adoption with the existing safe explicit-root source collector, then publish final distribution acceptance only in an excluded-build receipt. No live command-manifest or self-review hash is embedded here; no archive hash cycle.",
+  "native_vendor_member_pins": [
+    {
+      "bytes": 2281,
+      "path": "third_party/nlohmann_json/include/nlohmann/adl_serializer.hpp",
+      "sha256": "80742b0081e0ac5094ad4d7a3549e969b004bb7ed86807911a8177c843701262"
+    },
+    {
+      "bytes": 3535,
+      "path": "third_party/nlohmann_json/include/nlohmann/byte_container_with_subtype.hpp",
+      "sha256": "2b75a051d2f82fd95f613c70472b85a281d085f1973791c1118244099bf38942"
+    },
+    {
+      "bytes": 4121,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/abi_macros.hpp",
+      "sha256": "cebb5441f1ce851444f47a7d8ea0446339ee499df83215ebd873c8347a191bd7"
+    },
+    {
+      "bytes": 21391,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/conversions/from_json.hpp",
+      "sha256": "40af785ecd909d2ca3abea3e9a3b8d8b8973e66a3c9ff7820b06bb6898783f64"
+    },
+    {
+      "bytes": 38578,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/conversions/to_chars.hpp",
+      "sha256": "20b9bc4469ee490bc626d8dbcdee060a494292473df4bdbcecfe2f2145ed562d"
+    },
+    {
+      "bytes": 17205,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/conversions/to_json.hpp",
+      "sha256": "a0aadb543a4c2009564aee738b0adaabfa6275e9f4d3e08b6b11e4005bb6fb12"
+    },
+    {
+      "bytes": 10590,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/exceptions.hpp",
+      "sha256": "5c9b21e0a13ac0bab8dea676b9804d739dfd2adc24f036f97ab243ef70e2aae7"
+    },
+    {
+      "bytes": 4018,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/hash.hpp",
+      "sha256": "a025807281c5d92fdfddcc993b2b2a9658146435cc10b003723b130698445c80"
+    },
+    {
+      "bytes": 104932,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/input/binary_reader.hpp",
+      "sha256": "9e617825317910352f2a2025bb8749898287fa3003e81ce22a57b52c535d0eab"
+    },
+    {
+      "bytes": 19635,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/input/input_adapters.hpp",
+      "sha256": "01fa7af8fdd1ba7b1c12089bf92783f70d09a93db7564e4df70544fc85304de6"
+    },
+    {
+      "bytes": 31133,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/input/json_sax.hpp",
+      "sha256": "0ed6fdb0ef91f163cca312b7ffd6e0842f12e1b8340204ab2d0c05277e0d1f18"
+    },
+    {
+      "bytes": 55523,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/input/lexer.hpp",
+      "sha256": "a8b73e55242731375c088133f3a355af7b1bb82d6b9531678cb20560d3733c1d"
+    },
+    {
+      "bytes": 19712,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/input/parser.hpp",
+      "sha256": "b4a762967b174de0c43896b465e4a7c8c92c3a8636f669debdec836050f7912a"
+    },
+    {
+      "bytes": 960,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/input/position_t.hpp",
+      "sha256": "0239037872b622a5f3f42fa1b453d201f977d21829b2dc4a19abe2594515eada"
+    },
+    {
+      "bytes": 1073,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/iterators/internal_iterator.hpp",
+      "sha256": "bf015623518c5aab4762d9a4d21af0e85a26cdcb3fc6e69e464c8575a3b87aba"
+    },
+    {
+      "bytes": 24869,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/iterators/iter_impl.hpp",
+      "sha256": "c6f0664c4965287154505837dde4ae13e7625978745e8876951fc90da61b5068"
+    },
+    {
+      "bytes": 8073,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/iterators/iteration_proxy.hpp",
+      "sha256": "3c562f1783e1fc9476ed53d8054bc50309caa425d993996a9ddf9194fb2129cc"
+    },
+    {
+      "bytes": 1751,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/iterators/iterator_traits.hpp",
+      "sha256": "960d1fefbe7cb220292b07e4ec047bfa9a3ccbd753adaf62e5d583f746e71e47"
+    },
+    {
+      "bytes": 3863,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/iterators/json_reverse_iterator.hpp",
+      "sha256": "6f072fb2b9e151ad9645cb03a9aa23231480bf447e53b2e0ecb41f45fb7503e1"
+    },
+    {
+      "bytes": 3229,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/iterators/primitive_iterator.hpp",
+      "sha256": "40a03177d519ba378e59bed0a53a9be8022fd3d0ee701409781c0e856d5bf510"
+    },
+    {
+      "bytes": 1180,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/json_custom_base_class.hpp",
+      "sha256": "e622910868b019ba09460c96a6092c1018ed501f34cce4ed633641400c2d2500"
+    },
+    {
+      "bytes": 37199,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/json_pointer.hpp",
+      "sha256": "9c5b54a455e96c63788c157d914b70cde6a3f36ef1e5df037f4fc17bb92f235d"
+    },
+    {
+      "bytes": 1813,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/json_ref.hpp",
+      "sha256": "5d133945d0859acaa82c50c1a044b1e1f806c0a38107eae24bf07ff5944fc1e3"
+    },
+    {
+      "bytes": 51847,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/macro_scope.hpp",
+      "sha256": "76012b860dc76e7c28efead61311d588596417f5b476fc20f762b1ad81858ae0"
+    },
+    {
+      "bytes": 1281,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/macro_unscope.hpp",
+      "sha256": "626b7e10290a2bb558634b8bbfbc5118b5ce696151b5bc87418142c578bd501e"
+    },
+    {
+      "bytes": 455,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/meta/call_std/begin.hpp",
+      "sha256": "4629b547aa6b6629c266b1b474f576cbde5ce898c96502c828a72d99212b9f34"
+    },
+    {
+      "bytes": 453,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/meta/call_std/end.hpp",
+      "sha256": "e09dd80f2263ff192d60bad19bdbdc5402866d0b0c8caeb9c2759b26ba864a39"
+    },
+    {
+      "bytes": 5173,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/meta/cpp_future.hpp",
+      "sha256": "71e606c586174ff875f5996a00bc6e84a49e0919eafd6fb38c7cb928dfdf5795"
+    },
+    {
+      "bytes": 2111,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/meta/detected.hpp",
+      "sha256": "d144ac2ab6bb92be35bfda7eec560b9d030760e4330b7f951a2aca63469488a1"
+    },
+    {
+      "bytes": 528,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/meta/identity_tag.hpp",
+      "sha256": "37ff788879d4b14ffa2e79bdc75b470d2c2ca5ebadafef649312f653455d45fa"
+    },
+    {
+      "bytes": 6962,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/meta/is_sax.hpp",
+      "sha256": "e60398b282767374747db20ab06101804c7345eea0761a313a298bf87b913f91"
+    },
+    {
+      "bytes": 791,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/meta/std_fs.hpp",
+      "sha256": "257716f0958e9fd6c1dc3f0335716d779550353c58bc929e8dda1c79bd336701"
+    },
+    {
+      "bytes": 29415,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/meta/type_traits.hpp",
+      "sha256": "d5da966796c089fa89cba5474309fd2124b083d99adf17991084a6a532fdf55d"
+    },
+    {
+      "bytes": 599,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/meta/void_t.hpp",
+      "sha256": "c340e7b148543b0abfd719ddbc3759e23c2feffc63656136a15fd80b98ca8bf8"
+    },
+    {
+      "bytes": 71657,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/output/binary_writer.hpp",
+      "sha256": "cdf56265d14b80505796dfb94d79896a226e8888e4f730ff6e92c31a2b891cd1"
+    },
+    {
+      "bytes": 4069,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/output/output_adapters.hpp",
+      "sha256": "3322dce8f63e69930806bd8691c2cd9ece8a76b54b34f617641329c44559bbb5"
+    },
+    {
+      "bytes": 40155,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/output/serializer.hpp",
+      "sha256": "4c079acb8f6936c4f787fd5706a52c77a1751dd34787a821705845698ec8540e"
+    },
+    {
+      "bytes": 5953,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/string_concat.hpp",
+      "sha256": "fb30fb50c325a1b5610a62a9061a1966b4e850dd964635c1ad1c4c9da48f7daa"
+    },
+    {
+      "bytes": 2170,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/string_escape.hpp",
+      "sha256": "cb12b0e5903b1ec90aaa96a4a71e0cf7106440ca9cedcff6495677d01f244733"
+    },
+    {
+      "bytes": 840,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/string_utils.hpp",
+      "sha256": "85e2fbdfe07f1a44b90d5422ee1b951d1053f32e429dc4aee36274fb03fd9354"
+    },
+    {
+      "bytes": 4328,
+      "path": "third_party/nlohmann_json/include/nlohmann/detail/value_t.hpp",
+      "sha256": "67ed7b164db48556bb4ae409a645401faba459081570f9b9f9ff977fd32c6114"
+    },
+    {
+      "bytes": 201924,
+      "path": "third_party/nlohmann_json/include/nlohmann/json.hpp",
+      "sha256": "88d7eb42b19599cab48856576dd4ea52538df72ad7c57200c50de98bda246458"
+    },
+    {
+      "bytes": 2543,
+      "path": "third_party/nlohmann_json/include/nlohmann/json_fwd.hpp",
+      "sha256": "8777a878c20a412dd04c8011c87c3d72d74e48a4dda5e52f7948e26dd2168931"
+    },
+    {
+      "bytes": 11686,
+      "path": "third_party/nlohmann_json/include/nlohmann/ordered_map.hpp",
+      "sha256": "2d4e2d9f6e6a0c2d2adadcb620da1f49585fa4e54e54cfa16b6d20e01d857d61"
+    },
+    {
+      "bytes": 86072,
+      "path": "third_party/nlohmann_json/include/nlohmann/thirdparty/hedley/hedley.hpp",
+      "sha256": "1547b367895f8be9f8283ae21f583182db572ad990236220002b632a15238712"
+    },
+    {
+      "bytes": 5502,
+      "path": "third_party/nlohmann_json/include/nlohmann/thirdparty/hedley/hedley_undef.hpp",
+      "sha256": "ddf06784ca9448b4899db96a409ec1cbc65a0f682db9c966c011f00b77ae75c4"
+    },
+    {
+      "bytes": 4964,
+      "path": "third_party/zlib/adler32.c",
+      "sha256": "9cd1443a24ff2a3053961695bd432035c58347386a420d3388232376ebabe211"
+    },
+    {
+      "bytes": 2613,
+      "path": "third_party/zlib/compress.c",
+      "sha256": "86f802c16a965e7a28737e3730b4e576c5ba40981753967e3e30916f4dc1b4b1"
+    },
+    {
+      "bytes": 31605,
+      "path": "third_party/zlib/crc32.c",
+      "sha256": "8fd16f0a7714d51c89c2eb37eb98ec15e8a4dc57ba343e7b7398b19144039fda"
+    },
+    {
+      "bytes": 591749,
+      "path": "third_party/zlib/crc32.h",
+      "sha256": "9a2223575183ac2ee8a247f20bf3ac066e8bd0140369556bdbdffc777435749e"
+    },
+    {
+      "bytes": 81731,
+      "path": "third_party/zlib/deflate.c",
+      "sha256": "3b956337350f94c34987750f785587ef33d9c89ceaebb7c2afb189c956360cbe"
+    },
+    {
+      "bytes": 14041,
+      "path": "third_party/zlib/deflate.h",
+      "sha256": "48baf016326d8d5e3e32ac8153cc7e22f854b8e6834830b167b998a7fb1e7989"
+    },
+    {
+      "bytes": 6676,
+      "path": "third_party/zlib/gzguts.h",
+      "sha256": "716fa648aca1bb06c219d7b97ad4846d8479206143bc39557bfd8283f5783e04"
+    },
+    {
+      "bytes": 22669,
+      "path": "third_party/zlib/infback.c",
+      "sha256": "62df9a6dd3eef126f1d81d0ad7a534504610dec44482b0a472b61c93cbab6554"
+    },
+    {
+      "bytes": 12924,
+      "path": "third_party/zlib/inffast.c",
+      "sha256": "e6ef64ce5dc0a4cd5c7ad08ceeb2b2a698b8447f6bd156057caeb2edab68c0cb"
+    },
+    {
+      "bytes": 422,
+      "path": "third_party/zlib/inffast.h",
+      "sha256": "05cc5dc9ff1da7b8b52a4bd8bda0d8a5c236a2f39efe84b941516ea13857e6c5"
+    },
+    {
+      "bytes": 6332,
+      "path": "third_party/zlib/inffixed.h",
+      "sha256": "237ba710f090e432b62ebf963bee8b302867e9691406b2d3f8ee89ee7bfef9b0"
+    },
+    {
+      "bytes": 55519,
+      "path": "third_party/zlib/inflate.c",
+      "sha256": "34c998ce0037c0537c04b03b276f680b945f9b2c9d1e01b287605bd6879f7fd2"
+    },
+    {
+      "bytes": 6683,
+      "path": "third_party/zlib/inflate.h",
+      "sha256": "e8d4a51b07694bf48cb91979c19974cf6a5ab0b8a09d26ec0d14df349230673e"
+    },
+    {
+      "bytes": 13024,
+      "path": "third_party/zlib/inftrees.c",
+      "sha256": "5d4f335221d2dc76f17abd2577d92c2d7baf68fa6d7f23373b360830493d1563"
+    },
+    {
+      "bytes": 2920,
+      "path": "third_party/zlib/inftrees.h",
+      "sha256": "0a0fcaf2ae2fae57426bdc06637270e9bba974f35202cadbdba479d946e6409d"
+    },
+    {
+      "bytes": 40937,
+      "path": "third_party/zlib/trees.c",
+      "sha256": "f63c68c16c05fcd196050529d1a0e7657960e4136b9987d90a6ac3e58a964b0f"
+    },
+    {
+      "bytes": 8472,
+      "path": "third_party/zlib/trees.h",
+      "sha256": "bb0a9d3ca88ee00c81adb7c636e73b97085f6ef1b52d6d58edbe2b6dc3adeb4d"
+    },
+    {
+      "bytes": 2911,
+      "path": "third_party/zlib/uncompr.c",
+      "sha256": "04dca5e31b3b8a17d1806426f66f0c539f4184d657e149d40be07070c6227b52"
+    },
+    {
+      "bytes": 16500,
+      "path": "third_party/zlib/zconf.h",
+      "sha256": "f5134250a67d57459234b63858f0d9d3ef8dcc48e9e1028d3f4fdcf6eae677ae"
+    },
+    {
+      "bytes": 96829,
+      "path": "third_party/zlib/zlib.h",
+      "sha256": "8a5579af72ea4f427ff00a4150f0ccb3fc5c1e4379f726e101133b1ab9fc600c"
+    },
+    {
+      "bytes": 7179,
+      "path": "third_party/zlib/zutil.c",
+      "sha256": "8ced40d8c88588811edd2bdb35b7439983d5e1f8e9e32b8a3b244731f3c317b7"
+    },
+    {
+      "bytes": 6677,
+      "path": "third_party/zlib/zutil.h",
+      "sha256": "dddb2dc7a1dc339ecf2c8e089b366f08bb731c0839c7110240d17ce731bb4fea"
+    }
+  ],
+  "original_hold": {
+    "bytes": 2402,
+    "path": "build/shortcuts-001/commercial-review001/source-hold001.json",
+    "sha256": "3400f56a3bc42e964568cad57acddce51a5c6977d1edecac0680ad770b1f513b"
+  },
+  "owned_code_license": {
+    "bytes": 1079,
+    "obligation": "Retain project copyright/permission notice in copies or substantial portions.",
+    "path": "LICENSE",
+    "selected_license": "MIT",
+    "sha256": "6496956d6060adfcd2617e553b7393c3b7fbea353a02f3c39d60051709d1ce5f"
+  },
+  "owned_source_pins": [
+    {
+      "bytes": 48868,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "CMakeLists.txt",
+      "review_origins": [
+        "commercial_ui_addendum001_exact_current_source"
+      ],
+      "selected_license": "MIT",
+      "sha256": "c72dad3b775d2ade49af841a507762c638f8f58579ac91f29d2c039373a996d7"
+    },
+    {
+      "bytes": 11736,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "examples/cpp/CMakeLists.txt",
+      "review_origins": [
+        "addendum003_exact_current_source"
+      ],
+      "selected_license": "MIT",
+      "sha256": "a6db28beaa106a27d5dda4956b2bb3e62120ae718b632eee1598767ca3a3f030"
+    },
+    {
+      "bytes": 4020,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "examples/cpp/dataset_read_observer.cpp",
+      "review_origins": [
+        "addendum003_exact_current_source"
+      ],
+      "selected_license": "MIT",
+      "sha256": "c147e8c29c7b44bd65961862a52ca5b47ba36f40a6b07c0f59e743daa9d4f60e"
+    },
+    {
+      "bytes": 28850,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "examples/cpp/history_settings.cpp",
+      "review_origins": [
+        "extra_current_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "0fa433470e075bacf51f05d508bc57948b470806a989a2fea27bea196082a7f6"
+    },
+    {
+      "bytes": 6756,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "examples/cpp/shortcut_observations.hpp",
+      "review_origins": [
+        "extra_current_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "6e9e7263e54bb198c134c497766c38e8efaa56d7bf6c0bae6f22975dba3014b4"
+    },
+    {
+      "bytes": 46872,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "examples/cpp/shortcuts.cpp",
+      "review_origins": [
+        "extra_current_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "ef7a681f30dc7bd6f5f4465905ef3e5fffe05e7e2d7bec88d93cf24ac9b8c4e8"
+    },
+    {
+      "bytes": 13241,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "include/imagejxx/application.hpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "d36a271e271e407ad1c878314b7859c041448535c5520e569334a1c426849b12"
+    },
+    {
+      "bytes": 9304,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "include/imagejxx/dataset.hpp",
+      "review_origins": [
+        "addendum003_exact_current_source"
+      ],
+      "selected_license": "MIT",
+      "sha256": "8d48a49481904d932fb86162cbbbb90ba5d8de2cbaa6fa3e685eb686c468305a"
+    },
+    {
+      "bytes": 15230,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "include/imagejxx/document.hpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "d538ce987b303a231990834be0499a7d3086a2929646bc52ea7157797acd518e"
+    },
+    {
+      "bytes": 1757,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "include/imagejxx/preferences.hpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "b32c2f2543e4c763f72115bc636294c889fa9a8afa78ffc636842a563b98c9a9"
+    },
+    {
+      "bytes": 2099,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "include/imagejxx/settings.hpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "9e44ff611a6f2fa5e17d855b2bcdb6f70f217ebd35b76d4628d4f5c7c2893295"
+    },
+    {
+      "bytes": 7782,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "include/imagejxx/shortcuts.hpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "86c27027a701118916f65275169b1bfdaa262158593a6779624ab3282fe6863b"
+    },
+    {
+      "bytes": 28857,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "scripts/capture_shortcuts_history_ui.py",
+      "review_origins": [
+        "commercial_ui_addendum001_exact_current_source"
+      ],
+      "selected_license": "MIT",
+      "sha256": "4c7175b7a0f260871ed8767e600dab71a3fbf3b5402cf932691ac2245e2fd871"
+    },
+    {
+      "bytes": 74057,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "scripts/capture_windows_platform_workload.py",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "143068bccb64610036bcf5684e07cc68b47e5ce287041604dca465adec1869a7"
+    },
+    {
+      "bytes": 8234,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/desktop/actual_observation_transport.hpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "95ec15363fbdd14efc7edf674d6117880426e848a3ab940a914cc203c1f1d47e"
+    },
+    {
+      "bytes": 11984,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/desktop/desktop.hpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "474dae5d51012d4b5295ac19860764f99f253fb5e08903749bc79578c3e9546f"
+    },
+    {
+      "bytes": 39420,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/desktop/headless_session_consumer.cpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "f2c2f8621bc21b6e4dc836f606901ed601430354a138d56bb81bc8d8c5d60590"
+    },
+    {
+      "bytes": 1240,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/desktop/headless_session_internal.hpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "8171fef27522d25c622217768407e434a40a7bec82e389efd7826764795235dc"
+    },
+    {
+      "bytes": 31415,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/desktop/history_settings_ui_probe.cpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "b33829843853b08817cc0ce5db80866a71feb6d43172e08ece9cd0812ddff26f"
+    },
+    {
+      "bytes": 460,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/desktop/history_settings_ui_probe.hpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "e1db7e839a5a4f7d75fdd70f48009adda924a98ab1cca36ec1c6e7e031488915"
+    },
+    {
+      "bytes": 23770,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/desktop/main.cpp",
+      "review_origins": [
+        "commercial_ui_addendum001_exact_current_source"
+      ],
+      "selected_license": "MIT",
+      "sha256": "09ea64a021fdd6160ef1fcf71d50faa54d5cc7068c53def87dd1d4c699568c37"
+    },
+    {
+      "bytes": 31331,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/desktop/python.cpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "2410a6511adfe82fc38b58b93d2afd381c6f8077f238a70940a286b5197e3077"
+    },
+    {
+      "bytes": 75101,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/desktop/rank_runtime_probe.cpp",
+      "review_origins": [
+        "existing_owned_support_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "f4796d09aa7d3ece18c49be8f13515a2a968f9c49ddbdbca63cfcac0b5bb92d5"
+    },
+    {
+      "bytes": 1893,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/desktop/rank_runtime_probe.hpp",
+      "review_origins": [
+        "existing_owned_support_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "33d9241497fe06265c8794a4050df6541ab5b0017f906e6f92813cf328aabb3c"
+    },
+    {
+      "bytes": 3164,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/desktop/settings_io.cpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "565e21a5f5d6ca4cf00794873b6cfdf0e98c69cf9136aeb6d9a79ca873683b90"
+    },
+    {
+      "bytes": 705,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/desktop/settings_io.hpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "0c203626fe51ca0eaa788fc96fa0742ef0f8d0d70f23b24d07ceceef0332ae1b"
+    },
+    {
+      "bytes": 18094,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/desktop/settings_panel.cpp",
+      "review_origins": [
+        "commercial_ui_addendum001_exact_current_source"
+      ],
+      "selected_license": "MIT",
+      "sha256": "9f67395cadea2d8858a74a7ab64d1b05652784e31fae2c448df1d1da6a15546c"
+    },
+    {
+      "bytes": 1353,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/desktop/settings_panel.hpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "5195835ba30201bb53b2a08477bd0f8c37abe33de3b7bbab42bc9a86b6f9daec"
+    },
+    {
+      "bytes": 20967,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/desktop/shortcut_editor.cpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "89ff2fcd93a353609aec14fe14dc435cb830e39626aac26af0ebecb53400948a"
+    },
+    {
+      "bytes": 2555,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/desktop/shortcut_editor.hpp",
+      "review_origins": [
+        "commercial_ui_addendum001_exact_current_source"
+      ],
+      "selected_license": "MIT",
+      "sha256": "2339130f7faf09692c1002a49640d40db828b914fac63a6dca57130cafc1040f"
+    },
+    {
+      "bytes": 3532,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/desktop/shortcut_input.cpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "6e070b269d4db924a079daaafbc4d95b2ef6182676936e332f9fb792401f3e09"
+    },
+    {
+      "bytes": 562,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/desktop/shortcut_input.hpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "b9c00c3b8c5e93418a064c0f1a95bb00141acc488133807675625a661555e822"
+    },
+    {
+      "bytes": 29554,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/desktop/shortcut_policy_observations.cpp",
+      "review_origins": [
+        "commercial_ui_addendum001_exact_current_source"
+      ],
+      "selected_license": "MIT",
+      "sha256": "1336454efb3f17cbb31ffa1d32b7b8522039476790a154d26062813481ceddf4"
+    },
+    {
+      "bytes": 499,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/desktop/shortcut_policy_observations.hpp",
+      "review_origins": [
+        "commercial_ui_addendum001_exact_current_source"
+      ],
+      "selected_license": "MIT",
+      "sha256": "900a2a5bd0de3a9f6190a101f66b5c9c16a0cc07305dfd5aa3b207c696d36ae2"
+    },
+    {
+      "bytes": 60585,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/desktop/shortcuts_ui_probe.cpp",
+      "review_origins": [
+        "commercial_ui_addendum001_exact_current_source"
+      ],
+      "selected_license": "MIT",
+      "sha256": "03f53246a81dd20791dffdf9b791793696f21a8e5fc6059834800c2e3633a02c"
+    },
+    {
+      "bytes": 447,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/desktop/shortcuts_ui_probe.hpp",
+      "review_origins": [
+        "commercial_ui_addendum001_exact_current_source"
+      ],
+      "selected_license": "MIT",
+      "sha256": "e80afc0de86af5b93424ef9d83405e111a981eaf63903b77c3bbf44abb3033bd"
+    },
+    {
+      "bytes": 486069,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/desktop/window.cpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "39f330dcd49f5bc1e0e29acbfc3537659d0db86bc7ada03ad3d80178bcb745e0"
+    },
+    {
+      "bytes": 11314,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/desktop/window.hpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "f048d5ae92bd41055d6765998b19726913a62d6e440971731b68696831516727"
+    },
+    {
+      "bytes": 48165,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/imagejxx/__init__.py",
+      "review_origins": [
+        "addendum003_exact_current_source"
+      ],
+      "selected_license": "MIT",
+      "sha256": "e9a94b65eae7d52f993172e3c7b417a622d3a83612833c3107e89283adc832c4"
+    },
+    {
+      "bytes": 22134,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/imagejxx/ui/app.py",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "387e4a0c66bdcc4dd30e03f8cf20b146caffdfec944ea13238779e6dbaabe7b6"
+    },
+    {
+      "bytes": 23451,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/native/application.cpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "177509e15a104a904ff5b5512d91ed8459e9ab7f45297b50538df9e72945c5c4"
+    },
+    {
+      "bytes": 18024,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/native/application_bindings.cpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "5d5864fb05f9e42c25695f1e2d76ec95117556d170ce0ef10c9ea2d584c56d91"
+    },
+    {
+      "bytes": 28384,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/native/bindings.cpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "60c05835923db2d0eb33daca0370e6ee90a4c1d5e98166c6f721034cfe3d3ee6"
+    },
+    {
+      "bytes": 34421,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/native/dataset.cpp",
+      "review_origins": [
+        "addendum003_exact_current_source"
+      ],
+      "selected_license": "MIT",
+      "sha256": "8b29d2b3079e121f549bebe385df38039c50e9d7d03c91575c805a1ac99e4678"
+    },
+    {
+      "bytes": 21735,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/native/dataset_bindings.cpp",
+      "review_origins": [
+        "addendum003_exact_current_source"
+      ],
+      "selected_license": "MIT",
+      "sha256": "053c2ada7ae8672fb62c7edc9b35fa5d5a59d8e4e4e4152995c63ed8bb4e839f"
+    },
+    {
+      "bytes": 711,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/native/dataset_read_counter_internal.hpp",
+      "review_origins": [
+        "addendum003_exact_current_source"
+      ],
+      "selected_license": "MIT",
+      "sha256": "8b01f18f5c4bb2daaa5b1da79f823569e754a06705439d23470dfc975b2f3ac5"
+    },
+    {
+      "bytes": 50827,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/native/document.cpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "ed98fcbbc3dd02f897492528a1c3557bbcb6229e05debb673cbfdc1f9fcb57f6"
+    },
+    {
+      "bytes": 27852,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/native/document_bindings.cpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "2966a42fa0ecec573d51ba3fdd6d80e116e381a0276e664d7cf913b2299d59bc"
+    },
+    {
+      "bytes": 10766,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/native/preferences.cpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "8f13c109f36224fb2d7a4fe4f75c2f21afa95bfe030e31940a155787afedc44a"
+    },
+    {
+      "bytes": 2668,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/native/preferences_bindings.cpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "ccb446182683c401ea0fe500c94d0f931528a90f8e51f4589eae0330c76f66de"
+    },
+    {
+      "bytes": 16380,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/native/settings.cpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "d1d3a43d997c1c2b51d9df34d49de5a71e531d4919e01a9b71bd2cf3bbd826d6"
+    },
+    {
+      "bytes": 6515,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/native/settings_bindings.cpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "e9d439fdb94eb66c564d8ec75bc67cc8bcab38b6d598ac0336aefed972a4933f"
+    },
+    {
+      "bytes": 31279,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/native/shortcuts.cpp",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "bf213cbf80ebed0616a6dc0b67f10103640473c952a2acda304cb7b5c71def64"
+    },
+    {
+      "bytes": 21862,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "src/native/shortcuts_bindings.cpp",
+      "review_origins": [
+        "addendum003_exact_current_source"
+      ],
+      "selected_license": "MIT",
+      "sha256": "6799e55e26383acebe8d144ac93399da9276fff93223f7e358c917827b8ae6a6"
+    },
+    {
+      "bytes": 31855,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "tests/native/test_dataset_read_observer.cpp",
+      "review_origins": [
+        "addendum003_exact_current_source"
+      ],
+      "selected_license": "MIT",
+      "sha256": "2ef737e06d2b9f9680049afc6ed78ebf1bb31f120b572e01d49febbbbe23d5c0"
+    },
+    {
+      "bytes": 19763,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "tests/native/test_history_policy_batch.cpp",
+      "review_origins": [
+        "extra_current_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "82ca3de982e8f90bbbe4fc35c3ac119142694618e3290db3e0bf7e72c01a7043"
+    },
+    {
+      "bytes": 10837,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "tests/native/test_shortcut_settings.cpp",
+      "review_origins": [
+        "extra_current_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "d04a5d95f18f01d8b8a278ca25f9fd19b18659c5cfc273e153319a923b9908e2"
+    },
+    {
+      "bytes": 33734,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "tests/native/test_shortcut_window.cpp",
+      "review_origins": [
+        "extra_current_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "95dc7a8230bd65b8248ad96ea9e4cd5feef6487627ede9d7bfac869f754e553b"
+    },
+    {
+      "bytes": 26752,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "tests/native/test_shortcuts.cpp",
+      "review_origins": [
+        "extra_current_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "88549ab4e0b73eddab5fc512e9d56371e1828bfea4ed1e183ea0a61efc872e7b"
+    },
+    {
+      "bytes": 43787,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "tests/native/test_shortcuts_host.cpp",
+      "review_origins": [
+        "extra_current_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "0a94d99e68e07939507c815bef0e1f36cc6b8674d1f04ad54f26479407ab4586"
+    },
+    {
+      "bytes": 3017,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "tests/python/actual_observation_transport.py",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "022d5ce23c90b8e857d08eda56edf545b746f8c1ed9c5f6a4a71ced692aeda94"
+    },
+    {
+      "bytes": 34669,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "tests/python/shortcut_api_observations.py",
+      "review_origins": [
+        "addendum003_exact_current_source"
+      ],
+      "selected_license": "MIT",
+      "sha256": "2287284c842cfcc97b3914603a7d51f8ea7d94394f6c71fc027ada295bbcb783"
+    },
+    {
+      "bytes": 2444,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "tests/python/test_actual_observation_transport.py",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "641ec919611295e0609da1dd811c73c3df0c59771008d9d4bc323abc70dff399"
+    },
+    {
+      "bytes": 14780,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "tests/python/test_dataset_read_observer.py",
+      "review_origins": [
+        "addendum003_exact_current_source"
+      ],
+      "selected_license": "MIT",
+      "sha256": "87410da3946425e721c633492bfc7f4bb97c3e74887b628eee50a1c6c3114825"
+    },
+    {
+      "bytes": 27811,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "tests/python/test_history_settings.py",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "7b8a829b5b8366976abf2cc367ecd2a605fa93ad52070df9824dd7cccb9b689d"
+    },
+    {
+      "bytes": 42300,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "tests/python/test_history_settings_ui.py",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "a07e86a94f61d33f0ceade4404acc9014b73b3ec99f799c814351a432c74d5e9"
+    },
+    {
+      "bytes": 7597,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "tests/python/test_shortcut_editor.py",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "18fc18d3c738b7fdbe27abf171365a6075f476fa10c16026ca3dcd2103a08eb2"
+    },
+    {
+      "bytes": 4424,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "tests/python/test_shortcut_native_category.py",
+      "review_origins": [
+        "addendum003_exact_current_source"
+      ],
+      "selected_license": "MIT",
+      "sha256": "b3c24bb5bb2760a4b14e22294e69450b2eb8e7fa2131d0e6e5bdc900807d1f5d"
+    },
+    {
+      "bytes": 29808,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "tests/python/test_shortcuts.py",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "897624c2a8240071b895584f31ef60be9513bdfa0343208886eff76e387df0e5"
+    },
+    {
+      "bytes": 56151,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "tests/python/test_shortcuts_ui.py",
+      "review_origins": [
+        "owned_frozen_source_pins"
+      ],
+      "selected_license": "MIT",
+      "sha256": "ee5b1cdba3b85cf71c4de40d1279db26b1c5b7d7b31358f01fbd387e641adcf5"
+    },
+    {
+      "bytes": 43297,
+      "classification": "owned_project_code_or_owned_integration",
+      "path": "tests/python/test_shortcuts_ui_supplement.py",
+      "review_origins": [
+        "commercial_ui_addendum001_exact_current_source"
+      ],
+      "selected_license": "MIT",
+      "sha256": "126e2517bb7f8e2c7983287e8be8ea03f493e3c92e163cc59451b5ffc761de2f"
+    }
+  ],
+  "owner": "root",
+  "parent_accepted_reviews": [
+    {
+      "bytes": 106944,
+      "path": "docs/parity/saved-roi-commercial-review-001.json",
+      "sha256": "166e519763f98ce98ffa9fac37b68366bb2a887877375f5d5cf4cc13ada2324d"
+    },
+    {
+      "bytes": 41440,
+      "path": "docs/parity/rank-commercial-review-001.json",
+      "sha256": "628721ddf23d4ddb304257e5dff729930f0524d2aff65d4d3da746794ea08f7a"
+    },
+    {
+      "bytes": 21241,
+      "path": "docs/parity/rank-commercial-review-002.json",
+      "sha256": "f8febcbbd689ef632b9507683d3a0a8ce4792fc5eb52b5e6f40ae993d06ff2e7"
+    },
+    {
+      "bytes": 3178,
+      "path": "docs/parity/rank-commercial-review-003.json",
+      "sha256": "115f454d19e68818ceb81d136cc968beccca52fdb2d115ff1c92558db3a2d553"
+    }
+  ],
+  "preserved_identity_limits": [
+    "Actual final runtime DLL/member/notices identities require the separate product gate.",
+    "Prior57 direct desktop inputs remain historical reviewed evidence, not newly rehashed products here.",
+    "Keep private prefixed and desktop external zlib distinct.",
+    "Preserve prior cached libpng/zlib ABI metadata discrepancy; no rebuilt package closure claimed.",
+    "External Windows/OpenGL/MSVC/Python runtimes, drivers and system fonts retain existing scopes."
+  ],
+  "preserved_scope": {
+    "NC_research_only_unlicensed_unreviewed_incorporation": "excluded",
+    "copyleft_alone_is_not_NC": true,
+    "families": 99,
+    "family_promotions": 0,
+    "fiji_decision_changes": 0,
+    "pending_fiji_components": 1437
+  },
+  "proposal": {
+    "bytes": 39652,
+    "path": "build/shortcuts-001/commercial-review001/proposal.json",
+    "sha256": "161a0a34f4afb5fe122d86719129d81293a3d5c2ccc65755053aec3a1c9bebcb"
+  },
+  "reason": "Held independently authored project-source review plus observer/category addendum003 and UI addendum001 match actual71 source bytes. Original59 plus observer13 replace4/add9 to68; UI10 replace7/add3 to71. Project MIT and all unchanged selected third-party obligations remain. No new third-party implementation/model/font/fixture/dependency is incorporated by these deltas.",
+  "recorded_at_utc": "2026-10-17T04:38:53.419140+00:00",
+  "remaining_final_gates": [
+    "Root settles all source/docs/metadata before one final safe source/archive freeze.",
+    "Bind actual matching terminal original products002/SDK004 plus separately qualified current UI supplements and their wheel/installed source/member/runtime/notice identities, test-only source compatibility and included-helper addendum using their own exact passed receipts; source checks do not grant artifact acceptance or relabel old captures with new binaries.",
+    "Preserve cached codec ABI metadata and external runtime/font/platform limits; unrelated pending clauses and all broader ImageJ/commercial Fiji scope remain required.",
+    "Keep original holds, invalidated observer addendum001/002 and all original failures unchanged. Any later source/dependency/material delta needs an exact narrow review before this source decision applies to it."
+  ],
+  "required_obligations": [
+    "Retain project MIT and full existing ImGui/ProggyClean/GLFW/stb/JSON/pybind11/zlib/libpng/libtiff/libjpeg-turbo/IJG/liblzma notices plus IJG/XZ acknowledgments.",
+    "Retain exact native manifests and notices; no gzip/minizip/tools, xz/TurboJPEG tools or bundled system font expansion.",
+    "Existing optional Python/build/test packages retain their own licenses and distribution notices; project MIT does not relicense them.",
+    "Verify actual final bundled runtime/member/notices identities independently; source declarations are not package closure.",
+    "Any later changed source/dependency/version/component/model/font/asset requires an exact narrow review/addendum; final metadata collection remains separate."
+  ],
+  "root_checks": {
+    "all445_current_sources_reverified": false,
+    "owned_current_source_pins": 71,
+    "product_build_import_capture_execution": false,
+    "protected_paths_inspected": false,
+    "relationship_linked_runs": 21,
+    "relationship_requirements": 77,
+    "relationship_runs": 45,
+    "selected_notice_declaration_pins": 20,
+    "source_drift": [],
+    "static": {
+      "additions": 0,
+      "benchmarks": 1,
+      "fixtures": 12,
+      "formats": 1,
+      "platforms": 1,
+      "requirements": 77
+    },
+    "vendor_member_pins": 68
+  },
+  "runtime_commentary_supersession": "Original immutable proposal's64/67 missing-observation commentary described its then-current runtime boundary. Later all67/current product receipts remain separate root-qualified evidence; source adoption neither rewrites the historical commentary nor creates a runtime proof.",
+  "schema_version": 1,
+  "scope": "Exactly71 positive-listed current owned shortcut/history/observer/core-binding/SDK/test/carrier/UI sources,20 unchanged selected notices/declarations and68 unchanged vendor members. Source eligibility only; no package/member/runtime, full option/family/Fiji/platform/performance/accessibility/release acceptance.",
+  "selected_notice_and_declaration_pins": [
+    {
+      "bytes": 1079,
+      "path": "LICENSE",
+      "sha256": "6496956d6060adfcd2617e553b7393c3b7fbea353a02f3c39d60051709d1ce5f"
+    },
+    {
+      "bytes": 4201,
+      "path": "THIRD_PARTY_NOTICES.md",
+      "sha256": "9793a0e9272d9c7f8aa1ea97712a38f1ff186ecbd379f3a71c16ae273167bff9"
+    },
+    {
+      "bytes": 4516,
+      "path": "licenses/dependencies.json",
+      "sha256": "436d924a8d501a7139f09e65441c46b6944e1d4c63b12d56eb1fd43290dd0a67"
+    },
+    {
+      "bytes": 5236,
+      "path": "licenses/desktop-dependencies.json",
+      "sha256": "9b5aa27fbdc98780f7eb93aa6a290bea9eb0894cce5f89b5d22d081b15ed55f3"
+    },
+    {
+      "bytes": 904,
+      "path": "licenses/glfw3.txt",
+      "sha256": "149704059b5d0bf551637e50042dd4de9c2cae921021f6636298911e3a5f9462"
+    },
+    {
+      "bytes": 1083,
+      "path": "licenses/imgui.txt",
+      "sha256": "c80c5789748d955c4a650562baa0d750494e2c7128c2ca66aaebe2e3c4e198bf"
+    },
+    {
+      "bytes": 12799,
+      "path": "licenses/libjpeg-IJG.txt",
+      "sha256": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6"
+    },
+    {
+      "bytes": 5620,
+      "path": "licenses/libjpeg-turbo.txt",
+      "sha256": "2189dc45a8fe96204069f8124caa53a148dfdc193f50f584c6ca7849a6072872"
+    },
+    {
+      "bytes": 607,
+      "path": "licenses/liblzma-0bsd.txt",
+      "sha256": "0b01625d853911cd0e2e088dcfb743261034a091bb379246cb25a14cc4c74bf1"
+    },
+    {
+      "bytes": 3119,
+      "path": "licenses/liblzma.txt",
+      "sha256": "616a3ad264ce29b8f1cb97e53037b139d406899ca8d1f799651e17bfa09830b8"
+    },
+    {
+      "bytes": 5345,
+      "path": "licenses/libpng.txt",
+      "sha256": "16d9daaafbf63a31a5bdc91d4600972548fef5aaa1244202393288dbd079c49a"
+    },
+    {
+      "bytes": 2416,
+      "path": "licenses/libtiff.txt",
+      "sha256": "0e27c2382d7b8147972bbb746e04059a1152c8d0fda9d03ef1399d1a433c4ade"
+    },
+    {
+      "bytes": 1917,
+      "path": "licenses/native-dependencies.json",
+      "sha256": "b649aa7e93fc45941fb5f8092e9bebede34cab5c797f7bba95658a1da17d027d"
+    },
+    {
+      "bytes": 1076,
+      "path": "licenses/nlohmann-json.txt",
+      "sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+    },
+    {
+      "bytes": 1109,
+      "path": "licenses/proggy-clean.txt",
+      "sha256": "0b6e79fc26dcd9ec87d0e3f2ff383abd403ea58b855368960f2a2643c7744211"
+    },
+    {
+      "bytes": 1684,
+      "path": "licenses/pybind11.txt",
+      "sha256": "83965b843b98f670d3a85bd041ed4b372c8ec50d7b4a5995a83ac697ba675dcb"
+    },
+    {
+      "bytes": 2510,
+      "path": "licenses/stb.txt",
+      "sha256": "bebfe904b14301657e4e5d655c811d51fd31b97c455b9cc2d8600d6bac6cff63"
+    },
+    {
+      "bytes": 1002,
+      "path": "licenses/zlib.txt",
+      "sha256": "845efc77857d485d91fb3e0b884aaa929368c717ae8186b66fe1ed2495753243"
+    },
+    {
+      "bytes": 6553,
+      "path": "third_party/nlohmann_json/SOURCE.json",
+      "sha256": "c0edbd13965b5b3926e275f4e5260fa8a070c82a741c32fe3012f7511c0be843"
+    },
+    {
+      "bytes": 2649,
+      "path": "third_party/zlib/SOURCE.json",
+      "sha256": "165f7bad405b23d0d73aa6fe9fbde44f317cc0670d7505d2dc15fa38e61a5db8"
+    }
+  ],
+  "source_authoring_and_derivation": {
+    "observer_addendum": {
+      "cmake": "Owned target/test integration only; root external dependency declarations unchanged; SDK example links only existing imagejxx::core.",
+      "native_category": "Owned binding-local typed catch using existing pybind11 APIs and ordinary Python ValueError; no copied pybind11 implementation and no module-wide translator added.",
+      "native_observer": "Owned transparent decorator over existing project PlaneSource/GuardedSource/resource helpers, plus fixed-size std::atomic saturation. Existing C++ standard library and public project APIs only; no upstream source, algorithm library, model or asset added.",
+      "python_exports_and_carrier": "Thin existing native exports and owned actual scalar/structure transport. NumPy constructs literal input fixtures; native processing and owner actions remain C++. No expected-output oracle is incorporated into product processing.",
+      "reference_boundary": "Consumes adopted owned implementation contract and previously reviewed project material. No primary ImageJ license/archive or external reference source reopened.",
+      "tests_and_sdk": "Owned analytic integer fixture10000*t+1000*c+100*z+10*y+x, literal small arrays/Float32 bit patterns, boundary/refusal/lifetime/thread/history/session assertions; no ImageJ/Fiji code/JAR/image/model. SDK consumer uses public core headers and stdlib only."
+    },
+    "original": {
+      "native": "Independently authored registry/chord/profile/edit/evaluate and Settings validation, prepared history/adoption staging. Standard library and existing project APIs only.",
+      "python": "Thin native forwards, owned bounded actual-value readers/transports and synthetic NumPy fixtures; stdlib and selected NumPy/pytest. New helper reads actual native/Editor DTOs/files/approved origins, imports no additional package/model.",
+      "reference_material": "Owned adopted S01-S08 policy, synthetic images and literal expectations. No ImageJ Java/Fiji implementation/JAR/reference asset incorporated or source archive reopened.",
+      "shared_ui": "Owned Preferences/editor/capture/dispatcher/probe integration over selected ImGui/GLFW/JSON. Existing ImGui titlebar layout derivation explicitly retained in dependency-reuse.json."
+    },
+    "ui_addendum": {
+      "build_and_cli": "Private desktop CMake source addition and K01-K14 usage/dispatch table update only. Existing public core target, native dependency manifests, compile flags, Python forwarding signature and original case recipes remain unchanged.",
+      "candidate_apply_gate": "Owned tiny access predicate over existing candidate state plus balanced ImGui BeginDisabled/EndDisabled around existing Apply. No native algorithm or external implementation changed. Existing ImGui/ProggyClean license/notices remain applicable.",
+      "capture_tool": "Owned additive supplement kind and exact explicit archived reader-contract input admission. Only commands role may use the one pinned original corpus; passed complete product freeze remains authentic and unchanged. Every other role still checks current/frozen identity. New input is normative evidence, never processing code. The branch was independently source-reviewed; runtime/preflight qualification remains root-owned.",
+      "native_policy_producer": "Adapted from independently authored MIT project SDK/public-native policy recipes in examples/cpp/shortcuts.cpp and owned actual Window configuration/no-effects recipe. Fresh native instances/Preferences/DatasetReadObserver counters and real current Window recorded Add/config actions generate values within each UI host; no old SDK/API output is copied or relabelled as UI, and policy rows have explicit dependency scope distinct from physical input. Root separately reviewed actual native public method integration; no upstream ImageJ/Fiji source or assets are incorporated.",
+      "native_policy_support": "Uses stdlib, existing public imagejxx APIs, selected desktop Json/settings conversion and existing owned rankRuntimeSha256. No new cryptography, math, image-processing, model or asset package; cap/classification/observer semantics remain native. Caller inherited bindings are restored without persistence after genuine Add and config observations.",
+      "new_physical_carriers": "Independently authored additive K11-K14 recipes over the existing owned Driver, public Window APIs and selected ImGui/headless input. Exact original K01-K10 function bodies are unchanged. K12 tests modifier/canonical capture/conflict/reassign; K13 held Undo and text ownership; K14 session profile preservation and applied-settings export. These are source intentions, not actual runtime observations.",
+      "new_reader": "Owned independent pure Python reader over actual source/product-bound raw observations, frozen existing contracts, owned literal fixtures and delivered input. Imports stdlib, existing pytest and existing owned lossless decoder only; no imagejxx/native/desktop import, product processing oracle or new fixture/model/font/image/dependency. Expected literals remain distinct from actual policy values."
+    }
+  },
+  "source_union": {
+    "added_paths": [
+      "include/imagejxx/dataset.hpp",
+      "src/native/dataset.cpp",
+      "src/native/dataset_read_counter_internal.hpp",
+      "src/native/dataset_bindings.cpp",
+      "tests/native/test_dataset_read_observer.cpp",
+      "tests/python/test_dataset_read_observer.py",
+      "tests/python/test_shortcut_native_category.py",
+      "examples/cpp/dataset_read_observer.cpp",
+      "examples/cpp/CMakeLists.txt"
+    ],
+    "addendum_current": 13,
+    "current_unique": 71,
+    "observer_unique": 68,
+    "original_unique": 59,
+    "overridden_paths": [
+      "src/imagejxx/__init__.py",
+      "src/native/shortcuts_bindings.cpp",
+      "tests/python/shortcut_api_observations.py",
+      "CMakeLists.txt"
+    ],
+    "ui_added_paths": [
+      "src/desktop/shortcut_policy_observations.hpp",
+      "src/desktop/shortcut_policy_observations.cpp",
+      "tests/python/test_shortcuts_ui_supplement.py"
+    ],
+    "ui_override_paths": [
+      "src/desktop/settings_panel.cpp",
+      "src/desktop/shortcut_editor.hpp",
+      "src/desktop/shortcuts_ui_probe.cpp",
+      "src/desktop/shortcuts_ui_probe.hpp",
+      "src/desktop/main.cpp",
+      "CMakeLists.txt",
+      "scripts/capture_shortcuts_history_ui.py"
+    ]
+  },
+  "state": "adopted_owned_source_and_unchanged_selected_dependencies"
+}

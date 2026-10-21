@@ -1,0 +1,283 @@
+{
+  "schema_version": 1,
+  "state": "scoped_color_stack_dataset_verified",
+  "api": [
+    "resolve_color_stack_command",
+    "color_stack_command_from_record",
+    "rebind_color_stack_command",
+    "prepare_color_stack"
+  ],
+  "new_python_cases": 57,
+  "native_windows_suites": 22,
+  "linux_native_suites": 6,
+  "source_cases": 899,
+  "installed_cases": 899,
+  "pinned_split_layout_cases": 12,
+  "primitive_reference_cases": 41,
+  "reference_scope": "Typed native dataset split/merge and existing-RGB layout adapter; native calibration/annotation policy is explicit and intentionally avoids upstream silent loss. No new menu/workflow or whole editor certification.",
+  "evidence": [
+    {
+      "path": "build/p06zt-color-dataset001/build005/run001.json",
+      "bytes": 9615,
+      "sha256": "70d8a0f44e22749f95250b742f0c6dbcca9aae7fffadd79ec1fe1e4bd83c2db8"
+    },
+    {
+      "path": "build/p06zt-color-dataset001/source002/run001.json",
+      "bytes": 1370,
+      "sha256": "fc30224012bdb10026b8c81403a9a665e9b5b06af82cb597fca522ee31806942"
+    },
+    {
+      "path": "build/p06zt-color-dataset001/install002/run001.json",
+      "bytes": 7251,
+      "sha256": "9fca22a4d49d157fd739cd9819e42ed5a610bd0655ad01b4a06dc29b7c9257c2"
+    },
+    {
+      "path": "build/p06zt-color-dataset001/installed-python002/run001.json",
+      "bytes": 1419,
+      "sha256": "7479461b170c4d900d712d489a162b7b0c24d7f0ba5f6ef445352aa9cedfa39d"
+    },
+    {
+      "path": "build/p06zt-color-dataset001/sdk002/run001.json",
+      "bytes": 4122,
+      "sha256": "8a4064005d6a7f4d3d6f0f51518451feca7b188b0d632d7a01ef9926371c4d6b"
+    },
+    {
+      "path": "build/p06zt-color-dataset001/linux005/run001.json",
+      "bytes": 838,
+      "sha256": "c6379c3ac377b7466b45c86226ea2652eafa010d481f7221b73d63be364f9ded"
+    },
+    {
+      "path": "build/p06zt-color-dataset001/baseline002/run001.json",
+      "bytes": 1388,
+      "sha256": "b4c3b6ec6aa448db738bd45ce9ef2e6146624e271e926aa50ae64a6c1b7f77c1"
+    },
+    {
+      "path": "build/p06zt-color-dataset001/build005/native.xml",
+      "bytes": 6601,
+      "sha256": "086ad6420d017d439974f8d83fdcad74a162a44ec864d6f83d9a4922a39498ba"
+    },
+    {
+      "path": "build/p06zt-color-dataset001/linux005/native.xml",
+      "bytes": 1528,
+      "sha256": "9178d770723677a43d63d06a66e0c36a4c544137f90f902a8e01d63eb1900376"
+    },
+    {
+      "path": "build/p06zt-color-dataset001/source002/pytest.xml",
+      "bytes": 132401,
+      "sha256": "4112874a0ce029f22a8273b43137d4e6ce9bd918b70e87c1b99a067cc5a792a9"
+    },
+    {
+      "path": "build/p06zt-color-dataset001/installed-python002/pytest.xml",
+      "bytes": 132401,
+      "sha256": "9a2560d94c1ad3d12b1efd4f41353cb2abcd0cf0dfb28bed8b9ab3e417c86575"
+    },
+    {
+      "path": "build/p06zt-color-dataset001/baseline002/baseline001.json",
+      "bytes": 619,
+      "sha256": "5f9840d624a1bc1087039fc2b2cb919fbe79c2036b8ef183880abfefc573b5cb"
+    },
+    {
+      "path": "tests/fixtures/color-components-imagej154r.json",
+      "bytes": 2108591,
+      "sha256": "253ea310e95396ce3a63bbe265f5f67d81ee3f378254f25619ee8b8c5cbc8549"
+    },
+    {
+      "path": "build/p06zt-color-dataset001/policy001.json",
+      "bytes": 427,
+      "sha256": "3d731d1bf93f553289d934a08139c9b37472e30dd46a2fbc0542f19152b97784"
+    },
+    {
+      "path": "build/p06zt-color-dataset001/linux001/ext4-scratch001.json",
+      "bytes": 1776,
+      "sha256": "d859bfc4b9d6fec135c61b3859d6b534787568aeb7e67cd0f41838b70100dd4e"
+    },
+    {
+      "path": "build/p06zt-color-dataset001/linux001/ext4-scratch001.zip",
+      "bytes": 6387,
+      "sha256": "d49b7c180463da349209b92aff0e76e120bf74b925a44ef42041a928643cdf0c"
+    },
+    {
+      "path": "build/p06zt-color-dataset001/linux003/ext4-scratch001.json",
+      "bytes": 1776,
+      "sha256": "624ed4ea5dfb4ddb00353f01e2dd54b886fb56a96462b4ceaacca61869910a0a"
+    },
+    {
+      "path": "build/p06zt-color-dataset001/linux003/ext4-scratch001.zip",
+      "bytes": 6387,
+      "sha256": "10a54696dfdd1b125b0cd881f3cb42e974cb3b59c1d98e9f80348e036dd871e3"
+    },
+    {
+      "path": "build/p06zt-color-dataset001/linux004/ext4-scratch001.json",
+      "bytes": 1767,
+      "sha256": "fb5b94f984c610776c0206dc060ddb48a85b0457896c919d9fe2700bc857a7bf"
+    },
+    {
+      "path": "build/p06zt-color-dataset001/linux004/ext4-scratch001.zip",
+      "bytes": 6369,
+      "sha256": "6cec596aa7556aaecde324ca4b966d2704f3e2468f0dd3e2c3f852a83824487f"
+    },
+    {
+      "path": "build/p06zt-color-dataset001/linux005/ext4-scratch001.json",
+      "bytes": 1767,
+      "sha256": "7dc260cdc8d1aaf168136b44f617f9fb57904f16fdc08520d0843288946341b3"
+    },
+    {
+      "path": "build/p06zt-color-dataset001/linux005/ext4-scratch001.zip",
+      "bytes": 6368,
+      "sha256": "d9fbae731248352516fd35588f8b733732072235d631f34d298bd73ab5210d76"
+    },
+    {
+      "path": "build/p06zt-color-dataset001/cleanup001.json",
+      "bytes": 346131,
+      "sha256": "82f35ad9573e5c79f53755b223556fdfb04258048573628da826510374998e19"
+    }
+  ],
+  "superseded_diagnostics": [
+    {
+      "run": {
+        "path": "build/p06zt-color-dataset001/build001/run001.json",
+        "bytes": 9635,
+        "sha256": "0f1276ab9ee653b6560d5225aaac04e6a1e14b1be1e322c49bb86da5187a340f"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zt-color-dataset001/build002/run001.json",
+        "bytes": 9616,
+        "sha256": "d126a45a026f429953c4cda461a1023a70935e699f112667683ef69054272ead"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zt-color-dataset001/build003/run001.json",
+        "bytes": 9569,
+        "sha256": "7c1bf3ccfd55820b164b0dc4a053aa03cb754be75f192542c5ea99f229015779"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zt-color-dataset001/build004/run001.json",
+        "bytes": 9591,
+        "sha256": "000d8d33b50c9512c42a91ca20db2100550107e920ad240b7650fbceaf1ffa8e"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zt-color-dataset001/focused001/run001.json",
+        "bytes": 1592,
+        "sha256": "b27a47a216bb031f786db586b9291e172e513287461a92066949670235ebf276"
+      },
+      "state": "failed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zt-color-dataset001/focused002/run001.json",
+        "bytes": 1387,
+        "sha256": "d27b696ae2596f2ce5af34dbcd8b29f5dbf5c9370cdc9f3b4f73385d7e8263d8"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zt-color-dataset001/linux001/run001.json",
+        "bytes": 849,
+        "sha256": "d308acbce61e4fa3c8fe707e699b95121c4a2cd1038ab300dc77a8f5d7989b49"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zt-color-dataset001/linux002/run001.json",
+        "bytes": 927,
+        "sha256": "adde5db1fd9eab24a2bf77cad779427e749476a98a43cf3d56e763868055d5e1"
+      },
+      "state": "failed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zt-color-dataset001/linux003/run001.json",
+        "bytes": 846,
+        "sha256": "1f21a62d4c2d312f71392f057d51737e4d14036b6847d2de9edd60f60360eece"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zt-color-dataset001/linux004/run001.json",
+        "bytes": 838,
+        "sha256": "af98cd9df5fde9c3e3a5ab7b32b09e4bb767c45243183d58c591dcd882410f5f"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zt-color-dataset001/source001/run001.json",
+        "bytes": 1383,
+        "sha256": "d93804f7c2729ce87d62a44db857daa36c05d09d4a848163785a512b97b3f4ce"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zt-color-dataset001/install001/run001.json",
+        "bytes": 7252,
+        "sha256": "995fac2a441f100a1e8a706a130e6566b556e93de497cda7e6b0824ec1fde24c"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zt-color-dataset001/installed-python001/run001.json",
+        "bytes": 1419,
+        "sha256": "7eeb6c1fa5b8aa637c40d7781cf64bff1955cbdf4cf66a0c2a039004cc127c53"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zt-color-dataset001/sdk001/run001.json",
+        "bytes": 4121,
+        "sha256": "13ace9a3894ed42c165432c400b4f5d06496bf791b8e8d1b11194828a656542d"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zt-color-dataset001/baseline001/run001.json",
+        "bytes": 1388,
+        "sha256": "3e6d602c768f448605a5abb8b3d5250128c126218af88b111ee21842a6d3a0e1"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    }
+  ],
+  "remaining": [
+    "Native workflow/program/batch color_stack original-record grammar, metadata-only preflight and one final paired owner transaction",
+    "Shared Dear ImGui component/legacy-layout review, worker preview, explicit calibration/non-XY loss choices, recording and actual source/installed C++ and Python input proof",
+    "Compound scalar-to-RGB legacy flattening with pinned ImageJ stack display-range/LUT captures; the current flatten action accepts existing UInt8 RGB only",
+    "Indexed/global-palette output and remaining full editor/reference/resource/platform/release checks; historical fingerprint requalification; All99 stays42/57/0 and Source901 unchanged"
+  ],
+  "no_new_runtime_dependencies": true,
+  "profile_accepted": false,
+  "family_completed": false,
+  "broad_goal": "active",
+  "full_plan_gate": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed"
+}

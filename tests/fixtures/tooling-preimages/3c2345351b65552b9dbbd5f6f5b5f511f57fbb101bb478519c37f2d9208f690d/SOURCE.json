@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "scope": "Exact owned historical Python audit-helper bytes; data only, never imported or executed; not processing/runtime requalification",
+  "logical_path": "scripts/parity_evidence.py",
+  "sha256": "3c2345351b65552b9dbbd5f6f5b5f511f57fbb101bb478519c37f2d9208f690d",
+  "bytes": 26112,
+  "source_archive": {
+    "bytes": 8808972,
+    "path": "build/p06p-source-final001/imagejxx-0.2.0.tar.gz",
+    "sha256": "54433eddbdd012ea104944ad12239fb36df152109b34351b23cb22fc69a0338d"
+  },
+  "source_member": "imagejxx-0.2.0/scripts/parity_evidence.py",
+  "qualification_receipt": "build/p06p-edges001/final-distribution001.json",
+  "license": "Existing project MIT; owned repository source"
+}

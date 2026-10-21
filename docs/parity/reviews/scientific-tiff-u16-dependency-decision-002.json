@@ -1,0 +1,118 @@
+{
+  "acceptance": {
+    "format_accepted": false,
+    "implemented": false,
+    "new_dependency_approved": false,
+    "runtime_qualified": false
+  },
+  "build_paths_inspected": false,
+  "current_gaps": [
+    "TIFF discovery/private linkage only in the desktop CMake block; installed SDK config discovers Threads only.",
+    "Desktop reader returns flat Stack pages without Dataset/CZT metadata; writer copies planes and buffers the encoded file.",
+    "Runtime install derives codec paths from a ZLIB prefix and silently skips missing DLLs; it cannot establish complete headless closure."
+  ],
+  "decision": "Implement the frozen Dataset/series/metadata contract behind optional imagejxx::io, independent of ImGui/Python. Preserve imagejxx::core dependency scope and require conditional package dependency discovery only for io consumers.",
+  "entry": {
+    "bytes": 69541,
+    "path": "docs/parity/reviews/scientific-tiff-u16-entry-001.json",
+    "sha256": "b56b97945fc3f4a0271a29aa01dd84f603414c7b1bfce8283aeec7a846f5b478"
+  },
+  "existing_review_reuse": "Unchanged exact desktop libtiff4.7.1/libjpeg-turbo3.1.3/liblzma5.8.2/zlib1.3.1 notice/dependency scope can be consumed by identity; this is not new headless redistribution approval.",
+  "format_id": "F.G080.tiff-imagej-u16-uncompressed-ifd-czt-v1",
+  "full_exit_preserved": "Independent bounded/reference fixtures, installed core-only SDK read/write, Python/both ImGui consumers and actual ImageJ interoperability for the frozen profile. TIFF/OME/series/family scope remains required.",
+  "id": "scientific-tiff-u16-dependency-decision-002",
+  "matching_existing_desktop_notice_pins": [
+    {
+      "bytes": 2416,
+      "path": "licenses/libtiff.txt",
+      "sha256": "0e27c2382d7b8147972bbb746e04059a1152c8d0fda9d03ef1399d1a433c4ade"
+    },
+    {
+      "bytes": 5620,
+      "path": "licenses/libjpeg-turbo.txt",
+      "sha256": "2189dc45a8fe96204069f8124caa53a148dfdc193f50f584c6ca7849a6072872"
+    },
+    {
+      "bytes": 12799,
+      "path": "licenses/libjpeg-IJG.txt",
+      "sha256": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6"
+    },
+    {
+      "bytes": 3119,
+      "path": "licenses/liblzma.txt",
+      "sha256": "616a3ad264ce29b8f1cb97e53037b139d406899ca8d1f799651e17bfa09830b8"
+    },
+    {
+      "bytes": 607,
+      "path": "licenses/liblzma-0bsd.txt",
+      "sha256": "0b01625d853911cd0e2e088dcfb743261034a091bb379246cb25a14cc4c74bf1"
+    },
+    {
+      "bytes": 1002,
+      "path": "licenses/zlib.txt",
+      "sha256": "845efc77857d485d91fb3e0b884aaa929368c717ae8186b66fe1ed2495753243"
+    }
+  ],
+  "next_owned_patch": {
+    "files": [
+      "CMakeLists.txt",
+      "cmake/imagejxxConfig.cmake.in",
+      "licenses/dependencies.json",
+      "licenses/native-dependencies.json",
+      "licenses/desktop-dependencies.json"
+    ],
+    "outcome": "Settle exact reviewed io dependency graph and fail-closed conditional export/runtime/notices scope before incorporating the target; then native io.hpp/service and installed consumers.",
+    "owner": "root I/O integrator with disjoint dependency support"
+  },
+  "runtime_execution": false,
+  "schema_version": 1,
+  "source_evidence": [
+    {
+      "bytes": 43361,
+      "path": "CMakeLists.txt",
+      "sha256": "80732b5ec244af6e0f8f88186e57e03477221c0763e352c7dd44c25fcc4ab933"
+    },
+    {
+      "bytes": 170,
+      "path": "cmake/imagejxxConfig.cmake.in",
+      "sha256": "50d5f5758e54dc61381964de23bf8b46d876c185702d0afa28cb4544354a3984"
+    },
+    {
+      "bytes": 8015,
+      "path": "include/imagejxx/dataset.hpp",
+      "sha256": "4744b8097ac2794b358d4e625d996a06d3c1a9aa348c3f121a6b7b3ab9182eb7"
+    },
+    {
+      "bytes": 22783,
+      "path": "src/desktop/io.cpp",
+      "sha256": "d5856e7d43b995a63c143696cf123e1e590d1fc39bc32343add8541563fb6794"
+    },
+    {
+      "bytes": 4516,
+      "path": "licenses/dependencies.json",
+      "sha256": "436d924a8d501a7139f09e65441c46b6944e1d4c63b12d56eb1fd43290dd0a67"
+    },
+    {
+      "bytes": 1917,
+      "path": "licenses/native-dependencies.json",
+      "sha256": "b649aa7e93fc45941fb5f8092e9bebede34cab5c797f7bba95658a1da17d027d"
+    },
+    {
+      "bytes": 5236,
+      "path": "licenses/desktop-dependencies.json",
+      "sha256": "9b5aa27fbdc98780f7eb93aa6a290bea9eb0894cce5f89b5d22d081b15ed55f3"
+    },
+    {
+      "bytes": 4201,
+      "path": "THIRD_PARTY_NOTICES.md",
+      "sha256": "9793a0e9272d9c7f8aa1ea97712a38f1ff186ecbd379f3a71c16ae273167bff9"
+    }
+  ],
+  "state": "optional_headless_io_boundary_adopted_exact_dependency_approval_pending",
+  "supporting_rotation": "This dependency decision releases support to history_limit/history_memory_mb ownership and the selected pinned Fiji incorporation route.",
+  "unresolved_edges": [
+    "Pin selected codec source archives/versions/port patches and complete transitive closure for the optional headless target.",
+    "Reconcile the entry-recorded missing-liblzma metadata and two zlib ABIs. Native core privately prefixed zlib cannot substitute for TIFF external runtime.",
+    "Bind exact imported-target link/export requirements and installed runtime/notices for C++ SDK, Python and both desktop consumers."
+  ]
+}

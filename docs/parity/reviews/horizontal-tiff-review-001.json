@@ -1,0 +1,57 @@
+{
+  "state": "reviewed_and_qualified",
+  "scope": "Windows unsigned horizontal prediction for Deflate/LZW, C++/Python and both ImGui hosts",
+  "audit": {
+    "path": "build/p08i-horizontal-tiff001/final-audit001.json",
+    "bytes": 70894,
+    "sha256": "a9e99e3fdfc60bdb48315d2acd8e7312cd69dc6f375320b2150d7fda0f69e947"
+  },
+  "implementation_review": [
+    "Explicit six-profile append preserves enum ordinals 0-15, default U16 export and predictor-1 wire producers",
+    "Integer reconstruction follows file endian, matching component stride and row-reset modulo arithmetic; backward encoding avoids overwriting prior original values",
+    "Transform uses existing buffers and checkpoints; output estimates account for predictor tags; final descriptor verification includes predictor",
+    "Version 8 requires explicit horizontal predictor and supported codec/type; malformed or mixed records refuse; replay renews review",
+    "Shared ImGui controls invalidate estimates/consent; unsupported codec resets prediction; explicit invalid drafts refuse atomically"
+  ],
+  "validation": {
+    "windows_suites": 79,
+    "source_python_cases": 10133,
+    "installed_python_cases": 10133,
+    "previous_python_ids_retained": 9910,
+    "new_python_cases": 223,
+    "focused_cases": 445,
+    "independent_valid": 84,
+    "refused": 6,
+    "actual_ui_cases": 12,
+    "contexts": 4,
+    "imagej_reads": 216,
+    "sdk_profiles": 6,
+    "orthogonal_views": "Exact XY/XZ/YZ source words checked in all 48 new UI captures"
+  },
+  "historical_fixture_promotion": "Deflate/LZW predictor.tif test IDs retained; predictor-2 reconstruction replaces old refusal expectations without editing historical manifests",
+  "cleanup": {
+    "path": "build/p08i-horizontal-tiff001/cleanup001.json",
+    "bytes": 1296803,
+    "sha256": "8df1c3a047fae41b2a5745f25224bd3b226d0e73360cb6e94481b1b5b598f90b"
+  },
+  "failed_attempt": {
+    "gate": "focused001",
+    "reason": "UI tests ran before updated desktop binary was available; focused002 supersedes",
+    "receipt": {
+      "path": "build/p08i-horizontal-tiff001/focused001/run001.json",
+      "bytes": 1603,
+      "sha256": "8a82e2ed119178c8a10965a91af8fe8732137654a9ee1923f1bf780cdab4ded6"
+    }
+  },
+  "commercial_scope": "Original C++ transform; no dependency added; no non-commercial component introduced",
+  "remaining": [
+    "Actual ImGui inputs and CPU readbacks; no OS-input/GPU equivalence claim",
+    "No Linux TIFF/product qualification",
+    "Floating predictors, legacy codec variants, tiles/BigTIFF, broader metadata/high-bit/alpha and remaining ImageJ/Fiji/editor/release gaps remain open"
+  ],
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  }
+}

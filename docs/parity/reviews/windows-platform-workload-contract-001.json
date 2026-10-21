@@ -1,0 +1,715 @@
+{
+  "schema": "imagejxx.windows-platform-workload-contract",
+  "schema_version": 1,
+  "id": "windows-platform-workload-contract-001",
+  "state": "frozen_proposal_source_only_requires_root_review_and_execution_driver",
+  "reference_id": "imagej-1.54r-fiji-latest-20261007-1617-win64",
+  "scope": "W01-W06 actual Windows OS feasibility in both Dear ImGui launch modes on one machine, using immutable qualified P06c3 Min products. No platform/release acceptance, new inventory or product rebuild.",
+  "consumed_files": [
+    {
+      "path": "docs/parity/reviews/windows-platform-entry-001.json",
+      "bytes": 41113,
+      "sha256": "e6f0468d317dcec1341016c3f7ca2ec3292de2323fab99d9db59ec8c54abb33a"
+    },
+    {
+      "path": "docs/parity/platforms.json",
+      "bytes": 3803,
+      "sha256": "da853eb04ff16a2738c392218d52d7b49eb21d20841b80c13d2f01e0733e8378"
+    },
+    {
+      "path": "build/p06c3-001/local-exit-001.json",
+      "bytes": 9557,
+      "sha256": "0d98682cd598d3fbb79fb9082a5efc60e040f0f5bb34a0608ed1cedbd668225d"
+    },
+    {
+      "path": "build/p06c3-001/local-exit-001.passed.json",
+      "bytes": 366,
+      "sha256": "8f4f32f4e674989b005274582eaeca2ebb2d1a6f76efd675518be7280f8f34ef"
+    },
+    {
+      "path": "build/p06c3-001/distribution-001.json",
+      "bytes": 67724,
+      "sha256": "28cc33fc7973fbc87af6617db4223e04cf3b75ca44c2dd506d4c679ec8c1b5d5"
+    },
+    {
+      "path": "build/p06c3-dist-ui001/imagejxx-0.2.0-cp312-cp312-win_amd64.whl",
+      "bytes": 13346789,
+      "sha256": "de6dc275c9a8accc0514348d4c368d5e728e31c7e2ccda0bbc656ec8d9ef35a6"
+    },
+    {
+      "path": "build/p06c3-sdist001/imagejxx-0.2.0.tar.gz",
+      "bytes": 6806752,
+      "sha256": "2002da30e68d3846e403d02f3cea08ff148363ad3f7e534ea714abd710eb25e4"
+    }
+  ],
+  "product_pins": [
+    {
+      "path": "build/p06c3-install001/bin/imagejxx.exe",
+      "bytes": 8307712,
+      "sha256": "48b41d1da7e43431a97a56320a767c68959cd3bbd40b08cc74aa340072b769ca"
+    },
+    {
+      "path": "build/p06c3-env-ui001/Scripts/python.exe",
+      "bytes": 257536,
+      "sha256": "4025e2a6d8fc90d053a8405e81f008cbd8ee45b582e2d77480341501f4aeda73"
+    },
+    {
+      "path": "build/p06c3-env-ui001/Lib/site-packages/imagejxx/_native.cp312-win_amd64.pyd",
+      "bytes": 3278848,
+      "sha256": "fbaddc5388c8abe3a983c841dbd175f51c9547fcbe1655d9628abf088185e3f8"
+    },
+    {
+      "path": "build/p06c3-env-ui001/Lib/site-packages/imagejxx/_desktop.cp312-win_amd64.pyd",
+      "bytes": 8103424,
+      "sha256": "4b5f398ee35ee2d241217ef0950ea4d4b0d2c8d24745f393841f2a4023e1d8d9"
+    },
+    {
+      "path": "build/p06c3-env-ui001/Lib/site-packages/imagejxx/glfw3.dll",
+      "bytes": 233984,
+      "sha256": "a53079499276e3e55ec402f3716a3168d927b7adba20ed1135d0d9177b0c6c43"
+    },
+    {
+      "path": "build/p06c3-env-ui001/Lib/site-packages/imagejxx/ui/app.py",
+      "bytes": 20812,
+      "sha256": "f3ac361affb2af26dabf0a3a3171614d8aa6c529a808025fb8f689ddab73cea5"
+    },
+    {
+      "path": "build/p06c3-env-ui001/Lib/site-packages/imagejxx/ui/persistence.py",
+      "bytes": 34402,
+      "sha256": "66121dd53523c90b164babd2fc4b2fdd9c410565c550c7c826bd5061ebd3ffc4"
+    },
+    {
+      "path": "build/p06c3-env-ui001/Lib/site-packages/imagejxx/ui/commands.json",
+      "bytes": 60058,
+      "sha256": "8a0e1d594d5c24a0ea7b105282562d98ccde8042afae4a66261b3cadd3e12c2f"
+    }
+  ],
+  "qualified_source_members": [
+    {
+      "archive": "build/p06c3-sdist001/imagejxx-0.2.0.tar.gz",
+      "member": "imagejxx-0.2.0/src/desktop/main.cpp",
+      "bytes": 19560,
+      "sha256": "cd0c5ae265c26d4b65f856bf10af5d268e54277ecc5554f2833096646e7cf6b9"
+    },
+    {
+      "archive": "build/p06c3-sdist001/imagejxx-0.2.0.tar.gz",
+      "member": "imagejxx-0.2.0/src/desktop/window.cpp",
+      "bytes": 400358,
+      "sha256": "a6debcd25c3b9a7baacf254bb5c207fae0fb3ac64113ed5c47bf194731ee8930"
+    },
+    {
+      "archive": "build/p06c3-sdist001/imagejxx-0.2.0.tar.gz",
+      "member": "imagejxx-0.2.0/src/desktop/window.hpp",
+      "bytes": 9589,
+      "sha256": "c940414b3a97055d7acf986e6b9096b190b4b30706b52959725cb7c99e03a684"
+    },
+    {
+      "archive": "build/p06c3-sdist001/imagejxx-0.2.0.tar.gz",
+      "member": "imagejxx-0.2.0/src/desktop/python.cpp",
+      "bytes": 25694,
+      "sha256": "d572d255b4d72fb3d4b105b400b43ef20fdf4f52f926bd2faf0b54813ea5b0de"
+    },
+    {
+      "archive": "build/p06c3-sdist001/imagejxx-0.2.0.tar.gz",
+      "member": "imagejxx-0.2.0/src/desktop/export.cpp",
+      "bytes": 8344,
+      "sha256": "9c8763343bfc40e71de182dff41dcb82519872aeeee7ae35c62f627ee9d69d8b"
+    },
+    {
+      "archive": "build/p06c3-sdist001/imagejxx-0.2.0.tar.gz",
+      "member": "imagejxx-0.2.0/src/imagejxx/ui/app.py",
+      "bytes": 20812,
+      "sha256": "f3ac361affb2af26dabf0a3a3171614d8aa6c529a808025fb8f689ddab73cea5"
+    },
+    {
+      "archive": "build/p06c3-sdist001/imagejxx-0.2.0.tar.gz",
+      "member": "imagejxx-0.2.0/src/native/session_bindings.cpp",
+      "bytes": 8662,
+      "sha256": "236213a0b40f0858b7d597b8f6058947c70b17c11511921e8d7d12e898851258"
+    },
+    {
+      "archive": "build/p06c3-sdist001/imagejxx-0.2.0.tar.gz",
+      "member": "imagejxx-0.2.0/src/native/dataset_bindings.cpp",
+      "bytes": 20633,
+      "sha256": "29e4389edda4390d82f4bcca97732cd9f02292cea6ffb555f1505c3edfda9787"
+    }
+  ],
+  "acceptance": {
+    "new_visible_launches": 0,
+    "new_platform_runs": 0,
+    "new_benchmarks": 0,
+    "platform_accepted": false,
+    "release_accepted": false,
+    "manifest_writes": 0,
+    "commercial_effect": "None"
+  },
+  "identity_policy": "Revalidate all pins before setup/each launch. No primary mutable-cache product. New machine/OS observations bind P06c3 without relabelling previous P05l inventory or rerunning Min parity.",
+  "fixtures": [
+    {
+      "id": "F01.eager-selection",
+      "filename": "eager-selection.ijx",
+      "axes": "ZYXS",
+      "shape": [
+        2,
+        24,
+        32,
+        1
+      ],
+      "dtype": "uint16",
+      "recipe": "7*z + 3*y + x",
+      "calibration": "native defaults",
+      "initial_tcz": [
+        0,
+        0,
+        1
+      ],
+      "initial_crosshair_xyz": [
+        16,
+        12,
+        1
+      ],
+      "raw_order": "TCZYXS little-endian uint16",
+      "raw_bytes": 3072,
+      "raw_sha256": "9e555b30ea7dd1a30467dd348c7d64c113b63703fd9a90f715a15522e9ec0ed9"
+    },
+    {
+      "id": "F02.scientific-czt",
+      "filename": "scientific-czt.ijx",
+      "axes": "TCZYXS",
+      "shape": [
+        2,
+        3,
+        4,
+        48,
+        64,
+        1
+      ],
+      "dtype": "uint16",
+      "recipe": "4096*t + 512*c + 64*z + 3*y + x",
+      "calibration": {
+        "spacing": [
+          0.5,
+          1.25,
+          2.5
+        ],
+        "origin": [
+          11,
+          -7,
+          19
+        ],
+        "direction": [
+          -1,
+          0.25,
+          0.5,
+          0,
+          1,
+          0.5,
+          0.5,
+          0,
+          1
+        ],
+        "unit": "um",
+        "frame_interval": 0.75,
+        "time_origin": 2.25,
+        "time_unit": "s"
+      },
+      "initial_tcz": [
+        1,
+        1,
+        2
+      ],
+      "initial_crosshair_xyz": [
+        32,
+        24,
+        2
+      ],
+      "channel_display": {
+        "schema": "imagejxx.channel-display",
+        "version": 1,
+        "mode": "composite",
+        "channels": [
+          {
+            "visible": true,
+            "range": [
+              0,
+              6000
+            ],
+            "lut": {
+              "name": "Red"
+            }
+          },
+          {
+            "visible": true,
+            "range": [
+              0,
+              6000
+            ],
+            "lut": {
+              "name": "Green"
+            }
+          },
+          {
+            "visible": true,
+            "range": [
+              0,
+              6000
+            ],
+            "lut": {
+              "name": "Blue"
+            }
+          }
+        ]
+      },
+      "raw_order": "TCZYXS little-endian uint16",
+      "raw_bytes": 147456,
+      "raw_sha256": "d5f888017e3bbc669066222865b36ce46e19cf884ed92b0b55f11a2ad50f5035"
+    },
+    {
+      "id": "F03.preview-latency",
+      "filename": "preview-latency.ijx",
+      "axes": "ZYXS",
+      "shape": [
+        8,
+        512,
+        512,
+        1
+      ],
+      "dtype": "uint16",
+      "recipe": "(17*z + 3*y + x) % 4096",
+      "calibration": "native defaults",
+      "initial_tcz": [
+        0,
+        0,
+        3
+      ],
+      "initial_crosshair_xyz": [
+        256,
+        256,
+        3
+      ],
+      "raw_order": "TCZYXS little-endian uint16",
+      "raw_bytes": 4194304,
+      "raw_sha256": "07593052cbe208bef4a4b2f3d3377542b910aaa43e841d51112b68a973ad154c"
+    }
+  ],
+  "fixture_preparation": {
+    "stage": "build/windows-workload-001/prepare-001",
+    "timeout_seconds": 120,
+    "max_stage_bytes": 67108864,
+    "python_source": "from pathlib import Path\nimport hashlib,json,traceback\nroot=Path.cwd().resolve()\ncp=root/'docs/parity/reviews/windows-platform-workload-contract-001.json'\nc=json.loads(cp.read_text(encoding='utf-8'))\nfor pin in c['consumed_files']+c['product_pins']:\n    b=(root/pin['path']).read_bytes()\n    if len(b)!=pin['bytes'] or hashlib.sha256(b).hexdigest()!=pin['sha256']:raise RuntimeError('Changed input: '+pin['path'])\nstage=(root/'build/windows-workload-001/prepare-001').resolve()\nif root not in stage.parents:raise RuntimeError('Stage escapes workspace')\nstage.mkdir(parents=True,exist_ok=False)\nr={'id':'windows-workload.prepare.001','state':'started','acceptance_claim':False,'visible_launches':0,'fixtures':[],\n   'contract':{'path':str(cp),'bytes':cp.stat().st_size,'sha256':hashlib.sha256(cp.read_bytes()).hexdigest()}}\ndef durable():\n    (stage/'preparation.json').write_text(json.dumps(r,indent=2,allow_nan=False)+'\\n',encoding='utf-8')\ndurable()\ntry:\n    import imagejxx as ij\n    import imagejxx._native as native\n    import numpy as np\n    site=(root/'build/p06c3-env-ui001/Lib/site-packages').resolve()\n    if site not in Path(native.__file__).resolve().parents:raise RuntimeError('Wrong native origin')\n    r['native_origin']=str(Path(native.__file__).resolve())\n    out=stage/'fixtures';out.mkdir()\n    for f in c['fixtures']:\n        if f['id'].startswith('F01'):\n            z,y,x=np.ogrid[:2,:24,:32];a=(7*z+3*y+x).astype(np.uint16)[...,None]\n            cal=ij.SpatialCalibration()\n        elif f['id'].startswith('F02'):\n            t,ch,z,y,x=np.ogrid[:2,:3,:4,:48,:64]\n            a=(4096*t+512*ch+64*z+3*y+x).astype(np.uint16)[...,None]\n            cal=ij.SpatialCalibration(**f['calibration'])\n        else:\n            z,y,x=np.ogrid[:8,:512,:512];a=((17*z+3*y+x)%4096).astype(np.uint16)[...,None]\n            cal=ij.SpatialCalibration()\n        raw=a.astype('<u2',copy=False).tobytes(order='C')\n        if list(a.shape)!=f['shape'] or len(raw)!=f['raw_bytes'] or hashlib.sha256(raw).hexdigest()!=f['raw_sha256']:raise RuntimeError('Literal fixture mismatch')\n        owner=ij.Document(ij.Dataset(a,axes=f['axes'],calibration=cal),title=f['id'])\n        view=owner.snapshot().display;view.t,view.c=f['initial_tcz'][:2];view.crosshair=f['initial_crosshair_xyz']\n        if 'channel_display' in f:view.properties={'channel_display':f['channel_display']}\n        owner.set_display(view)\n        path=out/f['filename'];ij.save_session(str(path),ij.SessionCapture([owner]))\n        decoded=ij.load_session(str(path)).documents[0]\n        if decoded.dataset.numpy('TCZYXS').astype('<u2',copy=False).tobytes(order='C')!=raw:raise RuntimeError('Codec changed literal bytes')\n        b=path.read_bytes();r['fixtures'].append({'id':f['id'],'path':str(path),'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest(),'raw_sha256':f['raw_sha256']})\n        if sum(p.stat().st_size for p in stage.rglob('*') if p.is_file())>67108864:raise RuntimeError('Preparation64MiB cap')\n        durable()\n    r['state']='prepared_fixtures_only_no_platform_execution';durable()\n    print(json.dumps({'state':r['state'],'receipt':str(stage/'preparation.json'),'fixture_count':3,'visible_launches':0}))\nexcept BaseException as e:\n    r['state']='failed';r['error']=repr(e);r['traceback']=traceback.format_exc();durable();raise\n",
+    "effects": "When root executes: import pinned core/NumPy, materialize3literal nativeV3 fixtures, pin exact encoded bytes and verify raw roundtrip. No window/install/product qualification. Not executed.",
+    "first_command_powershell": "@'\nfrom pathlib import Path\nimport hashlib,json,subprocess,sys,time,traceback\nroot=Path.cwd().resolve();cp=root/'docs/parity/reviews/windows-platform-workload-contract-001.json'\nc=json.loads(cp.read_text(encoding='utf-8'))\nbase=root/'build/windows-workload-001';base.mkdir(parents=True,exist_ok=True)\nstarted=base/'prepare-001.started.json';final=base/'prepare-001.final.json'\nif started.exists() or final.exists():raise RuntimeError('Fresh attempt required; preserve existing preparation')\nr={'id':'windows-workload.fixture-supervisor.001','state':'started','contract_sha256':hashlib.sha256(cp.read_bytes()).hexdigest(),'timeout_seconds':120,'visible_launches':0}\nwith started.open('x',encoding='utf-8') as f:json.dump(r,f,indent=2)\nt=time.monotonic()\ntry:\n    done=subprocess.run([sys.executable,'-I','-X','utf8','-B','-c',c['fixture_preparation']['python_source']],timeout=120,capture_output=True)\n    (base/'prepare-001.stdout').write_bytes(done.stdout);(base/'prepare-001.stderr').write_bytes(done.stderr)\n    r['exit_code']=done.returncode\n    if done.returncode:raise RuntimeError('Preparation child failed; retain stdout/stderr')\n    r['state']='prepared_fixtures_only_no_platform_execution'\nexcept BaseException as e:\n    r['state']='failed';r['error']=repr(e);r['traceback']=traceback.format_exc()\n    raise\nfinally:\n    r['elapsed_seconds']=time.monotonic()-t\n    with final.open('x',encoding='utf-8') as f:json.dump(r,f,indent=2)\nprint(json.dumps(r))\n'@ | & 'build/p06c3-env-ui001/Scripts/python.exe' -I -X utf8 -B -\nif ($LASTEXITCODE -ne 0) { throw 'Windows literal fixture preparation failed; retain original receipts/logs.' }",
+    "supervisor_python_source": "from pathlib import Path\nimport hashlib,json,subprocess,sys,time,traceback\nroot=Path.cwd().resolve();cp=root/'docs/parity/reviews/windows-platform-workload-contract-001.json'\nc=json.loads(cp.read_text(encoding='utf-8'))\nbase=root/'build/windows-workload-001';base.mkdir(parents=True,exist_ok=True)\nstarted=base/'prepare-001.started.json';final=base/'prepare-001.final.json'\nif started.exists() or final.exists():raise RuntimeError('Fresh attempt required; preserve existing preparation')\nr={'id':'windows-workload.fixture-supervisor.001','state':'started','contract_sha256':hashlib.sha256(cp.read_bytes()).hexdigest(),'timeout_seconds':120,'visible_launches':0}\nwith started.open('x',encoding='utf-8') as f:json.dump(r,f,indent=2)\nt=time.monotonic()\ntry:\n    done=subprocess.run([sys.executable,'-I','-X','utf8','-B','-c',c['fixture_preparation']['python_source']],timeout=120,capture_output=True)\n    (base/'prepare-001.stdout').write_bytes(done.stdout);(base/'prepare-001.stderr').write_bytes(done.stderr)\n    r['exit_code']=done.returncode\n    if done.returncode:raise RuntimeError('Preparation child failed; retain stdout/stderr')\n    r['state']='prepared_fixtures_only_no_platform_execution'\nexcept BaseException as e:\n    r['state']='failed';r['error']=repr(e);r['traceback']=traceback.format_exc()\n    raise\nfinally:\n    r['elapsed_seconds']=time.monotonic()-t\n    with final.open('x',encoding='utf-8') as f:json.dump(r,f,indent=2)\nprint(json.dumps(r))\n"
+  },
+  "launches": [
+    {
+      "context": "imgui_cpp",
+      "argv": [
+        "<ROOT>/build/p06c3-install001/bin/imagejxx.exe",
+        "<PREP>/fixtures/eager-selection.ijx",
+        "<PREP>/fixtures/scientific-czt.ijx",
+        "<PREP>/fixtures/preview-latency.ijx"
+      ],
+      "environment": {
+        "IMAGEJXX_CONFIG_DIR": "<ATTEMPT>/imgui_cpp/preferences"
+      },
+      "visible": true
+    },
+    {
+      "context": "imgui_python",
+      "argv": [
+        "<ROOT>/build/p06c3-env-ui001/Scripts/python.exe",
+        "-I",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "imagejxx.ui",
+        "<PREP>/fixtures/eager-selection.ijx",
+        "<PREP>/fixtures/scientific-czt.ijx",
+        "<PREP>/fixtures/preview-latency.ijx"
+      ],
+      "environment": {
+        "IMAGEJXX_CONFIG_DIR": "<ATTEMPT>/imgui_python/preferences",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "visible": true
+    }
+  ],
+  "launch_policy": "Fresh per-context working/config directories contain any imgui.ini. No hidden/frames/smoke/headless/consumer flags. Resolve argv absolutely and preserve original user settings.",
+  "bounds": {
+    "contexts": 2,
+    "visible_product_processes_at_once": 1,
+    "product_launches_per_context": 2,
+    "neutral_helper_processes_at_once": 1,
+    "narrator_owned_processes_at_once": 1,
+    "per_context_seconds": 900,
+    "prepare_seconds": 120,
+    "parent_seconds": 1980,
+    "startup_seconds": 15,
+    "event_ack_seconds": 2,
+    "poll_interval_ms": 50,
+    "memory_sample_ms": 100,
+    "cleanup_seconds": 10,
+    "max_output_bytes": 268435456,
+    "max_single_json_bytes": 16777216,
+    "max_single_capture_bytes": 8388608,
+    "max_captures_per_context": 184,
+    "max_uia_elements": 2048,
+    "max_uia_depth": 16,
+    "max_event_rows_per_context": 20000,
+    "max_documents": 8,
+    "max_monitor_positions": 3,
+    "max_full_window_captures_per_context": 24,
+    "max_metric_crops_per_context": 160,
+    "maximum_metric_crop_wh": [
+      640,
+      512
+    ],
+    "max_observer_poll_frames_per_context": 2048
+  },
+  "workload": [
+    {
+      "id": "W01",
+      "checks": [
+        "WIN06.keyboard-and-focus",
+        "WIN07.live-graphics"
+      ],
+      "seconds": 90,
+      "fixtures": [
+        "F01",
+        "F02"
+      ],
+      "repetitions": 3,
+      "actions": [
+        "Launch visible using pinned argv. Await owned GLFW HWND; record PID/TID/creationtime/HWND/class/owner/rect/visibility/foreground and loaded modules.",
+        "Send actual Alt+Tab between product and one runner-owned neutral Win32 window,3roundtrips. Record actual focus changes and release injected modifiers.",
+        "Send Ctrl+O to focused product; record native Open dialog HWND/owner, then physical Escape. Observe Gaussian ImGui form separately; it is not an OS HWND modal.",
+        "Close clean product with Alt+F4 and await normal exit; reopen once with same owned preferences/literal inputs."
+      ],
+      "required_evidence": [
+        "QPC request/acknowledgment timestamps; tagged SendInput arrays/count/error and matching low-level injected events.",
+        "SetWinEventHook foreground/focus/show/hide/destroy plus GetGUIThreadInfo; exact owned-PID identity, not title matching alone.",
+        "Owned-window visible screenshots; native dialog GW_OWNER relation. Actual GL strings remain unobserved without G01."
+      ],
+      "completion": "Observed startup/focus/dialog/cancel/shutdown only. A visible window or loaded OpenGL DLL does not establish actual context/vendor/adapter."
+    },
+    {
+      "id": "W02",
+      "checks": [
+        "WIN06.keyboard-and-focus"
+      ],
+      "seconds": 180,
+      "fixtures": [
+        "F01",
+        "F02"
+      ],
+      "repetitions": 3,
+      "actions": [
+        "On F01 physically open Process > Filters > Gaussian blur (gaussian_blur); set sigma0.85, nearest border, preview-ready/cancel3times, then one actual Apply, Save Document and Undo.",
+        "In the real scalar field type raw partial \"-\", then \"1.25\". With field focus send Left/Right and Ctrl+Z; verify field edits cause no document navigation/pixel action. Escape closes form before canvas keys.",
+        "Create rectangle from image-cell(4,4) to(14,12) through OS press/move/release using the actually observed visible image transform, then physical File > Save document.",
+        "On F02 use physical T/C/Z fields through [[1,1,2],[1,2,2],[0,2,2],[0,2,3],[1,1,2]]; toggle XYZ; focus XY then Right, XZ then Up, YZ then Right (each keydown50ms/keyup); return to captured position through actual fields. Check linked view outcomes against the preserved qualified keyboard contract,not a new inferred key mapping."
+      ],
+      "required_evidence": [
+        "Pre/post captures/control crops plus raw input/focus ledger. Locate by root-approved visible rectangles or available UIA; no headless IDs or guessed geometry.",
+        "Physically saved nativeV3 checkpoints prove published pixels/calibration/selection; decode only closed files with pinned core. Save/Open does not persist undo/redo history or transient preview/camera focus. Actual Undo and enabled menu state are observed separately; exact live revisions/history need G02.",
+        "Native HWND focus does not prove ImGui InputText ownership. Require visible caret/text, UIA semantics if available, or G02."
+      ],
+      "completion": "No physical input credit from Editor.action/set_view/render_headless. Missing transform/widget/preview proof is observation-limited and requires G02, never reduced assertions."
+    },
+    {
+      "id": "W03",
+      "checks": [
+        "WIN08.monitor-and-dpi"
+      ],
+      "seconds": 120,
+      "fixtures": [
+        "F02"
+      ],
+      "repetitions": 2,
+      "actions": [
+        "Observe actual monitors/work areas and target/runner DPI awareness. Move/resize same owned window toward centered1280x820 logical size on each available monitor and back,twice; explicitly clamp to that workarea minus16physical-pixel margins and record requested/actual sizes.",
+        "At each position record window/client physical rectangles/DPI, then click same visible menu and a64x48 fixture landmark derived from that capture."
+      ],
+      "required_evidence": [
+        "EnumDisplayMonitors/GetMonitorInfoW, target/runner GetWindowDpiAwarenessContext/GetAwarenessFromDpiAwarenessContext, GetDpiForWindow, physical captures.",
+        "A96DPI return from an unaware window is not evidence of96physical-monitor DPI. Do not change machine scale or infer monitors from adapter inventory."
+      ],
+      "completion": "Only observed monitor/DPI combinations. Mixed-DPI stays open if unavailable; clipping, unreadability and hit-target drift are defects."
+    },
+    {
+      "id": "W04",
+      "checks": [
+        "WIN09.accessibility"
+      ],
+      "seconds": 180,
+      "fixtures": [
+        "F01"
+      ],
+      "repetitions": 1,
+      "actions": [
+        "Windows PowerShell UIAutomationClient/UIAutomationTypes inspects owned HWND raw/control trees in4states: menu, focused Gaussian scalar, image canvas, native Open dialog.",
+        "Record per-element name/type/automationID/HWND/value/patterns/bounds/enabled/offscreen/focus. Separately attempt Narrator keyboard traversal in those4states; record actual utterances and inputs."
+      ],
+      "required_evidence": [
+        "A generic GLFW pane or missing child semantic tree is an actual unsupported capability, not accessibility success.",
+        "Narrator needs exact operator-heard transcript/observer identity or explicit unobserved result. UIA does not prove speech. Do not control a pre-existing user Narrator instance."
+      ],
+      "completion": "Observed semantic/focus/announcement evidence per state; negative feasibility remains an open capability. No cross-machine accessibility claim."
+    },
+    {
+      "id": "W05",
+      "checks": [
+        "WIN10.clipboard-dialog-print"
+      ],
+      "seconds": 180,
+      "fixtures": [
+        "F01"
+      ],
+      "repetitions": 1,
+      "actions": [
+        "Physically Select All(Ctrl+A) then Copy(Ctrl+C) on F01 activeXY; observe clipboardsequence and CF_DIB in runner-owned neutral helper. Publish literal8x6RGB DIB from helper,actual Edit > Paste as new image,Save Document and inspect exact pixels.",
+        "Ctrl+O opens copied fixture through native Open; physical Save Document to ownedUnicode path, then native dialog reopen.",
+        "File > Print opens native PrintDlgW. Select only Microsoft Print to PDF if available and save in owned stage. If that exact printer is unavailable,cancel; never select a physical printer."
+      ],
+      "required_evidence": [
+        "CF_DIB header/stride/orientation/pixels parsed independently; raw clipboardsequence/openowner linked to physical action.",
+        "Actual file dialog HWND/class/owner, typedUnicode paths and output byte identities. Direct Editor open/save API is not evidence.",
+        "Actual printer selection/dialog events/PDF hash/page extent and rendered owned-content comparison. App PDF export is not Windows print."
+      ],
+      "completion": "Clipboard/native dialogs/printing have independent evidence. Unavailable printer/command remains open. No pre-existing clipboard payload is read or persisted."
+    },
+    {
+      "id": "W06",
+      "checks": [
+        "WIN11.performance-and-memory",
+        "WIN12.loaded-runtime-and-compiler"
+      ],
+      "seconds": 120,
+      "fixtures": [
+        "F02",
+        "F03"
+      ],
+      "repetitions": 10,
+      "actions": [
+        "One unmeasured warmup;10fixed F02navigationcycles(the5W02positions),10F03 sigma0.85/nearest preview-ready/cancelcycles,then3actual Apply/Undo pairs. Keep history-retaining Apply phase separate from cancel-only memory.",
+        "Sample exact owned PID WorkingSet/PrivateUsage every100ms from first ready to exit. Enumerate actual loaded module paths/version/hash at first ready and after cycles.",
+        "Record attributable GPU Process Memory PID/LUID counters if available; otherwise retain missing-attribution outcome."
+      ],
+      "required_evidence": [
+        "QPC input-ack to first observed stable visual state;20Hz capture around events,report50ms resolution/occlusion limits. Not CPU API timing.",
+        "PSAPI PROCESS_MEMORY_COUNTERS_EX WorkingSetSize/PeakWorkingSetSize/PrivateUsage and sampled PrivateUsage peak. SystemfreeRAM/estimatedarrays are not process usage.",
+        "Raw GPUProcessMemory counter instancePID/LUID linkage only; no whole-cardVRAM or runner-process DXGI result attributed to product.",
+        "Toolhelp/PSAPI resolved modules/version/hash are observed runtime facts; historic compiler invocation remains separately sourced."
+      ],
+      "completion": "Individual samples and median/nearest-rankp95/max by launch. Missing endpoint/counter remains missing; no algorithm/volume benchmark claim."
+    }
+  ],
+  "clipboard_literal": {
+    "shape_yxs": [
+      6,
+      8,
+      3
+    ],
+    "dtype": "uint8",
+    "recipe_rgb": [
+      "30*x",
+      "20*y",
+      "x+y"
+    ],
+    "transport": "BITMAPINFOHEADER40,biWidth8,biHeight6(bottom-up),planes1,bitCount24,BI_RGB0,stride24,RGB-observation/BGR-storage;144pixelbytes",
+    "independent_helper": "No product imports. The helper writes literal CF_DIB and reads owned returned CF_DIB; it is a separate owned process,not another user app.",
+    "unicode_roundtrip_basename": "owned-\u00b5-\u65e5\u672c.ijx",
+    "rgb_bytes_sha256": "cef9464164d4b8a272103b4a0f27b26cac276302e3a0ec0e1e4e5edbec9ed8dc",
+    "copy_direction_policy": "F01 Copy crosses rendered8-bit display/CF_DIB,not rawU16. Compare returned DIB to the observed physically exported display under the same source/view and reuse qualified rendering semantics separately. Helper-to-editor Paste independently requires exact literal RGB bytes above. Preserve F01 source bits."
+  },
+  "metric_contract": {
+    "ratification": "Root approval ratifies these first-workload feasibility budgets only,not universal release budgets. Missing endpoints are not zero latency.",
+    "samples": "1warmup,10navigation/preview cycles,3Apply/Undo pairs percontext; keep every sample,median,nearest-rankp95,max; no poolinglaunches.",
+    "definitions": {
+      "startup": "CreateProcess/Popen completion to first visible owned foreground nonblank/stable client capture.",
+      "navigation": "Tagged injected-event acknowledgment to capture showing requested control/image state at20Hz; report50ms granularity.",
+      "preview": "Last actual parameter/Preview event ack to first visible READY preview; busy=false alone does not prove source attribution.",
+      "apply": "Actual Apply ack to committed picture/state linked to physical Save Document or G02.",
+      "shutdown": "Alt+F4/accepted close-confirm ack to terminal process exit."
+    },
+    "budgets": {
+      "startup_max_ms": 10000,
+      "navigation_p95_ms": 250,
+      "preview_max_ms": 5000,
+      "apply_max_ms": 5000,
+      "shutdown_max_ms": 5000,
+      "working_set_peak_bytes": 2147483648,
+      "private_usage_peak_bytes": 2147483648,
+      "cancel_only_idle_private_growth_bytes": 67108864
+    },
+    "memory_baseline": "Median10samples in1s at initial ready after warmup; cancel-only delta uses median10samples after10thcancel+1ssettle. Apply/undo/history phase separate. Name native PeakWorkingSet and sampled peaks separately.",
+    "gpu": "No threshold without attributable counters. Observed values or missing capability only."
+  },
+  "win32_protocol": {
+    "input": "SendInput with correct pointer-width INPUT layouts/sizeof,scan codes or KEYEVENTF_UNICODE,taggeddwExtraInfo,absolute virtual-desktop mouse coordinates including negative monitor origin. Record request/count/error/QPC and matching WH_KEYBOARD_LL/WH_MOUSE_LL injected events. No PostMessage keyboard/mouse or ImGui input API.",
+    "foreground": "Exact launched PID+creationtime/HWND; verify GetForegroundWindow before every input and stop subcheck on mismatch. SetForegroundWindow failure is a finding; no blind input to user windows.",
+    "focus_observer": "SetWinEventHook out-of-context plus GetGUIThreadInfo active/focus/capture/menu HWNDs,with messagepump and errors. These are OS facts,not internal ImGui focus.",
+    "capture": "GDI BitBlt/GetDIBits of owned visible foreground rectangle;recordQPC/rect/DPI/occlusion/SHA. No full-desktop or foreign-window capture. Black PrintWindow OpenGL image is not a visible screenshot.",
+    "clipboard": "Only owned testpayload via independent CF_DIB helper; do not inspect/serialize original clipboard. Sequence-number ownership prevents clearing a later user change.",
+    "dialogs": "Enumerate only product/native-modal PID,HWndclass,GW_OWNER and bounded UIA when supported. ImGui forms are not nativeHWNDdialogs.",
+    "uia": "WindowsPowerShell5.1 loads UIAutomationClient/UIAutomationTypes and AutomationElement.FromHandle; bounded raw/control trees. No thirdparty install or UIAInvoke substitute for physical SendInput.",
+    "dpi": "Record target/runner awareness and actual monitor/window rectangles/DPI. No scaling changes or adapter-mode inference.",
+    "memory": "PSAPI PROCESS_MEMORY_COUNTERS_EX,exact PID+creationtime,PSAPI/Toolhelp modulepaths,QPC. Missingpermission/API is explicit failure.",
+    "gpu": "Actual per-PID/LUID GPUProcessMemory counters if available. External DXGI QueryVideoMemoryInfo reports calling-process scope and cannot prove target usage."
+  },
+  "execution_order": [
+    "root reviews/ratifies exact contract",
+    "execute bounded literal fixture first command once",
+    "assign/freeze one external Win32 observer driver and neutral helper against this contract; no second inventory",
+    "imgui_cpp W01-W06 sequentially, then imgui_python identical inputs/order",
+    "independently review exact observed/defect/unsupported/observation-limited subchecks and outputs",
+    "only root may adopt genuine platform/benchmark evidence; no automatic promotion"
+  ],
+  "driver_prerequisite": {
+    "state": "missing_execution_code_not_another_inventory",
+    "owned_next_file_proposal": "scripts/capture_windows_platform_workload.py",
+    "scope": "One stdlib ctypes Win32 observer + runner-owned neutral helper process; reuse existing bounded process-supervision patterns,not a general UI framework. Root must assign new file before implementation. No product math/UIA bridge/DLL injection.",
+    "inputs": "This exact contract hash and prepared fixture receipt. Freeze driver source/hash and exact raw schema before actual OS execution.",
+    "planned_cli": "build/p06c3-env-ui001/Scripts/python.exe -I -X utf8 -B scripts/capture_windows_platform_workload.py --contract <ABSOLUTE_CONTRACT> --prepared <ABSOLUTE_PREPARATION_JSON> --output <ROOT>/build/windows-workload-001/visible-001",
+    "planned_cli_is_executable_now": false,
+    "existing_tool_decision": "benchmark_desktop.py measures targeted native APIs without rendering; run_cpp_ui.ps1 may build and targets a mutable cache. Neither can supply OS events/focus/DPI/UIA/process observations. No suitable runner was found in scripts."
+  },
+  "raw_outputs": {
+    "root": "build/windows-workload-001/visible-001(fresh)",
+    "members": [
+      "run.started.json",
+      "run.final.json or run.failed.json",
+      "<context>/command.json",
+      "<context>/events.jsonl",
+      "<context>/window-snapshots.jsonl",
+      "<context>/memory.jsonl",
+      "<context>/modules.json",
+      "<context>/monitor-dpi.json",
+      "<context>/uia/*.json",
+      "<context>/narrator.json",
+      "<context>/metrics.json",
+      "<context>/captures/*.png",
+      "<context>/saved/*.ijx",
+      "<context>/clipboard/*.dib",
+      "<context>/print/*.pdf",
+      "<context>/stdout.log",
+      "<context>/stderr.log",
+      "cleanup.json",
+      "index.json"
+    ],
+    "index": "Exact context/W01-W06/subcheck membership,status observed/defect/unsupported/observation-limited,paths/bytes/SHA. No producer PASS/expectedRGB. Adoption is independent.",
+    "durability": "Start/exactargv/environment/pins before spawn;append actual events;final or failed receipt retains originals. Parentwallclock/storage/depth caps failclosed. Never overwrite failed attempts.",
+    "capture_policy": "Capture owned window at selected checkpoints and ROI-only metric crops around events. Keep pre-response and first-response evidence; append timestamps/hashes/classification for intermediate observer polls. Freeze visible endpoint classifier before execution; if correct-state timing cannot be independently established,report response timing only or observation-limited,no fabricated correctness/latency pass."
+  },
+  "lifecycle_and_cleanup": {
+    "ownership": "Record PID+creationtime/processhandle for every product/helper/newNarrator and original foreground. No process-name termination or controlling a pre-existing user editor/Narrator.",
+    "normal": "Release injected keys/buttons,cancel owned dialogs/jobs,use actual Cancel/Discard if dirty,Alt+F4,bounded wait;confirm process exit. No taskkill/name sweep.",
+    "timeout": "After10snormalcleanup,terminate only exact recorded owned product/helper or its kill-on-close Job;capture reason/exitcode and fail subcheck. Stop further input immediately on ownership/foreground loss.",
+    "job": "Prefer CreateProcess suspended,assign runner-owned JobObject then resume;or equivalent no-race ownership. Parent-job restrictions/assignment failure are explicit;no invented containment.",
+    "clipboard": "Set owned marker without reading original payload. Clear only if clipboardsequence still matches last runner write;preserve later user changes.",
+    "filesystem": "Preserve fixtures/rawcaptures/saved artifacts/terminal logs/failures/products. Delete only named owned scratch with no process/evidence consumer. No build/cache/source deletion."
+  },
+  "observation_limits_and_source_needs": [
+    {
+      "id": "G01.actual-gl-context",
+      "state": "not_exposed_by_preserved_products",
+      "source": "qualified src/desktop/window.cpp:8683-8830;after glfwMakeContextCurrent at8705",
+      "needed": "Separately authorize read-only owning-render-thread export of glGetString vendor/renderer/version/GLSL,GLFW negotiated attributes,native HWND,content scale/framebuffer. Route optional report through RunOptions/window.hpp,main.cpp and python.cpp symmetrically. No input injection/renderer change. Any changed product needs matching qualification.",
+      "first_workload": "Mark GL context/activeadapter unobserved for immutableMin;loadedopengl32/windowpixels cannot prove them. Other external OS checks proceed."
+    },
+    {
+      "id": "G02.visible-native-widget-state",
+      "state": "no_public_live_owning_thread_channel",
+      "source": "qualified src/desktop/window.hpp Window::run;src/desktop/python.cpp:467-475;src/imagejxx/ui/app.py:279",
+      "needed": "If visible/UIA and physical Save Document cannot prove an exact required field/transform/job/preview/revision,add narrow owning-render-thread read-only frame observations in a separately authorized product change. Actual OS events remain the input source. No headless probe or cross-thread Editor calls.",
+      "first_workload": "Use visible captures and actual saved files. Mark unverifiable internal claims observation-limited;do not infer history/revisions from persisted sessions."
+    },
+    {
+      "id": "G03.glfw-accessibility",
+      "state": "must_observe_first",
+      "source": "qualified GLFW/OpenGL Window::run;headless cases have no UIA/Narrator qualification",
+      "needed": "A missing semantic UIA tree or Narrator announcements is a real product gap. Record exact perstate result before designing a bridge. This preparation neither implements nor invents a provider."
+    }
+  ],
+  "local_tool_observations": {
+    "effects": "Read file/archive bytes;stdlib ctypes checked named systemDLL exports only. No OS input,product import,window,GLcontext,capture,benchmark or product execution in this task.",
+    "available_exports": {
+      "user32": [
+        "SendInput",
+        "SetWinEventHook",
+        "GetGUIThreadInfo",
+        "GetWindowThreadProcessId",
+        "GetDpiForWindow",
+        "GetWindowDpiAwarenessContext",
+        "EnumDisplayMonitors",
+        "GetMonitorInfoW",
+        "SetWindowPos",
+        "GetClipboardSequenceNumber",
+        "OpenClipboard",
+        "GetClipboardData",
+        "GetForegroundWindow",
+        "GetWindowRect",
+        "GetClientRect",
+        "PostMessageW",
+        "SetWindowsHookExW",
+        "CallNextHookEx",
+        "UnhookWindowsHookEx",
+        "GetAsyncKeyState",
+        "GetAwarenessFromDpiAwarenessContext",
+        "CloseClipboard",
+        "EmptyClipboard",
+        "SetClipboardData"
+      ],
+      "kernel32": [
+        "CreateJobObjectW",
+        "AssignProcessToJobObject",
+        "QueryPerformanceCounter",
+        "QueryPerformanceFrequency",
+        "CreateToolhelp32Snapshot"
+      ],
+      "psapi": [
+        "GetProcessMemoryInfo",
+        "EnumProcessModulesEx",
+        "GetModuleFileNameExW"
+      ],
+      "gdi32": [
+        "BitBlt",
+        "GetDIBits"
+      ],
+      "shcore": [
+        "GetDpiForMonitor"
+      ]
+    },
+    "present_paths": [
+      "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/WPF/UIAutomationClient.dll",
+      "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/WPF/UIAutomationTypes.dll",
+      "C:/Windows/System32/narrator.exe"
+    ],
+    "limits": "Export/file presence is not permission,functioning delivery,loadedproductmodule,UIA/Narrator result,effectiveDPI or graphics proof."
+  },
+  "technical_sources": [
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendinput",
+      "supports": "OSinput stream,returnedcount,UIPI/key-state limitations."
+    },
+    {
+      "url": "https://learn.microsoft.com/windows/win32/api/winuser/ns-winuser-guithreadinfo",
+      "supports": "NativeHWND active/focus/capture/menu facts,not ImGui semantic focus."
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getdpiforwindow",
+      "supports": "DPI depends on target awareness;96 may mean unaware."
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-getprocessmemoryinfo",
+      "supports": "Per-process PSAPI memory/access requirements."
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/dxgi1_4/nf-dxgi1_4-idxgiadapter3-queryvideomemoryinfo",
+      "supports": "Current-calling-process scope is not external product PID attribution."
+    }
+  ],
+  "next_root_action": "Review/ratify frozen workload+limits;execute fixture_preparation.first_command_powershell once. Assign the one missing external OS driver against this exact contract;run independently observable startup/focus/dialog/DPI/UIA/process subset using preservedMin without waiting forG01/G02. No second inventory,product rebuild or automatic manifest promotion."
+}

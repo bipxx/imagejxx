@@ -1,0 +1,105 @@
+{
+  "state": "reviewed_and_qualified",
+  "scope": "P08q bounded BigTIFF container implementation; no whole ImageJ/Fiji, format-family or release certification",
+  "qualification": {
+    "path": "build/p08q-bigtiff001/qualification001.json",
+    "bytes": 6891,
+    "sha256": "edc737f00a0e96cd4bd64c57878b86231cfeecb198341bd0325a46a32e38f4eb"
+  },
+  "implementation_review": [
+    "Reader distinguishes 42/43 directory widths and inline capacities; unsigned LONG8 block tables use checked native offsets/counts with existing overlap, homogeneity and resource admission.",
+    "Writer keeps classic serialization/defaults and all 48 profile ordinals. BigTIFF uses eight-byte-aligned canonical structures/blocks, inline RGB/RATIONALs and width-correct compressed-field patches; frozen bounds include padding.",
+    "A separate public container enum/property serves C++ and Python. Both ImGui hosts share actual container controls, renewed estimate/consent rules and strict explicit v15 records; v1..v14 keep their rules.",
+    "Both-endian sparse fixtures exercise offsets above 4 GiB without archiving logical holes. The complete existing case inventory remains; inspection pixel locks, malformed carriers, atomic destination/cancellation checks and SDK isolation are covered.",
+    "The original Linux source qualifier used a mistaken expected cardinality after the full tests completed. Its failed receipt is retained; a separate correction verifies all 18841 JUnit IDs, exact ten platform exemptions, unchanged frozen inputs/native modules and a fresh origin/IEEE smoke check without rerunning or altering tests."
+  ],
+  "validation": {
+    "native_suites": {
+      "windows": 87,
+      "linux": 238
+    },
+    "previous_python_ids_retained": 16678,
+    "new_python_cases": 2163,
+    "profile_ordinals": 48,
+    "container_profile_pairs": 96,
+    "new_record_version": 15,
+    "independent_libtiff_exports": 3504,
+    "classic_exports_byte_identical_to_previous_installed": 1728,
+    "new_generic_ui_observations": 768,
+    "new_generic_xyz_readbacks": 2304,
+    "new_ieee_recovery_ui_observations": 16,
+    "new_ieee_xyz_readbacks": 24
+  },
+  "python": [
+    {
+      "stage": "windows-python-full002",
+      "cases": 18841,
+      "passed": 18841,
+      "windows_only_exemptions": 0,
+      "xml": {
+        "path": "build/p08q-bigtiff001/windows-python-full002/pytest.xml",
+        "bytes": 2948311,
+        "sha256": "8ac3702aee3707acdf1b992f2db0220eb5ed38ea99acf42f46f796d5b943ea01"
+      }
+    },
+    {
+      "stage": "windows-python-installed002",
+      "cases": 18841,
+      "passed": 18841,
+      "windows_only_exemptions": 0,
+      "xml": {
+        "path": "build/p08q-bigtiff001/windows-python-installed002/pytest.xml",
+        "bytes": 2948311,
+        "sha256": "52e166719b2002dbdff2d5dfbc1d9f2d3f2f797a7f358e819e6dc17d0758c20d"
+      }
+    },
+    {
+      "stage": "linux-python-source001",
+      "cases": 18841,
+      "passed": 18831,
+      "windows_only_exemptions": 10,
+      "xml": {
+        "path": "build/p08q-bigtiff001/linux-python-source001/pytest.xml",
+        "bytes": 2950693,
+        "sha256": "c2a83b57a0c04a74fad678eb69d17dacf9f96234cb5aa4a53b2a77d51456d7cf"
+      }
+    },
+    {
+      "stage": "linux-python-installed001",
+      "cases": 18841,
+      "passed": 18831,
+      "windows_only_exemptions": 10,
+      "xml": {
+        "path": "build/p08q-bigtiff001/linux-python-installed001/pytest.xml",
+        "bytes": 2950692,
+        "sha256": "f450454e17aac97e5cdd2bbb0644686a6bc517e1d43c9bbb7656b35beba61828"
+      }
+    }
+  ],
+  "commercial": {
+    "new_external_dependencies": false,
+    "new_noncommercial_plugins": false,
+    "dependency_policy": "licenses/io-dependencies.json"
+  },
+  "limits": [
+    "64-bit Windows/Linux qualification; default input/output limits remain 512/128 MiB; container choice does not imply arbitrary out-of-core dataset processing.",
+    "All 96 registered container/profile variants remain partial; formal reciprocal fixture/accepted-run links and family/release certification remain pending."
+  ],
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  },
+  "supplemental_registry_checks": {
+    "audit": {
+      "path": "build/p08q-bigtiff001/parity-check003/baseline-audit001.json",
+      "bytes": 2046,
+      "sha256": "28928716fae1d9b31300ea38e2ae09d6db65627c2e0ac3fa65be8855e7dfd9b7"
+    },
+    "cases": 617,
+    "passed": 615,
+    "preexisting_failures": 2,
+    "full_registry_gate_passed": false,
+    "diagnostic": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed"
+  }
+}

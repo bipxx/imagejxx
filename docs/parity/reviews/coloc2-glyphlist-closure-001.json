@@ -1,0 +1,279 @@
+{
+  "schema": "imagejxx.coloc2-resource-commercial-review",
+  "schema_version": 1,
+  "id": "coloc2-glyphlist-closure-001",
+  "state": "held_resource_edge_source_and_grant_bound",
+  "recorded_at_utc": "2026-10-16T06:10:05.739381+00:00",
+  "scope": "Only the exact iText5.5.13.4 embedded glyphlist resource edge named by the held Coloc2 report. No other resource, dependency, component or product is cleared.",
+  "candidate_id": "R-7a864ddce4217b0c98d20c66",
+  "root_component_id": "fiji:plugins/Colocalisation_Analysis-3.1.0.jar",
+  "dependency_component_id": "fiji:jars/itextpdf-5.5.13.4.jar",
+  "consumed_held_report": {
+    "path": "docs/parity/reviews/coloc2-commercial-closure-001.json",
+    "bytes": 163685,
+    "sha256": "054446ce316e4e52621ca814dff68c4ddbf68902b6c02f1cc51fb4f1773bece8",
+    "modified": false
+  },
+  "local_binary_identity": {
+    "archive": "build/references/downloads/fiji-latest-20261007-1617-win64-jdk.zip",
+    "archive_sha256": "8e33a11c7e79eb02c055bcee40de806d16e59f0b42e58c4689bd23eb47d990bb",
+    "archive_hash_basis": "reused pinned identity from held report; whole archive not rehashed this task",
+    "member": "Fiji/jars/itextpdf-5.5.13.4.jar",
+    "bytes": 2334415,
+    "sha256": "6504ed81b34d1b4913d6cf16964b131cd8b10f54fc6c18390bb6dc5f64ea5079",
+    "resource": {
+      "member": "com/itextpdf/text/pdf/fonts/glyphlist.txt",
+      "bytes": 95794,
+      "sha256": "b309c7c528447925beb95aed87c7658f45b5cdf506b8e4e10a6abfe0b3e2be08"
+    }
+  },
+  "primary_document_budget": {
+    "maximum_new_documents": 6,
+    "consumed_unique_documents": 6,
+    "remaining": 0,
+    "stop_rule": "No further network research or graph expansion in this report"
+  },
+  "primary_documents": [
+    {
+      "id": "D01",
+      "url": "https://repo.maven.apache.org/maven2/com/itextpdf/itextpdf/5.5.13.4/itextpdf-5.5.13.4-sources.jar",
+      "bytes": 2350837,
+      "sha256": "2844df41d9b391af8e6fcaa380e77fa661abdbf1def7207955271315c2f4b933",
+      "access": "read-only in memory; no downloaded asset or extracted member saved"
+    },
+    {
+      "id": "D02",
+      "url": "https://raw.githubusercontent.com/adobe-type-tools/agl-aglfn/master/glyphlist.txt",
+      "bytes": 78060,
+      "sha256": "a3b2f61ced9f3644cc0d4ecde5c59df34ca286c689d9484a43a710a81c466789",
+      "access": "read-only in memory; no downloaded asset or extracted member saved"
+    },
+    {
+      "id": "D03",
+      "url": "https://raw.githubusercontent.com/adobe-type-tools/agl-aglfn/master/LICENSE.md",
+      "bytes": 1404,
+      "sha256": "58147d341e7a34aa2196862395a34d2fd95716c41d5ed26efb59ab0e12f92089",
+      "access": "read-only in memory; no downloaded asset or extracted member saved"
+    },
+    {
+      "id": "D04",
+      "url": "https://api.github.com/repos/adobe-type-tools/agl-aglfn/git/ref/heads/master",
+      "bytes": 363,
+      "sha256": "6c799246b6aa15454aebc76f3bf264617a56cf880f02af1959813c092158a27f",
+      "access": "read-only in memory; no downloaded asset or extracted member saved"
+    },
+    {
+      "id": "D05",
+      "url": "https://raw.githubusercontent.com/adobe-type-tools/agl-aglfn/4036a9ca80a62f64f9de4f7321a9a045ad0ecfd6/glyphlist.txt",
+      "bytes": 78060,
+      "sha256": "a3b2f61ced9f3644cc0d4ecde5c59df34ca286c689d9484a43a710a81c466789",
+      "access": "read-only in memory; no downloaded asset or extracted member saved"
+    },
+    {
+      "id": "D06",
+      "url": "https://raw.githubusercontent.com/adobe-type-tools/agl-aglfn/4036a9ca80a62f64f9de4f7321a9a045ad0ecfd6/LICENSE.md",
+      "bytes": 1404,
+      "sha256": "58147d341e7a34aa2196862395a34d2fd95716c41d5ed26efb59ab0e12f92089",
+      "access": "read-only in memory; no downloaded asset or extracted member saved"
+    }
+  ],
+  "version_binding": {
+    "official_source_artifact": "D01",
+    "coordinates": "com.itextpdf:itextpdf:5.5.13.4:sources",
+    "source_resource": {
+      "member": "com/itextpdf/text/pdf/fonts/glyphlist.txt",
+      "bytes": 95794,
+      "sha256": "b309c7c528447925beb95aed87c7658f45b5cdf506b8e4e10a6abfe0b3e2be08"
+    },
+    "resource_binary_source_exact_equal": true,
+    "source_and_binary_pom_exact_equal": true,
+    "pom": {
+      "member": "META-INF/maven/com.itextpdf/itextpdf/pom.xml",
+      "bytes": 11446,
+      "sha256": "ed3fcf26ad90adbb8805cc20607597b6d1ed478aee23788d4197fa0c2d1a8f62"
+    },
+    "pom_properties": {
+      "member": "META-INF/maven/com.itextpdf/itextpdf/pom.properties",
+      "bytes": 89,
+      "sha256": "0078615a40a091621d027e92b601e7c3a5ff2359781aa2de27a2f2fe8963620b"
+    },
+    "pom_properties_version": "5.5.13.4",
+    "source_and_binary_license_exact_equal": true,
+    "source_and_binary_notice_exact_equal": true,
+    "program_license": {
+      "member": "com/itextpdf/text/LICENSE.txt",
+      "bytes": 1918,
+      "sha256": "abf00687d6482774348535c0b24f758bc6ca8d2ff6660d349b06a8f28f1ab41f"
+    },
+    "program_notice": {
+      "member": "com/itextpdf/text/NOTICE.txt",
+      "bytes": 23283,
+      "sha256": "8645f60d9d59743d6b4b8763f5c2eeaf3503120fb2d39a1a6bfd4cf90504cb5c"
+    },
+    "source_identity_limit": "Maven release source artifact is byte-pinned and exact-resource/POM bound. This task does not establish a reproducible Java build or a separate git commit for iText."
+  },
+  "adobe_source": {
+    "repository": "https://github.com/adobe-type-tools/agl-aglfn",
+    "commit": "4036a9ca80a62f64f9de4f7321a9a045ad0ecfd6",
+    "ref_resolution_document": "D04",
+    "immutable_glyph_document": "D05",
+    "immutable_license_document": "D06",
+    "mutable_documents_match_pinned_bytes": true,
+    "table_name": "Adobe Glyph List",
+    "table_version": "2.0",
+    "table_date": "2002-09-20",
+    "copyright": "2002-2019 Adobe",
+    "grant_identity": "BSD-3-Clause-style Adobe terms in glyphlist header and repository LICENSE.md",
+    "grant_scope": "The official Adobe data at the pinned commit; not an assumption that AFM permission covers glyphlist."
+  },
+  "content_comparison": {
+    "method": "Decode UTF-8, split lines, discard blank/comment lines, preserve remaining exact mapping text and order. Compare ordered lists, counters and sets separately; no table is saved or incorporated.",
+    "shipped_lines": 5430,
+    "shipped_mapping_rows": 5320,
+    "shipped_unique_rows": 4284,
+    "adobe_mapping_rows": 4281,
+    "adobe_unique_rows": 4281,
+    "ordered_mapping_lists_equal": false,
+    "all_adobe_mapping_rows_present": true,
+    "adobe_rows_missing_from_shipped": [],
+    "shipped_only_rows": [
+      {
+        "mapping": "Delta;0394",
+        "line_numbers": [
+          4437
+        ]
+      },
+      {
+        "mapping": "Omega;03A9",
+        "line_numbers": [
+          4555
+        ]
+      },
+      {
+        "mapping": "mu;03BC",
+        "line_numbers": [
+          5203
+        ]
+      }
+    ],
+    "duplicate_occurrences_beyond_unique_rows": 1036,
+    "maximum_row_multiplicity": 2,
+    "normalized_shipped_sequence_sha256": "79be930a6006499b096933f996d23cc8f8c10189efafc9138a08b4df5c282b3d",
+    "normalized_adobe_sequence_sha256": "0d146227f9cca30bb3a388785a069ae23d111de8dbf6b479f32d1e866530133c",
+    "interpretation": "The shipped/source iText file is a modified distribution containing the entire official Adobe mapping set, three additional aliases and repeated rows. It is not the original Adobe file and must not be labelled entirely unmodified Adobe BSD data. No inference of the three aliases individual authorship or copyrightability is made."
+  },
+  "grant_analysis": [
+    {
+      "id": "G01",
+      "subject": "Official Adobe mapping data",
+      "primary_documents": [
+        "D05",
+        "D06"
+      ],
+      "finding": "Adobe permits source and binary redistribution, including changes. Commercial use is not excluded. Retain copyright, conditions and disclaimer in source; reproduce them in binary accompanying materials; do not imply Adobe endorsement without permission.",
+      "license_scope": "4281 upstream mapping rows and their permitted derivatives; keep Adobe provenance and notices.",
+      "nc_or_research_only_restriction_found": false
+    },
+    {
+      "id": "G02",
+      "subject": "Exact modified iText release resource",
+      "primary_documents": [
+        "D01"
+      ],
+      "member_evidence": [
+        "com/itextpdf/text/LICENSE.txt",
+        "com/itextpdf/text/NOTICE.txt",
+        "META-INF/maven/com.itextpdf/itextpdf/pom.xml",
+        "META-INF/maven/com.itextpdf/itextpdf/pom.properties",
+        "com/itextpdf/text/pdf/fonts/glyphlist.txt"
+      ],
+      "finding": "The exact resource ships in the official5.5.13.4 source program under its project AGPLv3 grant, with iText additional terms. This provides a copyleft distribution route for the modified program resource; it does not establish standalone BSD licensing for the three added aliases.",
+      "interpretation_basis": "The matching release POM declares AGPLv3 and its program LICENSE grants redistribution/modification of this program. The resource itself has no separate grant header. This is an explicit release-level scope interpretation, not per-alias authorship proof.",
+      "route_limit": "Use the identified AGPL-covered route with Adobe notices, or separately establish an intended alternative; no commercial-license purchase or proprietary-use permission is assumed."
+    },
+    {
+      "id": "G03",
+      "subject": "Existing notice separation",
+      "primary_documents": [
+        "D01"
+      ],
+      "finding": "The glyph file names Adobe Glyph List2.0 but carries no embedded redistribution grant. iText NOTICE identifies its Adobe XMP section as applying to package com.itextpdf.xmp; it is not used as the AGL grant. AFM mustRead.html is not used as glyphlist permission.",
+      "requirement": "If incorporating these bytes, associate the actual Adobe AGL copyright/conditions/disclaimer explicitly; preserving an unrelated AFM/XMP notice is insufficient."
+    }
+  ],
+  "edge_conclusion": {
+    "decision": "commercially_usable_with_obligations_for_this_resource_edge_only",
+    "confidence_scope": "Exact release resource/source identity and Adobe grant association are established. The modified release resource route consumes iText release-level AGPL terms.",
+    "not_noncommercial": true,
+    "exact_modified_file_standalone_bsd_clearance": false,
+    "agpl_covered_release_route_identified": true,
+    "incorporation_authorized": false,
+    "whole_itext_eligibility": "pending",
+    "whole_coloc2_eligibility": "pending",
+    "manifest_patch": null,
+    "approval_limit": "Supporting reviewed evidence only. Root may consume this exact edge without treating it as a component-level approval. No source, data file, font asset or implementation was copied into product."
+  },
+  "obligations_if_later_incorporated": [
+    {
+      "id": "O01",
+      "required": "Retain/reproduce the pinned Adobe AGL copyright, conditions and disclaimer in the distribution route appropriate to source versus binary; identify modified provenance.",
+      "evidence": [
+        "D05",
+        "D06"
+      ]
+    },
+    {
+      "id": "O02",
+      "required": "Do not use Adobe/contributor names as endorsement without permission.",
+      "evidence": [
+        "D05",
+        "D06"
+      ]
+    },
+    {
+      "id": "O03",
+      "required": "For the exact modified iText program/resource route, satisfy AGPLv3 and the pinned iText release notices/additional terms, including appropriate legal notices and any applicable PDF producer retention. Bind the selected incorporation/link/distribution route before product use.",
+      "evidence": [
+        "D01",
+        "com/itextpdf/text/LICENSE.txt",
+        "com/itextpdf/text/NOTICE.txt"
+      ]
+    },
+    {
+      "id": "O04",
+      "required": "Do not relabel the full modified file as unmodified Adobe data or strip the release-level copyleft scope on the basis of the common mapping rows. A newly authored/reconstructed alternative would require its own explicit review and is not proposed here.",
+      "evidence": [
+        "D01",
+        "D05",
+        "D06"
+      ]
+    }
+  ],
+  "remaining_outside_this_edge": [
+    "Other iText source/code/resource notices and the14AFM/readme association remain as listed by the immutable prior report; no automatic closure is claimed.",
+    "UDUNITS4.3.18 source/grant and remaining dependency/resource ledgers remain pending; no graph rescan or new dependency review occurred.",
+    "The final Coloc2/component decision and intended product incorporation obligations remain root-owned pending work. This report supplies no manifest update."
+  ],
+  "next_concrete_work": "Consume this glyphlist edge and its obligations in the existing iText5.5.13.4 resource ledger; close the remaining version-specific resource/NOTICE associations before any whole-iText decision. The original report remains immutable pending evidence.",
+  "checks": {
+    "strict_finite_json": true,
+    "unique_object_keys": true,
+    "source_binary_resource_and_pom_equality": true,
+    "source_binary_license_notice_equality": true,
+    "adobe_ref_and_pinned_document_hashes": true,
+    "mapping_set_counter_and_order_comparison": true,
+    "exact_six_document_budget": true,
+    "prior_report_hash_unchanged": true,
+    "new_owned_file_only": true,
+    "runtime_or_build_executed": false,
+    "downloaded_or_extracted_assets_saved": false,
+    "manifest_or_product_changed": false
+  },
+  "acceptance": {
+    "runtime_parity": false,
+    "whole_component": false,
+    "whole_family": false,
+    "platform": false,
+    "release": false
+  }
+}

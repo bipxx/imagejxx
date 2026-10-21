@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_owned_increment",
+  "review_type": "Root authorship/integration attestation, not independent legal review",
+  "license": "Existing project MIT for original explicit generated annotation export bases and tests",
+  "new_dependencies": [],
+  "restricted_features_added": false,
+  "imported_third_party_product_code": [],
+  "new_fonts": [],
+  "sources": [
+    {
+      "logical_path": "include/imagejxx/imagej_annotation_export.hpp",
+      "before": {
+        "path": "build/p06q-generated-export001/before001/include/imagejxx/imagej_annotation_export.hpp",
+        "bytes": 7136,
+        "sha256": "691748ba474bab06cf279c818842aa43db9be32e19cf47c49cf5e4ecc18a1978"
+      },
+      "after": {
+        "path": "build/p06q-generated-export001/held001/after/include/imagejxx/imagej_annotation_export.hpp",
+        "bytes": 7460,
+        "sha256": "53e4c63bff65407f08f08fc6ceaeec5a203aabc387d77b2bb2e46fafb4f0b648"
+      },
+      "current": {
+        "path": "include/imagejxx/imagej_annotation_export.hpp",
+        "bytes": 7460,
+        "sha256": "53e4c63bff65407f08f08fc6ceaeec5a203aabc387d77b2bb2e46fafb4f0b648"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_annotation_export.cpp",
+      "before": {
+        "path": "build/p06q-generated-export001/before001/src/native/imagej_annotation_export.cpp",
+        "bytes": 37910,
+        "sha256": "be797f334ca72fb6f1677672abf73954a910a2d630661d80534379fbd6b14e43"
+      },
+      "after": {
+        "path": "build/p06q-generated-export001/held001/after/src/native/imagej_annotation_export.cpp",
+        "bytes": 41708,
+        "sha256": "4a1f7a424e307b51c9b1f687111bf8e3ab0c289ae49d6d4c0deb49c390daa663"
+      },
+      "current": {
+        "path": "src/native/imagej_annotation_export.cpp",
+        "bytes": 41708,
+        "sha256": "4a1f7a424e307b51c9b1f687111bf8e3ab0c289ae49d6d4c0deb49c390daa663"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_annotation_export_bindings.cpp",
+      "before": {
+        "path": "build/p06q-generated-export001/before001/src/native/imagej_annotation_export_bindings.cpp",
+        "bytes": 18988,
+        "sha256": "c2be68b0b5912b7d850fefc334c7456cc449603b9e69899d48e9077d4ef96463"
+      },
+      "after": {
+        "path": "build/p06q-generated-export001/held001/after/src/native/imagej_annotation_export_bindings.cpp",
+        "bytes": 19653,
+        "sha256": "fd047d628b816d0662692b09164b92b125ece2254df27e75240e29c84ad9dc7e"
+      },
+      "current": {
+        "path": "src/native/imagej_annotation_export_bindings.cpp",
+        "bytes": 19653,
+        "sha256": "fd047d628b816d0662692b09164b92b125ece2254df27e75240e29c84ad9dc7e"
+      }
+    },
+    {
+      "logical_path": "tests/native/test_imagej_annotation_export.cpp",
+      "before": {
+        "path": "build/p06q-generated-export001/before001/tests/native/test_imagej_annotation_export.cpp",
+        "bytes": 4312,
+        "sha256": "a1cb11cd68bc32e50dcf6af1cd2234cd52924a91217166254c196a62f1a32827"
+      },
+      "after": {
+        "path": "build/p06q-generated-export001/held001/after/tests/native/test_imagej_annotation_export.cpp",
+        "bytes": 6104,
+        "sha256": "6194c5b6449b68c63928130363344bd8836c9daa5cdb35fa10696eefe34e7ea6"
+      },
+      "current": {
+        "path": "tests/native/test_imagej_annotation_export.cpp",
+        "bytes": 6104,
+        "sha256": "6194c5b6449b68c63928130363344bd8836c9daa5cdb35fa10696eefe34e7ea6"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_imagej_generated_annotation_export.py",
+      "before": null,
+      "after": {
+        "path": "build/p06q-generated-export001/held001/after/tests/python/test_imagej_generated_annotation_export.py",
+        "bytes": 12226,
+        "sha256": "757638a6ffbbcce36ae1bd171332e2bfd6727b056e792b407530c5cb9e36c75b"
+      },
+      "current": {
+        "path": "tests/python/test_imagej_generated_annotation_export.py",
+        "bytes": 12226,
+        "sha256": "757638a6ffbbcce36ae1bd171332e2bfd6727b056e792b407530c5cb9e36c75b"
+      }
+    }
+  ],
+  "scope": "C++/Python generated-source ROI/ZIP export API only; mixed export controls and full family/release qualification remain pending"
+}

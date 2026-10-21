@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "state": "scoped_color_stack_ui_verified",
+  "new_python_cases": 24,
+  "source_cases": 1015,
+  "installed_cases": 1015,
+  "native_windows_suites": 22,
+  "scope": "Shared standalone Image > Type review, isolated worker thumbnail/preparation, guarded publication, recording and explicit replay review. Actual C++ and Python raw-input driver covers HSB32 legacy loss choices and paired Undo/Redo. Core is unchanged; previous Linux6 remains applicable to core only. No new Linux desktop or whole editor certification.",
+  "evidence": [
+    {
+      "path": "build/p06zv-color-ui001/build004/run001.json",
+      "bytes": 9515,
+      "sha256": "949be3991c77b18cde48e7f0baed4feaebb7087383daee31f32ab4ce7e2e8d83"
+    },
+    {
+      "path": "build/p06zv-color-ui001/rgb-cpp003/run001.json",
+      "bytes": 1246,
+      "sha256": "d1b167a969a454ee452754ffb05bb07d113a08897a8eb2c0214304f9a99aff53"
+    },
+    {
+      "path": "build/p06zv-color-ui001/install003/run001.json",
+      "bytes": 7171,
+      "sha256": "cac52fdd1fef3f392f167a6c61ffe272cb0e908a9ee35a63a361f24e5dd3d511"
+    },
+    {
+      "path": "build/p06zv-color-ui001/rgb-installed-cpp003/run001.json",
+      "bytes": 1302,
+      "sha256": "4d717ca44703328b53f692384a299986336a3d8c3c8a66392d033a5e74128594"
+    },
+    {
+      "path": "build/p06zv-color-ui001/source003/run001.json",
+      "bytes": 1373,
+      "sha256": "30d57f066821b604fdccf8c9c3fb613066a602bbb0ddb23c3e934f871eb241b8"
+    },
+    {
+      "path": "build/p06zv-color-ui001/installed-python001/run001.json",
+      "bytes": 1402,
+      "sha256": "2978d56f87e6686a2e4507f2d53fcf2e88e9908ee7b3cbdd73671a94c0cf2932"
+    },
+    {
+      "path": "build/p06zv-color-ui001/build004/native.xml",
+      "bytes": 6606,
+      "sha256": "7788f34deee1d68777607f68f6450a986bfd7d94295a98c3f1875b6780599a16"
+    },
+    {
+      "path": "build/p06zv-color-ui001/source003/pytest.xml",
+      "bytes": 149676,
+      "sha256": "0b628eaaf5aee038e99c235d3ca20a6c0378fb410431eb5cc77265b7d79f522d"
+    },
+    {
+      "path": "build/p06zv-color-ui001/installed-python001/pytest.xml",
+      "bytes": 149676,
+      "sha256": "e6b0740591883c5c20394cb2e35930a2eac51f0d359bb71e5303c716a146babd"
+    },
+    {
+      "path": "build/p06zv-color-ui001/rgb-cpp003/capture001/case.json",
+      "bytes": 25888522,
+      "sha256": "f3dc3517db07d13016090497d93ccf2774de3e30a8cc41b60eb6c4cdf0cbe445"
+    },
+    {
+      "path": "build/p06zv-color-ui001/rgb-installed-cpp003/capture001/case.json",
+      "bytes": 25886869,
+      "sha256": "e9ad13b2324da676b7926d36f42447d62804f797aa86cb3452cc9711c9fff674"
+    },
+    {
+      "path": "build/p06zu-color-workflow001/linux002/run001.json",
+      "bytes": 842,
+      "sha256": "de20db6ec217e6e1af0a1859070f36905363ae8fb6f3e60e7544482a06209cc3"
+    },
+    {
+      "path": "build/p06zv-color-ui001/policy001.json",
+      "bytes": 427,
+      "sha256": "3d731d1bf93f553289d934a08139c9b37472e30dd46a2fbc0542f19152b97784"
+    },
+    {
+      "path": "build/p06zv-color-ui001/cleanup001.json",
+      "bytes": 83171,
+      "sha256": "75c762205be985b37d5d7f1b04d171c3837385d9dda2391b63d876f1c6859ed8"
+    }
+  ],
+  "superseded_diagnostics": [
+    {
+      "run": {
+        "path": "build/p06zv-color-ui001/build001/run001.json",
+        "bytes": 9545,
+        "sha256": "1a547e31ceed1b3f7bc2974cc3313f630342b3473ad4c80501703f0a98a10568"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zv-color-ui001/build002/run001.json",
+        "bytes": 9543,
+        "sha256": "cc755edb1729ef8fe455f9d4acdd250d9292b7ecf9ac00966d283c4418ebff1a"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zv-color-ui001/build003/run001.json",
+        "bytes": 9556,
+        "sha256": "e8c7b0564165b3f362a78cf831681e169fca8dfd71be2c69da7ffda4bb5faeb0"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zv-color-ui001/rgb-cpp001/run001.json",
+        "bytes": 1246,
+        "sha256": "e4d9886c81834017d0a2e24a0f33d874d2be087b5a74766ac167ed32a8c7424d"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zv-color-ui001/rgb-cpp002/run001.json",
+        "bytes": 1232,
+        "sha256": "a5f689b3cf3e9a86b1ee1757f3ab7daec84447195ff49d402b175e9c5abb3190"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zv-color-ui001/install001/run001.json",
+        "bytes": 7172,
+        "sha256": "e2674abcd6cd6eb3c48ae434e37ba42da6571e1ae350222a70ecd440e529fe6a"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zv-color-ui001/install002/run001.json",
+        "bytes": 7171,
+        "sha256": "075d84e3c4c0b6cadac427642bcebf6c4b665d16071fa4bf4428ea37434050c3"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zv-color-ui001/rgb-installed-cpp001/run001.json",
+        "bytes": 1302,
+        "sha256": "be497f73ac95b6a8383d771127d726225d2529b42fa5c73abdef8d4dadef1ccf"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zv-color-ui001/rgb-installed-cpp002/run001.json",
+        "bytes": 1301,
+        "sha256": "d720c45d8824bfbec5a48267829d48512cc5b4cd573ab42283eb8089b6538b97"
+      },
+      "state": "passed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zv-color-ui001/source001/run001.json",
+        "bytes": 1575,
+        "sha256": "6cef5ae248de7769af56a73684fd6563b1fb8ab73596838b10914f87929064a9"
+      },
+      "state": "failed",
+      "accepted_as_final": false
+    },
+    {
+      "run": {
+        "path": "build/p06zv-color-ui001/source002/run001.json",
+        "bytes": 1574,
+        "sha256": "1ad3d3a3513a584b99110100449612bbf5483e50b61274f4d7e777d819552e0d"
+      },
+      "state": "failed",
+      "accepted_as_final": false
+    }
+  ],
+  "remaining": [
+    "Compound scalar-to-RGB legacy flattening with captured ImageJ stack range/LUT semantics; standalone Flatten currently accepts existing UInt8 RGB only",
+    "Indexed/global-palette output",
+    "Remaining editor/reference/resource/platform/release obligations and historical source fingerprint requalification; All99 remains42/57/0 and Source901 unchanged"
+  ],
+  "no_new_runtime_dependencies": true,
+  "profile_accepted": false,
+  "family_completed": false,
+  "broad_goal": "active",
+  "full_plan_gate": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed"
+}

@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_owned_increment",
+  "review_type": "Root authorship/integration attestation, not independent legal review",
+  "license": "Existing project MIT for original native replacement API, versioned transport equations, bindings and regression fixtures",
+  "new_dependencies": [],
+  "restricted_features_added": false,
+  "imported_third_party_product_code": [],
+  "sources": [
+    {
+      "logical_path": "include/imagejxx/imagej_roi_import.hpp",
+      "before": {
+        "path": "build/p06q-roi-replacement001/before001/include/imagejxx/imagej_roi_import.hpp",
+        "bytes": 4154,
+        "sha256": "2ba33891d3ec2362431594d5fce7e67bd261fa916bd5b82c81613ce5a1d77c3d"
+      },
+      "after": {
+        "path": "build/p06q-roi-replacement001/held001/after/include/imagejxx/imagej_roi_import.hpp",
+        "bytes": 4470,
+        "sha256": "3c000d53b9617cc6266493aac061c985192c7655337413707918b789c6b3e004"
+      },
+      "current": {
+        "path": "include/imagejxx/imagej_roi_import.hpp",
+        "bytes": 4470,
+        "sha256": "3c000d53b9617cc6266493aac061c985192c7655337413707918b789c6b3e004"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_roi_import.cpp",
+      "before": {
+        "path": "build/p06q-roi-replacement001/before001/src/native/imagej_roi_import.cpp",
+        "bytes": 15924,
+        "sha256": "f675477bd13cd199bb3df98606449661c552303aa416dd25cf30bb861e9318ff"
+      },
+      "after": {
+        "path": "build/p06q-roi-replacement001/held001/after/src/native/imagej_roi_import.cpp",
+        "bytes": 21174,
+        "sha256": "ad4822e9b3acec7d29a322041d3366b63fb0e0e671298dad10d1695861982668"
+      },
+      "current": {
+        "path": "src/native/imagej_roi_import.cpp",
+        "bytes": 21174,
+        "sha256": "ad4822e9b3acec7d29a322041d3366b63fb0e0e671298dad10d1695861982668"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_roi_import_internal.hpp",
+      "before": {
+        "path": "build/p06q-roi-replacement001/before001/src/native/imagej_roi_import_internal.hpp",
+        "bytes": 1109,
+        "sha256": "1e26d38dcde0ce847b5197bcc0d26bbbbd2b45526f255deb2e81692e6fbc5e7f"
+      },
+      "after": {
+        "path": "build/p06q-roi-replacement001/held001/after/src/native/imagej_roi_import_internal.hpp",
+        "bytes": 1581,
+        "sha256": "c5a24ae45a698a3360f9f428b9ba8e9462314800d16b9b7a1f573ba34da3c93a"
+      },
+      "current": {
+        "path": "src/native/imagej_roi_import_internal.hpp",
+        "bytes": 1581,
+        "sha256": "c5a24ae45a698a3360f9f428b9ba8e9462314800d16b9b7a1f573ba34da3c93a"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_roi_import_command.cpp",
+      "before": {
+        "path": "build/p06q-roi-replacement001/before001/src/native/imagej_roi_import_command.cpp",
+        "bytes": 7746,
+        "sha256": "caff50c28c56664170e609e3a0cb2f5b81a11b483017f9d3b10d4f683e1a610a"
+      },
+      "after": {
+        "path": "build/p06q-roi-replacement001/held001/after/src/native/imagej_roi_import_command.cpp",
+        "bytes": 8453,
+        "sha256": "95084c187d132f2e565c05739deb72e781521f8278266588e2d9bc5655e1a4f8"
+      },
+      "current": {
+        "path": "src/native/imagej_roi_import_command.cpp",
+        "bytes": 8453,
+        "sha256": "95084c187d132f2e565c05739deb72e781521f8278266588e2d9bc5655e1a4f8"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_roi_import_bindings.cpp",
+      "before": {
+        "path": "build/p06q-roi-replacement001/before001/src/native/imagej_roi_import_bindings.cpp",
+        "bytes": 8335,
+        "sha256": "772a92cf5fd6dea3c6900e4433e4f447b147f3150425a8c4ece59a4b37d09f37"
+      },
+      "after": {
+        "path": "build/p06q-roi-replacement001/held001/after/src/native/imagej_roi_import_bindings.cpp",
+        "bytes": 10097,
+        "sha256": "8009f7ff3e875fe0fc2fa0df8113516e0172688a947531fdde57cf8f8bc80122"
+      },
+      "current": {
+        "path": "src/native/imagej_roi_import_bindings.cpp",
+        "bytes": 10097,
+        "sha256": "8009f7ff3e875fe0fc2fa0df8113516e0172688a947531fdde57cf8f8bc80122"
+      }
+    },
+    {
+      "logical_path": "src/imagejxx/__init__.py",
+      "before": {
+        "path": "build/p06q-roi-replacement001/before001/src/imagejxx/__init__.py",
+        "bytes": 56370,
+        "sha256": "0ab4c8ab1f79a204cca5364f3b288f71d2304287a8f309e0449065b3207df34a"
+      },
+      "after": {
+        "path": "build/p06q-roi-replacement001/held001/after/src/imagejxx/__init__.py",
+        "bytes": 56433,
+        "sha256": "ecce2f200eefe02d60b281d6b4ee9c7bafb25fe218095002cd6cd4edd60f8ad0"
+      },
+      "current": {
+        "path": "src/imagejxx/__init__.py",
+        "bytes": 56433,
+        "sha256": "ecce2f200eefe02d60b281d6b4ee9c7bafb25fe218095002cd6cd4edd60f8ad0"
+      }
+    },
+    {
+      "logical_path": "tests/native/test_imagej_roi.cpp",
+      "before": {
+        "path": "build/p06q-roi-replacement001/before001/tests/native/test_imagej_roi.cpp",
+        "bytes": 18834,
+        "sha256": "8304552b0b11c4f91aef12491d03238c7a16b82ef365011554e4cd74a0368974"
+      },
+      "after": {
+        "path": "build/p06q-roi-replacement001/held001/after/tests/native/test_imagej_roi.cpp",
+        "bytes": 21306,
+        "sha256": "761efa0285474b778bd02ea26b55836b42c551a74093157d3b975734d2c4e335"
+      },
+      "current": {
+        "path": "tests/native/test_imagej_roi.cpp",
+        "bytes": 21306,
+        "sha256": "761efa0285474b778bd02ea26b55836b42c551a74093157d3b975734d2c4e335"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_imagej_roi_import_native_replacement.py",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-replacement001/held001/after/tests/python/test_imagej_roi_import_native_replacement.py",
+        "bytes": 11440,
+        "sha256": "e900f4c51367672e9db6827dde91ffd529bd71726201ca9cd5701377c76d83e1"
+      },
+      "current": {
+        "path": "tests/python/test_imagej_roi_import_native_replacement.py",
+        "bytes": 11440,
+        "sha256": "e900f4c51367672e9db6827dde91ffd529bd71726201ca9cd5701377c76d83e1"
+      }
+    }
+  ]
+}

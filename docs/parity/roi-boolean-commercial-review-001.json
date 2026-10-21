@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "id": "G016.area-boolean.reference-commercial-review.001",
+  "recorded_at_utc": "2026-10-12T13:42:12.829499+00:00",
+  "reference_id": "imagej-1.54r-fiji-latest-20261007-1617-win64",
+  "candidate_id": "R-16be68ac718c581a71b6c880",
+  "decision": "eligible",
+  "scope": "ImageJ1.54r ShapeRoi area Boolean reference behavior and independently authored native equivalent; source-bound reference-only review. No upstream source/runtime/assets/models incorporated into product. Full ROI Manager option/runtime reconciliation and separate Fiji1.54p component review remain open.",
+  "reason": "The exact pinned ImageJ source archive declares public domain; ShapeRoi also declares public domain explicitly. Own C++/Python/ImGui adapter code remains under the repository MIT license. This feature introduces no third-party processing library, dataset, font, icon, model or weights. Existing shipped dependencies retain their separate recorded license checks.",
+  "code": "eligible_public_domain_reference_only_and_owned_MIT_equivalent",
+  "dependencies": "no_new_product_dependencies; existing JDK/AWT/ImageJ runtime used only in excluded reference tooling",
+  "models_assets": "none; independently authored synthetic geometry and binary-mask observations only",
+  "incorporated_components": [],
+  "archive": {
+    "path": "build/references/downloads/imagej-62db90a269cccc1ac79f658e4602043214ed055b.zip",
+    "sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+    "bytes": 6146010
+  },
+  "source_members": {
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/LICENSE.txt": {
+      "sha256": "618725ff649e43605de0fec0a778b4aad24b28c6be9b3cde16295764022f668c",
+      "bytes": 512
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/pom.xml": {
+      "sha256": "cc95c64d2da10810f4dfbec191212cf9bfbcbfabec8633e3f0ad1ae4a81c67b3",
+      "bytes": 7884
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/ShapeRoi.java": {
+      "sha256": "8ab4a507fed1ddd09391c5663d482350c9f035e17788d915b440915277fc419e",
+      "bytes": 53123
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/Roi.java": {
+      "sha256": "200ad9f501a5860fe1486a3d2a8ed6cf6f82f7c7562a81e11d91ee7b7a04497e",
+      "bytes": 90700
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/OvalRoi.java": {
+      "sha256": "f065f9a82d7e7d9de5c84615e8885465071f41076f872941f1b4259f93d76a38",
+      "bytes": 11947
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/gui/PolygonRoi.java": {
+      "sha256": "1c5b398b5423c7f763144f12b95cfa23e08ef9e1cc07a93ba9873411f0f76038",
+      "bytes": 52637
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/process/PolygonFiller.java": {
+      "sha256": "2d6c43bb6fed5bf206fa552bf0f60883117436884fcd9869ec4b9474ef7c5968",
+      "bytes": 9121
+    },
+    "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/plugin/frame/RoiManager.java": {
+      "sha256": "2cf7cbd08a780dd05f6f160ce0915eb4524b568410b5078a48afcbe326a3f020",
+      "bytes": 88381
+    }
+  },
+  "owned_code_license": {
+    "path": "LICENSE",
+    "sha256": "6496956d6060adfcd2617e553b7393c3b7fbea353a02f3c39d60051709d1ce5f",
+    "bytes": 1079
+  },
+  "primary_license_url": "https://imagej.net/ij/disclaimer.html",
+  "primary_license_checked_date": "2026-10-12",
+  "fiji_1_54p_review_unchanged": true,
+  "candidate_full_option_inventory_complete": false,
+  "candidate_runtime_reconciliation_complete": false,
+  "product_implementation_verified": false,
+  "family_complete": false,
+  "full_goal_complete": false
+}

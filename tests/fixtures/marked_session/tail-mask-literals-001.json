@@ -1,0 +1,429 @@
+{
+  "schema": "imagejxx.p04c.independent-tail-mask-literals.v1",
+  "status": "SOURCE_ONLY_WRITE_HOLD_ORIGINAL_NATIVE_ADMISSION_NOT_RUN",
+  "baseline": {
+    "path": "build/plan-implementation/p02a-gaussian-command-001/p04c-interchange-assertions-preparation-001/literal-cases-001.json",
+    "sha256": "21f98e965b3a3985e1f7bdb4c7c27f1bbd09523cf1e40d5141e996fb94c29337",
+    "bytes": 243206
+  },
+  "original_capture_case_id": "tail-mask-0xa7-with-unused-bits",
+  "root": {
+    "format": "imagejxx-session",
+    "version": 2,
+    "documents": [
+      {
+        "title": "P04c native named",
+        "is_stack": true,
+        "slice_index": 1,
+        "calibration": {
+          "pixel_width": 0.4,
+          "pixel_height": 1.2,
+          "pixel_depth": 3.0,
+          "unit": "um",
+          "origin": [
+            10.0,
+            -5.0,
+            2.0
+          ],
+          "direction": [
+            0.0,
+            -1.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "frame_interval": 4.0,
+          "time_origin": -2.0,
+          "time_unit": "ms",
+          "intensity": {
+            "coefficients": [
+              0.0,
+              1.25
+            ],
+            "unit": "a.u.",
+            "vendor": "kept"
+          }
+        },
+        "selection": {
+          "kind": "mask",
+          "points": [],
+          "width": 1.0,
+          "shape": [
+            2,
+            3
+          ],
+          "mask": "pw==",
+          "vendor_mask": {
+            "source": "mask-a",
+            "negative_zero": -0.0
+          }
+        },
+        "previous_selection": {
+          "kind": "point",
+          "points": [
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "width": 2.0,
+          "previous_unknown": {
+            "id": 18446744073709551615
+          }
+        },
+        "rois": [
+          {
+            "name": "tail-first",
+            "selection": {
+              "kind": "mask",
+              "points": [],
+              "width": 1.0,
+              "shape": [
+                2,
+                3
+              ],
+              "mask": "pw==",
+              "vendor_mask": {
+                "source": "mask-a",
+                "negative_zero": -0.0
+              }
+            },
+            "slice_index": 1,
+            "roi_unknown": "first"
+          },
+          {
+            "name": "tail-second",
+            "selection": {
+              "kind": "mask",
+              "points": [],
+              "width": 1.0,
+              "shape": [
+                2,
+                3
+              ],
+              "mask": "Uw==",
+              "vendor_mask": {
+                "source": "mask-b",
+                "unsigned": 18446744073709551615
+              }
+            },
+            "slice_index": 0,
+            "roi_unknown": "second"
+          }
+        ],
+        "overlays": [
+          {
+            "kind": "point",
+            "points": [
+              [
+                1.0,
+                1.0
+              ]
+            ],
+            "slice_index": 1,
+            "overlay_unknown": "kept"
+          }
+        ],
+        "labels": false,
+        "native_properties": {
+          "unknown_property": {
+            "vendor": "property-kept",
+            "unsigned": 18446744073709551615,
+            "signed": 17,
+            "negative_zero": -0.0,
+            "values": [
+              null,
+              true,
+              0.5
+            ]
+          }
+        },
+        "native_document_state": {
+          "version": "vendor",
+          "documents": "unknown-kept"
+        },
+        "vendor": {
+          "acquisition": [
+            null,
+            true,
+            "\u00b5m"
+          ],
+          "negative_zero": -0.0
+        },
+        "view_state": {
+          "orthogonal": true,
+          "linked_zoom": false,
+          "crosshair": [
+            1,
+            1,
+            1
+          ],
+          "zoom": 1.25,
+          "plane_zoom": [
+            2.0,
+            3.75,
+            0.5
+          ],
+          "pan": [
+            [
+              3.25,
+              -2.5
+            ],
+            [
+              5.5,
+              -4.25
+            ],
+            [
+              7.75,
+              -6.5
+            ]
+          ]
+        },
+        "dtype": "float64",
+        "shape": [
+          2,
+          2,
+          3
+        ],
+        "pixels": "AAAAAAAAAAAAAAAAAADwPwAAAAAAAABAAAAAAAAAIEAAAAAAAAAiQAAAAAAAACRAAAAAAAAAUEAAAAAAAEBQQAAAAAAAgFBAAAAAAAAAUkAAAAAAAEBSQAAAAAAAgFJA",
+        "lut": "Fire"
+      }
+    ],
+    "results": [
+      {
+        "unknown_result": "preserved",
+        "signed_zero": -0.0,
+        "unsigned": 18446744073709551615
+      }
+    ],
+    "workflow": [
+      {
+        "operation": "add",
+        "parameters": {
+          "value": 1
+        },
+        "vendor": {
+          "enabled": true
+        }
+      }
+    ],
+    "native_document_state": {
+      "version": 1,
+      "documents": [
+        {
+          "display_properties": [
+            "lut"
+          ],
+          "metadata": {
+            "title": "P04c native named",
+            "properties": {
+              "unknown_property": {
+                "vendor": "property-kept",
+                "unsigned": 18446744073709551615,
+                "signed": 17,
+                "negative_zero": -0.0,
+                "values": [
+                  null,
+                  true,
+                  0.5
+                ]
+              }
+            },
+            "extensions": {
+              "native_document_state": {
+                "version": "vendor",
+                "documents": "unknown-kept"
+              },
+              "vendor": {
+                "acquisition": [
+                  null,
+                  true,
+                  "\u00b5m"
+                ],
+                "negative_zero": -0.0
+              },
+              "calibration": {
+                "intensity": {
+                  "coefficients": [
+                    0.0,
+                    1.25
+                  ],
+                  "unit": "a.u.",
+                  "vendor": "kept"
+                }
+              },
+              "is_stack": true,
+              "labels": false
+            },
+            "record_layout": {
+              "root_fields": [
+                "native_properties",
+                "selection",
+                "previous_selection",
+                "rois",
+                "overlays"
+              ],
+              "null_fields": [],
+              "calibration_fields": [
+                "pixel_width",
+                "pixel_height",
+                "pixel_depth",
+                "unit",
+                "origin",
+                "direction",
+                "frame_interval",
+                "time_origin",
+                "time_unit"
+              ],
+              "roi_slice_fields": [
+                "0"
+              ],
+              "vendor_layout": {
+                "unknown": "layout-kept"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "expected_native_metadata": {
+    "title": "P04c native named",
+    "properties": {
+      "unknown_property": {
+        "vendor": "property-kept",
+        "unsigned": 18446744073709551615,
+        "signed": 17,
+        "negative_zero": -0.0,
+        "values": [
+          null,
+          true,
+          0.5
+        ]
+      }
+    },
+    "extensions": {
+      "native_document_state": {
+        "version": "vendor",
+        "documents": "unknown-kept"
+      },
+      "vendor": {
+        "acquisition": [
+          null,
+          true,
+          "\u00b5m"
+        ],
+        "negative_zero": -0.0
+      },
+      "calibration": {
+        "intensity": {
+          "coefficients": [
+            0.0,
+            1.25
+          ],
+          "unit": "a.u.",
+          "vendor": "kept"
+        }
+      },
+      "is_stack": true,
+      "labels": false
+    },
+    "record_layout": {
+      "root_fields": [
+        "native_properties",
+        "selection",
+        "previous_selection",
+        "rois",
+        "overlays"
+      ],
+      "null_fields": [],
+      "calibration_fields": [
+        "pixel_width",
+        "pixel_height",
+        "pixel_depth",
+        "unit",
+        "origin",
+        "direction",
+        "frame_interval",
+        "time_origin",
+        "time_unit"
+      ],
+      "roi_slice_fields": [
+        "0"
+      ],
+      "vendor_layout": {
+        "unknown": "layout-kept"
+      }
+    }
+  },
+  "pixel_dtype": "float64",
+  "pixel_shape": [
+    2,
+    2,
+    3
+  ],
+  "pixel_storage_base64": "AAAAAAAAAAAAAAAAAADwPwAAAAAAAABAAAAAAAAAIEAAAAAAAAAiQAAAAAAAACRAAAAAAAAAUEAAAAAAAEBQQAAAAAAAgFBAAAAAAAAAUkAAAAAAAEBSQAAAAAAAgFJA",
+  "expected_selection": {
+    "kind": "mask",
+    "points": [],
+    "width": 1.0,
+    "shape": [
+      2,
+      3
+    ],
+    "mask": "pw==",
+    "vendor_mask": {
+      "source": "mask-a",
+      "negative_zero": -0.0
+    }
+  },
+  "expected_roi_order": [
+    "tail-first",
+    "tail-second"
+  ],
+  "expected_roi_mask_tokens": {
+    "tail-first": "pw==",
+    "tail-second": "Uw=="
+  },
+  "independent_mask_bits": [
+    {
+      "token": "pw==",
+      "byte_hex": "a7",
+      "canonical_token_if_lost": "pA==",
+      "bitmap_yx": [
+        [
+          255,
+          0,
+          255
+        ],
+        [
+          0,
+          0,
+          255
+        ]
+      ]
+    },
+    {
+      "token": "Uw==",
+      "byte_hex": "53",
+      "canonical_token_if_lost": "UA==",
+      "bitmap_yx": [
+        [
+          0,
+          255,
+          0
+        ],
+        [
+          255,
+          0,
+          0
+        ]
+      ]
+    }
+  ],
+  "oracle": "Independent base64 byte literals and original native Selection::from_packed_mask size-only admission; no producer/candidate output is expected state."
+}

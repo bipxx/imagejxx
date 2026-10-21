@@ -1,0 +1,507 @@
+{
+  "schema_version": 1,
+  "origin": "Original struct mutations and excluded-layout carriers; no product writer or incorporated third-party code",
+  "constants_reference": "https://gitlab.com/libtiff/libtiff/-/raw/v4.7.1/libtiff/tiff.h",
+  "files": [
+    {
+      "file": "bad-endian.tif",
+      "bytes": 500,
+      "sha256": "84231c51ef9bdafea6b66e11be87056c1cc5a3eca81b8af2aed6936695b51f6d",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          8,
+          30
+        ]
+      ],
+      "reason": "Invalid byte-order marker",
+      "error_category": "metadata",
+      "witness": [
+        {
+          "offset": 0,
+          "hex": "5a5a"
+        }
+      ]
+    },
+    {
+      "file": "bad-magic.tif",
+      "bytes": 500,
+      "sha256": "4549f4a39f29c6896ba2676fc770940888a25dadcb0eb6a3bf70c90171b278c1",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          8,
+          30
+        ]
+      ],
+      "reason": "Non-TIFF magic",
+      "error_category": "metadata",
+      "witness": [
+        {
+          "offset": 2,
+          "hex": "2900"
+        }
+      ]
+    },
+    {
+      "file": "ifd-entry-overflow.tif",
+      "bytes": 500,
+      "sha256": "329b981efc07c9934d594ca2bda3386132854cd155f44e43ad465fae534e6b66",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          8,
+          30
+        ]
+      ],
+      "reason": "IFD count exceeds bounded admission",
+      "error_category": "resource",
+      "witness": [
+        {
+          "offset": 218,
+          "hex": "ffff"
+        }
+      ]
+    },
+    {
+      "file": "truncated-ifd-table.tif",
+      "bytes": 500,
+      "sha256": "1bb92d0bdb14cbbc936d4c72335f1d5e994a7cbe63dbbea870117889e75a3770",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          8,
+          30
+        ]
+      ],
+      "reason": "IFD table extends past EOF",
+      "error_category": "metadata",
+      "witness": [
+        {
+          "offset": 218,
+          "hex": "1800"
+        }
+      ]
+    },
+    {
+      "file": "strip-table-count-overflow.tif",
+      "bytes": 500,
+      "sha256": "bf850d40c45215987234e7876f1770d49cbf11ba8106b2bb378942eb14630334",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          8,
+          30
+        ]
+      ],
+      "reason": "Strip table external value exceeds file",
+      "error_category": "metadata",
+      "witness": [
+        {
+          "offset": 320,
+          "hex": "ffffffff"
+        }
+      ]
+    },
+    {
+      "file": "strip-outside-file.tif",
+      "bytes": 500,
+      "sha256": "2380058812c92b22c02c32345a7a808b0e68cb1a5162813637af663243484862",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          8,
+          30
+        ]
+      ],
+      "reason": "Declared strip is outside file",
+      "error_category": "metadata",
+      "witness": [
+        {
+          "offset": 324,
+          "hex": "58020000"
+        }
+      ]
+    },
+    {
+      "file": "zero-rows.tif",
+      "bytes": 500,
+      "sha256": "6f1e5df936cf0688ff104765e1ac6f8ca4048d101726309bc14829cc0e4d6a9d",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          8,
+          30
+        ]
+      ],
+      "reason": "Zero RowsPerStrip",
+      "error_category": "metadata",
+      "witness": [
+        {
+          "offset": 360,
+          "hex": "00000000"
+        }
+      ]
+    },
+    {
+      "file": "missing-strip-offset.tif",
+      "bytes": 770,
+      "sha256": "add3529aa64ff88df2a915648a00dc0661c1228d840e7e2825c93589ed6cf878",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          8,
+          30
+        ]
+      ],
+      "reason": "Required StripOffsets tag is absent",
+      "error_category": "metadata",
+      "witness": []
+    },
+    {
+      "file": "strip-offset-count.tif",
+      "bytes": 516,
+      "sha256": "50a0e7cfc08b347bfc5d73857757e2d60fae302deb68b3a1e1bb6ed7cc0e689a",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          8,
+          30
+        ]
+      ],
+      "reason": "Strip table count disagrees with rows",
+      "error_category": "metadata",
+      "witness": [
+        {
+          "offset": 336,
+          "hex": "01000000"
+        }
+      ]
+    },
+    {
+      "file": "strip-bytecount-count.tif",
+      "bytes": 516,
+      "sha256": "942af633fd86ccd09b3666cb36ebfd5c9ad58b6db52fd6d2651acc9dbff3404b",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          8,
+          30
+        ]
+      ],
+      "reason": "Strip table count disagrees with rows",
+      "error_category": "metadata",
+      "witness": [
+        {
+          "offset": 384,
+          "hex": "01000000"
+        }
+      ]
+    },
+    {
+      "file": "x-origin.tif",
+      "bytes": 510,
+      "sha256": "763e14401b51c7cf28ecff677fc4c8fc336029f3f4da02e4c607bbf4aaaee940",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          8,
+          30
+        ]
+      ],
+      "reason": "Nonzero spatial origin",
+      "error_category": "metadata",
+      "witness": []
+    },
+    {
+      "file": "y-origin.tif",
+      "bytes": 510,
+      "sha256": "7bbc6198f28dfa4ec2377bb18a69d4609a567bf928815e4cd490c69cc3b0165e",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          8,
+          30
+        ]
+      ],
+      "reason": "Nonzero spatial origin",
+      "error_category": "metadata",
+      "witness": []
+    },
+    {
+      "file": "z-origin.tif",
+      "bytes": 510,
+      "sha256": "6bb1f89269f6c10632f3fc2ecc3b7ea9c288e76c78e5b51dab2733419bfc8f9b",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          8,
+          30
+        ]
+      ],
+      "reason": "Nonzero spatial origin",
+      "error_category": "metadata",
+      "witness": []
+    },
+    {
+      "file": "unsupported-space-unit.tif",
+      "bytes": 500,
+      "sha256": "e31eebda851d3af20f4706f42eb904294809acb158360096747933b6c543256b",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          8,
+          30
+        ]
+      ],
+      "reason": "Unsupported calibration semantics: unsupported-space-unit",
+      "error_category": "metadata",
+      "witness": []
+    },
+    {
+      "file": "unsupported-time-unit.tif",
+      "bytes": 502,
+      "sha256": "f307aec10de111c753bdf71d04e695fafb4da7f9cc352ae47f590f7e83f2ba56",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          8,
+          30
+        ]
+      ],
+      "reason": "Unsupported calibration semantics: unsupported-time-unit",
+      "error_category": "metadata",
+      "witness": []
+    },
+    {
+      "file": "mixed-axis-unit.tif",
+      "bytes": 510,
+      "sha256": "d852441c277012759f07a0a61092dab4c5b3aea18a0207d1d7fdeaf002166947",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          8,
+          30
+        ]
+      ],
+      "reason": "Unsupported calibration semantics: mixed-axis-unit",
+      "error_category": "metadata",
+      "witness": []
+    },
+    {
+      "file": "density-calibration.tif",
+      "bytes": 526,
+      "sha256": "697c132214486f4c2c83dae7911cf836460eeabb0b0ecc1dc67918c7c5130238",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          8,
+          30
+        ]
+      ],
+      "reason": "Unsupported calibration semantics: density-calibration",
+      "error_category": "metadata",
+      "witness": []
+    },
+    {
+      "file": "nonidentity-description-direction.tif",
+      "bytes": 530,
+      "sha256": "4f5d147d5143f3f3931fc7e69be45ed1b74302b0ea5bbd3d64109b15fe1be9ff",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          8,
+          30
+        ]
+      ],
+      "reason": "Unsupported calibration semantics: nonidentity-description-direction",
+      "error_category": "metadata",
+      "witness": []
+    },
+    {
+      "file": "hidden-extra-page.tif",
+      "bytes": 810,
+      "sha256": "6976c9c5bedc803a572651d3a8079450e85042b18790cd0e7ebb72e7beeec792",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          8,
+          60
+        ]
+      ],
+      "reason": "Two explicit IFDs but dimensions/images claim one",
+      "error_category": "metadata",
+      "witness": []
+    },
+    {
+      "file": "subifd-child.tif",
+      "bytes": 1076,
+      "sha256": "01a9e3bc6a42c2df3ba339de58e907350b8186a02a592c41b2500d81277c0a39",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          8,
+          30
+        ]
+      ],
+      "reason": "SubIFDs are outside the admitted single-series profile",
+      "error_category": "metadata",
+      "witness": []
+    },
+    {
+      "file": "multiple-document-names.tif",
+      "bytes": 1358,
+      "sha256": "4ce537338fe769eb62139db0751a3a365eae5c31cd6b776ea1b47a3d82ccebe6",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          8,
+          60
+        ]
+      ],
+      "reason": "Conflicting later-page DocumentName",
+      "error_category": "metadata",
+      "witness": []
+    },
+    {
+      "file": "rgb-complete.tif",
+      "bytes": 878,
+      "sha256": "e9e18401bbf88a9bd0f48104cf065a57f71e736ec81284f13e68c5fab1f2d8a7",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          500,
+          90
+        ]
+      ],
+      "reason": "RGB with three 16-bit samples",
+      "error_category": "metadata",
+      "witness": []
+    },
+    {
+      "file": "palette-complete.tif",
+      "bytes": 394010,
+      "sha256": "1df21de7219046436b0dd1fe878fa6f08bf43d88154ff3d9ceecca99c1921710",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          8,
+          30
+        ]
+      ],
+      "reason": "Palette interpretation with complete ColorMap",
+      "error_category": "metadata",
+      "witness": []
+    },
+    {
+      "file": "signed-samples.tif",
+      "bytes": 500,
+      "sha256": "1375134dcd7ae683963cbaf7a4163cbd3cf9d3db0e7b75a039fd70fa18dc7e8c",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          8,
+          30
+        ]
+      ],
+      "reason": "Signed 16-bit sample format",
+      "error_category": "metadata",
+      "witness": [
+        {
+          "offset": 492,
+          "hex": "0200"
+        }
+      ]
+    },
+    {
+      "file": "float-complete.tif",
+      "bytes": 842,
+      "sha256": "1f0ae79f99eb44ee80ec0ef2735bb0873904e6dc8abaa441841083f4b6ba94b1",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          500,
+          60
+        ]
+      ],
+      "reason": "IEEE Float32 with complete payload",
+      "error_category": "metadata",
+      "witness": []
+    },
+    {
+      "file": "tiled-complete.tif",
+      "bytes": 1276,
+      "sha256": "6fae34c5189659a2d732da2e076b524f7839b36663e068b47b1fb4fc9c193707",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          8,
+          512
+        ]
+      ],
+      "reason": "One full 16x16 tile with exact payload",
+      "error_category": "metadata",
+      "witness": []
+    },
+    {
+      "file": "packbits-complete.tif",
+      "bytes": 816,
+      "sha256": "2d8bc28a26d73feef54f86791e80801e4412c33b64641e7c81e834dd77468ec2",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          500,
+          33
+        ]
+      ],
+      "reason": "PackBits with complete per-row literal packets",
+      "error_category": "metadata",
+      "witness": []
+    },
+    {
+      "file": "model-transformation.tif",
+      "bytes": 922,
+      "sha256": "2b4141bc000cb216c185e5d7b4db184683b2d5efd1984557e5c12dff112e9e4e",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          8,
+          30
+        ]
+      ],
+      "reason": "Nonidentity ModelTransformation metadata",
+      "error_category": "metadata",
+      "witness": []
+    },
+    {
+      "file": "imagej-private-metadata.tif",
+      "bytes": 802,
+      "sha256": "7709348aaf4ecfcbae80c5735573df31dbbf78e566c3b8024013e3cda86c3ec9",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          8,
+          30
+        ]
+      ],
+      "reason": "Unsupported ImageJ semantic metadata bytes",
+      "error_category": "metadata",
+      "witness": []
+    },
+    {
+      "file": "bigtiff-complete.tif",
+      "bytes": 468,
+      "sha256": "a8d5a050b8267a0923eda0c6f21d13f694195e1886fc6d7c8f8ee59197490181",
+      "valid": false,
+      "pixel_intervals": [
+        [
+          16,
+          30
+        ]
+      ],
+      "reason": "Complete BigTIFF is outside the classic TIFF profile",
+      "error_category": "metadata",
+      "witness": []
+    }
+  ]
+}

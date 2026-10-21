@@ -1,0 +1,207 @@
+{
+  "schema_version": 1,
+  "state": "scoped_processor_rgb_conversion_verified",
+  "api": "convert_rgb",
+  "cpp_header": "imagejxx/rgb_conversion.hpp",
+  "input_scope": "Scalar U8/U16/F32 and U8 RGB; Float64 scalar/RGBA are owned extensions",
+  "output": "Fresh UInt8 RGB; scalar LUT/display range, no composite axis merge or indexed quantization",
+  "pinned_reference_cases": 111,
+  "new_python_cases": 138,
+  "reference_scope": "Pinned direct uncalibrated ImageProcessor.convertToRGB with grayscale/inverse/custom LUT and processor display ranges; not composite-axis, threshold, density, stack/editor or indexed quantization certification. Float64/RGBA are owned extensions.",
+  "evidence": [
+    {
+      "path": "build/p06zn-rgb-conversion001/build002/run001.json",
+      "bytes": 9438,
+      "sha256": "75ac60fa8d5f3c7e2d8109d4e47804b63353b24b0af960f95d87001d395b7361"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/rgb002/run001.json",
+      "bytes": 1362,
+      "sha256": "2c65bc490025cfec83ef0ea7c0ec8bb19a819fb27933c1aa2ec226e587afd725"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/process-cpp001/run001.json",
+      "bytes": 1283,
+      "sha256": "3665329541bb7262db82ff178ada20058e5ed690c0c674b0a3a4c942262c5eb2"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/process-installed-cpp001/run001.json",
+      "bytes": 1761,
+      "sha256": "088e6c31f6ed6fe3783806d833d9aa32c9962341f31ad56cc63658457e58d534"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/source001/run001.json",
+      "bytes": 1398,
+      "sha256": "95ff2da9ac60ed434dc2acaf389ab7f3ed88ab859c8aa409ea401cc1642d1c7a"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/install001/run001.json",
+      "bytes": 7267,
+      "sha256": "281a922123c2663fc5b390962db84ab078dc3d36b829db7dded617e8262797cc"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/installed-cpp001/run001.json",
+      "bytes": 3126,
+      "sha256": "5ff02f6421cae223ebac400755fa9bc062a362cdfba5e8f3baa53d5bf486f747"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/installed-python001/run001.json",
+      "bytes": 1729,
+      "sha256": "03bb0b5a1a7562d2399a435e399e03750887666a022ed6c077d31ed4a3f03cf4"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/launcher001/run001.json",
+      "bytes": 3399,
+      "sha256": "a5117901f67b263d30757f357f7879a638592002b9c223139cdc3b5cfe868e74"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/api001/run001.json",
+      "bytes": 1375,
+      "sha256": "cb4622adc5b6e19238d913497919bb84a84bc8a047d714a1fa20614f17e7b409"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/regress001/run001.json",
+      "bytes": 18509,
+      "sha256": "8fbec96b4d398266c3da473eec985efe4459161a1254fb3da5b757f8a9273c64"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/paths-sdk001/run001.json",
+      "bytes": 4303,
+      "sha256": "aafc6ed5c9d585812b2d1a6c1b3f9cc1134c1ffa594bed3ccb5fb1cf613e6e26"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/rgb-sdk001/run001.json",
+      "bytes": 4281,
+      "sha256": "f746dfa710caef2c25139a92c3d7e7f8c953e339021ca625d2a2bc27dd6b76e4"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/baseline001/run001.json",
+      "bytes": 1392,
+      "sha256": "88c622cc31af01b2d51062f3c5c60ffb7d14232903371777a6834bdf1292368b"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/rgb001/run001.json",
+      "bytes": 1578,
+      "sha256": "656fce1458818398205e576ce52a393b9ef846aedece6bcfc38de14dc48d5d2f"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/test-before-driver-eol-fix001.py",
+      "bytes": 4596,
+      "sha256": "d45766c1289d4b36c7259a81a04000b1d538795df5b6b3efb97bebe25ee2b71d"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/linux001/run001.json",
+      "bytes": 848,
+      "sha256": "892f217c856f93e95ef861603817073b9219149d7704e47418f6bb125310f2ed"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/build002/native.xml",
+      "bytes": 5911,
+      "sha256": "fc37c39b5e15404c803f4f984913d9743b2dce4f4949aa3be82e859d1eeb6d56"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/linux001/native.xml",
+      "bytes": 851,
+      "sha256": "47cd25f676bcbcb749417bcc7259043925b9b0deb753acfe850f20aded196a2f"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/source001/pytest.xml",
+      "bytes": 81210,
+      "sha256": "e054660f5b3d4b73fbbbe3bd61bd4a74534549454991631d5a57b610de6afe3f"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/installed-python001/pytest.xml",
+      "bytes": 83641,
+      "sha256": "684b02681b97095d8c075fb82d3bf61f2fcfe72819959b6c6a167d092d7a45f3"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/rgb002/pytest.xml",
+      "bytes": 89678,
+      "sha256": "a82a40f26020b4440630d04632f4919e0a1fdc5a43ea78b1504a9268378a1705"
+    },
+    {
+      "path": "tests/fixtures/rgb-conversion-imagej154r.json",
+      "bytes": 241032,
+      "sha256": "2d158140ed1b3662365d01dc700adbf0e5f87415057b43fe378076c4f8735a35"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/reference001/RgbConversionReference.java",
+      "bytes": 3199,
+      "sha256": "c70090c9c218effa2b847b430c8d39bb422dc1ee1d12a6caa10c6c20d6d75776"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/reference001/javac.args",
+      "bytes": 40775,
+      "sha256": "04861ad14f4b276594e0ee43d71e7d59d2df1748d9a5d76c55dc336d88d4b2f4"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/reference001/javac.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/reference001/javac.stderr",
+      "bytes": 22821,
+      "sha256": "e28d00850b6c1ce9c7f0a93b0ce7d9a4428419f5c49ff1af112e8aaa8d3359d4"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/reference001/java.stdout",
+      "bytes": 51697,
+      "sha256": "c6a7a4ac35af14c66ca9b519d2f31eb25de088c5847bc75aced8d1284bd37113"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/reference001/java.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/baseline001/baseline001.json",
+      "bytes": 316,
+      "sha256": "3e85d904bf622ac1fd8c9677451d1220a463fb13eb3515d34368997a7b74b555"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/process-cpp001/capture001/case.json",
+      "bytes": 18505036,
+      "sha256": "8f302c9b9ef8578e892884f36cb46b7e381028e0040647d0d09ab801f783298c"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/process-installed-cpp001/capture001/case.json",
+      "bytes": 18509636,
+      "sha256": "dfa44d45dc3f72f2e48da9926fd3d73e53985ccfb10ee888a5f126384d2d1fe5"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/policy001.json",
+      "bytes": 255,
+      "sha256": "1bef12435bf3b5e613a6520d09a260e1ae696acc090fe4d50b24dcc2c6b44367"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/linux001/ext4-scratch001.json",
+      "bytes": 1777,
+      "sha256": "e2d7b789aaf4619002a79185fb3228397c814a94e200344d4fa2d1032097adcc"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/linux001/ext4-scratch001.zip",
+      "bytes": 6389,
+      "sha256": "3e0ef298e3c4a6f3bbca5a0694831f71dedec069d14dc87ee9362ffdc7b7ee67"
+    },
+    {
+      "path": "build/p06zn-rgb-conversion001/cleanup001.json",
+      "bytes": 590610,
+      "sha256": "dc84578383e246e749d06f8d0aa46bdb285a917e8b6abec582c80c7ed0689cca"
+    }
+  ],
+  "native_windows_suites": 19,
+  "linux_native_suites": 3,
+  "source_cases": 582,
+  "installed_cases": 602,
+  "focused_conversion_cases": 600,
+  "remaining": [
+    "Resolved RGB dataset command with frozen palette/range/composite intent, explicit C-axis layout and bounded ROI/annotation/label/display/calibration transforms; then menu, preview and portable recording",
+    "RGB/HSB stack interchange and indexed quantization/global-palette round trips; density/threshold/LUT/editor reference and full resource/platform/release qualification",
+    "All ImageJ/commercial Fiji and previous filesystem obligations; All99 remains42/57/0, Source901 unchanged; historical source fingerprints require requalification"
+  ],
+  "scientific_rgb_menu_enabled": false,
+  "profile_accepted": false,
+  "family_completed": false,
+  "broad_goal": "active"
+}

@@ -1,0 +1,205 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_owned_increment",
+  "review_type": "Root authorship/integration attestation, not independent legal review",
+  "license": "Existing project MIT for original native scientific workflow planner and Python adapters",
+  "new_dependencies": [],
+  "restricted_features_added": false,
+  "imported_third_party_product_code": [],
+  "new_fonts": [],
+  "sources": [
+    {
+      "logical_path": "CMakeLists.txt",
+      "before": {
+        "path": "build/p06q-native-workflow001/before001/CMakeLists.txt",
+        "bytes": 59960,
+        "sha256": "10b6bdb1a08a5ae8a31c3339ecc9f614b46c606bfd62861d9f6aa9ab7c34a3d4"
+      },
+      "after": {
+        "path": "build/p06q-native-workflow001/after001/CMakeLists.txt",
+        "bytes": 60310,
+        "sha256": "fc03a96a5d14ad2b943bccf2f7615aa2897cbf05234ab9097b9dd32f61d5f6e5"
+      },
+      "current": {
+        "path": "CMakeLists.txt",
+        "bytes": 60310,
+        "sha256": "fc03a96a5d14ad2b943bccf2f7615aa2897cbf05234ab9097b9dd32f61d5f6e5"
+      }
+    },
+    {
+      "logical_path": "src/imagejxx/__init__.py",
+      "before": {
+        "path": "build/p06q-native-workflow001/before001/src/imagejxx/__init__.py",
+        "bytes": 62782,
+        "sha256": "a20f66e27b7ef96c90eec6721197344385ad7e2abe0a7287cd6cf378209d22ec"
+      },
+      "after": {
+        "path": "build/p06q-native-workflow001/after001/src/imagejxx/__init__.py",
+        "bytes": 62970,
+        "sha256": "d1c70d15502fd4f93372b420df98f94b529bf661fb6dc53b7278685b63fe7657"
+      },
+      "current": {
+        "path": "src/imagejxx/__init__.py",
+        "bytes": 62970,
+        "sha256": "d1c70d15502fd4f93372b420df98f94b529bf661fb6dc53b7278685b63fe7657"
+      }
+    },
+    {
+      "logical_path": "src/native/bindings.cpp",
+      "before": {
+        "path": "build/p06q-native-workflow001/before001/src/native/bindings.cpp",
+        "bytes": 30008,
+        "sha256": "a24c76f4a37d65dd81fe090396d8d64070fe8f0623d6b53897da3c382009eb72"
+      },
+      "after": {
+        "path": "build/p06q-native-workflow001/after001/src/native/bindings.cpp",
+        "bytes": 30085,
+        "sha256": "86a106f14235e352806807343f7a6a6bc95dfcec561fe22d3e7f88366397fc26"
+      },
+      "current": {
+        "path": "src/native/bindings.cpp",
+        "bytes": 30085,
+        "sha256": "86a106f14235e352806807343f7a6a6bc95dfcec561fe22d3e7f88366397fc26"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_annotation_export_bindings.cpp",
+      "before": {
+        "path": "build/p06q-native-workflow001/before001/src/native/imagej_annotation_export_bindings.cpp",
+        "bytes": 19653,
+        "sha256": "fd047d628b816d0662692b09164b92b125ece2254df27e75240e29c84ad9dc7e"
+      },
+      "after": {
+        "path": "build/p06q-native-workflow001/after001/src/native/imagej_annotation_export_bindings.cpp",
+        "bytes": 19930,
+        "sha256": "fe050aab38e53941ee2478b5d9502ed7edbae287a138d5fb41ee1c2758671a90"
+      },
+      "current": {
+        "path": "src/native/imagej_annotation_export_bindings.cpp",
+        "bytes": 19930,
+        "sha256": "fe050aab38e53941ee2478b5d9502ed7edbae287a138d5fb41ee1c2758671a90"
+      }
+    },
+    {
+      "logical_path": "src/native/imagej_annotation_import_bindings.cpp",
+      "before": {
+        "path": "build/p06q-native-workflow001/before001/src/native/imagej_annotation_import_bindings.cpp",
+        "bytes": 10677,
+        "sha256": "7abbc7056d3da03ce1b13e13738343b59dd908420a16f8e23c3faf109a354254"
+      },
+      "after": {
+        "path": "build/p06q-native-workflow001/after001/src/native/imagej_annotation_import_bindings.cpp",
+        "bytes": 10850,
+        "sha256": "a527e20d720aa3276a0fc72c3cd5b6a41e589f779ebb0300bade6cb688ce1a63"
+      },
+      "current": {
+        "path": "src/native/imagej_annotation_import_bindings.cpp",
+        "bytes": 10850,
+        "sha256": "a527e20d720aa3276a0fc72c3cd5b6a41e589f779ebb0300bade6cb688ce1a63"
+      }
+    },
+    {
+      "logical_path": "src/native/operation_bindings.cpp",
+      "before": {
+        "path": "build/p06q-native-workflow001/before001/src/native/operation_bindings.cpp",
+        "bytes": 48292,
+        "sha256": "14becd169c7a11dde6808a22beb78c8f8e711131187443555a0aca38390b4f7b"
+      },
+      "after": {
+        "path": "build/p06q-native-workflow001/after001/src/native/operation_bindings.cpp",
+        "bytes": 48394,
+        "sha256": "a23ad4bb2027236dd1c3a62ff75f0a70f43aaef2f9dab757723ec0fd9b97cfc1"
+      },
+      "current": {
+        "path": "src/native/operation_bindings.cpp",
+        "bytes": 48394,
+        "sha256": "a23ad4bb2027236dd1c3a62ff75f0a70f43aaef2f9dab757723ec0fd9b97cfc1"
+      }
+    },
+    {
+      "logical_path": "include/imagejxx/native_workflow.hpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-native-workflow001/after001/include/imagejxx/native_workflow.hpp",
+        "bytes": 3773,
+        "sha256": "b9e12f2d5a963d00766a77e93f8920f872fd577c548d7bfd45f00ad30092f6aa"
+      },
+      "current": {
+        "path": "include/imagejxx/native_workflow.hpp",
+        "bytes": 3773,
+        "sha256": "b9e12f2d5a963d00766a77e93f8920f872fd577c548d7bfd45f00ad30092f6aa"
+      }
+    },
+    {
+      "logical_path": "src/native/native_workflow.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-native-workflow001/after001/src/native/native_workflow.cpp",
+        "bytes": 15455,
+        "sha256": "c9ba9ee9e5f1f0370622800ca34693fe70d268f550052109bbb6ecb4afa86984"
+      },
+      "current": {
+        "path": "src/native/native_workflow.cpp",
+        "bytes": 15455,
+        "sha256": "c9ba9ee9e5f1f0370622800ca34693fe70d268f550052109bbb6ecb4afa86984"
+      }
+    },
+    {
+      "logical_path": "src/native/native_workflow_internal.hpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-native-workflow001/after001/src/native/native_workflow_internal.hpp",
+        "bytes": 539,
+        "sha256": "a934505f5909d6c1b7a7090a15caaf8fce3cc87c0c98bf48e073ef96b0c580f1"
+      },
+      "current": {
+        "path": "src/native/native_workflow_internal.hpp",
+        "bytes": 539,
+        "sha256": "a934505f5909d6c1b7a7090a15caaf8fce3cc87c0c98bf48e073ef96b0c580f1"
+      }
+    },
+    {
+      "logical_path": "src/native/native_workflow_bindings.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-native-workflow001/after001/src/native/native_workflow_bindings.cpp",
+        "bytes": 7494,
+        "sha256": "9f3cd9d68b4c7a43e716c9e4114b16bdc2799a66392404ef1f039b8dfe1ba3cb"
+      },
+      "current": {
+        "path": "src/native/native_workflow_bindings.cpp",
+        "bytes": 7494,
+        "sha256": "9f3cd9d68b4c7a43e716c9e4114b16bdc2799a66392404ef1f039b8dfe1ba3cb"
+      }
+    },
+    {
+      "logical_path": "tests/native/test_native_workflow.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-native-workflow001/after001/tests/native/test_native_workflow.cpp",
+        "bytes": 4430,
+        "sha256": "9cafa247142b23a0cb9964cf3b020b6024d1b900fac3ca8855b62191b6597d3d"
+      },
+      "current": {
+        "path": "tests/native/test_native_workflow.cpp",
+        "bytes": 4430,
+        "sha256": "9cafa247142b23a0cb9964cf3b020b6024d1b900fac3ca8855b62191b6597d3d"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_native_workflow.py",
+      "before": null,
+      "after": {
+        "path": "build/p06q-native-workflow001/after001/tests/python/test_native_workflow.py",
+        "bytes": 11611,
+        "sha256": "f2dcba25dd7ce44c61f75de2cd9738ca79c22b9690115c24cb1ffceb7d5d866f"
+      },
+      "current": {
+        "path": "tests/python/test_native_workflow.py",
+        "bytes": 11611,
+        "sha256": "f2dcba25dd7ce44c61f75de2cd9738ca79c22b9690115c24cb1ffceb7d5d866f"
+      }
+    }
+  ],
+  "scope": "C++ SDK/Python path-free scientific workflow planning prerequisite; generic host Run/Batch and filesystem publication remain pending"
+}

@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "id": "G042-rank-registration-001",
+  "state": "additive_planning_registration_only_no_acceptance",
+  "proposal": {
+    "path": "build/p06f-001/registration-prep001/registration-proposal.json",
+    "bytes": 19042,
+    "sha256": "a3221a30505ae9397adfa5e594906ed842e9fac4611b83a375a2db9d57094520"
+  },
+  "consumed_card_drift_reconciled": [
+    {
+      "expected": {
+        "path": "docs/packets/P06f-rank-editor.md",
+        "bytes": 7740,
+        "sha256": "5a8ae0f5bf2249c75ef1a221787be483d627927141ef70c7d2362d06764630d5"
+      },
+      "actual": {
+        "path": "docs/packets/P06f-rank-editor.md",
+        "bytes": 8111,
+        "sha256": "4acf0f763e93771b645264daf597f4cd8b772919b32f688b1a10b25f85df440c"
+      },
+      "root_reconciliation": "Mutable execution card advanced native/Python evidence; adopted numerical/command contracts and every other consumed input remain exact. Read current card before adoption; no requirement contract changes."
+    }
+  ],
+  "before": [
+    {
+      "path": "build/p06f-001/registration-prep001/adoption001/commands.json.before",
+      "bytes": 3107284,
+      "sha256": "50f2dfaf9bc4c95cabfef8afd9c7f96d5367da4472cddd2b5e0947635205f8e0"
+    },
+    {
+      "path": "build/p06f-001/registration-prep001/adoption001/benchmarks.json.before",
+      "bytes": 243,
+      "sha256": "327c152e1c06006f309592320f99494e342e65dc4db9bf9468146b8502286c63"
+    }
+  ],
+  "after": [
+    {
+      "path": "docs/parity/commands.json",
+      "bytes": 3160933,
+      "sha256": "b568af585ad8880b9dc111ebaec5675102fce5010d96d321c53fd6d40371be70"
+    },
+    {
+      "path": "docs/parity/benchmarks.json",
+      "bytes": 3883,
+      "sha256": "c586788d74fac8119f751c5cbdb943a1c7ee06269e78635a54c7f1fafe4be60c"
+    }
+  ],
+  "delta": {
+    "requirement_ids": [
+      "G042.rank-imagej.profile-method-radius",
+      "G042.rank-imagej.targets-roi",
+      "G042.rank-imagej.preview-publication",
+      "G042.rank-imagej.lifecycle-resources",
+      "G042.rank-imagej.record-replay-rebind",
+      "G042.rank-imagej.persistence-surfaces"
+    ],
+    "benchmark_id": "B.G042.rank-imagej.processing-editor.001",
+    "benchmark_budgets": "proposed_unratified_unmeasured"
+  },
+  "structural_validation": {
+    "function": "scripts/parity_schema.py:validate_documents",
+    "before": {
+      "requirements": 52,
+      "additions": 0,
+      "formats": 1,
+      "fixtures": 10,
+      "benchmarks": 0,
+      "platforms": 1
+    },
+    "after": {
+      "requirements": 58,
+      "additions": 0,
+      "formats": 1,
+      "fixtures": 10,
+      "benchmarks": 1,
+      "platforms": 1
+    }
+  },
+  "counts": {
+    "requirements": 58,
+    "implementation_status": {
+      "partial": 54,
+      "open": 4
+    },
+    "families_with_children": 11,
+    "families_without_children": 88,
+    "family_states": {
+      "in_progress": 40,
+      "open": 59
+    }
+  },
+  "preservation": {
+    "all_2810_candidates_and_all_52_existing_requirements": "identical_objects_and_original_bytes_retained_in_order",
+    "commands_other_fields": "identical",
+    "unrelated_manifests": "byte_identical",
+    "inventory": {
+      "path": "docs/parity/inventory.json",
+      "bytes": 8971222,
+      "sha256": "25faee75b1879f067c4d1728f93e882b27bf407b6484252a87287b8f812c7770"
+    },
+    "families_and_commercial_decisions": "unchanged",
+    "new_fixture_run_surface_proof_or_consumer_bindings": 0
+  },
+  "pending": [
+    "Concrete interface assertions and independently expected fixture carriers before qualification",
+    "Rank shared lanes/panel/Window/replay integration and installed core-only SDK/both-launch qualification",
+    "Freeze actual benchmark observers and fixture hashes, qualify installed functionality, then measure declared endpoints; final artifact binding follows",
+    "Full99-family and eligible pinned Fiji/M0 requirements; all new commercial and verification statuses remain pending/unverified"
+  ],
+  "acceptance": {
+    "runtime": false,
+    "commercial": false,
+    "family": false,
+    "benchmark": false,
+    "platform": false,
+    "release": false
+  }
+}

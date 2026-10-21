@@ -1,0 +1,451 @@
+{
+  "schema_version": 1,
+  "state": "passed",
+  "scope": "Remove NaNs quiet-NaN Float32 C++/Python pixel API; command and UI remain open",
+  "reference_observations": 84,
+  "admitted_observations": 72,
+  "bitwise_planes_per_native_platform": 216,
+  "native_checks_per_platform": 216477,
+  "native_regression_suites_per_platform": 4,
+  "python_cases_per_source_installed_context": 1506,
+  "new_python_cases_per_context": 100,
+  "source_installed_inventory_equal": true,
+  "independent_oracle_bitwise_planes": 168,
+  "installed_cpp_sdk_consumer_passed": true,
+  "products": [
+    {
+      "path": "build/p07q-remove-nans001/installed001/python-prefix001/imagejxx/_native.cp312-win_amd64.pyd",
+      "bytes": 6238208,
+      "sha256": "b74b65c8e42980089a5d0f2842a2fd46fd8226fcf8de0f5654cad80adc614605"
+    },
+    {
+      "path": "build/p07q-remove-nans001/sdk001/sdk-prefix001/lib/imagejxx_core.lib",
+      "bytes": 45602336,
+      "sha256": "a85e22dd2e0c3836190b20bfeff5959de5fd47bb2da14162130e62da3fbc8818"
+    }
+  ],
+  "verified_source_freeze_pins": 4157,
+  "diff_whitespace_checked": [
+    "CMakeLists.txt",
+    "include\\imagejxx\\rank.hpp",
+    "src\\imagejxx\\__init__.py",
+    "src\\native\\binding_arrays.hpp",
+    "src\\native\\dataset_bindings.cpp",
+    "src\\native\\rank.cpp",
+    "src\\native\\rank_command_bindings.cpp"
+  ],
+  "cleanup_removed_targets": 9,
+  "net_scratch_bytes_cleaned": 69138963,
+  "commercial_scope": "Owned implementation; no new dependency, non-commercial plugin or reference runtime incorporated",
+  "remaining": [
+    "Typed command/strict records/geometry admission",
+    "Atomic publication, preview and new-image history",
+    "Shared C++/Python ImGui controls and actual-input qualification",
+    "Coherent full host/installed/common regression gates",
+    "Infinity and signaling-NaN profiles",
+    "Remaining ImageJ/Fiji gaps"
+  ],
+  "retained_failures": [
+    "Windows001: new test omitted required plane index; fixed test invocation, no assertion weakened",
+    "Linux001: same known frozen compile issue; owned group terminated before duplicate compilation, cleanup verified; partial cache replaced from verified archive",
+    "Independent stable-sort oracle001: numeric values matched but 285 signed-zero bit ties differed; oracle002 uses exact partition selection and matches all 168 observed planes"
+  ],
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  },
+  "goal_complete": false,
+  "receipt_pins": [
+    {
+      "path": "build/p07q-remove-nans001/cleanup-reference001.json",
+      "bytes": 79965,
+      "sha256": "441e53e45e263671b6b4fd985fbe1b946ac45e4b104114f5e14a844211e94993"
+    },
+    {
+      "path": "build/p07q-remove-nans001/cleanup001.json",
+      "bytes": 299049,
+      "sha256": "bdadc62c9b45318406dc3c0c0b23ec7897d77d2fe57ae71b4830e908c3b01961"
+    },
+    {
+      "path": "build/p07q-remove-nans001/cleanup001.py",
+      "bytes": 2037,
+      "sha256": "1f2b4f3a9abd8b9f64735a405d0180d9a7927ec2d115303f247ce3c84924da8a"
+    },
+    {
+      "path": "build/p07q-remove-nans001/finalize001.py",
+      "bytes": 6626,
+      "sha256": "b6396f78a76849b43177483fdda5e8aeaa99ea806663bd56774a116c888754ce"
+    },
+    {
+      "path": "build/p07q-remove-nans001/install001.py",
+      "bytes": 7938,
+      "sha256": "51978c047f159a701e6ead38db28d8af79dffaebd7467395dbf37eb2b9daa4ca"
+    },
+    {
+      "path": "build/p07q-remove-nans001/installed-worker001.py",
+      "bytes": 1599,
+      "sha256": "60a27c972ac21242dba043bb101c1e3cd394a380a363a47f4a17f05ca4426e48"
+    },
+    {
+      "path": "build/p07q-remove-nans001/linux-worker001.py",
+      "bytes": 3681,
+      "sha256": "939005c22e3eeec998b460f2cc5aff7377dd0bc127a8af6c259296d08a305def"
+    },
+    {
+      "path": "build/p07q-remove-nans001/linux-worker002.py",
+      "bytes": 3286,
+      "sha256": "cf539e29f86f1e42971667146a560e86109580c4902adb6d0861be1043eddf28"
+    },
+    {
+      "path": "build/p07q-remove-nans001/linux001.py",
+      "bytes": 6598,
+      "sha256": "c12a2090ef13ebe2de7d1fc9de31b64d1a4bb99d1c47e17b78f3ae9367eca050"
+    },
+    {
+      "path": "build/p07q-remove-nans001/linux002.py",
+      "bytes": 6598,
+      "sha256": "ed170b849d911ea7d553f754370d35422ee94840d834c63d06838d74db66da38"
+    },
+    {
+      "path": "build/p07q-remove-nans001/oracle001.py",
+      "bytes": 2380,
+      "sha256": "100a418288aed878c61d4e997d20af78feaf4277e53d1fbab2901986426bc2c3"
+    },
+    {
+      "path": "build/p07q-remove-nans001/oracle002.py",
+      "bytes": 2890,
+      "sha256": "4257c9a4311620a7735aa179ecc1d8c231ab611edd77c2efdeb381eab32fa2f7"
+    },
+    {
+      "path": "build/p07q-remove-nans001/python-worker001.py",
+      "bytes": 1306,
+      "sha256": "662efc00149681e914d4910c950b85d41b53bce17fc5b2371f7f9c87d27b2e12"
+    },
+    {
+      "path": "build/p07q-remove-nans001/qualify001.py",
+      "bytes": 6519,
+      "sha256": "598883686254e83a4c34d889f442483ffcf02779ed478c56f0600bd7381a8752"
+    },
+    {
+      "path": "build/p07q-remove-nans001/restore001.json",
+      "bytes": 124,
+      "sha256": "84962e39515dc362ea9fe18bb3e5f5ca25a20ec3848eaab4b7b778ed4ef5bc23"
+    },
+    {
+      "path": "build/p07q-remove-nans001/sdk-consumer001.cpp",
+      "bytes": 701,
+      "sha256": "de50904c3005bd2b847dbc6199636f354af3d75be83459d7ff19a747109ee0f9"
+    },
+    {
+      "path": "build/p07q-remove-nans001/installed001/core-evidence001.json",
+      "bytes": 43,
+      "sha256": "f766906ae740f75250789b387fa3373fb90243b93b6bf22288f332ef3076de75"
+    },
+    {
+      "path": "build/p07q-remove-nans001/installed001/install-processing.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07q-remove-nans001/installed001/install-processing.stdout",
+      "bytes": 4676,
+      "sha256": "56e76d0cbae2775ecc5cb10278c378cc6a4e70bf2ad814a58e94944d15aa8008"
+    },
+    {
+      "path": "build/p07q-remove-nans001/installed001/origins001.json",
+      "bytes": 288,
+      "sha256": "67e84f072111358a3bde543eb8580bca55b2e6e14ea71b6b818c4c9a710ea75d"
+    },
+    {
+      "path": "build/p07q-remove-nans001/installed001/pytest.xml",
+      "bytes": 204114,
+      "sha256": "73e4dd4c21a8661f1cd5ad7f853c308b74391840d1c0b6816d3160744eb5a65e"
+    },
+    {
+      "path": "build/p07q-remove-nans001/installed001/python.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07q-remove-nans001/installed001/python.stdout",
+      "bytes": 1807,
+      "sha256": "d3385e7a8662139fc7e2a25bd0db258b20341bc5ef3cbf22e85042c91e4d09a2"
+    },
+    {
+      "path": "build/p07q-remove-nans001/installed001/run001.json",
+      "bytes": 2796,
+      "sha256": "6328db1cc6cc2177633460ab6730550ccd4d1ae835c0461283d2c65d67658b2c"
+    },
+    {
+      "path": "build/p07q-remove-nans001/installed001/source-freeze001.json",
+      "bytes": 163927,
+      "sha256": "ba1ad9bc2af0f2bc567b4c797ac357be288bd7b4d4c88f842879f092b4c946af"
+    },
+    {
+      "path": "build/p07q-remove-nans001/linux001/run001.json",
+      "bytes": 921,
+      "sha256": "bd8f2073afd8630ca9dbaa73d411a40c9a8b24e750d761985114ef5aec99307b"
+    },
+    {
+      "path": "build/p07q-remove-nans001/linux001/source-freeze001.json",
+      "bytes": 47851,
+      "sha256": "77537d4778c73d7833dc98296be27b2c7963b967268b61a44af47dc2be2d8e7f"
+    },
+    {
+      "path": "build/p07q-remove-nans001/linux001/stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07q-remove-nans001/linux001/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07q-remove-nans001/linux001/superseded001.json",
+      "bytes": 195,
+      "sha256": "d35be361cfe5cc7ec73840f04e1faa39f146eb396e9464c6f00bbf013aa25a50"
+    },
+    {
+      "path": "build/p07q-remove-nans001/linux002/cache-reuse001.json",
+      "bytes": 116,
+      "sha256": "f55f31fa2cd9833a710d46ea28724fc462d8d3cd051437cfeb9cbb1013c00702"
+    },
+    {
+      "path": "build/p07q-remove-nans001/linux002/ext4-scratch001.json",
+      "bytes": 259,
+      "sha256": "3c8de3664ee8fb4b51475073a4a11c4813d51d7d3990fe2c1e0d40992c4cf49d"
+    },
+    {
+      "path": "build/p07q-remove-nans001/linux002/native.xml",
+      "bytes": 2094,
+      "sha256": "adaf803246a55214f910ac4cafd6664d97f6669da162bf13740a41b4ce83be0c"
+    },
+    {
+      "path": "build/p07q-remove-nans001/linux002/run001.json",
+      "bytes": 839,
+      "sha256": "7b6b4495ff252c180b7d7ee9e107b8f4e66caf0553e8b7d6f201a6df325dbbed"
+    },
+    {
+      "path": "build/p07q-remove-nans001/linux002/source-freeze001.json",
+      "bytes": 47851,
+      "sha256": "19c48e9848b755b5c965f0e6a9c2024159a8a4155cfc6586f11ea2320445d301"
+    },
+    {
+      "path": "build/p07q-remove-nans001/linux002/stderr.txt",
+      "bytes": 86337,
+      "sha256": "9656714e3b5603dcdebcb1d66a0785072a4965e80eca73f9d8f3a9604f92056e"
+    },
+    {
+      "path": "build/p07q-remove-nans001/linux002/stdout.txt",
+      "bytes": 10829,
+      "sha256": "2f689dc1c35f7383539c74bc952496f6b5ac197d492c89ce71a0b29a9dab4bae"
+    },
+    {
+      "path": "build/p07q-remove-nans001/reference001/independent-oracle001.json",
+      "bytes": 52687,
+      "sha256": "7977705f256257a082da51f3ab47788d9e0c8e6e99846ea5032aebeb723aa45d"
+    },
+    {
+      "path": "build/p07q-remove-nans001/reference001/independent-oracle002.json",
+      "bytes": 296,
+      "sha256": "28462cbc769b435d508c05f4dc866d9d4219ed5a4a2044c37f41326348e610db"
+    },
+    {
+      "path": "build/p07q-remove-nans001/reference001/IndexedTypeReference.java",
+      "bytes": 4151,
+      "sha256": "6f0abf1444dd5595c92ff66d87de6a9f716c4d298169c8b507f2a54952ab5775"
+    },
+    {
+      "path": "build/p07q-remove-nans001/reference001/java.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07q-remove-nans001/reference001/java.stdout",
+      "bytes": 2040094,
+      "sha256": "2fbba8032dbfe64dff4ea687bbd4ac4f926b979bc70c6c8c5a0c47b77e9ab0a3"
+    },
+    {
+      "path": "build/p07q-remove-nans001/reference001/javac.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07q-remove-nans001/reference001/javac.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07q-remove-nans001/reference001/reference001.json",
+      "bytes": 2170611,
+      "sha256": "2b5cf7bf127f771fbbbaed2e8183846400d7d9c1928bbec0d85d5f6cdae8e43a"
+    },
+    {
+      "path": "build/p07q-remove-nans001/sdk001/install-sdk.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07q-remove-nans001/sdk001/install-sdk.stdout",
+      "bytes": 11838,
+      "sha256": "ab0da240b562d13a9d149a11f524022c13de28ac38647c8ea6009c867c63de77"
+    },
+    {
+      "path": "build/p07q-remove-nans001/sdk001/run001.json",
+      "bytes": 5202,
+      "sha256": "8a5904174093cd7d16932eb58ba03ad285675780bb7534e1a91b08d5f77774d4"
+    },
+    {
+      "path": "build/p07q-remove-nans001/sdk001/sdk-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07q-remove-nans001/sdk001/sdk-build.stdout",
+      "bytes": 453,
+      "sha256": "4a44438548df15fc1a42dc6b54caafec69030209fdfd4c6724dd5963189e808c"
+    },
+    {
+      "path": "build/p07q-remove-nans001/sdk001/sdk-configure.stderr",
+      "bytes": 115,
+      "sha256": "03d38095766b425301057c85ef5f15d6dc4ca7d6ed363b2de3adcf2fabfc0648"
+    },
+    {
+      "path": "build/p07q-remove-nans001/sdk001/sdk-configure.stdout",
+      "bytes": 949,
+      "sha256": "a18983908098172d3e5074ce6370b3eecef34376c555d77a37d916b3afb23580"
+    },
+    {
+      "path": "build/p07q-remove-nans001/sdk001/sdk-run.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07q-remove-nans001/sdk001/sdk-run.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07q-remove-nans001/sdk001/source-freeze001.json",
+      "bytes": 163927,
+      "sha256": "ba1ad9bc2af0f2bc567b4c797ac357be288bd7b4d4c88f842879f092b4c946af"
+    },
+    {
+      "path": "build/p07q-remove-nans001/source001/core-evidence001.json",
+      "bytes": 43,
+      "sha256": "f766906ae740f75250789b387fa3373fb90243b93b6bf22288f332ef3076de75"
+    },
+    {
+      "path": "build/p07q-remove-nans001/source001/pytest.xml",
+      "bytes": 204114,
+      "sha256": "94183ed432749ea19b950e7addb7bb9e874a7637fd8827c7f0b33fe7acc7d05c"
+    },
+    {
+      "path": "build/p07q-remove-nans001/source001/python.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07q-remove-nans001/source001/python.stdout",
+      "bytes": 1804,
+      "sha256": "ad3aea9502238ba9fbde9d158b40b0f076af3e7ac5ffb3b6cbeb3260278b04b0"
+    },
+    {
+      "path": "build/p07q-remove-nans001/source001/run001.json",
+      "bytes": 1376,
+      "sha256": "ce7a7efcab2190afa62c5b9f917663afe29b6574fa9206f06d18ffc367628d9f"
+    },
+    {
+      "path": "build/p07q-remove-nans001/source001/source-freeze001.json",
+      "bytes": 163927,
+      "sha256": "ba1ad9bc2af0f2bc567b4c797ac357be288bd7b4d4c88f842879f092b4c946af"
+    },
+    {
+      "path": "build/p07q-remove-nans001/windows001/configure.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07q-remove-nans001/windows001/configure.stdout",
+      "bytes": 605,
+      "sha256": "28f80c087d18d780d72b2315ac412e6f266c029f767c33a262edb6f3461fe9ef"
+    },
+    {
+      "path": "build/p07q-remove-nans001/windows001/core-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07q-remove-nans001/windows001/core-build.stdout",
+      "bytes": 2376,
+      "sha256": "cf1473c6afea2d9b3f981e6c480f97f5473b84444129cb2559f4b5a31424fed5"
+    },
+    {
+      "path": "build/p07q-remove-nans001/windows001/run001.json",
+      "bytes": 2972,
+      "sha256": "01df5ac3805e736e6f73beb2077b7542c6159db017972fad32b7c327132dd45b"
+    },
+    {
+      "path": "build/p07q-remove-nans001/windows001/source-freeze001.json",
+      "bytes": 163927,
+      "sha256": "19727e31b464f3abc6265f9cf763019b2e95aa1f53502ddeb88df59e7f518fb5"
+    },
+    {
+      "path": "build/p07q-remove-nans001/windows002/configure.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07q-remove-nans001/windows002/configure.stdout",
+      "bytes": 605,
+      "sha256": "1e41f6a927424143977a899b4a4d417522802217e404c1558c423aa84fc6d5c3"
+    },
+    {
+      "path": "build/p07q-remove-nans001/windows002/core-build.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07q-remove-nans001/windows002/core-build.stdout",
+      "bytes": 2076,
+      "sha256": "2b811bf4c7812247469c509ef35c2e0742ccca519b56289abfb57fdf57341bb6"
+    },
+    {
+      "path": "build/p07q-remove-nans001/windows002/native.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p07q-remove-nans001/windows002/native.stdout",
+      "bytes": 656,
+      "sha256": "3a96c3da35e75812756d3f8dc5bcb07ddaa24440e41f3d81da81b51756cf613c"
+    },
+    {
+      "path": "build/p07q-remove-nans001/windows002/native.xml",
+      "bytes": 2177,
+      "sha256": "81bf243be58917a1b7d850fd34438fcb7b2ea43a726b590e0bc5c51f1094bdd1"
+    },
+    {
+      "path": "build/p07q-remove-nans001/windows002/run001.json",
+      "bytes": 4184,
+      "sha256": "5ab39cb06f96fe9bb5dd393c85fe16efd31c267daaa521762f8e1664f38bf454"
+    },
+    {
+      "path": "build/p07q-remove-nans001/windows002/source-freeze001.json",
+      "bytes": 163927,
+      "sha256": "ba1ad9bc2af0f2bc567b4c797ac357be288bd7b4d4c88f842879f092b4c946af"
+    },
+    {
+      "path": "build/p07q-remove-nans001/sdk001/sdk-project001/CMakeLists.txt",
+      "bytes": 230,
+      "sha256": "d21c556e167f933389283d30534743bbf12263903490e59741414cc18df8f2f8"
+    },
+    {
+      "path": "build/p07q-remove-nans001/sdk001/sdk-project001/main.cpp",
+      "bytes": 701,
+      "sha256": "de50904c3005bd2b847dbc6199636f354af3d75be83459d7ff19a747109ee0f9"
+    }
+  ]
+}

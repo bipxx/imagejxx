@@ -1,0 +1,222 @@
+{
+  "schema_version": 1,
+  "decision": "eligible_for_declared_owned_increment",
+  "review_type": "Root authorship/integration attestation, not independent legal review",
+  "license": "Existing project MIT for original scheduler/panel integration, actual UI probes and tests",
+  "specification_sources": [
+    "Existing native JobScheduler/ExecutionControl, JobsPanel and ROI import/visual preparation APIs"
+  ],
+  "new_dependencies": [],
+  "restricted_features_added": false,
+  "imported_third_party_product_code": [],
+  "sources": [
+    {
+      "logical_path": "CMakeLists.txt",
+      "before": {
+        "path": "build/p06q-roi-jobs001/before001/CMakeLists.txt",
+        "bytes": 57172,
+        "sha256": "64aa88755fbccf77b62480c003b1bc50c08e213ee6c48d4fb685fafca126de60"
+      },
+      "after": {
+        "path": "build/p06q-roi-jobs001/held001/after/CMakeLists.txt",
+        "bytes": 57218,
+        "sha256": "e7f63df16df0f7d5df5d8b8fdb749208b94acbd515532d902aa2daf15ec3d3d8"
+      },
+      "current": {
+        "path": "CMakeLists.txt",
+        "bytes": 57218,
+        "sha256": "e7f63df16df0f7d5df5d8b8fdb749208b94acbd515532d902aa2daf15ec3d3d8"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_panel.hpp",
+      "before": {
+        "path": "build/p06q-roi-jobs001/before001/src/desktop/roi_import_panel.hpp",
+        "bytes": 917,
+        "sha256": "641a64113279bab5ff1f5475adbddf5fe2ab8c8364df34615528a361fc48a3e7"
+      },
+      "after": {
+        "path": "build/p06q-roi-jobs001/held001/after/src/desktop/roi_import_panel.hpp",
+        "bytes": 1070,
+        "sha256": "3316f32126d9511bda9b3ffaecdf9c47d0e27624aa9515193cd72d7613d04eb7"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_panel.hpp",
+        "bytes": 1070,
+        "sha256": "3316f32126d9511bda9b3ffaecdf9c47d0e27624aa9515193cd72d7613d04eb7"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_panel.cpp",
+      "before": {
+        "path": "build/p06q-roi-jobs001/before001/src/desktop/roi_import_panel.cpp",
+        "bytes": 23762,
+        "sha256": "f6e9fcd61de65b0d0506635a2569ad5f36b585af70849ebe73fafc10601024be"
+      },
+      "after": {
+        "path": "build/p06q-roi-jobs001/held001/after/src/desktop/roi_import_panel.cpp",
+        "bytes": 25793,
+        "sha256": "a06fbdfa01202baf2f7eec48bb61d7c6107d2c69f688ba82a1eef11c3c844a29"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_panel.cpp",
+        "bytes": 25793,
+        "sha256": "a06fbdfa01202baf2f7eec48bb61d7c6107d2c69f688ba82a1eef11c3c844a29"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_preview.cpp",
+      "before": {
+        "path": "build/p06q-roi-jobs001/before001/src/desktop/roi_import_preview.cpp",
+        "bytes": 2977,
+        "sha256": "c8f3171714e5ee391806078ceacc42ba5514069e4fd34d6a7013d805e8458e0e"
+      },
+      "after": {
+        "path": "build/p06q-roi-jobs001/held001/after/src/desktop/roi_import_preview.cpp",
+        "bytes": 3181,
+        "sha256": "a106bd9a9c677a7df2e742e0abc17ba678ebed63beefc0bf863f2a257ed1c479"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_preview.cpp",
+        "bytes": 3181,
+        "sha256": "a106bd9a9c677a7df2e742e0abc17ba678ebed63beefc0bf863f2a257ed1c479"
+      }
+    },
+    {
+      "logical_path": "src/desktop/window.cpp",
+      "before": {
+        "path": "build/p06q-roi-jobs001/before001/src/desktop/window.cpp",
+        "bytes": 557113,
+        "sha256": "e9002a9c2f2470b81133fcad44688c166fd33c13c108d91cd0ed57183edc2c81"
+      },
+      "after": {
+        "path": "build/p06q-roi-jobs001/held001/after/src/desktop/window.cpp",
+        "bytes": 557401,
+        "sha256": "b0941bf7cc2167694f0da7b46cb28b265ad66d5806fe72a8dcf3c7cfb578122f"
+      },
+      "current": {
+        "path": "src/desktop/window.cpp",
+        "bytes": 557401,
+        "sha256": "b0941bf7cc2167694f0da7b46cb28b265ad66d5806fe72a8dcf3c7cfb578122f"
+      }
+    },
+    {
+      "logical_path": "src/desktop/jobs_panel.hpp",
+      "before": {
+        "path": "build/p06q-roi-jobs001/before001/src/desktop/jobs_panel.hpp",
+        "bytes": 809,
+        "sha256": "870b9a97a4be902ead5d005be6692fd574fadce950a5f9da32d53974319f729a"
+      },
+      "after": {
+        "path": "build/p06q-roi-jobs001/held001/after/src/desktop/jobs_panel.hpp",
+        "bytes": 841,
+        "sha256": "1801df7d36e0041c748c75dd4508340acb7900e34f4f1dca05c1f4f1be344df2"
+      },
+      "current": {
+        "path": "src/desktop/jobs_panel.hpp",
+        "bytes": 841,
+        "sha256": "1801df7d36e0041c748c75dd4508340acb7900e34f4f1dca05c1f4f1be344df2"
+      }
+    },
+    {
+      "logical_path": "src/desktop/jobs_panel.cpp",
+      "before": {
+        "path": "build/p06q-roi-jobs001/before001/src/desktop/jobs_panel.cpp",
+        "bytes": 7672,
+        "sha256": "3b64adb067aba77331e035241b5875d4ed74755cf3e129dd9ec916b16327edc6"
+      },
+      "after": {
+        "path": "build/p06q-roi-jobs001/held001/after/src/desktop/jobs_panel.cpp",
+        "bytes": 8239,
+        "sha256": "730fc4f50ea4fe83a77b2426d83ea7d754d1b7fb0d38fe1d0b981e9b77f7634a"
+      },
+      "current": {
+        "path": "src/desktop/jobs_panel.cpp",
+        "bytes": 8239,
+        "sha256": "730fc4f50ea4fe83a77b2426d83ea7d754d1b7fb0d38fe1d0b981e9b77f7634a"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_jobs_ui_probe.cpp",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-jobs001/held001/after/src/desktop/roi_import_jobs_ui_probe.cpp",
+        "bytes": 10422,
+        "sha256": "46d7b838dd3ce1e494801048c99d33923efdc670d2927bc0401f90964c5cd963"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_jobs_ui_probe.cpp",
+        "bytes": 10422,
+        "sha256": "46d7b838dd3ce1e494801048c99d33923efdc670d2927bc0401f90964c5cd963"
+      }
+    },
+    {
+      "logical_path": "src/desktop/roi_import_ui_probe.hpp",
+      "before": {
+        "path": "build/p06q-roi-jobs001/before001/src/desktop/roi_import_ui_probe.hpp",
+        "bytes": 359,
+        "sha256": "cbe818173c57552af0df861c476616704e35b61dbe05326372a6741fef7c6cc7"
+      },
+      "after": {
+        "path": "build/p06q-roi-jobs001/held001/after/src/desktop/roi_import_ui_probe.hpp",
+        "bytes": 484,
+        "sha256": "0c21f465d883a8b76eb373616e426003b66d0f28d0f9f980f59d47dddf1d4162"
+      },
+      "current": {
+        "path": "src/desktop/roi_import_ui_probe.hpp",
+        "bytes": 484,
+        "sha256": "0c21f465d883a8b76eb373616e426003b66d0f28d0f9f980f59d47dddf1d4162"
+      }
+    },
+    {
+      "logical_path": "src/desktop/main.cpp",
+      "before": {
+        "path": "build/p06q-roi-jobs001/before001/src/desktop/main.cpp",
+        "bytes": 34031,
+        "sha256": "541a6f1a6a5c8992b7e91c2efc65a70b9efc12f6edafd758fd442bbaec1b02fa"
+      },
+      "after": {
+        "path": "build/p06q-roi-jobs001/held001/after/src/desktop/main.cpp",
+        "bytes": 34487,
+        "sha256": "2b0d5437e1cd3f2a5fd773b5b68a54cb365c51b92b6158fdc2c05860d246d836"
+      },
+      "current": {
+        "path": "src/desktop/main.cpp",
+        "bytes": 34487,
+        "sha256": "2b0d5437e1cd3f2a5fd773b5b68a54cb365c51b92b6158fdc2c05860d246d836"
+      }
+    },
+    {
+      "logical_path": "src/desktop/python.cpp",
+      "before": {
+        "path": "build/p06q-roi-jobs001/before001/src/desktop/python.cpp",
+        "bytes": 39595,
+        "sha256": "7929a384eab57c88a13fdaea25ad4e95c7f9a23f69813c2f7ed185569ac9dbce"
+      },
+      "after": {
+        "path": "build/p06q-roi-jobs001/held001/after/src/desktop/python.cpp",
+        "bytes": 39802,
+        "sha256": "7311e74cac7216eb4f62b577422d41c0e1612500a095514062b44dcd1de9ff90"
+      },
+      "current": {
+        "path": "src/desktop/python.cpp",
+        "bytes": 39802,
+        "sha256": "7311e74cac7216eb4f62b577422d41c0e1612500a095514062b44dcd1de9ff90"
+      }
+    },
+    {
+      "logical_path": "tests/python/test_imagej_roi_import_jobs_ui.py",
+      "before": null,
+      "after": {
+        "path": "build/p06q-roi-jobs001/held001/after/tests/python/test_imagej_roi_import_jobs_ui.py",
+        "bytes": 5123,
+        "sha256": "e3e25b04da52ff1f1b7d2abbdf20d66386fbdad27c88ba24d5fe61b46dccc135"
+      },
+      "current": {
+        "path": "tests/python/test_imagej_roi_import_jobs_ui.py",
+        "bytes": 5123,
+        "sha256": "e3e25b04da52ff1f1b7d2abbdf20d66386fbdad27c88ba24d5fe61b46dccc135"
+      }
+    }
+  ]
+}

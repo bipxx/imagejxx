@@ -1,0 +1,38 @@
+{
+  "schema": "imagejxx.parity.select-min-adoption",
+  "schema_version": 1,
+  "id": "P06c3.SelectMin.V01.002",
+  "state": "adopted_preimplementation_clarification_no_runtime_credit",
+  "recorded_at_utc": "2026-10-16T06:03:19.446679+00:00",
+  "base": {
+    "path": "docs/parity/reviews/P06c3-min-adoption-001.json",
+    "bytes": 12988,
+    "sha256": "7020850a0678b3110349543d419f9b5c530d4eff8c2f3f1055c2c80a64f6b77f"
+  },
+  "changed_input": "Independent assertion owner found ambiguous repeat/no-op wording before assertion freeze. Authoritative existing native and desktop publication always advances Display and records an executed display action when recording is on.",
+  "consumed_source": [
+    {
+      "path": "src/native/document.cpp",
+      "bytes": 44071,
+      "sha256": "329cf066c2d3cb3b608b2d7e9ea0502d435baac5a782687d96d89a5f0e01cdef"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 400358,
+      "sha256": "a6debcd25c3b9a7baacf254bb5c207fae0fb3ac64113ed5c47bf194731ee8930"
+    }
+  ],
+  "only_delta": {
+    "replaces": "surface_contract.repeat",
+    "value": "Dispatch SelectMin even when the mode is already selected. Preserve existing channel-display publication: each successfully executed command publishes its resolved Display state and advances Display exactly once, including equal logical state. Append one resolved action when recording is on; append none when off. Do not change data identity, pixel/metadata/selection revisions, dirty/undo/redo or unrelated state. No new coalescing/no-op-suppression policy is introduced."
+  },
+  "preserved": "All001 transition/classification/strict record/replay/rebind/Gray compatibility and interface policies remain unchanged. In particular nativeGray repeatsMin without another LUT transform, while it still publishes/records as above. Existing SelectMax publication semantics remain unchanged.",
+  "invalidated_gates": [],
+  "reason_no_runtime_invalidation": "No product gate has executed and no native resolver behavior changes. The reference capture/readers remain unchanged; this clarifies owned publication expectations before their first execution.",
+  "acceptance": {
+    "product_runtime": false,
+    "whole_family": false,
+    "release": false,
+    "full_goal": false
+  }
+}
