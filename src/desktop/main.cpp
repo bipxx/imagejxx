@@ -1,4 +1,5 @@
 #include "shadow_ui_probe.hpp"
+#include "animation_ui_probe.hpp"
 #include "saved_roi_budget_ui_probe.hpp"
 #include "rounded_legacy_ui_probe.hpp"
 #include "rounded_roi_import_ui_probe.hpp"
@@ -319,6 +320,12 @@ int run(const std::vector<std::string> &arguments) {
     const auto output=std::filesystem::absolute(std::filesystem::u8path(arguments[1]));
     imagejxx::desktop::Window editor((output.parent_path()/"preferences.json").u8string());
     imagejxx::desktop::roiExportUiCase(editor,"imgui_cpp",arguments[1]);return 0;
+  }
+  if (!arguments.empty() && arguments[0] == "--animation-ui-case") {
+    if(arguments.size()!=3)throw std::invalid_argument("Use --animation-ui-case CASE FRESH_DIRECTORY");
+    const auto output=std::filesystem::absolute(std::filesystem::u8path(arguments[2]));
+    imagejxx::desktop::Window editor((output.parent_path()/"preferences.json").u8string());
+    imagejxx::desktop::animationUiCase(editor,arguments[1],"imgui_cpp",arguments[2]);return 0;
   }
   if (!arguments.empty() && arguments[0] == "--shadow-demo-ui-case") {
     if(arguments.size()!=3)throw std::invalid_argument("Use --shadow-demo-ui-case CASE FRESH_DIRECTORY");

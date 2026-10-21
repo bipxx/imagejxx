@@ -1,5 +1,27 @@
 # ImageJ and Fiji gap closure plan
 
+**Scientific playback checkpoint, 2026-10-21 (work in progress):** both hosts
+now offer explicit Z, scientific channel and time playback through the shared
+C++ controller. Native dimensions replace the legacy frame-table assumption;
+linked XY/XZ/YZ bindings follow each position. Live FPS settings, singleton and
+malformed requests, source switch/close/edit and processing guards pass. Stopping
+releases the source snapshot. RGB samples and literal IEEE Float32 bits remain
+unchanged alongside calibration, selections, history and workflow records.
+Both installed Windows/Linux profiles pass the same 2,107 checks with no skips,
+native preferences/settings and 15 transport checks per platform. 720 actual UI
+observations cover 46,292 frames; 52 playback observations cover 1,488 frames.
+CI retains 1,103 definitions and adds 13 playback cases, giving 1,116 launches.
+See [the guide](DESKTOP.md#z-channel-and-time-playback) and
+[the scoped receipt](parity/reviews/p09s-animation001.json).
+G037 is now in progress; all99 is 44 in progress / 55 open / 0 complete, and all
+96 format variants remain partial. Ranges, reverse/ping-pong, calibrated-time
+pacing, movie export and complete platform/UI parity remain required.
+The prior preferences fix now passes hosted native/SDK checks on all three OSes.
+Full hosted Python acceptance still fails; the latest Linux capture stops at the
+rounded-export oversized worker frame bound. Qualify its polling cadence next,
+retaining existing deadlines and independent assertions. The stale Auto Contrast
+evidence gate and broader ImageJ/Fiji requirements remain open.
+
 **Persistent renderer/editor checkpoint, 2026-10-21 (work in progress):** CI
 now supplies the eight existing persistent-session C++ cases, retaining their
 original absolute capture roots and raw archival copies. It preserves all 1,102
@@ -2128,7 +2150,7 @@ An audit area is complete only when **all its required options** are available t
 
 ## Current gap summary
 
-The recorded inventory checked on **2026-10-20** contains **99 families: 42 in progress, 57 open and 0 complete**. These are family counts, not percentages of implemented commands or estimates of remaining effort. An open family can already contain useful kernels or controls; it still needs its full option and interaction contract. P06k adds partial G021 manager verification; no family is complete.
+The recorded inventory checked on **2026-10-21** contains **99 families: 44 in progress, 55 open and 0 complete**. These are family counts, not percentages of implemented commands or estimates of remaining effort. An open family can already contain useful kernels or controls; it still needs its full option and interaction contract. P06k adds partial G021 manager verification; no family is complete.
 
 The [P06j formal/settings adoption](../build/p06j-001/formal-adoption002/adoption001.json)
 retains79 requirements/35 surface contracts,140 surface proofs,25 run bindings

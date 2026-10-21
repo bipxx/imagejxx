@@ -1,4 +1,5 @@
 #include "shadow_ui_probe.hpp"
+#include "animation_ui_probe.hpp"
 #include "saved_roi_budget_ui_probe.hpp"
 #include "rounded_legacy_ui_probe.hpp"
 #include "rounded_roi_import_ui_probe.hpp"
@@ -302,6 +303,11 @@ PYBIND11_MODULE(_desktop, m) {
              return roiImportRebindUiCase(window, "imgui_python", directory)
                  .dump();
            })
+      .def("_animation_ui_case",
+             [](Window &window,const std::string &caseId,const std::string &directory) {
+               py::gil_scoped_release release;
+               return animationUiCase(window,caseId,"imgui_python",directory).dump();
+             },py::arg("case_id"),py::arg("directory"))
       .def("_shadow_demo_ui_case",
              [](Window &window,const std::string &caseId,const std::string &directory) {
                py::gil_scoped_release release;

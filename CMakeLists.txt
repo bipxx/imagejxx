@@ -987,6 +987,7 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     src/desktop/roi_display_replacement_editor.cpp
     src/desktop/roi_import_replacement_ui_probe.cpp
     src/desktop/shadow_demo_ui_probe.cpp
+    src/desktop/animation_ui_probe.cpp
     src/desktop/shadow_demo.cpp
     src/desktop/shadow_ui_probe.cpp
     src/desktop/saved_roi_budget_ui_probe.cpp

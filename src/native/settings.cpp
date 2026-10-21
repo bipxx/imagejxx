@@ -158,7 +158,7 @@ const std::vector<SettingDefinition> &Settings::schema() {
        "Use four or eight neighboring pixels for wand flood fill.",
        SettingKind::Integer, std::int64_t(4), 4, 8},
       {"animation_fps", "Playback", "Frames per second",
-       "Z-stack playback rate.", SettingKind::Number, 8., .1, 120},
+       "Z, channel or time playback rate.", SettingKind::Number, 8., .1, 120},
       {"conversion_scale", "Conversion", "Scale when converting",
        "Scale 16-bit/float to 8-bit and float to 16-bit with the chosen source "
        "range.",

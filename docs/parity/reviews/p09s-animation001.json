@@ -1,0 +1,318 @@
+{
+  "state": "qualified_feature_and_ci_increment",
+  "objective_complete": false,
+  "scope": "Shared C++ forward-loop playback over explicit Z/C/T axes in scientific and ordinary views.",
+  "features": [
+    "Image/Stacks/Animation axis offers Z slices, Channels and Time frames in both hosts. Animate and the ordinary Z Play control route through the same validated C++ action.",
+    "Playback uses native dataset dimensions and display positions, preserving nonanimated coordinates. Linked XY/XZ/YZ views render the current native T/C/Z binding.",
+    "The live animation_fps setting controls a monotonic renderer clock with at most one advance per due frame. Axis changes restart timing at the current position.",
+    "A captured source and pixel/metadata revisions prevent retargeting. Source switch/close/edit and processing stop playback; stopping releases the snapshot.",
+    "Singleton and malformed requests refuse before state changes. Playback leaves samples, calibration, selections, ROIs, history and recording unchanged, including RGB samples and literal IEEE Float32 payloads."
+  ],
+  "tests": {
+    "windows": {
+      "passed": 2107,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_preferences": "passed",
+      "native_settings": "passed",
+      "transport_runner_checks": 15,
+      "observations": 360,
+      "frames": 23146,
+      "animation_observations": 26,
+      "animation_frames": 744,
+      "junit": {
+        "path": "build/p09s-animation001/windows-python003/pytest.xml",
+        "bytes": 332726,
+        "sha256": "e3a31a40293cb2ef8fac8fc0a222002c1c692bfd67a97672eb89d31efa60ef20"
+      },
+      "compact_evidence": {
+        "path": "build/p09s-animation001/windows-evidence001.json",
+        "bytes": 403419,
+        "sha256": "18a36f12f1956bc47ab92de0bc3abc4b41d041e91215b626525a1f6f0e84f46e"
+      }
+    },
+    "linux": {
+      "passed": 2107,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_preferences": "passed",
+      "native_settings": "passed",
+      "transport_runner_checks": 15,
+      "observations": 360,
+      "frames": 23146,
+      "animation_observations": 26,
+      "animation_frames": 744,
+      "junit": {
+        "path": "build/p09s-animation001/linux-python003/pytest.xml",
+        "bytes": 332726,
+        "sha256": "0779e19c6ef9ec06b809128afc0a31684471dfab4827d1207acf00ad1a892216"
+      },
+      "compact_evidence": {
+        "path": "build/p09s-animation001/linux-evidence001.json",
+        "bytes": 393867,
+        "sha256": "3e3a90934745e2073321f7fda7fd6d05a1d5cf395bdc209d5335aab966fbf19f"
+      }
+    }
+  },
+  "identical_case_ids": true,
+  "actual_ui": {
+    "observations": 720,
+    "frames": 46292,
+    "animation_observations": 52,
+    "animation_frames": 1488,
+    "os_input_or_gpu_equivalence_claim": false
+  },
+  "cases": [
+    "z",
+    "c",
+    "t",
+    "legacy",
+    "singleton",
+    "switch",
+    "edit",
+    "close",
+    "stop",
+    "fps",
+    "ieee",
+    "rgb",
+    "busy"
+  ],
+  "ci": {
+    "state": "passed",
+    "previous": 1103,
+    "current": 1116,
+    "preserved_order": true,
+    "added": [
+      [
+        "animation",
+        "z",
+        [
+          "--animation-ui-case",
+          "z"
+        ]
+      ],
+      [
+        "animation",
+        "c",
+        [
+          "--animation-ui-case",
+          "c"
+        ]
+      ],
+      [
+        "animation",
+        "t",
+        [
+          "--animation-ui-case",
+          "t"
+        ]
+      ],
+      [
+        "animation",
+        "legacy",
+        [
+          "--animation-ui-case",
+          "legacy"
+        ]
+      ],
+      [
+        "animation",
+        "singleton",
+        [
+          "--animation-ui-case",
+          "singleton"
+        ]
+      ],
+      [
+        "animation",
+        "switch",
+        [
+          "--animation-ui-case",
+          "switch"
+        ]
+      ],
+      [
+        "animation",
+        "edit",
+        [
+          "--animation-ui-case",
+          "edit"
+        ]
+      ],
+      [
+        "animation",
+        "close",
+        [
+          "--animation-ui-case",
+          "close"
+        ]
+      ],
+      [
+        "animation",
+        "stop",
+        [
+          "--animation-ui-case",
+          "stop"
+        ]
+      ],
+      [
+        "animation",
+        "fps",
+        [
+          "--animation-ui-case",
+          "fps"
+        ]
+      ],
+      [
+        "animation",
+        "ieee",
+        [
+          "--animation-ui-case",
+          "ieee"
+        ]
+      ],
+      [
+        "animation",
+        "rgb",
+        [
+          "--animation-ui-case",
+          "rgb"
+        ]
+      ],
+      [
+        "animation",
+        "busy",
+        [
+          "--animation-ui-case",
+          "busy"
+        ]
+      ]
+    ]
+  },
+  "products": {
+    "public_headers": 66,
+    "python_modules": 12,
+    "native_catalog_operations": 92,
+    "installed_sources_match": true,
+    "windows": "build/p09s-animation001/windows-build002/installed",
+    "linux": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/install-p09s002"
+  },
+  "commercial": {
+    "new_dependencies": [],
+    "review": "scripts/check_licenses.py --desktop passed"
+  },
+  "baseline": {
+    "initial_compile": "An observer used the nonexistent Dataset::from_image helper; corrected to the existing from_stack adapter. Original build failures remain.",
+    "initial_reader": "Both platforms executed 26 checks with six reader failures: early frames still had the initial Z choice before physical C/T selection, and the busy job correctly edited only the active rectangle. Corrected independent expectations preserve those phases and the literal mask; the final main command passes all 2107 cases."
+  },
+  "cleanup": {
+    "removed_bytes": 8323005648,
+    "removed_files": 43859,
+    "crc_and_every_member_sha256_verified": true,
+    "archives": {
+      "windows": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09s-animation001\\windows-scratch001.zip",
+        "bytes": 709593626,
+        "sha256": "d90ede488f628b041de631813385c0fdf4248d8b918e5133281948bff0cd4f45"
+      },
+      "linux": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09s-animation001/linux-scratch001.zip",
+        "bytes": 762119779,
+        "sha256": "9fa0e566a42b7c9261d9d7fd34e1e3cdab3ee363f2c75a86ac7639cf2731bdd4"
+      }
+    },
+    "preserved": "Final installed products, useful caches, compact evidence, JUnit, native/Python receipts and original logs remain. Raw passing/failed attempts and copied environments remain in verified archives."
+  },
+  "plan_check": {
+    "state": "failed_preexisting",
+    "message": "Plan inventory check failed: histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed",
+    "first_mismatch": {
+      "path": "include/imagejxx/application.hpp",
+      "current_and_previous_commit_sha256": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    },
+    "action": "Refresh complete Auto Contrast consumer evidence; retain historical identities."
+  },
+  "hosted_baseline": {
+    "run": 39611296564,
+    "commit": "04865924ab9f157fe7edbc78257615f5f8671c94",
+    "native_and_sdk_all_three_platforms": "passed",
+    "full_python_acceptance": false,
+    "linux312": "Capture stopped at rounded-export/oversized before pytest: Export frame bound. Existing probe has a 550-frame cap and 10-second worker deadline with 2-ms polling.",
+    "log": {
+      "path": "build/p09s-animation001/hosted-linux312.log",
+      "bytes": 54481,
+      "sha256": "deb59b9b566909f010041632b35a0b70d95f4e6a584eba18b2999d98fd6789d9"
+    },
+    "next_action": "Qualify the export observer polling cadence without weakening worker, frame or numerical assertions."
+  },
+  "remaining": [
+    "Animation start/end/step ranges, reverse/ping-pong modes, calibrated-time pacing, movie export and full platform/UI parity.",
+    "The latest feature still requires hosted platform confirmation; full Python profiles, other missing reference/capture contracts, actual regressions and stale historical fingerprints remain open.",
+    "All broader ImageJ/commercially usable Fiji capability and format obligations remain required."
+  ],
+  "inputs": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 100371,
+      "sha256": "5f4a93421ccca2b812e962d1b7e3cb88268a86f41c7c3be60ea0c602be3a3dd3"
+    },
+    {
+      "path": "src/native/settings.cpp",
+      "bytes": 19117,
+      "sha256": "5b9b2c56f4241a2950dd43f06234c00742f72bfa1e27cc61013857bf4f68b7cc"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 647513,
+      "sha256": "cdb71f55f22f12c4acbc6bd75e4b3cc20c72681904a1ec50c67727efcda8fed2"
+    },
+    {
+      "path": "src/desktop/main.cpp",
+      "bytes": 47414,
+      "sha256": "851de4b87947d8c36d9cfd82c5bd87a610a7182569a05b3b273c19cd306e22bb"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 51669,
+      "sha256": "35f71db7ad83aefe8e2cc76acde24b0978d2694fa3a87bd2d5696dffacdae774"
+    },
+    {
+      "path": "src/desktop/animation_ui_probe.hpp",
+      "bytes": 220,
+      "sha256": "6e9d6e0ddacd2bdbf4b226f4cbcda3cad881b3ca1af34179c9b2108105bc81ec"
+    },
+    {
+      "path": "src/desktop/animation_ui_probe.cpp",
+      "bytes": 9531,
+      "sha256": "03a02a40392298ce3e4ed4c4ed9c7456054a29188d2f0ac74fb32b65e007b4e2"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 29759,
+      "sha256": "e95201214e710d6c46cc6f6f98762294973e639c6fb20bca8e4164984f29aba6"
+    },
+    {
+      "path": "tests/python/test_animation_ui.py",
+      "bytes": 8306,
+      "sha256": "7868dd9e9b37143263c9924889c78b49e1263adf495e38cef2949f5773ec4b65"
+    },
+    {
+      "path": "docs/CI.md",
+      "bytes": 13793,
+      "sha256": "69585b1a3579c74b7624af4064c6867ecdace8eee59ced844a52681945291ed2"
+    },
+    {
+      "path": "docs/DESKTOP.md",
+      "bytes": 154725,
+      "sha256": "3d5552ca2e6dadeff790442d0a285adcd6f666fd720ed5e6e448949c4abda74d"
+    },
+    {
+      "path": "docs/PLAN.md",
+      "bytes": 394409,
+      "sha256": "0c75c470b463dcdcaf33a1ac973222095bf236b8a3fd1bedd799684e625b3ee5"
+    }
+  ]
+}

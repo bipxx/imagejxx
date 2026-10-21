@@ -217,6 +217,8 @@ def cases():
          ["north", "northeast", "east", "southeast", "south", "southwest", "west", "northwest"]),
         ("shadow-presets", "--shadow-preset-ui-case", shadow_preset_cases()),
         ("shadow-demo", "--shadow-demo-ui-case", shadow_demo_cases()),
+        ("animation", "--animation-ui-case", ["z", "c", "t", "legacy", "singleton", "switch",
+                                                "edit", "close", "stop", "fps", "ieee", "rgb", "busy"]),
         ("planar-matrix", "--planar-annotation-matrix-ui-case", planar_cases()),
         ("ieee-viewing", "--ieee-viewing-ui-case", [f"IEEE{i:02d}" for i in range(1, 5)]),
         ("native-workflow", "--native-workflow-ui-case", [None]),
@@ -258,6 +260,7 @@ def reader_environment(output):
         "IMAGEJXX_NATIVE_WORKFLOW_CPP_REPORT": reports / "native-workflow/legacy/case.json",
         "IMAGEJXX_NATIVE_BATCH_CPP_REPORT": reports / "native-batch/legacy/case.json",
         "IMAGEJXX_VARIANCE_CPP_REPORT": reports / "rank/R14/case.json",
+        "IMAGEJXX_ANIMATION_CPP_ROOT": reports / "animation",
     }
     environment["IMAGEJXX_THRESHOLD_CPP_REPORT"] = reports / "scientific-threshold/T10/case.json"
     # Session rows bind their absolute capture directory. Readers must use the

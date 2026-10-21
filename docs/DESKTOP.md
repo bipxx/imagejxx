@@ -1198,6 +1198,32 @@ Automatic methods, color threshold, scientific C/T controls and threshold-limite
 measurements remain required. The [P05k card](packets/P05k-manual-threshold-display.md#current-execution-card)
 owns current verification status; implementation alone does not certify parity.
 
+## Z, channel and time playback
+
+Choose **Image > Stacks > Animation axis** and select **Z slices**, **Channels**
+or **Time frames**, then toggle **Animate**. Axes with only one position cannot
+start playback. The ordinary stack's **Play** checkbox uses Z. Both launch modes
+use the same C++ controller and the `animation_fps` preference; changes to that
+setting take effect during playback. Axis changes restart timing at the current
+position. Playback loops forward and advances at most once per rendered frame.
+
+Linked XY/XZ/YZ views follow the selected position. Playback changes display
+state while retaining source samples, calibration, selections, history and
+workflow records. Switching or closing the source stops playback. Pixel/metadata
+edits and processing also stop it; it never continues on a different document.
+Stopping releases the captured source snapshot.
+
+The optional Python UI exposes the same action:
+
+```python
+editor.update_settings(animation_fps=12, persist=False)
+editor.action("animation", axis="t", playing=True)
+editor.action("animation", playing=False)
+```
+
+Start/end/step ranges, reverse and ping-pong modes, pacing from calibrated time,
+movie export and complete platform qualification remain open.
+
 ## Calibrated range reslicing
 
 Choose **Image > Stacks > Reslice oriented range…** in either launch mode.

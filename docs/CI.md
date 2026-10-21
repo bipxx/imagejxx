@@ -65,7 +65,7 @@ The runner records these measurements and supplies both axis-range memory-check
 contracts. These values come from the independent fixture, rather than from the
 operation's working-set estimate; the readers retain their exact byte formulas.
 The runner first invokes `scripts/ci_observations.py` against the installed C++
-application. Its 1,103-launch matrix captures rank filters, rounded creation
+application. Its 1,116-launch matrix captures rank filters, rounded creation
 and saved selections, ROI import/export, saved-selection budget behavior, and
 resize/rotate/move modifiers and directional shadows. The planar selection matrix
 covers 621 creation/edit/recovery cases across XY, XZ and YZ, including every
@@ -100,6 +100,10 @@ directory; byte-identical transport copies are retained for archival. Actual
 session lifetime, input, failure recovery and resource behavior remain assertions
 of the independent reader. S07's deliberate initialization failure has an empty
 initial lifecycle list and a separately observed recovery.
+Thirteen playback captures additionally exercise ordinary Z and scientific
+Z/C/T controls, live FPS changes, singleton refusal, source/edit/busy guards,
+RGB samples and literal IEEE Float32 transport. Independent readers check
+positions, linked plane bindings and exact source words through both hosts.
 Eight scientific shadow captures additionally check the actual direction editor,
 private linked preview, all-Z Apply, retained workflow rows and Undo/Redo through
 the same C++ host consumed by the independent Python tests.

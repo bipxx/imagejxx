@@ -1451,9 +1451,19 @@
     },
     {
       "evidence": {
-        "documentation": [],
-        "implementation": [],
-        "tests": []
+        "documentation": [
+          "docs/DESKTOP.md",
+          "docs/CI.md",
+          "docs/parity/reviews/p09s-animation001.json"
+        ],
+        "implementation": [
+          "src/desktop/window.cpp",
+          "src/native/settings.cpp",
+          "src/desktop/python.cpp"
+        ],
+        "tests": [
+          "tests/python/test_animation_ui.py"
+        ]
       },
       "id": "G037",
       "milestones": [
@@ -1463,11 +1473,13 @@
       ],
       "name": "Animation",
       "remaining": [
-        "Partial: global FPS and forward looping; add start/end/step, direction, ping-pong, calibrated time and movie export"
+        "Start/end/step ranges, reverse and ping-pong modes, calibrated-time pacing, movie export and full platform/UI parity remain required."
       ],
       "required_work": "Partial: global FPS and forward looping; add start/end/step, direction, ping-pong, calibrated time and movie export",
-      "status": "open",
-      "verification": []
+      "status": "in_progress",
+      "verification": [
+        "p09s.animation.functional.001"
+      ]
     },
     {
       "evidence": {
@@ -180141,6 +180153,29 @@
         "total": 1760
       },
       "scope": "1760 selected checks per platform; 32 persistent-renderer observations/768 frames, native preferences and 15 transport checks per platform. Hosted macOS and full capability acceptance remain open."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-21",
+      "id": "p09s.animation.functional.001",
+      "identity": {
+        "qualification": {
+          "bytes": 10093,
+          "path": "docs/parity/reviews/p09s-animation001.json",
+          "sha256": "c00764bf5e72a0baedd42235e40335a93f13262b83b06cc5854db26cf2854b23"
+        }
+      },
+      "platform": "Windows/Linux installed C++ and isolated Python Dear ImGui hosts",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 2107,
+        "report": "build/p09s-animation001/windows-python003/pytest.xml",
+        "skipped": 0,
+        "total": 2107
+      },
+      "scope": "2107 selected checks per platform; 720 actual UI observations/46292 frames including 52 playback observations/1488 frames. Native settings/preferences and 15 transport checks per platform. Full family/hosted acceptance remains open."
     }
   ]
 }

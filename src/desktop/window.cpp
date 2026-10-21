@@ -1036,6 +1036,9 @@ struct Window::Impl {
   float brush = 8;
   bool allSlices = false, showRois = true, animating = false;
   double fps = 8, lastTick = 0;
+  std::string animationAxis = "z", animationReason = "stopped";
+  std::optional<DocumentSnapshot> animationSource;
+  std::uint64_t animationTicks = 0;
   int historyLimit = 8, roiIndex = -1, lastVisible = -1;
   int numericZoomPlane = 0; // Transient Tools choice, never document/session data.
   std::uint64_t navigationDocument = 0;
@@ -1473,6 +1476,8 @@ struct Window::Impl {
     if (owner.documents_.empty() && !id)
       return true; // Preserve the existing no-document validation.
     const auto source = owner.documentById(id);
+    if (action == "animation")
+      return owner.controller_->active_document_id() == source->id;
     if (action == "show_channel_display" || action == "enable_channel_display" ||
         action == "channel_display" || action == "replay_channel_display" ||
         action == "auto_contrast" || action == "replay_auto_contrast")
@@ -1531,6 +1536,86 @@ struct Window::Impl {
       return axisExtractionSourceAllowed(*source);
     return action == "view" || action == "display_range" ||
            action == "save_document" || action == "undo" || action == "redo";
+  }
+  int animationExtent(const DatasetShape &shape, const std::string &axis) const {
+    return axis == "z" ? shape.z : axis == "t" ? shape.t : shape.c;
+  }
+  void stopAnimation(const char *reason) {
+    animating = false;
+    animationReason = reason;
+    animationSource.reset();
+  }
+  void configureAnimation(const Json &parameters) {
+    if (!parameters.is_object())
+      throw std::invalid_argument("Animation parameters must be an object");
+    for (const auto &field : parameters.items())
+      if (field.key() != "axis" && field.key() != "playing" && field.key() != "document_id")
+        throw std::invalid_argument("Unknown animation parameter: " + field.key());
+    auto axis = animationAxis;
+    if (parameters.contains("axis")) {
+      if (!parameters.at("axis").is_string())
+        throw std::invalid_argument("Animation axis must be Z, C or T");
+      axis = parameters.at("axis").get<std::string>();
+      if (axis == "Z" || axis == "C" || axis == "T") axis[0] += 'a' - 'A';
+      if (axis != "z" && axis != "c" && axis != "t")
+        throw std::invalid_argument("Animation axis must be Z, C or T");
+    }
+    if (parameters.contains("playing") && !parameters.at("playing").is_boolean())
+      throw std::invalid_argument("Animation playing must be boolean");
+    const bool playing = parameters.value("playing", animating);
+    std::optional<DocumentSnapshot> source;
+    if (playing) {
+      if (owner.busy()) throw std::invalid_argument("Wait for the current edit");
+      source = owner.nativeSnapshot();
+      if (parameters.contains("document_id") && parameters.at("document_id") != source->id())
+        throw std::invalid_argument("Animation requires the active document");
+      if (animationExtent(source->data().dataset.shape(), axis) < 2)
+        throw std::invalid_argument("Animation axis needs at least two positions");
+    }
+    // Validate the entire request before changing a running playback session.
+    animationAxis = axis;
+    if (!playing) { stopAnimation("stopped"); return; }
+    animationSource = std::move(source);
+    animationTicks = 0;
+    lastTick = -1;
+    animationReason = "playing";
+    animating = true;
+    cancelSavedRoiGeometry("playback");
+    cancelCreations("playback");
+  }
+  void advanceAnimation() {
+    if (!animating) {
+      if (animationSource) stopAnimation("stopped");
+      return;
+    }
+    if (owner.documents_.empty()) { stopAnimation("source_closed"); return; }
+    if (owner.busy()) { stopAnimation("busy"); return; }
+    const auto current = owner.nativeSnapshot();
+    if (!animationSource || !animationSource->same_document(current)) {
+      stopAnimation("source_changed"); return;
+    }
+    if (!current.revisions().matches(animationSource->revisions(), Change::Pixels | Change::Metadata)) {
+      stopAnimation("source_edited"); return;
+    }
+    const int extent = animationExtent(current.data().dataset.shape(), animationAxis);
+    if (extent < 2) { stopAnimation("single_position"); return; }
+    const double now = ImGui::GetTime();
+    if (lastTick < 0 || now < lastTick) { lastTick = now; return; }
+    if (now - lastTick < 1 / fps) return;
+    auto display = current.display();
+    int &position = animationAxis == "z" ? display.crosshair[2] : animationAxis == "t" ? display.t : display.c;
+    position = (position + 1) % extent;
+    cancelSavedRoiGeometry("position_changed");
+    cancelCreations("position_changed");
+    doc()->setNativeDisplay(std::move(display));
+    ++animationTicks;
+    lastTick = now;
+  }
+  Json animationDiagnostics() const {
+    return {{"playing", animating}, {"axis", animationAxis}, {"fps", fps},
+            {"ticks", animationTicks}, {"reason", animationReason},
+            {"source_id", animationSource ? Json(animationSource->id()) : Json()},
+            {"clock", "imgui_monotonic_seconds"}, {"last_tick", lastTick}};
   }
   void requireAction(const std::string &action, std::uint64_t id = 0,
                      const std::string &operationId = {}) const {
@@ -4744,6 +4829,7 @@ void Window::setActiveIndex(int index) {
   if (index < 0 || index >= int(documents_.size()))
     throw std::out_of_range("Invalid active document index");
   if (controller_->active_document_id() != documents_[index]->id) {
+    impl->stopAnimation("source_changed");
     impl->rgbDatasetPanel.cancel("activation_changed");
     impl->colorStackPanel.cancel("activation_changed");
     impl->indexedColorPanel.cancel("activation_changed");
@@ -5613,6 +5699,10 @@ void Window::action(const std::string &name, const Json &p) {
   // not bypass its capability check before clipboard, files or jobs change.
   if (targetId && !targeted.count(name))
     impl->requireAction(name, 0, operationId);
+  if (name == "animation") {
+    impl->configureAnimation(p);
+    return;
+  }
   if (name == "create_roi") {
     const auto facade = documentById(targetId);
     if (busy() || facade->id != controller_->active_document_id())
@@ -8059,7 +8149,23 @@ void Window::Impl::menu() {
       item("Reslice with ImageJ bilinear...", "show_axis_range_slicer_resize");
       form("Reslice...", "reslice", {{"axis", "y"}});
       form("Montage...", "montage", {{"columns", 4}});
-      ImGui::MenuItem("Animate", nullptr, &animating);
+      const auto animationShape = doc()->shape();
+      const bool canAnimate = !owner.busy() && animationExtent(animationShape, animationAxis) > 1;
+      const bool animationAxisOpen = ImGui::BeginMenu("Animation axis");
+      observeControl("menu.animation.axis");
+      if (animationAxisOpen) {
+        for (const auto *axis : {"z", "c", "t"}) {
+          const bool available = animationExtent(animationShape, axis) > 1 && !owner.busy();
+          const char *label = *axis == 'z' ? "Z slices" : *axis == 'c' ? "Channels" : "Time frames";
+          if (ImGui::MenuItem(label, nullptr, animationAxis == axis, available))
+            guard([&] { owner.action("animation", {{"axis", axis}}); });
+          observeControl(std::string("menu.animation.axis.") + axis, available);
+        }
+        ImGui::EndMenu();
+      }
+      if (ImGui::MenuItem("Animate", nullptr, animating, canAnimate || animating))
+        guard([&] { owner.action("animation", {{"playing", !animating}}); });
+      observeControl("menu.action.animation", canAnimate || animating);
       ImGui::EndMenu();
     }
     if (ImGui::BeginMenu("Overlays")) {
@@ -10104,7 +10210,10 @@ void Window::Impl::canvas(Pane &pane) {
       d->setView({{"crosshair", crosshair}});
     }
     ImGui::SameLine();
-    ImGui::Checkbox("Play", &animating);
+    bool playing = animating;
+    if (ImGui::Checkbox("Play", &playing))
+      guard([&] { owner.action("animation", {{"playing", playing}, {"axis", "z"}}); });
+    observeControl("image.play");
   }
 }
 void Window::Impl::dialogs() {
@@ -10971,6 +11080,7 @@ void Window::Impl::draw() {
   startupControls.clear();
   workflowControls.clear();
   owner.poll();
+  advanceAnimation();
   if (shadowDemo.active() && ImGui::IsKeyPressed(ImGuiKey_Escape, false)) shadowDemo.cancel("escape");
   if (savedRoiRebind) {
     try {
@@ -11101,19 +11211,6 @@ void Window::Impl::draw() {
     }
     ImGui::End();
     if(!shadowDemoVisible && shadowDemo.active())shadowDemo.cancel("closed");
-  }
-  if (animating && !owner.busy() && !owner.documents_.empty() &&
-      ImGui::GetTime() - lastTick >= 1 / fps) {
-    auto d = doc();
-    d->normalizeView();
-    auto crosshair = d->view().crosshair;
-    crosshair[2] = (d->slice() + 1) % int(d->state().frames.size());
-    if (crosshair[2] != d->slice()) {
-      cancelSavedRoiGeometry("position_changed");
-      cancelCreation(panes[owner.activeIndex()], "position_changed");
-    }
-    d->setView({{"crosshair", crosshair}});
-    lastTick = ImGui::GetTime();
   }
   if (const auto processingJob = owner.jobInfo()) {
     ImGui::SetNextWindowSize({360, 0}, ImGuiCond_Appearing);
@@ -11486,6 +11583,7 @@ Json Window::Impl::headlessReport() {
               {"imgui", IMGUI_VERSION}};
     result["document_tabs"] = documentTabs;
     result["host_controls"] = hostControls;
+    result["animation"] = animationDiagnostics();
     result["workflow_controls"] = workflowControls;
     result["roi_manager"] = roiManagerDiagnostics();
     result["error_modal"] = errorModal;
