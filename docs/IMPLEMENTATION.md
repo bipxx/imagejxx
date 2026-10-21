@@ -1,5 +1,20 @@
 # Implementation progress
 
+**Native pooled histogram checkpoint, 2026-10-21 (work in progress):**
+The C++/Python service now pools frozen C/T/Z ranges or explicit positions with
+whole/active/positioned area ROI unions, preserving raw processor/custom bins,
+statistics and lossless CSV. It admits total target pixels before reads, validates
+ROI exterior/unmatched planes and retains no source/provider in its result.
+Windows/Linux each pass 829 selected checks (53 new), four native executable
+suites and fresh installed SDK consumers. Existing histogram ImGui regression
+readers verify 36 reports / 4,980 input frames; pooled UI controls remain next.
+Verified cleanup removes 278,579,662 scratch bytes while retaining final products
+and evidence. See [usage/limits](HISTOGRAM.md) and
+[the scoped receipt](parity/reviews/p10i-target-histogram001.json).
+No new upstream oracle, pooled UI or complete resource/platform acceptance is
+claimed. Remaining domains/defaults/recording/async and the existing Auto Contrast
+fingerprint gate stay open; all99 stays 47 in progress / 52 open / 0 complete.
+
 **Standalone histogram UI checkpoint, 2026-10-21 (work in progress):**
 Both ImGui hosts now provide captured single T/C/Z and active-area ROI controls,
 processor-raw/custom bins and inclusive range, log1p display, raw statistics,

@@ -1,4 +1,6 @@
 #include <imagejxx/dataset_histogram.hpp>
+#include <imagejxx/target_histogram.hpp>
+#include "binding_metadata.hpp"
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
@@ -69,7 +71,7 @@ std::optional<std::array<double, 2>> optional_range(py::handle value) {
   return std::array<double, 2>{endpoint(values[0]), endpoint(values[1])};
 }
 
-py::dict histogram_dictionary(const DatasetHistogramResult &value) {
+template<class Result> py::dict histogram_dictionary(const Result &value) {
   py::array_t<std::uint64_t> counts(
       static_cast<py::ssize_t>(value.histogram.counts.size()));
   py::array_t<double> edges(
@@ -138,7 +140,7 @@ void bind_dataset_histogram(py::module_ &m) {
       .def_readonly("histogram_bytes", &DatasetHistogramEstimate::histogram_bytes);
 
   py::class_<DatasetHistogramResult>(m, "DatasetHistogramResult")
-      .def_property_readonly("histogram", &histogram_dictionary,
+      .def_property_readonly("histogram", &histogram_dictionary<DatasetHistogramResult>,
           "Detached uint64 counts and float64 edges; every access returns copies.")
       .def_readonly("histogram_origin", &DatasetHistogramResult::histogram_origin)
       .def_readonly("bin_size", &DatasetHistogramResult::bin_size)
@@ -200,4 +202,52 @@ void bind_dataset_histogram(py::module_ &m) {
       "histogram/provenance copies are detached. Python argument/value-conversion "
       "captures and later getter copies are frontend storage outside the native "
       "working estimate; core preflight precedes pixel/provider callbacks and reads.");
+  py::class_<TargetHistogramOptions>(m,"TargetHistogramOptions")
+      .def(py::init<>()).def(py::init<const TargetHistogramOptions &>())
+      .def_readwrite("binning",&TargetHistogramOptions::binning)
+      .def_property("bins",[](const TargetHistogramOptions &v){return v.bins;},[](TargetHistogramOptions &v,py::handle x){v.bins=integer<int>(x);})
+      .def_property("range",[](const TargetHistogramOptions &v){return v.range;},[](TargetHistogramOptions &v,py::handle x){v.range=optional_range(x);});
+  py::class_<TargetHistogramEstimate>(m,"TargetHistogramEstimate")
+      .def_readonly("plane_count",&TargetHistogramEstimate::plane_count)
+      .def_readonly("plane_pixels",&TargetHistogramEstimate::plane_pixels)
+      .def_readonly("total_pixels",&TargetHistogramEstimate::total_pixels)
+      .def_readonly("working_bytes",&TargetHistogramEstimate::working_bytes)
+      .def_readonly("plane_bytes",&TargetHistogramEstimate::plane_bytes)
+      .def_readonly("mask_bytes",&TargetHistogramEstimate::mask_bytes)
+      .def_readonly("histogram_bytes",&TargetHistogramEstimate::histogram_bytes)
+      .def_readonly("geometry_bytes",&TargetHistogramEstimate::geometry_bytes)
+      .def_readonly("record_bytes",&TargetHistogramEstimate::record_bytes);
+  py::class_<TargetHistogramResult>(m,"TargetHistogramResult")
+      .def_property_readonly("histogram",&histogram_dictionary<TargetHistogramResult>)
+      .def_readonly("histogram_origin",&TargetHistogramResult::histogram_origin)
+      .def_readonly("bin_size",&TargetHistogramResult::bin_size)
+      .def_readonly("minimum",&TargetHistogramResult::minimum)
+      .def_readonly("maximum",&TargetHistogramResult::maximum)
+      .def_readonly("mean",&TargetHistogramResult::mean)
+      .def_readonly("stddev",&TargetHistogramResult::stddev)
+      .def_readonly("sum",&TargetHistogramResult::sum)
+      .def_readonly("visited_count",&TargetHistogramResult::visited_count)
+      .def_readonly("finite_count",&TargetHistogramResult::finite_count)
+      .def_readonly("included_count",&TargetHistogramResult::included_count)
+      .def_readonly("nan_count",&TargetHistogramResult::nan_count)
+      .def_readonly("underflow_count",&TargetHistogramResult::underflow_count)
+      .def_readonly("overflow_count",&TargetHistogramResult::overflow_count)
+      .def_readonly("plane_minimum",&TargetHistogramResult::plane_minimum)
+      .def_readonly("plane_maximum",&TargetHistogramResult::plane_maximum)
+      .def_readonly("plane_finite_count",&TargetHistogramResult::plane_finite_count)
+      .def_readonly("plane_nan_count",&TargetHistogramResult::plane_nan_count)
+      .def_readonly("empty_finite",&TargetHistogramResult::empty_finite)
+      .def_property_readonly("options",[](const TargetHistogramResult &v){return v.options;})
+      .def_property_readonly("estimate",[](const TargetHistogramResult &v){return v.estimate;})
+      .def_property_readonly("target_record",[](const TargetHistogramResult &v){return bindings::metadata_python(v.target_record);});
+  m.def("estimate_target_histogram",[](ResolvedTarget target,TargetHistogramOptions options,DatasetHistogramLimits limits){
+    py::gil_scoped_release release;return estimate_target_histogram(target,options,limits);
+  },py::arg("target"),py::arg("options")=TargetHistogramOptions{},py::arg("limits")=DatasetHistogramLimits{},
+  "Metadata-only total-target admission; no plane reads or callbacks. Python argument/getter copies and source/cache/RSS costs are external.");
+  m.def("accumulate_target_histogram",[](ResolvedTarget target,TargetHistogramOptions options,DatasetHistogramLimits limits,std::shared_ptr<CancellationToken> token,py::object progress,py::object checkpoint){
+    const auto control=axis_range_python_control(std::move(token),std::move(progress),std::move(checkpoint));
+    py::gil_scoped_release release;return accumulate_target_histogram(target,options,limits,control);
+  },py::arg("target"),py::arg("options")=TargetHistogramOptions{},py::arg("limits")=DatasetHistogramLimits{},py::kw_only(),py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none(),
+  "Pool captured native C/T/Z plane/area targets without a concatenated stack. Python captures/getter copies and source/cache/RSS costs are external.");
+  m.def("target_histogram_csv",[](const TargetHistogramResult &v){py::gil_scoped_release release;return target_histogram_csv(v);},py::arg("result"));
 }

@@ -1,4 +1,5 @@
 #include <imagejxx/dataset_histogram.hpp>
+#include <imagejxx/target_histogram.hpp>
 #include "dataset_histogram_internal.hpp"
 #include <imagejxx/operations.hpp>
 
@@ -260,6 +261,26 @@ double uniform_fraction(double value, double low, double high) {
   const double scale = std::max(std::abs(low), std::abs(high));
   return (value / scale - low / scale) / (high / scale - low / scale);
 }
+
+int mapped_index(double value,double mapped,const Histogram &h,bool uniform,double low,double high) {
+  const int bins=static_cast<int>(h.counts.size());
+      auto index = mapped <= 0 ? 0 : mapped >= bins - 1
+          ? bins - 1 : static_cast<int>(mapped);
+      if (uniform && value == low) index = 0;
+      else if (uniform && value != high &&
+          (value < h.edges[std::size_t(index)] ||
+           value >= h.edges[std::size_t(index) + 1])) {
+        // Normalization can lose the side of a tiny interior displacement
+        // across extreme bounds, or land on collapsed rounded edges. Locate
+        // the actual half-open interval with bounded logarithmic work; equal
+        // interior edges belong to the rightmost interval.
+        const auto edge = std::upper_bound(h.edges.begin(),
+                                           h.edges.end(), value);
+        index = std::clamp(int(edge - h.edges.begin()) - 1,
+                           0, bins - 1);
+      }
+  return index;
+}
 } // namespace
 
 DatasetHistogramEstimate estimate_dataset_histogram(
@@ -381,23 +402,7 @@ static DatasetHistogramResult accumulate_histogram(
       else if (admitted.type == PixelType::UInt16)
         mapped = scale * (value - int(low));
       else mapped = scale == 0 ? 0 : scale * (value - low);
-      // Interior normalization may round to the final endpoint. Clamp before
-      // converting to int, so no floating-to-integer overflow is possible.
-      auto index = mapped <= 0 ? 0 : mapped >= bins - 1
-          ? bins - 1 : static_cast<int>(mapped);
-      if (uniform && value == low) index = 0;
-      else if (uniform && value != high &&
-          (value < result.histogram.edges[std::size_t(index)] ||
-           value >= result.histogram.edges[std::size_t(index) + 1])) {
-        // Normalization can lose the side of a tiny interior displacement
-        // across extreme bounds, or land on collapsed rounded edges. Locate
-        // the actual half-open interval with bounded logarithmic work; equal
-        // interior edges belong to the rightmost interval.
-        const auto edge = std::upper_bound(result.histogram.edges.begin(),
-                                           result.histogram.edges.end(), value);
-        index = std::clamp(int(edge - result.histogram.edges.begin()) - 1,
-                           0, bins - 1);
-      }
+      const auto index=mapped_index(value,mapped,result.histogram,uniform,low,high);
       ++result.histogram.counts[std::size_t(index)];
       ++result.included_count;
     }
@@ -419,8 +424,131 @@ DatasetHistogramResult accumulate_dataset_histogram_stages(
   return accumulate_histogram(source, request, limits, control, false);
 }
 } // namespace detail
-std::string dataset_histogram_csv(const DatasetHistogramResult &result) {
-  const auto &h = result.histogram;
+namespace {
+bool histogram_roi_matches(const ResolvedTarget &target,const Roi &roi) {
+  const std::array<std::optional<int>,3> fixed{roi.t,roi.c,roi.z};
+  if(target.scope()==TargetScope::Ranges) {
+    for(int a=0;a<3;++a)if(fixed[a]){const auto &r=target.ranges()[a];const auto v=*fixed[a];if(v<r.start || v>=*r.stop || (v-r.start)%r.step)return false;}
+    return true;
+  }
+  for(auto p:target.explicit_positions())if((!roi.t||*roi.t==p.t)&&(!roi.c||*roi.c==p.c)&&(!roi.z||*roi.z==p.z))return true;
+  return false;
+}
+}
+TargetHistogramEstimate estimate_target_histogram(const ResolvedTarget &target,
+    const TargetHistogramOptions &options,const DatasetHistogramLimits &limits) {
+  if(target.execution_mode()!=ExecutionMode::Planes || target.destination()!=OutputDestination::InPlace)
+    invalid("Target histogram requires a read-only plane target with in-place destination");
+  const auto &data=target.source().data();const auto shape=data.dataset.shape();
+  DatasetHistogramRequest request;request.position=target.position(0);request.binning=options.binning;request.bins=options.bins;request.range=options.range;
+  const auto base=layout(data.dataset,request,limits);
+  TargetHistogramEstimate out;out.plane_count=target.position_count();out.plane_pixels=base.estimate.pixel_count;
+  out.total_pixels=multiply(out.plane_pixels,out.plane_count);
+  if(out.total_pixels>limits.max_pixels)invalid("Target histogram exceeds its total target pixel limit");
+  out.plane_bytes=base.estimate.plane_bytes;out.histogram_bytes=base.estimate.histogram_bytes;
+  const bool positioned=target.roi_policy()==RoiPolicy::PositionedRois;
+  const bool active=target.roi_policy()==RoiPolicy::ActiveSelection && bool(data.selection);
+  out.mask_bytes=multiply(out.plane_bytes,positioned?2:active?1:0);
+  auto bytes=add(base.estimate.working_bytes,out.mask_bytes);within(bytes,limits);
+  std::size_t scratch=0;
+  auto area=[&](const Selection &selection) {
+    const auto retained=selection_charge(selection,shape,limits);
+    out.geometry_bytes=add(out.geometry_bytes,retained);
+    auto temporary=raster_scratch(selection);
+    if(selection.is_rounded_box())temporary=add(temporary,add(out.plane_pixels/8,out.plane_pixels%8!=0));
+    scratch=std::max(scratch,temporary);
+    within(add(bytes,add(out.geometry_bytes,scratch)),limits);
+  };
+  if(active)area(*data.selection);
+  if(positioned)for(const auto &roi:data.rois)if(histogram_roi_matches(target,roi))area(roi.selection);
+  out.geometry_bytes=add(out.geometry_bytes,scratch);bytes=add(bytes,out.geometry_bytes);
+  // Fixed map/value holders plus compact range records. Explicit position
+  // arrays have bounded nested metadata/temporary growth and a target copy.
+  out.record_bytes=16384;
+  if(target.scope()==TargetScope::Positions)out.record_bytes=add(out.record_bytes,multiply(out.plane_count,1024+sizeof(PlanePosition)));
+  bytes=add(bytes,out.record_bytes);
+  bytes=add(bytes,sizeof(TargetHistogramResult)+sizeof(ResolvedTarget)+sizeof(TargetHistogramOptions));
+  within(bytes,limits);out.working_bytes=bytes;return out;
+}
+TargetHistogramResult accumulate_target_histogram(const ResolvedTarget &requested,
+    const TargetHistogramOptions &requested_options,const DatasetHistogramLimits &limits,
+    const ExecutionControl &control) {
+  if(control.cancellation && control.cancellation->canceled())throw OperationCancelled();
+  const auto admitted=estimate_target_histogram(requested,requested_options,limits);
+  const auto target=requested;const auto options=requested_options;const auto captured=control;
+  const auto &dataset=target.source().data().dataset;const auto shape=dataset.shape();
+  const auto type=dataset.pixel_type();const auto policy=dataset.sample_policy();
+  TargetHistogramResult result;result.options=options;result.estimate=admitted;result.target_record=target.record();
+  ExecutionScope scope(captured);kernel_checkpoint();execution_progress(0,1);kernel_checkpoint();
+  const int bins=options.bins;const bool uniform=options.binning==HistogramBinning::UniformRange;
+  const bool observed=!uniform && type!=PixelType::UInt8;
+  double low=0,high=1,scale=0,mean=0,m2=0;
+  auto edges=[&] {
+    kernel_checkpoint();result.histogram.counts.assign(std::size_t(bins),0);result.histogram.edges.resize(std::size_t(bins)+1);kernel_checkpoint();
+    if(uniform){low=(*options.range)[0];high=(*options.range)[1];result.bin_size=uniform_width(low,high,bins);}
+    else if(result.empty_finite && observed){low=0;high=1;result.bin_size=1./256;scale=0;}
+    else if(type==PixelType::UInt8){low=0;high=256;scale=1;result.bin_size=1;}
+    else if(type==PixelType::UInt16){low=*result.minimum;high=*result.maximum+1;result.bin_size=(high-low)/256;scale=1/ *result.bin_size;}
+    else {low=*result.minimum;high=*result.maximum;result.bin_size=(high-low)/256;scale=high==low?0:256/(high-low);}
+    result.histogram_origin=low;
+    kernel_blocks("Target histogram edges",result.histogram.edges.size(),[&](std::size_t a,std::size_t b){
+      for(auto i=a;i<b;++i)result.histogram.edges[i]=uniform?uniform_edge(low,high,double(i)/bins):low+double(i)* *result.bin_size;
+    });result.histogram.edges.front()=low;result.histogram.edges.back()=high;
+  };
+  auto count=[&](double value) {
+    if(uniform && value<low){++result.underflow_count;return;}
+    if(uniform && value>high){++result.overflow_count;return;}
+    double mapped;
+    if(uniform)mapped=value==high?double(bins-1):uniform_fraction(value,low,high)*bins;
+    else if(type==PixelType::UInt8)mapped=value;
+    else if(type==PixelType::UInt16)mapped=scale*(value-int(low));
+    else mapped=scale==0?0:scale*(value-low);
+    const auto bin=mapped_index(value,mapped,result.histogram,uniform,low,high);
+    ++result.histogram.counts[std::size_t(bin)];++result.included_count;
+  };
+  if(!observed)edges();
+  auto scan=[&](bool statistics) {
+    KernelStage planes(statistics?"Target histogram statistics":"Target histogram accumulation",admitted.plane_count);
+    std::uint64_t members=0;
+    for(std::size_t ordinal=0;ordinal<admitted.plane_count;++ordinal) {
+      planes.checkpoint(ordinal);auto mask=target.mask(ordinal);kernel_checkpoint();
+      const auto plane=dataset.plane(target.position(ordinal));kernel_checkpoint();
+      if(!plane || plane->width!=shape.x || plane->height!=shape.y || plane->channels!=1 || plane->type!=type || plane->pixels.size()!=admitted.plane_pixels)
+        invalid("Target histogram acquired plane has a different shape/type/storage");
+      kernel_blocks("Target histogram samples",plane->pixels.size(),[&](std::size_t a,std::size_t b){
+        for(auto i=a;i<b;++i) {
+          const double value=plane->pixels[i];const bool finite=finite_sample(value,type,policy);
+          if(statistics){if(finite){++result.plane_finite_count;extrema(value,result.plane_minimum,result.plane_maximum);}else ++result.plane_nan_count;}
+          if(mask && mask->pixels[i]==0)continue;
+          if(statistics)++result.visited_count;
+          if(!finite){if(statistics)++result.nan_count;continue;}
+          ++members;
+          if(statistics) {
+            ++result.finite_count;result.sum+=value;const double delta=value-mean;mean+=delta/double(result.finite_count);m2+=delta*(value-mean);
+            extrema(value,result.minimum,result.maximum);
+          } else if(value<*result.minimum || value>*result.maximum)invalid("Target histogram source changed between passes");
+          if(!observed || !statistics)count(value);
+        }
+      });
+    }
+    planes.finish();return members;
+  };
+  scan(true);result.empty_finite=result.finite_count==0;
+  if(!result.empty_finite){result.mean=mean;result.stddev=std::sqrt(std::max(0.,m2/double(result.finite_count)));}
+  if(observed) {
+    edges();
+    if(result.finite_count && result.minimum==result.maximum){result.histogram.counts[0]=result.finite_count;result.included_count=result.finite_count;}
+    else if(result.finite_count && scan(false)!=result.finite_count)invalid("Target histogram source membership changed between passes");
+  } else if(!uniform && result.empty_finite) {
+    // The single-plane no-finite presentation uses finite 0..1 edges even for
+    // UInt8; it is not the full-type range or an automatic-threshold fallback.
+    result.bin_size=1./256;result.histogram_origin=0;
+    for(std::size_t i=0;i<result.histogram.edges.size();++i){kernel_checkpoint_periodic();result.histogram.edges[i]=double(i)/256;}
+  }
+  kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;
+}
+
+static std::string histogram_csv(const Histogram &h) {
   if (h.counts.empty() || h.counts.size() > 65536 ||
       h.edges.size() != h.counts.size() + 1)
     invalid("Histogram CSV requires 1..65536 bins and one more edge");
@@ -436,4 +564,6 @@ std::string dataset_histogram_csv(const DatasetHistogramResult &result) {
            << ',' << h.counts[i] << '\n';
   return stream.str();
 }
+std::string dataset_histogram_csv(const DatasetHistogramResult &result) { return histogram_csv(result.histogram); }
+std::string target_histogram_csv(const TargetHistogramResult &result) { return histogram_csv(result.histogram); }
 } // namespace imagejxx

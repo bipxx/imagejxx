@@ -350,6 +350,12 @@ from ._native import (
     estimate_dataset_histogram as estimate_dataset_histogram,
     accumulate_dataset_histogram as accumulate_dataset_histogram,
     dataset_histogram_csv as dataset_histogram_csv,
+    TargetHistogramOptions as TargetHistogramOptions,
+    TargetHistogramEstimate as TargetHistogramEstimate,
+    TargetHistogramResult as TargetHistogramResult,
+    estimate_target_histogram as estimate_target_histogram,
+    accumulate_target_histogram as accumulate_target_histogram,
+    target_histogram_csv as target_histogram_csv,
 )
 from ._native import (
     AutoContrastScope as AutoContrastScope,

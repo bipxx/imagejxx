@@ -2754,7 +2754,8 @@
           "docs/parity/reviews/p10f-scientific-threshold001.json",
           "docs/HISTOGRAM.md",
           "docs/parity/reviews/p10g-histogram-statistics001.json",
-          "docs/parity/reviews/p10h-histogram-ui001.json"
+          "docs/parity/reviews/p10h-histogram-ui001.json",
+          "docs/parity/reviews/p10i-target-histogram001.json"
         ],
         "implementation": [
           "include/imagejxx/auto_threshold_stack.hpp",
@@ -2766,7 +2767,8 @@
           "src/native/dataset_histogram.cpp",
           "src/native/dataset_histogram_bindings.cpp",
           "src/desktop/histogram_panel.cpp",
-          "src/desktop/window.cpp"
+          "src/desktop/window.cpp",
+          "include/imagejxx/target_histogram.hpp"
         ],
         "tests": [
           "tests/python/test_scientific_threshold_target.py",
@@ -2775,7 +2777,9 @@
           "tests/python/test_histogram_statistics.py",
           "tests/python/test_histogram_statistics_nan.py",
           "tests/python/test_histogram_ui.py",
-          "tests/python/test_histogram_desktop_api.py"
+          "tests/python/test_histogram_desktop_api.py",
+          "tests/native/test_target_histogram.cpp",
+          "tests/python/test_target_histogram.py"
         ]
       },
       "id": "G069",
@@ -2785,14 +2789,15 @@
       ],
       "name": "Histogram",
       "remaining": [
-        "Standalone shared ImGui controls now select one captured T/C/Z plane and active area/whole-plane ROI, processor-raw/custom bin/range accumulation, log1p count display, sample statistics/mode-bin intervals and lossless raw CSV file publication. Finish pooled standalone C/T/Z grid/stack targeting and positioned ROIs; calibrated/color/other numeric domains, saved defaults, analysis recording, async and complete reference/resource/platform qualification. Threshold-associated frozen grids are already available but do not close standalone pooled scope."
+        "Native C++/Python pooling now covers frozen C/T/Z ranges/explicit positions, whole/active/positioned area ROI unions, raw/custom bins, unbinned statistics and detached raw CSV with admitted read/scratch policies. Connect shared grid and positioned-ROI controls to the standalone histogram panel; its existing UI still selects one plane. Finish calibrated/color/other numeric domains, saved defaults, analysis recording, async and complete independent source/reference/resource/platform qualification."
       ],
       "required_work": "Stack/channel targeting, range/bin/log controls, statistics display and numerical export",
       "status": "in_progress",
       "verification": [
         "p10f.scientific-threshold.functional.001",
         "p10g.histogram-statistics.functional.001",
-        "p10h.histogram-ui.functional.001"
+        "p10h.histogram-ui.functional.001",
+        "p10i.target-histogram.functional.001"
       ]
     },
     {
@@ -180722,6 +180727,29 @@
         "total": 776
       },
       "scope": "776 selected checks per OS including 35 new API/UI cases; 36 reports / 4980 input frames, three native executable suites per OS and installed SDK consumers. No complete source/reference/resource/platform or whole-family acceptance."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-21",
+      "id": "p10i.target-histogram.functional.001",
+      "identity": {
+        "qualification": {
+          "bytes": 9901,
+          "path": "docs/parity/reviews/p10i-target-histogram001.json",
+          "sha256": "9c895f5ae1b1e41c86bd7f9c169b52ddd5876519b301b17bda7dce7b17d4f66b"
+        }
+      },
+      "platform": "Windows/Linux installed C++/Python pooled API and SDK; existing histogram ImGui regressions",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 829,
+        "report": "build/p10i-target-histogram001/windows-python001/pytest.xml",
+        "skipped": 0,
+        "total": 829
+      },
+      "scope": "829 selected checks per OS including 53 new target API cases; four native executable suites per OS, fresh installed SDK consumers and 36 existing histogram reports / 4980 frames. No pooled UI, new Java oracle or complete resource/platform/whole-family acceptance."
     }
   ]
 }
