@@ -154,11 +154,19 @@ void bind_dataset_histogram(py::module_ &m) {
       .def_readonly("plane_maximum", &DatasetHistogramResult::plane_maximum)
       .def_readonly("plane_finite_count", &DatasetHistogramResult::plane_finite_count)
       .def_readonly("plane_nan_count", &DatasetHistogramResult::plane_nan_count)
+      .def_readonly("mean", &DatasetHistogramResult::mean)
+      .def_readonly("stddev", &DatasetHistogramResult::stddev)
+      .def_readonly("sum", &DatasetHistogramResult::sum)
       .def_readonly("empty_finite", &DatasetHistogramResult::empty_finite)
       .def_property_readonly("request",
           [](const DatasetHistogramResult &value) { return value.request; })
       .def_property_readonly("estimate",
           [](const DatasetHistogramResult &value) { return value.estimate; });
+
+  m.def("dataset_histogram_csv", [](const DatasetHistogramResult &result) {
+    py::gil_scoped_release release;
+    return dataset_histogram_csv(result);
+  }, py::arg("result"), "Lossless raw-bin CSV; no source reads or file writes.");
 
   m.def("estimate_dataset_histogram",
       [](Dataset source, DatasetHistogramRequest request,

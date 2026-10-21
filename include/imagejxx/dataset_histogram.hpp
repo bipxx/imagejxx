@@ -38,6 +38,11 @@ struct DatasetHistogramResult {
                 nan_count = 0, underflow_count = 0, overflow_count = 0;
   std::optional<double> plane_minimum, plane_maximum;
   std::uint64_t plane_finite_count = 0, plane_nan_count = 0;
+  // Exact sample statistics over all finite ROI members, including values
+  // outside an explicit histogram range. stddev uses population normalization.
+  // Empty finite populations have absent mean/stddev and sum zero.
+  std::optional<double> mean, stddev;
+  double sum = 0;
   bool empty_finite = true;
   DatasetHistogramRequest request;
   DatasetHistogramEstimate estimate;
@@ -88,5 +93,11 @@ DatasetHistogramEstimate estimate_dataset_histogram(
 DatasetHistogramResult accumulate_dataset_histogram(
     const Dataset &, const DatasetHistogramRequest & = {},
     const DatasetHistogramLimits & = {}, const ExecutionControl & = {});
+
+// Locale-independent UTF-8/ASCII CSV of raw bins, with max_digits10 edges and
+// exact uint64 counts. Includes empty bins; never exports log display heights.
+// Detached formatting only: no source reads or filesystem writes. Rejects
+// malformed/nonfinite/nonmonotone edges and bin counts outside 1..65536.
+std::string dataset_histogram_csv(const DatasetHistogramResult &);
 
 } // namespace imagejxx

@@ -1,0 +1,160 @@
+{
+  "state": "qualified_native_functional_increment",
+  "objective_complete": false,
+  "scope": "Unbinned finite ROI statistics and raw lossless CSV formatting in the native Dataset histogram service and Python interface.",
+  "behavior": "Mean, population standard deviation and sequential sum use every finite ROI member, including explicit-range underflow/overflow. Statistics are collected in the existing validation pass with no new plane acquisition/sample vector. Empty finite populations have absent mean/stddev and zero sum. Existing scalar UInt8/UInt16/widened Float32 sample and cap policies remain.",
+  "csv": "Classic-locale bin,lower,upper,count text with max_digits10 edges, exact uint64 counts and all empty bins. No source reads or file writes. Malformed/nonfinite/nonmonotone edge arrays and bin counts outside 1..65536 refuse. Returned string/stream storage is outside the histogram accumulator estimate.",
+  "tests": "19 new Python cases per OS plus existing histogram, Auto Contrast, reset, pooled threshold/display and scientific threshold tests; 741 selected checks per OS, no failures/errors/skips. Native histogram/statistics/Auto Contrast executables and fresh installed core-only SDK consumers pass. SDK reader explicitly verifies uint64 9007199254740993, locale independence and malformed CSV refusals.",
+  "profiles": {
+    "windows": {
+      "python_cases": 741,
+      "new_statistics_cases": 19,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_test_executables": 3,
+      "sdk": "installed core-only consumer passed",
+      "evidence": [
+        {
+          "path": "build/p10g-histogram001/windows-build001/receipt.json",
+          "bytes": 1177,
+          "sha256": "1f4bd0af3e66c5c1c6f97c98c5ecd55f6c4e0407326c6b233bab406d6bb2e38f"
+        },
+        {
+          "path": "build/p10g-histogram001/windows-build001/native.xml",
+          "bytes": 3031,
+          "sha256": "752dfb26377729ed0e11349d2b5ff9af7debe14a195e4d71f8072df0c5bb3215"
+        },
+        {
+          "path": "build/p10g-histogram001/windows-python001/receipt.json",
+          "bytes": 1783,
+          "sha256": "f2496863d84af97d0e7aac9abb9c322c7b788f479445c7da4916218c1ec983c6"
+        },
+        {
+          "path": "build/p10g-histogram001/windows-python001/pytest.xml",
+          "bytes": 112111,
+          "sha256": "38cc39cfce5c7ac0f7effbd033184891a01173a5b11a1de01fc6021c258c0e9e"
+        },
+        {
+          "path": "build/p10g-histogram001/windows-sdk001/receipt.json",
+          "bytes": 368,
+          "sha256": "6cd835c5c29b86d7a506c41bd76664e1047ec97caee1ad1c20c4cfa97e6620ce"
+        },
+        {
+          "path": "build/p10g-histogram001/windows-cleanup001.json",
+          "bytes": 47110,
+          "sha256": "05590be5342c8ceb882ab6904eca735f79abdd02ebaa82386fc9d77a8d00a4f7"
+        }
+      ],
+      "removed_scratch_bytes": 25362391
+    },
+    "linux": {
+      "python_cases": 741,
+      "new_statistics_cases": 19,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_test_executables": 3,
+      "sdk": "installed core-only consumer passed",
+      "evidence": [
+        {
+          "path": "build/p10g-histogram001/linux-build001/receipt.json",
+          "bytes": 1153,
+          "sha256": "3f90f44d91d44d879df4f731d9a7cb7e90aabceb382d8219cfa9c6e6fea550b5"
+        },
+        {
+          "path": "build/p10g-histogram001/linux-build001/native.xml",
+          "bytes": 2976,
+          "sha256": "e5a883c094de5685b36eadefec0fc269345473c55bb394dc716b10c82511c981"
+        },
+        {
+          "path": "build/p10g-histogram001/linux-python001/receipt.json",
+          "bytes": 1698,
+          "sha256": "3d899826f1bcb34046e38807e84af9f8202ac94b8eaafb4a7d8c214244ac9fcd"
+        },
+        {
+          "path": "build/p10g-histogram001/linux-python001/pytest.xml",
+          "bytes": 112112,
+          "sha256": "c039b17e9aeed57c3035bca227f3ae77c4015824386cab5d657876c230d90136"
+        },
+        {
+          "path": "build/p10g-histogram001/linux-sdk001/receipt.json",
+          "bytes": 325,
+          "sha256": "c6f2f03cedc7f4dac68dda62ef15a3384d4a18e2e4fa730eb8a6663e2c41f5f7"
+        },
+        {
+          "path": "build/p10g-histogram001/linux-cleanup001.json",
+          "bytes": 32024,
+          "sha256": "f815516fed2069ea755bb4369425b756c9888550d21195119ccd3a740bfd5b0b"
+        }
+      ],
+      "removed_scratch_bytes": 47570887
+    }
+  },
+  "initial_fixture_failure": "Early checks correctly rejected a zero-width rectangle. The final empty-population fixture uses a valid all-zero area mask. Initial failed JUnit and corrected early/final reports are retained.",
+  "ui": "Both standalone and Python ImGui products compile. No new UI behavior or runtime UI acceptance is claimed; the existing Histogram menu still uses its old path.",
+  "commercial": {
+    "result": "Reviewed commercial-use dependency inventory passed; no new dependencies.",
+    "evidence": {
+      "path": "build/p10g-histogram001/licenses001.log",
+      "bytes": 53,
+      "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+    }
+  },
+  "plan_gate": {
+    "state": "existing_failure_preserved",
+    "message": "Plan inventory check failed: histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed",
+    "evidence": {
+      "path": "build/p10g-histogram001/plan-gate001.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    },
+    "unchanged_producer_source": {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 14135,
+      "sha256": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    }
+  },
+  "remaining": [
+    "Connect native standalone histogram service to captured scientific C/T/Z targets and ROI policies in both ImGui launchers.",
+    "Complete editable bin/range controls, log display, statistics display and lossless numerical file publication with actual-input UI tests.",
+    "Complete supported-domain/reference/resource/platform qualification, asynchronous execution and remaining full ImageJ/commercial Fiji scope."
+  ],
+  "source": [
+    {
+      "path": "include/imagejxx/dataset_histogram.hpp",
+      "bytes": 5409,
+      "sha256": "2ee63ec0c31c023c7e35b661c3be0f67bad840df8ff2cc69dcb01d88fb51b9f9"
+    },
+    {
+      "path": "src/native/dataset_histogram.cpp",
+      "bytes": 20722,
+      "sha256": "8a9f1effbeacb4150ca1e48243d16346a38f0b0956e2e417423fa8bd6a92a61c"
+    },
+    {
+      "path": "src/native/dataset_histogram_bindings.cpp",
+      "bytes": 10097,
+      "sha256": "6299e8f83ed0578cc1a983852a0e68f03a5c55121f475fb16e61dc0611efb96a"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 71333,
+      "sha256": "94f7fef42c6f3ec322be78f9c58fc119992c0dc0e334cca0cc2042b80ae2d420"
+    },
+    {
+      "path": "tests/native/test_histogram_statistics.cpp",
+      "bytes": 2232,
+      "sha256": "777741cc97e27c2003928eb17cc3092434ff9b705966359e15234ca0e1d92876"
+    },
+    {
+      "path": "tests/python/test_histogram_statistics.py",
+      "bytes": 2263,
+      "sha256": "ef09a2d80db5139855096427751eec379c6f69f2c5a246424818c412732dcd86"
+    },
+    {
+      "path": "tests/python/test_histogram_statistics_nan.py",
+      "bytes": 1118,
+      "sha256": "42bd3b8af73949765a18b887bdd829a413c729d0a0fb5fadec9ead1da398bb59"
+    }
+  ]
+}

@@ -1,5 +1,18 @@
 # ImageJ and Fiji gap closure plan
 
+**Native histogram statistics checkpoint, 2026-10-21 (work in progress):**
+The standalone Dataset histogram service now returns unbinned finite-ROI mean,
+population standard deviation and sum, independently of bin range. Raw CSV
+formatting preserves full edge precision and UInt64 counts without reading
+the source or writing files. Windows/Linux each pass 741 selected Python checks
+(19 new), three native test executables and an installed core-only SDK consumer.
+Both ImGui products compile; connecting their standalone Histogram controls
+to the native service remains the next step. No UI runtime acceptance or
+whole-family completion is claimed. See [usage](HISTOGRAM.md) and the
+[scoped receipt](parity/reviews/p10g-histogram-statistics001.json).
+The existing Auto Contrast fingerprint gate remains open; all99 stays
+47 in progress / 52 open / 0 complete.
+
 **Scientific threshold checkpoint, 2026-10-21 (work in progress):**
 Both ImGui hosts now reuse validated Current/All/First/Last/Step controls for
 C/Z/T, whole/active/positioned write ROIs and independent histogram ROI choice.

@@ -2751,18 +2751,26 @@
           "docs/THRESHOLDING.md",
           "docs/SESSION_FORMAT.md",
           "docs/DESKTOP.md",
-          "docs/parity/reviews/p10f-scientific-threshold001.json"
+          "docs/parity/reviews/p10f-scientific-threshold001.json",
+          "docs/HISTOGRAM.md",
+          "docs/parity/reviews/p10g-histogram-statistics001.json"
         ],
         "implementation": [
           "include/imagejxx/auto_threshold_stack.hpp",
           "src/native/auto_threshold_stack.cpp",
           "include/imagejxx/automatic_threshold_display.hpp",
           "src/native/automatic_threshold_display.cpp",
-          "src/desktop/threshold_panel.cpp"
+          "src/desktop/threshold_panel.cpp",
+          "include/imagejxx/dataset_histogram.hpp",
+          "src/native/dataset_histogram.cpp",
+          "src/native/dataset_histogram_bindings.cpp"
         ],
         "tests": [
           "tests/python/test_scientific_threshold_target.py",
-          "tests/python/test_scientific_threshold_target_ui.py"
+          "tests/python/test_scientific_threshold_target_ui.py",
+          "tests/native/test_histogram_statistics.cpp",
+          "tests/python/test_histogram_statistics.py",
+          "tests/python/test_histogram_statistics_nan.py"
         ]
       },
       "id": "G069",
@@ -2772,12 +2780,13 @@
       ],
       "name": "Histogram",
       "remaining": [
-        "The threshold-associated histogram API/panel now supports frozen stack/channel/time grids and ROI counts. Finish an independent standalone histogram calculation/dialog, range/bin/log controls, complete statistics display and numerical export, with reference/resource/platform qualification."
+        "Native single-plane/area histogram supports processor/raw and explicit range/bin accumulation, unbinned finite-ROI statistics and lossless raw-bin CSV text. Threshold-associated histograms already support frozen stack/channel/time grids. Finish independent standalone scientific targeting/dialog, range/bin/log controls, complete statistics display and numerical file publication in both ImGui hosts, with reference/resource/platform qualification."
       ],
       "required_work": "Stack/channel targeting, range/bin/log controls, statistics display and numerical export",
       "status": "in_progress",
       "verification": [
-        "p10f.scientific-threshold.functional.001"
+        "p10f.scientific-threshold.functional.001",
+        "p10g.histogram-statistics.functional.001"
       ]
     },
     {
@@ -180661,6 +180670,29 @@
         "total": 5445
       },
       "scope": "5445 selected checks per OS including 68 new scientific checks; 408 threshold reports / 38736 frames including 72 scientific target reports. Fresh SDK checks preserved callable signature, raw retention, range membership, zero-read admission and positioned replay. G069 starts in progress; no whole-family acceptance."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-21",
+      "id": "p10g.histogram-statistics.functional.001",
+      "identity": {
+        "qualification": {
+          "bytes": 7389,
+          "path": "docs/parity/reviews/p10g-histogram-statistics001.json",
+          "sha256": "75452635b13f5dba224112a2db2055895cb3f1da5bcc130ebfed1ce030432c6c"
+        }
+      },
+      "platform": "Windows/Linux installed native Python and core-only SDK; desktop compile only",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 741,
+        "report": "build/p10g-histogram001/windows-python001/pytest.xml",
+        "skipped": 0,
+        "total": 741
+      },
+      "scope": "741 selected checks per OS including 19 new statistics/CSV cases; three native executables per OS and installed core-only SDK consumers. No new UI runtime or whole-family acceptance."
     }
   ]
 }

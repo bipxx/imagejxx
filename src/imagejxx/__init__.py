@@ -349,6 +349,7 @@ from ._native import (
     DatasetHistogramResult as DatasetHistogramResult,
     estimate_dataset_histogram as estimate_dataset_histogram,
     accumulate_dataset_histogram as accumulate_dataset_histogram,
+    dataset_histogram_csv as dataset_histogram_csv,
 )
 from ._native import (
     AutoContrastScope as AutoContrastScope,

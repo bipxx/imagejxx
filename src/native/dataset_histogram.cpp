@@ -6,6 +6,9 @@
 #include <algorithm>
 #include <cmath>
 #include <limits>
+#include <iomanip>
+#include <locale>
+#include <sstream>
 #include <stdexcept>
 #include <utility>
 
@@ -296,6 +299,7 @@ static DatasetHistogramResult accumulate_histogram(
       plane->pixels.size() != admitted.estimate.pixel_count)
     invalid("Dataset histogram acquired plane has a different shape/type/storage");
 
+  double mean = 0, m2 = 0;
   kernel_blocks("Dataset histogram validation/extrema", plane->pixels.size(),
       [&](std::size_t first, std::size_t last) {
     for (auto i = first; i < last; ++i) {
@@ -309,10 +313,18 @@ static DatasetHistogramResult accumulate_histogram(
       ++result.visited_count;
       if (!finite) { ++result.nan_count; continue; }
       ++result.finite_count;
+      result.sum += value;
+      const double delta = value - mean;
+      mean += delta / double(result.finite_count);
+      m2 += delta * (value - mean);
       extrema(value, result.minimum, result.maximum);
     }
   });
   result.empty_finite = result.finite_count == 0;
+  if (!result.empty_finite) {
+    result.mean = mean;
+    result.stddev = std::sqrt(std::max(0.0, m2 / double(result.finite_count)));
+  }
   const int bins = result.request.bins;
   kernel_checkpoint();
   result.histogram.counts.assign(std::size_t(bins), 0);
@@ -407,4 +419,21 @@ DatasetHistogramResult accumulate_dataset_histogram_stages(
   return accumulate_histogram(source, request, limits, control, false);
 }
 } // namespace detail
+std::string dataset_histogram_csv(const DatasetHistogramResult &result) {
+  const auto &h = result.histogram;
+  if (h.counts.empty() || h.counts.size() > 65536 ||
+      h.edges.size() != h.counts.size() + 1)
+    invalid("Histogram CSV requires 1..65536 bins and one more edge");
+  for (std::size_t i = 0; i < h.edges.size(); ++i)
+    if (!std::isfinite(h.edges[i]) || (i && h.edges[i] < h.edges[i - 1]))
+      invalid("Histogram CSV requires finite nondecreasing edges");
+  std::ostringstream stream;
+  stream.imbue(std::locale::classic());
+  stream << std::setprecision(std::numeric_limits<double>::max_digits10);
+  stream << "bin,lower,upper,count\n";
+  for (std::size_t i = 0; i < h.counts.size(); ++i)
+    stream << i << ',' << h.edges[i] << ',' << h.edges[i + 1]
+           << ',' << h.counts[i] << '\n';
+  return stream.str();
+}
 } // namespace imagejxx
