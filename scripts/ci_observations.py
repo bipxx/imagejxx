@@ -27,6 +27,28 @@ def pin(path):
     return {"bytes": path.stat().st_size, "sha256": digest.hexdigest()}
 
 
+def planar_cases():
+    """Named cases for fresh C++ input, independently checked by Python readers."""
+    operations = ["rectangle", "ellipse", "line", "point", "freehand", "polygon",
+                  "multipoint", "escape", "focus", "context", "source", "wheel",
+                  "zoom", "preferences", "resize", "vertex", "rotate", "mask_move", "mask_hole",
+                  "busy", "scientific_busy", "modal", "time", "channel", "owner", "style", "mask_rotate"]
+    modifiers = ("none", "shift", "alt", "both")
+    for gesture in ("resize", "cross"):
+        operations.extend(f"{gesture}_{handle}_{modifier}"
+                          for handle in range(8) for modifier in modifiers)
+    operations.extend("collapse_" + modifier for modifier in modifiers)
+    operations.extend("invalid_" + name for name in (
+        "width_zero", "width_negative", "width_nan", "width_inf", "width_overflow",
+        "width_partial", "height_zero", "center_nan", "angle_inf", "fixed_negative",
+        "time_zero", "channel_over"))
+    operations.extend(f"profile_{profile}_cross_{handle}_{modifier}"
+                      for profile in ("ellipse", "rbox", "rellipse")
+                      for handle in range(8) for modifier in modifiers)
+    operations.extend("profile_ellipse_collapse_" + modifier for modifier in modifiers)
+    return [f"{plane}.{operation}" for plane in ("XY", "XZ", "YZ") for operation in operations]
+
+
 def cases():
     groups = [
         ("rank", "--rank-ui-case", [f"R{i:02d}" for i in range(1, 60)]),
@@ -45,6 +67,7 @@ def cases():
          [case + "-modifiers" for case in ["finite-axis", "finite-rotated", "ieee-axis", "ieee-rotated"]]),
         ("shadows", "--shadow-ui-case",
          ["north", "northeast", "east", "southeast", "south", "southwest", "west", "northwest"]),
+        ("planar-matrix", "--planar-annotation-matrix-ui-case", planar_cases()),
     ]
     for group, flag, variants in groups:
         for variant in variants:
@@ -65,6 +88,7 @@ def reader_environment(output):
         "IMAGEJXX_SAVED_POINTER_CPP_BASE": reports / "saved-pointer",
         "IMAGEJXX_SAVED_MODIFIERS_CPP_BASE": reports / "saved-modifiers",
         "IMAGEJXX_SHADOW_CPP_BASE": reports / "shadows",
+        "IMAGEJXX_PLANAR_MATRIX_CPP_ROOT": reports / "planar-matrix",
         "IMAGEJXX_VARIANCE_CPP_REPORT": reports / "rank/R14/case.json",
     }
     for name in ("NONBYTE", "THRESHOLD", "CHANNEL_VARIANCE", "DESPECKLE",

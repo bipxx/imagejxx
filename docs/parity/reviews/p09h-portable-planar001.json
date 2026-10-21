@@ -1,0 +1,110 @@
+{
+  "state": "qualified_ci_increment",
+  "objective_complete": false,
+  "scope": "Provision fresh C++ planar annotation captures for the existing full-suite readers; no product geometry or test assertion changes.",
+  "all99": {
+    "in_progress": 43,
+    "open": 56,
+    "complete": 0
+  },
+  "baseline": {
+    "run": 39540986889,
+    "job": 119028924309,
+    "failure_group": "Missing IMAGEJXX_PLANAR_MATRIX_CPP_ROOT",
+    "affected_cases": 621
+  },
+  "matrix": {
+    "state": "passed",
+    "previous_cases_preserved": 95,
+    "new_cases": 621,
+    "total": 716,
+    "independent_reader_case_ids_match": true,
+    "reader_assertions_changed": false
+  },
+  "tests": {
+    "state": "passed",
+    "profiles": {
+      "windows": {
+        "passed": 1243,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "linux": {
+        "passed": 1243,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "identical_case_ids": true,
+    "expected_count_correction": {
+      "original_wrapper_expected": 1242,
+      "actual_module_count": 1243,
+      "additional_case": "test_annotation_cap_refusal_recovers_without_losing_source",
+      "original_failures_preserved": true
+    }
+  },
+  "cpp_observations": {
+    "windows": {
+      "state": "passed",
+      "cases": 621,
+      "frames": 11406,
+      "unique_cases": 621
+    },
+    "linux": {
+      "state": "passed",
+      "cases": 621,
+      "frames": 11406,
+      "unique_cases": 621
+    }
+  },
+  "products": "Reuses the P09g qualified installed SDK application and Python desktop packages on Windows/Linux; no native source or installed product changed.",
+  "inputs": [
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 10320,
+      "sha256": "b509267084e7716861aa29b92646d13aafa95aa90bba60910ce019f2f10a81a6"
+    },
+    {
+      "path": "tests/python/test_planar_annotation_matrix_ui.py",
+      "bytes": 17819,
+      "sha256": "05bab53f7d88ad0902515ceeb99503b1b4702c5287f529adc6564a3ec7cd96cc"
+    },
+    {
+      "path": "build/p09h-portable-planar001/worker001.py",
+      "bytes": 3260,
+      "sha256": "fc8ff2b1724f0ed429fe2b336609e911da66dba54c33fdea024c3151653583e3"
+    },
+    {
+      "path": "build/p09h-portable-planar001/summarize001.py",
+      "bytes": 1126,
+      "sha256": "62c8222ae84203b31c54b42f38cf46bca5682a47b86860b5d5f9eec3b8621552"
+    }
+  ],
+  "receipts": "build/p09h-portable-planar001",
+  "limitations": [
+    "Full hosted CI remains unaccepted; next hosted run must exercise the default 716-case capture matrix and the full suite.",
+    "Other missing observation/reference contracts and actual full-suite failures remain open.",
+    "Windows/macOS reviewed scientific desktop CI profiles and platform/accessibility acceptance remain open.",
+    "No ImageJ/Fiji family is complete and all 96 format variants remain partial."
+  ],
+  "cleanup": {
+    "removed_bytes": 5245034773,
+    "removed_files": 4972,
+    "crc_and_every_member_sha256_verified": true,
+    "archives": {
+      "windows": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09h-portable-planar001\\windows-scratch001.zip",
+        "bytes": 207004458,
+        "sha256": "96638a3907e60b016a5d9803b48defdf616d02edb88c6c67df134f3bdb0e8df1"
+      },
+      "linux": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09h-portable-planar001/linux-scratch001.zip",
+        "bytes": 206985331,
+        "sha256": "e0a8f381bbef679dda19d76c90a50622954a7d48d607f4e79531d37886797a23"
+      }
+    },
+    "preserved": "All qualified product prefixes, useful native source/build and dependency caches, copied observation receipts, JUnit reports, original wrapper count failures and hosted baseline evidence"
+  }
+}

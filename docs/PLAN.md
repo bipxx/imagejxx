@@ -1,5 +1,20 @@
 # ImageJ and Fiji gap closure plan
 
+**Portable planar CI checkpoint, 2026-10-21 (work in progress):** CI now
+provisions 621 fresh C++ planar-selection observations across XY/XZ/YZ. This
+addresses the largest missing-contract group in hosted run 39540986889 while
+retaining the previous 95 capture cases and every existing reader assertion.
+The default matrix is 716 cases. Both Windows and Linux installed hosts supply
+621 actual C++ observations over 11,406 frames per platform; all 1,243 tests in
+the independent planar module pass on each platform without skips, including
+Python-host gestures and memory-cap recovery. The private wrapper's original
+1,242-count mistake is preserved alongside corrected independent validation.
+See [the scoped receipt](parity/reviews/p09h-portable-planar001.json).
+Other observation/reference contracts and actual hosted failures remain open;
+this local result does not establish full hosted acceptance. Product geometry
+is unchanged. All99 remains 43 in progress / 56 open / 0 complete; all 96 format
+variants remain partial.
+
 **Directional shadows checkpoint, 2026-10-21 (work in progress):** eight
 ImageJ direction presets now run through the C++ core, NumPy API and ordinary
 shared-ImGui Process/Shadows controls with Preview, Cancel, Apply and Undo/Redo.
