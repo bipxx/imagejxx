@@ -24,6 +24,12 @@ def projection(wire):
 def check(report,case):
     assert report['state']=='observed' and report['error']=='' and report['acceptance_claim'] is False
     assert report['contract']=='p08s.rounded-roi-export.ui.001' and report['case_id']==case
+    assert 0 < len(report['frames']) <= 550
+    assert report['worker_waits']
+    for wait in report['worker_waits']:
+        assert wait['poll_milliseconds'] == 20 and wait['deadline_seconds'] == 10
+        assert type(wait['polls']) is int and wait['polls'] >= 0
+        assert wait['polls'] * .020 - 1e-6 <= wait['elapsed_seconds'] <= 10
     assert all(f['events']==f['rendered']['input_frame']['raw_inputs'] for f in report['frames'])
     assert all(c['control']['id'] and c['control']['enabled'] for c in report['controls'])
     assert report['review']['ready'] and report['review']['projection_group']==9

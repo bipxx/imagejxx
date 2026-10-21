@@ -21,6 +21,11 @@ def reports(tmp_path_factory):
 def test_explicit_pair_projection_and_actual_preview_controls(reports):
     for r,context in zip(reports,['imgui_cpp','imgui_python']):
         assert r['contract']=='p06q.roi-export.ui.002' and r['state']=='observed' and r['context']==context and r['error']==''
+        assert 0 < len(r['frames']) <= 550 and r['worker_waits']
+        for wait in r['worker_waits']:
+            assert wait['poll_milliseconds'] == 20 and wait['deadline_seconds'] == 10
+            assert type(wait['polls']) is int and wait['polls'] >= 0
+            assert wait['polls'] * .020 - 1e-6 <= wait['elapsed_seconds'] <= 10
         assert r['loaded']['source_index']==r['loaded']['annotation_index']==r['loaded']['metadata_choice']==-1
         assert len(r['loaded']['sources'])==2 and [s['name'] for s in r['loaded']['sources']]==['duplicate##.roi']*2
         assert 'Choose both' in r['unselected']['error'] and not r['unselected']['ready']

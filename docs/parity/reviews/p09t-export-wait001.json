@@ -1,0 +1,152 @@
+{
+  "state": "qualified_capture_robustness_increment",
+  "objective_complete": false,
+  "scope": "Single-ROI export observer polling; product export algorithms and admitted behavior are unchanged.",
+  "change": "Poll active export workers every 20 ms, retaining the 550-frame cap and 10-second worker deadline. Record actual poll counts and monotonic wait durations; reject an over-deadline wait even when the last poll completed the worker.",
+  "readers": "Both ordinary and rounded export readers verify measured waits and frame bounds alongside all existing exact wire, metadata/projection, replay, overwrite, stale-source, cancellation, temporary-file and no-pixel-read assertions.",
+  "baseline": {
+    "state": "observed_failed_hosted_capture",
+    "run": 39611296564,
+    "job": 119261166800,
+    "commit": "04865924ab9f157fe7edbc78257615f5f8671c94",
+    "case": "oversized",
+    "frames": 550,
+    "worker_active": true,
+    "phase": 3,
+    "failure": "Export frame bound\n",
+    "archive": {
+      "path": "build\\p09s-animation001\\hosted-artifacts001\\cpp-observations.zip",
+      "bytes": 68646808,
+      "sha256": "b77bb3b2ace722b79ebb88657f5aa1f10e095c17127393a0f7d10dbe461ac1b2"
+    }
+  },
+  "tests": {
+    "windows": {
+      "passed": 45,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_preferences": "passed",
+      "transport_runner_checks": 15,
+      "observations": 42,
+      "frames": 8570,
+      "export_max_frames": 424,
+      "measured_poll_count": 168,
+      "measured_max_wait": 0.0390694,
+      "junit": {
+        "path": "build/p09t-export-wait001/windows-python001/pytest.xml",
+        "bytes": 6035,
+        "sha256": "6a47605ee6815eb9e17342c6f99f56c6e72b3e63101ca64564e2dd743d39514d"
+      },
+      "compact_evidence": {
+        "path": "build/p09t-export-wait001/windows-evidence001.json",
+        "bytes": 67370,
+        "sha256": "bd248d1f22a3f4c94f346e681e047a2d967a6213804c53f59bd52377d37e081e"
+      }
+    },
+    "linux": {
+      "passed": 45,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_preferences": "passed",
+      "transport_runner_checks": 15,
+      "observations": 42,
+      "frames": 8576,
+      "export_max_frames": 425,
+      "measured_poll_count": 169,
+      "measured_max_wait": 0.043977494,
+      "junit": {
+        "path": "build/p09t-export-wait001/linux-python001/pytest.xml",
+        "bytes": 6035,
+        "sha256": "cb6209bfee801543f0476915577a4e7cf6d15a0f8f16b70c1802cee9461b53e6"
+      },
+      "compact_evidence": {
+        "path": "build/p09t-export-wait001/linux-evidence001.json",
+        "bytes": 66534,
+        "sha256": "95df4ed5cea6b1f9e7209b7761b4e05b0d17d146adbeb9df345c51032a481d04"
+      }
+    }
+  },
+  "identical_case_ids": true,
+  "actual_ui": {
+    "observations": 84,
+    "frames": 17146,
+    "os_input_or_gpu_equivalence_claim": false
+  },
+  "ci": {
+    "default_launches": 1116,
+    "definitions_unchanged": true,
+    "selected_launches_per_platform": 21
+  },
+  "products": {
+    "public_headers": 66,
+    "python_modules": 12,
+    "native_catalog_operations": 92,
+    "installed_sources_match": true,
+    "windows": "build/p09t-export-wait001/windows-build001/installed",
+    "linux": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/install-p09t001"
+  },
+  "commercial": {
+    "new_dependencies": [],
+    "review": "scripts/check_licenses.py --desktop passed"
+  },
+  "cleanup": {
+    "removed_bytes": 1808088129,
+    "removed_files": 586,
+    "crc_and_every_member_sha256_verified": true,
+    "archives": {
+      "windows": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09t-export-wait001\\windows-scratch001.zip",
+        "bytes": 85037376,
+        "sha256": "d590d429361b27fca2e9f25116f0fed09e9f7745e8f8ee38144f8bfbaec13075"
+      },
+      "linux": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09t-export-wait001/linux-scratch001.zip",
+        "bytes": 102396592,
+        "sha256": "f91cd5c02da6401e43ceaf29961e76a955c51943fdb4082fa2652eec911c2fa0"
+      }
+    },
+    "preserved": "Final installed products, useful caches, compact evidence, JUnit, native/Python receipts and original logs remain. Raw captures and copied environments remain in verified archives."
+  },
+  "plan_check": {
+    "state": "failed_preexisting",
+    "message": "Plan inventory check failed: histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed",
+    "first_mismatch": {
+      "path": "include/imagejxx/application.hpp",
+      "current_and_previous_commit_sha256": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    },
+    "action": "Refresh complete Auto Contrast consumer evidence; retain historical identities."
+  },
+  "remaining": [
+    "Hosted confirmation of this capture repair and complete Python acceptance; other missing reference/capture contracts, actual failures and stale historical fingerprints remain open.",
+    "Animation ranges, reverse/ping-pong modes, calibrated-time pacing, movie export and all broader ImageJ/commercially usable Fiji requirements remain required."
+  ],
+  "inputs": [
+    {
+      "path": "src/desktop/roi_export_ui_probe.cpp",
+      "bytes": 19505,
+      "sha256": "80f64b3b9bd665044aeb0f450d1dd21f9918a49ee03dbeea52be87c6373623e6"
+    },
+    {
+      "path": "tests/python/test_imagej_roi_export_ui.py",
+      "bytes": 8571,
+      "sha256": "9ca5530d48e133f841a90ed0f225b6a1441d6664482121354162170fb2a6ec33"
+    },
+    {
+      "path": "tests/python/test_rounded_roi_export_ui.py",
+      "bytes": 3857,
+      "sha256": "56378f6c00f5a7b925e5f700f4e777b05c11efc4f4d025276b32e5809b5f2800"
+    },
+    {
+      "path": "docs/CI.md",
+      "bytes": 14181,
+      "sha256": "53d476d4e478c2398c2694232b6d0fb5dd598969de977576546663318e95bc91"
+    },
+    {
+      "path": "docs/PLAN.md",
+      "bytes": 395467,
+      "sha256": "ccf9b42889a97084274b52d65acdda1b127796975265231d2d518eca05831636"
+    }
+  ]
+}

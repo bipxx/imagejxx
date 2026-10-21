@@ -853,9 +853,14 @@
     },
     {
       "evidence": {
-        "documentation": [],
+        "documentation": [
+          "docs/parity/reviews/p09t-export-wait001.json"
+        ],
         "implementation": [],
-        "tests": []
+        "tests": [
+          "tests/python/test_imagej_roi_export_ui.py",
+          "tests/python/test_rounded_roi_export_ui.py"
+        ]
       },
       "id": "G020",
       "milestones": [
@@ -868,7 +873,9 @@
       ],
       "required_work": "ImageJ `.roi` and ROI ZIP read/write, coordinate files and supported geometry/style/position metadata",
       "status": "open",
-      "verification": []
+      "verification": [
+        "p09t.export-wait.functional.001"
+      ]
     },
     {
       "evidence": {
@@ -180176,6 +180183,29 @@
         "total": 2107
       },
       "scope": "2107 selected checks per platform; 720 actual UI observations/46292 frames including 52 playback observations/1488 frames. Native settings/preferences and 15 transport checks per platform. Full family/hosted acceptance remains open."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-21",
+      "id": "p09t.export-wait.functional.001",
+      "identity": {
+        "qualification": {
+          "bytes": 5952,
+          "path": "docs/parity/reviews/p09t-export-wait001.json",
+          "sha256": "5bceadb245e01c6579b8da291c408cc0ffb52aa77b1922bcef94ca4774e5cb7b"
+        }
+      },
+      "platform": "Windows/Linux installed C++ and isolated Python Dear ImGui hosts",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 45,
+        "report": "build/p09t-export-wait001/windows-python001/pytest.xml",
+        "skipped": 0,
+        "total": 45
+      },
+      "scope": "45 selected export/playback checks per platform; 84 actual UI observations/17146 frames, native preferences and 15 transport checks per platform. Full family/hosted acceptance remains open."
     }
   ]
 }

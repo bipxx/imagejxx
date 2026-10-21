@@ -169,14 +169,24 @@ static Json roiExportUiVariant(Window &w, const std::string &context,
           key + "." + std::to_string(index));
   };
   auto settle = [&] {
+    const auto started = std::chrono::steady_clock::now();
     const auto deadline =
-        std::chrono::steady_clock::now() + std::chrono::seconds(10);
+        started + std::chrono::seconds(10);
+    std::size_t polls = 0;
     while (panel().at("worker_active").get<bool>()) {
       require(std::chrono::steady_clock::now() < deadline,
               "Export worker timeout");
-      std::this_thread::sleep_for(std::chrono::milliseconds(2));
+      // Leave time for the worker instead of spending the finite observation
+      // frame budget on redundant polling on fast software-rendered hosts.
+      std::this_thread::sleep_for(std::chrono::milliseconds(20));
       frame();
+      ++polls;
     }
+    const auto finished = std::chrono::steady_clock::now();
+    require(finished <= deadline, "Export worker timeout");
+    report["worker_waits"].push_back({{"polls", polls}, {"poll_milliseconds", 20},
+        {"deadline_seconds", 10}, {"elapsed_seconds",
+          std::chrono::duration<double>(finished - started).count()}});
     frame();
   };
   auto open = [&] {

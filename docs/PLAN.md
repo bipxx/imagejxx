@@ -1,5 +1,20 @@
 # ImageJ and Fiji gap closure plan
 
+**Export capture checkpoint, 2026-10-21 (work in progress):** the hosted
+rounded-export oversized case exhausted 550 frames while its file worker was
+still active. The observer now polls every 20 ms, retaining that frame cap and
+the 10-second worker deadline. Independent ordinary/rounded readers check actual
+wait durations and poll counts alongside all wire, replay, overwrite, stale,
+cancel and no-pixel-read assertions. Both installed Windows/Linux profiles pass
+the same 45 export/playback checks without skips, native preferences and 15
+transport checks. 84 UI observations cover 17,146 frames; the largest checked
+export uses 425 frames. Verified archives reclaim 1,808,088,129 scratch bytes.
+See [the scoped receipt](parity/reviews/p09t-export-wait001.json).
+The 1,116 default capture definitions are unchanged. Hosted confirmation, full
+Python acceptance, the stale Auto Contrast evidence gate and all broader feature
+obligations remain open. All99 stays 44 in progress / 55 open / 0 complete;
+all 96 format variants remain partial.
+
 **Scientific playback checkpoint, 2026-10-21 (work in progress):** both hosts
 now offer explicit Z, scientific channel and time playback through the shared
 C++ controller. Native dimensions replace the legacy frame-table assumption;

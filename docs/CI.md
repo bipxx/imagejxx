@@ -104,6 +104,11 @@ Thirteen playback captures additionally exercise ordinary Z and scientific
 Z/C/T controls, live FPS changes, singleton refusal, source/edit/busy guards,
 RGB samples and literal IEEE Float32 transport. Independent readers check
 positions, linked plane bindings and exact source words through both hosts.
+The single-ROI export observer polls active file workers every 20 ms while
+retaining its 550-frame cap and 10-second worker deadline. It records actual
+poll counts and elapsed waits. Both ordinary and rounded export readers verify
+those bounds alongside the existing wire, replay, overwrite and no-pixel-read
+assertions. This avoids exhausting the frame budget with redundant polls.
 Eight scientific shadow captures additionally check the actual direction editor,
 private linked preview, all-Z Apply, retained workflow rows and Undo/Redo through
 the same C++ host consumed by the independent Python tests.
