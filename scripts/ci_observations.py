@@ -60,6 +60,81 @@ def bigtiff_cases():
             yield Path(row["file"]).stem, ["--scientific-tiff-ui-case", row["file"]]
 
 
+# Environment name and whether readers expect an extra capture001 directory.
+TIFF_READERS = {
+    "uint8-tiff": ("IMAGEJXX_UINT8_TIFF_CPP_DIR", True),
+    "rgb-tiff": ("IMAGEJXX_RGB_TIFF_CPP_DIR", True),
+    "deflate-tiff": ("IMAGEJXX_DEFLATE_TIFF_CPP_DIR", True),
+    "packbits-tiff": ("IMAGEJXX_PACKBITS_TIFF_CPP_DIR", True),
+    "lzw-tiff": ("IMAGEJXX_LZW_TIFF_CPP_DIR", True),
+    "horizontal-tiff": ("IMAGEJXX_HORIZONTAL_TIFF_CPP_DIR", True),
+    "float32-tiff": ("IMAGEJXX_FLOAT32_TIFF_CPP_DIR", False),
+    "deflate-float32": ("IMAGEJXX_DEFLATE_FLOAT32_CPP_DIR", False),
+    "packbits-float32": ("IMAGEJXX_PACKBITS_FLOAT32_CPP_DIR", False),
+    "lzw-float32": ("IMAGEJXX_LZW_FLOAT32_CPP_DIR", False),
+    "floating-tiff": ("IMAGEJXX_FLOATING_TIFF_CPP_DIR", False),
+    "tiled-tiff": ("IMAGEJXX_TILED_TIFF_CPP_DIR", True),
+    "deflate-tiles": ("IMAGEJXX_DEFLATE_TILES_CPP_DIR", True),
+    "deflate-tiles-float": ("IMAGEJXX_DEFLATE_TILES_FLOAT_CPP_DIR", True),
+    "packbits-lzw-tiles": ("IMAGEJXX_PACKBITS_LZW_TILES_CPP_DIR", True),
+    "packbits-lzw-tiles-float": ("IMAGEJXX_PACKBITS_LZW_TILES_FLOAT_CPP_DIR", True),
+    "predicted-tiles": ("IMAGEJXX_PREDICTED_TILES_CPP_DIR", True),
+    "predicted-tiles-float": ("IMAGEJXX_PREDICTED_TILES_FLOAT_CPP_DIR", True),
+}
+
+
+def tiff_cases():
+    """Input gestures and fixture paths for the existing independent TIFF readers."""
+    def scientific(group, case, folder, filename):
+        return group, case, ["--scientific-tiff-ui-case", f"{folder}/{filename}"]
+
+    def floating(group, case, preset, folder, filename):
+        return group, case, ["--float32-tiff-ui-case", preset, f"{folder}/{filename}"]
+
+    for order in ("le", "be"):
+        yield scientific("uint8-tiff", order, "uint8-tiff-imagej154r", f"byte-{order}.tif")
+        yield scientific("tiled-tiff", f"cpp-{order}001", "scientific-tiff-tiled",
+                         f"edges-{order}-{'poison' if order == 'le' else 'zero'}.tif")
+        for channels in (1, 2):
+            case = f"c{channels}-{order}"
+            yield scientific("rgb-tiff", case, "rgb-tiff-imagej154r", f"rgb-{case}.tif")
+        for dtype in ("u8", "u16", "rgb8"):
+            case = f"{dtype}-{order}"
+            for codec, group in ((8, "deflate-tiff"), (32773, "packbits-tiff"), (5, "lzw-tiff")):
+                yield scientific(group, case, "scientific-tiff-" + group.split("-")[0],
+                                 f"{case}-r64-c{codec}.tif")
+            for codec in (8, 5):
+                yield scientific("horizontal-tiff", f"{case}-c{codec}", "scientific-tiff-horizontal",
+                                 f"{case}-r2-c{codec}.tif")
+    presets = {"TF01": "finite-le.tif", "TF02": "quiet-be.tif", "TF03": "ieee-le.tif",
+               "TF04": "ieee-be.tif", "TF05": "quiet-le.tif", "TF06": "ieee-le.tif"}
+    for preset, filename in presets.items():
+        for group, folder in (("float32-tiff", "float32-tiff-imagej154r"),
+                              ("deflate-float32", "deflate-float32-tiff-imagej154r"),
+                              ("packbits-float32", "packbits-float32-tiff-imagej154r"),
+                              ("lzw-float32", "lzw-float32-tiff-imagej154r")):
+            yield floating(group, preset, preset, folder, filename)
+        for codec in (8, 5):
+            yield floating("floating-tiff", f"c{codec}/{preset}", preset,
+                           "floating-float32-tiff-corpus", filename.replace(".tif", f"-c{codec}.tif"))
+    fixtures = Path(__file__).resolve().parents[1] / "tests/fixtures"
+    for family in ("deflate", "packbits-lzw", "predicted"):
+        folder = f"scientific-tiff-{family}-tiles"
+        rows = json.loads((fixtures / folder / "SOURCE.json").read_bytes())["files"]
+        for row in rows:
+            if (not row["valid"] or "-edges-" not in row["file"] or not row["padding"]
+                    or (family == "deflate" and row["compression"] != 8)):
+                continue
+            if row["pattern"] == "finite":
+                yield scientific(f"{family}-tiles", "cpp-" + Path(row["file"]).stem + "001",
+                                 folder, row["file"])
+            elif row["dtype"] == "f32" and row["pattern"] in ("quiet", "ieee"):
+                preset = "TF02" if row["pattern"] == "quiet" else "TF04"
+                codec = "" if family == "deflate" else f"-c{row['compression']}"
+                case = f"float-{preset}-{row['endian']}{codec}001"
+                yield floating(f"{family}-tiles-float", case, preset, folder, row["file"])
+
+
 def cases():
     groups = [
         ("rank", "--rank-ui-case", [f"R{i:02d}" for i in range(1, 60)]),
@@ -89,6 +164,7 @@ def cases():
 
     for case, arguments in bigtiff_cases():
         yield "bigtiff", case, arguments
+    yield from tiff_cases()
 
 
 def reader_environment(output):
@@ -112,6 +188,8 @@ def reader_environment(output):
         "IMAGEJXX_NATIVE_BATCH_CPP_REPORT": reports / "native-batch/legacy/case.json",
         "IMAGEJXX_VARIANCE_CPP_REPORT": reports / "rank/R14/case.json",
     }
+    for group, (name, _) in TIFF_READERS.items():
+        environment[name] = reports / group
     for name in ("NONBYTE", "THRESHOLD", "CHANNEL_VARIANCE", "DESPECKLE",
                  "OUTLIERS", "REMOVE_NANS", "TOPHAT", "IEEE_REMOVE_NANS"):
         environment[f"IMAGEJXX_{name}_CPP_DIR"] = reports / "rank"
@@ -156,23 +234,32 @@ def capture(output, executable, root, environment=None):
             # that parent across cases would leak settings between probes.
             private = output / "private" / group / case
             private.mkdir(parents=True)
-            actual = private / ("capture001" if group == "bigtiff" else "capture")
+            tiff = group == "bigtiff" or group in TIFF_READERS
+            nested = group == "bigtiff" or (group in TIFF_READERS and TIFF_READERS[group][1])
+            actual = private / ("capture001" if nested else "capture")
             transport = output / "reports" / group / case
-            if group == "bigtiff":
+            if nested:
                 transport = transport / "capture001"
-                fixture = Path(root) / "tests/fixtures/scientific-bigtiff" / arguments[1]
+            if tiff:
+                relative = "scientific-bigtiff/" + arguments[-1] if group == "bigtiff" else arguments[-1]
+                fixture = Path(root) / "tests/fixtures" / relative
                 manifest = fixture.parent / "SOURCE.json"
                 rows = json.loads(manifest.read_bytes())["files"]
                 row = next(row for row in rows if row["file"] == fixture.name)
+                if fixture.stat().st_size > 64 * 1024 * 1024:
+                    raise ValueError(f"TIFF fixture exceeds capture budget: {fixture}")
                 fixture_pin = pin(fixture)
-                if fixture_pin != {"bytes": row["bytes"], "sha256": row["sha256"]}:
-                    raise ValueError(f"BigTIFF fixture changed: {fixture}")
-                argv = [str(executable), arguments[0], str(actual), str(fixture)]
+                expected = {"sha256": row["sha256"]}
+                if "bytes" in row:
+                    expected["bytes"] = row["bytes"]
+                if any(fixture_pin[key] != value for key, value in expected.items()):
+                    raise ValueError(f"TIFF fixture changed: {fixture}")
+                argv = [str(executable), *arguments[:-1], str(actual), str(fixture)]
             else:
                 argv = [str(executable), *arguments, str(actual)]
             item = {"group": group, "case": case, "argv": argv, "state": "running",
                     "actual": str(actual), "transport": str(transport)}
-            if group == "bigtiff":
+            if tiff:
                 item["inputs"] = [{"path": str(fixture), **fixture_pin},
                                   {"path": str(manifest), **pin(manifest)}]
             receipt["cases"].append(item)

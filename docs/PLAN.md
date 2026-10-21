@@ -1,5 +1,20 @@
 # ImageJ and Fiji gap closure plan
 
+**Portable classic-TIFF CI checkpoint, 2026-10-21 (work in progress):** the
+capture runner now provisions all 18 existing classic-TIFF UI reader modules:
+byte/RGB, Deflate/PackBits/LZW, horizontal/floating predictors, tiled XYZ views,
+and Float32 finite/quiet-NaN/IEEE recovery. The 146 new cases retain every
+preceding 818 definition, giving 964 default captures. Hashes remain mandatory;
+legacy SHA-only manifests record measured byte counts, while declared sizes and
+a 64-MiB fixture bound are enforced. Four runner contract checks now run in all
+three native CI jobs. Both installed platforms pass the same 272 TIFF tests
+without skips; 484 C++ observations cover 83,644 frames. Verified archives
+reclaim 14,752,143,585 bytes of owned scratch. See
+[the scoped receipt](parity/reviews/p09j-portable-tiff001.json).
+Other missing observation/reference contracts, actual regressions, complete
+hosted acceptance and broader ImageJ/Fiji requirements remain open. All99 stays
+43 in progress / 56 open / 0 complete; all 96 format variants remain partial.
+
 **Portable scientific/workflow CI checkpoint, 2026-10-21 (work in progress):**
 the default capture matrix now includes 96 BigTIFF edge fixtures, four IEEE
 Float32 viewers, workflow execution and workflow batch, preserving the preceding

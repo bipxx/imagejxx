@@ -16,6 +16,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Check capture runner contracts
+        run: python -I -B tests/tools/test_ci_observations.py
       - name: Build, test and install all headless C++ targets
         run: python scripts/ci_native.py --output build/ci-native
       - name: Retain native and SDK results

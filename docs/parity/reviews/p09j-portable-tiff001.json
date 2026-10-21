@@ -1,0 +1,177 @@
+{
+  "state": "qualified_ci_increment",
+  "objective_complete": false,
+  "scope": "Provision the 18 existing classic-TIFF UI reader contracts, with independent codec/policy/export and XYZ assertions; retain prior BigTIFF coverage.",
+  "all99": {
+    "in_progress": 43,
+    "open": 56,
+    "complete": 0
+  },
+  "matrix": {
+    "previous_cases_preserved": 818,
+    "new_cases": 146,
+    "default_total": 964,
+    "unique": true,
+    "groups": {
+      "uint8-tiff": 2,
+      "tiled-tiff": 2,
+      "rgb-tiff": 4,
+      "deflate-tiff": 6,
+      "packbits-tiff": 6,
+      "lzw-tiff": 6,
+      "horizontal-tiff": 12,
+      "float32-tiff": 6,
+      "deflate-float32": 6,
+      "packbits-float32": 6,
+      "lzw-float32": 6,
+      "floating-tiff": 12,
+      "deflate-tiles": 8,
+      "deflate-tiles-float": 4,
+      "packbits-lzw-tiles": 16,
+      "packbits-lzw-tiles-float": 8,
+      "predicted-tiles": 24,
+      "predicted-tiles-float": 12
+    }
+  },
+  "tests": {
+    "windows": {
+      "passed": 272,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "modules": 19
+    },
+    "linux": {
+      "passed": 272,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "modules": 19
+    }
+  },
+  "baseline_module_case_ids_preserved": true,
+  "cpp_observations": {
+    "windows": {
+      "state": "passed",
+      "cases": 242,
+      "frames": 42047,
+      "groups": {
+        "bigtiff": 96,
+        "uint8-tiff": 2,
+        "tiled-tiff": 2,
+        "rgb-tiff": 4,
+        "deflate-tiff": 6,
+        "packbits-tiff": 6,
+        "lzw-tiff": 6,
+        "horizontal-tiff": 12,
+        "float32-tiff": 6,
+        "deflate-float32": 6,
+        "packbits-float32": 6,
+        "lzw-float32": 6,
+        "floating-tiff": 12,
+        "deflate-tiles": 8,
+        "deflate-tiles-float": 4,
+        "packbits-lzw-tiles": 16,
+        "packbits-lzw-tiles-float": 8,
+        "predicted-tiles": 24,
+        "predicted-tiles-float": 12
+      },
+      "reused_bigtiff": 96,
+      "new": 146
+    },
+    "linux": {
+      "state": "passed",
+      "cases": 242,
+      "frames": 41597,
+      "groups": {
+        "bigtiff": 96,
+        "uint8-tiff": 2,
+        "tiled-tiff": 2,
+        "rgb-tiff": 4,
+        "deflate-tiff": 6,
+        "packbits-tiff": 6,
+        "lzw-tiff": 6,
+        "horizontal-tiff": 12,
+        "float32-tiff": 6,
+        "deflate-float32": 6,
+        "packbits-float32": 6,
+        "lzw-float32": 6,
+        "floating-tiff": 12,
+        "deflate-tiles": 8,
+        "deflate-tiles-float": 4,
+        "packbits-lzw-tiles": 16,
+        "packbits-lzw-tiles-float": 8,
+        "predicted-tiles": 24,
+        "predicted-tiles-float": 12
+      },
+      "reused_bigtiff": 96,
+      "new": 146
+    }
+  },
+  "retained_evidence": {
+    "bigtiff_cases_per_platform": 96,
+    "new_captures_per_platform": 146,
+    "first_attempt": "Stopped at a SHA-only legacy manifest after the 96 BigTIFF rows and four additional rows were observed. Original failed receipt is retained; BigTIFF items were reused only with the exact same executable hash and all independent readers passing.",
+    "products": "P09i qualified SDK/Python prefixes; application and extension paths verified by worker, application byte pins unchanged before/after capture and testing."
+  },
+  "runner_contract_checks": {
+    "windows": 4,
+    "linux": 4,
+    "mocked_subprocesses": true,
+    "scope": "SHA-only manifest support; same-size corruption refusal before launch; declared-size enforcement; Float32 argument ordering and flat reader layout.",
+    "ci_jobs": "All three native workflow jobs execute the same four stdlib checks before C++ compilation.",
+    "macos_local_acceptance": false
+  },
+  "fixture_inputs": {
+    "all_new_files_match_committed_hashes": true,
+    "declared_sizes_enforced": true,
+    "legacy_hash_only_files": 18,
+    "max_fixture_bytes": 67108864
+  },
+  "inputs": [
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 18416,
+      "sha256": "46dc3cdcd0a67364078edb884c9b9120b16008317b4afeec8559fc4eae5ffe34"
+    },
+    {
+      "path": "tests/tools/test_ci_observations.py",
+      "bytes": 4132,
+      "sha256": "dbac88d167ca36b48993290403fb7d6f2757aadcb0e354f25d843bf1d00e56b5"
+    },
+    {
+      "path": ".github/workflows/test.yml",
+      "bytes": 5885,
+      "sha256": "f46791deaaddb1458199d75fbb94d86b53a9ab7aecf5acc75e442c7a59210102"
+    }
+  ],
+  "receipts": "build/p09j-portable-tiff001",
+  "limitations": [
+    "Full default 964-case hosted capture and complete installed Python suite acceptance remain open.",
+    "Other observation/reference contracts, actual regressions and reviewed Windows/macOS complete-feature CI profiles remain open.",
+    "No feature family is complete; all 96 format variants remain partial."
+  ],
+  "cleanup": {
+    "removed_bytes": 14752143585,
+    "removed_files": 12298,
+    "crc_and_every_member_sha256_verified": true,
+    "archives": {
+      "windows": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09j-portable-tiff001\\windows-scratch001.zip",
+        "bytes": 816485673,
+        "sha256": "b97f6335a4591b0c484735b446e4b9220e1340cd506b5533a2890735633846d6"
+      },
+      "linux": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09j-portable-tiff001/linux-scratch001.zip",
+        "bytes": 626607063,
+        "sha256": "dbcc205626a0b38b5c5c2a5bafab8c54a40576454937b7260d1d716aedf624a0"
+      }
+    },
+    "preserved": "All qualified product prefixes, useful native source/build and dependency caches, copied observation receipts, JUnit reports, original SHA-only manifest capture attempt and its observed BigTIFF cases and hosted baseline evidence"
+  },
+  "superseded_runs": {
+    "39551986377": "completed/cancelled",
+    "39552745657": "completed/cancelled",
+    "reason": "Older capture matrices superseded by current provisioning; retained original hosted baseline evidence."
+  }
+}

@@ -60,7 +60,7 @@ package. The Linux codec audit rejects exposed static codec APIs that could bind
 to a different library already loaded by Python. Missing bindings or providers,
 failures, collection errors and skipped cases leave the complete profile failing.
 The runner first invokes `scripts/ci_observations.py` against the installed C++
-application. Its 818-case matrix captures rank filters, rounded creation
+application. Its 964-case matrix captures rank filters, rounded creation
 and saved selections, ROI import/export, saved-selection budget behavior, and
 resize/rotate/move modifiers and directional shadows. The planar selection matrix
 covers 621 creation/edit/recovery cases across XY, XZ and YZ, including every
@@ -76,6 +76,15 @@ legacy `report.json` and `passed` marker remain unchanged: that marker indicates
 probe completion, and the Python readers establish behavior independently.
 Workflow collision checks retain case-alias coverage on Windows and use a real
 lexical path alias on case-sensitive hosts.
+A further 146 captures supply all 18 existing classic-TIFF UI reader modules:
+byte/RGB, Deflate/PackBits/LZW, horizontal/floating prediction, tiled storage and
+Float32 finite/quiet-NaN/IEEE failure and recovery. They retain each reader's
+flat or nested paths. Input hashes are mandatory; manifest byte counts are also
+enforced when present, and captures refuse fixture files over 64 MiB. Older
+SHA-only manifests record the measured size without changing the committed
+fixture metadata. Four standard-library runner checks cover both manifest
+schemas, corruption refusal and Float32 argument/transport ordering. The native
+workflow jobs run these checks on every operating system before building C++.
 Each process gets private preferences. Byte-identical copies supply the readers
 with stable group/case paths; original artifacts remain available for absolute
 paths embedded in reports. The executable hash must remain unchanged. Reports
