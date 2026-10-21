@@ -141,6 +141,11 @@ def shadow_preset_cases():
         "guard." + name for name in ("ordinary-f64", "scientific-f64", "scientific-rgba", "scientific-ieee")] + ["failure.float32"]
 
 
+def shadow_demo_cases():
+    return ["byte", "short", "float", "rgb", "escape", "stop", "source", "budget",
+            "overflow", "guard-stack", "guard-type", "guard-policy"]
+
+
 def cases():
     groups = [
         ("rank", "--rank-ui-case", [f"R{i:02d}" for i in range(1, 60)]),
@@ -162,6 +167,7 @@ def cases():
         ("scientific-shadows", "--scientific-shadow-ui-case",
          ["north", "northeast", "east", "southeast", "south", "southwest", "west", "northwest"]),
         ("shadow-presets", "--shadow-preset-ui-case", shadow_preset_cases()),
+        ("shadow-demo", "--shadow-demo-ui-case", shadow_demo_cases()),
         ("planar-matrix", "--planar-annotation-matrix-ui-case", planar_cases()),
         ("ieee-viewing", "--ieee-viewing-ui-case", [f"IEEE{i:02d}" for i in range(1, 5)]),
         ("native-workflow", "--native-workflow-ui-case", [None]),
@@ -192,6 +198,7 @@ def reader_environment(output):
         "IMAGEJXX_SHADOW_CPP_BASE": reports / "shadows",
         "IMAGEJXX_SCIENTIFIC_SHADOW_CPP_BASE": reports / "scientific-shadows",
         "IMAGEJXX_SHADOW_PRESET_CPP_BASE": reports / "shadow-presets",
+        "IMAGEJXX_SHADOW_DEMO_CPP_BASE": reports / "shadow-demo",
         "IMAGEJXX_PLANAR_MATRIX_CPP_ROOT": reports / "planar-matrix",
         "IMAGEJXX_IEEE_CPP_DIR": reports / "ieee-viewing",
         "IMAGEJXX_BIGTIFF_CPP_DIR": reports / "bigtiff",

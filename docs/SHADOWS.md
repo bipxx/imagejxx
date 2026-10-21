@@ -33,6 +33,17 @@ with the direction already captured. All routes reuse `shadow_imagej` and retain
 normal Undo/Redo and recording. Unsupported sample layouts and floating policies
 disable both the direction entries and the general shadow form.
 
+**Process → Shadows → Demo** animates the eight directions for 20 cycles,
+holding each effect for at least 50 ms. Each effect starts from the original
+image and appears as a temporary preview in the main canvas. **Stop**, Escape,
+closing the demo, a source change, or completion restores the live canvas.
+Playback leaves source pixels, history, selections and workflow recording
+unchanged. It accepts a single finite-policy image in the supported layouts;
+stacks and unsupported layouts/policies disable the entry. Preview memory uses
+the shared processing budget; reducing the budget below a retained reservation
+is refused without changing settings. Float32 overflow stops playback with an
+error and releases the preview. Both desktop hosts run the same C++ controller.
+
 Scientific documents now use the shared native workflow review. Open the same
 Shadows menu, use **Edit this step's parameters** to choose a direction, and
 review the target before preparing. Current T/C/Z, all Z at current T/C, and
@@ -77,7 +88,10 @@ comparison corpus without replacing the committed fixture:
 python scripts/capture_shadows_reference.py --output build/shadows-reference --fixture-output build/shadows-reference.json
 ```
 
-Remaining family work includes the animated Shadows Demo, IEEE nonfinite source policies,
+[The demo reference review](parity/shadows-demo-commercial-source-review-001.json)
+pins the same public-domain source for timing and reset behavior.
+
+Remaining family work includes IEEE nonfinite source policies,
 broader scientific irregular-ROI/display and positioned-ROI contexts, and
 platform/accessibility qualification.
 The complete ImageJ/Fiji objective remains tracked in [the gap plan](PLAN.md).

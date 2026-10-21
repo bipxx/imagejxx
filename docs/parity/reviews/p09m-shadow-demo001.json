@@ -1,0 +1,196 @@
+{
+  "state": "qualified_feature_increment",
+  "objective_complete": false,
+  "scope": "Single-image animated Shadows Demo in both shared-ImGui hosts, using the C++ shadow kernel and transient main-canvas previews.",
+  "all99": {
+    "in_progress": 43,
+    "open": 56,
+    "complete": 0
+  },
+  "feature": [
+    "Twenty cycles of eight directions, each held for at least 50 ms, always computed from the original source.",
+    "Completion, Stop, Escape and source change release the preview and restore live rendering without publishing an edit. Closing the demo also cancels.",
+    "Metadata admission requires one plane and supported finite-policy UInt8 gray/RGB, UInt16 gray or Float32 gray.",
+    "A processing-memory reduction below a retained reservation is refused atomically; Stop remains available. Float32 output overflow stops with a visible error.",
+    "Shared scheduler reservations and one retained preview at a time; no new product dependency or Python processing implementation."
+  ],
+  "tests": {
+    "windows": {
+      "passed": 3624,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "linux": {
+      "passed": 3624,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "identical_case_ids": true,
+  "new_actual_ui": {
+    "observations": 48,
+    "frames": 19133,
+    "effects": 2684,
+    "cases_per_host_per_platform": 12,
+    "profiles": {
+      "windows": {
+        "state": "passed",
+        "tests": 3624,
+        "observations": 24,
+        "frames": 7078,
+        "effects": 1342,
+        "contexts": {
+          "imgui_cpp": 12,
+          "imgui_python": 12
+        }
+      },
+      "linux": {
+        "state": "passed",
+        "tests": 3624,
+        "observations": 24,
+        "frames": 12055,
+        "effects": 1342,
+        "contexts": {
+          "imgui_cpp": 12,
+          "imgui_python": 12
+        }
+      }
+    },
+    "os_input_or_gpu_equivalence_claim": false
+  },
+  "ci": {
+    "state": "passed",
+    "previous_cases_preserved": 1001,
+    "new_cases": 12,
+    "default_total": 1013,
+    "unique_cases": true
+  },
+  "capture_transport": {
+    "checks_per_platform": 4,
+    "platforms": [
+      "Windows",
+      "Linux"
+    ],
+    "fix": "Canonicalize the temporary fixture root to match the runner, retaining exact path assertions. Hosted Windows short-name and macOS /var aliases caused two pre-build unit failures."
+  },
+  "products": {
+    "public_headers": 66,
+    "python_modules": 12,
+    "native_catalog_operations": 92,
+    "installed_sources_match": true
+  },
+  "commercial": {
+    "decision": "eligible",
+    "review": "docs/parity/shadows-demo-commercial-source-review-001.json",
+    "incorporated_components": [],
+    "new_dependencies": []
+  },
+  "hosted_baseline": {
+    "run": 39563607640,
+    "commit": "6bd984a489d49e20af721d454efa9bc38599e404",
+    "url": "https://github.com/bipxx/imagejxx/actions/runs/39563607640",
+    "state": "completed_failure",
+    "linux_native_sdk": "passed",
+    "complete_hosted_acceptance": false,
+    "remaining": "Missing Python IO/UI packages in generic jobs, missing C++ capture contracts, installed artifact pins and actual UI failures remain; the path-unit correction still needs hosted confirmation."
+  },
+  "cleanup": {
+    "state": "passed",
+    "removed_bytes": 1238416120,
+    "removed_files": 1029,
+    "crc_and_every_member_sha256_verified": true,
+    "archives": {
+      "windows": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09m-shadow-demo001\\windows-scratch001.zip",
+        "bytes": 116320432,
+        "sha256": "d0fed9bf7233d778a71cfed9c494aeaac351e4f6c76218acf3db133b79b8110e"
+      },
+      "linux": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09m-shadow-demo001/linux-scratch001.zip",
+        "bytes": 77413840,
+        "sha256": "7a88edb7ea258639d043552e08a4bb09ae8f46e4425450a94dba1cd4b42d67f1"
+      }
+    },
+    "preserved": "Final Windows build003 and Linux install-p09m003 SDK/Python products, useful native build/dependency caches, JUnit reports, compact observations and failed-attempt receipts remain; full captures and superseded installs are archived."
+  },
+  "inputs": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 100331,
+      "sha256": "3e13e618c486b61b6f44579de00a17b7adcdd5508f26e429304dd543cd8d0014"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 641361,
+      "sha256": "492dd188cbd98d57d1fbbfbc6ac96c365a90948cd5afece6f80c73ce2227adf2"
+    },
+    {
+      "path": "src/desktop/shadow_demo.cpp",
+      "bytes": 3972,
+      "sha256": "ca5ccaad9ff0bc3dbfc5ade6514d285eead4968f346db32afeab2197a1d84ca4"
+    },
+    {
+      "path": "src/desktop/shadow_demo.hpp",
+      "bytes": 1362,
+      "sha256": "7edaee5c2b7ad2c7ed93bad8fc5d8b945a91f9fe4790a2c16ec41b64d57bea54"
+    },
+    {
+      "path": "src/desktop/shadow_demo_ui_probe.cpp",
+      "bytes": 7342,
+      "sha256": "0710111aba3844b79146cc959209a9132cf1180a6a5aad3ec6530456fbe762b2"
+    },
+    {
+      "path": "src/desktop/shadow_ui_probe.hpp",
+      "bytes": 656,
+      "sha256": "9bc973804ce2420cfdd4ddd7098af81a4d9e5920537ed43f63f01c441174f1c4"
+    },
+    {
+      "path": "src/desktop/main.cpp",
+      "bytes": 46921,
+      "sha256": "3e0b9f930792897adf4c6c41da08de4976541476a635436b8002eb211f3eda96"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 51318,
+      "sha256": "ac6e24d4d226b5256599062912cb137b85b20c4828103ef92629a56d90f4fe7c"
+    },
+    {
+      "path": "tests/python/test_shadow_demo_ui.py",
+      "bytes": 5248,
+      "sha256": "8bf035a11bc1f1b9cd4ded5aefa9d40134cd0b3575e04059a6cea92886717a4e"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 19500,
+      "sha256": "65be2a96a124046cd26fde19a54c59acf60613626849281e69b1afccd0f85453"
+    },
+    {
+      "path": "tests/tools/test_ci_observations.py",
+      "bytes": 4142,
+      "sha256": "884482d25066ab1e97c059ffcdd73458f678da3f8b0a724d3533f74f17d65f20"
+    },
+    {
+      "path": "docs/parity/shadows-demo-commercial-source-review-001.json",
+      "bytes": 1488,
+      "sha256": "80530869f82731aceee7641675d26750441b374f2d305c97a6d6259a14819ad0"
+    }
+  ],
+  "receipts": "build/p09m-shadow-demo001",
+  "remaining": [
+    "IEEE nonfinite-source profile and broader scientific positioned/irregular ROI/calibration/display contexts.",
+    "Full option registration, platform/accessibility and complete hosted/family acceptance; broader ImageJ/Fiji requirements and all 96 partial formats remain open."
+  ],
+  "plan_check": {
+    "state": "failed_preexisting",
+    "message": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed",
+    "first_mismatch": {
+      "path": "include/imagejxx/application.hpp",
+      "expected": "aad7b9c9e54f21ef59fdca02d8c3da2fcc5d5eeaf53f056d32615b4fa728fe09",
+      "current": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072",
+      "previous_commit": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    },
+    "action": "Retain historical fingerprints; refresh complete Auto Contrast evidence separately. No full plan acceptance claimed."
+  }
+}

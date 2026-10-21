@@ -320,6 +320,12 @@ int run(const std::vector<std::string> &arguments) {
     imagejxx::desktop::Window editor((output.parent_path()/"preferences.json").u8string());
     imagejxx::desktop::roiExportUiCase(editor,"imgui_cpp",arguments[1]);return 0;
   }
+  if (!arguments.empty() && arguments[0] == "--shadow-demo-ui-case") {
+    if(arguments.size()!=3)throw std::invalid_argument("Use --shadow-demo-ui-case CASE FRESH_DIRECTORY");
+    const auto output=std::filesystem::absolute(std::filesystem::u8path(arguments[2]));
+    imagejxx::desktop::Window editor((output.parent_path()/"preferences.json").u8string());
+    imagejxx::desktop::shadowDemoUiCase(editor,arguments[1],"imgui_cpp",arguments[2]);return 0;
+  }
   if (!arguments.empty() && arguments[0] == "--shadow-preset-ui-case") {
     if(arguments.size()!=3)throw std::invalid_argument("Use --shadow-preset-ui-case CASE FRESH_DIRECTORY");
     const auto output=std::filesystem::absolute(std::filesystem::u8path(arguments[2]));

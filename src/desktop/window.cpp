@@ -1,4 +1,5 @@
 #include "window.hpp"
+#include "shadow_demo.hpp"
 #include "legacy_target_resources.hpp"
 #include "planar_annotation_rebind.hpp"
 #include "roi_import_panel.hpp"
@@ -831,6 +832,8 @@ struct Window::Impl {
   Json rankConsumed = {{"valid", false}};
   std::map<std::uint64_t, std::pair<std::uint64_t, std::string>> rankSelectionHashes;
   GaussianJobs gaussianJobs;
+  ShadowDemo shadowDemo;
+  bool shadowDemoVisible = false;
   GaussianPanel gaussianPanel;
   RankPanel rankPanel;
   ThresholdPanel thresholdPanel;
@@ -1199,7 +1202,7 @@ struct Window::Impl {
             {"admission_reason", reason}, {"mode", mode}};
   }
   explicit Impl(Window &w, std::string path)
-      : owner(w), gaussianJobs(*w.controller_),
+      : owner(w), gaussianJobs(*w.controller_), shadowDemo(*w.controller_),
         gaussianCancellationScheduler(w.controller_->job_scheduler()),
         roiImportPanel(w.controller_->job_scheduler()),
         nativeWorkflowPanel(w.controller_->job_scheduler()),
@@ -1481,6 +1484,8 @@ struct Window::Impl {
     if (action=="remove_nans_imagej" ||
         ((action=="show_operation" || action=="rank_replay") && operationId=="remove_nans_imagej"))
       return removeNaNsSourceAllowed(*source);
+    if (action == "show_shadow_demo")
+      return !owner.busy() && owner.controller_->active_document_id() == source->id && ShadowDemo::eligible(source->nativeSnapshot());
     if (action == "shadow_imagej" || (action == "show_operation" && operationId == "shadow_imagej"))
       return owner.controller_->active_document_id() == source->id &&
              scientific_operation_review_available("shadow_imagej", source->nativeSnapshot());
@@ -1882,7 +1887,7 @@ struct Window::Impl {
     indexedColorPanel.tick(owner.documents_.empty()?std::optional<DocumentSnapshot>{}:std::optional<DocumentSnapshot>{owner.nativeSnapshot()},rgbCap(),
       [this](const auto &command,auto &prepared,bool recorded){std::visit([&](const auto &c){publishRgb(c,prepared,recorded);},command);});
   }
-  bool workflowOtherBusy() const { return indexedColorPanel.visible() || indexedColorPanel.working() || colorStackPanel.visible() || colorStackPanel.working() || rgbDatasetPanel.visible() || rgbDatasetPanel.working() || legacyBusy() || gaussianJobs.apply_busy() || bool(thresholdJob) || bool(autoJob); }
+  bool workflowOtherBusy() const { return shadowDemo.active() || indexedColorPanel.visible() || indexedColorPanel.working() || colorStackPanel.visible() || colorStackPanel.working() || rgbDatasetPanel.visible() || rgbDatasetPanel.working() || legacyBusy() || gaussianJobs.apply_busy() || bool(thresholdJob) || bool(autoJob); }
   bool legacyBusy() const {
     return job.valid() && job.info().state != JobState::Publishing;
   }
@@ -2495,6 +2500,7 @@ struct Window::Impl {
   }
   std::optional<DocumentSnapshot>
   planeOperationPreview(const Document &document, bool captured_only = true) const {
+    if (shadowDemo.active()) return shadowDemo.preview(document.nativeSnapshot());
     auto preview = gaussianJobs.preview_snapshot(document.id);
     const auto *target = gaussianJobs.preview_target(document.id);
     if (!preview || !target)
@@ -2510,6 +2516,12 @@ struct Window::Impl {
         !target->contains({display.t, display.c, display.crosshair[2]}))
       return std::nullopt;
     return preview;
+  }
+  std::uint64_t operationPreviewGeneration(const Document &document) const {
+    return shadowDemo.preview(document.nativeSnapshot()) ? shadowDemo.generation() : gaussianJobs.preview_generation(document.id).value_or(0);
+  }
+  const ResolvedTarget *operationPreviewTarget(const Document &document) const {
+    return shadowDemo.preview(document.nativeSnapshot()) ? shadowDemo.target() : gaussianJobs.preview_target(document.id);
   }
   void showPlaneOperationPreview(PlanePosition position) {
     auto display = doc()->view();
@@ -3973,8 +3985,8 @@ struct Window::Impl {
     const auto position = pane.doc->position();
     const auto channelState = recognized_channel_display(liveSnapshot.display(), liveSnapshot.data().dataset);
     const auto preview = planeOperationPreview(*pane.doc, !channelState.has_value());
-    const auto previewGeneration = preview ? gaussianJobs.preview_generation(pane.doc->id).value_or(0) : 0;
-    const auto *previewTarget = preview ? gaussianJobs.preview_target(pane.doc->id) : nullptr;
+    const auto previewGeneration = preview ? operationPreviewGeneration(*pane.doc) : 0;
+    const auto *previewTarget = preview ? operationPreviewTarget(*pane.doc) : nullptr;
     const auto sources = channelState ? std::optional<ChannelDisplaySources>(
         std::in_place, liveSnapshot, preview,
         previewTarget ? std::optional<ResolvedTarget>(*previewTarget) : std::nullopt,
@@ -6473,6 +6485,13 @@ void Window::action(const std::string &name, const Json &p) {
     impl->gaussianReadbackRequested = true;
     return;
   }
+  if (name == "show_shadow_demo") {
+    if (impl->dialog.open) throw std::invalid_argument("Close the current form before starting Shadows Demo");
+    impl->gaussianPanel.cancel([this]{impl->cancelGaussianPreview();});
+    impl->rankPanel.cancel([this]{impl->cancelGaussianPreview();});
+    impl->cancelGaussianPreview();
+    impl->shadowDemo.start(nativeSnapshot());impl->shadowDemoVisible=true;impl->animating=false;return;
+  }
   if (name == "show_operation") {
     const auto id = string(get(p, "operation"));
     const auto &commands = impl->commands;
@@ -7469,6 +7488,7 @@ void Window::action(const std::string &name, const Json &p) {
   throw std::invalid_argument("Unknown desktop action: " + name);
 }
 void Window::cancel() {
+  impl->shadowDemo.request_cancel();
 #ifdef IMAGEJXX_HAS_SCIENTIFIC_IO
   impl->scientificIoPanel.request_cancel();
 #endif
@@ -7543,6 +7563,7 @@ bool Window::cancelJob(std::uint64_t jobId) {
 }
 void Window::poll() {
   checkThread();
+  impl->shadowDemo.poll(documents_.empty()?std::optional<DocumentSnapshot>{}:std::optional<DocumentSnapshot>{nativeSnapshot()}, impl->rgbCap());
   impl->pollRgb();
   impl->pollColorStack();
   impl->pollIndexedColor();
@@ -7618,6 +7639,7 @@ void Window::poll() {
 }
 void Window::wait() {
   checkThread();
+  impl->shadowDemo.wait();
 #ifdef IMAGEJXX_HAS_SCIENTIFIC_IO
   impl->scientificIoPanel.wait();
 #endif
@@ -7769,6 +7791,9 @@ void Window::Impl::menu() {
               else owner.applyOperation("shadow_imagej", parameters, false, true);
             });
           }
+          const bool demoEnabled = !owner.documents_.empty() && actionAllowed("show_shadow_demo");
+          if (ImGui::MenuItem("Demo", nullptr, false, demoEnabled)) guard([&]{owner.action("show_shadow_demo");});
+          observeControl("menu.shadow.demo", demoEnabled);
           ImGui::Separator();
         }
         std::set<std::string> groups;
@@ -9323,8 +9348,8 @@ void Window::Impl::canvas(Pane &pane) {
     // Linked-plane inputs can change Z inside draw. Borrow the installed
     // snapshot here; its target is checked after all inputs, before extraction.
     const auto preview = planeOperationPreview(*d, false);
-    const auto previewGeneration = preview ? gaussianJobs.preview_generation(d->id).value_or(0) : 0;
-    const auto *previewTarget = preview ? gaussianJobs.preview_target(d->id) : nullptr;
+    const auto previewGeneration = preview ? operationPreviewGeneration(*d) : 0;
+    const auto *previewTarget = preview ? operationPreviewTarget(*d) : nullptr;
     const bool gesture = pane.selectionGesture.has_value() || pane.dragging;
     const bool requestFocus = !pane.orthogonalWasVisible;
     auto &context = *ImGui::GetCurrentContext();
@@ -9435,7 +9460,7 @@ void Window::Impl::canvas(Pane &pane) {
     pane.ordinaryFrameSource = {
         {"frame_source", previewPixels ? "preview" : "live"},
         {"preview_generation", previewPixels
-             ? gaussianJobs.preview_generation(d->id).value_or(0) : 0},
+             ? operationPreviewGeneration(*d) : 0},
         {"source_document_id", d->id},
         {"current_tcz", {currentPosition.t, currentPosition.c, currentPosition.z}}};
   auto refreshSelection = [&](bool preserveVertex) {
@@ -10931,6 +10956,7 @@ void Window::Impl::draw() {
   startupControls.clear();
   workflowControls.clear();
   owner.poll();
+  if (shadowDemo.active() && ImGui::IsKeyPressed(ImGuiKey_Escape, false)) shadowDemo.cancel("escape");
   if (savedRoiRebind) {
     try {
       const auto current = owner.nativeSnapshot();
@@ -11045,6 +11071,22 @@ void Window::Impl::draw() {
     resetInputs();
   ImGui::EndDisabled();
   ImGui::End();
+  if (shadowDemoVisible) {
+    ImGui::SetNextWindowSize({320,0},ImGuiCond_Appearing);
+    if(ImGui::Begin("Shadows Demo",&shadowDemoVisible,ImGuiWindowFlags_AlwaysAutoResize)) {
+      const auto info=shadowDemo.diagnostics();
+      ImGui::TextUnformatted("Original image stays unchanged.");
+      ImGui::ProgressBar(float(info.at("shown").get<int>())/160.f);
+      ImGui::Text("%d / 20 cycles",info.at("shown").get<int>()/8);
+      if(!info.at("direction").is_null())ImGui::Text("Direction: %s",info.at("direction").get<std::string>().c_str());
+      if(!info.at("error").get<std::string>().empty())ImGui::TextWrapped("%s",info.at("error").get<std::string>().c_str());
+      else if(!shadowDemo.active())ImGui::TextUnformatted(info.at("reason")=="completed"?"Demo finished.":"Demo stopped.");
+      if(ImGui::Button(shadowDemo.active()?"Stop":"Close")) {if(shadowDemo.active())shadowDemo.cancel("stopped");shadowDemoVisible=false;}
+      observeControl("shadow_demo.stop");
+    }
+    ImGui::End();
+    if(!shadowDemoVisible && shadowDemo.active())shadowDemo.cancel("closed");
+  }
   if (animating && !owner.busy() && !owner.documents_.empty() &&
       ImGui::GetTime() - lastTick >= 1 / fps) {
     auto d = doc();
@@ -11551,6 +11593,7 @@ Json Window::Impl::headlessReport() {
         ImGui::GetStyle().Colors[ImGuiCol_WindowBg].z};
     result["plot_samples"] = plotX.size();
     result["results_columns"] = resultColumns(owner.results, owner.settings());
+    result["shadow_demo"] = shadowDemo.diagnostics();
     result["operation_dialog"] = {
         {"id", dialog.id},
         {"open", dialog.open && dialog.operation},

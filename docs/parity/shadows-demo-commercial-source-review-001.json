@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "id": "G055.shadows-demo.reference-commercial-review.001",
+  "decision": "eligible",
+  "scope": "Pinned ImageJ 1.54r Shadows Demo timing, direction order, reset and stack rejection as reference for an independently authored C++/Dear ImGui implementation; not Fiji or full-family acceptance.",
+  "reason": "Pinned LICENSE.txt declares ImageJ public domain. No upstream code, classes, runtime or assets enter product. No new product dependency.",
+  "archive": {
+    "path": "build/references/downloads/imagej-62db90a269cccc1ac79f658e4602043214ed055b.zip",
+    "bytes": 6146010,
+    "sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665"
+  },
+  "source_members": [
+    {
+      "name": "LICENSE.txt",
+      "bytes": 512,
+      "sha256": "618725ff649e43605de0fec0a778b4aad24b28c6be9b3cde16295764022f668c"
+    },
+    {
+      "name": "ij/plugin/filter/Shadows.java",
+      "bytes": 2609,
+      "sha256": "373a3b583b0a60221ac2a4012e39038ade9c9fc5bd8b2e684a89cd2311180b10"
+    }
+  ],
+  "incorporated_components": [],
+  "behavior": {
+    "cycles": 20,
+    "direction_order": [
+      "north",
+      "northeast",
+      "east",
+      "southeast",
+      "south",
+      "southwest",
+      "west",
+      "northwest"
+    ],
+    "interval_ms": 50,
+    "source_reset": "Each direction starts from the original image; original is restored after completion.",
+    "stack_admission": "Reject more than one plane."
+  }
+}
