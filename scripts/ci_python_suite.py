@@ -14,6 +14,7 @@ import importlib.metadata
 import json
 import os
 from pathlib import Path
+import re
 import subprocess
 import sys
 import sysconfig
@@ -24,6 +25,25 @@ def pin(path):
     path = Path(path).resolve(strict=True)
     raw = path.read_bytes()
     return {"path": str(path), "bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}
+
+
+def audit_static_codecs(path):
+    """Selected static C archives must not export interposable codec APIs."""
+    symbols = subprocess.check_output(["nm", "-D", "--defined-only", str(path)], text=True)
+    forbidden = re.compile(r"^(TIFF|_TIFF|png_|jpeg_|lzma_|glfw|_glfw|"
+        r"zlibVersion$|zlibCompileFlags$|zError$|deflate|inflate|adler32|crc32|get_crc_table$)")
+    exported = [line.split()[-1] for line in symbols.splitlines() if line.split()]
+    leaked = [name for name in exported if forbidden.match(name)]
+    if leaked:
+        raise ValueError(f"Static codec symbols are exposed by {path}: {leaked}")
+    dynamic = subprocess.check_output(["readelf", "-d", str(path)], text=True)
+    needed = re.findall(r"\(NEEDED\).*?\[([^\]]+)\]", dynamic)
+    codecs = [name for name in needed if name.startswith(
+        ("libtiff.", "libjpeg.", "liblzma.", "libpng", "libglfw.", "libz."))]
+    if codecs:
+        raise ValueError(f"Static CI profile linked shared codec libraries: {codecs}")
+    return {"state": "passed", "defined_symbols": len(exported),
+            "exposed_codec_symbols": 0, "direct_dependencies": needed}
 
 
 def run(output: Path, root: Path):
@@ -39,9 +59,18 @@ def run(output: Path, root: Path):
 
     save()
     try:
+        distribution = importlib.metadata.distribution("imagejxx")
+        expected_package = Path(distribution.locate_file("imagejxx")).resolve(strict=True)
+        package = importlib.import_module("imagejxx")
+        if Path(package.__file__).resolve().parent != expected_package:
+            raise ValueError("Python tests must import the installed imagejxx package")
         for name in ("imagejxx._native", "imagejxx._scientific_io", "imagejxx._desktop"):
             module = importlib.import_module(name)
+            if Path(module.__file__).resolve().parent != expected_package:
+                raise ValueError(f"Native module is outside the installed package: {name}")
             receipt["modules"][name] = pin(module.__file__)
+            if sys.platform == "linux" and name != "imagejxx._native":
+                receipt["modules"][name]["static_codec_audit"] = audit_static_codecs(module.__file__)
         environment = os.environ.copy()
         environment.update(IMAGEJXX_RENDER_TESTS="1", IMAGEJXX_REQUIRE_RENDER_TESTS="1",
                            PYTHONDONTWRITEBYTECODE="1", PYTEST_DISABLE_PLUGIN_AUTOLOAD="1")
@@ -51,7 +80,6 @@ def run(output: Path, root: Path):
             raise ValueError(f"Expected one built test-only saved-ROI provider, found {len(providers)}")
         environment["IMAGEJXX_SAVED_ROI_PROVIDER"] = str(providers[0].resolve())
         receipt["test_provider"] = pin(providers[0])
-        distribution = importlib.metadata.distribution("imagejxx")
         applications = [Path(distribution.locate_file(path)).resolve()
                         for path in distribution.files or [] if path.name == "imagejxx"]
         applications = [path for path in applications if path.is_file() and os.access(path, os.X_OK)]

@@ -69,6 +69,9 @@ jobs:
     timeout-minutes: 90
     env:
       CMAKE_BUILD_PARALLEL_LEVEL: '2'
+      # Preserve scikit-build-core's cache search paths for isolated pybind11.
+      # CMake also searches this environment prefix for the reviewed libraries.
+      CMAKE_PREFIX_PATH: ${{ github.workspace }}/build/ci-prefix
       LIBGL_ALWAYS_SOFTWARE: '1'
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
@@ -91,7 +94,6 @@ jobs:
           -Ccmake.define.IMAGEJXX_BUILD_CPP_UI=ON
           -Ccmake.define.IMAGEJXX_BUILD_PYTHON_UI=ON
           -Ccmake.define.BUILD_TESTING=ON
-          -Ccmake.define.CMAKE_PREFIX_PATH=${{ github.workspace }}/build/ci-prefix
           -Ccmake.define.ZLIB_USE_STATIC_LIBS=ON
           -Ccmake.define.ZLIB_LIBRARY_RELEASE=${{ github.workspace }}/build/ci-prefix/lib/libz.a
           -Ccmake.define.PNG_LIBRARY_RELEASE=${{ github.workspace }}/build/ci-prefix/lib/libpng16.a

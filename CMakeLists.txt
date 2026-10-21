@@ -9,6 +9,7 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
 endif()
 option(IMAGEJXX_BUILD_IO "Build scientific Dataset TIFF IO (enabled by default for desktop builds)" ${IMAGEJXX_DEFAULT_IO})
 include(GNUInstallDirs)
+include(cmake/StaticCodecSymbols.cmake)
 
 add_library(imagejxx_core STATIC
   src/native/image.cpp src/native/filters.cpp src/native/gaussian.cpp src/native/gaussian_command.cpp src/native/rank.cpp src/native/rank_command.cpp src/native/axis_extraction_command.cpp src/native/transforms.cpp
@@ -305,6 +306,7 @@ if(IMAGEJXX_BUILD_IO)
   if(IMAGEJXX_BUILD_PYTHON)
     pybind11_add_module(_scientific_io src/io/python.cpp)
     target_link_libraries(_scientific_io PRIVATE imagejxx::io)
+    imagejxx_bind_static_codecs(_scientific_io)
     add_dependencies(_scientific_io _native)
     if(MSVC)
       target_compile_options(_scientific_io PRIVATE /W4 /utf-8)
@@ -320,6 +322,28 @@ if(IMAGEJXX_BUILD_IO)
   endif()
 endif()
 if(BUILD_TESTING)
+  if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    # A preload-like control must interpose; the same archive bound through the
+    # production helper must remain local. No external codec SDK is required.
+    add_library(imagejxx_codec_symbol_archive STATIC tests/native/codec_symbol_archive.c)
+    set_target_properties(imagejxx_codec_symbol_archive PROPERTIES
+      OUTPUT_NAME z POSITION_INDEPENDENT_CODE ON
+      ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/codec-symbol-fixture")
+    add_library(imagejxx_codec_symbol_host MODULE tests/native/codec_symbol_host.c)
+    add_library(imagejxx_codec_symbol_control MODULE tests/native/codec_symbol_consumer.c)
+    add_library(imagejxx_codec_symbol_bound MODULE tests/native/codec_symbol_consumer.c)
+    target_link_libraries(imagejxx_codec_symbol_control PRIVATE imagejxx_codec_symbol_archive)
+    target_link_libraries(imagejxx_codec_symbol_bound PRIVATE imagejxx_codec_symbol_archive)
+    imagejxx_bind_static_codecs(imagejxx_codec_symbol_bound)
+    add_executable(imagejxx_static_codec_symbol_tests tests/native/test_static_codec_symbols.cpp)
+    add_dependencies(imagejxx_static_codec_symbol_tests imagejxx_codec_symbol_host
+      imagejxx_codec_symbol_control imagejxx_codec_symbol_bound)
+    target_link_libraries(imagejxx_static_codec_symbol_tests PRIVATE ${CMAKE_DL_LIBS})
+    add_test(NAME native_static_codec_symbols COMMAND imagejxx_static_codec_symbol_tests
+      $<TARGET_FILE:imagejxx_codec_symbol_host> $<TARGET_FILE:imagejxx_codec_symbol_control>
+      $<TARGET_FILE:imagejxx_codec_symbol_bound>)
+    set_tests_properties(native_static_codec_symbols PROPERTIES TIMEOUT 30)
+  endif()
   if(NOT DEFINED IMAGEJXX_SESSION_TEST_ARTIFACT_DIR)
     set(IMAGEJXX_SESSION_TEST_ARTIFACT_DIR "${CMAKE_CURRENT_BINARY_DIR}/session-tests"
       CACHE PATH "Owned directory for native session test artifacts")
@@ -1235,6 +1259,7 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     endif()
     pybind11_add_module(_desktop src/desktop/python.cpp)
     target_link_libraries(_desktop PRIVATE imagejxx_desktop)
+    imagejxx_bind_static_codecs(_desktop)
     install(TARGETS _desktop LIBRARY DESTINATION imagejxx RUNTIME DESTINATION imagejxx)
   endif()
   # Runtime libraries are copied from the reviewed Windows dependency prefix.

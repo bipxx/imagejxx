@@ -52,13 +52,23 @@ and test-provider builds. The headless native job remains independent.
 `scripts/ci_python_suite.py` checks that all three installed extensions, the
 installed C++ desktop and the built test-only source provider are present, then
 runs the complete Python suite under software OpenGL. Its receipt records module
-identities and named environment contracts. Missing bindings or providers,
+identities and named environment contracts. Modules must come from the installed
+package. The Linux codec audit rejects exposed static codec APIs that could bind
+to a different library already loaded by Python. Missing bindings or providers,
 failures, collection errors and skipped cases leave the complete profile failing.
 This runner does not fabricate C++ observation reports; those still need portable
 producers for full hosted acceptance.
 
 The Linux source profile does not admit different Windows TIFF binaries or
 replace the Windows runtime fingerprint boundary.
+
+The reviewed prefix is supplied with the `CMAKE_PREFIX_PATH` environment variable,
+so scikit-build-core retains its own cache search paths for isolated pybind11.
+Linux Python extensions hide symbols from the selected static codec/windowing
+archives, while leaving the C++ core archive outside that rule. This keeps a
+loaded host zlib or image library from replacing the selected static copy.
+The native interposition regression includes an unprotected control, and an
+isolated wheel probe verifies the actual TIFF, PNG and zlib runtime versions.
 
 ## Complete Python integration remains open
 
