@@ -60,7 +60,7 @@ package. The Linux codec audit rejects exposed static codec APIs that could bind
 to a different library already loaded by Python. Missing bindings or providers,
 failures, collection errors and skipped cases leave the complete profile failing.
 The runner first invokes `scripts/ci_observations.py` against the installed C++
-application. Its 964-case matrix captures rank filters, rounded creation
+application. Its 972-case matrix captures rank filters, rounded creation
 and saved selections, ROI import/export, saved-selection budget behavior, and
 resize/rotate/move modifiers and directional shadows. The planar selection matrix
 covers 621 creation/edit/recovery cases across XY, XZ and YZ, including every
@@ -85,6 +85,9 @@ SHA-only manifests record the measured size without changing the committed
 fixture metadata. Four standard-library runner checks cover both manifest
 schemas, corruption refusal and Float32 argument/transport ordering. The native
 workflow jobs run these checks on every operating system before building C++.
+Eight scientific shadow captures additionally check the actual direction editor,
+private linked preview, all-Z Apply, retained workflow rows and Undo/Redo through
+the same C++ host consumed by the independent Python tests.
 Each process gets private preferences. Byte-identical copies supply the readers
 with stable group/case paths; original artifacts remain available for absolute
 paths embedded in reports. The executable hash must remain unchanged. Reports

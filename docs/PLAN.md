@@ -1,5 +1,23 @@
 # ImageJ and Fiji gap closure plan
 
+**Scientific shadow checkpoint, 2026-10-21 (work in progress):** supported
+scientific documents now open Process/Shadows through the existing native
+parameter and target review. Direction editing, private linked XYZ preview,
+Cancel, all-Z Apply and Undo/Redo pass through both installed hosts on Windows
+and Linux: 32 new observations over 4,544 frames. Pinned ImageJ pixels also
+qualify UInt8 gray/RGB, UInt16 and finite-policy Float32 current-plane, all-Z and
+strided C/Z/T ranges. Metadata-only source guards and visible, atomic finite
+output failure paths are checked. Each platform passes 3,540 main tests plus two
+appended failure checks, with identical case IDs and no skips. Ordinary shadow
+and existing scientific review/operation/execution/job regressions remain intact.
+Products match 66 headers, 12 Python modules and 92 catalog operations. Commercial
+dependency checks pass; verified archives reclaim 552,516,474 bytes. CI now
+provisions eight scientific shadow cases, giving 972 total. See
+[the guide](SHADOWS.md) and [the receipt](parity/reviews/p09k-scientific-shadows001.json).
+Animated Demo/direct direction menus, broader scientific ROI/display and IEEE
+policies, formal and full hosted/platform gates remain open. All99 stays 43 in
+progress / 56 open / 0 complete; all 96 format variants remain partial.
+
 **Portable classic-TIFF CI checkpoint, 2026-10-21 (work in progress):** the
 capture runner now provisions all 18 existing classic-TIFF UI reader modules:
 byte/RGB, Deflate/PackBits/LZW, horizontal/floating predictors, tiled XYZ views,

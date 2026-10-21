@@ -2016,7 +2016,8 @@
         "documentation": [
           "docs/SHADOWS.md",
           "docs/parity/shadows-commercial-source-review-001.json",
-          "docs/parity/reviews/p09g-shadows001.json"
+          "docs/parity/reviews/p09g-shadows001.json",
+          "docs/parity/reviews/p09k-scientific-shadows001.json"
         ],
         "implementation": [
           "src/native/shadow.cpp",
@@ -2025,13 +2026,15 @@
           "src/native/execution.cpp",
           "src/native/bindings.cpp",
           "src/imagejxx/__init__.py",
-          "src/desktop/window.cpp"
+          "src/desktop/window.cpp",
+          "src/desktop/native_workflow_panel.cpp"
         ],
         "tests": [
           "tests/python/test_shadow_imagej.py",
           "tests/python/test_shadow_ui.py",
           "examples/cpp/shadows.cpp",
-          "tests/fixtures/shadows-imagej154r.json"
+          "tests/fixtures/shadows-imagej154r.json",
+          "tests/python/test_scientific_shadow_review.py"
         ]
       },
       "id": "G055",
@@ -2041,13 +2044,14 @@
       "name": "Directional shadow filters",
       "remaining": [
         "Animated Demo and direct direction menu shortcuts.",
-        "Scientific desktop adapter, broader irregular ROI/display coverage and nonfinite IEEE profile.",
+        "Broader scientific positioned/irregular ROI and calibration/display coverage; nonfinite IEEE profile.",
         "Full option-level registration and platform/accessibility acceptance; broader ImageJ/Fiji feature families remain open."
       ],
       "required_work": "Dedicated direction presets and preview; retain custom-kernel editing",
       "status": "in_progress",
       "verification": [
-        "p09g.shadows.functional.001"
+        "p09g.shadows.functional.001",
+        "p09k.shadows.scientific.functional.001"
       ]
     },
     {
@@ -179925,6 +179929,29 @@
         "total": 3295
       },
       "scope": "3295 selected cases per profile, 64 actual UI observations over 4864 frames, 1920 pinned reference rows; excludes full-suite and family acceptance."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-21",
+      "id": "p09k.shadows.scientific.functional.001",
+      "identity": {
+        "qualification": {
+          "bytes": 5927,
+          "path": "docs/parity/reviews/p09k-scientific-shadows001.json",
+          "sha256": "4ab9aac8ebfd9f22e1f17c611b4f4b510ae37510c293725fc8619ec2a4b1c577"
+        }
+      },
+      "platform": "Windows/Linux installed C++ and Python Dear ImGui hosts",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 3540,
+        "report": "build/p09k-scientific-shadows001/windows-python002/pytest.xml",
+        "skipped": 0,
+        "total": 3540
+      },
+      "scope": "Scientific shadow access,32 actual observations/4544 frames,3540 main and2 supplementary tests per platform; not full hosted or family acceptance."
     }
   ]
 }

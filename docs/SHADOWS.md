@@ -24,6 +24,17 @@ The shared Dear ImGui desktop provides **Process → Shadows → Directional Sha
 Undo/Redo. The C++ and Python desktop hosts use the same native operation and
 form. Custom kernel editing remains available through Convolve.
 
+Scientific documents now use the shared native workflow review. Open the same
+Shadows menu, use **Edit this step's parameters** to choose a direction, and
+review the target before preparing. Current T/C/Z, all Z at current T/C, and
+explicit T/C/Z ranges retain their scientific axes. **Prepare image preview**
+and **View prepared image** provide a detached linked XY/XZ/YZ viewer; cancelling
+leaves the live image unchanged. Prepare and Apply publish one history
+transaction. Recording appends typed direction and frozen ranges while retaining
+prior workflow rows. UInt8 gray/RGB, UInt16 gray and finite-policy Float32 gray
+are admitted from metadata without reading samples. Other layouts and preserved
+nonfinite policies remain guarded.
+
 ## Pixel and target behavior
 
 Supported layouts are UInt8 grayscale/RGB, UInt16 grayscale and finite Float32
@@ -58,6 +69,7 @@ python scripts/capture_shadows_reference.py --output build/shadows-reference --f
 ```
 
 Remaining family work includes the animated Shadows Demo, direct direction menu
-shortcuts, scientific desktop integration, IEEE nonfinite source policies,
-broader irregular-ROI/display contexts, and platform/accessibility qualification.
+shortcuts, IEEE nonfinite source policies,
+broader scientific irregular-ROI/display and positioned-ROI contexts, and
+platform/accessibility qualification.
 The complete ImageJ/Fiji objective remains tracked in [the gap plan](PLAN.md).

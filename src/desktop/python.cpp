@@ -302,6 +302,11 @@ PYBIND11_MODULE(_desktop, m) {
              return roiImportRebindUiCase(window, "imgui_python", directory)
                  .dump();
            })
+      .def("_scientific_shadow_ui_case",
+             [](Window &window,const std::string &direction,const std::string &directory) {
+               py::gil_scoped_release release;
+               return scientificShadowUiCase(window,direction,"imgui_python",directory).dump();
+             },py::arg("direction"),py::arg("directory"))
       .def("_shadow_ui_case",
              [](Window &window,const std::string &direction,const std::string &directory) {
                py::gil_scoped_release release;

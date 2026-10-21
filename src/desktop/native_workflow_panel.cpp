@@ -1007,7 +1007,7 @@ bool scientific_operation_review_available(const std::string &id) {
     std::set<std::string> result;
     for (const auto &spec : operation_registry())
       if (spec.geometry == GeometryEffect::Preserve &&
-          (spec.id == "invert_uint16" ||
+          (spec.id == "invert_uint16" || spec.id == "shadow_imagej" ||
            (spec.menu.size() == 2 && spec.menu[0] == "Process" &&
             (spec.menu[1] == "Math" || spec.menu[1] == "Filters" ||
              scientific_binary_operation(spec.id)))) &&
@@ -1029,6 +1029,14 @@ bool scientific_operation_review_available(const std::string &id,
     return samples == 1 ||
            (source.data().dataset.pixel_type() == PixelType::UInt8 &&
             (samples == 3 || samples == 4));
+  }
+  if (id == "shadow_imagej") {
+    const auto &dataset = source.data().dataset;
+    const auto samples = dataset.shape().s;
+    const auto type = dataset.pixel_type();
+    return dataset.sample_policy() == FloatingSamplePolicy::FiniteOnly &&
+           ((type == PixelType::UInt8 && (samples == 1 || samples == 3)) ||
+            ((type == PixelType::UInt16 || type == PixelType::Float32) && samples == 1));
   }
   if (scientific_binary_operation(id) || id == "invert_uint16")
     return source.data().dataset.shape().s == 1 &&

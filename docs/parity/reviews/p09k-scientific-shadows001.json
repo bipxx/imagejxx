@@ -1,0 +1,149 @@
+{
+  "state": "qualified_feature_increment",
+  "objective_complete": false,
+  "scope": "Scientific directional shadows through the shared Dear ImGui native workflow review, with metadata-only finite-layout admission, typed directions and captured C/Z/T targets.",
+  "all99": {
+    "in_progress": 43,
+    "open": 56,
+    "complete": 0
+  },
+  "feature": [
+    "Scientific Process/Shadows now opens the native parameter/target review for UInt8 gray/RGB, UInt16 gray and finite-policy Float32 gray.",
+    "Current-plane, all-Z and explicit strided C/Z/T ranges preserve unselected planes and publish once.",
+    "Actual direction selection, detached linked XYZ preview, Cancel, Apply and Undo/Redo retain source samples, saved row metadata, navigation and prior workflow rows.",
+    "Unsupported layouts and preserved nonfinite policies refuse without source reads; finite-output failures remain visible and atomic."
+  ],
+  "tests": {
+    "windows": {
+      "main_passed": 3540,
+      "supplement_passed": 2,
+      "unique_passed": 3542,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "linux": {
+      "main_passed": 3540,
+      "supplement_passed": 2,
+      "unique_passed": 3542,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    }
+  },
+  "same_case_ids_on_both_platforms": true,
+  "main_suite_source_reuse": {
+    "main_test_snapshot": {
+      "path": "build/p09k-scientific-shadows001/test-main-snapshot001.py",
+      "bytes": 10131,
+      "sha256": "eea68b63cb771f1b607733d97474195e2c3315c10c29a13b135bc62b88e7e3b0"
+    },
+    "final_test_file_preserves_main_bytes_as_prefix": true,
+    "supplement": "Only two appended finite-output failure cases were executed after the main suite; no full-suite rerun or inflated single-run claim."
+  },
+  "actual_ui": {
+    "scientific_observations": 32,
+    "scientific_frames": 4544,
+    "ordinary_regression_observations": 32,
+    "profiles": {
+      "windows": {
+        "state": "passed",
+        "scientific_observations": 16,
+        "scientific_frames": 2272,
+        "ordinary_regression_observations": 16,
+        "groups": {
+          "('p09g.shadows.ui.001', 'imgui_cpp')": 8,
+          "('p09k.scientific-shadows.ui.001', 'imgui_cpp')": 8,
+          "('p09k.scientific-shadows.ui.001', 'imgui_python')": 8,
+          "('p09g.shadows.ui.001', 'imgui_python')": 8
+        }
+      },
+      "linux": {
+        "state": "passed",
+        "scientific_observations": 16,
+        "scientific_frames": 2272,
+        "ordinary_regression_observations": 16,
+        "groups": {
+          "('p09g.shadows.ui.001', 'imgui_cpp')": 8,
+          "('p09k.scientific-shadows.ui.001', 'imgui_cpp')": 8,
+          "('p09g.shadows.ui.001', 'imgui_python')": 8,
+          "('p09k.scientific-shadows.ui.001', 'imgui_python')": 8
+        }
+      }
+    },
+    "os_input_or_gpu_equivalence_claim": false
+  },
+  "catalog_operations": 92,
+  "public_headers": 66,
+  "python_modules": 12,
+  "source_and_installed_products_match": true,
+  "commercial_check": "Reviewed commercial-use dependency inventory passed; no new dependencies; existing public-domain ImageJ shadow reference retained.",
+  "ci": {
+    "previous_cases_preserved": 964,
+    "scientific_shadow_cases": 8,
+    "default_total": 972,
+    "full_hosted_acceptance": false
+  },
+  "cleanup": {
+    "removed_bytes": 552516474,
+    "removed_files": 213,
+    "crc_and_every_member_sha256_verified": true,
+    "archives": {
+      "windows": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09k-scientific-shadows001\\windows-scratch001.zip",
+        "bytes": 29873892,
+        "sha256": "ec4a1f1c008e44ee27870b91e58ab05f990ef405b34489eb2a6f46202ce0d469"
+      },
+      "linux": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09k-scientific-shadows001/linux-scratch001.zip",
+        "bytes": 29119539,
+        "sha256": "345d65c0b21a81da8c8f439eadb7084a449cd0abcca3943ac5b90bdbf04d859d"
+      }
+    },
+    "preserved": "All qualified product prefixes, useful native source/build and dependency caches, copied observation receipts, JUnit reports, preliminary headless-input calibration failures and hosted baseline evidence"
+  },
+  "inputs": [
+    {
+      "path": "src/desktop/native_workflow_panel.cpp",
+      "bytes": 107439,
+      "sha256": "07435180df5d0e6f92f3f158b5163d6184feef6ef31e06ebcaa4af04716eb3e7"
+    },
+    {
+      "path": "src/desktop/shadow_ui_probe.cpp",
+      "bytes": 11025,
+      "sha256": "e04547e42d29e7bc5adff90922ff3ca2590274023e7191669d9e7fa878c573c4"
+    },
+    {
+      "path": "src/desktop/shadow_ui_probe.hpp",
+      "bytes": 372,
+      "sha256": "f0b54627cc999cd65aeff022ace2ecee1639b535434e404c65a139105f520f44"
+    },
+    {
+      "path": "src/desktop/main.cpp",
+      "bytes": 45989,
+      "sha256": "1963835495d92bc79b4c4f56ff4ab5bce0173f3a501a71c22b85af00e13d5098"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 50676,
+      "sha256": "ff2d834e6cc33ec1b8cb17f142f2456ba146f5509cecd2888db4a69bf3d66210"
+    },
+    {
+      "path": "tests/python/test_scientific_shadow_review.py",
+      "bytes": 11191,
+      "sha256": "d84241bc6adad9b0d907eca2dcce209f04fe66b0f052da84b2bc1176fdec4951"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 18655,
+      "sha256": "1addd29b16ada00debf453b29a198177d97b7afa0389c092d0e75bce6b0ab724"
+    }
+  ],
+  "receipts": "build/p09k-scientific-shadows001",
+  "remaining": [
+    "Animated Demo and direct direction menu shortcuts.",
+    "Scientific positioned/irregular ROI and broader calibration/display contexts; nonfinite IEEE-source policy.",
+    "Full option-level registration, platform/DPI/accessibility and complete hosted/family acceptance.",
+    "Full ImageJ/Fiji objective and all 96 partial format variants remain open."
+  ]
+}
