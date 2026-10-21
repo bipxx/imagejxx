@@ -4,6 +4,7 @@
 #include <cctype>
 #include <cmath>
 #include <cstring>
+#include <imagejxx/auto_threshold.hpp>
 #include <imagejxx/binary.hpp>
 #include <imagejxx/conversion.hpp>
 #include <imagejxx/gaussian.hpp>
@@ -470,6 +471,13 @@ std::size_t operation_extra_workspace(const std::string &id,
           "Job reservation overflows addressable memory");
     bytes += amount;
   };
+  if(id=="auto_mask" && is_imagej_threshold_method(parameterText(parameters,"method","otsu"))) {
+    const auto requested=parameterInteger(parameters,"bins",0);
+    if(requested!=0 && (requested<2 || requested>65536))throw std::invalid_argument("ImageJ threshold requires 2..65536 bins");
+    const auto bins=std::size_t(requested==0?256:requested);
+    // Histogram counts/edges, count copy, entropy/mean tables and allocator overhead.
+    add(multiply(bins+1,12*sizeof(double)));add(65536);
+  }
   if(id=="convert_image"&&context.samples==1)add(1024*1024); // Lookup, palette/provenance and paired metadata copies.
   // Admission, normalization during execution, and retained preparation can
   // overlap copies of these arguments. Count their double-backed storage.

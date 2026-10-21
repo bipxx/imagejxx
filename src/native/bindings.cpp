@@ -36,6 +36,7 @@ void bind_saved_roi_geometry(py::module_& module);
 void bind_operations(py::module_& module);
 void bind_targets(py::module_& module);
 void bind_execution(py::module_& module);
+void bind_auto_threshold(py::module_& module);
 void bind_jobs(py::module_& module);
 void bind_gaussian_command(py::module_& module);
 void bind_rank_command(py::module_& module);
@@ -205,6 +206,7 @@ PYBIND11_MODULE(_native, m) {
     bind_targets(m);
     bind_operations(m);
     bind_execution(m);
+    bind_auto_threshold(m);
     bind_avi_movie(m);
     bind_jobs(m);
     bind_gaussian_command(m);

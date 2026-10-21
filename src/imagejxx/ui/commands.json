@@ -2012,7 +2012,13 @@
           "intermodes",
           "minimum",
           "moments",
-          "min_error"
+          "min_error",
+          "default",
+          "ij_isodata",
+          "huang",
+          "huang2",
+          "renyi_entropy",
+          "shanbhag"
         ],
         "optional": false
       },

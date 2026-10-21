@@ -1860,9 +1860,28 @@
     },
     {
       "evidence": {
-        "documentation": [],
-        "implementation": [],
-        "tests": []
+        "documentation": [
+          "docs/THRESHOLDING.md",
+          "docs/CI.md",
+          "docs/parity/reviews/p09z-auto-threshold001.json"
+        ],
+        "implementation": [
+          "include/imagejxx/auto_threshold.hpp",
+          "src/native/auto_threshold.cpp",
+          "src/native/auto_threshold_bindings.cpp",
+          "src/native/analysis.cpp",
+          "src/native/operations.cpp",
+          "src/native/operation_catalog.inc",
+          "src/desktop/auto_threshold_ui_probe.cpp",
+          "src/imagejxx/__init__.py"
+        ],
+        "tests": [
+          "tests/python/test_auto_threshold_imagej.py",
+          "tests/python/test_auto_threshold_ui.py",
+          "tests/fixtures/auto-threshold-imagej154r.json",
+          "scripts/capture_auto_threshold_reference.py",
+          "examples/cpp/auto_threshold.cpp"
+        ]
       },
       "id": "G047",
       "milestones": [
@@ -1870,11 +1889,14 @@
       ],
       "name": "Automatic global threshold",
       "remaining": [
-        "Add ImageJ `Default`, `Huang`, `IJ_IsoData`, `RenyiEntropy`, `Shanbhag`; Fiji `Huang2`; reference histogram edge/tie/16-bit behavior"
+        "Complete upstream image-scaling/edge/tie/overflow and scientific/ROI targeting options, ignore-black/white, stack histograms and threshold-display plugin integration.",
+        "Complete reference coverage for existing twelve methods, formal fixture/interface binding, and full performance/resource/platform/accessibility qualification."
       ],
       "required_work": "Add ImageJ `Default`, `Huang`, `IJ_IsoData`, `RenyiEntropy`, `Shanbhag`; Fiji `Huang2`; reference histogram edge/tie/16-bit behavior",
-      "status": "open",
-      "verification": []
+      "status": "in_progress",
+      "verification": [
+        "p09z.auto-threshold.functional.001"
+      ]
     },
     {
       "evidence": {
@@ -180367,6 +180389,29 @@
         "total": 371
       },
       "scope": "371 selected checks per OS, 232 input observation reports / 12920 frames plus six guard artifacts. Native AVI/playback/preferences, fresh installed SDK AVI examples, 54 independently decoded AVI files, and 15 transport checks per OS. Full family/hosted acceptance remains open."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-21",
+      "id": "p09z.auto-threshold.functional.001",
+      "identity": {
+        "qualification": {
+          "path": "docs/parity/reviews/p09z-auto-threshold001.json",
+          "bytes": 20190,
+          "sha256": "a2958971bd8a8ab6a32240971b7fc93aecf5b668a6a03dee99ad92458ac5190a"
+        }
+      },
+      "platform": "Windows/Linux installed C++ SDK and standalone/Python Dear ImGui hosts",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 649,
+        "report": "build/p09z-auto-threshold001/windows-python002/pytest.xml",
+        "skipped": 0,
+        "total": 649
+      },
+      "scope": "649 main + 1332 additional registry/jobs/admission checks per OS (1981 distinct). 348 exact Java histogram results per OS, 24 physical UI reports / 2016 frames total, installed SDK example and 15 capture transport tests per OS. Full G047/hosted acceptance stays open."
     }
   ]
 }

@@ -13,6 +13,7 @@ include(cmake/StaticCodecSymbols.cmake)
 
 add_library(imagejxx_core STATIC
   src/native/playback.cpp
+  src/native/auto_threshold.cpp
   src/native/avi_movie.cpp
   src/native/image.cpp src/native/filters.cpp src/native/shadow.cpp src/native/gaussian.cpp src/native/gaussian_command.cpp src/native/rank.cpp src/native/rank_command.cpp src/native/axis_extraction_command.cpp src/native/transforms.cpp
   src/native/segmentation.cpp src/native/analysis.cpp src/native/frequency.cpp src/native/binary.cpp src/native/conversion.cpp
@@ -112,7 +113,7 @@ if(IMAGEJXX_BUILD_PYTHON)
   set(PYBIND11_FINDPYTHON ON)
   find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
   find_package(pybind11 CONFIG REQUIRED)
-  pybind11_add_module(_native src/native/bindings.cpp src/native/avi_movie_bindings.cpp src/native/playback_bindings.cpp src/native/dataset_bindings.cpp src/native/settings_bindings.cpp src/native/preferences_bindings.cpp src/native/conversion_bindings.cpp src/native/document_bindings.cpp src/native/manual_threshold_bindings.cpp src/native/z_subset_bindings.cpp src/native/axis_spacing_command_bindings.cpp src/native/slicer_resize_command_bindings.cpp src/native/application_bindings.cpp src/native/operation_bindings.cpp src/native/target_bindings.cpp src/native/gaussian_command_bindings.cpp src/native/rank_command_bindings.cpp)
+  pybind11_add_module(_native src/native/auto_threshold_bindings.cpp src/native/bindings.cpp src/native/avi_movie_bindings.cpp src/native/playback_bindings.cpp src/native/dataset_bindings.cpp src/native/settings_bindings.cpp src/native/preferences_bindings.cpp src/native/conversion_bindings.cpp src/native/document_bindings.cpp src/native/manual_threshold_bindings.cpp src/native/z_subset_bindings.cpp src/native/axis_spacing_command_bindings.cpp src/native/slicer_resize_command_bindings.cpp src/native/application_bindings.cpp src/native/operation_bindings.cpp src/native/target_bindings.cpp src/native/gaussian_command_bindings.cpp src/native/rank_command_bindings.cpp)
   target_sources(_native PRIVATE src/native/session_bindings.cpp)
   target_sources(_native PRIVATE src/native/axis_extraction_command_bindings.cpp)
   target_sources(_native PRIVATE src/native/axis_orientation_command_bindings.cpp)
@@ -985,6 +986,7 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     src/desktop/roi_mixed_import_ui_probe.cpp
     src/desktop/roi_mixed_export_ui_probe.cpp
     src/desktop/roi_export_panel.cpp
+    src/desktop/auto_threshold_ui_probe.cpp
     src/desktop/movie_export_panel.cpp
     src/desktop/movie_export_ui_probe.cpp
     src/desktop/roi_mixed_export_panel.cpp

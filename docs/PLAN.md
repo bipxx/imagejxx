@@ -1,5 +1,22 @@
 # ImageJ and Fiji gap closure plan
 
+**Automatic threshold methods checkpoint, 2026-10-21 (work in progress):**
+The C++ core, Python API and both Dear ImGui hosts now expose Default,
+IJ_IsoData, Huang, Huang2, RenyiEntropy and Shanbhag. The histogram API retains
+bilevel/range/tie behavior; image adapters use the existing bin-center policy.
+348 results from pinned ImageJ 1.54r histograms match on both installed platforms.
+Windows/Linux each pass 1,981 distinct selected checks without skips, a fresh
+installed SDK example and 15 transport checks. Real pointer/scroll input in
+both hosts produces 24 reports / 2,016 frames covering method selection,
+preview/cancel, Apply and undo/redo. Table admission, cancellation and callback
+behavior are covered. No new runtime dependencies; commercial-use inventory
+passes. Verified archives remove 721,729,459 scratch bytes while retaining final
+products and evidence. See [the scoped receipt](parity/reviews/p09z-auto-threshold001.json)
+and [method semantics](THRESHOLDING.md). G047 moves to in progress. Plugin options,
+full numerical/reference/resource/platform qualification and the pre-existing
+Auto Contrast source-fingerprint gate remain open. All99 is 46 in progress /
+53 open / 0 complete; existing 96 format variants remain partial.
+
 **AVI movie export checkpoint, 2026-10-21 (work in progress):**
 The C++ core, installed SDK, Python API and both Dear ImGui hosts now export
 uncompressed Gray8/RGB24 AVI. The UI supports Z/C/T, inclusive range/stride,

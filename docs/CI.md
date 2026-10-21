@@ -65,7 +65,7 @@ The runner records these measurements and supplies both axis-range memory-check
 contracts. These values come from the independent fixture, rather than from the
 operation's working-set estimate; the readers retain their exact byte formulas.
 The runner first invokes `scripts/ci_observations.py` against the installed C++
-application. Its 1,153-launch matrix captures rank filters, rounded creation
+application. Its 1,159-launch matrix captures rank filters, rounded creation
 and saved selections, ROI import/export, saved-selection budget behavior, and
 resize/rotate/move modifiers and directional shadows. The planar selection matrix
 covers 621 creation/edit/recovery cases across XY, XZ and YZ, including every
@@ -241,3 +241,9 @@ Full hosted acceptance still requires the following work:
 
 The feature inventory and remaining ImageJ/Fiji requirements stay in
 [the gap plan](PLAN.md). CI infrastructure changes do not close capability families.
+
+Six automatic-threshold captures use actual menu/combo/popup-scroll input, preview,
+cancel, Apply and undo/redo in each native host. Independent readers compare all
+mask pixels against pinned Java histogram results. The fixture generator keeps
+the upstream Java source and JDK under build only; full plugin/reference/platform
+acceptance remains separate. See [threshold semantics](THRESHOLDING.md).

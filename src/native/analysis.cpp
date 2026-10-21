@@ -1,4 +1,6 @@
 #include "imagejxx/image.hpp"
+#include <imagejxx/auto_threshold.hpp>
+#include "kernel_control.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -37,7 +39,9 @@ Histogram histogram(const Image& image, int bins, double lower, double upper) {
     if (upper <= lower || !std::isfinite(upper - lower)) throw std::invalid_argument("Histogram range must have finite positive width");
     Histogram out{std::vector<std::uint64_t>(static_cast<std::size_t>(bins), 0), std::vector<double>(static_cast<std::size_t>(bins) + 1)};
     for (int b = 0; b <= bins; ++b) out.edges[b] = lower + (upper - lower) * (b / static_cast<double>(bins));
-    for (double value : image.pixels) if (value >= lower && value <= upper) ++out.counts[histogram_index(value, out)];
+    KernelStage stage("Histogram samples",image.pixels.size());
+    for (std::size_t i=0;i<image.pixels.size();++i) {stage.periodic(i);const auto value=image.pixels[i];if (value >= lower && value <= upper) ++out.counts[histogram_index(value, out)];}
+    stage.finish();
     return out;
 }
 Statistics statistics(const Image& image, const Image* mask) {
@@ -64,6 +68,16 @@ Statistics statistics(const Image& image, const Image* mask) {
 
 double auto_threshold(const Image& image, const std::string& method, int bins) {
     require_gray(image);
+    if(is_imagej_threshold_method(method)) {
+        const int count=bins==0?256:bins;
+        if(count<2 || count>65536)throw std::invalid_argument("ImageJ threshold requires 2..65536 bins");
+        KernelStage validation("Automatic threshold input",image.pixels.size());
+        for(std::size_t i=0;i<image.pixels.size();++i) {validation.periodic(i);require_finite(image.pixels[i],"Threshold pixel");}
+        validation.finish();
+        auto h=histogram(image,count);
+        const int bin=auto_threshold_histogram_imagej(h.counts,method);
+        return (h.edges[bin]+h.edges[bin+1])/2;
+    }
     const std::vector<std::string> methods = {"otsu", "mean", "isodata", "li", "triangle", "yen", "max_entropy", "percentile", "intermodes", "minimum", "moments", "min_error"};
     if (std::find(methods.begin(), methods.end(), method) == methods.end()) throw std::invalid_argument("Unknown automatic threshold method");
     auto extrema = std::minmax_element(image.pixels.begin(), image.pixels.end());
@@ -170,7 +184,9 @@ double auto_threshold(const Image& image, const std::string& method, int bins) {
 Image auto_mask(const Image& image, const std::string& method, bool bright, int bins) {
     double t = auto_threshold(image, method, bins);
     Image out(image.width, image.height, 1, PixelType::UInt8);
-    for (std::size_t i = 0; i < out.pixels.size(); ++i) out.pixels[i] = (image.pixels[i] > t) == bright ? 255 : 0;
+    KernelStage stage("Automatic threshold mask",out.pixels.size());
+    for (std::size_t i = 0; i < out.pixels.size(); ++i) {stage.periodic(i);out.pixels[i] = (image.pixels[i] > t) == bright ? 255 : 0;}
+    stage.finish();
     return out;
 }
 Image equalize_histogram(const Image& image) {

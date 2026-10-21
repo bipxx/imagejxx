@@ -1,0 +1,425 @@
+{
+  "state": "qualified_functional_increment",
+  "objective_complete": false,
+  "scope": "Six missing global automatic histogram methods: Default, IJ_IsoData, Huang, Huang2, RenyiEntropy and Shanbhag. C++ histogram API, Python binding and image adapters, shared native registry/form and installed C++ SDK example.",
+  "behavior": "The six methods preserve input counts, use the upstream bilevel shortcut and >256-bin occupied-range bracketing, and retain strict first-score ties. Integer histogram counts have a positive total <= INT32_MAX and 2..65536 bins. Image adapters return bin centers under existing histogram edge policy and preserve source samples; new methods reject nonfinite image samples. Existing twelve methods and default Otsu remain separate and unchanged numerically.",
+  "reference": {
+    "comparisons": 348,
+    "histograms": 58,
+    "upstream": {
+      "commit": "62db90a269cccc1ac79f658e4602043214ed055b",
+      "archive_sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+      "source_sha256": "a55323e8c84b0b6bd82e8df12aea2503805eabefe069e53860476ebb2d607dc5",
+      "source_url": "https://github.com/imagej/ImageJ/blob/62db90a269cccc1ac79f658e4602043214ed055b/ij/process/AutoThresholder.java",
+      "license_url": "https://imagej.net/ij/disclaimer.html"
+    },
+    "fixture": {
+      "path": "tests/fixtures/auto-threshold-imagej154r.json",
+      "bytes": 116881,
+      "sha256": "e8f76e8e82c0cbcce98307bf9374e175439bef531ae17a2f3a0de3289ae70db8"
+    },
+    "capture_script": {
+      "path": "scripts/capture_auto_threshold_reference.py",
+      "bytes": 5734,
+      "sha256": "853fb0905fcc509cc8c37e06d5ba40729ec39d4b1fb4c34756e545cd041e3510"
+    },
+    "capture_receipt": {
+      "path": "build/p09z-auto-threshold001/reference001/receipt.json",
+      "bytes": 541,
+      "sha256": "b5944c3789e17bef1b1ef5f6cb2dfac1ac70513d32fac338d89eab10a5ed5137"
+    },
+    "raw_output": {
+      "path": "build/p09z-auto-threshold001/reference001/stdout.txt",
+      "bytes": 1607,
+      "sha256": "6e8dc3c5ad08f74fa63d57b0af3a93add4d9b79abf4c313dc84d90f091940de4"
+    },
+    "scope": "256/257/65536-bin constant, bilevel, uniform, ramp, dominant-mode, trimodal and seeded sparse histograms. Upstream ImageJ class includes static Huang2. Java driver is a test oracle only; complete plugin/image-scaling/reference-inventory acceptance is not claimed."
+  },
+  "profiles": {
+    "windows": {
+      "tests": 1981,
+      "main_tests": 649,
+      "additional_registry_jobs_admission_tests": 1332,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "input_observations": 12,
+      "frames": 1008,
+      "contexts": [
+        "imgui_cpp",
+        "imgui_python"
+      ],
+      "sdk": "Fresh consumer of installed C++ header/library; six uniform-histogram results match pinned Java values",
+      "headers": 69,
+      "python_modules": 12,
+      "catalog_operations": 92,
+      "source_freeze": [
+        {
+          "path": "CMakeLists.txt",
+          "sha256": "57027f7f6f7d588bf3cac5755c0c07c38afd703cb43a8fb30fd2af259d63dcac"
+        },
+        {
+          "path": "include/imagejxx/auto_threshold.hpp",
+          "sha256": "1b6cc3f8967c25a00de8aebbc786626e1632eea6d3116bfd5328f72ec09c8020"
+        },
+        {
+          "path": "src/native/auto_threshold.cpp",
+          "sha256": "27845f3de2730fe5826bba63c55d41474a1cc9e46a37b28eb78b99690ba74dd3"
+        },
+        {
+          "path": "src/native/auto_threshold_bindings.cpp",
+          "sha256": "83ea8c3858f9b75295182908dd238cd64ea936df2769abe3c011e13b41c7bd4a"
+        },
+        {
+          "path": "src/native/bindings.cpp",
+          "sha256": "60e969ab7e0c632fe968fbef43fd242f089d1a02f674ebe1c487efa94a4bab37"
+        },
+        {
+          "path": "src/native/analysis.cpp",
+          "sha256": "2978e54970618ee693bd619de1bc897d367e31b2928c9e75dbaedc89a7a636d6"
+        },
+        {
+          "path": "src/native/operations.cpp",
+          "sha256": "e7c427b6edde23f48a21f0467e14c62de66a327b816b68c4c406904d2ef5cfbd"
+        },
+        {
+          "path": "src/native/operation_catalog.inc",
+          "sha256": "dda21d9d6839e46c4b7a91adfc5e206cfd2230b930ba1904be45c9ad8f6b13f1"
+        },
+        {
+          "path": "src/imagejxx/__init__.py",
+          "sha256": "3be87a11bd5bc06cfea9fcfb78676b0d695dd459f7959ba41c256f62862031ed"
+        },
+        {
+          "path": "src/imagejxx/ui/commands.json",
+          "sha256": "b5c12ac0b69213810983df0da87854be9731793004041a14d429847d9d321f9e"
+        },
+        {
+          "path": "src/desktop/auto_threshold_ui_probe.cpp",
+          "sha256": "6292bb1f998c116243a4de38329c489f9220f455dea69aa1c1638461494c9ff9"
+        },
+        {
+          "path": "src/desktop/auto_threshold_ui_probe.hpp",
+          "sha256": "6278f4ea944f6af63f6d63b1ac3537c9c989d69c9fa9a31e97ca7d5fa0c7eccd"
+        },
+        {
+          "path": "src/desktop/animation_ui_probe.cpp",
+          "sha256": "8e6051d0a5e40c8fb29b037f9d4d84bf6e3c4554a2581895188009cd299b3522"
+        },
+        {
+          "path": "examples/cpp/CMakeLists.txt",
+          "sha256": "3d75262228f88bd6e4894ff4586e4798017e2204f2952407efadae0e2497a929"
+        },
+        {
+          "path": "examples/cpp/auto_threshold.cpp",
+          "sha256": "0c8399f73b4d5bd76d555fd7b23ff0b97758eae19ef2d159b7d7d0673da91be8"
+        }
+      ],
+      "products": [
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09z-auto-threshold001\\windows-build004\\installed\\sdk-prefix001\\bin\\imagejxx.exe",
+          "bytes": 15275520,
+          "sha256": "7af14e6f94aa600af09e91b535068638cd34a3ea2587c44bc9e4169850b405ba"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09z-auto-threshold001\\windows-build004\\installed\\python-prefix001\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+          "bytes": 15121920,
+          "sha256": "07f62e8a1843bb7ea90f3fa3e11880547a54552ba74e94da44b0c3dfb9433792"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09z-auto-threshold001\\windows-build004\\installed\\python-prefix001\\imagejxx\\_native.cp312-win_amd64.pyd",
+          "bytes": 6364672,
+          "sha256": "ada03ee3f0a5f25bc4c167a9e74ef63bfcbfd5401c869401eac55688874d0feb"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09z-auto-threshold001\\windows-build004\\installed\\sdk-prefix001\\lib\\imagejxx_core.lib",
+          "bytes": 46358958,
+          "sha256": "2391ef130ec8437849bba96eddd2542d98496571f3f8be92070ba85892bb202e"
+        }
+      ],
+      "evidence": {
+        "windows-build004/receipt.json": {
+          "path": "build/p09z-auto-threshold001/windows-build004/receipt.json",
+          "bytes": 2304,
+          "sha256": "0baf0db61c29aef32726360489f7310ce7a3b31b54f073eff484587e5d03c4cd"
+        },
+        "windows-python002/pytest.xml": {
+          "path": "build/p09z-auto-threshold001/windows-python002/pytest.xml",
+          "bytes": 84168,
+          "sha256": "3b55b0659853a45084a497cd42691521c610e2657b8b8328189b20e5691f2e49"
+        },
+        "windows-python002/receipt.json": {
+          "path": "build/p09z-auto-threshold001/windows-python002/receipt.json",
+          "bytes": 87,
+          "sha256": "080370e2b615144fb0b10cc67852ec4273fcda31a8947affde5fc30669912d64"
+        },
+        "windows-regression001/pytest.xml": {
+          "path": "build/p09z-auto-threshold001/windows-regression001/pytest.xml",
+          "bytes": 201343,
+          "sha256": "6a0e54d53631ccf96d93d107ee99428390a396b657ceba5b3c8167a1d5f8a425"
+        },
+        "windows-regression001/receipt.json": {
+          "path": "build/p09z-auto-threshold001/windows-regression001/receipt.json",
+          "bytes": 88,
+          "sha256": "1a4e97f49ffe962db51e191dc94d1b0bf2c0a7be78420099926137036230ae35"
+        },
+        "windows-evidence001.json": {
+          "path": "build/p09z-auto-threshold001/windows-evidence001.json",
+          "bytes": 221355,
+          "sha256": "1f821e2648e322055cba11b999cd4d3fc95f88bf22ca902e4a019b841458ab37"
+        },
+        "windows-products001.json": {
+          "path": "build/p09z-auto-threshold001/windows-products001.json",
+          "bytes": 12754,
+          "sha256": "63e29a23b32fe22bbc13ff53a1add7c662656cd0facdc3cf6114dfbddbb3d33c"
+        },
+        "windows-sdk001/receipt.json": {
+          "path": "build/p09z-auto-threshold001/windows-sdk001/receipt.json",
+          "bytes": 514,
+          "sha256": "df6767209595199088c861a38aff3e69f4ebd61f29816613f6d083f068bdcf23"
+        },
+        "windows-sdk001/execute.log": {
+          "path": "build/p09z-auto-threshold001/windows-sdk001/execute.log",
+          "bytes": 85,
+          "sha256": "c7572a52eca820a65918e5e451a300b6e5f3d0ecede2b4fed3f370ce00b5dbaa"
+        },
+        "windows-gates001.log": {
+          "path": "build/p09z-auto-threshold001/windows-gates001.log",
+          "bytes": 53,
+          "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+        },
+        "windows-transport001.log": {
+          "path": "build/p09z-auto-threshold001/windows-transport001.log",
+          "bytes": 1630,
+          "sha256": "7559dce4792b2d1a0309723825a0e43c80edf099e9f2ea2057e1b04e934f43ad"
+        },
+        "windows-cleanup001.json": {
+          "path": "build/p09z-auto-threshold001/windows-cleanup001.json",
+          "bytes": 609474,
+          "sha256": "15554995e09d7337ee2052fe49bfe8534e35cec52f46ee2cf5688fe24b897646"
+        }
+      }
+    },
+    "linux": {
+      "tests": 1981,
+      "main_tests": 649,
+      "additional_registry_jobs_admission_tests": 1332,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "input_observations": 12,
+      "frames": 1008,
+      "contexts": [
+        "imgui_cpp",
+        "imgui_python"
+      ],
+      "sdk": "Fresh consumer of installed C++ header/library; six uniform-histogram results match pinned Java values",
+      "headers": 69,
+      "python_modules": 12,
+      "catalog_operations": 92,
+      "source_freeze": [
+        {
+          "path": "CMakeLists.txt",
+          "sha256": "57027f7f6f7d588bf3cac5755c0c07c38afd703cb43a8fb30fd2af259d63dcac"
+        },
+        {
+          "path": "include/imagejxx/auto_threshold.hpp",
+          "sha256": "1b6cc3f8967c25a00de8aebbc786626e1632eea6d3116bfd5328f72ec09c8020"
+        },
+        {
+          "path": "src/native/auto_threshold.cpp",
+          "sha256": "27845f3de2730fe5826bba63c55d41474a1cc9e46a37b28eb78b99690ba74dd3"
+        },
+        {
+          "path": "src/native/auto_threshold_bindings.cpp",
+          "sha256": "83ea8c3858f9b75295182908dd238cd64ea936df2769abe3c011e13b41c7bd4a"
+        },
+        {
+          "path": "src/native/bindings.cpp",
+          "sha256": "60e969ab7e0c632fe968fbef43fd242f089d1a02f674ebe1c487efa94a4bab37"
+        },
+        {
+          "path": "src/native/analysis.cpp",
+          "sha256": "2978e54970618ee693bd619de1bc897d367e31b2928c9e75dbaedc89a7a636d6"
+        },
+        {
+          "path": "src/native/operations.cpp",
+          "sha256": "e7c427b6edde23f48a21f0467e14c62de66a327b816b68c4c406904d2ef5cfbd"
+        },
+        {
+          "path": "src/native/operation_catalog.inc",
+          "sha256": "dda21d9d6839e46c4b7a91adfc5e206cfd2230b930ba1904be45c9ad8f6b13f1"
+        },
+        {
+          "path": "src/imagejxx/__init__.py",
+          "sha256": "3be87a11bd5bc06cfea9fcfb78676b0d695dd459f7959ba41c256f62862031ed"
+        },
+        {
+          "path": "src/imagejxx/ui/commands.json",
+          "sha256": "b5c12ac0b69213810983df0da87854be9731793004041a14d429847d9d321f9e"
+        },
+        {
+          "path": "src/desktop/auto_threshold_ui_probe.cpp",
+          "sha256": "6292bb1f998c116243a4de38329c489f9220f455dea69aa1c1638461494c9ff9"
+        },
+        {
+          "path": "src/desktop/auto_threshold_ui_probe.hpp",
+          "sha256": "6278f4ea944f6af63f6d63b1ac3537c9c989d69c9fa9a31e97ca7d5fa0c7eccd"
+        },
+        {
+          "path": "src/desktop/animation_ui_probe.cpp",
+          "sha256": "8e6051d0a5e40c8fb29b037f9d4d84bf6e3c4554a2581895188009cd299b3522"
+        },
+        {
+          "path": "examples/cpp/CMakeLists.txt",
+          "sha256": "3d75262228f88bd6e4894ff4586e4798017e2204f2952407efadae0e2497a929"
+        },
+        {
+          "path": "examples/cpp/auto_threshold.cpp",
+          "sha256": "0c8399f73b4d5bd76d555fd7b23ff0b97758eae19ef2d159b7d7d0673da91be8"
+        }
+      ],
+      "products": [
+        {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/install-p09z004/sdk-prefix001/bin/imagejxx",
+          "bytes": 30911816,
+          "sha256": "e6a3d419b66044d4eb8a1571feb58258d2d9a9a587de5274358abd7961c1b460"
+        },
+        {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/install-p09z004/python-prefix001/imagejxx/_desktop.cpython-312-x86_64-linux-gnu.so",
+          "bytes": 28960408,
+          "sha256": "b55eb90dfb967f8bb0b7464657ff42909da8424400cfde67d9d79dd04ee4b7fb"
+        },
+        {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/install-p09z004/python-prefix001/imagejxx/_native.cpython-312-x86_64-linux-gnu.so",
+          "bytes": 10349888,
+          "sha256": "ae13cb44fd486ef24a895bcd719b9593dbf268ed669dbdaa2bb6d51f9791dc70"
+        },
+        {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/install-p09z004/sdk-prefix001/lib/libimagejxx_core.a",
+          "bytes": 15166292,
+          "sha256": "4a4353dafbbe8cfc31df9b6a87948b326d6a123620ccab1c0a5756a5064d579b"
+        }
+      ],
+      "evidence": {
+        "linux-build004/receipt.json": {
+          "path": "build/p09z-auto-threshold001/linux-build004/receipt.json",
+          "bytes": 2275,
+          "sha256": "85e972698f68d694a5584c6b1a8bc570cf49a98f1d7534bbf6e7376ec142538b"
+        },
+        "linux-python002/pytest.xml": {
+          "path": "build/p09z-auto-threshold001/linux-python002/pytest.xml",
+          "bytes": 84169,
+          "sha256": "c5713c14fc6bec431725ea8d553002cc1fa15df9bbd2e14d5462bf918100bc7f"
+        },
+        "linux-python002/receipt.json": {
+          "path": "build/p09z-auto-threshold001/linux-python002/receipt.json",
+          "bytes": 87,
+          "sha256": "080370e2b615144fb0b10cc67852ec4273fcda31a8947affde5fc30669912d64"
+        },
+        "linux-regression001/pytest.xml": {
+          "path": "build/p09z-auto-threshold001/linux-regression001/pytest.xml",
+          "bytes": 201344,
+          "sha256": "24076952ff2fc9bf76c61e33f328c58582596b941710dd187a419b506217ad26"
+        },
+        "linux-regression001/receipt.json": {
+          "path": "build/p09z-auto-threshold001/linux-regression001/receipt.json",
+          "bytes": 88,
+          "sha256": "1a4e97f49ffe962db51e191dc94d1b0bf2c0a7be78420099926137036230ae35"
+        },
+        "linux-evidence001.json": {
+          "path": "build/p09z-auto-threshold001/linux-evidence001.json",
+          "bytes": 220907,
+          "sha256": "44293eb83dae67023c6af55d4b417dcf3bde0fc3b81dd9eef58a6f85bfe4cbfb"
+        },
+        "linux-products001.json": {
+          "path": "build/p09z-auto-threshold001/linux-products001.json",
+          "bytes": 12353,
+          "sha256": "b768e92a911aa0a3d05b7da1585cc8e015d541b7b7147c82a84c93960d42140f"
+        },
+        "linux-sdk001/receipt.json": {
+          "path": "build/p09z-auto-threshold001/linux-sdk001/receipt.json",
+          "bytes": 451,
+          "sha256": "352ec736050f4cf5c35e808cd2bd5d7884dc5ad5a1f1ce856be41eef1f3b6967"
+        },
+        "linux-sdk001/execute.log": {
+          "path": "build/p09z-auto-threshold001/linux-sdk001/execute.log",
+          "bytes": 79,
+          "sha256": "b46e1c68576a3647e32a30cc483efa5396769bd53d94a0c318460b1d4a2eb3dd"
+        },
+        "linux-gates001.log": {
+          "path": "build/p09z-auto-threshold001/linux-gates001.log",
+          "bytes": 53,
+          "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+        },
+        "linux-transport001.log": {
+          "path": "build/p09z-auto-threshold001/linux-transport001.log",
+          "bytes": 1630,
+          "sha256": "69c8cd97181d05e698b538943a66f67beda3d4886aba3ea2423556b750fd42cc"
+        },
+        "linux-cleanup001.json": {
+          "path": "build/p09z-auto-threshold001/linux-cleanup001.json",
+          "bytes": 435246,
+          "sha256": "651fa52f47bc5db98a851f8ae6b621bbd3d72153eec49440d4f12e24c0dc8964"
+        }
+      }
+    }
+  },
+  "checks": "Per OS: 348 exact upstream histogram results; 18 typed image-adapter/mask checks; shared Python-host command recording/undo/redo; real pointer/scroll preview, cancel, Apply, undo and redo for all six methods in both ImGui hosts; finite/bin/count validation, cancellation, callback errors/reentry/final cancellation; six job workspace rejection checks; existing numeric/desktop/AVI and full registry/jobs regressions. 1981 distinct test IDs, 12 physical UI reports / 1008 frames, plus 15 capture transport checks per OS.",
+  "resource_scope": "Histogram/threshold/mask named checkpoints and pre-admission table reservation for the six registered methods. Histogram API progress reports start/completion, with retained callback ownership. Entropy searches may be quadratic on dense histograms; complete latency, global allocation and large-data certification remain open.",
+  "commercial_scope": "No new runtime dependencies, Java, Qt or non-commercial components. Reviewed commercial-use inventory passes on both platforms. Original C++ histogram implementations use the mathematical methods; the pinned public-domain ImageJ Java class and verified reference JDK are test-only and remain outside products.",
+  "source_review": [
+    "Continuous versus rounded Huang class means and lookup bounds",
+    "Bilevel and constant-zero method-specific fallback; sparse >256-bin range offset",
+    "Renyi alpha/order combination, strict ties and ascending evaluation order",
+    "Double histogram sums avoid upstream signed-overflow reproduction; complete overflow compatibility not claimed",
+    "Exact original live source preimages remain in Git or earlier build freezes; no historical reference hash was repinned",
+    "Initial observer source used a plural menu key; corrected by source inspection before the first actual capture. First captures succeeded. Progress callbacks added and final native products rebuilt/requalified."
+  ],
+  "remaining": [
+    "Ignore-black/white and full stack-histogram/threshold-display plugin workflows",
+    "Full upstream image/display-range scaling, edge/tie/overflow and scientific/ROI option/reference coverage; formal fixture-manifest/interface binding",
+    "Matching reference qualification for the twelve existing algorithms",
+    "Complete performance/resource/platform/accessibility acceptance and every broader ImageJ/Fiji requirement"
+  ],
+  "registration": {
+    "path": "build/p09z-auto-threshold001/registration001.json",
+    "bytes": 955,
+    "sha256": "89ec00ccb6f0b6527cc028e96ad8b0038cb1fa854237fadf1469b0a22d2f5201"
+  },
+  "plan_gate": {
+    "state": "failed_preexisting",
+    "message": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed",
+    "gate_unchanged": true,
+    "evidence": {
+      "path": "build/p09z-auto-threshold001/plan-check001.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    },
+    "application_header_unchanged_from_head": true
+  },
+  "all99": {
+    "in_progress": 46,
+    "open": 53,
+    "complete": 0
+  },
+  "format_variants": "All existing 96 variants remain partial",
+  "cleanup_removed_bytes": 721729459,
+  "test_sources": [
+    {
+      "path": "tests/python/test_auto_threshold_imagej.py",
+      "bytes": 5995,
+      "sha256": "58220426ac3c9f9a09743364f7566d93a282f607f3ef940b240a7f7ae65ac12d"
+    },
+    {
+      "path": "tests/python/test_auto_threshold_ui.py",
+      "bytes": 2468,
+      "sha256": "c15845c96726e8e5eb2dacc8b1710f35cd5a4325ebd4265aaa39cccc3c7b839e"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 30846,
+      "sha256": "2bfb2c2af388ac21084aab81b0e0c3a32c1560a7a926e14e1cda303550828458"
+    }
+  ]
+}

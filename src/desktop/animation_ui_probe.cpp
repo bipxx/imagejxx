@@ -1,6 +1,7 @@
 // Actual-input observer only. Expected positions, sample words and lifetimes
 // belong to the independent reader, not this driver.
 #include "animation_ui_probe.hpp"
+#include "auto_threshold_ui_probe.hpp"
 #include "movie_export_ui_probe.hpp"
 #include "headless_session_internal.hpp"
 #include "window.hpp"
@@ -11,6 +12,7 @@
 namespace imagejxx::desktop {
 Json animationUiCase(Window &window, const std::string &id,
                      const std::string &context, const std::string &directory) {
+  if(id.rfind("threshold-",0)==0)return autoThresholdUiCase(window,id.substr(10),context,directory);
   if(id.rfind("movie-",0)==0)return movieExportUiCase(window,id,context,directory);
   const std::vector<std::string> cases{"z","c","t","legacy","singleton","switch",
       "edit","close","stop","fps","ieee","rgb","busy","range","reverse","ping",

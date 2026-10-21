@@ -292,3 +292,5 @@ reproduces the partial ImageJ/Fiji command/component inventory. Non-commercial, 
 unlicensed third-party components remain excluded.
 Numerical equivalence is documented per algorithm; full ImageJ/Fiji pixel parity
 has not been established.
+
+Automatic threshold method behavior and histogram APIs: [Thresholding](docs/THRESHOLDING.md).
