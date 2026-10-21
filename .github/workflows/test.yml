@@ -28,11 +28,93 @@ jobs:
             build/ci-native/*.log
             build/ci-native/*.xml
           if-no-files-found: error
+  linux-dependencies:
+    name: Reviewed Linux scientific and desktop dependencies
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install platform build prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ninja-build nasm libgl1-mesa-dev libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev
+      - name: Build the pinned source dependency prefix
+        run: python scripts/ci_linux_dependencies.py --output build/ci-linux-dependencies
+      - name: Publish dependency prefix with retained license notices
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-scientific-desktop-prefix
+          path: build/ci-linux-dependencies/prefix
+          if-no-files-found: error
+      - name: Retain dependency build evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-dependency-build-evidence
+          path: |
+            build/ci-linux-dependencies/receipt.json
+            build/ci-linux-dependencies/logs
+          if-no-files-found: error
+  linux-python:
+    name: Complete Linux Python IO and ImGui (${{ matrix.python }})
+    needs: linux-dependencies
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.10', '3.12']
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      CMAKE_BUILD_PARALLEL_LEVEL: '2'
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: linux-scientific-desktop-prefix
+          path: build/ci-prefix
+      - name: Install platform development and rendering prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ninja-build libgl1-mesa-dev libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev xvfb xauth
+      - name: Build and install Python IO and both desktop hosts
+        run: >-
+          python -m pip install '.[io,test]'
+          -Ccmake.define.IMAGEJXX_BUILD_IO=ON
+          -Ccmake.define.IMAGEJXX_BUILD_CPP_UI=ON
+          -Ccmake.define.IMAGEJXX_BUILD_PYTHON_UI=ON
+          -Ccmake.define.BUILD_TESTING=ON
+          -Ccmake.define.CMAKE_PREFIX_PATH=${{ github.workspace }}/build/ci-prefix
+          -Ccmake.define.ZLIB_USE_STATIC_LIBS=ON
+          -Ccmake.define.ZLIB_LIBRARY_RELEASE=${{ github.workspace }}/build/ci-prefix/lib/libz.a
+          -Ccmake.define.PNG_LIBRARY_RELEASE=${{ github.workspace }}/build/ci-prefix/lib/libpng16.a
+      - name: Test the complete installed Python suite under software OpenGL
+        run: xvfb-run -a python scripts/ci_python_suite.py --output build/ci-python
+      - name: Check installed dependency inventory
+        run: python scripts/check_licenses.py --installed --extras io,test --desktop
+      - name: Run pipeline example
+        run: python examples/pipeline.py
+      - name: Retain complete Python results and fixture-contract inventory
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-python-${{ matrix.python }}
+          path: |
+            build/ci-python/receipt.json
+            build/ci-python/pytest.xml
+          if-no-files-found: warn
   python:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [windows-latest, macos-latest]
         python: ['3.10', '3.12']
     runs-on: ${{ matrix.os }}
     timeout-minutes: 45
