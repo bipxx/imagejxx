@@ -4,6 +4,7 @@
 #include <complex>
 #include <cstdint>
 #include <limits>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -63,6 +64,10 @@ Image add_noise(const Image&, const std::string& kind, double amount, std::uint6
 
 Image convolve(const Image&, const std::vector<double>& kernel, int kw, int kh,
                Border border = Border::Reflect, double constant = 0, bool normalize = false);
+// ImageJ's eight directional 3x3 shadows. Scalar borders replicate pixels;
+// RGB borders remain unchanged. Extent is x,y,width,height; finite sources only.
+Image shadow_imagej(const Image&, const std::string& direction = "north",
+                    std::optional<std::array<int, 4>> extent = std::nullopt);
 Image gaussian_blur(const Image&, double sigma_x, double sigma_y, Border border = Border::Reflect);
 Image rank_filter(const Image&, int radius, const std::string& operation,
                   bool disk = true, Border border = Border::Reflect, double constant = 0);

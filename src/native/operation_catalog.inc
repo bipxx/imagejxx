@@ -919,6 +919,12 @@ static std::vector<OperationSpec> make_registry() {
                          DefaultRule::Literal},
                     },
                     GeometryEffect::Preserve});
+  result.push_back({"shadow_imagej", "Directional Shadow (ImageJ)", {"Process", "Shadows"},
+      "Eight directional 3x3 ImageJ shadow filters; scalar edges replicate, RGB borders remain unchanged.",
+      {{"direction", "Direction", ParameterKind::Text, std::string("north"), std::string("north"), "text",
+        {std::string("north"), std::string("northeast"), std::string("east"), std::string("southeast"),
+         std::string("south"), std::string("southwest"), std::string("west"), std::string("northwest")},
+        false, DefaultRule::Literal, DefaultRule::Literal}}, GeometryEffect::Preserve, true, true});
   result.push_back({"sharpen",
                     "Sharpen",
                     {"Process", "Filters"},

@@ -12,7 +12,7 @@ from imagejxx.ui.commands import OPERATIONS
 
 def test_native_catalog_is_the_shared_authority():
     registry = ij.operation_registry()
-    assert len(registry) == len(OPERATIONS) == 88
+    assert len(registry) == len(OPERATIONS) == 92
     assert {spec.id for spec in registry} == set(OPERATIONS)
     exported = json.loads((Path(ij.__file__).parent / "ui/commands.json").read_text())
     assert ij.operation_catalog() == exported
@@ -34,7 +34,8 @@ def test_native_catalog_is_the_shared_authority():
     assert capabilities["rank_filter_imagej"] is True
     assert all(
         spec.plane_only
-        and spec.cancellation_inside_kernel == (spec.id == "rank_filter_imagej")
+        and spec.cancellation_inside_kernel == (spec.id in {"rank_filter_imagej", "remove_outliers_imagej",
+                                                          "top_hat_imagej", "remove_nans_imagej", "shadow_imagej"})
         for spec in registry
     )
     with pytest.raises(AttributeError):
@@ -306,11 +307,12 @@ def test_shared_imgui_operation_forms_render_typed_choices(operation, tmp_path):
     from imagejxx.ui.persistence import Preferences
 
     editor = Editor(preferences=Preferences(tmp_path / "prefs.json"))
-    editor.add_document(Document(np.zeros((16, 16), np.uint16)))
+    dtype = np.float32 if operation == "remove_nans_imagej" else np.uint16
+    editor.add_document(Document(np.zeros((16, 16), dtype)))
     before = editor.live_document().info
     editor.action("show_operation", operation=operation)
     info = editor.render_headless()
-    if operation in ("gaussian_blur_imagej", "rank_filter_imagej"):
+    if operation in ("gaussian_blur_imagej", "rank_filter_imagej", "remove_outliers_imagej", "top_hat_imagej", "remove_nans_imagej"):
         assert not info["operation_dialog"]["open"]
         if operation == "gaussian_blur_imagej":
             panel = info["gaussian_panel"]
@@ -321,10 +323,21 @@ def test_shared_imgui_operation_forms_render_typed_choices(operation, tmp_path):
         else:
             panel = info["rank_panel"]
             assert not info["gaussian_panel"]["open"]
-            assert panel["method"] == "median"
             assert panel["radius"] == 2 and panel["radius_text"] == "2"
             assert not panel["new_document"] and panel["radius_units"] == "pixels"
-            controls = ("method", "radius", "new_document", "preview", "ok", "cancel")
+            controls = ("radius", "new_document", "preview", "ok", "cancel")
+            if operation == "rank_filter_imagej":
+                assert panel["method"] == "median" and panel["preset"] is None
+                controls += ("method",)
+            else:
+                assert panel["preset"] == {"top_hat_imagej": "top_hat", "remove_outliers_imagej": "remove_outliers",
+                                           "remove_nans_imagej": "remove_nans"}[operation]
+                if operation == "top_hat_imagej":
+                    assert not panel["light_background"] and not panel["dont_subtract"]
+                    controls += ("light_background", "dont_subtract")
+                elif operation == "remove_outliers_imagej":
+                    assert panel["threshold_text"] == "50" and panel["which_outliers"] == "bright"
+                    controls += ("threshold", "which")
         assert panel["open"] and panel["visible"] and panel["draft_valid"]
         assert not panel["error"] and not panel["preview_error"]
         assert not panel["preview"] and not panel["preview_requested"]
@@ -334,7 +347,7 @@ def test_shared_imgui_operation_forms_render_typed_choices(operation, tmp_path):
             assert control["enabled"] and control["id"] != 0
             point, rect = panel["controls"][name], panel["control_rects"][name]
             assert rect[0] <= point[0] <= rect[2] and rect[1] <= point[1] <= rect[3]
-        np.testing.assert_array_equal(editor.document.frame, np.zeros((16, 16), np.uint16))
+        np.testing.assert_array_equal(editor.document.frame, np.zeros((16, 16), dtype))
     else:
         dialog = info["operation_dialog"]
         assert dialog["id"] == operation and dialog["open"]

@@ -23,14 +23,14 @@ int main() {
     std::set<std::string> ids;
     const std::set<std::string> cancellable{
         "rank_filter_imagej", "remove_outliers_imagej", "top_hat_imagej",
-        "remove_nans_imagej"};
+        "remove_nans_imagej", "shadow_imagej"};
     for (const auto &entry : operation_registry()) {
       check(ids.insert(entry.id).second, "Unique operation IDs");
       check(entry.planeOnly && entry.cancellationInsideKernel ==
                                   (cancellable.count(entry.id) != 0),
             "Accurate current execution capabilities");
     }
-    check(ids.size() == 91 && ids.count("gaussian_blur") == 1 &&
+    check(ids.size() == 92 && ids.count("gaussian_blur") == 1 &&
               ids.count("gaussian_blur_imagej") == 1 &&
               ids.count("rank_filter_imagej") == 1 &&
               ids.count("remove_outliers_imagej") == 1 &&

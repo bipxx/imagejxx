@@ -1265,6 +1265,34 @@
     ]
   },
   {
+    "id": "shadow_imagej",
+    "title": "Directional Shadow (ImageJ)",
+    "menu": [
+      "Process",
+      "Shadows"
+    ],
+    "description": "Eight directional 3x3 ImageJ shadow filters; scalar edges replicate, RGB borders remain unchanged.",
+    "parameters": [
+      {
+        "name": "direction",
+        "label": "Direction",
+        "default": "north",
+        "kind": "text",
+        "choices": [
+          "north",
+          "northeast",
+          "east",
+          "southeast",
+          "south",
+          "southwest",
+          "west",
+          "northwest"
+        ],
+        "optional": false
+      }
+    ]
+  },
+  {
     "id": "sharpen",
     "title": "Sharpen",
     "menu": [

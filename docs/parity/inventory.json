@@ -2013,9 +2013,26 @@
     },
     {
       "evidence": {
-        "documentation": [],
-        "implementation": [],
-        "tests": []
+        "documentation": [
+          "docs/SHADOWS.md",
+          "docs/parity/shadows-commercial-source-review-001.json",
+          "docs/parity/reviews/p09g-shadows001.json"
+        ],
+        "implementation": [
+          "src/native/shadow.cpp",
+          "include/imagejxx/image.hpp",
+          "src/native/operation_catalog.inc",
+          "src/native/execution.cpp",
+          "src/native/bindings.cpp",
+          "src/imagejxx/__init__.py",
+          "src/desktop/window.cpp"
+        ],
+        "tests": [
+          "tests/python/test_shadow_imagej.py",
+          "tests/python/test_shadow_ui.py",
+          "examples/cpp/shadows.cpp",
+          "tests/fixtures/shadows-imagej154r.json"
+        ]
       },
       "id": "G055",
       "milestones": [
@@ -2023,11 +2040,15 @@
       ],
       "name": "Directional shadow filters",
       "remaining": [
-        "Dedicated direction presets and preview; retain custom-kernel editing"
+        "Animated Demo and direct direction menu shortcuts.",
+        "Scientific desktop adapter, broader irregular ROI/display coverage and nonfinite IEEE profile.",
+        "Full option-level registration and platform/accessibility acceptance; broader ImageJ/Fiji feature families remain open."
       ],
       "required_work": "Dedicated direction presets and preview; retain custom-kernel editing",
-      "status": "open",
-      "verification": []
+      "status": "in_progress",
+      "verification": [
+        "p09g.shadows.functional.001"
+      ]
     },
     {
       "evidence": {
@@ -179873,6 +179894,37 @@
         "total": 960
       },
       "scope": "Plane-native annotations: Native14, source960 and installed960 Python checks (611 regressions +349 interaction/recovery),174 cases per actual host including installed standalone, installed public SDK, matching wheel107/SDK63/standalone25. Regular T1/C1 busy only; no scientific-busy, OS/live-backend missing-release, formal/reference/platform/family acceptance."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-21",
+      "id": "p09g.shadows.functional.001",
+      "identity": {
+        "qualification": {
+          "bytes": 7149,
+          "path": "docs/parity/reviews/p09g-shadows001.json",
+          "sha256": "49893559f7374725dd1ec94b8f4c464cca3e4325d532cd6bc17972e53ae8b1de"
+        }
+      },
+      "native": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 22,
+        "report": "build/p09g-shadows001/windows-build004/native.xml",
+        "skipped": 0,
+        "total": 22
+      },
+      "platform": "Windows and Linux; source and component-installed Python; standalone and Python shared Dear ImGui hosts; installed SDK",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 3295,
+        "report": "build/p09g-shadows001/windows-install002/pytest.xml",
+        "skipped": 0,
+        "total": 3295
+      },
+      "scope": "3295 selected cases per profile, 64 actual UI observations over 4864 frames, 1920 pinned reference rows; excludes full-suite and family acceptance."
     }
   ]
 }

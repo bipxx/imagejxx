@@ -11535,6 +11535,11 @@ Json Window::Impl::headlessReport() {
         {"preview_point",
          {dialog.previewPoint.x, dialog.previewPoint.y}},
         {"has_preview", dialog.preview.has_value()}};
+    if (dialog.preview && dialog.preview->pixels.size() <= 1024) {
+      const auto &image = *dialog.preview;
+      result["operation_dialog"]["preview_image"] = {{"width",image.width},
+          {"height",image.height},{"channels",image.channels},{"pixels",image.pixels}};
+    }
     if (!owner.documents_.empty()) {
       result["selection"] = get(owner.document()->state().metadata, "selection");
       result["view"] = owner.document()->viewJson();

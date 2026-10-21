@@ -692,6 +692,11 @@ OperationParameters validate_operation(const std::string &id,
     else if (id == "top_hat_imagej") validate_imagej_top_hat_parameters(result);
     else validate_imagej_outlier_parameters(result);
   }
+  if (id == "shadow_imagej") {
+    if (!((context.type == PixelType::UInt8 && (context.samples == 1 || context.samples == 3)) ||
+          ((context.type == PixelType::UInt16 || context.type == PixelType::Float32) && context.samples == 1)))
+      throw std::invalid_argument("ImageJ shadows support UInt8 gray/RGB, UInt16 gray and Float32 gray");
+  }
   if (id == "gaussian_blur_imagej") {
     if (!((context.type == PixelType::UInt8 && (context.samples == 1 || context.samples == 3)) ||
           ((context.type == PixelType::UInt16 || context.type == PixelType::Float32) && context.samples == 1)))

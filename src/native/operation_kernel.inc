@@ -93,6 +93,8 @@ Image execute_kernel(const std::string &id, const Image &image,
   }
   if (id == "smooth")
     return box_blur(image, i("radius", 1), border);
+  if (id == "shadow_imagej")
+    return shadow_imagej(image, s("direction", "north"));
   if (id == "sharpen")
     return convolve(image, {-1, -1, -1, -1, 12, -1, -1, -1, -1}, 3, 3, border,
                     0, true);

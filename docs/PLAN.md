@@ -1,5 +1,22 @@
 # ImageJ and Fiji gap closure plan
 
+**Directional shadows checkpoint, 2026-10-21 (work in progress):** eight
+ImageJ direction presets now run through the C++ core, NumPy API and ordinary
+shared-ImGui Process/Shadows controls with Preview, Cancel, Apply and Undo/Redo.
+The bounded extent adapter avoids evaluating pixels outside selected bounds;
+custom convolution remains available. The pinned public-domain ImageJ reference
+supplies 1,920 cases, reproduced identically, with exact binary32 comparison.
+All four Windows/Linux source/installed profiles pass the same 3,295 selected
+cases without skips. Both installed SDKs pass 45 examples; 64 actual UI
+observations cover 4,864 frames. Component-installed Python packages also retain
+the native UI catalog. See [the guide](SHADOWS.md) and
+[the scoped receipt](parity/reviews/p09g-shadows001.json).
+Animated Demo, direct direction menus, scientific desktop support, broader ROI
+and nonfinite profiles, and full platform/accessibility acceptance remain open.
+The full hosted Python suite has unresolved failures; these local gates do not
+claim hosted acceptance. All99 is now 43 in progress / 56 open / 0 complete;
+all 96 format variants remain partial.
+
 **Saved-area modifier checkpoint, 2026-10-21 (work in progress):** ordinary XY
 now has explicit actual-input checks for Ctrl-centered corner resize,
 Shift aspect-preserving corner resize, Shift rotation snapping (22 degrees to
@@ -2015,7 +2032,7 @@ readiness is owned solely by the current final receipt described above.
 | G001–G012 Configuration and defaults | 12 / 0 | Consumed preferences for appearance, tools, conversion, binary processing, measurements, files and resources; portable configuration, reset/import/export, shortcuts and startup behavior. | M1, M2 and each setting's consuming feature |
 | G013–G025 Selections and pixel editing | 7 / 6 | Complete tools, move/resize/rotate and vertex editing, numeric properties, Boolean regions, fitting/conversion, ROI manager/positions/interchange, movable paste, drawing, text and overlays. | M2, M4–M8 as assigned below |
 | G026–G041 Slicing, axes and viewers | 6 / 10 | Linked calibrated XY/XZ/YZ input, axis-aligned/oblique/curved reslice, stack organization, projection/montage/animation, C/Z/T and composites, profiles, 3D and large-source viewing. | M1, M3, M5, M7–M10 |
-| G042–G065 Processing and display | 13 / 11 | Every 2D/3D filter and threshold option; specialized previews and targets, background/contrast, binary/maxima/frequency/equations, display/LUT/type conversion, geometry, calculator and zoom/pan. | M1–M6, M8 as assigned below |
+| G042–G065 Processing and display | 14 / 10 | Every 2D/3D filter and threshold option; specialized previews and targets, background/contrast, binary/maxima/frequency/equations, display/LUT/type conversion, geometry, calculator and zoom/pan. | M1–M6, M8 as assigned below |
 | G066–G073 Analysis and annotations | 1 / 7 | Configurable calibrated measurements and particles, histograms/profiles, linked results/plots, annotation utilities and analysis tools. | M1, M3–M7 |
 | G074–G089 Files and application workflows | 3 / 13 | Format/variant and metadata coverage, scientific/sequence I/O, interchange, recovery and printing; menus/windows/accessibility, recording/batch/macros/extensions, jobs and Python control. | M1–M3, M4–M6, M8–M10, M12 |
 | G090–G099 Highlighted Fiji families | 0 / 10 | BigDataViewer, 3D Viewer, MorphoLibJ, registration, stitching, deconvolution, TrackMate, AnalyzeSkeleton, Coloc 2 and interactive/trainable segmentation, including their complete eligible options and UI workflows. | M9–M11 |

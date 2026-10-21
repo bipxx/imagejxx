@@ -332,6 +332,30 @@ PYBIND11_MODULE(_native, m) {
         return image_call(a, [&](const Image& image) { return gaussian_blur_imagej(image, sx, sy, rectangle); });
     }, py::arg("image"), py::arg("sigma_x") = 2.0, py::arg("sigma_y") = 2.0,
        py::arg("extent") = py::none());
+    m.def("shadow_imagej", [](const py::array& a, const std::string& direction, const py::object& extent) {
+        std::optional<std::array<int, 4>> rectangle;
+        if (!extent.is_none()) {
+            if (!py::isinstance<py::sequence>(extent) || py::len(extent) != 4)
+                throw std::invalid_argument("Shadow extent must contain x, y, width and height");
+            auto sequence = py::reinterpret_borrow<py::sequence>(extent);
+            const auto numpy_bool = py::module_::import("numpy").attr("bool_");
+            std::array<int, 4> coordinates{};
+            for (std::size_t index = 0; index < coordinates.size(); ++index) {
+                auto item = sequence[static_cast<py::ssize_t>(index)];
+                if (PyBool_Check(item.ptr()) || py::isinstance(item, numpy_bool) || !PyIndex_Check(item.ptr()))
+                    throw std::invalid_argument("Shadow extent coordinates must be integers");
+                auto integer = py::reinterpret_steal<py::object>(PyNumber_Index(item.ptr()));
+                if (!integer) throw py::error_already_set();
+                auto value = py::cast<long long>(integer);
+                if (value < std::numeric_limits<int>::min() || value > std::numeric_limits<int>::max())
+                    throw std::invalid_argument("Shadow extent coordinates must fit in int32");
+                coordinates[index] = static_cast<int>(value);
+            }
+            rectangle = coordinates;
+        }
+        return image_call(a, [&](const Image& image) { return shadow_imagej(image, direction, rectangle); });
+    }, py::arg("image"), py::arg("direction") = "north",
+       py::arg("extent") = py::none());
     m.def("box_blur", [](const py::array& a, int r, const std::string& border) { auto b = parse_border(border); return image_call(a, [&](const Image& i) { return box_blur(i, r, b); }); });
     m.def("rank_filter", [](const py::array& a, int r, const std::string& op, bool disk, const std::string& border, double constant) { auto b = parse_border(border); return image_call(a, [&](const Image& i) { return rank_filter(i, r, op, disk, b, constant); }); });
     m.def("sobel", [](const py::array& a, const std::string& border) { auto b = parse_border(border); return image_call(a, [&](const Image& i) { return sobel(i, b); }); });

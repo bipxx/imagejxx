@@ -1,0 +1,212 @@
+{
+  "state": "qualified_increment",
+  "objective_complete": false,
+  "scope": "G055 finite directional shadow kernel/API, ordinary shared-ImGui presets and scoped dataset execution",
+  "all99": {
+    "in_progress": 43,
+    "open": 56,
+    "complete": 0
+  },
+  "format_variants": "96 partial",
+  "implementation": [
+    "Eight correlation presets, scalar replicated edges, RGB retained borders, finite Float32 ordered arithmetic, typed saturation and bounded extents.",
+    "Registered operation, C++/NumPy APIs and Process/Shadows direction/Preview/Cancel/Apply controls; original custom Convolve remains.",
+    "Native executor limits shadow computation to mask bounds, preventing unrelated finite-output overflow from rejecting a selected-area edit.",
+    "Component-installed Python packages now retain the native UI catalog JSON."
+  ],
+  "reference": {
+    "imagej_version": "1.54r",
+    "imagej_commit": "62db90a269cccc1ac79f658e4602043214ed055b",
+    "cases": 1920,
+    "upstream_error_cases": 96,
+    "float_comparison": "Exact binary32 words",
+    "reproduced_fixture_identically": true,
+    "one_column_safe_row_reference_checks": 32,
+    "commercial_review": "docs/parity/shadows-commercial-source-review-001.json"
+  },
+  "tests": {
+    "cases_per_profile": 3295,
+    "profiles": [
+      "windows-python003",
+      "windows-install002",
+      "linux-python-source002",
+      "linux-python-installed002"
+    ],
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "identical_case_ids": true,
+    "scope": "Shadow corpus, layout/extent/error/ROI/target/history controls and existing operation/execution/job regressions; not the complete Python suite."
+  },
+  "native": {
+    "windows_groups": 22,
+    "linux_groups": 6
+  },
+  "sdk": {
+    "windows_examples": 45,
+    "linux_examples": 45,
+    "all_passed": true
+  },
+  "products": {
+    "public_headers": 66,
+    "python_modules": 12,
+    "native_catalog_operations": 92,
+    "source_and_installed_bytes_match": true,
+    "java_or_qt_assets": false
+  },
+  "actual_ui": {
+    "observations": 64,
+    "frames": 4864,
+    "directions": [
+      "north",
+      "northeast",
+      "east",
+      "southeast",
+      "south",
+      "southwest",
+      "west",
+      "northwest"
+    ],
+    "hosts": [
+      "imgui_cpp",
+      "imgui_python"
+    ],
+    "platforms": [
+      "Windows",
+      "Linux"
+    ],
+    "profiles": [
+      "source",
+      "installed"
+    ],
+    "os_input_or_gpu_claim": false
+  },
+  "ci": {
+    "cpp_observation_cases": 95,
+    "hosted_baseline_run": 39540986889,
+    "hosted_python312": {
+      "passed": 31065,
+      "failed": 1558,
+      "errors": 491,
+      "skipped": 24
+    },
+    "full_acceptance": false
+  },
+  "remaining": [
+    "Animated Shadows Demo and direct direction menu shortcuts.",
+    "Scientific desktop integration; IEEE nonfinite-source policies and broader mask/display contexts.",
+    "Full platform/DPI/accessibility, performance and complete ImageJ/Fiji-family acceptance.",
+    "Portable reference/report contracts and remaining full hosted-suite failures; reviewed Windows/macOS feature profiles."
+  ],
+  "sources": [
+    {
+      "path": "src/native/shadow.cpp",
+      "bytes": 5141,
+      "sha256": "3ef595bd0d3ac8e5a212a7db555e7335e124ca8dc5910e840c43ce9e3254a4ec"
+    },
+    {
+      "path": "include/imagejxx/image.hpp",
+      "bytes": 8227,
+      "sha256": "34380ef8550224c86169714208a8ad78b48f51def83e5c3cd0bb97b0fe1791fa"
+    },
+    {
+      "path": "src/native/execution.cpp",
+      "bytes": 124399,
+      "sha256": "5c492127635af0c6fad718859e6ffe643e1dad84c494c86bfe7b363413a1471c"
+    },
+    {
+      "path": "src/native/operation_catalog.inc",
+      "bytes": 85663,
+      "sha256": "53cec9ca602b835ff68d8ca58c0758a18cae079b17c304f8e261ae4b228cf9c1"
+    },
+    {
+      "path": "src/native/operation_kernel.inc",
+      "bytes": 13593,
+      "sha256": "2d6ced9d13e6e8522c216965b0097e79e4d5a36f353c78cbadbb12a8b95002df"
+    },
+    {
+      "path": "src/native/operations.cpp",
+      "bytes": 40678,
+      "sha256": "44e0d0f73165f3cbcb28c6b71e5b89556cfaf01eb75ad9c02c01b3e1f302f659"
+    },
+    {
+      "path": "src/native/bindings.cpp",
+      "bytes": 34806,
+      "sha256": "3113702a7ae7bce24ee57f662f24f431ef3c33251d54d1a588588ee2a56bb27c"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 69011,
+      "sha256": "1fbf828776eb72aa94113a917ff4e94c5c54ca3cea9956912a17132def221c16"
+    },
+    {
+      "path": "src/imagejxx/ui/commands.json",
+      "bytes": 64096,
+      "sha256": "1c1a401e179079481028ec1f6493e9574f8a919ee8343304736acc19c1f4c6bb"
+    },
+    {
+      "path": "src/desktop/shadow_ui_probe.cpp",
+      "bytes": 5252,
+      "sha256": "eee04273d8e866864c189c8c1ab539fa6b915336ff29cdec0265f58be075577c"
+    },
+    {
+      "path": "src/desktop/shadow_ui_probe.hpp",
+      "bytes": 222,
+      "sha256": "fa54815b172481d0a5a31f3b8f5520aaed82d9ac70ce5ca6c2409fdb55ebde91"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 636767,
+      "sha256": "f99e20598ef9667f14a0fc1fd7bc45d9f212225515235543ce68e8c903025a8f"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 50337,
+      "sha256": "d00fd4d15eb8506865528ccb1d3c284961bb9b108182662d4db55a2bcba1655e"
+    },
+    {
+      "path": "src/desktop/main.cpp",
+      "bytes": 45503,
+      "sha256": "7d216822f4d0fd45b27e8caeab213aa623c3c862fb1f679b52ecc3bc794471d3"
+    },
+    {
+      "path": "tests/python/test_shadow_imagej.py",
+      "bytes": 6509,
+      "sha256": "042d4317e253f1880acc4c594821217003529c1e2cf3dc98bfffeb5de2aca0d8"
+    },
+    {
+      "path": "tests/python/test_shadow_ui.py",
+      "bytes": 2920,
+      "sha256": "dee71e8742d5bccb8f70ae111d93de2f8d834aabd84cef236474dbf05b48f47d"
+    },
+    {
+      "path": "examples/cpp/shadows.cpp",
+      "bytes": 2538,
+      "sha256": "0fd95c7304bb9d7752bc363d5e9bc39e91b0705abbea3111b81bc5edf9366287"
+    },
+    {
+      "path": "scripts/capture_shadows_reference.py",
+      "bytes": 7176,
+      "sha256": "5ae168661ce2af42278e64ba656692efb287add2de7a980aaffd790ca8dbdb4e"
+    }
+  ],
+  "receipts": "build/p09g-shadows001",
+  "cleanup": {
+    "removed_bytes": 987731449,
+    "removed_files": 6243,
+    "crc_and_every_member_sha256_verified": true,
+    "archives": {
+      "windows": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09g-shadows001\\windows-scratch001.zip",
+        "bytes": 100445964,
+        "sha256": "28b0706e6bdc47c2ca16ec3b04f4d5e81bcf72fb061ee5240d89c9956aa866c8"
+      },
+      "linux": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09g-shadows001/linux-scratch001.zip",
+        "bytes": 182493430,
+        "sha256": "aaed268c4e9cc3ce46bb3b1817e7626f718b16b516b54548de5764da30b01b31"
+      }
+    },
+    "preserved": "Final Windows windows-install002 SDK/Python prefixes, Linux install-p09g002, useful native source/build caches, authoritative hosted baseline and all earlier qualified installs/dependency prefixes"
+  }
+}

@@ -12,7 +12,7 @@ include(GNUInstallDirs)
 include(cmake/StaticCodecSymbols.cmake)
 
 add_library(imagejxx_core STATIC
-  src/native/image.cpp src/native/filters.cpp src/native/gaussian.cpp src/native/gaussian_command.cpp src/native/rank.cpp src/native/rank_command.cpp src/native/axis_extraction_command.cpp src/native/transforms.cpp
+  src/native/image.cpp src/native/filters.cpp src/native/shadow.cpp src/native/gaussian.cpp src/native/gaussian_command.cpp src/native/rank.cpp src/native/rank_command.cpp src/native/axis_extraction_command.cpp src/native/transforms.cpp
   src/native/segmentation.cpp src/native/analysis.cpp src/native/frequency.cpp src/native/binary.cpp src/native/conversion.cpp
   src/native/dataset.cpp src/native/settings.cpp src/native/preferences.cpp src/native/document.cpp src/native/axis_remap.cpp src/native/z_subset_command.cpp src/native/manual_threshold.cpp src/native/manual_threshold_command.cpp src/native/selection_edit.cpp src/native/selection_boolean.cpp src/native/roi_style.cpp src/native/application.cpp src/native/metadata.cpp src/native/session_metadata.cpp src/native/operations.cpp src/native/targets.cpp src/native/execution.cpp src/native/jobs.cpp src/native/kernel_control.cpp)
 add_library(imagejxx::core ALIAS imagejxx_core)
@@ -84,12 +84,12 @@ target_include_directories(imagejxx_core SYSTEM PRIVATE
 if(MSVC)
   target_compile_options(imagejxx_core PRIVATE /W4 $<$<COMPILE_LANGUAGE:CXX>:/permissive-> /utf-8)
   set_source_files_properties(${IMAGEJXX_PRIVATE_ZLIB_SOURCES} PROPERTIES COMPILE_OPTIONS /w)
-    set_source_files_properties(src/native/gaussian.cpp src/native/rank.cpp src/native/color_components.cpp src/native/indexed_color.cpp PROPERTIES COMPILE_OPTIONS /fp:strict)
+    set_source_files_properties(src/native/shadow.cpp src/native/gaussian.cpp src/native/rank.cpp src/native/color_components.cpp src/native/indexed_color.cpp PROPERTIES COMPILE_OPTIONS /fp:strict)
 else()
   target_compile_options(imagejxx_core PRIVATE -Wall -Wextra -Wpedantic)
     set_source_files_properties(src/native/color_components.cpp src/native/indexed_color.cpp PROPERTIES COMPILE_OPTIONS "-ffp-contract=off;-fno-fast-math")
   if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    set_source_files_properties(src/native/gaussian.cpp src/native/rank.cpp PROPERTIES COMPILE_OPTIONS "-ffp-contract=off;-fno-fast-math")
+    set_source_files_properties(src/native/shadow.cpp src/native/gaussian.cpp src/native/rank.cpp PROPERTIES COMPILE_OPTIONS "-ffp-contract=off;-fno-fast-math")
   endif()
 endif()
 
@@ -144,6 +144,7 @@ if(IMAGEJXX_BUILD_PYTHON)
   function(imagejxx_install_python_component component)
     install(FILES $<TARGET_FILE:_native> DESTINATION imagejxx COMPONENT ${component})
     install(DIRECTORY src/imagejxx/ DESTINATION imagejxx COMPONENT ${component} FILES_MATCHING PATTERN "*.py")
+    install(FILES src/imagejxx/ui/commands.json DESTINATION imagejxx/ui COMPONENT ${component})
     install(FILES LICENSE THIRD_PARTY_NOTICES.md DESTINATION imagejxx/licenses COMPONENT ${component})
     install(DIRECTORY licenses/ DESTINATION imagejxx/licenses COMPONENT ${component})
   endfunction()
@@ -761,6 +762,9 @@ if(BUILD_TESTING)
   add_executable(imagejxx_application_tests tests/native/test_application.cpp)
   target_link_libraries(imagejxx_application_tests PRIVATE imagejxx::core)
   add_test(NAME native_application COMMAND imagejxx_application_tests)
+  add_executable(imagejxx_shadow_tests examples/cpp/shadows.cpp)
+  target_link_libraries(imagejxx_shadow_tests PRIVATE imagejxx::core)
+  add_test(NAME native_shadow_imagej COMMAND imagejxx_shadow_tests)
   add_executable(imagejxx_operations_tests tests/native/test_operations.cpp)
   target_link_libraries(imagejxx_operations_tests PRIVATE imagejxx::core)
   add_test(NAME native_operations COMMAND imagejxx_operations_tests)
@@ -982,6 +986,7 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     src/desktop/roi_import_replacement_editor.cpp
     src/desktop/roi_display_replacement_editor.cpp
     src/desktop/roi_import_replacement_ui_probe.cpp
+    src/desktop/shadow_ui_probe.cpp
     src/desktop/saved_roi_budget_ui_probe.cpp
     src/desktop/rounded_legacy_ui_probe.cpp
     src/desktop/roi_import_rebind_ui_probe.cpp

@@ -1983,6 +1983,25 @@ PreparedOperation prepare_operation(const std::string &operation,
             {},active_plane.t,active_plane.c,active_plane.z,{}, {},control).range;
       auto input = source.data().dataset.plane(p);
       auto result = [&]() {
+        if (operation == "shadow_imagej") {
+          std::optional<std::array<int,4>> extent;
+          if (mask && !mask_full) {
+            if (mask->width != input->width || mask->height != input->height || mask->channels != 1)
+              throw std::invalid_argument("Shadow write mask does not match the source");
+            int left=input->width,top=input->height,right=0,bottom=0;
+            for (std::size_t index=0;index<mask->pixels.size();++index) {
+              if ((index & 1023)==0) checkpoint(control);
+              if (mask->pixels[index]==0) continue;
+              const int x=static_cast<int>(index % input->width),y=static_cast<int>(index / input->width);
+              left=std::min(left,x);top=std::min(top,y);
+              right=std::max(right,x+1);bottom=std::max(bottom,y+1);
+            }
+            extent=right>left && bottom>top ? std::array<int,4>{left,top,right-left,bottom-top}
+                                           : std::array<int,4>{0,0,0,0};
+          }
+          return OperationResult{shadow_imagej(*input,std::get<std::string>(normalized.at("direction")),extent),
+                                 std::nullopt,false};
+        }
         if(indexed_type)return detail::execute_indexed_type(*input,*indexed_type,normalized);
         if(top_hat) {
           auto filtered=detail::top_hat_pixels_imagej(*input,

@@ -43,6 +43,8 @@ def cases():
          ["finite-axis", "finite-rotated", "ieee-axis", "ieee-rotated"]),
         ("saved-modifiers", "--saved-roi-pointer-budget-ui-case",
          [case + "-modifiers" for case in ["finite-axis", "finite-rotated", "ieee-axis", "ieee-rotated"]]),
+        ("shadows", "--shadow-ui-case",
+         ["north", "northeast", "east", "southeast", "south", "southwest", "west", "northwest"]),
     ]
     for group, flag, variants in groups:
         for variant in variants:
@@ -62,6 +64,7 @@ def reader_environment(output):
         "IMAGEJXX_SAVED_BUDGET_CPP_BASE": reports / "saved-budget",
         "IMAGEJXX_SAVED_POINTER_CPP_BASE": reports / "saved-pointer",
         "IMAGEJXX_SAVED_MODIFIERS_CPP_BASE": reports / "saved-modifiers",
+        "IMAGEJXX_SHADOW_CPP_BASE": reports / "shadows",
         "IMAGEJXX_VARIANCE_CPP_REPORT": reports / "rank/R14/case.json",
     }
     for name in ("NONBYTE", "THRESHOLD", "CHANNEL_VARIANCE", "DESPECKLE",

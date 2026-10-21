@@ -2,11 +2,13 @@
 
 Native C++17 image editing and scientific processing with a NumPy Python interface.
 Includes a standalone **Dear ImGui C++ desktop** and an optional **Python interface
-to the same native UI**. Both expose 86 native editing commands and broad
+to the same native UI**. Both expose 92 native image operations and broad
 ImageJ-style desktop workflows. [Desktop coverage and remaining parity work](docs/DESKTOP.md).
 The [editor completeness audit](docs/DESKTOP.md#editor-completeness-audit-2026-10-09)
 tracks configuration, selection editing, slicing, linked XY/XZ/YZ views,
 C/Z/T hyperstacks, 3D viewing and the broader Fiji workflow backlog.
+The [directional shadow guide](docs/SHADOWS.md) covers the eight native presets,
+shared desktop controls, supported pixel layouts and remaining family work.
 The [gap closure plan](docs/PLAN.md) assigns all 99 audited capability areas to
 milestones, dependencies and acceptance checks. Its [current gap summary](docs/PLAN.md#current-gap-summary)
 prioritizes configuration, editable selections, filtering and linked XYZ/slicing

@@ -842,6 +842,15 @@ def convolve(
     )
 
 
+def shadow_imagej(image, direction: str = "north", *, extent=None) -> np.ndarray:
+    """ImageJ directional shadow; extent is (x, y, width, height).
+
+    UInt8 gray/RGB, UInt16 gray and finite Float32 gray are supported. Scalar
+    edges replicate pixels; RGB outer borders remain unchanged.
+    """
+    return _native.shadow_imagej(_array(image), direction, extent)
+
+
 def gaussian_blur(image, sigma=1, *, border: str = "reflect") -> np.ndarray:
     """Separable Gaussian with radius ceil(4*sigma); pairs are (sigma_y,sigma_x)."""
     sy, sx = _pair(sigma, "sigma")
