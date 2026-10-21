@@ -1,0 +1,192 @@
+{
+  "state": "qualified_functional_increment",
+  "objective_complete": false,
+  "scope": "G037 inclusive animation ranges, stride, reverse and ping-pong through a shared C++ PlaybackSequence and Dear ImGui C++/Python hosts.",
+  "semantics": "API indices are zero-based; UI First/Last are one-based inclusive. Non-aligned Last selects the last grid position below it. Off-grid positions enter the range in the chosen direction. Ping-pong does not repeat endpoints. Starting requires at least two selected positions. Options pause playback and refuse source, pixel/metadata or axis changes.",
+  "tests": {
+    "windows": {
+      "passed": 2184,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "observations": 374,
+      "frames": 24310,
+      "animation_observations": 40,
+      "animation_frames": 1908,
+      "options_guard_reports": 3,
+      "native_preferences": "passed",
+      "native_playback": "passed",
+      "installed_sdk_playback_example": "passed (only the added example was exercised)",
+      "transport_runner_checks": 15,
+      "installed_headers": 67,
+      "installed_python_modules": 12,
+      "catalog_operations": 92,
+      "junit": {
+        "path": "build/p09u-animation-ranges001/windows-python005/pytest.xml",
+        "bytes": 341747,
+        "sha256": "e570db375e03756dcbe005630d0aed27d34c8fd15f30aecf36324ee94115b7f4"
+      },
+      "compact_evidence": {
+        "path": "build/p09u-animation-ranges001/windows-evidence001.json",
+        "bytes": 418785,
+        "sha256": "8260be3c19cce7df05eca36b1481900937a0a9436ba7c8729330a027b0bac0a5"
+      },
+      "product_audit": {
+        "path": "build/p09u-animation-ranges001/windows-products001.json",
+        "bytes": 12460,
+        "sha256": "783aa4cd1af849cc2eb5f7c17b2702adca64e51300204ca7dbb93e688c1332f7"
+      },
+      "sdk": {
+        "path": "build/p09u-animation-ranges001/windows-sdk001/receipt.json",
+        "bytes": 521,
+        "sha256": "c8f16489b86146c62f1ce67a5f157ebdacc6b1277796341c9a7057d25104ca18"
+      },
+      "cleanup": {
+        "removed_bytes": 4639458322,
+        "removed_files": 22609,
+        "archive": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09u-animation-ranges001\\windows-scratch001.zip",
+          "bytes": 817428488,
+          "sha256": "4fc72b21a5616a53fdd3567ffe1e87bfaa3eb75541a64e53453a6e5b196f028d"
+        },
+        "receipt": {
+          "path": "build/p09u-animation-ranges001/windows-cleanup001.json",
+          "bytes": 8710450,
+          "sha256": "3ef42b41335ec5d5bdf5e20372e1e41a564e19302f380497d660e2cbf3d1b3cb"
+        }
+      }
+    },
+    "linux": {
+      "passed": 2184,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "observations": 374,
+      "frames": 24310,
+      "animation_observations": 40,
+      "animation_frames": 1908,
+      "options_guard_reports": 3,
+      "native_preferences": "passed",
+      "native_playback": "passed",
+      "installed_sdk_playback_example": "passed (only the added example was exercised)",
+      "transport_runner_checks": 15,
+      "installed_headers": 67,
+      "installed_python_modules": 12,
+      "catalog_operations": 92,
+      "junit": {
+        "path": "build/p09u-animation-ranges001/linux-python005/pytest.xml",
+        "bytes": 341747,
+        "sha256": "72180afcb118a5205491071fe0ad58160e7e441cbb9d64a71616ea0cdd3ac1c0"
+      },
+      "compact_evidence": {
+        "path": "build/p09u-animation-ranges001/linux-evidence001.json",
+        "bytes": 406166,
+        "sha256": "4ecf11784695a5dc30c088300da6d2c562344f9decf0439a6cc5dd98ae214102"
+      },
+      "product_audit": {
+        "path": "build/p09u-animation-ranges001/linux-products001.json",
+        "bytes": 12063,
+        "sha256": "129d5e8390e71b65e51739466f65db40c9de5a00d93e5418294a0be9d8d21630"
+      },
+      "sdk": {
+        "path": "build/p09u-animation-ranges001/linux-sdk001/receipt.json",
+        "bytes": 444,
+        "sha256": "a85b6ba85ca7779a1afd7c54a5b92d648b7a04b07a92a124b97a1df0cedb97dd"
+      },
+      "cleanup": {
+        "removed_bytes": 4758886627,
+        "removed_files": 23060,
+        "archive": {
+          "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09u-animation-ranges001/linux-scratch001.zip",
+          "bytes": 896571641,
+          "sha256": "3524c8c3e56a80650a894648e86739cb72fca6037387f272d8882405e9b60746"
+        },
+        "receipt": {
+          "path": "build/p09u-animation-ranges001/linux-cleanup001.json",
+          "bytes": 7871309,
+          "sha256": "a25aaac93d0bc83244e4d0d1bfe23ab9d9f32f0b07db5d6fa3661900d58e4bfd"
+        }
+      }
+    }
+  },
+  "source": [
+    {
+      "path": "include/imagejxx/playback.hpp",
+      "bytes": 1284,
+      "sha256": "758f93a63b34f1dfc03c70d56fd0f96ad63ead11fe4e27c543dff79df27b29d9"
+    },
+    {
+      "path": "src/native/playback.cpp",
+      "bytes": 2187,
+      "sha256": "cc41ea4d7c6c580ca0ced8992db592a9243716c9c9744c3a8566c3eba5c9ec46"
+    },
+    {
+      "path": "src/native/playback_bindings.cpp",
+      "bytes": 1753,
+      "sha256": "723857f664515122dd6cb3f3e64f9d495e3478b9112dd2052e47b3be8d769ecd"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 652907,
+      "sha256": "50b8a3deb4c2813267825c74c1608983674d2450fc570df8e95d2c91edfc874f"
+    },
+    {
+      "path": "src/desktop/animation_ui_probe.cpp",
+      "bytes": 11366,
+      "sha256": "87284a73ad950f7d29d5e5a5b1a3652a579581b89de3244639e7509db7cc5dcd"
+    },
+    {
+      "path": "tests/native/test_playback.cpp",
+      "bytes": 1615,
+      "sha256": "051322028fb04125c74435af821039394a87c80c38bef188f11496f4dbbe023a"
+    },
+    {
+      "path": "tests/python/test_playback.py",
+      "bytes": 2965,
+      "sha256": "ab7cb3c0ba32d4eb5660ac9a1485cfe7c262d7fd388ae0bf68fd8833ee901aeb"
+    },
+    {
+      "path": "tests/python/test_animation_ranges_ui.py",
+      "bytes": 6681,
+      "sha256": "e3fbd72da30cb57fa8635a454d9c3104bddf3762a60be736008c20a4f31fd38d"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 29891,
+      "sha256": "009d9afd34d8fc571b961f46321d218d6185f774c0abdbabcab77cc455d7ad65"
+    }
+  ],
+  "ci": {
+    "default_launches": 1123,
+    "animation_launches": 20,
+    "prior_launches_preserved": 1116,
+    "hosted_acceptance": false
+  },
+  "commercial_scope": "No new dependencies; existing commercial desktop source inventory passes. Qt and Java remain absent from installed products.",
+  "initial_failures": [
+    "Private build helper omitted files list; corrected before compilation.",
+    "Linux build required explicit CMake configure before invoking new target.",
+    "Observer JSON brace repaired before final products.",
+    "First reader run: 100 checks with 12 failures from expecting numeric drafts parsed before OK; readers now verify actual draft text.",
+    "Second reader run: 103 checks with 3 failures because legacy headless dialog whitelist excluded animation options; enabled this dialog.",
+    "Third run stopped at first guard error-modal assertion; added two actual idle frames before reading rendered error. Original failures retained."
+  ],
+  "plan_gate": {
+    "state": "failed_preexisting",
+    "message": "Plan inventory check failed: histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed",
+    "application_header_unchanged_from_head": true
+  },
+  "remaining": [
+    "Calibrated-time playback pacing",
+    "Movie export",
+    "Full hosted and platform/UI qualification",
+    "All remaining ImageJ and commercially usable Fiji requirements"
+  ],
+  "all99": {
+    "in_progress": 44,
+    "open": 55,
+    "complete": 0
+  },
+  "format_variants": "All 96 remain partial",
+  "cleanup_removed_bytes": 9398344949
+}

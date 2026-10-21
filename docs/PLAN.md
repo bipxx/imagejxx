@@ -1,5 +1,21 @@
 # ImageJ and Fiji gap closure plan
 
+**Animation ranges checkpoint, 2026-10-21 (work in progress):** C++ and Python
+now share inclusive First/Last/Step playback with forward, reverse and ping-pong
+modes. Both Dear ImGui hosts offer Animation options; changes to source or axis
+refuse stale confirmation. Off-grid entry and non-aligned range ends have literal
+position oracles. Both installed Windows/Linux profiles pass the same 2,184
+selected checks without skips, native playback/preferences, the added installed
+SDK example and 15 transport checks per host. 748 UI observations cover 48,620
+frames, plus six refusal artifacts. Installed audits verify 67 headers, 12 Python
+modules and 92 operations. CI preserves 1,116 definitions and adds seven ranges,
+for 1,123 launches. Verified archives reclaim 9,398,344,949 scratch bytes.
+See [the scoped receipt](parity/reviews/p09u-animation-ranges001.json).
+G037 remains in progress: calibrated-time pacing, movie export and full hosted/
+platform qualification remain open. All99 stays 44 in progress / 55 open /
+0 complete; all 96 format variants remain partial. The preexisting stale Auto
+Contrast evidence gate still fails and has not been repinned.
+
 **Export capture checkpoint, 2026-10-21 (work in progress):** the hosted
 rounded-export oversized case exhausted 550 frames while its file worker was
 still active. The observer now polls every 20 ms, retaining that frame cap and

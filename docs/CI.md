@@ -65,7 +65,7 @@ The runner records these measurements and supplies both axis-range memory-check
 contracts. These values come from the independent fixture, rather than from the
 operation's working-set estimate; the readers retain their exact byte formulas.
 The runner first invokes `scripts/ci_observations.py` against the installed C++
-application. Its 1,116-launch matrix captures rank filters, rounded creation
+application. Its 1,123-launch matrix captures rank filters, rounded creation
 and saved selections, ROI import/export, saved-selection budget behavior, and
 resize/rotate/move modifiers and directional shadows. The planar selection matrix
 covers 621 creation/edit/recovery cases across XY, XZ and YZ, including every
@@ -100,10 +100,14 @@ directory; byte-identical transport copies are retained for archival. Actual
 session lifetime, input, failure recovery and resource behavior remain assertions
 of the independent reader. S07's deliberate initialization failure has an empty
 initial lifecycle list and a separately observed recovery.
-Thirteen playback captures additionally exercise ordinary Z and scientific
+Twenty playback captures additionally exercise ordinary Z and scientific
 Z/C/T controls, live FPS changes, singleton refusal, source/edit/busy guards,
 RGB samples and literal IEEE Float32 transport. Independent readers check
 positions, linked plane bindings and exact source words through both hosts.
+The seven range additions cover inclusive striding, reverse and ping-pong,
+off-grid entry, C/T ranges and atomic malformed-range refusal. The options form
+uses actual text/choice/OK gestures. Separate physical OK checks preserve
+the draft and both documents when its source, metadata or axis changes.
 The single-ROI export observer polls active file workers every 20 ms while
 retaining its 550-frame cap and 10-second worker deadline. It records actual
 poll counts and elapsed waits. Both ordinary and rounded export readers verify

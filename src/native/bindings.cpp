@@ -19,6 +19,7 @@ using namespace imagejxx;
 void bind_dataset(py::module_& module);
 void bind_float32_sources(py::module_& module);
 void bind_settings(py::module_& module);
+void bind_playback(py::module_& module);
 void bind_shortcuts(py::module_& module);
 void bind_preferences(py::module_& module);
 void bind_startup(py::module_& module);
@@ -195,6 +196,7 @@ PYBIND11_MODULE(_native, m) {
     bind_conversion(m);
     bind_shortcuts(m);
     bind_settings(m);
+    bind_playback(m);
     bind_preferences(m);
     bind_startup(m);
     bind_document(m);

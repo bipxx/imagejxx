@@ -29,6 +29,7 @@ from ._native import (
     float32_display_bounds as float32_display_bounds,
 )
 from ._native import Settings as Settings
+from ._native import PlaybackSequence as PlaybackSequence
 from ._native import (
     shortcut_registry_version as shortcut_registry_version,
     ShortcutPlatform as ShortcutPlatform,

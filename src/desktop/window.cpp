@@ -1,4 +1,5 @@
 #include "window.hpp"
+#include <imagejxx/playback.hpp>
 #include "shadow_demo.hpp"
 #include "legacy_target_resources.hpp"
 #include "planar_annotation_rebind.hpp"
@@ -1039,6 +1040,11 @@ struct Window::Impl {
   std::string animationAxis = "z", animationReason = "stopped";
   std::optional<DocumentSnapshot> animationSource;
   std::uint64_t animationTicks = 0;
+  int animationFirst = 0, animationStep = 1;
+  std::optional<int> animationLast;
+  PlaybackMode animationMode = PlaybackMode::Forward;
+  bool animationReverse = false;
+  std::optional<PlaybackSequence> animationSequence;
   int historyLimit = 8, roiIndex = -1, lastVisible = -1;
   int numericZoomPlane = 0; // Transient Tools choice, never document/session data.
   std::uint64_t navigationDocument = 0;
@@ -1476,6 +1482,8 @@ struct Window::Impl {
     if (owner.documents_.empty() && !id)
       return true; // Preserve the existing no-document validation.
     const auto source = owner.documentById(id);
+    if (action == "show_animation_options")
+      return !owner.busy() && owner.controller_->active_document_id() == source->id;
     if (action == "animation")
       return owner.controller_->active_document_id() == source->id;
     if (action == "show_channel_display" || action == "enable_channel_display" ||
@@ -1549,7 +1557,8 @@ struct Window::Impl {
     if (!parameters.is_object())
       throw std::invalid_argument("Animation parameters must be an object");
     for (const auto &field : parameters.items())
-      if (field.key() != "axis" && field.key() != "playing" && field.key() != "document_id")
+      if (field.key() != "axis" && field.key() != "playing" && field.key() != "document_id" &&
+          field.key() != "first" && field.key() != "last" && field.key() != "step" && field.key() != "mode")
         throw std::invalid_argument("Unknown animation parameter: " + field.key());
     auto axis = animationAxis;
     if (parameters.contains("axis")) {
@@ -1563,17 +1572,41 @@ struct Window::Impl {
     if (parameters.contains("playing") && !parameters.at("playing").is_boolean())
       throw std::invalid_argument("Animation playing must be boolean");
     const bool playing = parameters.value("playing", animating);
+    const bool configured = parameters.contains("axis") || parameters.contains("first") ||
+        parameters.contains("last") || parameters.contains("step") || parameters.contains("mode");
+    if (!playing && !configured) { stopAnimation("stopped"); return; }
+    const auto index = [&](const char *key, int fallback) {
+      if (!parameters.contains(key)) return fallback;
+      const auto &value = parameters.at(key);
+      if (!value.is_number_integer() || value < 0 || value > INT32_MAX)
+        throw std::invalid_argument(std::string("Animation ") + key + " must be a nonnegative integer");
+      return value.get<int>();
+    };
+    const bool axisChanged = axis != animationAxis;
+    const int first = index("first", axisChanged ? 0 : animationFirst);
+    const int step = index("step", axisChanged ? 1 : animationStep);
+    auto last = axisChanged ? std::optional<int>{} : animationLast;
+    if (parameters.contains("last")) last = parameters.at("last").is_null() ? std::optional<int>{} : index("last",0);
+    auto mode = animationMode;
+    if (parameters.contains("mode")) {
+      if (!parameters.at("mode").is_string()) throw std::invalid_argument("Animation mode must be text");
+      mode = parse_playback_mode(parameters.at("mode").get<std::string>());
+    }
+    const auto captured = owner.nativeSnapshot();
+    if (parameters.contains("document_id") && parameters.at("document_id") != captured.id())
+      throw std::invalid_argument("Animation requires the active document");
+    PlaybackSequence sequence(animationExtent(captured.data().dataset.shape(),axis),first,last,step,mode);
     std::optional<DocumentSnapshot> source;
     if (playing) {
       if (owner.busy()) throw std::invalid_argument("Wait for the current edit");
-      source = owner.nativeSnapshot();
-      if (parameters.contains("document_id") && parameters.at("document_id") != source->id())
-        throw std::invalid_argument("Animation requires the active document");
-      if (animationExtent(source->data().dataset.shape(), axis) < 2)
+      source = captured;
+      if (sequence.count() < 2)
         throw std::invalid_argument("Animation axis needs at least two positions");
     }
     // Validate the entire request before changing a running playback session.
     animationAxis = axis;
+    animationFirst = first; animationLast = last; animationStep = step;
+    animationMode = mode; animationSequence = sequence; animationReverse = mode == PlaybackMode::Reverse;
     if (!playing) { stopAnimation("stopped"); return; }
     animationSource = std::move(source);
     animationTicks = 0;
@@ -1604,7 +1637,9 @@ struct Window::Impl {
     if (now - lastTick < 1 / fps) return;
     auto display = current.display();
     int &position = animationAxis == "z" ? display.crosshair[2] : animationAxis == "t" ? display.t : display.c;
-    position = (position + 1) % extent;
+    const auto next = animationSequence->advance(position, animationReverse);
+    position = next.position;
+    animationReverse = next.reverse;
     cancelSavedRoiGeometry("position_changed");
     cancelCreations("position_changed");
     doc()->setNativeDisplay(std::move(display));
@@ -1614,6 +1649,10 @@ struct Window::Impl {
   Json animationDiagnostics() const {
     return {{"playing", animating}, {"axis", animationAxis}, {"fps", fps},
             {"ticks", animationTicks}, {"reason", animationReason},
+            {"first", animationFirst}, {"last", animationLast ? Json(*animationLast) : Json()},
+            {"step", animationStep}, {"mode", playback_mode_name(animationMode)}, {"reverse", animationReverse},
+            {"count", animationSequence ? Json(animationSequence->count()) : Json()},
+            {"last_selected", animationSequence ? Json(animationSequence->last_selected()) : Json()},
             {"source_id", animationSource ? Json(animationSource->id()) : Json()},
             {"clock", "imgui_monotonic_seconds"}, {"last_tick", lastTick}};
   }
@@ -5703,6 +5742,39 @@ void Window::action(const std::string &name, const Json &p) {
     impl->configureAnimation(p);
     return;
   }
+  if (name == "show_animation_options") {
+    if (busy()) throw std::invalid_argument("Wait for the current edit");
+    for (const auto &field : p.items()) if (field.key() != "document_id")
+      throw std::invalid_argument("Animation options accepts only its source ID");
+    const auto captured = nativeSnapshot();
+    const auto sourceId = captured.id();
+    const auto revisions = captured.revisions();
+    const auto capturedAxis = impl->animationAxis;
+    const int extent = impl->animationExtent(captured.data().dataset.shape(),impl->animationAxis);
+    impl->stopAnimation("options");
+    const auto mode = impl->animationMode == PlaybackMode::Forward ? "Forward" :
+        impl->animationMode == PlaybackMode::Reverse ? "Reverse" : "Ping-pong";
+    const auto axisLabel = capturedAxis == "z" ? "Z" : capturedAxis == "c" ? "C" : "T";
+    impl->ask(std::string("Animation options (")+axisLabel+")", {{"first",impl->animationFirst+1},
+        {"last",impl->animationLast ? *impl->animationLast+1 : extent},
+        {"step",impl->animationStep},{"mode",mode}},
+        [this,sourceId,revisions,capturedAxis](Json values) {
+          if (impl->animationAxis!=capturedAxis || nativeSnapshot().id()!=sourceId || !nativeSnapshot().revisions().matches(revisions,Change::Pixels|Change::Metadata))
+            throw std::invalid_argument("Animation options source or axis changed");
+          for(const char *key:{"first","last"})
+            if(!values.at(key).is_number_integer() || values.at(key)<1 || values.at(key)>INT32_MAX)
+              throw std::invalid_argument("Animation First and Last must be positive integers");
+          const auto label=values.at("mode").get<std::string>();
+          if(label!="Forward" && label!="Reverse" && label!="Ping-pong")throw std::invalid_argument("Unknown animation mode");
+          action("animation",{{"first",values.at("first").get<int>()-1},
+              {"last",values.at("last").get<int>()-1},{"step",values.at("step")},
+              {"mode",label=="Forward"?"forward":label=="Reverse"?"reverse":"ping_pong"}});
+        }, Json::array({{{"name","first"},{"label","First (1-based)"},{"kind","int"}},
+            {{"name","last"},{"label","Last (inclusive, 1-based)"},{"kind","int"}},
+            {{"name","step"},{"label","Step"},{"kind","int"}},
+            {{"name","mode"},{"label","Mode"},{"kind","choice"},{"choices",{"Forward","Reverse","Ping-pong"}}}}),"animation_options");
+    return;
+  }
   if (name == "create_roi") {
     const auto facade = documentById(targetId);
     if (busy() || facade->id != controller_->active_document_id())
@@ -8150,7 +8222,12 @@ void Window::Impl::menu() {
       form("Reslice...", "reslice", {{"axis", "y"}});
       form("Montage...", "montage", {{"columns", 4}});
       const auto animationShape = doc()->shape();
-      const bool canAnimate = !owner.busy() && animationExtent(animationShape, animationAxis) > 1;
+      bool canAnimate = false;
+      if (!owner.busy()) try {
+        canAnimate = PlaybackSequence(animationExtent(animationShape,animationAxis),animationFirst,
+                                      animationLast,animationStep,animationMode).count()>1;
+      } catch (const std::invalid_argument &) {}
+      item("Animation options...", "show_animation_options");
       const bool animationAxisOpen = ImGui::BeginMenu("Animation axis");
       observeControl("menu.animation.axis");
       if (animationAxisOpen) {
@@ -12017,7 +12094,8 @@ Json Window::renderHeadless(int frames, bool exercise, bool exerciseCamera,
   if (!inputEvents.empty() &&
       (exercise || exerciseCamera || exercisePreferences || documents_.empty() ||
        (impl->dialog.open && !impl->dialog.operation &&
-        impl->dialog.id != "axis_plane_export" && impl->dialog.id != "axis_range_reslice") ||
+        impl->dialog.id != "axis_plane_export" && impl->dialog.id != "axis_range_reslice" &&
+        impl->dialog.id != "animation_options") ||
        impl->browser.open))
     throw std::invalid_argument(
         "Headless input needs an image canvas, Preferences or operation dialog");

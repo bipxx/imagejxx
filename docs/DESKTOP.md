@@ -1205,7 +1205,17 @@ or **Time frames**, then toggle **Animate**. Axes with only one position cannot
 start playback. The ordinary stack's **Play** checkbox uses Z. Both launch modes
 use the same C++ controller and the `animation_fps` preference; changes to that
 setting take effect during playback. Axis changes restart timing at the current
-position. Playback loops forward and advances at most once per rendered frame.
+position. Playback advances at most once per rendered frame.
+
+Open **Animation options...** to set inclusive **First** and **Last**, a positive
+**Step**, and **Forward**, **Reverse** or **Ping-pong**. The dialog uses one-based
+positions and pauses playback while options are reviewed. Confirm with **OK**,
+then toggle Animate. A stride need not land on Last: First 2, Last 7, Step 2
+selects positions 2, 4 and 6. Reverse loops those positions backwards; ping-pong
+reverses without repeating endpoints. A range needs two selected positions to
+play. An off-grid current position enters at the appropriate end on its first
+tick. Changing axis resets the range to that axis's full extent. An options
+dialog refuses confirmation if its source, source data or captured axis has changed.
 
 Linked XY/XZ/YZ views follow the selected position. Playback changes display
 state while retaining source samples, calibration, selections, history and
@@ -1219,10 +1229,23 @@ The optional Python UI exposes the same action:
 editor.update_settings(animation_fps=12, persist=False)
 editor.action("animation", axis="t", playing=True)
 editor.action("animation", playing=False)
+# API range indices are zero-based; omitted/None last means the axis's end.
+editor.action("animation", axis="z", first=1, last=6, step=2,
+              mode="ping_pong", playing=True)
 ```
 
-Start/end/step ranges, reverse and ping-pong modes, pacing from calibrated time,
-movie export and complete platform qualification remain open.
+The C++ core's immutable `PlaybackSequence` provides the same constant-space
+iteration without a GUI. It is also available as `imagejxx.PlaybackSequence`:
+
+```python
+import imagejxx
+sequence = imagejxx.PlaybackSequence(8, first=1, last=6, step=2, mode="ping_pong")
+position, reverse = 1, False
+position, reverse = sequence.advance(position, reverse)  # (3, False)
+```
+
+Pacing from calibrated time, movie export and complete platform qualification
+remain open.
 
 ## Calibrated range reslicing
 

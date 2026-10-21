@@ -11,7 +11,8 @@ namespace imagejxx::desktop {
 Json animationUiCase(Window &window, const std::string &id,
                      const std::string &context, const std::string &directory) {
   const std::vector<std::string> cases{"z","c","t","legacy","singleton","switch",
-      "edit","close","stop","fps","ieee","rgb","busy"};
+      "edit","close","stop","fps","ieee","rgb","busy","range","reverse","ping",
+      "range-offgrid","range-c","range-t","range-invalid"};
   if (std::find(cases.begin(),cases.end(),id)==cases.end() ||
       (context!="imgui_cpp" && context!="imgui_python") || !window.documents().empty())
     throw std::invalid_argument("Animation observation requires a fresh editor and a known case/host");
@@ -20,7 +21,8 @@ Json animationUiCase(Window &window, const std::string &id,
   std::filesystem::create_directories(root.parent_path());
   if(!std::filesystem::create_directory(root)) throw std::invalid_argument("Animation directory must be fresh");
   const bool legacy=id=="legacy" || id=="busy", ieee=id=="ieee", rgb=id=="rgb";
-  const DatasetShape shape=legacy?DatasetShape{1,1,4,5,7,1}:DatasetShape{2,3,id=="singleton"?1:4,5,7,rgb?3:1};
+  const bool ranged=id=="range" || id=="reverse" || id=="ping" || id.rfind("range-",0)==0;
+  const DatasetShape shape=legacy?DatasetShape{1,1,4,5,7,1}:DatasetShape{2,3,id=="singleton"?1:ranged?8:4,5,7,rgb?3:1};
   const auto policy=ieee?FloatingSamplePolicy::PreserveIEEEFloat32:FloatingSamplePolicy::FiniteOnly;
   Stack images;
   constexpr std::uint32_t special[]{0x7f800001,0xffc01234,0x80000000,0x7f800000,0xff800000,0x3f800000};
@@ -48,6 +50,7 @@ Json animationUiCase(Window &window, const std::string &id,
   }
   auto display=source->snapshot().display();
   display.t=legacy?0:1;display.c=legacy?0:1;display.crosshair={3,2,shape.z>1?1:0};
+  if(id=="range-offgrid")display.crosshair[2]=0;
   display.orthogonal=!legacy;display.zoom=1.25;display.planeZoom={1.25,1.75,2.25};display.linkedZoom=false;
   window.setNativeDisplay(display,source->id);
   window.updateSettings({{"animation_fps",60.}},false);window.recording=true;
@@ -89,11 +92,12 @@ Json animationUiCase(Window &window, const std::string &id,
     report["frames"].push_back({{"label",label},{"events",events},{"source",state()},
         {"rendered",{{"animation",last.at("animation")},{"input_frame",last.at("input_frame")},
           {"view",get(last,"view")},{"orthogonal_planes",get(last,"orthogonal_planes")},
+          {"dialog",get(last,"dialog")},
           {"window_error",last.at("window_error")}}}});
     if(!window.error().empty())throw std::runtime_error("Animation window error: "+window.error());
   };
   auto click=[&](const std::string &name,bool disabled=false) {
-    const auto control=last.at("host_controls").at(name);
+    const auto control=name.rfind("dialog.",0)==0 ? last.at("dialog").at("controls").at(name.substr(7)) : last.at("host_controls").at(name);
     if(!control.at("id").get<std::uint64_t>() || control.at("enabled").get<bool>()==disabled)
       throw std::runtime_error("Animation control unavailable: "+name);
     report["controls"].push_back({{"name",name},{"control",control},{"disabled_attempt",disabled}});
@@ -101,18 +105,40 @@ Json animationUiCase(Window &window, const std::string &id,
     for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();
   };
   auto menu=[&] {click("menu.Image");click("menu.Image.Stacks");};
+  auto type=[&](const char *field,const char *text) {
+    click(std::string("dialog.")+field);
+    for(bool down:{true,false}) {
+      const auto keys=Json::array({{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}});
+      frame(Json::array({{{"type","keys"},{"keys",keys}}}));
+    }
+    frame(Json::array({{{"type","text"},{"value",text}}}));
+    for(bool down:{true,false})frame(Json::array({{{"type","key"},{"name","Enter"},{"down",down}}}));
+    frame();
+  };
   auto api=[&](const char *label,auto operation) {
     Json item{{"label",label},{"before",state()}};
     try{operation();item["accepted"]=true;}catch(const std::exception &error){item["accepted"]=false;item["error"]=error.what();}
     item["after"]=state();report["api"].push_back(std::move(item));
   };
   frame();frame();frame();menu();
-  const std::string axis=id=="c"?"c":id=="t"?"t":"z";
+  const std::string axis=id=="c" || id=="range-c"?"c":id=="t" || id=="range-t"?"t":"z";
   if(id=="singleton") {
     click("menu.action.animation",true);
     api("singleton_refusal",[&]{window.action("animation",{{"playing",true}});});
   } else {
     if(axis!="z") {click("menu.animation.axis");click("menu.animation.axis."+axis);menu();}
+    if(ranged) {
+      click("menu.action.show_animation_options");
+      type("first",axis=="z"?"2":"1");
+      type("last",axis=="z"?"7":axis=="c"?"3":"2");
+      type("step",axis=="t"?"1":"2");
+      if(id=="reverse" || id=="range-c" || id=="ping" || id=="range-t") {
+        click("dialog.mode");
+        click(std::string("dialog.mode.choice.")+(id=="reverse" || id=="range-c"?"Reverse":"Ping-pong"));
+      }
+      report["options_before_submit"]=last.at("dialog");
+      click("dialog.apply");menu();
+    }
     click("menu.action.animation");
     while(last.at("animation").at("ticks").get<int>()<3)frame();
     if(id=="switch")api("switch",[&]{window.setActiveIndex(1);});
@@ -130,8 +156,15 @@ Json animationUiCase(Window &window, const std::string &id,
         api("invalid_playing",[&]{window.action("animation",{{"playing",1}});});
         api("unknown_parameter",[&]{window.action("animation",{{"unused",true}});});
       }
+      if(id=="range-invalid") {
+        api("range_negative",[&]{window.action("animation",{{"first",-1}});});
+        api("range_outside",[&]{window.action("animation",{{"last",8}});});
+        api("range_zero_step",[&]{window.action("animation",{{"step",0}});});
+        api("range_singleton",[&]{window.action("animation",{{"first",1},{"last",1}});});
+        api("range_mode",[&]{window.action("animation",{{"mode","unknown"}});});
+      }
       const int extent=axis=="z"?shape.z:axis=="c"?shape.c:shape.t;
-      while(last.at("animation").at("ticks").get<int>()<extent+3)frame();
+      while(last.at("animation").at("ticks").get<int>()<(ranged?8:extent+3))frame();
       window.action("animation",{{"playing",false}});
     }
     for(int i=0;i<5;++i)frame(Json::array(),"after_stop");
