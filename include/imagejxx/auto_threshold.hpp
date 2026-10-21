@@ -10,5 +10,15 @@ namespace imagejxx {
 // Only default, ij_isodata, huang, huang2, renyi_entropy and shanbhag.
 int auto_threshold_histogram_imagej(const std::vector<std::uint64_t> &counts,
                                     const std::string &method);
+int auto_threshold_histogram_imagej(const std::vector<std::uint64_t> &counts,
+                                    const std::string &method,
+                                    bool ignore_black, bool ignore_white);
+struct Image;
+// Endpoint bins affect threshold estimation only, never the output mask domain.
+// Include image.hpp when constructing or consuming Image values.
+double auto_threshold(const Image &, const std::string &method, int bins,
+                      bool ignore_black, bool ignore_white);
+Image auto_mask(const Image &, const std::string &method, bool bright, int bins,
+                bool ignore_black, bool ignore_white);
 bool is_imagej_threshold_method(const std::string &method);
 } // namespace imagejxx

@@ -1,0 +1,431 @@
+{
+  "state": "qualified_functional_increment",
+  "objective_complete": false,
+  "scope": "Ignore first/last histogram bins in all eighteen image threshold methods, six ImageJ histogram methods, C++ overloads/Python API and the shared native Auto Threshold form. Defaults remain off; existing C++ overloads remain available.",
+  "behavior": "Exclusions affect threshold estimation only; the complete source image participates in the output mask. The histogram input and source samples are preserved. Empty eligible histograms refuse and failed jobs never publish. Options are recorded and survive workflow serialization/replay, preview/cancel, Apply and undo/redo. Invalid nonboolean flags refuse. Endpoint exclusion requires finite samples and 2..65536 bins; the six histogram methods enforce the effective eligible count limit INT32_MAX.",
+  "compatibility": "The two existing C++ histogram/image overload families remain source-callable. With both flags off, old method conventions are retained; mean continues to use the raw sample mean. When exclusion is requested, mean uses the eligible histogram weighted bin-center mean. Full reference parity of the twelve older methods is still open. Min-error/moments fallback to Otsu retains the requested flags.",
+  "reference": {
+    "comparisons": 1302,
+    "histogram_options": 232,
+    "empty_preconditions": 15,
+    "upstream": {
+      "commit": "62db90a269cccc1ac79f658e4602043214ed055b",
+      "archive_sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+      "source_sha256": "a55323e8c84b0b6bd82e8df12aea2503805eabefe069e53860476ebb2d607dc5",
+      "source_url": "https://github.com/imagej/ImageJ/blob/62db90a269cccc1ac79f658e4602043214ed055b/ij/process/AutoThresholder.java",
+      "license_url": "https://imagej.net/ij/disclaimer.html"
+    },
+    "fixture": {
+      "path": "tests/fixtures/auto-threshold-options-imagej154r.json",
+      "bytes": 485227,
+      "sha256": "03543d3a9f0eeb82a2653ed51c61510ae615d2f84ba2472a5fe33aea0a9d3bd3"
+    },
+    "capture_script": {
+      "path": "scripts/capture_auto_threshold_options_reference.py",
+      "bytes": 6618,
+      "sha256": "c09df460859d7d0a4d62c74183eba1f42c053514bba717f9bd2a4102c3229387"
+    },
+    "capture_receipt": {
+      "path": "build/p10a-threshold-options001/reference001/receipt.json",
+      "bytes": 543,
+      "sha256": "4f6e23a2ab1758b3f23cd543bf307392e27d08f74ee66d593663cc68626c34bf"
+    },
+    "raw_output": {
+      "path": "build/p10a-threshold-options001/reference001/stdout.txt",
+      "bytes": 6132,
+      "sha256": "544b4bfdd55770ec2ee5224dd70cdeeb8bba60ab2a294c8ca4deecebec09612f"
+    },
+    "scope": "Six methods after exclusion, four flag combinations over the previous 58 histogram profiles. Fifteen empty eligible histograms produce no threshold oracle value and are checked as refusals. Prior 348 no-option expected values remain unchanged and pass again. Not complete plugin/image-display/reference-manifest qualification."
+  },
+  "profiles": {
+    "windows": {
+      "tests": 3542,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "observations": 48,
+      "frames": 4416,
+      "new_option_observations": 36,
+      "contexts": [
+        "imgui_cpp",
+        "imgui_python"
+      ],
+      "sdk": "Fresh installed SDK consumer runs old six-method histogram example and new eighteen-result endpoint example plus a literal whole-image mask/source-preservation check",
+      "headers": 69,
+      "python_modules": 12,
+      "catalog_operations": 92,
+      "source_freeze": [
+        {
+          "path": "CMakeLists.txt",
+          "sha256": "57027f7f6f7d588bf3cac5755c0c07c38afd703cb43a8fb30fd2af259d63dcac"
+        },
+        {
+          "path": "src/native/operation_kernel.inc",
+          "sha256": "74330dfe2e09476f7712ab710f89fd2d608bb5ce01a90512165c157d015b937a"
+        },
+        {
+          "path": "include/imagejxx/auto_threshold.hpp",
+          "sha256": "ae9a233cab455662530f965acec307b6b2a0c4a86b04f688dbe02e8237beb1bb"
+        },
+        {
+          "path": "src/native/auto_threshold.cpp",
+          "sha256": "5992a34f3af35bdce16b9bd74af4ec844ebe901ba73a64d0b3117aa5c1ecdbc8"
+        },
+        {
+          "path": "src/native/auto_threshold_bindings.cpp",
+          "sha256": "f0299a4c37ddfb49c96debc57ed14a732db5f23ea7f9e5b6f732faa4919318f3"
+        },
+        {
+          "path": "src/native/bindings.cpp",
+          "sha256": "965dee97354aa426dcc8f6cd0d9ef6b5502835059386d8e0c2796e27f1ecf541"
+        },
+        {
+          "path": "src/native/analysis.cpp",
+          "sha256": "d20c11116aae446b1d46037b20c5695d60e8eeb17b7affe53389f241892a4fbf"
+        },
+        {
+          "path": "src/native/operations.cpp",
+          "sha256": "fbb9a146ab30750cd6a018dc01371eeff752371bffb79222e0214aee68410803"
+        },
+        {
+          "path": "src/native/operation_catalog.inc",
+          "sha256": "aa022dc50740fef7ae98d898955635a5f8501d8a30912f22b4efcbad06fd9c8b"
+        },
+        {
+          "path": "src/imagejxx/__init__.py",
+          "sha256": "7b52ef6e902a6ed693ef6e1d436597f90d79685b5c29e6575608e3ce5ecf8c9c"
+        },
+        {
+          "path": "src/imagejxx/ui/commands.json",
+          "sha256": "76e711af57d7017f040945887ba1e8052cb80fd29cefc381bca6315d865b5794"
+        },
+        {
+          "path": "src/desktop/auto_threshold_ui_probe.cpp",
+          "sha256": "5b250ab395d78bb5fb4e19ed2d0569663540e0ca3a4957a97f4e593588a3559f"
+        },
+        {
+          "path": "src/desktop/auto_threshold_ui_probe.hpp",
+          "sha256": "6278f4ea944f6af63f6d63b1ac3537c9c989d69c9fa9a31e97ca7d5fa0c7eccd"
+        },
+        {
+          "path": "src/desktop/animation_ui_probe.cpp",
+          "sha256": "8e6051d0a5e40c8fb29b037f9d4d84bf6e3c4554a2581895188009cd299b3522"
+        },
+        {
+          "path": "examples/cpp/CMakeLists.txt",
+          "sha256": "9b4cd26b2cb4fda1d970348aee14b5f22f4589295b19b4c909d8d884a3aff9ce"
+        },
+        {
+          "path": "examples/cpp/auto_threshold.cpp",
+          "sha256": "0c8399f73b4d5bd76d555fd7b23ff0b97758eae19ef2d159b7d7d0673da91be8"
+        },
+        {
+          "path": "examples/cpp/auto_threshold_options.cpp",
+          "sha256": "dfed7858245c3b36eaf9875cf629563edd282af9b4caf85ceaa4aeebc1a4942c"
+        }
+      ],
+      "products": [
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p10a-threshold-options001\\windows-build003\\installed\\sdk-prefix001\\bin\\imagejxx.exe",
+          "bytes": 15279104,
+          "sha256": "4c89cdbb5eac1d7b681abb7a617fca3b9393b533f1cbeb6f59a8b63c79860a12"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p10a-threshold-options001\\windows-build003\\installed\\python-prefix001\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+          "bytes": 15125504,
+          "sha256": "b054d9be6d5acd9cf8e6624abf0c156d5f45b99a69cf2ede2b9546844f1ff6cd"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p10a-threshold-options001\\windows-build003\\installed\\python-prefix001\\imagejxx\\_native.cp312-win_amd64.pyd",
+          "bytes": 6369280,
+          "sha256": "bbc61efdfb77fba0338b923a6c90a4ebe8a0d32fa4cb7ec6909d6fdf9cc86c6e"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p10a-threshold-options001\\windows-build003\\installed\\sdk-prefix001\\lib\\imagejxx_core.lib",
+          "bytes": 46376368,
+          "sha256": "9519bb89e87c620dcb35ee04bc5439b9338fdda093d23cebad16bfb1bc81a4c6"
+        }
+      ],
+      "evidence": {
+        "windows-build003/receipt.json": {
+          "path": "build/p10a-threshold-options001/windows-build003/receipt.json",
+          "bytes": 2605,
+          "sha256": "0aec2958fee5490736796e9755ad3f89475a4acd4312eed045c6d3e6457dc6a8"
+        },
+        "windows-python002/pytest.xml": {
+          "path": "build/p10a-threshold-options001/windows-python002/pytest.xml",
+          "bytes": 513279,
+          "sha256": "9112c94a6b06f0c7c65c59a83148dc9b6dd6a8bce82bdb1e70d0ebc2b0ac9318"
+        },
+        "windows-python002/receipt.json": {
+          "path": "build/p10a-threshold-options001/windows-python002/receipt.json",
+          "bytes": 88,
+          "sha256": "dbc08177bda1bfe3ecaa3d602b7c41ae72030ed5e0d8a3e108861ae688156ccc"
+        },
+        "windows-evidence001.json": {
+          "path": "build/p10a-threshold-options001/windows-evidence001.json",
+          "bytes": 410139,
+          "sha256": "2550957fdacf148449f22d9ab45a5310dab8dde911e39096ec93ab5c84c381e1"
+        },
+        "windows-products001.json": {
+          "path": "build/p10a-threshold-options001/windows-products001.json",
+          "bytes": 12761,
+          "sha256": "20bf3ff1281ed5db1f83d13d3327305b7d4e502daf7829c6436da9d45952f422"
+        },
+        "windows-sdk001/receipt.json": {
+          "path": "build/p10a-threshold-options001/windows-sdk001/receipt.json",
+          "bytes": 796,
+          "sha256": "3932a4c2fce9a4b95fe6297a81fea2aba5fdde38d30bdaae0beda6d602eb2a3c"
+        },
+        "windows-sdk001/auto_threshold.log": {
+          "path": "build/p10a-threshold-options001/windows-sdk001/auto_threshold.log",
+          "bytes": 85,
+          "sha256": "c7572a52eca820a65918e5e451a300b6e5f3d0ecede2b4fed3f370ce00b5dbaa"
+        },
+        "windows-sdk001/auto_threshold_options.log": {
+          "path": "build/p10a-threshold-options001/windows-sdk001/auto_threshold_options.log",
+          "bytes": 309,
+          "sha256": "f387a86be188a1e7bdafd11b5bb5f6af5d20e0d54c1045d032ba6b6ca73280a1"
+        },
+        "windows-gates001.log": {
+          "path": "build/p10a-threshold-options001/windows-gates001.log",
+          "bytes": 53,
+          "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+        },
+        "windows-transport001.log": {
+          "path": "build/p10a-threshold-options001/windows-transport001.log",
+          "bytes": 1630,
+          "sha256": "4ba66197ee8142da37ddacb92b610198e1d2fcade62f60b5b40ecff9f250536b"
+        },
+        "windows-cleanup001.json": {
+          "path": "build/p10a-threshold-options001/windows-cleanup001.json",
+          "bytes": 595206,
+          "sha256": "9d083f18dae6fdadd63301bd9e9e92afa2187b1cb52cf88d33c0e4aaeab64bf9"
+        }
+      }
+    },
+    "linux": {
+      "tests": 3542,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "observations": 48,
+      "frames": 4416,
+      "new_option_observations": 36,
+      "contexts": [
+        "imgui_cpp",
+        "imgui_python"
+      ],
+      "sdk": "Fresh installed SDK consumer runs old six-method histogram example and new eighteen-result endpoint example plus a literal whole-image mask/source-preservation check",
+      "headers": 69,
+      "python_modules": 12,
+      "catalog_operations": 92,
+      "source_freeze": [
+        {
+          "path": "CMakeLists.txt",
+          "sha256": "57027f7f6f7d588bf3cac5755c0c07c38afd703cb43a8fb30fd2af259d63dcac"
+        },
+        {
+          "path": "src/native/operation_kernel.inc",
+          "sha256": "74330dfe2e09476f7712ab710f89fd2d608bb5ce01a90512165c157d015b937a"
+        },
+        {
+          "path": "include/imagejxx/auto_threshold.hpp",
+          "sha256": "ae9a233cab455662530f965acec307b6b2a0c4a86b04f688dbe02e8237beb1bb"
+        },
+        {
+          "path": "src/native/auto_threshold.cpp",
+          "sha256": "5992a34f3af35bdce16b9bd74af4ec844ebe901ba73a64d0b3117aa5c1ecdbc8"
+        },
+        {
+          "path": "src/native/auto_threshold_bindings.cpp",
+          "sha256": "f0299a4c37ddfb49c96debc57ed14a732db5f23ea7f9e5b6f732faa4919318f3"
+        },
+        {
+          "path": "src/native/bindings.cpp",
+          "sha256": "965dee97354aa426dcc8f6cd0d9ef6b5502835059386d8e0c2796e27f1ecf541"
+        },
+        {
+          "path": "src/native/analysis.cpp",
+          "sha256": "d20c11116aae446b1d46037b20c5695d60e8eeb17b7affe53389f241892a4fbf"
+        },
+        {
+          "path": "src/native/operations.cpp",
+          "sha256": "fbb9a146ab30750cd6a018dc01371eeff752371bffb79222e0214aee68410803"
+        },
+        {
+          "path": "src/native/operation_catalog.inc",
+          "sha256": "aa022dc50740fef7ae98d898955635a5f8501d8a30912f22b4efcbad06fd9c8b"
+        },
+        {
+          "path": "src/imagejxx/__init__.py",
+          "sha256": "7b52ef6e902a6ed693ef6e1d436597f90d79685b5c29e6575608e3ce5ecf8c9c"
+        },
+        {
+          "path": "src/imagejxx/ui/commands.json",
+          "sha256": "76e711af57d7017f040945887ba1e8052cb80fd29cefc381bca6315d865b5794"
+        },
+        {
+          "path": "src/desktop/auto_threshold_ui_probe.cpp",
+          "sha256": "5b250ab395d78bb5fb4e19ed2d0569663540e0ca3a4957a97f4e593588a3559f"
+        },
+        {
+          "path": "src/desktop/auto_threshold_ui_probe.hpp",
+          "sha256": "6278f4ea944f6af63f6d63b1ac3537c9c989d69c9fa9a31e97ca7d5fa0c7eccd"
+        },
+        {
+          "path": "src/desktop/animation_ui_probe.cpp",
+          "sha256": "8e6051d0a5e40c8fb29b037f9d4d84bf6e3c4554a2581895188009cd299b3522"
+        },
+        {
+          "path": "examples/cpp/CMakeLists.txt",
+          "sha256": "9b4cd26b2cb4fda1d970348aee14b5f22f4589295b19b4c909d8d884a3aff9ce"
+        },
+        {
+          "path": "examples/cpp/auto_threshold.cpp",
+          "sha256": "0c8399f73b4d5bd76d555fd7b23ff0b97758eae19ef2d159b7d7d0673da91be8"
+        },
+        {
+          "path": "examples/cpp/auto_threshold_options.cpp",
+          "sha256": "dfed7858245c3b36eaf9875cf629563edd282af9b4caf85ceaa4aeebc1a4942c"
+        }
+      ],
+      "products": [
+        {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/install-p10a003/sdk-prefix001/bin/imagejxx",
+          "bytes": 30920456,
+          "sha256": "a95a760cd8bda40bb2eeed459e915488371d604b4800575c82d2ece7c7d04bff"
+        },
+        {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/install-p10a003/python-prefix001/imagejxx/_desktop.cpython-312-x86_64-linux-gnu.so",
+          "bytes": 28964504,
+          "sha256": "64445dcd6aad70557f538764610bf4a06812acd5a8acf44eff5ef40e27d89f64"
+        },
+        {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/install-p10a003/python-prefix001/imagejxx/_native.cpython-312-x86_64-linux-gnu.so",
+          "bytes": 10353984,
+          "sha256": "c909cea906bc5b4cff7ae99dedf25b3ccf4735908e02a7d84ef0c995f182af5f"
+        },
+        {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/install-p10a003/sdk-prefix001/lib/libimagejxx_core.a",
+          "bytes": 15172938,
+          "sha256": "e145fb311d0fbaf2e767120fd0952ecad918e39ce04c64f5c40e4fa2a8b6cd8f"
+        }
+      ],
+      "evidence": {
+        "linux-build003/receipt.json": {
+          "path": "build/p10a-threshold-options001/linux-build003/receipt.json",
+          "bytes": 2573,
+          "sha256": "fde0dc6478534369f25503a5c7f11cf5825411c5394a1413ccfc761a8c3129ba"
+        },
+        "linux-python002/pytest.xml": {
+          "path": "build/p10a-threshold-options001/linux-python002/pytest.xml",
+          "bytes": 513279,
+          "sha256": "ddd73f830f24c5986acf36854a4b474fc9f72f360ebc51a83de6ad5f9c5ac635"
+        },
+        "linux-python002/receipt.json": {
+          "path": "build/p10a-threshold-options001/linux-python002/receipt.json",
+          "bytes": 88,
+          "sha256": "dbc08177bda1bfe3ecaa3d602b7c41ae72030ed5e0d8a3e108861ae688156ccc"
+        },
+        "linux-evidence001.json": {
+          "path": "build/p10a-threshold-options001/linux-evidence001.json",
+          "bytes": 408509,
+          "sha256": "c11218f8a108114134cb7ce4b584de50356929ad2aaae21eadc88939c327117e"
+        },
+        "linux-products001.json": {
+          "path": "build/p10a-threshold-options001/linux-products001.json",
+          "bytes": 12354,
+          "sha256": "734819884f32fdd466c1a0143b0a7ac0be77a1f66c250e46ec2223d7f4a2affc"
+        },
+        "linux-sdk001/receipt.json": {
+          "path": "build/p10a-threshold-options001/linux-sdk001/receipt.json",
+          "bytes": 707,
+          "sha256": "a27953b7f1cade42e0e27638d1f8bfd31a3efbaafc3444af1da2f448b32e9a18"
+        },
+        "linux-sdk001/auto_threshold.log": {
+          "path": "build/p10a-threshold-options001/linux-sdk001/auto_threshold.log",
+          "bytes": 79,
+          "sha256": "b46e1c68576a3647e32a30cc483efa5396769bd53d94a0c318460b1d4a2eb3dd"
+        },
+        "linux-sdk001/auto_threshold_options.log": {
+          "path": "build/p10a-threshold-options001/linux-sdk001/auto_threshold_options.log",
+          "bytes": 291,
+          "sha256": "ccc93f5c07e47984a897c0f9b2675990169b2a66dcf1946e550234466e817e33"
+        },
+        "linux-gates001.log": {
+          "path": "build/p10a-threshold-options001/linux-gates001.log",
+          "bytes": 53,
+          "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+        },
+        "linux-transport001.log": {
+          "path": "build/p10a-threshold-options001/linux-transport001.log",
+          "bytes": 1630,
+          "sha256": "48d5b6e4d0a9f585ef3a1aec0a79063bbbfcd088481aee5874b409eac2ac1760"
+        },
+        "linux-cleanup001.json": {
+          "path": "build/p10a-threshold-options001/linux-cleanup001.json",
+          "bytes": 408611,
+          "sha256": "0b18233af36b0ca1cd23fe5390348a53090ca6bb5e972277aac769feac7514b1"
+        }
+      }
+    }
+  },
+  "checks": "Per OS: 3542 distinct selected checks, no failures/errors/skips. Includes 1392 option-oracle checks (1302 threshold values and 90 empty refusals), literal full-image masks/registered execution for all eighteen methods in UInt8/UInt16/Float32, empty-worker publication guards, pre-admission workspace rejection, strict option validation, serialized workflow replay and final-callback cancellation. 48 physical input reports / 4416 frames include 36 new option reports and 12 prior selector regressions. Old numeric/desktop/AVI/registry/jobs and histogram comparisons pass; 15 capture transport checks pass.",
+  "resource_scope": "Requested endpoint options add histogram/count/entropy tables to managed admission for all eighteen image methods. Existing six-method table reservation bounds the additional filtered histogram copy. No global allocation/performance or all-kernel cancellation certification is claimed.",
+  "commercial_scope": "No new runtime dependencies or non-commercial components. Reviewed commercial-use dependency inventory passes on Windows/Linux. Java source/JDK remain reference-only under build and outside native/Python products.",
+  "source_review": [
+    "Preserved endpoint flags through min-error/moments Otsu fallback",
+    "Kept constant/raw-mean shortcuts only when neither endpoint is excluded",
+    "Kept all image samples in output masks, including excluded histogram endpoints",
+    "Excluded eligible-empty histograms before histogram normalization and publication",
+    "Checked effective-count/range/finite preconditions and source/ROI/history retention",
+    "Byte-preserving edit helpers initially encountered mixed indentation/newlines; corrected before compiling. All compiled builds and behavioral test runs passed. No old expected hashes or gates were repinned."
+  ],
+  "remaining": [
+    "Pooled stack histograms and complete threshold-display workflows",
+    "Persistent last-used plugin options and full scientific/ROI targeting",
+    "Full image/display scaling, overflow/tie/reference coverage for all methods, formal fixture/interface binding, platform/accessibility/performance/global resources",
+    "Every remaining ImageJ and commercially usable Fiji obligation"
+  ],
+  "registration": {
+    "path": "build/p10a-threshold-options001/registration001.json",
+    "bytes": 3161,
+    "sha256": "4d4e2bff34a1ae4667f0557da0981eb5922dd71b7c2b30992483bad4df2bdb12"
+  },
+  "test_sources": [
+    {
+      "path": "tests/python/test_auto_threshold_options.py",
+      "bytes": 6135,
+      "sha256": "6cebf95203c9645b6f536010eeb2b5b7a72b0b09c20424c309c66a41a0cd4e90"
+    },
+    {
+      "path": "tests/python/test_auto_threshold_options_ui.py",
+      "bytes": 2877,
+      "sha256": "b9b92efbe19ca77a27392358b0712eb36e1582c14a6118bb1f723d690af4af6a"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 31121,
+      "sha256": "17ebff247c4f94774e5ebd62c86f93068fac1e208c66bb6ab18174abdd13b236"
+    }
+  ],
+  "plan_gate": {
+    "state": "failed_preexisting",
+    "message": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed",
+    "gate_unchanged": true,
+    "evidence": {
+      "path": "build/p10a-threshold-options001/plan-check001.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    },
+    "application_header_unchanged_from_head": true
+  },
+  "all99": {
+    "in_progress": 46,
+    "open": 53,
+    "complete": 0
+  },
+  "format_variants": "All existing 96 variants remain partial",
+  "cleanup_removed_bytes": 1031191775
+}

@@ -471,7 +471,7 @@ std::size_t operation_extra_workspace(const std::string &id,
           "Job reservation overflows addressable memory");
     bytes += amount;
   };
-  if(id=="auto_mask" && is_imagej_threshold_method(parameterText(parameters,"method","otsu"))) {
+  if(id=="auto_mask" && (is_imagej_threshold_method(parameterText(parameters,"method","otsu")) || parameterBoolean(parameters,"ignore_black",false) || parameterBoolean(parameters,"ignore_white",false))) {
     const auto requested=parameterInteger(parameters,"bins",0);
     if(requested!=0 && (requested<2 || requested>65536))throw std::invalid_argument("ImageJ threshold requires 2..65536 bins");
     const auto bins=std::size_t(requested==0?256:requested);

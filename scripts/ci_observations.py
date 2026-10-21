@@ -224,6 +224,7 @@ def cases():
                                                   "cal-invalid", "cal-edit", "cal-unit",
                                                   "cal-legacy", "cal-legacy-step", "cal-legacy-reverse",
                                                   "cal-legacy-ping", "cal-legacy-edit", "cal-legacy-unit"]),
+        ("threshold-options", "--animation-ui-case", ["threshold-"+m+"-ignore-"+o for m in ["default","ij_isodata","huang","huang2","renyi_entropy","shanbhag"] for o in ["black","white","both"]]),
         ("auto-threshold", "--animation-ui-case", ["threshold-"+m for m in ["default","ij_isodata","huang","huang2","renyi_entropy","shanbhag"]]),
         ("movie", "--animation-ui-case", ["movie-z", "movie-t", "movie-c", "movie-reverse", "movie-ping", "movie-rgb", "movie-composite", "movie-existing", "movie-stale", "movie-cancel", "movie-invalid", "movie-f32", "movie-ieee", "movie-gray8", "movie-gray-refuse", "movie-draft"]),
         ("planar-matrix", "--planar-annotation-matrix-ui-case", planar_cases()),
@@ -270,6 +271,7 @@ def reader_environment(output):
         "IMAGEJXX_ANIMATION_CPP_ROOT": reports / "animation",
         "IMAGEJXX_MOVIE_CPP_ROOT": reports / "movie",
         "IMAGEJXX_THRESHOLD_CPP_ROOT": reports / "auto-threshold",
+        "IMAGEJXX_THRESHOLD_OPTIONS_CPP_ROOT": reports / "threshold-options",
     }
     environment["IMAGEJXX_THRESHOLD_CPP_REPORT"] = reports / "scientific-threshold/T10/case.json"
     # Session rows bind their absolute capture directory. Readers must use the

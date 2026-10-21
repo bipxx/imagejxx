@@ -2037,6 +2037,22 @@
         "kind": "int",
         "choices": [],
         "optional": false
+      },
+      {
+        "name": "ignore_black",
+        "label": "Ignore black (first histogram bin)",
+        "default": false,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
+      },
+      {
+        "name": "ignore_white",
+        "label": "Ignore white (last histogram bin)",
+        "default": false,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
       }
     ]
   },

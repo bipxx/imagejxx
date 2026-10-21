@@ -62,8 +62,49 @@ credits Landini, Celebi and Schindelin for the implementations and documents the
 published algorithms. No additional runtime dependency is introduced.
 
 These checks cover the six histogram methods and current shared operation form.
-Complete ImageJ/Fiji plugin options still require ignore-black/ignore-white,
-stack-histogram and threshold-display workflows, full scientific/ROI targeting,
+Complete ImageJ/Fiji plugin options still require pooled stack-histogram and
+threshold-display workflows, full scientific/ROI targeting,
 upstream image/display scaling and overflow/tie coverage, formal reference
 inventory binding and platform/accessibility/performance qualification. The
 other twelve methods also retain their existing reference obligations.
+
+## Histogram endpoints
+
+The shared Auto Threshold form now offers **Ignore black (first histogram bin)**
+and **Ignore white (last histogram bin)**. Both default to off. They are recorded
+with the command and survive workflow serialization and replay. All eighteen
+image methods accept the corresponding Python keywords:
+
+```python
+mask = imagejxx.auto_mask(image, "huang2", bins=65536,
+                         ignore_black=True, ignore_white=True)
+```
+
+The six-method histogram API accepts the same keywords. The C++ header adds
+overloads with `ignore_black, ignore_white`; the existing overloads remain
+available. Only the endpoint counts used for threshold estimation are removed.
+Pixels in those bins still participate in mask output, including white pixels
+above the resulting level. The source image and caller's histogram are preserved.
+
+The endpoints belong to the requested histogram. With a 256-bin UInt16 histogram,
+the first bin groups several low intensities; with 65,536 bins it represents zero
+alone. Float endpoints follow the image's finite data range. These options do not
+mean “exclude every pixel equal to numeric zero or 255” for all image types.
+
+Endpoint exclusion requires 2–65,536 bins, finite image samples and at least one
+eligible sample. An empty eligible histogram raises before an edit can publish.
+The histogram API's INT32_MAX limit applies to the remaining counts. The existing
+`mean` image method uses raw samples when both flags are off; with exclusions it
+uses the eligible histogram's weighted bin-center mean. Other legacy method
+conventions remain unchanged and retain their reference obligations.
+
+The endpoint fixture records 1,302 upstream results across 232 histogram/option
+combinations. Fifteen combinations have no eligible samples and are tested as
+refusals, rather than assigned artificial threshold values. Tests also cover
+literal whole-image masks for all eighteen methods and three pixel types,
+managed workspace admission, failed publication, callback cancellation, saved
+workflow replay and actual checkbox input in both native hosts.
+
+Pooled stack histograms, threshold-display integration, persistent last-used
+plugin options and complete scientific/ROI/reference/platform qualification
+remain open.

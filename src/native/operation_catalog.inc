@@ -1504,6 +1504,8 @@ static std::vector<OperationSpec> make_registry() {
             false,
             DefaultRule::Literal,
             DefaultRule::Literal},
+             {"ignore_black", "Ignore black (first histogram bin)", ParameterKind::Boolean, false, false, "bool", {}, false, DefaultRule::Literal, DefaultRule::Literal},
+             {"ignore_white", "Ignore white (last histogram bin)", ParameterKind::Boolean, false, false, "bool", {}, false, DefaultRule::Literal, DefaultRule::Literal},
        },
        GeometryEffect::Preserve});
   result.push_back(

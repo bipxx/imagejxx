@@ -1,5 +1,22 @@
 # ImageJ and Fiji gap closure plan
 
+**Threshold endpoint options checkpoint, 2026-10-21 (work in progress):**
+All eighteen image methods and six histogram methods now support ignoring the
+first/last histogram bins. Both flags default off and are exposed in C++/Python
+and the shared ImGui form. They affect estimation, while the whole image is
+masked. Empty eligible histograms refuse without publication; saved workflows
+retain/replay flags. Windows/Linux each pass 3,542 selected checks without skips,
+old/new installed SDK examples and 15 transport checks. The new oracle contains
+1,302 exact threshold values and 15 empty preconditions; the previous 348 values
+remain unchanged. Real input yields 96 reports / 8,832 frames across both hosts
+and platforms, including 72 new checkbox reports. Commercial-use inventory passes
+with no new runtime dependencies. Verified archives remove 1,031,191,775 scratch
+bytes. See [the scoped receipt](parity/reviews/p10a-threshold-options001.json).
+Next are pooled stack histograms and threshold-display integration, followed by
+complete plugin/reference/platform/resource qualification. The pre-existing
+Auto Contrast source-fingerprint gate remains open. All99 stays 46 in progress /
+53 open / 0 complete; all existing 96 format variants remain partial.
+
 **Automatic threshold methods checkpoint, 2026-10-21 (work in progress):**
 The C++ core, Python API and both Dear ImGui hosts now expose Default,
 IJ_IsoData, Huang, Huang2, RenyiEntropy and Shanbhag. The histogram API retains

@@ -1376,16 +1376,18 @@ def in_range(image, lower: Sequence[float], upper: Sequence[float]) -> np.ndarra
     return _native.in_range(_array(image), lower, upper)
 
 
-def auto_threshold(image, method: str = "otsu", *, bins: int = 0) -> float:
+def auto_threshold(image, method: str = "otsu", *, bins: int = 0,
+                   ignore_black: bool = False, ignore_white: bool = False) -> float:
     """Return a histogram threshold; default uses 256 bins, including uint16."""
-    return _native.auto_threshold(_array(image), method, bins)
+    return _native.auto_threshold(_array(image), method, bins, ignore_black, ignore_white)
 
 
 def auto_mask(
-    image, method: str = "otsu", *, bright: bool = True, bins: int = 0
+    image, method: str = "otsu", *, bright: bool = True, bins: int = 0,
+    ignore_black: bool = False, ignore_white: bool = False
 ) -> np.ndarray:
     """Threshold as pixel > level (bright) or pixel <= level (dark)."""
-    return _native.auto_mask(_array(image), method, bright, bins)
+    return _native.auto_mask(_array(image), method, bright, bins, ignore_black, ignore_white)
 
 
 def local_threshold(

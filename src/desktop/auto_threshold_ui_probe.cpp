@@ -20,9 +20,16 @@ Json state(Window &window, const std::shared_ptr<imagejxx::Document> &owner) {
       {"workflow",window.workflow}};
 }
 }
-Json autoThresholdUiCase(Window &window,const std::string &method,
+Json autoThresholdUiCase(Window &window,const std::string &case_id,
                    const std::string &context,const std::string &directory) {
-  validateRecord("auto_mask",{{"method",method}});
+  std::string method=case_id;bool ignore_black=false,ignore_white=false;
+  const auto marker=method.find("-ignore-");
+  if(marker!=std::string::npos) {
+    const auto option=method.substr(marker+8);method.resize(marker);
+    require(option=="black" || option=="white" || option=="both","Unknown threshold exclusion fixture");
+    ignore_black=option=="black" || option=="both";ignore_white=option=="white" || option=="both";
+  }
+  validateRecord("auto_mask",{{"method",method},{"ignore_black",ignore_black},{"ignore_white",ignore_white}});
   namespace fs=std::filesystem;const auto output=fs::absolute(fs::u8path(directory));
   require(!fs::exists(output) && window.documents().empty(),"Fresh threshold fixture required");
   fs::create_directories(output);
@@ -34,7 +41,7 @@ Json autoThresholdUiCase(Window &window,const std::string &method,
   auto owner=std::make_shared<imagejxx::Document>(std::move(data));
   window.updateSettings({{"processing_workers",1},{"processing_memory_mb",64}},false);
   window.addNativeDocument(owner);window.recording=true;
-  Json report{{"contract","p09z.auto-threshold.ui.001"},{"case_id",method},
+  Json report{{"contract",ignore_black || ignore_white?"p10a.auto-threshold-options.ui.001":"p09z.auto-threshold.ui.001"},{"case_id",case_id},{"method",method},{"ignore_black",ignore_black},{"ignore_white",ignore_white},
       {"context",context},{"acceptance_claim",false},{"state","running"},
       {"frames",Json::array()},{"controls",Json::array()},
       {"states",{{"before",state(window,owner)}}},
@@ -44,7 +51,7 @@ Json autoThresholdUiCase(Window &window,const std::string &method,
   }catch(...){}}}capture{report,output};
   HeadlessInputSession session(window);Json last;
   const auto frame=[&](const Json &events=Json::array()) {
-    require(report["frames"].size()<120,"Threshold UI frame bound");
+    require(report["frames"].size()<150,"Threshold UI frame bound");
     last=session.frame(events);Json rendered;
     for(const auto *key:{"input_frame","host_controls","operation_dialog","window_error"})rendered[key]=last.at(key);
     require(last.at("input_frame").at("raw_inputs")==events,"Threshold raw input mismatch");
@@ -69,6 +76,7 @@ Json autoThresholdUiCase(Window &window,const std::string &method,
    frame(Json::array({{{"type","position"},{"space","screen"},{"point",point}}}));
    frame(Json::array({{{"type","wheel"},{"x",0},{"y",-12}}}));frame();frame();}
   click("dialog.method.choice."+method);
+  if(ignore_black)click("dialog.ignore_black");if(ignore_white)click("dialog.ignore_white");
   report["selected_parameters"]=last.at("operation_dialog").at("parameters");
   click("dialog.preview");window.wait();window.poll();frame();frame();
   require(last.at("operation_dialog").value("has_preview",false),"Threshold preview missing");
@@ -81,6 +89,7 @@ Json autoThresholdUiCase(Window &window,const std::string &method,
    frame(Json::array({{{"type","position"},{"space","screen"},{"point",point}}}));
    frame(Json::array({{{"type","wheel"},{"x",0},{"y",-12}}}));frame();frame();}
   click("dialog.method.choice."+method);
+  if(ignore_black)click("dialog.ignore_black");if(ignore_white)click("dialog.ignore_white");
   click("dialog.apply");window.wait();window.poll();frame();frame();
   report["states"]["applied"]=state(window,owner);
   require(owner->undo_steps()==1 && window.workflow.size()==1,"Threshold Apply did not publish once");

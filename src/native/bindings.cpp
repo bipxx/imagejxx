@@ -1,4 +1,5 @@
 #include "imagejxx/image.hpp"
+#include <imagejxx/auto_threshold.hpp>
 #include <imagejxx/binary.hpp>
 #include <imagejxx/conversion.hpp>
 #include <imagejxx/rgb_conversion.hpp>
@@ -428,10 +429,10 @@ PYBIND11_MODULE(_native, m) {
         auto image = read_image(a); auto selection = read_optional(mask);
         auto stats = [&]() { py::gil_scoped_release release; return statistics(image, selection.get()); }(); return statistics_dict(stats);
     });
-    m.def("auto_threshold", [](const py::array& a, const std::string& method, int bins) {
-        auto image = read_image(a); py::gil_scoped_release release; return auto_threshold(image, method, bins);
-    });
-    m.def("auto_mask", [](const py::array& a, const std::string& method, bool bright, int bins) { return image_call(a, [&](const Image& i) { return auto_mask(i, method, bright, bins); }); });
+    m.def("auto_threshold", [](const py::array& a, const std::string& method, int bins,bool ignore_black,bool ignore_white) {
+        auto image = read_image(a); py::gil_scoped_release release; return auto_threshold(image, method, bins,ignore_black,ignore_white);
+    },py::arg("image"),py::arg("method"),py::arg("bins"),py::arg("ignore_black").noconvert()=false,py::arg("ignore_white").noconvert()=false);
+    m.def("auto_mask", [](const py::array& a, const std::string& method, bool bright, int bins,bool ignore_black,bool ignore_white) { return image_call(a, [&](const Image& i) { return auto_mask(i, method, bright, bins,ignore_black,ignore_white); }); },py::arg("image"),py::arg("method"),py::arg("bright"),py::arg("bins"),py::arg("ignore_black").noconvert()=false,py::arg("ignore_white").noconvert()=false);
     m.def("equalize_histogram", [](const py::array& a) { return image_call(a, [](const Image& i) { return equalize_histogram(i); }); });
     m.def("project", [](const py::array& a, const std::string& method) {
         auto stack = read_stack(a); auto out = [&]() { py::gil_scoped_release release; return project(stack, method); }(); return to_array(out);

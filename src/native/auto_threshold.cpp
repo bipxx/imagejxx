@@ -130,11 +130,21 @@ int entropy_threshold(const Counts &data,bool shanbhag) {
 }
 }
 int auto_threshold_histogram_imagej(const std::vector<std::uint64_t> &counts,const std::string &method) {
+  return auto_threshold_histogram_imagej(counts,method,false,false);
+}
+int auto_threshold_histogram_imagej(const std::vector<std::uint64_t> &input,const std::string &method,bool ignore_black,bool ignore_white) {
   kernel_checkpoint();
   execution_progress(0,1);
   const auto finish=[](int result) {kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;};
   if(!is_imagej_threshold_method(method))throw std::invalid_argument("Unknown ImageJ histogram threshold method");
-  if(counts.size()<2 || counts.size()>65536)throw std::invalid_argument("ImageJ threshold requires 2..65536 bins");
+  if(input.size()<2 || input.size()>65536)throw std::invalid_argument("ImageJ threshold requires 2..65536 bins");
+  std::vector<std::uint64_t> filtered;
+  if(ignore_black || ignore_white) {
+    filtered=input;
+    if(ignore_black)filtered.front()=0;
+    if(ignore_white)filtered.back()=0;
+  }
+  const auto &counts=ignore_black || ignore_white?filtered:input;
   std::uint64_t total=0;int first=-1,last=-1,occupied=0;
   for(std::size_t i=0;i<counts.size();++i) {
     kernel_checkpoint_periodic();

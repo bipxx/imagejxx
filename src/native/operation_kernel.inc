@@ -63,7 +63,7 @@ Image execute_kernel(const std::string &id, const Image &image,
     return threshold(image, n("lower"),
                      n("upper", std::numeric_limits<double>::infinity()));
   if (id == "auto_mask")
-    return auto_mask(image, s("method", "otsu"), b("bright", true), i("bins"));
+    return auto_mask(image, s("method", "otsu"), b("bright", true), i("bins"),b("ignore_black",false),b("ignore_white",false));
   if (id == "in_range")
     return in_range(image, vector(get_parameter(p, "lower")),
                     vector(get_parameter(p, "upper")));
