@@ -5608,6 +5608,12 @@ void Window::action(const std::string &name, const Json &p) {
     impl->histogramPanel.show(nativeSnapshot(),limits);impl->animating=false;return;
   }
   if(name=="configure_histogram"){impl->histogramPanel.configure(p);return;}
+  if(name=="configure_histogram_target") {
+    if(!p.is_object() || p.size()!=1 || !p.contains("target"))throw std::invalid_argument("Histogram target requires only a target object");
+    const auto request=[&]{try{return gaussianRebindRequest(p.at("target"));}catch(const std::invalid_argument &e){std::string message=e.what();const auto at=message.find("Gaussian");if(at!=std::string::npos)message.replace(at,8,"Histogram");throw std::invalid_argument(message);}}();
+    impl->histogramPanel.configureTarget(request);return;
+  }
+
   if(name=="calculate_histogram") {
     if(!p.is_object() || !p.empty())throw std::invalid_argument("Calculate Histogram accepts no parameters");
     impl->histogramPanel.calculate(documents_.empty()?std::nullopt:std::optional<DocumentSnapshot>{nativeSnapshot()},busy());return;

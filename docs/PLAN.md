@@ -1,5 +1,20 @@
 # ImageJ and Fiji gap closure plan
 
+**Pooled histogram UI checkpoint, 2026-10-21 (work in progress):**
+Both ImGui launchers now reuse Current/All/First/Last/Step for scientific C/T/Z
+grids and whole/active/positioned area ROI unions. Calculate pools the native
+target service; unmatched planes contribute no members. Invalid drafts and mode
+switches preserve the last result, its scope labels and lossless raw CSV export.
+Windows/Linux each pass 916 selected checks (51 new), four native executable
+suites and fresh installed SDK consumers. Independent readers verify 144 UI
+reports / 24,780 input frames, including 36 new reports / 7,848 frames.
+The 1,261-case registration preserves prior order. Verified cleanup removes
+830,430,034 scratch bytes, preserving final products and evidence. See
+[usage/limits](HISTOGRAM.md) and [the scoped receipt](parity/reviews/p10j-histogram-target-ui001.json).
+Remaining domains/statistical conventions/defaults/recording/async and full
+source/reference/resource/platform acceptance stay open, along with the existing
+Auto Contrast fingerprint gate. All99 stays 47 in progress / 52 open / 0 complete.
+
 **Native pooled histogram checkpoint, 2026-10-21 (work in progress):**
 The C++/Python service now pools frozen C/T/Z ranges or explicit positions with
 whole/active/positioned area ROI unions, preserving raw processor/custom bins,

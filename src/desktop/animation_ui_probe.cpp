@@ -2,6 +2,7 @@
 // belong to the independent reader, not this driver.
 #include "animation_ui_probe.hpp"
 #include "histogram_ui_probe.hpp"
+#include "target_histogram_ui_probe.hpp"
 #include "auto_threshold_ui_probe.hpp"
 #include "automatic_display_ui_probe.hpp"
 #include "scientific_threshold_target_ui_probe.hpp"
@@ -15,6 +16,7 @@
 namespace imagejxx::desktop {
 Json animationUiCase(Window &window, const std::string &id,
                      const std::string &context, const std::string &directory) {
+  if(id.rfind("target-histogram-",0)==0)return targetHistogramUiCase(window,id.substr(17),context,directory);
   if(id.rfind("histogram-",0)==0)return histogramUiCase(window,id.substr(10),context,directory);
   if(id.rfind("target-threshold-",0)==0)return scientificThresholdTargetUiCase(window,id.substr(17),context,directory);
   if(id.rfind("auto-display-",0)==0)return automaticDisplayUiCase(window,id.substr(13),context,directory);

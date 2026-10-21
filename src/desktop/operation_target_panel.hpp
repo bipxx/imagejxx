@@ -18,7 +18,10 @@ public:
   };
 
   void capture(const DocumentSnapshot &source);
-  bool draw(bool enabled = true, bool preview_ordinal = true);
+  bool draw(bool enabled = true, bool preview_ordinal = true,
+            const char *heading = "Apply target",
+            const char *description = "Independent XY planes; in place",
+            const char *positioned_hint = "Matching positioned ROIs form a union. Unmatched planes are unchanged.");
   void configure(const DocumentSnapshot &, const TargetRequest &);
   void refreshSelection(bool value) { hasSelection_=value; }
   bool enterConsumed() const { return enterConsumed_; }

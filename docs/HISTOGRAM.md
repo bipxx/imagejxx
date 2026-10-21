@@ -44,6 +44,23 @@ plane. Live navigation does not retarget those fields. Calculation requires the
 captured source to be active and unchanged. A metadata, pixel or selection edit
 requires reopening the panel; display navigation remains allowed.
 
+**Target... > Use scientific target** enables the shared Current/All/First/Last/
+Step controls for T/C/Z. Current uses the opening position, independently of the
+single-plane text fields and later navigation. Choose whole planes, the captured
+active area selection, or positioned area ROI unions. Overlaps count once and
+unmatched planes contribute no members. Done closes the target window while
+retaining its draft. Calculate pools that frozen grid with the panel's existing
+processor-raw/custom bin/range settings. Invalid or unfinished grid fields disable
+calculation while the last successful result remains available for export.
+
+Pooled results show their plane count, sampled ranges and ROI policy. These labels
+belong to the calculated result, even after further drafts or a mode switch.
+Turning scientific mode off restores the single-plane fields and their previous
+drafts without recalculating or deleting the pooled result. In scientific mode,
+the single-plane T/C/Z and active-ROI controls are disabled; their values do not
+override the grid or its ROI policy.
+
+
 The captured active area ROI is used by default. Uncheck it for the whole plane.
 A nonarea selection is refused rather than silently flattened or converted.
 **Calculate** uses the processor-raw convention by default. Enable **Custom bins
@@ -64,19 +81,29 @@ panel releases both source and result. Existing legacy histogram routes remain
 available for legacy image types outside the native service's supported domain.
 
 The shared Window action API provides `show_histogram`, `configure_histogram`,
-`calculate_histogram`, `export_histogram_csv` and `close_histogram`. Show/calculate/
-close accept an empty object. Configure accepts Boolean `custom`, `roi`, `log`
+`configure_histogram_target`, `calculate_histogram`, `export_histogram_csv` and `close_histogram`. Show/calculate/
+close accept an empty object. Configure accepts Boolean `custom`, `roi`, `log`, `scientific`
 and draft text fields `t`, `c`, `z`, `bins`, `lower`, `upper`; position text is
 one-based just like the UI. Invalid drafts are allowed, but unknown fields or
 wrong value types refuse atomically. Export accepts only a string `path` and
 writes the last successful raw result. The legacy `histogram` action retains its
 original plotting behavior for compatibility.
 
+`configure_histogram_target` accepts only a `target` object using the existing
+strict target syntax: `scope` is `current_plane`, `all_z` or `ranges`; `t`/`c`/`z`
+are zero-based half-open `{start, stop, step}` ranges when scope is `ranges`;
+`roi` is `whole_plane`, `active_selection` or `positioned_rois`. It validates and
+captures a range draft without reading pixels, and enables scientific mode.
+Explicit position lists, volume execution and new-document destinations remain
+available only where supported by the native APIs; this panel accepts plane
+grids with the in-place destination field and never edits image data.
+
+
 The calculation is currently synchronous and bounded by the native per-plane
 pixel/scratch limits and the captured processing-memory preference. Frontend plot
 heights, diagnostics, retained results, CSV text and allocator/provider/RSS costs
-are not a total memory cap. Full histogram parity remains open: pooled C/T/Z grids in the panel,
-positioned ROIs, calibrated/color domains, saved defaults, analysis recording,
+are not a total memory cap. Histogram parity remains open for calibrated/color
+and other numeric domains, saved defaults, analysis recording,
 asynchronous execution and complete reference/resource/platform acceptance.
 
 ## Pooled native C/T/Z targets
@@ -147,6 +174,7 @@ revisions, ranges/positions and ROI policy. It is provenance, not a complete ROI
 geometry file or a replayable histogram command. CSV shares the exact raw-bin
 formatter with the single-plane service.
 
-The standalone ImGui panel still selects one plane. Adding shared
-Current/All/First/Last/Step and positioned-ROI controls backed by this service is
-next; no pooled UI or whole-family acceptance is claimed by the native API tests.
+The standalone ImGui panel now uses this service for its scientific target mode.
+Both launchers have actual-input grid/ROI/bin/log/export checks. These bounded
+functional checks do not establish complete upstream, resource or real GPU/
+platform acceptance, nor completion of remaining histogram domains and workflows.

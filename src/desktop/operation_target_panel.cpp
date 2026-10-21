@@ -235,14 +235,14 @@ bool OperationTargetPanel::field(const char *label, const char *name,
   return edited || committed;
 }
 
-bool OperationTargetPanel::draw(bool enabled,bool preview_ordinal) {
+bool OperationTargetPanel::draw(bool enabled,bool preview_ordinal,const char *heading,const char *description,const char *positioned_hint) {
   resetControls();
   enterConsumed_ = false;
   if (!captured_)
     return false;
   bool changed = false;
-  ImGui::SeparatorText("Apply target");
-  ImGui::TextUnformatted("Independent XY planes; in place");
+  ImGui::SeparatorText(heading);
+  ImGui::TextUnformatted(description);
   ImGui::Text("C is scientific channel; S is interleaved sample (%d)", samples_);
   ImGui::BeginDisabled(!enabled);
   constexpr std::array<std::size_t, 3> order{1, 2, 0};
@@ -306,8 +306,7 @@ bool OperationTargetPanel::draw(bool enabled,bool preview_ordinal) {
   if (roi_ == RoiPolicy::ActiveSelection && !hasSelection_)
     ImGui::TextWrapped("No active selection was captured; use the whole plane.");
   if (roi_ == RoiPolicy::PositionedRois)
-    ImGui::TextWrapped("Matching positioned ROIs form a union. Unmatched planes "
-                       "are unchanged.");
+    ImGui::TextWrapped("%s",positioned_hint);
   if (changed)
     changedTarget();
   // Keep the text field available while its invalid or incomplete draft has

@@ -1,0 +1,231 @@
+{
+  "state": "qualified_functional_increment",
+  "objective_complete": false,
+  "baseline_commit": "b6fbd2b69ce63924929c7360474f905346732664",
+  "scope": "Both shared ImGui hosts pool scientific C/T/Z histogram grids and positioned area ROI unions through the qualified native target service.",
+  "behavior": "Target... exposes Current/All/First/Last/Step and whole/active/positioned area policies. Current uses the opening pose, independently of simple-plane drafts/live navigation. Invalid or unfinished range drafts disable Calculate but preserve the last successful result and raw export. The modeless target window closes without computing. Source data/history are untouched. Overlaps count once and unmatched planes contribute no samples.",
+  "result_scope": "Pooled result labels, plane count, sampled ranges, ROI policy, provenance and admitted target counts remain frozen with the calculated data. Switching back to basic mode restores its drafts without replacing a pooled result. Single-plane fields cannot override the scientific grid/ROI. Native raw/custom binning, finite-ROI statistics, log1p heights and shared lossless CSV remain. Source closure releases the capture and preserves detached export until panel close.",
+  "api": "configure_histogram_target accepts only a strict target object, validates metadata-only Current/AllZ/Ranges plane grids and atomically replaces the draft. It rejects explicit position lists, volume mode and new-document destinations for this panel. configure_histogram adds a strict Boolean scientific flag; inactive basic fields are ignored by scientific calculation. Calculation retains source/revision/read/resource guards.",
+  "shared_widgets": "OperationTargetPanel gains defaulted heading/description/positioned-hint text so analysis controls describe pooling and zero-membership planes. Existing edit-panel defaults retain their original text and behavior. Existing scientific threshold actual-input checks are requalified.",
+  "verification": "916 selected checks per OS, including 51 new checks (18 shared UI/33 controller API). Independent literal/formula readers verify 144 reports / 24780 input frames, including 36 new reports / 7848 frames, across both platforms/launchers. Counts/edges/statistics/log heights/CSV bytes, range errors, frozen result labels, mode isolation, unmatched ROIs, source invalidation, navigation and data/history/recording preservation are checked. Four native executable suites per OS and fresh installed SDK consumers pass. No new Java oracle or real GPU/full-platform certification is claimed.",
+  "profiles": {
+    "windows": {
+      "python_cases": 916,
+      "new_target_ui_cases": 18,
+      "new_target_api_cases": 33,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "reports": 72,
+      "frames": 12390,
+      "new_reports": 18,
+      "new_frames": 3924,
+      "native_test_executables": 4,
+      "sdk": "fresh installed target histogram API consumer passed",
+      "removed_scratch_bytes": 414269336,
+      "evidence": [
+        {
+          "path": "build/p10j-histogram-target-ui001/windows-build001/receipt.json",
+          "bytes": 1473,
+          "sha256": "89ac8f2d8fa8780b85f5e1cbdecfb57ae5c41a1403479837b311a3bacf4cd800"
+        },
+        {
+          "path": "build/p10j-histogram-target-ui001/windows-build001/native.xml",
+          "bytes": 3297,
+          "sha256": "2a5e178acfdd6b5c9fa2ec644de11c4bc66f46ee089b6898cc4bc29be56e385e"
+        },
+        {
+          "path": "build/p10j-histogram-target-ui001/windows-python001/receipt.json",
+          "bytes": 3189,
+          "sha256": "2aeeab2cb8a4376f2eabc9355c287facc26d8e17ca77fd8823b06e5ff9acdbb7"
+        },
+        {
+          "path": "build/p10j-histogram-target-ui001/windows-python001/pytest.xml",
+          "bytes": 139818,
+          "sha256": "86f37ba694204416a4755a3e0b34484511ddedc1dd0617b7aa8d685728027f0c"
+        },
+        {
+          "path": "build/p10j-histogram-target-ui001/windows-capture001.json",
+          "bytes": 13700,
+          "sha256": "4e8ae7d1a59389c50cf2d02844a3e58081a32cf00b76e5a8156c02dc34d3891e"
+        },
+        {
+          "path": "build/p10j-histogram-target-ui001/windows-evidence001.json",
+          "bytes": 29571,
+          "sha256": "34479c82ccbb16ae756f941919462f3fd06c7b4a4325ee0e18c9297d0476948d"
+        },
+        {
+          "path": "build/p10j-histogram-target-ui001/windows-sdk001/receipt.json",
+          "bytes": 388,
+          "sha256": "90cb9fab32f764acbf46784db549cabf6940426666886951e7ade0d8bcac3814"
+        },
+        {
+          "path": "build/p10j-histogram-target-ui001/windows-cleanup001.json",
+          "bytes": 146099,
+          "sha256": "bcbcafad69bc03ba53fbf5210fb3f150a6e170d8f6eb6bf77c7bfee342e2648f"
+        },
+        {
+          "path": "build/p10j-histogram-target-ui001/windows-products001.json",
+          "bytes": 3123,
+          "sha256": "b2c13477e0940655ffaa617434e145314f3c245d5e4f4b93fbbd7e628728739c"
+        }
+      ]
+    },
+    "linux": {
+      "python_cases": 916,
+      "new_target_ui_cases": 18,
+      "new_target_api_cases": 33,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "reports": 72,
+      "frames": 12390,
+      "new_reports": 18,
+      "new_frames": 3924,
+      "native_test_executables": 4,
+      "sdk": "fresh installed target histogram API consumer passed",
+      "removed_scratch_bytes": 416160698,
+      "evidence": [
+        {
+          "path": "build/p10j-histogram-target-ui001/linux-build001/receipt.json",
+          "bytes": 1439,
+          "sha256": "463f4edd6c5ec65229a78c3db975bef1360494449855be30c60a05eda0af2618"
+        },
+        {
+          "path": "build/p10j-histogram-target-ui001/linux-build001/native.xml",
+          "bytes": 3238,
+          "sha256": "7aaaf8e38210907ef4e63a22aed0519f28542d039472b9465a67b5d661442ff8"
+        },
+        {
+          "path": "build/p10j-histogram-target-ui001/linux-python001/receipt.json",
+          "bytes": 2992,
+          "sha256": "a8a00daa851debc4f23769d2d2969353058ca31214464d9b57966bb8e2906503"
+        },
+        {
+          "path": "build/p10j-histogram-target-ui001/linux-python001/pytest.xml",
+          "bytes": 139818,
+          "sha256": "f7bbb7d7aa527e432e2a77245a34d183b5711eeacabb58e2a95d6fc9626c2d59"
+        },
+        {
+          "path": "build/p10j-histogram-target-ui001/linux-capture001.json",
+          "bytes": 11240,
+          "sha256": "6d6199c232094ea22e6f564483712b2003c2616d1c014616d84a20847ebbd30b"
+        },
+        {
+          "path": "build/p10j-histogram-target-ui001/linux-evidence001.json",
+          "bytes": 27195,
+          "sha256": "838c46eb52998818ed396e68436dee85a09013580abd2870f580005d7526600b"
+        },
+        {
+          "path": "build/p10j-histogram-target-ui001/linux-sdk001/receipt.json",
+          "bytes": 335,
+          "sha256": "8e07fe00f8c1d2a88ac2b4c6fc0234b17aa669dc45f33897f535cf9b3374df20"
+        },
+        {
+          "path": "build/p10j-histogram-target-ui001/linux-cleanup001.json",
+          "bytes": 123930,
+          "sha256": "8a75ea7680f20f278a5750b620263787a4293b3322cb500b90c0db73bb302542"
+        },
+        {
+          "path": "build/p10j-histogram-target-ui001/linux-products001.json",
+          "bytes": 2930,
+          "sha256": "3573fea250a98617b726a631075785b18eeb722c5bdce54b5669a73b18bb43a6"
+        }
+      ]
+    }
+  },
+  "commercial": {
+    "result": "Reviewed commercial-use dependency inventory passed; no new dependencies.",
+    "evidence": {
+      "path": "build/p10j-histogram-target-ui001/licenses001.log",
+      "bytes": 53,
+      "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+    }
+  },
+  "registration": {
+    "path": "build/p10j-histogram-target-ui001/registration001.json",
+    "bytes": 1648,
+    "sha256": "275f6ceb67ddffd7d0f8fdf85d2027705cbcefecba4d5bc71d7b21af7ea4e865"
+  },
+  "plan_gate": {
+    "state": "existing_failure_preserved",
+    "message": "Plan inventory check failed: histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed",
+    "evidence": {
+      "path": "build/p10j-histogram-target-ui001/plan-gate001.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    },
+    "unchanged_producer_source": {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 14135,
+      "sha256": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    }
+  },
+  "remaining": [
+    "Calibrated/color/other numeric domains and remaining upstream statistical/presentation conventions.",
+    "Saved histogram defaults, analysis recording and asynchronous execution.",
+    "Complete original source/reference/resource/platform and full ImageJ/commercial Fiji acceptance; all99 statuses remain unchanged."
+  ],
+  "source": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 102137,
+      "sha256": "0ce628eb0a8b01801d1ae281e561ad9ce9035628d8fa8d31778b2c56b9d8ba37"
+    },
+    {
+      "path": "src/desktop/histogram_panel.hpp",
+      "bytes": 1755,
+      "sha256": "2dc0402476990f644be46e0d42b8bd9ad5e80c6ddd524dfc691b894d279d1ec1"
+    },
+    {
+      "path": "src/desktop/histogram_panel.cpp",
+      "bytes": 19605,
+      "sha256": "7a9dff8b841e656bb166d789a391e0b37b3a4c20e598651b73e045f1fd124fd8"
+    },
+    {
+      "path": "src/desktop/operation_target_panel.hpp",
+      "bytes": 2873,
+      "sha256": "25a33f1b6c5a77ae3c88a3f37d51399842035a1566d968c78c3e6e52d64b188b"
+    },
+    {
+      "path": "src/desktop/operation_target_panel.cpp",
+      "bytes": 16591,
+      "sha256": "3beec09305fdb76704bbe2079d8700b26f72ed3851d98fdd9a97acc24e8d578b"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 666944,
+      "sha256": "bc8cb8406443e6ff650e9ed10d586498b8767c98967c2af0789e4bc00ce0068c"
+    },
+    {
+      "path": "src/desktop/animation_ui_probe.cpp",
+      "bytes": 13963,
+      "sha256": "43d88999f23746c7b973ebfe947020c572eb270a762f6e38ce84c226cb8eb1df"
+    },
+    {
+      "path": "src/desktop/target_histogram_ui_probe.cpp",
+      "bytes": 6578,
+      "sha256": "9355748286f6707e4943feb6eed42354ddcf6712a07bb7fdfeeb8296a84bb06e"
+    },
+    {
+      "path": "src/desktop/target_histogram_ui_probe.hpp",
+      "bytes": 181,
+      "sha256": "e7b52157b37af5ebdb501a68c8b72606e8ace6cbf99470dbee8b82d75eb7faac"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 32702,
+      "sha256": "b2c363d21cf2347bb82bbdb7c3d033db673a8ae210867f1e9e0a59646499b120"
+    },
+    {
+      "path": "tests/python/test_target_histogram_ui.py",
+      "bytes": 5669,
+      "sha256": "659e83e62a65f8002417e7f4e9a123c8606ebfb30150a0216afc0fdf253119e7"
+    },
+    {
+      "path": "tests/python/test_target_histogram_desktop_api.py",
+      "bytes": 5409,
+      "sha256": "7264ce6fc85f405bce39119c73a5dcd1fd721d1534dabec45dac6074591fd0e8"
+    }
+  ]
+}
