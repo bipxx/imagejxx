@@ -1,0 +1,137 @@
+{
+  "state": "qualified_feature_increment",
+  "objective_complete": false,
+  "scope": "Eight direct shadow menu entries, source-aware single-image/stack/scientific routing, metadata admission consistency and direct asynchronous refusal.",
+  "all99": {
+    "in_progress": 43,
+    "open": 56,
+    "complete": 0
+  },
+  "feature": [
+    "North/Northeast/East/Southeast/South/Southwest/West/Northwest reuse the existing shadow_imagej core operation.",
+    "Ordinary single images apply directly; legacy stacks show a seeded form and explicit Process all slices choice; scientific datasets retain the native parameter/target review.",
+    "Both presets and the general form disable for unsupported layouts/policies; active owner and idle checks remain.",
+    "Pinned numerical results, current/all-stack/scientific targets, preview isolation, prior workflow rows, metadata/navigation and paired Undo/Redo are checked.",
+    "Direct asynchronous finite Float32 output overflow is visible and leaves source/history/recorder unchanged."
+  ],
+  "tests": {
+    "windows": {
+      "passed": 3600,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "linux": {
+      "passed": 3600,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "identical_case_ids": true,
+  "new_actual_ui": {
+    "observations": 116,
+    "frames": 4436,
+    "cases_per_host_per_platform": 29,
+    "profiles": {
+      "windows": {
+        "state": "passed",
+        "preset_observations": 58,
+        "frames": 2218,
+        "contexts": {
+          "imgui_cpp": 29,
+          "imgui_python": 29
+        },
+        "ordinary_scientific_regression_cpp_cases": 16
+      },
+      "linux": {
+        "state": "passed",
+        "preset_observations": 58,
+        "frames": 2218,
+        "contexts": {
+          "imgui_cpp": 29,
+          "imgui_python": 29
+        },
+        "ordinary_scientific_regression_cpp_cases": 16
+      }
+    },
+    "os_input_or_gpu_equivalence_claim": false
+  },
+  "ci": {
+    "state": "passed",
+    "previous_cases_preserved": 972,
+    "new_cases": 29,
+    "default_total": 1001,
+    "unique_cases": true
+  },
+  "products": {
+    "public_headers": 66,
+    "python_modules": 12,
+    "native_catalog_operations": 92,
+    "source_and_installed_match": true,
+    "new_product_dependencies": false
+  },
+  "commercial_check": "Reviewed commercial-use dependency inventory passed; existing public-domain ImageJ Shadows reference retained.",
+  "qualification_incident": "The first Linux worker selected an older qualified install and could not recognize the new private CLI; its failure is preserved. Final Linux cpp003/python003 use install-p09l002 and pass.",
+  "cleanup": {
+    "removed_bytes": 1036280057,
+    "removed_files": 784,
+    "crc_and_every_member_sha256_verified": true,
+    "archives": {
+      "windows": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09l-shadow-presets001\\windows-scratch001.zip",
+        "bytes": 65404409,
+        "sha256": "708ed14b895d2e1c9c64c07c15664ebee846f46ba4159836fa81de9c1b7b19b6"
+      },
+      "linux": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09l-shadow-presets001/linux-scratch001.zip",
+        "bytes": 82896441,
+        "sha256": "8a20593fa8518b4afdd2823b7433a2940d27455a7762375943837f650f77ee2c"
+      }
+    },
+    "preserved": "Final Windows build002 and Linux install-p09l002 SDK/Python packages, useful caches, original failure and retained receipts; superseded owned intermediate installs archived."
+  },
+  "inputs": [
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 638420,
+      "sha256": "ef36c2c07c5ddf1d7db0e38251e5b60ac3661569fc023c6b4a4d4f8884bf2d18"
+    },
+    {
+      "path": "src/desktop/shadow_ui_probe.cpp",
+      "bytes": 18565,
+      "sha256": "312020faa5593c1a987f559a469b3519f0a6a4c376b8a4652312d058604223b1"
+    },
+    {
+      "path": "src/desktop/shadow_ui_probe.hpp",
+      "bytes": 515,
+      "sha256": "c76b88c4e61b96551dbebe3e85264e35d035d7a05b603eabd037e289ac05a5a1"
+    },
+    {
+      "path": "src/desktop/main.cpp",
+      "bytes": 46458,
+      "sha256": "9cf7e99ef9f2cafeafa7fefcfd21967fcf37f01bc213428b1fda61a2487802b6"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 50999,
+      "sha256": "93260e3e414b874a9ad163038766b13dcdf0cabd4ddf822aa07e1c4eb9a979a5"
+    },
+    {
+      "path": "tests/python/test_shadow_presets_ui.py",
+      "bytes": 4983,
+      "sha256": "c40268595c14cc5a748c82b4631c44b287a67003aa744e05dc90b8a2b6b95a6d"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 19184,
+      "sha256": "2caf1d681859211e158c0457f11d0be9fabe6c9041ddc6ee199269354ab97b81"
+    }
+  ],
+  "receipts": "build/p09l-shadow-presets001",
+  "remaining": [
+    "Animated Shadows Demo.",
+    "IEEE nonfinite-source profile and broader scientific positioned/irregular ROI/calibration/display contexts.",
+    "Full option registration, platform/accessibility and complete hosted/family acceptance; broader ImageJ/Fiji requirements and all 96 partial formats remain open."
+  ]
+}

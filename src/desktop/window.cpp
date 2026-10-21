@@ -1481,6 +1481,9 @@ struct Window::Impl {
     if (action=="remove_nans_imagej" ||
         ((action=="show_operation" || action=="rank_replay") && operationId=="remove_nans_imagej"))
       return removeNaNsSourceAllowed(*source);
+    if (action == "shadow_imagej" || (action == "show_operation" && operationId == "shadow_imagej"))
+      return owner.controller_->active_document_id() == source->id &&
+             scientific_operation_review_available("shadow_imagej", source->nativeSnapshot());
     if (!source->scientific())
       return true;
     if(action=="show_display_annotations" || action=="replay_display_annotation")return owner.controller_->active_document_id()==source->id;
@@ -7749,6 +7752,25 @@ void Window::Impl::menu() {
       [&](std::vector<std::string> prefix) {
         if (prefix == std::vector<std::string>{"Process", "Noise"})
           item("Despeckle", "despeckle_imagej");
+        if (prefix == std::vector<std::string>{"Process", "Shadows"}) {
+          constexpr std::pair<const char *,const char *> directions[] = {
+              {"north","North"},{"northeast","Northeast"},{"east","East"},{"southeast","Southeast"},
+              {"south","South"},{"southwest","Southwest"},{"west","West"},{"northwest","Northwest"}};
+          const bool enabled = !owner.documents_.empty() && !owner.busy() &&
+                               actionAllowed("show_operation", 0, "shadow_imagej");
+          for (const auto &direction : directions) {
+            const bool selected = ImGui::MenuItem(direction.second, nullptr, false, enabled);
+            observeControl(std::string("menu.shadow.") + direction.first, enabled);
+            if (selected) guard([&] {
+              const Json parameters{{"direction",direction.first}};
+              const auto source = doc();
+              if (source->scientific() || source->nativeSnapshot().data().dataset.shape().z > 1)
+                owner.action("show_operation", {{"operation","shadow_imagej"},{"parameters",parameters}});
+              else owner.applyOperation("shadow_imagej", parameters, false, true);
+            });
+          }
+          ImGui::Separator();
+        }
         std::set<std::string> groups;
         for (const auto &c : commands) {
           const auto &menu = get(c, "menu");
@@ -10325,8 +10347,11 @@ void Window::Impl::dialogs() {
     if (dialog.operation && dialog.id == "convert_image")
       ImGui::TextDisabled(
           "Converts every slice; the active selection is preserved.");
-    else if (dialog.operation)
+    else if (dialog.operation) {
       ImGui::Checkbox("Process all slices", &allSlices);
+      dialog.controls["all_slices"] = itemControl();
+      dialog.controls["all_slices"]["value"] = allSlices;
+    }
     const auto extractionSource = dialog.axisPlaneSource
         ? &*dialog.axisPlaneSource
         : dialog.axisRangeSource ? &*dialog.axisRangeSource

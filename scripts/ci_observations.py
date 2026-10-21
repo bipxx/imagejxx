@@ -135,6 +135,12 @@ def tiff_cases():
                 yield floating(f"{family}-tiles-float", case, preset, folder, row["file"])
 
 
+def shadow_preset_cases():
+    directions = ("north", "northeast", "east", "southeast", "south", "southwest", "west", "northwest")
+    return [f"{mode}.{direction}" for mode in ("ordinary", "stack", "scientific") for direction in directions] + [
+        "guard." + name for name in ("ordinary-f64", "scientific-f64", "scientific-rgba", "scientific-ieee")] + ["failure.float32"]
+
+
 def cases():
     groups = [
         ("rank", "--rank-ui-case", [f"R{i:02d}" for i in range(1, 60)]),
@@ -155,6 +161,7 @@ def cases():
          ["north", "northeast", "east", "southeast", "south", "southwest", "west", "northwest"]),
         ("scientific-shadows", "--scientific-shadow-ui-case",
          ["north", "northeast", "east", "southeast", "south", "southwest", "west", "northwest"]),
+        ("shadow-presets", "--shadow-preset-ui-case", shadow_preset_cases()),
         ("planar-matrix", "--planar-annotation-matrix-ui-case", planar_cases()),
         ("ieee-viewing", "--ieee-viewing-ui-case", [f"IEEE{i:02d}" for i in range(1, 5)]),
         ("native-workflow", "--native-workflow-ui-case", [None]),
@@ -184,6 +191,7 @@ def reader_environment(output):
         "IMAGEJXX_SAVED_MODIFIERS_CPP_BASE": reports / "saved-modifiers",
         "IMAGEJXX_SHADOW_CPP_BASE": reports / "shadows",
         "IMAGEJXX_SCIENTIFIC_SHADOW_CPP_BASE": reports / "scientific-shadows",
+        "IMAGEJXX_SHADOW_PRESET_CPP_BASE": reports / "shadow-presets",
         "IMAGEJXX_PLANAR_MATRIX_CPP_ROOT": reports / "planar-matrix",
         "IMAGEJXX_IEEE_CPP_DIR": reports / "ieee-viewing",
         "IMAGEJXX_BIGTIFF_CPP_DIR": reports / "bigtiff",

@@ -1,5 +1,22 @@
 # ImageJ and Fiji gap closure plan
 
+**Direct shadow preset checkpoint, 2026-10-21 (work in progress):** the eight
+named Process/Shadows entries now apply directly to a single ordinary image,
+open a seeded scope form for legacy stacks, and retain target review for
+scientific datasets. Actual Process all slices input, preview, recording and
+Undo/Redo pass; source admission now disables both preset and general entries
+for unsupported types/policies. A direct asynchronous Float32 overflow is
+visibly refused without source, history or recorder changes. Both installed
+platforms pass the same 3,600 selected tests with no skips; 116 preset
+observations cover 4,436 shared-ImGui frames. Products match 66 headers,
+12 Python modules and 92 native operations; no dependency was added. Verified
+archives reclaim 1,036,280,057 bytes, including superseded owned installs.
+CI preserves its prior 972 cases and adds 29, giving 1,001. See
+[the guide](SHADOWS.md) and [the scoped receipt](parity/reviews/p09l-shadow-presets001.json).
+Animated Demo, IEEE and broader scientific ROI/display, formal and full hosted
+platform gates remain open. All99 stays 43 in progress / 56 open / 0 complete;
+all 96 format variants remain partial.
+
 **Scientific shadow checkpoint, 2026-10-21 (work in progress):** supported
 scientific documents now open Process/Shadows through the existing native
 parameter and target review. Direction editing, private linked XYZ preview,

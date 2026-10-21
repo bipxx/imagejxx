@@ -2017,7 +2017,8 @@
           "docs/SHADOWS.md",
           "docs/parity/shadows-commercial-source-review-001.json",
           "docs/parity/reviews/p09g-shadows001.json",
-          "docs/parity/reviews/p09k-scientific-shadows001.json"
+          "docs/parity/reviews/p09k-scientific-shadows001.json",
+          "docs/parity/reviews/p09l-shadow-presets001.json"
         ],
         "implementation": [
           "src/native/shadow.cpp",
@@ -2034,7 +2035,8 @@
           "tests/python/test_shadow_ui.py",
           "examples/cpp/shadows.cpp",
           "tests/fixtures/shadows-imagej154r.json",
-          "tests/python/test_scientific_shadow_review.py"
+          "tests/python/test_scientific_shadow_review.py",
+          "tests/python/test_shadow_presets_ui.py"
         ]
       },
       "id": "G055",
@@ -2043,7 +2045,7 @@
       ],
       "name": "Directional shadow filters",
       "remaining": [
-        "Animated Demo and direct direction menu shortcuts.",
+        "Animated Shadows Demo.",
         "Broader scientific positioned/irregular ROI and calibration/display coverage; nonfinite IEEE profile.",
         "Full option-level registration and platform/accessibility acceptance; broader ImageJ/Fiji feature families remain open."
       ],
@@ -2051,7 +2053,8 @@
       "status": "in_progress",
       "verification": [
         "p09g.shadows.functional.001",
-        "p09k.shadows.scientific.functional.001"
+        "p09k.shadows.scientific.functional.001",
+        "p09l.shadows.presets.functional.001"
       ]
     },
     {
@@ -179952,6 +179955,29 @@
         "total": 3540
       },
       "scope": "Scientific shadow access,32 actual observations/4544 frames,3540 main and2 supplementary tests per platform; not full hosted or family acceptance."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-21",
+      "id": "p09l.shadows.presets.functional.001",
+      "identity": {
+        "qualification": {
+          "bytes": 5184,
+          "path": "docs/parity/reviews/p09l-shadow-presets001.json",
+          "sha256": "afa3b62d3d2d5262bab8c25661c7e0e67bb75c3c4122bc4f905e059d9a905f76"
+        }
+      },
+      "platform": "Windows/Linux installed C++ and Python Dear ImGui hosts",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 3600,
+        "report": "build/p09l-shadow-presets001/windows-python002/pytest.xml",
+        "skipped": 0,
+        "total": 3600
+      },
+      "scope": "Eight direct presets with source routing, source admission,116 actual observations and3600 tests per platform; full family/hosted acceptance remains open."
     }
   ]
 }

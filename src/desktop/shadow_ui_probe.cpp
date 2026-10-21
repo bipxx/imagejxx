@@ -160,4 +160,88 @@ Json scientificShadowUiCase(Window &window,const std::string &direction,
   require(report.dump().size()<32*1048576,"Scientific shadow report bound");
   writeJson((output/"case.json").u8string(),report);capture.done=true;return report;
 }
+Json shadowPresetUiCase(Window &window,const std::string &caseId,
+                       const std::string &context,const std::string &directory) {
+  const auto split=caseId.find('.');require(split!=std::string::npos,"Shadow preset case requires a mode");
+  const auto mode=caseId.substr(0,split),argument=caseId.substr(split+1);
+  const bool guard=mode=="guard",failure=mode=="failure",scientific=mode=="scientific" || (guard && argument!="ordinary-f64");
+  require(mode=="ordinary" || mode=="stack" || mode=="scientific" || guard || failure,"Unknown shadow preset mode");
+  if(failure)require(argument=="float32","Unknown shadow failure case");
+  else if(!guard)validateRecord("shadow_imagej",{{"direction",argument}});
+  else require(argument=="ordinary-f64" || argument=="scientific-f64" || argument=="scientific-rgba" || argument=="scientific-ieee","Unknown shadow guard");
+  namespace fs=std::filesystem;const auto output=fs::absolute(fs::u8path(directory));
+  require(!fs::exists(output) && window.documents().empty(),"Fresh shadow preset fixture required");fs::create_directories(output);
+  const int samples=argument=="scientific-rgba"?4:1;
+  const auto type=failure?PixelType::Float32:guard?(argument=="scientific-ieee"?PixelType::Float32:argument=="scientific-rgba"?PixelType::UInt8:PixelType::Float64):PixelType::UInt8;
+  const DatasetShape shape{scientific?2:1,scientific?2:1,scientific || mode=="stack"?3:1,5,7,samples};Stack planes;
+  for(std::size_t p=0;p<shape.plane_count();++p) {
+    Image image(7,5,samples,type);
+    for(std::size_t i=0;i<image.pixels.size();++i)image.pixels[i]=failure?(i/7==0?1e38:i/7==2?-1e38:0):double((i*37+13)%256);
+    planes.push_back(std::move(image));
+  }
+  const auto policy=argument=="scientific-ieee"?FloatingSamplePolicy::PreserveIEEEFloat32:FloatingSamplePolicy::FiniteOnly;
+  DocumentData data{scientific?Dataset::from_planes(shape,std::move(planes),{},policy):Dataset::from_stack(std::move(planes))};
+  data.previous_selection=Selection("line",{{0,0},{6,4}});
+  data.rois={{"retained",Selection("rectangle",{{1,1},{6,4}}),scientific?std::optional<int>(1):std::nullopt,scientific?std::optional<int>(1):std::nullopt,shape.z>1?1:0,{{"opaque",std::string("retained")}}}};
+  auto owner=std::make_shared<imagejxx::Document>(std::move(data));
+  auto display=owner->snapshot().display();display.t=display.c=scientific?1:0;display.crosshair={3,2,shape.z>1?1:0};owner->set_display(display);
+  window.addNativeDocument(owner);window.updateSettings({{"processing_workers",1},{"processing_memory_mb",64}},false);
+  window.recording=true;window.workflow=Json::array({{{"operation","subtract"},{"parameters",{{"value",3}}},{"all_slices",false}}});
+  const auto snapshot=[&] {
+    auto result=state(window,owner);result["pixels"]=Json::array();const auto held=owner->snapshot();
+    for(int t=0;t<shape.t;++t)for(int c=0;c<shape.c;++c)for(int z=0;z<shape.z;++z)result["pixels"].push_back(held.data().dataset.plane({t,c,z})->pixels);
+    result["t"]=held.display().t;result["c"]=held.display().c;result["crosshair"]=held.display().crosshair;return result;
+  };
+  Json report{{"contract","p09l.shadow-presets.ui.001"},{"case_id",caseId},{"context",context},{"mode",mode},{"direction",guard?Json():Json(failure?"north":argument)},
+      {"state","running"},{"acceptance_claim",false},{"shape",{shape.t,shape.c,shape.z,5,7,samples}},
+      {"frames",Json::array()},{"controls",Json::array()},{"states",{{"before",snapshot()}}}};
+  struct Capture {Json &r;fs::path p;bool done=false;~Capture(){if(!done)try{r["state"]="failed";writeJson((p/"failure.json").u8string(),r);}catch(...){}}}capture{report,output};
+  HeadlessInputSession session(window);Json last;
+  const auto frame=[&](const Json &events=Json::array()) {
+    require(report["frames"].size()<240,"Shadow preset frame bound");last=session.frame(events);Json rendered;
+    for(const auto *key:{"input_frame","host_controls","operation_dialog","native_workflow","window_error"})rendered[key]=last.at(key);
+    require(last.at("input_frame").at("raw_inputs")==events,"Shadow preset raw input mismatch");
+    report["frames"].push_back({{"events",events},{"rendered",std::move(rendered)}});if(!failure)require(window.error().empty(),"Shadow preset window error");
+  };
+  const auto click=[&](const std::string &name) {
+    const Json control=name.rfind("dialog.",0)==0?last.at("operation_dialog").at("controls").at(name.substr(7)):
+        name.rfind("review.",0)==0?last.at("native_workflow").at("controls").at(name.substr(7)):last.at("host_controls").at(name);
+    require(control.value("enabled",true) && control.at("id").get<std::uint64_t>(),"Shadow preset control unavailable: "+name);
+    report["controls"].push_back({{"name",name},{"control",control}});
+    frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));
+    for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();
+  };
+  const auto settle=[&] {window.wait();window.poll();frame();frame();};
+  frame();frame();frame();click("menu.Process");click("menu.Process.Shadows");
+  if(guard) {
+    report["disabled_controls"]=Json::object();
+    for(const auto *id:{"north","northeast","east","southeast","south","southwest","west","northwest"}) {
+      const auto key=std::string("menu.shadow.")+id;const auto control=last.at("host_controls").at(key);
+      require(!control.at("enabled").get<bool>(),"Unsupported shadow preset was enabled");report["disabled_controls"][key]=control;
+    }
+    const auto control=last.at("host_controls").at("menu.command.shadow_imagej");require(!control.at("enabled").get<bool>(),"Unsupported generic shadow menu was enabled");
+    report["disabled_controls"]["menu.command.shadow_imagej"]=control;report["states"]["after"]=snapshot();
+  } else if(failure) {
+    require(window.error().empty(),"Shadow preset source failed before invocation");
+    click("menu.shadow.north");settle();
+    require(window.error().find("output is not finite")!=std::string::npos,"Shadow preset output error was not visible");
+    report["states"]["after"]=snapshot();
+  } else {
+    click("menu.shadow."+argument);
+    if(mode=="stack") {
+      report["seeded_dialog"]=last.at("operation_dialog");report["states"]["seeded"]=snapshot();
+      click("dialog.all_slices");report["stack_choice"]=last.at("operation_dialog");click("dialog.preview");settle();
+      report["preview_image"]=last.at("operation_dialog").at("preview_image");report["states"]["preview"]=snapshot();click("dialog.apply");
+    } else if(scientific) {
+      require(last.at("native_workflow").at("visible").get<bool>(),"Scientific preset skipped target review");
+      report["states"]["seeded"]=snapshot();click("review.confirm");click("review.prepare");settle();click("review.apply");
+    } else require(!last.at("operation_dialog").at("open").get<bool>(),"Single-image preset opened a dialog");
+    settle();report["states"]["applied"]=snapshot();if(scientific)click("review.cancel");
+    click("menu.Edit");click("menu.Edit.Undo");report["states"]["undone"]=snapshot();
+    click("menu.Edit");click("menu.Edit.Redo");report["states"]["redone"]=snapshot();
+    require(owner->undo_steps()==1 && window.workflow.size()==2,"Shadow preset did not publish exactly once");
+  }
+  report["final_error"]=window.error();session.close();report["state"]="observed";require(report.dump().size()<32*1048576,"Shadow preset report bound");
+  writeJson((output/"case.json").u8string(),report);capture.done=true;return report;
+}
 }

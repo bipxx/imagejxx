@@ -24,6 +24,15 @@ The shared Dear ImGui desktop provides **Process → Shadows → Directional Sha
 Undo/Redo. The C++ and Python desktop hosts use the same native operation and
 form. Custom kernel editing remains available through Convolve.
 
+The same submenu also provides **North**, **Northeast**, **East**, **Southeast**,
+**South**, **Southwest**, **West**, and **Northwest**. A single ordinary image
+runs the selected preset directly as one edit. A legacy stack opens the seeded
+form, including **Process all slices**, Preview and Apply; the choice remains
+visible before publication. Scientific documents open the native target review
+with the direction already captured. All routes reuse `shadow_imagej` and retain
+normal Undo/Redo and recording. Unsupported sample layouts and floating policies
+disable both the direction entries and the general shadow form.
+
 Scientific documents now use the shared native workflow review. Open the same
 Shadows menu, use **Edit this step's parameters** to choose a direction, and
 review the target before preparing. Current T/C/Z, all Z at current T/C, and
@@ -68,8 +77,7 @@ comparison corpus without replacing the committed fixture:
 python scripts/capture_shadows_reference.py --output build/shadows-reference --fixture-output build/shadows-reference.json
 ```
 
-Remaining family work includes the animated Shadows Demo, direct direction menu
-shortcuts, IEEE nonfinite source policies,
+Remaining family work includes the animated Shadows Demo, IEEE nonfinite source policies,
 broader scientific irregular-ROI/display and positioned-ROI contexts, and
 platform/accessibility qualification.
 The complete ImageJ/Fiji objective remains tracked in [the gap plan](PLAN.md).
