@@ -65,7 +65,7 @@ The runner records these measurements and supplies both axis-range memory-check
 contracts. These values come from the independent fixture, rather than from the
 operation's working-set estimate; the readers retain their exact byte formulas.
 The runner first invokes `scripts/ci_observations.py` against the installed C++
-application. Its 1,189-launch matrix captures rank filters, rounded creation
+application. Its 1,207-launch matrix captures rank filters, rounded creation
 and saved selections, ROI import/export, saved-selection budget behavior, and
 resize/rotate/move modifiers and directional shadows. The planar selection matrix
 covers 621 creation/edit/recovery cases across XY, XZ and YZ, including every

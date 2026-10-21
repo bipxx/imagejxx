@@ -114,6 +114,7 @@ void ThresholdPanel::show(const DocumentSnapshot &source,
   draft_ = range;
   error_.clear();
   actionError_.clear();
+  automaticResult_.reset();
   sourceError_.clear();
   exitReason_.clear();
   applyType_.reset();
@@ -123,8 +124,14 @@ void ThresholdPanel::show(const DocumentSnapshot &source,
   resetControls();
 }
 
+void ThresholdPanel::setAutomaticResult(const AutomaticThresholdDisplayResult &result) {
+  automaticMethod_=result.method;automaticBright_=result.bright;ignoreBlack_=result.ignore_black;ignoreWhite_=result.ignore_white;
+  result.range.validate();lowerText_=boundText(result.range.lower);upperText_=boundText(result.range.upper);
+  draft_=result.range;error_.clear();actionError_.clear();automaticResult_=result;
+}
 void ThresholdPanel::rebuildDraft() {
   draft_.reset();
+  automaticResult_.reset();
   error_.clear();
   actionError_.clear();
   try {
@@ -325,6 +332,24 @@ void ThresholdPanel::draw(const std::optional<DocumentSnapshot> &current,
     else
       ImGui::TextUnformatted("Apply target is being prepared.");
 
+
+    ImGui::BeginDisabled(!editable);
+    if(ImGui::BeginCombo("Auto method",automaticMethod_.c_str())) {
+      const auto &spec=operation_spec("auto_mask");
+      const auto field=std::find_if(spec.parameters.begin(),spec.parameters.end(),[](const auto &p){return p.name=="method";});
+      for(const auto &value:field->choices){const auto method=std::get<std::string>(value);
+        if(ImGui::Selectable(method.c_str(),method==automaticMethod_)){automaticMethod_=method;automaticResult_.reset();}
+        control(("auto.method.choice."+method).c_str(),editable);}
+      ImGui::EndCombo();
+    }control("auto.method",editable);
+    if(ImGui::Checkbox("Bright objects",&automaticBright_))automaticResult_.reset();control("auto.bright",editable);
+    if(ImGui::Checkbox("Ignore black (first bin)",&ignoreBlack_))automaticResult_.reset();control("auto.ignore_black",editable);
+    if(ImGui::Checkbox("Ignore white (last bin)",&ignoreWhite_))automaticResult_.reset();control("auto.ignore_white",editable);
+    const bool canAuto=editable && bool(callbacks.automatic);
+    ImGui::BeginDisabled(!canAuto);if(ImGui::Button("Auto"))pending=Pending::Automatic;control("auto",canAuto);ImGui::EndDisabled();
+    ImGui::EndDisabled();
+    ImGui::TextUnformatted("Auto uses this plane's whole image histogram (256 bins).");
+    if(automaticResult_)ImGui::Text("Auto level %.17g; %llu matching pixels",automaticResult_->threshold,static_cast<unsigned long long>(automaticResult_->matched_count));
     const bool canSet = editable && draft_ && bool(callbacks.set);
     ImGui::BeginDisabled(!canSet);
     if (ImGui::Button("Set"))
@@ -364,7 +389,7 @@ void ThresholdPanel::draw(const std::optional<DocumentSnapshot> &current,
         ImGui::IsKeyPressed(ImGuiKey_Enter, false)) {
       if (cancelFocused)
         pending = Pending::Cancel;
-      else if (canSet)
+      else if (canSet && (controlStates_["lower"].value("focused",false) || controlStates_["upper"].value("focused",false) || controlStates_["set"].value("focused",false)))
         pending = Pending::Set;
     }
     if (changed && pending == Pending::None && canSet)
@@ -381,6 +406,9 @@ void ThresholdPanel::draw(const std::optional<DocumentSnapshot> &current,
   }
   try {
     switch (pending) {
+    case Pending::Automatic:
+      setAutomaticResult(callbacks.automatic(automaticMethod_,automaticBright_,ignoreBlack_,ignoreWhite_));
+      break;
     case Pending::Set:
       callbacks.set(*draft_);
       actionError_.clear();
@@ -416,7 +444,9 @@ Json ThresholdPanel::diagnostics() const {
                      {"maximum", summary_.maximum},
                      {"sample_count", summary_.sample_count},
                      {"bins", summary_.histogram.counts.size()}};
-  return {{"open", open_},
+  Json automatic={{"method",automaticMethod_},{"bright",automaticBright_},{"ignore_black",ignoreBlack_},{"ignore_white",ignoreWhite_}};
+  if(automaticResult_) {automatic["level"]=automaticResult_->threshold;automatic["matched_count"]=automaticResult_->matched_count;}
+  return {{"automatic",automatic},{"open", open_},
           {"visible", open_},
           {"draft_valid", bool(draft_)},
           {"lower_text", lowerText_},

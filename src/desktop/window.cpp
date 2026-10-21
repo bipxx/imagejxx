@@ -1516,7 +1516,7 @@ struct Window::Impl {
     if (action == "show_rgb_dataset" || action=="show_color_stack" || action=="show_indexed_dataset" || action=="show_indexed_rgb") return true;
     if (action == "show_z_subset" || action == "substack" || action == "replay_z_subset")
       return source->nativeSnapshot().data().dataset.shared_planes().has_value();
-    if (action == "show_manual_threshold" || action == "set_manual_threshold" ||
+    if (action == "auto_manual_threshold" || action == "show_manual_threshold" || action == "set_manual_threshold" ||
         action == "reset_manual_threshold" || action == "manual_threshold_to_selection" ||
         action == "apply_manual_threshold" || action == "replay_manual_threshold") {
       const auto &dataset = source->nativeSnapshot().data().dataset;
@@ -2914,6 +2914,14 @@ struct Window::Impl {
     set_manual_threshold_state(display, source.data().dataset.shape(),
                                 {range, thresholdPosition()});
     owner.setNativeDisplay(std::move(display), source.id());
+  }
+  AutomaticThresholdDisplayResult thresholdAutomatic(const std::string &method,bool bright,bool black,bool white) {
+    if(owner.busy())throw std::invalid_argument("Wait for the current edit");
+    const auto source=checkedThresholdSource();const auto live=owner.nativeSnapshot(source.id());
+    if(!live.revisions().matches(source.revisions(),Change::Data))throw RevisionConflict();
+    const auto result=automatic_threshold_display(source.data().dataset,thresholdPosition(),method,0,bright,black,white,thresholdLimits());
+    auto display=live.display();set_manual_threshold_state(display,source.data().dataset.shape(),{result.range,thresholdPosition()});
+    owner.controller_->set_display_if_current(live,std::move(display));return result;
   }
   void thresholdReset() {
     if (owner.busy())
@@ -5731,7 +5739,7 @@ void Window::action(const std::string &name, const Json &p) {
   }
   static const std::set<std::string> targeted{
       "show_movie_export", "view", "fit_selection", "close_document", "combine_rois", "undo", "redo",
-      "show_manual_threshold", "set_manual_threshold", "reset_manual_threshold",
+      "show_manual_threshold", "auto_manual_threshold", "set_manual_threshold", "reset_manual_threshold",
       "manual_threshold_to_selection", "apply_manual_threshold",
       "replay_manual_threshold",
       "show_z_subset", "substack", "replay_z_subset",
@@ -5745,7 +5753,7 @@ void Window::action(const std::string &name, const Json &p) {
       "replay_axis_spacing", "replay_slicer_resize", "show_display_annotations", "replay_display_annotation", "replay_planar_annotation", "show_planar_annotation_rebind", "replay_imagej_roi_import", "replay_imagej_annotation_import", "show_roi_import", "show_roi_import_record", "show_roi_export", "show_roi_zip_export", "show_roi_export_record",
       "reslice_slicer_axis_range", "show_axis_range_slicer_resize"};
   if (!targetId && impl->thresholdSource &&
-      (name == "set_manual_threshold" || name == "reset_manual_threshold" ||
+      (name == "auto_manual_threshold" || name == "set_manual_threshold" || name == "reset_manual_threshold" ||
        name == "manual_threshold_to_selection" || name == "apply_manual_threshold"))
     targetId = impl->thresholdSource->id();
   const auto operationId = name == "show_operation"
@@ -6114,6 +6122,13 @@ void Window::action(const std::string &name, const Json &p) {
     replayAxisExtraction(record, rebind, targetId);
     return;
   }
+  if(name=="auto_manual_threshold") {
+    if(targetId && impl->thresholdSource && targetId!=impl->thresholdSource->id())throw std::invalid_argument("Automatic display target differs from captured owner");
+    for(const auto &entry:p.items())if(entry.key()!="method" && entry.key()!="bright" && entry.key()!="ignore_black" && entry.key()!="ignore_white" && entry.key()!="document_id")throw std::invalid_argument("Unknown automatic display parameter");
+    for(const auto key:{"bright","ignore_black","ignore_white"})if(p.contains(key) && !p.at(key).is_boolean())throw std::invalid_argument("Automatic display flags must be Boolean");
+    const auto result=impl->thresholdAutomatic(p.value("method",std::string("default")),p.value("bright",true),p.value("ignore_black",false),p.value("ignore_white",false));
+    impl->thresholdPanel.setAutomaticResult(result);return;
+  }
   if (name == "replay_manual_threshold") {
     if (!p.is_object()) throw std::invalid_argument("Threshold replay requires an object");
     for (const auto &entry : p.items())
@@ -6191,7 +6206,7 @@ void Window::action(const std::string &name, const Json &p) {
     impl->showThreshold(id.is_null() ? 0 : id.get<std::uint64_t>());
     return;
   }
-  if (name == "set_manual_threshold" || name == "reset_manual_threshold" ||
+  if (name == "auto_manual_threshold" || name == "set_manual_threshold" || name == "reset_manual_threshold" ||
       name == "manual_threshold_to_selection" || name == "apply_manual_threshold") {
     if (!p.is_object())
       throw std::invalid_argument("Threshold parameters must be an object");
@@ -11407,7 +11422,8 @@ void Window::Impl::draw() {
          [this] { thresholdReset(); },
          [this](ManualThresholdRange range) { thresholdToSelection(range); },
          [this](ManualThresholdRange range) { thresholdApply(range); },
-         [this] { thresholdCancel(); }});
+         [this] { thresholdCancel(); },
+           [this](const std::string &method,bool bright,bool black,bool white) { return thresholdAutomatic(method,bright,black,white); }});
     // A closed floating panel can retain NavWindow/ActiveId for a frame and
     // suppress document shortcuts. Hand focus to the current document on the
     // next canvas submission, including when it differs from the capture owner.

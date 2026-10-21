@@ -13,6 +13,7 @@ include(cmake/StaticCodecSymbols.cmake)
 
 add_library(imagejxx_core STATIC
   src/native/playback.cpp
+  src/native/automatic_threshold_display.cpp
   src/native/auto_threshold_stack.cpp
   src/native/auto_threshold.cpp
   src/native/avi_movie.cpp
@@ -987,6 +988,7 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     src/desktop/roi_mixed_import_ui_probe.cpp
     src/desktop/roi_mixed_export_ui_probe.cpp
     src/desktop/roi_export_panel.cpp
+    src/desktop/automatic_display_ui_probe.cpp
     src/desktop/auto_threshold_ui_probe.cpp
     src/desktop/movie_export_panel.cpp
     src/desktop/movie_export_ui_probe.cpp

@@ -170,5 +170,39 @@ untargeted positions and ROI pixels; the ordinary desktop retains its legacy
 whole-stack type-conversion policy. Display-only navigation does not retarget a
 captured command. Pixel/metadata/selection changes invalidate publication under
 the existing target dependencies. Complete scientific target controls in the
-threshold UI, threshold-display integration and reference/performance/platform
+threshold UI, persistent options and reference/performance/platform
 qualification remain open.
+
+## Automatic display range
+
+The manual Threshold panel now provides all eighteen Auto methods, bright/dark
+objects, and Ignore black/white. Auto computes from the whole captured scalar
+plane with 256 histogram bins, then publishes the red threshold overlay without
+changing pixels or pixel history. Reset removes the overlay; Cancel restores the
+opening display state. To Selection and Apply use the computed numeric range.
+Apply follows the existing ROI, output type, undo and recording policies.
+Options persist while the panel instance lives; cross-restart settings remain open.
+
+C++ callers include `imagejxx/automatic_threshold_display.hpp`; Python callers use
+`imagejxx.automatic_threshold_display(dataset, "huang2", bright=True)`.
+The result exposes the scalar threshold, inclusive manual range, matched count,
+method/options and estimated working bytes. Explicit T/C/Z and 2..65536 bins
+(zero means 256) are supported. Bright membership is strictly `value > level`;
+dark membership is `value <= level`. Integer successors and floating `nextafter`
+translate this predicate to the inclusive manual range. At the largest finite
+Float64 value, an absent exactly representable singleton encodes an empty bright
+result. Every source sample is checked against the resulting interval.
+
+The calculation acquires one plane, validates finite-only scalar data, and uses
+manual threshold pixel/working limits. Preflight cap refusal acquires no plane.
+Cancellation, checkpoints and progress callbacks are supported. The desktop
+captures the source and atomically checks all revisions before publishing the
+display. The Auto button is synchronous and bounded by the panel limits; a full
+background-worker and large-image latency qualification remain open. Scratch
+estimates cover analysis, histogram tables and the empty-interval bitmap; source
+storage, provider caches, callbacks and process allocation overhead are external.
+
+This does not yet supply pooled automatic display, full scientific/ROI histogram
+controls, persistent settings, or method-level nonpixel workflow recording.
+Apply records the existing numeric manual threshold when recording is enabled.
+Reference, resource, accessibility and full platform qualification remain open.

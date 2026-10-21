@@ -1,0 +1,265 @@
+{
+  "state": "qualified_functional_increment",
+  "objective_complete": false,
+  "scope": "Automatic threshold to manual display, selection and Apply in C++ core, Python API and both shared ImGui hosts.",
+  "behavior": "All eighteen methods available in the panel. Bright >level and dark <=level are translated to exact inclusive manual bounds. Auto publishes display only with atomic revision checks; Reset/Cancel/To Selection/Apply retain existing contracts. Four scalar dtypes tested against retained six-method upstream bins; all eighteen checked for compatible membership on a bimodal input.",
+  "profile": "Whole captured scalar XY plane; finite-only sources; core explicit T/C/Z and 2..65536 bins; UI 256 bins. One source acquisition, bounded scratch estimates and cancellation/progress/checkpoints. Largest Float64 bright empty result uses an absent finite singleton interval.",
+  "reference": {
+    "fixtures": [
+      {
+        "path": "tests/fixtures/auto-threshold-imagej154r.json",
+        "bytes": 116881,
+        "sha256": "e8f76e8e82c0cbcce98307bf9374e175439bef531ae17a2f3a0de3289ae70db8"
+      },
+      {
+        "path": "tests/fixtures/auto-threshold-options-imagej154r.json",
+        "bytes": 485227,
+        "sha256": "03543d3a9f0eeb82a2653ed51c61510ae615d2f84ba2472a5fe33aea0a9d3bd3"
+      }
+    ],
+    "scope": "Retained pinned upstream thresholds; independent scalar bin-center/membership and RGB tint expectations. Eighteen-method compatibility checks are not additional independent upstream oracle coverage."
+  },
+  "profiles": {
+    "windows": {
+      "tests": 4062,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "observations": 108,
+      "frames": 9192,
+      "new_display_observations": 36,
+      "contexts": [
+        "imgui_cpp",
+        "imgui_python"
+      ],
+      "evidence": {
+        "path": "build/p10c-auto-display001/windows-evidence001.json",
+        "bytes": 502815,
+        "sha256": "5410504d55f4b5113a52fc665d326075686679f04d002030b8e1d127fe139cee"
+      },
+      "junit": {
+        "path": "build/p10c-auto-display001/windows-python004/pytest.xml",
+        "bytes": 597283,
+        "sha256": "011055196278a6eae763ea99a24efe2d8511a8e799bc66f541dfafe1c3060ba8"
+      },
+      "products": {
+        "path": "build/p10c-auto-display001/windows-products001.json",
+        "bytes": 13072,
+        "sha256": "af0a181ed7156842634b9616cc14567ec4bf2a50922090286a8e7a19ac4384db"
+      },
+      "sdk": {
+        "path": "build/p10c-auto-display001/windows-sdk002/receipt.json",
+        "bytes": 1240,
+        "sha256": "8a4d3db452aba3b90122161bf30e3268cc19beccf23838105e42b07dd4e8755b"
+      },
+      "transport": {
+        "path": "build/p10c-auto-display001/windows-transport001.log",
+        "bytes": 1630,
+        "sha256": "94709b5444aabca3eeb5771e893e42085c4215855f748dedb5c29f6316d39b31"
+      },
+      "cleanup": {
+        "path": "build/p10c-auto-display001/windows-cleanup001.json",
+        "bytes": 698148,
+        "sha256": "186548b2b61281f4720f08b74c72ec0bbb2527d9aafb4e8a539b7ef959bfd0ad"
+      },
+      "removed_bytes": 1301563924
+    },
+    "linux": {
+      "tests": 4062,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "observations": 108,
+      "frames": 9192,
+      "new_display_observations": 36,
+      "contexts": [
+        "imgui_cpp",
+        "imgui_python"
+      ],
+      "evidence": {
+        "path": "build/p10c-auto-display001/linux-evidence001.json",
+        "bytes": 499855,
+        "sha256": "a5e1b776a96443d9464f38c16666436dcd5aa6e5dc248ed652cd0aa308831708"
+      },
+      "junit": {
+        "path": "build/p10c-auto-display001/linux-python004/pytest.xml",
+        "bytes": 597283,
+        "sha256": "ba776f12c83358e5e9e7edbaee224b047d0eeeccd4c05edeac53d580d776689c"
+      },
+      "products": {
+        "path": "build/p10c-auto-display001/linux-products001.json",
+        "bytes": 12667,
+        "sha256": "71cbb799ee4e4827158f12f9fce456afe7cc8e6e9926a29ff492a1cef57965b7"
+      },
+      "sdk": {
+        "path": "build/p10c-auto-display001/linux-sdk002/receipt.json",
+        "bytes": 1141,
+        "sha256": "43871a7c756d5ec7d879d7f10900c7c2ff6c5dba6b01853fbbe1ae5fdceef029"
+      },
+      "transport": {
+        "path": "build/p10c-auto-display001/linux-transport001.log",
+        "bytes": 1630,
+        "sha256": "f183fe3a7056a4b2691b9714d0945925388f315be2d1b9dbef38445fd02f2273"
+      },
+      "cleanup": {
+        "path": "build/p10c-auto-display001/linux-cleanup001.json",
+        "bytes": 979658,
+        "sha256": "a6ad6b7482cd171a45ed5e9d237c1051d599c2beb93be3e305b0a3ee3a29c9c5"
+      },
+      "removed_bytes": 1438141218
+    }
+  },
+  "source": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 101299,
+      "sha256": "7e43ebba96b1bb0bd8930a6dd737aa1006ec164caf5f5bc450c2157c9b4b69c2"
+    },
+    {
+      "path": "examples/cpp/CMakeLists.txt",
+      "bytes": 15080,
+      "sha256": "b50b335531b3ea48e33f7a35c5b64e7e0ee13309aa110227bdf2300fceb7b214"
+    },
+    {
+      "path": "examples/cpp/automatic_threshold_display.cpp",
+      "bytes": 1131,
+      "sha256": "b6ad123e5d0fe960033986d3fae9fd13f4ae965c6e6e48417ebc43d559259d96"
+    },
+    {
+      "path": "include/imagejxx/automatic_threshold_display.hpp",
+      "bytes": 848,
+      "sha256": "13741622fabf46ebc4ebde42e6d4f3b1050276ccf22f149e042a21946e608adb"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 31662,
+      "sha256": "daa622266f29cbb3b5ecfa2ddd98131335b556484f03bfb5ff5a702208b6afb2"
+    },
+    {
+      "path": "src/desktop/animation_ui_probe.cpp",
+      "bytes": 13505,
+      "sha256": "2e1a60b914fa43fbf0aa4969be798622f53296eb1600a79360609dfbfcfa449f"
+    },
+    {
+      "path": "src/desktop/automatic_display_ui_probe.cpp",
+      "bytes": 5164,
+      "sha256": "a04a95327e67e0b793069080a07e6a41caaf5fc5bb02dbabddf1da6c2916943f"
+    },
+    {
+      "path": "src/desktop/automatic_display_ui_probe.hpp",
+      "bytes": 178,
+      "sha256": "5487b9d0c9eb5724791277623a21cb6f98092453a00eba2f69358c7432f78348"
+    },
+    {
+      "path": "src/desktop/threshold_panel.cpp",
+      "bytes": 20111,
+      "sha256": "8cd5e73c24a1cbfb5a12379e171e41404ca7c95842de9f1638fa5295ef104cf6"
+    },
+    {
+      "path": "src/desktop/threshold_panel.hpp",
+      "bytes": 2789,
+      "sha256": "6262fa09bfd9f6412eb04a1a388332aa848927f4d16b6fe4d4575bf28194ca92"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 659069,
+      "sha256": "b5457e6c2ae99a822f4a4addf6199892cffed9dcad145eaa052ad46aaed0584c"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 71111,
+      "sha256": "e895ec193e8b0d1cc0a0ba763ecf6373767f0d69ee351e38aa642f69c4780df6"
+    },
+    {
+      "path": "src/native/auto_threshold_bindings.cpp",
+      "bytes": 4134,
+      "sha256": "56762e9209581c70dfed9890838ddb01a3a667921e7ce296c73f637a10b10d46"
+    },
+    {
+      "path": "src/native/automatic_threshold_display.cpp",
+      "bytes": 4013,
+      "sha256": "23a5a5e104b3171598686f2f376a43cd7f687842970d37db0df85286f250c348"
+    },
+    {
+      "path": "tests/python/test_automatic_display_ui.py",
+      "bytes": 3246,
+      "sha256": "eab5da738a8b75a8ee4163bb4eafe722e1dcbc128a1be98951c70e6a3a93a353"
+    },
+    {
+      "path": "tests/python/test_automatic_threshold_display.py",
+      "bytes": 4740,
+      "sha256": "8688346fd253310282d9201754274c1be33b6f375fdbcbf7a96b2efd9268f6ab"
+    }
+  ],
+  "registration": {
+    "path": "build/p10c-auto-display001/registration001.json",
+    "bytes": 3017,
+    "sha256": "88cb809a73e0a858818e1cb56cd1acafec8d2c4c6a0c771c8345cb54ba8d559c"
+  },
+  "commercial_use": {
+    "path": "build/p10c-auto-display001/windows-gates001.log",
+    "bytes": 53,
+    "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+  },
+  "initial_failures": [
+    {
+      "report": {
+        "path": "build/p10c-auto-display001/windows-python002/pytest.xml",
+        "bytes": 577832,
+        "sha256": "6d768cc938ce3b262581bed274fcbce3004b378397e11ec7765d62924f215423"
+      },
+      "reason": "Initial observer assertions incorrectly expected two pixel undo steps, then required workflow recording without enabling the fixture recorder. Existing product semantics preserved; reader now checks selection creates no pixel undo, Apply creates one step, observer enables recording."
+    },
+    {
+      "report": {
+        "path": "build/p10c-auto-display001/windows-python003/pytest.xml",
+        "bytes": 577907,
+        "sha256": "a7f2c095eebb727e5843cd91fac4df3e73a7ad0cd7308512bbd50023073062f8"
+      },
+      "reason": "Initial observer assertions incorrectly expected two pixel undo steps, then required workflow recording without enabling the fixture recorder. Existing product semantics preserved; reader now checks selection creates no pixel undo, Apply creates one step, observer enables recording."
+    },
+    {
+      "report": {
+        "path": "build/p10c-auto-display001/linux-python002/pytest.xml",
+        "bytes": 577830,
+        "sha256": "5182213567a095fdcd834264a1ec7b304c2aa15c36f86aa5835255a310771d82"
+      },
+      "reason": "Initial observer assertions incorrectly expected two pixel undo steps, then required workflow recording without enabling the fixture recorder. Existing product semantics preserved; reader now checks selection creates no pixel undo, Apply creates one step, observer enables recording."
+    },
+    {
+      "report": {
+        "path": "build/p10c-auto-display001/linux-python003/pytest.xml",
+        "bytes": 577904,
+        "sha256": "50a67825d5198313e284cc0ef44702c8697bd20976e6d11281f594284efc25bf"
+      },
+      "reason": "Initial observer assertions incorrectly expected two pixel undo steps, then required workflow recording without enabling the fixture recorder. Existing product semantics preserved; reader now checks selection creates no pixel undo, Apply creates one step, observer enables recording."
+    }
+  ],
+  "retained_failures": "Build002/003 compile failures corrected metadata helper usage; first desktop capture used object display_range instead of numeric endpoints. Initial core test used incorrect Dataset.plane accessor. Logs/preimages and failed JUnit retained in build/p10c-auto-display001.",
+  "remaining": [
+    "Persistent last-used options, pooled automatic display and complete scientific/ROI histogram controls.",
+    "Auto calculation remains synchronous and bounded; full background-worker, memory/RSS and latency qualification remains open. Scratch excludes source/provider caches, callbacks and process overhead.",
+    "Nonpixel method-level workflow recording, full legacy reference/interface binding, accessibility and full platform acceptance.",
+    "Pre-existing Auto Contrast producer-source fingerprint gate remains open; no fingerprints repinned."
+  ],
+  "counts": {
+    "in_progress": 46,
+    "open": 53,
+    "complete": 0,
+    "format_variants_partial": 96
+  },
+  "plan_gate": {
+    "state": "pre_existing_failure",
+    "evidence": {
+      "path": "build/p10c-auto-display001/plan-check001.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    },
+    "message": "Plan inventory check failed: histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed",
+    "unchanged_producer_source": {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 14135,
+      "sha256": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    }
+  }
+}

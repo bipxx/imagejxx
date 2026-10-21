@@ -1,5 +1,22 @@
 # ImageJ and Fiji gap closure plan
 
+**Automatic threshold display checkpoint, 2026-10-21 (work in progress):**
+The manual Threshold panel now offers all eighteen Auto methods, bright/dark
+objects and endpoint exclusions. C++/Python expose exact inclusive display
+ranges; Auto leaves pixels/history unchanged and atomically checks revisions.
+Reset/Cancel, To Selection and Apply retain their existing behavior. Windows and
+Linux each pass 4,062 selected checks without skips, four installed SDK examples,
+and 15 capture transport checks. Independent readers verify 216 threshold
+reports / 18,384 frames across both platforms, including 72 new display reports.
+No new runtime dependencies; commercial-use inventory passes. Verified archives
+remove 2,739,705,142 scratch bytes while retaining final builds and evidence.
+See [the scoped receipt](parity/reviews/p10c-auto-display001.json) and
+[usage and limits](THRESHOLDING.md). Next are persistent options, pooled automatic
+display and complete scientific/ROI controls, then reference/resource/platform
+qualification. The existing Auto Contrast source-fingerprint gate remains open.
+All99 remains 46 in progress / 53 open / 0 complete; all 96 format variants remain
+partial.
+
 **Pooled stack threshold checkpoint, 2026-10-21 (work in progress):**
 The C++/Python target API and managed executor now compute one threshold across
 captured planes/ROI members without concatenating pixels. Ordinary ImGui Z-stack

@@ -2,6 +2,7 @@
 
 #include "desktop.hpp"
 #include <imagejxx/manual_threshold.hpp>
+#include <imagejxx/automatic_threshold_display.hpp>
 #include <functional>
 #include <imgui.h>
 #include <optional>
@@ -22,12 +23,14 @@ public:
     RangeAction to_selection;
     RangeAction apply;
     Action cancel;
+    std::function<AutomaticThresholdDisplayResult(const std::string &,bool,bool,bool)> automatic;
   };
 
   void show(const DocumentSnapshot &source, ManualThresholdSummary summary);
   void draw(const std::optional<DocumentSnapshot> &current, bool busy,
             const Callbacks &callbacks);
   void cancel(const Action &callback = {});
+  void setAutomaticResult(const AutomaticThresholdDisplayResult &);
   // Keep the modeless controls visibly disabled after close without retaining
   // the source's pixel storage through a snapshot.
   void source_closed() { source_.reset(); }
@@ -40,7 +43,7 @@ public:
   Json diagnostics() const;
 
 private:
-  enum class Pending { None, Set, Reset, ToSelection, Apply, Cancel };
+  enum class Pending { None, Set, Reset, ToSelection, Apply, Cancel, Automatic };
   void rebuildDraft();
   void resetControls();
   void control(const char *name, bool enabled = true,
@@ -58,6 +61,9 @@ private:
   std::string lowerText_, upperText_, error_, actionError_, sourceError_;
   std::string exitReason_, applyExtent_;
   std::optional<PixelType> applyType_;
+  std::string automaticMethod_="default";
+  bool automaticBright_=true, ignoreBlack_=false, ignoreWhite_=false;
+  std::optional<AutomaticThresholdDisplayResult> automaticResult_;
   Json controls_ = Json::object(), controlRects_ = Json::object();
   Json controlStates_ = Json::object();
   ImVec2 closePoint_{-1, -1};

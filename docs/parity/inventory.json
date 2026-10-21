@@ -1865,7 +1865,8 @@
           "docs/CI.md",
           "docs/parity/reviews/p09z-auto-threshold001.json",
           "docs/parity/reviews/p10a-threshold-options001.json",
-          "docs/parity/reviews/p10b-pooled-threshold001.json"
+          "docs/parity/reviews/p10b-pooled-threshold001.json",
+          "docs/parity/reviews/p10c-auto-display001.json"
         ],
         "implementation": [
           "include/imagejxx/auto_threshold.hpp",
@@ -1881,7 +1882,12 @@
           "src/native/auto_threshold_stack.cpp",
           "src/native/auto_threshold_internal.hpp",
           "src/native/execution.cpp",
-          "src/desktop/window.cpp"
+          "src/desktop/window.cpp",
+          "include/imagejxx/automatic_threshold_display.hpp",
+          "src/native/automatic_threshold_display.cpp",
+          "src/desktop/threshold_panel.hpp",
+          "src/desktop/threshold_panel.cpp",
+          "src/desktop/automatic_display_ui_probe.cpp"
         ],
         "tests": [
           "tests/python/test_auto_threshold_imagej.py",
@@ -1896,7 +1902,10 @@
           "examples/cpp/auto_threshold_options.cpp",
           "tests/python/test_pooled_threshold.py",
           "tests/python/test_pooled_threshold_ui.py",
-          "examples/cpp/pooled_threshold.cpp"
+          "examples/cpp/pooled_threshold.cpp",
+          "tests/python/test_automatic_threshold_display.py",
+          "tests/python/test_automatic_display_ui.py",
+          "examples/cpp/automatic_threshold_display.cpp"
         ]
       },
       "id": "G047",
@@ -1905,7 +1914,7 @@
       ],
       "name": "Automatic global threshold",
       "remaining": [
-        "Complete upstream image-scaling/edge/tie/overflow and scientific/ROI target controls, threshold-display integration and persistent last-used plugin options.",
+        "Complete upstream image-scaling/edge/tie/overflow and scientific/ROI target controls, pooled automatic display and persistent last-used plugin options.",
         "Complete reference coverage for existing twelve methods, formal fixture/interface binding, and full performance/resource/platform/accessibility qualification."
       ],
       "required_work": "Add ImageJ `Default`, `Huang`, `IJ_IsoData`, `RenyiEntropy`, `Shanbhag`; Fiji `Huang2`; reference histogram edge/tie/16-bit behavior",
@@ -1913,7 +1922,8 @@
       "verification": [
         "p09z.auto-threshold.functional.001",
         "p10a.threshold-options.functional.001",
-        "p10b.pooled-threshold.functional.001"
+        "p10b.pooled-threshold.functional.001",
+        "p10c.automatic-display.functional.001"
       ]
     },
     {
@@ -180300,8 +180310,8 @@
       "id": "p09u.animation-ranges.functional.001",
       "identity": {
         "qualification": {
-          "path": "docs/parity/reviews/p09u-animation-ranges001.json",
           "bytes": 7693,
+          "path": "docs/parity/reviews/p09u-animation-ranges001.json",
           "sha256": "82f55396b124da66cef1d363562cebf176a763a71f07fcf95bd05eb663ce8e12"
         }
       },
@@ -180323,8 +180333,8 @@
       "id": "p09v.calibrated-time.functional.001",
       "identity": {
         "qualification": {
-          "path": "docs/parity/reviews/p09v-calibrated-playback001.json",
           "bytes": 8687,
+          "path": "docs/parity/reviews/p09v-calibrated-playback001.json",
           "sha256": "7c2a0888c502086d7398a6149cef07c9c73f138a7d2f24606130d5315fe7353e"
         }
       },
@@ -180346,8 +180356,8 @@
       "id": "p09w.legacy-calibrated-time.functional.001",
       "identity": {
         "qualification": {
-          "path": "docs/parity/reviews/p09w-legacy-time001.json",
           "bytes": 7880,
+          "path": "docs/parity/reviews/p09w-legacy-time001.json",
           "sha256": "455362366f118c32ab7102d3e04c8b6964369ed497ab201871e3823f4c72e963"
         }
       },
@@ -180369,8 +180379,8 @@
       "id": "p09x.python310-evidence.functional.001",
       "identity": {
         "qualification": {
-          "path": "docs/parity/reviews/p09x-python310-hashes001.json",
           "bytes": 25980,
+          "path": "docs/parity/reviews/p09x-python310-hashes001.json",
           "sha256": "77d68a24262c696e90c29c03e8c3094805dc531c8c2a5892f617ebfc679bd288"
         }
       },
@@ -180392,8 +180402,8 @@
       "id": "p09y.avi-movie.functional.001",
       "identity": {
         "qualification": {
-          "path": "docs/parity/reviews/p09y-avi-movie001.json",
           "bytes": 17700,
+          "path": "docs/parity/reviews/p09y-avi-movie001.json",
           "sha256": "ae305f0efc705fa40ce9d3207ac64dd1e15511c18b7ab4ef8cddc03396fce51d"
         }
       },
@@ -180415,8 +180425,8 @@
       "id": "p09z.auto-threshold.functional.001",
       "identity": {
         "qualification": {
-          "path": "docs/parity/reviews/p09z-auto-threshold001.json",
           "bytes": 20190,
+          "path": "docs/parity/reviews/p09z-auto-threshold001.json",
           "sha256": "a2958971bd8a8ab6a32240971b7fc93aecf5b668a6a03dee99ad92458ac5190a"
         }
       },
@@ -180438,8 +180448,8 @@
       "id": "p10a.threshold-options.functional.001",
       "identity": {
         "qualification": {
-          "path": "docs/parity/reviews/p10a-threshold-options001.json",
           "bytes": 20963,
+          "path": "docs/parity/reviews/p10a-threshold-options001.json",
           "sha256": "837ec6cda818f8f90327b6c0c92cb9d44c642aa82d098392673f2170f12bb7e9"
         }
       },
@@ -180461,8 +180471,8 @@
       "id": "p10b.pooled-threshold.functional.001",
       "identity": {
         "qualification": {
-          "path": "docs/parity/reviews/p10b-pooled-threshold001.json",
           "bytes": 26084,
+          "path": "docs/parity/reviews/p10b-pooled-threshold001.json",
           "sha256": "9727a07bf21da151831c08b7bb871fd37cf13e1ed16e6ee653a733918291dc40"
         }
       },
@@ -180476,6 +180486,29 @@
         "total": 3716
       },
       "scope": "3716 distinct selected checks per OS, 144 input reports / 13632 frames (48 new pooled reports), installed SDK with bounded read assertions and 15 transport checks per OS. Full G047/hosted acceptance remains open."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-21",
+      "id": "p10c.automatic-display.functional.001",
+      "identity": {
+        "qualification": {
+          "bytes": 11480,
+          "path": "docs/parity/reviews/p10c-auto-display001.json",
+          "sha256": "ba0d67d1de3e1de55badb9fb7f0cb62de80419111c13a1b48549f5c2df667e86"
+        }
+      },
+      "platform": "Windows/Linux installed SDK and standalone/Python Dear ImGui hosts",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 4062,
+        "report": "build/p10c-auto-display001/windows-python004/pytest.xml",
+        "skipped": 0,
+        "total": 4062
+      },
+      "scope": "4062 selected checks per OS; 216 threshold input reports / 18384 frames including 72 automatic display reports; four installed SDK examples and 15 transport checks per OS. Full G047 acceptance remains open."
     }
   ]
 }
