@@ -1,5 +1,17 @@
 # Implementation progress
 
+**Scientific threshold checkpoint, 2026-10-21:** The shared panel now reuses
+validated C/Z/T target controls, independent histogram ROI estimation and
+whole/active/positioned write ROIs. Range overlays and sessions use a strict
+nested version three; subsets intersect the selected Z grid. Raw histogram
+retention supports numeric Mean and constants while preserving numerical levels.
+Both platforms pass 5,445 selected checks without skips. The installed SDK
+checks old/new callable signatures, retained counts, range membership and
+positioned replay. See [current usage/limits](THRESHOLDING.md) and the
+[scoped receipt](parity/reviews/p10f-scientific-threshold001.json).
+This is partial functionality; full parity and the existing Auto Contrast
+source-fingerprint gate remain open. Earlier execution blocks are historical.
+
 **P06k, 2026-10-17:** The [scientific ROI manager](packets/P06k-scientific-roi-manager.md)
 supports New area/draw/store/reselect, saved-row style/T/C/Z properties, existing
 saved-area editing and native V3 Save/Open. Core prepared edits publish geometry

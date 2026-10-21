@@ -261,6 +261,30 @@ void detail::blend_manual_threshold_source_overlay(const Image &source, Image &r
                 });
   kernel_checkpoint();
 }
+namespace {
+const MetadataArray &threshold_array(const MetadataValue &value) {
+  const auto tree=std::get_if<std::shared_ptr<const MetadataTree>>(&value);
+  if(!tree || !*tree)throw std::invalid_argument("Threshold ranges require arrays");
+  const auto array=std::get_if<MetadataArray>(&(*tree)->value);
+  if(!array)throw std::invalid_argument("Threshold ranges require arrays");
+  return *array;
+}
+void validate_threshold_ranges(const ManualThresholdState &state,DatasetShape shape) {
+  if(!state.ranges)return;
+  if(state.all_z)throw std::invalid_argument("Threshold ranges cannot also claim all-Z scope");
+  const std::array<int,3> extents{shape.t,shape.c,shape.z};
+  for(std::size_t i=0;i<3;++i){const auto &r=(*state.ranges)[i];
+    if(!r.stop || r.start<0 || *r.stop<=r.start || *r.stop>extents[i] || r.step<=0)
+      throw std::invalid_argument("Threshold range is outside the dataset or has invalid bounds/step");
+  }
+}
+}
+bool manual_threshold_contains(const ManualThresholdState &state,PlanePosition p) {
+  if(state.ranges){const std::array<int,3> values{p.t,p.c,p.z};
+    for(std::size_t i=0;i<3;++i){const auto &r=(*state.ranges)[i];if(!r.stop || r.step<=0 || values[i]<r.start || values[i]>=*r.stop || (values[i]-r.start)%r.step)return false;}return true;
+  }
+  return p.t==state.position.t && p.c==state.position.c && (state.all_z || p.z==state.position.z);
+}
 std::optional<ManualThresholdState>
 manual_threshold_state(const DisplayState &display, DatasetShape shape) {
   shape.validate();
@@ -271,12 +295,18 @@ manual_threshold_state(const DisplayState &display, DatasetShape shape) {
     if (record.find(key) == record.end())
       throw std::invalid_argument("Manual threshold display property has missing fields");
   const auto version=integer(record.at("version"));
-  if (!((version==1 && record.size()==6) || (version==2 && record.size()==7 && record.count("all_z") && std::get_if<bool>(&record.at("all_z")))))
+  if (!((version==1 && record.size()==6) || (version==2 && record.size()==7 && record.count("all_z") && std::get_if<bool>(&record.at("all_z"))) || (version==3 && record.size()==7 && record.count("ranges"))))
     throw std::invalid_argument("Unsupported manual threshold display schema");
   ManualThresholdState state{{numeric(record.at("lower")), numeric(record.at("upper"))},
                              {integer(record.at("t")), integer(record.at("c")),
                               integer(record.at("z"))}};
   if(version==2)state.all_z=std::get<bool>(record.at("all_z"));
+  if(version==3){const auto &axes=threshold_array(record.at("ranges"));if(axes.size()!=3)throw std::invalid_argument("Threshold needs three axis ranges");
+    std::array<AxisRange,3> ranges;
+    for(std::size_t i=0;i<3;++i){const auto &r=threshold_array(axes[i]);if(r.size()!=3)throw std::invalid_argument("Threshold range needs first/stop/step");ranges[i]={integer(r[0]),integer(r[1]),integer(r[2])};}
+    state.ranges=ranges;
+  }
+  validate_threshold_ranges(state,shape);
   state.range.validate();
   if (shape.s != 1)
     throw std::invalid_argument("Manual threshold display requires a scalar dataset");
@@ -290,11 +320,13 @@ void set_manual_threshold_state(DisplayState &display, DatasetShape shape,
   if (shape.s != 1)
     throw std::invalid_argument("Manual threshold display requires a scalar dataset");
   validate_position(shape, state.position);
+  validate_threshold_ranges(state,shape);
   MetadataObject record{
-      {"version", std::int64_t(state.all_z?2:1)}, {"lower", state.range.lower},
+      {"version", std::int64_t(state.ranges?3:state.all_z?2:1)}, {"lower", state.range.lower},
       {"upper", state.range.upper}, {"t", std::int64_t(state.position.t)},
       {"c", std::int64_t(state.position.c)}, {"z", std::int64_t(state.position.z)}};
   if(state.all_z)record["all_z"]=true;
+  if(state.ranges){MetadataArray ranges;for(const auto &r:*state.ranges)ranges.push_back(metadata_array({std::int64_t(r.start),std::int64_t(*r.stop),std::int64_t(r.step)}));record["ranges"]=metadata_array(std::move(ranges));}
   display.properties[manual_threshold_property]=metadata_object(std::move(record));
 }
 void reset_manual_threshold_state(DisplayState &display) {

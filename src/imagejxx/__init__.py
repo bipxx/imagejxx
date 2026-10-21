@@ -1626,6 +1626,7 @@ from ._native import NativeWorkflowBatchSelection, NativeWorkflowBatchReview, re
 from ._native import NativeWorkflowBatchSetup, NativeWorkflowBatchSetupLimits, save_native_workflow_batch_setup, load_native_workflow_batch_setup
 
 
+from ._native import manual_threshold_contains as manual_threshold_contains
 __all__ = [
     name
     for name, value in list(globals().items())

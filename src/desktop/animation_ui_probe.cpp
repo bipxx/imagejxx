@@ -3,6 +3,7 @@
 #include "animation_ui_probe.hpp"
 #include "auto_threshold_ui_probe.hpp"
 #include "automatic_display_ui_probe.hpp"
+#include "scientific_threshold_target_ui_probe.hpp"
 #include "movie_export_ui_probe.hpp"
 #include "headless_session_internal.hpp"
 #include "window.hpp"
@@ -13,6 +14,7 @@
 namespace imagejxx::desktop {
 Json animationUiCase(Window &window, const std::string &id,
                      const std::string &context, const std::string &directory) {
+  if(id.rfind("target-threshold-",0)==0)return scientificThresholdTargetUiCase(window,id.substr(17),context,directory);
   if(id.rfind("auto-display-",0)==0)return automaticDisplayUiCase(window,id.substr(13),context,directory);
   if(id.rfind("threshold-",0)==0)return autoThresholdUiCase(window,id.substr(10),context,directory);
   if(id.rfind("movie-",0)==0)return movieExportUiCase(window,id,context,directory);

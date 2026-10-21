@@ -249,9 +249,9 @@ pixels outside histogram ROIs. Source providers must be immutable across reads.
 
 Pooled display admits the total target plane pixels against `max_pixels`
 (default 16 Mi pixels), including pixels outside ROIs, and bounds working scratch
-(default 128 MiB). Preflight failures acquire no source plane. Histogram methods
-use two pooled scans and one range/membership scan; constant/raw-mean shortcuts
-can use fewer. No stack-sized pixel array is formed. At the largest finite
+(default 128 MiB). Preflight failures acquire no source plane. Histogram/display calculations use two pooled scans and one range/membership
+scan; constants can finish estimation in one scan. Numeric-only raw-mean calls
+retain their one-scan path when histogram retention is not requested. No stack-sized pixel array is formed. At the largest finite
 Float64 threshold an N+1-byte occupancy bitmap finds a finite absent singleton
 for an empty bright interval; its admission is included even when not allocated.
 The estimate also includes plane/mask, histogram and analysis scratch. Provider
@@ -268,7 +268,85 @@ still checks source identity, data revisions and canonical selection. Explicit
 rebind chooses the new destination scope; it does not silently reuse navigation
 from the old source. Apply resets the overlay and produces one pixel undo step.
 
-The UI currently offers current-plane or all-Z-at-captured-T/C scope. Full
-scientific T/C/range/ROI controls, method-level nonpixel recording, background
-worker behavior and complete reference/resource/platform/accessibility gates
-remain open. Pooled histogram display does not certify large-data responsiveness.
+The UI also offers scientific T/C/Z ranges and ROI controls as described below.
+Method-level nonpixel recording, background worker behavior and complete
+reference/resource/platform/accessibility gates remain open. Pooled histogram display does not certify large-data responsiveness.
+
+## Scientific targets and histogram ROIs
+
+Open **Target...** in the Threshold panel. **Use scientific target** exposes the
+shared C/Z/T controls: Current, All, or a one-based inclusive First/Last/Step
+range on each axis. Invalid or unfinished input disables Set, Auto and Apply;
+the target window stays editable. Preview ordinal and Show preview plane let
+you inspect a member without changing the captured Apply grid. **Done** closes
+the target window while retaining its draft. Set or Auto publishes the overlay;
+editing the target alone does not change pixels or the existing overlay.
+
+Apply can use whole planes, the captured active selection, or the union of
+matching positioned ROIs. Missing positioned matches leave that plane unchanged.
+**Use target ROI for Auto histogram** links estimation to that ROI policy;
+turning it off estimates over whole target planes while Apply still respects its
+ROI policy. An absent active selection means the whole plane. Overlays show raw
+intensity membership on selected XY planes, including outside write ROIs.
+To Selection continues to use the original captured plane, even if outside the
+target grid. Raw bounds are shared across selected channels/times, rather than
+being recomputed independently for each plane.
+
+The plot now shows the raw pooled histogram retained by Auto, including legacy
+all-Z mode. Ignored endpoint bins remain visible and only affect estimation.
+Its displayed histogram range is the bin domain; sample counts describe the
+estimation domain. Reset returns the plot and numeric draft to the captured
+plane summary and removes the overlay. Whole-plane numeric bounds, source type
+preservation outside targets/ROIs, and one-step Apply undo remain unchanged.
+When full-dataset positioned-ROI coverage is not established without rasterizing
+all masks, the output caption explicitly describes the conditional type policy.
+
+`threshold_histogram_roi` and `threshold_apply_roi` are shared native preferences.
+Successful Auto saves them; defaults are false and active_selection. Axis ranges
+are source-specific drafts and are restored from an existing range overlay,
+not saved as global defaults for unrelated image shapes. Existing preference
+migration, opaque-field preservation and implicit-write protection still apply.
+
+Python automation uses the same host path:
+
+```python
+editor.action("show_manual_threshold")
+editor.action("configure_threshold_target", target={
+    "scope": "ranges",
+    "t": {"start": 0, "stop": 2},
+    "c": {"start": 1, "stop": 2},
+    "z": {"start": 1, "stop": 4, "step": 2},
+    "roi": "positioned_rois",
+}, histogram_roi=True)
+editor.action("auto_manual_threshold", method="huang")
+```
+
+This example requires at least two times/channels and four Z slices. API ranges
+are zero-based and half-open. The UI accepts compact ranges; arbitrary explicit
+positions remain available in the core target API. Histogram ROI can also be
+set through `auto_manual_threshold(histogram_roi=True)` in legacy plane/all-Z mode.
+
+`pooled_auto_threshold(..., include_histogram=True)` returns detached raw counts
+and edges in its optional `histogram`; omitted retention preserves the original
+numeric-only API and scan policy. Requested histograms are present on success,
+including raw Mean and constant shortcuts. Constant floating inputs use collapsed
+finite edges; retained Mean histograms safely bin finite opposite-sign Float64
+extrema without changing the raw numerical mean. Histogram retention is admitted
+in working scratch and can require another scan for numeric Mean. The original
+seven-argument C++ callable signature remains available as an overload.
+Pooled display results retain their target histogram automatically. The basic
+single-plane helper can still omit it and use the captured-plane plot.
+
+Range overlays use nested display version three: the common raw bounds and
+anchor plus resolved T/C/Z [start, stop, step] triples. The anchor must be within
+the dataset but may be outside the grid. `manual_threshold_contains` evaluates
+membership. Sessions retain the grid; Z subsets intersect and remap it, dropping
+the overlay when no selected Z survives. Manual commands now accept positioned
+ROIs with version-two records, null active-selection claims, strict source/data
+checks, and explicit destination rebinding.
+
+These remain finite scalar, eager desktop sources and independent XY planes.
+Auto is synchronous and bounded; complete background execution, arbitrary-list
+UI targets, volume/color/nonfinite policies, standalone histogram range/bin/log
+and export controls, method-level recording, and full performance/reference/
+platform/accessibility qualification remain unfinished.

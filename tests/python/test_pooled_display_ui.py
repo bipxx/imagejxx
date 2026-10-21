@@ -16,6 +16,7 @@ def test_pooled_display_selection_and_all_z_apply(method,mode,context,tmp_path):
         from imagejxx import _desktop
         r=json.loads(_desktop.Editor(str(tmp_path/"prefs.json"))._animation_ui_case(case,str(tmp_path/"capture")))
     assert r["contract"]=="p10e.pooled-display.ui.001" and r["state"]=="observed" and not r["acceptance_claim"]
+    assert r["automatic"]["histogram"]["source"]=="auto_target" and r["automatic"]["histogram"]["counts"]==[1]*256
     both=mode=="poolboth";bright=mode!="pooldark"
     row=next(x for x in DATA["cases"] if x["input_id"]=="uniform-256-0" and x["ignore_black"]==both and x["ignore_white"]==both);level=row["thresholds"][method]
     pixels=[[2*i+z for i in range(128)] for z in range(2)];membership=[[(v>level)==bright for v in plane] for plane in pixels]

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "desktop.hpp"
+#include "operation_target_panel.hpp"
 #include <imagejxx/manual_threshold.hpp>
 #include <imagejxx/settings.hpp>
 #include <imagejxx/automatic_threshold_display.hpp>
@@ -26,6 +27,7 @@ public:
     Action cancel;
     std::function<AutomaticThresholdDisplayResult(const std::string &,bool,bool,bool,bool)> automatic;
     Action scope_changed;
+    std::function<void(PlanePosition)> show_target;
   };
 
   void show(const DocumentSnapshot &source, ManualThresholdSummary summary);
@@ -41,7 +43,13 @@ public:
   // original histogram. Pixel/metadata changes must open a new panel instead.
   void rebase(const DocumentSnapshot &source);
   // The executor supplies its actual effective result type and target extent.
-  void setApplyPreview(PixelType result_type, std::string extent);
+  void setApplyPreview(PixelType result_type, std::string extent,bool conditional=false);
+  TargetRequest targetRequest() const;
+  ManualThresholdState displayState(ManualThresholdRange) const;
+  bool scientificTargets() const { return scientificTargets_; }
+  bool histogramUsesRoi() const { return histogramUsesRoi_; }
+  void configureTarget(const TargetRequest &,bool histogram_roi);
+  void setHistogramUsesRoi(bool value) { histogramUsesRoi_=value;clearAutomatic(); }
   bool stackHistogram() const { return stackHistogram_; }
   bool visible() const { return open_; }
   Json diagnostics() const;
@@ -49,6 +57,8 @@ public:
 private:
   enum class Pending { None, Set, Reset, ToSelection, Apply, Cancel, Automatic, Scope };
   void rebuildDraft();
+  void clearAutomatic();
+  void drawTargets(bool,const Callbacks &);
   void resetControls();
   void control(const char *name, bool enabled = true,
                std::optional<float> width = std::nullopt);
@@ -57,7 +67,8 @@ private:
 
   bool open_ = false, focus_ = false, busy_ = false, sourceValid_ = false;
   std::uint64_t sourceId_ = 0;
-  PlanePosition position_;
+  PlanePosition position_,canvasPosition_;
+  bool conditionalType_=false;
   std::optional<DocumentSnapshot> source_;
   ManualThresholdSummary summary_;
   std::vector<float> plotCounts_;
@@ -67,6 +78,9 @@ private:
   std::optional<PixelType> applyType_;
   std::string automaticMethod_="default";
   bool stackHistogram_=false;
+  bool scientificTargets_=false,targetsOpen_=false,histogramUsesRoi_=false,targetValid_=true;
+  std::string targetError_;
+  OperationTargetPanel targetPanel_;
   bool automaticBright_=true, ignoreBlack_=false, ignoreWhite_=false;
   std::optional<AutomaticThresholdDisplayResult> automaticResult_;
   Json controls_ = Json::object(), controlRects_ = Json::object();

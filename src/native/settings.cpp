@@ -215,6 +215,13 @@ const std::vector<SettingDefinition> &Settings::schema() {
                methods.push_back(std::get<std::string>(choice));
          return methods;
        }()},
+      {"threshold_histogram_roi", "Threshold", "Use target ROI for Auto histogram",
+       "Estimate Auto from target ROI members; overlays still show raw range membership.",
+       SettingKind::Boolean, false},
+      {"threshold_apply_roi", "Threshold", "Scientific Apply ROI",
+       "Default ROI policy when configuring scientific threshold targets.",
+       SettingKind::Choice, std::string("active_selection"), 0, 0,
+       {"whole_plane","active_selection","positioned_rois"}},
       {"threshold_stack_histogram", "Threshold", "Use all Z slices",
        "Auto estimates over all Z at captured T/C, and Apply targets those slices.",
        SettingKind::Boolean, false},

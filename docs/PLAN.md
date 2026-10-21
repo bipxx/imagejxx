@@ -1,5 +1,28 @@
 # ImageJ and Fiji gap closure plan
 
+**Scientific threshold checkpoint, 2026-10-21 (work in progress):**
+Both ImGui hosts now reuse validated Current/All/First/Last/Step controls for
+C/Z/T, whole/active/positioned write ROIs and independent histogram ROI choice.
+Invalid drafts disable publication; Show preview plane preserves the frozen
+grid. Auto retains and plots raw target histograms, including Mean/constants,
+while Apply edits that grid/ROI and preserves other pixels. Nested state version
+three retains the range grid through sessions and Z-subset intersection/remapping.
+Existing single-plane/all-Z forms and the C++ callable signature remain supported.
+Windows/Linux each pass 5,445 selected checks without skips, including 68 new
+scientific checks. Independent readers verify 408 reports / 38,736 frames,
+including 72 scientific target reports. Fresh SDK consumers check retained bins,
+legacy/new calls, zero-read admission, membership and positioned replay. The
+1,243-case registration preserves prior order; commercial-use inventory passes
+with no new runtime dependencies. Verified archives remove
+4,214,535,670 scratch bytes while retaining final products and evidence.
+See [the scoped receipt](parity/reviews/p10f-scientific-threshold001.json) and
+[usage/limits](THRESHOLDING.md). G069 starts in progress for this targeted
+histogram foundation. Standalone histogram range/bin/log/statistics/export,
+asynchronous execution, remaining defaults/recording and full source/reference/
+resource/platform acceptance remain open, as does the existing Auto Contrast
+fingerprint gate. All99 is 47 in progress / 52 open / 0 complete; all existing
+96 format variants remain partial.
+
 **Pooled display checkpoint, 2026-10-21 (work in progress):**
 Pooled Auto now estimates every Z at captured T/C. The shared Threshold panel
 retains that scope, displays the common overlay across Z navigation, and applies

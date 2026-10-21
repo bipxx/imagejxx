@@ -18,7 +18,9 @@ public:
   };
 
   void capture(const DocumentSnapshot &source);
-  bool draw(bool enabled = true);
+  bool draw(bool enabled = true, bool preview_ordinal = true);
+  void configure(const DocumentSnapshot &, const TargetRequest &);
+  void refreshSelection(bool value) { hasSelection_=value; }
   bool enterConsumed() const { return enterConsumed_; }
   TargetRequest request() const;
   // Call after resolving the complete Apply target. Retains a contained preview

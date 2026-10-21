@@ -106,7 +106,8 @@ void bind_manual_threshold(py::module_ &m) {
   py::class_<ManualThresholdState>(m, "ManualThresholdState")
       .def_property_readonly("range", [](const ManualThresholdState &s) { return s.range; })
       .def_property_readonly("position", [](const ManualThresholdState &s) { return s.position; })
-      .def_readonly("all_z", &ManualThresholdState::all_z);
+      .def_readonly("all_z", &ManualThresholdState::all_z)
+      .def_property_readonly("ranges",[](const ManualThresholdState &s){return s.ranges;});
   m.def("estimate_manual_threshold", [](const Dataset &source,
           PlanePosition position, const ManualThresholdLimits &limits) {
     return estimate_manual_threshold(source.shape(), source.pixel_type(), position, limits);
@@ -146,11 +147,12 @@ void bind_manual_threshold(py::module_ &m) {
     return manual_threshold_state(display, source.shape());
   }, py::arg("display"), py::arg("source"));
   m.def("set_manual_threshold_state", [](DisplayState display, const Dataset &source,
-          ManualThresholdRange range, PlanePosition position,bool all_z) {
-    set_manual_threshold_state(display, source.shape(), {range, position,all_z});
+          ManualThresholdRange range, PlanePosition position,bool all_z,std::optional<std::array<AxisRange,3>> ranges) {
+    set_manual_threshold_state(display, source.shape(), {range, position,all_z,std::move(ranges)});
     return display;
   }, py::arg("display"), py::arg("source"), py::arg("range"),
-     py::arg("position")=PlanePosition{},py::kw_only(),py::arg("all_z").noconvert()=false);
+     py::arg("position")=PlanePosition{},py::kw_only(),py::arg("all_z").noconvert()=false,py::arg("ranges")=py::none());
+  m.def("manual_threshold_contains",&manual_threshold_contains,py::arg("state"),py::arg("position"));
   m.def("reset_manual_threshold_state", [](DisplayState display) {
     reset_manual_threshold_state(display);
     return display;

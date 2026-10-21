@@ -989,6 +989,7 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     src/desktop/roi_mixed_export_ui_probe.cpp
     src/desktop/roi_export_panel.cpp
     src/desktop/automatic_display_ui_probe.cpp
+    src/desktop/scientific_threshold_target_ui_probe.cpp
     src/desktop/auto_threshold_ui_probe.cpp
     src/desktop/movie_export_panel.cpp
     src/desktop/movie_export_ui_probe.cpp

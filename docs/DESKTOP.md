@@ -873,6 +873,12 @@ remain separate gaps.
 
 ## Scientific manual threshold
 
+Scientific threshold targeting now also supports captured T/C/Z grids and
+histogram/write ROI policies through **Target...**. See
+[the current threshold contracts](THRESHOLDING.md); the plane/replay behavior
+below remains the default.
+
+
 **Process → Threshold display...** captures the current scalar C/Z/T plane and
 selection. Set/Reset adjust the display overlay, To Selection creates a transient
 mask, and Apply edits only the captured target with Undo/Redo and cancellation.
@@ -1177,26 +1183,34 @@ owns current qualification and remaining scope.
 
 ## Manual threshold display
 
-Choose **Process > Threshold display...** in either launch mode. The panel shows
-a256-bin histogram of original scalar intensities and inclusive Lower/Upper
-bounds. Valid edits update a red overlay; Set enables it explicitly and Reset
-disables it. The underlying pixels and pixel undo history stay unchanged.
-Cancel restores the threshold state present when the panel opened, while
-preserving current zoom, navigation and LUT changes.
+Choose **Process > Threshold display...** in either launch mode. The panel
+provides inclusive raw bounds, Set/Reset, a red overlay and all eighteen Auto
+methods. Pixel data and pixel history stay unchanged until Apply. Cancel restores
+the opening threshold state while retaining live camera/navigation/LUT changes.
 
-**To Selection** creates an area selection retaining holes, disconnected regions
-and empty results. **Apply** processes the captured current plane and active ROI
-through the native executor, even after a tab switch. The panel previews the
-effective output type: full-document coverage becomes UInt8; partial coverage
-preserves the common source/result type and untargeted values. A changed Apply
-creates one pixel undo entry. Recorded threshold steps retain that same policy
-during replay; existing generic threshold records retain their legacy behavior.
+The default target is the captured scalar XY plane and active selection. All-Z
+mode shares one histogram and overlay across Z at captured T/C. **Target...** also
+provides Current/All/First/Last/Step for C/Z/T, whole-plane/active/positioned ROI
+policies, and an independent histogram ROI toggle. Invalid drafts disable Set,
+Auto and Apply. Show preview plane navigates without retargeting Apply. The plot
+uses Auto's retained raw target histogram; endpoint exclusions affect estimation.
 
-Saved sessions retain the threshold display range and its captured T/C/Z plane.
-This panel supports finite eager scalar UInt8/UInt16/Float32/Float64 T1/C1 data.
-Automatic methods, color threshold, scientific C/T controls and threshold-limited
-measurements remain required. The [P05k card](packets/P05k-manual-threshold-display.md#current-execution-card)
-owns current verification status; implementation alone does not certify parity.
+To Selection derives a 2D mask from the captured plane. Apply edits the frozen
+target and its write ROIs through the C++ executor, retaining untargeted values.
+Full coverage can become UInt8; partial coverage preserves the common type.
+The panel explicitly describes conditional positioned-ROI coverage. Changed
+Apply creates one pixel undo entry. Typed replay and explicit rebinding retain
+source/ROI checks. Sessions preserve single-plane, all-Z and range-grid overlays.
+
+Both hosts support finite eager scalar UInt8/UInt16/Float32/Float64 datasets.
+Auto remains synchronous and bounded. Color/nonfinite/volume/lazy policies,
+standalone histogram controls/export, additional output/convention choices and
+full reference/resource/platform/accessibility acceptance remain open. See
+[threshold contracts](THRESHOLDING.md) and the
+[scoped functional receipt](parity/reviews/p10f-scientific-threshold001.json).
+The [P05k card](packets/P05k-manual-threshold-display.md#current-execution-card)
+retains its original bounded verification scope; this does not complete parity.
+
 
 ## Z, channel and time playback
 

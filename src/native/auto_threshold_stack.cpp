@@ -8,16 +8,22 @@
 #include <numeric>
 
 namespace imagejxx {
-std::size_t detail::pooled_threshold_working_bytes(const ResolvedTarget &target,int count) {
+std::size_t detail::pooled_threshold_working_bytes(const ResolvedTarget &target,int count,bool include_histogram) {
   if(count<2 || count>65536)throw std::invalid_argument("Pooled threshold requires 2..65536 bins");
   const auto shape=target.source().data().dataset.shape();
   const auto pixels=std::size_t(shape.x)*shape.y;
   const auto rounded=detail::target_rounded_mask_workspace(target);
   if(rounded>SIZE_MAX-65536 || pixels>(SIZE_MAX-rounded-65536)/ (2*sizeof(double)) || std::size_t(count+1)>(SIZE_MAX-rounded-65536-pixels*2*sizeof(double))/(24*sizeof(double)))
     throw std::invalid_argument("Pooled threshold workspace overflows size_t");
-  return rounded+65536+pixels*2*sizeof(double)+std::size_t(count+1)*24*sizeof(double);
+  const auto base=rounded+65536+pixels*2*sizeof(double)+std::size_t(count+1)*24*sizeof(double);
+  const auto retained=include_histogram?(std::size_t(count)*2+1)*sizeof(double):0;
+  if(retained>SIZE_MAX-base)throw std::invalid_argument("Pooled histogram retention workspace overflow");
+  return base+retained;
 }
-PooledThresholdResult pooled_auto_threshold(const ResolvedTarget &requested,const std::string &method,int bins,bool ignore_black,bool ignore_white,std::size_t cap,const ExecutionControl &control) {
+PooledThresholdResult pooled_auto_threshold(const ResolvedTarget &target,const std::string &method,int bins,bool black,bool white,std::size_t cap,const ExecutionControl &control) {
+  return pooled_auto_threshold(target,method,bins,black,white,cap,control,false);
+}
+PooledThresholdResult pooled_auto_threshold(const ResolvedTarget &requested,const std::string &method,int bins,bool ignore_black,bool ignore_white,std::size_t cap,const ExecutionControl &control,bool include_histogram) {
   // Freeze every caller-owned argument before the first execution callback.
   const auto target=requested;const std::string name=method;const auto captured=control;
   const auto &dataset=target.source().data().dataset;const auto shape=dataset.shape();
@@ -27,7 +33,7 @@ PooledThresholdResult pooled_auto_threshold(const ResolvedTarget &requested,cons
   (void)normalized;
   const int count=bins==0?256:bins;
   if(count<2 || count>65536)throw std::invalid_argument("Pooled threshold requires 2..65536 bins");
-  const auto working=detail::pooled_threshold_working_bytes(target,count);
+  const auto working=detail::pooled_threshold_working_bytes(target,count,include_histogram);
   if(working>cap)throw std::invalid_argument("Pooled threshold exceeds working-byte limit");
   if(captured.cancellation && captured.cancellation->canceled())throw OperationCancelled();
   ExecutionScope scope(captured);kernel_checkpoint();
@@ -56,26 +62,42 @@ PooledThresholdResult pooled_auto_threshold(const ResolvedTarget &requested,cons
     });
   }extrema.finish();
   if(!samples)throw std::invalid_argument("Pooled threshold target contains no selected samples");
-  const auto finish=[&](double threshold){require_finite(threshold,"Pooled threshold level");kernel_checkpoint();if(captured.progress)execution_progress(1,1);kernel_checkpoint();return PooledThresholdResult{threshold,samples,working};};
+  std::optional<Histogram> retained;
+  const auto finish=[&](double threshold){require_finite(threshold,"Pooled threshold level");kernel_checkpoint();if(captured.progress)execution_progress(1,1);kernel_checkpoint();return PooledThresholdResult{threshold,samples,working,std::move(retained)};};
+  const bool integer_type=dataset.pixel_type()==PixelType::UInt8 || dataset.pixel_type()==PixelType::UInt16;
+  std::optional<double> raw_level;
   if(!is_imagej_threshold_method(name) && !ignore_black && !ignore_white) {
-    if(low==high)return finish(low);
-    if(raw_mean)return finish(sum/samples);
+    if(low==high){
+      if(include_histogram){
+        retained=Histogram{std::vector<std::uint64_t>(count,0),std::vector<double>(count+1,low)};
+        std::size_t bin=0;
+        if(integer_type){const auto upper=type_max(dataset.pixel_type())+1;for(int i=0;i<=count;++i){kernel_checkpoint_periodic();retained->edges[i]=-.5+upper*(i/double(count));}bin=std::size_t(std::clamp(std::floor((low+.5)/upper*count),0.,double(count-1)));}
+        retained->counts[bin]=samples;
+      }
+      return finish(low);
+    }
+    if(raw_mean){if(!include_histogram)return finish(sum/samples);raw_level=sum/samples;require_finite(*raw_level,"Pooled threshold level");}
   }
-  if(dataset.pixel_type()==PixelType::UInt8 || dataset.pixel_type()==PixelType::UInt16) {low=-.5;high=type_max(dataset.pixel_type())+.5;}
+  if(integer_type) {low=-.5;high=type_max(dataset.pixel_type())+.5;}
   else if(low==high) {low-=.5;high+=.5;}
-  if(!(high>low) || !std::isfinite(high-low))throw std::invalid_argument("Pooled threshold histogram range must have finite positive width");
+  if(!(high>low) || (!std::isfinite(high-low) && !raw_level))throw std::invalid_argument("Pooled threshold histogram range must have finite positive width");
   Histogram histogram{std::vector<std::uint64_t>(count,0),std::vector<double>(count+1)};
-  for(int i=0;i<=count;++i){kernel_checkpoint_periodic();histogram.edges[i]=low+(high-low)*(i/double(count));}
+  for(int i=0;i<=count;++i){kernel_checkpoint_periodic();const double fraction=i/double(count);
+    histogram.edges[i]=raw_level && low<=0 && high>=0?low*(1-fraction)+high*fraction:low+(high-low)*fraction;
+  }
   KernelStage accumulation("Pooled threshold histogram",target.position_count());
   std::uint64_t included=0;
   for(std::size_t i=0;i<target.position_count();++i) {
     accumulation.checkpoint(i);acquire(i,[&](double value){
       if(value<low || value>high)throw std::invalid_argument("Pooled threshold source changed between passes");
-      const auto bin=std::size_t(std::clamp(std::floor((value-low)/(high-low)*count),0.,double(count-1)));
+      const double span=high-low,scale=std::max(std::abs(low),std::abs(high));
+      const double fraction=std::isfinite(span)?(value-low)/span:(value/scale-low/scale)/(high/scale-low/scale);
+      const auto bin=std::size_t(std::clamp(std::floor(fraction*count),0.,double(count-1)));
       ++histogram.counts[bin];++included;
     });
   }accumulation.finish();
   if(included!=samples)throw std::invalid_argument("Pooled threshold selection changed between passes");
-  return finish(detail::threshold_from_histogram(std::move(histogram),name,ignore_black,ignore_white));
+  if(include_histogram)retained=histogram;
+  return finish(raw_level?*raw_level:detail::threshold_from_histogram(std::move(histogram),name,ignore_black,ignore_white));
 }
 } // namespace imagejxx

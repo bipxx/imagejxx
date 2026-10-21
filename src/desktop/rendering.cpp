@@ -53,8 +53,7 @@ void renderThresholdOverlay(Image &rgb, const Image &original,
                             PlanePosition position) {
   const auto state =
       manual_threshold_state(source.display(), source.data().dataset.shape());
-  if (state && state->position.t == position.t &&
-      state->position.c == position.c && (state->all_z || state->position.z == position.z))
+  if (state && manual_threshold_contains(*state,position))
     imagejxx::detail::blend_manual_threshold_source_overlay(original, rgb, state->range,
         source.data().dataset.sample_policy());
 }

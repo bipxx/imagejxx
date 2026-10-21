@@ -98,6 +98,17 @@ void OperationTargetPanel::capture(const DocumentSnapshot &source) {
   resetControls();
 }
 
+void OperationTargetPanel::configure(const DocumentSnapshot &source,const TargetRequest &request) {
+  if(request.scope==TargetScope::Positions || request.mode!=ExecutionMode::Planes || request.destination!=OutputDestination::InPlace)
+    throw std::invalid_argument("Target controls require in-place plane ranges");
+  const auto resolved=resolve_target(source,request);
+  OperationTargetPanel next;next.capture(source);
+  for(std::size_t i=0;i<3;++i){auto &axis=next.axes_[i];const auto &r=resolved.ranges()[i];
+    axis.mode=r.start==axis.captured && *r.stop==axis.captured+1 && r.step==1?Mode::Current:r.start==0 && *r.stop==axis.extent && r.step==1?Mode::All:Mode::Range;
+    axis.first={std::to_string(r.start+1),false};axis.last={std::to_string(*r.stop),false};axis.step={std::to_string(r.step),false};
+  }
+  next.roi_=request.roi;next.resolvePreview(resolved);*this=std::move(next);
+}
 AxisRange OperationTargetPanel::range(const AxisDraft &axis) {
   if (axis.mode == Mode::Current)
     return {axis.captured, axis.captured + 1, 1};
@@ -224,7 +235,7 @@ bool OperationTargetPanel::field(const char *label, const char *name,
   return edited || committed;
 }
 
-bool OperationTargetPanel::draw(bool enabled) {
+bool OperationTargetPanel::draw(bool enabled,bool preview_ordinal) {
   resetControls();
   enterConsumed_ = false;
   if (!captured_)
@@ -301,7 +312,7 @@ bool OperationTargetPanel::draw(bool enabled) {
     changedTarget();
   // Keep the text field available while its invalid or incomplete draft has
   // disabled command resolution, so it can be corrected without reopening.
-  if (previewCount_) {
+  if (previewCount_ && preview_ordinal) {
     ImGui::BeginDisabled(!enabled);
     if (field("Preview plane (selected order)", "preview.ordinal",
               previewOrdinal_, 8.f * ImGui::GetFontSize(), enabled)) {

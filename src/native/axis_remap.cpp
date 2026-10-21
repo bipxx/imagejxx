@@ -151,9 +151,17 @@ PreparedAxisRemap prepare_z_axis_remap(const DocumentSnapshot &source,const ZSub
   const auto threshold=manual_threshold_state(display,shape);
   display.crosshair[2]=map.nearest_output(display.crosshair[2]);
   if(threshold) {
+    if(threshold->ranges){auto state=*threshold;const auto old=(*state.ranges)[2];int first=-1,last=-1,stride=0;
+      for(int z=0;z<map.count();++z){kernel_checkpoint_periodic();const int source_z=map.source_index(z);
+        if(source_z>=old.start && source_z<*old.stop && (source_z-old.start)%old.step==0){if(first<0)first=z;else if(!stride)stride=z-last;last=z;}
+      }
+      if(first<0)reset_manual_threshold_state(display);
+      else {(*state.ranges)[2]={first,last+1,stride?stride:1};state.position.z=map.nearest_output(state.position.z);set_manual_threshold_state(display,output_shape,state);}
+    }else {
     const auto mapped=map.output_index(threshold->position.z);
     if(mapped || threshold->all_z) {auto state=*threshold;state.position.z=mapped?*mapped:map.nearest_output(threshold->position.z);set_manual_threshold_state(display,output_shape,state);}
     else reset_manual_threshold_state(display);
+    }
   }
   edit.set_axis_remap_display(display);
   kernel_checkpoint();return {std::move(edit),std::move(display)};

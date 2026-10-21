@@ -1,0 +1,342 @@
+{
+  "state": "qualified_functional_increment",
+  "objective_complete": false,
+  "scope": "Scientific C/T/Z threshold target controls and independent histogram ROI estimation in both shared ImGui hosts; positioned write ROIs, raw histogram retention and version-three range overlays in C++/Python.",
+  "behavior": "The shared OperationTargetPanel supplies captured Current/All/First/Last/Step and ROI policies. Invalid drafts disable publication while controls remain editable. Show preview plane navigates within a frozen grid. Auto estimates whole target planes or ROI members; Apply uses the same grid with its selected write ROI. To Selection retains its captured plane. Overlays display raw membership across selected XY planes including outside write ROIs. Target edits are drafts until Set/Auto/Apply.",
+  "histogram": "Requested pooled histograms retain raw counts/edges including endpoint bins. Numeric-only calls preserve the original path and seven-argument C++ callable overload. Retention is admitted in working scratch; raw Mean retains its exact level while building a histogram, constants can form counts without another scan, and finite cross-zero Float64 Mean uses convex edges/scaled binning. All-Z/scientific/ROI plots display the retained target histogram. Basic single-plane calculation can still omit it. No global memory/RSS claim.",
+  "state_and_records": "Nested display version three stores fully resolved, nonempty half-open T/C/Z triples with positive steps. The anchor is inside the dataset but may be outside the grid. Version-one/two forms remain supported. State membership gates XY overlays and variance/top-hat threshold reset. Z subsetting intersects/remaps the grid and drops empty intersections. Manual positioned-ROI commands use version-two records with null active-selection claims; strict source/revision binding and explicit destination rebinding remain.",
+  "preferences": "Native threshold_histogram_roi and threshold_apply_roi settings are consumed and saved on successful Auto. Ranges are source-specific drafts restored from range overlays. Existing opaque-field, migration and implicit protected-write policy remains. Preference saving and display publication are separate resources, so a concurrent display conflict can refuse after preferences reached disk.",
+  "reference": {
+    "fixtures": [
+      {
+        "path": "tests/fixtures/auto-threshold-imagej154r.json",
+        "bytes": 116881,
+        "sha256": "e8f76e8e82c0cbcce98307bf9374e175439bef531ae17a2f3a0de3289ae70db8"
+      },
+      {
+        "path": "tests/fixtures/auto-threshold-options-imagej154r.json",
+        "bytes": 485227,
+        "sha256": "03543d3a9f0eeb82a2653ed51c61510ae615d2f84ba2472a5fe33aea0a9d3bd3"
+      }
+    ],
+    "scope": "Four target planes/ROI members contribute the retained pinned uniform histogram, with independently computed grid, raw bins, red tint and ROI-limited output. Other source planes and ROI exteriors use distinct literals. No new independent Java oracle was generated. Mean/constant/extreme and session/remap/replay checks are bounded functional contracts, not complete upstream or format certification."
+  },
+  "profiles": {
+    "windows": {
+      "tests": 5445,
+      "new_scientific_checks": 68,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "observations": 204,
+      "frames": 19368,
+      "scientific_target_reports": 36,
+      "contexts": [
+        "imgui_cpp",
+        "imgui_python"
+      ],
+      "evidence": {
+        "path": "build/p10f-scientific-threshold001/windows-evidence001.json",
+        "bytes": 700029,
+        "sha256": "bec567af8e2f3c275ab9ae3a67a06bcf8639c2d287192f30d542bbf3dab5f7fc"
+      },
+      "junit": {
+        "path": "build/p10f-scientific-threshold001/windows-python001/pytest.xml",
+        "bytes": 799623,
+        "sha256": "aea7feef21f2677d3eb52219b33934c017c88f94951d0dc503c397c29d5c0aab"
+      },
+      "products": {
+        "path": "build/p10f-scientific-threshold001/windows-products001.json",
+        "bytes": 13090,
+        "sha256": "d40fd85ad7ce010ff2a9e4dfa27454010766d0e8e205a6c66c6c42e41ff310c4"
+      },
+      "sdk": {
+        "path": "build/p10f-scientific-threshold001/windows-sdk001/receipt.json",
+        "bytes": 1288,
+        "sha256": "033f2051a778f1b635887719663423bd7d685a24fd3737eb351721caaf772490"
+      },
+      "scientific_sdk": {
+        "path": "build/p10f-scientific-threshold001/windows-sdk-scientific-threshold003/receipt.json",
+        "bytes": 546,
+        "sha256": "01efd05b1658f048b604f7a389a70e529b4eeb4b734992f60ea0305e68aa0a4a"
+      },
+      "commercial_use": {
+        "path": "build/p10f-scientific-threshold001/windows-gates001.log",
+        "bytes": 53,
+        "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+      },
+      "cleanup": {
+        "path": "build/p10f-scientific-threshold001/windows-cleanup001.json",
+        "bytes": 1011387,
+        "sha256": "6eba12215aeb17863d21dddc8dd76842aded5e956dbd72df84745e565ca41aa5"
+      },
+      "removed_bytes": 2078387476
+    },
+    "linux": {
+      "tests": 5445,
+      "new_scientific_checks": 68,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "observations": 204,
+      "frames": 19368,
+      "scientific_target_reports": 36,
+      "contexts": [
+        "imgui_cpp",
+        "imgui_python"
+      ],
+      "evidence": {
+        "path": "build/p10f-scientific-threshold001/linux-evidence001.json",
+        "bytes": 692777,
+        "sha256": "51fc43fc51f757dd3271c3a4ca6b652e9b8ac52657a027273b9d2cf978422a03"
+      },
+      "junit": {
+        "path": "build/p10f-scientific-threshold001/linux-python001/pytest.xml",
+        "bytes": 799624,
+        "sha256": "7476d4f5d503a6d11f37d22f25c068e29e98600cf18ad07d7c3504983c2a46d9"
+      },
+      "products": {
+        "path": "build/p10f-scientific-threshold001/linux-products001.json",
+        "bytes": 12669,
+        "sha256": "2f060a93e996eb64ebb0413844c319eca4073def146dfb29e52f6eac7df25873"
+      },
+      "sdk": {
+        "path": "build/p10f-scientific-threshold001/linux-sdk001/receipt.json",
+        "bytes": 1173,
+        "sha256": "ebbe86c61616ccda483394543f0640cb7b13812b76f744c47fb9ffa4ba56c34a"
+      },
+      "scientific_sdk": {
+        "path": "build/p10f-scientific-threshold001/linux-sdk-scientific-threshold003/receipt.json",
+        "bytes": 453,
+        "sha256": "f0ffab5be7fa3e00806ba2e2f799c0691ac7d41737d46a3d6c5b2602d34f2a78"
+      },
+      "commercial_use": {
+        "path": "build/p10f-scientific-threshold001/linux-gates001.log",
+        "bytes": 53,
+        "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+      },
+      "cleanup": {
+        "path": "build/p10f-scientific-threshold001/linux-cleanup001.json",
+        "bytes": 1033919,
+        "sha256": "e8cb2530d0d46c3f75706d843b3fbd7e7cfc0d2747bc1eddbdd4c08de74534f8"
+      },
+      "removed_bytes": 2136148194
+    }
+  },
+  "source": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 101356,
+      "sha256": "e8c8f8e5acc2c994c32dfb0ef8c9798bcf914e65b427e88bcdc9d976abab177d"
+    },
+    {
+      "path": "include/imagejxx/auto_threshold_stack.hpp",
+      "bytes": 1536,
+      "sha256": "f9b49369a8a648316a24f23592ef12baf15da58840443c1ecf45cbe2f08e0b94"
+    },
+    {
+      "path": "include/imagejxx/automatic_threshold_display.hpp",
+      "bytes": 1517,
+      "sha256": "c8588fe971fbcda751aef96de5d6bc575c6f5e868829d2a2a39afd56db4bb6e7"
+    },
+    {
+      "path": "include/imagejxx/manual_threshold.hpp",
+      "bytes": 3763,
+      "sha256": "268291351de4560022a6011ba8766cdf50d70cabb6e82dc18b0c2f53a6503d6c"
+    },
+    {
+      "path": "include/imagejxx/manual_threshold_command.hpp",
+      "bytes": 1885,
+      "sha256": "336b79fc4b748bb701b51c456c56cdbc1a029725e533d967bb12286a0b425205"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 32252,
+      "sha256": "ddede4b63c44973ff085b5efbe7435835e36f4dc5e9b65454f586b9abbb9252d"
+    },
+    {
+      "path": "src/desktop/animation_ui_probe.cpp",
+      "bytes": 13677,
+      "sha256": "1f1c47fdfd36b89ef98419c0f59ac522391afa91c61327f1197a772996c8fb6a"
+    },
+    {
+      "path": "src/desktop/operation_target_panel.cpp",
+      "bytes": 16626,
+      "sha256": "5105c0c1f73935479153444ab60d11d342fe2a52498aa12ac8f826ab8ac77813"
+    },
+    {
+      "path": "src/desktop/operation_target_panel.hpp",
+      "bytes": 2631,
+      "sha256": "fe0d6155dd4d58945974de078a1b899d85d1a91ac5676a83eb9ddd0fd3db4410"
+    },
+    {
+      "path": "src/desktop/rendering.cpp",
+      "bytes": 36122,
+      "sha256": "0cfcbbe6aa2695d6a67da162611180807d4ff7121d6faa3da281abc48857723b"
+    },
+    {
+      "path": "src/desktop/scientific_threshold_target_ui_probe.cpp",
+      "bytes": 6619,
+      "sha256": "fb0240b334507b2c9d590b0877f07c3aca6291dfa1460abe307842415af6126c"
+    },
+    {
+      "path": "src/desktop/scientific_threshold_target_ui_probe.hpp",
+      "bytes": 187,
+      "sha256": "df10c31ceb0078379104e14415ba77355b93f60d214dab89bcc29ebd145233c7"
+    },
+    {
+      "path": "src/desktop/threshold_panel.cpp",
+      "bytes": 27274,
+      "sha256": "7cae9825a6860d659fc705940d3991a1246b91dec31b42b16c83e9ebcd0c31b1"
+    },
+    {
+      "path": "src/desktop/threshold_panel.hpp",
+      "bytes": 3765,
+      "sha256": "dac57e62186dee541519365836496d5f141615d5d101ca63786c1b209e59546c"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 663645,
+      "sha256": "c48764820464a257a925c39c1d9df636216d0b532cfe2fdb3b3c7f0722f3f3d5"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 71280,
+      "sha256": "d43a8fdb3c088b01b2621f5ba77ec17657f59bf50df06bf90da03bc069183de0"
+    },
+    {
+      "path": "src/native/auto_threshold_bindings.cpp",
+      "bytes": 5786,
+      "sha256": "dc4cb606170e6260bcd6f1f8eef534a3d217369e6bef98a0be9972d466887e53"
+    },
+    {
+      "path": "src/native/auto_threshold_internal.hpp",
+      "bytes": 513,
+      "sha256": "406edf780b5e606e5a02afe8a1fa1352a26046cc72fefedd2b273bfc7ffeb2ce"
+    },
+    {
+      "path": "src/native/auto_threshold_stack.cpp",
+      "bytes": 7118,
+      "sha256": "65e7318bae66c818f754497d52ff6fef6daeb646741c78891bf0cefeebab1c1d"
+    },
+    {
+      "path": "src/native/automatic_threshold_display.cpp",
+      "bytes": 8198,
+      "sha256": "bd5c7b22af2d6d2574d2e82e0da504776d145ccad8dd147b9423fd229a383d46"
+    },
+    {
+      "path": "src/native/axis_remap.cpp",
+      "bytes": 9502,
+      "sha256": "f51f14f3c2b4bbf2cdfd111ff3cdb94ede4506e5e9b33af0426dddac9f00b966"
+    },
+    {
+      "path": "src/native/execution.cpp",
+      "bytes": 125690,
+      "sha256": "b53af2bbaab11c21da88afc26f77a0e06d816a36bf768735bd5b7c636cfc2370"
+    },
+    {
+      "path": "src/native/manual_threshold.cpp",
+      "bytes": 17194,
+      "sha256": "6d30cc71d27fe16d76f49d0a9264a0a8143460673d92eb2d1b7eb7ea3c37cabb"
+    },
+    {
+      "path": "src/native/manual_threshold_bindings.cpp",
+      "bytes": 8976,
+      "sha256": "0561673dc0826f74a245c5855a181e12f7561775a90d6bb0034f72f734f7d7fc"
+    },
+    {
+      "path": "src/native/manual_threshold_command.cpp",
+      "bytes": 7059,
+      "sha256": "372f2092e0d4bc4edbfeccc1070292d66c8e9d722a3fb16bf5094f4c00525768"
+    },
+    {
+      "path": "src/native/settings.cpp",
+      "bytes": 20865,
+      "sha256": "e0d76d031fb1a6f5a9f2bdbeb3fe532a1826eff53b70e95a3a9666da39936d36"
+    },
+    {
+      "path": "tests/python/test_pooled_display_ui.py",
+      "bytes": 3037,
+      "sha256": "83957260d5d5fa8d88108055b87a0ea194c3d4b45baec9c606ec063e7555de94"
+    },
+    {
+      "path": "tests/python/test_scientific_threshold_target.py",
+      "bytes": 10079,
+      "sha256": "50fcce11b9b76a20ac0f9e05cc668f5b313fee4722ee00bd9211367d14410836"
+    },
+    {
+      "path": "tests/python/test_scientific_threshold_target_ui.py",
+      "bytes": 3950,
+      "sha256": "bfb8149e880e0683d68b8c7b73e448ef267ae257b394bafb4c73ebc0d1f80ef8"
+    },
+    {
+      "path": "tests/python/test_threshold_preferences.py",
+      "bytes": 7829,
+      "sha256": "326853fb646309479e178f298b755c5268718a091f96b1e8ea8b1e1af08de6af"
+    }
+  ],
+  "registration": {
+    "path": "build/p10f-scientific-threshold001/registration001.json",
+    "bytes": 3425,
+    "sha256": "20adfe0ab33aa9646486bf74251b4f69226b0a4d6d71eedb4b9f9e0c6f4e2513"
+  },
+  "sdk_sources": [
+    {
+      "path": "build/p10f-scientific-threshold001/sdk-scientific-threshold-source001/CMakeLists.txt",
+      "bytes": 233,
+      "sha256": "ae749fdcede9eb3fcb3a66f8859bef73508046d36b1f88fe8c4357e029715a90"
+    },
+    {
+      "path": "build/p10f-scientific-threshold001/sdk-scientific-threshold-source001/main.cpp",
+      "bytes": 3009,
+      "sha256": "9675918db2ca9f218342a1f75493325b28e8bca462c6af7cac9eca2493895ac5"
+    }
+  ],
+  "initial_failures": [
+    {
+      "host": "windows",
+      "report": {
+        "path": "build/p10f-scientific-threshold001/windows-core001/pytest.xml",
+        "bytes": 2733,
+        "sha256": "1ba02fd53fc14d9a7189092655184c97e81689610ab90bafb4c079bd4d5deebf"
+      },
+      "reason": "New identity-subset test incorrectly expected an undo entry. It now explicitly asserts unchanged display and zero history for identity, while requiring one undo for real remapping."
+    },
+    {
+      "host": "linux",
+      "report": {
+        "path": "build/p10f-scientific-threshold001/linux-core001/pytest.xml",
+        "bytes": 2730,
+        "sha256": "5747d76f47f74f2eb93f740842224cc14d1883ec715cda4e16708bd6e26e9ace"
+      },
+      "reason": "New identity-subset test incorrectly expected an undo entry. It now explicitly asserts unchanged display and zero history for identity, while requiring one undo for real remapping."
+    }
+  ],
+  "remaining": [
+    "Complete background Auto execution, global resource/RSS/large-data responsiveness, full reference/interface bindings and platform/accessibility acceptance.",
+    "Standalone histogram calculation/dialog independent of threshold constraints; configurable range/bin/log controls, richer statistics and numerical export remain unfinished.",
+    "Arbitrary-position-list UI targets, lazy/volume/color/nonfinite desktop policies, further foreground/output/preview conventions and method-level nonpixel workflow recording.",
+    "Complete remaining automatic-mask/plugin defaults and full upstream image-scaling/edge/tie/overflow and legacy-method reference coverage.",
+    "The pre-existing Auto Contrast producer-source fingerprint gate remains unresolved; no fingerprint repinning. Existing 96 format variants remain partial."
+  ],
+  "counts": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0,
+    "format_variants_partial": 96
+  },
+  "plan_gate": {
+    "state": "pre_existing_failure",
+    "evidence": {
+      "path": "build/p10f-scientific-threshold001/plan-check001.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    },
+    "message": "Plan inventory check failed: histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed",
+    "unchanged_producer_source": {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 14135,
+      "sha256": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    }
+  }
+}

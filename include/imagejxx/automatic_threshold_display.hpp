@@ -11,6 +11,7 @@ struct AutomaticThresholdDisplayResult {
   bool bright, ignore_black, ignore_white;
   bool stack_histogram = false;
   std::uint64_t selected_samples = 0;
+  std::optional<Histogram> histogram;
 };
 // Captures a Dataset handle and one explicit XY position. The returned inclusive
 // interval selects precisely >level (bright) or <=level (dark), including empty

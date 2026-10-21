@@ -1516,7 +1516,7 @@ struct Window::Impl {
     if (action == "show_rgb_dataset" || action=="show_color_stack" || action=="show_indexed_dataset" || action=="show_indexed_rgb") return true;
     if (action == "show_z_subset" || action == "substack" || action == "replay_z_subset")
       return source->nativeSnapshot().data().dataset.shared_planes().has_value();
-    if (action == "auto_manual_threshold" || action == "show_manual_threshold" || action == "set_manual_threshold" ||
+    if (action == "configure_threshold_target" || action == "auto_manual_threshold" || action == "show_manual_threshold" || action == "set_manual_threshold" ||
         action == "reset_manual_threshold" || action == "manual_threshold_to_selection" ||
         action == "apply_manual_threshold" || action == "replay_manual_threshold") {
       const auto &dataset = source->nativeSnapshot().data().dataset;
@@ -2912,7 +2912,7 @@ struct Window::Impl {
     const auto source = checkedThresholdSource();
     auto display = owner.nativeSnapshot(source.id()).display();
     set_manual_threshold_state(display, source.data().dataset.shape(),
-                                {range, thresholdPosition(),thresholdPanel.stackHistogram()});
+                                thresholdPanel.displayState(range));
     owner.setNativeDisplay(std::move(display), source.id());
   }
   AutomaticThresholdDisplayResult thresholdAutomatic(const std::string &method,bool bright,bool black,bool white,bool pooled) {
@@ -2920,18 +2920,22 @@ struct Window::Impl {
     const auto source=checkedThresholdSource();const auto live=owner.nativeSnapshot(source.id());
     if(!live.revisions().matches(source.revisions(),Change::Data))throw RevisionConflict();
     const auto result=[&] {
-      if(!pooled)return automatic_threshold_display(source.data().dataset,thresholdPosition(),method,0,bright,black,white,thresholdLimits());
-      TargetRequest request;request.scope=TargetScope::AllZ;request.roi=RoiPolicy::WholePlane;
+      if(!pooled && !thresholdPanel.scientificTargets() && !thresholdPanel.histogramUsesRoi())return automatic_threshold_display(source.data().dataset,thresholdPosition(),method,0,bright,black,white,thresholdLimits());
+      auto request=thresholdPanel.targetRequest();
+      if(!thresholdPanel.scientificTargets()){request.scope=pooled?TargetScope::AllZ:TargetScope::Positions;request.positions=pooled?std::vector<PlanePosition>{}:std::vector<PlanePosition>{thresholdPosition()};}
+      if(!thresholdPanel.histogramUsesRoi())request.roi=RoiPolicy::WholePlane;
       const auto target=resolve_target(source,request,"threshold");
-      return pooled_automatic_threshold_display(target,method,0,bright,black,white,thresholdLimits());
+      auto result=pooled_automatic_threshold_display(target,method,0,bright,black,white,thresholdLimits());
+      result.stack_histogram=pooled;return result;
     }();
-    auto display=live.display();set_manual_threshold_state(display,source.data().dataset.shape(),{result.range,thresholdPosition(),pooled});
+    auto display=live.display();set_manual_threshold_state(display,source.data().dataset.shape(),thresholdPanel.scientificTargets()?thresholdPanel.displayState(result.range):ManualThresholdState{result.range,thresholdPosition(),pooled});
     auto remembered = preferenceState;
     remembered.settings = owner.settings();
     remembered.extras = preferences;
     remembered.settings.update({{"threshold_method", method},
         {"threshold_bright", bright}, {"threshold_ignore_black", black},
-        {"threshold_ignore_white", white},{"threshold_stack_histogram",pooled}});
+        {"threshold_ignore_white", white},{"threshold_stack_histogram",pooled},{"threshold_histogram_roi",thresholdPanel.histogramUsesRoi()}});
+    if(thresholdPanel.scientificTargets()){const auto roi=thresholdPanel.targetRequest().roi;remembered.settings.set("threshold_apply_roi",std::string(roi==RoiPolicy::WholePlane?"whole_plane":roi==RoiPolicy::ActiveSelection?"active_selection":"positioned_rois"));}
     // Implicit saves preserve newer/corrupt-file write protection. A disk
     // failure leaves both the display and remembered settings unchanged.
     remembered.save(preferencesPath);
@@ -2969,18 +2973,15 @@ struct Window::Impl {
   void thresholdApplyPreview() {
     const auto source = checkedThresholdSource();
     const auto shape = source.data().dataset.shape();
-    bool complete = shape.t == 1 && shape.c == 1 && (shape.z == 1 || thresholdPanel.stackHistogram());
-    if (complete && source.data().selection) {
-      const auto mask = source.data().selection->mask(shape.x, shape.y);
-      complete = std::all_of(mask.pixels.begin(), mask.pixels.end(),
-                             [](double value) { return value != 0; });
-    }
-    thresholdPanel.setApplyPreview(
-        complete ? PixelType::UInt8 : source.data().dataset.pixel_type(),
-        "Captured T " + std::to_string(thresholdPosition().t + 1) +
-          ", C " + std::to_string(thresholdPosition().c + 1) +
-          (thresholdPanel.stackHistogram()?", all Z":", Z " + std::to_string(thresholdPosition().z + 1)) +
-          (source.data().selection ? "; active selection" : "; whole plane"));
+    const auto request=thresholdPanel.targetRequest();const auto target=resolve_target(source,request,"threshold");
+    bool complete=target.position_count()==shape.plane_count();
+    const bool conditional=complete && request.roi==RoiPolicy::PositionedRois && source.data().dataset.pixel_type()!=PixelType::UInt8;
+    if(conditional)complete=false;
+    if(complete && request.roi==RoiPolicy::ActiveSelection && source.data().selection){const auto mask=source.data().selection->mask(shape.x,shape.y);complete=std::all_of(mask.pixels.begin(),mask.pixels.end(),[](double v){return v!=0;});}
+    const std::string roi=request.roi==RoiPolicy::WholePlane?"whole plane":request.roi==RoiPolicy::PositionedRois?"positioned ROIs":source.data().selection?"active selection":"whole plane (no selection)";
+    const auto extent=thresholdPanel.scientificTargets()?std::to_string(target.position_count())+" frozen XY planes; "+roi:
+        "Captured T "+std::to_string(thresholdPosition().t+1)+", C "+std::to_string(thresholdPosition().c+1)+(thresholdPanel.stackHistogram()?", all Z":", Z "+std::to_string(thresholdPosition().z+1))+"; "+roi;
+    thresholdPanel.setApplyPreview(complete?PixelType::UInt8:source.data().dataset.pixel_type(),extent,conditional);
   }
   void showThreshold(std::uint64_t id = 0) {
     if (owner.busy())
@@ -3028,16 +3029,14 @@ struct Window::Impl {
     const auto cancelEpoch = thresholdCancelEpoch.load();
     const auto source = checkedThresholdSource();
     range.validate();
-    TargetRequest request;
-    request.scope = thresholdPanel.stackHistogram()?TargetScope::AllZ:TargetScope::Positions;
-    if(request.scope==TargetScope::Positions)request.positions = {thresholdPosition()};
+    const auto request=thresholdPanel.targetRequest();
     const auto command = resolve_manual_threshold_command(source, range, request);
     Json step = owner.recording ? Json{{"operation", "threshold"},
         {"parameters", {{"lower", range.lower}, {"upper", range.upper}}},
         {"all_slices", thresholdPanel.stackHistogram()}, {"slice_index", thresholdPosition().z},
         {"selection", source.data().selection ? selectionJson(*source.data().selection) : Json()},
         {"dataset_policy", "preserve_untargeted"}} : Json();
-    if (owner.recording && (thresholdPanel.stackHistogram() || owner.documentById(source.id())->scientific()))
+    if (owner.recording && (thresholdPanel.scientificTargets() || thresholdPanel.stackHistogram() || owner.documentById(source.id())->scientific()))
       step = metadataJson(command.record());
     submitThreshold(command, std::move(step), cancelEpoch);
   }
@@ -5756,7 +5755,7 @@ void Window::action(const std::string &name, const Json &p) {
   }
   static const std::set<std::string> targeted{
       "show_movie_export", "view", "fit_selection", "close_document", "combine_rois", "undo", "redo",
-      "show_manual_threshold", "auto_manual_threshold", "set_manual_threshold", "reset_manual_threshold",
+      "show_manual_threshold", "configure_threshold_target", "auto_manual_threshold", "set_manual_threshold", "reset_manual_threshold",
       "manual_threshold_to_selection", "apply_manual_threshold",
       "replay_manual_threshold",
       "show_z_subset", "substack", "replay_z_subset",
@@ -5770,7 +5769,7 @@ void Window::action(const std::string &name, const Json &p) {
       "replay_axis_spacing", "replay_slicer_resize", "show_display_annotations", "replay_display_annotation", "replay_planar_annotation", "show_planar_annotation_rebind", "replay_imagej_roi_import", "replay_imagej_annotation_import", "show_roi_import", "show_roi_import_record", "show_roi_export", "show_roi_zip_export", "show_roi_export_record",
       "reslice_slicer_axis_range", "show_axis_range_slicer_resize"};
   if (!targetId && impl->thresholdSource &&
-      (name == "auto_manual_threshold" || name == "set_manual_threshold" || name == "reset_manual_threshold" ||
+      (name == "configure_threshold_target" || name == "auto_manual_threshold" || name == "set_manual_threshold" || name == "reset_manual_threshold" ||
        name == "manual_threshold_to_selection" || name == "apply_manual_threshold"))
     targetId = impl->thresholdSource->id();
   const auto operationId = name == "show_operation"
@@ -6139,11 +6138,23 @@ void Window::action(const std::string &name, const Json &p) {
     replayAxisExtraction(record, rebind, targetId);
     return;
   }
+  if(name=="configure_threshold_target") {
+    if(!p.is_object())throw std::invalid_argument("Threshold target parameters require an object");
+    if(targetId && impl->thresholdSource && targetId!=impl->thresholdSource->id())throw std::invalid_argument("Threshold target differs from captured owner");
+    for(const auto &field:p.items())if(field.key()!="target" && field.key()!="histogram_roi" && field.key()!="document_id")throw std::invalid_argument("Unknown threshold target parameter");
+    if(p.contains("histogram_roi") && !p.at("histogram_roi").is_boolean())throw std::invalid_argument("Histogram ROI must be Boolean");
+    (void)impl->checkedThresholdSource();
+    if(!p.contains("target"))throw std::invalid_argument("Threshold target is required");
+    const auto request=[&] {try{return gaussianRebindRequest(p.at("target"));}catch(const std::invalid_argument &e){std::string message=e.what();const auto at=message.find("Gaussian");if(at!=std::string::npos)message.replace(at,8,"Threshold");throw std::invalid_argument(message);}}();
+    impl->thresholdPanel.configureTarget(request,p.value("histogram_roi",impl->thresholdPanel.histogramUsesRoi()));
+    impl->thresholdApplyPreview();return;
+  }
   if(name=="auto_manual_threshold") {
     if(targetId && impl->thresholdSource && targetId!=impl->thresholdSource->id())throw std::invalid_argument("Automatic display target differs from captured owner");
-    for(const auto &entry:p.items())if(entry.key()!="method" && entry.key()!="bright" && entry.key()!="ignore_black" && entry.key()!="ignore_white" && entry.key()!="stack_histogram" && entry.key()!="document_id")throw std::invalid_argument("Unknown automatic display parameter");
-    for(const auto key:{"bright","ignore_black","ignore_white","stack_histogram"})if(p.contains(key) && !p.at(key).is_boolean())throw std::invalid_argument("Automatic display flags must be Boolean");
+    for(const auto &entry:p.items())if(entry.key()!="method" && entry.key()!="bright" && entry.key()!="ignore_black" && entry.key()!="ignore_white" && entry.key()!="stack_histogram" && entry.key()!="histogram_roi" && entry.key()!="document_id")throw std::invalid_argument("Unknown automatic display parameter");
+    for(const auto key:{"bright","ignore_black","ignore_white","stack_histogram","histogram_roi"})if(p.contains(key) && !p.at(key).is_boolean())throw std::invalid_argument("Automatic display flags must be Boolean");
     const auto defaults = settings();
+    if(p.contains("histogram_roi"))impl->thresholdPanel.setHistogramUsesRoi(p.at("histogram_roi").get<bool>());
     const auto result=impl->thresholdAutomatic(p.value("method",defaults.text("threshold_method")),p.value("bright",defaults.boolean("threshold_bright")),p.value("ignore_black",defaults.boolean("threshold_ignore_black")),p.value("ignore_white",defaults.boolean("threshold_ignore_white")),p.value("stack_histogram",defaults.boolean("threshold_stack_histogram") && impl->checkedThresholdSource().data().dataset.shape().z>1));
     impl->thresholdPanel.setAutomaticResult(result);return;
   }
@@ -11442,7 +11453,8 @@ void Window::Impl::draw() {
          [this](ManualThresholdRange range) { thresholdApply(range); },
          [this] { thresholdCancel(); },
            [this](const std::string &method,bool bright,bool black,bool white,bool pooled) { return thresholdAutomatic(method,bright,black,white,pooled); },
-           [this] { thresholdApplyPreview(); }});
+           [this] { thresholdApplyPreview(); },
+           [this](PlanePosition position) {const auto source=checkedThresholdSource();const auto live=owner.nativeSnapshot(source.id());auto display=live.display();display.t=position.t;display.c=position.c;display.crosshair[2]=position.z;owner.controller_->set_display_if_current(live,std::move(display));}});
     // A closed floating panel can retain NavWindow/ActiveId for a frame and
     // suppress document shortcuts. Hand focus to the current document on the
     // next canvas submission, including when it differs from the capture owner.

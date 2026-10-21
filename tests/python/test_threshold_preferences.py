@@ -7,11 +7,11 @@ import imagejxx as ij
 import numpy as np
 import pytest
 
-KEYS = ("threshold_method", "threshold_bright", "threshold_ignore_black", "threshold_ignore_white", "threshold_stack_histogram")
+KEYS = ("threshold_method", "threshold_bright", "threshold_ignore_black", "threshold_ignore_white", "threshold_stack_histogram", "threshold_histogram_roi", "threshold_apply_roi")
 METHODS = ("default", "ij_isodata", "huang", "huang2", "renyi_entropy", "shanbhag")
 
-def options(method="default", bright=True, black=False, white=False, pooled=False):
-    return dict(zip(KEYS, (method, bright, black, white, pooled)))
+def options(method="default", bright=True, black=False, white=False, pooled=False, histogram_roi=False, apply_roi="active_selection"):
+    return dict(zip(KEYS, (method, bright, black, white, pooled, histogram_roi, apply_roi)))
 
 def test_schema_matches_registered_methods_and_defaults():
     row = next(d for d in ij.Settings.schema() if d["name"] == "threshold_method")

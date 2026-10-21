@@ -64,7 +64,7 @@ AutomaticThresholdDisplayResult pooled_automatic_threshold_display(const Resolve
   const auto pixels=estimate.pixel_count*target.position_count();
   if(pixels>9007199254740991ULL)throw std::invalid_argument("Pooled display sample count overflow");
   (void)validate_operation("auto_mask",OperationDefaultContext{shape.x,shape.y,shape.s,data.pixel_type(),{}},{{"method",name},{"bins",std::int64_t(bins)}});
-  const auto pooled_bytes=detail::pooled_threshold_working_bytes(target,bins?bins:256);
+  const auto pooled_bytes=detail::pooled_threshold_working_bytes(target,bins?bins:256,true);
   if(pixels==SIZE_MAX || pooled_bytes>SIZE_MAX-pixels-1 || estimate.analysis_bytes>SIZE_MAX-pooled_bytes-pixels-1)
     throw std::invalid_argument("Pooled display workspace overflow");
   const auto working=pooled_bytes+pixels+1+estimate.analysis_bytes;
@@ -74,7 +74,7 @@ AutomaticThresholdDisplayResult pooled_automatic_threshold_display(const Resolve
   // The default child scope inherits cancellation/checkpoints from the outer
   // scope, without emitting an intermediate completion progress callback.
   const ExecutionControl nested;
-  const auto pooled=pooled_auto_threshold(target,name,bins,black,white,cap.max_working_bytes,nested);
+  auto pooled=pooled_auto_threshold(target,name,bins,black,white,cap.max_working_bytes,nested,true);
   const auto level=pooled.threshold;
   const bool integer=data.pixel_type()==PixelType::UInt8 || data.pixel_type()==PixelType::UInt16;
   double lower=integer?std::floor(level)+1:std::nextafter(level,std::numeric_limits<double>::infinity());
@@ -104,7 +104,7 @@ AutomaticThresholdDisplayResult pooled_automatic_threshold_display(const Resolve
     range={std::min(integer?0.:minimum,upper),upper};
   }
   range.validate();kernel_checkpoint();if(captured.progress)execution_progress(1,1);kernel_checkpoint();
-  return {level,range,matches,working,name,bright,black,white,true,pooled.selected_samples};
+  return {level,range,matches,working,name,bright,black,white,true,pooled.selected_samples,std::move(pooled.histogram)};
 }
 
 }

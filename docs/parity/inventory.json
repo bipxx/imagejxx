@@ -14,7 +14,8 @@
           "docs/THRESHOLDING.md",
           "docs/parity/reviews/p10d-threshold-preferences001.json",
           "docs/SESSION_FORMAT.md",
-          "docs/parity/reviews/p10e-pooled-display001.json"
+          "docs/parity/reviews/p10e-pooled-display001.json",
+          "docs/parity/reviews/p10f-scientific-threshold001.json"
         ],
         "implementation": [
           "include/imagejxx/settings.hpp",
@@ -47,7 +48,8 @@
           "scripts/capture_binary_reference.py",
           "examples/cpp/binary.cpp",
           "tests/python/test_threshold_preferences.py",
-          "tests/python/test_pooled_display_ui.py"
+          "tests/python/test_pooled_display_ui.py",
+          "tests/python/test_scientific_threshold_target_ui.py"
         ]
       },
       "id": "G001",
@@ -67,7 +69,8 @@
         "p09q.preferences-reslice.functional.001",
         "p09r.editor-integration.functional.001",
         "p10d.threshold-preferences.functional.001",
-        "p10e.pooled-display.functional.001"
+        "p10e.pooled-display.functional.001",
+        "p10f.scientific-threshold.functional.001"
       ]
     },
     {
@@ -81,7 +84,8 @@
           "docs/THRESHOLDING.md",
           "docs/parity/reviews/p10d-threshold-preferences001.json",
           "docs/SESSION_FORMAT.md",
-          "docs/parity/reviews/p10e-pooled-display001.json"
+          "docs/parity/reviews/p10e-pooled-display001.json",
+          "docs/parity/reviews/p10f-scientific-threshold001.json"
         ],
         "implementation": [
           "include/imagejxx/settings.hpp",
@@ -114,7 +118,8 @@
           "scripts/capture_binary_reference.py",
           "examples/cpp/binary.cpp",
           "tests/python/test_threshold_preferences.py",
-          "tests/python/test_pooled_display_ui.py"
+          "tests/python/test_pooled_display_ui.py",
+          "tests/python/test_scientific_threshold_target_ui.py"
         ]
       },
       "id": "G002",
@@ -131,7 +136,8 @@
         "m2-settings-foundation-windows-2026-10-10",
         "m2-m6-binary-options-windows-2026-10-10",
         "p10d.threshold-preferences.functional.001",
-        "p10e.pooled-display.functional.001"
+        "p10e.pooled-display.functional.001",
+        "p10f.scientific-threshold.functional.001"
       ]
     },
     {
@@ -1889,7 +1895,9 @@
           "docs/parity/reviews/p10c-auto-display001.json",
           "docs/parity/reviews/p10d-threshold-preferences001.json",
           "docs/SESSION_FORMAT.md",
-          "docs/parity/reviews/p10e-pooled-display001.json"
+          "docs/parity/reviews/p10e-pooled-display001.json",
+          "docs/DESKTOP.md",
+          "docs/parity/reviews/p10f-scientific-threshold001.json"
         ],
         "implementation": [
           "include/imagejxx/auto_threshold.hpp",
@@ -1915,7 +1923,9 @@
           "include/imagejxx/manual_threshold.hpp",
           "src/native/manual_threshold.cpp",
           "src/native/manual_threshold_command.cpp",
-          "src/desktop/rendering.cpp"
+          "src/desktop/rendering.cpp",
+          "src/desktop/operation_target_panel.cpp",
+          "src/native/axis_remap.cpp"
         ],
         "tests": [
           "tests/python/test_auto_threshold_imagej.py",
@@ -1937,7 +1947,9 @@
           "tests/python/test_threshold_preferences.py",
           "tests/python/test_pooled_display.py",
           "tests/python/test_pooled_display_ui.py",
-          "tests/python/test_pooled_display_effects.py"
+          "tests/python/test_pooled_display_effects.py",
+          "tests/python/test_scientific_threshold_target.py",
+          "tests/python/test_scientific_threshold_target_ui.py"
         ]
       },
       "id": "G047",
@@ -1946,7 +1958,7 @@
       ],
       "name": "Automatic global threshold",
       "remaining": [
-        "Complete upstream image-scaling/edge/tie/overflow and scientific T/C/range/histogram ROI controls, remaining automatic-mask/plugin form defaults and method-level nonpixel recording.",
+        "Complete upstream image-scaling/edge/tie/overflow, remaining automatic-mask/plugin defaults, method-level recording and full supported-source/output/scientific-target conventions beyond the finite eager XY-grid profile.",
         "Complete reference coverage for existing twelve methods, formal fixture/interface binding, and full performance/resource/platform/accessibility qualification."
       ],
       "required_work": "Add ImageJ `Default`, `Huang`, `IJ_IsoData`, `RenyiEntropy`, `Shanbhag`; Fiji `Huang2`; reference histogram edge/tie/16-bit behavior",
@@ -1957,7 +1969,8 @@
         "p10b.pooled-threshold.functional.001",
         "p10c.automatic-display.functional.001",
         "p10d.threshold-preferences.functional.001",
-        "p10e.pooled-display.functional.001"
+        "p10e.pooled-display.functional.001",
+        "p10f.scientific-threshold.functional.001"
       ]
     },
     {
@@ -1985,7 +1998,9 @@
           "docs/packets/P06l-scientific-manual-threshold.md",
           "docs/THRESHOLDING.md",
           "docs/SESSION_FORMAT.md",
-          "docs/parity/reviews/p10e-pooled-display001.json"
+          "docs/parity/reviews/p10e-pooled-display001.json",
+          "docs/DESKTOP.md",
+          "docs/parity/reviews/p10f-scientific-threshold001.json"
         ],
         "implementation": [
           "include/imagejxx/manual_threshold.hpp",
@@ -2013,7 +2028,10 @@
           "src/desktop/main.cpp",
           "include/imagejxx/automatic_threshold_display.hpp",
           "src/native/automatic_threshold_display.cpp",
-          "src/native/settings.cpp"
+          "src/native/settings.cpp",
+          "src/desktop/operation_target_panel.cpp",
+          "src/native/auto_threshold_stack.cpp",
+          "src/native/axis_remap.cpp"
         ],
         "tests": [
           "tests/native/test_manual_threshold.cpp",
@@ -2027,7 +2045,9 @@
           "tests/python/test_manual_threshold_ui.py",
           "tests/python/test_pooled_display.py",
           "tests/python/test_pooled_display_ui.py",
-          "tests/python/test_pooled_display_effects.py"
+          "tests/python/test_pooled_display_effects.py",
+          "tests/python/test_scientific_threshold_target.py",
+          "tests/python/test_scientific_threshold_target_ui.py"
         ]
       },
       "id": "G049",
@@ -2041,13 +2061,15 @@
         "Complete stack/scientific C/Z/T, color/nonfinite and supported-source policies, ROI/selection targeting and all remaining preview/output/UI options; fixed256 histogram display does not complete G069.",
         "Finish pinned upstream/reference comparisons, final matching installed C++/Python/shared ImGui and package qualification, formal interface/settings evidence, persistence/migration, global resources/performance and accessibility/platform coverage.",
         "P06l adds captured scientific manual threshold and explicit typed replay/rebind. Automatic/local/color, generalized scientific batch/workflow, broader options and formal/platform/performance/reference certification remain required.",
-        "P10e adds all-Z-at-captured-T/C overlays, pooled Auto, scope preference, session/subset preservation and versioned multi-plane manual Apply/replay. Full scientific target controls and complete plugin/reference/resource/worker/platform gates remain open."
+        "P10e adds all-Z-at-captured-T/C overlays, pooled Auto, scope preference, session/subset preservation and versioned multi-plane manual Apply/replay. Full scientific target controls and complete plugin/reference/resource/worker/platform gates remain open.",
+        "P10f adds finite eager T/C/Z grid controls, histogram ROI choice, positioned write ROIs, version-three state/session/subset membership and retained target plots. Standalone histogram, broader source/output/foreground/worker and all formal/reference/platform gates remain required."
       ],
       "required_work": "Non-destructive live threshold overlay, histogram/range controls, foreground convention, reset/set/apply and threshold-to-selection",
       "status": "in_progress",
       "verification": [
         "p06l.manual-threshold.functional.001",
-        "p10e.pooled-display.functional.001"
+        "p10e.pooled-display.functional.001",
+        "p10f.scientific-threshold.functional.001"
       ]
     },
     {
@@ -2725,9 +2747,23 @@
     },
     {
       "evidence": {
-        "documentation": [],
-        "implementation": [],
-        "tests": []
+        "documentation": [
+          "docs/THRESHOLDING.md",
+          "docs/SESSION_FORMAT.md",
+          "docs/DESKTOP.md",
+          "docs/parity/reviews/p10f-scientific-threshold001.json"
+        ],
+        "implementation": [
+          "include/imagejxx/auto_threshold_stack.hpp",
+          "src/native/auto_threshold_stack.cpp",
+          "include/imagejxx/automatic_threshold_display.hpp",
+          "src/native/automatic_threshold_display.cpp",
+          "src/desktop/threshold_panel.cpp"
+        ],
+        "tests": [
+          "tests/python/test_scientific_threshold_target.py",
+          "tests/python/test_scientific_threshold_target_ui.py"
+        ]
       },
       "id": "G069",
       "milestones": [
@@ -2736,11 +2772,13 @@
       ],
       "name": "Histogram",
       "remaining": [
-        "Stack/channel targeting, range/bin/log controls, statistics display and numerical export"
+        "The threshold-associated histogram API/panel now supports frozen stack/channel/time grids and ROI counts. Finish an independent standalone histogram calculation/dialog, range/bin/log controls, complete statistics display and numerical export, with reference/resource/platform qualification."
       ],
       "required_work": "Stack/channel targeting, range/bin/log controls, statistics display and numerical export",
-      "status": "open",
-      "verification": []
+      "status": "in_progress",
+      "verification": [
+        "p10f.scientific-threshold.functional.001"
+      ]
     },
     {
       "evidence": {
@@ -180600,6 +180638,29 @@
         "total": 5369
       },
       "scope": "5369 selected checks per OS, including 259 pooled display checks; 336 threshold reports / 26784 frames including 72 pooled display reports. Installed SDK verifies six pinned global thresholds, all-Z state/record and zero-read preflight/three-scan read counts. Full acceptance remains open. Eight additional non-anchor variance/top-hat scope/history checks pass per OS (5377 total)."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-21",
+      "id": "p10f.scientific-threshold.functional.001",
+      "identity": {
+        "qualification": {
+          "bytes": 15235,
+          "path": "docs/parity/reviews/p10f-scientific-threshold001.json",
+          "sha256": "db54f3b658fdba3513cee508787614665f2a8ddd406c1d4c637eac7c945d2730"
+        }
+      },
+      "platform": "Windows/Linux installed SDK and standalone/Python Dear ImGui hosts",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 5445,
+        "report": "build/p10f-scientific-threshold001/windows-python001/pytest.xml",
+        "skipped": 0,
+        "total": 5445
+      },
+      "scope": "5445 selected checks per OS including 68 new scientific checks; 408 threshold reports / 38736 frames including 72 scientific target reports. Fresh SDK checks preserved callable signature, raw retention, range membership, zero-read admission and positioned replay. G069 starts in progress; no whole-family acceptance."
     }
   ]
 }

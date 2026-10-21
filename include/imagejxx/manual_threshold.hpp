@@ -61,14 +61,19 @@ struct ManualThresholdState {
   ManualThresholdRange range;
   PlanePosition position;
   bool all_z = false;
+  std::optional<std::array<AxisRange,3>> ranges;
 };
 // Absent property means disabled. A present property is an exact version-one
 // object with version/lower/upper/t/c/z. Version two adds Boolean all_z for
-// every Z at the captured T/C. Malformed values are rejected.
+// every Z at the captured T/C. Version three stores three resolved half-open
+// T/C/Z [start,stop,step] ranges; its anchor may lie outside that grid.
+// Malformed values are rejected.
 std::optional<ManualThresholdState>
 manual_threshold_state(const DisplayState &display, DatasetShape shape);
 void set_manual_threshold_state(DisplayState &display, DatasetShape shape,
                                 const ManualThresholdState &state);
 void reset_manual_threshold_state(DisplayState &display);
+// Position membership for validated single-plane, all-Z or explicit range state.
+bool manual_threshold_contains(const ManualThresholdState &, PlanePosition);
 
 } // namespace imagejxx

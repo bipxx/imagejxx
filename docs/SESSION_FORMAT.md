@@ -389,3 +389,13 @@ remains the six-field single-plane representation. This is a nested display
 property version, independent of the session archive envelope. Unknown fields,
 non-Boolean scope flags and unsupported versions refuse. See
 [threshold scopes and record compatibility](THRESHOLDING.md).
+
+Manual threshold display version three stores `version`, `lower`, `upper`,
+`t`, `c`, `z`, and `ranges`. The latter is exactly three integer
+`[start, stop, step]` triples in T/C/Z order, with zero-based half-open bounds,
+positive steps and nonempty ranges within the dataset. The anchor T/C/Z may lie
+outside the selected grid but must remain inside the dataset. This form excludes
+`all_z`. Version-one single-plane and version-two all-Z forms remain supported.
+Z subsetting intersects the selected grid and remaps its Z progression; an empty
+intersection removes the overlay. These are nested display-property versions,
+not changes to the session archive envelope.

@@ -23,7 +23,7 @@ private:
 };
 
 // CurrentPlane, AllZ, Ranges or explicit Positions; in-place plane execution,
-// active selection or whole plane. Eager, finite-only scalar sources only.
+// active selection, positioned ROIs or whole plane. Eager, finite-only scalar sources only.
 ResolvedManualThresholdCommand resolve_manual_threshold_command(
     const DocumentSnapshot &, ManualThresholdRange, const TargetRequest & = {});
 void validate_manual_threshold_command_record(const MetadataObject &);

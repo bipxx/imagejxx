@@ -19,10 +19,10 @@ void fields(const Json &value, std::initializer_list<const char *> names) {
 void request_valid(const TargetRequest &request) {
   if (request.mode != ExecutionMode::Planes ||
       request.destination != OutputDestination::InPlace ||
-      (request.roi != RoiPolicy::ActiveSelection && request.roi != RoiPolicy::WholePlane) ||
+      (request.roi != RoiPolicy::ActiveSelection && request.roi != RoiPolicy::WholePlane && request.roi != RoiPolicy::PositionedRois) ||
       (request.scope!=TargetScope::CurrentPlane && request.scope!=TargetScope::AllZ &&
        request.scope!=TargetScope::Ranges && request.scope!=TargetScope::Positions))
-    throw std::invalid_argument("Manual threshold requires in-place captured planes and active or whole-plane ROI");
+    throw std::invalid_argument("Manual threshold requires in-place captured planes and a supported ROI policy");
 }
 void source_valid(const DocumentSnapshot &source) {
   const auto &dataset = source.data().dataset;
@@ -64,7 +64,7 @@ Record decode(const MetadataObject &record) {
   range.validate();
   auto target = detail::decode_target_record(codec::object_from_json(value["target"]));
   request_valid(target.request);
-  if (target.source_shape.s != 1 || (v1 && (target.request.scope != TargetScope::Positions || target.request.positions.size()!=1)))
+  if (target.source_shape.s != 1 || (v1 && (target.request.scope != TargetScope::Positions || target.request.positions.size()!=1 || target.request.roi==RoiPolicy::PositionedRois)))
     throw std::invalid_argument("Threshold record requires a captured scalar position");
   std::optional<Selection> selection;
   if (!value["selection"].is_null()) {
@@ -73,8 +73,8 @@ Record decode(const MetadataObject &record) {
     if (codec::selection_to_json(*selection) != value["selection"])
       throw std::invalid_argument("Threshold selection must be canonical");
   }
-  if (target.request.roi == RoiPolicy::WholePlane && selection)
-    throw std::invalid_argument("Whole-plane threshold cannot claim an active ROI");
+  if (target.request.roi != RoiPolicy::ActiveSelection && selection)
+    throw std::invalid_argument("Only active-selection thresholds can record an active selection");
   return {range, std::move(target), std::move(selection)};
 }
 } // namespace
@@ -87,7 +87,7 @@ OperationParameters ResolvedManualThresholdCommand::parameters() const {
 }
 MetadataObject ResolvedManualThresholdCommand::record() const {
   const auto &selection = target_.source().data().selection;
-  const bool single=target_.scope()==TargetScope::Positions && target_.position_count()==1;
+  const bool single=target_.scope()==TargetScope::Positions && target_.position_count()==1 && target_.roi_policy()!=RoiPolicy::PositionedRois;
   return {{"schema_version", single?1:2}, {"operation", std::string("threshold")},
       {"profile", std::string(single?"manual_raw_inclusive_v1":"manual_raw_inclusive_v2")},
       {"lower", range_.lower}, {"upper", range_.upper},
