@@ -1550,6 +1550,11 @@ struct Window::Impl {
   int animationExtent(const DatasetShape &shape, const std::string &axis) const {
     return axis == "z" ? shape.z : axis == "t" ? shape.t : shape.c;
   }
+  bool animationCalibratedAxis(const DatasetShape &shape, const std::string &axis) const {
+    // Ordinary ImageJ stacks may store a time series along Z. This is an
+    // explicit timing choice, never inferred from spatial spacing or units.
+    return axis == "t" || (axis == "z" && shape.t == 1 && shape.c == 1);
+  }
   void stopAnimation(const char *reason) {
     animating = false;
     animationReason = reason;
@@ -1603,7 +1608,8 @@ struct Window::Impl {
       if(!parameters.at("timing").is_string())throw std::invalid_argument("Animation timing must be text");
       timing=parameters.at("timing").get<std::string>();
     }
-    if(timing=="calibrated_time" && axis!="t")throw std::invalid_argument("Calibrated playback requires the T axis");
+    if(timing=="calibrated_time" && !animationCalibratedAxis(captured.data().dataset.shape(),axis))
+      throw std::invalid_argument("Calibrated playback requires T or an ordinary Z time-series stack");
     const auto &calibration=captured.data().dataset.calibration();
     const double interval=playback_interval_seconds(fps,timing,calibration.frame_interval,calibration.time_unit,step);
     std::optional<DocumentSnapshot> source;
@@ -5791,7 +5797,8 @@ void Window::action(const std::string &name, const Json &p) {
             {{"name","step"},{"label","Step"},{"kind","int"}},
             {{"name","mode"},{"label","Mode"},{"kind","choice"},{"choices",{"Forward","Reverse","Ping-pong"}}},
             {{"name","timing"},{"label","Timing"},{"kind","choice"},
-             {"choices",capturedAxis=="t"?Json::array({"FPS","Calibrated time"}):Json::array({"FPS"})}}}),"animation_options");
+             {"choices",impl->animationCalibratedAxis(captured.data().dataset.shape(),capturedAxis)?
+                Json::array({"FPS","Calibrated time"}):Json::array({"FPS"})}}}),"animation_options");
     return;
   }
   if (name == "create_roi") {

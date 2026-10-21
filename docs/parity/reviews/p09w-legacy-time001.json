@@ -1,0 +1,194 @@
+{
+  "state": "qualified_functional_increment",
+  "objective_complete": false,
+  "scope": "G037 explicit calibrated-time animation for ordinary Z time-series stacks in C++ and Python Dear ImGui hosts.",
+  "semantics": "Ordinary stacks have one T and one scientific channel. An explicit Calibrated time choice interprets their Z sequence as time, using the existing core frame_interval times stride conversion. Scientific Z depth and C remain FPS-only; scientific T retains calibrated playback. Forward/reverse/ping-pong retain range semantics. Default FPS behavior is unchanged. Unknown time units refuse calibrated timing. Source metadata edits stop playback.",
+  "tests": {
+    "windows": {
+      "passed": 298,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "observations": 84,
+      "frames": 5168,
+      "animation_observations": 68,
+      "animation_frames": 4784,
+      "options_guard_reports": 3,
+      "native_preferences": "passed",
+      "native_playback": "passed",
+      "installed_sdk_playback_example": "passed (only the existing playback example was exercised)",
+      "transport_runner_checks": 15,
+      "installed_headers": 67,
+      "installed_python_modules": 12,
+      "catalog_operations": 92,
+      "junit": {
+        "path": "build/p09w-legacy-time001/windows-python002/pytest.xml",
+        "bytes": 39492,
+        "sha256": "4a901d2592d2796faba1c3371a931ffba1af658e9a69f06c265c854b03091362"
+      },
+      "compact_evidence": {
+        "path": "build/p09w-legacy-time001/windows-evidence001.json",
+        "bytes": 63654,
+        "sha256": "b7a96a8752e0331119cc50f11f7fd5bc63efbdc3f24e72f65fc28911678121bb"
+      },
+      "product_audit": {
+        "path": "build/p09w-legacy-time001/windows-products001.json",
+        "bytes": 12450,
+        "sha256": "f2ac1a8381ac5c2d9397d45e518e06fe8b25d0ea6c9f3d146971f223373dcace"
+      },
+      "sdk": {
+        "path": "build/p09w-legacy-time001/windows-sdk001/receipt.json",
+        "bytes": 506,
+        "sha256": "3cefe773e249cee5bc898664c7bbea1e0caf7d8123a944bdd9f4f1b82f2de849"
+      },
+      "cleanup": {
+        "removed_bytes": 621972651,
+        "removed_files": 1341,
+        "archive": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09w-legacy-time001\\windows-scratch001.zip",
+          "bytes": 88149035,
+          "sha256": "6ef8a6c5e331cc1304ad12e6bd6d251867c2545a7b11467319a13de16bb8d8bf"
+        },
+        "receipt": {
+          "path": "build/p09w-legacy-time001/windows-cleanup001.json",
+          "bytes": 490860,
+          "sha256": "d448f166ee0aecce8a92c59fc4d097d9ee56490209462d6a73810c1396794076"
+        }
+      }
+    },
+    "linux": {
+      "passed": 298,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "observations": 84,
+      "frames": 5168,
+      "animation_observations": 68,
+      "animation_frames": 4784,
+      "options_guard_reports": 3,
+      "native_preferences": "passed",
+      "native_playback": "passed",
+      "installed_sdk_playback_example": "passed (only the existing playback example was exercised)",
+      "transport_runner_checks": 15,
+      "installed_headers": 67,
+      "installed_python_modules": 12,
+      "catalog_operations": 92,
+      "junit": {
+        "path": "build/p09w-legacy-time001/linux-python002/pytest.xml",
+        "bytes": 39492,
+        "sha256": "47810f97a55eb426cbb98b805bd8e3dfe2cfa76584c47aafa38ad5dd2705a63f"
+      },
+      "compact_evidence": {
+        "path": "build/p09w-legacy-time001/linux-evidence001.json",
+        "bytes": 61417,
+        "sha256": "03b7b0053a930f8e6df5438b01a1dedd935cf4eb9c188350c862e59b0af738da"
+      },
+      "product_audit": {
+        "path": "build/p09w-legacy-time001/linux-products001.json",
+        "bytes": 12063,
+        "sha256": "d44a58a213c335c57d04b8e3318dc2253d70b9e71ab554d28e35cf79e74a3fb7"
+      },
+      "sdk": {
+        "path": "build/p09w-legacy-time001/linux-sdk001/receipt.json",
+        "bytes": 439,
+        "sha256": "f7e5975ada3c73dee3be9608d28523c29824ecc660e15fdce51a2f3f909b3d81"
+      },
+      "cleanup": {
+        "removed_bytes": 703375091,
+        "removed_files": 1845,
+        "archive": {
+          "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09w-legacy-time001/linux-scratch001.zip",
+          "bytes": 123899244,
+          "sha256": "d2082bba04068c9da235e1b8e465cc3d358117b3d926cbcee76c407138d084e9"
+        },
+        "receipt": {
+          "path": "build/p09w-legacy-time001/linux-cleanup001.json",
+          "bytes": 630139,
+          "sha256": "57cd670777abcb7a4bd8e1e7094027fe5c720d6c55a2910590b836679a410862"
+        }
+      }
+    }
+  },
+  "source": [
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 654923,
+      "sha256": "bc7a5660d36347611a64dd7bf0e56a16309a969d4d00a3ad0075161b1dd2a8da"
+    },
+    {
+      "path": "src/desktop/animation_ui_probe.cpp",
+      "bytes": 13095,
+      "sha256": "5ae32826a0d0cea60359eb590c6935326b10e514071b3764f450ed5a35e46eed"
+    },
+    {
+      "path": "tests/python/test_animation_legacy_time_ui.py",
+      "bytes": 5279,
+      "sha256": "a52e2f8b117125c51cdd5ffde89f9b0f5b1418f06ec2e3cdc0513334e141ee07"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 30294,
+      "sha256": "19444c42fdf0c79b1426e81859067752c29cd49537d465a1d2b9cc49a55a4afb"
+    }
+  ],
+  "ci": {
+    "default_launches": 1137,
+    "animation_launches": 34,
+    "prior_launches_preserved": 1131,
+    "hosted_acceptance": false,
+    "registration": {
+      "path": "build/p09w-legacy-time001/registration001.json",
+      "bytes": 883,
+      "sha256": "0a70157d3f6c403f84ba09493b5f008b148d8047224ea04fc9e31ed1c4233e9b"
+    }
+  },
+  "commercial_scope": "No new dependencies or processing kernels. Existing reviewed commercial-use desktop inventory passes; no Qt/Java in installed product audit.",
+  "initial_failures": [
+    {
+      "host": "windows",
+      "receipt": {
+        "path": "build/p09w-legacy-time001/windows-python001/receipt.json",
+        "bytes": 1014,
+        "sha256": "78387923327a3f1a0e0f58fca72b7a57bb15b027f0ac83db175c3ed13ddd0d6b"
+      },
+      "junit": {
+        "path": "build/p09w-legacy-time001/windows-python001/pytest.xml",
+        "bytes": 22997,
+        "sha256": "2afce91c654a5724ff57cfb9a95c9a9a00d742bc24c1ab9233de883da721ce97"
+      },
+      "observed": "181 checks passed, then the first new API-admission setup tried to assign readonly SpatialCalibration properties. Corrected the test to use its public constructor; no native product changes or rebuild were needed."
+    },
+    {
+      "host": "linux",
+      "receipt": {
+        "path": "build/p09w-legacy-time001/linux-python001/receipt.json",
+        "bytes": 994,
+        "sha256": "8daa2922e4d5dc5117ce65723a476bc81eaecb2ac1f674e92cef785d9734ab9d"
+      },
+      "junit": {
+        "path": "build/p09w-legacy-time001/linux-python001/pytest.xml",
+        "bytes": 22995,
+        "sha256": "49caec624fe16fab5278f29ed618cbaccf38ba4ff80c41bc8b103f2a0ee496e2"
+      },
+      "observed": "181 checks passed, then the first new API-admission setup tried to assign readonly SpatialCalibration properties. Corrected the test to use its public constructor; no native product changes or rebuild were needed."
+    }
+  ],
+  "plan_gate": {
+    "state": "failed_preexisting",
+    "message": "Plan inventory check failed: histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed",
+    "application_header_unchanged_from_head": true
+  },
+  "remaining": [
+    "Movie export",
+    "Full hosted and platform/UI qualification",
+    "Python 3.10 evidence-reader compatibility and missing reference artifacts",
+    "All remaining ImageJ and commercially usable Fiji requirements"
+  ],
+  "all99": {
+    "in_progress": 44,
+    "open": 55,
+    "complete": 0
+  },
+  "format_variants": "All 96 remain partial",
+  "cleanup_removed_bytes": 1325347742
+}

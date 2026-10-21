@@ -1,5 +1,25 @@
 # ImageJ and Fiji gap closure plan
 
+**Ordinary Z time-series playback checkpoint, 2026-10-21 (work in progress):**
+ordinary stacks (one T and one scientific channel) now offer explicit calibrated
+time pacing along Z in both Dear ImGui hosts. Forward, stride, reverse and
+ping-pong use the existing native time conversion. Scientific Z depth and C
+remain FPS-only; no spatial unit or spacing infers temporal intent. Unknown
+units refuse calibrated mode and metadata edits stop playback.
+Both installed Windows/Linux profiles pass 298 selected playback, desktop,
+persistent-session and preferences checks without skips, plus native playback/
+preferences, the existing installed SDK playback example and 15 transport checks
+per host. 168 UI observations cover 10,336 frames, plus six source/axis/metadata
+refusal artifacts. CI preserves 1,131 definitions and adds six legacy timing
+captures, for 1,137 launches. An initial test used readonly calibration properties;
+it was corrected to construct calibration through its public API. Original failed
+reports are retained. Verified archives reclaim 1,325,347,742 scratch bytes.
+See [the scoped receipt](parity/reviews/p09w-legacy-time001.json).
+Movie export, full hosted/platform qualification, the Python 3.10 evidence-reader
+failures and missing reference artifacts remain required. The preexisting stale
+Auto Contrast gate still fails. All99 stays 44 in progress / 55 open / 0 complete;
+all 96 format variants remain partial.
+
 **Calibrated T playback checkpoint, 2026-10-21 (work in progress):** both
 Dear ImGui hosts offer explicit FPS or calibrated-time pacing for scientific T.
 The shared C++ conversion covers recognized seconds through days, includes stride,

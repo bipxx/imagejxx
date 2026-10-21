@@ -1217,15 +1217,19 @@ play. An off-grid current position enters at the appropriate end on its first
 tick. Changing axis resets the range to that axis's full extent. An options
 dialog refuses confirmation if its source, source data or captured axis has changed.
 
-For **Time frames**, the options form also offers **Timing > Calibrated time**.
+For **Time frames** and ordinary **Z stacks**, the options form offers
+**Timing > Calibrated time**. An ordinary stack has exactly one T and one
+scientific channel; choosing this mode explicitly treats its Z sequence as time.
+Scientific Z depth and channel playback continue to use FPS.
 Each tick waits `frame_interval * Step` in the dataset's time unit. Seconds,
 milliseconds, microseconds (us, UTF-8 micro sign or Greek mu followed by s),
 nanoseconds, minutes, hours and days are recognized, including their singular
 and plural English names; seconds also accepts sec, hours hr. Unknown units and
 non-finite, zero, overflowing or underflowing intervals are refused. Loop and
 ping-pong boundaries use the same interval. Time origin does not affect pacing.
-Changing the FPS preference does not alter calibrated playback. Selecting Z or C
-resets timing to FPS; calibrated timing on those axes is refused. Rendering can
+Changing the FPS preference does not alter calibrated playback. Changing to Z or C
+resets timing to FPS; ordinary Z stacks can then explicitly choose calibrated
+time again. Scientific Z depth and C cannot use calibrated timing. Rendering can
 make playback slower than the requested interval; no positions are skipped to
 catch up. Timing choices are transient and do not edit calibration or preferences.
 
@@ -1262,8 +1266,7 @@ time_unit="ms", step=2)` returns 0.05 seconds. FPS mode ignores calibration; a
 positive stride does not change its interval. Native conversion refuses an
 interval that cannot be represented as finite positive seconds.
 
-Calibrated timing for legacy Z time-series, movie export and complete hosted/
-platform qualification remain open.
+Movie export and complete hosted/platform qualification remain open.
 
 ## Calibrated range reslicing
 
