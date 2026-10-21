@@ -30,6 +30,7 @@ from ._native import (
 )
 from ._native import Settings as Settings
 from ._native import PlaybackSequence as PlaybackSequence
+from ._native import playback_interval_seconds as playback_interval_seconds
 from ._native import (
     shortcut_registry_version as shortcut_registry_version,
     ShortcutPlatform as ShortcutPlatform,

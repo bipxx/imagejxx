@@ -12,7 +12,8 @@ Json animationUiCase(Window &window, const std::string &id,
                      const std::string &context, const std::string &directory) {
   const std::vector<std::string> cases{"z","c","t","legacy","singleton","switch",
       "edit","close","stop","fps","ieee","rgb","busy","range","reverse","ping",
-      "range-offgrid","range-c","range-t","range-invalid"};
+      "range-offgrid","range-c","range-t","range-invalid","cal-s","cal-ms","cal-us",
+      "cal-step","cal-fps","cal-invalid","cal-edit","cal-unit"};
   if (std::find(cases.begin(),cases.end(),id)==cases.end() ||
       (context!="imgui_cpp" && context!="imgui_python") || !window.documents().empty())
     throw std::invalid_argument("Animation observation requires a fresh editor and a known case/host");
@@ -22,7 +23,8 @@ Json animationUiCase(Window &window, const std::string &id,
   if(!std::filesystem::create_directory(root)) throw std::invalid_argument("Animation directory must be fresh");
   const bool legacy=id=="legacy" || id=="busy", ieee=id=="ieee", rgb=id=="rgb";
   const bool ranged=id=="range" || id=="reverse" || id=="ping" || id.rfind("range-",0)==0;
-  const DatasetShape shape=legacy?DatasetShape{1,1,4,5,7,1}:DatasetShape{2,3,id=="singleton"?1:ranged?8:4,5,7,rgb?3:1};
+  const bool calibrated=id.rfind("cal-",0)==0;
+  const DatasetShape shape=legacy?DatasetShape{1,1,4,5,7,1}:DatasetShape{calibrated?5:2,3,id=="singleton"?1:ranged?8:4,5,7,rgb?3:1};
   const auto policy=ieee?FloatingSamplePolicy::PreserveIEEEFloat32:FloatingSamplePolicy::FiniteOnly;
   Stack images;
   constexpr std::uint32_t special[]{0x7f800001,0xffc01234,0x80000000,0x7f800000,0xff800000,0x3f800000};
@@ -36,6 +38,10 @@ Json animationUiCase(Window &window, const std::string &id,
   SpatialCalibration calibration;
   calibration.spacing={.5,1.25,2.5};calibration.origin={11,-7,19};
   calibration.unit="um";calibration.frame_interval=.75;calibration.time_origin=2.25;
+  if(calibrated) {
+    calibration.time_unit=id=="cal-ms" || id=="cal-step"?"ms":id=="cal-us"?"us":id=="cal-unit"?"frame":"s";
+    calibration.frame_interval=id=="cal-step"?25:id=="cal-ms"?50:id=="cal-us"?50000:.05;
+  }
   DocumentData data{Dataset::from_planes(shape,std::move(images),calibration,policy)};
   data.metadata.title="Playback source";
   data.selection=Selection("rectangle",{{1,1},{4,3}});
@@ -67,7 +73,8 @@ Json animationUiCase(Window &window, const std::string &id,
         {"previous",selectionJson(*d.previous_selection)},{"roi",selectionJson(d.rois[0].selection)},
         {"zoom",v.zoom},{"plane_zoom",v.planeZoom},{"linked_zoom",v.linkedZoom},
         {"orthogonal",v.orthogonal},{"spacing",d.dataset.calibration().spacing},
-        {"origin",d.dataset.calibration().origin}};
+        {"origin",d.dataset.calibration().origin},
+        {"frame_interval",d.dataset.calibration().frame_interval},{"time_unit",d.dataset.calibration().time_unit}};
     Json ids=Json::array();for(const auto &doc:window.documents())ids.push_back(doc->id);
     result["document_ids"]=ids;result["active_index"]=window.activeIndex();
     if(pixels) {
@@ -121,17 +128,20 @@ Json animationUiCase(Window &window, const std::string &id,
     item["after"]=state();report["api"].push_back(std::move(item));
   };
   frame();frame();frame();menu();
-  const std::string axis=id=="c" || id=="range-c"?"c":id=="t" || id=="range-t"?"t":"z";
+  const std::string axis=id=="c" || id=="range-c"?"c":id=="t" || id=="range-t" || calibrated?"t":"z";
   if(id=="singleton") {
     click("menu.action.animation",true);
     api("singleton_refusal",[&]{window.action("animation",{{"playing",true}});});
   } else {
     if(axis!="z") {click("menu.animation.axis");click("menu.animation.axis."+axis);menu();}
-    if(ranged) {
+    if(ranged || calibrated) {
       click("menu.action.show_animation_options");
       type("first",axis=="z"?"2":"1");
-      type("last",axis=="z"?"7":axis=="c"?"3":"2");
-      type("step",axis=="t"?"1":"2");
+      type("last",axis=="z"?"7":axis=="c"?"3":calibrated?"5":"2");
+      type("step",axis=="t" && id!="cal-step"?"1":"2");
+      if(calibrated && id!="cal-unit") {
+        click("dialog.timing");click("dialog.timing.choice.Calibrated time");
+      }
       if(id=="reverse" || id=="range-c" || id=="ping" || id=="range-t") {
         click("dialog.mode");
         click(std::string("dialog.mode.choice.")+(id=="reverse" || id=="range-c"?"Reverse":"Ping-pong"));
@@ -143,7 +153,7 @@ Json animationUiCase(Window &window, const std::string &id,
     while(last.at("animation").at("ticks").get<int>()<3)frame();
     if(id=="switch")api("switch",[&]{window.setActiveIndex(1);});
     else if(id=="close")api("close",[&]{window.closeDocument(source->id,true);});
-    else if(id=="edit")api("edit",[&]{auto edit=source->begin_edit();edit.set_property("changed",true);source->commit(edit);});
+    else if(id=="edit" || id=="cal-edit")api("edit",[&]{auto edit=source->begin_edit();edit.set_property("changed",true);source->commit(edit);});
     else if(id=="stop") {menu();click("menu.action.animation");}
     else if(id=="busy") {
       api("submit",[&]{window.applyOperation("add",{{"value",1}},true,true);});
@@ -151,6 +161,13 @@ Json animationUiCase(Window &window, const std::string &id,
       window.wait();
     } else {
       if(id=="fps")api("fps",[&]{window.updateSettings({{"animation_fps",15.}},false);});
+      if(id=="cal-fps")api("fps",[&]{window.updateSettings({{"animation_fps",15.}},false);});
+      if(id=="cal-unit")api("unknown_unit",[&]{window.action("animation",{{"timing","calibrated_time"}});});
+      if(id=="cal-invalid") {
+        api("timing_unknown",[&]{window.action("animation",{{"timing","unknown"}});});
+        api("timing_type",[&]{window.action("animation",{{"timing",true}});});
+        api("timing_axis",[&]{window.action("animation",{{"axis","z"},{"timing","calibrated_time"}});});
+      }
       if(id=="z") {
         api("invalid_axis",[&]{window.action("animation",{{"axis","invalid"}});});
         api("invalid_playing",[&]{window.action("animation",{{"playing",1}});});
@@ -164,7 +181,7 @@ Json animationUiCase(Window &window, const std::string &id,
         api("range_mode",[&]{window.action("animation",{{"mode","unknown"}});});
       }
       const int extent=axis=="z"?shape.z:axis=="c"?shape.c:shape.t;
-      while(last.at("animation").at("ticks").get<int>()<(ranged?8:extent+3))frame();
+      while(last.at("animation").at("ticks").get<int>()<(ranged || calibrated?8:extent+3))frame();
       window.action("animation",{{"playing",false}});
     }
     for(int i=0;i<5;++i)frame(Json::array(),"after_stop");

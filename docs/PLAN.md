@@ -1,5 +1,23 @@
 # ImageJ and Fiji gap closure plan
 
+**Calibrated T playback checkpoint, 2026-10-21 (work in progress):** both
+Dear ImGui hosts offer explicit FPS or calibrated-time pacing for scientific T.
+The shared C++ conversion covers recognized seconds through days, includes stride,
+and refuses unknown units or non-positive/non-finite/unrepresentable intervals.
+FPS changes do not alter calibrated ticks; metadata edits stop playback.
+Both installed Windows/Linux profiles pass 2,250 selected checks without skips,
+native timing/playback/preferences, the updated installed SDK example and 15
+transport checks per host. 780 UI observations cover 52,112 frames, plus
+six source/axis/metadata refusal artifacts. CI preserves 1,123 capture definitions
+and adds eight timing cases, for 1,131 launches. Verified archives reclaim
+8,413,695,486 scratch bytes. See [the scoped receipt](parity/reviews/p09v-calibrated-playback001.json).
+Legacy Z time-series calibrated timing, movie export, complete hosted/platform
+qualification and all broader requirements remain open. The previous hosted run
+now confirms complete Python failures, including Python 3.10 file_digest usage
+and unavailable reference evidence. The preexisting stale Auto Contrast gate
+still fails. All99 remains 44 in progress / 55 open / 0 complete; all 96 format
+variants remain partial.
+
 **Animation ranges checkpoint, 2026-10-21 (work in progress):** C++ and Python
 now share inclusive First/Last/Step playback with forward, reverse and ping-pong
 modes. Both Dear ImGui hosts offer Animation options; changes to source or axis

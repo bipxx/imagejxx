@@ -1,0 +1,216 @@
+{
+  "state": "qualified_functional_increment",
+  "objective_complete": false,
+  "scope": "G037 calibrated T-axis animation pacing in shared C++ core and Dear ImGui C++/Python hosts.",
+  "semantics": "Explicit Timing choice: FPS (default) or Calibrated time for T. Recognized time units convert frame_interval times selected stride to finite positive seconds. Loop boundaries use the same interval. At most one advance per rendered frame; no catch-up skips. FPS changes leave calibrated timing unchanged. Source edits stop playback. Changing to Z/C resets timing to FPS. Source calibration/preferences are not edited.",
+  "tests": {
+    "windows": {
+      "passed": 2250,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "observations": 390,
+      "frames": 26056,
+      "animation_observations": 56,
+      "animation_frames": 3654,
+      "options_guard_reports": 3,
+      "native_preferences": "passed",
+      "native_playback": "passed",
+      "installed_sdk_playback_example": "passed (only the updated playback example was exercised)",
+      "transport_runner_checks": 15,
+      "installed_headers": 67,
+      "installed_python_modules": 12,
+      "catalog_operations": 92,
+      "junit": {
+        "path": "build/p09v-calibrated-playback001/windows-python001/pytest.xml",
+        "bytes": 350090,
+        "sha256": "388815b729aec05f631c9fafd9337f0075ed724726e400ed06a9fa1be3024b2b"
+      },
+      "compact_evidence": {
+        "path": "build/p09v-calibrated-playback001/windows-evidence001.json",
+        "bytes": 432374,
+        "sha256": "feb87ed7843fe93043d1b7366fe8bfb69da0718d0ee99e7b3e2f55cfc9491738"
+      },
+      "product_audit": {
+        "path": "build/p09v-calibrated-playback001/windows-products001.json",
+        "bytes": 12466,
+        "sha256": "cfb9697b0832513025491ed4dd1376794561969af099bbf2f7f42c6279be5c7d"
+      },
+      "sdk": {
+        "path": "build/p09v-calibrated-playback001/windows-sdk001/receipt.json",
+        "bytes": 530,
+        "sha256": "ce2fbf5ca55b2497878dc81048e700f76dc7ea930c7bbfc5a3fed3b2cd6524ac"
+      },
+      "cleanup": {
+        "removed_bytes": 4189411255,
+        "removed_files": 21955,
+        "archive": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09v-calibrated-playback001\\windows-scratch001.zip",
+          "bytes": 702335912,
+          "sha256": "70d5dd6c3704b85cc56e27a650f2cfb49a8a1faa85e54a8eb7820117612365e0"
+        },
+        "receipt": {
+          "path": "build/p09v-calibrated-playback001/windows-cleanup001.json",
+          "bytes": 8539256,
+          "sha256": "90e4a2d37c51a64e8e47ac5d5d910961e2c00ffccd5f8317134386a291aa4af4"
+        }
+      }
+    },
+    "linux": {
+      "passed": 2250,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "observations": 390,
+      "frames": 26056,
+      "animation_observations": 56,
+      "animation_frames": 3654,
+      "options_guard_reports": 3,
+      "native_preferences": "passed",
+      "native_playback": "passed",
+      "installed_sdk_playback_example": "passed (only the updated playback example was exercised)",
+      "transport_runner_checks": 15,
+      "installed_headers": 67,
+      "installed_python_modules": 12,
+      "catalog_operations": 92,
+      "junit": {
+        "path": "build/p09v-calibrated-playback001/linux-python001/pytest.xml",
+        "bytes": 350090,
+        "sha256": "e06b0925cbe25fe20dd34db3ecaca71863b1ca2e717cc8ac0492495b5c81dcf9"
+      },
+      "compact_evidence": {
+        "path": "build/p09v-calibrated-playback001/linux-evidence001.json",
+        "bytes": 418079,
+        "sha256": "b1c6572eb5c1d7c76cbbf72d98278a2f2fdc090c5169bab70ebb57e24fc9008a"
+      },
+      "product_audit": {
+        "path": "build/p09v-calibrated-playback001/linux-products001.json",
+        "bytes": 12063,
+        "sha256": "74812b94faba63117b9f87995b93eb3eb19cd0aff2ddf828510ef076a5e995f8"
+      },
+      "sdk": {
+        "path": "build/p09v-calibrated-playback001/linux-sdk001/receipt.json",
+        "bytes": 447,
+        "sha256": "f2cebbbd4e376284d00eb14771bbed2d3bc75ebdf8763ee076424d325b6db8e0"
+      },
+      "cleanup": {
+        "removed_bytes": 4224284231,
+        "removed_files": 22464,
+        "archive": {
+          "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09v-calibrated-playback001/linux-scratch001.zip",
+          "bytes": 718622844,
+          "sha256": "5a01486c38e6f1fbe3ab66c008bd09072b14c36b1da66179aa45a5931a02a33f"
+        },
+        "receipt": {
+          "path": "build/p09v-calibrated-playback001/linux-cleanup001.json",
+          "bytes": 7667061,
+          "sha256": "135b5e4f6557b75f3e0cc51f42a51986d6b116fa2357f88313bdeac5a3ea83e5"
+        }
+      }
+    }
+  },
+  "source": [
+    {
+      "path": "include/imagejxx/playback.hpp",
+      "bytes": 1658,
+      "sha256": "f67245c7eef6f5f987eea7b8e668de059cf3e4ccae2d8cab6958cec7c30fb841"
+    },
+    {
+      "path": "src/native/playback.cpp",
+      "bytes": 3791,
+      "sha256": "51d12714ee45480b21f8215dd9f3e3ef4b2f87fcf47516f0c6765917cc7752b2"
+    },
+    {
+      "path": "src/native/playback_bindings.cpp",
+      "bytes": 2100,
+      "sha256": "c54430510ea40c33aa42e4043e69d46d616bfd656b3d487e44a54ca9a58d7dab"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 654436,
+      "sha256": "cee2b52467412f4027240905790d34204e46cc2976ec93cf0bd3f1b988c75e06"
+    },
+    {
+      "path": "src/desktop/animation_ui_probe.cpp",
+      "bytes": 12583,
+      "sha256": "f977cc84af00d93d379b564c055248f23915163532615ccf1a81b724ef4aa81e"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 69147,
+      "sha256": "e700e5b35517ea1384789fa9d9e8ec0b45636afb168ad8575dc913f117c57d0e"
+    },
+    {
+      "path": "tests/native/test_playback.cpp",
+      "bytes": 2338,
+      "sha256": "a9851c7da9990757eaea6a00c6743b84395786b6b5706c896bd9cc6e0de586e7"
+    },
+    {
+      "path": "tests/python/test_playback_timing.py",
+      "bytes": 2144,
+      "sha256": "b185b059f8c0117f2cb567c0213855d161668367f6c1f87626b2742d02957084"
+    },
+    {
+      "path": "tests/python/test_animation_timing_ui.py",
+      "bytes": 3786,
+      "sha256": "a01c4c6cb37cf5a1eec664ad9e1c181e221d13c846a68a6f2760cc5863fbb8d5"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 30082,
+      "sha256": "a8d8be81e61fc832171c88261fadd7748ac1c038798669c01e6919cc9f3226ec"
+    },
+    {
+      "path": "examples/cpp/playback.cpp",
+      "bytes": 590,
+      "sha256": "f1d33d0eb3bbafd409d1ed4ab5bde4c096893e0d8ccbeceecf16c2c9aa8c7be3"
+    }
+  ],
+  "reference": {
+    "url": "https://imagej.net/ij/docs/guide/146-28.html",
+    "basis": "ImageJ guide ties frame interval to animation speed. This increment provides explicit calibrated timing for scientific T, with supported unit conversion; legacy Z time-series timing remains required."
+  },
+  "ci": {
+    "default_launches": 1131,
+    "animation_launches": 28,
+    "prior_launches_preserved": 1123,
+    "hosted_acceptance": false,
+    "registration": {
+      "path": "build/p09v-calibrated-playback001/registration001.json",
+      "bytes": 1025,
+      "sha256": "92f324701f3a242352ad1a3933de117cdc9ebd30e35ed86e3764171754a4a015"
+    }
+  },
+  "commercial_scope": "No new dependencies. Commercial desktop source inventory passes; no Qt or Java in installed products.",
+  "initial_failures": [
+    "First commercial-check invocation used a bare Python without packaging; reran with the existing tooling dependency path. No processing or UI reader failures in final products."
+  ],
+  "plan_gate": {
+    "state": "failed_preexisting",
+    "message": "Plan inventory check failed: histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed",
+    "application_header_unchanged_from_head": true
+  },
+  "hosted_previous": {
+    "run": 39619055444,
+    "state": "failed",
+    "log": {
+      "path": "build/p09v-calibrated-playback001/hosted-previous-failures001.log",
+      "bytes": 3563325,
+      "sha256": "6a986f1208288db3fa49356379c75066b41c9bbc59fb7772b4ffbea79dec3949"
+    },
+    "observed": "Native C++/SDK jobs pass on all three OSes. Complete Python acceptance fails: Python 3.10 evidence readers call unavailable hashlib.file_digest; missing reference artifacts and other collection failures remain. This turn does not claim to repair those failures."
+  },
+  "remaining": [
+    "Legacy Z time-series calibrated timing",
+    "Movie export",
+    "Full hosted and platform/UI qualification",
+    "All remaining ImageJ and commercially usable Fiji requirements"
+  ],
+  "all99": {
+    "in_progress": 44,
+    "open": 55,
+    "complete": 0
+  },
+  "format_variants": "All 96 remain partial",
+  "cleanup_removed_bytes": 8413695486
+}

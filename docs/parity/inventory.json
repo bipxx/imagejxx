@@ -1462,7 +1462,8 @@
           "docs/DESKTOP.md",
           "docs/CI.md",
           "docs/parity/reviews/p09s-animation001.json",
-          "docs/parity/reviews/p09u-animation-ranges001.json"
+          "docs/parity/reviews/p09u-animation-ranges001.json",
+          "docs/parity/reviews/p09v-calibrated-playback001.json"
         ],
         "implementation": [
           "src/desktop/window.cpp",
@@ -1476,7 +1477,9 @@
           "tests/python/test_animation_ui.py",
           "tests/native/test_playback.cpp",
           "tests/python/test_playback.py",
-          "tests/python/test_animation_ranges_ui.py"
+          "tests/python/test_animation_ranges_ui.py",
+          "tests/python/test_playback_timing.py",
+          "tests/python/test_animation_timing_ui.py"
         ]
       },
       "id": "G037",
@@ -1487,13 +1490,14 @@
       ],
       "name": "Animation",
       "remaining": [
-        "Calibrated-time pacing, movie export and full hosted/platform/UI parity remain required."
+        "Legacy Z time-series calibrated timing, movie export and full hosted/platform/UI parity remain required."
       ],
       "required_work": "Partial: global FPS and forward looping; add start/end/step, direction, ping-pong, calibrated time and movie export",
       "status": "in_progress",
       "verification": [
         "p09s.animation.functional.001",
-        "p09u.animation-ranges.functional.001"
+        "p09u.animation-ranges.functional.001",
+        "p09v.calibrated-time.functional.001"
       ]
     },
     {
@@ -180237,6 +180241,29 @@
         "total": 2184
       },
       "scope": "2184 selected checks per platform; 748 UI observations / 48620 frames, plus six source/axis/metadata refusal artifacts. Native playback/preferences, new installed SDK example and 15 transport checks per platform. Full family/hosted acceptance remains open."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-21",
+      "id": "p09v.calibrated-time.functional.001",
+      "identity": {
+        "qualification": {
+          "path": "docs/parity/reviews/p09v-calibrated-playback001.json",
+          "bytes": 8687,
+          "sha256": "7c2a0888c502086d7398a6149cef07c9c73f138a7d2f24606130d5315fe7353e"
+        }
+      },
+      "platform": "Windows/Linux installed C++ and isolated Python Dear ImGui hosts",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 2250,
+        "report": "build/p09v-calibrated-playback001/windows-python001/pytest.xml",
+        "skipped": 0,
+        "total": 2250
+      },
+      "scope": "2250 selected checks per platform; 780 UI observations (frame totals in qualification), plus six source/axis/metadata refusal artifacts. Native timing/playback/preferences, updated installed SDK example and 15 transport checks per platform. Full family/hosted acceptance remains open."
     }
   ]
 }

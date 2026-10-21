@@ -1,8 +1,34 @@
 #include <imagejxx/playback.hpp>
 #include <cstdint>
+#include <cmath>
 #include <stdexcept>
 
 namespace imagejxx {
+double playback_interval_seconds(double fps, const std::string &timing,
+                                 double frame_interval, const std::string &unit, int step) {
+  if(step<=0)throw std::invalid_argument("Playback step must be positive");
+  double seconds;
+  if(timing=="fps") {
+    if(!std::isfinite(fps) || fps<=0)throw std::invalid_argument("Playback FPS must be finite and positive");
+    seconds=1/fps;
+  } else if(timing=="calibrated_time") {
+    double scale;
+    if(unit=="s" || unit=="sec" || unit=="second" || unit=="seconds")scale=1;
+    else if(unit=="ms" || unit=="millisecond" || unit=="milliseconds")scale=.001;
+    else if(unit=="us" || unit=="\xc2\xb5s" || unit=="\xce\xbcs" || unit=="microsecond" || unit=="microseconds")scale=.000001;
+    else if(unit=="ns" || unit=="nanosecond" || unit=="nanoseconds")scale=.000000001;
+    else if(unit=="min" || unit=="minute" || unit=="minutes")scale=60;
+    else if(unit=="h" || unit=="hr" || unit=="hour" || unit=="hours")scale=3600;
+    else if(unit=="d" || unit=="day" || unit=="days")scale=86400;
+    else throw std::invalid_argument("Playback calibration needs a recognized time unit");
+    if(!std::isfinite(frame_interval) || frame_interval<=0)
+      throw std::invalid_argument("Playback frame interval must be finite and positive");
+    seconds=frame_interval*(scale*step);
+  } else throw std::invalid_argument("Playback timing must be fps or calibrated_time");
+  if(!std::isfinite(seconds) || seconds<=0)
+    throw std::invalid_argument("Playback interval is outside the supported seconds range");
+  return seconds;
+}
 PlaybackMode parse_playback_mode(const std::string &name) {
   if(name=="forward")return PlaybackMode::Forward;
   if(name=="reverse")return PlaybackMode::Reverse;

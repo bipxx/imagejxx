@@ -13,6 +13,10 @@ int integer(py::handle value) {
 }
 void bind_playback(py::module_ &m) {
   using namespace imagejxx;
+  m.def("playback_interval_seconds",[](double fps,const std::string &timing,double interval,const std::string &unit,py::object step){
+    return playback_interval_seconds(fps,timing,interval,unit,integer(step));
+  },py::arg("fps"),py::kw_only(),py::arg("timing")="fps",py::arg("frame_interval")=1,
+    py::arg("time_unit")="s",py::arg("step")=1);
   py::class_<PlaybackSequence>(m,"PlaybackSequence")
       .def(py::init([](py::object extent,py::object first,py::object last,py::object step,const std::string &mode){
         return PlaybackSequence(integer(extent),integer(first),last.is_none()?std::optional<int>{}:integer(last),integer(step),parse_playback_mode(mode));

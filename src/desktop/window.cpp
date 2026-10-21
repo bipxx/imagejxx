@@ -1045,6 +1045,8 @@ struct Window::Impl {
   PlaybackMode animationMode = PlaybackMode::Forward;
   bool animationReverse = false;
   std::optional<PlaybackSequence> animationSequence;
+  std::string animationTiming = "fps";
+  double animationCalibratedInterval = 1;
   int historyLimit = 8, roiIndex = -1, lastVisible = -1;
   int numericZoomPlane = 0; // Transient Tools choice, never document/session data.
   std::uint64_t navigationDocument = 0;
@@ -1558,7 +1560,7 @@ struct Window::Impl {
       throw std::invalid_argument("Animation parameters must be an object");
     for (const auto &field : parameters.items())
       if (field.key() != "axis" && field.key() != "playing" && field.key() != "document_id" &&
-          field.key() != "first" && field.key() != "last" && field.key() != "step" && field.key() != "mode")
+          field.key() != "first" && field.key() != "last" && field.key() != "step" && field.key() != "mode" && field.key() != "timing")
         throw std::invalid_argument("Unknown animation parameter: " + field.key());
     auto axis = animationAxis;
     if (parameters.contains("axis")) {
@@ -1573,7 +1575,7 @@ struct Window::Impl {
       throw std::invalid_argument("Animation playing must be boolean");
     const bool playing = parameters.value("playing", animating);
     const bool configured = parameters.contains("axis") || parameters.contains("first") ||
-        parameters.contains("last") || parameters.contains("step") || parameters.contains("mode");
+        parameters.contains("last") || parameters.contains("step") || parameters.contains("mode") || parameters.contains("timing");
     if (!playing && !configured) { stopAnimation("stopped"); return; }
     const auto index = [&](const char *key, int fallback) {
       if (!parameters.contains(key)) return fallback;
@@ -1596,6 +1598,14 @@ struct Window::Impl {
     if (parameters.contains("document_id") && parameters.at("document_id") != captured.id())
       throw std::invalid_argument("Animation requires the active document");
     PlaybackSequence sequence(animationExtent(captured.data().dataset.shape(),axis),first,last,step,mode);
+    auto timing = axisChanged && axis != "t" ? std::string("fps") : animationTiming;
+    if(parameters.contains("timing")) {
+      if(!parameters.at("timing").is_string())throw std::invalid_argument("Animation timing must be text");
+      timing=parameters.at("timing").get<std::string>();
+    }
+    if(timing=="calibrated_time" && axis!="t")throw std::invalid_argument("Calibrated playback requires the T axis");
+    const auto &calibration=captured.data().dataset.calibration();
+    const double interval=playback_interval_seconds(fps,timing,calibration.frame_interval,calibration.time_unit,step);
     std::optional<DocumentSnapshot> source;
     if (playing) {
       if (owner.busy()) throw std::invalid_argument("Wait for the current edit");
@@ -1607,6 +1617,7 @@ struct Window::Impl {
     animationAxis = axis;
     animationFirst = first; animationLast = last; animationStep = step;
     animationMode = mode; animationSequence = sequence; animationReverse = mode == PlaybackMode::Reverse;
+    animationTiming = timing; animationCalibratedInterval = interval;
     if (!playing) { stopAnimation("stopped"); return; }
     animationSource = std::move(source);
     animationTicks = 0;
@@ -1634,7 +1645,8 @@ struct Window::Impl {
     if (extent < 2) { stopAnimation("single_position"); return; }
     const double now = ImGui::GetTime();
     if (lastTick < 0 || now < lastTick) { lastTick = now; return; }
-    if (now - lastTick < 1 / fps) return;
+    const double interval=animationTiming=="fps" ? 1/fps : animationCalibratedInterval;
+    if (now - lastTick < interval) return;
     auto display = current.display();
     int &position = animationAxis == "z" ? display.crosshair[2] : animationAxis == "t" ? display.t : display.c;
     const auto next = animationSequence->advance(position, animationReverse);
@@ -1648,6 +1660,7 @@ struct Window::Impl {
   }
   Json animationDiagnostics() const {
     return {{"playing", animating}, {"axis", animationAxis}, {"fps", fps},
+            {"timing",animationTiming},{"interval_seconds",animationTiming=="fps"?1/fps:animationCalibratedInterval},
             {"ticks", animationTicks}, {"reason", animationReason},
             {"first", animationFirst}, {"last", animationLast ? Json(*animationLast) : Json()},
             {"step", animationStep}, {"mode", playback_mode_name(animationMode)}, {"reverse", animationReverse},
@@ -5757,7 +5770,8 @@ void Window::action(const std::string &name, const Json &p) {
     const auto axisLabel = capturedAxis == "z" ? "Z" : capturedAxis == "c" ? "C" : "T";
     impl->ask(std::string("Animation options (")+axisLabel+")", {{"first",impl->animationFirst+1},
         {"last",impl->animationLast ? *impl->animationLast+1 : extent},
-        {"step",impl->animationStep},{"mode",mode}},
+        {"step",impl->animationStep},{"mode",mode},
+        {"timing",impl->animationTiming=="fps"?"FPS":"Calibrated time"}},
         [this,sourceId,revisions,capturedAxis](Json values) {
           if (impl->animationAxis!=capturedAxis || nativeSnapshot().id()!=sourceId || !nativeSnapshot().revisions().matches(revisions,Change::Pixels|Change::Metadata))
             throw std::invalid_argument("Animation options source or axis changed");
@@ -5766,13 +5780,18 @@ void Window::action(const std::string &name, const Json &p) {
               throw std::invalid_argument("Animation First and Last must be positive integers");
           const auto label=values.at("mode").get<std::string>();
           if(label!="Forward" && label!="Reverse" && label!="Ping-pong")throw std::invalid_argument("Unknown animation mode");
+          const auto timing=values.at("timing").get<std::string>();
+          if(timing!="FPS" && timing!="Calibrated time")throw std::invalid_argument("Unknown animation timing");
           action("animation",{{"first",values.at("first").get<int>()-1},
               {"last",values.at("last").get<int>()-1},{"step",values.at("step")},
-              {"mode",label=="Forward"?"forward":label=="Reverse"?"reverse":"ping_pong"}});
+              {"mode",label=="Forward"?"forward":label=="Reverse"?"reverse":"ping_pong"},
+              {"timing",timing=="FPS"?"fps":"calibrated_time"}});
         }, Json::array({{{"name","first"},{"label","First (1-based)"},{"kind","int"}},
             {{"name","last"},{"label","Last (inclusive, 1-based)"},{"kind","int"}},
             {{"name","step"},{"label","Step"},{"kind","int"}},
-            {{"name","mode"},{"label","Mode"},{"kind","choice"},{"choices",{"Forward","Reverse","Ping-pong"}}}}),"animation_options");
+            {{"name","mode"},{"label","Mode"},{"kind","choice"},{"choices",{"Forward","Reverse","Ping-pong"}}},
+            {{"name","timing"},{"label","Timing"},{"kind","choice"},
+             {"choices",capturedAxis=="t"?Json::array({"FPS","Calibrated time"}):Json::array({"FPS"})}}}),"animation_options");
     return;
   }
   if (name == "create_roi") {

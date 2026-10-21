@@ -6,6 +6,11 @@ namespace imagejxx {
 enum class PlaybackMode { Forward, Reverse, PingPong };
 PlaybackMode parse_playback_mode(const std::string &name);
 const char *playback_mode_name(PlaybackMode mode);
+// FPS ignores calibration. Calibrated time includes the selected T stride.
+// Loop boundaries have the same interval as ordinary selected positions.
+double playback_interval_seconds(double fps, const std::string &timing = "fps",
+                                 double frame_interval = 1,
+                                 const std::string &time_unit = "s", int step = 1);
 struct PlaybackStep {
   int position;
   bool reverse;

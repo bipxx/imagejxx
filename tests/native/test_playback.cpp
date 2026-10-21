@@ -1,11 +1,23 @@
 #include <imagejxx/playback.hpp>
 #include <climits>
+#include <cmath>
+#include <limits>
 #include <iostream>
 #include <stdexcept>
 #include <vector>
 using namespace imagejxx;
 void check(bool value){if(!value)throw std::runtime_error("Playback sequence mismatch");}
 int main(){try{
+  check(playback_interval_seconds(8)==.125);
+  check(std::abs(playback_interval_seconds(60,"calibrated_time",25,"ms",2)-.05)<1e-12);
+  check(playback_interval_seconds(60,"calibrated_time",2,"min",3)==360);
+  for(int kind=0;kind<5;++kind){bool rejected=false;try{
+    if(kind==0)playback_interval_seconds(0);
+    else if(kind==1)playback_interval_seconds(8,"calibrated_time",1,"frame");
+    else if(kind==2)playback_interval_seconds(8,"calibrated_time",std::numeric_limits<double>::max(),"day",2);
+    else if(kind==3)playback_interval_seconds(8,"calibrated_time",0);
+    else playback_interval_seconds(8,"invalid");
+  }catch(const std::invalid_argument&){rejected=true;}check(rejected);}
   for(auto mode:{PlaybackMode::Forward,PlaybackMode::Reverse,PlaybackMode::PingPong}){
     PlaybackSequence s(10,1,8,3,mode);check(s.count()==3&&s.last_selected()==7);
     std::vector<int> expected=mode==PlaybackMode::Forward?std::vector<int>{4,7,1,4,7,1}:

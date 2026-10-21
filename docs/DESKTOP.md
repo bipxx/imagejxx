@@ -1203,8 +1203,8 @@ owns current verification status; implementation alone does not certify parity.
 Choose **Image > Stacks > Animation axis** and select **Z slices**, **Channels**
 or **Time frames**, then toggle **Animate**. Axes with only one position cannot
 start playback. The ordinary stack's **Play** checkbox uses Z. Both launch modes
-use the same C++ controller and the `animation_fps` preference; changes to that
-setting take effect during playback. Axis changes restart timing at the current
+use the same C++ controller. Default FPS timing uses the `animation_fps`
+preference; changes take effect during playback. Axis changes restart timing at the current
 position. Playback advances at most once per rendered frame.
 
 Open **Animation options...** to set inclusive **First** and **Last**, a positive
@@ -1217,6 +1217,18 @@ play. An off-grid current position enters at the appropriate end on its first
 tick. Changing axis resets the range to that axis's full extent. An options
 dialog refuses confirmation if its source, source data or captured axis has changed.
 
+For **Time frames**, the options form also offers **Timing > Calibrated time**.
+Each tick waits `frame_interval * Step` in the dataset's time unit. Seconds,
+milliseconds, microseconds (us, UTF-8 micro sign or Greek mu followed by s),
+nanoseconds, minutes, hours and days are recognized, including their singular
+and plural English names; seconds also accepts sec, hours hr. Unknown units and
+non-finite, zero, overflowing or underflowing intervals are refused. Loop and
+ping-pong boundaries use the same interval. Time origin does not affect pacing.
+Changing the FPS preference does not alter calibrated playback. Selecting Z or C
+resets timing to FPS; calibrated timing on those axes is refused. Rendering can
+make playback slower than the requested interval; no positions are skipped to
+catch up. Timing choices are transient and do not edit calibration or preferences.
+
 Linked XY/XZ/YZ views follow the selected position. Playback changes display
 state while retaining source samples, calibration, selections, history and
 workflow records. Switching or closing the source stops playback. Pixel/metadata
@@ -1227,7 +1239,7 @@ The optional Python UI exposes the same action:
 
 ```python
 editor.update_settings(animation_fps=12, persist=False)
-editor.action("animation", axis="t", playing=True)
+editor.action("animation", axis="t", timing="calibrated_time", playing=True)
 editor.action("animation", playing=False)
 # API range indices are zero-based; omitted/None last means the axis's end.
 editor.action("animation", axis="z", first=1, last=6, step=2,
@@ -1244,8 +1256,14 @@ position, reverse = 1, False
 position, reverse = sequence.advance(position, reverse)  # (3, False)
 ```
 
-Pacing from calibrated time, movie export and complete platform qualification
-remain open.
+The public C++ `playback_interval_seconds` helper is also exposed in Python:
+`imagejxx.playback_interval_seconds(60, timing="calibrated_time", frame_interval=25,
+time_unit="ms", step=2)` returns 0.05 seconds. FPS mode ignores calibration; a
+positive stride does not change its interval. Native conversion refuses an
+interval that cannot be represented as finite positive seconds.
+
+Calibrated timing for legacy Z time-series, movie export and complete hosted/
+platform qualification remain open.
 
 ## Calibrated range reslicing
 
