@@ -1,5 +1,26 @@
 # ImageJ and Fiji gap closure plan
 
+**Saved-area pointer-budget checkpoint, 2026-10-20 (work in progress):**
+new pointer gestures and no-movement draft recreation now read current resource
+settings. A saved-area panel opened under a higher budget previously admitted a
+new 5.44-MiB pointer draft after Preferences lowered the budget to 1 MiB. Actual
+mouse-down now refuses visibly and releases the draft; release-time publication
+also refuses an explicitly injected mid-drag API budget drop. Physical Preferences
+recovery, Escape cancellation, Shift-constrained movement and Undo/Redo pass for
+finite and IEEE Float32 sources with axis-aligned and rotated rounded areas.
+Windows/Linux source/installed pass identical sets of 5,041 cases, no skips,
+preserving the preceding 5,037; 17 native groups pass per platform. Both launch
+modes provide 32 pointer observations over 6,848 shared-ImGui input frames.
+Literal samples, global selections, unrelated metadata and history remain intact;
+installed SDK consumers and 66-header/12-module product audits pass. Verified
+archives reclaim 1,664,699,863 bytes; qualified installs and caches remain.
+See [the qualification receipt](parity/reviews/p08z-pointer-budget001.json).
+The initial GitHub workflow exposed compiler-selection and missing optional
+IO/UI build configuration failures; hosted/macOS CI is not accepted by these
+local checks. Repair CI next, then finish remaining pointer modifier/no-movement,
+workflow/rebind/scientific-context and rounded promotion gates. All99 remains
+42 in progress / 57 open / 0 complete; all 96 format variants remain partial.
+
 **Saved-area live-budget UI checkpoint, 2026-10-20 (work in progress):**
 saved-area Numeric Apply now reports publication failures in the root error
 modal after releasing its draft. Previously, lowering the memory budget while
@@ -1948,7 +1969,7 @@ An audit area is complete only when **all its required options** are available t
 
 ## Current gap summary
 
-The recorded inventory checked on **2026-10-17** contains **99 families: 41 in progress, 58 open and 0 complete**. These are family counts, not percentages of implemented commands or estimates of remaining effort. An open family can already contain useful kernels or controls; it still needs its full option and interaction contract. P06k adds partial G021 manager verification; no family is complete.
+The recorded inventory checked on **2026-10-20** contains **99 families: 42 in progress, 57 open and 0 complete**. These are family counts, not percentages of implemented commands or estimates of remaining effort. An open family can already contain useful kernels or controls; it still needs its full option and interaction contract. P06k adds partial G021 manager verification; no family is complete.
 
 The [P06j formal/settings adoption](../build/p06j-001/formal-adoption002/adoption001.json)
 retains79 requirements/35 surface contracts,140 surface proofs,25 run bindings
@@ -1965,7 +1986,7 @@ readiness is owned solely by the current final receipt described above.
 | G001–G012 Configuration and defaults | 12 / 0 | Consumed preferences for appearance, tools, conversion, binary processing, measurements, files and resources; portable configuration, reset/import/export, shortcuts and startup behavior. | M1, M2 and each setting's consuming feature |
 | G013–G025 Selections and pixel editing | 7 / 6 | Complete tools, move/resize/rotate and vertex editing, numeric properties, Boolean regions, fitting/conversion, ROI manager/positions/interchange, movable paste, drawing, text and overlays. | M2, M4–M8 as assigned below |
 | G026–G041 Slicing, axes and viewers | 6 / 10 | Linked calibrated XY/XZ/YZ input, axis-aligned/oblique/curved reslice, stack organization, projection/montage/animation, C/Z/T and composites, profiles, 3D and large-source viewing. | M1, M3, M5, M7–M10 |
-| G042–G065 Processing and display | 12 / 12 | Every 2D/3D filter and threshold option; specialized previews and targets, background/contrast, binary/maxima/frequency/equations, display/LUT/type conversion, geometry, calculator and zoom/pan. | M1–M6, M8 as assigned below |
+| G042–G065 Processing and display | 13 / 11 | Every 2D/3D filter and threshold option; specialized previews and targets, background/contrast, binary/maxima/frequency/equations, display/LUT/type conversion, geometry, calculator and zoom/pan. | M1–M6, M8 as assigned below |
 | G066–G073 Analysis and annotations | 1 / 7 | Configurable calibrated measurements and particles, histograms/profiles, linked results/plots, annotation utilities and analysis tools. | M1, M3–M7 |
 | G074–G089 Files and application workflows | 3 / 13 | Format/variant and metadata coverage, scientific/sequence I/O, interchange, recovery and printing; menus/windows/accessibility, recording/batch/macros/extensions, jobs and Python control. | M1–M3, M4–M6, M8–M10, M12 |
 | G090–G099 Highlighted Fiji families | 0 / 10 | BigDataViewer, 3D Viewer, MorphoLibJ, registration, stitching, deconvolution, TrackMate, AnalyzeSkeleton, Coloc 2 and interactive/trainable segmentation, including their complete eligible options and UI workflows. | M9–M11 |

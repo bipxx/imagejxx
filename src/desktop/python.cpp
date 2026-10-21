@@ -301,6 +301,11 @@ PYBIND11_MODULE(_desktop, m) {
              return roiImportRebindUiCase(window, "imgui_python", directory)
                  .dump();
            })
+      .def("_saved_roi_pointer_budget_ui_case",
+           [](Window &window,const std::string &caseId,const std::string &directory) {
+             py::gil_scoped_release release;
+             return savedRoiPointerBudgetUiCase(window,caseId,"imgui_python",directory).dump();
+           },py::arg("case_id"),py::arg("directory"))
       .def("_saved_roi_budget_ui_case",
            [](Window &window,const std::string &caseId,const std::string &directory) {
              py::gil_scoped_release release;

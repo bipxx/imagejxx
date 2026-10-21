@@ -1,0 +1,143 @@
+{
+  "state": "qualified_increment",
+  "scope": "P08z saved-area pointer admission at current resource limits and live-budget release/refusal/recovery",
+  "objective_complete": false,
+  "all99": {
+    "in_progress": 42,
+    "open": 57,
+    "complete": 0
+  },
+  "format_variants": "96 partial",
+  "tests": {
+    "state": "passed",
+    "cases": 5041,
+    "profiles": [
+      "windows-python001",
+      "windows-install001",
+      "linux-python-source001",
+      "linux-python-installed001"
+    ],
+    "previous_cases": 5037,
+    "previous_subset": true,
+    "case_id_sha256": "a332224b71e4fee90ae57601db520048de25e5c768f533e6fb8bdaff6c6ec8d2"
+  },
+  "native_groups_per_platform": 17,
+  "actual_ui": {
+    "observations": 32,
+    "frames": 6848,
+    "cases": [
+      "finite-axis",
+      "finite-rotated",
+      "ieee-axis",
+      "ieee-rotated"
+    ],
+    "hosts": [
+      "imgui_cpp",
+      "imgui_python"
+    ],
+    "platforms": [
+      "Windows",
+      "Linux"
+    ],
+    "profiles": [
+      "source",
+      "installed"
+    ],
+    "os_input_or_gpu_claim": false
+  },
+  "fix": "Refresh limits on pointer begin and no-movement release draft recreation; retain original captured document/revision guards",
+  "scratch_removed_bytes": 1664699863,
+  "source": [
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 636482,
+      "sha256": "bd84710a45d0aec133dfcf1476fc3f89ba0aa873eb8785224f9e1faa8cead6ed"
+    },
+    {
+      "path": "src/desktop/saved_roi_budget_ui_probe.cpp",
+      "bytes": 13940,
+      "sha256": "911de53878e12a061c53e4197a008ed484c15115a9e723b36f53d68e6505cce3"
+    },
+    {
+      "path": "src/desktop/saved_roi_budget_ui_probe.hpp",
+      "bytes": 482,
+      "sha256": "3253ef2601412cf2bdbb4f3e01c7b135c934bcadd2e66af222b351c2f5fad2a8"
+    },
+    {
+      "path": "src/desktop/main.cpp",
+      "bytes": 45017,
+      "sha256": "0772f4ef6bdaa8811c03fc1066111f6d5f795ae27216cab810eebedac4d2290b"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 49987,
+      "sha256": "707ad7e0ba9308e06222ab575961a85c488d49c602cc02d4485c51439abc22c1"
+    },
+    {
+      "path": "tests/python/test_saved_roi_pointer_budget_ui.py",
+      "bytes": 3751,
+      "sha256": "6df92e9287bb6819798f09ca65d83d3358e466470e35ad6dc7d42832718ee897"
+    }
+  ],
+  "limits": [
+    "Mid-drag budget lowering is an explicitly declared updateSettings API transition while left mouse is held; Preferences controls supply pre-drag lowering and recovery",
+    "Metadata no-read guarantees belong to preceding API matrices; actual rendering and test observations may acquire planes",
+    "No-movement re-admission uses fresh limits in production but is not a separate actual-input budget-lowering case in this gate",
+    "Remaining resize/rotation/Alt/Ctrl/modifier and workflow/rebind/scientific-position UI variants remain open",
+    "Hosted CI and macOS acceptance remain unqualified; initial remote failure audit retained",
+    "No complete ImageJ/Fiji capability family or format variant is declared"
+  ],
+  "next": [
+    "Repair hosted CI compiler selection and core/scientific/desktop build-test configuration; retain failing logs",
+    "Rounded pointer modifier/cancel and workflow/rebind/scientific-position resource UI",
+    "Complete remaining rounded primitive promotion contexts",
+    "Continue broader ImageJ/Fiji capability inventory without declaring a family complete"
+  ],
+  "receipts": [
+    {
+      "path": "build/p08z-pointer-budget001/test-identity001.json",
+      "bytes": 327,
+      "sha256": "77619fbdc52749bed78260800ab98dbaff4613e51df482530194fc63e77101fa"
+    },
+    {
+      "path": "build/p08z-pointer-budget001/windows-observations001.json",
+      "bytes": 5914,
+      "sha256": "a7896e3e77dd277147042e5da89695543b7113689f37bd30081a7444c3aee6a4"
+    },
+    {
+      "path": "build/p08z-pointer-budget001/linux-observations001.json",
+      "bytes": 5559,
+      "sha256": "0782a915701972ef045915a74da2e615ad5781e427ce44e087f8f47b28f44097"
+    },
+    {
+      "path": "build/p08z-pointer-budget001/windows-products-audit001.json",
+      "bytes": 2487,
+      "sha256": "fa09a8f917a8df524f89e58738a0e57ce1b3525e7f754dee5199460d56f1b356"
+    },
+    {
+      "path": "build/p08z-pointer-budget001/linux-products-audit001.json",
+      "bytes": 2362,
+      "sha256": "3d501666e95af937da245c7cead8b46e33a7ad6392585da8ebd9ef7c5aeae14a"
+    },
+    {
+      "path": "build/p08z-pointer-budget001/windows-cleanup001.json",
+      "bytes": 81237,
+      "sha256": "a1ab9b1f1164c2ff94f4380a19c384c10fb489b61904a2e1ed1579e7a2271230"
+    },
+    {
+      "path": "build/p08z-pointer-budget001/linux-cleanup001.json",
+      "bytes": 107026,
+      "sha256": "c1775ff8b5178c4afcea55a6e8bffe4bc82fa048f3830361acb5d947cd8409f5"
+    },
+    {
+      "path": "build/p08z-pointer-budget001/pointer-budget-audit001.json",
+      "bytes": 1837,
+      "sha256": "42cab97efdbc12a838113721183ef4e6f201fa3b7044df40f68d506a73776fdf"
+    },
+    {
+      "path": "build/p08z-pointer-budget001/remote-ci001/audit001.json",
+      "bytes": 1294,
+      "sha256": "2d49f61ae198742bf824e720558ca9bc18f5b3515810e8e757221bf32f830adb"
+    }
+  ]
+}

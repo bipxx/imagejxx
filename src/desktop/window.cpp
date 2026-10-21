@@ -2132,7 +2132,7 @@ struct Window::Impl {
         // This is the actual mouse-down capture. All Window activation changes
         // cancel the prior row draft; no release-time capture is permitted.
         const auto capture = owner.controller_->capture_saved_roi_geometry();
-        const auto limits = savedRoiEdit.limits();
+        const auto limits = savedRoiGeometryLimits();
         selectionPanel.cancel();
         savedRoiPanelShown = false;
         savedRoiEdit.begin_pointer(capture, row, transform, hit, down, limits);
@@ -2161,7 +2161,7 @@ struct Window::Impl {
           // Delete/nudge. It does not accept geometry or mint a new owner token.
           const auto capture = savedRoiEdit.capture();
           const auto row = savedRoiEdit.row_index();
-          const auto limits = savedRoiEdit.limits();
+          const auto limits = savedRoiGeometryLimits();
           savedRoiEdit.begin(capture, row, limits);
         }
       } catch (...) { cancelSavedRoiGeometry("pointer_publication_failed"); throw; }

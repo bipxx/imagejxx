@@ -1,5 +1,26 @@
 # Sol Ultra execution guide
 
+**Saved-area pointer-budget checkpoint, 2026-10-20 (work in progress):**
+new pointer gestures and no-movement draft recreation now read current resource
+settings. A saved-area panel opened under a higher budget previously admitted a
+new 5.44-MiB pointer draft after Preferences lowered the budget to 1 MiB. Actual
+mouse-down now refuses visibly and releases the draft; release-time publication
+also refuses an explicitly injected mid-drag API budget drop. Physical Preferences
+recovery, Escape cancellation, Shift-constrained movement and Undo/Redo pass for
+finite and IEEE Float32 sources with axis-aligned and rotated rounded areas.
+Windows/Linux source/installed pass identical sets of 5,041 cases, no skips,
+preserving the preceding 5,037; 17 native groups pass per platform. Both launch
+modes provide 32 pointer observations over 6,848 shared-ImGui input frames.
+Literal samples, global selections, unrelated metadata and history remain intact;
+installed SDK consumers and 66-header/12-module product audits pass. Verified
+archives reclaim 1,664,699,863 bytes; qualified installs and caches remain.
+See [the qualification receipt](parity/reviews/p08z-pointer-budget001.json).
+The initial GitHub workflow exposed compiler-selection and missing optional
+IO/UI build configuration failures; hosted/macOS CI is not accepted by these
+local checks. Repair CI next, then finish remaining pointer modifier/no-movement,
+workflow/rebind/scientific-context and rounded promotion gates. All99 remains
+42 in progress / 57 open / 0 complete; all 96 format variants remain partial.
+
 **Saved-area live-budget UI checkpoint, 2026-10-20 (work in progress):**
 saved-area Numeric Apply now reports publication failures in the root error
 modal after releasing its draft. Previously, lowering the memory budget while
