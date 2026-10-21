@@ -1,0 +1,204 @@
+{
+  "state": "qualified_feature_and_ci_increment",
+  "objective_complete": false,
+  "scope": "Preferences I/O failures, closed captured-source errors and independent reslice memory inputs.",
+  "features": [
+    "Preferences read through the input stream so Linux directory/read failures retain an I/O error instead of becoming malformed JSON. Python strict load raises OSError; recovery retains defaults, warnings and blocked automatic writes.",
+    "Native tests cover strict directory failure and short, exact-block and multi-block reads, including UTF-8 split across an 8192-byte boundary.",
+    "Captured axis extraction checks controller membership before facade lookup, preserving DocumentUnavailable for a closed source without publication.",
+    "The private compiled provider measures Image/shared_ptr sizes from public headers. CI supplies both axis-range ABI contracts; independent readers retain exact memory formulas. No product API or Python reader was weakened."
+  ],
+  "tests": {
+    "windows": {
+      "passed": 317,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_preferences": "passed",
+      "transport_runner_checks": 12,
+      "abi_sizes": {
+        "image": 40,
+        "shared_const_image": 16
+      },
+      "observations": 256,
+      "frames": 17170,
+      "junit": {
+        "path": "build/p09q-hosted001/windows-python002/pytest.xml",
+        "bytes": 47396,
+        "sha256": "299042d5ad4b256c31a8fa9a2a6b22abb942c711087773ef5a9c68aec679633f"
+      },
+      "compact_evidence": {
+        "path": "build/p09q-hosted001/windows-evidence001.json",
+        "bytes": 142400,
+        "sha256": "8a60adc12c6da608a19a7d16c790a6fba30c6e17a1d0455f1c6fb31c68d7de90"
+      }
+    },
+    "linux": {
+      "passed": 317,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_preferences": "passed",
+      "transport_runner_checks": 12,
+      "abi_sizes": {
+        "image": 40,
+        "shared_const_image": 16
+      },
+      "observations": 256,
+      "frames": 17170,
+      "junit": {
+        "path": "build/p09q-hosted001/linux-python002/pytest.xml",
+        "bytes": 47395,
+        "sha256": "975dc5f53616dc1dd174e62dfc6db912a9a51b4cd9897ce2cc7d2b2365b94c53"
+      },
+      "compact_evidence": {
+        "path": "build/p09q-hosted001/linux-evidence001.json",
+        "bytes": 133499,
+        "sha256": "0fafe6482fa47bb3ddd1c773e16ba92eaec0bdd02ea2df9d852426563ae0023b"
+      }
+    }
+  },
+  "identical_case_ids": true,
+  "ui_scope": "68 bilinear-resize, 20 physical-spacing, 19 eager orientation and 21 integer-reslice cases through each installed C++/Python host per platform; three public LiveDocument checks and 58 Python preferences tests complete the 317 checks.",
+  "actual_ui": {
+    "observations": 512,
+    "frames": 34340,
+    "os_input_or_gpu_equivalence_claim": false
+  },
+  "baseline": {
+    "windows": {
+      "cases": 179,
+      "failed": 154,
+      "passed": 25,
+      "missing_abi_assertions": 152,
+      "closed_source_error_mismatches": 2,
+      "preserved": true
+    },
+    "linux_preferences": {
+      "type": "ValueError",
+      "message": "[json.exception.parse_error.101] parse error at line 1, column 1: attempting to parse an empty input; check that your input string or stream contains the expected JSON"
+    },
+    "setup_failure": "Linux build002 completed compilation but the native fixture refused reuse of an old work directory. Fresh work002 passed; the original failure log remains."
+  },
+  "products": {
+    "public_headers": 66,
+    "python_modules": 12,
+    "native_catalog_operations": 92,
+    "installed_sources_match": true
+  },
+  "commercial": {
+    "new_dependencies": [],
+    "review": "scripts/check_licenses.py --desktop passed",
+    "log": {
+      "path": "build/p09q-hosted001/licenses002.log",
+      "bytes": 53,
+      "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+    }
+  },
+  "cleanup": {
+    "removed_bytes": 8707351383,
+    "removed_files": 55477,
+    "crc_and_every_member_sha256_verified": true,
+    "archives": {
+      "windows-baseline": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09q-hosted001\\windows-baseline-scratch001.zip",
+        "bytes": 384788752,
+        "sha256": "e9593519131e5d3836985df17db5f1ef29a85320391b8b9808c32b2b6a760de7"
+      },
+      "windows-final": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09q-hosted001\\windows-final-scratch001.zip",
+        "bytes": 557619449,
+        "sha256": "d865af3cb7798cdd82e1dc59e5313524295fcc3dfc211885d6f18dc97a99581e"
+      },
+      "linux-baseline": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09q-hosted001/linux-baseline-scratch001.zip",
+        "bytes": 4706325,
+        "sha256": "6c4984be97fed3d17d9d178aa41973fd75cebce8dcd87c421e5018afebabe813"
+      },
+      "linux-final": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09q-hosted001/linux-final-scratch001.zip",
+        "bytes": 574390676,
+        "sha256": "fcd2d37405f6214367cf4ca7ec60577a91995bffb8c714e3b8fad1527716bbf5"
+      },
+      "linux-workspace": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09q-hosted001/linux-workspace-scratch001.zip",
+        "bytes": 38456,
+        "sha256": "6917050c8531c3d19a3d1822721edb7428594c7abfcab769f8f699356268cb6f"
+      }
+    },
+    "preserved": "Final build002 installed products, useful caches, native/Python receipts, JUnit and compact evidence remain. Raw passing and failed captures and copied environments remain in verified archives."
+  },
+  "plan_check": {
+    "state": "failed_preexisting",
+    "message": "Plan inventory check failed: histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed",
+    "first_mismatch": {
+      "path": "include/imagejxx/application.hpp",
+      "current_and_previous_commit_sha256": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    },
+    "action": "Refresh complete affected Auto Contrast consumer evidence; retain historical identities."
+  },
+  "hosted": {
+    "baseline_run": 39598592846,
+    "baseline_commit": "b26e0db8d9f398a1b3f4bfd95c4a1d4d07796788",
+    "baseline_linux312": {
+      "passed": 34379,
+      "failed": 609,
+      "errors": 293,
+      "skipped": 24
+    },
+    "previous_head_when_read": {
+      "conclusion": "",
+      "headSha": "866cc2db7a53e5af909542487cd61bf5dd252e7d",
+      "status": "in_progress",
+      "url": "https://github.com/bipxx/imagejxx/actions/runs/39604822143"
+    },
+    "complete_acceptance": false
+  },
+  "remaining": [
+    "Missing reference/capture contracts, stale historical evidence fingerprints and remaining actual hosted failures.",
+    "Reviewed Windows/macOS scientific IO and desktop profiles and complete hosted Python acceptance.",
+    "Broader ImageJ/commercially usable Fiji capability and format obligations remain open."
+  ],
+  "inputs": [
+    {
+      "path": "src/native/preferences.cpp",
+      "bytes": 11837,
+      "sha256": "9f8cf050a91365a6ec820e3fa4485a198030e20a2193da5232f8e8be72647830"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 642486,
+      "sha256": "bc9dea1c30c6fcf779aa19bfd96c34b0ed7a9d783360e3932f80b609088f90c8"
+    },
+    {
+      "path": "tests/native/test_preferences.cpp",
+      "bytes": 15470,
+      "sha256": "9cf9a607e06545340596b27c2459636879e1aa2963b86faba4fa93e9e012df5a"
+    },
+    {
+      "path": "tests/native/saved_roi_python_source.cpp",
+      "bytes": 6461,
+      "sha256": "5dbefdd6446c12d9e4b4b682ad4f15aca66ef7bc6f1540ed7ff482d59dea8335"
+    },
+    {
+      "path": "scripts/ci_python_suite.py",
+      "bytes": 8632,
+      "sha256": "8f2f7bfdaaf1f86acd10b63ed610feb92980fafa13ddab3e56d52d55648f56cd"
+    },
+    {
+      "path": "docs/CI.md",
+      "bytes": 12863,
+      "sha256": "02c8bd90157c4d2853e9583a235249763f9a562a41c40d1c7a8bf9afc4cef8ab"
+    },
+    {
+      "path": "docs/DESKTOP.md",
+      "bytes": 153466,
+      "sha256": "48cba28f8af68917c28c517c26ad4d096801ac803e20d059e1b45506f0838622"
+    },
+    {
+      "path": "docs/PLAN.md",
+      "bytes": 391504,
+      "sha256": "39110b9485deb075670ebfe53f9f7ef7de875acbf11b54cef1b2cf31ac955f89"
+    }
+  ]
+}

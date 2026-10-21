@@ -4,6 +4,7 @@
 #include <iostream>
 #include <iterator>
 #include <stdexcept>
+#include <system_error>
 
 #ifdef _WIN32
 #ifndef NOMINMAX
@@ -264,6 +265,32 @@ void fileChecks(const fs::path &directory) {
   const auto directoryRecovered = PreferencesDocument::load(directory.u8string());
   check(directoryRecovered.write_blocked && !directoryRecovered.warnings.empty(),
         "Recovery load catches filesystem read failures");
+  bool directoryReadFailed = false;
+  try {
+    PreferencesDocument::load(directory.u8string(), false);
+  } catch (const std::system_error &) {
+    directoryReadFailed = true;
+  }
+  check(directoryReadFailed,
+        "Strict directory load must retain an I/O error, not a JSON error");
+
+  // Cover short, exact-block and multi-block reads, including UTF-8 text split
+  // across a block boundary. The stream's expected EOF must still close cleanly.
+  for (const std::size_t size : {std::size_t(8191), std::size_t(8192),
+                                 std::size_t(8193), std::size_t(20000)}) {
+    const std::string prefix =
+        R"({"format":"imagejxx-preferences","version":1,"values":{},"padding":")";
+    std::string padding(size - prefix.size() - 2, 'x');
+    if (size > 8193)
+      padding.replace(8191 - prefix.size(), 2, u8"\u00e9");
+    const auto text = prefix + padding + "\"}";
+    check(text.size() == size, "Block-read fixture has the wrong length");
+    write(path, text);
+    const auto loaded = PreferencesDocument::load(path.u8string(), false);
+    check(!loaded.write_blocked && loaded.warnings.empty() &&
+              loaded.unknown_fields_json == "{\"padding\":\"" + padding + "\"}",
+          "Block reads must preserve exact UTF-8 text and close cleanly");
+  }
 
   const auto blocked = directory / "blocked.json";
   write(blocked, "original bytes must survive replacement failure");

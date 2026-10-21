@@ -59,6 +59,11 @@ identities and named environment contracts. Modules must come from the installed
 package. The Linux codec audit rejects exposed static codec APIs that could bind
 to a different library already loaded by Python. Missing bindings or providers,
 failures, collection errors and skipped cases leave the complete profile failing.
+The test-only provider also measures `sizeof(Image)` and
+`sizeof(shared_ptr<const Image>)` using the build's compiler and public headers.
+The runner records these measurements and supplies both axis-range memory-check
+contracts. These values come from the independent fixture, rather than from the
+operation's working-set estimate; the readers retain their exact byte formulas.
 The runner first invokes `scripts/ci_observations.py` against the installed C++
 application. Its 1,102-case matrix captures rank filters, rounded creation
 and saved selections, ROI import/export, saved-selection budget behavior, and

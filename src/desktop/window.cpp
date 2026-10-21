@@ -1410,8 +1410,8 @@ struct Window::Impl {
                                   bool requireCapturedPosition) const {
     if (owner.busy())
       throw std::invalid_argument("Wait for the current edit");
-    const auto facade = owner.documentById(source.id());
     const auto current = owner.controller_->snapshot(source.id());
+    const auto facade = owner.documentById(source.id());
     if (!source.same_document(current))
       throw std::invalid_argument("Axis extraction belongs to another document");
     if (!current.revisions().matches(source.revisions(),

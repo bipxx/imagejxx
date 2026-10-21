@@ -91,6 +91,14 @@ PYBIND11_MODULE(_imagejxx_test_saved_roi_source, module) {
   // Dataset or impersonate an imagejxx package/module.
   py::module_::import("imagejxx._native");
   module.attr("fixture_contract") = "p06g.saved-roi-provider.001";
+  // Independent compiler measurements for portable working-set assertions.
+  // Never derive these from an estimate supplied by the operation under test.
+  module.def("abi_sizes", [] {
+    py::dict sizes;
+    sizes["image"] = sizeof(Image);
+    sizes["shared_const_image"] = sizeof(std::shared_ptr<const Image>);
+    return sizes;
+  });
   py::class_<ReadObserver, std::shared_ptr<ReadObserver>>(module, "ReadObserver")
       .def_property_readonly("counts", &counts);
   module.attr("constraint_contract") = "p06g.saved-roi-constraint.001";

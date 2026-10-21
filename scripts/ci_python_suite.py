@@ -12,6 +12,7 @@ import ast
 import hashlib
 import importlib
 import importlib.metadata
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -86,6 +87,19 @@ def run(output: Path, root: Path):
             raise ValueError(f"Expected one built test-only saved-ROI provider, found {len(providers)}")
         environment["IMAGEJXX_SAVED_ROI_PROVIDER"] = str(providers[0].resolve())
         receipt["test_provider"] = pin(providers[0])
+        provider_spec = importlib.util.spec_from_file_location(
+            "_imagejxx_test_saved_roi_source", providers[0])
+        provider = importlib.util.module_from_spec(provider_spec)
+        provider_spec.loader.exec_module(provider)
+        sizes = provider.abi_sizes()
+        if (type(sizes) is not dict or set(sizes) != {"image", "shared_const_image"}
+                or any(type(value) is not int or not 1 <= value <= 9999
+                       for value in sizes.values())):
+            raise ValueError("Invalid independent native ABI measurements")
+        receipt["native_abi_sizes"] = sizes
+        abi = f"{sizes['image']},{sizes['shared_const_image']}"
+        environment["IMAGEJXX_AXIS_RANGE_SPACING_ABI_SIZES"] = abi
+        environment["IMAGEJXX_AXIS_RANGE_SLICER_RESIZE_ABI_SIZES"] = abi
         applications = [Path(distribution.locate_file(path)).resolve()
                         for path in distribution.files or [] if path.name == "imagejxx"]
         applications = [path for path in applications if path.is_file() and os.access(path, os.X_OK)]

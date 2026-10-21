@@ -3,6 +3,7 @@
 #include <nlohmann/json.hpp>
 
 #include <algorithm>
+#include <array>
 #include <cerrno>
 #include <filesystem>
 #include <fstream>
@@ -164,14 +165,20 @@ std::string readFile(const fs::path &path) {
                               errno ? std::error_code(errno, std::generic_category())
                                     : std::make_error_code(std::errc::io_error));
   stream.exceptions(std::ios::badbit);
-  std::ostringstream content;
-  content << stream.rdbuf();
-  if (stream.bad() || content.bad())
+  // Read through the input stream so read failures update its state. Inserting
+  // rdbuf() into an ostream can otherwise turn an unreadable directory into
+  // empty text and misreport the filesystem error as malformed JSON on Linux.
+  std::string content;
+  std::array<char, 8192> buffer;
+  while (stream.read(buffer.data(), buffer.size()) || stream.gcount() != 0)
+    content.append(buffer.data(), static_cast<std::size_t>(stream.gcount()));
+  if (!stream.eof())
     throw std::ios_base::failure("Could not read preferences");
+  stream.clear(); // Expected EOF must not be mistaken for a close failure.
   stream.close();
   if (stream.fail())
     throw std::ios_base::failure("Could not close preferences input");
-  return content.str();
+  return content;
 }
 
 void backupFile(const fs::path &destination) {

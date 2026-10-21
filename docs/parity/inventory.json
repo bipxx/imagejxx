@@ -8,7 +8,8 @@
           "docs/COMPATIBILITY.md",
           "docs/DESKTOP.md",
           "docs/PLAN.md",
-          "docs/parity/README.md"
+          "docs/parity/README.md",
+          "docs/parity/reviews/p09q-preferences-reslice001.json"
         ],
         "implementation": [
           "include/imagejxx/settings.hpp",
@@ -53,7 +54,8 @@
       "status": "in_progress",
       "verification": [
         "m2-settings-foundation-windows-2026-10-10",
-        "m2-m6-binary-options-windows-2026-10-10"
+        "m2-m6-binary-options-windows-2026-10-10",
+        "p09q.preferences-reslice.functional.001"
       ]
     },
     {
@@ -1163,7 +1165,8 @@
           "docs/packets/P06o-scientific-bilinear-slicing.md",
           "docs/packets/P06p-planar-annotations.md",
           "docs/parity/reviews/p09p-scientific-ui001.json",
-          "docs/CI.md"
+          "docs/CI.md",
+          "docs/parity/reviews/p09q-preferences-reslice001.json"
         ],
         "implementation": [
           "CMakeLists.txt",
@@ -1260,7 +1263,8 @@
         "p06n.physical-spacing.functional.001",
         "p06o.bilinear.functional.001",
         "p06p.planar.functional.001",
-        "p09p.scientific-ui.functional.001"
+        "p09p.scientific-ui.functional.001",
+        "p09q.preferences-reslice.functional.001"
       ]
     },
     {
@@ -180083,6 +180087,29 @@
         "total": 142
       },
       "scope": "140 passing main cases plus 2 targeted passing reruns per platform, 284 raw reports/17972 frames. Original two reader failures retained; only the new reader changed between runs. Full hosted/family acceptance remains open."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-21",
+      "id": "p09q.preferences-reslice.functional.001",
+      "identity": {
+        "qualification": {
+          "bytes": 8192,
+          "path": "docs/parity/reviews/p09q-preferences-reslice001.json",
+          "sha256": "7b47c332da1a7242829bfadda88ed4f822b41f912a61f7c3ca88c763d53a5c60"
+        }
+      },
+      "platform": "Windows/Linux installed C++ and isolated Python Dear ImGui hosts",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 317,
+        "report": "build/p09q-hosted001/windows-python002/pytest.xml",
+        "skipped": 0,
+        "total": 317
+      },
+      "scope": "317 selected checks per platform, 512 actual UI observations/34340 frames; native preferences and 12 transport checks per platform. Full family/hosted acceptance remains open."
     }
   ]
 }

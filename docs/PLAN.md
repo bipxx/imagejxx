@@ -1,5 +1,20 @@
 # ImageJ and Fiji gap closure plan
 
+**Preferences and reslice integration checkpoint, 2026-10-21 (work in progress):**
+strict native preferences loading now preserves Linux filesystem read failures as
+I/O errors, while recovery retains defaults, warnings and blocked automatic
+writes. Native checks include exact-block reads and split UTF-8. Captured axis
+extraction now reports a closed source through the controller lifetime guard.
+CI obtains independent compiler measurements for both reslice memory contracts;
+the readers retain exact pixel, affine, memory and publication assertions.
+Both installed Windows/Linux profiles pass the same 317 selected checks without
+skips, plus native preferences and 12 capture-runner checks per platform.
+512 actual UI observations cover 34,340 frames. See
+[the scoped receipt](parity/reviews/p09q-preferences-reslice001.json).
+Full hosted acceptance, missing reference/capture contracts and the stale Auto
+Contrast evidence gate remain open. All99 stays 43 in progress / 56 open /
+0 complete; all 96 format variants remain partial.
+
 **Direct shadow preset checkpoint, 2026-10-21 (work in progress):** the eight
 named Process/Shadows entries now apply directly to a single ordinary image,
 open a seeded scope form for legacy stacks, and retain target review for

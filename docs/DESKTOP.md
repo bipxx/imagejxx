@@ -1150,6 +1150,10 @@ paths-only batch. With no explicit inputs, `restore_workspace=None` inherits the
 configuration, `False` starts empty, and `True` requires a configured workspace.
 An explicit `workspace` conflicts with `images` and with `restore_workspace=False`.
 A `Preferences` object selects its `.path`; unsaved in-memory values are not applied.
+Native `PreferencesDocument.load(path, recover=False)` reports filesystem read
+failures as `OSError` in Python, including a directory supplied as the file path.
+With recovery enabled, those failures retain defaults, warnings and blocked
+automatic writes. Malformed JSON remains a validation error under strict loading.
 The legacy `ui.launch` mixed path/array/Document form preserves ordered appends
 with configured restore suppressed; that compatibility form is not an atomic batch.
 
