@@ -713,6 +713,10 @@ if(BUILD_TESTING)
   target_link_libraries(imagejxx_z_subset_tests PRIVATE imagejxx::core)
   add_test(NAME native_z_subset COMMAND imagejxx_z_subset_tests)
   set_tests_properties(native_z_subset PROPERTIES TIMEOUT 30)
+  add_executable(imagejxx_histogram_defaults_tests tests/native/test_histogram_defaults.cpp)
+  target_link_libraries(imagejxx_histogram_defaults_tests PRIVATE imagejxx::core)
+  add_test(NAME native_histogram_defaults COMMAND imagejxx_histogram_defaults_tests)
+  set_tests_properties(native_histogram_defaults PROPERTIES TIMEOUT 30)
   add_executable(imagejxx_target_histogram_tests tests/native/test_target_histogram.cpp)
   target_link_libraries(imagejxx_target_histogram_tests PRIVATE imagejxx::core)
   add_test(NAME native_target_histogram COMMAND imagejxx_target_histogram_tests)
@@ -983,7 +987,7 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     src/desktop/saved_roi_edit.cpp
     src/desktop/saved_roi_geometry_ui_probe.cpp
     src/desktop/saved_roi_geometry_dependencies.cpp
-    src/desktop/gaussian_panel.cpp src/desktop/rank_panel.cpp src/desktop/operation_target_panel.cpp src/desktop/gaussian_jobs.cpp src/desktop/threshold_panel.cpp src/desktop/histogram_panel.cpp src/desktop/histogram_ui_probe.cpp src/desktop/target_histogram_ui_probe.cpp src/desktop/manual_threshold_ui_probe.cpp src/desktop/z_subset_ui_probe.cpp src/desktop/axis_spacing_ui_probe.cpp src/desktop/slicer_resize_ui_probe.cpp src/desktop/planar_annotation_panel.cpp src/desktop/planar_annotation_ui_probe.cpp src/desktop/planar_annotation_rebind.cpp src/desktop/planar_annotation_matrix.cpp
+    src/desktop/gaussian_panel.cpp src/desktop/rank_panel.cpp src/desktop/operation_target_panel.cpp src/desktop/gaussian_jobs.cpp src/desktop/threshold_panel.cpp src/desktop/histogram_panel.cpp src/desktop/histogram_ui_probe.cpp src/desktop/histogram_defaults_ui_probe.cpp src/desktop/target_histogram_ui_probe.cpp src/desktop/manual_threshold_ui_probe.cpp src/desktop/z_subset_ui_probe.cpp src/desktop/axis_spacing_ui_probe.cpp src/desktop/slicer_resize_ui_probe.cpp src/desktop/planar_annotation_panel.cpp src/desktop/planar_annotation_ui_probe.cpp src/desktop/planar_annotation_rebind.cpp src/desktop/planar_annotation_matrix.cpp
     src/desktop/native_workflow_batch_ui_probe.cpp
     src/desktop/native_workflow_ui_probe.cpp
     src/desktop/native_workflow_panel.cpp

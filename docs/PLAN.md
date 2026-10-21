@@ -1,5 +1,22 @@
 # ImageJ and Fiji gap closure plan
 
+**Histogram defaults checkpoint, 2026-10-21 (work in progress):**
+Both ImGui launchers consume eight native Histogram defaults. Successful
+calculation remembers used options; raw mode preserves the last custom range,
+and basic/scientific ROI choices are independent. New sources start their own
+Current grids. Coupled bounds migrate/reset atomically; protected files retain
+their bytes, and save failures preserve the previous result and memory defaults.
+Windows/Linux each pass 1,300 selected checks (124 new), six native executable
+suites and fresh installed SDK consumers. Independent readers verify 200 UI
+reports / 28,368 input frames, including eight restart reports / 516 frames.
+Verified cleanup removes 1,004,327,009 scratch bytes while preserving final
+products/evidence. The 1,261-case capture registration is unchanged; restart
+checks launch paired processes/editors directly. See [usage](HISTOGRAM.md) and
+[the scoped receipt](parity/reviews/p10k-histogram-defaults001.json).
+Recording/async, remaining domains/conventions and full source/reference/
+resource/platform qualification stay open, along with the existing Auto Contrast
+fingerprint gate. All99 stays 47 in progress / 52 open / 0 complete.
+
 **Pooled histogram UI checkpoint, 2026-10-21 (work in progress):**
 Both ImGui launchers now reuse Current/All/First/Last/Step for scientific C/T/Z
 grids and whole/active/positioned area ROI unions. Calculate pools the native

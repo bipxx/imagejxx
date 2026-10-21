@@ -1,0 +1,229 @@
+{
+  "state": "qualified_functional_increment",
+  "objective_complete": false,
+  "baseline_commit": "012751586552cc1da64e8d34cfcf4cdb47796d58",
+  "scope": "Eight typed native histogram defaults consumed by both ImGui hosts, paired-bound migration/recovery and successful-calculation persistence.",
+  "settings": [
+    "histogram_custom",
+    "histogram_bins",
+    "histogram_lower",
+    "histogram_upper",
+    "histogram_log",
+    "histogram_use_roi",
+    "histogram_scientific",
+    "histogram_roi"
+  ],
+  "semantics": "Opening applies global defaults once. Successful Calculate saves the used custom/raw/log/mode choices, independently remembering basic area-selection and scientific ROI policies. Custom bins/bounds are updated only for a successful custom calculation. Raw calculations preserve prior custom defaults and ignore invalid hidden custom text. Scientific reopening uses Current at the new source pose; indices, numeric ranges, ROI geometry and output paths are not global defaults.",
+  "validation": "Bounds are a finite increasing pair, validated atomically with the full Settings patch. Migration processes supplied bounds together instead of rejecting a valid lower endpoint in lexical order; invalid pairs recover together to 0..1 with warnings/write protection. Histogram group reset preserves other settings.",
+  "publication": "Native calculation, formatted values, provenance, shared immutable result allocation and settings patch are staged before the remember callback. Preferences save and in-memory preference swap precede allocation-free result ownership/JSON/string moves. A save I/O failure preserves prior result/defaults; protected implicit saves preserve file bytes while allowing session defaults/result update. Unknown preference compartments survive successful saves. No cross-provider/RSS transaction is claimed.",
+  "verification": "1300 selected checks per OS including 124 new histogram preference checks. Independent readers verify 200 reports / 28368 physical-input frames, including 8 paired configure/inspect restart reports / 516 frames across standalone C++ and Python hosts. Counts, persisted choices, readonly source state, source-relative Current reopening, opaque retention and no-save inspection are checked. Six native executable suites per OS and fresh installed settings/preferences SDK consumers pass. Existing histogram/grid/threshold/settings/preference regressions remain. No complete upstream/resource/real-GPU platform acceptance.",
+  "profiles": {
+    "windows": {
+      "python_cases": 1300,
+      "new_histogram_preferences_cases": 124,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "reports": 100,
+      "frames": 14184,
+      "new_restart_reports": 4,
+      "new_restart_frames": 258,
+      "native_test_executables": 6,
+      "sdk": "fresh installed settings/preferences consumer passed",
+      "removed_scratch_bytes": 455038078,
+      "evidence": [
+        {
+          "path": "build/p10k-histogram-defaults001/windows-build002/receipt.json",
+          "bytes": 1463,
+          "sha256": "bb20bf7d7f9597a3b93fdba8d1498fd9e142915c7feb3cc4cb5aa078776de76a"
+        },
+        {
+          "path": "build/p10k-histogram-defaults001/windows-build002/native.xml",
+          "bytes": 3750,
+          "sha256": "8bc3f4a86e70206c6556a9a6501ad6878f039402f2ac5dade89f65124857935f"
+        },
+        {
+          "path": "build/p10k-histogram-defaults001/windows-python002/receipt.json",
+          "bytes": 3798,
+          "sha256": "9e333210033409969f860472ceedfee01356d3ddf2dace358f7268a91a93432a"
+        },
+        {
+          "path": "build/p10k-histogram-defaults001/windows-python002/pytest.xml",
+          "bytes": 201492,
+          "sha256": "e112056cc55ae042e19d47cb79cbfc98149dba4f0e9f94b0d612e728e0d3356a"
+        },
+        {
+          "path": "build/p10k-histogram-defaults001/windows-capture001.json",
+          "bytes": 13614,
+          "sha256": "a714565a5e2ee651accd760b5114566e864010f6e5ac27a2f9162a5b56e53fc2"
+        },
+        {
+          "path": "build/p10k-histogram-defaults001/windows-evidence001.json",
+          "bytes": 40843,
+          "sha256": "c725e394f1c246441a38d2ba209475c8b4ad56d71783f72cca293dbe18e6022b"
+        },
+        {
+          "path": "build/p10k-histogram-defaults001/windows-sdk001/receipt.json",
+          "bytes": 386,
+          "sha256": "f40df8feed6d1d38695d69ba666340c8da24cf6b16bf7fe5f86bf74b6ec8799c"
+        },
+        {
+          "path": "build/p10k-histogram-defaults001/windows-cleanup001.json",
+          "bytes": 356855,
+          "sha256": "d4998428ddf0e87c780844f7bade1fc7ce4a8f5d1ca2c35e5c4c328102953bf0"
+        },
+        {
+          "path": "build/p10k-histogram-defaults001/windows-products001.json",
+          "bytes": 3731,
+          "sha256": "49a001598498185adfa098c090b513dd81a4c96a27099c84352de95c24533a5e"
+        }
+      ]
+    },
+    "linux": {
+      "python_cases": 1300,
+      "new_histogram_preferences_cases": 124,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "reports": 100,
+      "frames": 14184,
+      "new_restart_reports": 4,
+      "new_restart_frames": 258,
+      "native_test_executables": 6,
+      "sdk": "fresh installed settings/preferences consumer passed",
+      "removed_scratch_bytes": 549288931,
+      "evidence": [
+        {
+          "path": "build/p10k-histogram-defaults001/linux-build002/receipt.json",
+          "bytes": 1430,
+          "sha256": "5f52d888f85b55194552e5df4aa1675aef8ff1e8fb56efe8890a36d506c5aa1b"
+        },
+        {
+          "path": "build/p10k-histogram-defaults001/linux-build002/native.xml",
+          "bytes": 3685,
+          "sha256": "fa940d98facf290107e5d8cc73bcb61ab1379e6577d910b1b4f5f41af5101071"
+        },
+        {
+          "path": "build/p10k-histogram-defaults001/linux-python002/receipt.json",
+          "bytes": 3589,
+          "sha256": "452a09c41215451dedce670aeb42b3e0f6e995e45e29c90a8ed0e013ea1d71fe"
+        },
+        {
+          "path": "build/p10k-histogram-defaults001/linux-python002/pytest.xml",
+          "bytes": 201492,
+          "sha256": "6a607966a1642d7fc7792535c3e5e7c8b90dc365109b20652b9136d2b559edc1"
+        },
+        {
+          "path": "build/p10k-histogram-defaults001/linux-capture001.json",
+          "bytes": 11240,
+          "sha256": "2e4cd739cee155c2dd6223e1e86f0666bfdf13fbf27d6e2d424d51aadd975da9"
+        },
+        {
+          "path": "build/p10k-histogram-defaults001/linux-evidence001.json",
+          "bytes": 37531,
+          "sha256": "d54660571550a229c81f352635f1454f7e0e4a69c4eb237cbbf40bfd0feacfc3"
+        },
+        {
+          "path": "build/p10k-histogram-defaults001/linux-sdk001/receipt.json",
+          "bytes": 334,
+          "sha256": "1640fcabc6c86eafe8b013f21d9c7b19ed09c45bce5c283a5c2bb8bf48919dff"
+        },
+        {
+          "path": "build/p10k-histogram-defaults001/linux-cleanup001.json",
+          "bytes": 377987,
+          "sha256": "87000558ee988af35d01bac4e9d8dcc2c0c8db9ec5b746b7c0180b1fa939a3d5"
+        },
+        {
+          "path": "build/p10k-histogram-defaults001/linux-products001.json",
+          "bytes": 3526,
+          "sha256": "84b299eff14a4406ffd5bba8f3df1992c7c0c368dac5fb52070482cec4d21c12"
+        }
+      ]
+    }
+  },
+  "commercial": {
+    "result": "Reviewed commercial-use dependency inventory passed; no new dependencies.",
+    "evidence": {
+      "path": "build/p10k-histogram-defaults001/licenses001.log",
+      "bytes": 53,
+      "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+    }
+  },
+  "registration": {
+    "path": "build/p10k-histogram-defaults001/registration001.json",
+    "bytes": 369,
+    "sha256": "70bf90270f58078e1b7575145a651206e52790d583e62c1ca2ce3aefff7714ef"
+  },
+  "initial_checks": "A Windows compile-time assertion found nonportable optional-result move traits. The final implementation stages a shared immutable result before persistence and checks no-throw publication. The first restart reader also required exact floating-point equality for an online mean; the final assertion uses a documented tight absolute tolerance. Original compiler/JUnit evidence is retained, with all final checks rerun.",
+  "plan_gate": {
+    "state": "existing_failure_preserved",
+    "message": "Plan inventory check failed: histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed",
+    "evidence": {
+      "path": "build/p10k-histogram-defaults001/plan-gate001.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    },
+    "unchanged_producer_source": {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 14135,
+      "sha256": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    }
+  },
+  "remaining": [
+    "Histogram analysis recording and asynchronous execution.",
+    "Remaining calibrated/color/other numeric domains and upstream statistical/presentation/default conventions.",
+    "Complete original source/reference/resource/platform and full ImageJ/commercial Fiji acceptance; capability statuses remain unchanged."
+  ],
+  "source": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 102517,
+      "sha256": "b4b876397c8c01f3f16e7442fc27a6edb03da5550eb13ce6389f034c46acc92c"
+    },
+    {
+      "path": "src/native/settings.cpp",
+      "bytes": 23368,
+      "sha256": "3351df69f02bab3abd8f42ead0de0480ebd218eb22d1b684bc8c7a00fb9119e8"
+    },
+    {
+      "path": "src/desktop/histogram_panel.hpp",
+      "bytes": 1944,
+      "sha256": "1397ae4139703b8a24503bfb03072e6f95c9dfff75c2bb31deece9b7155ea73d"
+    },
+    {
+      "path": "src/desktop/histogram_panel.cpp",
+      "bytes": 20897,
+      "sha256": "e816d0c69990171e5c8e0da5f71e4848d5829b75a8b00f0858d18b44a5f3e25a"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 667370,
+      "sha256": "f43e08985028f3fe779b015649560687e8ad4cae73c312c7b7aaa9277d4d7472"
+    },
+    {
+      "path": "src/desktop/animation_ui_probe.cpp",
+      "bytes": 14122,
+      "sha256": "b3269ab85c14763c54ff92695af9196b92ac84327f66a2dc60c68585fbf31fd5"
+    },
+    {
+      "path": "src/desktop/histogram_defaults_ui_probe.cpp",
+      "bytes": 4916,
+      "sha256": "647b24d87c5f3ce2cf4879f0f9668f1766ce6cfcaabb4c651e5d1067d6370fdc"
+    },
+    {
+      "path": "src/desktop/histogram_defaults_ui_probe.hpp",
+      "bytes": 183,
+      "sha256": "0d10e493e8d1f75f2249e811da794f6fd842719104848378ddbd08e891eb288f"
+    },
+    {
+      "path": "tests/native/test_histogram_defaults.cpp",
+      "bytes": 2515,
+      "sha256": "6b00351b6f1b9cd2696e3fd8a9d6305c3ab5980d822cbf63bbab569dd33867a2"
+    },
+    {
+      "path": "tests/python/test_histogram_preferences.py",
+      "bytes": 11481,
+      "sha256": "794b21a496d843f841df9d9c3eee8f1c2bfe38ee765f6a968df4d4eb99387c31"
+    }
+  ]
+}

@@ -27,15 +27,17 @@ std::string format(double value) {
 }
 Json optional(const std::optional<double> &v){return v?Json(*v):Json(nullptr);}
 }
-void HistogramPanel::show(const DocumentSnapshot &source,DatasetHistogramLimits limits) {
+void HistogramPanel::show(const DocumentSnapshot &source,DatasetHistogramLimits limits,const Settings &settings) {
   DatasetHistogramRequest r;r.position={source.display().t,source.display().c,source.display().crosshair[2]};
   // Admission only; opening never acquires pixels. Active nonarea selections
   // require the user to choose whole plane explicitly.
   estimate_dataset_histogram(source.data().dataset,r,limits);
   source_=source;sourceId_=source.id();limits_=limits;
   position_={std::to_string(r.position.t+1),std::to_string(r.position.c+1),std::to_string(r.position.z+1)};
-  bins_="256";lower_="0";upper_="1";custom_=log_=false;roi_=true;
-  targetPanel_.capture(source);scientific_=targetsOpen_=false;targetValid_=true;targetError_.clear();
+  bins_=std::to_string(settings.integer("histogram_bins"));lower_=format(settings.number("histogram_lower"));upper_=format(settings.number("histogram_upper"));
+  custom_=settings.boolean("histogram_custom");log_=settings.boolean("histogram_log");roi_=settings.boolean("histogram_use_roi");
+  TargetRequest defaults;const auto &policy=settings.text("histogram_roi");defaults.roi=policy=="whole_plane"?RoiPolicy::WholePlane:policy=="positioned_rois"?RoiPolicy::PositionedRois:RoiPolicy::ActiveSelection;
+  targetPanel_.configure(source,defaults);scientific_=settings.boolean("histogram_scientific");targetsOpen_=false;targetValid_=true;targetError_.clear();
   result_.reset();resultTarget_=resultEstimate_=Json::object();resultPlaneCount_=0;resultScientific_=resultUsesRoi_=false;
   heights_.clear();error_.clear();sourceError_.clear();actionError_.clear();draftChanged_=true;open_=focus_=true;
 }
@@ -107,7 +109,7 @@ void HistogramPanel::configure(const Json &p) {
   if(p.size()!=1 || !p.contains("log"))next.draftChanged_=true;
   *this=std::move(next);
 }
-void HistogramPanel::calculate(const std::optional<DocumentSnapshot> &current,bool busy) {
+void HistogramPanel::calculate(const std::optional<DocumentSnapshot> &current,bool busy,const Remember &remember) {
   validateSource(current,busy);
   DatasetHistogramResult result;Json provenance,estimate;
   std::size_t planes=1;bool usesRoi=false;std::string roiPolicy;
@@ -147,7 +149,14 @@ void HistogramPanel::calculate(const std::optional<DocumentSnapshot> &current,bo
   // Only a successful calculation publishes a replacement result/provenance.
   auto lower=lower_,upper=upper_;
   if(!custom_ && result.histogram.edges.front()<result.histogram.edges.back()) {lower=format(result.histogram.edges.front());upper=format(result.histogram.edges.back());}
-  lower_=std::move(lower);upper_=std::move(upper);result_=std::move(result);resultTarget_=std::move(provenance);resultEstimate_=std::move(estimate);
+  SettingsPatch defaults{{"histogram_custom",custom_},{"histogram_log",log_},{"histogram_scientific",scientific_}};
+  if(scientific_)defaults.emplace("histogram_roi",roiPolicy);else defaults.emplace("histogram_use_roi",roi_);
+  if(custom_) {const auto configuration=options();defaults.emplace("histogram_bins",std::int64_t(configuration.bins));defaults.emplace("histogram_lower",(*configuration.range)[0]);defaults.emplace("histogram_upper",(*configuration.range)[1]);}
+  auto candidate=std::make_shared<const DatasetHistogramResult>(std::move(result));
+  static_assert(std::is_nothrow_move_assignable_v<decltype(result_)>);
+  static_assert(std::is_nothrow_move_assignable_v<Json>);
+  if(remember)remember(defaults);
+  lower_=std::move(lower);upper_=std::move(upper);result_=std::move(candidate);resultTarget_=std::move(provenance);resultEstimate_=std::move(estimate);
   resultPlaneCount_=planes;resultScientific_=scientific_;resultUsesRoi_=usesRoi;resultRoiPolicy_=std::move(roiPolicy);
   draftChanged_=false;error_.clear();actionError_.clear();
 }
@@ -161,7 +170,7 @@ void HistogramPanel::control(const char *name,bool enabled) {
   controls_[name]={(a.x+b.x)*.5f,(a.y+b.y)*.5f};
   states_[name]={{"id",ImGui::GetItemID()},{"enabled",enabled},{"rect",{a.x,a.y,b.x,b.y}}};
 }
-void HistogramPanel::draw(const std::optional<DocumentSnapshot> &current,bool busy,const std::function<void(std::string)> &export_csv) {
+void HistogramPanel::draw(const std::optional<DocumentSnapshot> &current,bool busy,const std::function<void(std::string)> &export_csv,const Remember &remember) {
   controls_=states_=Json::object();if(!open_)return;
   bool sourceValid=false,valid=false;sourceError_.clear();
   try{validateSource(current,busy);sourceValid=true;}catch(const std::exception &e){sourceError_=e.what();}
@@ -231,7 +240,7 @@ void HistogramPanel::draw(const std::optional<DocumentSnapshot> &current,bool bu
   }
   ImGui::End();
   if(!stay||closeNow){cancel();return;}
-  try{if(calculateNow)calculate(current,busy);if(exportNow && export_csv)export_csv(csv());}catch(const std::exception &e){actionError_=e.what();}
+  try{if(calculateNow)calculate(current,busy,remember);if(exportNow && export_csv)export_csv(csv());}catch(const std::exception &e){actionError_=e.what();}
 }
 Json HistogramPanel::diagnostics() const {
   Json out={{"open",open_},{"scientific_target",scientific_},{"targets_open",targetsOpen_},{"target_valid",targetValid_},{"target_error",targetError_},{"target_panel",targetPanel_.diagnostics()},{"source_id",sourceId_},{"has_source",bool(source_)},{"position",position_},{"bins",bins_},{"lower",lower_},{"upper",upper_},{"custom",custom_},{"roi",roi_},{"log",log_},{"draft_changed",draftChanged_},{"error",error_},{"action_error",actionError_},{"source_error",sourceError_},{"controls",controls_},{"control_states",states_},{"heights",heights_}};

@@ -95,6 +95,10 @@ void validateStartupPair(const SettingsPatch &values) {
     throw std::invalid_argument(
         "startup_mode: workspace mode requires a nonempty startup_workspace");
 }
+void validateHistogramRange(const SettingsPatch &values) {
+  if(std::get<double>(values.at("histogram_lower"))>=std::get<double>(values.at("histogram_upper")))
+    throw std::invalid_argument("histogram_lower: histogram bounds require lower < upper");
+}
 } // namespace
 const std::vector<SettingDefinition> &Settings::schema() {
   static const std::vector<SettingDefinition> definitions{
@@ -205,6 +209,31 @@ const std::vector<SettingDefinition> &Settings::schema() {
        0,
        0,
        {"auto", "8", "10", "12", "14", "15", "16"}},
+      {"histogram_custom", "Histogram", "Custom bins and range",
+       "Open the Histogram panel with explicit bins and raw intensity bounds.",
+       SettingKind::Boolean, false},
+      {"histogram_bins", "Histogram", "Custom bin count",
+       "Bin count for explicit-range histograms; processor-raw mode uses 256.",
+       SettingKind::Integer, std::int64_t(256), 1, 65536},
+      {"histogram_lower", "Histogram", "Custom lower bound",
+       "Inclusive finite raw lower bound; must be below the upper bound.",
+       SettingKind::Number, 0., -std::numeric_limits<double>::max(), std::numeric_limits<double>::max()},
+      {"histogram_upper", "Histogram", "Custom upper bound",
+       "Inclusive finite raw upper bound; update coupled bounds together.",
+       SettingKind::Number, 1., -std::numeric_limits<double>::max(), std::numeric_limits<double>::max()},
+      {"histogram_log", "Histogram", "Log count display",
+       "Display log1p count heights; raw counts and CSV remain unchanged.",
+       SettingKind::Boolean, false},
+      {"histogram_use_roi", "Histogram", "Single-plane active area ROI",
+       "Use the captured active area selection in single-plane mode.",
+       SettingKind::Boolean, true},
+      {"histogram_scientific", "Histogram", "Scientific target mode",
+       "Open scientific target mode at the new source's captured Current T/C/Z; ranges are not global defaults.",
+       SettingKind::Boolean, false},
+      {"histogram_roi", "Histogram", "Scientific area ROI policy",
+       "Default scientific histogram ROI policy; geometry and positions remain source-specific.",
+       SettingKind::Choice, std::string("active_selection"), 0, 0,
+       {"whole_plane","active_selection","positioned_rois"}},
       {"threshold_method", "Threshold", "Auto method",
        "Last method used by Auto in the manual Threshold panel.",
        SettingKind::Choice, std::string("default"), 0, 0, [] {
@@ -388,6 +417,7 @@ void Settings::update(const SettingsPatch &patch) {
   for (const auto &[name, value] : patch)
     proposed[name] = validate(definition(name), value);
   validateStartupPair(proposed);
+  validateHistogramRange(proposed);
   values_ = std::move(proposed);
 }
 void Settings::reset(const std::string &group) {
@@ -403,6 +433,7 @@ void Settings::reset(const std::string &group) {
   if (!found)
     throw std::invalid_argument("Unknown settings group: " + group);
   validateStartupPair(proposed);
+  validateHistogramRange(proposed);
   values_.swap(proposed);
 }
 Settings Settings::migrate(const SettingsPatch &knownValues,
@@ -411,7 +442,7 @@ Settings Settings::migrate(const SettingsPatch &knownValues,
   for (const auto &[name, value] : knownValues) {
     // The two startup values form one configuration. In lexical map order,
     // validating startup_mode alone would discard a valid workspace pair.
-    if (name == "startup_mode" || name == "startup_workspace")
+    if (name == "startup_mode" || name == "startup_workspace" || name == "histogram_lower" || name == "histogram_upper")
       continue;
     try {
       auto migrated = value;
@@ -449,6 +480,13 @@ Settings Settings::migrate(const SettingsPatch &knownValues,
     // unrelated settings and their original structured validation behavior.
     warnings.push_back(std::string(error.what()) +
                        "; using safe Startup defaults");
+  }
+  SettingsPatch histogramBounds;
+  for(const auto *name:{"histogram_lower","histogram_upper"}) {
+    const auto found=knownValues.find(name);if(found!=knownValues.end())histogramBounds.emplace(found->first,found->second);
+  }
+  try{result.update(histogramBounds);}catch(const std::exception &error){
+    warnings.push_back(std::string(error.what())+"; using safe Histogram bounds");
   }
   if (legacy && knownValues.count("brush_width") &&
       !knownValues.count("point_size"))

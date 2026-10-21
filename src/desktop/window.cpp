@@ -2923,6 +2923,10 @@ struct Window::Impl {
                                 thresholdPanel.displayState(range));
     owner.setNativeDisplay(std::move(display), source.id());
   }
+  void rememberHistogram(const SettingsPatch &values) {
+    auto remembered=preferenceState;remembered.settings=owner.settings();remembered.extras=preferences;
+    remembered.settings.update(values);remembered.save(preferencesPath);swapPreferences(preferenceState,remembered);
+  }
   AutomaticThresholdDisplayResult thresholdAutomatic(const std::string &method,bool bright,bool black,bool white,bool pooled) {
     if(owner.busy())throw std::invalid_argument("Wait for the current edit");
     const auto source=checkedThresholdSource();const auto live=owner.nativeSnapshot(source.id());
@@ -5605,7 +5609,7 @@ void Window::action(const std::string &name, const Json &p) {
     if(busy())throw std::invalid_argument("Wait for the current edit");
     DatasetHistogramLimits limits;const auto histogramCap=static_cast<std::size_t>(impl->preferenceState.settings.integer("processing_memory_mb"))*1024*1024;
     if(histogramCap)limits.max_working_bytes=std::min(limits.max_working_bytes,histogramCap);
-    impl->histogramPanel.show(nativeSnapshot(),limits);impl->animating=false;return;
+    impl->histogramPanel.show(nativeSnapshot(),limits,settings());impl->animating=false;return;
   }
   if(name=="configure_histogram"){impl->histogramPanel.configure(p);return;}
   if(name=="configure_histogram_target") {
@@ -5616,7 +5620,7 @@ void Window::action(const std::string &name, const Json &p) {
 
   if(name=="calculate_histogram") {
     if(!p.is_object() || !p.empty())throw std::invalid_argument("Calculate Histogram accepts no parameters");
-    impl->histogramPanel.calculate(documents_.empty()?std::nullopt:std::optional<DocumentSnapshot>{nativeSnapshot()},busy());return;
+    impl->histogramPanel.calculate(documents_.empty()?std::nullopt:std::optional<DocumentSnapshot>{nativeSnapshot()},busy(),[this](const SettingsPatch &values){impl->rememberHistogram(values);});return;
   }
   if(name=="close_histogram") {
     if(!p.is_object() || !p.empty())throw std::invalid_argument("Close Histogram accepts no parameters");
@@ -11484,7 +11488,7 @@ void Window::Impl::draw() {
   guard([&] {
     const bool visible=histogramPanel.visible();
     histogramPanel.draw(owner.documents_.empty()?std::nullopt:std::optional<DocumentSnapshot>{owner.nativeSnapshot()},owner.busy(),
-      [this](std::string text){file("Export histogram CSV",true,[text=std::move(text)](std::string path){writeBytes(path,{text.begin(),text.end()});},"histogram.csv");});
+      [this](std::string text){file("Export histogram CSV",true,[text=std::move(text)](std::string path){writeBytes(path,{text.begin(),text.end()});},"histogram.csv");},[this](const SettingsPatch &values){rememberHistogram(values);});
     if(visible && !histogramPanel.visible() && !owner.documents_.empty())
       for(auto &pane:panes)if(pane.doc && pane.doc->id==owner.controller_->active_document_id())pane.requestOrdinaryFocus=true;
   });

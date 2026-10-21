@@ -15,7 +15,9 @@
           "docs/parity/reviews/p10d-threshold-preferences001.json",
           "docs/SESSION_FORMAT.md",
           "docs/parity/reviews/p10e-pooled-display001.json",
-          "docs/parity/reviews/p10f-scientific-threshold001.json"
+          "docs/parity/reviews/p10f-scientific-threshold001.json",
+          "docs/HISTOGRAM.md",
+          "docs/parity/reviews/p10k-histogram-defaults001.json"
         ],
         "implementation": [
           "include/imagejxx/settings.hpp",
@@ -35,7 +37,8 @@
           "src/desktop/smoke.cpp",
           "src/imagejxx/__init__.py",
           "src/desktop/threshold_panel.hpp",
-          "src/desktop/threshold_panel.cpp"
+          "src/desktop/threshold_panel.cpp",
+          "src/desktop/histogram_panel.cpp"
         ],
         "tests": [
           "tests/native/test_settings.cpp",
@@ -49,7 +52,9 @@
           "examples/cpp/binary.cpp",
           "tests/python/test_threshold_preferences.py",
           "tests/python/test_pooled_display_ui.py",
-          "tests/python/test_scientific_threshold_target_ui.py"
+          "tests/python/test_scientific_threshold_target_ui.py",
+          "tests/native/test_histogram_defaults.cpp",
+          "tests/python/test_histogram_preferences.py"
         ]
       },
       "id": "G001",
@@ -70,7 +75,8 @@
         "p09r.editor-integration.functional.001",
         "p10d.threshold-preferences.functional.001",
         "p10e.pooled-display.functional.001",
-        "p10f.scientific-threshold.functional.001"
+        "p10f.scientific-threshold.functional.001",
+        "p10k.histogram-defaults.functional.001"
       ]
     },
     {
@@ -85,7 +91,9 @@
           "docs/parity/reviews/p10d-threshold-preferences001.json",
           "docs/SESSION_FORMAT.md",
           "docs/parity/reviews/p10e-pooled-display001.json",
-          "docs/parity/reviews/p10f-scientific-threshold001.json"
+          "docs/parity/reviews/p10f-scientific-threshold001.json",
+          "docs/HISTOGRAM.md",
+          "docs/parity/reviews/p10k-histogram-defaults001.json"
         ],
         "implementation": [
           "include/imagejxx/settings.hpp",
@@ -105,7 +113,8 @@
           "src/desktop/smoke.cpp",
           "src/imagejxx/__init__.py",
           "src/desktop/threshold_panel.hpp",
-          "src/desktop/threshold_panel.cpp"
+          "src/desktop/threshold_panel.cpp",
+          "src/desktop/histogram_panel.cpp"
         ],
         "tests": [
           "tests/native/test_settings.cpp",
@@ -119,7 +128,9 @@
           "examples/cpp/binary.cpp",
           "tests/python/test_threshold_preferences.py",
           "tests/python/test_pooled_display_ui.py",
-          "tests/python/test_scientific_threshold_target_ui.py"
+          "tests/python/test_scientific_threshold_target_ui.py",
+          "tests/native/test_histogram_defaults.cpp",
+          "tests/python/test_histogram_preferences.py"
         ]
       },
       "id": "G002",
@@ -137,7 +148,8 @@
         "m2-m6-binary-options-windows-2026-10-10",
         "p10d.threshold-preferences.functional.001",
         "p10e.pooled-display.functional.001",
-        "p10f.scientific-threshold.functional.001"
+        "p10f.scientific-threshold.functional.001",
+        "p10k.histogram-defaults.functional.001"
       ]
     },
     {
@@ -2756,7 +2768,8 @@
           "docs/parity/reviews/p10g-histogram-statistics001.json",
           "docs/parity/reviews/p10h-histogram-ui001.json",
           "docs/parity/reviews/p10i-target-histogram001.json",
-          "docs/parity/reviews/p10j-histogram-target-ui001.json"
+          "docs/parity/reviews/p10j-histogram-target-ui001.json",
+          "docs/parity/reviews/p10k-histogram-defaults001.json"
         ],
         "implementation": [
           "include/imagejxx/auto_threshold_stack.hpp",
@@ -2771,7 +2784,8 @@
           "src/desktop/window.cpp",
           "include/imagejxx/target_histogram.hpp",
           "src/desktop/histogram_panel.hpp",
-          "src/desktop/operation_target_panel.cpp"
+          "src/desktop/operation_target_panel.cpp",
+          "src/native/settings.cpp"
         ],
         "tests": [
           "tests/python/test_scientific_threshold_target.py",
@@ -2784,7 +2798,9 @@
           "tests/native/test_target_histogram.cpp",
           "tests/python/test_target_histogram.py",
           "tests/python/test_target_histogram_ui.py",
-          "tests/python/test_target_histogram_desktop_api.py"
+          "tests/python/test_target_histogram_desktop_api.py",
+          "tests/native/test_histogram_defaults.cpp",
+          "tests/python/test_histogram_preferences.py"
         ]
       },
       "id": "G069",
@@ -2794,7 +2810,7 @@
       ],
       "name": "Histogram",
       "remaining": [
-        "Shared standalone ImGui controls now pool sampled C/T/Z grids with whole/active/positioned area ROI unions, using native raw/custom bins, range/log display, statistics and frozen raw CSV. Invalid range drafts/mode switches preserve the last result and scope; existing simple-plane controls remain. Finish calibrated/color/other numeric domains and remaining upstream statistical/presentation conventions, saved defaults, analysis recording, async and complete independent source/reference/resource/platform qualification."
+        "Shared histogram UI pooling, bins/range/log/statistics/export now include eight native persisted defaults with source-relative reopening, paired-bound recovery and guarded preference/result publication. Finish analysis recording, async, calibrated/color/other numeric domains and remaining upstream statistical/presentation/default conventions, plus complete independent source/reference/resource/platform qualification."
       ],
       "required_work": "Stack/channel targeting, range/bin/log controls, statistics display and numerical export",
       "status": "in_progress",
@@ -2803,7 +2819,8 @@
         "p10g.histogram-statistics.functional.001",
         "p10h.histogram-ui.functional.001",
         "p10i.target-histogram.functional.001",
-        "p10j.histogram-target-ui.functional.001"
+        "p10j.histogram-target-ui.functional.001",
+        "p10k.histogram-defaults.functional.001"
       ]
     },
     {
@@ -180779,6 +180796,29 @@
         "total": 916
       },
       "scope": "916 selected checks per OS including 51 new target UI/API checks; 144 reports / 24780 frames including 36 new reports / 7848 frames; four native executable suites per OS and fresh SDK consumers. No complete source/reference/resource/real-platform or whole-family acceptance."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-21",
+      "id": "p10k.histogram-defaults.functional.001",
+      "identity": {
+        "qualification": {
+          "bytes": 10833,
+          "path": "docs/parity/reviews/p10k-histogram-defaults001.json",
+          "sha256": "b823294f218b20c4a75045feae382372a710de21565653f6b74783f445210b3c"
+        }
+      },
+      "platform": "Windows/Linux standalone/Python ImGui, native settings/preferences and installed SDK",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 1300,
+        "report": "build/p10k-histogram-defaults001/windows-python002/pytest.xml",
+        "skipped": 0,
+        "total": 1300
+      },
+      "scope": "1300 selected checks per OS including 124 new histogram defaults checks; 200 reports / 28368 frames including 8 restart reports / 516 frames; six native executable suites per OS and fresh SDK consumers. No complete upstream/resource/real-platform or whole-family acceptance."
     }
   ]
 }

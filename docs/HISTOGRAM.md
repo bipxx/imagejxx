@@ -99,11 +99,13 @@ available only where supported by the native APIs; this panel accepts plane
 grids with the in-place destination field and never edits image data.
 
 
-The calculation is currently synchronous and bounded by the native per-plane
-pixel/scratch limits and the captured processing-memory preference. Frontend plot
+The calculation is currently synchronous and bounded by native limits and the
+processing-memory preference captured at opening. Scientific mode admits all XY
+pixels across the target planes, including ROI exterior and unmatched planes,
+against the default 16 Mi-pixel total limit. Frontend plot
 heights, diagnostics, retained results, CSV text and allocator/provider/RSS costs
 are not a total memory cap. Histogram parity remains open for calibrated/color
-and other numeric domains, saved defaults, analysis recording,
+and other numeric domains, analysis recording,
 asynchronous execution and complete reference/resource/platform acceptance.
 
 ## Pooled native C/T/Z targets
@@ -178,3 +180,45 @@ The standalone ImGui panel now uses this service for its scientific target mode.
 Both launchers have actual-input grid/ROI/bin/log/export checks. These bounded
 functional checks do not establish complete upstream, resource or real GPU/
 platform acceptance, nor completion of remaining histogram domains and workflows.
+
+## Saved histogram defaults
+
+Both launchers use the native **Histogram** group in Preferences. A successful
+Calculate remembers these defaults; they are applied when a histogram panel is
+opened again. Opening, changing drafts, switching modes or closing the panel
+does not itself save those drafts. A later Calculate also remembers log changes.
+
+| Setting | Initial default | Consumer |
+| --- | --- | --- |
+| `histogram_custom` | false | Explicit bins/range versus processor raw |
+| `histogram_bins` | 256 | Custom bin count, 1–65,536 |
+| `histogram_lower` | 0 | Inclusive custom lower bound |
+| `histogram_upper` | 1 | Inclusive custom upper bound |
+| `histogram_log` | false | Log1p plot heights |
+| `histogram_use_roi` | true | Single-plane active-area selection toggle |
+| `histogram_scientific` | false | Scientific target mode on reopening |
+| `histogram_roi` | active_selection | Scientific whole/active/positioned area policy |
+
+Single-plane and scientific ROI defaults are independent. Reopening scientific
+mode starts at **Current** T/C/Z for the newly captured source. Numeric positions,
+First/Last/Step ranges, ROI geometry and export paths are never global defaults.
+The last custom bin/range defaults are updated only by a successful custom-range
+calculation; processor-raw calculations preserve them, including when hidden
+custom fields contain invalid unfinished text. Derived raw histogram extrema
+remain local presentation values.
+
+Bounds form one validated setting pair and must be finite with lower < upper,
+even while custom mode is off. Use a single `Settings.update` patch to change
+both when an intermediate value would be invalid. Recovery migration accepts
+valid supplied bounds together; an invalid pair falls back together to 0..1,
+produces a warning and retains the existing implicit-write protection. Resetting
+the Histogram group resets all eight defaults while preserving other groups.
+
+The native calculation and result are staged before saving preferences. An I/O
+save failure leaves the prior result and remembered in-memory defaults intact.
+Files protected after recovery or a newer-version load retain their exact bytes;
+as with existing implicit saves, the successful result and session defaults can
+still update. Unknown preference values, extra data and root extensions survive
+normal saves. Result publication after saving uses allocation-free ownership
+moves, including on Windows. This is a functional preference/result boundary,
+not a transaction across external source providers or a complete memory/RSS cap.

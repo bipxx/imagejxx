@@ -1191,7 +1191,10 @@ in either ImGui launcher. Overlaps count once; unmatched planes contribute no
 samples. Drafts and the last result are distinguished, including after switching
 back to single-plane mode. Navigation does not retarget calculation, and source
 edits invalidate it. The save browser publishes a frozen raw CSV snapshot using
-the existing atomic writer. See [usage and remaining scope](HISTOGRAM.md).
+the existing atomic writer. Successful calculation remembers eight native
+Histogram defaults, including independent basic/scientific ROI choices; a new
+source starts its own Current grid. Preference save failures preserve the prior
+result. See [usage and remaining scope](HISTOGRAM.md).
 
 ## Manual threshold display
 

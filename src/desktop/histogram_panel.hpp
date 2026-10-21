@@ -1,19 +1,22 @@
 #pragma once
 #include "desktop.hpp"
 #include <imagejxx/target_histogram.hpp>
+#include <imagejxx/settings.hpp>
 #include "operation_target_panel.hpp"
 #include <functional>
 #include <optional>
+#include <memory>
 
 namespace imagejxx::desktop {
 class HistogramPanel {
 public:
-  void show(const DocumentSnapshot &, DatasetHistogramLimits);
+  using Remember = std::function<void(const SettingsPatch &)>;
+  void show(const DocumentSnapshot &, DatasetHistogramLimits, const Settings &);
   void configure(const Json &);
   void configureTarget(const TargetRequest &);
-  void calculate(const std::optional<DocumentSnapshot> &, bool busy);
+  void calculate(const std::optional<DocumentSnapshot> &, bool busy, const Remember & = {});
   void draw(const std::optional<DocumentSnapshot> &, bool busy,
-            const std::function<void(std::string)> &export_csv);
+            const std::function<void(std::string)> &export_csv, const Remember & = {});
   void sourceClosed(std::uint64_t);
   void cancel();
   bool visible() const { return open_; }
@@ -38,7 +41,7 @@ private:
   DatasetHistogramLimits limits_;
   std::array<std::string,3> position_;
   std::string bins_="256", lower_="0", upper_="1", error_, sourceError_, actionError_;
-  std::optional<DatasetHistogramResult> result_;
+  std::shared_ptr<const DatasetHistogramResult> result_;
   std::vector<float> heights_;
   Json controls_=Json::object(), states_=Json::object();
 };
