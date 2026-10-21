@@ -1,6 +1,7 @@
 #include "imagejxx/image.hpp"
 #include <imagejxx/auto_threshold.hpp>
 #include "kernel_control.hpp"
+#include "auto_threshold_internal.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -69,30 +70,13 @@ Statistics statistics(const Image& image, const Image* mask) {
 double auto_threshold(const Image& image, const std::string& method, int bins) {
     return auto_threshold(image,method,bins,false,false);
 }
-double auto_threshold(const Image& image, const std::string& method, int bins,bool ignore_black,bool ignore_white) {
-    require_gray(image);
+namespace detail {
+double threshold_from_histogram(Histogram h,const std::string &method,bool ignore_black,bool ignore_white) {
+    if(h.counts.size()<2 || h.edges.size()!=h.counts.size()+1)throw std::invalid_argument("Invalid threshold histogram layout");
     if(is_imagej_threshold_method(method)) {
-        const int count=bins==0?256:bins;
-        if(count<2 || count>65536)throw std::invalid_argument("ImageJ threshold requires 2..65536 bins");
-        KernelStage validation("Automatic threshold input",image.pixels.size());
-        for(std::size_t i=0;i<image.pixels.size();++i) {validation.periodic(i);require_finite(image.pixels[i],"Threshold pixel");}
-        validation.finish();
-        auto h=histogram(image,count);
-        const int bin=auto_threshold_histogram_imagej(h.counts,method,ignore_black,ignore_white);
+        const auto bin=imagej_histogram_threshold(h.counts,method,ignore_black,ignore_white,false);
         return (h.edges[bin]+h.edges[bin+1])/2;
     }
-    const std::vector<std::string> methods = {"otsu", "mean", "isodata", "li", "triangle", "yen", "max_entropy", "percentile", "intermodes", "minimum", "moments", "min_error"};
-    if (std::find(methods.begin(), methods.end(), method) == methods.end()) throw std::invalid_argument("Unknown automatic threshold method");
-    auto extrema = std::minmax_element(image.pixels.begin(), image.pixels.end());
-    if (!ignore_black && !ignore_white && *extrema.first == *extrema.second) return *extrema.first;
-    if (!ignore_black && !ignore_white && method == "mean") return std::accumulate(image.pixels.begin(), image.pixels.end(), 0.0) / image.pixels.size();
-    if(ignore_black || ignore_white) {
-        if(bins!=0 && (bins<2 || bins>65536))throw std::invalid_argument("Endpoint exclusion requires 2..65536 histogram bins");
-        KernelStage validation("Automatic threshold input",image.pixels.size());
-        for(std::size_t i=0;i<image.pixels.size();++i) {validation.periodic(i);require_finite(image.pixels[i],"Threshold pixel");}
-        validation.finish();
-    }
-    auto h = histogram(image, bins == 0 ? 256 : bins);
     if(ignore_black)h.counts.front()=0;
     if(ignore_white)h.counts.back()=0;
     if(std::none_of(h.counts.begin(),h.counts.end(),[](auto n){return n!=0;}))throw std::invalid_argument("Histogram contains no samples after endpoint exclusion");
@@ -133,7 +117,7 @@ double auto_threshold(const Image& image, const std::string& method, int bins,bo
             bool better = method == "min_error" ? score < best : score > best;
             if (better) { found = true; best = score; threshold_bin = i; }
         }
-        if (!found && method == "min_error") return auto_threshold(image, "otsu", bins,ignore_black,ignore_white);
+        if (!found && method == "min_error") return threshold_from_histogram(std::move(h),"otsu",false,false);
     } else if (method == "percentile") {
         threshold_bin = static_cast<std::size_t>(std::lower_bound(cumulative.begin(), cumulative.end(), 0.5) - cumulative.begin());
     } else if (method == "isodata" || method == "li") {
@@ -163,10 +147,10 @@ double auto_threshold(const Image& image, const std::string& method, int bins,bo
         double m2 = second.back(), m3 = 0;
         for (std::size_t i = 0; i < n; ++i) m3 += p[i] * i * i * i;
         double cd = m2 - mean * mean;
-        if (cd <= 0) return auto_threshold(image, "otsu", bins,ignore_black,ignore_white);
+        if (cd <= 0) return threshold_from_histogram(std::move(h),"otsu",false,false);
         double c0 = (-m2 * m2 + mean * m3) / cd, c1 = (-m3 + mean * m2) / cd;
         double discriminant = c1 * c1 - 4 * c0;
-        if (discriminant <= 0) return auto_threshold(image, "otsu", bins,ignore_black,ignore_white);
+        if (discriminant <= 0) return threshold_from_histogram(std::move(h),"otsu",false,false);
         double z0 = (-c1 - std::sqrt(discriminant)) / 2, z1 = (-c1 + std::sqrt(discriminant)) / 2;
         double background = std::clamp((z1 - mean) / (z1 - z0), 0.0, 1.0);
         threshold_bin = static_cast<std::size_t>(std::lower_bound(cumulative.begin(), cumulative.end(), background) - cumulative.begin());
@@ -193,6 +177,25 @@ double auto_threshold(const Image& image, const std::string& method, int bins,bo
     }
     threshold_bin = std::min(threshold_bin, n - 1);
     return (h.edges[threshold_bin] + h.edges[threshold_bin + 1]) / 2;
+}
+} // namespace detail
+double auto_threshold(const Image& image, const std::string& method, int bins,bool ignore_black,bool ignore_white) {
+    require_gray(image);
+    const bool imagej=is_imagej_threshold_method(method);
+    const std::vector<std::string> methods={"otsu","mean","isodata","li","triangle","yen","max_entropy","percentile","intermodes","minimum","moments","min_error"};
+    if(!imagej && std::find(methods.begin(),methods.end(),method)==methods.end())throw std::invalid_argument("Unknown automatic threshold method");
+    if(imagej || ignore_black || ignore_white) {
+        if(bins!=0 && (bins<2 || bins>65536))throw std::invalid_argument("Endpoint/ImageJ threshold requires 2..65536 histogram bins");
+        KernelStage validation("Automatic threshold input",image.pixels.size());
+        for(std::size_t i=0;i<image.pixels.size();++i) {validation.periodic(i);require_finite(image.pixels[i],"Threshold pixel");}
+        validation.finish();
+    }
+    if(!imagej && !ignore_black && !ignore_white) {
+        const auto extrema=std::minmax_element(image.pixels.begin(),image.pixels.end());
+        if(*extrema.first==*extrema.second)return *extrema.first;
+        if(method=="mean")return std::accumulate(image.pixels.begin(),image.pixels.end(),0.0)/image.pixels.size();
+    }
+    return detail::threshold_from_histogram(histogram(image,bins==0?256:bins),method,ignore_black,ignore_white);
 }
 Image auto_mask(const Image& image, const std::string& method, bool bright, int bins) {
     return auto_mask(image,method,bright,bins,false,false);

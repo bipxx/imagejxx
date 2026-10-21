@@ -11,7 +11,9 @@ void require(bool value, const std::string &message) {
 }
 Json state(Window &window, const std::shared_ptr<imagejxx::Document> &owner) {
   const auto snapshot=owner->snapshot();const auto &data=snapshot.data();
-  return {{"pixels",data.dataset.plane({0,0,0})->pixels},
+  Json volume=Json::array();const auto shape=data.dataset.shape();
+  for(int t=0;t<shape.t;++t)for(int c=0;c<shape.c;++c)for(int z=0;z<shape.z;++z)volume.push_back(data.dataset.plane({t,c,z})->pixels);
+  return {{"volume",volume},{"position",{snapshot.display().t,snapshot.display().c,snapshot.display().crosshair[2]}},{"pixels",data.dataset.plane({0,0,0})->pixels},
       {"selection",data.selection?selectionJson(*data.selection):Json()},
       {"previous",selectionJson(*data.previous_selection)},
       {"roi",selectionJson(data.rois.at(0).selection)},
@@ -23,6 +25,8 @@ Json state(Window &window, const std::shared_ptr<imagejxx::Document> &owner) {
 Json autoThresholdUiCase(Window &window,const std::string &case_id,
                    const std::string &context,const std::string &directory) {
   std::string method=case_id;bool ignore_black=false,ignore_white=false;
+  const bool pooled=method.size()>=5 && method.substr(method.size()-5)=="-pool";
+  if(pooled)method.resize(method.size()-5);
   const auto marker=method.find("-ignore-");
   if(marker!=std::string::npos) {
     const auto option=method.substr(marker+8);method.resize(marker);
@@ -33,15 +37,17 @@ Json autoThresholdUiCase(Window &window,const std::string &case_id,
   namespace fs=std::filesystem;const auto output=fs::absolute(fs::u8path(directory));
   require(!fs::exists(output) && window.documents().empty(),"Fresh threshold fixture required");
   fs::create_directories(output);
-  Image image(16,16,1,PixelType::UInt8);
-  for(std::size_t i=0;i<image.pixels.size();++i)image.pixels[i]=static_cast<double>(i);
-  DocumentData data{Dataset::from_stack({std::move(image)})};
+  Stack input;
+  for(int z=0;z<(pooled?4:1);++z){Image image(pooled?8:16,pooled?8:16,1,PixelType::UInt8);
+    for(std::size_t i=0;i<image.pixels.size();++i)image.pixels[i]=static_cast<double>(z*64+i);input.push_back(std::move(image));}
+  DocumentData data{Dataset::from_stack(std::move(input))};
   data.previous_selection=Selection("line",{{0,0},{6,4}});
   data.rois={{"retained",Selection("rectangle",{{1,1},{6,4}}),std::nullopt,std::nullopt,0,{{"opaque",std::string("retained")}}}};
   auto owner=std::make_shared<imagejxx::Document>(std::move(data));
   window.updateSettings({{"processing_workers",1},{"processing_memory_mb",64}},false);
+  if(pooled){auto view=owner->snapshot().display();view.crosshair={3,3,1};owner->set_display(view);}
   window.addNativeDocument(owner);window.recording=true;
-  Json report{{"contract",ignore_black || ignore_white?"p10a.auto-threshold-options.ui.001":"p09z.auto-threshold.ui.001"},{"case_id",case_id},{"method",method},{"ignore_black",ignore_black},{"ignore_white",ignore_white},
+  Json report{{"contract",pooled?"p10b.pooled-threshold.ui.001":ignore_black || ignore_white?"p10a.auto-threshold-options.ui.001":"p09z.auto-threshold.ui.001"},{"case_id",case_id},{"pooled",pooled},{"method",method},{"ignore_black",ignore_black},{"ignore_white",ignore_white},
       {"context",context},{"acceptance_claim",false},{"state","running"},
       {"frames",Json::array()},{"controls",Json::array()},
       {"states",{{"before",state(window,owner)}}},
@@ -77,6 +83,8 @@ Json autoThresholdUiCase(Window &window,const std::string &case_id,
    frame(Json::array({{{"type","wheel"},{"x",0},{"y",-12}}}));frame();frame();}
   click("dialog.method.choice."+method);
   if(ignore_black)click("dialog.ignore_black");if(ignore_white)click("dialog.ignore_white");
+  if(pooled)click("dialog.stack_histogram");
+  report["configured"]=last.at("operation_dialog");
   report["selected_parameters"]=last.at("operation_dialog").at("parameters");
   click("dialog.preview");window.wait();window.poll();frame();frame();
   require(last.at("operation_dialog").value("has_preview",false),"Threshold preview missing");
@@ -90,6 +98,7 @@ Json autoThresholdUiCase(Window &window,const std::string &case_id,
    frame(Json::array({{{"type","wheel"},{"x",0},{"y",-12}}}));frame();frame();}
   click("dialog.method.choice."+method);
   if(ignore_black)click("dialog.ignore_black");if(ignore_white)click("dialog.ignore_white");
+  if(pooled)click("dialog.stack_histogram");
   click("dialog.apply");window.wait();window.poll();frame();frame();
   report["states"]["applied"]=state(window,owner);
   require(owner->undo_steps()==1 && window.workflow.size()==1,"Threshold Apply did not publish once");

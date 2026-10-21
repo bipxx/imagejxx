@@ -1,5 +1,6 @@
 #include <imagejxx/auto_threshold.hpp>
 #include "kernel_control.hpp"
+#include "auto_threshold_internal.hpp"
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -133,9 +134,12 @@ int auto_threshold_histogram_imagej(const std::vector<std::uint64_t> &counts,con
   return auto_threshold_histogram_imagej(counts,method,false,false);
 }
 int auto_threshold_histogram_imagej(const std::vector<std::uint64_t> &input,const std::string &method,bool ignore_black,bool ignore_white) {
+  return detail::imagej_histogram_threshold(input,method,ignore_black,ignore_white,true);
+}
+int detail::imagej_histogram_threshold(const std::vector<std::uint64_t> &input,const std::string &method,bool ignore_black,bool ignore_white,bool progress) {
   kernel_checkpoint();
-  execution_progress(0,1);
-  const auto finish=[](int result) {kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;};
+  if(progress)execution_progress(0,1);
+  const auto finish=[progress](int result) {kernel_checkpoint();if(progress)execution_progress(1,1);kernel_checkpoint();return result;};
   if(!is_imagej_threshold_method(method))throw std::invalid_argument("Unknown ImageJ histogram threshold method");
   if(input.size()<2 || input.size()>65536)throw std::invalid_argument("ImageJ threshold requires 2..65536 bins");
   std::vector<std::uint64_t> filtered;

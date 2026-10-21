@@ -1,5 +1,21 @@
 # ImageJ and Fiji gap closure plan
 
+**Pooled stack threshold checkpoint, 2026-10-21 (work in progress):**
+The C++/Python target API and managed executor now compute one threshold across
+captured planes/ROI members without concatenating pixels. Ordinary ImGui Z-stack
+forms select/lock all slices for pooling; preview uses the same global level as
+Apply. Endpoint options and recorded workflows retain the flag. Windows/Linux
+each pass 3,716 selected checks without skips, three installed SDK examples and
+15 transport checks. Read counters prove zero reads on cap refusal and two scans
+for four-plane histogram construction. 144 input reports cover 13,632 frames,
+including 48 new pooled reports. No new runtime dependencies; commercial-use
+inventory passes. Verified archives remove 2,173,857,541 scratch bytes.
+See [the scoped receipt](parity/reviews/p10b-pooled-threshold001.json). Next are
+threshold-display integration, persistent options and complete scientific target
+UI/reference/platform/resource qualification. The pre-existing Auto Contrast
+source-fingerprint gate remains open. All99 stays 46 in progress / 53 open /
+0 complete; all existing 96 format variants remain partial.
+
 **Threshold endpoint options checkpoint, 2026-10-21 (work in progress):**
 All eighteen image methods and six histogram methods now support ignoring the
 first/last histogram bins. Both flags default off and are exposed in C++/Python

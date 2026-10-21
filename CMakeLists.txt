@@ -13,6 +13,7 @@ include(cmake/StaticCodecSymbols.cmake)
 
 add_library(imagejxx_core STATIC
   src/native/playback.cpp
+  src/native/auto_threshold_stack.cpp
   src/native/auto_threshold.cpp
   src/native/avi_movie.cpp
   src/native/image.cpp src/native/filters.cpp src/native/shadow.cpp src/native/gaussian.cpp src/native/gaussian_command.cpp src/native/rank.cpp src/native/rank_command.cpp src/native/axis_extraction_command.cpp src/native/transforms.cpp

@@ -31,6 +31,7 @@ from ._native import (
 )
 from ._native import Settings as Settings
 from ._native import auto_threshold_histogram_imagej as auto_threshold_histogram_imagej
+from ._native import pooled_auto_threshold as pooled_auto_threshold, PooledThresholdResult as PooledThresholdResult
 from ._native import PlaybackSequence as PlaybackSequence
 from ._native import playback_interval_seconds as playback_interval_seconds
 
@@ -1384,9 +1385,11 @@ def auto_threshold(image, method: str = "otsu", *, bins: int = 0,
 
 def auto_mask(
     image, method: str = "otsu", *, bright: bool = True, bins: int = 0,
-    ignore_black: bool = False, ignore_white: bool = False
+    ignore_black: bool = False, ignore_white: bool = False, stack_histogram: bool = False
 ) -> np.ndarray:
     """Threshold as pixel > level (bright) or pixel <= level (dark)."""
+    if not isinstance(stack_histogram, bool):
+        raise TypeError("stack_histogram must be a Boolean")
     return _native.auto_mask(_array(image), method, bright, bins, ignore_black, ignore_white)
 
 

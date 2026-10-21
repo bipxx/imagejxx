@@ -8,6 +8,7 @@
 #include "indexed_type_internal.hpp"
 #include "workflow_stage_metadata.hpp"
 #include <imagejxx/manual_threshold.hpp>
+#include <imagejxx/auto_threshold_stack.hpp>
 #include <imagejxx/channel_display.hpp>
 #include <imagejxx/z_subset_command.hpp>
 #include <imagejxx/axis_spacing_command.hpp>
@@ -1867,6 +1868,11 @@ OperationParameters validate_execution_parameters(
       OperationDefaultContext{
           shape.x, shape.y, shape.s, source.data().dataset.pixel_type(), {}},
       parameters);
+  if(operation=="auto_mask" && std::get<bool>(normalized.at("stack_histogram"))) {
+    const auto bins=std::get<std::int64_t>(normalized.at("bins"));
+    if(shape.s!=1 || source.data().dataset.sample_policy()!=FloatingSamplePolicy::FiniteOnly || (bins!=0 && (bins<2 || bins>65536)))
+      throw std::invalid_argument("Pooled threshold requires finite scalar planes and 2..65536 bins");
+  }
   if(operation=="convert_image"){const auto &type=std::get<std::string>(normalized.at("dtype"));(void)detail::resolve_indexed_type_plan(source,type=="uint8"?PixelType::UInt8:type=="uint16"?PixelType::UInt16:type=="float32"?PixelType::Float32:PixelType::Float64);}
   if(operation=="rank_filter_imagej" && std::get<std::string>(normalized.at("method"))=="variance")
     (void)detail::validate_rank_variance_display_source(source);
@@ -1906,6 +1912,11 @@ PreparedOperation prepare_operation(const std::string &operation,
   std::optional<PixelType> result_type;
   std::size_t completed = 0;
   execution_progress(0, target.position_count());
+  std::optional<double> pooled_level;
+  if(operation=="auto_mask" && std::get<bool>(normalized.at("stack_histogram")))
+    pooled_level=pooled_auto_threshold(target,std::get<std::string>(normalized.at("method")),
+      int(std::get<std::int64_t>(normalized.at("bins"))),std::get<bool>(normalized.at("ignore_black")),
+      std::get<bool>(normalized.at("ignore_white")),std::numeric_limits<std::size_t>::max()).threshold;
   std::optional<Image> fixed_mask;
   std::optional<GaussianBlurCommandRegion> fixed_gaussian_region;
   std::optional<RankFilterCommandRegion> fixed_rank_region;
@@ -1983,6 +1994,15 @@ PreparedOperation prepare_operation(const std::string &operation,
             {},active_plane.t,active_plane.c,active_plane.z,{}, {},control).range;
       auto input = source.data().dataset.plane(p);
       auto result = [&]() {
+        if(pooled_level) {
+          Image output(input->width,input->height,1,PixelType::UInt8);
+          const bool bright=std::get<bool>(normalized.at("bright"));
+          KernelStage stage("Pooled threshold mask",input->pixels.size());
+          for(std::size_t index=0;index<input->pixels.size();++index) {
+            stage.periodic(index);require_finite(input->pixels[index],"Pooled threshold mask sample");
+            output.pixels[index]=(input->pixels[index]>*pooled_level)==bright?255:0;
+          }stage.finish();return OperationResult{std::move(output),std::nullopt,false};
+        }
         if (operation == "shadow_imagej") {
           std::optional<std::array<int,4>> extent;
           if (mask && !mask_full) {

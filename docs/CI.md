@@ -65,7 +65,7 @@ The runner records these measurements and supplies both axis-range memory-check
 contracts. These values come from the independent fixture, rather than from the
 operation's working-set estimate; the readers retain their exact byte formulas.
 The runner first invokes `scripts/ci_observations.py` against the installed C++
-application. Its 1,177-launch matrix captures rank filters, rounded creation
+application. Its 1,189-launch matrix captures rank filters, rounded creation
 and saved selections, ROI import/export, saved-selection budget behavior, and
 resize/rotate/move modifiers and directional shadows. The planar selection matrix
 covers 621 creation/edit/recovery cases across XY, XZ and YZ, including every
@@ -253,3 +253,9 @@ checkboxes with all six new methods. Readers compare preview/Apply masks to the
 pinned endpoint-exclusion oracle and verify recorded flags, undo/redo and ROI
 retention. Empty eligible histograms are refusals; all eighteen image methods
 have direct mask and managed-job admission/publication checks.
+
+Twelve pooled-threshold captures split one pinned uniform histogram across four
+source planes. The stack checkbox selects/locks all slices. Independent readers
+check the current-plane pooled preview and every applied/undone/redone plane
+against retained Java histogram values. Core checks cover C/Z/T positions, ROI
+selection, resource/cancellation/stale publication and workflow replay.

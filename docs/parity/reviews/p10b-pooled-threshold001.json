@@ -1,0 +1,533 @@
+{
+  "state": "qualified_functional_increment",
+  "objective_complete": false,
+  "scope": "Pooled automatic threshold across frozen plane targets in the C++ core/Python API and managed executor. Shared ordinary Z-stack ImGui checkbox selects/locks all slices; preview and Apply use the same target membership and pooled level.",
+  "behavior": "A reusable histogram solver preserves selected legacy method conventions. The pooled helper scans one plane/mask at a time, with no concatenated pixel buffer. It uses ROI members for estimation, validates entire acquired planes, skips source acquisition for empty masks, and applies the common threshold through existing masked output/publication/type policies. Endpoint exclusions still affect estimation only. Native target API supports captured C/Z/T positions; complete scientific threshold controls in the UI remain open.",
+  "profile": "Finite-only scalar sources, plane execution, 2..65536 bins (0=>256), selected sample count <=INT32_MAX. Integer histograms use full type range; float histograms use global selected extrema. Legacy mean/constant shortcuts can finish after one scan; histogram construction uses two. Providers must remain immutable across reads. Empty selection/eligible histograms and invalid working caps refuse without edits.",
+  "reference": {
+    "scope": "Six-method thresholds use retained pinned uniform/endpoint Java histograms. The same 256 samples are split across four source planes, each contributing one quarter of that histogram. UInt8/UInt16/Float32/Float64 bin-center expectations are independently derived from the retained expected bin. Eighteen-method logical-concatenation compatibility is a separate check, not an independent upstream oracle.",
+    "fixtures": [
+      {
+        "path": "tests/fixtures/auto-threshold-imagej154r.json",
+        "bytes": 116881,
+        "sha256": "e8f76e8e82c0cbcce98307bf9374e175439bef531ae17a2f3a0de3289ae70db8"
+      },
+      {
+        "path": "tests/fixtures/auto-threshold-options-imagej154r.json",
+        "bytes": 485227,
+        "sha256": "03543d3a9f0eeb82a2653ed51c61510ae615d2f84ba2472a5fe33aea0a9d3bd3"
+      }
+    ],
+    "refactor_preimage": {
+      "path": "build/p10b-pooled-threshold001/analysis-preimage001.bin",
+      "bytes": 16555,
+      "sha256": "d20c11116aae446b1d46037b20c5695d60e8eeb17b7affe53389f241892a4fbf"
+    }
+  },
+  "profiles": {
+    "windows": {
+      "tests": 3716,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "observations": 72,
+      "frames": 6816,
+      "pooled_observations": 24,
+      "contexts": [
+        "imgui_cpp",
+        "imgui_python"
+      ],
+      "sdk": "Fresh installed SDK consumer runs old histogram/endpoint examples plus six pooled results. Native read counters assert zero acquisitions on cap refusal and eight acquisitions for each four-plane pooled calculation.",
+      "headers": 70,
+      "python_modules": 12,
+      "catalog_operations": 92,
+      "source_freeze": [
+        {
+          "path": "CMakeLists.txt",
+          "sha256": "c9febc87f473dd2697ef3549f712566375291b80b2ecf0ff77940d8e9d3933fc"
+        },
+        {
+          "path": "include/imagejxx/auto_threshold_stack.hpp",
+          "sha256": "ae2e5b0e8a8598e569e8ec32999f7cb3cf2d9bdb698b02eb33216765e4d1fe0a"
+        },
+        {
+          "path": "src/native/auto_threshold_stack.cpp",
+          "sha256": "6612e988cd16a00c1ecc77debffef238f471d72e7b29b682f487d1e0db729577"
+        },
+        {
+          "path": "src/native/auto_threshold_internal.hpp",
+          "sha256": "0a8b421f24186eda11a673f788591bbbbde3e4506bd528becdef82ed44ad8b7e"
+        },
+        {
+          "path": "src/native/execution.cpp",
+          "sha256": "9e678b6424c1bd84c708b0069b33d867da6732d3bb206beda16d6dc799ea57c1"
+        },
+        {
+          "path": "src/desktop/window.cpp",
+          "sha256": "1ebb80e2884584e545f7ca20216f9f7667635de3b0d80c2a077fe51a17971f80"
+        },
+        {
+          "path": "src/native/operation_kernel.inc",
+          "sha256": "74330dfe2e09476f7712ab710f89fd2d608bb5ce01a90512165c157d015b937a"
+        },
+        {
+          "path": "include/imagejxx/auto_threshold.hpp",
+          "sha256": "ae9a233cab455662530f965acec307b6b2a0c4a86b04f688dbe02e8237beb1bb"
+        },
+        {
+          "path": "src/native/auto_threshold.cpp",
+          "sha256": "f69b3bbe1dbb825a0e110ea3c85c833ab8f5b43ae7671cb8ad8d6058860f5df5"
+        },
+        {
+          "path": "src/native/auto_threshold_bindings.cpp",
+          "sha256": "e9b5a89e68c3e788313065943f279ee3dc48781cfd4c5e956f3992883d84b5f8"
+        },
+        {
+          "path": "src/native/bindings.cpp",
+          "sha256": "965dee97354aa426dcc8f6cd0d9ef6b5502835059386d8e0c2796e27f1ecf541"
+        },
+        {
+          "path": "src/native/analysis.cpp",
+          "sha256": "bab150881bc4fa3474c2033da7d1fd66b5396dc28a5063031498c73ac774249f"
+        },
+        {
+          "path": "src/native/operations.cpp",
+          "sha256": "174a499208121a07f20bac5ee3715aab16305ec8c090dc9078c4f62b60ca671e"
+        },
+        {
+          "path": "src/native/operation_catalog.inc",
+          "sha256": "fce4ba7c5662008a00c8ea5878afa3b5f53e21c97ee41114b9b6f36076ef20b6"
+        },
+        {
+          "path": "src/imagejxx/__init__.py",
+          "sha256": "92e6ac257d380b26f40d6df053a69f8fed98c24617a67baad6f67623163a6702"
+        },
+        {
+          "path": "src/imagejxx/ui/commands.json",
+          "sha256": "bc3567dfeb694aac5436b4916f7ddc176712d8fc8528059a24d69ccb16dbdcd3"
+        },
+        {
+          "path": "src/desktop/auto_threshold_ui_probe.cpp",
+          "sha256": "245eef139662d5b3b056313ef84e0281ee7be1405d0957ec324279c861e9ad40"
+        },
+        {
+          "path": "src/desktop/auto_threshold_ui_probe.hpp",
+          "sha256": "6278f4ea944f6af63f6d63b1ac3537c9c989d69c9fa9a31e97ca7d5fa0c7eccd"
+        },
+        {
+          "path": "src/desktop/animation_ui_probe.cpp",
+          "sha256": "8e6051d0a5e40c8fb29b037f9d4d84bf6e3c4554a2581895188009cd299b3522"
+        },
+        {
+          "path": "examples/cpp/CMakeLists.txt",
+          "sha256": "6d722dbe171dc9672d5aa406ba2b47bb6abb32943f08a6ca45c1a5eaf3d44155"
+        },
+        {
+          "path": "examples/cpp/auto_threshold.cpp",
+          "sha256": "0c8399f73b4d5bd76d555fd7b23ff0b97758eae19ef2d159b7d7d0673da91be8"
+        },
+        {
+          "path": "examples/cpp/auto_threshold_options.cpp",
+          "sha256": "dfed7858245c3b36eaf9875cf629563edd282af9b4caf85ceaa4aeebc1a4942c"
+        },
+        {
+          "path": "examples/cpp/pooled_threshold.cpp",
+          "sha256": "a1ba7b19e2134d622408c5470f22b51e185b6da059fcca0241f00197f22deafe"
+        }
+      ],
+      "products": [
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p10b-pooled-threshold001\\windows-build004\\installed\\sdk-prefix001\\bin\\imagejxx.exe",
+          "bytes": 15293440,
+          "sha256": "4c6648f5978fec47e5f61586a926801ca6f111159a5540030d387f9a7c77afc2"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p10b-pooled-threshold001\\windows-build004\\installed\\python-prefix001\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+          "bytes": 15139328,
+          "sha256": "ac0ae98d1037d9483ec58e3bb19ed1382e763a95ed68b7ced137aa740c97fc8f"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p10b-pooled-threshold001\\windows-build004\\installed\\python-prefix001\\imagejxx\\_native.cp312-win_amd64.pyd",
+          "bytes": 6388224,
+          "sha256": "32c66ec957c3a7319e466e049bfb06e5d5e4e35672862743741c146e5093517c"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p10b-pooled-threshold001\\windows-build004\\installed\\sdk-prefix001\\lib\\imagejxx_core.lib",
+          "bytes": 46596662,
+          "sha256": "62f7776dd1deb40ff55dad646b78d3b7e898cf7ea8ab15ecc21b888273f5d254"
+        }
+      ],
+      "evidence": {
+        "windows-build004/receipt.json": {
+          "path": "build/p10b-pooled-threshold001/windows-build004/receipt.json",
+          "bytes": 3481,
+          "sha256": "46905b4816f5c4d317cbccde55a9a1e65e0cd601c53d6cdfe1e981b06de1bfdd"
+        },
+        "windows-python004/pytest.xml": {
+          "path": "build/p10b-pooled-threshold001/windows-python004/pytest.xml",
+          "bytes": 539953,
+          "sha256": "cf7de8aa76c7307cab2ba06eea2f75af19830cbfe469f0ed299e435b93785854"
+        },
+        "windows-python004/receipt.json": {
+          "path": "build/p10b-pooled-threshold001/windows-python004/receipt.json",
+          "bytes": 88,
+          "sha256": "7848319702b5e41527d9e9582356d32fffba535de7743d10164c274c69352505"
+        },
+        "windows-evidence002.json": {
+          "path": "build/p10b-pooled-threshold001/windows-evidence002.json",
+          "bytes": 441844,
+          "sha256": "61dfc98214b20da037a19a44ee35f8c523898d4ed1e61cef829bd73bd0e0b92f"
+        },
+        "windows-products002.json": {
+          "path": "build/p10b-pooled-threshold001/windows-products002.json",
+          "bytes": 12916,
+          "sha256": "8e678fc192b8a2fd6e648f8764bfb942d1e398301fb604ca4e64b45a21d3496f"
+        },
+        "windows-sdk002/receipt.json": {
+          "path": "build/p10b-pooled-threshold001/windows-sdk002/receipt.json",
+          "bytes": 1034,
+          "sha256": "6c56c91afa471b3afeaa82a638c82840336105203b460bf0f649f6a56caaaafd"
+        },
+        "windows-sdk002/pooled_threshold.log": {
+          "path": "build/p10b-pooled-threshold001/windows-sdk002/pooled_threshold.log",
+          "bytes": 109,
+          "sha256": "5256e7c1ac3935b6ab87a8d45591d731901335cc610282f7878c1031b77df8c3"
+        },
+        "windows-gates001.log": {
+          "path": "build/p10b-pooled-threshold001/windows-gates001.log",
+          "bytes": 53,
+          "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+        },
+        "windows-transport001.log": {
+          "path": "build/p10b-pooled-threshold001/windows-transport001.log",
+          "bytes": 1630,
+          "sha256": "5d82ca89a7724e075000d931a0bbdd20484763615bcfb64f872ef0599a3ad61e"
+        },
+        "windows-cleanup001.json": {
+          "path": "build/p10b-pooled-threshold001/windows-cleanup001.json",
+          "bytes": 313291,
+          "sha256": "d00e4e3aad44f7397c1998acce89337c5bccdf35d29616aa321d27a0e48f2d17"
+        },
+        "windows-cleanup002.json": {
+          "path": "build/p10b-pooled-threshold001/windows-cleanup002.json",
+          "bytes": 214774,
+          "sha256": "023ecfb42878ab0821787e5f6c7cfe653e208edef70550f3d4ac79cee9ba9941"
+        }
+      }
+    },
+    "linux": {
+      "tests": 3716,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "observations": 72,
+      "frames": 6816,
+      "pooled_observations": 24,
+      "contexts": [
+        "imgui_cpp",
+        "imgui_python"
+      ],
+      "sdk": "Fresh installed SDK consumer runs old histogram/endpoint examples plus six pooled results. Native read counters assert zero acquisitions on cap refusal and eight acquisitions for each four-plane pooled calculation.",
+      "headers": 70,
+      "python_modules": 12,
+      "catalog_operations": 92,
+      "source_freeze": [
+        {
+          "path": "CMakeLists.txt",
+          "sha256": "c9febc87f473dd2697ef3549f712566375291b80b2ecf0ff77940d8e9d3933fc"
+        },
+        {
+          "path": "include/imagejxx/auto_threshold_stack.hpp",
+          "sha256": "ae2e5b0e8a8598e569e8ec32999f7cb3cf2d9bdb698b02eb33216765e4d1fe0a"
+        },
+        {
+          "path": "src/native/auto_threshold_stack.cpp",
+          "sha256": "6612e988cd16a00c1ecc77debffef238f471d72e7b29b682f487d1e0db729577"
+        },
+        {
+          "path": "src/native/auto_threshold_internal.hpp",
+          "sha256": "0a8b421f24186eda11a673f788591bbbbde3e4506bd528becdef82ed44ad8b7e"
+        },
+        {
+          "path": "src/native/execution.cpp",
+          "sha256": "9e678b6424c1bd84c708b0069b33d867da6732d3bb206beda16d6dc799ea57c1"
+        },
+        {
+          "path": "src/desktop/window.cpp",
+          "sha256": "1ebb80e2884584e545f7ca20216f9f7667635de3b0d80c2a077fe51a17971f80"
+        },
+        {
+          "path": "src/native/operation_kernel.inc",
+          "sha256": "74330dfe2e09476f7712ab710f89fd2d608bb5ce01a90512165c157d015b937a"
+        },
+        {
+          "path": "include/imagejxx/auto_threshold.hpp",
+          "sha256": "ae9a233cab455662530f965acec307b6b2a0c4a86b04f688dbe02e8237beb1bb"
+        },
+        {
+          "path": "src/native/auto_threshold.cpp",
+          "sha256": "f69b3bbe1dbb825a0e110ea3c85c833ab8f5b43ae7671cb8ad8d6058860f5df5"
+        },
+        {
+          "path": "src/native/auto_threshold_bindings.cpp",
+          "sha256": "e9b5a89e68c3e788313065943f279ee3dc48781cfd4c5e956f3992883d84b5f8"
+        },
+        {
+          "path": "src/native/bindings.cpp",
+          "sha256": "965dee97354aa426dcc8f6cd0d9ef6b5502835059386d8e0c2796e27f1ecf541"
+        },
+        {
+          "path": "src/native/analysis.cpp",
+          "sha256": "bab150881bc4fa3474c2033da7d1fd66b5396dc28a5063031498c73ac774249f"
+        },
+        {
+          "path": "src/native/operations.cpp",
+          "sha256": "174a499208121a07f20bac5ee3715aab16305ec8c090dc9078c4f62b60ca671e"
+        },
+        {
+          "path": "src/native/operation_catalog.inc",
+          "sha256": "fce4ba7c5662008a00c8ea5878afa3b5f53e21c97ee41114b9b6f36076ef20b6"
+        },
+        {
+          "path": "src/imagejxx/__init__.py",
+          "sha256": "92e6ac257d380b26f40d6df053a69f8fed98c24617a67baad6f67623163a6702"
+        },
+        {
+          "path": "src/imagejxx/ui/commands.json",
+          "sha256": "bc3567dfeb694aac5436b4916f7ddc176712d8fc8528059a24d69ccb16dbdcd3"
+        },
+        {
+          "path": "src/desktop/auto_threshold_ui_probe.cpp",
+          "sha256": "245eef139662d5b3b056313ef84e0281ee7be1405d0957ec324279c861e9ad40"
+        },
+        {
+          "path": "src/desktop/auto_threshold_ui_probe.hpp",
+          "sha256": "6278f4ea944f6af63f6d63b1ac3537c9c989d69c9fa9a31e97ca7d5fa0c7eccd"
+        },
+        {
+          "path": "src/desktop/animation_ui_probe.cpp",
+          "sha256": "8e6051d0a5e40c8fb29b037f9d4d84bf6e3c4554a2581895188009cd299b3522"
+        },
+        {
+          "path": "examples/cpp/CMakeLists.txt",
+          "sha256": "6d722dbe171dc9672d5aa406ba2b47bb6abb32943f08a6ca45c1a5eaf3d44155"
+        },
+        {
+          "path": "examples/cpp/auto_threshold.cpp",
+          "sha256": "0c8399f73b4d5bd76d555fd7b23ff0b97758eae19ef2d159b7d7d0673da91be8"
+        },
+        {
+          "path": "examples/cpp/auto_threshold_options.cpp",
+          "sha256": "dfed7858245c3b36eaf9875cf629563edd282af9b4caf85ceaa4aeebc1a4942c"
+        },
+        {
+          "path": "examples/cpp/pooled_threshold.cpp",
+          "sha256": "a1ba7b19e2134d622408c5470f22b51e185b6da059fcca0241f00197f22deafe"
+        }
+      ],
+      "products": [
+        {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/install-p10b004/sdk-prefix001/bin/imagejxx",
+          "bytes": 30951336,
+          "sha256": "84e716081a672b8f52a0d10913993a9e736ffd63bf097aabb0d102702664f0d3"
+        },
+        {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/install-p10b004/python-prefix001/imagejxx/_desktop.cpython-312-x86_64-linux-gnu.so",
+          "bytes": 28993240,
+          "sha256": "101489ea84ac814aa991f629c2dd7c31b80c374cfe80b85e6c276af85f6ffb34"
+        },
+        {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/install-p10b004/python-prefix001/imagejxx/_native.cpython-312-x86_64-linux-gnu.so",
+          "bytes": 10386784,
+          "sha256": "d53540c593a70946a26eb3c1380dd20fbc435afa463cf8c8b3bc9397adc03f86"
+        },
+        {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/install-p10b004/sdk-prefix001/lib/libimagejxx_core.a",
+          "bytes": 15241186,
+          "sha256": "d13089fe739231c5825b67014c0d206b27e52ee621291fa32abeed3083523054"
+        }
+      ],
+      "evidence": {
+        "linux-build004/receipt.json": {
+          "path": "build/p10b-pooled-threshold001/linux-build004/receipt.json",
+          "bytes": 3450,
+          "sha256": "942444000c70d7958ab8326921606368cff0243d6236c5bdcbe1c54d02bbe5ef"
+        },
+        "linux-python004/pytest.xml": {
+          "path": "build/p10b-pooled-threshold001/linux-python004/pytest.xml",
+          "bytes": 539953,
+          "sha256": "ef8339dd24eb32ef6d4feb4533207406353d23487a2dc06ac8f2089c41bbd8fe"
+        },
+        "linux-python004/receipt.json": {
+          "path": "build/p10b-pooled-threshold001/linux-python004/receipt.json",
+          "bytes": 88,
+          "sha256": "7848319702b5e41527d9e9582356d32fffba535de7743d10164c274c69352505"
+        },
+        "linux-evidence002.json": {
+          "path": "build/p10b-pooled-threshold001/linux-evidence002.json",
+          "bytes": 439534,
+          "sha256": "73df9d079de22b1f3470aa0a2b8b2679a44d20152dd9c3280ba00b93a6921892"
+        },
+        "linux-products002.json": {
+          "path": "build/p10b-pooled-threshold001/linux-products002.json",
+          "bytes": 12507,
+          "sha256": "38b3503ee7d5e8345b649d65c6bb233ad427656cd394a8f62818bbf97ced9aa0"
+        },
+        "linux-sdk002/receipt.json": {
+          "path": "build/p10b-pooled-threshold001/linux-sdk002/receipt.json",
+          "bytes": 937,
+          "sha256": "fcfdb10a3c612b51e5e7bf32434b2dd6b5c29117ace14305689cac93d2f1212b"
+        },
+        "linux-sdk002/pooled_threshold.log": {
+          "path": "build/p10b-pooled-threshold001/linux-sdk002/pooled_threshold.log",
+          "bytes": 103,
+          "sha256": "2e77577ae5035757b67f7cc5454f86b000ac8bf43124d0f76d8e2e74afbe7950"
+        },
+        "linux-gates001.log": {
+          "path": "build/p10b-pooled-threshold001/linux-gates001.log",
+          "bytes": 53,
+          "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+        },
+        "linux-transport001.log": {
+          "path": "build/p10b-pooled-threshold001/linux-transport001.log",
+          "bytes": 1630,
+          "sha256": "8a5aca232a8076d2eb72e8ad55c10749ab0c48513da38b62c160d25b90cb7061"
+        },
+        "linux-cleanup001.json": {
+          "path": "build/p10b-pooled-threshold001/linux-cleanup001.json",
+          "bytes": 444705,
+          "sha256": "7a767b3409d4c91c19dda96efc4855f6eaf0bad706aa072f058aa50c5a1cfb76"
+        },
+        "linux-cleanup002.json": {
+          "path": "build/p10b-pooled-threshold001/linux-cleanup002.json",
+          "bytes": 360777,
+          "sha256": "410bb7af3075c02a88a4bb5190253bb9095542024a5d3161bc7c1da489b8f864"
+        }
+      }
+    }
+  },
+  "checks": "Per OS: 3716 distinct selected checks, no failures/errors/skips. 96 exact pooled histogram/type/endpoint cases, 18 logical-concatenation method comparisons, scientific ROI/position writes, captured navigation/stale publication, preflight/cancellation/callback failure, empty targets and admission checks, 12 workflow serialization/replay cases and 24 new actual-input UI reports. Previous 3542 threshold/numeric/desktop/AVI/registry/jobs checks remain passing. 72 physical reports / 6816 frames per OS include old selector/endpoint regressions; 15 transport tests also pass. Nineteen further callback checks verify standalone 0/1..1/1 progress, reentry, completion cancellation and exact managed plane counts.",
+  "resource_scope": "Managed reservations include histogram tables and conservative nested fallback workspace plus existing output/plane/mask budgets. Public scratch cap covers dense buffers, tables and rounded raster admission; frozen arguments, other ROI geometry scratch, opaque callbacks, provider caches, source/history/allocator/process memory remain external. Preview currently stages detached outputs for the selected stack, not only the visible slice. Full global allocation/latency/large-data certification is open.",
+  "commercial_scope": "No new runtime dependencies, Java, Qt or non-commercial components. Reviewed commercial-use inventory passes on Windows/Linux; installed audit matches 70 source headers, 12 Python modules and 92 registered operations.",
+  "source_review": [
+    "Extracted the old histogram solver for shared plane/pool execution; preserved no-option constant/raw-mean shortcuts and endpoint-aware fallback behavior. Old numeric/reference checks pass.",
+    "The GUI automatically selects and disables all-slices while pooling is enabled; preview uses that same scope.",
+    "Core target mask merge/publication/type rules remain authoritative; no separate Python pixel implementation.",
+    "Public helper freezes target/method/control before callbacks; direct cap/pre-cancel checks acquire no pixels. Managed execution inherits its existing execution scope without duplicating callback dispatch.",
+    "Initial byte-preserving edit helper matches were corrected before compilation. Final review separated solver progress from managed plane counts. A flat-histogram Intermodes callback test was invalid and corrected to valid 0/200 bimodal data; all final checks pass. No kernel refusal, historical reference fingerprint or acceptance gate was relaxed."
+  ],
+  "remaining": [
+    "Threshold-display integration and persistent last-used plugin options",
+    "Complete scientific target UI and full numeric/ROI/reference/interface/platform/accessibility qualification",
+    "Full dense-entropy performance, managed argument/ROI/allocation tracking, preview latency and large-data certification",
+    "Every remaining ImageJ and commercially usable Fiji requirement"
+  ],
+  "registration": {
+    "path": "build/p10b-pooled-threshold001/registration001.json",
+    "bytes": 2091,
+    "sha256": "b404d06aa98b142c2ab34fc7d74076aa832b79aa7b68180f3f1830da40e011aa"
+  },
+  "test_sources": [
+    {
+      "path": "tests/python/test_pooled_threshold.py",
+      "bytes": 9668,
+      "sha256": "7ced5cc9c4837d9e78ef28e085fa110b4c9acaf1061ab651ebcb8220a39b78b1"
+    },
+    {
+      "path": "tests/python/test_pooled_threshold_ui.py",
+      "bytes": 2686,
+      "sha256": "f021cee07fc0703ec324ee387271c50814f897a627ef824d149011d7316c102f"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 31385,
+      "sha256": "119c4810c2bec59efcc8faee016bd9991f61b3ae0969b2059e9f86fa362ec2cb"
+    }
+  ],
+  "plan_gate": {
+    "state": "failed_preexisting",
+    "message": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed",
+    "gate_unchanged": true,
+    "evidence": {
+      "path": "build/p10b-pooled-threshold001/plan-check002.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    },
+    "application_header_unchanged_from_head": true
+  },
+  "all99": {
+    "in_progress": 46,
+    "open": 53,
+    "complete": 0
+  },
+  "format_variants": "All existing 96 variants remain partial",
+  "cleanup_removed_bytes": 2173857541,
+  "progress": "Only the standalone histogram/pooled APIs report one-task progress. Plane/pooled image execution uses named solver stages without resetting the caller plane counter. Managed four-plane progress is exactly (0,4)..(4,4).",
+  "initial_failures": [
+    {
+      "host": "windows",
+      "receipt": {
+        "path": "build/p10b-pooled-threshold001/windows-python003/receipt.json",
+        "bytes": 87,
+        "sha256": "764527fedfdf1da863bd8c05fcb6023bc420bfd18611b868d920aa471777b26f"
+      },
+      "junit": {
+        "path": "build/p10b-pooled-threshold001/windows-python003/pytest.xml",
+        "bytes": 20289,
+        "sha256": "ec395e8f63656aa1c1384c33d26ff85414e9c3bafe0046c2079f384aa332d966"
+      },
+      "log": {
+        "path": "build/p10b-pooled-threshold001/windows-python003.log",
+        "bytes": 928,
+        "sha256": "56ff742d6d17e89a5d6a9437bff979e4fdffb62c93d0b7c087a00383f9f49f94"
+      },
+      "observed": "New progress/reentry test used a uniform histogram that Intermodes correctly refuses. Changed only that callback test to an established bimodal 0/200 input; no product relaxation."
+    },
+    {
+      "host": "linux",
+      "receipt": {
+        "path": "build/p10b-pooled-threshold001/linux-python003/receipt.json",
+        "bytes": 87,
+        "sha256": "764527fedfdf1da863bd8c05fcb6023bc420bfd18611b868d920aa471777b26f"
+      },
+      "junit": {
+        "path": "build/p10b-pooled-threshold001/linux-python003/pytest.xml",
+        "bytes": 20288,
+        "sha256": "7e27ae39e1a1ab1855abba55f9f84abe8fac35e9cda476b9bd449cebe46068ff"
+      },
+      "log": {
+        "path": "build/p10b-pooled-threshold001/linux-python003.log",
+        "bytes": 934,
+        "sha256": "b78b3412aabdfb80f0dae398931a17a04b8bce22102715459030b9534cf0c68d"
+      },
+      "observed": "New progress/reentry test used a uniform histogram that Intermodes correctly refuses. Changed only that callback test to an established bimodal 0/200 input; no product relaxation."
+    }
+  ],
+  "retained_intermediate_source": [
+    {
+      "path": "build/p10b-pooled-threshold001/source-freeze003/src/native/analysis.cpp",
+      "bytes": 16554,
+      "sha256": "68928f93249d8c213726bf4596d6ac80ee0e15760fb83d8958a9986fbdb984cc"
+    },
+    {
+      "path": "build/p10b-pooled-threshold001/source-freeze003/src/native/auto_threshold.cpp",
+      "bytes": 7496,
+      "sha256": "5992a34f3af35bdce16b9bd74af4ec844ebe901ba73a64d0b3117aa5c1ecdbc8"
+    },
+    {
+      "path": "build/p10b-pooled-threshold001/source-freeze003/src/native/auto_threshold_internal.hpp",
+      "bytes": 214,
+      "sha256": "a2e97dcb36bc70dd4823a03ad0df0564af169dc0839c5f9152ec06e14f4493be"
+    },
+    {
+      "path": "build/p10b-pooled-threshold001/source-freeze003/src/native/auto_threshold_stack.cpp",
+      "bytes": 5074,
+      "sha256": "419574ec8ca220d48d2f76568d79923c699f408d3891bf1309e4f3a86f37f61c"
+    },
+    {
+      "path": "build/p10b-pooled-threshold001/source-freeze003/tests/python/test_pooled_threshold.py",
+      "bytes": 8644,
+      "sha256": "2c571fb3af5f90f4afa514abdb39013dfcc643ec3af03a3bdeaae832275489c4"
+    }
+  ]
+}

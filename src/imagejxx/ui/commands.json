@@ -2053,6 +2053,14 @@
         "kind": "bool",
         "choices": [],
         "optional": false
+      },
+      {
+        "name": "stack_histogram",
+        "label": "Use stack histogram",
+        "default": false,
+        "kind": "bool",
+        "choices": [],
+        "optional": false
       }
     ]
   },

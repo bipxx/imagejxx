@@ -10403,8 +10403,10 @@ void Window::Impl::dialogs() {
       ImGui::PushID(name.c_str());
       if (kind == "bool") {
         bool v = boolean(value);
-        if (ImGui::Checkbox(label.c_str(), &v))
+        if (ImGui::Checkbox(label.c_str(), &v)) {
           value = v;
+          if(dialog.id=="auto_mask" && name=="stack_histogram" && v)allSlices=true;
+        }
       } else if (kind == "float" && spacingRange && value.is_number()) {
         double v = number(value);
         ImGui::SetNextItemWidth(390);
@@ -10621,8 +10623,12 @@ void Window::Impl::dialogs() {
       ImGui::TextDisabled(
           "Converts every slice; the active selection is preserved.");
     else if (dialog.operation) {
+      const bool pooled=dialog.id=="auto_mask" && boolean(get(dialog.values,"stack_histogram"));
+      if(pooled)allSlices=true;
+      ImGui::BeginDisabled(pooled);
       ImGui::Checkbox("Process all slices", &allSlices);
-      dialog.controls["all_slices"] = itemControl();
+      dialog.controls["all_slices"] = itemControl(!pooled);
+      ImGui::EndDisabled();
       dialog.controls["all_slices"]["value"] = allSlices;
     }
     const auto extractionSource = dialog.axisPlaneSource
@@ -10943,10 +10949,11 @@ void Window::Impl::dialogs() {
           auto p = parse();
           auto d = doc();
           auto id = dialog.id;
-          const auto workspace = legacy_operation_workspace(id,d->nativeSnapshot(),false,d->slice(),
+          const bool poolPreview=id=="auto_mask" && p.value("stack_histogram",false) && allSlices;
+          const auto workspace = legacy_operation_workspace(id,d->nativeSnapshot(),poolPreview,d->slice(),
                                                              extraWorkspace(id, d->frame(), p));
           start([source = d->snapshot(), id,
-                 p = std::move(p)] { return source.compute(id, p, false); },
+                 p = std::move(p),poolPreview] { return source.compute(id, p, poolPreview); },
                 d, false, "", "Preview: " + dialog.title, workspace);
           jobPreview = true;
         });

@@ -62,8 +62,8 @@ credits Landini, Celebi and Schindelin for the implementations and documents the
 published algorithms. No additional runtime dependency is introduced.
 
 These checks cover the six histogram methods and current shared operation form.
-Complete ImageJ/Fiji plugin options still require pooled stack-histogram and
-threshold-display workflows, full scientific/ROI targeting,
+Complete ImageJ/Fiji plugin options still require threshold-display workflows,
+full scientific/ROI interaction and reference qualification,
 upstream image/display scaling and overflow/tie coverage, formal reference
 inventory binding and platform/accessibility/performance qualification. The
 other twelve methods also retain their existing reference obligations.
@@ -105,6 +105,70 @@ literal whole-image masks for all eighteen methods and three pixel types,
 managed workspace admission, failed publication, callback cancellation, saved
 workflow replay and actual checkbox input in both native hosts.
 
-Pooled stack histograms, threshold-display integration, persistent last-used
+Threshold-display integration, persistent last-used
 plugin options and complete scientific/ROI/reference/platform qualification
 remain open.
+
+## Pooled stack histograms
+
+**Use stack histogram** selects and locks **Process all slices** in the ordinary
+Z-stack Auto Threshold form. The captured stack contributes one histogram and
+one threshold, which is applied to every selected slice. Preview shows the
+current slice using that same pooled level; it does not silently revert to a
+per-slice histogram. Uncheck the stack-histogram option to return to independent
+per-plane processing. Both Dear ImGui launch modes record and replay the flag.
+
+The C++ API is in `imagejxx/auto_threshold_stack.hpp`. The Python interface accepts
+an immutable resolved target, including explicit scientific C/Z/T positions and
+active or positioned ROI masks:
+
+```python
+owner = imagejxx.Document(imagejxx.Dataset(volume, axes="ZYX"))
+app = imagejxx.Application()
+app.adopt(owner)
+target = app.resolve_target(imagejxx.TargetRequest(
+    imagejxx.TargetScope.ALL_Z, roi=imagejxx.RoiPolicy.WHOLE_PLANE))
+summary = imagejxx.pooled_auto_threshold(target, "huang2", bins=65536)
+job = app.submit("auto_mask", target, {
+    "method": "huang2", "bins": 65536, "stack_histogram": True})
+job.wait()
+app.publish(job)
+```
+
+All eighteen methods support pooling under the existing method conventions.
+The source must be scalar with finite-only sample policy. The selected sample
+count is limited to INT32_MAX, and bins must be 2–65,536 (zero requests 256).
+Unsigned inputs retain their full type histogram range; float inputs use the
+global selected minimum/maximum. The returned `selected_samples` counts ROI
+members before endpoint exclusion. RGB, nonfinite-policy and volume-mode targets
+refuse. No selected or no eligible samples also refuse without publication.
+
+Histogram estimation visits only ROI members. Every acquired source plane is
+validated for finite samples, including pixels outside the ROI. Empty masks do
+not acquire a source plane. Histogram construction uses two bounded scans with
+one plane and mask at a time; legacy mean/constant shortcuts can finish after
+the first scan. Source providers must remain immutable across reads. The code
+does not concatenate the stack into an image or sample vector.
+
+The standalone pooled API accepts cancellation, checkpoint and progress
+callbacks. Its progress reports one task from 0/1 to 1/1. Managed execution keeps
+overall plane progress separate from the named histogram/solver stages, so the
+solver does not reset a stack job's plane counter. Callback reentry without new
+callbacks is supported; cancellation from the completion callback refuses the
+result before return or publication.
+
+The helper's working-byte estimate covers dense plane/mask buffers, histogram
+tables and rounded raster admission. Frozen arguments, other ROI geometry
+scratch, opaque callbacks, provider caches, source/history, allocation overhead
+and process memory remain external. Managed execution additionally reserves
+staged output planes before admission. Preview currently stages the selected
+stack's detached outputs; this is functional parity, not a large-data latency or
+global memory certification. Cancellation and callback exceptions discard work.
+
+Public target execution retains its existing preservation/type policies for
+untargeted positions and ROI pixels; the ordinary desktop retains its legacy
+whole-stack type-conversion policy. Display-only navigation does not retarget a
+captured command. Pixel/metadata/selection changes invalidate publication under
+the existing target dependencies. Complete scientific target controls in the
+threshold UI, threshold-display integration and reference/performance/platform
+qualification remain open.
