@@ -9,7 +9,8 @@
           "docs/DESKTOP.md",
           "docs/PLAN.md",
           "docs/parity/README.md",
-          "docs/parity/reviews/p09q-preferences-reslice001.json"
+          "docs/parity/reviews/p09q-preferences-reslice001.json",
+          "docs/parity/reviews/p09r-editor-integration001.json"
         ],
         "implementation": [
           "include/imagejxx/settings.hpp",
@@ -55,7 +56,8 @@
       "verification": [
         "m2-settings-foundation-windows-2026-10-10",
         "m2-m6-binary-options-windows-2026-10-10",
-        "p09q.preferences-reslice.functional.001"
+        "p09q.preferences-reslice.functional.001",
+        "p09r.editor-integration.functional.001"
       ]
     },
     {
@@ -324,7 +326,8 @@
           "docs/COMPATIBILITY.md",
           "docs/DESKTOP.md",
           "docs/PLAN.md",
-          "docs/parity/README.md"
+          "docs/parity/README.md",
+          "docs/parity/reviews/p09r-editor-integration001.json"
         ],
         "implementation": [
           "include/imagejxx/binary.hpp",
@@ -364,7 +367,8 @@
       "required_work": "Foreground/background convention, iteration count, neighbor count, edge policy and output convention",
       "status": "in_progress",
       "verification": [
-        "m2-m6-binary-options-windows-2026-10-10"
+        "m2-m6-binary-options-windows-2026-10-10",
+        "p09r.editor-integration.functional.001"
       ]
     },
     {
@@ -1166,7 +1170,8 @@
           "docs/packets/P06p-planar-annotations.md",
           "docs/parity/reviews/p09p-scientific-ui001.json",
           "docs/CI.md",
-          "docs/parity/reviews/p09q-preferences-reslice001.json"
+          "docs/parity/reviews/p09q-preferences-reslice001.json",
+          "docs/parity/reviews/p09r-editor-integration001.json"
         ],
         "implementation": [
           "CMakeLists.txt",
@@ -1264,7 +1269,8 @@
         "p06o.bilinear.functional.001",
         "p06p.planar.functional.001",
         "p09p.scientific-ui.functional.001",
-        "p09q.preferences-reslice.functional.001"
+        "p09q.preferences-reslice.functional.001",
+        "p09r.editor-integration.functional.001"
       ]
     },
     {
@@ -1293,7 +1299,8 @@
           "docs/SESSION_FORMAT.md",
           "docs/packets/P06a-scientific-session-codec.md",
           "docs/parity/reviews/p09p-scientific-ui001.json",
-          "docs/CI.md"
+          "docs/CI.md",
+          "docs/parity/reviews/p09r-editor-integration001.json"
         ],
         "implementation": [
           "include/imagejxx/dataset.hpp",
@@ -1344,7 +1351,8 @@
       "verification": [
         "m1-m3-foundation-windows-2026-10-10",
         "m1-document-transactions-windows-2026-10-10",
-        "p09p.scientific-ui.functional.001"
+        "p09p.scientific-ui.functional.001",
+        "p09r.editor-integration.functional.001"
       ]
     },
     {
@@ -180110,6 +180118,29 @@
         "total": 317
       },
       "scope": "317 selected checks per platform, 512 actual UI observations/34340 frames; native preferences and 12 transport checks per platform. Full family/hosted acceptance remains open."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-21",
+      "id": "p09r.editor-integration.functional.001",
+      "identity": {
+        "qualification": {
+          "bytes": 9851,
+          "path": "docs/parity/reviews/p09r-editor-integration001.json",
+          "sha256": "316472301336f012ba277958faf4de0d059e508aa048a8037bf8020e1dab48de"
+        }
+      },
+      "platform": "Windows/Linux installed C++ and isolated Python Dear ImGui hosts",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 1760,
+        "report": "build/p09r-editor-integration001/windows-python005/pytest.xml",
+        "skipped": 0,
+        "total": 1760
+      },
+      "scope": "1760 selected checks per platform; 32 persistent-renderer observations/768 frames, native preferences and 15 transport checks per platform. Hosted macOS and full capability acceptance remain open."
     }
   ]
 }

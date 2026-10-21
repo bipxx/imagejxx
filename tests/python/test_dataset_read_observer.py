@@ -258,14 +258,16 @@ def test_observation_keeps_quiet_nan_bits_policy_and_eager_editability():
     ordinary = source.with_calibration(calibrated.calibration).with_plane(replacement, z=0)
     ordinary_owner = ij.Document(ordinary, "Ordinary quiet NaN")
     refusals = []
+    invalid_bits = bits[0].copy()
+    invalid_bits[0, 0] = 0x7F800001  # Signaling NaN is outside the quiet-only policy.
     for candidate_owner in (ordinary_owner, owner):
         before = candidate_owner.snapshot()
         before_counts = counts(observer)
         edit = candidate_owner.begin_edit()
-        # This existing transaction binding admits finite NumPy images only.
-        # Observation must preserve the ordinary owner's atomic refusal.
+        # Both observed and ordinary owners honor their explicit quiet-NaN
+        # policy and atomically refuse a signaling payload outside that policy.
         with pytest.raises(ValueError) as refusal:
-            edit.replace_plane(bits[0].view(np.float32), z=0)
+            edit.replace_plane(invalid_bits.view(np.float32), z=0)
         refusals.append(refusal.value)
         after = candidate_owner.snapshot()
         assert edit.active and after.shares_data(before)
@@ -287,7 +289,8 @@ def test_observation_keeps_quiet_nan_bits_policy_and_eager_editability():
     # publish that immutable Dataset through the still-active observed transaction.
     accepted = owner.snapshot().dataset.with_plane(bits[0].view(np.float32), z=0)
     assert accepted.sample_policy == policy and counts(observer) == (1, 1, False)
-    edit.replace_dataset(accepted)
+    edit.replace_plane(bits[0].view(np.float32), z=0)
+    assert edit.preview().dataset.sample_policy == accepted.sample_policy
     owner.commit(edit)
     assert not edit.active and owner.undo_steps == 1
     before_read = counts(observer)

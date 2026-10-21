@@ -1,5 +1,22 @@
 # ImageJ and Fiji gap closure plan
 
+**Persistent renderer/editor checkpoint, 2026-10-21 (work in progress):** CI
+now supplies the eight existing persistent-session C++ cases, retaining their
+original absolute capture roots and raw archival copies. It preserves all 1,102
+prior definitions and adds one aggregate launch. Independent readers verify both
+hosts' lifetime, physical input, initialization/frame recovery and resource cleanup.
+Workspace extension and binary-control checks follow current public contracts;
+substack checks cover an independently derived oblique origin and strided spacing.
+Quiet-NaN transactions retain exact bits and atomically refuse signaling NaNs.
+A hosted macOS native test exposed directory reads reported as EOF; preferences
+now explicitly refuse directories before parsing. Both rebuilt Windows/Linux
+profiles pass the same 1,760 checks with no skips, native preferences and 15
+transport checks per platform. 32 persistent-session observations cover 768 frames.
+See [the scoped receipt](parity/reviews/p09r-editor-integration001.json).
+macOS confirmation, complete hosted acceptance, missing reference/capture inputs
+and the stale Auto Contrast evidence gate remain open. All99 stays 43 in progress /
+56 open / 0 complete; all 96 format variants remain partial.
+
 **Preferences and reslice integration checkpoint, 2026-10-21 (work in progress):**
 strict native preferences loading now preserves Linux filesystem read failures as
 I/O errors, while recovery retains defaults, warnings and blocked automatic

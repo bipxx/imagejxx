@@ -65,7 +65,7 @@ The runner records these measurements and supplies both axis-range memory-check
 contracts. These values come from the independent fixture, rather than from the
 operation's working-set estimate; the readers retain their exact byte formulas.
 The runner first invokes `scripts/ci_observations.py` against the installed C++
-application. Its 1,102-case matrix captures rank filters, rounded creation
+application. Its 1,103-launch matrix captures rank filters, rounded creation
 and saved selections, ROI import/export, saved-selection budget behavior, and
 resize/rotate/move modifiers and directional shadows. The planar selection matrix
 covers 621 creation/edit/recovery cases across XY, XZ and YZ, including every
@@ -87,11 +87,19 @@ Float32 finite/quiet-NaN/IEEE failure and recovery. They retain each reader's
 flat or nested paths. Input hashes are mandatory; manifest byte counts are also
 enforced when present, and captures refuse fixture files over 64 MiB. Older
 SHA-only manifests record the measured size without changing the committed
-fixture metadata. Twelve standard-library runner checks cover both manifest
+fixture metadata. Fifteen standard-library runner checks cover both manifest
 schemas, corruption refusal, Float32 argument/transport ordering and legacy editor
 envelope preservation/refusal, and complete path-only index membership, identities
 and corruption refusal. The native
 workflow jobs run these checks on every operating system before building C++.
+One aggregate launch now supplies all eight existing persistent-renderer cases
+to `IMAGEJXX_SESSION_CPP_REPORT`. The runner checks ordered complete membership,
+completion and host identity, then preserves the raw report and artifacts.
+The reader uses the original capture root because each case binds its absolute
+directory; byte-identical transport copies are retained for archival. Actual
+session lifetime, input, failure recovery and resource behavior remain assertions
+of the independent reader. S07's deliberate initialization failure has an empty
+initial lifecycle list and a separately observed recovery.
 Eight scientific shadow captures additionally check the actual direction editor,
 private linked preview, all-Z Apply, retained workflow rows and Undo/Redo through
 the same C++ host consumed by the independent Python tests.

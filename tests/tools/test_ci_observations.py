@@ -132,6 +132,71 @@ class LegacyEditorCaptureInputs(unittest.TestCase):
             self.invoke("scientific-process", report)
 
 
+class PersistentSessionCaptureInputs(unittest.TestCase):
+    """Aggregate transport checks only; real input proofs use installed readers."""
+    def invoke(self, root, report):
+        output = root / "observations"
+        def observer(argv, **kwargs):
+            self.assertEqual(argv[1:3], ["--headless-session-consumer-test", "--consumer-dir"])
+            actual = Path(argv[-1]); actual.mkdir()
+            for row in report["cases"]:
+                if isinstance(row, dict): row["directory"] = str(actual / row["case_id"])
+            self.raw = (json.dumps(report, indent=2) + "\n").encode()
+            (actual / "imgui-cpp.json").write_bytes(self.raw)
+            (actual / "artifact.bin").write_bytes(b"preserved session artifact")
+            return subprocess.CompletedProcess(argv, 0)
+        with patch.object(capture, "cases", return_value=iter([
+                ("headless-session", "legacy", ["--headless-session-consumer-test"])])):
+            with patch.object(capture.subprocess, "run", side_effect=observer):
+                return capture.capture(output, sys.executable, root)
+
+    @staticmethod
+    def report():
+        return dict(schema_version=1, contract_id="p02a.headless-session.001",
+            context="imgui_cpp", status="passed", acceptance_claim=False,
+            cases=[dict(case_id=f"S{i:02d}", contract_id="p02a.headless-session.001",
+                        context="imgui_cpp", status="passed", acceptance_claim=False,
+                        # S07 deliberately fails initialization before recovery.
+                        frames=[{}], lifecycle=[] if i == 7 else [{}]) for i in range(1, 9)])
+
+    def test_complete_aggregate_keeps_raw_report_and_artifact_bytes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            environment = self.invoke(root, self.report())
+            report = Path(environment["IMAGEJXX_SESSION_CPP_REPORT"])
+            self.assertEqual(report.read_bytes(), self.raw)
+            self.assertEqual(report, root / "observations/private/headless-session/legacy/capture/imgui-cpp.json")
+            copied = root / "observations/reports/headless-session/legacy/imgui-cpp.json"
+            self.assertEqual(copied.read_bytes(), self.raw)
+            self.assertEqual(Path(json.loads(self.raw)["cases"][0]["directory"]).parent, report.parent)
+            self.assertEqual((report.parent / "artifact.bin").read_bytes(), b"preserved session artifact")
+            receipt = json.loads((root / "observations/receipt.json").read_bytes())
+            self.assertEqual(receipt["state"], "observed")
+            self.assertTrue(receipt["cases"][0]["legacy_probe_envelope"])
+            self.assertFalse(receipt["acceptance_claim"])
+
+    def test_incomplete_or_reordered_membership_is_refused(self):
+        for change in ("missing", "duplicate", "reordered", "nonobject"):
+            with self.subTest(change=change), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory).resolve(); report = self.report()
+                if change == "missing": report["cases"].pop()
+                elif change == "duplicate": report["cases"][-1] = report["cases"][0]
+                elif change == "reordered": report["cases"].reverse()
+                else: report["cases"][-1] = None
+                with self.assertRaisesRegex(ValueError, "Persistent session probe did not finish"):
+                    self.invoke(root, report)
+                self.assertFalse((root / "observations/reports/headless-session").exists())
+
+    def test_unfinished_or_acceptance_claiming_member_is_refused(self):
+        for field, value in (("context", "imgui_python"), ("status", "running"),
+                             ("frames", []), ("lifecycle", {}), ("acceptance_claim", True)):
+            with self.subTest(field=field), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory).resolve(); report = self.report()
+                report["cases"][0][field] = value
+                with self.assertRaisesRegex(ValueError, "Persistent session probe did not finish"):
+                    self.invoke(root, report)
+
+
 class IndexedCaptureInputs(unittest.TestCase):
     """Index transport only; raw UI behavior belongs to the installed readers."""
     def setUp(self):

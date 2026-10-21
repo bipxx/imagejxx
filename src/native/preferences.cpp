@@ -159,6 +159,11 @@ fs::path nativePath(const std::string &utf8) {
 }
 
 std::string readFile(const fs::path &path) {
+  // Some standard libraries report directory reads as EOF rather than an I/O
+  // failure. Preserve the filesystem error before JSON parsing on every host.
+  if (fs::is_directory(path))
+    throw fs::filesystem_error("Could not read preferences", path,
+                              std::make_error_code(std::errc::is_a_directory));
   std::ifstream stream(path, std::ios::binary);
   if (!stream.is_open())
     throw fs::filesystem_error("Could not open preferences", path,

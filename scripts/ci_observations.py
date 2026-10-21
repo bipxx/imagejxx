@@ -221,6 +221,7 @@ def cases():
         ("ieee-viewing", "--ieee-viewing-ui-case", [f"IEEE{i:02d}" for i in range(1, 5)]),
         ("native-workflow", "--native-workflow-ui-case", [None]),
         ("native-batch", "--native-workflow-batch-ui-case", [None]),
+        ("headless-session", "--headless-session-consumer-test", [None]),
     ]
     groups.extend((group, flag, variants) for group, (flag, _, _, variants) in INDEXED_READERS.items())
     groups.extend((group, flag, [None]) for group, (flag, _) in EDITOR_READERS.items())
@@ -259,6 +260,9 @@ def reader_environment(output):
         "IMAGEJXX_VARIANCE_CPP_REPORT": reports / "rank/R14/case.json",
     }
     environment["IMAGEJXX_THRESHOLD_CPP_REPORT"] = reports / "scientific-threshold/T10/case.json"
+    # Session rows bind their absolute capture directory. Readers must use the
+    # original root; retain byte-identical transport copies for archival only.
+    environment["IMAGEJXX_SESSION_CPP_REPORT"] = Path(output).resolve() / "private/headless-session/legacy/capture/imgui-cpp.json"
     for group, (_, name, _, _) in INDEXED_READERS.items():
         environment[name] = Path(output).resolve() / (group + "-index.json")
     for group, (_, name) in EDITOR_READERS.items():
@@ -365,6 +369,8 @@ def capture(output, executable, root, environment=None):
                 if any(fixture_pin[key] != value for key, value in expected.items()):
                     raise ValueError(f"TIFF fixture changed: {fixture}")
                 argv = [str(executable), *arguments[:-1], str(actual), str(fixture)]
+            elif group == "headless-session":
+                argv = [str(executable), *arguments, "--consumer-dir", str(actual)]
             else:
                 argv = [str(executable), *arguments, str(actual)]
             item = {"group": group, "case": case, "argv": argv, "state": "running",
@@ -382,11 +388,30 @@ def capture(output, executable, root, environment=None):
             item.update(exit_code=process.returncode, elapsed_seconds=time.monotonic() - started)
             if process.returncode:
                 raise subprocess.CalledProcessError(process.returncode, argv)
-            report = actual / ("report.json" if group == "ieee-viewing" else "case.json")
+            report = actual / ("report.json" if group == "ieee-viewing" else
+                               "imgui-cpp.json" if group == "headless-session" else "case.json")
             if not report.is_file() or report.stat().st_size > 128 * 1024 * 1024:
                 raise ValueError(f"Missing or oversized observation report: {report}")
             observation = json.loads(report.read_bytes())
-            if group == "ieee-viewing":
+            if group == "headless-session":
+                rows = observation.get("cases")
+                if (observation.get("schema_version") != 1
+                        or observation.get("contract_id") != "p02a.headless-session.001"
+                        or observation.get("context") != "imgui_cpp"
+                        or observation.get("status") != "passed"
+                        or observation.get("acceptance_claim") is not False
+                        or not isinstance(rows, list)
+                        or any(not isinstance(row, dict) for row in rows)
+                        or [row.get("case_id") for row in rows] != [f"S{i:02d}" for i in range(1, 9)]
+                        or any(row.get("context") != "imgui_cpp"
+                               or row.get("contract_id") != "p02a.headless-session.001"
+                               or row.get("status") != "passed"
+                               or row.get("acceptance_claim") is not False
+                               or not row.get("frames")
+                               or not isinstance(row.get("lifecycle"), list) for row in rows)):
+                    raise ValueError(f"Persistent session probe did not finish: {report}")
+                item["legacy_probe_envelope"] = True
+            elif group == "ieee-viewing":
                 # The existing IEEE probe predates the observation vocabulary.
                 # Preserve its raw report; its "passed" only means probe completion.
                 if (observation.get("state") != "passed" or observation.get("case_id") != case

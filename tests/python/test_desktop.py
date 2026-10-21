@@ -226,7 +226,9 @@ def test_imgui_sessions_workflows_and_calibration(editor, tmp_path):
     editor.wait()
     assert editor.document.data[3, 2] == before[3, 2] + 3
     editor.action("save_document", path=str(tmp_path / "python-imgui.ijx"))
-    restored, rows, steps = load_session(tmp_path / "python-imgui.ijx")
+    extensions = {}
+    restored, rows, steps = load_session(tmp_path / "python-imgui.ijx", extensions=extensions)
+    assert extensions == {"imagejxx_workspace": {"version": 1, "active_index": 0}}
     np.testing.assert_array_equal(restored[0].data, editor.document.data)
     assert rows == editor.results and steps == editor.workflow
     editor.action("selection_mask")
@@ -291,13 +293,15 @@ def test_imgui_channel_split_keeps_volume_and_calibration(editor, channels, dtyp
 def test_imgui_substack_preserves_spatial_calibration(editor, step):
     source = Document(np.arange(6 * 5 * 6, dtype=np.uint16).reshape(6, 5, 6),
                       "Calibrated volume", is_stack=True)
-    source.set_calibration(Calibration(0.5, 0.75, 3, "um", 2, "s"))
+    source.set_calibration(Calibration(0.5, 0.75, 3, "um", 2, "s",
+        origin=(11, -7, 19), direction=(1, .25, -.5, .5, -1, .125, 0, .75, 1.5)))
     editor.add_document(source)
     editor.action("substack", first=2, last=6, step=step)
     out = editor.document
     np.testing.assert_array_equal(out.data, source.data[1:6:step])
     expected = asdict(source.calibration)
     expected["pixel_depth"] *= step
+    expected["origin"] = (9.5, -6.625, 23.5)
     assert asdict(out.calibration) == expected
     assert asdict(editor.documents[0].calibration) == asdict(source.calibration)
 
@@ -336,11 +340,16 @@ def test_imgui_single_document_save_preserves_workspace(editor, tmp_path, reopen
         editor.action("save_document", path=str(alias))
     assert workspace.read_bytes() == before
     editor.action("save_document", path=str(tmp_path / "separate.ijx"))
-    assert len(load_session(tmp_path / "separate.ijx")[0]) == 1
-    assert len(load_session(workspace)[0]) == 2
+    single_extensions, workspace_extensions = {}, {}
+    assert len(load_session(tmp_path / "separate.ijx", extensions=single_extensions)[0]) == 1
+    assert single_extensions == {"imagejxx_workspace": {"version": 1, "active_index": 0}}
+    assert len(load_session(workspace, extensions=workspace_extensions)[0]) == 2
+    assert workspace_extensions == {"imagejxx_workspace": {"version": 1, "active_index": 1}}
     editor.apply_operation("add", {"value": 3}, asynchronous=False)
     editor.action("save_workspace", path=str(workspace))
-    restored, _, _ = load_session(workspace)
+    extensions = {}
+    restored, _, _ = load_session(workspace, extensions=extensions)
+    assert extensions == {"imagejxx_workspace": {"version": 1, "active_index": 1}}
     assert len(restored) == 2
     np.testing.assert_array_equal(
         restored[editor.active_index].data, editor.document.data

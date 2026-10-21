@@ -372,12 +372,15 @@ def test_actual_integer_checkbox_preview_apply_controls(desktop, operation):
         "black_background": True,
         "pad_edges": False,
     }
-    assert {key: value["kind"] for key, value in dialog["controls"].items()} == {
+    assert {key: dialog["controls"][key]["kind"] for key in dialog["parameters"]} == {
         "iterations": "int",
         "neighbors": "int",
         "black_background": "bool",
         "pad_edges": "bool",
     }
+    assert set(dialog["controls"]) == set(dialog["parameters"]) | {
+        "all_slices", "apply", "preview", "cancel"}
+    assert dialog["controls"]["all_slices"]["value"] is False
     events = typing(dialog["controls"]["iterations"]["point"], "2")
     events += typing(dialog["controls"]["neighbors"]["point"], "3")
     events += click(dialog["controls"]["black_background"]["point"])

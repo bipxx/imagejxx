@@ -1,0 +1,262 @@
+{
+  "state": "qualified_feature_and_ci_increment",
+  "objective_complete": false,
+  "scope": "Portable preferences directory guard, persistent-renderer CI inputs and current editor behavior checks.",
+  "features": [
+    "Preferences explicitly reject directory paths with a filesystem error before opening the stream. This covers standard libraries that report a directory read as EOF. Existing strict/recovery and block/UTF-8 checks stay active.",
+    "CI adds one aggregate launch for eight ordered persistent-renderer cases, preserving the original report and capture directory, plus byte-identical archival copies. The independent reader proves lifecycle, input, failure recovery and resource behavior.",
+    "Workspace tests retain and assert exact active-index extensions. Substack tests independently assert the shifted origin under an oblique affine and strided Z spacing.",
+    "Binary UI tests distinguish parameter kinds from scope/action controls while retaining actual Preview, Apply, workflow and numerical assertions.",
+    "Quiet-NaN editing tests retain exact payload/negative-zero bits and atomic signaling-NaN refusal for observed and ordinary owners, including history and no-read checks."
+  ],
+  "tests": {
+    "windows": {
+      "passed": 1760,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_preferences": "passed",
+      "transport_runner_checks": 15,
+      "observations": 16,
+      "frames": 384,
+      "junit": {
+        "path": "build/p09r-editor-integration001/windows-python005/pytest.xml",
+        "bytes": 283147,
+        "sha256": "1158ba2cff94e9c7bdb0287d508864b0bf0d9199111df61837750eedef1f01d7"
+      },
+      "compact_evidence": {
+        "path": "build/p09r-editor-integration001/windows-evidence002.json",
+        "bytes": 226051,
+        "sha256": "5f04e8e2dee706eb94434d506307d232599e4b2732abc94558b0a66fdcdb3810"
+      }
+    },
+    "linux": {
+      "passed": 1760,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_preferences": "passed",
+      "transport_runner_checks": 15,
+      "observations": 16,
+      "frames": 384,
+      "junit": {
+        "path": "build/p09r-editor-integration001/linux-python005/pytest.xml",
+        "bytes": 283148,
+        "sha256": "11293c16c9463b79e1936c7a364d68c2dfbb5cb408d3651ece1b12d73d47fb20"
+      },
+      "compact_evidence": {
+        "path": "build/p09r-editor-integration001/linux-evidence002.json",
+        "bytes": 225499,
+        "sha256": "b8ee64ed62a7e7c9ecf400bd7655f259edcd5372ca09fbe01a013fcac954eb3b"
+      }
+    }
+  },
+  "identical_case_ids": true,
+  "actual_persistent_sessions": {
+    "observations": 32,
+    "frames": 768,
+    "cases_per_host": 8,
+    "os_input_or_gpu_equivalence_claim": false
+  },
+  "ci": {
+    "state": "passed",
+    "previous": 1102,
+    "current": 1103,
+    "preserved_order": true,
+    "added": [
+      [
+        "headless-session",
+        "legacy",
+        [
+          "--headless-session-consumer-test"
+        ]
+      ]
+    ]
+  },
+  "products": {
+    "public_headers": 66,
+    "python_modules": 12,
+    "native_catalog_operations": 92,
+    "installed_sources_match": true,
+    "windows": "build/p09r-editor-integration001/windows-build001/installed",
+    "linux": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/install-p09r001"
+  },
+  "commercial": {
+    "new_dependencies": [],
+    "review": "scripts/check_licenses.py --desktop passed"
+  },
+  "baseline": {
+    "windows": {
+      "cases": 1686,
+      "passed": 1676,
+      "failed": 10
+    },
+    "intermediate": "Raw initial envelope refusal (S07 intentionally has no initial lifecycle events), copied-root mismatch and failed test attempts remain in verified archives. Both platforms passed 1702 checks before the portable preferences guard; the final rebuilt profiles pass all 1760 checks.",
+    "macos": {
+      "run": 39608533119,
+      "job": 119250995169,
+      "commit": "94f704793bfd4600e587b647104510bee4668263",
+      "native_passed": 142,
+      "native_failed": 1,
+      "failed_test": "native_preferences",
+      "error": "Directory read reached empty-JSON parsing under libc++",
+      "log": {
+        "path": "build/p09r-editor-integration001/macos-native002.log",
+        "bytes": 56796,
+        "sha256": "e1d0a0684b24eb378d71707f4a01ba55de92b950577bf0130e21b29c6cc1e379"
+      }
+    }
+  },
+  "cleanup": {
+    "removed_bytes": 2100713128,
+    "removed_files": 6315,
+    "crc_and_every_member_sha256_verified": true,
+    "archives": {
+      "windows": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09r-editor-integration001\\windows-scratch001.zip",
+        "bytes": 132832334,
+        "sha256": "6da9292b81bf86c69240b1dbd790c5f59314461df4ef5c9b0335e7c7ad5816eb"
+      },
+      "windows-final": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p09r-editor-integration001\\windows-final-scratch001.zip",
+        "bytes": 48167137,
+        "sha256": "79a93ad3f1d6341ea219e6d0b4d3bb6beab433471a2fe25ccaff3f3f86bf331c"
+      },
+      "linux": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09r-editor-integration001/linux-scratch001.zip",
+        "bytes": 174368539,
+        "sha256": "74659c45f43f69afc703e2273038ad43aa54f3627546cf8c83383abd9647b1a5"
+      },
+      "linux-final": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p09r-editor-integration001/linux-final-scratch001.zip",
+        "bytes": 65952184,
+        "sha256": "04b637b2aa6085dfe093c00b705887df61999ba9fbcc56844d594c248f9fe297"
+      }
+    },
+    "preserved": "Final installed products, useful caches, compact evidence, JUnit, native/Python receipts and original logs remain. All raw successful/failed capture attempts and copied environments remain in verified archives."
+  },
+  "plan_check": {
+    "state": "failed_preexisting",
+    "message": "Plan inventory check failed: histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed",
+    "first_mismatch": {
+      "path": "include/imagejxx/application.hpp",
+      "current_and_previous_commit_sha256": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    },
+    "action": "Refresh complete Auto Contrast consumer evidence; retain historical identities."
+  },
+  "hosted_baseline": {
+    "conclusion": "",
+    "headSha": "94f704793bfd4600e587b647104510bee4668263",
+    "jobs": [
+      {
+        "conclusion": "success",
+        "id": 119250994446,
+        "name": "Reviewed Linux scientific and desktop dependencies",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "id": 119250994894,
+        "name": "Complete headless C++ and installed SDK (ubuntu-latest)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "failure",
+        "id": 119250995034,
+        "name": "python (macos-latest, 3.12)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "id": 119250995154,
+        "name": "Complete headless C++ and installed SDK (windows-latest)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "failure",
+        "id": 119250995157,
+        "name": "python (macos-latest, 3.10)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "failure",
+        "id": 119250995169,
+        "name": "Complete headless C++ and installed SDK (macos-latest)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "",
+        "id": 119250995315,
+        "name": "python (windows-latest, 3.12)",
+        "status": "in_progress"
+      },
+      {
+        "conclusion": "failure",
+        "id": 119250995447,
+        "name": "python (windows-latest, 3.10)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "",
+        "id": 119251543985,
+        "name": "Complete Linux Python IO and ImGui (3.12)",
+        "status": "in_progress"
+      },
+      {
+        "conclusion": "",
+        "id": 119251544140,
+        "name": "Complete Linux Python IO and ImGui (3.10)",
+        "status": "in_progress"
+      }
+    ],
+    "status": "in_progress",
+    "url": "https://github.com/bipxx/imagejxx/actions/runs/39608533119"
+  },
+  "remaining": [
+    "Hosted macOS confirmation of the explicit directory guard; complete Linux Python and reviewed Windows/macOS IO/UI feature profiles.",
+    "Other missing reference/capture contracts, actual hosted regressions and stale historical evidence fingerprints.",
+    "All broader ImageJ/commercially usable Fiji capability and format requirements remain open."
+  ],
+  "inputs": [
+    {
+      "path": "src/native/preferences.cpp",
+      "bytes": 12171,
+      "sha256": "b826da224f4ea3636db7b1aab24dd988c93f0a0424bbf16562c03626603df21a"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 29498,
+      "sha256": "095de488917696cadc741a962bf364b1a727423bc6e8aed88d2c4ae98a358b8e"
+    },
+    {
+      "path": "tests/python/test_desktop.py",
+      "bytes": 20111,
+      "sha256": "71077eb5d33c086da375a5e96b07d8692dbff36f1cffdeb1d73ee86b26f82d7a"
+    },
+    {
+      "path": "tests/python/test_binary_options.py",
+      "bytes": 17029,
+      "sha256": "1aee34b0c3989a0f393028b4dfab90193bc6ea36020b49f05cbb8abc0cc7c937"
+    },
+    {
+      "path": "tests/python/test_dataset_read_observer.py",
+      "bytes": 15004,
+      "sha256": "611677817f626725d028f721f52a04a8a952c323f33b2b3c5b1ae06c4c938702"
+    },
+    {
+      "path": "tests/tools/test_ci_observations.py",
+      "bytes": 15603,
+      "sha256": "4fa88c9d2ecaf9a1455815c0e3aad177ad501ef57e8b134985b7ada6aaea74fd"
+    },
+    {
+      "path": "docs/CI.md",
+      "bytes": 13486,
+      "sha256": "15602e9ce35bb5bccf0c68f5c4171c7f0d64b98afc62cb2b6cf2fda01e54d80d"
+    },
+    {
+      "path": "docs/PLAN.md",
+      "bytes": 392782,
+      "sha256": "a192b9c4b65611e353bc03ade28d2d3a7cd3b5ab3dcc74a60b231720372398da"
+    }
+  ]
+}
