@@ -1,5 +1,21 @@
 # ImageJ and Fiji gap closure plan
 
+**Optional background viewport checkpoint, 2026-10-22 (work in progress):**
+Resources → Background virtual views now moves virtual ordinary/XYZ extraction,
+live range scans and CPU display rendering onto bounded native jobs in both
+ImGui launchers. Loading placeholders retain navigation; matching keys alone
+publish, and ordinary hover uses a charged completed surface without source IO.
+Document/mode/hidden-view/context cleanup cancels pending work. Re-enabling on a
+cached texture acquires its sampling surface. Windows/Linux each pass ten native
+suites, ten background repetitions, four hidden/recreated GL contexts and 1,585
+selected installed Python checks, including real virtual TIFF volumes. Temporary
+fixtures and redundant installs are archived/verified before cleanup.
+The option defaults false; whole-editor responsiveness, broader preview/channel/
+annotation input traces, resource/performance/platform acceptance and all other
+original gaps remain. Follow [remaining work](BACKGROUND_VIEWPORT.md) and the
+[scoped receipt](parity/reviews/p10z-background-views001.json). All99 remains
+47 in progress / 52 open / 0 complete; the Auto Contrast gate remains open.
+
 **Background viewport scheduler checkpoint, 2026-10-22 (work in progress):**
 A private native scheduler now stages CPU viewport results on two workers with
 16 total slots, including retiring work. Supersession discards stale ready and

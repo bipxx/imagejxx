@@ -1,36 +1,72 @@
-# Background viewport integration
+# Background viewport loading
 
-The native request scheduler in `src/desktop/viewport_jobs.*` is a tested
-foundation. It is not connected to either editor UI yet. G041 remains in
-progress; ordinary and XYZ virtual pixel acquisition can still block the UI.
+Preferences → Resources → **Background virtual views** enables asynchronous CPU
+rendering for virtual datasets in both ImGui launchers. It is opt-in, default
+`false`. Python uses `Editor.update_settings(async_viewport=True)`; C++ uses
+`Window::updateSettings({{"async_viewport", true}}, false)`. Eager datasets keep
+their existing rendering path. Runtime rank instrumentation also keeps its
+synchronous render path.
 
-The scheduler uses two workers and at most 16 slots, including canceled running
-requests and ready/failed results. The creator thread reserves declared peak
-render bytes before submission. Workers capture immutable inputs and return CPU
-surfaces. Superseding a view discards its old result and keeps its reservation
-until the old worker finalizes. Memory/capacity pressure returns pending without
-retaining an additional builder. Failed keys retain their error until a new key
-or explicit cancellation. Caller-held published frames own their reservations;
-release their CPU outputs before releasing the remaining working charge.
+Ordinary and linked XY/XZ/YZ requests capture immutable live/preview snapshots,
+resolved preview targets, T/C/Z, plane coordinate, display metadata and channel
+limits. Source extraction, live contrast-range scans, channel composition,
+legacy CPU overlay painting and threshold tinting run on native workers. GL
+uploads, styled annotations, ImGui and frontend publication stay on the creator
+thread. Linked navigation is processed before its render request; the ordinary
+canvas retains its established pre-input pixel snapshot.
 
-Keys must include every source, position, display and resource input. Peak bytes
-are a caller contract, not measured allocation/RSS. Providers that ignore
-cancellation can delay shutdown. Construct/destroy and consume frames on the
-creator thread; public operations reject other threads. Instantiate this helper
-lazily in Window integration so unused windows do not start extra workers.
+Loading views show a placeholder and keep their navigation controls active.
+Pending views expose no old scalar/RGB readback as current. Complete matching
+keys publish on the creator thread; superseded ready/running outputs are dropped.
+Ordinary hover/picker sampling uses its completed active-channel surface without
+synchronous source IO. This surface retains its actual capacity charge in the
+Render surfaces pool, independently of the shared virtual XY cache. Re-enabling
+background loading on an already cached texture acquires that sampling surface.
 
-## Integration sequence
+A lazy scheduler uses two workers and at most 16 slots, including ready, failed
+and retiring requests. It reserves declared peak render bytes before submission;
+XYZ includes an additional live XY range-plane allowance. Canceled workers keep
+their reservations until finalization. Temporary memory/capacity pressure returns
+pending without retaining an extra builder. Failed keys keep their error until
+source/display/position changes or cancellation. Document close, mode switch,
+hidden documents and context cleanup cancel their requests. Cancellation is
+cooperative: a custom provider that ignores it can delay final destruction.
 
-1. Freeze a complete ordinary/XYZ CPU render specification: immutable live and optional preview snapshots, resolved target, T/C/Z, orientation/fixed coordinate, display and threshold state, overlay treatment, channel limits, capture flags, source identity/revisions and render resource plan.
+These are managed reservations, not measured process or GPU memory. Provider,
+codec, transform/compositor internals and font/annotation/GUI allocations remain
+outside the declared surface quantities. Font assets are read by the existing
+CPU overlay renderer, rather than pinned as immutable image data. Other panels
+and legacy display actions can still synchronously read pixels. This increment
+does not claim whole-editor responsiveness, default-on behavior, every preview/
+annotation/channel combination, real-device performance or full platform parity.
 
-2. Move extraction/range/channel composition/RGB construction to a pure CPU builder; compare its results against current synchronous rendering for integer/float/IEEE, channel visibility/LUT, preview targeting and thresholds. Keep ImGui, GL, font/display-layer caches and frontend publication on the creator thread unless separately audited.
+Windows and Linux each pass ten native suites, ten repeated background-view
+runs, four hidden/recreated GL contexts and 1,585 selected installed Python
+checks with no failure/error/skip. Blocked-reader tests exercise ordinary wheel
+and focused linked page-key navigation, position supersession, independently
+calculated scalar/RGB orientations, worker-only reads, stable reuse, hover,
+mode/context/document cleanup and settings transitions. Captured channel preview
+and finite/quiet-NaN/IEEE range tests cover the CPU builder. Python uses real
+virtual scientific TIFF volumes. See the [scoped receipt](parity/reviews/p10z-background-views001.json).
 
-3. Submit only after aggregate render reservation admission. Pending ordinary and linked XYZ views display a loading placeholder and preserve navigation; their previous texture/readback must not be labeled as the new position. Wait rather than enqueue under temporary memory/capacity pressure; oversize requests report a bounded refusal.
+## Remaining integration and qualification
 
-4. Publish only matching complete keys on the creator thread. Source/position/preview/display changes supersede work. Transfer declared working leases into actual retained readback/logical texture leases; free CPU outputs before remaining working charge. Include fallback read, source and RGB capacity bounds in pure builders.
+1. Broaden actual UI input traces across preview targeting, channel projection
+modes, IEEE data, threshold state and legacy/styled annotations on both launchers.
+Compare pinned upstream fixtures before claiming ImageJ/Fiji numerical/UI parity.
 
-5. Hover/picker use the matching completed CPU surface or schedule a separate bounded sample. No synchronous pixel-read fallback while the background path is enabled. Avoid stale edits/samples during loading; camera/navigation remain usable.
+2. Audit remaining display/analysis actions and panels for synchronous source IO;
+move long reads behind captured requests without changing operation semantics.
+The legacy display-range action currently acquires pixels even for manual input.
 
-6. Cancel on document close, mode switch, preview invalidation, context teardown and disabled/hidden views; poll retired slots every frame, including frames with no visible documents. Lazily allocate viewport workers so unused windows do not gain threads. Preserve atomic preferences publication and cooperative shutdown semantics.
+3. Qualify file/provider replacement during active loads, hidden-window/session
+transitions, admission pressure across all surface consumers and uncooperative
+providers. Extend cancellation checkpoints in long CPU overlay/range operations
+where needed. Measure latency and resource usage on representative datasets and
+real GPUs before considering default-on behavior or configurable worker counts.
 
-7. Exercise real slow/blocking file-backed ordinary/XYZ views with navigation while blocked; source replacement and TCZ changes, stale ready/running results, multi-channel preview and IEEE ranges, memory pressure, read failures, hidden/recreated GL contexts, detached Python diagnostics and both launchers. Enable a public setting/default only once this integrated behavior qualifies. Keep the original inventory requirements/statuses and Auto Contrast gate unchanged.
+4. Preserve all original G041 requirements: other file-backed formats,
+tiled/pyramid storage, cache policies, incremental uploads, virtual output and
+workspace/materialization behavior. Provider/internal scratch accounting and
+whole-process performance remain separate. All original 99 inventory requirement
+and status triples, including the existing Auto Contrast gate, remain unchanged.

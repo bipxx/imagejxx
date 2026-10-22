@@ -469,7 +469,9 @@
           "docs/parity/reviews/p10v-view-cache001.json",
           "docs/SCIENTIFIC_TIFF_SERVICE.md",
           "docs/parity/reviews/p10w-canvas-reads001.json",
-          "docs/parity/reviews/p10x-render-memory001.json"
+          "docs/parity/reviews/p10x-render-memory001.json",
+          "docs/parity/reviews/p10z-background-views001.json",
+          "docs/BACKGROUND_VIEWPORT.md"
         ],
         "implementation": [
           "include/imagejxx/settings.hpp",
@@ -502,7 +504,11 @@
           "src/desktop/commands.cpp",
           "src/desktop/desktop.hpp",
           "src/desktop/virtual_view_cache.hpp",
-          "src/desktop/render_memory.hpp"
+          "src/desktop/render_memory.hpp",
+          "src/desktop/viewport_renderer.hpp",
+          "src/desktop/viewport_renderer.cpp",
+          "src/desktop/viewport_jobs.hpp",
+          "src/desktop/viewport_jobs.cpp"
         ],
         "tests": [
           "tests/native/test_settings.cpp",
@@ -530,7 +536,9 @@
           "tests/python/test_virtual_view_cache.py",
           "tests/native/test_canvas_reads.cpp",
           "tests/native/test_render_memory.cpp",
-          "tests/python/test_render_memory.py"
+          "tests/python/test_render_memory.py",
+          "tests/native/test_background_views.cpp",
+          "tests/python/test_background_views.py"
         ]
       },
       "id": "G010",
@@ -541,6 +549,7 @@
       ],
       "name": "Resource settings",
       "remaining": [
+        "The opt-in Background virtual views Boolean now controls shared C++/Python ordinary/XYZ worker rendering. Strict validation, persistence and actual Preferences control are covered. Default-on behavior, broader resource/preview/platform settings acceptance and all other original configuration requirements remain open.",
         "Shared ordinary/XYZ managed surface admission, retained diagnostic/logical texture charges, configuration and lifecycle release are functional. Provider/codec and transform/compositor internal scratch, annotation/font/GUI data, dialogs and other preview surfaces remain outside this managed viewer-surface pool. Complete cross-component resource/performance/platform qualification remains required.",
         "Metadata-only ordinary geometry/properties and stable render reuse under CPU cache eviction are functional. Aggregate linked XYZ, display/readback/cache/upload buffers and GPU texture budgets; whole-process or RSS accounting is not supplied. Other file-backed formats, tiled/pyramid storage/caches, incremental uploads, asynchronous viewport reads and stale-result rejection. Virtual output propagation, materialization/workspace serialization and complete provider/reference/resource/platform qualification.",
         "A persisted window-wide decoded virtual XY budget, capacity accounting, LRU eviction and detached counters are functional. Aggregate XYZ/display/readback/texture/upload/provider accounting and full resource qualification remain open.",
@@ -558,7 +567,8 @@
         "m1-job-resource-lifecycle-windows-2026-10-10",
         "p10v.view-cache.functional.001",
         "p10w.canvas-reads.functional.001",
-        "p10x.render-memory.functional.001"
+        "p10x.render-memory.functional.001",
+        "p10z.background-views.optional.001"
       ]
     },
     {
@@ -1652,7 +1662,8 @@
           "docs/parity/reviews/p10w-canvas-reads001.json",
           "docs/parity/reviews/p10x-render-memory001.json",
           "docs/parity/reviews/p10y-viewport-jobs001.json",
-          "docs/BACKGROUND_VIEWPORT.md"
+          "docs/BACKGROUND_VIEWPORT.md",
+          "docs/parity/reviews/p10z-background-views001.json"
         ],
         "implementation": [
           "include/imagejxx/dataset.hpp",
@@ -1675,7 +1686,9 @@
           "src/native/settings.cpp",
           "src/desktop/render_memory.hpp",
           "src/desktop/viewport_jobs.hpp",
-          "src/desktop/viewport_jobs.cpp"
+          "src/desktop/viewport_jobs.cpp",
+          "src/desktop/viewport_renderer.hpp",
+          "src/desktop/viewport_renderer.cpp"
         ],
         "tests": [
           "tests/native/test_dataset.cpp",
@@ -1698,7 +1711,9 @@
           "tests/native/test_canvas_reads.cpp",
           "tests/native/test_render_memory.cpp",
           "tests/python/test_render_memory.py",
-          "tests/native/test_viewport_jobs.cpp"
+          "tests/native/test_viewport_jobs.cpp",
+          "tests/native/test_background_views.cpp",
+          "tests/python/test_background_views.py"
         ]
       },
       "id": "G041",
@@ -1709,8 +1724,7 @@
       ],
       "name": "Large datasets",
       "remaining": [
-        "A private bounded CPU viewport job lifecycle is qualified, including stale-result rejection and canceled-worker memory ownership. It is not wired into the editors. Ordinary/XYZ pure render capture, loading/navigation, hover sampling, GL publication, lifecycle integration and both-launcher acceptance remain required; see docs/BACKGROUND_VIEWPORT.md.",
-        "Virtual TIFF/import, regional XYZ, worker histograms, bounded XY retention, metadata-only geometry and stable render reuse are functional. Managed ordinary/XYZ source-output/RGB/upload/readback/logical texture reservations are now shared. Provider/codec and transform/compositor internal scratch, annotation/font/GUI data, dialogs and other preview surfaces remain outside this managed viewer-surface pool. Complete cross-component resource/performance/platform qualification remains required. Four-byte logical texture charges do not measure physical driver allocations, queued storage or device overhead; whole-process/RSS guarantees are not supplied. Asynchronous viewport reads with stale-result rejection, other file-backed formats, tiled/pyramid storage/caches and incremental uploads. Virtual output propagation, materialization/workspace serialization, the existing Auto Contrast gate and every other original inventory requirement remain open."
+        "Optional ordinary/XYZ worker rendering, matching-key publication, pending navigation and matching hover surfaces now use the private bounded scheduler. Broader actual input traces and acceptance across all previews, channel modes, IEEE/threshold and annotation combinations on both launchers, plus file/provider replacement while running. Other legacy display/analysis actions and panels can synchronously acquire pixels; manual display-range action currently acquires a frame even for manual bounds. Whole-editor responsiveness is not claimed. Provider/codec/transform/compositor internal scratch, font/annotation/GUI allocations, driver overhead and whole-process resource/latency qualification remain separate. Custom uncooperative providers may delay destruction; default-on behavior and configurable viewport worker counts need additional evidence. Other formats, tiled/pyramid storage, incremental upload, virtual output/workspace/materialization behavior, the existing Auto Contrast gate and every other original requirement remain open."
       ],
       "required_work": "Missing virtual/tiled/pyramid storage, bounded cache, incremental upload and responsive navigation while loading",
       "status": "in_progress",
@@ -1722,7 +1736,8 @@
         "p10v.view-cache.functional.001",
         "p10w.canvas-reads.functional.001",
         "p10x.render-memory.functional.001",
-        "p10y.viewport-jobs.foundation.001"
+        "p10y.viewport-jobs.foundation.001",
+        "p10z.background-views.optional.001"
       ]
     },
     {
@@ -181271,6 +181286,29 @@
       },
       "platform": "Windows/Linux native CPU viewport scheduler foundation; not editor integration",
       "scope": "Windows/Linux each pass nine native suites, including the new scheduler suite, and forty additional scheduler repetitions. Tests cover worker/TLS execution, immutable virtual XY/XZ/YZ extraction with independent TCZ formulas, same-key reuse, running and ready supersession, canceled reservations and live-limit refusal, 16-slot pressure, unqueued capture release, queued provider destruction, creator-thread guards, invalid requests, sticky errors/new-key retry, lease handoff, cooperative cancellation and unpublished/running shutdown. Existing native jobs, retained jobs, dataset, ordinary canvas, virtual cache/source, histogram and render-memory suites pass."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-22",
+      "id": "p10z.background-views.optional.001",
+      "identity": {
+        "qualification": {
+          "bytes": 13797,
+          "path": "docs/parity/reviews/p10z-background-views001.json",
+          "sha256": "3ffa0775ef988dfd1c57512afab751bdc9b4c6cb059d1e4fff9853faf7e3e5a7"
+        }
+      },
+      "platform": "Windows/Linux optional native CPU ordinary/XYZ loading in shared C++/Python ImGui frontends",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 1585,
+        "report": "build/p10z-background-views001/windows-python003/pytest.xml",
+        "skipped": 0,
+        "total": 1585
+      },
+      "scope": "Windows/Linux each pass ten native suites, ten additional background-view repetitions, four hidden/recreated GL contexts and 1585 selected installed Python checks (nine new), with zero failure/error/skip. Slow cooperative readers prove ordinary/XYZ frame progress without source reads on the UI thread, ordinary wheel and focused linked PageUp input while pending, position supersession and no stale readback, independent scalar/RGB TCZ/orientation formulas, stable reuse and hover without decode, mode/document/context cancellation and cached-texture enable/disable transitions. CPU builder tests cover targeted other-channel previews, out-of-target navigation, finite/quiet-NaN/IEEE ranges and source payload preservation. GL runs rebuild both modes in recreated contexts and reject ImGui recovery diagnostics. Python tests use real virtual scientific TIFF volumes, strict persisted Boolean settings and the rendered Preferences control. Existing selected settings/cache/dataset/TIFF/channel/projection/XYZ cases pass from disposable proper installed origins; module bytes match retained final prefixes. All 1297 existing input registrations remain unchanged. This is scoped functionality, not complete upstream/reference/platform/resource acceptance."
     }
   ]
 }

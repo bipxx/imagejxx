@@ -10,7 +10,9 @@
 namespace imagejxx::desktop {
 struct SavedRoiCanvasHooks;
 class RoiImportPreview;
+class ViewportJobs;
 struct OrthogonalInputContext {
+  ViewportJobs *viewport_jobs = nullptr;
   bool active_document = false;
   bool input_enabled = false;
   bool keyboard_admitted = false;
@@ -67,7 +69,7 @@ private:
     std::uint64_t revision = ~std::uint64_t(0);
     std::uint64_t documentId = 0, previewGeneration = 0;
     std::uintptr_t dataIdentity = 0;
-    bool transient = false, textureDirty = true;
+    bool transient = false, textureDirty = true, pending = false;
     int coordinate = -1, width = 0, height = 0;
     // T/C identify extracted pixels; Z records the current linked crosshair.
     // XZ/YZ pixels also depend on their fixed spatial coordinate above.

@@ -516,4 +516,11 @@ internals, annotation/font/GUI metadata, dialogs and other preview surfaces,
 allocator overhead, and driver queues/storage overhead remain separate. A
 four-byte logical texel charge cannot guarantee physical GPU availability.
 Historical peak reservations can exceed a subsequently reduced limit. Complete
-resource qualification and asynchronous viewport loading remain open.
+resource qualification remains open. Optional background viewport loading is
+covered separately below.
+
+
+Virtual ordinary and linked XYZ views can use Resources **Background virtual views**
+(`async_viewport`, default false). Loading placeholders preserve navigation;
+matching CPU results publish on the UI thread and superseded work is canceled.
+See [behavior, resource ownership and remaining qualification](BACKGROUND_VIEWPORT.md).

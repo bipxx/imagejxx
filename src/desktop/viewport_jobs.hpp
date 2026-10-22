@@ -11,10 +11,12 @@ namespace imagejxx::desktop {
 struct ViewportSurface {
   std::shared_ptr<const Image> source;
   std::optional<Image> rgb;
+  std::array<double, 2> range{};
+  FloatingSamplePolicy policy = FloatingSamplePolicy::FiniteOnly;
+  Json channels = nullptr;
 };
 
-// Private staging primitive for background ordinary/XYZ rendering. Not yet
-// connected to Window: it introduces no user-visible asynchronous preference.
+// Private scheduler for the optional background ordinary/XYZ render path.
 class ViewportJobs {
 public:
   using Builder = std::function<ViewportSurface(const ExecutionControl &)>;
@@ -37,6 +39,7 @@ public:
   std::optional<Frame> request(std::uint64_t document, int view,
                               std::string key, std::size_t bytes, Builder builder);
   void cancelDocument(std::uint64_t document);
+  void cancelView(std::uint64_t document, int view);
   void cancelAll();
   void poll();
   Json diagnostics() const;

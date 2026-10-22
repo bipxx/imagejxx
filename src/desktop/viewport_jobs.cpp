@@ -112,6 +112,12 @@ void ViewportJobs::cancelDocument(std::uint64_t document) {
   for (auto &slot : slots_) if (slot.document == document) cancel(slot);
   poll();
 }
+void ViewportJobs::cancelView(std::uint64_t document, int view) {
+  checkThread();
+  for (auto &slot : slots_)
+    if (slot.document == document && slot.view == view) cancel(slot);
+  poll();
+}
 void ViewportJobs::cancelAll() {
   checkThread(); for (auto &slot : slots_) cancel(slot); poll();
 }

@@ -2437,3 +2437,9 @@ captured plane lazily. Context recreation and changed render keys still rebuild.
 
 Ordinary and linked XYZ views share the Resources **Render surfaces (MiB)**
 reservation pool. See [managed allocations and remaining limits](SCIENTIFIC_TIFF_SERVICE.md#managed-render-reservations).
+
+
+Virtual ordinary and linked XYZ views can use Resources **Background virtual views**
+(`async_viewport`, default false). Loading placeholders preserve navigation;
+matching CPU results publish on the UI thread and superseded work is canceled.
+See [behavior, resource ownership and remaining qualification](BACKGROUND_VIEWPORT.md).

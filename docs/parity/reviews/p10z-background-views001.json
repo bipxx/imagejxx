@@ -1,0 +1,260 @@
+{
+  "state": "qualified_functional_increment",
+  "objective_complete": false,
+  "baseline_commit": "c3e4991c589d4df467864b8a1c97e1911f9028e2",
+  "scope": "Opt-in native background CPU ordinary and linked XYZ rendering in both shared ImGui launchers, including persisted configuration, pending navigation, captured previews/display, stale-result rejection, hover surfaces and lifecycle cancellation.",
+  "semantics": "async_viewport is strict Boolean default false in Resources. Only virtual datasets use the worker path; eager data and runtime rank instrumentation retain the prior path. Lazy two-worker scheduler has at most sixteen active/ready/failed/retiring slots. Immutable live/preview snapshots, target, position, display/channel state and complete keys are captured; extraction, live range scans, RGB composition, legacy CPU overlays and threshold tint run on workers. GL, styled drawing and publication stay on creator thread. Pending views show placeholders and clear current readback copies. Navigation supersedes keys and publishes only matching results. Ordinary hover/picker uses the completed active scalar retained in RenderMemory, independent of the virtual XY cache. XYZ adds a full live XY allowance to its declared peak. Canceled working ownership survives to actual finalization. Mode/hidden-document/context/document cancellation is polled without synchronous joins during normal frames. Ordinary retains its existing pre-input snapshot semantics; XYZ captures after navigation.",
+  "boundaries": "Opt-in virtual viewing only, not whole-editor responsiveness. Peak bytes are managed caller declarations; custom provider allocation and internal scratch are not physical memory guarantees. Legacy CPU overlay font assets are read rather than pinned as immutable image data. Uncooperative providers can delay final shutdown. No broad all-preview/channel/annotation/threshold UI or ImageJ/Fiji reference parity, whole-process/RSS/GPU, real-device performance or full platform acceptance claim.",
+  "verification": "Windows/Linux each pass ten native suites, ten additional background-view repetitions, four hidden/recreated GL contexts and 1585 selected installed Python checks (nine new), with zero failure/error/skip. Slow cooperative readers prove ordinary/XYZ frame progress without source reads on the UI thread, ordinary wheel and focused linked PageUp input while pending, position supersession and no stale readback, independent scalar/RGB TCZ/orientation formulas, stable reuse and hover without decode, mode/document/context cancellation and cached-texture enable/disable transitions. CPU builder tests cover targeted other-channel previews, out-of-target navigation, finite/quiet-NaN/IEEE ranges and source payload preservation. GL runs rebuild both modes in recreated contexts and reject ImGui recovery diagnostics. Python tests use real virtual scientific TIFF volumes, strict persisted Boolean settings and the rendered Preferences control. Existing selected settings/cache/dataset/TIFF/channel/projection/XYZ cases pass from disposable proper installed origins; module bytes match retained final prefixes. All 1297 existing input registrations remain unchanged. This is scoped functionality, not complete upstream/reference/platform/resource acceptance.",
+  "profiles": {
+    "windows": {
+      "native_suites": 10,
+      "new_background_suite": 1,
+      "background_repetitions": 10,
+      "hidden_gl_contexts": 4,
+      "python_cases": 1585,
+      "new_python_cases": 9,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "removed_scratch_bytes": 452616848,
+      "archive": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p10z-background-views001\\windows-scratch001.zip",
+        "bytes": 80598396,
+        "sha256": "028833f15b28a9e8d632a9857a60ef72cb5b1b59101077ac74c8da48eac5c4a5"
+      },
+      "evidence": [
+        {
+          "path": "build/p10z-background-views001/windows-qualified002/receipt.json",
+          "bytes": 1208,
+          "sha256": "df11f0e71e6abc86ab573e6753de5f8db1eb81f65b375a4c54070a9a24fc1191"
+        },
+        {
+          "path": "build/p10z-background-views001/windows-qualified002/native.xml",
+          "bytes": 3928,
+          "sha256": "74733af42a20ac17cd1d5a2995f1754c9a38c0ee73dc55e5b608a29b91462a17"
+        },
+        {
+          "path": "build/p10z-background-views001/windows-qualified002/repeat.xml",
+          "bytes": 623,
+          "sha256": "dbb7da93bba59e44fbc9c61007a74861b8c2a6aebfb4973ff1ccaafc076b5dde"
+        },
+        {
+          "path": "build/p10z-background-views001/windows-qualified002/background-gl.log",
+          "bytes": 116,
+          "sha256": "4a9efe703a8147cd67ee41ed7693448770a0e56024f32cd1131db7f5aea1d3ea"
+        },
+        {
+          "path": "build/p10z-background-views001/windows-python003/receipt.json",
+          "bytes": 2787,
+          "sha256": "2dae86635b79f5317b100d4d67bdf872bd403e8c81c56e408d23a87a84528675"
+        },
+        {
+          "path": "build/p10z-background-views001/windows-python003/pytest.xml",
+          "bytes": 221260,
+          "sha256": "bd7db24d724932a4ba952f888aa9c409e99eaf1a78eb9cefbbc8d79adbc170f0"
+        },
+        {
+          "path": "build/p10z-background-views001/windows-env001/receipt.json",
+          "bytes": 286,
+          "sha256": "58ee4bac5026a8a76f7ab0a8c2eed01ccb1d8ca39b0a5dd0092afcb91da7cee6"
+        },
+        {
+          "path": "build/p10z-background-views001/windows-products001.json",
+          "bytes": 2725,
+          "sha256": "911b32d477d287643dac6c9129917dc4a4a11b9468a25235350900bc26981b22"
+        },
+        {
+          "path": "build/p10z-background-views001/windows-cleanup001.json",
+          "bytes": 483940,
+          "sha256": "3a60b50ab59672e7fc20b16a1363a6d9c92b746c671c6eefa39c1455b14e0ca8"
+        }
+      ]
+    },
+    "linux": {
+      "native_suites": 10,
+      "new_background_suite": 1,
+      "background_repetitions": 10,
+      "hidden_gl_contexts": 4,
+      "python_cases": 1585,
+      "new_python_cases": 9,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "removed_scratch_bytes": 462676031,
+      "archive": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p10z-background-views001/linux-scratch001.zip",
+        "bytes": 96971307,
+        "sha256": "194b912948c847b1ecce9c54da0daa6e88c740d482af8fba7bf492205c572462"
+      },
+      "evidence": [
+        {
+          "path": "build/p10z-background-views001/linux-qualified002/receipt.json",
+          "bytes": 1157,
+          "sha256": "26f9a64668415a6ad6eaed6be5b8d7a9ff7b2f50f3ee556ed1c4367bf56938ed"
+        },
+        {
+          "path": "build/p10z-background-views001/linux-qualified002/native.xml",
+          "bytes": 3936,
+          "sha256": "942ff2cdf72df6850609116906145d1eb394ffc1b91dfb0565fa90e87bee5f20"
+        },
+        {
+          "path": "build/p10z-background-views001/linux-qualified002/repeat.xml",
+          "bytes": 617,
+          "sha256": "afcc1264ebcea3c130051c60ca85fd14249f695d0160c949bf13e9dc15a2c38d"
+        },
+        {
+          "path": "build/p10z-background-views001/linux-qualified002/background-gl.log",
+          "bytes": 115,
+          "sha256": "af0cf02bc32e37064a73f474b55cc38cf391df0c4b97c52422c7aa675ceb6178"
+        },
+        {
+          "path": "build/p10z-background-views001/linux-python003/receipt.json",
+          "bytes": 2687,
+          "sha256": "25f71d31047df1fa75bb112e201677ad25a30cc55818efca2eae65f15441ad26"
+        },
+        {
+          "path": "build/p10z-background-views001/linux-python003/pytest.xml",
+          "bytes": 221260,
+          "sha256": "a52dcb4d19776548b6d2f81db88e1c30fdee38691370ce03fc919d52726b06ae"
+        },
+        {
+          "path": "build/p10z-background-views001/linux-env001/receipt.json",
+          "bytes": 218,
+          "sha256": "938fd4ef82450087da3e25e0575092b2b31a4991676c6617ced487e67ecb7e3c"
+        },
+        {
+          "path": "build/p10z-background-views001/linux-products001.json",
+          "bytes": 2469,
+          "sha256": "d2ff97c7d959a1eb99b48a5d3e98deec0de75f072f19012cb8e1de01131d4a8e"
+        },
+        {
+          "path": "build/p10z-background-views001/linux-cleanup001.json",
+          "bytes": 415532,
+          "sha256": "ad8907dcea694540db0a3f56bfa04a314bd1f39c9eec1d03862ed7b5c7fa82d5"
+        }
+      ]
+    }
+  },
+  "source": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 108334,
+      "sha256": "b751bb568c37c4fa8ca0046af9bbaf5b1f2aacca9fd6a538b7a15d64d91e9601"
+    },
+    {
+      "path": "src/desktop/orthogonal.cpp",
+      "bytes": 63703,
+      "sha256": "2c1f2f30abcb51abe9d9441725f3597293a271ea4b24762128f3fef59c43ceab"
+    },
+    {
+      "path": "src/desktop/orthogonal.hpp",
+      "bytes": 5648,
+      "sha256": "ce8a38668a4a012388831175ac9cf09a65f28703d9368e7197d008f8481a478f"
+    },
+    {
+      "path": "src/desktop/viewport_jobs.cpp",
+      "bytes": 5408,
+      "sha256": "7d4cce52a34cf915b0a5e3fb152b5d07207d2927d3c18d4643c0f90b4fc52429"
+    },
+    {
+      "path": "src/desktop/viewport_jobs.hpp",
+      "bytes": 2735,
+      "sha256": "e745f1c499bd9210270a4071988261020ab1b0f975410ce97a785787381d9a78"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 684640,
+      "sha256": "380efe0051859c0ecf41c67e3b186818ea7c23d9c92c6711a66e5e7bf7779c8d"
+    },
+    {
+      "path": "src/native/settings.cpp",
+      "bytes": 24295,
+      "sha256": "f39c0729489de73a109d1fac7d8e185f10958e29e04e69de2abaf72c43423d4d"
+    },
+    {
+      "path": "src/desktop/viewport_renderer.hpp",
+      "bytes": 770,
+      "sha256": "a087fbf0f5b225dc10677a496210847de0e0f8cc3d5a24ec155251d6bd523eba"
+    },
+    {
+      "path": "src/desktop/viewport_renderer.cpp",
+      "bytes": 4217,
+      "sha256": "b9e4af5e1b6e04ef924f9c36b0293dfc5fe2193395bb33f569e6375b8cdbfd38"
+    },
+    {
+      "path": "tests/native/test_background_views.cpp",
+      "bytes": 15121,
+      "sha256": "7809e7086476cda5c4681c392189da854d7841957ad7270059e3e26aa212b481"
+    },
+    {
+      "path": "tests/python/test_background_views.py",
+      "bytes": 3341,
+      "sha256": "6374fb3e4c72cdedcf658cbd942efe222a7e091c8cbb05e2dd56a38b6a1923da"
+    }
+  ],
+  "documentation": [
+    {
+      "path": "docs/BACKGROUND_VIEWPORT.md",
+      "bytes": 4697,
+      "sha256": "81a498327d86fd95ff0edca8519f138329f90be68479ed65d9ea9858edc009fc"
+    },
+    {
+      "path": "docs/DESKTOP.md",
+      "bytes": 165574,
+      "sha256": "bc38387266ec7c20587cb339d567c3c94129645a0002347bbf1cfcda8200b577"
+    },
+    {
+      "path": "docs/SCIENTIFIC_TIFF_SERVICE.md",
+      "bytes": 33246,
+      "sha256": "b7eb6740d1664fa23156a0069b4beaf09804e8efd85b00817c920b0ead327dc6"
+    },
+    {
+      "path": "docs/PLAN.md",
+      "bytes": 435219,
+      "sha256": "e4f5ad46f42310d466eaf7351a09fbfe34628a051e603f6cade2f777a40b3bf9"
+    },
+    {
+      "path": "docs/IMPLEMENTATION.md",
+      "bytes": 141241,
+      "sha256": "2ed90c35f90acf3a54cdca1b142247b3f929221dc9072ab4608948ab7bce5573"
+    }
+  ],
+  "licenses": {
+    "path": "build/p10z-background-views001/licenses001.log",
+    "bytes": 62,
+    "sha256": "939b266b092bfdc37d1814f66b75a21469497e36e30a2050805031da4f97b417"
+  },
+  "registration": {
+    "path": "build/p10z-background-views001/registration001.json",
+    "bytes": 218,
+    "sha256": "768427ebd581ce069969d84ab38452330565a62c30d9174f24ac4ce600f01a0f"
+  },
+  "attempts": "Earlier test prototypes exposed a malformed test initializer, synchronous legacy display-action setup, incorrect raw input fields and ordinary/page-key conventions. Those tests were corrected against the existing APIs; failed source variants and logs remain. Qualified001 passed the extended cases. Review then found an enable-on-cached-texture sampling gap; matching-surface admission and rank-instrumented sampling are corrected and covered in authoritative qualified002. Python001 lacked diagnostic capture; Python002 passed new cases then refused an improper module origin. Python003 uses real disposable installed environments without weakening origin guards; all1585 pass on both OSes. CRC and per-member SHA checks precede exact owned scratch deletion; final qualified002 prefixes/native probes, logs, source variants and useful caches remain.",
+  "existing_gate": {
+    "state": "open",
+    "reason": "Existing Auto Contrast producer_source fingerprint mismatch; application.hpp unchanged; no repin or relaxation.",
+    "producer": {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 14135,
+      "sha256": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    },
+    "log": {
+      "path": "build/p10z-background-views001/plan001.log",
+      "bytes": 151,
+      "sha256": "5741e4b9133f374434cac8973e1f1c6131200e632958a012913a739c28d47006"
+    }
+  },
+  "scope_status_counts": {
+    "total": 99,
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  },
+  "remaining": [
+    "Broader actual input traces and acceptance across all previews, channel modes, IEEE/threshold and annotation combinations on both launchers, plus file/provider replacement while running.",
+    "Other legacy display/analysis actions and panels can synchronously acquire pixels; manual display-range action currently acquires a frame even for manual bounds. Whole-editor responsiveness is not claimed.",
+    "Provider/codec/transform/compositor internal scratch, font/annotation/GUI allocations, driver overhead and whole-process resource/latency qualification remain separate. Custom uncooperative providers may delay destruction; default-on behavior and configurable viewport worker counts need additional evidence.",
+    "Other formats, tiled/pyramid storage, incremental upload, virtual output/workspace/materialization behavior, the existing Auto Contrast gate and every other original requirement remain open."
+  ]
+}

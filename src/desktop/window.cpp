@@ -48,6 +48,7 @@
 #include "orthogonal.hpp"
 #include "render_memory.hpp"
 #include "rendering.hpp"
+#include "viewport_renderer.hpp"
 #include "selection_panel.hpp"
 #include "saved_roi_edit.hpp"
 #include "settings_io.hpp"
@@ -790,6 +791,8 @@ std::string resultText(const Json &value, const Settings &settings) {
 struct Window::Impl {
   Window &owner;
   std::shared_ptr<RenderMemory> renderMemory=std::make_shared<RenderMemory>();
+  std::unique_ptr<ViewportJobs> viewportJobs;
+  ViewportJobs &viewJobs(){if(!viewportJobs)viewportJobs=std::make_unique<ViewportJobs>(renderMemory);return *viewportJobs;}
   std::shared_ptr<VirtualViewCache> viewCache=std::make_shared<VirtualViewCache>();
   struct LaunchAppendItem {
     std::string path;
@@ -877,6 +880,9 @@ struct Window::Impl {
     RenderMemory::Lease textureMemory,readbackMemory,rankMemory;
     uint64_t revision = ~uint64_t(0);
     bool previewActive = false, textureDirty = true;
+    bool viewportPending=false,viewportSeen=false;
+    RenderMemory::Lease sampleMemory;
+    std::shared_ptr<const Image> sampledSurface;
     std::uint64_t previewGeneration = 0;
     std::uintptr_t pixelsIdentity = 0;
     std::size_t pixelBuilds = 0, diagnosticRebuilds = 0;
@@ -2718,6 +2724,8 @@ struct Window::Impl {
            (gaussianReadbackRequested || headlessSessionReadback || channelDisplayPanel.visible());
   }
   void clearGaussianReadbacks() {
+    if(viewportJobs)viewportJobs->cancelAll();
+    for(auto &pane:panes){pane.sampledSurface.reset();pane.sampleMemory.reset();pane.viewportPending=false;}
     headlessDiagnostics = false;
     for (auto &pane : panes) {
       pane.sourceReadback.reset();
@@ -3681,6 +3689,8 @@ struct Window::Impl {
     mirrorGaussianIds();
     resetInput(panes[index]);
     owner.controller_->close(d->id, true);
+    if(viewportJobs)viewportJobs->cancelDocument(d->id);
+    panes[index].sampledSurface.reset();panes[index].sampleMemory.reset();
     d->releaseFrontend();
     if (gl && panes[index].texture)
       glDeleteTextures(1, &panes[index].texture);
@@ -4254,7 +4264,7 @@ struct Window::Impl {
                         : preferenceState.settings.number("line_width")));
     });
   }
-  void refreshTexture(Pane &pane) {
+  bool refreshTexture(Pane &pane) {
     try {
     const auto liveSnapshot = pane.doc->nativeSnapshot();
     const auto position = pane.doc->position();
@@ -4288,8 +4298,9 @@ struct Window::Impl {
       ++pane.overlayBuilds;
     }
     const bool capture = captureGaussianReadback();
-    if (!gl && !capture)
-      return;
+    const bool background=preferenceState.settings.boolean("async_viewport") && !liveSnapshot.data().dataset.has_eager_planes() && !rankProbe;
+    if (!gl && !capture && !background)
+      return true;
     bool linear = preferenceState.settings.text("interpolation") == "linear";
     if (gl && pane.texture) {
       glBindTexture(GL_TEXTURE_2D, pane.texture);
@@ -4307,7 +4318,7 @@ struct Window::Impl {
     if (sources && sources->generation() == 0)
       for (const auto &item : channelKey.at("contributors"))
         uncachedPreview = uncachedPreview || item.at("preview").get<bool>();
-    const bool rebuild = pane.revision != pane.doc->renderRevision() ||
+    const bool rebuild = (background && !pane.sampledSurface) || pane.revision != pane.doc->renderRevision() ||
         pane.pixelsPosition.t != position.t || pane.pixelsPosition.c != position.c ||
         pane.slice != pane.doc->slice() || pane.previewActive != activePreview ||
         pane.previewGeneration != generation || pane.pixelsIdentity != identity ||
@@ -4315,15 +4326,39 @@ struct Window::Impl {
         (gl && (pane.textureDirty || !pane.texture));
     const bool missingReadback = capture && (!pane.sourceReadback || !pane.renderedReadback);
     if (!rebuild && !missingReadback)
-      return;
+      return true;
     const auto memoryPlan=RenderMemory::plan(shape[0],shape[1],dimensions.s,gl,capture,bool(rankProbe));
-    auto memory=renderMemory->acquire(memoryPlan.peak);
+    RenderMemory::Lease memory;
+    std::optional<ViewportJobs::Frame> asynchronous;
+    std::shared_ptr<const Image> framePixels;
+    std::optional<Image> rendered;
+    auto samplePolicy=liveSnapshot.data().dataset.sample_policy();
+    if(background){
+      pane.doc->admitView();
+      ViewportRender spec{liveSnapshot};spec.preview=preview;spec.previewGeneration=previewGeneration;spec.position=position;spec.coordinate=position.z;
+      if(previewTarget)spec.target=*previewTarget;
+      spec.metadata=pane.doc->state().metadata;spec.layered=pane.layeredOverlays;spec.capture=capture;spec.channelLimits=channelLimits();
+      const auto key=Json{{"identity",identity},{"live",liveSnapshot.data_identity().value_or(0)},{"revision",pane.doc->renderRevision()},
+          {"tcz",{position.t,position.c,position.z}},{"preview",generation},{"channels",channelKey},{"capture",capture},{"gl",gl}}.dump();
+      auto ready=viewJobs().request(pane.doc->id,0,key,memoryPlan.peak,[spec=std::move(spec)](const ExecutionControl &){return renderViewport(spec);});
+      if(!ready){pane.viewportPending=true;pane.sampledSurface.reset();pane.sampleMemory.reset();pane.sourceReadback.reset();pane.renderedReadback.reset();pane.readbackMemory.reset();status="Loading view...";return false;}
+      asynchronous.emplace(std::move(*ready));memory=std::move(asynchronous->reservation);
+      auto &surface=*asynchronous->surface;framePixels=surface.source;rendered=std::move(surface.rgb);samplePolicy=surface.policy;pane.effectiveRange=surface.range;
+      pane.channelDisplayReadback=surface.channels;
+      pane.sampledSurface.reset();pane.sampleMemory.reset();
+      pane.sampleMemory=memory.retain(RenderMemory::mul(framePixels->pixels.capacity(),sizeof(double)));
+      pane.sampledSurface=framePixels;
+      pane.revision=pane.doc->renderRevision();pane.slice=position.z;pane.previewActive=activePreview;pane.channelDisplayKey=channelKey;
+      pane.previewGeneration=generation;pane.pixelsIdentity=identity;pane.pixelsPosition=position;pane.rangePosition=position;
+    }else{
+      pane.sampledSurface.reset();pane.sampleMemory.reset();
+    memory=renderMemory->acquire(memoryPlan.peak);
     // Acquire pixels only after the complete texture/readback key misses.
     const auto previewPixels = sources ? sources->provider()(Plane::XY, position.z, position.t, position.c) : preview
         ? preview->data().dataset.plane(position) : nullptr;
-    const auto framePixels=previewPixels?previewPixels:pane.doc->sharedFrame();
+    framePixels=previewPixels?previewPixels:pane.doc->sharedFrame();
     const auto &frame=*framePixels;
-    const auto samplePolicy=previewPixels && !sources?preview->data().dataset.sample_policy():liveSnapshot.data().dataset.sample_policy();
+    samplePolicy=previewPixels && !sources?preview->data().dataset.sample_policy():liveSnapshot.data().dataset.sample_policy();
     if (!rebuild)
       ++pane.diagnosticRebuilds;
     pane.revision = pane.doc->renderRevision();
@@ -4363,6 +4398,11 @@ struct Window::Impl {
     if (activeContributes)
       renderThresholdOverlay(image, pane.doc->frame(), liveSnapshot,
                                {liveSnapshot.display().t, liveSnapshot.display().c, pane.doc->slice()});
+    rendered=std::move(image);
+    }
+    pane.viewportPending=false;
+    const auto &frame=*framePixels;
+    auto &image=*rendered;
     ++pane.pixelBuilds;
     pane.textureDirty = !gl;
     if (capture) {
@@ -4379,7 +4419,7 @@ struct Window::Impl {
       pane.sourceReadbackPolicy = FloatingSamplePolicy::FiniteOnly;
     }
     if (!gl)
-      return;
+      return true;
     std::vector<unsigned char> pixels(image.pixels.size());
     for (size_t i = 0; i < pixels.size(); ++i)
       pixels[i] = static_cast<unsigned char>(image.pixels[i]);
@@ -4411,6 +4451,7 @@ struct Window::Impl {
       pane.rankMemory=memory.retain(RenderMemory::add(pane.rankScalarBytes.capacity(),pane.rankRgbBytes.capacity()));
     }
     } catch (...) {
+      pane.viewportPending=false;pane.sampledSurface.reset();pane.sampleMemory.reset();
       // A failed composition/upload must never mark an older texture or RGB
       // diagnostic as current under the new state, source, or resource limit.
       pane.revision = ~std::uint64_t(0);
@@ -4421,6 +4462,7 @@ struct Window::Impl {
       std::vector<unsigned char>().swap(pane.rankScalarBytes);std::vector<unsigned char>().swap(pane.rankRgbBytes);pane.rankMemory.reset();
       throw;
     }
+    return true;
   }
 };
 Json RankRuntimeProbeAccess::inspect(Window &window, bool viewBytes) {
@@ -9799,6 +9841,7 @@ void Window::Impl::canvas(Pane &pane) {
   pane.savedRoiHandles = Json::array();
   pane.savedRoiInput = Json::object();
   pane.overlayLayers = Json::array();
+  pane.viewportSeen=true;
   auto d = pane.doc;
   const bool readOnly = d->scientific();
   const bool creationEnabled = !readOnly || scientificRoiCreationOwner == d->id;
@@ -9895,6 +9938,7 @@ void Window::Impl::canvas(Pane &pane) {
     input.import_preview=roiPreview(d->nativeSnapshot(),input.annotation_max_working_bytes);
     input.import_preview_diagnostics=headlessDiagnostics;
     input.import_preview_error=[this](const std::string &error){roiPreviewError(error);};
+    if(preferenceState.settings.boolean("async_viewport") && !d->nativeSnapshot().data().dataset.has_eager_planes() && !rankProbe){input.viewport_jobs=&viewJobs();input.viewport_jobs->cancelView(d->id,0);pane.sampledSurface.reset();pane.sampleMemory.reset();}
     input.request_xy_focus = requestFocus;
     pane.selectionGesture.reset();
     auto bg = color(preferenceState.settings.text("canvas_background"));
@@ -9936,6 +9980,7 @@ void Window::Impl::canvas(Pane &pane) {
     pane.outlineT = currentPosition.t;
     pane.outlineC = currentPosition.c;
   }
+  if(viewportJobs)for(int view=1;view<=3;++view)viewportJobs->cancelView(d->id,view);
   // Re-evaluate after a possible linked-view Escape/navigation handoff.
   const auto preview = planeOperationPreview(*d);
   // Freeze source/position before input publication. Geometry is metadata-only;
@@ -9948,7 +9993,8 @@ void Window::Impl::canvas(Pane &pane) {
   std::shared_ptr<const Image> sampledPixels;
   auto canvasPixels=[&]() -> const Image & {
     if(!sampledPixels){
-      if(preview || canvasDataset.has_eager_planes())sampledPixels=canvasDataset.plane(currentPosition);
+      if(preferenceState.settings.boolean("async_viewport") && !canvasDataset.has_eager_planes() && !rankProbe){sampledPixels=pane.sampledSurface;if(!sampledPixels)throw std::logic_error("Viewport sample unavailable");}
+      else if(preview || canvasDataset.has_eager_planes())sampledPixels=canvasDataset.plane(currentPosition);
       else {d->admitView();sampledPixels=d->viewCache_->read(d->viewSlot_,canvasDataset,currentPosition);}
     }
     return *sampledPixels;
@@ -10089,10 +10135,11 @@ void Window::Impl::canvas(Pane &pane) {
       a, b,
       IM_COL32(canvasColor[0], canvasColor[1], canvasColor[2], canvasColor[3]));
   draw->PushClipRect(a, b, true);
-  refreshTexture(pane);
-  draw->AddImage(static_cast<ImTextureID>(gl ? pane.texture : 1), pane.origin,
+  const bool viewportReady=refreshTexture(pane);
+  if(viewportReady)draw->AddImage(static_cast<ImTextureID>(gl ? pane.texture : 1), pane.origin,
                  {pane.origin.x + f.width * pane.zoom,
                   pane.origin.y + f.height * pane.zoom * pane.aspectY});
+  else draw->AddText(a,ImGui::GetColorU32(ImGuiCol_Text),"Loading view...");
   {
     const auto source=d->nativeSnapshot();
     auto cap=static_cast<std::size_t>(preferenceState.settings.integer("processing_memory_mb"))*1024*1024;
@@ -10362,7 +10409,7 @@ void Window::Impl::canvas(Pane &pane) {
       }
     });
   }
-  if (hover && inside) {
+  if (hover && inside && viewportReady) {
     int ix = int(x), iy = int(y);
     std::ostringstream pixel;
     auto world =
@@ -10472,7 +10519,7 @@ void Window::Impl::canvas(Pane &pane) {
       } else if (tool == "zoom") {
         pane.zoom =
             std::clamp(pane.zoom * (io.KeyShift ? .5f : 2.f), .01f, 64.f);
-      } else if (tool == "picker") {
+      } else if (tool == "picker" && viewportReady) {
         for (int c = 0; c < 3; ++c)
           foreground[c] = float(std::clamp(
               canvasPixels().at(int(x), int(y), f.channels == 1 ? 0 : c) / type_max(f.type),
@@ -11468,6 +11515,8 @@ void Window::Impl::dialogs() {
   }
 }
 void Window::Impl::draw() {
+  if(viewportJobs){viewportJobs->poll();if(!preferenceState.settings.boolean("async_viewport")){viewportJobs->cancelAll();for(auto &pane:panes){pane.sampledSurface.reset();pane.sampleMemory.reset();pane.viewportPending=false;}}}
+  for(auto &pane:panes)pane.viewportSeen=false;
   startupFramesDrawn = true;
   if (headlessDiagnostics) {
     errorModal = {{"open", false}, {"controls", Json::object()}};
@@ -11921,6 +11970,7 @@ void Window::Impl::draw() {
   ImGui::TextUnformatted(status.c_str());
   ImGui::End();
   ImGui::PopStyleVar();
+  if(viewportJobs)for(auto &pane:panes)if(!pane.viewportSeen)viewportJobs->cancelDocument(pane.doc->id);
 }
 namespace {
 void setupGui(bool fonts, const Settings &settings, float scale,
@@ -12018,6 +12068,7 @@ Json Window::Impl::headlessReport() {
         {"save", browser.save}, {"overwrite",browser.overwrite}, {"path", browser.path}, {"controls", browserControls},
         {"filter",browser.filter},{"prompt",browser.prompt},{"extensions",browser.extensions},
         {"expired",browser.expired},{"entries",browser.entries}};
+    result["viewport_jobs"]=viewportJobs?viewportJobs->diagnostics():Json(nullptr);
     result["session_extensions"] = sessionExtensions;
     result["startup"] = owner.startupState();
     result["startup_controls"] = startupControls;
@@ -12156,6 +12207,7 @@ Json Window::Impl::headlessReport() {
           {"extent", {pane.extent.x, pane.extent.y}},
           {"origin", {pane.origin.x, pane.origin.y}},
           {"scale", {pane.zoom, pane.zoom * pane.aspectY}}};
+      result["ordinary_canvas"]["loading"]=pane.viewportPending;
       result["ordinary_canvas"]["style_layers"] = pane.styledLayers;
       result["ordinary_canvas"]["display_annotations"]=pane.displayLayers;
       result["ordinary_canvas"]["native_planar_annotations"]=pane.nativePlanar.diagnostics();
@@ -12960,6 +13012,8 @@ int Window::run(const RunOptions &options) {
   bool platform = ImGui_ImplGlfw_InitForOpenGL(window, true),
        renderer = platform && ImGui_ImplOpenGL3_Init("#version 130");
   auto cleanup = [&] {
+    if(impl->viewportJobs)impl->viewportJobs->cancelAll();
+    for(auto &pane:impl->panes){pane.sampledSurface.reset();pane.sampleMemory.reset();pane.viewportPending=false;}
     impl->rankProbe = nullptr;
     impl->rankConsumed = {{"valid", false}};
     impl->rankSelectionHashes.clear();

@@ -1,5 +1,6 @@
 #include "orthogonal.hpp"
 #include "rendering.hpp"
+#include "viewport_renderer.hpp"
 #include "channel_display_sources.hpp"
 #include "saved_roi_edit.hpp"
 #include <imagejxx/planar_annotations.hpp>
@@ -652,6 +653,8 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
   worldDraw->AddText(worldPoint, ImGui::GetColorU32(ImGuiCol_Text), worldText);
   worldDraw->PopClipRect();
   const auto displayProperties = displayFinal.properties;
+  const bool background=input.viewport_jobs!=nullptr;
+  if(!background){
   if (channelState) {
     range_ = channelState->channels[static_cast<std::size_t>(currentPosition.c)].range;
     rangeRevision_ = pixelRevision;
@@ -690,6 +693,7 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
     rangeSlice_ = currentPosition.z;
     rangeProperties_ = displayProperties;
   }
+  }
   for (int i = 0; i < 3; ++i) {
     const auto &plane = planes[i];
     if (!plane.draw)
@@ -713,14 +717,14 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
                                    contributor.at("generation").get<std::uint64_t>() == 0;
       }
     const bool rebuild =
-        uncachedPreview || channelUncachedPreview || cache.documentId != live.id() ||
+        cache.pending || uncachedPreview || channelUncachedPreview || cache.documentId != live.id() ||
         cache.dataIdentity != (previewActive?dataIdentity:0) || cache.transient != previewActive ||
         cache.previewGeneration != previewGeneration ||
         cache.revision != pixelRevision || cache.pixelMetadataGeneration != pixelMetadataGeneration_ || cache.coordinate != coordinate ||
         cache.t != currentPosition.t || cache.c != currentPosition.c ||
-        (channelState && cache.z != currentPosition.z) ||
+        ((channelState || background) && cache.z != currentPosition.z) ||
         cache.channelDisplayKey != channelCacheKey ||
-        !sameDisplayRange(cache.range,range_) ||
+        (!background && !sameDisplayRange(cache.range,range_)) ||
         !metadata_equal(cache.displayProperties, displayProperties) ||
         (gl && (!cache.texture || cache.textureDirty));
     const bool missingReadback =
@@ -729,7 +733,34 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
       const auto rowSamples=RenderMemory::mul(std::size_t(sizes[horizontal[i]]),std::size_t(shape.s));
       const auto fallback=i && !pixelsDataset->has_eager_planes()?xySamples:0;
       const auto memoryPlan=RenderMemory::plan(sizes[horizontal[i]],sizes[vertical[i]],shape.s,gl,capture_readback,false,i?RenderMemory::add(rowSamples,fallback):0);
-      auto memory=memory_->acquire(memoryPlan.peak);
+      RenderMemory::Lease memory;
+      std::optional<ViewportJobs::Frame> asynchronous;
+      std::optional<ViewportSurface> completed;
+      const auto declared=background && !channelState?RenderMemory::add(memoryPlan.peak,RenderMemory::mul(xySamples,sizeof(double))):memoryPlan.peak;
+      if(background){
+        d.admitView(i!=0);
+        ViewportRender spec{live};spec.position=currentPosition;spec.plane=views[i];spec.coordinate=coordinate;
+        if(transient)spec.preview=*transient;if(transient_target)spec.target=*transient_target;
+        spec.previewGeneration=preview_generation;spec.metadata=d.state().metadata;spec.linked=true;
+        spec.layered=i==0 && hasStyledOverlays(spec.metadata,currentPosition);spec.capture=capture_readback;spec.channelLimits=channel_limits;
+        const auto key=Json{{"data",live.data_identity().value_or(0)},{"pixels",pixelRevision},{"meta",pixelMetadataGeneration_},
+          {"display",metadataJson(displayProperties)},{"tcz",{currentPosition.t,currentPosition.c,currentPosition.z}},
+          {"plane",i},{"coordinate",coordinate},{"preview",previewGeneration},{"preview_data",dataIdentity},
+          {"channels",channelKey},{"capture",capture_readback},{"gl",gl}}.dump();
+        auto ready=input.viewport_jobs->request(d.id,i+1,key,declared,[spec=std::move(spec)](const ExecutionControl &){return renderViewport(spec);});
+        if(!ready){
+          cache.pending=true;cache.readbackSource.reset();cache.readbackDisplay.reset();cache.readbackMemory.reset();
+          plane.draw->PushClipRect(plane.clip.Min,plane.clip.Max,false);
+          plane.draw->AddRectFilled(plane.minimum,plane.maximum,ImGui::GetColorU32(ImGuiCol_ChildBg));
+          plane.draw->AddText(plane.heading,ImGui::GetColorU32(ImGuiCol_Text),"Loading view...");
+          plane.draw->PopClipRect();status="Loading XYZ views...";continue;
+        }
+        asynchronous.emplace(std::move(*ready));memory=std::move(asynchronous->reservation);
+        completed=std::move(asynchronous->surface);
+        range_=completed->range;
+        rangeDocument_=live.id();rangeT_=currentPosition.t;rangeC_=currentPosition.c;rangeSlice_=currentPosition.z;
+        rangePreviewGeneration_=previewGeneration;
+      }else memory=memory_->acquire(memoryPlan.peak);
       try {
       cache.textureDirty = true;
       // Rebuilding without capture cannot leave copies of a prior plane under
@@ -753,6 +784,7 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
       const bool layered = i == 0 && hasStyledOverlays(metadata, currentPosition);
       const auto samplePolicy = pixelsDataset->sample_policy();
       auto display = [&] {
+        if(completed){if(capture_readback)readbackPixels=*completed->source;return std::move(*completed->rgb);}
         if (channelSources) {
           auto provider = channelSources->provider();
           auto rgb = compose_channel_display(liveDataset, *channelState,
@@ -773,7 +805,7 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
           readbackPixels = std::move(pixels);
         return rgb;
       }();
-      if (i == 0 && activeContributes) {
+      if (!completed && i == 0 && activeContributes) {
         const auto original = liveDataset.plane(currentPosition);
         renderThresholdOverlay(display, *original, live, currentPosition);
       }
@@ -801,6 +833,7 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
         cache.textureMemory=memory.retain(memoryPlan.texture);
         cache.textureDirty = false;
       }
+      cache.pending=false;
       cache.coordinate = coordinate;
       cache.t = currentPosition.t;
       cache.c = currentPosition.c;
@@ -828,7 +861,7 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
       if (missingReadback && !rebuild)
         ++cache.diagnosticRebuilds;
       ++cache.builds;
-      }catch(...){cache.readbackSource.reset();cache.readbackDisplay.reset();cache.readbackMemory.reset();cache.revision=~std::uint64_t(0);cache.textureDirty=true;throw;}
+      }catch(...){cache.pending=false;cache.readbackSource.reset();cache.readbackDisplay.reset();cache.readbackMemory.reset();cache.revision=~std::uint64_t(0);cache.textureDirty=true;throw;}
     }
     if(channelSources && !rebuild && !missingReadback)
       cache.channelDisplay=channelDisplayDiagnostics(*channelState,*channelSources,views[i],coordinate,
@@ -1081,6 +1114,7 @@ Json OrthogonalViews::diagnostics(bool include_readback) const {
                       {"width", cache.width},
                       {"height", cache.height},
                       {"spacing", cache.spacing},
+                      {"loading",cache.pending},
                       {"builds", cache.builds},
                       {"selection_spans", cache.selectionOutline.size()},
                       {"roi_spans", cache.roiOutline.size()},
