@@ -1671,6 +1671,8 @@ from ._native import RgbContrastApplyOptions, RgbContrastApplyEstimate, apply_rg
 
 from ._native import RgbHistogramComponent, RgbHistogramOptions, RgbHistogramResult, RgbAutoContrastResult, estimate_rgb_histogram, accumulate_rgb_histogram, rgb_auto_contrast_from_histogram, estimate_rgb_histogram_job, submit_rgb_histogram
 
+from ._native import estimate_rgb_contrast_sequence_job, submit_rgb_contrast_sequence
+
 __all__ = [
     name
     for name, value in list(globals().items())

@@ -459,3 +459,141 @@ def test_actual_imagej_processor_reset_threshold_and_palette(row):
     np.testing.assert_array_equal(document.snapshot().dataset.numpy("YX"), pixels)
     document.redo()
     assert document.snapshot().display.properties == after.display.properties
+
+
+SEQUENCE_FIXTURE = json.loads((Path(__file__).parents[1] / "fixtures/rgb-contrast-sequence-imagej154r.json").read_text())
+
+
+@pytest.mark.parametrize("mode", ["reset", "initial", "moved", "auto"])
+@pytest.mark.parametrize("row", SEQUENCE_FIXTURE["rows"], ids=lambda r:f'sequence-r{r["range_index"]}-a{r["first_channels"]}-b{r["second_channels"]}-roi{r["roi"]}')
+def test_rgb_promoted_sequence_matches_actual_imagej_and_portable_program(row, mode):
+    from test_contrast_apply import rgb_auto_input, rgb_auto_selection
+    owner = ij.Document(ij.Dataset(rgb_auto_input(0), axes="YXS"))
+    owner.select(rgb_auto_selection(row["roi"]))
+    before = owner.snapshot()
+    app = ij.Application();app.adopt(owner)
+    scheduler = ij.JobScheduler()
+    first = ij.resolve_rgb_contrast_apply_command(before, rgb_options(*SEQUENCE_FIXTURE["first_ranges"][row["range_index"]], row["first_channels"]))
+    second_range = [0., 255.] if mode == "reset" else SEQUENCE_FIXTURE["initial_range"] if mode == "initial" else SEQUENCE_FIXTURE["moved_range"]
+    commands = [first, ij.resolve_rgb_contrast_apply_command(before, rgb_options(*second_range, row["second_channels"]))]
+    if mode == "auto":
+        baseline = ij.submit_rgb_contrast_sequence(scheduler, commands);assert baseline.wait()
+        target = ij.resolve_target(baseline.preview)
+        decision = ij.rgb_auto_contrast_from_histogram(ij.accumulate_rgb_histogram(target))
+        assert decision.range == row["auto_range"] and decision.cycle.next == row["auto_divisor"]
+        commands.append(ij.resolve_rgb_contrast_apply_command(before, rgb_options(*decision.range, row["first_channels"]), ij.TargetRequest(roi=ij.RoiPolicy.WHOLE_PLANE)))
+        baseline.cancel()
+    estimate = ij.estimate_rgb_contrast_sequence_job(commands)
+    job = ij.submit_rgb_contrast_sequence(scheduler, commands);assert job.wait()
+    assert job.info.resource_bytes == estimate.reservation_bytes and before.shares_data(owner.snapshot()) and owner.undo_steps == 0
+    expected = row[{"reset":"promoted_sha256", "initial":"initial_sha256", "moved":"moved_sha256", "auto":"auto_sha256"}[mode]]
+    preview = job.preview
+    assert hashlib.sha256(preview.dataset.numpy("YXS").tobytes()).hexdigest() == expected
+    record = job.record();assert record["schema"] == "imagejxx.native-workflow-program" and len(record["steps"]) == len(commands)
+    program = ij.NativeWorkflowProgram.from_record(json.loads(json.dumps(record)))
+    rebound = ij.Document(before)
+    rebound.commit(ij.prepare_native_workflow(rebound.snapshot(), program.steps).begin_edit())
+    assert hashlib.sha256(rebound.snapshot().dataset.numpy("YXS").tobytes()).hexdigest() == expected
+    job.publish(app);assert owner.undo_steps == 1
+    assert hashlib.sha256(owner.snapshot().dataset.numpy("YXS").tobytes()).hexdigest() == expected
+    owner.undo();assert owner.snapshot().shares_data(before)
+    owner.redo();assert owner.snapshot().dataset.shares_pixels(preview.dataset)
+    scheduler.shutdown()
+
+
+@pytest.mark.parametrize("failure", ["empty", "steps", "foreign", "revision", "detached", "view", "pixels", "memory", "record"])
+def test_rgb_sequence_admission_refuses_before_reads(failure):
+    owner, pixels, reads = rgb_owner();before=owner.snapshot()
+    commands=[ij.resolve_rgb_contrast_apply_command(before, rgb_options())]
+    limits=ij.ContrastApplyCommandLimits()
+    if failure=="empty":commands=[]
+    elif failure=="steps":commands*=65
+    elif failure=="foreign":commands.append(ij.resolve_rgb_contrast_apply_command(ij.Document(before).snapshot(), rgb_options()))
+    elif failure=="revision":
+        owner.select(None);commands.append(ij.resolve_rgb_contrast_apply_command(owner.snapshot(),rgb_options()))
+    elif failure=="detached":
+        edit=before.begin_edit();edit.select(None);commands.append(ij.resolve_rgb_contrast_apply_command(edit.preview(),rgb_options()))
+    elif failure=="view":
+        view=before.display;view.zoom=2;commands.append(ij.resolve_rgb_contrast_apply_command(before.with_display(view),rgb_options()))
+    elif failure=="pixels":commands*=2;limits.processing.max_pixels=8
+    elif failure=="memory":limits.processing.max_working_bytes=1
+    else:limits.max_record_bytes=1
+    scheduler=ij.JobScheduler()
+    with pytest.raises((ValueError,RuntimeError)):ij.estimate_rgb_contrast_sequence_job(commands,limits)
+    with pytest.raises((ValueError,RuntimeError)):ij.submit_rgb_contrast_sequence(scheduler,commands,limits)
+    assert reads.counts().plane_reads==0 and owner.undo_steps==0 and scheduler.usage.reserved_bytes==0
+    scheduler.shutdown()
+
+
+@pytest.mark.parametrize("stale", ["pixels", "selection", "metadata", "display", "close"])
+def test_rgb_sequence_stale_publication_leaves_owner_unchanged(stale):
+    owner, pixels, reads=rgb_owner();app=ij.Application();app.adopt(owner)
+    source=owner.snapshot();commands=[ij.resolve_rgb_contrast_apply_command(source,rgb_options()),ij.resolve_rgb_contrast_apply_command(source,rgb_options(20,100,2))]
+    scheduler=ij.JobScheduler();job=ij.submit_rgb_contrast_sequence(scheduler,commands);assert job.wait()
+    if stale=="pixels":owner.commit(ij.prepare_rgb_contrast_apply(ij.resolve_target(source),rgb_options(0,100,1)))
+    elif stale=="selection":owner.select(None)
+    elif stale=="metadata":
+        edit=owner.begin_edit();edit.set_title("newer title");owner.commit(edit)
+    elif stale=="display":
+        view=source.display;view.zoom=2;owner.set_display(view)
+    else:app.close(owner.id,discard=True)
+    stable=owner.snapshot();steps=owner.undo_steps
+    with pytest.raises((ValueError,RuntimeError)):job.publish(app)
+    assert stable.shares_data(owner.snapshot()) and owner.undo_steps==steps
+    scheduler.shutdown()
+
+
+@pytest.mark.parametrize("cancel", [False,True])
+def test_rgb_sequence_escaped_dataset_lease_and_owning_plane_copy(cancel):
+    owner, pixels, reads=rgb_owner();app=ij.Application();app.adopt(owner);source=owner.snapshot()
+    commands=[ij.resolve_rgb_contrast_apply_command(source,rgb_options()),ij.resolve_rgb_contrast_apply_command(source,rgb_options(20,100,2))]
+    scheduler=ij.JobScheduler();job=ij.submit_rgb_contrast_sequence(scheduler,commands);assert job.wait()
+    preview=job.preview;dataset=preview.dataset;plane=dataset.plane();reservation=job.info.resource_bytes
+    if cancel:job.cancel()
+    else:job.publish(app);app.close(owner.id,discard=True);del owner
+    scheduler.shutdown();assert scheduler.usage.reserved_bytes==reservation
+    del preview;gc.collect();assert scheduler.usage.reserved_bytes==reservation
+    del dataset;gc.collect();assert scheduler.usage.reserved_bytes==0
+    assert plane.shape==(2,4,3) and np.isfinite(plane).all()
+
+@pytest.mark.parametrize("first_scope", ["current", "all_z", "positions"])
+@pytest.mark.parametrize("second_scope", ["current", "all_z", "positions"])
+def test_rgb_sequence_preserves_each_stage_sparse_scientific_target(first_scope,second_scope):
+    owner,pixels,reads=rgb_owner();before=owner.snapshot();app=ij.Application();app.adopt(owner)
+    def target(scope,roi):
+        if scope=="current":return ij.TargetRequest(roi=roi),[(0,0,0)]
+        if scope=="all_z":return ij.TargetRequest(ij.TargetScope.ALL_Z,roi=roi),[(0,0,0),(0,0,1)]
+        return ij.TargetRequest(ij.TargetScope.POSITIONS,positions=[ij.PlanePosition(0,1,1),ij.PlanePosition(0,0,0)],roi=roi),[(0,1,1),(0,0,0)]
+    first,first_positions=target(first_scope,ij.RoiPolicy.ACTIVE_SELECTION)
+    second,second_positions=target(second_scope,ij.RoiPolicy.WHOLE_PLANE)
+    commands=[ij.resolve_rgb_contrast_apply_command(before,rgb_options(0,20,4),first),ij.resolve_rgb_contrast_apply_command(before,rgb_options(10,40,2),second)]
+    estimate=ij.estimate_rgb_contrast_sequence_job(commands);assert estimate.command.pixels==8*(len(first_positions)+len(second_positions)) and reads.counts().plane_reads==0
+    expected=pixels.copy()
+    for t,c,z in first_positions:expected[t,c,z,:,1:3,0]=np.clip(np.trunc(expected[t,c,z,:,1:3,0].astype(float)*256/20),0,255)
+    for t,c,z in second_positions:expected[t,c,z,:,:,1]=np.clip(np.trunc((expected[t,c,z,:,:,1].astype(float)-10)*256/30),0,255)
+    scheduler=ij.JobScheduler();job=ij.submit_rgb_contrast_sequence(scheduler,commands);assert job.wait();job.publish(app)
+    np.testing.assert_array_equal(owner.snapshot().dataset.numpy("TCZYXS"),expected)
+    assert owner.undo_steps==1;owner.undo();assert owner.snapshot().shares_data(before);scheduler.shutdown()
+
+
+@pytest.mark.parametrize("empty_later",[False,True])
+def test_rgb_sequence_empty_membership_is_no_read_and_no_change_when_all_empty(empty_later):
+    owner,pixels,reads=rgb_owner();owner.select(ij.Selection.from_mask(np.zeros((2,4),np.uint8)));before=owner.snapshot();app=ij.Application();app.adopt(owner)
+    first=ij.TargetRequest(roi=ij.RoiPolicy.WHOLE_PLANE) if empty_later else ij.TargetRequest()
+    commands=[ij.resolve_rgb_contrast_apply_command(before,rgb_options(0,20,4),first),ij.resolve_rgb_contrast_apply_command(before,rgb_options(10,40,2))]
+    scheduler=ij.JobScheduler();job=ij.submit_rgb_contrast_sequence(scheduler,commands);assert job.wait();job.publish(app)
+    if not empty_later:assert reads.counts().plane_reads==0 and owner.snapshot().shares_data(before) and owner.undo_steps==0
+    else:
+        expected=pixels.copy();expected[0,0,0,:,:,0]=np.clip(np.trunc(expected[0,0,0,:,:,0].astype(float)*256/20),0,255)
+        np.testing.assert_array_equal(owner.snapshot().dataset.numpy("TCZYXS"),expected)
+        assert owner.undo_steps==1;owner.undo();assert owner.snapshot().shares_data(before)
+    scheduler.shutdown()
+
+
+def test_rgb_sequence_single_stage_keeps_original_capture_and_program_shape():
+    owner,pixels,reads=rgb_owner();before=owner.snapshot();command=ij.resolve_rgb_contrast_apply_command(before,rgb_options())
+    scheduler=ij.JobScheduler();job=ij.submit_rgb_contrast_sequence(scheduler,[command]);assert job.wait()
+    record=job.record();assert len(record["steps"])==1 and record["steps"][0]["original"]==command.record()
+    expected=ij.execute_rgb_contrast_apply_command(command).preview()
+    np.testing.assert_array_equal(job.preview.dataset.numpy("TCZYXS"),expected.dataset.numpy("TCZYXS"))
+    job.cancel();scheduler.shutdown()

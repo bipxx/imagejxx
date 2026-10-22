@@ -1,4 +1,4 @@
-#include <imagejxx/rgb_contrast_apply_job.hpp>
+#include <imagejxx/rgb_contrast_sequence_job.hpp>
 #include <imagejxx/histogram_job.hpp>
 #include <imagejxx/application.hpp>
 #include <imagejxx/manual_threshold.hpp>
@@ -167,4 +167,30 @@ void rgb_histograms(){
   const auto bytes=job.info().resource_bytes;job.complete();scheduler.shutdown();check(scheduler.usage().reserved_bytes==bytes,"Escaped RGB histogram aliases retain reservation after completion/shutdown");
   typed.reset();check(scheduler.usage().reserved_bytes==bytes,"Base alias retains RGB lease");base.reset();until([&]{return scheduler.usage().reserved_bytes==0;});
 }
-int main(){try{records();jobs();freeze();queued();reset();rgb_records_jobs();rgb_queued();rgb_histograms();std::cout<<"PASS captured Apply records, strict replay/rebind, worker publication, escaped leases, cancellation and frozen intent\n";return 0;}catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}
+void rgb_sequences(){
+  JobScheduler scheduler;Application app;auto source=std::make_shared<RgbSource>();auto owner=std::make_shared<Document>(Dataset(source));app.adopt(owner);
+  const auto before=owner->snapshot();TargetRequest firstTarget;firstTarget.scope=TargetScope::Positions;firstTarget.positions={{0,0,1}};
+  TargetRequest secondTarget;secondTarget.roi=RoiPolicy::WholePlane;
+  std::vector<ResolvedRgbContrastApplyCommand> commands{resolve_rgb_contrast_apply_command(before,{0,7,4},firstTarget),resolve_rgb_contrast_apply_command(before,{10,20,2},secondTarget)};
+  const auto estimate=estimate_rgb_contrast_sequence_job(commands);check(source->reads==0,"RGB sequence admission has no IO");
+  source->opened=false;OpenOnExit release{source};auto canceled=submit_rgb_contrast_sequence(scheduler,commands);until([&]{return source->reads>0;});canceled.cancel();check(canceled.wait_for(5s),"RGB sequence blocked worker cancels");
+  source->open();auto job=submit_rgb_contrast_sequence(scheduler,commands);check(job.wait_for(5s),"RGB sequence ready");
+  check(source->mainReads==0 && before.shares_data(owner->snapshot()),"RGB sequence reads only on workers and stages privately");
+  std::optional<DocumentSnapshot> preview=job.preview();auto plane=preview->data().dataset.plane({0,0,1});
+  check(plane->pixels[3]==255 && plane->pixels[4]==21,"Frozen first-stage explicit target retained");
+  check(preview->data().dataset.plane()->pixels[4]==25,"Second stage targets captured active plane");
+  check(job.info().resource_bytes==estimate.reservation_bytes,"RGB sequence admission matches lease");
+  job.publish(app);check(owner->undo_steps()==1,"RGB sequence publishes one paired transaction");owner->undo();app.close(owner->id,true);owner.reset();
+  const auto bytes=job.info().resource_bytes;preview.reset();scheduler.shutdown();check(scheduler.usage().reserved_bytes==bytes,"RGB sequence plane alias retains lease");plane.reset();until([&]{return scheduler.usage().reserved_bytes==0;});
+}
+void rgb_sequence_freeze(){
+  JobScheduler scheduler;auto source=std::make_shared<RgbSource>();auto owner=std::make_shared<Document>(Dataset(source));
+  const auto before=owner->snapshot();std::vector<ResolvedRgbContrastApplyCommand> commands{resolve_rgb_contrast_apply_command(before,{0,7,4}),resolve_rgb_contrast_apply_command(before,{10,20,2})};
+  ContrastApplyCommandLimits limits;int callbacks=0;ExecutionControl control;
+  control.checkpoint=[&]{++callbacks;commands.clear();limits.processing.max_pixels=1;};
+  std::optional<ContrastApplyJob> job;
+  {ExecutionScope scope(control);(void)estimate_rgb_contrast_sequence_job(commands,limits);check(callbacks==0,"Borrowed sequence estimate has no callbacks");job=submit_rgb_contrast_sequence(scheduler,commands,limits);}
+  check(callbacks>0 && commands.empty() && job->wait_for(5s),"Sequence freezes vector and limits before reentrant codec checkpoints");
+  const auto pixels=job->preview().data().dataset.plane();check(pixels->pixels[3]==36 && pixels->pixels[4]==25,"Reentrant sequence retains original mapping and limits");job->cancel();
+}
+int main(){try{records();jobs();freeze();queued();reset();rgb_records_jobs();rgb_queued();rgb_histograms();rgb_sequences();rgb_sequence_freeze();std::cout<<"PASS captured Apply records, strict replay/rebind, worker publication, escaped leases, cancellation and frozen intent\n";return 0;}catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

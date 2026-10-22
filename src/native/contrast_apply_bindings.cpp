@@ -1,7 +1,7 @@
 #include "binding_arrays.hpp"
 #include <imagejxx/contrast_apply.hpp>
 #include <imagejxx/rgb_contrast_apply.hpp>
-#include <imagejxx/rgb_contrast_apply_job.hpp>
+#include <imagejxx/rgb_contrast_sequence_job.hpp>
 #include <imagejxx/application.hpp>
 #include "binding_metadata.hpp"
 #include <pybind11/pybind11.h>
@@ -132,6 +132,10 @@ void bind_contrast_apply(py::module_ &m) {
         py::gil_scoped_release release;return v.wait_for(std::chrono::milliseconds(count));
       },py::arg("timeout_ms")=5000)
       .def("publish",&ContrastApplyJob::publish,py::arg("application"),py::call_guard<py::gil_scoped_release>());
+  m.def("estimate_rgb_contrast_sequence_job",&estimate_rgb_contrast_sequence_job,py::arg("commands"),py::arg("limits")=ContrastApplyCommandLimits{},py::arg("job_options")=JobOptions{},py::call_guard<py::gil_scoped_release>());
+  m.def("submit_rgb_contrast_sequence",[](JobScheduler &scheduler,std::vector<ResolvedRgbContrastApplyCommand> commands,ContrastApplyCommandLimits limits,JobOptions options){
+    py::gil_scoped_release release;return submit_rgb_contrast_sequence(scheduler,commands,limits,std::move(options));
+  },py::arg("scheduler"),py::arg("commands"),py::arg("limits")=ContrastApplyCommandLimits{},py::arg("job_options")=JobOptions{});
   m.def("estimate_rgb_contrast_apply_job",&estimate_rgb_contrast_apply_job,py::arg("command"),py::arg("limits")=ContrastApplyCommandLimits{},py::arg("job_options")=JobOptions{},py::call_guard<py::gil_scoped_release>());
   m.def("submit_rgb_contrast_apply",[](JobScheduler &scheduler,ResolvedRgbContrastApplyCommand command,ContrastApplyCommandLimits limits,JobOptions options){
     py::gil_scoped_release release;return submit_rgb_contrast_apply(scheduler,command,limits,std::move(options));

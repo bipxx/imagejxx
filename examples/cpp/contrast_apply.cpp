@@ -1,5 +1,5 @@
 #include <imagejxx/contrast_apply.hpp>
-#include <imagejxx/rgb_contrast_apply_job.hpp>
+#include <imagejxx/rgb_contrast_sequence_job.hpp>
 #include <imagejxx/application.hpp>
 #include <imagejxx/native_workflow.hpp>
 #include <imagejxx/histogram_job.hpp>
@@ -44,6 +44,10 @@ int main() {
   JobScheduler histScheduler;auto histogram=submit_rgb_histogram(histScheduler,statsTarget);histogram.wait();
   const auto result=histogram.rgb_result();const auto automatic=rgb_auto_contrast_from_histogram(*result);
   if(automatic.range!=std::array<double,2>{10,209} || automatic.cycle.next!=5000)throw std::runtime_error("RGB histogram/Auto");histogram.complete();
+  const auto promoted=color->snapshot();
+  std::vector<ResolvedRgbContrastApplyCommand> sequence{resolve_rgb_contrast_apply_command(promoted,{10,40,4}),resolve_rgb_contrast_apply_command(promoted,{20,60,2})};
+  auto sequenceJob=submit_rgb_contrast_sequence(scheduler,sequence);sequenceJob.wait();sequenceJob.publish(app);
+  if(color->undo_steps()!=2 || color->snapshot().data().dataset.plane()->pixels!=std::vector<double>{0,0,30,255,192,60})throw std::runtime_error("RGB promoted sequence publication");
   std::cout<<"PASS installed scalar and RGB Apply APIs, atomic commit and Undo\n";
 
 }

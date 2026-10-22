@@ -419,6 +419,44 @@ once and narrows bounds on other stack planes; native multi-axis mapping remains
 an explicit uniform-plane extension. Slider/log-plot/Set/reset/calibration,
 RGBA/floating Apply and complete platform/resource acceptance remain required.
 
+### Promoted RGB mapping sequences (core service)
+
+`rgb_contrast_sequence_job.hpp` and Python `submit_rgb_contrast_sequence` compose
+1..64 captured RGB mappings, subject to cumulative pixel, record and working
+limits. Every command must refer to the same exact immutable owner/data,
+revisions, geometry and display. Different sources, staged edits and detached
+view changes are refused before processing reads. Each stage has its own frozen
+compact ranges or explicit positions and ROI policy. Later stages see the prior
+stage's pixels; unchanged virtual planes stay shared. An empty area retains the
+native no-change/no-read extension.
+
+This service supplies the ordered processing needed for ImageJ's component
+snapshot promotion. A repeated endpoint change should replace the current draft
+command; a component change promotes that command to the retained prefix and
+starts a new 0..255 draft. It must not append every endpoint adjustment. Auto
+reads weighted intensity from the promoted baseline before creating its next
+whole-plane mapping. The core reference cases cover both promotion resets,
+replacement endpoint choices, overlapping component bits, selected areas and
+Auto after a second promotion. The reference invokes actual ColorProcessor
+snapshot operations at the boundary used by ContrastAdjuster.itemStateChanged;
+Choice/AWT event delivery is outside this core qualification.
+
+The existing ContrastApplyJob retains cancellation, escaped snapshot/Dataset/
+plane leases and guarded caller-thread publication. A sequence records an
+existing NativeWorkflowProgram containing full historical RGB commands and
+explicit frozen targets. Portable replay sees preceding-stage pixels and one
+paired Undo/Redo transaction. Scalar and RGB command wire profiles are unchanged.
+Conservative admission sums retained per-stage planes, metadata and record work,
+and cumulative visited pixel capacity. Source/provider caches, frontend copies,
+publication/history staging and total process RSS remain external.
+
+The shared ImGui panel has not yet adopted this service. Its adapter still needs
+promoted prefix state, new component reset, promoted Auto statistics, union
+preview selection and complete Apply recording. Repeated-range, pending/cancel,
+source/geometry/display transitions, real widgets and replay must be checked
+before claiming editor component-switch fidelity. Exact ImageJ active/stack
+narrowing, slider/log-plot/Set/reset/calibration and full acceptance remain open.
+
 Remaining integration and qualification:
 
 1. Extend actual range/text/positioned-ROI widget and publication failure-injection

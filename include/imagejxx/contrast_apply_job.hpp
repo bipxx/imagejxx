@@ -32,7 +32,13 @@ public:
       const ContrastApplyCommandLimits & = {},JobOptions = {});
   static ContrastApplyJob submit(JobScheduler &,const ResolvedRgbContrastApplyCommand &,
       const ContrastApplyCommandLimits & = {},JobOptions = {});
+  static ContrastApplyJob submit_rgb_sequence(JobScheduler &,
+      const std::vector<ResolvedRgbContrastApplyCommand> &,
+      const ContrastApplyCommandLimits & = {},JobOptions = {});
 private:
+  friend ContrastApplyJobEstimate estimate_rgb_contrast_sequence_job(
+      const std::vector<ResolvedRgbContrastApplyCommand> &,
+      const ContrastApplyCommandLimits &,const JobOptions &);
   template<class Command> static ContrastApplyJob submit_impl(JobScheduler &,const Command &,
       const ContrastApplyCommandLimits &,JobOptions);
   struct ResultCell;

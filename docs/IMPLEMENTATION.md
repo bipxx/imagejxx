@@ -1,5 +1,24 @@
 # Implementation progress
 
+**RGB promoted-sequence foundation, 2026-10-22 (work in progress):**
+The shared native Apply job can now compose captured RGB mappings in order,
+with a sparse frozen target for each stage, one paired guarded publication and
+an existing portable program record. All stages require the same exact source
+capture. Callers retain promoted maps and replace the current draft instead
+of appending each endpoint adjustment. Actual ImageJ snapshot/reset/Auto processing supplies
+378 reference sequences. Windows/Linux each pass 22 native suites, three existing standalone C++ UI
+probes, one installed public C++ SDK consumer, ten background repetitions, four
+hidden GL contexts and 13,725 installed Python checks (1,540 new), zero
+failure/error/skip. Exact owned scratch is CRC/member-SHA archived before
+cleanup; qualified installs/probes remain. See the
+[scoped receipt](parity/reviews/p11m-rgb-sequence001.json).
+
+Next connect this service to component switching in the shared ImGui panel:
+retain promoted prefixes, reset the new component range, use the promoted
+baseline for Auto, display the union of affected target planes and record the
+complete sequence on Apply. The current panel still uses its original baseline;
+full component-switch/geometry/stack/slider/controller acceptance remains open.
+
 **RGB histogram/Auto checkpoint, 2026-10-22 (work in progress):**
 Native UInt8 RGB raw histograms, a pure repeated-cycle Auto decision and leased
 histogram jobs now feed the shared modeless ImGui panel and Python interface.
