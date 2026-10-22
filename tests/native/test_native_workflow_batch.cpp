@@ -251,6 +251,15 @@ int main(int argc, char **argv) {
                                     (dir / "outputs").u8string(), tiny);
     });
     check(bytes(dir / "first.ijx") == original);
+    {
+      Image image(2,1,3,PixelType::UInt8);image.pixels={10,20,30,20,30,40};Document rgb(Dataset::from_stack({image}));
+      SessionCapture capture{{rgb.snapshot()},{},{},{}};const auto input=dir/"rgb-input.ijx";save_session(input.u8string(),capture);const auto raw=bytes(input);
+      NativeWorkflowOperation apply;apply.operation="rgb_contrast_apply";apply.parameters={{"minimum",10.},{"maximum",40.},{"channels",std::int64_t(4)}};
+      auto prepared=prepare_native_workflow_batch({{input.u8string(),"rgb-output"}},{apply},(dir/"outputs").u8string());
+      check(!fs::exists(dir/"outputs/rgb-output.ijx"));prepared.publish();
+      const auto result=load_session((dir/"outputs/rgb-output.ijx").u8string());
+      check(result.documents[0]->snapshot().data().dataset.plane()->pixels==std::vector<double>({0,20,30,85,30,40}));check(bytes(input)==raw);
+    }
     statistics_contract(dir);
     std::cout
         << "PASS native scientific session batch planning and publication\n";

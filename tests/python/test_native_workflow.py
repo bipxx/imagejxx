@@ -419,3 +419,160 @@ def test_conversion_after_apply_consumes_observed_reset_range():
     doc.undo()
     np.testing.assert_array_equal(doc.snapshot().dataset.numpy('YX'), [[10, 20, 30, 40]])
     assert doc.snapshot().display.properties == before.display.properties
+
+
+import hashlib
+from test_contrast_apply import RGB_FIXTURE, rgb_input, rgb_options
+
+
+def rgb_apply_saved_record(channels=7):
+    saved = ij.Document(ij.Dataset(np.array([[[10, 20, 30], [40, 50, 60]]], np.uint8), axes='YXS'))
+    return ij.resolve_rgb_contrast_apply_command(saved.snapshot(), rgb_options(10, 40, channels)).record()
+
+
+@pytest.mark.parametrize('authored', [False, True])
+@pytest.mark.parametrize('row', RGB_FIXTURE['rows'], ids=lambda r: f'rgb-r{r["range_index"]}-c{r["channels"]}-roi{r["roi"]}')
+def test_rgb_apply_program_matches_actual_imagej_reference(row, authored):
+    pixels = rgb_input()
+    doc = ij.Document(ij.Dataset(pixels, axes='YXS'))
+    if row['roi']:
+        mask = np.zeros((2, 256), np.uint8); mask[:, 17:236] = 1
+        if row['roi'] == 2:
+            y, x = np.indices(mask.shape); mask[(x+y) % 3 == 0] = 0
+        doc.select(ij.Selection.from_mask(mask))
+    low, high = RGB_FIXTURE['ranges'][row['range_index']]
+    original = ij.resolve_rgb_contrast_apply_command(doc.snapshot(), rgb_options(low, high, row['channels'])).record()
+    parameters = {'minimum': low, 'maximum': high, 'channels': row['channels']} if authored else {}
+    program = ij.NativeWorkflowProgram([ij.NativeWorkflowOperation('rgb_contrast_apply', parameters, ij.TargetRequest(), original=original)])
+    wire = program.json(); program = ij.NativeWorkflowProgram.from_json(wire)
+    assert program.json() == wire and program.record()['steps'][0]['original'] == original
+    before = doc.snapshot()
+    prepared = ij.prepare_native_workflow(before, program.steps)
+    applied = prepared.preview.dataset.numpy('YXS')
+    assert hashlib.sha256(applied.tobytes()).hexdigest() == row['sha256']
+    assert prepared.preview.display.properties['display_range'] == [0., 255.]
+    assert prepared.completed_steps == 1 and before.shares_data(doc.snapshot()) and doc.undo_steps == 0
+    doc.commit(prepared.begin_edit()); assert doc.undo_steps == 1
+    doc.undo(); np.testing.assert_array_equal(doc.snapshot().dataset.numpy('YXS'), pixels)
+    assert doc.snapshot().display.properties == before.display.properties
+
+
+@pytest.mark.parametrize('authored', [False, True])
+@pytest.mark.parametrize('channels', [1, 4, 7])
+@pytest.mark.parametrize('scope', ['current', 'all_z', 'ranges', 'positions'])
+@pytest.mark.parametrize('roi', ['whole', 'active', 'positioned'])
+def test_rgb_apply_workflow_native_target_extension_and_paired_history(authored, channels, scope, roi):
+    pixels = np.tile(np.array([[[10,20,30],[20,30,40],[30,40,50],[40,50,60],[50,60,70],[60,70,80]]], np.uint8), (2,2,2,2,1,1))
+    reads = ij.DatasetReadObserver(); doc = ij.Document(ij.Dataset(pixels, axes='TCZYXS').observe_reads(reads))
+    doc.select(ij.Selection.from_mask(np.array([[0,0,1,1,0,0]]*2, np.uint8)))
+    edit = doc.begin_edit();edit.set_rois([ij.ROI('rgb',ij.Selection('rectangle',[(1,0),(5,2)]),t=1,c=1,z=0)]);doc.commit(edit)
+    view = doc.snapshot().display;view.t,view.c,view.crosshair=1,1,[0,0,1];view.properties={'display_range':[10.,40.],'lut':'Fire'};doc.set_display(view)
+    request, positions = contrast_target(scope, roi)
+    original = rgb_apply_saved_record(channels)
+    parameters = {'minimum':10.,'maximum':40.,'channels':channels} if authored else {}
+    step = ij.NativeWorkflowOperation('rgb_contrast_apply',parameters,request,original=original)
+    before, undo = doc.snapshot(), doc.undo_steps
+    prepared = ij.prepare_native_workflow(before,[step])
+    expected=pixels.copy();changed=False
+    for p in positions:
+        if roi=='positioned' and p!=(1,1,0):continue
+        changed=True;columns=slice(None) if roi=='whole' else slice(2,4) if roi=='active' else slice(1,5)
+        for c,bit in enumerate([4,2,1]):
+            if channels & bit:expected[p][:,columns,c]=np.clip(np.trunc((pixels[p][:,columns,c].astype(float)-10)*256/30),0,255)
+    assert reads.counts().plane_reads == sum(roi!='positioned' or p==(1,1,0) for p in positions)
+    np.testing.assert_array_equal(prepared.preview.dataset.numpy('TCZYXS'),expected)
+    assert prepared.preview.display.properties==({'display_range':[0.,255.],'lut':'Fire'} if changed else before.display.properties)
+    assert before.shares_data(doc.snapshot());doc.commit(prepared.begin_edit());assert doc.undo_steps==undo+changed
+    if changed:
+        doc.undo();np.testing.assert_array_equal(doc.snapshot().dataset.numpy('TCZYXS'),pixels)
+        assert doc.snapshot().display.properties==before.display.properties
+
+
+@pytest.mark.parametrize('parameters', [{},{'minimum':0,'maximum':1},
+    {'minimum':0,'maximum':1,'channels':1,'extra':1}, {'minimum':True,'maximum':1,'channels':1},
+    {'minimum':2**64-1,'maximum':1,'channels':1}, {'minimum':0,'maximum':float('inf'),'channels':1},
+    {'minimum':2,'maximum':1,'channels':1}, {'minimum':0,'maximum':1,'channels':True},
+    {'minimum':0,'maximum':1,'channels':4.}, {'minimum':0,'maximum':1,'channels':0}, {'minimum':0,'maximum':1,'channels':8}])
+def test_rgb_apply_authored_invalid_later_step_refused_before_any_reads(parameters):
+    reads=ij.DatasetReadObserver();doc=ij.Document(ij.Dataset(np.zeros((2,4,3),np.uint8),axes='YXS').observe_reads(reads));before=doc.snapshot()
+    steps=[ij.NativeWorkflowOperation('add',{'value':1},ij.TargetRequest()),ij.NativeWorkflowOperation('rgb_contrast_apply',parameters,ij.TargetRequest())]
+    with pytest.raises((ValueError,TypeError,RuntimeError,OverflowError)):ij.NativeWorkflowProgram(steps)
+    with pytest.raises((ValueError,TypeError,RuntimeError,OverflowError)):ij.prepare_native_workflow(before,steps)
+    assert reads.counts().plane_reads==reads.counts().region_reads==0 and before.shares_data(doc.snapshot())
+
+
+@pytest.mark.parametrize('failure',['original','calibration','typed_options','volume','destination','target','budget'])
+def test_rgb_apply_saved_original_and_target_admission_precedes_io(failure):
+    reads=ij.DatasetReadObserver();doc=ij.Document(ij.Dataset(np.zeros((2,4,3),np.uint8),axes='YXS').observe_reads(reads));before=doc.snapshot()
+    original=rgb_apply_saved_record();request=ij.TargetRequest();kwargs={};limits=ij.NativeWorkflowLimits()
+    if failure=='original':original['profile']='future'
+    elif failure=='calibration':kwargs['use_destination_calibration']=True
+    elif failure=='typed_options':kwargs['filter_options']=ij.GaussianBlurCommandOptions()
+    elif failure=='volume':request=ij.TargetRequest(mode=ij.ExecutionMode.VOLUME)
+    elif failure=='destination':request=ij.TargetRequest(destination=ij.OutputDestination.NEW_DOCUMENT)
+    elif failure=='target':request=ij.TargetRequest(ij.TargetScope.POSITIONS,positions=[ij.PlanePosition(0,0,99)])
+    else:limits=ij.NativeWorkflowLimits(max_retained_bytes=1)
+    step=ij.NativeWorkflowOperation('rgb_contrast_apply',{'minimum':0.,'maximum':1.,'channels':4},request,original=original,**kwargs)
+    with pytest.raises((ValueError,TypeError,RuntimeError,IndexError)):ij.prepare_native_workflow(before,[step],limits)
+    assert reads.counts().plane_reads==reads.counts().region_reads==0 and before.shares_data(doc.snapshot())
+
+
+@pytest.mark.parametrize('dtype,samples',[(np.uint8,1),(np.uint8,4),(np.uint16,3),(np.float32,3)])
+def test_rgb_apply_disabled_intent_keeps_original_without_destination_admission(dtype,samples):
+    reads=ij.DatasetReadObserver();doc=ij.Document(ij.Dataset(np.zeros((2,4,samples),dtype),axes='YXS').observe_reads(reads))
+    request=ij.TargetRequest(ij.TargetScope.POSITIONS,positions=[ij.PlanePosition(0,0,99)]);original=rgb_apply_saved_record()
+    step=ij.NativeWorkflowOperation('rgb_contrast_apply',{},request,original=original,enabled=False)
+    p=ij.NativeWorkflowProgram.from_json(ij.NativeWorkflowProgram([step]).json())
+    assert ij.prepare_native_workflow(doc.snapshot(),p.steps).completed_steps==0 and reads.counts().plane_reads==0
+    step=ij.NativeWorkflowOperation('rgb_contrast_apply',{},request,original=original,enabled=True)
+    with pytest.raises((ValueError,RuntimeError,IndexError)):ij.prepare_native_workflow(doc.snapshot(),[step])
+    assert reads.counts().plane_reads==0
+
+
+def test_rgb_apply_mixed_program_uses_prior_pixels_and_reset_before_next_conversion():
+    pixels=np.array([[[10,10,10],[20,20,20],[30,30,30],[40,40,40]]],np.uint8)
+    doc=ij.Document(ij.Dataset(pixels,axes='YXS'));view=doc.snapshot().display;view.properties={'display_range':[10.,40.]};doc.set_display(view)
+    request=ij.TargetRequest(ij.TargetScope.RANGES,t=ij.AxisRange(0,1),c=ij.AxisRange(0,1),z=ij.AxisRange(0,1),roi=ij.RoiPolicy.WHOLE_PLANE)
+    apply=ij.NativeWorkflowOperation('rgb_contrast_apply',{'minimum':10.,'maximum':40.,'channels':7},request)
+    converted=ij.prepare_native_workflow(doc.snapshot(),[apply,ij.NativeWorkflowOperation('convert_image',{'dtype':'uint8','scale':True},request)])
+    np.testing.assert_array_equal(converted.preview.dataset.numpy('YX'),[[0,85,170,255]])
+    prepared=ij.prepare_native_workflow(doc.snapshot(),[ij.NativeWorkflowOperation('add',{'value':1},request),apply])
+    np.testing.assert_array_equal(prepared.preview.dataset.numpy('YXS'),np.repeat(np.array([[8,93,179,255]],np.uint8)[...,None],3,axis=-1))
+    assert prepared.preview.display.properties['display_range']==[0.,255.]
+
+
+def test_rgb_apply_stage_type_admission_does_not_read_before_late_failure():
+    pixels=np.array([[[10,10,10],[20,20,20]]],np.uint8);reads=ij.DatasetReadObserver();doc=ij.Document(ij.Dataset(pixels,axes='YXS').observe_reads(reads))
+    request=ij.TargetRequest(ij.TargetScope.RANGES,t=ij.AxisRange(0,1),c=ij.AxisRange(0,1),z=ij.AxisRange(0,1),roi=ij.RoiPolicy.WHOLE_PLANE)
+    steps=[ij.NativeWorkflowOperation('convert_image',{'dtype':'uint8','scale':True},request),ij.NativeWorkflowOperation('rgb_contrast_apply',{},request,original=rgb_apply_saved_record())]
+    with pytest.raises((ValueError,RuntimeError)):ij.prepare_native_workflow(doc.snapshot(),steps)
+    assert reads.counts().plane_reads==reads.counts().region_reads==0
+
+
+@pytest.mark.parametrize('phase',['pre','between','callback','stale'])
+def test_rgb_apply_workflow_failure_and_stale_commit_are_atomic(phase):
+    doc=ij.Document(ij.Dataset(rgb_input(),axes='YXS'));before=doc.snapshot()
+    step=ij.NativeWorkflowOperation('rgb_contrast_apply',{},ij.TargetRequest(),original=rgb_apply_saved_record())
+    token=ij.CancellationToken()
+    if phase=='pre':token.cancel()
+    def progress(done,total):
+        if done==1:
+            if phase=='between':token.cancel()
+            if phase=='callback':raise RuntimeError('controlled RGB workflow failure')
+    if phase=='stale':
+        prepared=ij.prepare_native_workflow(before,[step]);view=before.display;view.zoom=2.;doc.set_display(view)
+        with pytest.raises(ij.RevisionConflict):doc.commit(prepared.begin_edit())
+    else:
+        with pytest.raises((RuntimeError,ij.OperationCancelled)):ij.prepare_native_workflow(before,[step],cancellation=token,progress=progress)
+    assert before.shares_data(doc.snapshot()) and doc.undo_steps==0
+
+
+def test_rgb_apply_admits_rgb_created_by_preceding_stage():
+    pixels=np.array([[10,20,30,40]],np.uint8);reads=ij.DatasetReadObserver();doc=ij.Document(ij.Dataset(pixels,axes='YX').observe_reads(reads))
+    request=ij.TargetRequest(ij.TargetScope.RANGES,t=ij.AxisRange(0,1),c=ij.AxisRange(0,1),z=ij.AxisRange(0,1),roi=ij.RoiPolicy.WHOLE_PLANE)
+    original=ij.resolve_rgb_dataset_command(doc.snapshot(),mode=ij.RgbDatasetMode.PER_PLANE,destination=ij.OutputDestination.IN_PLACE).record()
+    steps=[ij.NativeWorkflowOperation('rgb_dataset',{},request,original=original),ij.NativeWorkflowOperation('rgb_contrast_apply',{'minimum':10.,'maximum':40.,'channels':4},request)]
+    prepared=ij.prepare_native_workflow(doc.snapshot(),steps)
+    expected=np.stack([np.array([[0,85,170,255]],np.uint8),pixels,pixels],axis=-1)
+    np.testing.assert_array_equal(prepared.preview.dataset.numpy('YXS'),expected)
+    assert prepared.completed_steps==2 and doc.undo_steps==0

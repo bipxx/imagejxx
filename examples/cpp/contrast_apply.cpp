@@ -1,6 +1,7 @@
 #include <imagejxx/contrast_apply.hpp>
 #include <imagejxx/rgb_contrast_apply_job.hpp>
 #include <imagejxx/application.hpp>
+#include <imagejxx/native_workflow.hpp>
 #include <iostream>
 #include <stdexcept>
 int main() {
@@ -34,6 +35,9 @@ int main() {
   if(!job.ready() || jobEstimate.reservation_bytes==0)throw std::runtime_error("RGB worker preparation");
   job.publish(app);
   if(color->snapshot().data().dataset.plane()->pixels!=std::vector<double>{0,20,30,255,50,60})throw std::runtime_error("RGB command publication");
+  color->undo();NativeWorkflowOperation step;step.operation="rgb_contrast_apply";step.original=command.record();
+  auto program=prepare_native_workflow(color->snapshot(),{step});auto workflowEdit=program.begin_edit();app.commit(workflowEdit);
+  if(color->snapshot().data().dataset.plane()->pixels!=std::vector<double>{0,20,30,255,50,60})throw std::runtime_error("RGB workflow publication");
   std::cout<<"PASS installed scalar and RGB Apply APIs, atomic commit and Undo\n";
 
 }

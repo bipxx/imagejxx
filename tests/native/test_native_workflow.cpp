@@ -344,6 +344,18 @@ int main() {
     replay.original = g.record();
     replay.target.roi = RoiPolicy::WholePlane;
     check(prepare_native_workflow(before, {replay}).completed_steps() == 1);
+    {
+      Image image(2,1,3,PixelType::UInt8);image.pixels={10,20,30,20,30,40};DatasetReadObserver reads;
+      Document color(Dataset::from_stack({image}).observe_reads(reads));const auto before=color.snapshot();
+      NativeWorkflowOperation op;op.operation="rgb_contrast_apply";op.original=resolve_rgb_contrast_apply_command(before,{10,40,4}).record();
+      auto program=make_native_workflow_program({op});auto restored=native_workflow_program_from_record(program.record());
+      auto prepared=prepare_native_workflow(before,restored.steps());
+      check(prepared.preview().data().dataset.plane()->pixels==std::vector<double>({0,20,30,85,30,40}));
+      auto rgbEdit=prepared.begin_edit();color.commit(rgbEdit);check(color.undo_steps()==1);color.undo();check(color.snapshot().shares_data(before));
+      auto malformed=*op.original;malformed["profile"]=std::string("future");op.original=malformed;
+      op.parameters={{"minimum",0.},{"maximum",1.},{"channels",std::int64_t(7)}};const auto count=reads.counts().plane_reads;
+      refuses([&]{prepare_native_workflow(color.snapshot(),{op});});check(reads.counts().plane_reads==count);
+    }
     contrast_workflow_contract();
     histogram_workflow_contract();
     conversion_contract();

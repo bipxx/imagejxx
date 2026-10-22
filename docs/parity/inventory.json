@@ -2422,7 +2422,8 @@
           "docs/NATIVE_WORKFLOW_PARAMETERS.md",
           "docs/parity/reviews/p11h-rgb-contrast001.json",
           "docs/parity/reviews/p11i-rgb-command001.json",
-          "docs/parity/reviews/p11j-rgb-editor001.json"
+          "docs/parity/reviews/p11j-rgb-editor001.json",
+          "docs/parity/reviews/p11k-rgb-workflow001.json"
         ],
         "implementation": [
           "include/imagejxx/document.hpp",
@@ -2525,7 +2526,8 @@
         "p11g.contrast-apply.workflow-batch.001",
         "p11h.rgb-contrast.foundation.001",
         "p11i.rgb-contrast.command-job.001",
-        "p11j.rgb-contrast.editor.001"
+        "p11j.rgb-contrast.editor.001",
+        "p11k.rgb-contrast.workflow.001"
       ]
     },
     {
@@ -181644,6 +181646,29 @@
         "total": 4774
       },
       "scope": "Windows/Linux each pass 22 native suites, three existing full C++ workflow/batch/RGB UI regression probes, one installed C++ SDK consumer, ten background repetitions, four hidden GL contexts and 4774 installed Python checks, zero failure/error/skip. There are 331 new RGB editor Python cases: 273 actual ImageJ 1.54r reference rows through the shared modeless preview, neutral ordinary rendering, READY-job transfer, recorded atomic Apply and next committed baseline; 36 native uniform target-extension combinations; eight component admission cases; five stale/close/cancel cases; six saved strict/reviewed-rebind cases; two real virtual TIFF ordinary/XYZ background cases; and pending-cancel/explicit-refresh coverage. Native actual mouse/key/text fixtures additionally verify component selection, Apply, READY job identity reuse, invalid-then-corrected explicit T/C/Z list editing, ordered recorded publication, untouched planes, Undo and blocked virtual-reader cancellation/close with no creator-thread processing reads. Explicit list UI is bounded to 4096 unique planes and 1 MiB of text; existing scalar panel admission remains unchanged. Stretched text-field diagnostic bounds now follow the actual widget. All processing stays in C++; optional Python UI uses the same native host. Original scalar/RGB public core APIs and wire schemas are unchanged. Actual native compiled inputs and installed Python module origins are pinned; Linux uses a SHA-verified native snapshot of 5469 test/config/fixture files. Prototype/final temporary environments, installs, snapshots, transfers, fixtures and consumer build caches are CRC/member-SHA archived before removal; final qualified installs/probes/consumer, logs and reports remain. Original 99 requirement/status triples, existing input registrations and commercial-use dependency inventory are preserved. Native uniform multi-axis mapping and paired Undo are explicit extensions; exact ImageJ other-stack-plane narrowing, full RGB histogram/Auto/workflow/Batch, slider/controller semantics and complete G057/ImageJ/Fiji/platform/resource acceptance remain open."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-22",
+      "id": "p11k.rgb-contrast.workflow.001",
+      "identity": {
+        "qualification": {
+          "path": "docs/parity/reviews/p11k-rgb-workflow001.json",
+          "bytes": 24850,
+          "sha256": "c1202b61e7e157560c7d38ec97c254ac912c0c9da7c419c116b54a75cf7c69f6"
+        }
+      },
+      "platform": "Windows/Linux installed C++/Python RGB Apply portable native programs, Run parameters and session Batch",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 5438,
+        "report": "build/p11k-rgb-workflow001/windows-python003/pytest.xml",
+        "skipped": 0,
+        "total": 5438
+      },
+      "scope": "Windows/Linux each pass 22 native suites, three existing full C++ workflow/batch/RGB UI regression probes, one installed public C++ SDK consumer exercising RGB workflow publication, ten background repetitions, four hidden GL contexts and 5438 installed Python checks, zero failure/error/skip. There are 664 new cases: 546 saved/authored program executions of 273 actual ImageJ 1.54r RGB Apply reference rows; 72 native uniform target/ROI/component/history combinations; 11 authored grammar, seven complete-original/target/budget, four disabled-intent, two mixed/evolving-stage, one late stage-type refusal, four cancellation/failure/stale, 12 portable session Batch, three Batch cleanup and two per-input Batch setup transport cases. Whole-program metadata descriptors throw on plane access; native RGB reset metadata feeds later conversions without samples. Actual execution uses preceding-stage pixels, with empty-mask no-change behavior and paired final history. Native fixtures additionally validate public C++ program serialization/publication, session Batch input preservation and real mouse/key/text Run parameter editing with invalid then corrected component input, explicit confirmation, Prepare, Apply and Undo/Redo. Saved captures remain immutable when authored options override them. RGB and scalar public Apply headers/wire profiles and portable program schemas remain unchanged; one operation token is added. Actual compiled native inputs and installed module origins are pinned. Linux uses a SHA-verified native snapshot of 5469 test/config/fixture files. Two test-only amendments after native qualification remove accidental patch markers and fix test access to immutable Python intent; before/after identities and original variants are retained. Owned prototype/final scratch is CRC/member-SHA archived before deletion; final qualified installs, consumer/probes, logs and reports remain. Original 99 requirement/status triples, existing input registrations and commercial-use dependency inventory are preserved. RGB histogram/Auto, exact ImageJ stack/controller/slider semantics and full G057/ImageJ/Fiji/platform/resource acceptance remain open. The workflow uses the documented native uniform multi-axis mapping and paired Undo extension."
     }
   ]
 }

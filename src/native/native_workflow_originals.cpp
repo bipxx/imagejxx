@@ -117,6 +117,35 @@ ContrastApplyOptions contrast_apply_workflow_options(const NativeWorkflowOperati
 OperationParameters contrast_apply_workflow_parameters(const ContrastApplyOptions &o) {
   return {{"minimum",o.minimum},{"maximum",o.maximum},{"unsigned16_bits",std::int64_t(o.unsigned16_bits)}};
 }
+RgbContrastApplyOptions rgb_contrast_apply_workflow_options(const NativeWorkflowOperation &v) {
+  require(v.operation=="rgb_contrast_apply" && !v.filter_options && !v.use_destination_calibration,
+          "Contrast Apply workflow requires unscaled RGB mapping choices");
+  require(v.target.mode==ExecutionMode::Planes && v.target.destination==OutputDestination::InPlace,
+          "Contrast Apply workflow requires in-place planes");
+  if(v.original)validate_rgb_contrast_apply_command_record(*v.original);
+  RgbContrastApplyOptions result;
+  if(v.parameters.empty()) {
+    require(v.original.has_value(),"Contrast Apply workflow requires saved or authored choices");
+    const auto &o=object_value(v.original->at("options"));
+    result={number_value(o.at("minimum")),number_value(o.at("maximum")),index_value(o.at("channels"))};
+  } else {
+    require(v.parameters.size()==3 && v.parameters.count("minimum") && v.parameters.count("maximum") && v.parameters.count("channels"),
+            "Contrast Apply authored choices require minimum, maximum and channels only");
+    const auto scalar=[](const OperationValue &value)->MetadataValue {
+      return std::visit([](const auto &n)->MetadataValue {
+        using T=std::decay_t<decltype(n)>;
+        if constexpr(std::is_same_v<T,double> || std::is_same_v<T,std::int64_t> || std::is_same_v<T,std::uint64_t>)return n;
+        else throw std::invalid_argument("Contrast Apply choices require exact numeric scalars");
+      },value);
+    };
+    result={number_value(scalar(v.parameters.at("minimum"))),number_value(scalar(v.parameters.at("maximum"))),index_value(scalar(v.parameters.at("channels")))};
+  }
+  require(std::isfinite(result.minimum) && std::isfinite(result.maximum) && result.minimum<=result.maximum && result.channels>=1 && result.channels<=7,
+          "RGB Apply requires finite ordered endpoints and component bits 1..7");return result;
+}
+OperationParameters rgb_contrast_apply_workflow_parameters(const RgbContrastApplyOptions &o) {
+  return {{"minimum",o.minimum},{"maximum",o.maximum},{"channels",std::int64_t(o.channels)}};
+}
 ContrastApplyCommandLimits contrast_apply_workflow_limits(std::size_t cap) {
   ContrastApplyCommandLimits limits;
   limits.processing.max_working_bytes=std::min(limits.processing.max_working_bytes,cap);
@@ -126,9 +155,14 @@ ResolvedContrastApplyCommand workflow_contrast_apply(const DocumentSnapshot &sou
     const NativeWorkflowOperation &v,const ContrastApplyCommandLimits &limits) {
   return resolve_contrast_apply_command(source,contrast_apply_workflow_options(v),v.target,limits);
 }
+ResolvedRgbContrastApplyCommand workflow_rgb_contrast_apply(const DocumentSnapshot &source,
+    const NativeWorkflowOperation &v,const ContrastApplyCommandLimits &limits) {
+  return resolve_rgb_contrast_apply_command(source,rgb_contrast_apply_workflow_options(v),v.target,limits);
+}
 void validate_native_workflow_operation_original(
     const std::string &id, const OperationParameters &parameters,
     const MetadataObject &r) {
+  if(id=="rgb_contrast_apply"){validate_rgb_contrast_apply_command_record(r);return;}
   if(id=="contrast_apply"){validate_contrast_apply_command_record(r);return;}
   if(id=="rgb_dataset") {
     require(parameters.empty(),"RGB workflow intent requires empty registry parameters");
@@ -157,6 +191,7 @@ void validate_native_workflow_operation_original(
 }
 void validate_native_workflow_operation_intent(
     const NativeWorkflowOperation &v) {
+  if(v.operation=="rgb_contrast_apply"){(void)rgb_contrast_apply_workflow_options(v);return;}
   if(v.operation=="contrast_apply"){(void)contrast_apply_workflow_options(v);return;}
   if(v.operation=="rgb_dataset" || v.operation=="color_stack" || v.operation=="indexed_dataset" || v.operation=="indexed_rgb")
     require(v.original && (v.operation!="rgb_dataset" || v.parameters.empty()) && !v.filter_options && !v.use_destination_calibration,

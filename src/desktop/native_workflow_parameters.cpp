@@ -121,7 +121,9 @@ struct NativeWorkflowParameters::State {
     const auto shape = source.data().dataset.shape();
     if (!result.enabled)
       return result;
-    if(result.operation=="contrast_apply") {
+    if(result.operation=="rgb_contrast_apply") {
+      (void)detail::workflow_rgb_contrast_apply(source,result,detail::contrast_apply_workflow_limits(processing_cap));
+    } else if(result.operation=="contrast_apply") {
       (void)detail::workflow_contrast_apply(source,result,detail::contrast_apply_workflow_limits(processing_cap));
     } else if(result.operation=="color_stack") {
       auto request=detail::color_stack_workflow_request(result.parameters,*result.original);
@@ -165,7 +167,7 @@ NativeWorkflowParameters::NativeWorkflowParameters(
   auto admitted = detail::make_native_workflow_program_borrowed(
       {detail::NativeWorkflowStepRef{original.get()}}, {1, cap / 8});
   auto operation = std::get<NativeWorkflowOperation>(admitted.steps()[0]);
-  if (operation.operation!="contrast_apply" && !operation.filter_options && operation.original &&
+  if (operation.operation!="rgb_contrast_apply" && operation.operation!="contrast_apply" && !operation.filter_options && operation.original &&
       detail::native_workflow_bound_operation_original(*operation.original)) {
     const auto raw = metadataJson(operation.original->at("options"));
     if (operation.operation == "gaussian_blur_imagej")
@@ -176,7 +178,9 @@ NativeWorkflowParameters::NativeWorkflowParameters(
           parse_rank_filter_method(raw.at("method").get<std::string>()),
           raw.at("radius").get<double>()};
   }
-  if(operation.operation=="contrast_apply") {
+  if(operation.operation=="rgb_contrast_apply") {
+    operation.parameters=detail::rgb_contrast_apply_workflow_parameters(detail::rgb_contrast_apply_workflow_options(operation));
+  } else if(operation.operation=="contrast_apply") {
     operation.parameters=detail::contrast_apply_workflow_parameters(detail::contrast_apply_workflow_options(operation));
   } else if(operation.operation=="color_stack") {
     operation.parameters=detail::color_stack_workflow_parameters(
@@ -244,7 +248,12 @@ NativeWorkflowParameters::NativeWorkflowParameters(
     s.fields.push_back(std::move(field));
   };
   s.color_stack=operation.operation=="color_stack";
-  if(operation.operation=="contrast_apply") {
+  if(operation.operation=="rgb_contrast_apply") {
+    const auto value=[&](const char *name){return step["parameters"].at(name).at("value");};
+    add("minimum","Minimum","real",value("minimum"));
+    add("maximum","Maximum","real",value("maximum"));
+    add("channels","RGB component bits (Red 4 / Green 2 / Blue 1)","int64",value("channels"));
+  } else if(operation.operation=="contrast_apply") {
     const auto value=[&](const char *name){return step["parameters"].at(name).at("value");};
     add("minimum","Minimum","real",value("minimum"));
     add("maximum","Maximum","real",value("maximum"));

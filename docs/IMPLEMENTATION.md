@@ -1,5 +1,21 @@
 # Implementation progress
 
+**RGB workflow/Batch checkpoint, 2026-10-22 (work in progress):**
+RGB Apply now participates in portable native programs, recorded Run review,
+editable mapping/component parameters and session Batch. Saved originals remain
+immutable while authored choices can replace their options. Whole-program
+metadata-only preflight follows evolving RGB storage and reset display bounds;
+execution consumes preceding-stage pixels and publishes paired final history.
+Windows/Linux each pass 22 native suites, three existing full C++ UI probes,
+one installed public C++ SDK consumer, ten background repetitions, four hidden
+GL contexts and 5438 installed Python checks (664 new), zero failure/error/skip.
+Exact owned scratch is archived and verified before cleanup. See the
+[scoped receipt](parity/reviews/p11k-rgb-workflow001.json).
+RGB histogram/Auto, exact ImageJ stack/slider/controller
+semantics and complete G057/platform/resource acceptance remain open.
+See [Apply details](CONTRAST_APPLY.md).
+
+
 **RGB modeless editor checkpoint, 2026-10-22 (work in progress):**
 The shared C++/optional Python editor now prepares immutable RGB previews with
 seven component masks, reuses READY preview jobs for guarded Apply, and supports

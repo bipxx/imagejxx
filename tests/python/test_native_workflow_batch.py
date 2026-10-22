@@ -234,3 +234,60 @@ def test_contrast_program_batch_setup_keeps_saved_and_authored_choices(transport
     assert restored.record() == setup.record()
     assert restored.common_program.record()['steps'][0]['original'] == original
     assert restored.inputs[0].program.record()['steps'][0]['original'] == original
+
+
+@pytest.mark.parametrize('all_documents',[False,True])
+@pytest.mark.parametrize('authored',[False,True])
+@pytest.mark.parametrize('channels',[1,4,7])
+def test_rgb_apply_portable_session_batch_and_override_preserve_input(all_documents,authored,channels,tmp_path):
+    from test_native_workflow import rgb_apply_saved_record
+    docs=[ij.Document(ij.Dataset(np.full((2,2,3),v,np.uint8),axes='YXS')) for v in [10,20]]
+    capture=ij.SessionCapture([d.snapshot() for d in docs]);capture.results=[{'kept':42}];capture.workflow=[{'never':'execute'}];capture.extensions={'keep':[True,2**64-1]}
+    inputs=[];raw=[];paths=[]
+    for i in range(2):
+        path=tmp_path/('input'+str(i)+'.ijx');ij.save_session(str(path),capture);raw.append(path.read_bytes());paths.append(path);inputs.append(ij.NativeWorkflowBatchInput(str(path),'out'+str(i)))
+    output=tmp_path/'output';output.mkdir();request=ij.TargetRequest(roi=ij.RoiPolicy.WHOLE_PLANE);original=rgb_apply_saved_record(channels)
+    params={'minimum':10.,'maximum':40.,'channels':channels} if authored else {}
+    program=ij.NativeWorkflowProgram.from_json(ij.NativeWorkflowProgram([ij.NativeWorkflowOperation('rgb_contrast_apply',params,request,original=original)]).json())
+    plan=ij.prepare_native_workflow_batch(inputs,program.steps,str(output),ij.NativeWorkflowBatchOptions(all_documents=all_documents))
+    assert not any((output/('out'+str(i)+'.ijx')).exists() for i in range(2));plan.publish()
+    for i in range(2):
+        loaded=ij.load_session(str(output/('out'+str(i)+'.ijx')))
+        for j,document in enumerate(loaded.documents):
+            expected=np.full((2,2,3),10+10*j,np.uint8)
+            if all_documents or j==0:
+                for c,bit in enumerate([4,2,1]):
+                    if channels&bit:expected[...,c]=85*j
+                assert document.snapshot().display.properties['display_range']==[0.,255.]
+            np.testing.assert_array_equal(document.snapshot().dataset.numpy('YXS'),expected)
+        assert loaded.results==capture.results and loaded.workflow==capture.workflow and loaded.extensions==capture.extensions
+    assert [p.read_bytes() for p in paths]==raw
+
+
+@pytest.mark.parametrize('failure',['cancel','callback','invalid_later'])
+def test_rgb_apply_batch_failures_leave_no_final_or_staged_outputs(failure,tmp_path):
+    from test_native_workflow import rgb_apply_saved_record
+    doc=ij.Document(ij.Dataset(np.full((2,2,3),10,np.uint8),axes='YXS'));path=tmp_path/'input.ijx';ij.save_session(str(path),ij.SessionCapture([doc.snapshot()]));raw=path.read_bytes()
+    output=tmp_path/'output';output.mkdir();steps=[ij.NativeWorkflowOperation('rgb_contrast_apply',{},ij.TargetRequest(),original=rgb_apply_saved_record())]
+    if failure=='invalid_later':steps.append(ij.NativeWorkflowOperation('rgb_contrast_apply',{'minimum':0,'maximum':1,'channels':8},ij.TargetRequest()))
+    token=ij.CancellationToken()
+    def progress(index,state):
+        if state==ij.NativeWorkflowBatchState.PREPARED:
+            if failure=='callback':raise RuntimeError('controlled RGB Batch failure')
+            token.cancel()
+    with pytest.raises((RuntimeError,ValueError,ij.OperationCancelled)):
+        ij.prepare_native_workflow_batch([ij.NativeWorkflowBatchInput(str(path),'output')],steps,str(output),cancellation=token,progress=progress)
+    assert list(output.iterdir())==[] and path.read_bytes()==raw
+
+
+@pytest.mark.parametrize('transport',['record','json'])
+def test_rgb_apply_batch_setup_keeps_saved_and_authored_per_input_choices(transport):
+    from test_native_workflow import rgb_apply_saved_record
+    original=rgb_apply_saved_record();request=ij.TargetRequest(roi=ij.RoiPolicy.WHOLE_PLANE)
+    common=ij.NativeWorkflowProgram([ij.NativeWorkflowOperation('rgb_contrast_apply',{},request,original=original)])
+    override=ij.NativeWorkflowProgram([ij.NativeWorkflowOperation('rgb_contrast_apply',{'minimum':10.,'maximum':40.,'channels':4},request,original=original)])
+    setup=ij.NativeWorkflowBatchSetup(common,[ij.NativeWorkflowBatchInput('missing/input.ijx','out',program=override)],'missing/output')
+    restored=ij.NativeWorkflowBatchSetup.from_json(setup.json()) if transport=='json' else ij.NativeWorkflowBatchSetup.from_record(setup.record())
+    assert restored.record()==setup.record()
+    assert restored.common_program.record()['steps'][0]['original']==original
+    assert restored.inputs[0].program.record()['steps'][0]['original']==original

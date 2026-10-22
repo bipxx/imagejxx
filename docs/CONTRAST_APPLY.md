@@ -319,11 +319,55 @@ compact. Existing scalar panel target-policy admission is unchanged.
 
 Recorded RGB Apply supports the recorder's strict replay and reviewed/explicit
 rebind paths, preserving saved endpoint precision and component bits. Native
-workflow/Run/Batch adapters are still pending. RGB source histograms and Auto,
+workflow/Run/Batch adapters are now available as described below. RGB source histograms and Auto,
 exact ImageJ slider rules, RGBA/floating Apply, and complete stack controller
 semantics remain open. The selected-plane UI applies the native uniform mapping;
 ImageJ uses processor-narrowed bounds on other stack planes. This extension and
 paired Undo are explicit differences, not complete stack-controller parity.
+
+
+### RGB workflow, Run and Batch
+
+`NativeWorkflowOperation("rgb_contrast_apply", parameters, target)` adds RGB
+Apply to the existing portable program format. Saved choices use an immutable
+`original` RGB command record and empty parameters. Authored choices require
+exactly `minimum`, `maximum` and integer component bits `channels` (1..7).
+Authored choices can replace saved options while retaining the complete original
+as provenance; the original is fully validated first. Typed filter options,
+calibration scaling, volume execution and new-document targets are rejected.
+
+```python
+step = ij.NativeWorkflowOperation(
+    "rgb_contrast_apply",
+    {"minimum": 10.9, "maximum": 40.1, "channels": 4},
+    ij.TargetRequest(ij.TargetScope.ALL_Z, roi=ij.RoiPolicy.WHOLE_PLANE),
+)
+program = ij.NativeWorkflowProgram([step])
+prepared = ij.prepare_native_workflow(document.snapshot(), program.steps)
+document.commit(prepared.begin_edit())
+```
+
+Whole-program preflight follows evolving shape/type/display descriptors and
+uses providers that throw on sample access. It validates UInt8 RGB storage,
+resolved ROI/axis intent, record/metadata and processing budgets before any
+processing reads. RGB Apply contributes its fixed 0..255 reset range to later
+steps. Execution resolves against actual preceding-stage pixels and publishes
+the final program as one paired pixel/display transaction. Empty masks retain
+the native no-change/no-IO extension. Disabled steps keep valid historical intent
+without requiring destination storage or target compatibility.
+
+The shared Run review recognizes recorded RGB Apply, preserves target policies
+and exposes Minimum, Maximum and RGB component bits through Edit parameters.
+Invalid fields remain private; editing requires affected steps to be confirmed
+again. The original recorder history stays unchanged. Session Batch uses the
+same operation, common/per-input program transport and selected/all-document
+policies. Preparation creates no final outputs; each output uses existing guarded
+publication and failure/cancellation cleanup. Input session bytes and unrelated session
+metadata/results/workflow remain intact.
+
+This workflow operation retains the native uniform independent-plane profile.
+Exact ImageJ stack narrowing, RGB histogram/Auto and broader calibrated reset/
+slider/controller behavior remain open.
 
 Remaining integration and qualification:
 
@@ -331,8 +375,8 @@ Remaining integration and qualification:
    coverage beyond the current real C/Z/ROI radio, Apply/Rebind and workflow mapping
    field/prepare/Apply tests. Broader workflow outputs/operation combinations and
    resource/platform acceptance remain open.
-2. Add native RGB workflow/Batch adapters and source histogram/Auto controls.
-   Extend widget/guard coverage beyond the RGB controls now qualified below.
+2. Add RGB source histogram/Auto controls and extend mixed workflow acceptance.
+   Extend widget/guard coverage beyond the RGB controls now qualified above.
    Preserve scalar V1 records and prevent a mapped preview from being mapped
    twice. Qualify current/stack controller behavior: ImageJ commits its active
    preview and uses processor-narrowed bounds on other stack planes. The native

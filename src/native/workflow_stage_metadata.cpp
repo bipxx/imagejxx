@@ -55,9 +55,9 @@ DocumentSnapshot scalar_conversion_metadata_preview(const DocumentSnapshot &sour
   edit.set_spectrum({});pair_numeric_conversion_metadata(source,shape,edit,type);
   return edit.preview();
 }
-DocumentSnapshot contrast_apply_metadata_preview(const ResolvedContrastApplyCommand &command) {
+template<class Command>DocumentSnapshot contrast_apply_metadata(const Command &command,std::array<double,2> range) {
   const auto &target=command.target();const auto &source=target.source();
-  const auto &input=source.data().dataset;const auto options=command.options();
+  const auto &input=source.data().dataset;
   std::set<int> affected;
   for(std::size_t i=0;i<target.position_count();++i){
     kernel_checkpoint();const auto mask=target.mask(i);bool any=!mask;
@@ -68,15 +68,21 @@ DocumentSnapshot contrast_apply_metadata_preview(const ResolvedContrastApplyComm
   auto edit=source.begin_edit(Change::All);
   edit.replace_dataset(workflow_metadata_dataset(input.shape(),input.pixel_type(),input.calibration()));
   edit.set_spectrum({});auto display=source.display();
-  // Numeric placeholders bound metadata only. Execution computes observed
-  // automatic UInt16 bounds from output samples, including outside each ROI.
-  const std::array<double,2> range{0,input.pixel_type()==PixelType::UInt8?255.:
-      options.unsigned16_bits?double((1u<<options.unsigned16_bits)-1):65535.};
+
   if(auto channels=recognized_channel_display(display,input)){
     for(auto c:affected)channels->channels.at(c).range=range;
     display=with_channel_display(std::move(display),input,std::move(channels));
   } else display.properties["display_range"]=metadata_array({range[0],range[1]});
   reset_manual_threshold_state(display);edit.set_axis_remap_display(std::move(display));return edit.preview();
+}
+DocumentSnapshot contrast_apply_metadata_preview(const ResolvedContrastApplyCommand &command) {
+  const auto options=command.options();
+  // Admission placeholders only; execution computes automatic UInt16 extrema.
+  return contrast_apply_metadata(command,{0,command.target().source().data().dataset.pixel_type()==PixelType::UInt8?255.:
+      options.unsigned16_bits?double((1u<<options.unsigned16_bits)-1):65535.});
+}
+DocumentSnapshot contrast_apply_metadata_preview(const ResolvedRgbContrastApplyCommand &command) {
+  return contrast_apply_metadata(command,{0,255});
 }
 DocumentSnapshot workflow_filter_metadata_preview(const DocumentSnapshot &source,
     const std::string &operation,const OperationParameters &parameters,const ResolvedTarget &target) {
