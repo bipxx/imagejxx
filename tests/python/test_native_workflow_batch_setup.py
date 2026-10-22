@@ -68,7 +68,7 @@ def test_array_and_image_parameters_originals_and_disabled_state_survive(kind):
 
 
 @pytest.mark.parametrize('mutate',[
-    lambda r:r.update(version=2), lambda r:r.update(version=True),lambda r:r.update(schema='other'),
+    lambda r:r.update(version=3), lambda r:r.update(version=True),lambda r:r.update(schema='other'),
     lambda r:r.update(fingerprint='a'*64),lambda r:r.update(consent=True),lambda r:r.update(prepared={}),
     lambda r:r['selection'].update(all_documents=1),lambda r:r['selection'].update(document_index=1),
     lambda r:r['inputs'][0].update(path=''),lambda r:r['inputs'][0].update(path='bad\0.ijx'),

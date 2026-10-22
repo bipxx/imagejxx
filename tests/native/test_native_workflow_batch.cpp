@@ -5,6 +5,7 @@
 #include <imagejxx/native_workflow_batch_setup.hpp>
 #include <imagejxx/native_workflow_program.hpp>
 #include <iostream>
+#include <limits>
 using namespace imagejxx;
 namespace {
 void check(bool b) {
@@ -32,6 +33,37 @@ std::shared_ptr<Document> owner(DatasetShape shape, double value) {
   }
   return std::make_shared<Document>(
       Dataset::from_planes(shape, std::move(planes)));
+}
+void statistics_contract(const std::filesystem::path &root) {
+  namespace fs=std::filesystem;NativeWorkflowBatchHistogram r;
+  r.name="quoted,\"row\"\n.csv";r.pixel_type="uint8";r.sample_policy="finite_only";r.plane_count=1;
+  r.visited_count=r.finite_count=r.included_count=std::numeric_limits<std::uint64_t>::max();
+  r.minimum=r.maximum=r.mean=1.;r.stddev=0.;r.sum=double(r.finite_count);
+  const auto csv=native_workflow_batch_histogram_csv({r});
+  check(csv.find("18446744073709551615")!=std::string::npos);
+  check(csv.find("\"quoted,\"\"row\"\"\n.csv\"")!=std::string::npos);
+  refuses([&]{native_workflow_batch_histogram_csv({r},1);});
+  auto invalid=r;invalid.stddev=-1;refuses([&]{native_workflow_batch_histogram_csv({invalid});});
+  invalid=r;invalid.nan_count=1;refuses([&]{native_workflow_batch_histogram_csv({invalid});});
+  const auto dir=root/"statistics";fs::create_directory(dir);fs::create_directory(dir/"out");
+  auto doc=owner({1,1,1,2,2,1},7);SessionCapture capture{{doc->snapshot()},{},{},{}};
+  save_session((dir/"input.ijx").u8string(),capture);
+  NativeWorkflowHistogram step;step.name="bins.csv";step.target.roi=RoiPolicy::WholePlane;
+  NativeWorkflowHistogramOptions choices;choices.histogram.binning=HistogramBinning::UniformRange;
+  choices.histogram.bins=1;choices.histogram.range=std::array<double,2>{0,5};step.authored_options=choices;
+  const auto program=make_native_workflow_program({step});
+  const auto setup=make_native_workflow_batch_setup(program,{{(dir/"input.ijx").u8string(),"stats"}},(dir/"out").u8string());
+  const auto changed=setup.with_histogram_statistics(true);
+  check(changed.histogram_statistics() && !setup.histogram_statistics());
+  check(native_workflow_batch_setup_from_json(changed.json()).histogram_statistics());
+  check(changed.with_histogram_statistics(false).json()==setup.json());
+  NativeWorkflowBatchOptions options;options.histogram_statistics=true;
+  auto batch=prepare_native_workflow_batch(setup.inputs(),program.steps(),setup.output_directory(),options);
+  check(batch.histograms().size()==1 && batch.outputs().size()==3);
+  const auto value=batch.histograms()[0];
+  check(value.finite_count==4 && value.included_count==0 && value.overflow_count==4 && value.mean==7 && value.stddev==0 && value.sum==28);
+  batch.publish();std::size_t encoded=0;for(const auto &out:batch.outputs())encoded+=fs::file_size(fs::u8path(out.path));
+  check(encoded==batch.encoded_bytes() && fs::exists(dir/"out/stats.histograms.csv"));
 }
 } // namespace
 int main(int argc, char **argv) {
@@ -219,6 +251,7 @@ int main(int argc, char **argv) {
                                     (dir / "outputs").u8string(), tiny);
     });
     check(bytes(dir / "first.ijx") == original);
+    statistics_contract(dir);
     std::cout
         << "PASS native scientific session batch planning and publication\n";
     return 0;

@@ -1621,7 +1621,8 @@ from ._native import (NativeWorkflowLimits, NativeWorkflowOperation, NativeWorkf
                       NativeWorkflowExport, NativeWorkflowHistogram, NativeWorkflowHistogramOptions, PreparedNativeWorkflow, prepare_native_workflow)
 
 from ._native import (NativeWorkflowBatchInput, NativeWorkflowBatchOptions, NativeWorkflowBatchState,
-                      PreparedNativeWorkflowBatch, prepare_native_workflow_batch)
+                      PreparedNativeWorkflowBatch, prepare_native_workflow_batch,
+                      NativeWorkflowBatchHistogram, native_workflow_batch_histogram_csv)
 
 from ._native import NativeWorkflowProgram, NativeWorkflowProgramLimits
 from ._native import (RgbDatasetMode, RgbDatasetLayout, ResolvedRgbDatasetCommand,

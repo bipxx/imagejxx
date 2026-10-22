@@ -2397,3 +2397,11 @@ The ImageJ rank profile now supports UInt8 variance with palette/range retention
 and shared ImGui authoring. See [byte variance scope](BYTE_VARIANCE.md). Non-byte
 variance, final contrast stretch and the other remaining filter packets stay open.
 Earlier open-work statements above describe their original checkpoint.
+
+
+## Batch histogram summaries (p10s)
+
+Both shared ImGui launchers review unbinned per-input/document histogram
+statistics and optionally export one summary CSV per input. Save/load retains
+the export choice without retaining publication consent. See
+[histogram usage and limits](HISTOGRAM.md#batch-histogram-statistics-review-and-export).

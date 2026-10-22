@@ -1,0 +1,274 @@
+{
+  "state": "qualified_functional_increment",
+  "objective_complete": false,
+  "baseline_commit": "fd0df9083276d3c579fb4dac87ec320d3e4579e1",
+  "scope": "Per-input/document batch unbinned histogram statistics review and opt-in CSV through C++/Python and both shared ImGui launchers.",
+  "semantics": "Retain scalar statistics from existing ordered-stage histogram results, never reconstructed from bin centers. Finite ROI range outliers contribute to extrema/mean/population SD/sum. Detached rows contain identity/options/type/policy/counts but no snapshots/provider/bin arrays; Python returns owning copies. Default file products and existing live/saved session Results tables are preserved. encoded_bytes remains actual encoded output bytes.",
+  "transport": "Opt-in one <output_stem>.histograms.csv per input with histogram rows, after bins/exports and before complete session. New-files-only preflight/consent/cancel/partial/no-retry rules remain. CSV indices are zero-based, counters exact UInt64, values max_digits10/classic locale, absent statistics blank. Immutable setup export intent writes closed V2 only when enabled; V1 unchanged and V2 false canonicalizes to V1. Consent is not serialized.",
+  "ui": "Both shared ImGui launchers review a clipped summary table and export checkbox. Choice changes invalidate preparation/confirmation/consent. Saved setup restores the flag without consent. Summaries remain inspectable after Apply or partial publication.",
+  "memory": "Cumulative detached summary storage and optional CSV formatting scratch are conservatively admitted before kernels/publication; formatter validates scalar rows and checkpoints during batch work. Frontend copies, provider caches, allocator overhead and process RSS remain external.",
+  "verification": "589 selected Python checks per OS including 24 new API and ten new input checks; five native executable suites per OS and fresh installed SDK consumers. Independent readers verify 84 reports / 23800 raw input frames, including 20 new reports / 2056 frames. Tests cover unbinned ROI/range-outlier/NaN/empty populations, exact UInt64 counters and CSV quoting, immutable detached copies, output counts/memory limits, cancellation/conflicts/partial publication and closed V2 setup save/load. No complete ImageJ/Fiji source/reference/resource/real-GPU/OS-desktop/platform acceptance.",
+  "profiles": {
+    "windows": {
+      "python_cases": 589,
+      "new_api_cases": 24,
+      "new_ui_cases": 10,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_executable_suites": 5,
+      "fresh_installed_sdk_consumer": true,
+      "reports": 42,
+      "frames": 11845,
+      "new_ui_reports": 10,
+      "new_ui_frames": 1011,
+      "removed_scratch_bytes": 283767739,
+      "archive": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p10s-batch-histogram-statistics001\\windows-scratch001.zip",
+        "bytes": 25061466,
+        "sha256": "8512796179dc00772ecb588382291d960ebd09898c6b68629f66cf536feed050"
+      },
+      "evidence": [
+        {
+          "path": "build/p10s-batch-histogram-statistics001/windows-build001/receipt.json",
+          "bytes": 1697,
+          "sha256": "95e876a86a6f18f62d2b11ef0226d8318e9929a8fe1966c83b38f375eda54fd1"
+        },
+        {
+          "path": "build/p10s-batch-histogram-statistics001/windows-build001/native.xml",
+          "bytes": 1184,
+          "sha256": "a0a21dc63f2d5c7d76cd26acbb7b50935354ee3db4cfcfff1036002ed58a123d"
+        },
+        {
+          "path": "build/p10s-batch-histogram-statistics001/windows-build001/ui-native.xml",
+          "bytes": 638,
+          "sha256": "e9add284d3fc9a80a2b9dffca2322bfeb80b2fe132dc21102c467df18aa5aed1"
+        },
+        {
+          "path": "build/p10s-batch-histogram-statistics001/windows-python001/receipt.json",
+          "bytes": 3811,
+          "sha256": "bc49aeb32f90b62f7663b13f7a7f68f5f882dfd5105234d5dbb49b4f44cb6d26"
+        },
+        {
+          "path": "build/p10s-batch-histogram-statistics001/windows-python001/pytest.xml",
+          "bytes": 87765,
+          "sha256": "c98e5a3150fab89d7216d1c50e97af2948599c07b91ee4867b0884305d81b5e0"
+        },
+        {
+          "path": "build/p10s-batch-histogram-statistics001/windows-capture001.json",
+          "bytes": 14809,
+          "sha256": "76bd646dd1da36ee41849bde573486ef04bd6ced366fafd823adc4b97f50be88"
+        },
+        {
+          "path": "build/p10s-batch-histogram-statistics001/windows-evidence001.json",
+          "bytes": 19162,
+          "sha256": "3ee73e22a7008fee628aaf34800ded1678100be349d0066e4a1daab2d880f1e9"
+        },
+        {
+          "path": "build/p10s-batch-histogram-statistics001/windows-products001.json",
+          "bytes": 3779,
+          "sha256": "5c2c0cd1da9d6baaf6f2abbf28fb4e67f5ecf8b893d7aa64d475afec38f5e8cf"
+        },
+        {
+          "path": "build/p10s-batch-histogram-statistics001/windows-verified001.json",
+          "bytes": 196,
+          "sha256": "044cf088aa06777111432ed941ff11fb5b3f07a8575a368c3b5e1b8105a35db2"
+        },
+        {
+          "path": "build/p10s-batch-histogram-statistics001/windows-sdk001/receipt.json",
+          "bytes": 489,
+          "sha256": "b703a08bd0797da40b4dbdabf5d0058f9a4ce28b462f49e854e4cc5bbb56a186"
+        },
+        {
+          "path": "build/p10s-batch-histogram-statistics001/windows-cleanup001.json",
+          "bytes": 313899,
+          "sha256": "8153b179de74e273331414e7f8235c12e9871146474c6750791e16c3a7d05c27"
+        }
+      ]
+    },
+    "linux": {
+      "python_cases": 589,
+      "new_api_cases": 24,
+      "new_ui_cases": 10,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_executable_suites": 5,
+      "fresh_installed_sdk_consumer": true,
+      "reports": 42,
+      "frames": 11955,
+      "new_ui_reports": 10,
+      "new_ui_frames": 1045,
+      "removed_scratch_bytes": 284904375,
+      "archive": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p10s-batch-histogram-statistics001/linux-scratch001.zip",
+        "bytes": 22168634,
+        "sha256": "34b3088e47d5fe459786571a1a172668c9c474b63aa1d9f8fcd5a2113f3a14f3"
+      },
+      "evidence": [
+        {
+          "path": "build/p10s-batch-histogram-statistics001/linux-build001/receipt.json",
+          "bytes": 1637,
+          "sha256": "704089d219aab360cd1ebbe87c0891b0392e955935d2edef332f6502e3587dcd"
+        },
+        {
+          "path": "build/p10s-batch-histogram-statistics001/linux-build001/native.xml",
+          "bytes": 1153,
+          "sha256": "17dc26d8c89c744b34aa2f0499f657c74bda434835cfb9cad9b09a5c077f1dbe"
+        },
+        {
+          "path": "build/p10s-batch-histogram-statistics001/linux-build001/ui-native.xml",
+          "bytes": 631,
+          "sha256": "622c2041a68937e4e3061ecdc912d94b0f3ccd234ec939d51fa4e49798177069"
+        },
+        {
+          "path": "build/p10s-batch-histogram-statistics001/linux-python001/receipt.json",
+          "bytes": 3611,
+          "sha256": "f9afe172e17b06f4de2deeff189246789fce7f7dcb4d15f227784be15d906f30"
+        },
+        {
+          "path": "build/p10s-batch-histogram-statistics001/linux-python001/pytest.xml",
+          "bytes": 87765,
+          "sha256": "6ceedbceb3257f9814e5fe8257bbfec96035a6e7b64686d419f9ff0ca42c3b55"
+        },
+        {
+          "path": "build/p10s-batch-histogram-statistics001/linux-capture001.json",
+          "bytes": 11642,
+          "sha256": "40fcb24f638e7134ce1231bbe398afc416a5160d866f0121f6db9d9156421219"
+        },
+        {
+          "path": "build/p10s-batch-histogram-statistics001/linux-evidence001.json",
+          "bytes": 17054,
+          "sha256": "3b5ae812e7c51705d2bdce2db12f2af06c58ae7b90b6bbaa65e12dd58b7d928b"
+        },
+        {
+          "path": "build/p10s-batch-histogram-statistics001/linux-products001.json",
+          "bytes": 3582,
+          "sha256": "78a8c83270bd1c3af1d8d0a11254914a260040c2092d401e7661f504cd6f3303"
+        },
+        {
+          "path": "build/p10s-batch-histogram-statistics001/linux-verified001.json",
+          "bytes": 190,
+          "sha256": "7c7913610bc3b693ba4b10bd05e8d3728d6c2d1137d56d36b76a451b2d4910c4"
+        },
+        {
+          "path": "build/p10s-batch-histogram-statistics001/linux-sdk001/receipt.json",
+          "bytes": 428,
+          "sha256": "0ff7897e820f8c7d21692f83dbfb120c58160e9acde443a53a39afa0df8827a0"
+        },
+        {
+          "path": "build/p10s-batch-histogram-statistics001/linux-cleanup001.json",
+          "bytes": 254456,
+          "sha256": "22cefe72baeab9c22821fd8547f2515564673e703e342ca572d22940c9151bc1"
+        }
+      ]
+    }
+  },
+  "source": [
+    {
+      "path": "include/imagejxx/native_workflow_batch.hpp",
+      "bytes": 6033,
+      "sha256": "99aab312d3a9bb13be5efcaac1d286b067fc37d549e2acae87af234bee0cb5a9"
+    },
+    {
+      "path": "include/imagejxx/native_workflow_batch_setup.hpp",
+      "bytes": 3060,
+      "sha256": "cf13bcd5415c909ba129218c24628ed6837dd2c249c816b26b41f859a6ff7e8c"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 33828,
+      "sha256": "3ad36fbb2ec5684404b8f6136cf1e23f18e5b5b4799af20878b347ce591459b0"
+    },
+    {
+      "path": "src/desktop/histogram_workflow_ui_probe.cpp",
+      "bytes": 15270,
+      "sha256": "ab9902ca7767041a14bae72f05ff4333755fa01e731ea2fc47f60c9ae76581c3"
+    },
+    {
+      "path": "src/desktop/native_workflow_panel.cpp",
+      "bytes": 122141,
+      "sha256": "fa3593ff067dd7fd077c3624ecfc77468d139427f4a3753929960fd1277edc36"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 72498,
+      "sha256": "3130c0c1e5a3a9ec5a5f53ce3c7c9791230851e13925e2a7a7ef9c6134d0aead"
+    },
+    {
+      "path": "src/native/native_workflow_batch.cpp",
+      "bytes": 28881,
+      "sha256": "e25166271ae194f9342dbdb1cf3499fd8765f48260593bb24a808373dbf7500d"
+    },
+    {
+      "path": "src/native/native_workflow_batch_setup.cpp",
+      "bytes": 13133,
+      "sha256": "830bd0099fe5a6cc36b61d99198aef01c738b27c524d578f9f66ccdfd260d81d"
+    },
+    {
+      "path": "src/native/native_workflow_bindings.cpp",
+      "bytes": 39412,
+      "sha256": "44f9ae9cb3d9e1cd76d3d6739e1d7b191d7a6c5b43ea42785037f5c7a93948eb"
+    },
+    {
+      "path": "tests/native/test_native_workflow_batch.cpp",
+      "bytes": 12653,
+      "sha256": "11313c6fb01981cb2f81d54837e53b06e49c6c9d46890d7053da3e304f0ce63d"
+    },
+    {
+      "path": "tests/python/test_native_workflow_batch_setup.py",
+      "bytes": 8815,
+      "sha256": "ea58a615af3699685a9b46540a94a315fde455edbd10c5e2000f5c03b5464ac6"
+    },
+    {
+      "path": "tests/python/test_batch_histogram_statistics.py",
+      "bytes": 10711,
+      "sha256": "0bfc8a10c3d1d4d377994d69069f3f85cf099f28cac411b7a8506a7ecf5b0a2d"
+    },
+    {
+      "path": "tests/python/test_batch_histogram_statistics_ui.py",
+      "bytes": 3279,
+      "sha256": "07dfc618e806d543c31dc9cc19f883877d9a960a36283c4dfde2d0d72dbf720a"
+    }
+  ],
+  "registration": {
+    "path": "build/p10s-batch-histogram-statistics001/registration001.json",
+    "bytes": 1069,
+    "sha256": "43b0054c6039b84ecf4858a2acc92c25769ebc04f105f55ca84875c9761237b2"
+  },
+  "licenses": {
+    "path": "build/p10s-batch-histogram-statistics001/licenses001.log",
+    "bytes": 62,
+    "sha256": "939b266b092bfdc37d1814f66b75a21469497e36e30a2050805031da4f97b417"
+  },
+  "existing_gate": {
+    "state": "open",
+    "reason": "Existing Auto Contrast producer_source fingerprint mismatch; application.hpp unchanged; no repin or gate relaxation.",
+    "producer": {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 14135,
+      "sha256": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    },
+    "log": {
+      "path": "build/p10s-batch-histogram-statistics001/plan001.log",
+      "bytes": 151,
+      "sha256": "5741e4b9133f374434cac8973e1f1c6131200e632958a012913a739c28d47006"
+    },
+    "final_log": {
+      "path": "build/p10s-batch-histogram-statistics001/plan002.log",
+      "bytes": 151,
+      "sha256": "5741e4b9133f374434cac8973e1f1c6131200e632958a012913a739c28d47006"
+    }
+  },
+  "scope_status_counts": {
+    "total": 99,
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  },
+  "remaining": [
+    "Desktop virtual-source adaptation.",
+    "Histogram unsupported legacy/calibrated/color/other numeric domains and complete upstream statistical/presentation/default conventions.",
+    "Full source/reference/resource/platform qualification, existing Auto Contrast producer gate and every other original inventory requirement remain open."
+  ]
+}

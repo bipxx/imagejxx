@@ -78,7 +78,7 @@ MetadataObject encode(const NativeWorkflowProgram &common,
                       const std::vector<NativeWorkflowBatchInput> &inputs,
                       const std::string &directory,
                       const NativeWorkflowBatchSelection &selection,
-                      const NativeWorkflowBatchSetupLimits &limits) {
+                      const NativeWorkflowBatchSetupLimits &limits, bool histogram_statistics=false) {
   valid(limits);
   require(inputs.size() <= limits.max_inputs, "Batch setup input count limit");
   text(directory);
@@ -127,11 +127,12 @@ MetadataObject encode(const NativeWorkflowProgram &common,
   }
   MetadataObject record{
       {"schema", "imagejxx.native-workflow-batch-setup"},
-      {"version", std::uint64_t(1)},
+      {"version", std::uint64_t(histogram_statistics?2:1)},
       {"common_program", std::move(common_record)},
       {"selection", metadata_object(selection_record(selection))},
       {"output_directory", directory},
       {"inputs", metadata_array(std::move(rows))}};
+  if(histogram_statistics)record["histogram_statistics"]=true;
   detail::native_workflow_record_budget(record, limits.max_record_bytes);
   require(detail::imagej_roi_record_bytes(record, limits.max_record_bytes) <=
               limits.max_record_bytes - retained,
@@ -145,7 +146,7 @@ struct detail::NativeWorkflowBatchSetupAccess {
   make(NativeWorkflowProgram common,
        std::vector<NativeWorkflowBatchInput> inputs, std::string directory,
        NativeWorkflowBatchSelection selection,
-       NativeWorkflowBatchSetupLimits limits) {
+       NativeWorkflowBatchSetupLimits limits, bool histogram_statistics=false) {
     NativeWorkflowBatchSetup s;
     for (auto &input : inputs)
       input.expected_fingerprint.clear();
@@ -156,6 +157,7 @@ struct detail::NativeWorkflowBatchSetupAccess {
     s.directory_ = std::move(directory);
     s.selection_ = selection;
     s.limits_ = limits;
+    s.histogram_statistics_=histogram_statistics;
     return s;
   }
 };
@@ -163,7 +165,11 @@ MetadataObject
 NativeWorkflowBatchSetup::record(const ExecutionControl &control) const {
   ExecutionScope scope(control);
   detail::file_checkpoint(control);
-  return encode(*common_, *inputs_, directory_, selection_, limits_);
+  return encode(*common_, *inputs_, directory_, selection_, limits_, histogram_statistics_);
+}
+NativeWorkflowBatchSetup NativeWorkflowBatchSetup::with_histogram_statistics(bool enabled,const ExecutionControl &control) const {
+  detail::file_checkpoint(control);auto candidate=*this;candidate.histogram_statistics_=enabled;
+  (void)candidate.record(control);return candidate;
 }
 std::string
 NativeWorkflowBatchSetup::json(const ExecutionControl &control) const {
@@ -198,12 +204,14 @@ NativeWorkflowBatchSetup native_workflow_batch_setup_from_record(
   validate_metadata(r);
   Budget budget{limits.max_record_bytes};
   budget.add(detail::imagej_roi_record_bytes(r, budget.left));
-  exact_fields(r, {"schema", "version", "common_program", "selection",
-                   "output_directory", "inputs"});
-  require(text_value(r.at("schema")) ==
-                  "imagejxx.native-workflow-batch-setup" &&
-              unsigned_value(r.at("version")) == 1,
-          "Unsupported native Batch setup");
+  const auto version=unsigned_value(r.at("version"));
+  require(text_value(r.at("schema"))=="imagejxx.native-workflow-batch-setup" && (version==1||version==2),"Unsupported native Batch setup");
+  bool statistics=false;
+  if(version==1)exact_fields(r,{"schema","version","common_program","selection","output_directory","inputs"});
+  else {
+    exact_fields(r,{"schema","version","common_program","selection","output_directory","inputs","histogram_statistics"});
+    const auto p=std::get_if<bool>(&r.at("histogram_statistics"));require(p,"Batch statistics flag requires bool");statistics=*p;
+  }
   const auto selection = selection_from(r.at("selection"));
   const auto &directory = text_value(r.at("output_directory"));
   text(directory);
@@ -252,9 +260,9 @@ NativeWorkflowBatchSetup native_workflow_batch_setup_from_record(
   }
   detail::file_checkpoint(control);
   // Canonical output also has to fit before the candidate becomes observable.
-  (void)encode(common, inputs, directory, selection, limits);
+  (void)encode(common, inputs, directory, selection, limits, statistics);
   return detail::NativeWorkflowBatchSetupAccess::make(
-      std::move(common), std::move(inputs), directory, selection, limits);
+      std::move(common), std::move(inputs), directory, selection, limits, statistics);
 }
 NativeWorkflowBatchSetup native_workflow_batch_setup_from_json(
     const std::string &text, const NativeWorkflowBatchSetupLimits &limits,

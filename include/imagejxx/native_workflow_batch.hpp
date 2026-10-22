@@ -58,6 +58,8 @@ struct NativeWorkflowBatchOptions {
   std::size_t max_working_bytes = 512ULL * 1024 * 1024;
   NativeWorkflowLimits workflow;
   SessionLimits session;
+  // Opt-in per-input unbinned summary CSV; bin CSVs remain unchanged.
+  bool histogram_statistics = false;
 };
 struct NativeWorkflowBatchItem {
   std::string input;
@@ -67,7 +69,26 @@ struct NativeWorkflowBatchOutput {
   std::size_t input_index;
   std::string path;
   bool session = false, published = false, failed = false;
+  bool histogram_statistics = false;
 };
+// Detached unbinned analysis. No source/provider, histogram arrays or snapshots.
+// Indices are zero-based; plane_count includes every resolved target plane.
+struct NativeWorkflowBatchHistogram {
+  std::size_t input_index=0, document_index=0, step_index=0, plane_count=0;
+  std::string name, pixel_type, sample_policy;
+  TargetHistogramOptions options;
+  bool log_counts=false;
+  std::uint64_t visited_count=0, finite_count=0, included_count=0, nan_count=0,
+                underflow_count=0, overflow_count=0;
+  std::optional<double> minimum, maximum, mean, stddev;
+  double sum=0;
+};
+// Path-free CSV with exact UInt64 counters, classic locale/max_digits10,
+// quoted names and blank absent statistics. Bounded format scratch; caller
+// arguments, allocator overhead and process RSS are outside this bound.
+std::string native_workflow_batch_histogram_csv(
+    const std::vector<NativeWorkflowBatchHistogram> &,
+    std::size_t max_working_bytes=128ULL*1024*1024);
 using NativeWorkflowBatchProgress =
     std::function<void(std::size_t, NativeWorkflowBatchState)>;
 namespace detail {
@@ -85,8 +106,10 @@ public:
   const std::vector<NativeWorkflowBatchItem> &items() const;
   const std::vector<NativeWorkflowBatchOutput> &outputs() const;
   std::size_t encoded_bytes() const;
+  const std::vector<NativeWorkflowBatchHistogram> &histograms() const;
   bool attempted() const;
-  // New files only, in input order: exports then that input's complete session.
+  // New files only, in input order: exports/bin CSVs, optional statistics CSV,
+  // then that input's complete session.
   // An error retains earlier published files and marks the partial/failed item
   // and later skipped items. No retry of a partially attempted bundle.
   // No user callbacks run during this synchronous publication boundary.

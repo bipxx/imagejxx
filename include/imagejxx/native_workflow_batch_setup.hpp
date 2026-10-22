@@ -20,6 +20,10 @@ public:
   const NativeWorkflowBatchSelection &selection() const { return selection_; }
   const std::string &output_directory() const { return directory_; }
   const NativeWorkflowBatchSetupLimits &limits() const { return limits_; }
+  bool histogram_statistics() const { return histogram_statistics_; }
+  // Pure output intent; no file access or publication consent.
+  NativeWorkflowBatchSetup with_histogram_statistics(bool,
+      const ExecutionControl & = {}) const;
   MetadataObject record(const ExecutionControl & = {}) const;
   std::string json(const ExecutionControl & = {}) const;
 
@@ -30,6 +34,7 @@ private:
   NativeWorkflowBatchSelection selection_;
   std::string directory_;
   NativeWorkflowBatchSetupLimits limits_;
+  bool histogram_statistics_=false;
   NativeWorkflowBatchSetup() = default;
 };
 // Pure intent: paths are external choices, never opened or resolved here.

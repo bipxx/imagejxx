@@ -1,5 +1,22 @@
 # Implementation progress
 
+**Batch histogram statistics checkpoint, 2026-10-22 (work in progress):**
+C++/Python and both shared ImGui launchers now retain and review unbinned
+per-input/document histogram statistics, with opt-in summary CSV export.
+Results reuse ordered-stage finite ROI samples, including range outliers;
+existing session tables and default output files are preserved. Closed V2 setup
+intent stores the export choice without consent and retains V1 compatibility.
+Windows/Linux each pass 589 selected Python checks (24 new API / ten new input),
+five native suites and fresh installed SDK consumers. Independent readers verify
+84 reports / 23,800 raw input frames, including 20 new reports / 2,056 frames.
+Verified cleanup removes 568,672,114 scratch bytes, preserving products/evidence.
+Five input cases append to 1,288 without changing prior order. See
+[usage](HISTOGRAM.md#batch-histogram-statistics-review-and-export) and
+[the scoped receipt](parity/reviews/p10s-batch-histogram-statistics001.json).
+Virtual sources, remaining numeric/calibration domains, upstream conventions and
+full qualification remain open. All99 stays 47 in progress / 52 open / 0 complete;
+the existing Auto Contrast fingerprint gate remains open.
+
 **Histogram workflow options checkpoint, 2026-10-21 (work in progress):**
 C++/Python workflows now author histogram bin/range/log choices independently of
 optional original captures. The closed V5 format preserves V4 and retained history;
@@ -13,7 +30,7 @@ cleanup removes 511,231,849 scratch bytes, retaining final products/evidence.
 Registration appends five cases to 1,283 and preserves prior order. See
 [usage](HISTOGRAM.md) and
 [the scoped receipt](parity/reviews/p10r-histogram-workflow-options001.json).
-Batch unbinned statistics review/export, virtual sources, remaining domains and
+At that checkpoint, batch statistics review/export, virtual sources, remaining domains and
 full qualification remain open. All99 stays 47 in progress / 52 open / 0 complete;
 the unchanged Auto Contrast fingerprint gate remains open.
 

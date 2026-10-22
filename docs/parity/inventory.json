@@ -2790,7 +2790,8 @@
           "docs/parity/reviews/p10o-histogram-async001.json",
           "docs/parity/reviews/p10p-histogram-workflow001.json",
           "docs/parity/reviews/p10q-histogram-workflow-ui001.json",
-          "docs/parity/reviews/p10r-histogram-workflow-options001.json"
+          "docs/parity/reviews/p10r-histogram-workflow-options001.json",
+          "docs/parity/reviews/p10s-batch-histogram-statistics001.json"
         ],
         "implementation": [
           "include/imagejxx/auto_threshold_stack.hpp",
@@ -2815,7 +2816,8 @@
           "src/desktop/histogram_async_ui_probe.cpp",
           "src/desktop/native_workflow_panel.cpp",
           "src/desktop/histogram_workflow_ui_probe.cpp",
-          "src/native/histogram_command_internal.hpp"
+          "src/native/histogram_command_internal.hpp",
+          "src/native/native_workflow_batch.cpp"
         ],
         "tests": [
           "tests/python/test_scientific_threshold_target.py",
@@ -2846,7 +2848,9 @@
           "tests/python/test_histogram_workflow_ui.py",
           "tests/python/test_native_workflow_order.py",
           "tests/python/test_histogram_workflow_options.py",
-          "tests/python/test_histogram_workflow_choices_ui.py"
+          "tests/python/test_histogram_workflow_choices_ui.py",
+          "tests/python/test_batch_histogram_statistics.py",
+          "tests/python/test_batch_histogram_statistics_ui.py"
         ]
       },
       "id": "G069",
@@ -2856,7 +2860,7 @@
       ],
       "name": "Histogram",
       "remaining": [
-        "Standalone/Run histogram targets, authored or retained bin/range/log choices, plots/statistics/exact-bin tables, Results and CSV/defaults, recording/replay/rebind and worker progress/cancel/publication are functional; Batch reviews targets/tokens and emits per-document bin CSVs using retained or authored choices. Finish per-input batch unbinned statistics review/export, desktop virtual-source adaptation, unsupported legacy/calibrated/color/other numeric domains and upstream statistical/presentation/default conventions, plus complete independent source/reference/resource/platform qualification."
+        "Standalone/Run histogram targets, authored or retained bin/range/log choices, plots/statistics/exact-bin tables, Results and CSV/defaults, recording/replay/rebind and worker progress/cancel/publication are functional; Batch reviews targets/tokens/unbinned summaries and emits per-document bin CSVs plus optional per-input statistics CSVs with saved export intent. Finish desktop virtual-source adaptation, unsupported legacy/calibrated/color/other numeric domains and upstream statistical/presentation/default conventions, plus complete independent source/reference/resource/platform qualification."
       ],
       "required_work": "Stack/channel targeting, range/bin/log controls, statistics display and numerical export",
       "status": "in_progress",
@@ -2873,7 +2877,8 @@
         "p10o.histogram-async.functional.001",
         "p10p.histogram-workflow.functional.001",
         "p10q.histogram-workflow-ui.functional.001",
-        "p10r.histogram-workflow-options.functional.001"
+        "p10r.histogram-workflow-options.functional.001",
+        "p10s.batch-histogram-statistics.functional.001"
       ]
     },
     {
@@ -181033,6 +181038,29 @@
         "total": 555
       },
       "scope": "555 selected Python checks per OS including 41 new native API checks and ten new input checks; five native executable suites per OS and fresh installed SDK consumers. Independent readers verify 64 reports / 21715 raw input frames, including 20 new option reports / 2096 frames. New input cases keep/reopen custom bins/range/log, raw processor choices, original restoration, invalid choices and capture-free authorship. Tests cover closed V5 grammar, exact integer/Boolean/range admission, immutable values/history, UInt8/UInt16/Float32 and 1/5/65536 bins, ordered stages, disabled validation, batch/setup transport and unchanged V4 behavior. No complete ImageJ/Fiji source/reference/resource/real-GPU/OS-desktop/platform acceptance."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-22",
+      "id": "p10s.batch-histogram-statistics.functional.001",
+      "identity": {
+        "qualification": {
+          "bytes": 12524,
+          "path": "docs/parity/reviews/p10s-batch-histogram-statistics001.json",
+          "sha256": "e0dab988b99153c9f1eab9c7c6cd97ad4f33eb9ccbb48323d9d0d04d7cbc627f"
+        }
+      },
+      "platform": "Windows/Linux native C++/Python and shared ImGui batch histogram statistics",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 589,
+        "report": "build/p10s-batch-histogram-statistics001/windows-python001/pytest.xml",
+        "skipped": 0,
+        "total": 589
+      },
+      "scope": "589 selected Python checks per OS including 24 new API and ten new input checks; five native executable suites per OS and fresh installed SDK consumers. Independent readers verify 84 reports / 23800 raw input frames, including 20 new reports / 2056 frames. Tests cover unbinned ROI/range-outlier/NaN/empty populations, exact UInt64 counters and CSV quoting, immutable detached copies, output counts/memory limits, cancellation/conflicts/partial publication and closed V2 setup save/load. No complete ImageJ/Fiji source/reference/resource/real-GPU/OS-desktop/platform acceptance."
     }
   ]
 }

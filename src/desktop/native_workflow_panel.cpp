@@ -84,6 +84,36 @@ Json histogram_summary(const NativeWorkflowHistogramOutput &out) {
           {"mean",optional(v.mean)},{"stddev",optional(v.stddev)},{"sum",v.sum},
           {"counts",v.histogram.counts},{"edges",v.histogram.edges}};
 }
+Json batch_histogram_summary(const NativeWorkflowBatchHistogram &v) {
+  auto number=[](const std::optional<double> &n){return n?Json(*n):Json(nullptr);};
+  return {{"input_index",v.input_index},{"document_index",v.document_index},{"step_index",v.step_index},{"name",v.name},
+    {"plane_count",v.plane_count},{"pixel_type",v.pixel_type},{"sample_policy",v.sample_policy},
+    {"binning",v.options.binning==HistogramBinning::ProcessorRaw?"processor_raw":"uniform_range"},{"bins",v.options.bins},
+    {"range",v.options.range?Json(*v.options.range):Json(nullptr)},{"log_counts",v.log_counts},
+    {"visited_count",v.visited_count},{"finite_count",v.finite_count},{"included_count",v.included_count},
+    {"nan_count",v.nan_count},{"underflow_count",v.underflow_count},{"overflow_count",v.overflow_count},
+    {"minimum",number(v.minimum)},{"maximum",number(v.maximum)},{"mean",number(v.mean)},{"stddev",number(v.stddev)},{"sum",v.sum}};
+}
+void draw_batch_histograms(const PreparedNativeWorkflowBatch &batch) {
+  const auto &rows=batch.histograms();if(rows.empty())return;
+  ImGui::Text("Prepared unbinned histogram statistics: %zu rows",rows.size());
+  if(ImGui::BeginTable("Batch histogram statistics",22,ImGuiTableFlags_Borders|ImGuiTableFlags_RowBg|ImGuiTableFlags_ScrollX|ImGuiTableFlags_ScrollY|ImGuiTableFlags_Resizable,{0,220})) {
+    for(const auto *name:{"Input","Document","Step","Name","Planes","Type","Binning","Bins","Lower","Upper","Log","Visited","Finite","Included","NaN","Below","Above","Minimum","Maximum","Mean","Population SD","Sum"})ImGui::TableSetupColumn(name,ImGuiTableColumnFlags_WidthFixed,100);
+    ImGui::TableSetupScrollFreeze(4,1);ImGui::TableHeadersRow();
+    auto count=[](std::uint64_t value){ImGui::TableNextColumn();ImGui::Text("%llu",(unsigned long long)value);};
+    auto number=[](const std::optional<double> &value){ImGui::TableNextColumn();if(value)ImGui::Text("%.17g",*value);else ImGui::TextUnformatted("--");};
+    ImGuiListClipper clipper;clipper.Begin(int(rows.size()));
+    while(clipper.Step())for(int i=clipper.DisplayStart;i<clipper.DisplayEnd;++i){const auto &v=rows[std::size_t(i)];
+      ImGui::TableNextRow();ImGui::TableNextColumn();ImGui::TextUnformatted(batch.items().at(v.input_index).input.c_str());
+      count(v.document_index+1);count(v.step_index+1);ImGui::TableNextColumn();ImGui::TextUnformatted(v.name.c_str());count(v.plane_count);
+      ImGui::TableNextColumn();ImGui::TextUnformatted(v.pixel_type.c_str());ImGui::TableNextColumn();ImGui::TextUnformatted(v.options.binning==HistogramBinning::ProcessorRaw?"Raw":"Explicit range");count(v.options.bins);
+      number(v.options.range?std::optional<double>((*v.options.range)[0]):std::nullopt);number(v.options.range?std::optional<double>((*v.options.range)[1]):std::nullopt);
+      ImGui::TableNextColumn();ImGui::TextUnformatted(v.log_counts?"yes":"no");count(v.visited_count);count(v.finite_count);count(v.included_count);count(v.nan_count);count(v.underflow_count);count(v.overflow_count);
+      number(v.minimum);number(v.maximum);number(v.mean);number(v.stddev);number(std::optional<double>(v.sum));
+    }
+    ImGui::EndTable();
+  }
+}
 void draw_histogram(const NativeWorkflowHistogramOutput &out, const std::function<void(const std::string &)> &observe) {
   const auto &v=out.value;
   ImGui::PushID(int(out.step_index));
@@ -471,7 +501,7 @@ struct NativeWorkflowPanel::State {
   Json table = Json::array(), controls = Json::object(), bounds = Json::array();
   std::vector<Entry> entries;
   bool batch = false, draft_mode = false, all_documents = false,
-       batch_confirmed = false;
+       batch_confirmed = false, histogram_statistics=false;
   int document_index = 0;
   std::string input_path, output_directory;
   std::vector<NativeWorkflowBatchInput> inputs;
@@ -570,6 +600,7 @@ struct NativeWorkflowPanel::State {
     const auto epoch_source = &cancel_epoch;
     const auto limit = cap;
     const auto snapshot = *source;
+    const bool statistics=histogram_statistics;
     auto result = std::make_shared<std::shared_ptr<Ready>>();
     JobOptions options;
     options.label =
@@ -580,7 +611,7 @@ struct NativeWorkflowPanel::State {
     job = scheduler->submit(
         [path = std::move(path), load, replace, common = std::move(common),
          input_rows = std::move(input_rows), directory = std::move(directory),
-         selection, epoch, epoch_source, limit, snapshot,
+         selection, epoch, epoch_source, limit, snapshot, statistics,
          result](const JobContext &context) {
           auto control = context.execution_control();
           control.checkpoint = [&context, epoch, epoch_source] {
@@ -633,7 +664,7 @@ struct NativeWorkflowPanel::State {
             const auto program = detail::make_native_workflow_program_borrowed(
                 refs, desktop_workflow_program_limits(limit));
             const auto setup = make_native_workflow_batch_setup(
-                program, input_rows, directory, selection, limits, control);
+                program, input_rows, directory, selection, limits, control).with_histogram_statistics(statistics,control);
             auto encoded = setup.json(control);
             ready->files.push_back(
                 {path,
@@ -673,6 +704,7 @@ struct NativeWorkflowPanel::State {
         review_indices = std::move(indices);
         selected = 0;
         all_documents = result->setup->selection().all_documents;
+        histogram_statistics=result->setup->histogram_statistics();
         document_index = int(result->setup->selection().document_index);
         table_bytes = result->setup_table_bytes;
         batch_confirmed = file_consent = false;
@@ -1045,6 +1077,7 @@ void NativeWorkflowPanel::show(const DocumentSnapshot &source,
   s.input_path.clear();
   s.output_directory.clear();
   s.all_documents = false;
+  s.histogram_statistics=false;
   s.document_index = 0;
   s.batch_confirmed = false;
   s.progress.reset();
@@ -1642,6 +1675,11 @@ void NativeWorkflowPanel::draw(
       s.batch_confirmed = false;
       s.file_consent = false;
     }
+    if(ImGui::Checkbox("Export unbinned histogram statistics CSV",&s.histogram_statistics)) {
+      s.invalidate();s.batch_confirmed=false;s.file_consent=false;
+    }
+    s.observe("batch.histogram_statistics");
+    ImGui::TextWrapped("Review unbinned histogram summaries after preparation. This option adds one statistics CSV per input, before its complete session; existing session results remain unchanged.");
     if (ImGui::Checkbox("Confirm input/document/output choices",
                         &s.batch_confirmed))
       s.invalidate();
@@ -2161,6 +2199,7 @@ void NativeWorkflowPanel::draw(
         batch_options.all_documents = s.all_documents;
         batch_options.document_index = std::size_t(s.document_index);
         batch_options.max_working_bytes = cap;
+        batch_options.histogram_statistics=s.histogram_statistics;
         batch_options.workflow.max_retained_bytes = cap;
         auto progress = std::make_shared<BatchProgress>();
         progress->states.resize(inputs.size(),
@@ -2349,6 +2388,7 @@ void NativeWorkflowPanel::draw(
   }
   ImGui::EndDisabled();
   if(s.ready && s.ready->plan)for(const auto &out:s.ready->plan->histograms())draw_histogram(out,[&](const auto &key){s.observe(key);});
+  if(s.ready && s.ready->batch)draw_batch_histograms(*s.ready->batch);
   if (!s.error.empty())
     ImGui::TextWrapped("%s", s.error.c_str());
   if (!s.message.empty())
@@ -2444,6 +2484,8 @@ Json NativeWorkflowPanel::diagnostics() const {
       files.push_back({{"path", f.path}, {"published", f.published}});
   Json histograms=Json::array();
   if(s.ready && s.ready->plan)for(const auto &out:s.ready->plan->histograms())histograms.push_back(histogram_summary(out));
+  Json batch_histograms=Json::array();
+  if(s.ready && s.ready->batch)for(const auto &row:s.ready->batch->histograms())batch_histograms.push_back(batch_histogram_summary(row));
   Json inputs = Json::array();
   for (const auto &input : s.inputs)
     inputs.push_back(
@@ -2466,7 +2508,7 @@ Json NativeWorkflowPanel::diagnostics() const {
                        {"published", f.published},
                        {"failed", f.failed},
                        {"session", f.session},
-                       {"input_index", f.input_index}});
+                       {"input_index", f.input_index},{"histogram_statistics",f.histogram_statistics}});
   } else if (s.progress) {
     std::lock_guard<std::mutex> lock(s.progress->mutex);
     for (std::size_t i = 0; i < s.progress->states.size(); ++i)
@@ -2507,6 +2549,7 @@ Json NativeWorkflowPanel::diagnostics() const {
           {"entries", entries},
           {"files", files},
           {"histograms",histograms},
+          {"batch_histograms",batch_histograms},{"histogram_statistics",s.histogram_statistics},
           {"controls", s.controls},
           {"window", s.bounds},
           {"error", s.error},

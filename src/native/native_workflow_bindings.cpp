@@ -385,7 +385,8 @@ void bind_native_workflow(py::module_ &m) {
                        std::string directory,
                        NativeWorkflowBatchSelection selection,
                        NativeWorkflowBatchSetupLimits limits,
-                       std::shared_ptr<CancellationToken> cancel) {
+                       std::shared_ptr<CancellationToken> cancel, py::object statistics) {
+             const bool export_statistics=flag(statistics);
              if (std::size_t(py::len(rows)) > limits.max_inputs ||
                  directory.size() > limits.max_record_bytes)
                throw py::value_error("Batch setup input/byte limit");
@@ -407,14 +408,16 @@ void bind_native_workflow(py::module_ &m) {
              ExecutionControl control;
              control.cancellation = std::move(cancel);
              py::gil_scoped_release release;
-             return make_native_workflow_batch_setup(
-                 common, inputs, directory, selection, limits, control);
+             auto setup=make_native_workflow_batch_setup(common, inputs, directory, selection, limits, control);
+             return export_statistics?setup.with_histogram_statistics(true,control):setup;
            }),
            py::arg("common_program"), py::arg("inputs"),
            py::arg("output_directory") = "",
            py::arg("selection") = NativeWorkflowBatchSelection{},
            py::arg("limits") = NativeWorkflowBatchSetupLimits{},
-           py::arg("cancellation") = std::shared_ptr<CancellationToken>{})
+           py::arg("cancellation") = std::shared_ptr<CancellationToken>{}, py::arg("histogram_statistics")=false)
+      .def_property_readonly("histogram_statistics",&NativeWorkflowBatchSetup::histogram_statistics)
+      .def("with_histogram_statistics",[](const NativeWorkflowBatchSetup &s,py::object enabled){const bool value=flag(enabled);py::gil_scoped_release release;return s.with_histogram_statistics(value);},py::arg("enabled"))
       .def_static(
           "from_record",
           [](py::dict record, NativeWorkflowBatchSetupLimits limits,
@@ -495,9 +498,10 @@ void bind_native_workflow(py::module_ &m) {
   py::class_<NativeWorkflowBatchOptions>(m, "NativeWorkflowBatchOptions")
       .def(py::init([](py::object all, py::object doc, py::object inputs,
                        py::object outputs, py::object bytes,
-                       NativeWorkflowLimits workflow, py::object session) {
+                       NativeWorkflowLimits workflow, py::object session, py::object statistics) {
              NativeWorkflowBatchOptions o;
              o.all_documents = flag(all);
+             o.histogram_statistics=flag(statistics);
              o.document_index = integer(doc);
              o.max_inputs = integer(inputs);
              o.max_outputs = integer(outputs);
@@ -514,12 +518,43 @@ void bind_native_workflow(py::module_ &m) {
            py::arg("max_inputs") = 64, py::arg("max_outputs") = 4096,
            py::arg("max_working_bytes") = 512ULL * 1024 * 1024,
            py::arg("workflow") = NativeWorkflowLimits{},
-           py::arg("session") = py::none());
+           py::arg("session") = py::none(), py::arg("histogram_statistics")=false)
+      .def_readonly("histogram_statistics",&NativeWorkflowBatchOptions::histogram_statistics);
+  py::class_<NativeWorkflowBatchHistogram>(m,"NativeWorkflowBatchHistogram")
+      .def(py::init<>()).def(py::init<const NativeWorkflowBatchHistogram &>())
+      .def_readonly("input_index",&NativeWorkflowBatchHistogram::input_index)
+      .def_readonly("document_index",&NativeWorkflowBatchHistogram::document_index)
+      .def_readonly("step_index",&NativeWorkflowBatchHistogram::step_index)
+      .def_readonly("plane_count",&NativeWorkflowBatchHistogram::plane_count)
+      .def_readonly("name",&NativeWorkflowBatchHistogram::name)
+      .def_readonly("pixel_type",&NativeWorkflowBatchHistogram::pixel_type)
+      .def_readonly("sample_policy",&NativeWorkflowBatchHistogram::sample_policy)
+      .def_property_readonly("options",[](const NativeWorkflowBatchHistogram &v){return v.options;})
+      .def_readonly("log_counts",&NativeWorkflowBatchHistogram::log_counts)
+      .def_readonly("visited_count",&NativeWorkflowBatchHistogram::visited_count)
+      .def_readonly("finite_count",&NativeWorkflowBatchHistogram::finite_count)
+      .def_readonly("included_count",&NativeWorkflowBatchHistogram::included_count)
+      .def_readonly("nan_count",&NativeWorkflowBatchHistogram::nan_count)
+      .def_readonly("underflow_count",&NativeWorkflowBatchHistogram::underflow_count)
+      .def_readonly("overflow_count",&NativeWorkflowBatchHistogram::overflow_count)
+      .def_readonly("minimum",&NativeWorkflowBatchHistogram::minimum)
+      .def_readonly("maximum",&NativeWorkflowBatchHistogram::maximum)
+      .def_readonly("mean",&NativeWorkflowBatchHistogram::mean)
+      .def_readonly("stddev",&NativeWorkflowBatchHistogram::stddev)
+      .def_readonly("sum",&NativeWorkflowBatchHistogram::sum);
+  m.def("native_workflow_batch_histogram_csv",[](py::sequence values,py::object requested) {
+    const auto cap=integer(requested);const auto count=std::size_t(py::len(values));
+    if(count>cap/8192)throw py::value_error("Batch statistics CSV working limit");
+    std::vector<NativeWorkflowBatchHistogram> rows;rows.reserve(count);
+    for(auto value:values){if(rows.size()>=cap/8192)throw py::value_error("Batch statistics CSV working limit");rows.push_back(value.cast<const NativeWorkflowBatchHistogram &>());}
+    py::gil_scoped_release release;return native_workflow_batch_histogram_csv(rows,cap);
+  },py::arg("rows"),py::arg("max_working_bytes")=128ULL*1024*1024);
   py::class_<PreparedNativeWorkflowBatch>(m, "PreparedNativeWorkflowBatch")
       .def_property_readonly("attempted",
                              &PreparedNativeWorkflowBatch::attempted)
       .def_property_readonly("encoded_bytes",
                              &PreparedNativeWorkflowBatch::encoded_bytes)
+      .def_property_readonly("histograms",[](const PreparedNativeWorkflowBatch &v){py::list rows;for(const auto &r:v.histograms())rows.append(py::cast(NativeWorkflowBatchHistogram(r)));return rows;})
       .def_property_readonly("items",
                              [](const PreparedNativeWorkflowBatch &v) {
                                py::list rows;
@@ -541,6 +576,7 @@ void bind_native_workflow(py::module_ &m) {
                                  r["session"] = i.session;
                                  r["published"] = i.published;
                                  r["failed"] = i.failed;
+                                 r["histogram_statistics"]=i.histogram_statistics;
                                  rows.append(r);
                                }
                                return rows;

@@ -565,3 +565,47 @@ serves commands and workflows, and metadata preflight checks every destination
 stage before kernel reads. Native batch common/override programs and setup
 records carry V5 and use the authored bins for existing per-document CSV output.
 No additional pixel/sample/calibration domains or defaults are admitted.
+
+
+## Batch histogram statistics review and export
+
+Both ImGui launchers show a detached summary for every enabled histogram and
+selected input document after Batch preparation. These are unbinned finite ROI
+statistics from each ordered workflow stage: minimum, maximum, mean, population
+standard deviation and sum, plus visited/finite/included/NaN/outlier counts.
+Explicit-range outliers contribute to statistics. Empty finite populations have
+absent extrema/mean/SD and zero sum. Bin centers are never used to reconstruct
+statistics. Review rows do not append to the live or saved session Results table.
+
+Enable **Export unbinned histogram statistics CSV** before preparing to publish
+one `<output_stem>.histograms.csv` per input containing enabled histogram rows.
+The default remains per-document bin CSVs and the complete processed session.
+Inputs with no histogram rows produce no summary CSV. The summary includes
+zero-based input/document/step indices, token, plane count, pixel type, sample
+policy, requested bin/range/log choices and exact counters. Absent statistics and
+raw requested ranges have blank CSV fields; finite values use round-trip precision.
+
+Summary files use the same new-files-only consent, destination checks and output
+limits as other batch products. Each input publishes its bins/exports, optional
+summary, then complete session. Cancellation or a later conflict may retain
+already published files; it does not publish the complete session for that input
+or modify the live owner. Review remains available, and retry requires a new
+preparation. Existing session tables and untouched documents are preserved.
+
+The C++ `PreparedNativeWorkflowBatch::histograms()` and Python `.histograms`
+expose `NativeWorkflowBatchHistogram` values without source snapshots or bin
+arrays. Python returns owning copies, including copied options.
+`native_workflow_batch_histogram_csv(rows, max_working_bytes)` formats these
+values without opening paths. Set `NativeWorkflowBatchOptions.histogram_statistics`
+(Python constructor keyword `histogram_statistics=True`) to include sidecars.
+Retained summary storage and opt-in formatting scratch count against aggregate
+batch admission; `encoded_bytes` still counts actual encoded output bytes.
+Frontend copies, allocator overhead and total process RSS remain external.
+
+Batch setup `.with_histogram_statistics(True)` returns a new immutable setup;
+the Python constructor also accepts the flag. Enabled export writes closed V2
+setup JSON with a required Boolean `histogram_statistics`. Disabled export keeps
+the byte-compatible V1 encoding; V2 false canonicalizes to V1. Save/load restores
+the choice without persisting publication consent. Supported histogram numeric
+domains remain unchanged. Virtual sources, calibrated/color/other numeric
+domains and complete upstream/platform qualification remain open.

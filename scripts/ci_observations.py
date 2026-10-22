@@ -259,6 +259,8 @@ def cases():
         yield "histogram-workflow",mode,["--histogram-workflow-ui-case",mode]
     for mode in ["choices","raw_choices","restore","invalid_choices","authored"]:
         yield "histogram-workflow",mode,["--histogram-workflow-ui-case",mode]
+    for mode in ["batch_statistics","batch_statistics_review","batch_statistics_conflict","batch_statistics_cancel","batch_statistics_setup"]:
+        yield "histogram-workflow",mode,["--histogram-workflow-ui-case",mode]
 
 
 def reader_environment(output):

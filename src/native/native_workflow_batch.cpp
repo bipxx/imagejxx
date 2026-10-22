@@ -1,6 +1,12 @@
 #include "atomic_file.hpp"
 #include "content_sha256.hpp"
 #include "kernel_control.hpp"
+#include "histogram_command_internal.hpp"
+#include <cmath>
+#include <iomanip>
+#include <limits>
+#include <locale>
+#include <sstream>
 #include "native_workflow_batch_internal.hpp"
 #include "native_workflow_program_internal.hpp"
 #include "session_io_internal.hpp"
@@ -63,6 +69,52 @@ struct InputGuard {
             "Batch input changed since review");
   }
 };
+std::size_t statistics_row_cost(const std::string &name) {
+  require(name.size()<=180,"Batch statistics name limit");
+  return 2048+2*name.size()+128;
+}
+void validate_statistics(const NativeWorkflowBatchHistogram &v) {
+  require(flat(v.name) && v.plane_count>0,"Invalid batch histogram identity");
+  require(v.pixel_type=="uint8" || v.pixel_type=="uint16" || v.pixel_type=="float32","Invalid batch histogram pixel type");
+  require(v.sample_policy=="finite_only" || (v.sample_policy=="preserve_quiet_nan_float32" && v.pixel_type=="float32"),"Invalid batch histogram sample policy");
+  detail::validate_histogram_command_options(v.options);
+  require(v.finite_count<=v.visited_count && v.visited_count-v.finite_count==v.nan_count &&
+          v.included_count<=v.finite_count && v.underflow_count<=v.finite_count-v.included_count &&
+          v.overflow_count==v.finite_count-v.included_count-v.underflow_count,"Inconsistent batch histogram counters");
+  require(v.sample_policy!="finite_only" || !v.nan_count,"Finite-only batch statistics contain NaNs");
+  require(v.options.binning!=HistogramBinning::ProcessorRaw || (!v.underflow_count&&!v.overflow_count),"Raw batch statistics contain outliers");
+  require(std::isfinite(v.sum),"Nonfinite batch histogram sum");
+  if(!v.finite_count)require(!v.minimum&&!v.maximum&&!v.mean&&!v.stddev&&v.sum==0,"Empty batch statistics require absent statistics");
+  else require(v.minimum&&v.maximum&&v.mean&&v.stddev&&std::isfinite(*v.minimum)&&std::isfinite(*v.maximum)&&
+      std::isfinite(*v.mean)&&std::isfinite(*v.stddev)&&*v.minimum<=*v.maximum&&*v.stddev>=0,"Invalid batch histogram statistics");
+}
+std::string statistics_csv(const NativeWorkflowBatchHistogram *rows,std::size_t count,std::size_t cap,const ExecutionControl &control={}) {
+  const char *header="input_index,document_index,step_index,name,plane_count,pixel_type,sample_policy,binning,bins,range_lower,range_upper,log_counts,visited_count,finite_count,included_count,nan_count,underflow_count,overflow_count,minimum,maximum,mean,stddev,sum\n";
+  std::size_t remaining=cap/4;
+  require(remaining>=4096 && count<=(remaining-4096)/2048,"Batch statistics CSV working limit");remaining-=4096;
+  for(std::size_t i=0;i<count;++i){if(!(i&63))checkpoint(control);const auto cost=statistics_row_cost(rows[i].name);require(cost<=remaining,"Batch statistics CSV working limit");remaining-=cost;validate_statistics(rows[i]);}
+  std::ostringstream out;out.exceptions(std::ios::badbit|std::ios::failbit);out.imbue(std::locale::classic());out<<std::setprecision(std::numeric_limits<double>::max_digits10)<<header;
+  auto text=[&](const std::string &s){out<<'"';for(char c:s){if(c=='"')out<<'"';out<<c;}out<<'"';};
+  auto optional=[&](const std::optional<double> &v){if(v)out<<*v;};
+  for(std::size_t i=0;i<count;++i){if(!(i&63))checkpoint(control);const auto &v=rows[i];
+    out<<v.input_index<<','<<v.document_index<<','<<v.step_index<<',';text(v.name);
+    out<<','<<v.plane_count<<',';text(v.pixel_type);out<<',';text(v.sample_policy);out<<',';
+    text(v.options.binning==HistogramBinning::ProcessorRaw?"processor_raw":"uniform_range");out<<','<<v.options.bins<<',';
+    if(v.options.range)out<<(*v.options.range)[0];out<<',';if(v.options.range)out<<(*v.options.range)[1];
+    out<<','<<(v.log_counts?"true":"false")<<','<<v.visited_count<<','<<v.finite_count<<','<<v.included_count<<','<<v.nan_count<<','<<v.underflow_count<<','<<v.overflow_count<<',';
+    optional(v.minimum);out<<',';optional(v.maximum);out<<',';optional(v.mean);out<<',';optional(v.stddev);out<<','<<v.sum<<'\n';
+  }
+  return out.str();
+}
+NativeWorkflowBatchHistogram statistics_row(std::size_t input,std::size_t document,const NativeWorkflowHistogramOutput &out) {
+  const auto &v=out.value;NativeWorkflowBatchHistogram r;
+  r.input_index=input;r.document_index=document;r.step_index=out.step_index;r.plane_count=v.estimate.plane_count;
+  r.name=out.name;r.pixel_type=std::get<std::string>(out.record.at("pixel_type"));r.sample_policy=std::get<std::string>(out.record.at("sample_policy"));
+  r.options=v.options;r.log_counts=std::get<bool>(out.record.at("log_counts"));
+  r.visited_count=v.visited_count;r.finite_count=v.finite_count;r.included_count=v.included_count;r.nan_count=v.nan_count;
+  r.underflow_count=v.underflow_count;r.overflow_count=v.overflow_count;r.minimum=v.minimum;r.maximum=v.maximum;r.mean=v.mean;r.stddev=v.stddev;r.sum=v.sum;
+  return r;
+}
 struct Buffer {
   NativeWorkflowBatchOutput info;
   std::vector<unsigned char> bytes;
@@ -71,6 +123,7 @@ struct Buffer {
 struct PreparedNativeWorkflowBatch::State {
   std::vector<NativeWorkflowBatchItem> items;
   std::vector<NativeWorkflowBatchOutput> outputs;
+  std::vector<NativeWorkflowBatchHistogram> histograms;
   std::vector<std::unique_ptr<detail::StagedAtomicFile>> files;
   std::size_t bytes = 0;
   bool attempted = false;
@@ -81,11 +134,12 @@ struct detail::NativeWorkflowBatchAccess {
   make(std::vector<NativeWorkflowBatchItem> items, std::vector<Buffer> buffers,
        std::size_t bytes, const ExecutionControl &control,
        const NativeWorkflowBatchProgress &progress,
-       std::vector<InputGuard> guards) {
+       std::vector<InputGuard> guards, std::vector<NativeWorkflowBatchHistogram> histograms) {
     auto s = std::make_unique<PreparedNativeWorkflowBatch::State>();
     s->items = std::move(items);
     s->guards = std::move(guards);
     s->bytes = bytes;
+    s->histograms=std::move(histograms);
     s->outputs.reserve(buffers.size());
     s->files.reserve(buffers.size());
     std::size_t current = 0;
@@ -185,6 +239,12 @@ const std::vector<NativeWorkflowBatchOutput> &
 PreparedNativeWorkflowBatch::outputs() const {
   require(bool(state_), "Moved batch");
   return state_->outputs;
+}
+const std::vector<NativeWorkflowBatchHistogram> &PreparedNativeWorkflowBatch::histograms() const {
+  require(bool(state_),"Moved batch");return state_->histograms;
+}
+std::string native_workflow_batch_histogram_csv(const std::vector<NativeWorkflowBatchHistogram> &rows,std::size_t cap) {
+  return statistics_csv(rows.data(),rows.size(),cap);
 }
 std::size_t PreparedNativeWorkflowBatch::encoded_bytes() const {
   require(bool(state_), "Moved batch");
@@ -326,7 +386,8 @@ PreparedNativeWorkflowBatch detail::prepare_native_workflow_batch_borrowed(
     items.push_back({i.path, NativeWorkflowBatchState::Queued});
   std::vector<fs::path> sources, planned;
   std::vector<Buffer> buffers;
-  std::size_t retained = request_bytes, current = 0;
+  std::size_t retained = request_bytes, current = 0, encoded_total=0;
+  std::vector<NativeWorkflowBatchHistogram> histograms;
   std::vector<InputGuard> guards;
   auto notify = [&](std::size_t i, NativeWorkflowBatchState state) {
     items[i].state = state;
@@ -350,12 +411,12 @@ PreparedNativeWorkflowBatch detail::prepare_native_workflow_batch_borrowed(
     planned.push_back(p);
   };
   auto add_buffer = [&](std::size_t i, const fs::path &p, bool session,
-                        std::vector<unsigned char> bytes) {
+                        std::vector<unsigned char> bytes, bool statistics=false) {
     require(bytes.size() <= o.max_working_bytes - retained,
             "Batch encoded-output limit");
-    retained += bytes.size();
+    retained += bytes.size();encoded_total+=bytes.size();
     buffers.push_back(
-        {{i, p.u8string(), session, false, false}, std::move(bytes)});
+        {{i, p.u8string(), session, false, false, statistics}, std::move(bytes)});
   };
   try {
     // Reserve every complete-session destination and admit every input path
@@ -411,6 +472,22 @@ PreparedNativeWorkflowBatch detail::prepare_native_workflow_batch_borrowed(
       require(selection.all_documents ||
                   selection.document_index < decoded.documents.size(),
               "Batch document index outside input session");
+      const auto statistics_first=histograms.size();
+      const std::size_t documents=selection.all_documents?decoded.documents.size():1;
+      std::size_t statistics_chars=4096, new_rows=0;
+      for(const auto &ref:effective_steps)if(const auto p=std::get_if<const NativeWorkflowHistogram *>(&ref);p&&(*p)->enabled) {
+        const auto &step=**p;const auto cost=2*(sizeof(NativeWorkflowBatchHistogram)+step.name.size()+128);
+        require(documents<=(o.max_working_bytes-retained)/cost,"Batch retained statistics limit");retained+=documents*cost;
+        require(documents<=histograms.max_size()-histograms.size()-new_rows,"Batch statistics row count limit");new_rows+=documents;
+        if(o.histogram_statistics) {
+          const auto cost_csv=statistics_row_cost(step.name);
+          require(statistics_chars<=o.max_working_bytes/4 && documents<=(o.max_working_bytes/4-statistics_chars)/cost_csv,"Batch statistics CSV working limit");statistics_chars+=documents*cost_csv;
+        }
+      }
+      histograms.reserve(histograms.size()+new_rows);
+      const std::size_t statistics_scratch=o.histogram_statistics&&new_rows?4*statistics_chars:0;
+      std::optional<fs::path> statistics_path;
+      if(o.histogram_statistics&&new_rows){statistics_path=dir/fs::u8path(input.output_stem+".histograms.csv");output_path(*statistics_path);}
       SessionCapture capture;
       capture.results = std::move(decoded.results);
       capture.workflow = std::move(decoded.workflow);
@@ -426,8 +503,9 @@ PreparedNativeWorkflowBatch detail::prepare_native_workflow_batch_borrowed(
             estimate_session(capture, phase_limits(o, retained));
         require(input_estimate.working_bytes < o.max_working_bytes - retained,
                 "Batch planner phase limit");
+        require(statistics_scratch<=o.max_working_bytes-retained-input_estimate.working_bytes,"Batch statistics phase limit");
         auto available =
-            o.max_working_bytes - retained - input_estimate.working_bytes;
+            o.max_working_bytes - retained - input_estimate.working_bytes - statistics_scratch;
         auto limits = o.workflow;
         limits.max_retained_bytes =
             std::min(limits.max_retained_bytes, available);
@@ -446,6 +524,7 @@ PreparedNativeWorkflowBatch detail::prepare_native_workflow_batch_borrowed(
           available -= out.value.data().size();
         }
         for (const auto &out : prepared.histograms()) {
+          histograms.push_back(statistics_row(current,d,out));
           auto path = dir / fs::u8path(inputs[current].output_stem + ".d" +
                                        std::to_string(d + 1) + "." + out.name);
           output_path(path);
@@ -458,6 +537,13 @@ PreparedNativeWorkflowBatch detail::prepare_native_workflow_batch_borrowed(
         }
         capture.documents[d] = prepared.preview();
         decoded.documents[d].reset();
+      }
+      if(o.histogram_statistics && histograms.size()!=statistics_first) {
+        const auto &path=*statistics_path;
+        const auto phase=estimate_session(capture,phase_limits(o,retained));
+        require(phase.working_bytes<o.max_working_bytes-retained,"Batch statistics encoding phase limit");
+        auto csv=statistics_csv(histograms.data()+statistics_first,histograms.size()-statistics_first,o.max_working_bytes-retained-phase.working_bytes,control);
+        add_buffer(current,path,false,std::vector<unsigned char>(csv.begin(),csv.end()),true);
       }
       notify(current, NativeWorkflowBatchState::Encoding);
       auto encoded =
@@ -473,8 +559,8 @@ PreparedNativeWorkflowBatch detail::prepare_native_workflow_batch_borrowed(
     }
     current = inputs.size();
     return NativeWorkflowBatchAccess::make(std::move(items), std::move(buffers),
-                                           retained - request_bytes, control,
-                                           progress, std::move(guards));
+                                           encoded_total, control,
+                                           progress, std::move(guards), std::move(histograms));
   } catch (...) {
     auto error = std::current_exception();
     if (current < inputs.size()) {
