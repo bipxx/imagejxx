@@ -10,6 +10,8 @@
 #include "../native/indexed_rgb_internal.hpp"
 #include "../native/native_workflow_program_internal.hpp"
 #include "native_workflow_parameters.hpp"
+#include "../native/target_record_internal.hpp"
+#include <cmath>
 #include "native_workflow_viewport.hpp"
 #include "roi_mixed_export_panel.hpp"
 #include <imagejxx/gaussian_command.hpp>
@@ -40,7 +42,7 @@ bool matches(const DocumentSnapshot &a, const DocumentSnapshot &b) {
 }
 struct Entry {
   std::shared_ptr<const NativeWorkflowStep> step;
-  std::string title, path;
+  std::string title, path, output_token;
   bool enabled = true;
   bool confirmed = false, calibration = false, authored = false,
        retained_target = false;
@@ -51,6 +53,54 @@ struct Entry {
   std::array<int, 3> position{};
   std::vector<PlanePosition> positions;
 };
+const TargetRequest &entry_target(const NativeWorkflowStep &step) {
+  if (const auto *op=std::get_if<NativeWorkflowOperation>(&step)) return op->target;
+  return std::get<NativeWorkflowHistogram>(step).target;
+}
+Json histogram_summary(const NativeWorkflowHistogramOutput &out) {
+  const auto &v=out.value;
+  auto optional=[](const std::optional<double> &n){return n?Json(*n):Json(nullptr);};
+  return {{"step_index",out.step_index},{"name",out.name},{"finite_count",v.finite_count},
+          {"visited_count",v.visited_count},{"included_count",v.included_count},
+          {"nan_count",v.nan_count},{"underflow_count",v.underflow_count},{"overflow_count",v.overflow_count},
+          {"minimum",optional(v.minimum)},{"maximum",optional(v.maximum)},
+          {"mean",optional(v.mean)},{"stddev",optional(v.stddev)},{"sum",v.sum},
+          {"counts",v.histogram.counts},{"edges",v.histogram.edges}};
+}
+void draw_histogram(const NativeWorkflowHistogramOutput &out, const std::function<void(const std::string &)> &observe) {
+  const auto &v=out.value;
+  ImGui::PushID(int(out.step_index));
+  ImGui::Text("Step %zu: %s",out.step_index+1,out.name.c_str());
+  struct Plot { const Histogram *histogram; bool log; } plot{&v.histogram,std::get<bool>(out.record.at("log_counts"))};
+  ImGui::PlotHistogram("##histogram",[](void *opaque,int index) {
+    const auto &p=*static_cast<Plot *>(opaque);const double count=p.histogram->counts[std::size_t(index)];
+    return float(p.log?std::log1p(count):count);
+  },&plot,int(v.histogram.counts.size()),0,plot.log?"Log counts":"Counts",0,FLT_MAX,{0,120});
+  ImGui::Text("Finite %llu; included %llu; NaN %llu",(unsigned long long)v.finite_count,(unsigned long long)v.included_count,(unsigned long long)v.nan_count);
+  ImGui::Text("Below range %llu; above range %llu",(unsigned long long)v.underflow_count,(unsigned long long)v.overflow_count);
+  if(v.mean) {
+    ImGui::Text("Minimum %.17g; maximum %.17g",*v.minimum,*v.maximum);
+    ImGui::Text("Mean %.17g; population SD %.17g; sum %.17g",*v.mean,*v.stddev,v.sum);
+  } else ImGui::TextUnformatted("No finite samples");
+  const bool bins_open=ImGui::TreeNode("Exact bin counts");
+  observe("histogram."+std::to_string(out.step_index)+".bins");
+  if(bins_open) {
+    if(ImGui::BeginTable("Bins",4,ImGuiTableFlags_Borders|ImGuiTableFlags_RowBg|ImGuiTableFlags_ScrollY,{0,150})) {
+      for(const auto *label:{"Bin","Lower","Upper","Count"})ImGui::TableSetupColumn(label);
+      ImGui::TableSetupScrollFreeze(0,1);ImGui::TableHeadersRow();
+      ImGuiListClipper clipper;clipper.Begin(int(v.histogram.counts.size()));
+      while(clipper.Step())for(int i=clipper.DisplayStart;i<clipper.DisplayEnd;++i) {
+        ImGui::TableNextRow();ImGui::TableNextColumn();ImGui::Text("%d",i);
+        ImGui::TableNextColumn();ImGui::Text("%.17g",v.histogram.edges[std::size_t(i)]);
+        ImGui::TableNextColumn();ImGui::Text("%.17g",v.histogram.edges[std::size_t(i)+1]);
+        ImGui::TableNextColumn();ImGui::Text("%llu",(unsigned long long)v.histogram.counts[std::size_t(i)]);
+      }
+      ImGui::EndTable();
+    }
+    ImGui::TreePop();
+  }
+  ImGui::PopID();
+}
 std::size_t admit_review_table(const Json &table, std::size_t cap) {
   std::size_t remaining = cap / 4, nodes = 0;
   auto add = [&](std::size_t n) {
@@ -84,8 +134,6 @@ std::vector<Entry> program_entries(const Json &record, std::size_t cap) {
           desktop_workflow_program_limits(cap)));
   std::vector<Entry> entries;
   for (const auto &step : program->steps()) {
-    require(!std::holds_alternative<NativeWorkflowHistogram>(step),
-            "Histogram workflow review is not yet available; use native workflow execution or individual replay");
     Entry entry;
     entry.step = std::shared_ptr<const NativeWorkflowStep>(program, &step);
     entry.authored = true;
@@ -97,6 +145,9 @@ std::vector<Entry> program_entries(const Json &record, std::size_t cap) {
       entry.calibration = op->use_destination_calibration;
       entry.positions = op->target.positions;
       entry.retained_target = true;
+    } else if (const auto hist=std::get_if<NativeWorkflowHistogram>(&step)) {
+      entry.title="Histogram";entry.output_token=hist->name;entry.scope=int(hist->target.scope);entry.roi=int(hist->target.roi);
+      entry.positions=hist->target.positions;entry.retained_target=true;
     } else
       entry.title = std::holds_alternative<NativeWorkflowImport>(step)
                         ? "Import annotations"
@@ -126,7 +177,13 @@ std::vector<Entry> compile(const Json &table, std::size_t cap) {
     const auto schema = string(get(raw, "schema"));
     NativeWorkflowStep step;
     std::string title;
-    if (schema == "imagejxx.imagej-annotation-import-command") {
+    if (schema == "imagejxx.histogram-command") {
+      validate_histogram_command_record(record);
+      NativeWorkflowHistogram value;value.name="step-"+std::to_string(entries.size())+".csv";
+      value.original=record;
+      value.target=detail::decode_target_record(metadataObjectFromJson(raw.at("target"))).request;
+      step=std::move(value);title="Histogram";
+    } else if (schema == "imagejxx.imagej-annotation-import-command") {
       auto request = decode_imagej_annotation_import_request(record);
       step = NativeWorkflowImport{std::move(request.items), request.mode,
                                   request.limits, record};
@@ -251,40 +308,32 @@ std::vector<Entry> compile(const Json &table, std::size_t cap) {
     if(const auto op=std::get_if<NativeWorkflowOperation>(entry.step.get());op && (op->operation=="rgb_dataset" || op->operation=="color_stack" || op->operation=="indexed_dataset" || op->operation=="indexed_rgb")) {
       entry.scope=int(TargetScope::Ranges);entry.roi=int(RoiPolicy::WholePlane);entry.retained_target=true;
     }
+    if(const auto hist=std::get_if<NativeWorkflowHistogram>(entry.step.get())) {
+      entry.output_token=hist->name;entry.scope=int(hist->target.scope);entry.roi=int(hist->target.roi);
+      entry.positions=hist->target.positions;entry.retained_target=true;
+    }
     entries.push_back(std::move(entry));
   }
   return entries;
 }
 std::shared_ptr<const NativeWorkflowStep> effective(const Entry &e) {
-  const auto op = std::get_if<NativeWorkflowOperation>(e.step.get());
-  if (!op) {
-    if (e.enabled ==
-        std::visit([](const auto &v) { return v.enabled; }, *e.step))
-      return e.step;
-    auto value = *e.step;
-    std::visit([&](auto &v) { v.enabled = e.enabled; }, value);
+  auto targeted=[&](auto value) {
+    value.enabled=e.enabled;
+    if(!e.retained_target) {
+      auto &target=value.target;target.t.reset();target.c.reset();target.z.reset();target.positions.clear();
+      target.scope=TargetScope(e.scope);target.roi=RoiPolicy(e.roi);
+      if(e.scope==2) {target.t=AxisRange{e.first[0],e.stop[0],e.stride[0]};target.c=AxisRange{e.first[1],e.stop[1],e.stride[1]};target.z=AxisRange{e.first[2],e.stop[2],e.stride[2]};}
+      if(e.scope==3)target.positions=e.positions;
+    }
     return std::make_shared<const NativeWorkflowStep>(std::move(value));
+  };
+  if(const auto op=std::get_if<NativeWorkflowOperation>(e.step.get())) {
+    auto v=*op;v.use_destination_calibration=e.calibration;return targeted(std::move(v));
   }
-  auto v = *op;
-  v.enabled = e.enabled;
-  v.use_destination_calibration = e.calibration;
-  if (e.retained_target)
-    return std::make_shared<const NativeWorkflowStep>(std::move(v));
-  v.target.t.reset();
-  v.target.c.reset();
-  v.target.z.reset();
-  v.target.positions.clear();
-  v.target.scope = TargetScope(e.scope);
-  v.target.roi = RoiPolicy(e.roi);
-  v.use_destination_calibration = e.calibration;
-  if (e.scope == 2) {
-    v.target.t = AxisRange{e.first[0], e.stop[0], e.stride[0]};
-    v.target.c = AxisRange{e.first[1], e.stop[1], e.stride[1]};
-    v.target.z = AxisRange{e.first[2], e.stop[2], e.stride[2]};
-  }
-  if (e.scope == 3)
-    v.target.positions = e.positions;
-  return std::make_shared<const NativeWorkflowStep>(std::move(v));
+  if(const auto hist=std::get_if<NativeWorkflowHistogram>(e.step.get())) {auto v=*hist;v.name=e.output_token;return targeted(std::move(v));}
+  if(e.enabled==std::visit([](const auto &v){return v.enabled;},*e.step))return e.step;
+  auto value=*e.step;std::visit([&](auto &v){v.enabled=e.enabled;},value);
+  return std::make_shared<const NativeWorkflowStep>(std::move(value));
 }
 bool alias(const std::filesystem::path &a, const std::filesystem::path &b) {
 #ifdef _WIN32
@@ -295,14 +344,14 @@ bool alias(const std::filesystem::path &a, const std::filesystem::path &b) {
   return a == b;
 #endif
 }
-std::filesystem::path destination(const std::string &text, bool zip) {
+std::filesystem::path destination(const std::string &text, bool zip, bool histogram=false) {
   namespace fs = std::filesystem;
   require(!text.empty() && text.find('\0') == std::string::npos,
           "Choose every output destination");
   auto p = fs::absolute(fs::u8path(text)).lexically_normal();
   require(p.has_filename(), "Choose an output filename");
-  require(extension(p.u8string()) == (zip ? ".zip" : ".roi"),
-          "Output extension must match ROI/ZIP packaging");
+  require(extension(p.u8string()) == (histogram ? ".csv" : zip ? ".zip" : ".roi"),
+          "Output extension must match CSV/ROI/ZIP packaging");
   require(fs::is_directory(p.parent_path()),
           "Output parent must already be a directory");
   p = fs::canonical(p.parent_path()) / p.filename();
@@ -537,7 +586,7 @@ struct NativeWorkflowPanel::State {
               entry.stop = {shape.t, shape.c, shape.z};
               if (entry.retained_target) {
                 const auto &target =
-                    std::get<NativeWorkflowOperation>(*entry.step).target;
+                    entry_target(*entry.step);
                 const std::array<std::optional<AxisRange>, 3> ranges{
                     target.t, target.c, target.z};
                 for (std::size_t i = 0; i < 3; ++i)
@@ -979,7 +1028,7 @@ void NativeWorkflowPanel::show(const DocumentSnapshot &source,
     entry.stop = {shape.t, shape.c, shape.z};
     if (entry.retained_target) {
       const auto &target =
-          std::get<NativeWorkflowOperation>(*entry.step).target;
+          entry_target(*entry.step);
       const std::array<std::optional<AxisRange>, 3> ranges{target.t, target.c,
                                                            target.z};
       for (std::size_t i = 0; i < 3; ++i)
@@ -1286,8 +1335,8 @@ RoiImportBrowseRequest NativeWorkflowPanel::browse_request() const {
             s.browse_route};
   }
   require(s.entries.at(s.selected).enabled &&
-              std::holds_alternative<NativeWorkflowExport>(
-                  *s.entries.at(s.selected).step),
+              (std::holds_alternative<NativeWorkflowExport>(*s.entries.at(s.selected).step) ||
+               std::holds_alternative<NativeWorkflowHistogram>(*s.entries.at(s.selected).step)),
           "Choose an export step");
   return {*s.source, s.generation, s.entries.at(s.selected).path,
           std::uint64_t(s.selected)};
@@ -1608,7 +1657,7 @@ void NativeWorkflowPanel::draw(
   auto &entry = s.entries.at(s.selected);
   {
     const auto operation=std::get_if<NativeWorkflowOperation>(entry.step.get());
-    const bool rgb_step=operation && operation->operation=="rgb_dataset";
+    const bool rgb_step=(operation && operation->operation=="rgb_dataset") || std::holds_alternative<NativeWorkflowHistogram>(*entry.step);
     const bool parameter_step = bool(operation);
     const bool prefix_confirmed =
         std::all_of(s.entries.begin(), s.entries.begin() + s.selected,
@@ -1675,6 +1724,47 @@ void NativeWorkflowPanel::draw(
           "Confirm earlier steps before preparing this step's private input.");
   }
   bool changed = false;
+  auto draw_target = [&] {
+    const char *scopes[]{"Current T/C/Z plane", "All Z at current T/C",
+                         "T/C/Z ranges", "Explicit T/C/Z positions"};
+    const char *rois[]{"Whole plane", "Active selection", "Positioned ROIs"};
+    changed |= s.combo("Process", entry.scope, scopes, 4, "scope");
+    changed |= s.combo("Region", entry.roi, rois, 3, "region");
+    if (entry.scope == 2) {
+      const char *axes[]{"T", "C", "Z"};
+      for (int i = 0; i < 3; ++i) {
+        ImGui::PushID(i);
+        ImGui::Text("%s range [start, stop), zero-based", axes[i]);
+        changed |= ImGui::InputInt("Start", &entry.first[i], 0, 0);
+        s.observe("start." + std::to_string(i));
+        ImGui::SameLine();
+        changed |= ImGui::InputInt("Stop", &entry.stop[i], 0, 0);
+        s.observe("stop." + std::to_string(i));
+        changed |= ImGui::InputInt("Step", &entry.stride[i], 0, 0);
+        s.observe("stride." + std::to_string(i));
+        ImGui::PopID();
+      }
+    }
+    if (entry.scope == 3) {
+      ImGui::InputInt3("Position T/C/Z (zero-based)", entry.position.data());
+      s.observe("position");
+      if (ImGui::Button("Add position")) {
+        entry.positions.push_back(
+            {entry.position[0], entry.position[1], entry.position[2]});
+        changed = true;
+      }
+      s.observe("add_position");
+      ImGui::SameLine();
+      if (ImGui::Button("Clear positions")) {
+        entry.positions.clear();
+        changed = true;
+      }
+      s.observe("clear_positions");
+      ImGui::Text("%zu ordered positions", entry.positions.size());
+    }
+    if (changed)
+      entry.retained_target = false;
+  };
   if (const auto op = std::get_if<NativeWorkflowOperation>(entry.step.get())) {
     ImGui::TextWrapped(
         "Processing intent: %s. Edit parameters above or retain them; choose "
@@ -1715,45 +1805,7 @@ void NativeWorkflowPanel::draw(
       ImGui::Text("Complete ranges T[0,%d), C[0,%d), Z[0,%d)",
                   entry.stop[0], entry.stop[1], entry.stop[2]);
     } else {
-    const char *scopes[]{"Current T/C/Z plane", "All Z at current T/C",
-                         "T/C/Z ranges", "Explicit T/C/Z positions"};
-    const char *rois[]{"Whole plane", "Active selection", "Positioned ROIs"};
-    changed |= s.combo("Process", entry.scope, scopes, 4, "scope");
-    changed |= s.combo("Region", entry.roi, rois, 3, "region");
-    if (entry.scope == 2) {
-      const char *axes[]{"T", "C", "Z"};
-      for (int i = 0; i < 3; ++i) {
-        ImGui::PushID(i);
-        ImGui::Text("%s range [start, stop), zero-based", axes[i]);
-        changed |= ImGui::InputInt("Start", &entry.first[i], 0, 0);
-        s.observe("start." + std::to_string(i));
-        ImGui::SameLine();
-        changed |= ImGui::InputInt("Stop", &entry.stop[i], 0, 0);
-        s.observe("stop." + std::to_string(i));
-        changed |= ImGui::InputInt("Step", &entry.stride[i], 0, 0);
-        s.observe("stride." + std::to_string(i));
-        ImGui::PopID();
-      }
-    }
-    if (entry.scope == 3) {
-      ImGui::InputInt3("Position T/C/Z (zero-based)", entry.position.data());
-      s.observe("position");
-      if (ImGui::Button("Add position")) {
-        entry.positions.push_back(
-            {entry.position[0], entry.position[1], entry.position[2]});
-        changed = true;
-      }
-      s.observe("add_position");
-      ImGui::SameLine();
-      if (ImGui::Button("Clear positions")) {
-        entry.positions.clear();
-        changed = true;
-      }
-      s.observe("clear_positions");
-      ImGui::Text("%zu ordered positions", entry.positions.size());
-    }
-    if (changed)
-      entry.retained_target = false;
+    draw_target();
     }
     ImGui::Text("Execution: %s",
                 op->target.mode == ExecutionMode::Volume ? "Volume" : "Planes");
@@ -1765,6 +1817,20 @@ void NativeWorkflowPanel::draw(
                                   : "Use this image's calibration",
                           &entry.calibration);
       s.observe("calibration");
+    }
+  } else if (const auto hist=std::get_if<NativeWorkflowHistogram>(entry.step.get())) {
+    ImGui::TextWrapped("Histogram analysis uses the preceding step's image. The recorded bin/range/log choices below are retained; choose destination planes and ROI geometry.");
+    const auto options=metadataJson(hist->original->at("options"));
+    ImGui::Text("Bins: %d; %s",options.at("bins").get<int>(),options.at("binning")=="uniform_range"?"Explicit raw range":"Raw processor values");
+    if(!options.at("range").is_null())ImGui::Text("Range: %.17g .. %.17g",options.at("range")[0].get<double>(),options.at("range")[1].get<double>());
+    draw_target();
+    changed|=ImGui::InputText("CSV token",&entry.output_token);s.observe("output_token");
+    if(s.batch || s.draft_mode)ImGui::TextWrapped("Use a unique filename token, including .csv. Each selected document gets its own file.");
+    else {
+      changed|=ImGui::InputText("Optional CSV file",&entry.path);s.observe("path");
+      ImGui::SameLine();if(ImGui::Button("Browse..."))browse();s.observe("browse");
+      ImGui::TextWrapped("Leave the CSV path empty to keep results in this window and append statistics to Results on Apply. CSV files publish before the image edit; existing files are never overwritten.");
+      if(ImGui::Checkbox("Accept per-file publication",&s.file_consent))s.invalidate();s.observe("file_consent");
     }
   } else if (const auto imp =
                  std::get_if<NativeWorkflowImport>(entry.step.get())) {
@@ -1978,6 +2044,7 @@ void NativeWorkflowPanel::draw(
         s.invalidate();
         std::vector<std::shared_ptr<const NativeWorkflowStep>> steps;
         std::vector<std::filesystem::path> paths;
+        std::vector<std::pair<std::size_t,std::filesystem::path>> histogram_paths;
         for (std::size_t i = 0; i < s.entries.size(); ++i) {
           const auto &e = s.entries[i];
           if (const auto op =
@@ -1996,12 +2063,21 @@ void NativeWorkflowPanel::draw(
             }
             auto path = destination(e.path, ex->zip);
             for (const auto &prior : paths)
-              require(!alias(prior, path),
-                      "Workflow outputs address the same file");
+              require(!alias(prior, path), "Workflow outputs address the same file");
+            for(const auto &prior:histogram_paths)
+              require(!alias(prior.second,path),"Workflow outputs address the same file");
             paths.push_back(path);
             steps.push_back(effective(e));
-          } else
+          } else if(const auto hist=std::get_if<NativeWorkflowHistogram>(e.step.get())) {
+            if(e.enabled && !s.batch && !e.path.empty()) {
+              require(s.file_consent,"Confirm per-file publication");
+              auto path=destination(e.path,false,true);
+              for(const auto &prior:paths)require(!alias(prior,path),"Workflow outputs address the same file");
+              for(const auto &prior:histogram_paths)require(!alias(prior.second,path),"Workflow outputs address the same file");
+              histogram_paths.emplace_back(i,std::move(path));
+            }
             steps.push_back(effective(e));
+          } else steps.push_back(effective(e));
         }
         std::optional<Json> operation_record;
         std::size_t record_bytes = 0;
@@ -2059,7 +2135,7 @@ void NativeWorkflowPanel::draw(
         auto epoch = s.cancel_epoch.load();
         auto epoch_source = &s.cancel_epoch;
         auto job = s.scheduler->submit(
-            [source, steps = std::move(steps), paths = std::move(paths), cell,
+            [source, steps = std::move(steps), paths = std::move(paths), histogram_paths=std::move(histogram_paths), cell,
              cap, epoch, epoch_source, batch, inputs, directory, batch_options,
              progress, operation_record = std::move(operation_record),
              record_bytes](const JobContext &context) mutable {
@@ -2094,7 +2170,7 @@ void NativeWorkflowPanel::draw(
               ready->cancel_epoch = epoch;
               require(ready->plan->outputs().size() == paths.size(),
                       "Workflow output count mismatch");
-              ready->files.reserve(paths.size());
+              ready->files.reserve(paths.size()+histogram_paths.size());
               for (std::size_t i = 0; i < paths.size(); ++i) {
                 context.checkpoint();
                 const auto &bytes = ready->plan->outputs()[i].value.data();
@@ -2102,6 +2178,15 @@ void NativeWorkflowPanel::draw(
                                                         bytes.size(), control);
                 ready->files.push_back(
                     {paths[i].u8string(), std::move(staged), false});
+              }
+              for(const auto &[index,path]:histogram_paths) {
+                context.checkpoint();
+                const auto &analyses=ready->plan->histograms();
+                const auto found=std::find_if(analyses.begin(),analyses.end(),[&](const auto &out){return out.step_index==index;});
+                require(found!=analyses.end(),"Missing workflow histogram output");
+                const auto csv=target_histogram_csv(found->value);
+                auto staged=detail::stage_atomic_file(path,reinterpret_cast<const unsigned char *>(csv.data()),csv.size(),control);
+                ready->files.push_back({path.u8string(),std::move(staged),false});
               }
               context.checkpoint();
               *cell = std::move(ready);
@@ -2163,7 +2248,7 @@ void NativeWorkflowPanel::draw(
     else {
       ImGui::Text("Prepared %zu steps, %zu outputs; admission %zu bytes",
                   s.ready->plan->completed_steps(),
-                  s.ready->plan->outputs().size(),
+                  s.ready->plan->outputs().size()+s.ready->plan->histograms().size(),
                   s.ready->plan->retained_bytes());
     }
     if (s.ready->preview_only)
@@ -2221,6 +2306,7 @@ void NativeWorkflowPanel::draw(
       ImGui::Text("Input %zu: %s", i + 1, batch_state(s.progress->states[i]));
   }
   ImGui::EndDisabled();
+  if(s.ready && s.ready->plan)for(const auto &out:s.ready->plan->histograms())draw_histogram(out,[&](const auto &key){s.observe(key);});
   if (!s.error.empty())
     ImGui::TextWrapped("%s", s.error.c_str());
   if (!s.message.empty())
@@ -2307,11 +2393,14 @@ Json NativeWorkflowPanel::diagnostics() const {
                        {"enabled", e.enabled},
                        {"confirmed", e.confirmed},
                        {"path", e.path},
+                       {"output_token",e.output_token},
                        {"authored", e.authored},
                        {"choice_bytes", e.choice_bytes}});
   if (s.ready)
     for (const auto &f : s.ready->files)
       files.push_back({{"path", f.path}, {"published", f.published}});
+  Json histograms=Json::array();
+  if(s.ready && s.ready->plan)for(const auto &out:s.ready->plan->histograms())histograms.push_back(histogram_summary(out));
   Json inputs = Json::array();
   for (const auto &input : s.inputs)
     inputs.push_back(
@@ -2374,6 +2463,7 @@ Json NativeWorkflowPanel::diagnostics() const {
           {"selected", s.selected},
           {"entries", entries},
           {"files", files},
+          {"histograms",histograms},
           {"controls", s.controls},
           {"window", s.bounds},
           {"error", s.error},

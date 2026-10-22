@@ -1196,6 +1196,15 @@ Histogram defaults, including independent basic/scientific ROI choices; a new
 source starts its own Current grid. Preference save failures preserve the prior
 result. See [usage and remaining scope](HISTOGRAM.md).
 
+Recorded histograms and V4 programs also open the shared workflow Run/Batch
+review. Review each analysis target and CSV token, prepare plots/statistics on
+workers, and Apply summary rows to Results. Run CSV paths are optional and use
+the shared save browser; Batch emits per-document CSVs. Preview and canceled or
+stale work leave live data/results/files unchanged. Numeric histogram choice
+authoring within workflows remains open; the original bin/range/log choices are
+retained. See the workflow section of the usage page above.
+
+
 ## Manual threshold display
 
 Choose **Process > Threshold display...** in either launch mode. The panel

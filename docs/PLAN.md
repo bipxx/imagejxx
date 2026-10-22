@@ -1,5 +1,23 @@
 # ImageJ and Fiji gap closure plan
 
+**Histogram workflow UI checkpoint, 2026-10-21 (work in progress):**
+Both ImGui launchers now review captured histogram entries/V4 programs in Run
+and native Batch. Plane/ROI targets, enabled steps and CSV tokens are editable;
+workers prepare plots, statistics and exact clipped bin tables. Guarded Apply
+appends summary Results and optionally publishes Run CSVs through the save
+browser. Batch emits per-document CSVs. Preview, queued cancellation, source
+changes and publication conflicts preserve the expected live state/file policy.
+Windows/Linux each pass 504 selected Python checks (18 new) and four native
+suites. Independent readers verify 44 reports / 19,590 input frames, including
+36 new reports / 2,227 frames. Verified cleanup removes 1,907,508,259 scratch
+bytes while retaining final products and archived evidence. Registration appends
+nine cases to 1,278 and preserves prior order. See [usage](HISTOGRAM.md) and
+[the scoped receipt](parity/reviews/p10q-histogram-workflow-ui001.json).
+Workflow histogram numeric choice authoring, batch unbinned statistics review/
+export, virtual sources, remaining domains/conventions and full qualification
+remain open. All99 stays 47 in
+progress / 52 open / 0 complete; the unchanged Auto Contrast gate remains open.
+
 **Histogram workflow checkpoint, 2026-10-21 (work in progress):**
 C++/Python native workflows now retain ordered, read-only histogram results and
 portable V4 intent. Session batches emit histogram CSVs per selected document;

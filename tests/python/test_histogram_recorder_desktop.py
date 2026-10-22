@@ -82,9 +82,9 @@ def test_record_and_defaults_failure_preserves_previous_result(tmp_path):
     assert workflow(e)==before and e.settings()==saved and counts(e,tmp_path/'after.csv')==old
 
 @pytest.mark.parametrize('operation',['run_workflow','batch','native_batch'])
-def test_run_all_refuses_captured_histogram_without_implicit_retargeting(operation,tmp_path):
+def test_run_all_opens_histogram_review_without_processing(operation,tmp_path):
     e,owner,reads=setup(tmp_path);action(e,'calculate_histogram');before=workflow(e);n=reads.counts().plane_reads
-    with pytest.raises(ValueError,match='individually'):action(e,operation)
+    action(e,operation)
     assert workflow(e)==before and reads.counts().plane_reads==n and owner.undo_steps==1
 
 def test_recording_off_and_programmatic_explicit_rebind(tmp_path):

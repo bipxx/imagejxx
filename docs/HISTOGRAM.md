@@ -307,12 +307,12 @@ source data or the panel draft refuse stale publication. Panel snapshots and
 record captures use shared immutable ownership for a non-throwing final handoff
 on Windows and Linux.
 
-Captured histogram entries currently replay individually. Run all/Batch refuse
-these entries rather than silently treating them as legacy plot operations.
+Captured histogram entries support individual replay and the reviewed native
+Run/Batch path described below; opening review performs no processing.
 The internal panel callback tests use virtual providers directly; the desktop
 Window adapter still refuses virtual datasets.
-The native workflow API below supports histogram steps; desktop workflow review
-and complete ImageJ/Fiji domains/conventions and qualification remain open.
+The native API and shared workflow review below support histogram steps;
+complete ImageJ/Fiji domains/conventions and qualification remain open.
 
 ## Native background histogram jobs
 
@@ -370,10 +370,10 @@ be read from the cleaned native cell after completion.
 
 Source/cache storage, opaque provider and publication internals, allocator and
 scheduler container overhead, frontend argument/getter/result copies, CSV text
-and total process RSS remain external to these declared reservations. This is
-native job infrastructure now drives both ImGui histogram panels as described
+and total process RSS remain external to these declared reservations. This
+native job infrastructure drives both ImGui histogram panels as described
 below. Native workflow execution and session batching are described next; the
-desktop workflow review remains separate work.
+desktop workflow review is described in that section.
 
 
 ## Background calculation in both desktop launchers
@@ -475,9 +475,40 @@ record/result and CSV formatting/copy scratch (512 bytes per bin plus fixed
 allowance). Source/provider caches, allocator overhead, frontend copies and total
 process RSS remain external. No new scalar/color/calibration domains are admitted.
 
-The ImGui workflow review cannot yet review histogram analysis outputs. Run
-all/Batch still refuses recorded histogram entries, and loading a V4 histogram
-program into that review refuses explicitly. Individual desktop replay and the
-native C++/Python workflow/batch APIs remain available. The next integration must
-add target review, output display/CSV publication and creator-thread completion
-before removing that refusal.
+Both ImGui launchers review recorded histogram entries and V4 programs through
+**Run all** and native **Batch**. Each enabled histogram has independent plane,
+range/stride/explicit-position and whole/active/positioned ROI choices, plus an
+editable unique CSV token. The original numeric bin/range/log capture is retained;
+editing numeric histogram choices inside a workflow remains separate work.
+
+Confirm every step, then use **Prepare image preview** to inspect each histogram
+plot and statistics alongside the prepared image without writing files or Results.
+**Prepare complete workflow** runs the ordered analysis/edit steps on workers and
+stages selected outputs. For Run, leave **Optional CSV file** empty for analysis
+without file output, or choose a new `.csv` path with the field or Browse and
+accept per-file publication. Batch writes a CSV per selected document using the
+reviewed token. Duplicate/invalid tokens, unsupported stages and invalid targets
+refuse before processing reads. Invalid/existing output paths refuse publication.
+
+**Apply complete workflow** appends one summary row per enabled histogram to
+Results on the creator thread, after revalidating the live source and reserving
+all output rows. Rows include the step/name, finite count, raw extrema, mean,
+population SD, sum, NaN and explicit-range outlier counts. Bin plots, a clipped table of exact per-bin counts/edges,
+and unbinned statistics remain inspectable in the review, including after Apply. A mixed workflow has
+one pixel undo entry; analysis-only Apply creates none. Undoing pixel edits does
+not remove published analysis rows or files. Running a recorder table does not
+duplicate its entries; use the existing edited-program controls to retain target
+or token changes as a portable V4 program.
+
+Preview, queued cancellation, source changes and closure publish no results or
+files. Changing workflow context or processing choices invalidates prepared work.
+Optional Run CSVs and annotation exports publish individually before the guarded
+image edit. If a later file loses a publication race, earlier files remain listed,
+the foreign file is preserved, and image/history/Results remain unchanged. Batch
+retains its existing per-input partial-publication policy. Full upstream/source,
+resource and platform qualification, desktop virtual-source adaptation and the
+remaining histogram domains/conventions are still open.
+
+Per-input batch unbinned statistics review/export is still open; current batch
+histogram products contain bin counts/edges, while existing session tables are
+preserved. Run displays and publishes the unbinned summary rows described above.

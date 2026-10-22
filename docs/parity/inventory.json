@@ -2788,7 +2788,8 @@
           "docs/parity/reviews/p10m-histogram-recorder001.json",
           "docs/parity/reviews/p10n-histogram-job001.json",
           "docs/parity/reviews/p10o-histogram-async001.json",
-          "docs/parity/reviews/p10p-histogram-workflow001.json"
+          "docs/parity/reviews/p10p-histogram-workflow001.json",
+          "docs/parity/reviews/p10q-histogram-workflow-ui001.json"
         ],
         "implementation": [
           "include/imagejxx/auto_threshold_stack.hpp",
@@ -2810,7 +2811,9 @@
           "src/desktop/histogram_recorder_ui_probe.cpp",
           "include/imagejxx/histogram_job.hpp",
           "src/native/histogram_job.cpp",
-          "src/desktop/histogram_async_ui_probe.cpp"
+          "src/desktop/histogram_async_ui_probe.cpp",
+          "src/desktop/native_workflow_panel.cpp",
+          "src/desktop/histogram_workflow_ui_probe.cpp"
         ],
         "tests": [
           "tests/python/test_scientific_threshold_target.py",
@@ -2837,7 +2840,9 @@
           "tests/python/test_histogram_async_desktop.py",
           "tests/python/test_histogram_async_ui.py",
           "tests/native/test_native_workflow.cpp",
-          "tests/python/test_histogram_workflow.py"
+          "tests/python/test_histogram_workflow.py",
+          "tests/python/test_histogram_workflow_ui.py",
+          "tests/python/test_native_workflow_order.py"
         ]
       },
       "id": "G069",
@@ -2847,7 +2852,7 @@
       ],
       "name": "Histogram",
       "remaining": [
-        "Shared histogram pooling, controls/statistics/CSV/defaults, individual recording/replay/rebind, native worker-driven desktop progress/cancel/publication and native ordered workflow/session batch CSV APIs are functional. Finish desktop workflow target/output review and creator-thread publication, virtual-source adaptation, unsupported legacy/calibrated/color/other numeric domains and upstream statistical/presentation/default conventions, plus complete independent source/reference/resource/platform qualification."
+        "Standalone/Run histogram targets, plots/statistics/exact-bin tables, Results and CSV/defaults, individual recording/replay/rebind and worker progress/cancel/publication are functional; Batch reviews targets/tokens and emits per-document bin CSVs. Finish workflow histogram numeric choice authoring, per-input batch unbinned statistics review/export, desktop virtual-source adaptation, unsupported legacy/calibrated/color/other numeric domains and upstream statistical/presentation/default conventions, plus complete independent source/reference/resource/platform qualification."
       ],
       "required_work": "Stack/channel targeting, range/bin/log controls, statistics display and numerical export",
       "status": "in_progress",
@@ -2862,7 +2867,8 @@
         "p10m.histogram-recorder.functional.001",
         "p10n.histogram-job.functional.001",
         "p10o.histogram-async.functional.001",
-        "p10p.histogram-workflow.functional.001"
+        "p10p.histogram-workflow.functional.001",
+        "p10q.histogram-workflow-ui.functional.001"
       ]
     },
     {
@@ -180976,6 +180982,29 @@
         "total": 505
       },
       "scope": "505 selected Python checks per OS, including 30 new histogram workflow cases; four native executable suites per OS and fresh installed SDK consumers. Both C++/Python desktop targets build; installed headless Python editor explicitly refuses V4 histogram review without source/history/workflow/preferences effects. Three pre-existing desktop input tests are deselected from this native API run; no new rendered/input or full source/reference/resource/platform acceptance."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-21",
+      "id": "p10q.histogram-workflow-ui.functional.001",
+      "identity": {
+        "qualification": {
+          "bytes": 12469,
+          "path": "docs/parity/reviews/p10q-histogram-workflow-ui001.json",
+          "sha256": "e4c527fd6a52e2ab74cda4b510c3ecad85deefa4a23d5b72b37baf5ffcc33276"
+        }
+      },
+      "platform": "Windows/Linux standalone and Python shared ImGui workflows",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 504,
+        "report": "build/p10q-histogram-workflow-ui001/windows-python004/pytest.xml",
+        "skipped": 0,
+        "total": 504
+      },
+      "scope": "504 selected Python checks per OS including 18 new input checks; four native executable suites per OS. Independent readers verify 44 reports / 19590 raw input frames, including 36 new histogram workflow reports / 2227 frames. Both launchers cover edited range targets, captured entries, read-only Apply, disabled steps, preview, staged CSV conflict, stale source, queued cancellation and all-document native session batch. Run exercises CSV Browse; Batch edits its output token; read-only Apply expands the exact-bin table after publication. Existing Run/Batch physical reviews and histogram recorder/async/native APIs are rerun. No whole ImageJ/Fiji, original-source/reference, real GPU, OS desktop, wall-time or resource acceptance."
     }
   ]
 }

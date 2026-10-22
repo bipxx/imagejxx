@@ -3747,7 +3747,7 @@ struct Window::Impl {
     const auto request=nativeWorkflowPanel.browse_request();
     auto current=[this]() -> std::optional<DocumentSnapshot>{if(owner.documents_.empty()||workflowOtherBusy()||nativeWorkflowPanel.working())return {};return owner.nativeSnapshot();};
     file("Choose workflow output",true,[this,request,current](std::string path){nativeWorkflowPanel.path(request,current(),std::move(path),browser.overwrite);},request.path);
-    browser.prompt="Choose a new output ROI (.roi) or ZIP (.zip) file";browser.extensions={".roi",".zip"};
+    browser.prompt="Choose a new CSV (.csv), ROI (.roi) or ZIP (.zip) file";browser.extensions={".csv",".roi",".zip"};
     if(request.route==UINT64_MAX){browser.directory=true;browser.save=false;browser.extensions.clear();browser.prompt="Choose an existing batch output folder";}
     else if(request.route==UINT64_MAX-1){browser.save=false;browser.extensions={".ijx"};browser.prompt="Choose an input native session (.ijx)";}
     else if(request.route==UINT64_MAX-2){browser.extensions={".json"};browser.prompt="Save native Batch setup (.json)";}
@@ -5686,7 +5686,6 @@ void Window::clearError() {
 }
 void Window::action(const std::string &name, const Json &p) {
   checkThread();
-  if((name=="run_workflow"||name=="batch"||name=="native_batch")&&workflow.is_array())for(const auto &step:workflow)if(get(step,"schema")=="imagejxx.histogram-command")throw std::invalid_argument("Replay or rebind histogram entries individually before running other workflow steps");
   if(name=="show_histogram") {
     if(!p.is_object() || !p.empty())throw std::invalid_argument("Show Histogram accepts no parameters");
     if(busy())throw std::invalid_argument("Wait for the current edit");
@@ -11718,6 +11717,16 @@ void Window::Impl::draw() {
         admit_display_annotation_visuals(planar_display_annotations(preview.data()),cap);
         if(!owner.workflow.is_array()||!owner.results.is_array())throw std::invalid_argument("Workflow and results must remain arrays");
         OutputPublication outputs(owner.results,owner.workflow,{},"",nativeWorkflowPanel.recorded_operation());
+        if(!plan.histograms().empty()) {
+          outputs.rows=Json::array();
+          for(const auto &out:plan.histograms()) {
+            const auto &v=out.value;auto number=[](const std::optional<double> &n){return n?Json(*n):Json(nullptr);};
+            outputs.rows.push_back({{"Label",out.name},{"WorkflowStep",out.step_index+1},{"Count",v.finite_count},
+              {"Mean",number(v.mean)},{"StdDev",number(v.stddev)},{"Min",number(v.minimum)},{"Max",number(v.maximum)},
+              {"Sum",v.sum},{"NaN",v.nan_count},{"Underflow",v.underflow_count},{"Overflow",v.overflow_count}});
+          }
+          outputs.resultArray=OutputPublication::reserve(owner.results,outputs.rows.size(),"Results");
+        }
         publishFiles();owner.controller_->commit(edit);outputs.publish();
       },[this](const DocumentSnapshot &source,const std::function<void()> &publishFiles){
         if(workflowOtherBusy()||owner.controller_->active_document_id()!=source.id())throw std::invalid_argument("Batch publication requires its idle active anchor");

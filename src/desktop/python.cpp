@@ -1,4 +1,5 @@
 #include "shadow_ui_probe.hpp"
+#include "histogram_workflow_ui_probe.hpp"
 #include "animation_ui_probe.hpp"
 #include "saved_roi_budget_ui_probe.hpp"
 #include "rounded_legacy_ui_probe.hpp"
@@ -262,6 +263,9 @@ PYBIND11_MODULE(_desktop, m) {
              py::gil_scoped_release release;
              return scientificProcessUiCase(window, "imgui_python", directory).dump();
            })
+      .def("_histogram_workflow_ui_case",[](Window &window,const std::string &id,const std::string &directory){
+        py::gil_scoped_release release;return histogramWorkflowUiCase(window,id,"imgui_python",directory).dump();
+      })
       .def("_native_workflow_ui_case",
            [](Window &window, const std::string &directory) {
              py::gil_scoped_release release;

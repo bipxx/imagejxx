@@ -255,6 +255,8 @@ def cases():
     for mode in ["cancel","draft","source","close","replay","targets"]:
         case="histogram-async-"+mode
         yield "histogram-async",case,["--animation-ui-case",case]
+    for mode in ["run","captured","readonly","disabled","preview","conflict","stale","cancel","batch"]:
+        yield "histogram-workflow",mode,["--histogram-workflow-ui-case",mode]
 
 
 def reader_environment(output):
@@ -288,6 +290,7 @@ def reader_environment(output):
         "IMAGEJXX_TARGET_HISTOGRAM_CPP_ROOT": reports / "target-histogram",
         "IMAGEJXX_HISTOGRAM_RECORDER_CPP_ROOT": reports / "histogram-recorder",
         "IMAGEJXX_HISTOGRAM_ASYNC_CPP_ROOT": reports / "histogram-async",
+        "IMAGEJXX_HISTOGRAM_WORKFLOW_CPP_ROOT": reports / "histogram-workflow",
         "IMAGEJXX_HISTOGRAM_CPP_ROOT": reports / "histogram",
         "IMAGEJXX_SCIENTIFIC_THRESHOLD_TARGET_CPP_ROOT": reports / "scientific-threshold-target",
         "IMAGEJXX_POOLED_DISPLAY_CPP_ROOT": reports / "pooled-display",
