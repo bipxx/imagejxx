@@ -56,6 +56,7 @@ int main() {
   try {
     auto source = std::make_shared<CountingSource>();
     Dataset dataset(source);
+    check(!dataset.has_eager_planes() && !dataset.observe_reads(DatasetReadObserver{}).has_eager_planes(),"Virtual/observed discovery must stay lazy");
     check(source->reads == 0, "Metadata inspection must not load pixels");
     check(dataset.shape().pixel_count() == 240, "Explicit axis sizes");
     auto xy = dataset.extract_plane(Plane::XY, 2, 1, 1);
@@ -117,6 +118,7 @@ int main() {
     Stack frames{Image(5, 4), Image(5, 4)};
     frames[1].at(3, 2) = 42;
     auto eager = Dataset::from_stack(std::move(frames));
+    check(eager.has_eager_planes() && eager.observe_reads(DatasetReadObserver{}).has_eager_planes(),"Eager/observed storage discovery");
     auto old = eager.plane({0, 0, 1});
     Image replacement(5, 4);
     replacement.at(3, 2) = 77;

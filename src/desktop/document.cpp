@@ -269,7 +269,7 @@ State initialState(SharedPlanes frames, std::string title) {
 Json nativeMetadata(const DocumentData &data);
 bool scientificData(const DocumentData &data) {
   const auto shape = data.dataset.shape();
-  return shape.t > 1 || shape.c > 1 ||
+  return !data.dataset.has_eager_planes() || shape.t > 1 || shape.c > 1 ||
          std::any_of(data.rois.begin(), data.rois.end(),
                      [](const Roi &roi) { return roi.t || roi.c; });
 }
@@ -353,14 +353,14 @@ DisplayState stateDisplay(const State &state, DisplayState display,
   return display;
 }
 void validateDesktop(const DocumentData &data, const DisplayState &display,
-                     bool eagerAdmitted = false) {
+                     bool eagerAdmitted = false, bool allowVirtual=false) {
   const auto shape = data.dataset.shape();
   manual_threshold_state(display, shape);
   recognized_channel_display(display, data.dataset);
-  if (!eagerAdmitted && !data.dataset.shared_planes())
+  if (!allowVirtual && !eagerAdmitted && !data.dataset.shared_planes())
     throw std::invalid_argument(
         "Desktop virtual sources are not supported yet");
-  if ((shape.t > 1 || shape.c > 1) && data.spectrum)
+  if ((!data.dataset.has_eager_planes() || shape.t > 1 || shape.c > 1) && data.spectrum)
     throw std::invalid_argument(
         "Desktop scientific Fourier positions are not supported yet");
   for (const auto &[key, value] : data.metadata.extensions) {
@@ -465,13 +465,14 @@ Document::Document(SharedPlanes frames, std::string title, Json metadata)
         return initial;
       }()) {}
 Document::Document(State initial) : Document(makeOwner(std::move(initial))) {}
-Document::Document(std::shared_ptr<imagejxx::Document> document)
+Document::Document(std::shared_ptr<imagejxx::Document> document, bool allowVirtual, std::size_t maxViewBytes)
     : id(document ? document->id
                   : throw std::invalid_argument("Document owner is required")),
-      native_(std::move(document)) {
+      native_(std::move(document)), maxViewBytes_(maxViewBytes) {
+  if(!maxViewBytes_)throw std::invalid_argument("Virtual view byte limit must be positive");
   const auto thread = std::this_thread::get_id();
   validation_ = native_->constrain(
-      [thread, admitted = std::optional<Dataset>{}](
+      [thread, allowVirtual, admitted = std::optional<Dataset>{}](
           const DocumentData &data, const DisplayState &display) mutable {
         if (std::this_thread::get_id() != thread)
           throw std::runtime_error(
@@ -481,7 +482,7 @@ Document::Document(std::shared_ptr<imagejxx::Document> document)
         // repeatedly copy T*C*Z shared pointers. No image samples are read.
         const bool sameSource =
             admitted && admitted->shares_pixels(data.dataset);
-        validateDesktop(data, display, sameSource);
+        validateDesktop(data, display, sameSource, allowVirtual);
         // Admission caches pixel identity, not a running/READY job lease.
         // Staged publication can detach that lease without changing pixels.
         if (!sameSource)
@@ -489,7 +490,7 @@ Document::Document(std::shared_ptr<imagejxx::Document> document)
       });
 }
 Document::Document(const DocumentSnapshot &source, WorkerTag)
-    : Document(std::make_shared<imagejxx::Document>(source)) {
+    : Document(std::make_shared<imagejxx::Document>(source),!source.data().dataset.has_eager_planes()) {
   validation_.reset();
   origin_ = source;
 }
@@ -506,17 +507,14 @@ void Document::refresh() const {
                           current.display().c != cached_->display().c;
   if (dataChanged) {
     auto planes = current.data().dataset.shared_planes();
-    if (!planes)
-      throw std::invalid_argument(
-          "Desktop virtual sources are not supported yet");
-    auto frames = selectedPlanes(*planes, current.data().dataset.shape(),
-                                 current.display());
+    auto frames = planes ? selectedPlanes(*planes, current.data().dataset.shape(),
+                                 current.display()) : SharedPlanes{};
     auto metadata = nativeMetadata(current.data());
     cachedPlanes_ = std::move(planes);
     cachedState_.frames = std::move(frames);
     cachedState_.metadata = std::move(metadata);
     cachedState_.spectrum = current.data().spectrum;
-  } else if (axesChanged)
+  } else if (axesChanged && cachedPlanes_)
     cachedState_.frames = selectedPlanes(*cachedPlanes_,
                                         current.data().dataset.shape(),
                                         current.display());
@@ -624,7 +622,30 @@ std::size_t Document::historyPixelBudget() const {
 std::size_t Document::undoSteps() const { return native_->undo_steps(); }
 std::size_t Document::redoSteps() const { return native_->redo_steps(); }
 int Document::slice() const { return view().crosshair[2]; }
-const Image &Document::frame() const { return state().frames[slice()]; }
+void Document::admitView(bool orthogonal) const {
+  const auto &dataset=nativeSnapshot().data().dataset;
+  if(dataset.has_eager_planes())return;
+  const auto s=dataset.shape();s.validate();
+  auto fits=[&](int w,int h){
+    std::size_t left=maxViewBytes_/sizeof(double);
+    for(int extent:{s.s,w,h}){if(std::size_t(extent)>left)throw std::invalid_argument("Virtual decoded view buffer exceeds byte limit");left/=std::size_t(extent);}
+  };
+  // Even regional providers may use the default full-XY fallback.
+  fits(s.x,s.y);
+  if(orthogonal){fits(s.x,s.z);fits(s.y,s.z);}
+}
+std::shared_ptr<const Image> Document::sharedFrame() const {
+  const auto snapshot=nativeSnapshot();const auto &dataset=snapshot.data().dataset;
+  const PlanePosition position{snapshot.display().t,snapshot.display().c,snapshot.display().crosshair[2]};
+  if(dataset.has_eager_planes()){auto pixels=dataset.plane(position);frameSource_.reset();framePixels_.reset();return pixels;}
+  admitView();
+  if(framePixels_ && frameSource_ && frameSource_->shares_pixels(dataset) &&
+     framePosition_.t==position.t && framePosition_.c==position.c && framePosition_.z==position.z)return framePixels_;
+  auto pixels=dataset.plane(position); // Validate before replacing a useful cache.
+  frameSource_=dataset;framePosition_=position;framePixels_=std::move(pixels);
+  return framePixels_;
+}
+const Image &Document::frame() const { return *sharedFrame(); }
 std::string Document::title() const {
   return nativeSnapshot().data().metadata.title;
 }
@@ -733,6 +754,7 @@ SpatialCalibration Document::spatialCalibration() const {
   return nativeSnapshot().data().dataset.calibration();
 }
 Image Document::plane(Plane orientation, int coordinate) const {
+  admitView(orientation!=Plane::XY);
   const auto snapshot = nativeSnapshot();
   return snapshot.data().dataset.extract_plane(
       orientation, coordinate, snapshot.display().t, snapshot.display().c);
@@ -819,6 +841,7 @@ void Document::commitNative(DocumentTransaction &transaction) {
 Document Document::snapshot() const {
   Document copy(nativeSnapshot(), WorkerTag{});
   copy.path = path;
+  copy.maxViewBytes_=maxViewBytes_;
   copy.origin_ =
       origin_ ? origin_ : std::optional<DocumentSnapshot>(nativeSnapshot());
   return copy;

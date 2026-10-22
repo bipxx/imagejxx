@@ -5024,6 +5024,10 @@ void Window::addNativeDocument(std::shared_ptr<imagejxx::Document> document) {
   checkThread();
   addDocument(std::make_shared<Document>(std::move(document)));
 }
+void Window::addVirtualDocument(std::shared_ptr<imagejxx::Document> document,std::size_t maxViewBytes) {
+  checkThread();
+  addDocument(std::make_shared<Document>(std::move(document),true,maxViewBytes));
+}
 std::uint64_t Window::publishZSubset(const ResolvedZSubsetCommand &command) {
   checkThread();
   if (busy()) throw std::invalid_argument("Wait for the current edit");
@@ -5288,20 +5292,20 @@ std::shared_ptr<Document> Window::documentById(std::uint64_t id) const {
 }
 Json Window::documentInfo(std::uint64_t id) const {
   auto d = documentById(id);
-  const auto &f = d->frame();
+  const auto type=d->nativeSnapshot().data().dataset.pixel_type();
   const auto shape = d->shape();
   const auto position = d->position();
   const auto calibration = d->spatialCalibration();
   return {{"id", d->id},
           {"title", d->title()},
-          {"dtype", typeName(f.type)},
+          {"dtype", typeName(type)},
           {"axis_sizes",
            {{"T", shape.t},
             {"C", shape.c},
             {"Z", shape.z},
-            {"Y", f.height},
-            {"X", f.width},
-            {"S", f.channels}}},
+            {"Y", shape.y},
+            {"X", shape.x},
+            {"S", shape.s}}},
           {"slice_index", d->slice()},
           {"current_tcz", {position.t, position.c, position.z}},
           {"scientific_read_only", false},
@@ -8884,7 +8888,7 @@ void Window::Impl::properties() {
     ImGui::TextWrapped("%s%s", d->title().c_str(), d->dirty() ? " *" : "");
     ImGui::Text("%d x %d x %d | %s", f.width, f.height, f.channels,
                 typeName(f.type).c_str());
-    ImGui::Text("Slice %d / %zu", d->slice() + 1, d->state().frames.size());
+    ImGui::Text("Slice %d / %d", d->slice() + 1, d->shape().z);
     if (d->scientific()) {
       const auto position = d->position();
       const auto shape = d->shape();
@@ -9785,6 +9789,7 @@ void Window::Impl::canvas(Pane &pane) {
   const auto toggleMin = ImGui::GetItemRectMin(), toggleMax = ImGui::GetItemRectMax();
   pane.togglePoint = {(toggleMin.x + toggleMax.x) * .5f, (toggleMin.y + toggleMax.y) * .5f};
   if (d->view().orthogonal) {
+    d->admitView(true);
     cancelCreation(pane, "orthogonal_view");
     creationAdmission = "orthogonal_view";
     // Linked-plane inputs can change Z inside draw. Borrow the installed
@@ -9896,7 +9901,7 @@ void Window::Impl::canvas(Pane &pane) {
   // Retain the native plane; refreshing the legacy State cache after that
   // publication may replace its frames vector and invalidate a borrowed frame.
   const auto liveCanvasPixels = previewPixels ? std::shared_ptr<const Image>{}
-      : d->nativeSnapshot().data().dataset.plane(currentPosition);
+      : d->sharedFrame();
   const auto &f = previewPixels ? *previewPixels : *liveCanvasPixels;
   if (captureGaussianReadback())
     pane.ordinaryFrameSource = {
@@ -9940,7 +9945,7 @@ void Window::Impl::canvas(Pane &pane) {
     refreshSelection(true);
   };
   auto available = ImGui::GetContentRegionAvail();
-  available.y -= d->state().frames.size() > 1 ? 36 : 0;
+  available.y -= d->shape().z > 1 ? 36 : 0;
   available.x = std::max(32.f, available.x);
   available.y = std::max(32.f, available.y);
   if (pane.requestOrdinaryFocus)
@@ -10328,10 +10333,10 @@ void Window::Impl::canvas(Pane &pane) {
   const auto oldPan = pane.pan;
   bool creationNavigated = false;
   if (hover && !owner.busy()) {
-    if (io.MouseWheel != 0 && !io.KeyCtrl && d->state().frames.size() > 1) {
+    if (io.MouseWheel != 0 && !io.KeyCtrl && d->shape().z > 1) {
       auto crosshair = d->view().crosshair;
       crosshair[2] = std::clamp(d->slice() + (io.MouseWheel > 0 ? 1 : -1), 0,
-                                int(d->state().frames.size()) - 1);
+                                d->shape().z - 1);
       if (crosshair[2] != d->slice()) {
         if (savedRoiEdit.active()) cancelSavedRoiGeometry("position_changed");
         cancelCreation(pane, "position_changed");
@@ -10526,16 +10531,16 @@ void Window::Impl::canvas(Pane &pane) {
         finish(pane);
     }
   }
-  if (d->state().frames.size() > 1) {
+  if (d->shape().z > 1) {
     int index = d->slice() + 1;
-    const bool sliceChanged = ImGui::SliderInt("Slice", &index, 1, int(d->state().frames.size()));
+    const bool sliceChanged = ImGui::SliderInt("Slice", &index, 1, d->shape().z);
     observeControl("image.slice");
     if (headlessDiagnostics) {
       auto &control = hostControls["image.slice"];
       control["document_id"] = d->id;
       control["value"] = index;
       control["minimum"] = 1;
-      control["maximum"] = d->state().frames.size();
+      control["maximum"] = d->shape().z;
       control["native_slice"] = index - 1;
     }
     if (sliceChanged) {

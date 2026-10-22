@@ -147,7 +147,12 @@ public:
   explicit Document(SharedPlanes frames, std::string title = "Untitled",
                     Json metadata = Json::object());
   explicit Document(State initial);
-  explicit Document(std::shared_ptr<imagejxx::Document> document);
+  // Virtual viewing is explicit: providers must support immutable concurrent
+  // reads on creator and processing threads. The cap bounds individual decoded
+  // view buffers, not provider caches, renderer allocations or process RSS.
+  explicit Document(std::shared_ptr<imagejxx::Document> document,
+                    bool allow_virtual=false,
+                    std::size_t max_view_bytes=128ULL*1024*1024);
   const State &state() const;
   DatasetShape shape() const;
   PlanePosition position() const;
@@ -177,6 +182,8 @@ public:
   std::size_t redoSteps() const;
   int slice() const;
   const Image &frame() const;
+  std::shared_ptr<const Image> sharedFrame() const;
+  void admitView(bool orthogonal=false) const;
   std::string title() const;
   bool dirty() const;
   Json pixelStorage() const;
@@ -227,6 +234,12 @@ private:
   // The complete eager table is copied only when native data changes. T/C
   // navigation derives a Z subset of shared pointers without reading samples.
   mutable std::optional<SharedPlanes> cachedPlanes_;
+  // Virtual State.frames stays empty; metadata projection never acquires pixels.
+  // One current XY plane is retained independently of metadata/display changes.
+  std::size_t maxViewBytes_=128ULL*1024*1024;
+  mutable std::optional<Dataset> frameSource_;
+  mutable PlanePosition framePosition_;
+  mutable std::shared_ptr<const Image> framePixels_;
   mutable State cachedState_;
 };
 using Documents = std::vector<std::shared_ptr<Document>>;

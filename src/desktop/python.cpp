@@ -830,6 +830,11 @@ PYBIND11_MODULE(_desktop, m) {
            py::arg("document_id") = 0)
       .def("add_native_document", &Window::addNativeDocument,
            py::arg("document"))
+      .def("add_virtual_document", [](Window &w,std::shared_ptr<imagejxx::Document> d,py::handle cap){
+             if(!PyLong_Check(cap.ptr()) || PyBool_Check(cap.ptr()))throw py::value_error("Virtual view byte limit requires a positive integer");
+             const auto bytes=PyLong_AsSize_t(cap.ptr());if(PyErr_Occurred())throw py::error_already_set();
+             w.addVirtualDocument(std::move(d),bytes);
+           },py::arg("document"),py::arg("max_view_bytes")=128ULL*1024*1024)
       .def("set_native_display", &Window::setNativeDisplay, py::arg("display"),
            py::arg("document_id") = 0)
       .def("begin_edit", &Window::beginEdit, py::arg("document_id") = 0,

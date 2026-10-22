@@ -46,6 +46,9 @@ public:
   void addDocument(std::shared_ptr<Document> document);
   ShortcutProfile shortcutProfile() const;
   void addNativeDocument(std::shared_ptr<imagejxx::Document> document);
+  // Explicit provider/thread contract; metadata-only attachment and lazy viewing.
+  void addVirtualDocument(std::shared_ptr<imagejxx::Document> document,
+                          std::size_t max_view_bytes=128ULL*1024*1024);
   std::uint64_t publishZSubset(const ResolvedZSubsetCommand &command);
   std::uint64_t exportAxisPlane(const DocumentSnapshot &source,
                                 AxisPlaneExportRequest request);

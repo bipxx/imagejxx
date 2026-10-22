@@ -760,6 +760,13 @@ bool Dataset::shares_pixels(const Dataset &other) const {
   return detail::source_identity(source_.get()) ==
          detail::source_identity(other.source_.get());
 }
+bool Dataset::has_eager_planes() const {
+  if (auto observed=std::dynamic_pointer_cast<const ObservedSource>(source_))
+    return Dataset(observed->source(),calibration_,sample_policy_).has_eager_planes();
+  if (auto guarded=std::dynamic_pointer_cast<const GuardedSource>(source_))
+    return Dataset(guarded->source(),calibration_,sample_policy_).has_eager_planes();
+  return bool(std::dynamic_pointer_cast<const MemorySource>(source_));
+}
 std::optional<SharedPlanes> Dataset::shared_planes() const {
   if (auto observed = std::dynamic_pointer_cast<const ObservedSource>(source_))
     return Dataset(observed->source(), calibration_, sample_policy_).shared_planes();

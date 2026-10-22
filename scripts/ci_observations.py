@@ -263,6 +263,10 @@ def cases():
         yield "histogram-workflow",mode,["--histogram-workflow-ui-case",mode]
 
 
+    for mode in ["virtual_cancel","virtual_source","virtual_replay","virtual_xyz"]:
+        case="histogram-async-"+mode
+        yield "histogram-async",case,["--animation-ui-case",case]
+
 def reader_environment(output):
     reports = Path(output).resolve() / "reports"
     environment = {

@@ -1079,6 +1079,14 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     target_link_libraries(imagejxx_desktop PRIVATE comdlg32 gdi32)
   endif()
   if(BUILD_TESTING)
+    add_executable(imagejxx_virtual_desktop_tests tests/native/test_virtual_desktop.cpp)
+    target_link_libraries(imagejxx_virtual_desktop_tests PRIVATE imagejxx_desktop)
+    add_test(NAME desktop_virtual_source COMMAND ${CMAKE_COMMAND}
+      -DTEST_EXECUTABLE=$<TARGET_FILE:imagejxx_virtual_desktop_tests>
+      -DWORK_ROOT=${CMAKE_CURRENT_BINARY_DIR}/virtual-desktop-tests
+      -DTEST_TIMEOUT_SECONDS=30
+      -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/RunOwnedFixtureTest.cmake)
+    set_tests_properties(desktop_virtual_source PROPERTIES TIMEOUT 35)
     add_executable(imagejxx_histogram_async_window_tests tests/native/test_histogram_async_window.cpp)
     target_link_libraries(imagejxx_histogram_async_window_tests PRIVATE imagejxx_desktop)
     add_test(NAME desktop_histogram_async_window COMMAND ${CMAKE_COMMAND}

@@ -1,0 +1,314 @@
+{
+  "state": "qualified_functional_increment",
+  "objective_complete": false,
+  "baseline_commit": "08dea62da98a9c273db9fc1c8b6d5db1d575eeca",
+  "scope": "Explicit immutable virtual-provider attachment, metadata-only inspection, lazy bounded decoded viewing and worker histogram analysis in C++/Python and both shared ImGui launchers.",
+  "semantics": "Window.addVirtualDocument / Editor.add_virtual_document explicitly opts into immutable concurrent provider reads on creator/render and processing threads. Default eager-only attachment and retained constraints remain. Dataset.has_eager_planes discovers table availability without copying or reading samples. Virtual metadata State has no legacy frames; native dimensions drive Z navigation and document info. Scientific/native paths retain their own admission; no legacy eager editing/serialization permission is inferred.",
+  "viewing": "Retain one decoded XY plane by source identity and T/C/Z; metadata/camera changes reuse it, new reads validate before replacing it, eager transition releases the virtual cache, and detached handles retain prior images. Linked XYZ uses regional extraction and existing rendering caches. Snapshot facades inherit the view limit. Individual decoded XY/XZ/YZ buffers are bounded before provider calls; full XY is also checked for regional fallback. Provider caches/internal allocations, aggregate renderer/cache memory, allocator overhead and process RSS are external.",
+  "histograms": "Existing resolved targets, worker jobs, cancellation/record/replay/defaults and guarded creator-thread publication serve virtual sources. T/C/Z and regional extraction use deterministic independent sample formulas. A provider failure preserves prior result/workflow/defaults. Unknown virtual providers remain finite-only; no NaN/IEEE policy inference or Python processing callbacks are added.",
+  "verification": "733 selected Python checks per OS, including seven new API and eight new input checks; seven native suites plus 36 rank-host cases / 499 checks and two resource-lifetime groups per OS. Fresh installed SDK consumers pass, and core headers/library are byte-identical in final prefixes after desktop-only refinements. Independent readers verify 124 reports / 26631 raw input frames, including 16 new reports / 1132 frames. Virtual cases cover cancellation, source changes, frozen replay, target-editor preservation and linked XYZ with independent source/RGB sample assertions. Native tests cover zero-read attachment/huge metadata, pre-read limits, inherited snapshot caps, cache reuse/failure/lifetime, T/C/Z, regional XZ/YZ, worker results/provider failure and creator-thread constraints. No complete ImageJ/Fiji source/reference/resource/real-GPU/OS-desktop/platform acceptance.",
+  "profiles": {
+    "windows": {
+      "python_cases": 733,
+      "new_api_cases": 7,
+      "new_ui_cases": 8,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_suites": 7,
+      "rank_host_cases": 36,
+      "rank_host_checks": 499,
+      "resource_groups": 2,
+      "fresh_installed_sdk_consumer": true,
+      "reports": 62,
+      "frames": 13260,
+      "new_ui_reports": 8,
+      "new_ui_frames": 566,
+      "sdk_core_unchanged": {
+        "include/imagejxx/dataset.hpp": "a9cbf88d67730ac64521f9da87db2c1c68651893560f40cf58ebd1e689acb057",
+        "lib/imagejxx_core.lib": "977b50ac09de46275c36479aadc78605216f16eb584f075b46458b8d3b446c7e"
+      },
+      "removed_scratch_bytes": 391126876,
+      "archive": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p10t-virtual-desktop001\\windows-scratch001.zip",
+        "bytes": 54027929,
+        "sha256": "912166555ff9e1e5efd04826fe308d91bc42e7e4ac960918f930a7b96e6d7540"
+      },
+      "evidence": [
+        {
+          "path": "build/p10t-virtual-desktop001/windows-build001/receipt.json",
+          "bytes": 1614,
+          "sha256": "15dda2896288f5a4fc60d76b97c7074b01af8033c2fd564820241ac9c51d7c17"
+        },
+        {
+          "path": "build/p10t-virtual-desktop001/windows-build002/receipt.json",
+          "bytes": 1614,
+          "sha256": "88e79802d0ec2efa2fb20749fb04f07f9bd36287377bd2e4276306f1e7fa95a3"
+        },
+        {
+          "path": "build/p10t-virtual-desktop001/windows-build002/native.xml",
+          "bytes": 1371,
+          "sha256": "0df8e23eeb8455182c0caadf6fa8a11a8e849ee0e5200e7ffe30367c7fb9e77d"
+        },
+        {
+          "path": "build/p10t-virtual-desktop001/windows-build002/ui-native.xml",
+          "bytes": 1016,
+          "sha256": "cd07b8ac74d40c26bbffbdfc97a873a63d9c76a307139c783d4890b7e77e71bd"
+        },
+        {
+          "path": "build/p10t-virtual-desktop001/windows-python001/receipt.json",
+          "bytes": 4536,
+          "sha256": "d44acedac7c680371a742d2f9a95b61232469ba7bd66468ad8bd237933f3a44d"
+        },
+        {
+          "path": "build/p10t-virtual-desktop001/windows-python001/pytest.xml",
+          "bytes": 107953,
+          "sha256": "ca3edc2d0eab4a00c7dbb9986d2b423f9a9681b690b69ef0c90261bb4dc84d52"
+        },
+        {
+          "path": "build/p10t-virtual-desktop001/windows-capture001.json",
+          "bytes": 13830,
+          "sha256": "bec33928dd1b8ace7d764969cb501b5b70850df505e8b1cfb0141c6dc95a66f7"
+        },
+        {
+          "path": "build/p10t-virtual-desktop001/windows-evidence001.json",
+          "bytes": 27657,
+          "sha256": "a113057c7991ec0e39b4f00368e1341fc72b01a14e27f88611f05cbf441462e7"
+        },
+        {
+          "path": "build/p10t-virtual-desktop001/windows-products001.json",
+          "bytes": 4504,
+          "sha256": "d6c84ba1ee8cba54991d2bd9726d957e4a887862fb66c305bde5329365624feb"
+        },
+        {
+          "path": "build/p10t-virtual-desktop001/windows-verified001.json",
+          "bytes": 196,
+          "sha256": "48b031819c9a4daa14f3ee75e322d244a4c7788dd94389e0ac5da3e6e2607a4f"
+        },
+        {
+          "path": "build/p10t-virtual-desktop001/windows-sdk001/receipt.json",
+          "bytes": 467,
+          "sha256": "64520efae06a98f57999c9207b450429752d6b03e61547d4ef97fdff11601aa8"
+        },
+        {
+          "path": "build/p10t-virtual-desktop001/windows-extra001/receipt.json",
+          "bytes": 327,
+          "sha256": "f2e3f8b68a8b46ae5e64d5134d368ab94bec47a9ba6ef7899bc835b815b80d55"
+        },
+        {
+          "path": "build/p10t-virtual-desktop001/windows-cleanup001.json",
+          "bytes": 349236,
+          "sha256": "b42b6d86ed6939c4b69b403af1ba1136e6bea0e91144df36e72c022ccfdbd5e8"
+        }
+      ]
+    },
+    "linux": {
+      "python_cases": 733,
+      "new_api_cases": 7,
+      "new_ui_cases": 8,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_suites": 7,
+      "rank_host_cases": 36,
+      "rank_host_checks": 499,
+      "resource_groups": 2,
+      "fresh_installed_sdk_consumer": true,
+      "reports": 62,
+      "frames": 13371,
+      "new_ui_reports": 8,
+      "new_ui_frames": 566,
+      "sdk_core_unchanged": {
+        "include/imagejxx/dataset.hpp": "a9cbf88d67730ac64521f9da87db2c1c68651893560f40cf58ebd1e689acb057",
+        "lib/libimagejxx_core.a": "2ee60d8119bda0009d85172d2811a603e723f7c626c378c75778fa69ef79a81f"
+      },
+      "removed_scratch_bytes": 400703394,
+      "archive": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p10t-virtual-desktop001/linux-scratch001.zip",
+        "bytes": 63005746,
+        "sha256": "390ba82a6436ef0911fcc9d41d8cf805cb5f05f235963920bb5fbf64adee4351"
+      },
+      "evidence": [
+        {
+          "path": "build/p10t-virtual-desktop001/linux-build001/receipt.json",
+          "bytes": 1564,
+          "sha256": "ce087fb07e3f0917356cae84b89aa40d8bdcbdf530fe6fece30eb1b49d74f2e2"
+        },
+        {
+          "path": "build/p10t-virtual-desktop001/linux-build002/receipt.json",
+          "bytes": 1564,
+          "sha256": "c3d9c430bdff5e1fbad57fa9572f0339536d9000a8a57622c96ce8e94cb5857c"
+        },
+        {
+          "path": "build/p10t-virtual-desktop001/linux-build002/native.xml",
+          "bytes": 1332,
+          "sha256": "f87153fbcdc577b2de10585b9190df8d30b3ef84ece384c615565577147f8ce8"
+        },
+        {
+          "path": "build/p10t-virtual-desktop001/linux-build002/ui-native.xml",
+          "bytes": 1018,
+          "sha256": "135443dad4fd2e9ea82872182fa024e75c1dc5fda66f694e67e29a7b60ebdf3b"
+        },
+        {
+          "path": "build/p10t-virtual-desktop001/linux-python001/receipt.json",
+          "bytes": 4349,
+          "sha256": "b25c055bc8b27a658fdb4b6bb7603d65d7df8cb6c7f68865a08954063a06b449"
+        },
+        {
+          "path": "build/p10t-virtual-desktop001/linux-python001/pytest.xml",
+          "bytes": 107953,
+          "sha256": "12acfab6ed2adb91a99f5c171e6bb9786ee26e8804098d13bd5459f576737e4f"
+        },
+        {
+          "path": "build/p10t-virtual-desktop001/linux-capture001.json",
+          "bytes": 11642,
+          "sha256": "1be3f9c7aa857b5ae48087b3c02f5662cb2a5c56fb72d10b6c3df98376045cd9"
+        },
+        {
+          "path": "build/p10t-virtual-desktop001/linux-evidence001.json",
+          "bytes": 25231,
+          "sha256": "b9ebc147af1a8496c1009cd47696df59797bcfc72b95aca6410c04c7e7bd8d87"
+        },
+        {
+          "path": "build/p10t-virtual-desktop001/linux-products001.json",
+          "bytes": 4320,
+          "sha256": "11f7f70471916d14d69b36c2c6614a02a0c13f00f5af3913a4dd8f5cfe87c5cd"
+        },
+        {
+          "path": "build/p10t-virtual-desktop001/linux-verified001.json",
+          "bytes": 190,
+          "sha256": "c79c580243bc5aca5b42bfea7efa599cb784f188b212918b863e658a0a572f53"
+        },
+        {
+          "path": "build/p10t-virtual-desktop001/linux-sdk001/receipt.json",
+          "bytes": 417,
+          "sha256": "63c040de92395c0274dccf141f04f9f6bb51cb98586030b39ee5a55533653ec9"
+        },
+        {
+          "path": "build/p10t-virtual-desktop001/linux-extra001/receipt.json",
+          "bytes": 318,
+          "sha256": "87b0fc7cbf7ab2813ce89a3ba67dc95af66cc861b0cdeeab367a682b568e4351"
+        },
+        {
+          "path": "build/p10t-virtual-desktop001/linux-cleanup001.json",
+          "bytes": 329420,
+          "sha256": "252c3621ec3ac2b4350920ed9fb8a2b5803ae0ab4259d532077663f2567ffa0e"
+        }
+      ]
+    }
+  },
+  "source": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 104871,
+      "sha256": "1e1e22f2b8f910a145edd199007d4558d4255ec5b16ecc637d65a20681eab6f1"
+    },
+    {
+      "path": "include/imagejxx/dataset.hpp",
+      "bytes": 9755,
+      "sha256": "a9cbf88d67730ac64521f9da87db2c1c68651893560f40cf58ebd1e689acb057"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 34016,
+      "sha256": "6f5fe013aeac243d9c6d10f8d0482cdfc57a5f8aa8e953084bc182b723c0cfac"
+    },
+    {
+      "path": "src/desktop/desktop.hpp",
+      "bytes": 13416,
+      "sha256": "60ecc3b5acc242da0367d1f20861145190320c7d41f203198161a6957e438abd"
+    },
+    {
+      "path": "src/desktop/document.cpp",
+      "bytes": 75227,
+      "sha256": "1764bb1e2ba6c4295a95c21f9928949a1063366eb397d6791dba4ae40432fece"
+    },
+    {
+      "path": "src/desktop/histogram_async_ui_probe.cpp",
+      "bytes": 7376,
+      "sha256": "4ad553a68dd6925039501c2f4e506259c780dcd74a4ff00f0beca46ae784703f"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 52445,
+      "sha256": "005dd3af4e36baa9e1a46bb209d8cbc3e8242ff50694271405c897d89807fe04"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 676371,
+      "sha256": "fc4a5d32b804ed084f9f5f54e29bd8c6acdd51ac72ff7d5db0604e59dd4c5744"
+    },
+    {
+      "path": "src/desktop/window.hpp",
+      "bytes": 14901,
+      "sha256": "49ab11d79de92e43db5f2a327d9e5b648380dabac698bdd908a3df22ef950da8"
+    },
+    {
+      "path": "src/native/dataset.cpp",
+      "bytes": 35858,
+      "sha256": "4e80a933beac9c85eeae4f0c7838b1d994b51d197d5d7f4d98b8a327cef152bd"
+    },
+    {
+      "path": "src/native/dataset_bindings.cpp",
+      "bytes": 23327,
+      "sha256": "dd9bd53e8f6dfb110e834653dc81f664e8c756e6c7c5b754036e9edd858a6926"
+    },
+    {
+      "path": "tests/native/test_dataset.cpp",
+      "bytes": 8204,
+      "sha256": "731e442583cc4edaaaee91f6ef33e1866974b30eeda52fb5239bbe67597f0477"
+    },
+    {
+      "path": "tests/native/test_virtual_desktop.cpp",
+      "bytes": 6018,
+      "sha256": "5029fa33b803193807cb15f5951161baddd0ca66ef38a2af512c239fee180143"
+    },
+    {
+      "path": "tests/python/test_virtual_desktop.py",
+      "bytes": 3767,
+      "sha256": "35cdc8f2e1a3c15a33b17ed95e73925328490cb44331e421443d522ecd8b9091"
+    }
+  ],
+  "registration": {
+    "path": "build/p10t-virtual-desktop001/registration001.json",
+    "bytes": 911,
+    "sha256": "439383fe51387d5ab89177a9ebef29f2c3e221a7402a3ebb66856e46d2a40049"
+  },
+  "licenses": {
+    "path": "build/p10t-virtual-desktop001/licenses001.log",
+    "bytes": 62,
+    "sha256": "939b266b092bfdc37d1814f66b75a21469497e36e30a2050805031da4f97b417"
+  },
+  "attempts": "Both first builds and native suites passed; first Linux rendered/API run passed 15 checks. Review then made document-info queries descriptor-only, preserved snapshot view caps, released stale virtual cache on eager transitions and strengthened independent XYZ source/RGB assertions. First source variants, logs and qualified SDK consumers are retained; final build002/test identities are authoritative.",
+  "existing_gate": {
+    "state": "open",
+    "reason": "Existing Auto Contrast producer_source fingerprint mismatch; application.hpp unchanged; no repin or gate relaxation.",
+    "producer": {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 14135,
+      "sha256": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    },
+    "log": {
+      "path": "build/p10t-virtual-desktop001/plan001.log",
+      "bytes": 151,
+      "sha256": "5741e4b9133f374434cac8973e1f1c6131200e632958a012913a739c28d47006"
+    },
+    "final_log": {
+      "path": "build/p10t-virtual-desktop001/plan002.log",
+      "bytes": 151,
+      "sha256": "5741e4b9133f374434cac8973e1f1c6131200e632958a012913a739c28d47006"
+    }
+  },
+  "scope_status_counts": {
+    "total": 99,
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  },
+  "remaining": [
+    "File-backed virtual import choices and provider implementations; tiled/pyramid viewport, bounded aggregate cache/eviction and responsive asynchronous viewport loading.",
+    "Virtual output-adapter propagation, eager-only serialization/materialization choices and complete provider/resource/platform qualification.",
+    "Histogram unsupported legacy/calibrated/color/other numeric domains and complete upstream statistical/presentation/default conventions.",
+    "Full source/reference/resource/platform qualification, existing Auto Contrast producer gate and every other original inventory requirement remain open."
+  ]
+}

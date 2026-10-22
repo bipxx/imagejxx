@@ -1,5 +1,24 @@
 # ImageJ and Fiji gap closure plan
 
+**Explicit virtual desktop checkpoint, 2026-10-22 (work in progress):**
+C++ and Python launchers explicitly attach immutable virtual providers without
+pixel reads. Metadata-only document inspection, cached current XY viewing,
+dimension-based Z controls, bounded regional XYZ and native worker histogram
+analysis now share the existing editor. Default eager attachment retains its
+admission rules; snapshots inherit view limits and failed reads preserve useful
+cached images and prior histogram publication. Unknown providers stay finite-only.
+Windows/Linux each pass 733 selected Python checks (seven new API / eight new input),
+seven native suites, 36 rank-host cases / 499 checks, two resource groups and fresh
+installed SDK consumers. Readers verify 124 reports / 26,631 raw input frames,
+including 16 new reports / 1,132 frames with XYZ source/RGB assertions.
+Verified cleanup removes 791,830,270 scratch bytes and keeps final products/evidence.
+Four cases append to 1,292 without changing prior order. See
+[provider usage/limits](HISTOGRAM.md#virtual-providers-in-the-desktop) and
+[the scoped receipt](parity/reviews/p10t-virtual-desktop001.json).
+File-backed import choices, tiled/pyramid/async viewport and aggregate cache
+policy, virtual output propagation and full qualification remain open. All99
+stays 47 in progress / 52 open / 0 complete; the Auto Contrast gate remains open.
+
 **Batch histogram statistics checkpoint, 2026-10-22 (work in progress):**
 C++/Python and both shared ImGui launchers now retain and review unbinned
 per-input/document histogram statistics, with opt-in summary CSV export.

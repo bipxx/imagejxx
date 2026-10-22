@@ -309,8 +309,8 @@ on Windows and Linux.
 
 Captured histogram entries support individual replay and the reviewed native
 Run/Batch path described below; opening review performs no processing.
-The internal panel callback tests use virtual providers directly; the desktop
-Window adapter still refuses virtual datasets.
+The desktop now has explicit virtual-provider attachment, described below;
+its default eager attachment continues to require an eager table.
 The native API and shared workflow review below support histogram steps;
 complete ImageJ/Fiji domains/conventions and qualification remain open.
 
@@ -338,7 +338,8 @@ does not itself rethrow a worker error; reading the result or completing does.
 `cancel()` and scheduler cancellation release queued captures immediately;
 running work releases them when it reaches a checkpoint. Provider calls are
 not forcibly interrupted. Virtual C++ providers must support immutable reads on
-the scheduler's worker threads. The desktop virtual-source adapter remains open.
+the scheduler's worker threads. Desktop virtual attachment is explicit, as
+described below.
 
 `complete(publication)` optionally invokes a callback on the calling thread,
 with an immutable native result reference in C++, or an owning detached result
@@ -609,3 +610,42 @@ the byte-compatible V1 encoding; V2 false canonicalizes to V1. Save/load restore
 the choice without persisting publication consent. Supported histogram numeric
 domains remain unchanged. Virtual sources, calibrated/color/other numeric
 domains and complete upstream/platform qualification remain open.
+
+
+## Virtual providers in the desktop
+
+C++ `Window::addVirtualDocument(owner, max_view_bytes)` and Python
+`Editor.add_virtual_document(owner, max_view_bytes=128*1024*1024)` explicitly
+attach a native document backed by an immutable virtual provider. Providers must
+support concurrent immutable reads from the creator/render thread and native
+processing workers. This entry point also accepts eager documents. The original
+`addNativeDocument` / `add_native_document` retains its eager-only admission and
+creator-thread publication constraints. No Python processing callback is added.
+
+Attachment and metadata projection acquire no pixels. `Dataset.has_eager_planes`
+(C++ `has_eager_planes()`) discovers table availability without copying it or
+reading samples. A virtual desktop State has metadata and no legacy eager frames;
+native descriptors supply dimensions and Z navigation. Existing eager-only edit
+and serialization paths retain their admission rules.
+
+The ordinary viewer retains one decoded XY plane by pixel-source identity and
+T/C/Z. Repeated frames and metadata/camera changes reuse it; navigation or source
+replacement reads and validates a new plane before replacing the cache. Retained
+immutable image handles keep prior buffers alive independently. Linked XYZ uses
+the native regional XZ/YZ extractor and its existing rendering caches.
+
+For virtual datasets, the positive integer `max_view_bytes` cap bounds each decoded XY/XZ/YZ image
+buffer before provider calls. Orthogonal admission also checks full XY size,
+because a provider may use the default regional fallback. It does not bound the
+sum of caches, provider internal allocations, rendering buffers, allocator
+overhead or process RSS. Large descriptors can still attach for metadata and
+bounded native analysis even when a decoded view exceeds that cap.
+
+Analyze > Histogram uses the same target controls, worker progress/cancellation,
+record/replay and guarded creator-thread publication for virtual sources.
+Histogram processing limits are separate from the view cap. Provider failures
+preserve the prior histogram result, workflow and defaults. Unknown virtual
+providers keep finite-only sample admission; quiet-NaN/IEEE storage permission is
+not inferred. File-backed virtual import choices, tiled viewport rendering,
+virtual output-adapter propagation and complete provider/resource/platform
+qualification remain open.

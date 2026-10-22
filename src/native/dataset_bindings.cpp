@@ -330,6 +330,7 @@ void bind_dataset(py::module_ &m) {
            py::arg("axes"), py::arg("calibration") = SpatialCalibration{},
            py::arg("sample_policy") = FloatingSamplePolicy::FiniteOnly)
       .def_property_readonly("sample_policy", &Dataset::sample_policy)
+      .def_property_readonly("has_eager_planes", &Dataset::has_eager_planes)
       .def_property_readonly("axes",
                              [](const Dataset &) { return canonical_axes; })
       .def_property_readonly("shape",

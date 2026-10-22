@@ -202,6 +202,9 @@ public:
   // Eager adapter only. A virtual source returns nullopt without reading
   // pixels.
   std::optional<SharedPlanes> shared_planes() const;
+  // Metadata-only discovery without copying the table or reading pixels.
+  // True exactly when shared_planes() can expose an immutable eager table.
+  bool has_eager_planes() const;
 
 private:
   friend class PreparedOperation;

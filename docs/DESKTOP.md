@@ -2405,3 +2405,14 @@ Both shared ImGui launchers review unbinned per-input/document histogram
 statistics and optionally export one summary CSV per input. Save/load retains
 the export choice without retaining publication consent. See
 [histogram usage and limits](HISTOGRAM.md#batch-histogram-statistics-review-and-export).
+
+
+## Explicit virtual-provider viewing (p10t)
+
+Native immutable providers can attach through `Window::addVirtualDocument` or
+Python `Editor.add_virtual_document`. Attachment and document metadata do not
+load planes. Ordinary viewing caches the current XY plane; linked XYZ uses
+regional extraction and Z controls use native dimensions. Analyze > Histogram
+uses native workers and existing cancellation/replay/publication controls.
+See [provider contract and bounds](HISTOGRAM.md#virtual-providers-in-the-desktop).
+File-backed import UI and tiled viewport rendering remain open.

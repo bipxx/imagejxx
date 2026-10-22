@@ -1627,7 +1627,8 @@
     {
       "evidence": {
         "documentation": [
-          "docs/IMPLEMENTATION.md"
+          "docs/IMPLEMENTATION.md",
+          "docs/parity/reviews/p10t-virtual-desktop001.json"
         ],
         "implementation": [
           "include/imagejxx/dataset.hpp",
@@ -1650,7 +1651,9 @@
           "tests/python/test_orthogonal.py",
           "tests/native/test_document.cpp",
           "tests/python/test_document.py",
-          "examples/cpp/document.cpp"
+          "examples/cpp/document.cpp",
+          "tests/native/test_virtual_desktop.cpp",
+          "tests/python/test_virtual_desktop.py"
         ]
       },
       "id": "G041",
@@ -1661,13 +1664,14 @@
       ],
       "name": "Large datasets",
       "remaining": [
-        "PlaneSource supports bounded region reads; headless datasets and desktop history share immutable eager planes. Typed/virtual/tiled/pyramid readers, desktop lazy sources, cache/resource budgets and large-data rendering remain; legacy volume kernels/writers still materialize stacks."
+        "Explicit virtual-provider desktop attachment, zero-read metadata, a bounded decoded XY cache, regional linked XYZ and worker histograms are functional. Finish file-backed virtual/tiled/pyramid readers and import choices, aggregate cache/eviction budgets, tiled/incremental upload and responsive asynchronous viewport loading, virtual output propagation and full provider/resource/platform qualification; legacy volume kernels/writers still require eager materialization."
       ],
       "required_work": "Missing virtual/tiled/pyramid storage, bounded cache, incremental upload and responsive navigation while loading",
       "status": "in_progress",
       "verification": [
         "m1-m3-foundation-windows-2026-10-10",
-        "m1-document-transactions-windows-2026-10-10"
+        "m1-document-transactions-windows-2026-10-10",
+        "p10t.virtual-desktop.functional.001"
       ]
     },
     {
@@ -2791,7 +2795,8 @@
           "docs/parity/reviews/p10p-histogram-workflow001.json",
           "docs/parity/reviews/p10q-histogram-workflow-ui001.json",
           "docs/parity/reviews/p10r-histogram-workflow-options001.json",
-          "docs/parity/reviews/p10s-batch-histogram-statistics001.json"
+          "docs/parity/reviews/p10s-batch-histogram-statistics001.json",
+          "docs/parity/reviews/p10t-virtual-desktop001.json"
         ],
         "implementation": [
           "include/imagejxx/auto_threshold_stack.hpp",
@@ -2817,7 +2822,8 @@
           "src/desktop/native_workflow_panel.cpp",
           "src/desktop/histogram_workflow_ui_probe.cpp",
           "src/native/histogram_command_internal.hpp",
-          "src/native/native_workflow_batch.cpp"
+          "src/native/native_workflow_batch.cpp",
+          "src/desktop/document.cpp"
         ],
         "tests": [
           "tests/python/test_scientific_threshold_target.py",
@@ -2850,7 +2856,9 @@
           "tests/python/test_histogram_workflow_options.py",
           "tests/python/test_histogram_workflow_choices_ui.py",
           "tests/python/test_batch_histogram_statistics.py",
-          "tests/python/test_batch_histogram_statistics_ui.py"
+          "tests/python/test_batch_histogram_statistics_ui.py",
+          "tests/native/test_virtual_desktop.cpp",
+          "tests/python/test_virtual_desktop.py"
         ]
       },
       "id": "G069",
@@ -2860,7 +2868,7 @@
       ],
       "name": "Histogram",
       "remaining": [
-        "Standalone/Run histogram targets, authored or retained bin/range/log choices, plots/statistics/exact-bin tables, Results and CSV/defaults, recording/replay/rebind and worker progress/cancel/publication are functional; Batch reviews targets/tokens/unbinned summaries and emits per-document bin CSVs plus optional per-input statistics CSVs with saved export intent. Finish desktop virtual-source adaptation, unsupported legacy/calibrated/color/other numeric domains and upstream statistical/presentation/default conventions, plus complete independent source/reference/resource/platform qualification."
+        "Standalone/Run/Batch histogram controls, authored/retained choices, plots/statistics/tables/CSV/defaults/record/replay/rebind and worker publication are functional; explicit immutable virtual desktop providers support metadata/viewing/histograms. Finish file-backed virtual imports, tiled/async viewport and virtual output propagation, unsupported legacy/calibrated/color/other numeric domains and upstream statistical/presentation/default conventions, plus complete independent source/reference/resource/platform qualification."
       ],
       "required_work": "Stack/channel targeting, range/bin/log controls, statistics display and numerical export",
       "status": "in_progress",
@@ -2878,7 +2886,8 @@
         "p10p.histogram-workflow.functional.001",
         "p10q.histogram-workflow-ui.functional.001",
         "p10r.histogram-workflow-options.functional.001",
-        "p10s.batch-histogram-statistics.functional.001"
+        "p10s.batch-histogram-statistics.functional.001",
+        "p10t.virtual-desktop.functional.001"
       ]
     },
     {
@@ -181061,6 +181070,29 @@
         "total": 589
       },
       "scope": "589 selected Python checks per OS including 24 new API and ten new input checks; five native executable suites per OS and fresh installed SDK consumers. Independent readers verify 84 reports / 23800 raw input frames, including 20 new reports / 2056 frames. Tests cover unbinned ROI/range-outlier/NaN/empty populations, exact UInt64 counters and CSV quoting, immutable detached copies, output counts/memory limits, cancellation/conflicts/partial publication and closed V2 setup save/load. No complete ImageJ/Fiji source/reference/resource/real-GPU/OS-desktop/platform acceptance."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-22",
+      "id": "p10t.virtual-desktop.functional.001",
+      "identity": {
+        "qualification": {
+          "bytes": 14802,
+          "path": "docs/parity/reviews/p10t-virtual-desktop001.json",
+          "sha256": "d7d8555f2d4151faa351096a20abe4336501af4e0327329bfc722a9fa01a8ad0"
+        }
+      },
+      "platform": "Windows/Linux C++/Python and shared ImGui explicit virtual-provider desktop",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 733,
+        "report": "build/p10t-virtual-desktop001/windows-python001/pytest.xml",
+        "skipped": 0,
+        "total": 733
+      },
+      "scope": "733 selected Python checks per OS, including seven new API and eight new input checks; seven native suites plus 36 rank-host cases / 499 checks and two resource-lifetime groups per OS. Fresh installed SDK consumers pass, and core headers/library are byte-identical in final prefixes after desktop-only refinements. Independent readers verify 124 reports / 26631 raw input frames, including 16 new reports / 1132 frames. Virtual cases cover cancellation, source changes, frozen replay, target-editor preservation and linked XYZ with independent source/RGB sample assertions. Native tests cover zero-read attachment/huge metadata, pre-read limits, inherited snapshot caps, cache reuse/failure/lifetime, T/C/Z, regional XZ/YZ, worker results/provider failure and creator-thread constraints. No complete ImageJ/Fiji source/reference/resource/real-GPU/OS-desktop/platform acceptance."
     }
   ]
 }
