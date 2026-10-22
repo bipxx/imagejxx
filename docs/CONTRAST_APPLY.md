@@ -16,8 +16,8 @@ app.commit(transaction)
 
 One explicit mapping applies to every frozen target plane. Active-selection or
 positioned-ROI masks preserve exterior samples; empty masks skip source reads.
-The preparation accepts in-place plane-mode targets. It stages replacements and
-the affected channels' range reset together. Commit checks every captured
+The preparation accepts in-place plane-mode targets. It stages replacements,
+the affected channels' range reset and threshold clearing together. Commit checks every captured
 revision, and Undo/Redo restores pixels and presentation in one step. Unrelated
 channels, camera settings, LUTs, selections and metadata remain intact.
 
@@ -41,20 +41,71 @@ estimate. Whole-process memory acceptance is still open. Cancellation is checked
 inside validation, mapping, mask scanning and restoration, between planes, and
 before returning a proposal. No live document changes during preparation.
 
+Captured commands and workers now provide the next API layer:
+
+```python
+command = imagejxx.resolve_contrast_apply_command(
+    app.snapshot(), options, imagejxx.TargetRequest(imagejxx.TargetScope.ALL_Z))
+job = imagejxx.submit_contrast_apply(app.job_scheduler, command)
+if job.wait(5000):
+    record = job.record()
+    preview = job.preview
+    job.publish(app)
+```
+
+The closed `imagejxx.contrast-apply-command` V1 record freezes mapping, bit setting,
+T/C/Z targets, reset anchor, scalar storage/calibration, all source revisions,
+display properties and canonical nativeV3 selection/positioned-ROI geometry.
+Strict replay checks these against the original owner. Rebinding validates the
+entire original first, then requires an explicit new target request and uses the
+destination's geometry and presentation. No source view or ROI is restored.
+Records carry intent; automatic UInt16 reset bounds are derived during execution.
+
+Processor reset differs from the pixel mapping's maximum. UInt8 resets to 0–255.
+A configured 12-bit UInt16 mapping ends at 4094 but its reset display ends at 4095.
+Automatic UInt16 reset uses observed full-plane values after masked edits,
+including pixels outside the ROI; a constant plane may have equal bounds.
+Threshold presentation clears and indexed palettes/LUTs remain intact. Twelve
+additional ImageJ 1.54r cases independently exercise whole planes, partial ROIs
+and constant planes with threshold and palette state. The driver uses actual
+ImagePlus/processor reset methods while bypassing AWT controls. These checks
+correct the earlier transaction foundation's output-bound reset assumption.
+
+For each affected scientific channel, reset prefers the captured T/Z plane if
+that plane changed, otherwise its first affected plane. Legacy flat presentation
+uses the active affected C or the lowest affected C. Entirely empty masks retain
+the native no-change/no-IO behavior. These multi-axis/empty-target extensions,
+custom default ranges and signed/intensity calibration need broader UI reference
+qualification.
+
+`ContrastApplyCommandLimits` adds bounded metadata/wire admission before command
+construction. The command estimate includes metadata copies, ROI scratch and
+wire intermediates in addition to the raw processing allowance. The worker job
+reserves the larger of its estimate and an explicit job reservation. Escaped
+preview snapshots, datasets and native plane aliases keep the lease after cancel,
+publication, handle destruction or scheduler shutdown. Published document/history
+storage detaches its lease; retained previews still keep theirs. Source caches,
+allocator overhead, frontend copies and publication/history allocations remain
+external. This is a declared resource bound, not a process-memory measurement.
+
+`publish(app)` runs on the caller's thread, checks membership and all captured
+revisions, and pairs pixels with presentation in one commit. Cancellation wins
+until publication begins. Queued cancellation releases source captures even if
+the job handle survives. Native providers must support immutable worker reads.
+The core does not infer an active-document or GUI-thread policy.
+
 Finish the editor integration in this order:
 
-1. Add a captured native command/record and replay validation, freezing range,
-   settings, target and reset semantics. Cover opaque channel state, indexed
-   metadata and threshold interaction with independent upstream cases.
-2. Add scheduler admission, result reservations, cooperative cancellation and
-   guarded publication to the desktop host. Preserve the staged transaction's
-   pixel/display history pairing and release captures on close or supersession.
-3. Add the ImGui Apply action with explicit current-plane/stack/channel and ROI
-   choices, using the shared C++ host from both launchers. Qualify real input,
+1. Connect these APIs to the Window host: active-owner admission, busy state,
+   wait/cancel/close handling, staged workflow recording and result diagnostics.
+2. Reuse `OperationTargetPanel` for explicit current/range/all T/C/Z and ROI
+   choices. Add the ImGui Apply action in both launchers, qualifying real input,
    canceled/failed/stale jobs, busy controls, recording, Undo/Redo and virtual IO.
+3. Add recorded-command dispatch, explicit rebind review and native workflow/
+   batch-language integration. The standalone strict/rebind APIs work; the
+   editor workflow does not yet recognize this schema.
 4. Qualify RGB Apply against ImageJ's separate color-controller behavior before
    enabling it. Keep unsupported floating Apply visibly unavailable; separately
-   decide and qualify RGBA behavior. Complete platform/resource acceptance.
+   qualify RGBA, broader reset/calibration semantics and platform/resource use.
 
-G057 remains in progress. There is no Apply button in the contrast panel yet;
-the new core API is the transaction and arithmetic foundation for that feature.
+G057 remains in progress. There is no Apply button in the contrast panel yet.

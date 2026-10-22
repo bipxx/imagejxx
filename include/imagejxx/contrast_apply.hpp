@@ -21,6 +21,10 @@ Image apply_contrast_imagej(const Image &, const ContrastApplyOptions & = {},
 // In-place, plane-mode targets only. Nonempty masks affect source samples only
 // inside the selection. Pixel edits and range reset share one Undo/Redo step;
 // any intervening data/selection/display change rejects publication.
+// Reset clears threshold presentation. UInt8 uses 0..255; UInt16 uses the
+// configured bit range or observed full-plane extrema (including exterior ROI
+// pixels). Per channel, prefer the captured T/Z if affected, else first affected
+// plane. An entirely empty target mask is a native no-change/no-IO extension.
 DocumentTransaction prepare_contrast_apply(
     const ResolvedTarget &, const ContrastApplyOptions & = {},
     const ContrastApplyLimits & = {}, const ExecutionControl & = {});

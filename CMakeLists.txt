@@ -37,7 +37,7 @@ target_sources(imagejxx_core PRIVATE
   src/native/float32_display.cpp
   src/native/channel_display.cpp src/native/channel_display_command.cpp
   src/native/dataset_histogram.cpp src/native/histogram_command.cpp src/native/histogram_job.cpp
-  src/native/auto_contrast.cpp src/native/auto_contrast_job.cpp src/native/contrast_apply.cpp
+  src/native/auto_contrast.cpp src/native/auto_contrast_job.cpp src/native/contrast_apply.cpp src/native/contrast_apply_command.cpp src/native/contrast_apply_job.cpp
   src/native/selection_creation.cpp
   src/native/selection_creation_geometry.cpp
   src/native/roi_manager.cpp
@@ -747,6 +747,10 @@ if(BUILD_TESTING)
   target_link_libraries(imagejxx_dataset_histogram_tests PRIVATE imagejxx::core)
   add_test(NAME native_dataset_histogram COMMAND imagejxx_dataset_histogram_tests)
   set_tests_properties(native_dataset_histogram PROPERTIES TIMEOUT 60)
+  add_executable(imagejxx_contrast_apply_command_tests tests/native/test_contrast_apply_command.cpp)
+  target_link_libraries(imagejxx_contrast_apply_command_tests PRIVATE imagejxx_core)
+  add_test(NAME native_contrast_apply_command COMMAND imagejxx_contrast_apply_command_tests)
+  set_tests_properties(native_contrast_apply_command PROPERTIES TIMEOUT 30)
   add_executable(imagejxx_contrast_apply_tests tests/native/test_contrast_apply.cpp)
   target_link_libraries(imagejxx_contrast_apply_tests PRIVATE imagejxx_core)
   add_test(NAME native_contrast_apply COMMAND imagejxx_contrast_apply_tests)

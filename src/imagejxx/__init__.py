@@ -34,6 +34,19 @@ from ._native import (
     ContrastApplyLimits as ContrastApplyLimits,
     apply_contrast_imagej as apply_contrast_imagej,
     prepare_contrast_apply as prepare_contrast_apply,
+    ContrastApplyCommandLimits as ContrastApplyCommandLimits,
+    ContrastApplyCommandEstimate as ContrastApplyCommandEstimate,
+    ResolvedContrastApplyCommand as ResolvedContrastApplyCommand,
+    ContrastApplyJobEstimate as ContrastApplyJobEstimate,
+    ContrastApplyJob as ContrastApplyJob,
+    resolve_contrast_apply_command as resolve_contrast_apply_command,
+    validate_contrast_apply_command_record as validate_contrast_apply_command_record,
+    contrast_apply_command_from_record as contrast_apply_command_from_record,
+    rebind_contrast_apply_command as rebind_contrast_apply_command,
+    estimate_contrast_apply_command as estimate_contrast_apply_command,
+    execute_contrast_apply_command as execute_contrast_apply_command,
+    estimate_contrast_apply_job as estimate_contrast_apply_job,
+    submit_contrast_apply as submit_contrast_apply,
 )
 from ._native import Settings as Settings
 from ._native import auto_threshold_histogram_imagej as auto_threshold_histogram_imagej

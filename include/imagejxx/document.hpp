@@ -218,6 +218,7 @@ public:
 
 private:
   friend class PreparedOperation;
+  friend class ContrastApplyJob;
   void retain_resources(std::shared_ptr<const void> guard);
   void require_active() const;
   DocumentData apply_to(const DocumentData &base) const;

@@ -1,0 +1,111 @@
+#include <imagejxx/contrast_apply_job.hpp>
+#include <imagejxx/application.hpp>
+#include <imagejxx/manual_threshold.hpp>
+#include "../../src/native/kernel_control.hpp"
+#include <condition_variable>
+#include <atomic>
+#include <iostream>
+using namespace imagejxx;
+using namespace std::chrono_literals;
+namespace {
+void check(bool b,const char *s){if(!b)throw std::runtime_error(s);}
+template<class E=std::exception,class F>void refuses(F f){try{f();}catch(const E &){return;}throw std::runtime_error("Expected refusal");}
+template<class F>void until(F f){const auto end=std::chrono::steady_clock::now()+5s;while(!f()){check(std::chrono::steady_clock::now()<end,"Apply command deadline");std::this_thread::sleep_for(1ms);}}
+struct Source:PlaneSource {
+  mutable std::atomic<int> reads{0},mainReads{0};bool opened=true;
+  const std::thread::id creator=std::this_thread::get_id();
+  mutable std::mutex mutex;mutable std::condition_variable changed;
+  DatasetShape shape()const override{return {1,2,2,2,4,1};}
+  PixelType pixel_type()const override{return PixelType::UInt8;}
+  void open(){std::lock_guard<std::mutex> lock(mutex);opened=true;changed.notify_all();}
+  std::shared_ptr<const Image> read_plane(PlanePosition p)const override{
+    ++reads;if(std::this_thread::get_id()==creator)++mainReads;
+    std::unique_lock<std::mutex> lock(mutex);
+    const auto end=std::chrono::steady_clock::now()+5s;
+    while(!opened){lock.unlock();kernel_checkpoint();lock.lock();check(std::chrono::steady_clock::now()<end,"Reader deadline");changed.wait_for(lock,1ms);}
+    lock.unlock();kernel_checkpoint();auto result=std::make_shared<Image>(4,2,1,PixelType::UInt8);
+    for(int i=0;i<8;++i)result->pixels[i]=i+20*p.c+10*p.z;return result;
+  }
+};
+struct OpenOnExit{std::shared_ptr<Source> source;~OpenOnExit(){source->open();}};
+void records(){
+  auto source=std::make_shared<Source>();auto owner=std::make_shared<Document>(Dataset(source));
+  owner->select(Selection::from_packed_mask(4,2,{0x66}));
+  auto view=owner->snapshot().display();view.properties["retained"]=metadata_object({{"future",true}});owner->set_display(view);
+  const auto before=owner->snapshot();TargetRequest all;all.scope=TargetScope::AllZ;
+  auto command=resolve_contrast_apply_command(before,{0,7,0},all);const auto record=command.record();
+  validate_contrast_apply_command_record(record);
+  auto strict=contrast_apply_command_from_record(before,record);check(strict.target().position_count()==2,"Strict AllZ roundtrip");
+  check(source->reads==0,"Capture/record/strict validation do not read source");
+  auto bad=record;bad["extra"]=true;refuses([&]{validate_contrast_apply_command_record(bad);});
+  bad=record;bad["profile"]=std::string("unknown");refuses([&]{rebind_contrast_apply_command(before,bad,{});});
+  ContrastApplyCommandLimits tiny;tiny.max_record_bytes=1;refuses([&]{resolve_contrast_apply_command(before,{},all,tiny);});check(source->reads==0,"Budget refusal precedes IO");
+  auto detached=before.display();detached.crosshair[2]=1;refuses([&]{contrast_apply_command_from_record(before.with_display(detached),record);});
+  view.zoom=2;owner->set_display(view);refuses<RevisionConflict>([&]{contrast_apply_command_from_record(owner->snapshot(),record);});
+  auto rebound=rebind_contrast_apply_command(owner->snapshot(),record,{});
+  check(rebound.target().position_count()==1 && rebound.options().maximum==7,"Explicit rebind recaptures view/target");
+  owner->select(Selection::from_packed_mask(4,2,{0}));refuses<RevisionConflict>([&]{contrast_apply_command_from_record(owner->snapshot(),record);});
+  auto empty=rebind_contrast_apply_command(owner->snapshot(),record,{});auto edit=execute_contrast_apply_command(empty);owner->commit(edit);check(source->reads==0,"Rebind uses destination empty selection, not recorded mask");
+}
+void jobs(){
+  JobScheduler scheduler;Application app;auto source=std::make_shared<Source>();source->opened=false;OpenOnExit release{source};
+  auto owner=std::make_shared<Document>(Dataset(source));app.adopt(owner);const auto before=owner->snapshot();
+  auto command=resolve_contrast_apply_command(before,{0,7,0});
+  auto job=submit_contrast_apply(scheduler,command);until([&]{return source->reads>0;});
+  check(source->mainReads==0 && before.shares_data(owner->snapshot()),"Worker alone acquires source and leaves owner unchanged");
+  job.cancel();check(job.wait_for(5s),"Running cancellation completes");refuses<OperationCancelled>([&]{job.publish(app);});
+  until([&]{return scheduler.usage().reserved_bytes==0;});
+  source->open();auto ready=submit_contrast_apply(scheduler,command);check(ready.wait_for(5s),"Ready result completes");
+  std::optional<DocumentSnapshot> preview=ready.preview();std::optional<Dataset> data=preview->data().dataset;auto plane=data->plane();
+  check(plane->pixels==std::vector<double>({0,36,73,109,146,182,219,255}),"Detached preview has independent expected values");
+  const auto reservation=ready.info().resource_bytes;check(scheduler.usage().retained_bytes==reservation,"Ready reservation retained");
+  check(metadata_equal(ready.record(),command.record()),"Ready record matches captured intent");
+  ready.publish(app);check(ready.info().state==JobState::Completed && owner->snapshot().dirty(),"Publication commits on caller thread");
+  check(scheduler.usage().reserved_bytes==reservation,"Escaped preview keeps full reservation after publication");
+  preview.reset();data.reset();check(scheduler.usage().reserved_bytes==reservation,"Plane alias keeps reservation");plane.reset();
+  until([&]{return scheduler.usage().reserved_bytes==0;});
+  owner->undo();auto stale=submit_contrast_apply(scheduler,resolve_contrast_apply_command(owner->snapshot(),{0,7,0}));check(stale.wait_for(5s),"Stale proposal ready");
+  auto view=owner->snapshot().display();view.zoom=3;owner->set_display(view);const auto stable=owner->snapshot();
+  refuses<RevisionConflict>([&]{stale.publish(app);});check(stale.info().state==JobState::Failed && stable.shares_data(owner->snapshot()),"Stale publication fails without edits");
+  until([&]{return scheduler.usage().reserved_bytes==0;});
+  auto canceled=submit_contrast_apply(scheduler,resolve_contrast_apply_command(owner->snapshot(),{0,7,0}));check(canceled.wait_for(5s),"Cancel-ready proposal ready");
+  std::optional<DocumentSnapshot> retained=canceled.preview();canceled.cancel();refuses<OperationCancelled>([&]{canceled.publish(app);});
+  check(scheduler.usage().reserved_bytes>0,"Cancel preserves escaped preview lease");scheduler.shutdown();check(retained->data().dataset.plane()->pixels.back()==255,"Shutdown preserves preview values");retained.reset();
+  until([&]{return scheduler.usage().reserved_bytes==0;});
+}
+void freeze(){
+  auto source=std::make_shared<Source>();auto owner=std::make_shared<Document>(Dataset(source));
+  TargetRequest request;request.scope=TargetScope::AllZ;auto target=resolve_target(owner->snapshot(),request);
+  ContrastApplyOptions options{0,7,0};ContrastApplyLimits limits;ExecutionControl control;
+  control.progress=[&](auto done,auto){if(done==1){options={100,200,0};limits.max_pixels=1;target=resolve_target(owner->snapshot());}};
+  auto edit=prepare_contrast_apply(target,options,limits,control);owner->commit(edit);
+  check(owner->snapshot().data().dataset.plane({0,0,1})->pixels==std::vector<double>(8,255),"Reentrant caller changes cannot alter frozen multi-plane intent");
+}
+void queued(){
+  JobScheduler scheduler({1,64*1024*1024,8});std::atomic<bool> finish{false},entered{false};
+  auto blocker=scheduler.submit([&](const JobContext &context){entered=true;while(!finish){context.checkpoint();std::this_thread::sleep_for(1ms);}});
+  until([&]{return entered.load();});
+  auto source=std::make_shared<Source>();std::weak_ptr<Source> weak=source;
+  auto owner=std::make_shared<Document>(Dataset(source));
+  std::optional<ResolvedContrastApplyCommand> command=resolve_contrast_apply_command(owner->snapshot(),{0,7,0});
+  auto job=submit_contrast_apply(scheduler,*command);owner.reset();source.reset();command.reset();
+  check(!weak.expired() && job.info().state==JobState::Queued,"Queued command retains its source");
+  job.cancel();check(weak.expired(),"Queued cancel drops source even while job handle survives");
+  refuses<OperationCancelled>([&]{job.preview();});finish=true;blocker.wait();blocker.complete([]{});
+}
+void reset(){
+  for(int bits:{0,12}){
+    Image image(4,1,1,PixelType::UInt16);image.pixels={10,20,30,40};
+    auto owner=std::make_shared<Document>(Dataset::from_stack({image}));owner->select(Selection::from_packed_mask(4,1,{0x60}));
+    auto view=owner->snapshot().display();ManualThresholdState threshold;threshold.range={15,35};
+    set_manual_threshold_state(view,owner->snapshot().data().dataset.shape(),threshold);owner->set_display(view);
+    const auto before=owner->snapshot();auto command=resolve_contrast_apply_command(before,{10,40,bits});
+    auto edit=execute_contrast_apply_command(command);owner->commit(edit);
+    const auto expected=bits?metadata_array({0.,4095.}):metadata_array({10.,43690.});
+    check(metadata_equal(owner->snapshot().display().properties.at("display_range"),expected),"Captured Apply uses processor reset, not mapping output bounds");
+    check(!manual_threshold_state(owner->snapshot().display(),owner->snapshot().data().dataset.shape()),"Captured Apply reset clears threshold");
+    owner->undo();check(manual_threshold_state(owner->snapshot().display(),before.data().dataset.shape()).has_value(),"Undo restores threshold with pixels");
+  }
+}
+}
+int main(){try{records();jobs();freeze();queued();reset();std::cout<<"PASS captured Apply records, strict replay/rebind, worker publication, escaped leases, cancellation and frozen intent\n";return 0;}catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

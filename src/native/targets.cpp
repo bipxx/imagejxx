@@ -1,6 +1,7 @@
 #include <imagejxx/operations.hpp>
 #include <imagejxx/targets.hpp>
 #include "target_record_internal.hpp"
+#include "kernel_control.hpp"
 #include <limits>
 #include <map>
 #include <set>
@@ -183,9 +184,9 @@ std::optional<Image> ResolvedTarget::mask(std::size_t index) const {
         (roi.z && *roi.z != p.z))
       continue;
     auto mask = roi.selection.mask(shape.x, shape.y);
-    for (std::size_t i = 0; i < result.pixels.size(); ++i)
-      if (mask.pixels[i] != 0)
-        result.pixels[i] = 255;
+    kernel_blocks("Positioned ROI union",result.pixels.size(),[&](auto first,auto last){
+      for(auto i=first;i<last;++i)if(mask.pixels[i]!=0)result.pixels[i]=255;
+    });
   }
   return result;
 }

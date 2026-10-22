@@ -1,0 +1,226 @@
+{
+  "schema_version": 1,
+  "imagej_version": "1.54r",
+  "scope": "Scalar Apply with actual ImagePlus/processor reset under default calibration; AWT construction/controls excluded.",
+  "producer_inputs": {
+    "tests/reference/ContrastApplyResetReference.java": "84e13582cb88a770b42e5cd3a36a5401a2ad64d35f098a0d23cc0a886c4c987a",
+    "build/references/binary-imagej154r/sources/ij/plugin/frame/ContrastAdjuster.java": "e6cc033f00052659b530cbba144afd6d312721ba01ae39080fcb3700befb0de2",
+    "build/references/binary-imagej154r/classes/ij/plugin/frame/ContrastAdjuster.class": "e96ad03441f326515bddd8f210fafb70b682d2adbd2e6f400d629a95d4937b18",
+    "build/references/binary-imagej154r/sources/ij/process/ByteProcessor.java": "fc23c95778bd7154eba1ea56d9ea943e7d1d9ea568fe20cf9bf9c6db1db3ad94",
+    "build/references/binary-imagej154r/classes/ij/process/ByteProcessor.class": "114969f837ccb4f86d7d3c0a9762c6d31f317c94cafb49814ff1e6a5ddc3208a",
+    "build/references/binary-imagej154r/sources/ij/process/ShortProcessor.java": "7484082e91c7095a3c79984c74b4dafa8b6d2912ed3b862e28dd331c8ba3024d",
+    "build/references/binary-imagej154r/classes/ij/process/ShortProcessor.class": "1a4d72bbb32b80c59502b1a991656ed0b099b370d0437977c26d9d0c0146bbc7",
+    "build/references/binary-imagej154r/sources/ij/ImagePlus.java": "477e3f5f913b9c42feb68ea35d21836d45fd56920cccbfc5719a06822cbcfab9",
+    "build/references/binary-imagej154r/classes/ij/ImagePlus.class": "c0bd19569dd78ff3a43222991ca3b3b04d00f8e43f7673e2de3d47982d0895da",
+    "build/references/binary-imagej154r/sources/ij/IJ.java": "8c620842fedd63392268b4fee191e4f6e9ef749ce96bf14a3e9f936e7cea06b4",
+    "build/references/binary-imagej154r/classes/ij/IJ.class": "0056d78345e0ef7e2b03b9298b03a0ab833558462cc636fb43bc8ab26e1db32c",
+    "build/references/roi-style-imagej154r/jdk/bin/java.exe": "798ffec156ceb8cb1535bf68747d0ee3dfc1fc17dcd0b322f8027018404155c1",
+    "build/references/roi-style-imagej154r/jdk/bin/javac.exe": "494786cb950aca4a0bfb3e69dbc75ce049d6965cdadb6bc486d4c20a07b0eb1a"
+  },
+  "cases": [
+    {
+      "depth": 8,
+      "bits": 0,
+      "scenario": 0,
+      "range": [
+        0.0,
+        255.0
+      ],
+      "threshold": false,
+      "palette_unchanged": true,
+      "pixels": [
+        0,
+        85,
+        170,
+        255
+      ]
+    },
+    {
+      "depth": 8,
+      "bits": 0,
+      "scenario": 1,
+      "range": [
+        0.0,
+        255.0
+      ],
+      "threshold": false,
+      "palette_unchanged": true,
+      "pixels": [
+        10,
+        85,
+        170,
+        40
+      ]
+    },
+    {
+      "depth": 8,
+      "bits": 0,
+      "scenario": 2,
+      "range": [
+        0.0,
+        255.0
+      ],
+      "threshold": false,
+      "palette_unchanged": true,
+      "pixels": [
+        85,
+        85,
+        85,
+        85
+      ]
+    },
+    {
+      "depth": 16,
+      "bits": 0,
+      "scenario": 0,
+      "range": [
+        0.0,
+        65535.0
+      ],
+      "threshold": false,
+      "palette_unchanged": true,
+      "pixels": [
+        0,
+        21845,
+        43690,
+        65535
+      ]
+    },
+    {
+      "depth": 16,
+      "bits": 0,
+      "scenario": 1,
+      "range": [
+        10.0,
+        43690.0
+      ],
+      "threshold": false,
+      "palette_unchanged": true,
+      "pixels": [
+        10,
+        21845,
+        43690,
+        40
+      ]
+    },
+    {
+      "depth": 16,
+      "bits": 0,
+      "scenario": 2,
+      "range": [
+        21845.0,
+        21845.0
+      ],
+      "threshold": false,
+      "palette_unchanged": true,
+      "pixels": [
+        21845,
+        21845,
+        21845,
+        21845
+      ]
+    },
+    {
+      "depth": 16,
+      "bits": 12,
+      "scenario": 0,
+      "range": [
+        0.0,
+        4095.0
+      ],
+      "threshold": false,
+      "palette_unchanged": true,
+      "pixels": [
+        0,
+        1365,
+        2730,
+        4094
+      ]
+    },
+    {
+      "depth": 16,
+      "bits": 12,
+      "scenario": 1,
+      "range": [
+        0.0,
+        4095.0
+      ],
+      "threshold": false,
+      "palette_unchanged": true,
+      "pixels": [
+        10,
+        1365,
+        2730,
+        40
+      ]
+    },
+    {
+      "depth": 16,
+      "bits": 12,
+      "scenario": 2,
+      "range": [
+        0.0,
+        4095.0
+      ],
+      "threshold": false,
+      "palette_unchanged": true,
+      "pixels": [
+        1365,
+        1365,
+        1365,
+        1365
+      ]
+    },
+    {
+      "depth": 16,
+      "bits": 16,
+      "scenario": 0,
+      "range": [
+        0.0,
+        65535.0
+      ],
+      "threshold": false,
+      "palette_unchanged": true,
+      "pixels": [
+        0,
+        21845,
+        43690,
+        65534
+      ]
+    },
+    {
+      "depth": 16,
+      "bits": 16,
+      "scenario": 1,
+      "range": [
+        0.0,
+        65535.0
+      ],
+      "threshold": false,
+      "palette_unchanged": true,
+      "pixels": [
+        10,
+        21845,
+        43690,
+        40
+      ]
+    },
+    {
+      "depth": 16,
+      "bits": 16,
+      "scenario": 2,
+      "range": [
+        0.0,
+        65535.0
+      ],
+      "threshold": false,
+      "palette_unchanged": true,
+      "pixels": [
+        21845,
+        21845,
+        21845,
+        21845
+      ]
+    }
+  ]
+}

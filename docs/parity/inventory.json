@@ -2413,7 +2413,8 @@
           "docs/parity/reviews/p11b-contrast-panel001.json",
           "docs/CONTRAST_PANEL.md",
           "docs/parity/reviews/p11c-contrast-apply001.json",
-          "docs/CONTRAST_APPLY.md"
+          "docs/CONTRAST_APPLY.md",
+          "docs/parity/reviews/p11d-contrast-command001.json"
         ],
         "implementation": [
           "include/imagejxx/document.hpp",
@@ -2437,7 +2438,14 @@
           "include/imagejxx/contrast_apply.hpp",
           "src/native/contrast_apply.cpp",
           "src/native/contrast_apply_bindings.cpp",
-          "src/native/bindings.cpp"
+          "src/native/bindings.cpp",
+          "include/imagejxx/jobs.hpp",
+          "include/imagejxx/contrast_apply_command.hpp",
+          "include/imagejxx/contrast_apply_job.hpp",
+          "src/native/contrast_apply_internal.hpp",
+          "src/native/contrast_apply_command.cpp",
+          "src/native/contrast_apply_job.cpp",
+          "src/native/targets.cpp"
         ],
         "tests": [
           "tests/native/test_document.cpp",
@@ -2454,7 +2462,12 @@
           "tests/python/test_contrast_apply.py",
           "tests/reference/ContrastApplyReference.java",
           "tests/fixtures/contrast-apply-imagej154r.json",
-          "examples/cpp/contrast_apply.cpp"
+          "examples/cpp/contrast_apply.cpp",
+          "tests/native/test_contrast_apply_command.cpp",
+          "tests/python/test_contrast_apply_command.py",
+          "tests/reference/ContrastApplyResetReference.java",
+          "tests/fixtures/contrast-apply-reset-imagej154r.json",
+          "examples/cpp/contrast_apply_command.cpp"
         ]
       },
       "id": "G057",
@@ -2464,11 +2477,12 @@
       ],
       "name": "Brightness/contrast and window/level",
       "remaining": [
-        "The scalar Apply core is now available through C++/Python, but the contrast panel still has no Apply button. Add a captured command/record/replay path, native worker job/reservation/publication integration and explicit plane/stack/channel/ROI controls, then qualify actual input, recording, cancellation, stale results, busy behavior and Undo/Redo.",
-        "RGB Apply requires independent color-controller reference behavior before enabling it; RGBA is a separate extension. Floating Apply must remain unavailable consistently with ImageJ scalar support.",
-        "Exact upstream slider normalization, histogram/control behavior including log scale and calibration, Set/Reset semantics and complete selection/channel/stack traces remain unqualified. Float64, IEEE-preserving Float32 and packed RGB/RGBA histogram/Auto are not enabled in the current panel.",
-        "Finite legacy automatic range scans and other analysis/editing paths can still acquire pixels synchronously; whole-editor responsiveness remains open.",
-        "Apply admission bounds owned samples/masks/replacement tables/channel-state allowance only. Source/metadata, ROI rasterizer scratch, reader internals and commit/history allocations remain outside the bound; full process/resource/platform acceptance remains open."
+        "Captured commands, strict/rebind APIs and worker preparation/publication are available through C++/Python. Connect them to the Window host: active owner and busy policy, wait/cancel/close, staged workflow recording, diagnostics and shared OperationTargetPanel T/C/Z/ROI controls. The contrast panel still has no Apply button.",
+        "Add editor record-schema dispatch, explicit rebind review and native workflow/batch-language integration; the standalone native replay/rebind APIs are not yet editor workflow support.",
+        "RGB Apply requires independent color-controller reference behavior before enabling it; RGBA is a separate extension. Floating Apply remains unavailable consistently with ImageJ scalar support.",
+        "Processor reset now clears threshold, preserves palettes and uses observed UInt16 or configured full display bounds. Broader multi-channel representative-plane, empty-target, custom default-range, signed/intensity calibration and UI reference acceptance remain open. Empty masks retain the explicit native no-change/no-IO extension.",
+        "Exact upstream slider normalization, log histogram/control/calibration and Set/Reset traces remain unqualified. Float64, IEEE-preserving Float32 and packed RGB/RGBA histogram/Auto are not enabled in the current panel.",
+        "Finite legacy automatic range scans and other analysis/editing paths can still acquire pixels synchronously. Source caches, allocator/frontend and publication/history allocations are outside declared job reservations; full responsiveness/resource/platform acceptance remains open."
       ],
       "required_work": "Non-destructive histogram-linked sliders, brightness/contrast/window/level controls, saturation-aware auto, reset/set/apply and channel targeting",
       "status": "in_progress",
@@ -2477,7 +2491,8 @@
         "m1-document-records-windows-2026-10-10",
         "p11a.display-actions.metadata.001",
         "p11b.contrast-panel.native.001",
-        "p11c.contrast-apply.scalar.001"
+        "p11c.contrast-apply.scalar.001",
+        "p11d.contrast-apply.command-job.001"
       ]
     },
     {
@@ -181435,6 +181450,29 @@
         "total": 3256
       },
       "scope": "Windows/Linux each pass nineteen native suites, ten background-view repetitions, four background GL contexts, one installed public C++ Apply consumer and 3256 selected installed Python checks, zero failures/errors/skips. Eighty new Python cases include 64 actual ImageJ 1.54r scalar Apply full-domain UInt8/UInt16 hashes across all configured bit ranges and fractional/collapsed/extreme Java endpoints. Native/installed tests cover scalar mapping, intra-kernel validation/mapping cancellation, selected-plane-only virtual IO, mask exterior preservation, metadata-only admission before reads, affected-channel reset, one-step paired pixel/display Undo/Redo, isolated preparation, last-plane cancellation and stale-display refusal. Existing operations/catalog/targets/execution, Auto, histogram/panel, dataset/TIFF/cache/XYZ/settings regressions pass. All 1297 input registrations and the commercial-use dependency audit remain unchanged/passing. This qualifies the scalar C++/Python arithmetic and transaction foundation; no new Apply GUI, command/replay/job route or broad upstream/platform/resource acceptance is claimed."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-22",
+      "id": "p11d.contrast-apply.command-job.001",
+      "identity": {
+        "qualification": {
+          "bytes": 15637,
+          "path": "docs/parity/reviews/p11d-contrast-command001.json",
+          "sha256": "88829b1932fb2eda87926311e24a877494c8bc6d6a9b97672c9e34f536dc0e1e"
+        }
+      },
+      "platform": "Windows/Linux installed C++/Python captured Apply commands, worker jobs and processor reset",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 3310,
+        "report": "build/p11d-contrast-command001/windows-python002/pytest.xml",
+        "skipped": 0,
+        "total": 3310
+      },
+      "scope": "Windows/Linux each pass twenty native suites, ten background repetitions, four background GL contexts, one installed public C++ command/job consumer and 3310 installed Python checks, zero failure/error/skip. Fifty-four new Python cases cover captured intent, full original-record validation before strict replay/rebinding, lossless numeric rules, stale source domains, masks/positioned ROIs, metadata-only admission, publication failure atomicity and escaped-preview reservation lifetime. Twelve new actual ImageJ 1.54r Apply/reset cases cover UInt8/UInt16 whole/partial/constant data, configured and observed display ranges, threshold clearing and palette preservation. All 64 prior full-domain arithmetic vectors and prior 3256 selected regressions pass. Native fixtures additionally cover blocked worker-only virtual reads, queued source release, cooperative running/ready cancellation, shutdown, publication guards, plane-alias leases and reentrant caller changes to frozen inputs. Final qualification fingerprints actual compiled source trees against a fresh Windows manifest; Linux Python runs use a byte-verified native filesystem snapshot of 5467 test/config/fixture files. Both final installed origins and retained product bytes are checked. All 1297 input registrations, original 99 requirement/status triples and the commercial-use dependency inventory are preserved. This is scoped command/job/reset qualification, not an ImGui Apply route or complete G057/platform/resource acceptance."
     }
   ]
 }

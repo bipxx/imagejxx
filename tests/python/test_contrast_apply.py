@@ -44,14 +44,14 @@ def test_masked_multiplane_apply_pairs_pixels_and_display_history():
     app.commit(transaction)
     expected = np.tile(np.array([10, 1365, 2730, 40], np.uint16), (2, 1, 1))
     np.testing.assert_array_equal(owner.snapshot().dataset.numpy("ZYX"), expected)
-    assert owner.snapshot().display.properties == {"display_range": [0., 4094.], "retained": {"exact": 42}}
+    assert owner.snapshot().display.properties == {"display_range": [0., 4095.], "retained": {"exact": 42}}
     assert owner.undo_steps == steps + 1 and owner.snapshot().dirty
     owner.undo()
     np.testing.assert_array_equal(owner.snapshot().dataset.numpy("ZYX"), pixels)
     assert owner.snapshot().display.properties == before.display.properties
     owner.redo()
     np.testing.assert_array_equal(owner.snapshot().dataset.numpy("ZYX"), expected)
-    assert owner.snapshot().display.properties["display_range"] == [0., 4094.]
+    assert owner.snapshot().display.properties["display_range"] == [0., 4095.]
 
 
 def test_admission_and_cancellation_preserve_source():

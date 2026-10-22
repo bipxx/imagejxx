@@ -1,10 +1,13 @@
 #include <imagejxx/contrast_apply.hpp>
 #include <imagejxx/channel_display.hpp>
+#include <imagejxx/manual_threshold.hpp>
 #include "kernel_control.hpp"
+#include "contrast_apply_internal.hpp"
 #include <algorithm>
 #include <cmath>
 #include <limits>
 #include <set>
+#include <map>
 
 namespace imagejxx {
 namespace {
@@ -50,8 +53,9 @@ double mapped(double v, Mapping m, PixelType type) {
 } // namespace
 Image apply_contrast_imagej(const Image &source, const ContrastApplyOptions &options,
                             const ExecutionControl &control) {
-  ExecutionScope scope(control);kernel_checkpoint();
-  const auto map=mapping(source.type,source.channels,options);
+  const auto frozen_options=options;const auto frozen_control=control;
+  ExecutionScope scope(frozen_control);kernel_checkpoint();
+  const auto map=mapping(source.type,source.channels,frozen_options);
   if (source.width<=0 || source.height<=0 ||
       mul(std::size_t(source.width),std::size_t(source.height))!=source.pixels.size())
     throw std::invalid_argument("Invalid contrast Apply image");
@@ -68,12 +72,11 @@ Image apply_contrast_imagej(const Image &source, const ContrastApplyOptions &opt
   });
   kernel_checkpoint();return result;
 }
-DocumentTransaction prepare_contrast_apply(const ResolvedTarget &target,
-    const ContrastApplyOptions &options,const ContrastApplyLimits &limits,
-    const ExecutionControl &control) {
-  ExecutionScope scope(control);kernel_checkpoint();
+void detail::validate_contrast_apply_options(PixelType type,int samples,const ContrastApplyOptions &options){(void)mapping(type,samples,options);}
+std::size_t detail::contrast_apply_working_bytes(const ResolvedTarget &target,
+    const ContrastApplyOptions &options,const ContrastApplyLimits &limits) {
   const auto &source=target.source();const auto &dataset=source.data().dataset;
-  const auto shape=dataset.shape();const auto map=mapping(dataset.pixel_type(),shape.s,options);
+  const auto shape=dataset.shape();(void)mapping(dataset.pixel_type(),shape.s,options);
   if (target.destination()!=OutputDestination::InPlace || target.execution_mode()!=ExecutionMode::Planes)
     throw std::invalid_argument("Contrast Apply preparation needs an in-place plane target");
   const auto plane=mul(std::size_t(shape.x),std::size_t(shape.y));
@@ -84,12 +87,25 @@ DocumentTransaction prepare_contrast_apply(const ResolvedTarget &target,
                          add(mul(std::size_t(shape.c),65536),mul(count,256)));
   if(!limits.max_pixels || pixels>limits.max_pixels || !limits.max_working_bytes || working>limits.max_working_bytes)
     throw std::invalid_argument("Contrast Apply pixel/working-byte limit");
+  return working;
+}
+DocumentTransaction prepare_contrast_apply(const ResolvedTarget &requested,
+    const ContrastApplyOptions &requested_options,const ContrastApplyLimits &requested_limits,
+    const ExecutionControl &requested_control) {
+  const auto target=requested;const auto options=requested_options;const auto limits=requested_limits;
+  const auto control=requested_control;ExecutionScope scope(control);kernel_checkpoint();
+  (void)detail::contrast_apply_working_bytes(target,options,limits);
+  const auto &source=target.source();const auto &dataset=source.data().dataset;
+  const auto shape=dataset.shape();
+  const auto plane=mul(std::size_t(shape.x),std::size_t(shape.y));
+  const auto count=target.position_count();
   auto channels=recognized_channel_display(source.display(),dataset);
   if(source.display().properties.count("channel_display") && !channels)
     throw std::invalid_argument("Contrast Apply cannot reset an opaque channel display");
   auto edit=source.begin_edit(Change::All);
   std::vector<std::pair<PlanePosition,Image>> replacements;replacements.reserve(count);
   std::set<int> affected;
+  std::map<int,std::pair<bool,std::array<double,2>>> bounds;
   for(std::size_t i=0;i<count;++i) {
     kernel_checkpoint();const auto position=target.position(i);const auto mask=target.mask(i);
     bool selected=!mask;
@@ -102,6 +118,15 @@ DocumentTransaction prepare_contrast_apply(const ResolvedTarget &target,
     if(mask)kernel_blocks("Contrast Apply selection",plane,[&](auto first,auto last){
       for(auto p=first;p<last;++p)if(mask->pixels[p]==0)output.pixels[p]=input->pixels[p];
     });
+    if(dataset.pixel_type()==PixelType::UInt16 && !options.unsigned16_bits){
+      std::array<double,2> range{output.pixels.front(),output.pixels.front()};
+      kernel_blocks("Apply reset extrema",output.pixels.size(),[&](auto first,auto last){
+        for(auto p=first;p<last;++p){range[0]=std::min(range[0],output.pixels[p]);range[1]=std::max(range[1],output.pixels[p]);}
+      });
+      const auto &view=source.display();const bool active=position.t==view.t && position.z==view.crosshair[2];
+      auto found=bounds.find(position.c);
+      if(found==bounds.end() || active)bounds.insert_or_assign(position.c,std::make_pair(active,range));
+    }
     replacements.emplace_back(position,std::move(output));affected.insert(position.c);
     execution_progress(i+1,count);
   }
@@ -109,10 +134,19 @@ DocumentTransaction prepare_contrast_apply(const ResolvedTarget &target,
   if(!replacements.empty()) {
     edit.replace_dataset(dataset.with_planes(std::move(replacements)));
     auto display=source.display();
+    const auto reset_range=[&](int c){
+      if(dataset.pixel_type()==PixelType::UInt8)return std::array<double,2>{0,255};
+      if(options.unsigned16_bits)return std::array<double,2>{0,double((1u<<options.unsigned16_bits)-1)};
+      return bounds.at(c).second;
+    };
     if(channels) {
-      for(auto c:affected)channels->channels.at(c).range={0,double(map.range-1)};
+      for(auto c:affected)channels->channels.at(c).range=reset_range(c);
       display=with_channel_display(std::move(display),dataset,std::move(channels));
-    } else display.properties["display_range"]=metadata_array({0.,double(map.range-1)});
+    } else {
+      const auto channel=affected.count(source.display().c)?source.display().c:*affected.begin();
+      const auto range=reset_range(channel);display.properties["display_range"]=metadata_array({range[0],range[1]});
+    }
+    reset_manual_threshold_state(display);
     edit.set_axis_remap_display(std::move(display));
   }
   kernel_checkpoint();return edit;

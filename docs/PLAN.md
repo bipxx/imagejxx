@@ -1,5 +1,25 @@
 # ImageJ and Fiji gap closure plan
 
+**Captured Apply commands/jobs checkpoint, 2026-10-22 (work in progress):**
+C++/Python now provide immutable Apply records, strict replay, explicit rebinding,
+metadata admission and native worker jobs with caller-thread atomic publication.
+Escaped previews/datasets/plane aliases retain their reservations after cancel or
+completion. Queued cancellation releases sources. Reentrant caller changes cannot
+alter frozen multi-plane inputs, and positioned-ROI union checks cancellation.
+New ImageJ 1.54r cases correct reset semantics: clear threshold, preserve palettes,
+and reset UInt16 to observed bounds or the configured full display range, even
+when the mapped pixel maximum is one level lower.
+Windows/Linux each pass twenty native suites, an installed command/job SDK
+consumer, 3310 installed Python checks (54 new), ten background repetitions and
+four background GL contexts. Linux source/test manifests verify native filesystem
+inputs; exact scratch is archived/verified before cleanup. See
+[the remaining host/UI sequence](CONTRAST_APPLY.md) and the
+[scoped receipt](parity/reviews/p11d-contrast-command001.json).
+The Window host, Apply button, editor workflow/batch routing, RGB behavior and
+full upstream/resource/platform acceptance remain open. G057 stays in progress;
+all 99 original requirement/status triples and the existing Auto gate remain.
+
+
 **Scalar contrast Apply core checkpoint, 2026-10-22 (work in progress):**
 C++ and Python now expose scalar UInt8/UInt16 Apply arithmetic and isolated
 in-place target preparation. Masks preserve exterior pixels; range resets share
