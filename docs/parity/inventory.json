@@ -2420,7 +2420,8 @@
           "docs/parity/reviews/p11g-contrast-workflow001.json",
           "docs/NATIVE_WORKFLOW_PROGRAM.md",
           "docs/NATIVE_WORKFLOW_PARAMETERS.md",
-          "docs/parity/reviews/p11h-rgb-contrast001.json"
+          "docs/parity/reviews/p11h-rgb-contrast001.json",
+          "docs/parity/reviews/p11i-rgb-command001.json"
         ],
         "implementation": [
           "include/imagejxx/document.hpp",
@@ -2459,7 +2460,10 @@
           "src/native/workflow_stage_metadata.cpp",
           "src/desktop/native_workflow_panel.cpp",
           "src/desktop/native_workflow_parameters.cpp",
-          "include/imagejxx/rgb_contrast_apply.hpp"
+          "include/imagejxx/rgb_contrast_apply.hpp",
+          "include/imagejxx/rgb_contrast_apply_command.hpp",
+          "include/imagejxx/rgb_contrast_apply_job.hpp",
+          "src/native/rgb_contrast_apply_command.cpp"
         ],
         "tests": [
           "tests/native/test_document.cpp",
@@ -2516,7 +2520,8 @@
         "p11e.contrast-apply.desktop.001",
         "p11f.contrast-apply.rebind-ui.001",
         "p11g.contrast-apply.workflow-batch.001",
-        "p11h.rgb-contrast.foundation.001"
+        "p11h.rgb-contrast.foundation.001",
+        "p11i.rgb-contrast.command-job.001"
       ]
     },
     {
@@ -181589,6 +181594,29 @@
         "total": 4127
       },
       "scope": "Windows/Linux each pass 22 native suites, three full C++ workflow/batch/RGB UI regression probes, one installed public scalar/RGB C++ SDK consumer, ten background repetitions, four hidden GL contexts and 4127 installed Python checks, zero failure/error/skip. There are 334 new Python cases: 273 actual ImageJ 1.54r ColorProcessor preview/ContrastAdjuster RGB commit/subsequent-snapshot rows and 61 native API/target/guard cases. References cover every unsigned component value, all seven masks, whole/rectangular/irregular ROIs and fractional/extreme/collapsed/signed-zero spans. Native fixtures additionally verify Java numerator wrapping, three-sample ROI indexing, paired range/pixel Undo/Redo, metadata admission, stale display, mid-kernel cancellation and reentrant frozen controls. Native transaction targeting covers independent T/C/Z and whole/active/positioned masks; empty masks keep the explicit no-change/no-IO extension. Scalar API/header/V1 command contracts remain unchanged. Actual native compiled sources and installed module origins are pinned; Linux tests use a SHA-verified native snapshot of 5469 test/config/fixture files. Owned scratch and oracle/SDK build products are CRC/member-SHA archived before removal; qualified installs, consumers, probes, logs and reports remain. Original 99 requirement/status triples, existing input registrations and commercial-use dependency inventory are preserved. This is an RGB kernel/transaction/API foundation, not enabled RGB editor/captured-command/job/workflow support, complete RGB controller/stack/Auto behavior or full G057/ImageJ/Fiji/platform/resource acceptance."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-22",
+      "id": "p11i.rgb-contrast.command-job.001",
+      "identity": {
+        "qualification": {
+          "path": "docs/parity/reviews/p11i-rgb-command001.json",
+          "bytes": 22608,
+          "sha256": "6c97fd02c87ee5be41f8f2894e04ef61097e1101ca64e012cadfb1bb8d25f889"
+        }
+      },
+      "platform": "Windows/Linux installed C++/Python captured RGB commands and resource-leased native jobs",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 4443,
+        "report": "build/p11i-rgb-command001/windows-python002/pytest.xml",
+        "skipped": 0,
+        "total": 4443
+      },
+      "scope": "Windows/Linux each pass 22 native suites, three existing full C++ workflow/batch/RGB UI regression probes, one installed public C++ SDK consumer exercising scalar/RGB APIs and RGB captured replay/job publication, ten background repetitions, four hidden GL contexts and 4443 installed Python checks, zero failure/error/skip. There are 316 new Python cases: 273 actual ImageJ 1.54r reference rows exercised through RGB record capture/JSON strict replay/native worker preview/atomic publication/fresh committed baseline, plus 43 grammar/stale-domain/lease/storage/rebind/positioned-ROI checks. Native tests add virtual RGB worker-only IO, running/queued cancellation, queued source release, escaped plane reservations, stale publication and scalar/RGB profile isolation. Shared scalar-neutral metadata admission/geometry encoding helpers are extracted without behavior changes, and the native retained-result preparation/publication path is shared. Scalar public kernel/command headers and scalar V1 schema/fields remain unchanged. Actual native compiled sources and installed module origins are pinned; Linux tests use a SHA-verified native snapshot of 5469 test/config/fixture files. The sole post-build test amendment places a provider-read assertion before test-side full-dataset materialization; old/new test fingerprints and the failed harness report are retained. Owned scratch is CRC/member-SHA archived before removal; qualified installs, consumers, probes, logs and reports remain. Original 99 requirement/status triples, existing input registrations and commercial-use dependency inventory are preserved. This does not enable RGB editor controls, qualify the complete active/stack controller or close full G057/ImageJ/Fiji/platform/resource acceptance."
     }
   ]
 }

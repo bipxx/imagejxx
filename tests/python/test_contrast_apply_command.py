@@ -7,9 +7,203 @@ import numpy as np
 import pytest
 import imagejxx as ij
 from test_contrast_apply import options
+from test_contrast_apply import RGB_FIXTURE, rgb_options, rgb_input
+import hashlib
 from pathlib import Path
 
 RESET = json.loads((Path(__file__).parents[1] / "fixtures/contrast-apply-reset-imagej154r.json").read_text())
+
+
+def rgb_owner():
+    pixels = np.tile(np.arange(24, dtype=np.uint8).reshape(2, 4, 3), (1, 2, 2, 1, 1, 1))
+    observer = ij.DatasetReadObserver()
+    document = ij.Document(ij.Dataset(pixels, axes="TCZYXS").observe_reads(observer))
+    document.select(ij.Selection.from_mask(np.array([[0, 1, 1, 0]] * 2, np.uint8)))
+    return document, pixels, observer
+
+
+@pytest.mark.parametrize("row", RGB_FIXTURE["rows"], ids=lambda r: f'rgb-r{r["range_index"]}-c{r["channels"]}-roi{r["roi"]}')
+def test_rgb_captured_worker_matches_actual_imagej(row):
+    pixels = rgb_input()
+    observer = ij.DatasetReadObserver()
+    document = ij.Document(ij.Dataset(pixels, axes="YXS").observe_reads(observer))
+    if row["roi"]:
+        mask = np.zeros((2, 256), np.uint8)
+        mask[:, 17:236] = 1
+        if row["roi"] == 2:
+            y, x = np.indices(mask.shape)
+            mask[(x + y) % 3 == 0] = 0
+        document.select(ij.Selection.from_mask(mask))
+    app = ij.Application()
+    app.adopt(document)
+    low, high = RGB_FIXTURE["ranges"][row["range_index"]]
+    resolved = ij.resolve_rgb_contrast_apply_command(document.snapshot(), rgb_options(low, high, row["channels"]))
+    record = json.loads(json.dumps(resolved.record()))
+    ij.validate_rgb_contrast_apply_command_record(record)
+    strict = ij.rgb_contrast_apply_command_from_record(document.snapshot(), record)
+    assert strict.record() == resolved.record() and observer.counts().plane_reads == 0
+    before = document.snapshot()
+    job = ij.submit_rgb_contrast_apply(app.job_scheduler, strict)
+    assert job.wait(5000) and job.ready
+    assert document.snapshot().shares_data(before) and job.record() == resolved.record()
+    preview = job.preview
+    assert hashlib.sha256(preview.dataset.numpy("YXS").tobytes()).hexdigest() == row["sha256"]
+    job.publish(app)
+    after = document.snapshot()
+    assert hashlib.sha256(after.dataset.numpy("YXS").tobytes()).hexdigest() == row["sha256"]
+    assert after.display.properties["display_range"] == [0., 255.]
+    # A new capture must use the committed baseline, with no stale-preview reuse.
+    document.select(None)
+    next_command = ij.resolve_rgb_contrast_apply_command(document.snapshot(), strict.options)
+    document.commit(ij.execute_rgb_contrast_apply_command(next_command))
+    assert hashlib.sha256(document.snapshot().dataset.numpy("YXS").tobytes()).hexdigest() == row["next_sha256"]
+    document.undo()
+    np.testing.assert_array_equal(document.snapshot().dataset.numpy("YXS"), after.dataset.numpy("YXS"))
+    app.job_scheduler.shutdown()
+
+
+RGB_MALFORMED = [
+    (("extra",), 1), (("schema",), "imagejxx.contrast-apply-command"),
+    (("schema_version",), True), (("schema_version",), 1.),
+    (("operation",), "contrast_apply"), (("profile",), "scalar_integer_apply_v1"),
+    (("options", "channels"), True), (("options", "channels"), 1.),
+    (("options", "channels"), 0), (("options", "channels"), 8),
+    (("options", "unsigned16_bits"), 12), (("options", "minimum"), True),
+    (("options", "minimum"), 2**64 - 1), (("options", "maximum"), -1),
+    (("source", "shape", 5), 4), (("source", "pixel_type"), "uint16"),
+    (("source", "sample_policy"), "preserve_quiet_nan_float32"),
+    (("target", "source_revisions", 0), 99), (("target", "execution_mode"), "volume"),
+    (("target", "destination"), "new_document"), (("target", "document_id"), 0),
+    (("reset_anchor", 0), True), (("reset_anchor", 2), 99), (("display_revision",), 1.),
+    (("display_properties", "channel_display"), {}), (("selection", "extra"), 1),
+    (("reset", "policy"), "imagej_scalar_reset_v1"), (("reset", "range", 1), 254),
+    (("reset", "threshold"), "preserve"), (("reset", "indexed_palette"), "clear"),
+    (("reset", "extra"), 1),
+]
+
+
+@pytest.mark.parametrize("path,value", RGB_MALFORMED, ids=lambda v: str(v))
+def test_rgb_original_validated_entirely_before_explicit_rebind(path, value):
+    document, _, observer = rgb_owner()
+    record = ij.resolve_rgb_contrast_apply_command(document.snapshot(), rgb_options(0, 7)).record()
+    at = record
+    for key in path[:-1]:
+        at = at[key]
+    at[path[-1]] = value
+    stable = document.snapshot()
+    for call in (lambda: ij.validate_rgb_contrast_apply_command_record(record),
+                 lambda: ij.rgb_contrast_apply_command_from_record(stable, record),
+                 lambda: ij.rebind_rgb_contrast_apply_command(stable, record, ij.TargetRequest())):
+        with pytest.raises((ValueError, TypeError, IndexError, ij.RevisionConflict)):
+            call()
+    assert observer.counts().plane_reads == 0 and document.snapshot().shares_data(stable)
+
+
+@pytest.mark.parametrize("change", ["display", "selection", "pixels", "metadata"])
+def test_rgb_strict_and_pending_publication_reject_all_stale_domains(change):
+    document, _, _ = rgb_owner()
+    app = ij.Application()
+    app.adopt(document)
+    command = ij.resolve_rgb_contrast_apply_command(document.snapshot(), rgb_options(0, 7))
+    job = ij.submit_rgb_contrast_apply(app.job_scheduler, command)
+    assert job.wait(5000)
+    if change == "display":
+        view = document.snapshot().display
+        view.zoom = 2
+        document.set_display(view)
+    elif change == "selection":
+        document.select(None)
+    elif change == "metadata":
+        edit = document.begin_edit()
+        edit.set_extension("rgb-test", {"changed": True})
+        document.commit(edit)
+    else:
+        document.commit(ij.execute_rgb_contrast_apply_command(command))
+    stable = document.snapshot()
+    with pytest.raises(ij.RevisionConflict):
+        ij.rgb_contrast_apply_command_from_record(stable, command.record())
+    with pytest.raises(ij.RevisionConflict):
+        job.publish(app)
+    assert stable.shares_data(document.snapshot()) and job.info.state == ij.JobState.FAILED
+    wait_usage(app.job_scheduler)
+
+
+@pytest.mark.parametrize("cancel", [False, True])
+def test_rgb_worker_escaped_dataset_retains_memory_lease(cancel):
+    document, _, _ = rgb_owner()
+    app = ij.Application()
+    app.adopt(document)
+    job = ij.submit_rgb_contrast_apply(app.job_scheduler, ij.resolve_rgb_contrast_apply_command(document.snapshot(), rgb_options(0, 7, 4)))
+    assert job.wait(5000)
+    preview = job.preview
+    dataset = preview.dataset
+    reservation = job.info.resource_bytes
+    before = document.snapshot()
+    if cancel:
+        assert job.cancel()
+        with pytest.raises(ij.OperationCancelled):
+            job.publish(app)
+        assert document.snapshot().shares_data(before)
+    else:
+        job.publish(app)
+        assert job.info.state == ij.JobState.COMPLETED
+    del preview
+    gc.collect()
+    assert app.job_scheduler.usage.reserved_bytes == reservation
+    np.testing.assert_array_equal(dataset.plane()[0, 1], [109, 4, 5])
+    app.job_scheduler.shutdown()
+    del dataset
+    gc.collect()
+    wait_usage(app.job_scheduler)
+
+
+@pytest.mark.parametrize("dtype,samples", [(np.uint8, 1), (np.uint8, 4), (np.uint16, 3), (np.float32, 3)])
+def test_rgb_rebind_cannot_cross_unqualified_storage(dtype, samples):
+    document, _, _ = rgb_owner()
+    record = ij.resolve_rgb_contrast_apply_command(document.snapshot()).record()
+    destination = ij.Document(ij.Dataset(np.zeros((2, 4, samples), dtype), axes="YXS"))
+    with pytest.raises(ValueError):
+        ij.rebind_rgb_contrast_apply_command(destination.snapshot(), record, ij.TargetRequest())
+
+
+def test_rgb_rebind_uses_fresh_geometry_estimates_and_no_io_empty_masks():
+    document, _, observer = rgb_owner()
+    request = ij.TargetRequest(ij.TargetScope.ALL_Z)
+    command = ij.resolve_rgb_contrast_apply_command(document.snapshot(), rgb_options(0, 7, 5), request)
+    assert ij.estimate_rgb_contrast_apply_command(command).pixels == 16
+    estimate = ij.estimate_rgb_contrast_apply_job(command)
+    assert estimate.reservation_bytes >= estimate.working_bytes > estimate.command.working_bytes
+    document.select(ij.Selection.from_mask(np.zeros((2, 4), np.uint8)))
+    rebound = ij.rebind_rgb_contrast_apply_command(document.snapshot(), command.record(), ij.TargetRequest())
+    assert rebound.target.position_count == 1 and rebound.options.channels == 5
+    stable = document.snapshot()
+    document.commit(ij.execute_rgb_contrast_apply_command(rebound))
+    assert stable.shares_data(document.snapshot()) and observer.counts().plane_reads == 0
+    with pytest.raises(ValueError):
+        ij.validate_contrast_apply_command_record(command.record())
+    limits = ij.ContrastApplyCommandLimits()
+    limits.max_record_bytes = 1
+    with pytest.raises(ValueError):
+        ij.submit_rgb_contrast_apply(ij.JobScheduler(), command, limits)
+    assert observer.counts().plane_reads == 0
+
+
+def test_rgb_positioned_record_is_canonical_and_freezes_destination_geometry():
+    document, pixels, observer = rgb_owner()
+    edit = document.begin_edit()
+    edit.set_rois([ij.ROI("rgb", ij.Selection("rectangle", [(0, 0), (2, 1)]), c=0, z=0)])
+    document.commit(edit)
+    request = ij.TargetRequest(ij.TargetScope.ALL_Z, roi=ij.RoiPolicy.POSITIONED_ROIS)
+    resolved = ij.resolve_rgb_contrast_apply_command(document.snapshot(), rgb_options(0, 7, 4), request)
+    record = resolved.record()
+    ij.validate_rgb_contrast_apply_command_record(record)
+    assert observer.counts().plane_reads == 0 and record["selection"] is None and len(record["rois"]) == 1
+    strict = ij.rgb_contrast_apply_command_from_record(document.snapshot(), record)
+    document.commit(ij.execute_rgb_contrast_apply_command(strict))
+    expected = pixels.copy()
+    expected[0, 0, 0, 0, :2, 0] = [0, 109]
+    assert observer.counts().plane_reads == 1
+    np.testing.assert_array_equal(document.snapshot().dataset.numpy("TCZYXS"), expected)
 
 
 def owner():

@@ -1,5 +1,22 @@
 # ImageJ and Fiji gap closure plan
 
+**RGB captured-command/job checkpoint, 2026-10-22 (work in progress):**
+RGB Apply now has a separate C++/Python record profile, metadata-only strict
+replay and explicit rebind, with immutable source/target/display/geometry intent.
+Scalar V1 stays unchanged. The shared worker path prepares detached RGB results,
+retains preview memory leases, arbitrates cancellation and guards caller-thread
+publication against source closure or any revision change. The installed C++
+example exercises RGB command replay and job publication.
+Windows/Linux each pass 22 native suites, three existing full C++ UI probes,
+one installed public C++ SDK consumer, ten background repetitions, four hidden
+GL contexts and 4443 installed Python checks (316 new), zero failures/errors/skips.
+Exact owned scratch is archived and verified before cleanup. See the
+[scoped receipt](parity/reviews/p11i-rgb-command001.json).
+Shared RGB preview/component/Apply/Rebind controls,
+actual active/stack controller semantics and workflow/Batch adapters remain open.
+See [Apply details](CONTRAST_APPLY.md).
+
+
 **RGB contrast foundation checkpoint, 2026-10-22 (work in progress):**
 C++/Python now expose an independent RGB lookup transform, metadata estimate and
 atomic ROI/axis-target transaction. Actual ImageJ ColorProcessor preview and

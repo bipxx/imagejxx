@@ -238,14 +238,60 @@ pixel. Working-byte admission includes three-component processing and masks;
 source metadata/providers, allocator/frontend and publication/history remain
 external. The API is synchronous; callers must arrange worker-only virtual reads.
 
+
+### Captured RGB commands and worker jobs
+
+`rgb_contrast_apply_command.hpp` exposes the separate
+`imagejxx.rgb-contrast-apply-command` V1 schema with the `rgb_byte_apply_v1`
+profile. Options retain the original double endpoints and component bits.
+Records capture immutable source storage, calibration, all revision domains,
+display properties, T/C/Z reset anchor and canonical target selection/positioned
+ROIs. Capture, strict replay, rebinding and estimation do not acquire planes.
+Scalar V1 schema/fields and mapping behavior remain unchanged.
+
+```python
+command = ij.resolve_rgb_contrast_apply_command(document.snapshot(), options, request)
+record = command.record()
+ij.validate_rgb_contrast_apply_command_record(record)
+strict = ij.rgb_contrast_apply_command_from_record(document.snapshot(), record)
+job = ij.submit_rgb_contrast_apply(application.job_scheduler, strict)
+if job.wait(5000) and job.ready:
+    preview = job.preview
+    job.publish(application)
+```
+
+Strict replay requires the captured source and all revisions. Explicit
+`rebind_rgb_contrast_apply_command(destination.snapshot(), record, request)`
+validates the entire original before recapturing destination geometry/display;
+it retains mapping/component bits and refuses scalar, RGBA and other unqualified
+storage. Neither path restores a recorded view. Reapplying to an already mapped
+preview would transform twice; a command always describes mapping its captured
+baseline once. A fresh command after publication uses the committed baseline.
+
+`rgb_contrast_apply_job.hpp` returns the shared `ContrastApplyJob` handle.
+Native workers alone read the immutable source and prepare a detached result;
+caller-thread publication requires source membership and unchanged revisions.
+Cancellation can win until publication begins. Queued cancellation releases its
+captured source; escaped preview snapshots, datasets and plane aliases retain
+their declared result reservation through publication/cancellation/shutdown.
+The result guard and publication code are shared with scalar jobs.
+`estimate_rgb_contrast_apply_command` and `estimate_rgb_contrast_apply_job`
+include bounded metadata/record work and owned processing/result work. Provider
+storage, allocator overhead and frontend/history staging remain external.
+
+The record profile deliberately describes the native uniform independent-XY
+mapping. ImageJ's active RGB preview commit and processor-narrowed bounds for
+other stack planes still need a separately qualified controller path. Existing
+RGB editor Apply remains disabled; these APIs do not claim that UI behavior.
+
 Remaining integration and qualification:
 
 1. Extend actual range/text/positioned-ROI widget and publication failure-injection
    coverage beyond the current real C/Z/ROI radio, Apply/Rebind and workflow mapping
    field/prepare/Apply tests. Broader workflow outputs/operation combinations and
    resource/platform acceptance remain open.
-2. Add RGB captured records, explicit replay/rebind, worker jobs and shared
-   modeless preview/Apply component controls, then native workflow/Batch adapters.
+2. Connect captured RGB commands/jobs to shared modeless baseline preview/Apply
+   component controls and Rebind review, then native workflow/Batch adapters.
    Preserve scalar V1 records and prevent a mapped preview from being mapped
    twice. Qualify current/stack controller behavior: ImageJ commits its active
    preview and uses processor-narrowed bounds on other stack planes. The native

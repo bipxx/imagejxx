@@ -1,4 +1,4 @@
-#include <imagejxx/contrast_apply_job.hpp>
+#include <imagejxx/rgb_contrast_apply_job.hpp>
 #include <imagejxx/application.hpp>
 #include <imagejxx/manual_threshold.hpp>
 #include "../../src/native/kernel_control.hpp"
@@ -108,4 +108,49 @@ void reset(){
   }
 }
 }
-int main(){try{records();jobs();freeze();queued();reset();std::cout<<"PASS captured Apply records, strict replay/rebind, worker publication, escaped leases, cancellation and frozen intent\n";return 0;}catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}
+namespace {
+struct RgbSource:Source {
+  DatasetShape shape()const override{return {1,2,2,2,4,3};}
+  std::shared_ptr<const Image> read_plane(PlanePosition p)const override{
+    auto scalar=Source::read_plane(p);auto result=std::make_shared<Image>(4,2,3,PixelType::UInt8);
+    for(int i=0;i<8;++i)for(int c=0;c<3;++c)result->pixels[3*i+c]=scalar->pixels[i]+c*10;
+    return result;
+  }
+};
+void rgb_records_jobs(){
+  JobScheduler scheduler;Application app;auto source=std::make_shared<RgbSource>();
+  auto owner=std::make_shared<Document>(Dataset(source));app.adopt(owner);
+  const auto before=owner->snapshot();TargetRequest all;all.scope=TargetScope::AllZ;
+  auto command=resolve_rgb_contrast_apply_command(before,{0,7,4},all);const auto record=command.record();
+  validate_rgb_contrast_apply_command_record(record);auto strict=rgb_contrast_apply_command_from_record(before,record);
+  check(source->reads==0 && strict.target().position_count()==2,"RGB record capture and strict replay are metadata-only");
+  refuses([&]{validate_contrast_apply_command_record(record);});
+  auto malformed=record;malformed["profile"]=std::string("scalar_integer_apply_v1");
+  refuses([&]{rebind_rgb_contrast_apply_command(before,malformed,{});});
+  source->opened=false;OpenOnExit release{source};auto canceled=submit_rgb_contrast_apply(scheduler,strict);
+  until([&]{return source->reads>0;});canceled.cancel();check(canceled.wait_for(5s),"RGB running cancellation");
+  refuses<OperationCancelled>([&]{canceled.publish(app);});check(source->mainReads==0,"RGB reads run on worker only");
+  source->open();auto job=submit_rgb_contrast_apply(scheduler,command);check(job.wait_for(5s),"RGB proposal ready");
+  std::optional<DocumentSnapshot> preview=job.preview();auto plane=preview->data().dataset.plane();
+  check(plane->pixels[3]==36 && plane->pixels[4]==11 && plane->pixels[5]==21,"RGB mapping changes selected components only");
+  check(metadata_equal(job.record(),record) && before.shares_data(owner->snapshot()),"RGB job preserves immutable record and owner");
+  const auto bytes=job.info().resource_bytes;job.publish(app);preview.reset();
+  check(scheduler.usage().reserved_bytes==bytes,"RGB plane alias retains reservation through publication");plane.reset();until([&]{return scheduler.usage().reserved_bytes==0;});
+  owner->undo();refuses<RevisionConflict>([&]{rgb_contrast_apply_command_from_record(owner->snapshot(),record);});
+  auto rebound=rebind_rgb_contrast_apply_command(owner->snapshot(),record,{});
+  check(rebound.options().channels==4 && rebound.target().position_count()==1,"RGB rebind retains mapping but replaces target");
+  auto stale=submit_rgb_contrast_apply(scheduler,rebound);check(stale.wait_for(5s),"RGB stale proposal ready");
+  auto view=owner->snapshot().display();view.zoom=2;owner->set_display(view);const auto stable=owner->snapshot();
+  refuses<RevisionConflict>([&]{stale.publish(app);});check(stable.shares_data(owner->snapshot()),"RGB stale publish is atomic");
+}
+void rgb_queued(){
+  JobScheduler scheduler({1,64*1024*1024,8});std::atomic<bool> entered{false};
+  auto blocker=scheduler.submit([&](const JobContext &ctx){entered=true;for(;;){ctx.checkpoint();std::this_thread::sleep_for(1ms);}});
+  until([&]{return entered.load();});auto source=std::make_shared<RgbSource>();std::weak_ptr<RgbSource> weak=source;
+  auto owner=std::make_shared<Document>(Dataset(source));std::optional<ResolvedRgbContrastApplyCommand> command=resolve_rgb_contrast_apply_command(owner->snapshot());
+  auto job=submit_rgb_contrast_apply(scheduler,*command);command.reset();source.reset();owner.reset();
+  check(job.info().state==JobState::Queued && !weak.expired(),"RGB queued command retains source");
+  job.cancel();check(weak.expired(),"RGB queued cancel releases source while handle survives");blocker.cancel();blocker.wait();
+}
+}
+int main(){try{records();jobs();freeze();queued();reset();rgb_records_jobs();rgb_queued();std::cout<<"PASS captured Apply records, strict replay/rebind, worker publication, escaped leases, cancellation and frozen intent\n";return 0;}catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

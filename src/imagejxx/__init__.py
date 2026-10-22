@@ -1666,6 +1666,7 @@ from ._native import NativeWorkflowBatchSetup, NativeWorkflowBatchSetupLimits, s
 
 
 from ._native import manual_threshold_contains as manual_threshold_contains
+from ._native import ResolvedRgbContrastApplyCommand, resolve_rgb_contrast_apply_command, validate_rgb_contrast_apply_command_record, rgb_contrast_apply_command_from_record, rebind_rgb_contrast_apply_command, estimate_rgb_contrast_apply_command, execute_rgb_contrast_apply_command, estimate_rgb_contrast_apply_job, submit_rgb_contrast_apply
 from ._native import RgbContrastApplyOptions, RgbContrastApplyEstimate, apply_rgb_contrast_imagej, estimate_rgb_contrast_apply, prepare_rgb_contrast_apply
 
 __all__ = [

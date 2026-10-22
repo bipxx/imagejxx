@@ -3,6 +3,7 @@
 #include <imagejxx/jobs.hpp>
 namespace imagejxx {
 class Application;
+class ResolvedRgbContrastApplyCommand;
 struct ContrastApplyJobEstimate {
   ContrastApplyCommandEstimate command;
   std::size_t working_bytes=0,reservation_bytes=0;
@@ -29,9 +30,15 @@ public:
   void publish(Application &);
   static ContrastApplyJob submit(JobScheduler &,const ResolvedContrastApplyCommand &,
       const ContrastApplyCommandLimits & = {},JobOptions = {});
+  static ContrastApplyJob submit(JobScheduler &,const ResolvedRgbContrastApplyCommand &,
+      const ContrastApplyCommandLimits & = {},JobOptions = {});
 private:
+  template<class Command> static ContrastApplyJob submit_impl(JobScheduler &,const Command &,
+      const ContrastApplyCommandLimits &,JobOptions);
   struct ResultCell;
   ContrastApplyJob(Job,std::shared_ptr<ResultCell>);
+  friend ContrastApplyJobEstimate estimate_rgb_contrast_apply_job(const ResolvedRgbContrastApplyCommand &,
+      const ContrastApplyCommandLimits &,const JobOptions &);
   Job job_;
   std::shared_ptr<ResultCell> result_;
   friend ContrastApplyJobEstimate estimate_contrast_apply_job(const ResolvedContrastApplyCommand &,
