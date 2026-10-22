@@ -53,7 +53,7 @@ def test_histogram_controls_raw_results_log_and_csv(context,dtype,policy,tmp_pat
     assert not report['closed_source']['has_source'] and report['closed_source']['result']==result
     assert not report['closed']['open'] and report['closed']['result'] is None
     before,after=report['before'],report['after']
-    assert after['pixels']==before['pixels'] and after['workflow']==before['workflow']==[]
+    assert after['pixels']==before['pixels'] and before['workflow']==[] and len(after['workflow'])==2 and after['workflow'][-1]==report['calculated']['command']
     assert after['revisions']['pixels']==before['revisions']['pixels'] and after['revisions']['selection']==before['revisions']['selection']
     assert after['undo']==1 and after['position']==[1,1,1] # one deliberate external metadata edit
     assert len(report['frames'])<300 and all(f['panel']['action_error']=='' for f in report['frames'])

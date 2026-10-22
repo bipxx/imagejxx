@@ -74,5 +74,5 @@ def test_scientific_histogram_controls_and_frozen_results(context,dtype,policy,t
     assert report['closed_source']['result']==result and not report['closed_source']['has_source'] and not report['closed_source']['targets_open']
     assert report['closed']['result'] is None and not report['closed']['open']
     before,after=report['before'],report['after'];assert before['pixels']==after['pixels'] and before['revisions']==after['revisions'] and before['dirty']==after['dirty']==False
-    assert before['undo']==after['undo']==0 and before['workflow']==after['workflow']==[] and after['position']==[1,0,2]
+    assert before['undo']==after['undo']==0 and before['workflow']==[] and len(after['workflow'])==3 and after['workflow'][-1]==report['calculated']['command'] and after['position']==[1,0,2]
     assert len(report['frames'])<512 and all(f['panel']['action_error']=='' for f in report['frames'])

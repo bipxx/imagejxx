@@ -2923,6 +2923,17 @@ struct Window::Impl {
                                 thresholdPanel.displayState(range));
     owner.setNativeDisplay(std::move(display), source.id());
   }
+  DatasetHistogramLimits histogramLimits() const {
+    DatasetHistogramLimits limits;const auto cap=static_cast<std::size_t>(preferenceState.settings.integer("processing_memory_mb"))*1024*1024;
+    if(cap)limits.max_working_bytes=std::min(limits.max_working_bytes,cap);return limits;
+  }
+  void publishHistogram(const SettingsPatch &values,const MetadataObject &record,bool remember=true) {
+    HistogramCommandLimits cap;cap.processing=histogramLimits();
+    (void)histogram_command_from_record(owner.nativeSnapshot(),record,cap);
+    OutputPublication outputs(owner.results,owner.workflow,{},"",owner.recording?metadataJson(record):Json(nullptr));
+    if(remember)rememberHistogram(values);
+    outputs.publish();
+  }
   void rememberHistogram(const SettingsPatch &values) {
     auto remembered=preferenceState;remembered.settings=owner.settings();remembered.extras=preferences;
     remembered.settings.update(values);remembered.save(preferencesPath);swapPreferences(preferenceState,remembered);
@@ -5604,12 +5615,27 @@ void Window::clearError() {
 }
 void Window::action(const std::string &name, const Json &p) {
   checkThread();
+  if((name=="run_workflow"||name=="batch"||name=="native_batch")&&workflow.is_array())for(const auto &step:workflow)if(get(step,"schema")=="imagejxx.histogram-command")throw std::invalid_argument("Replay or rebind histogram entries individually before running other workflow steps");
   if(name=="show_histogram") {
     if(!p.is_object() || !p.empty())throw std::invalid_argument("Show Histogram accepts no parameters");
     if(busy())throw std::invalid_argument("Wait for the current edit");
-    DatasetHistogramLimits limits;const auto histogramCap=static_cast<std::size_t>(impl->preferenceState.settings.integer("processing_memory_mb"))*1024*1024;
-    if(histogramCap)limits.max_working_bytes=std::min(limits.max_working_bytes,histogramCap);
-    impl->histogramPanel.show(nativeSnapshot(),limits,settings());impl->animating=false;return;
+    impl->histogramPanel.show(nativeSnapshot(),impl->histogramLimits(),settings());impl->animating=false;return;
+  }
+  if(name=="replay_histogram" || name=="show_histogram_rebind") {
+    if(!p.is_object() || !p.contains("record") || !p.at("record").is_object())throw std::invalid_argument("Histogram replay requires a command record");
+    for(const auto &v:p.items())if(v.key()!="record" && !(name=="replay_histogram" && v.key()=="histogram_rebind"))throw std::invalid_argument("Unknown histogram replay parameter");
+    const auto record=metadataObjectFromJson(p.at("record"));validate_histogram_command_record(record);
+    if(busy())throw std::invalid_argument("Wait for the current edit");
+    const auto source=nativeSnapshot();const auto limits=impl->histogramLimits();
+    if(name=="show_histogram_rebind")impl->histogramPanel.showRebind(source,record,limits,settings());
+    else {
+      HistogramCommandLimits cap;cap.processing=limits;
+      const auto captured=p.contains("histogram_rebind")
+          ?rebind_histogram_command(source,record,gaussianRebindRequest(p.at("histogram_rebind")),cap)
+          :histogram_command_from_record(source,record,cap);
+      impl->histogramPanel.replay(captured,limits,settings(),[this](const SettingsPatch &values,const MetadataObject &intent){impl->publishHistogram(values,intent,false);});
+    }
+    impl->animating=false;return;
   }
   if(name=="configure_histogram"){impl->histogramPanel.configure(p);return;}
   if(name=="configure_histogram_target") {
@@ -5620,7 +5646,7 @@ void Window::action(const std::string &name, const Json &p) {
 
   if(name=="calculate_histogram") {
     if(!p.is_object() || !p.empty())throw std::invalid_argument("Calculate Histogram accepts no parameters");
-    impl->histogramPanel.calculate(documents_.empty()?std::nullopt:std::optional<DocumentSnapshot>{nativeSnapshot()},busy(),[this](const SettingsPatch &values){impl->rememberHistogram(values);});return;
+    impl->histogramPanel.calculate(documents_.empty()?std::nullopt:std::optional<DocumentSnapshot>{nativeSnapshot()},busy(),[this](const SettingsPatch &values,const MetadataObject &record){impl->publishHistogram(values,record);});return;
   }
   if(name=="close_histogram") {
     if(!p.is_object() || !p.empty())throw std::invalid_argument("Close Histogram accepts no parameters");
@@ -9078,7 +9104,7 @@ void Window::Impl::resultTable() {
 void Window::Impl::recorder() {
   ImGui::Begin("Workflow");
   ImGui::BeginDisabled(owner.busy());
-  ImGui::Checkbox("Record edits", &owner.recording);
+  ImGui::Checkbox("Record actions", &owner.recording);
   observeControl("workflow.record");
   if (headlessDiagnostics) {
     workflowControls["record"] = hostControls["workflow.record"];
@@ -9184,6 +9210,15 @@ void Window::Impl::recorder() {
       continue;
     }
     const auto step = owner.workflow[i]; // Replay can append and reallocate.
+    if(get(step,"schema")=="imagejxx.histogram-command") {
+      ImGui::Text("%zu. Captured histogram",i+1);ImGui::PushID(static_cast<int>(i));
+      ImGui::BeginDisabled(owner.busy()||owner.documents_.empty());
+      if(ImGui::Button("Replay histogram"))guard([&]{owner.action("replay_histogram",{{"record",step}});});
+      observeControl("workflow.histogram."+std::to_string(i)+".replay");ImGui::SameLine();
+      if(ImGui::Button("Rebind histogram..."))guard([&]{owner.action("show_histogram_rebind",{{"record",step}});});
+      observeControl("workflow.histogram."+std::to_string(i)+".rebind");
+      ImGui::EndDisabled();ImGui::PopID();continue;
+    }
     if(get(step,"schema")=="imagejxx.indexed-dataset-command" || get(step,"schema")=="imagejxx.indexed-rgb-command") {
       ImGui::Text("%zu. Indexed color conversion",i+1);ImGui::PushID(static_cast<int>(i));
       ImGui::BeginDisabled(owner.busy()||owner.documents_.empty());
@@ -11488,7 +11523,7 @@ void Window::Impl::draw() {
   guard([&] {
     const bool visible=histogramPanel.visible();
     histogramPanel.draw(owner.documents_.empty()?std::nullopt:std::optional<DocumentSnapshot>{owner.nativeSnapshot()},owner.busy(),
-      [this](std::string text){file("Export histogram CSV",true,[text=std::move(text)](std::string path){writeBytes(path,{text.begin(),text.end()});},"histogram.csv");},[this](const SettingsPatch &values){rememberHistogram(values);});
+      [this](std::string text){file("Export histogram CSV",true,[text=std::move(text)](std::string path){writeBytes(path,{text.begin(),text.end()});},"histogram.csv");},[this](const SettingsPatch &values,const MetadataObject &record){publishHistogram(values,record);});
     if(visible && !histogramPanel.visible() && !owner.documents_.empty())
       for(auto &pane:panes)if(pane.doc && pane.doc->id==owner.controller_->active_document_id())pane.requestOrdinaryFocus=true;
   });

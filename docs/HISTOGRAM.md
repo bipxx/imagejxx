@@ -274,6 +274,42 @@ handles. Cancellation and callback failures discard work without source edits,
 history changes, preference saves or file writes. Log affects presentation intent
 only; it does not transform histogram counts.
 
-The panel recorder, workflow replay controls and background execution still need
-integration with this contract. These APIs alone do not complete histogram UI
-recording or full ImageJ/Fiji histogram parity.
+## Recording and replay in both ImGui launchers
+
+Enable **Record actions** in Workflow before Calculate. Each successful histogram
+calculation records one native histogram command, including simple one-plane
+calculations and scientific pooled targets. Save/load Workflow preserves these
+entries. Changing drafts, log display, opening/closing a panel, exporting CSV or
+a failed calculation does not add an entry. The last successful command is also
+available in panel diagnostics, independently of the recording toggle.
+
+**Replay histogram** checks the active source identity and relevant revisions,
+then calculates the captured target and displays its detached result. Navigation
+can differ. Replay does not save global histogram defaults; recording it again
+adds one entry only after success. Its target remains frozen, including explicit
+position order, until **Target... > Choose new target...** replaces it. Source
+changes and malformed records preserve the existing result and workflow.
+
+**Rebind histogram...** opens a review on the active destination source. It starts
+with Current T/C/Z and whole plane; choose the intended destination planes and
+ROI policy using Target, then Calculate. Recorded bins, numeric bounds and log
+presentation remain fixed. Destination active/positioned ROI geometry is used;
+no original geometry or camera position is silently transplanted. A successful
+Calculate saves the used defaults and, when recording, appends a newly bound
+command. An already-open panel's detached last result remains exportable while
+reviewing the rebind. Explicitly closing a panel releases that result.
+
+The calculation stages the result and command, validates the still-current
+active source, reserves the workflow entry and saves preferences before
+allocation-free result/workflow publication. Real preference-save failures
+preserve prior defaults, result and workflow. Provider callbacks that change
+source data or the panel draft refuse stale publication. Panel snapshots and
+record captures use shared immutable ownership for a non-throwing final handoff
+on Windows and Linux.
+
+Captured histogram entries currently replay individually. Run all/Batch refuse
+these entries rather than silently treating them as legacy plot operations.
+The internal panel callback tests use virtual providers directly; the desktop
+Window adapter still refuses virtual datasets.
+Native workflow-program/batch integration, background execution and full
+ImageJ/Fiji histogram domains/conventions and qualification remain open.

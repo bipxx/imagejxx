@@ -991,7 +991,7 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     src/desktop/saved_roi_edit.cpp
     src/desktop/saved_roi_geometry_ui_probe.cpp
     src/desktop/saved_roi_geometry_dependencies.cpp
-    src/desktop/gaussian_panel.cpp src/desktop/rank_panel.cpp src/desktop/operation_target_panel.cpp src/desktop/gaussian_jobs.cpp src/desktop/threshold_panel.cpp src/desktop/histogram_panel.cpp src/desktop/histogram_ui_probe.cpp src/desktop/histogram_defaults_ui_probe.cpp src/desktop/target_histogram_ui_probe.cpp src/desktop/manual_threshold_ui_probe.cpp src/desktop/z_subset_ui_probe.cpp src/desktop/axis_spacing_ui_probe.cpp src/desktop/slicer_resize_ui_probe.cpp src/desktop/planar_annotation_panel.cpp src/desktop/planar_annotation_ui_probe.cpp src/desktop/planar_annotation_rebind.cpp src/desktop/planar_annotation_matrix.cpp
+    src/desktop/gaussian_panel.cpp src/desktop/rank_panel.cpp src/desktop/operation_target_panel.cpp src/desktop/gaussian_jobs.cpp src/desktop/threshold_panel.cpp src/desktop/histogram_panel.cpp src/desktop/histogram_ui_probe.cpp src/desktop/histogram_defaults_ui_probe.cpp src/desktop/histogram_recorder_ui_probe.cpp src/desktop/target_histogram_ui_probe.cpp src/desktop/manual_threshold_ui_probe.cpp src/desktop/z_subset_ui_probe.cpp src/desktop/axis_spacing_ui_probe.cpp src/desktop/slicer_resize_ui_probe.cpp src/desktop/planar_annotation_panel.cpp src/desktop/planar_annotation_ui_probe.cpp src/desktop/planar_annotation_rebind.cpp src/desktop/planar_annotation_matrix.cpp
     src/desktop/native_workflow_batch_ui_probe.cpp
     src/desktop/native_workflow_ui_probe.cpp
     src/desktop/native_workflow_panel.cpp
@@ -1074,6 +1074,10 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     target_link_libraries(imagejxx_desktop PRIVATE comdlg32 gdi32)
   endif()
   if(BUILD_TESTING)
+    add_executable(imagejxx_histogram_recorder_panel_tests tests/native/test_histogram_recorder_panel.cpp)
+    target_link_libraries(imagejxx_histogram_recorder_panel_tests PRIVATE imagejxx_desktop)
+    add_test(NAME desktop_histogram_recorder_panel COMMAND imagejxx_histogram_recorder_panel_tests)
+    set_tests_properties(desktop_histogram_recorder_panel PROPERTIES TIMEOUT 30)
     add_executable(imagejxx_startup_window_tests tests/native/test_startup_window.cpp)
     target_link_libraries(imagejxx_startup_window_tests PRIVATE imagejxx_desktop)
     foreach(group IN ITEMS SU01 SU02 SU03 SU04 SU05 SU06 SU07 SU08 SU09 SU10)

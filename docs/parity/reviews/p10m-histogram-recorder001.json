@@ -1,0 +1,247 @@
+{
+  "state": "qualified_functional_increment",
+  "objective_complete": false,
+  "baseline_commit": "a065ebe52f7ac0877c09abb0f898d6d2a8400741",
+  "scope": "Both shared ImGui launchers record successful simple/pooled histograms, preserve native intent through workflow save/load, strictly replay frozen targets and review explicit destination rebinding.",
+  "semantics": "Record actions appends exactly one native command on successful Calculate. Replay checks active owner/relevant revisions and does not save histogram defaults; target positions/order remain frozen until explicitly replaced. Rebind starts at the active destination Current/whole-plane target, exposes shared scientific range/ROI controls and locks recorded bins, numeric bounds and log. Destination geometry is used. Existing detached results remain exportable during rebind review unless explicitly closed.",
+  "publication": "The panel stages work in a separate candidate, retains immutable source/record ownership and checks its generation before publication. The host revalidates the live active source from the command, reserves workflow storage, saves preferences when calculating and uses non-throwing moves for result/workflow/panel publication. Real save failures preserve result/defaults/workflow; strict replay skips preference save. Opening, drafts, exports, closed panels and failures do not record extra steps.",
+  "verification": "1429 selected checks per OS including 23 new installed desktop API/input checks. Five native executable suites include direct panel draft/source/closure/provider callback publication checks. Independent readers verify 208 reports / 29432 physical-input frames, including 8 new recorder reports / 1064 frames. Existing histogram/grid/preferences/threshold/settings tests remain. No complete upstream reference, resource, real-GPU platform or whole-family acceptance.",
+  "virtual_scope": "Native panel callback tests instantiate virtual provider fixtures directly. The public desktop Window adapter still refuses virtual datasets; these tests do not claim that adapter support.",
+  "profiles": {
+    "windows": {
+      "python_cases": 1429,
+      "new_histogram_recorder_cases": 23,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_test_executables": 5,
+      "reports": 104,
+      "frames": 14716,
+      "new_recorder_reports": 4,
+      "new_recorder_frames": 532,
+      "removed_scratch_bytes": 1791558184,
+      "evidence": [
+        {
+          "path": "build/p10m-histogram-recorder001/windows-build007/receipt.json",
+          "bytes": 2246,
+          "sha256": "945d5c9a0c857b4cd938f41217f3273db134dc2a578928c98e8be2589f05fd35"
+        },
+        {
+          "path": "build/p10m-histogram-recorder001/windows-build007/native.xml",
+          "bytes": 2544,
+          "sha256": "67d663c77de7509b8a8c81e1b4bce02d1d55b77bc5a77e60ac642d200e6cbd10"
+        },
+        {
+          "path": "build/p10m-histogram-recorder001/windows-python005/receipt.json",
+          "bytes": 4270,
+          "sha256": "7aceffe988f8541ddbafa931ca06f8157efd90d6e33ca91b70949d11deac04a4"
+        },
+        {
+          "path": "build/p10m-histogram-recorder001/windows-python005/pytest.xml",
+          "bytes": 219080,
+          "sha256": "268a6d2a05910cde0b85d00bd012611ef9e335c26f465ce3843d835a4a05f5bb"
+        },
+        {
+          "path": "build/p10m-histogram-recorder001/windows-capture004.json",
+          "bytes": 13777,
+          "sha256": "6ff61b0e35cc0c6f91e2814ac5db88bf17a77bd5e55c8e7c41afb0159ebfc718"
+        },
+        {
+          "path": "build/p10m-histogram-recorder001/windows-evidence002.json",
+          "bytes": 42513,
+          "sha256": "c4c8b79a2888d2144f04e88e2bdf42dda8a92ce2322c2add630e4d9877daef80"
+        },
+        {
+          "path": "build/p10m-histogram-recorder001/windows-products002.json",
+          "bytes": 4203,
+          "sha256": "9189c91c8fa4d934c29300539bbf27c7eb517fc6c844589ba258e38d7e70d16a"
+        },
+        {
+          "path": "build/p10m-histogram-recorder001/windows-cleanup001.json",
+          "bytes": 628903,
+          "sha256": "1100d2aa8d4670b4d0b57143bf6201513a3a53426f2e63f8362d9cf4ec5df225"
+        },
+        {
+          "path": "build/p10m-histogram-recorder001/windows-cleanup002.json",
+          "bytes": 377004,
+          "sha256": "9b783b005add0123a0716de29a9e06aaea80d0d853ccdd92324d31138b4887f5"
+        }
+      ],
+      "archives": [
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p10m-histogram-recorder001\\windows-scratch001.zip",
+          "bytes": 129288155,
+          "sha256": "22865aad9afd059209e00b6cac953a04127d2ffcfd158e016f48995b2749eea4"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p10m-histogram-recorder001\\windows-scratch002.zip",
+          "bytes": 61158534,
+          "sha256": "d7cd30500525992e4a7ab0bd8ed3e8e025c348ca81eeea4ba07614afc7b7efa5"
+        }
+      ]
+    },
+    "linux": {
+      "python_cases": 1429,
+      "new_histogram_recorder_cases": 23,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_test_executables": 5,
+      "reports": 104,
+      "frames": 14716,
+      "new_recorder_reports": 4,
+      "new_recorder_frames": 532,
+      "removed_scratch_bytes": 1799529654,
+      "evidence": [
+        {
+          "path": "build/p10m-histogram-recorder001/linux-build007/receipt.json",
+          "bytes": 2213,
+          "sha256": "4a1c82423db0610153ff38be09c44e482324bfa53df903f7291d8f04f423b0fe"
+        },
+        {
+          "path": "build/p10m-histogram-recorder001/linux-build007/native.xml",
+          "bytes": 2484,
+          "sha256": "7025e83363dd3611c7f21910d301eab179f37ffe746e3ae28f6bf9221d2de671"
+        },
+        {
+          "path": "build/p10m-histogram-recorder001/linux-python005/receipt.json",
+          "bytes": 4049,
+          "sha256": "c10b500db4ce10f3530f43504fe668e0a759240cdadb8493057a64722f31b4b8"
+        },
+        {
+          "path": "build/p10m-histogram-recorder001/linux-python005/pytest.xml",
+          "bytes": 219080,
+          "sha256": "20e0a8c535d130dbd04764d0b28f968ea8172855d85bf39f71f16c6eb0145b41"
+        },
+        {
+          "path": "build/p10m-histogram-recorder001/linux-capture004.json",
+          "bytes": 11376,
+          "sha256": "7245e4bd953e8d6579b89cb125464af3921f6d123edbd1bb93e1940e329b7cb9"
+        },
+        {
+          "path": "build/p10m-histogram-recorder001/linux-evidence002.json",
+          "bytes": 39073,
+          "sha256": "401d715372147bcdad27c511237df580ee98f5038bb50844d48b2a1a2792c0bb"
+        },
+        {
+          "path": "build/p10m-histogram-recorder001/linux-products002.json",
+          "bytes": 3986,
+          "sha256": "d4da9ae99ad1d9b87bb81f252c48ab7a4eebb93a7152ea349e5c06b6b4685aa8"
+        },
+        {
+          "path": "build/p10m-histogram-recorder001/linux-cleanup001.json",
+          "bytes": 567395,
+          "sha256": "99cfd3eecbc5486341e9b7fc6c8df3c72163d62834b65bab16aad280f32ba5d4"
+        },
+        {
+          "path": "build/p10m-histogram-recorder001/linux-cleanup002.json",
+          "bytes": 359047,
+          "sha256": "fab22228042305bc3d6953f482ca6811df6db448fe8fb00314c16698e432228d"
+        }
+      ],
+      "archives": [
+        {
+          "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p10m-histogram-recorder001/linux-scratch001.zip",
+          "bytes": 152449417,
+          "sha256": "a6f281c7d57eb08fc24bc65841845edef7b0ab9c6946bc309a75417d806adb31"
+        },
+        {
+          "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p10m-histogram-recorder001/linux-scratch002.zip",
+          "bytes": 72786727,
+          "sha256": "0063d5949af1c6e5c8270759fd00a579589b530c986b1d395db5471a6d993b82"
+        }
+      ]
+    }
+  },
+  "cleanup_bytes": 3591087838,
+  "registration": {
+    "path": "build/p10m-histogram-recorder001/registration001.json",
+    "bytes": 455,
+    "sha256": "8256350b8add04148881b6995bd5b509cb32f0d1b44b9b892c66e02c066a2ef3"
+  },
+  "license_check": {
+    "path": "build/p10m-histogram-recorder001/licenses002.log",
+    "bytes": 53,
+    "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+  },
+  "plan_gate": {
+    "state": "known_failure",
+    "log": {
+      "path": "build/p10m-histogram-recorder001/plan-gate002.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    },
+    "reason": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api producer_source byte fingerprint changed",
+    "producer_unchanged_from_baseline": true,
+    "producer": {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 14135,
+      "sha256": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    }
+  },
+  "remaining": [
+    "Background histogram jobs and UI cancellation/publication",
+    "Native workflow-program and batch histogram analysis integration; Run all/Batch currently refuse captured histogram entries explicitly",
+    "Desktop virtual source adapter; calibrated/color/remaining numeric domains and upstream histogram conventions",
+    "Complete independent source/reference/resource/platform qualification; full 99-feature goal remains open"
+  ],
+  "source": [
+    {
+      "path": "CMakeLists.txt",
+      "sha256": "173c668a3cf3b914199a0f258455eca25d02ca3b9bdd1e76aaeeed0017d54948"
+    },
+    {
+      "path": "src/desktop/histogram_panel.hpp",
+      "sha256": "460bef1080a4563e1dc58d41e209d585244ef6933d844d125f4c75e75eca3401"
+    },
+    {
+      "path": "src/desktop/histogram_panel.cpp",
+      "sha256": "7c4d3a0cfa40544c101c38fd86a4ca0f09d9204cd0b09facf31955a0c63ee851"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "sha256": "e30f294f45118dc708b1d41aa365f3ae83ace14c3a2938e272d1ef88b18a4aed"
+    },
+    {
+      "path": "src/desktop/histogram_recorder_ui_probe.hpp",
+      "sha256": "1f477e1131f2a822fc4d39318dd6f33e87e8d9d57e84abae33ebaa9abf657bcd"
+    },
+    {
+      "path": "src/desktop/histogram_recorder_ui_probe.cpp",
+      "sha256": "9b2bfcf36f702dcf4b084d3ac43d9688f19632ff6c8d6b1eda18ce5afbc52e59"
+    },
+    {
+      "path": "src/desktop/animation_ui_probe.cpp",
+      "sha256": "355b363e3f5f0728111f7a50a3568a409d9fdee0a5ef74e05f9cdd3385094628"
+    },
+    {
+      "path": "tests/python/test_histogram_ui.py",
+      "sha256": "b2ce41320303fbc3905782c6226d0895c0b1d5661b369b3d973c2e4be9f6143f"
+    },
+    {
+      "path": "tests/python/test_target_histogram_ui.py",
+      "sha256": "9cb7e9a052e85be66c854ac3eaafb75d229e949ab35bfe961953fd1e4b6a4175"
+    },
+    {
+      "path": "tests/python/test_histogram_recorder_desktop.py",
+      "sha256": "9f6c8def948dd387b5c4a967d988d793c8944d270f4fdc481202d7924f3fe17f"
+    },
+    {
+      "path": "tests/python/test_histogram_recorder_ui.py",
+      "sha256": "bdaf452b1d98ac807799126909e346d385303b7425b2963974912b46ed065744"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "sha256": "dc0dbd1d9e5e5d5f5be04e23c11763f290e607fc0757024de99fcffb1a3439ad"
+    },
+    {
+      "path": "tests/python/test_histogram_preferences.py",
+      "sha256": "674afbfc40672127f161fad2a0404a9419217f16f2b04abb02d2b9850edf7232"
+    },
+    {
+      "path": "tests/native/test_histogram_recorder_panel.cpp",
+      "sha256": "cfce0731eb27c40f841d83b9bd67286e03ebc9fff6290362327a7a1f3082f844"
+    }
+  ],
+  "batch_guard": "The Run all/Batch refusal is at the unconditional action boundary, outside optional scientific-I/O compilation. Captured histogram entries still require individual replay/rebind."
+}

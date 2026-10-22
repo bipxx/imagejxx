@@ -2770,7 +2770,8 @@
           "docs/parity/reviews/p10i-target-histogram001.json",
           "docs/parity/reviews/p10j-histogram-target-ui001.json",
           "docs/parity/reviews/p10k-histogram-defaults001.json",
-          "docs/parity/reviews/p10l-histogram-command001.json"
+          "docs/parity/reviews/p10l-histogram-command001.json",
+          "docs/parity/reviews/p10m-histogram-recorder001.json"
         ],
         "implementation": [
           "include/imagejxx/auto_threshold_stack.hpp",
@@ -2788,7 +2789,8 @@
           "src/desktop/operation_target_panel.cpp",
           "src/native/settings.cpp",
           "include/imagejxx/histogram_command.hpp",
-          "src/native/histogram_command.cpp"
+          "src/native/histogram_command.cpp",
+          "src/desktop/histogram_recorder_ui_probe.cpp"
         ],
         "tests": [
           "tests/python/test_scientific_threshold_target.py",
@@ -2805,7 +2807,10 @@
           "tests/native/test_histogram_defaults.cpp",
           "tests/python/test_histogram_preferences.py",
           "tests/native/test_histogram_command.cpp",
-          "tests/python/test_histogram_command.py"
+          "tests/python/test_histogram_command.py",
+          "tests/native/test_histogram_recorder_panel.cpp",
+          "tests/python/test_histogram_recorder_desktop.py",
+          "tests/python/test_histogram_recorder_ui.py"
         ]
       },
       "id": "G069",
@@ -2815,7 +2820,7 @@
       ],
       "name": "Histogram",
       "remaining": [
-        "Shared histogram UI pooling, bins/range/log/statistics/export and eight persisted defaults are functional. Native source-bound histogram intent now has strict replay and explicit rebinding through C++/Python. Finish panel recorder/workflow integration, async, calibrated/color/other numeric domains and remaining upstream statistical/presentation/default conventions, plus complete independent source/reference/resource/platform qualification."
+        "Shared histogram pooling, bins/range/log/statistics/export, persisted defaults and individual source-bound recording/replay/explicit rebind are functional in both ImGui hosts. Finish async execution, native workflow-program/batch integration, desktop virtual-source adaptation, calibrated/color/other numeric domains and upstream statistical/presentation/default conventions, plus complete independent source/reference/resource/platform qualification."
       ],
       "required_work": "Stack/channel targeting, range/bin/log controls, statistics display and numerical export",
       "status": "in_progress",
@@ -2826,7 +2831,8 @@
         "p10i.target-histogram.functional.001",
         "p10j.histogram-target-ui.functional.001",
         "p10k.histogram-defaults.functional.001",
-        "p10l.histogram-command.functional.001"
+        "p10l.histogram-command.functional.001",
+        "p10m.histogram-recorder.functional.001"
       ]
     },
     {
@@ -180848,6 +180854,29 @@
         "total": 272
       },
       "scope": "272 selected checks per OS, 106 new command checks, four native suites and fresh SDK consumers. Both UI products build; panel recording/workflow/background integration and full parity remain open."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-21",
+      "id": "p10m.histogram-recorder.functional.001",
+      "identity": {
+        "qualification": {
+          "path": "docs/parity/reviews/p10m-histogram-recorder001.json",
+          "bytes": 11523,
+          "sha256": "e9cbe630d94d41c3f42c8dbf814561d287ca97aee31ad65d847e3a4ac4743ec8"
+        }
+      },
+      "platform": "Windows/Linux standalone and Python ImGui, native panel/core",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 1429,
+        "report": "build/p10m-histogram-recorder001/windows-python005/pytest.xml",
+        "skipped": 0,
+        "total": 1429
+      },
+      "scope": "1429 selected checks per OS including 23 new recorder checks; five native suites per OS; 208 reports / 29432 input frames including 8 new recorder reports / 1064 frames. Native workflow-program/batch, async, virtual desktop sources and full histogram parity remain open."
     }
   ]
 }

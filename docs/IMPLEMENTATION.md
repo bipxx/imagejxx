@@ -1,5 +1,22 @@
 # Implementation progress
 
+**Histogram recorder checkpoint, 2026-10-21 (work in progress):**
+Both ImGui launchers record successful simple/pooled calculations as native
+histogram commands, preserve them through workflow save/load, strictly replay
+frozen targets and review explicit destination rebinding with fixed numeric/log
+options. Preference-save and source/draft failures preserve prior output; final
+panel/workflow publication uses non-throwing ownership moves on Windows/Linux.
+Each OS passes 1,429 selected checks (23 new), five native suites and independent
+readers of 104 reports / 14,716 input frames. Across both OSs, recorder coverage
+adds eight reports / 1,064 frames. Verified cleanup removes 3,591,087,838 scratch
+bytes, preserving final products and evidence. Registration appends two cases to
+1,263 while retaining all previous order. See [usage](HISTOGRAM.md) and
+[the scoped receipt](parity/reviews/p10m-histogram-recorder001.json).
+Async execution, native workflow-program/batch integration, desktop virtual
+sources, remaining histogram domains and full qualification remain open. All99
+stays 47 in progress / 52 open / 0 complete; the existing Auto Contrast producer
+fingerprint gate remains open.
+
 **Histogram command checkpoint, 2026-10-21 (work in progress):**
 C++ and Python now capture immutable histogram intent with strict source-bound
 replay and explicit destination rebinding. Records freeze target, binning, storage

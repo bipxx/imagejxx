@@ -1,6 +1,7 @@
 #pragma once
 #include "desktop.hpp"
 #include <imagejxx/target_histogram.hpp>
+#include <imagejxx/histogram_command.hpp>
 #include <imagejxx/settings.hpp>
 #include "operation_target_panel.hpp"
 #include <functional>
@@ -10,8 +11,12 @@
 namespace imagejxx::desktop {
 class HistogramPanel {
 public:
-  using Remember = std::function<void(const SettingsPatch &)>;
+  using Remember = std::function<void(const SettingsPatch &, const MetadataObject &)>;
   void show(const DocumentSnapshot &, DatasetHistogramLimits, const Settings &);
+  void showRebind(const DocumentSnapshot &, const MetadataObject &,
+                  DatasetHistogramLimits, const Settings &);
+  void replay(const ResolvedHistogramCommand &, DatasetHistogramLimits,
+              const Settings &, const Remember &);
   void configure(const Json &);
   void configureTarget(const TargetRequest &);
   void calculate(const std::optional<DocumentSnapshot> &, bool busy, const Remember & = {});
@@ -23,8 +28,12 @@ public:
   std::string csv() const;
   Json diagnostics() const;
 private:
+  void calculateImpl(const std::optional<DocumentSnapshot> &,bool,const Remember &);
+  std::uint64_t generation_=0;
   DatasetHistogramRequest request() const;
   TargetHistogramOptions options() const;
+  ResolvedHistogramCommand command() const;
+  void loadOptions(const ResolvedHistogramCommand &);
   void validateDraft() const;
   void drawTargets(bool);
   void validateSource(const std::optional<DocumentSnapshot> &, bool) const;
@@ -35,9 +44,12 @@ private:
   std::size_t resultPlaneCount_=0;
   std::string targetError_, resultRoiPolicy_;
   Json resultTarget_=Json::object(), resultEstimate_=Json::object();
+  Json resultCommand_=Json::object();
+  std::shared_ptr<const MetadataObject> rebindRecord_;
+  std::optional<TargetRequest> frozenTarget_;
   OperationTargetPanel targetPanel_;
   std::uint64_t sourceId_=0;
-  std::optional<DocumentSnapshot> source_;
+  std::shared_ptr<const DocumentSnapshot> source_;
   DatasetHistogramLimits limits_;
   std::array<std::string,3> position_;
   std::string bins_="256", lower_="0", upper_="1", error_, sourceError_, actionError_;

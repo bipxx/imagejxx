@@ -133,5 +133,7 @@ def test_actual_save_close_and_host_restart_restore_defaults_without_source_rang
     opened=second['opened'];assert opened['scientific_target'] and opened['custom'] and opened['log'] and opened['bins']=='8' and opened['lower']=='0' and opened['upper']=='128' and opened['result'] is None
     assert second['target']['target']['ranges']==[[1,2,1],[1,2,1],[2,3,1]] and second['target']['roi_policy']=='positioned_rois' and second['target']['selected_plane_count']==1
     for report in [first,second]:
-        assert report['before']==report['after'] and report['after']['undo']==0 and not report['after']['dirty'] and report['after']['workflow']==[]
+        assert {k:v for k,v in report['before'].items() if k!='workflow'}=={k:v for k,v in report['after'].items() if k!='workflow'}
+        assert report['after']['undo']==0 and not report['after']['dirty']
+        assert report['after']['workflow']==([first['calculated']['command']] if report is first else [])
         assert not report['acceptance_claim'] and len(report['frames'])<256
