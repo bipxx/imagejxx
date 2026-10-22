@@ -64,7 +64,9 @@ def editor_with_source(path):
     editor=_desktop.Editor(str(path));owner=ij.Document(ij.Dataset(np.arange(128,dtype=np.uint8).reshape(2,8,8),axes='ZYX'));editor.add_native_document(owner)
     editor.action('show_histogram','{}');return editor,owner
 
-def action(editor,name,**params):editor.action(name,json.dumps(params))
+def action(editor,name,**params):
+    editor.action(name,json.dumps(params))
+    if name in ["calculate_histogram","replay_histogram"]:editor.action("wait_histogram","{}")
 def settings(editor):return json.loads(editor.settings())
 
 def test_success_remembers_used_options_and_raw_mode_preserves_last_custom_range(tmp_path):

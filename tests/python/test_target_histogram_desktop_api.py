@@ -8,7 +8,9 @@ from test_target_histogram import fixture
 from test_target_histogram_ui import expected
 
 
-def action(editor,name,**params):editor.action(name,json.dumps(params))
+def action(editor,name,**params):
+    editor.action(name,json.dumps(params))
+    if name in ["calculate_histogram","replay_histogram"]:editor.action("wait_histogram","{}")
 
 def grid(policy):return dict(scope='ranges',t=dict(start=0,stop=2),c=dict(start=1,stop=2),z=dict(start=1,stop=4,step=2),roi={'whole':'whole_plane','active':'active_selection','positioned':'positioned_rois'}[policy])
 

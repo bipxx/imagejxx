@@ -371,6 +371,49 @@ be read from the cleaned native cell after completion.
 Source/cache storage, opaque provider and publication internals, allocator and
 scheduler container overhead, frontend argument/getter/result copies, CSV text
 and total process RSS remain external to these declared reservations. This is
-native job infrastructure. Both ImGui histogram panels still calculate
-synchronously; worker-driven UI progress/cancel/result publication and native
-workflow-program/batch integration remain separate work.
+native job infrastructure now drives both ImGui histogram panels as described
+below. Native workflow-program/batch integration remains separate work.
+
+
+## Background calculation in both desktop launchers
+
+Calculate and Workflow Replay now queue a native histogram job on the application's
+shared scheduler and return immediately. The panel shows Queued/Calculating/
+Cancelling status, stage progress and a Cancel calculation button. Processing
+inputs and duplicate Calculate requests are disabled until work retires. The last
+successful result stays visible and exportable while a replacement is pending.
+The shared Jobs panel can also cancel the histogram ticket.
+
+Only the creator thread polls a READY result, stages its detached bins/statistics,
+validates the still-current source/draft, saves used defaults when appropriate,
+and appends its captured workflow command. Recording is captured at submission;
+changing the recording flag later does not alter that job's decision. Replay
+still skips preference saving. A real preference-save or workflow-reservation
+failure preserves the prior result, remembered defaults and workflow contents.
+Source pixels and undo history are unchanged by successful analysis.
+
+Panel closure, source closure, source data/selection changes, native document
+activation changes and draft changes cancel or discard stale work. Source-view
+navigation within the same dataset does not retarget captured planes. Cancellation
+is cooperative at native checkpoints; the panel retains its last successful
+result unless explicitly closed. Queued cancellation retires immediately.
+Closing the Target dialog during work changes presentation only and stays closed
+when the result arrives. Explicit-position replay captions preserve their order
+instead of treating positions as a range grid.
+
+Programmatic calculate_histogram and replay_histogram actions now submit
+asynchronous work. Call poll() while pumping the UI, wait(), wait_jobs, or
+wait_histogram to observe completion. The latter accepts only an optional integer
+timeout_ms in 1..60000 (default 5000) and propagates histogram publication failures
+to the caller. cancel_histogram accepts no parameters. The Python document-index
+setter retains its existing busy guard; cancel/finish work before switching
+through that setter.
+
+Simple and scientific panels now use the same native target accumulator. Uniform
+ranges and raw UInt8 acquire each selected plane once. Nonconstant raw UInt16/
+Float32 targets require two passes, including a simple one-plane calculation;
+empty/constant raw populations require one. Numeric bins/statistics/CSV retain the
+native target contract. Frontend result copies and plot buffers remain outside
+the native scheduler reservation. Existing unsupported legacy histogram domains
+still use their legacy adapter; this does not establish full ImageJ/Fiji histogram
+parity or complete resource/platform acceptance.

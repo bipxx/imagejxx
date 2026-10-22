@@ -2786,7 +2786,8 @@
           "docs/parity/reviews/p10k-histogram-defaults001.json",
           "docs/parity/reviews/p10l-histogram-command001.json",
           "docs/parity/reviews/p10m-histogram-recorder001.json",
-          "docs/parity/reviews/p10n-histogram-job001.json"
+          "docs/parity/reviews/p10n-histogram-job001.json",
+          "docs/parity/reviews/p10o-histogram-async001.json"
         ],
         "implementation": [
           "include/imagejxx/auto_threshold_stack.hpp",
@@ -2807,7 +2808,8 @@
           "src/native/histogram_command.cpp",
           "src/desktop/histogram_recorder_ui_probe.cpp",
           "include/imagejxx/histogram_job.hpp",
-          "src/native/histogram_job.cpp"
+          "src/native/histogram_job.cpp",
+          "src/desktop/histogram_async_ui_probe.cpp"
         ],
         "tests": [
           "tests/python/test_scientific_threshold_target.py",
@@ -2829,7 +2831,10 @@
           "tests/python/test_histogram_recorder_desktop.py",
           "tests/python/test_histogram_recorder_ui.py",
           "tests/native/test_histogram_job.cpp",
-          "tests/python/test_histogram_job.py"
+          "tests/python/test_histogram_job.py",
+          "tests/native/test_histogram_async_window.cpp",
+          "tests/python/test_histogram_async_desktop.py",
+          "tests/python/test_histogram_async_ui.py"
         ]
       },
       "id": "G069",
@@ -2839,7 +2844,7 @@
       ],
       "name": "Histogram",
       "remaining": [
-        "Native C++/Python histogram worker jobs now provide shared scheduling, progress/cancellation, caller-thread completion and resource-retaining detached result aliases. Finish asynchronous histogram UI integration (panels remain synchronous), native workflow-program/batch integration, desktop virtual-source adaptation, calibrated/color/other numeric domains and upstream conventions, plus complete independent source/reference/resource/platform qualification."
+        "Shared histogram pooling, controls/statistics/CSV/defaults, individual recording/replay/rebind and native worker-driven desktop progress/cancel/publication are functional. Finish native workflow-program/batch integration, desktop virtual-source adaptation, unsupported legacy/calibrated/color/other numeric domains and upstream statistical/presentation/default conventions, plus complete independent source/reference/resource/platform qualification."
       ],
       "required_work": "Stack/channel targeting, range/bin/log controls, statistics display and numerical export",
       "status": "in_progress",
@@ -2852,7 +2857,8 @@
         "p10k.histogram-defaults.functional.001",
         "p10l.histogram-command.functional.001",
         "p10m.histogram-recorder.functional.001",
-        "p10n.histogram-job.functional.001"
+        "p10n.histogram-job.functional.001",
+        "p10o.histogram-async.functional.001"
       ]
     },
     {
@@ -180920,6 +180926,29 @@
         "total": 581
       },
       "scope": "581 selected checks per OS including 25 new worker checks; eight native executable suites per OS and fresh installed SDK consumers. Histogram UI worker integration, native workflow/batch and full histogram parity remain open."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-21",
+      "id": "p10o.histogram-async.functional.001",
+      "identity": {
+        "qualification": {
+          "path": "docs/parity/reviews/p10o-histogram-async001.json",
+          "bytes": 11512,
+          "sha256": "a6c9b38e54fe767e7ad797f1e9ab2f77e2f7622c40602dcb03065fea03769bc3"
+        }
+      },
+      "platform": "Windows/Linux standalone and Python shared ImGui histogram workers",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 1527,
+        "report": "build/p10o-histogram-async001/windows-python003/pytest.xml",
+        "skipped": 0,
+        "total": 1527
+      },
+      "scope": "1527 selected checks per OS including 31 new API/input checks; ten native suites per OS; 232 reports / 31133 frames including 24 new async reports / 1700 frames. Native workflow/batch, remaining domains and full histogram parity remain open."
     }
   ]
 }

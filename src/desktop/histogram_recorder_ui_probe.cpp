@@ -22,7 +22,7 @@ Json histogramRecorderUiCase(Window &w,const std::string &id,const std::string &
     else if(name.rfind("target.",0)==0){const auto key=name.substr(7);const auto &p=last.at("histogram_panel").at("target_panel");v=p.at("control_states").at(key);v["point"]=p.at("controls").at(key);}
     else v=last.at("host_controls").at(name);return v;};
   auto click=[&](const std::string &name){const auto v=control(name);require(v.at("enabled").get<bool>()&&v.at("id").get<std::uint64_t>(),"Histogram recorder control unavailable");report["controls"].push_back({{"name",name},{"control",v}});
-    frame(Json::array({{{"type","position"},{"space","screen"},{"point",v.at("point")}}}));for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();};
+    frame(Json::array({{{"type","position"},{"space","screen"},{"point",v.at("point")}}}));for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();if(last.contains("histogram_processing") && last.at("histogram_processing").at("active").get<bool>()){w.action("wait_histogram");frame();}};
   auto text=[&](const std::string &name,const std::string &value){click(name);for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",Json::array({{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}})}}}));frame(Json::array({{{"type","text"},{"value",value}}}));for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",Json::array({{{"name","Enter"},{"down",down}}})}}}));frame();};
   frame();frame();click("workflow.record");click("menu.Analyze");click("menu.histogram");
   click("panel.custom");text("panel.bins","6");text("panel.lower","0");text("panel.upper","24");click("panel.log");

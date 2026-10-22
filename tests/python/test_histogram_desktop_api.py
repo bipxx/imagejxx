@@ -11,7 +11,9 @@ def fixture(tmp_path):
     editor=_desktop.Editor(str(tmp_path/'prefs.json'));editor.add_native_document(owner)
     return editor,owner,reads
 
-def action(editor,name,**params):editor.action(name,json.dumps(params))
+def action(editor,name,**params):
+    editor.action(name,json.dumps(params))
+    if name in ["calculate_histogram","replay_histogram"]:editor.action("wait_histogram","{}")
 
 @pytest.mark.parametrize('field,value',[('bins','0'),('bins','65537'),('bins','-'),('lower','nan'),('upper','inf'),('z','0'),('z','3'),('t','2'),('c','2'),('lower','2x')])
 def test_invalid_histogram_drafts_refuse_before_pixel_reads(field,value,tmp_path):

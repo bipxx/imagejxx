@@ -1,0 +1,245 @@
+{
+  "state": "qualified_functional_increment",
+  "objective_complete": false,
+  "baseline_commit": "b1219b504877271c1e913d98370defcc2ae396c3",
+  "scope": "Both shared ImGui launchers submit histogram Calculate/Replay to native workers, display stage progress/cancellation and publish detached results/defaults/workflow only on the creator thread.",
+  "semantics": "The application shared scheduler owns work. Commands, limits and recording choice are captured at submission. Duplicate processing is refused; pending inputs are disabled while old results remain exportable. Cancel/close, source data/selection/closure, native activation and draft changes cancel or discard work. Same-dataset navigation preserves captured planes. Queued cancellation retires immediately; running cancellation is cooperative. Both launchers use the target accumulator for simple and scientific modes, so nonconstant raw UInt16/Float32 simple calculations now use two source passes.",
+  "publication": "The creator polls READY results, stages owned DTO/bin/statistic/record copies, revalidates source/draft, reserves the captured workflow entry and saves defaults before non-throwing result ownership moves. Replay does not save defaults. Preference-save and workflow-array refusal preserve prior result/defaults/workflow. Completion updates only result fields, preserving presentation changes such as closing Target while queued. Explicit-position result captions no longer assume a range target.",
+  "api": "calculate_histogram and replay_histogram submit asynchronously. poll/wait/wait_jobs or wait_histogram observe completion; wait_histogram validates timeout_ms in 1..60000 (default5000) and propagates publication errors. cancel_histogram accepts no parameters. Existing Python active_index busy guard is retained; native activation changes cancel jobs, including activation ABA. Generic cancel_job and thread-safe Window.cancel also reach histogram tickets.",
+  "verification": "1527 selected checks per OS including 31 new API/input checks; ten native executable suites, including twelve native Window scenarios for blocked queues, cancellation, source/draft/activation/closure, captured recording, preference/workflow refusal and readonly history. Independent readers verify 232 reports / 31133 input frames, including 24 new async reports / 1700 frames. New real inputs prove queued cancellation, stale source/draft handling, closure, replay after navigation and preserving a closed Target dialog. No complete upstream reference/resource/real-GPU/platform acceptance.",
+  "profiles": {
+    "windows": {
+      "python_cases": 1527,
+      "new_async_cases": 31,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_test_executables": 10,
+      "reports": 116,
+      "frames": 15566,
+      "new_async_reports": 12,
+      "new_async_frames": 850,
+      "removed_scratch_bytes": 960805858,
+      "evidence": [
+        {
+          "path": "build/p10o-histogram-async001/windows-build004/receipt.json",
+          "bytes": 3161,
+          "sha256": "21f4e1a924a4105fae200f1ca687e4ec811bc93221d4c8e50d03f571e1584dc2"
+        },
+        {
+          "path": "build/p10o-histogram-async001/windows-build004/native.xml",
+          "bytes": 5440,
+          "sha256": "2c07d63542ef28251c7aef8fb68bd5bcedf0d79588cc104a4f55f178cd083f70"
+        },
+        {
+          "path": "build/p10o-histogram-async001/windows-python003/receipt.json",
+          "bytes": 5009,
+          "sha256": "12a5f5191a3c2d25c3e4c174a3734195b6357e88a112ef264a6eb08313ce44cc"
+        },
+        {
+          "path": "build/p10o-histogram-async001/windows-python003/pytest.xml",
+          "bytes": 233043,
+          "sha256": "26831170cfec3dab46523b6786ec231d05bd1991de9d13fa2dd300d8270aa698"
+        },
+        {
+          "path": "build/p10o-histogram-async001/windows-capture003.json",
+          "bytes": 13670,
+          "sha256": "004721c523ea9c1514a9fde51aaf19b97744019afca3bdb3e623bd9194b7a9ab"
+        },
+        {
+          "path": "build/p10o-histogram-async001/windows-evidence002.json",
+          "bytes": 46886,
+          "sha256": "b7654fcd3471d6d72e8ef350353a6499c35988c759c4571cc749fd89658fd8ca"
+        },
+        {
+          "path": "build/p10o-histogram-async001/windows-products001.json",
+          "bytes": 4942,
+          "sha256": "fd1d2128e88cf7bd11309df6518badcd6c4aba1857551202fad526630e576d89"
+        },
+        {
+          "path": "build/p10o-histogram-async001/windows-cleanup001.json",
+          "bytes": 620213,
+          "sha256": "206cd35380bfe5ba4b5a29deb242c562f1c52a757632af7cd24f6b4c166c6e90"
+        }
+      ],
+      "archive": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p10o-histogram-async001\\windows-scratch001.zip",
+        "bytes": 111182383,
+        "sha256": "a8ed2498d932320e8166ebe51d93d475492fdb61c1910630c2eb9a20d79dcb36"
+      }
+    },
+    "linux": {
+      "python_cases": 1527,
+      "new_async_cases": 31,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_test_executables": 10,
+      "reports": 116,
+      "frames": 15567,
+      "new_async_reports": 12,
+      "new_async_frames": 850,
+      "removed_scratch_bytes": 965997911,
+      "evidence": [
+        {
+          "path": "build/p10o-histogram-async001/linux-build004/receipt.json",
+          "bytes": 3131,
+          "sha256": "7520e40ec3d1e248b0fbeed54566143459a57001707a6f91cc0e23dd8e18d131"
+        },
+        {
+          "path": "build/p10o-histogram-async001/linux-build004/native.xml",
+          "bytes": 5333,
+          "sha256": "c892c0bf2769659340821d347fafb88c12b602b6460215a7c1f5bca50401ece4"
+        },
+        {
+          "path": "build/p10o-histogram-async001/linux-python003/receipt.json",
+          "bytes": 4780,
+          "sha256": "ccd1d1676245cb47eef4d323cb7e1a5191ee81e7f9aca4ff3e0ba5dfd5fe307d"
+        },
+        {
+          "path": "build/p10o-histogram-async001/linux-python003/pytest.xml",
+          "bytes": 233043,
+          "sha256": "2023e0c24d4feea644244ac52d47b8776b62e1b8b3f237407506f57e3fa725a9"
+        },
+        {
+          "path": "build/p10o-histogram-async001/linux-capture003.json",
+          "bytes": 11506,
+          "sha256": "5118d25b7b2642f535523e1d8b92e973d1fd2b0804816c4575470e56035460f2"
+        },
+        {
+          "path": "build/p10o-histogram-async001/linux-evidence002.json",
+          "bytes": 43410,
+          "sha256": "ae29df2346df4812338c6505de0c51ec584854e765e445b9735349ce3f0610ba"
+        },
+        {
+          "path": "build/p10o-histogram-async001/linux-products001.json",
+          "bytes": 4717,
+          "sha256": "027d56ad49bbf7f0c8fff6a2baaa6fc299039e37e30ef35f3ace76ea4b749101"
+        },
+        {
+          "path": "build/p10o-histogram-async001/linux-cleanup001.json",
+          "bytes": 512964,
+          "sha256": "6fa6478f22d5a6365169204a25c69b4e0dea653e9c3a02956118cfb18d205f38"
+        }
+      ],
+      "archive": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p10o-histogram-async001/linux-scratch001.zip",
+        "bytes": 134317355,
+        "sha256": "14228fe5c2d0aa1927b4df95ce853208ec700804ae4cddfc45e0336c10d90d88"
+      }
+    }
+  },
+  "cleanup_bytes": 1926803769,
+  "registration": {
+    "path": "build/p10o-histogram-async001/registration001.json",
+    "bytes": 1061,
+    "sha256": "707c99b0b446c33430ddad76aa0d4d5b05f1d093c110c97ce87a7613dc5f5a13"
+  },
+  "license_check": {
+    "path": "build/p10o-histogram-async001/licenses001.log",
+    "bytes": 53,
+    "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+  },
+  "plan_gate": {
+    "state": "known_failure",
+    "log": {
+      "path": "build/p10o-histogram-async001/plan-gate001.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    },
+    "reason": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api producer_source byte fingerprint changed",
+    "producer_unchanged_from_baseline": true,
+    "producer": {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 14135,
+      "sha256": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    }
+  },
+  "remaining": [
+    "Native workflow-program and batch histogram analysis integration",
+    "Desktop virtual-source adaptation, unsupported legacy/calibrated/color/numeric histogram domains and upstream conventions",
+    "Complete independent source/reference/resource/platform qualification; full 99-feature goal remains open"
+  ],
+  "source": [
+    {
+      "path": "CMakeLists.txt",
+      "sha256": "3db384e02abeed0d0e133649bef8aee869613517ee35887ca324ebbbfd8bcbb1"
+    },
+    {
+      "path": "src/desktop/histogram_panel.hpp",
+      "sha256": "8387c456f8fffa18e9de28b97af529f09151474d88fcc1ee309d4375eba9e81f"
+    },
+    {
+      "path": "src/desktop/histogram_panel.cpp",
+      "sha256": "06b6ed22c576e5de98dcda330b8c1780d2966f591f841ef4a114426e8fafafc8"
+    },
+    {
+      "path": "src/desktop/window.hpp",
+      "sha256": "3792ef6adda0790543df6b78fa083c252e20022040d0069effcbcc1123ee8117"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "sha256": "4a2e33fd54e3e0806e42ad01c06aaa941e2a349c2db7035f13c2db34a6cc8361"
+    },
+    {
+      "path": "src/desktop/histogram_async_ui_probe.hpp",
+      "sha256": "9070a521913399d75aeb86fa62b78b8da5b8066b40cee9e916b88b658581aace"
+    },
+    {
+      "path": "src/desktop/histogram_async_ui_probe.cpp",
+      "sha256": "ae6dddf0ac8f345a699faa7aedd2abc8bafe16fb85b09088f16a2832e1e220dc"
+    },
+    {
+      "path": "src/desktop/animation_ui_probe.cpp",
+      "sha256": "0b69cd6ec5608b5398181fba4a3150aefc00d3ec57a2c6c2d526b08c4f64bf63"
+    },
+    {
+      "path": "src/desktop/histogram_ui_probe.cpp",
+      "sha256": "8115e6e99b454cf55207a39a585f29b27fab05f495b48596751018c9b449d261"
+    },
+    {
+      "path": "src/desktop/target_histogram_ui_probe.cpp",
+      "sha256": "52f361fdb05ddbc4a76429a71f86f4f35843932c96c74b2141cb22b7d5cab673"
+    },
+    {
+      "path": "src/desktop/histogram_defaults_ui_probe.cpp",
+      "sha256": "7fd69a40511434c44a2658d99cf59fd16f2688b37da767d43c014f1b90195e6c"
+    },
+    {
+      "path": "src/desktop/histogram_recorder_ui_probe.cpp",
+      "sha256": "066827f36088393e1feb4048cf8fa5272cfa3906f30e661c7f80f342d2e47b06"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "sha256": "5149e5fb0aac3d6ee8619e078dfda80791cd057d1f090b4948bfede83843f17e"
+    },
+    {
+      "path": "tests/native/test_histogram_async_window.cpp",
+      "sha256": "16f5a9cd7b93c31ba56f7dcc86b3a88a47406c463346744dd67cd9e5068a5974"
+    },
+    {
+      "path": "tests/python/test_histogram_async_desktop.py",
+      "sha256": "305536b462a60885237d561088f9b6f78467d547a8a0e963df309ac38246926c"
+    },
+    {
+      "path": "tests/python/test_histogram_async_ui.py",
+      "sha256": "d63336719ac72d09f9851601b965ef61ee518566ab8ee5c851dfe5942fb4276a"
+    },
+    {
+      "path": "tests/python/test_histogram_desktop_api.py",
+      "sha256": "b83384291664627a259cbf98a7b04c3d72d5b710081c8c26d2dac71dba83eb80"
+    },
+    {
+      "path": "tests/python/test_target_histogram_desktop_api.py",
+      "sha256": "4b7d30c57efaa7c039735f6a5cdbdf47c6086365f1386d305e463e869d58ac4d"
+    },
+    {
+      "path": "tests/python/test_histogram_preferences.py",
+      "sha256": "e0d0ce78168795d273b3ba474e98c2e359522820759991beb7cbbbc1f3be34e8"
+    },
+    {
+      "path": "tests/python/test_histogram_recorder_desktop.py",
+      "sha256": "6b58975896b00d2a5ddc9c52b661992a16a03f2c6c65ebe574eb46f801ef7aea"
+    }
+  ]
+}

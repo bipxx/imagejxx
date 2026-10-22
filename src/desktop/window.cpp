@@ -16,6 +16,7 @@
 #include "roi_export_panel.hpp"
 #include "movie_export_panel.hpp"
 #include "movie_export_ui_probe.hpp"
+#include "histogram_async_ui_probe.hpp"
 #include "display_annotation_panel.hpp"
 #include "display_annotation_renderer.hpp"
 #include "roi_import_preview.hpp"
@@ -842,6 +843,16 @@ struct Window::Impl {
   RankPanel rankPanel;
   ThresholdPanel thresholdPanel;
   HistogramPanel histogramPanel;
+  struct HistogramTask {
+    HistogramJob job;
+    ResolvedHistogramCommand command;
+    std::uint64_t generation;
+    bool recording,remember;
+    std::string error;
+  };
+  std::shared_ptr<HistogramTask> histogramTask;
+  std::shared_ptr<const JobInfo> histogramLast;
+  std::atomic<std::uint64_t> histogramCancelId{0},histogramCancelEpoch{0};
   ChannelDisplayPanel channelDisplayPanel;
   std::optional<MetadataObject> channelDisplayRebind;
   std::optional<std::uint64_t> channelDisplayRebindOwner;
@@ -2042,7 +2053,7 @@ struct Window::Impl {
     indexedColorPanel.tick(owner.documents_.empty()?std::optional<DocumentSnapshot>{}:std::optional<DocumentSnapshot>{owner.nativeSnapshot()},rgbCap(),
       [this](const auto &command,auto &prepared,bool recorded){std::visit([&](const auto &c){publishRgb(c,prepared,recorded);},command);});
   }
-  bool workflowOtherBusy() const { return movieExportPanel.working() || shadowDemo.active() || indexedColorPanel.visible() || indexedColorPanel.working() || colorStackPanel.visible() || colorStackPanel.working() || rgbDatasetPanel.visible() || rgbDatasetPanel.working() || legacyBusy() || gaussianJobs.apply_busy() || bool(thresholdJob) || bool(autoJob); }
+  bool workflowOtherBusy() const { return movieExportPanel.working() || shadowDemo.active() || indexedColorPanel.visible() || indexedColorPanel.working() || colorStackPanel.visible() || colorStackPanel.working() || rgbDatasetPanel.visible() || rgbDatasetPanel.working() || legacyBusy() || gaussianJobs.apply_busy() || bool(thresholdJob) || bool(autoJob) || bool(histogramTask); }
   bool legacyBusy() const {
     return job.valid() && job.info().state != JobState::Publishing;
   }
@@ -2927,10 +2938,67 @@ struct Window::Impl {
     DatasetHistogramLimits limits;const auto cap=static_cast<std::size_t>(preferenceState.settings.integer("processing_memory_mb"))*1024*1024;
     if(cap)limits.max_working_bytes=std::min(limits.max_working_bytes,cap);return limits;
   }
-  void publishHistogram(const SettingsPatch &values,const MetadataObject &record,bool remember=true) {
+  void beginHistogram(bool remember=true,std::optional<HistogramPanel> replacement={}) {
+    if(owner.busy())throw std::invalid_argument("Wait for the current edit");
+    const auto epoch=histogramCancelEpoch.load();const bool recording=owner.recording;
+    const auto &draft=replacement?*replacement:histogramPanel;
+    const auto captured=draft.capture(owner.nativeSnapshot(),false);
+    HistogramCommandLimits cap;cap.processing=histogramLimits();
+    JobOptions options;options.label="Histogram";options.supersedes="histogram.panel";
+    auto submitted=submit_histogram(*owner.controller_->job_scheduler(),captured,cap,std::move(options));
+    const auto id=submitted.info().id;
+    auto pending=std::make_shared<HistogramTask>(HistogramTask{std::move(submitted),captured,draft.generation(),recording,remember,{}});
+    static_assert(std::is_nothrow_move_assignable_v<HistogramPanel>);
+    if(replacement)histogramPanel=std::move(*replacement);
+    histogramPanel.actionError({});histogramTask=std::move(pending);
+    histogramCancelId.store(id);
+    if(histogramCancelEpoch.load()!=epoch)histogramTask->job.cancel();
+    animating=false;
+  }
+  void cancelHistogram(){if(histogramTask){histogramTask->job.cancel();if(histogramTask->job.ready())pollHistogram();}}
+  void pollHistogram() {
+    if(!histogramTask)return;
+    const auto pending=histogramTask;
+    bool valid=histogramPanel.generation()==pending->generation;
+    try {
+      const auto current=owner.nativeSnapshot();
+      valid=valid && current.id()==pending->command.target().document_id() &&
+          current.revisions().matches(pending->command.target().source_revisions(),Change::Data);
+    }catch(const std::exception &){valid=false;}
+    if(!valid)pending->job.cancel();
+    if(!pending->job.ready())return;
+    auto terminal=std::make_shared<JobInfo>(pending->job.info());
+    try {
+      const auto result=pending->job.result();
+      // All result copies/formatting are staged before preference/workflow effects.
+      pending->job.complete([&](const TargetHistogramResult &){
+        if(histogramPanel.generation()!=pending->generation)throw std::invalid_argument("Histogram draft changed before publication");
+        histogramPanel.accept(pending->command,*result,[&](const SettingsPatch &values,const MetadataObject &record){
+          publishHistogram(values,record,pending->remember,pending->recording);
+        });
+      });
+      terminal->state=JobState::Completed;
+    } catch(const OperationCancelled &) {
+      terminal->state=JobState::Canceled;
+    } catch(const std::exception &error) {
+      pending->error=error.what();lastError=pending->error;histogramPanel.actionError(pending->error);
+      *terminal=pending->job.info();
+    }
+    histogramLast=std::move(terminal);histogramCancelId.store(0);histogramTask.reset();
+  }
+  Json histogramDiagnostics() const {
+    const auto info=histogramTask?std::optional<JobInfo>{histogramTask->job.info()}:histogramLast?std::optional<JobInfo>{*histogramLast}:std::nullopt;
+    Json out={{"active",bool(histogramTask)}};
+    if(info)out["job"]={{"id",info->id},{"document_id",info->document_id},{"state",jobStateName(info->state)},
+      {"completed",info->completed},{"total",info->total},{"stage",info->stage},{"stage_completed",info->stage_completed},{"stage_total",info->stage_total},
+      {"cancel_requested",info->cancel_requested},{"resource_bytes",info->resource_bytes},{"error",info->error}};
+    else out["job"]=nullptr;
+    return out;
+  }
+  void publishHistogram(const SettingsPatch &values,const MetadataObject &record,bool remember=true,std::optional<bool> recorded={}) {
     HistogramCommandLimits cap;cap.processing=histogramLimits();
     (void)histogram_command_from_record(owner.nativeSnapshot(),record,cap);
-    OutputPublication outputs(owner.results,owner.workflow,{},"",owner.recording?metadataJson(record):Json(nullptr));
+    OutputPublication outputs(owner.results,owner.workflow,{},"",recorded.value_or(owner.recording)?metadataJson(record):Json(nullptr));
     if(remember)rememberHistogram(values);
     outputs.publish();
   }
@@ -3584,6 +3652,7 @@ struct Window::Impl {
       return;
     size_t index = it - owner.documents_.begin();
     cancelCreation(panes[index], "owner_closed");
+    if(histogramTask && histogramTask->command.target().document_id()==d->id)cancelHistogram();
     histogramPanel.sourceClosed(d->id);
     if (autoJob && autoOwner == d->id) autoJob->cancel();
     if (thresholdSource && thresholdSource->id() == d->id) {
@@ -4483,6 +4552,7 @@ Window::Window(std::string path)
 Window::~Window() {
   cancel();
   if (impl->autoJob) impl->autoJob->wait();
+  if (impl->histogramTask) impl->histogramTask->job.wait();
   impl->gaussianPanel.cancel([this] { impl->cancelGaussianPreview(); });
   impl->rankPanel.cancel([this] { impl->cancelGaussianPreview(); });
   impl->drainGaussianCancellation();
@@ -4940,6 +5010,7 @@ void Window::setActiveIndex(int index) {
     throw std::out_of_range("Invalid active document index");
   if (controller_->active_document_id() != documents_[index]->id) {
     impl->stopAnimation("source_changed");
+    impl->cancelHistogram();
     impl->rgbDatasetPanel.cancel("activation_changed");
     impl->colorStackPanel.cancel("activation_changed");
     impl->indexedColorPanel.cancel("activation_changed");
@@ -5633,7 +5704,7 @@ void Window::action(const std::string &name, const Json &p) {
       const auto captured=p.contains("histogram_rebind")
           ?rebind_histogram_command(source,record,gaussianRebindRequest(p.at("histogram_rebind")),cap)
           :histogram_command_from_record(source,record,cap);
-      impl->histogramPanel.replay(captured,limits,settings(),[this](const SettingsPatch &values,const MetadataObject &intent){impl->publishHistogram(values,intent,false);});
+      impl->beginHistogram(false,impl->histogramPanel.replayDraft(captured,limits,settings()));
     }
     impl->animating=false;return;
   }
@@ -5646,11 +5717,23 @@ void Window::action(const std::string &name, const Json &p) {
 
   if(name=="calculate_histogram") {
     if(!p.is_object() || !p.empty())throw std::invalid_argument("Calculate Histogram accepts no parameters");
-    impl->histogramPanel.calculate(documents_.empty()?std::nullopt:std::optional<DocumentSnapshot>{nativeSnapshot()},busy(),[this](const SettingsPatch &values,const MetadataObject &record){impl->publishHistogram(values,record);});return;
+    impl->beginHistogram();return;
+  }
+  if(name=="cancel_histogram") {
+    if(!p.is_object() || !p.empty())throw std::invalid_argument("Cancel Histogram accepts no parameters");
+    impl->cancelHistogram();return;
+  }
+  if(name=="wait_histogram") {
+    if(!p.is_object() || p.size()>1 || (p.size()==1&&!p.contains("timeout_ms")))throw std::invalid_argument("Histogram wait accepts only timeout_ms");
+    const auto timeout=p.value("timeout_ms",Json(5000));
+    if(!timeout.is_number_integer() || timeout<1 || timeout>60000)throw std::invalid_argument("Histogram wait timeout must be in 1..60000 ms");
+    const auto pending=impl->histogramTask;impl->pollHistogram();
+    if(pending && !pending->job.wait_for(std::chrono::milliseconds(timeout.get<int>())))throw std::runtime_error("Histogram wait timed out");
+    impl->pollHistogram();if(pending && !pending->error.empty())throw std::runtime_error(pending->error);return;
   }
   if(name=="close_histogram") {
     if(!p.is_object() || !p.empty())throw std::invalid_argument("Close Histogram accepts no parameters");
-    impl->histogramPanel.cancel();return;
+    impl->cancelHistogram();impl->histogramPanel.cancel();return;
   }
   if(name=="export_histogram_csv") {
     if(!p.is_object() || p.size()!=1 || !p.contains("path") || !p.at("path").is_string())throw std::invalid_argument("Histogram CSV export requires only a path");
@@ -6570,6 +6653,8 @@ void Window::action(const std::string &name, const Json &p) {
       throw std::runtime_error("Gaussian Apply wait timed out");
     if (impl->thresholdJob && !impl->thresholdJob->wait_for(remaining()))
       throw std::runtime_error("Threshold Apply wait timed out");
+    impl->pollHistogram();
+    if(impl->histogramTask && !impl->histogramTask->job.wait_for(remaining()))throw std::runtime_error("Histogram wait timed out");
     if (impl->autoJob && !impl->autoJob->wait_for(remaining()))
       throw std::runtime_error("Auto contrast wait timed out");
 #ifdef IMAGEJXX_HAS_SCIENTIFIC_IO
@@ -7809,6 +7894,8 @@ void Window::cancel() {
   impl->colorStackPanel.request_cancel();
   impl->indexedColorPanel.request_cancel();
   impl->nativeWorkflowPanel.request_cancel();
+  impl->histogramCancelEpoch.fetch_add(1);
+  if(const auto id=impl->histogramCancelId.load())impl->gaussianCancellationScheduler->cancel(id);
   impl->autoCancelEpoch.fetch_add(1);
   if (const auto id = impl->autoCancelId.load())
     impl->gaussianCancellationScheduler->cancel(id);
@@ -7838,6 +7925,7 @@ std::optional<JobInfo> Window::jobInfo() const {
   if(auto io=impl->scientificIoPanel.job_info())return io;
 #endif
   if(auto workflow=impl->nativeWorkflowPanel.job_info())return workflow;
+  if (impl->histogramTask)return impl->histogramTask->job.info();
   if (impl->autoJob) return impl->autoJob->info();
   if (impl->thresholdJob)
     return impl->thresholdJob->info();
@@ -7869,11 +7957,14 @@ bool Window::cancelJob(std::uint64_t jobId) {
     impl->pollGaussian();
   if (accepted)
     impl->pollAuto();
+  if(accepted)impl->pollHistogram();
   if (accepted)
     impl->roiImportPanel.poll();
   if (accepted) impl->roiExportPanel.poll();
   return accepted;
 }
+std::shared_ptr<JobScheduler> HistogramAsyncUiProbeAccess::scheduler(Window &w){w.checkThread();return w.controller_->job_scheduler();}
+Json HistogramAsyncUiProbeAccess::diagnostics(Window &w){w.checkThread();return {{"panel",w.impl->histogramPanel.diagnostics()},{"processing",w.impl->histogramDiagnostics()}};}
 void MovieExportUiProbeAccess::worker_gate(Window &window,std::function<void()> gate){window.checkThread();window.impl->movieExportPanel.worker_gate(std::move(gate));}
 void Window::poll() {
   checkThread();
@@ -7890,6 +7981,7 @@ void Window::poll() {
   impl->nativeWorkflowPanel.poll();
   impl->roiImportPanel.poll();
   impl->pollAuto();
+  impl->pollHistogram();
   impl->pollThreshold();
   impl->pollGaussian();
   if (!impl->legacyBusy() || !impl->job.ready())
@@ -7966,6 +8058,7 @@ void Window::wait() {
   impl->roiImportPanel.wait();
   impl->roiExportPanel.wait();
   if (impl->autoJob) impl->autoJob->wait();
+  if (impl->histogramTask) impl->histogramTask->job.wait();
   if (impl->thresholdJob)
     impl->thresholdJob->wait();
   if (impl->legacyBusy())
@@ -11523,7 +11616,7 @@ void Window::Impl::draw() {
   guard([&] {
     const bool visible=histogramPanel.visible();
     histogramPanel.draw(owner.documents_.empty()?std::nullopt:std::optional<DocumentSnapshot>{owner.nativeSnapshot()},owner.busy(),
-      [this](std::string text){file("Export histogram CSV",true,[text=std::move(text)](std::string path){writeBytes(path,{text.begin(),text.end()});},"histogram.csv");},[this](const SettingsPatch &values,const MetadataObject &record){publishHistogram(values,record);});
+      [this](std::string text){file("Export histogram CSV",true,[text=std::move(text)](std::string path){writeBytes(path,{text.begin(),text.end()});},"histogram.csv");},[this]{beginHistogram();},histogramTask?std::optional<JobInfo>{histogramTask->job.info()}:std::nullopt,[this]{cancelHistogram();});
     if(visible && !histogramPanel.visible() && !owner.documents_.empty())
       for(auto &pane:panes)if(pane.doc && pane.doc->id==owner.controller_->active_document_id())pane.requestOrdinaryFocus=true;
   });
@@ -11951,6 +12044,7 @@ Json Window::Impl::headlessReport() {
     result["movie_export"] = movieExportPanel.diagnostics();
     result["threshold_panel"] = thresholdPanel.diagnostics();
     result["histogram_panel"] = histogramPanel.diagnostics();
+    result["histogram_processing"]=histogramDiagnostics();
     result["channel_display_panel"] = channelDisplayPanel.diagnostics();
     result["auto_contrast"] = {{"busy", bool(autoJob)}, {"owner_id", autoOwner},
         {"divisor", owner.controller_->auto_contrast_divisor()},

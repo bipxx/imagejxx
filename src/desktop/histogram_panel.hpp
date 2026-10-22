@@ -2,6 +2,7 @@
 #include "desktop.hpp"
 #include <imagejxx/target_histogram.hpp>
 #include <imagejxx/histogram_command.hpp>
+#include <imagejxx/histogram_job.hpp>
 #include <imagejxx/settings.hpp>
 #include "operation_target_panel.hpp"
 #include <functional>
@@ -17,11 +18,19 @@ public:
                   DatasetHistogramLimits, const Settings &);
   void replay(const ResolvedHistogramCommand &, DatasetHistogramLimits,
               const Settings &, const Remember &);
+  HistogramPanel replayDraft(const ResolvedHistogramCommand &,DatasetHistogramLimits,
+                             const Settings &) const;
+  ResolvedHistogramCommand capture(const std::optional<DocumentSnapshot> &,bool busy) const;
+  void accept(const ResolvedHistogramCommand &,const TargetHistogramResult &,const Remember &);
+  std::uint64_t generation() const {return generation_;}
+  void actionError(std::string value){actionError_=std::move(value);}
   void configure(const Json &);
   void configureTarget(const TargetRequest &);
   void calculate(const std::optional<DocumentSnapshot> &, bool busy, const Remember & = {});
   void draw(const std::optional<DocumentSnapshot> &, bool busy,
-            const std::function<void(std::string)> &export_csv, const Remember & = {});
+            const std::function<void(std::string)> &export_csv,
+            const std::function<void()> &calculate,
+            const std::optional<JobInfo> &,const std::function<void()> &cancel_job);
   void sourceClosed(std::uint64_t);
   void cancel();
   bool visible() const { return open_; }

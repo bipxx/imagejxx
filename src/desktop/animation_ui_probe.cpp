@@ -4,6 +4,7 @@
 #include "histogram_ui_probe.hpp"
 #include "histogram_defaults_ui_probe.hpp"
 #include "histogram_recorder_ui_probe.hpp"
+#include "histogram_async_ui_probe.hpp"
 #include "target_histogram_ui_probe.hpp"
 #include "auto_threshold_ui_probe.hpp"
 #include "automatic_display_ui_probe.hpp"
@@ -19,6 +20,7 @@ namespace imagejxx::desktop {
 Json animationUiCase(Window &window, const std::string &id,
                      const std::string &context, const std::string &directory) {
   if(id.rfind("target-histogram-",0)==0)return targetHistogramUiCase(window,id.substr(17),context,directory);
+  if(id.rfind("histogram-async-",0)==0)return histogramAsyncUiCase(window,id.substr(16),context,directory);
   if(id.rfind("histogram-recorder-",0)==0)return histogramRecorderUiCase(window,id.substr(19),context,directory);
   if(id.rfind("histogram-defaults-",0)==0)return histogramDefaultsUiCase(window,id.substr(19),context,directory);
   if(id.rfind("histogram-",0)==0)return histogramUiCase(window,id.substr(10),context,directory);

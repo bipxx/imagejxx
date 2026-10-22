@@ -1,5 +1,22 @@
 # Implementation progress
 
+**Histogram async UI checkpoint, 2026-10-21 (work in progress):**
+Both ImGui launchers now queue native histogram Calculate/Replay work on the
+shared scheduler, show stage progress/Cancel and preserve prior output during
+work. Creator-thread publication guards source/draft identity, captured recording,
+preferences and workflow; source changes/closure, activation, drafts and cancellation
+discard stale work. Live navigation stays independent of captured planes. Target
+dialog presentation is preserved and explicit-position replay captions render.
+Windows/Linux each pass 1,527 selected checks (31 new) and ten native suites.
+Independent readers verify 232 reports / 31,133 input frames, including 24 new
+async reports / 1,700 frames. Verified cleanup removes 1,926,803,769 scratch bytes,
+retaining final products/evidence. Registration appends six cases to 1,269 and
+preserves prior order. See [usage](HISTOGRAM.md) and
+[the scoped receipt](parity/reviews/p10o-histogram-async001.json).
+Native workflow/batch, remaining histogram domains and full qualification remain
+open. All99 stays 47 in progress / 52 open / 0 complete; the existing Auto Contrast
+producer fingerprint gate remains open.
+
 **Histogram worker checkpoint, 2026-10-21 (work in progress):**
 C++ and Python now submit immutable histogram commands to the shared scheduler.
 Metadata-only admission, progress, cooperative cancellation and caller-thread

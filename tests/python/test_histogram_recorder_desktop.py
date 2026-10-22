@@ -7,7 +7,9 @@ import pytest
 import imagejxx as ij
 from imagejxx import _desktop
 
-def action(e,name,**p):e.action(name,json.dumps(p))
+def action(e,name,**p):
+    e.action(name,json.dumps(p))
+    if name in ["calculate_histogram","replay_histogram"]:e.action("wait_histogram","{}")
 def workflow(e):return json.loads(e.workflow)
 def counts(e,path):
     action(e,'export_histogram_csv',path=str(path))

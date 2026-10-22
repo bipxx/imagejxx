@@ -25,6 +25,7 @@ class RankRuntimeProbe;
 class RankRuntimeProbeAccess;
 class SavedRoiGeometryPythonAccess;
 class MovieExportUiProbeAccess;
+class HistogramAsyncUiProbeAccess;
 struct RunOptions {
   bool hidden = false;
   int frames = 0;
@@ -256,6 +257,7 @@ private:
   friend class RankRuntimeProbeAccess;
   friend class SavedRoiGeometryPythonAccess;
   friend class MovieExportUiProbeAccess;
+  friend class HistogramAsyncUiProbeAccess;
   friend Json roiImportQueueUiCase(Window &, const std::string &,
                                    const std::string &);
   std::shared_ptr<imagejxx::Application> controller_ =
