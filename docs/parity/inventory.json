@@ -468,7 +468,8 @@
           "docs/DESKTOP.md",
           "docs/parity/reviews/p10v-view-cache001.json",
           "docs/SCIENTIFIC_TIFF_SERVICE.md",
-          "docs/parity/reviews/p10w-canvas-reads001.json"
+          "docs/parity/reviews/p10w-canvas-reads001.json",
+          "docs/parity/reviews/p10x-render-memory001.json"
         ],
         "implementation": [
           "include/imagejxx/settings.hpp",
@@ -500,7 +501,8 @@
           "src/native/operation_internal.hpp",
           "src/desktop/commands.cpp",
           "src/desktop/desktop.hpp",
-          "src/desktop/virtual_view_cache.hpp"
+          "src/desktop/virtual_view_cache.hpp",
+          "src/desktop/render_memory.hpp"
         ],
         "tests": [
           "tests/native/test_settings.cpp",
@@ -526,7 +528,9 @@
           "scripts/check_distribution.py",
           "tests/native/test_virtual_view_cache.cpp",
           "tests/python/test_virtual_view_cache.py",
-          "tests/native/test_canvas_reads.cpp"
+          "tests/native/test_canvas_reads.cpp",
+          "tests/native/test_render_memory.cpp",
+          "tests/python/test_render_memory.py"
         ]
       },
       "id": "G010",
@@ -537,6 +541,7 @@
       ],
       "name": "Resource settings",
       "remaining": [
+        "Shared ordinary/XYZ managed surface admission, retained diagnostic/logical texture charges, configuration and lifecycle release are functional. Provider/codec and transform/compositor internal scratch, annotation/font/GUI data, dialogs and other preview surfaces remain outside this managed viewer-surface pool. Complete cross-component resource/performance/platform qualification remains required.",
         "Metadata-only ordinary geometry/properties and stable render reuse under CPU cache eviction are functional. Aggregate linked XYZ, display/readback/cache/upload buffers and GPU texture budgets; whole-process or RSS accounting is not supplied. Other file-backed formats, tiled/pyramid storage/caches, incremental uploads, asynchronous viewport reads and stale-result rejection. Virtual output propagation, materialization/workspace serialization and complete provider/reference/resource/platform qualification.",
         "A persisted window-wide decoded virtual XY budget, capacity accounting, LRU eviction and detached counters are functional. Aggregate XYZ/display/readback/texture/upload/provider accounting and full resource qualification remain open.",
         "Retain consumed undo budgets, worker limits, prompt queued-capture release, parameter-dependent filter workspace admission and visible reservation usage; finish exact managed accounting across argument freezing/admission, queued captures, every scratch/output path, retained results/documents/history, readers, render buffers and CPU/GPU caches.",
@@ -552,7 +557,8 @@
         "m1-jobs-feedback-windows-2026-10-10",
         "m1-job-resource-lifecycle-windows-2026-10-10",
         "p10v.view-cache.functional.001",
-        "p10w.canvas-reads.functional.001"
+        "p10w.canvas-reads.functional.001",
+        "p10x.render-memory.functional.001"
       ]
     },
     {
@@ -1643,7 +1649,8 @@
           "docs/parity/reviews/p10u-virtual-tiff001.json",
           "docs/SCIENTIFIC_TIFF_SERVICE.md",
           "docs/parity/reviews/p10v-view-cache001.json",
-          "docs/parity/reviews/p10w-canvas-reads001.json"
+          "docs/parity/reviews/p10w-canvas-reads001.json",
+          "docs/parity/reviews/p10x-render-memory001.json"
         ],
         "implementation": [
           "include/imagejxx/dataset.hpp",
@@ -1663,7 +1670,8 @@
           "src/native/controlled_source_internal.hpp",
           "src/desktop/scientific_io_panel.cpp",
           "src/desktop/virtual_view_cache.hpp",
-          "src/native/settings.cpp"
+          "src/native/settings.cpp",
+          "src/desktop/render_memory.hpp"
         ],
         "tests": [
           "tests/native/test_dataset.cpp",
@@ -1683,7 +1691,9 @@
           "tests/python/test_virtual_tiff_ui.py",
           "tests/native/test_virtual_view_cache.cpp",
           "tests/python/test_virtual_view_cache.py",
-          "tests/native/test_canvas_reads.cpp"
+          "tests/native/test_canvas_reads.cpp",
+          "tests/native/test_render_memory.cpp",
+          "tests/python/test_render_memory.py"
         ]
       },
       "id": "G041",
@@ -1694,7 +1704,7 @@
       ],
       "name": "Large datasets",
       "remaining": [
-        "Virtual TIFF/import, source guards, regional XYZ, replay/startup, worker histograms and bounded shared XY retention are functional. Ordinary geometry/properties use metadata and stable render caches avoid redundant plane reads. Aggregate linked XYZ, display/readback/cache/upload buffers and GPU texture budgets; whole-process or RSS accounting is not supplied. Other file-backed formats, tiled/pyramid storage/caches, incremental uploads, asynchronous viewport reads and stale-result rejection. Virtual output propagation, materialization/workspace serialization and complete provider/reference/resource/platform qualification."
+        "Virtual TIFF/import, regional XYZ, worker histograms, bounded XY retention, metadata-only geometry and stable render reuse are functional. Managed ordinary/XYZ source-output/RGB/upload/readback/logical texture reservations are now shared. Provider/codec and transform/compositor internal scratch, annotation/font/GUI data, dialogs and other preview surfaces remain outside this managed viewer-surface pool. Complete cross-component resource/performance/platform qualification remains required. Four-byte logical texture charges do not measure physical driver allocations, queued storage or device overhead; whole-process/RSS guarantees are not supplied. Asynchronous viewport reads with stale-result rejection, other file-backed formats, tiled/pyramid storage/caches and incremental uploads. Virtual output propagation, materialization/workspace serialization, the existing Auto Contrast gate and every other original inventory requirement remain open."
       ],
       "required_work": "Missing virtual/tiled/pyramid storage, bounded cache, incremental upload and responsive navigation while loading",
       "status": "in_progress",
@@ -1704,7 +1714,8 @@
         "p10t.virtual-desktop.functional.001",
         "p10u.virtual-tiff.functional.001",
         "p10v.view-cache.functional.001",
-        "p10w.canvas-reads.functional.001"
+        "p10w.canvas-reads.functional.001",
+        "p10x.render-memory.functional.001"
       ]
     },
     {
@@ -181208,6 +181219,29 @@
         "total": 4422
       },
       "scope": "5001 selected Python checks per OS (4422 base and 579 additional channel checks); eleven native suites including the new canvas suite, eight session groups, three desktop IO/startup/append suites, 36 rank-host cases / 499 checks and two resource groups per OS. The new native suite additionally passes hidden OpenGL and recreated-context runs. It verifies zero provider reads for geometry/properties even with failing sources; visited-tab rendering, active-plane eviction under a 1 MiB budget, stable cached RGB without further reads, deferred hover reacquisition and the independently expected sample 772. Fresh installed SDK consumers pass; public dataset/settings headers and core archive are byte-identical to the preceding qualified prefixes. Readers verify 296 existing reports / 39273 raw input frames; all 1297 input registrations stay unchanged. No complete ImageJ/Fiji source/reference/resource/real-GPU/OS-desktop/platform acceptance."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-22",
+      "id": "p10x.render-memory.functional.001",
+      "identity": {
+        "qualification": {
+          "bytes": 17991,
+          "path": "docs/parity/reviews/p10x-render-memory001.json",
+          "sha256": "25de868b528a8b4fc2b3f4130e10d5c635483812f9e3c071cd2608aec9975e5f"
+        }
+      },
+      "platform": "Windows/Linux C++/Python shared ImGui managed ordinary/XYZ render reservations",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 4431,
+        "report": "build/p10x-render-memory001/windows-python001/pytest.xml",
+        "skipped": 0,
+        "total": 4431
+      },
+      "scope": "5010 selected Python checks per OS (4431 base including nine new resource tests, plus 579 channel tests); twelve native suites, eight session groups, three desktop IO/startup/append suites, 36 rank-host cases / 499 checks and two resource groups per OS. Three hidden/recreated GL contexts cover canvas reuse and the new memory reservations. Memory tests verify reservation transfer/release/overflow, pre-provider denial for ordinary/XYZ views, exact 8388608/8486912-byte diagnostic retention, live-limit refusal without mutation, stable-frame reuse, diagnostic teardown and pre-read GL reservations/texture teardown. ImGui recovery errors fail the GL check. Fresh installed SDK consumers check the new 1024 MiB setting; channel tests use proper disposable installed origins and byte-identical modules. Readers verify 296 existing reports / 39261 raw input frames; all 1297 registrations stay unchanged. No complete ImageJ/Fiji source/reference/resource/real-GPU/OS-desktop/platform acceptance."
     }
   ]
 }

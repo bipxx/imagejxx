@@ -46,6 +46,7 @@
 #include "gaussian_replay_policy.hpp"
 #include "jobs_panel.hpp"
 #include "orthogonal.hpp"
+#include "render_memory.hpp"
 #include "rendering.hpp"
 #include "selection_panel.hpp"
 #include "saved_roi_edit.hpp"
@@ -788,6 +789,7 @@ std::string resultText(const Json &value, const Settings &settings) {
 } // namespace
 struct Window::Impl {
   Window &owner;
+  std::shared_ptr<RenderMemory> renderMemory=std::make_shared<RenderMemory>();
   std::shared_ptr<VirtualViewCache> viewCache=std::make_shared<VirtualViewCache>();
   struct LaunchAppendItem {
     std::string path;
@@ -872,6 +874,7 @@ struct Window::Impl {
   struct Pane {
     std::shared_ptr<Document> doc;
     GLuint texture = 0;
+    RenderMemory::Lease textureMemory,readbackMemory,rankMemory;
     uint64_t revision = ~uint64_t(0);
     bool previewActive = false, textureDirty = true;
     std::uint64_t previewGeneration = 0;
@@ -1316,6 +1319,8 @@ struct Window::Impl {
         static_cast<std::size_t>(settings.integer("processing_workers")),
         settingBytes(settings, "processing_memory_mb"), 64};
     const auto nextCacheBytes=settingBytes(settings,"viewport_cache_mb");
+    const auto nextRenderBytes=settingBytes(settings,"render_memory_mb");
+    renderMemory->validateLimit(nextRenderBytes);
     const auto nextFps = settings.number("animation_fps");
     const auto nextBrush = static_cast<float>(settings.number("brush_width"));
     const auto nextShowRois = settings.boolean("show_rois");
@@ -1354,6 +1359,7 @@ struct Window::Impl {
       foreground[c] = fg[c] / 255.f;
       background[c] = bg[c] / 255.f;
     }
+    renderMemory->setLimit(nextRenderBytes);
     viewCache->setBudget(nextCacheBytes);
     shortcutsRearmed = false;
   }
@@ -2716,6 +2722,7 @@ struct Window::Impl {
     for (auto &pane : panes) {
       pane.sourceReadback.reset();
       pane.renderedReadback.reset();
+      pane.readbackMemory.reset();
       pane.sourceReadbackPolicy = FloatingSamplePolicy::FiniteOnly;
       pane.orthogonal.clearReadback();
     }
@@ -4309,6 +4316,8 @@ struct Window::Impl {
     const bool missingReadback = capture && (!pane.sourceReadback || !pane.renderedReadback);
     if (!rebuild && !missingReadback)
       return;
+    const auto memoryPlan=RenderMemory::plan(shape[0],shape[1],dimensions.s,gl,capture,bool(rankProbe));
+    auto memory=renderMemory->acquire(memoryPlan.peak);
     // Acquire pixels only after the complete texture/readback key misses.
     const auto previewPixels = sources ? sources->provider()(Plane::XY, position.z, position.t, position.c) : preview
         ? preview->data().dataset.plane(position) : nullptr;
@@ -4358,12 +4367,15 @@ struct Window::Impl {
     pane.textureDirty = !gl;
     if (capture) {
       // Deep values from the actual cache build, never retained source aliases.
+      pane.sourceReadback.reset();pane.renderedReadback.reset();pane.readbackMemory.reset();
       pane.sourceReadback = frame;
       pane.renderedReadback = image;
+      pane.readbackMemory=memory.retain(RenderMemory::mul(RenderMemory::add(pane.sourceReadback->pixels.capacity(),pane.renderedReadback->pixels.capacity()),sizeof(double)));
       pane.sourceReadbackPolicy = samplePolicy;
     } else {
       pane.sourceReadback.reset();
       pane.renderedReadback.reset();
+      pane.readbackMemory.reset();
       pane.sourceReadbackPolicy = FloatingSamplePolicy::FiniteOnly;
     }
     if (!gl)
@@ -4381,6 +4393,7 @@ struct Window::Impl {
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image.width, image.height, 0, GL_RGB,
                  GL_UNSIGNED_BYTE, pixels.data());
+    pane.textureMemory=memory.retain(memoryPlan.texture);
     if (rankProbe) {
       const auto &consumed = activePreview ? *preview : liveSnapshot;
       pane.rankTexture = {{"valid", glGetError() == GL_NO_ERROR},
@@ -4392,18 +4405,20 @@ struct Window::Impl {
           {"preview_generation", generation}, {"upload_serial", ++rankUploadSerial}};
       // Own copied bytes only. Hashing and JSON/hex serialization occur after
       // the CPU render-submission timestamp, never while retaining a source.
+      std::vector<unsigned char>().swap(pane.rankScalarBytes);std::vector<unsigned char>().swap(pane.rankRgbBytes);pane.rankMemory.reset();
       pane.rankScalarBytes = rankProbeDeclaredBytes(frame);
       pane.rankRgbBytes = std::move(pixels);
+      pane.rankMemory=memory.retain(RenderMemory::add(pane.rankScalarBytes.capacity(),pane.rankRgbBytes.capacity()));
     }
     } catch (...) {
       // A failed composition/upload must never mark an older texture or RGB
       // diagnostic as current under the new state, source, or resource limit.
       pane.revision = ~std::uint64_t(0);
       pane.textureDirty = true;
-      pane.sourceReadback.reset(); pane.renderedReadback.reset();
+      pane.sourceReadback.reset(); pane.renderedReadback.reset();pane.readbackMemory.reset();
       pane.channelDisplayKey = nullptr; pane.channelDisplayReadback = nullptr;
       pane.rankTexture = {{"valid", false}};
-      pane.rankScalarBytes.clear(); pane.rankRgbBytes.clear();
+      std::vector<unsigned char>().swap(pane.rankScalarBytes);std::vector<unsigned char>().swap(pane.rankRgbBytes);pane.rankMemory.reset();
       throw;
     }
   }
@@ -5038,6 +5053,10 @@ void Window::setActiveIndex(int index) {
 void Window::addNativeDocument(std::shared_ptr<imagejxx::Document> document) {
   checkThread();
   addDocument(std::make_shared<Document>(std::move(document)));
+}
+Json Window::renderMemoryInfo() const {
+  checkThread();const auto &m=*impl->renderMemory;
+  return {{"limit_bytes",m.limit()},{"retained_bytes",m.retained()},{"working_bytes",m.working()},{"peak_reserved_bytes",m.peak()},{"denied_requests",m.denied()}};
 }
 Json Window::virtualViewCacheInfo() const {
   checkThread();const auto &cache=*impl->viewCache;
@@ -9882,14 +9901,18 @@ void Window::Impl::canvas(Pane &pane) {
     ImGui::PushStyleColor(
         ImGuiCol_ChildBg,
         ImVec4(bg[0] / 255.f, bg[1] / 255.f, bg[2] / 255.f, bg[3] / 255.f));
+    const auto dispatch=[&]{
+      struct PopCanvasStyle {~PopCanvasStyle(){ImGui::PopStyleColor();}} pop;
     auto savedHooks = savedRoiHooks(pane);
-    const auto dispatch = pane.orthogonal.draw(
+    pane.orthogonal.setRenderMemory(renderMemory);
+    return pane.orthogonal.draw(
         *d, gl, showRois,
         preferenceState.settings.text("interpolation") == "linear", status, input,
         preview && previewTarget ? &*preview : nullptr, previewGeneration,
         captureGaussianReadback(), previewTarget, channelLimits(),
         savedHooks.edit ? &savedHooks : nullptr);
-    ImGui::PopStyleColor();
+
+    }();
     pane.orthogonalWasVisible = true;
     if (!dispatch.escape_requested)
       return;
@@ -12944,10 +12967,10 @@ int Window::run(const RunOptions &options) {
       for (auto &pane : impl->panes) {
         if (pane.texture)
           glDeleteTextures(1, &pane.texture);
-        pane.texture = 0;
+        pane.texture = 0;pane.textureMemory.reset();
         pane.revision = ~uint64_t(0);
         pane.rankTexture = {{"valid", false}};
-        pane.rankScalarBytes.clear(); pane.rankRgbBytes.clear();
+        std::vector<unsigned char>().swap(pane.rankScalarBytes);std::vector<unsigned char>().swap(pane.rankRgbBytes);pane.rankMemory.reset();
         pane.orthogonal.releaseTextures();
         pane.displayRenderer.release_textures();
         pane.importDisplayRenderer.release_textures();

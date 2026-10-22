@@ -829,6 +829,7 @@ PYBIND11_MODULE(_desktop, m) {
            py::arg("document_id") = 0)
       .def("native_document", &Window::nativeDocument,
            py::arg("document_id") = 0)
+      .def("render_memory_info",[](const Window &w){return w.renderMemoryInfo().dump();})
       .def("virtual_view_cache_info",[](const Window &w){return w.virtualViewCacheInfo().dump();})
       .def("add_native_document", &Window::addNativeDocument,
            py::arg("document"))

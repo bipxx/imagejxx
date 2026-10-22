@@ -291,6 +291,11 @@ const std::vector<SettingDefinition> &Settings::schema() {
        "used planes are evicted. Provider scratch, caller-held images, "
        "orthogonal/render caches and GPU textures are separate.",
        SettingKind::Integer, std::int64_t(128), 1, 1048576},
+      {"render_memory_mb", "Resources", "Render surfaces (MiB)",
+       "Shared ordinary/XYZ source-output, RGB, upload, diagnostic and logical "
+       "texture reservations. Provider/transform scratch and driver overhead "
+       "are separate. Close views before lowering below live reservations.",
+       SettingKind::Integer, std::int64_t(1024), 1, 1048576},
       {"processing_workers", "Resources", "Processing workers",
        "Maximum simultaneous native processing jobs.", SettingKind::Integer,
        std::int64_t(2), 1, 64},

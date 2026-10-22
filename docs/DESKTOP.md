@@ -2433,3 +2433,7 @@ Virtual documents share a configurable decoded XY cache. See
 Ordinary canvas geometry and properties no longer decode virtual pixels. Stable
 render caches survive CPU-plane eviction; hover and picker values read the
 captured plane lazily. Context recreation and changed render keys still rebuild.
+
+
+Ordinary and linked XYZ views share the Resources **Render surfaces (MiB)**
+reservation pool. See [managed allocations and remaining limits](SCIENTIFIC_TIFF_SERVICE.md#managed-render-reservations).

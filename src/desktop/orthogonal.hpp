@@ -1,4 +1,5 @@
 #pragma once
+#include "render_memory.hpp"
 #include "desktop.hpp"
 #include "planar_annotation_panel.hpp"
 #include <imagejxx/channel_display.hpp>
@@ -49,6 +50,7 @@ public:
        const ResolvedTarget *transient_target = nullptr,
        ChannelDisplayLimits channel_limits = {},
        const SavedRoiCanvasHooks *saved_roi = nullptr);
+  void setRenderMemory(std::shared_ptr<RenderMemory> memory);
   void resetInput();
   int focusedPlane() const;
   void releaseTextures();
@@ -57,9 +59,11 @@ public:
   ImVec2 screenPoint(int view, int horizontal, int vertical) const;
 
 private:
+  std::shared_ptr<RenderMemory> memory_=std::make_shared<RenderMemory>();
   PlanarAnnotationPanel planar_;
   struct Cache {
     unsigned int texture = 0;
+    RenderMemory::Lease textureMemory,readbackMemory;
     std::uint64_t revision = ~std::uint64_t(0);
     std::uint64_t documentId = 0, previewGeneration = 0;
     std::uintptr_t dataIdentity = 0;

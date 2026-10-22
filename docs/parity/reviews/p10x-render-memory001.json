@@ -1,0 +1,386 @@
+{
+  "state": "qualified_functional_increment",
+  "objective_complete": false,
+  "baseline_commit": "9123266f138cd81e3f03e804524008f4abd1cfd5",
+  "scope": "One managed render-reservation pool across ordinary and linked XYZ viewer surfaces, persisted resource configuration, C++/Python diagnostics and deterministic lifecycle release.",
+  "semantics": "Move-only shared-state leases charge working reservations before selected/extracted source-output, RGB, upload and replacement buffer work. Retained CPU diagnostic/rank charges use actual vector capacity; live textures use four logical bytes per texel. Replacements include existing retained charges until publication. Regional XYZ includes row/full-XY virtual fallback estimates; range scans reserve a full-plane output before IO. Stable render hits acquire no new reservations. Document/context teardown releases corresponding charges. Lower limits are validated before preference publication. Invalid values, failed writes and below-live limits preserve settings.",
+  "boundaries": "Reservations are conservative managed quantities, not measured physical memory. Borrowed source outputs may be charged again; the separate XY cache remains independent. Provider/codec/transform/compositor internals, font/annotation/GUI metadata, other dialogs/previews, allocator and driver overhead remain external. New scene allocation is refused rather than evicting live GPU objects. Historical peak reservations may exceed a subsequently lowered limit.",
+  "verification": "5010 selected Python checks per OS (4431 base including nine new resource tests, plus 579 channel tests); twelve native suites, eight session groups, three desktop IO/startup/append suites, 36 rank-host cases / 499 checks and two resource groups per OS. Three hidden/recreated GL contexts cover canvas reuse and the new memory reservations. Memory tests verify reservation transfer/release/overflow, pre-provider denial for ordinary/XYZ views, exact 8388608/8486912-byte diagnostic retention, live-limit refusal without mutation, stable-frame reuse, diagnostic teardown and pre-read GL reservations/texture teardown. ImGui recovery errors fail the GL check. Fresh installed SDK consumers check the new 1024 MiB setting; channel tests use proper disposable installed origins and byte-identical modules. Readers verify 296 existing reports / 39261 raw input frames; all 1297 registrations stay unchanged. No complete ImageJ/Fiji source/reference/resource/real-GPU/OS-desktop/platform acceptance.",
+  "profiles": {
+    "windows": {
+      "python_cases": 5010,
+      "base_python_cases": 4431,
+      "channel_python_cases": 579,
+      "new_python_cases": 9,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_suites": 12,
+      "new_memory_suite": 1,
+      "hidden_gl_contexts": 3,
+      "session_groups": 8,
+      "desktop_regression_suites": 3,
+      "rank_host_cases": 36,
+      "rank_host_checks": 499,
+      "resource_groups": 2,
+      "fresh_installed_sdk_consumer": true,
+      "reports": 148,
+      "frames": 19585,
+      "removed_scratch_bytes": 1153736543,
+      "archive": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p10x-render-memory001\\windows-scratch001.zip",
+        "bytes": 226501889,
+        "sha256": "031bedccb9120c22aef6ddd4287ef4eb750d32b2b13236b6c9a867a0555bf56b"
+      },
+      "evidence": [
+        {
+          "path": "build/p10x-render-memory001/windows-build001/core-ready.json",
+          "bytes": 1280,
+          "sha256": "991b1eedc4859c41dbeb4bbcd1da281cebf68481b612885156b1ddba6e851587"
+        },
+        {
+          "path": "build/p10x-render-memory001/windows-build001/ui-build.log",
+          "bytes": 11701,
+          "sha256": "0187e5119dbd6c94e457e358191a08ccbf1eff3b9ca5ab2624ed3e85aa68c2b7"
+        },
+        {
+          "path": "build/p10x-render-memory001/windows-build002/core-ready.json",
+          "bytes": 1280,
+          "sha256": "ad20005102c675fb8e5f610aa768961450a00fb9b013cf41940d60a7aea72321"
+        },
+        {
+          "path": "build/p10x-render-memory001/windows-build002/ui-native.xml",
+          "bytes": 2330,
+          "sha256": "04d137ffd47266823a47e5d10b3c9ac984dfb0aa64ec0d63a48b002ea30a6d35"
+        },
+        {
+          "path": "build/p10x-render-memory001/windows-build003/receipt.json",
+          "bytes": 1280,
+          "sha256": "abdfa1728c19e7c99cea7b9e26e4ee63d9ccb88cc1ad9db0bb7e495384ed5ec2"
+        },
+        {
+          "path": "build/p10x-render-memory001/windows-build003/native.xml",
+          "bytes": 1922,
+          "sha256": "b109acccc84d4ee2310597aa448036f7ee62f07f100c5142b887875ad043fdbb"
+        },
+        {
+          "path": "build/p10x-render-memory001/windows-build003/ui-native.xml",
+          "bytes": 2192,
+          "sha256": "fd7b5e71880f60fc26d8b1759ec8f13a3c2fee94b9e22219ce33b33559c92347"
+        },
+        {
+          "path": "build/p10x-render-memory001/windows-python001/receipt.json",
+          "bytes": 7706,
+          "sha256": "4e5ac669217c6cf35417c094d26ef048c45d2e0f49826a31ca00d9054f325db5"
+        },
+        {
+          "path": "build/p10x-render-memory001/windows-python001/pytest.xml",
+          "bytes": 661896,
+          "sha256": "6975b9d66909c906ec9f4fc47799c69a8ce4fa6ae8e878f58fef583467a57e6f"
+        },
+        {
+          "path": "build/p10x-render-memory001/windows-channels002/receipt.json",
+          "bytes": 2825,
+          "sha256": "2548711957caae025d37c9db58d96d7d2dbd5c9133a8c3b42ea9b18094e9cf67"
+        },
+        {
+          "path": "build/p10x-render-memory001/windows-channels002/pytest.xml",
+          "bytes": 79470,
+          "sha256": "7d4c7f3c2f9513306d7d28d1a0175f9a723ac2fb79a6efc1a5fcb58452a527fa"
+        },
+        {
+          "path": "build/p10x-render-memory001/windows-channel-env002/receipt.json",
+          "bytes": 296,
+          "sha256": "b86b54a23d3c7d91191cbd7269c4a1de0c6ce8752383d34f5a46b95a12889d6e"
+        },
+        {
+          "path": "build/p10x-render-memory001/windows-channel-capture001.json",
+          "bytes": 14428,
+          "sha256": "03b653673214f683b7a323a5f18c7d9926c1c9cc6755cd94681a710dcc870127"
+        },
+        {
+          "path": "build/p10x-render-memory001/windows-extra002/receipt.json",
+          "bytes": 1068,
+          "sha256": "f30745cc049dee59a7a02bc5c787e0f582f5629e44147badc832159229631d2e"
+        },
+        {
+          "path": "build/p10x-render-memory001/windows-extra002/canvas-gl.log",
+          "bytes": 96,
+          "sha256": "d9b08d63f23c4c1f6bc8776602cee3ab03c5b3f23a62feedf4338a495838b8b4"
+        },
+        {
+          "path": "build/p10x-render-memory001/windows-extra002/memory-gl.log",
+          "bytes": 104,
+          "sha256": "37e5d993a253d4a98c83e45ebb25f1a74368339a4766ed18a2588892cd07738e"
+        },
+        {
+          "path": "build/p10x-render-memory001/windows-sdk002/receipt.json",
+          "bytes": 463,
+          "sha256": "6225c4c6702e6bc716003566ead69a598cb1f8b179d4d6ac5585d03ffefa9f72"
+        },
+        {
+          "path": "build/p10x-render-memory001/windows-capture002.json",
+          "bytes": 13798,
+          "sha256": "64f7a55b1bafea512c61a3c9abc5cd3571b24869a5325bb75c85e8732ed79d99"
+        },
+        {
+          "path": "build/p10x-render-memory001/windows-evidence001.json",
+          "bytes": 63829,
+          "sha256": "66401f36f8f7ad7fafb4f2d81b7e5b935f1c16d5874c1df968cdb10198ff35ea"
+        },
+        {
+          "path": "build/p10x-render-memory001/windows-products001.json",
+          "bytes": 9193,
+          "sha256": "5f1237bd1afee19ef9e7f0abaab174293583d9d47a845b1de4a1657963db8da2"
+        },
+        {
+          "path": "build/p10x-render-memory001/windows-cleanup001.json",
+          "bytes": 1826576,
+          "sha256": "40e82d0564d823f7ceb8bf647d411d04ae23e55609fd61d2a8dbacce4d82368c"
+        },
+        {
+          "path": "build/p10x-render-memory001/windows-verified001.json",
+          "bytes": 196,
+          "sha256": "6696bbde9fe793d75f312103f31b41a8591e925da5cd62bd2396ffa6d08ba6ca"
+        }
+      ]
+    },
+    "linux": {
+      "python_cases": 5010,
+      "base_python_cases": 4431,
+      "channel_python_cases": 579,
+      "new_python_cases": 9,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_suites": 12,
+      "new_memory_suite": 1,
+      "hidden_gl_contexts": 3,
+      "session_groups": 8,
+      "desktop_regression_suites": 3,
+      "rank_host_cases": 36,
+      "rank_host_checks": 499,
+      "resource_groups": 2,
+      "fresh_installed_sdk_consumer": true,
+      "reports": 148,
+      "frames": 19676,
+      "removed_scratch_bytes": 1350229576,
+      "archive": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p10x-render-memory001/linux-scratch001.zip",
+        "bytes": 257979942,
+        "sha256": "6daaff55fa0539a20544452ec585a2b62e24f179a50e8bfc2d206bb62c8262fe"
+      },
+      "evidence": [
+        {
+          "path": "build/p10x-render-memory001/linux-build001/core-ready.json",
+          "bytes": 1235,
+          "sha256": "d7132839c02a7421776272e32e3ea417d57289ddb112e5f25f4293ebe51bccd1"
+        },
+        {
+          "path": "build/p10x-render-memory001/linux-build001/ui-build.log",
+          "bytes": 1918,
+          "sha256": "657ce8c542488ce7b9642596f02238c616df3ac949585ed8e8c69ba5ff7f50d2"
+        },
+        {
+          "path": "build/p10x-render-memory001/linux-build002/core-ready.json",
+          "bytes": 1235,
+          "sha256": "997e6dee358616a75306c2034ac8e9759c9910ae6493da0d674e5934cd37776f"
+        },
+        {
+          "path": "build/p10x-render-memory001/linux-build002/ui-native.xml",
+          "bytes": 2355,
+          "sha256": "6b52be059fa6ce1698396f87e1f95fcc1fd227f631003fede2c2397a0e40b383"
+        },
+        {
+          "path": "build/p10x-render-memory001/linux-build003/receipt.json",
+          "bytes": 1235,
+          "sha256": "e7162e63f503c9b91d90d339c1e5a4681b437dfba689bc5859094c62593712ca"
+        },
+        {
+          "path": "build/p10x-render-memory001/linux-build003/native.xml",
+          "bytes": 1890,
+          "sha256": "6b864cc4f53fda196a91bd7ef667bd0d537bb101443846507e20a68b09e7a2c1"
+        },
+        {
+          "path": "build/p10x-render-memory001/linux-build003/ui-native.xml",
+          "bytes": 2221,
+          "sha256": "c3ebec05fa2a6dbdcae34a49065928e1d7b85b20e33ae9045edd2436deb68fb0"
+        },
+        {
+          "path": "build/p10x-render-memory001/linux-python001/receipt.json",
+          "bytes": 7399,
+          "sha256": "74b218898200e92a21665302ac9f353cbfa466908c57f2dcd239a3e457cb8a42"
+        },
+        {
+          "path": "build/p10x-render-memory001/linux-python001/pytest.xml",
+          "bytes": 661897,
+          "sha256": "dcf6e7a7c17686eb28a3bac5a7fd14be9b07e798e50ab06d95294ae9cace73d6"
+        },
+        {
+          "path": "build/p10x-render-memory001/linux-channels002/receipt.json",
+          "bytes": 2686,
+          "sha256": "b3b1d00fc71b2b409768a1ad272396e61795919e9609ed634282fa905361c0a7"
+        },
+        {
+          "path": "build/p10x-render-memory001/linux-channels002/pytest.xml",
+          "bytes": 79470,
+          "sha256": "45e1fcdb769c7bea2edf4319d40fd1a4056d9582669825eb1ae12ec78279b92e"
+        },
+        {
+          "path": "build/p10x-render-memory001/linux-channel-env002/receipt.json",
+          "bytes": 234,
+          "sha256": "2284f89546289e97b9dbe62f579e38a86c36fb185cd51a0e6b0e4d67f3bccfca"
+        },
+        {
+          "path": "build/p10x-render-memory001/linux-channel-capture001.json",
+          "bytes": 12396,
+          "sha256": "5e1ae6d50d57b609baa54e29d18923636004d8238af3c37398273715676d3852"
+        },
+        {
+          "path": "build/p10x-render-memory001/linux-extra002/receipt.json",
+          "bytes": 1050,
+          "sha256": "fa5f636400aa1dff0c5b5c4c23724fc1bdc017030656aad8966ddb7950c8cb96"
+        },
+        {
+          "path": "build/p10x-render-memory001/linux-extra002/canvas-gl.log",
+          "bytes": 95,
+          "sha256": "df94a01272f05d622b65da66f19ab418a688f4341e82d8677592ac9256c4fa4c"
+        },
+        {
+          "path": "build/p10x-render-memory001/linux-extra002/memory-gl.log",
+          "bytes": 103,
+          "sha256": "9ab42509f81992a4d123d94b138d9f6454cee514a8f06faecbbbbb9d7f2402f9"
+        },
+        {
+          "path": "build/p10x-render-memory001/linux-sdk002/receipt.json",
+          "bytes": 415,
+          "sha256": "1b71df4b33f5e724440ed5ccf59d90e63569302e07d1fff26b4470ed997e3c90"
+        },
+        {
+          "path": "build/p10x-render-memory001/linux-capture002.json",
+          "bytes": 11766,
+          "sha256": "5e4f634cfd8e286410462eae7134ef56c6a3abb9ba87a57a594389383a198bb8"
+        },
+        {
+          "path": "build/p10x-render-memory001/linux-evidence001.json",
+          "bytes": 58373,
+          "sha256": "df78c59d00200a2ef596bf5a13a620cc7a480585ece0d51aeff6a4e1dcf72e34"
+        },
+        {
+          "path": "build/p10x-render-memory001/linux-products001.json",
+          "bytes": 8852,
+          "sha256": "8c1d4354ff48d5aba1d124dbc70d15d6c4406a4729a2a1242333f712aa0a27db"
+        },
+        {
+          "path": "build/p10x-render-memory001/linux-cleanup001.json",
+          "bytes": 1686893,
+          "sha256": "631e7b5bca129ae8886803daefd891d509093c9df390557add342170e0fe5015"
+        },
+        {
+          "path": "build/p10x-render-memory001/linux-verified001.json",
+          "bytes": 190,
+          "sha256": "341b0e867968281cdb70348e9ec430409223f04f92a4573770c16efb1993269a"
+        }
+      ]
+    }
+  },
+  "source": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 107387,
+      "sha256": "bdddd4b0c6cdb06fa3c25ae1182f0d259cbc0bd220842f74f6aa2a157c1df060"
+    },
+    {
+      "path": "src/desktop/orthogonal.cpp",
+      "bytes": 61098,
+      "sha256": "d727d50ed68a09d4c0ca2de5d26ba66eeaa6745b5ee1836fba36d13186f2f598"
+    },
+    {
+      "path": "src/desktop/orthogonal.hpp",
+      "bytes": 5570,
+      "sha256": "2b1feb21100677b495f6a05adf7ec9a3539c4e29f0b9dc30cad8eeb6fdec01fe"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 52836,
+      "sha256": "649fd00b6564a3d8a41ab6bca7836d869c6ec0a2769c042587a7da667479c038"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 680006,
+      "sha256": "51c4db425050cbf174b6b960d1a0df0a5b60cf1e1d7c0212c3f6d8c467467cc5"
+    },
+    {
+      "path": "src/desktop/window.hpp",
+      "bytes": 14971,
+      "sha256": "cd78b402cbdbe236f96dad7d0c6ff47b2fb9660128388bffa81ffc57f7aa7ada"
+    },
+    {
+      "path": "src/imagejxx/ui/app.py",
+      "bytes": 31284,
+      "sha256": "176be29f6ab583c15e5c9c8c971568f6f39383505e4ad0f11feb08f22285869e"
+    },
+    {
+      "path": "src/native/settings.cpp",
+      "bytes": 24079,
+      "sha256": "b8978bde0f0b5164e6529d46a68320db360a502790dcf7a2ce7eda25759198f8"
+    },
+    {
+      "path": "src/desktop/render_memory.hpp",
+      "bytes": 4061,
+      "sha256": "bd4688297ee5eeebc50e688598525c7e1932b3768ec296f0758eeaa4dd1261b2"
+    },
+    {
+      "path": "tests/native/test_render_memory.cpp",
+      "bytes": 5222,
+      "sha256": "ece99416338e92f784f979f9302b2db00e8d5c21308be4ec4dc1e1c472eea377"
+    },
+    {
+      "path": "tests/python/test_render_memory.py",
+      "bytes": 1570,
+      "sha256": "4834929253e69a74b7075f56d2bf61bdd812020ed4fcef1b811623bf6f9c8339"
+    }
+  ],
+  "licenses": {
+    "path": "build/p10x-render-memory001/licenses001.log",
+    "bytes": 62,
+    "sha256": "939b266b092bfdc37d1814f66b75a21469497e36e30a2050805031da4f97b417"
+  },
+  "registration": {
+    "path": "build/p10x-render-memory001/registration001.json",
+    "bytes": 218,
+    "sha256": "768427ebd581ce069969d84ab38452330565a62c30d9174f24ac4ce600f01a0f"
+  },
+  "attempts": "First compilation found an unavailable shape helper; checked multiplication now supplies XY sample counts. Standalone lease tests passed. Build002 native suites passed, but the GL log exposed a pre-existing style-stack imbalance on the newly exercised XYZ denial path. Scope-based style cleanup now runs through exceptions, and GL qualification explicitly rejects ImGui recovery diagnostics. Build003, capture002, python001, channels002, extra002 and SDK002 are authoritative. Source variants, failed build logs and earlier GL diagnostics are preserved. ZIP CRC/per-member SHA verification precedes exact owned scratch/nonce removal; final installations, consumer binaries, logs and useful build/dependency caches remain.",
+  "existing_gate": {
+    "state": "open",
+    "reason": "Existing Auto Contrast producer_source fingerprint mismatch; application.hpp unchanged; no repin or relaxation.",
+    "producer": {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 14135,
+      "sha256": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    },
+    "log": {
+      "path": "build/p10x-render-memory001/plan001.log",
+      "bytes": 151,
+      "sha256": "5741e4b9133f374434cac8973e1f1c6131200e632958a012913a739c28d47006"
+    },
+    "final_log": {
+      "path": "build/p10x-render-memory001/plan002.log",
+      "bytes": 151,
+      "sha256": "5741e4b9133f374434cac8973e1f1c6131200e632958a012913a739c28d47006"
+    }
+  },
+  "scope_status_counts": {
+    "total": 99,
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  },
+  "remaining": [
+    "Provider/codec and transform/compositor internal scratch, annotation/font/GUI data, dialogs and other preview surfaces remain outside this managed viewer-surface pool. Complete cross-component resource/performance/platform qualification remains required.",
+    "Four-byte logical texture charges do not measure physical driver allocations, queued storage or device overhead; whole-process/RSS guarantees are not supplied.",
+    "Asynchronous viewport reads with stale-result rejection, other file-backed formats, tiled/pyramid storage/caches and incremental uploads.",
+    "Virtual output propagation, materialization/workspace serialization, the existing Auto Contrast gate and every other original inventory requirement remain open."
+  ]
+}

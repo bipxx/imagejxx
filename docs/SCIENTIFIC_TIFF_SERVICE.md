@@ -482,3 +482,38 @@ leave ownership in the cache: weak slots release their provider and image when
 the last owning facade goes away. Remaining work includes aggregate XYZ/display/
 texture accounting, tiled/pyramid policies, asynchronous reads and stale-result
 rejection. These remain required for complete large-dataset parity.
+
+
+## Managed render reservations
+
+Preferences → Resources → **Render surfaces (MiB)** sets one shared pool for
+ordinary and linked XYZ views in a window, defaulting to 1024 MiB. Python uses
+`Editor.update_settings(render_memory_mb=1024)` and
+`Editor.render_memory_info`; C++ uses `Window::updateSettings` and
+`Window::renderMemoryInfo`. Diagnostics report the limit, retained and working
+reservations, historical peak reservations and denied buffer requests.
+
+A cache rebuild reserves its declared source-output, RGB, upload and replacement
+surfaces before pixel acquisition. Regional XYZ admission includes a temporary
+row and a conservative full-XY fallback for virtual providers. Range scans also
+reserve their full-plane output before reads. CPU diagnostic buffers and rank
+capture vectors retain their actual vector-capacity charge. Live texture objects
+use a logical four-byte-per-texel charge. Replacement admission includes existing
+retained surfaces until they are replaced; stable cache hits acquire no new
+render reservation. A failed build releases temporary reservations, clears
+unpublished diagnostic buffers and keeps any surviving texture storage charged.
+
+Closing documents releases their retained surfaces. Headless-context teardown
+releases diagnostic copies; GL-context teardown releases texture and rank-capture
+charges. Lowering the limit below live reservations is rejected before settings
+or preferences are published. Close views or release their contexts first.
+Invalid values and failed preference writes leave the limit unchanged.
+
+These are managed reservations, not RSS or device-memory measurements. Planned
+source outputs may conservatively charge borrowed images. The virtual XY cache
+has its own retention budget. Provider/codec scratch, transform/compositor
+internals, annotation/font/GUI metadata, dialogs and other preview surfaces,
+allocator overhead, and driver queues/storage overhead remain separate. A
+four-byte logical texel charge cannot guarantee physical GPU availability.
+Historical peak reservations can exceed a subsequently reduced limit. Complete
+resource qualification and asynchronous viewport loading remain open.

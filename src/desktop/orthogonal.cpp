@@ -98,6 +98,7 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
   auto live = d.nativeSnapshot();
   const auto liveDataset = live.data().dataset;
   const auto shape = liveDataset.shape();
+  const auto xySamples=RenderMemory::mul(RenderMemory::mul(std::size_t(shape.x),std::size_t(shape.y)),std::size_t(shape.s));
   auto savedOwner = [&] {
     return saved_roi && saved_roi->edit && saved_roi->edit->active() &&
            saved_roi->edit->source().id() == d.id;
@@ -674,6 +675,7 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
     if (range.is_array() && range.size() == 2)
       range_ = {number(range[0]), number(range[1])};
     else {
+      auto rangeMemory=memory_->acquire(RenderMemory::mul(xySamples,sizeof(double)));
       const auto image = liveDataset.plane(currentPosition);
       range_ = sourceDisplayRange(*image, liveDataset.sample_policy());
     }
@@ -724,12 +726,17 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
     const bool missingReadback =
         capture_readback && (!cache.readbackSource || !cache.readbackDisplay);
     if (rebuild || missingReadback) {
+      const auto rowSamples=RenderMemory::mul(std::size_t(sizes[horizontal[i]]),std::size_t(shape.s));
+      const auto fallback=i && !pixelsDataset->has_eager_planes()?xySamples:0;
+      const auto memoryPlan=RenderMemory::plan(sizes[horizontal[i]],sizes[vertical[i]],shape.s,gl,capture_readback,false,i?RenderMemory::add(rowSamples,fallback):0);
+      auto memory=memory_->acquire(memoryPlan.peak);
+      try {
       cache.textureDirty = true;
       // Rebuilding without capture cannot leave copies of a prior plane under
       // the new cache identity. Missing copies are filled through this actual
       // extraction/render path, including when only diagnostics need a build.
       cache.readbackSource.reset();
-      cache.readbackDisplay.reset();
+      cache.readbackDisplay.reset();cache.readbackMemory.reset();
       cache.readbackSamplePolicy = FloatingSamplePolicy::FiniteOnly;
       cache.channelDisplay = nullptr;
       std::optional<Image> readbackPixels;
@@ -791,6 +798,7 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, display.width, display.height,
                      0, GL_RGB, GL_UNSIGNED_BYTE, bytes.data());
+        cache.textureMemory=memory.retain(memoryPlan.texture);
         cache.textureDirty = false;
       }
       cache.coordinate = coordinate;
@@ -814,11 +822,13 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
       if (capture_readback) {
         cache.readbackSource = std::move(readbackPixels);
         cache.readbackDisplay = display;
+        cache.readbackMemory=memory.retain(RenderMemory::mul(RenderMemory::add(cache.readbackSource->pixels.capacity(),cache.readbackDisplay->pixels.capacity()),sizeof(double)));
         cache.readbackSamplePolicy = samplePolicy;
       }
       if (missingReadback && !rebuild)
         ++cache.diagnosticRebuilds;
       ++cache.builds;
+      }catch(...){cache.readbackSource.reset();cache.readbackDisplay.reset();cache.readbackMemory.reset();cache.revision=~std::uint64_t(0);cache.textureDirty=true;throw;}
     }
     if(channelSources && !rebuild && !missingReadback)
       cache.channelDisplay=channelDisplayDiagnostics(*channelState,*channelSources,views[i],coordinate,
@@ -1022,18 +1032,24 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
   result.focused_plane = focusedPlane();
   return result;
 }
+void OrthogonalViews::setRenderMemory(std::shared_ptr<RenderMemory> memory){
+  if(memory_==memory)return;
+  if(!memory)throw std::invalid_argument("Render memory pool required");
+  for(const auto &cache:caches_)if(cache.textureMemory.bytes() || cache.readbackMemory.bytes())throw std::logic_error("Cannot rebind live render reservations");
+  memory_=std::move(memory);
+}
 void OrthogonalViews::releaseTextures() {
   for (auto &cache : caches_) {
     if (cache.texture)
       glDeleteTextures(1, &cache.texture);
-    cache.texture = 0;
+    cache.texture = 0;cache.textureMemory.reset();
     cache.textureDirty = true;
   }
 }
 void OrthogonalViews::clearReadback() {
   for (auto &cache : caches_) {
     cache.readbackSource.reset();
-    cache.readbackDisplay.reset();
+    cache.readbackDisplay.reset();cache.readbackMemory.reset();
     cache.readbackSamplePolicy = FloatingSamplePolicy::FiniteOnly;
   }
 }

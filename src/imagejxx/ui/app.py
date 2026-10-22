@@ -109,6 +109,11 @@ class Editor:
         return Settings(json.loads(self._editor.settings()))
 
     @property
+    def render_memory_info(self):
+        """Detached managed render reservations; logical textures exclude driver overhead."""
+        return json.loads(self._editor.render_memory_info())
+
+    @property
     def virtual_view_cache_info(self):
         """Detached decoded XY cache counters; external handles/render memory excluded."""
         return json.loads(self._editor.virtual_view_cache_info())

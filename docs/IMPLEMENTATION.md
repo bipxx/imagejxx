@@ -1,5 +1,23 @@
 # Implementation progress
 
+**Managed render reservations checkpoint, 2026-10-22 (work in progress):**
+Ordinary and linked XYZ views share the persisted Render surfaces (MiB) pool.
+Direct source-output/RGB/upload work is admitted before pixel IO; retained
+diagnostic/rank capacities and logical textures hold lifecycle leases. Limit
+changes below live reservations refuse atomically. XYZ refusal now unwinds ImGui
+style correctly. C++/Python expose detached counters. Windows/Linux each pass
+5,010 selected Python checks (nine new), twelve native suites, three GL contexts,
+eight session groups, three desktop regressions, 36 rank-host cases / 499 checks,
+two resource groups and fresh installed SDK consumers. Readers verify 296 existing
+reports / 39,261 raw input frames; all 1,297 registrations are unchanged.
+Verified cleanup removes 2,503,966,119 scratch bytes and preserves final products.
+See [managed quantities and boundaries](SCIENTIFIC_TIFF_SERVICE.md#managed-render-reservations)
+and [the scoped receipt](parity/reviews/p10x-render-memory001.json).
+Provider/transform internals, other preview/font/GUI surfaces, driver overhead
+and full resource qualification remain open. Next: asynchronous viewport loading
+with stale-result rejection and bounded queued/read-result ownership. All99 stays
+47 in progress / 52 open / 0 complete, including the Auto Contrast gate.
+
 **Ordinary canvas read checkpoint, 2026-10-22 (work in progress):**
 Geometry, properties and annotation dimensions now use metadata; validated
 texture/readback keys are checked before pixel acquisition. Evicted CPU planes
