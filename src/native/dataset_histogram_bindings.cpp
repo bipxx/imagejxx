@@ -1,6 +1,7 @@
 #include <imagejxx/dataset_histogram.hpp>
 #include <imagejxx/target_histogram.hpp>
 #include <imagejxx/histogram_command.hpp>
+#include <imagejxx/histogram_job.hpp>
 #include "binding_metadata.hpp"
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
@@ -281,5 +282,46 @@ void bind_dataset_histogram(py::module_ &m) {
     const auto control=axis_range_python_control(std::move(token),std::move(progress),std::move(checkpoint));
     py::gil_scoped_release release;return execute_histogram_command(command,limits,control);
   },py::arg("command"),py::arg("limits")=HistogramCommandLimits{},py::kw_only(),py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none());
+
+  py::class_<HistogramJobEstimate>(m,"HistogramJobEstimate")
+      .def_property_readonly("processing",[](const HistogramJobEstimate &v){return v.processing;})
+      .def_readonly("working_bytes",&HistogramJobEstimate::working_bytes)
+      .def_readonly("reservation_bytes",&HistogramJobEstimate::reservation_bytes);
+  py::class_<HistogramJob>(m,"HistogramJob")
+      .def_property_readonly("info",[](const HistogramJob &v){py::gil_scoped_release release;return v.info();})
+      .def_property_readonly("ready",[](const HistogramJob &v){py::gil_scoped_release release;return v.ready();})
+      .def_property_readonly("result",[](const HistogramJob &v){
+        const auto value=[&]{py::gil_scoped_release release;return v.result();}();
+        // Fully detached Python-facing copy. Its conversion/getter storage is
+        // external to the scheduler's native retained-result reservation.
+        return TargetHistogramResult(*value);
+      })
+      .def("cancel",[](HistogramJob &v){py::gil_scoped_release release;return v.cancel();})
+      .def("wait",[](const HistogramJob &v,py::object timeout){
+        const auto milliseconds=timeout.is_none()?std::optional<std::int64_t>{}:std::optional<std::int64_t>{integer<std::int64_t>(timeout)};
+        py::gil_scoped_release release;if(milliseconds)return v.wait_for(std::chrono::milliseconds(*milliseconds));v.wait();return true;
+      },py::arg("timeout_ms")=py::none())
+      .def("wait_for",[](const HistogramJob &v,py::handle timeout){const auto milliseconds=integer<std::int64_t>(timeout);py::gil_scoped_release release;return v.wait_for(std::chrono::milliseconds(milliseconds));},py::arg("timeout_ms"))
+      .def("complete",[](HistogramJob job,py::object publication){
+        if(!publication.is_none() && !PyCallable_Check(publication.ptr()))throw py::type_error("Histogram publication must be callable or None");
+        const auto holder=std::make_shared<const py::object>(publication);
+        std::exception_ptr python_failure,failure;
+        std::function<void(const TargetHistogramResult &)> publish;
+        if(!publication.is_none())publish=[holder,&python_failure](const TargetHistogramResult &value){
+          py::gil_scoped_acquire acquire;
+          try {(*holder)(py::cast(TargetHistogramResult(value),py::return_value_policy::move));}
+          catch(const py::error_already_set &error) {
+            // Scheduler failure state must not retain Python traceback objects.
+            // Re-raise the original on this caller after restoring its GIL.
+            python_failure=std::current_exception();
+            throw std::runtime_error(std::string("Python histogram publication failed: ")+error.what());
+          }
+        };
+        {py::gil_scoped_release release;try{job.complete(publish);}catch(...){failure=std::current_exception();}}
+        if(python_failure)std::rethrow_exception(python_failure);
+        if(failure)std::rethrow_exception(failure);
+      },py::arg("publication")=py::none(),"Complete on the caller thread. Python publication receives an owning detached result copy; conversion storage is outside native reservations.");
+  m.def("estimate_histogram_job",[](ResolvedHistogramCommand command,HistogramCommandLimits limits,JobOptions options){py::gil_scoped_release release;return estimate_histogram_job(command,limits,options);},py::arg("command"),py::arg("limits")=HistogramCommandLimits{},py::arg("job_options")=JobOptions{});
+  m.def("submit_histogram",[](JobScheduler &scheduler,ResolvedHistogramCommand command,HistogramCommandLimits limits,JobOptions options){py::gil_scoped_release release;return submit_histogram(scheduler,command,limits,std::move(options));},py::arg("scheduler"),py::arg("command"),py::arg("limits")=HistogramCommandLimits{},py::arg("job_options")=JobOptions{},"Read-only native worker histogram with polling, cancellation and retained-result admission. Caller-thread completion supplies its own source/UI guards; no automatic document publication occurs.");
 
 }

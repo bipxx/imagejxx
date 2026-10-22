@@ -313,3 +313,64 @@ The internal panel callback tests use virtual providers directly; the desktop
 Window adapter still refuses virtual datasets.
 Native workflow-program/batch integration, background execution and full
 ImageJ/Fiji histogram domains/conventions and qualification remain open.
+
+## Native background histogram jobs
+
+`imagejxx/histogram_job.hpp` and the Python API submit an immutable histogram
+command to an existing `JobScheduler`. Workers run the C++ accumulator with
+scheduler progress/checkpoints and cooperative cancellation. No Python processing
+callback runs on the worker. The command snapshot stays alive until work retires;
+successful READY result cells retain no source or provider handle.
+
+```python
+scheduler = ij.JobScheduler()
+job = ij.submit_histogram(scheduler, command)
+job.wait()                  # waits for READY or a terminal state
+result = job.result         # raises on cancellation or failure
+job.complete()              # acknowledge; no source or file publication
+scheduler.shutdown()
+```
+
+`wait(timeout_ms)` and `wait_for(timeout_ms)` return whether work finished and
+require a nonnegative integer timeout. `info` exposes queued/running/ready/
+publishing/terminal state, native progress and reservation counters. Waiting
+does not itself rethrow a worker error; reading the result or completing does.
+`cancel()` and scheduler cancellation release queued captures immediately;
+running work releases them when it reaches a checkpoint. Provider calls are
+not forcibly interrupted. Virtual C++ providers must support immutable reads on
+the scheduler's worker threads. The desktop virtual-source adapter remains open.
+
+`complete(publication)` optionally invokes a callback on the calling thread,
+with an immutable native result reference in C++, or an owning detached result
+copy in Python. Cancellation can win until publication starts. Once Publishing,
+cancel returns false. A publication exception fails the job and clears its
+result; Python rethrows the original callback exception to that caller while
+storing a plain native diagnostic for later job inspection, rather than retaining
+Python traceback objects. Argument/callback capture errors before publication
+leave an otherwise READY job available. Completing acknowledges the result; it
+does not validate live document membership, active state or revisions. Callers
+must stage their own publication and validate the command's source against the
+current owner when their workflow requires current data.
+
+`estimate_histogram_job` is metadata-only. It adds typed task/result holders and
+captured option strings to the command working estimate. Native working limits
+apply before queuing; the scheduler reserves the larger of that estimate and
+`JobOptions.resource_bytes`. The document tag is always the command's owner ID.
+Labels are captured; the default is `histogram`. An empty supersession key allows
+independent jobs; an explicit key supersedes only within that owner ID.
+
+In C++, `job.result()` returns a shared immutable result alias. Such aliases keep
+the conservative whole working reservation alive after cancellation, completion,
+dropping job handles or scheduler shutdown. Releasing the final alias releases
+that reservation and wakes queued work. No plane buffers or source snapshots are
+retained by the result. Python `job.result` and publication arguments are full
+detached copies; they survive native cell cleanup without retaining its lease.
+Dropping all job handles cancels their queued/running/ready work. A result cannot
+be read from the cleaned native cell after completion.
+
+Source/cache storage, opaque provider and publication internals, allocator and
+scheduler container overhead, frontend argument/getter/result copies, CSV text
+and total process RSS remain external to these declared reservations. This is
+native job infrastructure. Both ImGui histogram panels still calculate
+synchronously; worker-driven UI progress/cancel/result publication and native
+workflow-program/batch integration remain separate work.

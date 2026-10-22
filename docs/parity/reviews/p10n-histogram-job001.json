@@ -1,0 +1,179 @@
+{
+  "state": "qualified_functional_increment",
+  "objective_complete": false,
+  "baseline_commit": "3d9a0eca0eb60a0e04611df156ec38d8172b0808",
+  "scope": "C++/Python read-only histogram worker jobs on the shared JobScheduler, with metadata-only resource admission, progress, cancellation, caller-thread completion and detached retained results.",
+  "semantics": "Commands/limits/options are frozen at submission. The typed job forces source owner tagging and retained-result accounting; an empty supersession key allows independent jobs and explicit keys supersede within the owner. Work runs in C++ using scheduler checkpoints and native histogram accumulation. READY results retain no source/provider handle. Source membership/active/revision checks and atomic UI/preferences/file publication remain the caller responsibility; the job performs no automatic owner edits.",
+  "resources": "Typed holders and option strings augment the command working estimate. The scheduler reserves max(native estimate, caller resource_bytes). C++ immutable result aliases retain the whole conservative reservation through cancellation/completion/job destruction/shutdown; releasing final aliases wakes queued work. Python results/publication arguments are detached owning copies outside native reservations. Source/cache, opaque provider/publication internals, allocator/scheduler bookkeeping, frontend copies, CSV and RSS are external.",
+  "python_publication": "Completion invokes Python only on the caller thread. Its callback receives an owning result copy; cancellation loses after Publishing begins. A callback error fails the job and releases its native cell. The original Python exception is rethrown to that caller; persistent scheduler failure state holds a plain native diagnostic rather than Python traceback objects. A weak-reference test proves callback-captured objects can retire after the handled exception.",
+  "verification": "581 selected checks per OS including 25 new worker checks, eight native executable suites and fresh installed core-only SDK consumers. Native gates cover queued/running cancellation, immediate last-handle capture release, supersession/document cancellation, detached source lifetime, lease-held queue admission/wakeup, publication/cancellation serialization, callback failures and repeated concurrent result/cancel races. Quiet-NaN payload bits, independent pooled ROI count/statistic expectations, native shared scheduler regressions and prior histogram UI API behavior remain checked. Render-enabled final runs have no skips. No full upstream/resource/platform acceptance.",
+  "profiles": {
+    "windows": {
+      "python_cases": 581,
+      "new_histogram_job_cases": 25,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_test_executables": 8,
+      "sdk": "fresh installed core-only histogram worker consumer passed",
+      "ui": "both desktop products rebuilt; existing shared jobs-panel render regression enabled; no new histogram UI workflow claim",
+      "removed_scratch_bytes": 1397196,
+      "evidence": [
+        {
+          "path": "build/p10n-histogram-job001/windows-build001/receipt.json",
+          "bytes": 1298,
+          "sha256": "dede1c0a5747704be731c57dbd265f842d444cc0d77256b6cd0547afc42697d7"
+        },
+        {
+          "path": "build/p10n-histogram-job001/windows-build001/native.xml",
+          "bytes": 4744,
+          "sha256": "d37706b41394b3b730b6bd6aae5bb07a844ef5bc5f92219ddced8c42a08113de"
+        },
+        {
+          "path": "build/p10n-histogram-job001/windows-python002/receipt.json",
+          "bytes": 2459,
+          "sha256": "6242c47970eb9bd13c0d67884718ae7982ad326b0ced18dfdc46e52030fd366e"
+        },
+        {
+          "path": "build/p10n-histogram-job001/windows-python002/pytest.xml",
+          "bytes": 83545,
+          "sha256": "1f4824b68b1df5e92cf73692ecfece298dc1c69bff2e295b852778a072f34ea6"
+        },
+        {
+          "path": "build/p10n-histogram-job001/windows-sdk001/receipt.json",
+          "bytes": 376,
+          "sha256": "8d19dd398c3866401029875c35cc35c2d7996f95e7ed1c773cc4217460af4d9b"
+        },
+        {
+          "path": "build/p10n-histogram-job001/windows-products001.json",
+          "bytes": 2393,
+          "sha256": "237b05bfa316672eb1bdb33898dae0b2e35ddfc9b9ea33452027cbb6ee3644da"
+        },
+        {
+          "path": "build/p10n-histogram-job001/windows-cleanup001.json",
+          "bytes": 46306,
+          "sha256": "9bcde0fb288852e8f48306117902cb5329fe6530b8d24767ab4ff3a0f8474d14"
+        }
+      ],
+      "archive": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p10n-histogram-job001\\windows-scratch001.zip",
+        "bytes": 449591,
+        "sha256": "4e2c8c1e6ba50d137d576771b022e0489a1338a9fdaf34276193c6ef52439101"
+      }
+    },
+    "linux": {
+      "python_cases": 581,
+      "new_histogram_job_cases": 25,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_test_executables": 8,
+      "sdk": "fresh installed core-only histogram worker consumer passed",
+      "ui": "both desktop products rebuilt; existing shared jobs-panel render regression enabled; no new histogram UI workflow claim",
+      "removed_scratch_bytes": 3597315,
+      "evidence": [
+        {
+          "path": "build/p10n-histogram-job001/linux-build001/receipt.json",
+          "bytes": 1270,
+          "sha256": "31e7983a44094904e9e35ffa977d7541b16f0d3183ee4f9b02bf6b80dba8c936"
+        },
+        {
+          "path": "build/p10n-histogram-job001/linux-build001/native.xml",
+          "bytes": 4634,
+          "sha256": "be086d6103d3178b7eaab38a08e5d4bb4669b08f60d6f2877864d46cea20560d"
+        },
+        {
+          "path": "build/p10n-histogram-job001/linux-python002/receipt.json",
+          "bytes": 2334,
+          "sha256": "8fc423a23cfc8052c7888c8a7598f251ab98d43c79bfb1ecbe07d484c7abc800"
+        },
+        {
+          "path": "build/p10n-histogram-job001/linux-python002/pytest.xml",
+          "bytes": 83546,
+          "sha256": "0bc5ef1670e2767332f1e6a9f829f26014f0285f0401b62293c9d6849ab61694"
+        },
+        {
+          "path": "build/p10n-histogram-job001/linux-sdk001/receipt.json",
+          "bytes": 329,
+          "sha256": "f030bfecc5da822a3a12fd29f515bacd3985afc3365497ffcbd2fb63718d946b"
+        },
+        {
+          "path": "build/p10n-histogram-job001/linux-products001.json",
+          "bytes": 2272,
+          "sha256": "bd0da01037f289b18a2f93f583ae86d6b03113ca36a72afc7c40bb05061780e2"
+        },
+        {
+          "path": "build/p10n-histogram-job001/linux-cleanup001.json",
+          "bytes": 56798,
+          "sha256": "99b38f4d28b7d4bb9d1b737f2fdead106d38be367f8f72d247240f352b97bb55"
+        }
+      ],
+      "archive": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p10n-histogram-job001/linux-scratch001.zip",
+        "bytes": 1423289,
+        "sha256": "967a7706c276a8c71c929e300e09ac9bc14e843cc68f1b258f8384ec9ab3a679"
+      }
+    }
+  },
+  "cleanup_bytes": 4994511,
+  "license_check": {
+    "path": "build/p10n-histogram-job001/licenses001.log",
+    "bytes": 53,
+    "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+  },
+  "plan_gate": {
+    "state": "known_failure",
+    "log": {
+      "path": "build/p10n-histogram-job001/plan-gate001.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    },
+    "reason": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api producer_source byte fingerprint changed",
+    "producer_unchanged_from_baseline": true,
+    "producer": {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 14135,
+      "sha256": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    }
+  },
+  "remaining": [
+    "Both histogram UI panels still calculate synchronously; integrate worker-driven progress/cancel/result publication with their source/draft/preference/workflow guards",
+    "Native workflow-program and batch histogram analysis integration",
+    "Desktop virtual-source adapter, remaining calibrated/color/numeric domains and upstream conventions",
+    "Complete independent source/reference/resource/platform qualification; full 99-feature goal remains open"
+  ],
+  "source": [
+    {
+      "path": "CMakeLists.txt",
+      "sha256": "89fbf06bbc4ed0bf16242371a100954dc51e2f298150a818ae22ab5f5a9edd0e"
+    },
+    {
+      "path": "include/imagejxx/jobs.hpp",
+      "sha256": "5d1c9cbfad27b96708cffae14922c02df9249957ff895176eb25cccd17be1c09"
+    },
+    {
+      "path": "include/imagejxx/histogram_job.hpp",
+      "sha256": "0fcd39441e51aedbf5459b8dea3b29eae9898fc0282cd791abe1abc0de328bac"
+    },
+    {
+      "path": "src/native/histogram_job.cpp",
+      "sha256": "ae081593d5c483eed3f33ed25b05dd105cf060eeacba09fd3a1b1cb154028d4c"
+    },
+    {
+      "path": "src/native/dataset_histogram_bindings.cpp",
+      "sha256": "92a5c18d79549d5a1ece6dbd9805aea10c8183e8be3719a0a9df24c5dc392481"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "sha256": "877e102fe20994f7806294c368bfeda32fd9fa3cff658f11ffef6f2ce61ec6fe"
+    },
+    {
+      "path": "tests/native/test_histogram_job.cpp",
+      "sha256": "c06037a6b139845a995b68e6e945702bfba1a9a79c94934294067cf1b726e342"
+    },
+    {
+      "path": "tests/python/test_histogram_job.py",
+      "sha256": "e8dbaeadcd63c996ea0e5f77d3363e3d6d9d925bbd190bb3830449f8a5117ff2"
+    }
+  ]
+}

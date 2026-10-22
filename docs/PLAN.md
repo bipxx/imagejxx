@@ -1,5 +1,21 @@
 # ImageJ and Fiji gap closure plan
 
+**Histogram worker checkpoint, 2026-10-21 (work in progress):**
+C++ and Python now submit immutable histogram commands to the shared scheduler.
+Metadata-only admission, progress, cooperative cancellation and caller-thread
+completion preserve readonly analysis. Native result aliases retain their
+reservation while Python receives detached copies; READY results release source
+captures. Publication errors do not persist Python traceback objects in scheduler
+state. Windows/Linux each pass 581 selected checks (25 new), eight native suites
+and fresh installed core-only SDK consumers; both desktop products rebuild.
+Verified cleanup removes 4,994,511 scratch bytes, retaining products/evidence.
+See [usage and limits](HISTOGRAM.md) and
+[the scoped receipt](parity/reviews/p10n-histogram-job001.json).
+Histogram UI panels remain synchronous: worker progress/cancel/result integration
+is next. Native workflow/batch, remaining domains and full qualification remain
+open. All99 stays 47 in progress / 52 open / 0 complete; the existing Auto Contrast
+producer fingerprint gate remains open.
+
 **Histogram recorder checkpoint, 2026-10-21 (work in progress):**
 Both ImGui launchers record successful simple/pooled calculations as native
 histogram commands, preserve them through workflow save/load, strictly replay

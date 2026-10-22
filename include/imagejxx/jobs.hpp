@@ -69,6 +69,7 @@ private:
   friend class JobScheduler;
   friend class OperationJob;
   friend class AutoContrastJob;
+  friend class HistogramJob;
   struct State;
   struct RetiredTasks;
   bool cancel_into(RetiredTasks &retired);
@@ -117,6 +118,7 @@ public:
 
 private:
   friend class Application;
+  friend class HistogramJob;
   struct Shared;
   Job submit_with_cleanup(std::function<void(const JobContext &)> task,
                           JobOptions options, std::function<void()> cleanup);
