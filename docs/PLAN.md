@@ -1,5 +1,24 @@
 # ImageJ and Fiji gap closure plan
 
+**Virtual TIFF import checkpoint, 2026-10-22 (work in progress):**
+C++/Python and both ImGui launchers now open supported classic/BigTIFF inputs
+virtually, decoding requested planes or intersected regions on demand. Reviewed
+loading choices, strict V16 replay, atomic startup, source-change guards, linked
+XYZ and worker histograms share the existing editor. Cross-extension execution
+control preserves cancellation, progress, callback exceptions and reentrant reads.
+Windows/Linux each pass 4,377 selected Python checks (845 new API / ten new input),
+eight native suites, eight session groups, three desktop regression suites,
+36 rank-host cases / 499 checks, two resource groups and fresh optional-IO SDK
+consumers. Readers verify 144 reports / 27,578 raw input frames, including
+20 new reports / 980 frames. Verified cleanup removes 2,182,993,622 scratch
+bytes and keeps final products/evidence. Five cases append to 1,297 without
+changing prior order. See [usage and limits](SCIENTIFIC_TIFF_SERVICE.md#virtual-tiff-loading-p10u)
+and [the scoped receipt](parity/reviews/p10u-virtual-tiff001.json).
+Other formats, pyramid/tiled/async viewport, aggregate caches and virtual output/
+workspace serialization remain open. Next: bound aggregate viewport cache use,
+then move provider reads off the render thread with stale-result rejection.
+All99 stays 47 in progress / 52 open / 0 complete; the Auto Contrast gate remains open.
+
 **Explicit virtual desktop checkpoint, 2026-10-22 (work in progress):**
 C++ and Python launchers explicitly attach immutable virtual providers without
 pixel reads. Metadata-only document inspection, cached current XY viewing,

@@ -1,4 +1,5 @@
 #include "scientific_io_panel.hpp"
+#include <imagejxx/virtual_io.hpp>
 #include "../io/internal.hpp"
 #include "../io/staged.hpp"
 #include <algorithm>
@@ -265,6 +266,15 @@ void record_path(const std::string &path, const ImageFileLimits &limits) {
 } // namespace
 Json scientific_io_replay_draft(const Json &record) {
   require(record.is_object(), "Scientific IO record must be an object");
+  if(record.contains("version") && record.at("version")==16){
+    require(record.at("version").is_number_integer() && !record.at("version").is_boolean(),"Scientific IO version requires an integer");
+    require(record.at("loading")=="virtual" && record.at("operation")=="open","Version 16 requires virtual import intent");
+    const auto version=record_integer(record.at("source_format_version"),1,15);
+    auto original=record;original.erase("loading");original.erase("source_format_version");original["version"]=version;
+    auto draft=scientific_io_replay_draft(original);
+    require(!original.contains("sample_policy") || original.at("sample_policy")=="finite_only","Virtual TIFF requires finite-only samples");
+    draft["virtual_loading"]=true;return draft;
+  }
   const std::vector<std::string> allowed{"container", "storage", "predictor", "compression", "components", "dtype", "sample_policy", "schema",
                                          "version",
                                          "operation",
@@ -475,7 +485,7 @@ struct ScientificIoPanel::State {
   std::shared_ptr<Cell> cell;
   bool open = false, focus = false, exporting = false, recording = false,
        axes = false, loss = false, replace = false, flat = false,
-       fixed_path = false, job_canceled = false;
+       fixed_path = false, job_canceled = false, virtual_loading=false;
   bool pending = false;
   int phase = 0;
   std::uint64_t generation = 0, worker_generation = 0;
@@ -610,6 +620,7 @@ struct ScientificIoPanel::State {
       out["canonicalized_fields"] = estimate->canonicalized_fields;
       out["xy_resolution"] = estimate->xy_resolution;
     }
+    if(virtual_loading && !exporting){out["source_format_version"]=out.at("version");out["version"]=16;out["loading"]="virtual";}
     return out;
   }
   void observe(const char *name) {
@@ -648,6 +659,7 @@ void ScientificIoPanel::show(bool exporting,
   s.path = std::move(path);
   s.replace = false;
   s.sample_policy = FloatingSamplePolicy::FiniteOnly;
+  s.virtual_loading=false;
   s.compression=1;s.predictor=1;s.tiled=false;s.bigtiff=false;
   s.open = s.focus = true;
   s.reason.clear();
@@ -660,7 +672,7 @@ void ScientificIoPanel::patch(const Json &patch) {
   auto limits = s.limits;
   auto policy = s.sample_policy;
   auto compression=s.compression,predictor=s.predictor;
-  bool tiled=s.tiled,bigtiff=s.bigtiff;
+  bool tiled=s.tiled,bigtiff=s.bigtiff,virtual_loading=s.virtual_loading;
   bool axes = s.axes, loss = s.loss, replace = s.replace, flat = s.flat;
   bool changed = false;
   for (const auto &field : patch.items()) {
@@ -685,6 +697,8 @@ void ScientificIoPanel::patch(const Json &patch) {
       require(s.exporting && field.value().is_string(),"Prediction is an export choice requiring text");
       require(field.value()=="none" || field.value()=="horizontal" || field.value()=="floating","Unknown TIFF predictor");
       predictor=field.value()=="floating"?3:field.value()=="horizontal"?2:1;changed|=predictor!=s.predictor;
+    } else if(field.key()=="virtual_loading") {
+      require(!s.exporting && field.value().is_boolean(),"Virtual loading requires an import Boolean");virtual_loading=field.value().get<bool>();
     } else if (field.key() == "sample_policy") {
       require(!s.exporting, "Sample policy is an import choice");
       policy = sample_policy(field.value());
@@ -738,11 +752,12 @@ void ScientificIoPanel::patch(const Json &patch) {
     require(s.source.has_value(),"Tiled export requires a source");
     (void)io_detail::image_profile(s.source->data().dataset.pixel_type(),s.source->data().dataset.shape().s,compression,predictor,true);
   }
+  require(!virtual_loading || policy==FloatingSamplePolicy::FiniteOnly,"Virtual TIFF requires finite-only samples");
   if (changed) {
     s.invalidate();
     axes = loss = flat = false;
     replace = false;
-  } else if (policy != s.sample_policy) {
+  } else if (policy != s.sample_policy || virtual_loading!=s.virtual_loading) {
     // Sample admission does not change inspected layout/calibration or identity.
     // Keep the held descriptor and require renewed consent for this read policy.
     ++s.generation;
@@ -753,6 +768,7 @@ void ScientificIoPanel::patch(const Json &patch) {
   s.path = std::move(path);
   s.limits = limits;
   s.sample_policy = policy;
+  s.virtual_loading=virtual_loading;
   s.compression=compression;s.predictor=predictor;s.tiled=tiled;s.bigtiff=bigtiff;
   s.axes = axes;
   s.loss = loss;
@@ -830,11 +846,12 @@ void ScientificIoPanel::apply() {
     const auto review = s.inspection->series.at(0);
     auto held = s.input_guard;
     ImageReadRequest request; request.sample_policy = s.sample_policy;
-    s.start(2, [path, review, held, limits, request](const JobContext &context) {
+    const bool virtual_loading=s.virtual_loading;
+    s.start(2, [path, review, held, limits, request,virtual_loading](const JobContext &context) {
       State::Result result;
       held->unchanged();
       auto decoded =
-          read_image_series(path, request, limits, context.execution_control());
+          virtual_loading?open_virtual_image_series(path,request,limits,context.execution_control()):read_image_series(path, request, limits, context.execution_control());
       held->unchanged();
       require(matches_review(decoded, review),
               "File descriptors changed after review");
@@ -951,7 +968,7 @@ void ScientificIoPanel::tick(const std::optional<DocumentSnapshot> &current,
 }
 std::string ScientificIoPanel::flat_import_path() const {
   const auto &s = *state_;
-  require(s.open && !s.pending && !s.exporting && s.flat,
+  require(s.open && !s.pending && !s.exporting && !s.virtual_loading && s.flat,
           "Confirm flat pixels on an idle TIFF import form");
   require(!s.path.empty() && s.path.find('\0') == std::string::npos,
           "Choose a bounded TIFF path without NUL");
@@ -1131,6 +1148,9 @@ void ScientificIoPanel::draw(const std::function<void()> &browse,
         if (chosen >= 0)
           safe([&] { patch({{"sample_policy", policy_name(static_cast<FloatingSamplePolicy>(chosen))}}); });
       }
+      bool virtual_loading=s.virtual_loading;
+      if(ImGui::Checkbox("Load virtually (read planes and regions on demand)",&virtual_loading))safe([&]{patch({{"virtual_loading",virtual_loading}});});
+      s.observe("virtual_loading");
       bool axes = s.axes;
       if (ImGui::Checkbox("Use reviewed file axes and calibration", &axes))
         safe([&] { patch({{"confirm_axes", axes}}); });
@@ -1174,6 +1194,7 @@ void ScientificIoPanel::draw(const std::function<void()> &browse,
       ImGui::Separator();
       ImGui::TextWrapped(
           "Flat-pixel import uses one Z plane per page and pixel units.");
+      ImGui::BeginDisabled(s.virtual_loading);
       bool flat = s.flat;
       if (ImGui::Checkbox("Accept flat pixels without file axes or calibration",
                           &flat))
@@ -1183,6 +1204,7 @@ void ScientificIoPanel::draw(const std::function<void()> &browse,
       if (ImGui::Button("Import flat pixels"))
         safe(flat_import);
       s.observe("flat_open");
+      ImGui::EndDisabled();
       ImGui::EndDisabled();
     }
     ImGui::EndDisabled();
@@ -1227,7 +1249,7 @@ Json ScientificIoPanel::diagnostics() const {
               {"job_canceled", s.job_canceled},
               {"generation", s.generation},
               {"path", s.path},
-              {"confirm_axes", s.axes},
+              {"confirm_axes", s.axes},{"virtual_loading",s.virtual_loading},
               {"sample_policy", policy_name(s.sample_policy)},
               {"accept_flat_pixels_only", s.flat},
               {"accept_loss", s.loss},

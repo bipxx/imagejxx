@@ -109,6 +109,20 @@ def read_image_series(path, *, request=None, limits=None, cancellation=None,
     )
 
 
+def open_virtual_image_series(path, *, request=None, limits=None, cancellation=None,
+                              progress=None, checkpoint=None, stage_progress=None):
+    """Inspect a finite-only TIFF and retain a guarded, regional native provider.
+
+    No pixels decode at open. File change tokens are checked on each read.
+    Limits bound descriptors and per-read output/scratch, excluding caller-held
+    images, aggregate concurrent reads, provider-independent caches and process RSS.
+    """
+    return _io.open_virtual_image_series(
+        _path(path), request if request is not None else ImageReadRequest(),
+        limits if limits is not None else ImageFileLimits(), cancellation=cancellation,
+        progress=progress, checkpoint=checkpoint, stage_progress=stage_progress)
+
+
 def estimate_image_write(dataset, metadata=None, *, request=None, limits=None):
     """Estimate bounds/rational pairs/canonicalization without provider reads.
 
@@ -150,5 +164,5 @@ __all__ = [
     "float32_deflate_floating_tiled_format_id",
     "float32_lzw_floating_tiled_format_id",
 "u16_tiled_format_id", "u8_tiled_format_id", "rgb8_tiled_format_id", "float32_tiled_format_id", "u16_deflate_tiled_format_id", "u8_deflate_tiled_format_id", "rgb8_deflate_tiled_format_id", "float32_deflate_tiled_format_id", "u16_packbits_tiled_format_id", "u8_packbits_tiled_format_id", "rgb8_packbits_tiled_format_id", "float32_packbits_tiled_format_id", "u16_lzw_tiled_format_id", "u8_lzw_tiled_format_id", "rgb8_lzw_tiled_format_id", "float32_lzw_tiled_format_id",    "format_id", "float32_format_id", "uint8_format_id", "rgb8_format_id", "u16_deflate_format_id", "float32_deflate_format_id", "u8_deflate_format_id", "rgb8_deflate_format_id", "u16_packbits_format_id", "float32_packbits_format_id", "u8_packbits_format_id", "rgb8_packbits_format_id", "u16_lzw_format_id", "float32_lzw_format_id", "u8_lzw_format_id", "rgb8_lzw_format_id", "float32_deflate_floating_format_id", "float32_lzw_floating_format_id", "u16_deflate_horizontal_format_id", "u8_deflate_horizontal_format_id", "rgb8_deflate_horizontal_format_id", "u16_lzw_horizontal_format_id", "u8_lzw_horizontal_format_id", "rgb8_lzw_horizontal_format_id", "inspect_image_file",
-    "read_image_series", "estimate_image_write", "write_image_series",
+    "read_image_series", "open_virtual_image_series", "estimate_image_write", "write_image_series",
 ]

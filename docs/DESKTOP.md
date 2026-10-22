@@ -2416,3 +2416,11 @@ regional extraction and Z controls use native dimensions. Analyze > Histogram
 uses native workers and existing cancellation/replay/publication controls.
 See [provider contract and bounds](HISTOGRAM.md#virtual-providers-in-the-desktop).
 File-backed import UI and tiled viewport rendering remain open.
+
+
+## Virtual TIFF import (p10u)
+
+The scientific TIFF form in both ImGui launchers can retain a file-backed virtual
+dataset after explicit axes/calibration review. Startup keeps all-or-nothing
+attachment and fresh per-file choices. Linked XYZ and worker histograms use the
+same guarded regional reader. See [usage and limits](SCIENTIFIC_TIFF_SERVICE.md#virtual-tiff-loading-p10u).

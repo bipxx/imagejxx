@@ -646,6 +646,7 @@ record/replay and guarded creator-thread publication for virtual sources.
 Histogram processing limits are separate from the view cap. Provider failures
 preserve the prior histogram result, workflow and defaults. Unknown virtual
 providers keep finite-only sample admission; quiet-NaN/IEEE storage permission is
-not inferred. File-backed virtual import choices, tiled viewport rendering,
-virtual output-adapter propagation and complete provider/resource/platform
-qualification remain open.
+not inferred. Scientific TIFF now has file-backed virtual import choices and regional reads;
+see [virtual TIFF usage](SCIENTIFIC_TIFF_SERVICE.md#virtual-tiff-loading-p10u).
+Other formats, tiled/asynchronous viewport rendering, virtual output-adapter
+propagation and complete provider/resource/platform qualification remain open.

@@ -10,6 +10,7 @@
 #include "indexed_color_panel.hpp"
 #ifdef IMAGEJXX_HAS_SCIENTIFIC_IO
 #include "scientific_io_panel.hpp"
+#include "../native/startup_admission_internal.hpp"
 #include "../io/internal.hpp"
 #endif
 #include "../native/native_workflow_program_internal.hpp"
@@ -3450,7 +3451,7 @@ struct Window::Impl {
     SessionCapture aggregate;
     for(const auto &entry:startupTiffs->entries)if(entry.document)aggregate.documents.push_back(entry.document->nativeSnapshot());
     aggregate.documents.push_back(candidate->nativeSnapshot());
-    (void)estimate_session(aggregate);
+    (void)detail::estimate_startup_admission(aggregate);
     auto &entry=startupTiffs->entries[startupTiffs->next];
     entry.document=std::move(candidate);entry.revalidate=std::move(revalidate);
     ++startupTiffs->next;
@@ -3496,7 +3497,7 @@ struct Window::Impl {
         requireLaunchPath(record.at("path").get<std::string>());
         if(startupTiffs) {
           auto revalidate=scientificIoPanel.import_revalidation();
-          keepStartupTiff(std::make_shared<Document>(std::move(candidate)),record.at("path").get<std::string>(),std::move(revalidate));return;
+          keepStartupTiff(std::make_shared<Document>(std::move(candidate),record.value("loading",std::string())=="virtual",scientificIoCap()),record.at("path").get<std::string>(),std::move(revalidate));return;
         }
         auto nextPreferences=preferences;nextPreferences["scientific_io_last_directory"]=std::filesystem::u8path(record.at("path").get<std::string>()).parent_path().u8string();
         const auto openedPath=record.at("path").get<std::string>();Json recentFiles=Json::array({openedPath});for(const auto &p:get(nextPreferences,"recent"))if(p!=openedPath && recentFiles.size()<15)recentFiles.push_back(p);nextPreferences["recent"]=std::move(recentFiles);
@@ -3504,7 +3505,7 @@ struct Window::Impl {
         OutputPublication outputs(owner.results,owner.workflow,{},"",capturedRecording?record:Json());
         struct Flag {bool &value;explicit Flag(bool &v):value(v){value=true;}~Flag(){value=false;}} flag(scientificIoPublishing);
         struct LaunchFlag {bool &v;explicit LaunchFlag(bool &value):v(value){v=true;}~LaunchFlag(){v=false;}} launchFlag(launchPublishing);
-        owner.addNativeDocument(std::move(candidate));
+        if(record.value("loading",std::string())=="virtual")owner.addVirtualDocument(std::move(candidate),scientificIoCap());else owner.addNativeDocument(std::move(candidate));
         outputs.publish();preferences.swap(nextPreferences);status.swap(completed);startupUserOpened=true;completeLaunchReview();
       },
       [this](const DocumentSnapshot &source,const Json &record,bool capturedRecording,const std::function<void()> &publishFile){
@@ -4791,9 +4792,10 @@ void Window::executeStartup(StartupRequest request, bool retry) {
       }
       stage = StartupStage::Validation;
       reason = StartupReason::AdmissionFailed;
-      // Checked aggregate decoded admission; existing per-reader limits still
+      // Conservative logical/session-shaped admission; virtual pixels stay lazy.
+      // Existing per-reader limits still
       // own their scratch. This is not a whole-process preallocation guarantee.
-      (void)estimate_session(aggregate);
+      (void)detail::estimate_startup_admission(aggregate);
       Json recent = Json::array({path});
       for (const auto &old : get(nextPreferences, "recent"))
         if (old != path && recent.size() < 15) recent.push_back(old);
@@ -5817,7 +5819,7 @@ void Window::action(const std::string &name, const Json &p) {
   if(name=="scientific_io_flat_open"){if(!p.is_object()||!p.empty())throw std::invalid_argument("Flat import accepts no parameters");impl->pollScientificIo();impl->importFlatReview();return;}
   if(name=="review_scientific_io"){
     if(!p.is_object()||p.size()!=1||!p.contains("record"))throw std::invalid_argument("Choose one scientific IO record for explicit review");
-    auto draft=scientific_io_replay_draft(p.at("record"));impl->showScientificIo(draft.at("exporting").get<bool>(),{{"path",draft.at("path")}});impl->scientificIoPanel.patch({{"limits",draft.at("limits")}});if(draft.contains("sample_policy"))impl->scientificIoPanel.patch({{"sample_policy",draft.at("sample_policy")}});if(draft.contains("compression"))impl->scientificIoPanel.patch({{"compression",draft.at("compression")}});if(draft.contains("predictor"))impl->scientificIoPanel.patch({{"predictor",draft.at("predictor")}});if(draft.contains("storage"))impl->scientificIoPanel.patch({{"storage",draft.at("storage")}});if(draft.contains("container"))impl->scientificIoPanel.patch({{"container",draft.at("container")}});return;
+    auto draft=scientific_io_replay_draft(p.at("record"));impl->showScientificIo(draft.at("exporting").get<bool>(),{{"path",draft.at("path")}});impl->scientificIoPanel.patch({{"limits",draft.at("limits")}});if(draft.contains("sample_policy"))impl->scientificIoPanel.patch({{"sample_policy",draft.at("sample_policy")}});if(draft.contains("compression"))impl->scientificIoPanel.patch({{"compression",draft.at("compression")}});if(draft.contains("predictor"))impl->scientificIoPanel.patch({{"predictor",draft.at("predictor")}});if(draft.contains("storage"))impl->scientificIoPanel.patch({{"storage",draft.at("storage")}});if(draft.contains("container"))impl->scientificIoPanel.patch({{"container",draft.at("container")}});if(draft.contains("virtual_loading"))impl->scientificIoPanel.patch({{"virtual_loading",draft.at("virtual_loading")}});return;
   }
   if((name=="run_workflow"||name=="batch"||name=="native_batch")&&workflow.is_array())for(const auto &step:workflow)if(get(step,"schema")=="imagejxx.scientific-image-io")throw std::invalid_argument("Review scientific file actions individually; Batch inputs remain native sessions");
 #endif

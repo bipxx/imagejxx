@@ -381,3 +381,65 @@ source-name fallback. WSL 9P demonstrated unsafe descriptor-link behavior and no
 refuses that operation before creating a destination link; safe no-replace 9P
 support remains open. Replace-existing/cleanup races remain open. Evidence:
 `build/p06zg-link-publication001/link-publication-handoff001.json`.
+
+
+## Virtual TIFF loading (p10u)
+
+Both ImGui launchers offer **Load virtually (read planes and regions on demand)**
+after Inspect in the scientific TIFF form. Select it, then confirm the reviewed
+axes/calibration and Open. Changing loading mode resets confirmation; flat-pixel
+import is disabled while virtual mode is selected. Float32 virtual loading uses
+finite-only samples. Existing eager imports retain their supported nonfinite
+policies. Startup reviews each file separately and attaches the complete batch
+only after every input is accepted and revalidated. Each next file starts with
+fresh loading choices and consent.
+
+The C++ entry point is `open_virtual_image_series` in
+`imagejxx/virtual_io.hpp`, linked through `imagejxx::io`. Python uses the same
+native provider:
+
+```python
+from imagejxx import scientific_io as io
+
+opened = io.open_virtual_image_series('image.tif')
+data = opened.dataset
+region = data.region(100, 200, 64, 32, t=0, c=1, z=2)
+xz = data.plane('xz', 200, t=0, c=1)
+```
+
+Open inspects existing supported classic/BigTIFF profiles without decoding pixel
+payloads. The provider retains bounded descriptors and a guarded file handle;
+it decodes only intersecting strips/tiles, with partial row reads for uncompressed
+data. Existing codec, integer/floating predictor and endian helpers serve finite
+UInt8/UInt16/Float32 and RGB8. XZ/YZ extraction uses regional reads. Full-plane,
+NumPy materialization and whole-dataset export naturally read their requested
+pixels. No provider tile cache or whole-volume pixel table is retained.
+
+File identity, size and change tokens are checked before and after reads,
+including after callbacks. A changed/replaced/removed source refuses new reads;
+already returned images remain independent snapshots. This is change-token
+guarding, not a stored content-hash attestation. Concurrent calls use independent
+decoder buffers; file seek/read pairs are serialized. The provider borrows the
+calling native execution scope for cancellation/checkpoints/stage progress and
+retains no Python callbacks or cancellation tokens after a call.
+
+`ImageFileLimits` still limits logical total/plane samples, file bytes, metadata,
+IFDs and encoded block sizes during inspection. A small region does not bypass
+those descriptor/codec limits. `max_working_bytes` bounds retained descriptors
+plus each read's conservative codec/row/output scratch; a region can fit when a
+full decoded plane does not. Outstanding caller images, aggregate concurrent
+reads, renderer caches, allocator overhead and process RSS are external. Large
+sources require explicit logical/file limit choices. Startup retains its prior
+conservative aggregate document/plane/sample/JSON/working admission, now using
+metadata-only virtual descriptors instead of demanding session encodability.
+Session estimation/encoding itself remains eager-only.
+
+Recorded virtual imports use closed V16 with `loading: "virtual"` and
+`source_format_version` naming the complete original V1-V15 format descriptor.
+All original descriptor fields validate under that grammar. Eager records keep
+their prior encodings. Replay restores virtual intent without opening the
+historical path or retaining consent; Inspect and confirmation are required
+again. Virtual file-backed sources participate in the existing worker histogram
+and linked XYZ viewer paths. Other file formats, pyramid/tile caching and
+asynchronous viewport loading, virtual output propagation, workspace
+serialization/materialization choices and full platform qualification remain open.

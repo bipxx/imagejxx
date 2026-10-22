@@ -267,9 +267,13 @@ def cases():
         case="histogram-async-"+mode
         yield "histogram-async",case,["--animation-ui-case",case]
 
+    for mode in ["open","replay","cancel","changed","startup"]:
+        yield "virtual-tiff",mode,["--virtual-tiff-ui-case",mode]
+
 def reader_environment(output):
     reports = Path(output).resolve() / "reports"
     environment = {
+        "IMAGEJXX_VIRTUAL_TIFF_CPP_ROOT": reports / "virtual-tiff",
         "IMAGEJXX_ROUNDED_CPP_CASE": reports / "selection/R01",
         "IMAGEJXX_ROUNDED_SAVED_CPP_BASE": reports / "selection",
         "IMAGEJXX_ROUNDED_EXPORT_CPP_BASE": reports / "rounded-export",

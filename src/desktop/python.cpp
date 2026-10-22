@@ -250,6 +250,7 @@ PYBIND11_MODULE(_desktop, m) {
              py::gil_scoped_release release;
              return float32TiffUiCase(window,case_id,"imgui_python",directory,fixture).dump();
            })
+      .def("_virtual_tiff_ui_case",[](Window &w,const std::string &mode,const std::string &directory){py::gil_scoped_release release;return virtualTiffUiCase(w,mode,"imgui_python",directory).dump();})
       .def("_scientific_tiff_ui_case",
            [](Window &window, const std::string &directory,
               const std::string &fixture) {

@@ -259,6 +259,12 @@ int run(const std::vector<std::string> &arguments) {
     imagejxx::desktop::Window editor((output.parent_path()/"preferences.json").u8string());
     imagejxx::desktop::float32TiffUiCase(editor,arguments[1],"imgui_cpp",arguments[2],arguments[3]);return 0;
   }
+  if(!arguments.empty() && arguments[0]=="--virtual-tiff-ui-case"){
+    if(arguments.size()!=3)throw std::invalid_argument("Use --virtual-tiff-ui-case MODE FRESH_DIRECTORY");
+    const auto output=std::filesystem::absolute(std::filesystem::u8path(arguments[2]));
+    imagejxx::desktop::Window editor((output.parent_path()/"preferences.json").u8string());
+    imagejxx::desktop::virtualTiffUiCase(editor,arguments[1],"imgui_cpp",arguments[2]);return 0;
+  }
   if (!arguments.empty() && arguments[0] == "--scientific-tiff-ui-case") {
     if(arguments.size()!=3)throw std::invalid_argument("Use --scientific-tiff-ui-case FRESH_DIRECTORY FIXTURE_TIFF");
     const auto output=std::filesystem::absolute(std::filesystem::u8path(arguments[1]));

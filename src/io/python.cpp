@@ -1,5 +1,6 @@
 #include "../native/binding_metadata.hpp"
 #include "internal.hpp"
+#include <imagejxx/virtual_io.hpp>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <set>
@@ -343,6 +344,13 @@ PYBIND11_MODULE(_scientific_io, m) {
       py::arg("cancellation") = nullptr, py::arg("progress") = py::none(),
       py::arg("checkpoint") = py::none(),
       py::arg("stage_progress") = py::none());
+  m.def("open_virtual_image_series",[](py::handle input,ImageReadRequest request,ImageFileLimits limits,
+        std::shared_ptr<CancellationToken> token,py::object progress,py::object checkpoint,py::object stage){
+      auto control=control_value(std::move(token),std::move(progress),std::move(checkpoint),std::move(stage));
+      io_detail::token(control);auto path=path_value(input,limits);py::gil_scoped_release release;
+      return open_virtual_image_series(path,request,limits,control);
+    },py::arg("path"),py::arg("request")=ImageReadRequest{},py::arg("limits")=ImageFileLimits{},py::kw_only(),
+      py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none(),py::arg("stage_progress")=py::none());
   m.def(
       "estimate_image_write",
       [](Dataset dataset, py::handle metadata, ImageWriteRequest request,

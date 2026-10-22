@@ -1,6 +1,7 @@
 #include <imagejxx/dataset.hpp>
 #include <imagejxx/operations.hpp>
 #include "kernel_control.hpp"
+#include "controlled_source_internal.hpp"
 #include "retained_resource_internal.hpp"
 #include "dataset_read_counter_internal.hpp"
 
@@ -177,7 +178,7 @@ private:
   PixelType type_;
   SharedPlanes planes_;
 };
-class OverlaySource final : public PlaneSource, public detail::ResourceSource {
+class OverlaySource final : public PlaneSource, public detail::ResourceSource, public detail::ControlledPlaneSource {
 public:
   OverlaySource(std::shared_ptr<const PlaneSource> source, PlanePosition p,
                 Image replacement) {
@@ -224,16 +225,21 @@ public:
     return result;
   }
   std::shared_ptr<const Image> read_plane(PlanePosition p) const override {
+    return controlled_plane(p,detail::source_read_control());
+  }
+  std::shared_ptr<const Image> controlled_plane(PlanePosition p,const detail::SourceReadControl &control) const override {
     auto found = replacements_.find(plane_index(shape(), p));
-    return found == replacements_.end() ? source_->read_plane(p)
+    return found == replacements_.end() ? detail::source_plane(*source_,p,control)
                                         : found->second;
   }
   Image read_region(PlanePosition p, int x, int y, int width,
                     int height) const override {
-    auto found = replacements_.find(plane_index(shape(), p));
-    return found == replacements_.end()
-               ? source_->read_region(p, x, y, width, height)
-               : crop(*found->second, x, y, width, height);
+    return controlled_region(p,x,y,width,height,detail::source_read_control());
+  }
+  Image controlled_region(PlanePosition p,int x,int y,int width,int height,const detail::SourceReadControl &control) const override {
+    auto found=replacements_.find(plane_index(shape(),p));
+    if(found==replacements_.end())return detail::source_region(*source_,p,x,y,width,height,control);
+    detail::SourceReadScope scope(control);return crop(*found->second,x,y,width,height);
   }
 
 private:
@@ -266,7 +272,7 @@ private:
   DatasetShape shape_;
 };
 
-class GuardedSource final : public PlaneSource, public detail::ResourceSource {
+class GuardedSource final : public PlaneSource, public detail::ResourceSource, public detail::ControlledPlaneSource {
 public:
   GuardedSource(std::shared_ptr<const PlaneSource> source,
                 std::shared_ptr<const void> guard)
@@ -280,11 +286,17 @@ public:
     return detail::detach_source(source_);
   }
   std::shared_ptr<const Image> read_plane(PlanePosition position) const override {
-    return detail::guard_image(source_->read_plane(position), guard_);
+    return controlled_plane(position,detail::source_read_control());
+  }
+  std::shared_ptr<const Image> controlled_plane(PlanePosition position,const detail::SourceReadControl &control) const override {
+    return detail::guard_image(detail::source_plane(*source_,position,control),guard_);
   }
   Image read_region(PlanePosition position, int x, int y, int width,
                     int height) const override {
-    return source_->read_region(position, x, y, width, height);
+    return controlled_region(position,x,y,width,height,detail::source_read_control());
+  }
+  Image controlled_region(PlanePosition position,int x,int y,int width,int height,const detail::SourceReadControl &control) const override {
+    return detail::source_region(*source_,position,x,y,width,height,control);
   }
   const std::shared_ptr<const PlaneSource> &source() const { return source_; }
   const std::shared_ptr<const void> &guard() const { return guard_; }
@@ -292,7 +304,7 @@ private:
   std::shared_ptr<const PlaneSource> source_;
   std::shared_ptr<const void> guard_;
 };
-class ObservedSource final : public PlaneSource, public detail::ResourceSource {
+class ObservedSource final : public PlaneSource, public detail::ResourceSource, public detail::ControlledPlaneSource {
 public:
   ObservedSource(std::shared_ptr<const PlaneSource> source,
                  std::shared_ptr<detail::DatasetReadCounterState> state)
@@ -313,13 +325,19 @@ public:
     return std::make_shared<ObservedSource>(std::move(detached), state_);
   }
   std::shared_ptr<const Image> read_plane(PlanePosition position) const override {
-    detail::increment_saturated_read_count(state_->plane_reads, state_->overflowed);
-    return source_->read_plane(position);
+    return controlled_plane(position,detail::source_read_control());
+  }
+  std::shared_ptr<const Image> controlled_plane(PlanePosition position,const detail::SourceReadControl &control) const override {
+    detail::increment_saturated_read_count(state_->plane_reads,state_->overflowed);
+    return detail::source_plane(*source_,position,control);
   }
   Image read_region(PlanePosition position, int x, int y, int width,
                     int height) const override {
-    detail::increment_saturated_read_count(state_->region_reads, state_->overflowed);
-    return source_->read_region(position, x, y, width, height);
+    return controlled_region(position,x,y,width,height,detail::source_read_control());
+  }
+  Image controlled_region(PlanePosition position,int x,int y,int width,int height,const detail::SourceReadControl &control) const override {
+    detail::increment_saturated_read_count(state_->region_reads,state_->overflowed);
+    return detail::source_region(*source_,position,x,y,width,height,control);
   }
 private:
   std::shared_ptr<const PlaneSource> source_;
@@ -587,7 +605,7 @@ PixelType Dataset::pixel_type() const { return source_->pixel_type(); }
 const SpatialCalibration &Dataset::calibration() const { return calibration_; }
 std::shared_ptr<const Image> Dataset::plane(PlanePosition position) const {
   validate_position(shape(), position);
-  auto result = source_->read_plane(position);
+  auto result = detail::source_plane(*source_,position,detail::source_read_control());
   if (!result)
     throw std::runtime_error("Dataset source returned a null plane");
   validate_plane(*result, shape(), pixel_type(), false);
@@ -609,7 +627,7 @@ Image Dataset::region(PlanePosition position, int x, int y, int width,
   if (x < 0 || y < 0 || x >= sizes.x || y >= sizes.y || width <= 0 ||
       height <= 0 || width > sizes.x - x || height > sizes.y - y)
     throw std::out_of_range("Dataset region is outside the XY plane");
-  auto result = source_->read_region(position, x, y, width, height);
+  auto result = detail::source_region(*source_,position,x,y,width,height,detail::source_read_control());
   sizes.x = width;
   sizes.y = height;
   validate_plane(result, sizes, pixel_type(), false);

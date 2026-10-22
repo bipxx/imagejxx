@@ -1,6 +1,7 @@
 #include <imagejxx/session.hpp>
 
 #include "kernel_control.hpp"
+#include "startup_admission_internal.hpp"
 #include "session_legacy.hpp"
 #include "session_metadata.hpp"
 #include "selection_codec.hpp"
@@ -414,16 +415,16 @@ std::optional<FourierState> fourier(const Json &value, DatasetShape source_shape
   }
   return FourierState(std::move(result), original);
 }
-Json document_json(const DocumentSnapshot &snapshot, bool pixels) {
+Json document_json(const DocumentSnapshot &snapshot, bool pixels, bool virtual_admission=false) {
   const auto &data = snapshot.data();
   const auto shape = data.dataset.shape();
   data.validate(); snapshot.display().validate(shape);
   if (data.spectrum && (shape.t != 1 || shape.c != 1))
     fail("Scientific Fourier position is not defined by this session version");
   const auto shared = data.dataset.shared_planes();
-  if (!shared) fail("Session codec requires an eager source");
+  if (!shared && (!virtual_admission || pixels)) fail("Session codec requires an eager source");
   Json plane_values = Json::array();
-  for (std::size_t i = 0; i < shared->size(); ++i) {
+  for (std::size_t i = 0, count=shared?shared->size():shape.plane_count(); i < count; ++i) {
     kernel_checkpoint_periodic();
     plane_values.push_back(pixels ? encode_doubles((*shared)[i].pixels,
         data.dataset.pixel_type(), data.dataset.sample_policy()) : std::string());
@@ -439,9 +440,9 @@ Json document_json(const DocumentSnapshot &snapshot, bool pixels) {
       {"rois", rois_json(data.rois)}, {"overlays", overlays_json(data.overlays)},
       {"fourier", fourier_json(data.spectrum, pixels)}};
 }
-Json capture_json(const SessionCapture &capture, bool pixels) {
+Json capture_json(const SessionCapture &capture, bool pixels, bool virtual_admission=false) {
   Json documents = Json::array();
-  for (const auto &snapshot : capture.documents) documents.push_back(document_json(snapshot, pixels));
+  for (const auto &snapshot : capture.documents) documents.push_back(document_json(snapshot, pixels, virtual_admission));
   return {{"format", "imagejxx-session"}, {"version", 3}, {"documents", std::move(documents)},
       {"results", metadata_array_json(capture.results)},
       {"workflow", metadata_array_json(capture.workflow)},
@@ -956,7 +957,8 @@ std::string decompress(const std::vector<unsigned char> &bytes, std::size_t head
 }
 } // namespace
 
-SessionEstimate estimate_session(const SessionCapture &capture, const SessionLimits &limits) try {
+namespace {
+SessionEstimate estimate_capture_admission(const SessionCapture &capture, const SessionLimits &limits, bool virtual_admission) try {
   limits_valid(limits);
   Counts counts;
   std::size_t payload = 0;
@@ -978,12 +980,12 @@ SessionEstimate estimate_session(const SessionCapture &capture, const SessionLim
   }
   within(payload, limits.max_json_bytes, "Session sample payload exceeds JSON limit");
   preflight_capture(capture, limits, counts, payload);
-  for (const auto &snapshot : capture.documents)
+  if(!virtual_admission)for (const auto &snapshot : capture.documents)
     if (!snapshot.data().dataset.shared_planes()) fail("Session codec requires an eager source");
   for (const auto &value : capture.results) validate_metadata(value);
   for (const auto &value : capture.workflow) validate_metadata(value);
   validate_metadata(capture.extensions);
-  const auto skeleton = capture_json(capture, false).dump();
+  const auto skeleton = capture_json(capture, false, virtual_admission).dump();
   const auto nodes = inspect_json(skeleton, limits);
   const auto json_size = add(skeleton.size(), payload);
   within(json_size, limits.max_json_bytes, "Session JSON byte limit exceeded");
@@ -997,6 +999,9 @@ SessionEstimate estimate_session(const SessionCapture &capture, const SessionLim
 } catch (const Json::exception &error) {
   throw std::invalid_argument(error.what());
 }
+} // namespace
+SessionEstimate estimate_session(const SessionCapture &capture,const SessionLimits &limits){return estimate_capture_admission(capture,limits,false);}
+SessionEstimate detail::estimate_startup_admission(const SessionCapture &capture,const SessionLimits &limits){return estimate_capture_admission(capture,limits,true);}
 std::vector<unsigned char> encode_session(const SessionCapture &capture,
     const SessionLimits &limits, const ExecutionControl &control) try {
   // This unsupported descriptor is deterministic and borrowed. Refuse it

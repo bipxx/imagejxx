@@ -2,6 +2,7 @@
 #include "internal.hpp"
 #include <algorithm>
 #include <limits>
+#include <mutex>
 #include <stdexcept>
 #ifdef _WIN32
 #ifndef NOMINMAX
@@ -222,6 +223,7 @@ std::filesystem::path native_path(const std::string &s, std::size_t limit) {
 struct Source::State {
   std::filesystem::path path;
   Handle handle = invalid;
+  std::mutex reads;
   Stamp initial;
   ~State() { close_handle(handle); }
 };
@@ -248,6 +250,7 @@ void Source::read(std::size_t offset, unsigned char *out, std::size_t count,
                   const ExecutionControl &c) {
   require(offset <= size() && count <= size() - offset,
           "TIFF range outside input file");
+  std::lock_guard<std::mutex> lock(state_->reads);
   while (count) {
     token(c);
     const auto n = std::min(count, std::size_t(65536));
