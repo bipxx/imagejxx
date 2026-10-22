@@ -1,5 +1,24 @@
 # ImageJ and Fiji gap closure plan
 
+**Modeless contrast checkpoint, 2026-10-22 (work in progress):**
+Image → Brightness/Contrast now supplies native histogram-linked min/max,
+brightness/contrast/window/level, cached Reset, channel targeting and asynchronous
+Auto in both ImGui launchers. Histograms use captured native workers; display
+changes reuse them, navigation discards stale captures, and close/cancel releases
+work. Auto on ordinary images stages channel metadata privately and publishes
+only on success; the original strict Auto API retains its contract. Both public
+interfaces include the additive seeded Auto entry point.
+Windows/Linux each pass fourteen native suites, ten background repetitions,
+four background GL contexts, one installed SDK consumer and 1,819 selected Python
+checks (twelve new), including actual slider/fractional-field input. Temporary
+fixtures and redundant installs are archived/verified before cleanup. See
+[behavior and remaining work](CONTRAST_PANEL.md) and the
+[scoped receipt](parity/reviews/p11b-contrast-panel001.json).
+Destructive Apply, broader histogram formats, exact upstream control semantics
+and full platform/resource acceptance remain open. Original inventory: 47 in progress /
+52 open / 0 complete; the pre-existing Auto evidence gate remains open.
+
+
 **Metadata-only contrast and palettes checkpoint, 2026-10-22 (work in progress):**
 Manual display-range changes and LUT selection/import/export now run before
 source acquisition. Virtual scientific images admit these display-only palette

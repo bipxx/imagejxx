@@ -18,6 +18,8 @@ ExecutionControl axis_range_python_control(std::shared_ptr<CancellationToken>,
                                            py::object, py::object);
 AutoContrastJob submit_auto_contrast_python(Application &, AutoContrastOptions,
                                             AutoContrastLimits, JobOptions);
+AutoContrastJob submit_seeded_auto_contrast_python(Application &,py::object,
+    AutoContrastOptions,AutoContrastLimits,JobOptions);
 AutoContrastJob submit_rebound_auto_contrast_python(Application &, py::object,
     py::object, AutoContrastLimits, JobOptions);
 ResolvedAutoContrastCommand replay_auto_contrast_python(Application &, py::object,
@@ -166,6 +168,9 @@ void bind_application(py::module_ &m) {
            py::arg("options") = AutoContrastOptions{},
            py::arg("limits") = AutoContrastLimits{}, py::kw_only(),
            py::arg("job_options") = JobOptions{})
+      .def("submit_seeded_auto_contrast",&submit_seeded_auto_contrast_python,
+           py::arg("initial"),py::arg("options")=AutoContrastOptions{},
+           py::arg("limits")=AutoContrastLimits{},py::kw_only(),py::arg("job_options")=JobOptions{})
       .def("submit_rebound_auto_contrast", &submit_rebound_auto_contrast_python,
            py::arg("record"), py::arg("complete_request"),
            py::arg("limits") = AutoContrastLimits{}, py::kw_only(),

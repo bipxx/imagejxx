@@ -143,6 +143,13 @@ public:
   AutoContrastJob submit_auto_contrast(
       const AutoContrastOptions &options = {},
       const AutoContrastLimits &limits = {}, JobOptions job_options = {});
+  // Explicit initial display for an ordinary source with no channel_display
+  // property. The seed is staged privately: admission/failure/cancellation do
+  // not publish it. A successful Auto atomically publishes its complete Set
+  // effect and the normal controller cycle. Existing submit remains strict.
+  AutoContrastJob submit_seeded_auto_contrast(const ChannelDisplayState &initial,
+      const AutoContrastOptions &options = {},
+      const AutoContrastLimits &limits = {}, JobOptions job_options = {});
   AutoContrastJob submit_rebound_auto_contrast(
       const MetadataObject &original, const AutoContrastRequest &complete_request,
       const AutoContrastLimits &limits = {}, JobOptions job_options = {});
@@ -257,6 +264,8 @@ public:
   HistoryInfo history(std::uint64_t id = 0) const;
 
 private:
+  AutoContrastJob submit_auto_contrast_impl(const AutoContrastOptions &,
+      const AutoContrastLimits &,JobOptions,const ChannelDisplayState *);
   friend class PreparedOperation;
   std::shared_ptr<Document> lookup_locked(std::uint64_t id) const;
   std::uint64_t adopt_locked(std::shared_ptr<Document> document,

@@ -1,0 +1,267 @@
+{
+  "schema_version": 1,
+  "id": "p11b.contrast-panel.native.001",
+  "date": "2026-10-22",
+  "state": "scoped-qualified",
+  "acceptance": false,
+  "complete_requirement_coverage": false,
+  "scope": "Windows/Linux each pass fourteen native suites, ten background-view repetitions, four background hidden/recreated GL contexts, one installed public C++ SDK consumer and 1819 selected installed Python checks (twelve new), zero failure/error/skip. The new native fixture exercises actual ImGui brightness-slider and fractional field input, independent raw histogram bins, blocked cooperative virtual readers without UI-thread reads, TCZ supersession/stale-result discard, close/global foreign-thread cancellation, reservation release, display/history/pixel invariants and active scientific-channel isolation. New seeded Auto API tests preserve the strict original API, defer all display publication until successful guarded completion, reject bad seeds/budgets/opaque existing state, preserve cycle on cancel/stale results and continue ordinary Auto cycles. Python checks qualify the dictionary interface and modeless controls from proper disposable installed origins; all 207 original Auto cases and prior 1600 selected regressions pass. Module bytes match retained final prefixes. Dependency audit and all 1297 unchanged input registrations pass. This is scoped functionality, not full ImageJ/Fiji/UI/platform/resource acceptance.",
+  "sources": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 109475,
+      "sha256": "b2406aebf3a67a7801dbd85fd645f352ccc1a53718f0a03286df4ae213aa306a"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 690315,
+      "sha256": "105c1327f395d7347cb8082873f6b489f1e218c7012ab4d7e312d8e57c14f894"
+    },
+    {
+      "path": "src/desktop/contrast_panel.hpp",
+      "bytes": 2449,
+      "sha256": "0cc83272390b02b1806fbe48814fdc8861a0af2d8a02f43864944e07596107c3"
+    },
+    {
+      "path": "src/desktop/contrast_panel.cpp",
+      "bytes": 16361,
+      "sha256": "05251c0c32d4e779849f0d7e1f5a189be31c7212a49d8f2e4cc382d98ccf044a"
+    },
+    {
+      "path": "tests/native/test_contrast_panel.cpp",
+      "bytes": 12410,
+      "sha256": "cf87cb58557d97b79db90535308d17fe03a887a64b7b8b23243a0525dee6b8f3"
+    },
+    {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 14796,
+      "sha256": "7bbb3da8c3c9b12c2f616b1a6e542597098b5c3796054b6f1bbfab721ecf161c"
+    },
+    {
+      "path": "src/native/auto_contrast_job.cpp",
+      "bytes": 22041,
+      "sha256": "30f492a83f12d462222643d0a0a7c6eac4f403722b1b3d66836599369d0815a1"
+    },
+    {
+      "path": "src/native/auto_contrast_bindings.cpp",
+      "bytes": 13837,
+      "sha256": "08aa8ab9e708b22812012f8580c87be1be91905ff4740722030e8db35f494416"
+    },
+    {
+      "path": "src/native/application_bindings.cpp",
+      "bytes": 19708,
+      "sha256": "ac9178ebe2953e5b1395549e06089d56a7d113dd1bb184728f8f94a379368813"
+    },
+    {
+      "path": "tests/python/test_contrast_panel.py",
+      "bytes": 6311,
+      "sha256": "8c4fce082b7ea79cc49ed2284c755f78a6fa1acc761b759eb142db727b840393"
+    },
+    {
+      "path": "examples/cpp/CMakeLists.txt",
+      "bytes": 15462,
+      "sha256": "03cbc2cb72f52857d2e0786321494e3bdbb5c23cb04197d2cc9c8011a4cc0847"
+    },
+    {
+      "path": "examples/cpp/seeded_auto_contrast.cpp",
+      "bytes": 1296,
+      "sha256": "2d03c7b68cc4dc7d0bcf36325c0c4336f1a4326eab7e9f2d8f374fdd8a037227"
+    },
+    {
+      "path": "docs/CONTRAST_PANEL.md",
+      "bytes": 3176,
+      "sha256": "1235b32d3cf6033dde76f6d6a218b6e04fd91769a58503d514c85a698c0d03ba"
+    }
+  ],
+  "profiles": {
+    "windows": {
+      "native_suites": 14,
+      "new_panel_suite": 1,
+      "background_repetitions": 10,
+      "background_hidden_gl_contexts": 4,
+      "installed_sdk_consumers": 1,
+      "python_cases": 1819,
+      "new_python_cases": 12,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "removed_scratch_bytes": 817146182,
+      "archive": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p11b-contrast-panel001\\windows-scratch001.zip",
+        "bytes": 126049583,
+        "sha256": "48e0a6d8f08c601720ffac661660b12cb908d2a8cd38b5b6439cbdbd8570bf72"
+      },
+      "evidence": [
+        {
+          "path": "build/p11b-contrast-panel001/windows-qualified002/receipt.json",
+          "bytes": 1454,
+          "sha256": "1e6d6453e90b6a2f383a6de87289ef8c91966041c84126a3dd4833ceb72ed690"
+        },
+        {
+          "path": "build/p11b-contrast-panel001/windows-qualified002/native.xml",
+          "bytes": 7322,
+          "sha256": "5287ebc6ffab73d7160a604b733283f0efcbcc608a4c7a0b5168f9e23b21d0c1"
+        },
+        {
+          "path": "build/p11b-contrast-panel001/windows-qualified002/repeat.xml",
+          "bytes": 623,
+          "sha256": "ba56e515870a79e800d97d7e40503b716821271041c67ff40d30c31db4fc7abe"
+        },
+        {
+          "path": "build/p11b-contrast-panel001/windows-qualified002/background-gl.log",
+          "bytes": 116,
+          "sha256": "4a9efe703a8147cd67ee41ed7693448770a0e56024f32cd1131db7f5aea1d3ea"
+        },
+        {
+          "path": "build/p11b-contrast-panel001/windows-python002/receipt.json",
+          "bytes": 3231,
+          "sha256": "96da8697feb796c1d3ad21801b43388b48687c68a34885eb0c9b0f98afe2fa8f"
+        },
+        {
+          "path": "build/p11b-contrast-panel001/windows-python002/pytest.xml",
+          "bytes": 255586,
+          "sha256": "2e4b5ff32be7bd996be115b2f829e49b4794f1366d0f928bd750237a3ac762b2"
+        },
+        {
+          "path": "build/p11b-contrast-panel001/windows-env002/receipt.json",
+          "bytes": 282,
+          "sha256": "b633fbfbb2605cddb872f263276d0568fef406735d9bd4cfa806dde2ba9016c0"
+        },
+        {
+          "path": "build/p11b-contrast-panel001/windows-sdk002/receipt.json",
+          "bytes": 360,
+          "sha256": "e2798058044f7bcbdd612dcc4dff902e67f25c826aeb66d0a76fbf4591ed2f2a"
+        },
+        {
+          "path": "build/p11b-contrast-panel001/windows-sdk002/sdk.xml",
+          "bytes": 480,
+          "sha256": "fa9bccbb45b31dff73b5d165f9e8037aeaf58f4dd1f034a53a55ec07b70f6f8f"
+        },
+        {
+          "path": "build/p11b-contrast-panel001/windows-products001.json",
+          "bytes": 4089,
+          "sha256": "e42ad9d132bf4c7396e153485fac15b4411aa127304bbec75a43d1b29acdb31a"
+        },
+        {
+          "path": "build/p11b-contrast-panel001/windows-cleanup001.json",
+          "bytes": 972558,
+          "sha256": "8545e3e569c6376c2d989f4999b09457eba6a077e994018dcae737054ffb9be7"
+        }
+      ]
+    },
+    "linux": {
+      "native_suites": 14,
+      "new_panel_suite": 1,
+      "background_repetitions": 10,
+      "background_hidden_gl_contexts": 4,
+      "installed_sdk_consumers": 1,
+      "python_cases": 1819,
+      "new_python_cases": 12,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "removed_scratch_bytes": 842812132,
+      "archive": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p11b-contrast-panel001/linux-scratch001.zip",
+        "bytes": 157854054,
+        "sha256": "f0e4a4f257865b1e308ce9b6ac5aa260b251d89ad7a48a1e6ce5e851b2f404b5"
+      },
+      "evidence": [
+        {
+          "path": "build/p11b-contrast-panel001/linux-qualified002/receipt.json",
+          "bytes": 1403,
+          "sha256": "c88407d531fed4d9ba0d6fc2ec925dc00abc2b559c4b5d15c83e1884342ceca8"
+        },
+        {
+          "path": "build/p11b-contrast-panel001/linux-qualified002/native.xml",
+          "bytes": 7306,
+          "sha256": "0566e31c1c93e0e7ea61e7d6bb943d30864ba0857caec84e8ff1afb037f0dfba"
+        },
+        {
+          "path": "build/p11b-contrast-panel001/linux-qualified002/repeat.xml",
+          "bytes": 617,
+          "sha256": "64ba549e5446758addcae9a063813cfc91dc7fc86be172623e0fc05295361bd4"
+        },
+        {
+          "path": "build/p11b-contrast-panel001/linux-qualified002/background-gl.log",
+          "bytes": 115,
+          "sha256": "af0cf02bc32e37064a73f474b55cc38cf391df0c4b97c52422c7aa675ceb6178"
+        },
+        {
+          "path": "build/p11b-contrast-panel001/linux-python002/receipt.json",
+          "bytes": 3125,
+          "sha256": "ef167ff021b668512538a53018a2b69640ba75067e40b5889f30eea233f4567c"
+        },
+        {
+          "path": "build/p11b-contrast-panel001/linux-python002/pytest.xml",
+          "bytes": 255587,
+          "sha256": "da376098d0c93682f67d28b11e158bd55c38365a43eb26687f0e5bc7cfa7d0d2"
+        },
+        {
+          "path": "build/p11b-contrast-panel001/linux-env002/receipt.json",
+          "bytes": 218,
+          "sha256": "a1f1329867a759f1718adb8f7476ecec608ab6fbaab1c0c75c50aa92b7bb543c"
+        },
+        {
+          "path": "build/p11b-contrast-panel001/linux-sdk002/receipt.json",
+          "bytes": 314,
+          "sha256": "3eb5955432626b34beb1703d839cf17a759ccaccdf185584cf1a53b9bbe7ec38"
+        },
+        {
+          "path": "build/p11b-contrast-panel001/linux-sdk002/sdk.xml",
+          "bytes": 460,
+          "sha256": "c24efb843c8afdbee764ee9c44a832e480adbee5be683096c3970ae4f0f41f21"
+        },
+        {
+          "path": "build/p11b-contrast-panel001/linux-products001.json",
+          "bytes": 3863,
+          "sha256": "f9f26da45067ff4c7878931b324a5efad9aba50effdb5325a6410e4a0f06fc7e"
+        },
+        {
+          "path": "build/p11b-contrast-panel001/linux-cleanup001.json",
+          "bytes": 1074844,
+          "sha256": "f9eecf8331ac0d960432be245bbeb7dd5ca9d984487c7ced65ab3a3f06e43c2c"
+        }
+      ]
+    }
+  },
+  "existing_gate": {
+    "state": "open",
+    "reason": "Existing Auto producer_source fingerprint mismatch is preserved. The Application header now adds the seeded Auto API; no evidence repin or relaxation.",
+    "producer": {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 14796,
+      "sha256": "7bbb3da8c3c9b12c2f616b1a6e542597098b5c3796054b6f1bbfab721ecf161c"
+    },
+    "log": {
+      "path": "build/p11b-contrast-panel001/plan001.log",
+      "bytes": 151,
+      "sha256": "5741e4b9133f374434cac8973e1f1c6131200e632958a012913a739c28d47006"
+    }
+  },
+  "checks": [
+    {
+      "path": "build/p11b-contrast-panel001/licenses001.log",
+      "bytes": 62,
+      "sha256": "939b266b092bfdc37d1814f66b75a21469497e36e30a2050805031da4f97b417"
+    },
+    {
+      "path": "build/p11b-contrast-panel001/registration001.json",
+      "bytes": 218,
+      "sha256": "768427ebd581ce069969d84ab38452330565a62c30d9174f24ac4ce600f01a0f"
+    }
+  ],
+  "attempts": "Initial native integration exposed strict Auto channel-state admission. The additive seeded API preserves that contract and stages metadata privately. Review corrected Python dictionary conversion and validates equal legacy endpoints on a bounded carrier before publication. Attempt logs and source variants are retained/archived. Archive CRC and per-member SHA verification precede exact owned scratch deletion; final products/logs/JUnit and useful caches remain.",
+  "scope_status_counts": {
+    "total": 99,
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  },
+  "remaining": [
+    "Destructive Apply-to-pixels, complete ImageJ reset/set/apply and slider-normalization parity, selection/channel upstream UI reference acceptance and further lifecycle/resource/platform qualification remain open.",
+    "Float64, IEEE-preserving Float32 and packed RGB/RGBA histogram/Auto are not enabled in this panel; finite manual endpoints remain available.",
+    "Finite legacy automatic scans and other analysis/edit paths may still read synchronously. Whole-editor responsiveness and complete large-dataset acceptance remain open.",
+    "Full LUT editor, ImageJ binary palette interchange and all other original requirements retain their prior status."
+  ]
+}

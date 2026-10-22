@@ -1665,7 +1665,9 @@
           "docs/BACKGROUND_VIEWPORT.md",
           "docs/parity/reviews/p10z-background-views001.json",
           "docs/parity/reviews/p11a-display-actions001.json",
-          "docs/DESKTOP.md"
+          "docs/DESKTOP.md",
+          "docs/parity/reviews/p11b-contrast-panel001.json",
+          "docs/CONTRAST_PANEL.md"
         ],
         "implementation": [
           "include/imagejxx/dataset.hpp",
@@ -1690,7 +1692,13 @@
           "src/desktop/viewport_jobs.hpp",
           "src/desktop/viewport_jobs.cpp",
           "src/desktop/viewport_renderer.hpp",
-          "src/desktop/viewport_renderer.cpp"
+          "src/desktop/viewport_renderer.cpp",
+          "src/desktop/contrast_panel.hpp",
+          "src/desktop/contrast_panel.cpp",
+          "include/imagejxx/application.hpp",
+          "src/native/auto_contrast_job.cpp",
+          "src/native/auto_contrast_bindings.cpp",
+          "src/native/application_bindings.cpp"
         ],
         "tests": [
           "tests/native/test_dataset.cpp",
@@ -1717,7 +1725,10 @@
           "tests/native/test_background_views.cpp",
           "tests/python/test_background_views.py",
           "tests/native/test_display_actions.cpp",
-          "tests/python/test_display_actions.py"
+          "tests/python/test_display_actions.py",
+          "tests/native/test_contrast_panel.cpp",
+          "tests/python/test_contrast_panel.py",
+          "examples/cpp/seeded_auto_contrast.cpp"
         ]
       },
       "id": "G041",
@@ -1728,6 +1739,7 @@
       ],
       "name": "Large datasets",
       "remaining": [
+        "Brightness/Contrast raw histograms now use captured native worker jobs, with stale discard and cancel/close cleanup; display-only slider changes reuse histogram results. Finite legacy automatic scans and other analysis/edit paths may still read synchronously. Whole-editor responsiveness and complete large-dataset acceptance remain open.",
         "Optional ordinary/XYZ worker rendering, matching-key publication, pending navigation and matching hover surfaces now use the private bounded scheduler. Broader actual input traces and acceptance across all previews, channel modes, IEEE/threshold and annotation combinations on both launchers, plus file/provider replacement while running. Other legacy display/analysis actions and panels can synchronously acquire pixels; manual display-range and palette configuration now use metadata only, including for virtual scientific data. Finite automatic range reset still scans pixels. Whole-editor responsiveness is not claimed. Provider/codec/transform/compositor internal scratch, font/annotation/GUI allocations, driver overhead and whole-process resource/latency qualification remain separate. Custom uncooperative providers may delay destruction; default-on behavior and configurable viewport worker counts need additional evidence. Other formats, tiled/pyramid storage, incremental upload, virtual output/workspace/materialization behavior, the existing Auto Contrast gate and every other original requirement remain open."
       ],
       "required_work": "Missing virtual/tiled/pyramid storage, bounded cache, incremental upload and responsive navigation while loading",
@@ -1742,7 +1754,8 @@
         "p10x.render-memory.functional.001",
         "p10y.viewport-jobs.foundation.001",
         "p10z.background-views.optional.001",
-        "p11a.display-actions.metadata.001"
+        "p11a.display-actions.metadata.001",
+        "p11b.contrast-panel.native.001"
       ]
     },
     {
@@ -2396,7 +2409,9 @@
           "docs/DESKTOP.md",
           "docs/COMPATIBILITY.md",
           "docs/parity/reviews/p11a-display-actions001.json",
-          "docs/BACKGROUND_VIEWPORT.md"
+          "docs/BACKGROUND_VIEWPORT.md",
+          "docs/parity/reviews/p11b-contrast-panel001.json",
+          "docs/CONTRAST_PANEL.md"
         ],
         "implementation": [
           "include/imagejxx/document.hpp",
@@ -2410,7 +2425,13 @@
           "src/native/metadata.cpp",
           "src/native/binding_metadata.hpp",
           "src/desktop/metadata.cpp",
-          "src/imagejxx/__init__.py"
+          "src/imagejxx/__init__.py",
+          "src/desktop/contrast_panel.hpp",
+          "src/desktop/contrast_panel.cpp",
+          "include/imagejxx/application.hpp",
+          "src/native/auto_contrast_job.cpp",
+          "src/native/auto_contrast_bindings.cpp",
+          "src/native/application_bindings.cpp"
         ],
         "tests": [
           "tests/native/test_document.cpp",
@@ -2419,7 +2440,10 @@
           "tests/native/test_desktop.cpp",
           "tests/python/test_document_records.py",
           "tests/native/test_display_actions.cpp",
-          "tests/python/test_display_actions.py"
+          "tests/python/test_display_actions.py",
+          "tests/native/test_contrast_panel.cpp",
+          "tests/python/test_contrast_panel.py",
+          "examples/cpp/seeded_auto_contrast.cpp"
         ]
       },
       "id": "G057",
@@ -2429,6 +2453,7 @@
       ],
       "name": "Brightness/contrast and window/level",
       "remaining": [
+        "The modeless native panel now supplies async source histograms, fractional min/max, brightness/contrast/window/level, cached Reset and selection/scope-aware asynchronous Auto with active-channel manual targeting. Destructive Apply-to-pixels, complete ImageJ reset/set/apply and slider-normalization parity, selection/channel upstream UI reference acceptance and further lifecycle/resource/platform qualification remain open. Float64, IEEE-preserving Float32 and packed RGB/RGBA histogram/Auto are not enabled in this panel; finite manual endpoints remain available.",
         "Manual legacy range commands and Image-menu defaults no longer request source pixels; IEEE endpoint/reset validation preserves the source. Finite automatic range reset and other legacy analysis/editing actions still acquire pixels synchronously; background eligibility, captured publication and UI responsiveness need further work. Brightness/contrast/window/level sliders, histogram linkage, complete reset/set/apply semantics and upstream channel-targeting acceptance remain required. The generic range form minimum remains integer-typed; fractional minimum UI needs qualification.",
         "Native display records expose/publish ranges independently of pixel/history identity and survive undo/concurrent pixel jobs. Histogram-linked sliders, brightness/contrast/window/level modes, saturation-aware auto, reset/set/apply and scientific channel targeting remain."
       ],
@@ -2437,7 +2462,8 @@
       "verification": [
         "m1-document-transactions-windows-2026-10-10",
         "m1-document-records-windows-2026-10-10",
-        "p11a.display-actions.metadata.001"
+        "p11a.display-actions.metadata.001",
+        "p11b.contrast-panel.native.001"
       ]
     },
     {
@@ -181349,6 +181375,29 @@
         "total": 1600
       },
       "scope": "Windows/Linux each pass eleven native suites, ten background-view repetitions, four hidden/recreated GL contexts and 1600 selected installed Python checks (fifteen new), with zero failure/error/skip. New failing virtual providers cover scalar/RGB/RGBA U8/U16/F32/F64 and assert zero reads for manual bounds and LUT selection/import/export, exact custom palette export, source/history/dirty preservation and atomic invalid bounds/unused bad palette-row refusal. IEEE eager-source read observation checks manual/equal ranges, binary32 endpoint refusal and reset without new reads. Actual ImGui menu/form opening uses metadata defaults without reads. Python checks use both observed eager sources and real virtual TIFF readers, exercise palette validation/export and actual menu plus keyboard OK submission, and verify no reads until a later explicit plane request. Existing settings/cache/background/dataset/TIFF/channel/projection/XYZ cases pass from proper disposable installed origins; module bytes match retained final prefixes. Core and IO SDK archives and native Python modules are byte-identical to preceding p10z products. All1297 input registrations remain unchanged. This is scoped functional coverage, not full ImageJ/Fiji reference/UI/platform/resource acceptance."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-22",
+      "id": "p11b.contrast-panel.native.001",
+      "identity": {
+        "qualification": {
+          "bytes": 11755,
+          "path": "docs/parity/reviews/p11b-contrast-panel001.json",
+          "sha256": "194ea17593ca3faa03e9df4ec9dbc36d635200b209ac66dafa58927ec2ea380a"
+        }
+      },
+      "platform": "Windows/Linux C++/Python Dear ImGui contrast panel and seeded native Auto API",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 1819,
+        "report": "build/p11b-contrast-panel001/windows-python002/pytest.xml",
+        "skipped": 0,
+        "total": 1819
+      },
+      "scope": "Windows/Linux each pass fourteen native suites, ten background-view repetitions, four background hidden/recreated GL contexts, one installed public C++ SDK consumer and 1819 selected installed Python checks (twelve new), zero failure/error/skip. The new native fixture exercises actual ImGui brightness-slider and fractional field input, independent raw histogram bins, blocked cooperative virtual readers without UI-thread reads, TCZ supersession/stale-result discard, close/global foreign-thread cancellation, reservation release, display/history/pixel invariants and active scientific-channel isolation. New seeded Auto API tests preserve the strict original API, defer all display publication until successful guarded completion, reject bad seeds/budgets/opaque existing state, preserve cycle on cancel/stale results and continue ordinary Auto cycles. Python checks qualify the dictionary interface and modeless controls from proper disposable installed origins; all 207 original Auto cases and prior 1600 selected regressions pass. Module bytes match retained final prefixes. Dependency audit and all 1297 unchanged input registrations pass. This is scoped functionality, not full ImageJ/Fiji/UI/platform/resource acceptance."
     }
   ]
 }

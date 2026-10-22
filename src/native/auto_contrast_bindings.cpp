@@ -51,6 +51,15 @@ AutoContrastJob submit_auto_contrast_python(Application &application,
   py::gil_scoped_release release;
   return application.submit_auto_contrast(options, limits, std::move(job_options));
 }
+AutoContrastJob submit_seeded_auto_contrast_python(Application &application,
+    py::object initial_value,AutoContrastOptions options,AutoContrastLimits limits,JobOptions job_options){
+  const auto object=bindings::metadata_object_value(initial_value);
+  const auto source=application.snapshot();
+  const auto &data=source.data().dataset;
+  const auto initial=parse_requested_channel_display(object,data.shape(),data.pixel_type(),data.sample_policy());
+  py::gil_scoped_release release;
+  return application.submit_seeded_auto_contrast(initial,options,limits,std::move(job_options));
+}
 AutoContrastJob submit_rebound_auto_contrast_python(Application &application,
     py::object original, py::object complete_request, AutoContrastLimits limits,
     JobOptions job_options) {

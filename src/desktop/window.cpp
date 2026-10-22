@@ -40,6 +40,7 @@
 #include "threshold_panel.hpp"
 #include "histogram_panel.hpp"
 #include "channel_display_panel.hpp"
+#include "contrast_panel.hpp"
 #include "channel_display_sources.hpp"
 #include <imagejxx/manual_threshold.hpp>
 #include <imagejxx/manual_threshold_command.hpp>
@@ -823,7 +824,7 @@ struct Window::Impl {
         dialog.open || browser.open || pendingClose || closingApp ||
         settingsPanel.visible() || selectionPanel.visible() ||
         gaussianPanel.visible() || rankPanel.visible() || planarAnnotationRebind.visible() || (movieExportPanel.visible() || roiImportPanel.visible() || roiExportPanel.visible() || displayAnnotationPanel.visible()) || thresholdPanel.visible() || histogramPanel.visible() ||
-        channelDisplayPanel.inputActive() || savedRoiEdit.active())
+        (channelDisplayPanel.inputActive() || contrastPanel.inputActive()) || savedRoiEdit.active())
       return false;
     if (const auto *gui = ImGui::GetCurrentContext()) {
       const bool ownedButton = gui->ActiveId == startupRetryId ||
@@ -861,6 +862,7 @@ struct Window::Impl {
   std::shared_ptr<const JobInfo> histogramLast;
   std::atomic<std::uint64_t> histogramCancelId{0},histogramCancelEpoch{0};
   ChannelDisplayPanel channelDisplayPanel;
+  ContrastPanel contrastPanel;
   std::optional<MetadataObject> channelDisplayRebind;
   std::optional<std::uint64_t> channelDisplayRebindOwner;
   std::optional<AutoContrastJob> autoJob;
@@ -1527,6 +1529,7 @@ struct Window::Impl {
       return !owner.busy() && owner.controller_->active_document_id() == source->id;
     if (action == "animation")
       return owner.controller_->active_document_id() == source->id;
+    if(ContrastPanel::handles(action))return true;
     if (action == "show_channel_display" || action == "enable_channel_display" ||
         action == "channel_display" || action == "replay_channel_display" ||
         action == "auto_contrast" || action == "replay_auto_contrast")
@@ -2078,6 +2081,40 @@ struct Window::Impl {
     return owner.documents_.empty()
                ? std::nullopt
                : std::optional<DocumentSnapshot>(doc()->nativeSnapshot());
+  }
+  void tickContrast(){if(!contrastPanel.visible())return;contrastPanel.tick(gaussianCurrent(),owner.busy(),*owner.controller_->job_scheduler(),histogramLimits());}
+  void publishContrast(const DocumentSnapshot &source,std::array<double,2> range){
+    if(owner.busy())throw std::invalid_argument("Wait for the current edit");
+    const auto current=owner.nativeSnapshot();
+    if(!source.same_document(current) || !source.revisions().matches(current.revisions(),Change::All))throw RevisionConflict();
+    const auto &data=source.data().dataset;
+    if(auto channels=recognized_channel_display(source.display(),data)){
+      channels->channels.at(source.display().c).range=range;
+      applyChannelPanel(source,{ChannelDisplayAction::Set,std::move(*channels),{}});
+    }else{
+      auto display=source.display();display.properties["display_range"]=metadataFromJson(Json(range));
+      Image carrier(1,1,data.shape().s,data.pixel_type());
+      (void)displayImage(carrier,metadataJson(display.properties),data.sample_policy());
+      owner.controller_->set_display_if_current(source,std::move(display));
+    }
+  }
+  void contrastAuto(const DocumentSnapshot &source,bool all,bool selection){
+    auto options=autoOptions(all);options.roi=selection?AutoContrastRoiPolicy::ActiveSelection:AutoContrastRoiPolicy::WholePlane;
+    if(recognized_channel_display(source.display(),source.data().dataset))owner.applyAutoContrast(source,options);
+    else{
+      const auto current=owner.nativeSnapshot();
+      if(owner.busy() || !source.same_document(current) || !source.revisions().matches(current.revisions(),Change::All))throw RevisionConflict();
+      if(boolean(get(metadataJson(source.data().metadata.extensions),"labels")))throw std::invalid_argument("Disable label coloring before Auto");
+      const auto limit=autoLimits();const auto count=std::size_t(source.data().dataset.shape().c);
+      if(count>limit.max_working_bytes/(8*sizeof(ChannelDisplayChannel)))throw std::invalid_argument("Auto channel display exceeds metadata budget");
+      const auto properties=metadataJson(source.display().properties);const auto lut=inheritedDisplayLut(properties);
+      ChannelDisplayState initial;initial.mode=ChannelDisplayMode::Color;initial.channels.resize(count);
+      const auto range=contrastPanel.currentRange();
+      for(auto &channel:initial.channels){channel.range=range;channel.lut=lut;}
+      const auto epoch=autoCancelEpoch.load();JobOptions jobOptions;jobOptions.label="Auto contrast";
+      auto submitted=owner.controller_->submit_seeded_auto_contrast(initial,options,limit,std::move(jobOptions));
+      bindAutoJob(std::move(submitted),source.id(),epoch);
+    }
   }
   ChannelDisplayLimits channelLimits() const {
     ChannelDisplayLimits limits;
@@ -3674,6 +3711,7 @@ struct Window::Impl {
     cancelCreation(panes[index], "owner_closed");
     if(histogramTask && histogramTask->command.target().document_id()==d->id)cancelHistogram();
     histogramPanel.sourceClosed(d->id);
+    contrastPanel.sourceClosed(d->id);
     if (autoJob && autoOwner == d->id) autoJob->cancel();
     if (thresholdSource && thresholdSource->id() == d->id) {
       thresholdPanel.source_closed();
@@ -6017,6 +6055,19 @@ void Window::action(const std::string &name, const Json &p) {
   // not bypass its capability check before clipboard, files or jobs change.
   if (targetId && !targeted.count(name))
     impl->requireAction(name, 0, operationId);
+  if(ContrastPanel::handles(name)){
+    if(targetId && (documents_.empty() || targetId!=document()->id))throw std::invalid_argument("Contrast controls require the active image");
+    Json values=p;if(values.is_object())values.erase("document_id");
+    if(name=="show_contrast"||name=="close_contrast"){
+      if(!values.is_object()||!values.empty())throw std::invalid_argument("Contrast visibility accepts only the active document ID");
+      if(name=="show_contrast"){impl->contrastPanel.open();impl->tickContrast();}else impl->contrastPanel.close();
+    }else{
+      impl->tickContrast();impl->contrastPanel.action(name,values,busy(),
+        [this](const DocumentSnapshot &source,std::array<double,2> range){impl->publishContrast(source,range);},
+        [this](const DocumentSnapshot &source,bool all,bool selection){impl->contrastAuto(source,all,selection);},settings().conversion_options().unsigned16_bits);
+    }
+    return;
+  }
   if (name == "animation") {
     impl->configureAnimation(p);
     return;
@@ -6739,6 +6790,8 @@ void Window::action(const std::string &name, const Json &p) {
       throw std::runtime_error("Threshold Apply wait timed out");
     impl->pollHistogram();
     if(impl->histogramTask && !impl->histogramTask->job.wait_for(remaining()))throw std::runtime_error("Histogram wait timed out");
+    impl->tickContrast();
+    if(!impl->contrastPanel.wait_for(remaining()))throw std::runtime_error("Contrast histogram wait timed out");
     if (impl->autoJob && !impl->autoJob->wait_for(remaining()))
       throw std::runtime_error("Auto contrast wait timed out");
 #ifdef IMAGEJXX_HAS_SCIENTIFIC_IO
@@ -7988,6 +8041,7 @@ void Window::cancel() {
   impl->colorStackPanel.request_cancel();
   impl->indexedColorPanel.request_cancel();
   impl->nativeWorkflowPanel.request_cancel();
+  impl->contrastPanel.request_cancel(*impl->gaussianCancellationScheduler);
   impl->histogramCancelEpoch.fetch_add(1);
   if(const auto id=impl->histogramCancelId.load())impl->gaussianCancellationScheduler->cancel(id);
   impl->autoCancelEpoch.fetch_add(1);
@@ -8062,6 +8116,7 @@ Json HistogramAsyncUiProbeAccess::diagnostics(Window &w){w.checkThread();return 
 void MovieExportUiProbeAccess::worker_gate(Window &window,std::function<void()> gate){window.checkThread();window.impl->movieExportPanel.worker_gate(std::move(gate));}
 void Window::poll() {
   checkThread();
+  impl->tickContrast();
   impl->movieExportPanel.poll(documents_.empty()?std::optional<DocumentSnapshot>{}:std::optional<DocumentSnapshot>{nativeSnapshot()},impl->rgbCap());
   impl->shadowDemo.poll(documents_.empty()?std::optional<DocumentSnapshot>{}:std::optional<DocumentSnapshot>{nativeSnapshot()}, impl->rgbCap());
   impl->pollRgb();
@@ -8510,8 +8565,9 @@ void Window::Impl::menu() {
     catalogMenu({"Image"});
     ImGui::Separator();
     item("Duplicate", "duplicate");
+    item("Brightness/Contrast...","show_contrast");
     form("Display range...", "display_range",
-         {{"minimum", 0},
+         {{"minimum", 0.0},
           {"maximum",
            owner.documents_.empty() ? 255 : type_max(doc()->nativeSnapshot().data().dataset.pixel_type())},
           {"auto", false}});
@@ -9905,7 +9961,7 @@ void Window::Impl::canvas(Pane &pane) {
     else if (owner.busy()) blocked = "busy";
     else if (context.CurrentItemFlags & ImGuiItemFlags_Disabled) blocked = "disabled";
     else if (io.WantTextInput) blocked = "text_input";
-    else if (dialog.open || pendingClose || (selectionPanel.visible() && !selectionPanel.geometry_only()) || gaussianPanel.visible() || rankPanel.visible() || planarAnnotationRebind.visible() || (roiImportPanel.visible() || roiExportPanel.visible() || displayAnnotationPanel.visible()) || channelDisplayPanel.inputActive()) blocked = "dialog";
+    else if (dialog.open || pendingClose || (selectionPanel.visible() && !selectionPanel.geometry_only()) || gaussianPanel.visible() || rankPanel.visible() || planarAnnotationRebind.visible() || (roiImportPanel.visible() || roiExportPanel.visible() || displayAnnotationPanel.visible()) || (channelDisplayPanel.inputActive() || contrastPanel.inputActive())) blocked = "dialog";
     else if (browser.open) blocked = "browser";
     else if (settingsPanel.visible()) blocked = "preferences";
     else if (ImGui::IsPopupOpen(nullptr, ImGuiPopupFlags_AnyPopupId | ImGuiPopupFlags_AnyPopupLevel)) blocked = "popup";
@@ -11695,6 +11751,15 @@ void Window::Impl::draw() {
     else
       pendingClose = *found;
   }
+  guard([&]{
+    tickContrast();
+    const bool wasVisible=contrastPanel.visible();
+    contrastPanel.draw(owner.busy(),
+      [this](const DocumentSnapshot &source,std::array<double,2> range){publishContrast(source,range);},
+      [this](const DocumentSnapshot &source,bool all,bool selection){contrastAuto(source,all,selection);},
+      [this](int c){owner.action("view",{{"c",c}});},owner.settings().conversion_options().unsigned16_bits);
+    if(wasVisible && !contrastPanel.visible() && !owner.documents_.empty())for(auto &pane:panes)if(pane.doc->id==owner.controller_->active_document_id())pane.requestOrdinaryFocus=true;
+  });
   // Draw floating selection controls after document windows so opening the
   // panel gives it keyboard focus. Keep Cancel outside busy document controls.
   guard([&] {
@@ -12172,6 +12237,7 @@ Json Window::Impl::headlessReport() {
     result["movie_export"] = movieExportPanel.diagnostics();
     result["threshold_panel"] = thresholdPanel.diagnostics();
     result["histogram_panel"] = histogramPanel.diagnostics();
+    result["contrast_panel"]=contrastPanel.diagnostics();
     result["histogram_processing"]=histogramDiagnostics();
     result["channel_display_panel"] = channelDisplayPanel.diagnostics();
     result["auto_contrast"] = {{"busy", bool(autoJob)}, {"owner_id", autoOwner},
@@ -12608,20 +12674,20 @@ Json Window::renderHeadless(int frames, bool exercise, bool exerciseCamera,
   }
   if (exerciseCamera && (documents_.empty() || impl->settingsPanel.visible() ||
                          impl->dialog.open || impl->browser.open ||
-                         impl->gaussianPanel.visible() || impl->rankPanel.visible() || (impl->planarAnnotationRebind.visible() || (impl->roiImportPanel.visible() || impl->roiExportPanel.visible() || impl->displayAnnotationPanel.visible())) || impl->channelDisplayPanel.inputActive()))
+                         impl->gaussianPanel.visible() || impl->rankPanel.visible() || (impl->planarAnnotationRebind.visible() || (impl->roiImportPanel.visible() || impl->roiExportPanel.visible() || impl->displayAnnotationPanel.visible())) || (impl->channelDisplayPanel.inputActive() || impl->contrastPanel.inputActive())))
     throw std::invalid_argument(
         "Camera exercise needs an unobstructed image canvas");
   if (exercisePreferences &&
       (busy() || impl->settingsPanel.visible() || impl->dialog.open ||
        impl->browser.open || impl->selectionPanel.visible() ||
-       impl->gaussianPanel.visible() || impl->rankPanel.visible() || (impl->planarAnnotationRebind.visible() || (impl->roiImportPanel.visible() || impl->roiExportPanel.visible() || impl->displayAnnotationPanel.visible())) || impl->channelDisplayPanel.inputActive()))
+       impl->gaussianPanel.visible() || impl->rankPanel.visible() || (impl->planarAnnotationRebind.visible() || (impl->roiImportPanel.visible() || impl->roiExportPanel.visible() || impl->displayAnnotationPanel.visible())) || (impl->channelDisplayPanel.inputActive() || impl->contrastPanel.inputActive())))
     throw std::invalid_argument(
         "Preferences exercise needs closed dialogs and an idle editor");
   if (exerciseOrthogonalBusy &&
       (exercise || exerciseCamera || exercisePreferences || inputEvents.empty() ||
        documents_.empty() || busy() || impl->dialog.open || impl->browser.open ||
        impl->settingsPanel.visible() || impl->selectionPanel.visible() ||
-       impl->gaussianPanel.visible() || impl->rankPanel.visible() || (impl->planarAnnotationRebind.visible() || (impl->roiImportPanel.visible() || impl->roiExportPanel.visible() || impl->displayAnnotationPanel.visible())) || impl->channelDisplayPanel.inputActive()))
+       impl->gaussianPanel.visible() || impl->rankPanel.visible() || (impl->planarAnnotationRebind.visible() || (impl->roiImportPanel.visible() || impl->roiExportPanel.visible() || impl->displayAnnotationPanel.visible())) || (impl->channelDisplayPanel.inputActive() || impl->contrastPanel.inputActive())))
     throw std::invalid_argument("Orthogonal busy exercise needs input and an idle unobstructed image");
   HeadlessInputSession session(*this);
   auto &io = ImGui::GetIO();

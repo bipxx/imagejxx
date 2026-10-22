@@ -968,7 +968,7 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
   find_path(IMAGEJXX_STB_INCLUDE_DIR stb_image.h PATH_SUFFIXES stb REQUIRED)
   find_package(TIFF 4.7.1 EXACT QUIET)
   add_library(imagejxx_desktop STATIC src/desktop/util.cpp src/desktop/document.cpp src/desktop/session.cpp src/desktop/metadata.cpp
-    src/desktop/commands.cpp src/desktop/io.cpp src/desktop/rendering.cpp src/desktop/viewport_jobs.cpp src/desktop/viewport_renderer.cpp
+    src/desktop/commands.cpp src/desktop/io.cpp src/desktop/rendering.cpp src/desktop/viewport_jobs.cpp src/desktop/viewport_renderer.cpp src/desktop/contrast_panel.cpp
     src/desktop/export.cpp src/desktop/window.cpp src/desktop/orthogonal.cpp src/desktop/smoke.cpp
     src/desktop/binary_iterations_consumer.cpp
     src/desktop/binary_pad_edges_consumer.cpp
@@ -1089,6 +1089,14 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     target_link_libraries(imagejxx_desktop PRIVATE comdlg32 gdi32)
   endif()
   if(BUILD_TESTING)
+    add_executable(imagejxx_contrast_panel_tests tests/native/test_contrast_panel.cpp)
+    target_link_libraries(imagejxx_contrast_panel_tests PRIVATE imagejxx_desktop)
+    add_test(NAME desktop_contrast_panel COMMAND ${CMAKE_COMMAND}
+      -DTEST_EXECUTABLE=$<TARGET_FILE:imagejxx_contrast_panel_tests>
+      -DWORK_ROOT=${CMAKE_CURRENT_BINARY_DIR}/contrast-panel-tests
+      -DTEST_TIMEOUT_SECONDS=30
+      -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/RunOwnedFixtureTest.cmake)
+    set_tests_properties(desktop_contrast_panel PROPERTIES TIMEOUT 35)
     add_executable(imagejxx_display_actions_tests tests/native/test_display_actions.cpp)
     target_link_libraries(imagejxx_display_actions_tests PRIVATE imagejxx_desktop)
     add_test(NAME desktop_display_actions COMMAND ${CMAKE_COMMAND}

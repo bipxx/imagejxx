@@ -1,5 +1,10 @@
 # Dear ImGui desktop
 
+## Brightness/Contrast
+
+Open **Image → Brightness/Contrast...** for the modeless native panel. See
+[controls, native/Python API and remaining scope](CONTRAST_PANEL.md).
+
 ## ImageJ ROI files (geometric and text/image import WIP)
 
 Use **File → Import ImageJ ROIs**, then **Browse...** to choose a `.roi` or `.zip`.

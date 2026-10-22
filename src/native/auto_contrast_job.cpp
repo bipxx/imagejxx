@@ -57,6 +57,7 @@ struct AutoContrastSubmission {
   AutoContrastCycleKey key;
   AutoContrastRequest request;
   AutoContrastLimits limits;
+  std::optional<DocumentSnapshot> calculation_source;
 };
 
 } // namespace detail
@@ -185,7 +186,15 @@ ResolvedAutoContrastCommand AutoContrastJob::resolved() const {
 }
 
 AutoContrastJob Application::submit_auto_contrast(const AutoContrastOptions &options,
-    const AutoContrastLimits &limits, JobOptions job_options) {
+    const AutoContrastLimits &limits,JobOptions job_options){
+  return submit_auto_contrast_impl(options,limits,std::move(job_options),nullptr);
+}
+AutoContrastJob Application::submit_seeded_auto_contrast(const ChannelDisplayState &initial,
+    const AutoContrastOptions &options,const AutoContrastLimits &limits,JobOptions job_options){
+  return submit_auto_contrast_impl(options,limits,std::move(job_options),&initial);
+}
+AutoContrastJob Application::submit_auto_contrast_impl(const AutoContrastOptions &options,
+    const AutoContrastLimits &limits,JobOptions job_options,const ChannelDisplayState *initial) {
   const AutoContrastOptions frozen_options = options;
   const AutoContrastLimits frozen_limits = limits;
   AutoContrastRequest request{0, frozen_options.scope, frozen_options.roi, frozen_options.unsigned16_bits};
@@ -212,11 +221,31 @@ AutoContrastJob Application::submit_auto_contrast(const AutoContrastOptions &opt
         captured_owner, *captured_source, captured_activation));
     if (!auto_contrast_) auto_contrast_ = captured_controller;
   }
+  std::optional<DocumentSnapshot> calculation;
+  if(initial){
+    if(captured_source->display().properties.count("channel_display"))
+      throw std::invalid_argument("Seeded Auto requires an absent channel display property");
+    // Charge typed input and a conservative wire allowance before cloning the
+    // seed or allocating its encoded display tree. Caller-owned input, like
+    // other frontend argument copies, is outside scheduler reservations.
+    auto seed_bytes=add(4096,multiply(initial->channels.size(),sizeof(ChannelDisplayChannel)));
+    for(const auto &channel:initial->channels){
+      seed_bytes=add(seed_bytes,add(2048,channel.lut.name.size()));
+      if(channel.lut.table)seed_bytes=add(seed_bytes,1048576);
+    }
+    if(seed_bytes>frozen_limits.max_record_bytes || seed_bytes>frozen_limits.max_working_bytes/8)
+      throw std::invalid_argument("Auto initial display exceeds metadata budget");
+    const auto seed=resolve_channel_display_command(*captured_source,
+        {ChannelDisplayAction::Set,*initial,{}},
+        {frozen_limits.max_pixels,frozen_limits.max_working_bytes});
+    calculation=captured_source->with_display(command_display_state(seed,*captured_source));
+  }
   auto captured = std::make_shared<const detail::AutoContrastSubmission>(
       detail::AutoContrastSubmission{std::move(*captured_source), std::move(captured_owner),
         std::move(captured_controller), std::move(captured_activation), std::move(captured_epoch),
-        std::move(replacement_epoch), std::move(*captured_key), request, frozen_limits});
-  const auto estimate = estimate_auto_contrast_command(captured->source, captured->request, captured->limits);
+        std::move(replacement_epoch), std::move(*captured_key), request, frozen_limits,std::move(calculation)});
+  const auto &input=captured->calculation_source?*captured->calculation_source:captured->source;
+  const auto estimate = estimate_auto_contrast_command(input, captured->request, captured->limits);
   normalize_options(job_options, estimate, captured->source.id(), sizeof(AutoContrastJob::ResultCell));
   auto result = std::make_shared<AutoContrastJob::ResultCell>(captured);
   auto scheduler = job_scheduler();
@@ -226,7 +255,7 @@ AutoContrastJob Application::submit_auto_contrast(const AutoContrastOptions &opt
   auto job = scheduler->submit_with_cleanup(
       [weak_result, captured](const JobContext &context) {
         context.checkpoint();
-        auto command = resolve_auto_contrast_command(captured->source, captured->request,
+        auto command = resolve_auto_contrast_command(captured->calculation_source?*captured->calculation_source:captured->source, captured->request,
             captured->limits, context.execution_control());
         command.resource_guard_ = context.result_resource_guard();
         context.checkpoint();
