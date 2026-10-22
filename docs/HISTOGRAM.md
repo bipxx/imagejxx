@@ -311,8 +311,8 @@ Captured histogram entries currently replay individually. Run all/Batch refuse
 these entries rather than silently treating them as legacy plot operations.
 The internal panel callback tests use virtual providers directly; the desktop
 Window adapter still refuses virtual datasets.
-Native workflow-program/batch integration, background execution and full
-ImageJ/Fiji histogram domains/conventions and qualification remain open.
+The native workflow API below supports histogram steps; desktop workflow review
+and complete ImageJ/Fiji domains/conventions and qualification remain open.
 
 ## Native background histogram jobs
 
@@ -372,7 +372,8 @@ Source/cache storage, opaque provider and publication internals, allocator and
 scheduler container overhead, frontend argument/getter/result copies, CSV text
 and total process RSS remain external to these declared reservations. This is
 native job infrastructure now drives both ImGui histogram panels as described
-below. Native workflow-program/batch integration remains separate work.
+below. Native workflow execution and session batching are described next; the
+desktop workflow review remains separate work.
 
 
 ## Background calculation in both desktop launchers
@@ -417,3 +418,66 @@ native target contract. Frontend result copies and plot buffers remain outside
 the native scheduler reservation. Existing unsupported legacy histogram domains
 still use their legacy adapter; this does not establish full ImageJ/Fiji histogram
 parity or complete resource/platform acceptance.
+
+
+## Histograms in native workflows and session batches
+
+`NativeWorkflowHistogram(name, target, original, limits=None, enabled=True)`
+adds read-only analysis to the ordered native workflow. `original` is a complete
+histogram command record. It preserves the captured numeric/log choices; `target`
+explicitly chooses the destination stage's planes and ROI geometry. The original
+capture is validated before rebinding, rather than requiring its historical owner
+to still exist. Target and sample-domain compatibility are checked against the
+metadata of every preceding stage before any processing reads.
+
+```python
+target = imagejxx.TargetRequest(imagejxx.TargetScope.ALL_Z,
+    roi=imagejxx.RoiPolicy.WHOLE_PLANE)
+original = imagejxx.resolve_histogram_command(snapshot, request=target).record()
+steps = [imagejxx.NativeWorkflowHistogram('before.csv', target, original),
+    imagejxx.NativeWorkflowOperation('add', {'value': 5}, target),
+    imagejxx.NativeWorkflowHistogram('after.csv', target, original)]
+program = imagejxx.NativeWorkflowProgram(steps)
+prepared = imagejxx.prepare_native_workflow(snapshot, steps)
+for output in prepared.histograms:
+    print(output['step_index'], output['name'], output['result'].mean)
+```
+
+The C++ equivalent is `NativeWorkflowHistogram` in `native_workflow.hpp`;
+`PreparedNativeWorkflow::histograms()` returns detached result objects, each with
+its step index, output name, rebound command record and `TargetHistogramResult`.
+Python getters return owning copies. Histograms do not mutate the owner, advance
+the detached editing stage, create undo entries, remember defaults or write files.
+Mixed processing can still be committed as one guarded transaction; an
+analysis-only proposal is an empty edit. Cancellation or a callback failure
+aborts the entire preparation without publishing a partial result.
+
+Programs containing histograms use the closed V4 grammar. V1/V2/V3 programs keep
+their existing encodings. V4 retains explicit enabled flags and typed filter
+options on operation steps. A disabled analysis validates its original/portable
+intent but does not check destination compatibility, read samples or emit output.
+Output names are unique flat tokens shared with annotation exports, including
+disabled steps. A `.csv` suffix is conventional; no extension is added.
+
+Native session batching emits one CSV per enabled histogram per selected document:
+`<output_stem>.d<one-based-document-index>.<name>`. It uses the same native CSV
+formatter as individual histograms. Annotation exports and then histogram CSVs
+precede the complete session for each input. All destinations are planned before
+temporary files are created. Existing destinations and publication races preserve
+foreign files under the existing new-files-only, partial-publication batch policy.
+Input files, untouched documents and existing session results/workflow tables
+remain preserved; histogram tables are separate CSV products. Common programs,
+per-input program overrides and batch setup records can carry V4 intent.
+
+Per-step histogram limits combine with the cumulative native workflow bound.
+Admission conservatively charges each histogram's working estimate, retained
+record/result and CSV formatting/copy scratch (512 bytes per bin plus fixed
+allowance). Source/provider caches, allocator overhead, frontend copies and total
+process RSS remain external. No new scalar/color/calibration domains are admitted.
+
+The ImGui workflow review cannot yet review histogram analysis outputs. Run
+all/Batch still refuses recorded histogram entries, and loading a V4 histogram
+program into that review refuses explicitly. Individual desktop replay and the
+native C++/Python workflow/batch APIs remain available. The next integration must
+add target review, output display/CSV publication and creator-thread completion
+before removing that refusal.

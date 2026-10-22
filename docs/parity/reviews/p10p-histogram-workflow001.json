@@ -1,0 +1,229 @@
+{
+  "state": "qualified_functional_increment",
+  "objective_complete": false,
+  "baseline_commit": "ee51d911e8fab6da688d445978f63335d4a1c644",
+  "scope": "Native ordered histogram analysis, detached typed results, portable V4 programs and session batch CSV output in C++ and Python. Desktop histogram workflow review remains explicitly refused.",
+  "semantics": "Each enabled histogram validates a complete original numeric/log capture and explicitly rebinds target/ROI to its preceding detached stage. Whole request metadata, original records, domains, output names and cumulative memory admission pass before processing reads. Read-only analysis never advances editing stages or mutates source/history/preferences. Only processing edits share one guarded transaction. Analysis-only begin_edit is empty. Cancellation/callback errors abort preparation. Results retain no source/provider; Python getters explicitly copy.",
+  "program": "Closed V4 histogram kind includes name, original, explicit target, processing/record limits and enabled. Other V4 kinds retain V3 fields. Prior V1/V2/V3 encodings remain. Disabled analyses validate portable intent, share output-name uniqueness and do not resolve destination compatibility or produce results.",
+  "batch": "Native session batching writes one existing-formatter CSV per enabled histogram per selected document before the complete session. Common/per-input programs and setup records carry V4. New-files-only conflicts, race handling and partial publication policy remain. Existing session tables and untouched documents are preserved; histogram tables are separate CSV products.",
+  "memory": "Conservative cumulative workflow admission includes per-analysis working estimate, target positions, original/rebound records, output DTO and CSV string/byte-copy scratch at 512 bytes per bin plus fixed allowance. Source/provider caches, allocator overhead, frontend copies and process RSS remain external.",
+  "verification": "505 selected Python checks per OS, including 30 new histogram workflow cases; four native executable suites per OS and fresh installed SDK consumers. Both C++/Python desktop targets build; installed headless Python editor explicitly refuses V4 histogram review without source/history/workflow/preferences effects. Three pre-existing desktop input tests are deselected from this native API run; no new rendered/input or full source/reference/resource/platform acceptance.",
+  "corrections": "Initial API run included a desktop-input test without its required desktop/capture fixture; final native API selection explicitly deselects three such tests. Review made Python result copy policy explicit and bounded original-record conversion. The added ROI test now compares unchanged history against its captured baseline rather than assuming selection creates an undo entry. Final binaries and final test sources are independently pinned.",
+  "profiles": {
+    "windows": {
+      "python_cases": 505,
+      "new_cases": 30,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_executable_suites": 4,
+      "fresh_sdk_consumer": true,
+      "desktop_build": true,
+      "desktop_refusal_smoke": true,
+      "removed_scratch_bytes": 60577621,
+      "archive": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p10p-histogram-workflow001\\windows-scratch001.zip",
+        "bytes": 14543192,
+        "sha256": "19bbbc346e45436455a925a3ee2a65620b89c6db11fddf03f0f4946c3206a76e"
+      },
+      "evidence": [
+        {
+          "path": "build/p10p-histogram-workflow001/windows-build002/receipt.json",
+          "bytes": 1526,
+          "sha256": "2e86c425e5c9eb60de3e18bb1ee2c598f3f5f664ed3f1408c4cd357092de7cf0"
+        },
+        {
+          "path": "build/p10p-histogram-workflow001/windows-build002/native.xml",
+          "bytes": 1185,
+          "sha256": "a8c84bbaf411f0cec384f089af328e68b1aeee003037414694a25567fdf60478"
+        },
+        {
+          "path": "build/p10p-histogram-workflow001/windows-python004/receipt.json",
+          "bytes": 2264,
+          "sha256": "3fdc27f3c8e3e1cf4f7fa045dc61f710f1097c5536c7a66fd96aadc9ca64dd1a"
+        },
+        {
+          "path": "build/p10p-histogram-workflow001/windows-python004/pytest.xml",
+          "bytes": 74387,
+          "sha256": "f2da4500c7e498b3fa0aeeb7bcfc0aad9dd2d05868a475ff79ebed57124c23d3"
+        },
+        {
+          "path": "build/p10p-histogram-workflow001/windows-sdk001/receipt.json",
+          "bytes": 473,
+          "sha256": "a436b36074b6ea7c5d66332793806ec1182f22782dfd343820f47a6e8364423e"
+        },
+        {
+          "path": "build/p10p-histogram-workflow001/windows-ui001/receipt.json",
+          "bytes": 891,
+          "sha256": "98d2333c62fec3f415e2fd46c498b09931c0bde5aa7fa5b25a728c4aba2511a3"
+        },
+        {
+          "path": "build/p10p-histogram-workflow001/windows-cleanup001.json",
+          "bytes": 164404,
+          "sha256": "5068014ed9779d151a93ee7c3f3b27b478a92f5a63f3b863421b8e858d50b319"
+        },
+        {
+          "path": "build/p10p-histogram-workflow001/windows-products001.json",
+          "bytes": 2960,
+          "sha256": "34e23cbaf575e7e4fc0b3a60d10f90c17f830175a957c930ab9c710784990388"
+        }
+      ]
+    },
+    "linux": {
+      "python_cases": 505,
+      "new_cases": 30,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_executable_suites": 4,
+      "fresh_sdk_consumer": true,
+      "desktop_build": true,
+      "desktop_refusal_smoke": true,
+      "removed_scratch_bytes": 40076370,
+      "archive": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p10p-histogram-workflow001/linux-scratch001.zip",
+        "bytes": 14960951,
+        "sha256": "e6536f259159c87aaad9a52cb132a550d86bc450f918aad66f8adf249ac2c5a7"
+      },
+      "evidence": [
+        {
+          "path": "build/p10p-histogram-workflow001/linux-build002/receipt.json",
+          "bytes": 1475,
+          "sha256": "5601441947636bd564aad53a728f0be91712bd4228968704fcf0161169cce5fb"
+        },
+        {
+          "path": "build/p10p-histogram-workflow001/linux-build002/native.xml",
+          "bytes": 1153,
+          "sha256": "01e2d1cd977179fb59b8816ebc7bbd610bff2623f3cec61ee9c835b92c29617e"
+        },
+        {
+          "path": "build/p10p-histogram-workflow001/linux-python004/receipt.json",
+          "bytes": 2149,
+          "sha256": "47d56f619f8e2a31403e2bd4d36fd23f1019245b739755de40898c8418b56612"
+        },
+        {
+          "path": "build/p10p-histogram-workflow001/linux-python004/pytest.xml",
+          "bytes": 74388,
+          "sha256": "75e30def58530d958f282dbb9b5c7baa29e362365d9da45eb380d8cb7a7ed171"
+        },
+        {
+          "path": "build/p10p-histogram-workflow001/linux-sdk001/receipt.json",
+          "bytes": 420,
+          "sha256": "0fface58b664cfbd1b2f041115afb7b97bcb09d63c6325d544046d223b5ca296"
+        },
+        {
+          "path": "build/p10p-histogram-workflow001/linux-ui001/receipt.json",
+          "bytes": 785,
+          "sha256": "dd426d3bcb2cc76c6d5d64da30ac8724367e54d031470a5972d5687fcb9eb687"
+        },
+        {
+          "path": "build/p10p-histogram-workflow001/linux-cleanup001.json",
+          "bytes": 89096,
+          "sha256": "4f4fcd627854eb5aceef1b07ec9516fe37ba9b4e59b46dd2fe53e0181f93850e"
+        },
+        {
+          "path": "build/p10p-histogram-workflow001/linux-products001.json",
+          "bytes": 2770,
+          "sha256": "c13bcf9174b86cd8d1995d5c4a129fa9fc32ccecceca0a626ba88ded6d132231"
+        }
+      ]
+    }
+  },
+  "source": [
+    {
+      "path": "include/imagejxx/native_workflow.hpp",
+      "bytes": 6207,
+      "sha256": "2b57f7a14d63b032b6d5ddcc85a43d1e27549219edd45f2d4b9e65453473eeb6"
+    },
+    {
+      "path": "include/imagejxx/native_workflow_program.hpp",
+      "bytes": 2037,
+      "sha256": "5969a4771725f55ac3319e383f6787a81beff36401a09fb23baa81e07ebb9be0"
+    },
+    {
+      "path": "src/desktop/native_workflow_panel.cpp",
+      "bytes": 107624,
+      "sha256": "4a2718a14c55c877979587ef52a88e3882fbb76bffab83dea30c44e623fe1dc0"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 72376,
+      "sha256": "2f3158056f59a75e1f186d963abdc8d305a3adc17d1ad262264a7888c752f7de"
+    },
+    {
+      "path": "src/native/native_workflow.cpp",
+      "bytes": 29991,
+      "sha256": "c83687e906ce9806b316093297e6f460fdca40baf854a38ace3cc88a3fb1e6e9"
+    },
+    {
+      "path": "src/native/native_workflow_batch.cpp",
+      "bytes": 21468,
+      "sha256": "f8ef54c338a1cb75e1f6ddd0d473c0209d90a4b89125ac9d8073c3f115d5f3a9"
+    },
+    {
+      "path": "src/native/native_workflow_bindings.cpp",
+      "bytes": 35260,
+      "sha256": "a92bc368d333a96eeca7d27f576cf4ceb5c7720b80c0cc40809028003bae656c"
+    },
+    {
+      "path": "src/native/native_workflow_internal.hpp",
+      "bytes": 1604,
+      "sha256": "57724fe6e3dde4764525f6146cc1a1566bc90bfb110f0079eaa8b371dc814ac5"
+    },
+    {
+      "path": "src/native/native_workflow_originals.cpp",
+      "bytes": 8935,
+      "sha256": "12cdd4a3ce26d37edf52c5abc3ea166fa60eaeee58077eb08f5349629eabda3a"
+    },
+    {
+      "path": "src/native/native_workflow_program.cpp",
+      "bytes": 34041,
+      "sha256": "30233e6e483a9beaa78c2f137a382e5276f02cafd7508f7f68f77d6335d94331"
+    },
+    {
+      "path": "tests/native/test_native_workflow.cpp",
+      "bytes": 16892,
+      "sha256": "027f07a255eb5e65644e5c834a0909f8cc305153c4380463e251d6376cb25dae"
+    },
+    {
+      "path": "tests/python/test_histogram_workflow.py",
+      "bytes": 10302,
+      "sha256": "ab9ba2d4a4fce2fdb43b167bf73ad0c0a8f3c5c89b95bde70b827462543a6b02"
+    }
+  ],
+  "licenses": {
+    "path": "build/p10p-histogram-workflow001/licenses002.log",
+    "bytes": 53,
+    "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+  },
+  "existing_gate": {
+    "state": "open",
+    "producer": {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 14135,
+      "sha256": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    },
+    "log": {
+      "path": "build/p10p-histogram-workflow001/plan001.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    },
+    "reason": "Existing Auto Contrast consumer producer_source byte fingerprint mismatch; unchanged producer; no repin or gate relaxation.",
+    "final_log": {
+      "path": "build/p10p-histogram-workflow001/plan002.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    }
+  },
+  "scope_status_counts": {
+    "total": 99,
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  },
+  "remaining": [
+    "Desktop workflow target/output review, recording, creator-thread result publication and batch progress/cancellation/input qualification before removing the refusal.",
+    "Desktop virtual-source adapter and histogram legacy/calibrated/color/other numeric domains, conventions and complete upstream/reference/resource/platform acceptance.",
+    "All other inventory requirements retain their original scope/status; full objective remains active."
+  ]
+}

@@ -84,6 +84,8 @@ std::vector<Entry> program_entries(const Json &record, std::size_t cap) {
           desktop_workflow_program_limits(cap)));
   std::vector<Entry> entries;
   for (const auto &step : program->steps()) {
+    require(!std::holds_alternative<NativeWorkflowHistogram>(step),
+            "Histogram workflow review is not yet available; use native workflow execution or individual replay");
     Entry entry;
     entry.step = std::shared_ptr<const NativeWorkflowStep>(program, &step);
     entry.authored = true;

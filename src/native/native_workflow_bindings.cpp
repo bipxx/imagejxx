@@ -114,6 +114,19 @@ void bind_native_workflow(py::module_ &m) {
           py::arg("use_destination_calibration") = false,
           py::arg("filter_options") = py::none(), py::arg("enabled") = true)
       .def_readonly("enabled", &NativeWorkflowOperation::enabled);
+  py::class_<NativeWorkflowHistogram>(m, "NativeWorkflowHistogram")
+      .def(py::init([](std::string name, TargetRequest target, py::dict record,
+                       py::object limits, py::object enabled) {
+        const auto bounded = limits.is_none() ? HistogramCommandLimits{} : limits.cast<HistogramCommandLimits>();
+        auto remaining = bounded.max_record_bytes;
+        std::size_t nodes = 0;
+        std::vector<PyObject *> active;
+        preflight_program_python(record, remaining, active, nodes);
+        return NativeWorkflowHistogram{std::move(name), std::move(target),
+            original(record), bounded, flag(enabled)};
+      }), py::arg("name"), py::arg("target"), py::arg("original"),
+          py::arg("limits") = py::none(), py::arg("enabled") = true)
+      .def_readonly("enabled", &NativeWorkflowHistogram::enabled);
   py::class_<NativeWorkflowImport>(m, "NativeWorkflowImport")
       .def(py::init([](py::sequence items, ImageJRoiImportMode mode,
                        const ImageJAnnotationImportLimits &limits,
@@ -174,7 +187,11 @@ void bind_native_workflow(py::module_ &m) {
                     &item.cast<const NativeWorkflowOperation &>());
               else if (py::isinstance<NativeWorkflowImport>(item))
                 steps.emplace_back(&item.cast<const NativeWorkflowImport &>());
-              else if (py::isinstance<NativeWorkflowExport>(item))
+              else if (py::isinstance<NativeWorkflowHistogram>(item))
+                steps.emplace_back(&item.cast<const NativeWorkflowHistogram &>());
+              else if (py::isinstance<NativeWorkflowHistogram>(item))
+            steps.emplace_back(&item.cast<const NativeWorkflowHistogram &>());
+          else if (py::isinstance<NativeWorkflowExport>(item))
                 steps.emplace_back(&item.cast<const NativeWorkflowExport &>());
               else
                 throw py::type_error("Unsupported native program step");
@@ -555,6 +572,8 @@ void bind_native_workflow(py::module_ &m) {
             steps.emplace_back(&item.cast<const NativeWorkflowOperation &>());
           else if (py::isinstance<NativeWorkflowImport>(item))
             steps.emplace_back(&item.cast<const NativeWorkflowImport &>());
+          else if (py::isinstance<NativeWorkflowHistogram>(item))
+            steps.emplace_back(&item.cast<const NativeWorkflowHistogram &>());
           else if (py::isinstance<NativeWorkflowExport>(item))
             steps.emplace_back(&item.cast<const NativeWorkflowExport &>());
           else
@@ -587,6 +606,18 @@ void bind_native_workflow(py::module_ &m) {
                              &PreparedNativeWorkflow::completed_steps)
       .def_property_readonly("retained_bytes",
                              &PreparedNativeWorkflow::retained_bytes)
+      .def_property_readonly("histograms", [](const PreparedNativeWorkflow &p) {
+        py::list out;
+        for (const auto &o : p.histograms()) {
+          py::dict v;
+          v["step_index"] = o.step_index;
+          v["name"] = o.name;
+          v["record"] = bindings::metadata_python(o.record);
+          v["result"] = py::cast(o.value, py::return_value_policy::copy);
+          out.append(v);
+        }
+        return out;
+      })
       .def("begin_edit", &PreparedNativeWorkflow::begin_edit)
       .def_property_readonly("outputs", [](const PreparedNativeWorkflow &p) {
         py::list out;
@@ -622,6 +653,8 @@ void bind_native_workflow(py::module_ &m) {
             steps.emplace_back(&item.cast<const NativeWorkflowOperation &>());
           else if (py::isinstance<NativeWorkflowImport>(item))
             steps.emplace_back(&item.cast<const NativeWorkflowImport &>());
+          else if (py::isinstance<NativeWorkflowHistogram>(item))
+            steps.emplace_back(&item.cast<const NativeWorkflowHistogram &>());
           else if (py::isinstance<NativeWorkflowExport>(item))
             steps.emplace_back(&item.cast<const NativeWorkflowExport &>());
           else

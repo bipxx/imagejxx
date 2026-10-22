@@ -445,6 +445,17 @@ PreparedNativeWorkflowBatch detail::prepare_native_workflow_batch_borrowed(
           add_buffer(current, path, false, out.value.data());
           available -= out.value.data().size();
         }
+        for (const auto &out : prepared.histograms()) {
+          auto path = dir / fs::u8path(inputs[current].output_stem + ".d" +
+                                       std::to_string(d + 1) + "." + out.name);
+          output_path(path);
+          // Planner admits both CSV string and byte-copy scratch before reads.
+          auto csv = target_histogram_csv(out.value);
+          require(csv.size() <= available - prepared.retained_bytes(),
+                  "Batch histogram-copy phase limit");
+          add_buffer(current, path, false, std::vector<unsigned char>(csv.begin(), csv.end()));
+          available -= csv.size();
+        }
         capture.documents[d] = prepared.preview();
         decoded.documents[d].reset();
       }

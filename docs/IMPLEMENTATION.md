@@ -1,5 +1,20 @@
 # Implementation progress
 
+**Histogram workflow checkpoint, 2026-10-21 (work in progress):**
+C++/Python native workflows now retain ordered, read-only histogram results and
+portable V4 intent. Session batches emit histogram CSVs per selected document;
+explicit target rebinding, cancellation, cumulative admission and new-file conflict
+rules preserve source/history/tables. Python result getters own detached copies.
+Windows/Linux each pass 505 selected Python checks (30 new), four native suites
+and fresh installed SDK consumers. Both desktop targets build and explicitly
+refuse histogram workflow review pending target/output/publication integration.
+Verified cleanup removes 100,653,991 scratch bytes and retains final products.
+See [usage](HISTOGRAM.md) and
+[the scoped receipt](parity/reviews/p10p-histogram-workflow001.json).
+Desktop workflow integration, remaining histogram domains and full qualification
+remain open. All99 stays 47 in progress / 52 open / 0 complete; the unchanged
+Auto Contrast producer fingerprint gate remains open.
+
 **Histogram async UI checkpoint, 2026-10-21 (work in progress):**
 Both ImGui launchers now queue native histogram Calculate/Replay work on the
 shared scheduler, show stage progress/Cancel and preserve prior output during

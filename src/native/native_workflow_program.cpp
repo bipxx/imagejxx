@@ -385,6 +385,9 @@ void charge_step(const detail::NativeWorkflowStepRef &step, Budget &b) {
             b.add(name.size());
             valid_parameter(value, b);
           }
+        } else if constexpr (std::is_same_v<T, NativeWorkflowHistogram>) {
+          b.add(v.name.size());
+          b.product(v.target.positions.size(), 256);
         } else if constexpr (std::is_same_v<T, NativeWorkflowImport>) {
           require(v.items.size() <= v.limits.batch.max_entries,
                   "Program import count");
@@ -439,6 +442,9 @@ void preflight(const std::vector<detail::NativeWorkflowStepRef> &steps,
                         GeometryEffect::Preserve || v.operation == "convert_image",
                     "Program geometry requires explicit remap");
             detail::validate_native_workflow_operation_intent(v);
+          } else if constexpr (std::is_same_v<T, NativeWorkflowHistogram>) {
+            valid_target(v.target);
+            detail::validate_native_workflow_histogram_intent(v);
           } else if constexpr (std::is_same_v<T, NativeWorkflowImport>) {
             detail::validate_imagej_annotation_import_limits(v.limits);
             if (v.original)
@@ -503,6 +509,9 @@ MetadataObject encode(const std::vector<detail::NativeWorkflowStepRef> &steps,
   const bool v3 = std::any_of(steps.begin(), steps.end(), [](const auto &ref) {
     return std::visit([](const auto *p) { return !p->enabled; }, ref);
   });
+  const bool v4 = std::any_of(steps.begin(), steps.end(), [](const auto &ref) {
+    return std::holds_alternative<const NativeWorkflowHistogram *>(ref);
+  });
   MetadataArray records;
   std::set<std::string> outputs;
   for (const auto &step : steps)
@@ -522,8 +531,17 @@ MetadataObject encode(const std::vector<detail::NativeWorkflowStepRef> &steps,
             r["parameters"] = metadata_object(std::move(params));
             r["target"] = target_value(v.target);
             r["use_destination_calibration"] = v.use_destination_calibration;
-            if (v2 || v3)
+            if (v2 || v3 || v4)
               r["filter_options"] = filter_options_value(v.filter_options);
+          } else if constexpr (std::is_same_v<T, NativeWorkflowHistogram>) {
+            require(outputs.insert(v.name).second, "Duplicate workflow output name");
+            r["kind"] = std::string("histogram");
+            r["name"] = v.name;
+            r["target"] = target_value(v.target);
+            r["limits"] = metadata_object({
+                {"max_pixels", std::uint64_t(v.limits.processing.max_pixels)},
+                {"max_working_bytes", std::uint64_t(v.limits.processing.max_working_bytes)},
+                {"max_record_bytes", std::uint64_t(v.limits.max_record_bytes)}});
           } else if constexpr (std::is_same_v<T, NativeWorkflowImport>) {
             require(v.mode == ImageJRoiImportMode::Append ||
                         v.mode == ImageJRoiImportMode::Replace,
@@ -547,14 +565,15 @@ MetadataObject encode(const std::vector<detail::NativeWorkflowStepRef> &steps,
             r["choices"] = detail::imagej_annotation_export_choices_value(
                 {v.items, v.limits, v.zip, v.zip && v.compress});
           }
-          if (v3)
+          if (v3 || v4)
             r["enabled"] = v.enabled;
           records.push_back(metadata_object(std::move(r)));
         },
         step);
   MetadataObject result{
       {"schema", std::string("imagejxx.native-workflow-program")},
-      {"version", v3   ? 3
+      {"version", v4   ? 4
+                  : v3 ? 3
                   : v2 ? 2
                        : 1},
       {"steps", metadata_array(std::move(records))}};
@@ -629,7 +648,7 @@ native_workflow_program_from_record(const MetadataObject &r,
   exact_fields(r, {"schema", "version", "steps"});
   const auto version = unsigned_value(r.at("version"));
   require(text_value(r.at("schema")) == "imagejxx.native-workflow-program" &&
-              (version == 1 || version == 2 || version == 3),
+              (version >= 1 && version <= 4),
           "Unsupported native program record");
   const auto &records = array(r.at("steps"));
   require(!records.empty() && records.size() <= limits.max_steps,
@@ -664,11 +683,25 @@ native_workflow_program_from_record(const MetadataObject &r,
           flag(s.at("use_destination_calibration"));
       if (version >= 2)
         op.filter_options = filter_options_from(s.at("filter_options"));
-      if (version == 3)
+      if (version >= 3)
         op.enabled = flag(s.at("enabled"));
       steps.emplace_back(std::move(op));
+    } else if (kind == "histogram") {
+      require(version == 4, "Histogram step requires native program V4");
+      exact_fields(s, {"kind", "original", "name", "target", "limits", "enabled"});
+      const auto &l = object_value(s.at("limits"));
+      exact_fields(l, {"max_pixels", "max_working_bytes", "max_record_bytes"});
+      NativeWorkflowHistogram step;
+      step.name = text_value(s.at("name"));
+      step.target = target_from(s.at("target"));
+      step.original = original_from(s.at("original"));
+      step.limits.processing.max_pixels = size_value(l.at("max_pixels"));
+      step.limits.processing.max_working_bytes = size_value(l.at("max_working_bytes"));
+      step.limits.max_record_bytes = size_value(l.at("max_record_bytes"));
+      step.enabled = flag(s.at("enabled"));
+      steps.emplace_back(std::move(step));
     } else if (kind == "import") {
-      if (version == 3)
+      if (version >= 3)
         exact_fields(
             s, {"kind", "original", "mode", "limits", "inputs", "enabled"});
       else
@@ -683,10 +716,10 @@ native_workflow_program_from_record(const MetadataObject &r,
                                mode == "append" ? ImageJRoiImportMode::Append
                                                 : ImageJRoiImportMode::Replace,
                                l, original_from(s.at("original")),
-                               version == 3 ? flag(s.at("enabled")) : true});
+                               version >= 3 ? flag(s.at("enabled")) : true});
     } else {
       require(kind == "export", "Unknown native program step kind");
-      if (version == 3)
+      if (version >= 3)
         exact_fields(s, {"kind", "original", "name", "choices", "enabled"});
       else
         exact_fields(s, {"kind", "original", "name", "choices"});
@@ -695,7 +728,7 @@ native_workflow_program_from_record(const MetadataObject &r,
       steps.emplace_back(NativeWorkflowExport{
           text_value(s.at("name")), std::move(request.items), request.limits,
           request.is_zip, request.compress, original_from(s.at("original")),
-          version == 3 ? flag(s.at("enabled")) : true});
+          version >= 3 ? flag(s.at("enabled")) : true});
     }
     std::visit(
         [&](const auto &step) {

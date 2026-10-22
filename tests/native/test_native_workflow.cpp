@@ -20,6 +20,43 @@ template <class F> void refuses(F f) {
   }
   throw std::runtime_error("Expected workflow refusal");
 }
+void histogram_workflow_contract() {
+  Image image(3,2,1,PixelType::UInt16);
+  image.pixels={0,1,2,3,4,5};
+  DatasetReadObserver reads;
+  Document owner(Dataset::from_planes({1,1,1,2,3,1},{image}).observe_reads(reads));
+  const auto source=owner.snapshot();
+  TargetRequest target; target.roi=RoiPolicy::WholePlane;
+  TargetHistogramOptions options; options.binning=HistogramBinning::UniformRange;
+  options.bins=4; options.range=std::array<double,2>{0,12};
+  NativeWorkflowHistogram first; first.name="before.csv";first.target=target;
+  first.original=resolve_histogram_command(source,options,target,true).record();
+  auto last=first;last.name="after.csv";
+  NativeWorkflowOperation add;add.operation="add";add.parameters={{"value",6.}};add.target=target;
+  const auto program=native_workflow_program_from_json(make_native_workflow_program({first,add,last}).json());
+  check(reads.counts().plane_reads==0);
+  auto invalid=last;invalid.limits.processing.max_pixels=1;
+  refuses([&]{prepare_native_workflow(source,{add,invalid});});
+  check(reads.counts().plane_reads==0);
+  auto prepared=prepare_native_workflow(source,program.steps());
+  check(prepared.completed_steps()==3 && prepared.histograms().size()==2 && prepared.outputs().empty());
+  const auto &a=prepared.histograms()[0], &b=prepared.histograms()[1];
+  check(a.step_index==0 && b.step_index==2 && a.value.sum==15 && b.value.sum==51);
+  check(a.value.histogram.counts==std::vector<std::uint64_t>({3,3,0,0}));
+  check(b.value.histogram.counts==std::vector<std::uint64_t>({0,0,3,3}));
+  check(owner.snapshot().shares_data(source) && owner.history().undo_steps==0);
+  auto edit=prepared.begin_edit();owner.commit(edit);
+  check(owner.history().undo_steps==1);owner.undo();check(owner.snapshot().shares_data(source));
+  auto only=prepare_native_workflow(owner.snapshot(),{first});auto noop=only.begin_edit();owner.commit(noop);
+  check(owner.history().undo_steps==0 && only.histograms().size()==1);
+  auto disabled=first;disabled.enabled=false;disabled.target.scope=TargetScope::Positions;
+  disabled.target.positions={{0,0,999}};
+  auto skipped=prepare_native_workflow(source,{disabled});
+  check(skipped.histograms().empty() && skipped.completed_steps()==0);
+  ExecutionControl control;control.cancellation=std::make_shared<CancellationToken>();
+  control.progress=[&](std::size_t done,std::size_t total){if(done==total)control.cancellation->cancel();};
+  refuses([&]{prepare_native_workflow(source,{first}, {},control);});
+}
 void conversion_contract() {
   const DatasetShape shape{2, 2, 2, 2, 3, 1};
   Stack planes;
@@ -235,6 +272,7 @@ int main() {
     replay.original = g.record();
     replay.target.roi = RoiPolicy::WholePlane;
     check(prepare_native_workflow(before, {replay}).completed_steps() == 1);
+    histogram_workflow_contract();
     conversion_contract();
     rgb_workflow_contract();
     color_workflow_contract();

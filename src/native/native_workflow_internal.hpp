@@ -11,7 +11,8 @@ void validate_native_workflow_import_original(const MetadataObject &);
 void validate_native_workflow_export_original(const MetadataObject &);
 using NativeWorkflowStepRef =
     std::variant<const NativeWorkflowOperation *, const NativeWorkflowImport *,
-                 const NativeWorkflowExport *>;
+                 const NativeWorkflowExport *, const NativeWorkflowHistogram *>;
+void validate_native_workflow_histogram_intent(const NativeWorkflowHistogram &);
 // Metadata-only admission of source, targets, parameters and retained/output
 // budgets. Acquires no source samples; execution performs this admission again.
 std::size_t admit_native_workflow(

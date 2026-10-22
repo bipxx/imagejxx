@@ -122,6 +122,12 @@ auto workflow_indexed(const DocumentSnapshot &source,const NativeWorkflowOperati
   auto view=source.display();view.t=position[0];view.c=position[1];view.crosshair[2]=position[2];
   return resolve(source.with_display(std::move(view)),request);
 }
+HistogramCommandLimits histogram_limits(const NativeWorkflowHistogram &v, std::size_t cap) {
+  auto limits = v.limits;
+  limits.processing.max_working_bytes = std::min(limits.processing.max_working_bytes, cap);
+  limits.max_record_bytes = std::min(limits.max_record_bytes, cap);
+  return limits;
+}
 ResolvedImageJAnnotationExport workflow_export(const DocumentSnapshot &source,
                                                const NativeWorkflowExport &v) {
   if(v.original && detail::native_workflow_original_schema(*v.original)=="imagejxx.imagej-annotation-export")
@@ -157,7 +163,7 @@ void preflight(const DocumentSnapshot &initial,
           const auto &v = *pointer;
           using T = std::decay_t<decltype(v)>;
           if (!v.enabled) {
-            if constexpr (std::is_same_v<T, NativeWorkflowExport>) {
+            if constexpr (std::is_same_v<T, NativeWorkflowExport> || std::is_same_v<T, NativeWorkflowHistogram>) {
               require(!v.name.empty() && v.name.size() <= 240 &&
                           v.name != "." && v.name != ".." &&
                           v.name.find_first_of("/\\:\0", 0, 4) ==
@@ -257,6 +263,18 @@ void preflight(const DocumentSnapshot &initial,
             }
             if(v.operation=="convert_image")source=detail::scalar_conversion_metadata_preview(source,conversion_type(*normalized));
             else source=detail::workflow_filter_metadata_preview(source,v.operation,normalized?*normalized:v.parameters,resolved);
+          } else if constexpr (std::is_same_v<T, NativeWorkflowHistogram>) {
+            detail::validate_native_workflow_histogram_intent(v);
+            require(names.insert(v.name).second, "Duplicate workflow output name");
+            budget.add(v.name.size());
+            budget.product(v.target.positions.size(), sizeof(PlanePosition));
+            const auto limits = histogram_limits(v, budget.cap - budget.used);
+            const auto command = rebind_histogram_command(source, *v.original, v.target, limits);
+            budget.add(estimate_histogram_command(command, limits).working_bytes);
+            budget.record(command.record());
+            // Retained output DTO and conservative CSV text + byte-copy scratch.
+            budget.add(sizeof(NativeWorkflowHistogramOutput) + 4096);
+            budget.product(std::size_t(command.options().bins), 512);
           } else if constexpr (std::is_same_v<T, NativeWorkflowImport>) {
             if (v.original)
               detail::validate_native_workflow_import_original(*v.original);
@@ -383,10 +401,11 @@ struct detail::NativeWorkflowAccess {
   static PreparedNativeWorkflow make(DocumentSnapshot source,
                                      DocumentSnapshot preview,
                                      std::vector<NativeWorkflowOutput> outputs,
+                                     std::vector<NativeWorkflowHistogramOutput> histograms,
                                      std::size_t completed, std::size_t bytes,
                                      bool paired_display) {
     return PreparedNativeWorkflow(std::move(source), std::move(preview),
-                                  std::move(outputs), completed, bytes, paired_display);
+                                  std::move(outputs), std::move(histograms), completed, bytes, paired_display);
   }
 };
 PreparedNativeWorkflow
@@ -421,6 +440,7 @@ PreparedNativeWorkflow detail::prepare_native_workflow_borrowed(
     const NativeWorkflowLimits &limits, const ExecutionControl &control) {
   const auto admitted = admit_native_workflow(source, steps, limits, control);
   std::vector<NativeWorkflowOutput> outputs;
+  std::vector<NativeWorkflowHistogramOutput> histograms;
   std::size_t completed = 0;
   bool paired_display = false;
   Document working(source);
@@ -499,6 +519,12 @@ PreparedNativeWorkflow detail::prepare_native_workflow_borrowed(
             } else
               execute(resolve_target(current, v.target, v.operation),
                       v.parameters);
+          } else if constexpr (std::is_same_v<T, NativeWorkflowHistogram>) {
+            const auto limits_for_step = histogram_limits(v, limits.max_retained_bytes);
+            const auto command = rebind_histogram_command(current, *v.original, v.target, limits_for_step);
+            auto value = execute_histogram_command(command, limits_for_step, control);
+            checkpoint(control);
+            histograms.push_back({index, v.name, command.record(), std::move(value)});
           } else if constexpr (std::is_same_v<T, NativeWorkflowImport>) {
             auto command=workflow_import(current,v);
             auto edit = prepare_imagej_annotation_import(command);
@@ -518,6 +544,6 @@ PreparedNativeWorkflow detail::prepare_native_workflow_borrowed(
   }
   checkpoint(control);
   return NativeWorkflowAccess::make(source, working.snapshot(),
-                                    std::move(outputs), completed, admitted, paired_display);
+                                    std::move(outputs), std::move(histograms), completed, admitted, paired_display);
 }
 } // namespace imagejxx
