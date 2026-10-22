@@ -609,3 +609,51 @@ shutdown. Python plane arrays are owning copies, as in other Apply jobs.
 `job.record()` returns the complete captured stack command. Portable workflow
 adapters and actual ImGui stack controls still need to consume this record;
 the new job does not turn uniform multi-axis Apply into ImageJ stack Apply.
+
+
+### Portable RGB stack replay and workflow review
+
+`imagejxx/rgb_contrast_stack_workflow.hpp` and Python expose
+`make_rgb_contrast_stack_workflow_step(command, limits)`. This creates a native
+`rgb_contrast_stack` operation with its complete historical capture and one
+explicit `Positions` target. That position selects the active processor; the
+operation always maps the complete current-stage TCZ stack. The target requires
+`ActiveSelection`, plane execution and an in-place destination, with no unused
+ranges, free parameters, filter options or calibration override. Existing
+portable container fields/versions and prior scalar/RGB command profiles stay
+unchanged. A disabled step retains and validates its complete intent without
+resolving the destination's compatibility or anchor bounds.
+
+Replay validates the entire original before rebinding the saved ordered stages
+to the current-stage destination selection and explicit anchor. Historical
+source identity, geometry, display and anchor remain unchanged in the original
+record. Destination navigation does not choose the active processor and is not
+restored from history: replay updates numeric display/threshold state while
+preserving destination T/C/Z, crosshair, zoom and pan. Earlier promoted mappings
+affect the explicit active plane; other planes use only the final mapping's
+component and Java-int-narrowed bounds. There is one final paired publication.
+Even an empty enabled stack step retains all source revision dependencies;
+empty membership still reads no samples and creates no history entry.
+
+Preflight first admits source metadata and conservative command/processing
+work, then derives sample-free stage descriptors using the same processor masks
+as execution. Descriptor sample acquisition throws. Empty membership retains
+the input descriptor/display; nonempty processing predicts RGB UInt8 and reset
+display state. Invalid later anchors, storage, captures or limits fail before
+earlier processing samples are acquired. Cancellation/failure leaves live
+owners unchanged. Native session batches use the same operation and preserve
+input files, session results/workflow tables, other documents and navigation
+under their declared selection/publication policy. Source/provider caches,
+frontend copies, phase-local codec work and total process RSS remain outside
+the workflow's retained-byte estimate.
+
+Shared ImGui workflow review accepts both plain stack captures and portable
+programs, shows retained component mappings and provides explicit active T/C/Z
+fields. Prepare program/Keep program preserves the complete original and the
+edited anchor. Private preview and Apply use the native path; replay does not
+append itself to the recorder. Saved mapping choices are read-only in this
+review, matching the complete-capture contract. General stage-choice editing
+and the main brightness/contrast panel's stack controls remain separate work.
+The actual-widget fixture covers anchor editing, program retention/reopen,
+preview, Apply, paired Undo/Redo and preserved navigation in both launch modes.
+This scoped integration does not complete G057 or full ImageJ/Fiji parity.

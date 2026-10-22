@@ -187,7 +187,7 @@ std::vector<Entry> program_entries(const Json &record, std::size_t cap) {
     entry.authored = true;
     entry.enabled = std::visit([](const auto &v) { return v.enabled; }, step);
     if (const auto op = std::get_if<NativeWorkflowOperation>(&step)) {
-      entry.title = op->operation=="rgb_contrast_apply"?"Apply RGB brightness/contrast":op->operation=="contrast_apply"?"Apply brightness/contrast":op->operation=="rgb_dataset"?"RGB dataset conversion":op->operation=="color_stack"?"RGB / HSB component stack":op->operation=="indexed_dataset"?"Indexed color dataset":op->operation=="indexed_rgb"?"Indexed palette to RGB":operation_spec(op->operation).title;
+      entry.title = op->operation=="rgb_contrast_stack"?"Apply RGB brightness/contrast to stack":op->operation=="rgb_contrast_apply"?"Apply RGB brightness/contrast":op->operation=="contrast_apply"?"Apply brightness/contrast":op->operation=="rgb_dataset"?"RGB dataset conversion":op->operation=="color_stack"?"RGB / HSB component stack":op->operation=="indexed_dataset"?"Indexed color dataset":op->operation=="indexed_rgb"?"Indexed palette to RGB":operation_spec(op->operation).title;
       entry.scope = int(op->target.scope);
       entry.roi = int(op->target.roi);
       entry.calibration = op->use_destination_calibration;
@@ -226,7 +226,14 @@ std::vector<Entry> compile(const Json &table, std::size_t cap) {
     const auto schema = string(get(raw, "schema"));
     NativeWorkflowStep step;
     std::string title;
-    if(schema=="imagejxx.rgb-contrast-apply-command") {
+    if(schema=="imagejxx.rgb-contrast-stack-command") {
+      validate_rgb_contrast_stack_command_record(record);
+      NativeWorkflowOperation value;value.operation="rgb_contrast_stack";value.original=record;
+      const auto anchor=raw.at("capture").at("reset_anchor").get<std::array<int,3>>();
+      value.target.scope=TargetScope::Positions;value.target.roi=RoiPolicy::ActiveSelection;
+      value.target.positions={{anchor[0],anchor[1],anchor[2]}};
+      step=std::move(value);title="Apply RGB brightness/contrast to stack";
+    } else if(schema=="imagejxx.rgb-contrast-apply-command") {
       validate_rgb_contrast_apply_command_record(record);
       NativeWorkflowOperation value;value.operation="rgb_contrast_apply";value.original=record;
       value.target=detail::decode_target_record(metadataObjectFromJson(raw.at("target"))).request;
@@ -367,7 +374,7 @@ std::vector<Entry> compile(const Json &table, std::size_t cap) {
     if(const auto op=std::get_if<NativeWorkflowOperation>(entry.step.get());op && (op->operation=="rgb_dataset" || op->operation=="color_stack" || op->operation=="indexed_dataset" || op->operation=="indexed_rgb")) {
       entry.scope=int(TargetScope::Ranges);entry.roi=int(RoiPolicy::WholePlane);entry.retained_target=true;
     }
-    if(const auto op=std::get_if<NativeWorkflowOperation>(entry.step.get());op && (op->operation=="contrast_apply" || op->operation=="rgb_contrast_apply")) {
+    if(const auto op=std::get_if<NativeWorkflowOperation>(entry.step.get());op && (op->operation=="rgb_contrast_stack" || op->operation=="contrast_apply" || op->operation=="rgb_contrast_apply")) {
       entry.scope=int(op->target.scope);entry.roi=int(op->target.roi);entry.positions=op->target.positions;entry.retained_target=true;
     }
     if(const auto hist=std::get_if<NativeWorkflowHistogram>(entry.step.get())) {
@@ -1738,7 +1745,7 @@ void NativeWorkflowPanel::draw(
   auto &entry = s.entries.at(s.selected);
   {
     const auto operation=std::get_if<NativeWorkflowOperation>(entry.step.get());
-    const bool rgb_step=(operation && operation->operation=="rgb_dataset") || std::holds_alternative<NativeWorkflowHistogram>(*entry.step);
+    const bool rgb_step=(operation && (operation->operation=="rgb_dataset" || operation->operation=="rgb_contrast_stack")) || std::holds_alternative<NativeWorkflowHistogram>(*entry.step);
     const bool parameter_step = bool(operation);
     const bool prefix_confirmed =
         std::all_of(s.entries.begin(), s.entries.begin() + s.selected,
@@ -1853,7 +1860,17 @@ void NativeWorkflowPanel::draw(
         "destination target below. Selection targeting uses this image's "
         "native selection/positioned ROIs.",
         op->operation.c_str());
-    if(op->operation=="rgb_contrast_apply") {
+    if(op->operation=="rgb_contrast_stack") {
+      detail::validate_rgb_contrast_stack_workflow_intent(*op);
+      const auto saved=metadataJson(op->original->at("stages"));
+      ImGui::Text("Saved component adjustments: %zu",saved.size());
+      ImGui::TextWrapped("Apply to every stack plane. The active processor below keeps its promoted component adjustments; other planes use the final mapping and selection. Saved mappings are retained. Your current navigation is preserved.");
+      if(ImGui::CollapsingHeader("Saved stack mappings"))for(std::size_t i=0;i<saved.size();++i){const auto &row=saved[i];ImGui::Text("%zu: %.10g to %.10g; RGB bits %d; %s",i+1,row.at("minimum").get<double>(),row.at("maximum").get<double>(),row.at("channels").get<int>(),row.at("whole_plane").get<bool>()?"whole active plane":"active selection policy");}
+      auto at=entry.positions.front();std::array<int,3> anchor{at.t,at.c,at.z};
+      const char *labels[]{"Active T (zero-based)","Active C (zero-based)","Active Z (zero-based)"};
+      for(int axis=0;axis<3;++axis){changed|=ImGui::InputInt(labels[axis],&anchor[axis],0,0);s.observe("rgb_stack_anchor."+std::to_string(axis));}
+      if(changed){entry.scope=int(TargetScope::Positions);entry.roi=int(RoiPolicy::ActiveSelection);entry.positions={{anchor[0],anchor[1],anchor[2]}};entry.retained_target=false;}
+    } else if(op->operation=="rgb_contrast_apply") {
       const auto options=detail::rgb_contrast_apply_workflow_options(*op);
       ImGui::Text("Mapping: %.10g to %.10g; RGB bits: %d",options.minimum,options.maximum,options.channels);
       ImGui::TextWrapped("Maps the preceding stage once, using the same endpoints on selected planes. Edit parameters to replace mapping/components; the original capture stays unchanged. Undo/Redo restores pixels and display together.");

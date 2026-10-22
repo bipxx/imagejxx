@@ -2,8 +2,10 @@
 #include <imagejxx/rgb_contrast_sequence_job.hpp>
 #include <imagejxx/rgb_contrast_stack.hpp>
 #include <imagejxx/rgb_contrast_stack_job.hpp>
+#include <imagejxx/rgb_contrast_stack_workflow.hpp>
 #include <imagejxx/application.hpp>
 #include <imagejxx/native_workflow.hpp>
+#include <imagejxx/native_workflow_program.hpp>
 #include <imagejxx/histogram_job.hpp>
 #include <iostream>
 #include <stdexcept>
@@ -58,6 +60,10 @@ int main() {
   auto stackJob=submit_rgb_contrast_stack(scheduler,rgb_contrast_stack_command_from_record(stackOwner->snapshot(),stackRecord));stackJob.wait();stackJob.publish(app);
   if(stackOwner->snapshot().data().dataset.plane()->pixels[0]!=87 || stackOwner->snapshot().data().dataset.plane({0,0,1})->pixels[0]!=85)throw std::runtime_error("RGB captured stack worker publication");
   stackOwner->undo();if(!stackOwner->snapshot().shares_data(stackSource))throw std::runtime_error("RGB captured stack Undo");
+  auto stackStep=make_rgb_contrast_stack_workflow_step(resolve_rgb_contrast_stack_command(stackOwner->snapshot(),{{{10.9,40.1,4},false}}));stackStep.target.positions={{0,0,1}};
+  auto stackProgram=native_workflow_program_from_json(make_native_workflow_program({stackStep}).json());auto stackWorkflow=prepare_native_workflow(stackOwner->snapshot(),stackProgram.steps());auto stackWorkflowEdit=stackWorkflow.begin_edit();app.commit(stackWorkflowEdit);
+  if(stackOwner->snapshot().data().dataset.plane()->pixels[0]!=85 || stackOwner->snapshot().data().dataset.plane({0,0,1})->pixels[0]!=87 || stackOwner->snapshot().display().crosshair[2]!=0)throw std::runtime_error("RGB stack portable explicit anchor and preserved navigation");
+  stackOwner->undo();if(!stackOwner->snapshot().shares_data(stackSource))throw std::runtime_error("RGB stack portable Undo");
   std::cout<<"PASS installed scalar and RGB Apply APIs, atomic commit and Undo\n";
 
 }

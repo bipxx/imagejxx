@@ -546,3 +546,17 @@ def test_order_all_disabled_batch_emits_only_a_confirmed_session_copy(reports):
         actual = ij.load_session(done['files'][0]['path']); original = order_input(r)
         np.testing.assert_array_equal(actual.documents[0].snapshot().dataset.numpy('TCZYX'),original.documents[0].snapshot().dataset.numpy('TCZYX'))
         assert actual.workflow == original.workflow and actual.workflow[0]['version'] == 1
+
+
+
+def test_rgb_stack_workflow_actual_anchor_widgets_portable_program_and_paired_apply(reports):
+    for r in reports:
+        s=r["rgb_stack"];program=s["table"][0];step=program["steps"][0]
+        assert step["operation"]=="rgb_contrast_stack" and step["target"]["positions"]==[[0,0,1]] and step["original"]==s["original"]
+        assert s["original"]["capture"]["reset_anchor"]==[0,0,0] and len(s["original"]["stages"])==2
+        assert s["preview"]["preview_only"] and not s["preview"]["controls"]["apply"]["enabled"]
+        expected=np.tile(np.array([85,30,40]),(8,8,1));expected[1]=[255,170,255]
+        np.testing.assert_array_equal(np.asarray(s["after"]).reshape(8,8,3),expected)
+        assert s["navigation_after"]==s["navigation_before"]=={"t":1,"c":1,"crosshair":[1,1,1],"zoom":1.5}
+        assert s["history_after"]==s["history_before"]+1 and s["undone"]==s["before"] and s["redone"]==s["after"]
+        assert s["display_after"]==s["display_redone"]=={"display_range":[0.,255.]} and s["display_undone"]==s["display_before"]

@@ -1,4 +1,5 @@
 #include <imagejxx/rgb_contrast_stack.hpp>
+#include "rgb_contrast_stack_internal.hpp"
 #include <imagejxx/roi_style.hpp>
 #include <imagejxx/manual_threshold.hpp>
 #include "contrast_command_record.hpp"
@@ -63,6 +64,11 @@ RgbContrastStackEstimate estimate_rgb_contrast_stack(const DocumentSnapshot &sou
   if(out.pixels>limits.processing.max_pixels || out.working_bytes>limits.processing.max_working_bytes)invalid("RGB stack cumulative pixel/working limit");
   if(source.data().selection){const auto &s=*source.data().selection;s.validate(shape.x,shape.y);if(!selection_is_area(s) && s.points.empty())invalid("RGB stack point selection requires a coordinate");if(!selection_is_area(s) && s.kind!="line" && s.kind!="point" && s.kind!="multipoint" && s.kind!="polyline" && s.kind!="angle")invalid("Unsupported ImageJ RGB stack selection");}
   return out;
+}
+bool detail::rgb_contrast_stack_has_membership(const DocumentSnapshot &source,const std::vector<RgbContrastStackStep> &steps){
+  const auto masks=regions(source);if(any(masks.active))return true;
+  for(const auto &step:steps)if(step.whole_plane)return true;
+  return source.data().dataset.shape().plane_count()>1 && any(masks.other);
 }
 DocumentTransaction prepare_rgb_contrast_stack(const DocumentSnapshot &requested,const std::vector<RgbContrastStackStep> &requested_steps,const ContrastApplyCommandLimits &requested_limits,const ExecutionControl &requested_control){
   if(requested_control.cancellation && requested_control.cancellation->canceled())throw OperationCancelled();

@@ -192,6 +192,14 @@ void preflight(const DocumentSnapshot &initial,
           if constexpr (std::is_same_v<T, NativeWorkflowOperation>) {
             budget.add(v.operation.size());parameters_budget(budget,v.parameters);
             budget.product(v.target.positions.size(),sizeof(PlanePosition));
+            if(v.operation=="rgb_contrast_stack") {
+              ExecutionScope intent_scope(control);
+              const auto limits=detail::contrast_apply_workflow_limits(budget.cap-budget.used);
+              const auto command=detail::workflow_rgb_contrast_stack(source,v,limits);
+              budget.add(estimate_rgb_contrast_stack_command(command,limits).working_bytes);
+              budget.data(source);budget.record(command.record());
+              source=detail::rgb_contrast_stack_metadata_preview(command,source.display());return;
+            }
             if(v.operation=="rgb_contrast_apply") {
               const auto limits=detail::contrast_apply_workflow_limits(budget.cap-budget.used);
               const auto command=detail::workflow_rgb_contrast_apply(source,v,limits);
@@ -492,7 +500,11 @@ PreparedNativeWorkflow detail::prepare_native_workflow_borrowed(
               checkpoint(control);
               working.commit(edit);
             };
-            if(v.operation=="rgb_contrast_apply") {
+            if(v.operation=="rgb_contrast_stack") {
+              const auto limits_for_step=detail::contrast_apply_workflow_limits(limits.max_retained_bytes);
+              auto edit=detail::execute_workflow_rgb_contrast_stack(current,v,limits_for_step,control);
+              paired_display=true;checkpoint(control);working.commit(edit);
+            } else if(v.operation=="rgb_contrast_apply") {
               const auto limits_for_step=detail::contrast_apply_workflow_limits(limits.max_retained_bytes);
               const auto command=detail::workflow_rgb_contrast_apply(current,v,limits_for_step);
               auto edit=execute_rgb_contrast_apply_command(command,limits_for_step,control);

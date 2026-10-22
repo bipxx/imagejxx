@@ -1,5 +1,28 @@
 # ImageJ and Fiji gap closure plan
 
+**RGB portable-stack workflow checkpoint, 2026-10-22 (work in progress):**
+Exact captured RGB stack mappings now replay through native portable workflows,
+session batches and the shared workflow review. The explicit singleton target
+chooses the active T/C/Z processor; processing still covers the whole stack.
+Replay adopts the destination selection and preserves its current navigation.
+Sample-free preflight shares actual active/other-plane membership rules and
+validates later stages before earlier samples. Workflow review reads complete
+stack captures, edits the anchor and keeps the full portable program.
+Windows/Linux each pass 22 native suites, three existing standalone C++ UI
+regression probes, an installed C++ SDK consumer, ten background repetitions,
+four hidden GL contexts and 31,235 installed Python checks (5,323 new), zero
+failure/error/skip. Exact owned scratch is CRC/member-SHA archived before
+cleanup; qualified installs/probes remain. See the
+[scoped receipt](parity/reviews/p11q-rgb-stack-workflow001.json).
+
+
+Next connect the main brightness/contrast panel's ImageJ stack controls and
+complete snapshot/selection/navigation transitions. Saved stack mapping choices
+are retained in workflow review; a dedicated stage-choice editor, broader actual
+widget coverage, slider/log-plot/Set/reset/calibration and full G057/ImageJ/Fiji/
+platform/resource acceptance remain open. The existing Auto producer-source
+evidence gate is unchanged.
+
 **RGB captured-stack jobs checkpoint, 2026-10-22 (work in progress):**
 The exact RGB stack service now has immutable C++/Python captured commands,
 a separate closed V1 record, strict replay and explicit destination rebinding.

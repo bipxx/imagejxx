@@ -2428,7 +2428,8 @@
           "docs/parity/reviews/p11m-rgb-sequence001.json",
           "docs/parity/reviews/p11n-rgb-component-ui001.json",
           "docs/parity/reviews/p11o-rgb-stack001.json",
-          "docs/parity/reviews/p11p-rgb-stack-command001.json"
+          "docs/parity/reviews/p11p-rgb-stack-command001.json",
+          "docs/parity/reviews/p11q-rgb-stack-workflow001.json"
         ],
         "implementation": [
           "include/imagejxx/document.hpp",
@@ -2483,7 +2484,11 @@
           "src/native/rgb_contrast_stack.cpp",
           "include/imagejxx/rgb_contrast_stack_command.hpp",
           "include/imagejxx/rgb_contrast_stack_job.hpp",
-          "src/native/rgb_contrast_stack_command.cpp"
+          "src/native/rgb_contrast_stack_command.cpp",
+          "include/imagejxx/rgb_contrast_stack_workflow.hpp",
+          "src/native/rgb_contrast_stack_workflow.cpp",
+          "src/native/rgb_contrast_stack_internal.hpp",
+          "src/desktop/native_workflow_ui_probe.cpp"
         ],
         "tests": [
           "tests/native/test_document.cpp",
@@ -2548,7 +2553,8 @@
         "p11m.rgb-contrast.sequence.001",
         "p11n.rgb-component.editor.001",
         "p11o.rgb-stack.core.001",
-        "p11p.rgb-stack.command-jobs.001"
+        "p11p.rgb-stack.command-jobs.001",
+        "p11q.rgb-stack.workflow.001"
       ]
     },
     {
@@ -181805,6 +181811,29 @@
         "total": 25912
       },
       "scope": "Immutable C++/Python captured RGB entire-stack commands and resource-leased worker jobs match all 5292 unchanged actual ImageJ 1.54r private applyRGBStack reference rows, with complete record/JSON strict replay before worker execution. The independent closed V1 stack profile embeds the existing full RGB capture plus ordered typed stages, requires the canonical singleton active-selection target and exact last-stage options, and keeps all existing scalar/uniform-RGB wire profiles unchanged. Twenty-seven malformed record cases refuse validation/strict replay/rebind before reads; five stale/closed owner cases assert exact RevisionConflict/FAILED or application-owned close cancellation/OperationCancelled/CANCELED; two escaped Dataset cases preserve reservations after publication/cancellation/shutdown; three rebind cases use destination point geometry and different scientific anchors; five admission cases refuse record/working/pixel/scheduler/minimum-job limits before reads; one case proves detached mutable Python stages/records. Native cases exercise blocked-reader cancellation, no creator-thread worker reads, queued-source release while the handle survives, command/limit freeze before reentrant execution checkpoints and escaped plane-alias leases after publication, owner close and scheduler shutdown. Full installed SDK consumers exercise capture/strict replay/worker publication and paired Undo. Windows/Linux each pass 22 native suites, three existing standalone C++ workflow/batch/RGB UI regression probes, one installed SDK consumer, ten background repetitions, four hidden GL contexts and 25912 installed Python checks (5335 new), zero failure/error/skip. Both installed suites use actual disposable venv interpreters; source/module origins and 5475 native Linux test/config/fixture files are pinned. Two test-only exception amendments align the new close case with actual application-owned scheduler cancellation after a focused closed-owner failure; final 66-case focused and complete installed suites pass. Native/SDK/production bytes are unchanged by these amendments. Estimates admit cumulative processing, metadata, record copies and conservative owned command/result/job work, honoring caller resource minima; source/provider caches, frontend copies, history/publication staging and total RSS remain external. Exact owned scratch is CRC/member-SHA archived before confined removal, retaining qualified installs/probes and useful caches. Portable workflow adapters and actual ImGui stack controls have not adopted this path. All 99 requirement/status triples, registrations and commercial-use dependency inventory remain unchanged; the old Auto producer-source gate remains open."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-22",
+      "id": "p11q.rgb-stack.workflow.001",
+      "identity": {
+        "qualification": {
+          "path": "docs/parity/reviews/p11q-rgb-stack-workflow001.json",
+          "bytes": 32089,
+          "sha256": "9b1a8759b47b98f17ecbfd073b2e4272823e34c91b1a55ceb69e1f294190d55a"
+        }
+      },
+      "platform": "Windows/Linux installed C++/Python RGB stack portable workflows and shared review widgets",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 31235,
+        "report": "build/p11q-rgb-stack-workflow001/windows-python002/pytest.xml",
+        "skipped": 0,
+        "total": 31235
+      },
+      "scope": "Exact captured RGB stacks now replay as rgb_contrast_stack native portable operations and session batches. A singleton explicit ActiveSelection Positions target identifies the active processor while execution maps the entire current TCZ stack; it requires empty free parameters, complete original, in-place plane execution, no unused ranges/calibration/filter overrides. The original is completely validated and retained unchanged before rebinding saved mappings to destination selection and the authored anchor. Destination T/C/Z, crosshair, zoom and pan survive paired publication. Shared exact processor membership produces sample-free metadata descriptors after conservative admission; descriptor sample acquisition throws, invalid later intent/storage/anchor/limits fails before prefix samples, and empty enabled stack steps retain Change::All dependencies without reads/history. All 5292 unchanged actual ImageJ 1.54r stack reference rows pass portable record/JSON roundtrip, explicit original-anchor replay after destination navigation changes, complete stack hashes, geometry, one paired Undo/Redo and immutable original assertions. Fifteen ambiguous-intent cases, five late/preflight cases, four stale revisions, three cancellation/callback cases, one disabled incompatible anchor and two scientific session batches pass. Actual shared workflow widgets load a plain complete capture, edit active Z, keep/reopen a portable program, preview/Apply promoted active pixels and narrowed other-plane pixels, preserve navigation/recorder and perform paired Undo/Redo in standalone C++ and Python launches. Saved mapping choices remain read-only in workflow review. Windows/Linux each pass 22 native suites, three full standalone workflow/batch/RGB UI probes, one installed SDK consumer, ten background repetitions, four hidden GL contexts and 31235 installed Python checks (5323 new), zero failure/error/skip. SDK consumers explicitly retarget the anchor and exercise record/JSON replay, publication and Undo. A failed SDK example include and strict GCC temporary-reference error, plus the Python out-of-range IndexError expectation, were corrected only in test/SDK consumers; final native/production/UI bytes are unchanged and both SDKs pass. Actual source/module origins and 5475 native Linux test/config/fixture files are pinned. One previously unused compiled-source-cache Python UI test matched exact initial Git 0aa3acc bytes; its controlled migration is recorded, while all prior and current Python qualification uses separate SHA-verified native snapshots. Full installed suites use actual disposable venv interpreters. Exact owned scratch is CRC/member-SHA archived before confined removal; final installs, native/SDK probes and useful caches remain. Source/provider caches, frontend copies, phase-local codec work and total RSS remain external to retained-byte estimates. Main brightness/contrast stack controls, stage-choice editing, snapshot/selection/navigation transitions and full G057/ImageJ/Fiji/platform/resource acceptance remain open. Existing scalar/uniform-RGB wire profiles, portable container fields, general registrations, commercial-use inventory and all 99 requirement/status triples remain unchanged. The old Auto producer-source gate remains open."
     }
   ]
 }

@@ -5,6 +5,7 @@
 #include <fstream>
 #include <imagejxx/imagej_annotation_export.hpp>
 #include <imagejxx/native_workflow_program.hpp>
+#include <imagejxx/rgb_contrast_stack_workflow.hpp>
 #include <imagejxx/session.hpp>
 #include <thread>
 namespace imagejxx::desktop {
@@ -1571,6 +1572,33 @@ Json nativeWorkflowUiCase(Window &w, const std::string &context,
   Window reopened((dir / "reopened.json").u8string());
   reopened.openFile((dir / "workflow.ijx").u8string());
   report["states"]["reopened"] = state(reopened);
+  // Replay the complete stack capture through actual shared review widgets.
+  const int stackPreviousIndex=w.activeIndex();const auto stackPreviousTable=w.workflow;
+  Image stackImage(4,2,3,PixelType::UInt8);for(int i=0;i<8;++i){stackImage.pixels[3*i]=20;stackImage.pixels[3*i+1]=30;stackImage.pixels[3*i+2]=40;}
+  DatasetShape stackShape{2,2,2,2,4,3};Stack stackPlanes(8,stackImage);
+  auto stackOwner=std::make_shared<imagejxx::Document>(Dataset::from_planes(stackShape,std::move(stackPlanes)),"RGB stack workflow");w.addNativeDocument(stackOwner);
+  auto stackCommand=resolve_rgb_contrast_stack_command(stackOwner->snapshot(),{{{10,40,7},false},{{10.9,40.1,4},false}});
+  const auto stackOriginal=stackCommand.record();w.workflow=Json::array({metadataJson(stackOriginal)});
+  auto stackView=stackOwner->snapshot().display();stackView.t=stackView.c=1;stackView.crosshair={1,1,1};stackView.zoom=1.5;stackView.properties["display_range"]=metadata_array({12.,220.});w.setNativeDisplay(stackView);
+  const auto stackBefore=stackOwner->snapshot();
+  auto stackPixels=[&]{Json values=Json::array();const auto dataset=stackOwner->snapshot().data().dataset;for(int t=0;t<2;++t)for(int c=0;c<2;++c)for(int z=0;z<2;++z)values.push_back(dataset.plane({t,c,z})->pixels);return values;};
+  auto stackNavigation=[&]{const auto snapshot=stackOwner->snapshot();const auto &v=snapshot.display();return Json{{"t",v.t},{"c",v.c},{"crosshair",v.crosshair},{"zoom",v.zoom}};};
+  report["rgb_stack"]={{"before",stackPixels()},{"navigation_before",stackNavigation()},{"display_before",metadataJson(stackBefore.display().properties)},{"history_before",stackOwner->undo_steps()},{"original",metadataJson(stackOriginal)}};
+  session=std::make_unique<HeadlessInputSession>(w);frame();frame();open();
+  require(panel().at("controls").at("edit_parameters").at("enabled")==false,"Saved stack mappings exposed unsupported parameter editing");
+  type("rgb_stack_anchor.2","1");press("confirm");press("prepare_program");settle();press("keep_program");frame();
+  const auto stackTable=w.workflow;report["rgb_stack"]["table"]=stackTable;
+  require(stackTable.size()==1 && stackTable[0].at("steps")[0].at("target").at("positions")==Json::array({Json::array({0,0,1})}) && stackTable[0].at("steps")[0].at("original")==metadataJson(stackOriginal),"Stack anchor authoring altered saved mappings or failed");
+  require(stackOwner->snapshot().shares_data(stackBefore) && stackOwner->undo_steps()==0,"Stack program authoring changed owner");
+  open();press("confirm");press("prepare_preview");settle();report["rgb_stack"]["preview"]=panel();
+  require(stackOwner->snapshot().shares_data(stackBefore) && panel().at("preview_only").get<bool>(),"Stack private preview changed owner");
+  press("prepare");settle();press("apply");frame();
+  report["rgb_stack"]["after"]=stackPixels();report["rgb_stack"]["navigation_after"]=stackNavigation();report["rgb_stack"]["display_after"]=metadataJson(stackOwner->snapshot().display().properties);report["rgb_stack"]["history_after"]=stackOwner->undo_steps();
+  require(panel().at("error")=="" && w.workflow==stackTable && stackOwner->undo_steps()==1 && stackNavigation()==report["rgb_stack"]["navigation_before"],"Stack replay publication or navigation failed");
+  for(int i=0;i<8;++i){const auto &pixels=report["rgb_stack"]["after"][i];for(int j=0;j<8;++j){require(pixels[3*j]==(i==1?255:85) && pixels[3*j+1]==(i==1?170:30) && pixels[3*j+2]==(i==1?255:40),"Stack replay active promotion or other-plane narrowing differs");}}
+  press("cancel");w.action("undo");report["rgb_stack"]["undone"]=stackPixels();report["rgb_stack"]["display_undone"]=metadataJson(stackOwner->snapshot().display().properties);require(stackOwner->snapshot().shares_data(stackBefore),"Stack replay Undo failed");
+  w.action("redo");report["rgb_stack"]["redone"]=stackPixels();report["rgb_stack"]["display_redone"]=metadataJson(stackOwner->snapshot().display().properties);require(report["rgb_stack"]["redone"]==report["rgb_stack"]["after"],"Stack replay Redo differs");
+  session->close();w.workflow=stackPreviousTable;w.setActiveIndex(stackPreviousIndex);
   Json members = Json::array();
   for (const auto &entry : fs::directory_iterator(dir))
     members.push_back(entry.path().filename().u8string());

@@ -2,6 +2,7 @@
 #include <imagejxx/native_workflow.hpp>
 #include <imagejxx/contrast_apply_command.hpp>
 #include <imagejxx/manual_threshold.hpp>
+#include <imagejxx/rgb_contrast_stack_workflow.hpp>
 #include "../../src/native/contrast_apply_workflow.hpp"
 #include "../../src/native/native_workflow_internal.hpp"
 #include "../../src/native/axis_command_record.hpp"
@@ -25,6 +26,17 @@ template <class F> void refuses(F f) {
     return;
   }
   throw std::runtime_error("Expected workflow refusal");
+}
+void rgb_stack_workflow_contract(){
+  Image image(1,1,3,PixelType::UInt8);image.pixels={20,30,40};DatasetReadObserver reads;Document owner(Dataset::from_stack({image,image}).observe_reads(reads));
+  const auto capture=resolve_rgb_contrast_stack_command(owner.snapshot(),{{{10.9,40.1,4},false}});auto step=make_rgb_contrast_stack_workflow_step(capture);step.target.positions={{0,0,1}};
+  auto view=owner.snapshot().display();view.properties["display_range"]=metadata_array({12.,220.});owner.set_display(view);const auto before=owner.snapshot();
+  auto program=native_workflow_program_from_json(make_native_workflow_program({step}).json());(void)detail::admit_native_workflow(before,{&step},{});
+  auto command=detail::workflow_rgb_contrast_stack(before,step,{});auto descriptor=detail::rgb_contrast_stack_metadata_preview(command,before.display());check(reads.counts().plane_reads==0);refuses([&]{descriptor.data().dataset.plane();});check(reads.counts().plane_reads==0);
+  auto bad=step;bad.target.positions={{0,0,2}};refuses([&]{prepare_native_workflow(before,{step,bad});});check(reads.counts().plane_reads==0);
+  auto prepared=prepare_native_workflow(before,program.steps());check(prepared.dependencies()==Change::All && prepared.preview().data().dataset.plane()->pixels[0]==85 && prepared.preview().data().dataset.plane({0,0,1})->pixels[0]==87);
+  check(prepared.preview().display().crosshair[2]==0 && owner.undo_steps()==0);auto edit=prepared.begin_edit();owner.commit(edit);check(owner.undo_steps()==1);owner.undo();check(owner.snapshot().shares_data(before));
+  const auto count=reads.counts().plane_reads;ExecutionControl control;control.checkpoint=[&]{if(reads.counts().plane_reads>count)throw OperationCancelled();};refuses([&]{prepare_native_workflow(owner.snapshot(),{step},{},control);});check(reads.counts().plane_reads>count && owner.snapshot().shares_data(before));
 }
 void contrast_workflow_contract() {
   Image image(4,1,1,PixelType::UInt16);image.pixels={10,20,30,40};DatasetReadObserver reads;
@@ -356,6 +368,7 @@ int main() {
       op.parameters={{"minimum",0.},{"maximum",1.},{"channels",std::int64_t(7)}};const auto count=reads.counts().plane_reads;
       refuses([&]{prepare_native_workflow(color.snapshot(),{op});});check(reads.counts().plane_reads==count);
     }
+    rgb_stack_workflow_contract();
     contrast_workflow_contract();
     histogram_workflow_contract();
     conversion_contract();

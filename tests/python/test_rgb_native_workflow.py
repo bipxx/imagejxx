@@ -216,3 +216,128 @@ def test_rgb_noop_restores_captured_stage_position_for_later_current_target():
     expected=pixels.copy();expected[1,1,1]+=1
     np.testing.assert_array_equal(plan.preview.dataset.numpy('TCZYXS'),expected)
     assert owner.snapshot().display.t==0 and owner.undo_steps==0
+
+
+import hashlib
+from test_contrast_apply import STACK_FIXTURE, rgb_stack_owner, rgb_stack_steps, rgb_options
+
+
+@pytest.mark.parametrize("row",STACK_FIXTURE["rows"],ids=lambda r:f'portable-stack-r{r["range_index"]}-c{r["channels"]}-roi{r["roi"]}-a{r["anchor"]}-p{int(r["prefix"])}-w{int(r["whole_plane"])}')
+def test_rgb_stack_workflow_matches_actual_imagej_with_explicit_anchor_and_preserved_navigation(row):
+    reads=ij.DatasetReadObserver();owner=rgb_stack_owner(row,reads);command=ij.resolve_rgb_contrast_stack_command(owner.snapshot(),rgb_stack_steps(row))
+    step=ij.make_rgb_contrast_stack_workflow_step(command);program=ij.NativeWorkflowProgram([step]);saved=program.record()
+    assert saved["steps"][0]["target"]["positions"]==[STACK_FIXTURE["anchors"][row["anchor"]]] and saved["steps"][0]["original"]==command.record()
+    program=ij.NativeWorkflowProgram.from_json(program.json());assert ij.NativeWorkflowProgram.from_record(saved).record()==program.record()==saved and reads.counts().plane_reads==0
+    t,c,z=STACK_FIXTURE["anchors"][row["anchor"]];view=owner.snapshot().display;view.t,view.c=(t+1)%3,(c+1)%3;view.crosshair=[12,3,(z+1)%3];view.zoom=1.5;owner.set_display(view)
+    before=owner.snapshot();prepared=ij.prepare_native_workflow(before,program.steps)
+    expected_reads=0 if row["roi"]==3 and not row["whole_plane"] else 1 if row["roi"]==3 else 27
+    assert reads.counts().plane_reads==expected_reads and owner.undo_steps==0 and owner.snapshot().shares_data(before) and prepared.completed_steps==1 and prepared.dependencies==ij.Change.ALL
+    preview=prepared.preview;pixels=preview.dataset.numpy("TCZYXS");assert hashlib.sha256(pixels.tobytes()).hexdigest()==row["stack_sha256"] and preview.selection==before.selection
+    assert (preview.display.t,preview.display.c,preview.display.crosshair,preview.display.zoom)==(view.t,view.c,view.crosshair,view.zoom)
+    owner.commit(prepared.begin_edit());assert owner.undo_steps==int(expected_reads!=0)
+    if expected_reads:
+        assert owner.snapshot().display.properties=={"display_range":[0.,255.]};owner.undo();assert owner.snapshot().shares_data(before) and owner.snapshot().display.properties==before.display.properties
+        owner.redo();np.testing.assert_array_equal(owner.snapshot().dataset.numpy("TCZYXS"),pixels)
+    else:assert owner.snapshot().shares_data(before) and owner.snapshot().display.properties==before.display.properties
+    assert program.record()==saved
+
+
+def rgb_stack_workflow_small():
+    pixels=np.tile(np.array([[[20,30,40]]],np.uint8),(2,1,1,1));reads=ij.DatasetReadObserver();owner=ij.Document(ij.Dataset(pixels,axes="ZYXS").observe_reads(reads))
+    step=ij.RgbContrastStackStep();step.options=rgb_options(10.9,40.1,4)
+    command=ij.resolve_rgb_contrast_stack_command(owner.snapshot(),[step]);return owner,reads,ij.make_rgb_contrast_stack_workflow_step(command)
+
+
+@pytest.mark.parametrize("bad",["missing","parameters","calibration","filter","current","all_z","ranges","empty_positions","many_positions","whole_roi","positioned_roi","volume","new_document","unused_range","negative"])
+def test_rgb_stack_workflow_rejects_ambiguous_intent_before_reads(bad):
+    owner,reads,step=rgb_stack_workflow_small();record=ij.NativeWorkflowProgram([step]).record();row=record["steps"][0];target=row["target"]
+    if bad=="missing":row["original"]=None
+    elif bad=="parameters":row["parameters"]={"minimum":{"kind":"real","value":10.}}
+    elif bad=="calibration":row["use_destination_calibration"]=True
+    elif bad=="filter":
+        request=ij.TargetRequest(ij.TargetScope.POSITIONS,positions=[ij.PlanePosition(0,0,0)])
+        invalid=ij.NativeWorkflowOperation("rgb_contrast_stack",{},request,original=row["original"],filter_options=ij.GaussianBlurCommandOptions())
+        with pytest.raises(ValueError):ij.NativeWorkflowProgram([invalid])
+        assert reads.counts().plane_reads==0;return
+    elif bad in ["current","all_z","ranges"]:target["scope"]={"current":0,"all_z":1,"ranges":2}[bad];target["positions"]=[]
+    elif bad=="empty_positions":target["positions"]=[]
+    elif bad=="many_positions":target["positions"]=[[0,0,0],[0,0,1]]
+    elif bad=="whole_roi":target["roi"]=0
+    elif bad=="positioned_roi":target["roi"]=2
+    elif bad=="volume":target["mode"]=1
+    elif bad=="new_document":target["destination"]=1
+    elif bad=="unused_range":target["t"]=[0,1,1]
+    else:target["positions"]=[[-1,0,0]]
+    with pytest.raises((ValueError,TypeError,IndexError)):ij.NativeWorkflowProgram.from_record(record)
+    assert reads.counts().plane_reads==0 and owner.undo_steps==0
+
+
+@pytest.mark.parametrize("bad",["anchor","scalar_after_conversion","late_original","record_limit","working_limit"])
+def test_rgb_stack_workflow_late_failure_preflights_without_prefix_reads(bad):
+    owner,reads,step=rgb_stack_workflow_small();record=ij.NativeWorkflowProgram([step]).record();row=record["steps"][0]
+    prefix=ij.NativeWorkflowOperation("add",{"value":1},ij.TargetRequest(ij.TargetScope.ALL_Z,roi=ij.RoiPolicy.WHOLE_PLANE));limits=ij.NativeWorkflowLimits()
+    if bad=="anchor":row["target"]["positions"]=[[0,0,2]];step=ij.NativeWorkflowProgram.from_record(record).steps[0]
+    elif bad=="scalar_after_conversion":
+        request=ij.TargetRequest(ij.TargetScope.RANGES,t=ij.AxisRange(0,1),c=ij.AxisRange(0,1),z=ij.AxisRange(0,2),roi=ij.RoiPolicy.WHOLE_PLANE)
+        prefix=ij.NativeWorkflowOperation("convert_image",{"dtype":"uint8","scale":False,"weighted_rgb":False},request)
+    elif bad=="late_original":
+        capture=copy.deepcopy(row["original"]);capture["stages"][0]["whole_plane"]=1
+        step=ij.NativeWorkflowOperation("rgb_contrast_stack",{},ij.TargetRequest(ij.TargetScope.POSITIONS,positions=[ij.PlanePosition(0,0,0)]),original=capture)
+    elif bad=="record_limit":
+        with pytest.raises(ValueError):ij.NativeWorkflowProgram([step],ij.NativeWorkflowProgramLimits(max_record_bytes=512))
+        assert reads.counts().plane_reads==0;return
+    else:limits=ij.NativeWorkflowLimits(max_retained_bytes=1)
+    before=owner.snapshot()
+    expected=IndexError if bad=="anchor" else (ValueError,TypeError)
+    with pytest.raises(expected):ij.prepare_native_workflow(before,[prefix,step],limits)
+    assert reads.counts().plane_reads==0 and owner.snapshot().shares_data(before) and owner.undo_steps==0
+
+
+@pytest.mark.parametrize("change",["pixels","selection","display","metadata"])
+def test_rgb_stack_workflow_pending_publication_guards_all_revisions(change):
+    owner,_,step=rgb_stack_workflow_small();source=owner.snapshot();prepared=ij.prepare_native_workflow(source,[step])
+    if change=="pixels":owner.commit(prepared.begin_edit())
+    elif change=="selection":owner.select(ij.Selection("rectangle",[(0,0),(1,1)]))
+    elif change=="display":
+        view=source.display;view.zoom=2;owner.set_display(view)
+    else:
+        edit=owner.begin_edit();edit.set_title("new title");owner.commit(edit)
+    stable=owner.snapshot();history=owner.undo_steps
+    with pytest.raises(ij.RevisionConflict):owner.commit(prepared.begin_edit())
+    assert owner.snapshot().shares_data(stable) and owner.undo_steps==history
+
+
+@pytest.mark.parametrize("failure",["pre_cancel","late_cancel","callback"])
+def test_rgb_stack_workflow_cancellation_and_failure_never_publish(failure):
+    owner,reads,step=rgb_stack_workflow_small();before=owner.snapshot();token=ij.CancellationToken()
+    if failure=="pre_cancel":token.cancel()
+    def progress(done,total):
+        if failure=="callback":raise RuntimeError("workflow callback failure")
+        if failure=="late_cancel":token.cancel()
+    with pytest.raises((ij.OperationCancelled,RuntimeError)):ij.prepare_native_workflow(before,[step],cancellation=token,progress=progress)
+    assert owner.snapshot().shares_data(before) and owner.undo_steps==0
+    assert reads.counts().plane_reads==(0 if failure=="pre_cancel" else 2)
+
+
+def test_rgb_stack_workflow_disabled_anchor_retains_valid_intent_without_resolving_destination():
+    owner,reads,step=rgb_stack_workflow_small();record=ij.NativeWorkflowProgram([step]).record();original=record["steps"][0]["original"]
+    disabled=ij.NativeWorkflowOperation("rgb_contrast_stack",{},ij.TargetRequest(ij.TargetScope.POSITIONS,positions=[ij.PlanePosition(999,0,0)]),original=original,enabled=False)
+    program=ij.NativeWorkflowProgram.from_json(ij.NativeWorkflowProgram([disabled]).json());assert program.record()["version"]==3
+    before=owner.snapshot();prepared=ij.prepare_native_workflow(before,program.steps);owner.commit(prepared.begin_edit())
+    assert prepared.completed_steps==0 and reads.counts().plane_reads==0 and owner.undo_steps==0 and owner.snapshot().shares_data(before)
+
+
+@pytest.mark.parametrize("all_documents",[False,True])
+def test_rgb_stack_workflow_batch_preserves_session_tables_navigation_and_other_documents(tmp_path,all_documents):
+    first,_,_=rgb_stack_workflow_small();second=ij.Document(ij.Dataset(np.tile(np.array([[[30,40,50]]],np.uint8),(2,1,1,1)),axes="ZYXS"))
+    source=first.snapshot();view=source.display;view.crosshair=[0,0,1]
+    step1=ij.RgbContrastStackStep();step1.options=rgb_options(10,40,7);step2=ij.RgbContrastStackStep();step2.options=rgb_options(10.9,40.1,4)
+    command=ij.resolve_rgb_contrast_stack_command(source.with_display(view),[step1,step2]);step=ij.make_rgb_contrast_stack_workflow_step(command)
+    capture=ij.SessionCapture([first.snapshot(),second.snapshot()]);capture.results=[{"kept":True}];capture.workflow=[{"schema":"kept"}]
+    path=tmp_path/"input.ijx";ij.save_session(str(path),capture);before=path.read_bytes();out=tmp_path/"out";out.mkdir()
+    batch=ij.prepare_native_workflow_batch([ij.NativeWorkflowBatchInput(str(path),"result")],[step],str(out),ij.NativeWorkflowBatchOptions(all_documents=all_documents));batch.publish()
+    result=ij.load_session(str(out/"result.ijx"));assert result.results==capture.results and result.workflow==capture.workflow and path.read_bytes()==before
+    np.testing.assert_array_equal(result.documents[0].snapshot().dataset.numpy("ZYXS"),np.array([[[[85,30,40]]],[[[255,170,255]]]],np.uint8))
+    expected=np.array([[[[170,40,50]]],[[[255,255,255]]]],np.uint8) if all_documents else np.tile(np.array([[[30,40,50]]],np.uint8),(2,1,1,1))
+    np.testing.assert_array_equal(result.documents[1].snapshot().dataset.numpy("ZYXS"),expected)
+    assert result.documents[0].snapshot().display.crosshair==[0,0,0] and first.undo_steps==second.undo_steps==0

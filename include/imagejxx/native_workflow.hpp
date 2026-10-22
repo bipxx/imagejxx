@@ -16,6 +16,9 @@ struct NativeWorkflowAccess;
 // evidence; explicit parameters/target carry the new intent. Import/export
 // The rgb_dataset operation requires empty parameters, a complete immutable
 // RGB capture in original, and explicit complete-TCZ WholePlane InPlace ranges.
+// rgb_contrast_stack requires its full saved capture, empty parameters and one
+// explicit ActiveSelection position identifying the active processor. It maps
+// the entire TCZ stack, rebinds destination selection and preserves navigation.
 // Each subsequent step resolves against the preceding stage. Import/export
 // originals accept their complete legacy geometric or heterogeneous captured
 // records.

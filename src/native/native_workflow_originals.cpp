@@ -162,6 +162,7 @@ ResolvedRgbContrastApplyCommand workflow_rgb_contrast_apply(const DocumentSnapsh
 void validate_native_workflow_operation_original(
     const std::string &id, const OperationParameters &parameters,
     const MetadataObject &r) {
+  if(id=="rgb_contrast_stack"){require(parameters.empty(),"RGB stack workflow retains saved mappings");validate_rgb_contrast_stack_command_record(r);return;}
   if(id=="rgb_contrast_apply"){validate_rgb_contrast_apply_command_record(r);return;}
   if(id=="contrast_apply"){validate_contrast_apply_command_record(r);return;}
   if(id=="rgb_dataset") {
@@ -191,6 +192,7 @@ void validate_native_workflow_operation_original(
 }
 void validate_native_workflow_operation_intent(
     const NativeWorkflowOperation &v) {
+  if(v.operation=="rgb_contrast_stack"){validate_rgb_contrast_stack_workflow_intent(v);return;}
   if(v.operation=="rgb_contrast_apply"){(void)rgb_contrast_apply_workflow_options(v);return;}
   if(v.operation=="contrast_apply"){(void)contrast_apply_workflow_options(v);return;}
   if(v.operation=="rgb_dataset" || v.operation=="color_stack" || v.operation=="indexed_dataset" || v.operation=="indexed_rgb")
