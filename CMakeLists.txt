@@ -968,7 +968,7 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
   find_path(IMAGEJXX_STB_INCLUDE_DIR stb_image.h PATH_SUFFIXES stb REQUIRED)
   find_package(TIFF 4.7.1 EXACT QUIET)
   add_library(imagejxx_desktop STATIC src/desktop/util.cpp src/desktop/document.cpp src/desktop/session.cpp src/desktop/metadata.cpp
-    src/desktop/commands.cpp src/desktop/io.cpp src/desktop/rendering.cpp
+    src/desktop/commands.cpp src/desktop/io.cpp src/desktop/rendering.cpp src/desktop/viewport_jobs.cpp
     src/desktop/export.cpp src/desktop/window.cpp src/desktop/orthogonal.cpp src/desktop/smoke.cpp
     src/desktop/binary_iterations_consumer.cpp
     src/desktop/binary_pad_edges_consumer.cpp
@@ -1089,6 +1089,10 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     target_link_libraries(imagejxx_desktop PRIVATE comdlg32 gdi32)
   endif()
   if(BUILD_TESTING)
+    add_executable(imagejxx_viewport_jobs_tests tests/native/test_viewport_jobs.cpp)
+    target_link_libraries(imagejxx_viewport_jobs_tests PRIVATE imagejxx_desktop)
+    add_test(NAME desktop_viewport_jobs COMMAND imagejxx_viewport_jobs_tests)
+    set_tests_properties(desktop_viewport_jobs PROPERTIES TIMEOUT 35)
     add_executable(imagejxx_render_memory_tests tests/native/test_render_memory.cpp)
     target_link_libraries(imagejxx_render_memory_tests PRIVATE imagejxx_desktop)
     add_test(NAME desktop_render_memory COMMAND ${CMAKE_COMMAND}

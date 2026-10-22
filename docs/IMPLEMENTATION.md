@@ -1,5 +1,19 @@
 # Implementation progress
 
+**Background viewport scheduler checkpoint, 2026-10-22 (work in progress):**
+A private native scheduler now stages CPU viewport results on two workers with
+16 total slots, including retiring work. Supersession discards stale ready and
+running results; canceled readers retain their declared render reservations until
+worker finalization. Pending admission retains no extra provider capture.
+Creator-thread publication, sticky failures, queued owner release, cooperative
+cancellation and shutdown are covered, including virtual XY/XZ/YZ pixel values.
+This foundation is not wired into either UI; responsive background viewing is
+still open. Follow [the integration sequence](BACKGROUND_VIEWPORT.md) for the
+CPU renderer, matching-key publication, loading/navigation, hover sampling,
+lifecycle and both-launcher qualification. Every original inventory requirement
+and status remains: 47 in progress / 52 open / 0 complete. The Auto Contrast
+fingerprint gate remains open.
+
 **Managed render reservations checkpoint, 2026-10-22 (work in progress):**
 Ordinary and linked XYZ views share the persisted Render surfaces (MiB) pool.
 Direct source-output/RGB/upload work is admitted before pixel IO; retained

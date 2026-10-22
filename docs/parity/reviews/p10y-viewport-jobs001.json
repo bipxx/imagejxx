@@ -1,0 +1,165 @@
+{
+  "state": "qualified_native_foundation",
+  "objective_complete": false,
+  "baseline_commit": "b2244a6bf0845e724614a8b27b2089b36b0b582b",
+  "scope": "Private bounded CPU viewport request/result lifecycle; no Window or Python UI integration yet.",
+  "semantics": "Two workers, sixteen total slots including failed/ready/retiring requests. Creator-thread shared RenderMemory admission before submission. A different key cancels the old request and discards its staged output. Running canceled work retains its charge until Job finalization; queued captures release promptly. Capacity/memory pressure returns pending without retaining another builder. Sticky errors avoid repeated failing reads. Published frames carry leases and release outputs before working charge. All public operations check creator thread.",
+  "boundaries": "Caller supplies complete immutable capture, key and conservative declared peak bytes; arbitrary provider allocation is not measured. Builders must not touch frontend, GL or ImGui state. Frames and helper destruction belong on the creator thread. Uncooperative providers may delay shutdown. Not instantiated by Window yet: no public asynchronous setting, UI responsiveness, channel-render parity, real-GL publication or Python acceptance is claimed.",
+  "verification": "Windows/Linux each pass nine native suites, including the new scheduler suite, and forty additional scheduler repetitions. Tests cover worker/TLS execution, immutable virtual XY/XZ/YZ extraction with independent TCZ formulas, same-key reuse, running and ready supersession, canceled reservations and live-limit refusal, 16-slot pressure, unqueued capture release, queued provider destruction, creator-thread guards, invalid requests, sticky errors/new-key retry, lease handoff, cooperative cancellation and unpublished/running shutdown. Existing native jobs, retained jobs, dataset, ordinary canvas, virtual cache/source, histogram and render-memory suites pass.",
+  "profiles": {
+    "windows": {
+      "native_suites": 9,
+      "new_viewport_suite": 1,
+      "scheduler_repetitions": 40,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "evidence": [
+        {
+          "path": "build/p10y-viewport-jobs001/configure-windows001.log",
+          "bytes": 612,
+          "sha256": "3953304f137eff0368ad6b7000b3957f7a1b4aa834942caf51e198e756fe5b31"
+        },
+        {
+          "path": "build/p10y-viewport-jobs001/build-windows001.log",
+          "bytes": 20458,
+          "sha256": "5eb2585fd2c8c2825c1232256a61c142e2bde7d5ae837423eb2ffe4e9db2c2ab"
+        },
+        {
+          "path": "build/p10y-viewport-jobs001/build-windows002.log",
+          "bytes": 647,
+          "sha256": "0e840e3cdb9823aa4169fa8f4502abc9a388f5dab5efad372149d2cb350fe030"
+        },
+        {
+          "path": "build/p10y-viewport-jobs001/native-windows002.xml",
+          "bytes": 466,
+          "sha256": "8e387376b5617b133fc1335bbcb47c345255f8369e5058210f23d58dc9b3d731"
+        },
+        {
+          "path": "build/p10y-viewport-jobs001/regression-windows001.xml",
+          "bytes": 3516,
+          "sha256": "67f351a95deffdcf6729415d2dea865c8bbcc5137451740e70fd2a2cca6ce205"
+        },
+        {
+          "path": "build/p10y-viewport-jobs001/repeat-windows001.xml",
+          "bytes": 467,
+          "sha256": "7d38a9e31d16c409347634f6a3dccfec1c28ad661a55a3b6e0b9a35cce6e44b6"
+        },
+        {
+          "path": "build/p10y-viewport-jobs001/repeat-windows001.log",
+          "bytes": 4558,
+          "sha256": "2295355fb004ac0b0aada609d909d845919a96a25c2294880dfa66719f09affe"
+        },
+        {
+          "path": "build/p10y-viewport-jobs001/windows-cleanup001.json",
+          "bytes": 5008,
+          "sha256": "a241abca0d27ea93fd73904d66c738400d0e94519fa5941acd9727d511057609"
+        }
+      ]
+    },
+    "linux": {
+      "native_suites": 9,
+      "new_viewport_suite": 1,
+      "scheduler_repetitions": 40,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "evidence": [
+        {
+          "path": "build/p10y-viewport-jobs001/configure-linux001.log",
+          "bytes": 544,
+          "sha256": "f92b3454d8aabc7cf14ca8164188fb2f1218c7e6e54ba11dcbf163acb87e8270"
+        },
+        {
+          "path": "build/p10y-viewport-jobs001/build-linux001.log",
+          "bytes": 502,
+          "sha256": "7b9e9dc24ed7e83c27a881129dccfb11f927a2b25203dab408761e7c5c4f63c1"
+        },
+        {
+          "path": "build/p10y-viewport-jobs001/build-linux002.log",
+          "bytes": 355,
+          "sha256": "74daaabdd46a66043ec3b8fb70934cd6500820439f3b528f462b41302f25c4a7"
+        },
+        {
+          "path": "build/p10y-viewport-jobs001/native-linux002.xml",
+          "bytes": 447,
+          "sha256": "7e4e1968f9c517a92e706a216fe609a97db791d5fde87adb8b9d99e645ad77d1"
+        },
+        {
+          "path": "build/p10y-viewport-jobs001/regression-linux001.xml",
+          "bytes": 3517,
+          "sha256": "e2fc37add8efb057bd4726a4efa30dc5d4954cece1470f9a68b5e120b7128d54"
+        },
+        {
+          "path": "build/p10y-viewport-jobs001/repeat-linux001.xml",
+          "bytes": 447,
+          "sha256": "71c38de173fabb36b119826b00391fe82834d3e85789fec0ae0f2d801d317452"
+        },
+        {
+          "path": "build/p10y-viewport-jobs001/repeat-linux001.log",
+          "bytes": 4586,
+          "sha256": "049321f01f648f1514dd2a7d07b0e5605c97562bb2de3fb4de69120488d48362"
+        },
+        {
+          "path": "build/p10y-viewport-jobs001/linux-cleanup001.json",
+          "bytes": 3279,
+          "sha256": "f7f7e380a9f719ce2dca47295d3135d52dd088f100a6a72e35653896e3bd24b3"
+        }
+      ]
+    }
+  },
+  "source": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 107735,
+      "sha256": "7ef0f5f8f00b7234886b224133debba02596bfdcd44b1ba15fa71ed3e7e0566d"
+    },
+    {
+      "path": "src/desktop/viewport_jobs.hpp",
+      "bytes": 2636,
+      "sha256": "b27fec5a03f8523d25e4f33ccb9dd1bec45578b003c56b38111997679fea462a"
+    },
+    {
+      "path": "src/desktop/viewport_jobs.cpp",
+      "bytes": 5215,
+      "sha256": "9adc99159c1747952ec649ff5c0c532a74b92462f44457b5089cca5a4ed6b644"
+    },
+    {
+      "path": "tests/native/test_viewport_jobs.cpp",
+      "bytes": 12755,
+      "sha256": "5e09b783a6d7f5fe15e675fad253854c281951bf5e32d66cf3459829b0943352"
+    }
+  ],
+  "licenses": {
+    "path": "build/p10y-viewport-jobs001/licenses001.log",
+    "bytes": 62,
+    "sha256": "939b266b092bfdc37d1814f66b75a21469497e36e30a2050805031da4f97b417"
+  },
+  "registration": {
+    "path": "build/p10y-viewport-jobs001/registration001.json",
+    "bytes": 218,
+    "sha256": "768427ebd581ce069969d84ab38452330565a62c30d9174f24ac4ce600f01a0f"
+  },
+  "existing_gate": {
+    "state": "open",
+    "reason": "Existing Auto Contrast producer_source fingerprint mismatch; application.hpp unchanged; no repin or relaxation.",
+    "producer": {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 14135,
+      "sha256": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    },
+    "log": {
+      "path": "build/p10y-viewport-jobs001/plan001.log",
+      "bytes": 151,
+      "sha256": "5741e4b9133f374434cac8973e1f1c6131200e632958a012913a739c28d47006"
+    }
+  },
+  "scope_status_counts": {
+    "total": 99,
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  },
+  "next": "docs/BACKGROUND_VIEWPORT.md",
+  "cleanup_removed_bytes": 869142
+}

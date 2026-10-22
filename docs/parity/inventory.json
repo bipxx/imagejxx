@@ -1650,7 +1650,9 @@
           "docs/SCIENTIFIC_TIFF_SERVICE.md",
           "docs/parity/reviews/p10v-view-cache001.json",
           "docs/parity/reviews/p10w-canvas-reads001.json",
-          "docs/parity/reviews/p10x-render-memory001.json"
+          "docs/parity/reviews/p10x-render-memory001.json",
+          "docs/parity/reviews/p10y-viewport-jobs001.json",
+          "docs/BACKGROUND_VIEWPORT.md"
         ],
         "implementation": [
           "include/imagejxx/dataset.hpp",
@@ -1671,7 +1673,9 @@
           "src/desktop/scientific_io_panel.cpp",
           "src/desktop/virtual_view_cache.hpp",
           "src/native/settings.cpp",
-          "src/desktop/render_memory.hpp"
+          "src/desktop/render_memory.hpp",
+          "src/desktop/viewport_jobs.hpp",
+          "src/desktop/viewport_jobs.cpp"
         ],
         "tests": [
           "tests/native/test_dataset.cpp",
@@ -1693,7 +1697,8 @@
           "tests/python/test_virtual_view_cache.py",
           "tests/native/test_canvas_reads.cpp",
           "tests/native/test_render_memory.cpp",
-          "tests/python/test_render_memory.py"
+          "tests/python/test_render_memory.py",
+          "tests/native/test_viewport_jobs.cpp"
         ]
       },
       "id": "G041",
@@ -1704,6 +1709,7 @@
       ],
       "name": "Large datasets",
       "remaining": [
+        "A private bounded CPU viewport job lifecycle is qualified, including stale-result rejection and canceled-worker memory ownership. It is not wired into the editors. Ordinary/XYZ pure render capture, loading/navigation, hover sampling, GL publication, lifecycle integration and both-launcher acceptance remain required; see docs/BACKGROUND_VIEWPORT.md.",
         "Virtual TIFF/import, regional XYZ, worker histograms, bounded XY retention, metadata-only geometry and stable render reuse are functional. Managed ordinary/XYZ source-output/RGB/upload/readback/logical texture reservations are now shared. Provider/codec and transform/compositor internal scratch, annotation/font/GUI data, dialogs and other preview surfaces remain outside this managed viewer-surface pool. Complete cross-component resource/performance/platform qualification remains required. Four-byte logical texture charges do not measure physical driver allocations, queued storage or device overhead; whole-process/RSS guarantees are not supplied. Asynchronous viewport reads with stale-result rejection, other file-backed formats, tiled/pyramid storage/caches and incremental uploads. Virtual output propagation, materialization/workspace serialization, the existing Auto Contrast gate and every other original inventory requirement remain open."
       ],
       "required_work": "Missing virtual/tiled/pyramid storage, bounded cache, incremental upload and responsive navigation while loading",
@@ -1715,7 +1721,8 @@
         "p10u.virtual-tiff.functional.001",
         "p10v.view-cache.functional.001",
         "p10w.canvas-reads.functional.001",
-        "p10x.render-memory.functional.001"
+        "p10x.render-memory.functional.001",
+        "p10y.viewport-jobs.foundation.001"
       ]
     },
     {
@@ -181242,6 +181249,28 @@
         "total": 4431
       },
       "scope": "5010 selected Python checks per OS (4431 base including nine new resource tests, plus 579 channel tests); twelve native suites, eight session groups, three desktop IO/startup/append suites, 36 rank-host cases / 499 checks and two resource groups per OS. Three hidden/recreated GL contexts cover canvas reuse and the new memory reservations. Memory tests verify reservation transfer/release/overflow, pre-provider denial for ordinary/XYZ views, exact 8388608/8486912-byte diagnostic retention, live-limit refusal without mutation, stable-frame reuse, diagnostic teardown and pre-read GL reservations/texture teardown. ImGui recovery errors fail the GL check. Fresh installed SDK consumers check the new 1024 MiB setting; channel tests use proper disposable installed origins and byte-identical modules. Readers verify 296 existing reports / 39261 raw input frames; all 1297 registrations stay unchanged. No complete ImageJ/Fiji source/reference/resource/real-GPU/OS-desktop/platform acceptance."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-22",
+      "id": "p10y.viewport-jobs.foundation.001",
+      "identity": {
+        "qualification": {
+          "bytes": 7392,
+          "path": "docs/parity/reviews/p10y-viewport-jobs001.json",
+          "sha256": "3784f418188837eec6af0e75e821b2e537e3fc59d7f5893b092d01806870b941"
+        }
+      },
+      "native": {
+        "errors": 0,
+        "failed": 0,
+        "scheduler_repetitions_per_os": 40,
+        "skipped": 0,
+        "suites_per_os": 9
+      },
+      "platform": "Windows/Linux native CPU viewport scheduler foundation; not editor integration",
+      "scope": "Windows/Linux each pass nine native suites, including the new scheduler suite, and forty additional scheduler repetitions. Tests cover worker/TLS execution, immutable virtual XY/XZ/YZ extraction with independent TCZ formulas, same-key reuse, running and ready supersession, canceled reservations and live-limit refusal, 16-slot pressure, unqueued capture release, queued provider destruction, creator-thread guards, invalid requests, sticky errors/new-key retry, lease handoff, cooperative cancellation and unpublished/running shutdown. Existing native jobs, retained jobs, dataset, ordinary canvas, virtual cache/source, histogram and render-memory suites pass."
     }
   ]
 }
