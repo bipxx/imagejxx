@@ -2425,7 +2425,8 @@
           "docs/parity/reviews/p11j-rgb-editor001.json",
           "docs/parity/reviews/p11k-rgb-workflow001.json",
           "docs/parity/reviews/p11l-rgb-histogram001.json",
-          "docs/parity/reviews/p11m-rgb-sequence001.json"
+          "docs/parity/reviews/p11m-rgb-sequence001.json",
+          "docs/parity/reviews/p11n-rgb-component-ui001.json"
         ],
         "implementation": [
           "include/imagejxx/document.hpp",
@@ -2473,7 +2474,9 @@
           "include/imagejxx/rgb_histogram.hpp",
           "src/native/rgb_histogram.cpp",
           "src/native/histogram_job.cpp",
-          "include/imagejxx/rgb_contrast_sequence_job.hpp"
+          "include/imagejxx/rgb_contrast_sequence_job.hpp",
+          "src/desktop/viewport_renderer.cpp",
+          "src/desktop/orthogonal.cpp"
         ],
         "tests": [
           "tests/native/test_document.cpp",
@@ -2535,7 +2538,8 @@
         "p11j.rgb-contrast.editor.001",
         "p11k.rgb-contrast.workflow.001",
         "p11l.rgb-histogram.auto.001",
-        "p11m.rgb-contrast.sequence.001"
+        "p11m.rgb-contrast.sequence.001",
+        "p11n.rgb-component.editor.001"
       ]
     },
     {
@@ -181723,6 +181727,29 @@
         "total": 13725
       },
       "scope": "Windows/Linux each pass 22 native suites, three existing standalone C++ workflow/batch/RGB UI regression probes, one installed public C++ SDK consumer exercising ordered RGB sequence publication, ten background repetitions, four hidden GL contexts and 13725 installed Python checks, zero failure/error/skip. The 1540 new cases include four native sequence/portable replay executions of each of 378 actual ImageJ reference rows (1512 cases), nine admission refusals, five stale-domain/closed-owner refusals, two escaped Dataset lease/owning Python plane-copy cases, nine sparse scientific target combinations, two empty-membership cases and a singleton record case. The oracle invokes actual ColorProcessor snapshot boundaries, ContrastAdjuster reset/masking/mapping and Auto after promotion; Choice/AWT delivery is excluded. The native worker composes frozen mappings against preceding-stage pixels, preserves compact ranges and ordered explicit targets, and publishes one paired transaction against the original owner and all revisions. Borrowed estimation is read/callback-free; portable encoding occurs after freezing all inputs. An adversarial native caller checkpoint clears its command vector and changes its limits during encoding without altering the submitted sequence. Other native cases prove blocked-reader cancellation, no creator-thread source reads and escaped plane leases after publication, owner close and scheduler shutdown. Complete historical RGB captures and explicit targets use the existing portable program schema. Cumulative pixels, retained per-stage planes/metadata/record work and caller resource minima are admitted; source/provider caches, frontend copies, publication/history staging and total RSS are external. Actual compiled inputs, installed module origins and 5473 native Linux test/config/fixture bytes are pinned. After native qualification, 12 Python cases were added and new test calls corrected to existing program and owning-copy APIs; before/after hashes, variants and failed reports remain. Prototype sources and failed native fixtures are retained or archived; exact scratch is CRC/member-SHA verified before cleanup. Existing scalar/RGB command wire profiles, registrations, commercial-use inventory and all 99 requirement/status triples remain unchanged. The common Apply job adds a static sequence entry point without changing its layout. This is the processing foundation for component snapshot promotion; the shared ImGui panel has not adopted it. Complete component/ROI/source-transition handling, union preview selection, promoted Auto, complete Apply recording, ImageJ active/stack narrowing, slider/log-plot/Set/reset/calibration and full G057/ImageJ/Fiji/platform/resource acceptance remain open. The old Auto producer-source gate is unchanged."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-22",
+      "id": "p11n.rgb-component.editor.001",
+      "identity": {
+        "qualification": {
+          "path": "docs/parity/reviews/p11n-rgb-component-ui001.json",
+          "bytes": 30315,
+          "sha256": "2a6a007f6e792cc7c4beb48eb86b29d52ef6e2452ed93af49fb3794cc2cc139d"
+        }
+      },
+      "platform": "Windows/Linux shared native ImGui RGB component promotion, Auto and complete Apply recording",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 15262,
+        "report": "build/p11n-rgb-component-ui001/windows-python003/pytest.xml",
+        "skipped": 0,
+        "total": 15262
+      },
+      "scope": "Windows/Linux each pass 22 native suites, three existing standalone C++ workflow/batch/RGB UI regression probes, one installed public C++ SDK consumer, ten background repetitions, four hidden GL contexts and 15262 installed Python checks, zero failure/error/skip. The 1537 new cases include 1512 shared-editor executions of four modes over 378 actual ImageJ promoted-snapshot reference rows, two latest pending-range cases, three current-component no-ops, three compatible camera/title/display changes, six superseded promoted Auto cases, four eager/virtual XY/XYZ target-union cases, one atomic budget refusal and six Auto whole-plane policy checks across zoom/cancel/refresh. Each reference case compares displayed and published pixels, complete portable replay, READY job reuse and paired history. Different components promote the current draft and reset range/cycle; repeated endpoints replace only the current draft. The panel opens RGB at 0..255 without implicitly mapping stored display metadata. Auto prepares the promoted baseline, measures weighted intensity and maps whole selected planes. Combined frozen membership gates ordinary and linked XYZ previews on both eager and virtual sources, with neutral display. Compatible camera/title/display changes preserve endpoints and targets while re-capturing owner revisions. Resource refresh preserves whole-plane Auto intent. Admission precedes component-state mutation, preserving the previous READY job on refusal. Scalar/public core APIs, command/program schemas, existing registrations and commercial dependency inventory are unchanged. The same native ImGui code serves both launch modes. After native qualification, test-only fixes use supported display properties, numeric portable scope and relative history counts. The native widget fixture is strengthened to actually click Apply for a promoted sequence, rebuilt and rerun separately on both hosts; its executable/source are pinned and match the retained native probe. That fixture retains earlier job-reuse assertions and validates recorded complete programs, exact promoted pixels and one paired transaction. Production inputs are unchanged after qualified002. Final installed origins and a 5473-file native Linux test/config/fixture snapshot are pinned. Exact owned prototype/final scratch is CRC/member-SHA verified before deletion; qualified products, logs, reports and variants remain. Original 99 requirement/status triples are preserved. Selection/ROI and navigation snapshot retention, exact ImageJ active/stack narrowing, slider/log-plot/Set/reset/calibration, RGBA/floating Apply and full G057/ImageJ/Fiji/widget/platform/resource acceptance remain open. Current-Z membership retains the existing native linked-view policy. The old Auto producer-source gate is unchanged."
     }
   ]
 }

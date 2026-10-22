@@ -10,6 +10,7 @@ struct ViewportRender {
   DocumentSnapshot live;
   std::optional<DocumentSnapshot> preview;
   std::optional<ResolvedTarget> target;
+  std::vector<ResolvedTarget> previewTargets;
   std::uint64_t previewGeneration = 0;
   PlanePosition position{};
   Plane plane = Plane::XY;

@@ -1,5 +1,25 @@
 # ImageJ and Fiji gap closure plan
 
+**RGB component editor checkpoint, 2026-10-22 (work in progress):**
+The shared ImGui panel now promotes the current mapping when changing RGB
+components, resets the new range, and replaces endpoint drafts without
+reapplying earlier adjustments. Auto measures the promoted baseline; Apply
+reuses its READY sequence and records the complete portable program. Ordinary
+and XYZ previews use the combined target membership on eager/virtual sources.
+Camera and compatible metadata changes preserve the draft and its target;
+resource refresh retains Auto's whole-plane policy. Windows/Linux each pass 22 native suites, three standalone C++ UI probes,
+one installed public C++ SDK consumer, ten background repetitions, four hidden
+GL contexts and 15,262 installed Python checks (1,537 new), zero failure/error/skip.
+The strengthened native actual Apply-button suite is also rebuilt and rerun on
+both hosts. Exact owned scratch is CRC/member-SHA archived before cleanup;
+qualified installs/probes remain. See the
+[scoped receipt](parity/reviews/p11n-rgb-component-ui001.json).
+
+Selection/ROI and navigation transitions, exact active/stack narrowing,
+slider/log-plot/Set/reset/calibration and complete G057/ImageJ/Fiji/platform/
+resource acceptance remain open. The existing Auto producer-source gate is
+unchanged.
+
 **RGB promoted-sequence foundation, 2026-10-22 (work in progress):**
 The shared native Apply job can now compose captured RGB mappings in order,
 with a sparse frozen target for each stage, one paired guarded publication and

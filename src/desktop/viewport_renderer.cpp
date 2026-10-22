@@ -3,6 +3,7 @@
 #include "channel_display_sources.hpp"
 #include "../native/kernel_control.hpp"
 #include <cmath>
+#include <algorithm>
 
 namespace imagejxx::desktop {
 ViewportSurface renderViewport(const ViewportRender &s) {
@@ -12,6 +13,10 @@ ViewportSurface renderViewport(const ViewportRender &s) {
   if (s.position.t < 0 || s.position.t >= shape.t || s.position.c < 0 ||
       s.position.c >= shape.c || s.position.z < 0 || s.position.z >= shape.z)
     throw std::out_of_range("Viewport position outside captured dataset");
+  if(!s.previewTargets.empty()){
+    if(!s.preview || shape.s!=3 || live.pixel_type()!=PixelType::UInt8 || s.previewTargets.size()>64)throw std::invalid_argument("RGB preview target union requires bounded RGB pixels");
+    for(const auto &target:s.previewTargets)target.validate_source(s.live);
+  }
   auto metadata = s.metadata;
   const auto channels = recognized_channel_display(s.live.display(), live);
   const ChannelDisplaySources sources(s.live, s.preview, s.target,
@@ -19,7 +24,7 @@ ViewportSurface renderViewport(const ViewportRender &s) {
   // Unchanneled previews are already selected/gated by the host. Channel
   // sources additionally validate each contributor against its resolved target.
   const bool preview = channels ? sources.usesPreview(s.position.c)
-      : s.preview && (!s.target || s.target->contains(s.position));
+      : s.preview && (s.previewTargets.empty()?(!s.target || s.target->contains(s.position)):std::any_of(s.previewTargets.begin(),s.previewTargets.end(),[&](const auto &target){return target.contains(s.position);}));
   const auto &selected = preview ? s.preview->data().dataset : live;
   ViewportSurface result;
   result.policy = selected.sample_policy();

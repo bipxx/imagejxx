@@ -140,6 +140,10 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
       throw std::invalid_argument("Orthogonal preview target requires pixels");
     transient_target->validate_source(live);
   }
+  if(!input.preview_targets.empty()){
+    if(!input.preview_display_range || input.preview_targets.size()>64)throw std::invalid_argument("RGB target union requires a bounded neutral preview");
+    for(const auto &target:input.preview_targets)target.validate_source(live);
+  }
   if(input.preview_display_range && (!transient || shape.s!=3 || liveDataset.pixel_type()!=PixelType::UInt8 || *input.preview_display_range!=std::array<double,2>{0,255}))
     throw std::invalid_argument("Neutral preview display requires mapped UInt8 RGB pixels");
   if (transient) {
@@ -636,7 +640,7 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
         preview_generation, currentPosition);
   const bool previewActive = channelSources
       ? channelSources->usesPreview(currentPosition.c)
-      : transient && (!transient_target || transient_target->contains(currentPosition));
+      : transient && (input.preview_targets.empty()?(!transient_target || transient_target->contains(currentPosition)):std::any_of(input.preview_targets.begin(),input.preview_targets.end(),[&](const auto &target){return target.contains(currentPosition);}));
   const Dataset *pixelsDataset = previewActive ? &transient->data().dataset : &liveDataset;
   const auto previewGeneration = previewActive ? preview_generation : 0;
   // Borrowed snapshots/targets never enter the caches; keys retain only value
@@ -745,7 +749,7 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
       if(background){
         d.admitView(i!=0);
         ViewportRender spec{live};spec.position=currentPosition;spec.plane=views[i];spec.coordinate=coordinate;
-        if(transient)spec.preview=*transient;if(transient_target)spec.target=*transient_target;
+        if(transient)spec.preview=*transient;if(transient_target)spec.target=*transient_target;spec.previewTargets=input.preview_targets;
         spec.previewGeneration=preview_generation;spec.metadata=d.state().metadata;if(previewRange)spec.metadata["display_range"]=*previewRange;spec.linked=true;
         spec.layered=i==0 && hasStyledOverlays(spec.metadata,currentPosition);spec.capture=capture_readback;spec.channelLimits=channel_limits;
         const auto key=Json{{"data",live.data_identity().value_or(0)},{"pixels",pixelRevision},{"meta",pixelMetadataGeneration_},

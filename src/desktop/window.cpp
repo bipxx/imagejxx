@@ -2807,8 +2807,8 @@ struct Window::Impl {
   planeOperationPreview(const Document &document, bool captured_only = true) const {
     const auto rgbLive=document.nativeSnapshot();
     if(auto rgb=contrastPanel.rgbPreview(rgbLive)){
-      const auto *target=contrastPanel.rgbPreviewTarget(rgbLive);const auto &v=rgbLive.display();
-      if(!captured_only || (target && target->contains({v.t,v.c,v.crosshair[2]})))return rgb;
+      const auto &v=rgbLive.display();
+      if(!captured_only || contrastPanel.rgbPreviewAffects(rgbLive,{v.t,v.c,v.crosshair[2]}))return rgb;
       return std::nullopt; // The active RGB tool owns preview selection, including excluded planes.
     }
     if (shadowDemo.active()) return shadowDemo.preview(document.nativeSnapshot());
@@ -4470,7 +4470,7 @@ struct Window::Impl {
     if(background){
       pane.doc->admitView();
       ViewportRender spec{liveSnapshot};spec.preview=preview;spec.previewGeneration=previewGeneration;spec.position=position;spec.coordinate=position.z;
-      if(previewTarget)spec.target=*previewTarget;
+      if(previewTarget)spec.target=*previewTarget;if(rgbContrast)spec.previewTargets=contrastPanel.rgbPreviewTargets(liveSnapshot);
       spec.metadata=pane.doc->state().metadata;if(rgbContrast)spec.metadata["display_range"]={0.,255.};spec.layered=pane.layeredOverlays;spec.capture=capture;spec.channelLimits=channelLimits();
       const auto key=Json{{"identity",identity},{"live",liveSnapshot.data_identity().value_or(0)},{"revision",pane.doc->renderRevision()},
           {"tcz",{position.t,position.c,position.z}},{"preview",generation},{"channels",channelKey},{"capture",capture},{"gl",gl}}.dump();
@@ -10153,7 +10153,7 @@ void Window::Impl::canvas(Pane &pane) {
       blocked = "unfocused_window";
     pane.keyboardAdmission = blocked.empty() ? "admitted" : blocked;
     OrthogonalInputContext input;
-    if(preview && contrastPanel.rgbPreview(d->nativeSnapshot()))input.preview_display_range=std::array<double,2>{0,255};
+    if(preview && contrastPanel.rgbPreview(d->nativeSnapshot())){input.preview_display_range=std::array<double,2>{0,255};input.preview_targets=contrastPanel.rgbPreviewTargets(d->nativeSnapshot());}
     input.active_document = owner.controller_->active_document_id() == d->id;
     input.input_enabled = !owner.busy() && !(context.CurrentItemFlags & ImGuiItemFlags_Disabled);
     input.keyboard_admitted = blocked.empty();

@@ -332,19 +332,21 @@ void rgbUi(const std::filesystem::path &root){
   session.frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));
   for(bool down:{true,false})session.frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));
   w.action("wait_jobs");report=session.frame();
-  check(report.at("contrast_panel").at("rgb").at("channels")==4 && before.shares_data(owner->snapshot()),"Actual component widget preserves source baseline");
+  check(report.at("contrast_panel").at("rgb").at("channels")==4 && before.shares_data(owner->snapshot()),"Actual component widget promotes mapped preview privately");
+  check(report.at("contrast_panel").at("range")==Json::array({0.,255.}) && report.at("contrast_panel").at("rgb").at("promoted_stages")==1,"Actual component switch resets range and retains one promoted map");
   const auto id=report.at("contrast_panel").at("rgb").at("job_id").get<std::uint64_t>();
   control=report.at("contrast_panel").at("controls").at("apply");check(control.at("visible") && control.at("enabled"),"RGB Apply widget admitted");
   w.recording=true;w.action("contrast_apply");check(w.jobInfo()->id==id,"RGB Apply reuses prepared preview job");w.action("wait_jobs");
   const auto plane=owner->snapshot().data().dataset.plane();
-  check(plane->pixels[30]==0 && plane->pixels[33]==8 && plane->pixels[34]==21 && plane->pixels[35]==31,"RGB Apply uses original fractional mapping once");
+  check(plane->pixels[30]==0 && plane->pixels[33]==8 && plane->pixels[34]==96 && plane->pixels[35]==184,"Component switch preserves prior All mapping without mapping it twice");
   check(source->mainReads==0 && owner->undo_steps()==1 && w.workflow.size()==1,"RGB virtual preview/apply stays on native workers and records one edit");
   owner->undo();check(owner->snapshot().data().dataset.shares_pixels(before.data().dataset),"RGB Undo restores immutable baseline");
-  w.action("contrast_range",{{"minimum",10.9},{"maximum",40.1}});w.action("wait_jobs");report=session.frame();
+  w.action("contrast_range",{{"minimum",10.9},{"maximum",40.1}});w.action("wait_jobs");w.action("contrast_rgb_channels",{{"channels",2}});w.action("wait_jobs");report=session.frame();
   control=report.at("contrast_panel").at("controls").at("apply");
   session.frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));
   for(bool down:{true,false})session.frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));
-  w.action("wait_jobs");check(owner->snapshot().data().dataset.plane()->pixels[33]==8 && owner->undo_steps()==1,"Actual RGB Apply button commits the once-mapped baseline");
+  w.action("wait_jobs");check(owner->snapshot().data().dataset.plane()->pixels[33]==8 && owner->snapshot().data().dataset.plane()->pixels[34]==21 && owner->undo_steps()==1,"Actual RGB Apply button commits the promoted sequence once");
+  check(w.workflow.back().at("schema")=="imagejxx.native-workflow-program" && w.workflow.back().at("steps").size()==2,"Actual Apply button records the complete promoted program");
   w.action("close_contrast");
 }
 void rgbPositionsUi(const std::filesystem::path &root){

@@ -412,11 +412,9 @@ not patched. Source and cached class identities are pinned separately. The
 reference spans four inputs, four weight policies, five ROI forms, seven
 component masks and eleven previous divisors (6,160 rows).
 
-Exact ImageJ controller parity remains open: changing its component choice
-promotes the current preview to the processor snapshot, whereas this native
-panel retains its immutable baseline. ImageJ also commits its active preview
-once and narrows bounds on other stack planes; native multi-axis mapping remains
-an explicit uniform-plane extension. Slider/log-plot/Set/reset/calibration,
+Component snapshot promotion is now connected as described below. ImageJ
+commits its active preview once and narrows bounds on other stack planes;
+native multi-axis mapping remains an explicit uniform-plane extension. Slider/log-plot/Set/reset/calibration,
 RGBA/floating Apply and complete platform/resource acceptance remain required.
 
 ### Promoted RGB mapping sequences (core service)
@@ -450,12 +448,60 @@ Conservative admission sums retained per-stage planes, metadata and record work,
 and cumulative visited pixel capacity. Source/provider caches, frontend copies,
 publication/history staging and total process RSS remain external.
 
-The shared ImGui panel has not yet adopted this service. Its adapter still needs
-promoted prefix state, new component reset, promoted Auto statistics, union
-preview selection and complete Apply recording. Repeated-range, pending/cancel,
-source/geometry/display transitions, real widgets and replay must be checked
-before claiming editor component-switch fidelity. Exact ImageJ active/stack
-narrowing, slider/log-plot/Set/reset/calibration and full acceptance remain open.
+The shared panel now uses this service as described below. Complete source/
+geometry/navigation transitions, exact ImageJ active/stack narrowing,
+slider/log-plot/Set/reset/calibration and full acceptance remain open.
+
+### Shared RGB component promotion
+
+Choosing a different RGB component keeps the current draft as a promoted prefix
+and starts the new component at 0..255, resetting its Auto divisor. Re-selecting
+the current component changes nothing. Identity 0..255 drafts need no extra
+processing stage. Subsequent endpoint edits replace the current draft, while
+Reset discards that draft and retains the promoted prefix. The panel opens a
+byte RGB snapshot at 0..255; a stored display range does not implicitly map those
+already captured samples again. No document pixel or display edits occur until
+Apply.
+
+The full next sequence is admitted before a component choice retires its old
+preview. Refusal leaves its component, range, prefix and READY job intact.
+Pending endpoint intent is captured in order, and superseded workers cannot
+replace later choices. Auto first prepares the promoted prefix on a native
+worker, then histograms its weighted baseline with the existing area policy.
+The final whole-plane component mapping is prepared separately. Cancel, close,
+new range/component/weight/source intent cancels the dependent work. Resource
+refresh and compatible presentation changes retain the whole-plane policy.
+
+Apply transfers the current READY job, including its original job identity,
+into the existing guarded publisher. A promoted sequence records one complete
+portable program; a single mapping keeps its existing RGB command record. Run,
+parameter review and session Batch can consume those programs through their
+existing adapters. One Apply creates one paired pixel/display history entry;
+Undo/Redo preserves prior unrelated history and the captured display state.
+
+Ordinary and XYZ rendering use the union of the bounded frozen targets, rather
+than only the current draft target. An earlier adjusted plane remains visible
+when a later draft excludes it. Compact/explicit membership remains metadata;
+worker requests own immutable value captures and never call ImGui. Current-Z
+membership continues to gate linked views under the existing native preview
+policy. Neutral RGB display prevents applying the display range twice.
+
+Camera, compatible display properties and unrelated title changes re-capture
+commands against the fresh owner revisions, preserving component mappings,
+current endpoints and target choices. External pixel changes, active T/C/Z
+navigation or changed selection/positioned-ROI geometry clear the native
+component prefix. Preserving ImageJ snapshot state through those latter
+transitions still requires work and is not claimed here.
+
+The editor reference cases drive the same 378 actual ImageJ promotion sequences
+through reset, initial/moved endpoints and promoted Auto, compare displayed and
+published byte hashes, and replay each complete program. Other checks exercise
+pending drafts, current-component re-selection, compatible metadata, canceled
+promoted Auto, eager/virtual XY/XYZ target unions, budget refusal and Auto policy
+after zoom/cancel/refresh. The standalone native suite uses real component and
+Apply widgets and checks the promoted pixels, reset range and paired history.
+These cases do not complete broad widget, stack, reset/calibration or platform/
+resource acceptance. G057 remains in progress.
 
 Remaining integration and qualification:
 

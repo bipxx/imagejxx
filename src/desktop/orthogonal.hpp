@@ -15,6 +15,7 @@ struct OrthogonalInputContext {
   ViewportJobs *viewport_jobs = nullptr;
   // Mapped RGB contrast pixels require a neutral display range.
   std::optional<std::array<double,2>> preview_display_range;
+  std::vector<ResolvedTarget> preview_targets;
   bool active_document = false;
   bool input_enabled = false;
   bool keyboard_admitted = false;

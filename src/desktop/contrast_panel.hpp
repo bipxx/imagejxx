@@ -2,7 +2,7 @@
 #include "desktop.hpp"
 #include "operation_target_panel.hpp"
 #include <imagejxx/histogram_job.hpp>
-#include <imagejxx/rgb_contrast_apply_job.hpp>
+#include <imagejxx/rgb_contrast_sequence_job.hpp>
 #include <functional>
 #include <atomic>
 
@@ -40,6 +40,8 @@ public:
   int rgbChannels()const{return rgbChannels_;}
   std::optional<DocumentSnapshot> rgbPreview(const DocumentSnapshot &)const;
   const ResolvedTarget *rgbPreviewTarget(const DocumentSnapshot &)const;
+  bool rgbPreviewAffects(const DocumentSnapshot &,PlanePosition)const;
+  std::vector<ResolvedTarget> rgbPreviewTargets(const DocumentSnapshot &)const;
   std::uint64_t rgbPreviewGeneration()const{return rgbGeneration_;}
   ContrastApplyJob takeRgbPreview(const ResolvedRgbContrastApplyCommand &);
   void sourceClosed(std::uint64_t);
@@ -65,6 +67,10 @@ private:
   std::optional<RebindReview> rebind_;
   std::atomic<std::uint64_t> rebindCancelEpoch_{0};
   OperationTargetPanel target_;
+  std::vector<ResolvedRgbContrastApplyCommand> rgbPrefix_;
+  void selectRgbChannels(int);
+  void clearRgbSequence();
+  static bool rgbCompatible(const DocumentSnapshot &,const DocumentSnapshot &);
   std::optional<ResolvedRgbContrastApplyCommand> rgbCommand_;
   std::optional<ContrastApplyJob> rgbJob_;
   std::optional<DocumentSnapshot> rgbPreview_;
@@ -76,6 +82,9 @@ private:
   std::atomic<std::uint64_t> rgbCancelId_{0};
   std::uint64_t rgbCancelEpoch_=0,rgbPlotGeneration_=0;
   std::array<double,3> rgbWeights_{1./3,1./3,1./3};
+  std::optional<ContrastApplyJob> rgbAutoBaselineJob_;
+  std::optional<DocumentSnapshot> rgbAutoBaseline_;
+  std::atomic<std::uint64_t> rgbAutoBaselineCancelId_{0};
   std::optional<HistogramJob> rgbAutoJob_;
   std::optional<DocumentSnapshot> rgbAutoSource_;
   bool rgbAutoRequested_=false,rgbAutoWhole_=false;

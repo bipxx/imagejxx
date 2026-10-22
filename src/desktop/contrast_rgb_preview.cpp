@@ -2,13 +2,40 @@
 #include <cmath>
 #include <imagejxx/roi_style.hpp>
 namespace imagejxx::desktop {
+namespace {
+TargetRequest rgbFrozenTarget(const ResolvedTarget &target){
+  TargetRequest request;request.roi=target.roi_policy();
+  if(target.scope()==TargetScope::Positions){request.scope=TargetScope::Positions;request.positions=target.explicit_positions();}
+  else{request.scope=TargetScope::Ranges;request.t=target.ranges()[0];request.c=target.ranges()[1];request.z=target.ranges()[2];}
+  return request;
+}
+}
+bool ContrastPanel::rgbCompatible(const DocumentSnapshot &a,const DocumentSnapshot &b){
+  const auto &x=a.data(),&y=b.data();
+  return a.same_document(b) && a.revisions().pixels==b.revisions().pixels && x.dataset.shares_pixels(y.dataset) &&
+    x.dataset.shape().dimensions()==y.dataset.shape().dimensions() && x.dataset.pixel_type()==y.dataset.pixel_type() && x.dataset.sample_policy()==y.dataset.sample_policy() &&
+    x.selection==y.selection && x.rois==y.rois && a.display().t==b.display().t && a.display().c==b.display().c && a.display().crosshair[2]==b.display().crosshair[2];
+}
+void ContrastPanel::clearRgbSequence(){rgbPrefix_.clear();}
+void ContrastPanel::selectRgbChannels(int channels){
+  if(channels==rgbChannels_)return;
+  if(!rgbSource() || channels<1 || channels>7)throw std::invalid_argument("Choose valid RGB component bits");
+  // Admit the complete next intent before retiring any preview or changing fields.
+  auto next=rgbPrefix_;
+  if(range_!=std::array<double,2>{0,255})next.push_back(resolve_rgb_contrast_apply_command(*source_,{range_[0],range_[1],rgbChannels_},applyTarget(),rgbLimits_));
+  auto identity=resolve_rgb_contrast_apply_command(*source_,{0,255,channels},target_.request(),rgbLimits_);
+  if(!next.empty()){auto complete=next;complete.push_back(identity);(void)estimate_rgb_contrast_sequence_job(complete,rgbLimits_);}
+  else (void)estimate_rgb_contrast_apply_job(identity,rgbLimits_);
+  invalidateRgb();rgbAutoWhole_=false;rgbPrefix_=std::move(next);rgbChannels_=channels;rgbAutoDivisor_=0;draft({0,255});resolved_=true;error_.clear();
+}
+
 bool ContrastPanel::rgbSource()const {
   if(!source_)return false;
   const auto &d=source_->data().dataset;
   return d.shape().s==3 && d.pixel_type()==PixelType::UInt8 && d.sample_policy()==FloatingSamplePolicy::FiniteOnly;
 }
 void ContrastPanel::invalidateRgb(bool retry){
-  cancelRgbAuto();rgbAutoWhole_=false;rgbPlotGeneration_=0;
+  cancelRgbAuto();rgbPlotGeneration_=0;
   if(rgbSource()){cancelHistogram();histogram_.reset();heights_.clear();}
   rgbCancelId_.store(0);
   if(rgbJob_){rgbJob_->cancel();rgbJob_.reset();++rgbDiscarded_;}
@@ -17,11 +44,12 @@ void ContrastPanel::invalidateRgb(bool retry){
 bool ContrastPanel::wait_for(std::chrono::milliseconds timeout)const {
   const auto end=std::chrono::steady_clock::now()+timeout;
   if(job_ && !job_->wait_for(timeout))return false;
+  if(rgbAutoBaselineJob_ && !rgbAutoBaselineJob_->wait_for(std::chrono::duration_cast<std::chrono::milliseconds>(end-std::chrono::steady_clock::now())))return false;
   if(rgbAutoJob_ && !rgbAutoJob_->wait_for(std::chrono::duration_cast<std::chrono::milliseconds>(end-std::chrono::steady_clock::now())))return false;
   return !rgbJob_ || rgbJob_->wait_for(std::chrono::duration_cast<std::chrono::milliseconds>(end-std::chrono::steady_clock::now()));
 }
 void ContrastPanel::tickRgb(bool busy,JobScheduler &scheduler,const ContrastApplyCommandLimits &limits){
-  if(!rgbSource()){if(rgbSource_ || rgbJob_ || rgbPreview_)invalidateRgb(false);rgbSource_.reset();return;}
+  if(!rgbSource()){rgbAutoWhole_=false;clearRgbSequence();if(rgbSource_ || rgbJob_ || rgbPreview_)invalidateRgb(false);rgbSource_.reset();return;}
   const auto epoch=cancelEpoch_.load();
   if(rgbCancelEpoch_!=epoch){invalidateRgb(false);rgbCancelEpoch_=epoch;}
   const bool changed=!rgbSource_ || !rgbSource_->same_document(*source_) ||
@@ -30,6 +58,12 @@ void ContrastPanel::tickRgb(bool busy,JobScheduler &scheduler,const ContrastAppl
       rgbLimits_.processing.max_pixels!=limits.processing.max_pixels ||
       rgbLimits_.processing.max_working_bytes!=limits.processing.max_working_bytes;
   if(changed){
+    const bool compatible=rgbSource_ && rgbCompatible(*rgbSource_,*source_);
+    if(!compatible){rgbAutoWhole_=false;clearRgbSequence();}
+    else if(!rgbPrefix_.empty()){
+      try{auto next=rgbPrefix_;for(auto &command:next)command=resolve_rgb_contrast_apply_command(*source_,command.options(),rgbFrozenTarget(command.target()),limits);rgbPrefix_=std::move(next);}
+      catch(const std::exception &e){invalidateRgb(false);error_=e.what();return;}
+    }
     if(!rgbSource_ || !rgbSource_->same_document(*source_) || rgbSource_->revisions().pixels!=source_->revisions().pixels ||
       rgbSource_->display().t!=source_->display().t || rgbSource_->display().c!=source_->display().c || rgbSource_->display().crosshair[2]!=source_->display().crosshair[2])rgbAutoDivisor_=0;
     invalidateRgb();rgbSource_=source_;rgbLimits_=limits;
@@ -47,7 +81,8 @@ void ContrastPanel::tickRgb(bool busy,JobScheduler &scheduler,const ContrastAppl
       const auto epoch=cancelEpoch_.load();
       auto command=resolve_rgb_contrast_apply_command(*source_,{range_[0],range_[1],rgbChannels_},applyTarget(),limits);
       JobOptions options;options.label="RGB contrast preview";options.supersedes="contrast.rgb.preview";
-      auto job=submit_rgb_contrast_apply(scheduler,command,limits,std::move(options));
+      auto job=[&]{if(rgbPrefix_.empty())return submit_rgb_contrast_apply(scheduler,command,limits,std::move(options));
+        auto complete=rgbPrefix_;complete.push_back(command);return submit_rgb_contrast_sequence(scheduler,complete,limits,std::move(options));}();
       const auto id=job.info().id;rgbCommand_=std::move(command);rgbJob_=std::move(job);rgbCancelId_.store(id);++rgbSubmitted_;
       if(cancelEpoch_.load()!=epoch)rgbJob_->cancel();
     }catch(const std::exception &e){error_=e.what();invalidateRgb(false);}
@@ -63,6 +98,16 @@ std::optional<DocumentSnapshot> ContrastPanel::rgbPreview(const DocumentSnapshot
 const ResolvedTarget *ContrastPanel::rgbPreviewTarget(const DocumentSnapshot &live)const {
   return rgbPreview(live)?&rgbCommand_->target():nullptr;
 }
+bool ContrastPanel::rgbPreviewAffects(const DocumentSnapshot &live,PlanePosition position)const{
+  if(!rgbPreview(live))return false;
+  if(rgbCommand_->target().contains(position))return true;
+  for(const auto &command:rgbPrefix_)if(command.target().contains(position))return true;
+  return false;
+}
+std::vector<ResolvedTarget> ContrastPanel::rgbPreviewTargets(const DocumentSnapshot &live)const{
+  std::vector<ResolvedTarget> result;if(!rgbPreview(live))return result;
+  result.reserve(rgbPrefix_.size()+1);for(const auto &command:rgbPrefix_)result.push_back(command.target());result.push_back(rgbCommand_->target());return result;
+}
 ContrastApplyJob ContrastPanel::takeRgbPreview(const ResolvedRgbContrastApplyCommand &command){
   if(!rgbPreview(command.target().source()) || !metadata_equal(command.record(),rgbCommand_->record()))
     throw std::invalid_argument("Wait for the current RGB source/target/component preview before Apply");
@@ -71,7 +116,7 @@ ContrastApplyJob ContrastPanel::takeRgbPreview(const ResolvedRgbContrastApplyCom
 }
 Json ContrastPanel::rgbDiagnostics()const {
   return {{"supported",rgbSource()},{"channels",rgbChannels_},{"pending",bool(rgbJob_)&&!rgbPreview_},
-    {"auto_divisor",rgbAutoDivisor_},{"auto_pending",rgbAutoRequested_||bool(rgbAutoJob_)},{"auto_whole_planes",rgbAutoWhole_},{"weights",rgbWeights_},
+    {"promoted_stages",rgbPrefix_.size()},{"auto_baseline_pending",bool(rgbAutoBaselineJob_)&&!rgbAutoBaseline_},{"auto_divisor",rgbAutoDivisor_},{"auto_pending",rgbAutoRequested_||bool(rgbAutoJob_)},{"auto_whole_planes",rgbAutoWhole_},{"weights",rgbWeights_},
     {"ready",source_ && bool(rgbPreview(*source_))},{"generation",rgbGeneration_},
     {"submitted",rgbSubmitted_},{"discarded",rgbDiscarded_},
     {"job_id",rgbJob_?Json(rgbJob_->info().id):Json(nullptr)}};
@@ -81,6 +126,7 @@ TargetRequest ContrastPanel::applyTarget()const{
   auto request=target_.request();if(rgbSource() && rgbAutoWhole_)request.roi=RoiPolicy::WholePlane;return request;
 }
 void ContrastPanel::cancelRgbAuto(){
+  rgbAutoBaselineCancelId_.store(0);if(rgbAutoBaselineJob_)rgbAutoBaselineJob_->cancel();rgbAutoBaselineJob_.reset();rgbAutoBaseline_.reset();
   rgbAutoCancelId_.store(0);if(rgbAutoJob_)rgbAutoJob_->cancel();rgbAutoJob_.reset();rgbAutoRequested_=false;rgbAutoSource_.reset();
 }
 void ContrastPanel::rgbWeights(std::array<double,3> weights){
@@ -110,13 +156,24 @@ void ContrastPanel::tickRgbAuto(bool busy,JobScheduler &scheduler,const DatasetH
     rgbAutoCancelId_.store(0);rgbAutoSource_.reset();
   }
   if(rgbAutoRequested_ && !busy){
-    rgbAutoRequested_=false;
     try{
-      TargetRequest request;const auto &selection=rgbAutoSource_->data().selection;
+      if(!rgbPrefix_.empty() && !rgbAutoBaseline_){
+        if(!rgbAutoBaselineJob_){
+          JobOptions options;options.label="RGB promoted Auto baseline";options.supersedes="contrast.rgb.auto.baseline";
+          auto submitted=submit_rgb_contrast_sequence(scheduler,rgbPrefix_,rgbLimits_,std::move(options));
+          const auto id=submitted.info().id;rgbAutoBaselineJob_=std::move(submitted);rgbAutoBaselineCancelId_.store(id);
+          if(rgbAutoEpoch_!=cancelEpoch_.load())rgbAutoBaselineJob_->cancel();
+        }
+        if(!rgbAutoBaselineJob_->ready())return;
+        rgbAutoBaseline_=rgbAutoBaselineJob_->preview();
+      }
+      rgbAutoRequested_=false;
+      const auto baseline=rgbAutoBaseline_?*rgbAutoBaseline_:*rgbAutoSource_;
+      TargetRequest request;const auto &selection=baseline.data().selection;
       request.roi=useSelection_ && selection && selection_is_area(*selection)?RoiPolicy::ActiveSelection:RoiPolicy::WholePlane;
       RgbHistogramOptions options;options.weights=rgbWeights_;
       JobOptions job;job.label="RGB Auto baseline";job.supersedes="contrast.rgb.auto";
-      auto submitted=submit_rgb_histogram(scheduler,resolve_target(*rgbAutoSource_,request),options,limits,std::move(job));
+      auto submitted=submit_rgb_histogram(scheduler,resolve_target(baseline,request),options,limits,std::move(job));
       const auto id=submitted.info().id;rgbAutoJob_=std::move(submitted);rgbAutoCancelId_.store(id);
       if(rgbAutoEpoch_!=cancelEpoch_.load())rgbAutoJob_->cancel();
     }catch(const std::exception &e){error_=e.what();cancelRgbAuto();rgbAttempted_=true;}
@@ -126,8 +183,8 @@ void ContrastPanel::tickRgbPlot(JobScheduler &scheduler,const DatasetHistogramLi
   if(!source_ || !rgbPreview(*source_) || rgbPlotGeneration_==rgbGeneration_)return;
   rgbPlotGeneration_=rgbGeneration_;cancelHistogram();histogram_.reset();heights_.clear();histogramAttempted_=true;
   try{
-    const auto &view=source_->display();const auto &target=rgbCommand_->target();
-    const auto selected=target.contains({view.t,view.c,view.crosshair[2]})?*rgbPreview_:*source_;
+    const auto &view=source_->display();
+    const auto selected=rgbPreviewAffects(*source_,{view.t,view.c,view.crosshair[2]})?*rgbPreview_:*source_;
     RgbHistogramOptions options;options.weights=rgbWeights_;
     options.component=rgbChannels_==4?RgbHistogramComponent::Red:rgbChannels_==2?RgbHistogramComponent::Green:rgbChannels_==1?RgbHistogramComponent::Blue:RgbHistogramComponent::Intensity;
     TargetRequest request;const auto &selection=selected.data().selection;
