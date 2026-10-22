@@ -63,6 +63,7 @@ void bind_imagej_roi_zip_export(py::module_& module);
 void bind_planar_annotation_command(py::module_& module);
 void bind_dataset_histogram(py::module_& module);
 void bind_auto_contrast(py::module_& module);
+void bind_contrast_apply(py::module_& module);
 void bind_session(py::module_& module);
 namespace {
 int dimension(const py::array& a, int axis) {
@@ -239,6 +240,7 @@ PYBIND11_MODULE(_native, m) {
   bind_planar_annotation_command(m);
     bind_dataset_histogram(m);
     bind_auto_contrast(m);
+    bind_contrast_apply(m);
     bind_saved_roi_geometry(m);
     bind_application(m);
     bind_session(m);

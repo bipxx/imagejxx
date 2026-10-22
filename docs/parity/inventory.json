@@ -2411,7 +2411,9 @@
           "docs/parity/reviews/p11a-display-actions001.json",
           "docs/BACKGROUND_VIEWPORT.md",
           "docs/parity/reviews/p11b-contrast-panel001.json",
-          "docs/CONTRAST_PANEL.md"
+          "docs/CONTRAST_PANEL.md",
+          "docs/parity/reviews/p11c-contrast-apply001.json",
+          "docs/CONTRAST_APPLY.md"
         ],
         "implementation": [
           "include/imagejxx/document.hpp",
@@ -2431,7 +2433,11 @@
           "include/imagejxx/application.hpp",
           "src/native/auto_contrast_job.cpp",
           "src/native/auto_contrast_bindings.cpp",
-          "src/native/application_bindings.cpp"
+          "src/native/application_bindings.cpp",
+          "include/imagejxx/contrast_apply.hpp",
+          "src/native/contrast_apply.cpp",
+          "src/native/contrast_apply_bindings.cpp",
+          "src/native/bindings.cpp"
         ],
         "tests": [
           "tests/native/test_document.cpp",
@@ -2443,7 +2449,12 @@
           "tests/python/test_display_actions.py",
           "tests/native/test_contrast_panel.cpp",
           "tests/python/test_contrast_panel.py",
-          "examples/cpp/seeded_auto_contrast.cpp"
+          "examples/cpp/seeded_auto_contrast.cpp",
+          "tests/native/test_contrast_apply.cpp",
+          "tests/python/test_contrast_apply.py",
+          "tests/reference/ContrastApplyReference.java",
+          "tests/fixtures/contrast-apply-imagej154r.json",
+          "examples/cpp/contrast_apply.cpp"
         ]
       },
       "id": "G057",
@@ -2453,9 +2464,11 @@
       ],
       "name": "Brightness/contrast and window/level",
       "remaining": [
-        "The modeless native panel now supplies async source histograms, fractional min/max, brightness/contrast/window/level, cached Reset and selection/scope-aware asynchronous Auto with active-channel manual targeting. Destructive Apply-to-pixels, complete ImageJ reset/set/apply and slider-normalization parity, selection/channel upstream UI reference acceptance and further lifecycle/resource/platform qualification remain open. Float64, IEEE-preserving Float32 and packed RGB/RGBA histogram/Auto are not enabled in this panel; finite manual endpoints remain available.",
-        "Manual legacy range commands and Image-menu defaults no longer request source pixels; IEEE endpoint/reset validation preserves the source. Finite automatic range reset and other legacy analysis/editing actions still acquire pixels synchronously; background eligibility, captured publication and UI responsiveness need further work. Brightness/contrast/window/level sliders, histogram linkage, complete reset/set/apply semantics and upstream channel-targeting acceptance remain required. The generic range form minimum remains integer-typed; fractional minimum UI needs qualification.",
-        "Native display records expose/publish ranges independently of pixel/history identity and survive undo/concurrent pixel jobs. Histogram-linked sliders, brightness/contrast/window/level modes, saturation-aware auto, reset/set/apply and scientific channel targeting remain."
+        "The scalar Apply core is now available through C++/Python, but the contrast panel still has no Apply button. Add a captured command/record/replay path, native worker job/reservation/publication integration and explicit plane/stack/channel/ROI controls, then qualify actual input, recording, cancellation, stale results, busy behavior and Undo/Redo.",
+        "RGB Apply requires independent color-controller reference behavior before enabling it; RGBA is a separate extension. Floating Apply must remain unavailable consistently with ImageJ scalar support.",
+        "Exact upstream slider normalization, histogram/control behavior including log scale and calibration, Set/Reset semantics and complete selection/channel/stack traces remain unqualified. Float64, IEEE-preserving Float32 and packed RGB/RGBA histogram/Auto are not enabled in the current panel.",
+        "Finite legacy automatic range scans and other analysis/editing paths can still acquire pixels synchronously; whole-editor responsiveness remains open.",
+        "Apply admission bounds owned samples/masks/replacement tables/channel-state allowance only. Source/metadata, ROI rasterizer scratch, reader internals and commit/history allocations remain outside the bound; full process/resource/platform acceptance remains open."
       ],
       "required_work": "Non-destructive histogram-linked sliders, brightness/contrast/window/level controls, saturation-aware auto, reset/set/apply and channel targeting",
       "status": "in_progress",
@@ -2463,7 +2476,8 @@
         "m1-document-transactions-windows-2026-10-10",
         "m1-document-records-windows-2026-10-10",
         "p11a.display-actions.metadata.001",
-        "p11b.contrast-panel.native.001"
+        "p11b.contrast-panel.native.001",
+        "p11c.contrast-apply.scalar.001"
       ]
     },
     {
@@ -181398,6 +181412,29 @@
         "total": 1819
       },
       "scope": "Windows/Linux each pass fourteen native suites, ten background-view repetitions, four background hidden/recreated GL contexts, one installed public C++ SDK consumer and 1819 selected installed Python checks (twelve new), zero failure/error/skip. The new native fixture exercises actual ImGui brightness-slider and fractional field input, independent raw histogram bins, blocked cooperative virtual readers without UI-thread reads, TCZ supersession/stale-result discard, close/global foreign-thread cancellation, reservation release, display/history/pixel invariants and active scientific-channel isolation. New seeded Auto API tests preserve the strict original API, defer all display publication until successful guarded completion, reject bad seeds/budgets/opaque existing state, preserve cycle on cancel/stale results and continue ordinary Auto cycles. Python checks qualify the dictionary interface and modeless controls from proper disposable installed origins; all 207 original Auto cases and prior 1600 selected regressions pass. Module bytes match retained final prefixes. Dependency audit and all 1297 unchanged input registrations pass. This is scoped functionality, not full ImageJ/Fiji/UI/platform/resource acceptance."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-22",
+      "id": "p11c.contrast-apply.scalar.001",
+      "identity": {
+        "qualification": {
+          "bytes": 12745,
+          "path": "docs/parity/reviews/p11c-contrast-apply001.json",
+          "sha256": "601d42ddbbaac03ddb68aff7d0a8ed0506e11b4247672768d434824d7ae43c90"
+        }
+      },
+      "platform": "Windows/Linux installed C++/Python scalar Apply arithmetic and atomic transactions",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 3256,
+        "report": "build/p11c-contrast-apply001/windows-python001/pytest.xml",
+        "skipped": 0,
+        "total": 3256
+      },
+      "scope": "Windows/Linux each pass nineteen native suites, ten background-view repetitions, four background GL contexts, one installed public C++ Apply consumer and 3256 selected installed Python checks, zero failures/errors/skips. Eighty new Python cases include 64 actual ImageJ 1.54r scalar Apply full-domain UInt8/UInt16 hashes across all configured bit ranges and fractional/collapsed/extreme Java endpoints. Native/installed tests cover scalar mapping, intra-kernel validation/mapping cancellation, selected-plane-only virtual IO, mask exterior preservation, metadata-only admission before reads, affected-channel reset, one-step paired pixel/display Undo/Redo, isolated preparation, last-plane cancellation and stale-display refusal. Existing operations/catalog/targets/execution, Auto, histogram/panel, dataset/TIFF/cache/XYZ/settings regressions pass. All 1297 input registrations and the commercial-use dependency audit remain unchanged/passing. This qualifies the scalar C++/Python arithmetic and transaction foundation; no new Apply GUI, command/replay/job route or broad upstream/platform/resource acceptance is claimed."
     }
   ]
 }

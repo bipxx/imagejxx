@@ -29,6 +29,12 @@ from ._native import (
     render_float32_display as render_float32_display,
     float32_display_bounds as float32_display_bounds,
 )
+from ._native import (
+    ContrastApplyOptions as ContrastApplyOptions,
+    ContrastApplyLimits as ContrastApplyLimits,
+    apply_contrast_imagej as apply_contrast_imagej,
+    prepare_contrast_apply as prepare_contrast_apply,
+)
 from ._native import Settings as Settings
 from ._native import auto_threshold_histogram_imagej as auto_threshold_histogram_imagej
 from ._native import pooled_auto_threshold as pooled_auto_threshold, PooledThresholdResult as PooledThresholdResult

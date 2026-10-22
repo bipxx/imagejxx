@@ -1,5 +1,23 @@
 # ImageJ and Fiji gap closure plan
 
+**Scalar contrast Apply core checkpoint, 2026-10-22 (work in progress):**
+C++ and Python now expose scalar UInt8/UInt16 Apply arithmetic and isolated
+in-place target preparation. Masks preserve exterior pixels; range resets share
+pixel Undo/Redo history. Admission precedes provider IO, cancellation is checked
+inside the kernels, and stale display/data/selection rejects commit. Eighty new
+Python cases include 64 actual ImageJ 1.54r full-domain output vectors, including
+configured bit ranges and Java integer edge behavior.
+Windows/Linux each pass nineteen native suites, an installed Apply SDK consumer,
+3,256 selected Python checks, ten background repetitions and four background GL
+contexts. Verified cleanup removes owned scratch; final products/evidence remain.
+See [the Apply integration sequence](CONTRAST_APPLY.md) and the
+[scoped receipt](parity/reviews/p11c-contrast-apply001.json).
+Apply still needs its captured command/replay, worker job and ImGui route, plus
+RGB behavior and full upstream/platform/resource acceptance. G057 stays in
+progress. The 99 original requirement/status triples are unchanged; the existing
+Auto evidence gate remains open.
+
+
 **Modeless contrast checkpoint, 2026-10-22 (work in progress):**
 Image → Brightness/Contrast now supplies native histogram-linked min/max,
 brightness/contrast/window/level, cached Reset, channel targeting and asynchronous

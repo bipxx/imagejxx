@@ -1,0 +1,278 @@
+{
+  "schema_version": 1,
+  "id": "p11c.contrast-apply.scalar.001",
+  "date": "2026-10-22",
+  "state": "scoped-qualified",
+  "acceptance": false,
+  "complete_requirement_coverage": false,
+  "scope": "Windows/Linux each pass nineteen native suites, ten background-view repetitions, four background GL contexts, one installed public C++ Apply consumer and 3256 selected installed Python checks, zero failures/errors/skips. Eighty new Python cases include 64 actual ImageJ 1.54r scalar Apply full-domain UInt8/UInt16 hashes across all configured bit ranges and fractional/collapsed/extreme Java endpoints. Native/installed tests cover scalar mapping, intra-kernel validation/mapping cancellation, selected-plane-only virtual IO, mask exterior preservation, metadata-only admission before reads, affected-channel reset, one-step paired pixel/display Undo/Redo, isolated preparation, last-plane cancellation and stale-display refusal. Existing operations/catalog/targets/execution, Auto, histogram/panel, dataset/TIFF/cache/XYZ/settings regressions pass. All 1297 input registrations and the commercial-use dependency audit remain unchanged/passing. This qualifies the scalar C++/Python arithmetic and transaction foundation; no new Apply GUI, command/replay/job route or broad upstream/platform/resource acceptance is claimed.",
+  "sources": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 109911,
+      "sha256": "9c39588746d437a7e0c99a63d9c3255141fca8497ad53a7876c010d771833112"
+    },
+    {
+      "path": "include/imagejxx/contrast_apply.hpp",
+      "bytes": 1338,
+      "sha256": "086b6436d454bb0d7db48cf27c479b5f78867a3c815fa578a9d7b84fae4b95fe"
+    },
+    {
+      "path": "src/native/contrast_apply.cpp",
+      "bytes": 6144,
+      "sha256": "cea1c21e82562aa9df57dc54fe7cbb377b5310429eae1dcd610e233809dffc03"
+    },
+    {
+      "path": "src/native/contrast_apply_bindings.cpp",
+      "bytes": 3096,
+      "sha256": "dbeb341e886cf69e8d33f5ceeda0821addd490cadab489d5b15491fe3d0c9733"
+    },
+    {
+      "path": "src/native/bindings.cpp",
+      "bytes": 35560,
+      "sha256": "7132c493647610be20bdd9d0acb780175f284e323111d080a8172068c9f1925d"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 72727,
+      "sha256": "2dc7c7587b0acfe783fea8d567763c069150a7c42bf60e4d94d7aa6ab88cdc7b"
+    },
+    {
+      "path": "tests/native/test_contrast_apply.cpp",
+      "bytes": 7240,
+      "sha256": "6c1a861dfec15f303c9ab8b3860d7097a143f24f82231685b9bfce6b0380acbc"
+    },
+    {
+      "path": "tests/python/test_contrast_apply.py",
+      "bytes": 4621,
+      "sha256": "cce84687eb58b607b416c2ad731cae227d8d384f7d81aa4cc7b49e331dbe70fd"
+    },
+    {
+      "path": "tests/reference/ContrastApplyReference.java",
+      "bytes": 2775,
+      "sha256": "778e6e50e900e774efe054901eece138e12f6bb4df4ed78fd6542d4514e68781"
+    },
+    {
+      "path": "tests/fixtures/contrast-apply-imagej154r.json",
+      "bytes": 12959,
+      "sha256": "fa97e139870400100d5a067b58dfc7d5931cc02b67cff1a2b57e8a4dee9fd4bb"
+    },
+    {
+      "path": "examples/cpp/CMakeLists.txt",
+      "bytes": 15808,
+      "sha256": "a8140eb3525ce2f8d8ff35db61919b8cd6cbcd3a06c4f9320ca00eb627ab8e41"
+    },
+    {
+      "path": "examples/cpp/contrast_apply.cpp",
+      "bytes": 980,
+      "sha256": "b3b87deab4238be1faef5675d2da44592ebd4369bfad7b65fe4d11fe01f76136"
+    },
+    {
+      "path": "docs/CONTRAST_APPLY.md",
+      "bytes": 3659,
+      "sha256": "077d4380e8055adc9e01cc66c0c5eb6516bf6db12972f3a73d39fd8ebd56da70"
+    }
+  ],
+  "profiles": {
+    "windows": {
+      "native_suites": 19,
+      "new_apply_suite": 1,
+      "background_repetitions": 10,
+      "background_hidden_gl_contexts": 4,
+      "installed_sdk_consumers": 1,
+      "python_cases": 3256,
+      "new_python_cases": 80,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "removed_scratch_bytes": 361085906,
+      "archive": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p11c-contrast-apply001\\windows-scratch001.zip",
+        "bytes": 47927934,
+        "sha256": "9d95eb68f1ebbc274af6e705aaab0a1f58dc45de4c1efca7a0587a9659c28e08"
+      },
+      "evidence": [
+        {
+          "path": "build/p11c-contrast-apply001/windows-qualified001/receipt.json",
+          "bytes": 1467,
+          "sha256": "44ceb06d4db5eed09963acf1cc2e489e126896eaea6c36435e64649b6347fd42"
+        },
+        {
+          "path": "build/p11c-contrast-apply001/windows-qualified001/native.xml",
+          "bytes": 9291,
+          "sha256": "cf17ca6f28f0e5b86db0d13ec27e92115e9c7344f698d29238794cb508299bb9"
+        },
+        {
+          "path": "build/p11c-contrast-apply001/windows-qualified001/repeat.xml",
+          "bytes": 623,
+          "sha256": "a077b9575f80dd2952a6d6fa870c04325e6822aa2b882a5ec086dfa12800b590"
+        },
+        {
+          "path": "build/p11c-contrast-apply001/windows-qualified001/background-gl.log",
+          "bytes": 116,
+          "sha256": "4a9efe703a8147cd67ee41ed7693448770a0e56024f32cd1131db7f5aea1d3ea"
+        },
+        {
+          "path": "build/p11c-contrast-apply001/windows-python001/receipt.json",
+          "bytes": 3815,
+          "sha256": "2d8f4a6e544366e05d75cd106020950707ad5909181d2a137a9a28009b78ac99"
+        },
+        {
+          "path": "build/p11c-contrast-apply001/windows-python001/pytest.xml",
+          "bytes": 469892,
+          "sha256": "68ff4419b003e9973e4acb52dc8a74fdca084476d0e264503bcc6caee808fda0"
+        },
+        {
+          "path": "build/p11c-contrast-apply001/windows-env001/receipt.json",
+          "bytes": 282,
+          "sha256": "2d2782bfe9649ea121268ff4cb9cd3c07397eabc4b68d093b589c8fbfaf84452"
+        },
+        {
+          "path": "build/p11c-contrast-apply001/windows-sdk001/receipt.json",
+          "bytes": 354,
+          "sha256": "c9246897f9f07946662fe3211ed3d2ec4baeb2425a9e11a4c58164cc15a72e17"
+        },
+        {
+          "path": "build/p11c-contrast-apply001/windows-sdk001/sdk.xml",
+          "bytes": 454,
+          "sha256": "058d46d0ad096a197a60130e42b1ed32ffb7a2c033e9d9b91304de13001cb77d"
+        },
+        {
+          "path": "build/p11c-contrast-apply001/windows-products001.json",
+          "bytes": 3653,
+          "sha256": "30060abf2cb1697f9dcd22b3176b56691d054a775e5b7806621e70d4670238a2"
+        },
+        {
+          "path": "build/p11c-contrast-apply001/windows-cleanup001.json",
+          "bytes": 466660,
+          "sha256": "ef85c30f2584c854e85778de3e2a3056eb79426e078f69876dfff443aa855377"
+        }
+      ]
+    },
+    "linux": {
+      "native_suites": 19,
+      "new_apply_suite": 1,
+      "background_repetitions": 10,
+      "background_hidden_gl_contexts": 4,
+      "installed_sdk_consumers": 1,
+      "python_cases": 3256,
+      "new_python_cases": 80,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "removed_scratch_bytes": 373842513,
+      "archive": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p11c-contrast-apply001/linux-scratch001.zip",
+        "bytes": 58222891,
+        "sha256": "9336a6a883305789619877178dc8f7819633c91028080723acecd61908c24f4d"
+      },
+      "evidence": [
+        {
+          "path": "build/p11c-contrast-apply001/linux-qualified001/receipt.json",
+          "bytes": 1416,
+          "sha256": "c03b1a4602273cb371b4af8cdd9b382e4d29506f9f0759cb9346291a8810e4cc"
+        },
+        {
+          "path": "build/p11c-contrast-apply001/linux-qualified001/native.xml",
+          "bytes": 9234,
+          "sha256": "9912411c485a916f96a8af868cb7293f387a7988e8c09e6aa831988b64cabce2"
+        },
+        {
+          "path": "build/p11c-contrast-apply001/linux-qualified001/repeat.xml",
+          "bytes": 616,
+          "sha256": "42aa3f041977871ca23a6701a08307e5eff6d43046f5dc5e302a25697d17b4c0"
+        },
+        {
+          "path": "build/p11c-contrast-apply001/linux-qualified001/background-gl.log",
+          "bytes": 115,
+          "sha256": "af0cf02bc32e37064a73f474b55cc38cf391df0c4b97c52422c7aa675ceb6178"
+        },
+        {
+          "path": "build/p11c-contrast-apply001/linux-python001/receipt.json",
+          "bytes": 3693,
+          "sha256": "a4e96e226d5e99d1530dd192ad559df8918c061f651a42a7cb93876dd105ae99"
+        },
+        {
+          "path": "build/p11c-contrast-apply001/linux-python001/pytest.xml",
+          "bytes": 469892,
+          "sha256": "16c2f7128893b9720ddc54604ae39be696be774158eae2e8f3f459008e94833a"
+        },
+        {
+          "path": "build/p11c-contrast-apply001/linux-env001/receipt.json",
+          "bytes": 218,
+          "sha256": "375bc67dac974de18c25d9d7907be9371478184a11bbfa39eb1a579d10c29609"
+        },
+        {
+          "path": "build/p11c-contrast-apply001/linux-sdk001/receipt.json",
+          "bytes": 308,
+          "sha256": "8cf2e565d9d61991ec04549589d39a316d91aaa5d7808963f99659b7a3764ca2"
+        },
+        {
+          "path": "build/p11c-contrast-apply001/linux-sdk001/sdk.xml",
+          "bytes": 434,
+          "sha256": "71de94c977f96837b56d322020ffcaf2f760b1fcc3a014bc96db5fa433e17e3c"
+        },
+        {
+          "path": "build/p11c-contrast-apply001/linux-products001.json",
+          "bytes": 3565,
+          "sha256": "4947ec3447d9df9fa59dd0ce5eb6141e41cfcd8130b58916344c062ba6840ef7"
+        },
+        {
+          "path": "build/p11c-contrast-apply001/linux-cleanup001.json",
+          "bytes": 527152,
+          "sha256": "80d67ffc450914b0446680ee3e18de3daeecba24759dd5c7bedfc2b9b30052ac"
+        }
+      ]
+    }
+  },
+  "existing_gate": {
+    "state": "open",
+    "reason": "Existing Auto producer_source fingerprint mismatch is preserved; Application header is byte-identical to HEAD. No evidence repin or relaxation.",
+    "producer": {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 14796,
+      "sha256": "7bbb3da8c3c9b12c2f616b1a6e542597098b5c3796054b6f1bbfab721ecf161c"
+    },
+    "log": {
+      "path": "build/p11c-contrast-apply001/plan001.log",
+      "bytes": 151,
+      "sha256": "5741e4b9133f374434cac8973e1f1c6131200e632958a012913a739c28d47006"
+    }
+  },
+  "checks": [
+    {
+      "path": "build/p11c-contrast-apply001/licenses001.log",
+      "bytes": 62,
+      "sha256": "939b266b092bfdc37d1814f66b75a21469497e36e30a2050805031da4f97b417"
+    },
+    {
+      "path": "build/p11c-contrast-apply001/registration001.json",
+      "bytes": 218,
+      "sha256": "768427ebd581ce069969d84ab38452330565a62c30d9174f24ac4ce600f01a0f"
+    },
+    {
+      "path": "build/p11c-contrast-apply001/oracle-compile001.log",
+      "bytes": 954,
+      "sha256": "26154098848643991a9adf135dad36a859922b42f59336b0aab929713438c242"
+    },
+    {
+      "path": "build/p11c-contrast-apply001/oracle-run001.log",
+      "bytes": 4704,
+      "sha256": "c465b1d61eabbae6195be91a6e9540cf7d16ad4f789df0a704df394f8e3e9667"
+    }
+  ],
+  "attempts": "The first Linux multi-target build regenerated Makefiles but did not recognize the newly registered test target in that same invocation. Explicit CMake configuration followed by the preserved build002 log qualifies all targets. Source files remained stable. The reference driver calls the actual cached ImageJ 1.54r Apply method, with AWT construction and reset overridden; reference hashes qualify arithmetic only. CRC/member-SHA verification precedes exact observed fixture, disposable environment, oracle class and SDK-cache deletion; final installs/probes/logs/JUnit remain.",
+  "scope_status_counts": {
+    "total": 99,
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  },
+  "remaining": [
+    "The scalar Apply core is now available through C++/Python, but the contrast panel still has no Apply button. Add a captured command/record/replay path, native worker job/reservation/publication integration and explicit plane/stack/channel/ROI controls, then qualify actual input, recording, cancellation, stale results, busy behavior and Undo/Redo.",
+    "RGB Apply requires independent color-controller reference behavior before enabling it; RGBA is a separate extension. Floating Apply must remain unavailable consistently with ImageJ scalar support.",
+    "Exact upstream slider normalization, histogram/control behavior including log scale and calibration, Set/Reset semantics and complete selection/channel/stack traces remain unqualified. Float64, IEEE-preserving Float32 and packed RGB/RGBA histogram/Auto are not enabled in the current panel.",
+    "Finite legacy automatic range scans and other analysis/editing paths can still acquire pixels synchronously; whole-editor responsiveness remains open.",
+    "Apply admission bounds owned samples/masks/replacement tables/channel-state allowance only. Source/metadata, ROI rasterizer scratch, reader internals and commit/history allocations remain outside the bound; full process/resource/platform acceptance remains open."
+  ]
+}

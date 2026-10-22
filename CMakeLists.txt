@@ -37,7 +37,7 @@ target_sources(imagejxx_core PRIVATE
   src/native/float32_display.cpp
   src/native/channel_display.cpp src/native/channel_display_command.cpp
   src/native/dataset_histogram.cpp src/native/histogram_command.cpp src/native/histogram_job.cpp
-  src/native/auto_contrast.cpp src/native/auto_contrast_job.cpp
+  src/native/auto_contrast.cpp src/native/auto_contrast_job.cpp src/native/contrast_apply.cpp
   src/native/selection_creation.cpp
   src/native/selection_creation_geometry.cpp
   src/native/roi_manager.cpp
@@ -103,12 +103,12 @@ if(MSVC)
   set_source_files_properties(src/native/execution.cpp PROPERTIES COMPILE_OPTIONS /fp:strict)
   set_source_files_properties(src/native/channel_display.cpp src/native/float32_display.cpp PROPERTIES COMPILE_OPTIONS /fp:strict)
   set_source_files_properties(src/native/dataset_histogram.cpp PROPERTIES COMPILE_OPTIONS /fp:strict)
-  set_source_files_properties(src/native/auto_contrast.cpp PROPERTIES COMPILE_OPTIONS /fp:strict)
+  set_source_files_properties(src/native/auto_contrast.cpp src/native/contrast_apply.cpp PROPERTIES COMPILE_OPTIONS /fp:strict)
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
   set_source_files_properties(src/native/execution.cpp PROPERTIES COMPILE_OPTIONS "-ffp-contract=off;-fno-fast-math")
   set_source_files_properties(src/native/channel_display.cpp src/native/float32_display.cpp PROPERTIES COMPILE_OPTIONS "-ffp-contract=off;-fno-fast-math")
   set_source_files_properties(src/native/dataset_histogram.cpp PROPERTIES COMPILE_OPTIONS "-ffp-contract=off;-fno-fast-math")
-  set_source_files_properties(src/native/auto_contrast.cpp PROPERTIES COMPILE_OPTIONS "-ffp-contract=off;-fno-fast-math")
+  set_source_files_properties(src/native/auto_contrast.cpp src/native/contrast_apply.cpp PROPERTIES COMPILE_OPTIONS "-ffp-contract=off;-fno-fast-math")
 endif()
 
 if(IMAGEJXX_BUILD_PYTHON)
@@ -137,7 +137,7 @@ if(IMAGEJXX_BUILD_PYTHON)
   target_sources(_native PRIVATE src/native/planar_annotation_command_bindings.cpp)
   target_sources(_native PRIVATE src/native/saved_roi_geometry_bindings.cpp)
   target_sources(_native PRIVATE src/native/dataset_histogram_bindings.cpp)
-  target_sources(_native PRIVATE src/native/auto_contrast_bindings.cpp)
+  target_sources(_native PRIVATE src/native/auto_contrast_bindings.cpp src/native/contrast_apply_bindings.cpp)
   target_sources(_native PRIVATE src/native/shortcuts_bindings.cpp)
   target_sources(_native PRIVATE src/native/startup_bindings.cpp)
   target_link_libraries(_native PRIVATE imagejxx_core)
@@ -747,6 +747,10 @@ if(BUILD_TESTING)
   target_link_libraries(imagejxx_dataset_histogram_tests PRIVATE imagejxx::core)
   add_test(NAME native_dataset_histogram COMMAND imagejxx_dataset_histogram_tests)
   set_tests_properties(native_dataset_histogram PROPERTIES TIMEOUT 60)
+  add_executable(imagejxx_contrast_apply_tests tests/native/test_contrast_apply.cpp)
+  target_link_libraries(imagejxx_contrast_apply_tests PRIVATE imagejxx_core)
+  add_test(NAME native_contrast_apply COMMAND imagejxx_contrast_apply_tests)
+  set_tests_properties(native_contrast_apply PROPERTIES TIMEOUT 30)
   add_executable(imagejxx_auto_contrast_tests tests/native/test_auto_contrast.cpp)
   target_link_libraries(imagejxx_auto_contrast_tests PRIVATE imagejxx::core)
   add_test(NAME native_auto_contrast COMMAND imagejxx_auto_contrast_tests)
