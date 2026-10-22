@@ -286,6 +286,11 @@ const std::vector<SettingDefinition> &Settings::schema() {
        "Per-document budget for pixel buffers held only by undo/redo. Zero "
        "retains the step limit without a byte limit.",
        SettingKind::Integer, std::int64_t(0), 0, 1048576},
+      {"viewport_cache_mb", "Resources", "Virtual XY cache (MiB)",
+       "Shared decoded XY cache across open virtual documents. Least recently "
+       "used planes are evicted. Provider scratch, caller-held images, "
+       "orthogonal/render caches and GPU textures are separate.",
+       SettingKind::Integer, std::int64_t(128), 1, 1048576},
       {"processing_workers", "Resources", "Processing workers",
        "Maximum simultaneous native processing jobs.", SettingKind::Integer,
        std::int64_t(2), 1, 64},

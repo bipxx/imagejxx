@@ -637,13 +637,9 @@ void Document::admitView(bool orthogonal) const {
 std::shared_ptr<const Image> Document::sharedFrame() const {
   const auto snapshot=nativeSnapshot();const auto &dataset=snapshot.data().dataset;
   const PlanePosition position{snapshot.display().t,snapshot.display().c,snapshot.display().crosshair[2]};
-  if(dataset.has_eager_planes()){auto pixels=dataset.plane(position);frameSource_.reset();framePixels_.reset();return pixels;}
+  if(dataset.has_eager_planes()){auto pixels=dataset.plane(position);viewSlot_->clear();return pixels;}
   admitView();
-  if(framePixels_ && frameSource_ && frameSource_->shares_pixels(dataset) &&
-     framePosition_.t==position.t && framePosition_.c==position.c && framePosition_.z==position.z)return framePixels_;
-  auto pixels=dataset.plane(position); // Validate before replacing a useful cache.
-  frameSource_=dataset;framePosition_=position;framePixels_=std::move(pixels);
-  return framePixels_;
+  return viewCache_->read(viewSlot_,dataset,position);
 }
 const Image &Document::frame() const { return *sharedFrame(); }
 std::string Document::title() const {
@@ -842,6 +838,7 @@ Document Document::snapshot() const {
   Document copy(nativeSnapshot(), WorkerTag{});
   copy.path = path;
   copy.maxViewBytes_=maxViewBytes_;
+  copy.viewCache_->setBudget(viewCache_->budget());
   copy.origin_ =
       origin_ ? origin_ : std::optional<DocumentSnapshot>(nativeSnapshot());
   return copy;

@@ -1,0 +1,292 @@
+{
+  "state": "qualified_functional_increment",
+  "objective_complete": false,
+  "baseline_commit": "697239252a0a559e1b20ec119843770c596b2551",
+  "scope": "Shared bounded decoded XY retention for virtual desktop documents with persisted resource configuration in C++/Python and both ImGui launchers.",
+  "semantics": "Window-owned creator-thread cache gives each frontend one current source/T/C/Z slot. Hits update recency; validated successful misses evict least-recently-used other slots. Weak registrations do not own closed frontends or providers. Eager tables bypass retention. Worker snapshots use independent caches with the captured budget. Caller-held shared images survive eviction. Staged cache slots publish only after successful document adoption; source values are copied before eviction and cache-source publication is statically checked nonallocating.",
+  "limits": "viewport_cache_mb is a positive persisted Resources setting, default 128 MiB. The shared cache counts pixel-vector capacity, conservatively per retained slot. Shape admission rejects oversized XY before provider IO; excess returned vector capacity is rejected before retention. Shrinking settings immediately trims cache retention. Existing per-document decoded-view caps remain. Provider scratch/caches, outstanding caller handles, miss temporaries, allocator/metadata overhead, linked XYZ/readback/display buffers, GPU textures and process RSS are external. This is not a complete aggregate viewport memory bound.",
+  "configuration": "The schema-generated ImGui preferences control and C++ Window.updateSettings / Python Editor.update_settings consume the same setting. Settings writes and invalid updates leave the cache intact on failure. Window.virtualViewCacheInfo / Editor.virtual_view_cache_info return detached creator-thread cache counters. New optional UI source is matched byte-for-byte to its installed facade during qualification.",
+  "verification": "4422 selected Python checks per OS, including ten new cache/preferences checks and 35 settings regressions; ten native suites including the new cache suite, eight session groups, three desktop IO/startup/append regression suites, 36 rank-host cases / 499 checks and two resource groups per OS. Fresh installed SDK consumers verify the new setting and virtual TIFF API. Readers verify 144 existing reports / 27598 raw input frames; no new input cases are claimed. Native tests cover LRU/hits/misses, pre-read and actual-capacity admission, failed reads, immediate shrink, detached handles, weak-slot/provider lifetime, source identity, worker independence, failed document adoption and preference persistence. Python tests verify schema/defaults, detached diagnostics, strict and atomic invalid updates, actual ImGui control rendering and failed preference writes. No complete ImageJ/Fiji source/reference/resource/real-GPU/OS-desktop/platform acceptance.",
+  "profiles": {
+    "windows": {
+      "python_cases": 4422,
+      "new_python_cases": 10,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_suites": 10,
+      "new_cache_suite": 1,
+      "session_groups": 8,
+      "desktop_regression_suites": 3,
+      "rank_host_cases": 36,
+      "rank_host_checks": 499,
+      "resource_groups": 2,
+      "fresh_installed_sdk_consumer": true,
+      "reports": 72,
+      "frames": 13755,
+      "removed_scratch_bytes": 440815703,
+      "archive": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p10v-view-cache001\\windows-scratch001.zip",
+        "bytes": 69316274,
+        "sha256": "e67c70d3b0308ba11c2a76c7565961f4b698447aae9efbf679d6f49a96e81aca"
+      },
+      "evidence": [
+        {
+          "path": "build/p10v-view-cache001/windows-build001/receipt.json",
+          "bytes": 1072,
+          "sha256": "460f8f1d558dcb8d591584f50e2d5e67b5868c5d2438fed1baba3d78691085d1"
+        },
+        {
+          "path": "build/p10v-view-cache001/windows-build002/receipt.json",
+          "bytes": 1287,
+          "sha256": "b0ae97ea1a93b906d33e7cd04f481e522fca832960e95136f3c2736e72dadaa9"
+        },
+        {
+          "path": "build/p10v-view-cache001/windows-build002/native.xml",
+          "bytes": 1920,
+          "sha256": "a100a68daaad84ef94068477fabfa3b2855678d00fcca9398c0438239532bd09"
+        },
+        {
+          "path": "build/p10v-view-cache001/windows-build002/ui-native.xml",
+          "bytes": 1420,
+          "sha256": "dca35835a855e0f9c9e71e830b0fa2c908be211e9141d615088eba8296df13a9"
+        },
+        {
+          "path": "build/p10v-view-cache001/windows-python001/receipt.json",
+          "bytes": 7542,
+          "sha256": "b79acbd424e6b9cfdda087ae3387d38c9e4b335ae021e803b4bf8d042c06a63a"
+        },
+        {
+          "path": "build/p10v-view-cache001/windows-python001/pytest.xml",
+          "bytes": 660807,
+          "sha256": "67f2e8de37a52cbd5d0cea107eb3515cf3db2a03ffd1462e5958e83e1b4b1644"
+        },
+        {
+          "path": "build/p10v-view-cache001/windows-extra001/receipt.json",
+          "bytes": 845,
+          "sha256": "db11ee7f0a3deafb232282cdd2051b6e26a8170eda48dc3651f1ce39d9e630bb"
+        },
+        {
+          "path": "build/p10v-view-cache001/windows-sdk001/receipt.json",
+          "bytes": 457,
+          "sha256": "83d300b672b39c008fa6f44f3cd081c0425bf0810d3681f2e6c6412672b4c6b6"
+        },
+        {
+          "path": "build/p10v-view-cache001/windows-capture001.json",
+          "bytes": 13528,
+          "sha256": "507dccc4008896b3a881f14af1a4e07e58221e17a3a0abfd47d5fccd0f0ae296"
+        },
+        {
+          "path": "build/p10v-view-cache001/windows-evidence001.json",
+          "bytes": 31245,
+          "sha256": "ff542835908e5a098332231805ac284df4a51e851145b703afbb9d93fee10df2"
+        },
+        {
+          "path": "build/p10v-view-cache001/windows-products001.json",
+          "bytes": 7509,
+          "sha256": "e79d45a8588a99c3b6cd1693a6dd0457a067e909390a8488d1c9efde2412ecdc"
+        },
+        {
+          "path": "build/p10v-view-cache001/windows-cleanup001.json",
+          "bytes": 1637070,
+          "sha256": "a954b66f60e29a350ffdba1649402e9b1aa4ad422a56e544c0d5912dee497efa"
+        },
+        {
+          "path": "build/p10v-view-cache001/windows-verified001.json",
+          "bytes": 196,
+          "sha256": "dff1ac128b6a7ccf17ac9afd11bb5b91a987570727d0043b3e01b9ebe8a98c53"
+        }
+      ]
+    },
+    "linux": {
+      "python_cases": 4422,
+      "new_python_cases": 10,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_suites": 10,
+      "new_cache_suite": 1,
+      "session_groups": 8,
+      "desktop_regression_suites": 3,
+      "rank_host_cases": 36,
+      "rank_host_checks": 499,
+      "resource_groups": 2,
+      "fresh_installed_sdk_consumer": true,
+      "reports": 72,
+      "frames": 13843,
+      "removed_scratch_bytes": 439898447,
+      "archive": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p10v-view-cache001/linux-scratch001.zip",
+        "bytes": 76970614,
+        "sha256": "1edfbcb3b329fafbf7892111e07eddf2c58ca3500c0bee5e94eb7bfc1ac8435f"
+      },
+      "evidence": [
+        {
+          "path": "build/p10v-view-cache001/linux-build001/receipt.json",
+          "bytes": 1032,
+          "sha256": "c2cfc89ef47bd647cef5837c4daf02420c30e1fc617b20396049b0c9ffc22a22"
+        },
+        {
+          "path": "build/p10v-view-cache001/linux-build002/receipt.json",
+          "bytes": 1245,
+          "sha256": "26427f28f4690328fb153ddcb16c6b2f853122a197f55677831dd6db9ae929df"
+        },
+        {
+          "path": "build/p10v-view-cache001/linux-build002/native.xml",
+          "bytes": 1890,
+          "sha256": "d5c2594f7da5dec2001a7c31d73f3714041d939c1c3147015de086e6db8418cb"
+        },
+        {
+          "path": "build/p10v-view-cache001/linux-build002/ui-native.xml",
+          "bytes": 1430,
+          "sha256": "44a623e6b1cddaf141325b6dd2178b5de255381ea12e8cc17299b9567e1e3884"
+        },
+        {
+          "path": "build/p10v-view-cache001/linux-python001/receipt.json",
+          "bytes": 7254,
+          "sha256": "97127710ecb042d030e1b37aba7603abd7f1c810f3bfeed831e1a8aa26519345"
+        },
+        {
+          "path": "build/p10v-view-cache001/linux-python001/pytest.xml",
+          "bytes": 660808,
+          "sha256": "587e88f13f56f0688400bf812d8437fca28a52ebeb19788205fa92ba6161fbf5"
+        },
+        {
+          "path": "build/p10v-view-cache001/linux-extra001/receipt.json",
+          "bytes": 829,
+          "sha256": "81d65c4f258818946b544e7685fa32ee53e513389a34eb112ea2295daea974ec"
+        },
+        {
+          "path": "build/p10v-view-cache001/linux-sdk001/receipt.json",
+          "bytes": 412,
+          "sha256": "e57cb5c48dbddbd5852f0b4b3f44843efcc92699f25c9780fdd23f3e0ff10820"
+        },
+        {
+          "path": "build/p10v-view-cache001/linux-capture001.json",
+          "bytes": 11766,
+          "sha256": "ecb39c13e55e8c71c87d87973acc6f57c5fc841c52758c1cf6cebce738f3eecd"
+        },
+        {
+          "path": "build/p10v-view-cache001/linux-evidence001.json",
+          "bytes": 28793,
+          "sha256": "4f0e48c9ace26eafabe60e67c0b4feb072ed4c401f4d0c96fe92226977c3f45c"
+        },
+        {
+          "path": "build/p10v-view-cache001/linux-products001.json",
+          "bytes": 7224,
+          "sha256": "e0c6fe1d74088e9daa85c4119945aa4a947a43505edfc4c650a3b244337f8500"
+        },
+        {
+          "path": "build/p10v-view-cache001/linux-cleanup001.json",
+          "bytes": 1419642,
+          "sha256": "36bb670fb004497ae5d1a724c27d0d98ff8fc91bd6cfa49ea16eac31ddab8438"
+        },
+        {
+          "path": "build/p10v-view-cache001/linux-verified001.json",
+          "bytes": 190,
+          "sha256": "1181d369f7a52489acf5b5fd4d9e28b7d2027afc1e98ecc6172d955de30fa45d"
+        }
+      ]
+    }
+  },
+  "source": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 106304,
+      "sha256": "0b42604496e2eab810725083a878556db54fb78cb7001b64847f39a1e1d84eea"
+    },
+    {
+      "path": "src/desktop/desktop.hpp",
+      "bytes": 13464,
+      "sha256": "eac4cf4e88060af24c122445ecbd5a55e32585a860b50e53e233c3a263740b54"
+    },
+    {
+      "path": "src/desktop/document.cpp",
+      "bytes": 74923,
+      "sha256": "c9ecd45ce88b6c325a8895dac7c3ea8fae0396a416771ed6bef3ccf18691739e"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 52746,
+      "sha256": "c850888f820481e1000cf7597eb0aa9c7f5059a695d82df6ee18cc015bcea982"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 677631,
+      "sha256": "a3264f7a16b9fb6e0c64bb198e41ce82aae0e696cd03156fdb518b493386aaeb"
+    },
+    {
+      "path": "src/desktop/window.hpp",
+      "bytes": 14938,
+      "sha256": "d77233021162bd2a859f706dedf72b227fdcfe07b059baf35dc6b7c0c5d7ada3"
+    },
+    {
+      "path": "src/native/settings.cpp",
+      "bytes": 23715,
+      "sha256": "b66b0b47df9f67f2c8d25c872e70727f72763cc00464290492a80baee2fa33ec"
+    },
+    {
+      "path": "src/desktop/virtual_view_cache.hpp",
+      "bytes": 3817,
+      "sha256": "af50714720aa6ff469e5eba08676322477bd0455429f572f14ba5955eab32bc2"
+    },
+    {
+      "path": "tests/native/test_virtual_view_cache.cpp",
+      "bytes": 6028,
+      "sha256": "9cecac41826f211654c77a5caa693b1f52223b3fa6adcadba348a74cd2eee737"
+    },
+    {
+      "path": "src/imagejxx/ui/app.py",
+      "bytes": 31080,
+      "sha256": "cea7e4b2855fd61f375d9cd7198b8cbc6bc1d1e8a76f673f9bb20a75623dec63"
+    },
+    {
+      "path": "tests/python/test_virtual_view_cache.py",
+      "bytes": 2369,
+      "sha256": "0669cc62297491f52c01faf4f32e5e5033f540d62d48045d6c1021a828133833"
+    }
+  ],
+  "licenses": {
+    "path": "build/p10v-view-cache001/licenses001.log",
+    "bytes": 62,
+    "sha256": "939b266b092bfdc37d1814f66b75a21469497e36e30a2050805031da4f97b417"
+  },
+  "registration": {
+    "path": "build/p10v-view-cache001/registration001.json",
+    "bytes": 218,
+    "sha256": "768427ebd581ce069969d84ab38452330565a62c30d9174f24ac4ce600f01a0f"
+  },
+  "attempts": "First builds/native suites passed both OS. A first Linux Python smoke run found the late-added optional Python facade missing from its earlier install; the component was reinstalled and all 45 selected cache/settings checks passed. Review then staged cache attachment transactionally, preserved the source value before eviction and added a rejecting-adoption test. Final build002/capture001/python001/extra001/SDK001 are authoritative. First source variants, receipts/logs and failed smoke evidence are preserved. ZIP CRC and each member SHA are verified before exact owned scratch/nonce deletion; final products, SDK consumers and useful caches are preserved.",
+  "existing_gate": {
+    "state": "open",
+    "reason": "Existing Auto Contrast producer_source fingerprint mismatch; no repin or gate relaxation.",
+    "producer": {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 14135,
+      "sha256": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    },
+    "log": {
+      "path": "build/p10v-view-cache001/plan001.log",
+      "bytes": 151,
+      "sha256": "5741e4b9133f374434cac8973e1f1c6131200e632958a012913a739c28d47006"
+    },
+    "final_log": {
+      "path": "build/p10v-view-cache001/plan002.log",
+      "bytes": 151,
+      "sha256": "5741e4b9133f374434cac8973e1f1c6131200e632958a012913a739c28d47006"
+    }
+  },
+  "scope_status_counts": {
+    "total": 99,
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  },
+  "remaining": [
+    "Metadata-only ordinary canvas geometry and validated texture reuse, avoiding repeated provider reads when the visible working set exceeds the XY cache budget.",
+    "Aggregate linked XYZ, display/readback/cache/upload buffers and GPU texture budgets; exact whole-process or RSS accounting is not supplied.",
+    "Other file-backed formats, tiled/pyramid storage and caches, incremental uploads, asynchronous viewport reads and stale-result rejection.",
+    "Virtual output propagation, materialization/workspace serialization, complete provider/reference/resource/platform qualification and every original inventory requirement.",
+    "Existing Auto Contrast producer fingerprint gate remains open; application.hpp is unchanged and no fingerprint is repinned."
+  ]
+}

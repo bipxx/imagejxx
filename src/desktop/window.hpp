@@ -77,6 +77,7 @@ public:
   std::shared_ptr<Document> document() const;
   std::shared_ptr<Document> documentById(std::uint64_t id = 0) const;
   Json documentInfo(std::uint64_t id = 0) const;
+  Json virtualViewCacheInfo() const;
   DocumentSnapshot nativeSnapshot(std::uint64_t id = 0) const;
   void setNativeDisplay(DisplayState display, std::uint64_t id = 0);
   void enableChannelDisplay(std::uint64_t documentId = 0);

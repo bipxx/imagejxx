@@ -1,4 +1,5 @@
 #pragma once
+#include "virtual_view_cache.hpp"
 #include <cstddef>
 #include <filesystem>
 #include <functional>
@@ -237,9 +238,8 @@ private:
   // Virtual State.frames stays empty; metadata projection never acquires pixels.
   // One current XY plane is retained independently of metadata/display changes.
   std::size_t maxViewBytes_=128ULL*1024*1024;
-  mutable std::optional<Dataset> frameSource_;
-  mutable PlanePosition framePosition_;
-  mutable std::shared_ptr<const Image> framePixels_;
+  std::shared_ptr<VirtualViewCache> viewCache_=std::make_shared<VirtualViewCache>();
+  std::shared_ptr<VirtualViewCache::Slot> viewSlot_=viewCache_->slot();
   mutable State cachedState_;
 };
 using Documents = std::vector<std::shared_ptr<Document>>;

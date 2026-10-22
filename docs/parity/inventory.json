@@ -465,7 +465,9 @@
         "documentation": [
           "docs/IMPLEMENTATION.md",
           "docs/PLAN.md",
-          "docs/DESKTOP.md"
+          "docs/DESKTOP.md",
+          "docs/parity/reviews/p10v-view-cache001.json",
+          "docs/SCIENTIFIC_TIFF_SERVICE.md"
         ],
         "implementation": [
           "include/imagejxx/settings.hpp",
@@ -496,7 +498,8 @@
           "src/native/operations.cpp",
           "src/native/operation_internal.hpp",
           "src/desktop/commands.cpp",
-          "src/desktop/desktop.hpp"
+          "src/desktop/desktop.hpp",
+          "src/desktop/virtual_view_cache.hpp"
         ],
         "tests": [
           "tests/native/test_settings.cpp",
@@ -519,7 +522,9 @@
           "tests/python/test_jobs.py",
           "examples/cpp/jobs.cpp",
           "scripts/benchmark_kernels.py",
-          "scripts/check_distribution.py"
+          "scripts/check_distribution.py",
+          "tests/native/test_virtual_view_cache.cpp",
+          "tests/python/test_virtual_view_cache.py"
         ]
       },
       "id": "G010",
@@ -530,6 +535,7 @@
       ],
       "name": "Resource settings",
       "remaining": [
+        "A persisted window-wide decoded virtual XY budget, capacity accounting, LRU eviction and detached counters are functional. Aggregate XYZ/display/readback/texture/upload/provider accounting and full resource qualification remain open.",
         "Retain consumed undo budgets, worker limits, prompt queued-capture release, parameter-dependent filter workspace admission and visible reservation usage; finish exact managed accounting across argument freezing/admission, queued captures, every scratch/output path, retained results/documents/history, readers, render buffers and CPU/GPU caches.",
         "Complete pinned resource options, large-data enforcement and platform/performance fixtures; reservations are not whole-process memory measurement."
       ],
@@ -541,7 +547,8 @@
         "m1-application-controller-windows-2026-10-10",
         "m1-desktop-native-owner-windows-2026-10-10",
         "m1-jobs-feedback-windows-2026-10-10",
-        "m1-job-resource-lifecycle-windows-2026-10-10"
+        "m1-job-resource-lifecycle-windows-2026-10-10",
+        "p10v.view-cache.functional.001"
       ]
     },
     {
@@ -1630,7 +1637,8 @@
           "docs/IMPLEMENTATION.md",
           "docs/parity/reviews/p10t-virtual-desktop001.json",
           "docs/parity/reviews/p10u-virtual-tiff001.json",
-          "docs/SCIENTIFIC_TIFF_SERVICE.md"
+          "docs/SCIENTIFIC_TIFF_SERVICE.md",
+          "docs/parity/reviews/p10v-view-cache001.json"
         ],
         "implementation": [
           "include/imagejxx/dataset.hpp",
@@ -1648,7 +1656,9 @@
           "include/imagejxx/virtual_io.hpp",
           "src/io/virtual.cpp",
           "src/native/controlled_source_internal.hpp",
-          "src/desktop/scientific_io_panel.cpp"
+          "src/desktop/scientific_io_panel.cpp",
+          "src/desktop/virtual_view_cache.hpp",
+          "src/native/settings.cpp"
         ],
         "tests": [
           "tests/native/test_dataset.cpp",
@@ -1665,7 +1675,9 @@
           "tests/python/test_virtual_tiff_failures.py",
           "tests/python/test_virtual_tiff_control.py",
           "tests/python/test_virtual_tiff_control_edges.py",
-          "tests/python/test_virtual_tiff_ui.py"
+          "tests/python/test_virtual_tiff_ui.py",
+          "tests/native/test_virtual_view_cache.cpp",
+          "tests/python/test_virtual_view_cache.py"
         ]
       },
       "id": "G041",
@@ -1676,7 +1688,7 @@
       ],
       "name": "Large datasets",
       "remaining": [
-        "Virtual TIFF API/import, source guards, regional XYZ, replay/startup and worker histograms are functional. Other file-backed formats, pyramid storage, tiled/incremental viewport upload, asynchronous viewport reads and aggregate cache/eviction budgets. Virtual output propagation and explicit materialization/workspace serialization; public session encoding/estimation remains eager-only. Complete provider/resource/platform qualification and unsupported histogram numeric/calibration/color domains and upstream conventions."
+        "Virtual TIFF/import, source guards, regional XYZ, replay/startup and worker histograms are functional; decoded XY retention is now bounded across open frontends. Metadata-only ordinary canvas geometry and validated texture reuse, avoiding repeated provider reads when the visible working set exceeds the XY cache budget. Aggregate linked XYZ, display/readback/cache/upload buffers and GPU texture budgets; exact whole-process or RSS accounting is not supplied. Other file-backed formats, tiled/pyramid storage and caches, incremental uploads, asynchronous viewport reads and stale-result rejection. Virtual output propagation, materialization/workspace serialization, complete provider/reference/resource/platform qualification and every original inventory requirement."
       ],
       "required_work": "Missing virtual/tiled/pyramid storage, bounded cache, incremental upload and responsive navigation while loading",
       "status": "in_progress",
@@ -1684,7 +1696,8 @@
         "m1-m3-foundation-windows-2026-10-10",
         "m1-document-transactions-windows-2026-10-10",
         "p10t.virtual-desktop.functional.001",
-        "p10u.virtual-tiff.functional.001"
+        "p10u.virtual-tiff.functional.001",
+        "p10v.view-cache.functional.001"
       ]
     },
     {
@@ -181142,6 +181155,29 @@
         "total": 4377
       },
       "scope": "4377 selected Python checks per OS, including 845 new API and ten new input checks; eight native suites, eight session groups, three desktop IO/startup/append regression suites, 36 rank-host cases / 499 checks and two resource groups per OS. Fresh installed optional-IO SDK consumers pass. Readers verify 144 reports / 27578 raw input frames, including 20 new reports / 980 frames. Tests cover supported TIFF carriers/codecs/endian/predictors, TCZYXS mapping, intersected-block regions, linked XYZ, bounds, concurrent reads, deferred corrupt/nonfinite failures, source replacement/removal/mutation, detached snapshots, V16 grammar/inert replay/fresh consent, atomic startup, cross-extension checkpoints/cancellation, original Python callback exceptions and reentrant reads. No complete ImageJ/Fiji source/reference/resource/real-GPU/OS-desktop/platform acceptance."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-22",
+      "id": "p10v.view-cache.functional.001",
+      "identity": {
+        "qualification": {
+          "bytes": 14199,
+          "path": "docs/parity/reviews/p10v-view-cache001.json",
+          "sha256": "f24e5509b2aae26fed88a8ea70bb05e66db81b710e491ce166287156de037eb4"
+        }
+      },
+      "platform": "Windows/Linux C++/Python and shared ImGui bounded virtual XY cache",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 4422,
+        "report": "build/p10v-view-cache001/windows-python001/pytest.xml",
+        "skipped": 0,
+        "total": 4422
+      },
+      "scope": "4422 selected Python checks per OS, including ten new cache/preferences checks and 35 settings regressions; ten native suites including the new cache suite, eight session groups, three desktop IO/startup/append regression suites, 36 rank-host cases / 499 checks and two resource groups per OS. Fresh installed SDK consumers verify the new setting and virtual TIFF API. Readers verify 144 existing reports / 27598 raw input frames; no new input cases are claimed. Native tests cover LRU/hits/misses, pre-read and actual-capacity admission, failed reads, immediate shrink, detached handles, weak-slot/provider lifetime, source identity, worker independence, failed document adoption and preference persistence. Python tests verify schema/defaults, detached diagnostics, strict and atomic invalid updates, actual ImGui control rendering and failed preference writes. No complete ImageJ/Fiji source/reference/resource/real-GPU/OS-desktop/platform acceptance."
     }
   ]
 }

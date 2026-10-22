@@ -443,3 +443,41 @@ again. Virtual file-backed sources participate in the existing worker histogram
 and linked XYZ viewer paths. Other file formats, pyramid/tile caching and
 asynchronous viewport loading, virtual output propagation, workspace
 serialization/materialization choices and full platform qualification remain open.
+
+
+## Shared virtual XY cache
+
+Preferences → Resources → **Virtual XY cache (MiB)** sets a window-wide
+decoded XY retention budget, defaulting to 128 MiB. The same persisted setting
+is available through C++ `Window::updateSettings` and Python
+`Editor.update_settings(viewport_cache_mb=128)`. Reducing the budget immediately
+evicts least recently used entries. Increasing it lets more document planes stay
+resident. The budget is positive; invalid updates leave settings and cache intact.
+
+Virtual documents share this cache, including reviewed TIFF startup/import.
+Each facade has one current XY slot, keyed by provider identity and T/C/Z.
+Metadata and camera changes reuse its pixels. A hit makes that slot most recently
+used; a successful miss evicts the oldest other slots as needed. Requested planes
+that cannot fit are rejected before the provider call. Providers that return
+excess vector capacity are rejected before retention. Failed reads preserve useful
+prior entries. Eager plane tables bypass the cache.
+
+The budget counts retained pixel-vector capacity in bytes, conservatively counting
+separately retained slots even when providers share buffers. It does not bound
+provider scratch/caches, temporary miss buffers, externally held image handles,
+allocator overhead, metadata, linked XYZ/readback/display caches, GPU textures,
+or process RSS. Per-document decoded view limits still apply. A worker snapshot
+gets an independent cache with the captured limit, so worker activity cannot
+evict live UI entries. An external shared image handle remains valid after
+eviction; borrow `frame()` references only until the next cache-affecting action.
+
+Python `Editor.virtual_view_cache_info` and native
+`Window::virtualViewCacheInfo()` return detached budget/retained-byte/entry/eviction
+counters. These counters describe this cache alone. Canvas geometry still requests
+CPU frames on each draw; when visible planes exceed the budget, eviction can
+cause repeated reads even with current textures. Metadata-only geometry and
+texture reuse remain a required follow-up before background viewport loading. Document closure does not
+leave ownership in the cache: weak slots release their provider and image when
+the last owning facade goes away. Remaining work includes aggregate XYZ/display/
+texture accounting, tiled/pyramid policies, asynchronous reads and stale-result
+rejection. These remain required for complete large-dataset parity.

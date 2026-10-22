@@ -788,6 +788,7 @@ std::string resultText(const Json &value, const Settings &settings) {
 } // namespace
 struct Window::Impl {
   Window &owner;
+  std::shared_ptr<VirtualViewCache> viewCache=std::make_shared<VirtualViewCache>();
   struct LaunchAppendItem {
     std::string path;
     std::shared_ptr<Document> document;
@@ -1314,6 +1315,7 @@ struct Window::Impl {
     const JobLimits limits{
         static_cast<std::size_t>(settings.integer("processing_workers")),
         settingBytes(settings, "processing_memory_mb"), 64};
+    const auto nextCacheBytes=settingBytes(settings,"viewport_cache_mb");
     const auto nextFps = settings.number("animation_fps");
     const auto nextBrush = static_cast<float>(settings.number("brush_width"));
     const auto nextShowRois = settings.boolean("show_rois");
@@ -1352,6 +1354,7 @@ struct Window::Impl {
       foreground[c] = fg[c] / 255.f;
       background[c] = bg[c] / 255.f;
     }
+    viewCache->setBudget(nextCacheBytes);
     shortcutsRearmed = false;
   }
   void consumeSettings() { applyPreferences(preferenceState, false); }
@@ -4906,6 +4909,7 @@ void Window::addDocument(std::shared_ptr<Document> d) {
   if (controller_->contains(d->id))
     throw std::invalid_argument("Document is already open");
   std::vector<DocumentAdoption> adoptions;
+  auto viewSlot=impl->viewCache->slot();
   adoptions.push_back(impl->prepareAdoption(d, true));
   const auto policy = Impl::historyPolicy(impl->preferenceState.settings);
   documents_.reserve(documents_.size() + 1);
@@ -4926,6 +4930,7 @@ void Window::addDocument(std::shared_ptr<Document> d) {
     documentAdapters_.erase(d->id);
     throw;
   }
+  d->viewSlot_=std::move(viewSlot);d->viewCache_=impl->viewCache;
   d->bindPublishedController(controller_);
   documents_.push_back(std::move(d));
   impl->startupUserOpened = true;
@@ -4949,6 +4954,8 @@ HistoryPolicyAdoption Window::attachStartupDocuments(const Documents &documents,
     throw std::invalid_argument("Wait for the current edit");
   auto nextAdapters = documentAdapters_;
   std::vector<DocumentAdoption> owners;
+  std::vector<std::shared_ptr<VirtualViewCache::Slot>> viewSlots;
+  viewSlots.reserve(documents.size());
   owners.reserve(documents.size());
   if (applyDefaults.size() != documents.size())
     throw std::invalid_argument("Startup default policy count differs");
@@ -4957,6 +4964,7 @@ HistoryPolicyAdoption Window::attachStartupDocuments(const Documents &documents,
     if (!document || controller_->contains(document->id) ||
         !nextAdapters.emplace(document->id, document).second)
       throw std::invalid_argument("Session document is already attached or invalid");
+    viewSlots.push_back(impl->viewCache->slot());
     owners.push_back(impl->prepareAdoption(document, applyDefaults[i]));
   }
   documents_.reserve(documents_.size() + documents.size());
@@ -4982,7 +4990,9 @@ HistoryPolicyAdoption Window::attachStartupDocuments(const Documents &documents,
     throw;
   }
   documentAdapters_.swap(nextAdapters);
+  std::size_t viewIndex=0;
   for (const auto &document : documents) {
+    document->viewSlot_=std::move(viewSlots[viewIndex++]);document->viewCache_=impl->viewCache;
     document->bindPublishedController(controller_);
     documents_.push_back(document);
   }
@@ -5025,6 +5035,10 @@ void Window::setActiveIndex(int index) {
 void Window::addNativeDocument(std::shared_ptr<imagejxx::Document> document) {
   checkThread();
   addDocument(std::make_shared<Document>(std::move(document)));
+}
+Json Window::virtualViewCacheInfo() const {
+  checkThread();const auto &cache=*impl->viewCache;
+  return {{"budget_bytes",cache.budget()},{"retained_bytes",cache.bytes()},{"entries",cache.entries()},{"evictions",cache.evictions()}};
 }
 void Window::addVirtualDocument(std::shared_ptr<imagejxx::Document> document,std::size_t maxViewBytes) {
   checkThread();

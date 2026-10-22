@@ -109,6 +109,11 @@ class Editor:
         return Settings(json.loads(self._editor.settings()))
 
     @property
+    def virtual_view_cache_info(self):
+        """Detached decoded XY cache counters; external handles/render memory excluded."""
+        return json.loads(self._editor.virtual_view_cache_info())
+
+    @property
     def shortcut_profile(self):
         """Return the immutable native profile applied to this editor."""
         return self._editor.shortcut_profile()

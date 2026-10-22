@@ -829,6 +829,7 @@ PYBIND11_MODULE(_desktop, m) {
            py::arg("document_id") = 0)
       .def("native_document", &Window::nativeDocument,
            py::arg("document_id") = 0)
+      .def("virtual_view_cache_info",[](const Window &w){return w.virtualViewCacheInfo().dump();})
       .def("add_native_document", &Window::addNativeDocument,
            py::arg("document"))
       .def("add_virtual_document", [](Window &w,std::shared_ptr<imagejxx::Document> d,py::handle cap){

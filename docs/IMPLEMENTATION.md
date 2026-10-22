@@ -1,5 +1,24 @@
 # Implementation progress
 
+**Shared virtual XY cache checkpoint, 2026-10-22 (work in progress):**
+Open virtual documents now share a persisted decoded XY retention budget with
+least-recently-used eviction. Preferences → Resources exposes Virtual XY cache
+(MiB); C++/Python consume the same setting and expose detached counters. Capacity
+admission, failed reads, shrinking budgets, provider lifetime, independent worker
+caches and atomic document attachment are covered. Caller-held images survive
+eviction. Windows/Linux each pass 4,422 selected Python checks (ten new), ten
+native suites, eight session groups, three desktop regression suites, 36 rank-host
+cases / 499 checks, two resource groups and fresh installed SDK consumers.
+Readers verify 144 existing reports / 27,598 raw input frames; all 1,297 input
+registrations remain unchanged. Verified cleanup removes 880,714,150 scratch bytes
+and preserves final products/evidence. See [cache configuration and limits](SCIENTIFIC_TIFF_SERVICE.md#shared-virtual-xy-cache)
+and [the scoped receipt](parity/reviews/p10v-view-cache001.json).
+Next: metadata-only canvas geometry and texture reuse under cache pressure;
+then XYZ/display/readback/texture and upload accounting, followed by asynchronous
+viewport reads with stale-result rejection. Provider
+scratch, external handles and whole-process memory remain separate. All99 stays
+47 in progress / 52 open / 0 complete; the Auto Contrast gate remains open.
+
 **Virtual TIFF import checkpoint, 2026-10-22 (work in progress):**
 C++/Python and both ImGui launchers now open supported classic/BigTIFF inputs
 virtually, decoding requested planes or intersected regions on demand. Reviewed
