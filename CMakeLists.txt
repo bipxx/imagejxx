@@ -1089,6 +1089,14 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     target_link_libraries(imagejxx_desktop PRIVATE comdlg32 gdi32)
   endif()
   if(BUILD_TESTING)
+    add_executable(imagejxx_canvas_reads_tests tests/native/test_canvas_reads.cpp)
+    target_link_libraries(imagejxx_canvas_reads_tests PRIVATE imagejxx_desktop)
+    add_test(NAME desktop_canvas_reads COMMAND ${CMAKE_COMMAND}
+      -DTEST_EXECUTABLE=$<TARGET_FILE:imagejxx_canvas_reads_tests>
+      -DWORK_ROOT=${CMAKE_CURRENT_BINARY_DIR}/canvas-reads-tests
+      -DTEST_TIMEOUT_SECONDS=30
+      -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/RunOwnedFixtureTest.cmake)
+    set_tests_properties(desktop_canvas_reads PROPERTIES TIMEOUT 35)
     add_executable(imagejxx_virtual_view_cache_tests tests/native/test_virtual_view_cache.cpp)
     target_link_libraries(imagejxx_virtual_view_cache_tests PRIVATE imagejxx_desktop)
     add_test(NAME desktop_virtual_view_cache COMMAND ${CMAKE_COMMAND}

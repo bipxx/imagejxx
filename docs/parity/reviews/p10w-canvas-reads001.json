@@ -1,0 +1,333 @@
+{
+  "state": "qualified_functional_increment",
+  "objective_complete": false,
+  "baseline_commit": "73496ff39abd85084c42f85262cdc43cf95086c7",
+  "scope": "Metadata-only ordinary canvas/properties/annotation geometry and validated render-cache reuse after virtual CPU-plane eviction in C++/Python and both shared ImGui launchers.",
+  "semantics": "Texture/readback validity is checked before acquiring scalar source/preview planes. Metadata supplies geometry and properties. Real rebuilds retain the source image throughout render/upload. Canvas hover/picker reads are deferred, retaining a source snapshot and explicit T/C/Z captured before input publication. Metadata or position changes later in the frame cannot retarget that pixel accessor. Cache misses still use decoded-view admission and the shared XY retention budget. Actual changed/dirty render keys, diagnostic readback requests and recreated GL contexts continue to rebuild.",
+  "verification": "5001 selected Python checks per OS (4422 base and 579 additional channel checks); eleven native suites including the new canvas suite, eight session groups, three desktop IO/startup/append suites, 36 rank-host cases / 499 checks and two resource groups per OS. The new native suite additionally passes hidden OpenGL and recreated-context runs. It verifies zero provider reads for geometry/properties even with failing sources; visited-tab rendering, active-plane eviction under a 1 MiB budget, stable cached RGB without further reads, deferred hover reacquisition and the independently expected sample 772. Fresh installed SDK consumers pass; public dataset/settings headers and core archive are byte-identical to the preceding qualified prefixes. Readers verify 296 existing reports / 39273 raw input frames; all 1297 input registrations stay unchanged. No complete ImageJ/Fiji source/reference/resource/real-GPU/OS-desktop/platform acceptance.",
+  "profiles": {
+    "windows": {
+      "python_cases": 5001,
+      "base_python_cases": 4422,
+      "channel_python_cases": 579,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_suites": 11,
+      "new_canvas_suite": 1,
+      "hidden_gl_contexts": 2,
+      "session_groups": 8,
+      "desktop_regression_suites": 3,
+      "rank_host_cases": 36,
+      "rank_host_checks": 499,
+      "resource_groups": 2,
+      "fresh_installed_sdk_consumer": true,
+      "unchanged_public_core": {
+        "include/imagejxx/dataset.hpp": "a9cbf88d67730ac64521f9da87db2c1c68651893560f40cf58ebd1e689acb057",
+        "include/imagejxx/settings.hpp": "13d186df5c2ea0d00975461215b68144e65ebf36d35dc8158a1292280e4a518e",
+        "lib/imagejxx_core.lib": "a85128ac3ae630368fb4b2ded9b7f7e2fbf9cf005454a2cf5de8f73f4e7fca7e"
+      },
+      "reports": 148,
+      "frames": 19586,
+      "removed_scratch_bytes": 1060411210,
+      "archive": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p10w-canvas-reads001\\windows-scratch001.zip",
+        "bytes": 196694089,
+        "sha256": "1f0b49e0b5101092d7e51971deeb9abde88d657f9f588c6ea1f3c7f084ca7c2a"
+      },
+      "evidence": [
+        {
+          "path": "build/p10w-canvas-reads001/windows-build001/core-ready.json",
+          "bytes": 458,
+          "sha256": "3ee5d40b167ad77d3b4ce77e77b00a52bbbf8133e8edf3293f0b0d68035d7b85"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/windows-build001/ui-native.xml",
+          "bytes": 1911,
+          "sha256": "09e068d8892f2696478f56501d56991099e170093a0ffd5e8778172a060bb6db"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/windows-build002/receipt.json",
+          "bytes": 458,
+          "sha256": "e84e9302928e49f71e658a22db6ce538f76ffa45d70c884d6a3930f0d2f3cfe4"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/windows-build002/native.xml",
+          "bytes": 1922,
+          "sha256": "65206cd9655db8f3bf903e81a1c1ba5124642853dc14314066e775539d32d7de"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/windows-build002/ui-native.xml",
+          "bytes": 1800,
+          "sha256": "73f05ec3c2be193421ecc6c821454f13623d2d13663ad9802ca9ec6dfc958f36"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/windows-python001/receipt.json",
+          "bytes": 7552,
+          "sha256": "ff957bd872766118bfa448978b8a3378a4b3b9d94794193c9f53cef04a9a012b"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/windows-python001/pytest.xml",
+          "bytes": 660808,
+          "sha256": "33679146e46fe5694d22665bea2d600fd74a87c3194b91da0a13a8c3ddd2a674"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/windows-channels002/receipt.json",
+          "bytes": 2820,
+          "sha256": "67b40452d76396d12c69575db15367a18f29251e123f30e27ad1648b7295c6c1"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/windows-channels002/pytest.xml",
+          "bytes": 79470,
+          "sha256": "0b67ec4d03ad0f41fa8e53f23faf4ed0a26d56c772fc13bfe111cc16a3253dc5"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/windows-channel-env002/receipt.json",
+          "bytes": 294,
+          "sha256": "a644892d5573010ed1fa0b9c613be5ab4d18dc02e113309a656e48ca1f665c04"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/windows-channel-capture001.json",
+          "bytes": 14338,
+          "sha256": "0e380ed3eb3457c08870d7503b05a604e6083a4dd6ef5fed00dd737aac9e81f2"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/windows-extra001/receipt.json",
+          "bytes": 956,
+          "sha256": "228d7562b7430a1fc669757f585357177cec2e2df75c3cde1abca7f72e49a299"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/windows-extra001/canvas-gl.log",
+          "bytes": 96,
+          "sha256": "d9b08d63f23c4c1f6bc8776602cee3ab03c5b3f23a62feedf4338a495838b8b4"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/windows-sdk001/receipt.json",
+          "bytes": 461,
+          "sha256": "dccd70548c47eea41f15001dea1eeecd4000a709084f7f14ea653d6298005e09"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/windows-capture001.json",
+          "bytes": 13708,
+          "sha256": "17b76cbf58e22ee7fbf7f43007c936f30a852473699c3bf712d41f93743fd328"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/windows-evidence001.json",
+          "bytes": 63681,
+          "sha256": "f888e72a6041d3e4c275be75c80142ed4fdbd8efa014bdf09a30cda08340e860"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/windows-products001.json",
+          "bytes": 9039,
+          "sha256": "1c0a4bc2ca0beb215b51523dd7a968103f01e0a724d41d175924157c10c16747"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/windows-cleanup001.json",
+          "bytes": 1755316,
+          "sha256": "dfeca78e13007895fc5d6ea54701f74713e158b3a1bb58250414b79a44376661"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/windows-verified001.json",
+          "bytes": 196,
+          "sha256": "4bc7faea602182292ef7a0d12ea0a223127541552bd1282ce97df67e9037033c"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/windows-core001.json",
+          "bytes": 359,
+          "sha256": "4620cd0c8a4e914e4887a337410c6f321bf88b30e0becf01e6c10a1dd69bcef5"
+        }
+      ]
+    },
+    "linux": {
+      "python_cases": 5001,
+      "base_python_cases": 4422,
+      "channel_python_cases": 579,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "native_suites": 11,
+      "new_canvas_suite": 1,
+      "hidden_gl_contexts": 2,
+      "session_groups": 8,
+      "desktop_regression_suites": 3,
+      "rank_host_cases": 36,
+      "rank_host_checks": 499,
+      "resource_groups": 2,
+      "fresh_installed_sdk_consumer": true,
+      "unchanged_public_core": {
+        "include/imagejxx/dataset.hpp": "a9cbf88d67730ac64521f9da87db2c1c68651893560f40cf58ebd1e689acb057",
+        "include/imagejxx/settings.hpp": "13d186df5c2ea0d00975461215b68144e65ebf36d35dc8158a1292280e4a518e",
+        "lib/libimagejxx_core.a": "89a7e414015a89e21842146e45277b4139944a8e6b4bf8745d3daaefeb41dcd3"
+      },
+      "reports": 148,
+      "frames": 19687,
+      "removed_scratch_bytes": 1057571866,
+      "archive": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p10w-canvas-reads001/linux-scratch001.zip",
+        "bytes": 203198515,
+        "sha256": "ed93105b674fb8dba74eebc06ee2981c0bf41253b48a706058846421a16cd85c"
+      },
+      "evidence": [
+        {
+          "path": "build/p10w-canvas-reads001/linux-build001/core-ready.json",
+          "bytes": 422,
+          "sha256": "4eebf533b71326036f79347f68d0c96dc2a80c036fbd7fcef41bc2e15426235c"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/linux-build001/ui-native.xml",
+          "bytes": 1955,
+          "sha256": "0b020810fe602a0a1ca85d9a4359bd110dd73c61d0c77f89e23e69483221712a"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/linux-build002/receipt.json",
+          "bytes": 422,
+          "sha256": "4d14ecd27eba561969b146a2fd58760b9e59584c8e4e5d91dcbe5bc89b908264"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/linux-build002/native.xml",
+          "bytes": 1888,
+          "sha256": "029c97f0e05532c6b7c3ee98546e63f417e191b287cf4afc8fbb1b37dd1bc753"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/linux-build002/ui-native.xml",
+          "bytes": 1820,
+          "sha256": "ba0bb439a96f3cc9a8139c813dd4ac879f39db4bfdf95e13409e5ebe813f8da0"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/linux-python001/receipt.json",
+          "bytes": 7254,
+          "sha256": "adcd2c6346ac9bcd5636de02b74090831c319d2df54acc52314700c0f9d2e5c8"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/linux-python001/pytest.xml",
+          "bytes": 660808,
+          "sha256": "6750c2e73589cb83b74d458b38979e52d437d116fb3877d0099f1a4a35f86a9a"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/linux-channels002/receipt.json",
+          "bytes": 2686,
+          "sha256": "8f5408009ce855c643c920ed2632a5b596ec1108753c8a115c6b4765668da309"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/linux-channels002/pytest.xml",
+          "bytes": 79470,
+          "sha256": "be45ad059a007a0442795406b49ec620f6290785df496dc8f2669981535befb2"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/linux-channel-env002/receipt.json",
+          "bytes": 234,
+          "sha256": "feebf1e0a33714d2bdd448ec327d2d8422198779f4ebd2ff256c6978839e9dff"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/linux-channel-capture001.json",
+          "bytes": 12396,
+          "sha256": "458856e2efab2caeba44547dd0b94e2bfaaa296f4a24e21eeeecbbac0859883d"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/linux-extra001/receipt.json",
+          "bytes": 939,
+          "sha256": "753e70482bf3422e4d9943c8e648bce093b169d9c593835561e43479158017c5"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/linux-extra001/canvas-gl.log",
+          "bytes": 95,
+          "sha256": "df94a01272f05d622b65da66f19ab418a688f4341e82d8677592ac9256c4fa4c"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/linux-sdk001/receipt.json",
+          "bytes": 414,
+          "sha256": "bcc9ff7729db102176254a3bd2d4a3e505e60166f24e3ddf486f14e599ea9773"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/linux-capture001.json",
+          "bytes": 11766,
+          "sha256": "b79f0191e1ea3e13ee589388d42444635823bdc5c09becf38d6d435cbae087d3"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/linux-evidence001.json",
+          "bytes": 58372,
+          "sha256": "d6a77b0b809aef236523632abd51157d7f1efd5177ae2e84e78e62cc2c29f0d5"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/linux-products001.json",
+          "bytes": 8707,
+          "sha256": "a7ad63a853f9211e4042d8105f020c9b1b4f058d3b42b9473c951bca03a3c90a"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/linux-cleanup001.json",
+          "bytes": 1533510,
+          "sha256": "739b6af0b7a25f00e65cf2de1fb70278ebc5f372f3fe31ff2cb77f59aea85e55"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/linux-verified001.json",
+          "bytes": 190,
+          "sha256": "722d51392769919f0c531bee092babb7ab5a6b9d56f679f51af285586b7c5728"
+        },
+        {
+          "path": "build/p10w-canvas-reads001/linux-core001.json",
+          "bytes": 352,
+          "sha256": "4371872201e585e0b5bb623796f7144a616c06bf77a0cf7ac2e9aa7955be302e"
+        }
+      ]
+    }
+  },
+  "source": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 106842,
+      "sha256": "95f9c57ada1040872c7b5469f6ca4446ee8fa71b1245e982068de6b54e641600"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 678258,
+      "sha256": "88bf3f042f03b38fcab22388ed93655a550a23934d65046a3d1318dfb9fd2496"
+    },
+    {
+      "path": "tests/native/test_canvas_reads.cpp",
+      "bytes": 4206,
+      "sha256": "239ed7f6b9b089667389f069de70ccf07f874a7f32eb555fbe22a97086d4612f"
+    }
+  ],
+  "licenses": {
+    "path": "build/p10w-canvas-reads001/licenses001.log",
+    "bytes": 62,
+    "sha256": "939b266b092bfdc37d1814f66b75a21469497e36e30a2050805031da4f97b417"
+  },
+  "registration": {
+    "path": "build/p10w-canvas-reads001/registration001.json",
+    "bytes": 218,
+    "sha256": "768427ebd581ce069969d84ab38452330565a62c30d9174f24ac4ce600f01a0f"
+  },
+  "attempts": "First builds compiled and the zero-read geometry test passed, but the new fixture incorrectly assumed every open tab renders simultaneously. The fixture now visits each tab, explicitly evicts the active CPU plane, then tests reuse and deferred sampling. A status diagnostic supports the independent hover-value assertion. Additional channel readers enforce normal installed-package origins; disposable venv installations retain that guard and match final-prefix binaries byte-for-byte. Initial custom-prefix setup errors and a missing inherited NumPy path were corrected without changing tests or product code. First source variants and failed test XML/logs are retained. Copied helper native-filesystem aliases were corrected before reuse; prior passed-helper scratch ownership is checked before including those leftovers in verified cleanup. Final build002/capture001/python001/extra001/SDK001 are authoritative. ZIP CRC and each member SHA are verified before removal of exact owned scratch/nonce paths; final products, copied SDK consumers and useful caches remain.",
+  "existing_gate": {
+    "state": "open",
+    "reason": "Existing Auto Contrast producer_source fingerprint mismatch; application.hpp unchanged; no repin or relaxation.",
+    "producer": {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 14135,
+      "sha256": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    },
+    "log": {
+      "path": "build/p10w-canvas-reads001/plan001.log",
+      "bytes": 151,
+      "sha256": "5741e4b9133f374434cac8973e1f1c6131200e632958a012913a739c28d47006"
+    },
+    "final_log": {
+      "path": "build/p10w-canvas-reads001/plan002.log",
+      "bytes": 151,
+      "sha256": "5741e4b9133f374434cac8973e1f1c6131200e632958a012913a739c28d47006"
+    }
+  },
+  "scope_status_counts": {
+    "total": 99,
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  },
+  "remaining": [
+    "Aggregate linked XYZ, display/readback/cache/upload buffers and GPU texture budgets; whole-process or RSS accounting is not supplied.",
+    "Other file-backed formats, tiled/pyramid storage/caches, incremental uploads, asynchronous viewport reads and stale-result rejection.",
+    "Virtual output propagation, materialization/workspace serialization and complete provider/reference/resource/platform qualification.",
+    "Existing Auto Contrast producer fingerprint gate and every other original inventory requirement remain open."
+  ]
+}

@@ -2428,3 +2428,8 @@ same guarded regional reader. See [usage and limits](SCIENTIFIC_TIFF_SERVICE.md#
 
 Virtual documents share a configurable decoded XY cache. See
 [resource settings, lifetime and remaining limits](SCIENTIFIC_TIFF_SERVICE.md#shared-virtual-xy-cache).
+
+
+Ordinary canvas geometry and properties no longer decode virtual pixels. Stable
+render caches survive CPU-plane eviction; hover and picker values read the
+captured plane lazily. Context recreation and changed render keys still rebuild.

@@ -473,10 +473,11 @@ eviction; borrow `frame()` references only until the next cache-affecting action
 
 Python `Editor.virtual_view_cache_info` and native
 `Window::virtualViewCacheInfo()` return detached budget/retained-byte/entry/eviction
-counters. These counters describe this cache alone. Canvas geometry still requests
-CPU frames on each draw; when visible planes exceed the budget, eviction can
-cause repeated reads even with current textures. Metadata-only geometry and
-texture reuse remain a required follow-up before background viewport loading. Document closure does not
+counters. These counters describe this cache alone. Ordinary canvas geometry, image properties and
+annotation dimensions use metadata. Current texture/readback keys are checked
+before plane acquisition, so an evicted CPU plane does not force a stable cached
+render to decode again. Hover and picker sampling acquire pixels only when
+needed, retaining the source and T/C/Z captured before input publication. Document closure does not
 leave ownership in the cache: weak slots release their provider and image when
 the last owning facade goes away. Remaining work includes aggregate XYZ/display/
 texture accounting, tiled/pyramid policies, asynchronous reads and stale-result

@@ -1,5 +1,23 @@
 # ImageJ and Fiji gap closure plan
 
+**Ordinary canvas read checkpoint, 2026-10-22 (work in progress):**
+Geometry, properties and annotation dimensions now use metadata; validated
+texture/readback keys are checked before pixel acquisition. Evicted CPU planes
+no longer force unchanged cached renders to decode again. Hover/picker sampling
+retains the pre-input source and T/C/Z and reads only when needed. Windows/Linux
+each pass 5,001 selected Python checks (4,422 base / 579 channel), eleven native suites, the new hidden-GL
+and recreated-context checks, eight session groups, three desktop regressions,
+36 rank-host cases / 499 checks, two resource groups and fresh installed SDK
+consumers. Public dataset/settings headers and core archives remain byte-identical
+to preceding qualified prefixes. Readers verify 296 existing reports / 39,273
+raw input frames; all 1,297 registrations are unchanged. Verified cleanup removes
+2,117,983,076 scratch bytes, including verified older helper leftovers, and preserves
+final products/evidence. See [cache semantics](SCIENTIFIC_TIFF_SERVICE.md#shared-virtual-xy-cache)
+and [the scoped receipt](parity/reviews/p10w-canvas-reads001.json).
+Next: XYZ/display/readback/texture/upload accounting, followed by asynchronous
+viewport reads with stale-result rejection. All original requirements remain;
+All99 stays 47 in progress / 52 open / 0 complete, including the Auto Contrast gate.
+
 **Shared virtual XY cache checkpoint, 2026-10-22 (work in progress):**
 Open virtual documents now share a persisted decoded XY retention budget with
 least-recently-used eviction. Preferences → Resources exposes Virtual XY cache

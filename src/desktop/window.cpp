@@ -4260,19 +4260,16 @@ struct Window::Impl {
         previewTarget ? std::optional<ResolvedTarget>(*previewTarget) : std::nullopt,
         previewGeneration, position) : std::nullopt;
     const bool activePreview = sources ? sources->usesPreview(position.c) : bool(preview);
-    const auto previewPixels = sources ? sources->provider()(Plane::XY, position.z, position.t, position.c) : preview
-        ? preview->data().dataset.plane(position) : nullptr;
-    const auto &frame = previewPixels ? *previewPixels : pane.doc->frame();
-    const auto samplePolicy = previewPixels && !sources ? preview->data().dataset.sample_policy()
-                                           : liveSnapshot.data().dataset.sample_policy();
-    const std::array<int, 2> shape{frame.width, frame.height};
+    // Shape and overlay geometry do not require a decoded source plane.
+    const auto dimensions=(!sources && preview)?preview->data().dataset.shape():liveSnapshot.data().dataset.shape();
+    const std::array<int, 2> shape{dimensions.x, dimensions.y};
     if (pane.overlayRevision != pane.doc->revision() ||
         pane.overlayT != position.t || pane.overlayC != position.c ||
         pane.overlaySlice != pane.doc->slice() || pane.overlayShape != shape) {
       const auto &metadata = pane.doc->state().metadata;
       const bool layered = hasStyledOverlays(metadata, position);
       auto layers = layered
-                        ? overlayVisuals(metadata, frame.width, frame.height, position)
+                        ? overlayVisuals(metadata, shape[0], shape[1], position)
                         : std::vector<OverlayVisual>{};
       pane.overlays = std::move(layers);
       pane.layeredOverlays = layered;
@@ -4312,6 +4309,12 @@ struct Window::Impl {
     const bool missingReadback = capture && (!pane.sourceReadback || !pane.renderedReadback);
     if (!rebuild && !missingReadback)
       return;
+    // Acquire pixels only after the complete texture/readback key misses.
+    const auto previewPixels = sources ? sources->provider()(Plane::XY, position.z, position.t, position.c) : preview
+        ? preview->data().dataset.plane(position) : nullptr;
+    const auto framePixels=previewPixels?previewPixels:pane.doc->sharedFrame();
+    const auto &frame=*framePixels;
+    const auto samplePolicy=previewPixels && !sources?preview->data().dataset.sample_policy():liveSnapshot.data().dataset.sample_policy();
     if (!rebuild)
       ++pane.diagnosticRebuilds;
     pane.revision = pane.doc->renderRevision();
@@ -8900,10 +8903,10 @@ void Window::Impl::properties() {
   ImGui::BeginDisabled(owner.busy());
   if (!owner.documents_.empty()) {
     auto d = doc();
-    const auto &f = d->frame();
+    const auto shape=d->shape();const auto type=d->nativeSnapshot().data().dataset.pixel_type();
     ImGui::TextWrapped("%s%s", d->title().c_str(), d->dirty() ? " *" : "");
-    ImGui::Text("%d x %d x %d | %s", f.width, f.height, f.channels,
-                typeName(f.type).c_str());
+    ImGui::Text("%d x %d x %d | %s", shape.x, shape.y, shape.s,
+                typeName(type).c_str());
     ImGui::Text("Slice %d / %d", d->slice() + 1, d->shape().z);
     if (d->scientific()) {
       const auto position = d->position();
@@ -9631,8 +9634,8 @@ void Window::Impl::geometry(const Json &o, Pane &pane, ImU32 tint, bool cache,
                             static_cast<unsigned char>(rgba.w * 255 + .5f)};
     auto found = pane.roiVisuals.find(&o);
     if (!cache) {
-      const std::array<int, 2> shape{pane.doc->frame().width,
-                                     pane.doc->frame().height};
+      const std::array<int, 2> shape{pane.doc->shape().x,
+                                     pane.doc->shape().y};
       if (!pane.transientVisual || pane.transientStyle != o ||
           pane.transientShape != shape || pane.transientFallback != fallback) {
         pane.transientVisual = roiVisual(o, shape[0], shape[1], fallback);
@@ -9644,8 +9647,8 @@ void Window::Impl::geometry(const Json &o, Pane &pane, ImU32 tint, bool cache,
       }
     } else if (found == pane.roiVisuals.end()) {
       found = pane.roiVisuals
-                  .emplace(&o, roiVisual(o, pane.doc->frame().width,
-                                         pane.doc->frame().height, fallback))
+                  .emplace(&o, roiVisual(o, pane.doc->shape().x,
+                                         pane.doc->shape().y, fallback))
                   .first;
       ++maskOutlineBuilds;
     }
@@ -9671,8 +9674,8 @@ void Window::Impl::geometry(const Json &o, Pane &pane, ImU32 tint, bool cache,
   if (kind == "mask") {
     auto found = pane.maskOutlines.find(&o);
     if (!cache) {
-      const std::array<int, 2> shape{pane.doc->frame().width,
-                                     pane.doc->frame().height};
+      const std::array<int, 2> shape{pane.doc->shape().x,
+                                     pane.doc->shape().y};
       if (!pane.transientOutline || pane.transientStyle != o ||
           pane.transientShape != shape) {
         pane.transientOutline = selectionOutlineSpans(o, shape[0], shape[1]);
@@ -9682,8 +9685,8 @@ void Window::Impl::geometry(const Json &o, Pane &pane, ImU32 tint, bool cache,
         ++maskOutlineBuilds;
       }
     } else if (found == pane.maskOutlines.end()) {
-      auto spans = selectionOutlineSpans(o, pane.doc->frame().width,
-                                         pane.doc->frame().height);
+      auto spans = selectionOutlineSpans(o, pane.doc->shape().x,
+                                         pane.doc->shape().y);
       found = pane.maskOutlines.emplace(&o, std::move(spans)).first;
       ++maskOutlineBuilds;
     }
@@ -9912,17 +9915,25 @@ void Window::Impl::canvas(Pane &pane) {
   }
   // Re-evaluate after a possible linked-view Escape/navigation handoff.
   const auto preview = planeOperationPreview(*d);
-  const auto previewPixels = preview ? preview->data().dataset.plane(currentPosition) : nullptr;
-  // Saved-row input can publish Metadata before annotation rendering below.
-  // Retain the native plane; refreshing the legacy State cache after that
-  // publication may replace its frames vector and invalidate a borrowed frame.
-  const auto liveCanvasPixels = previewPixels ? std::shared_ptr<const Image>{}
-      : d->sharedFrame();
-  const auto &f = previewPixels ? *previewPixels : *liveCanvasPixels;
+  // Freeze source/position before input publication. Geometry is metadata-only;
+  // hover/picker sampling acquires a retained plane only when a pixel is needed.
+  const auto canvasSnapshot=d->nativeSnapshot();
+  const auto &canvasDataset=preview?preview->data().dataset:canvasSnapshot.data().dataset;
+  const auto sizes=canvasDataset.shape();
+  struct Geometry {int width,height,channels;PixelType type;};
+  const Geometry f{sizes.x,sizes.y,sizes.s,canvasDataset.pixel_type()};
+  std::shared_ptr<const Image> sampledPixels;
+  auto canvasPixels=[&]() -> const Image & {
+    if(!sampledPixels){
+      if(preview || canvasDataset.has_eager_planes())sampledPixels=canvasDataset.plane(currentPosition);
+      else {d->admitView();sampledPixels=d->viewCache_->read(d->viewSlot_,canvasDataset,currentPosition);}
+    }
+    return *sampledPixels;
+  };
   if (captureGaussianReadback())
     pane.ordinaryFrameSource = {
-        {"frame_source", previewPixels ? "preview" : "live"},
-        {"preview_generation", previewPixels
+        {"frame_source", preview ? "preview" : "live"},
+        {"preview_generation", preview
              ? operationPreviewGeneration(*d) : 0},
         {"source_document_id", d->id},
         {"current_tcz", {currentPosition.t, currentPosition.c, currentPosition.z}}};
@@ -10341,7 +10352,7 @@ void Window::Impl::canvas(Pane &pane) {
     for (int c = 0; c < f.channels; ++c) {
       if (c)
         pixel << ", ";
-      pixel << f.at(ix, iy, c);
+      pixel << canvasPixels().at(ix, iy, c);
     }
     status = pixel.str();
   }
@@ -10441,7 +10452,7 @@ void Window::Impl::canvas(Pane &pane) {
       } else if (tool == "picker") {
         for (int c = 0; c < 3; ++c)
           foreground[c] = float(std::clamp(
-              f.at(int(x), int(y), f.channels == 1 ? 0 : c) / type_max(f.type),
+              canvasPixels().at(int(x), int(y), f.channels == 1 ? 0 : c) / type_max(f.type),
               0.0, 1.0));
       } else if (tool == "text")
         ask("Text annotation",
@@ -11974,6 +11985,7 @@ Json Window::Impl::headlessReport() {
     result["error_modal"] = errorModal;
     result["close_prompt"] = closePrompt;
     result["window_error"] = lastError;
+    result["status"] = status;
     Json browserControls = Json::object();
     for (const auto *name : {"path", "submit", "cancel", "up", "filter", "replace", "replace_cancel"}) {
       const auto key = std::string("browser.") + name;
@@ -12764,10 +12776,10 @@ Json Window::renderHeadless(int frames, bool exercise, bool exerciseCamera,
       const auto &pane = impl->panes[activeIndex()];
       auto point =
           pane.doc->view().orthogonal
-              ? pane.orthogonal.screenPoint(0, pane.doc->frame().width / 2,
-                                            pane.doc->frame().height / 2)
-              : ImVec2(pane.origin.x + pane.doc->frame().width * pane.zoom / 2,
-                       pane.origin.y + pane.doc->frame().height * pane.zoom *
+              ? pane.orthogonal.screenPoint(0, pane.doc->shape().x / 2,
+                                            pane.doc->shape().y / 2)
+              : ImVec2(pane.origin.x + pane.doc->shape().x * pane.zoom / 2,
+                       pane.origin.y + pane.doc->shape().y * pane.zoom *
                                            pane.aspectY / 2);
       io.AddMousePosEvent(point.x, point.y);
       frame();
