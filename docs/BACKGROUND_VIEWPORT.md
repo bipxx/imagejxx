@@ -35,8 +35,9 @@ cooperative: a custom provider that ignores it can delay final destruction.
 These are managed reservations, not measured process or GPU memory. Provider,
 codec, transform/compositor internals and font/annotation/GUI allocations remain
 outside the declared surface quantities. Font assets are read by the existing
-CPU overlay renderer, rather than pinned as immutable image data. Other panels
-and legacy display actions can still synchronously read pixels. This increment
+CPU overlay renderer, rather than pinned as immutable image data. Manual display-range changes, LUT selection/import/export and opening the Image
+menu use metadata without image reads. Other panels and automatic/analysis
+actions can still synchronously read pixels. This increment
 does not claim whole-editor responsiveness, default-on behavior, every preview/
 annotation/channel combination, real-device performance or full platform parity.
 
@@ -57,7 +58,8 @@ Compare pinned upstream fixtures before claiming ImageJ/Fiji numerical/UI parity
 
 2. Audit remaining display/analysis actions and panels for synchronous source IO;
 move long reads behind captured requests without changing operation semantics.
-The legacy display-range action currently acquires pixels even for manual input.
+Manual display-range and palette actions are now metadata-only, including on
+virtual scientific images. Finite automatic range resets still scan pixels.
 
 3. Qualify file/provider replacement during active loads, hidden-window/session
 transitions, admission pressure across all surface consumers and uncooperative

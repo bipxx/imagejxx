@@ -2443,3 +2443,10 @@ Virtual ordinary and linked XYZ views can use Resources **Background virtual vie
 (`async_viewport`, default false). Loading placeholders preserve navigation;
 matching CPU results publish on the UI thread and superseded work is canceled.
 See [behavior, resource ownership and remaining qualification](BACKGROUND_VIEWPORT.md).
+
+
+Manual display-range changes and LUT selection/import/export use metadata, even
+for virtual scientific images. The Image menu determines type defaults without
+decoding a plane. These controls do not edit pixels or add undo history. Finite
+automatic range resets still scan pixels; broader brightness/contrast sliders,
+window/level controls and binary ImageJ LUT interchange remain open.

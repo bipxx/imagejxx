@@ -1089,6 +1089,14 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     target_link_libraries(imagejxx_desktop PRIVATE comdlg32 gdi32)
   endif()
   if(BUILD_TESTING)
+    add_executable(imagejxx_display_actions_tests tests/native/test_display_actions.cpp)
+    target_link_libraries(imagejxx_display_actions_tests PRIVATE imagejxx_desktop)
+    add_test(NAME desktop_display_actions COMMAND ${CMAKE_COMMAND}
+      -DTEST_EXECUTABLE=$<TARGET_FILE:imagejxx_display_actions_tests>
+      -DWORK_ROOT=${CMAKE_CURRENT_BINARY_DIR}/display-action-tests
+      -DTEST_TIMEOUT_SECONDS=30
+      -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/RunOwnedFixtureTest.cmake)
+    set_tests_properties(desktop_display_actions PROPERTIES TIMEOUT 35)
     add_executable(imagejxx_background_views_tests tests/native/test_background_views.cpp)
     target_link_libraries(imagejxx_background_views_tests PRIVATE imagejxx_desktop)
     add_test(NAME desktop_background_views COMMAND ${CMAKE_COMMAND}

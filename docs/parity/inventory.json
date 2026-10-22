@@ -1663,7 +1663,9 @@
           "docs/parity/reviews/p10x-render-memory001.json",
           "docs/parity/reviews/p10y-viewport-jobs001.json",
           "docs/BACKGROUND_VIEWPORT.md",
-          "docs/parity/reviews/p10z-background-views001.json"
+          "docs/parity/reviews/p10z-background-views001.json",
+          "docs/parity/reviews/p11a-display-actions001.json",
+          "docs/DESKTOP.md"
         ],
         "implementation": [
           "include/imagejxx/dataset.hpp",
@@ -1713,7 +1715,9 @@
           "tests/python/test_render_memory.py",
           "tests/native/test_viewport_jobs.cpp",
           "tests/native/test_background_views.cpp",
-          "tests/python/test_background_views.py"
+          "tests/python/test_background_views.py",
+          "tests/native/test_display_actions.cpp",
+          "tests/python/test_display_actions.py"
         ]
       },
       "id": "G041",
@@ -1724,7 +1728,7 @@
       ],
       "name": "Large datasets",
       "remaining": [
-        "Optional ordinary/XYZ worker rendering, matching-key publication, pending navigation and matching hover surfaces now use the private bounded scheduler. Broader actual input traces and acceptance across all previews, channel modes, IEEE/threshold and annotation combinations on both launchers, plus file/provider replacement while running. Other legacy display/analysis actions and panels can synchronously acquire pixels; manual display-range action currently acquires a frame even for manual bounds. Whole-editor responsiveness is not claimed. Provider/codec/transform/compositor internal scratch, font/annotation/GUI allocations, driver overhead and whole-process resource/latency qualification remain separate. Custom uncooperative providers may delay destruction; default-on behavior and configurable viewport worker counts need additional evidence. Other formats, tiled/pyramid storage, incremental upload, virtual output/workspace/materialization behavior, the existing Auto Contrast gate and every other original requirement remain open."
+        "Optional ordinary/XYZ worker rendering, matching-key publication, pending navigation and matching hover surfaces now use the private bounded scheduler. Broader actual input traces and acceptance across all previews, channel modes, IEEE/threshold and annotation combinations on both launchers, plus file/provider replacement while running. Other legacy display/analysis actions and panels can synchronously acquire pixels; manual display-range and palette configuration now use metadata only, including for virtual scientific data. Finite automatic range reset still scans pixels. Whole-editor responsiveness is not claimed. Provider/codec/transform/compositor internal scratch, font/annotation/GUI allocations, driver overhead and whole-process resource/latency qualification remain separate. Custom uncooperative providers may delay destruction; default-on behavior and configurable viewport worker counts need additional evidence. Other formats, tiled/pyramid storage, incremental upload, virtual output/workspace/materialization behavior, the existing Auto Contrast gate and every other original requirement remain open."
       ],
       "required_work": "Missing virtual/tiled/pyramid storage, bounded cache, incremental upload and responsive navigation while loading",
       "status": "in_progress",
@@ -1737,7 +1741,8 @@
         "p10w.canvas-reads.functional.001",
         "p10x.render-memory.functional.001",
         "p10y.viewport-jobs.foundation.001",
-        "p10z.background-views.optional.001"
+        "p10z.background-views.optional.001",
+        "p11a.display-actions.metadata.001"
       ]
     },
     {
@@ -2389,7 +2394,9 @@
         "documentation": [
           "docs/IMPLEMENTATION.md",
           "docs/DESKTOP.md",
-          "docs/COMPATIBILITY.md"
+          "docs/COMPATIBILITY.md",
+          "docs/parity/reviews/p11a-display-actions001.json",
+          "docs/BACKGROUND_VIEWPORT.md"
         ],
         "implementation": [
           "include/imagejxx/document.hpp",
@@ -2410,7 +2417,9 @@
           "tests/python/test_document.py",
           "examples/cpp/document.cpp",
           "tests/native/test_desktop.cpp",
-          "tests/python/test_document_records.py"
+          "tests/python/test_document_records.py",
+          "tests/native/test_display_actions.cpp",
+          "tests/python/test_display_actions.py"
         ]
       },
       "id": "G057",
@@ -2420,13 +2429,15 @@
       ],
       "name": "Brightness/contrast and window/level",
       "remaining": [
+        "Manual legacy range commands and Image-menu defaults no longer request source pixels; IEEE endpoint/reset validation preserves the source. Finite automatic range reset and other legacy analysis/editing actions still acquire pixels synchronously; background eligibility, captured publication and UI responsiveness need further work. Brightness/contrast/window/level sliders, histogram linkage, complete reset/set/apply semantics and upstream channel-targeting acceptance remain required. The generic range form minimum remains integer-typed; fractional minimum UI needs qualification.",
         "Native display records expose/publish ranges independently of pixel/history identity and survive undo/concurrent pixel jobs. Histogram-linked sliders, brightness/contrast/window/level modes, saturation-aware auto, reset/set/apply and scientific channel targeting remain."
       ],
       "required_work": "Non-destructive histogram-linked sliders, brightness/contrast/window/level controls, saturation-aware auto, reset/set/apply and channel targeting",
       "status": "in_progress",
       "verification": [
         "m1-document-transactions-windows-2026-10-10",
-        "m1-document-records-windows-2026-10-10"
+        "m1-document-records-windows-2026-10-10",
+        "p11a.display-actions.metadata.001"
       ]
     },
     {
@@ -2452,7 +2463,9 @@
         "documentation": [
           "docs/IMPLEMENTATION.md",
           "docs/COMPATIBILITY.md",
-          "docs/DESKTOP.md"
+          "docs/DESKTOP.md",
+          "docs/parity/reviews/p11a-display-actions001.json",
+          "docs/BACKGROUND_VIEWPORT.md"
         ],
         "implementation": [
           "include/imagejxx/document.hpp",
@@ -2485,7 +2498,9 @@
           "tests/python/test_operations.py",
           "examples/cpp/operations.cpp",
           "tests/native/test_desktop.cpp",
-          "tests/python/test_document_records.py"
+          "tests/python/test_document_records.py",
+          "tests/native/test_display_actions.cpp",
+          "tests/python/test_display_actions.py"
         ]
       },
       "id": "G059",
@@ -2495,6 +2510,7 @@
       ],
       "name": "LUT display/editing",
       "remaining": [
+        "Legacy LUT selection and JSON palette import/export now work on virtual scientific data without pixel reads or image history changes. Complete palette choices, visualization/editor, inversion/destructive application options and binary ImageJ LUT interchange remain required. Palette JSON file IO itself remains synchronous.",
         "Display records retain LUT/custom-LUT values without pixel history and have targeted native/Python control, validation and legacy-session fixtures. Complete palettes, LUT visualization/editor, inversion/destructive application options and binary ImageJ LUT interchange remain."
       ],
       "required_work": "Complete palette choices, LUT visualization/editor, inversion/application semantics and ImageJ LUT file interchange",
@@ -2502,7 +2518,8 @@
       "verification": [
         "m1-document-transactions-windows-2026-10-10",
         "m1-native-operations-windows-2026-10-10",
-        "m1-document-records-windows-2026-10-10"
+        "m1-document-records-windows-2026-10-10",
+        "p11a.display-actions.metadata.001"
       ]
     },
     {
@@ -181309,6 +181326,29 @@
         "total": 1585
       },
       "scope": "Windows/Linux each pass ten native suites, ten additional background-view repetitions, four hidden/recreated GL contexts and 1585 selected installed Python checks (nine new), with zero failure/error/skip. Slow cooperative readers prove ordinary/XYZ frame progress without source reads on the UI thread, ordinary wheel and focused linked PageUp input while pending, position supersession and no stale readback, independent scalar/RGB TCZ/orientation formulas, stable reuse and hover without decode, mode/document/context cancellation and cached-texture enable/disable transitions. CPU builder tests cover targeted other-channel previews, out-of-target navigation, finite/quiet-NaN/IEEE ranges and source payload preservation. GL runs rebuild both modes in recreated contexts and reject ImGui recovery diagnostics. Python tests use real virtual scientific TIFF volumes, strict persisted Boolean settings and the rendered Preferences control. Existing selected settings/cache/dataset/TIFF/channel/projection/XYZ cases pass from disposable proper installed origins; module bytes match retained final prefixes. All 1297 existing input registrations remain unchanged. This is scoped functionality, not complete upstream/reference/platform/resource acceptance."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-22",
+      "id": "p11a.display-actions.metadata.001",
+      "identity": {
+        "qualification": {
+          "bytes": 12982,
+          "path": "docs/parity/reviews/p11a-display-actions001.json",
+          "sha256": "24c8a2b125aaaa943b093b53022c6c456cf693751f4fbb0f8ea10c7005940e04"
+        }
+      },
+      "platform": "Windows/Linux shared C++/Python ImGui metadata-only legacy manual contrast and palette controls",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 1600,
+        "report": "build/p11a-display-actions001/windows-python003/pytest.xml",
+        "skipped": 0,
+        "total": 1600
+      },
+      "scope": "Windows/Linux each pass eleven native suites, ten background-view repetitions, four hidden/recreated GL contexts and 1600 selected installed Python checks (fifteen new), with zero failure/error/skip. New failing virtual providers cover scalar/RGB/RGBA U8/U16/F32/F64 and assert zero reads for manual bounds and LUT selection/import/export, exact custom palette export, source/history/dirty preservation and atomic invalid bounds/unused bad palette-row refusal. IEEE eager-source read observation checks manual/equal ranges, binary32 endpoint refusal and reset without new reads. Actual ImGui menu/form opening uses metadata defaults without reads. Python checks use both observed eager sources and real virtual TIFF readers, exercise palette validation/export and actual menu plus keyboard OK submission, and verify no reads until a later explicit plane request. Existing settings/cache/background/dataset/TIFF/channel/projection/XYZ cases pass from proper disposable installed origins; module bytes match retained final prefixes. Core and IO SDK archives and native Python modules are byte-identical to preceding p10z products. All1297 input registrations remain unchanged. This is scoped functional coverage, not full ImageJ/Fiji reference/UI/platform/resource acceptance."
     }
   ]
 }

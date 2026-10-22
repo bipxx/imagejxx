@@ -1584,6 +1584,7 @@ struct Window::Impl {
         action == "reslice_oriented_axis_range" || action == "show_axis_range_orientation")
       return axisExtractionSourceAllowed(*source);
     return action == "view" || action == "display_range" ||
+           action == "lut" || action == "load_lut" || action == "save_lut" ||
            action == "save_document" || action == "undo" || action == "redo";
   }
   int animationExtent(const DatasetShape &shape, const std::string &axis) const {
@@ -7128,6 +7129,73 @@ void Window::action(const std::string &name, const Json &p) {
         display.properties.erase(key);
     d->setNativeDisplay(std::move(display));
   };
+  // Display configuration validates metadata and processor options without
+  // asking an immutable provider for image pixels. The one-pixel carrier is
+  // local and bounded; actual source validity remains the renderer's job.
+  auto validateDisplayMapping = [&](const Json &properties) {
+    const auto source=d->nativeSnapshot();
+    const auto &data=source.data().dataset;
+    const auto samples=data.shape().s;
+    Image carrier(1,1,samples==4?4:samples>=3?3:1,data.pixel_type());
+    (void)displayImage(carrier,properties,data.sample_policy());
+  };
+  if (name == "display_range") {
+    if (boolean(get(p, "auto"))) {
+      if (d->samplePolicy()==FloatingSamplePolicy::PreserveIEEEFloat32) {
+        meta.erase("display_range"); publishDisplay(); return;
+      }
+      const auto bounds = finiteDisplayRange(d->frame(), d->samplePolicy(), false);
+      meta["display_range"] = {bounds[0], bounds[1]};
+      publishDisplay();
+      return;
+    }
+    double lower = number(get(p, "minimum")),
+           upper = number(get(p, "maximum"), type_max(d->nativeSnapshot().data().dataset.pixel_type()));
+    if (lower > upper || (lower==upper && d->samplePolicy()!=FloatingSamplePolicy::PreserveIEEEFloat32))
+      throw std::invalid_argument("Maximum must exceed minimum");
+    if (d->samplePolicy()==FloatingSamplePolicy::PreserveIEEEFloat32) {
+      auto proposed=meta; proposed["display_range"]={lower,upper};
+      validateDisplayMapping(proposed);
+    }
+    meta["display_range"] = {lower, upper};
+    publishDisplay();
+    return;
+  }
+  if (name == "lut") {
+    auto lutName = string(get(p, "name"), "Grays");
+    auto proposed = meta;
+    proposed["lut"] = lutName;
+    proposed.erase("custom_lut");
+    validateDisplayMapping(proposed);
+    meta["lut"] = lutName;
+    meta.erase("custom_lut");
+    publishDisplay();
+    return;
+  }
+  if (name == "load_lut") {
+    auto root = readJson(string(get(p, "path")));
+    const auto &lut = get(root, "lut");
+    if (!lut.is_array() || lut.size() != 256)
+      throw std::invalid_argument("LUT needs 256 RGB rows");
+    auto check = meta;
+    check["custom_lut"] = lut;
+    validateDisplayMapping(check);
+    meta["custom_lut"] = lut;
+    publishDisplay();
+    return;
+  }
+  if (name == "save_lut") {
+    Image ramp(256, 1, 1, PixelType::UInt8);
+    for (int x = 0; x < 256; ++x)
+      ramp.at(x, 0) = x;
+    auto settings = meta;
+    settings.erase("display_range");
+    settings["labels"] = false;
+    auto lut = displayImage(ramp, settings, FloatingSamplePolicy::FiniteOnly);
+    writeJson(string(get(p, "path")),
+              {{"format", "imagejxx-lut"}, {"lut", imageArray(lut)[0]}});
+    return;
+  }
   const auto &frame = d->frame();
   auto selected = get(meta, "selection");
   if (name == "undo") {
@@ -7366,63 +7434,6 @@ void Window::action(const std::string &name, const Json &p) {
     action("calibration", {{"pixel_width", distance / pixels},
                            {"pixel_height", distance / pixels},
                            {"unit", string(get(p, "unit"), "um")}});
-    return;
-  }
-  if (name == "display_range") {
-    if (boolean(get(p, "auto"))) {
-      if (d->samplePolicy()==FloatingSamplePolicy::PreserveIEEEFloat32) {
-        meta.erase("display_range"); publishDisplay(); return;
-      }
-      const auto bounds = finiteDisplayRange(frame, d->samplePolicy(), false);
-      meta["display_range"] = {bounds[0], bounds[1]};
-      publishDisplay();
-      return;
-    }
-    double lower = number(get(p, "minimum")),
-           upper = number(get(p, "maximum"), type_max(frame.type));
-    if (lower > upper || (lower==upper && d->samplePolicy()!=FloatingSamplePolicy::PreserveIEEEFloat32))
-      throw std::invalid_argument("Maximum must exceed minimum");
-    if (d->samplePolicy()==FloatingSamplePolicy::PreserveIEEEFloat32) {
-      auto proposed=meta; proposed["display_range"]={lower,upper};
-      (void)displayImage(frame,proposed,d->samplePolicy());
-    }
-    meta["display_range"] = {lower, upper};
-    publishDisplay();
-    return;
-  }
-  if (name == "lut") {
-    auto lutName = string(get(p, "name"), "Grays");
-    auto proposed = meta;
-    proposed["lut"] = lutName;
-    proposed.erase("custom_lut");
-    displayImage(frame, proposed, d->samplePolicy());
-    meta["lut"] = lutName;
-    meta.erase("custom_lut");
-    publishDisplay();
-    return;
-  }
-  if (name == "load_lut") {
-    auto root = readJson(string(get(p, "path")));
-    const auto &lut = get(root, "lut");
-    if (!lut.is_array() || lut.size() != 256)
-      throw std::invalid_argument("LUT needs 256 RGB rows");
-    auto check = meta;
-    check["custom_lut"] = lut;
-    displayImage(frame, check, d->samplePolicy());
-    meta["custom_lut"] = lut;
-    publishDisplay();
-    return;
-  }
-  if (name == "save_lut") {
-    Image ramp(256, 1, 1, PixelType::UInt8);
-    for (int x = 0; x < 256; ++x)
-      ramp.at(x, 0) = x;
-    auto settings = meta;
-    settings.erase("display_range");
-    settings["labels"] = false;
-    auto lut = displayImage(ramp, settings, FloatingSamplePolicy::FiniteOnly);
-    writeJson(string(get(p, "path")),
-              {{"format", "imagejxx-lut"}, {"lut", imageArray(lut)[0]}});
     return;
   }
   if (name == "add_roi") {
@@ -8240,11 +8251,12 @@ void Window::Impl::menu() {
       guard([&] { if (command) invokeShellCommand(command); else owner.action(action); });
   };
   auto form = [&](const char *label, const char *action, Json values) {
-    if (ImGui::MenuItem(label, nullptr, false, actionAllowed(action)))
-      guard([&] {
-        ask(label, std::move(values),
-            [this, action](Json p) { owner.action(action, p); });
-      });
+    const bool enabled=actionAllowed(action);
+    const bool selected=ImGui::MenuItem(label,nullptr,false,enabled);
+    observeControl(std::string("menu.form.")+action,enabled);
+    if(selected)guard([&] {
+      ask(label,std::move(values),[this,action](Json p){owner.action(action,p);});
+    });
   };
   auto path = [&](const char *label, const char *action, bool save,
                   const char *suggested = "") {
@@ -8501,7 +8513,7 @@ void Window::Impl::menu() {
     form("Display range...", "display_range",
          {{"minimum", 0},
           {"maximum",
-           owner.documents_.empty() ? 255 : type_max(doc()->frame().type)},
+           owner.documents_.empty() ? 255 : type_max(doc()->nativeSnapshot().data().dataset.pixel_type())},
           {"auto", false}});
     item("Channel display...", "show_channel_display");
     item("Auto contrast", "auto_contrast");

@@ -1,5 +1,23 @@
 # ImageJ and Fiji gap closure plan
 
+**Metadata-only contrast and palettes checkpoint, 2026-10-22 (work in progress):**
+Manual display-range changes and LUT selection/import/export now run before
+source acquisition. Virtual scientific images admit these display-only palette
+controls; Image-menu defaults use pixel-type metadata. IEEE endpoint validation
+uses a bounded local processor carrier, and IEEE reset defers range reads to the
+renderer. Invalid bounds/palette rows preserve display state without reads;
+pixels, metadata history and dirty state remain unchanged. Native failing-provider
+fixtures cover scalar/RGB/RGBA U8/U16/F32/F64 plus IEEE read observation and real
+menu/form opening. Windows/Linux each pass eleven native suites, ten background
+repetitions, four hidden/recreated GL contexts and 1,600 selected installed Python
+checks (fifteen new), including real input-driven form submission and virtual TIFF
+read counters. Core/IO modules and SDK archives stay byte-identical to p10z.
+See [the scoped receipt](parity/reviews/p11a-display-actions001.json).
+Finite automatic scans, other legacy action reads, histogram-linked contrast/
+window/level controls, full palette editing/interchange and platform acceptance
+remain required. All99 stays 47 in progress / 52 open / 0 complete; the Auto
+Contrast fingerprint gate remains open.
+
 **Optional background viewport checkpoint, 2026-10-22 (work in progress):**
 Resources → Background virtual views now moves virtual ordinary/XYZ extraction,
 live range scans and CPU display rendering onto bounded native jobs in both

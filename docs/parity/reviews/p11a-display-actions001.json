@@ -1,0 +1,232 @@
+{
+  "state": "qualified_functional_increment",
+  "objective_complete": false,
+  "baseline_commit": "d3345f3b0036520ad6ec27d333b5a2c877008555",
+  "scope": "Metadata-only legacy manual contrast and palette configuration, including virtual scientific images and Image-menu defaults, in the shared C++/Python ImGui editor.",
+  "semantics": "Legacy display_range/lut/load_lut/save_lut dispatch before generic frame acquisition. Manual endpoint defaults use dataset pixel type. IEEE manual endpoints and LUT mapping options validate with a bounded detached one-pixel processor carrier (at most four samples), not provider output. Full facade validation still rejects malformed custom rows atomically. IEEE automatic reset removes explicit bounds without reading; finite automatic range retains its existing actual-plane scan. Virtual scientific facades now permit non-destructive palette actions. Display publication preserves source/pixel/metadata identity, history and dirty state. Image-menu maximum defaults use immutable type metadata; form controls expose actual ImGui IDs/geometry for input tests. Recognized channel-display actions retain their separate existing native path.",
+  "boundaries": "Only the display-configuration paths above avoid image source IO. Palette JSON loading/saving and bounded local validation still perform their own allocations/file IO. Actual source validity and automatic range computation belong to subsequent rendering/scanning; metadata changes can succeed on an unreadable provider. No global asynchronous analysis behavior, full contrast/LUT editing, binary ImageJ LUT interchange, whole-editor responsiveness or full upstream/reference/resource/platform acceptance is claimed.",
+  "verification": "Windows/Linux each pass eleven native suites, ten background-view repetitions, four hidden/recreated GL contexts and 1600 selected installed Python checks (fifteen new), with zero failure/error/skip. New failing virtual providers cover scalar/RGB/RGBA U8/U16/F32/F64 and assert zero reads for manual bounds and LUT selection/import/export, exact custom palette export, source/history/dirty preservation and atomic invalid bounds/unused bad palette-row refusal. IEEE eager-source read observation checks manual/equal ranges, binary32 endpoint refusal and reset without new reads. Actual ImGui menu/form opening uses metadata defaults without reads. Python checks use both observed eager sources and real virtual TIFF readers, exercise palette validation/export and actual menu plus keyboard OK submission, and verify no reads until a later explicit plane request. Existing settings/cache/background/dataset/TIFF/channel/projection/XYZ cases pass from proper disposable installed origins; module bytes match retained final prefixes. Core and IO SDK archives and native Python modules are byte-identical to preceding p10z products. All1297 input registrations remain unchanged. This is scoped functional coverage, not full ImageJ/Fiji reference/UI/platform/resource acceptance.",
+  "profiles": {
+    "windows": {
+      "native_suites": 11,
+      "new_metadata_suite": 1,
+      "background_repetitions": 10,
+      "hidden_gl_contexts": 4,
+      "python_cases": 1600,
+      "new_python_cases": 15,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "unchanged_core_io": {
+        "_native.cp312-win_amd64.pyd": "783edeab5e0a35a22c63f34279e669c53c61b8ff51dbbe1e6e9340aaffda2edd",
+        "_scientific_io.cp312-win_amd64.pyd": "ff67e81b0ca46df353df685c21193c2ef4529af86bb22c2ade8f88f2431c607c",
+        "imagejxx_core.lib": "84a2f528b34e67044dfa26ab87cd7598a7ece7f0a736e1887f97917968a68d10",
+        "imagejxx_io.lib": "3a1b99b55cdb30e7075bb46b44644bda8edac64cfcb655d85f21f37ad24a9122"
+      },
+      "removed_scratch_bytes": 355720290,
+      "archive": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p11a-display-actions001\\windows-scratch001.zip",
+        "bytes": 47171660,
+        "sha256": "165c913d934a95f5da8723a01ab3647528495472ce0b086ae1ab47392d879b0d"
+      },
+      "evidence": [
+        {
+          "path": "build/p11a-display-actions001/windows-qualified001/receipt.json",
+          "bytes": 468,
+          "sha256": "d468261421d22567b0b6bf1beee01b3efac17a8aeb3b31ecc272a207a86a66e3"
+        },
+        {
+          "path": "build/p11a-display-actions001/windows-qualified001/native.xml",
+          "bytes": 4314,
+          "sha256": "865f99c1dbaecaa7e38d8de760cfc85bf0e2b58e3a34da6b1e7e22e4b2b69dea"
+        },
+        {
+          "path": "build/p11a-display-actions001/windows-qualified001/repeat.xml",
+          "bytes": 623,
+          "sha256": "b8c94259fbcd9bbe592c30ee17634a42519c7153db55422c54ce2d053e8d1846"
+        },
+        {
+          "path": "build/p11a-display-actions001/windows-qualified001/background-gl.log",
+          "bytes": 116,
+          "sha256": "4a9efe703a8147cd67ee41ed7693448770a0e56024f32cd1131db7f5aea1d3ea"
+        },
+        {
+          "path": "build/p11a-display-actions001/windows-python003/receipt.json",
+          "bytes": 2935,
+          "sha256": "08a2d9f3b90c369ed9f40114cbbca855c7bd1ff4961421eb5bfa0274ea0421c7"
+        },
+        {
+          "path": "build/p11a-display-actions001/windows-python003/pytest.xml",
+          "bytes": 223443,
+          "sha256": "32cb158546d1912fbb85fd4e9be75d112f4af394ef203aebb0bb78db2af5e798"
+        },
+        {
+          "path": "build/p11a-display-actions001/windows-env001/receipt.json",
+          "bytes": 284,
+          "sha256": "f5ee96e4175db396b9810648fb45c1981d72d96ec09ae43bb724924e08f3933e"
+        },
+        {
+          "path": "build/p11a-display-actions001/windows-products001.json",
+          "bytes": 3567,
+          "sha256": "e5bbb218e3a64c63e009dadcb304e49550639a1ed0a52336f168fa19fa7ce959"
+        },
+        {
+          "path": "build/p11a-display-actions001/windows-cleanup001.json",
+          "bytes": 433282,
+          "sha256": "ac384af7cffbc4e7a423d82cfe3fd81aae7ad7b251af3ebba1b7030628b0bb67"
+        }
+      ]
+    },
+    "linux": {
+      "native_suites": 11,
+      "new_metadata_suite": 1,
+      "background_repetitions": 10,
+      "hidden_gl_contexts": 4,
+      "python_cases": 1600,
+      "new_python_cases": 15,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "unchanged_core_io": {
+        "_native.cpython-312-x86_64-linux-gnu.so": "2e00f750fafb70d40a851c5404e84df45740d293f789410f65ad1276db6c86b2",
+        "_scientific_io.cpython-312-x86_64-linux-gnu.so": "ec52421b00996c1df3c9449fc589dfb5cac99b728afbb5055abb0b5249dca9da",
+        "libimagejxx_core.a": "5e230bd39ea0de019e57dd6322f19114e26493d7133bddec9fa13b4c893c09a3",
+        "libimagejxx_io.a": "2c0fd4bd055586f3eacf2969234701205967b1ffa9c678a6180272943902eb5c"
+      },
+      "removed_scratch_bytes": 368148263,
+      "archive": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p11a-display-actions001/linux-scratch001.zip",
+        "bytes": 55784667,
+        "sha256": "3e959fbb19f1b699fc41b72aaa52745cfaffb4d334774d591600f3e6ace4b56f"
+      },
+      "evidence": [
+        {
+          "path": "build/p11a-display-actions001/linux-qualified001/receipt.json",
+          "bytes": 425,
+          "sha256": "4bad63064fb22f0851b913c40f359f21771d2d5e6a04726743c724feee53240d"
+        },
+        {
+          "path": "build/p11a-display-actions001/linux-qualified001/native.xml",
+          "bytes": 4331,
+          "sha256": "badc523ce055b0ed5826ff01df49a1ceea09a6f98b4039e6eabec304a5640cbb"
+        },
+        {
+          "path": "build/p11a-display-actions001/linux-qualified001/repeat.xml",
+          "bytes": 616,
+          "sha256": "064c8cc61622ac4cd074aac9a9983a5969f20e7d9d0e9a08d610f95a2ecaba27"
+        },
+        {
+          "path": "build/p11a-display-actions001/linux-qualified001/background-gl.log",
+          "bytes": 115,
+          "sha256": "af0cf02bc32e37064a73f474b55cc38cf391df0c4b97c52422c7aa675ceb6178"
+        },
+        {
+          "path": "build/p11a-display-actions001/linux-python003/receipt.json",
+          "bytes": 2834,
+          "sha256": "0bcf00c679ec026a525ed8a4da79a18d54207fe0a8d8ed34293e972f23c20a29"
+        },
+        {
+          "path": "build/p11a-display-actions001/linux-python003/pytest.xml",
+          "bytes": 223444,
+          "sha256": "a40c00778c762536b4bf328db744d3b4842d3efce5483206c7b163546c39ef74"
+        },
+        {
+          "path": "build/p11a-display-actions001/linux-env001/receipt.json",
+          "bytes": 218,
+          "sha256": "e4be12c61d6520d25f649ef39c083955420b0bf2f58855378151a993932e4623"
+        },
+        {
+          "path": "build/p11a-display-actions001/linux-products001.json",
+          "bytes": 3275,
+          "sha256": "fc2da41dbcdc8bbaa56eea9eb6ac4becc82a4c7219e200efe5fa1f67cb2e4e3a"
+        },
+        {
+          "path": "build/p11a-display-actions001/linux-cleanup001.json",
+          "bytes": 395866,
+          "sha256": "9aab1a735a28702a63dfc3a9fcbc7735d4b07d2d7fd4c5eee936fa4d0972640c"
+        }
+      ]
+    }
+  },
+  "source": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 108892,
+      "sha256": "a863a8a18f1f29747e7430e55b15c7091394f393b796761f2907b37b002c4795"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 685386,
+      "sha256": "494ce7f77a8f52d9671a8bf6a223f7fc5af60ac92c2e9dbf62067a8148e6e39d"
+    },
+    {
+      "path": "tests/native/test_display_actions.cpp",
+      "bytes": 6528,
+      "sha256": "a76c5f10aa8003c6dad53f339625a7d10a3f7d18a70cc80c35eaa027c58ac720"
+    },
+    {
+      "path": "tests/python/test_display_actions.py",
+      "bytes": 5817,
+      "sha256": "e886a8d505890b4f7266516060bd1446563d3d3a39f38e0440e4400a762f45d1"
+    }
+  ],
+  "documentation": [
+    {
+      "path": "docs/BACKGROUND_VIEWPORT.md",
+      "bytes": 4892,
+      "sha256": "132bcda387b3a1d06276134cd2b759049a42ce150a28c04c00c909e76b24b1b9"
+    },
+    {
+      "path": "docs/DESKTOP.md",
+      "bytes": 165963,
+      "sha256": "ef00f942bd70ffe8ea1406d434f53f304d1d02f8de7e0951fb1452abe3f42fad"
+    },
+    {
+      "path": "docs/PLAN.md",
+      "bytes": 436529,
+      "sha256": "f790ddbba1eaf8d76e8f3388ad7dd0e322401037ebc6e0e025ddbfb24e2abdd4"
+    },
+    {
+      "path": "docs/IMPLEMENTATION.md",
+      "bytes": 142551,
+      "sha256": "078529ca7e2baa2f9e9b1e99b2a2d6e683da0e810bb483340609751c87b1b21f"
+    }
+  ],
+  "licenses": {
+    "path": "build/p11a-display-actions001/licenses001.log",
+    "bytes": 62,
+    "sha256": "939b266b092bfdc37d1814f66b75a21469497e36e30a2050805031da4f97b417"
+  },
+  "registration": {
+    "path": "build/p11a-display-actions001/registration001.json",
+    "bytes": 218,
+    "sha256": "768427ebd581ce069969d84ab38452330565a62c30d9174f24ac4ce600f01a0f"
+  },
+  "attempts": "Native implementation and fixtures pass on the first build. Earlier Python form sequences hit the existing generic-modal preflight and context-dependent popup centering; diagnostic snapshots and test variants are retained/archived. Python003 uses an actual single admitted event sequence with reverse-tab/Enter navigation to OK, without weakening preflight or changing application dialog behavior. One unqualified Linux run observed a test-file revision while a failed prototype was active; authoritative Python003 verifies stable input hashes. ZIP CRC/member SHA verification precedes exact owned fixture/environment deletion; final installed products, native probes, logs/JUnit, source variants and useful caches remain.",
+  "existing_gate": {
+    "state": "open",
+    "reason": "Existing Auto Contrast producer_source fingerprint mismatch; application.hpp unchanged; no repin or relaxation.",
+    "producer": {
+      "path": "include/imagejxx/application.hpp",
+      "bytes": 14135,
+      "sha256": "029698bbd73c99629721bc0d91e5c8f8fff8ccce0565af972d02dcc367536072"
+    },
+    "log": {
+      "path": "build/p11a-display-actions001/plan001.log",
+      "bytes": 151,
+      "sha256": "5741e4b9133f374434cac8973e1f1c6131200e632958a012913a739c28d47006"
+    }
+  },
+  "scope_status_counts": {
+    "total": 99,
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  },
+  "remaining": [
+    "Finite automatic range reset and other legacy analysis/editing actions still acquire pixels synchronously; background eligibility, captured publication and UI responsiveness need further work.",
+    "Brightness/contrast/window/level sliders, histogram linkage, complete reset/set/apply semantics and upstream channel-targeting acceptance remain required. The generic range form minimum remains integer-typed; fractional minimum UI needs qualification.",
+    "Complete palette choices, visualization/editor, inversion/destructive application options and binary ImageJ LUT interchange remain required. Palette JSON file IO itself remains synchronous.",
+    "Broader viewport preview/channel/IEEE/annotation input traces, provider replacement and resource/performance/platform qualification, tiled/pyramid/incremental upload/virtual workspace behavior, the Auto Contrast gate and all other original requirements remain open."
+  ]
+}
