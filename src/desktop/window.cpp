@@ -2091,7 +2091,10 @@ struct Window::Impl {
   void tickContrast(){
     if(!contrastPanel.visible() && !contrastPanel.rebindVisible())return;
     const auto current=gaussianCurrent();contrastPanel.tickRebind(current);
-    if(contrastPanel.visible())contrastPanel.tick(current,owner.busy(),*owner.controller_->job_scheduler(),histogramLimits(),contrastApplyLimits());
+    if(contrastPanel.visible()){
+      const auto conversion=owner.settings().conversion_options();contrastPanel.rgbWeights(conversion.weighted_rgb?conversion.rgb_weights:std::array<double,3>{1./3,1./3,1./3});
+      contrastPanel.tick(current,owner.busy(),*owner.controller_->job_scheduler(),histogramLimits(),contrastApplyLimits());
+    }
   }
   void publishContrast(const DocumentSnapshot &source,std::array<double,2> range){
     if(owner.busy())throw std::invalid_argument("Wait for the current edit");
@@ -6937,8 +6940,11 @@ void Window::action(const std::string &name, const Json &p) {
     if(impl->contrastApplyJob && !impl->contrastApplyJob->wait_for(remaining()))throw std::runtime_error("Contrast Apply wait timed out");
     impl->pollHistogram();
     if(impl->histogramTask && !impl->histogramTask->job.wait_for(remaining()))throw std::runtime_error("Histogram wait timed out");
-    impl->tickContrast();
-    if(!impl->contrastPanel.wait_for(remaining()))throw std::runtime_error("Contrast histogram wait timed out");
+    for(;;){
+      impl->tickContrast();if(!impl->contrastPanel.pending())break;
+      if(remaining().count()<=0 || !impl->contrastPanel.wait_for(remaining()))throw std::runtime_error("Contrast preview/histogram wait timed out");
+      poll();
+    }
     if (impl->autoJob && !impl->autoJob->wait_for(remaining()))
       throw std::runtime_error("Auto contrast wait timed out");
 #ifdef IMAGEJXX_HAS_SCIENTIFIC_IO

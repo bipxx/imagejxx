@@ -2,6 +2,7 @@
 #include <imagejxx/rgb_contrast_apply_job.hpp>
 #include <imagejxx/application.hpp>
 #include <imagejxx/native_workflow.hpp>
+#include <imagejxx/histogram_job.hpp>
 #include <iostream>
 #include <stdexcept>
 int main() {
@@ -38,6 +39,11 @@ int main() {
   color->undo();NativeWorkflowOperation step;step.operation="rgb_contrast_apply";step.original=command.record();
   auto program=prepare_native_workflow(color->snapshot(),{step});auto workflowEdit=program.begin_edit();app.commit(workflowEdit);
   if(color->snapshot().data().dataset.plane()->pixels!=std::vector<double>{0,20,30,255,50,60})throw std::runtime_error("RGB workflow publication");
+  Image ramp(200,1,3,PixelType::UInt8);for(int x=0;x<200;++x)for(int c=0;c<3;++c)ramp.pixels[x*3+c]=10+x;
+  Document statsOwner(Dataset::from_stack({ramp}));auto statsTarget=resolve_target(statsOwner.snapshot());
+  JobScheduler histScheduler;auto histogram=submit_rgb_histogram(histScheduler,statsTarget);histogram.wait();
+  const auto result=histogram.rgb_result();const auto automatic=rgb_auto_contrast_from_histogram(*result);
+  if(automatic.range!=std::array<double,2>{10,209} || automatic.cycle.next!=5000)throw std::runtime_error("RGB histogram/Auto");histogram.complete();
   std::cout<<"PASS installed scalar and RGB Apply APIs, atomic commit and Undo\n";
 
 }

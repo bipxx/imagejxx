@@ -1,5 +1,6 @@
 #pragma once
 #include <imagejxx/histogram_command.hpp>
+#include <imagejxx/rgb_histogram.hpp>
 #include <imagejxx/jobs.hpp>
 
 namespace imagejxx {
@@ -36,9 +37,14 @@ public:
   // and clears its result. The caller supplies source/UI guards and stages its
   // own atomic effects. An empty callback simply acknowledges the result.
   void complete(const std::function<void(const TargetHistogramResult &)> & = {});
+  std::shared_ptr<const RgbHistogramResult> rgb_result()const;
+  static HistogramJob submit_rgb(JobScheduler &,const ResolvedTarget &,
+      const RgbHistogramOptions & = {},const DatasetHistogramLimits & = {},JobOptions = {});
   static HistogramJob submit(JobScheduler &,const ResolvedHistogramCommand &,
       const HistogramCommandLimits & = {},JobOptions = {});
 private:
+  friend HistogramJobEstimate estimate_rgb_histogram_job(const ResolvedTarget &,
+      const RgbHistogramOptions &,const DatasetHistogramLimits &,const JobOptions &);
   friend HistogramJobEstimate estimate_histogram_job(const ResolvedHistogramCommand &,
       const HistogramCommandLimits &,const JobOptions &);
   struct ResultCell;
@@ -46,6 +52,9 @@ private:
   Job job_;
   std::shared_ptr<ResultCell> result_;
 };
+HistogramJobEstimate estimate_rgb_histogram_job(const ResolvedTarget &,const RgbHistogramOptions & = {},
+    const DatasetHistogramLimits & = {},const JobOptions & = {});
+inline HistogramJob submit_rgb_histogram(JobScheduler &s,const ResolvedTarget &t,const RgbHistogramOptions &o = {},const DatasetHistogramLimits &l = {},JobOptions j = {}){return HistogramJob::submit_rgb(s,t,o,l,std::move(j));}
 inline HistogramJob submit_histogram(JobScheduler &scheduler,
     const ResolvedHistogramCommand &command,const HistogramCommandLimits &limits = {},
     JobOptions options = {}) {

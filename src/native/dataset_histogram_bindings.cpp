@@ -320,8 +320,27 @@ void bind_dataset_histogram(py::module_ &m) {
         {py::gil_scoped_release release;try{job.complete(publish);}catch(...){failure=std::current_exception();}}
         if(python_failure)std::rethrow_exception(python_failure);
         if(failure)std::rethrow_exception(failure);
-      },py::arg("publication")=py::none(),"Complete on the caller thread. Python publication receives an owning detached result copy; conversion storage is outside native reservations.");
+      },py::arg("publication")=py::none(),"Complete on the caller thread. Python publication receives an owning detached result copy; conversion storage is outside native reservations.").def("rgb_result",[](const HistogramJob &v){std::shared_ptr<const RgbHistogramResult> value;{py::gil_scoped_release release;value=v.rgb_result();}return RgbHistogramResult(*value);});
   m.def("estimate_histogram_job",[](ResolvedHistogramCommand command,HistogramCommandLimits limits,JobOptions options){py::gil_scoped_release release;return estimate_histogram_job(command,limits,options);},py::arg("command"),py::arg("limits")=HistogramCommandLimits{},py::arg("job_options")=JobOptions{});
   m.def("submit_histogram",[](JobScheduler &scheduler,ResolvedHistogramCommand command,HistogramCommandLimits limits,JobOptions options){py::gil_scoped_release release;return submit_histogram(scheduler,command,limits,std::move(options));},py::arg("scheduler"),py::arg("command"),py::arg("limits")=HistogramCommandLimits{},py::arg("job_options")=JobOptions{},"Read-only native worker histogram with polling, cancellation and retained-result admission. Caller-thread completion supplies its own source/UI guards; no automatic document publication occurs.");
+
+  py::enum_<RgbHistogramComponent>(m,"RgbHistogramComponent")
+    .value("INTENSITY",RgbHistogramComponent::Intensity).value("RED",RgbHistogramComponent::Red).value("GREEN",RgbHistogramComponent::Green).value("BLUE",RgbHistogramComponent::Blue);
+  py::class_<RgbHistogramOptions>(m,"RgbHistogramOptions").def(py::init<>())
+    .def_readwrite("component",&RgbHistogramOptions::component)
+    .def_property("weights",[](const RgbHistogramOptions &v){return v.weights;},[](RgbHistogramOptions &v,py::sequence values){
+      if(py::len(values)!=3)throw py::value_error("RGB histogram requires three weights");std::array<double,3> weights;
+      for(int i=0;i<3;++i)weights[i]=endpoint(values[i]);v.weights=weights;
+    });
+  py::class_<RgbHistogramResult,TargetHistogramResult>(m,"RgbHistogramResult").def_property_readonly("rgb_options",[](const RgbHistogramResult &v){return v.rgb_options;});
+  py::class_<RgbAutoContrastResult>(m,"RgbAutoContrastResult").def_readonly("range",&RgbAutoContrastResult::range)
+    .def_readonly("cycle",&RgbAutoContrastResult::cycle).def_readonly("outcome",&RgbAutoContrastResult::outcome).def_readonly("indices",&RgbAutoContrastResult::indices);
+  m.def("estimate_rgb_histogram",&estimate_rgb_histogram,py::arg("target"),py::arg("options")=RgbHistogramOptions{},py::arg("limits")=DatasetHistogramLimits{},py::call_guard<py::gil_scoped_release>());
+  m.def("accumulate_rgb_histogram",[](ResolvedTarget target,RgbHistogramOptions options,DatasetHistogramLimits limits,std::shared_ptr<CancellationToken> token,py::object progress,py::object checkpoint){
+    const auto control=axis_range_python_control(std::move(token),std::move(progress),std::move(checkpoint));py::gil_scoped_release release;return accumulate_rgb_histogram(target,options,limits,control);
+  },py::arg("target"),py::arg("options")=RgbHistogramOptions{},py::arg("limits")=DatasetHistogramLimits{},py::kw_only(),py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none());
+  m.def("rgb_auto_contrast_from_histogram",[](const TargetHistogramResult &h,py::object divisor){return rgb_auto_contrast_from_histogram(h,integer<int>(divisor));},py::arg("histogram"),py::arg("previous_divisor")=0);
+  m.def("estimate_rgb_histogram_job",&estimate_rgb_histogram_job,py::arg("target"),py::arg("options")=RgbHistogramOptions{},py::arg("limits")=DatasetHistogramLimits{},py::arg("job_options")=JobOptions{},py::call_guard<py::gil_scoped_release>());
+  m.def("submit_rgb_histogram",[](JobScheduler &scheduler,ResolvedTarget target,RgbHistogramOptions options,DatasetHistogramLimits limits,JobOptions job){py::gil_scoped_release release;return submit_rgb_histogram(scheduler,target,options,limits,std::move(job));},py::arg("scheduler"),py::arg("target"),py::arg("options")=RgbHistogramOptions{},py::arg("limits")=DatasetHistogramLimits{},py::arg("job_options")=JobOptions{});
 
 }

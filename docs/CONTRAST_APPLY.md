@@ -319,7 +319,7 @@ compact. Existing scalar panel target-policy admission is unchanged.
 
 Recorded RGB Apply supports the recorder's strict replay and reviewed/explicit
 rebind paths, preserving saved endpoint precision and component bits. Native
-workflow/Run/Batch adapters are now available as described below. RGB source histograms and Auto,
+workflow/Run/Batch adapters are now available as described below. RGB source histograms and Auto are described below;
 exact ImageJ slider rules, RGBA/floating Apply, and complete stack controller
 semantics remain open. The selected-plane UI applies the native uniform mapping;
 ImageJ uses processor-narrowed bounds on other stack planes. This extension and
@@ -366,8 +366,58 @@ publication and failure/cancellation cleanup. Input session bytes and unrelated 
 metadata/results/workflow remain intact.
 
 This workflow operation retains the native uniform independent-plane profile.
-Exact ImageJ stack narrowing, RGB histogram/Auto and broader calibrated reset/
+Exact ImageJ stack narrowing and broader calibrated reset/
 slider/controller behavior remain open.
+
+### RGB raw histograms and Auto
+
+The C++ `rgb_histogram.hpp` API and Python `accumulate_rgb_histogram` expose
+raw 256-bin UInt8 RGB histograms for resolved T/C/Z targets and area membership.
+Choose Intensity, Red, Green or Blue. Intensity uses ColorProcessor's ordered
+weighted sum, plus 0.5 and Java integer narrowing. Finite weights are neither
+normalized nor clipped; invalid member indices refuse the operation. Invalid
+projected indices outside the ROI are excluded, while all acquired RGB storage
+samples must still be valid bytes. Full-plane projected extrema are a native
+extension and can lie outside byte bins for excluded pixels.
+
+`rgb_auto_contrast_from_histogram` makes the byte-histogram decision without
+reading or editing a source. It validates the raw histogram and previous divisor,
+then reproduces ImageJ's repeated-click cycle, dominant-bin exclusion, area-extrema
+fallback and reset. It does not create a captured Auto command. Apply records the
+resulting range and component mapping through the existing RGB command format.
+
+The shared ImGui panel submits leased histogram jobs over its captured baseline
+and mapped preview. Primary-component plots use the whole plane; combined
+component plots use weighted intensity and active area membership. Auto always
+uses baseline weighted intensity, irrespective of the selected component. It
+uses the active area for statistics, then previews whole-plane mapping on the
+selected native target planes. Non-area selections use whole-plane statistics.
+Conversion preference weights feed both consumers. Repeated Auto starts from
+the captured baseline and carries the divisor; Reset clears the cycle. Cancel,
+close, a changed source/intent or superseding weights prevent stale publication.
+Auto and plots do not edit document pixels or history; Apply reuses the current
+READY mapping and publishes its existing guarded paired transaction.
+
+Admission performs no sample reads or callbacks. Jobs freeze options, targets
+and limits before callbacks; the existing HistogramJob scheduler handles
+cancellation, completion and resource leases, including escaped typed/base result
+aliases. Python receives owning result copies. Conservative admission includes
+metadata, geometry, the acquired RGB plane and histogram storage; external source
+caches and total process RSS are outside that bound.
+
+Reference cases execute pinned ImageJ 1.54r ColorProcessor/ColorStatistics,
+ContrastAdjuster.plotHistogram and autoAdjust methods. The harness bypasses AWT
+construction and scrollbar presentation only; upstream processing sources are
+not patched. Source and cached class identities are pinned separately. The
+reference spans four inputs, four weight policies, five ROI forms, seven
+component masks and eleven previous divisors (6,160 rows).
+
+Exact ImageJ controller parity remains open: changing its component choice
+promotes the current preview to the processor snapshot, whereas this native
+panel retains its immutable baseline. ImageJ also commits its active preview
+once and narrows bounds on other stack planes; native multi-axis mapping remains
+an explicit uniform-plane extension. Slider/log-plot/Set/reset/calibration,
+RGBA/floating Apply and complete platform/resource acceptance remain required.
 
 Remaining integration and qualification:
 
@@ -375,7 +425,7 @@ Remaining integration and qualification:
    coverage beyond the current real C/Z/ROI radio, Apply/Rebind and workflow mapping
    field/prepare/Apply tests. Broader workflow outputs/operation combinations and
    resource/platform acceptance remain open.
-2. Add RGB source histogram/Auto controls and extend mixed workflow acceptance.
+2. Extend mixed workflow acceptance and exact RGB controller behavior.
    Extend widget/guard coverage beyond the RGB controls now qualified above.
    Preserve scalar V1 records and prevent a mapped preview from being mapped
    twice. Qualify current/stack controller behavior: ImageJ commits its active

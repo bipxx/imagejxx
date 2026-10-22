@@ -26,6 +26,8 @@ std::size_t strings(std::size_t n,std::size_t copies) {
 }
 }
 struct HistogramJob::ResultCell : std::enable_shared_from_this<ResultCell> {
+  explicit ResultCell(bool rgb=false):rgb(rgb){}
+  const bool rgb;
   mutable std::mutex mutex;
   std::shared_ptr<const TargetHistogramResult> value;
   std::weak_ptr<Job::State> job;
@@ -87,6 +89,33 @@ HistogramJob HistogramJob::submit(JobScheduler &scheduler,
     destination->store(std::shared_ptr<const TargetHistogramResult>(retained,&retained->value));
   },std::move(options),cell->cleanup());
   cell->bind(job);return HistogramJob(std::move(job),std::move(cell));
+}
+namespace {
+struct RgbSubmission {ResolvedTarget target;RgbHistogramOptions options;DatasetHistogramLimits limits;};
+struct RgbRetained {std::shared_ptr<const void> reservation;RgbHistogramResult value;};
+}
+HistogramJobEstimate estimate_rgb_histogram_job(const ResolvedTarget &target,const RgbHistogramOptions &options,const DatasetHistogramLimits &limits,const JobOptions &job){
+  HistogramJobEstimate out;out.processing=estimate_rgb_histogram(target,options,limits);
+  auto bytes=add(out.processing.working_bytes,sizeof(RgbSubmission)+sizeof(RgbRetained)+sizeof(HistogramJob::ResultCell)+sizeof(JobOptions)+sizeof(JobInfo)+sizeof(JobContext)+sizeof(HistogramJob)+sizeof(ExecutionControl)+4096);
+  bytes=add(bytes,add(strings(job.label.empty()?13:job.label.size(),8),strings(job.supersedes.size(),4)));
+  if(bytes>limits.max_working_bytes)throw std::invalid_argument("RGB histogram job working limit");
+  out.working_bytes=bytes;out.reservation_bytes=std::max(bytes,job.resource_bytes);return out;
+}
+HistogramJob HistogramJob::submit_rgb(JobScheduler &scheduler,const ResolvedTarget &target,const RgbHistogramOptions &options,const DatasetHistogramLimits &limits,JobOptions job){
+  const auto estimate=estimate_rgb_histogram_job(target,options,limits,job);
+  const auto capture=std::make_shared<const RgbSubmission>(RgbSubmission{target,options,limits});
+  job.resource_bytes=estimate.reservation_bytes;job.retain_result_resources=true;job.document_id=target.document_id();if(job.label.empty())job.label="RGB histogram";
+  auto cell=std::make_shared<ResultCell>(true);const std::weak_ptr<ResultCell> weak=cell;
+  auto handle=scheduler.submit_with_cleanup([weak,capture](const JobContext &context){
+    context.checkpoint();auto value=accumulate_rgb_histogram(capture->target,capture->options,capture->limits,context.execution_control());context.checkpoint();
+    auto retained=std::make_shared<const RgbRetained>(RgbRetained{context.result_resource_guard(),std::move(value)});
+    auto destination=weak.lock();if(!destination)throw OperationCancelled();
+    destination->store(std::shared_ptr<const TargetHistogramResult>(retained,&retained->value));
+  },std::move(job),cell->cleanup());cell->bind(handle);return HistogramJob(std::move(handle),std::move(cell));
+}
+std::shared_ptr<const RgbHistogramResult> HistogramJob::rgb_result()const{
+  if(!result_->rgb)throw std::invalid_argument("Histogram job is not RGB");
+  return std::static_pointer_cast<const RgbHistogramResult>(result());
 }
 std::shared_ptr<const TargetHistogramResult> HistogramJob::result() const {
   std::shared_ptr<const TargetHistogramResult> result;

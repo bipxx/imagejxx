@@ -642,3 +642,56 @@ def test_rgb_cancel_pending_preview_does_not_restart_until_explicit_refresh(tmp_
     report = editor.render_headless(frames=8)["contrast_panel"]["rgb"]
     assert not report["ready"] and not report["pending"]
     editor.action("close_contrast")
+
+
+from test_contrast_apply import RGB_AUTO_FIXTURE,rgb_auto_input,rgb_auto_selection,histogram_hash
+
+
+@pytest.mark.parametrize('row',[r for r in RGB_AUTO_FIXTURE['rows'] if r['previous']==0],ids=lambda r:f'rgb-ui-auto-s{r["scenario"]}-w{r["weights"]}-r{r["roi"]}-c{r["channels"]}')
+def test_rgb_editor_auto_baseline_weights_whole_mapping_and_plot_match_imagej(row,tmp_path):
+    owner=ij.Document(ij.Dataset(rgb_auto_input(row['scenario']),axes='YXS'));owner.select(rgb_auto_selection(row['roi']))
+    editor=Editor(preferences=tmp_path/'preferences.json');editor._editor.add_virtual_document(owner)
+    weights=RGB_AUTO_FIXTURE['weights'][row['weights']]
+    editor.update_settings(conversion_weighted_rgb=True,conversion_red_weight=weights[0],conversion_green_weight=weights[1],conversion_blue_weight=weights[2],persist=False)
+    editor.action('show_contrast');editor.action('contrast_rgb_channels',channels=row['channels']);editor.action('wait_jobs')
+    report=editor.render_headless()['contrast_panel'];assert report['rgb']['ready'] and report['histogram']['counts']
+    assert hashlib.sha256(np.array(report['histogram']['counts'],dtype='<u8').tobytes()).hexdigest()==row['plot_before_sha256']
+    before=owner.snapshot();editor.action('contrast_auto');editor.action('wait_jobs');report=editor.render_headless()['contrast_panel']
+    assert report['range']==row['range'] and report['rgb']['auto_divisor']==row['next'] and report['rgb']['auto_whole_planes']
+    assert owner.snapshot().shares_data(before) and owner.snapshot().revisions.display==before.revisions.display and owner.undo_steps==0
+    assert hashlib.sha256(np.array(report['histogram']['counts'],dtype='<u8').tobytes()).hexdigest()==row['plot_after_sha256']
+    editor.recording=True;editor.action('contrast_apply');editor.action('wait_jobs')
+    assert hashlib.sha256(owner.snapshot().dataset.numpy('YXS').tobytes()).hexdigest()==row['pixels_sha256']
+    assert editor.workflow[0]['target']['roi_policy']=='whole_plane' and editor.workflow[0]['options']['channels']==row['channels']
+    assert owner.undo_steps==1;owner.undo();np.testing.assert_array_equal(owner.snapshot().dataset.numpy('YXS'),before.dataset.numpy('YXS'))
+    editor.action('close_contrast')
+
+
+def test_rgb_editor_auto_repeats_baseline_cycle_and_reset(tmp_path):
+    row=next(r for r in RGB_AUTO_FIXTURE['rows'] if r['scenario']==0 and r['weights']==0 and r['roi']==0 and r['channels']==4 and r['previous']==0)
+    owner=ij.Document(ij.Dataset(rgb_auto_input(0),axes='YXS'));editor=Editor(preferences=tmp_path/'preferences.json');editor._editor.add_virtual_document(owner)
+    editor.action('show_contrast');editor.action('contrast_rgb_channels',channels=4)
+    previous=0;before=owner.snapshot()
+    for _ in range(12):
+        expected=next(r for r in RGB_AUTO_FIXTURE['rows'] if r['scenario']==0 and r['weights']==0 and r['roi']==0 and r['channels']==4 and r['previous']==previous)
+        editor.action('contrast_auto');editor.action('wait_jobs');report=editor.render_headless()['contrast_panel']
+        assert report['range']==expected['range'] and report['rgb']['auto_divisor']==expected['next'];previous=expected['next']
+    assert owner.snapshot().shares_data(before) and owner.undo_steps==0
+    editor.action('contrast_reset');editor.action('wait_jobs');report=editor.render_headless()['contrast_panel']
+    assert report['rgb']['auto_divisor']==0 and not report['rgb']['auto_whole_planes'] and report['range']==[0.,255.]
+    editor.action('close_contrast')
+
+
+@pytest.mark.parametrize('failure',['pending_cancel','manual_range','close','weights'])
+def test_rgb_editor_pending_auto_cannot_publish_over_newer_intent(failure,tmp_path):
+    owner=ij.Document(ij.Dataset(rgb_auto_input(0),axes='YXS'));editor=Editor(preferences=tmp_path/'preferences.json');editor._editor.add_virtual_document(owner)
+    editor.action('show_contrast');editor.action('wait_jobs');before=owner.snapshot();editor.action('contrast_auto')
+    if failure=='pending_cancel':editor.cancel()
+    elif failure=='manual_range':editor.action('contrast_range',minimum=12.,maximum=200.)
+    elif failure=='close':editor.action('close_contrast')
+    else:editor.update_settings(conversion_weighted_rgb=True,persist=False)
+    editor.action('wait_jobs');report=editor.render_headless()['contrast_panel']
+    assert not report['rgb']['auto_pending'] and report['rgb']['auto_divisor']==0
+    assert owner.snapshot().shares_data(before) and owner.undo_steps==0
+    if failure=='manual_range':assert report['range']==[12.,200.]
+    editor.action('close_contrast')

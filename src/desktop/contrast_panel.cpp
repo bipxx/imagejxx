@@ -35,10 +35,10 @@ bool ContrastPanel::handles(const std::string &name){
     "contrast_brightness","contrast_contrast","contrast_rgb_channels","cancel_rgb_contrast_preview","refresh_rgb_contrast_preview","contrast_reset","contrast_auto","contrast_apply","configure_contrast_target","cancel_contrast_apply","refresh_contrast_histogram","cancel_contrast_histogram"};
   return names.count(name)!=0;
 }
-void ContrastPanel::request_cancel(JobScheduler &scheduler){++rebindCancelEpoch_;++cancelEpoch_;if(const auto id=cancelId_.load())scheduler.cancel(id);if(const auto id=rgbCancelId_.load())scheduler.cancel(id);}
+void ContrastPanel::request_cancel(JobScheduler &scheduler){++rebindCancelEpoch_;++cancelEpoch_;if(const auto id=cancelId_.load())scheduler.cancel(id);if(const auto id=rgbCancelId_.load())scheduler.cancel(id);if(const auto id=rgbAutoCancelId_.load())scheduler.cancel(id);}
 void ContrastPanel::open(){open_=focus_=true;}
 void ContrastPanel::cancelHistogram(){cancelId_.store(0);if(job_){job_->cancel();job_.reset();++discarded_;}}
-void ContrastPanel::close(){invalidateRgb(false);rgbSource_.reset();cancelRebind();cancelHistogram();histogram_.reset();heights_.clear();source_.reset();key_.clear();rangeKey_=nullptr;controls_=Json::object();open_=focus_=focused_=histogramAttempted_=resolved_=false;}
+void ContrastPanel::close(){rgbAutoDivisor_=0;invalidateRgb(false);rgbSource_.reset();cancelRebind();cancelHistogram();histogram_.reset();heights_.clear();source_.reset();key_.clear();rangeKey_=nullptr;controls_=Json::object();open_=focus_=focused_=histogramAttempted_=resolved_=false;}
 void ContrastPanel::sourceClosed(std::uint64_t id){if(rebind_ && rebind_->source.id()==id)cancelRebind();if(source_ && source_->id()==id){invalidateRgb(false);rgbSource_.reset();cancelHistogram();histogram_.reset();source_.reset();key_.clear();rangeKey_=nullptr;heights_.clear();resolved_=focused_=false;}}
 bool ContrastPanel::inputActive()const{return (open_ && focused_) || (rebind_ && rebind_->focused);}
 bool ContrastPanel::histogramSupported(const Dataset &d)const{
@@ -147,21 +147,21 @@ void ContrastPanel::action(const std::string &name,const Json &p,bool busy,const
   else if(name=="contrast_rgb_channels"){
     const auto &value=p.at("channels");
     if(!rgbSource() || busy || !value.is_number_integer() || value<1 || value>7)throw std::invalid_argument("RGB components require integer bits 1..7 on an idle UInt8 RGB source");
-    rgbChannels_=value.get<int>();invalidateRgb();
+    rgbChannels_=value.get<int>();rgbAutoDivisor_=0;invalidateRgb();
   }
   else if(name=="cancel_rgb_contrast_preview" || name=="refresh_rgb_contrast_preview"){
     if(!rgbSource())throw std::invalid_argument("Choose an RGB contrast source first");
     if(name=="refresh_rgb_contrast_preview" && busy)throw std::invalid_argument("Wait for the current edit");
     invalidateRgb(name=="refresh_rgb_contrast_preview");rgbCancelEpoch_=cancelEpoch_.load();
   }
-  else if(name=="contrast_reset")publish(resetRange(bits),busy,effect);
+  else if(name=="contrast_reset"){if(rgbSource())rgbAutoDivisor_=0;publish(resetRange(bits),busy,effect);}
   else if(name=="contrast_apply"){
     if(!source_ || busy || !resolved_ || !apply)throw std::invalid_argument("Choose an idle resolved contrast source");
     if(rgbSource() && !rgbPreview(*source_))throw std::invalid_argument("Wait for the RGB preview before Apply");
-    finiteRange(range_);apply(*source_,range_,target_.request());
+    finiteRange(range_);apply(*source_,range_,applyTarget());
   }
-  else if(name=="contrast_auto"){if(!source_||busy)throw std::invalid_argument("Choose an idle contrast source");automatic(*source_,allChannels_,useSelection_);}
-  else if(name=="refresh_contrast_histogram")refresh();
+  else if(name=="contrast_auto"){if(!source_||busy)throw std::invalid_argument("Choose an idle contrast source");if(rgbSource())requestRgbAuto();else automatic(*source_,allChannels_,useSelection_);}
+  else if(name=="refresh_contrast_histogram"){if(rgbSource())rgbPlotGeneration_=0;refresh();}
   else if(name=="cancel_contrast_histogram"){cancelHistogram();histogramAttempted_=true;}
   else if(name=="close_contrast")close();
   else throw std::invalid_argument("Unknown contrast action");
@@ -189,7 +189,7 @@ void ContrastPanel::draw(bool busy,const Publish &effect,const Auto &automatic,c
     (d.pixel_type()==PixelType::UInt8 || d.pixel_type()==PixelType::UInt16)) || (rgbSource() && bool(rgbPreview(*source_)))) &&
     d.sample_policy()==FloatingSamplePolicy::FiniteOnly && !boolean(get(metadataJson(source_->data().metadata.extensions),"labels")) && std::isfinite(range_[0]) && std::isfinite(range_[1]);
   ImGui::BeginDisabled(busy||!applyReady);
-  if(ImGui::Button("Apply to pixels"))attempt([&]{apply(*source_,range_,target_.request());});control("apply",!busy&&applyReady);
+  if(ImGui::Button("Apply to pixels"))attempt([&]{apply(*source_,range_,applyTarget());});control("apply",!busy&&applyReady);
   ImGui::EndDisabled();
   if(applying && cancel){ImGui::SameLine();if(ImGui::Button("Cancel Apply"))cancel();control("cancel_apply");}
   ImGui::TextWrapped("Apply changes source pixels and display together; Undo restores both.");
@@ -198,7 +198,7 @@ void ContrastPanel::draw(bool busy,const Publish &effect,const Auto &automatic,c
   if(rgbSource()){
     ImGui::TextUnformatted("RGB components");ImGui::BeginDisabled(busy);
     for(const auto &[label,bits]:std::array<std::pair<const char *,int>,7>{{{"All",7},{"Red",4},{"Green",2},{"Blue",1},{"Red + Green",6},{"Red + Blue",5},{"Green + Blue",3}}}){
-      if(ImGui::RadioButton(label,rgbChannels_==bits)){rgbChannels_=bits;invalidateRgb();}
+      if(ImGui::RadioButton(label,rgbChannels_==bits)){rgbChannels_=bits;rgbAutoDivisor_=0;invalidateRgb();}
       control(("rgb_components_"+std::to_string(bits)).c_str(),!busy);
     }
     ImGui::EndDisabled();
@@ -206,7 +206,7 @@ void ContrastPanel::draw(bool busy,const Publish &effect,const Auto &automatic,c
     if(rgbJob_ && !rgbPreview_)ImGui::TextUnformatted("Preparing RGB preview...");
   }
   if(!heights_.empty()){
-    ImGui::PlotHistogram("##source_histogram",heights_.data(),int(heights_.size()),0,"Live source histogram",0,FLT_MAX,{0,95});
+    ImGui::PlotHistogram("##source_histogram",heights_.data(),int(heights_.size()),0,rgbSource()?"RGB preview histogram":"Live source histogram",0,FLT_MAX,{0,95});
     const auto a=ImGui::GetItemRectMin(),b=ImGui::GetItemRectMax();
     const auto lo=histogram_->histogram.edges.front(),hi=histogram_->histogram.edges.back();
     if(hi>lo && std::isfinite(hi-lo))for(int i=0;i<2;++i)if(std::isfinite(range_[i])){
@@ -215,10 +215,13 @@ void ContrastPanel::draw(bool busy,const Publish &effect,const Auto &automatic,c
     }
     ImGui::Text("Histogram: %.6g to %.6g",lo,hi);
   }
+  else if(rgbSource())ImGui::TextUnformatted(rgbAutoRequested_||rgbAutoJob_?"Calculating baseline RGB Auto...":"RGB preview histogram pending or canceled.");
   else ImGui::TextWrapped(histogramSupported(d)?(job_?"Calculating source histogram...":"Source histogram unavailable; refresh to retry."):"Source histogram is unavailable for this sample format. Finite manual ranges remain available.");
   if(rgbSource()){
     if(rgbJob_ && !rgbPreview_){if(ImGui::Button("Cancel RGB preview"))invalidateRgb(false);control("cancel_rgb_preview");}
     else{ImGui::BeginDisabled(busy);if(ImGui::Button("Refresh RGB preview"))invalidateRgb();control("refresh_rgb_preview",!busy);ImGui::EndDisabled();}
+    if(job_){if(ImGui::Button("Cancel RGB histogram"))cancelHistogram();control("cancel_histogram");}
+    else{if(ImGui::Button("Refresh RGB histogram")){rgbPlotGeneration_=0;refresh();}control("refresh_histogram");}
   }else if(job_){if(ImGui::Button("Cancel histogram"))cancelHistogram();control("cancel_histogram");}
   else{if(ImGui::Button("Refresh histogram"))refresh();control("refresh_histogram");}
   const bool finite=std::isfinite(range_[0])&&std::isfinite(range_[1]);
@@ -248,12 +251,13 @@ void ContrastPanel::draw(bool busy,const Publish &effect,const Auto &automatic,c
   if(ImGui::Button("Set window/level")||changedWindow||changedLevel)attempt([&]{publish(windowLevel(window_,level_),busy,effect);});control("set_window_level",!busy);
   const bool resetReady=bool(histogram_)||d.pixel_type()==PixelType::UInt8||(d.pixel_type()==PixelType::UInt16&&bits);
   ImGui::BeginDisabled(!resetReady);
-  if(ImGui::Button("Reset"))attempt([&]{publish(resetRange(bits),busy,effect);});control("reset",!busy&&resetReady);ImGui::EndDisabled();
-  ImGui::SameLine();const bool autoReady=histogramSupported(d);
+  if(ImGui::Button("Reset"))attempt([&]{if(rgbSource())rgbAutoDivisor_=0;publish(resetRange(bits),busy,effect);});control("reset",!busy&&resetReady);ImGui::EndDisabled();
+  ImGui::SameLine();const bool autoReady=histogramSupported(d)||rgbSource();
   ImGui::BeginDisabled(!autoReady);
-  if(ImGui::Button("Auto"))attempt([&]{automatic(*source_,allChannels_,useSelection_);});control("auto",!busy&&autoReady);ImGui::EndDisabled();
-  ImGui::Checkbox("Auto uses area selection",&useSelection_);control("use_selection",!busy);
-  ImGui::Checkbox("Auto adjusts all composite channels",&allChannels_);control("all_channels",!busy);
+  if(ImGui::Button("Auto"))attempt([&]{if(rgbSource())requestRgbAuto();else automatic(*source_,allChannels_,useSelection_);});control("auto",!busy&&autoReady);ImGui::EndDisabled();
+  if(ImGui::Checkbox("Auto uses area selection",&useSelection_) && rgbSource())cancelRgbAuto();control("use_selection",!busy);
+  if(!rgbSource()){ImGui::Checkbox("Auto adjusts all composite channels",&allChannels_);control("all_channels",!busy);}
+  else ImGui::TextWrapped("Auto measures baseline intensity using RGB conversion weights, then maps whole selected planes. Component plots ignore selection for Red, Green or Blue.");
   ImGui::EndDisabled();
   if(!error_.empty())ImGui::TextWrapped("%s",error_.c_str());
   ImGui::TextWrapped("Range adjustments leave source pixels unchanged until Apply.");

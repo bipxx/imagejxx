@@ -1,4 +1,5 @@
 #include <imagejxx/rgb_contrast_apply_job.hpp>
+#include <imagejxx/histogram_job.hpp>
 #include <imagejxx/application.hpp>
 #include <imagejxx/manual_threshold.hpp>
 #include "../../src/native/kernel_control.hpp"
@@ -153,4 +154,17 @@ void rgb_queued(){
   job.cancel();check(weak.expired(),"RGB queued cancel releases source while handle survives");blocker.cancel();blocker.wait();
 }
 }
-int main(){try{records();jobs();freeze();queued();reset();rgb_records_jobs();rgb_queued();std::cout<<"PASS captured Apply records, strict replay/rebind, worker publication, escaped leases, cancellation and frozen intent\n";return 0;}catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}
+void rgb_histograms(){
+  JobScheduler scheduler;auto source=std::make_shared<RgbSource>();source->opened=false;
+  auto owner=std::make_shared<Document>(Dataset(source));std::optional<ResolvedTarget> target=resolve_target(owner->snapshot());
+  RgbHistogramOptions options;options.component=RgbHistogramComponent::Red;
+  DatasetHistogramLimits tiny;tiny.max_working_bytes=1;refuses([&]{estimate_rgb_histogram(*target,options,tiny);});
+  check(source->reads==0,"RGB histogram admission has no IO");
+  auto canceled=submit_rgb_histogram(scheduler,*target,options);until([&]{return source->reads>0;});canceled.cancel();check(canceled.wait_for(5s),"RGB histogram running cancel");
+  refuses<OperationCancelled>([&]{canceled.rgb_result();});check(source->mainReads==0,"RGB histogram reads only on native workers");
+  source->open();auto job=submit_rgb_histogram(scheduler,*target,options);check(job.wait_for(5s),"RGB histogram ready");
+  auto typed=job.rgb_result();auto base=job.result();check(typed->rgb_options.component==RgbHistogramComponent::Red && typed->histogram.counts[0]==1 && typed->finite_count==8,"RGB typed result");
+  const auto bytes=job.info().resource_bytes;job.complete();scheduler.shutdown();check(scheduler.usage().reserved_bytes==bytes,"Escaped RGB histogram aliases retain reservation after completion/shutdown");
+  typed.reset();check(scheduler.usage().reserved_bytes==bytes,"Base alias retains RGB lease");base.reset();until([&]{return scheduler.usage().reserved_bytes==0;});
+}
+int main(){try{records();jobs();freeze();queued();reset();rgb_records_jobs();rgb_queued();rgb_histograms();std::cout<<"PASS captured Apply records, strict replay/rebind, worker publication, escaped leases, cancellation and frozen intent\n";return 0;}catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

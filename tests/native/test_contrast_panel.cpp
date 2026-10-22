@@ -411,9 +411,28 @@ void ui(const std::filesystem::path &root){
   w.action("close_contrast");session.frame();
 }
 } // namespace
+namespace {
+void rgbAutoUi(const std::filesystem::path &root){
+  Image image(200,2,3,PixelType::UInt8);for(int y=0;y<2;++y)for(int x=0;x<200;++x)for(int c=0;c<3;++c)image.pixels[(y*200+x)*3+c]=10+x;
+  auto owner=std::make_shared<Document>(Dataset::from_stack({image}));Selection area("rectangle",{{100,0},{200,2}});owner->select(area);
+  Window w((root/"rgb-auto-ui.json").u8string());w.addVirtualDocument(owner);const auto before=owner->snapshot();w.action("show_contrast");w.action("contrast_rgb_channels",{{"channels",4}});w.action("wait_jobs");
+  HeadlessInputSession session(w);auto report=session.frame();report=session.frame();
+  for(int i=0;i<8 && !report.at("contrast_panel").at("controls").at("auto").at("visible").get<bool>();++i){
+    const auto point=report.at("contrast_panel").at("controls").at("rgb_components_4").at("point");
+    session.frame(Json::array({{{"type","position"},{"space","screen"},{"point",point}}}));report=session.frame(Json::array({{{"type","wheel"},{"x",0},{"y",-5}}}));report=session.frame();
+  }
+  const auto control=report.at("contrast_panel").at("controls").at("auto");check(control.at("enabled") && control.at("visible"),"RGB Auto widget visible and enabled");
+  session.frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));for(bool down:{true,false})session.frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));
+  w.action("wait_jobs");report=session.frame();check(report.at("contrast_panel").at("range")==Json::array({110.,209.}) && report.at("contrast_panel").at("rgb").at("auto_divisor")==5000,"Actual RGB Auto widget measures area on baseline");
+  check(before.shares_data(owner->snapshot()) && owner->undo_steps()==0,"RGB Auto leaves owner unchanged before Apply");
+  w.action("contrast_apply");w.action("wait_jobs");const auto plane=owner->snapshot().data().dataset.plane();
+  check(plane->pixels[0]==0 && plane->pixels[1]==10 && plane->pixels[2]==10 && plane->pixels[199*3]==255,"RGB Auto maps whole plane, not only statistics ROI");
+  owner->undo();check(owner->snapshot().shares_data(before),"RGB Auto/Apply Undo restores baseline");w.action("close_contrast");
+}
+}
 int main(int argc,char **argv){try{
   check(argc==2,"Owned fixture path required");const auto root=std::filesystem::absolute(std::filesystem::u8path(argv[1]));
   check(!std::filesystem::exists(root),"Fresh fixture required");std::filesystem::create_directories(root);
-  math();seeded();captured(root);canceled(root);applyHost(root);applyAbandoned(root);rebindUi(root);rebindStale(root);workflowUi(root);rgbWorkflowUi(root);ui(root);rgbUi(root);rgbCancel(root);rgbPositionsUi(root);
+  math();seeded();captured(root);canceled(root);applyHost(root);applyAbandoned(root);rebindUi(root);rebindStale(root);workflowUi(root);rgbWorkflowUi(root);ui(root);rgbUi(root);rgbCancel(root);rgbPositionsUi(root);rgbAutoUi(root);
   std::cout<<"PASS native modeless contrast math, captured histogram, active channel, Auto, cancellation and actual widgets\n";return 0;
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

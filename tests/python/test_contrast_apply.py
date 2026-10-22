@@ -282,3 +282,117 @@ def test_limits_reject_invalid_python_integers(field, value):
     with pytest.raises((TypeError, ValueError, OverflowError)):
         setattr(limits, field, value)
     assert getattr(limits, field) == before
+
+
+RGB_AUTO_FIXTURE = json.loads((Path(__file__).parents[1] / "fixtures/rgb-histogram-auto-imagej154r.json").read_text())
+
+
+def rgb_auto_input(scenario):
+    y,x=np.indices((8,256));pixels=np.stack([x,(73*x+19*y)&255,255-x],axis=-1).astype(np.uint8)
+    if scenario==1:pixels[:]=[20,40,80]
+    if scenario>=2:
+        pixels[:]=0
+        for x in range(32 if scenario==2 else 16):pixels[0,x]=[100+x,110+x,120+x] if scenario==2 else [160]*3
+    return pixels
+
+
+def rgb_auto_selection(roi):
+    if roi==4:return ij.Selection('line',[(0,0),(255,7)])
+    if roi==0:return None
+    mask=np.zeros((8,256),np.uint8)
+    if roi!=3:
+        mask[:,17:236]=1
+        if roi==2:
+            y,x=np.indices(mask.shape);mask[(x+y)%3==0]=0
+    return ij.Selection.from_mask(mask)
+
+
+def rgb_histogram_options(weights,channels=7):
+    result=ij.RgbHistogramOptions();result.weights=weights
+    result.component={4:ij.RgbHistogramComponent.RED,2:ij.RgbHistogramComponent.GREEN,1:ij.RgbHistogramComponent.BLUE}.get(channels,ij.RgbHistogramComponent.INTENSITY)
+    return result
+
+
+def histogram_hash(result):return hashlib.sha256(np.array(result.histogram["counts"],dtype='<u8').tobytes()).hexdigest()
+
+
+@pytest.mark.parametrize('row',RGB_AUTO_FIXTURE['rows'],ids=lambda r:f'rgb-h-s{r["scenario"]}-w{r["weights"]}-r{r["roi"]}-c{r["channels"]}-p{r["previous"]}')
+def test_actual_imagej_rgb_histogram_auto_plot_and_whole_plane_mapping(row):
+    pixels=rgb_auto_input(row['scenario']);reads=ij.DatasetReadObserver();doc=ij.Document(ij.Dataset(pixels,axes='YXS').observe_reads(reads));doc.select(rgb_auto_selection(row['roi']))
+    weights=RGB_AUTO_FIXTURE['weights'][row['weights']]
+    plot_options=rgb_histogram_options(weights,row['channels']);auto_options=rgb_histogram_options(weights)
+    area=row['roi'] not in (0,4)
+    auto_request=ij.TargetRequest(roi=ij.RoiPolicy.ACTIVE_SELECTION if area else ij.RoiPolicy.WHOLE_PLANE)
+    plot_request=ij.TargetRequest(roi=ij.RoiPolicy.ACTIVE_SELECTION if area and row['channels'] not in (1,2,4) else ij.RoiPolicy.WHOLE_PLANE)
+    target=ij.resolve_target(doc.snapshot(),auto_request);estimate=ij.estimate_rgb_histogram(target,auto_options)
+    assert estimate.plane_pixels==2048 and estimate.plane_count==1 and estimate.plane_bytes==2048*3*8 and reads.counts().plane_reads==0
+    before=doc.snapshot();plot=ij.accumulate_rgb_histogram(ij.resolve_target(before,plot_request),plot_options)
+    auto=ij.accumulate_rgb_histogram(target,auto_options)
+    assert histogram_hash(plot)==row['plot_before_sha256'] and histogram_hash(auto)==row['auto_histogram_sha256']
+    decision=ij.rgb_auto_contrast_from_histogram(auto,row['previous'])
+    assert decision.range==row['range'] and decision.cycle.previous==row['previous'] and decision.cycle.next==row['next']
+    assert decision.cycle.used==(5000 if row['previous']<10 else row['previous']//2)
+    doc.commit(ij.prepare_rgb_contrast_apply(ij.resolve_target(before,ij.TargetRequest(roi=ij.RoiPolicy.WHOLE_PLANE)),rgb_options(*decision.range,row['channels'])))
+    applied=doc.snapshot().dataset.numpy('YXS');assert hashlib.sha256(applied.tobytes()).hexdigest()==row['pixels_sha256']
+    plot=ij.accumulate_rgb_histogram(ij.resolve_target(doc.snapshot(),plot_request),plot_options)
+    assert histogram_hash(plot)==row['plot_after_sha256'] and before.dataset.numpy('YXS').tobytes()==pixels.tobytes()
+
+
+@pytest.mark.parametrize('bad',[[True,0,0],[1,False,0],[1,0,float('nan')],[1,0,float('inf')],[1,0],[1,0,0,0],['red',0,0]])
+def test_rgb_histogram_weight_setter_is_strict_and_atomic(bad):
+    options=ij.RgbHistogramOptions();before=options.weights
+    with pytest.raises((ValueError,TypeError,OverflowError)):options.weights=bad
+    assert options.weights==before
+
+
+@pytest.mark.parametrize('failure',['memory','pixels','pre_cancel','callback','outside_roi_invalid_source'])
+def test_rgb_histogram_admission_callbacks_and_invalid_samples_preserve_source(failure):
+    reads=ij.DatasetReadObserver();pixels=rgb_input();doc=ij.Document(ij.Dataset(pixels,axes='YXS').observe_reads(reads));before=doc.snapshot()
+    limits=ij.DatasetHistogramLimits();token=ij.CancellationToken()
+    if failure=='memory':limits.max_working_bytes=1
+    if failure=='pixels':limits.max_pixels=1
+    if failure=='pre_cancel':token.cancel()
+    options=ij.RgbHistogramOptions()
+    if failure=='outside_roi_invalid_source':
+        options.weights=[-1,0,0]
+    def checkpoint():
+        if failure=='callback':raise RuntimeError('controlled RGB histogram callback failure')
+    with pytest.raises((ValueError,RuntimeError,ij.OperationCancelled)):
+        ij.accumulate_rgb_histogram(ij.resolve_target(before),options,limits,cancellation=token,checkpoint=checkpoint)
+    if failure in ['memory','pixels','pre_cancel','callback']:assert reads.counts().plane_reads==0
+    assert before.shares_data(doc.snapshot()) and doc.undo_steps==0
+
+
+def test_rgb_histogram_custom_indices_outside_roi_do_not_reject_valid_members():
+    pixels=np.array([[[0,20,30],[255,0,0]]],np.uint8);doc=ij.Document(ij.Dataset(pixels,axes='YXS'));doc.select(ij.Selection.from_mask(np.array([[1,0]],np.uint8)))
+    options=ij.RgbHistogramOptions();options.weights=[-1,1,1]
+    result=ij.accumulate_rgb_histogram(ij.resolve_target(doc.snapshot()),options)
+    assert result.histogram["counts"][50]==1 and result.finite_count==1 and result.plane_minimum==-254
+
+
+def test_rgb_histogram_freezes_reentrant_options_target_and_limits():
+    pixels=rgb_input();doc=ij.Document(ij.Dataset(pixels,axes='YXS'));options=rgb_histogram_options([1,0,0]);limits=ij.DatasetHistogramLimits()
+    def checkpoint():options.weights=[0,0,0];limits.max_pixels=1
+    result=ij.accumulate_rgb_histogram(ij.resolve_target(doc.snapshot()),options,limits,checkpoint=checkpoint)
+    np.testing.assert_array_equal(result.histogram["counts"],[2]*256)
+    assert result.rgb_options.weights==[1.,0.,0.]
+
+
+@pytest.mark.parametrize('cancel',[False,True])
+def test_rgb_histogram_worker_retains_typed_result_reservation(cancel):
+    import gc,time
+    doc=ij.Document(ij.Dataset(rgb_input(),axes='YXS'));scheduler=ij.JobScheduler();target=ij.resolve_target(doc.snapshot())
+    estimate=ij.estimate_rgb_histogram_job(target);job=ij.submit_rgb_histogram(scheduler,target)
+    assert job.wait(5000);value=job.rgb_result();reservation=job.info.resource_bytes
+    assert value.rgb_options.component==ij.RgbHistogramComponent.INTENSITY and reservation==estimate.reservation_bytes
+    # Python getters intentionally copy out of native reservations.
+    if cancel:job.cancel()
+    else:job.complete()
+    scheduler.shutdown();assert sum(value.histogram["counts"])==512
+    assert scheduler.usage.reserved_bytes==0
+
+
+@pytest.mark.parametrize('bad',[-1,10,11,True,1.5,2**64])
+def test_rgb_auto_divisor_rejects_noncanonical_values(bad):
+    doc=ij.Document(ij.Dataset(rgb_input(),axes='YXS'));value=ij.accumulate_rgb_histogram(ij.resolve_target(doc.snapshot()))
+    with pytest.raises((ValueError,TypeError,OverflowError)):ij.rgb_auto_contrast_from_histogram(value,bad)

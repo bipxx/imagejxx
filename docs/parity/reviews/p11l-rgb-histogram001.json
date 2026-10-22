@@ -1,0 +1,635 @@
+{
+  "schema_version": 1,
+  "id": "p11l.rgb-histogram.auto.001",
+  "date": "2026-10-22",
+  "state": "scoped-qualified",
+  "acceptance": false,
+  "complete_requirement_coverage": false,
+  "scope": "Windows/Linux each pass 22 native suites, three existing standalone C++ workflow/batch/RGB UI probes, one installed public C++ SDK consumer exercising the new RGB histogram job and Auto decision, ten background repetitions, four hidden GL contexts and 12185 installed Python checks, zero failure/error/skip. The 6747 new cases include 6160 actual ImageJ raw plot/Auto histogram, decision/cycle and mapped-output rows, 22 core strict/admission/callback/weight/job cases, 560 editor reference rows and five repeated-cycle/reset/superseded-intent cases. Reference harness executes pinned ContrastAdjuster plotHistogram and autoAdjust plus actual ColorProcessor/ColorStatistics; AWT construction and scrollbar presentation are bypassed without patching upstream processing sources. Primary plots count whole planes; intensity plots use active area membership. Auto always measures baseline weighted intensity and previews whole-plane mapping with selected component bits. Preference weights, repeated cycle and stale/cancel/close/reset paths are connected through the shared ImGui panel. Histograms and Auto do not change document pixels/display/history before Apply. Leased HistogramJob is reused with typed/base aliases and Python owning copies. Native fixtures exercise cancellation on a blocked worker, no creator-thread reads, retained aliases after completion/shutdown, and real mouse-click Auto/Apply/Undo. Admission is metadata-only and bounds native payloads; external caches/RSS remain outside scope. Actual compiled inputs and installed origins are pinned; a SHA-verified native Linux snapshot contains 5471 test/config/fixture files. Two test-only corrections adapt new assertions to the existing histogram dictionary/NumPy API; original variants and failed reports are retained. Exact owned scratch including disposable environments, test fixtures and Java class directories is CRC/member-SHA archived before deletion. Scalar/RGB Apply headers and wire profiles, original 99 requirement/status triples and commercial-use inventory remain unchanged. Exact ImageJ component-switch snapshot promotion, active/stack narrowing, slider/log-plot/Set/reset/calibration, RGBA/floating Apply and complete G057/ImageJ/Fiji/platform/resource acceptance remain open. Existing Auto producer-source gate is unchanged.",
+  "sources": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 110504,
+      "sha256": "c486e90760f332d3206961303f31236b0d9576c579d3f20a701c7f5cc3a30cbe"
+    },
+    {
+      "path": "include/imagejxx/document.hpp",
+      "bytes": 16326,
+      "sha256": "45794499611779e49f26eccd5c3d575588a59cbde50190fc05d892999069b437"
+    },
+    {
+      "path": "include/imagejxx/jobs.hpp",
+      "bytes": 5779,
+      "sha256": "cd46d821c437c26917439b5e86f7bc501131709cd26b41d07b09b4334cd9ed12"
+    },
+    {
+      "path": "include/imagejxx/contrast_apply_command.hpp",
+      "bytes": 2229,
+      "sha256": "6fed6f474cbafe8d09c75df3e5d265599289e102555be28d689fc6d94bd97d0e"
+    },
+    {
+      "path": "include/imagejxx/contrast_apply_job.hpp",
+      "bytes": 2829,
+      "sha256": "8f795834c985cf4a47442d54223bc5ffe1193de0f6fb98ac095e51725ee32803"
+    },
+    {
+      "path": "src/native/contrast_apply.cpp",
+      "bytes": 13359,
+      "sha256": "d153c98897dcae2c9f050eb4a176af91ba27dc80f1ceefdb62f39e0c82fd9db3"
+    },
+    {
+      "path": "src/native/contrast_apply_internal.hpp",
+      "bytes": 293,
+      "sha256": "09f31ddaeb04b9e14baa434ac0b05a2f5f03766c6a6c3cf3ca2019c6ac6b3f75"
+    },
+    {
+      "path": "src/native/contrast_apply_command.cpp",
+      "bytes": 12267,
+      "sha256": "c9fd8b6a198e3116f0c716e3cecbbf7d64f672e52e4cf41f271bcafc814c28bc"
+    },
+    {
+      "path": "src/native/contrast_apply_job.cpp",
+      "bytes": 6272,
+      "sha256": "f7102301f985bfc174bf8ebd2011c533b6379da1433031735e255abb2312c54e"
+    },
+    {
+      "path": "src/native/contrast_apply_bindings.cpp",
+      "bytes": 14463,
+      "sha256": "10fea04b95a320c35eeeb3eed61846e9959a6b7baa70789ec5b25e6dec117a8b"
+    },
+    {
+      "path": "src/native/targets.cpp",
+      "bytes": 18613,
+      "sha256": "2ac64ffc020adda6c35a4833dd199082717673aed67be8a0118c052818b29f2f"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 74323,
+      "sha256": "7f2b39f2a0941d3f1b026fa5e29446ed7604b0d515c2fd32acd6c0e1d9de3316"
+    },
+    {
+      "path": "tests/native/test_contrast_apply_command.cpp",
+      "bytes": 15211,
+      "sha256": "8f157619941a766881b738114e76fedff29ec98a8e273ef720fce1b4bd54b003"
+    },
+    {
+      "path": "tests/python/test_contrast_apply_command.py",
+      "bytes": 22140,
+      "sha256": "bc0dcd36ccfb50e0e3c915327deb2c43cac675f0bba6070aba0c69ecea37649c"
+    },
+    {
+      "path": "examples/cpp/CMakeLists.txt",
+      "bytes": 16195,
+      "sha256": "ce80276d600de05162a0eb003a289177636e9549f48eae359b03bddd90234fb9"
+    },
+    {
+      "path": "examples/cpp/contrast_apply_command.cpp",
+      "bytes": 1556,
+      "sha256": "79146a44ba3939cccc05260d41450a94d0dadd0ab325d52f66502efe5da5c536"
+    },
+    {
+      "path": "include/imagejxx/contrast_apply.hpp",
+      "bytes": 1653,
+      "sha256": "1a83f6f9a5209b9fdf2f7208346467d6301f08dedfd66b11b8895ef23500482e"
+    },
+    {
+      "path": "tests/python/test_contrast_apply.py",
+      "bytes": 20651,
+      "sha256": "dff21fab8cfa1d31c8d9e7b9f5b38f3d8174a8d70d476357d3c05c4ae519a170"
+    },
+    {
+      "path": "tests/reference/ContrastApplyResetReference.java",
+      "bytes": 2282,
+      "sha256": "84e13582cb88a770b42e5cd3a36a5401a2ad64d35f098a0d23cc0a886c4c987a"
+    },
+    {
+      "path": "tests/fixtures/contrast-apply-reset-imagej154r.json",
+      "bytes": 5433,
+      "sha256": "a305ceea9d6c314ba6f6bf2a87bc4eb08dbfc58a8155a9e8f9804d5777abce0a"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 703185,
+      "sha256": "6396821f6f95d17164ec26ed7a64a68ada12d2e8db41624da02847f5f162ae2a"
+    },
+    {
+      "path": "src/desktop/contrast_panel.cpp",
+      "bytes": 26357,
+      "sha256": "d5b23d8be92412302d7d49700f1775ee3c8e45a40072c0b15d38d856309718d1"
+    },
+    {
+      "path": "src/desktop/contrast_panel.hpp",
+      "bytes": 5503,
+      "sha256": "54c0d187e3828c50ef4f49a160c8795281ee9e406a3175e0e85c18d057a8f5cb"
+    },
+    {
+      "path": "tests/native/test_contrast_panel.cpp",
+      "bytes": 38382,
+      "sha256": "933f8b5b71c6f4052d9684dfc81f10ac3bc2c220395b86cf284253fcb19de765"
+    },
+    {
+      "path": "tests/python/test_contrast_panel.py",
+      "bytes": 35841,
+      "sha256": "ce4ad76e49202cec4f2835e46bec485a030862159b1b7a801d00863667e085ae"
+    },
+    {
+      "path": "src/native/contrast_apply_workflow.hpp",
+      "bytes": 1301,
+      "sha256": "01f96a69cbfbbed54bbc6a56c90ab52e7baff40111c92d548af276b83c8d4abf"
+    },
+    {
+      "path": "src/native/native_workflow.cpp",
+      "bytes": 32450,
+      "sha256": "64c0cd04198a61ced6c0bbe99bb17b2681bddd68549797875c8a697d4d70b1c9"
+    },
+    {
+      "path": "src/native/native_workflow_originals.cpp",
+      "bytes": 14465,
+      "sha256": "60c3da53e65a55c527bd04e9e65878d7d30e9be4274981aecb4ce1b050db1e89"
+    },
+    {
+      "path": "src/native/native_workflow_program.cpp",
+      "bytes": 36006,
+      "sha256": "70d13951e9a1bd758d8f47906950c3b42eef4782d67804afb3ecf1485e8244c8"
+    },
+    {
+      "path": "src/native/workflow_stage_metadata.cpp",
+      "bytes": 7537,
+      "sha256": "557513b12053adcdf0c057d745546123ec4f7f8c6f9e4af06f8b5c791eca3df1"
+    },
+    {
+      "path": "src/desktop/native_workflow_panel.cpp",
+      "bytes": 124358,
+      "sha256": "22af54f46937b3e12d6227b64aac1b8f6e2bf12d67ccbd46c25297ae4bab84f2"
+    },
+    {
+      "path": "src/desktop/native_workflow_parameters.cpp",
+      "bytes": 22788,
+      "sha256": "0469e7d98fa054955ad8588fe561c4791e286fcd81bf2dd14c6ff2edcabaced6"
+    },
+    {
+      "path": "tests/native/test_native_workflow.cpp",
+      "bytes": 23748,
+      "sha256": "4d3091ea024d95a3e8bd8944c57be46402dfd740f0c3572bec2811521e57511f"
+    },
+    {
+      "path": "tests/native/test_native_workflow_batch.cpp",
+      "bytes": 13519,
+      "sha256": "f5ffa34dd2627e962c9421bda8bfcf86a61c7b78e0a894eb02b80af791043212"
+    },
+    {
+      "path": "tests/python/test_native_workflow.py",
+      "bytes": 35230,
+      "sha256": "795a09342586ec713a6c081bc0dd039cb0bec9544e269d379d676e06694b05ac"
+    },
+    {
+      "path": "tests/python/test_native_workflow_batch.py",
+      "bytes": 19560,
+      "sha256": "9e1e0e4c247efda1be6e442b1f3f9c03f0e7facb527fc76710fa7fa7e196cd2e"
+    },
+    {
+      "path": "cmake/RunOwnedFixtureTest.cmake",
+      "bytes": 1082,
+      "sha256": "90fad11f62f99233d2d425681d7f6b2da2a9eb4c60f9f42cc5035e77c282becf"
+    },
+    {
+      "path": "include/imagejxx/rgb_contrast_apply.hpp",
+      "bytes": 1581,
+      "sha256": "dcac0527c9e81d02dfb513e04eac7a6be8d1e518b41a358c0c5870b2efead2bd"
+    },
+    {
+      "path": "tests/native/test_contrast_apply.cpp",
+      "bytes": 12020,
+      "sha256": "cc7b8666c2092c58cc4d9e2f020fa23629a860c29b757a16ffb623c887449eaf"
+    },
+    {
+      "path": "tests/reference/RgbContrastApplyReference.java",
+      "bytes": 2915,
+      "sha256": "0d16d7b4636a58084a06250761ee9ee23214e907f1b1875c97772d07b0ae0035"
+    },
+    {
+      "path": "tests/fixtures/rgb-contrast-apply-imagej154r.json",
+      "bytes": 72187,
+      "sha256": "9551229e2800ff7195f4172fb4793bac5c7e5db3b74532b940545c84ff3086aa"
+    },
+    {
+      "path": "examples/cpp/contrast_apply.cpp",
+      "bytes": 3436,
+      "sha256": "239b0892df4c0aadc296a6d7d586d0f55a50a247a7d159d760c179b4c8dc7a1f"
+    },
+    {
+      "path": "include/imagejxx/rgb_contrast_apply_command.hpp",
+      "bytes": 2104,
+      "sha256": "f53510d2d6015bcd5cf3dcfb0dfeabd46c95a108114e9cdb83c32f7e8ce08072"
+    },
+    {
+      "path": "include/imagejxx/rgb_contrast_apply_job.hpp",
+      "bytes": 695,
+      "sha256": "a955c8ce4cfc4334cf8050383d5b8704f2d4bac537f63a2381052bb53718adfe"
+    },
+    {
+      "path": "src/native/contrast_command_record.hpp",
+      "bytes": 3210,
+      "sha256": "13de0ee7977badb33b14e8dd818a3c420f3f5363fced2402c3e17c961183c0ad"
+    },
+    {
+      "path": "src/native/rgb_contrast_apply_command.cpp",
+      "bytes": 11784,
+      "sha256": "b18619907cbb5b9349845c7074609d412f20e0a84d89264bcc0cd000992285ef"
+    },
+    {
+      "path": "src/desktop/contrast_rgb_preview.cpp",
+      "bytes": 9529,
+      "sha256": "a000210a907657a4134b42ba0e7ef25fcfa577aa5f29b558a8dd368765ae0640"
+    },
+    {
+      "path": "src/desktop/orthogonal.hpp",
+      "bytes": 5774,
+      "sha256": "18f5d36d4e88f295f5b20e4d5b097d99a111610f2e0d04fd236fdffda2932ac1"
+    },
+    {
+      "path": "src/desktop/orthogonal.cpp",
+      "bytes": 64321,
+      "sha256": "dd864f0a8c0b820706c9a5f5fb129cb3ba0e107d68cf10f62b6e2c2fdce02bf4"
+    },
+    {
+      "path": "src/desktop/operation_target_panel.cpp",
+      "bytes": 19348,
+      "sha256": "5789ff09c84ce9ec5128809d2ad8f80488e2265d9c013054c9ac7525d93183a6"
+    },
+    {
+      "path": "src/desktop/operation_target_panel.hpp",
+      "bytes": 3039,
+      "sha256": "a62c708a370084e52e79bf1b41e712fb17138d9caa0a69172a1500f45a19c0f4"
+    },
+    {
+      "path": "include/imagejxx/rgb_histogram.hpp",
+      "bytes": 2111,
+      "sha256": "e065aa0b05daecf9446a9c009da645b263bb7a687f596c7d45f0eba1156df5fb"
+    },
+    {
+      "path": "include/imagejxx/histogram_job.hpp",
+      "bytes": 3608,
+      "sha256": "0d0bf92056fb877c82591fd82063f3f3eddb959ba632a818ecc4d7f258a27d0c"
+    },
+    {
+      "path": "src/native/rgb_histogram.cpp",
+      "bytes": 8233,
+      "sha256": "34987fef2e3955e7807969f960d207df29d670ecc0fffb0603762b8d6f5aa2b0"
+    },
+    {
+      "path": "src/native/histogram_job.cpp",
+      "bytes": 7511,
+      "sha256": "719e92a650b02183adc1fe0687023473dd0acb421c7379ae2d4f15d9331a71b6"
+    },
+    {
+      "path": "src/native/dataset_histogram_bindings.cpp",
+      "bytes": 25244,
+      "sha256": "fd45ecd171643cb88282a9733cfd94badcdcf75f55ee4053a6f374a641f496ac"
+    },
+    {
+      "path": "tests/reference/RgbHistogramAutoReference.java",
+      "bytes": 4323,
+      "sha256": "5e9791778b9c34d3a55ba7d041f0de56430442de086ef8146e42bfb152a9a79d"
+    },
+    {
+      "path": "tests/fixtures/rgb-histogram-auto-imagej154r.json",
+      "bytes": 3579254,
+      "sha256": "1e7dd905776c437c66ac3a2ef77871c726c177f4c354ac96eaa0c50d5aff2389"
+    },
+    {
+      "path": "docs/CONTRAST_APPLY.md",
+      "bytes": 26168,
+      "sha256": "e18af1af0a5c24b3ccb2a956af631432b40bd783973a015db423e61daaf849d5"
+    },
+    {
+      "path": "docs/PLAN.md",
+      "bytes": 448436,
+      "sha256": "0202f96d685d02f7b0f68ae95b7f4fd305371bf13611844772a9e327e610494e"
+    },
+    {
+      "path": "docs/IMPLEMENTATION.md",
+      "bytes": 154422,
+      "sha256": "7cf796f3e02e3b0296b618544c68b97661f2c5d0a9ad45e1235c9d06617e4148"
+    }
+  ],
+  "profiles": {
+    "windows": {
+      "native_suites": 22,
+      "ctest_native_suites": 21,
+      "owned_native_batch_suite": 1,
+      "full_cpp_ui_probes": 3,
+      "installed_cpp_sdk_consumers": 1,
+      "background_repetitions": 10,
+      "background_hidden_gl_contexts": 4,
+      "python_cases": 12185,
+      "new_python_cases": 6747,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "removed_scratch_bytes": 650073109,
+      "archive": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\p11l-rgb-histogram001\\windows-scratch001.zip",
+        "bytes": 81469863,
+        "sha256": "2b940254a4f6039794d3fd24e993b4f3f6894de78f9751e7e4d148fa6a97c7c3"
+      },
+      "evidence": [
+        {
+          "path": "build/p11l-rgb-histogram001/windows-qualified002/receipt.json",
+          "bytes": 6720,
+          "sha256": "9f78a9425134ba954a534405821f2c3410d5a0e0fd9f67175828c7d72a97e7b0"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/windows-qualified002/extended.json",
+          "bytes": 160,
+          "sha256": "4bd90f32a4951a1e6f50172b7ece6d0b3dca0a7e924b2a3e3941b89fd825fc9e"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/windows-qualified002/native.xml",
+          "bytes": 9811,
+          "sha256": "0895f190f3eafd6bf5a560717ebeb0b7b056656c604b922d7f270023ee9bd5d3"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/windows-qualified002/repeat.xml",
+          "bytes": 623,
+          "sha256": "4d8f7c84c9cd9f55014c899d9688c0a5b7840173e515201c437c03c92b70cf35"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/windows-qualified002/background-gl.log",
+          "bytes": 116,
+          "sha256": "4a9efe703a8147cd67ee41ed7693448770a0e56024f32cd1131db7f5aea1d3ea"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/windows-qualified002/native-batch.log",
+          "bytes": 211,
+          "sha256": "748aabfcde00f40db942db05b2ce0fcd81ec24f17ecdcaff896488c7adac0e0e"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/windows-qualified002/workflow-ui-case001.json",
+          "bytes": 49857284,
+          "sha256": "211ae34fc43b5efcdaf50902e6f9c1224985eefdcb0c1a23b7e50d7d551ac8de"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/windows-qualified002/batch-ui-case001.json",
+          "bytes": 21184760,
+          "sha256": "e86e676dc0de53023dd4215dc47954b63308a48d0d83604d5acd27b36ed94a0f"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/windows-qualified002/rgb-ui-case001.json",
+          "bytes": 69380544,
+          "sha256": "8679f8c0e01810dc072a14ac5b2b62dddf1f3094ed18611a2a631bf29ba9fd51"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/windows-python004/receipt.json",
+          "bytes": 5862,
+          "sha256": "c82d65a35465cd33de89b8a02974f6dfe88cedb1fee7c0f11958322fd6c856d0"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/windows-python004/pytest.xml",
+          "bytes": 1942894,
+          "sha256": "5ad9ba518b5bad1904420a5175bb85635019cf3c7a2a558b3b7fc373575c6c72"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/windows-env002/receipt.json",
+          "bytes": 280,
+          "sha256": "68ae2b64f519b86f046ee323b44ef33594b5329cce1ddde2ee7962bf7f3eaf74"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/windows-sdk002/receipt.json",
+          "bytes": 352,
+          "sha256": "3a957382df967f230cdf0f28b6575da70e29bfde4717a6fe95d60604312e91a0"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/windows-sdk002/sdk.xml",
+          "bytes": 463,
+          "sha256": "0a009a02c44a92fe8c7cbaec02460472b3a447df0dc1e0a5e403c647f7ecba80"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/windows-products001.json",
+          "bytes": 4336,
+          "sha256": "f7a7e0fe9320811ff12924a6ebfc5628690b8cabd44aa842321a8663f7904d99"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/windows-cleanup001.json",
+          "bytes": 555337,
+          "sha256": "df857107f9b1a9777291e8d93de4071d2ae78c5034bb7f66999ab86727b57c55"
+        }
+      ]
+    },
+    "linux": {
+      "native_suites": 22,
+      "ctest_native_suites": 21,
+      "owned_native_batch_suite": 1,
+      "full_cpp_ui_probes": 3,
+      "installed_cpp_sdk_consumers": 1,
+      "background_repetitions": 10,
+      "background_hidden_gl_contexts": 4,
+      "python_cases": 12185,
+      "new_python_cases": 6747,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "removed_scratch_bytes": 1707678183,
+      "archive": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/build/p11l-rgb-histogram001/linux-scratch001.zip",
+        "bytes": 335281239,
+        "sha256": "ccd8851962431cd768b69a102a07c493975876fab2d36316aaf4e09d011ff383"
+      },
+      "evidence": [
+        {
+          "path": "build/p11l-rgb-histogram001/linux-qualified002/receipt.json",
+          "bytes": 6624,
+          "sha256": "16376ee84f25ed46e90bc8764d8f23bafdbc04687f65607c5b316cb8f272dfff"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/linux-qualified002/extended.json",
+          "bytes": 114,
+          "sha256": "355f8576dd55e3448647a7f6da8dd8a7a51a72c29fca40de336f23162ae92fff"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/linux-qualified002/native.xml",
+          "bytes": 9740,
+          "sha256": "1894668dcbc2951c46727a9f01f651777d01c6c89904761be306b5d82c121657"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/linux-qualified002/repeat.xml",
+          "bytes": 616,
+          "sha256": "5c3e3487b587f6be7ce0ecda943b0726b1e00153b3c567112169cbb512b8f2dd"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/linux-qualified002/background-gl.log",
+          "bytes": 115,
+          "sha256": "af0cf02bc32e37064a73f474b55cc38cf391df0c4b97c52422c7aa675ceb6178"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/linux-qualified002/native-batch.log",
+          "bytes": 176,
+          "sha256": "30ea6318f6819947c17c2f7f3df290e028008d8b77066cda6a0d183b625ef6c6"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/linux-qualified002/workflow-ui-case001.json",
+          "bytes": 49697314,
+          "sha256": "d415537322f33d4a9d215e426503dbf23b910c77fb9ebedf5d2f208167a50ac0"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/linux-qualified002/batch-ui-case001.json",
+          "bytes": 21197732,
+          "sha256": "f2276242f9c07fae1e7189ce77704267c2bc8816bf328d7fe67d0574c0c870af"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/linux-qualified002/rgb-ui-case001.json",
+          "bytes": 69366800,
+          "sha256": "61ee211c8df1342122a33de0906f8bc7dd9b3cd6389ee7e27411b3cf48520639"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/linux-python004/receipt.json",
+          "bytes": 6648,
+          "sha256": "e9753f0a055601925f68a4255b5ee2129d617da3c627bcc2bcf77f57d8ecea2b"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/linux-python004/pytest.xml",
+          "bytes": 1942893,
+          "sha256": "04e70c6d31e4bf0de14d7c41309c21fd2a9f540eb516dcfc8982d3303a56ded7"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/linux-env002/receipt.json",
+          "bytes": 218,
+          "sha256": "e7f05ed2c456863ae787481bf271afb20775ee3284e0e98c584f0eb0bf509ff5"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/linux-sdk002/receipt.json",
+          "bytes": 307,
+          "sha256": "aa0fd90900f7b749120e424a40bcee340bdac5f57f04495f3288fe6f05e54f19"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/linux-sdk002/sdk.xml",
+          "bytes": 443,
+          "sha256": "16e2fc6df7914f2e17104d3b64534cdca6c997fbda26461fd970a0a98ca01569"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/linux-products001.json",
+          "bytes": 4005,
+          "sha256": "3181c371c3169f8d1f951c1da313fe6de990bb0ead6138d09fec991b58bef65f"
+        },
+        {
+          "path": "build/p11l-rgb-histogram001/linux-cleanup001.json",
+          "bytes": 4135652,
+          "sha256": "dba71c4eab848463867d30fb69eb1e304f9d24d3b5cc0459a9b528c8bc2efc04"
+        }
+      ]
+    }
+  },
+  "reference": {
+    "rows": 6160,
+    "editor_rows": 560,
+    "fixture": {
+      "path": "tests/fixtures/rgb-histogram-auto-imagej154r.json",
+      "bytes": 3579254,
+      "sha256": "1e7dd905776c437c66ac3a2ef77871c726c177f4c354ac96eaa0c50d5aff2389"
+    },
+    "driver": {
+      "path": "tests/reference/RgbHistogramAutoReference.java",
+      "bytes": 4323,
+      "sha256": "5e9791778b9c34d3a55ba7d041f0de56430442de086ef8146e42bfb152a9a79d"
+    }
+  },
+  "test_only_amendment": {
+    "state": "test-only",
+    "reason": "Use the established dictionary histogram API and NumPy array assertion; production and native fixture sources are unchanged after qualification.",
+    "files": [
+      {
+        "path": "tests/python/test_contrast_apply.py",
+        "before": "dc24451771cdeeb37883c4ea60fd262f72be1f82876ceaf1ef50d2f6d0516777",
+        "after": "dff21fab8cfa1d31c8d9e7b9f5b38f3d8174a8d70d476357d3c05c4ae519a170"
+      }
+    ],
+    "variants": [
+      "test_contrast_apply-variant002.py",
+      "test_contrast_apply-variant003.py"
+    ]
+  },
+  "evidence": [
+    {
+      "path": "build/p11l-rgb-histogram001/source-manifest001.json",
+      "bytes": 6447,
+      "sha256": "0e3be72554976812c26fa0ab57c3cb1e5b0a7d146107062ab8a423c22f54c5a1"
+    },
+    {
+      "path": "build/p11l-rgb-histogram001/source-manifest002.json",
+      "bytes": 6447,
+      "sha256": "2582736e8394dded6ad84a50418ea3b92befe7320faf0f443ed717beede4dd8f"
+    },
+    {
+      "path": "build/p11l-rgb-histogram001/source-manifest004.json",
+      "bytes": 6447,
+      "sha256": "6cd36742e5ffe3b5fc28c5f06ba12c21287630da5a638f81265e91a6bf4e4166"
+    },
+    {
+      "path": "build/p11l-rgb-histogram001/test-amendment001.json",
+      "bytes": 553,
+      "sha256": "d896649081220fe45679e416d97f8d8c5866bc25e7935938c59a2a48baa43d19"
+    },
+    {
+      "path": "build/p11l-rgb-histogram001/test_contrast_panel-variant001.cpp",
+      "bytes": 38403,
+      "sha256": "7f564a0aff1ab2ba35dce93793b1164623a2d9dc2dcf5fa6d5d26bd6dbeed78e"
+    },
+    {
+      "path": "build/p11l-rgb-histogram001/test_contrast_apply-variant002.py",
+      "bytes": 20609,
+      "sha256": "dc24451771cdeeb37883c4ea60fd262f72be1f82876ceaf1ef50d2f6d0516777"
+    },
+    {
+      "path": "build/p11l-rgb-histogram001/test_contrast_apply-variant003.py",
+      "bytes": 20621,
+      "sha256": "9e8213ded17c092a2779469a606ff9c07ae2411d6fa6816d659c53af694e8706"
+    },
+    {
+      "path": "build/p11l-rgb-histogram001/oracle-compile002.log",
+      "bytes": 1272,
+      "sha256": "ef0a1310ce926e85b15f9e3b6487046826b3ca8040374c7d6f75a2e2035421fc"
+    },
+    {
+      "path": "build/p11l-rgb-histogram001/oracle-run002.log",
+      "bytes": 1758988,
+      "sha256": "6ca6357d9502186d6b6aed3bae2ffb7ddeaf589b44508bdd8e0494d4cd7a6983"
+    },
+    {
+      "path": "build/p11l-rgb-histogram001/check_licenses001.log",
+      "bytes": 62,
+      "sha256": "939b266b092bfdc37d1814f66b75a21469497e36e30a2050805031da4f97b417"
+    },
+    {
+      "path": "build/p11l-rgb-histogram001/check_plan001.log",
+      "bytes": 151,
+      "sha256": "5741e4b9133f374434cac8973e1f1c6131200e632958a012913a739c28d47006"
+    },
+    {
+      "path": "build/p11l-rgb-histogram001/windows-python002/pytest.xml",
+      "bytes": 118021,
+      "sha256": "fa3ceeddffa5ac36385ccf5721ac27c097ec77dcadbbd73a90308865f91ec8aa"
+    },
+    {
+      "path": "build/p11l-rgb-histogram001/windows-python003/pytest.xml",
+      "bytes": 1152335,
+      "sha256": "dace44c62c0de3cd95cf26b2285d1d7973a3da8d69d1fa7eaf47b2c8feaab073"
+    },
+    {
+      "path": "build/p11l-rgb-histogram001/linux-transfer004.json",
+      "bytes": 780576,
+      "sha256": "deae78e88d0a28f5e6b28ae3a328d062709d6728710efc4266f2c0630c12591b"
+    },
+    {
+      "path": "build/p11l-rgb-histogram001/linux-tests004.json",
+      "bytes": 775002,
+      "sha256": "7535caaf4c5c7c15fa358271183333673680e0c90b3275e3bcd9df15f6b8d19e"
+    }
+  ],
+  "remaining": [
+    "Implement exact ImageJ component-switch snapshot promotion from the current mapped preview; the native editor currently retains its immutable baseline.",
+    "Implement exact ImageJ active/stack controller semantics including processor-narrowed bounds on other stack planes; native uniform multi-axis mapping and paired Undo remain explicit extensions.",
+    "Extend actual slider/log-plot/Set/reset/calibration, ROI/field/publication failure injection and mixed workflow/platform/resource acceptance.",
+    "Keep RGBA/floating Apply unavailable until independently qualified; remove remaining synchronous legacy source reads.",
+    "The existing histogram-auto-consumer-p06c4-windows-001 Auto producer-source evidence gate remains open and was not repinned or relaxed."
+  ]
+}

@@ -1,5 +1,21 @@
 # ImageJ and Fiji gap closure plan
 
+**RGB histogram/Auto checkpoint, 2026-10-22 (work in progress):**
+Native UInt8 RGB raw histograms, a pure repeated-cycle Auto decision and leased
+histogram jobs now feed the shared modeless ImGui panel and Python interface.
+Primary plots count whole planes; weighted plots use area membership. Auto
+measures baseline weighted intensity and previews whole-plane mapping with the
+selected component bits. Preference weights, cancellation and stale intent
+remain explicit. Actual ImageJ methods supply 6,160 reference rows.
+Windows/Linux each pass 22 native suites, three standalone C++ UI probes,
+one installed public C++ SDK consumer, ten background repetitions, four hidden
+GL contexts and 12,185 installed Python checks (6,747 new), zero failure/error/skip.
+Exact owned scratch is CRC/member-SHA archived before cleanup; qualified products
+remain. See the [scoped receipt](parity/reviews/p11l-rgb-histogram001.json).
+Exact component-switch snapshot promotion, active/
+stack narrowing, slider/log-plot/Set/reset/calibration and complete ImageJ/Fiji
+acceptance remain open. The existing Auto producer-source gate is unchanged.
+
 **RGB workflow/Batch checkpoint, 2026-10-22 (work in progress):**
 RGB Apply now participates in portable native programs, recorded Run review,
 editable mapping/component parameters and session Batch. Saved originals remain

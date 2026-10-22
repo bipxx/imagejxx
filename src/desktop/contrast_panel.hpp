@@ -34,6 +34,9 @@ public:
   void request_cancel(JobScheduler &);
   bool wait_for(std::chrono::milliseconds)const;
   bool rgbSource()const;
+  bool pending()const{return bool(job_) || rgbAutoRequested_ || bool(rgbAutoJob_) || (rgbJob_ && !rgbPreview_);}
+  TargetRequest applyTarget()const;
+  void rgbWeights(std::array<double,3>);
   int rgbChannels()const{return rgbChannels_;}
   std::optional<DocumentSnapshot> rgbPreview(const DocumentSnapshot &)const;
   const ResolvedTarget *rgbPreviewTarget(const DocumentSnapshot &)const;
@@ -71,7 +74,18 @@ private:
   bool rgbAttempted_=false;
   std::uint64_t rgbGeneration_=0,rgbSubmitted_=0,rgbDiscarded_=0;
   std::atomic<std::uint64_t> rgbCancelId_{0};
-  std::uint64_t rgbCancelEpoch_=0;
+  std::uint64_t rgbCancelEpoch_=0,rgbPlotGeneration_=0;
+  std::array<double,3> rgbWeights_{1./3,1./3,1./3};
+  std::optional<HistogramJob> rgbAutoJob_;
+  std::optional<DocumentSnapshot> rgbAutoSource_;
+  bool rgbAutoRequested_=false,rgbAutoWhole_=false;
+  int rgbAutoDivisor_=0,rgbAutoPrevious_=0;
+  std::uint64_t rgbAutoEpoch_=0;
+  std::atomic<std::uint64_t> rgbAutoCancelId_{0};
+  void requestRgbAuto();
+  void cancelRgbAuto();
+  void tickRgbAuto(bool,JobScheduler &,const DatasetHistogramLimits &);
+  void tickRgbPlot(JobScheduler &,const DatasetHistogramLimits &);
   void invalidateRgb(bool retry=true);
   void tickRgb(bool,JobScheduler &,const ContrastApplyCommandLimits &);
   Json rgbDiagnostics()const;
