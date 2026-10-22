@@ -1,5 +1,22 @@
 # Implementation progress
 
+**Histogram workflow options checkpoint, 2026-10-21 (work in progress):**
+C++/Python workflows now author histogram bin/range/log choices independently of
+optional original captures. The closed V5 format preserves V4 and retained history;
+new intent can be authored without fabricating a capture. Both ImGui launchers
+edit/restore choices inline and keep/reopen V5 programs without changing targets
+or standalone defaults. Commands and workflows share option validation.
+Windows/Linux each pass 555 selected Python checks (41 new API / ten new input),
+five native suites and fresh installed SDK consumers. Independent readers verify
+64 reports / 21,715 frames, including 20 new reports / 2,096 frames. Verified
+cleanup removes 511,231,849 scratch bytes, retaining final products/evidence.
+Registration appends five cases to 1,283 and preserves prior order. See
+[usage](HISTOGRAM.md) and
+[the scoped receipt](parity/reviews/p10r-histogram-workflow-options001.json).
+Batch unbinned statistics review/export, virtual sources, remaining domains and
+full qualification remain open. All99 stays 47 in progress / 52 open / 0 complete;
+the unchanged Auto Contrast fingerprint gate remains open.
+
 **Histogram workflow UI checkpoint, 2026-10-21 (work in progress):**
 Both ImGui launchers now review captured histogram entries/V4 programs in Run
 and native Batch. Plane/ROI targets, enabled steps and CSV tokens are editable;

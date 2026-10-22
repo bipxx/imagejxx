@@ -128,6 +128,14 @@ HistogramCommandLimits histogram_limits(const NativeWorkflowHistogram &v, std::s
   limits.max_record_bytes = std::min(limits.max_record_bytes, cap);
   return limits;
 }
+ResolvedHistogramCommand workflow_histogram(const DocumentSnapshot &source,
+    const NativeWorkflowHistogram &step,const HistogramCommandLimits &limits) {
+  // Historical evidence is validated even when explicit choices replace it.
+  detail::validate_native_workflow_histogram_intent(step);
+  if(step.authored_options)return resolve_histogram_command(source,
+      step.authored_options->histogram,step.target,step.authored_options->log_counts,limits);
+  return rebind_histogram_command(source,*step.original,step.target,limits);
+}
 ResolvedImageJAnnotationExport workflow_export(const DocumentSnapshot &source,
                                                const NativeWorkflowExport &v) {
   if(v.original && detail::native_workflow_original_schema(*v.original)=="imagejxx.imagej-annotation-export")
@@ -269,7 +277,7 @@ void preflight(const DocumentSnapshot &initial,
             budget.add(v.name.size());
             budget.product(v.target.positions.size(), sizeof(PlanePosition));
             const auto limits = histogram_limits(v, budget.cap - budget.used);
-            const auto command = rebind_histogram_command(source, *v.original, v.target, limits);
+            const auto command = workflow_histogram(source, v, limits);
             budget.add(estimate_histogram_command(command, limits).working_bytes);
             budget.record(command.record());
             // Retained output DTO and conservative CSV text + byte-copy scratch.
@@ -521,7 +529,7 @@ PreparedNativeWorkflow detail::prepare_native_workflow_borrowed(
                       v.parameters);
           } else if constexpr (std::is_same_v<T, NativeWorkflowHistogram>) {
             const auto limits_for_step = histogram_limits(v, limits.max_retained_bytes);
-            const auto command = rebind_histogram_command(current, *v.original, v.target, limits_for_step);
+            const auto command = workflow_histogram(current, v, limits_for_step);
             auto value = execute_histogram_command(command, limits_for_step, control);
             checkpoint(control);
             histograms.push_back({index, v.name, command.record(), std::move(value)});

@@ -48,7 +48,11 @@ struct NativeWorkflowExport {
   std::optional<MetadataObject> original;
   bool enabled = true;
 };
-// Read-only analysis. The original capture supplies numeric/log choices;
+struct NativeWorkflowHistogramOptions {
+  TargetHistogramOptions histogram;
+  bool log_counts = false;
+};
+// Read-only analysis. Absent authored_options retains the original choices;
 // the explicit target is resolved against the preceding workflow stage.
 // Name is a unique flat output token, shared with annotation exports.
 struct NativeWorkflowHistogram {
@@ -57,6 +61,9 @@ struct NativeWorkflowHistogram {
   std::optional<MetadataObject> original;
   HistogramCommandLimits limits;
   bool enabled = true;
+  // New explicit choices, independent of optional historical evidence.
+  // Required when there is no original capture. Never mutates the original.
+  std::optional<NativeWorkflowHistogramOptions> authored_options;
 };
 using NativeWorkflowStep =
     std::variant<NativeWorkflowOperation, NativeWorkflowImport,

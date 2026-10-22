@@ -1200,9 +1200,9 @@ Recorded histograms and V4 programs also open the shared workflow Run/Batch
 review. Review each analysis target and CSV token, prepare plots/statistics on
 workers, and Apply summary rows to Results. Run CSV paths are optional and use
 the shared save browser; Batch emits per-document CSVs. Preview and canceled or
-stale work leave live data/results/files unchanged. Numeric histogram choice
-authoring within workflows remains open; the original bin/range/log choices are
-retained. See the workflow section of the usage page above.
+stale work leave live data/results/files unchanged. Each histogram can retain its original choices or author new bin/range/log
+values inline, without changing the original capture or standalone defaults.
+Edited choices can be kept and reopened as portable V5 programs. See the workflow section of the usage page above.
 
 
 ## Manual threshold display

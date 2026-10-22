@@ -21,7 +21,7 @@ std::string read(const std::filesystem::path &p){std::ifstream f(p,std::ios::bin
 Json histogramWorkflowUiCase(Window &w,const std::string &id,const std::string &host,const std::string &directory){
   namespace fs=std::filesystem;const auto root=fs::absolute(fs::u8path(directory));
   require(!directory.empty()&&!fs::exists(root)&&w.documents().empty(),"Fresh histogram workflow fixture required");
-  require(id=="run"||id=="captured"||id=="readonly"||id=="disabled"||id=="preview"||id=="conflict"||id=="stale"||id=="cancel"||id=="batch","Unknown histogram workflow case");
+  require(id=="run"||id=="captured"||id=="readonly"||id=="disabled"||id=="preview"||id=="conflict"||id=="stale"||id=="cancel"||id=="batch"||id=="choices"||id=="raw_choices"||id=="restore"||id=="invalid_choices"||id=="authored","Unknown histogram workflow case");
   fs::create_directories(root);Stack planes;
   for(int z=0;z<3;++z){Image p(2,2,1,PixelType::UInt16);for(int i=0;i<4;++i)p.pixels[i]=4*z+i;planes.push_back(std::move(p));}
   DatasetReadObserver reads;auto owner=std::make_shared<imagejxx::Document>(Dataset::from_planes({1,1,3,2,2,1},std::move(planes)).observe_reads(reads));
@@ -32,10 +32,16 @@ Json histogramWorkflowUiCase(Window &w,const std::string &id,const std::string &
   NativeWorkflowHistogram first;first.name="before.csv";first.target=target;first.original=record;
   auto last_step=first;last_step.name="after.csv";
   NativeWorkflowOperation add;add.operation="add";add.parameters={{"value",5.}};add.target=target;
+  const bool choice_case=id=="choices"||id=="raw_choices"||id=="restore"||id=="invalid_choices"||id=="authored";
+  if(id=="authored") {
+    first.original.reset();NativeWorkflowHistogramOptions value;value.histogram=options;
+    value.histogram.bins=6;value.histogram.range=std::array<double,2>{0,12};value.log_counts=false;first.authored_options=value;
+  }
   const bool single=id=="captured"||id=="readonly";
   w.workflow=id=="captured"?Json::array({metadataJson(record)}):Json::array({metadataJson(make_native_workflow_program(single?std::vector<NativeWorkflowStep>{first}:std::vector<NativeWorkflowStep>{first,add,last_step}).record())});
-  const auto original_workflow=w.workflow;const auto source=owner->snapshot();
-  Json report={{"contract","p10q.histogram-workflow.ui.001"},{"context",host},{"case_id",id},{"acceptance_claim",false},{"state","running"},{"frames",Json::array()},{"controls",Json::array()}};
+  const auto original_workflow=w.workflow;auto expected_workflow=w.workflow;const auto source=owner->snapshot();
+  Json report={{"contract",choice_case?"p10r.histogram-workflow-options.ui.001":"p10q.histogram-workflow.ui.001"},{"context",host},{"case_id",id},{"acceptance_claim",false},{"state","running"},{"frames",Json::array()},{"controls",Json::array()}};
+  report["original_workflow"]=original_workflow;report["defaults_before"]=w.preferencesJson();
   auto gate=std::make_shared<Gate>();struct Cleanup{std::shared_ptr<Gate> gate;~Cleanup(){gate->release();}} cleanup{gate};
   struct Failure{Json &report;fs::path root;~Failure(){if(report.at("state")!="observed")try{writeJson((root/"failure.json").u8string(),report);}catch(...){}}} failure{report,root};
   const auto admission_before=reads.counts();w.action(id=="batch"?"native_batch":"run_workflow");const auto admission_after=reads.counts();
@@ -85,17 +91,34 @@ Json histogramWorkflowUiCase(Window &w,const std::string &id,const std::string &
     if(i==0&&id=="disabled")press("enabled");
     if(i==0&&id=="batch")text("output_token","initial.csv");
     if(i==0&&id=="run"){choose("scope",2);text("stop.2","2");}
+    if(i==0&&choice_case) {
+      if(id!="authored")press("histogram.author");
+      if(id=="raw_choices")press("histogram.custom");
+      else {text("histogram.bins",id=="invalid_choices"?"0":id=="authored"?"3":"5");text("histogram.lower","0");text("histogram.upper",id=="authored"?"12":"10");}
+      if(id!="authored")press("histogram.log");
+      if(id=="restore")press("histogram.author");
+    }
     if(i==0&&id=="run") {
       press("browse");type_hit(last.at("file_browser").at("controls").at("path"),"browser.path",(root/"before.csv").u8string());
       click(last.at("file_browser").at("controls").at("submit"),"browser.submit");
-    } else if(i!=1&&id!="batch"&&id!="preview"&&id!="readonly"&&id!="captured"&&id!="disabled")text("path",(root/(i==0?"before.csv":"after.csv")).u8string());
-    if(i==0&&id!="batch"&&id!="preview"&&id!="readonly"&&id!="captured"&&id!="disabled")press("file_consent");
+    } else if(!choice_case&&i!=1&&id!="batch"&&id!="preview"&&id!="readonly"&&id!="captured"&&id!="disabled")text("path",(root/(i==0?"before.csv":"after.csv")).u8string());
+    if(!choice_case&&i==0&&id!="batch"&&id!="preview"&&id!="readonly"&&id!="captured"&&id!="disabled")press("file_consent");
     press("confirm");
+  }
+  if(choice_case && id!="invalid_choices") {
+    press("prepare_program");settle();require(panel().at("program_ready").get<bool>() && panel().at("error")=="","Edited choices did not prepare");
+    require(w.workflow==original_workflow && w.results.empty(),"Program preparation published effects");
+    press("keep_program");expected_workflow=w.workflow;report["retained_program"]=w.workflow;
+    frame();click(last.at("host_controls").at("workflow.run"),"workflow.run.retained");
+    for(int i=0;i<3;++i){press("step."+std::to_string(i));press("confirm");}
   }
   auto scheduler=HistogramAsyncUiProbeAccess::scheduler(w);Job held;
   if(id=="cancel"){scheduler->set_limits({1,1024ULL*1024*1024,64});held=scheduler->submit([gate](const JobContext &){gate->block();});gate->wait();}
   press(id=="preview"?"prepare_preview":"prepare");
-  if(id=="cancel"){
+  if(id=="invalid_choices") {
+    settle();report["rejected"]=panel();
+    require(panel().at("error")!=""&&!panel().at("ready").get<bool>()&&w.results.empty()&&owner->snapshot().shares_data(source),"Invalid histogram choices published effects");press("cancel");
+  }else if(id=="cancel"){
     report["queued"]=panel();require(panel().at("working").get<bool>(),"Workflow did not queue");press("cancel");gate->release();held.wait();w.wait();frame();
     require(!panel().at("visible").get<bool>()&&w.results.empty()&&owner->undo_steps()==0,"Canceled workflow published effects");
   }else{
@@ -128,7 +151,8 @@ Json histogramWorkflowUiCase(Window &w,const std::string &id,const std::string &
   if(id=="batch"){
     report["batch_files"]=Json::object();for(const auto &entry:fs::directory_iterator(root/"batch-output"))report["batch_files"][entry.path().filename().u8string()]=entry.path().extension()==".csv"?Json(read(entry.path())):Json(entry.file_size());
   }
-  require(w.workflow==original_workflow,"Running a recorded workflow duplicated its recorder");
+  report["defaults_after"]=w.preferencesJson();
+  require(w.workflow==expected_workflow,"Running a recorded workflow duplicated its recorder");
   report["state"]="observed";writeJson((root/"case.json").u8string(),report);return report;
 }
 }

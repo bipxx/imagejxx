@@ -56,6 +56,24 @@ void histogram_workflow_contract() {
   ExecutionControl control;control.cancellation=std::make_shared<CancellationToken>();
   control.progress=[&](std::size_t done,std::size_t total){if(done==total)control.cancellation->cancel();};
   refuses([&]{prepare_native_workflow(source,{first}, {},control);});
+  auto authored=first;NativeWorkflowHistogramOptions choices;
+  choices.histogram.binning=HistogramBinning::UniformRange;choices.histogram.bins=6;
+  choices.histogram.range=std::array<double,2>{0,6};choices.log_counts=false;
+  authored.authored_options=choices;
+  const auto v5=make_native_workflow_program({authored,last});
+  check(v5.json().find("\"version\":5")!=std::string::npos);
+  const auto decoded=native_workflow_program_from_json(v5.json());
+  check(metadata_equal(*std::get<NativeWorkflowHistogram>(decoded.steps()[0]).original,*first.original));
+  const auto changed=prepare_native_workflow(source,decoded.steps());
+  check(changed.histograms()[0].value.histogram.counts==std::vector<std::uint64_t>({1,1,1,1,1,1}));
+  check(changed.histograms()[1].value.histogram.counts==std::vector<std::uint64_t>({3,3,0,0}));
+  authored.original.reset();const auto fresh=make_native_workflow_program({authored});
+  check(prepare_native_workflow(source,fresh.steps()).histograms()[0].value.sum==15);
+  const auto old_reads=reads.counts().plane_reads;
+  authored.authored_options->histogram.bins=0;authored.enabled=false;
+  refuses([&]{make_native_workflow_program({authored});});
+  refuses([&]{prepare_native_workflow(source,{add,authored});});
+  check(reads.counts().plane_reads==old_reads);
 }
 void conversion_contract() {
   const DatasetShape shape{2, 2, 2, 2, 3, 1};

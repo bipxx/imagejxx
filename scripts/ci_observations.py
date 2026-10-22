@@ -257,6 +257,8 @@ def cases():
         yield "histogram-async",case,["--animation-ui-case",case]
     for mode in ["run","captured","readonly","disabled","preview","conflict","stale","cancel","batch"]:
         yield "histogram-workflow",mode,["--histogram-workflow-ui-case",mode]
+    for mode in ["choices","raw_choices","restore","invalid_choices","authored"]:
+        yield "histogram-workflow",mode,["--histogram-workflow-ui-case",mode]
 
 
 def reader_environment(output):

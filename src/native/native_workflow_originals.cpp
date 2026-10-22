@@ -2,6 +2,7 @@
 #include "imagej_roi_import_internal.hpp"
 #include "kernel_control.hpp"
 #include "native_workflow_internal.hpp"
+#include "histogram_command_internal.hpp"
 #include "rgb_dataset_internal.hpp"
 #include "color_stack_internal.hpp"
 #include "indexed_dataset_internal.hpp"
@@ -156,7 +157,7 @@ void validate_native_workflow_operation_intent(
   }
 }
 void validate_native_workflow_histogram_intent(const NativeWorkflowHistogram &v) {
-  require(v.original.has_value(), "Workflow histogram requires a complete capture");
+  require(v.original.has_value() || v.authored_options.has_value(), "Workflow histogram requires a capture or authored choices");
   require(!v.name.empty() && v.name.size() <= 180 && v.name != "." &&
               v.name != ".." && v.name.find_first_of("/\\:\0", 0, 4) == std::string::npos,
           "Workflow histogram requires a flat output token");
@@ -166,7 +167,8 @@ void validate_native_workflow_histogram_intent(const NativeWorkflowHistogram &v)
   require(v.limits.processing.max_pixels > 0 &&
               v.limits.processing.max_working_bytes > 0 && v.limits.max_record_bytes > 0,
           "Workflow histogram limits must be positive");
-  validate_histogram_command_record(*v.original, v.limits.max_record_bytes);
+  if(v.original)validate_histogram_command_record(*v.original, v.limits.max_record_bytes);
+  if(v.authored_options)validate_histogram_command_options(v.authored_options->histogram);
 }
 void validate_native_workflow_import_original(const MetadataObject &r) {
   const auto &schema = native_workflow_original_schema(r);

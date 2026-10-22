@@ -106,7 +106,7 @@ def test_closed_v3_requires_explicit_bool_and_retains_disabled_validation(bad):
     elif bad == 'extra': s['skip'] = True
     elif bad == 'v1': r['version'] = 1
     elif bad == 'v2': r['version'] = 2
-    elif bad == 'future': r['version'] = 5
+    elif bad == 'future': r['version'] = 6
     elif bad == 'target': s['target']['positions'] = [[1,2,3]]
     else: s['parameters']['value']['kind'] = 'future'
     with pytest.raises((ValueError, KeyError)): ij.NativeWorkflowProgram.from_record(r)

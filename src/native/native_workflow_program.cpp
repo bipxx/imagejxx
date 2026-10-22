@@ -367,6 +367,26 @@ OperationValue parameter_from(const MetadataValue &v) {
 std::optional<MetadataObject> original_from(const MetadataValue &v) {
   return null(v) ? std::optional<MetadataObject>{} : object_value(v);
 }
+MetadataValue histogram_options_value(const std::optional<NativeWorkflowHistogramOptions> &value) {
+  if(!value)return {};
+  const auto &o=value->histogram;
+  return metadata_object({{"binning",std::string(o.binning==HistogramBinning::ProcessorRaw?"processor_raw":"uniform_range")},
+    {"bins",o.bins},{"range",o.range?metadata_array({(*o.range)[0],(*o.range)[1]}):MetadataValue{}},
+    {"log_counts",value->log_counts}});
+}
+std::optional<NativeWorkflowHistogramOptions> histogram_options_from(const MetadataValue &value) {
+  if(null(value))return {};
+  const auto &o=object_value(value);exact_fields(o,{"binning","bins","range","log_counts"});
+  NativeWorkflowHistogramOptions out;const auto &binning=text_value(o.at("binning"));
+  require(binning=="processor_raw" || binning=="uniform_range","Unknown workflow histogram binning");
+  out.histogram.binning=binning=="processor_raw"?HistogramBinning::ProcessorRaw:HistogramBinning::UniformRange;
+  out.histogram.bins=index_value(o.at("bins"),true);
+  if(!null(o.at("range"))) {
+    const auto &r=array(o.at("range"));require(r.size()==2,"Workflow histogram range requires two endpoints");
+    out.histogram.range=std::array<double,2>{number_value(r[0]),number_value(r[1])};
+  }
+  out.log_counts=flag(o.at("log_counts"));return out;
+}
 void charge_step(const detail::NativeWorkflowStepRef &step, Budget &b) {
   std::visit(
       [&](const auto *p) {
@@ -387,6 +407,7 @@ void charge_step(const detail::NativeWorkflowStepRef &step, Budget &b) {
           }
         } else if constexpr (std::is_same_v<T, NativeWorkflowHistogram>) {
           b.add(v.name.size());
+          if(v.authored_options)b.add(sizeof(NativeWorkflowHistogramOptions));
           b.product(v.target.positions.size(), 256);
         } else if constexpr (std::is_same_v<T, NativeWorkflowImport>) {
           require(v.items.size() <= v.limits.batch.max_entries,
@@ -512,6 +533,10 @@ MetadataObject encode(const std::vector<detail::NativeWorkflowStepRef> &steps,
   const bool v4 = std::any_of(steps.begin(), steps.end(), [](const auto &ref) {
     return std::holds_alternative<const NativeWorkflowHistogram *>(ref);
   });
+  const bool v5=std::any_of(steps.begin(),steps.end(),[](const auto &ref) {
+    const auto p=std::get_if<const NativeWorkflowHistogram *>(&ref);
+    return p && bool((*p)->authored_options);
+  });
   MetadataArray records;
   std::set<std::string> outputs;
   for (const auto &step : steps)
@@ -538,6 +563,7 @@ MetadataObject encode(const std::vector<detail::NativeWorkflowStepRef> &steps,
             r["kind"] = std::string("histogram");
             r["name"] = v.name;
             r["target"] = target_value(v.target);
+            if(v5)r["options"]=histogram_options_value(v.authored_options);
             r["limits"] = metadata_object({
                 {"max_pixels", std::uint64_t(v.limits.processing.max_pixels)},
                 {"max_working_bytes", std::uint64_t(v.limits.processing.max_working_bytes)},
@@ -572,7 +598,8 @@ MetadataObject encode(const std::vector<detail::NativeWorkflowStepRef> &steps,
         step);
   MetadataObject result{
       {"schema", std::string("imagejxx.native-workflow-program")},
-      {"version", v4   ? 4
+      {"version", v5   ? 5
+                  : v4 ? 4
                   : v3 ? 3
                   : v2 ? 2
                        : 1},
@@ -648,7 +675,7 @@ native_workflow_program_from_record(const MetadataObject &r,
   exact_fields(r, {"schema", "version", "steps"});
   const auto version = unsigned_value(r.at("version"));
   require(text_value(r.at("schema")) == "imagejxx.native-workflow-program" &&
-              (version >= 1 && version <= 4),
+              (version >= 1 && version <= 5),
           "Unsupported native program record");
   const auto &records = array(r.at("steps"));
   require(!records.empty() && records.size() <= limits.max_steps,
@@ -687,8 +714,9 @@ native_workflow_program_from_record(const MetadataObject &r,
         op.enabled = flag(s.at("enabled"));
       steps.emplace_back(std::move(op));
     } else if (kind == "histogram") {
-      require(version == 4, "Histogram step requires native program V4");
-      exact_fields(s, {"kind", "original", "name", "target", "limits", "enabled"});
+      require(version >= 4, "Histogram step requires native program V4 or V5");
+      if(version==4)exact_fields(s, {"kind", "original", "name", "target", "limits", "enabled"});
+      else exact_fields(s, {"kind", "original", "name", "target", "limits", "enabled", "options"});
       const auto &l = object_value(s.at("limits"));
       exact_fields(l, {"max_pixels", "max_working_bytes", "max_record_bytes"});
       NativeWorkflowHistogram step;
@@ -699,6 +727,7 @@ native_workflow_program_from_record(const MetadataObject &r,
       step.limits.processing.max_working_bytes = size_value(l.at("max_working_bytes"));
       step.limits.max_record_bytes = size_value(l.at("max_record_bytes"));
       step.enabled = flag(s.at("enabled"));
+      if(version>=5)step.authored_options=histogram_options_from(s.at("options"));
       steps.emplace_back(std::move(step));
     } else if (kind == "import") {
       if (version >= 3)

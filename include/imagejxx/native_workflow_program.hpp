@@ -29,7 +29,7 @@ private:
             std::move(steps))),
         limits_(limits) {}
 };
-// Closed V1/V2/V3/V4 portable intent; V4 adds histogram analysis. Original captured records remain historical
+// Closed V1/V2/V3/V4/V5 portable intent; V5 adds authored histogram choices. Original captured records remain historical
 // evidence; typed choices/targets contain no destination document identity.
 // No pixel reads, execution, file paths, write consent or filesystem IO.
 NativeWorkflowProgram

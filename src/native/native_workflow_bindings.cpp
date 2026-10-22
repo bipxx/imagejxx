@@ -114,18 +114,24 @@ void bind_native_workflow(py::module_ &m) {
           py::arg("use_destination_calibration") = false,
           py::arg("filter_options") = py::none(), py::arg("enabled") = true)
       .def_readonly("enabled", &NativeWorkflowOperation::enabled);
+  py::class_<NativeWorkflowHistogramOptions>(m,"NativeWorkflowHistogramOptions")
+      .def(py::init([](py::object options,py::object log) {
+        return NativeWorkflowHistogramOptions{options.is_none()?TargetHistogramOptions{}:options.cast<TargetHistogramOptions>(),flag(log)};
+      }),py::arg("histogram")=py::none(),py::arg("log_counts")=false)
+      .def_property_readonly("histogram",[](const NativeWorkflowHistogramOptions &v){return v.histogram;})
+      .def_readonly("log_counts",&NativeWorkflowHistogramOptions::log_counts);
   py::class_<NativeWorkflowHistogram>(m, "NativeWorkflowHistogram")
-      .def(py::init([](std::string name, TargetRequest target, py::dict record,
-                       py::object limits, py::object enabled) {
+      .def(py::init([](std::string name, TargetRequest target, py::object record,
+                       py::object limits, py::object enabled, py::object options) {
         const auto bounded = limits.is_none() ? HistogramCommandLimits{} : limits.cast<HistogramCommandLimits>();
         auto remaining = bounded.max_record_bytes;
         std::size_t nodes = 0;
         std::vector<PyObject *> active;
         preflight_program_python(record, remaining, active, nodes);
         return NativeWorkflowHistogram{std::move(name), std::move(target),
-            original(record), bounded, flag(enabled)};
-      }), py::arg("name"), py::arg("target"), py::arg("original"),
-          py::arg("limits") = py::none(), py::arg("enabled") = true)
+            original(record), bounded, flag(enabled), options.is_none()?std::optional<NativeWorkflowHistogramOptions>{}:options.cast<NativeWorkflowHistogramOptions>()};
+      }), py::arg("name"), py::arg("target"), py::arg("original") = py::none(),
+          py::arg("limits") = py::none(), py::arg("enabled") = true, py::arg("authored_options") = py::none())
       .def_readonly("enabled", &NativeWorkflowHistogram::enabled);
   py::class_<NativeWorkflowImport>(m, "NativeWorkflowImport")
       .def(py::init([](py::sequence items, ImageJRoiImportMode mode,

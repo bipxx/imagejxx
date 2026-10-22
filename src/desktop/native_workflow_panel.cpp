@@ -47,12 +47,29 @@ struct Entry {
   bool confirmed = false, calibration = false, authored = false,
        retained_target = false;
   MetadataObject review_record;
+  NativeWorkflowHistogramOptions histogram_original, histogram_choices;
+  bool histogram_authored=false, histogram_custom=false;
+  std::array<double,2> histogram_range{0,255};
   std::size_t choice_bytes = 0;
   int scope = 0, roi = 0;
   std::array<int, 3> first{}, stop{}, stride{1, 1, 1};
   std::array<int, 3> position{};
   std::vector<PlanePosition> positions;
 };
+void seed_histogram(Entry &entry,const NativeWorkflowHistogram &histogram) {
+  if(histogram.original) {
+    const auto options=metadataJson(histogram.original->at("options"));
+    auto &o=entry.histogram_original.histogram;
+    o.binning=options.at("binning")=="uniform_range"?HistogramBinning::UniformRange:HistogramBinning::ProcessorRaw;
+    o.bins=options.at("bins").get<int>();
+    if(!options.at("range").is_null())o.range=options.at("range").get<std::array<double,2>>();
+    entry.histogram_original.log_counts=std::get<bool>(histogram.original->at("log_counts"));
+  }
+  entry.histogram_authored=bool(histogram.authored_options);
+  entry.histogram_choices=histogram.authored_options.value_or(entry.histogram_original);
+  entry.histogram_custom=entry.histogram_choices.histogram.binning==HistogramBinning::UniformRange;
+  entry.histogram_range=entry.histogram_choices.histogram.range.value_or(std::array<double,2>{0,255});
+}
 const TargetRequest &entry_target(const NativeWorkflowStep &step) {
   if (const auto *op=std::get_if<NativeWorkflowOperation>(&step)) return op->target;
   return std::get<NativeWorkflowHistogram>(step).target;
@@ -146,6 +163,7 @@ std::vector<Entry> program_entries(const Json &record, std::size_t cap) {
       entry.positions = op->target.positions;
       entry.retained_target = true;
     } else if (const auto hist=std::get_if<NativeWorkflowHistogram>(&step)) {
+      seed_histogram(entry,*hist);
       entry.title="Histogram";entry.output_token=hist->name;entry.scope=int(hist->target.scope);entry.roi=int(hist->target.roi);
       entry.positions=hist->target.positions;entry.retained_target=true;
     } else
@@ -309,6 +327,7 @@ std::vector<Entry> compile(const Json &table, std::size_t cap) {
       entry.scope=int(TargetScope::Ranges);entry.roi=int(RoiPolicy::WholePlane);entry.retained_target=true;
     }
     if(const auto hist=std::get_if<NativeWorkflowHistogram>(entry.step.get())) {
+      seed_histogram(entry,*hist);
       entry.output_token=hist->name;entry.scope=int(hist->target.scope);entry.roi=int(hist->target.roi);
       entry.positions=hist->target.positions;entry.retained_target=true;
     }
@@ -330,7 +349,17 @@ std::shared_ptr<const NativeWorkflowStep> effective(const Entry &e) {
   if(const auto op=std::get_if<NativeWorkflowOperation>(e.step.get())) {
     auto v=*op;v.use_destination_calibration=e.calibration;return targeted(std::move(v));
   }
-  if(const auto hist=std::get_if<NativeWorkflowHistogram>(e.step.get())) {auto v=*hist;v.name=e.output_token;return targeted(std::move(v));}
+  if(const auto hist=std::get_if<NativeWorkflowHistogram>(e.step.get())) {
+    auto v=*hist;v.name=e.output_token;v.authored_options.reset();
+    if(e.histogram_authored) {
+      auto choices=e.histogram_choices;
+      choices.histogram.binning=e.histogram_custom?HistogramBinning::UniformRange:HistogramBinning::ProcessorRaw;
+      choices.histogram.bins=e.histogram_custom?choices.histogram.bins:256;
+      choices.histogram.range=e.histogram_custom?std::optional<std::array<double,2>>(e.histogram_range):std::nullopt;
+      v.authored_options=choices;
+    }
+    return targeted(std::move(v));
+  }
   if(e.enabled==std::visit([](const auto &v){return v.enabled;},*e.step))return e.step;
   auto value=*e.step;std::visit([&](auto &v){v.enabled=e.enabled;},value);
   return std::make_shared<const NativeWorkflowStep>(std::move(value));
@@ -1819,11 +1848,24 @@ void NativeWorkflowPanel::draw(
       s.observe("calibration");
     }
   } else if (const auto hist=std::get_if<NativeWorkflowHistogram>(entry.step.get())) {
-    ImGui::TextWrapped("Histogram analysis uses the preceding step's image. The recorded bin/range/log choices below are retained; choose destination planes and ROI geometry.");
-    const auto options=metadataJson(hist->original->at("options"));
-    ImGui::Text("Bins: %d; %s",options.at("bins").get<int>(),options.at("binning")=="uniform_range"?"Explicit raw range":"Raw processor values");
-    if(!options.at("range").is_null())ImGui::Text("Range: %.17g .. %.17g",options.at("range")[0].get<double>(),options.at("range")[1].get<double>());
+    ImGui::TextWrapped("Histogram analysis uses the preceding step's image. Review its target and retain or edit the numeric choices. The original capture remains unchanged.");
     draw_target();
+    ImGui::BeginDisabled(!hist->original);
+    changed|=ImGui::Checkbox("Use edited histogram choices",&entry.histogram_authored);s.observe("histogram.author",bool(hist->original));
+    ImGui::EndDisabled();
+    if(entry.histogram_authored) {
+      changed|=ImGui::Checkbox("Explicit range and bin count",&entry.histogram_custom);s.observe("histogram.custom");
+      if(entry.histogram_custom) {
+        changed|=ImGui::InputInt("Bins",&entry.histogram_choices.histogram.bins,0,0);s.observe("histogram.bins");
+        changed|=ImGui::InputDouble("Lower",&entry.histogram_range[0],0,0,"%.17g");s.observe("histogram.lower");
+        changed|=ImGui::InputDouble("Upper",&entry.histogram_range[1],0,0,"%.17g");s.observe("histogram.upper");
+      } else ImGui::TextUnformatted("Raw processor histogram: 256 bins, range from samples");
+      changed|=ImGui::Checkbox("Log counts",&entry.histogram_choices.log_counts);s.observe("histogram.log");
+    } else {
+      const auto &o=entry.histogram_original.histogram;
+      ImGui::Text("Recorded: %d bins; %s",o.bins,entry.histogram_original.log_counts?"Log counts":"Counts");
+      if(o.range)ImGui::Text("Range: %.17g .. %.17g",(*o.range)[0],(*o.range)[1]);
+    }
     changed|=ImGui::InputText("CSV token",&entry.output_token);s.observe("output_token");
     if(s.batch || s.draft_mode)ImGui::TextWrapped("Use a unique filename token, including .csv. Each selected document gets its own file.");
     else {
@@ -2394,6 +2436,7 @@ Json NativeWorkflowPanel::diagnostics() const {
                        {"confirmed", e.confirmed},
                        {"path", e.path},
                        {"output_token",e.output_token},
+                       {"histogram_authored",e.histogram_authored},
                        {"authored", e.authored},
                        {"choice_bytes", e.choice_bytes}});
   if (s.ready)

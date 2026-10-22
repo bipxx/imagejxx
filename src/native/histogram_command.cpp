@@ -1,5 +1,6 @@
 #include <imagejxx/histogram_command.hpp>
 #include "axis_command_record.hpp"
+#include "histogram_command_internal.hpp"
 #include "target_record_internal.hpp"
 #include <cmath>
 #include <limits>
@@ -157,6 +158,7 @@ ResolvedHistogramCommand resolve_histogram_command(const DocumentSnapshot &sourc
   return ResolvedHistogramCommand(std::make_shared<const ResolvedHistogramCommand::Data>(
       ResolvedHistogramCommand::Data{std::move(target),options,log,std::move(record)}));
 }
+void detail::validate_histogram_command_options(const TargetHistogramOptions &options){options_valid(options);}
 void validate_histogram_command_record(const MetadataObject &record,std::size_t max_bytes){(void)decode(record,max_bytes);}
 ResolvedHistogramCommand histogram_command_from_record(const DocumentSnapshot &source,
     const MetadataObject &record,const HistogramCommandLimits &limits) {

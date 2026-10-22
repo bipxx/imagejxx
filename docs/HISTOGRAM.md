@@ -422,9 +422,10 @@ parity or complete resource/platform acceptance.
 
 ## Histograms in native workflows and session batches
 
-`NativeWorkflowHistogram(name, target, original, limits=None, enabled=True)`
-adds read-only analysis to the ordered native workflow. `original` is a complete
-histogram command record. It preserves the captured numeric/log choices; `target`
+`NativeWorkflowHistogram(name, target, original=None, limits=None, enabled=True, authored_options=None)`
+adds read-only analysis to the ordered native workflow. Supply a complete
+histogram command record as `original`, explicit `authored_options`, or both.
+Without authored options it preserves the captured numeric/log choices; `target`
 explicitly chooses the destination stage's planes and ROI geometry. The original
 capture is validated before rebinding, rather than requiring its historical owner
 to still exist. Target and sample-domain compatibility are checked against the
@@ -452,8 +453,9 @@ Mixed processing can still be committed as one guarded transaction; an
 analysis-only proposal is an empty edit. Cancellation or a callback failure
 aborts the entire preparation without publishing a partial result.
 
-Programs containing histograms use the closed V4 grammar. V1/V2/V3 programs keep
-their existing encodings. V4 retains explicit enabled flags and typed filter
+Programs retaining original histogram choices use the closed V4 grammar;
+authored choices use V5 as described below. V1/V2/V3/V4 programs keep their
+existing encodings when authored choices are absent. V4/V5 retain explicit enabled flags and typed filter
 options on operation steps. A disabled analysis validates its original/portable
 intent but does not check destination compatibility, read samples or emit output.
 Output names are unique flat tokens shared with annotation exports, including
@@ -478,8 +480,9 @@ process RSS remain external. No new scalar/color/calibration domains are admitte
 Both ImGui launchers review recorded histogram entries and V4 programs through
 **Run all** and native **Batch**. Each enabled histogram has independent plane,
 range/stride/explicit-position and whole/active/positioned ROI choices, plus an
-editable unique CSV token. The original numeric bin/range/log capture is retained;
-editing numeric histogram choices inside a workflow remains separate work.
+editable unique CSV token. **Use edited histogram choices** enables bin/range/log
+authoring; turning it off restores the original numeric capture. The original
+record remains unchanged in either case.
 
 Confirm every step, then use **Prepare image preview** to inspect each histogram
 plot and statistics alongside the prepared image without writing files or Results.
@@ -512,3 +515,53 @@ remaining histogram domains/conventions are still open.
 Per-input batch unbinned statistics review/export is still open; current batch
 histogram products contain bin counts/edges, while existing session tables are
 preserved. Run displays and publishes the unbinned summary rows described above.
+
+
+## Authoring workflow histogram choices
+
+Both ImGui launchers let each histogram step use its recorded choices or explicit
+new choices. After choosing the target, enable **Use edited histogram choices**,
+choose **Explicit range and bin count** for 1-65,536 bins with finite low < high,
+or disable that option for the 256-bin raw processor profile. **Log counts** changes
+the plot presentation. Confirm the step and its successors again. Numeric edits
+are independent of the plane/ROI request and do not remember standalone histogram
+preferences. Statistics still describe all finite ROI samples, including explicit
+range outliers. Invalid active choices refuse preparation without live effects.
+
+Turning **Use edited histogram choices** off retains the original capture's
+bin/range/log values. When a step was authored without a capture, choices remain
+explicit and that reset switch is disabled. **Prepare edited program > Keep edited
+program** stores authored choices as V5 and can reopen them for later execution;
+restoring every recorded choice uses the prior V4 encoding again. Complete
+preparation/Apply also uses current review choices without implicitly rewriting
+the recorder table. CSV paths and file-publication consent remain separate.
+
+The C++ `NativeWorkflowHistogramOptions` value contains `histogram` (the existing
+`TargetHistogramOptions`) and `log_counts`. Assign it to the histogram step's
+optional `authored_options`. The Python equivalent is:
+
+```python
+options = imagejxx.TargetHistogramOptions()
+options.binning = imagejxx.HistogramBinning.UniformRange
+options.bins = 128
+options.range = (0, 4095)
+choices = imagejxx.NativeWorkflowHistogramOptions(options, log_counts=False)
+step = imagejxx.NativeWorkflowHistogram('histogram.csv', target,
+    original=captured_record, authored_options=choices)
+```
+
+Omit `original` to author a new step from scratch with explicit choices. Omitting
+both capture and choices is refused during program/workflow admission. Supplying
+an original always validates it in full, even when overridden or disabled. No
+historical capture is synthesized or rewritten. Python option getters and program
+records are independent values; mutating them does not modify retained intent.
+
+V5 histogram steps have an explicit `options` field: null retains the original,
+or an exact object with `binning`, `bins`, `range` and `log_counts` supplies new
+choices. Other V5 step kinds retain the V4 fields. Mixed programs can retain one
+histogram and author another. Disabled steps validate portable options without
+binding destination compatibility. The same source-independent option validator
+serves commands and workflows, and metadata preflight checks every destination
+stage before kernel reads. Native batch common/override programs and setup
+records carry V5 and use the authored bins for existing per-document CSV output.
+No additional pixel/sample/calibration domains or defaults are admitted.

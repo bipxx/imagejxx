@@ -1618,7 +1618,7 @@ from .editor import Editor as Editor
 from .io import imread as imread, imwrite as imwrite
 
 from ._native import (NativeWorkflowLimits, NativeWorkflowOperation, NativeWorkflowImport,
-                      NativeWorkflowExport, NativeWorkflowHistogram, PreparedNativeWorkflow, prepare_native_workflow)
+                      NativeWorkflowExport, NativeWorkflowHistogram, NativeWorkflowHistogramOptions, PreparedNativeWorkflow, prepare_native_workflow)
 
 from ._native import (NativeWorkflowBatchInput, NativeWorkflowBatchOptions, NativeWorkflowBatchState,
                       PreparedNativeWorkflowBatch, prepare_native_workflow_batch)
