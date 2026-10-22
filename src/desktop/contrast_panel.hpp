@@ -1,15 +1,18 @@
 #pragma once
 #include "desktop.hpp"
+#include "operation_target_panel.hpp"
 #include <imagejxx/histogram_job.hpp>
 #include <functional>
 #include <atomic>
 
 namespace imagejxx::desktop {
 // The panel retains immutable captures and detached histogram results only.
-// The host owns atomic display publication and the existing Auto command.
+// The host owns atomic publication and the native Auto/Apply commands.
 class ContrastPanel {
 public:
   using Publish=std::function<void(const DocumentSnapshot &,std::array<double,2>)>;
+  using Apply=std::function<void(const DocumentSnapshot &,std::array<double,2>,const TargetRequest &)>;
+  void configureTarget(const TargetRequest &);
   using Auto=std::function<void(const DocumentSnapshot &,bool,bool)>;
   ~ContrastPanel();
   void open();
@@ -22,13 +25,14 @@ public:
   bool wait_for(std::chrono::milliseconds timeout)const{return !job_||job_->wait_for(timeout);}
   void sourceClosed(std::uint64_t);
   void tick(const std::optional<DocumentSnapshot> &,bool,JobScheduler &,DatasetHistogramLimits);
-  void draw(bool,const Publish &,const Auto &,const std::function<void(int)> &,int unsigned16_bits);
-  void action(const std::string &,const Json &,bool,const Publish &,const Auto &,int unsigned16_bits);
+  void draw(bool,const Publish &,const Auto &,const std::function<void(int)> &,int unsigned16_bits,const Apply & = {},bool applying=false,const std::function<void()> &cancel={});
+  void action(const std::string &,const Json &,bool,const Publish &,const Auto &,int unsigned16_bits,const Apply & = {});
   Json diagnostics()const;
   static std::array<double,2> windowLevel(double window,double level);
   static std::array<double,2> brightness(std::array<double,2>,std::array<double,2>,double);
   static std::array<double,2> contrast(std::array<double,2>,std::array<double,2>,double);
 private:
+  OperationTargetPanel target_;
   bool open_=false,focus_=false,focused_=false,histogramAttempted_=false;
   bool allChannels_=false,useSelection_=true,resolved_=false;
   std::string key_,error_;

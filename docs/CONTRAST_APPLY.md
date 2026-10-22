@@ -94,18 +94,46 @@ until publication begins. Queued cancellation releases source captures even if
 the job handle survives. Native providers must support immutable worker reads.
 The core does not infer an active-document or GUI-thread policy.
 
-Finish the editor integration in this order:
+The shared Window host now submits these native jobs from the ImGui
+**Apply to pixels** button and Python editor actions. Expand **Apply target**
+for current/range/all T/C/Z and whole-plane, active-selection or positioned-ROI
+choices. UI ranges are one-based; programmatic targets use the native zero-based,
+exclusive-stop grammar. The source, endpoints, target, UInt16 range preference
+and recording flag are captured at submission. A successful commit publishes
+pixels and reset presentation together as one Undo/Redo step.
 
-1. Connect these APIs to the Window host: active-owner admission, busy state,
-   wait/cancel/close handling, staged workflow recording and result diagnostics.
-2. Reuse `OperationTargetPanel` for explicit current/range/all T/C/Z and ROI
-   choices. Add the ImGui Apply action in both launchers, qualifying real input,
-   canceled/failed/stale jobs, busy controls, recording, Undo/Redo and virtual IO.
-3. Add recorded-command dispatch, explicit rebind review and native workflow/
-   batch-language integration. The standalone strict/rebind APIs work; the
-   editor workflow does not yet recognize this schema.
-4. Qualify RGB Apply against ImageJ's separate color-controller behavior before
+Apply participates in editor busy state, job reporting and `wait_jobs`.
+`cancel_contrast_apply`, the panel Cancel button, global cancellation and job-ID
+cancellation all cancel its native job. Closing the contrast panel or source
+also cancels pending Apply; changed revisions or active owners discard the work.
+Workflow output is allocated before the native commit and published afterwards.
+Diagnostic reports expose `contrast_apply` alongside `contrast_panel.apply_target`.
+Unsupported floating and packed-color Apply controls stay disabled.
+
+Python editor actions (all processing remains native):
+
+```python
+editor.action("show_contrast")
+editor.action("contrast_range", minimum=10., maximum=40.)
+editor.action("configure_contrast_target", target={"scope": "all_z", "roi": "active_selection"})
+editor.action("contrast_apply")
+editor.action("wait_jobs")
+```
+
+`replay_contrast_apply(record=...)` validates a captured record and strictly
+replays it. Supplying an explicit `contrast_rebind` target instead retains its
+mapping/bit preference and captures the destination's source, geometry and view.
+The workflow panel offers strict Replay; stale captures fail without fallback.
+Saving/loading recorded workflow metadata does not imply the native workflow
+language can execute this schema.
+
+Remaining integration and qualification:
+
+1. Add explicit ImGui rebind review and native workflow/batch-language execution.
+   Extend real target-widget and failure-injection coverage beyond the current
+   programmatic targeting, blocked-worker, cancellation and Apply-button tests.
+2. Qualify RGB Apply against ImageJ's separate color-controller behavior before
    enabling it. Keep unsupported floating Apply visibly unavailable; separately
    qualify RGBA, broader reset/calibration semantics and platform/resource use.
 
-G057 remains in progress. There is no Apply button in the contrast panel yet.
+G057 remains in progress; scalar editor Apply does not close full ImageJ/Fiji parity.

@@ -114,6 +114,58 @@ void canceled(const std::filesystem::path &root){
   until([&]{w.poll();return scheduler->usage().reserved_bytes==0;});
 }
 Json key(const char *name,bool down){return {{"type","key"},{"name",name},{"down",down}};}
+void applyHost(const std::filesystem::path &root){
+  auto source=std::make_shared<Source>();source->open();OpenOnExit release{source};
+  Window w((root/"apply.json").u8string());auto owner=std::make_shared<Document>(Dataset(source));w.addVirtualDocument(owner);
+  w.action("show_contrast");w.action("wait_jobs");
+  w.action("view",{{"c",1}});w.action("wait_jobs");
+  w.action("contrast_range",{{"minimum",20},{"maximum",87}});
+  w.action("configure_contrast_target",{{"target",{{"scope","all_z"},{"roi","whole_plane"}}}});
+  const auto before=owner->snapshot();w.recording=true;
+  {std::lock_guard<std::mutex> lock(source->mutex);source->released=false;}
+  const auto entered=source->entered.load();w.action("contrast_apply");
+  until([&]{return source->entered>entered;});
+  check(w.busy() && w.jobInfo()->label=="Apply brightness/contrast","Apply participates in host busy/job state");
+  refuses([&]{w.action("contrast_apply");});
+  check(before.shares_data(owner->snapshot()) && w.workflow.empty(),"Worker does not publish pixels or recording");
+  w.recording=false;source->open();w.action("wait_jobs");
+  check(!w.busy() && owner->undo_steps()==1 && w.workflow.size()==1,"Submit-time recording and one native undo entry");
+  check(w.workflow[0].at("schema")=="imagejxx.contrast-apply-command","Host records captured native command");
+  const auto after=owner->snapshot();
+  for(int z=0;z<3;++z){
+    check(after.data().dataset.plane({0,0,z})->pixels==before.data().dataset.plane({0,0,z})->pixels,"Unselected channel is preserved");
+    const auto pixels=after.data().dataset.plane({0,1,z})->pixels;
+    for(int i=0;i<48;++i)check(pixels[i]==std::min(255,int((10*z+i)*256/67)),"All-Z target applies captured endpoints");
+  }
+  check(range(w)==std::array<double,2>{0,255},"Apply publishes processor reset with pixels");
+  owner->undo();check(owner->snapshot().shares_data(before),"Undo restores original native dataset");
+  check(range(w)==std::array<double,2>{20,87},"Undo restores captured display");
+  owner->redo();check(owner->snapshot().shares_data(after) && range(w)==std::array<double,2>{0,255},"Redo restores paired pixels and display");
+  w.action("close_contrast");w.closeDocument(w.document()->id,true);
+  const auto scheduler=imagejxx::desktop::HistogramAsyncUiProbeAccess::scheduler(w);
+  until([&]{w.poll();return scheduler->usage().reserved_bytes==0;});
+}
+void applyAbandoned(const std::filesystem::path &root){
+  for(int mode=0;mode<5;++mode){
+    auto source=std::make_shared<Source>();source->open();OpenOnExit release{source};
+    Window w((root/("apply-cancel-"+std::to_string(mode)+".json")).u8string());
+    auto owner=std::make_shared<Document>(Dataset(source));w.addVirtualDocument(owner);
+    w.action("show_contrast");w.action("wait_jobs");w.action("contrast_range",{{"minimum",10},{"maximum",40}});
+    const auto before=owner->snapshot();w.recording=true;
+    {std::lock_guard<std::mutex> lock(source->mutex);source->released=false;}
+    const auto entered=source->entered.load();w.action("contrast_apply");until([&]{return source->entered>entered;});
+    if(mode==0){std::thread cancel([&]{w.cancel();});cancel.join();}
+    if(mode==1)w.action("close_contrast");
+    if(mode==2){auto view=owner->snapshot().display();view.zoom=2;owner->set_display(view);w.poll();}
+    if(mode==3)w.closeDocument(w.document()->id,true);
+    if(mode==4)check(w.cancelJob(w.jobInfo()->id),"Job-ID Apply cancellation accepted");
+    source->open();w.action("wait_jobs");
+    check(!w.busy() && before.shares_data(owner->snapshot()) && owner->undo_steps()==0 && w.workflow.empty(),"Abandoned Apply preserves pixels, history and recording");
+    if(mode!=3)w.closeDocument(w.document()->id,true);
+    const auto scheduler=imagejxx::desktop::HistogramAsyncUiProbeAccess::scheduler(w);
+    until([&]{w.poll();return scheduler->usage().reserved_bytes==0;});
+  }
+}
 void ui(const std::filesystem::path &root){
   auto source=std::make_shared<Source>();source->open();Window w((root/"ui.json").u8string());
   w.addVirtualDocument(std::make_shared<Document>(Dataset(source)));w.action("show_contrast");w.action("wait_jobs");
@@ -130,12 +182,20 @@ void ui(const std::filesystem::path &root){
   session.frame(Json::array({{{"type","text"},{"value","12.5"}}}));session.frame(Json::array({key("Enter",true)}));report=session.frame(Json::array({key("Enter",false)}));
   check(range(w)[0]==12.5,"Actual fractional minimum field publishes without integer truncation");
   check(before.shares_data(w.nativeSnapshot()) && !w.nativeSnapshot().dirty(),"Actual widget input preserves source pixels");
+  w.action("contrast_range",{{"minimum",0},{"maximum",47}});report=session.frame();
+  control=report.at("contrast_panel").at("controls").at("apply");
+  check(control.at("visible") && control.at("enabled"),"Apply pixel button is visible and enabled");
+  point=control.at("point");
+  session.frame(Json::array({{{"type","position"},{"space","screen"},{"point",point}},{{"type","button"},{"name","left"},{"down",true}}}));
+  session.frame(Json::array({{{"type","button"},{"name","left"},{"down",false}}}));
+  w.action("wait_jobs");
+  check(w.document()->undoSteps()==1 && !before.shares_data(w.nativeSnapshot()),"Actual Apply button publishes an undoable native edit");
   w.action("close_contrast");session.frame();
 }
 } // namespace
 int main(int argc,char **argv){try{
   check(argc==2,"Owned fixture path required");const auto root=std::filesystem::absolute(std::filesystem::u8path(argv[1]));
   check(!std::filesystem::exists(root),"Fresh fixture required");std::filesystem::create_directories(root);
-  math();seeded();captured(root);canceled(root);ui(root);
+  math();seeded();captured(root);canceled(root);applyHost(root);applyAbandoned(root);ui(root);
   std::cout<<"PASS native modeless contrast math, captured histogram, active channel, Auto, cancellation and actual widgets\n";return 0;
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

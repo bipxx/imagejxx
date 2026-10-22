@@ -2414,7 +2414,8 @@
           "docs/CONTRAST_PANEL.md",
           "docs/parity/reviews/p11c-contrast-apply001.json",
           "docs/CONTRAST_APPLY.md",
-          "docs/parity/reviews/p11d-contrast-command001.json"
+          "docs/parity/reviews/p11d-contrast-command001.json",
+          "docs/parity/reviews/p11e-contrast-host001.json"
         ],
         "implementation": [
           "include/imagejxx/document.hpp",
@@ -2477,8 +2478,8 @@
       ],
       "name": "Brightness/contrast and window/level",
       "remaining": [
-        "Captured commands, strict/rebind APIs and worker preparation/publication are available through C++/Python. Connect them to the Window host: active owner and busy policy, wait/cancel/close, staged workflow recording, diagnostics and shared OperationTargetPanel T/C/Z/ROI controls. The contrast panel still has no Apply button.",
-        "Add editor record-schema dispatch, explicit rebind review and native workflow/batch-language integration; the standalone native replay/rebind APIs are not yet editor workflow support.",
+        "The shared Window/ImGui host now exposes scalar Apply with native captured jobs, T/C/Z/ROI controls, busy/wait/cancel/close, staged submission-time recording and paired pixel/display Undo/Redo. Extend actual target-widget/failure-injection and upstream/platform/resource qualification; this does not close G057.",
+        "Editor record-schema dispatch now supports strict replay and explicit API rebind, and the workflow panel offers strict Replay. Explicit ImGui rebind review and native workflow/batch-language execution remain open.",
         "RGB Apply requires independent color-controller reference behavior before enabling it; RGBA is a separate extension. Floating Apply remains unavailable consistently with ImageJ scalar support.",
         "Processor reset now clears threshold, preserves palettes and uses observed UInt16 or configured full display bounds. Broader multi-channel representative-plane, empty-target, custom default-range, signed/intensity calibration and UI reference acceptance remain open. Empty masks retain the explicit native no-change/no-IO extension.",
         "Exact upstream slider normalization, log histogram/control/calibration and Set/Reset traces remain unqualified. Float64, IEEE-preserving Float32 and packed RGB/RGBA histogram/Auto are not enabled in the current panel.",
@@ -2492,7 +2493,8 @@
         "p11a.display-actions.metadata.001",
         "p11b.contrast-panel.native.001",
         "p11c.contrast-apply.scalar.001",
-        "p11d.contrast-apply.command-job.001"
+        "p11d.contrast-apply.command-job.001",
+        "p11e.contrast-apply.desktop.001"
       ]
     },
     {
@@ -181473,6 +181475,29 @@
         "total": 3310
       },
       "scope": "Windows/Linux each pass twenty native suites, ten background repetitions, four background GL contexts, one installed public C++ command/job consumer and 3310 installed Python checks, zero failure/error/skip. Fifty-four new Python cases cover captured intent, full original-record validation before strict replay/rebinding, lossless numeric rules, stale source domains, masks/positioned ROIs, metadata-only admission, publication failure atomicity and escaped-preview reservation lifetime. Twelve new actual ImageJ 1.54r Apply/reset cases cover UInt8/UInt16 whole/partial/constant data, configured and observed display ranges, threshold clearing and palette preservation. All 64 prior full-domain arithmetic vectors and prior 3256 selected regressions pass. Native fixtures additionally cover blocked worker-only virtual reads, queued source release, cooperative running/ready cancellation, shutdown, publication guards, plane-alias leases and reentrant caller changes to frozen inputs. Final qualification fingerprints actual compiled source trees against a fresh Windows manifest; Linux Python runs use a byte-verified native filesystem snapshot of 5467 test/config/fixture files. Both final installed origins and retained product bytes are checked. All 1297 input registrations, original 99 requirement/status triples and the commercial-use dependency inventory are preserved. This is scoped command/job/reset qualification, not an ImGui Apply route or complete G057/platform/resource acceptance."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-22",
+      "id": "p11e.contrast-apply.desktop.001",
+      "identity": {
+        "qualification": {
+          "bytes": 12780,
+          "path": "docs/parity/reviews/p11e-contrast-host001.json",
+          "sha256": "b592c3de9f40f16d3d4e032d8e160ecefcdb05048aa78af676536c7f7f620540"
+        }
+      },
+      "platform": "Windows/Linux installed C++/Python shared editor and ImGui scalar Apply",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 3321,
+        "report": "build/p11e-contrast-host001/windows-python002/pytest.xml",
+        "skipped": 0,
+        "total": 3321
+      },
+      "scope": "Windows/Linux each pass twenty native suites, ten background repetitions, four hidden background GL contexts and 3321 installed Python checks, zero failure/error/skip. Eleven new Python cases cover native editor Apply across UInt8/UInt16, whole/active masks and T/C/Z scopes, submission-time settings/recording, paired history, strict replay/rebind validation and disabled floating controls. Expanded native desktop fixtures cover an actual Apply button, all-Z independent pixel expectations, busy/job reporting, Undo/Redo, worker-only blocked virtual IO, global foreign-thread/job-ID cancellation, panel/source closure, stale display and eventual reservation release. Linux builds fingerprint the native compiled source mirror and run a byte-verified native snapshot of 5467 test/config/fixture files. Disposable module origins match retained qualified installs. Scratch is archived with CRC and per-member SHA verification before exact owned-path removal. Original 99 requirement/status triples and existing build/test registrations are preserved. This is scalar desktop Apply integration, not full ImageJ/Fiji or G057/platform/resource acceptance."
     }
   ]
 }

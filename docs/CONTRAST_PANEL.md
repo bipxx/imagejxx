@@ -44,7 +44,9 @@ controls but have no histogram/Auto in this panel. An implicit floating range
 must resolve or be set manually before sliders become available. Reset uses the
 cached plane extrema, UInt8 0–255, or the configured UInt16 bit-depth range.
 
-Destructive Apply-to-pixels, broader sample-format histogram support, complete
-ImageJ reset/set/apply semantics, and full upstream UI/platform/resource
-qualification remain open under G057. This panel is a scoped increment, not a
+Scalar UInt8/UInt16 **Apply to pixels** now uses native captured worker jobs,
+shared T/C/Z/ROI controls and a paired pixel/display Undo/Redo step. See
+[Apply behavior and editor actions](CONTRAST_APPLY.md). Broader sample-format
+histogram support, color Apply, complete ImageJ reset/set/apply semantics, and
+full upstream UI/platform/resource qualification remain open under G057. This panel is a scoped increment, not a
 claim of complete ImageJ/Fiji editor parity.

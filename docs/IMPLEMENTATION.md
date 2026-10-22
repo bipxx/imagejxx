@@ -1,5 +1,18 @@
 # Implementation progress
 
+**Desktop scalar Apply checkpoint, 2026-10-22 (work in progress):**
+The shared C++ Window host and ImGui contrast panel now connect captured native
+Apply jobs to T/C/Z/ROI controls, busy/wait/cancel/close, submit-time settings and
+recording, paired pixel/display Undo/Redo, strict replay and explicit API rebind.
+The workflow panel recognizes the schema for strict Replay. ImGui rebind review,
+native workflow/batch execution, RGB/RGBA and broader upstream UI qualification
+remain open. Windows/Linux each pass 20 native suites, ten background repetitions, four
+hidden GL contexts and 3321 installed Python checks, with zero failures/errors/
+skips. Temporary environments and fixtures are archived and verified before
+cleanup. See [Apply details](CONTRAST_APPLY.md) and the
+[scoped receipt](parity/reviews/p11e-contrast-host001.json).
+
+
 **Captured Apply commands/jobs checkpoint, 2026-10-22 (work in progress):**
 C++/Python now provide immutable Apply records, strict replay, explicit rebinding,
 metadata admission and native worker jobs with caller-thread atomic publication.

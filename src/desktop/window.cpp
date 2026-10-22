@@ -41,6 +41,7 @@
 #include "histogram_panel.hpp"
 #include "channel_display_panel.hpp"
 #include "contrast_panel.hpp"
+#include <imagejxx/contrast_apply_job.hpp>
 #include "channel_display_sources.hpp"
 #include <imagejxx/manual_threshold.hpp>
 #include <imagejxx/manual_threshold_command.hpp>
@@ -865,6 +866,10 @@ struct Window::Impl {
   ContrastPanel contrastPanel;
   std::optional<MetadataObject> channelDisplayRebind;
   std::optional<std::uint64_t> channelDisplayRebindOwner;
+  std::optional<ContrastApplyJob> contrastApplyJob;
+  std::optional<DocumentSnapshot> contrastApplySource;
+  bool contrastApplyRecording=false;
+  std::atomic<std::uint64_t> contrastApplyCancelId{0},contrastApplyCancelEpoch{0};
   std::optional<AutoContrastJob> autoJob;
   std::uint64_t autoOwner = 0;
   std::atomic<std::uint64_t> autoCancelId{0}, autoCancelEpoch{0};
@@ -2073,7 +2078,7 @@ struct Window::Impl {
     indexedColorPanel.tick(owner.documents_.empty()?std::optional<DocumentSnapshot>{}:std::optional<DocumentSnapshot>{owner.nativeSnapshot()},rgbCap(),
       [this](const auto &command,auto &prepared,bool recorded){std::visit([&](const auto &c){publishRgb(c,prepared,recorded);},command);});
   }
-  bool workflowOtherBusy() const { return movieExportPanel.working() || shadowDemo.active() || indexedColorPanel.visible() || indexedColorPanel.working() || colorStackPanel.visible() || colorStackPanel.working() || rgbDatasetPanel.visible() || rgbDatasetPanel.working() || legacyBusy() || gaussianJobs.apply_busy() || bool(thresholdJob) || bool(autoJob) || bool(histogramTask); }
+  bool workflowOtherBusy() const { return movieExportPanel.working() || shadowDemo.active() || indexedColorPanel.visible() || indexedColorPanel.working() || colorStackPanel.visible() || colorStackPanel.working() || rgbDatasetPanel.visible() || rgbDatasetPanel.working() || legacyBusy() || gaussianJobs.apply_busy() || bool(thresholdJob) || bool(autoJob) || bool(contrastApplyJob) || bool(histogramTask); }
   bool legacyBusy() const {
     return job.valid() && job.info().state != JobState::Publishing;
   }
@@ -2115,6 +2120,55 @@ struct Window::Impl {
       auto submitted=owner.controller_->submit_seeded_auto_contrast(initial,options,limit,std::move(jobOptions));
       bindAutoJob(std::move(submitted),source.id(),epoch);
     }
+  }
+  ContrastApplyCommandLimits contrastApplyLimits() const {
+    ContrastApplyCommandLimits limits;
+    const auto cap=static_cast<std::size_t>(preferenceState.settings.integer("processing_memory_mb"))*1024*1024;
+    if(cap)limits.processing.max_working_bytes=std::min(limits.processing.max_working_bytes,cap);
+    return limits;
+  }
+  void beginContrastApply(const ResolvedContrastApplyCommand &command,std::uint64_t epoch){
+    if(owner.busy())throw std::invalid_argument("Wait for the current edit");
+    const auto source=command.target().source();
+    const auto current=owner.nativeSnapshot();
+    if(!source.same_document(current) || !source.revisions().matches(current.revisions(),Change::All))throw RevisionConflict();
+    if(boolean(get(metadataJson(source.data().metadata.extensions),"labels")))throw std::invalid_argument("Disable label coloring before Apply");
+    auto capturedSource=std::optional<DocumentSnapshot>(source);
+    const bool capturedRecording=owner.recording;
+    std::string pendingStatus="Applying brightness/contrast...";
+    JobOptions options;options.label="Apply brightness/contrast";
+    auto submitted=submit_contrast_apply(*owner.controller_->job_scheduler(),command,contrastApplyLimits(),std::move(options));
+    std::uint64_t id;
+    try{id=submitted.info().id;}catch(...){submitted.cancel();throw;}
+    contrastApplySource=std::move(capturedSource);contrastApplyRecording=capturedRecording;
+    contrastApplyJob.emplace(std::move(submitted));
+    contrastApplyCancelId.store(id);
+    if(contrastApplyCancelEpoch.load()!=epoch)contrastApplyJob->cancel();
+    animating=false;status.swap(pendingStatus);
+  }
+  void applyContrast(const DocumentSnapshot &source,std::array<double,2> range,const TargetRequest &target){
+    if(owner.busy())throw std::invalid_argument("Wait for the current edit");
+    const auto epoch=contrastApplyCancelEpoch.load();
+    ContrastApplyOptions options;options.minimum=range[0];options.maximum=range[1];
+    options.unsigned16_bits=owner.settings().conversion_options().unsigned16_bits;
+    beginContrastApply(resolve_contrast_apply_command(source,options,target,contrastApplyLimits()),epoch);
+  }
+  void cancelContrastApply(){if(contrastApplyJob)contrastApplyJob->cancel();}
+  void pollContrastApply(){
+    if(!contrastApplyJob)return;
+    const auto current=gaussianCurrent();
+    if(!current || !contrastApplySource || !contrastApplySource->same_document(*current) ||
+       !contrastApplySource->revisions().matches(current->revisions(),Change::All))contrastApplyJob->cancel();
+    if(!contrastApplyJob->ready())return;
+    try{
+      const auto record=contrastApplyJob->record();
+      OutputPublication outputs(owner.results,owner.workflow,{},"",contrastApplyRecording?metadataJson(record):Json(nullptr));
+      std::string completed="Brightness/contrast applied";
+      contrastApplyJob->publish(*owner.controller_);
+      outputs.publish();status.swap(completed);
+    }catch(const OperationCancelled &){status="Contrast Apply cancelled";}
+    catch(const std::exception &e){lastError=e.what();status="Contrast Apply failed";}
+    contrastApplyCancelId.store(0);contrastApplyJob.reset();contrastApplySource.reset();contrastApplyRecording=false;
   }
   ChannelDisplayLimits channelLimits() const {
     ChannelDisplayLimits limits;
@@ -3713,6 +3767,7 @@ struct Window::Impl {
     histogramPanel.sourceClosed(d->id);
     contrastPanel.sourceClosed(d->id);
     if (autoJob && autoOwner == d->id) autoJob->cancel();
+    if(contrastApplySource && contrastApplySource->id()==d->id)cancelContrastApply();
     if (thresholdSource && thresholdSource->id() == d->id) {
       thresholdPanel.source_closed();
       thresholdSource.reset();
@@ -4655,6 +4710,7 @@ Window::Window(std::string path)
 Window::~Window() {
   cancel();
   if (impl->autoJob) impl->autoJob->wait();
+  if(impl->contrastApplyJob)impl->contrastApplyJob->wait();
   if (impl->histogramTask) impl->histogramTask->job.wait();
   impl->gaussianPanel.cancel([this] { impl->cancelGaussianPreview(); });
   impl->rankPanel.cancel([this] { impl->cancelGaussianPreview(); });
@@ -5809,6 +5865,19 @@ void Window::clearError() {
 }
 void Window::action(const std::string &name, const Json &p) {
   checkThread();
+  if(name=="replay_contrast_apply"){
+    const auto epoch=impl->contrastApplyCancelEpoch.load();
+    if(!p.is_object() || !p.contains("record") || !p.at("record").is_object())throw std::invalid_argument("Contrast Apply replay requires a command record");
+    for(const auto &v:p.items())if(v.key()!="record" && v.key()!="contrast_rebind")throw std::invalid_argument("Unknown Contrast Apply replay parameter");
+    const auto record=metadataObjectFromJson(p.at("record"));
+    const auto limits=impl->contrastApplyLimits();validate_contrast_apply_command_record(record,limits.max_record_bytes);
+    if(busy())throw std::invalid_argument("Wait for the current edit");
+    const auto source=nativeSnapshot();
+    const auto command=p.contains("contrast_rebind")
+      ?rebind_contrast_apply_command(source,record,gaussianRebindRequest(p.at("contrast_rebind")),limits)
+      :contrast_apply_command_from_record(source,record,limits);
+    impl->beginContrastApply(command,epoch);return;
+  }
   if(name=="show_histogram") {
     if(!p.is_object() || !p.empty())throw std::invalid_argument("Show Histogram accepts no parameters");
     if(busy())throw std::invalid_argument("Wait for the current edit");
@@ -6060,11 +6129,22 @@ void Window::action(const std::string &name, const Json &p) {
     Json values=p;if(values.is_object())values.erase("document_id");
     if(name=="show_contrast"||name=="close_contrast"){
       if(!values.is_object()||!values.empty())throw std::invalid_argument("Contrast visibility accepts only the active document ID");
-      if(name=="show_contrast"){impl->contrastPanel.open();impl->tickContrast();}else impl->contrastPanel.close();
+      if(name=="show_contrast"){impl->contrastPanel.open();impl->tickContrast();}else {impl->cancelContrastApply();impl->contrastPanel.close();}
     }else{
-      impl->tickContrast();impl->contrastPanel.action(name,values,busy(),
+      impl->tickContrast();
+      if(name=="cancel_contrast_apply"){
+        if(!values.is_object() || !values.empty())throw std::invalid_argument("Cancel Apply accepts no parameters");
+        impl->cancelContrastApply();return;
+      }
+      if(name=="configure_contrast_target"){
+        if(busy())throw std::invalid_argument("Wait for the current edit");
+        if(!values.is_object() || values.size()!=1 || !values.contains("target"))throw std::invalid_argument("Contrast target requires only a target object");
+        impl->contrastPanel.configureTarget(gaussianRebindRequest(values.at("target")));return;
+      }
+      impl->contrastPanel.action(name,values,busy(),
         [this](const DocumentSnapshot &source,std::array<double,2> range){impl->publishContrast(source,range);},
-        [this](const DocumentSnapshot &source,bool all,bool selection){impl->contrastAuto(source,all,selection);},settings().conversion_options().unsigned16_bits);
+        [this](const DocumentSnapshot &source,bool all,bool selection){impl->contrastAuto(source,all,selection);},settings().conversion_options().unsigned16_bits,
+        [this](const DocumentSnapshot &source,std::array<double,2> range,const TargetRequest &target){impl->applyContrast(source,range,target);});
     }
     return;
   }
@@ -6788,6 +6868,8 @@ void Window::action(const std::string &name, const Json &p) {
       throw std::runtime_error("Gaussian Apply wait timed out");
     if (impl->thresholdJob && !impl->thresholdJob->wait_for(remaining()))
       throw std::runtime_error("Threshold Apply wait timed out");
+    impl->pollContrastApply();
+    if(impl->contrastApplyJob && !impl->contrastApplyJob->wait_for(remaining()))throw std::runtime_error("Contrast Apply wait timed out");
     impl->pollHistogram();
     if(impl->histogramTask && !impl->histogramTask->job.wait_for(remaining()))throw std::runtime_error("Histogram wait timed out");
     impl->tickContrast();
@@ -8044,6 +8126,8 @@ void Window::cancel() {
   impl->contrastPanel.request_cancel(*impl->gaussianCancellationScheduler);
   impl->histogramCancelEpoch.fetch_add(1);
   if(const auto id=impl->histogramCancelId.load())impl->gaussianCancellationScheduler->cancel(id);
+  impl->contrastApplyCancelEpoch.fetch_add(1);
+  if(const auto id=impl->contrastApplyCancelId.load())impl->gaussianCancellationScheduler->cancel(id);
   impl->autoCancelEpoch.fetch_add(1);
   if (const auto id = impl->autoCancelId.load())
     impl->gaussianCancellationScheduler->cancel(id);
@@ -8074,6 +8158,7 @@ std::optional<JobInfo> Window::jobInfo() const {
 #endif
   if(auto workflow=impl->nativeWorkflowPanel.job_info())return workflow;
   if (impl->histogramTask)return impl->histogramTask->job.info();
+  if(impl->contrastApplyJob)return impl->contrastApplyJob->info();
   if (impl->autoJob) return impl->autoJob->info();
   if (impl->thresholdJob)
     return impl->thresholdJob->info();
@@ -8106,6 +8191,7 @@ bool Window::cancelJob(std::uint64_t jobId) {
   if (accepted)
     impl->pollAuto();
   if(accepted)impl->pollHistogram();
+  if(accepted)impl->pollContrastApply();
   if (accepted)
     impl->roiImportPanel.poll();
   if (accepted) impl->roiExportPanel.poll();
@@ -8116,6 +8202,7 @@ Json HistogramAsyncUiProbeAccess::diagnostics(Window &w){w.checkThread();return 
 void MovieExportUiProbeAccess::worker_gate(Window &window,std::function<void()> gate){window.checkThread();window.impl->movieExportPanel.worker_gate(std::move(gate));}
 void Window::poll() {
   checkThread();
+  impl->pollContrastApply();
   impl->tickContrast();
   impl->movieExportPanel.poll(documents_.empty()?std::optional<DocumentSnapshot>{}:std::optional<DocumentSnapshot>{nativeSnapshot()},impl->rgbCap());
   impl->shadowDemo.poll(documents_.empty()?std::optional<DocumentSnapshot>{}:std::optional<DocumentSnapshot>{nativeSnapshot()}, impl->rgbCap());
@@ -8207,6 +8294,7 @@ void Window::wait() {
   impl->roiImportPanel.wait();
   impl->roiExportPanel.wait();
   if (impl->autoJob) impl->autoJob->wait();
+  if(impl->contrastApplyJob)impl->contrastApplyJob->wait();
   if (impl->histogramTask) impl->histogramTask->job.wait();
   if (impl->thresholdJob)
     impl->thresholdJob->wait();
@@ -9454,6 +9542,13 @@ void Window::Impl::recorder() {
       continue;
     }
     const auto step = owner.workflow[i]; // Replay can append and reallocate.
+    if(get(step,"schema")=="imagejxx.contrast-apply-command") {
+      ImGui::Text("%zu. Apply brightness/contrast",i+1);ImGui::PushID(static_cast<int>(i));
+      ImGui::BeginDisabled(owner.busy()||owner.documents_.empty());
+      if(ImGui::Button("Replay captured Apply"))guard([&]{owner.action("replay_contrast_apply",{{"record",step}});});
+      observeControl("workflow.contrast_apply."+std::to_string(i)+".replay");
+      ImGui::EndDisabled();ImGui::PopID();continue;
+    }
     if(get(step,"schema")=="imagejxx.histogram-command") {
       ImGui::Text("%zu. Captured histogram",i+1);ImGui::PushID(static_cast<int>(i));
       ImGui::BeginDisabled(owner.busy()||owner.documents_.empty());
@@ -11757,7 +11852,10 @@ void Window::Impl::draw() {
     contrastPanel.draw(owner.busy(),
       [this](const DocumentSnapshot &source,std::array<double,2> range){publishContrast(source,range);},
       [this](const DocumentSnapshot &source,bool all,bool selection){contrastAuto(source,all,selection);},
-      [this](int c){owner.action("view",{{"c",c}});},owner.settings().conversion_options().unsigned16_bits);
+      [this](int c){owner.action("view",{{"c",c}});},owner.settings().conversion_options().unsigned16_bits,
+      [this](const DocumentSnapshot &source,std::array<double,2> range,const TargetRequest &target){applyContrast(source,range,target);},
+      bool(contrastApplyJob),[this]{cancelContrastApply();});
+    if(wasVisible && !contrastPanel.visible())cancelContrastApply();
     if(wasVisible && !contrastPanel.visible() && !owner.documents_.empty())for(auto &pane:panes)if(pane.doc->id==owner.controller_->active_document_id())pane.requestOrdinaryFocus=true;
   });
   // Draw floating selection controls after document windows so opening the
@@ -12238,6 +12336,7 @@ Json Window::Impl::headlessReport() {
     result["threshold_panel"] = thresholdPanel.diagnostics();
     result["histogram_panel"] = histogramPanel.diagnostics();
     result["contrast_panel"]=contrastPanel.diagnostics();
+    result["contrast_apply"]={{"busy",bool(contrastApplyJob)},{"owner_id",contrastApplySource?Json(contrastApplySource->id()):Json(nullptr)},{"recording_captured",contrastApplyRecording}};
     result["histogram_processing"]=histogramDiagnostics();
     result["channel_display_panel"] = channelDisplayPanel.diagnostics();
     result["auto_contrast"] = {{"busy", bool(autoJob)}, {"owner_id", autoOwner},

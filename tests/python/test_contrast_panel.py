@@ -145,3 +145,92 @@ def test_invalid_contrast_controls_are_atomic(action, params, tmp_path):
     assert owner.snapshot().display.properties == before.display.properties
     assert owner.snapshot().revisions.display == before.revisions.display
     editor.action("close_contrast")
+
+
+@pytest.mark.parametrize("dtype", [np.uint8, np.uint16])
+@pytest.mark.parametrize("roi", ["whole_plane", "active_selection"])
+@pytest.mark.parametrize("scope", ["all_z", "ranges"])
+def test_editor_apply_target_settings_record_and_history(dtype, roi, scope, tmp_path):
+    pixels = np.tile(np.array([0, 10, 20, 40], dtype), (2, 2, 2, 2, 1))
+    owner = ij.Document(ij.Dataset(pixels, axes="TCZYX"))
+    owner.select(ij.Selection.from_mask(np.array([[0, 1, 1, 0]] * 2, np.uint8)))
+    editor = Editor(preferences=tmp_path / "preferences.json")
+    editor._editor.add_virtual_document(owner)
+    editor.update_settings(conversion_unsigned16_range="12", persist=False)
+    editor.action("show_contrast")
+    editor.action("wait_jobs")
+    editor.action("view", c=1)
+    editor.action("contrast_range", minimum=10., maximum=40.)
+    target = {"scope": scope, "roi": roi}
+    if scope == "ranges":
+        target.update(t={"start": 0, "stop": 2}, c={"start": 1, "stop": 2},
+                      z={"start": 0, "stop": 2})
+    editor.action("configure_contrast_target", target=target)
+    editor.recording = True
+    before = owner.snapshot()
+    editor.action("contrast_apply")
+    editor.recording = False
+    editor.update_settings(conversion_unsigned16_range="auto", persist=False)
+    editor.action("wait_jobs")
+    expected = pixels.copy()
+    mapped = [0, 0, 85, 255] if dtype == np.uint8 else [0, 0, 1365, 4094]
+    for t in range(1 if scope == "all_z" else 2):
+        for z in range(2):
+            if roi == "whole_plane":
+                expected[t, 1, z] = mapped
+            else:
+                expected[t, 1, z, :, 1:3] = mapped[1:3]
+    np.testing.assert_array_equal(owner.snapshot().dataset.numpy("TCZYX"), expected)
+    assert owner.undo_steps == 1 and len(editor.workflow) == 1
+    record = editor.workflow[0]
+    assert record["schema"] == "imagejxx.contrast-apply-command"
+    assert record["options"]["unsigned16_bits"] == 12
+    assert owner.snapshot().display.properties["display_range"] == [0., 255. if dtype == np.uint8 else 4095.]
+    owner.undo()
+    np.testing.assert_array_equal(owner.snapshot().dataset.numpy("TCZYX"), pixels)
+    assert owner.snapshot().display.properties == before.display.properties
+    owner.redo()
+    np.testing.assert_array_equal(owner.snapshot().dataset.numpy("TCZYX"), expected)
+    editor.action("close_contrast")
+
+
+def test_editor_apply_strict_and_explicit_rebind(tmp_path):
+    owner = image()
+    editor = Editor(preferences=tmp_path / "preferences.json")
+    editor._editor.add_virtual_document(owner)
+    options = ij.ContrastApplyOptions()
+    options.minimum, options.maximum = 10., 40.
+    record = ij.resolve_contrast_apply_command(owner.snapshot(), options).record()
+    with pytest.raises((ValueError, RuntimeError)):
+        editor.action("replay_contrast_apply", record=record, extra=True)
+    editor.action("replay_contrast_apply", record=record)
+    editor.action("wait_jobs")
+    assert owner.undo_steps == 1
+    with pytest.raises((ValueError, RuntimeError)):
+        editor.action("replay_contrast_apply", record=record)
+    before = owner.snapshot()
+    malformed = dict(record, extra=True)
+    with pytest.raises((ValueError, RuntimeError)):
+        editor.action("replay_contrast_apply", record=malformed, contrast_rebind={"roi": "whole_plane"})
+    assert owner.snapshot().revisions.pixels == before.revisions.pixels
+    editor.action("replay_contrast_apply", record=record, contrast_rebind={"roi": "whole_plane"})
+    editor.action("wait_jobs")
+    assert owner.undo_steps == 2
+
+
+@pytest.mark.parametrize("dtype", [np.float32, np.float64])
+def test_editor_floating_apply_disabled_without_changes(dtype, tmp_path):
+    owner = ij.Document(ij.Dataset(np.arange(48, dtype=dtype).reshape(6, 8), axes="YX"))
+    editor = Editor(preferences=tmp_path / "preferences.json")
+    editor._editor.add_virtual_document(owner)
+    editor.action("show_contrast")
+    editor.action("contrast_range", minimum=10., maximum=40.)
+    before = owner.snapshot()
+    report = editor.render_headless()
+    assert not report["contrast_panel"]["controls"]["apply"]["enabled"]
+    with pytest.raises((ValueError, RuntimeError)):
+        editor.action("contrast_apply")
+    assert owner.snapshot().revisions.pixels == before.revisions.pixels
+    assert owner.snapshot().display.properties == before.display.properties
+    assert owner.undo_steps == 0 and not editor.workflow
+    editor.action("close_contrast")
