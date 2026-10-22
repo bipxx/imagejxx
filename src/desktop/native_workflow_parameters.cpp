@@ -1,5 +1,6 @@
 #include "native_workflow_parameters.hpp"
 #include "../native/native_workflow_internal.hpp"
+#include "../native/contrast_apply_workflow.hpp"
 #include "../native/native_workflow_program_internal.hpp"
 #include "../native/color_stack_internal.hpp"
 #include "../native/indexed_dataset_internal.hpp"
@@ -120,7 +121,9 @@ struct NativeWorkflowParameters::State {
     const auto shape = source.data().dataset.shape();
     if (!result.enabled)
       return result;
-    if(result.operation=="color_stack") {
+    if(result.operation=="contrast_apply") {
+      (void)detail::workflow_contrast_apply(source,result,detail::contrast_apply_workflow_limits(processing_cap));
+    } else if(result.operation=="color_stack") {
       auto request=detail::color_stack_workflow_request(result.parameters,*result.original);
       request.max_working_bytes=std::min(request.max_working_bytes,processing_cap);
       (void)resolve_color_stack_command(source,request,request.action==ColorStackAction::FlattenRgb && shape.s==1?detail::color_stack_rendering_options(*result.original):std::nullopt);
@@ -162,7 +165,7 @@ NativeWorkflowParameters::NativeWorkflowParameters(
   auto admitted = detail::make_native_workflow_program_borrowed(
       {detail::NativeWorkflowStepRef{original.get()}}, {1, cap / 8});
   auto operation = std::get<NativeWorkflowOperation>(admitted.steps()[0]);
-  if (!operation.filter_options && operation.original &&
+  if (operation.operation!="contrast_apply" && !operation.filter_options && operation.original &&
       detail::native_workflow_bound_operation_original(*operation.original)) {
     const auto raw = metadataJson(operation.original->at("options"));
     if (operation.operation == "gaussian_blur_imagej")
@@ -173,7 +176,9 @@ NativeWorkflowParameters::NativeWorkflowParameters(
           parse_rank_filter_method(raw.at("method").get<std::string>()),
           raw.at("radius").get<double>()};
   }
-  if(operation.operation=="color_stack") {
+  if(operation.operation=="contrast_apply") {
+    operation.parameters=detail::contrast_apply_workflow_parameters(detail::contrast_apply_workflow_options(operation));
+  } else if(operation.operation=="color_stack") {
     operation.parameters=detail::color_stack_workflow_parameters(
         detail::color_stack_workflow_request(operation.parameters,*operation.original));
   } else if(operation.operation=="indexed_dataset") {
@@ -239,7 +244,12 @@ NativeWorkflowParameters::NativeWorkflowParameters(
     s.fields.push_back(std::move(field));
   };
   s.color_stack=operation.operation=="color_stack";
-  if(s.color_stack) {
+  if(operation.operation=="contrast_apply") {
+    const auto value=[&](const char *name){return step["parameters"].at(name).at("value");};
+    add("minimum","Minimum","real",value("minimum"));
+    add("maximum","Maximum","real",value("maximum"));
+    add("unsigned16_bits","Unsigned 16-bit output (0/8/10/12/14/15/16)","int64",value("unsigned16_bits"));
+  } else if(s.color_stack) {
     auto value=[&](const char *name){return step["parameters"].at(name).at("value");};
     add("action","Conversion","text",value("action"));s.fields.back().choices={"split","merge","flatten_rgb"};
     s.fields.back().choice_labels={"Split into component channels","Merge component channels to RGB","Flatten RGB channels to Z"};

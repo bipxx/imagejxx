@@ -146,20 +146,63 @@ editor.action("wait_jobs")
 # Before submitting: editor.action("cancel_contrast_rebind")
 ```
 
-Saving/loading recorded workflow metadata and individual Replay/Rebind do not
-imply that the native workflow language can execute this schema.
+Native workflow and session Batch now execute scalar Apply through
+`NativeWorkflowOperation("contrast_apply", parameters, target, original=...)`.
+An empty parameter map retains the complete original capture's mapping and bit
+setting. Authored parameters require exactly `minimum`, `maximum` and
+`unsigned16_bits`; a supplied original is fully validated and remains unchanged.
+Endpoints must be finite and ordered; integer endpoints must convert losslessly.
+Bits require an integer from 0, 8, 10, 12, 14, 15 or 16. Typed Gaussian/rank options,
+calibration scaling, volume execution and new-document destinations are rejected.
+
+```python
+target = ij.TargetRequest(ij.TargetScope.ALL_Z, roi=ij.RoiPolicy.ACTIVE_SELECTION)
+saved = ij.NativeWorkflowOperation("contrast_apply", {}, target, original=record)
+authored = ij.NativeWorkflowOperation("contrast_apply",
+    {"minimum": 10., "maximum": 40., "unsigned16_bits": 12}, target,
+    original=record)
+program = ij.NativeWorkflowProgram([authored])
+restored = ij.NativeWorkflowProgram.from_json(program.json())
+prepared = ij.prepare_native_workflow(document.snapshot(), restored.steps)
+document.commit(prepared.begin_edit())
+```
+
+The existing closed program grammar retains operation parameters and originals.
+Recorded Apply rows open in Run/Batch review with their target intent. The shared
+ImGui parameter editor exposes the three mapping fields; targets can be edited,
+steps reordered/disabled, and reviewed intent saved as a portable program.
+Later steps consume the preceding pixels and actual reset display. For example,
+a masked UInt16 Apply yielding `[10, 21845, 30, 40]` resets its range to
+`10..21845`; a subsequent scaled byte conversion produces `[0, 255, 0, 0]`.
+
+Whole-program admission reads metadata and ROI masks only. Scalar type/geometry
+descriptors throw on sample access, retain palettes and clear threshold/spectrum
+state for affected planes. Automatic UInt16 extrema use bounded numeric
+placeholders during admission and are computed from real outputs during
+execution. Data-dependent failures still leave the live owner unchanged.
+The budget charges the command's processing/metadata estimate, full conservative
+dataset backing and records. Core phase limits remain in effect; this is a
+declared budget, not process-RSS measurement. Provider caches, allocator/frontend
+and publication/history allocations remain external.
+
+Run publishes one final guarded transaction pairing changed pixels with display;
+stale display revisions reject that publication. Empty ROI targets retain their
+no-change/no-IO behavior. Disabled Apply steps validate portable choices without
+checking compatibility against a destination or reading its samples.
+
+Session Batch uses the same operation in common or per-input programs and Batch
+setup codecs. Each selected document receives its own resolved target and reset;
+other documents, session results/workflow/extensions and input files are retained.
+Ordered histogram outputs describe intermediate stages. Preparation may stage
+temporary files; existing no-replace/per-item publication and cancellation/failure
+policies govern final files.
 
 Remaining integration and qualification:
 
-1. Add native workflow/batch-language execution for captured and authored Apply
-   choices. Carry reset presentation into every later stage while retaining
-   metadata-only whole-program preflight. Add closed program-codec support,
-   parameter review, ordered intermediate outputs and one final paired commit.
-   Reuse the existing worker/resource/publication host rather than a new path.
-   Cover malformed later steps before any reads, disabled intent, per-input
-   target compatibility, cancellation and failure atomicity.
-   Extend actual range/text/positioned-ROI widget and publication failure-injection
-   coverage beyond the current real C/Z/ROI radio and Apply/Rebind-button tests.
+1. Extend actual range/text/positioned-ROI widget and publication failure-injection
+   coverage beyond the current real C/Z/ROI radio, Apply/Rebind and workflow mapping
+   field/prepare/Apply tests. Broader workflow outputs/operation combinations and
+   resource/platform acceptance remain open.
 2. Qualify RGB Apply against ImageJ's separate color-controller behavior before
    enabling it. Keep unsupported floating Apply visibly unavailable; separately
    qualify RGBA, broader reset/calibration semantics and platform/resource use.

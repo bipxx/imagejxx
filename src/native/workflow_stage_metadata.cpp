@@ -1,4 +1,6 @@
 #include "workflow_stage_metadata.hpp"
+#include "contrast_apply_workflow.hpp"
+#include <imagejxx/channel_display.hpp>
 #include <imagejxx/manual_threshold.hpp>
 #include <imagejxx/planar_display_annotations.hpp>
 #include <imagejxx/targets.hpp>
@@ -52,6 +54,29 @@ DocumentSnapshot scalar_conversion_metadata_preview(const DocumentSnapshot &sour
   edit.replace_dataset(workflow_metadata_dataset(shape,type,before.calibration()));
   edit.set_spectrum({});pair_numeric_conversion_metadata(source,shape,edit,type);
   return edit.preview();
+}
+DocumentSnapshot contrast_apply_metadata_preview(const ResolvedContrastApplyCommand &command) {
+  const auto &target=command.target();const auto &source=target.source();
+  const auto &input=source.data().dataset;const auto options=command.options();
+  std::set<int> affected;
+  for(std::size_t i=0;i<target.position_count();++i){
+    kernel_checkpoint();const auto mask=target.mask(i);bool any=!mask;
+    if(mask)for(std::size_t p=0;p<mask->pixels.size();++p){kernel_checkpoint_periodic();any=any||mask->pixels[p]!=0;}
+    if(any)affected.insert(target.position(i).c);
+  }
+  if(affected.empty())return source;
+  auto edit=source.begin_edit(Change::All);
+  edit.replace_dataset(workflow_metadata_dataset(input.shape(),input.pixel_type(),input.calibration()));
+  edit.set_spectrum({});auto display=source.display();
+  // Numeric placeholders bound metadata only. Execution computes observed
+  // automatic UInt16 bounds from output samples, including outside each ROI.
+  const std::array<double,2> range{0,input.pixel_type()==PixelType::UInt8?255.:
+      options.unsigned16_bits?double((1u<<options.unsigned16_bits)-1):65535.};
+  if(auto channels=recognized_channel_display(display,input)){
+    for(auto c:affected)channels->channels.at(c).range=range;
+    display=with_channel_display(std::move(display),input,std::move(channels));
+  } else display.properties["display_range"]=metadata_array({range[0],range[1]});
+  reset_manual_threshold_state(display);edit.set_axis_remap_display(std::move(display));return edit.preview();
 }
 DocumentSnapshot workflow_filter_metadata_preview(const DocumentSnapshot &source,
     const std::string &operation,const OperationParameters &parameters,const ResolvedTarget &target) {

@@ -2416,7 +2416,10 @@
           "docs/CONTRAST_APPLY.md",
           "docs/parity/reviews/p11d-contrast-command001.json",
           "docs/parity/reviews/p11e-contrast-host001.json",
-          "docs/parity/reviews/p11f-contrast-rebind001.json"
+          "docs/parity/reviews/p11f-contrast-rebind001.json",
+          "docs/parity/reviews/p11g-contrast-workflow001.json",
+          "docs/NATIVE_WORKFLOW_PROGRAM.md",
+          "docs/NATIVE_WORKFLOW_PARAMETERS.md"
         ],
         "implementation": [
           "include/imagejxx/document.hpp",
@@ -2447,7 +2450,14 @@
           "src/native/contrast_apply_internal.hpp",
           "src/native/contrast_apply_command.cpp",
           "src/native/contrast_apply_job.cpp",
-          "src/native/targets.cpp"
+          "src/native/targets.cpp",
+          "src/native/contrast_apply_workflow.hpp",
+          "src/native/native_workflow.cpp",
+          "src/native/native_workflow_originals.cpp",
+          "src/native/native_workflow_program.cpp",
+          "src/native/workflow_stage_metadata.cpp",
+          "src/desktop/native_workflow_panel.cpp",
+          "src/desktop/native_workflow_parameters.cpp"
         ],
         "tests": [
           "tests/native/test_document.cpp",
@@ -2469,7 +2479,11 @@
           "tests/python/test_contrast_apply_command.py",
           "tests/reference/ContrastApplyResetReference.java",
           "tests/fixtures/contrast-apply-reset-imagej154r.json",
-          "examples/cpp/contrast_apply_command.cpp"
+          "examples/cpp/contrast_apply_command.cpp",
+          "tests/native/test_native_workflow.cpp",
+          "tests/native/test_native_workflow_batch.cpp",
+          "tests/python/test_native_workflow.py",
+          "tests/python/test_native_workflow_batch.py"
         ]
       },
       "id": "G057",
@@ -2480,7 +2494,7 @@
       "name": "Brightness/contrast and window/level",
       "remaining": [
         "The shared Window/ImGui host exposes scalar Apply and guarded saved-command rebind review with native captured jobs, T/C/Z/ROI controls, busy/wait/cancel/close, staged submission-time recording and paired pixel/display Undo/Redo. Extend range/text/positioned-ROI widget, failure-injection and upstream/platform/resource qualification; this does not close G057.",
-        "Editor record-schema dispatch, strict workflow Replay, explicit API rebind and guarded ImGui rebind review are implemented. Native workflow/batch-language execution remains open: add captured/authored options, reset-aware metadata-only preflight, program-codec/parameter review, ordered intermediate outputs and one paired final publication.",
+        "Native workflow/Run/session Batch now support saved and authored scalar Apply, complete original validation, reset-aware metadata-only preflight, closed program/Batch setup codecs, editable mapping/target review, ordered intermediate histograms and one paired final Run commit. Extend operation/output combinations, actual target widgets, failure injection and full upstream/resource/platform qualification; these scoped adapters do not close G057.",
         "RGB Apply requires independent color-controller reference behavior before enabling it; RGBA is a separate extension. Floating Apply remains unavailable consistently with ImageJ scalar support.",
         "Processor reset now clears threshold, preserves palettes and uses observed UInt16 or configured full display bounds. Broader multi-channel representative-plane, empty-target, custom default-range, signed/intensity calibration and UI reference acceptance remain open. Empty masks retain the explicit native no-change/no-IO extension.",
         "Exact upstream slider normalization, log histogram/control/calibration and Set/Reset traces remain unqualified. Float64, IEEE-preserving Float32 and packed RGB/RGBA histogram/Auto are not enabled in the current panel.",
@@ -2496,7 +2510,8 @@
         "p11c.contrast-apply.scalar.001",
         "p11d.contrast-apply.command-job.001",
         "p11e.contrast-apply.desktop.001",
-        "p11f.contrast-apply.rebind-ui.001"
+        "p11f.contrast-apply.rebind-ui.001",
+        "p11g.contrast-apply.workflow-batch.001"
       ]
     },
     {
@@ -181523,6 +181538,29 @@
         "total": 3354
       },
       "scope": "Windows/Linux each pass twenty native suites, ten background repetitions, four hidden background GL contexts and 3354 installed Python checks, zero failure/error/skip. Thirty-three new Python cases exercise reviewed destination T/C/Z targets across UInt8/UInt16 and whole-plane/active-mask/positioned-ROI policies, immutable saved mapping and UInt16 settings, new destination captures, paired Undo/Redo and submission-time recording. They cover stale pixel/metadata/selection/display/active-owner domains, malformed originals and target replacement, review cancellation/closure and retained non-area selection with explicit Whole plane. Expanded native desktop fixtures drive actual C/Z/ROI radio buttons and Apply saved mapping, independently check every selected plane, and verify metadata-only opening plus canceled/stale/closed reviews without provider reads. Linux builds fingerprint the actual native compiled source mirror; installed tests use a SHA-verified native snapshot of 5467 test/config/fixture files transferred through CRC/member-SHA-verified archives. Final module origins map to retained qualified installs; exact owned scratch is archived and verified before removal. Original 99 requirement/status triples and existing build/test registrations remain unchanged. This is scoped saved-command ImGui rebind review; native workflow/batch execution, complete ImageJ/Fiji and G057/platform/resource acceptance remain open."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-22",
+      "id": "p11g.contrast-apply.workflow-batch.001",
+      "identity": {
+        "qualification": {
+          "path": "docs/parity/reviews/p11g-contrast-workflow001.json",
+          "bytes": 18442,
+          "sha256": "8421afd9c3b5bcee6c57bb83178c2c96343d7f16632160d81b37544018525ffe"
+        }
+      },
+      "platform": "Windows/Linux installed native scalar Apply workflow, Run review and session Batch",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 3793,
+        "report": "build/p11g-contrast-workflow001/windows-python003/pytest.xml",
+        "skipped": 0,
+        "total": 3793
+      },
+      "scope": "Windows/Linux each pass 22 native suites (21 CTest plus one owned native batch suite), three full C++ workflow/batch/RGB UI probes, ten background repetitions, four hidden background GL contexts and 3793 installed Python checks, zero failure/error/skip. Seventy-one new Python cases cover saved and authored mapping, complete historical validation before override, all target scopes across scalar UInt8/UInt16 with whole/active/positioned ROIs, observed/configured reset ranges, threshold clearing and LUT retention, ordered histogram outputs, scaled conversion using the actual preceding reset range, paired history and stale publication. They cover invalid/disabled portable intent before source reads, cancellation/callback failure, common/per-input Batch setup codecs, selected/all session documents, unchanged inputs/session tables, staged versus final files and failure before publication. Expanded native fixtures verify sample-blocking admission descriptors, malformed later steps without provider reads, mid-kernel cancellation, independent pixels and actual workflow mapping fields including invalid numeric correction, Prepare and Apply. Linux builds and installed tests use byte-verified native filesystem source/test snapshots. Final origins map to retained qualified installs and probes; scratch is CRC/member-SHA verified before exact owned removal. All original 99 requirement/status triples and existing build/test registrations are preserved. This is scoped scalar Apply workflow/batch integration, not full ImageJ/Fiji/G057 or resource/platform acceptance."
     }
   ]
 }

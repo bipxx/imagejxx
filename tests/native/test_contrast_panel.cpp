@@ -218,6 +218,53 @@ void rebindStale(const std::filesystem::path &root){
     if(mode!=2)w.closeDocument(w.document()->id,true);
   }
 }
+void workflowUi(const std::filesystem::path &root){
+  auto source=std::make_shared<Source>();source->open();OpenOnExit release{source};
+  Window w((root/"workflow.json").u8string());auto owner=std::make_shared<Document>(Dataset(source));w.addVirtualDocument(owner);
+  auto view=owner->snapshot().display();view.properties["display_range"]=imagejxx::metadata_array({20.,87.});owner->set_display(view);
+  const auto before=owner->snapshot();TargetRequest target;target.roi=RoiPolicy::WholePlane;
+  const auto record=imagejxx::desktop::metadataJson(resolve_contrast_apply_command(before,{20,87,0},target).record());
+  w.workflow=Json::array({record});w.action("run_workflow");
+  check(source->entered==0,"Opening recorded Apply workflow is metadata-only");
+  HeadlessInputSession session(w);auto report=session.frame();report=session.frame();
+  const auto frame=[&](const Json &events=Json::array()){report=session.frame(events);};
+  const auto panel=[&]()->Json {
+    const auto &main=report.at("native_workflow");const auto child=main.at("editor");
+    return child.value("visible",false)?child:main;
+  };
+  const auto press=[&](const std::string &name){
+    Json hit;
+    for(int retry=0;retry<45;++retry){
+      const auto current=panel();check(current.at("controls").contains(name),"Workflow control missing");hit=current.at("controls").at(name);
+      if(hit.at("visible").get<bool>())break;
+      const auto bounds=current.at("window");const double y=hit.at("point")[1];
+      frame(Json::array({{{"type","position"},{"space","screen"},{"point",{bounds[2].get<double>()-14,(bounds[1].get<double>()+bounds[3].get<double>())/2}}},{{"type","wheel"},{"x",0},{"y",y<bounds[1].get<double>()?3:-3}}}));frame();
+    }
+    check(hit.at("visible") && hit.at("enabled"),"Workflow control unavailable");
+    frame(Json::array({{{"type","position"},{"space","screen"},{"point",hit.at("point")}}}));
+    for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();
+  };
+  const auto text=[&](const std::string &name,const std::string &value){
+    press(name);frame(Json::array({key("Ctrl",true),key("A",true)}));frame(Json::array({key("A",false),key("Ctrl",false)}));
+    frame(Json::array({{{"type","text"},{"value",value}}}));frame();
+  };
+  press("edit_parameters");until([&]{w.poll();frame();return panel().value("parameters",false);});
+  check(panel().at("fields").size()==3 && panel().at("error")=="","Captured Apply opens its three native mapping fields");
+  text("minimum","10");text("maximum","40");text("unsigned16_bits","12.0");press("keep_parameters");
+  check(panel().value("parameters",false) && panel().at("error")!="" && before.shares_data(owner->snapshot()),"Invalid typed workflow mapping stays private");
+  text("unsigned16_bits","12");press("keep_parameters");
+  check(!panel().value("parameters",false),"Corrected parameters are retained");
+  press("confirm");press("prepare");
+  until([&]{w.poll();frame();return report.at("native_workflow").at("ready").get<bool>() && !report.at("native_workflow").at("working").get<bool>();});
+  check(before.shares_data(owner->snapshot()) && owner->undo_steps()==0,"Prepared workflow leaves live owner unchanged");
+  press("apply");frame();const auto after=owner->snapshot();
+  check(owner->undo_steps()==1 && range(w)==std::array<double,2>{0,255},"Reviewed workflow publishes paired pixels and display once");
+  const auto pixels=after.data().dataset.plane();for(int i=0;i<48;++i)check(pixels->pixels[i]==std::clamp((i-10)*256/30,0,255),"Actual workflow authored mapping pixels");
+  check(w.workflow==Json::array({record}),"Editing workflow choices retains original recorder history");
+  owner->undo();check(owner->snapshot().shares_data(before) && range(w)==std::array<double,2>{20,87},"Workflow Undo restores source pixels and range");
+  owner->redo();check(owner->snapshot().shares_data(after),"Workflow Redo restores paired output");
+  w.closeDocument(w.document()->id,true);
+}
 void ui(const std::filesystem::path &root){
   auto source=std::make_shared<Source>();source->open();Window w((root/"ui.json").u8string());
   w.addVirtualDocument(std::make_shared<Document>(Dataset(source)));w.action("show_contrast");w.action("wait_jobs");
@@ -248,6 +295,6 @@ void ui(const std::filesystem::path &root){
 int main(int argc,char **argv){try{
   check(argc==2,"Owned fixture path required");const auto root=std::filesystem::absolute(std::filesystem::u8path(argv[1]));
   check(!std::filesystem::exists(root),"Fresh fixture required");std::filesystem::create_directories(root);
-  math();seeded();captured(root);canceled(root);applyHost(root);applyAbandoned(root);rebindUi(root);rebindStale(root);ui(root);
+  math();seeded();captured(root);canceled(root);applyHost(root);applyAbandoned(root);rebindUi(root);rebindStale(root);workflowUi(root);ui(root);
   std::cout<<"PASS native modeless contrast math, captured histogram, active channel, Auto, cancellation and actual widgets\n";return 0;
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

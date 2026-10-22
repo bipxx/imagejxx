@@ -1,5 +1,12 @@
 # Portable native workflow programs
 
+Scalar `contrast_apply` accepts a complete saved command with empty parameters,
+or exactly `minimum`, `maximum` and integer `unsigned16_bits` authored parameters.
+The shared parameter editor exposes those three fields and preserves any original
+capture. Its target uses the existing in-place plane/ROI policies; later steps see
+the actual reset presentation. See [Apply workflows and Batch](CONTRAST_APPLY.md).
+
+
 `NativeWorkflowProgram` is an immutable, owner-independent sequence of typed native
 workflow steps. The C++ core encodes and validates intent without reading dataset
 pixels, opening files, executing kernels or committing edits. Original captured

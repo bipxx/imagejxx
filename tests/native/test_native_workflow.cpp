@@ -1,5 +1,10 @@
 #include <imagejxx/gaussian_command.hpp>
 #include <imagejxx/native_workflow.hpp>
+#include <imagejxx/contrast_apply_command.hpp>
+#include <imagejxx/manual_threshold.hpp>
+#include "../../src/native/contrast_apply_workflow.hpp"
+#include "../../src/native/native_workflow_internal.hpp"
+#include "../../src/native/axis_command_record.hpp"
 #include <imagejxx/native_workflow_program.hpp>
 #include <imagejxx/rgb_dataset_command.hpp>
 #include <imagejxx/color_stack_command.hpp>
@@ -8,10 +13,11 @@
 #include <iostream>
 using namespace imagejxx;
 namespace {
-void check(bool b) {
+void check(bool b,int line) {
   if (!b)
-    throw std::runtime_error("Native workflow assertion");
+    throw std::runtime_error("Native workflow assertion at line "+std::to_string(line));
 }
+#define check(...) check((__VA_ARGS__),__LINE__)
 template <class F> void refuses(F f) {
   try {
     f();
@@ -19,6 +25,54 @@ template <class F> void refuses(F f) {
     return;
   }
   throw std::runtime_error("Expected workflow refusal");
+}
+void contrast_workflow_contract() {
+  Image image(4,1,1,PixelType::UInt16);image.pixels={10,20,30,40};DatasetReadObserver reads;
+  Document owner(Dataset::from_stack({image}).observe_reads(reads));
+  auto view=owner.snapshot().display();ManualThresholdState threshold;threshold.range={15,35};
+  set_manual_threshold_state(view,owner.snapshot().data().dataset.shape(),threshold);
+  view.properties["display_range"]=metadata_array({10.,40.});owner.set_display(view);
+  const auto source=owner.snapshot();TargetRequest target;target.roi=RoiPolicy::WholePlane;
+  NativeWorkflowOperation apply;apply.operation="contrast_apply";apply.target=target;
+  apply.original=resolve_contrast_apply_command(source,{10,40,12},target).record();
+  const auto saved=*apply.original;
+  apply.parameters={{"minimum",10.},{"maximum",40.},{"unsigned16_bits",std::int64_t(0)}};
+  const auto program=native_workflow_program_from_json(make_native_workflow_program({apply}).json());
+  check(metadata_equal(*std::get<NativeWorkflowOperation>(program.steps()[0]).original,saved));
+  check(reads.counts().plane_reads==0);
+  (void)detail::admit_native_workflow(source,{&apply},{});
+  const auto command=detail::workflow_contrast_apply(source,apply,{});
+  const auto descriptor=detail::contrast_apply_metadata_preview(command);
+  check(!manual_threshold_state(descriptor.display(),descriptor.data().dataset.shape()));
+  check(reads.counts().plane_reads==0);refuses([&]{descriptor.data().dataset.plane();});
+  check(reads.counts().plane_reads==0);
+  NativeWorkflowOperation bad=apply;bad.parameters["unsigned16_bits"]=true;
+  refuses([&]{prepare_native_workflow(source,{apply,bad});});
+  check(reads.counts().plane_reads==0);
+  auto malformed=saved;malformed["future"]=true;bad=apply;bad.original=malformed;
+  refuses([&]{make_native_workflow_program({bad});});check(reads.counts().plane_reads==0);
+  NativeWorkflowHistogram histogram;histogram.name="after.csv";histogram.target=target;
+  histogram.authored_options=NativeWorkflowHistogramOptions{};
+  auto prepared=prepare_native_workflow(source,{program.steps()[0],histogram});
+  check(prepared.completed_steps()==2 && prepared.histograms().size()==1 && prepared.histograms()[0].value.sum==131070);
+  check(prepared.preview().data().dataset.plane()->pixels==std::vector<double>({0,21845,43690,65535}));
+  check(prepared.dependencies()==Change::All && owner.snapshot().shares_data(source) && owner.undo_steps()==0);
+  auto edit=prepared.begin_edit();owner.commit(edit);check(owner.undo_steps()==1);
+  check(!manual_threshold_state(owner.snapshot().display(),source.data().dataset.shape()));
+  owner.undo();check(owner.snapshot().shares_data(source) && manual_threshold_state(owner.snapshot().display(),source.data().dataset.shape()).has_value());
+  owner.redo();check(owner.snapshot().data().dataset.plane()->pixels==std::vector<double>({0,21845,43690,65535}));owner.undo();
+  owner.select(Selection::from_packed_mask(4,1,{0x40}));const auto masked=owner.snapshot();
+  apply.target.roi=RoiPolicy::ActiveSelection;
+  prepared=prepare_native_workflow(masked,{apply});
+  check(prepared.preview().data().dataset.plane()->pixels==std::vector<double>({10,21845,30,40}));
+  const auto &range=detail::axis_command_record::array_value(prepared.preview().display().properties.at("display_range"));
+  check(detail::axis_command_record::number_value(range[0])==10 && detail::axis_command_record::number_value(range[1])==21845);
+  auto disabled=apply;disabled.enabled=false;disabled.target.scope=TargetScope::Positions;disabled.target.positions={{0,0,999}};
+  check(prepare_native_workflow(masked,{disabled}).completed_steps()==0);
+  auto token=std::make_shared<CancellationToken>();ExecutionControl control;control.cancellation=token;
+  control.stage_progress=[&](const auto &phase,auto,auto){if(phase=="Contrast Apply pixels")token->cancel();};
+  refuses([&]{prepare_native_workflow(masked,{apply},{},control);});
+  check(owner.snapshot().shares_data(masked));
 }
 void histogram_workflow_contract() {
   Image image(3,2,1,PixelType::UInt16);
@@ -290,6 +344,7 @@ int main() {
     replay.original = g.record();
     replay.target.roi = RoiPolicy::WholePlane;
     check(prepare_native_workflow(before, {replay}).completed_steps() == 1);
+    contrast_workflow_contract();
     histogram_workflow_contract();
     conversion_contract();
     rgb_workflow_contract();

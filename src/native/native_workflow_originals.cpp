@@ -2,6 +2,8 @@
 #include "imagej_roi_import_internal.hpp"
 #include "kernel_control.hpp"
 #include "native_workflow_internal.hpp"
+#include "contrast_apply_workflow.hpp"
+#include "contrast_apply_internal.hpp"
 #include "histogram_command_internal.hpp"
 #include "rgb_dataset_internal.hpp"
 #include "color_stack_internal.hpp"
@@ -87,9 +89,47 @@ const std::string &native_workflow_original_schema(const MetadataObject &r) {
 bool native_workflow_bound_operation_original(const MetadataObject &r) {
   return r.count("schema_version") != 0;
 }
+ContrastApplyOptions contrast_apply_workflow_options(const NativeWorkflowOperation &v) {
+  require(v.operation=="contrast_apply" && !v.filter_options && !v.use_destination_calibration,
+          "Contrast Apply workflow requires unscaled scalar mapping choices");
+  require(v.target.mode==ExecutionMode::Planes && v.target.destination==OutputDestination::InPlace,
+          "Contrast Apply workflow requires in-place planes");
+  if(v.original)validate_contrast_apply_command_record(*v.original);
+  ContrastApplyOptions result;
+  if(v.parameters.empty()) {
+    require(v.original.has_value(),"Contrast Apply workflow requires saved or authored choices");
+    const auto &o=object_value(v.original->at("options"));
+    result={number_value(o.at("minimum")),number_value(o.at("maximum")),index_value(o.at("unsigned16_bits"))};
+  } else {
+    require(v.parameters.size()==3 && v.parameters.count("minimum") && v.parameters.count("maximum") && v.parameters.count("unsigned16_bits"),
+            "Contrast Apply authored choices require minimum, maximum and unsigned16_bits only");
+    const auto scalar=[](const OperationValue &value)->MetadataValue {
+      return std::visit([](const auto &n)->MetadataValue {
+        using T=std::decay_t<decltype(n)>;
+        if constexpr(std::is_same_v<T,double> || std::is_same_v<T,std::int64_t> || std::is_same_v<T,std::uint64_t>)return n;
+        else throw std::invalid_argument("Contrast Apply choices require exact numeric scalars");
+      },value);
+    };
+    result={number_value(scalar(v.parameters.at("minimum"))),number_value(scalar(v.parameters.at("maximum"))),index_value(scalar(v.parameters.at("unsigned16_bits")))};
+  }
+  validate_contrast_apply_options(PixelType::UInt16,1,result);return result;
+}
+OperationParameters contrast_apply_workflow_parameters(const ContrastApplyOptions &o) {
+  return {{"minimum",o.minimum},{"maximum",o.maximum},{"unsigned16_bits",std::int64_t(o.unsigned16_bits)}};
+}
+ContrastApplyCommandLimits contrast_apply_workflow_limits(std::size_t cap) {
+  ContrastApplyCommandLimits limits;
+  limits.processing.max_working_bytes=std::min(limits.processing.max_working_bytes,cap);
+  limits.max_record_bytes=std::min(limits.max_record_bytes,cap);return limits;
+}
+ResolvedContrastApplyCommand workflow_contrast_apply(const DocumentSnapshot &source,
+    const NativeWorkflowOperation &v,const ContrastApplyCommandLimits &limits) {
+  return resolve_contrast_apply_command(source,contrast_apply_workflow_options(v),v.target,limits);
+}
 void validate_native_workflow_operation_original(
     const std::string &id, const OperationParameters &parameters,
     const MetadataObject &r) {
+  if(id=="contrast_apply"){validate_contrast_apply_command_record(r);return;}
   if(id=="rgb_dataset") {
     require(parameters.empty(),"RGB workflow intent requires empty registry parameters");
     validate_rgb_dataset_command_record(r);return;
@@ -117,6 +157,7 @@ void validate_native_workflow_operation_original(
 }
 void validate_native_workflow_operation_intent(
     const NativeWorkflowOperation &v) {
+  if(v.operation=="contrast_apply"){(void)contrast_apply_workflow_options(v);return;}
   if(v.operation=="rgb_dataset" || v.operation=="color_stack" || v.operation=="indexed_dataset" || v.operation=="indexed_rgb")
     require(v.original && (v.operation!="rgb_dataset" || v.parameters.empty()) && !v.filter_options && !v.use_destination_calibration,
             "Dataset conversion workflow requires a complete capture and whole-dataset target");

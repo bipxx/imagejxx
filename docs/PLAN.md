@@ -1,5 +1,19 @@
 # ImageJ and Fiji gap closure plan
 
+**Contrast Apply workflow/batch checkpoint, 2026-10-22 (work in progress):**
+Saved and authored scalar Apply now execute in native programs, Run review and
+session Batch. Original records stay immutable while three explicit mapping
+fields can be edited. Whole-program metadata/ROI admission uses sample-blocking
+descriptors; actual execution passes observed reset ranges to subsequent steps.
+Intermediate histograms, paired final history, disabled intent, portable Batch
+setup/common/per-input programs and existing file publication rules are retained.
+Windows/Linux each pass 22 native suites, three full C++ UI probes, ten background
+repetitions, four hidden GL contexts and 3793 installed Python checks (71 new),
+with zero failures/errors/skips. Owned scratch is archived/verified before
+cleanup. See [Apply workflow details](CONTRAST_APPLY.md) and the
+[scoped receipt](parity/reviews/p11g-contrast-workflow001.json).
+
+
 **Contrast Apply rebind review checkpoint, 2026-10-22 (work in progress):**
 The workflow recorder now opens a guarded ImGui destination review with saved
 mapping/bit settings and shared T/C/Z/ROI controls. Opening/configuring/canceling

@@ -158,3 +158,79 @@ def test_cancellation_after_final_prepared_reports_canceled(tmp_path):
         ij.prepare_native_workflow_batch(inputs, steps, str(output), cancellation=token, progress=progress)
     assert events[-2:] == [(0, ij.NativeWorkflowBatchState.CANCELED), (1, ij.NativeWorkflowBatchState.SKIPPED)]
     assert list(output.iterdir()) == []
+
+
+@pytest.mark.parametrize('bits', [0, 12])
+@pytest.mark.parametrize('all_documents', [False, True])
+def test_contrast_apply_session_batch_preserves_inputs_and_resets_outputs(bits, all_documents, tmp_path):
+    from test_native_workflow import contrast_saved_record
+    source, capture, paths, inputs, output, _ = fixture(tmp_path)
+    original = [p.read_bytes() for p in paths]
+    target = ij.TargetRequest(ij.TargetScope.ALL_Z, roi=ij.RoiPolicy.WHOLE_PLANE)
+    step = ij.NativeWorkflowOperation('contrast_apply',
+        {'minimum': 10., 'maximum': 40., 'unsigned16_bits': bits}, target, original=contrast_saved_record())
+    hist = lambda name: ij.NativeWorkflowHistogram(name, target, authored_options=ij.NativeWorkflowHistogramOptions())
+    program = ij.NativeWorkflowProgram.from_json(ij.NativeWorkflowProgram([hist('before.csv'), step, hist('after.csv')]).json())
+    before = source.snapshot()
+    result = ij.prepare_native_workflow_batch(inputs, program.steps, str(output),
+        ij.NativeWorkflowBatchOptions(all_documents=all_documents))
+    assert not result.attempted
+    for name in ['one', 'two']:
+        assert not (output / (name + '.ijx')).exists()
+        assert not (output / (name + '.d1.before.csv')).exists()
+        assert not (output / (name + '.d1.after.csv')).exists()
+    result.publish()
+    for name in ['one', 'two']:
+        session = ij.load_session(str(output / (name + '.ijx')))
+        first, second = [doc.snapshot() for doc in session.documents]
+        expected = np.full((2, 3, 2, 4, 5), 10, np.uint16)
+        expected[1, 2] = 0
+        np.testing.assert_array_equal(first.dataset.numpy('TCZYX'), expected)
+        np.testing.assert_array_equal(second.dataset.numpy('ZYX'), np.full((3, 3, 7),
+            (1365 if bits else 21845) if all_documents else 20, np.uint16))
+        assert first.display.properties['display_range'] == ([0., 4095.] if bits else [0., 0.])
+        if all_documents:
+            value = 1365. if bits else 21845.
+            assert second.display.properties['display_range'] == ([0., 4095.] if bits else [value, value])
+        assert session.results == capture.results and session.workflow == capture.workflow
+        assert session.extensions == capture.extensions
+        assert (output / (name + '.d1.before.csv')).exists() and (output / (name + '.d1.after.csv')).exists()
+        assert (output / (name + '.d2.after.csv')).exists() == all_documents
+    assert [p.read_bytes() for p in paths] == original and source.snapshot().shares_data(before)
+
+
+@pytest.mark.parametrize('failure', ['cancel', 'callback', 'invalid_later'])
+def test_contrast_batch_failure_never_publishes_partial_preparation(failure, tmp_path):
+    from test_native_workflow import contrast_saved_record
+    _, _, paths, inputs, output, _ = fixture(tmp_path)
+    original = [p.read_bytes() for p in paths]
+    request = ij.TargetRequest(ij.TargetScope.ALL_Z, roi=ij.RoiPolicy.WHOLE_PLANE)
+    steps = [ij.NativeWorkflowOperation('contrast_apply', {}, request, original=contrast_saved_record())]
+    if failure == 'invalid_later':
+        steps.append(ij.NativeWorkflowOperation('contrast_apply',
+            {'minimum': 0, 'maximum': 1, 'unsigned16_bits': 9}, request))
+    token = ij.CancellationToken()
+    def progress(index, state):
+        if state == ij.NativeWorkflowBatchState.PREPARED:
+            if failure == 'callback': raise RuntimeError('controlled batch callback failure')
+            token.cancel()
+    with pytest.raises((RuntimeError, ValueError)):
+        ij.prepare_native_workflow_batch(inputs, steps, str(output), cancellation=token, progress=progress)
+    assert list(output.iterdir()) == [] and [p.read_bytes() for p in paths] == original
+
+
+@pytest.mark.parametrize('transport', ['record', 'json'])
+def test_contrast_program_batch_setup_keeps_saved_and_authored_choices(transport):
+    from test_native_workflow import contrast_saved_record
+    original = contrast_saved_record()
+    request = ij.TargetRequest(ij.TargetScope.ALL_Z, roi=ij.RoiPolicy.WHOLE_PLANE)
+    common = ij.NativeWorkflowProgram([ij.NativeWorkflowOperation('contrast_apply', {}, request, original=original)])
+    override = ij.NativeWorkflowProgram([ij.NativeWorkflowOperation('contrast_apply',
+        {'minimum': 10., 'maximum': 40., 'unsigned16_bits': 12}, request, original=original)])
+    setup = ij.NativeWorkflowBatchSetup(common,
+        [ij.NativeWorkflowBatchInput('missing/input.ijx', 'out', program=override)], 'missing/output')
+    restored = (ij.NativeWorkflowBatchSetup.from_json(setup.json()) if transport == 'json'
+                else ij.NativeWorkflowBatchSetup.from_record(setup.record()))
+    assert restored.record() == setup.record()
+    assert restored.common_program.record()['steps'][0]['original'] == original
+    assert restored.inputs[0].program.record()['steps'][0]['original'] == original

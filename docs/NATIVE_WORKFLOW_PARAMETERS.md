@@ -1,5 +1,12 @@
 # Workflow parameter authoring
 
+Scalar `contrast_apply` accepts a complete saved command with empty parameters,
+or exactly `minimum`, `maximum` and integer `unsigned16_bits` authored parameters.
+The shared parameter editor exposes those three fields and preserves any original
+capture. Its target uses the existing in-place plane/ROI policies; later steps see
+the actual reset presentation. See [Apply workflows and Batch](CONTRAST_APPLY.md).
+
+
 In either Dear ImGui host, select a processing step in **Run on image** and choose
 **Edit this step's parameters...**. Confirm earlier steps first. The native planner
 prepares their detached result without publishing files; the form uses that private
