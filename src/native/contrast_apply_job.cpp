@@ -1,4 +1,5 @@
 #include <imagejxx/rgb_contrast_sequence_job.hpp>
+#include <imagejxx/rgb_contrast_stack_job.hpp>
 #include <imagejxx/native_workflow_program.hpp>
 #include "contrast_command_record.hpp"
 #include <imagejxx/application.hpp>
@@ -39,16 +40,29 @@ ContrastApplyJobEstimate estimate_rgb_contrast_apply_job(const ResolvedRgbContra
   if(bytes>limits.processing.max_working_bytes)throw std::invalid_argument("Apply job working-byte limit");
   result.working_bytes=bytes;result.reservation_bytes=std::max(bytes,options.resource_bytes);return result;
 }
+ContrastApplyJobEstimate estimate_rgb_contrast_stack_job(const ResolvedRgbContrastStackCommand &command,
+    const ContrastApplyCommandLimits &limits,const JobOptions &options){
+  ContrastApplyJobEstimate result;result.command=estimate_rgb_contrast_stack_command(command,limits);
+  auto bytes=add(result.command.working_bytes,sizeof(Submission<ResolvedRgbContrastStackCommand>)+sizeof(Retained)+sizeof(ContrastApplyJob)+sizeof(ContrastApplyJob::ResultCell)+
+      sizeof(JobOptions)+sizeof(JobInfo)+sizeof(JobContext)+sizeof(ExecutionControl)+4096);
+  bytes=add(bytes,add(text_bytes(options.label),text_bytes(options.supersedes)));
+  if(bytes>limits.processing.max_working_bytes)throw std::invalid_argument("RGB stack job working-byte limit");
+  result.working_bytes=bytes;result.reservation_bytes=std::max(bytes,options.resource_bytes);return result;
+}
 ContrastApplyJob::ContrastApplyJob(Job job,std::shared_ptr<ResultCell> cell)
     :job_(std::move(job)),result_(std::move(cell)){}
 ContrastApplyJob ContrastApplyJob::submit(JobScheduler &s,const ResolvedContrastApplyCommand &c,const ContrastApplyCommandLimits &l,JobOptions o){return submit_impl(s,c,l,std::move(o));}
 ContrastApplyJob ContrastApplyJob::submit(JobScheduler &s,const ResolvedRgbContrastApplyCommand &c,const ContrastApplyCommandLimits &l,JobOptions o){return submit_impl(s,c,l,std::move(o));}
 namespace {
+auto job_estimate(const ResolvedRgbContrastStackCommand &c,const ContrastApplyCommandLimits &l,const JobOptions &o){return estimate_rgb_contrast_stack_job(c,l,o);}
+auto execute(const ResolvedRgbContrastStackCommand &c,const ContrastApplyCommandLimits &l,const ExecutionControl &e){return execute_rgb_contrast_stack_command(c,l,e);}
 auto job_estimate(const ResolvedContrastApplyCommand &c,const ContrastApplyCommandLimits &l,const JobOptions &o){return estimate_contrast_apply_job(c,l,o);}
 auto job_estimate(const ResolvedRgbContrastApplyCommand &c,const ContrastApplyCommandLimits &l,const JobOptions &o){return estimate_rgb_contrast_apply_job(c,l,o);}
 auto execute(const ResolvedContrastApplyCommand &c,const ContrastApplyCommandLimits &l,const ExecutionControl &e){return execute_contrast_apply_command(c,l,e);}
 auto execute(const ResolvedRgbContrastApplyCommand &c,const ContrastApplyCommandLimits &l,const ExecutionControl &e){return execute_rgb_contrast_apply_command(c,l,e);}
 }
+ContrastApplyJob ContrastApplyJob::submit(JobScheduler &s,const ResolvedRgbContrastStackCommand &c,const ContrastApplyCommandLimits &l,JobOptions o){return submit_impl(s,c,l,std::move(o));}
+
 template<class Command>ContrastApplyJob ContrastApplyJob::submit_impl(JobScheduler &scheduler,const Command &command,
     const ContrastApplyCommandLimits &limits,JobOptions options){
   const auto frozen=command;const auto cap=limits;

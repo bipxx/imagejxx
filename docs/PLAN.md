@@ -1,5 +1,25 @@
 # ImageJ and Fiji gap closure plan
 
+**RGB captured-stack jobs checkpoint, 2026-10-22 (work in progress):**
+The exact RGB stack service now has immutable C++/Python captured commands,
+a separate closed V1 record, strict replay and explicit destination rebinding.
+The common native Apply job prepares full-stack results on a worker, retains
+resource reservations through escaped previews and publishes one guarded paired
+transaction. Original scalar and uniform RGB wire profiles stay unchanged.
+Windows/Linux each pass 22 native suites, three existing standalone C++ UI
+regression probes, an installed C++ SDK consumer, ten background repetitions,
+four hidden GL contexts and 25,912 installed Python checks (5,335 new), zero
+failure/error/skip. Exact owned scratch is CRC/member-SHA archived before
+cleanup; qualified installs/probes remain. See the
+[scoped receipt](parity/reviews/p11p-rgb-stack-command001.json).
+
+
+Next adopt the captured stack path in portable workflow replay and the shared
+ImGui stack controls. Selection/navigation snapshot transitions, broader actual
+widget coverage, slider/log-plot/Set/reset/calibration and full G057/ImageJ/Fiji/
+platform/resource acceptance remain open. The existing Auto producer-source
+evidence gate is unchanged.
+
 **RGB component editor checkpoint, 2026-10-22 (work in progress):**
 The shared ImGui panel now promotes the current mapping when changing RGB
 components, resets the new range, and replaces endpoint drafts without

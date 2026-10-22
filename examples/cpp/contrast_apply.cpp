@@ -1,6 +1,7 @@
 #include <imagejxx/contrast_apply.hpp>
 #include <imagejxx/rgb_contrast_sequence_job.hpp>
 #include <imagejxx/rgb_contrast_stack.hpp>
+#include <imagejxx/rgb_contrast_stack_job.hpp>
 #include <imagejxx/application.hpp>
 #include <imagejxx/native_workflow.hpp>
 #include <imagejxx/histogram_job.hpp>
@@ -53,6 +54,10 @@ int main() {
   const auto stackSource=stackOwner->snapshot();auto stackEdit=prepare_rgb_contrast_stack(stackSource,{{{10.9,40.1,4},false}});app.commit(stackEdit);
   if(stackOwner->snapshot().data().dataset.plane()->pixels[0]!=87 || stackOwner->snapshot().data().dataset.plane({0,0,1})->pixels[0]!=85)throw std::runtime_error("RGB entire-stack endpoint narrowing");
   stackOwner->undo();if(!stackOwner->snapshot().shares_data(stackSource))throw std::runtime_error("RGB stack Undo");
+  auto stackCommand=resolve_rgb_contrast_stack_command(stackOwner->snapshot(),{{{10.9,40.1,4},false}});auto stackRecord=stackCommand.record();validate_rgb_contrast_stack_command_record(stackRecord);
+  auto stackJob=submit_rgb_contrast_stack(scheduler,rgb_contrast_stack_command_from_record(stackOwner->snapshot(),stackRecord));stackJob.wait();stackJob.publish(app);
+  if(stackOwner->snapshot().data().dataset.plane()->pixels[0]!=87 || stackOwner->snapshot().data().dataset.plane({0,0,1})->pixels[0]!=85)throw std::runtime_error("RGB captured stack worker publication");
+  stackOwner->undo();if(!stackOwner->snapshot().shares_data(stackSource))throw std::runtime_error("RGB captured stack Undo");
   std::cout<<"PASS installed scalar and RGB Apply APIs, atomic commit and Undo\n";
 
 }

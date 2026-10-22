@@ -564,3 +564,48 @@ background scheduling, portable replay and actual ImGui stack controls still
 need to adopt these semantics. Existing UI probes provide regression coverage
 for the unchanged panel; they do not certify the new stack interaction. G057
 and full ImageJ/Fiji parity remain in progress.
+
+
+### Captured RGB stack commands and native jobs
+
+`imagejxx/rgb_contrast_stack_command.hpp` adds immutable
+`ResolvedRgbContrastStackCommand` captures and the matching Python interface.
+`resolve_rgb_contrast_stack_command(source, active_steps)` borrows inputs for
+sample/callback-free admission, then freezes the source, stages and limits
+before encoding. The active processor is captured from current T/C/Z; execution
+always includes the complete captured TCZ stack. The exposed singleton `target`
+identifies that active processor and is not the processing extent.
+
+The independent `imagejxx.rgb-contrast-stack-command` V1 grammar embeds a full
+RGB capture and ordered typed stages. Its component/range must match the final
+stage, and its target must be the canonical singleton active-selection range
+at the saved reset anchor. Unknown fields, mismatched claims, unsupported
+storage/reset policies, non-Boolean whole-plane flags, malformed stages and
+out-of-range or excessive stages fail before source samples are requested.
+Original scalar and uniform-RGB command formats are unchanged.
+
+`rgb_contrast_stack_command_from_record` checks owner, pixel/metadata/selection/
+display revisions, calibration, storage, selection geometry, display properties
+and active position against the actual source. It never restores a saved view.
+`rebind_rgb_contrast_stack_command` validates the entire original first, retains
+its stages and explicitly adopts the destination's current active processor,
+selection and display. `execute_rgb_contrast_stack_command` returns the same
+private paired transaction as synchronous stack preparation, freezing the
+command and limits before execution callbacks.
+
+`imagejxx/rgb_contrast_stack_job.hpp` exposes
+`estimate_rgb_contrast_stack_job` and `submit_rgb_contrast_stack`. They reuse
+`ContrastApplyJob` and its READY/cancel/publish lifecycle. The submitted source
+is immutable; virtual readers must allow worker access. Caller resource minima
+are honored and cumulative command/result/metadata/record work is admitted
+without pixel reads. Source/provider caches, frontend copies, publication/history
+staging and total process RSS remain external. Source acquisition occurs on the
+worker; cancellation or worker failure publishes nothing. Publication requires
+the captured owner to remain registered and every dependency revision current.
+
+READY preview snapshots, Dataset views and C++ plane aliases keep the job's
+reservation alive through cancellation, publication, owner close and scheduler
+shutdown. Python plane arrays are owning copies, as in other Apply jobs.
+`job.record()` returns the complete captured stack command. Portable workflow
+adapters and actual ImGui stack controls still need to consume this record;
+the new job does not turn uniform multi-axis Apply into ImageJ stack Apply.

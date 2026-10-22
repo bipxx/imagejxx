@@ -2427,7 +2427,8 @@
           "docs/parity/reviews/p11l-rgb-histogram001.json",
           "docs/parity/reviews/p11m-rgb-sequence001.json",
           "docs/parity/reviews/p11n-rgb-component-ui001.json",
-          "docs/parity/reviews/p11o-rgb-stack001.json"
+          "docs/parity/reviews/p11o-rgb-stack001.json",
+          "docs/parity/reviews/p11p-rgb-stack-command001.json"
         ],
         "implementation": [
           "include/imagejxx/document.hpp",
@@ -2479,7 +2480,10 @@
           "src/desktop/viewport_renderer.cpp",
           "src/desktop/orthogonal.cpp",
           "include/imagejxx/rgb_contrast_stack.hpp",
-          "src/native/rgb_contrast_stack.cpp"
+          "src/native/rgb_contrast_stack.cpp",
+          "include/imagejxx/rgb_contrast_stack_command.hpp",
+          "include/imagejxx/rgb_contrast_stack_job.hpp",
+          "src/native/rgb_contrast_stack_command.cpp"
         ],
         "tests": [
           "tests/native/test_document.cpp",
@@ -2543,7 +2547,8 @@
         "p11l.rgb-histogram.auto.001",
         "p11m.rgb-contrast.sequence.001",
         "p11n.rgb-component.editor.001",
-        "p11o.rgb-stack.core.001"
+        "p11o.rgb-stack.core.001",
+        "p11p.rgb-stack.command-jobs.001"
       ]
     },
     {
@@ -181777,6 +181782,29 @@
         "total": 20577
       },
       "scope": "C++/Python synchronous RGB entire-stack preparation matches 5292 actual ImageJ 1.54r private applyRGBStack reference rows: seven endpoint pairs, seven component masks, nine selection forms, three C/Z/T anchors, optional promoted stages and whole-active-plane policy. The actual macro-confirmed GenericDialog and post-commit setup execute with only plot/label/scrollbar presentation bypasses; processing sources and bytecode are unmodified. The oracle was corrected to use actual setup/getProcessor/snapshot promotion boundaries after its initial point-selection mismatch; failed logs and variants remain. A final test-only amendment replaces an invalid no-op preview-wrapper identity assertion with a committed owner/history identity assertion; compiled native/SDK bytes are unchanged and both installed suites rerun against the final test snapshot. The active preview maps once through promoted stages; other TCZ planes use only the current component and Java-int-narrowed processor bounds. Non-area processor ROI/mask asymmetry, fractional/degenerate/extreme endpoints, source geometry, private preparation, one paired Undo/Redo, stale-domain refusal, freeze-before-callback, cancellation/failure, admission, unsupported storage and empty membership/progress are tested. Source metadata is admitted before resolving target copies. Limits conservatively cover owned mapping/output/mask/geometry/transaction work; caller/source/provider caches, history/publication staging and total RSS are external. Windows/Linux each pass 22 native suites, three existing C++ workflow/batch/RGB UI regression probes, installed SDK consumer, ten background repetitions, four hidden GL contexts and 20577 installed Python checks (5315 new), zero failure/error/skip. Each installed test uses its actual disposable venv interpreter; source/module origins and 5475 native Linux test/config/fixture files are pinned. Exact owned scratch is archived and every member CRC/SHA verified before confined removal; final installed prefixes and native/SDK probes remain. This service is not yet integrated into captured stack commands, leased jobs, portable replay or actual ImGui stack controls. Existing command wire contracts, registration/dependency inventory and all 99 requirement/status triples remain unchanged; the old Auto producer-source gate remains open."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-22",
+      "id": "p11p.rgb-stack.command-jobs.001",
+      "identity": {
+        "qualification": {
+          "path": "docs/parity/reviews/p11p-rgb-stack-command001.json",
+          "bytes": 29001,
+          "sha256": "d122f4180f8cdd803d46552e5056ee878d4e42d9406f4d148b1720100f74d744"
+        }
+      },
+      "platform": "Windows/Linux installed C++/Python captured RGB stack commands and leased worker jobs",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 25912,
+        "report": "build/p11p-rgb-stack-command001/windows-python003/pytest.xml",
+        "skipped": 0,
+        "total": 25912
+      },
+      "scope": "Immutable C++/Python captured RGB entire-stack commands and resource-leased worker jobs match all 5292 unchanged actual ImageJ 1.54r private applyRGBStack reference rows, with complete record/JSON strict replay before worker execution. The independent closed V1 stack profile embeds the existing full RGB capture plus ordered typed stages, requires the canonical singleton active-selection target and exact last-stage options, and keeps all existing scalar/uniform-RGB wire profiles unchanged. Twenty-seven malformed record cases refuse validation/strict replay/rebind before reads; five stale/closed owner cases assert exact RevisionConflict/FAILED or application-owned close cancellation/OperationCancelled/CANCELED; two escaped Dataset cases preserve reservations after publication/cancellation/shutdown; three rebind cases use destination point geometry and different scientific anchors; five admission cases refuse record/working/pixel/scheduler/minimum-job limits before reads; one case proves detached mutable Python stages/records. Native cases exercise blocked-reader cancellation, no creator-thread worker reads, queued-source release while the handle survives, command/limit freeze before reentrant execution checkpoints and escaped plane-alias leases after publication, owner close and scheduler shutdown. Full installed SDK consumers exercise capture/strict replay/worker publication and paired Undo. Windows/Linux each pass 22 native suites, three existing standalone C++ workflow/batch/RGB UI regression probes, one installed SDK consumer, ten background repetitions, four hidden GL contexts and 25912 installed Python checks (5335 new), zero failure/error/skip. Both installed suites use actual disposable venv interpreters; source/module origins and 5475 native Linux test/config/fixture files are pinned. Two test-only exception amendments align the new close case with actual application-owned scheduler cancellation after a focused closed-owner failure; final 66-case focused and complete installed suites pass. Native/SDK/production bytes are unchanged by these amendments. Estimates admit cumulative processing, metadata, record copies and conservative owned command/result/job work, honoring caller resource minima; source/provider caches, frontend copies, history/publication staging and total RSS remain external. Exact owned scratch is CRC/member-SHA archived before confined removal, retaining qualified installs/probes and useful caches. Portable workflow adapters and actual ImGui stack controls have not adopted this path. All 99 requirement/status triples, registrations and commercial-use dependency inventory remain unchanged; the old Auto producer-source gate remains open."
     }
   ]
 }

@@ -1,5 +1,6 @@
 #include <imagejxx/rgb_contrast_sequence_job.hpp>
 #include <imagejxx/rgb_contrast_stack.hpp>
+#include <imagejxx/rgb_contrast_stack_job.hpp>
 #include <imagejxx/histogram_job.hpp>
 #include <imagejxx/application.hpp>
 #include <imagejxx/manual_threshold.hpp>
@@ -204,4 +205,22 @@ void rgb_stack(){
   auto preview=edit.preview();check(preview.data().dataset.plane({0,0,1})->pixels[0]==87 && preview.data().dataset.plane({0,0,2})->pixels[0]==170,"Active fractional range and narrowed other range differ");
   owner->commit(edit);check(owner->undo_steps()==1,"Stack publishes one paired transaction");owner->undo();check(owner->snapshot().shares_data(before),"Stack Undo restores original");
 }
-int main(){try{records();jobs();freeze();queued();reset();rgb_records_jobs();rgb_queued();rgb_histograms();rgb_sequences();rgb_sequence_freeze();rgb_stack();std::cout<<"PASS captured Apply records, strict replay/rebind, worker publication, escaped leases, cancellation and frozen intent\n";return 0;}catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}
+void rgb_stack_commands(){
+  JobScheduler scheduler;Application app;auto source=std::make_shared<RgbSource>();auto owner=std::make_shared<Document>(Dataset(source));app.adopt(owner);const auto before=owner->snapshot();
+  std::vector<RgbContrastStackStep> stages{{{0,7,4},false}};auto command=resolve_rgb_contrast_stack_command(before,stages);const auto record=command.record();validate_rgb_contrast_stack_command_record(record);
+  auto strict=rgb_contrast_stack_command_from_record(before,record);const auto estimate=estimate_rgb_contrast_stack_job(strict);check(source->reads==0 && strict.target().position_count()==1 && estimate.command.pixels==32,"Stack capture and borrowed admission have no IO");
+  stages.clear();auto replacement=resolve_rgb_contrast_stack_command(before,{{{0,255,7},false}});ContrastApplyCommandLimits limits;int callbacks=0;ExecutionControl control;
+  control.checkpoint=[&]{++callbacks;command=replacement;limits.processing.max_pixels=1;};auto direct=execute_rgb_contrast_stack_command(command,limits,control);
+  check(callbacks>0 && direct.preview().data().dataset.plane()->pixels[3]==36,"Stack execution freezes command and limits before callbacks");
+  source->opened=false;OpenOnExit release{source};const auto previous=source->reads.load();const auto mainBefore=source->mainReads.load();auto canceled=submit_rgb_contrast_stack(scheduler,strict);until([&]{return source->reads>previous;});canceled.cancel();check(canceled.wait_for(5s),"Stack blocked reader cancels");
+  refuses<OperationCancelled>([&]{canceled.publish(app);});source->open();auto job=submit_rgb_contrast_stack(scheduler,strict);check(job.wait_for(5s),"Stack worker ready");
+  std::optional<DocumentSnapshot> preview=job.preview();auto plane=preview->data().dataset.plane();check(plane->pixels[3]==36 && metadata_equal(job.record(),record),"Stack worker retains complete capture and exact pixels");check(source->mainReads==mainBefore,"Stack worker never reads on creator thread");
+  const auto bytes=job.info().resource_bytes;job.publish(app);check(owner->undo_steps()==1,"Stack worker publishes one Undo");owner->undo();app.close(owner->id,true);owner.reset();preview.reset();scheduler.shutdown();
+  check(scheduler.usage().reserved_bytes==bytes,"Stack plane alias retains lease after publication, close and shutdown");plane.reset();until([&]{return scheduler.usage().reserved_bytes==0;});
+}
+void rgb_stack_queued(){
+  JobScheduler scheduler({1,64*1024*1024,8});std::atomic<bool> entered{false};auto blocker=scheduler.submit([&](const JobContext &ctx){entered=true;for(;;){ctx.checkpoint();std::this_thread::sleep_for(1ms);}});until([&]{return entered.load();});
+  auto source=std::make_shared<RgbSource>();std::weak_ptr<RgbSource> weak=source;auto owner=std::make_shared<Document>(Dataset(source));std::optional<ResolvedRgbContrastStackCommand> command=resolve_rgb_contrast_stack_command(owner->snapshot(),{{{0,7,4},false}});
+  auto job=submit_rgb_contrast_stack(scheduler,*command);command.reset();source.reset();owner.reset();check(job.info().state==JobState::Queued && !weak.expired(),"Stack queued command retains source");job.cancel();check(weak.expired(),"Stack queued cancel releases source while handle survives");blocker.cancel();blocker.wait();
+}
+int main(){try{records();jobs();freeze();queued();reset();rgb_records_jobs();rgb_queued();rgb_histograms();rgb_sequences();rgb_sequence_freeze();rgb_stack();rgb_stack_commands();rgb_stack_queued();std::cout<<"PASS captured Apply records, strict replay/rebind, worker publication, escaped leases, cancellation and frozen intent\n";return 0;}catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}
