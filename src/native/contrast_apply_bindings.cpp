@@ -2,6 +2,7 @@
 #include <imagejxx/contrast_apply.hpp>
 #include <imagejxx/rgb_contrast_apply.hpp>
 #include <imagejxx/rgb_contrast_sequence_job.hpp>
+#include <imagejxx/rgb_contrast_stack.hpp>
 #include <imagejxx/application.hpp>
 #include "binding_metadata.hpp"
 #include <pybind11/pybind11.h>
@@ -132,6 +133,16 @@ void bind_contrast_apply(py::module_ &m) {
         py::gil_scoped_release release;return v.wait_for(std::chrono::milliseconds(count));
       },py::arg("timeout_ms")=5000)
       .def("publish",&ContrastApplyJob::publish,py::arg("application"),py::call_guard<py::gil_scoped_release>());
+  py::class_<RgbContrastStackStep>(m,"RgbContrastStackStep").def(py::init<>())
+    .def_readwrite("options",&RgbContrastStackStep::options)
+    .def_property("whole_plane",[](const RgbContrastStackStep &v){return v.whole_plane;},[](RgbContrastStackStep &v,py::object flag){if(!py::isinstance<py::bool_>(flag))throw py::type_error("whole_plane requires bool");v.whole_plane=flag.cast<bool>();});
+  py::class_<RgbContrastStackEstimate>(m,"RgbContrastStackEstimate")
+    .def_readonly("planes",&RgbContrastStackEstimate::planes).def_readonly("active_stages",&RgbContrastStackEstimate::active_stages)
+    .def_readonly("pixels",&RgbContrastStackEstimate::pixels).def_readonly("working_bytes",&RgbContrastStackEstimate::working_bytes).def_readonly("metadata_bytes",&RgbContrastStackEstimate::metadata_bytes);
+  m.def("estimate_rgb_contrast_stack",&estimate_rgb_contrast_stack,py::arg("source"),py::arg("active_steps"),py::arg("limits")=ContrastApplyCommandLimits{},py::call_guard<py::gil_scoped_release>());
+  m.def("prepare_rgb_contrast_stack",[](DocumentSnapshot source,std::vector<RgbContrastStackStep> steps,ContrastApplyCommandLimits limits,std::shared_ptr<CancellationToken> token,py::object progress,py::object checkpoint){
+    const auto control=axis_range_python_control(std::move(token),std::move(progress),std::move(checkpoint));py::gil_scoped_release release;return prepare_rgb_contrast_stack(source,steps,limits,control);
+  },py::arg("source"),py::arg("active_steps"),py::arg("limits")=ContrastApplyCommandLimits{},py::kw_only(),py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none());
   m.def("estimate_rgb_contrast_sequence_job",&estimate_rgb_contrast_sequence_job,py::arg("commands"),py::arg("limits")=ContrastApplyCommandLimits{},py::arg("job_options")=JobOptions{},py::call_guard<py::gil_scoped_release>());
   m.def("submit_rgb_contrast_sequence",[](JobScheduler &scheduler,std::vector<ResolvedRgbContrastApplyCommand> commands,ContrastApplyCommandLimits limits,JobOptions options){
     py::gil_scoped_release release;return submit_rgb_contrast_sequence(scheduler,commands,limits,std::move(options));

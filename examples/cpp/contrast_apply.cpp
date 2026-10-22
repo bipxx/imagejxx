@@ -1,5 +1,6 @@
 #include <imagejxx/contrast_apply.hpp>
 #include <imagejxx/rgb_contrast_sequence_job.hpp>
+#include <imagejxx/rgb_contrast_stack.hpp>
 #include <imagejxx/application.hpp>
 #include <imagejxx/native_workflow.hpp>
 #include <imagejxx/histogram_job.hpp>
@@ -48,6 +49,10 @@ int main() {
   std::vector<ResolvedRgbContrastApplyCommand> sequence{resolve_rgb_contrast_apply_command(promoted,{10,40,4}),resolve_rgb_contrast_apply_command(promoted,{20,60,2})};
   auto sequenceJob=submit_rgb_contrast_sequence(scheduler,sequence);sequenceJob.wait();sequenceJob.publish(app);
   if(color->undo_steps()!=2 || color->snapshot().data().dataset.plane()->pixels!=std::vector<double>{0,0,30,255,192,60})throw std::runtime_error("RGB promoted sequence publication");
+  Image stackPlane(1,1,3,PixelType::UInt8);stackPlane.pixels={20,30,40};auto stackOwner=std::make_shared<Document>(Dataset::from_stack({stackPlane,stackPlane}));app.adopt(stackOwner);
+  const auto stackSource=stackOwner->snapshot();auto stackEdit=prepare_rgb_contrast_stack(stackSource,{{{10.9,40.1,4},false}});app.commit(stackEdit);
+  if(stackOwner->snapshot().data().dataset.plane()->pixels[0]!=87 || stackOwner->snapshot().data().dataset.plane({0,0,1})->pixels[0]!=85)throw std::runtime_error("RGB entire-stack endpoint narrowing");
+  stackOwner->undo();if(!stackOwner->snapshot().shares_data(stackSource))throw std::runtime_error("RGB stack Undo");
   std::cout<<"PASS installed scalar and RGB Apply APIs, atomic commit and Undo\n";
 
 }

@@ -37,7 +37,7 @@ target_sources(imagejxx_core PRIVATE
   src/native/float32_display.cpp
   src/native/channel_display.cpp src/native/channel_display_command.cpp
   src/native/dataset_histogram.cpp src/native/rgb_histogram.cpp src/native/histogram_command.cpp src/native/histogram_job.cpp
-  src/native/auto_contrast.cpp src/native/auto_contrast_job.cpp src/native/contrast_apply.cpp src/native/contrast_apply_command.cpp src/native/rgb_contrast_apply_command.cpp src/native/contrast_apply_job.cpp
+  src/native/auto_contrast.cpp src/native/auto_contrast_job.cpp src/native/contrast_apply.cpp src/native/contrast_apply_command.cpp src/native/rgb_contrast_apply_command.cpp src/native/rgb_contrast_stack.cpp src/native/contrast_apply_job.cpp
   src/native/selection_creation.cpp
   src/native/selection_creation_geometry.cpp
   src/native/roi_manager.cpp
@@ -103,12 +103,12 @@ if(MSVC)
   set_source_files_properties(src/native/execution.cpp PROPERTIES COMPILE_OPTIONS /fp:strict)
   set_source_files_properties(src/native/channel_display.cpp src/native/float32_display.cpp PROPERTIES COMPILE_OPTIONS /fp:strict)
   set_source_files_properties(src/native/dataset_histogram.cpp src/native/rgb_histogram.cpp PROPERTIES COMPILE_OPTIONS /fp:strict)
-  set_source_files_properties(src/native/auto_contrast.cpp src/native/contrast_apply.cpp PROPERTIES COMPILE_OPTIONS /fp:strict)
+  set_source_files_properties(src/native/auto_contrast.cpp src/native/contrast_apply.cpp src/native/rgb_contrast_stack.cpp PROPERTIES COMPILE_OPTIONS /fp:strict)
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
   set_source_files_properties(src/native/execution.cpp PROPERTIES COMPILE_OPTIONS "-ffp-contract=off;-fno-fast-math")
   set_source_files_properties(src/native/channel_display.cpp src/native/float32_display.cpp PROPERTIES COMPILE_OPTIONS "-ffp-contract=off;-fno-fast-math")
   set_source_files_properties(src/native/dataset_histogram.cpp src/native/rgb_histogram.cpp PROPERTIES COMPILE_OPTIONS "-ffp-contract=off;-fno-fast-math")
-  set_source_files_properties(src/native/auto_contrast.cpp src/native/contrast_apply.cpp PROPERTIES COMPILE_OPTIONS "-ffp-contract=off;-fno-fast-math")
+  set_source_files_properties(src/native/auto_contrast.cpp src/native/contrast_apply.cpp src/native/rgb_contrast_stack.cpp PROPERTIES COMPILE_OPTIONS "-ffp-contract=off;-fno-fast-math")
 endif()
 
 if(IMAGEJXX_BUILD_PYTHON)

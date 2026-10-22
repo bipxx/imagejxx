@@ -1,5 +1,27 @@
 # Implementation progress
 
+**RGB entire-stack core checkpoint, 2026-10-22 (work in progress):**
+The C++ core and Python interface now prepare ImageJ-compatible RGB stack
+Apply transactions. Promoted component stages affect the active preview once;
+the remaining C/Z/T planes use the current component and Java-int-narrowed
+processor bounds. The original selection survives. Straight lines, points,
+open polylines and angles retain ImageJ's distinct active/other-plane rules.
+The actual private ImageJ 1.54r stack method supplies 5,292 reference rows.
+Windows/Linux each pass 22 native suites, three existing standalone C++ UI
+regression probes, an installed C++ SDK consumer, ten background repetitions,
+four hidden GL contexts and 20,577 installed Python checks (5,315 new), zero
+failure/error/skip. Exact owned scratch is CRC/member-SHA archived before
+cleanup; qualified installs/probes remain. See the
+[scoped receipt](parity/reviews/p11o-rgb-stack001.json).
+
+
+Next connect this service to captured stack commands, leased background jobs,
+portable replay and the shared ImGui stack controls. Selection/navigation
+snapshot transitions, slider/log-plot/Set/reset/calibration and broader
+G057/ImageJ/Fiji/platform/resource acceptance remain open. Existing uniform
+multi-axis mapping remains an explicit extension. The existing Auto
+producer-source evidence gate is unchanged.
+
 **RGB component editor checkpoint, 2026-10-22 (work in progress):**
 The shared ImGui panel now promotes the current mapping when changing RGB
 components, resets the new range, and replaces endpoint drafts without

@@ -1,4 +1,5 @@
 #include <imagejxx/rgb_contrast_sequence_job.hpp>
+#include <imagejxx/rgb_contrast_stack.hpp>
 #include <imagejxx/histogram_job.hpp>
 #include <imagejxx/application.hpp>
 #include <imagejxx/manual_threshold.hpp>
@@ -193,4 +194,14 @@ void rgb_sequence_freeze(){
   check(callbacks>0 && commands.empty() && job->wait_for(5s),"Sequence freezes vector and limits before reentrant codec checkpoints");
   const auto pixels=job->preview().data().dataset.plane();check(pixels->pixels[3]==36 && pixels->pixels[4]==25,"Reentrant sequence retains original mapping and limits");job->cancel();
 }
-int main(){try{records();jobs();freeze();queued();reset();rgb_records_jobs();rgb_queued();rgb_histograms();rgb_sequences();rgb_sequence_freeze();std::cout<<"PASS captured Apply records, strict replay/rebind, worker publication, escaped leases, cancellation and frozen intent\n";return 0;}catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}
+void rgb_stack(){
+  Image image(4,2,3,PixelType::UInt8);std::vector<Image> planes;
+  for(int z=0;z<3;++z){auto p=image;for(int i=0;i<8;++i){p.pixels[3*i]=10+10*z+i;p.pixels[3*i+1]=30;p.pixels[3*i+2]=50;}planes.push_back(std::move(p));}
+  DatasetReadObserver reads;auto owner=std::make_shared<Document>(Dataset::from_stack(planes).observe_reads(reads));auto view=owner->snapshot().display();view.crosshair[2]=1;owner->set_display(view);const auto before=owner->snapshot();
+  std::vector<RgbContrastStackStep> steps{{{10.9,40.1,4},false}};const auto estimate=estimate_rgb_contrast_stack(before,steps);check(estimate.planes==3 && estimate.pixels==24 && reads.counts().plane_reads==0,"Stack admission has no IO");
+  ContrastApplyCommandLimits tiny;tiny.processing.max_pixels=23;refuses([&]{prepare_rgb_contrast_stack(before,steps,tiny);});check(reads.counts().plane_reads==0,"Stack refusal precedes reads");
+  auto edit=prepare_rgb_contrast_stack(before,steps);check(reads.counts().plane_reads==3 && before.shares_data(owner->snapshot()),"Stack reads each source plane once and stages privately");
+  auto preview=edit.preview();check(preview.data().dataset.plane({0,0,1})->pixels[0]==87 && preview.data().dataset.plane({0,0,2})->pixels[0]==170,"Active fractional range and narrowed other range differ");
+  owner->commit(edit);check(owner->undo_steps()==1,"Stack publishes one paired transaction");owner->undo();check(owner->snapshot().shares_data(before),"Stack Undo restores original");
+}
+int main(){try{records();jobs();freeze();queued();reset();rgb_records_jobs();rgb_queued();rgb_histograms();rgb_sequences();rgb_sequence_freeze();rgb_stack();std::cout<<"PASS captured Apply records, strict replay/rebind, worker publication, escaped leases, cancellation and frozen intent\n";return 0;}catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

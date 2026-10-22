@@ -396,3 +396,125 @@ def test_rgb_histogram_worker_retains_typed_result_reservation(cancel):
 def test_rgb_auto_divisor_rejects_noncanonical_values(bad):
     doc=ij.Document(ij.Dataset(rgb_input(),axes='YXS'));value=ij.accumulate_rgb_histogram(ij.resolve_target(doc.snapshot()))
     with pytest.raises((ValueError,TypeError,OverflowError)):ij.rgb_auto_contrast_from_histogram(value,bad)
+
+
+STACK_FIXTURE=json.loads((Path(__file__).parents[1]/"fixtures/rgb-stack-apply-imagej154r.json").read_text())
+
+def rgb_stack_input():
+    t,c,z,y,x=np.indices((3,3,3,8,256))
+    return np.stack([(x+11*c+23*z+41*t)&255,(73*x+19*y+17*c+31*z+47*t)&255,(255-x+53*c+59*z+61*t)&255],axis=-1).astype(np.uint8)
+
+STACK_PIXELS=rgb_stack_input();STACK_PIXELS.flags.writeable=False
+
+def rgb_stack_selection(roi):
+    if roi in [0,1,2,3]:return rgb_auto_selection(roi)
+    points=[(20.25,1.25),(90.75,3.5),(35.5,5.75)]
+    if roi==4:return ij.Selection("line",[(20.25,1.25),(90.75,5.75)])
+    if roi==5:return ij.Selection("multipoint",[(20.25,1.25),(90.75,5.75)],width=9)
+    if roi in [6,7]:return ij.Selection("polyline" if roi==6 else "angle",points)
+    return ij.Selection("ellipse",[(17,0),(236,8)])
+
+def rgb_stack_steps(row):
+    result=[]
+    if row["prefix"]:
+        step=ij.RgbContrastStackStep();step.options=rgb_options(*STACK_FIXTURE["prefix_range"],7);result.append(step)
+    step=ij.RgbContrastStackStep();step.options=rgb_options(*STACK_FIXTURE["ranges"][row["range_index"]],row["channels"]);step.whole_plane=row["whole_plane"];result.append(step)
+    return result
+
+def rgb_stack_owner(row,observer=None):
+    dataset=ij.Dataset(STACK_PIXELS,axes="TCZYXS")
+    if observer is not None:dataset=dataset.observe_reads(observer)
+    owner=ij.Document(dataset);owner.select(rgb_stack_selection(row["roi"]))
+    t,c,z=STACK_FIXTURE["anchors"][row["anchor"]];view=owner.snapshot().display;view.t,view.c,view.crosshair=t,c,[0,0,z];view.properties={"display_range":[12.,220.]};owner.set_display(view)
+    return owner
+
+@pytest.mark.parametrize("row",STACK_FIXTURE["rows"],ids=lambda r:f'stack-r{r["range_index"]}-c{r["channels"]}-roi{r["roi"]}-a{r["anchor"]}-p{int(r["prefix"])}-w{int(r["whole_plane"])}')
+def test_actual_imagej_entire_rgb_stack_preserves_active_preview_and_narrows_other_planes(row):
+    reads=ij.DatasetReadObserver();owner=rgb_stack_owner(row,reads);before=owner.snapshot();steps=rgb_stack_steps(row)
+    estimate=ij.estimate_rgb_contrast_stack(before,steps);assert estimate.planes==27 and estimate.active_stages==len(steps) and estimate.pixels==2048*(26+len(steps)) and reads.counts().plane_reads==0
+    edit=ij.prepare_rgb_contrast_stack(before,steps);expected_reads=0 if row["roi"]==3 and not row["whole_plane"] else 1 if row["roi"]==3 else 27
+    assert reads.counts().plane_reads==expected_reads and before.shares_data(owner.snapshot()) and owner.undo_steps==0
+    preview=edit.preview();pixels=preview.dataset.numpy("TCZYXS");assert hashlib.sha256(pixels.tobytes()).hexdigest()==row["stack_sha256"]
+    t,c,z=STACK_FIXTURE["anchors"][row["anchor"]];assert hashlib.sha256(pixels[t,c,z].tobytes()).hexdigest()==row["active_sha256"]
+    assert preview.selection==before.selection
+    owner.commit(edit);assert owner.undo_steps==int(expected_reads!=0)
+    if expected_reads:
+        assert owner.snapshot().display.properties=={"display_range":[0.,255.]};owner.undo();assert owner.snapshot().shares_data(before)
+        owner.redo();np.testing.assert_array_equal(owner.snapshot().dataset.numpy("TCZYXS"),pixels)
+    else:assert owner.snapshot().shares_data(before) and owner.snapshot().display.properties==before.display.properties
+
+@pytest.mark.parametrize("failure",["empty","stages","memory","pixels","metadata","pre_cancel","callback","late_callback"])
+def test_rgb_stack_failures_leave_owner_and_history_unchanged(failure):
+    row=STACK_FIXTURE["rows"][0];reads=ij.DatasetReadObserver();owner=rgb_stack_owner(row,reads);before=owner.snapshot();steps=rgb_stack_steps(row);limits=ij.ContrastApplyCommandLimits();token=ij.CancellationToken()
+    if failure=="empty":steps=[]
+    elif failure=="stages":steps*=65
+    elif failure=="memory":limits.processing.max_working_bytes=1
+    elif failure=="pixels":limits.processing.max_pixels=1
+    elif failure=="metadata":limits.max_record_bytes=1
+    elif failure=="pre_cancel":token.cancel()
+    def checkpoint():
+        if failure=="callback" or failure=="late_callback" and reads.counts().plane_reads>1:raise RuntimeError("controlled stack callback failure")
+    with pytest.raises((ValueError,RuntimeError,ij.OperationCancelled)):ij.prepare_rgb_contrast_stack(before,steps,limits,cancellation=token,checkpoint=checkpoint)
+    assert before.shares_data(owner.snapshot()) and owner.undo_steps==0
+    if failure!="late_callback":assert reads.counts().plane_reads==0
+    else:assert reads.counts().plane_reads>1
+
+@pytest.mark.parametrize("change",["selection","display","metadata","pixels"])
+def test_rgb_stack_stale_transaction_never_overwrites_newer_owner(change):
+    owner=rgb_stack_owner(STACK_FIXTURE["rows"][0]);source=owner.snapshot();edit=ij.prepare_rgb_contrast_stack(source,rgb_stack_steps(STACK_FIXTURE["rows"][0]))
+    if change=="selection":owner.select(ij.Selection("rectangle",[(0,0),(5,5)]))
+    elif change=="display":
+        view=source.display;view.zoom=2;owner.set_display(view)
+    elif change=="metadata":
+        newer=owner.begin_edit();newer.set_title("newer title");owner.commit(newer)
+    else:owner.commit(ij.prepare_rgb_contrast_apply(ij.resolve_target(source),rgb_options()))
+    stable=owner.snapshot();steps=owner.undo_steps
+    with pytest.raises(ij.RevisionConflict):owner.commit(edit)
+    assert stable.shares_data(owner.snapshot()) and owner.undo_steps==steps
+
+def test_rgb_stack_freezes_steps_and_limits_before_callbacks():
+    row=next(r for r in STACK_FIXTURE["rows"] if r["range_index"]==0 and r["channels"]==4 and r["roi"]==5 and r["anchor"]==1 and r["prefix"] and r["whole_plane"])
+    owner=rgb_stack_owner(row);steps=rgb_stack_steps(row);limits=ij.ContrastApplyCommandLimits()
+    def checkpoint():steps.clear();limits.processing.max_pixels=1
+    edit=ij.prepare_rgb_contrast_stack(owner.snapshot(),steps,limits,checkpoint=checkpoint)
+    assert hashlib.sha256(edit.preview().dataset.numpy("TCZYXS").tobytes()).hexdigest()==row["stack_sha256"]
+
+@pytest.mark.parametrize("bad",[1,0,"true"])
+def test_rgb_stack_whole_plane_field_requires_boolean(bad):
+    step=ij.RgbContrastStackStep()
+    with pytest.raises(TypeError):step.whole_plane=bad
+    assert not step.whole_plane
+
+
+def test_rgb_stack_empty_point_geometry_refuses_before_reads():
+    reads=ij.DatasetReadObserver();owner=rgb_stack_owner(STACK_FIXTURE["rows"][0],reads);owner.select(ij.Selection("point"));step=ij.RgbContrastStackStep()
+    with pytest.raises(ValueError):ij.prepare_rgb_contrast_stack(owner.snapshot(),[step])
+    assert reads.counts().plane_reads==0
+
+
+def test_rgb_stack_single_plane_keeps_fractional_active_mapping():
+    pixels=np.array([[[20,30,40],[30,40,50]]],np.uint8);owner=ij.Document(ij.Dataset(pixels,axes="YXS"));step=ij.RgbContrastStackStep();step.options=rgb_options(10.9,40.1,4)
+    edit=ij.prepare_rgb_contrast_stack(owner.snapshot(),[step]);assert edit.preview().dataset.plane()[0,0,0]==87
+    expected=ij.apply_rgb_contrast_imagej(pixels,step.options);np.testing.assert_array_equal(edit.preview().dataset.numpy("YXS"),expected)
+
+@pytest.mark.parametrize("pixels",[np.zeros((2,4),np.uint8),np.zeros((2,4,3),np.uint16),np.zeros((2,4,4),np.uint8)])
+def test_rgb_stack_unsupported_storage_refuses_before_reads(pixels):
+    reads=ij.DatasetReadObserver();owner=ij.Document(ij.Dataset(pixels,axes="YX" if pixels.ndim==2 else "YXS").observe_reads(reads))
+    with pytest.raises(ValueError):ij.prepare_rgb_contrast_stack(owner.snapshot(),[ij.RgbContrastStackStep()])
+    assert reads.counts().plane_reads==0
+
+
+def test_rgb_stack_empty_membership_reports_terminal_progress_without_reads():
+    row=next(r for r in STACK_FIXTURE["rows"] if r["roi"]==3 and r["anchor"]==2 and not r["whole_plane"])
+    reads=ij.DatasetReadObserver();owner=rgb_stack_owner(row,reads);events=[]
+    edit=ij.prepare_rgb_contrast_stack(owner.snapshot(),rgb_stack_steps(row),progress=lambda done,total:events.append((done,total)))
+    assert events and events[-1]==(27,27) and reads.counts().plane_reads==0
+    stable=owner.snapshot();owner.commit(edit);assert owner.snapshot().shares_data(stable) and owner.undo_steps==0
+
+
+def test_rgb_stack_metadata_admission_precedes_callbacks_and_reads():
+    reads=ij.DatasetReadObserver();row=STACK_FIXTURE["rows"][0];owner=rgb_stack_owner(row,reads)
+    view=owner.snapshot().display;view.properties={"large":"x"*4096};owner.set_display(view)
+    limits=ij.ContrastApplyCommandLimits();limits.max_record_bytes=1024;events=[]
+    with pytest.raises(ValueError):ij.prepare_rgb_contrast_stack(owner.snapshot(),rgb_stack_steps(row),limits,checkpoint=lambda:events.append(True))
+    assert not events and reads.counts().plane_reads==0 and owner.undo_steps==0

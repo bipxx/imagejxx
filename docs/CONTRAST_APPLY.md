@@ -519,3 +519,48 @@ Remaining integration and qualification:
    reset/calibration semantics and platform/resource use remain open.
 
 G057 remains in progress; scalar editor Apply does not close full ImageJ/Fiji parity.
+
+
+### ImageJ RGB entire-stack preparation
+
+`estimate_rgb_contrast_stack` and `prepare_rgb_contrast_stack`, declared in
+`imagejxx/rgb_contrast_stack.hpp` and exposed to Python, accept one to 64 typed
+`RgbContrastStackStep` values. Supply promoted active-processor mappings followed
+by the current mapping; replace repeated endpoint drafts. The final step's
+component and Java-int-narrowed bounds map every other C/Z/T plane. Earlier
+promoted stages affect only the active plane. A step's `whole_plane` flag models
+an active Auto-style mapping while the restored source selection still applies
+to the other planes. This differs from uniform multi-axis Apply.
+
+ImageJ resets the active processor ROI for non-area selections. A straight line
+therefore maps its whole active plane and its integer bounding rectangle on
+other slices. Points and open polylines/angles use the ImageJ processor mask
+inside their bounds, with the rest of the active plane included. Point drawing
+size does not widen the processing mask; polygon coordinates use binary32.
+Area selections retain their existing membership. Original selection, previous
+selection, positioned records and unrelated metadata survive preparation.
+
+The estimator reads no samples and invokes no callbacks. It checks source
+metadata before resolving a target, cumulative mapped pixels and conservative
+owned output/mask/geometry/transaction work. Preparation freezes inputs before
+callbacks, checks cancellation, reads each affected plane once and returns a
+private paired pixel/display transaction. Commit checks all captured revision
+domains and provides one Undo. Empty membership is an explicit native no-read,
+no-change extension and still reports terminal progress. Source/provider caches,
+caller copies, publication/history staging and total process RSS remain external
+to this estimate. RGB UInt8 finite storage is required. Oversized non-area
+integer bounds are refused.
+
+The reference driver calls ImageJ 1.54r's actual private `applyRGBStack`, including
+its real macro-confirmed GenericDialog and post-commit setup. Only plot/label/
+scrollbar presentation is bypassed; upstream processing code is unmodified.
+Its 5,292 cases combine seven endpoint pairs, all seven component bit masks,
+nine selection modes, three scientific anchors, optional promoted mappings and
+whole-active-plane policy. They compare complete stack and active-plane hashes,
+including fractional endpoints, saturation, degenerate ranges and extremes.
+
+This is a synchronous preparation service. Captured command records, leased
+background scheduling, portable replay and actual ImGui stack controls still
+need to adopt these semantics. Existing UI probes provide regression coverage
+for the unchanged panel; they do not certify the new stack interaction. G057
+and full ImageJ/Fiji parity remain in progress.
