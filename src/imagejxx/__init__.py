@@ -1666,6 +1666,8 @@ from ._native import NativeWorkflowBatchSetup, NativeWorkflowBatchSetupLimits, s
 
 
 from ._native import manual_threshold_contains as manual_threshold_contains
+from ._native import RgbContrastApplyOptions, RgbContrastApplyEstimate, apply_rgb_contrast_imagej, estimate_rgb_contrast_apply, prepare_rgb_contrast_apply
+
 __all__ = [
     name
     for name, value in list(globals().items())

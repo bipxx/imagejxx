@@ -2419,7 +2419,8 @@
           "docs/parity/reviews/p11f-contrast-rebind001.json",
           "docs/parity/reviews/p11g-contrast-workflow001.json",
           "docs/NATIVE_WORKFLOW_PROGRAM.md",
-          "docs/NATIVE_WORKFLOW_PARAMETERS.md"
+          "docs/NATIVE_WORKFLOW_PARAMETERS.md",
+          "docs/parity/reviews/p11h-rgb-contrast001.json"
         ],
         "implementation": [
           "include/imagejxx/document.hpp",
@@ -2457,7 +2458,8 @@
           "src/native/native_workflow_program.cpp",
           "src/native/workflow_stage_metadata.cpp",
           "src/desktop/native_workflow_panel.cpp",
-          "src/desktop/native_workflow_parameters.cpp"
+          "src/desktop/native_workflow_parameters.cpp",
+          "include/imagejxx/rgb_contrast_apply.hpp"
         ],
         "tests": [
           "tests/native/test_document.cpp",
@@ -2483,7 +2485,9 @@
           "tests/native/test_native_workflow.cpp",
           "tests/native/test_native_workflow_batch.cpp",
           "tests/python/test_native_workflow.py",
-          "tests/python/test_native_workflow_batch.py"
+          "tests/python/test_native_workflow_batch.py",
+          "tests/reference/RgbContrastApplyReference.java",
+          "tests/fixtures/rgb-contrast-apply-imagej154r.json"
         ]
       },
       "id": "G057",
@@ -2495,7 +2499,7 @@
       "remaining": [
         "The shared Window/ImGui host exposes scalar Apply and guarded saved-command rebind review with native captured jobs, T/C/Z/ROI controls, busy/wait/cancel/close, staged submission-time recording and paired pixel/display Undo/Redo. Extend range/text/positioned-ROI widget, failure-injection and upstream/platform/resource qualification; this does not close G057.",
         "Native workflow/Run/session Batch now support saved and authored scalar Apply, complete original validation, reset-aware metadata-only preflight, closed program/Batch setup codecs, editable mapping/target review, ordered intermediate histograms and one paired final Run commit. Extend operation/output combinations, actual target widgets, failure injection and full upstream/resource/platform qualification; these scoped adapters do not close G057.",
-        "RGB Apply requires independent color-controller reference behavior before enabling it; RGBA is a separate extension. Floating Apply remains unavailable consistently with ImageJ scalar support.",
+        "Independent RGB transform/estimate/target-transaction C++/Python APIs now match 273 actual ImageJ preview/commit/snapshot reference rows, including seven component masks and fractional/extreme arithmetic. Add captured RGB records/replay/rebind, native worker jobs, exact baseline/component preview and shared Apply controls, then workflow/Batch adapters. Qualify the separate current/stack controller behavior before enabling RGB UI; RGBA is a separate extension and floating Apply remains unavailable.",
         "Processor reset now clears threshold, preserves palettes and uses observed UInt16 or configured full display bounds. Broader multi-channel representative-plane, empty-target, custom default-range, signed/intensity calibration and UI reference acceptance remain open. Empty masks retain the explicit native no-change/no-IO extension.",
         "Exact upstream slider normalization, log histogram/control/calibration and Set/Reset traces remain unqualified. Float64, IEEE-preserving Float32 and packed RGB/RGBA histogram/Auto are not enabled in the current panel.",
         "Finite legacy automatic range scans and other analysis/editing paths can still acquire pixels synchronously. Source caches, allocator/frontend and publication/history allocations are outside declared job reservations; full responsiveness/resource/platform acceptance remains open."
@@ -2511,7 +2515,8 @@
         "p11d.contrast-apply.command-job.001",
         "p11e.contrast-apply.desktop.001",
         "p11f.contrast-apply.rebind-ui.001",
-        "p11g.contrast-apply.workflow-batch.001"
+        "p11g.contrast-apply.workflow-batch.001",
+        "p11h.rgb-contrast.foundation.001"
       ]
     },
     {
@@ -181561,6 +181566,29 @@
         "total": 3793
       },
       "scope": "Windows/Linux each pass 22 native suites (21 CTest plus one owned native batch suite), three full C++ workflow/batch/RGB UI probes, ten background repetitions, four hidden background GL contexts and 3793 installed Python checks, zero failure/error/skip. Seventy-one new Python cases cover saved and authored mapping, complete historical validation before override, all target scopes across scalar UInt8/UInt16 with whole/active/positioned ROIs, observed/configured reset ranges, threshold clearing and LUT retention, ordered histogram outputs, scaled conversion using the actual preceding reset range, paired history and stale publication. They cover invalid/disabled portable intent before source reads, cancellation/callback failure, common/per-input Batch setup codecs, selected/all session documents, unchanged inputs/session tables, staged versus final files and failure before publication. Expanded native fixtures verify sample-blocking admission descriptors, malformed later steps without provider reads, mid-kernel cancellation, independent pixels and actual workflow mapping fields including invalid numeric correction, Prepare and Apply. Linux builds and installed tests use byte-verified native filesystem source/test snapshots. Final origins map to retained qualified installs and probes; scratch is CRC/member-SHA verified before exact owned removal. All original 99 requirement/status triples and existing build/test registrations are preserved. This is scoped scalar Apply workflow/batch integration, not full ImageJ/Fiji/G057 or resource/platform acceptance."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-22",
+      "id": "p11h.rgb-contrast.foundation.001",
+      "identity": {
+        "qualification": {
+          "path": "docs/parity/reviews/p11h-rgb-contrast001.json",
+          "bytes": 19841,
+          "sha256": "ad8473b8ac5ff1a93be291a15566e0c4ffef80fbcad4ae469c971acf57745b66"
+        }
+      },
+      "platform": "Windows/Linux installed C++/Python RGB contrast kernel and atomic target transaction",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 4127,
+        "report": "build/p11h-rgb-contrast001/windows-python001/pytest.xml",
+        "skipped": 0,
+        "total": 4127
+      },
+      "scope": "Windows/Linux each pass 22 native suites, three full C++ workflow/batch/RGB UI regression probes, one installed public scalar/RGB C++ SDK consumer, ten background repetitions, four hidden GL contexts and 4127 installed Python checks, zero failure/error/skip. There are 334 new Python cases: 273 actual ImageJ 1.54r ColorProcessor preview/ContrastAdjuster RGB commit/subsequent-snapshot rows and 61 native API/target/guard cases. References cover every unsigned component value, all seven masks, whole/rectangular/irregular ROIs and fractional/extreme/collapsed/signed-zero spans. Native fixtures additionally verify Java numerator wrapping, three-sample ROI indexing, paired range/pixel Undo/Redo, metadata admission, stale display, mid-kernel cancellation and reentrant frozen controls. Native transaction targeting covers independent T/C/Z and whole/active/positioned masks; empty masks keep the explicit no-change/no-IO extension. Scalar API/header/V1 command contracts remain unchanged. Actual native compiled sources and installed module origins are pinned; Linux tests use a SHA-verified native snapshot of 5469 test/config/fixture files. Owned scratch and oracle/SDK build products are CRC/member-SHA archived before removal; qualified installs, consumers, probes, logs and reports remain. Original 99 requirement/status triples, existing input registrations and commercial-use dependency inventory are preserved. This is an RGB kernel/transaction/API foundation, not enabled RGB editor/captured-command/job/workflow support, complete RGB controller/stack/Auto behavior or full G057/ImageJ/Fiji/platform/resource acceptance."
     }
   ]
 }

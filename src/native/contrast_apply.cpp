@@ -1,4 +1,5 @@
 #include <imagejxx/contrast_apply.hpp>
+#include <imagejxx/rgb_contrast_apply.hpp>
 #include <imagejxx/channel_display.hpp>
 #include <imagejxx/manual_threshold.hpp>
 #include "kernel_control.hpp"
@@ -148,6 +149,70 @@ DocumentTransaction prepare_contrast_apply(const ResolvedTarget &requested,
     }
     reset_manual_threshold_state(display);
     edit.set_axis_remap_display(std::move(display));
+  }
+  kernel_checkpoint();return edit;
+}
+namespace {
+std::array<int,256> rgb_table(const RgbContrastApplyOptions &o) {
+  if(!std::isfinite(o.minimum) || !std::isfinite(o.maximum) || o.minimum>o.maximum || o.channels<1 || o.channels>7)
+    throw std::invalid_argument("RGB contrast requires finite ordered endpoints and component bits 1..7");
+  const auto low=java_int(o.minimum);const double span=o.maximum-o.minimum;
+  std::array<int,256> result;
+  for(int i=0;i<256;++i)result[i]=std::clamp(java_int(256.0*double(java_sub(i,low))/span),0,255);
+  return result;
+}
+void rgb_storage(PixelType type,int samples){
+  if(type!=PixelType::UInt8 || samples!=3)throw std::invalid_argument("RGB contrast requires UInt8 RGB samples");
+}
+}
+Image apply_rgb_contrast_imagej(const Image &source,const RgbContrastApplyOptions &requested,const ExecutionControl &requested_control) {
+  const auto options=requested;const auto control=requested_control;
+  ExecutionScope scope(control);kernel_checkpoint();rgb_storage(source.type,source.channels);
+  const auto table=rgb_table(options);
+  if(source.width<=0 || source.height<=0 || mul(mul(std::size_t(source.width),std::size_t(source.height)),3)!=source.pixels.size())
+    throw std::invalid_argument("Invalid RGB contrast image");
+  kernel_blocks("RGB contrast validation",source.pixels.size(),[&](auto first,auto last){
+    for(auto i=first;i<last;++i){const auto v=source.pixels[i];if(!std::isfinite(v) || v<0 || v>255 || v!=std::floor(v))throw std::invalid_argument("RGB contrast sample is invalid");}
+  });
+  Image result=source;
+  kernel_blocks("RGB contrast pixels",result.pixels.size(),[&](auto first,auto last){
+    for(auto i=first;i<last;++i)if(options.channels&(4>>int(i%3)))result.pixels[i]=table[int(source.pixels[i])];
+  });
+  kernel_checkpoint();return result;
+}
+RgbContrastApplyEstimate estimate_rgb_contrast_apply(const ResolvedTarget &target,const RgbContrastApplyOptions &options,const ContrastApplyLimits &limits) {
+  const auto &source=target.source();const auto &data=source.data().dataset;const auto shape=data.shape();
+  rgb_storage(data.pixel_type(),shape.s);(void)rgb_table(options);
+  if(data.sample_policy()!=FloatingSamplePolicy::FiniteOnly || target.destination()!=OutputDestination::InPlace || target.execution_mode()!=ExecutionMode::Planes)
+    throw std::invalid_argument("RGB contrast requires finite in-place plane targets");
+  if(source.display().properties.count("channel_display"))throw std::invalid_argument("RGB contrast cannot reset scalar channel display state");
+  const auto plane=mul(std::size_t(shape.x),std::size_t(shape.y)),count=target.position_count();
+  RgbContrastApplyEstimate result;result.pixels=mul(plane,count);result.samples=mul(result.pixels,3);
+  result.working_bytes=add(add(mul(add(result.samples,mul(plane,13)),sizeof(double)),mul(data.shape().plane_count(),128)),
+      add(65536,add(mul(std::size_t(shape.c),65536),mul(count,256))));
+  if(!limits.max_pixels || result.pixels>limits.max_pixels || !limits.max_working_bytes || result.working_bytes>limits.max_working_bytes)
+    throw std::invalid_argument("RGB contrast pixel/working-byte limit");
+  return result;
+}
+DocumentTransaction prepare_rgb_contrast_apply(const ResolvedTarget &requested,const RgbContrastApplyOptions &requested_options,
+    const ContrastApplyLimits &requested_limits,const ExecutionControl &requested_control) {
+  const auto target=requested;const auto options=requested_options;const auto limits=requested_limits;const auto control=requested_control;
+  ExecutionScope scope(control);kernel_checkpoint();(void)estimate_rgb_contrast_apply(target,options,limits);
+  const auto &source=target.source();const auto &data=source.data().dataset;
+  const auto plane=mul(std::size_t(data.shape().x),std::size_t(data.shape().y)),count=target.position_count();
+  auto edit=source.begin_edit(Change::All);std::vector<std::pair<PlanePosition,Image>> replacements;replacements.reserve(count);
+  for(std::size_t i=0;i<count;++i){
+    kernel_checkpoint();const auto position=target.position(i);const auto mask=target.mask(i);bool any=!mask;
+    if(mask)kernel_blocks("RGB contrast mask",plane,[&](auto first,auto last){for(auto p=first;p<last;++p)any=any||mask->pixels[p]!=0;});
+    if(!any){execution_progress(i+1,count);continue;}
+    const auto input=data.plane(position);auto output=apply_rgb_contrast_imagej(*input,options,{});
+    if(mask)kernel_blocks("RGB contrast selection",plane,[&](auto first,auto last){for(auto p=first;p<last;++p)if(mask->pixels[p]==0)for(int c=0;c<3;++c)output.pixels[p*3+c]=input->pixels[p*3+c];});
+    replacements.emplace_back(position,std::move(output));execution_progress(i+1,count);
+  }
+  kernel_checkpoint();
+  if(!replacements.empty()){
+    edit.replace_dataset(data.with_planes(std::move(replacements)));auto display=source.display();
+    display.properties["display_range"]=metadata_array({0.,255.});reset_manual_threshold_state(display);edit.set_axis_remap_display(std::move(display));
   }
   kernel_checkpoint();return edit;
 }

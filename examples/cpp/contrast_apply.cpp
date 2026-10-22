@@ -1,4 +1,5 @@
 #include <imagejxx/contrast_apply.hpp>
+#include <imagejxx/rgb_contrast_apply.hpp>
 #include <imagejxx/application.hpp>
 #include <iostream>
 #include <stdexcept>
@@ -17,5 +18,15 @@ int main() {
   owner->undo();
   if(!owner->snapshot().data().dataset.shares_pixels(original.data().dataset))
     throw std::runtime_error("Undo did not restore source");
-  std::cout<<"PASS installed scalar Apply API, atomic commit and Undo\n";
+  Image rgb(2,1,3,PixelType::UInt8);rgb.pixels={10,20,30,40,50,60};
+  auto color=std::make_shared<Document>(Dataset::from_stack({rgb}));app.adopt(color);
+  const auto baseline=color->snapshot();const auto rgbTarget=resolve_target(baseline);
+  const auto estimate=estimate_rgb_contrast_apply(rgbTarget,{10,40,4});
+  if(estimate.pixels!=2 || estimate.samples!=6)throw std::runtime_error("RGB estimate");
+  auto rgbEdit=prepare_rgb_contrast_apply(rgbTarget,{10,40,4});app.commit(rgbEdit);
+  if(color->snapshot().data().dataset.plane()->pixels!=std::vector<double>{0,20,30,255,50,60})
+    throw std::runtime_error("RGB component mapping");
+  color->undo();if(!color->snapshot().shares_data(baseline))throw std::runtime_error("RGB Undo");
+  std::cout<<"PASS installed scalar and RGB Apply APIs, atomic commit and Undo\n";
+
 }

@@ -1,4 +1,6 @@
 #include <imagejxx/contrast_apply.hpp>
+#include <imagejxx/rgb_contrast_apply.hpp>
+#include <imagejxx/manual_threshold.hpp>
 #include <imagejxx/application.hpp>
 #include <imagejxx/channel_display.hpp>
 #include <algorithm>
@@ -76,6 +78,43 @@ void transaction(){
   auto noop=prepare_contrast_apply(resolve_target(empty),options);owner->commit(noop);
   check(source->reads==reads && empty.shares_data(owner->snapshot()),"Empty selection performs no IO or edit");
 }
+Image rgbrow(){Image image(4,1,3,PixelType::UInt8);image.pixels={10,20,30,20,30,40,30,40,50,40,50,60};return image;}
+void rgb(){
+  const auto source=rgbrow();RgbContrastApplyOptions options;options.minimum=10.9;options.maximum=40.1;
+  auto output=apply_rgb_contrast_imagej(source,options);
+  check(output.pixels==std::vector<double>({0,87,175,87,175,255,175,255,255,255,255,255}),"RGB retains fractional denominator independently of scalar Apply");
+  options.channels=4;output=apply_rgb_contrast_imagej(source,options);
+  for(int i=0;i<4;++i)for(int c=1;c<3;++c)check(output.pixels[3*i+c]==source.pixels[3*i+c],"Unselected RGB components remain exact");
+  options={0,-0.,7};output=apply_rgb_contrast_imagej(source,options);check(std::all_of(output.pixels.begin(),output.pixels.end(),[](double v){return v==0;}),"Signed zero denominator follows Java color arithmetic");
+  options={-2147483648.,2147483647.,7};output=apply_rgb_contrast_imagej(source,options);check(std::all_of(output.pixels.begin(),output.pixels.end(),[](double v){return v==0;}),"RGB wraps Java numerator without scalar endpoint branches");
+  options={10,40,7};Document owner(Dataset::from_stack({source}));auto view=owner.snapshot().display();view.properties["display_range"]=metadata_array({10.,40.});view.properties["lut"]=std::string("retained");owner.set_display(view);
+  owner.select(Selection::from_packed_mask(4,1,{0x40}));const auto before=owner.snapshot();
+  const auto target=resolve_target(before);const auto estimate=estimate_rgb_contrast_apply(target,options);
+  check(estimate.pixels==4 && estimate.samples==12 && estimate.working_bytes>12*sizeof(double),"RGB estimate counts pixels and three samples");
+  ContrastApplyLimits tiny;tiny.max_working_bytes=1;refuses([&]{prepare_rgb_contrast_apply(target,options,tiny);});
+  auto edit=prepare_rgb_contrast_apply(target,options);check(before.shares_data(owner.snapshot()),"RGB preparation stays detached");owner.commit(edit);
+  const auto after=owner.snapshot();const auto pixels=after.data().dataset.plane()->pixels;
+  check(pixels==std::vector<double>({10,20,30,85,170,255,30,40,50,40,50,60}),"RGB ROI mask indexes pixels rather than samples");
+  check(owner.undo_steps()==1 && metadata_equal(after.display().properties.at("display_range"),metadata_array({0.,255.})) && after.display().properties.at("lut")==before.display().properties.at("lut"),"RGB reset is paired with pixels and preserves LUT");
+  owner.undo();check(owner.snapshot().shares_data(before) && metadata_equal(owner.snapshot().display().properties,before.display().properties),"RGB Undo restores pixels and display");owner.redo();check(owner.snapshot().shares_data(after),"RGB Redo restores atomic output");
+  const auto stable=owner.snapshot();auto stale=prepare_rgb_contrast_apply(resolve_target(stable),options);view=owner.snapshot().display();view.zoom=2;owner.set_display(view);refuses<RevisionConflict>([&]{owner.commit(stale);});check(stable.shares_data(owner.snapshot()),"Stale RGB display blocks commit");
+  options={10.9,40.1,7};const auto expected=apply_rgb_contrast_imagej(source,options);ExecutionControl reentrant;
+  reentrant.checkpoint=[&]{options={0,1,1};};check(apply_rgb_contrast_imagej(source,options,reentrant).pixels==expected.pixels,"Native RGB mapping freezes before reentrant checkpoints");
+  options={10,40,7};ContrastApplyLimits capturedLimits;const auto current=resolve_target(owner.snapshot());
+  const auto expectedEdit=prepare_rgb_contrast_apply(current,options,capturedLimits).preview().data().dataset.plane()->pixels;
+  reentrant.checkpoint=[&]{options={0,1,1};capturedLimits.max_pixels=0;};
+  check(prepare_rgb_contrast_apply(current,options,capturedLimits,reentrant).preview().data().dataset.plane()->pixels==expectedEdit,"Native RGB target preparation freezes options and limits before callbacks");
+  options={10,40,7};
+  Image large(4096,1,3,PixelType::UInt8);std::fill(large.pixels.begin(),large.pixels.end(),20);
+  for(const auto *phase:{"RGB contrast validation","RGB contrast pixels"}){
+    auto token=std::make_shared<CancellationToken>();ExecutionControl control;control.cancellation=token;
+    control.stage_progress=[&](auto name,auto done,auto){if(name==phase && done>=1024)token->cancel();};
+    refuses<OperationCancelled>([&]{apply_rgb_contrast_imagej(large,options,control);});
+    check(std::all_of(large.pixels.begin(),large.pixels.end(),[](double v){return v==20;}),"RGB cancellation preserves source input");
+  }
+  for(int invalid:{0,8,-1}){options.channels=invalid;refuses([&]{apply_rgb_contrast_imagej(source,options);});}
+  refuses([&]{apply_rgb_contrast_imagej(row(PixelType::UInt8,{10,20}));});
+}
 void cancel(){
   auto owner=std::make_shared<Document>(Dataset::from_stack({row(PixelType::UInt8,{10,20,30,40})}));
   const auto before=owner->snapshot();ExecutionControl control;
@@ -85,4 +124,4 @@ void cancel(){
   check(before.shares_data(owner->snapshot()) && !owner->snapshot().dirty(),"Cancel after last plane preserves owner");
 }
 }
-int main(){try{literals();transaction();cancel();std::cout<<"PASS contrast Apply mapping, masks, targeting, atomic history, admission and cancellation\n";return 0;}catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}
+int main(){try{literals();transaction();rgb();cancel();std::cout<<"PASS contrast Apply mapping, masks, targeting, atomic history, admission and cancellation\n";return 0;}catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

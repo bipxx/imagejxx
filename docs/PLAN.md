@@ -1,5 +1,21 @@
 # ImageJ and Fiji gap closure plan
 
+**RGB contrast foundation checkpoint, 2026-10-22 (work in progress):**
+C++/Python now expose an independent RGB lookup transform, metadata estimate and
+atomic ROI/axis-target transaction. Actual ImageJ ColorProcessor preview and
+ContrastAdjuster RGB commit/snapshot behavior produce 273 reference rows. RGB
+uses different fractional/overflow arithmetic from scalar Apply; all component
+masks and source-baseline behavior are explicit. Scalar V1 records stay unchanged.
+Windows/Linux each pass 22 native suites, three C++ UI probes, an installed SDK
+consumer, ten background repetitions, four hidden GL contexts and 4127 installed
+Python checks (334 new), with zero failures/errors/skips. Exact owned scratch is
+archived/verified before cleanup. See the
+[scoped receipt](parity/reviews/p11h-rgb-contrast001.json).
+Captured RGB records/jobs and shared preview/Apply/
+Rebind/workflow integration remain the next steps; RGB controls stay disabled.
+See [Apply details](CONTRAST_APPLY.md).
+
+
 **Contrast Apply workflow/batch checkpoint, 2026-10-22 (work in progress):**
 Saved and authored scalar Apply now execute in native programs, Run review and
 session Batch. Original records stay immutable while three explicit mapping

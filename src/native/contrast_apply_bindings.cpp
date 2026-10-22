@@ -1,5 +1,6 @@
 #include "binding_arrays.hpp"
 #include <imagejxx/contrast_apply.hpp>
+#include <imagejxx/rgb_contrast_apply.hpp>
 #include <imagejxx/contrast_apply_job.hpp>
 #include <imagejxx/application.hpp>
 #include "binding_metadata.hpp"
@@ -26,12 +27,25 @@ void bind_contrast_apply(py::module_ &m) {
           [](ContrastApplyOptions &o,py::object value){
             o.unsigned16_bits=integer<int>(std::move(value));
           });
+  py::class_<RgbContrastApplyOptions>(m,"RgbContrastApplyOptions")
+      .def(py::init<>()).def_readwrite("minimum",&RgbContrastApplyOptions::minimum).def_readwrite("maximum",&RgbContrastApplyOptions::maximum)
+      .def_property("channels",[](const RgbContrastApplyOptions &o){return o.channels;},[](RgbContrastApplyOptions &o,py::object value){o.channels=integer<int>(std::move(value));});
+  py::class_<RgbContrastApplyEstimate>(m,"RgbContrastApplyEstimate")
+      .def_readonly("pixels",&RgbContrastApplyEstimate::pixels).def_readonly("samples",&RgbContrastApplyEstimate::samples).def_readonly("working_bytes",&RgbContrastApplyEstimate::working_bytes);
   py::class_<ContrastApplyLimits>(m,"ContrastApplyLimits")
       .def(py::init<>())
       .def_property("max_pixels",[](const ContrastApplyLimits &l){return l.max_pixels;},
           [](ContrastApplyLimits &l,py::object v){l.max_pixels=integer<std::size_t>(std::move(v));})
       .def_property("max_working_bytes",[](const ContrastApplyLimits &l){return l.max_working_bytes;},
           [](ContrastApplyLimits &l,py::object v){l.max_working_bytes=integer<std::size_t>(std::move(v));});
+  m.def("apply_rgb_contrast_imagej",[](py::array pixels,RgbContrastApplyOptions options,std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint){
+    const auto input=bindings::read_numpy_image(pixels);const auto control=axis_range_python_control(std::move(cancellation),std::move(progress),std::move(checkpoint));Image result(1,1);
+    {py::gil_scoped_release release;result=apply_rgb_contrast_imagej(input,options,control);}return bindings::numpy_image(result);
+  },py::arg("pixels"),py::arg("options")=RgbContrastApplyOptions{},py::kw_only(),py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none());
+  m.def("estimate_rgb_contrast_apply",&estimate_rgb_contrast_apply,py::arg("target"),py::arg("options")=RgbContrastApplyOptions{},py::arg("limits")=ContrastApplyLimits{});
+  m.def("prepare_rgb_contrast_apply",[](const ResolvedTarget &target,RgbContrastApplyOptions options,ContrastApplyLimits limits,std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint){
+    const auto control=axis_range_python_control(std::move(cancellation),std::move(progress),std::move(checkpoint));py::gil_scoped_release release;return prepare_rgb_contrast_apply(target,options,limits,control);
+  },py::arg("target"),py::arg("options")=RgbContrastApplyOptions{},py::arg("limits")=ContrastApplyLimits{},py::kw_only(),py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none());
   m.def("apply_contrast_imagej",[](py::array pixels,ContrastApplyOptions options,
       std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint){
     const auto input=bindings::read_numpy_image(pixels);

@@ -197,14 +197,60 @@ Ordered histogram outputs describe intermediate stages. Preparation may stage
 temporary files; existing no-replace/per-item publication and cancellation/failure
 policies govern final files.
 
+The independent `RgbContrastApplyOptions` / `apply_rgb_contrast_imagej` and
+`prepare_rgb_contrast_apply` APIs now provide a reference-qualified UInt8 RGB
+foundation. Scalar options, V1 records, worker jobs and workflow behavior retain
+their contracts. RGB is not enabled in the contrast panel, captured-command
+schema or native workflow operation yet.
+
+RGB has separate arithmetic: ColorProcessor narrows the lower endpoint and
+wraps its integer subtraction, but divides by the original double endpoint span.
+Lookup output clips to bytes. This differs from scalar Apply, especially for
+fractional, extreme and collapsed ranges. Component bits are red=4, green=2,
+blue=1; nonempty combinations 1..7 are supported. Unselected components retain
+their exact bytes. RGBA and other sample types remain unavailable in this API.
+
+```python
+options = ij.RgbContrastApplyOptions()
+options.minimum, options.maximum, options.channels = 10.9, 40.1, 4
+rgb = ij.apply_rgb_contrast_imagej(immutable_baseline, options)
+estimate = ij.estimate_rgb_contrast_apply(target, options)
+edit = ij.prepare_rgb_contrast_apply(target, options)
+document.commit(edit)
+```
+
+Always map the immutable baseline once. The actual ImageJ RGB controller first
+changes preview pixels; its Apply snapshots that preview and resets the range.
+The native transform maps the supplied baseline without hidden mutable preview
+state. Two hundred seventy-three ImageJ 1.54r cases cover all byte values in each
+component, seven masks, fractional/extreme/signed-zero spans, whole/rectangular/
+irregular ROI previews, actual Apply commit and a subsequent preview using the
+committed snapshot. AWT reset controls are replaced only by actual processor
+reset/range methods; full RGB UI and stack-controller behavior is not claimed.
+
+Target preparation uses frozen options/limits, independent XY planes and the
+existing current/all-Z/range/position/ROI policies. It reads selected planes,
+preserves pixels outside each ROI, and pairs changed pixels with 0..255 display
+reset in one guarded Undo/Redo transaction. Threshold clears and LUT metadata
+persists. Empty masks keep the explicit native no-change/no-IO extension.
+`RgbContrastApplyEstimate.pixels` counts XY pixels; `samples` counts three per
+pixel. Working-byte admission includes three-component processing and masks;
+source metadata/providers, allocator/frontend and publication/history remain
+external. The API is synchronous; callers must arrange worker-only virtual reads.
+
 Remaining integration and qualification:
 
 1. Extend actual range/text/positioned-ROI widget and publication failure-injection
    coverage beyond the current real C/Z/ROI radio, Apply/Rebind and workflow mapping
    field/prepare/Apply tests. Broader workflow outputs/operation combinations and
    resource/platform acceptance remain open.
-2. Qualify RGB Apply against ImageJ's separate color-controller behavior before
-   enabling it. Keep unsupported floating Apply visibly unavailable; separately
-   qualify RGBA, broader reset/calibration semantics and platform/resource use.
+2. Add RGB captured records, explicit replay/rebind, worker jobs and shared
+   modeless preview/Apply component controls, then native workflow/Batch adapters.
+   Preserve scalar V1 records and prevent a mapped preview from being mapped
+   twice. Qualify current/stack controller behavior: ImageJ commits its active
+   preview and uses processor-narrowed bounds on other stack planes. The native
+   uniform multi-axis transform and paired Undo are explicit extensions.
+   Keep floating/RGBA Apply unavailable until separately qualified; broader
+   reset/calibration semantics and platform/resource use remain open.
 
 G057 remains in progress; scalar editor Apply does not close full ImageJ/Fiji parity.
