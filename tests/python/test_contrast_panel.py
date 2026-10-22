@@ -234,3 +234,176 @@ def test_editor_floating_apply_disabled_without_changes(dtype, tmp_path):
     assert owner.snapshot().display.properties == before.display.properties
     assert owner.undo_steps == 0 and not editor.workflow
     editor.action("close_contrast")
+
+
+def saved_apply_record():
+    source = ij.Document(ij.Dataset(np.array([[0, 10, 20, 40]], np.uint16), axes="YX"))
+    options = ij.ContrastApplyOptions()
+    options.minimum, options.maximum, options.unsigned16_bits = 10., 40., 12
+    return ij.resolve_contrast_apply_command(source.snapshot(), options).record()
+
+
+@pytest.mark.parametrize("dtype", [np.uint8, np.uint16])
+@pytest.mark.parametrize("roi", ["whole_plane", "active_selection", "positioned_rois"])
+@pytest.mark.parametrize("scope", ["all_z", "ranges"])
+def test_reviewed_apply_uses_destination_targets_and_saved_settings(dtype, roi, scope, tmp_path):
+    import copy
+    record = saved_apply_record()
+    saved = copy.deepcopy(record)
+    pixels = np.tile(np.array([0, 10, 20, 40], dtype), (2, 2, 2, 2, 1))
+    observer = ij.DatasetReadObserver()
+    owner = ij.Document(ij.Dataset(pixels, axes="TCZYX").observe_reads(observer))
+    owner.select(ij.Selection.from_mask(np.array([[0, 1, 1, 0]] * 2, np.uint8)))
+    edit = owner.begin_edit()
+    edit.set_rois([ij.ROI("destination", ij.Selection("rectangle", [(1, 0), (3, 2)]), t=0, c=1, z=1)])
+    owner.commit(edit)
+    editor = Editor(preferences=tmp_path / "preferences.json")
+    editor._editor.add_virtual_document(owner)
+    editor.action("view", c=1)
+    before, steps = owner.snapshot(), owner.undo_steps
+    editor.action("show_contrast_apply_rebind", record=record)
+    record["options"]["minimum"] = 999.
+    target = {"scope": scope, "roi": roi}
+    if scope == "ranges":
+        target.update(t={"start": 0, "stop": 2}, c={"start": 1, "stop": 2}, z={"start": 0, "stop": 2})
+    editor.action("configure_contrast_rebind_target", target=target)
+    assert observer.counts().plane_reads == 0 and observer.counts().region_reads == 0
+    assert owner.snapshot().shares_data(before) and not editor.busy
+    editor.update_settings(conversion_unsigned16_range="auto", persist=False)
+    editor.recording = True
+    editor.action("apply_contrast_rebind")
+    editor.recording = False
+    editor.action("wait_jobs")
+    expected = pixels.copy()
+    mapped = [0, 0, 85, 255] if dtype == np.uint8 else [0, 0, 1365, 4094]
+    if roi == "positioned_rois":
+        expected[0, 1, 1, :, 1:3] = mapped[1:3]
+    else:
+        for t in range(1 if scope == "all_z" else 2):
+            if roi == "whole_plane":
+                expected[t, 1] = mapped
+            else:
+                expected[t, 1, :, :, 1:3] = mapped[1:3]
+    np.testing.assert_array_equal(owner.snapshot().dataset.numpy("TCZYX"), expected)
+    assert owner.undo_steps == steps + 1 and len(editor.workflow) == 1
+    assert editor.workflow[0]["options"] == saved["options"]
+    assert editor.workflow[0]["source"] != saved["source"]
+    assert not editor.render_headless()["contrast_apply_rebind"]["open"]
+    owner.undo()
+    np.testing.assert_array_equal(owner.snapshot().dataset.numpy("TCZYX"), pixels)
+    assert owner.snapshot().display.properties == before.display.properties
+    owner.redo()
+    np.testing.assert_array_equal(owner.snapshot().dataset.numpy("TCZYX"), expected)
+
+
+@pytest.mark.parametrize("change", ["display", "selection", "pixels", "metadata", "owner"])
+def test_rebind_review_rejects_changed_destination(change, tmp_path):
+    owner = image()
+    editor = Editor(preferences=tmp_path / "preferences.json")
+    editor._editor.add_virtual_document(owner)
+    editor.action("show_contrast_apply_rebind", record=saved_apply_record())
+    if change == "display":
+        view = owner.snapshot().display
+        view.zoom = 2.
+        owner.set_display(view)
+    elif change == "selection":
+        owner.select(ij.Selection("rectangle", [(0, 0), (2, 2)]))
+    elif change == "owner":
+        editor._editor.add_virtual_document(image())
+        editor.active_index = 1
+    else:
+        edit = owner.begin_edit()
+        if change == "pixels":
+            edit.replace_plane(np.full((6, 8), 99, np.uint8))
+        else:
+            edit.set_title("changed destination")
+        owner.commit(edit)
+    stable, steps = owner.snapshot(), owner.undo_steps
+    with pytest.raises((ValueError, RuntimeError)):
+        editor.action("apply_contrast_rebind")
+    report = editor.render_headless()["contrast_apply_rebind"]
+    assert report["open"] and not report["valid"] and not report["controls"]["apply"]["enabled"]
+    assert owner.snapshot().shares_data(stable) and owner.undo_steps == steps and not editor.workflow
+    editor.action("cancel_contrast_rebind")
+
+
+@pytest.mark.parametrize("target", [
+    {"scope": "future"}, {"mode": "volume"}, {"destination": "new_document"},
+    {"scope": "positions", "positions": [[0, 0, 0]]},
+    {"scope": "ranges", "c": {"start": 0, "stop": 99}}, {"roi": "future"},
+])
+def test_rebind_review_bad_target_keeps_capture_without_reads(target, tmp_path):
+    observer = ij.DatasetReadObserver()
+    owner = ij.Document(ij.Dataset(np.arange(48, dtype=np.uint8).reshape(6, 8), axes="YX").observe_reads(observer))
+    editor = Editor(preferences=tmp_path / "preferences.json")
+    editor._editor.add_virtual_document(owner)
+    editor.action("show_contrast_apply_rebind", record=saved_apply_record())
+    before = owner.snapshot()
+    with pytest.raises((ValueError, RuntimeError, IndexError)):
+        editor.action("configure_contrast_rebind_target", target=target)
+    assert observer.counts().plane_reads == 0 and observer.counts().region_reads == 0
+    assert owner.snapshot().shares_data(before) and owner.undo_steps == 0 and not editor.workflow
+    editor.action("configure_contrast_rebind_target", target={"roi": "whole_plane"})
+    editor.action("apply_contrast_rebind")
+    editor.action("wait_jobs")
+    assert owner.undo_steps == 1
+
+
+@pytest.mark.parametrize("change", ["schema", "profile", "options", "source", "reset", "extra"])
+def test_rebind_review_validates_complete_original_before_replace(change, tmp_path):
+    import copy
+    observer = ij.DatasetReadObserver()
+    owner = ij.Document(ij.Dataset(np.arange(48, dtype=np.uint8).reshape(6, 8), axes="YX").observe_reads(observer))
+    editor = Editor(preferences=tmp_path / "preferences.json")
+    editor._editor.add_virtual_document(owner)
+    record = saved_apply_record()
+    editor.action("show_contrast_apply_rebind", record=record)
+    bad = copy.deepcopy(record)
+    if change in ("schema", "profile"):
+        bad[change] = "future"
+    elif change == "options":
+        bad[change]["minimum"] = True
+    elif change == "source":
+        bad[change]["pixel_type"] = "future"
+    elif change == "reset":
+        bad[change]["policy"] = "future"
+    else:
+        bad["extra"] = True
+    with pytest.raises((ValueError, RuntimeError, TypeError)):
+        editor.action("show_contrast_apply_rebind", record=bad)
+    assert observer.counts().plane_reads == 0 and observer.counts().region_reads == 0
+    editor.action("configure_contrast_rebind_target", target={"roi": "whole_plane"})
+    editor.action("apply_contrast_rebind")
+    editor.action("wait_jobs")
+    assert owner.undo_steps == 1
+
+
+@pytest.mark.parametrize("dismiss", ["cancel", "close", "global"])
+def test_rebind_review_dismissal_leaves_source_untouched(dismiss, tmp_path):
+    owner = image()
+    editor = Editor(preferences=tmp_path / "preferences.json")
+    editor._editor.add_virtual_document(owner)
+    editor.action("show_contrast_apply_rebind", record=saved_apply_record())
+    before = owner.snapshot()
+    if dismiss == "close":
+        editor.close_document(owner.id, discard=True)
+    elif dismiss == "global":
+        editor.cancel()
+    else:
+        editor.action("cancel_contrast_rebind")
+    with pytest.raises((ValueError, RuntimeError)):
+        editor.action("apply_contrast_rebind")
+    assert owner.snapshot().shares_data(before) and owner.undo_steps == 0 and not editor.workflow
+    assert not editor.render_headless()["contrast_apply_rebind"]["open"]
+
+
+def test_rebind_review_can_override_nonarea_selection(tmp_path):
+    owner = image()
+    owner.select(ij.Selection("line", [(0, 0), (3, 1)]))
+    editor = Editor(preferences=tmp_path / "preferences.json")
+    editor._editor.add_virtual_document(owner)
+    editor.action("show_contrast_apply_rebind", record=saved_apply_record())
+    editor.action("configure_contrast_rebind_target", target={"roi": "whole_plane"})
+    editor.action("apply_contrast_rebind")
+    editor.action("wait_jobs")
+    assert owner.undo_steps == 1 and owner.snapshot().selection.kind == "line"

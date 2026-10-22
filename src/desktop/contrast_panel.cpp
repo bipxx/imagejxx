@@ -34,12 +34,12 @@ bool ContrastPanel::handles(const std::string &name){
     "contrast_brightness","contrast_contrast","contrast_reset","contrast_auto","contrast_apply","configure_contrast_target","cancel_contrast_apply","refresh_contrast_histogram","cancel_contrast_histogram"};
   return names.count(name)!=0;
 }
-void ContrastPanel::request_cancel(JobScheduler &scheduler){++cancelEpoch_;if(const auto id=cancelId_.load())scheduler.cancel(id);}
+void ContrastPanel::request_cancel(JobScheduler &scheduler){++rebindCancelEpoch_;++cancelEpoch_;if(const auto id=cancelId_.load())scheduler.cancel(id);}
 void ContrastPanel::open(){open_=focus_=true;}
 void ContrastPanel::cancelHistogram(){cancelId_.store(0);if(job_){job_->cancel();job_.reset();++discarded_;}}
-void ContrastPanel::close(){cancelHistogram();histogram_.reset();heights_.clear();source_.reset();key_.clear();rangeKey_=nullptr;controls_=Json::object();open_=focus_=focused_=histogramAttempted_=resolved_=false;}
-void ContrastPanel::sourceClosed(std::uint64_t id){if(source_ && source_->id()==id){cancelHistogram();histogram_.reset();source_.reset();key_.clear();rangeKey_=nullptr;heights_.clear();resolved_=focused_=false;}}
-bool ContrastPanel::inputActive()const{return open_ && focused_;}
+void ContrastPanel::close(){cancelRebind();cancelHistogram();histogram_.reset();heights_.clear();source_.reset();key_.clear();rangeKey_=nullptr;controls_=Json::object();open_=focus_=focused_=histogramAttempted_=resolved_=false;}
+void ContrastPanel::sourceClosed(std::uint64_t id){if(rebind_ && rebind_->source.id()==id)cancelRebind();if(source_ && source_->id()==id){cancelHistogram();histogram_.reset();source_.reset();key_.clear();rangeKey_=nullptr;heights_.clear();resolved_=focused_=false;}}
+bool ContrastPanel::inputActive()const{return (open_ && focused_) || (rebind_ && rebind_->focused);}
 bool ContrastPanel::histogramSupported(const Dataset &d)const{
   return d.shape().s==1 && (d.pixel_type()==PixelType::UInt8 || d.pixel_type()==PixelType::UInt16 || d.pixel_type()==PixelType::Float32) &&
     (d.sample_policy()==FloatingSamplePolicy::FiniteOnly || d.sample_policy()==FloatingSamplePolicy::PreserveQuietNaNFloat32);
@@ -226,6 +226,70 @@ void ContrastPanel::draw(bool busy,const Publish &effect,const Auto &automatic,c
   if(!error_.empty())ImGui::TextWrapped("%s",error_.c_str());
   ImGui::TextWrapped("Range adjustments leave source pixels unchanged until Apply.");
   ImGui::End();
+}
+void ContrastPanel::showRebind(const DocumentSnapshot &source,const MetadataObject &record,const ContrastApplyCommandLimits &limits){
+  const auto epoch=rebindCancelEpoch_.load();
+  TargetRequest admission;admission.roi=RoiPolicy::WholePlane;
+  const auto command=rebind_contrast_apply_command(source,record,admission,limits);
+  RebindReview next{source,record,command.options()};
+  next.target.capture(source);next.cancelEpoch=epoch;
+  rebind_.emplace(std::move(next));
+}
+void ContrastPanel::tickRebind(const std::optional<DocumentSnapshot> &current){
+  if(!rebind_)return;
+  if(rebind_->cancelEpoch!=rebindCancelEpoch_.load()){cancelRebind();return;}
+  if(!current || !rebind_->source.same_document(*current) ||
+     !rebind_->source.revisions().matches(current->revisions(),Change::All)){
+    rebind_->valid=false;rebind_->error="Destination changed. Reopen Rebind to capture it again.";
+  }
+}
+void ContrastPanel::configureRebindTarget(const TargetRequest &request,bool busy){
+  if(!rebind_ || !rebind_->valid || busy)throw std::invalid_argument("Choose an idle, current Rebind destination");
+  rebind_->target.configure(rebind_->source,request);rebind_->error.clear();
+}
+void ContrastPanel::applyRebind(bool busy,const RebindApply &apply){
+  if(!rebind_ || !rebind_->valid || busy || !apply)throw std::invalid_argument("Choose an idle, current Rebind destination");
+  apply(rebind_->source,rebind_->original,rebind_->target.request());
+  cancelRebind();
+}
+void ContrastPanel::drawRebind(const std::optional<DocumentSnapshot> &current,bool busy,const RebindApply &apply){
+  tickRebind(current);if(!rebind_)return;
+  auto &r=*rebind_;r.controls=Json::object();r.focused=false;
+  ImGui::SetNextWindowSize({610,540},ImGuiCond_FirstUseEver);
+  if(r.focus){ImGui::SetNextWindowFocus();r.focus=false;}
+  bool shown=true;const bool expanded=ImGui::Begin("Rebind contrast Apply",&shown);
+  if(!shown){ImGui::End();cancelRebind();return;}
+  r.focused=ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows);
+  if(!expanded){ImGui::End();return;}
+  ImGui::Text("Saved mapping: %.10g to %.10g",r.options.minimum,r.options.maximum);
+  if(r.options.unsigned16_bits)ImGui::Text("Saved 16-bit output: %d bits",r.options.unsigned16_bits);
+  else ImGui::TextUnformatted("Saved 16-bit output: automatic full range");
+  const auto &v=r.source.display();
+  ImGui::Text("Destination: T %d C %d Z %d",v.t+1,v.c+1,v.crosshair[2]+1);
+  ImGui::TextWrapped("Choose destination planes and area. Apply replaces their pixels; Undo restores pixels and display together.");
+  if(r.target.draw(r.valid&&!busy,false) && r.valid)r.error.clear();
+  const auto observe=[&](const char *name){
+    const auto a=ImGui::GetItemRectMin(),b=ImGui::GetItemRectMax();
+    r.controls[name]={{"id",ImGui::GetItemID()},{"point",{(a.x+b.x)/2,(a.y+b.y)/2}},
+      {"rect",{a.x,a.y,b.x,b.y}},{"visible",ImGui::IsItemVisible()},
+      {"enabled",!(ImGui::GetCurrentContext()->LastItemData.ItemFlags&ImGuiItemFlags_Disabled)}};
+  };
+  ImGui::BeginDisabled(!r.valid||busy||!apply);
+  const bool submit=ImGui::Button("Apply saved mapping");observe("apply");
+  ImGui::EndDisabled();ImGui::SameLine();
+  const bool cancel=ImGui::Button("Cancel");observe("cancel");
+  if(!r.error.empty())ImGui::TextWrapped("%s",r.error.c_str());
+  ImGui::End();
+  if(cancel){cancelRebind();return;}
+  if(submit)try{applyRebind(busy,apply);}catch(const std::exception &e){if(rebind_)rebind_->error=e.what();}
+}
+Json ContrastPanel::rebindDiagnostics()const{
+  if(!rebind_)return {{"open",false}};
+  const auto &r=*rebind_;const auto &v=r.source.display();
+  return {{"open",true},{"valid",r.valid},{"focused",r.focused},{"error",r.error},
+    {"source",{{"id",r.source.id()},{"tcz",{v.t,v.c,v.crosshair[2]}}}},
+    {"mapping",{{"minimum",r.options.minimum},{"maximum",r.options.maximum},{"unsigned16_bits",r.options.unsigned16_bits}}},
+    {"target",r.target.diagnostics()},{"controls",r.controls}};
 }
 Json ContrastPanel::diagnostics()const{
   Json result={{"open",open_},{"focused",focused_},{"range",displayRangeValue(range_)},{"domain",displayRangeValue(domain_)},

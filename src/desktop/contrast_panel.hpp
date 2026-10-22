@@ -2,6 +2,7 @@
 #include "desktop.hpp"
 #include "operation_target_panel.hpp"
 #include <imagejxx/histogram_job.hpp>
+#include <imagejxx/contrast_apply_command.hpp>
 #include <functional>
 #include <atomic>
 
@@ -13,6 +14,15 @@ public:
   using Publish=std::function<void(const DocumentSnapshot &,std::array<double,2>)>;
   using Apply=std::function<void(const DocumentSnapshot &,std::array<double,2>,const TargetRequest &)>;
   void configureTarget(const TargetRequest &);
+  using RebindApply=std::function<void(const DocumentSnapshot &,const MetadataObject &,const TargetRequest &)>;
+  void showRebind(const DocumentSnapshot &,const MetadataObject &,const ContrastApplyCommandLimits &);
+  bool rebindVisible()const{return bool(rebind_);}
+  void cancelRebind(){rebind_.reset();}
+  void tickRebind(const std::optional<DocumentSnapshot> &);
+  void configureRebindTarget(const TargetRequest &,bool busy);
+  void applyRebind(bool busy,const RebindApply &);
+  void drawRebind(const std::optional<DocumentSnapshot> &,bool busy,const RebindApply &);
+  Json rebindDiagnostics()const;
   using Auto=std::function<void(const DocumentSnapshot &,bool,bool)>;
   ~ContrastPanel();
   void open();
@@ -32,6 +42,18 @@ public:
   static std::array<double,2> brightness(std::array<double,2>,std::array<double,2>,double);
   static std::array<double,2> contrast(std::array<double,2>,std::array<double,2>,double);
 private:
+  struct RebindReview {
+    DocumentSnapshot source;
+    MetadataObject original;
+    ContrastApplyOptions options;
+    OperationTargetPanel target;
+    bool valid=true,focus=true,focused=false;
+    std::uint64_t cancelEpoch=0;
+    std::string error;
+    Json controls=Json::object();
+  };
+  std::optional<RebindReview> rebind_;
+  std::atomic<std::uint64_t> rebindCancelEpoch_{0};
   OperationTargetPanel target_;
   bool open_=false,focus_=false,focused_=false,histogramAttempted_=false;
   bool allChannels_=false,useSelection_=true,resolved_=false;

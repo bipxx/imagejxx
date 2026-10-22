@@ -2087,7 +2087,11 @@ struct Window::Impl {
                ? std::nullopt
                : std::optional<DocumentSnapshot>(doc()->nativeSnapshot());
   }
-  void tickContrast(){if(!contrastPanel.visible())return;contrastPanel.tick(gaussianCurrent(),owner.busy(),*owner.controller_->job_scheduler(),histogramLimits());}
+  void tickContrast(){
+    if(!contrastPanel.visible() && !contrastPanel.rebindVisible())return;
+    const auto current=gaussianCurrent();contrastPanel.tickRebind(current);
+    if(contrastPanel.visible())contrastPanel.tick(current,owner.busy(),*owner.controller_->job_scheduler(),histogramLimits());
+  }
   void publishContrast(const DocumentSnapshot &source,std::array<double,2> range){
     if(owner.busy())throw std::invalid_argument("Wait for the current edit");
     const auto current=owner.nativeSnapshot();
@@ -2152,6 +2156,13 @@ struct Window::Impl {
     ContrastApplyOptions options;options.minimum=range[0];options.maximum=range[1];
     options.unsigned16_bits=owner.settings().conversion_options().unsigned16_bits;
     beginContrastApply(resolve_contrast_apply_command(source,options,target,contrastApplyLimits()),epoch);
+  }
+  void applyContrastRebind(const DocumentSnapshot &source,const MetadataObject &record,const TargetRequest &target){
+    const auto epoch=contrastApplyCancelEpoch.load();
+    const auto current=owner.nativeSnapshot();
+    if(!source.same_document(current) || !source.revisions().matches(current.revisions(),Change::All))throw RevisionConflict();
+    if(owner.busy())throw std::invalid_argument("Wait for the current edit");
+    beginContrastApply(rebind_contrast_apply_command(source,record,target,contrastApplyLimits()),epoch);
   }
   void cancelContrastApply(){if(contrastApplyJob)contrastApplyJob->cancel();}
   void pollContrastApply(){
@@ -5865,6 +5876,27 @@ void Window::clearError() {
 }
 void Window::action(const std::string &name, const Json &p) {
   checkThread();
+  if(name=="show_contrast_apply_rebind"){
+    if(!p.is_object() || p.size()!=1 || !p.contains("record") || !p.at("record").is_object())throw std::invalid_argument("Rebind review requires only a command record");
+    const auto record=metadataObjectFromJson(p.at("record"));const auto limits=impl->contrastApplyLimits();
+    validate_contrast_apply_command_record(record,limits.max_record_bytes);
+    if(busy())throw std::invalid_argument("Wait for the current edit");
+    const auto source=nativeSnapshot();
+    if(boolean(get(metadataJson(source.data().metadata.extensions),"labels")))throw std::invalid_argument("Disable label coloring before Apply");
+    impl->contrastPanel.showRebind(source,record,limits);impl->animating=false;return;
+  }
+  if(name=="configure_contrast_rebind_target"){
+    if(!p.is_object() || p.size()!=1 || !p.contains("target"))throw std::invalid_argument("Rebind target requires only a target object");
+    const auto request=gaussianRebindRequest(p.at("target"));impl->tickContrast();
+    impl->contrastPanel.configureRebindTarget(request,busy());return;
+  }
+  if(name=="apply_contrast_rebind" || name=="cancel_contrast_rebind"){
+    if(!p.is_object() || !p.empty())throw std::invalid_argument("Rebind control accepts no parameters");
+    impl->tickContrast();
+    if(name=="cancel_contrast_rebind")impl->contrastPanel.cancelRebind();
+    else impl->contrastPanel.applyRebind(busy(),[this](const DocumentSnapshot &source,const MetadataObject &record,const TargetRequest &target){impl->applyContrastRebind(source,record,target);});
+    return;
+  }
   if(name=="replay_contrast_apply"){
     const auto epoch=impl->contrastApplyCancelEpoch.load();
     if(!p.is_object() || !p.contains("record") || !p.at("record").is_object())throw std::invalid_argument("Contrast Apply replay requires a command record");
@@ -9546,7 +9578,9 @@ void Window::Impl::recorder() {
       ImGui::Text("%zu. Apply brightness/contrast",i+1);ImGui::PushID(static_cast<int>(i));
       ImGui::BeginDisabled(owner.busy()||owner.documents_.empty());
       if(ImGui::Button("Replay captured Apply"))guard([&]{owner.action("replay_contrast_apply",{{"record",step}});});
-      observeControl("workflow.contrast_apply."+std::to_string(i)+".replay");
+      observeControl("workflow.contrast_apply."+std::to_string(i)+".replay");ImGui::SameLine();
+      if(ImGui::Button("Rebind Apply..."))guard([&]{owner.action("show_contrast_apply_rebind",{{"record",step}});});
+      observeControl("workflow.contrast_apply."+std::to_string(i)+".rebind");
       ImGui::EndDisabled();ImGui::PopID();continue;
     }
     if(get(step,"schema")=="imagejxx.histogram-command") {
@@ -11858,6 +11892,12 @@ void Window::Impl::draw() {
     if(wasVisible && !contrastPanel.visible())cancelContrastApply();
     if(wasVisible && !contrastPanel.visible() && !owner.documents_.empty())for(auto &pane:panes)if(pane.doc->id==owner.controller_->active_document_id())pane.requestOrdinaryFocus=true;
   });
+  guard([&]{
+    const bool wasVisible=contrastPanel.rebindVisible();
+    contrastPanel.drawRebind(gaussianCurrent(),owner.busy(),
+      [this](const DocumentSnapshot &source,const MetadataObject &record,const TargetRequest &target){applyContrastRebind(source,record,target);});
+    if(wasVisible && !contrastPanel.rebindVisible() && !owner.documents_.empty())for(auto &pane:panes)if(pane.doc->id==owner.controller_->active_document_id())pane.requestOrdinaryFocus=true;
+  });
   // Draw floating selection controls after document windows so opening the
   // panel gives it keyboard focus. Keep Cancel outside busy document controls.
   guard([&] {
@@ -12336,6 +12376,7 @@ Json Window::Impl::headlessReport() {
     result["threshold_panel"] = thresholdPanel.diagnostics();
     result["histogram_panel"] = histogramPanel.diagnostics();
     result["contrast_panel"]=contrastPanel.diagnostics();
+    result["contrast_apply_rebind"]=contrastPanel.rebindDiagnostics();
     result["contrast_apply"]={{"busy",bool(contrastApplyJob)},{"owner_id",contrastApplySource?Json(contrastApplySource->id()):Json(nullptr)},{"recording_captured",contrastApplyRecording}};
     result["histogram_processing"]=histogramDiagnostics();
     result["channel_display_panel"] = channelDisplayPanel.diagnostics();

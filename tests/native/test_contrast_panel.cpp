@@ -166,6 +166,58 @@ void applyAbandoned(const std::filesystem::path &root){
     until([&]{w.poll();return scheduler->usage().reserved_bytes==0;});
   }
 }
+void rebindUi(const std::filesystem::path &root){
+  auto source=std::make_shared<Source>();source->open();OpenOnExit release{source};
+  Window w((root/"rebind.json").u8string());auto owner=std::make_shared<Document>(Dataset(source));w.addVirtualDocument(owner);
+  Image pixels(4,1,1,PixelType::UInt16);pixels.pixels={0,10,20,40};
+  Document original(Dataset::from_stack({pixels}));TargetRequest target;target.roi=RoiPolicy::WholePlane;
+  const auto record=imagejxx::desktop::metadataJson(resolve_contrast_apply_command(original.snapshot(),{20,87,12},target).record());
+  const auto before=owner->snapshot();const auto reads=source->entered.load();
+  w.action("show_contrast_apply_rebind",{{"record",record}});
+  check(source->entered==reads && !w.busy() && before.shares_data(owner->snapshot()),"Opening Rebind is metadata-only and non-mutating");
+  auto malformed=record;malformed["extra"]=true;
+  refuses([&]{w.action("show_contrast_apply_rebind",{{"record",malformed}});});
+  HeadlessInputSession session(w);auto report=session.frame();report=session.frame();
+  check(report.at("contrast_apply_rebind").at("open") && report.at("contrast_apply_rebind").at("valid"),"Rebind remains open after rejected replacement");
+  check(report.at("contrast_apply_rebind").at("mapping").at("unsigned16_bits")==12,"Review shows saved bit preference");
+  auto click=[&](Json point){
+    session.frame(Json::array({{{"type","position"},{"space","screen"},{"point",point}},{{"type","button"},{"name","left"},{"down",true}}}));
+    report=session.frame(Json::array({{{"type","button"},{"name","left"},{"down",false}}}));
+  };
+  for(const char *name:{"c.all","z.all","roi.whole_plane"})click(report.at("contrast_apply_rebind").at("target").at("controls").at(name));
+  check(report.at("contrast_apply_rebind").at("target").at("axes").at("c").at("mode")=="all" &&
+        report.at("contrast_apply_rebind").at("target").at("axes").at("z").at("mode")=="all" &&
+        report.at("contrast_apply_rebind").at("target").at("roi_policy")=="whole_plane","Actual target radio buttons select C/Z/ROI");
+  w.recording=true;
+  const auto button=report.at("contrast_apply_rebind").at("controls").at("apply");
+  check(button.at("visible") && button.at("enabled"),"Rebind Apply is visible/admitted");click(button.at("point"));
+  w.action("wait_jobs");report=session.frame();
+  check(!report.at("contrast_apply_rebind").at("open") && owner->undo_steps()==1 && w.workflow.size()==1,"Actual reviewed Apply closes review and records one native edit");
+  const auto after=owner->snapshot();
+  for(int c=0;c<2;++c)for(int z=0;z<3;++z){
+    const auto plane=after.data().dataset.plane({0,c,z});
+    for(int i=0;i<48;++i)check(plane->pixels[i]==std::clamp((20*c+10*z+i-20)*256/67,0,255),"Actual Rebind target maps independent expected pixels");
+  }
+  check(w.workflow[0].at("options").at("unsigned16_bits")==12 && record.at("source")!=w.workflow[0].at("source"),"Rebind preserves saved mapping while capturing destination");
+  owner->undo();check(owner->snapshot().shares_data(before),"Reviewed Apply Undo restores original source");owner->redo();check(owner->snapshot().shares_data(after),"Reviewed Apply Redo restores output");
+  w.closeDocument(w.document()->id,true);
+}
+void rebindStale(const std::filesystem::path &root){
+  for(int mode=0;mode<4;++mode){
+    auto source=std::make_shared<Source>();OpenOnExit release{source};
+    Window w((root/("rebind-stale-"+std::to_string(mode)+".json")).u8string());
+    auto owner=std::make_shared<Document>(Dataset(source));w.addVirtualDocument(owner);
+    const auto record=imagejxx::desktop::metadataJson(resolve_contrast_apply_command(owner->snapshot(),{10,40,0}).record());
+    w.action("show_contrast_apply_rebind",{{"record",record}});const auto before=owner->snapshot();
+    if(mode==0){auto view=owner->snapshot().display();view.zoom=2;owner->set_display(view);}
+    if(mode==1){std::thread cancel([&]{w.cancel();});cancel.join();w.poll();}
+    if(mode==2)w.closeDocument(w.document()->id,true);
+    if(mode==3)w.action("cancel_contrast_rebind");
+    refuses([&]{w.action("apply_contrast_rebind");});
+    check(before.shares_data(owner->snapshot()) && owner->undo_steps()==0 && w.workflow.empty() && source->entered==0,"Stale/canceled/closed Rebind never acquires source samples or publishes");
+    if(mode!=2)w.closeDocument(w.document()->id,true);
+  }
+}
 void ui(const std::filesystem::path &root){
   auto source=std::make_shared<Source>();source->open();Window w((root/"ui.json").u8string());
   w.addVirtualDocument(std::make_shared<Document>(Dataset(source)));w.action("show_contrast");w.action("wait_jobs");
@@ -196,6 +248,6 @@ void ui(const std::filesystem::path &root){
 int main(int argc,char **argv){try{
   check(argc==2,"Owned fixture path required");const auto root=std::filesystem::absolute(std::filesystem::u8path(argv[1]));
   check(!std::filesystem::exists(root),"Fresh fixture required");std::filesystem::create_directories(root);
-  math();seeded();captured(root);canceled(root);applyHost(root);applyAbandoned(root);ui(root);
+  math();seeded();captured(root);canceled(root);applyHost(root);applyAbandoned(root);rebindUi(root);rebindStale(root);ui(root);
   std::cout<<"PASS native modeless contrast math, captured histogram, active channel, Auto, cancellation and actual widgets\n";return 0;
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

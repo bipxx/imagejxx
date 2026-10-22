@@ -123,15 +123,43 @@ editor.action("wait_jobs")
 `replay_contrast_apply(record=...)` validates a captured record and strictly
 replays it. Supplying an explicit `contrast_rebind` target instead retains its
 mapping/bit preference and captures the destination's source, geometry and view.
-The workflow panel offers strict Replay; stale captures fail without fallback.
-Saving/loading recorded workflow metadata does not imply the native workflow
-language can execute this schema.
+The workflow panel offers strict Replay and **Rebind Apply...**. Strict stale
+captures fail without fallback. Rebind opens a separate destination review,
+showing the saved endpoints and UInt16 output setting and shared T/C/Z/ROI
+controls. Its **Apply saved mapping** button starts the same native worker job.
+Opening, configuring and canceling the review acquire no source samples and
+publish no image/history/recording changes. The saved original stays immutable;
+editing preferences does not replace its mapping or bit setting.
+
+All captured destination revisions and its active owner must remain current.
+A change invalidates the review and disables Apply; reopen Rebind to capture the
+destination again. Closing the destination or global cancellation dismisses the
+review. Closing the contrast controls also dismisses it. A failed target or
+original-record replacement leaves the existing review available to correct or
+cancel. Keyboard focus uses the same canvas/shortcut guard as the contrast panel.
+
+```python
+editor.action("show_contrast_apply_rebind", record=record)
+editor.action("configure_contrast_rebind_target", target={"scope": "all_z", "roi": "whole_plane"})
+editor.action("apply_contrast_rebind")
+editor.action("wait_jobs")
+# Before submitting: editor.action("cancel_contrast_rebind")
+```
+
+Saving/loading recorded workflow metadata and individual Replay/Rebind do not
+imply that the native workflow language can execute this schema.
 
 Remaining integration and qualification:
 
-1. Add explicit ImGui rebind review and native workflow/batch-language execution.
-   Extend real target-widget and failure-injection coverage beyond the current
-   programmatic targeting, blocked-worker, cancellation and Apply-button tests.
+1. Add native workflow/batch-language execution for captured and authored Apply
+   choices. Carry reset presentation into every later stage while retaining
+   metadata-only whole-program preflight. Add closed program-codec support,
+   parameter review, ordered intermediate outputs and one final paired commit.
+   Reuse the existing worker/resource/publication host rather than a new path.
+   Cover malformed later steps before any reads, disabled intent, per-input
+   target compatibility, cancellation and failure atomicity.
+   Extend actual range/text/positioned-ROI widget and publication failure-injection
+   coverage beyond the current real C/Z/ROI radio and Apply/Rebind-button tests.
 2. Qualify RGB Apply against ImageJ's separate color-controller behavior before
    enabling it. Keep unsupported floating Apply visibly unavailable; separately
    qualify RGBA, broader reset/calibration semantics and platform/resource use.

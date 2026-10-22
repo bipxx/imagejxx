@@ -1,5 +1,20 @@
 # ImageJ and Fiji gap closure plan
 
+**Contrast Apply rebind review checkpoint, 2026-10-22 (work in progress):**
+The workflow recorder now opens a guarded ImGui destination review with saved
+mapping/bit settings and shared T/C/Z/ROI controls. Opening/configuring/canceling
+is metadata-only. Apply uses the existing native worker, staged recording and
+paired history; stale revisions or owner switches require reopening the review.
+Global cancellation and destination closure dismiss it. Windows/Linux each pass
+20 native suites, ten background repetitions, four hidden GL contexts and
+3354 installed Python checks, with zero failures/errors/skips. Exact owned
+scratch is archived/verified before cleanup. See the
+[scoped receipt](parity/reviews/p11f-contrast-rebind001.json).
+Native workflow/batch execution remains the next dependency: preserve Apply's
+reset presentation in subsequent stages without source reads during preflight.
+See [Apply details](CONTRAST_APPLY.md).
+
+
 **Desktop scalar Apply checkpoint, 2026-10-22 (work in progress):**
 The shared C++ Window host and ImGui contrast panel now connect captured native
 Apply jobs to T/C/Z/ROI controls, busy/wait/cancel/close, submit-time settings and
