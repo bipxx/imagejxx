@@ -140,6 +140,8 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
       throw std::invalid_argument("Orthogonal preview target requires pixels");
     transient_target->validate_source(live);
   }
+  if(input.preview_display_range && (!transient || shape.s!=3 || liveDataset.pixel_type()!=PixelType::UInt8 || *input.preview_display_range!=std::array<double,2>{0,255}))
+    throw std::invalid_argument("Neutral preview display requires mapped UInt8 RGB pixels");
   if (transient) {
     if (!transient->same_document(live))
       throw std::invalid_argument(
@@ -154,7 +156,7 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
           "Orthogonal preview must preserve the scientific shape and pixel type");
     // Eager-source discovery copies only shared ownership metadata. It never
     // reads a plane, including when retained-resource guards wrap the source.
-    if (!liveDataset.shared_planes() || !previewDataset.shared_planes())
+    if ((!liveDataset.shared_planes() || !previewDataset.shared_planes()) && !(input.viewport_jobs && input.preview_display_range))
       throw std::invalid_argument(
           "Orthogonal preview requires eager plane sources");
   }
@@ -652,7 +654,9 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
   worldDraw->PushClipRect(worldClip.Min, worldClip.Max, false);
   worldDraw->AddText(worldPoint, ImGui::GetColorU32(ImGuiCol_Text), worldText);
   worldDraw->PopClipRect();
-  const auto displayProperties = displayFinal.properties;
+  auto displayProperties = displayFinal.properties;
+  const auto previewRange=previewActive?input.preview_display_range:std::nullopt;
+  if(previewRange)displayProperties["display_range"]=metadata_array({(*previewRange)[0],(*previewRange)[1]});
   const bool background=input.viewport_jobs!=nullptr;
   if(!background){
   if (channelState) {
@@ -675,7 +679,8 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
       rangeC_ != currentPosition.c || rangeSlice_ != currentPosition.z ||
       !metadata_equal(rangeProperties_, displayProperties)) {
     const auto &range = get(d.state().metadata, "display_range");
-    if (range.is_array() && range.size() == 2)
+    if(previewRange)range_=*previewRange;
+    else if (range.is_array() && range.size() == 2)
       range_ = {number(range[0]), number(range[1])};
     else {
       auto rangeMemory=memory_->acquire(RenderMemory::mul(xySamples,sizeof(double)));
@@ -741,7 +746,7 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
         d.admitView(i!=0);
         ViewportRender spec{live};spec.position=currentPosition;spec.plane=views[i];spec.coordinate=coordinate;
         if(transient)spec.preview=*transient;if(transient_target)spec.target=*transient_target;
-        spec.previewGeneration=preview_generation;spec.metadata=d.state().metadata;spec.linked=true;
+        spec.previewGeneration=preview_generation;spec.metadata=d.state().metadata;if(previewRange)spec.metadata["display_range"]=*previewRange;spec.linked=true;
         spec.layered=i==0 && hasStyledOverlays(spec.metadata,currentPosition);spec.capture=capture_readback;spec.channelLimits=channel_limits;
         const auto key=Json{{"data",live.data_identity().value_or(0)},{"pixels",pixelRevision},{"meta",pixelMetadataGeneration_},
           {"display",metadataJson(displayProperties)},{"tcz",{currentPosition.t,currentPosition.c,currentPosition.z}},

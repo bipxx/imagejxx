@@ -281,8 +281,49 @@ storage, allocator overhead and frontend/history staging remain external.
 
 The record profile deliberately describes the native uniform independent-XY
 mapping. ImageJ's active RGB preview commit and processor-narrowed bounds for
-other stack planes still need a separately qualified controller path. Existing
-RGB editor Apply remains disabled; these APIs do not claim that UI behavior.
+other stack planes still need a separately qualified controller path. The shared
+editor now exposes this native uniform mapping, as described below.
+
+
+### Modeless RGB editor integration
+
+The shared native Brightness/Contrast panel now offers RGB component controls
+for all seven nonempty masks. `contrast_rgb_channels` takes an integer `channels`
+mask (red=4, green=2, blue=1). Manual range/window/level/brightness/contrast drafts
+prepare a detached native RGB preview while source pixels, display and history
+stay unchanged. Closing the panel discards it. Apply transfers the same READY
+job to guarded caller-thread publication; it commits the once-mapped preview
+instead of mapping that preview again or acquiring the source a second time.
+The committed snapshot becomes the next adjustment's baseline.
+
+Range/component/target changes discard the old preview and schedule the newest
+intent. All revision domains, owner/position changes, resource preferences and
+close/cancel participate in invalidation. Cancel also suppresses an intent that
+has not yet been submitted; a new adjustment or explicit refresh can retry.
+`cancel_rgb_contrast_preview` and `refresh_rgb_contrast_preview` are exposed by
+the same native host to C++ and optional Python UI. Virtual preparation runs on
+native workers. Processing and record admission remain bounded.
+
+The ordinary canvas and linked XY/XZ/YZ views use 0..255 for mapped RGB previews,
+independently of the live display range. This prevents a second display mapping.
+Background virtual XYZ preview uses the existing `async_viewport` setting;
+legacy synchronous virtual XYZ previews are still rejected. The temporary
+range override is restricted to mapped UInt8 RGB pixels. Generic Gaussian and
+scalar preview range behavior is retained.
+
+RGB target controls and Rebind review also offer an explicit plane-list editor.
+It accepts `[[T,C,Z], ...]` with 1-based indices, up to 4096 unique planes in
+selected order and 1 MiB of text. Native records keep zero-based positions.
+Partial/invalid fields remain private until corrected; range targets remain
+compact. Existing scalar panel target-policy admission is unchanged.
+
+Recorded RGB Apply supports the recorder's strict replay and reviewed/explicit
+rebind paths, preserving saved endpoint precision and component bits. Native
+workflow/Run/Batch adapters are still pending. RGB source histograms and Auto,
+exact ImageJ slider rules, RGBA/floating Apply, and complete stack controller
+semantics remain open. The selected-plane UI applies the native uniform mapping;
+ImageJ uses processor-narrowed bounds on other stack planes. This extension and
+paired Undo are explicit differences, not complete stack-controller parity.
 
 Remaining integration and qualification:
 
@@ -290,8 +331,8 @@ Remaining integration and qualification:
    coverage beyond the current real C/Z/ROI radio, Apply/Rebind and workflow mapping
    field/prepare/Apply tests. Broader workflow outputs/operation combinations and
    resource/platform acceptance remain open.
-2. Connect captured RGB commands/jobs to shared modeless baseline preview/Apply
-   component controls and Rebind review, then native workflow/Batch adapters.
+2. Add native RGB workflow/Batch adapters and source histogram/Auto controls.
+   Extend widget/guard coverage beyond the RGB controls now qualified below.
    Preserve scalar V1 records and prevent a mapped preview from being mapped
    twice. Qualify current/stack controller behavior: ImageJ commits its active
    preview and uses processor-narrowed bounds on other stack planes. The native

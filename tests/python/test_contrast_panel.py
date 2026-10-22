@@ -407,3 +407,238 @@ def test_rebind_review_can_override_nonarea_selection(tmp_path):
     editor.action("apply_contrast_rebind")
     editor.action("wait_jobs")
     assert owner.undo_steps == 1 and owner.snapshot().selection.kind == "line"
+
+
+# RGB modeless controls operate on immutable source pixels until atomic Apply.
+import hashlib
+import time
+from test_contrast_apply import RGB_FIXTURE, rgb_input, rgb_options
+
+
+@pytest.mark.parametrize("row", RGB_FIXTURE["rows"], ids=lambda r: f'rgb-r{r["range_index"]}-c{r["channels"]}-roi{r["roi"]}')
+def test_rgb_editor_preview_apply_and_next_baseline_match_imagej(row, tmp_path):
+    pixels = rgb_input()
+    owner = ij.Document(ij.Dataset(pixels, axes="YXS"))
+    if row["roi"]:
+        mask = np.zeros((2, 256), np.uint8)
+        mask[:, 17:236] = 1
+        if row["roi"] == 2:
+            y, x = np.indices(mask.shape)
+            mask[(x + y) % 3 == 0] = 0
+        owner.select(ij.Selection.from_mask(mask))
+    # The live display range must never map the already-mapped preview again.
+    view = owner.snapshot().display
+    view.properties = {"display_range": [10., 40.]}
+    owner.set_display(view)
+    editor = Editor(preferences=tmp_path / "preferences.json")
+    editor._editor.add_virtual_document(owner)
+    editor.action("show_contrast")
+    low, high = RGB_FIXTURE["ranges"][row["range_index"]]
+    editor.action("contrast_range", minimum=low, maximum=high)
+    editor.action("contrast_rgb_channels", channels=row["channels"])
+    before = owner.snapshot()
+    editor.action("wait_jobs")
+    editor.action("show_channel_display")  # Enables native pixel-readback diagnostics.
+    report = editor.render_headless()
+    assert report["contrast_panel"]["rgb"]["ready"]
+    readback = report["ordinary_pixels"]["readback"]
+    assert readback["available"]
+    for field in ["source", "rendered_rgb"]:
+        assert hashlib.sha256(np.array(readback[field]["pixels"], np.uint8).tobytes()).hexdigest() == row["sha256"]
+    assert owner.snapshot().shares_data(before) and owner.snapshot().revisions.display == before.revisions.display
+    assert owner.undo_steps == 0
+    job_id = report["contrast_panel"]["rgb"]["job_id"]
+    editor.recording = True
+    editor.action("contrast_apply")
+    assert editor.job_info.id == job_id
+    editor.recording = False
+    editor.action("wait_jobs")
+    assert owner.undo_steps == 1 and len(editor.workflow) == 1
+    record = editor.workflow[0]
+    assert record["schema"] == "imagejxx.rgb-contrast-apply-command"
+    assert record["options"]["channels"] == row["channels"]
+    assert hashlib.sha256(owner.snapshot().dataset.numpy("YXS").tobytes()).hexdigest() == row["sha256"]
+    assert owner.snapshot().display.properties == {"display_range": [0., 255.]}
+    owner.select(None)
+    editor.action("contrast_range", minimum=low, maximum=high)
+    editor.action("wait_jobs")
+    editor.action("contrast_apply")
+    editor.action("wait_jobs")
+    assert hashlib.sha256(owner.snapshot().dataset.numpy("YXS").tobytes()).hexdigest() == row["next_sha256"]
+    owner.undo()
+    assert hashlib.sha256(owner.snapshot().dataset.numpy("YXS").tobytes()).hexdigest() == row["sha256"]
+    editor.action("close_contrast")
+
+
+@pytest.mark.parametrize("channels", [1, 4, 7])
+@pytest.mark.parametrize("scope", ["current_plane", "all_z", "ranges", "positions"])
+@pytest.mark.parametrize("roi", ["whole_plane", "active_selection", "positioned_rois"])
+def test_rgb_editor_native_target_extension_uses_independent_axes(channels, scope, roi, tmp_path):
+    pixels = np.tile(np.array([[[10, 20, 30], [20, 30, 40], [30, 40, 50], [40, 50, 60]]], np.uint8), (2, 2, 2, 2, 1, 1))
+    owner = ij.Document(ij.Dataset(pixels, axes="TCZYXS"))
+    owner.select(ij.Selection.from_mask(np.array([[0, 1, 1, 0]] * 2, np.uint8)))
+    edit = owner.begin_edit()
+    edit.set_rois([ij.ROI("rgb", ij.Selection("rectangle", [(1, 0), (3, 2)]), t=1, c=1, z=0)])
+    owner.commit(edit)
+    editor = Editor(preferences=tmp_path / "preferences.json")
+    editor._editor.add_virtual_document(owner)
+    editor.action("view", t=1, c=1, crosshair=[0, 0, 1])
+    editor.action("show_contrast")
+    editor.action("contrast_range", minimum=10., maximum=40.)
+    editor.action("contrast_rgb_channels", channels=channels)
+    request = {"scope": scope, "roi": roi}
+    positions = [(1, 1, 1)]
+    if scope == "all_z": positions = [(1, 1, 0), (1, 1, 1)]
+    if scope == "ranges":
+        request.update(t={"start": 0, "stop": 2}, c={"start": 0, "stop": 2}, z={"start": 0, "stop": 2})
+        positions = [(t, c, z) for t in range(2) for c in range(2) for z in range(2)]
+    if scope == "positions":
+        positions = [(1, 1, 0), (0, 0, 1)]
+        request["positions"] = [list(p) for p in positions]
+    editor.action("configure_contrast_target", target=request)
+    editor.action("wait_jobs")
+    before, steps = owner.snapshot(), owner.undo_steps
+    editor.action("contrast_apply")
+    editor.action("wait_jobs")
+    expected = pixels.copy()
+    changed = False
+    for p in positions:
+        if roi == "positioned_rois" and p != (1, 1, 0): continue
+        changed = True
+        columns = slice(None) if roi == "whole_plane" else slice(1, 3)
+        for c, bit in enumerate([4, 2, 1]):
+            if channels & bit:
+                expected[p][:, columns, c] = np.clip(np.trunc((pixels[p][:, columns, c].astype(float) - 10) * 256 / 30), 0, 255)
+    np.testing.assert_array_equal(owner.snapshot().dataset.numpy("TCZYXS"), expected)
+    assert owner.undo_steps == steps + changed
+    if changed:
+        owner.undo()
+        np.testing.assert_array_equal(owner.snapshot().dataset.numpy("TCZYXS"), pixels)
+        assert owner.snapshot().display.properties == before.display.properties
+    editor.action("close_contrast")
+
+
+@pytest.mark.parametrize("bad", [True, 1., 0, -1, 8, "red", None, 2**63])
+def test_rgb_editor_component_validation_preserves_intent(bad, tmp_path):
+    owner = ij.Document(ij.Dataset(rgb_input(), axes="YXS"))
+    editor = Editor(preferences=tmp_path / "preferences.json")
+    editor._editor.add_virtual_document(owner)
+    editor.action("show_contrast")
+    editor.action("wait_jobs")
+    before = owner.snapshot()
+    with pytest.raises((ValueError, TypeError, RuntimeError, OverflowError)):
+        editor.action("contrast_rgb_channels", channels=bad)
+    report = editor.render_headless()["contrast_panel"]
+    assert report["rgb"]["channels"] == 7 and report["rgb"]["ready"]
+    assert before.shares_data(owner.snapshot()) and owner.undo_steps == 0
+    editor.action("close_contrast")
+
+
+@pytest.mark.parametrize("change", ["zoom", "selection", "navigation", "cancel", "close"])
+def test_rgb_editor_stale_preview_and_close_never_publish(change, tmp_path):
+    pixels = np.tile(np.array([[[10, 20, 30], [40, 50, 60]]], np.uint8), (2, 1, 1, 1))
+    owner = ij.Document(ij.Dataset(pixels, axes="ZYXS"))
+    editor = Editor(preferences=tmp_path / "preferences.json")
+    editor._editor.add_virtual_document(owner)
+    editor.action("show_contrast")
+    editor.action("contrast_range", minimum=10., maximum=40.)
+    editor.action("wait_jobs")
+    before = owner.snapshot()
+    if change == "zoom":
+        view = owner.snapshot().display
+        view.zoom = 2.
+        owner.set_display(view)
+    elif change == "selection": owner.select(ij.Selection.from_mask(np.zeros((1, 2), np.uint8)))
+    elif change == "navigation": editor.action("view", crosshair=[0, 0, 1])
+    elif change == "cancel": editor.cancel()
+    else: editor.action("close_contrast")
+    stable, steps = owner.snapshot(), owner.undo_steps
+    # Stale/reopened intent needs a fresh READY result before Apply.
+    with pytest.raises((ValueError, RuntimeError)):
+        editor.action("contrast_apply")
+    assert owner.snapshot().shares_data(stable) and owner.undo_steps == steps
+    assert owner.snapshot().dataset.shares_pixels(before.dataset)
+    editor.action("close_contrast")
+
+
+@pytest.mark.parametrize("channels", [1, 4, 7])
+@pytest.mark.parametrize("review", [False, True])
+def test_rgb_editor_saved_record_replay_and_reviewed_rebind(channels, review, tmp_path):
+    pixels = np.array([[[10, 20, 30], [40, 50, 60]]], np.uint8)
+    owner = ij.Document(ij.Dataset(pixels, axes="YXS"))
+    original = ij.resolve_rgb_contrast_apply_command(owner.snapshot(), rgb_options(10, 40, channels)).record()
+    editor = Editor(preferences=tmp_path / "preferences.json")
+    editor._editor.add_virtual_document(owner)
+    if review:
+        editor.action("show_contrast_apply_rebind", record=original)
+        report = editor.render_headless()["contrast_apply_rebind"]
+        assert report["open"] and report["valid"] and report["rgb_channels"] == channels
+        editor.action("configure_contrast_rebind_target", target={"roi": "whole_plane"})
+        editor.action("apply_contrast_rebind")
+    else: editor.action("replay_contrast_apply", record=original)
+    editor.action("wait_jobs")
+    expected = pixels.copy()
+    for c, bit in enumerate([4, 2, 1]):
+        if channels & bit: expected[..., c] = np.clip(np.trunc((pixels[..., c].astype(float) - 10) * 256 / 30), 0, 255)
+    np.testing.assert_array_equal(owner.snapshot().dataset.numpy("YXS"), expected)
+    assert owner.undo_steps == 1
+
+
+@pytest.mark.parametrize("xyz", [False, True])
+def test_rgb_editor_virtual_background_preview_uses_neutral_display_in_xyz(xyz, tmp_path):
+    from test_virtual_tiff import write
+    from imagejxx import scientific_io as io
+    pixels = np.tile(np.array([[[10, 20, 30], [20, 30, 40], [30, 40, 50], [40, 50, 60]]] * 3, np.uint8), (1, 1, 3, 1, 1, 1))
+    path = tmp_path / "rgb.tif"
+    write(path, pixels, io.ImageFileFormat.SCIENTIFIC_TIFF_RGB8_V1)
+    owner = ij.Document(io.open_virtual_image_series(path).dataset)
+    view = owner.snapshot().display
+    view.crosshair, view.orthogonal = [1, 1, 1], xyz
+    view.properties = {"display_range": [10., 40.]}
+    owner.set_display(view)
+    editor = Editor(preferences=tmp_path / "preferences.json")
+    editor.update_settings(async_viewport=True, persist=False)
+    editor._editor.add_virtual_document(owner)
+    editor.action("show_contrast")
+    editor.action("contrast_range", minimum=10., maximum=40.)
+    editor.action("contrast_rgb_channels", channels=4)
+    editor.action("configure_contrast_target", target={"scope": "all_z", "roi": "whole_plane"})
+    editor.action("wait_jobs")
+    editor.action("show_channel_display")
+    expected = pixels.copy()
+    expected[..., 0] = np.clip(np.trunc((pixels[..., 0].astype(float) - 10) * 256 / 30), 0, 255)
+    end = time.monotonic() + 10
+    while True:
+        report = editor.render_headless(frames=8)
+        planes = report["orthogonal_planes"] if xyz else [report["ordinary_pixels"]]
+        if len(planes) == (3 if xyz else 1) and all(p["readback"]["available"] for p in planes): break
+        assert time.monotonic() < end
+    for i, plane in enumerate(planes):
+        wanted = expected[0, 0, 1] if i == 0 else expected[0, 0, :, 1] if i == 1 else expected[0, 0, :, :, 1]
+        for field in ["source", "rendered_rgb"]:
+            assert plane["readback"][field]["pixels"] == wanted.ravel().tolist()
+    assert owner.undo_steps == 0
+    editor.action("close_contrast")
+
+
+def test_rgb_cancel_pending_preview_does_not_restart_until_explicit_refresh(tmp_path):
+    owner = ij.Document(ij.Dataset(rgb_input(), axes="YXS"))
+    editor = Editor(preferences=tmp_path / "preferences.json")
+    editor._editor.add_virtual_document(owner)
+    editor.action("show_contrast")
+    editor.action("wait_jobs")
+    report = editor.render_headless()["contrast_panel"]["rgb"]
+    submitted = report["submitted"]
+    editor.action("contrast_range", minimum=10., maximum=40.)
+    editor.cancel()
+    before = owner.snapshot()
+    report = editor.render_headless(frames=8)["contrast_panel"]["rgb"]
+    assert report["submitted"] == submitted and not report["ready"] and not report["pending"]
+    assert owner.snapshot().shares_data(before) and owner.undo_steps == 0
+    editor.action("refresh_rgb_contrast_preview")
+    editor.action("wait_jobs")
+    assert editor.render_headless()["contrast_panel"]["rgb"]["ready"]
+    editor.action("cancel_rgb_contrast_preview")
+    report = editor.render_headless(frames=8)["contrast_panel"]["rgb"]
+    assert not report["ready"] and not report["pending"]
+    editor.action("close_contrast")

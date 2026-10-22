@@ -2421,7 +2421,8 @@
           "docs/NATIVE_WORKFLOW_PROGRAM.md",
           "docs/NATIVE_WORKFLOW_PARAMETERS.md",
           "docs/parity/reviews/p11h-rgb-contrast001.json",
-          "docs/parity/reviews/p11i-rgb-command001.json"
+          "docs/parity/reviews/p11i-rgb-command001.json",
+          "docs/parity/reviews/p11j-rgb-editor001.json"
         ],
         "implementation": [
           "include/imagejxx/document.hpp",
@@ -2463,7 +2464,9 @@
           "include/imagejxx/rgb_contrast_apply.hpp",
           "include/imagejxx/rgb_contrast_apply_command.hpp",
           "include/imagejxx/rgb_contrast_apply_job.hpp",
-          "src/native/rgb_contrast_apply_command.cpp"
+          "src/native/rgb_contrast_apply_command.cpp",
+          "src/desktop/contrast_rgb_preview.cpp",
+          "src/desktop/operation_target_panel.cpp"
         ],
         "tests": [
           "tests/native/test_document.cpp",
@@ -2521,7 +2524,8 @@
         "p11f.contrast-apply.rebind-ui.001",
         "p11g.contrast-apply.workflow-batch.001",
         "p11h.rgb-contrast.foundation.001",
-        "p11i.rgb-contrast.command-job.001"
+        "p11i.rgb-contrast.command-job.001",
+        "p11j.rgb-contrast.editor.001"
       ]
     },
     {
@@ -181617,6 +181621,29 @@
         "total": 4443
       },
       "scope": "Windows/Linux each pass 22 native suites, three existing full C++ workflow/batch/RGB UI regression probes, one installed public C++ SDK consumer exercising scalar/RGB APIs and RGB captured replay/job publication, ten background repetitions, four hidden GL contexts and 4443 installed Python checks, zero failure/error/skip. There are 316 new Python cases: 273 actual ImageJ 1.54r reference rows exercised through RGB record capture/JSON strict replay/native worker preview/atomic publication/fresh committed baseline, plus 43 grammar/stale-domain/lease/storage/rebind/positioned-ROI checks. Native tests add virtual RGB worker-only IO, running/queued cancellation, queued source release, escaped plane reservations, stale publication and scalar/RGB profile isolation. Shared scalar-neutral metadata admission/geometry encoding helpers are extracted without behavior changes, and the native retained-result preparation/publication path is shared. Scalar public kernel/command headers and scalar V1 schema/fields remain unchanged. Actual native compiled sources and installed module origins are pinned; Linux tests use a SHA-verified native snapshot of 5469 test/config/fixture files. The sole post-build test amendment places a provider-read assertion before test-side full-dataset materialization; old/new test fingerprints and the failed harness report are retained. Owned scratch is CRC/member-SHA archived before removal; qualified installs, consumers, probes, logs and reports remain. Original 99 requirement/status triples, existing input registrations and commercial-use dependency inventory are preserved. This does not enable RGB editor controls, qualify the complete active/stack controller or close full G057/ImageJ/Fiji/platform/resource acceptance."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-22",
+      "id": "p11j.rgb-contrast.editor.001",
+      "identity": {
+        "qualification": {
+          "path": "docs/parity/reviews/p11j-rgb-editor001.json",
+          "bytes": 22554,
+          "sha256": "a713eb1d8bb7efb5ab5cc2c7c56144e790e3f14f404d124e3033f6dfc5bdf2e1"
+        }
+      },
+      "platform": "Windows/Linux shared C++/optional Python modeless RGB preview/Apply/Rebind and native uniform target extensions",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 4774,
+        "report": "build/p11j-rgb-editor001/windows-python004/pytest.xml",
+        "skipped": 0,
+        "total": 4774
+      },
+      "scope": "Windows/Linux each pass 22 native suites, three existing full C++ workflow/batch/RGB UI regression probes, one installed C++ SDK consumer, ten background repetitions, four hidden GL contexts and 4774 installed Python checks, zero failure/error/skip. There are 331 new RGB editor Python cases: 273 actual ImageJ 1.54r reference rows through the shared modeless preview, neutral ordinary rendering, READY-job transfer, recorded atomic Apply and next committed baseline; 36 native uniform target-extension combinations; eight component admission cases; five stale/close/cancel cases; six saved strict/reviewed-rebind cases; two real virtual TIFF ordinary/XYZ background cases; and pending-cancel/explicit-refresh coverage. Native actual mouse/key/text fixtures additionally verify component selection, Apply, READY job identity reuse, invalid-then-corrected explicit T/C/Z list editing, ordered recorded publication, untouched planes, Undo and blocked virtual-reader cancellation/close with no creator-thread processing reads. Explicit list UI is bounded to 4096 unique planes and 1 MiB of text; existing scalar panel admission remains unchanged. Stretched text-field diagnostic bounds now follow the actual widget. All processing stays in C++; optional Python UI uses the same native host. Original scalar/RGB public core APIs and wire schemas are unchanged. Actual native compiled inputs and installed Python module origins are pinned; Linux uses a SHA-verified native snapshot of 5469 test/config/fixture files. Prototype/final temporary environments, installs, snapshots, transfers, fixtures and consumer build caches are CRC/member-SHA archived before removal; final qualified installs/probes/consumer, logs and reports remain. Original 99 requirement/status triples, existing input registrations and commercial-use dependency inventory are preserved. Native uniform multi-axis mapping and paired Undo are explicit extensions; exact ImageJ other-stack-plane narrowing, full RGB histogram/Auto/workflow/Batch, slider/controller semantics and complete G057/ImageJ/Fiji/platform/resource acceptance remain open."
     }
   ]
 }

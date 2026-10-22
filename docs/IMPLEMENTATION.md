@@ -1,5 +1,23 @@
 # Implementation progress
 
+**RGB modeless editor checkpoint, 2026-10-22 (work in progress):**
+The shared C++/optional Python editor now prepares immutable RGB previews with
+seven component masks, reuses READY preview jobs for guarded Apply, and supports
+recorded strict replay and Rebind review. Ordinary and linked XYZ preview use a
+neutral display range; source pixels/display/history stay unchanged until Apply.
+RGB targets include bounded editable explicit plane lists in selected order.
+Cancellation covers running jobs and pending intent; new adjustments can retry.
+Windows/Linux each pass 22 native suites, three existing full C++ UI probes,
+one installed C++ SDK consumer, ten background repetitions, four hidden GL
+contexts and 4774 installed Python checks (331 new), zero failure/error/skip.
+Owned scratch is archived and verified before cleanup. See the
+[scoped receipt](parity/reviews/p11j-rgb-editor001.json).
+RGB native workflow/Batch and histogram/Auto adapters,
+exact active/stack controller and slider semantics remain open. The multi-axis
+UI exposes the explicit native uniform mapping and paired Undo extension.
+See [Apply details](CONTRAST_APPLY.md).
+
+
 **RGB captured-command/job checkpoint, 2026-10-22 (work in progress):**
 RGB Apply now has a separate C++/Python record profile, metadata-only strict
 replay and explicit rebind, with immutable source/target/display/geometry intent.

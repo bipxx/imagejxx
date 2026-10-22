@@ -265,6 +265,78 @@ void workflowUi(const std::filesystem::path &root){
   owner->redo();check(owner->snapshot().shares_data(after),"Workflow Redo restores paired output");
   w.closeDocument(w.document()->id,true);
 }
+
+struct RgbSource:Source {
+  DatasetShape shape()const override{return {1,2,3,6,8,3};}
+  std::shared_ptr<const Image> read_plane(PlanePosition p)const override{
+    const auto scalar=Source::read_plane(p);auto result=std::make_shared<Image>(8,6,3,PixelType::UInt8);
+    for(int i=0;i<48;++i)for(int c=0;c<3;++c)result->pixels[3*i+c]=scalar->pixels[i]+10*c;
+    return result;
+  }
+};
+void rgbUi(const std::filesystem::path &root){
+  auto source=std::make_shared<RgbSource>();source->open();OpenOnExit release{source};
+  Window w((root/"rgb-ui.json").u8string());w.updateSettings({{"async_viewport",true}},false);
+  auto owner=std::make_shared<Document>(Dataset(source));w.addVirtualDocument(owner);const auto before=owner->snapshot();
+  w.action("show_contrast");w.action("contrast_range",{{"minimum",10.9},{"maximum",40.1}});w.action("wait_jobs");
+  HeadlessInputSession session(w);auto report=session.frame();report=session.frame();
+  auto control=report.at("contrast_panel").at("controls").at("rgb_components_4");
+  check(control.at("visible") && control.at("enabled"),"RGB component widget admitted");
+  session.frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));
+  for(bool down:{true,false})session.frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));
+  w.action("wait_jobs");report=session.frame();
+  check(report.at("contrast_panel").at("rgb").at("channels")==4 && before.shares_data(owner->snapshot()),"Actual component widget preserves source baseline");
+  const auto id=report.at("contrast_panel").at("rgb").at("job_id").get<std::uint64_t>();
+  control=report.at("contrast_panel").at("controls").at("apply");check(control.at("visible") && control.at("enabled"),"RGB Apply widget admitted");
+  w.recording=true;w.action("contrast_apply");check(w.jobInfo()->id==id,"RGB Apply reuses prepared preview job");w.action("wait_jobs");
+  const auto plane=owner->snapshot().data().dataset.plane();
+  check(plane->pixels[30]==0 && plane->pixels[33]==8 && plane->pixels[34]==21 && plane->pixels[35]==31,"RGB Apply uses original fractional mapping once");
+  check(source->mainReads==0 && owner->undo_steps()==1 && w.workflow.size()==1,"RGB virtual preview/apply stays on native workers and records one edit");
+  owner->undo();check(owner->snapshot().data().dataset.shares_pixels(before.data().dataset),"RGB Undo restores immutable baseline");
+  w.action("contrast_range",{{"minimum",10.9},{"maximum",40.1}});w.action("wait_jobs");report=session.frame();
+  control=report.at("contrast_panel").at("controls").at("apply");
+  session.frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));
+  for(bool down:{true,false})session.frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));
+  w.action("wait_jobs");check(owner->snapshot().data().dataset.plane()->pixels[33]==8 && owner->undo_steps()==1,"Actual RGB Apply button commits the once-mapped baseline");
+  w.action("close_contrast");
+}
+void rgbPositionsUi(const std::filesystem::path &root){
+  Image image(2,1,3,PixelType::UInt8);image.pixels={10,20,30,20,30,40};
+  auto owner=std::make_shared<Document>(Dataset::from_stack({image,image,image}));
+  Window w((root/"rgb-positions-ui.json").u8string());w.addVirtualDocument(owner);
+  const auto original=owner->snapshot();
+  const auto record=imagejxx::desktop::metadataJson(resolve_rgb_contrast_apply_command(original,{10,40,4}).record());
+  w.action("show_contrast_apply_rebind",{{"record",record}});
+  HeadlessInputSession session(w);auto report=session.frame();report=session.frame();
+  const auto click=[&](Json point){session.frame(Json::array({{{"type","position"},{"space","screen"},{"point",point}}}));for(bool down:{true,false})report=session.frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));};
+  click(report.at("contrast_apply_rebind").at("target").at("controls").at("positions.enabled"));
+  const auto text=[&](const char *value){
+    click(report.at("contrast_apply_rebind").at("target").at("controls").at("positions"));
+    session.frame(Json::array({key("Ctrl",true),key("A",true)}));session.frame(Json::array({key("A",false),key("Ctrl",false)}));
+    session.frame(Json::array({{{"type","text"},{"value",value}}}));session.frame(Json::array({key("Enter",true)}));report=session.frame(Json::array({key("Enter",false)}));
+  };
+  text("[[1,1,1.5]]");const auto reads=owner->snapshot();
+  refuses([&]{w.action("apply_contrast_rebind");});
+  check(owner->snapshot().shares_data(reads) && owner->undo_steps()==0,"Invalid actual explicit-plane field leaves source unchanged");
+  text("[[1,1,3],[1,1,1]]");w.recording=true;
+  click(report.at("contrast_apply_rebind").at("controls").at("apply").at("point"));w.action("wait_jobs");
+  check(owner->undo_steps()==1 && w.workflow.size()==1 && w.workflow[0].at("target").at("positions")==Json::array({Json::array({0,0,2}),Json::array({0,0,0})}),"Actual explicit plane text retains selected order in RGB record");
+  check(owner->snapshot().data().dataset.plane({0,0,1})->pixels==image.pixels,"Unlisted plane remains unchanged");
+  check(owner->snapshot().data().dataset.plane({0,0,2})->pixels==std::vector<double>({0,20,30,85,30,40}),"Selected explicit plane maps chosen component");
+  owner->undo();check(owner->snapshot().shares_data(original),"Explicit RGB Apply is atomic and undoable");
+}
+void rgbCancel(const std::filesystem::path &root){
+  auto source=std::make_shared<RgbSource>();OpenOnExit release{source};Window w((root/"rgb-cancel.json").u8string());
+  auto owner=std::make_shared<Document>(Dataset(source));w.addVirtualDocument(owner);const auto before=owner->snapshot();
+  w.action("show_contrast");until([&]{return source->entered>0;});
+  std::thread cancel([&]{w.cancel();});cancel.join();
+  const auto scheduler=imagejxx::desktop::HistogramAsyncUiProbeAccess::scheduler(w);
+  until([&]{w.poll();return scheduler->usage().reserved_bytes==0;});
+  refuses([&]{w.action("contrast_apply");});check(source->mainReads==0 && before.shares_data(owner->snapshot()),"RGB cancellation leaves baseline/history unchanged");
+  source->open();w.action("contrast_range",{{"minimum",10},{"maximum",40}});w.action("wait_jobs");
+  auto report=w.renderHeadless();check(report.at("contrast_panel").at("rgb").at("ready"),"RGB new intent retries canceled preview");
+  w.closeDocument(w.document()->id,true);until([&]{w.poll();return scheduler->usage().reserved_bytes==0;});
+}
 void ui(const std::filesystem::path &root){
   auto source=std::make_shared<Source>();source->open();Window w((root/"ui.json").u8string());
   w.addVirtualDocument(std::make_shared<Document>(Dataset(source)));w.action("show_contrast");w.action("wait_jobs");
@@ -295,6 +367,6 @@ void ui(const std::filesystem::path &root){
 int main(int argc,char **argv){try{
   check(argc==2,"Owned fixture path required");const auto root=std::filesystem::absolute(std::filesystem::u8path(argv[1]));
   check(!std::filesystem::exists(root),"Fresh fixture required");std::filesystem::create_directories(root);
-  math();seeded();captured(root);canceled(root);applyHost(root);applyAbandoned(root);rebindUi(root);rebindStale(root);workflowUi(root);ui(root);
+  math();seeded();captured(root);canceled(root);applyHost(root);applyAbandoned(root);rebindUi(root);rebindStale(root);workflowUi(root);ui(root);rgbUi(root);rgbCancel(root);rgbPositionsUi(root);
   std::cout<<"PASS native modeless contrast math, captured histogram, active channel, Auto, cancellation and actual widgets\n";return 0;
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

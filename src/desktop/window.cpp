@@ -41,7 +41,8 @@
 #include "histogram_panel.hpp"
 #include "channel_display_panel.hpp"
 #include "contrast_panel.hpp"
-#include <imagejxx/contrast_apply_job.hpp>
+#include <imagejxx/rgb_contrast_apply_job.hpp>
+#include <type_traits>
 #include "channel_display_sources.hpp"
 #include <imagejxx/manual_threshold.hpp>
 #include <imagejxx/manual_threshold_command.hpp>
@@ -2090,7 +2091,7 @@ struct Window::Impl {
   void tickContrast(){
     if(!contrastPanel.visible() && !contrastPanel.rebindVisible())return;
     const auto current=gaussianCurrent();contrastPanel.tickRebind(current);
-    if(contrastPanel.visible())contrastPanel.tick(current,owner.busy(),*owner.controller_->job_scheduler(),histogramLimits());
+    if(contrastPanel.visible())contrastPanel.tick(current,owner.busy(),*owner.controller_->job_scheduler(),histogramLimits(),contrastApplyLimits());
   }
   void publishContrast(const DocumentSnapshot &source,std::array<double,2> range){
     if(owner.busy())throw std::invalid_argument("Wait for the current edit");
@@ -2125,13 +2126,20 @@ struct Window::Impl {
       bindAutoJob(std::move(submitted),source.id(),epoch);
     }
   }
+  static bool rgbContrastRecord(const MetadataObject &record){
+    const auto it=record.find("schema");const auto value=it==record.end()?nullptr:std::get_if<std::string>(&it->second);
+    return value && *value=="imagejxx.rgb-contrast-apply-command";
+  }
+  static void validateContrastRecord(const MetadataObject &record,std::size_t cap){
+    if(rgbContrastRecord(record))validate_rgb_contrast_apply_command_record(record,cap);else validate_contrast_apply_command_record(record,cap);
+  }
   ContrastApplyCommandLimits contrastApplyLimits() const {
     ContrastApplyCommandLimits limits;
     const auto cap=static_cast<std::size_t>(preferenceState.settings.integer("processing_memory_mb"))*1024*1024;
     if(cap)limits.processing.max_working_bytes=std::min(limits.processing.max_working_bytes,cap);
     return limits;
   }
-  void beginContrastApply(const ResolvedContrastApplyCommand &command,std::uint64_t epoch){
+  template<class Command>void beginContrastApply(const Command &command,std::uint64_t epoch,bool reusePreview=false){
     if(owner.busy())throw std::invalid_argument("Wait for the current edit");
     const auto source=command.target().source();
     const auto current=owner.nativeSnapshot();
@@ -2141,7 +2149,12 @@ struct Window::Impl {
     const bool capturedRecording=owner.recording;
     std::string pendingStatus="Applying brightness/contrast...";
     JobOptions options;options.label="Apply brightness/contrast";
-    auto submitted=submit_contrast_apply(*owner.controller_->job_scheduler(),command,contrastApplyLimits(),std::move(options));
+    auto submitted=[&]{
+      if constexpr(std::is_same_v<Command,ResolvedRgbContrastApplyCommand>){
+        if(reusePreview)return contrastPanel.takeRgbPreview(command);
+        return submit_rgb_contrast_apply(*owner.controller_->job_scheduler(),command,contrastApplyLimits(),std::move(options));
+      }else return submit_contrast_apply(*owner.controller_->job_scheduler(),command,contrastApplyLimits(),std::move(options));
+    }();
     std::uint64_t id;
     try{id=submitted.info().id;}catch(...){submitted.cancel();throw;}
     contrastApplySource=std::move(capturedSource);contrastApplyRecording=capturedRecording;
@@ -2153,6 +2166,9 @@ struct Window::Impl {
   void applyContrast(const DocumentSnapshot &source,std::array<double,2> range,const TargetRequest &target){
     if(owner.busy())throw std::invalid_argument("Wait for the current edit");
     const auto epoch=contrastApplyCancelEpoch.load();
+    if(source.data().dataset.shape().s==3){
+      beginContrastApply(resolve_rgb_contrast_apply_command(source,{range[0],range[1],contrastPanel.rgbChannels()},target,contrastApplyLimits()),epoch,true);return;
+    }
     ContrastApplyOptions options;options.minimum=range[0];options.maximum=range[1];
     options.unsigned16_bits=owner.settings().conversion_options().unsigned16_bits;
     beginContrastApply(resolve_contrast_apply_command(source,options,target,contrastApplyLimits()),epoch);
@@ -2162,7 +2178,8 @@ struct Window::Impl {
     const auto current=owner.nativeSnapshot();
     if(!source.same_document(current) || !source.revisions().matches(current.revisions(),Change::All))throw RevisionConflict();
     if(owner.busy())throw std::invalid_argument("Wait for the current edit");
-    beginContrastApply(rebind_contrast_apply_command(source,record,target,contrastApplyLimits()),epoch);
+    if(rgbContrastRecord(record))beginContrastApply(rebind_rgb_contrast_apply_command(source,record,target,contrastApplyLimits()),epoch);
+    else beginContrastApply(rebind_contrast_apply_command(source,record,target,contrastApplyLimits()),epoch);
   }
   void cancelContrastApply(){if(contrastApplyJob)contrastApplyJob->cancel();}
   void pollContrastApply(){
@@ -2785,6 +2802,12 @@ struct Window::Impl {
   }
   std::optional<DocumentSnapshot>
   planeOperationPreview(const Document &document, bool captured_only = true) const {
+    const auto rgbLive=document.nativeSnapshot();
+    if(auto rgb=contrastPanel.rgbPreview(rgbLive)){
+      const auto *target=contrastPanel.rgbPreviewTarget(rgbLive);const auto &v=rgbLive.display();
+      if(!captured_only || (target && target->contains({v.t,v.c,v.crosshair[2]})))return rgb;
+      return std::nullopt; // The active RGB tool owns preview selection, including excluded planes.
+    }
     if (shadowDemo.active()) return shadowDemo.preview(document.nativeSnapshot());
     auto preview = gaussianJobs.preview_snapshot(document.id);
     const auto *target = gaussianJobs.preview_target(document.id);
@@ -2803,9 +2826,11 @@ struct Window::Impl {
     return preview;
   }
   std::uint64_t operationPreviewGeneration(const Document &document) const {
+    if(contrastPanel.rgbPreview(document.nativeSnapshot()))return contrastPanel.rgbPreviewGeneration();
     return shadowDemo.preview(document.nativeSnapshot()) ? shadowDemo.generation() : gaussianJobs.preview_generation(document.id).value_or(0);
   }
   const ResolvedTarget *operationPreviewTarget(const Document &document) const {
+    if(const auto *target=contrastPanel.rgbPreviewTarget(document.nativeSnapshot()))return target;
     return shadowDemo.preview(document.nativeSnapshot()) ? shadowDemo.target() : gaussianJobs.preview_target(document.id);
   }
   void showPlaneOperationPreview(PlanePosition position) {
@@ -4375,6 +4400,7 @@ struct Window::Impl {
     const auto position = pane.doc->position();
     const auto channelState = recognized_channel_display(liveSnapshot.display(), liveSnapshot.data().dataset);
     const auto preview = planeOperationPreview(*pane.doc, !channelState.has_value());
+    const bool rgbContrast=bool(preview) && bool(contrastPanel.rgbPreview(liveSnapshot));
     const auto previewGeneration = preview ? operationPreviewGeneration(*pane.doc) : 0;
     const auto *previewTarget = preview ? operationPreviewTarget(*pane.doc) : nullptr;
     const auto sources = channelState ? std::optional<ChannelDisplaySources>(
@@ -4442,7 +4468,7 @@ struct Window::Impl {
       pane.doc->admitView();
       ViewportRender spec{liveSnapshot};spec.preview=preview;spec.previewGeneration=previewGeneration;spec.position=position;spec.coordinate=position.z;
       if(previewTarget)spec.target=*previewTarget;
-      spec.metadata=pane.doc->state().metadata;spec.layered=pane.layeredOverlays;spec.capture=capture;spec.channelLimits=channelLimits();
+      spec.metadata=pane.doc->state().metadata;if(rgbContrast)spec.metadata["display_range"]={0.,255.};spec.layered=pane.layeredOverlays;spec.capture=capture;spec.channelLimits=channelLimits();
       const auto key=Json{{"identity",identity},{"live",liveSnapshot.data_identity().value_or(0)},{"revision",pane.doc->renderRevision()},
           {"tcz",{position.t,position.c,position.z}},{"preview",generation},{"channels",channelKey},{"capture",capture},{"gl",gl}}.dump();
       auto ready=viewJobs().request(pane.doc->id,0,key,memoryPlan.peak,[spec=std::move(spec)](const ExecutionControl &){return renderViewport(spec);});
@@ -4477,6 +4503,7 @@ struct Window::Impl {
     pane.pixelsPosition = position;
     pane.rangePosition = position;
     auto metadata = pane.doc->state().metadata;
+    if(rgbContrast)metadata["display_range"]={0.,255.};
     // Preview changes pixels, not the live display range. Freeze the ordinary
     // floating auto-range from the live source when no explicit range exists.
     std::optional<std::array<std::uint32_t,2>> computed;
@@ -5879,7 +5906,7 @@ void Window::action(const std::string &name, const Json &p) {
   if(name=="show_contrast_apply_rebind"){
     if(!p.is_object() || p.size()!=1 || !p.contains("record") || !p.at("record").is_object())throw std::invalid_argument("Rebind review requires only a command record");
     const auto record=metadataObjectFromJson(p.at("record"));const auto limits=impl->contrastApplyLimits();
-    validate_contrast_apply_command_record(record,limits.max_record_bytes);
+    Impl::validateContrastRecord(record,limits.max_record_bytes);
     if(busy())throw std::invalid_argument("Wait for the current edit");
     const auto source=nativeSnapshot();
     if(boolean(get(metadataJson(source.data().metadata.extensions),"labels")))throw std::invalid_argument("Disable label coloring before Apply");
@@ -5902,9 +5929,15 @@ void Window::action(const std::string &name, const Json &p) {
     if(!p.is_object() || !p.contains("record") || !p.at("record").is_object())throw std::invalid_argument("Contrast Apply replay requires a command record");
     for(const auto &v:p.items())if(v.key()!="record" && v.key()!="contrast_rebind")throw std::invalid_argument("Unknown Contrast Apply replay parameter");
     const auto record=metadataObjectFromJson(p.at("record"));
-    const auto limits=impl->contrastApplyLimits();validate_contrast_apply_command_record(record,limits.max_record_bytes);
+    const auto limits=impl->contrastApplyLimits();Impl::validateContrastRecord(record,limits.max_record_bytes);
     if(busy())throw std::invalid_argument("Wait for the current edit");
     const auto source=nativeSnapshot();
+    if(Impl::rgbContrastRecord(record)){
+      const auto command=p.contains("contrast_rebind")
+        ?rebind_rgb_contrast_apply_command(source,record,gaussianRebindRequest(p.at("contrast_rebind")),limits)
+        :rgb_contrast_apply_command_from_record(source,record,limits);
+      impl->beginContrastApply(command,epoch);return;
+    }
     const auto command=p.contains("contrast_rebind")
       ?rebind_contrast_apply_command(source,record,gaussianRebindRequest(p.at("contrast_rebind")),limits)
       :contrast_apply_command_from_record(source,record,limits);
@@ -9574,7 +9607,7 @@ void Window::Impl::recorder() {
       continue;
     }
     const auto step = owner.workflow[i]; // Replay can append and reallocate.
-    if(get(step,"schema")=="imagejxx.contrast-apply-command") {
+    if(get(step,"schema")=="imagejxx.contrast-apply-command" || get(step,"schema")=="imagejxx.rgb-contrast-apply-command") {
       ImGui::Text("%zu. Apply brightness/contrast",i+1);ImGui::PushID(static_cast<int>(i));
       ImGui::BeginDisabled(owner.busy()||owner.documents_.empty());
       if(ImGui::Button("Replay captured Apply"))guard([&]{owner.action("replay_contrast_apply",{{"record",step}});});
@@ -10114,6 +10147,7 @@ void Window::Impl::canvas(Pane &pane) {
       blocked = "unfocused_window";
     pane.keyboardAdmission = blocked.empty() ? "admitted" : blocked;
     OrthogonalInputContext input;
+    if(preview && contrastPanel.rgbPreview(d->nativeSnapshot()))input.preview_display_range=std::array<double,2>{0,255};
     input.active_document = owner.controller_->active_document_id() == d->id;
     input.input_enabled = !owner.busy() && !(context.CurrentItemFlags & ImGuiItemFlags_Disabled);
     input.keyboard_admitted = blocked.empty();

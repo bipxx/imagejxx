@@ -22,7 +22,8 @@ public:
             const char *heading = "Apply target",
             const char *description = "Independent XY planes; in place",
             const char *positioned_hint = "Matching positioned ROIs form a union. Unmatched planes are unchanged.");
-  void configure(const DocumentSnapshot &, const TargetRequest &);
+  void configure(const DocumentSnapshot &, const TargetRequest &,bool allow_positions=false);
+  void enablePositions(bool value=true){allowPositions_=value;}
   void refreshSelection(bool value) { hasSelection_=value; }
   bool enterConsumed() const { return enterConsumed_; }
   TargetRequest request() const;
@@ -57,6 +58,8 @@ private:
                std::optional<float> width = std::nullopt);
   void resetControls();
 
+  bool allowPositions_=false,explicitPositions_=false;
+  Field positions_;
   bool captured_ = false, hasSelection_ = false, targetChanged_ = true;
   bool enterConsumed_ = false;
   bool previewExplicit_ = false;

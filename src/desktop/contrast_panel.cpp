@@ -10,6 +10,7 @@
 
 namespace imagejxx::desktop {
 namespace {
+bool wireRgbRecord(const MetadataObject &record){const auto it=record.find("schema");return it!=record.end() && std::get_if<std::string>(&it->second) && std::get<std::string>(it->second)=="imagejxx.rgb-contrast-apply-command";}
 void finiteRange(std::array<double,2> r){
   if(!std::isfinite(r[0]) || !std::isfinite(r[1]) || r[0]>r[1])
     throw std::invalid_argument("Display endpoints must be finite and ordered");
@@ -31,14 +32,14 @@ void unit(double value){if(!std::isfinite(value)||value<0||value>1)throw std::in
 ContrastPanel::~ContrastPanel(){try{close();}catch(...){}}
 bool ContrastPanel::handles(const std::string &name){
   static const std::set<std::string> names{"show_contrast","close_contrast","contrast_range","contrast_window_level",
-    "contrast_brightness","contrast_contrast","contrast_reset","contrast_auto","contrast_apply","configure_contrast_target","cancel_contrast_apply","refresh_contrast_histogram","cancel_contrast_histogram"};
+    "contrast_brightness","contrast_contrast","contrast_rgb_channels","cancel_rgb_contrast_preview","refresh_rgb_contrast_preview","contrast_reset","contrast_auto","contrast_apply","configure_contrast_target","cancel_contrast_apply","refresh_contrast_histogram","cancel_contrast_histogram"};
   return names.count(name)!=0;
 }
-void ContrastPanel::request_cancel(JobScheduler &scheduler){++rebindCancelEpoch_;++cancelEpoch_;if(const auto id=cancelId_.load())scheduler.cancel(id);}
+void ContrastPanel::request_cancel(JobScheduler &scheduler){++rebindCancelEpoch_;++cancelEpoch_;if(const auto id=cancelId_.load())scheduler.cancel(id);if(const auto id=rgbCancelId_.load())scheduler.cancel(id);}
 void ContrastPanel::open(){open_=focus_=true;}
 void ContrastPanel::cancelHistogram(){cancelId_.store(0);if(job_){job_->cancel();job_.reset();++discarded_;}}
-void ContrastPanel::close(){cancelRebind();cancelHistogram();histogram_.reset();heights_.clear();source_.reset();key_.clear();rangeKey_=nullptr;controls_=Json::object();open_=focus_=focused_=histogramAttempted_=resolved_=false;}
-void ContrastPanel::sourceClosed(std::uint64_t id){if(rebind_ && rebind_->source.id()==id)cancelRebind();if(source_ && source_->id()==id){cancelHistogram();histogram_.reset();source_.reset();key_.clear();rangeKey_=nullptr;heights_.clear();resolved_=focused_=false;}}
+void ContrastPanel::close(){invalidateRgb(false);rgbSource_.reset();cancelRebind();cancelHistogram();histogram_.reset();heights_.clear();source_.reset();key_.clear();rangeKey_=nullptr;controls_=Json::object();open_=focus_=focused_=histogramAttempted_=resolved_=false;}
+void ContrastPanel::sourceClosed(std::uint64_t id){if(rebind_ && rebind_->source.id()==id)cancelRebind();if(source_ && source_->id()==id){invalidateRgb(false);rgbSource_.reset();cancelHistogram();histogram_.reset();source_.reset();key_.clear();rangeKey_=nullptr;heights_.clear();resolved_=focused_=false;}}
 bool ContrastPanel::inputActive()const{return (open_ && focused_) || (rebind_ && rebind_->focused);}
 bool ContrastPanel::histogramSupported(const Dataset &d)const{
   return d.shape().s==1 && (d.pixel_type()==PixelType::UInt8 || d.pixel_type()==PixelType::UInt16 || d.pixel_type()==PixelType::Float32) &&
@@ -59,14 +60,14 @@ void ContrastPanel::draft(std::array<double,2> r){
   range_=r;minimum_=r[0];maximum_=r[1];level_=middle(r);window_=r[1]-r[0];
 }
 void ContrastPanel::refresh(){cancelHistogram();histogram_.reset();heights_.clear();histogramAttempted_=false;error_.clear();}
-void ContrastPanel::tick(const std::optional<DocumentSnapshot> &current,bool busy,JobScheduler &scheduler,DatasetHistogramLimits limits){
+void ContrastPanel::tick(const std::optional<DocumentSnapshot> &current,bool busy,JobScheduler &scheduler,DatasetHistogramLimits limits,const ContrastApplyCommandLimits &applyLimits){
   if(!open_)return;
   if(!current){sourceClosed(source_?source_->id():0);focused_=false;return;}
   const auto &d=current->data().dataset;const auto &v=current->display();
   const auto key=Json{{"owner",current->id()},{"data",current->data_identity().value_or(0)},{"pixels",current->revisions().pixels},
     {"tcz",{v.t,v.c,v.crosshair[2]}},{"max_pixels",limits.max_pixels},{"max_bytes",limits.max_working_bytes}}.dump();
   if(key!=key_){target_.capture(*current);refresh();key_=key;rangeKey_=nullptr;domain_={0,type_max(d.pixel_type())};}
-  source_=current;target_.refreshSelection(bool(current->data().selection));
+  source_=current;target_.enablePositions(rgbSource());target_.refreshSelection(bool(current->data().selection));
   if(job_ && job_->ready()){
     try{
       auto result=job_->result();std::vector<float> heights;heights.reserve(result->histogram.counts.size());
@@ -94,9 +95,10 @@ void ContrastPanel::tick(const std::optional<DocumentSnapshot> &current,bool bus
   const auto r=effectiveRange(*current);
   const auto properties=metadataJson(current->display().properties);
   resolved_=bool(recognized_channel_display(current->display(),d)) || get(properties,"display_range").is_array() ||
-    bool(histogram_) || (!v.orthogonal && (d.pixel_type()==PixelType::UInt8 || d.pixel_type()==PixelType::UInt16));
+    bool(histogram_) || rgbSource() || (!v.orthogonal && (d.pixel_type()==PixelType::UInt8 || d.pixel_type()==PixelType::UInt16));
   const auto next=Json{{"owner",current->id()},{"position",{v.t,v.c,v.crosshair[2]}},{"range",displayRangeValue(r)}};
-  if(next!=rangeKey_){draft(r);rangeKey_=next;}
+  if(next!=rangeKey_){draft(r);rangeKey_=next;invalidateRgb();}
+  tickRgb(busy,scheduler,applyLimits);
 }
 std::array<double,2> ContrastPanel::windowLevel(double w,double level){
   if(!std::isfinite(w)||w<=0||!std::isfinite(level))throw std::invalid_argument("Window must be positive and level finite");
@@ -112,7 +114,9 @@ std::array<double,2> ContrastPanel::contrast(std::array<double,2> r,std::array<d
 }
 void ContrastPanel::publish(std::array<double,2> r,bool busy,const Publish &effect){
   if(!source_ || busy)throw std::invalid_argument("Choose an idle image before changing contrast");
-  finiteRange(r);effect(*source_,r);draft(r);resolved_=true;error_.clear();
+  finiteRange(r);
+  if(rgbSource()){draft(r);invalidateRgb();}else{effect(*source_,r);draft(r);}
+  resolved_=true;error_.clear();
 }
 std::array<double,2> ContrastPanel::resetRange(int bits)const{
   if(!source_)throw std::invalid_argument("No contrast source");
@@ -124,11 +128,12 @@ std::array<double,2> ContrastPanel::resetRange(int bits)const{
 }
 void ContrastPanel::configureTarget(const TargetRequest &request){
   if(!open_ || !source_)throw std::invalid_argument("Open Brightness/Contrast with a source first");
-  target_.configure(*source_,request);
+  target_.configure(*source_,request,rgbSource());invalidateRgb();
 }
 void ContrastPanel::action(const std::string &name,const Json &p,bool busy,const Publish &effect,const Auto &automatic,int bits,const Apply &apply){
   if(!open_)throw std::invalid_argument("Open Brightness/Contrast first");
   const std::vector<std::string> fields=name=="contrast_range"?std::vector<std::string>{"minimum","maximum"}:
+    name=="contrast_rgb_channels"?std::vector<std::string>{"channels"}:
     name=="contrast_window_level"?std::vector<std::string>{"window","level"}:
     name=="contrast_brightness"||name=="contrast_contrast"?std::vector<std::string>{"value"}:std::vector<std::string>{};
   if(!p.is_object() || p.size()!=fields.size())throw std::invalid_argument("Contrast request requires its exact numeric fields");
@@ -139,9 +144,20 @@ void ContrastPanel::action(const std::string &name,const Json &p,bool busy,const
     if(!resolved_)throw std::invalid_argument("Wait for the source range or set finite endpoints first");
     publish(name=="contrast_brightness"?brightness(range_,domain_,numeric(p,"value")):contrast(range_,domain_,numeric(p,"value")),busy,effect);
   }
+  else if(name=="contrast_rgb_channels"){
+    const auto &value=p.at("channels");
+    if(!rgbSource() || busy || !value.is_number_integer() || value<1 || value>7)throw std::invalid_argument("RGB components require integer bits 1..7 on an idle UInt8 RGB source");
+    rgbChannels_=value.get<int>();invalidateRgb();
+  }
+  else if(name=="cancel_rgb_contrast_preview" || name=="refresh_rgb_contrast_preview"){
+    if(!rgbSource())throw std::invalid_argument("Choose an RGB contrast source first");
+    if(name=="refresh_rgb_contrast_preview" && busy)throw std::invalid_argument("Wait for the current edit");
+    invalidateRgb(name=="refresh_rgb_contrast_preview");rgbCancelEpoch_=cancelEpoch_.load();
+  }
   else if(name=="contrast_reset")publish(resetRange(bits),busy,effect);
   else if(name=="contrast_apply"){
     if(!source_ || busy || !resolved_ || !apply)throw std::invalid_argument("Choose an idle resolved contrast source");
+    if(rgbSource() && !rgbPreview(*source_))throw std::invalid_argument("Wait for the RGB preview before Apply");
     finiteRange(range_);apply(*source_,range_,target_.request());
   }
   else if(name=="contrast_auto"){if(!source_||busy)throw std::invalid_argument("Choose an idle contrast source");automatic(*source_,allChannels_,useSelection_);}
@@ -169,8 +185,8 @@ void ContrastPanel::draw(bool busy,const Publish &effect,const Auto &automatic,c
   const auto &d=source_->data().dataset;const auto &v=source_->display();
   ImGui::Text("Source: T %d  C %d  Z %d",v.t+1,v.c+1,v.crosshair[2]+1);
   if(d.shape().c>1){int c=v.c+1;ImGui::BeginDisabled(busy);if(ImGui::SliderInt("Channel",&c,1,d.shape().c))attempt([&]{select(c-1);});control("channel",!busy);ImGui::EndDisabled();}
-  const bool applyReady=bool(apply) && resolved_ && d.shape().s==1 &&
-    (d.pixel_type()==PixelType::UInt8 || d.pixel_type()==PixelType::UInt16) &&
+  const bool applyReady=bool(apply) && resolved_ && ((d.shape().s==1 &&
+    (d.pixel_type()==PixelType::UInt8 || d.pixel_type()==PixelType::UInt16)) || (rgbSource() && bool(rgbPreview(*source_)))) &&
     d.sample_policy()==FloatingSamplePolicy::FiniteOnly && !boolean(get(metadataJson(source_->data().metadata.extensions),"labels")) && std::isfinite(range_[0]) && std::isfinite(range_[1]);
   ImGui::BeginDisabled(busy||!applyReady);
   if(ImGui::Button("Apply to pixels"))attempt([&]{apply(*source_,range_,target_.request());});control("apply",!busy&&applyReady);
@@ -178,7 +194,17 @@ void ContrastPanel::draw(bool busy,const Publish &effect,const Auto &automatic,c
   if(applying && cancel){ImGui::SameLine();if(ImGui::Button("Cancel Apply"))cancel();control("cancel_apply");}
   ImGui::TextWrapped("Apply changes source pixels and display together; Undo restores both.");
   target_.clearControls();
-  if(ImGui::CollapsingHeader("Apply target"))target_.draw(!busy,false,"Target planes and area");
+  if(ImGui::CollapsingHeader("Apply target") && target_.draw(!busy,false,"Target planes and area"))invalidateRgb();
+  if(rgbSource()){
+    ImGui::TextUnformatted("RGB components");ImGui::BeginDisabled(busy);
+    for(const auto &[label,bits]:std::array<std::pair<const char *,int>,7>{{{"All",7},{"Red",4},{"Green",2},{"Blue",1},{"Red + Green",6},{"Red + Blue",5},{"Green + Blue",3}}}){
+      if(ImGui::RadioButton(label,rgbChannels_==bits)){rgbChannels_=bits;invalidateRgb();}
+      control(("rgb_components_"+std::to_string(bits)).c_str(),!busy);
+    }
+    ImGui::EndDisabled();
+    ImGui::TextWrapped("Preview maps the captured source once; Apply commits that result. Selected planes use the same endpoints.");
+    if(rgbJob_ && !rgbPreview_)ImGui::TextUnformatted("Preparing RGB preview...");
+  }
   if(!heights_.empty()){
     ImGui::PlotHistogram("##source_histogram",heights_.data(),int(heights_.size()),0,"Live source histogram",0,FLT_MAX,{0,95});
     const auto a=ImGui::GetItemRectMin(),b=ImGui::GetItemRectMax();
@@ -190,7 +216,10 @@ void ContrastPanel::draw(bool busy,const Publish &effect,const Auto &automatic,c
     ImGui::Text("Histogram: %.6g to %.6g",lo,hi);
   }
   else ImGui::TextWrapped(histogramSupported(d)?(job_?"Calculating source histogram...":"Source histogram unavailable; refresh to retry."):"Source histogram is unavailable for this sample format. Finite manual ranges remain available.");
-  if(job_){if(ImGui::Button("Cancel histogram"))cancelHistogram();control("cancel_histogram");}
+  if(rgbSource()){
+    if(rgbJob_ && !rgbPreview_){if(ImGui::Button("Cancel RGB preview"))invalidateRgb(false);control("cancel_rgb_preview");}
+    else{ImGui::BeginDisabled(busy);if(ImGui::Button("Refresh RGB preview"))invalidateRgb();control("refresh_rgb_preview",!busy);ImGui::EndDisabled();}
+  }else if(job_){if(ImGui::Button("Cancel histogram"))cancelHistogram();control("cancel_histogram");}
   else{if(ImGui::Button("Refresh histogram"))refresh();control("refresh_histogram");}
   const bool finite=std::isfinite(range_[0])&&std::isfinite(range_[1]);
   if(!resolved_)ImGui::TextWrapped("Set endpoints or wait for the automatic source range before using sliders.");
@@ -203,8 +232,11 @@ void ContrastPanel::draw(bool busy,const Publish &effect,const Auto &automatic,c
   if(ImGui::Button("Set range")||low||high)attempt([&]{publish({minimum_,maximum_},busy,effect);});control("set_range",!busy);
   ImGui::BeginDisabled(!finite||!resolved_);
   double lower=range_[0],upper=range_[1];const double domainLow=std::min(domain_[0],lower),domainHigh=std::max(domain_[1],upper);
+  const bool sliderBounds=domainLow>=-DBL_MAX/2 && domainHigh<=DBL_MAX/2;
+  if(sliderBounds){
   if(ImGui::SliderScalar("Minimum slider",ImGuiDataType_Double,&lower,&domainLow,&domainHigh,"%.6g"))attempt([&]{publish({lower,std::max(lower,upper)},busy,effect);});control("minimum_slider",!busy&&finite);
   if(ImGui::SliderScalar("Maximum slider",ImGuiDataType_Double,&upper,&domainLow,&domainHigh,"%.6g"))attempt([&]{publish({std::min(lower,upper),upper},busy,effect);});control("maximum_slider",!busy&&finite);
+  }else ImGui::TextUnformatted("Use endpoint fields for this large range.");
   double bright=.5,contrastValue=.5;bool normalized=false;
   try{const auto span=width(domain_),w=width(range_);bright=std::clamp((domain_[1]-middle(range_))/span,0.,1.);contrastValue=std::clamp(.5-std::log2(w/span)/8,0.,1.);normalized=true;}catch(const std::exception &){}
   ImGui::BeginDisabled(!normalized);
@@ -230,9 +262,12 @@ void ContrastPanel::draw(bool busy,const Publish &effect,const Auto &automatic,c
 void ContrastPanel::showRebind(const DocumentSnapshot &source,const MetadataObject &record,const ContrastApplyCommandLimits &limits){
   const auto epoch=rebindCancelEpoch_.load();
   TargetRequest admission;admission.roi=RoiPolicy::WholePlane;
-  const auto command=rebind_contrast_apply_command(source,record,admission,limits);
-  RebindReview next{source,record,command.options()};
-  next.target.capture(source);next.cancelEpoch=epoch;
+  const bool rgb=wireRgbRecord(record);
+  ContrastApplyOptions options;int components=0;
+  if(rgb){const auto command=rebind_rgb_contrast_apply_command(source,record,admission,limits);const auto o=command.options();options.minimum=o.minimum;options.maximum=o.maximum;components=o.channels;}
+  else options=rebind_contrast_apply_command(source,record,admission,limits).options();
+  RebindReview next{source,record,options};next.rgbChannels=components;
+  next.target.capture(source);next.target.enablePositions(rgb);next.cancelEpoch=epoch;
   rebind_.emplace(std::move(next));
 }
 void ContrastPanel::tickRebind(const std::optional<DocumentSnapshot> &current){
@@ -245,7 +280,7 @@ void ContrastPanel::tickRebind(const std::optional<DocumentSnapshot> &current){
 }
 void ContrastPanel::configureRebindTarget(const TargetRequest &request,bool busy){
   if(!rebind_ || !rebind_->valid || busy)throw std::invalid_argument("Choose an idle, current Rebind destination");
-  rebind_->target.configure(rebind_->source,request);rebind_->error.clear();
+  rebind_->target.configure(rebind_->source,request,rebind_->rgbChannels!=0);rebind_->error.clear();
 }
 void ContrastPanel::applyRebind(bool busy,const RebindApply &apply){
   if(!rebind_ || !rebind_->valid || busy || !apply)throw std::invalid_argument("Choose an idle, current Rebind destination");
@@ -262,7 +297,8 @@ void ContrastPanel::drawRebind(const std::optional<DocumentSnapshot> &current,bo
   r.focused=ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows);
   if(!expanded){ImGui::End();return;}
   ImGui::Text("Saved mapping: %.10g to %.10g",r.options.minimum,r.options.maximum);
-  if(r.options.unsigned16_bits)ImGui::Text("Saved 16-bit output: %d bits",r.options.unsigned16_bits);
+  if(r.rgbChannels)ImGui::Text("Saved RGB component bits: %d (Red 4, Green 2, Blue 1)",r.rgbChannels);
+  else if(r.options.unsigned16_bits)ImGui::Text("Saved 16-bit output: %d bits",r.options.unsigned16_bits);
   else ImGui::TextUnformatted("Saved 16-bit output: automatic full range");
   const auto &v=r.source.display();
   ImGui::Text("Destination: T %d C %d Z %d",v.t+1,v.c+1,v.crosshair[2]+1);
@@ -289,12 +325,12 @@ Json ContrastPanel::rebindDiagnostics()const{
   return {{"open",true},{"valid",r.valid},{"focused",r.focused},{"error",r.error},
     {"source",{{"id",r.source.id()},{"tcz",{v.t,v.c,v.crosshair[2]}}}},
     {"mapping",{{"minimum",r.options.minimum},{"maximum",r.options.maximum},{"unsigned16_bits",r.options.unsigned16_bits}}},
-    {"target",r.target.diagnostics()},{"controls",r.controls}};
+    {"rgb_channels",r.rgbChannels},{"target",r.target.diagnostics()},{"controls",r.controls}};
 }
 Json ContrastPanel::diagnostics()const{
   Json result={{"open",open_},{"focused",focused_},{"range",displayRangeValue(range_)},{"domain",displayRangeValue(domain_)},
     {"controls",controls_},{"apply_target",target_.diagnostics()},{"error",error_},{"submitted",submitted_},{"published",published_},{"discarded",discarded_},
-    {"range_resolved",resolved_},{"histogram_pending",bool(job_)},{"histogram",nullptr}};
+    {"rgb",rgbDiagnostics()},{"range_resolved",resolved_},{"histogram_pending",bool(job_)},{"histogram",nullptr}};
   if(source_)result["source"]={{"id",source_->id()},{"tcz",{source_->display().t,source_->display().c,source_->display().crosshair[2]}},{"pixels_revision",source_->revisions().pixels}};
   if(histogram_)result["histogram"]={{"counts",histogram_->histogram.counts},{"edges",histogram_->histogram.edges},
     {"minimum",histogram_->plane_minimum?Json(*histogram_->plane_minimum):Json(nullptr)},

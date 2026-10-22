@@ -1,6 +1,7 @@
 #include "operation_target_panel.hpp"
 
 #include <charconv>
+#include <set>
 #include <stdexcept>
 #include <string_view>
 #include <imgui.h>
@@ -52,6 +53,10 @@ const char *roiName(RoiPolicy policy) {
 }
 
 std::size_t ordinal(const ResolvedTarget &target, PlanePosition position) {
+  if(target.scope()==TargetScope::Positions){
+    for(std::size_t i=0;i<target.position_count();++i){const auto p=target.position(i);if(p.t==position.t && p.c==position.c && p.z==position.z)return i;}
+    throw std::out_of_range("Preview position is outside the explicit list");
+  }
   // The panel emits compact ranges, never a list proportional to plane count.
   // Their native resolver has already checked the complete count for overflow.
   const auto &ranges = target.ranges();
@@ -84,6 +89,8 @@ void OperationTargetPanel::capture(const DocumentSnapshot &source) {
     axes_[i].last.text = std::to_string(extents[i]);
     axes_[i].step.text = "1";
   }
+  allowPositions_=explicitPositions_=false;
+  positions_={Json::array({Json::array({capturedPosition_.t+1,capturedPosition_.c+1,capturedPosition_.z+1})}).dump(),false};
   samples_ = shape.s;
   hasSelection_ = bool(source.data().selection);
   roi_ = RoiPolicy::ActiveSelection;
@@ -98,11 +105,16 @@ void OperationTargetPanel::capture(const DocumentSnapshot &source) {
   resetControls();
 }
 
-void OperationTargetPanel::configure(const DocumentSnapshot &source,const TargetRequest &request) {
-  if(request.scope==TargetScope::Positions || request.mode!=ExecutionMode::Planes || request.destination!=OutputDestination::InPlace)
+void OperationTargetPanel::configure(const DocumentSnapshot &source,const TargetRequest &request,bool allow_positions) {
+  if((request.scope==TargetScope::Positions && !allow_positions) || request.mode!=ExecutionMode::Planes || request.destination!=OutputDestination::InPlace)
     throw std::invalid_argument("Target controls require in-place plane ranges");
+  if(request.positions.size()>4096)throw std::invalid_argument("Target controls support at most 4096 explicit planes");
   const auto resolved=resolve_target(source,request);
-  OperationTargetPanel next;next.capture(source);
+  OperationTargetPanel next;next.capture(source);next.allowPositions_=allow_positions;
+  if(request.scope==TargetScope::Positions){
+    Json rows=Json::array();for(const auto &p:resolved.explicit_positions())rows.push_back({p.t+1,p.c+1,p.z+1});
+    next.positions_={rows.dump(),false};next.explicitPositions_=true;
+  }else
   for(std::size_t i=0;i<3;++i){auto &axis=next.axes_[i];const auto &r=resolved.ranges()[i];
     axis.mode=r.start==axis.captured && *r.stop==axis.captured+1 && r.step==1?Mode::Current:r.start==0 && *r.stop==axis.extent && r.step==1?Mode::All:Mode::Range;
     axis.first={std::to_string(r.start+1),false};axis.last={std::to_string(*r.stop),false};axis.step={std::to_string(r.step),false};
@@ -134,10 +146,26 @@ TargetRequest OperationTargetPanel::request() const {
     throw std::invalid_argument(
         "Finish editing the preview plane with Enter or by leaving the field");
   TargetRequest result;
-  result.scope = TargetScope::Ranges;
-  result.t = range(axes_[0]);
-  result.c = range(axes_[1]);
-  result.z = range(axes_[2]);
+  if(explicitPositions_){
+    if(!allowPositions_ || positions_.pending)throw std::invalid_argument("Finish editing explicit planes with Enter or by leaving the field");
+    if(positions_.text.size()>1048576)throw std::invalid_argument("Explicit plane text exceeds 1 MiB");
+    const auto rows=Json::parse(positions_.text);
+    if(!rows.is_array() || rows.empty() || rows.size()>4096)throw std::invalid_argument("Choose 1..4096 explicit T/C/Z planes");
+    std::set<std::array<int,3>> seen;
+    for(const auto &row:rows){
+      if(!row.is_array() || row.size()!=3)throw std::invalid_argument("Explicit planes require [T,C,Z] integer rows");
+      std::array<int,3> values{};
+      for(std::size_t i=0;i<3;++i){if(!row[i].is_number_integer() || row[i]<1 || row[i]>axes_[i].extent)throw std::invalid_argument("Explicit plane is outside captured T/C/Z extents");values[i]=row[i].get<int>()-1;}
+      if(!seen.insert(values).second)throw std::invalid_argument("Duplicate explicit plane");
+      result.positions.push_back({values[0],values[1],values[2]});
+    }
+    result.scope=TargetScope::Positions;
+  }else{
+    result.scope = TargetScope::Ranges;
+    result.t = range(axes_[0]);
+    result.c = range(axes_[1]);
+    result.z = range(axes_[2]);
+  }
   result.roi = roi_;
   result.mode = ExecutionMode::Planes;
   result.destination = OutputDestination::InPlace;
@@ -145,7 +173,7 @@ TargetRequest OperationTargetPanel::request() const {
 }
 
 void OperationTargetPanel::resolvePreview(const ResolvedTarget &target) {
-  if (target.scope() != TargetScope::Ranges || !target.position_count())
+  if ((target.scope() != TargetScope::Ranges && !(allowPositions_ && target.scope()==TargetScope::Positions)) || !target.position_count())
     throw std::logic_error("Operation panel requires a nonempty range target");
   const auto count = target.position_count();
   PlanePosition selected;
@@ -207,7 +235,7 @@ void OperationTargetPanel::control(const std::string &name, bool enabled,
                                   std::optional<float> width) {
   const auto minimum = ImGui::GetItemRectMin();
   auto maximum = ImGui::GetItemRectMax();
-  if (width)
+  if (width && *width>0)
     maximum.x = minimum.x + *width;
   controls_[name] = {(minimum.x + maximum.x) * .5f,
                      (minimum.y + maximum.y) * .5f};
@@ -248,7 +276,13 @@ bool OperationTargetPanel::draw(bool enabled,bool preview_ordinal,const char *he
   constexpr std::array<std::size_t, 3> order{1, 2, 0};
   constexpr std::array<const char *, 3> names{"t", "c", "z"};
   constexpr std::array<const char *, 3> labels{"T", "C", "Z"};
-  for (const auto index : order) {
+  if(allowPositions_){
+    if(ImGui::Checkbox("Explicit plane list",&explicitPositions_))changed=true;control("positions.enabled",enabled);
+  }
+  if(explicitPositions_){
+    ImGui::TextWrapped("Enter [[T,C,Z], ...] using 1-based indices, up to 4096 planes. Order is preserved; duplicates are rejected.");
+    changed|=field("Planes","positions",positions_,-1,enabled);
+  }else for (const auto index : order) {
     auto &axis = axes_[index];
     ImGui::PushID(names[index]);
     ImGui::Text("%s: 1-%d (captured %d)", labels[index], axis.extent,
@@ -333,7 +367,8 @@ OperationTargetPanel::PreviewDraw OperationTargetPanel::drawPreview(
   ImGui::SeparatorText("Frozen target and preview");
   ImGui::Text("Selected XY planes: %zu", target.position_count());
   const auto &ranges = target.ranges();
-  ImGui::Text("C %d-%d step %d; Z %d-%d step %d; T %d-%d step %d",
+  if(target.scope()==TargetScope::Positions)ImGui::Text("Explicit planes in selected order: %zu",target.position_count());
+  else ImGui::Text("C %d-%d step %d; Z %d-%d step %d; T %d-%d step %d",
               ranges[1].start + 1, *ranges[1].stop, ranges[1].step,
               ranges[2].start + 1, *ranges[2].stop, ranges[2].step,
               ranges[0].start + 1, *ranges[0].stop, ranges[0].step);
@@ -393,6 +428,7 @@ Json OperationTargetPanel::diagnostics() const {
          {"step", fieldInfo(axis.step)}};
   }
   return {{"captured", captured_},
+          {"explicit_positions",{{"supported",allowPositions_},{"enabled",explicitPositions_},{"text",positions_.text},{"pending",positions_.pending}}},
           {"axes", std::move(axes)},
           {"roi_policy", roiName(roi_)},
           {"has_active_selection", hasSelection_},

@@ -2,7 +2,7 @@
 #include "desktop.hpp"
 #include "operation_target_panel.hpp"
 #include <imagejxx/histogram_job.hpp>
-#include <imagejxx/contrast_apply_command.hpp>
+#include <imagejxx/rgb_contrast_apply_job.hpp>
 #include <functional>
 #include <atomic>
 
@@ -32,9 +32,15 @@ public:
   bool inputActive()const;
   static bool handles(const std::string &);
   void request_cancel(JobScheduler &);
-  bool wait_for(std::chrono::milliseconds timeout)const{return !job_||job_->wait_for(timeout);}
+  bool wait_for(std::chrono::milliseconds)const;
+  bool rgbSource()const;
+  int rgbChannels()const{return rgbChannels_;}
+  std::optional<DocumentSnapshot> rgbPreview(const DocumentSnapshot &)const;
+  const ResolvedTarget *rgbPreviewTarget(const DocumentSnapshot &)const;
+  std::uint64_t rgbPreviewGeneration()const{return rgbGeneration_;}
+  ContrastApplyJob takeRgbPreview(const ResolvedRgbContrastApplyCommand &);
   void sourceClosed(std::uint64_t);
-  void tick(const std::optional<DocumentSnapshot> &,bool,JobScheduler &,DatasetHistogramLimits);
+  void tick(const std::optional<DocumentSnapshot> &,bool,JobScheduler &,DatasetHistogramLimits,const ContrastApplyCommandLimits & = {});
   void draw(bool,const Publish &,const Auto &,const std::function<void(int)> &,int unsigned16_bits,const Apply & = {},bool applying=false,const std::function<void()> &cancel={});
   void action(const std::string &,const Json &,bool,const Publish &,const Auto &,int unsigned16_bits,const Apply & = {});
   Json diagnostics()const;
@@ -47,6 +53,7 @@ private:
     MetadataObject original;
     ContrastApplyOptions options;
     OperationTargetPanel target;
+    int rgbChannels=0;
     bool valid=true,focus=true,focused=false;
     std::uint64_t cancelEpoch=0;
     std::string error;
@@ -55,6 +62,19 @@ private:
   std::optional<RebindReview> rebind_;
   std::atomic<std::uint64_t> rebindCancelEpoch_{0};
   OperationTargetPanel target_;
+  std::optional<ResolvedRgbContrastApplyCommand> rgbCommand_;
+  std::optional<ContrastApplyJob> rgbJob_;
+  std::optional<DocumentSnapshot> rgbPreview_;
+  std::optional<DocumentSnapshot> rgbSource_;
+  ContrastApplyCommandLimits rgbLimits_;
+  int rgbChannels_=7;
+  bool rgbAttempted_=false;
+  std::uint64_t rgbGeneration_=0,rgbSubmitted_=0,rgbDiscarded_=0;
+  std::atomic<std::uint64_t> rgbCancelId_{0};
+  std::uint64_t rgbCancelEpoch_=0;
+  void invalidateRgb(bool retry=true);
+  void tickRgb(bool,JobScheduler &,const ContrastApplyCommandLimits &);
+  Json rgbDiagnostics()const;
   bool open_=false,focus_=false,focused_=false,histogramAttempted_=false;
   bool allChannels_=false,useSelection_=true,resolved_=false;
   std::string key_,error_;
