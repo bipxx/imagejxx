@@ -1100,6 +1100,14 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     target_link_libraries(imagejxx_desktop PRIVATE comdlg32 gdi32)
   endif()
   if(BUILD_TESTING)
+    add_executable(imagejxx_rgb_combined_input_tests tests/native/test_rgb_combined_input.cpp)
+    target_link_libraries(imagejxx_rgb_combined_input_tests PRIVATE imagejxx_desktop)
+    add_test(NAME desktop_rgb_combined_input COMMAND ${CMAKE_COMMAND}
+      -DTEST_EXECUTABLE=$<TARGET_FILE:imagejxx_rgb_combined_input_tests>
+      -DWORK_ROOT=${CMAKE_CURRENT_BINARY_DIR}/rgb-combined-input-tests
+      -DTEST_TIMEOUT_SECONDS=60
+      -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/RunOwnedFixtureTest.cmake)
+    set_tests_properties(desktop_rgb_combined_input PROPERTIES TIMEOUT 65)
     add_executable(imagejxx_contrast_panel_tests tests/native/test_contrast_panel.cpp)
     target_link_libraries(imagejxx_contrast_panel_tests PRIVATE imagejxx_desktop)
     add_test(NAME desktop_contrast_panel COMMAND ${CMAKE_COMMAND}

@@ -144,6 +144,14 @@ The final live visit remains protected; all authored history is admitted before
 adoption. Broader real transition-input and platform/resource qualification
 remain open. See `reviews/p12d-rgb-visit001.json`. See `reviews/p12b-rgb-stage-edit001.json`.
 
+Combined actual ImGui input now consumes the existing 504 ellipse → Deselect →
+rectangle ImageJ traces across every component pair, axis, direction and ending.
+The C++ session drives real canvas, range/navigation, Reset/Auto and Apply input;
+independent readers check exported full-stack bytes and control observations.
+Scientific Select all/Deselect/Restore now use the native controller without
+legacy sample materialization. See [the input contract](RGB_GESTURE_INPUT.md).
+Other shapes and richer gesture/presentation/resource cases remain open.
+
 ## Observed behavior
 
 `RgbContrastNavigationReference.java` invokes actual ImageJ 1.54r

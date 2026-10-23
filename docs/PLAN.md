@@ -1,5 +1,23 @@
 # ImageJ and Fiji gap closure plan
 
+**Native selection menus and combined RGB input, 2026-10-23 (work in progress):**
+Scientific/native documents now support Select all, Deselect and Restore through
+the native selection controller, with idle active-owner checks and no pixel IO.
+The new combined input consumer drives the ROI manager, ellipse/rectangle canvas
+gestures, component/stack controls, range text fields, T/C/Z departure/return,
+Reset, Auto and Apply in one ImGui session per independent ImageJ trace. All 42
+component pairs, axes, directions and endings form 504 unique physical traces.
+Published stack bytes, final range/cycle, full records and paired history are
+checked by the C++ consumer and an independent Python observation reader.
+Windows/Linux each pass all 504 traces and 504 independent byte/control readers,
+7,066 installed selection/shortcut/RGB checks, eight isolated core-only shortcut
+checks, seven native groups and three standalone probes, zero failure/error/skip.
+The 12-trace CTest subset and readers reuse the same 504 gesture identities; they
+are not additional unique gesture executions. Other shapes,
+richer gesture histories, real OpenGL presentation, platform/resource acceptance
+and full ImageJ/Fiji requirements remain open. All99 triples and the historical
+Auto evidence gate remain unchanged. See [combined RGB input](parity/RGB_GESTURE_INPUT.md).
+
 **RGB visit authoring and cross-visit transfer, 2026-10-23 (work in progress):**
 The native editor and Python binding now insert, reposition, reorder and remove
 historical visits, and transfer complete frozen stages between visits. The final

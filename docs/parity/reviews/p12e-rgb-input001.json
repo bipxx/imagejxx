@@ -1,0 +1,1049 @@
+{
+  "schema_version": 1,
+  "id": "p12e.native-selection-and-rgb-input.001",
+  "date": "2026-10-23",
+  "state": "scoped-qualified",
+  "acceptance": false,
+  "complete_requirement_coverage": false,
+  "baseline_commit": "12d36bd",
+  "scope": "Scientific/native Select all, Deselect and Restore now route through the C++ controller before the legacy materialization path, requiring an idle active owner and exact parameter fields. Pixel storage/navigation/Undo history remain unchanged and no samples are read; legacy documents retain their route. No new workflow record format is claimed for these metadata commands. New C++ HeadlessInputSession consumer executes an ellipse-to-Deselect-to-rectangle history against the existing independent ImageJ 1.54r combined fixture. All42 component pairs, three axes, both directions and manual/Auto endings form504 unique traces per host. Fixture preparation owns synthetic pixels, initial position/camera and floating-panel placement. ROI-manager authorization, both canvas drags, selection-menu cycle, components/stack, finite range text, T/C/Z departure/return, Reset, optional Auto and Apply are actual pointer/key deliveries. Final full-stack UInt8 observations are exported and independently hashed against the unchanged reference; ranges/cycles, full captures, pre-Apply pixel identity, current selection/navigation and paired history are checked. Seven new installed selection cases verify metadata-only routing and strict active-owner/schema behavior across RGB/U8/U16/float sources. Windows/Linux each pass504 actual traces,504 separate byte/control readers of those same executions,7066 installed API/editor regressions,8 isolated core shortcut checks,7 native groups (including a12-trace subset) and3 standalone app probes, zero failure/error/skip. The reader/subset are not extra unique gesture identities. Exact package/three-extension/app bytes in earlier tested005 and retained007 prefixes match; final native007 source seals pass. Core shortcut origins are checked in a no-desktop process and child. Initial C++ harness had an ambiguous Document namespace and incorrect member spelling; corrected harness only. CTest first requested180 seconds but the existing wrapper refused its1..60 bound; registration now uses60 without changing the wrapper. The first copied Windows probe lacked runtime DLLs and did not start; retained final probe copies/pins its actual DLLs. Linux preliminary full504 passed. Initial Windows full run stopped after271 traces on a requested range mismatch; the final driver refreshes moving hit geometry and verifies/retries text focus before typing, retaining all delivery observations and unchanged numerical/pixel expectations. A focused reproduction and final full504 pass on both hosts use that exact driver. No processing change is attributed to that delivery failure. One negative selection fixture was legacy-compatible and therefore exercised the intentionally unchanged legacy route; corrected to a T-axis scientific source. The shortcut core contract initially lacked required origin metadata in a mixed UI run; it now passes separately with actual installed origins and no desktop module. A reader dependency-path setup refusal is retained; final reader adds the existing pytest dependency site. Reader junction detection uses a compatibility fallback, with all504 readers rerun. Owned disposable environments, duplicate prefixes, pytest/native fixtures, prototype and preliminary matrix outputs are CRC/member-SHA archived before confined removal. Final full raw matrices/control observations, tested installs, native carriers, probes, reports, logs and useful caches remain. Other shapes/irregular or non-area gestures, richer visits, OS/OpenGL presentation and full ImageJ/Fiji/platform/resource acceptance remain open. All99 original triples, old accepted runs/expectations and historical Auto fingerprint failure are unchanged.",
+  "sources": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 111819,
+      "sha256": "44e38de509abf56476ea115f9d5fd6149cba3d98d7313067e75470366864d3ad"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 708200,
+      "sha256": "b18747a6991102a6415901147292d2aad3fc57668c4601adca8407c546628974"
+    },
+    {
+      "path": "tests/native/test_rgb_combined_input.cpp",
+      "bytes": 11723,
+      "sha256": "ac3cf6e12675d593ebe13130609b602ead2872ced310fa272e34e90e3a0a109c"
+    },
+    {
+      "path": "tests/python/test_native_selection_actions.py",
+      "bytes": 2492,
+      "sha256": "3e14f199b2b0173e65943f490beafff5fc87ba5df9096b36c2939ed910d0eaee"
+    },
+    {
+      "path": "tests/python/test_rgb_combined_input.py",
+      "bytes": 3155,
+      "sha256": "7f74d59cd90eb11f3870b92efafecdc18924a901837a02c69805acdf60ec8da3"
+    },
+    {
+      "path": "tests/fixtures/rgb-contrast-combined-imagej154r.json",
+      "bytes": 5218551,
+      "sha256": "91bac51bb07ea229569ed64b1aee6879c0428ec6ecff8eb29e431b94eb5cb455"
+    },
+    {
+      "path": "docs/PLAN.md",
+      "bytes": 471914,
+      "sha256": "2b1d70a248bae86bc14f96576707f13d663bbc0997cf1c439b76938ca31e9568"
+    },
+    {
+      "path": "docs/IMPLEMENTATION.md",
+      "bytes": 177138,
+      "sha256": "f815e524f86cceb63bc59944a3fc168f75fefa8586bb169db3e7ac7d61b0497b"
+    },
+    {
+      "path": "docs/parity/RGB_NAVIGATION.md",
+      "bytes": 19344,
+      "sha256": "363b1ea481bfa11767242d14b398ff473f7eadbc36d7e6059e878daf0bf4ec2a"
+    },
+    {
+      "path": "docs/parity/RGB_GESTURE_INPUT.md",
+      "bytes": 3932,
+      "sha256": "bc84a9775155b5914661c4d3d4b7e0a5da98b9d56f7854e013a00ceb075d5500"
+    },
+    {
+      "path": "docs/parity/inventory.json",
+      "bytes": 11019626,
+      "sha256": "b2e76f1e8fba0cbb96d832f0e5f8a0266edfc6eb0a37aa6b5394f00d0c349fba"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "build/p12e-rgb-input001/check_licenses001.log",
+      "bytes": 53,
+      "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+    },
+    {
+      "path": "build/p12e-rgb-input001/check_plan001.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    },
+    {
+      "path": "build/p12e-rgb-input001/cleanup001.py",
+      "bytes": 6262,
+      "sha256": "1f2e98814b761a67c01d8cb0c29581fb4951f570849b49ded1c027aea31dea1d"
+    },
+    {
+      "path": "build/p12e-rgb-input001/combined001.py",
+      "bytes": 1299,
+      "sha256": "98acf983d18e01a69c49c6f6e44662cbd98dcfdd51e55ce87922074abe157be9"
+    },
+    {
+      "path": "build/p12e-rgb-input001/combined002.py",
+      "bytes": 1513,
+      "sha256": "b9f6892061de5460e33ad010a31b192c0f0e11e8f487b3eed368531cc2079f59"
+    },
+    {
+      "path": "build/p12e-rgb-input001/combined003.py",
+      "bytes": 1513,
+      "sha256": "91dbe8e567c3f8e5e01adcbda5271fab8c8fda318ba34d7eac3f0d1beff57301"
+    },
+    {
+      "path": "build/p12e-rgb-input001/core-shortcuts001.py",
+      "bytes": 2100,
+      "sha256": "84fbb3b544af19f7e8e060f4598decefa4d74cfe6fc1f54a932b3172bf0c1dc6"
+    },
+    {
+      "path": "build/p12e-rgb-input001/docs001.py",
+      "bytes": 2588,
+      "sha256": "3fb762c5cd8733296a2cdaafb7f7fb21224ef50b2e0f81664b64b6bfc95c35c9"
+    },
+    {
+      "path": "build/p12e-rgb-input001/edit001.py",
+      "bytes": 1479,
+      "sha256": "1c85034f93bbad91ee7a9f8342266d45a5892b6f8937564934d070332e3bee0e"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-build001.log",
+      "bytes": 27736,
+      "sha256": "5ed6938b77767cede0bf27b25dcd510d3c356a78389b6d0be02108019e5e0dff"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-cleanup001.json",
+      "bytes": 89089,
+      "sha256": "06eeece8efa6c14799f860456e65780bc305fad4a553b7efa61c30fcbbf309ce"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-combined001/execute.log",
+      "bytes": 15012,
+      "sha256": "cea128db899d9a9ce9044fe243082cca4cfbb287f4e878a44791fb2b691e855f"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-combined001/receipt.json",
+      "bytes": 514,
+      "sha256": "41d3523e91c568ce0c4a37eb08c07799062a8eac492dec4bf43d8297a95d782c"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-combined003/execute.log",
+      "bytes": 15012,
+      "sha256": "cea128db899d9a9ce9044fe243082cca4cfbb287f4e878a44791fb2b691e855f"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-combined003/receipt.json",
+      "bytes": 541,
+      "sha256": "9edc3d73730b649fc3f33bc845ed811463f4d7c8bd156e53604c1dfa39630d4a"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-configure001.log",
+      "bytes": 550,
+      "sha256": "1f16e7d7a45a1c2b518080fb446d2d27de9c075fe8413ff6b64e26f117970068"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-core-shortcuts001/origins.json",
+      "bytes": 1174,
+      "sha256": "ffd57c5282a85470c56d3037b78ca1a0d540266cf7c7a81f2413f012b8d2bf86"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-core-shortcuts001/pytest.xml",
+      "bytes": 1099,
+      "sha256": "e5b55e25a1857e7c8bdef5af8c048d034564ae978f62888f3e30cb31be191120"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-core-shortcuts001/receipt.json",
+      "bytes": 1410,
+      "sha256": "2e91ae55d67362bf3d1c530bd7a43850d3b0f6e53afd391947526951de5752ec"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-product-equivalence007.json",
+      "bytes": 2748,
+      "sha256": "c86e4284fc594c195e233e1a3d2afccf3123afacc8ed57086d7bfe0d78d56ff0"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-products001.json",
+      "bytes": 5279,
+      "sha256": "b8481d6d9d28b2c139e04fd49908276afca37b0aef0cac8139d41dde646b421f"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-python005/collection.json",
+      "bytes": 943310,
+      "sha256": "1e66841fe0e7906b2602bf5e9baa13c3afe591e86eb8a58f1080633b38e6e7f5"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-python005/pytest.xml",
+      "bytes": 1490,
+      "sha256": "70076cc866ef5dbb50c5a079236a7348b5fd7486f04054504f88e2fca5717047"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-python005/receipt.json",
+      "bytes": 3202,
+      "sha256": "1d9d57fc4cb255885156e27f0155ba7577f0fc9e31541d48b196224a4cd0a536"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-python006/collection.json",
+      "bytes": 943310,
+      "sha256": "1e66841fe0e7906b2602bf5e9baa13c3afe591e86eb8a58f1080633b38e6e7f5"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-python006/pytest.xml",
+      "bytes": 74295,
+      "sha256": "c945a2c5872e6871aff4ede5958c2e53f5b72c2e4dfeedc727bfc08196a37af5"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-python006/receipt.json",
+      "bytes": 3204,
+      "sha256": "7184ff21fb7243c49116b8f50267183db0d86bcb11f69a3c5d7bea9338098e66"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-python007/collection.json",
+      "bytes": 942732,
+      "sha256": "7f247b53026f847228fdf0472b2b94f7a1f34f35e9410ce67528956ac4892602"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-python007/pytest.xml",
+      "bytes": 1190397,
+      "sha256": "17855227e88ffbc33b7a6589cc9ebc5ae4eaef46631258b2d9bc0e66e41e1a08"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-python007/receipt.json",
+      "bytes": 3064,
+      "sha256": "271be998ac63976762c2e7a9cfd73bb957544d218593b52cda6d9e95ddbc254c"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified004/build.log",
+      "bytes": 1746,
+      "sha256": "52bfe8d646d393fa1f255f6b4d935a897c246c973be597f3a86635a472240f31"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified004/configure.log",
+      "bytes": 545,
+      "sha256": "909f18bbe0c7848c26d4f5190cc05e4b861f1e4d16a3cac5d798f520f7ea67d3"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified004/native.log",
+      "bytes": 1356,
+      "sha256": "7c91dbd2e50c006027321fcc976c81315d0eb397ddd2b92836e5ed0a6cefcc16"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified004/native.xml",
+      "bytes": 2434,
+      "sha256": "11ea1e87046dad873a161541ccebc2541f331a702326aecb4fb1fe5db8f03cdd"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified005/build.log",
+      "bytes": 1328,
+      "sha256": "dd1be7edd50b0433e3c82e4f0258ad7f60fde7b6e72463ddb9f5b55f4b493fd3"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified005/configure.log",
+      "bytes": 544,
+      "sha256": "693c0e8c9af54aba5e951d8548a38da62a7b25e0a67c60135ac3cdb56018441f"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified005/install-desktop.log",
+      "bytes": 2962,
+      "sha256": "aef82608c30590c4250180c8a920cc4596c44ee561070863c223c81c776f51fe"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified005/install-development.log",
+      "bytes": 16028,
+      "sha256": "4ffd65c6ba288eb694f609c59e50722412a3ca4784e4aac0bfc8560e7e8f2f66"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified005/install-io-development.log",
+      "bytes": 716,
+      "sha256": "9d8e75c0df327ff3d1040a9ee52e2eae91666dffa41a15e2a21a80f88bc76fba"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified005/install-processing-python.log",
+      "bytes": 4725,
+      "sha256": "7489cd489e025f19422bdcdc786e04fd1d932ff5ea5e31d6d3051637ffd475bd"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified005/install-scientific-python.log",
+      "bytes": 4879,
+      "sha256": "7bfb2a1ec078b58907d8e63b50eb8c724b75a755583c9980ed708cebe41d1639"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified005/install-Unspecified.log",
+      "bytes": 3086,
+      "sha256": "fe1c74afdad6583fc70c5a6470c71d6fd236c58ae47c5ce8b0e7fb5fe2f4373a"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified005/native.log",
+      "bytes": 1074,
+      "sha256": "ded8cda55a77c86d1db1498fc6c122ae64f7e552152ee7df8003116ec0d5e128"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified005/native.xml",
+      "bytes": 2700,
+      "sha256": "1043fbdb90e672ea37ded274507892dc65b1cae2d51d5f31995256473e3d6c49"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified005/receipt.json",
+      "bytes": 11869,
+      "sha256": "eed35d7287a69265dce74efa9f8afc758471c7fd99e1d626c36f2af7191308be"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified005/venv-install-processing-python.log",
+      "bytes": 5021,
+      "sha256": "847633cb5ed8f0c9dba8558cb14a27d089cca2ceb4cd5573bf31cab8685db031"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified005/venv-install-scientific-python.log",
+      "bytes": 5183,
+      "sha256": "97efa0a4d3680b975065f30b9771378b06d81cd4cd5fb9c40613203f1218cc02"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified005/venv-install-Unspecified.log",
+      "bytes": 3270,
+      "sha256": "3359b7f7a10df4f6b4d830844bcf6facbc3f71ea59edd3debdf0120d746ef70d"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified005/venv.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified007/build.log",
+      "bytes": 1511,
+      "sha256": "3d5cc47a65d93a467b5b50d7808efe0d21b8da6a7584b992750dd1c62983f161"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified007/configure.log",
+      "bytes": 545,
+      "sha256": "15ddc127435acafb004330adc3149afed3712e605728221648b9e2628f58a3ef"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified007/install-desktop.log",
+      "bytes": 2962,
+      "sha256": "6b4704b325f4fc580289adf1f07c673ee9fa7227417f3907702cd21592123787"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified007/install-development.log",
+      "bytes": 16028,
+      "sha256": "4daadce1998913ac9f412ff0a94c3b4108fe37ecef0d9bd7e941b030c87263b2"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified007/install-io-development.log",
+      "bytes": 716,
+      "sha256": "91529c166ad2735a413e007168f62e7ed2f6b6b276b3732d6c08be3fb153c266"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified007/install-processing-python.log",
+      "bytes": 4725,
+      "sha256": "c53e35f147d804dc1fe15b6513c3655d504789cf23540ae89547e971215e6d44"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified007/install-scientific-python.log",
+      "bytes": 4879,
+      "sha256": "628d0e3f4eab6cd733dfb6d43d56e6e6a47ebbb3b92cd2e9ec744a884e263714"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified007/install-Unspecified.log",
+      "bytes": 3086,
+      "sha256": "1f22e210999908d936a629ed8ff1fb17a95b5df2a0e99293d4f8ae4447305320"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified007/native.log",
+      "bytes": 1074,
+      "sha256": "19cae9eee144d675867708629a0ffcfebdda85f2710b1b4bf6c37075afe012df"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified007/native.xml",
+      "bytes": 2701,
+      "sha256": "619e22b78e03ba9184132b4ee2954e7a154d59cc5d29e1b517613dfa98110d7b"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified007/receipt.json",
+      "bytes": 11869,
+      "sha256": "5ba2ea2564e6650bdbd582a861028d9b510d853527d365d27a7bd5a6bb387343"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified007/venv-install-processing-python.log",
+      "bytes": 5021,
+      "sha256": "6b02204084fc65ec3380dcd59f48ab5d1411266e867501eb59c6fdbad20b283e"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified007/venv-install-scientific-python.log",
+      "bytes": 5183,
+      "sha256": "616973df7c94b1c7bb09f593e9d0ea7caa59fad75305a2ee08332258fb125823"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified007/venv-install-Unspecified.log",
+      "bytes": 3270,
+      "sha256": "98a3c6e4b6fad21763872df58698b411c390dc988cfe6092ae31271bbf48aa91"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-qualified007/venv.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-reader-smoke002/pytest.xml",
+      "bytes": 80884,
+      "sha256": "c7bc50697fe3c0c5d7d8dc7b248f34d2125453698a3fa2e1e23403d8922b2fa1"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-reader-smoke002/receipt.json",
+      "bytes": 88767,
+      "sha256": "ca54339923705abedd7bcafee250ff37ced5733acff620996e540379a8ed0c7d"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-reader001/pytest.xml",
+      "bytes": 80883,
+      "sha256": "f37ec515385efd34b30437fb51cef31eca2ecddf4d0d66ca7dad1b04b0018b8c"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-reader001/receipt.json",
+      "bytes": 88767,
+      "sha256": "1d625b83e0bd69006ae98d0bc18ad535e0cccbd568ea10177522f31c826b6a5b"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-reader002/pytest.xml",
+      "bytes": 80883,
+      "sha256": "1f38f5ed851c76d2cf04b8b466a7ed59078e96d067f411863e34a092bccde653"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-reader002/receipt.json",
+      "bytes": 88765,
+      "sha256": "488cce534d92429a9f87e329aafc2a615b1b058a1a736d84c184072368d251c0"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-ui001/batch-case-retained001.json",
+      "bytes": 21262334,
+      "sha256": "77f162c4ad87c33fdf56317a8bbee7564d52bb98cc766b3f8c6c5c66e2860929"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-ui001/batch.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-ui001/receipt.json",
+      "bytes": 834,
+      "sha256": "13ad16233d577c63cd67e3ef64075b62631d8672484efaffd0083017da2a2e06"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-ui001/rgb-case-retained001.json",
+      "bytes": 69730775,
+      "sha256": "e818e7398649d53c9aeb0c2dc4a1acfebcbabbff4d9ccecbf42f899b934be214"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-ui001/rgb.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-ui001/workflow-case-retained001.json",
+      "bytes": 51315295,
+      "sha256": "d7d8b9beaf2c7c40025195b7706c4e6cd6ce25279115666f4467a001380903ae"
+    },
+    {
+      "path": "build/p12e-rgb-input001/linux-ui001/workflow.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12e-rgb-input001/preliminary-cleanup001.json",
+      "bytes": 162759,
+      "sha256": "1a5671cea802ac145d171036d159578e4c0a0cc192730d2e7ec0c75c6563e01d"
+    },
+    {
+      "path": "build/p12e-rgb-input001/python005.py",
+      "bytes": 2693,
+      "sha256": "5a7d9e16c1f3375997f9a97d1d216cc479a1da089b33b017b903a603af904f4e"
+    },
+    {
+      "path": "build/p12e-rgb-input001/python006.py",
+      "bytes": 2693,
+      "sha256": "7c565e2de91154fc68446fae3730b1011e251bcdce81076d59f46796281248f0"
+    },
+    {
+      "path": "build/p12e-rgb-input001/python007.py",
+      "bytes": 2676,
+      "sha256": "05f09a5047a6a1b0f20461538c1a53297a942f10dd17a06751b55ca41588d21f"
+    },
+    {
+      "path": "build/p12e-rgb-input001/qualify004.py",
+      "bytes": 3032,
+      "sha256": "ea155ed1569d4037e55a8437e88d0c123b26fdd823f5de62310734f109e6220f"
+    },
+    {
+      "path": "build/p12e-rgb-input001/qualify005.py",
+      "bytes": 3032,
+      "sha256": "f589f0c750ff6618bfe5b9c896a285fc9008fb0af4bbe3d7ef69bfaa0f84813c"
+    },
+    {
+      "path": "build/p12e-rgb-input001/qualify007.py",
+      "bytes": 3032,
+      "sha256": "ad7c78b0473c2b8d1c2e151f2744029ed79286d98e03c4626a1f7462bc87377c"
+    },
+    {
+      "path": "build/p12e-rgb-input001/reader-smoke001.py",
+      "bytes": 1443,
+      "sha256": "76327fb5e75d75915e9f1b59241a81b8be057abc449ea72c28a2e6d5f162ffe5"
+    },
+    {
+      "path": "build/p12e-rgb-input001/reader-smoke002.py",
+      "bytes": 1562,
+      "sha256": "8ca3b599ddce96d0af7dbb14630607c772c42e469b7b9f23a742d522e84056de"
+    },
+    {
+      "path": "build/p12e-rgb-input001/reader001.py",
+      "bytes": 1556,
+      "sha256": "79649c62e677b5456cca0d1a82b9f8d46fb251b2cc383627fab7f284fbdf903a"
+    },
+    {
+      "path": "build/p12e-rgb-input001/reader002.py",
+      "bytes": 1556,
+      "sha256": "8f746234485ad20bbe96394f4332cc513a7af27e6d0c91d0b72faae76aa69741"
+    },
+    {
+      "path": "build/p12e-rgb-input001/seal001.py",
+      "bytes": 10142,
+      "sha256": "ae0af517d11c2a50daf11b81da1a8abce58813ea2f53c1b70bac2459b5a5d485"
+    },
+    {
+      "path": "build/p12e-rgb-input001/source-manifest001.json",
+      "bytes": 11380,
+      "sha256": "d34e398bceceee2a3169a4fb170d41a7dd7b26f981de1f6dee43e15ce7599263"
+    },
+    {
+      "path": "build/p12e-rgb-input001/source-manifest004.json",
+      "bytes": 11380,
+      "sha256": "bcb921eab5e19dcbfd058c52b3ea8aa2962885aadf4977e21f53e0c13d5e2412"
+    },
+    {
+      "path": "build/p12e-rgb-input001/source-manifest005.json",
+      "bytes": 11380,
+      "sha256": "52bd6d238887d161e0650d0fc2603ec5ae804c078b2236ebc71759f8eb8f5d30"
+    },
+    {
+      "path": "build/p12e-rgb-input001/source-manifest007.json",
+      "bytes": 11380,
+      "sha256": "d6ac240a72f9f4fdc6afcd5ab201b1b863aab1b456c3a9d641efb40f97435f1f"
+    },
+    {
+      "path": "build/p12e-rgb-input001/standalone001.py",
+      "bytes": 1300,
+      "sha256": "de039cf6154ba0dc700b94f121f5744e765c129fc999aa7c8924709150480561"
+    },
+    {
+      "path": "build/p12e-rgb-input001/test-native-selection-actions-legacy-fixture005.py",
+      "bytes": 2468,
+      "sha256": "77763c6311ed2a1f76f273e81f7a1363b8f9614ab7a9a9c1cca1e2d627ceee41"
+    },
+    {
+      "path": "build/p12e-rgb-input001/test-rgb-combined-input-initial001.cpp",
+      "bytes": 9476,
+      "sha256": "d348a992acdec9da0ddb37ce7f52e9040752f5c8221261e33e3d4e194284907b"
+    },
+    {
+      "path": "build/p12e-rgb-input001/test-rgb-combined-input-pre-focus005.cpp",
+      "bytes": 10829,
+      "sha256": "0d28510a0749959233ef792f5f2af0084e9c3c16bd28280323aadc381f5cc0a9"
+    },
+    {
+      "path": "build/p12e-rgb-input001/test-rgb-combined-input-reader-pre-portability001.py",
+      "bytes": 3128,
+      "sha256": "75b9c8c836c78158d8e9a11371c9b94bb4b83697992a0e72b1bad75a20784f84"
+    },
+    {
+      "path": "build/p12e-rgb-input001/test-rgb-combined-input-smoke002.cpp",
+      "bytes": 9595,
+      "sha256": "80b6a5806cbb6ed3723350a09380c89e3755d43089b919b19053562e2a52debc"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-build001.log",
+      "bytes": 6184,
+      "sha256": "bc9e49d53013db809695a763867571337a34b208f467680e4eea9cdee8bfdce6"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-build002.log",
+      "bytes": 662,
+      "sha256": "6e9424f6603a923e189acd9292b4e84c4d2891513b28a15e224128eb1d11c98c"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-build003.log",
+      "bytes": 1577,
+      "sha256": "321dd0cb14b659dbb3c82e1d914065677017c2b61f4c965f5261d16b909f11bd"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-build006.log",
+      "bytes": 662,
+      "sha256": "6e9424f6603a923e189acd9292b4e84c4d2891513b28a15e224128eb1d11c98c"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-cleanup001-console.log",
+      "bytes": 75,
+      "sha256": "12e3465673c61ab234909e8f124b3e32a92dff9ab26c6dab41f8cf15d1f39558"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-cleanup001.json",
+      "bytes": 98309,
+      "sha256": "11a4054a2fafd46bcf58995b3e0f101cdd9a1216b5bf4e951fdaedbcc3a56e4b"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-combined001/execute.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-combined001-console.log",
+      "bytes": 1071,
+      "sha256": "0e141da5acc6911c0c0c401b4bc74eaf5ca5a593fd9f89cd4aa9e441aa11b805"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-combined002/execute.log",
+      "bytes": 8323,
+      "sha256": "03a7b8c3749191aa3e96f839c1a0febef085dd58a4264562e1c0ddf1efca7340"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-combined002-console.log",
+      "bytes": 1062,
+      "sha256": "30622e4a718005054ea6bc9040d8f28d61b31fc913a6137934f855fb090738ee"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-combined003/execute.log",
+      "bytes": 15516,
+      "sha256": "d5f0e7237c8a4c87cc617eab77cd6b63a061d94205d25e801f0c35816d6d997c"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-combined003/receipt.json",
+      "bytes": 1591,
+      "sha256": "3d7c5efab0cd8953663c96ce9b745ebd1e5e9cf23dccfa4f751220bc35aa2d8f"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-combined003-console.log",
+      "bytes": 51,
+      "sha256": "5a81c960e1050869f8998a83211bc4a7c3854248617838a31bdb064f99ac8993"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-core-shortcuts001/origins.json",
+      "bytes": 1323,
+      "sha256": "6dd2c1cbe8c40b4a0d790872153b53aa4ceeeba694de9ecdf0585cb7f99f1ac5"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-core-shortcuts001/pytest.xml",
+      "bytes": 1099,
+      "sha256": "3fe0fb17b7e2470670e8daedcd4d8b3d47e67b9c62633c22b415ac8c9235852d"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-core-shortcuts001/receipt.json",
+      "bytes": 1607,
+      "sha256": "b8475c8177cb4e74fab53f7be7009a53fe31cb93dd2b0b115f53436e31dc05cc"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-core-shortcuts001-console.log",
+      "bytes": 198,
+      "sha256": "ad9de816f9c95cd135298c5e9bd44d2ccd07167ab69191610d9b257fb40dd1c8"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-focus006.log",
+      "bytes": 29,
+      "sha256": "e273c7e9bdc3f4401631feb440479c7a5adef2803923ef0858b73ce5bc9ebd2b"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-product-equivalence007.json",
+      "bytes": 2654,
+      "sha256": "f33a6e119bdf3bba8203d12d3702ddf133f33ae2d0b2eb5006c2bc24a60045cf"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-products001.json",
+      "bytes": 5747,
+      "sha256": "f96ab1f36d369360329285dd75b8f337a1e0f6b87dd766a5780cc22d51ab70d5"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-python005/collection.json",
+      "bytes": 950386,
+      "sha256": "c3189229723801499ce4d2a6c7a85013bae29dbf9e284bcec193d7e02e9fd39c"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-python005/pytest.xml",
+      "bytes": 1543,
+      "sha256": "776716801b15be04d256d7bf5f75a0027a5eb113d7f8398f4d37818f21bb3659"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-python005/receipt.json",
+      "bytes": 3364,
+      "sha256": "d31c9f7f99f48b3c0f251101e3f2176b7a4c503c037b15458a0cb40af4544b0b"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-python005-console.log",
+      "bytes": 893,
+      "sha256": "d5fa2d88c2dcaf97b2fe5fe8d7dd42f20a5708e0cf0cad8b4b82823a76f64b4e"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-python006/collection.json",
+      "bytes": 950386,
+      "sha256": "c3189229723801499ce4d2a6c7a85013bae29dbf9e284bcec193d7e02e9fd39c"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-python006/pytest.xml",
+      "bytes": 74297,
+      "sha256": "6476124f4b6628bad3c244ec6d45e9b571268e0d63adeabe28519a17b89f4081"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-python006/receipt.json",
+      "bytes": 3366,
+      "sha256": "c393e90c9c4d2f55585e30faebcbb3c50bd15156b4652ca35e09a45d42b3974a"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-python006-console.log",
+      "bytes": 1334,
+      "sha256": "2d3e2f8e6371bfa7f01601889c505a9cccab8027e40a258c27003af4b1a0f0b9"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-python007/collection.json",
+      "bytes": 949800,
+      "sha256": "d035bc08d467ca2126dbf57d907995e8b608dec1ebd16beea0709d43937cdef5"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-python007/pytest.xml",
+      "bytes": 1190396,
+      "sha256": "3fc836e2d431782fad520d0c0b5f16bd7ab98d7e865694cbe599d08c174ad971"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-python007/receipt.json",
+      "bytes": 3222,
+      "sha256": "d9660a470777e5ce8e19b28871f309175e739e4c2c4c9c1507a2e67018ec85b7"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-python007-console.log",
+      "bytes": 8128,
+      "sha256": "5f64ae4baa20eab7e4cce9686aede890d10738eeca237bf14b2a3b2b89d16d70"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified004/build.log",
+      "bytes": 4842,
+      "sha256": "c2b68c45872e56dde3d50bfd88195630892a65a30a6eaf03a7406949cb7f58b0"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified004/configure.log",
+      "bytes": 606,
+      "sha256": "740d7cbbc6e45a1e4cd5153c03dda9af8e30741515ed5dcb8b927ee3eeab8a1f"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified004/native.log",
+      "bytes": 1299,
+      "sha256": "d5c7a62d54d1e3ddde93741c085f8ca7269d0e73639925bd4f4667e2dc31a6b1"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified004/native.xml",
+      "bytes": 2431,
+      "sha256": "8e8fdbc1c4012f07399281184a9cb723a69d9f828421bac516d6f2b388f1682d"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified004-console.log",
+      "bytes": 1597,
+      "sha256": "ec6ea4b5459b71f0f82302d8c4c2fea278dff887f37f6d7c978285e533bcbdab"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified005/build.log",
+      "bytes": 4584,
+      "sha256": "f6088a67b1efbe77d26c3958b78db646dd4f82eeac8ccbf0d91716bff384b3e3"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified005/configure.log",
+      "bytes": 605,
+      "sha256": "dd26c92b3ea0f3580f6de536d714919eceaab3f31c5fa38f259733bd9b4b64f1"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified005/install-desktop.log",
+      "bytes": 4322,
+      "sha256": "bf5f93bffc776b9b6cc4af89a309367ac1fc3f6bf24ff33421f3a88057615463"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified005/install-development.log",
+      "bytes": 18564,
+      "sha256": "ddc243ca7ceeb92511850c95b084ca7f4bb5563a0a8d7b150e2743535830b0d7"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified005/install-io-development.log",
+      "bytes": 2083,
+      "sha256": "d6d49a6c9b4a25989f5733fd54c22c5957360c607d38cf716de931f40e00b5d4"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified005/install-processing-python.log",
+      "bytes": 5729,
+      "sha256": "e8cf4c815bd358eb3e0b62c6834f783c51eaadb144a02e9c55a3a7dfcf5d967a"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified005/install-scientific-python.log",
+      "bytes": 6441,
+      "sha256": "f6738d9eaf2ca1d16be4005f9d9c95d51b28c3785d8a6f109b26561b12d20a2a"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified005/install-Unspecified.log",
+      "bytes": 4483,
+      "sha256": "0c3c814242437f85a525511a08edc5c7ba84efdff12f89f0a0be3ff7df91bc28"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified005/native.log",
+      "bytes": 1046,
+      "sha256": "51c144510a444f9e646acae0087c8074d13e7567bc04d0ade6dfce4329ddefab"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified005/native.xml",
+      "bytes": 2719,
+      "sha256": "3413d622b691debc9b8714bd7a0e830eef80b930d2e327b20f043fd161669a9d"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified005/receipt.json",
+      "bytes": 12097,
+      "sha256": "e5f6c42bc6ed1126bbf3c831b8cd8b34bfb6dfd92688f7a7544a373a549b77e4"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified005/venv-install-processing-python.log",
+      "bytes": 5690,
+      "sha256": "f43694aaf88f0f4046a8e90850c55d47cb7c79dd14c92894ab21572ab1eda52f"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified005/venv-install-scientific-python.log",
+      "bytes": 6397,
+      "sha256": "a646b8bda3e16fb13729938e624c37fc24fad9c83af8fac939fc2f686dba6790"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified005/venv-install-Unspecified.log",
+      "bytes": 4453,
+      "sha256": "cfe5a69c3f028a23ac54de5ea90389b15b6dd14b79eeeae573cbe3314fc924b6"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified005/venv.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified005-console.log",
+      "bytes": 60,
+      "sha256": "851fe865eb3c028e5574b76b3c944dbe3c426c72da6b036d42b405df38317834"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified007/build.log",
+      "bytes": 4584,
+      "sha256": "f6088a67b1efbe77d26c3958b78db646dd4f82eeac8ccbf0d91716bff384b3e3"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified007/configure.log",
+      "bytes": 605,
+      "sha256": "e6bdbf63b9915e3329a268f0cf9cd5a9ab141ca5c9e73fa5b5b3ce37d9c803b5"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified007/install-desktop.log",
+      "bytes": 4322,
+      "sha256": "5ec76a2f688b05019ac90c336eea6f929521d80cc6da19ca22201b18c8a520af"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified007/install-development.log",
+      "bytes": 18564,
+      "sha256": "f9a57598aa118bfd8771eafc3384ac8b3c3dc388ae7c40012bddaccbd035e117"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified007/install-io-development.log",
+      "bytes": 2083,
+      "sha256": "4e56d191734accbed85a5396e1799cc2f60115b1fb5a8ad4c2a55dabd76c0f4f"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified007/install-processing-python.log",
+      "bytes": 5729,
+      "sha256": "40aced66a4aa1e0cec38760a45cbe8fdb304cec273424394e7d47964d719d5a6"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified007/install-scientific-python.log",
+      "bytes": 6441,
+      "sha256": "fa6b3b629179bfbca5664b5f2a02ffea09411425447649119eac0f24982df783"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified007/install-Unspecified.log",
+      "bytes": 4483,
+      "sha256": "ad1dd6cdb60f7d0b4fb3b6984e723dac2167afbd244841d95016100df2bbd12f"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified007/native.log",
+      "bytes": 1046,
+      "sha256": "5b330763276b2faaa429087b21c2a01f2e24ea609c2796b973832de88f730b19"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified007/native.xml",
+      "bytes": 2717,
+      "sha256": "7f504cc61ee8f0d62fb3b24df85237fcb2d5464de9e2f63506438af30aa8d582"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified007/receipt.json",
+      "bytes": 12097,
+      "sha256": "9ec87e4919df87168e7aeddaa1c01b54824566065c1f94f79261618a0e8a25e5"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified007/venv-install-processing-python.log",
+      "bytes": 5690,
+      "sha256": "f076bd6f8f7d72d6edc6ba8570657b721cad7eeca0aad6a2389087c8c039fab7"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified007/venv-install-scientific-python.log",
+      "bytes": 6397,
+      "sha256": "c16acdaec650c8db041492d4c89064d9213b6ead752750409ba1d164de8f442a"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified007/venv-install-Unspecified.log",
+      "bytes": 4453,
+      "sha256": "0faf577e5d5521b104c0edce4220960cc87b9019b3e157c5235bd4e1ff9e40a5"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified007/venv.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-qualified007-console.log",
+      "bytes": 60,
+      "sha256": "851fe865eb3c028e5574b76b3c944dbe3c426c72da6b036d42b405df38317834"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-reader001/pytest.xml",
+      "bytes": 80883,
+      "sha256": "5221f8f3c0ce76c222875fdcf3e1348286e45d2a8d97a60c6fe92fde9f92da6d"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-reader001/receipt.json",
+      "bytes": 92865,
+      "sha256": "a070d73778b80cfa221da5c9bf2702d39028bc72a0c2d533960337b4a7de699b"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-reader001-console.log",
+      "bytes": 676,
+      "sha256": "b6967b107e4156c514d4672f5dbabdedecc77ac495a9453abac72bc154512583"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-reader002/pytest.xml",
+      "bytes": 80883,
+      "sha256": "1cbf145a03bf5f33fd75276d7a5ab9b55318b48eb4163b344114d4841ceb6215"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-reader002/receipt.json",
+      "bytes": 92845,
+      "sha256": "306510d114753b9b9ce1b92d0f17cd8d4ac93ccf7e729e7baafab8c3e0f78b36"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-reader002-console.log",
+      "bytes": 676,
+      "sha256": "0ae119356e0a1fd23d6c12aa3dcfe4588a32c92e19658694a7c509ccc26a34b6"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-smoke002.log",
+      "bytes": 29,
+      "sha256": "e273c7e9bdc3f4401631feb440479c7a5adef2803923ef0858b73ce5bc9ebd2b"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-smoke003.log",
+      "bytes": 58,
+      "sha256": "844df62180cee583be27a00551404838e679e761437dd87c8ace3f6b3ca52f5d"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-ui001/batch-case-retained001.json",
+      "bytes": 21105097,
+      "sha256": "35fec42734116b51572c492bd210779f489e55e6143d6cb5d66bd833ab76c252"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-ui001/batch.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-ui001/receipt.json",
+      "bytes": 963,
+      "sha256": "05f1e7a119a6446a661654787f33d30fabe3a3103a09a349724a299358986ca3"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-ui001/rgb-case-retained001.json",
+      "bytes": 69757088,
+      "sha256": "219395e00a265a11eb16c83336ea5bacf32c7e3867d2a76b1b0e33100e5d2039"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-ui001/rgb.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-ui001/workflow-case-retained001.json",
+      "bytes": 51256730,
+      "sha256": "917e5efb549a9d56eb6291a7598c87353a2d1ca3a66cf5cd2362baead3689d5f"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-ui001/workflow.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12e-rgb-input001/windows-ui001-console.log",
+      "bytes": 53,
+      "sha256": "c35daded5e920d9398abb6bcd79548f3f98a5ddf7d88e8368ebd1828cb2fec18"
+    }
+  ],
+  "qualification": {
+    "platforms": {
+      "windows": {
+        "unique_actual_gesture_traces": 504,
+        "independent_raw_byte_and_control_readers": 504,
+        "installed_regressions": 7066,
+        "new_native_selection_action_checks": 7,
+        "isolated_core_shortcut_checks": 8,
+        "native_groups": 7,
+        "ctest_gesture_subset": 12,
+        "standalone_ui_probes": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "linux": {
+        "unique_actual_gesture_traces": 504,
+        "independent_raw_byte_and_control_readers": 504,
+        "installed_regressions": 7066,
+        "new_native_selection_action_checks": 7,
+        "isolated_core_shortcut_checks": 8,
+        "native_groups": 7,
+        "ctest_gesture_subset": 12,
+        "standalone_ui_probes": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "reclaimed_bytes": {
+      "windows": 298267464,
+      "linux": 340466572,
+      "preliminary_shared_workspace": 86375085
+    },
+    "total_reclaimed_bytes": 725109121,
+    "reference_fixture_unchanged": true,
+    "reference_roi": 8,
+    "reference_changed_roi": 0,
+    "reference_other_roi": 1,
+    "third_party_reference_presentation_or_os_input_qualified": false,
+    "actual_gesture_launch": "C++ headless shared ImGui controller; Python UI regressions qualified separately"
+  },
+  "requirements": {
+    "count": 99,
+    "statuses": {
+      "in_progress": 47,
+      "open": 52
+    },
+    "original_triples_unchanged": true
+  },
+  "remaining": [
+    "Qualify additional real canvas shapes, irregular/non-area histories, richer visits and presentation/resource cases without changing reference expectations.",
+    "Recover exact historical Auto producer bytes without repinning old expectations or bypassing its verifier.",
+    "Finish remaining original ImageJ/Fiji features and platform/resource requirements."
+  ],
+  "checks": {
+    "commercial_dependencies": "passed",
+    "plan_inventory": "historical producer-source fingerprint failure remains; not passed",
+    "original_99_requirement_status_triples": "unchanged"
+  }
+}

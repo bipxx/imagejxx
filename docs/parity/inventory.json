@@ -2444,6 +2444,8 @@
           "docs/parity/reviews/p12b-rgb-stage-edit001.json",
           "docs/parity/reviews/p12c-rgb-stage-area001.json",
           "docs/parity/reviews/p12d-rgb-visit001.json",
+          "docs/parity/reviews/p12e-rgb-input001.json",
+          "docs/parity/RGB_GESTURE_INPUT.md",
           "docs/parity/RGB_STAGE_AUTHORING.md",
           "docs/parity/AUTO_REQUALIFICATION.md"
         ],
@@ -2556,6 +2558,9 @@
           "tests/python/test_rgb_stage_edit.py",
           "tests/python/test_rgb_stage_area.py",
           "tests/python/test_rgb_visit_authoring.py",
+          "tests/python/test_native_selection_actions.py",
+          "tests/python/test_rgb_combined_input.py",
+          "tests/native/test_rgb_combined_input.cpp",
           "examples/cpp/rgb_stage_edit.cpp",
           "tests/reference/RgbContrastCombinedReference.java",
           "tests/reference/extract_rgb_combined_fixture.py",

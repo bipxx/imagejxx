@@ -1567,6 +1567,8 @@ struct Window::Impl {
       return dataset.shape().s == 1 && dataset.shared_planes() &&
              dataset.sample_policy() == FloatingSamplePolicy::FiniteOnly;
     }
+    if(action=="select_all" || action=="select_none" || action=="restore_selection")
+      return !owner.busy() && owner.controller_->active_document_id()==source->id;
     if (action == "create_roi" || action == "add_roi" || action == "select_roi" || action == "update_roi" ||
         action == "rename_roi" || action == "delete_roi" || action == "roi_properties")
       return owner.controller_->active_document_id() == source->id;
@@ -6300,6 +6302,18 @@ void Window::action(const std::string &name, const Json &p) {
              {"choices",impl->animationCalibratedAxis(captured.data().dataset.shape(),capturedAxis)?
                 Json::array({"FPS","Calibrated time"}):Json::array({"FPS"})}}}),"animation_options");
     return;
+  }
+  if(name=="select_all" || name=="select_none" || name=="restore_selection"){
+    const auto facade=documentById(targetId);
+    if(facade->scientific()){
+      if(busy() || facade->id!=controller_->active_document_id())throw std::invalid_argument("Selection commands require the idle active document");
+      if(!p.is_object() || (p.size() && !(p.size()==1 && p.contains("document_id"))))throw std::invalid_argument("Selection commands accept only their document ID");
+      const auto source=facade->nativeSnapshot();std::optional<Selection> selected;
+      if(name=="select_all"){const auto shape=source.data().dataset.shape();selected=Selection("rectangle",{{0,0},{double(shape.x),double(shape.y)}});}
+      else if(name=="restore_selection")selected=source.data().previous_selection;
+      impl->cancelCreations("selection_command");impl->cancelSavedRoiGeometry("selection_command");
+      controller_->select(std::move(selected),facade->id);impl->tickContrast();return;
+    }
   }
   if (name == "create_roi") {
     const auto facade = documentById(targetId);
