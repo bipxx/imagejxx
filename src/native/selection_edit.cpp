@@ -123,14 +123,16 @@ std::size_t geometry_preflight(const Selection &selection, int width, int height
     finite_point(point);
   }
   storage.object(selection.attributes);
-  if (selection.kind == "mask") {
+  if (selection.is_mask()) {
     const auto &packed = selection.packed_mask();
-    const auto bytes = geometry_add(pixels / 8, pixels % 8 != 0);
-    if (selection.mask_width() != width || selection.mask_height() != height ||
+    const auto stored=geometry_multiply(static_cast<std::size_t>(selection.mask_width()),selection.mask_height());
+    if(stored>limits.max_xy_pixels)throw std::length_error("Selection region pixel limit exceeded");
+    const auto bytes = geometry_add(stored / 8, stored % 8 != 0);
+    if ((!selection.is_region() && (selection.mask_width() != width || selection.mask_height() != height)) ||
         packed.size() != bytes)
       throw std::invalid_argument("ROI mask shape or payload mismatch");
-    if (pixels % 8 &&
-        (packed.back() & ((1u << (8 - pixels % 8)) - 1u)) != 0)
+    if (stored % 8 &&
+        (packed.back() & ((1u << (8 - stored % 8)) - 1u)) != 0)
       throw std::invalid_argument("ROI mask has nonzero unused bits");
     storage.add(bytes);
   }
@@ -216,16 +218,17 @@ void SelectionEditor::initialize_bounds(bool validate) {
     bounds_ =
         selection_.box_frame()->bounds(selection_.kind == "rotated_ellipse");
     has_bounds_ = true;
-  } else if (selection_.kind == "mask") {
+  } else if (selection_.is_mask()) {
+    const auto origin=selection_.mask_origin();const auto width=selection_.mask_width(),height=selection_.mask_height();
     with_kernel_stage(
-        "Selection mask bounds", static_cast<std::size_t>(width_) * height_,
+        "Selection mask bounds", static_cast<std::size_t>(width) * height,
         [&](const auto &stage) {
-          for (int y = 0; y < height_; ++y)
-            for (int x = 0; x < width_; ++x) {
-              const auto p = static_cast<std::size_t>(y) * width_ + x;
+          for (int y = 0; y < height; ++y)
+            for (int x = 0; x < width; ++x) {
+              const auto p = static_cast<std::size_t>(y) * width + x;
               stage.periodic(p);
               if (bit(selection_, p))
-                include(x, y, x + 1., y + 1.);
+                include(double(x)+origin[0], double(y)+origin[1], double(x)+origin[0]+1, double(y)+origin[1]+1);
             }
           stage.finish();
         });
@@ -247,7 +250,7 @@ std::vector<SelectionHandle> SelectionEditor::handles() const {
     for (std::size_t i = 0; i < corners.size(); ++i)
       result.push_back(
           {SelectionHandleKind::Resize, i, frame.image_point(corners[i])});
-  } else if (selection_.kind != "mask") {
+  } else if (!selection_.is_mask()) {
     for (std::size_t i = 0; i < selection_.points.size(); ++i) {
       kernel_checkpoint_periodic();
       result.push_back({SelectionHandleKind::Vertex, i, selection_.points[i]});
@@ -286,6 +289,11 @@ bool SelectionEditor::contains(std::array<double, 2> point,
                                std::array<double, 2> tolerance) const {
   if (!has_bounds_)
     return false;
+  if(selection_.is_region()) {
+    const auto origin=selection_.mask_origin();const auto x=std::floor(point[0]-origin[0]),y=std::floor(point[1]-origin[1]);
+    if(x<0 || y<0 || x>=selection_.mask_width() || y>=selection_.mask_height())return false;
+    return bit(selection_,static_cast<std::size_t>(y)*selection_.mask_width()+static_cast<std::size_t>(x));
+  }
   if (selection_.kind == "mask") {
     if (point[0] < 0 || point[1] < 0 || point[0] >= width_ ||
         point[1] >= height_)
@@ -407,6 +415,17 @@ Selection SelectionEditor::moved(std::array<double, 2> delta,
   Selection result = selection_;
   if (delta[0] == 0 && delta[1] == 0)
     return result;
+  if(selection_.is_region()) {
+    auto origin=selection_.mask_origin();
+    for(int axis=0;axis<2;++axis) {
+      const double moved=origin[axis]+std::ceil(delta[axis]-.5);
+      if(moved<std::numeric_limits<int>::min() || moved>std::numeric_limits<int>::max())
+        throw std::invalid_argument("Moved region origin exceeds integer range");
+      origin[axis]=static_cast<int>(moved);
+    }
+    result=Selection::from_packed_region(selection_.mask_width(),selection_.mask_height(),selection_.packed_mask(),origin);
+    result.width=selection_.width;result.attributes=selection_.attributes;return checked(std::move(result));
+  }
   if (selection_.kind == "mask") {
     const auto count = static_cast<std::size_t>(width_) * height_;
     result = with_kernel_stage(
@@ -506,7 +525,7 @@ Selection SelectionEditor::resized(std::size_t handle,
 Selection SelectionEditor::moved_vertex(std::size_t index,
                                         std::array<double, 2> point) const {
   finite_point(point);
-  if (box(selection_) || selection_.kind == "mask" ||
+  if (box(selection_) || selection_.is_mask() ||
       index >= selection_.points.size())
     throw std::invalid_argument("Invalid selection vertex");
   kernel_checkpoint();
@@ -521,7 +540,7 @@ SelectionEditor::insertion_index(std::array<double, 2> point,
   finite_point(metric);
   if (metric[0] <= 0 || metric[1] <= 0)
     throw std::invalid_argument("Selection insertion metric must be positive");
-  if (box(selection_) || selection_.kind == "mask" ||
+  if (box(selection_) || selection_.is_mask() ||
       selection_.kind == "angle")
     throw std::invalid_argument("Selection does not support vertex insertion");
   const auto &points = selection_.points;
@@ -555,7 +574,7 @@ SelectionEditor::insertion_index(std::array<double, 2> point,
 Selection SelectionEditor::inserted_vertex(std::size_t index,
                                            std::array<double, 2> point) const {
   finite_point(point);
-  if (box(selection_) || selection_.kind == "mask" ||
+  if (box(selection_) || selection_.is_mask() ||
       selection_.kind == "angle" || index > selection_.points.size())
     throw std::invalid_argument(
         "Selection does not support this vertex insertion");
@@ -575,7 +594,7 @@ Selection SelectionEditor::removed_vertex(std::size_t index) const {
           ? 3
       : selection_.kind == "line" || selection_.kind == "polyline" ? 2
                                                                    : 1;
-  if (box(selection_) || selection_.kind == "mask" ||
+  if (box(selection_) || selection_.is_mask() ||
       index >= selection_.points.size() || selection_.points.size() <= minimum)
     throw std::invalid_argument("Cannot remove this selection vertex");
   kernel_checkpoint();
@@ -616,6 +635,8 @@ SelectionEditor::rotated(double degrees,
             : selection_.is_rounded_box() ? "rotated_rounded_rectangle" : "rotated_rectangle";
     result.points = {turn(frame.center), turn(frame.image_point({1, 0})),
                      turn(frame.image_point({0, 1}))};
+  } else if(selection_.is_region()) {
+    throw std::invalid_argument("Full region rotation is not integrated yet");
   } else if (selection_.kind == "mask") {
     const auto count = static_cast<std::size_t>(width_) * height_;
     result = with_kernel_stage(
@@ -762,7 +783,7 @@ Selection SelectionEditor::moved_vertex(
     std::size_t index, std::array<double, 2> point,
     const SelectionEditLimits &limits, const ExecutionControl &control) const {
   finite_point(point);
-  if (box(selection_) || selection_.kind == "mask" ||
+  if (box(selection_) || selection_.is_mask() ||
       index >= selection_.points.size())
     throw std::invalid_argument("Invalid selection vertex");
   return controlled_geometry(*this, width_, height_, limits, control, 0,
@@ -777,7 +798,7 @@ std::size_t SelectionEditor::insertion_index(
   finite_point(metric);
   if (metric[0] <= 0 || metric[1] <= 0)
     throw std::invalid_argument("Selection insertion metric must be positive");
-  if (box(selection_) || selection_.kind == "mask" || selection_.kind == "angle")
+  if (box(selection_) || selection_.is_mask() || selection_.kind == "angle")
     throw std::invalid_argument("Selection does not support vertex insertion");
   return controlled_geometry(*this, width_, height_, limits, control, 0,
       [point, metric](const auto &editor) {
@@ -788,7 +809,7 @@ Selection SelectionEditor::inserted_vertex(
     std::size_t index, std::array<double, 2> point,
     const SelectionEditLimits &limits, const ExecutionControl &control) const {
   finite_point(point);
-  if (box(selection_) || selection_.kind == "mask" ||
+  if (box(selection_) || selection_.is_mask() ||
       selection_.kind == "angle" || index > selection_.points.size())
     throw std::invalid_argument("Selection does not support this vertex insertion");
   return controlled_geometry(*this, width_, height_, limits, control, 1,
@@ -804,7 +825,7 @@ Selection SelectionEditor::removed_vertex(
               selection_.kind == "angle"
           ? 3
       : selection_.kind == "line" || selection_.kind == "polyline" ? 2 : 1;
-  if (box(selection_) || selection_.kind == "mask" ||
+  if (box(selection_) || selection_.is_mask() ||
       index >= selection_.points.size() || selection_.points.size() <= minimum)
     throw std::invalid_argument("Cannot remove this selection vertex");
   return controlled_geometry(*this, width_, height_, limits, control, 0,
@@ -979,6 +1000,7 @@ SelectionEnlargementEstimate estimate_selection_enlargement_geometry(
 }
 SelectionEnlargementEstimate SelectionEditor::estimate_enlargement(
     double pixels,const SelectionEditLimits &limits) const {
+  if(selection_.is_region())return SelectionRegion(selection_,width_,height_,{0,0},limits).estimate_enlargement(pixels,limits);
   return enlargement_plan(selection_,width_,height_,bounds_,has_bounds_,pixels,limits,{}).estimate;
 }
 SelectionRegion SelectionEditor::enlarged_region_impl(double pixels,const SelectionEditLimits &limits,
@@ -1099,8 +1121,18 @@ SelectionRegion::SelectionRegion(const Selection &selection,int width,int height
     std::array<int,2> origin,const SelectionEditLimits &limits)
     :selection_("point"),width_(width),height_(height),origin_(origin) {
   geometry_preflight(selection,width,height,limits,{});
-  if(!region_area(selection))throw std::invalid_argument("Selection region requires area geometry");
+  if(!region_area(selection) && !selection.is_region())throw std::invalid_argument("Selection region requires area geometry");
   selection_=selection;
+  if(selection.is_region()) {
+    origin_=region_origin(origin_,selection.mask_origin());width_=selection.mask_width();height_=selection.mask_height();
+    selection_.kind="mask";selection_.maskOrigin_={0,0};
+  }
+}
+Selection SelectionRegion::as_selection() const {
+  auto result=selection_;
+  if(result.kind=="mask") {result.kind="region";result.maskOrigin_=origin_;}
+  else for(auto &point:result.points){point[0]+=origin_[0];point[1]+=origin_[1];}
+  return result;
 }
 std::optional<std::array<double,4>> SelectionRegion::bounds() const {
   const auto frozen_origin=origin_;
@@ -1195,12 +1227,17 @@ Selection SelectionRegion::project(int width,int height,const SelectionEditLimit
 }
 SelectionRegion SelectionEditor::enlarged_region(double pixels,const SelectionEditLimits &limits,
     const ExecutionControl &control) const {
+  if(selection_.is_region())return SelectionRegion(selection_,width_,height_,{0,0},limits).enlarged(pixels,limits,control);
   return enlarged_region_impl(pixels,limits,control,true);
 }
 Selection SelectionEditor::enlarged(double pixels,const SelectionEditLimits &limits,
     const ExecutionControl &control) const {
   const auto frozen_limits=limits;const auto frozen_control=control;
   const auto target_width=width_,target_height=height_;
+  if(selection_.is_region()) {
+    SelectionRegion frozen(selection_,target_width,target_height,{0,0},frozen_limits);
+    return frozen.enlarged(pixels,frozen_limits,frozen_control).as_selection();
+  }
   auto result=enlarged_region_impl(pixels,frozen_limits,frozen_control,false);
   // Keep the released canvas selection/record contract. Full regions are an
   // explicit API until document/session storage is migrated.

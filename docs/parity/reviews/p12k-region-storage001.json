@@ -1,0 +1,396 @@
+{
+  "schema_version": 1,
+  "id": "p12k.canonical-region-storage.001",
+  "date": "2026-10-23",
+  "state": "scoped-qualified",
+  "stage": "canonical-storage-and-session-integration",
+  "acceptance": false,
+  "complete_requirement_coverage": false,
+  "baseline_commit": "a87d9d26900dafd400d8dce5cf02876214556ec1",
+  "previous_goal_turn": "progress: full region geometry foundation committed and pushed",
+  "scope": "Canonical packed region selections own intrinsic dimensions and signed XY origins. Document current/Previous/saved ROI state, equality, validation, bounds, native translation and repeated enlargement retain complete geometry. Generic mask/filter consumers project at the canvas without replacing canonical owner state. Area style and mask outline rendering recognize regional values. Conditional native V4 sessions and closed typed value codecs retain all carriers, exact integer origins, canonical tail bits, metadata and source words; legacy-only native captures remain V3 and public V2/V3 readers reject regional typed values. The detached Python model and explicit private migration bridge preserve native/detached regional carriers through V4 save/reopen. All scientific I/O consumers are rebuilt against the changed native Selection/DocumentData layout. Recorded command/workflow, histogram/contrast, Boolean/rotation, axis/planar/interchange and actual regional editor gesture integration remain required; unported entry points explicitly reject the new kind. No editor-level completion or new regional UI acceptance is claimed.",
+  "qualification": {
+    "source_generation": "002",
+    "python_generation": "003",
+    "hosts": {
+      "windows": {
+        "state": "passed",
+        "installed_python_checks": 21249,
+        "new_storage_checks": 126,
+        "additional_regression_checks": 530,
+        "prior_ids_retained": 20593,
+        "native_groups": 18,
+        "installed_sdk_consumers": 1,
+        "existing_standalone_ui_probes": 3,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0,
+        "archived_scratch_bytes": 570358600
+      },
+      "linux": {
+        "state": "passed",
+        "installed_python_checks": 21249,
+        "new_storage_checks": 126,
+        "additional_regression_checks": 530,
+        "prior_ids_retained": 20593,
+        "native_groups": 18,
+        "installed_sdk_consumers": 1,
+        "existing_standalone_ui_probes": 3,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0,
+        "archived_scratch_bytes": 571391197
+      }
+    },
+    "source_manifest": "build/p12k-region-storage001/source-manifest002.json",
+    "source_inputs": 756,
+    "reused_reference": "144 unchanged complete ImageJ 1.54r geometry stages across 72 two-step sequences, now transported through native document/session boundaries before each next edit. No new independent oracle observations are counted.",
+    "storage_regressions": "All six source recipes preserve source words; current/Previous/saved ROI carriers, all 72 repeated sequences, translation ties, off-canvas hit testing, projected filtering/undo, malformed closed value/V4 grammars, legacy V2/V3 refusal, metadata-only version choice, exact JSON limits, cancellation/atomic save, Earlier-extent Previous, area styling, and all detached/native-marked facade carriers are covered.",
+    "failed_attempts": "Initial storage smoke expectations incorrectly ignored a regional Previous when choosing the session version. Corrected those new expectations without changing reference data. Additional regressions reproduced malformed regional Previous being accepted by the native setter and being checked after pixel decoding. Exact failing test and native module retained; intrinsic regional validation now occurs before pixel materialization. Generation001 Windows was not accepted because sources changed during its build; the frozen generation002 matrix was rerun on both hosts. The first installed Python run exposed an incorrect ARGB literal in a new style test; its exact preimage is retained. Corrected that new input literal and reran the full installed Python matrix as generation003 against unchanged qualified binaries.",
+    "archived_scratch_bytes": 1141749797
+  },
+  "requirements": {
+    "original_requirements": 99,
+    "statuses": {
+      "in_progress": 47,
+      "open": 52
+    },
+    "unchanged": true,
+    "historical_verification_runs_unchanged": true,
+    "historical_auto_expectations_unchanged": true
+  },
+  "checks": {
+    "commercial_licenses": "passed",
+    "plan_inventory": "known historical Auto producer fingerprint failure: histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed"
+  },
+  "remaining": [
+    "Version full-region enlargement and saved ROI command captures, estimates, source guards, replay and jobs while preserving V1 clipped equations.",
+    "Retain regions in portable workflow/batch stage state and integrate histogram/contrast consumers.",
+    "Complete full-frame Boolean/rotation/resize, axis/planar remapping and ImageJ ROI interchange.",
+    "Qualify actual C++ and optional Python ImGui regional editing, save/reopen, preview/hit testing, history/cancellation and managed large-ROI behavior."
+  ],
+  "sources": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 114082,
+      "sha256": "5d1298891323ebc13ba6e12f2811045f737f0e73b3ff73b13fb39a7f7cfc75a5"
+    },
+    {
+      "path": "examples/cpp/CMakeLists.txt",
+      "bytes": 17917,
+      "sha256": "dce239825493e6540231187293a8db882c8436863de98b18e18b41ed0a3ee2c3"
+    },
+    {
+      "path": "examples/cpp/selection_region_storage.cpp",
+      "bytes": 3237,
+      "sha256": "8e82af0c2a44ee98b36f48bb6051ad1448986d5a39d5ced7df4292ec847004b9"
+    },
+    {
+      "path": "include/imagejxx/document.hpp",
+      "bytes": 16869,
+      "sha256": "077e1fb23ccd1cb19c0b021131df6e4d2992e48c4cf5390a766920ad608efd91"
+    },
+    {
+      "path": "include/imagejxx/selection_region.hpp",
+      "bytes": 1659,
+      "sha256": "e248b402cde152e8b9dddcac37f58105bc47a618eab3d1c9b0b99e5bc22b8a6a"
+    },
+    {
+      "path": "include/imagejxx/session.hpp",
+      "bytes": 3787,
+      "sha256": "c5e83c15f691ff891c3a3a56c476e19b1dd9622c4331fe8b1042bd368e8d771b"
+    },
+    {
+      "path": "src/desktop/session.cpp",
+      "bytes": 3084,
+      "sha256": "adb12c653f40d7d340ee66921d85b7d4e9fe21e854bbc633be33aeb49b0f7fc2"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 719341,
+      "sha256": "72300c30b997dab557962ccdda73b5f5fdda2e04763ae5a720f1fedcff4a48ae"
+    },
+    {
+      "path": "src/imagejxx/ui/model.py",
+      "bytes": 53534,
+      "sha256": "2b61686f5692fed775ee8a2a776446ae555da5b6d0851d58094dff8a4da79788"
+    },
+    {
+      "path": "src/imagejxx/ui/persistence.py",
+      "bytes": 35136,
+      "sha256": "b81a58dc638a43c8b5706f8055396895fb7a0226cf8166d560c9e15c362e396c"
+    },
+    {
+      "path": "src/native/document.cpp",
+      "bytes": 57281,
+      "sha256": "fc1a7dd32bb695308133a71aee8f75d906ae68b41071622582ea9f65c2c92424"
+    },
+    {
+      "path": "src/native/document_bindings.cpp",
+      "bytes": 33887,
+      "sha256": "e9386af02b19c59cf14ef0554d0029ea4a942b521041b5c882bb43777006b5dc"
+    },
+    {
+      "path": "src/native/rgb_contrast_session.cpp",
+      "bytes": 8679,
+      "sha256": "1d3e85cbe7b1ebded8d99cdb30d53f05131aaf9cfb6650be4e7db24490889619"
+    },
+    {
+      "path": "src/native/rgb_contrast_stack.cpp",
+      "bytes": 9128,
+      "sha256": "eb49dbae95cc0059d7e132d4f34f1eb614354a9b4d7c79846f3e26900155606f"
+    },
+    {
+      "path": "src/native/roi_style.cpp",
+      "bytes": 10560,
+      "sha256": "17ad2ee852a579bc655f8079f2b1094486dfd6844b29e17e5899eee97818e190"
+    },
+    {
+      "path": "src/native/saved_roi_geometry.cpp",
+      "bytes": 37325,
+      "sha256": "dc0deed1990d31eea1f19d1d7e094784911555502b704f4c2630b48d9205464e"
+    },
+    {
+      "path": "src/native/selection_codec.cpp",
+      "bytes": 7495,
+      "sha256": "ed90fe1d37b2ea8a1d629ec6ca1f0ec988b9f497312c6b5ac2f2c9904e1f3ba8"
+    },
+    {
+      "path": "src/native/selection_codec.hpp",
+      "bytes": 843,
+      "sha256": "ca66ac59d7cd25f13934c00c2f0dd14ae110ecf133bf3a11a1932a06c7696a89"
+    },
+    {
+      "path": "src/native/selection_edit.cpp",
+      "bytes": 62481,
+      "sha256": "32387a620d5129f40d60c19d41879c913296c23b497d083ce7f076c824fc0b27"
+    },
+    {
+      "path": "src/native/session.cpp",
+      "bytes": 64149,
+      "sha256": "b15e7103c737c7ab422b3635cd65b871ac4dd29c7b698d5cb8285bfed0327b5d"
+    },
+    {
+      "path": "src/native/session_bindings.cpp",
+      "bytes": 9437,
+      "sha256": "4418ba608bfed3810574af0a99ea2a1e7a7ed7756511660696c4f0f498c6bfbc"
+    },
+    {
+      "path": "src/native/session_legacy.hpp",
+      "bytes": 904,
+      "sha256": "388df6612cf3f18803ff0b6c4da0cd653a69aabf0b0870947bf60510b850b206"
+    },
+    {
+      "path": "src/native/session_metadata.cpp",
+      "bytes": 40564,
+      "sha256": "0b109b54ee20ee0efc930f39707a78851fa29a65854b95a44342c1c3e780e3f7"
+    },
+    {
+      "path": "tests/python/test_region_storage.py",
+      "bytes": 16037,
+      "sha256": "3a93a805295eec209d6b9c72523ba8e14b8a471aa52fe699aef0435049dc0fcf"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "build/p12k-region-storage001/windows-qualified002/receipt.json",
+      "bytes": 86041,
+      "sha256": "70da895dd7b17650131dfc23d783dc567e1f5f7151770b7d8c60062f7a0c68b7"
+    },
+    {
+      "path": "build/p12k-region-storage001/windows-qualified002/native.xml",
+      "bytes": 5823,
+      "sha256": "cf4b555aa1c4cc8a3193b6b2d0cda064605eb9e943b3edf046c7027f643ead70"
+    },
+    {
+      "path": "build/p12k-region-storage001/windows-python003/receipt.json",
+      "bytes": 8809,
+      "sha256": "e33540887c28deee8d581c31eaf5f8c76c8676eaedee75f18fa0047d99876e10"
+    },
+    {
+      "path": "build/p12k-region-storage001/windows-python003/collection.json",
+      "bytes": 3177840,
+      "sha256": "2eda0d5cd30be92e4c9a61a4eb908274b176cd4cc8ef4136b9918ff72b38455f"
+    },
+    {
+      "path": "build/p12k-region-storage001/windows-python003/pytest.xml",
+      "bytes": 3901054,
+      "sha256": "3737afd31589d43be44e7d71e9e2ce8fb517c8fcf371ed04fae24eafc9a6edc9"
+    },
+    {
+      "path": "build/p12k-region-storage001/windows-sdk002/receipt.json",
+      "bytes": 442,
+      "sha256": "4738795c6c971b266eba6f6724bf100ad692b2f7d3140cc3a59aab92a700dacf"
+    },
+    {
+      "path": "build/p12k-region-storage001/windows-ui002/receipt.json",
+      "bytes": 983,
+      "sha256": "0af33d3a6b4e07cdb2aee0cd5ea3df093ce7ab740c56902cc9a1369e34e0ca00"
+    },
+    {
+      "path": "build/p12k-region-storage001/windows-cleanup002.json",
+      "bytes": 608569,
+      "sha256": "663a87c5e27ccdf2a9bfb909f489745c006b2a829fff8d6ac364dc9913611033"
+    },
+    {
+      "path": "build/p12k-region-storage001/windows-products002.json",
+      "bytes": 7938,
+      "sha256": "a3da10da8802d0e535217ffea0372a850f9928f657f703b8cc103045d77e017d"
+    },
+    {
+      "path": "build/p12k-region-storage001/linux-qualified002/receipt.json",
+      "bytes": 85137,
+      "sha256": "16224f5acc3d9063eda6e82112f641b2d22f017d09f9bf9d8834c79dfa731d08"
+    },
+    {
+      "path": "build/p12k-region-storage001/linux-qualified002/native.xml",
+      "bytes": 5781,
+      "sha256": "e505eae07c5b9f0748447b06013e15ba9a4a78cdf8d4b5fb16102feb941a20cf"
+    },
+    {
+      "path": "build/p12k-region-storage001/linux-python003/receipt.json",
+      "bytes": 8478,
+      "sha256": "433208f52f2f98c9e8f28491f666cb76b0e3bd26430d5778f495d837d0cb8799"
+    },
+    {
+      "path": "build/p12k-region-storage001/linux-python003/collection.json",
+      "bytes": 3156589,
+      "sha256": "3b5f8186c777683c60ee7714ccc2152909338724e3f3c7ce2cbada203189b5ef"
+    },
+    {
+      "path": "build/p12k-region-storage001/linux-python003/pytest.xml",
+      "bytes": 3901054,
+      "sha256": "e353c97c59a1a01f1d51a8079b840bf29cb7bd938db73c886e065133396fcba2"
+    },
+    {
+      "path": "build/p12k-region-storage001/linux-sdk002/receipt.json",
+      "bytes": 415,
+      "sha256": "a67b48e2af0ba061ef18afc67e4e6b77e54d19317286039c43f82af7d9daabce"
+    },
+    {
+      "path": "build/p12k-region-storage001/linux-ui002/receipt.json",
+      "bytes": 834,
+      "sha256": "219ad2ced5b0e4f2648c882d0210da2315a0d912cf9d96844414aa212a842959"
+    },
+    {
+      "path": "build/p12k-region-storage001/linux-cleanup002.json",
+      "bytes": 700771,
+      "sha256": "df88b87cdcda3bb5808f115ac535daa75a583c7fcaa61e97fe4ea263dc51a992"
+    },
+    {
+      "path": "build/p12k-region-storage001/linux-products002.json",
+      "bytes": 6305,
+      "sha256": "620453a8fa373418ff1242b976b89afba372f7ae9e377bfd62f5ea7c7b7784a3"
+    },
+    {
+      "path": "build/p12k-region-storage001/source-manifest002.json",
+      "bytes": 83992,
+      "sha256": "c6f86223a5234c9627ef377ed9cc8a6caed02eb11ac83557d7eec70a2af610a4"
+    },
+    {
+      "path": "build/p12k-region-storage001/smoke001.log",
+      "bytes": 1492,
+      "sha256": "c319c09e442ab607e6646855a7a25f94bccb853fe1fde301b9ef81bd35b1bfbc"
+    },
+    {
+      "path": "build/p12k-region-storage001/smoke001.xml",
+      "bytes": 16457,
+      "sha256": "f2183b7a30f52d544c005fc8ad24b6201551a01ad8c33cf99f986dc8aef80fab"
+    },
+    {
+      "path": "build/p12k-region-storage001/smoke002.log",
+      "bytes": 3136,
+      "sha256": "fb038a6e8c20e0b1c817dd38e6ec1e39b294976e3e8e227508ef81a2918f18cd"
+    },
+    {
+      "path": "build/p12k-region-storage001/smoke002.xml",
+      "bytes": 20232,
+      "sha256": "d85abd6ef2c211b7b2df92a01bd621fb6fb9092736d46f034d7cdbf9cbe89359"
+    },
+    {
+      "path": "build/p12k-region-storage001/smoke002-receipt.json",
+      "bytes": 827,
+      "sha256": "caeb8fdabb0f81180384d36118ed47305e1a0b66004fada55b8f2efdbcb43884"
+    },
+    {
+      "path": "build/p12k-region-storage001/licenses002.log",
+      "bytes": 53,
+      "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+    },
+    {
+      "path": "build/p12k-region-storage001/plan002.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    },
+    {
+      "path": "build/p12k-region-storage001/preimage003/test_region_storage.py",
+      "bytes": 16037,
+      "sha256": "769512280123176cc811c8102357ac23026931bef31410b491dbbbaf5389b380"
+    },
+    {
+      "path": "build/p12k-region-storage001/windows-python002/receipt.json",
+      "bytes": 8807,
+      "sha256": "57b4b21a7231ac9614da3b98ed643951aa9e861389e13602f586c11dcb39b788"
+    },
+    {
+      "path": "build/p12k-region-storage001/windows-python002/pytest.xml",
+      "bytes": 94240,
+      "sha256": "09423ccc37f8544ee6c0d411ee0f939a3e4a1cf77e0f9fb85f8344acc33f8efd"
+    },
+    {
+      "path": "build/p12k-region-storage001/prepare001.py",
+      "bytes": 3069,
+      "sha256": "4f9962cbd46074166ee61e70b8dfdae9a4d58148c7e9d4cbc018fbcb0e2dfbea"
+    },
+    {
+      "path": "build/p12k-region-storage001/seal002.py",
+      "bytes": 1338,
+      "sha256": "34c64a8ed7f3b67ac059cf1cedb7d1595549098550f112f61a032384492ce199"
+    },
+    {
+      "path": "build/p12k-region-storage001/qualify002.py",
+      "bytes": 3678,
+      "sha256": "0f0cdd13ef654bef07c4cf0d895c41972c176c58cd3e741e737c30d164fb9632"
+    },
+    {
+      "path": "build/p12k-region-storage001/python003.py",
+      "bytes": 3989,
+      "sha256": "763216cdefcb4a5fa71f201b4c29b698a947cd94e7ab224ef8e97d406ac61bf3"
+    },
+    {
+      "path": "build/p12k-region-storage001/sdk002.py",
+      "bytes": 1660,
+      "sha256": "6e96e4b2ba8141a70ffdb34a953563800a91d4c3a08818ede21e37514a5d6cef"
+    },
+    {
+      "path": "build/p12k-region-storage001/standalone002.py",
+      "bytes": 1300,
+      "sha256": "43653f4126d78cc13bc289eed893664faa1cb64eabd26488d38102b3b104768b"
+    },
+    {
+      "path": "build/p12k-region-storage001/cleanup002.py",
+      "bytes": 6498,
+      "sha256": "a0cd7c9133753f90a160625ac8a336a4d7bdf39ae2e11caf6253cd85de22eba4"
+    },
+    {
+      "path": "build/p12k-region-storage001/finalize002.py",
+      "bytes": 9842,
+      "sha256": "c5a3d01821e0d006306de6ccad7deed759d3734d1a394d69934a60906bd34683"
+    },
+    {
+      "path": "build/p12k-region-storage001/plan-final003.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    },
+    {
+      "path": "build/p12k-region-storage001/inventory-bytes003.py",
+      "bytes": 620,
+      "sha256": "aab5fe57e96635a031f076e5cf6fc613c015190f39e9e0cfd2e0edba2a0f5904"
+    },
+    {
+      "path": "build/p12k-region-storage001/seal-docs003.py",
+      "bytes": 1553,
+      "sha256": "039976ef4e971bb01763cf9b191d47ba5b0a7a3cf9c7acf6171fa3b02d6945ed"
+    }
+  ]
+}

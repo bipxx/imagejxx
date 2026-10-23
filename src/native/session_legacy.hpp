@@ -10,4 +10,8 @@ namespace imagejxx::detail {
 // representable eager T=C=1 snapshot is admitted. No owner or frame is created.
 std::string session_legacy_record_json(const DocumentSnapshot &snapshot,
                                        const SessionLimits &limits = {});
+// Explicit facade migration only. Public V2/V3 file decoding remains closed to
+// regional geometry. The result uses the native V4 writer and its limits.
+std::vector<unsigned char> upgrade_regional_legacy_session(
+    const std::vector<unsigned char> &, const SessionLimits & = {});
 } // namespace imagejxx::detail

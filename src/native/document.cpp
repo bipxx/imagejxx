@@ -73,6 +73,14 @@ Selection Selection::from_packed_mask(int width, int height,
   value.validate(width, height);
   return value;
 }
+Selection Selection::from_packed_region(int width,int height,
+    std::vector<unsigned char> bytes,std::array<int,2> origin) {
+  auto result=from_packed_mask(width,height,std::move(bytes));
+  const auto pixels=static_cast<std::size_t>(width)*height;
+  if(pixels%8 && (result.packed_mask().back() & ((1u<<(8-pixels%8))-1u)))
+    throw std::invalid_argument("Region has nonzero unused packed bits");
+  result.kind="region";result.maskOrigin_=origin;return result;
+}
 Selection Selection::from_mask(const Image &image) {
   require_gray(image);
   if (image.width <= 0 || image.height <= 0 ||
@@ -189,7 +197,9 @@ void Selection::validate(int w, int h) const {
     if (attributes.count(key))
       throw std::invalid_argument(
           "Selection attributes contain a geometry field");
-  if (kind == "mask" && (attributes.count("shape") || attributes.count("mask")))
+  if (kind != "region" && maskOrigin_ != std::array<int,2>{0,0})
+    throw std::invalid_argument("Non-region selection contains a region origin");
+  if (is_mask() && (attributes.count("shape") || attributes.count("mask")))
     throw std::invalid_argument("Mask attributes contain a storage field");
   if (w <= 0 || h <= 0)
     throw std::invalid_argument("Invalid selection dimensions");
@@ -203,9 +213,11 @@ void Selection::validate(int w, int h) const {
     (void)rounded_path();
     (void)rounded_path(true);
   }
-  if (kind == "mask") {
-    auto count = static_cast<std::size_t>(w) * h;
-    if (maskWidth_ != w || maskHeight_ != h || !mask_ ||
+  if (is_mask()) {
+    if(maskWidth_<=0 || maskHeight_<=0 || (is_region() && !points.empty()))
+      throw std::invalid_argument("Invalid packed region dimensions/points");
+    auto count = static_cast<std::size_t>(maskWidth_) * maskHeight_;
+    if ((!is_region() && (maskWidth_ != w || maskHeight_ != h)) || !mask_ ||
         mask_->size() != (count + 7) / 8)
       throw std::invalid_argument("ROI mask shape or payload mismatch");
   } else if (kind == "rotated_rectangle" || kind == "rotated_ellipse" ||
@@ -397,7 +409,18 @@ Image Selection::mask(int w, int h) const {
   }
   Image out(w, h, 1, PixelType::UInt8);
   kernel_checkpoint();
-  if (kind == "mask") {
+  if(is_region()) {
+    const auto left=std::max<std::int64_t>(0,maskOrigin_[0]),top=std::max<std::int64_t>(0,maskOrigin_[1]);
+    const auto right=std::min<std::int64_t>(w,static_cast<std::int64_t>(maskOrigin_[0])+maskWidth_);
+    const auto bottom=std::min<std::int64_t>(h,static_cast<std::int64_t>(maskOrigin_[1])+maskHeight_);
+    const auto count=right>left && bottom>top?static_cast<std::size_t>(right-left)*(bottom-top):0;
+    const KernelStage stage("Selection region decoding",count);std::size_t visited=0;
+    for(auto y=top;count && y<bottom;++y)for(auto x=left;x<right;++x) {
+      stage.periodic(visited++);const auto i=static_cast<std::size_t>(y-maskOrigin_[1])*maskWidth_+static_cast<std::size_t>(x-maskOrigin_[0]);
+      out.pixels[static_cast<std::size_t>(y)*w+static_cast<std::size_t>(x)]=((*mask_)[i/8] & (1u<<(7-i%8)))?255:0;
+    }
+    stage.finish();
+  } else if (kind == "mask") {
     kernel_blocks("Selection mask decoding", out.pixels.size(),
                   [&](std::size_t first, std::size_t last) {
                     for (auto i = first; i < last; ++i)
@@ -437,6 +460,7 @@ Image Selection::mask(int w, int h) const {
 }
 bool Selection::operator==(const Selection &other) const {
   return kind == other.kind && points == other.points && width == other.width &&
+         maskOrigin_ == other.maskOrigin_ &&
          maskWidth_ == other.maskWidth_ && maskHeight_ == other.maskHeight_ &&
          (mask_ == other.mask_ || packed_mask() == other.packed_mask()) &&
          metadata_equal(attributes, other.attributes);
@@ -584,6 +608,7 @@ void DocumentData::validate() const {
   // Previous geometry may belong to an earlier image extent. Restore validates
   // against the current extent; retaining it must not prevent crop/resize.
   if (previous_selection) {
+    if(previous_selection->is_region())previous_selection->validate(1,1);
     validate_metadata(previous_selection->attributes);
     roi_style(*previous_selection);
   }
@@ -743,6 +768,7 @@ void DocumentTransaction::set_previous_selection(
     std::optional<Selection> selection) {
   require_active();
   if (selection) {
+    if(selection->is_region())selection->validate(1,1);
     validate_metadata(selection->attributes);
     roi_style(*selection);
   }

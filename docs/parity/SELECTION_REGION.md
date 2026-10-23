@@ -1,9 +1,11 @@
 # Selection regions and off-image geometry
 
-This is a C++/Python geometry foundation. Document selections, recorded commands,
-sessions and the desktop still use the existing canvas mask representation.
-Their off-image irregular-selection gap remains open until the integrations below
-are implemented and qualified.
+`SelectionRegion.as_selection()` now publishes full packed geometry as a native
+`region` selection with intrinsic YX dimensions and a signed integer XY origin.
+Current selections, Previous and saved ROI rows retain that value. Pixel consumers
+project it at the document canvas; native translation and enlargement keep its
+full geometry. The off-image editor gap remains open until recorded commands,
+interchange, workflows and the remaining transformations are integrated.
 
 `SelectionRegion` retains an area selection in a local coordinate frame and an
 explicit integer XY origin. A packed mask's dimensions belong to that geometry;
@@ -50,15 +52,39 @@ off-image freehand areas, holes, disconnected islands, erased shrinks and both
 sides of the byte/float transition. These are separate observations, rather than
 additional counts for the old canvas cases.
 
+Canonical storage and files:
+
+- Legacy `mask` values remain canvas-sized. Regional values carry packed bytes
+  in their own frame, and equality includes that frame. No canonical geometry is
+  stored in opaque attributes or a clipped cache.
+- Native sessions containing any regional current selection, Previous value or
+  saved ROI use `IMAGEJXX4` with a closed seven-field selection DTO. Legacy-only
+  captures retain V3. Opaque metadata that resembles a region does not change
+  the version. Public V2/V3 readers reject regional typed values.
+- Origins must be exact signed 32-bit integers. Intrinsic shape, payload length,
+  canonical zero tail bits, points and style are validated before loaded pixel
+  materialization. Previous values may belong to an earlier canvas extent, but
+  their intrinsic regional geometry must still be valid.
+- The detached Python model uses the native value codec. Its explicit private
+  migration bridge writes regional saves through the native V4 writer; the
+  public legacy file grammar remains closed. Native desktop loading recognizes
+  V4 and draws visible regional mask outlines.
+- Generic filtering consumes projected membership while retaining canonical
+  owner geometry. Recorded enlargement/histogram commands, rotation, Boolean
+  editing and saved ROI geometry commands do not yet accept regional inputs;
+  they refuse them before publication. The existing UI probes establish
+  regressions only, not new regional gesture acceptance.
+- Adding the origin changes native Selection/DocumentData layout. Rebuild all
+  consumers, including the scientific I/O extension, against matching headers.
+
 Remaining integration work, in dependency order:
 
-1. Give canonical native selection storage an explicit region frame. Update
-   equality, validation, geometry/resource admission and every direct packed-mask
-   consumer. Retain the existing canvas-mask contract for legacy values; avoid
-   hidden canonical geometry in opaque attributes or a clipped cache.
-2. Version session and command wire formats for regional geometry. Preserve old
-   record validation/replay under their original equations. Admit dimensions,
-   signed origins, payloads and metadata before copying or rasterizing.
+1. Version recorded selection commands for regional inputs and full outputs.
+   Keep old validation/replay equations unchanged. Admit intrinsic geometry,
+   signed origins and payloads before copying or rasterizing. Update captured
+   source guards and command estimates instead of passing regions to V1 codecs.
+2. Integrate regional histogram/contrast targets and typed saved ROI commands.
+   Preserve full geometry across clipping-only consumers and shared replay.
 3. Make masks for filtering, histograms and display at their consumption canvas.
    Keep full geometry for selection transformations, Previous and saved ROIs.
    Cover axis remapping, slicing/resizing, geometry editing and Boolean operations
@@ -74,4 +100,5 @@ session/reopen, workflow/batch and ImageJ interchange, with unchanged image word
 and metadata outside the requested edits. Core-only region tests do not establish
 that editor-level completion.
 
-See the [scoped foundation receipt](reviews/p12j-selection-region001.json).
+See the [scoped foundation receipt](reviews/p12j-selection-region001.json) and
+[storage/session receipt](reviews/p12k-region-storage001.json).

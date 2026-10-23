@@ -1,5 +1,23 @@
 # Implementation progress
 
+**Canonical region storage and V4 sessions, 2026-10-23 (scoped integration):**
+Full packed regions now survive native document selections, Previous and saved
+ROI rows. Sessions containing those values use V4; legacy-only captures retain
+V3, and public V2/V3 grammars stay closed to regional typed values. Generic
+filtering projects membership without replacing owner geometry. Native translation
+and enlargement retain the full frame; the optional Python model and persistence
+adapter route through native values/codecs. Recorded commands, workflows,
+Boolean/rotation edits and ImageJ interchange still require migration. Regional
+Previous validates independently of the current canvas, before pixel decoding.
+Windows/Linux each pass 21,249 installed checks (126 new storage checks, 530
+additional regressions, all 20,593 prior IDs retained), 18 native groups, an
+installed SDK consumer and three existing standalone UI probes, zero failure/
+error/skip. Verified archives precede cleanup of 1,141,749,797 owned scratch bytes.
+All original requirements, historical runs and Auto expectations remain unchanged;
+the historical Auto producer fingerprint check still fails. Next is versioned
+regional commands and workflow retention. See [the migration plan](parity/SELECTION_REGION.md)
+and [scoped receipt](parity/reviews/p12k-region-storage001.json).
+
 **Full selection-region geometry, 2026-10-23 (core foundation; editor gap open):**
 The C++/Python SelectionRegion value retains complete local area geometry and
 an explicit origin. Repeated enlarge/shrink operations retain off-image cells;

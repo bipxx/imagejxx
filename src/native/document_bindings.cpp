@@ -225,6 +225,7 @@ void bind_document(py::module_ &m) {
         py::gil_scoped_release release;return SelectionRegion(selection,shape[1],shape[0],origin,limits);
       }),py::arg("selection"),py::arg("shape"),py::arg("origin")=std::array<int,2>{0,0},py::arg("limits")=SelectionEditLimits{})
       .def_property_readonly("local_selection",[](const SelectionRegion &region){return region.local_selection();})
+      .def("as_selection",&SelectionRegion::as_selection)
       .def_property_readonly("origin",&SelectionRegion::origin)
       .def_property_readonly("shape",&SelectionRegion::shape)
       .def_property_readonly("bounds",&SelectionRegion::bounds)
@@ -335,6 +336,15 @@ void bind_document(py::module_ &m) {
       .def_property_readonly("corner_diameter", &Selection::corner_diameter)
       .def("rounded_path", &Selection::rounded_path, py::arg("processing") = false,
            py::call_guard<py::gil_scoped_release>())
+      .def_static("from_dict",[](py::dict value){
+        const auto metadata=bindings::metadata_object_value(value);
+        return imagejxx::detail::session_metadata::selection_from_json(imagejxx::detail::session_metadata::to_json(metadata));
+      })
+      .def("to_dict",[](const Selection &value){
+        return bindings::metadata_python(imagejxx::detail::session_metadata::from_json(imagejxx::detail::session_metadata::selection_to_json(value)));
+      })
+      .def_property_readonly("is_region",&Selection::is_region)
+      .def_property_readonly("mask_origin",&Selection::mask_origin)
       .def_readonly("kind", &Selection::kind)
       .def_readonly("points", &Selection::points)
       .def_readonly("width", &Selection::width)

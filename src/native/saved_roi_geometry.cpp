@@ -164,6 +164,8 @@ bool area_kind(const std::string &kind) {
 Size selection_size(const Selection &selection, DatasetShape shape,
                     const SavedRoiGeometryLimits &limits, bool require_area,
                     bool validate_geometry = true) {
+  if (selection.is_region())
+    invalid("Full region saved ROI geometry commands are not integrated yet");
   if (require_area && !area_kind(selection.kind))
     invalid("Saved ROI geometry requires an area selection");
   within(selection.points.size(), limits.max_vertices);

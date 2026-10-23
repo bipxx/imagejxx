@@ -104,7 +104,7 @@ bool selection_is_area(const Selection &selection) {
   const auto &kind = selection.kind;
   return kind == "rounded_rectangle" || kind == "rotated_rounded_rectangle" || kind == "rectangle" || kind == "ellipse" ||
          kind == "rotated_rectangle" || kind == "rotated_ellipse" ||
-         kind == "polygon" || kind == "freehand" || kind == "mask";
+         kind == "polygon" || kind == "freehand" || kind == "mask" || kind == "region";
 }
 RoiStyle roi_style(const Selection &selection) {
   RoiStyle result;

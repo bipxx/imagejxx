@@ -120,6 +120,18 @@ void bind_session(py::module_ &m) {
   }, py::arg("capture"), py::arg("limits") = SessionLimits{}, py::kw_only(),
       py::arg("cancellation") = nullptr, py::arg("checkpoint") = py::none(),
       py::arg("stage_progress") = py::none());
+  m.def("_upgrade_regional_legacy_session",[](py::bytes input,SessionLimits limits){
+    char *data=nullptr;Py_ssize_t size=0;
+    if(PyBytes_AsStringAndSize(input.ptr(),&data,&size)!=0)throw py::error_already_set();
+    if(static_cast<std::size_t>(size)>limits.max_encoded_bytes || static_cast<std::size_t>(size)>limits.max_working_bytes)
+      throw py::value_error("Regional facade input exceeds session limits");
+    std::vector<unsigned char> output;
+    {py::gil_scoped_release release;
+      std::vector<unsigned char> bytes(data,data+size);
+      output=detail::upgrade_regional_legacy_session(bytes,limits);
+    }
+    return py::bytes(reinterpret_cast<const char *>(output.data()),output.size());
+  },py::arg("input"),py::arg("limits")=SessionLimits{});
   m.def("decode_session", [](py::bytes input, SessionLimits limits,
       std::shared_ptr<CancellationToken> token, py::object checkpoint, py::object progress) {
     char *data = nullptr;

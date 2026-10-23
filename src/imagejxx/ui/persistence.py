@@ -589,6 +589,15 @@ def save_session(path, documents, *, results=(), workflow=()):
     if len(content) > 1024**3:
         raise ValueError("Session exceeds the 1 GiB interchange limit")
     encoded = b"IMAGEJXX2\n" + struct.pack(">I", len(content)) + zlib.compress(content)
+    regional = any(
+        (owner.selection is not None and owner.selection.kind == "region")
+        or (owner.previous_selection is not None and owner.previous_selection.kind == "region")
+        or any(roi.selection.kind == "region" for roi in owner.rois)
+        for owner in owners
+    )
+    if regional:
+        from imagejxx import _native
+        encoded = _native._upgrade_regional_legacy_session(encoded)
     stream = None
     temporary = None
     try:
@@ -624,7 +633,7 @@ def save_session(path, documents, *, results=(), workflow=()):
 def load_session(path, *, extensions=None):
     """Load detached documents, results and workflow from a session archive.
 
-    Native v3 archives use the bounded C++ codec. Their opaque root extensions
+    Native v3/v4 archives use the bounded C++ codec. Their opaque root extensions
     require an explicit mutable mapping destination, replaced after every
     document has been validated and converted to the legacy Python model.
     """
@@ -633,7 +642,7 @@ def load_session(path, *, extensions=None):
     source = Path(path)
     with source.open("rb") as stream:
         header = stream.read(10)
-    if header == b"IMAGEJXX3\n":
+    if header in (b"IMAGEJXX3\n", b"IMAGEJXX4\n"):
         from imagejxx import _native
 
         decoded = ij.load_session(str(source))

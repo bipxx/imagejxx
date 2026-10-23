@@ -69,18 +69,24 @@ std::optional<int> optional_index(const Json &value) {
   return value.is_null() ? std::nullopt : std::optional<int>(integer(value));
 }
 } // namespace
-Json encode_selection(const Selection &value) {
+Json encode_selection(const Selection &value,bool allow_regions) {
+  if(value.is_region() && !allow_regions)fail("Regional geometry requires an explicit codec version");
+  if(value.is_region())value.validate(1,1);
   Json result{{"kind", value.kind}, {"points", value.points}, {"width", value.width},
                {"attributes", scalar::to_json(value.attributes)}};
-  if (value.kind == "mask") {
+  if (value.is_mask()) {
+    if(value.is_region())result["origin"]=value.mask_origin();
     result["shape"] = {value.mask_height(), value.mask_width()};
     result["mask"] = scalar::encode_base64(value.packed_mask());
   }
   return result;
 }
-Selection decode_selection(const Json &value, const SessionLimits &limits) {
+Selection decode_selection(const Json &value, const SessionLimits &limits,bool allow_regions) {
   const auto kind = text(field(value, "kind"));
-  if (kind == "mask") keys(value, {"kind", "points", "width", "attributes", "shape", "mask"});
+  if(kind=="region") {
+    if(!allow_regions)fail("Regional geometry requires session version 4");
+    keys(value,{"kind","points","width","attributes","shape","mask","origin"});
+  } else if (kind == "mask") keys(value, {"kind", "points", "width", "attributes", "shape", "mask"});
   else keys(value, {"kind", "points", "width", "attributes"});
   Selection result(kind);
   const auto &points = value.at("points");
@@ -90,7 +96,7 @@ Selection decode_selection(const Json &value, const SessionLimits &limits) {
   for (const auto &point : points) result.points.push_back(numbers<2>(point));
   result.width = number(value.at("width"));
   result.attributes = scalar::object_from_json(value.at("attributes"));
-  if (kind == "mask") {
+  if (kind == "mask" || kind=="region") {
     const auto &shape = value.at("shape");
     if (!shape.is_array() || shape.size() != 2) fail("Invalid packed selection shape");
     const int h = integer(shape[0], true), w = integer(shape[1], true);
@@ -100,25 +106,43 @@ Selection decode_selection(const Json &value, const SessionLimits &limits) {
     const auto &encoded = value.at("mask");
     if (!encoded.is_string() || encoded.get_ref<const std::string &>().size() != b64size(bytes))
       fail("Packed selection payload length mismatch");
+    std::array<int,2> origin{0,0};
+    if(kind=="region") {
+      const auto &xy=value.at("origin");
+      if(!xy.is_array() || xy.size()!=2)fail("Region origin requires two signed integers");
+      for(int axis=0;axis<2;++axis) {
+        const auto &n=xy[axis];
+        if(n.is_number_unsigned()) {
+          if(n.get<std::uint64_t>()>std::uint64_t(std::numeric_limits<int>::max()))fail("Region origin exceeds int32");
+          origin[axis]=static_cast<int>(n.get<std::uint64_t>());
+        } else if(n.is_number_integer()) {
+          const auto number=n.get<std::int64_t>();
+          if(number<std::numeric_limits<int>::min() || number>std::numeric_limits<int>::max())fail("Region origin exceeds int32");
+          origin[axis]=static_cast<int>(number);
+        } else fail("Region origin requires exact signed integers");
+      }
+      if(!result.points.empty())fail("Packed region must not contain vector points");
+    }
     auto packed = scalar::decode_base64(encoded.get_ref<const std::string &>());
     if (packed.size() != bytes) fail("Packed selection payload size mismatch");
-    auto restored = Selection::from_packed_mask(w, h, std::move(packed));
+    auto restored = kind=="region"?Selection::from_packed_region(w,h,std::move(packed),origin):Selection::from_packed_mask(w, h, std::move(packed));
     restored.points = std::move(result.points); restored.width = result.width;
     restored.attributes = std::move(result.attributes);
+    if(kind=="region")restored.validate(1,1);
     return restored;
   }
   return result;
 }
 
-Json encode_roi(const Roi &roi) {
-  return {{"name", roi.name}, {"selection", encode_selection(roi.selection)},
+Json encode_roi(const Roi &roi,bool allow_regions) {
+  return {{"name", roi.name}, {"selection", encode_selection(roi.selection,allow_regions)},
       {"t", roi.t ? Json(*roi.t) : Json()}, {"c", roi.c ? Json(*roi.c) : Json()},
       {"z", roi.z ? Json(*roi.z) : Json()},
       {"attributes", scalar::to_json(roi.attributes)}};
 }
-Roi decode_roi(const Json &item, const SessionLimits &limits) {
+Roi decode_roi(const Json &item, const SessionLimits &limits,bool allow_regions) {
   keys(item, {"name", "selection", "t", "c", "z", "attributes"});
-  return {text(item.at("name")), decode_selection(item.at("selection"), limits),
+  return {text(item.at("name")), decode_selection(item.at("selection"), limits,allow_regions),
       optional_index(item.at("t")), optional_index(item.at("c")),
       optional_index(item.at("z")),
       scalar::object_from_json(item.at("attributes"))};

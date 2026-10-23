@@ -58,6 +58,13 @@ struct Selection {
   static Selection from_mask(const Image &mask);
   static Selection from_packed_mask(int width, int height,
                                     std::vector<unsigned char> bytes);
+  // A region owns its packed extent in an explicit global XY frame. Legacy
+  // masks remain canvas-sized. Both expose packed bytes in their own frame.
+  static Selection from_packed_region(int width, int height,
+      std::vector<unsigned char> bytes, std::array<int,2> origin);
+  bool is_region() const { return kind == "region"; }
+  bool is_mask() const { return kind == "mask" || is_region(); }
+  std::array<int,2> mask_origin() const { return maskOrigin_; }
   int mask_width() const { return maskWidth_; }
   int mask_height() const { return maskHeight_; }
   const std::vector<unsigned char> &packed_mask() const;
@@ -75,6 +82,8 @@ struct Selection {
   bool operator!=(const Selection &other) const { return !(*this == other); }
 
 private:
+  friend class SelectionRegion;
+  std::array<int,2> maskOrigin_{0,0};
   int maskWidth_ = 0, maskHeight_ = 0;
   std::shared_ptr<const std::vector<unsigned char>> mask_;
 };

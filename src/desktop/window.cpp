@@ -10102,7 +10102,7 @@ void Window::Impl::geometry(const Json &o, Pane &pane, ImU32 tint, bool cache,
     const auto rgba = color(string(get(o, "color")));
     tint = IM_COL32(rgba[0], rgba[1], rgba[2], rgba[3]);
   }
-  if (kind == "mask") {
+  if (kind == "mask" || kind=="region") {
     auto found = pane.maskOutlines.find(&o);
     if (!cache) {
       const std::array<int, 2> shape{pane.doc->shape().x,

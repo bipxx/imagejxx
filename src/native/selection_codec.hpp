@@ -6,10 +6,10 @@
 
 namespace imagejxx::detail::selection_codec {
 using Json = nlohmann::json;
-Json encode_selection(const Selection &value);
-Json encode_roi(const Roi &value);
+Json encode_selection(const Selection &value, bool allow_regions = false);
+Json encode_roi(const Roi &value, bool allow_regions = false);
 // The caller preflights the complete record and validates returned geometry
 // against its dataset descriptor. These functions acquire no image pixels.
-Selection decode_selection(const Json &value, const SessionLimits &limits);
-Roi decode_roi(const Json &value, const SessionLimits &limits);
+Selection decode_selection(const Json &value, const SessionLimits &limits, bool allow_regions = false);
+Roi decode_roi(const Json &value, const SessionLimits &limits, bool allow_regions = false);
 } // namespace imagejxx::detail::selection_codec

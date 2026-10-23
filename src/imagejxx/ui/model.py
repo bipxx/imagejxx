@@ -61,13 +61,16 @@ class Selection:
     width: float = 1
     bitmap: np.ndarray | None = None
     attributes: dict = field(default_factory=dict)
+    origin: tuple[int, int] = (0, 0)
 
     def clone(self):
         return deepcopy(self)
 
     def native(self):
         """Adapt geometry and attributes without reimplementing native ROI styles."""
-        if self.kind == "mask":
+        if self.kind in ("mask", "region"):
+            if self.kind == "region" and self.points:
+                raise ValueError("Packed region must not contain vector points")
             if self.bitmap is None:
                 raise ValueError("Selection mask is missing")
             bitmap = np.asarray(self.bitmap)
@@ -83,9 +86,10 @@ class Selection:
                 bitmap = bitmap.astype(np.float64)
             native = ij.Selection.from_mask(bitmap)
             h, w = self.bitmap.shape
-            return ij.SelectionEditor(native, (h, w)).properties(
+            styled = ij.SelectionEditor(native, (h, w)).properties(
                 self.width, self.attributes
             )
+            return ij.SelectionRegion(styled, (h, w), self.origin).as_selection() if self.kind == "region" else styled
         return ij.Selection(
             self.kind, self.points, self.width, attributes=self.attributes
         )
@@ -95,6 +99,11 @@ class Selection:
         return self.native().mask((height, width))
 
     def bounds(self, shape):
+        if self.kind == "region":
+            bounds = ij.SelectionRegion(self.native(), shape[:2]).bounds
+            if bounds is None:
+                raise ValueError("Selection contains no pixels")
+            return (int(bounds[0]), int(bounds[1]), int(bounds[2]-bounds[0]), int(bounds[3]-bounds[1]))
         yy, xx = np.nonzero(self.mask(shape))
         if not len(xx):
             raise ValueError("Selection contains no pixels")
@@ -107,6 +116,9 @@ class Selection:
 
     def moved(self, dx, dy, shape):
         selection = self.clone()
+        if self.kind == "region":
+            moved = ij.SelectionEditor(self.native(), shape[:2]).moved((dx, dy))
+            return Selection.from_dict(moved.to_dict())
         if self.kind == "mask":
             selection.bitmap = ij.translate(
                 self.mask(shape), dx, dy, interpolation="nearest"
@@ -117,6 +129,8 @@ class Selection:
         return selection
 
     def to_dict(self):
+        if self.kind == "region":
+            return self.native().to_dict()
         reserved = {"kind", "points", "width"}
         if self.bitmap is not None or self.kind == "mask":
             reserved |= {"shape", "mask"}
@@ -146,6 +160,8 @@ class Selection:
 
     @classmethod
     def _from_session_dict(cls, value):
+        if value["kind"] == "region":
+            return cls.from_dict(value)
         if value["kind"] != "mask":
             # Native non-mask shape/mask members are opaque attributes. The
             # legacy attached-bitmap heuristic must not change their geometry.
@@ -168,6 +184,13 @@ class Selection:
 
     @classmethod
     def from_dict(cls, value):
+        if value["kind"] == "region":
+            canonical = ij.Selection.from_dict(value).to_dict()
+            shape = tuple(canonical["shape"])
+            bits = np.unpackbits(np.frombuffer(base64.b64decode(canonical["mask"]), np.uint8))
+            return cls("region", [], canonical["width"],
+                       bits[:shape[0]*shape[1]].reshape(shape).astype(np.uint8)*255,
+                       deepcopy(canonical["attributes"]), tuple(canonical["origin"]))
         dimensions = value.get("shape")
         # Old Python records could attach a packed bitmap to another kind.
         # Retain that encoding without treating arbitrary metadata named
