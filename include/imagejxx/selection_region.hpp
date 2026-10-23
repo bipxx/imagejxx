@@ -32,4 +32,33 @@ private:
   int width_, height_;
   std::array<int, 2> origin_;
 };
+
+struct SelectionRegionBooleanEstimate {
+  std::array<int,2> origin;
+  std::array<int,2> shape; // height,width of the admitted result frame
+  std::size_t pixels=0,working_bytes=0;
+};
+// Full image-grid area algebra, independent of the document's clipping canvas.
+// Legacy masks must match width/height; regions retain their intrinsic extent.
+// Empty results are explicit 1x1 zero regions at (0,0). Styles are not combined.
+// Estimates borrow geometry/metadata without rasterization or user callbacks.
+// The bound covers frozen geometry, packed output, one dense vector raster and
+// scratch; it is not RSS and excludes caller/frontend copies and opaque callable
+// storage. Pixel limits apply to input masks and the result frame.
+SelectionRegionBooleanEstimate estimate_selection_region_boolean(
+    int width,int height,const std::vector<Selection> &,SelectionBooleanOperation,
+    const SelectionEditLimits & = {});
+Selection combine_selection_regions(
+    int width,int height,const std::vector<Selection> &,SelectionBooleanOperation,
+    const SelectionEditLimits & = {},const ExecutionControl & = {});
+// Ordered distinct manager rows are combined regardless of their TCZ positions.
+// Only current/Previous selection changes; saved rows and source words survive.
+// Transaction admission additionally includes retained source annotation copies;
+// publication/history and externally retained previews remain the host's scope.
+SelectionRegionBooleanEstimate estimate_roi_region_boolean(
+    const DocumentSnapshot &,const std::vector<std::size_t> &,SelectionBooleanOperation,
+    const SelectionEditLimits & = {});
+DocumentTransaction prepare_roi_region_boolean(
+    const DocumentSnapshot &,const std::vector<std::size_t> &,SelectionBooleanOperation,
+    const SelectionEditLimits & = {},const ExecutionControl & = {});
 }

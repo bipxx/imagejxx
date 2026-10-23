@@ -33,6 +33,7 @@
 #include "../native/kernel_control.hpp"
 #include "gaussian_cancellation_internal.hpp"
 #include "headless_session_internal.hpp"
+#include <imagejxx/selection_region.hpp>
 #include "gaussian_jobs.hpp"
 #include "gaussian_panel.hpp"
 #include "rank_panel.hpp"
@@ -1574,7 +1575,7 @@ struct Window::Impl {
       return !owner.busy() && owner.controller_->active_document_id()==source->id;
     if(action=="select_all" || action=="select_none" || action=="restore_selection" || action=="invert_selection")
       return !owner.busy() && owner.controller_->active_document_id()==source->id;
-    if (action == "create_roi" || action == "add_roi" || action == "select_roi" || action == "update_roi" ||
+    if (action == "combine_rois" || action == "create_roi" || action == "add_roi" || action == "select_roi" || action == "update_roi" ||
         action == "rename_roi" || action == "delete_roi" || action == "roi_properties")
       return owner.controller_->active_document_id() == source->id;
     if (action == "gaussian_blur_imagej" || action == "gaussian_replay" ||
@@ -7179,7 +7180,7 @@ void Window::action(const std::string &name, const Json &p) {
       throw std::invalid_argument("ROI combination parameters must be an object");
     for (const auto &field : p.items())
       if (field.key() != "indices" && field.key() != "operation" &&
-          field.key() != "document_id" && field.key() != "metadata_revision")
+          field.key() != "document_id" && field.key() != "metadata_revision" && field.key() != "geometry")
         throw std::invalid_argument("Unknown ROI combination parameter: " +
                                     field.key());
     if (p.contains("operation") && !p["operation"].is_string())
@@ -7233,12 +7234,19 @@ void Window::action(const std::string &name, const Json &p) {
         throw std::invalid_argument("ROI combinations require area ROIs");
       indices.push_back(checked);
     }
-    auto edit = imagejxx::prepare_roi_boolean(source, indices, kind);
+    bool full=false;for(auto index:indices)full=full || source.data().rois[index].selection.is_region();
+    if(p.contains("geometry")) {
+      if(!p["geometry"].is_string() || (p["geometry"]!="canvas_v1" && p["geometry"]!="full_region_v2"))throw std::invalid_argument("Choose canvas_v1 or full_region_v2 Boolean geometry");
+      full=p["geometry"]=="full_region_v2";
+    }
+    const auto admitted=impl->selectionCreationLimits();
+    const SelectionEditLimits limits{admitted.max_pixels,admitted.max_candidate_vertices,admitted.max_working_bytes};
+    auto edit = full?imagejxx::prepare_roi_region_boolean(source,indices,kind,limits):imagejxx::prepare_roi_boolean(source, indices, kind);
     if (busy())
       throw std::invalid_argument("Wait for the current edit");
     // The retained adapter and transaction target the captured native owner;
     // later active-tab/display changes cannot redirect publication.
-    target->commitNative(edit);
+    if(target->scientific())controller_->commit(edit);else target->commitNative(edit);
     return;
   }
   if (name == "new") {

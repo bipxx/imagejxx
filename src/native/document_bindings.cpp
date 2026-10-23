@@ -378,6 +378,25 @@ void bind_document(py::module_ &m) {
             return bindings::numpy_image(image);
           },
           py::arg("shape"));
+  py::class_<SelectionRegionBooleanEstimate>(m,"SelectionRegionBooleanEstimate")
+      .def_readonly("origin",&SelectionRegionBooleanEstimate::origin)
+      .def_readonly("shape",&SelectionRegionBooleanEstimate::shape)
+      .def_readonly("pixels",&SelectionRegionBooleanEstimate::pixels)
+      .def_readonly("working_bytes",&SelectionRegionBooleanEstimate::working_bytes);
+  m.def("estimate_selection_region_boolean",[](int width,int height,const std::vector<Selection> &operands,const std::string &operation,SelectionEditLimits limits){
+    const auto mode=boolean_operation(operation);py::gil_scoped_release release;return estimate_selection_region_boolean(width,height,operands,mode,limits);
+  },py::arg("width"),py::arg("height"),py::arg("operands"),py::arg("operation")="union",py::arg("limits")=SelectionEditLimits{});
+  m.def("combine_selection_regions",[](int width,int height,const std::vector<Selection> &operands,const std::string &operation,SelectionEditLimits limits,std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint){
+    const auto mode=boolean_operation(operation);const auto control=axis_range_python_control(std::move(cancellation),std::move(progress),std::move(checkpoint));
+    py::gil_scoped_release release;return combine_selection_regions(width,height,operands,mode,limits,control);
+  },py::arg("width"),py::arg("height"),py::arg("operands"),py::arg("operation")="union",py::arg("limits")=SelectionEditLimits{},py::kw_only(),py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none());
+  m.def("estimate_roi_region_boolean",[](const DocumentSnapshot &source,const py::iterable &indices,const std::string &operation,SelectionEditLimits limits){
+    const auto mode=boolean_operation(operation);const auto rows=roi_indices(indices);py::gil_scoped_release release;return estimate_roi_region_boolean(source,rows,mode,limits);
+  },py::arg("source"),py::arg("indices"),py::arg("operation")="union",py::arg("limits")=SelectionEditLimits{});
+  m.def("prepare_roi_region_boolean",[](const DocumentSnapshot &source,const py::iterable &indices,const std::string &operation,SelectionEditLimits limits,std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint){
+    const auto mode=boolean_operation(operation);const auto rows=roi_indices(indices);const auto control=axis_range_python_control(std::move(cancellation),std::move(progress),std::move(checkpoint));
+    py::gil_scoped_release release;return prepare_roi_region_boolean(source,rows,mode,limits,control);
+  },py::arg("source"),py::arg("indices"),py::arg("operation")="union",py::arg("limits")=SelectionEditLimits{},py::kw_only(),py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none());
   m.def(
       "combine_selections",
       [](int width, int height, const std::vector<Selection> &operands,

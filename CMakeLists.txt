@@ -19,7 +19,7 @@ add_library(imagejxx_core STATIC
   src/native/avi_movie.cpp
   src/native/image.cpp src/native/filters.cpp src/native/shadow.cpp src/native/gaussian.cpp src/native/gaussian_command.cpp src/native/rank.cpp src/native/rank_command.cpp src/native/axis_extraction_command.cpp src/native/transforms.cpp
   src/native/segmentation.cpp src/native/analysis.cpp src/native/frequency.cpp src/native/binary.cpp src/native/conversion.cpp
-  src/native/dataset.cpp src/native/settings.cpp src/native/preferences.cpp src/native/document.cpp src/native/axis_remap.cpp src/native/z_subset_command.cpp src/native/manual_threshold.cpp src/native/manual_threshold_command.cpp src/native/selection_edit.cpp src/native/selection_boolean.cpp src/native/roi_style.cpp src/native/application.cpp src/native/metadata.cpp src/native/session_metadata.cpp src/native/operations.cpp src/native/targets.cpp src/native/execution.cpp src/native/jobs.cpp src/native/kernel_control.cpp)
+  src/native/dataset.cpp src/native/settings.cpp src/native/preferences.cpp src/native/document.cpp src/native/axis_remap.cpp src/native/z_subset_command.cpp src/native/manual_threshold.cpp src/native/manual_threshold_command.cpp src/native/selection_edit.cpp src/native/selection_boolean.cpp src/native/selection_region_boolean.cpp src/native/roi_style.cpp src/native/application.cpp src/native/metadata.cpp src/native/session_metadata.cpp src/native/operations.cpp src/native/targets.cpp src/native/execution.cpp src/native/jobs.cpp src/native/kernel_control.cpp)
 add_library(imagejxx::core ALIAS imagejxx_core)
 set(IMAGEJXX_PRIVATE_ZLIB_SOURCES
   third_party/zlib/adler32.c third_party/zlib/compress.c
@@ -704,6 +704,9 @@ if(BUILD_TESTING)
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party/nlohmann_json/include)
   add_test(NAME native_session_metadata COMMAND imagejxx_session_metadata_tests)
   set_tests_properties(native_session_metadata PROPERTIES TIMEOUT 30)
+  add_executable(imagejxx_region_boolean_tests examples/cpp/selection_region_boolean.cpp)
+  target_link_libraries(imagejxx_region_boolean_tests PRIVATE imagejxx::core)
+  add_test(NAME native_region_boolean COMMAND imagejxx_region_boolean_tests)
   add_executable(imagejxx_saved_region_geometry_tests examples/cpp/saved_region_geometry.cpp)
   target_link_libraries(imagejxx_saved_region_geometry_tests PRIVATE imagejxx::core)
   add_test(NAME native_saved_region_geometry COMMAND imagejxx_saved_region_geometry_tests)

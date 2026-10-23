@@ -1,0 +1,3983 @@
+{
+  "schema": "imagejxx.reference.selection-region-boolean-vectors",
+  "version": 1,
+  "imagej_version": "1.54r",
+  "cases": [
+    {
+      "kind": 0,
+      "variant": 0,
+      "inputs": [
+        {
+          "kind": "rectangle",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -14.25,
+              -7.75
+            ],
+            [
+              5.25,
+              8.75
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -4,
+            7
+          ],
+          "shape": [
+            25,
+            25
+          ],
+          "mask": "/////////////////////8AAf+AAP/AAH/gAD/wAB/4AA/8AAf+AAP/AAH/gAD/wAB/4AA/8AAf+AAP/AAH/////////////////////gA=="
+        },
+        {
+          "kind": "rounded_rectangle",
+          "width": 1,
+          "attributes": {
+            "corner_diameter": 8
+          },
+          "points": [
+            [
+              -7.25,
+              -0.75
+            ],
+            [
+              12.25,
+              15.75
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "union",
+        "intersection"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -14,
+            -7,
+            35,
+            39
+          ],
+          "sample": [
+            -16,
+            -9,
+            39,
+            43
+          ],
+          "occupied": 710,
+          "mask": "AAAAAAAAAAAAAP//8AAB///gAAP//8AAB///gAAP//8AAB///gAAP//8AAB///gAAP//8AAB///gAAP//8AAB///gAAP//8AAB///gAAP/////h/////8P/////gAH///8AA////gAHwAB8AA+AAPgAHwAB8AA+AAPgAHwAB8AA+AAPgAHwAB8AA+AAPgAHwAB8AA+AAPgAHwAB8AA+AAPgAHwAB8AA+AAPgAHwAB8AA////gAH///8AA////gAH///8AA////gAAAAAAAAAAAAA"
+        },
+        {
+          "bounds": [
+            -7,
+            0,
+            20,
+            17
+          ],
+          "sample": [
+            -16,
+            -9,
+            39,
+            43
+          ],
+          "occupied": 207,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/gAAAD/8AAAA//gAAAH/8AAAA//gAAAH/8AAAA//gAAAH//+AAA///wAAH//+AAAH//wAAA//+AAAHwAAAAA+AAAAAHwAAAAA+AAAAAHwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      ]
+    },
+    {
+      "kind": 0,
+      "variant": 0,
+      "inputs": [
+        {
+          "kind": "rectangle",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -14.25,
+              -7.75
+            ],
+            [
+              5.25,
+              8.75
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -4,
+            7
+          ],
+          "shape": [
+            25,
+            25
+          ],
+          "mask": "/////////////////////8AAf+AAP/AAH/gAD/wAB/4AA/8AAf+AAP/AAH/gAD/wAB/4AA/8AAf+AAP/AAH/////////////////////gA=="
+        },
+        {
+          "kind": "rounded_rectangle",
+          "width": 1,
+          "attributes": {
+            "corner_diameter": 8
+          },
+          "points": [
+            [
+              -7.25,
+              -0.75
+            ],
+            [
+              12.25,
+              15.75
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "intersection",
+        "subtraction"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -4,
+            7,
+            10,
+            3
+          ],
+          "sample": [
+            -16,
+            -9,
+            39,
+            43
+          ],
+          "occupied": 30,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/8AAAAH/gAAAA/8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        {
+          "bounds": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "sample": [
+            -16,
+            -9,
+            39,
+            43
+          ],
+          "occupied": 0,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      ]
+    },
+    {
+      "kind": 0,
+      "variant": 0,
+      "inputs": [
+        {
+          "kind": "rectangle",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -14.25,
+              -7.75
+            ],
+            [
+              5.25,
+              8.75
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -4,
+            7
+          ],
+          "shape": [
+            25,
+            25
+          ],
+          "mask": "/////////////////////8AAf+AAP/AAH/gAD/wAB/4AA/8AAf+AAP/AAH/gAD/wAB/4AA/8AAf+AAP/AAH/////////////////////gA=="
+        },
+        {
+          "kind": "rounded_rectangle",
+          "width": 1,
+          "attributes": {
+            "corner_diameter": 8
+          },
+          "points": [
+            [
+              -7.25,
+              -0.75
+            ],
+            [
+              12.25,
+              15.75
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "subtraction",
+        "xor"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -14,
+            -7,
+            20,
+            17
+          ],
+          "sample": [
+            -16,
+            -9,
+            39,
+            43
+          ],
+          "occupied": 310,
+          "mask": "AAAAAAAAAAAAAP//8AAB///gAAP//8AAB///gAAP//8AAB///gAAP//8AAB///gAAP//8AAB///gAAP//8AAB///gAAP//8AAB///gAAP/AAAAB/4AAAAP/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        {
+          "bounds": [
+            -14,
+            -7,
+            27,
+            24
+          ],
+          "sample": [
+            -16,
+            -9,
+            39,
+            43
+          ],
+          "occupied": 444,
+          "mask": "AAAAAAAAAAAAAP//8AAB///gAAP//8AAB///gAAP//8AAB///gAAP//8AAB/wAfAAP8AD8AB/AAfwAP4AD+AB/AAfwAP4AD+AB/AAfwAP4//+AB/H//wAP4//+AAA///wAAH//+AAA///wAAH//+AAA///wAAD//8AAAP//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      ]
+    },
+    {
+      "kind": 0,
+      "variant": 0,
+      "inputs": [
+        {
+          "kind": "rectangle",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -14.25,
+              -7.75
+            ],
+            [
+              5.25,
+              8.75
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -4,
+            7
+          ],
+          "shape": [
+            25,
+            25
+          ],
+          "mask": "/////////////////////8AAf+AAP/AAH/gAD/wAB/4AA/8AAf+AAP/AAH/gAD/wAB/4AA/8AAf+AAP/AAH/////////////////////gA=="
+        },
+        {
+          "kind": "rounded_rectangle",
+          "width": 1,
+          "attributes": {
+            "corner_diameter": 8
+          },
+          "points": [
+            [
+              -7.25,
+              -0.75
+            ],
+            [
+              12.25,
+              15.75
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "xor",
+        "union"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -14,
+            -7,
+            35,
+            39
+          ],
+          "sample": [
+            -16,
+            -9,
+            39,
+            43
+          ],
+          "occupied": 680,
+          "mask": "AAAAAAAAAAAAAP//8AAB///gAAP//8AAB///gAAP//8AAB///gAAP//8AAB///gAAP//8AAB///gAAP//8AAB///gAAP//8AAB///gAAP/AD//h/4Af/8P/AD//gAH///8AA////gAHwAB8AA+AAPgAHwAB8AA+AAPgAHwAB8AA+AAPgAHwAB8AA+AAPgAHwAB8AA+AAPgAHwAB8AA+AAPgAHwAB8AA+AAPgAHwAB8AA////gAH///8AA////gAH///8AA////gAAAAAAAAAAAAA"
+        },
+        {
+          "bounds": [
+            -14,
+            -7,
+            35,
+            39
+          ],
+          "sample": [
+            -16,
+            -9,
+            39,
+            43
+          ],
+          "occupied": 831,
+          "mask": "AAAAAAAAAAAAAP//8AAB///gAAP//8AAB///gAAP//8AAB///gAAP//8AAB////AAP///8AB////wAP///+AB////wAP///+AB////wAP/////h/////8P/////gA////8AH////gA///x8AH//+PgA///x8AD//8PgAP//B8AA+AAPgAHwAB8AA+AAPgAHwAB8AA+AAPgAHwAB8AA+AAPgAHwAB8AA+AAPgAHwAB8AA////gAH///8AA////gAH///8AA////gAAAAAAAAAAAAA"
+        }
+      ]
+    },
+    {
+      "kind": 0,
+      "variant": 1,
+      "inputs": [
+        {
+          "kind": "rectangle",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              4.75,
+              5.25
+            ],
+            [
+              24.25,
+              21.75
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -4,
+            7
+          ],
+          "shape": [
+            25,
+            25
+          ],
+          "mask": "/////////////////////8AAf+AAP/AAH/gAD/wAB/4AA/8AAf+AAP/AAH/gAD/wAB/4AA/8AAf+AAP/AAH/////////////////////gA=="
+        },
+        {
+          "kind": "rounded_rectangle",
+          "width": 1,
+          "attributes": {
+            "corner_diameter": 8
+          },
+          "points": [
+            [
+              -7.25,
+              -0.75
+            ],
+            [
+              12.25,
+              15.75
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "union",
+        "intersection"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -4,
+            5,
+            28,
+            27
+          ],
+          "sample": [
+            -9,
+            -2,
+            35,
+            36
+          ],
+          "occupied": 605,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA///wAB///gP////Af///+A////8B////4D////wHx///gPj///AfH//+A+P//8B8f//4D4///wHx///gPj///AfH//+A+P//8B8AAfAD4AA+AHwAB8APgAD4AfAAHwA////gB////AD///+AH///8AP///4AAAAAAAAAAAAA="
+        },
+        {
+          "bounds": [
+            -4,
+            5,
+            17,
+            12
+          ],
+          "sample": [
+            -9,
+            -2,
+            35,
+            36
+          ],
+          "occupied": 170,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/4AAAB/wAAP//gAAf//AAA//+AAB//8AAD//4AAHx/wAAPj/gAAfH/AAA+P8AAB8fwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+        }
+      ]
+    },
+    {
+      "kind": 0,
+      "variant": 1,
+      "inputs": [
+        {
+          "kind": "rectangle",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              4.75,
+              5.25
+            ],
+            [
+              24.25,
+              21.75
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -4,
+            7
+          ],
+          "shape": [
+            25,
+            25
+          ],
+          "mask": "/////////////////////8AAf+AAP/AAH/gAD/wAB/4AA/8AAf+AAP/AAH/gAD/wAB/4AA/8AAf+AAP/AAH/////////////////////gA=="
+        },
+        {
+          "kind": "rounded_rectangle",
+          "width": 1,
+          "attributes": {
+            "corner_diameter": 8
+          },
+          "points": [
+            [
+              -7.25,
+              -0.75
+            ],
+            [
+              12.25,
+              15.75
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "intersection",
+        "subtraction"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            4,
+            7,
+            17,
+            15
+          ],
+          "sample": [
+            -9,
+            -2,
+            35,
+            36
+          ],
+          "occupied": 135,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//4AAH//wAAP//gAAf//AAA//+AAAAB8AAAAD4AAAAHwAAAAPgAAAAfAAAAA+AAAAB8AAAAD4AAAAHwAAAAPgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+        },
+        {
+          "bounds": [
+            13,
+            7,
+            8,
+            15
+          ],
+          "sample": [
+            -9,
+            -2,
+            35,
+            36
+          ],
+          "occupied": 90,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf4AAAA/wAAAB/gAAAD/AAAAH+AAAAB8AAAAD4AAAAHwAAAAPgAAAAfAAAAA+AAAAB8AAAAD4AAAAHwAAAAPgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+        }
+      ]
+    },
+    {
+      "kind": 0,
+      "variant": 1,
+      "inputs": [
+        {
+          "kind": "rectangle",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              4.75,
+              5.25
+            ],
+            [
+              24.25,
+              21.75
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -4,
+            7
+          ],
+          "shape": [
+            25,
+            25
+          ],
+          "mask": "/////////////////////8AAf+AAP/AAH/gAD/wAB/4AA/8AAf+AAP/AAH/gAD/wAB/4AA/8AAf+AAP/AAH/////////////////////gA=="
+        },
+        {
+          "kind": "rounded_rectangle",
+          "width": 1,
+          "attributes": {
+            "corner_diameter": 8
+          },
+          "points": [
+            [
+              -7.25,
+              -0.75
+            ],
+            [
+              12.25,
+              15.75
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "subtraction",
+        "xor"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            4,
+            5,
+            20,
+            17
+          ],
+          "sample": [
+            -9,
+            -2,
+            35,
+            36
+          ],
+          "occupied": 205,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA///wAB///gAAAAHAAAAAOAAAAAcAAAAA4AAAABwAB/+DgAD/8HAAH/4OAAP/wcAAf/g4AA//BwAB/+DgAD/8HAAH/4OAAP/wcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+        },
+        {
+          "bounds": [
+            -7,
+            0,
+            31,
+            22
+          ],
+          "sample": [
+            -9,
+            -2,
+            35,
+            36
+          ],
+          "occupied": 413,
+          "mask": "AAAAAAAAAAAAP//AAA///AAD///AAH//+AAP//8AAf/AH/w/+AP/h///gHD///AOH//+AcP//8A4f//4Bw/+AODh/8AcHD/4A4OD/wDwcD/gPg4AA//BwAB/+DgAD/8HAAH/4OAAP/wcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+        }
+      ]
+    },
+    {
+      "kind": 0,
+      "variant": 1,
+      "inputs": [
+        {
+          "kind": "rectangle",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              4.75,
+              5.25
+            ],
+            [
+              24.25,
+              21.75
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -4,
+            7
+          ],
+          "shape": [
+            25,
+            25
+          ],
+          "mask": "/////////////////////8AAf+AAP/AAH/gAD/wAB/4AA/8AAf+AAP/AAH/gAD/wAB/4AA/8AAf+AAP/AAH/////////////////////gA=="
+        },
+        {
+          "kind": "rounded_rectangle",
+          "width": 1,
+          "attributes": {
+            "corner_diameter": 8
+          },
+          "points": [
+            [
+              -7.25,
+              -0.75
+            ],
+            [
+              12.25,
+              15.75
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "xor",
+        "union"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -4,
+            5,
+            28,
+            27
+          ],
+          "sample": [
+            -9,
+            -2,
+            35,
+            36
+          ],
+          "occupied": 470,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA///wAB///gP8AAHAf4AAOA/wAAcB/gAA4D/AABwHx/+DgPj/8HAfH/4OA+P/wcB8f/g4D4//BwHx/+DgPj/8HAfH/4OA+P/wcB8AAfAD4AA+AHwAB8APgAD4AfAAHwA////gB////AD///+AH///8AP///4AAAAAAAAAAAAA="
+        },
+        {
+          "bounds": [
+            -7,
+            0,
+            31,
+            32
+          ],
+          "sample": [
+            -9,
+            -2,
+            35,
+            36
+          ],
+          "occupied": 673,
+          "mask": "AAAAAAAAAAAAP//AAA///AAD///AAH//+AAP//8AAf////w/////h///gHD///AOH//+AcP//8A4f//4Bw///+Dh///8HD///4OD///wcD///g4D4//BwHx/+DgPj/8HAfH/4OA+P/wcB8AAfAD4AA+AHwAB8APgAD4AfAAHwA////gB////AD///+AH///8AP///4AAAAAAAAAAAAA="
+        }
+      ]
+    },
+    {
+      "kind": 1,
+      "variant": 0,
+      "inputs": [
+        {
+          "kind": "ellipse",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -14.25,
+              -7.75
+            ],
+            [
+              5.25,
+              8.75
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -1,
+            10
+          ],
+          "shape": [
+            23,
+            23
+          ],
+          "mask": "gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=="
+        },
+        {
+          "kind": "polygon",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -9.0,
+              -2.0
+            ],
+            [
+              15.0,
+              -3.0
+            ],
+            [
+              23.0,
+              11.0
+            ],
+            [
+              8.0,
+              26.0
+            ],
+            [
+              -5.0,
+              17.0
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "union",
+        "subtraction"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -14,
+            -7,
+            36,
+            40
+          ],
+          "sample": [
+            -16,
+            -9,
+            41,
+            44
+          ],
+          "occupied": 270,
+          "mask": "AAAAAAAAAAAAAAAfgAAAAH/4AAAAf/4AAAB//4AAAH//4AAAP//wAAA///wAAB///gAAD///AAAH//+AAAP//8AAAP//wAAAf//gAAAf/+AAAAf/4AAAAf/gAAAAH4AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=="
+        },
+        {
+          "bounds": [
+            -14,
+            -7,
+            36,
+            40
+          ],
+          "sample": [
+            -16,
+            -9,
+            41,
+            44
+          ],
+          "occupied": 121,
+          "mask": "AAAAAAAAAAAAAAAfgAAAAH/4AAAAf/4AAAB//4AAAH//gAAAPAAAAAA+AAAAAB+AAAAAD8AAAAAH4AAAAAPwAAAAAPgAAAAAfgAAAAAfAAAAAAeAAAAAAcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=="
+        }
+      ]
+    },
+    {
+      "kind": 1,
+      "variant": 0,
+      "inputs": [
+        {
+          "kind": "ellipse",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -14.25,
+              -7.75
+            ],
+            [
+              5.25,
+              8.75
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -1,
+            10
+          ],
+          "shape": [
+            23,
+            23
+          ],
+          "mask": "gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=="
+        },
+        {
+          "kind": "polygon",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -9.0,
+              -2.0
+            ],
+            [
+              15.0,
+              -3.0
+            ],
+            [
+              23.0,
+              11.0
+            ],
+            [
+              8.0,
+              26.0
+            ],
+            [
+              -5.0,
+              17.0
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "intersection",
+        "xor"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "sample": [
+            -16,
+            -9,
+            41,
+            44
+          ],
+          "occupied": 0,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+        },
+        {
+          "bounds": [
+            -9,
+            -3,
+            32,
+            29
+          ],
+          "sample": [
+            -16,
+            -9,
+            41,
+            44
+          ],
+          "occupied": 622,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf/gAA////gAB////AAB////AAD////AAH///+AAP///+AAf///8AAf///8AA////4AB////4AD////4AH////wAH////wAP////gAf///+AA////4AB////gAB///+AAD///4AAD///gAAD//+AAAB//4AAAB//gAAAA/+AAAAA/4AAAAA/gAAAAAeAAAAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+        }
+      ]
+    },
+    {
+      "kind": 1,
+      "variant": 0,
+      "inputs": [
+        {
+          "kind": "ellipse",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -14.25,
+              -7.75
+            ],
+            [
+              5.25,
+              8.75
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -1,
+            10
+          ],
+          "shape": [
+            23,
+            23
+          ],
+          "mask": "gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=="
+        },
+        {
+          "kind": "polygon",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -9.0,
+              -2.0
+            ],
+            [
+              15.0,
+              -3.0
+            ],
+            [
+              23.0,
+              11.0
+            ],
+            [
+              8.0,
+              26.0
+            ],
+            [
+              -5.0,
+              17.0
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "subtraction",
+        "union"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -14,
+            -7,
+            20,
+            17
+          ],
+          "sample": [
+            -16,
+            -9,
+            41,
+            44
+          ],
+          "occupied": 268,
+          "mask": "AAAAAAAAAAAAAAAfgAAAAH/4AAAAf/4AAAB//4AAAH//4AAAP//wAAA///wAAB///gAAD///AAAH//+AAAP//8AAAP//wAAAf//gAAAf/+AAAAf/4AAAAf/gAAAAH4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+        },
+        {
+          "bounds": [
+            -14,
+            -7,
+            37,
+            33
+          ],
+          "sample": [
+            -16,
+            -9,
+            41,
+            44
+          ],
+          "occupied": 742,
+          "mask": "AAAAAAAAAAAAAAAfgAAAAH/4AAAAf/4AAAB//4AAAH////gAP////gA/////AB/////AD/////AH////+AP////+AP////8Af////8Af////4Af////4Af////4AH////wAH////wAP////gAf///+AA////4AB////gAB///+AAD///4AAD///gAAD//+AAAB//4AAAB//gAAAA/+AAAAA/4AAAAA/gAAAAAeAAAAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+        }
+      ]
+    },
+    {
+      "kind": 1,
+      "variant": 0,
+      "inputs": [
+        {
+          "kind": "ellipse",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -14.25,
+              -7.75
+            ],
+            [
+              5.25,
+              8.75
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -1,
+            10
+          ],
+          "shape": [
+            23,
+            23
+          ],
+          "mask": "gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=="
+        },
+        {
+          "kind": "polygon",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -9.0,
+              -2.0
+            ],
+            [
+              15.0,
+              -3.0
+            ],
+            [
+              23.0,
+              11.0
+            ],
+            [
+              8.0,
+              26.0
+            ],
+            [
+              -5.0,
+              17.0
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "xor",
+        "intersection"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -14,
+            -7,
+            36,
+            40
+          ],
+          "sample": [
+            -16,
+            -9,
+            41,
+            44
+          ],
+          "occupied": 270,
+          "mask": "AAAAAAAAAAAAAAAfgAAAAH/4AAAAf/4AAAB//4AAAH//4AAAP//wAAA///wAAB///gAAD///AAAH//+AAAP//8AAAP//wAAAf//gAAAf/+AAAAf/4AAAAf/gAAAAH4AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=="
+        },
+        {
+          "bounds": [
+            -9,
+            -3,
+            15,
+            14
+          ],
+          "sample": [
+            -16,
+            -9,
+            41,
+            44
+          ],
+          "occupied": 149,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAAAA//wAAAB//wAAAB//gAAAD//AAAAH/+AAAAP/8AAAAf/wAAAAf/gAAAA/+AAAAB/4AAAAD/gAAAAH4AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+        }
+      ]
+    },
+    {
+      "kind": 1,
+      "variant": 1,
+      "inputs": [
+        {
+          "kind": "ellipse",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              4.75,
+              5.25
+            ],
+            [
+              24.25,
+              21.75
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -1,
+            10
+          ],
+          "shape": [
+            23,
+            23
+          ],
+          "mask": "gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=="
+        },
+        {
+          "kind": "polygon",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -9.0,
+              -2.0
+            ],
+            [
+              15.0,
+              -3.0
+            ],
+            [
+              23.0,
+              11.0
+            ],
+            [
+              8.0,
+              26.0
+            ],
+            [
+              -5.0,
+              17.0
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "union",
+        "subtraction"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -1,
+            5,
+            25,
+            28
+          ],
+          "sample": [
+            -11,
+            -5,
+            37,
+            40
+          ],
+          "occupied": 270,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPwAAAA//AAAA//wAAA//8AAA///AAQf//gAAf//4AAP//8AAH//+AAD///AAB///gAAf//gAAP//wAAD//wAAA//wAAAP/wAAAA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA="
+        },
+        {
+          "bounds": [
+            13,
+            9,
+            11,
+            24
+          ],
+          "sample": [
+            -11,
+            -5,
+            37,
+            40
+          ],
+          "occupied": 50,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAIAAAAAMAAAAAOAAAAAPAAAAAPgAAAAPgAAAAPwAAAAPwAAAAPwAAAAPwAAAAPAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA="
+        }
+      ]
+    },
+    {
+      "kind": 1,
+      "variant": 1,
+      "inputs": [
+        {
+          "kind": "ellipse",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              4.75,
+              5.25
+            ],
+            [
+              24.25,
+              21.75
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -1,
+            10
+          ],
+          "shape": [
+            23,
+            23
+          ],
+          "mask": "gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=="
+        },
+        {
+          "kind": "polygon",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -9.0,
+              -2.0
+            ],
+            [
+              15.0,
+              -3.0
+            ],
+            [
+              23.0,
+              11.0
+            ],
+            [
+              8.0,
+              26.0
+            ],
+            [
+              -5.0,
+              17.0
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "intersection",
+        "xor"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "sample": [
+            -11,
+            -5,
+            37,
+            40
+          ],
+          "occupied": 0,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+        },
+        {
+          "bounds": [
+            -9,
+            -3,
+            32,
+            29
+          ],
+          "sample": [
+            -11,
+            -5,
+            37,
+            40
+          ],
+          "occupied": 622,
+          "mask": "AAAAAAAAAAAAAAD/8AB////AA////gAP///4AH///+AD////AB////wA////4AP///+AH////AD////wB////8A////+AP////gH////wD////wB////wA////wAP///wAH///wAB///wAAf//wAAD//wAAA//wAAAH/wAAAB/wAAAAfwAAAADwAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+        }
+      ]
+    },
+    {
+      "kind": 1,
+      "variant": 1,
+      "inputs": [
+        {
+          "kind": "ellipse",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              4.75,
+              5.25
+            ],
+            [
+              24.25,
+              21.75
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -1,
+            10
+          ],
+          "shape": [
+            23,
+            23
+          ],
+          "mask": "gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=="
+        },
+        {
+          "kind": "polygon",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -9.0,
+              -2.0
+            ],
+            [
+              15.0,
+              -3.0
+            ],
+            [
+              23.0,
+              11.0
+            ],
+            [
+              8.0,
+              26.0
+            ],
+            [
+              -5.0,
+              17.0
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "subtraction",
+        "union"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            4,
+            5,
+            20,
+            17
+          ],
+          "sample": [
+            -11,
+            -5,
+            37,
+            40
+          ],
+          "occupied": 268,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPwAAAA//AAAA//wAAA//8AAA///AAAf//gAAf//4AAP//8AAH//+AAD///AAB///gAAf//gAAP//wAAD//wAAA//wAAAP/wAAAA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+        },
+        {
+          "bounds": [
+            -9,
+            -3,
+            33,
+            29
+          ],
+          "sample": [
+            -11,
+            -5,
+            37,
+            40
+          ],
+          "occupied": 671,
+          "mask": "AAAAAAAAAAAAAAD/8AB////AA////gAP///4AH///+AD////AB////wA////4AP///+AH////AD////wB////8A/////AP////gH////4D////8B////+A/////AP////gH////gB////wAf///wAD///wAA///wAAH//AAAB/wAAAAfwAAAADwAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+        }
+      ]
+    },
+    {
+      "kind": 1,
+      "variant": 1,
+      "inputs": [
+        {
+          "kind": "ellipse",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              4.75,
+              5.25
+            ],
+            [
+              24.25,
+              21.75
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -1,
+            10
+          ],
+          "shape": [
+            23,
+            23
+          ],
+          "mask": "gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=="
+        },
+        {
+          "kind": "polygon",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -9.0,
+              -2.0
+            ],
+            [
+              15.0,
+              -3.0
+            ],
+            [
+              23.0,
+              11.0
+            ],
+            [
+              8.0,
+              26.0
+            ],
+            [
+              -5.0,
+              17.0
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "xor",
+        "intersection"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -1,
+            5,
+            25,
+            28
+          ],
+          "sample": [
+            -11,
+            -5,
+            37,
+            40
+          ],
+          "occupied": 270,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPwAAAA//AAAA//wAAA//8AAA///AAQf//gAAf//4AAP//8AAH//+AAD///AAB///gAAf//gAAP//wAAD//wAAA//wAAAP/wAAAA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA="
+        },
+        {
+          "bounds": [
+            -1,
+            5,
+            24,
+            17
+          ],
+          "sample": [
+            -11,
+            -5,
+            37,
+            40
+          ],
+          "occupied": 220,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPwAAAA//AAAA//wAAA//8AAA//+AAQf//gAAf//wAAP//wAAH//wAAD//wAAB//wAAAf/wAAAP/wAAAD/wAAAA/wAAAAPwAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "variant": 0,
+      "inputs": [
+        {
+          "kind": "rounded_rectangle",
+          "width": 1,
+          "attributes": {
+            "corner_diameter": 8
+          },
+          "points": [
+            [
+              -14.25,
+              -7.75
+            ],
+            [
+              5.25,
+              8.75
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -7,
+            5
+          ],
+          "shape": [
+            23,
+            27
+          ],
+          "mask": "/AAAH4AAA/AAAH4AAA/AAAH4AAA/AAAH4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP4AAB/AAAP4AAB/AAAP4AAB/AAAP4"
+        },
+        {
+          "kind": "freehand",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -16.0,
+              -8.0
+            ],
+            [
+              7.0,
+              -5.0
+            ],
+            [
+              19.0,
+              14.0
+            ],
+            [
+              0.0,
+              29.0
+            ],
+            [
+              -15.0,
+              11.0
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "union",
+        "xor"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -14,
+            -7,
+            34,
+            35
+          ],
+          "sample": [
+            -18,
+            -10,
+            40,
+            41
+          ],
+          "occupied": 395,
+          "mask": "AAAAAAAAAAAAAAAAAAAAA//8AAAH//4AAA///wAAD///AAAP//8AAA///wAAD///AAAP//8AAA///wAAD///AAAP//8AAA///wAAD///AAAP//8AAA///wAAB//+AAAD//wAAAAfgAAAAB+AAAAAH4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB/AAAAAH8AAAAAfwAAAAB/AAAAAH8AAAAAfwAAAAB/AAAAAAAAAAAAAAAAAAAAA=="
+        },
+        {
+          "bounds": [
+            -16,
+            -8,
+            36,
+            37
+          ],
+          "sample": [
+            -18,
+            -10,
+            40,
+            41
+          ],
+          "occupied": 529,
+          "mask": "AAAAAAAAAAAAADwAAAAAPAP8AAA4AAYAADAAAIAAMAAAwAAwAADgADAAAOAAMAAA8AAwAADwABAAAPgAEAAA/AAQAAD8ABAAAP4AEAAA/wAQAAD/ABAAAP+AGAAB/8AcAAP/wB/gf//gH+B//+AP4H//8Af////4A/////AB////4AD////AAP///4AAf//+AAA///wAAB//+AAAD//x/AAH/8H8AAf/gfwAA/8B/AAB/AH8AAD4AfwAAHAB/AAAIAAAAAAAAAAAAAAAAA=="
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "variant": 0,
+      "inputs": [
+        {
+          "kind": "rounded_rectangle",
+          "width": 1,
+          "attributes": {
+            "corner_diameter": 8
+          },
+          "points": [
+            [
+              -14.25,
+              -7.75
+            ],
+            [
+              5.25,
+              8.75
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -7,
+            5
+          ],
+          "shape": [
+            23,
+            27
+          ],
+          "mask": "/AAAH4AAA/AAAH4AAA/AAAH4AAA/AAAH4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP4AAB/AAAP4AAB/AAAP4AAB/AAAP4"
+        },
+        {
+          "kind": "freehand",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -16.0,
+              -8.0
+            ],
+            [
+              7.0,
+              -5.0
+            ],
+            [
+              19.0,
+              14.0
+            ],
+            [
+              0.0,
+              29.0
+            ],
+            [
+              -15.0,
+              11.0
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "intersection",
+        "union"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -7,
+            5,
+            6,
+            5
+          ],
+          "sample": [
+            -18,
+            -10,
+            40,
+            41
+          ],
+          "occupied": 30,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB+AAAAAH4AAAAAfgAAAAB+AAAAAH4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+        },
+        {
+          "bounds": [
+            -16,
+            -8,
+            35,
+            37
+          ],
+          "sample": [
+            -18,
+            -10,
+            40,
+            41
+          ],
+          "occupied": 806,
+          "mask": "AAAAAAAAAAAAADwAAAAAP/wAAAA///gAAD///4AAP///wAA////gAD///+AAP///8AA////wAB////gAH////AAf///8AB////4AH////wAf////AB////+AH////8Af////wB/////gH////+AP////8Af////4A/////AB////4AD////AAP///4AAf//+AAA///wAAB//+AAAD//wAAAH/8AAAAf/gAAAA/8AAAAB/AAAAAD4AAAAAHAAAAAAIAAAAAAAAAAAAAAAAA=="
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "variant": 0,
+      "inputs": [
+        {
+          "kind": "rounded_rectangle",
+          "width": 1,
+          "attributes": {
+            "corner_diameter": 8
+          },
+          "points": [
+            [
+              -14.25,
+              -7.75
+            ],
+            [
+              5.25,
+              8.75
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -7,
+            5
+          ],
+          "shape": [
+            23,
+            27
+          ],
+          "mask": "/AAAH4AAA/AAAH4AAA/AAAH4AAA/AAAH4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP4AAB/AAAP4AAB/AAAP4AAB/AAAP4"
+        },
+        {
+          "kind": "freehand",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -16.0,
+              -8.0
+            ],
+            [
+              7.0,
+              -5.0
+            ],
+            [
+              19.0,
+              14.0
+            ],
+            [
+              0.0,
+              29.0
+            ],
+            [
+              -15.0,
+              11.0
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "subtraction",
+        "intersection"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -14,
+            -7,
+            20,
+            17
+          ],
+          "sample": [
+            -18,
+            -10,
+            40,
+            41
+          ],
+          "occupied": 298,
+          "mask": "AAAAAAAAAAAAAAAAAAAAA//8AAAH//4AAA///wAAD///AAAP//8AAA///wAAD///AAAP//8AAA///wAAD///AAAP//8AAA///wAAD+B/AAAP4H8AAA/gfwAAB+B+AAAD4HwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+        },
+        {
+          "bounds": [
+            -14,
+            -7,
+            20,
+            17
+          ],
+          "sample": [
+            -18,
+            -10,
+            40,
+            41
+          ],
+          "occupied": 288,
+          "mask": "AAAAAAAAAAAAAAAAAAAAA/wAAAAH//gAAA///wAAD///AAAP//8AAA///wAAD///AAAP//8AAA///wAAD///AAAP//8AAA///wAAD+B/AAAP4H8AAA/gfwAAB+B+AAAD4HwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "variant": 0,
+      "inputs": [
+        {
+          "kind": "rounded_rectangle",
+          "width": 1,
+          "attributes": {
+            "corner_diameter": 8
+          },
+          "points": [
+            [
+              -14.25,
+              -7.75
+            ],
+            [
+              5.25,
+              8.75
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -7,
+            5
+          ],
+          "shape": [
+            23,
+            27
+          ],
+          "mask": "/AAAH4AAA/AAAH4AAA/AAAH4AAA/AAAH4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP4AAB/AAAP4AAB/AAAP4AAB/AAAP4"
+        },
+        {
+          "kind": "freehand",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -16.0,
+              -8.0
+            ],
+            [
+              7.0,
+              -5.0
+            ],
+            [
+              19.0,
+              14.0
+            ],
+            [
+              0.0,
+              29.0
+            ],
+            [
+              -15.0,
+              11.0
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "xor",
+        "subtraction"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -14,
+            -7,
+            34,
+            35
+          ],
+          "sample": [
+            -18,
+            -10,
+            40,
+            41
+          ],
+          "occupied": 365,
+          "mask": "AAAAAAAAAAAAAAAAAAAAA//8AAAH//4AAA///wAAD///AAAP//8AAA///wAAD///AAAP//8AAA///wAAD///AAAP//8AAA///wAAD+B/AAAP4H8AAA/gfwAAB+B+AAAD4HwAAAAfgAAAAB+AAAAAH4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB/AAAAAH8AAAAAfwAAAAB/AAAAAH8AAAAAfwAAAAB/AAAAAAAAAAAAAAAAAAAAA=="
+        },
+        {
+          "bounds": [
+            -4,
+            -7,
+            24,
+            35
+          ],
+          "sample": [
+            -18,
+            -10,
+            40,
+            41
+          ],
+          "occupied": 59,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAP8AAAAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB/AAAAAH8AAAAAfwAAAAB/AAAAAH8AAAAAfwAAAAB/AAAAAAAAAAAAAAAAAAAAA=="
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "variant": 1,
+      "inputs": [
+        {
+          "kind": "rounded_rectangle",
+          "width": 1,
+          "attributes": {
+            "corner_diameter": 8
+          },
+          "points": [
+            [
+              4.75,
+              5.25
+            ],
+            [
+              24.25,
+              21.75
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -7,
+            5
+          ],
+          "shape": [
+            23,
+            27
+          ],
+          "mask": "/AAAH4AAA/AAAH4AAA/AAAH4AAA/AAAH4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP4AAB/AAAP4AAB/AAAP4AAB/AAAP4"
+        },
+        {
+          "kind": "freehand",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -16.0,
+              -8.0
+            ],
+            [
+              7.0,
+              -5.0
+            ],
+            [
+              19.0,
+              14.0
+            ],
+            [
+              0.0,
+              29.0
+            ],
+            [
+              -15.0,
+              11.0
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "union",
+        "xor"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -7,
+            5,
+            31,
+            23
+          ],
+          "sample": [
+            -18,
+            -10,
+            44,
+            41
+          ],
+          "occupied": 418,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB+A//8AAfgf//gAH4P//8AB+D///AAfg///wAH4P//8AB+D///AAfg///wAAAP//8AAAD///AAAA///wAAAP//8AAAD///AAAA///wAAAP//8AAAB//+AAAAP//AAAAAB/AAAAAAfwAAAAAH8AAAAAB/AAAAAAfwAAAAAH8AAAAAAAAAAAAAAAAAAAAAAAA=="
+        },
+        {
+          "bounds": [
+            -16,
+            -8,
+            40,
+            37
+          ],
+          "sample": [
+            -18,
+            -10,
+            44,
+            41
+          ],
+          "occupied": 760,
+          "mask": "AAAAAAAAAAAAAAA8AAAAAAP/wAAAAD//+AAAA///+AAAP///wAAD///+AAA////gAAP///8AAD////AAAf///4AAH////AAB////wAAf///+AAH+B/AP8B/gfgD/gf4HwAf8H+B8AD/B/gfAA/wf4HwAH8H+B8AB/A/gfAAPwH//wAB8A//8AA/AH//AAfwA//wAP8AP/8AH/AB//AH/wAP/wD/8AB/+B/+AAP/w//AAB//B/AAAf/gfwAAD/wH8AAAfwB/AAAD4AfwAAAcAH8AAACAAAAAAAAAAAAAAAAAAAA=="
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "variant": 1,
+      "inputs": [
+        {
+          "kind": "rounded_rectangle",
+          "width": 1,
+          "attributes": {
+            "corner_diameter": 8
+          },
+          "points": [
+            [
+              4.75,
+              5.25
+            ],
+            [
+              24.25,
+              21.75
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -7,
+            5
+          ],
+          "shape": [
+            23,
+            27
+          ],
+          "mask": "/AAAH4AAA/AAAH4AAA/AAAH4AAA/AAAH4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP4AAB/AAAP4AAB/AAAP4AAB/AAAP4"
+        },
+        {
+          "kind": "freehand",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -16.0,
+              -8.0
+            ],
+            [
+              7.0,
+              -5.0
+            ],
+            [
+              19.0,
+              14.0
+            ],
+            [
+              0.0,
+              29.0
+            ],
+            [
+              -15.0,
+              11.0
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "intersection",
+        "union"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            13,
+            21,
+            7,
+            1
+          ],
+          "sample": [
+            -18,
+            -10,
+            44,
+            41
+          ],
+          "occupied": 7,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+        },
+        {
+          "bounds": [
+            -16,
+            -8,
+            36,
+            37
+          ],
+          "sample": [
+            -18,
+            -10,
+            44,
+            41
+          ],
+          "occupied": 813,
+          "mask": "AAAAAAAAAAAAAAA8AAAAAAP/wAAAAD//+AAAA///+AAAP///wAAD///+AAA////gAAP///8AAD////AAAf///4AAH////AAB////wAAf///+AAH////wAB////8AAf////gAH////8AB/////AAf////4AH////+AA/////wAH////+AA/////AAH////gAA////wAAP///4AAB///4AAAP//8AAAB//+AAAAP//H8AAB//AAAAAf/gAAAAD/wAAAAAfwAAAAAD4AAAAAAcAAAAAACAAAAAAAAAAAAAAAAAAAA=="
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "variant": 1,
+      "inputs": [
+        {
+          "kind": "rounded_rectangle",
+          "width": 1,
+          "attributes": {
+            "corner_diameter": 8
+          },
+          "points": [
+            [
+              4.75,
+              5.25
+            ],
+            [
+              24.25,
+              21.75
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -7,
+            5
+          ],
+          "shape": [
+            23,
+            27
+          ],
+          "mask": "/AAAH4AAA/AAAH4AAA/AAAH4AAA/AAAH4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP4AAB/AAAP4AAB/AAAP4AAB/AAAP4"
+        },
+        {
+          "kind": "freehand",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -16.0,
+              -8.0
+            ],
+            [
+              7.0,
+              -5.0
+            ],
+            [
+              19.0,
+              14.0
+            ],
+            [
+              0.0,
+              29.0
+            ],
+            [
+              -15.0,
+              11.0
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "subtraction",
+        "intersection"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            4,
+            5,
+            20,
+            17
+          ],
+          "sample": [
+            -18,
+            -10,
+            44,
+            41
+          ],
+          "occupied": 321,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8AAAAf//gAAAP//8AAAD///AAAA///wAAAP//8AAAD///AAAA///wAAAP//8AAAD///AAAA///wAAAP//8AAAD///AAAA///wAAAP//8AAAB//+AAAAP4DAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+        },
+        {
+          "bounds": [
+            4,
+            5,
+            15,
+            17
+          ],
+          "sample": [
+            -18,
+            -10,
+            44,
+            41
+          ],
+          "occupied": 184,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wAAAAAf8AAAAAP/gAAAAD/8AAAAA//AAAAAP/4AAAAD/+AAAAA//wAAAAP/+AAAAD//AAAAA//gAAAAP/wAAAAD/4AAAAA/4AAAAAP8AAAAAB+AAAAAAPAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "variant": 1,
+      "inputs": [
+        {
+          "kind": "rounded_rectangle",
+          "width": 1,
+          "attributes": {
+            "corner_diameter": 8
+          },
+          "points": [
+            [
+              4.75,
+              5.25
+            ],
+            [
+              24.25,
+              21.75
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -7,
+            5
+          ],
+          "shape": [
+            23,
+            27
+          ],
+          "mask": "/AAAH4AAA/AAAH4AAA/AAAH4AAA/AAAH4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP4AAB/AAAP4AAB/AAAP4AAB/AAAP4"
+        },
+        {
+          "kind": "freehand",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -16.0,
+              -8.0
+            ],
+            [
+              7.0,
+              -5.0
+            ],
+            [
+              19.0,
+              14.0
+            ],
+            [
+              0.0,
+              29.0
+            ],
+            [
+              -15.0,
+              11.0
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "xor",
+        "subtraction"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -7,
+            5,
+            31,
+            23
+          ],
+          "sample": [
+            -18,
+            -10,
+            44,
+            41
+          ],
+          "occupied": 411,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB+A//8AAfgf//gAH4P//8AB+D///AAfg///wAH4P//8AB+D///AAfg///wAAAP//8AAAD///AAAA///wAAAP//8AAAD///AAAA///wAAAP//8AAAB//+AAAAP4DAAAAAB/AAAAAAfwAAAAAH8AAAAAB/AAAAAAfwAAAAAH8AAAAAAAAAAAAAAAAAAAAAAAA=="
+        },
+        {
+          "bounds": [
+            10,
+            5,
+            14,
+            23
+          ],
+          "sample": [
+            -18,
+            -10,
+            44,
+            41
+          ],
+          "occupied": 179,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP8AAAAAD/gAAAAAf8AAAAAD/AAAAAA/wAAAAAH8AAAAAB/AAAAAAPwAAAAAB8AAAAAA/AAAAAAfwAAAAAP8AAAAAH/AAAAAH/wAAAAD/8AAAAB/+AAAAA4DAAAAAB/AAAAAAfwAAAAAH8AAAAAB/AAAAAAfwAAAAAH8AAAAAAAAAAAAAAAAAAAAAAAA=="
+        }
+      ]
+    },
+    {
+      "kind": 3,
+      "variant": 0,
+      "inputs": [
+        {
+          "kind": "polygon",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -16.0,
+              -9.0
+            ],
+            [
+              8.0,
+              -10.0
+            ],
+            [
+              16.0,
+              4.0
+            ],
+            [
+              1.0,
+              19.0
+            ],
+            [
+              -12.0,
+              10.0
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -5,
+            6
+          ],
+          "shape": [
+            34,
+            41
+          ],
+          "mask": "IECBAiQECDBAgwAAAAAH7AQGAwGIiIgAREQgICEhIAAAFVVUgJICSAkiEQiIRAMAYBwDAHwAAB+IIIIIIICSBIEgTAoUCBAoFCgQKFCQJIEgSCCCCGGEAB8AAAfDAGAYAwhEIgEQgCSAkBJEAAAAAqoCAhISEgiIiIiIMBAYDAYAAAAD/4YIEGCDAIECJEiRCFCFCEFQKAUAokkgASSTDCEIIQh4AB4ABwA4AcAOAA=="
+        },
+        {
+          "kind": "rectangle",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -7.25,
+              -0.75
+            ],
+            [
+              12.25,
+              15.75
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "union",
+        "union"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -16,
+            -10,
+            52,
+            50
+          ],
+          "sample": [
+            -18,
+            -12,
+            56,
+            54
+          ],
+          "occupied": 896,
+          "mask": "AAAAAAAAAAAAAAAAAAAAA//AAAAAP///4AAAAD///+AAAAAf///wAAAAH///+AAAAB////gAAAAf///8AAAAH////AAAAA////4AAAAP///+AAAAD////wAAAA////+AAAAP////gAAAB////8AAAAf////AAAAH////gAAAB////wgRIAf///8ECDAD///8AAD8A///+YDAYAH///QAIiAA///gISEgAD//wCqqqAAf/8gJICQAB/+IREIgAAP+BgHAMAAB/4AAA/AAAnggggggAAB5AkCQJAAEChQIECgAAChQIFCgAAJAkgSBIAABBBBDDCAAAAHwAAB8AABgDAMAYAACEQiARCAAABJASAkgAAQAAAACqAAEBAQkJCQAACIiIiIgAAGAgMBgMAAAAAAAP/gAAMECDBBgAAAgQIkSJAAAhChChCAAAVAoBQCgAASSQAJJJAAEMIQghCAAA8AA8AA4AAADgBwA4AAAAAAAAAAAAAAAAAAA"
+        },
+        {
+          "bounds": [
+            -16,
+            -10,
+            52,
+            50
+          ],
+          "sample": [
+            -18,
+            -12,
+            56,
+            54
+          ],
+          "occupied": 940,
+          "mask": "AAAAAAAAAAAAAAAAAAAAA//AAAAAP///4AAAAD///+AAAAAf///wAAAAH///+AAAAB////gAAAAf///8AAAAH////AAAAA////4AAAAP///+AAAAD////wAAAA////+AAAAP////gAAAB////8AAAAf////AAAAH////gAAAB////wgRIAf///8ECDAD///+AAD8A////4DAYAH///4AIiAA///+ISEgAD///iqqqAAf//4JICQAH//+REIgAB///gHAMAAf//4AA/AAAnggggggAAB5AkCQJAAEChQIECgAAChQIFCgAAJAkgSBIAABBBBDDCAAAAHwAAB8AABgDAMAYAACEQiARCAAABJASAkgAAQAAAACqAAEBAQkJCQAACIiIiIgAAGAgMBgMAAAAAAAP/gAAMECDBBgAAAgQIkSJAAAhChChCAAAVAoBQCgAASSQAJJJAAEMIQghCAAA8AA8AA4AAADgBwA4AAAAAAAAAAAAAAAAAAA"
+        }
+      ]
+    },
+    {
+      "kind": 3,
+      "variant": 0,
+      "inputs": [
+        {
+          "kind": "polygon",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -16.0,
+              -9.0
+            ],
+            [
+              8.0,
+              -10.0
+            ],
+            [
+              16.0,
+              4.0
+            ],
+            [
+              1.0,
+              19.0
+            ],
+            [
+              -12.0,
+              10.0
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -5,
+            6
+          ],
+          "shape": [
+            34,
+            41
+          ],
+          "mask": "IECBAiQECDBAgwAAAAAH7AQGAwGIiIgAREQgICEhIAAAFVVUgJICSAkiEQiIRAMAYBwDAHwAAB+IIIIIIICSBIEgTAoUCBAoFCgQKFCQJIEgSCCCCGGEAB8AAAfDAGAYAwhEIgEQgCSAkBJEAAAAAqoCAhISEgiIiIiIMBAYDAYAAAAD/4YIEGCDAIECJEiRCFCFCEFQKAUAokkgASSTDCEIIQh4AB4ABwA4AcAOAA=="
+        },
+        {
+          "kind": "rectangle",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -7.25,
+              -0.75
+            ],
+            [
+              12.25,
+              15.75
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "intersection",
+        "intersection"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -5,
+            6,
+            18,
+            12
+          ],
+          "sample": [
+            -18,
+            -12,
+            56,
+            54
+          ],
+          "occupied": 25,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAECBAAAAAAAQIIAAAAAAAAAAAAAAAMBAAAAAAAEREAAAAAABCAgAAAAAAAAAAAAAAACAgAAAAAAARAAAAAAAAAwAAAAAAAADAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        {
+          "bounds": [
+            -5,
+            6,
+            18,
+            11
+          ],
+          "sample": [
+            -18,
+            -12,
+            56,
+            54
+          ],
+          "occupied": 24,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAECBAAAAAAAQIIAAAAAAAAAAAAAAAMBAAAAAAAEREAAAAAABCAgAAAAAAAAAAAAAAACAgAAAAAAARAAAAAAAAAwAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      ]
+    },
+    {
+      "kind": 3,
+      "variant": 0,
+      "inputs": [
+        {
+          "kind": "polygon",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -16.0,
+              -9.0
+            ],
+            [
+              8.0,
+              -10.0
+            ],
+            [
+              16.0,
+              4.0
+            ],
+            [
+              1.0,
+              19.0
+            ],
+            [
+              -12.0,
+              10.0
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -5,
+            6
+          ],
+          "shape": [
+            34,
+            41
+          ],
+          "mask": "IECBAiQECDBAgwAAAAAH7AQGAwGIiIgAREQgICEhIAAAFVVUgJICSAkiEQiIRAMAYBwDAHwAAB+IIIIIIICSBIEgTAoUCBAoFCgQKFCQJIEgSCCCCGGEAB8AAAfDAGAYAwhEIgEQgCSAkBJEAAAAAqoCAhISEgiIiIiIMBAYDAYAAAAD/4YIEGCDAIECJEiRCFCFCEFQKAUAokkgASSTDCEIIQh4AB4ABwA4AcAOAA=="
+        },
+        {
+          "kind": "rectangle",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -7.25,
+              -0.75
+            ],
+            [
+              12.25,
+              15.75
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "subtraction",
+        "subtraction"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -16,
+            -10,
+            32,
+            29
+          ],
+          "sample": [
+            -18,
+            -12,
+            56,
+            54
+          ],
+          "occupied": 597,
+          "mask": "AAAAAAAAAAAAAAAAAAAAA//AAAAAP///4AAAAD///+AAAAAf///wAAAAH///+AAAAB////gAAAAf///8AAAAH////AAAAA////4AAAAP///+AAAAD////wAAAA////+AAAAP////gAAAB////8AAAAf////AAAAH////gAAAB/79+wAAAAf/v3wAAAAD///8AAAAA/z++AAAAAH7u7AAAAAA+9/AAAAAAD//wAAAAAAd/YAAAAAABu8AAAAAAAPOAAAAAAAB8AAAAAAAAHAAAAAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        {
+          "bounds": [
+            -16,
+            -10,
+            32,
+            29
+          ],
+          "sample": [
+            -18,
+            -12,
+            56,
+            54
+          ],
+          "occupied": 335,
+          "mask": "AAAAAAAAAAAAAAAAAAAAA//AAAAAP///4AAAAD///+AAAAAf///wAAAAH///+AAAAB////gAAAAf///8AAAAH////AAAAA////4AAAAP///+AAAAD+AAAQAAAA/gAAGAAAAP4AABgAAAB+AAAcAAAAfgAAHAAAAH4AABgAAAB+AAAQAAAAfgAAAAAAAD4AAAAAAAA+AAAAAAAAHgAAAAAAAA4AAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHAAAAAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      ]
+    },
+    {
+      "kind": 3,
+      "variant": 0,
+      "inputs": [
+        {
+          "kind": "polygon",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -16.0,
+              -9.0
+            ],
+            [
+              8.0,
+              -10.0
+            ],
+            [
+              16.0,
+              4.0
+            ],
+            [
+              1.0,
+              19.0
+            ],
+            [
+              -12.0,
+              10.0
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -5,
+            6
+          ],
+          "shape": [
+            34,
+            41
+          ],
+          "mask": "IECBAiQECDBAgwAAAAAH7AQGAwGIiIgAREQgICEhIAAAFVVUgJICSAkiEQiIRAMAYBwDAHwAAB+IIIIIIICSBIEgTAoUCBAoFCgQKFCQJIEgSCCCCGGEAB8AAAfDAGAYAwhEIgEQgCSAkBJEAAAAAqoCAhISEgiIiIiIMBAYDAYAAAAD/4YIEGCDAIECJEiRCFCFCEFQKAUAokkgASSTDCEIIQh4AB4ABwA4AcAOAA=="
+        },
+        {
+          "kind": "rectangle",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -7.25,
+              -0.75
+            ],
+            [
+              12.25,
+              15.75
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "xor",
+        "xor"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -16,
+            -10,
+            52,
+            50
+          ],
+          "sample": [
+            -18,
+            -12,
+            56,
+            54
+          ],
+          "occupied": 871,
+          "mask": "AAAAAAAAAAAAAAAAAAAAA//AAAAAP///4AAAAD///+AAAAAf///wAAAAH///+AAAAB////gAAAAf///8AAAAH////AAAAA////4AAAAP///+AAAAD////wAAAA////+AAAAP////gAAAB////8AAAAf////AAAAH////gAAAB/79+wgRIAf/v30ECDAD///8AAD8A/z++YDAYAH7u7QAIiAA+9/AISEgAD//wCqqqAAd/cgJICQABu+IREIgAAPOBgHAMAAB84AAA/AAAnAgggggAAB5AkCQJAAEChQIECgAAChQIFCgAAJAkgSBIAABBBBDDCAAAAHwAAB8AABgDAMAYAACEQiARCAAABJASAkgAAQAAAACqAAEBAQkJCQAACIiIiIgAAGAgMBgMAAAAAAAP/gAAMECDBBgAAAgQIkSJAAAhChChCAAAVAoBQCgAASSQAJJJAAEMIQghCAAA8AA8AA4AAADgBwA4AAAAAAAAAAAAAAAAAAA"
+        },
+        {
+          "bounds": [
+            -16,
+            -10,
+            52,
+            50
+          ],
+          "sample": [
+            -18,
+            -12,
+            56,
+            54
+          ],
+          "occupied": 667,
+          "mask": "AAAAAAAAAAAAAAAAAAAAA//AAAAAP///4AAAAD///+AAAAAf///wAAAAH///+AAAAB////gAAAAf///8AAAAH////AAAAA////4AAAAP///+AAAAD+AAAQAAAA/gAAGAAAAP4AABgAAAB+AAAcAAAAfgAAHAAAAH4AABgAAAB+ECBQgRIAfgQIMECDAD4AACAAD8A+MBB4DAYAHkREoAIiAA5CA+ISEgACAAPiqqqAACAjYJICQAGRB2REIgABwx+AHAMAAeDH4AA/AAAnAgggggAAB5AkCQJAAEChQIECgAAChQIFCgAAJAkgSBIAABBBBDDCAAAAHwAAB8AABgDAMAYAACEQiARCAAABJASAkgAAQAAAACqAAEBAQkJCQAACIiIiIgAAGAgMBgMAAAAAAAP/gAAMECDBBgAAAgQIkSJAAAhChChCAAAVAoBQCgAASSQAJJJAAEMIQghCAAA8AA8AA4AAADgBwA4AAAAAAAAAAAAAAAAAAA"
+        }
+      ]
+    },
+    {
+      "kind": 3,
+      "variant": 1,
+      "inputs": [
+        {
+          "kind": "polygon",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              3.0,
+              4.0
+            ],
+            [
+              27.0,
+              3.0
+            ],
+            [
+              35.0,
+              17.0
+            ],
+            [
+              20.0,
+              32.0
+            ],
+            [
+              7.0,
+              23.0
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -5,
+            6
+          ],
+          "shape": [
+            34,
+            41
+          ],
+          "mask": "IECBAiQECDBAgwAAAAAH7AQGAwGIiIgAREQgICEhIAAAFVVUgJICSAkiEQiIRAMAYBwDAHwAAB+IIIIIIICSBIEgTAoUCBAoFCgQKFCQJIEgSCCCCGGEAB8AAAfDAGAYAwhEIgEQgCSAkBJEAAAAAqoCAhISEgiIiIiIMBAYDAYAAAAD/4YIEGCDAIECJEiRCFCFCEFQKAUAokkgASSTDCEIIQh4AB4ABwA4AcAOAA=="
+        },
+        {
+          "kind": "rectangle",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -7.25,
+              -0.75
+            ],
+            [
+              12.25,
+              15.75
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "union",
+        "union"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -5,
+            3,
+            41,
+            37
+          ],
+          "sample": [
+            -9,
+            -2,
+            47,
+            44
+          ],
+          "occupied": 817,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf/gAAA////gAAB////AACB////kABD////MAAH////+AwP////gCI////9AEIf///+AAA////9AID////5AIj////4ADH////wAB/////wCCP////gAk////+gQK////6ABR////wAkD///+gAgj///5AAAf///nwAwD//+MAIRD//8IAAkh//yQBAAA/+KoCAgI/8hIAIiI/oiADAQGewGAAAAAY/+AGCBBggwACBAiRIkAQhQhQhABUCgFAKAJJIAEkkgQwhCCEIAeAAeAAcAAOAHADgAAAAAAAAAAAAAAAAA=="
+        },
+        {
+          "bounds": [
+            -7,
+            0,
+            43,
+            40
+          ],
+          "sample": [
+            -9,
+            -2,
+            47,
+            44
+          ],
+          "occupied": 1026,
+          "mask": "AAAAAAAAAAAAAAAA///wAAAB///gAAAD///AAAAH//+f/gAP/////gAf/////AA//////kB//////MD//////+H//////gP/////9Af/////+A//////9B//////5D//////4H//////wP//////wCCP////gAk////+gQK////6ABR////wAkD///+gAgj///5AAAf///nwAwD//+MAIRD//8IAAkh//yQBAAA/+KoCAgI/8hIAIiI/oiADAQGewGAAAAAY/+AGCBBggwACBAiRIkAQhQhQhABUCgFAKAJJIAEkkgQwhCCEIAeAAeAAcAAOAHADgAAAAAAAAAAAAAAAAA=="
+        }
+      ]
+    },
+    {
+      "kind": 3,
+      "variant": 1,
+      "inputs": [
+        {
+          "kind": "polygon",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              3.0,
+              4.0
+            ],
+            [
+              27.0,
+              3.0
+            ],
+            [
+              35.0,
+              17.0
+            ],
+            [
+              20.0,
+              32.0
+            ],
+            [
+              7.0,
+              23.0
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -5,
+            6
+          ],
+          "shape": [
+            34,
+            41
+          ],
+          "mask": "IECBAiQECDBAgwAAAAAH7AQGAwGIiIgAREQgICEhIAAAFVVUgJICSAkiEQiIRAMAYBwDAHwAAB+IIIIIIICSBIEgTAoUCBAoFCgQKFCQJIEgSCCCCGGEAB8AAAfDAGAYAwhEIgEQgCSAkBJEAAAAAqoCAhISEgiIiIiIMBAYDAYAAAAD/4YIEGCDAIECJEiRCFCFCEFQKAUAokkgASSTDCEIIQh4AB4ABwA4AcAOAA=="
+        },
+        {
+          "kind": "rectangle",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -7.25,
+              -0.75
+            ],
+            [
+              12.25,
+              15.75
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "intersection",
+        "intersection"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            4,
+            6,
+            30,
+            24
+          ],
+          "sample": [
+            -9,
+            -2,
+            47,
+            44
+          ],
+          "occupied": 104,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAgQIAAAAgwQIAAAAAAAAAAAEBgMAAAACIAEQAAACAhIQAAAABVVQAAASAkgIAABEIiEQAAAGAcAwAAEAAAfgAACCCCCAAAASBIEAAAFAgQIAAAoEChAAAASBIEAAAAghhgAAADAAAAAAABgGAAAAAAIBAAAAAAJAAAAAAAAAAAAAAASAAAAAAAiAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+        },
+        {
+          "bounds": [
+            4,
+            6,
+            9,
+            11
+          ],
+          "sample": [
+            -9,
+            -2,
+            47,
+            44
+          ],
+          "occupied": 15,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAgAAAAAAggAAAAAAAAAAAAAEAAAAAAACIAAAAAACAAAAAAAAAAAAAAASAAAAAABEAAAAAAAGAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+        }
+      ]
+    },
+    {
+      "kind": 3,
+      "variant": 1,
+      "inputs": [
+        {
+          "kind": "polygon",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              3.0,
+              4.0
+            ],
+            [
+              27.0,
+              3.0
+            ],
+            [
+              35.0,
+              17.0
+            ],
+            [
+              20.0,
+              32.0
+            ],
+            [
+              7.0,
+              23.0
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -5,
+            6
+          ],
+          "shape": [
+            34,
+            41
+          ],
+          "mask": "IECBAiQECDBAgwAAAAAH7AQGAwGIiIgAREQgICEhIAAAFVVUgJICSAkiEQiIRAMAYBwDAHwAAB+IIIIIIICSBIEgTAoUCBAoFCgQKFCQJIEgSCCCCGGEAB8AAAfDAGAYAwhEIgEQgCSAkBJEAAAAAqoCAhISEgiIiIiIMBAYDAYAAAAD/4YIEGCDAIECJEiRCFCFCEFQKAUAokkgASSTDCEIIQh4AB4ABwA4AcAOAA=="
+        },
+        {
+          "kind": "rectangle",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -7.25,
+              -0.75
+            ],
+            [
+              12.25,
+              15.75
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "subtraction",
+        "subtraction"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            3,
+            3,
+            32,
+            29
+          ],
+          "sample": [
+            -9,
+            -2,
+            47,
+            44
+          ],
+          "occupied": 518,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf/gAAA////gAAB////AAAA/fv3AAADfPv3AAAH///+AAAL+fz+AAAd3/7sAAAd/e3sAAA/+qqoAABt/bfwAAC73d7oAAH5/j/AAAD///gQAAN9999gAAft+36AAA6/fvwAABX79egAABt+36AAADfeeYAAAA///gAAACf5+AAAAB3+4AAAAB2/gAAAAA/+AAAAAAt4AAAAAAdgAAAAAAeAAAAAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+        },
+        {
+          "bounds": [
+            6,
+            3,
+            29,
+            29
+          ],
+          "sample": [
+            -9,
+            -2,
+            47,
+            44
+          ],
+          "occupied": 421,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf/gAAAAD//gAAAAH//AAAAAPv3AAAAAPv3AAAAA//+AAAAAfz+AAAAD/7sAAAAHe3sAAAAOqqoAAAAfbfwAAAA3d7oAAAB/j/AAAAD//gQAAN9999gAAft+36AAA6/fvwAABX79egAABt+36AAADfeeYAAAA///gAAACf5+AAAAB3+4AAAAB2/gAAAAA/+AAAAAAt4AAAAAAdgAAAAAAeAAAAAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+        }
+      ]
+    },
+    {
+      "kind": 3,
+      "variant": 1,
+      "inputs": [
+        {
+          "kind": "polygon",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              3.0,
+              4.0
+            ],
+            [
+              27.0,
+              3.0
+            ],
+            [
+              35.0,
+              17.0
+            ],
+            [
+              20.0,
+              32.0
+            ],
+            [
+              7.0,
+              23.0
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -5,
+            6
+          ],
+          "shape": [
+            34,
+            41
+          ],
+          "mask": "IECBAiQECDBAgwAAAAAH7AQGAwGIiIgAREQgICEhIAAAFVVUgJICSAkiEQiIRAMAYBwDAHwAAB+IIIIIIICSBIEgTAoUCBAoFCgQKFCQJIEgSCCCCGGEAB8AAAfDAGAYAwhEIgEQgCSAkBJEAAAAAqoCAhISEgiIiIiIMBAYDAYAAAAD/4YIEGCDAIECJEiRCFCFCEFQKAUAokkgASSTDCEIIQh4AB4ABwA4AcAOAA=="
+        },
+        {
+          "kind": "rectangle",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -7.25,
+              -0.75
+            ],
+            [
+              12.25,
+              15.75
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "xor",
+        "xor"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -5,
+            3,
+            41,
+            37
+          ],
+          "sample": [
+            -9,
+            -2,
+            47,
+            44
+          ],
+          "occupied": 713,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf/gAAA////gAAB////AACA/fv3kABDfPv3MAAH////+AwL+fz/gCI93/7tAEId/e3uAAA/+qqtAIDt/bfxAIi73d7oADH5/j/AAB7///gQCCN9999gAk/t+36gQK6/fvyABRX79ewAkDt+36gAgjfeeZAAAc///nwAwCf5+MAIRD3+8IAAkh2/yQBAAA/+KoCAgIt8hIAIiIdoiADAQGewGAAAAAY/+AGCBBggwACBAiRIkAQhQhQhABUCgFAKAJJIAEkkgQwhCCEIAeAAeAAcAAOAHADgAAAAAAAAAAAAAAAAA=="
+        },
+        {
+          "bounds": [
+            -7,
+            0,
+            43,
+            40
+          ],
+          "sample": [
+            -9,
+            -2,
+            47,
+            44
+          ],
+          "occupied": 821,
+          "mask": "AAAAAAAAAAAAAAAA///wAAAB///gAAAD///AAAAH//+f/gAP/AD//gAf+AH//AA9/Avv3kB+8gvv3MD/4A///+HP0Afz/gN3CL/7tAb3iHe3uA//AOqqtB38SfbfxD3dE3d7oH84H/j/AP+ED//gQCCN9999gAk/t+36gQK6/fvyABRX79ewAkDt+36gAgjfeeZAAAc///nwAwCf5+MAIRD3+8IAAkh2/yQBAAA/+KoCAgIt8hIAIiIdoiADAQGewGAAAAAY/+AGCBBggwACBAiRIkAQhQhQhABUCgFAKAJJIAEkkgQwhCCEIAeAAeAAcAAOAHADgAAAAAAAAAAAAAAAAA=="
+        }
+      ]
+    },
+    {
+      "kind": 4,
+      "variant": 0,
+      "inputs": [
+        {
+          "kind": "freehand",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -23.0,
+              -15.0
+            ],
+            [
+              0.0,
+              -12.0
+            ],
+            [
+              12.0,
+              7.0
+            ],
+            [
+              -7.0,
+              22.0
+            ],
+            [
+              -22.0,
+              4.0
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -5,
+            8
+          ],
+          "shape": [
+            17,
+            20
+          ],
+          "mask": "////////////////////////////////////////////////////////8A=="
+        },
+        {
+          "kind": "ellipse",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -7.25,
+              -0.75
+            ],
+            [
+              12.25,
+              15.75
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "union",
+        "intersection"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -23,
+            -15,
+            38,
+            40
+          ],
+          "sample": [
+            -25,
+            -17,
+            42,
+            44
+          ],
+          "occupied": 1048,
+          "mask": "AAAAAAAAAAAAAAPAAAAAAP/wAAAAP//4AAAP///gAAP///wAAP///4AAP///4AAP///8AAP///8AAH///+AAH////AAH////AAH////gAH////wAH////wAH////4AH////8AH////8AH////+AH////+AD/////AB/////gA/////AAf////8AP////8AP////8AH////8AD////8AB////8AA////8AAf///8AAf///8AAP///8AAH///8AAD///8AAB///8AAAv//8AAAP//8AAAP//8AAAP//8AAAAAAAAAAAAAA"
+        },
+        {
+          "bounds": [
+            -7,
+            0,
+            20,
+            17
+          ],
+          "sample": [
+            -25,
+            -17,
+            42,
+            44
+          ],
+          "occupied": 260,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgAAAAD/8AAAAH/8AAAAP/+AAAAf/+AAAAf//AAAA///gAAA///AAAA///wAAA///wAAA///wAAAf//gAAAf//gAAAP//AAAAH/+AAAAD/8AAAAAfgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      ]
+    },
+    {
+      "kind": 4,
+      "variant": 0,
+      "inputs": [
+        {
+          "kind": "freehand",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -23.0,
+              -15.0
+            ],
+            [
+              0.0,
+              -12.0
+            ],
+            [
+              12.0,
+              7.0
+            ],
+            [
+              -7.0,
+              22.0
+            ],
+            [
+              -22.0,
+              4.0
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -5,
+            8
+          ],
+          "shape": [
+            17,
+            20
+          ],
+          "mask": "////////////////////////////////////////////////////////8A=="
+        },
+        {
+          "kind": "ellipse",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -7.25,
+              -0.75
+            ],
+            [
+              12.25,
+              15.75
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "intersection",
+        "subtraction"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -5,
+            8,
+            15,
+            12
+          ],
+          "sample": [
+            -25,
+            -17,
+            42,
+            44
+          ],
+          "occupied": 98,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/+AAAAP/8AAAAP/4AAAAP/gAAAAP/AAAAAP+AAAAAP8AAAAAPwAAAAAPgAAAAAPAAAAAAMAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        {
+          "bounds": [
+            -5,
+            14,
+            5,
+            6
+          ],
+          "sample": [
+            -25,
+            -17,
+            42,
+            44
+          ],
+          "occupied": 15,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAMAAAAAAPgAAAAAPAAAAAAMAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      ]
+    },
+    {
+      "kind": 4,
+      "variant": 0,
+      "inputs": [
+        {
+          "kind": "freehand",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -23.0,
+              -15.0
+            ],
+            [
+              0.0,
+              -12.0
+            ],
+            [
+              12.0,
+              7.0
+            ],
+            [
+              -7.0,
+              22.0
+            ],
+            [
+              -22.0,
+              4.0
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -5,
+            8
+          ],
+          "shape": [
+            17,
+            20
+          ],
+          "mask": "////////////////////////////////////////////////////////8A=="
+        },
+        {
+          "kind": "ellipse",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -7.25,
+              -0.75
+            ],
+            [
+              12.25,
+              15.75
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "subtraction",
+        "xor"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -23,
+            -15,
+            35,
+            37
+          ],
+          "sample": [
+            -25,
+            -17,
+            42,
+            44
+          ],
+          "occupied": 708,
+          "mask": "AAAAAAAAAAAAAAPAAAAAAP/wAAAAP//4AAAP///gAAP///wAAP///4AAP///4AAP///8AAP///8AAH///+AAH////AAH////AAH////gAH////wAH////wAH////4AH////8AH////8AH////+AH////+AD/////AB/////gA/////AAf/wAAAAP/wAAAAP/wAAAAH/wAAAAD/wAAAAB/wAAAAA/wAAAAAfwAAAAAfwAAAAAPwAAAAAHwAAAAADwAAAAABwAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        {
+          "bounds": [
+            -23,
+            -15,
+            36,
+            37
+          ],
+          "sample": [
+            -25,
+            -17,
+            42,
+            44
+          ],
+          "occupied": 728,
+          "mask": "AAAAAAAAAAAAAAPAAAAAAP/wAAAAP//4AAAP///gAAP///wAAP///4AAP///4AAP///8AAP///8AAH///+AAH////AAH////AAH////gAH////wAH////wAH///gYAH//8AAAH//4ACAH//wABAH//gABgD//gAAgB//AAAQA//AAAwAf/P//wAP/P//wAP/P//wAH/v//gAD/v//gAB////AAA/3/+AAAfz/8AAAfwfgAAAPwAAAAAHwAAAAADwAAAAABwAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      ]
+    },
+    {
+      "kind": 4,
+      "variant": 0,
+      "inputs": [
+        {
+          "kind": "freehand",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -23.0,
+              -15.0
+            ],
+            [
+              0.0,
+              -12.0
+            ],
+            [
+              12.0,
+              7.0
+            ],
+            [
+              -7.0,
+              22.0
+            ],
+            [
+              -22.0,
+              4.0
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -5,
+            8
+          ],
+          "shape": [
+            17,
+            20
+          ],
+          "mask": "////////////////////////////////////////////////////////8A=="
+        },
+        {
+          "kind": "ellipse",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -7.25,
+              -0.75
+            ],
+            [
+              12.25,
+              15.75
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "xor",
+        "union"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -23,
+            -15,
+            38,
+            40
+          ],
+          "sample": [
+            -25,
+            -17,
+            42,
+            44
+          ],
+          "occupied": 950,
+          "mask": "AAAAAAAAAAAAAAPAAAAAAP/wAAAAP//4AAAP///gAAP///wAAP///4AAP///4AAP///8AAP///8AAH///+AAH////AAH////AAH////gAH////wAH////wAH////4AH////8AH////8AH////+AH////+AD/////AB/////gA/////AAf/wAB8AP/wAD8AP/wAH8AH/wAf8AD/wA/8AB/wB/8AA/wD/8AAfwP/8AAfwf/8AAPw//8AAHz//8AAD3//8AAB///8AAAv//8AAAP//8AAAP//8AAAP//8AAAAAAAAAAAAAA"
+        },
+        {
+          "bounds": [
+            -23,
+            -15,
+            38,
+            40
+          ],
+          "sample": [
+            -25,
+            -17,
+            42,
+            44
+          ],
+          "occupied": 1041,
+          "mask": "AAAAAAAAAAAAAAPAAAAAAP/wAAAAP//4AAAP///gAAP///wAAP///4AAP///4AAP///8AAP///8AAH///+AAH////AAH////AAH////gAH////wAH////wAH////4AH////8AH////+AH/////AH/////gD/////gB/////wA/////wAf////8AP////8AP////8AH////8AD////8AB////8AA/3//8AAfz//8AAfwf/8AAPw//8AAHz//8AAD3//8AAB///8AAAv//8AAAP//8AAAP//8AAAP//8AAAAAAAAAAAAAA"
+        }
+      ]
+    },
+    {
+      "kind": 4,
+      "variant": 1,
+      "inputs": [
+        {
+          "kind": "freehand",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -4.0,
+              -2.0
+            ],
+            [
+              19.0,
+              1.0
+            ],
+            [
+              31.0,
+              20.0
+            ],
+            [
+              12.0,
+              35.0
+            ],
+            [
+              -3.0,
+              17.0
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -5,
+            8
+          ],
+          "shape": [
+            17,
+            20
+          ],
+          "mask": "////////////////////////////////////////////////////////8A=="
+        },
+        {
+          "kind": "ellipse",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -7.25,
+              -0.75
+            ],
+            [
+              12.25,
+              15.75
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "union",
+        "intersection"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -5,
+            -2,
+            36,
+            37
+          ],
+          "sample": [
+            -9,
+            -4,
+            42,
+            41
+          ],
+          "occupied": 866,
+          "mask": "AAAAAAAAAAAAAAB4AAAAAB/+AAAAB///AAAB///8AAB///+AAB////AAB////AAB////gAB////gAA////wAD////4AD////4AD////8AD////+AD////+AD/////AD/////gD/////gD/////wD/////wD/////4D/////8D/////4D/////wD/////gD/////AD////8AAAf//4AAAP//wAAAH//gAAAD/+AAAAD/8AAAAB/4AAAAA/gAAAAAfAAAAAAOAAAAAAEAAAAAAAAAAAAAAAAAA"
+        },
+        {
+          "bounds": [
+            -5,
+            0,
+            18,
+            17
+          ],
+          "sample": [
+            -9,
+            -4,
+            42,
+            41
+          ],
+          "occupied": 248,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAH4AAAAA//AAAAB//gAAAB//wAAAB//4AAAB//4AAAB//8AAAA//8AAAD//8AAAD//8AAAD//8AAAD//4AAAD//4AAAD//wAAAB//gAAAA//AAAAAH4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      ]
+    },
+    {
+      "kind": 4,
+      "variant": 1,
+      "inputs": [
+        {
+          "kind": "freehand",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -4.0,
+              -2.0
+            ],
+            [
+              19.0,
+              1.0
+            ],
+            [
+              31.0,
+              20.0
+            ],
+            [
+              12.0,
+              35.0
+            ],
+            [
+              -3.0,
+              17.0
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -5,
+            8
+          ],
+          "shape": [
+            17,
+            20
+          ],
+          "mask": "////////////////////////////////////////////////////////8A=="
+        },
+        {
+          "kind": "ellipse",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -7.25,
+              -0.75
+            ],
+            [
+              12.25,
+              15.75
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "intersection",
+        "subtraction"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -3,
+            8,
+            18,
+            17
+          ],
+          "sample": [
+            -9,
+            -4,
+            42,
+            41
+          ],
+          "occupied": 280,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA///AAAA///AAAA///AAAA///AAAA///AAAA///AAAA///AAAA///AAAA///AAAA///AAAAf//AAAAP//AAAAH//AAAAD//AAAAB//AAAAB//AAAAA//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        {
+          "bounds": [
+            -3,
+            8,
+            18,
+            17
+          ],
+          "sample": [
+            -9,
+            -4,
+            42,
+            41
+          ],
+          "occupied": 157,
+          "mask": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAAADAAAAAADAAAAAAHAAAAAAHAAAAAAPAAAAAAfAAAAAA/AAAA4H/AAAA///AAAAf//AAAAP//AAAAH//AAAAD//AAAAB//AAAAB//AAAAA//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      ]
+    },
+    {
+      "kind": 4,
+      "variant": 1,
+      "inputs": [
+        {
+          "kind": "freehand",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -4.0,
+              -2.0
+            ],
+            [
+              19.0,
+              1.0
+            ],
+            [
+              31.0,
+              20.0
+            ],
+            [
+              12.0,
+              35.0
+            ],
+            [
+              -3.0,
+              17.0
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -5,
+            8
+          ],
+          "shape": [
+            17,
+            20
+          ],
+          "mask": "////////////////////////////////////////////////////////8A=="
+        },
+        {
+          "kind": "ellipse",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -7.25,
+              -0.75
+            ],
+            [
+              12.25,
+              15.75
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "subtraction",
+        "xor"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -4,
+            -2,
+            35,
+            37
+          ],
+          "sample": [
+            -9,
+            -4,
+            42,
+            41
+          ],
+          "occupied": 526,
+          "mask": "AAAAAAAAAAAAAAB4AAAAAB/+AAAAB///AAAB///8AAB///+AAB////AAB////AAB////gAB////gAA////wAAAAA/4AAAAA/4AAAAA/8AAAAA/+AAAAA/+AAAAA//AAAAA//gAAAA//gAAAA//wAAAA//wAAAA//4AAAA//8AAAA//4AAAA//wAAAA//gAAAA//AAAAA/8AAAf//4AAAP//wAAAH//gAAAD/+AAAAD/8AAAAB/4AAAAA/gAAAAAfAAAAAAOAAAAAAEAAAAAAAAAAAAAAAAAA"
+        },
+        {
+          "bounds": [
+            -7,
+            -2,
+            38,
+            37
+          ],
+          "sample": [
+            -9,
+            -4,
+            42,
+            41
+          ],
+          "occupied": 570,
+          "mask": "AAAAAAAAAAAAAAB4AAAAAB/+AAAAB4H/AAABAA/8AAAAAf+AACAAP/AAGAAH/AAGAAH/gAOAAD/gAPAAD/wAP//8/4AP//8/4AP//8/8AH//4/+AH//4/+AD//w//AB//g//gA//A//gAH4A//wAAAA//wAAAA//4AAAA//8AAAA//4AAAA//wAAAA//gAAAA//AAAAA/8AAAf//4AAAP//wAAAH//gAAAD/+AAAAD/8AAAAB/4AAAAA/gAAAAAfAAAAAAOAAAAAAEAAAAAAAAAAAAAAAAAA"
+        }
+      ]
+    },
+    {
+      "kind": 4,
+      "variant": 1,
+      "inputs": [
+        {
+          "kind": "freehand",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -4.0,
+              -2.0
+            ],
+            [
+              19.0,
+              1.0
+            ],
+            [
+              31.0,
+              20.0
+            ],
+            [
+              12.0,
+              35.0
+            ],
+            [
+              -3.0,
+              17.0
+            ]
+          ]
+        },
+        {
+          "kind": "region",
+          "points": [],
+          "width": 1,
+          "attributes": {},
+          "origin": [
+            -5,
+            8
+          ],
+          "shape": [
+            17,
+            20
+          ],
+          "mask": "////////////////////////////////////////////////////////8A=="
+        },
+        {
+          "kind": "ellipse",
+          "width": 1,
+          "attributes": {},
+          "points": [
+            [
+              -7.25,
+              -0.75
+            ],
+            [
+              12.25,
+              15.75
+            ]
+          ]
+        }
+      ],
+      "operations": [
+        "xor",
+        "union"
+      ],
+      "stages": [
+        {
+          "bounds": [
+            -5,
+            -2,
+            36,
+            37
+          ],
+          "sample": [
+            -9,
+            -4,
+            42,
+            41
+          ],
+          "occupied": 586,
+          "mask": "AAAAAAAAAAAAAAB4AAAAAB/+AAAAB///AAAB///8AAB///+AAB////AAB////AAB////gAB////gAA////wADAAA/4ADAAA/4ADAAA/8ADAAA/+ADAAA/+ADAAA//ADAAA//gDAAA//gDAAA//wDAAA//wDgAA//4DwAA//8D4AA//4D8AA//wD+AA//gD+AA//AD/AA/8AAAf//4AAAP//wAAAH//gAAAD/+AAAAD/8AAAAB/4AAAAA/gAAAAAfAAAAAAOAAAAAAEAAAAAAAAAAAAAAAAAA"
+        },
+        {
+          "bounds": [
+            -7,
+            -2,
+            38,
+            37
+          ],
+          "sample": [
+            -9,
+            -4,
+            42,
+            41
+          ],
+          "occupied": 729,
+          "mask": "AAAAAAAAAAAAAAB4AAAAAB/+AAAAB///AAAB///8AAB///+AAD////AAH////AAH////gAP////gAP////wAP//8/4AP//8/4AP//8/8AH//4/+AH//4/+AD//w//AD//g//gD//A//gDH4A//wDAAA//wDgAA//4DwAA//8D4AA//4D8AA//wD+AA//gD+AA//AD/AA/8AAAf//4AAAP//wAAAH//gAAAD/+AAAAD/8AAAAB/4AAAAA/gAAAAAfAAAAAAOAAAAAAEAAAAAAAAAAAAAAAAAA"
+        }
+      ]
+    }
+  ]
+}

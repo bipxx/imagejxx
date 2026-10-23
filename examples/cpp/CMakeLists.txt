@@ -302,3 +302,9 @@ target_link_libraries(imagejxx_saved_region_geometry_example PRIVATE imagejxx::c
 if(BUILD_TESTING)
   add_test(NAME imagejxx_saved_region_geometry_example COMMAND imagejxx_saved_region_geometry_example)
 endif()
+
+add_executable(imagejxx_region_boolean_example selection_region_boolean.cpp)
+target_link_libraries(imagejxx_region_boolean_example PRIVATE imagejxx::core)
+if(BUILD_TESTING)
+  add_test(NAME imagejxx_region_boolean_example COMMAND imagejxx_region_boolean_example)
+endif()

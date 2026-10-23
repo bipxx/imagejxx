@@ -88,17 +88,20 @@ Canonical storage and files:
   replacing the stored geometry. Auto/Apply and RGB stack/session records use V2
   when regional geometry is captured. Saved row replacement now captures V3
   for regional geometry and supports numeric movement in the shared panel.
-  Rotation, Boolean editing and ROI interchange still require integration.
-  This is not complete editor interoperability.
+  Full pixel-region Boolean APIs and regional manager combinations now retain
+  off-image membership. Rotation, creation/modifier replay, continuous composite
+  paths and ROI interchange still require integration. This is not complete
+  editor interoperability.
 - Adding the origin changes native Selection/DocumentData layout. Rebuild all
   consumers, including the scientific I/O extension, against matching headers.
 
 Remaining integration work, in dependency order:
 
-1. Extend full-frame editing through rotation and Boolean operations. Saved
-   row replacement/replay and numeric movement now retain regions, alongside
-   histogram/Auto/Apply and RGB histories. Qualify regional pointer gestures and
-   the remaining geometry tools against independent reference behavior.
+1. Integrate full regional Boolean algebra into creation/modifier commands
+   and portable replay without changing recorded V1/V2 equations. Manager
+   combinations and native/Python full-region APIs now preserve all pixel cells.
+   Extend continuous composite-path storage and rotation, and qualify regional
+   pointer gestures and remaining geometry tools against independent references.
 2. Extend full-frame transformation/creation command codecs and source guards;
    never feed regional packed storage to a canvas-indexed V1 consumer.
 3. Make masks for filtering, histograms and display at their consumption canvas.

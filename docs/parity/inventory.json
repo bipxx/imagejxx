@@ -892,7 +892,8 @@
           "docs/parity/reviews/p12k-region-storage001.json",
           "docs/parity/reviews/p12l-region-command001.json",
           "docs/parity/reviews/p12m-region-analysis001.json",
-          "docs/parity/reviews/p12n-saved-region001.json"
+          "docs/parity/reviews/p12n-saved-region001.json",
+          "docs/parity/reviews/p12o-region-boolean001.json"
         ],
         "implementation": [
           "include/imagejxx/selection_edit.hpp",

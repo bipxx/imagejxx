@@ -1,0 +1,646 @@
+{
+  "schema_version": 1,
+  "id": "p12o.full-pixel-region-boolean.001",
+  "date": "2026-10-23",
+  "state": "scoped-qualified",
+  "acceptance": false,
+  "complete_requirement_coverage": false,
+  "baseline_commit": "a26257fc0f72f201495297d0c97ca8c365fad5bb",
+  "scope": "New C++/Python full-region Boolean APIs combine complete pixel-grid area geometry beyond the image canvas. Union/XOR admit a full envelope; intersection and subtraction avoid distant spans. Ordered manager-row preparation preserves saved rows and source words while publishing current/Previous selection without pixel history. Borrowed geometry/storage admission precedes owned captures and callbacks; operands, controls and source guards freeze before execution. ROI Manager automatically uses full geometry for regional operands, and explicit full mode handles legacy vectors through editor actions/live Python handles. Scientific publication uses the native metadata controller. The detached Python model keeps intrinsic bitmap extent and origin. Existing canvas APIs and legacy-only default manager combinations remain unchanged. This does not complete continuous ShapeRoi path storage, rotation, creation/modifier commands or portable recorded Boolean workflow integration.",
+  "qualification": {
+    "source_generation": "001",
+    "source_inputs": 769,
+    "matrix": "Focused Boolean, manager, selection, regional consumer, document and session regressions; retains all 2211 preceding focused IDs and adds 394 existing Boolean/scientific-manager checks. It does not repeat the earlier 41120-case matrix in full.",
+    "hosts": {
+      "windows": {
+        "state": "passed",
+        "installed_python_checks": 2811,
+        "new_regional_boolean_checks": 206,
+        "prior_focused_ids_retained": 2211,
+        "additional_existing_boolean_and_scientific_manager_checks": 394,
+        "native_groups": 26,
+        "installed_sdk_consumers": 1,
+        "existing_standalone_ui_probes": 16,
+        "actual_shared_imgui_regional_manager_ctrl_click_and_union_cases": 1,
+        "paired_saved_budget_pointer_modifier_cases": 12,
+        "paired_scientific_manager_recipe": 1,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0,
+        "archived_scratch_bytes": 528976420
+      },
+      "linux": {
+        "state": "passed",
+        "installed_python_checks": 2811,
+        "new_regional_boolean_checks": 206,
+        "prior_focused_ids_retained": 2211,
+        "additional_existing_boolean_and_scientific_manager_checks": 394,
+        "native_groups": 26,
+        "installed_sdk_consumers": 1,
+        "existing_standalone_ui_probes": 16,
+        "actual_shared_imgui_regional_manager_ctrl_click_and_union_cases": 1,
+        "paired_saved_budget_pointer_modifier_cases": 12,
+        "paired_scientific_manager_recipe": 1,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0,
+        "archived_scratch_bytes": 518662975
+      }
+    },
+    "total_archived_scratch_bytes": 1047639395,
+    "reference": "New observations from unchanged ImageJ 1.54r sources/classes comprise 144 two-stage pixel-region groups (288 stages) plus 40 mixed vector/packed groups (80 stages). Inputs include off-image coordinates, holes, disconnected populations, empty states and repeated operations. Expected membership and bounds come from actual ShapeRoi algebra. Pixel-cell input regions are materialized through ImageJ ThresholdToSelection, so this is pixel-membership evidence, not continuous composite-path retention. Existing fixtures, historical runs and Auto expectations remain unchanged.",
+    "actual_ui": "Real dock-tab and Ctrl-row pointer input selects two saved regional operands and clicks Union in the shared ImGui ROI Manager. The result retains 21 cells with only 8 visible on the canvas, preserves saved rows and source words, captures Previous and adds no pixel history. Sixteen standalone regressions run, including scientific-manager input paired with the Python launch and twelve saved budget/pointer/modifier recipes. This is not OS-input or new regional standalone-launch certification.",
+    "failed_attempts": "Initial compile lacked the roi_style declaration include. The first new mixed-input test used the public legacy from_dict decoder for a nested-attribute vector fixture; corrected only test construction, preserving oracle observations. End-to-end scientific integration then exposed both the existing action allowlist and legacy adapter read-only commit route; metadata-only Boolean actions now use the established native-controller route. The retained preimage module/source and failing smoke logs record those refusals. The new manager test also assumed a visible field that this control schema does not expose; it now checks manager visibility, enabled controls and resulting state. No original tests, fixtures or historical expectations were changed."
+  },
+  "requirements": {
+    "original_requirements": 99,
+    "statuses": {
+      "in_progress": 47,
+      "open": 52
+    },
+    "unchanged": true,
+    "historical_verification_runs_unchanged": true,
+    "historical_auto_expectations_unchanged": true
+  },
+  "checks": {
+    "commercial_licenses": "passed",
+    "plan_inventory": "Known historical first failure: histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed; the inventory validator is not green."
+  },
+  "remaining": [
+    "Integrate regional Boolean algebra into creation/modifier command capture, complete-original validation and portable replay without changing V1/V2 equations.",
+    "Preserve continuous composite paths and implement/qualify full regional rotation; pixel-grid algebra is not that acceptance.",
+    "Finish full-mode GUI choices for legacy-only vector operands and regional saved-row pointer qualification in both launch paths.",
+    "Axis/planar remapping, slicing/resizing and ImageJ ROI interchange for full geometry.",
+    "Managed large-ROI, runtime work admission, editor/UI/platform/accessibility and all other original requirements."
+  ],
+  "limits": "The working estimate bounds logical geometry/retention and memory, not RSS or total execution time. Rounded paths retain the shared rasterizer separate path-work allowance; exhausting it aborts private execution. Publication/history and externally retained previews remain the host scope.",
+  "sources": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 115196,
+      "sha256": "2be071bac7cae1b479bb9de245610cd523b5ea817a699d8852e00e2e907e19ab"
+    },
+    {
+      "path": "examples/cpp/CMakeLists.txt",
+      "bytes": 18961,
+      "sha256": "f752555513b0feaf192d8a09b4a96312997d3aaf90521bec335c2e5602b5ebb7"
+    },
+    {
+      "path": "examples/cpp/selection_region_boolean.cpp",
+      "bytes": 2996,
+      "sha256": "1e052612587bad645a7ae19db2065c534a6df664579662ba1c5be61ee5003603"
+    },
+    {
+      "path": "include/imagejxx/selection_region.hpp",
+      "bytes": 3490,
+      "sha256": "1aaec97205bf938a82ad6029e70010d207c93b96eb819d7c846f71ade0fab095"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 720646,
+      "sha256": "ed573ad353e3e760e91b46c6def107336809d2335959bd9678c12cdd58c4e905"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 77141,
+      "sha256": "3971f5e5b47754bf21cc06f5286386cdf13f53394d67edb1a819d9779c9d24cc"
+    },
+    {
+      "path": "src/imagejxx/ui/app.py",
+      "bytes": 31398,
+      "sha256": "727ade99067f0556e27deb62233d7b3d53cdae3944b9b61ac9992a11d1ee8664"
+    },
+    {
+      "path": "src/imagejxx/ui/model.py",
+      "bytes": 53928,
+      "sha256": "0a9162e24d3ad1368399f2335ab694945e576881c963138b8f0e9c82e34dcaad"
+    },
+    {
+      "path": "src/native/document_bindings.cpp",
+      "bytes": 36712,
+      "sha256": "b8273b1dd0aa77e6689b0a552c1010afbee374289a0f664d0b0adb7ea260fab6"
+    },
+    {
+      "path": "src/native/selection_region_boolean.cpp",
+      "bytes": 21725,
+      "sha256": "7577f461d4c393dd0ceb5de29598e76bc0003b9b33c371e6d4344dc2bde534ee"
+    },
+    {
+      "path": "tests/fixtures/selection-region-boolean-imagej154r.json",
+      "bytes": 430148,
+      "sha256": "78a4e202e438b7bc1a8b6d998198517b679164aeb9443a7571f2a7d13009672e"
+    },
+    {
+      "path": "tests/fixtures/selection-region-boolean-vectors-imagej154r.json",
+      "bytes": 101618,
+      "sha256": "93b802aa2fd76ded110cf62761c9606edca8e8470db222e6401715900c671c8a"
+    },
+    {
+      "path": "tests/python/test_region_boolean.py",
+      "bytes": 10485,
+      "sha256": "3e4edf95008db7b990f575666c700e294d9fe4ff628762753b78010e344d2935"
+    },
+    {
+      "path": "tests/reference/SelectionRegionBooleanReference.java",
+      "bytes": 4027,
+      "sha256": "39d3075bc41416308dfc99accc1a700d23586f39bf35c54ed6b7c70ff7318392"
+    },
+    {
+      "path": "tests/reference/SelectionRegionBooleanVectorReference.java",
+      "bytes": 3128,
+      "sha256": "73dd7bb48622e17296b860b21161d3b9efd331bf2a3eb311a82bc4f22a9fbf3b"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "build/p12o-region-boolean001/windows-qualified001/final-observation.json",
+      "bytes": 153818,
+      "sha256": "b0a1c9fc53ae986c445d66e721d3b5f00d84453c220da08d28fdeb924666fe3e"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-qualified001/program-observation.json",
+      "bytes": 99316,
+      "sha256": "4b50a925dddb7d5890c62694f0acbd03dee221bdeb90b2fde46c3d3d1872f054"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-qualified001/receipt.json",
+      "bytes": 87873,
+      "sha256": "00085324c75b21b985beaf0fd2fed34941bfae7a497977d0654d000bd6b2da1b"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-qualified001/regional-manager-union.json",
+      "bytes": 149067,
+      "sha256": "beffd5714729e734252799418f861801933c0422bd8b692463c45970bcca7f2b"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-qualified001/regional-saved-row-applied.json",
+      "bytes": 405775,
+      "sha256": "25a00e2271335cc4c1aa35cd17c0574825c9a3eb33b09bba02482eb9e726ec5e"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-qualified001/regional-saved-row-draft.json",
+      "bytes": 99447,
+      "sha256": "2b41e59b5901c6312359a4c76fea4a15c9828e4704f225868dcf894f2c67bfb4"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-python001/collection.json",
+      "bytes": 333941,
+      "sha256": "fb7d3417c1bc5fcfa3991712cd09c42704a98df90534ed9e9be099e78e6cfad0"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-python001/receipt.json",
+      "bytes": 6222,
+      "sha256": "60dc281044e1adc3981c5e569cee379a72b77ea46cb6ab34303e8a0391aefd54"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-sdk001/receipt.json",
+      "bytes": 442,
+      "sha256": "ea84cd37c738a02596ffc4453936514ff3652c82a02a7a11b0455ba47dce1a44"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-ui001/batch-case-retained.json",
+      "bytes": 21147538,
+      "sha256": "4c410a09f6eac86cc07dee667b14b196932df1ee26520f6c34200c88156d60e0"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-ui001/budget-finite-axis-case-retained.json",
+      "bytes": 4273357,
+      "sha256": "31f527d4547192f0aa671dd80538621664b28f811218748c4f3d911d3e6400e7"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-ui001/budget-finite-rotated-case-retained.json",
+      "bytes": 4302449,
+      "sha256": "0f206b8337883c6c0334e98a26c31b5e2c475deee054eb325cc87fcf1951bbcf"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-ui001/budget-ieee-axis-case-retained.json",
+      "bytes": 4252154,
+      "sha256": "627ab77096b2357dea7ea6fd3501be9707d2479638d1468c1ce75bde9d305352"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-ui001/budget-ieee-rotated-case-retained.json",
+      "bytes": 4281246,
+      "sha256": "b4c1f1b53730eeff1c1d65be12ff5c354205840d62bad71d4a829858c44ed547"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-ui001/modifiers-finite-axis-modifiers-case-retained.json",
+      "bytes": 25000375,
+      "sha256": "768e36d791a52fb6ba3880dfd2c80f2959c47981506232117ea2585f3e9bdb74"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-ui001/modifiers-finite-rotated-modifiers-case-retained.json",
+      "bytes": 25169044,
+      "sha256": "0ff3a4c1bcf5f88c4dc602086b803468dc9e9d4785dc18ecf41382582e39e290"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-ui001/modifiers-ieee-axis-modifiers-case-retained.json",
+      "bytes": 24886915,
+      "sha256": "eefe2034132ccea1713f76b6f86a3fa762b31656f18419da7d28804ff0e6478c"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-ui001/modifiers-ieee-rotated-modifiers-case-retained.json",
+      "bytes": 25052591,
+      "sha256": "49b3b5d99936bbe848930aadee3198afa7d7a4797fc97d2ca1e1f73addec2708"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-ui001/pointer-finite-axis-case-retained.json",
+      "bytes": 8018658,
+      "sha256": "8878297ba9fdfb4e77e6bc721a2f9e9ab59c0ef640a0495d20dd54157c4d1803"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-ui001/pointer-finite-rotated-case-retained.json",
+      "bytes": 8113272,
+      "sha256": "5d96649469e71f88740a90e953ba99058dbcc644ae6cd703ec9ec4f2d0e4333a"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-ui001/pointer-ieee-axis-case-retained.json",
+      "bytes": 7979257,
+      "sha256": "8be265e656200ecda79f78a9a010e0e6e27e67698fb72f965b6105ff92240e92"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-ui001/pointer-ieee-rotated-case-retained.json",
+      "bytes": 8073871,
+      "sha256": "417807c6b3d8067684d99b856c92cc281facd32b57fd4195486ef7f857acebc5"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-ui001/receipt.json",
+      "bytes": 4879,
+      "sha256": "39e13eba4b958f67df93ab7ba46dc3d7d066ac643d51ecb133e43c43d6d52571"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-ui001/rgb-case-retained.json",
+      "bytes": 69818956,
+      "sha256": "25140800d819fe6c8b068e2ba16185d5129543c12c1b80f3c4e3e7c6eccefc6b"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-ui001/scientific-manager-case-retained.json",
+      "bytes": 10750222,
+      "sha256": "f086021def43b17475a6f86fdb4c94424af6c2662fbc4b0a5d54e45a9e62aa2b"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-ui001/workflow-case-retained.json",
+      "bytes": 51361526,
+      "sha256": "b0673cd92c585d7aa08a46b293690ce837f631a04f202c6c75124159d78c4f12"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-cleanup001.json",
+      "bytes": 294976,
+      "sha256": "57a39f3dd7f72dab8b0d1866192e9240d1686bf02301dfba314f67a28cfa55a7"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-products001.json",
+      "bytes": 10557,
+      "sha256": "dd43e1ea65ad0bc92969b6f1044c3dc380c9ae989e2ca8307de78fba2e8c6082"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-qualified001/native.xml",
+      "bytes": 8567,
+      "sha256": "f8c9a7b9bbf14c685c164850881f75d9b876fe2230a646d50d787cd694d1f6ad"
+    },
+    {
+      "path": "build/p12o-region-boolean001/windows-python001/pytest.xml",
+      "bytes": 429912,
+      "sha256": "5c74253a1422fdedc19744a74e0f064638024bd5fa15266047e58c647ac21d1c"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-qualified001/final-observation.json",
+      "bytes": 153717,
+      "sha256": "decd278cfb8243c7b3feeba1664dc3aaf1b5fe329567b6e37729a241cae3b16e"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-qualified001/program-observation.json",
+      "bytes": 99227,
+      "sha256": "ae0bdf75d897900c4ecec845a88c4d6c00a27c2caa2ed329327b3b2e71ed4e67"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-qualified001/receipt.json",
+      "bytes": 86960,
+      "sha256": "0ef5b7698ba46ec6e0ff573d8de4951f7be4c46bb92eefd9fa98863e8767b7e6"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-qualified001/regional-manager-union.json",
+      "bytes": 148991,
+      "sha256": "c5cbcaa31f4bb7edee360dd9d8d33bfbdda83971317a2c81a2a7a9e0a40c713a"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-qualified001/regional-saved-row-applied.json",
+      "bytes": 405634,
+      "sha256": "0f2bed013f1214e3bbca3b53437e539757af9faee50933fa01b76267e1b04c79"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-qualified001/regional-saved-row-draft.json",
+      "bytes": 99365,
+      "sha256": "12195f7ad8834bb186b311313ff0ab1287f200d42aaab16d5952fba670f6f318"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-python001/collection.json",
+      "bytes": 331128,
+      "sha256": "7fc3afe491c211eed13d3cd7c22e09d3a9d8ca140c5b6b5a37fa4700a79a8159"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-python001/receipt.json",
+      "bytes": 5968,
+      "sha256": "c1717946d461953352b4127a643e87c587ad514d806f414a1504cb907f779297"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-sdk001/receipt.json",
+      "bytes": 415,
+      "sha256": "1a0d6d493fa2d74e164e35e7772d3aab00832267d35fbfb1be92c9237d1c8dd4"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-ui001/batch-case-retained.json",
+      "bytes": 21278501,
+      "sha256": "7e3407e43c27d7e763dd469e644d588bf503ced78ee8ddebbb29de923913077b"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-ui001/budget-finite-axis-case-retained.json",
+      "bytes": 4273357,
+      "sha256": "a09b5f0bfd8c00d8e40377a9cc7574924b5dca00cf26aae7222c0d4e4a030b53"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-ui001/budget-finite-rotated-case-retained.json",
+      "bytes": 4302449,
+      "sha256": "9b16bd0c7ed45861e30375068ba18672a0be1a3b1655ada88323785cba2a5025"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-ui001/budget-ieee-axis-case-retained.json",
+      "bytes": 4252093,
+      "sha256": "9ff6e33a0d476fa4078e662b8fe645508197a9f05d6161b274cd969afcf94291"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-ui001/budget-ieee-rotated-case-retained.json",
+      "bytes": 4281246,
+      "sha256": "c49b48a534e458e0ea6b3017f5d6948cea89440a9e1b14a29d220a15a21cc8aa"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-ui001/modifiers-finite-axis-modifiers-case-retained.json",
+      "bytes": 25001331,
+      "sha256": "c23de5d6e59c7026502949c9c21e932c276c2ebd185b87d9fddd06919f004f97"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-ui001/modifiers-finite-rotated-modifiers-case-retained.json",
+      "bytes": 25169131,
+      "sha256": "c43213080b8958e3029a93f72a9e5db7907253a7d0e9d17a4d064999b5b0d332"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-ui001/modifiers-ieee-axis-modifiers-case-retained.json",
+      "bytes": 24886915,
+      "sha256": "b1db5a4f7211d3829ac12d2b85b4bee802ae123ac41051535e58b5799cd7c1ca"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-ui001/modifiers-ieee-rotated-modifiers-case-retained.json",
+      "bytes": 25054715,
+      "sha256": "31ee4f4f24e1b254589865a96d9ae7c781b75bd49ad90038cdce97e15a91dd25"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-ui001/pointer-finite-axis-case-retained.json",
+      "bytes": 8018658,
+      "sha256": "bca58fc14a9100a4ec8d44961fe769397be23aa53179f466be5e972f4da6f0d3"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-ui001/pointer-finite-rotated-case-retained.json",
+      "bytes": 8113333,
+      "sha256": "b20d38063c6a8e2e84844e04cf464bdf9ef4e42220ce6d3570824368d23afefe"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-ui001/pointer-ieee-axis-case-retained.json",
+      "bytes": 7978702,
+      "sha256": "e4092f74fe4b665b52ac54fdf48b2f89ee2d89621ac56fe6415170264f5bcc3b"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-ui001/pointer-ieee-rotated-case-retained.json",
+      "bytes": 8072630,
+      "sha256": "047b870c9d5d55b70071103b7de72db2b8fbdd293ce7c23fda44df0418df7e7a"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-ui001/receipt.json",
+      "bytes": 4214,
+      "sha256": "8a025d5ccad4b2f924a3cbdb1b7dd5a5297a0990cfd9aaf01c0f5b8933e8037d"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-ui001/rgb-case-retained.json",
+      "bytes": 69812057,
+      "sha256": "f63936e5abf1c36298eba7e6e473e8c1b2de852f0a70008fb67e6bdb41f72e17"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-ui001/scientific-manager-case-retained.json",
+      "bytes": 10746942,
+      "sha256": "6189bc92a9ccb7f06d6c3a57715f6f2ae988dc0c0d451bad6a84f71cb653ece1"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-ui001/workflow-case-retained.json",
+      "bytes": 51329785,
+      "sha256": "31b002389f35123db5a29789083f7f1cc5d261f5271eb4ad9b14336c0d08647a"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-cleanup001.json",
+      "bytes": 523961,
+      "sha256": "e9ae722370199a20cc3b7f75620a711dab93e0f08d1416d34f522e8eb4553dd4"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-products001.json",
+      "bytes": 10122,
+      "sha256": "6fc93b244fb2da914173427ccd6f77623c3627d1aedc770dcf21011c961a7012"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-qualified001/native.xml",
+      "bytes": 8478,
+      "sha256": "8056e1065590e701528f506b2cdf341484905e505938b19b7ffdedd867aea19c"
+    },
+    {
+      "path": "build/p12o-region-boolean001/linux-python001/pytest.xml",
+      "bytes": 429912,
+      "sha256": "f1d2070808d863889f44abfe8cb0b65bb5865e9d538ada9a88c6977061ea64c5"
+    },
+    {
+      "path": "build/p12o-region-boolean001/reference001/receipt.json",
+      "bytes": 177798,
+      "sha256": "457cf17a2dd1bdd0d25b37e0eb9fd0974c24424cba1484c0ea8ac55571c8f669"
+    },
+    {
+      "path": "build/p12o-region-boolean001/reference001/compile.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12o-region-boolean001/reference001/compile.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12o-region-boolean001/reference001/execute.stdout",
+      "bytes": 273162,
+      "sha256": "c307e3201357b9eb3db9345d34eba3335885c11b775213032a4a8b510898b0b2"
+    },
+    {
+      "path": "build/p12o-region-boolean001/reference001/execute.stderr",
+      "bytes": 50,
+      "sha256": "99c92337d398182c35cf3a8965f5a41cfa79caad62b212a4d5aa21795feca922"
+    },
+    {
+      "path": "build/p12o-region-boolean001/reference002/receipt.json",
+      "bytes": 178090,
+      "sha256": "0e23d9d15dfe7c8f0b5eee796efc969963a9968af3e321f2e8e73afe31060379"
+    },
+    {
+      "path": "build/p12o-region-boolean001/reference002/compile.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12o-region-boolean001/reference002/compile.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12o-region-boolean001/reference002/execute.stdout",
+      "bytes": 50760,
+      "sha256": "f57f00407b70652c14b42e2c82aa1674d8d8b570b4e7cf0d9417bb934629b550"
+    },
+    {
+      "path": "build/p12o-region-boolean001/reference002/execute.stderr",
+      "bytes": 50,
+      "sha256": "99c92337d398182c35cf3a8965f5a41cfa79caad62b212a4d5aa21795feca922"
+    },
+    {
+      "path": "build/p12o-region-boolean001/source-manifest001.json",
+      "bytes": 85549,
+      "sha256": "bf245d9b7869df24658239309a7cee1b5d17d7e432d87ccff9715468d6504782"
+    },
+    {
+      "path": "build/p12o-region-boolean001/modules001.json",
+      "bytes": 815,
+      "sha256": "88636f43a979fd1af20c866204930b23b6452bdeb30f2eaa629e9ad4e7f8f811"
+    },
+    {
+      "path": "build/p12o-region-boolean001/prepare001.py",
+      "bytes": 2992,
+      "sha256": "15e2a3f81d441422a9897736083d3b887f64bcc91e6dd9b0727188e410ad73d4"
+    },
+    {
+      "path": "build/p12o-region-boolean001/qualify001.py",
+      "bytes": 4476,
+      "sha256": "30b91ab60c1919f3ac24c9ef12955d3db280dadea57bb615d9a2323a67dbc1d6"
+    },
+    {
+      "path": "build/p12o-region-boolean001/python001.py",
+      "bytes": 3300,
+      "sha256": "7f1b53bd4519735d963526813a3b3675f2cc5c5c8d19b023b6fa431777ce81e5"
+    },
+    {
+      "path": "build/p12o-region-boolean001/sdk001.py",
+      "bytes": 1650,
+      "sha256": "6da5269ad6d32856c7ff3a0e0b1b39fcbc9a02334da14f8e4e03da32ee67d6ce"
+    },
+    {
+      "path": "build/p12o-region-boolean001/standalone001.py",
+      "bytes": 2365,
+      "sha256": "fbb709aea5e908cbf622d8ba7c0ec0a16dd502831f1f3e288c74354f101d6360"
+    },
+    {
+      "path": "build/p12o-region-boolean001/cleanup001.py",
+      "bytes": 4541,
+      "sha256": "1a3d81f667a08bd234975d8d7943985c0c902a3f79c16631ab43d33cf5508512"
+    },
+    {
+      "path": "build/p12o-region-boolean001/finalize001.py",
+      "bytes": 11321,
+      "sha256": "23643dc9ae637fb333af366adc887b852ff204e71f092d23b3c8519647a4a300"
+    },
+    {
+      "path": "build/p12o-region-boolean001/integrate001.py",
+      "bytes": 5078,
+      "sha256": "f2310037fe3eeb3f7b3ccff425ce3d0908e6ae4d0e83e18a825dea35e5528355"
+    },
+    {
+      "path": "build/p12o-region-boolean001/native001.py",
+      "bytes": 855,
+      "sha256": "a0f8b5cf96cce6b485dd85cae31a127b9fbf7fa565cc82cadbce3a3c3dd54bfd"
+    },
+    {
+      "path": "build/p12o-region-boolean001/native-smoke001.log",
+      "bytes": 66,
+      "sha256": "9d7f6fbc96cc372109e8828646297bbe143115ec8977d3baf0bb7d93832bdcf8"
+    },
+    {
+      "path": "build/p12o-region-boolean001/python_ui001.py",
+      "bytes": 2485,
+      "sha256": "2f00a7f8dcddfe6c7c21d12789b1f87cc1b6a6d9f28457868ea7b026703275c1"
+    },
+    {
+      "path": "build/p12o-region-boolean001/scientific001.py",
+      "bytes": 984,
+      "sha256": "c59552571b592790eb8a4b9eac40c7d0499391e633d7c853819a3540f6fac2ce"
+    },
+    {
+      "path": "build/p12o-region-boolean001/scientific002.py",
+      "bytes": 652,
+      "sha256": "0be6c604d7b19f510814ce7dee6809b1da2226eae709fd58b29114f4c4df9039"
+    },
+    {
+      "path": "build/p12o-region-boolean001/preimage-scientific001/receipt.json",
+      "bytes": 800,
+      "sha256": "4b3d10712a9232f75c34475cd787e13ac0c9aff331673b53b303550eb5408560"
+    },
+    {
+      "path": "build/p12o-region-boolean001/smoke001.log",
+      "bytes": 1960,
+      "sha256": "26d0cb27264e67448b3342717325c2ae5d6dc0a6d1befceb521648cb90b93daa"
+    },
+    {
+      "path": "build/p12o-region-boolean001/smoke002.log",
+      "bytes": 1309,
+      "sha256": "70eace4dd6f1bebad86fb13b7d03ee018d6b2abdb6bf44db096b280842f0d053"
+    },
+    {
+      "path": "build/p12o-region-boolean001/smoke003.log",
+      "bytes": 1327,
+      "sha256": "788d210d1d8f6a825761df15dc23b37d29aa6ace6d090f804c8dfc6d65b473dc"
+    },
+    {
+      "path": "build/p12o-region-boolean001/smoke004.log",
+      "bytes": 1142,
+      "sha256": "06fe17fbe328b174f976316ec500774455d2db0bfb772223f50374201f8f6f82"
+    },
+    {
+      "path": "build/p12o-region-boolean001/smoke005.log",
+      "bytes": 958,
+      "sha256": "c644d5540205539fa4fbc2b10544e5b4f59e953c7961159f290e31221cdb29fa"
+    },
+    {
+      "path": "build/p12o-region-boolean001/smoke006.log",
+      "bytes": 958,
+      "sha256": "d087993a0dce7c0abad3555836e1b3a4cfd9408365a2eda3f24be4532845beb5"
+    },
+    {
+      "path": "build/p12o-region-boolean001/licenses001.log",
+      "bytes": 53,
+      "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+    },
+    {
+      "path": "build/p12o-region-boolean001/reference001.py",
+      "bytes": 1816,
+      "sha256": "5cb124cfc7bea1bec2f4c05d76cfc7b15ff99fadeb90ece76ae8a651efa5abf7"
+    },
+    {
+      "path": "build/p12o-region-boolean001/reference002.py",
+      "bytes": 1863,
+      "sha256": "3ea3421ddaee86378bca8e809da0b542cfe174951e38dfe8fd661b70bd557ad2"
+    },
+    {
+      "path": "build/p12o-region-boolean001/build-initial001.log",
+      "bytes": 1811,
+      "sha256": "9d3d1eb34ba873aeb95ba2642b9f7249569ab2d920304961f6a0c103108c78f6"
+    },
+    {
+      "path": "build/p12o-region-boolean001/plan-final002.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    },
+    {
+      "path": "build/p12o-region-boolean001/seal002.py",
+      "bytes": 1477,
+      "sha256": "d330a6a0f34fdbac1477d57816f5bceb1a3a4628b4ea350f72f1fcc2cfeb3cad"
+    }
+  ]
+}

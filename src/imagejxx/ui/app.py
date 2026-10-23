@@ -636,12 +636,12 @@ class LiveDocument:
         value = selection.to_dict() if isinstance(selection, Selection) else selection
         self._editor._editor.select_document(self.id, _json(value))
 
-    def combine_rois(self, indices, operation="union"):
-        """Combine saved area ROIs through the shared C++ manager action."""
-        self._editor.action(
-            "combine_rois", indices=list(indices), operation=operation,
-            document_id=self.id,
-        )
+    def combine_rois(self, indices, operation="union", *, geometry=None):
+        """Combine saved areas; regional operands automatically retain full geometry."""
+        parameters = dict(indices=list(indices), operation=operation, document_id=self.id)
+        if geometry is not None:
+            parameters["geometry"] = geometry
+        self._editor.action("combine_rois", **parameters)
 
     def apply_operation(
         self, operation, parameters=None, all_slices=False, *, asynchronous=True

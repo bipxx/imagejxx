@@ -686,8 +686,8 @@ class Document:
             self.previous_selection = self.selection.clone()
         self.selection = None if selection is None else selection.clone()
 
-    def combine_rois(self, indices, operation="union"):
-        """Combine saved area ROIs using the native raster and Boolean kernels."""
+    def combine_rois(self, indices, operation="union", *, geometry=None):
+        """Combine saved areas through native canvas or complete-region algebra."""
         selected = list(indices)
         if (
             len(selected) < 2
@@ -697,12 +697,13 @@ class Document:
         ):
             raise ValueError("Choose at least two distinct valid ROI indices")
         height, width = self.shape
-        native = ij.combine_selections(
-            width, height,
-            [self.rois[index].selection.native() for index in selected],
-            operation,
-        )
-        result = Selection(
+        operands = [self.rois[index].selection.native() for index in selected]
+        if geometry not in (None, "canvas_v1", "full_region_v2"):
+            raise ValueError("Choose canvas_v1 or full_region_v2 Boolean geometry")
+        full = any(value.is_region for value in operands) if geometry is None else geometry == "full_region_v2"
+        combine = ij.combine_selection_regions if full else ij.combine_selections
+        native = combine(width, height, operands, operation)
+        result = Selection.from_dict(native.to_dict()) if native.is_region else Selection(
             "mask", width=native.width, bitmap=native.mask(self.shape),
             attributes=native.attributes,
         )

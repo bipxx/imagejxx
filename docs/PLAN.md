@@ -1,5 +1,25 @@
 # ImageJ and Fiji gap closure plan
 
+**Complete regional Boolean core and manager, 2026-10-23 (scoped integration):**
+New full-region area algebra retains cells outside the image boundary. Union/XOR
+use a complete envelope; subtraction/intersection avoid distant empty spans.
+Native and Python APIs admit geometry, packed storage and scratch before
+callbacks, and freeze operation inputs before execution. ROI Manager dispatches
+regional operands through this path, including scientific metadata publication;
+live and detached Python UI routes retain full origin/extent. Legacy canvas
+APIs remain available. Continuous composite paths, rotation and regional
+creation/modifier command migration still require work.
+Windows/Linux each pass 2,811 focused installed checks (206 new, all 2,211
+prior focused IDs, 394 additional existing checks), 26 native groups, an
+installed SDK consumer and 16 standalone probes. Actual manager input preserves
+21 regional cells (8 visible); all 368 new ImageJ oracle stages pass. Failure/
+error/skip counts are zero. Verified archives precede removal of 1,047,639,395
+owned scratch bytes. Original requirements and historical expectations remain
+unchanged; the historical Auto fingerprint gate stays open. This is pixel-grid
+algebra and manager integration; next is creation/modifier command migration
+and continuous-path/rotation work. See [the scoped receipt](parity/reviews/p12o-region-boolean001.json).
+See [the contract](parity/REGION_BOOLEAN.md).
+
 **Saved regional ROI commands, 2026-10-23 (scoped integration):**
 Saved row replacement now retains full regional geometry, including intrinsic
 packed extents and signed origins. Unrelated regional saved rows, active and

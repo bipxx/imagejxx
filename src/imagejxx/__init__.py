@@ -500,6 +500,11 @@ from ._native import (
     DisplayState as DisplayState,
     Revisions as Revisions,
     RevisionConflict as RevisionConflict,
+    SelectionRegionBooleanEstimate as SelectionRegionBooleanEstimate,
+    estimate_selection_region_boolean as estimate_selection_region_boolean,
+    combine_selection_regions as combine_selection_regions,
+    estimate_roi_region_boolean as estimate_roi_region_boolean,
+    prepare_roi_region_boolean as prepare_roi_region_boolean,
     combine_selections as combine_selections,
     prepare_roi_boolean as prepare_roi_boolean,
 )
