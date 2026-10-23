@@ -1,5 +1,6 @@
 #include "planar_annotation_rebind.hpp"
 #include "geometry_number.hpp"
+#include "path_visual.hpp"
 #include <imagejxx/roi_style.hpp>
 #include <imagejxx/selection_edit.hpp>
 #include <imgui_internal.h>
@@ -32,14 +33,21 @@ struct PlanarAnnotationRebind::State {
     error.clear();
   }
   void load_vertex() {
-    if(replacement && vertex>0 && std::size_t(vertex)<=replacement->selection.points.size())
-      for(int i=0;i<2;++i)point[i]=geometry_number_text(replacement->selection.points[vertex-1][i]);
+    if(!replacement)return;
+    const auto controls=planarControlPoints(replacement->selection);
+    if(vertex>0 && std::size_t(vertex)<=controls.size())
+      for(int i=0;i<2;++i)point[i]=geometry_number_text(controls[vertex-1][i]);
   }
   Selection vertex_geometry() const {
-    if(!replacement || vertex<1 || std::size_t(vertex)>replacement->selection.points.size())
+    if(!replacement || vertex<1 || std::size_t(vertex)>planarControlPoints(replacement->selection).size())
       throw std::invalid_argument("Select a valid 1-based replacement vertex");
     auto geometry=replacement->selection;
-    geometry.points[vertex-1]={parse_geometry_number(point[0]),parse_geometry_number(point[1])};
+    const std::array<double,2> position{parse_geometry_number(point[0]),parse_geometry_number(point[1])};
+    if(geometry.is_path()) {
+      const auto shape=planar_annotation_geometry(source->data().dataset.shape(),replacement->plane);
+      return SelectionEditor(geometry,shape.width,shape.height).moved_vertex(std::size_t(vertex-1),position);
+    }
+    geometry.points[vertex-1]=position;
     return geometry;
   }
   PlanarAnnotationRequest request() const {
@@ -63,7 +71,7 @@ struct PlanarAnnotationRebind::State {
       const auto dimensions=planar_annotation_geometry(source->data().dataset.shape(),value.plane);
       value.selection=SelectionEditor(unit,dimensions.width,dimensions.height,SelectionEditLimits{})
           .box_geometry({values[0],values[1]},{values[2],values[3]},values[4]);
-    } else if(value.selection.kind!="mask" && !value.selection.points.empty())value.selection=vertex_geometry();
+    } else if(value.selection.is_path() || (value.selection.kind!="mask" && !value.selection.points.empty()))value.selection=vertex_geometry();
     value.selection=with_roi_style(value.selection,{{"stroke_color",stroke},{"fill_color",fill},{"stroke_width",parse_geometry_number(stroke_width)}});
     return {op,index,std::move(value)};
   }
@@ -143,8 +151,8 @@ void PlanarAnnotationRebind::draw(const std::optional<DocumentSnapshot> &current
     if(s.replacement->selection.box_frame()) {
       number("Center U",s.box[0],"center_u");ImGui::SameLine();number("Center V",s.box[1],"center_v");
       number("Width",s.box[2],"width");ImGui::SameLine();number("Height",s.box[3],"height");ImGui::SameLine();number("Angle",s.box[4],"angle");
-    } else if(s.replacement->selection.kind!="mask" && !s.replacement->selection.points.empty()) {
-      ImGui::Text("%s: %zu vertices",s.replacement->selection.kind.c_str(),s.replacement->selection.points.size());
+    } else if(s.replacement->selection.is_path() || (s.replacement->selection.kind!="mask" && !s.replacement->selection.points.empty())) {
+      ImGui::Text("%s: %zu endpoints / controls",s.replacement->selection.kind.c_str(),planarControlPoints(s.replacement->selection).size());
       ImGui::SetNextItemWidth(90);const auto vertex_id=ImGui::GetID("Vertex (1-based)");
       if(ImGui::InputInt("Vertex (1-based)",&s.vertex,0,0))s.load_vertex();s.observe("vertex",true,90,vertex_id);
       number("Vertex U",s.point[0],"vertex_u");ImGui::SameLine();number("Vertex V",s.point[1],"vertex_v");

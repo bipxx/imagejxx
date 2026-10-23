@@ -41,10 +41,12 @@ remain unchanged. Publication, undo/redo, source replay and source-revision
 guards keep their existing contracts. These metadata operations acquire no
 dataset samples; saving a scientific session still deliberately reads samples.
 
-This does not add a bare-file native import mode, desktop path renderer or
-control handles, path-enabled processing filters, continuous Boolean tools or
-saved native workflow intent. Desktop guards remain until their integration is
-implemented. Qualification is recorded in `reviews/p13a-path-envelope001.json`.
+This envelope packet does not add a bare-file native import mode, path-enabled
+processing filters, continuous Boolean tools or saved native workflow intent.
+The subsequent [planar path UI integration](PLANAR_PATH_UI.md) adds shared
+desktop rendering and control-point editing for typed planar geometry. Legacy
+active/previous/saved desktop selection adapters retain their guards.
+Envelope qualification is recorded in `reviews/p13a-path-envelope001.json`.
 
 The pinned ImageJ reference performs 36 positive read/save roundtrips across
 XY/XZ/YZ and native-source/current combinations, including holes, islands,

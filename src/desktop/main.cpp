@@ -25,6 +25,7 @@
 #include "axis_spacing_ui_probe.hpp"
 #include "slicer_resize_ui_probe.hpp"
 #include "planar_annotation_ui_probe.hpp"
+#include "planar_path_ui_probe.hpp"
 #include "planar_annotation_matrix.hpp"
 #include "rank_ui_probe.hpp"
 #include "rank_runtime_probe.hpp"
@@ -417,6 +418,12 @@ int run(const std::vector<std::string> &arguments) {
     const auto output=std::filesystem::absolute(std::filesystem::u8path(arguments[1]));
     imagejxx::desktop::Window editor((output.parent_path()/"preferences.json").u8string());
     imagejxx::desktop::roiImportQueueUiCase(editor,"imgui_cpp",arguments[1]);return 0;
+  }
+  if (!arguments.empty() && arguments[0] == "--planar-path-ui-case") {
+    if(arguments.size()!=2)throw std::invalid_argument("Use --planar-path-ui-case FRESH_DIRECTORY");
+    const auto output=std::filesystem::absolute(std::filesystem::u8path(arguments[1]));
+    imagejxx::desktop::Window editor((output.parent_path()/"preferences.json").u8string());
+    imagejxx::desktop::planarPathUiCase(editor,"imgui_cpp",arguments[1]);return 0;
   }
   if (!arguments.empty() && arguments[0] == "--planar-annotation-ui-case") {
     if(arguments.size()!=2)throw std::invalid_argument("Use --planar-annotation-ui-case FRESH_DIRECTORY");

@@ -38,10 +38,10 @@ Calibration and geometry therefore retain the same physical world landmarks.
 The versioned extension uses the existing native session metadata transport;
 a planar path alone does not change an otherwise V3 session frame to V5.
 Native V5 selection storage and planar extension V3 are independent contracts.
-Desktop owners explicitly refuse V3 planar path publication before changing
-data or history until their path renderer/editor is implemented. The guard
-checks the already-validated version tag without decoding all rows on camera
-changes. Existing regional desktop rendering and interaction remain supported.
+The subsequent [planar path UI integration](PLANAR_PATH_UI.md) admits V3 planar
+paths through native document entry and typed planar/import publication.
+Legacy State/Stack entry retains its initial guard until a typed publisher
+activates support. Active/previous/saved legacy selection guards remain.
 
 Tests cover store/update/delete equations, mixed-set downgrades, every path
 control in XY/XZ/YZ subsets, physical landmarks outside the volume, both output
@@ -50,6 +50,7 @@ domain preflight and desktop atomic refusal. The installed SDK consumer and
 existing regional actual-input subset recipe provide separate regression
 evidence. See [the scoped receipt](reviews/p12y-planar-path001.json).
 
-Desktop path drawing/editing, native ImageJ path mapping, general workflow path
-intent, path-enabled filter commands and continuous Boolean/topology/resize
-operations remain required. No capability family is complete.
+Shared desktop planar rendering/control editing and native ImageJ path mapping
+now have separate scoped evidence. Desktop path drawing, bare-file native
+import, general workflow path intent, path-enabled filters and continuous
+Boolean/topology/resize operations remain required. No capability family is complete.

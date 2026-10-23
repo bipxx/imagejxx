@@ -354,11 +354,13 @@ DisplayState stateDisplay(const State &state, DisplayState display,
   return display;
 }
 void validateDesktop(const DocumentData &data, const DisplayState &display,
-                     bool eagerAdmitted = false, bool allowVirtual=false) {
+                     bool eagerAdmitted = false, bool allowVirtual=false,
+                     bool allowPlanarPaths=false) {
   const auto path=[](const std::optional<Selection> &value){return value && value->is_path();};
   if(path(data.selection) || path(data.previous_selection) ||
       std::any_of(data.rois.begin(),data.rois.end(),[](const auto &row){return row.selection.is_path();}))
     throw std::invalid_argument("Desktop path selections require versioned path support");
+  if(!allowPlanarPaths)
   if(const auto found=data.metadata.extensions.find(planar_annotations_extension);found!=data.metadata.extensions.end())
     if(const auto node=std::get_if<std::shared_ptr<const MetadataTree>>(&found->second);node && *node)
       if(const auto object=std::get_if<MetadataObject>(&(*node)->value))
@@ -478,15 +480,20 @@ Document::Document(SharedPlanes frames, std::string title, Json metadata)
         initial.metadata.update(metadata);
         return initial;
       }()) {}
-Document::Document(State initial) : Document(makeOwner(std::move(initial))) {}
-Document::Document(std::shared_ptr<imagejxx::Document> document, bool allowVirtual, std::size_t maxViewBytes)
+Document::Document(State initial) : Document(makeOwner(std::move(initial)),false,128ULL*1024*1024,false) {}
+struct Document::PathAdmission {
+  std::thread::id thread;
+  bool enabled;
+};
+Document::Document(std::shared_ptr<imagejxx::Document> document, bool allowVirtual, std::size_t maxViewBytes, bool allowPlanarPaths)
     : id(document ? document->id
                   : throw std::invalid_argument("Document owner is required")),
       native_(std::move(document)), maxViewBytes_(maxViewBytes) {
   if(!maxViewBytes_)throw std::invalid_argument("Virtual view byte limit must be positive");
   const auto thread = std::this_thread::get_id();
+  pathAdmission_=std::make_shared<PathAdmission>(PathAdmission{thread,allowPlanarPaths});
   validation_ = native_->constrain(
-      [thread, allowVirtual, admitted = std::optional<Dataset>{}](
+      [thread, allowVirtual, paths=pathAdmission_, admitted = std::optional<Dataset>{}](
           const DocumentData &data, const DisplayState &display) mutable {
         if (std::this_thread::get_id() != thread)
           throw std::runtime_error(
@@ -496,7 +503,7 @@ Document::Document(std::shared_ptr<imagejxx::Document> document, bool allowVirtu
         // repeatedly copy T*C*Z shared pointers. No image samples are read.
         const bool sameSource =
             admitted && admitted->shares_pixels(data.dataset);
-        validateDesktop(data, display, sameSource, allowVirtual);
+        validateDesktop(data, display, sameSource, allowVirtual, paths->enabled);
         // Admission caches pixel identity, not a running/READY job lease.
         // Staged publication can detach that lease without changing pixels.
         if (!sameSource)
@@ -776,6 +783,15 @@ void Document::setNativeDisplay(DisplayState display) {
   else
     native_->set_display(std::move(display));
 }
+void Document::commitPlanarNative(DocumentTransaction &transaction) {
+  if(std::this_thread::get_id()!=pathAdmission_->thread)
+    throw std::runtime_error("Desktop documents must be edited on their creator thread");
+  const bool before=pathAdmission_->enabled;
+  pathAdmission_->enabled=true;
+  try {
+    if(controller_)controller_->commit(transaction);else native_->commit(transaction);
+  } catch(...) {pathAdmission_->enabled=before;throw;}
+}
 void Document::commitPlanarAnnotation(DocumentTransaction &transaction) {
   if(transaction.axis_remap_display())
     throw std::invalid_argument("Planar annotation publication cannot override display/history state");
@@ -790,8 +806,7 @@ void Document::commitPlanarAnnotation(DocumentTransaction &transaction) {
   else allowed.metadata.extensions["imagejxx.planar_annotations"]=found->second;
   if(document_changes(allowed,preview.data())!=Change::None)
     throw std::invalid_argument("Planar annotation publication cannot change pixels or other document state");
-  if(controller_)controller_->commit(transaction);
-  else native_->commit(transaction);
+  commitPlanarNative(transaction);
 }
 void Document::commitDisplayAnnotation(DocumentTransaction &transaction) {
   if(transaction.axis_remap_display())
@@ -823,7 +838,7 @@ void Document::commitImageJAnnotationImport(const ResolvedImageJAnnotationImport
   }
   if(document_changes(allowed,preview.data())!=Change::None)
     throw std::invalid_argument("Mixed import cannot change pixels or other document state");
-  if(controller_)controller_->commit(transaction);else native_->commit(transaction);
+  commitPlanarNative(transaction);
 }
 void Document::commitImageJRoiImport(const ResolvedImageJRoiImport &command) {
   const auto current=nativeSnapshot();
@@ -839,7 +854,7 @@ void Document::commitImageJRoiImport(const ResolvedImageJRoiImport &command) {
   }
   if(document_changes(allowed,preview.data())!=Change::None)
     throw std::invalid_argument("ROI import cannot change pixels or other document state");
-  if(controller_)controller_->commit(transaction);else native_->commit(transaction);
+  commitPlanarNative(transaction);
 }
 void Document::commitNative(DocumentTransaction &transaction) {
   requireLegacyEditable();
@@ -1303,7 +1318,7 @@ std::shared_ptr<Document> restoreNativeDocumentState(
     else
       display.properties.erase(key);
   }
-  validateDesktop(data, display);
+  validateDesktop(data, display,false,false,true);
   // Verify the declared native metadata generates the SAME existing wire
   // metadata/view, without calling documentJson or copying raw pixel buffers.
   auto generated = nativeMetadata(data);

@@ -153,7 +153,8 @@ public:
   // view buffers, not provider caches, renderer allocations or process RSS.
   explicit Document(std::shared_ptr<imagejxx::Document> document,
                     bool allow_virtual=false,
-                    std::size_t max_view_bytes=128ULL*1024*1024);
+                    std::size_t max_view_bytes=128ULL*1024*1024,
+                    bool allow_planar_paths=true);
   const State &state() const;
   DatasetShape shape() const;
   PlanePosition position() const;
@@ -218,6 +219,9 @@ public:
                int sliceIndex = -1) const;
 
 private:
+  struct PathAdmission;
+  std::shared_ptr<PathAdmission> pathAdmission_;
+  void commitPlanarNative(DocumentTransaction &);
   struct WorkerTag {};
   friend class Window;
   // The exact facade is staged before native adoption; final attachment cannot

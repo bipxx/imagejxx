@@ -1,5 +1,21 @@
 # ImageJ and Fiji gap closure plan
 
+**Planar path ImGui viewing/editing, 2026-10-23 (scoped integration):**
+Both desktop launch modes render continuous paths on XY/XZ/YZ and edit
+endpoints/control points through actual dragging and binary64 numeric fields.
+Scale-aware visuals preserve native curves, holes and metadata; typed imports
+share the renderer. Cancellation, no-op/refusal, undo/redo, idle caches and
+session reopening have actual shared-ImGui coverage on Windows/Linux. Both
+hosts pass 2,293 installed Python checks (13 new), eleven native groups and
+a 17-check installed SDK client. Cleanup removed 9,497,408,803 logical bytes
+of owned compiler/test scratch; source and final products were preserved.
+No dependency or restricted feature is added. Original capability statuses
+and historical verification records remain unchanged. Next add bare-file
+native import, typed workflow intent, active/saved desktop path tools, then
+creation/topology/resize, filters and continuous Boolean operations. See
+[the contract and dependency order](parity/PLANAR_PATH_UI.md) and
+[qualification receipt](parity/reviews/p13b-planar-path-ui001.json).
+
 **Native path envelopes and core import/export, 2026-10-23 (scoped integration):**
 V3 retains full native source/current path geometry and checks both against
 explicit ImageJ wire bindings. Source modes, mapping equations, import

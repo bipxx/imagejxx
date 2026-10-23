@@ -30,7 +30,7 @@ public:
 private:
   struct Layer {
     PlanarAnnotation row;
-    RoiVisual visual;
+    mutable RoiVisual visual;
   };
   DocumentSnapshot source_;
   bool replace_;

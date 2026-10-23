@@ -1,6 +1,7 @@
 #include "planar_annotation_panel.hpp"
 #include "geometry_number.hpp"
 #include "planar_annotation_visual.hpp"
+#include "path_visual.hpp"
 #include <imagejxx/planar_annotations.hpp>
 #include <imagejxx/planar_annotation_command.hpp>
 #include <imagejxx/selection_creation.hpp>
@@ -49,8 +50,9 @@ struct PlanarAnnotationPanel::State {
   std::optional<std::size_t> selected_;
   std::optional<PlanarAnnotation> selected_value_;
   std::optional<Draft> draft_;
-  struct Visual {Selection geometry;RoiVisual visual;int width,height;};
+  struct Visual {Selection geometry;RoiVisual visual;int width,height;std::array<float,2> scale;};
   std::map<std::size_t,Visual> visuals_;
+  std::array<std::array<float,2>,3> scales_{{{1,1},{1,1},{1,1}}};
   std::size_t visual_builds_=0,cap_=256*1048576,admitted_cap_=0;
   Json controls_=Json::object(),input_=Json::object(),layers_=Json::array(),handles_=Json::array();
   std::string name_,stroke_="#FF40D2F0",fill_="none",last_cancel_,error_;
@@ -58,6 +60,7 @@ struct PlanarAnnotationPanel::State {
   std::array<std::string,5> box_numbers_;
   std::array<std::string,2> vertex_numbers_;
   int vertex_index_=1;
+  std::vector<std::array<double,2>> vertex_points_;
 
   int scope_plane_=0,scope_coordinate_=0,scope_t_=1,scope_c_=1;
   bool all_t_=false,all_c_=false,finish_requested_=false,vertices_requested_=false,resource_refused_=false;
@@ -65,7 +68,7 @@ struct PlanarAnnotationPanel::State {
   void update_vertices();
   void sync(Document &);
   void select(std::size_t);
-  void commit(Document &,const DocumentSnapshot &,std::optional<std::size_t>,const PlanarAnnotation &,const PlanarAnnotationPublisher &);
+  void commit(Document &,const DocumentSnapshot &,std::optional<std::size_t>,const PlanarAnnotation &,const PlanarAnnotationPublisher &,std::optional<std::size_t> control={});
   void observe(const std::string &,bool enabled=true,float input_width=0,ImGuiID item_id=0);
 };
 bool PlanarCanvas::operator==(const PlanarCanvas &v) const {
@@ -102,7 +105,8 @@ void PlanarAnnotationPanel::State::sync(Document &d) {
     catch (...) {cancel("resource_refusal");throw;}
   }
   for(auto it=visuals_.begin();it!=visuals_.end();) {
-    if(it->first>=rows_.size() && it->first!=std::numeric_limits<std::size_t>::max())it=visuals_.erase(it);
+    if(it->first!=std::numeric_limits<std::size_t>::max() &&
+       (it->first>=rows_.size() || it->second.geometry!=rows_[it->first].selection))it=visuals_.erase(it);
     else ++it;
   }
 }
@@ -116,8 +120,9 @@ void PlanarAnnotationPanel::State::select(std::size_t row) {
   scope_t_=selected_value_->t.value_or(0)+1;scope_c_=selected_value_->c.value_or(0)+1;
   vertex_index_=1;
   const auto &selection=selected_value_->selection;
-  if(!selection.points.empty())
-    for(int i=0;i<2;++i)vertex_numbers_[i]=geometry_number_text(selection.points[0][i]);
+  vertex_points_=planarControlPoints(selection);
+  if(!vertex_points_.empty())
+    for(int i=0;i<2;++i)vertex_numbers_[i]=geometry_number_text(vertex_points_[0][i]);
   if(const auto frame=selection.box_frame()) {
     const std::array<double,5> values{frame->center[0],frame->center[1],
         2*std::hypot(frame->u[0],frame->u[1]),2*std::hypot(frame->v[0],frame->v[1]),
@@ -134,13 +139,30 @@ void PlanarAnnotationPanel::State::update_vertices() {
   else state.candidate.reset();
 }
 void PlanarAnnotationPanel::State::commit(Document &d,const DocumentSnapshot &source,
-                                  std::optional<std::size_t> row,const PlanarAnnotation &value,const PlanarAnnotationPublisher &publish) {
+                                  std::optional<std::size_t> row,const PlanarAnnotation &value,const PlanarAnnotationPublisher &publish,std::optional<std::size_t> control) {
+  const int keep_vertex=control?int(*control)+1:(row && selected_==row?vertex_index_:1);
   const auto index=row.value_or(planar_annotations(source.data()).size());
   auto proposed=rows_;if(row)proposed.at(*row)=value;else proposed.push_back(value);
-  admit_planar_annotation_visuals(source.data().dataset.shape(),proposed,cap_);
+  const auto shape=source.data().dataset.shape();
+  auto retained=planar_annotation_visual_estimate(shape,proposed,cap_);
+  for(std::size_t n=0;n<proposed.size();++n)if(proposed[n].selection.is_path()) {
+    const auto geometry=planar_annotation_geometry(shape,proposed[n].plane);
+    const auto scale=scales_[std::size_t(proposed[n].plane)];
+    const auto cached=visuals_.find(n);
+    const auto bytes=cached!=visuals_.end() && cached->second.geometry==proposed[n].selection &&
+        cached->second.scale==scale && cached->second.width==geometry.width && cached->second.height==geometry.height
+        ? pathVisualBytes(cached->second.visual)
+        : pathVisualBytes(pathVisual(proposed[n].selection,geometry.width,geometry.height,scale,cap_-retained));
+    if(bytes>cap_-retained)throw std::invalid_argument("Planar path visual exceeds the processing memory cap");
+    retained+=bytes;
+  }
   const auto command=resolve_planar_annotation_command(source,{row?PlanarAnnotationOperation::Update:PlanarAnnotationOperation::Store,row,value});
   if(publish)publish(command);else {auto edit=prepare_planar_annotation(command);d.commitPlanarAnnotation(edit);}
   selected_=index;selected_value_=value;metadata_revision_=~std::uint64_t(0);sync(d);select(index);
+  if(keep_vertex>=1 && std::size_t(keep_vertex)<=vertex_points_.size()) {
+    vertex_index_=keep_vertex;
+    for(int axis=0;axis<2;++axis)vertex_numbers_[axis]=geometry_number_text(vertex_points_[std::size_t(keep_vertex-1)][axis]);
+  }
 }
 void PlanarAnnotationPanel::State::controls(Document &d,bool enabled,std::size_t cap,const PlanarAnnotationPublisher &publish) {
   cap_=cap;
@@ -255,11 +277,13 @@ void PlanarAnnotationPanel::State::controls(Document &d,bool enabled,std::size_t
             commit(d,d.nativeSnapshot(),selected_,value,publish);
           });
           observe("box_apply",enabled);
-        } else if(row.selection.kind!="mask" && !row.selection.points.empty()) {
+        } else if(row.selection.is_path() || (row.selection.kind!="mask" && !row.selection.points.empty())) {
+          const auto &controls=vertex_points_;
+          if(row.selection.is_path())ImGui::TextUnformatted("Vertices index path endpoints and control points; curve commands are preserved.");
           ImGui::SetNextItemWidth(90);const auto vertex_id=ImGui::GetID("Vertex (1-based)");
           if(ImGui::InputInt("Vertex (1-based)",&vertex_index_,0,0) && vertex_index_>=1 &&
-             std::size_t(vertex_index_)<=row.selection.points.size())
-            for(int i=0;i<2;++i)vertex_numbers_[i]=geometry_number_text(row.selection.points[vertex_index_-1][i]);
+             std::size_t(vertex_index_)<=controls.size())
+            for(int i=0;i<2;++i)vertex_numbers_[i]=geometry_number_text(controls[vertex_index_-1][i]);
           observe("vertex_index",enabled,90,vertex_id);
           number("Vertex U",vertex_numbers_[0],"vertex_u");ImGui::SameLine();
           number("Vertex V",vertex_numbers_[1],"vertex_v");
@@ -275,12 +299,15 @@ void PlanarAnnotationPanel::State::controls(Document &d,bool enabled,std::size_t
             commit(d,d.nativeSnapshot(),selected_,value,publish);
           };
           if(ImGui::Button("Apply vertex"))action([&]{vertex_action(0);});observe("vertex_apply",enabled);
-          ImGui::SameLine();const bool insertable=row.selection.kind!="angle";
+          ImGui::SameLine();const bool insertable=row.selection.kind!="angle" && !row.selection.is_path();
           ImGui::BeginDisabled(!insertable);
           if(ImGui::Button("Insert before vertex"))action([&]{vertex_action(1);});observe("vertex_insert",enabled && insertable);
           ImGui::EndDisabled();ImGui::SameLine();
-          if(ImGui::Button("Remove vertex"))action([&]{vertex_action(2);});observe("vertex_remove",enabled);
-          ImGui::TextUnformatted("Insertion at vertex count + 1 appends. Shape minimums are enforced.");
+          ImGui::BeginDisabled(row.selection.is_path());
+          if(ImGui::Button("Remove vertex"))action([&]{vertex_action(2);});observe("vertex_remove",enabled && !row.selection.is_path());
+          ImGui::EndDisabled();
+          if(row.selection.is_path())ImGui::TextUnformatted("Move endpoints and control points; adding or removing curve segments is not available yet.");
+          else ImGui::TextUnformatted("Insertion at vertex count + 1 appends. Shape minimums are enforced.");
         } else ImGui::TextUnformatted("Masks retain their packed geometry; use move / rotation in properties.");
       }
       const bool properties_open=ImGui::CollapsingHeader("Annotation properties");observe("properties_section",enabled);
@@ -358,7 +385,12 @@ bool PlanarAnnotationPanel::State::pointer(Document &d,const PlanarCanvas &canva
     if(ImGui::IsMouseReleased(ImGuiMouseButton_Left)) {
       auto completed=std::move(*draft_);draft_.reset();
       visuals_.erase(std::numeric_limits<std::size_t>::max());
-      if(completed.candidate) {auto value=completed.original;value.selection=*completed.candidate;commit(d,completed.source,completed.row,value,publish);}
+      if(completed.candidate) {
+        auto value=completed.original;value.selection=*completed.candidate;
+        const auto control=completed.handle && completed.handle->kind==SelectionHandleKind::Vertex
+            ?std::optional<std::size_t>(completed.handle->index):std::nullopt;
+        commit(d,completed.source,completed.row,value,publish,control);
+      }
       input_["phase"]="released";
     } else if(ImGui::IsMouseDown(ImGuiMouseButton_Left)) {
       auto &state=*draft_;
@@ -420,22 +452,37 @@ bool PlanarAnnotationPanel::State::pointer(Document &d,const PlanarCanvas &canva
 }
 void PlanarAnnotationPanel::State::draw(Document &d,const PlanarCanvas &canvas,ImDrawList *draw,bool show,bool editable) {
   sync(d);const auto source=d.nativeSnapshot();
+  scales_[std::size_t(canvas.plane)]=canvas.scale;
   std::vector<ImVec2> handle_points;
   auto visual=[&](const Selection &selection,std::optional<std::size_t> row,bool preview) {
     const auto key=row.value_or(std::numeric_limits<std::size_t>::max());
     auto found=visuals_.find(key);
-    if(found==visuals_.end() || found->second.geometry!=selection || found->second.width!=canvas.width || found->second.height!=canvas.height) {
+    if(found==visuals_.end() || found->second.geometry!=selection || found->second.width!=canvas.width || found->second.height!=canvas.height || (selection.is_path() && found->second.scale!=canvas.scale)) {
       auto proposed=rows_;
       if(preview && row)proposed.at(*row).selection=selection;
       else if(!row && draft_) {auto candidate=draft_->original;candidate.selection=selection;proposed.push_back(std::move(candidate));}
       admit_planar_annotation_visuals(source.data().dataset.shape(),proposed,cap_);
-      auto geometry=roiVisual(selectionJson(selection),canvas.width,canvas.height,{64,210,240,255});
-      found=visuals_.insert_or_assign(key,Visual{selection,std::move(geometry),canvas.width,canvas.height}).first;
+      std::size_t other=0;
+      for(const auto &[index,cached]:visuals_)if(index!=key) {
+        const auto bytes=pathVisualBytes(cached.visual);
+        if(bytes>cap_-other)throw std::invalid_argument("Planar visual cache exceeds the processing memory cap");
+        other+=bytes;
+      }
+      auto geometry=selection.is_path()
+          ? pathVisual(selection,canvas.width,canvas.height,canvas.scale,cap_-other)
+          : roiVisual(selectionJson(selection),canvas.width,canvas.height,{64,210,240,255});
+      found=visuals_.insert_or_assign(key,Visual{selection,std::move(geometry),canvas.width,canvas.height,canvas.scale}).first;
       ++visual_builds_;
     }
+    const auto vertex_begin=draw->VtxBuffer.Size,index_begin=draw->IdxBuffer.Size;
     drawRoiVisual(found->second.visual,draw,canvas.origin,canvas.scale);
     layers_.push_back({{"plane",planeName(canvas.plane)},{"coordinate",canvas.coordinate},
-      {"row",row?Json(*row):Json()},{"preview",preview},{"canvas_id",canvas.id},{"geometry",selectionJson(selection)}});
+      {"row",row?Json(*row):Json()},{"preview",preview},{"canvas_id",canvas.id},{"geometry",planarSelectionJson(selection)}});
+    if(selection.is_path()) {
+      layers_.back()["path_visual"]=roiVisualJson(found->second.visual);
+      layers_.back()["emitted_vertices"]=draw->VtxBuffer.Size-vertex_begin;
+      layers_.back()["emitted_indices"]=draw->IdxBuffer.Size-index_begin;
+    }
   };
   struct ClipGuard {ImDrawList *draw;~ClipGuard(){if(draw)draw->PopClipRect();}};
   draw->PushClipRect({canvas.origin[0],canvas.origin[1]},
@@ -460,7 +507,10 @@ void PlanarAnnotationPanel::State::draw(Document &d,const PlanarCanvas &canvas,I
   draw->PopClipRect();clip.draw=nullptr;
   // Handles may sit outside the image while still inside the canvas. Keep the
   // parent canvas clip, so near-edge rotation handles remain visible/hittable.
-  for(const auto &point:handle_points)draw->AddCircleFilled(point,4,IM_COL32(255,213,75,255));
+  const auto low=draw->GetClipRectMin(),high=draw->GetClipRectMax();
+  for(const auto &point:handle_points)
+    if(point.x>=low.x-4 && point.x<=high.x+4 && point.y>=low.y-4 && point.y<=high.y+4)
+      draw->AddCircleFilled(point,4,IM_COL32(255,213,75,255));
 }
 Json PlanarAnnotationPanel::State::diagnostics() const {
   return {{"mode",int(mode_)},{"active",active()},{"selected",selected_?Json(*selected_):Json()},{"visual_builds",visual_builds_},{"cached_visuals",visuals_.size()},

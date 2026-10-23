@@ -1079,7 +1079,7 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     src/desktop/saved_roi_edit.cpp
     src/desktop/saved_roi_geometry_ui_probe.cpp
     src/desktop/saved_roi_geometry_dependencies.cpp
-    src/desktop/gaussian_panel.cpp src/desktop/rank_panel.cpp src/desktop/operation_target_panel.cpp src/desktop/gaussian_jobs.cpp src/desktop/threshold_panel.cpp src/desktop/histogram_panel.cpp src/desktop/histogram_ui_probe.cpp src/desktop/histogram_defaults_ui_probe.cpp src/desktop/histogram_recorder_ui_probe.cpp src/desktop/histogram_async_ui_probe.cpp src/desktop/target_histogram_ui_probe.cpp src/desktop/manual_threshold_ui_probe.cpp src/desktop/z_subset_ui_probe.cpp src/desktop/axis_spacing_ui_probe.cpp src/desktop/slicer_resize_ui_probe.cpp src/desktop/planar_annotation_panel.cpp src/desktop/planar_annotation_ui_probe.cpp src/desktop/planar_annotation_rebind.cpp src/desktop/planar_annotation_matrix.cpp
+    src/desktop/gaussian_panel.cpp src/desktop/rank_panel.cpp src/desktop/operation_target_panel.cpp src/desktop/gaussian_jobs.cpp src/desktop/threshold_panel.cpp src/desktop/histogram_panel.cpp src/desktop/histogram_ui_probe.cpp src/desktop/histogram_defaults_ui_probe.cpp src/desktop/histogram_recorder_ui_probe.cpp src/desktop/histogram_async_ui_probe.cpp src/desktop/target_histogram_ui_probe.cpp src/desktop/manual_threshold_ui_probe.cpp src/desktop/z_subset_ui_probe.cpp src/desktop/axis_spacing_ui_probe.cpp src/desktop/slicer_resize_ui_probe.cpp src/desktop/path_visual.cpp src/desktop/planar_path_ui_probe.cpp src/desktop/planar_annotation_panel.cpp src/desktop/planar_annotation_ui_probe.cpp src/desktop/planar_annotation_rebind.cpp src/desktop/planar_annotation_matrix.cpp
     src/desktop/native_workflow_batch_ui_probe.cpp
     src/desktop/native_workflow_ui_probe.cpp
     src/desktop/histogram_workflow_ui_probe.cpp
@@ -1393,6 +1393,10 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     set_tests_properties(desktop_manual_threshold_persistence PROPERTIES TIMEOUT 30)
     add_executable(imagejxx_desktop_tests tests/native/test_desktop.cpp)
     target_link_libraries(imagejxx_desktop_tests PRIVATE imagejxx_desktop ZLIB::ZLIB)
+    add_executable(imagejxx_path_visual_tests tests/native/test_path_visual.cpp)
+    target_include_directories(imagejxx_path_visual_tests PRIVATE src/desktop)
+    target_link_libraries(imagejxx_path_visual_tests PRIVATE imagejxx_desktop)
+    add_test(NAME desktop_path_visual COMMAND imagejxx_path_visual_tests)
     add_test(NAME desktop_regressions COMMAND imagejxx_desktop_tests ${CMAKE_CURRENT_BINARY_DIR}/desktop-tests)
     add_executable(imagejxx_publication_tests tests/native/test_publication.cpp)
     target_link_libraries(imagejxx_publication_tests PRIVATE imagejxx_desktop)

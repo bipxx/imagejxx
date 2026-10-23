@@ -2,9 +2,28 @@
 #include "../native/kernel_control.hpp"
 #include "display_annotation_renderer.hpp"
 #include "planar_annotation_visual.hpp"
+#include "path_visual.hpp"
 #include <imgui.h>
 #include <set>
 namespace imagejxx::desktop {
+namespace {
+template<class Layers> RoiVisual previewVisual(const Selection &selection,int width,int height,
+    RoiColor fallback,std::size_t cap,const Layers &layers,std::array<float,2> scale={1,1},
+    const RoiVisual *replaced=nullptr) {
+  std::size_t retained=0;
+  for(const auto &layer:layers)if(&layer.visual!=replaced) {
+    const auto bytes=pathVisualBytes(layer.visual);
+    if(bytes>cap-retained)throw std::invalid_argument("ROI preview exceeds the processing memory cap");
+    retained+=bytes;
+  }
+  auto result=selection.is_path()?pathVisual(selection,width,height,scale,cap-retained,fallback):
+      roiVisual(selectionJson(selection),width,height,fallback);
+  if(pathVisualBytes(result)>cap-retained)throw std::invalid_argument("ROI preview exceeds the processing memory cap");
+  result.screenKey[2]=scale[0];result.screenKey[3]=scale[1];
+  return result;
+}
+}
+
 RoiImportPreview::RoiImportPreview(const ResolvedImageJAnnotationExport &command,
                                    std::size_t cap, bool standard)
     : source_(command.source()), replace_(false), cap_(cap), export_(true) {
@@ -45,7 +64,7 @@ RoiImportPreview::RoiImportPreview(const ResolvedImageJAnnotationExport &command
   admit_display_annotation_visuals(display,cap);
   for(auto &row:geometry) {
     kernel_checkpoint();const auto shape=planar_annotation_geometry(source_.data().dataset.shape(),row.plane);
-    auto visual=roiVisual(selectionJson(row.selection),shape.width,shape.height,{255,213,75,255});
+    auto visual=previewVisual(row.selection,shape.width,shape.height,{255,213,75,255},cap_,layers_);
     layers_.push_back({std::move(row),std::move(visual)});
   }
   auto edit=source_.begin_edit(Change::Pixels|Change::Metadata);
@@ -68,8 +87,8 @@ RoiImportPreview::RoiImportPreview(
       const auto geometry =
           planar_annotation_geometry(source_.data().dataset.shape(), row.plane);
       layers_.push_back(
-          {row, roiVisual(selectionJson(row.selection), geometry.width,
-                          geometry.height, {64, 210, 240, 255})});
+          {row, previewVisual(row.selection, geometry.width,
+                          geometry.height, {64, 210, 240, 255},cap_,layers_)});
     } else
       display.push_back(std::get<MappedImageJDisplayRoi>(record).annotation());
   }
@@ -99,8 +118,8 @@ RoiImportPreview::RoiImportPreview(const ResolvedImageJRoiImport &command,
     const auto &row = record.annotation();
     const auto geometry =
         planar_annotation_geometry(source_.data().dataset.shape(), row.plane);
-    auto visual = roiVisual(selectionJson(row.selection), geometry.width,
-                            geometry.height, {64, 210, 240, 255});
+    auto visual = previewVisual(row.selection, geometry.width,
+                            geometry.height, {64, 210, 240, 255},cap_,layers_);
     layers_.push_back({row, std::move(visual)});
     execution_stage_progress("Prepare ROI visuals", layers_.size(),
                              command.records().size());
@@ -122,8 +141,8 @@ RoiImportPreview::RoiImportPreview(const ResolvedImageJRoiPairing &pair,
   const auto geometry =
       planar_annotation_geometry(source_.data().dataset.shape(), row.plane);
   layers_.push_back(
-      {row, roiVisual(selectionJson(row.selection), geometry.width,
-                      geometry.height, {255, 213, 75, 255})});
+      {row, previewVisual(row.selection, geometry.width,
+                      geometry.height, {255, 213, 75, 255},cap_,layers_)});
   kernel_checkpoint();
 }
 RoiImportPreview::RoiImportPreview(const ResolvedImageJRoiZipExport &batch,
@@ -137,8 +156,8 @@ RoiImportPreview::RoiImportPreview(const ResolvedImageJRoiZipExport &batch,
     kernel_checkpoint();
     const auto geometry =
         planar_annotation_geometry(source_.data().dataset.shape(), row.plane);
-    auto visual = roiVisual(selectionJson(row.selection), geometry.width,
-                            geometry.height, {255, 213, 75, 255});
+    auto visual = previewVisual(row.selection, geometry.width,
+                            geometry.height, {255, 213, 75, 255},cap_,layers_);
     layers_.push_back({std::move(row), std::move(visual)});
   }
 }
@@ -164,6 +183,9 @@ Json RoiImportPreview::draw(const DocumentSnapshot &current,
     if (!planar_annotation_visible(row, canvas.plane, canvas.coordinate,
                                    current.display().t, current.display().c))
       continue;
+    if(row.selection.is_path() && (layer.visual.screenKey[2]!=canvas.scale[0] || layer.visual.screenKey[3]!=canvas.scale[1]))
+      layer.visual=previewVisual(row.selection,canvas.width,canvas.height,
+          layer.visual.style.stroke_color.value_or(RoiColor{64,210,240,255}),cap_,layers_,canvas.scale,&layer.visual);
     const auto draw_begin = draw->IdxBuffer.Size;
     drawRoiVisual(layer.visual, draw, canvas.origin, canvas.scale);
     visible = true;
@@ -177,7 +199,7 @@ Json RoiImportPreview::draw(const DocumentSnapshot &current,
            {"coordinate", canvas.coordinate},
            {"canvas_id", canvas.id},
            {"preview", true},
-           {"geometry", selectionJson(row.selection)},
+           {"geometry", planarSelectionJson(row.selection)},
            {"screen_builds", layer.visual.screenBuilds}});
   }
   if (visible)
