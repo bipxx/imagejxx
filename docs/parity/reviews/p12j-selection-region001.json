@@ -1,0 +1,418 @@
+{
+  "schema_version": 1,
+  "id": "p12j.selection-region-foundation.001",
+  "date": "2026-10-23",
+  "state": "scoped-qualified",
+  "stage": "core-foundation",
+  "acceptance": false,
+  "complete_requirement_coverage": false,
+  "baseline_commit": "644ad1be985a1a61dc57217fbc3fd4201e781c24",
+  "previous_goal_turn": "progress: enlargement workflow/batch integration committed and pushed",
+  "scope": "Immutable C++/Python SelectionRegion retains complete local area geometry and an explicit XY origin, independently of a document canvas. Region enlargement retains off-image irregular cells, holes and disconnected islands across repeated edits. Explicit projection returns a legacy canvas selection; vector projection translates without clamping. SelectionEditor.enlarged_region exposes the full path. Source shape/context, origins, bounds, style, resource admission, cancellation and finish failures are qualified within the stated limits. The complete ImageJ oracle exposed a one-cell saturated-byte placement rule and native rectangle promotion: both now match in the full-region API, so later operations take the correct analytic path. A shared private kernel policy preserves legacy clipped command geometry and record equations. Geometry/projection estimates now include at least their own admission floor, exact working caps are exercised, projection admission is cancellable, and the Python estimate wrapper copies mutable limits before GIL release. C++ callbacks can assign over their source value; enlargement, projection and bounds now freeze complete source geometry/canvas/origin before callbacks, with an observed failing preimage and native/installed SDK regression checks. This is a required foundation, not editor-level gap completion: document storage, saved rows, codecs, commands, interchange, workflow/batch retention and actual UI interaction still require canonical region migration. No new physical UI acceptance is claimed; existing UI regressions are rerun. Legacy canvas callers also retain previously accepted far-off-canvas double coordinates, independently of the new integer region-frame limit. They clip directly without a temporary full-region packed result. Actual historical V1 command data verifies validation/rebind/preparation compatibility on both hosts, in addition to native/installed SDK checks.",
+  "sources": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 113834,
+      "sha256": "b51555d82c66f6ca8f834d63acae0cb5e085d7b59c43a85517ef0a062704b26c"
+    },
+    {
+      "path": "examples/cpp/CMakeLists.txt",
+      "bytes": 17642,
+      "sha256": "e2f2d9b9c95f78a92de63b6f10e585586a46c2929e1f25b428c9c00351c35cdb"
+    },
+    {
+      "path": "include/imagejxx/selection_edit.hpp",
+      "bytes": 7693,
+      "sha256": "593ac5c772094605ede7f5f522a7af92f20d8ae8c61aab9883b6c37ff666b896"
+    },
+    {
+      "path": "include/imagejxx/selection_region.hpp",
+      "bytes": 1616,
+      "sha256": "84e7b3c07c15a494214daab96af47428d0f880d2120956caeeda69b45e73753c"
+    },
+    {
+      "path": "src/native/selection_edit.cpp",
+      "bytes": 60013,
+      "sha256": "fc94a136054ea9f5ab3f37b0316dc7415eb9474cca3fc1a1a1709c7218812963"
+    },
+    {
+      "path": "src/native/document_bindings.cpp",
+      "bytes": 33224,
+      "sha256": "771de9890a64997d2c55c0f5bf940dd13efd10921a09f42a71b88b90ab186bb0"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 76737,
+      "sha256": "b0f51d74e3e944a88edbc6a0ca231b934dd6693523b7e2c440b37a02fa8cc4dc"
+    },
+    {
+      "path": "examples/cpp/selection_region.cpp",
+      "bytes": 3910,
+      "sha256": "13371c7b0edb459df743476452bdccc871b15f117f4c7c526578fd779941976f"
+    },
+    {
+      "path": "tests/python/test_selection_region.py",
+      "bytes": 7727,
+      "sha256": "bcd81134015640cc1b5b3d2ec52d060655a7f51bfdb0dcd597a4162d08e992a9"
+    },
+    {
+      "path": "tests/reference/SelectionRegionReference.java",
+      "bytes": 2246,
+      "sha256": "f40da1ca8b1864426287e336a27f41c661b4ddc742c84b61d69071333410cc75"
+    },
+    {
+      "path": "tests/fixtures/selection-region-imagej154r.json",
+      "bytes": 1039279,
+      "sha256": "23a0deba1af9cf7ea082916428ba5507a267de62c53a5e8f803a53b26fe31349"
+    },
+    {
+      "path": "docs/parity/SELECTION_REGION.md",
+      "bytes": 5072,
+      "sha256": "a3abd1ae2c0cfe23c4cee60b904260d5c4f201ee834a7c75b8255fb7221a12e0"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "build/p12j-selection-region001/windows-qualified008/receipt.json",
+      "bytes": 63965,
+      "sha256": "5e5e7282d474b2d00d3efc73d137217bed4622c3bd002a4da68306e5e89faf41"
+    },
+    {
+      "path": "build/p12j-selection-region001/windows-qualified008/native.xml",
+      "bytes": 5584,
+      "sha256": "70248085fd70f20f3c9b8324555611d1f711984cb83e2ec5cce68e6597d6026e"
+    },
+    {
+      "path": "build/p12j-selection-region001/windows-qualified008/enlargement-dialog-retained001.json",
+      "bytes": 35934,
+      "sha256": "49f12d364a1dafea04a311a27e6189f5aa033b1e59350b5e12715c996113709e"
+    },
+    {
+      "path": "build/p12j-selection-region001/windows-python008/receipt.json",
+      "bytes": 6716,
+      "sha256": "5cf381a5ebd0dcd70fbefde989dd2bd3c0114bb2e27a6f7f00fa73a1c9620511"
+    },
+    {
+      "path": "build/p12j-selection-region001/windows-python008/pytest.xml",
+      "bytes": 3806063,
+      "sha256": "6117dae6eefae2bebbce1501504a1a58d2c8243d4efdda19f65eadbb13d6b0a1"
+    },
+    {
+      "path": "build/p12j-selection-region001/windows-python008/collection.json",
+      "bytes": 3105153,
+      "sha256": "71a1e5fda21a0f82de893240e6541918b87a6a37a87d98a160f1b997637ca9b6"
+    },
+    {
+      "path": "build/p12j-selection-region001/windows-sdk003/receipt.json",
+      "bytes": 446,
+      "sha256": "85bbd126be40b3a05a89ffc5fd675d0e24e8232a15be5ad4e8e8cc580d2f6285"
+    },
+    {
+      "path": "build/p12j-selection-region001/windows-ui003/receipt.json",
+      "bytes": 991,
+      "sha256": "8df4688a178951af33e94f5045ab1e5581344165b7425842abd03ef410f3ecf8"
+    },
+    {
+      "path": "build/p12j-selection-region001/windows-direct003.json",
+      "bytes": 833,
+      "sha256": "17df9c4dd266e6657d52b21c71fb85b472ab527a261f9b096fe84aaaa9661f2e"
+    },
+    {
+      "path": "build/p12j-selection-region001/windows-cleanup003.json",
+      "bytes": 326215,
+      "sha256": "dc0ef4bcf2b3e5c2b178482c58ea742c8cee243fab69882b091b3d5b06a16b1c"
+    },
+    {
+      "path": "build/p12j-selection-region001/windows-products003.json",
+      "bytes": 7749,
+      "sha256": "90a87eab517b475d19396bf85a07f5bbbed15a811066096de6d0630283fc360a"
+    },
+    {
+      "path": "build/p12j-selection-region001/linux-qualified008/receipt.json",
+      "bytes": 63248,
+      "sha256": "880c34b0854f07452f545ad4697a63515e1eddbb0479c17b2c68e371441a5a98"
+    },
+    {
+      "path": "build/p12j-selection-region001/linux-qualified008/native.xml",
+      "bytes": 5542,
+      "sha256": "f9e63fab1f24bd0fe2955c6f45932f32be4acfc17ba9851157250da74c04c9e3"
+    },
+    {
+      "path": "build/p12j-selection-region001/linux-qualified008/enlargement-dialog-retained001.json",
+      "bytes": 34413,
+      "sha256": "665cd37d51e4c8e651a535ea1abb8826c25a352ae229d6f893660b6bf6906e22"
+    },
+    {
+      "path": "build/p12j-selection-region001/linux-python008/receipt.json",
+      "bytes": 6442,
+      "sha256": "559fb44a3f85a8f44502a0c62e46e1720a1f3fedf9e57928fdebb98a33678680"
+    },
+    {
+      "path": "build/p12j-selection-region001/linux-python008/pytest.xml",
+      "bytes": 3806063,
+      "sha256": "974b7e7b34d2e0e41c72721c78cb78104c2d252b3205a95fbb12b5273e90f435"
+    },
+    {
+      "path": "build/p12j-selection-region001/linux-python008/collection.json",
+      "bytes": 3084558,
+      "sha256": "c87a76d3437152f8ba2c3f64f4b028c92abc15f1ed7906a9eb81c71c09cca718"
+    },
+    {
+      "path": "build/p12j-selection-region001/linux-sdk003/receipt.json",
+      "bytes": 419,
+      "sha256": "33664a08772500db306cfe40a6e42176228f68bdc5fbfa132616b92c9cb52c73"
+    },
+    {
+      "path": "build/p12j-selection-region001/linux-ui003/receipt.json",
+      "bytes": 834,
+      "sha256": "808d44af96bd2c45fb1b1ae8a87dd086432eeb14eafd255ccaa059246c5a8d75"
+    },
+    {
+      "path": "build/p12j-selection-region001/linux-direct003.json",
+      "bytes": 712,
+      "sha256": "0168ee9f38c649b25a8204c64d8ce6452ce5edb5228960a32eaddbf181d2e516"
+    },
+    {
+      "path": "build/p12j-selection-region001/linux-cleanup003.json",
+      "bytes": 535942,
+      "sha256": "826f6ca86017a1a84ac32263f79c2d1af60180237775a213214e7c165dcff415"
+    },
+    {
+      "path": "build/p12j-selection-region001/linux-products003.json",
+      "bytes": 6093,
+      "sha256": "035d18940635fd7aa734c61acc39cd7e5a9e525b5877f8ddf9712a50d4e8e007"
+    },
+    {
+      "path": "build/p12j-selection-region001/source-manifest008.json",
+      "bytes": 62298,
+      "sha256": "d242101bd15f86f94eec756fc541c2170f5b81e81a3f16a2b1d967497f7a179d"
+    },
+    {
+      "path": "build/p12j-selection-region001/reference001/receipt.json",
+      "bytes": 156967,
+      "sha256": "16b49ee4a3eb4ce63d2f90fd1b64c3b69930794d6762b18c43b19e8ab93454bc"
+    },
+    {
+      "path": "build/p12j-selection-region001/reference001/observe.log",
+      "bytes": 1005125,
+      "sha256": "e8118b60a2846dda4afddbe1ae5596c2e5e04902578c5e5b21b53ad9cb014099"
+    },
+    {
+      "path": "build/p12j-selection-region001/linux-smoke001/receipt.json",
+      "bytes": 1758,
+      "sha256": "92245663926eb953394eb7889d3a6547e0dac325bfd015168894ca808f1dcb49"
+    },
+    {
+      "path": "build/p12j-selection-region001/linux-smoke001/pytest.xml",
+      "bytes": 136131,
+      "sha256": "5bef926b9c8dcea036cb5329a640c23e2432bbf2eeec8847d0acc84b69ab776d"
+    },
+    {
+      "path": "build/p12j-selection-region001/linux-smoke002/receipt.json",
+      "bytes": 1757,
+      "sha256": "f41ae0205c74715b9abfefac2a0f10d91523940e6d5d913c4a3112bca27fd964"
+    },
+    {
+      "path": "build/p12j-selection-region001/preimage004/src/native/selection_edit.cpp",
+      "bytes": 55932,
+      "sha256": "e5cf04ba40b19e1079d1906d81ade89602d6a29095c20b5926def5b317b44d92"
+    },
+    {
+      "path": "build/p12j-selection-region001/preimage005/document_bindings.cpp",
+      "bytes": 33128,
+      "sha256": "715d8ca159b8377228b69657e131c887516a11c64b897cd1044035f93e7153de"
+    },
+    {
+      "path": "build/p12j-selection-region001/freeze-probe-receipt001.json",
+      "bytes": 490,
+      "sha256": "0d4523d7d7017d32dadec9fe55e38e5dd44a16d2b1fb2716a896d827f02880a7"
+    },
+    {
+      "path": "build/p12j-selection-region001/freeze-probe001.log",
+      "bytes": 58,
+      "sha256": "8d417358f189b388a97309a640a7fa6b4e2af4a6c67d82f4dc76fc1e77e97933"
+    },
+    {
+      "path": "build/p12j-selection-region001/freeze-fixed001.log",
+      "bytes": 83,
+      "sha256": "a8af19dd24aa314fc75172b07c9c6dfdbdf760ad430ae818a1766789768fe43e"
+    },
+    {
+      "path": "build/p12j-selection-region001/preimage006/src/native/selection_edit.cpp",
+      "bytes": 58193,
+      "sha256": "4d18f20e8d8388092a894b5f43d85d265dbb6a543f06fcae07069aa5ac322871"
+    },
+    {
+      "path": "build/p12j-selection-region001/preimage006/examples/cpp/selection_region.cpp",
+      "bytes": 2198,
+      "sha256": "f82b72ecd8faac714ecbfbb9efa111591e7a0de627d6531737c529a2d51f36b5"
+    },
+    {
+      "path": "build/p12j-selection-region001/windows-cleanup001.json",
+      "bytes": 460570,
+      "sha256": "2231008dc17a7da4ebf7218a35d626fcee87e12e65cf224d5e05b473d1e290b5"
+    },
+    {
+      "path": "build/p12j-selection-region001/linux-cleanup001.json",
+      "bytes": 644633,
+      "sha256": "392fd2b15e466d8d78205ed2c5bcb150aebc60f1ca547ab3e6375e820e282a9f"
+    },
+    {
+      "path": "build/p12j-selection-region001/licenses001.log",
+      "bytes": 53,
+      "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+    },
+    {
+      "path": "build/p12j-selection-region001/plan001.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    },
+    {
+      "path": "build/p12j-selection-region001/windows-cleanup002.json",
+      "bytes": 326215,
+      "sha256": "8926596f4d603798ce84e4cbe1a587c4954dbc79e0d1c78a8dc5ac1e03d30e3a"
+    },
+    {
+      "path": "build/p12j-selection-region001/windows-legacy-record008.json",
+      "bytes": 582,
+      "sha256": "c4bc99d5010f2f2da4bd6997cdce0a35bb42bb9187e00f526b232da46a4627c3"
+    },
+    {
+      "path": "build/p12j-selection-region001/windows-qualified007/receipt.json",
+      "bytes": 63965,
+      "sha256": "acceef2e3fcc36083269344ac958a270caf4ae656ae886f9ac9fcb28c66d82be"
+    },
+    {
+      "path": "build/p12j-selection-region001/linux-cleanup002.json",
+      "bytes": 535942,
+      "sha256": "364ae1ec734cad9a7a504a422ff0c58fcd2eacf798dca80b7932a28053854ad3"
+    },
+    {
+      "path": "build/p12j-selection-region001/linux-legacy-record008.json",
+      "bytes": 507,
+      "sha256": "67e27fdd09994bba19b61614bab5b0e3856d4157afa9e9be66d90a22820ca099"
+    },
+    {
+      "path": "build/p12j-selection-region001/linux-qualified007/receipt.json",
+      "bytes": 63248,
+      "sha256": "5cef0422e9ffbdf3d603239d0dec3d05dfa909f151b194a4c002156280e0f69d"
+    },
+    {
+      "path": "build/p12j-selection-region001/legacy-far-observed001.json",
+      "bytes": 719,
+      "sha256": "0feb8e6114452967a08b0b38b62694f575fbddd511f39e5ef7f05a7f24cda28f"
+    },
+    {
+      "path": "build/p12j-selection-region001/legacy-far-v1-record001.json",
+      "bytes": 938,
+      "sha256": "09341d0b0eb67da1a7b860bfcd56e320b098c40375e297f2f562df7e9c41be08"
+    },
+    {
+      "path": "build/p12j-selection-region001/legacy-far-v1-producer001.json",
+      "bytes": 522,
+      "sha256": "14538ad274139a39d8f7c0e7fab2e284715089f92885785aa6567c281bdac2c6"
+    },
+    {
+      "path": "build/p12j-selection-region001/legacy-far-receipt001.json",
+      "bytes": 483,
+      "sha256": "5dd3086121898e3bea4ceb86021339434726e37cdf0e23e80c5d8b7b92df5308"
+    },
+    {
+      "path": "build/p12j-selection-region001/legacy-far-failure001.log",
+      "bytes": 45,
+      "sha256": "2e5b3b101fc4c3fc725c156c21cbdd6ee224f1e59dbcda53f0a148bf10e3c7c8"
+    },
+    {
+      "path": "build/p12j-selection-region001/legacy-far-fixed001.log",
+      "bytes": 83,
+      "sha256": "a8af19dd24aa314fc75172b07c9c6dfdbdf760ad430ae818a1766789768fe43e"
+    },
+    {
+      "path": "build/p12j-selection-region001/preimage007/src/native/selection_edit.cpp",
+      "bytes": 58623,
+      "sha256": "c18985ac6298d87831cc81c329c34053688a989365d16348397f53e839ba0bd5"
+    },
+    {
+      "path": "build/p12j-selection-region001/preimage007/examples/cpp/selection_region.cpp",
+      "bytes": 3606,
+      "sha256": "a367496fb6dd3d2c6ff7611b3682b9cdfc31057204c0458bef77372754f1b6f4"
+    },
+    {
+      "path": "build/p12j-selection-region001/licenses-final002.log",
+      "bytes": 53,
+      "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+    },
+    {
+      "path": "build/p12j-selection-region001/plan-final002.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    }
+  ],
+  "qualification": {
+    "hosts": {
+      "windows": {
+        "installed_checks": 20593,
+        "new_region_checks": 174,
+        "prior_installed_ids_retained": 20419,
+        "unique_new_imagej_stage_observations": 144,
+        "two_step_reference_sequences": 72,
+        "native_groups": 17,
+        "installed_region_sdk_consumers": 1,
+        "installed_direct_editor_region_probes": 1,
+        "existing_standalone_ui_probes": 3,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0,
+        "actual_historical_v1_record_probes": 1
+      },
+      "linux": {
+        "installed_checks": 20593,
+        "new_region_checks": 174,
+        "prior_installed_ids_retained": 20419,
+        "unique_new_imagej_stage_observations": 144,
+        "two_step_reference_sequences": 72,
+        "native_groups": 17,
+        "installed_region_sdk_consumers": 1,
+        "installed_direct_editor_region_probes": 1,
+        "existing_standalone_ui_probes": 3,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0,
+        "actual_historical_v1_record_probes": 1
+      }
+    },
+    "compiled_source_inputs": 561,
+    "imagej_source_class_inputs": 992,
+    "total_archived_scratch_bytes": 3343057672,
+    "archived_scratch_bytes": {
+      "windows": 1622765006,
+      "linux": 1720292666
+    },
+    "original_144_canvas_fixture_unchanged": true,
+    "new_upstream_fixture_re_pinned": false,
+    "new_editor_region_storage_acceptance": false,
+    "new_paired_launch_ui_acceptance": false,
+    "failed_attempts": "Initial installed Linux targeted run: 722 checks, 12 full-region failures at the saturated byte transition; original full ImageJ observations were retained. Corrected product placement/type without changing oracle expectations. Corrected run: 725 passed, including three added exact-budget/empty cases. Final review also reproduced C++ callback reassignment changing the retained origin. Added four native/installed SDK checks for region enlargement/projection and legacy/full editor source/canvas freezing. Source snapshots now precede callbacks; the observed failure executable and source preimages remain. Final generation also freezes estimator limits before GIL release and passes all 20,593 installed checks on each host. Initial source/binding preimages and qualified prefixes are retained or CRC/member-SHA archived. A later compatibility audit reproduced a legacy far-coordinate refusal introduced by the first region bridge. Historical binary/record observations and the failing preimage were retained; direct legacy clipping and separate region-frame admission corrected it before the final generation-008 matrix.",
+    "source_generation": "008",
+    "legacy_coordinate_compatibility": "An actual released p12i binary accepts a polygon at 1e10 and returns an empty canvas mask. The first region bridge instead refused its integer frame. A retained failing executable precedes the fix: legacy callers now clip directly in double coordinates, while full-region callers retain integer-frame admission. Native/installed SDK regressions cover both policies, and the actual released V1 record validates, rebinds and prepares on both hosts without dataset reads or pixel undo."
+  },
+  "requirements": {
+    "count": 99,
+    "statuses": {
+      "in_progress": 47,
+      "open": 52
+    },
+    "original_triples_unchanged": true,
+    "historical_verification_runs_unchanged": true
+  },
+  "checks": {
+    "commercial_dependencies": "passed; no added dependency",
+    "plan_inventory": "historical Auto producer-source fingerprint mismatch remains unresolved; not passed"
+  },
+  "remaining": [
+    "Migrate canonical native selection storage and versioned session/command codecs without losing old record equations.",
+    "Carry regions through saved ROIs, transformations/Booleans, axis changes, filtering/histogram consumption, ImageJ interchange, commands/workflows/batch and shared C++/Python UI interaction.",
+    "Finish remembered enlargement last-use behavior and managed large-ROI UI/cancellation; qualify persistence/platform/resource/editor acceptance.",
+    "Complete all original ImageJ/Fiji feature families and recover historical Auto preimages without changing old expectations."
+  ]
+}

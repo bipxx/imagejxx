@@ -35,6 +35,7 @@ SelectionEnlargementEstimate estimate_selection_enlargement_geometry(
     const SelectionEditLimits & = {}, const ExecutionControl & = {});
 // Immutable geometry operations. Coordinates are image-cell boundaries, as in
 // Selection. This class stages geometry; the caller commits a document edit.
+class SelectionRegion;
 class SelectionEditor {
 public:
   SelectionEditor(Selection selection, int width, int height);
@@ -118,10 +119,17 @@ public:
       double pixels, const SelectionEditLimits &limits = {}) const;
   Selection enlarged(double pixels, const SelectionEditLimits &limits = {},
                      const ExecutionControl &control = {}) const;
+  // Retain the full irregular raster with its local-to-image origin. Projection
+  // to a document canvas is a separate, explicitly lossy operation.
+  SelectionRegion enlarged_region(double pixels, const SelectionEditLimits & = {},
+                                  const ExecutionControl & = {}) const;
   Selection properties(double width, const MetadataObject &patch = {}) const;
   Selection roi_style(const MetadataObject &patch) const;
 
 private:
+  friend class SelectionRegion;
+  SelectionRegion enlarged_region_impl(double, const SelectionEditLimits &,
+      const ExecutionControl &, bool preserve_full_geometry) const;
   Selection selection_;
   int width_, height_;
   std::array<double, 4> bounds_{};

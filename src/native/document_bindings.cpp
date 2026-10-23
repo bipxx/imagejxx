@@ -7,6 +7,7 @@
 #include <imagejxx/document.hpp>
 #include <imagejxx/roi_style.hpp>
 #include <imagejxx/selection_edit.hpp>
+#include <imagejxx/selection_region.hpp>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
@@ -219,6 +220,32 @@ void bind_document(py::module_ &m) {
       .def_readonly("rounded_pixels",&SelectionEnlargementEstimate::rounded_pixels)
       .def_readonly("padded_pixels",&SelectionEnlargementEstimate::padded_pixels)
       .def_readonly("working_bytes",&SelectionEnlargementEstimate::working_bytes);
+  py::class_<SelectionRegion>(m,"SelectionRegion")
+      .def(py::init([](Selection selection,std::array<int,2> shape,std::array<int,2> origin,SelectionEditLimits limits){
+        py::gil_scoped_release release;return SelectionRegion(selection,shape[1],shape[0],origin,limits);
+      }),py::arg("selection"),py::arg("shape"),py::arg("origin")=std::array<int,2>{0,0},py::arg("limits")=SelectionEditLimits{})
+      .def_property_readonly("local_selection",[](const SelectionRegion &region){return region.local_selection();})
+      .def_property_readonly("origin",&SelectionRegion::origin)
+      .def_property_readonly("shape",&SelectionRegion::shape)
+      .def_property_readonly("bounds",&SelectionRegion::bounds)
+      .def("estimate_enlargement",[](const SelectionRegion &region,double pixels,SelectionEditLimits limits){
+        py::gil_scoped_release release;return region.estimate_enlargement(pixels,limits);
+      },py::arg("pixels"),py::arg("limits")=SelectionEditLimits{})
+      .def("enlarged",[](const SelectionRegion &region,double pixels,SelectionEditLimits limits,
+          std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint){
+        const auto control=axis_range_python_control(std::move(cancellation),std::move(progress),std::move(checkpoint));
+        py::gil_scoped_release release;return region.enlarged(pixels,limits,control);
+      },py::arg("pixels"),py::arg("limits")=SelectionEditLimits{},py::kw_only(),
+        py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none())
+      .def("estimate_projection",[](const SelectionRegion &region,std::array<int,2> shape,SelectionEditLimits limits){
+        py::gil_scoped_release release;return region.estimate_projection(shape[1],shape[0],limits);
+      },py::arg("shape"),py::arg("limits")=SelectionEditLimits{})
+      .def("project",[](const SelectionRegion &region,std::array<int,2> shape,SelectionEditLimits limits,
+          std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint){
+        const auto control=axis_range_python_control(std::move(cancellation),std::move(progress),std::move(checkpoint));
+        py::gil_scoped_release release;return region.project(shape[1],shape[0],limits,control);
+      },py::arg("shape"),py::arg("limits")=SelectionEditLimits{},py::kw_only(),
+        py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none());
   py::class_<SelectionEditor>(m, "SelectionEditor")
       .def(py::init([](Selection selection, std::array<int, 2> shape) {
              return SelectionEditor(std::move(selection), shape[1], shape[0]);
@@ -236,6 +263,12 @@ void bind_document(py::module_ &m) {
           std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint){
         const auto control=axis_range_python_control(std::move(cancellation),std::move(progress),std::move(checkpoint));
         py::gil_scoped_release release;return editor.enlarged(pixels,limits,control);
+      },py::arg("pixels"),py::arg("limits")=SelectionEditLimits{},py::kw_only(),
+        py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none())
+      .def("enlarged_region",[](const SelectionEditor &editor,double pixels,SelectionEditLimits limits,
+          std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint){
+        const auto control=axis_range_python_control(std::move(cancellation),std::move(progress),std::move(checkpoint));
+        py::gil_scoped_release release;return editor.enlarged_region(pixels,limits,control);
       },py::arg("pixels"),py::arg("limits")=SelectionEditLimits{},py::kw_only(),
         py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none())
       .def("handles", py::overload_cast<>(

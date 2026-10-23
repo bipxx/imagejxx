@@ -1,5 +1,25 @@
 # ImageJ and Fiji gap closure plan
 
+**Full selection-region geometry, 2026-10-23 (core foundation; editor gap open):**
+The C++/Python SelectionRegion value retains complete local area geometry and
+an explicit origin. Repeated enlarge/shrink operations retain off-image cells;
+projection onto a document canvas is explicit. A new ImageJ 1.54r driver observes
+144 complete stages across 72 sequences, including holes, islands and byte/float
+transitions. It exposed saturated-byte placement and rectangle-type behavior,
+now matched by the region API. Legacy canvas commands retain their equations.
+Source/projection admission now reports at least its own required working bytes,
+and Python estimates freeze limits before releasing the GIL. C++ source value
+assignment inside callbacks is covered by complete geometry/frame snapshots. Windows/Linux each
+pass 20,593 installed checks (174 new, all 20,419 prior IDs retained), 17 native
+groups, an installed region SDK consumer, a direct editor-to-region API probe and
+three existing standalone UI probes, zero failure/error/skip. Verified scratch
+archives precede confined cleanup. This does not migrate document storage,
+sessions, saved ROIs, interchange, commands or UI interaction to full regions;
+those remain required. All 99 statuses and historical runs/Auto expectations are
+unchanged; the historical Auto producer fingerprint check still fails. Next is
+canonical native region storage and versioned codecs. See [the migration plan](parity/SELECTION_REGION.md)
+and [scoped receipt](parity/reviews/p12j-selection-region001.json).
+
 **Selection enlargement in workflows and Batch, 2026-10-23 (work in progress):**
 Captured enlargement commands now become portable authored distance/unit steps.
 Metadata-only preflight advances each stage's selection before later filters and

@@ -3,6 +3,7 @@
 #include <cmath>
 #include <imagejxx/roi_style.hpp>
 #include <imagejxx/selection_edit.hpp>
+#include <imagejxx/selection_region.hpp>
 #include <limits>
 #include <type_traits>
 #include <utility>
@@ -99,7 +100,7 @@ private:
   std::size_t bytes_ = 0, visits_ = 0, maximum_;
   const ExecutionControl &control_;
 };
-void geometry_preflight(const Selection &selection, int width, int height,
+std::size_t geometry_preflight(const Selection &selection, int width, int height,
                         const SelectionEditLimits &limits,
                         const ExecutionControl &control,
                         std::size_t added_vertices = 0) {
@@ -151,7 +152,7 @@ void geometry_preflight(const Selection &selection, int width, int height,
     throw std::length_error("Selection geometry working limit exceeded");
   geometry_canceled(control);
   selection.validate(width, height);
-  geometry_canceled(control);
+  geometry_canceled(control);return working;
 }
 template <class Function>
 auto controlled_geometry(const SelectionEditor &source, int width, int height,
@@ -848,8 +849,8 @@ struct EnlargementPlan {
 };
 EnlargementPlan enlargement_plan(const Selection &selection,int width,int height,
     std::array<double,4> bounds,bool has_bounds,double pixels,
-    const SelectionEditLimits &limits,const ExecutionControl &control) {
-  geometry_preflight(selection,width,height,limits,control);
+    const SelectionEditLimits &limits,const ExecutionControl &control,bool require_integer_frame=false) {
+  const auto geometry_bytes=geometry_preflight(selection,width,height,limits,control);
   require_finite(pixels,"Selection enlargement distance");
   const bool analytic=selection.kind=="rectangle" || selection.kind=="ellipse" || selection.kind=="rounded_rectangle";
   if(!analytic && selection.kind!="polygon" && selection.kind!="freehand" &&
@@ -890,6 +891,9 @@ EnlargementPlan enlargement_plan(const Selection &selection,int width,int height
     // Keep ImageJ's signed squared-distance arithmetic in its valid domain.
     if(pw<=0 || ph<=0 || pw>32767 || ph>32767)
       throw std::length_error("Enlargement padded EDM dimensions exceed 32767");
+    if(require_integer_frame)for(double value:{plan.left,plan.top,plan.right,plan.bottom})
+      if(value<std::numeric_limits<int>::min() || value>std::numeric_limits<int>::max())
+        throw std::invalid_argument("Enlarged region bounds exceed integer range");
     plan.width=static_cast<int>(pw);plan.height=static_cast<int>(ph);
     plan.estimate.padded_pixels=geometry_multiply(plan.width,plan.height);
     if(plan.estimate.padded_pixels>limits.max_xy_pixels)
@@ -900,6 +904,7 @@ EnlargementPlan enlargement_plan(const Selection &selection,int width,int height
     bytes=geometry_add(bytes,geometry_multiply(32,plan.width));
     bytes=geometry_add(bytes,512*1024);
   }
+  bytes=std::max(bytes,geometry_bytes);
   plan.estimate.working_bytes=bytes;
   if(bytes>limits.max_working_bytes)
     throw std::length_error("Selection enlargement working limit exceeded");
@@ -976,15 +981,18 @@ SelectionEnlargementEstimate SelectionEditor::estimate_enlargement(
     double pixels,const SelectionEditLimits &limits) const {
   return enlargement_plan(selection_,width_,height_,bounds_,has_bounds_,pixels,limits,{}).estimate;
 }
-Selection SelectionEditor::enlarged(double pixels,const SelectionEditLimits &limits,
-                                   const ExecutionControl &control) const {
+SelectionRegion SelectionEditor::enlarged_region_impl(double pixels,const SelectionEditLimits &limits,
+                                   const ExecutionControl &control,bool preserve_full_geometry) const {
   // Freeze scalar limits/control before callbacks; preflight borrows geometry
   // and performs no image allocation or user callback.
   const auto frozen_limits=limits;const auto frozen_control=control;
-  const auto plan=enlargement_plan(selection_,width_,height_,bounds_,has_bounds_,pixels,frozen_limits,frozen_control);
+  const auto plan=enlargement_plan(selection_,width_,height_,bounds_,has_bounds_,pixels,frozen_limits,frozen_control,preserve_full_geometry);
+  const auto source=selection_;const auto source_width=width_,source_height=height_;
   ExecutionScope scope(frozen_control);kernel_checkpoint();execution_progress(0,1);kernel_checkpoint();
-  const auto source=selection_;
-  const auto finish=[&](Selection result){kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;};
+  const auto finish=[&](Selection result,std::array<int,2> origin=std::array<int,2>{0,0},int width=0,int height=0){
+    kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();
+    return SelectionRegion(std::move(result),width?width:source_width,height?height:source_height,origin,true);
+  };
   if(plan.unchanged)return finish(source);
   if(plan.analytic) {
     auto attributes=source.attributes;attributes.erase("corner_diameter");
@@ -994,9 +1002,9 @@ Selection SelectionEditor::enlarged(double pixels,const SelectionEditLimits &lim
   }
   Image mask(plan.width,plan.height,1,PixelType::UInt8);
   if(source.kind=="mask") {
-    const KernelStage stage("Enlarge packed source",static_cast<std::size_t>(width_)*height_);
-    for(int y=0;y<height_;++y)for(int x=0;x<width_;++x) {
-      const auto i=static_cast<std::size_t>(y)*width_+x;stage.periodic(i);
+    const KernelStage stage("Enlarge packed source",static_cast<std::size_t>(source_width)*source_height);
+    for(int y=0;y<source_height;++y)for(int x=0;x<source_width;++x) {
+      const auto i=static_cast<std::size_t>(y)*source_width+x;stage.periodic(i);
       if(bit(source,i))mask.at(static_cast<int>(x-plan.left),static_cast<int>(y-plan.top))=255;
     }
     stage.finish();
@@ -1005,15 +1013,19 @@ Selection SelectionEditor::enlarged(double pixels,const SelectionEditLimits &lim
     for(auto &point:shifted.points){kernel_checkpoint_periodic();point[0]-=plan.left;point[1]-=plan.top;}
     mask=shifted.mask(plan.width,plan.height);
   }
-  bool occupied=false;
+  bool occupied=false;int source_left=plan.width,source_top=plan.height;
   const KernelStage membership("Enlarge source membership",mask.pixels.size());
-  for(std::size_t i=0;i<mask.pixels.size();++i){membership.periodic(i);occupied|=mask.pixels[i]!=0;}
+  for(std::size_t i=0;i<mask.pixels.size();++i){
+    membership.periodic(i);
+    if(mask.pixels[i]!=0){occupied=true;if(preserve_full_geometry){source_left=std::min(source_left,static_cast<int>(i%plan.width));source_top=std::min(source_top,static_cast<int>(i/plan.width));}}
+  }
   membership.finish();
   if(!occupied)return finish(source);
   const bool grow=plan.estimate.rounded_pixels>=0;
   auto distances=enlargement_edm(mask,grow);
-  const auto count=static_cast<std::size_t>(width_)*height_;
+  const auto count=preserve_full_geometry?static_cast<std::size_t>(plan.width)*plan.height:static_cast<std::size_t>(source_width)*source_height;
   std::vector<unsigned char> packed((count+7)/8,0);bool any=false;
+  int left=plan.width,top=plan.height,right=0,bottom=0;std::size_t cells=0;
   const KernelStage stage("Enlarge result",distances.size());
   for(int y=0;y<plan.height;++y)for(int x=0;x<plan.width;++x) {
     const auto i=static_cast<std::size_t>(y)*plan.width+x;stage.periodic(i);
@@ -1021,17 +1033,179 @@ Selection SelectionEditor::enlarged(double pixels,const SelectionEditLimits &lim
     if(plan.byte_edm)distance=std::floor(std::min(255.f,distance+.5f));
     const bool selected=grow ? distance<=plan.estimate.rounded_pixels : distance>=-plan.estimate.rounded_pixels+1;
     any|=selected;
-    const double gx=x+plan.left,gy=y+plan.top;
-    if(selected && gx>=0 && gx<width_ && gy>=0 && gy<height_) {
-      const auto p=static_cast<std::size_t>(gy)*width_+static_cast<std::size_t>(gx);
-      packed[p/8]|=static_cast<unsigned char>(1u<<(7-p%8));
+    if(selected){
+      if(preserve_full_geometry) {
+        packed[i/8]|=static_cast<unsigned char>(1u<<(7-i%8));++cells;
+        left=std::min(left,x);top=std::min(top,y);right=std::max(right,x+1);bottom=std::max(bottom,y+1);
+      } else {
+        // Legacy records accept finite off-canvas vector coordinates beyond
+        // the new integer region-frame domain. Clip in double before indexing.
+        const double gx=x+plan.left,gy=y+plan.top;
+        if(gx>=0 && gx<source_width && gy>=0 && gy<source_height) {
+          const auto p=static_cast<std::size_t>(gy)*source_width+static_cast<std::size_t>(gx);
+          packed[p/8]|=static_cast<unsigned char>(1u<<(7-p%8));
+        }
+      }
     }
   }
   stage.finish();
   if(!any)return finish(source); // ImageJ preserves the ROI if shrinking erases it.
-  auto result=Selection::from_packed_mask(width_,height_,std::move(packed));
+  if(!preserve_full_geometry) {
+    auto result=Selection::from_packed_mask(source_width,source_height,std::move(packed));
+    result.width=source.width;result.attributes=source.attributes;result.attributes.erase("corner_diameter");
+    return finish(std::move(result));
+  }
+  std::array<int,2> origin{static_cast<int>(plan.left),static_cast<int>(plan.top)};
+  if(preserve_full_geometry && grow) {
+    // ImageJ sets the threshold result's location from the source raster's
+    // occupied bounds, rather than retaining the padded image coordinates.
+    // The byte-saturated all-selected case therefore shifts by one cell.
+    for(int axis=0;axis<2;++axis) {
+      const auto value=static_cast<std::int64_t>(origin[axis])+
+          (axis==0?source_left:source_top)-plan.estimate.rounded_pixels-(axis==0?left:top);
+      if(value<std::numeric_limits<int>::min() || value>std::numeric_limits<int>::max())
+        throw std::invalid_argument("Enlarged region origin exceeds integer range");
+      origin[axis]=static_cast<int>(value);
+    }
+  }
+  // ThresholdToSelection emits a native rectangle for a solid rectangular
+  // result. Keeping that type matters for the next analytic enlarge/shrink.
+  auto result=preserve_full_geometry && cells==static_cast<std::size_t>(right-left)*(bottom-top)
+      ? Selection("rectangle",{{double(left),double(top)},{double(right),double(bottom)}},source.width)
+      : Selection::from_packed_mask(plan.width,plan.height,std::move(packed));
   result.width=source.width;result.attributes=source.attributes;result.attributes.erase("corner_diameter");
-  result.validate(width_,height_);return finish(std::move(result));
+  result.validate(plan.width,plan.height);
+  return finish(std::move(result),origin,plan.width,plan.height);
+}
+
+namespace {
+bool region_area(const Selection &selection) {
+  return box(selection) || selection.kind=="polygon" || selection.kind=="freehand" || selection.kind=="mask";
+}
+std::array<int,2> region_origin(std::array<int,2> first,std::array<int,2> second) {
+  for(int axis=0;axis<2;++axis) {
+    const auto sum=static_cast<std::int64_t>(first[axis])+second[axis];
+    if(sum<std::numeric_limits<int>::min() || sum>std::numeric_limits<int>::max())
+      throw std::invalid_argument("Selection region origin exceeds integer range");
+    first[axis]=static_cast<int>(sum);
+  }
+  return first;
+}
+}
+SelectionRegion::SelectionRegion(Selection selection,int width,int height,
+    std::array<int,2> origin,bool)
+    :selection_(std::move(selection)),width_(width),height_(height),origin_(origin) {}
+SelectionRegion::SelectionRegion(const Selection &selection,int width,int height,
+    std::array<int,2> origin,const SelectionEditLimits &limits)
+    :selection_("point"),width_(width),height_(height),origin_(origin) {
+  geometry_preflight(selection,width,height,limits,{});
+  if(!region_area(selection))throw std::invalid_argument("Selection region requires area geometry");
+  selection_=selection;
+}
+std::optional<std::array<double,4>> SelectionRegion::bounds() const {
+  const auto frozen_origin=origin_;
+  SelectionEditor editor(selection_,width_,height_);
+  if(!editor.has_bounds_)return std::nullopt;
+  auto result=editor.bounds();
+  for(int axis=0;axis<4;++axis) {
+    result[axis]+=frozen_origin[axis%2];require_finite(result[axis],"Selection region bounds");
+  }
+  return result;
+}
+SelectionEnlargementEstimate SelectionRegion::estimate_enlargement(
+    double pixels,const SelectionEditLimits &limits) const {
+  geometry_preflight(selection_,width_,height_,limits,{});
+  SelectionEditor editor(selection_,width_,height_);
+  const auto plan=enlargement_plan(selection_,width_,height_,editor.bounds_,editor.has_bounds_,pixels,limits,{},true);
+  if(!plan.analytic && !plan.unchanged) {
+    (void)region_origin(origin_,{static_cast<int>(plan.left),static_cast<int>(plan.top)});
+    (void)region_origin(origin_,{static_cast<int>(plan.right),static_cast<int>(plan.bottom)});
+  }
+  return plan.estimate;
+}
+SelectionRegion SelectionRegion::enlarged(double pixels,const SelectionEditLimits &limits,
+    const ExecutionControl &control) const {
+  const auto frozen_limits=limits;const auto frozen_control=control;
+  // Borrowed resource admission precedes constructing the private editor.
+  geometry_preflight(selection_,width_,height_,frozen_limits,frozen_control);
+  const auto frozen_origin=origin_;
+  SelectionEditor editor(selection_,width_,height_);
+  const auto plan=enlargement_plan(selection_,width_,height_,editor.bounds_,editor.has_bounds_,
+      pixels,frozen_limits,frozen_control,true);
+  if(!plan.analytic && !plan.unchanged) {
+    (void)region_origin(frozen_origin,{static_cast<int>(plan.left),static_cast<int>(plan.top)});
+    (void)region_origin(frozen_origin,{static_cast<int>(plan.right),static_cast<int>(plan.bottom)});
+  }
+  auto result=editor.enlarged_region(pixels,frozen_limits,frozen_control);
+  result.origin_=region_origin(frozen_origin,result.origin_);
+  return result;
+}
+namespace {
+std::size_t region_projection_bytes(const Selection &selection_,int width_,int height_,int width,int height,
+    const SelectionEditLimits &limits,const ExecutionControl &control) {
+  const auto geometry_bytes=geometry_preflight(selection_,width_,height_,limits,control);
+  if(width<=0 || height<=0)throw std::invalid_argument("Invalid projection dimensions");
+  const auto pixels=geometry_multiply(static_cast<std::size_t>(width),height);
+  if(pixels>limits.max_xy_pixels)throw std::length_error("Selection projection pixel limit exceeded");
+  GeometryStorage storage(limits.max_working_bytes,control);
+  storage.add(sizeof(SelectionRegion)+sizeof(Selection));storage.add(selection_.kind.size());
+  storage.add(geometry_multiply(selection_.points.size(),sizeof(selection_.points[0])));
+  storage.add(selection_.packed_mask().size());storage.object(selection_.attributes);
+  auto bytes=geometry_add(16384,geometry_multiply(4,storage.bytes()));
+  if(selection_.kind=="mask")bytes=geometry_add(bytes,geometry_multiply(4,(pixels+7)/8));
+  bytes=std::max(bytes,geometry_bytes);
+  if(bytes>limits.max_working_bytes)throw std::length_error("Selection projection working limit exceeded");
+  return bytes;
+}
+}
+std::size_t SelectionRegion::estimate_projection(int width,int height,const SelectionEditLimits &limits) const {
+  return region_projection_bytes(selection_,width_,height_,width,height,limits,{});
+}
+Selection SelectionRegion::project(int width,int height,const SelectionEditLimits &limits,
+    const ExecutionControl &control) const {
+  const auto frozen_limits=limits;const auto frozen_control=control;
+  (void)region_projection_bytes(selection_,width_,height_,width,height,frozen_limits,frozen_control);
+  const auto frozen=*this;
+  ExecutionScope scope(frozen_control);kernel_checkpoint();execution_progress(0,1);kernel_checkpoint();
+  const auto finish=[](Selection result){kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;};
+  if(frozen.origin_==std::array<int,2>{0,0} && width==frozen.width_ && height==frozen.height_)return finish(frozen.selection_);
+  if(frozen.selection_.kind!="mask") {
+    auto result=frozen.selection_;
+    for(auto &point:result.points){kernel_checkpoint_periodic();point[0]+=frozen.origin_[0];point[1]+=frozen.origin_[1];}
+    result.validate(width,height);return finish(std::move(result));
+  }
+  const auto pixels=geometry_multiply(static_cast<std::size_t>(width),height);
+  std::vector<unsigned char> packed((pixels+7)/8,0);
+  const auto left=std::max<std::int64_t>(0,frozen.origin_[0]),top=std::max<std::int64_t>(0,frozen.origin_[1]);
+  const auto right=std::min<std::int64_t>(width,static_cast<std::int64_t>(frozen.origin_[0])+frozen.width_);
+  const auto bottom=std::min<std::int64_t>(height,static_cast<std::int64_t>(frozen.origin_[1])+frozen.height_);
+  const auto count=(right>left && bottom>top)?static_cast<std::size_t>(right-left)*(bottom-top):0;
+  const KernelStage stage("Selection region projection",count);std::size_t visited=0;
+  for(auto y=top;count && y<bottom;++y)for(auto x=left;x<right;++x) {
+    stage.periodic(visited++);
+    const auto source=static_cast<std::size_t>(y-frozen.origin_[1])*frozen.width_+static_cast<std::size_t>(x-frozen.origin_[0]);
+    if(bit(frozen.selection_,source)) {
+      const auto target=static_cast<std::size_t>(y)*width+static_cast<std::size_t>(x);
+      packed[target/8]|=static_cast<unsigned char>(1u<<(7-target%8));
+    }
+  }
+  stage.finish();auto result=Selection::from_packed_mask(width,height,std::move(packed));
+  result.width=frozen.selection_.width;result.attributes=frozen.selection_.attributes;
+  return finish(std::move(result));
+}
+SelectionRegion SelectionEditor::enlarged_region(double pixels,const SelectionEditLimits &limits,
+    const ExecutionControl &control) const {
+  return enlarged_region_impl(pixels,limits,control,true);
+}
+Selection SelectionEditor::enlarged(double pixels,const SelectionEditLimits &limits,
+    const ExecutionControl &control) const {
+  const auto frozen_limits=limits;const auto frozen_control=control;
+  const auto target_width=width_,target_height=height_;
+  auto result=enlarged_region_impl(pixels,frozen_limits,frozen_control,false);
+  // Keep the released canvas selection/record contract. Full regions are an
+  // explicit API until document/session storage is migrated.
+  auto projection=frozen_control;projection.progress={};
+  return result.project(target_width,target_height,frozen_limits,projection);
 }
 
 } // namespace imagejxx

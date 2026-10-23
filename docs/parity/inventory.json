@@ -886,7 +886,9 @@
           "docs/parity/SELECTION_ENLARGEMENT.md",
           "docs/parity/reviews/p12g-selection-enlarge001.json",
           "docs/parity/reviews/p12h-enlargement-command001.json",
-          "docs/parity/reviews/p12i-workflow-enlargement001.json"
+          "docs/parity/reviews/p12i-workflow-enlargement001.json",
+          "docs/parity/SELECTION_REGION.md",
+          "docs/parity/reviews/p12j-selection-region001.json"
         ],
         "implementation": [
           "include/imagejxx/selection_edit.hpp",
@@ -904,7 +906,8 @@
           "src/native/native_workflow_originals.cpp",
           "src/native/native_workflow_program.cpp",
           "src/desktop/native_workflow_panel.cpp",
-          "src/desktop/native_workflow_parameters.cpp"
+          "src/desktop/native_workflow_parameters.cpp",
+          "include/imagejxx/selection_region.hpp"
         ],
         "tests": [
           "tests/python/test_selection_enlargement.py",
@@ -916,7 +919,11 @@
           "tests/native/test_enlargement_dialog.cpp",
           "examples/cpp/selection_enlargement_command.cpp",
           "tests/native/test_native_workflow.cpp",
-          "tests/python/test_selection_enlargement_workflow.py"
+          "tests/python/test_selection_enlargement_workflow.py",
+          "tests/python/test_selection_region.py",
+          "tests/fixtures/selection-region-imagej154r.json",
+          "tests/reference/SelectionRegionReference.java",
+          "examples/cpp/selection_region.cpp"
         ]
       },
       "id": "G018",
