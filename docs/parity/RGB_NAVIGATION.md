@@ -101,6 +101,32 @@ and three installed standalone UI probes also pass. See
 actual navigation/selection gesture coverage, combined upstream promotion plus
 navigation/final-stack traces and dedicated saved-stage authoring remain open.
 
+The combined reference now invokes ImageJ's actual component-selection callback
+(`itemStateChanged`) and consumes its requested Reset through the real inherited
+implementation. It then changes selection, promotes again, visits B, returns to A,
+replaces and resets its draft, invokes manual mapping or actual Auto, and finally
+calls the real private `applyRGBStack`. The AWT queue and presentation remain
+outside this harness. Two independent compilations/runs reproduce all 4,536 rows:
+42 component-promotion pairs × 9 selections × 3 axes × 2 directions × 2 final modes.
+The final active processor must remain identical across stack Apply. The fixture
+pins all driver bytecode, relevant ImageJ classes/source and Java/Javac binaries.
+
+`test_rgb_combined.py` consumes each row through both the native session service
+and the installed shared panel. It verifies promoted snapshots, replacement and
+returning Reset, returning Auto range/cycle, final active output and complete
+stack output, full capture/workflow replay, worker publication, source immutability
+and paired history. Eighty-four further cases use real ImGui input for every
+component pair, stack checkbox and Apply, with explicit window focus in the same
+headless input session. Windows/Linux each pass all 9,156 installed checks; see
+`reviews/p11y-rgb-combined001.json`. Runtime code is unchanged. Actual selection and
+navigation gestures, returning Auto/Reset widget delivery beyond these action
+checks, richer visit orders and dedicated stage authoring still need coverage.
+
+The next independent evidence task is fresh qualification of the existing scalar
+Auto producer against current C++/ImGui interfaces. Preserve its original expected
+outputs and historical record; do not repin a fingerprint or relax the verifier
+to turn the currently failing old-source gate green.
+
 ## Observed behavior
 
 `RgbContrastNavigationReference.java` invokes actual ImageJ 1.54r

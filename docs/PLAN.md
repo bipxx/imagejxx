@@ -1,5 +1,20 @@
 # ImageJ and Fiji gap closure plan
 
+**Combined RGB promotion/navigation/Auto reference, 2026-10-23 (work in progress):**
+A new independent ImageJ 1.54r oracle combines actual component callbacks,
+selection changes, plane departure/return, replacing/resetting a returning draft,
+manual or Auto final bounds, and actual final stack Apply. All 42 component
+promotion pairs, nine selection forms, three navigation axes and both directions
+produce 4,536 traces. Two fresh compilations/runs reproduce the fixture byte for
+byte. Native API and shared-panel tests check every numerical checkpoint, final
+whole-stack hashes, complete captures/workflows/worker publication and paired
+history. Another 84 cases drive the real ImGui component, stack and Apply widgets.
+Windows/Linux each pass 9,156 installed checks (4,536 native API, 4,536 shared
+panel, 84 actual widget cases) against the unchanged qualified main binaries. Broader
+selection/navigation/Auto/Reset gesture delivery and independent stage authoring
+remain open. The old Auto source-evidence gate still requires separate fresh
+qualification; its original record and expectations are unchanged.
+
 **Shared RGB session panel, 2026-10-23 (work in progress):**
 The main ImGui contrast panel now retains complete RGB histories across live
 selection and T/C/Z changes. Native admission precedes source/range adoption;
