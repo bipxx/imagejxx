@@ -509,6 +509,30 @@ void rgbSavedEditUi(const std::filesystem::path &root){
   check(w.workflow.size()==1 && w.workflow[0].at("visits")[0].at("stages").size()==2 && owner->undo_steps()==1,"Historical UI authoring commits one complete edit");
   owner->undo();check(owner->snapshot().shares_data(before),"Historical editing Undo restores source");owner->redo();check(owner->snapshot().shares_data(after),"Historical editing Redo restores full result");w.action("close_contrast");
 }
+void rgbSavedAreaUi(const std::filesystem::path &root){
+  for(bool whole:{false,true}){
+    Image image(4,2,3,PixelType::UInt8);std::fill(image.pixels.begin(),image.pixels.end(),30);
+    auto owner=std::make_shared<Document>(Dataset::from_stack({image}));owner->select(Selection("rectangle",{{0,0},{2,1}}));
+    Window w((root/(whole?"rgb-area-whole.json":"rgb-area-selection.json")).u8string());w.addVirtualDocument(owner);w.action("show_contrast");
+    w.action("contrast_range",{{"minimum",10.},{"maximum",40.}});w.action("promote_rgb_contrast_stage");
+    owner->select(Selection("rectangle",{{2,1},{4,2}}));w.action("wait_jobs");const auto before=owner->snapshot();
+    w.action("select_rgb_contrast_stage",{{"visit",0},{"stage",0}});
+    HeadlessInputSession session(w);auto report=session.frame();report=session.frame();
+    const auto anchor=report.at("contrast_panel").at("controls").at("rgb_components_7").at("point");
+    const auto name=whole?"saved_rgb_whole_plane":"saved_rgb_current_selection";auto hit=report.at("contrast_panel").at("controls").at(name);
+    for(int i=0;i<20 && !hit.at("visible").get<bool>();++i){
+      session.frame(Json::array({{{"type","position"},{"space","screen"},{"point",anchor}}}));
+      session.frame(Json::array({{{"type","wheel"},{"x",0},{"y",hit.at("point")[1].get<double>()>700?-4:4}}}));report=session.frame();hit=report.at("contrast_panel").at("controls").at(name);
+    }
+    check(hit.at("visible") && hit.at("enabled"),"Historical area button is visible and admitted");
+    session.frame(Json::array({{{"type","position"},{"space","screen"},{"point",hit.at("point")}}}));for(bool down:{true,false})report=session.frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));
+    w.action("wait_jobs");check(owner->snapshot().shares_data(before) && owner->undo_steps()==0,"Area authoring leaves source and live selection unchanged");
+    w.recording=true;w.action("contrast_apply");w.action("wait_jobs");const auto after=owner->snapshot();const auto plane=after.data().dataset.plane();
+    for(int y=0;y<2;++y)for(int x=0;x<4;++x)for(int c=0;c<3;++c)check(plane->at(x,y,c)==(whole || (x>=2 && y==1)?170:30),"Physical area button maps exact historical membership");
+    check(w.workflow[0].at("visits")[0].at("stages")[0].at("whole_plane")==whole && owner->undo_steps()==1 && after.data().selection==before.data().selection,"Area policy records complete paired edit and preserves current selection");
+    owner->undo();check(owner->snapshot().shares_data(before),"Area Undo restores full source");owner->redo();check(owner->snapshot().shares_data(after),"Area Redo restores authored geometry result");w.action("close_contrast");
+  }
+}
 void rgbStackCancel(const std::filesystem::path &root){
   auto source=std::make_shared<RgbSource>();OpenOnExit release{source};Window w((root/"rgb-stack-cancel.json").u8string());auto owner=std::make_shared<Document>(Dataset(source));w.addVirtualDocument(owner);const auto before=owner->snapshot();
   w.action("show_contrast");until([&]{return source->entered>0;});w.action("contrast_rgb_stack",{{"enabled",true}});const auto previous=source->entered.load();w.poll();until([&]{return source->entered>previous;});std::thread cancel([&]{w.cancel();});cancel.join();const auto scheduler=imagejxx::desktop::HistogramAsyncUiProbeAccess::scheduler(w);
@@ -535,6 +559,6 @@ void rgbAutoUi(const std::filesystem::path &root){
 int main(int argc,char **argv){try{
   check(argc==2,"Owned fixture path required");const auto root=std::filesystem::absolute(std::filesystem::u8path(argv[1]));
   check(!std::filesystem::exists(root),"Fresh fixture required");std::filesystem::create_directories(root);
-  math();seeded();captured(root);canceled(root);applyHost(root);applyAbandoned(root);rebindUi(root);rebindStale(root);workflowUi(root);rgbWorkflowUi(root);ui(root);rgbUi(root);rgbCancel(root);rgbPositionsUi(root);rgbAutoUi(root);rgbStackUi(root);rgbStackCancel(root);rgbSessionUi(root);rgbKeepUi(root);rgbSavedEditUi(root);
+  math();seeded();captured(root);canceled(root);applyHost(root);applyAbandoned(root);rebindUi(root);rebindStale(root);workflowUi(root);rgbWorkflowUi(root);ui(root);rgbUi(root);rgbCancel(root);rgbPositionsUi(root);rgbAutoUi(root);rgbStackUi(root);rgbStackCancel(root);rgbSessionUi(root);rgbKeepUi(root);rgbSavedEditUi(root);rgbSavedAreaUi(root);
   std::cout<<"PASS native modeless contrast math, captured histogram, active channel, Auto, cancellation and actual widgets\n";return 0;
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

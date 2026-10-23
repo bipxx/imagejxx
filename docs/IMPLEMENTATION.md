@@ -263,6 +263,22 @@ Captured RGB records/jobs and shared preview/Apply/
 Rebind/workflow integration remain the next steps; RGB controls stay disabled.
 See [Apply details](CONTRAST_APPLY.md).
 
+**Historical RGB selection editing, 2026-10-23 (work in progress):**
+The native session editor and Python binding now replace a saved stage's
+selection/whole-plane policy through admitted immutable candidates. Mapping,
+components, visit position, other stages and the live draft are preserved.
+Shared ImGui Use current selection and Use whole plane controls author that
+policy without changing the live selection or navigation. Both ignored and
+active geometry still pass metadata/resource admission before preview IO.
+Windows/Linux each pass 6,345 installed Python checks (126 new), six native
+groups including actual area-button input, an installed SDK consumer and three
+standalone UI probes, with zero failures/errors/skips. Checks cover exact region
+pixels, all component combinations, earlier visits, malformed geometry/budget
+refusal, complete recording and paired history. Cross-visit movement,
+arbitrary visit authoring, broader real selection/navigation/Auto/Reset input
+and full ImageJ/Fiji parity remain open. All99 triples and the historical Auto
+evidence gate remain unchanged. See [RGB stage authoring](parity/RGB_STAGE_AUTHORING.md).
+
 **Saved RGB stage editing, 2026-10-23 (work in progress):**
 The admitted C++ session editor and Python binding now update saved mapping
 bounds/components, reorder stages within a visit and remove stages. Frozen

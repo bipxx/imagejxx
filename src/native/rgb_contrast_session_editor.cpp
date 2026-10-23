@@ -92,6 +92,11 @@ void RgbContrastSessionEditor::remove_saved_stage(std::size_t visit,std::size_t 
   if(stages.size()==1)throw std::invalid_argument("A saved visit must retain at least one stage");
   stages.erase(stages.begin()+stage);adopt(source(),candidate,limits());
 }
+void RgbContrastSessionEditor::set_saved_selection(std::size_t visit,std::size_t stage,
+    const std::optional<Selection> &selection,bool whole_plane){
+  saved_stage(plan(),visit,stage);auto candidate=plan();auto &saved=candidate.visits[visit].stages[stage];
+  saved.selection=selection;saved.whole_plane=whole_plane;adopt(source(),candidate,limits());
+}
 void RgbContrastSessionEditor::move_saved_stage(std::size_t visit,std::size_t stage,std::size_t destination){
   saved_stage(plan(),visit,stage);saved_stage(plan(),visit,destination);
   if(stage==destination)return;

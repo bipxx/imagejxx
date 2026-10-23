@@ -30,6 +30,10 @@ public:
   // draft and cannot be addressed here. Mapping edits retain frozen geometry;
   // moves stay within one visit. Removing a visit's only stage is refused.
   void set_saved_stage(std::size_t visit,std::size_t stage,const RgbContrastApplyOptions &);
+  // Explicit historical geometry edit. Mapping, visit position and all other
+  // stages remain unchanged. Even ignored whole-plane geometry is validated.
+  void set_saved_selection(std::size_t visit,std::size_t stage,
+      const std::optional<Selection> &,bool whole_plane=false);
   void remove_saved_stage(std::size_t visit,std::size_t stage);
   void move_saved_stage(std::size_t visit,std::size_t stage,std::size_t destination);
   void set_entire_stack(bool);

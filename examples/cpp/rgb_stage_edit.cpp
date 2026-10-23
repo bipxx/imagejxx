@@ -17,6 +17,13 @@ int main(){try{
   owner.commit(edit);
   if(owner.undo_steps()!=1)throw std::runtime_error("Expected one paired edit");
   owner.undo();if(!owner.snapshot().shares_data(before))throw std::runtime_error("Undo differs");
+  RgbContrastSessionEditor area(before);area.set_range(10,40);area.promote();
+  area.set_saved_selection(0,0,Selection("rectangle",{{1,0},{2,1}}));
+  auto selected=execute_rgb_contrast_session_command(area.command()).preview().data().dataset.plane();
+  if(selected->at(0,0,0)!=30 || selected->at(1,0,0)!=170)throw std::runtime_error("Saved selection differs");
+  area.set_saved_selection(0,0,area.plan().visits[0].stages[0].selection,true);
+  selected=execute_rgb_contrast_session_command(area.command()).preview().data().dataset.plane();
+  if(selected->at(0,0,0)!=170 || selected->at(1,0,0)!=170)throw std::runtime_error("Whole-plane area differs");
   std::cout<<"PASS installed RGB saved-stage update/order/removal and paired history\n";
   return 0;
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

@@ -20,6 +20,21 @@ void savedEditing(){
   const auto plane=execute_rgb_contrast_session_command(editor.command()).preview().data().dataset.plane();
   check(plane->at(0,0,0)==45 && plane->at(0,0,1)==45 && plane->at(0,0,2)==45,"Saved edit/delete evaluates exact remaining mapping");
 }
+void savedSelection(){
+  Image image(2,1,3,PixelType::UInt8);std::fill(image.pixels.begin(),image.pixels.end(),30);
+  auto reads=std::make_shared<DatasetReadObserver>();Document owner(Dataset::from_stack({image}).observe_reads(*reads));
+  RgbContrastSessionEditor editor(owner.snapshot());editor.set_range(10,40);editor.promote();const auto old=editor.command();
+  Selection area("rectangle",{{1,0},{2,1}});editor.set_saved_selection(0,0,area);
+  check(editor.plan().visits[0].stages[0].selection==area && !old.plan().visits[0].stages[0].selection,"Explicit historical area edit freezes detached geometry");
+  const auto stable=editor.command().record();area.points[0][0]=std::numeric_limits<double>::quiet_NaN();
+  for(bool whole:{false,true})refuses([&]{editor.set_saved_selection(0,0,area,whole);});
+  check(metadata_equal(stable,editor.command().record()) && reads->counts().plane_reads==0,"Invalid geometry, including ignored masks, refuses atomically without IO");
+  auto result=execute_rgb_contrast_session_command(editor.command()).preview().data().dataset.plane();
+  check(result->at(0,0,0)==30 && result->at(1,0,0)==170,"Saved selection maps only new frozen region");
+  editor.set_saved_selection(0,0,editor.plan().visits[0].stages[0].selection,true);
+  result=execute_rgb_contrast_session_command(editor.command()).preview().data().dataset.plane();
+  check(result->at(0,0,0)==170 && result->at(1,0,0)==170 && owner.undo_steps()==0,"Whole-plane area changes private output without publication");
+}
 void run(){
   auto reads=std::make_shared<DatasetReadObserver>();Image image(2,1,3,PixelType::UInt8);
   for(int x=0;x<2;++x){image.at(x,0,0)=20;image.at(x,0,1)=30;image.at(x,0,2)=30;}
@@ -53,4 +68,4 @@ void run(){
   check(owner.undo_steps()==history,"Private transition state never publishes edits");
 }
 }
-int main(){try{run();savedEditing();std::cout<<"PASS native RGB session transitions, admission and preview/Apply separation\n";return 0;}catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}
+int main(){try{run();savedEditing();savedSelection();std::cout<<"PASS native RGB session transitions, admission and preview/Apply separation\n";return 0;}catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

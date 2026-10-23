@@ -136,8 +136,9 @@ draft without publishing source pixels. Native admission is atomic; Reset and
 Apply retain the saved stage. See [stage authoring](RGB_STAGE_AUTHORING.md).
 Saved stage selection, mapping edits, within-visit ordering and deletion are now
 available through the admitted native editor and shared panel. The final live
-draft and historical visit membership are protected. Historical geometry editing,
-cross-visit movement and arbitrary visit authoring remain open, alongside real
+draft and historical visit membership are protected. Historical selection replacement and whole-plane policy editing are now
+available through admitted native/Python methods and shared area buttons.
+Cross-visit movement and arbitrary visit authoring remain open, alongside real
 transition-input qualification. See `reviews/p12b-rgb-stage-edit001.json`.
 
 ## Observed behavior

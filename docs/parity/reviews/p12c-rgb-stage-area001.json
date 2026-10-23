@@ -1,0 +1,577 @@
+{
+  "schema_version": 1,
+  "id": "p12c.rgb-saved-stage-area.001",
+  "date": "2026-10-23",
+  "state": "scoped-qualified",
+  "acceptance": false,
+  "complete_requirement_coverage": false,
+  "baseline_commit": "e340c96",
+  "scope": "Native C++/Python RgbContrastSessionEditor.set_saved_selection explicitly replaces historical selection/whole-plane policy after complete metadata/resource admission. Mapping/components, visit positions, other stages, source capture and live draft remain unchanged. Frozen geometry is validated even when whole-plane mode ignores it; invalid coordinates, addresses, draft access, policy types and record-budget excess retain the entire prior command without source reads. Shared C++/Python ImGui Use current selection and Use whole plane actions take exact visit/stage/policy fields, preserve live selection/navigation, invalidate only private preview and retain complete session Apply/recording/history. Whole-plane policy keeps the previously frozen selection metadata; current-selection policy captures the current source selection at the historical stage plane. One hundred twenty-six new installed cases cover seven components, three geometry choices, whole-plane modes, current/earlier visits, invalid ignored masks, strict types, budget refusal and complete paired publication with literal region bytes. Windows/Linux each pass 6345 installed Python checks, six native groups including real clicks on both area buttons, an installed public C++ SDK consumer and three standalone UI probes, zero failure/error/skip. SDK checks exact masked and whole-plane pixels through the installed header/core. The initial budget-test cap of 65536 refused even the unchanged starting command; corrected to 262144 so setup is admitted but the large replacement is still refused, with unchanged product and numerical/atomic expectations; failing reports and source variant remain. Final source/product/header identities are checked before sealing. Actual disposable venv interpreters import installed modules; Python performs no product processing. Temporary environments, failed/final pytest scratch, native fixture trees and SDK intermediates are CRC/every-member-SHA archived before exact confined removal; final installs/native carriers/SDK examples/probes/reports/logs remain. No dependency or historical acceptance record change. All99 original scope/status triples and the old Auto fingerprint failure remain unchanged. Cross-visit movement, arbitrary visit authoring, broad real canvas/navigation/Auto/Reset input and complete ImageJ/Fiji/platform/resource acceptance remain open.",
+  "sources": [
+    {
+      "path": "include/imagejxx/rgb_contrast_session_editor.hpp",
+      "bytes": 2544,
+      "sha256": "f1c52fbe8ff3868bd1d5469c13de813f16e87f43184fc48338fdb517c2a7dd00"
+    },
+    {
+      "path": "src/native/rgb_contrast_session_editor.cpp",
+      "bytes": 7206,
+      "sha256": "17832d82d1546543c15910fb12d8547724cc544c8e3e5688605497d02eecf2c3"
+    },
+    {
+      "path": "src/native/contrast_apply_bindings.cpp",
+      "bytes": 29529,
+      "sha256": "12fcda080492bba72510c94d72fd3917dff54951a4c5b62f01c5856da4d19289"
+    },
+    {
+      "path": "src/desktop/contrast_panel.cpp",
+      "bytes": 30751,
+      "sha256": "ac4a4872061830b59ce80eef2558a395812826c1da1a43a06d9a36c579dc1821"
+    },
+    {
+      "path": "src/desktop/contrast_rgb_preview.cpp",
+      "bytes": 34469,
+      "sha256": "83a8005ce0a75678a7c414df5fbc24bbb6f9c05080d9ecc06b4522830e7a8f33"
+    },
+    {
+      "path": "tests/native/test_rgb_contrast_session_editor.cpp",
+      "bytes": 7034,
+      "sha256": "3e54cb455acf6857fefeb2bc7c1df5e10ffa645504b2884af640709453f141dc"
+    },
+    {
+      "path": "tests/native/test_contrast_panel.cpp",
+      "bytes": 56416,
+      "sha256": "99374498174d072d00c57de4fd0b4f62ae37701336a8719bc3e3cf6e9421a3a6"
+    },
+    {
+      "path": "tests/python/test_rgb_stage_area.py",
+      "bytes": 7785,
+      "sha256": "65a41137cd36615016d170b67588e566e1d4134759b084a37cb8b3eb403aaebe"
+    },
+    {
+      "path": "examples/cpp/rgb_stage_edit.cpp",
+      "bytes": 1926,
+      "sha256": "f16bf14b22a0636ce1c2162aded0dc173729900330c59d3d7fc538ec6fb376b2"
+    },
+    {
+      "path": "docs/PLAN.md",
+      "bytes": 469191,
+      "sha256": "86e68ddf75b932fd5d75964fdcb1f6a0f75590b02bb0f112ee862684a4797224"
+    },
+    {
+      "path": "docs/IMPLEMENTATION.md",
+      "bytes": 174415,
+      "sha256": "3576400c405161153711acbdc8a435ed2dbf10fcd546d824b3464d5a84a41884"
+    },
+    {
+      "path": "docs/parity/RGB_NAVIGATION.md",
+      "bytes": 18540,
+      "sha256": "d8c87f74a7e6c941ff957f9bdf228fc87e91f7e491c91e3f479ba043ec9f1307"
+    },
+    {
+      "path": "docs/parity/RGB_STAGE_AUTHORING.md",
+      "bytes": 5042,
+      "sha256": "85fae966a9b47aa2e5cd6ded03c7e01fb24cfd6a9f6eade9accbf254bee225da"
+    },
+    {
+      "path": "docs/parity/inventory.json",
+      "bytes": 11019241,
+      "sha256": "ffc4d79060c67272de0fb25aefdf08eb8b136731076f1c0f433d9cf669e54a69"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "build/p12c-rgb-stage-area001/check_licenses001.log",
+      "bytes": 53,
+      "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/check_plan001.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/cleanup001.py",
+      "bytes": 5749,
+      "sha256": "da91e79b0dec448f1fc880da8a998e964cf021f83d0170c413cb3bf7457de4ab"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/docs001.py",
+      "bytes": 2118,
+      "sha256": "8e4f1ea3b472af8ecc5eb0282f872afa75eabddc4ff356db075c4ebd2dffcf1c"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/edit001.py",
+      "bytes": 2990,
+      "sha256": "782f677bb7ad620c1a9ef93b02854b3733119cb13c67f2aea0891aa5130b6e0f"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-cleanup001.json",
+      "bytes": 29820,
+      "sha256": "2423b3c84a66e36c6de7cc89cf85012ee435b625585a90198a220f71f97d9b9e"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-products001.json",
+      "bytes": 4549,
+      "sha256": "e70eace7ffd968470b74c0b101f0af5bf1869f6353f7504a066d2d1a0166a412"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-python001/collection.json",
+      "bytes": 856664,
+      "sha256": "cedd00ac4c434b061d655f7f792e497fe6be3b939c0401333eb80d138275cc73"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-python001/pytest.xml",
+      "bytes": 16417,
+      "sha256": "d6e5067b8af058c9485e8d4d3dcf608d564a9053f59e06261796a52593122654"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-python001/receipt.json",
+      "bytes": 2000,
+      "sha256": "9128d7781c0db61537836a785c2093cd5b227588db0f27e7a4e39cd5e530ac61"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-python002/collection.json",
+      "bytes": 856664,
+      "sha256": "cedd00ac4c434b061d655f7f792e497fe6be3b939c0401333eb80d138275cc73"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-python002/pytest.xml",
+      "bytes": 1078981,
+      "sha256": "46b02cb39a0cef7a8ccfe0e2594a2e9effdfc1500554b9a26a46c7b00593e97e"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-python002/receipt.json",
+      "bytes": 2002,
+      "sha256": "51fdb468387f2fd187185c75cf58517befd7d5e3e4de30fd1f38d6b3a4ebcd42"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-qualified001/build.log",
+      "bytes": 6850,
+      "sha256": "be2c97cc0bac13bbc00bb2b0c7fb4751f9cd92dadf41b51a6d3c580c548a8530"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-qualified001/configure.log",
+      "bytes": 544,
+      "sha256": "965d12367eceba51f0f2949fee23ae63b6a17acf9833c82a9519dc75d1c7e462"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-qualified001/install-desktop.log",
+      "bytes": 2962,
+      "sha256": "077287a1d712e10f07a62b4b4e54e4474d25e3fd54f69094bc767b3200c9be3f"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-qualified001/install-development.log",
+      "bytes": 16028,
+      "sha256": "69d11dc03789e96f558a2eedd6de93fdbf203339de9496122967c2f4f878fc9b"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-qualified001/install-io-development.log",
+      "bytes": 716,
+      "sha256": "69ba861a364ecf846a474c9e25fe9fdb6413b1aa2cf3ed067e695be94f222f6e"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-qualified001/install-processing-python.log",
+      "bytes": 4725,
+      "sha256": "4a52680de11026d9d6370de5003f5a272f8c186c00c1d0572a663abfb908e362"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-qualified001/install-scientific-python.log",
+      "bytes": 4879,
+      "sha256": "e598f12635e915169de39162990a2a123b0fff359e8484dc3d1b8cb98af6fd08"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-qualified001/install-Unspecified.log",
+      "bytes": 3086,
+      "sha256": "d9f964b73831304898db87151c07555b1a23e3fd237e4cad9bd2ff71df86959b"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-qualified001/native.log",
+      "bytes": 957,
+      "sha256": "3507af4ba772a54f0716f7cecb096a3519c0d8cf1ab2ef8c9b72b795166ae249"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-qualified001/native.xml",
+      "bytes": 2050,
+      "sha256": "9e5c0a89d1753654f68b273a9079684d595735e9731f4c2bde1816dd38ac18dc"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-qualified001/receipt.json",
+      "bytes": 11625,
+      "sha256": "fc011fb226e2e993b1d9b5df9f93831dac4c7d25883aff643e770d326363d0eb"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-qualified001/venv-install-processing-python.log",
+      "bytes": 5021,
+      "sha256": "60c4ccead605e608e6b62157ed993eb9855a2f4e8ac4fee67990c09d2aa26343"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-qualified001/venv-install-scientific-python.log",
+      "bytes": 5183,
+      "sha256": "775c0e41f81f1ea895da6535f38b5825fc4ef518a03173ff633eaeaceb94996d"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-qualified001/venv-install-Unspecified.log",
+      "bytes": 3270,
+      "sha256": "b7caa0ffb7b901dc18c4af586a4bbcec5d3768bd2cbdf7fade38be504150f18b"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-qualified001/venv.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-sdk-cleanup001.json",
+      "bytes": 171575,
+      "sha256": "96d0dcb6eaf967577df05eb16038bedd0f8306b7d8d88d97e66facef69a8c02c"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-sdk001/build.log",
+      "bytes": 209,
+      "sha256": "45d3f8a62285eeb5fee99f4e1a7d6a21ca3972354762383a162ccccd0dff9dab"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-sdk001/configure.log",
+      "bytes": 556,
+      "sha256": "fcdd4f3463b1a09cbb23d71f2b4f77c6f5d661692e0a949362a5b34196deac47"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-sdk001/execute.log",
+      "bytes": 71,
+      "sha256": "3cecfb86fd3c2d1ebb2faf812032a4d4616eedb0a78e1697662dfb8d1b7b4630"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-sdk001/receipt.json",
+      "bytes": 415,
+      "sha256": "d4baeac11562c06d77ca76400577b50a6a7dd3e33ab2c630ec6fc1b61f028b0c"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-ui001/batch-case-retained001.json",
+      "bytes": 21213853,
+      "sha256": "f586739023c2c80563654ce835737e68e7a08e023b74c5df8f88c59a35eb6144"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-ui001/batch.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-ui001/receipt.json",
+      "bytes": 834,
+      "sha256": "c8b54cca020c1980313ec232b42eb131d2c04ae7a835dd2246d1a10feb745b4c"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-ui001/rgb-case-retained001.json",
+      "bytes": 69606420,
+      "sha256": "225464421a569b1cd02ef5b7628606030cf07c495a3d595a3374aef15baeb441"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-ui001/rgb.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-ui001/workflow-case-retained001.json",
+      "bytes": 51240178,
+      "sha256": "9822ac0d4e3d16d431ede4dbc942d2a8d98120a59a0c216e907a003271c080c9"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/linux-ui001/workflow.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/native-test001.py",
+      "bytes": 6428,
+      "sha256": "e5c2d1f66a3df67d0ce8073658b7246533cc98fafe4c72921645d27317f2aea0"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/python001.py",
+      "bytes": 2482,
+      "sha256": "4abc8389c22cfd35a22667d1f6cee2e145c45f059f778fa79360b812a745316a"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/python002.py",
+      "bytes": 2482,
+      "sha256": "075d07040771cf1d01bd950f072bb784ff174a6f1787cd661c030c8ba4d71d7d"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/qualify001.py",
+      "bytes": 2977,
+      "sha256": "870230f88f890a0fcf0a023aec0a9d2c6a3e0a41ca96f30e33ca5927487b84fb"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/sdk001.py",
+      "bytes": 1602,
+      "sha256": "478ab5b18edbe93728fc38d48b20f4a745cf519d799f6abef2bbd7dd069cce30"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/seal001.py",
+      "bytes": 7021,
+      "sha256": "e6108874a214a23f08310f6916b4ff44b86f3be5bca5fa78348657ffc19c1585"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/source-manifest001.json",
+      "bytes": 11138,
+      "sha256": "000bea01b8d4595164914ac889b73e2e0eac42b6bb2672fee38978652b5f2a2c"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/standalone001.py",
+      "bytes": 1300,
+      "sha256": "32167071db01ca097c1f9e0ede92289bbf335329d1a8c0adb3e9cdb15459ad01"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/test-rgb-stage-area-initial001.py",
+      "bytes": 7784,
+      "sha256": "368cec267ba8d08813502083ac25723b3e91c511d16b055e485ba2517a2ae384"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-cleanup001-console.log",
+      "bytes": 75,
+      "sha256": "aa60fe6b381e82ba5ceb52aa1117f19533e02d5faefffd6749ce38c79fd65c7c"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-cleanup001.json",
+      "bytes": 75887,
+      "sha256": "8c3df61a7a9acc391a2da11d99f79aaae200b3548075bd5bcc6c722e45a97a34"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-products001.json",
+      "bytes": 5014,
+      "sha256": "734a1b93f9a7b5bb339413e65f66670498557b8b92ce9a6eabd8080d4eca2787"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-python001/collection.json",
+      "bytes": 863011,
+      "sha256": "a6588351bc4c1c7d09c1b7b0c8784bfbd4354fef104d24d215db811cd37e632e"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-python001/pytest.xml",
+      "bytes": 16418,
+      "sha256": "ec9bdaae6c3813e465ef831c052850c8cdace9e6843026c27466c3da3d11c114"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-python001/receipt.json",
+      "bytes": 2150,
+      "sha256": "95b354f89252e9c066c02263a077d86f3d3ac7f3184f50a6c405a0cf02bc6f2c"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-python001-console.log",
+      "bytes": 882,
+      "sha256": "8dd8cae6d3fcf06c6b838389ffcee86d1c9fa0509353cfaef9833961c33e018f"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-python002/collection.json",
+      "bytes": 863011,
+      "sha256": "a6588351bc4c1c7d09c1b7b0c8784bfbd4354fef104d24d215db811cd37e632e"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-python002/pytest.xml",
+      "bytes": 1078981,
+      "sha256": "1292fc38ca1a151407b7350cc087547c1ca41b4c83dcaabdfce3bfed2755d15e"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-python002/receipt.json",
+      "bytes": 2152,
+      "sha256": "689d4f1abdf509fb4a2b6973a8beecbd6b59eda35aa6ec6250e5e128383ea4e3"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-python002-console.log",
+      "bytes": 7323,
+      "sha256": "00db271922b3fb41a9f8be42c937198e04ce16aca88f001ce1a8894d548c736a"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-qualified001/build.log",
+      "bytes": 9946,
+      "sha256": "0f8d5500e66b6afaa6dac9b73a056dff464a81289f74fdac00325c8eae38b086"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-qualified001/configure.log",
+      "bytes": 605,
+      "sha256": "9e8fedbc006ee6f3a7980be95e370cfad53b65e3d3790ba4964586f27e92d41a"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-qualified001/install-desktop.log",
+      "bytes": 4467,
+      "sha256": "e6eef8ce93866a5148d53166d6767c06bc5d6499e97ba731677b80b40c017ec6"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-qualified001/install-development.log",
+      "bytes": 19169,
+      "sha256": "32d6b14c332f6a7cfa61d6a75fe186305cda07490829efe0ac0b86977145d52e"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-qualified001/install-io-development.log",
+      "bytes": 2158,
+      "sha256": "95bf57b9a4d7ce8e89a0e05bc99c0ac2345b2979825acb2622a521731f2367e3"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-qualified001/install-processing-python.log",
+      "bytes": 5924,
+      "sha256": "a67c2e054cc3545b22ccf5fa9fa0669f62015749f38e6e93d6aa34a669541110"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-qualified001/install-scientific-python.log",
+      "bytes": 6661,
+      "sha256": "1a65d898168ce1a7b325376cfdbb32b3694de387225787950ea416d03e321fa3"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-qualified001/install-Unspecified.log",
+      "bytes": 4633,
+      "sha256": "7a1ce304edd9da507d1dc87aa37a920645f45b560fd89ee74fa25b1472e03611"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-qualified001/native.log",
+      "bytes": 929,
+      "sha256": "2eaf01ab9afd3ce576de7eeca7cb8a4645e877682ed05985f6e607c1826b4bfe"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-qualified001/native.xml",
+      "bytes": 2065,
+      "sha256": "9c51cce93cae8864b4511bded77c5014dc8d0b672cea4447f96258dd8952c920"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-qualified001/receipt.json",
+      "bytes": 11871,
+      "sha256": "53db6a4ba4be2ea8b1405e4a6d5e6d8d52113bee3399f7ab3547a6db014a2da9"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-qualified001/venv-install-processing-python.log",
+      "bytes": 5885,
+      "sha256": "60d056991724a330660cc0e2acc43395ed37105ca988c932ad52d984079644c1"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-qualified001/venv-install-scientific-python.log",
+      "bytes": 6617,
+      "sha256": "7626ca8217f58b535e77d801bd165393b84201782d3349ceda3a90b4d53b003c"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-qualified001/venv-install-Unspecified.log",
+      "bytes": 4603,
+      "sha256": "e1d1f524a8241939bd243564282952c0b5d0328ba353a5840396a8ac25c41704"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-qualified001/venv.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-qualified001-console.log",
+      "bytes": 60,
+      "sha256": "851fe865eb3c028e5574b76b3c944dbe3c426c72da6b036d42b405df38317834"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-sdk001/build.log",
+      "bytes": 363,
+      "sha256": "9d3905bf64073d0a1bc2d86a93685c0a7c3ca5cfa77294e0e7a7b248c2e095d6"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-sdk001/configure.log",
+      "bytes": 956,
+      "sha256": "87e1ae0bb37c8d473d7cf2e01eac8c0be4856d1be9dc17134c094f2b63d3c225"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-sdk001/execute.log",
+      "bytes": 72,
+      "sha256": "ad51a739a149a9989978437c4b77c843c8227f0003f01cfb2d8a412e887f1cc5"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-sdk001/receipt.json",
+      "bytes": 442,
+      "sha256": "31e8dea5559e47dcbdabaf4f5ac55bed611601680fe5a33c8fcc5f5038176832"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-sdk001-console.log",
+      "bytes": 51,
+      "sha256": "0ebb22cdc1077c99fb1bbdacaf70f23186243ab9a5d9397151f785793332dc09"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-ui001/batch-case-retained001.json",
+      "bytes": 21194211,
+      "sha256": "ac3b070eda0aabfb926e3e3ce5fa06c2d977bd2079a3d2a4c55373f4c2fcaf3a"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-ui001/batch.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-ui001/receipt.json",
+      "bytes": 983,
+      "sha256": "061dbcb8359c4522239218f016e6347504f87c7cd60b0a7a672beabca19a2298"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-ui001/rgb-case-retained001.json",
+      "bytes": 69615853,
+      "sha256": "c1b620f4282dbe1cf69472764de778327387a0e2a41dc01e28ab2264d3396cef"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-ui001/rgb.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-ui001/workflow-case-retained001.json",
+      "bytes": 51293511,
+      "sha256": "fa92d12d8e9c41aaaa5b83130a90730df5c75f364df8eb551884d9b955ba966e"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-ui001/workflow.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12c-rgb-stage-area001/windows-ui001-console.log",
+      "bytes": 53,
+      "sha256": "c35daded5e920d9398abb6bcd79548f3f98a5ddf7d88e8368ebd1828cb2fec18"
+    }
+  ],
+  "qualification": {
+    "platforms": {
+      "windows": {
+        "installed_python": 6345,
+        "new_area_cases": 126,
+        "native_suites_including_actual_area_buttons": 6,
+        "installed_sdk_consumers": 1,
+        "standalone_ui_probes": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "linux": {
+        "installed_python": 6345,
+        "new_area_cases": 126,
+        "native_suites_including_actual_area_buttons": 6,
+        "installed_sdk_consumers": 1,
+        "standalone_ui_probes": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "reclaimed_bytes": {
+      "windows": 177911289,
+      "linux": 190633858,
+      "linux_sdk_shared_workspace": 6828611
+    },
+    "total_reclaimed_bytes": 375373758
+  },
+  "requirements": {
+    "count": 99,
+    "statuses": {
+      "in_progress": 47,
+      "open": 52
+    },
+    "original_triples_unchanged": true
+  },
+  "remaining": [
+    "Implement admitted cross-visit movement and arbitrary visit authoring with native and UI evidence.",
+    "Qualify real canvas selection/navigation/returning Auto/Reset delivery across richer histories.",
+    "Recover exact historical Auto producer bytes and finish remaining ImageJ/Fiji/platform/resource requirements."
+  ],
+  "checks": {
+    "commercial_dependencies": "passed",
+    "plan_inventory": "historical producer-source fingerprint failure remains; not passed",
+    "original_99_requirement_status_triples": "unchanged"
+  }
+}

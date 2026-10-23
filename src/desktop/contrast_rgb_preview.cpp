@@ -53,6 +53,13 @@ void ContrastPanel::savedRgbStageAction(const std::string &name,const Json &p,bo
     const auto &channels=p.at("channels");if(!channels.is_number_integer() || channels<1 || channels>7)throw std::invalid_argument("RGB components require integer bits 1..7");
     if(!p.at("minimum").is_number() || !p.at("maximum").is_number())throw std::invalid_argument("RGB stage bounds require finite numbers");
     candidate.set_saved_stage(visit,stage,{p.at("minimum").get<double>(),p.at("maximum").get<double>(),channels.get<int>()});
+  }else if(name=="update_rgb_contrast_stage_area"){
+    const auto &policy=p.at("policy");if(!policy.is_string() || (policy!="current_selection" && policy!="whole_plane"))throw std::invalid_argument("Saved RGB area requires current_selection or whole_plane");
+    const bool whole=policy=="whole_plane";
+    // Validate historical addressing before retrieving a potentially ignored mask.
+    const auto &plan=candidate.plan();
+    if(visit>=plan.visits.size() || stage>=plan.visits[visit].stages.size() || (visit+1==plan.visits.size() && stage+1==plan.visits[visit].stages.size()))throw std::invalid_argument("Choose a saved RGB stage, not the live draft");
+    candidate.set_saved_selection(visit,stage,whole?plan.visits[visit].stages[stage].selection:source_->data().selection,whole);
   }else if(name=="remove_rgb_contrast_stage")candidate.remove_saved_stage(visit,stage);
   else {selected=index("destination");candidate.move_saved_stage(visit,stage,selected);}
   rgbSession_=std::move(candidate);rgbSessionActive_=true;rgbPrefix_.clear();rgbStackPrefix_.clear();invalidateRgb();rgbAutoDivisor_=0;error_.clear();
@@ -89,13 +96,17 @@ void ContrastPanel::drawSavedRgbStages(bool busy){
     int selected=rgbStageChannels_-1;if(ImGui::Combo("Saved components",&selected,components,7))rgbStageChannels_=selected+1;control("saved_rgb_channels",enabled);
     const auto request=Json{{"visit",visit},{"stage",stage}};
     if(ImGui::Button("Update saved adjustment"))attempt([&]{auto p=request;p["minimum"]=rgbStageMinimum_;p["maximum"]=rgbStageMaximum_;p["channels"]=rgbStageChannels_;savedRgbStageAction("update_rgb_contrast_stage",p,busy);});control("update_saved_rgb_stage",enabled);
+    if(ImGui::Button("Use current selection"))attempt([&]{auto p=request;p["policy"]="current_selection";savedRgbStageAction("update_rgb_contrast_stage_area",p,busy);});control("saved_rgb_current_selection",enabled);
+    ImGui::SameLine();
+    if(ImGui::Button("Use whole plane"))attempt([&]{auto p=request;p["policy"]="whole_plane";savedRgbStageAction("update_rgb_contrast_stage_area",p,busy);});control("saved_rgb_whole_plane",enabled);
+    ImGui::TextWrapped("Use current selection replaces only this saved adjustment's area, at its original plane. Whole plane ignores its frozen mask; the live selection stays unchanged.");
     ImGui::BeginDisabled(stage==0);
     if(ImGui::Button("Move earlier"))attempt([&]{auto p=request;p["destination"]=stage-1;savedRgbStageAction("move_rgb_contrast_stage",p,busy);});control("move_saved_rgb_earlier",enabled&&stage>0);ImGui::EndDisabled();
     ImGui::SameLine();ImGui::BeginDisabled(stage+1>=count);
     if(ImGui::Button("Move later"))attempt([&]{auto p=request;p["destination"]=stage+1;savedRgbStageAction("move_rgb_contrast_stage",p,busy);});control("move_saved_rgb_later",enabled&&stage+1<count);ImGui::EndDisabled();
     ImGui::BeginDisabled(stages.size()==1);
     if(ImGui::Button("Remove saved adjustment"))attempt([&]{savedRgbStageAction("remove_rgb_contrast_stage",request,busy);});control("remove_saved_rgb_stage",enabled&&stages.size()>1);ImGui::EndDisabled();
-    ImGui::TextWrapped("Changes keep this stage's frozen area and plane. The live draft stays separate. Apply commits the complete result; Restart discards saved intent.");
+    ImGui::TextWrapped("Mapping and order changes keep the frozen area and plane. Area buttons explicitly replace that policy. The live draft stays separate. Apply commits the complete result; Restart discards saved intent.");
   }
   ImGui::EndDisabled();
 }

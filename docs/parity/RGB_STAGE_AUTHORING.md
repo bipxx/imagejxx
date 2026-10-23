@@ -20,9 +20,18 @@ adjustment** deletes the selected stage. These operations retain each stage's
 frozen selection and whole-plane policy. They recompute the private preview;
 source pixels and history change only when Apply is pressed.
 
+**Use current selection** explicitly replaces the selected stage's frozen area
+with the live selection's image coordinates at that stage's original plane.
+**Use whole plane** keeps the frozen mask as metadata but ignores it during
+evaluation. These buttons retain the stage's mapping/components and every other
+stage, including the live draft. The document's current selection and navigation
+stay unchanged. With no live selection, Use current selection captures the
+ordinary no-selection policy. Future live selection changes do not rewrite the
+saved mask.
+
 The final visit's last stage is the live draft and is excluded from this editor.
-A historical visit must retain at least one stage. Reordering across visits,
-changing historical geometry and authoring arbitrary plane visits remain open.
+A historical visit must retain at least one stage. Reordering across visits and
+authoring arbitrary plane visits remain open.
 Real selection/navigation/returning Auto/Reset input coverage and the
 historical Auto evidence-retention gate also remain open. This feature does not
 establish complete ImageJ/Fiji parity or change the original 99 requirements.
@@ -39,6 +48,15 @@ values and copied editors retain their old plans. The shared panel actions are
 `visit, stage`, plus `minimum, maximum, channels` for update or `destination` for
 move. Booleans and fractional indices/component masks are refused.
 
+`set_saved_selection(visit, stage, selection, whole_plane=False)` replaces the
+historical geometry through the same metadata-only admission. Invalid geometry
+is rejected even when whole-plane mode would ignore its mask. Record and resource
+limits remain enforced before state replacement or pixel reads. The shared
+action `update_rgb_contrast_stage_area` takes exactly `visit`, `stage` and
+`policy`, with policy `current_selection` or `whole_plane`. It refuses busy,
+incompatible, scalar and uniform-target contexts just like the other saved-stage
+actions.
+
 The new installed tests use independent byte expectations: an all-30 RGB image
 maps 30 to 170 with bounds 10..40, then 170 to 255 with bounds 0..170. Changing
 selection after Keep leaves the first mask frozen; disjoint new pixels map 30 to
@@ -54,3 +72,7 @@ results and retained evidence. New order-sensitive literal tests distinguish
 30 → 85 → 128 from reordered 30 → 45 → 149. Both hosts run the actual stage list,
 range field, update, move and remove controls in a native ImGui input session,
 plus an installed public C++ SDK consumer and installed Python consumers.
+Historical selection editing is qualified separately in
+[the area-editing receipt](reviews/p12c-rgb-stage-area001.json), including actual
+area button delivery, strict addressing/policy types, invalid masks and budget
+refusal, earlier visits and exact region pixels with paired history.
