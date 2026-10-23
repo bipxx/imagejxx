@@ -3,6 +3,18 @@
 Status: open; reference and installed-editor gap evidence captured on 2026-10-22.
 This is part of G057, not a change to the original ImageJ/Fiji scope or acceptance.
 
+The native session value plan and evaluator are now implemented in
+`rgb_contrast_session.hpp` with installed Python bindings. They compose frozen
+visit stages against the immutable original and prepare one paired transaction.
+The 378 reference cases are consumed at every numerical checkpoint; the 5,292
+single-visit stack cases also exercise final narrowed stack mapping. Windows/Linux each pass 39,604 installed Python cases, 22 native suites,
+existing standalone UI probes and installed SDK consumers. A final facade-only
+export correction is separately verified on both hosts; see
+[the scoped receipt](reviews/p11t-rgb-session-core001.json). Complete captures/jobs/replay and main-panel transition retention
+remain open; the six-case native editor gap probe has not been made to pass by
+this detached service alone. Combined upstream promotion/navigation/final stack
+traces and actual transition widgets remain required for full acceptance.
+
 ## Observed behavior
 
 `RgbContrastNavigationReference.java` invokes actual ImageJ 1.54r

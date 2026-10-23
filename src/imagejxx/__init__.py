@@ -1679,6 +1679,8 @@ from ._native import ResolvedRgbContrastStackCommand, resolve_rgb_contrast_stack
 
 from ._native import make_rgb_contrast_stack_workflow_step
 
+from ._native import RgbContrastSessionStep, RgbContrastSessionVisit, RgbContrastSessionPlan, RgbContrastSessionEstimate, estimate_rgb_contrast_session, prepare_rgb_contrast_session
+
 __all__ = [
     name
     for name, value in list(globals().items())

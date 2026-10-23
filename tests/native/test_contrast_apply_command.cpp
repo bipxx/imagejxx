@@ -1,5 +1,6 @@
 #include <imagejxx/rgb_contrast_sequence_job.hpp>
 #include <imagejxx/rgb_contrast_stack.hpp>
+#include <imagejxx/rgb_contrast_session.hpp>
 #include <imagejxx/rgb_contrast_stack_job.hpp>
 #include <imagejxx/histogram_job.hpp>
 #include <imagejxx/application.hpp>
@@ -218,9 +219,20 @@ void rgb_stack_commands(){
   const auto bytes=job.info().resource_bytes;job.publish(app);check(owner->undo_steps()==1,"Stack worker publishes one Undo");owner->undo();app.close(owner->id,true);owner.reset();preview.reset();scheduler.shutdown();
   check(scheduler.usage().reserved_bytes==bytes,"Stack plane alias retains lease after publication, close and shutdown");plane.reset();until([&]{return scheduler.usage().reserved_bytes==0;});
 }
+void rgb_session(){
+  auto source=std::make_shared<RgbSource>();Document owner{Dataset(source)};const auto before=owner.snapshot();
+  RgbContrastSessionPlan plan;plan.visits={{{0,0,0},{{{0,7,4},{},false}}},{{0,0,1},{{{0,7,2},{},false}}},{{0,0,0},{{{0,255,4},{},false}}}};
+  const auto estimate=estimate_rgb_contrast_session(before,plan);check(source->reads==0 && estimate.visits==3 && estimate.stages==3,"Session admission has no sample IO");
+  ContrastApplyCommandLimits limits;ExecutionControl control;int calls=0;control.checkpoint=[&]{++calls;plan.visits.clear();limits.processing.max_pixels=0;};
+  auto edit=prepare_rgb_contrast_session(before,plan,limits,control);check(calls>0 && source->reads==2,"Repeated session visits freeze intent and acquire each source plane once");
+  auto pixels=edit.preview().data().dataset.plane({0,0,0});check(pixels->pixels[3]==36,"Returning Reset preserves earlier visit baseline");
+  owner.commit(edit);check(owner.undo_steps()==1,"Session publishes one paired history entry");owner.undo();check(owner.snapshot().shares_data(before),"Session Undo restores original owner");
+  RgbContrastSessionPlan invalid;invalid.visits={{{0,0,0},{{{0,7,4},{},false}}},{{0,0,1},{{{0,7,2},Selection("line",{{-2e10,0},{2e10,1}}),false}}}};
+  const auto reads=source->reads.load();refuses([&]{prepare_rgb_contrast_session(before,invalid);});check(source->reads==reads,"Late invalid session geometry refuses before earlier samples");
+}
 void rgb_stack_queued(){
   JobScheduler scheduler({1,64*1024*1024,8});std::atomic<bool> entered{false};auto blocker=scheduler.submit([&](const JobContext &ctx){entered=true;for(;;){ctx.checkpoint();std::this_thread::sleep_for(1ms);}});until([&]{return entered.load();});
   auto source=std::make_shared<RgbSource>();std::weak_ptr<RgbSource> weak=source;auto owner=std::make_shared<Document>(Dataset(source));std::optional<ResolvedRgbContrastStackCommand> command=resolve_rgb_contrast_stack_command(owner->snapshot(),{{{0,7,4},false}});
   auto job=submit_rgb_contrast_stack(scheduler,*command);command.reset();source.reset();owner.reset();check(job.info().state==JobState::Queued && !weak.expired(),"Stack queued command retains source");job.cancel();check(weak.expired(),"Stack queued cancel releases source while handle survives");blocker.cancel();blocker.wait();
 }
-int main(){try{records();jobs();freeze();queued();reset();rgb_records_jobs();rgb_queued();rgb_histograms();rgb_sequences();rgb_sequence_freeze();rgb_stack();rgb_stack_commands();rgb_stack_queued();std::cout<<"PASS captured Apply records, strict replay/rebind, worker publication, escaped leases, cancellation and frozen intent\n";return 0;}catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}
+int main(){try{records();jobs();freeze();queued();reset();rgb_records_jobs();rgb_queued();rgb_histograms();rgb_sequences();rgb_sequence_freeze();rgb_stack();rgb_stack_commands();rgb_stack_queued();rgb_session();std::cout<<"PASS captured Apply records, strict replay/rebind, worker publication, escaped leases, cancellation and frozen intent\n";return 0;}catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

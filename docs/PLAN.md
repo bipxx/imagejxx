@@ -1,5 +1,24 @@
 # ImageJ and Fiji gap closure plan
 
+**RGB per-plane session core, 2026-10-22 (work in progress):**
+New C++/Python session plans retain ordered plane visits and frozen per-stage
+selections. Replacing the current draft models endpoint/selection changes;
+identity Reset retains earlier visits. Evaluation reads each affected source
+plane at most once and stages one guarded paired transaction. Final stack Apply
+uses only the final draft for narrowed noncurrent processors. Metadata/stage/
+geometry admission and validation precede source reads.
+Windows/Linux each pass 22 native suites, three existing standalone C++ UI
+probes, two installed SDK consumers, ten background repetitions, four hidden
+GL contexts and 39,604 installed Python checks (5,689 new), zero failures/errors/
+skips. A final facade-only import-order correction is separately installed and
+verified for wildcard exports, exact composed pixels and Undo on both hosts;
+native products and numerical inputs are unchanged. Exact owned scratch is
+CRC/member-SHA archived before cleanup. See the
+[scoped receipt](parity/reviews/p11t-rgb-session-core001.json).
+The main ImGui panel still needs complete session captures/jobs/replay before
+navigation retention is enabled. All99 status triples and the old Auto evidence
+gate stay unchanged. See [the session contract](parity/RGB_NAVIGATION.md).
+
 **RGB navigation gap evidence, 2026-10-22 (open):**
 A new actual ImageJ reference captures 378 T/C/Z navigation, selection and Reset
 cases. Two independent runs reproduce the fixture exactly. The installed native

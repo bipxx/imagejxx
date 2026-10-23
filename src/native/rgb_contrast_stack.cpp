@@ -15,10 +15,10 @@ using detail::contrast_command_record::mul;
 int java_int(double v){if(std::isnan(v))return 0;if(v<=double(INT_MIN))return INT_MIN;if(v>=double(INT_MAX))return INT_MAX;return static_cast<int>(v);}
 PlanePosition position(const DatasetShape &s,std::size_t n){return {int(n/(std::size_t(s.c)*s.z)),int((n/s.z)%s.c),int(n%s.z)};}
 bool equal(PlanePosition a,PlanePosition b){return a.t==b.t && a.c==b.c && a.z==b.z;}
-struct Regions {std::optional<Image> active,other;};
-Regions regions(const DocumentSnapshot &source){
-  const auto &selection=source.data().selection;if(!selection)return {};
-  const auto &s=*selection;const auto shape=source.data().dataset.shape();const int w=shape.x,h=shape.y;
+using Regions=detail::RgbContrastProcessorRegions;
+Regions regions(const std::optional<Selection> &selection,const DatasetShape &shape){
+  if(!selection)return {};
+  const auto &s=*selection;const int w=shape.x,h=shape.y;
   if(selection_is_area(s)){auto mask=s.mask(w,h);return {mask,std::move(mask)};}
   const bool line=s.kind=="line",points=s.kind=="point" || s.kind=="multipoint";
   if(!line && !points && s.kind!="polyline" && s.kind!="angle")invalid("Unsupported ImageJ RGB stack selection");
@@ -51,6 +51,10 @@ Image mapped(const Image &input,const RgbContrastApplyOptions &options,const std
   return output;
 }
 }
+detail::RgbContrastProcessorRegions detail::rgb_contrast_processor_regions(const std::optional<Selection> &selection,const DatasetShape &shape){return regions(selection,shape);}
+bool detail::rgb_contrast_region_has_membership(const std::optional<Image> &mask){return any(mask);}
+Image detail::rgb_contrast_map_region(const Image &input,const RgbContrastApplyOptions &options,const std::optional<Image> &mask){return mapped(input,options,mask);}
+RgbContrastApplyOptions detail::rgb_contrast_other_processor_options(const RgbContrastApplyOptions &options){return {double(java_int(options.minimum)),double(java_int(options.maximum)),options.channels};}
 RgbContrastStackEstimate estimate_rgb_contrast_stack(const DocumentSnapshot &source,const std::vector<RgbContrastStackStep> &steps,const ContrastApplyCommandLimits &limits){
   if(steps.empty() || steps.size()>64)invalid("RGB stack requires 1..64 active stages");
   const auto &data=source.data().dataset;const auto shape=data.shape();
@@ -66,7 +70,7 @@ RgbContrastStackEstimate estimate_rgb_contrast_stack(const DocumentSnapshot &sou
   return out;
 }
 bool detail::rgb_contrast_stack_has_membership(const DocumentSnapshot &source,const std::vector<RgbContrastStackStep> &steps){
-  const auto masks=regions(source);if(any(masks.active))return true;
+  const auto masks=regions(source.data().selection,source.data().dataset.shape());if(any(masks.active))return true;
   for(const auto &step:steps)if(step.whole_plane)return true;
   return source.data().dataset.shape().plane_count()>1 && any(masks.other);
 }
@@ -74,10 +78,10 @@ DocumentTransaction prepare_rgb_contrast_stack(const DocumentSnapshot &requested
   if(requested_control.cancellation && requested_control.cancellation->canceled())throw OperationCancelled();
   const auto estimate=estimate_rgb_contrast_stack(requested,requested_steps,requested_limits);
   const auto source=requested;const auto steps=requested_steps;const auto control=requested_control;
-  ExecutionScope scope(control);kernel_checkpoint();const auto masks=regions(source);const std::optional<Image> wholeMask;const bool activeAny=any(masks.active),otherAny=any(masks.other);
+  ExecutionScope scope(control);kernel_checkpoint();const auto masks=regions(source.data().selection,source.data().dataset.shape());const std::optional<Image> wholeMask;const bool activeAny=any(masks.active),otherAny=any(masks.other);
   const auto &data=source.data().dataset;const auto shape=data.shape();const auto &view=source.display();const PlanePosition anchor{view.t,view.c,view.crosshair[2]};
   auto edit=source.begin_edit(Change::All);std::vector<std::pair<PlanePosition,Image>> output;output.reserve(estimate.planes);
-  const auto last=steps.back().options;const RgbContrastApplyOptions other{double(java_int(last.minimum)),double(java_int(last.maximum)),last.channels};
+  const auto other=detail::rgb_contrast_other_processor_options(steps.back().options);
   KernelStage planes("ImageJ RGB stack planes",estimate.planes);
   for(std::size_t i=0;i<estimate.planes;++i){planes.checkpoint(i);const auto at=position(shape,i);
     if(equal(at,anchor)){

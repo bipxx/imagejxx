@@ -721,3 +721,38 @@ mode controls, resource admission and 64/65-stage behavior. Native fixtures
 click actual stack/component/Apply widgets and cancel a blocked stack reader
 before refreshing or closing. This scope does not complete G057 or full
 ImageJ/Fiji acceptance.
+
+
+### Native per-plane RGB session evaluation
+
+`rgb_contrast_session.hpp` exposes detached C++ value plans and an admitted
+transaction evaluator; the optional installed Python bindings expose the same
+native implementation. An `RgbContrastSessionPlan` contains ordered visits,
+each with a T/C/Z position and one or more stages. An `RgbContrastSessionStep`
+freezes mapping options, its selection and the whole-active-plane policy.
+A visit's promoted stages precede one current draft. Replace that draft when
+endpoints or current selection change; use an identity range for Reset. Append
+a fresh identity draft after component promotion or a fresh visit after
+navigation. Returning visits start from their plane's previous logical output,
+so Reset does not discard the earlier visit. Plans do not mutate source pixels.
+
+`estimate_rgb_contrast_session` admits source and every historical selection/
+stage before target resolution or rasterization. Its `planes` field is a
+conservative upper bound on distinct affected planes, not exact membership.
+`prepare_rgb_contrast_session` freezes the plan before callbacks, validates all
+historical processor geometry before any sample acquisition, composes stages
+privately and acquires each affected source plane at most once. With
+`entire_stack=True`, the final draft's component, restored selection and narrowed
+endpoints map every noncurrent plane after earlier visits; the current plane
+is not mapped twice. A whole-plane final active map does not erase the saved
+selection policy for other stack planes. Empty membership remains the explicit
+no-read/no-change extension. One guarded transaction pairs pixels and neutral
+range/threshold reset; source selection, ROIs, navigation and unrelated metadata
+remain intact. Current source/provider caches, caller/frontend copies,
+publication/history staging and total RSS are outside these owned-work limits.
+
+This API is the numerical session foundation. It is not yet connected to the
+main panel's navigation transitions or to complete session command records,
+leased jobs, portable workflow review or Batch. Existing scalar, uniform RGB
+and stack V1 records retain their meanings. See
+[the remaining session integration plan](parity/RGB_NAVIGATION.md).

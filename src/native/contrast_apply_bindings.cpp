@@ -3,6 +3,7 @@
 #include <imagejxx/rgb_contrast_apply.hpp>
 #include <imagejxx/rgb_contrast_sequence_job.hpp>
 #include <imagejxx/rgb_contrast_stack.hpp>
+#include <imagejxx/rgb_contrast_session.hpp>
 #include <imagejxx/rgb_contrast_stack_job.hpp>
 #include <imagejxx/rgb_contrast_stack_workflow.hpp>
 #include <imagejxx/application.hpp>
@@ -135,6 +136,22 @@ void bind_contrast_apply(py::module_ &m) {
         py::gil_scoped_release release;return v.wait_for(std::chrono::milliseconds(count));
       },py::arg("timeout_ms")=5000)
       .def("publish",&ContrastApplyJob::publish,py::arg("application"),py::call_guard<py::gil_scoped_release>());
+  py::class_<RgbContrastSessionStep>(m,"RgbContrastSessionStep").def(py::init<>())
+    .def_readwrite("options",&RgbContrastSessionStep::options).def_readwrite("selection",&RgbContrastSessionStep::selection)
+    .def_property("whole_plane",[](const RgbContrastSessionStep &v){return v.whole_plane;},[](RgbContrastSessionStep &v,py::object flag){if(!py::isinstance<py::bool_>(flag))throw py::type_error("whole_plane requires bool");v.whole_plane=flag.cast<bool>();});
+  py::class_<RgbContrastSessionVisit>(m,"RgbContrastSessionVisit").def(py::init<>())
+    .def_readwrite("position",&RgbContrastSessionVisit::position).def_readwrite("stages",&RgbContrastSessionVisit::stages);
+  py::class_<RgbContrastSessionPlan>(m,"RgbContrastSessionPlan").def(py::init<>())
+    .def_readwrite("visits",&RgbContrastSessionPlan::visits)
+    .def_property("entire_stack",[](const RgbContrastSessionPlan &v){return v.entire_stack;},[](RgbContrastSessionPlan &v,py::object flag){if(!py::isinstance<py::bool_>(flag))throw py::type_error("entire_stack requires bool");v.entire_stack=flag.cast<bool>();});
+  py::class_<RgbContrastSessionEstimate>(m,"RgbContrastSessionEstimate")
+    .def_readonly("visits",&RgbContrastSessionEstimate::visits).def_readonly("stages",&RgbContrastSessionEstimate::stages)
+    .def_readonly("planes",&RgbContrastSessionEstimate::planes).def_readonly("pixels",&RgbContrastSessionEstimate::pixels)
+    .def_readonly("working_bytes",&RgbContrastSessionEstimate::working_bytes).def_readonly("metadata_bytes",&RgbContrastSessionEstimate::metadata_bytes);
+  m.def("estimate_rgb_contrast_session",&estimate_rgb_contrast_session,py::arg("source"),py::arg("plan"),py::arg("limits")=ContrastApplyCommandLimits{},py::call_guard<py::gil_scoped_release>());
+  m.def("prepare_rgb_contrast_session",[](DocumentSnapshot source,RgbContrastSessionPlan plan,ContrastApplyCommandLimits limits,std::shared_ptr<CancellationToken> token,py::object progress,py::object checkpoint){
+    const auto control=axis_range_python_control(std::move(token),std::move(progress),std::move(checkpoint));py::gil_scoped_release release;return prepare_rgb_contrast_session(source,plan,limits,control);
+  },py::arg("source"),py::arg("plan"),py::arg("limits")=ContrastApplyCommandLimits{},py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none());
   py::class_<RgbContrastStackStep>(m,"RgbContrastStackStep").def(py::init<>())
     .def_readwrite("options",&RgbContrastStackStep::options)
     .def_property("whole_plane",[](const RgbContrastStackStep &v){return v.whole_plane;},[](RgbContrastStackStep &v,py::object flag){if(!py::isinstance<py::bool_>(flag))throw py::type_error("whole_plane requires bool");v.whole_plane=flag.cast<bool>();});
