@@ -37,7 +37,7 @@ target_sources(imagejxx_core PRIVATE
   src/native/float32_display.cpp
   src/native/channel_display.cpp src/native/channel_display_command.cpp
   src/native/dataset_histogram.cpp src/native/rgb_histogram.cpp src/native/histogram_command.cpp src/native/histogram_job.cpp
-  src/native/auto_contrast.cpp src/native/auto_contrast_job.cpp src/native/contrast_apply.cpp src/native/contrast_apply_command.cpp src/native/rgb_contrast_apply_command.cpp src/native/rgb_contrast_stack.cpp src/native/rgb_contrast_session.cpp src/native/rgb_contrast_stack_command.cpp src/native/rgb_contrast_stack_workflow.cpp src/native/contrast_apply_job.cpp
+  src/native/auto_contrast.cpp src/native/auto_contrast_job.cpp src/native/contrast_apply.cpp src/native/contrast_apply_command.cpp src/native/rgb_contrast_apply_command.cpp src/native/rgb_contrast_stack.cpp src/native/rgb_contrast_session.cpp src/native/rgb_contrast_session_command.cpp src/native/rgb_contrast_stack_command.cpp src/native/rgb_contrast_stack_workflow.cpp src/native/contrast_apply_job.cpp
   src/native/selection_creation.cpp
   src/native/selection_creation_geometry.cpp
   src/native/roi_manager.cpp

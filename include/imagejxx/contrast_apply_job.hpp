@@ -5,6 +5,7 @@ namespace imagejxx {
 class Application;
 class ResolvedRgbContrastApplyCommand;
 class ResolvedRgbContrastStackCommand;
+class ResolvedRgbContrastSessionCommand;
 struct ContrastApplyJobEstimate {
   ContrastApplyCommandEstimate command;
   std::size_t working_bytes=0,reservation_bytes=0;
@@ -35,6 +36,8 @@ public:
       const ContrastApplyCommandLimits & = {},JobOptions = {});
   static ContrastApplyJob submit(JobScheduler &,const ResolvedRgbContrastStackCommand &,
       const ContrastApplyCommandLimits & = {},JobOptions = {});
+  static ContrastApplyJob submit(JobScheduler &,const ResolvedRgbContrastSessionCommand &,
+      const ContrastApplyCommandLimits & = {},JobOptions = {});
   static ContrastApplyJob submit_rgb_sequence(JobScheduler &,
       const std::vector<ResolvedRgbContrastApplyCommand> &,
       const ContrastApplyCommandLimits & = {},JobOptions = {});
@@ -49,6 +52,8 @@ private:
   friend ContrastApplyJobEstimate estimate_rgb_contrast_apply_job(const ResolvedRgbContrastApplyCommand &,
       const ContrastApplyCommandLimits &,const JobOptions &);
   friend ContrastApplyJobEstimate estimate_rgb_contrast_stack_job(const ResolvedRgbContrastStackCommand &,
+      const ContrastApplyCommandLimits &,const JobOptions &);
+  friend ContrastApplyJobEstimate estimate_rgb_contrast_session_job(const ResolvedRgbContrastSessionCommand &,
       const ContrastApplyCommandLimits &,const JobOptions &);
   Job job_;
   std::shared_ptr<ResultCell> result_;

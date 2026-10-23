@@ -2,6 +2,9 @@
 #include <imagejxx/manual_threshold.hpp>
 #include <imagejxx/roi_style.hpp>
 #include "rgb_contrast_stack_internal.hpp"
+#include "rgb_contrast_session_internal.hpp"
+#include <climits>
+#include <cmath>
 #include "contrast_command_record.hpp"
 #include "kernel_control.hpp"
 #include <algorithm>
@@ -20,15 +23,33 @@ std::size_t index(const DatasetShape &s,PlanePosition p){
 PlanePosition position(const DatasetShape &s,std::size_t i){
   return {int(i/(std::size_t(s.c)*s.z)),int((i/s.z)%s.c),int(i%s.z)};
 }
-void selection(const std::optional<Selection> &selected,const DatasetShape &shape){
+}
+void detail::validate_rgb_contrast_session_selection(const std::optional<Selection> &selected,const DatasetShape &shape){
   if(!selected)return;
   const auto &s=*selected;s.validate(shape.x,shape.y);
   if(!selection_is_area(s)){
     if(s.points.empty())invalid("RGB session non-area selection requires a coordinate");
     if(s.kind!="line" && s.kind!="point" && s.kind!="multipoint" && s.kind!="polyline" && s.kind!="angle")
       invalid("Unsupported ImageJ RGB session selection");
+    const bool line=s.kind=="line";
+    std::array<double,2> lo{},hi{};bool first=true;
+    for(const auto &point:s.points){
+      for(int axis=0;axis<2;++axis){
+        const double value=line?point[axis]:double(float(point[axis]));
+        if(!std::isfinite(value))invalid("RGB session selection exceeds processor coordinates");
+        if(first)lo[axis]=hi[axis]=value;
+        else{lo[axis]=std::min(lo[axis],value);hi[axis]=std::max(hi[axis],value);}
+      }
+      first=false;
+    }
+    const auto narrowed=[](double v){return v<=double(INT_MIN)?INT_MIN:v>=double(INT_MAX)?INT_MAX:static_cast<int>(v);};
+    for(int axis=0;axis<2;++axis){
+      const double span=line?hi[axis]-lo[axis]:double(float(hi[axis]-lo[axis]));
+      if(!std::isfinite(span))invalid("RGB session selection integer bounds overflow");
+      const int lower=narrowed(std::floor(lo[axis]+.5)),upper=narrowed(std::floor(lo[axis]+span+1.5));
+      if(std::int64_t(upper)-std::int64_t(lower)>INT_MAX || upper<lower)invalid("RGB session selection integer bounds overflow");
+    }
   }
-}
 }
 RgbContrastSessionEstimate estimate_rgb_contrast_session(const DocumentSnapshot &source,
     const RgbContrastSessionPlan &plan,const ContrastApplyCommandLimits &limits){
@@ -59,7 +80,7 @@ RgbContrastSessionEstimate estimate_rgb_contrast_session(const DocumentSnapshot 
     (void)index(shape,visit.position);
     for(const auto &step:visit.stages){
       (void)estimate_rgb_contrast_apply(target,step.options,limits.processing);
-      selection(step.selection,shape);
+      detail::validate_rgb_contrast_session_selection(step.selection,shape);
     }
   }
   return out;

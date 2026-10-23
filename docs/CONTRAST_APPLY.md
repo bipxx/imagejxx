@@ -756,3 +756,53 @@ main panel's navigation transitions or to complete session command records,
 leased jobs, portable workflow review or Batch. Existing scalar, uniform RGB
 and stack V1 records retain their meanings. See
 [the remaining session integration plan](parity/RGB_NAVIGATION.md).
+
+
+### Complete captured RGB sessions and worker jobs
+
+`rgb_contrast_session_command.hpp` captures the complete detached visit plan
+against its actual original source. Its independent closed V1 record uses
+`imagejxx.rgb-contrast-session-command`, operation `rgb_contrast_session` and
+profile `imagej_rgb_session_v1`. The record carries an existing singleton RGB
+source/display/revision capture plus `entire_stack` and ordered `visits`. Each
+visit carries an absolute T/C/Z position and stages; each stage retains minimum,
+maximum, component bits, exact Boolean whole-plane policy and canonical frozen
+selection or null. The last stage's mapping must match the source capture's
+mapping. The singleton source target is an ownership/navigation capture, not the
+processing membership; the final visit position can differ from live navigation.
+Existing scalar, uniform RGB and stack V1 records keep their meanings.
+
+`resolve_rgb_contrast_session_command` admits cumulative work/metadata before
+copying and encoding. Returned plans and records are immutable native captures;
+Python accessors return detached values. Validation checks the closed grammar,
+complete source capture, every visit/stage and canonical selection against the
+original descriptor. Processor coordinate bounds are checked without allocating
+masks or reading samples, even for a malformed late stage. Strict record replay
+additionally checks original identity/revisions, storage/calibration, selection,
+active source position and display properties through its existing RGB capture.
+
+`rebind_rgb_contrast_session_command` is an explicit source substitution. It
+first validates the complete original, then retains all saved absolute visit
+coordinates, frozen selections and stage policies. It does not replace historical
+boundaries with the destination's current selection or active position. The
+destination must accommodate the entire saved plan. Preparation preserves the
+destination's navigation, live selection and unrelated metadata. Relative anchor
+translation and editable per-visit rebinding are not inferred by this API.
+
+`rgb_contrast_session_job.hpp` uses the common `ContrastApplyJob` result and
+publication service. Submission admits borrowed captures and caller resource
+minima; source processing runs only on workers. Queued cancellation releases
+captured sources; blocked reads checkpoint cooperatively. READY previews retain
+reservations through escaped snapshots, Dataset views and C++ plane aliases,
+including after publication, cancellation, document close or scheduler shutdown.
+The complete original record accompanies the retained result. Publication checks
+the original owner and all revisions and commits one paired transaction. Empty
+membership keeps the no-read/no-history extension. Source/provider caches,
+caller/frontend copies, publication/history staging and total RSS remain outside
+these declared owned-work estimates.
+
+This independent capture/job API is not yet routed through portable native
+workflow/Batch, saved-stage review or main-panel navigation transitions. Those
+adapters must preserve the complete session before the panel begins retaining
+visits. Combined upstream promotion/navigation/final-stack traces and full widget/
+platform/resource acceptance remain open.

@@ -10,10 +10,22 @@ The 378 reference cases are consumed at every numerical checkpoint; the 5,292
 single-visit stack cases also exercise final narrowed stack mapping. Windows/Linux each pass 39,604 installed Python cases, 22 native suites,
 existing standalone UI probes and installed SDK consumers. A final facade-only
 export correction is separately verified on both hosts; see
-[the scoped receipt](reviews/p11t-rgb-session-core001.json). Complete captures/jobs/replay and main-panel transition retention
+[the scoped receipt](reviews/p11t-rgb-session-core001.json). Portable session workflows/Batch/review and main-panel transition retention
 remain open; the six-case native editor gap probe has not been made to pass by
 this detached service alone. Combined upstream promotion/navigation/final stack
 traces and actual transition widgets remain required for full acceptance.
+
+The next dependency is now implemented as a detached captured-session API:
+`rgb_contrast_session_command.hpp` and `rgb_contrast_session_job.hpp` retain the
+entire visit plan, validate an independent closed V1, provide strict replay and
+explicit source rebinding, and prepare/publish through the common leased Apply
+job. Source rebinding retains saved absolute visit coordinates and selections;
+it validates the complete original before checking destination compatibility.
+It does not infer historical membership from the destination's current selection
+or navigation. Windows/Linux each pass 45,319 installed Python cases and the native/SDK/UI
+regression scope in [the capture/job receipt](reviews/p11u-rgb-session-command001.json). Portable workflow/Batch and shared
+ImGui transition integration remain open; this API alone does not make the
+six-case editor navigation probe pass.
 
 ## Observed behavior
 

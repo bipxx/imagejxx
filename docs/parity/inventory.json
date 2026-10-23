@@ -2433,7 +2433,8 @@
           "docs/parity/reviews/p11r-rgb-stack-panel001.json",
           "docs/parity/RGB_NAVIGATION.md",
           "docs/parity/reviews/p11s-rgb-navigation001.json",
-          "docs/parity/reviews/p11t-rgb-session-core001.json"
+          "docs/parity/reviews/p11t-rgb-session-core001.json",
+          "docs/parity/reviews/p11u-rgb-session-command001.json"
         ],
         "implementation": [
           "include/imagejxx/document.hpp",
@@ -2494,7 +2495,11 @@
           "src/native/rgb_contrast_stack_internal.hpp",
           "src/desktop/native_workflow_ui_probe.cpp",
           "include/imagejxx/rgb_contrast_session.hpp",
-          "src/native/rgb_contrast_session.cpp"
+          "src/native/rgb_contrast_session.cpp",
+          "include/imagejxx/rgb_contrast_session_command.hpp",
+          "include/imagejxx/rgb_contrast_session_job.hpp",
+          "src/native/rgb_contrast_session_command.cpp",
+          "src/native/rgb_contrast_session_internal.hpp"
         ],
         "tests": [
           "tests/native/test_document.cpp",
@@ -2524,7 +2529,8 @@
           "tests/reference/RgbContrastApplyReference.java",
           "tests/fixtures/rgb-contrast-apply-imagej154r.json",
           "tests/python/test_rgb_contrast_session.py",
-          "tests/fixtures/rgb-contrast-navigation-imagej154r.json"
+          "tests/fixtures/rgb-contrast-navigation-imagej154r.json",
+          "tests/python/test_rgb_contrast_session_command.py"
         ]
       },
       "id": "G057",
@@ -2536,7 +2542,7 @@
       "remaining": [
         "The shared Window/ImGui host exposes scalar Apply and guarded saved-command rebind review with native captured jobs, T/C/Z/ROI controls, busy/wait/cancel/close, staged submission-time recording and paired pixel/display Undo/Redo. Extend range/text/positioned-ROI widget, failure-injection and upstream/platform/resource qualification; this does not close G057.",
         "Native workflow/Run/session Batch now support saved and authored scalar Apply, complete original validation, reset-aware metadata-only preflight, closed program/Batch setup codecs, editable mapping/target review, ordered intermediate histograms and one paired final Run commit. Extend operation/output combinations, actual target widgets, failure injection and full upstream/resource/platform qualification; these scoped adapters do not close G057.",
-        "Native RGB mapping, captured commands/jobs, promoted histogram/Auto, exact entire-stack Apply, shared ImGui preview/Apply and portable workflow/Batch adapters have scoped evidence. The new detached native per-plane session evaluator represents ordered visits, frozen selections and replaceable drafts; p11t qualifies numerical checkpoint composition separately. ImageJ snapshot/navigation retention in the main panel remains open: add complete session command captures, leased worker jobs and portable replay/Batch, then integrate shared ImGui transitions. See docs/parity/RGB_NAVIGATION.md. RGBA and floating Apply remain separate gaps.",
+        "Native RGB mapping, captured commands/jobs, promoted histogram/Auto, exact entire-stack Apply, shared ImGui preview/Apply and portable workflow/Batch adapters have scoped evidence. The detached per-plane session evaluator now has immutable complete-history captures, independent closed V1 records, strict/source rebind replay and common leased worker jobs. Explicit source rebind retains all saved historical positions and selections. Portable session workflow/Batch/review adapters and main-panel snapshot/navigation retention remain open. See docs/parity/RGB_NAVIGATION.md. RGBA and floating Apply remain separate gaps.",
         "Processor reset now clears threshold, preserves palettes and uses observed UInt16 or configured full display bounds. Broader multi-channel representative-plane, empty-target, custom default-range, signed/intensity calibration and UI reference acceptance remain open. Empty masks retain the explicit native no-change/no-IO extension.",
         "Exact upstream slider normalization, log histogram/control/calibration and Set/Reset traces remain unqualified. Finite UInt8 RGB histogram/Auto is now enabled with scoped promotion and stack evidence; Float64, IEEE-preserving Float32 and RGBA histogram/Auto remain unavailable in this panel.",
         "Finite legacy automatic range scans and other analysis/editing paths can still acquire pixels synchronously. Source caches, allocator/frontend and publication/history allocations are outside declared job reservations; full responsiveness/resource/platform acceptance remains open."

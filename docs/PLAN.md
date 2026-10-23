@@ -1,5 +1,23 @@
 # ImageJ and Fiji gap closure plan
 
+**RGB captured-session jobs, 2026-10-22 (work in progress):**
+Immutable C++/Python session captures now retain complete ordered visits, frozen
+selections, promoted stages and the final stack policy in a separate closed V1.
+Strict replay checks the original owner/revisions; explicit source rebinding
+preserves all saved historical positions/selections and destination navigation.
+The shared Apply job prepares on a worker, retains escaped preview reservations
+and publishes one guarded paired transaction. Descriptor-only validation rejects
+malformed late geometry before original history can be rebound.
+Windows/Linux each pass 22 native suites, three existing standalone C++ UI
+probes, two installed SDK consumers, ten background repetitions, four hidden
+GL contexts and 45,319 installed Python checks (5,715 new), no failures/errors/
+skips. Final full suites use the corrected Python test fixtures; all production
+and native test inputs are unchanged after the final native qualification.
+Owned scratch is CRC/member-SHA archived before cleanup; final installs and
+probes remain. See the [scoped receipt](parity/reviews/p11u-rgb-session-command001.json).
+Portable workflow/Batch/review adapters and shared ImGui transition
+retention remain open. Original 99 scope/status triples are unchanged.
+
 **RGB per-plane session core, 2026-10-22 (work in progress):**
 New C++/Python session plans retain ordered plane visits and frozen per-stage
 selections. Replacing the current draft models endpoint/selection changes;
