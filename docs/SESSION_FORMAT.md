@@ -1,5 +1,24 @@
 # Native scientific sessions
 
+Version5 extends native sessions with immutable continuous path selections.
+The frame uses `IMAGEJXX5\n` with the same uint64 little-endian JSON length and
+single zlib stream as Version3. Encoding selects V5 when any active, previous,
+or saved ROI selection is a native path; otherwise it selects V4 for intrinsic
+regional selections and V3 for earlier geometry. V5 admits regions as well as
+paths. A V5 file without a native path is rejected. V2/V3/V4 remain closed to
+native paths; changing a version field cannot authorize their payload.
+
+A V5 path selection has exactly `kind`, `points`, `width`, `attributes`, and
+`path`. Its kind is `path`, its points array is empty, and its path is the
+complete absolute move/line/quadratic/cubic/close command stream. Coordinates
+retain binary64 precision; selection geometry is not replaced with a raster.
+Finite coordinate, opcode, segment, byte and session node/depth/workspace limits
+apply. Active, previous and saved geometry, opaque attributes and scientific
+positions retain their existing ownership and history semantics. The native
+codec does not imply desktop support for this new selection kind. Legacy UI
+dictionary adapters explicitly refuse paths until their migration is complete.
+See [the native path contract](parity/PATH_SELECTION.md).
+
 The reserved metadata extension `imagejxx.planar_annotations` version1 stores
 plane-native annotations with T/C/Z/Y/X extent binding, Selection geometry,
 explicit XY/XZ/YZ plane and fixed voxel coordinate, optional T/C, name and opaque

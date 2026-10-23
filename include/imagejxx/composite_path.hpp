@@ -14,6 +14,9 @@ public:
   // min-x, min-y, max-x, max-y, including isolated move points. Curve extrema
   // are evaluated analytically rather than using the control-point hull.
   std::array<double, 4> bounds() const { return bounds_; }
+  // Continuous even-odd fill, using monotone curve intervals and bounded root
+  // isolation. Boundary classification follows half-open ray crossings.
+  bool contains(std::array<double, 2> point) const;
   // Row-major [a,b,tx,c,d,ty], finite and invertible. No float32 quantization.
   ImageJCompositePath transformed(const std::array<double, 6> &matrix,
                                   const ImageJRoiLimits &limits = {}) const;

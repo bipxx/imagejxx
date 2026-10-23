@@ -69,11 +69,14 @@ std::optional<int> optional_index(const Json &value) {
   return value.is_null() ? std::nullopt : std::optional<int>(integer(value));
 }
 } // namespace
-Json encode_selection(const Selection &value,bool allow_regions) {
+Json encode_selection(const Selection &value,bool allow_regions,bool allow_paths) {
+  if(value.is_path() && !allow_paths)fail("Path geometry requires an explicit codec version");
+  if(value.is_path())value.validate(1,1);
   if(value.is_region() && !allow_regions)fail("Regional geometry requires an explicit codec version");
   if(value.is_region())value.validate(1,1);
   Json result{{"kind", value.kind}, {"points", value.points}, {"width", value.width},
                {"attributes", scalar::to_json(value.attributes)}};
+  if(value.is_path())result["path"]=value.path_commands();
   if (value.is_mask()) {
     if(value.is_region())result["origin"]=value.mask_origin();
     result["shape"] = {value.mask_height(), value.mask_width()};
@@ -81,9 +84,12 @@ Json encode_selection(const Selection &value,bool allow_regions) {
   }
   return result;
 }
-Selection decode_selection(const Json &value, const SessionLimits &limits,bool allow_regions) {
+Selection decode_selection(const Json &value, const SessionLimits &limits,bool allow_regions,bool allow_paths) {
   const auto kind = text(field(value, "kind"));
-  if(kind=="region") {
+  if(kind=="path") {
+    if(!allow_paths)fail("Path geometry requires session version 5");
+    keys(value,{"kind","points","width","attributes","path"});
+  } else if(kind=="region") {
     if(!allow_regions)fail("Regional geometry requires session version 4");
     keys(value,{"kind","points","width","attributes","shape","mask","origin"});
   } else if (kind == "mask") keys(value, {"kind", "points", "width", "attributes", "shape", "mask"});
@@ -96,6 +102,18 @@ Selection decode_selection(const Json &value, const SessionLimits &limits,bool a
   for (const auto &point : points) result.points.push_back(numbers<2>(point));
   result.width = number(value.at("width"));
   result.attributes = scalar::object_from_json(value.at("attributes"));
+  if(kind=="path") {
+    if(!result.points.empty())fail("Path selection must not contain vector points");
+    const auto &path=value.at("path");
+    if(!path.is_array())fail("Selection path must be an array");
+    within(path.size(),limits.max_nodes,"Selection path node limit exceeded");
+    within(path.size(),16*1024*1024/sizeof(double),"Selection path byte limit exceeded");
+    std::vector<double> commands;commands.reserve(path.size());
+    for(const auto &n:path)commands.push_back(number(n));
+    auto restored=Selection::from_path(commands);
+    restored.width=result.width;restored.attributes=std::move(result.attributes);
+    restored.validate(1,1);return restored;
+  }
   if (kind == "mask" || kind=="region") {
     const auto &shape = value.at("shape");
     if (!shape.is_array() || shape.size() != 2) fail("Invalid packed selection shape");
@@ -134,15 +152,15 @@ Selection decode_selection(const Json &value, const SessionLimits &limits,bool a
   return result;
 }
 
-Json encode_roi(const Roi &roi,bool allow_regions) {
-  return {{"name", roi.name}, {"selection", encode_selection(roi.selection,allow_regions)},
+Json encode_roi(const Roi &roi,bool allow_regions,bool allow_paths) {
+  return {{"name", roi.name}, {"selection", encode_selection(roi.selection,allow_regions,allow_paths)},
       {"t", roi.t ? Json(*roi.t) : Json()}, {"c", roi.c ? Json(*roi.c) : Json()},
       {"z", roi.z ? Json(*roi.z) : Json()},
       {"attributes", scalar::to_json(roi.attributes)}};
 }
-Roi decode_roi(const Json &item, const SessionLimits &limits,bool allow_regions) {
+Roi decode_roi(const Json &item, const SessionLimits &limits,bool allow_regions,bool allow_paths) {
   keys(item, {"name", "selection", "t", "c", "z", "attributes"});
-  return {text(item.at("name")), decode_selection(item.at("selection"), limits,allow_regions),
+  return {text(item.at("name")), decode_selection(item.at("selection"), limits,allow_regions,allow_paths),
       optional_index(item.at("t")), optional_index(item.at("c")),
       optional_index(item.at("z")),
       scalar::object_from_json(item.at("attributes"))};

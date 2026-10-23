@@ -5,6 +5,7 @@
 #include <cstring>
 #include <limits>
 #include <imagejxx/document.hpp>
+#include <imagejxx/composite_path.hpp>
 #include <imagejxx/roi_style.hpp>
 #include <imagejxx/selection_edit.hpp>
 #include <imagejxx/selection_region.hpp>
@@ -354,6 +355,9 @@ void bind_document(py::module_ &m) {
         return bindings::metadata_python(imagejxx::detail::session_metadata::from_json(imagejxx::detail::session_metadata::selection_to_json(value)));
       })
       .def_property_readonly("is_region",&Selection::is_region)
+      .def_static("from_path", py::overload_cast<const ImageJCompositePath &>(&Selection::from_path), py::arg("path"))
+      .def_property_readonly("is_path", &Selection::is_path)
+      .def_property_readonly("path", [](const Selection &s) { return ImageJCompositePath(s.path_geometry()); })
       .def_property_readonly("mask_origin",&Selection::mask_origin)
       .def_readonly("kind", &Selection::kind)
       .def_readonly("points", &Selection::points)

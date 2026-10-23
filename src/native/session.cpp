@@ -33,6 +33,7 @@ constexpr std::size_t codec_overhead = 1024 * 1024;
 constexpr std::size_t v3_header = 18, v2_header = 14;
 constexpr const char *v3_magic = "IMAGEJXX3\n";
 constexpr const char *v4_magic = "IMAGEJXX4\n";
+constexpr const char *v5_magic = "IMAGEJXX5\n";
 constexpr const char *v2_magic = "IMAGEJXX2\n";
 
 [[noreturn]] void fail(const char *message) { throw std::invalid_argument(message); }
@@ -288,36 +289,42 @@ bool has_regions(const DocumentData &data) {
   for(const auto &roi:data.rois)if(roi.selection.is_region())return true;
   return false;
 }
+bool has_paths(const DocumentData &data) {
+  if((data.selection && data.selection->is_path()) || (data.previous_selection && data.previous_selection->is_path()))return true;
+  for(const auto &roi:data.rois)if(roi.selection.is_path())return true;
+  return false;
+}
 int capture_version(const SessionCapture &capture) {
+  for(const auto &document:capture.documents)if(has_paths(document.data()))return 5;
   for(const auto &document:capture.documents)if(has_regions(document.data()))return 4;
   return 3;
 }
 Json selection_json(const Selection &value) {
-  return detail::selection_codec::encode_selection(value,true);
+  return detail::selection_codec::encode_selection(value,true,true);
 }
-Selection selection(const Json &value, const SessionLimits &limits,bool allow_regions=false) {
-  return detail::selection_codec::decode_selection(value, limits,allow_regions);
+Selection selection(const Json &value, const SessionLimits &limits,bool allow_regions=false,bool allow_paths=false) {
+  return detail::selection_codec::decode_selection(value, limits,allow_regions,allow_paths);
 }
 Json optional_selection_json(const std::optional<Selection> &value) {
   return value ? selection_json(*value) : Json();
 }
-std::optional<Selection> optional_selection(const Json &value, const SessionLimits &limits,bool allow_regions=false) {
-  return value.is_null() ? std::nullopt : std::optional<Selection>(selection(value, limits,allow_regions));
+std::optional<Selection> optional_selection(const Json &value, const SessionLimits &limits,bool allow_regions=false,bool allow_paths=false) {
+  return value.is_null() ? std::nullopt : std::optional<Selection>(selection(value, limits,allow_regions,allow_paths));
 }
 Json rois_json(const std::vector<Roi> &rois) {
   Json result = Json::array();
   for (const auto &roi : rois)
-    result.push_back(detail::selection_codec::encode_roi(roi,true));
+    result.push_back(detail::selection_codec::encode_roi(roi,true,true));
   return result;
 }
 std::optional<int> optional_index(const Json &value) {
   return value.is_null() ? std::nullopt : std::optional<int>(integer(value));
 }
-std::vector<Roi> rois(const Json &value, const SessionLimits &limits,bool allow_regions=false) {
+std::vector<Roi> rois(const Json &value, const SessionLimits &limits,bool allow_regions=false,bool allow_paths=false) {
   if (!value.is_array()) fail("Session ROIs must be an array");
   std::vector<Roi> result;
   for (const auto &item : value) {
-    result.push_back(detail::selection_codec::decode_roi(item, limits,allow_regions));
+    result.push_back(detail::selection_codec::decode_roi(item, limits,allow_regions,allow_paths));
   }
   return result;
 }
@@ -548,10 +555,14 @@ public:
     for (const auto &value : values) metadata_value(value, depth + 1);
   }
   void selection_value(const Selection &value, std::size_t depth) {
-    object(value.is_region()?7:value.kind == "mask" ? 6 : 4, depth);
+    object(value.is_path()?5:value.is_region()?7:value.kind == "mask" ? 6 : 4, depth);
     key("kind"); string(value.kind);
     key("points"); array(value.points.size(), depth + 1);
     for (const auto &point : value.points) real_array(point, depth + 2);
+    if(value.is_path()) {
+      key("path");array(value.path_commands().size(),depth+1);
+      for(const auto n:value.path_commands())real(n);
+    }
     key("width"); real(value.width);
     key("attributes"); metadata_object(value.attributes, depth + 1);
     if (value.is_mask()) {
@@ -745,15 +756,15 @@ std::size_t fourier_size(const Json &value) {
   if (!shape.is_array() || shape.size() != 2) fail("Invalid Fourier shape");
   return mul(mul(std::size_t(integer(shape[0], true)), std::size_t(integer(shape[1], true))), 2);
 }
-std::shared_ptr<Document> decode_v3_document(const Json &item, const SessionLimits &limits,bool allow_regions=false) {
+std::shared_ptr<Document> decode_v3_document(const Json &item, const SessionLimits &limits,bool allow_regions=false,bool allow_paths=false) {
   const auto shape = v3_shape(item);
   const auto type = pixel_type(item.at("pixel_type"));
   const auto sample_policy = policy(item.at("sample_policy"));
   if ((sample_policy == FloatingSamplePolicy::PreserveQuietNaNFloat32 || sample_policy == FloatingSamplePolicy::PreserveIEEEFloat32) &&
       (type != PixelType::Float32 || shape.s != 1)) fail("Invalid quiet-NaN session source");
-  auto selected=optional_selection(item.at("selection"),limits,allow_regions);
-  auto previous=optional_selection(item.at("previous_selection"),limits,allow_regions);
-  auto saved=rois(item.at("rois"),limits,allow_regions);
+  auto selected=optional_selection(item.at("selection"),limits,allow_regions,allow_paths);
+  auto previous=optional_selection(item.at("previous_selection"),limits,allow_regions,allow_paths);
+  auto saved=rois(item.at("rois"),limits,allow_regions,allow_paths);
   if(selected)selected->validate(shape.x,shape.y);
   for(const auto &roi:saved)roi.validate(shape);
   const auto &planes = item.at("planes");
@@ -918,7 +929,7 @@ std::vector<unsigned char> compress(const std::string &json, const SessionLimits
   z_stream stream{};
   if (deflateInit(&stream, Z_DEFAULT_COMPRESSION) != Z_OK) throw std::runtime_error("Session compression initialization failed");
   struct End { z_stream &stream; ~End() { deflateEnd(&stream); } } end{stream};
-  const auto magic=version==4?v4_magic:v3_magic;
+  const auto magic=version==5?v5_magic:version==4?v4_magic:v3_magic;
   std::vector<unsigned char> result(magic, magic + 10);
   const auto length = std::uint64_t(json.size());
   for (int b = 0; b < 8; ++b) result.push_back(static_cast<unsigned char>(length >> (b * 8)));
@@ -1049,7 +1060,10 @@ static DecodedSession decode_session_impl(const std::vector<unsigned char> &byte
   int version;
   std::size_t header;
   std::uint64_t declared = 0;
-  if (bytes.size() >= v3_header && std::equal(v4_magic, v4_magic + 10, bytes.begin())) {
+  if (bytes.size() >= v3_header && std::equal(v5_magic, v5_magic + 10, bytes.begin())) {
+    version = 5; header = v3_header;
+    for (int b = 0; b < 8; ++b) declared |= std::uint64_t(bytes[10 + b]) << (b * 8);
+  } else if (bytes.size() >= v3_header && std::equal(v4_magic, v4_magic + 10, bytes.begin())) {
     version = 4; header = v3_header;
     for (int b = 0; b < 8; ++b) declared |= std::uint64_t(bytes[10 + b]) << (b * 8);
   } else if (bytes.size() >= v3_header && std::equal(v3_magic, v3_magic + 10, bytes.begin())) {
@@ -1107,9 +1121,12 @@ static DecodedSession decode_session_impl(const std::vector<unsigned char> &byte
   // All records remain private until this complete result is returned.
   for (std::size_t i = 0; i < documents.size(); ++i) {
     kernel_checkpoint();
-    result.documents.push_back(version >= 3 ? decode_v3_document(documents[i], limits,version==4) :
+    result.documents.push_back(version >= 3 ? decode_v3_document(documents[i], limits,version>=4,version==5) :
         decode_v2_document(documents[i], marker ? &(*marker)[i] : nullptr, limits,allow_legacy_regions));
   }
+  if(version==5 && !std::any_of(result.documents.begin(),result.documents.end(),
+      [](const auto &document){return has_paths(document->snapshot().data());}))
+    fail("Session version 5 requires path geometry");
   kernel_checkpoint();
   return result;
 } catch (const Json::exception &error) {

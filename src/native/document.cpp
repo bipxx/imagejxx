@@ -5,6 +5,7 @@
 #include <cmath>
 #include <imagejxx/document.hpp>
 #include <imagejxx/imagej_roi.hpp>
+#include <imagejxx/composite_path.hpp>
 #include <imagejxx/indexed_palette.hpp>
 #include <imagejxx/manual_threshold.hpp>
 #include <imagejxx/channel_display.hpp>
@@ -62,6 +63,23 @@ Selection::Selection(std::string kind,
 const std::vector<unsigned char> &Selection::packed_mask() const {
   static const std::vector<unsigned char> empty;
   return mask_ ? *mask_ : empty;
+}
+Selection Selection::from_path(const std::vector<double> &commands) {
+  return from_path(ImageJCompositePath(commands));
+}
+Selection Selection::from_path(const ImageJCompositePath &path) {
+  Selection result("path");
+  result.path_ = std::make_shared<const ImageJCompositePath>(
+      path.transformed({1,0,0,0,1,0}));
+  return result;
+}
+const ImageJCompositePath &Selection::path_geometry() const {
+  if(!is_path() || !path_)throw std::invalid_argument("Selection has no native path");
+  return *path_;
+}
+const std::vector<double> &Selection::path_commands() const {
+  static const std::vector<double> empty;
+  return path_ ? path_->commands() : empty;
 }
 Selection Selection::from_packed_mask(int width, int height,
                                       std::vector<unsigned char> bytes) {
@@ -193,6 +211,11 @@ std::optional<SelectionFrame> Selection::box_frame() const {
 void Selection::validate(int w, int h) const {
   validate_metadata(attributes);
   roi_style(*this);
+  if ((!is_path() && path_) ||
+      (is_path() && (!path_ || !points.empty() || mask_ || maskWidth_ || maskHeight_)))
+    throw std::invalid_argument("Selection path storage/geometry mismatch");
+  if(is_path() && attributes.count("path"))
+    throw std::invalid_argument("Path attributes contain a storage field");
   for (auto key : {"kind", "points", "width"})
     if (attributes.count(key))
       throw std::invalid_argument(
@@ -213,7 +236,9 @@ void Selection::validate(int w, int h) const {
     (void)rounded_path();
     (void)rounded_path(true);
   }
-  if (is_mask()) {
+  if (is_path()) {
+    (void)path_geometry();
+  } else if (is_mask()) {
     if(maskWidth_<=0 || maskHeight_<=0 || (is_region() && !points.empty()))
       throw std::invalid_argument("Invalid packed region dimensions/points");
     auto count = static_cast<std::size_t>(maskWidth_) * maskHeight_;
@@ -389,6 +414,7 @@ Image area_polygon_mask(const Selection &selection, int width, int height,
 Image Selection::mask(int w, int h) const {
   kernel_checkpoint();
   validate(w, h);
+  if(is_path())return path_geometry().mask(w,h).mask(w,h);
   if (is_rounded_box()) {
     const auto path = rounded_path(true);
     auto packed = imagej_shape_mask(std::vector<double>(path.begin(), path.end()), w, h);
@@ -463,6 +489,7 @@ bool Selection::operator==(const Selection &other) const {
          maskOrigin_ == other.maskOrigin_ &&
          maskWidth_ == other.maskWidth_ && maskHeight_ == other.maskHeight_ &&
          (mask_ == other.mask_ || packed_mask() == other.packed_mask()) &&
+         (path_ == other.path_ || path_commands() == other.path_commands()) &&
          metadata_equal(attributes, other.attributes);
 }
 void Roi::validate(DatasetShape shape) const {
@@ -608,7 +635,7 @@ void DocumentData::validate() const {
   // Previous geometry may belong to an earlier image extent. Restore validates
   // against the current extent; retaining it must not prevent crop/resize.
   if (previous_selection) {
-    if(previous_selection->is_region())previous_selection->validate(1,1);
+    if(previous_selection->is_region() || previous_selection->is_path() || !previous_selection->path_commands().empty())previous_selection->validate(1,1);
     validate_metadata(previous_selection->attributes);
     roi_style(*previous_selection);
   }
@@ -768,7 +795,7 @@ void DocumentTransaction::set_previous_selection(
     std::optional<Selection> selection) {
   require_active();
   if (selection) {
-    if(selection->is_region())selection->validate(1,1);
+    if(selection->is_region() || selection->is_path() || !selection->path_commands().empty())selection->validate(1,1);
     validate_metadata(selection->attributes);
     roi_style(*selection);
   }

@@ -49,7 +49,7 @@ struct DecodedSession {
 // allocator bookkeeping and unrelated application allocations.
 SessionEstimate estimate_session(const SessionCapture &capture,
                                   const SessionLimits &limits = {});
-// V3/V4 framing: "IMAGEJXX3\n" or "IMAGEJXX4\n", uint64 little-endian
+// V3/V4/V5 framing: "IMAGEJXX3\n", "IMAGEJXX4\n" or "IMAGEJXX5\n", uint64 little-endian
 // JSON length, one zlib stream.
 // It stores native double-backed sample bits in explicit little-endian order;
 // declared PixelType and sample policy remain separate. T,C,Z,Y,X,S singleton
@@ -61,7 +61,8 @@ DecodedSession decode_session(const std::vector<unsigned char> &bytes,
                                const SessionLimits &limits = {},
                                const ExecutionControl &control = {});
 // The decoder also migrates the legacy V2 frame, retaining its declared-type
-// canonicalization and marked-metadata checks. Encoding emits V4 when typed
+// canonicalization and marked-metadata checks. Encoding emits V5 when a typed
+// active/previous/saved selection contains a native path, otherwise V4 when typed
 // selections contain regional geometry, and V3 for legacy-only captures.
 // Atomic replacement never marks an owner saved. Call owner.mark_saved(saved)
 // with the particular captured DocumentSnapshot after successful publication

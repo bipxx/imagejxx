@@ -225,6 +225,8 @@ void operands_admission(DatasetShape shape, const std::optional<Selection> &base
                         const SelectionCreationRequest &request,
                         const SelectionCreationLimits &limits) {
   (void)operation_name(request.operation);
+  if((base && base->is_path()) || request.candidate.is_path())
+    invalid("Native paths require a versioned selection creation command");
   const auto full = full_creation(base, request);
   if (full) {
     for (const auto &[key, value] : request.candidate.attributes)
@@ -495,6 +497,7 @@ std::string encode_mask(const std::vector<unsigned char> &bytes) {
   kernel_checkpoint(); return encoded;
 }
 MetadataValue encode_selection(const Selection &selection,bool structured=false) {
+  if(selection.is_path())invalid("Native paths require a versioned creation selection codec");
   kernel_checkpoint();
   if(selection.is_region() && !structured)invalid("Regional selection requires a V2 command codec");
   MetadataObject object=structured?MetadataObject{{"attributes",metadata_object(selection.attributes)}}:selection.attributes;

@@ -1,4 +1,5 @@
 #include <imagejxx/composite_path.hpp>
+#include "kernel_control.hpp"
 #include <algorithm>
 #include <cmath>
 #include <limits>
@@ -138,6 +139,91 @@ ImageJCompositePath::transformed(const std::array<double, 6> &matrix,
     at += n;
   }
   return ImageJCompositePath(output, limits);
+}
+
+bool ImageJCompositePath::contains(Point point) const {
+  const auto frozen = *this;
+  require(std::isfinite(point[0]) && std::isfinite(point[1]),
+          "Composite hit point must be finite");
+  const auto bounds = frozen.bounds();
+  if (point[0] < bounds[0] || point[0] > bounds[2] || point[1] < bounds[1] ||
+      point[1] > bounds[3])
+    return false;
+  bool inside = false, active = false;
+  Point current{}, start{};
+  auto line = [&](Point a, Point b) {
+    if ((a[1] > point[1]) != (b[1] > point[1]) &&
+        point[0] < a[0] + (point[1] - a[1]) * (b[0] - a[0]) / (b[1] - a[1]))
+      inside = !inside;
+  };
+  auto curve = [&](Point a, Point b, Point c, Point d, bool cubic) {
+    std::array<double, 4> cuts{0, 1, 0, 0};
+    std::size_t count = 2;
+    auto cut = [&](double t) {
+      if (t > 0 && t < 1)
+        cuts[count++] = t;
+    };
+    if (cubic)
+      roots(-a[1] + 3 * b[1] - 3 * c[1] + d[1], 2 * (a[1] - 2 * b[1] + c[1]),
+            b[1] - a[1], cut);
+    else {
+      const double denominator = a[1] - 2 * b[1] + c[1];
+      if (denominator != 0)
+        cut((a[1] - b[1]) / denominator);
+    }
+    std::sort(cuts.begin(), cuts.begin() + count);
+    auto evaluate = [&](double t) {
+      const auto ab = mix(a, b, t), bc = mix(b, c, t);
+      return cubic ? mix(mix(ab, bc, t), mix(bc, mix(c, d, t), t), t) : mix(ab, bc, t);
+    };
+    for (std::size_t i = 1; i < count; ++i) {
+      double low = cuts[i - 1], high = cuts[i];
+      const auto first = evaluate(low), last = evaluate(high);
+      if ((first[1] > point[1]) == (last[1] > point[1]))
+        continue;
+      const bool rising = last[1] > first[1];
+      for (int iteration = 0; iteration < 64; ++iteration) {
+        kernel_checkpoint_periodic();
+        const double middle = (low + high) / 2;
+        if ((evaluate(middle)[1] > point[1]) == rising)
+          high = middle;
+        else
+          low = middle;
+      }
+      if (point[0] < evaluate((low + high) / 2)[0])
+        inside = !inside;
+    }
+  };
+  const auto &data = frozen.commands();
+  for (std::size_t at = 0; at < data.size();) {
+    kernel_checkpoint_periodic();
+    const int op = int(data[at++]);
+    auto p = [&](std::size_t offset) {
+      return Point{data[at + offset], data[at + offset + 1]};
+    };
+    if (op == 0) {
+      if (active)
+        line(current, start);
+      current = start = p(0);
+      active = true;
+    } else if (op == 1) {
+      line(current, p(0));
+      current = p(0);
+    } else if (op == 2) {
+      curve(current, p(0), p(2), {}, false);
+      current = p(2);
+    } else if (op == 3) {
+      curve(current, p(0), p(2), p(4), true);
+      current = p(4);
+    } else {
+      line(current, start);
+      current = start;
+    }
+    at += arity(op);
+  }
+  if (active)
+    line(current, start);
+  return inside;
 }
 
 Selection ImageJCompositePath::mask(int width, int height,

@@ -101,7 +101,7 @@ struct Budget {
 bool packed_bit(const Selection &s, std::size_t bit) {
   return (s.packed_mask()[bit / 8] >> (7 - bit % 8)) & 1u;
 }
-bool area(const Selection &s) { return selection_is_area(s); }
+bool area(const Selection &s) { return selection_is_area(s) && !s.is_path(); }
 template <class Function>
 void path_coordinates(std::array<double, 44> &path, Function function) {
   for (std::size_t at = 0; at < path.size();) {

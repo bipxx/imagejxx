@@ -36,7 +36,7 @@ std::array<double,2> read_pair(const MetadataValue &v) {
 std::size_t metadata_bytes(const DocumentSnapshot &s,std::size_t cap) {
   Budget b{cap};const auto &d=s.data();b.record(d.metadata.properties);b.record(d.metadata.extensions);
   b.record(d.metadata.record_layout);b.record(s.display().properties);b.add(d.metadata.title.size());
-  auto selection=[&](const Selection &v){b.add(sizeof(Selection));b.product(v.points.size(),sizeof(v.points[0]));b.add(v.packed_mask().size());b.record(v.attributes);};
+  auto selection=[&](const Selection &v){b.add(sizeof(Selection));b.product(v.points.size(),sizeof(v.points[0]));b.add(v.packed_mask().size());b.product(v.path_commands().size(),sizeof(double));b.record(v.attributes);};
   if(d.selection)selection(*d.selection);
   if(d.previous_selection)selection(*d.previous_selection);
   for(const auto &r:d.rois){b.add(sizeof(Roi)+r.name.size());selection(r.selection);b.record(r.attributes);}

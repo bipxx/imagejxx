@@ -1,5 +1,18 @@
 # Implementation progress
 
+**Native path selections and V5 sessions, 2026-10-23 (scoped integration):**
+Native selections retain immutable curves, holes, islands and off-canvas
+contours through moves, rotations, control-point edits and V5 sessions. Metadata
+edit history retains complete geometry. Continuous even-odd hit testing avoids
+raster conversion. Strict legacy codec boundaries and prepublication admission
+prevent unsupported desktop/creation paths from losing payloads. Both hosts
+pass 2,522 focused installed Python checks, 19 native groups, a 22-check
+installed C++ client and the paired readers for an existing regional ImGui
+interaction. This does not close desktop path tools, saved-row/workflow/filter
+or planar command integration, native path ImageJ mapping, curve topology/resize
+editing or continuous Boolean operations. See [the contract](parity/PATH_SELECTION.md)
+and [the scoped receipt](parity/reviews/p12w-path-selection001.json).
+
 **Continuous composite path foundation, 2026-10-23 (scoped native/Python work):**
 Immutable M/L/Q/C/Z geometry now exposes exact curve extrema, affine transforms
 and explicit raster consumption through C++ and Python. Checked composite ROI

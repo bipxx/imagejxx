@@ -498,6 +498,7 @@ void bind_imagej_roi(py::module_ &m) {
       .def_property_readonly("commands", [](const ImageJCompositePath &p) { return p.commands(); })
       .def_property_readonly("segment_count", &ImageJCompositePath::segment_count)
       .def_property_readonly("bounds", &ImageJCompositePath::bounds)
+      .def("contains", &ImageJCompositePath::contains, py::arg("point"))
       .def("transformed", [](const ImageJCompositePath &p, py::handle matrix, ImageJRoiLimits limits) {
         return p.transformed(path_matrix(matrix), limits);
       }, py::arg("matrix"), py::arg("limits") = ImageJRoiLimits{})

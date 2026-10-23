@@ -31,11 +31,13 @@ Off-canvas contours remain in `composite_path` and can return to the canvas
 on a later transform. Export continues through the existing checked ImageJ
 codec, with its documented binary32 wire quantization.
 
-This foundation does not add a path kind to document selections or change
-historical session/command grammars. Desktop tools, handles, saved-row commands,
-session transport of a native path selection and continuous path Boolean
-operations remain required. The current processing selection is still an
-explicit mask. No capability family is marked complete by this packet.
+This foundation is independent of document selection storage. Native path
+selections, geometry editing, continuous hit testing and V5 session transport
+are now described in [the path selection contract](PATH_SELECTION.md). Desktop
+path tools, saved-row/workflow command migration, planar path annotations and
+continuous path Boolean operations remain required. The interchange-record
+transform above still uses an explicit processing mask. No capability family
+is marked complete by the foundation packet.
 
 The new tests use analytic Bézier extrema and independent Bernstein evaluation,
 cell-by-cell hole/island expectations, off-canvas recovery, invalid/resource

@@ -67,7 +67,7 @@ RgbContrastStackEstimate estimate_rgb_contrast_stack(const DocumentSnapshot &sou
   out.metadata_bytes=metadata;
   out.working_bytes=add(mul(add(mul(mul(plane,out.planes),3),mul(plane,32)),sizeof(double)),add(mul(out.planes,1024),add(mul(out.metadata_bytes,32),1024*1024)));
   if(out.pixels>limits.processing.max_pixels || out.working_bytes>limits.processing.max_working_bytes)invalid("RGB stack cumulative pixel/working limit");
-  if(source.data().selection){const auto &s=*source.data().selection;s.validate(shape.x,shape.y);detail::validate_region_storage(s);if(!selection_is_area(s) && s.points.empty())invalid("RGB stack point selection requires a coordinate");if(!selection_is_area(s) && s.kind!="line" && s.kind!="point" && s.kind!="multipoint" && s.kind!="polyline" && s.kind!="angle")invalid("Unsupported ImageJ RGB stack selection");}
+  if(source.data().selection){const auto &s=*source.data().selection;if(s.is_path())invalid("Native paths require a versioned RGB stack command");s.validate(shape.x,shape.y);detail::validate_region_storage(s);if(!selection_is_area(s) && s.points.empty())invalid("RGB stack point selection requires a coordinate");if(!selection_is_area(s) && s.kind!="line" && s.kind!="point" && s.kind!="multipoint" && s.kind!="polyline" && s.kind!="angle")invalid("Unsupported ImageJ RGB stack selection");}
   return out;
 }
 bool detail::rgb_contrast_stack_has_membership(const DocumentSnapshot &source,const std::vector<RgbContrastStackStep> &steps){

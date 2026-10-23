@@ -505,6 +505,7 @@ std::vector<unsigned char> decode_base64(const std::string &data) {
 
 Selection selection_from_json(const Json &value) {
   auto kind = text(field(value, "kind"));
+  if(kind=="path")throw std::invalid_argument("Path selection requires the native V5 session codec");
   if(kind=="region")return detail::selection_codec::decode_selection(value,SessionLimits{},true);
   auto result = [&] {
     if (kind != "mask")
@@ -528,6 +529,7 @@ Selection selection_from_json(const Json &value) {
 }
 
 Json selection_to_json(const Selection &value) {
+  if(value.is_path())throw std::invalid_argument("Path selection requires the native V5 session codec");
   if(value.is_region())return detail::selection_codec::encode_selection(value,true);
   Json result = to_json(value.attributes);
   result.update(

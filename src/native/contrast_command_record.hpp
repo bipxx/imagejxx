@@ -31,7 +31,7 @@ struct Budget {
       else for(const auto &item:std::get<MetadataArray>((*p)->value))value(item,depth+1);
     }
   }
-  void selection(const Selection &s){text(s.kind);take(mul(s.points.size(),256));take(mul(s.packed_mask().size(),2));object(s.attributes);}
+  void selection(const Selection &s){text(s.kind);take(mul(s.points.size(),256));take(mul(s.packed_mask().size(),2));take(mul(s.path_commands().size(),64));object(s.attributes);}
   void roi(const Roi &r){take(512);text(r.name);selection(r.selection);object(r.attributes);}
 };
 inline std::size_t source_budget(const DocumentSnapshot &s,std::size_t limit){

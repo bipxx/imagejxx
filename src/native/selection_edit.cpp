@@ -4,6 +4,7 @@
 #include <cmath>
 #include <imagejxx/roi_style.hpp>
 #include <imagejxx/selection_edit.hpp>
+#include <imagejxx/composite_path.hpp>
 #include <imagejxx/selection_region.hpp>
 #include <limits>
 #include <type_traits>
@@ -19,6 +20,12 @@ bool box(const Selection &selection) {
   return selection.is_rounded_box() || selection.kind == "rectangle" || selection.kind == "ellipse" ||
          selection.kind == "rotated_rectangle" ||
          selection.kind == "rotated_ellipse";
+}
+std::size_t vertex_count(const Selection &s) {
+  return s.is_path() ? (s.path_commands().size()-s.path_geometry().segment_count())/2 : s.points.size();
+}
+Selection path_result(const Selection &s,const ImageJCompositePath &path) {
+  auto result=Selection::from_path(path);result.width=s.width;result.attributes=s.attributes;return result;
 }
 bool bit(const Selection &selection, std::size_t index) {
   return (selection.packed_mask()[index / 8] & (1u << (7 - index % 8))) != 0;
@@ -112,12 +119,14 @@ std::size_t geometry_preflight(const Selection &selection, int width, int height
     throw std::invalid_argument("Invalid selection dimensions");
   const auto pixels = geometry_multiply(static_cast<std::size_t>(width),
                                         static_cast<std::size_t>(height));
-  const auto vertices = geometry_add(selection.points.size(), added_vertices);
+  const auto vertices = geometry_add(vertex_count(selection), added_vertices);
   if (pixels > limits.max_xy_pixels || vertices > limits.max_vertices)
     throw std::length_error("Selection geometry dimension/vertex limit exceeded");
   GeometryStorage storage(limits.max_working_bytes, control);
   storage.add(sizeof(Selection));
   storage.add(selection.kind.size());
+  storage.add(geometry_multiply(selection.path_commands().size(),sizeof(double)));
+  if(selection.is_path())storage.add(sizeof(ImageJCompositePath));
   storage.add(geometry_multiply(vertices, sizeof(std::array<double, 2>)));
   for (const auto &point : selection.points) {
     storage.poll();
@@ -223,6 +232,8 @@ void SelectionEditor::initialize_bounds(bool validate) {
     bounds_ =
         selection_.box_frame()->bounds(selection_.kind == "rotated_ellipse");
     has_bounds_ = true;
+  } else if (selection_.is_path()) {
+    bounds_=selection_.path_geometry().bounds();has_bounds_=true;
   } else if (selection_.is_mask()) {
     const auto origin=selection_.mask_origin();const auto width=selection_.mask_width(),height=selection_.mask_height();
     with_kernel_stage(
@@ -255,6 +266,14 @@ std::vector<SelectionHandle> SelectionEditor::handles() const {
     for (std::size_t i = 0; i < corners.size(); ++i)
       result.push_back(
           {SelectionHandleKind::Resize, i, frame.image_point(corners[i])});
+  } else if(selection_.is_path()) {
+    const auto &path=selection_.path_commands();std::size_t index=0;
+    for(std::size_t at=0;at<path.size();) {
+      kernel_checkpoint_periodic();
+      const int op=int(path[at++]);const auto n=op==4?0u:op==3?6u:op==2?4u:2u;
+      for(unsigned i=0;i<n;i+=2)result.push_back({SelectionHandleKind::Vertex,index++,{path[at+i],path[at+i+1]}});
+      at+=n;
+    }
   } else if (!selection_.is_mask()) {
     for (std::size_t i = 0; i < selection_.points.size(); ++i) {
       kernel_checkpoint_periodic();
@@ -294,6 +313,7 @@ bool SelectionEditor::contains(std::array<double, 2> point,
                                std::array<double, 2> tolerance) const {
   if (!has_bounds_)
     return false;
+  if(selection_.is_path())return selection_.path_geometry().contains(point);
   if(selection_.is_region()) {
     const auto origin=selection_.mask_origin();const auto x=std::floor(point[0]-origin[0]),y=std::floor(point[1]-origin[1]);
     if(x<0 || y<0 || x>=selection_.mask_width() || y>=selection_.mask_height())return false;
@@ -420,6 +440,7 @@ Selection SelectionEditor::moved(std::array<double, 2> delta,
   Selection result = selection_;
   if (delta[0] == 0 && delta[1] == 0)
     return result;
+  if(selection_.is_path())return checked(path_result(selection_,selection_.path_geometry().transformed({1,0,delta[0],0,1,delta[1]})));
   if(selection_.is_region()) {
     auto origin=selection_.mask_origin();
     for(int axis=0;axis<2;++axis) {
@@ -531,10 +552,23 @@ Selection SelectionEditor::moved_vertex(std::size_t index,
                                         std::array<double, 2> point) const {
   finite_point(point);
   if (box(selection_) || selection_.is_mask() ||
-      index >= selection_.points.size())
+      index >= vertex_count(selection_))
     throw std::invalid_argument("Invalid selection vertex");
   kernel_checkpoint();
   Selection result = selection_;
+  if(selection_.is_path()) {
+    auto path=selection_.path_commands();std::size_t position=0;
+    for(std::size_t at=0;at<path.size();) {
+      kernel_checkpoint_periodic();
+      const int op=int(path[at++]);const auto n=op==4?0u:op==3?6u:op==2?4u:2u;
+      for(unsigned i=0;i<n;i+=2)if(position++==index) {
+        path[at+i]=point[0];path[at+i+1]=point[1];
+        return checked(path_result(selection_,ImageJCompositePath(path)));
+      }
+      at+=n;
+    }
+    throw std::invalid_argument("Invalid path control point");
+  }
   result.points[index] = point;
   return checked(std::move(result));
 }
@@ -545,7 +579,7 @@ SelectionEditor::insertion_index(std::array<double, 2> point,
   finite_point(metric);
   if (metric[0] <= 0 || metric[1] <= 0)
     throw std::invalid_argument("Selection insertion metric must be positive");
-  if (box(selection_) || selection_.is_mask() ||
+  if (box(selection_) || selection_.is_mask() || selection_.is_path() ||
       selection_.kind == "angle")
     throw std::invalid_argument("Selection does not support vertex insertion");
   const auto &points = selection_.points;
@@ -579,7 +613,7 @@ SelectionEditor::insertion_index(std::array<double, 2> point,
 Selection SelectionEditor::inserted_vertex(std::size_t index,
                                            std::array<double, 2> point) const {
   finite_point(point);
-  if (box(selection_) || selection_.is_mask() ||
+  if (box(selection_) || selection_.is_mask() || selection_.is_path() ||
       selection_.kind == "angle" || index > selection_.points.size())
     throw std::invalid_argument(
         "Selection does not support this vertex insertion");
@@ -599,7 +633,7 @@ Selection SelectionEditor::removed_vertex(std::size_t index) const {
           ? 3
       : selection_.kind == "line" || selection_.kind == "polyline" ? 2
                                                                    : 1;
-  if (box(selection_) || selection_.is_mask() ||
+  if (box(selection_) || selection_.is_mask() || selection_.is_path() ||
       index >= selection_.points.size() || selection_.points.size() <= minimum)
     throw std::invalid_argument("Cannot remove this selection vertex");
   kernel_checkpoint();
@@ -633,7 +667,10 @@ SelectionEditor::rotated(double degrees,
   };
   kernel_checkpoint();
   Selection result = selection_;
-  if (box(selection_)) {
+  if(selection_.is_path()) {
+    result=path_result(selection_,selection_.path_geometry().transformed(
+      {c,-s,center[0]-c*center[0]+s*center[1],s,c,center[1]-s*center[0]-c*center[1]}));
+  } else if (box(selection_)) {
     const auto frame = *selection_.box_frame();
     frame.validate();
     result.kind =
@@ -790,7 +827,7 @@ Selection SelectionEditor::moved_vertex(
     const SelectionEditLimits &limits, const ExecutionControl &control) const {
   finite_point(point);
   if (box(selection_) || selection_.is_mask() ||
-      index >= selection_.points.size())
+      index >= vertex_count(selection_))
     throw std::invalid_argument("Invalid selection vertex");
   return controlled_geometry(*this, width_, height_, limits, control, 0,
       [index, point](const auto &editor) {
@@ -804,7 +841,7 @@ std::size_t SelectionEditor::insertion_index(
   finite_point(metric);
   if (metric[0] <= 0 || metric[1] <= 0)
     throw std::invalid_argument("Selection insertion metric must be positive");
-  if (box(selection_) || selection_.is_mask() || selection_.kind == "angle")
+  if (box(selection_) || selection_.is_mask() || selection_.is_path() || selection_.kind == "angle")
     throw std::invalid_argument("Selection does not support vertex insertion");
   return controlled_geometry(*this, width_, height_, limits, control, 0,
       [point, metric](const auto &editor) {
@@ -815,7 +852,7 @@ Selection SelectionEditor::inserted_vertex(
     std::size_t index, std::array<double, 2> point,
     const SelectionEditLimits &limits, const ExecutionControl &control) const {
   finite_point(point);
-  if (box(selection_) || selection_.is_mask() ||
+  if (box(selection_) || selection_.is_mask() || selection_.is_path() ||
       selection_.kind == "angle" || index > selection_.points.size())
     throw std::invalid_argument("Selection does not support this vertex insertion");
   return controlled_geometry(*this, width_, height_, limits, control, 1,
@@ -831,7 +868,7 @@ Selection SelectionEditor::removed_vertex(
               selection_.kind == "angle"
           ? 3
       : selection_.kind == "line" || selection_.kind == "polyline" ? 2 : 1;
-  if (box(selection_) || selection_.is_mask() ||
+  if (box(selection_) || selection_.is_mask() || selection_.is_path() ||
       index >= selection_.points.size() || selection_.points.size() <= minimum)
     throw std::invalid_argument("Cannot remove this selection vertex");
   return controlled_geometry(*this, width_, height_, limits, control, 0,

@@ -354,6 +354,10 @@ DisplayState stateDisplay(const State &state, DisplayState display,
 }
 void validateDesktop(const DocumentData &data, const DisplayState &display,
                      bool eagerAdmitted = false, bool allowVirtual=false) {
+  const auto path=[](const std::optional<Selection> &value){return value && value->is_path();};
+  if(path(data.selection) || path(data.previous_selection) ||
+      std::any_of(data.rois.begin(),data.rois.end(),[](const auto &row){return row.selection.is_path();}))
+    throw std::invalid_argument("Desktop path selections require versioned path support");
   const auto shape = data.dataset.shape();
   manual_threshold_state(display, shape);
   recognized_channel_display(display, data.dataset);

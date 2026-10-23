@@ -59,7 +59,7 @@ Position overlay_position(const MetadataObject &o,DatasetShape s){const auto j=c
 void row_limit(std::size_t &n){if(++n>4096)throw std::invalid_argument("Color stack remapped annotation row limit");}
 std::size_t metadata_charge(const DocumentSnapshot &source,const ColorStackRequest &r,std::size_t cap){
   const auto &d=source.data();const auto s=d.dataset.shape();Budget b{cap};b.add(65536);b.record(d.metadata.properties);b.record(d.metadata.extensions);b.record(d.metadata.record_layout);b.record(source.display().properties);b.add(d.metadata.title.size());
-  auto selection=[&](const Selection &v){b.add(sizeof(Selection));b.product(v.points.size(),sizeof(v.points[0]));b.add(v.packed_mask().size());b.record(v.attributes);};
+  auto selection=[&](const Selection &v){b.add(sizeof(Selection));b.product(v.points.size(),sizeof(v.points[0]));b.add(v.packed_mask().size());b.product(v.path_commands().size(),sizeof(double));b.record(v.attributes);};
   if(d.selection)selection(*d.selection);
   if(d.previous_selection)selection(*d.previous_selection);
   std::size_t fanout=1,n=0;

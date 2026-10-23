@@ -26,6 +26,7 @@ PlanePosition position(const DatasetShape &s,std::size_t i){
 }
 void detail::validate_rgb_contrast_session_selection(const std::optional<Selection> &selected,const DatasetShape &shape){
   if(!selected)return;
+  if(selected->is_path())invalid("Native paths require a versioned RGB session command");
   const auto &s=*selected;s.validate(shape.x,shape.y);
   detail::validate_region_storage(s);
   if(!selection_is_area(s)){

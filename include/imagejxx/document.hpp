@@ -10,6 +10,7 @@
 #include <variant>
 
 namespace imagejxx {
+class ImageJCompositePath;
 struct SavedRoiGeometryLimits;
 
 enum class Change : unsigned {
@@ -63,6 +64,11 @@ struct Selection {
   static Selection from_packed_region(int width, int height,
       std::vector<unsigned char> bytes, std::array<int,2> origin);
   bool is_region() const { return kind == "region"; }
+  static Selection from_path(const std::vector<double> &commands);
+  static Selection from_path(const ImageJCompositePath &path);
+  bool is_path() const { return kind == "path"; }
+  const ImageJCompositePath &path_geometry() const;
+  const std::vector<double> &path_commands() const;
   bool is_mask() const { return kind == "mask" || is_region(); }
   std::array<int,2> mask_origin() const { return maskOrigin_; }
   int mask_width() const { return maskWidth_; }
@@ -86,6 +92,7 @@ private:
   std::array<int,2> maskOrigin_{0,0};
   int maskWidth_ = 0, maskHeight_ = 0;
   std::shared_ptr<const std::vector<unsigned char>> mask_;
+  std::shared_ptr<const ImageJCompositePath> path_;
 };
 enum class SelectionBooleanOperation { Union, Intersection, Subtraction, Xor };
 // Area operands use full-canvas raster membership. Subtraction keeps the first

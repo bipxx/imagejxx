@@ -229,6 +229,7 @@ std::size_t xy_size(DatasetShape shape) {
 }
 std::size_t selection_size(const Selection &selection, DatasetShape shape,
                            const AutoContrastLimits &limits) {
+  if(selection.is_path())invalid("Native paths require a versioned Auto selection command");
   if (selection.points.size() > limits.max_selection_vertices)
     invalid("Auto contrast selection exceeds vertex limit");
   if (!selection.is_mask() && (selection.mask_width() || selection.mask_height() ||

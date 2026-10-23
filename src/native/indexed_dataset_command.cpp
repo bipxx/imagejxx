@@ -29,7 +29,7 @@ IndexedDatasetRequest read_request(const MetadataObject &r){
 }
 std::size_t metadata_bytes(const DocumentSnapshot &source,std::size_t cap){
   Budget b{cap};const auto &d=source.data();b.add(65536);b.add(d.metadata.title.size());b.record(d.metadata.properties);b.record(d.metadata.extensions);b.record(d.metadata.record_layout);b.record(source.display().properties);
-  auto selection=[&](const Selection &v){b.add(sizeof(Selection));b.product(v.points.size(),sizeof(v.points[0]));b.add(v.packed_mask().size());b.record(v.attributes);};
+  auto selection=[&](const Selection &v){b.add(sizeof(Selection));b.product(v.points.size(),sizeof(v.points[0]));b.add(v.packed_mask().size());b.product(v.path_commands().size(),sizeof(double));b.record(v.attributes);};
   if(d.selection)selection(*d.selection);if(d.previous_selection)selection(*d.previous_selection);
   for(const auto &row:d.rois){b.add(sizeof(Roi)+row.name.size());selection(row.selection);b.record(row.attributes);}for(const auto &row:d.overlays)b.record(row);
   Budget result{cap};result.product(b.used,16);return result.used;

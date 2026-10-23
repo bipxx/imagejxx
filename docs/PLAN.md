@@ -1,5 +1,22 @@
 # ImageJ and Fiji gap closure plan
 
+**Native path selections and V5 sessions, 2026-10-23 (scoped integration):**
+Immutable continuous paths now survive native selection translation, rotation,
+control-point edits, metadata-edit history and active/previous/saved session
+carriers. Hit testing uses monotone curve intervals and bounded ray-crossing
+roots. V5 is explicit; V3/V4 and older command/dictionary grammars stay closed.
+Malformed previous paths, unsupported desktop publication and older creation
+capture refuse before mutation. Both hosts pass 2,522 focused installed Python
+checks (58 new), 19 native groups and a 22-check installed C++ client; an
+existing regional interaction also passes standalone and Python ImGui readers.
+Document path drawing/editing, path-aware saved-row/workflow/filter and planar
+codecs, ImageJ mapping, resize/segment editing and continuous Boolean algebra
+remain open. Next migrate shared saved-row/workflow and planar codecs, then
+route both UI launch modes through typed path commands. Original requirements
+and historical verification records remain unchanged. See
+[the contract](parity/PATH_SELECTION.md) and
+[the scoped receipt](parity/reviews/p12w-path-selection001.json).
+
 **Continuous composite path foundation, 2026-10-23 (scoped native/Python work):**
 `ImageJCompositePath` retains M/L/Q/C/Z contours with analytic curve bounds and
 bounded affine transforms. A checked interchange-record operation rebuilds the
