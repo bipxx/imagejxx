@@ -1,5 +1,16 @@
 # Implementation progress
 
+**Native ImageJ composite path interchange, 2026-10-23 (scoped integration):**
+Explicit C++/Python composite decoders and XY/XZ/YZ mapping retain continuous
+curves without a canvas. Native path export checks retained geometry and rounds
+only the wire coordinates to binary32. Existing mask decoders remain unchanged.
+Both hosts pass 2,125 installed Python checks (74 new), nine native
+groups and an 18-check installed SDK client. Scratch archives were verified
+before removing 4,642,669 bytes. Native envelope/workflow integration and
+desktop rendering/controls remain open; no capability family is closed.
+See [the contract](parity/PATH_WIRE.md) and
+[qualification receipt](parity/reviews/p12z-path-wire001.json).
+
 **Planar paths and XYZ subset alignment, 2026-10-23 (scoped integration):**
 Plane-native path sets and commands use strict V3 geometry with complete
 before/request/after equations. Continuous control coordinates survive XY/XZ/YZ

@@ -61,6 +61,11 @@ decode_imagej_roi_mapped(const std::vector<unsigned char> &bytes,
       decode_imagej_roi(bytes, limits, geometry.width, geometry.height),
       mapping, limits);
 }
+MappedImageJRoi decode_imagej_composite_roi_mapped(
+    const std::vector<unsigned char> &bytes,
+    const ImageJRoiPlaneMapping &mapping, const ImageJRoiLimits &limits) {
+  return map_imagej_roi(decode_imagej_composite_roi(bytes, limits), mapping, limits);
+}
 MappedImageJRoi rebind_imagej_roi_mapping(const MappedImageJRoi &original,
                                           DatasetShape target,
                                           const PlanarAnnotation &replacement,

@@ -69,6 +69,10 @@ MappedImageJRoi map_imagej_roi(const ImageJRoi &, const ImageJRoiPlaneMapping &,
 MappedImageJRoi decode_imagej_roi_mapped(const std::vector<unsigned char> &,
                                          const ImageJRoiPlaneMapping &,
                                          const ImageJRoiLimits & = {});
+// Composite-only mapping with continuous native paths, without a mask canvas.
+MappedImageJRoi decode_imagej_composite_roi_mapped(
+    const std::vector<unsigned char> &, const ImageJRoiPlaneMapping &,
+    const ImageJRoiLimits & = {});
 // Complete explicit replacement. Validate original source and current binding
 // before target/replacement; never infer/crop/reinterpret coordinates on
 // rebind.

@@ -365,6 +365,8 @@ from ._native import (
     ImageJRoiLimits as ImageJRoiLimits,
     encode_imagej_roi as encode_imagej_roi,
     decode_imagej_roi as decode_imagej_roi,
+    decode_imagej_composite_roi as decode_imagej_composite_roi,
+    decode_imagej_composite_roi_mapped as decode_imagej_composite_roi_mapped,
     planar_annotations as planar_annotations,
     planar_annotation_voxel as planar_annotation_voxel,
     planar_annotation_world as planar_annotation_world,

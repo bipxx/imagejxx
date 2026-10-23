@@ -491,6 +491,35 @@ void bind_imagej_roi(py::module_ &m) {
       },
       py::arg("data"), py::arg("limits") = ImageJRoiLimits{},
       py::arg("mask_width") = 0, py::arg("mask_height") = 0);
+  m.def(
+      "decode_imagej_composite_roi",
+      [](py::bytes blob, ImageJRoiLimits limits) {
+        const auto length = PyBytes_Size(blob.ptr());
+        if (length < 0)
+          throw py::error_already_set();
+        if (std::size_t(length) > limits.max_bytes)
+          throw py::value_error("ImageJ ROI byte limit");
+        const auto *p = reinterpret_cast<const unsigned char *>(
+            PyBytes_AsString(blob.ptr()));
+        std::vector<unsigned char> data(p, p + length);
+        py::gil_scoped_release release;
+        return decode_imagej_composite_roi(data, limits);
+      }, py::arg("data"), py::arg("limits") = ImageJRoiLimits{});
+  m.def(
+      "decode_imagej_composite_roi_mapped",
+      [](py::bytes blob, ImageJRoiPlaneMapping mapping, ImageJRoiLimits limits) {
+        const auto length = PyBytes_Size(blob.ptr());
+        if (length < 0)
+          throw py::error_already_set();
+        if (std::size_t(length) > limits.max_bytes)
+          throw py::value_error("ImageJ ROI byte limit");
+        const auto *p = reinterpret_cast<const unsigned char *>(
+            PyBytes_AsString(blob.ptr()));
+        std::vector<unsigned char> data(p, p + length);
+        py::gil_scoped_release release;
+        return decode_imagej_composite_roi_mapped(data, mapping, limits);
+      }, py::arg("data"), py::arg("mapping"),
+      py::arg("limits") = ImageJRoiLimits{});
   py::class_<ImageJCompositePath>(m, "ImageJCompositePath")
       .def(py::init([](py::handle commands, ImageJRoiLimits limits) {
         return ImageJCompositePath(path_numbers(commands, limits.max_bytes / sizeof(double)), limits);

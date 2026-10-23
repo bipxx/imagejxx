@@ -6,6 +6,7 @@
 #include <cmath>
 #include <cstring>
 #include <imagejxx/imagej_roi.hpp>
+#include <imagejxx/composite_path.hpp>
 #include <imagejxx/imagej_roi_projection.hpp>
 #include <imagejxx/roi_style.hpp>
 #include <limits>
@@ -201,7 +202,8 @@ static ImageJRoi
 decode_imagej_roi_impl(const Bytes &bytes, const ImageJRoiLimits &l,
                        int mask_width, int mask_height,
                        ImageJTextRoi *text_record,
-                       ImageJImageRoi *image_record = nullptr) {
+                       ImageJImageRoi *image_record = nullptr,
+                       bool native_composite = false) {
   limits_ok(l);
   need(bytes.size() >= 64 && bytes.size() <= l.max_bytes,
        "ImageJ ROI byte limit/header");
@@ -215,6 +217,9 @@ decode_imagej_roi_impl(const Bytes &bytes, const ImageJRoiLimits &l,
   need(bytes[7] == 0 && kinds.count(type), "Unsupported ImageJ ROI type");
   const auto shape_size = std::size_t(r.u32(36));
   const bool composite = shape_size != 0;
+  need(!native_composite || composite, "Expected ImageJ composite path ROI");
+  need(!native_composite || shape_size <= l.max_bytes / sizeof(double),
+       "Composite path retained byte limit");
   need(!composite || (type == 1 && subtype == 0),
        "Invalid ImageJ composite type/subtype");
   const bool rotated = type == 7 && (subtype == 3 || subtype == 5);
@@ -329,8 +334,9 @@ decode_imagej_roi_impl(const Bytes &bytes, const ImageJRoiLimits &l,
     r.claim(64, payload);
   std::vector<std::array<double, 2>> points;
   if (composite) {
-    // The declared canvas is required before any path allocation/rasterization.
-    need(mask_width > 0 && mask_height > 0 &&
+    // Legacy mask decoding admits its canvas before path allocation.
+    if (!native_composite)
+      need(mask_width > 0 && mask_height > 0 &&
              std::size_t(mask_width) <=
                  l.max_mask_pixels / std::size_t(mask_height),
          "ImageJ composite requires an explicit bounded mask canvas");
@@ -409,8 +415,9 @@ decode_imagej_roi_impl(const Bytes &bytes, const ImageJRoiLimits &l,
     result.composite_path.reserve(shape_size);
     for (std::size_t i = 0; i < shape_size; ++i)
       result.composite_path.push_back(r.f32(64 + 4 * i));
-    result.roi.selection =
-        imagej_shape_mask(result.composite_path, mask_width, mask_height, l);
+    result.roi.selection = native_composite
+        ? Selection::from_path(ImageJCompositePath(result.composite_path, l))
+        : imagej_shape_mask(result.composite_path, mask_width, mask_height, l);
   } else if (rounded) {
     result.rounded_rectangle = {
         {points[0][0], points[0][1], points[1][0] - points[0][0],
@@ -475,8 +482,8 @@ decode_imagej_roi_impl(const Bytes &bytes, const ImageJRoiLimits &l,
                                             {"stroke_color", color(r.u32(40))},
                                             {"fill_color", color(r.u32(44))}});
   result.roi.selection.validate(
-      (composite || rounded || arrow) ? mask_width : 1,
-      (composite || rounded || arrow) ? mask_height : 1);
+      ((composite && !native_composite) || rounded || arrow) ? mask_width : 1,
+      ((composite && !native_composite) || rounded || arrow) ? mask_height : 1);
   std::sort(r.regions.begin(), r.regions.end());
   std::size_t end = 0;
   for (const auto &region : r.regions) {
@@ -498,9 +505,10 @@ encode_imagej_roi_impl(const ImageJRoi &record, const ImageJRoiLimits &l,
   const auto &s = roi.selection;
   const bool mask = s.kind == "mask", rounded = bool(record.rounded_rectangle),
              arrow = bool(record.arrow);
-  const bool composite = mask && !rounded && !arrow;
+  const bool native_path = s.is_path();
+  const bool composite = (mask || native_path) && !rounded && !arrow;
   const bool spline = bool(record.spline);
-  need(!spline || (!mask && !arrow && !rounded),
+  need(!spline || (!mask && !native_path && !arrow && !rounded),
        "Spline control points require an unambiguous sampled selection");
   need(spline || !(record.options & 1),
        "ImageJ spline flag requires retained control points");
@@ -534,14 +542,24 @@ encode_imagej_roi_impl(const ImageJRoi &record, const ImageJRoiLimits &l,
          "parameters to export edited pixels");
   }
   need(composite || record.composite_path.empty(),
-       "Composite path requires a mask selection");
+       "Composite path requires a mask or native path selection");
   need(record.composite_path.size() <= (l.max_bytes - 64) / 4 &&
            (record.composite_path.empty() ||
             (record.composite_path.size() - 1) / 7 < l.max_vertices),
        "ImageJ composite path byte/segment limit");
-  kernel_checkpoint();
-  std::vector<double> shape_path = record.composite_path;
-  if (composite) {
+  std::vector<double> shape_path;
+  if (native_path) {
+    const ImageJCompositePath admitted(s.path_commands(), l);
+    need(record.composite_path.empty() ||
+             record.composite_path == admitted.commands(),
+         "ImageJ retained composite path differs from native geometry; clear "
+         "path to export edited geometry");
+    shape_path = admitted.commands();
+  } else {
+    kernel_checkpoint();
+    shape_path = record.composite_path;
+  }
+  if (composite && !native_path) {
     need(std::size_t(s.mask_width()) <=
              l.max_mask_pixels / std::size_t(s.mask_height()),
          "ImageJ composite mask pixel limit");
@@ -637,7 +655,7 @@ encode_imagej_roi_impl(const ImageJRoi &record, const ImageJRoiLimits &l,
   }
   if (s.kind == "rectangle")
     type = 1;
-  else if (mask)
+  else if (mask || native_path)
     type = arrow ? 3 : 1;
   else if (s.kind == "ellipse")
     type = 2;
@@ -668,7 +686,7 @@ encode_imagej_roi_impl(const ImageJRoi &record, const ImageJRoiLimits &l,
              (kinds.at(*record.source_type) == s.kind ||
               (spline && *record.source_type == record.spline->type) ||
               (rotated && *record.source_type == 7) ||
-              (mask && !arrow && *record.source_type == 1) ||
+              ((mask || native_path) && !arrow && *record.source_type == 1) ||
               (arrow && *record.source_type == 3) ||
               (*record.source_type == 10 && s.kind == "point")),
          "ImageJ source type differs from native geometry");
@@ -929,12 +947,17 @@ encode_imagej_roi_impl(const ImageJRoi &record, const ImageJRoiLimits &l,
   (void)decode_imagej_roi_impl(out, l, mask ? s.mask_width() : 0,
                                mask ? s.mask_height() : 0,
                                text_record ? &validation : nullptr,
-                               image_record ? &*image_validation : nullptr);
+                               image_record ? &*image_validation : nullptr,
+                               native_path);
   return out;
 }
 ImageJRoi decode_imagej_roi(const Bytes &bytes, const ImageJRoiLimits &limits,
                             int width, int height) {
   return decode_imagej_roi_impl(bytes, limits, width, height, nullptr);
+}
+ImageJRoi decode_imagej_composite_roi(const Bytes &bytes,
+                                      const ImageJRoiLimits &limits) {
+  return decode_imagej_roi_impl(bytes, limits, 0, 0, nullptr, nullptr, true);
 }
 std::string
 detail::preview_imagej_roi_properties(const Bytes &bytes,

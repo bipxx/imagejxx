@@ -75,7 +75,8 @@ struct ImageJRoi {
   std::optional<std::array<double, 5>> ignored_rotated_parameters;
   // Lossless wire path: move0/line1/quad2/cubic3/close4, followed by
   // 2/2/4/6/0 absolute coordinates. Even-odd fill. A decoded composite
-  // has an explicit canvas mask; export checks it against this retained path.
+  // has an explicit canvas mask by default. The native composite decoder
+  // retains a path selection instead; export checks either representation.
   std::vector<double> composite_path;
   // x,y,width,height,integer corner diameter. Processing selection is an
   // explicit canvas mask, checked against these retained parameters on export.
@@ -109,6 +110,11 @@ Selection imagej_spline_selection(const ImageJSpline &,
 ImageJRoi decode_imagej_roi(const std::vector<unsigned char> &,
                             const ImageJRoiLimits & = {}, int mask_width = 0,
                             int mask_height = 0);
+// Composite-only, continuous geometry. No canvas, rasterization or sample IO.
+// Retains the binary32 wire coordinates as native binary64 path values.
+// Mask/work limits do not apply; byte and segment limits still apply.
+ImageJRoi decode_imagej_composite_roi(const std::vector<unsigned char> &,
+                                     const ImageJRoiLimits & = {});
 std::vector<unsigned char> encode_imagej_roi(const ImageJRoi &,
                                              const ImageJRoiLimits & = {});
 struct ImageJRoiZipEntry {
