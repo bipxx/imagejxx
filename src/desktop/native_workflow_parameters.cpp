@@ -3,6 +3,7 @@
 #include "../native/contrast_apply_workflow.hpp"
 #include "../native/native_workflow_program_internal.hpp"
 #include "../native/color_stack_internal.hpp"
+#include "../native/selection_enlargement_workflow.hpp"
 #include "../native/indexed_dataset_internal.hpp"
 #include "../native/indexed_rgb_internal.hpp"
 #include <cstring>
@@ -121,7 +122,9 @@ struct NativeWorkflowParameters::State {
     const auto shape = source.data().dataset.shape();
     if (!result.enabled)
       return result;
-    if(result.operation=="rgb_contrast_apply") {
+    if(result.operation=="selection_enlargement") {
+      (void)detail::workflow_selection_enlargement(source,result,detail::selection_enlargement_workflow_limits(processing_cap));
+    } else if(result.operation=="rgb_contrast_apply") {
       (void)detail::workflow_rgb_contrast_apply(source,result,detail::contrast_apply_workflow_limits(processing_cap));
     } else if(result.operation=="contrast_apply") {
       (void)detail::workflow_contrast_apply(source,result,detail::contrast_apply_workflow_limits(processing_cap));
@@ -189,7 +192,7 @@ NativeWorkflowParameters::NativeWorkflowParameters(
     operation.parameters=detail::indexed_dataset_workflow_parameters(detail::indexed_dataset_workflow_request(operation.parameters,*operation.original));
   } else if(operation.operation=="indexed_rgb") {
     operation.parameters=detail::indexed_rgb_workflow_parameters(detail::indexed_rgb_workflow_request(operation.parameters,*operation.original));
-  } else if (!operation.filter_options) {
+  } else if (!operation.filter_options && operation.operation!="selection_enlargement") {
     OperationDefaultContext context;
     const auto shape = source.data().dataset.shape();
     context.width = shape.x;
@@ -248,7 +251,12 @@ NativeWorkflowParameters::NativeWorkflowParameters(
     s.fields.push_back(std::move(field));
   };
   s.color_stack=operation.operation=="color_stack";
-  if(operation.operation=="rgb_contrast_apply") {
+  if(operation.operation=="selection_enlargement") {
+    const auto value=[&](const char *name){return step["parameters"].at(name).at("value");};
+    add("distance","Signed distance (negative shrinks)","real",value("distance"));
+    add("units","Distance units","text",value("units"));s.fields.back().choices={"pixels","calibrated"};
+    s.fields.back().choice_labels={"Pixels","Input X calibration"};
+  } else if(operation.operation=="rgb_contrast_apply") {
     const auto value=[&](const char *name){return step["parameters"].at(name).at("value");};
     add("minimum","Minimum","real",value("minimum"));
     add("maximum","Maximum","real",value("maximum"));

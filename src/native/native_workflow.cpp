@@ -5,6 +5,7 @@
 #include "operation_internal.hpp"
 #include "native_workflow_internal.hpp"
 #include "contrast_apply_workflow.hpp"
+#include "selection_enlargement_workflow.hpp"
 #include "native_workflow_program_internal.hpp"
 #include "rgb_dataset_internal.hpp"
 #include "color_stack_internal.hpp"
@@ -192,6 +193,14 @@ void preflight(const DocumentSnapshot &initial,
           if constexpr (std::is_same_v<T, NativeWorkflowOperation>) {
             budget.add(v.operation.size());parameters_budget(budget,v.parameters);
             budget.product(v.target.positions.size(),sizeof(PlanePosition));
+            if(v.operation=="selection_enlargement") {
+              ExecutionScope intent_scope(control);
+              const auto limits=detail::selection_enlargement_workflow_limits(budget.cap-budget.used);
+              const auto command=detail::workflow_selection_enlargement(source,v,limits,control);
+              budget.add(command.estimate().working_bytes);budget.record(command.record());
+              auto edit=prepare_selection_enlargement(command,control,limits.max_working_bytes);
+              source=edit.preview();return;
+            }
             if(v.operation=="rgb_contrast_session") {
               ExecutionScope intent_scope(control);
               const auto limits=detail::contrast_apply_workflow_limits(budget.cap-budget.used);
@@ -442,9 +451,9 @@ struct detail::NativeWorkflowAccess {
                                      std::vector<NativeWorkflowOutput> outputs,
                                      std::vector<NativeWorkflowHistogramOutput> histograms,
                                      std::size_t completed, std::size_t bytes,
-                                     bool paired_display) {
+                                     bool paired_display, bool guard_display) {
     return PreparedNativeWorkflow(std::move(source), std::move(preview),
-                                  std::move(outputs), std::move(histograms), completed, bytes, paired_display);
+                                  std::move(outputs), std::move(histograms), completed, bytes, paired_display, guard_display);
   }
 };
 PreparedNativeWorkflow
@@ -481,7 +490,7 @@ PreparedNativeWorkflow detail::prepare_native_workflow_borrowed(
   std::vector<NativeWorkflowOutput> outputs;
   std::vector<NativeWorkflowHistogramOutput> histograms;
   std::size_t completed = 0;
-  bool paired_display = false;
+  bool paired_display = false, guard_display = false;
   Document working(source);
   working.set_history_policy(1);
   for (std::size_t index = 0; index < steps.size(); ++index) {
@@ -508,7 +517,12 @@ PreparedNativeWorkflow detail::prepare_native_workflow_borrowed(
               checkpoint(control);
               working.commit(edit);
             };
-            if(v.operation=="rgb_contrast_session") {
+            if(v.operation=="selection_enlargement") {
+              const auto step_limits=detail::selection_enlargement_workflow_limits(limits.max_retained_bytes);
+              const auto command=detail::workflow_selection_enlargement(current,v,step_limits,control);
+              auto edit=prepare_selection_enlargement(command,control,step_limits.max_working_bytes);
+              guard_display=true;checkpoint(control);working.commit(edit);
+            } else if(v.operation=="rgb_contrast_session") {
               const auto limits_for_step=detail::contrast_apply_workflow_limits(limits.max_retained_bytes);
               const auto command=detail::workflow_rgb_contrast_session(current,v,limits_for_step);
               auto edit=execute_rgb_contrast_session_command(command,limits_for_step,control);
@@ -602,6 +616,6 @@ PreparedNativeWorkflow detail::prepare_native_workflow_borrowed(
   }
   checkpoint(control);
   return NativeWorkflowAccess::make(source, working.snapshot(),
-                                    std::move(outputs), std::move(histograms), completed, admitted, paired_display);
+                                    std::move(outputs), std::move(histograms), completed, admitted, paired_display, guard_display);
 }
 } // namespace imagejxx

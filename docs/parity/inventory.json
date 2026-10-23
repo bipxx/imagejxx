@@ -885,7 +885,8 @@
         "documentation": [
           "docs/parity/SELECTION_ENLARGEMENT.md",
           "docs/parity/reviews/p12g-selection-enlarge001.json",
-          "docs/parity/reviews/p12h-enlargement-command001.json"
+          "docs/parity/reviews/p12h-enlargement-command001.json",
+          "docs/parity/reviews/p12i-workflow-enlargement001.json"
         ],
         "implementation": [
           "include/imagejxx/selection_edit.hpp",
@@ -896,7 +897,14 @@
           "src/native/selection_creation.cpp",
           "src/native/selection_creation_bindings.cpp",
           "src/native/settings.cpp",
-          "src/desktop/window.cpp"
+          "src/desktop/window.cpp",
+          "include/imagejxx/native_workflow.hpp",
+          "src/native/selection_enlargement_workflow.hpp",
+          "src/native/native_workflow.cpp",
+          "src/native/native_workflow_originals.cpp",
+          "src/native/native_workflow_program.cpp",
+          "src/desktop/native_workflow_panel.cpp",
+          "src/desktop/native_workflow_parameters.cpp"
         ],
         "tests": [
           "tests/python/test_selection_enlargement.py",
@@ -906,7 +914,9 @@
           "examples/cpp/selection_enlargement.cpp",
           "tests/python/test_selection_enlargement_command.py",
           "tests/native/test_enlargement_dialog.cpp",
-          "examples/cpp/selection_enlargement_command.cpp"
+          "examples/cpp/selection_enlargement_command.cpp",
+          "tests/native/test_native_workflow.cpp",
+          "tests/python/test_selection_enlargement_workflow.py"
         ]
       },
       "id": "G018",

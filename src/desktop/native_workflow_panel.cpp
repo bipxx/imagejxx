@@ -5,6 +5,7 @@
 #include "../native/native_workflow_batch_internal.hpp"
 #include "../native/native_workflow_internal.hpp"
 #include "../native/contrast_apply_workflow.hpp"
+#include "../native/selection_enlargement_workflow.hpp"
 #include "../native/rgb_dataset_internal.hpp"
 #include "../native/color_stack_internal.hpp"
 #include "../native/indexed_dataset_internal.hpp"
@@ -189,7 +190,7 @@ std::vector<Entry> program_entries(const Json &record, std::size_t cap) {
     entry.authored = true;
     entry.enabled = std::visit([](const auto &v) { return v.enabled; }, step);
     if (const auto op = std::get_if<NativeWorkflowOperation>(&step)) {
-      entry.title = op->operation=="rgb_contrast_session"?"Apply RGB session history":op->operation=="rgb_contrast_stack"?"Apply RGB brightness/contrast to stack":op->operation=="rgb_contrast_apply"?"Apply RGB brightness/contrast":op->operation=="contrast_apply"?"Apply brightness/contrast":op->operation=="rgb_dataset"?"RGB dataset conversion":op->operation=="color_stack"?"RGB / HSB component stack":op->operation=="indexed_dataset"?"Indexed color dataset":op->operation=="indexed_rgb"?"Indexed palette to RGB":operation_spec(op->operation).title;
+      entry.title = op->operation=="selection_enlargement"?"Enlarge / shrink selection":op->operation=="rgb_contrast_session"?"Apply RGB session history":op->operation=="rgb_contrast_stack"?"Apply RGB brightness/contrast to stack":op->operation=="rgb_contrast_apply"?"Apply RGB brightness/contrast":op->operation=="contrast_apply"?"Apply brightness/contrast":op->operation=="rgb_dataset"?"RGB dataset conversion":op->operation=="color_stack"?"RGB / HSB component stack":op->operation=="indexed_dataset"?"Indexed color dataset":op->operation=="indexed_rgb"?"Indexed palette to RGB":operation_spec(op->operation).title;
       entry.scope = int(op->target.scope);
       entry.roi = int(op->target.roi);
       entry.calibration = op->use_destination_calibration;
@@ -228,7 +229,12 @@ std::vector<Entry> compile(const Json &table, std::size_t cap) {
     const auto schema = string(get(raw, "schema"));
     NativeWorkflowStep step;
     std::string title;
-    if(schema=="imagejxx.rgb-contrast-session-command") {
+    if(schema=="imagejxx.selection-enlargement-command") {
+      validate_selection_enlargement_command_record(record);
+      NativeWorkflowOperation value;value.operation="selection_enlargement";value.original=record;
+      value.parameters={{"distance",raw.at("distance").get<double>()},{"units",raw.at("units").get<std::string>()}};
+      step=std::move(value);title="Enlarge / shrink selection";
+    } else if(schema=="imagejxx.rgb-contrast-session-command") {
       validate_rgb_contrast_session_command_record(record);
       NativeWorkflowOperation value;value.operation="rgb_contrast_session";value.original=record;
       const auto anchor=raw.at("visits").back().at("position").get<std::array<int,3>>();
@@ -383,7 +389,7 @@ std::vector<Entry> compile(const Json &table, std::size_t cap) {
     if(const auto op=std::get_if<NativeWorkflowOperation>(entry.step.get());op && (op->operation=="rgb_dataset" || op->operation=="color_stack" || op->operation=="indexed_dataset" || op->operation=="indexed_rgb")) {
       entry.scope=int(TargetScope::Ranges);entry.roi=int(RoiPolicy::WholePlane);entry.retained_target=true;
     }
-    if(const auto op=std::get_if<NativeWorkflowOperation>(entry.step.get());op && (op->operation=="rgb_contrast_session" || op->operation=="rgb_contrast_stack" || op->operation=="contrast_apply" || op->operation=="rgb_contrast_apply")) {
+    if(const auto op=std::get_if<NativeWorkflowOperation>(entry.step.get());op && (op->operation=="selection_enlargement" || op->operation=="rgb_contrast_session" || op->operation=="rgb_contrast_stack" || op->operation=="contrast_apply" || op->operation=="rgb_contrast_apply")) {
       entry.scope=int(op->target.scope);entry.roi=int(op->target.roi);entry.positions=op->target.positions;entry.retained_target=true;
     }
     if(const auto hist=std::get_if<NativeWorkflowHistogram>(entry.step.get())) {
@@ -1869,7 +1875,11 @@ void NativeWorkflowPanel::draw(
         "destination target below. Selection targeting uses this image's "
         "native selection/positioned ROIs.",
         op->operation.c_str());
-    if(op->operation=="rgb_contrast_session") {
+    if(op->operation=="selection_enlargement") {
+      const auto request=detail::selection_enlargement_workflow_request(*op);
+      ImGui::Text("Distance: %.10g %s",request.distance,request.units==SelectionEnlargementUnits::Pixels?"pixels":"calibrated units");
+      ImGui::TextWrapped("Changes the preceding stage's area selection. Later filters and analyses use this result. Calibrated distance uses each input's X spacing. Edit parameters to change distance or units; the original capture remains historical. Navigation is preserved.");
+    } else if(op->operation=="rgb_contrast_session") {
       if(entry.session_history.is_null()){
         detail::validate_rgb_contrast_session_workflow_intent(*op);
         entry.session_history=metadataJson(op->original->at("visits"));
@@ -2241,7 +2251,7 @@ void NativeWorkflowPanel::draw(
             captured.push_back(*step);
             if (auto op =
                     std::get_if<NativeWorkflowOperation>(&captured.back());
-                op && op->enabled) {
+                op && op->enabled && op->operation!="selection_enlargement") {
               const auto frozen =
                   resolve_target(*s.source, op->target, op->operation);
               if (op->target.scope != TargetScope::Positions) {

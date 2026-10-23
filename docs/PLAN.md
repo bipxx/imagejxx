@@ -1,5 +1,23 @@
 # ImageJ and Fiji gap closure plan
 
+**Selection enlargement in workflows and Batch, 2026-10-23 (work in progress):**
+Captured enlargement commands now become portable authored distance/unit steps.
+Metadata-only preflight advances each stage's selection before later filters and
+histograms; execution uses each destination's current geometry and X spacing.
+Original captures remain validated provenance, including disabled steps. Shared
+Run supports adoption, portable preparation and execution; selection-only edits
+preserve pixel history, mixed runs commit once, and stale view changes refuse.
+Windows/Linux each pass 20,419 installed checks (all 7,788 prior IDs, 53 new
+workflow checks and 12,578 additional existing workflow checks), 16 native groups,
+an installed SDK consumer and three standalone app probes, zero failure/error/skip.
+Creator-owned actual ImGui input covers scalar/RGB/IEEE program adoption and
+execution against fresh geometry; new parameter-edit and paired Python-launch
+gesture acceptance remains open. Scratch is CRC/member-SHA verified before
+confined cleanup. Original 99 statuses and historical runs/Auto expectations stay
+unchanged; the historical Auto producer fingerprint check still fails. Next:
+off-grid irregular retention, remembered last-use defaults and managed large-ROI
+UI/cancellation. See [the scoped receipt](parity/reviews/p12i-workflow-enlargement001.json).
+
 **Recorded enlargement and shared dialog, 2026-10-23 (work in progress):**
 C++/Python enlargement commands now capture owner/descriptor, original/result
 geometry, TCZ and X calibration with admitted records, strict replay and explicit

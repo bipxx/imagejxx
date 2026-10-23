@@ -1,0 +1,244 @@
+{
+  "schema_version": 1,
+  "id": "p12i.selection-enlargement-workflow.001",
+  "date": "2026-10-23",
+  "state": "scoped-qualified",
+  "acceptance": false,
+  "complete_requirement_coverage": false,
+  "baseline_commit": "e2534496061b277f79d49cb23ed07ae3866c1700",
+  "previous_goal_turn": "progress: calibrated enlargement commands and shared dialog committed and pushed",
+  "scope": "Existing native operation programs now carry selection_enlargement with explicit signed numeric distance and pixels/calibrated units. CurrentPlane/ActiveSelection/Planes/InPlace is closed: ranges, positions, filter options and the separate filter-calibration flag are refused. Any complete original equation is validated as immutable provenance even for disabled steps. Enabled execution applies authored choices to current stage geometry/view/X calibration; it does not replay historical geometry or navigate to captured TCZ. Metadata-only preflight advances the selection for subsequent pixel and histogram targets without sample IO, charges command working bytes/records within the existing workflow retained-byte accounting, and refuses late invalid inputs before earlier pixel reads. Detached execution publishes selection/Previous through the existing atomic transaction. Full Display dependencies are independent of paired-display publication, preserving selection-only history while refusing stale navigation. Shared Run adopts captures, offers explicit parameter fields and retains portable ordering/enable/disable/save/load and per-input batch mechanisms. Native actual input covers scalar/RGB/IEEE captured adoption, portable preparation and execution against fresh area geometry. Installed Python tests cover sequential masks, later filtering/histograms, transient history, stale state, malformed/disabled originals, resource/callback refusal and saved-session calibration per input. Existing workflow suites broaden regression coverage; no new upstream reference identities or complete-family acceptance are claimed.",
+  "sources": [
+    {
+      "path": "include/imagejxx/native_workflow.hpp",
+      "bytes": 6873,
+      "sha256": "5a5c0bd01bff5f3ed5a13a2703097ef64ef38241879feb2cd5b8e1c222fc0893"
+    },
+    {
+      "path": "src/native/selection_enlargement_workflow.hpp",
+      "bytes": 681,
+      "sha256": "32e2b7643e404802b1bb02bbd9514d6a786524419f31aff7071e700b2bf533d6"
+    },
+    {
+      "path": "src/native/native_workflow.cpp",
+      "bytes": 35504,
+      "sha256": "14609a3700ee6abb8f2ff2f830eb55f14ce14be57a3333336f4426eb8fc2c590"
+    },
+    {
+      "path": "src/native/native_workflow_originals.cpp",
+      "bytes": 17500,
+      "sha256": "70a0cbed442a2537dc6ca1e909928ee1a8e02d59ba1d9eed1f7a7f96db1a243d"
+    },
+    {
+      "path": "src/native/native_workflow_program.cpp",
+      "bytes": 36122,
+      "sha256": "8f835cf488f0896d20c8b3d8a4f44d8489fbf3b88145dea3aaf4047472fc576a"
+    },
+    {
+      "path": "src/desktop/native_workflow_panel.cpp",
+      "bytes": 130788,
+      "sha256": "0830cc2ccc7305ad2427bbbdb1b2570093af63ddab726d22eeb79d9f7ce7b86e"
+    },
+    {
+      "path": "src/desktop/native_workflow_parameters.cpp",
+      "bytes": 23497,
+      "sha256": "d4f178282cdb0b978df624bd65a34fb031c34d8090352e076a57865338868dcd"
+    },
+    {
+      "path": "tests/native/test_native_workflow.cpp",
+      "bytes": 31518,
+      "sha256": "46d117a89056fcded5219246e4f80bf50f62e381a46e8e2532efbfd24e4688ec"
+    },
+    {
+      "path": "tests/native/test_enlargement_dialog.cpp",
+      "bytes": 7592,
+      "sha256": "a31dab06a27d18ed856af6fa8f6c72f2d662d59cb60a5a40845b884b61990739"
+    },
+    {
+      "path": "tests/python/test_selection_enlargement_workflow.py",
+      "bytes": 11053,
+      "sha256": "8686d26ee3318016a5f092ff294f7dc8252c9653baaa842eaf105c53da997002"
+    },
+    {
+      "path": "docs/parity/SELECTION_ENLARGEMENT.md",
+      "bytes": 10810,
+      "sha256": "ef91657eac0f6cfbda3296a9165e424780e142b457d82baf3e1452b4193921e2"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "build/p12i-workflow-enlargement001/windows-qualified004/receipt.json",
+      "bytes": 63757,
+      "sha256": "5ada261a86327d1727a5e42d29bcafff10fa48422a8dec7b9761f74759bc56b8"
+    },
+    {
+      "path": "build/p12i-workflow-enlargement001/windows-qualified004/native.xml",
+      "bytes": 5328,
+      "sha256": "055ac9975fe913e6da2e71bb10fa293505265de83ca457af9b30f65864aba6a9"
+    },
+    {
+      "path": "build/p12i-workflow-enlargement001/windows-qualified004/enlargement-dialog-retained001.json",
+      "bytes": 35934,
+      "sha256": "89d98116f322744462ceb38b1bb3a7a9c45180d42de2924b6177b1b38232fa03"
+    },
+    {
+      "path": "build/p12i-workflow-enlargement001/windows-python006/receipt.json",
+      "bytes": 6418,
+      "sha256": "97492f297fa62529f6fccdbbcaf23ade6bdfd2b38c4282641ef8145ee6079958"
+    },
+    {
+      "path": "build/p12i-workflow-enlargement001/windows-python006/collection.json",
+      "bytes": 3084085,
+      "sha256": "1491b94c9560ea134df92f72cdb84e9e7052ad3b3067ded7a537f58d512b0ae2"
+    },
+    {
+      "path": "build/p12i-workflow-enlargement001/windows-python006/pytest.xml",
+      "bytes": 3779079,
+      "sha256": "7bdb17641b74fe2c5f0f796ab70074d91c8fa88c98a51d0c4950bd5aab7ab57f"
+    },
+    {
+      "path": "build/p12i-workflow-enlargement001/windows-sdk001/receipt.json",
+      "bytes": 463,
+      "sha256": "27027b6a3d85295365157fa0535b64c486c149bc906413dcb0b934414065fafb"
+    },
+    {
+      "path": "build/p12i-workflow-enlargement001/windows-ui001/receipt.json",
+      "bytes": 1007,
+      "sha256": "bc5a6c6a844ef4ff79b2562f03f4da169998ff1030cc7c31e89c40dcd9f52e05"
+    },
+    {
+      "path": "build/p12i-workflow-enlargement001/windows-cleanup001.json",
+      "bytes": 345467,
+      "sha256": "fcfc36d6f0acf907f4b118fc71cd691bc2819b0645c37b25dacdc89afef35ebb"
+    },
+    {
+      "path": "build/p12i-workflow-enlargement001/windows-products001.json",
+      "bytes": 7684,
+      "sha256": "ae57bef27dc0e078121c23e867c9dcebae989d9bbc64641fa39bce775ce81a75"
+    },
+    {
+      "path": "build/p12i-workflow-enlargement001/linux-qualified004/receipt.json",
+      "bytes": 63026,
+      "sha256": "48a3057db137ddf87addf5f7637958d128d1f0b614d1ae5586e86b4f288b8c30"
+    },
+    {
+      "path": "build/p12i-workflow-enlargement001/linux-qualified004/native.xml",
+      "bytes": 5290,
+      "sha256": "d7d38af477580207c7f3b7be9eb33942b5876ab9507a07d2a4e5edc4750dc12a"
+    },
+    {
+      "path": "build/p12i-workflow-enlargement001/linux-qualified004/enlargement-dialog-retained001.json",
+      "bytes": 34413,
+      "sha256": "ca06568c1c97877ac9680dc1b3d96927fbe704df3b7c582d1d3c4b3854169ba9"
+    },
+    {
+      "path": "build/p12i-workflow-enlargement001/linux-python006/receipt.json",
+      "bytes": 6136,
+      "sha256": "d264a96b13de68b5e64534b01503af5e28d261447dc4a995868aa024a5419b31"
+    },
+    {
+      "path": "build/p12i-workflow-enlargement001/linux-python006/collection.json",
+      "bytes": 3063664,
+      "sha256": "e28970bd3cb0070f4b34442cb9b318f64fa4762231c431f6c2eb6abcc72380bb"
+    },
+    {
+      "path": "build/p12i-workflow-enlargement001/linux-python006/pytest.xml",
+      "bytes": 3779079,
+      "sha256": "fda6e10ca54ccb91bb4574f7fb4fd1ef740f48e9aa4afe77e7859c2d873be7a2"
+    },
+    {
+      "path": "build/p12i-workflow-enlargement001/linux-sdk001/receipt.json",
+      "bytes": 436,
+      "sha256": "b8b75578e4399614b3cc52d2d0d22793cd6ffaa367dcfe92248b94aa2d3128ff"
+    },
+    {
+      "path": "build/p12i-workflow-enlargement001/linux-ui001/receipt.json",
+      "bytes": 834,
+      "sha256": "80de43dda31ff7938a6c724e541d7c5de618bed008a7cb3485658496e2bdf0e3"
+    },
+    {
+      "path": "build/p12i-workflow-enlargement001/linux-cleanup001.json",
+      "bytes": 481479,
+      "sha256": "8a78f9445edb30b629e7955c11e838692cddd661c6cc4402e3a07bee9c5c2fa5"
+    },
+    {
+      "path": "build/p12i-workflow-enlargement001/linux-products001.json",
+      "bytes": 5988,
+      "sha256": "4e0b2fba4ce60beebc6e7f1d0ad7228a8524be73e1b91215669be1328e9e7cdf"
+    },
+    {
+      "path": "build/p12i-workflow-enlargement001/source-manifest004.json",
+      "bytes": 62078,
+      "sha256": "fcccc3360f27c4211846da1fbb3ef9dd150fcc07ea51cf2e70c1549d61423cde"
+    },
+    {
+      "path": "build/p12i-workflow-enlargement001/licenses001.log",
+      "bytes": 53,
+      "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+    },
+    {
+      "path": "build/p12i-workflow-enlargement001/plan001.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    }
+  ],
+  "qualification": {
+    "hosts": {
+      "windows": {
+        "installed_checks": 20419,
+        "new_workflow_checks": 53,
+        "additional_existing_workflow_checks": 12578,
+        "prior_installed_ids_retained": 7788,
+        "native_groups": 16,
+        "actual_shared_imgui_source_modes": 3,
+        "installed_sdk_consumers": 1,
+        "standalone_app_probes": 3,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      },
+      "linux": {
+        "installed_checks": 20419,
+        "new_workflow_checks": 53,
+        "additional_existing_workflow_checks": 12578,
+        "prior_installed_ids_retained": 7788,
+        "native_groups": 16,
+        "actual_shared_imgui_source_modes": 3,
+        "installed_sdk_consumers": 1,
+        "standalone_app_probes": 3,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    "compiled_source_inputs": 559,
+    "total_archived_scratch_bytes": 798235448,
+    "archived_scratch_bytes": {
+      "windows": 390710804,
+      "linux": 407524644
+    },
+    "cpp_shared_imgui_program_adoption": true,
+    "new_parameter_edit_gesture_acceptance": false,
+    "new_paired_python_launch_gesture_acceptance": false,
+    "failed_attempts": "Initial byte-edit preparation assertion was corrected before qualification. Python runs exposed test assumptions about crosshair list copies, 255 mask bytes, title-edit history and staged batch files; test preimages and failed XML/logs remain. A broadened run omitted its required RGB probe environment variable; final runs use the current installed probe receipt. Production behavior was not relaxed to make these checks pass."
+  },
+  "requirements": {
+    "count": 99,
+    "statuses": {
+      "in_progress": 47,
+      "open": 52
+    },
+    "original_triples_unchanged": true,
+    "historical_verification_runs_unchanged": true
+  },
+  "checks": {
+    "commercial_dependencies": "passed; no added dependency",
+    "plan_inventory": "historical Auto producer-source fingerprint mismatch remains unresolved; not passed"
+  },
+  "remaining": [
+    "Retain off-grid irregular geometry across repeated transformations and complete ImageJ shape/subpixel contracts.",
+    "Finish remembered last-use defaults and managed large-ROI UI/cancellation.",
+    "Qualify full parameter-edit gestures, paired Python-launch gestures and remaining persistence/platform/resource cases.",
+    "Complete all original ImageJ/Fiji feature families and recover historical Auto preimages without changing old expectations."
+  ]
+}

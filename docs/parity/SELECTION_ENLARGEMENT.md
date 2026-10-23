@@ -111,8 +111,7 @@ publication. Preparation exposes no pixel edit or pixel Undo/Redo step.
 Changed desktop publications append exactly one complete record when recording
 is enabled. Exact no-ops append nothing. The Workflow panel provides dedicated
 captured Replay and explicit Rebind controls. Records round-trip through native
-sessions; reopened owners require explicit rebind. Generic workflow/batch-program
-integration remains a separate requirement.
+sessions; reopened owners require explicit rebind. Portable workflow and session-batch integration is described below.
 
 The core command bound includes retained display/record/geometry, enlargement
 scratch and preparation's document metadata/annotations. Existing pixels/history,
@@ -133,3 +132,41 @@ Python-launch gesture acceptance. Off-grid irregular retention, remaining
 reference/presentation/platform/resource cases and all original families remain
 open. See [the geometry receipt](reviews/p12g-selection-enlarge001.json) and
 [command/editor receipt](reviews/p12h-enlargement-command001.json).
+
+## Portable workflows and session Batch
+
+`NativeWorkflowOperation("selection_enlargement", {{"distance", 1.0},
+{"units", std::string("pixels")}}, TargetRequest{})` carries explicit signed distance and
+`pixels` or `calibrated` units through the existing operation program format.
+Python accepts the same operation name and parameter dictionary. Its target
+must be CurrentPlane / ActiveSelection / Planes / InPlace, with no ranges or
+positions. Filter options and the separate filter-calibration flag are refused.
+An optional complete command capture is immutable provenance: its original
+equation is validated even when disabled. Enabled execution always uses the
+preceding stage's selection, current view and X spacing. It never substitutes
+the captured geometry or silently moves to its historical TCZ.
+
+Metadata-only preflight advances selection geometry before admitting subsequent
+filters, histograms and annotation exports. It validates the entire workflow
+before processing samples. The workflow budget charges command working bytes
+and generated records within the existing retained-byte accounting; this is
+not a bound on total process memory. Disabled steps validate portable intent
+without requiring a compatible destination area.
+
+Execution stays detached until publication. Selection-only runs preserve dirty
+state and pixel history; mixed runs publish through one transaction. An enabled
+enlargement adds full Display revision dependencies, independently of whether
+the workflow needs paired pixel/display history. Navigation changes after
+preparation therefore refuse publication without imposing a display replacement
+for selection-only edits. Batch applies choices separately to each selected
+document and preserves the existing staged-file and partial-publication policy.
+
+Run adopts captured enlargement records into explicit portable intent. Review
+shows stage-relative selection/calibration behavior, with distance and unit
+fields in the parameter editor. Standard ordering, enable/disable, program
+save/load and batch input overrides share the native path. C++ actual-input
+checks cover captured adoption, portable preparation and execution against fresh
+geometry in scalar/RGB/IEEE documents. Full parameter-edit gestures, paired
+Python-launch acceptance and final platform/resource acceptance remain open.
+
+See the [workflow qualification receipt](reviews/p12i-workflow-enlargement001.json).

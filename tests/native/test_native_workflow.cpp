@@ -1,5 +1,6 @@
 #include <imagejxx/gaussian_command.hpp>
 #include <imagejxx/native_workflow.hpp>
+#include <imagejxx/selection_enlargement.hpp>
 #include <imagejxx/contrast_apply_command.hpp>
 #include <imagejxx/manual_threshold.hpp>
 #include <imagejxx/rgb_contrast_stack_workflow.hpp>
@@ -27,6 +28,37 @@ template <class F> void refuses(F f) {
     return;
   }
   throw std::runtime_error("Expected workflow refusal");
+}
+void selection_enlargement_workflow_contract(){
+  Image image(9,9,1,PixelType::UInt16);image.pixels.assign(81,10);
+  DatasetReadObserver reads;SpatialCalibration calibration;calibration.spacing={.5,1.5,2};calibration.unit="um";
+  Document owner(Dataset::from_stack({image,image},calibration).observe_reads(reads));
+  owner.select(Selection("rectangle",{{3,3},{6,6}}));
+  auto display=owner.snapshot().display();display.crosshair[2]=1;owner.set_display(display);
+  const auto before=owner.snapshot();
+  NativeWorkflowOperation enlarge;enlarge.operation="selection_enlargement";enlarge.parameters={{"distance",1.},{"units",std::string("calibrated")}};
+  enlarge.original=resolve_selection_enlargement_command(before,{1,SelectionEnlargementUnits::Pixels}).record();
+  const auto program=native_workflow_program_from_json(make_native_workflow_program({enlarge}).json());
+  const auto admission=detail::admit_native_workflow(before,{&enlarge},{});check(admission>0 && reads.counts().plane_reads==0);
+  auto only=prepare_native_workflow(before,program.steps());
+  check(only.preview().data().selection==Selection("rectangle",{{1,1},{8,8}}));
+  check(only.dependencies()==Change::All && reads.counts().plane_reads==0);
+  auto edit=only.begin_edit();owner.commit(edit);check(owner.undo_steps()==0 && !owner.snapshot().dirty());
+  check(owner.snapshot().data().previous_selection==before.data().selection);
+  auto view=owner.snapshot().display();view.crosshair[2]=0;owner.set_display(view);
+  refuses([&]{auto stale=only.begin_edit();owner.commit(stale);});
+  owner.select(*before.data().selection);owner.set_display(before.display());
+  const auto current=owner.snapshot();NativeWorkflowOperation add;add.operation="add";add.parameters={{"value",7.}};
+  auto mixed=prepare_native_workflow(current,{enlarge,add});
+  const auto pixels=mixed.preview().data().dataset.plane({0,0,1})->pixels;
+  for(int y=0;y<9;++y)for(int x=0;x<9;++x)check(pixels[y*9+x]==(x>=1 && x<8 && y>=1 && y<8?17:10));
+  check(mixed.preview().data().dataset.plane()->pixels==image.pixels);
+  auto mixedEdit=mixed.begin_edit();owner.commit(mixedEdit);check(owner.undo_steps()==1);owner.undo();check(owner.snapshot().shares_data(current));
+  const auto count=reads.counts().plane_reads;auto bad=enlarge;(*bad.original)["distance"]=3.;
+  refuses([&]{prepare_native_workflow(owner.snapshot(),{add,bad});});check(reads.counts().plane_reads==count);
+  bad.enabled=false;refuses([&]{make_native_workflow_program({bad});});
+  enlarge.enabled=false;Document empty(Dataset::from_stack({image}));
+  auto disabled=prepare_native_workflow(empty.snapshot(),{enlarge});check(disabled.completed_steps()==0);
 }
 void rgb_session_workflow_contract(){
   Image image(1,1,3,PixelType::UInt8);image.pixels={20,30,30};DatasetReadObserver originalReads,reads;
@@ -385,6 +417,7 @@ int main() {
       op.parameters={{"minimum",0.},{"maximum",1.},{"channels",std::int64_t(7)}};const auto count=reads.counts().plane_reads;
       refuses([&]{prepare_native_workflow(color.snapshot(),{op});});check(reads.counts().plane_reads==count);
     }
+    selection_enlargement_workflow_contract();
     rgb_session_workflow_contract();
     rgb_stack_workflow_contract();
     contrast_workflow_contract();

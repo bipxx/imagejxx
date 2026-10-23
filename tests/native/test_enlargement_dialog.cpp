@@ -3,6 +3,8 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <thread>
+#include <chrono>
 using namespace imagejxx;
 using imagejxx::desktop::Window;
 using imagejxx::desktop::Json;
@@ -14,7 +16,8 @@ public:
  Window &window;HeadlessInputSession session;Json report,deliveries=Json::array();
  explicit Input(Window &w):window(w),session(w){frame();frame();}
  void frame(const Json &events=Json::array()){report=session.frame(events);}
- Json control(const std::string &name){return name.rfind("dialog.",0)==0?report.at("dialog").at("controls").at(name.substr(7)):report.at("host_controls").at(name);}
+ void settle(){for(int i=0;i<3000;++i){frame();if(!report.at("native_workflow").at("working").get<bool>()){frame();return;}std::this_thread::sleep_for(std::chrono::milliseconds(1));}throw std::runtime_error("Workflow worker did not settle");}
+ Json control(const std::string &name){if(name.rfind("workflow.",0)==0)return report.at("native_workflow").at("controls").at(name.substr(9));return name.rfind("dialog.",0)==0?report.at("dialog").at("controls").at(name.substr(7)):report.at("host_controls").at(name);}
  void click(const std::string &name){
   auto hit=control(name);check(hit.at("enabled").get<bool>(),"Disabled control "+name);
   for(int i=0;i<3;++i){frame(Json::array({{{"type","position"},{"space","screen"},{"point",hit.at("point")}}}));auto next=control(name);if(next.at("point")==hit.at("point"))break;hit=next;}
@@ -55,6 +58,21 @@ Json run(const std::filesystem::path &root,int mode){
  check(!after.dirty() && owner->undo_steps()==0 && after.display().t==1 && after.display().c==1 && after.display().crosshair[2]==1,"Dialog changed history/navigation");
  input.menu(true);check(input.report.at("dialog").at("values").at("distance")==-2.,"Shrink default sign differs");
  input.click("dialog.cancel");input.frame();check(owner->snapshot().shares_data(after) && window.workflow.size()==1,"Cancel published geometry");
+ // Adopt the captured command as portable intent, then run it against fresh
+ // live geometry through actual workflow controls. Original geometry is historical.
+ owner->select(Selection("rectangle",{{3,3},{6,6}}));
+ window.action("run_workflow");input.frame();input.frame();
+ input.click("workflow.confirm");input.click("workflow.prepare_program");input.settle();
+ check(input.report.at("native_workflow").at("program_ready").get<bool>(),"Enlargement portable preparation failed");
+ input.click("workflow.keep_program");input.frame();
+ check(window.workflow.size()==1 && window.workflow[0].at("schema")=="imagejxx.native-workflow-program","Captured enlargement did not become a portable program");
+ window.recording=false;window.action("run_workflow");input.frame();input.frame();
+ input.click("workflow.confirm");input.click("workflow.prepare");input.settle();
+ check(input.report.at("native_workflow").at("ready").get<bool>(),"Enlargement workflow execution failed: "+input.report.at("native_workflow").dump());
+ input.click("workflow.apply");input.frame();
+ check(owner->snapshot().data().selection==Selection("rectangle",{{1,1},{8,8}}),"Workflow reused historical mask instead of current selection");
+ check(owner->undo_steps()==0 && !owner->snapshot().dirty(),"Selection workflow created pixel history");
+ window.recording=true;window.action("cancel_native_workflow");input.frame();
  input.menu();view=owner->snapshot().display();view.t=0;owner->set_display(view);const auto stale=owner->snapshot();input.click("dialog.apply");input.frame();
  check(!window.error().empty() && owner->snapshot().shares_data(stale) && window.workflow.size()==1,"Stale captured source was published");
  return {{"mode",mode},{"state","passed"},{"deliveries",input.deliveries},{"record",window.workflow[0]}};

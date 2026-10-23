@@ -99,7 +99,7 @@ public:
   // Only enabled, executed steps. Output indices refer to the retained order.
   std::size_t completed_steps() const { return completed_steps_; }
   std::size_t retained_bytes() const { return retained_bytes_; }
-  Change dependencies() const { return paired_display_ ? Change::All : Change::Data; }
+  Change dependencies() const { return (paired_display_ || guard_display_) ? Change::All : Change::Data; }
   // One guarded transaction. Conversion pairs display with pixel history and
   // requires every captured revision; other steps retain fresh display state.
   // Commit through the source owner;
@@ -114,15 +114,15 @@ private:
   PreparedNativeWorkflow(DocumentSnapshot source, DocumentSnapshot preview,
                          std::vector<NativeWorkflowOutput> outputs,
                          std::vector<NativeWorkflowHistogramOutput> histograms,
-                         std::size_t completed, std::size_t bytes, bool paired_display)
+                         std::size_t completed, std::size_t bytes, bool paired_display, bool guard_display)
       : source_(std::move(source)), preview_(std::move(preview)),
         outputs_(std::move(outputs)), histograms_(std::move(histograms)), completed_steps_(completed),
-        retained_bytes_(bytes), paired_display_(paired_display) {}
+        retained_bytes_(bytes), paired_display_(paired_display), guard_display_(guard_display) {}
   DocumentSnapshot source_, preview_;
   std::vector<NativeWorkflowOutput> outputs_;
   std::vector<NativeWorkflowHistogramOutput> histograms_;
   std::size_t completed_steps_ = 0, retained_bytes_ = 0;
-  bool paired_display_ = false;
+  bool paired_display_ = false, guard_display_ = false;
 };
 // Preflight the entire request, then execute in order on a detached scientific
 // owner with at most one internal undo entry. Each later step sees earlier

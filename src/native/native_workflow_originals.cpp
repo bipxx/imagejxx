@@ -3,6 +3,7 @@
 #include "kernel_control.hpp"
 #include "native_workflow_internal.hpp"
 #include "contrast_apply_workflow.hpp"
+#include "selection_enlargement_workflow.hpp"
 #include "contrast_apply_internal.hpp"
 #include "histogram_command_internal.hpp"
 #include "rgb_dataset_internal.hpp"
@@ -159,9 +160,41 @@ ResolvedRgbContrastApplyCommand workflow_rgb_contrast_apply(const DocumentSnapsh
     const NativeWorkflowOperation &v,const ContrastApplyCommandLimits &limits) {
   return resolve_rgb_contrast_apply_command(source,rgb_contrast_apply_workflow_options(v),v.target,limits);
 }
+SelectionEnlargementCommandLimits selection_enlargement_workflow_limits(std::size_t cap) {
+  SelectionEnlargementCommandLimits result;
+  result.max_working_bytes=std::min(result.max_working_bytes,cap);
+  return result;
+}
+SelectionEnlargementRequest selection_enlargement_workflow_request(const NativeWorkflowOperation &v) {
+  require(v.operation=="selection_enlargement" && !v.filter_options && !v.use_destination_calibration,
+          "Selection enlargement requires explicit distance and units");
+  require(v.target.scope==TargetScope::CurrentPlane && v.target.roi==RoiPolicy::ActiveSelection &&
+              v.target.mode==ExecutionMode::Planes && v.target.destination==OutputDestination::InPlace &&
+              !v.target.t && !v.target.c && !v.target.z && v.target.positions.empty(),
+          "Selection enlargement uses the current stage selection and view");
+  if(v.original)validate_selection_enlargement_command_record(*v.original);
+  require(v.parameters.size()==2 && v.parameters.count("distance") && v.parameters.count("units"),
+          "Selection enlargement requires distance and units only");
+  const auto distance=std::visit([](const auto &value)->double {
+    using T=std::decay_t<decltype(value)>;
+    if constexpr(std::is_same_v<T,double> || std::is_same_v<T,std::int64_t> || std::is_same_v<T,std::uint64_t>)
+      return axis_command_record::number_value(MetadataValue(value));
+    else throw std::invalid_argument("Selection enlargement distance requires an exact numeric scalar");
+  },v.parameters.at("distance"));
+  require(std::isfinite(distance),"Selection enlargement distance must be finite");
+  const auto *units=std::get_if<std::string>(&v.parameters.at("units"));
+  require(units && (*units=="pixels" || *units=="calibrated"),"Unknown selection enlargement units");
+  return {distance,*units=="pixels"?SelectionEnlargementUnits::Pixels:SelectionEnlargementUnits::Calibrated};
+}
+ResolvedSelectionEnlargementCommand workflow_selection_enlargement(const DocumentSnapshot &source,
+    const NativeWorkflowOperation &v,const SelectionEnlargementCommandLimits &limits,const ExecutionControl &control) {
+  const auto request=selection_enlargement_workflow_request(v);
+  return resolve_selection_enlargement_command(source,request,limits,control);
+}
 void validate_native_workflow_operation_original(
     const std::string &id, const OperationParameters &parameters,
     const MetadataObject &r) {
+  if(id=="selection_enlargement"){validate_selection_enlargement_command_record(r);return;}
   if(id=="rgb_contrast_session"){require(parameters.empty(),"RGB session workflow retains saved history");validate_rgb_contrast_session_command_record(r);return;}
   if(id=="rgb_contrast_stack"){require(parameters.empty(),"RGB stack workflow retains saved mappings");validate_rgb_contrast_stack_command_record(r);return;}
   if(id=="rgb_contrast_apply"){validate_rgb_contrast_apply_command_record(r);return;}
@@ -193,6 +226,7 @@ void validate_native_workflow_operation_original(
 }
 void validate_native_workflow_operation_intent(
     const NativeWorkflowOperation &v) {
+  if(v.operation=="selection_enlargement"){(void)selection_enlargement_workflow_request(v);return;}
   if(v.operation=="rgb_contrast_session"){validate_rgb_contrast_session_workflow_intent(v);return;}
   if(v.operation=="rgb_contrast_stack"){validate_rgb_contrast_stack_workflow_intent(v);return;}
   if(v.operation=="rgb_contrast_apply"){(void)rgb_contrast_apply_workflow_options(v);return;}
