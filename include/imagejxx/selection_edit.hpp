@@ -28,6 +28,17 @@ struct SelectionEnlargementEstimate {
   int rounded_pixels = 0;
   std::size_t padded_pixels = 0, working_bytes = 0;
 };
+struct SelectionRegionRotationEstimate {
+  std::array<int, 2> origin, shape; // global XY origin, intrinsic height/width
+  std::size_t pixels = 0, working_bytes = 0;
+};
+// Borrowed admission before geometry copies, callbacks or output allocation.
+// Regional rotation inverse-maps ImageJ ShapeRoi pixel probes on the full
+// image grid. It preserves off-canvas cells; projection remains explicit.
+SelectionRegionRotationEstimate estimate_selection_region_rotation(
+    const Selection &, int width, int height, double degrees,
+    std::optional<std::array<double, 2>> pivot = {},
+    const SelectionEditLimits & = {}, const ExecutionControl & = {});
 // Borrowed geometry admission for command hosts, without constructing an editor
 // or allocating a raster. Control is used for cancellation only, not callbacks.
 SelectionEnlargementEstimate estimate_selection_enlargement_geometry(

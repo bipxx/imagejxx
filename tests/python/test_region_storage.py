@@ -211,7 +211,9 @@ def test_python_model_and_persistence_use_native_region_values_and_v4(tmp_path):
 
 def test_remaining_unported_transforms_refuse_without_geometry_loss():
     area = stored()
-    with pytest.raises(ValueError): ij.SelectionEditor(area, (9, 9)).rotated(30)
+    rotated = ij.SelectionEditor(area, (9, 9)).rotated(30)
+    assert rotated.is_region and rotated.attributes == area.attributes
+    assert rotated.width == area.width
     with pytest.raises(ValueError): ij.combine_selections(9, 9, [area, area], 'union')
     assert ij.SelectionRegion(area, (9, 9)).bounds == [-2, -2, 3, 3]
 

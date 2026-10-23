@@ -44,9 +44,9 @@ constexpr const char *contract="p06g.saved-roi-geometry-ui.001";
 constexpr std::size_t maxReport=16u*1024u*1024u,maxArchive=32u*1024u*1024u;
 constexpr std::size_t maxContextArchive=64u*1024u*1024u;
 constexpr std::array<const char *,10> ids{"PX01","PX02","PX03","PX04","PX05","PX06","PX07","PX08","PX09","PX10"};
-constexpr std::array<std::size_t,10> frameCaps{140,120,150,170,170,160,170,130,140,180};
+constexpr std::array<std::size_t,11> frameCaps{140,120,150,170,170,160,170,130,140,180,140};
 void require(bool value,const char *message){if(!value)throw std::runtime_error(message);}
-int number(const std::string &id){for(std::size_t i=0;i<ids.size();++i)if(id==ids[i])return int(i);throw std::invalid_argument("Saved ROI UI case must be PX01..PX10");}
+int number(const std::string &id){if(id=="PX11")return 10;for(std::size_t i=0;i<ids.size();++i)if(id==ids[i])return int(i);throw std::invalid_argument("Saved ROI UI case must be PX01..PX10");}
 Json errorJson(const std::exception &e){return {{"type",dynamic_cast<const RevisionConflict *>(&e)?"revision_conflict":
     dynamic_cast<const OperationCancelled *>(&e)?"operation_canceled":dynamic_cast<const std::invalid_argument *>(&e)?"invalid_argument":
     dynamic_cast<const std::out_of_range *>(&e)?"out_of_range":"exception"},{"message",e.what()}};}
@@ -124,6 +124,16 @@ std::shared_ptr<imagejxx::Document> fixture(int n){const auto type=n==1?PixelTyp
   if(n==2){d.rois.push_back({"fresh rotate",rotated("rotated_rectangle"),{},{},{},{}});d.rois.push_back({"ellipse angle zero",rotated("rotated_ellipse"),{},{},{},{}});d.rois.push_back({"ellipse angle ninety",rotated("rotated_ellipse"),{},{},{},{}});}
   if(n==3)d.rois.push_back({"freehand",polygon("freehand"),{},{},{},{}});
   if(n==4){d.rois.push_back({"fresh mask rotate",mask(),{},{},{},{}});d.rois.push_back({"fresh mask clip",mask(),{},{},{},{}});d.rois.push_back({"empty mask",mask(true),{},{},{},{}});}
+  if(n==10) {
+    std::vector<unsigned char> bytes(4,0);
+    for(int y=0;y<3;++y)for(int x=0;x<9;++x) {
+      if(y==1 && x>=3 && x<=5)continue;
+      const auto i=y*9+x;bytes[i/8]|=static_cast<unsigned char>(0x80u>>(i%8));
+    }
+    auto region=styled(Selection::from_packed_region(9,3,std::move(bytes),{-2,2}));
+    d.rois[0].selection=region;
+    d.rois.push_back({"fresh regional numeric",region,{},{},{},{}});
+  }
   if(n==8){d.rois[0].t=1;d.rois[0].c=2;d.rois[0].z=2;}
   d.overlays={{{"kind",std::string("rectangle")},{"points",metadata_array({metadata_array({10,8}),metadata_array({11,9})})},
       {"opaque",metadata_array({std::int64_t(3),std::int64_t(1),std::int64_t(4)})}}};
@@ -153,7 +163,7 @@ private:Window &window_;std::string id_;int n_;fs::path directory_;Clock::time_p
   void imageClick(HeadlessInputSession &,const std::string &,std::array<double,2>,const char *modifier=nullptr);
   void write(const std::string &,const Json &);void cleanup();void perform(HeadlessInputSession &);
   void px01(HeadlessInputSession &);void px02(HeadlessInputSession &);void px03(HeadlessInputSession &);void px04(HeadlessInputSession &);void px05(HeadlessInputSession &);
-  void px06(HeadlessInputSession &);void px07(HeadlessInputSession &);void px08(HeadlessInputSession &);void px09(HeadlessInputSession &);void px10(HeadlessInputSession &);
+  void px06(HeadlessInputSession &);void px07(HeadlessInputSession &);void px08(HeadlessInputSession &);void px09(HeadlessInputSession &);void px10(HeadlessInputSession &);void px11(HeadlessInputSession &);
 };
 Driver::Driver(Window &w,std::string id,std::string context,fs::path directory,std::size_t *contextBytes):window_(w),id_(std::move(id)),n_(number(id_)),directory_(std::move(directory)),
     app_(GaussianCancellationAccess::application(w)),scheduler_(GaussianCancellationAccess::scheduler(w)),contextBytes_(contextBytes){
@@ -336,6 +346,14 @@ void Driver::px04(HeadlessInputSession &s){
   api("minimum_three_api_refusal",[&](Json &row){const auto selection=styled(Selection("polygon",{{2,2},{8,2},{8,7}}));
     row["literal_input"]=selectionJson(selection);row["removed_vertex"]=0;SelectionEditor editor(selection,12,10);row["result"]=selectionJson(editor.removed_vertex(0));});
   checkpoint(s,"minimum_three.after_api");}
+void Driver::px11(HeadlessInputSession &s){
+  report_["regional_rotation_contract"]="p12s.region-rotation-ui.001";
+  open(s,0,"regional_pointer");const auto from=handle(int(SelectionHandleKind::Rotate),0);
+  drag(s,"regional_pointer",from,{2.5-(from[1]-3.5),3.5+(from[0]-2.5)},"Shift");
+  checkpoint(s,"regional_pointer.accepted");
+  open(s,3,"regional_numeric");numeric(s,"Rotate (degrees)","90","regional_numeric.value");
+  checkpoint(s,"regional_numeric.preview");apply(s,"regional_numeric.accepted");
+}
 void Driver::px05(HeadlessInputSession &s){
   open(s,0,"mask_move");drag(s,"mask_move",{3,3},{4,2});
   open(s,3,"mask_rotate");const auto from=handle(int(SelectionHandleKind::Rotate),0);
@@ -458,7 +476,7 @@ void Driver::px10(HeadlessInputSession &s){
   checkpoint(s,"malformed_original.after_api");
 }
 void Driver::perform(HeadlessInputSession &s){switch(n_){case 0:px01(s);break;case 1:px02(s);break;case 2:px03(s);break;case 3:px04(s);break;
-  case 4:px05(s);break;case 5:px06(s);break;case 6:px07(s);break;case 7:px08(s);break;case 8:px09(s);break;case 9:px10(s);break;default:throw std::logic_error("Invalid fixed saved ROI case");}}
+  case 4:px05(s);break;case 5:px06(s);break;case 6:px07(s);break;case 7:px08(s);break;case 8:px09(s);break;case 9:px10(s);break;case 10:px11(s);break;default:throw std::logic_error("Invalid fixed saved ROI case");}}
 void Driver::cleanup(){
   if(!last_.is_null()&&last_.contains("saved_roi_geometry")&&last_.at("saved_roi_geometry").value("active",false))
     window_.action("cancel_selection_properties");

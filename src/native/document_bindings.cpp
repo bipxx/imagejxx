@@ -220,6 +220,16 @@ void bind_document(py::module_ &m) {
       .def_readonly("rounded_pixels",&SelectionEnlargementEstimate::rounded_pixels)
       .def_readonly("padded_pixels",&SelectionEnlargementEstimate::padded_pixels)
       .def_readonly("working_bytes",&SelectionEnlargementEstimate::working_bytes);
+  py::class_<SelectionRegionRotationEstimate>(m,"SelectionRegionRotationEstimate")
+      .def_readonly("origin",&SelectionRegionRotationEstimate::origin)
+      .def_readonly("shape",&SelectionRegionRotationEstimate::shape)
+      .def_readonly("pixels",&SelectionRegionRotationEstimate::pixels)
+      .def_readonly("working_bytes",&SelectionRegionRotationEstimate::working_bytes);
+  m.def("estimate_selection_region_rotation",[](const Selection &s,std::array<int,2> shape,double degrees,
+      std::optional<std::array<double,2>> pivot,SelectionEditLimits limits) {
+    py::gil_scoped_release release;
+    return estimate_selection_region_rotation(s,shape[1],shape[0],degrees,pivot,limits);
+  },py::arg("selection"),py::arg("shape"),py::arg("degrees"),py::arg("pivot")=py::none(),py::arg("limits")=SelectionEditLimits{});
   py::class_<SelectionRegion>(m,"SelectionRegion")
       .def(py::init([](Selection selection,std::array<int,2> shape,std::array<int,2> origin,SelectionEditLimits limits){
         py::gil_scoped_release release;return SelectionRegion(selection,shape[1],shape[0],origin,limits);

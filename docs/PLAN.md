@@ -1,5 +1,22 @@
 # ImageJ and Fiji gap closure plan
 
+**Regional raster rotation, 2026-10-23 (scoped integration):**
+Full regional selections now rotate through the native/Python editor and
+saved-row handle/numeric UI without projecting to the document canvas.
+Borrowed admission bounds the full result frame before copies/callbacks.
+ImageJ pixel probes match 60 pinned upstream observations; identity/empty
+storage, style, holes, disconnected cells and guarded saved-row publication
+have explicit coverage. This remains raster resampling; continuous composite
+paths and repeated path-preserving transforms remain open.
+Windows/Linux each pass 8,555 installed Python checks (80 new), ten
+native groups, an 18-check installed SDK client and 38 standalone UI recipes.
+All prior 7,860 IDs remain included; failure/error/skip counts are zero.
+Verified archives precede removal of 1,041,992,894 owned scratch bytes.
+Original requirement statuses and historical expectations remain unchanged;
+the historical Auto fingerprint gate remains open. Next: continuous paths
+and axis/planar remapping. See [the contract](parity/REGION_ROTATION.md) and
+[the scoped receipt](parity/reviews/p12s-region-rotation001.json).
+
 **Native creation workflows, 2026-10-23 (scoped integration):**
 Typed creation steps now participate in staged native programs, shared Run
 review, sessions and batch. V6 stores complete authored candidates and retains

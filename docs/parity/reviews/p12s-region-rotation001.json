@@ -1,0 +1,3275 @@
+{
+  "schema_version": 1,
+  "id": "p12s.region-rotation.001",
+  "date": "2026-10-23",
+  "state": "scoped-qualified",
+  "acceptance": false,
+  "complete_requirement_coverage": false,
+  "baseline_commit": "64fba11b1060c1e59f140d0a71ada4554422294c",
+  "scope": "Full intrinsic regional raster rotation in SelectionEditor, native/Python interfaces and existing saved-row pointer/numeric UI. Full-frame inverse sampling follows ImageJ 1.54r ShapeRoi.contains pixel probes. Borrowed source/output frame and logical-budget checks precede owned copies, callbacks or output allocation; controlled execution freezes inputs. Identity/empty storage, styles, disconnected cells and holes remain represented. Legacy canvas-mask equations are unchanged. This is a raster operation, not continuous-path-preserving repeated transforms.",
+  "qualification": {
+    "source_generation": "003-production/005-test-contract",
+    "source_inputs": 781,
+    "frozen_test_tree_inputs": 5522,
+    "upstream_rotation_observations": 60,
+    "hosts": {
+      "windows": {
+        "state": "passed",
+        "installed_python_checks": 8555,
+        "new_rotation_checks": 80,
+        "prior_checks_retained": 7860,
+        "native_groups": 10,
+        "installed_sdk_checks": 18,
+        "standalone_ui_recipes": 38,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0,
+        "archived_scratch_bytes": 386825083
+      },
+      "linux": {
+        "state": "passed",
+        "installed_python_checks": 8555,
+        "new_rotation_checks": 80,
+        "prior_checks_retained": 7860,
+        "native_groups": 10,
+        "installed_sdk_checks": 18,
+        "standalone_ui_recipes": 38,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0,
+        "archived_scratch_bytes": 655167811
+      }
+    },
+    "removed_scratch_bytes": 1041992894
+  },
+  "regressions": {
+    "sampling": "Actual upstream comparisons found an arbitrary-angle cell differing from exact-center sampling. The old native module/source and failing XML are preserved. Pixel probes now match ShapeRoi.contains; the original 60-case fixture is unchanged.",
+    "harness": "Initial SDK example called a nonexistent free publication function; it now uses Application capture/prepare/publish. New UI reader uses the producer role-keyed states map."
+  },
+  "remaining": [
+    "Continuous composite path storage and path-preserving repeated transforms.",
+    "Axis/planar remapping, ImageJ ROI interchange, persistent tool settings, managed runtime acceptance and other original open/in-progress requirements."
+  ],
+  "updated_current_test": "The former regional-rotation refusal is now a positive regional/style check. Its original source and failing run are retained; legacy canvas-Boolean refusal remains.",
+  "historical_gate": {
+    "state": "open",
+    "reason": "histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed",
+    "original_expectations_rewritten": false
+  },
+  "native_filesystem_artifacts": [
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/batch001/all/first-processed.ijx",
+      "bytes": 645,
+      "sha256": "539edd519bf85611bd4c124fd355df6578b2b15a87038a0331d0d28e1af24fa0"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/batch001/all/second-processed.ijx",
+      "bytes": 652,
+      "sha256": "8dc3f86c0b5a931a35be022672e92c4901c5003981567e16fea6ba33f536d0ee"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/batch001/bad-batch.json",
+      "bytes": 2288,
+      "sha256": "90260c7cbfd48509b16bd05315cd7730ecffc0fc3ae8abde3a7b4bdb8449376a"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/batch001/batch-review.png",
+      "bytes": 50096,
+      "sha256": "c7c1d14694c2e511daacf6953f5f6589b21dc10458ebe21e1f4f393180340aa5"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/batch001/batch-setup-loaded.png",
+      "bytes": 49733,
+      "sha256": "dc7dae19dfaca966119dd57c50a902052ce485b073393521a6cbe2a8eeb25a2d"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/batch001/case.json",
+      "bytes": 21092360,
+      "sha256": "2e3824644030733e69566b09c4a5bf9668215e5867bae8634ffcbfac5c7d7e2c"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/batch001/first.ijx",
+      "bytes": 631,
+      "sha256": "a0ab062c2182cf53534b4ad04012fb0a92eb3ad2710e3cbc288695975f349126"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/batch001/input-review.png",
+      "bytes": 37233,
+      "sha256": "d8969003d41926637582f524ec68f80dc21dd73a6b64fbd8e5014708b40c88d1"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/batch001/overrides/first-processed.ijx",
+      "bytes": 643,
+      "sha256": "d69bcd8fc0c1c92d6812dfb327d89a4d23e3f3931363a66cadba02b81d879047"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/batch001/overrides/second-processed.ijx",
+      "bytes": 642,
+      "sha256": "4b8080012acbec40dcb464f9890279948dee02b0bbfc3332bab4fd287eba40a9"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/batch001/race/first-processed.d1.step-2.zip",
+      "bytes": 2037,
+      "sha256": "f3fd2a5ca10bb8ce19bc0a8576d473a27c6656a59b57116738a9c862256d520d"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/batch001/race/first-processed.ijx",
+      "bytes": 1291,
+      "sha256": "33b7d2bc6423fcd656958c27bfd2e108b607f927740ee813a49983fab1e5bf45"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/batch001/race/second-processed.d1.step-2.zip",
+      "bytes": 2037,
+      "sha256": "f3fd2a5ca10bb8ce19bc0a8576d473a27c6656a59b57116738a9c862256d520d"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/batch001/race/second-processed.ijx",
+      "bytes": 4,
+      "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/batch001/saved-batch.json",
+      "bytes": 1328,
+      "sha256": "2b944d8b4f347401a83254ed323d22b60f49b2ffbe0b12f30dbb67f24f362ee9"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/batch001/second.ijx",
+      "bytes": 636,
+      "sha256": "d1ece1fd8b8e74094d479e8badb30a5659e914e41aeeeb9f14be318b0d269e2f"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/batch001/success/first-processed.d1.step-2.zip",
+      "bytes": 2037,
+      "sha256": "f3fd2a5ca10bb8ce19bc0a8576d473a27c6656a59b57116738a9c862256d520d"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/batch001/success/first-processed.ijx",
+      "bytes": 1291,
+      "sha256": "33b7d2bc6423fcd656958c27bfd2e108b607f927740ee813a49983fab1e5bf45"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/batch001/success/second-processed.d1.step-2.zip",
+      "bytes": 2037,
+      "sha256": "f3fd2a5ca10bb8ce19bc0a8576d473a27c6656a59b57116738a9c862256d520d"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/batch001/success/second-processed.ijx",
+      "bytes": 1302,
+      "sha256": "847aaf9dbda1b27b7fc4b09d3844e1ed8e7b5f33c1d41d9e38a5a7ffd9f8b255"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/histogram001/authored/case.json",
+      "bytes": 1167502,
+      "sha256": "5b5ede01df5807a609603652bbe0940d462098f5f21a29c36e8c320b45b20aff"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/histogram001/batch/batch-output/input-processed.d1.after.csv",
+      "bytes": 59,
+      "sha256": "c81ac5afff578d177020d57b487cbbc5451b47d621bb06aa5074cfbe8d57f866"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/histogram001/batch/batch-output/input-processed.d1.initial.csv",
+      "bytes": 59,
+      "sha256": "f2b1e702429cf980b9b1b4c6e41ffbdebda29ca6b9ca2b46257b308cec380b52"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/histogram001/batch/batch-output/input-processed.d2.after.csv",
+      "bytes": 59,
+      "sha256": "cc4d81455200e3091ba387a4a60a52cd12b4da8af14e35a94ed56a78a190db83"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/histogram001/batch/batch-output/input-processed.d2.initial.csv",
+      "bytes": 59,
+      "sha256": "52175435456206fd5d260e07bb2beb54ceebad6b45395492994d6b3d057916e8"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/histogram001/batch/batch-output/input-processed.ijx",
+      "bytes": 506,
+      "sha256": "588a70950b4cdec2bc186df9e5f8a8c879d5ace1f1a7a60382046b093dd48044"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/histogram001/batch/case.json",
+      "bytes": 1485292,
+      "sha256": "3be15cc7759f59a1c83914b1e272359cd51dcca8270d540e7e1b3759b1c82b79"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/histogram001/batch/input.ijx",
+      "bytes": 506,
+      "sha256": "13db8cb8b568da18555d7b60fcc6eb708fed6727a2888b7fba09826700f7124a"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/histogram001/cancel/case.json",
+      "bytes": 604989,
+      "sha256": "cfd58d2ade050b52e98a3c9940dd5b061d21b24f8cef02904161e7a9c692a4f7"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/histogram001/captured/case.json",
+      "bytes": 430538,
+      "sha256": "4e908253d0867c11b072f6699745243ed58e4d66992df98e78c626b87828f4b2"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/histogram001/choices/case.json",
+      "bytes": 1221095,
+      "sha256": "08dcc78bfad57e973dc627deeb5a3fa66a22dfec4c55688c575cef00f7deec84"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/histogram001/conflict/after.csv",
+      "bytes": 14,
+      "sha256": "8b74229eb8eb7ed7c77f8fb9f04d52d52297d2d506cedc1e9ea91dfbf9856253"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/histogram001/conflict/before.csv",
+      "bytes": 59,
+      "sha256": "f2b1e702429cf980b9b1b4c6e41ffbdebda29ca6b9ca2b46257b308cec380b52"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/histogram001/conflict/case.json",
+      "bytes": 738005,
+      "sha256": "6981c2c92e41851435e45684aa7f5f594544c1f01f87ee8705f9b3d88af1bab5"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/histogram001/disabled/case.json",
+      "bytes": 529533,
+      "sha256": "65632ac854fe190be327870ea139d021535c6e78aa6d43a1583592a60a4a7108"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/histogram001/invalid_choices/case.json",
+      "bytes": 788450,
+      "sha256": "a06f46e577f074f41cd28dd06c86353a02d2e6bc8e6d95846f631e111157a1dc"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/histogram001/preview/case.json",
+      "bytes": 438522,
+      "sha256": "7c8a822ebcc61b32917c05f0259723957b02d5e9853059cda09f435062c75049"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/histogram001/raw_choices/case.json",
+      "bytes": 1075139,
+      "sha256": "53085db2a9d54c058113c64ed62cb3d2273b1390701bdb2a503f2e27ea3b8276"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/histogram001/readonly/case.json",
+      "bytes": 360892,
+      "sha256": "1fedc4aeb2db44e89ddc7926035d71da3252de9c4a60dea542d6d9a928e2911f"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/histogram001/restore/case.json",
+      "bytes": 1222238,
+      "sha256": "c7323e08c42c2910c255baad15fce564cbe58afc9427a1330804d6101869124e"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/histogram001/run/after.csv",
+      "bytes": 59,
+      "sha256": "c81ac5afff578d177020d57b487cbbc5451b47d621bb06aa5074cfbe8d57f866"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/histogram001/run/before.csv",
+      "bytes": 59,
+      "sha256": "6425a55e91e754abcf70d78747986255f1a1651fc4cf8df9b6e952a30bca65b2"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/histogram001/run/case.json",
+      "bytes": 1052677,
+      "sha256": "995d07e0691e0fafe99a844ce313c590409b02cd0d02fcd1115d10437dc56aa2"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/histogram001/stale/case.json",
+      "bytes": 625064,
+      "sha256": "5844051e1f655c1c9aba4c2be4597e17e5e43307842ef25620a450501f40b2a3"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/legacy001/case01/case.json",
+      "bytes": 1103330,
+      "sha256": "60b412fae78a0fd90c04a190bc868562cbd0315360bcefbd013bcb57d7ecd83a"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/legacy001/case02/case.json",
+      "bytes": 1228913,
+      "sha256": "fc4f4ad369c3b7c60b244a23f88bf91357f91dfc5ac25af2d488a3871e5c7d57"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/legacy001/case03/case.json",
+      "bytes": 1229028,
+      "sha256": "5318b37cd81aabf9e122575a93dc69cc0f8fb57a87a9f38d1deefa3fc2c4b729"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/legacy001/case04/case.json",
+      "bytes": 1229172,
+      "sha256": "624726d63745c7071e409c5917e64ee3bc9826694950ff6840477fd9dd816fbf"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/legacy001/case05/case.json",
+      "bytes": 2263099,
+      "sha256": "0366eca8851332986929fc97d6db674426bc214adf3bf43ca4c981af813843d1"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/legacy001/case06/case.json",
+      "bytes": 1962754,
+      "sha256": "1825368be4553bbaf7d8e8bd214e28fb2d6103c665712a823e5b41932e032219"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/legacy001/case07/case.json",
+      "bytes": 1961745,
+      "sha256": "d0a187f0bd602b85824d425f1671000f8d318f6ebc4f8221301eb1f7022fbe9f"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/legacy001/case08/case.json",
+      "bytes": 2146273,
+      "sha256": "3b35964923a51704de32bab84a7fbae91614f318ca7f14b6588338332f5c2d97"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/legacy001/case09/case.json",
+      "bytes": 2193873,
+      "sha256": "42d26b22499ac324e7ecf96a49b199d28803a0909516421dc7c9cb0ff5d3c13f"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/legacy001/case10/case.json",
+      "bytes": 1363342,
+      "sha256": "78db796dff1452821739f3b93d950a8815dcc7e3aed0b9baef78746cde88e5ce"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/legacy001/case11/case.json",
+      "bytes": 4018355,
+      "sha256": "919c44de04b6205174470992b8ddb7066fef2a3a0e2836f7d3f5fac2f4c8d985"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/legacy001/case12/case.json",
+      "bytes": 4301254,
+      "sha256": "98b027c168a8c69bb1c4bc35314df4b2399952346285af8557df28652e6d7349"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/legacy001/case13/case.json",
+      "bytes": 1927690,
+      "sha256": "6fc25f870972e171e7664b6c73d48de363e8d807e873a3541f32bba8011476dc"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/legacy001/case14/case.json",
+      "bytes": 5684724,
+      "sha256": "28674c8bd28cac6e1e1a64582e47e896730c0acc10c4a7f6fc723c3f37b0faaa"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/legacy001/case15/case.json",
+      "bytes": 10467982,
+      "sha256": "2c253ba5720c5f232f0707f068d17f8dc087134c15bf3f385ff33d70cf2c0e70"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/legacy001/case15/selection-creation.ijx",
+      "bytes": 2058,
+      "sha256": "713aa2d758638ccaf8c006f949242a2dcb18e61878bc00ef2c480be7b0ff1e37"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/legacy001/case16/case.json",
+      "bytes": 9464721,
+      "sha256": "09fb8c5e9600c2f931196e8817201e673d31b209876cfbf94b6798d221e46189"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/legacy001/imgui-cpp.json",
+      "bytes": 1805,
+      "sha256": "55655b510740ef8ac15e267fc55af8ade9b8e15e61ed7cc72ee3f02f96d80694"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/batch-output/order-input-processed.ijx",
+      "bytes": 4464,
+      "sha256": "9329fa05c214b436af3baec7db494a90e81f908b6ede9fbd2541e5dfb56f57ff"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/batch-output/parameter-input-processed.ijx",
+      "bytes": 1245,
+      "sha256": "8d0ffc0b91efd4df14c142c1877c99bae9f7b0699598940a755e80550a3c8741"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/batch-output/portable-input-processed.d1.step-2.zip",
+      "bytes": 3844,
+      "sha256": "013a7801c46a02684ac971d3ae1c01814a759c54f8364c203df7a8e31753bb90"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/batch-output/portable-input-processed.ijx",
+      "bytes": 4427,
+      "sha256": "ec12b250f57daa628004e6c059e5ec5e0657cfbc95acbf088387c047cb5dd4e6"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/choice-review.png",
+      "bytes": 33043,
+      "sha256": "92adfdfea1296c730b350c8b3574db8da7c9434e03bee1c9df04e17aae077df8"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/duplicate.json",
+      "bytes": 79,
+      "sha256": "36c32534ab576662b3b025e8e1056dc178332a0836eb2552b87d291f8b481024"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/image-preview.png",
+      "bytes": 34845,
+      "sha256": "91aa998935747a1ab1d099cb1e5a94db34af07426d0561ea3ceef289eee39830"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/legacy-portable.json",
+      "bytes": 11308,
+      "sha256": "14e7b55aec897baa24eb0d625cae81ff35813e4e29df3de3c6ed0b6612f0d9b4"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/legacy-reedited.roi",
+      "bytes": 3794,
+      "sha256": "9b65114edd25a233ccf8c43052a4cda959e3e46c729eefe33a78cdff83abd55f"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/legacy.json",
+      "bytes": 17226,
+      "sha256": "d4cee3cc94747a550d74fef342aa65746bc2f6616afcb950082f47767893210a"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/order-active.zip",
+      "bytes": 2083,
+      "sha256": "ac611c5c651fa9f671d7d9bd3138a95e1bdba0c44cceac577b56a844396e15e2"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/order-all-disabled.json",
+      "bytes": 27930,
+      "sha256": "2e5dc5ac6f4c0a75e3efa907d79a787540b0e9ab7c516f650e2888373adb4b87"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/order-edited.json",
+      "bytes": 27926,
+      "sha256": "d92932cc9981263c493b550ed339005d0ecabbaca888ab2eb426a682a3c2c863"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/order-input.ijx",
+      "bytes": 4464,
+      "sha256": "9329fa05c214b436af3baec7db494a90e81f908b6ede9fbd2541e5dfb56f57ff"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/order-review.png",
+      "bytes": 35756,
+      "sha256": "946da45331776c52ab62f1134d3fae5d00c5152e5bdfec0f660fef18283e29bb"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/parameter-input.ijx",
+      "bytes": 1245,
+      "sha256": "8d0ffc0b91efd4df14c142c1877c99bae9f7b0699598940a755e80550a3c8741"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/parameter-review.png",
+      "bytes": 30125,
+      "sha256": "fb861a5cf5b541981b31c06478db382804dd56b50bcbb951830ecd46bac2fb05"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/parameters-array.json",
+      "bytes": 586,
+      "sha256": "db499cd7566d47dc692940843b740be60b326826400d440391860ba292a7d954"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/parameters-gaussian.json",
+      "bytes": 944,
+      "sha256": "0104b69ff4ed210c305c7ac4f6a9e331bb84f095260686e4ba5effe98ec8d269"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/parameters-image.json",
+      "bytes": 655,
+      "sha256": "4fb9c31ef822d2d22c2c5f04c87374be86ee1ca8dc77bf2bab525b101fca245c"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/parameters-rank.json",
+      "bytes": 743,
+      "sha256": "954780719ee3b54c95582fe368f6f81d9b580694eb10fb7a87d09ace0e24711f"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/parameters-registry.json",
+      "bytes": 667,
+      "sha256": "32e2d4b4ebc8aa63a0ab9dd46c50e0b99931dd6c1f037bc6c0f4465546a38a49"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/parameters-signed.json",
+      "bytes": 390,
+      "sha256": "2ccc9f3cde2b6e6062bb2a55ef7392578180c402f509975b86ca9738d875ffaf"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/parameters-unsigned.json",
+      "bytes": 391,
+      "sha256": "c7ff3b5ac64a9913d9d7edbfd9d7c7166c322820f23babe1044d30db39f46982"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/portable-input.ijx",
+      "bytes": 4359,
+      "sha256": "061c950b7641a4af460ffe4a2abcc083518f9b483def9c3b7b6aa949ddf9f3cd"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/program-high-budget.json",
+      "bytes": 13818,
+      "sha256": "4149dc49cf6c2524cfd7f17b29311db9bc28d655005bf3c2aaf4f62fafdb7a0b"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/program-review.png",
+      "bytes": 38545,
+      "sha256": "8206643fa778dfdae5fba4e732772b49efefc1b3a51128c1b9a83eb11f1ebaeb"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/program-\u03bb.json",
+      "bytes": 13893,
+      "sha256": "1840211f238168e096fe437ad69b979979eadea92ca3554984001ed3cbd04dc7"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/authoring001/reviewed.zip",
+      "bytes": 3844,
+      "sha256": "013a7801c46a02684ac971d3ae1c01814a759c54f8364c203df7a8e31753bb90"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/case.json",
+      "bytes": 49721553,
+      "sha256": "0be69ae4ab6feb5943d1a07aedd06eeee6a87d1d46b62078fc3c698fe9b721f6"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/complete.zip",
+      "bytes": 2083,
+      "sha256": "ac611c5c651fa9f671d7d9bd3138a95e1bdba0c44cceac577b56a844396e15e2"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/race-second.zip",
+      "bytes": 4,
+      "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/race.zip",
+      "bytes": 2083,
+      "sha256": "ac611c5c651fa9f671d7d9bd3138a95e1bdba0c44cceac577b56a844396e15e2"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/recording-off.zip",
+      "bytes": 2083,
+      "sha256": "ac611c5c651fa9f671d7d9bd3138a95e1bdba0c44cceac577b56a844396e15e2"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/workflow-review.png",
+      "bytes": 40841,
+      "sha256": "883359a95dcc4563b7f297bf06c56eb705a7ea640e31f3e2410cfab65da2a753"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/native_workflow001/workflow.ijx",
+      "bytes": 4149,
+      "sha256": "528ee2fee2cf2721423c9ff0a6fe31d9d73d01e002269ca62b915892a6dd4ded"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/regional001/Q01/case.json",
+      "bytes": 1217375,
+      "sha256": "1f288000d102fef220f2d2625b7ccf3c17641dc5da809be9c5c39ad537089146"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/regional001/Q02/case.json",
+      "bytes": 1784182,
+      "sha256": "f3162ead6997b6973ce0a82534b9f7a070d935a9a1b3f59d46f14d418ac54b60"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/regional001/Q03/case.json",
+      "bytes": 1387189,
+      "sha256": "caf17610084f2efdbe1bce84ed300c451eb419fa04ad5eb9db0d9374eb6d971b"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/regional001/Q04/case.json",
+      "bytes": 6335525,
+      "sha256": "49c8a49ba11a63bd3b25044c936fc7dfb2f5863fc5c8136d293a879a876ef8c1"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/rgb001/case.json",
+      "bytes": 70014759,
+      "sha256": "78eb7ef34a2adbf487500e170e84429785a681bdcb46b6bf8f4a6fb388ebbf25"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/rotation001/case-index.json",
+      "bytes": 299,
+      "sha256": "43b622c9018a0b66d13a8e9224927ed8f3ae877ab4db70a2fcc78bc929c32e26"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p12s-qualified-ui003/rotation001/case.json",
+      "bytes": 2457125,
+      "sha256": "ee01775c84ddf0f9b97d77187be556a2ae635549f09a98ac8013337c52d6074b"
+    }
+  ],
+  "sources": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 115895,
+      "sha256": "67458025c02dc9924ca9feee158784ce60b4adca129a1a57a1850d0e03d1ed82"
+    },
+    {
+      "path": "examples/cpp/CMakeLists.txt",
+      "bytes": 19287,
+      "sha256": "df58b80b63b7e2eac15d11e065928dc829d58141b9164bd085b77886cb46364d"
+    },
+    {
+      "path": "examples/cpp/selection_region_rotation.cpp",
+      "bytes": 4595,
+      "sha256": "a2f3abd18395d961f0a91e4ff3ae78be4aa8aa38241e1db8939905475ed4fe66"
+    },
+    {
+      "path": "include/imagejxx/selection_edit.hpp",
+      "bytes": 8632,
+      "sha256": "297e4bab65379dbd9aa9e2699b7786faaea484de4e71d2d851b75eb14d5aaa26"
+    },
+    {
+      "path": "src/desktop/saved_roi_geometry_ui_probe.cpp",
+      "bytes": 64871,
+      "sha256": "43d453321b2477ce7a6630e16fab376507dd133918521946cbcf6e43c2d0ac38"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 77353,
+      "sha256": "979052d351f676b4cc20d582573b04f4eb0d3983b1a0241c498cd7907ee24d49"
+    },
+    {
+      "path": "src/native/document_bindings.cpp",
+      "bytes": 37533,
+      "sha256": "189d685efcddef3749540e2ccb3ae2d13f87f68c5a0c7d3d94f9be5bda3c40f9"
+    },
+    {
+      "path": "src/native/selection_edit.cpp",
+      "bytes": 64254,
+      "sha256": "15ee483c8c6acbf554c63d0f242302167d1e0f0234581991dbefc51930fb45ca"
+    },
+    {
+      "path": "src/native/selection_region_rotation.cpp",
+      "bytes": 6855,
+      "sha256": "0d36358e6a9c385ed01dcb60acf12e2f6c405cd7e582dcb4111544ba5cd2ff45"
+    },
+    {
+      "path": "src/native/selection_region_rotation.hpp",
+      "bytes": 513,
+      "sha256": "d7846777e1750eba3e940eebba22d9fbea5c8d6d081d3362039438ab98569d70"
+    },
+    {
+      "path": "tests/fixtures/selection-region-rotation-imagej154r.json",
+      "bytes": 48943,
+      "sha256": "708ddef2c165033e701e8120d5463327f827e7dd27c513b1c9ec67ab4f99d41c"
+    },
+    {
+      "path": "tests/python/test_region_rotation.py",
+      "bytes": 4957,
+      "sha256": "5c7a13ea9e75a6bbd54da5c3efdc1c6e23d042185f57d8fe44b8e3f254f2735f"
+    },
+    {
+      "path": "tests/python/test_region_storage.py",
+      "bytes": 16125,
+      "sha256": "aeb177639138f3e17af36aba46dd8c1511a76c0325f56448b98fe8e4572e9fc4"
+    },
+    {
+      "path": "tests/reference/SelectionRegionRotationReference.java",
+      "bytes": 1774,
+      "sha256": "163fce7f386b671b9e71d729c0747698dba4003263ce8032f59010cf6157b959"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "build/p12s-region-rotation001/adjust019.py",
+      "bytes": 1790,
+      "sha256": "af365791d917c89ebdd4ce3688d86fe14cc9b1cb1374ec00b5b816e78b99d227"
+    },
+    {
+      "path": "build/p12s-region-rotation001/audit015.py",
+      "bytes": 1584,
+      "sha256": "189152b6280de5f2bd86b43087c0dd9c22da895909f0bb4866fffe83b4c797c4"
+    },
+    {
+      "path": "build/p12s-region-rotation001/cleanup-update012.py",
+      "bytes": 1061,
+      "sha256": "06bf68fecaa88dd00176f02fa37013d12acfdb2e7d59c86a39ea8068ce9b1235"
+    },
+    {
+      "path": "build/p12s-region-rotation001/cleanup008.py",
+      "bytes": 3050,
+      "sha256": "b92dc5634e6af13abd5e81a102ee19e7303d9e4d77c6b54599b1179bbd5e1819"
+    },
+    {
+      "path": "build/p12s-region-rotation001/cleanup010.py",
+      "bytes": 3938,
+      "sha256": "d2559e20a0fc1c128d9d585ad62251a5faa5ab387f7c010dc4269c2506f04cf8"
+    },
+    {
+      "path": "build/p12s-region-rotation001/diagnose011.py",
+      "bytes": 958,
+      "sha256": "cf2b60f398f391aa69e774b91f7721ab8e29f4170de0ea54ba56c12d5a897e9a"
+    },
+    {
+      "path": "build/p12s-region-rotation001/finalize013.py",
+      "bytes": 9141,
+      "sha256": "d05f48e5b2a79b4c65188b460f13630c36e38b024a7be05cb3469ed66c6dcb4b"
+    },
+    {
+      "path": "build/p12s-region-rotation001/generation006.py",
+      "bytes": 785,
+      "sha256": "70c28266576e66d2c6cda5fe38c32c9b0ebf49515bf9d5ed5680a08017e8cfed"
+    },
+    {
+      "path": "build/p12s-region-rotation001/generation010.py",
+      "bytes": 995,
+      "sha256": "b82e9e52bf176e36c56270cc9a22e2e6df02457c9053d80987521687e2663ca4"
+    },
+    {
+      "path": "build/p12s-region-rotation001/harness021.py",
+      "bytes": 1303,
+      "sha256": "a78c04a2e2ffac4550fc1f09aaa332bfd2225a7c4cb0e10836d44cf8a1904247"
+    },
+    {
+      "path": "build/p12s-region-rotation001/inspect-ui014.py",
+      "bytes": 571,
+      "sha256": "b6223d2c68948565a2810f54b85389ccf7d76cfee9271b214d4e64491c5e0f6b"
+    },
+    {
+      "path": "build/p12s-region-rotation001/integrate001.py",
+      "bytes": 2668,
+      "sha256": "dc4f73ab4cca11b25bb426a50161999548e817e700677267a68cf7cff48049e2"
+    },
+    {
+      "path": "build/p12s-region-rotation001/legacy022.py",
+      "bytes": 3415,
+      "sha256": "39b7d7b977a90c4f9d688978b8e07e32d46f974b2a9f1ec7b7bbf93c75190935"
+    },
+    {
+      "path": "build/p12s-region-rotation001/license007.py",
+      "bytes": 293,
+      "sha256": "691e812b40528eaadcf509877f33375b1234b03479303aae3ca36d5e5e599580"
+    },
+    {
+      "path": "build/p12s-region-rotation001/licenses002.log",
+      "bytes": 53,
+      "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-cleanup003.json",
+      "bytes": 242703,
+      "sha256": "8a62a5e099d795b4b8547797d487021887ce6472afd83503c351051eea7d4bf1"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified001/build.log",
+      "bytes": 3798,
+      "sha256": "aac434b031b87bf70b8c53f5edd552d41ceddd5697a90725077f32f601f5721a"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified001/configure.log",
+      "bytes": 544,
+      "sha256": "7358e67937280d18049cc579e8c7775902b6b71f955f7f0bcd2e9c2f28673763"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/build.log",
+      "bytes": 3937,
+      "sha256": "93a68e00fb36a73e200e4b737d6bf92c0fe6395b5f197668a60312308607bf11"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/collection.json",
+      "bytes": 1318738,
+      "sha256": "48e8a355c93935b326e00ec38d5b3a66b91582292ad31aca960a2361fdeb736e"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/configure.log",
+      "bytes": 544,
+      "sha256": "a4e6ed1c76201a62ad9811ef4061bdbf856e7c091a2a1852acd3ca7c4ded1ded"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/install-desktop.log",
+      "bytes": 3358,
+      "sha256": "260c98dcec7f27496f18820d75627cbe12cc42a9c878b57f4c559c64e90bb1e2"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/install-development.log",
+      "bytes": 18495,
+      "sha256": "fe3ecd9472f7f0027b9b86c44e04de00a080d9146a697ec6718534b288cf1755"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/install-io-development.log",
+      "bytes": 806,
+      "sha256": "44adde71c898c547b9a63782afc622675a86f769e98b6993422c8707434e168e"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/install-processing-python.log",
+      "bytes": 5391,
+      "sha256": "16e4d9e417fbe8438b70017a8be176f944a95c2489ae3c4d7222a5d525d1e44f"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/install-receipt.json",
+      "bytes": 684,
+      "sha256": "6a47a1dff5cf93c8032a341b7ca36380bf1a2e73db1e13f6886c6828145b7a97"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/install-scientific-python.log",
+      "bytes": 5563,
+      "sha256": "a6cef6fc366dbafda6feb5fc755a4c2ced1e36f2d76d3433f2f888e0b0ce604c"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/install-Unspecified.log",
+      "bytes": 3500,
+      "sha256": "13a4081c6bd21294258f942b0b22440a97b87aa0e9a92ff3f919be9dbcb5e8ce"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/native.log",
+      "bytes": 1492,
+      "sha256": "0c8d806d50f9fe743a8c44cae5ff30407952199ae7d046eec7e202962d66fdde"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/native.xml",
+      "bytes": 2768,
+      "sha256": "1e65f4c0ab43bfd9050f2fe5a27751d7a8960d983f8ee041ad0e85b11edc7009"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/pytest.xml",
+      "bytes": 3240,
+      "sha256": "a1b4726bdddf0a11791afd242643a1f38a45920ec1f65220f90aeb25450f2108"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/python-receipt.json",
+      "bytes": 2038,
+      "sha256": "a5ff6cb6715bc78debc771ff7fbe8eb591ae0269e676e9e5104af35cfc4da325"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/python.log",
+      "bytes": 1167,
+      "sha256": "6801f9f1a2fdce309c66214263553abbd50ccdf4006e913e2376f23ae6d76f4a"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/sdk-build.log",
+      "bytes": 250,
+      "sha256": "08ba5234225baf5797637e0b0e613cca71230a4b5dcd7c74eccd88b9c4b7afaf"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/sdk-configure.log",
+      "bytes": 571,
+      "sha256": "bffbbd90d418ab9e664f85df4d07dc4ffe0bd1c2adea2bed614dc9f12681d02e"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/sdk-execute.log",
+      "bytes": 83,
+      "sha256": "d8fe6197333c07da22ac4d0b4c2fa8cf63084c3dca7d539259c1051e251b5323"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/standalone.log",
+      "bytes": 42,
+      "sha256": "d23b588a929ae5b5b6fbab1fd1383cf46aa23650ae9f35009df4a135f954c358"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/ui001/batch.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/ui001/histogram-authored.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/ui001/histogram-batch.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/ui001/histogram-cancel.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/ui001/histogram-captured.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/ui001/histogram-choices.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/ui001/histogram-conflict.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/ui001/histogram-disabled.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/ui001/histogram-invalid_choices.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/ui001/histogram-preview.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/ui001/histogram-raw_choices.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/ui001/histogram-readonly.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/ui001/histogram-restore.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/ui001/histogram-run.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/ui001/histogram-stale.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/ui001/legacy.log",
+      "bytes": 368,
+      "sha256": "a074ae61462b0eb38d990eefbdfef2b9c123b3e553d33a6feb1dff897cd3259b"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/ui001/native_workflow.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/ui001/Q01.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/ui001/Q02.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/ui001/Q03.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/ui001/Q04.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/ui001/receipt.json",
+      "bytes": 2035,
+      "sha256": "b74c0bfa7e50359028409ae6d007d4c560cc783c1326115f82dc20c97ce5ba92"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/ui001/regional-rotation.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/ui001/rgb.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/venv-install-processing-python.log",
+      "bytes": 5021,
+      "sha256": "98c9500599452d43541cb9f27db114a5d31123c7a7c1f1e905519bb62946b4cb"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/venv-install-scientific-python.log",
+      "bytes": 5183,
+      "sha256": "e55bb4386cc99288fd6b9c0e790b740e8c10c8e606b1d4be186bf6e9d03c9118"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/venv-install-Unspecified.log",
+      "bytes": 3270,
+      "sha256": "5544cb87ccd1e682501f8721d30e2c5f2f63f7601aa9f63ab26e6fdebf32a2bf"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified002/venv.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/build.log",
+      "bytes": 6068,
+      "sha256": "d918b45f2111218e6c2d1ba7c7b0651d88866966fb901cfeaa4a73557d424c56"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/collection.json",
+      "bytes": 1318738,
+      "sha256": "48e8a355c93935b326e00ec38d5b3a66b91582292ad31aca960a2361fdeb736e"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/configure.log",
+      "bytes": 545,
+      "sha256": "34142561d3e7cef918d22c6b217eb62a03ffbba16ff709956f1a136e4f2639fb"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/install-desktop.log",
+      "bytes": 3358,
+      "sha256": "0b17122bbabd06afd4327f48d1e76ae76268a87a56040f28418e840f13d24440"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/install-development.log",
+      "bytes": 18495,
+      "sha256": "636efc6af3a3456b47a802461e7f0883fa63b1e03fba28307a03e67e6c2c4368"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/install-io-development.log",
+      "bytes": 806,
+      "sha256": "0bd1b531fd7c5ca39dc5756d7849c0b1cf026b4b9c99c9c1713d1717bd69fe75"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/install-processing-python.log",
+      "bytes": 5391,
+      "sha256": "189ae509fbc54de4f20bac86bc1fe4f5c152234c02bd18289b56e7e8cdce7290"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/install-receipt.json",
+      "bytes": 684,
+      "sha256": "12008648c7c6d0e5f8d23db0ea930a4418dd89eced4a8c5c9702dae3eef62739"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/install-scientific-python.log",
+      "bytes": 5563,
+      "sha256": "a6a44658c33f4198ec8a79c26fbf462bb265cb34453ee7b8d724478ed0c3a965"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/install-Unspecified.log",
+      "bytes": 3500,
+      "sha256": "3ddef0056145b1023c2e23b6c5952d8092a701470e8d9f33dc847a2ced822b4e"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/native.log",
+      "bytes": 1492,
+      "sha256": "95764b25082496d5959a4e4dba0f97db10b37ed54b9259ab7c3a83a0e621cafa"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/native.xml",
+      "bytes": 2771,
+      "sha256": "102b0e21b4089132c3f1355cae27ab32bd1202540a85cbd63e1e2b626b7baf0f"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/batch001/bad-batch.json",
+      "bytes": 2288,
+      "sha256": "2845b995a9f6df053a227f17871062d73e6e8089585b06f5f0ac273857ae4d8f"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/batch001/case.json",
+      "bytes": 23266493,
+      "sha256": "d0899d76c77843d8f441aab4ae6b8c2ff1f30157cc67672bb52146e9eb5f58b0"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/batch001/saved-batch.json",
+      "bytes": 1328,
+      "sha256": "361e8c547cc933c188c45a37fa57e4221f568e5eb3fa5c4bb377eaf64f027fe9"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/histogram001/authored/case.json",
+      "bytes": 1346349,
+      "sha256": "9eaecd741df7682e3ff3a73b083250192cfcc360a4e050a72771fbbb6488163a"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/histogram001/batch/case.json",
+      "bytes": 1819704,
+      "sha256": "61b75cb0aab7a7c9917554f10168c4b447335a699bda19142e029acc2e5f8b64"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/histogram001/cancel/case.json",
+      "bytes": 604989,
+      "sha256": "c52380f498386ca1fdbb35766eebe7c97172756f3220b662323e5fee81a62aaf"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/histogram001/captured/case.json",
+      "bytes": 547633,
+      "sha256": "d458273ea60917f040cf7b51d1f643d1b923c8612255371adb62eb8041686e96"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/histogram001/choices/case.json",
+      "bytes": 1444767,
+      "sha256": "6a3c2f7e78bf9f845c12d263100d7c0976476d77d4b9102ece13ff1284218b75"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/histogram001/conflict/case.json",
+      "bytes": 838705,
+      "sha256": "310107d0888c422373b9280297af880278ff93d3c645d42c6775ccb995787ce5"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/histogram001/disabled/case.json",
+      "bytes": 529533,
+      "sha256": "b4c6e2c8a765d5f206e3fd450a6669db0e87faee276596cfb38cfc1452d6d204"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/histogram001/invalid_choices/case.json",
+      "bytes": 797395,
+      "sha256": "dde823227ea134132ce0e5f140fb3de6ea2e6d1cbddc189be6a10da342c49822"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/histogram001/preview/case.json",
+      "bytes": 527896,
+      "sha256": "e5ee1948b76b1a89e66751c26fdcec36d1cfc768ca3c8c0e5ac882e6d0cf4783"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/histogram001/raw_choices/case.json",
+      "bytes": 1101950,
+      "sha256": "a7dc7b6e2e018f0bfb4debfc70b9827844ab0e83dc0e1bdbe0d536a46887c09e"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/histogram001/readonly/case.json",
+      "bytes": 453794,
+      "sha256": "e00440e61158a3a7133b6f6e03b5ea958ea0033dd391446c6f46c64430310d8d"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/histogram001/restore/case.json",
+      "bytes": 1284860,
+      "sha256": "03054590a4d5ffaeb2d17fc593e93977401b6fd15e56985432e87852baa42271"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/histogram001/run/case.json",
+      "bytes": 1281252,
+      "sha256": "68a9655de0136e564858fc0a50f33d2b4bb200e6e86f8f75c0820b3496452082"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/histogram001/stale/case.json",
+      "bytes": 661652,
+      "sha256": "86a04c3ae0c7b2e82081bce70309a2e86898634188b7817e1774ae654bd8ee1c"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/legacy001/case01/case.json",
+      "bytes": 1103288,
+      "sha256": "793a36a33796721b6a14602c83828ebd4b7d938ac05e197177b6199742af0eba"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/legacy001/case02/case.json",
+      "bytes": 1228732,
+      "sha256": "7b91f367133207271caf1d2a50d7b24ea4a00ae7c4864c32190187ab82c89bca"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/legacy001/case03/case.json",
+      "bytes": 1229043,
+      "sha256": "eafdab6507f07b258a17cf49e497af46075cef0d36c63674f861a454a4b8d663"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/legacy001/case04/case.json",
+      "bytes": 1229172,
+      "sha256": "cb359f595a0f81c1e344cd63fb809cf81015dc0b7c6121a35b856a60716cf728"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/legacy001/case05/case.json",
+      "bytes": 2263098,
+      "sha256": "25a98405ae156d715d97c7d3863c9b91f4c5cad8422ca165366c8fbcb0d66fbd"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/legacy001/case06/case.json",
+      "bytes": 1962686,
+      "sha256": "76d8eddb65915d760188bfe5c7af369b70b90452df75a3aaf4b645b2dea43612"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/legacy001/case07/case.json",
+      "bytes": 1961824,
+      "sha256": "70e9726e82e5c526b9221b2ce51d65354761fc49c24cd88be02c37c5fd889f44"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/legacy001/case08/case.json",
+      "bytes": 2146332,
+      "sha256": "cfe55ed96aacb5b95bae7fdcd88a7f0d3ee7389a511cdf5e55818e1eaa71f3e2"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/legacy001/case09/case.json",
+      "bytes": 2193872,
+      "sha256": "6a4fb4f32e561d8eed813cc632354c2ec49f1b087268197a7e2aafe1c98c546f"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/legacy001/case10/case.json",
+      "bytes": 1363194,
+      "sha256": "05c60dd233848f02d631d1ca37926665918f751c6b890aae2ee4baf19c20c126"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/legacy001/case11/case.json",
+      "bytes": 4018295,
+      "sha256": "e9ebf4d5fedcab3f6bc0f0a980c1997d8a9ddcf55411fb9891cc5b6434537872"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/legacy001/case12/case.json",
+      "bytes": 4300846,
+      "sha256": "bfba88a89c0110be6e888073f77d06cfe80f7903c1fc55b5aa0bdff1de49a3b2"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/legacy001/case13/case.json",
+      "bytes": 1927690,
+      "sha256": "40b370e3297bfedb0c5698597a676f262131a3f086b6e91ca823e5ded323f612"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/legacy001/case14/case.json",
+      "bytes": 5684722,
+      "sha256": "54f870b6a6a48b31422ae859a827ce8c94cab837ec7f6b3fd9b52805cb54818c"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/legacy001/case15/case.json",
+      "bytes": 10467655,
+      "sha256": "deb84f4a70ee6994c44a2b2480a245cc6bac3c94b747f5da14bfca9c314d3d72"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/legacy001/case16/case.json",
+      "bytes": 9464685,
+      "sha256": "658e1da378f7d94ddeb2897fc5a20efa1e1881407a55d347ea64eb6cceff7e76"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/legacy001/imgui-cpp.json",
+      "bytes": 1805,
+      "sha256": "367231fbd83e623f7a51d1f301201eacf4d2b6319affe50713beb83410410481"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/native_workflow001/authoring001/duplicate.json",
+      "bytes": 79,
+      "sha256": "36c32534ab576662b3b025e8e1056dc178332a0836eb2552b87d291f8b481024"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/native_workflow001/authoring001/legacy-portable.json",
+      "bytes": 11308,
+      "sha256": "437d4a869d0a5cdd180300a3ddb529128eebdd98c541c2436d9f849eae2a0785"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/native_workflow001/authoring001/legacy.json",
+      "bytes": 17226,
+      "sha256": "a48e2ee23be208c5f5c0529cdb7b651e128b568a08fc9f5991d280c3d22c13f7"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/native_workflow001/authoring001/order-all-disabled.json",
+      "bytes": 27930,
+      "sha256": "6a06cbe1bf62f8e8e85d1daf4fd481de6f8a16022c01de70b80fbe28e6959f37"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/native_workflow001/authoring001/order-edited.json",
+      "bytes": 27926,
+      "sha256": "222ace64ce0b5de85f460370344441f04df068372d5dcd413371c6c1370fb912"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/native_workflow001/authoring001/parameters-array.json",
+      "bytes": 586,
+      "sha256": "db499cd7566d47dc692940843b740be60b326826400d440391860ba292a7d954"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/native_workflow001/authoring001/parameters-gaussian.json",
+      "bytes": 944,
+      "sha256": "7651aeacaf876de1e90336993e4c27f3ce6937990f015dfd9542e1d874f001e7"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/native_workflow001/authoring001/parameters-image.json",
+      "bytes": 655,
+      "sha256": "4fb9c31ef822d2d22c2c5f04c87374be86ee1ca8dc77bf2bab525b101fca245c"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/native_workflow001/authoring001/parameters-rank.json",
+      "bytes": 743,
+      "sha256": "95477372cd3a148c8e36a4d2ef9748c69a9ce3ba8f784794043e795a84329bc0"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/native_workflow001/authoring001/parameters-registry.json",
+      "bytes": 667,
+      "sha256": "32e2d4b4ebc8aa63a0ab9dd46c50e0b99931dd6c1f037bc6c0f4465546a38a49"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/native_workflow001/authoring001/parameters-signed.json",
+      "bytes": 390,
+      "sha256": "2ccc9f3cde2b6e6062bb2a55ef7392578180c402f509975b86ca9738d875ffaf"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/native_workflow001/authoring001/parameters-unsigned.json",
+      "bytes": 391,
+      "sha256": "c7ff3b5ac64a9913d9d7edbfd9d7c7166c322820f23babe1044d30db39f46982"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/native_workflow001/authoring001/program-high-budget.json",
+      "bytes": 13818,
+      "sha256": "60ed94af5e8a90897f0d0d052a8c64120e021a3e9b521951345e4d559e4bf812"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/native_workflow001/authoring001/program-\u03bb.json",
+      "bytes": 13893,
+      "sha256": "2b8c3ef7016d33dbc41eb8006490bc702eff8fde136e4ab6779936bbf2f6161e"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/native_workflow001/case.json",
+      "bytes": 49671188,
+      "sha256": "34394a21839c31e32d0103b45974b60118c5538af6f77cd431146ed696189815"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/regional001/Q01/case.json",
+      "bytes": 1217391,
+      "sha256": "4ad632e2c27103c0649d684541713499d6837f0addbb10fde23db25308abb1e6"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/regional001/Q02/case.json",
+      "bytes": 1784255,
+      "sha256": "4a33b3dcf4ae2da2465b5f86cb4b4b6e13e0fbd3873bed3852a7b34eb7773d2d"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/regional001/Q03/case.json",
+      "bytes": 1387345,
+      "sha256": "b2143ce01c707545947742919c73e481cdf51e4124efe7577ed97f325b8108ef"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/regional001/Q04/case.json",
+      "bytes": 6210253,
+      "sha256": "72f1a45743ae1c753286a77a881ecf743b87c6b6a9a2e6e2bac6e7276b644118"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/rgb001/case.json",
+      "bytes": 70014058,
+      "sha256": "1c866d75f4e01da6989934dded06458da820801ae85fb264bb2c3573f986f29b"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/rotation001/case-index.json",
+      "bytes": 299,
+      "sha256": "436791bb357ba443085814041f903f1be95391ec917c1fc92b8fd04a9d49e429"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/preimage-native002/rotation001/case.json",
+      "bytes": 2457410,
+      "sha256": "a3bc7d69c950142239ddd120d95ea6a3e8602b37c7f610b928b8258fd7e454b0"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/provider-build.log",
+      "bytes": 183,
+      "sha256": "a4a3ddb8c03c4ec9314c4ba117ddc1163d415dfe2259dcbe546cc900944f73bc"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/provider-receipt.json",
+      "bytes": 281,
+      "sha256": "36943d02dd9cfb4f021b5193e850c39eae48702d6e10d3ba90d21501e0eabd48"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/provider.log",
+      "bytes": 48,
+      "sha256": "1477c5dab0025996106e78a1e373da66a3c4d089b1882628904f5cb0a59290a8"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/pytest.xml",
+      "bytes": 1618865,
+      "sha256": "ae1b200f962d71b72b1f55f00c67ae31d0dc867db802ab8b76aa75975e736833"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/python-receipt.json",
+      "bytes": 783489,
+      "sha256": "09ccf7c69e1b3df4df78fbed350fb272876db8fccddd1cd1ecbf57da3b0ef83d"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/python.log",
+      "bytes": 9639,
+      "sha256": "91804af2ce8018861c32e7011a6218f8e50a2e92e06797087d1fe66a94e23462"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/receipt.json",
+      "bytes": 681,
+      "sha256": "c71675aae1f836d049dfe9a54079eb09ee23ad867e0e65afa619968e94ec4f19"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/sdk-build.log",
+      "bytes": 250,
+      "sha256": "08ba5234225baf5797637e0b0e613cca71230a4b5dcd7c74eccd88b9c4b7afaf"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/sdk-configure.log",
+      "bytes": 570,
+      "sha256": "d04fb70db2fe79f9802a95a6433d7ee987c4990df27b37f29689b7b8092968a8"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/sdk-execute.log",
+      "bytes": 83,
+      "sha256": "d8fe6197333c07da22ac4d0b4c2fa8cf63084c3dca7d539259c1051e251b5323"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/standalone.log",
+      "bytes": 42,
+      "sha256": "d23b588a929ae5b5b6fbab1fd1383cf46aa23650ae9f35009df4a135f954c358"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/batch.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/histogram-authored.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/histogram-batch.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/histogram-cancel.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/histogram-captured.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/histogram-choices.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/histogram-conflict.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/histogram-disabled.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/histogram-invalid_choices.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/histogram-preview.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/histogram-raw_choices.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/histogram-readonly.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/histogram-restore.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/histogram-run.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/histogram-stale.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/legacy.log",
+      "bytes": 368,
+      "sha256": "a074ae61462b0eb38d990eefbdfef2b9c123b3e553d33a6feb1dff897cd3259b"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/batch001/bad-batch.json",
+      "bytes": 2288,
+      "sha256": "90260c7cbfd48509b16bd05315cd7730ecffc0fc3ae8abde3a7b4bdb8449376a"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/batch001/case.json",
+      "bytes": 21092360,
+      "sha256": "2e3824644030733e69566b09c4a5bf9668215e5867bae8634ffcbfac5c7d7e2c"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/batch001/saved-batch.json",
+      "bytes": 1328,
+      "sha256": "2b944d8b4f347401a83254ed323d22b60f49b2ffbe0b12f30dbb67f24f362ee9"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/histogram001/authored/case.json",
+      "bytes": 1167502,
+      "sha256": "5b5ede01df5807a609603652bbe0940d462098f5f21a29c36e8c320b45b20aff"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/histogram001/batch/case.json",
+      "bytes": 1485292,
+      "sha256": "3be15cc7759f59a1c83914b1e272359cd51dcca8270d540e7e1b3759b1c82b79"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/histogram001/cancel/case.json",
+      "bytes": 604989,
+      "sha256": "cfd58d2ade050b52e98a3c9940dd5b061d21b24f8cef02904161e7a9c692a4f7"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/histogram001/captured/case.json",
+      "bytes": 430538,
+      "sha256": "4e908253d0867c11b072f6699745243ed58e4d66992df98e78c626b87828f4b2"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/histogram001/choices/case.json",
+      "bytes": 1221095,
+      "sha256": "08dcc78bfad57e973dc627deeb5a3fa66a22dfec4c55688c575cef00f7deec84"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/histogram001/conflict/case.json",
+      "bytes": 738005,
+      "sha256": "6981c2c92e41851435e45684aa7f5f594544c1f01f87ee8705f9b3d88af1bab5"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/histogram001/disabled/case.json",
+      "bytes": 529533,
+      "sha256": "65632ac854fe190be327870ea139d021535c6e78aa6d43a1583592a60a4a7108"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/histogram001/invalid_choices/case.json",
+      "bytes": 788450,
+      "sha256": "a06f46e577f074f41cd28dd06c86353a02d2e6bc8e6d95846f631e111157a1dc"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/histogram001/preview/case.json",
+      "bytes": 438522,
+      "sha256": "7c8a822ebcc61b32917c05f0259723957b02d5e9853059cda09f435062c75049"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/histogram001/raw_choices/case.json",
+      "bytes": 1075139,
+      "sha256": "53085db2a9d54c058113c64ed62cb3d2273b1390701bdb2a503f2e27ea3b8276"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/histogram001/readonly/case.json",
+      "bytes": 360892,
+      "sha256": "1fedc4aeb2db44e89ddc7926035d71da3252de9c4a60dea542d6d9a928e2911f"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/histogram001/restore/case.json",
+      "bytes": 1222238,
+      "sha256": "c7323e08c42c2910c255baad15fce564cbe58afc9427a1330804d6101869124e"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/histogram001/run/case.json",
+      "bytes": 1052677,
+      "sha256": "995d07e0691e0fafe99a844ce313c590409b02cd0d02fcd1115d10437dc56aa2"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/histogram001/stale/case.json",
+      "bytes": 625064,
+      "sha256": "5844051e1f655c1c9aba4c2be4597e17e5e43307842ef25620a450501f40b2a3"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/legacy001/case01/case.json",
+      "bytes": 1103330,
+      "sha256": "60b412fae78a0fd90c04a190bc868562cbd0315360bcefbd013bcb57d7ecd83a"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/legacy001/case02/case.json",
+      "bytes": 1228913,
+      "sha256": "fc4f4ad369c3b7c60b244a23f88bf91357f91dfc5ac25af2d488a3871e5c7d57"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/legacy001/case03/case.json",
+      "bytes": 1229028,
+      "sha256": "5318b37cd81aabf9e122575a93dc69cc0f8fb57a87a9f38d1deefa3fc2c4b729"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/legacy001/case04/case.json",
+      "bytes": 1229172,
+      "sha256": "624726d63745c7071e409c5917e64ee3bc9826694950ff6840477fd9dd816fbf"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/legacy001/case05/case.json",
+      "bytes": 2263099,
+      "sha256": "0366eca8851332986929fc97d6db674426bc214adf3bf43ca4c981af813843d1"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/legacy001/case06/case.json",
+      "bytes": 1962754,
+      "sha256": "1825368be4553bbaf7d8e8bd214e28fb2d6103c665712a823e5b41932e032219"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/legacy001/case07/case.json",
+      "bytes": 1961745,
+      "sha256": "d0a187f0bd602b85824d425f1671000f8d318f6ebc4f8221301eb1f7022fbe9f"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/legacy001/case08/case.json",
+      "bytes": 2146273,
+      "sha256": "3b35964923a51704de32bab84a7fbae91614f318ca7f14b6588338332f5c2d97"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/legacy001/case09/case.json",
+      "bytes": 2193873,
+      "sha256": "42d26b22499ac324e7ecf96a49b199d28803a0909516421dc7c9cb0ff5d3c13f"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/legacy001/case10/case.json",
+      "bytes": 1363342,
+      "sha256": "78db796dff1452821739f3b93d950a8815dcc7e3aed0b9baef78746cde88e5ce"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/legacy001/case11/case.json",
+      "bytes": 4018355,
+      "sha256": "919c44de04b6205174470992b8ddb7066fef2a3a0e2836f7d3f5fac2f4c8d985"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/legacy001/case12/case.json",
+      "bytes": 4301254,
+      "sha256": "98b027c168a8c69bb1c4bc35314df4b2399952346285af8557df28652e6d7349"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/legacy001/case13/case.json",
+      "bytes": 1927690,
+      "sha256": "6fc25f870972e171e7664b6c73d48de363e8d807e873a3541f32bba8011476dc"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/legacy001/case14/case.json",
+      "bytes": 5684724,
+      "sha256": "28674c8bd28cac6e1e1a64582e47e896730c0acc10c4a7f6fc723c3f37b0faaa"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/legacy001/case15/case.json",
+      "bytes": 10467982,
+      "sha256": "2c253ba5720c5f232f0707f068d17f8dc087134c15bf3f385ff33d70cf2c0e70"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/legacy001/case16/case.json",
+      "bytes": 9464721,
+      "sha256": "09fb8c5e9600c2f931196e8817201e673d31b209876cfbf94b6798d221e46189"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/legacy001/imgui-cpp.json",
+      "bytes": 1805,
+      "sha256": "55655b510740ef8ac15e267fc55af8ade9b8e15e61ed7cc72ee3f02f96d80694"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/native_workflow001/authoring001/duplicate.json",
+      "bytes": 79,
+      "sha256": "36c32534ab576662b3b025e8e1056dc178332a0836eb2552b87d291f8b481024"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/native_workflow001/authoring001/legacy-portable.json",
+      "bytes": 11308,
+      "sha256": "14e7b55aec897baa24eb0d625cae81ff35813e4e29df3de3c6ed0b6612f0d9b4"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/native_workflow001/authoring001/legacy.json",
+      "bytes": 17226,
+      "sha256": "d4cee3cc94747a550d74fef342aa65746bc2f6616afcb950082f47767893210a"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/native_workflow001/authoring001/order-all-disabled.json",
+      "bytes": 27930,
+      "sha256": "2e5dc5ac6f4c0a75e3efa907d79a787540b0e9ab7c516f650e2888373adb4b87"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/native_workflow001/authoring001/order-edited.json",
+      "bytes": 27926,
+      "sha256": "d92932cc9981263c493b550ed339005d0ecabbaca888ab2eb426a682a3c2c863"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/native_workflow001/authoring001/parameters-array.json",
+      "bytes": 586,
+      "sha256": "db499cd7566d47dc692940843b740be60b326826400d440391860ba292a7d954"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/native_workflow001/authoring001/parameters-gaussian.json",
+      "bytes": 944,
+      "sha256": "0104b69ff4ed210c305c7ac4f6a9e331bb84f095260686e4ba5effe98ec8d269"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/native_workflow001/authoring001/parameters-image.json",
+      "bytes": 655,
+      "sha256": "4fb9c31ef822d2d22c2c5f04c87374be86ee1ca8dc77bf2bab525b101fca245c"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/native_workflow001/authoring001/parameters-rank.json",
+      "bytes": 743,
+      "sha256": "954780719ee3b54c95582fe368f6f81d9b580694eb10fb7a87d09ace0e24711f"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/native_workflow001/authoring001/parameters-registry.json",
+      "bytes": 667,
+      "sha256": "32e2d4b4ebc8aa63a0ab9dd46c50e0b99931dd6c1f037bc6c0f4465546a38a49"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/native_workflow001/authoring001/parameters-signed.json",
+      "bytes": 390,
+      "sha256": "2ccc9f3cde2b6e6062bb2a55ef7392578180c402f509975b86ca9738d875ffaf"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/native_workflow001/authoring001/parameters-unsigned.json",
+      "bytes": 391,
+      "sha256": "c7ff3b5ac64a9913d9d7edbfd9d7c7166c322820f23babe1044d30db39f46982"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/native_workflow001/authoring001/program-high-budget.json",
+      "bytes": 13818,
+      "sha256": "4149dc49cf6c2524cfd7f17b29311db9bc28d655005bf3c2aaf4f62fafdb7a0b"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/native_workflow001/authoring001/program-\u03bb.json",
+      "bytes": 13893,
+      "sha256": "1840211f238168e096fe437ad69b979979eadea92ca3554984001ed3cbd04dc7"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/native_workflow001/case.json",
+      "bytes": 49721553,
+      "sha256": "0be69ae4ab6feb5943d1a07aedd06eeee6a87d1d46b62078fc3c698fe9b721f6"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/regional001/Q01/case.json",
+      "bytes": 1217375,
+      "sha256": "1f288000d102fef220f2d2625b7ccf3c17641dc5da809be9c5c39ad537089146"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/regional001/Q02/case.json",
+      "bytes": 1784182,
+      "sha256": "f3162ead6997b6973ce0a82534b9f7a070d935a9a1b3f59d46f14d418ac54b60"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/regional001/Q03/case.json",
+      "bytes": 1387189,
+      "sha256": "caf17610084f2efdbe1bce84ed300c451eb419fa04ad5eb9db0d9374eb6d971b"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/regional001/Q04/case.json",
+      "bytes": 6335525,
+      "sha256": "49c8a49ba11a63bd3b25044c936fc7dfb2f5863fc5c8136d293a879a876ef8c1"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/rgb001/case.json",
+      "bytes": 70014759,
+      "sha256": "78eb7ef34a2adbf487500e170e84429785a681bdcb46b6bf8f4a6fb388ebbf25"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/rotation001/case-index.json",
+      "bytes": 299,
+      "sha256": "43b622c9018a0b66d13a8e9224927ed8f3ae877ab4db70a2fcc78bc929c32e26"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native-json-carriers001/rotation001/case.json",
+      "bytes": 2457125,
+      "sha256": "ee01775c84ddf0f9b97d77187be556a2ae635549f09a98ac8013337c52d6074b"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/native_workflow.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/PX11-python.json",
+      "bytes": 2458811,
+      "sha256": "55c75825ef3d52d4292701bd97203e22c8fec667bc70a3ae1c0a0838f3bfbb89"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/Q01.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/Q02.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/Q03.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/Q04.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/receipt.json",
+      "bytes": 2035,
+      "sha256": "e7fd8b7eee7065d434107f29b2e6190b0da5ba93ce4434b2076ef4282c9ced3d"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/regional-rotation.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/ui001/rgb.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/venv-install-processing-python.log",
+      "bytes": 5021,
+      "sha256": "b17b77a72f9cd53597aba84c9d7859c28f935dcc2f99c07ff77e5ebb3d64adb8"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/venv-install-scientific-python.log",
+      "bytes": 5183,
+      "sha256": "db3ea7b9e7da444b937b39c9c74cd4081d1f9b59e5425ce3e09c8e031dc5530f"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/venv-install-Unspecified.log",
+      "bytes": 3270,
+      "sha256": "6977efd5b7bb72cedfd929a33c0c2b5c14efe669b136b3a717c4a8f912700e72"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-qualified003/venv.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/linux-scratch003.zip",
+      "bytes": 147279558,
+      "sha256": "bd675cda48d59fe07ab5c9a1ca9ca8d023e02e5c6639e1ae8588441688e58338"
+    },
+    {
+      "path": "build/p12s-region-rotation001/plan001.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    },
+    {
+      "path": "build/p12s-region-rotation001/preimage-legacy-refusal001/pytest.xml",
+      "bytes": 102186,
+      "sha256": "b3c7057fce29197d610b9d511e573c5f06abd849d6ce4083b35e82eb48d5a97d"
+    },
+    {
+      "path": "build/p12s-region-rotation001/preimage-legacy-refusal001/python-receipt.json",
+      "bytes": 789138,
+      "sha256": "4f66152e29e6cd6710ab64842c1bb504f4a79929837e2fec4440185183f54b8e"
+    },
+    {
+      "path": "build/p12s-region-rotation001/preimage-legacy-refusal001/python005.log",
+      "bytes": 1580,
+      "sha256": "7bfd5cd5487d0a49d1c7a2694aa2bc9c914580f3d862f495897bde0feadc7b76"
+    },
+    {
+      "path": "build/p12s-region-rotation001/preimage-legacy-refusal001/test_region_storage.py",
+      "bytes": 16037,
+      "sha256": "3a93a805295eec209d6b9c72523ba8e14b8a471aa52fe699aef0435049dc0fcf"
+    },
+    {
+      "path": "build/p12s-region-rotation001/preimage-reader001/collection.json",
+      "bytes": 1327295,
+      "sha256": "b6c6c097d5081faeca387ebf91b68e23dde908628ed9007fab525dac847c4b7f"
+    },
+    {
+      "path": "build/p12s-region-rotation001/preimage-reader001/pytest.xml",
+      "bytes": 12217,
+      "sha256": "7e92e18bdb52ad72518e033fb69842565e6730759a0a58907bae585096bef92e"
+    },
+    {
+      "path": "build/p12s-region-rotation001/preimage-reader001/python-receipt.json",
+      "bytes": 788829,
+      "sha256": "ded84dd6bbfd584f2c28d9b25a8f679832111b3a5f6d4dfe9df58da29ee14076"
+    },
+    {
+      "path": "build/p12s-region-rotation001/preimage-reader001/python.log",
+      "bytes": 1351,
+      "sha256": "bc9acb77a517195b641aaaa52d6dfc24addb09f04fcb8978bcc80a0a2ffbbdbf"
+    },
+    {
+      "path": "build/p12s-region-rotation001/preimage-reader001/test_region_rotation.py",
+      "bytes": 4965,
+      "sha256": "15407033c122290b2162c529f1ddae107fd83091dd7f125767f82c7ff810d821"
+    },
+    {
+      "path": "build/p12s-region-rotation001/preimage-sampling001/_native.cp312-win_amd64.pyd",
+      "bytes": 7361536,
+      "sha256": "a300055024b83e22bff2787b33cafb3a9ffa83fe2b69bf9eb3d90af7b4373a43"
+    },
+    {
+      "path": "build/p12s-region-rotation001/preimage-sampling001/pytest.xml",
+      "bytes": 3249,
+      "sha256": "0ebd719c5c3857fcda26450aea1a54744a1e92744a497e47f0f0890123916520"
+    },
+    {
+      "path": "build/p12s-region-rotation001/preimage-sampling001/receipt.json",
+      "bytes": 454,
+      "sha256": "0fd6b0835e5eb30533e5e9ab13bbd162750d8b2598b61327e782b35a4fc8612b"
+    },
+    {
+      "path": "build/p12s-region-rotation001/preimage-sampling001/selection_region_rotation.cpp",
+      "bytes": 6773,
+      "sha256": "735a5f38c08157c61beb737274c6fbaeb3c1461c03c381511ee7621802ac9d06"
+    },
+    {
+      "path": "build/p12s-region-rotation001/prepare004.py",
+      "bytes": 1040,
+      "sha256": "5528c89d327ea3eeab0168af8ca0c6bc2e0c3d82797eb021fa6bf04e8f5f6551"
+    },
+    {
+      "path": "build/p12s-region-rotation001/prepare006.py",
+      "bytes": 1051,
+      "sha256": "9692dd93ec1b6db109a68d73bb21a86b8cfddc4795edff327bb9bb325c51f05d"
+    },
+    {
+      "path": "build/p12s-region-rotation001/provider020.py",
+      "bytes": 1267,
+      "sha256": "d14e35a0c620feebe25b1d634206612b7ed139b59078500c85151cab7e5a30d4"
+    },
+    {
+      "path": "build/p12s-region-rotation001/python001.py",
+      "bytes": 3745,
+      "sha256": "d6292dedd33ddec665cb428185437ee131dc90cd8dfc05a60203942f0b8bf826"
+    },
+    {
+      "path": "build/p12s-region-rotation001/python002.py",
+      "bytes": 3745,
+      "sha256": "4b372ad06c64e44c65aefa3faf1e4aaaaac74e65f0d672ee5555219c88d16dcf"
+    },
+    {
+      "path": "build/p12s-region-rotation001/python003.py",
+      "bytes": 3945,
+      "sha256": "38f6130bd3f54506092003aace6a10b6819a7b24f545c5b822193dbb95bfb2ae"
+    },
+    {
+      "path": "build/p12s-region-rotation001/python004.py",
+      "bytes": 3945,
+      "sha256": "af3325408abc80ae736f21bfdd1fca40007c6c08ff1434fbf947aefcd15790f9"
+    },
+    {
+      "path": "build/p12s-region-rotation001/python005.py",
+      "bytes": 4150,
+      "sha256": "79c43d07692eaad0a0351adcd96b18324ccb7f4a2b82209e16e9308017201ef4"
+    },
+    {
+      "path": "build/p12s-region-rotation001/python006.py",
+      "bytes": 4150,
+      "sha256": "793765b82a3dd7e51d4fb022359a76ef03f3ac725c1c76e5600e04301f71c51c"
+    },
+    {
+      "path": "build/p12s-region-rotation001/qualify001.py",
+      "bytes": 4450,
+      "sha256": "cd558bc6601a2df1b9273974194e1de7dd22723242503dade515fd62d26f6967"
+    },
+    {
+      "path": "build/p12s-region-rotation001/qualify002.py",
+      "bytes": 4450,
+      "sha256": "fc9d978ce2a212437ada82afdb5616c071c369993eba48d80129f4a99a8dbf53"
+    },
+    {
+      "path": "build/p12s-region-rotation001/qualify003.py",
+      "bytes": 4450,
+      "sha256": "c04a50eb4980c527d094f7cde7c830884399ebe16f16379d0685ead0c380a84d"
+    },
+    {
+      "path": "build/p12s-region-rotation001/qualify004.py",
+      "bytes": 4530,
+      "sha256": "916b34c09ece595072305918bc68f6098dede047e8241b99722db7dc30152083"
+    },
+    {
+      "path": "build/p12s-region-rotation001/qualify005.py",
+      "bytes": 4530,
+      "sha256": "be281a90e0808ec1adbb9828bc632fbaa48551226c28cd25bad1f92dde0d57e8"
+    },
+    {
+      "path": "build/p12s-region-rotation001/reader017.py",
+      "bytes": 1448,
+      "sha256": "776c53cca36e01faa956c3832a614ba081669a66939859dbb332738613b266e4"
+    },
+    {
+      "path": "build/p12s-region-rotation001/reference001/compile.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/reference001/compile.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/reference001/execute.stderr",
+      "bytes": 50,
+      "sha256": "99c92337d398182c35cf3a8965f5a41cfa79caad62b212a4d5aa21795feca922"
+    },
+    {
+      "path": "build/p12s-region-rotation001/reference001/execute.stdout",
+      "bytes": 44329,
+      "sha256": "8129671fd9f67d968d5892e49f93fcb7537001356b4c002f217efa93c7930737"
+    },
+    {
+      "path": "build/p12s-region-rotation001/reference001/receipt.json",
+      "bytes": 177522,
+      "sha256": "a4a134cce72f45992a26ea224d80095525b048d334d7ff5dcce69ee685cf3dde"
+    },
+    {
+      "path": "build/p12s-region-rotation001/reference003.py",
+      "bytes": 1675,
+      "sha256": "a05483e66d6961d0a6ce8769dbdd0e15ccd91abbd81641225748880c63954667"
+    },
+    {
+      "path": "build/p12s-region-rotation001/resume018.py",
+      "bytes": 993,
+      "sha256": "189918588b4c0115d2334e8424ae12e31c23f45bb243f85ba672f27ee3f2aa8a"
+    },
+    {
+      "path": "build/p12s-region-rotation001/resume021.py",
+      "bytes": 1002,
+      "sha256": "d975dd6dd45ed323a11db60b8b07f1832c8a485849f91a8580313091c115a647"
+    },
+    {
+      "path": "build/p12s-region-rotation001/resume022.py",
+      "bytes": 1002,
+      "sha256": "a767e52ebafbadd4678c3be6421be41fe76482b856db08ef8e10301d7d0466be"
+    },
+    {
+      "path": "build/p12s-region-rotation001/sampling009.py",
+      "bytes": 985,
+      "sha256": "20576e2b9bcf417d52f476d7ff513bf54e9df0bc613dcbc6c6d7748dd7bcc97d"
+    },
+    {
+      "path": "build/p12s-region-rotation001/setup005.py",
+      "bytes": 2147,
+      "sha256": "af3fa2197f8d60284e2e1ea0e2fef8b960058e31a2ea96cbf599bfd1c2ee15ff"
+    },
+    {
+      "path": "build/p12s-region-rotation001/source-manifest001.json",
+      "bytes": 86851,
+      "sha256": "e55ae7af812b7412fc37872a4a3b779cd24c9b209247cb43640804b24bcefd14"
+    },
+    {
+      "path": "build/p12s-region-rotation001/source-manifest002.json",
+      "bytes": 86851,
+      "sha256": "c2953a49bb42e2a2a81ab3c27302bf7db6d57a16409a1b235ba28d475500c4ee"
+    },
+    {
+      "path": "build/p12s-region-rotation001/source-manifest003.json",
+      "bytes": 86851,
+      "sha256": "63aa5a8b1a756058e13d0684898ea296de3b89f936bc0744053bc63380e53880"
+    },
+    {
+      "path": "build/p12s-region-rotation001/source-manifest004.json",
+      "bytes": 86851,
+      "sha256": "992c4fa0b50e6f697b418c1be592c0c58ccfcf5fd1f6c7a3e930bb5900f6cddc"
+    },
+    {
+      "path": "build/p12s-region-rotation001/source-manifest005.json",
+      "bytes": 86961,
+      "sha256": "17f9dfe282063c2d6983d5c9f89f01154b9f63a0bc5ed468e69a99fb224a1d7d"
+    },
+    {
+      "path": "build/p12s-region-rotation001/standalone001.py",
+      "bytes": 2824,
+      "sha256": "0682220a872dbebf2004f230935d855f2091e2e53c8aa9d78ee4d32c30f2a5a8"
+    },
+    {
+      "path": "build/p12s-region-rotation001/standalone002.py",
+      "bytes": 2824,
+      "sha256": "c34d0dab3c52437426dceff917297217f219d20b971dfa7adc53a846fcbf9973"
+    },
+    {
+      "path": "build/p12s-region-rotation001/standalone003.py",
+      "bytes": 2824,
+      "sha256": "5bba0242747dfdb34c0f63eb9e1e89b107d1a79cf9ae2fb2eaf3483047cc7ed1"
+    },
+    {
+      "path": "build/p12s-region-rotation001/sync010.py",
+      "bytes": 617,
+      "sha256": "45abec00b7e5e4eb1612e7be5fea5d4425be21c9564df36452bacd4d8a698329"
+    },
+    {
+      "path": "build/p12s-region-rotation001/sync019.py",
+      "bytes": 627,
+      "sha256": "808c2017f4e69fc95aab14fb8e558de1a730d4b3d638f3a273dbc0f0f529f28c"
+    },
+    {
+      "path": "build/p12s-region-rotation001/sync022.py",
+      "bytes": 759,
+      "sha256": "7b3cdf2705bff26c1a5b8f9638b7672ad130060369a6c0bec934a8e7e486c201"
+    },
+    {
+      "path": "build/p12s-region-rotation001/test-inputs001.json",
+      "bytes": 775600,
+      "sha256": "47fe26e18402bbde308f7eae0ea8ba6e2aca6447a0e1083928c6e9752ad60ee5"
+    },
+    {
+      "path": "build/p12s-region-rotation001/test-inputs002.json",
+      "bytes": 775600,
+      "sha256": "adcbab3b241037702c7df22521e05045eb9559f4122415bda9d7cd56345b9345"
+    },
+    {
+      "path": "build/p12s-region-rotation001/test-inputs003.json",
+      "bytes": 775600,
+      "sha256": "1627adb87a79fed035b6a4c3e097b40797688dee20f66c49500fff19919f2718"
+    },
+    {
+      "path": "build/p12s-region-rotation001/test-inputs016.py",
+      "bytes": 903,
+      "sha256": "5c92b73bf456b7a722a32513284eeafebf58d63732ba9948fdce279482b0cc80"
+    },
+    {
+      "path": "build/p12s-region-rotation001/ui002.py",
+      "bytes": 1907,
+      "sha256": "c83ca9394a4aba761f2eca870120476f64b6a76328a614bc8a32428633c441c1"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-cleanup003.json",
+      "bytes": 251619,
+      "sha256": "96cfa841348dfa472ca6cb3de487af170bdb920f0c9d0c49a6e742e7f2d2b3a5"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified001/build.log",
+      "bytes": 3495,
+      "sha256": "c3927c9ef949c62aa96e6f3e5f4cc25cf500fd46fce6e917be215daea4a804e2"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified001/configure.log",
+      "bytes": 605,
+      "sha256": "74d96e056f6da61811fc00f9910154abc7fbe63261b93c575a79ff8cf330b3b9"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/build.log",
+      "bytes": 5629,
+      "sha256": "56ec600de5e74a08cf7ade5c2a30b093d439529608d2a9fb33cce82ecce5dc75"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/collection.json",
+      "bytes": 1327295,
+      "sha256": "b6c6c097d5081faeca387ebf91b68e23dde908628ed9007fab525dac847c4b7f"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/configure.log",
+      "bytes": 605,
+      "sha256": "67c52a8fc04de2732049676faaf5cea0531f6c8707c3a1b06832ee9b00414fcb"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/install-desktop.log",
+      "bytes": 4206,
+      "sha256": "0308a56461dfa018d06b793d280675026c27c95e2f4fd2c8d6a0bd09aca89ae0"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/install-development.log",
+      "bytes": 18383,
+      "sha256": "2f8e6d8b028e1773e78f2736988c82fba93dc54f628d731c6b7589aa485b8884"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/install-io-development.log",
+      "bytes": 2023,
+      "sha256": "f26ba19e57c98ab450efa84fb1752099d09350a53f922b62e5686b6c6e17d0eb"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/install-processing-python.log",
+      "bytes": 5573,
+      "sha256": "2f8eef616985b398c4aaa37c632195955799d6b942ac93fd3b1e9ca5e4c8e30c"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/install-receipt.json",
+      "bytes": 824,
+      "sha256": "a44aba5eeeb97b0efbcbbb159b69505312ec7653f271ee5e64de0b680397a2e2"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/install-scientific-python.log",
+      "bytes": 6265,
+      "sha256": "c686dd51a8e1b5eff9738d428715cef0f3125ae2151e792b847b001e06c3e4e4"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/install-Unspecified.log",
+      "bytes": 4363,
+      "sha256": "b4e2b26ccf2765e0dd69c224320fd84cdef686f6f04206be097d70b2d2f7383f"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/native.log",
+      "bytes": 1464,
+      "sha256": "65b14643030ed2351f79a89d34496650ae5b456319634005470de2b59ef07b97"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/native.xml",
+      "bytes": 2824,
+      "sha256": "ec1ae9605f340d51cfcce87b785f14d65274d1ffd4c6f46c419c7c1ca527bf6d"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/pytest.xml",
+      "bytes": 3249,
+      "sha256": "0ebd719c5c3857fcda26450aea1a54744a1e92744a497e47f0f0890123916520"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/python-receipt.json",
+      "bytes": 2165,
+      "sha256": "4f00003a436a1568dad2a0153ed7ea25b5131dbcf3dff7366de6a775430f82a8"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/python.log",
+      "bytes": 1180,
+      "sha256": "64634fe05d62f50626daaf97bd28293585cd8045589a62d103b2093c95d5fb10"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/sdk-build.log",
+      "bytes": 533,
+      "sha256": "c98e2ea7b1e13b761ba9d57dbb7cf2930390e3b9630ed2f2e41365ab5e3f8890"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/sdk-configure.log",
+      "bytes": 970,
+      "sha256": "c72127fd2b74a835f258c65a7903ca2754a279027bf40f46edc28246a56cfef9"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/sdk-execute.log",
+      "bytes": 84,
+      "sha256": "a075ae0b2b159446bda747d58a698f3384dc4a05ce203bbc75934bea4343f84a"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/standalone.log",
+      "bytes": 43,
+      "sha256": "dd28bf91703737bd919563e2fc7feb194e797f435f1b89a92b5a5d540a3482c4"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/batch.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/batch001/bad-batch.json",
+      "bytes": 2369,
+      "sha256": "9a2b2d8da8e3bd3ef97a080bf997c61917865a1dce91e1c477d836108a369295"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/batch001/case.json",
+      "bytes": 21201579,
+      "sha256": "79ca3f97831d10da206ebf7b6ec3922488fa3874bcf1c0333241ab80f5f0e5a7"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/batch001/saved-batch.json",
+      "bytes": 1409,
+      "sha256": "38da1e070e7655c9592ed259a564650f922cfdf6420af082a53d6bcbc599cb25"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram-authored.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram-batch.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram-cancel.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram-captured.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram-choices.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram-conflict.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram-disabled.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram-invalid_choices.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram-preview.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram-raw_choices.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram-readonly.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram-restore.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram-run.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram-stale.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram001/authored/case.json",
+      "bytes": 1140729,
+      "sha256": "79e6210adc8dbffef1935f33b7d1b9fe979676c2e8393e2603a66d38fcf513b7"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram001/batch/case.json",
+      "bytes": 1408039,
+      "sha256": "47eec29001b6ac4e353bf74c5c17d93b8e7ce87b39c03be575324607e32395ec"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram001/cancel/case.json",
+      "bytes": 606613,
+      "sha256": "5ab6f64650b89b0debb0daf0f0d28567009fd54441935e85ee07af286f194095"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram001/captured/case.json",
+      "bytes": 419955,
+      "sha256": "8626bdf53a6f5b9ba203190af99a8b955a72e146473ebfa3dc825ef38f2c6bf3"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram001/choices/case.json",
+      "bytes": 1203320,
+      "sha256": "47b272c29eb949e2de52fcfd77f16d35f7bf92a775bce67dfefdc9a512c0066d"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram001/conflict/case.json",
+      "bytes": 695183,
+      "sha256": "d706a9fb9c956cae30815927fe2d89f53b73e0e4b461a20f7cc4009f6ac27132"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram001/disabled/case.json",
+      "bytes": 511719,
+      "sha256": "3f3ed45a547b89718ee3f0fa3580240f1f93b26df6edbc292d72de7a70d2e661"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram001/invalid_choices/case.json",
+      "bytes": 770622,
+      "sha256": "fc0ab66843c293860b462490a3d128cf71f76404613d106b08f40260f47be8bf"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram001/preview/case.json",
+      "bytes": 429650,
+      "sha256": "9455fcba66dfe4e8f37d79c07a2a33513be9465f0a2fae66eb6416e979118c92"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram001/raw_choices/case.json",
+      "bytes": 1057327,
+      "sha256": "0b4d27043bf10f70fc225a82695f9a13dc68855fed7c9ab4e9b81a5ea2e18f18"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram001/readonly/case.json",
+      "bytes": 353212,
+      "sha256": "69282ded605a4110a652d4b1d790a4e3f9c430499405c7bf3fb3653d6984d36c"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram001/restore/case.json",
+      "bytes": 1213407,
+      "sha256": "77abd85de7e5d5884e808010c1ee48fe6fc91444b3540355bf7a1033715407b7"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram001/run/case.json",
+      "bytes": 1027918,
+      "sha256": "737360ed709c4b9b12f374ad73e15e48ab99f69bd46706f1c91b3157e8627c7f"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/histogram001/stale/case.json",
+      "bytes": 599441,
+      "sha256": "db6cde646c0206dfbf0d918b9d466feb4b754e5d05d792b21a5d75437238f394"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/legacy.log",
+      "bytes": 384,
+      "sha256": "57e02e9caa041590b62d7f666527f4980f6d97e33155e3ca52348e001a65cbfd"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/legacy001/case01/case.json",
+      "bytes": 1103940,
+      "sha256": "d2f8c5f093878b33cd5758ca0a69cd9297ac51f1b81e1896b91fb4d0e8fbfcd9"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/legacy001/case02/case.json",
+      "bytes": 1229768,
+      "sha256": "60e4f986d4700d46bd6ed8be76560fc6f3a528e1dd8a6e8b87e891809d294747"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/legacy001/case03/case.json",
+      "bytes": 1229791,
+      "sha256": "eb173a8e7dde0b3ed91f3c0c526be9956f5292cc59915d44ad4face7b7df5cde"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/legacy001/case04/case.json",
+      "bytes": 1230010,
+      "sha256": "3495600ddaa05b7ec497538d40c574014a4b553f3a9fe781f440bea1d47096b0"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/legacy001/case05/case.json",
+      "bytes": 2264492,
+      "sha256": "b14f45daded242b4dd5c3684462ca252954da6c7e576ffb986f17a5ba70bb8ba"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/legacy001/case06/case.json",
+      "bytes": 1963969,
+      "sha256": "95796734c34ea15fa198477e38d42a55e61011a70a1f291359dc3dfa099770a1"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/legacy001/case07/case.json",
+      "bytes": 1963133,
+      "sha256": "47a1b8907538366899b0b40079b18662185f0e3cc30a2d7195e8d2c87211946b"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/legacy001/case08/case.json",
+      "bytes": 2147850,
+      "sha256": "837f9cd93def7d4b0ef12209854f12d9dae538a99418bd166ecf942e9c598097"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/legacy001/case09/case.json",
+      "bytes": 2195204,
+      "sha256": "a5e9bfa0bd3a67101422c603398619f1e212209b1e970c87d5742859d52de554"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/legacy001/case10/case.json",
+      "bytes": 1364318,
+      "sha256": "3393d54ac5cea9ee9c8cfedf2ea97759b2b5a4c4fb2849b608ea4ed7dff3bc96"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/legacy001/case11/case.json",
+      "bytes": 4021421,
+      "sha256": "bee029a0110770c3e05cee1964faa58f7b297786d3d613b1f431c12b8be46574"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/legacy001/case12/case.json",
+      "bytes": 4303804,
+      "sha256": "2c9500bb728a0fde1b3b718caf48a4e8cc5f048efc9831258e2973513b7807a2"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/legacy001/case13/case.json",
+      "bytes": 1928991,
+      "sha256": "e82639cb3b639e741851e5c41c7444ad65a9dca1934b8a5d9f351b16ff72132c"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/legacy001/case14/case.json",
+      "bytes": 5723480,
+      "sha256": "5891b7f9a788f7f2d48ae88f96c9b308d16622a6dd32e80613a0bc1d70e144a0"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/legacy001/case15/case.json",
+      "bytes": 10514810,
+      "sha256": "53da22047922c69ae7075fdc961f05a55c61cb9dd6839836a4d2939c5f9f0fc3"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/legacy001/case16/case.json",
+      "bytes": 9468748,
+      "sha256": "d69296d227e3a77c2d815b488d74006e402ed6d3729eb2b946d49c9577e924a3"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/legacy001/imgui-cpp.json",
+      "bytes": 1802,
+      "sha256": "2b5389d835ffe0987c8e1b2c8ac94808f4004f992966c6d55e2495f90d4382aa"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/native_workflow.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/native_workflow001/authoring001/duplicate.json",
+      "bytes": 79,
+      "sha256": "36c32534ab576662b3b025e8e1056dc178332a0836eb2552b87d291f8b481024"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/native_workflow001/authoring001/legacy-portable.json",
+      "bytes": 11308,
+      "sha256": "682853ac45ffaa113c2875669f1b06f3ac57afaeb322a04d01f8aac4fbcf9e09"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/native_workflow001/authoring001/legacy.json",
+      "bytes": 17226,
+      "sha256": "ea2682f3e481269043b941301da323a6fed1b5e8c161f1d11308b5d62486da8e"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/native_workflow001/authoring001/order-all-disabled.json",
+      "bytes": 27930,
+      "sha256": "016f9e233ae8ccb6f3811bc8abb491921669744fd201edcbfbcf6d6af0ab4110"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/native_workflow001/authoring001/order-edited.json",
+      "bytes": 27926,
+      "sha256": "1bf92f74344b98470e07c070a55a842ef2d1ebf475b38bfd81b427a5e66fc060"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/native_workflow001/authoring001/parameters-array.json",
+      "bytes": 586,
+      "sha256": "db499cd7566d47dc692940843b740be60b326826400d440391860ba292a7d954"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/native_workflow001/authoring001/parameters-gaussian.json",
+      "bytes": 944,
+      "sha256": "423fb97323115437380c5817ee0a4af697eb024315c0b1c89e97b28780268267"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/native_workflow001/authoring001/parameters-image.json",
+      "bytes": 655,
+      "sha256": "4fb9c31ef822d2d22c2c5f04c87374be86ee1ca8dc77bf2bab525b101fca245c"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/native_workflow001/authoring001/parameters-rank.json",
+      "bytes": 743,
+      "sha256": "643e35bf4456889659f85b30d3adff6a677b04615fa052a1eada1b214360a144"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/native_workflow001/authoring001/parameters-registry.json",
+      "bytes": 667,
+      "sha256": "32e2d4b4ebc8aa63a0ab9dd46c50e0b99931dd6c1f037bc6c0f4465546a38a49"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/native_workflow001/authoring001/parameters-signed.json",
+      "bytes": 390,
+      "sha256": "2ccc9f3cde2b6e6062bb2a55ef7392578180c402f509975b86ca9738d875ffaf"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/native_workflow001/authoring001/parameters-unsigned.json",
+      "bytes": 391,
+      "sha256": "c7ff3b5ac64a9913d9d7edbfd9d7c7166c322820f23babe1044d30db39f46982"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/native_workflow001/authoring001/program-high-budget.json",
+      "bytes": 13818,
+      "sha256": "4293ac7ac0a0dafe80df91a87c32fe76bb307e719b3bb654e99f3af0e6a7ce5c"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/native_workflow001/authoring001/program-\u03bb.json",
+      "bytes": 13893,
+      "sha256": "23d18fce296b08793c25efefbd2669f1863a38c44d22a0fd91787346594ae451"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/native_workflow001/case.json",
+      "bytes": 51393270,
+      "sha256": "7c6213f3c861b244c92b1d5fad84c8b7120cd595c77a9f5f50301c7d9bed42ee"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/Q01.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/Q02.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/Q03.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/Q04.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/receipt.json",
+      "bytes": 2402,
+      "sha256": "ad605cc142f57c77c46b2670cc3b3fa51840143c8ccb15e23e31dabf9dbd70d8"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/regional-rotation.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/regional001/Q01/case.json",
+      "bytes": 1218194,
+      "sha256": "018a1a002c10f569b93e9dfd00be9a1f5660d700793a57dfd34598ec8a33ff53"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/regional001/Q02/case.json",
+      "bytes": 1785021,
+      "sha256": "f9fe5f166bc9f21eec41338d12f3b663d41196b935b73c08a39e5b36db2c6d8f"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/regional001/Q03/case.json",
+      "bytes": 1388259,
+      "sha256": "19df7fe0cf9d0dd9f55aef8e339134d458e5f8de47506de303087551f65e32ba"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/regional001/Q04/case.json",
+      "bytes": 6214169,
+      "sha256": "da1588a3315f8c92c5fda1465e8652499ff790826dac7e8a4f5bcc5999653c3f"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/rgb.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/rgb001/case.json",
+      "bytes": 70042010,
+      "sha256": "2f95ce56cdbf8d7fd475e52656d958abbb8ad80ea6ead5f0565d9e5f15096e01"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/rotation001/case-index.json",
+      "bytes": 299,
+      "sha256": "0f98af28dae6a65cef19968478d3607b8d5bf0712531e46802ca06ecdeb1aa1e"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/ui001/rotation001/case.json",
+      "bytes": 2459929,
+      "sha256": "c5cdf1315a24dfe886d653ea12d01398f9c61a0c05abe835aeb207ce53615233"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/venv-install-processing-python.log",
+      "bytes": 5924,
+      "sha256": "ac1618df21132259a7ce5441c6be2a73f670a4de9df7216860114790e3fdb66b"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/venv-install-scientific-python.log",
+      "bytes": 6661,
+      "sha256": "d35a0b1c84b24bf19f872689717d0358df606d39c9ffd1abaef9306897d83375"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/venv-install-Unspecified.log",
+      "bytes": 4633,
+      "sha256": "d307da1c1e5691908841083bd81dc92056f2edd6211d87e401e587beee57a147"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified002/venv.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/build.log",
+      "bytes": 15132,
+      "sha256": "9cf593c7cfeba313c6eaca1e59443a12c2a57f59ee84fe08fc007f4a497473a9"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/collection.json",
+      "bytes": 1327295,
+      "sha256": "b6c6c097d5081faeca387ebf91b68e23dde908628ed9007fab525dac847c4b7f"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/configure.log",
+      "bytes": 606,
+      "sha256": "a341a91433da8c5b1f73ac1f47a9bc2ccb47f7617ecf7fd4e8abb95ca865d37b"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/install-desktop.log",
+      "bytes": 4206,
+      "sha256": "6e0e569c4700b576012184a19dce5e5063611d460a7fd0b33dd686b51ee2d3ae"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/install-development.log",
+      "bytes": 18383,
+      "sha256": "7351f54fb5d48523162a2108fc50b8eb6319fc6c1d10d2f8cd22fc5f543ae484"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/install-io-development.log",
+      "bytes": 2023,
+      "sha256": "a58ccb62acb4b2ec9e42e38b08b56a78d3fe1855318d5c225a78bde451211496"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/install-processing-python.log",
+      "bytes": 5573,
+      "sha256": "c032a47d5967f671f0f9a337104300dded4ce0fe882cebf28427e97ef17ce958"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/install-receipt.json",
+      "bytes": 824,
+      "sha256": "ca512f7349941087ab68f3e6e2dc93832760ae57de3d365a9fa180e27c8ba780"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/install-scientific-python.log",
+      "bytes": 6265,
+      "sha256": "d3a0567cfdefa58eb5bf4c07a0ce4c8eb786ca25d138a17b4261fd5f39d39991"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/install-Unspecified.log",
+      "bytes": 4363,
+      "sha256": "fc5d81f7c7ba33a101d18eadbf5c9f6821e592915ff8a3c059a7bbfa6a85d677"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/native.log",
+      "bytes": 1464,
+      "sha256": "021b4077ea9fa0cfe348fa4fe8de4482b65ba13770f2234590f0480d06b97e31"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/native.xml",
+      "bytes": 2820,
+      "sha256": "c24d61acfad3b8de835ec87e4c4c56eb03e80cc7a549f5a1543150030fcabfd3"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/provider-build.log",
+      "bytes": 594,
+      "sha256": "af0b4bc42026f2883279ff1785c4b2e269d90f5ef5d097df3b89d4799a8e9e65"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/provider-receipt.json",
+      "bytes": 280,
+      "sha256": "5c304323f70a3875e1026172abf00ee9ac491f0af42762843e8bad659db64866"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/pytest.xml",
+      "bytes": 1618865,
+      "sha256": "494cdf0d32e1bf56209ededcc37eda7b27ab4483bf62b16ae054bc5d2635fcb5"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/python-receipt.json",
+      "bytes": 789139,
+      "sha256": "90f8f5c4052891b08cf78033fa50f4b8e9981f247f8bc30f81c0b074707cf036"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/python.log",
+      "bytes": 1351,
+      "sha256": "bc9acb77a517195b641aaaa52d6dfc24addb09f04fcb8978bcc80a0a2ffbbdbf"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/python004.log",
+      "bytes": 1477,
+      "sha256": "620b6f27fae874e9e9fc304f83c4b04735743d039cbe32d7e83b068d69c78094"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/python005.log",
+      "bytes": 1580,
+      "sha256": "7bfd5cd5487d0a49d1c7a2694aa2bc9c914580f3d862f495897bde0feadc7b76"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/python006.log",
+      "bytes": 9757,
+      "sha256": "cda65b9128b8f30bc0218f6b402fd485fc1cd5daa61ccaabbc5dd8260b2f10e3"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/receipt.json",
+      "bytes": 879,
+      "sha256": "00ee049fb1388ba2f2605b6725c4b6b41f496dbf48aaf52ee832b22b096bda9d"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/sdk-build.log",
+      "bytes": 533,
+      "sha256": "1b2bc637bb871386b51a17ab0b755c6be94d2127883ef4cfd95e42641d1da1b2"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/sdk-configure.log",
+      "bytes": 970,
+      "sha256": "4edb328d090767cee77ea9f4a7f04e2a21d8970f19d5684fffabccfc25075c2a"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/sdk-execute.log",
+      "bytes": 84,
+      "sha256": "a075ae0b2b159446bda747d58a698f3384dc4a05ce203bbc75934bea4343f84a"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/standalone.log",
+      "bytes": 43,
+      "sha256": "dd28bf91703737bd919563e2fc7feb194e797f435f1b89a92b5a5d540a3482c4"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/batch.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/batch001/all/first-processed.ijx",
+      "bytes": 645,
+      "sha256": "539edd519bf85611bd4c124fd355df6578b2b15a87038a0331d0d28e1af24fa0"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/batch001/all/second-processed.ijx",
+      "bytes": 652,
+      "sha256": "8dc3f86c0b5a931a35be022672e92c4901c5003981567e16fea6ba33f536d0ee"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/batch001/bad-batch.json",
+      "bytes": 2369,
+      "sha256": "911f633501f3f4f502f4a8de3ab32d5caaf4449ce9ab97963282f38f00fcb3fd"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/batch001/case.json",
+      "bytes": 21170367,
+      "sha256": "5f216f27be3c2fd7b235f4fadef863d4e482bd7642479cab8bdc803f603c703d"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/batch001/first.ijx",
+      "bytes": 631,
+      "sha256": "a0ab062c2182cf53534b4ad04012fb0a92eb3ad2710e3cbc288695975f349126"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/batch001/overrides/first-processed.ijx",
+      "bytes": 643,
+      "sha256": "d69bcd8fc0c1c92d6812dfb327d89a4d23e3f3931363a66cadba02b81d879047"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/batch001/overrides/second-processed.ijx",
+      "bytes": 642,
+      "sha256": "4b8080012acbec40dcb464f9890279948dee02b0bbfc3332bab4fd287eba40a9"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/batch001/race/first-processed.ijx",
+      "bytes": 1291,
+      "sha256": "33b7d2bc6423fcd656958c27bfd2e108b607f927740ee813a49983fab1e5bf45"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/batch001/race/second-processed.ijx",
+      "bytes": 4,
+      "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/batch001/saved-batch.json",
+      "bytes": 1409,
+      "sha256": "05309ebcb17fbbbf2e80bed0650fa2d49280bbfac68b31ecaafdcba10af6f818"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/batch001/second.ijx",
+      "bytes": 636,
+      "sha256": "d1ece1fd8b8e74094d479e8badb30a5659e914e41aeeeb9f14be318b0d269e2f"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/batch001/success/first-processed.ijx",
+      "bytes": 1291,
+      "sha256": "33b7d2bc6423fcd656958c27bfd2e108b607f927740ee813a49983fab1e5bf45"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/batch001/success/second-processed.ijx",
+      "bytes": 1302,
+      "sha256": "847aaf9dbda1b27b7fc4b09d3844e1ed8e7b5f33c1d41d9e38a5a7ffd9f8b255"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram-authored.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram-batch.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram-cancel.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram-captured.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram-choices.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram-conflict.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram-disabled.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram-invalid_choices.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram-preview.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram-raw_choices.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram-readonly.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram-restore.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram-run.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram-stale.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram001/authored/case.json",
+      "bytes": 1140726,
+      "sha256": "152c063c0299515f8ed898d5f391739035c98c24df4f4a68d3250cf47ae7c7f1"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram001/batch/batch-output/input-processed.ijx",
+      "bytes": 506,
+      "sha256": "588a70950b4cdec2bc186df9e5f8a8c879d5ace1f1a7a60382046b093dd48044"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram001/batch/case.json",
+      "bytes": 1408035,
+      "sha256": "a22601e33f16b3d5692dfb93a693e2f42964ef1416e3d79bcfad9c818882357b"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram001/batch/input.ijx",
+      "bytes": 506,
+      "sha256": "13db8cb8b568da18555d7b60fcc6eb708fed6727a2888b7fba09826700f7124a"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram001/cancel/case.json",
+      "bytes": 606613,
+      "sha256": "8e5431b25e9ad88aa8e75826ed6fe7bb10b4f52dc2fe9ddce4da667006d0e1e6"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram001/captured/case.json",
+      "bytes": 419955,
+      "sha256": "5abddaa75c7be7e7d40b5984868a1d4a7c86db06b0362261b015e8a742fadae4"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram001/choices/case.json",
+      "bytes": 1203320,
+      "sha256": "74994867c9d7800a2a546fbb891b55a48b10f6ce9dd6029e0981128c8445916d"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram001/conflict/case.json",
+      "bytes": 695236,
+      "sha256": "2c568e6cf560a5d48e67f16241b03b823db38c5930595af8d12801b853101438"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram001/disabled/case.json",
+      "bytes": 511719,
+      "sha256": "f89ba504ea4789081eb15f1d3c92c01ea260e17b97bd935e2365280b92305fe0"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram001/invalid_choices/case.json",
+      "bytes": 770622,
+      "sha256": "d5c40b6d29eaa332c3af1df05c6ea3f533be8b9853a202fbe8b0d5625792318f"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram001/preview/case.json",
+      "bytes": 429650,
+      "sha256": "a0c5e04120e261193057ec5244f5a1ab85902bc9486fda40a8ffa4da980e5f3b"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram001/raw_choices/case.json",
+      "bytes": 1057327,
+      "sha256": "dbbfe358295aed141eaf119651cef5b6a05f612f0bc7f34e1911135af4f5f3ff"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram001/readonly/case.json",
+      "bytes": 353212,
+      "sha256": "6f7e782c6ad8f3c814d89d0cdd3820019f7a72a3540ce04155eab71cbeeb8533"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram001/restore/case.json",
+      "bytes": 1213407,
+      "sha256": "b1b9d18520fa77ff7caeed52141f6ceaffe275d2b42537697a2023c4f4d5eb14"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram001/run/case.json",
+      "bytes": 1027914,
+      "sha256": "d6241daaf59bf2be8164956bdb6d9875951ece13b36a07a4c6c2c51f200f5d90"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/histogram001/stale/case.json",
+      "bytes": 599441,
+      "sha256": "a76f560e7f6d34573a3e294615344e428b5bafd09c976d07dde01107fc39af39"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/legacy.log",
+      "bytes": 384,
+      "sha256": "57e02e9caa041590b62d7f666527f4980f6d97e33155e3ca52348e001a65cbfd"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/legacy001/case01/case.json",
+      "bytes": 1103968,
+      "sha256": "2ca19f1fa8967f15004970fd4bc37418a4add87d37db04f70e35a5828e469c41"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/legacy001/case02/case.json",
+      "bytes": 1229570,
+      "sha256": "2a79a1f2ad077c4d9ce651dc87e6a2d4539e647e280b4313f0b88a058e01f871"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/legacy001/case03/case.json",
+      "bytes": 1229897,
+      "sha256": "57a24e93933927485eb62700a3c14b8e58e1b84ddb434a05bae3d52842830757"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/legacy001/case04/case.json",
+      "bytes": 1229919,
+      "sha256": "c0f1a9886789d6f75a501cca1df7bda0853ac54ba2499326b82eb1230c81b401"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/legacy001/case05/case.json",
+      "bytes": 2264521,
+      "sha256": "e3e0f1875e26843533b7e1472cee76d2e0846fafd300b9ae6c61157cd5154768"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/legacy001/case06/case.json",
+      "bytes": 1964194,
+      "sha256": "7af8bee1ec0d1a04d456f9f8ee13af0b5c9630bf97ceee0c63d9b7af2fd2f139"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/legacy001/case07/case.json",
+      "bytes": 1963134,
+      "sha256": "d9853a0feb0f87f3ea41247994041de459965f316f896efc5cfb5e6ab86288f9"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/legacy001/case08/case.json",
+      "bytes": 2147791,
+      "sha256": "a77cd5d2fbba9ed0ce264f64dfab8fd139f639e7aaac46b2cdebffbc21c7c5c1"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/legacy001/case09/case.json",
+      "bytes": 2195387,
+      "sha256": "dd72b405def934b51faff5da505054a122f0d7148428ce811f96a178d7ded2fc"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/legacy001/case10/case.json",
+      "bytes": 1364299,
+      "sha256": "2659853f5c7c4f5a3120c9007c4b55827623c49ab91698fc5a263b3d750034d4"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/legacy001/case11/case.json",
+      "bytes": 4021302,
+      "sha256": "2762113104caf22f307da22fa21d32defc71161e7a6d6c65ce5f65b94df65cb5"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/legacy001/case12/case.json",
+      "bytes": 4304152,
+      "sha256": "cff7f8a35bd50f81021608239658293df3b4b402c0a6b5d5d8b8a9718c703ce6"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/legacy001/case13/case.json",
+      "bytes": 1928992,
+      "sha256": "834a16f5585b37b1c4da8770b4d09a9b2ef80b40463bd11c7aee596c943e3713"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/legacy001/case14/case.json",
+      "bytes": 5723480,
+      "sha256": "579947ed114ee374f5b6ed2384b5add2923d3d4a9148da0619c7e3f9b74914d5"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/legacy001/case15/case.json",
+      "bytes": 10515040,
+      "sha256": "fddfdc054adedee58965c6f52a537fb599e3992f05b0da6ee0a867962aacce26"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/legacy001/case15/selection-creation.ijx",
+      "bytes": 2058,
+      "sha256": "dd3d4c7db6fe3bcb40ed4c2f8647792a8eb43b098c0e5c8874e0e3f45bbb5257"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/legacy001/case16/case.json",
+      "bytes": 9468433,
+      "sha256": "2ec1b4a7b8077ea52fb584295b57781be34bba10421d4d981d28f29fb517828f"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/legacy001/imgui-cpp.json",
+      "bytes": 1803,
+      "sha256": "25a52f8eae65d5cb3bd400c57def3846bf94bd2d4906a897ffcbfbe2d575b8f7"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/native_workflow.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/native_workflow001/authoring001/batch-output/order-input-processed.ijx",
+      "bytes": 4464,
+      "sha256": "7f86e1651ccdd88612dc20dae2763cbe1cc3ec8a65f02ddef861e1b7e88d23ed"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/native_workflow001/authoring001/batch-output/parameter-input-processed.ijx",
+      "bytes": 1245,
+      "sha256": "8d0ffc0b91efd4df14c142c1877c99bae9f7b0699598940a755e80550a3c8741"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/native_workflow001/authoring001/batch-output/portable-input-processed.ijx",
+      "bytes": 4428,
+      "sha256": "403a3822dd283b5fb16b59a1678ba8702d9a6c86dfa02b29bb5c5cb8a7890af6"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/native_workflow001/authoring001/duplicate.json",
+      "bytes": 79,
+      "sha256": "36c32534ab576662b3b025e8e1056dc178332a0836eb2552b87d291f8b481024"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/native_workflow001/authoring001/legacy-portable.json",
+      "bytes": 11308,
+      "sha256": "363fe7339f8d2437b0f43bfeb7ef2d25fd7de16ca7af35f9ff06b3230e2a9867"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/native_workflow001/authoring001/legacy.json",
+      "bytes": 17226,
+      "sha256": "2e370305b9c2927b654f7212ef60e82d2f33e80ef967c77ec791a09235e14502"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/native_workflow001/authoring001/order-all-disabled.json",
+      "bytes": 27930,
+      "sha256": "4c4d394a7966b845c6dd55c3cf690c13fc34d7e04bed2eb425943f8747ddcafc"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/native_workflow001/authoring001/order-edited.json",
+      "bytes": 27926,
+      "sha256": "b4697b362efb3cf4b805a897e3264625f8b48e9cc74bdc8c85a0ffb8c69252e4"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/native_workflow001/authoring001/order-input.ijx",
+      "bytes": 4464,
+      "sha256": "7f86e1651ccdd88612dc20dae2763cbe1cc3ec8a65f02ddef861e1b7e88d23ed"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/native_workflow001/authoring001/parameter-input.ijx",
+      "bytes": 1245,
+      "sha256": "8d0ffc0b91efd4df14c142c1877c99bae9f7b0699598940a755e80550a3c8741"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/native_workflow001/authoring001/parameters-array.json",
+      "bytes": 586,
+      "sha256": "db499cd7566d47dc692940843b740be60b326826400d440391860ba292a7d954"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/native_workflow001/authoring001/parameters-gaussian.json",
+      "bytes": 944,
+      "sha256": "47b869c13f0622851f377e6712acbdeb7c6965bf306e2bba7c1acbe34dcbb14c"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/native_workflow001/authoring001/parameters-image.json",
+      "bytes": 655,
+      "sha256": "4fb9c31ef822d2d22c2c5f04c87374be86ee1ca8dc77bf2bab525b101fca245c"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/native_workflow001/authoring001/parameters-rank.json",
+      "bytes": 743,
+      "sha256": "7f2c769682870dc089f761d75254f9350aad8388b564d57e44ca0453d9639eeb"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/native_workflow001/authoring001/parameters-registry.json",
+      "bytes": 667,
+      "sha256": "32e2d4b4ebc8aa63a0ab9dd46c50e0b99931dd6c1f037bc6c0f4465546a38a49"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/native_workflow001/authoring001/parameters-signed.json",
+      "bytes": 390,
+      "sha256": "2ccc9f3cde2b6e6062bb2a55ef7392578180c402f509975b86ca9738d875ffaf"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/native_workflow001/authoring001/parameters-unsigned.json",
+      "bytes": 391,
+      "sha256": "c7ff3b5ac64a9913d9d7edbfd9d7c7166c322820f23babe1044d30db39f46982"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/native_workflow001/authoring001/portable-input.ijx",
+      "bytes": 4359,
+      "sha256": "e83ea063aa4b700570a09e1abe53b9c8c94529fe0f7cbb505b0d609e5b4dfd9f"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/native_workflow001/authoring001/program-high-budget.json",
+      "bytes": 13818,
+      "sha256": "0f2fef3127c1412aef54f6dcdbbab38fd825ef0d589c0e27362c0766ca32517a"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/native_workflow001/authoring001/program-\u03bb.json",
+      "bytes": 13893,
+      "sha256": "b912c3b1792dd8bb70b3da536e940b87721daa247a5207297974e50967bb7cea"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/native_workflow001/case.json",
+      "bytes": 51292469,
+      "sha256": "ecd83e3a93c9406a169d8cc152d4cc0c09c94956b5bfe8a3a406b70ebcde302f"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/native_workflow001/workflow.ijx",
+      "bytes": 4148,
+      "sha256": "3d6722b8017e5a2af9c42012c03e3c9941fa277471452fc40e9de16378c47fd1"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/PX11-python.json",
+      "bytes": 2462485,
+      "sha256": "0aa845fb2517397a54590b1772cae23ff6635c28bce31d997db7a949216a8f7e"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/Q01.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/Q02.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/Q03.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/Q04.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/receipt.json",
+      "bytes": 2402,
+      "sha256": "a1790c4bd0e8baed5f35653fd14f5e8b22d9df872cb920157815980973b89d03"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/regional-rotation.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/regional001/Q01/case.json",
+      "bytes": 1218195,
+      "sha256": "14f4ca1b08a0f8965a738547931b0283583d2277233033e0621b8cc87b340752"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/regional001/Q02/case.json",
+      "bytes": 1784658,
+      "sha256": "c9e9c65fec34559b232e58caff9fa2994b8284dca567c6ddbdd2ca640a2c347c"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/regional001/Q03/case.json",
+      "bytes": 1388339,
+      "sha256": "8ccb22145e80379c7a324386aceb9bf4444bf8e9e8b5d1978108e0944ab68d3c"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/regional001/Q04/case.json",
+      "bytes": 6213941,
+      "sha256": "3909a5cd491ac3f94c1826237ed68ab5e70db1a7332248281bf05f36525ec7a2"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/rgb.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/rgb001/case.json",
+      "bytes": 70041489,
+      "sha256": "ad46af589edf11af6031a7c3960ac73f0da88d3c0cccb6081822acb9cf8f6121"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/rotation001/case-index.json",
+      "bytes": 299,
+      "sha256": "0072a49ae0a493a84823f6d0c0b0cab46d0a1baaa16703dec0ddebfd6c5a65be"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/ui001/rotation001/case.json",
+      "bytes": 2459966,
+      "sha256": "9b67064f554d8cd173940b240618613283ebba69c3c1eec36256509bf2f04b2f"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/venv-install-processing-python.log",
+      "bytes": 5924,
+      "sha256": "a0f87162ae767b9f78fb9a94e1049e47d7c5e2b6b389f136aa28bba92a7361f9"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/venv-install-scientific-python.log",
+      "bytes": 6661,
+      "sha256": "11adcc2decb1395abca6f2f3005a9aaf48da51189fe4ad2d6d7bf2809ddf42c6"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/venv-install-Unspecified.log",
+      "bytes": 4633,
+      "sha256": "2bef1bcab62633c777dd853b484cdd42148d9cef7a099f2a81043a2ed99c24f3"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-qualified003/venv.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12s-region-rotation001/windows-scratch003.zip",
+      "bytes": 87563349,
+      "sha256": "9b1e8534f16ccf534939ff3701dcf7f6f8d82f007c790f9d77356bcb4608bc2d"
+    }
+  ]
+}

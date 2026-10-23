@@ -1,4 +1,5 @@
 #include "kernel_control.hpp"
+#include "selection_region_rotation.hpp"
 #include <algorithm>
 #include <cmath>
 #include <imagejxx/roi_style.hpp>
@@ -177,6 +178,10 @@ auto controlled_geometry(const SelectionEditor &source, int width, int height,
   return result;
 }
 } // namespace
+std::size_t detail::admit_selection_geometry(const Selection &s,int w,int h,
+    const SelectionEditLimits &limits,const ExecutionControl &control) {
+  return geometry_preflight(s,w,h,limits,control);
+}
 SelectionEditor::SelectionEditor(Selection selection, int width, int height)
     : selection_(std::move(selection)), width_(width), height_(height) {
   initialize_bounds();
@@ -608,6 +613,8 @@ SelectionEditor::rotated(double degrees,
   require_finite(degrees, "Selection rotation");
   if (pivot)
     finite_point(*pivot);
+  if(selection_.is_region())
+    return detail::rotate_region(selection_,width_,height_,degrees,pivot,{},{});
   const double angle = std::remainder(degrees, 360.);
   if (angle == 0 || !has_bounds_)
     return selection_;
@@ -635,8 +642,7 @@ SelectionEditor::rotated(double degrees,
             : selection_.is_rounded_box() ? "rotated_rounded_rectangle" : "rotated_rectangle";
     result.points = {turn(frame.center), turn(frame.image_point({1, 0})),
                      turn(frame.image_point({0, 1}))};
-  } else if(selection_.is_region()) {
-    throw std::invalid_argument("Full region rotation is not integrated yet");
+
   } else if (selection_.kind == "mask") {
     const auto count = static_cast<std::size_t>(width_) * height_;
     result = with_kernel_stage(
@@ -837,6 +843,8 @@ Selection SelectionEditor::rotated(
   require_finite(degrees, "Selection rotation");
   if (pivot)
     finite_point(*pivot);
+  if(selection_.is_region())
+    return detail::rotate_region(selection_,width_,height_,degrees,pivot,limits,control);
   const auto added = box(selection_) && selection_.points.size() < 3 &&
                              std::remainder(degrees, 360.) != 0
                          ? 3 - selection_.points.size() : std::size_t(0);

@@ -3,6 +3,8 @@ project(imagejxx_example LANGUAGES CXX)
 include(CTest)
 find_package(imagejxx CONFIG REQUIRED)
 add_executable(imagejxx_creation_workflow_example selection_creation_workflow.cpp)
+add_executable(imagejxx_region_rotation_example selection_region_rotation.cpp)
+target_link_libraries(imagejxx_region_rotation_example PRIVATE imagejxx::core)
 target_link_libraries(imagejxx_creation_workflow_example PRIVATE imagejxx::core)
 
 add_executable(imagejxx_region_analysis_example regional_analysis.cpp)

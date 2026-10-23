@@ -169,6 +169,8 @@ from ._native import (
     SelectionRegion as SelectionRegion,
     SelectionEditLimits as SelectionEditLimits,
     SelectionEnlargementEstimate as SelectionEnlargementEstimate,
+    SelectionRegionRotationEstimate as SelectionRegionRotationEstimate,
+    estimate_selection_region_rotation as estimate_selection_region_rotation,
     SelectionHandle as SelectionHandle,
     SelectionHandleKind as SelectionHandleKind,
     SelectionFrame as SelectionFrame,
