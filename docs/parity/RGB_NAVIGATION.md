@@ -10,7 +10,7 @@ The 378 reference cases are consumed at every numerical checkpoint; the 5,292
 single-visit stack cases also exercise final narrowed stack mapping. Windows/Linux each pass 39,604 installed Python cases, 22 native suites,
 existing standalone UI probes and installed SDK consumers. A final facade-only
 export correction is separately verified on both hosts; see
-[the scoped receipt](reviews/p11t-rgb-session-core001.json). Portable session workflows/Batch/review and main-panel transition retention
+[the scoped receipt](reviews/p11t-rgb-session-core001.json). Main-panel transition retention and dedicated saved-stage authoring
 remain open; the six-case native editor gap probe has not been made to pass by
 this detached service alone. Combined upstream promotion/navigation/final stack
 traces and actual transition widgets remain required for full acceptance.
@@ -23,9 +23,20 @@ job. Source rebinding retains saved absolute visit coordinates and selections;
 it validates the complete original before checking destination compatibility.
 It does not infer historical membership from the destination's current selection
 or navigation. Windows/Linux each pass 45,319 installed Python cases and the native/SDK/UI
-regression scope in [the capture/job receipt](reviews/p11u-rgb-session-command001.json). Portable workflow/Batch and shared
-ImGui transition integration remain open; this API alone does not make the
+regression scope in [the capture/job receipt](reviews/p11u-rgb-session-command001.json). Main ImGui transition integration remains open; this API alone does not make the
 six-case editor navigation probe pass.
+
+Portable session workflow/Batch and shared Run review now use the complete
+history through `rgb_contrast_session_workflow.hpp`. A singleton WholePlane
+Positions target chooses the destination for the final visit. Every saved T/C/Z
+position receives the same checked offset; order, repeats and historical masks
+remain intact. The original validates against its own descriptor before shifts
+are checked against the destination. Current destination selections are not
+substituted. Metadata-only membership preflight, empty no-IO/no-history behavior,
+paired all-revision publication and existing container versions are retained.
+The review inspects saved visits/mappings and authors the final anchor; saved
+mapping editing and independent per-visit relocation remain open. Qualification
+is running. Main brightness/contrast transitions are the next integration gate.
 
 ## Observed behavior
 

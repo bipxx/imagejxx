@@ -459,7 +459,7 @@ void preflight(const std::vector<detail::NativeWorkflowStepRef> &steps,
           using T = std::decay_t<decltype(v)>;
           if constexpr (std::is_same_v<T, NativeWorkflowOperation>) {
             valid_target(v.target);
-            require(v.operation=="rgb_contrast_stack" || v.operation=="rgb_contrast_apply" || v.operation=="contrast_apply" || v.operation=="rgb_dataset" || v.operation=="color_stack" || v.operation=="indexed_dataset" || v.operation=="indexed_rgb" || operation_spec(v.operation).geometry ==
+            require(v.operation=="rgb_contrast_session" || v.operation=="rgb_contrast_stack" || v.operation=="rgb_contrast_apply" || v.operation=="contrast_apply" || v.operation=="rgb_dataset" || v.operation=="color_stack" || v.operation=="indexed_dataset" || v.operation=="indexed_rgb" || operation_spec(v.operation).geometry ==
                         GeometryEffect::Preserve || v.operation == "convert_image",
                     "Program geometry requires explicit remap");
             detail::validate_native_workflow_operation_intent(v);

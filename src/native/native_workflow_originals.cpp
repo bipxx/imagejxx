@@ -162,6 +162,7 @@ ResolvedRgbContrastApplyCommand workflow_rgb_contrast_apply(const DocumentSnapsh
 void validate_native_workflow_operation_original(
     const std::string &id, const OperationParameters &parameters,
     const MetadataObject &r) {
+  if(id=="rgb_contrast_session"){require(parameters.empty(),"RGB session workflow retains saved history");validate_rgb_contrast_session_command_record(r);return;}
   if(id=="rgb_contrast_stack"){require(parameters.empty(),"RGB stack workflow retains saved mappings");validate_rgb_contrast_stack_command_record(r);return;}
   if(id=="rgb_contrast_apply"){validate_rgb_contrast_apply_command_record(r);return;}
   if(id=="contrast_apply"){validate_contrast_apply_command_record(r);return;}
@@ -192,6 +193,7 @@ void validate_native_workflow_operation_original(
 }
 void validate_native_workflow_operation_intent(
     const NativeWorkflowOperation &v) {
+  if(v.operation=="rgb_contrast_session"){validate_rgb_contrast_session_workflow_intent(v);return;}
   if(v.operation=="rgb_contrast_stack"){validate_rgb_contrast_stack_workflow_intent(v);return;}
   if(v.operation=="rgb_contrast_apply"){(void)rgb_contrast_apply_workflow_options(v);return;}
   if(v.operation=="contrast_apply"){(void)contrast_apply_workflow_options(v);return;}

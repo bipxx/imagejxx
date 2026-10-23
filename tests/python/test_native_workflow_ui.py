@@ -560,3 +560,18 @@ def test_rgb_stack_workflow_actual_anchor_widgets_portable_program_and_paired_ap
         assert s["navigation_after"]==s["navigation_before"]=={"t":1,"c":1,"crosshair":[1,1,1],"zoom":1.5}
         assert s["history_after"]==s["history_before"]+1 and s["undone"]==s["before"] and s["redone"]==s["after"]
         assert s["display_after"]==s["display_redone"]=={"display_range":[0.,255.]} and s["display_undone"]==s["display_before"]
+
+
+def test_rgb_session_actual_visit_inspection_anchor_translation_and_paired_apply(reports):
+    for r in reports:
+        s=r["rgb_session"];operation=s["table"][0]["steps"][0]
+        assert operation["operation"]=="rgb_contrast_session" and operation["target"]["positions"]==[[1,1,0]]
+        assert operation["original"]==s["original"] and len(s["original"]["visits"])==3
+        assert [v["position"] for v in s["original"]["visits"]]==[[0,0,0],[0,0,1],[0,0,0]]
+        assert s["preview"]["preview_only"] and not s["preview"]["controls"]["apply"]["enabled"]
+        expected=np.tile(np.array([20,30,30]),(8,8,1));expected[:,:2,2]=170
+        expected[6,:2]=[85,30,175];expected[7,:2]=[20,170,170]
+        np.testing.assert_array_equal(np.asarray(s["after"]).reshape(8,8,3),expected)
+        assert s["navigation_after"]==s["navigation_before"]=={"t":1,"c":1,"crosshair":[1,1,1],"zoom":1.5}
+        assert s["history_after"]==s["history_before"]+1 and s["undone"]==s["before"] and s["redone"]==s["after"]
+        assert s["display_after"]==s["display_redone"]=={"display_range":[0.,255.]} and s["display_undone"]==s["display_before"]

@@ -1,5 +1,21 @@
 # ImageJ and Fiji gap closure plan
 
+**RGB portable session workflow, 2026-10-22 (work in progress):**
+Complete RGB visit histories now run through portable native workflows and
+session Batch. One explicit final-visit anchor translates every saved T/C/Z
+position together, preserving repeats, stage order and frozen selections. Whole
+stack policy uses the destination stack; live selection/navigation survive.
+Metadata-only preflight shares exact session membership and rejects late invalid
+history before earlier sample reads. Shared ImGui review inspects visits and
+mappings and edits the final anchor, retaining the full original capture.
+Windows and Linux each pass 22 native suites, two installed SDK consumers,
+three standalone UI probes and 51,397 unique installed Python checks (6,078 new).
+The initial full run reached a UI report-path setup error; the corrected UI/Batch
+tail passes, and the unique aggregate retains both invocations as evidence.
+Main brightness/contrast snapshot/navigation transition
+retention and dedicated stage-choice authoring remain open. Original 99 scope/
+status triples and the old Auto evidence gate are unchanged.
+
 **RGB captured-session jobs, 2026-10-22 (work in progress):**
 Immutable C++/Python session captures now retain complete ordered visits, frozen
 selections, promoted stages and the final stack policy in a separate closed V1.

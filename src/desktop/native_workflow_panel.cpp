@@ -53,6 +53,8 @@ struct Entry {
   std::array<double,2> histogram_range{0,255};
   std::size_t choice_bytes = 0;
   int scope = 0, roi = 0;
+  int session_visit=1;
+  Json session_history;
   std::array<int, 3> first{}, stop{}, stride{1, 1, 1};
   std::array<int, 3> position{};
   std::vector<PlanePosition> positions;
@@ -187,7 +189,7 @@ std::vector<Entry> program_entries(const Json &record, std::size_t cap) {
     entry.authored = true;
     entry.enabled = std::visit([](const auto &v) { return v.enabled; }, step);
     if (const auto op = std::get_if<NativeWorkflowOperation>(&step)) {
-      entry.title = op->operation=="rgb_contrast_stack"?"Apply RGB brightness/contrast to stack":op->operation=="rgb_contrast_apply"?"Apply RGB brightness/contrast":op->operation=="contrast_apply"?"Apply brightness/contrast":op->operation=="rgb_dataset"?"RGB dataset conversion":op->operation=="color_stack"?"RGB / HSB component stack":op->operation=="indexed_dataset"?"Indexed color dataset":op->operation=="indexed_rgb"?"Indexed palette to RGB":operation_spec(op->operation).title;
+      entry.title = op->operation=="rgb_contrast_session"?"Apply RGB session history":op->operation=="rgb_contrast_stack"?"Apply RGB brightness/contrast to stack":op->operation=="rgb_contrast_apply"?"Apply RGB brightness/contrast":op->operation=="contrast_apply"?"Apply brightness/contrast":op->operation=="rgb_dataset"?"RGB dataset conversion":op->operation=="color_stack"?"RGB / HSB component stack":op->operation=="indexed_dataset"?"Indexed color dataset":op->operation=="indexed_rgb"?"Indexed palette to RGB":operation_spec(op->operation).title;
       entry.scope = int(op->target.scope);
       entry.roi = int(op->target.roi);
       entry.calibration = op->use_destination_calibration;
@@ -226,7 +228,14 @@ std::vector<Entry> compile(const Json &table, std::size_t cap) {
     const auto schema = string(get(raw, "schema"));
     NativeWorkflowStep step;
     std::string title;
-    if(schema=="imagejxx.rgb-contrast-stack-command") {
+    if(schema=="imagejxx.rgb-contrast-session-command") {
+      validate_rgb_contrast_session_command_record(record);
+      NativeWorkflowOperation value;value.operation="rgb_contrast_session";value.original=record;
+      const auto anchor=raw.at("visits").back().at("position").get<std::array<int,3>>();
+      value.target.scope=TargetScope::Positions;value.target.roi=RoiPolicy::WholePlane;
+      value.target.positions={{anchor[0],anchor[1],anchor[2]}};
+      step=std::move(value);title="Apply RGB session history";
+    } else if(schema=="imagejxx.rgb-contrast-stack-command") {
       validate_rgb_contrast_stack_command_record(record);
       NativeWorkflowOperation value;value.operation="rgb_contrast_stack";value.original=record;
       const auto anchor=raw.at("capture").at("reset_anchor").get<std::array<int,3>>();
@@ -374,7 +383,7 @@ std::vector<Entry> compile(const Json &table, std::size_t cap) {
     if(const auto op=std::get_if<NativeWorkflowOperation>(entry.step.get());op && (op->operation=="rgb_dataset" || op->operation=="color_stack" || op->operation=="indexed_dataset" || op->operation=="indexed_rgb")) {
       entry.scope=int(TargetScope::Ranges);entry.roi=int(RoiPolicy::WholePlane);entry.retained_target=true;
     }
-    if(const auto op=std::get_if<NativeWorkflowOperation>(entry.step.get());op && (op->operation=="rgb_contrast_stack" || op->operation=="contrast_apply" || op->operation=="rgb_contrast_apply")) {
+    if(const auto op=std::get_if<NativeWorkflowOperation>(entry.step.get());op && (op->operation=="rgb_contrast_session" || op->operation=="rgb_contrast_stack" || op->operation=="contrast_apply" || op->operation=="rgb_contrast_apply")) {
       entry.scope=int(op->target.scope);entry.roi=int(op->target.roi);entry.positions=op->target.positions;entry.retained_target=true;
     }
     if(const auto hist=std::get_if<NativeWorkflowHistogram>(entry.step.get())) {
@@ -1745,7 +1754,7 @@ void NativeWorkflowPanel::draw(
   auto &entry = s.entries.at(s.selected);
   {
     const auto operation=std::get_if<NativeWorkflowOperation>(entry.step.get());
-    const bool rgb_step=(operation && (operation->operation=="rgb_dataset" || operation->operation=="rgb_contrast_stack")) || std::holds_alternative<NativeWorkflowHistogram>(*entry.step);
+    const bool rgb_step=(operation && (operation->operation=="rgb_dataset" || operation->operation=="rgb_contrast_session" || operation->operation=="rgb_contrast_stack")) || std::holds_alternative<NativeWorkflowHistogram>(*entry.step);
     const bool parameter_step = bool(operation);
     const bool prefix_confirmed =
         std::all_of(s.entries.begin(), s.entries.begin() + s.selected,
@@ -1860,7 +1869,30 @@ void NativeWorkflowPanel::draw(
         "destination target below. Selection targeting uses this image's "
         "native selection/positioned ROIs.",
         op->operation.c_str());
-    if(op->operation=="rgb_contrast_stack") {
+    if(op->operation=="rgb_contrast_session") {
+      if(entry.session_history.is_null()){
+        detail::validate_rgb_contrast_session_workflow_intent(*op);
+        entry.session_history=metadataJson(op->original->at("visits"));
+      }
+      const auto &saved=entry.session_history;
+      ImGui::Text("Saved plane visits: %zu; final stack Apply: %s",saved.size(),std::get<bool>(op->original->at("entire_stack"))?"yes":"no");
+      ImGui::TextWrapped("Move the final visit anchor below to translate every saved T/C/Z position together. Order, revisits and saved selections stay attached to their mappings. Current destination selections are not substituted. Your navigation is preserved.");
+      ImGui::InputInt("Inspect saved visit",&entry.session_visit,0,0);s.observe("rgb_session_visit");
+      entry.session_visit=std::clamp(entry.session_visit,1,int(saved.size()));
+      const auto &row=saved.at(std::size_t(entry.session_visit-1));const auto at=row.at("position").get<std::array<int,3>>();
+      ImGui::Text("Visit %d: saved T %d, C %d, Z %d; %zu mappings",entry.session_visit,at[0],at[1],at[2],row.at("stages").size());
+      ImGui::BeginChild("Saved session mappings",{0,110},ImGuiChildFlags_Borders);
+      ImGuiListClipper clipper;clipper.Begin(int(row.at("stages").size()));
+      while(clipper.Step())for(int i=clipper.DisplayStart;i<clipper.DisplayEnd;++i){const auto &stage=row.at("stages").at(std::size_t(i));
+        const auto &selection=stage.at("selection");const auto kind=selection.is_null()?std::string("whole plane"):selection.at("kind").get<std::string>();
+        ImGui::Text("%d: %.10g to %.10g; RGB bits %d; %s%s",i+1,stage.at("minimum").get<double>(),stage.at("maximum").get<double>(),stage.at("channels").get<int>(),stage.at("whole_plane").get<bool>()?"whole active plane; saved ":"saved ",kind.c_str());
+      }
+      ImGui::EndChild();
+      auto anchor=entry.positions.front();std::array<int,3> coordinates{anchor.t,anchor.c,anchor.z};
+      const char *labels[]{"Final visit T (zero-based)","Final visit C (zero-based)","Final visit Z (zero-based)"};
+      for(int axis=0;axis<3;++axis){changed|=ImGui::InputInt(labels[axis],&coordinates[axis],0,0);s.observe("rgb_session_anchor."+std::to_string(axis));}
+      if(changed){entry.scope=int(TargetScope::Positions);entry.roi=int(RoiPolicy::WholePlane);entry.positions={{coordinates[0],coordinates[1],coordinates[2]}};entry.retained_target=false;}
+    } else if(op->operation=="rgb_contrast_stack") {
       detail::validate_rgb_contrast_stack_workflow_intent(*op);
       const auto saved=metadataJson(op->original->at("stages"));
       ImGui::Text("Saved component adjustments: %zu",saved.size());

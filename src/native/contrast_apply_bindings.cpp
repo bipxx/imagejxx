@@ -7,6 +7,7 @@
 #include <imagejxx/rgb_contrast_session_job.hpp>
 #include <imagejxx/rgb_contrast_stack_job.hpp>
 #include <imagejxx/rgb_contrast_stack_workflow.hpp>
+#include <imagejxx/rgb_contrast_session_workflow.hpp>
 #include <imagejxx/application.hpp>
 #include "binding_metadata.hpp"
 #include <pybind11/pybind11.h>
@@ -203,6 +204,10 @@ void bind_contrast_apply(py::module_ &m) {
   m.def("execute_rgb_contrast_stack_command",[](ResolvedRgbContrastStackCommand command,ContrastApplyCommandLimits limits,std::shared_ptr<CancellationToken> token,py::object progress,py::object checkpoint){
     const auto control=axis_range_python_control(std::move(token),std::move(progress),std::move(checkpoint));py::gil_scoped_release release;return execute_rgb_contrast_stack_command(command,limits,control);
   },py::arg("command"),py::arg("limits")=ContrastApplyCommandLimits{},py::kw_only(),py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none());
+  m.def("make_rgb_contrast_session_workflow_step",&make_rgb_contrast_session_workflow_step,py::arg("command"),py::arg("limits")=ContrastApplyCommandLimits{},py::call_guard<py::gil_scoped_release>());
+  m.def("rgb_contrast_session_plan_from_record",[](py::object record,py::object cap){
+    const auto value=bindings::metadata_object_value(record);const auto maximum=integer<std::size_t>(std::move(cap));py::gil_scoped_release release;return rgb_contrast_session_plan_from_record(value,maximum);
+  },py::arg("record"),py::arg("max_record_bytes")=8ULL*1024*1024);
   m.def("make_rgb_contrast_stack_workflow_step",&make_rgb_contrast_stack_workflow_step,py::arg("command"),py::arg("limits")=ContrastApplyCommandLimits{},py::call_guard<py::gil_scoped_release>());
   m.def("estimate_rgb_contrast_stack_job",&estimate_rgb_contrast_stack_job,py::arg("command"),py::arg("limits")=ContrastApplyCommandLimits{},py::arg("job_options")=JobOptions{},py::call_guard<py::gil_scoped_release>());
   m.def("submit_rgb_contrast_stack",[](JobScheduler &scheduler,ResolvedRgbContrastStackCommand command,ContrastApplyCommandLimits limits,JobOptions options){

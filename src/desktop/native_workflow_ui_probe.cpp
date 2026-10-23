@@ -6,6 +6,7 @@
 #include <imagejxx/imagej_annotation_export.hpp>
 #include <imagejxx/native_workflow_program.hpp>
 #include <imagejxx/rgb_contrast_stack_workflow.hpp>
+#include <imagejxx/rgb_contrast_session_workflow.hpp>
 #include <imagejxx/session.hpp>
 #include <thread>
 namespace imagejxx::desktop {
@@ -1599,6 +1600,28 @@ Json nativeWorkflowUiCase(Window &w, const std::string &context,
   press("cancel");w.action("undo");report["rgb_stack"]["undone"]=stackPixels();report["rgb_stack"]["display_undone"]=metadataJson(stackOwner->snapshot().display().properties);require(stackOwner->snapshot().shares_data(stackBefore),"Stack replay Undo failed");
   w.action("redo");report["rgb_stack"]["redone"]=stackPixels();report["rgb_stack"]["display_redone"]=metadataJson(stackOwner->snapshot().display().properties);require(report["rgb_stack"]["redone"]==report["rgb_stack"]["after"],"Stack replay Redo differs");
   session->close();w.workflow=stackPreviousTable;w.setActiveIndex(stackPreviousIndex);
+  // Full visit history: translate all positions using real final-anchor widgets.
+  const int sessionPreviousIndex=w.activeIndex();const auto sessionPreviousTable=w.workflow;
+  Image sessionImage=stackImage;for(int i=0;i<8;++i)sessionImage.pixels[3*i+2]=30;
+  auto sessionOwner=std::make_shared<imagejxx::Document>(Dataset::from_planes(stackShape,Stack(8,sessionImage)),"RGB session workflow");w.addNativeDocument(sessionOwner);
+  const Selection savedArea("rectangle",{{0,0},{2,1}});
+  RgbContrastSessionPlan sessionPlan;sessionPlan.entire_stack=true;
+  sessionPlan.visits={{{0,0,0},{{{10,40,4},savedArea,false}}},{{0,0,1},{{{10,40,2},savedArea,false}}},{{0,0,0},{{{10.9,40.1,1},savedArea,false}}}};
+  const auto sessionOriginal=resolve_rgb_contrast_session_command(sessionOwner->snapshot(),sessionPlan).record();w.workflow=Json::array({metadataJson(sessionOriginal)});
+  sessionOwner->select(Selection::from_packed_mask(4,2,{0}));auto sessionView=sessionOwner->snapshot().display();sessionView.t=sessionView.c=1;sessionView.crosshair={1,1,1};sessionView.zoom=1.5;sessionView.properties["display_range"]=metadata_array({12.,220.});w.setNativeDisplay(sessionView);const auto sessionBefore=sessionOwner->snapshot();
+  auto sessionPixels=[&]{Json values=Json::array();const auto dataset=sessionOwner->snapshot().data().dataset;for(int t=0;t<2;++t)for(int c=0;c<2;++c)for(int z=0;z<2;++z)values.push_back(dataset.plane({t,c,z})->pixels);return values;};
+  auto sessionNavigation=[&]{const auto snapshot=sessionOwner->snapshot();const auto &v=snapshot.display();return Json{{"t",v.t},{"c",v.c},{"crosshair",v.crosshair},{"zoom",v.zoom}};};
+  report["rgb_session"]={{"before",sessionPixels()},{"navigation_before",sessionNavigation()},{"display_before",metadataJson(sessionBefore.display().properties)},{"history_before",sessionOwner->undo_steps()},{"original",metadataJson(sessionOriginal)}};
+  session=std::make_unique<HeadlessInputSession>(w);frame();frame();open();require(panel().at("controls").at("edit_parameters").at("enabled")==false,"Saved session history exposed unsupported parameter editing");
+  type("rgb_session_visit","2");type("rgb_session_anchor.0","1");type("rgb_session_anchor.1","1");press("confirm");press("prepare_program");settle();press("keep_program");frame();
+  const auto sessionTable=w.workflow;report["rgb_session"]["table"]=sessionTable;
+  require(sessionTable.size()==1 && sessionTable[0].at("steps")[0].at("target").at("positions")==Json::array({Json::array({1,1,0})}) && sessionTable[0].at("steps")[0].at("original")==metadataJson(sessionOriginal),"Session anchor editing rewrote saved history");
+  require(sessionOwner->snapshot().shares_data(sessionBefore),"Session authoring changed owner");open();press("confirm");press("prepare_preview");settle();report["rgb_session"]["preview"]=panel();require(sessionOwner->snapshot().shares_data(sessionBefore) && panel().at("preview_only").get<bool>(),"Session preview changed owner");
+  press("prepare");settle();press("apply");frame();report["rgb_session"]["after"]=sessionPixels();report["rgb_session"]["navigation_after"]=sessionNavigation();report["rgb_session"]["display_after"]=metadataJson(sessionOwner->snapshot().display().properties);report["rgb_session"]["history_after"]=sessionOwner->undo_steps();
+  require(panel().at("error")=="" && w.workflow==sessionTable && sessionOwner->undo_steps()==report["rgb_session"]["history_before"].get<std::size_t>()+1 && sessionNavigation()==report["rgb_session"]["navigation_before"],"Session replay publication or navigation failed");
+  require(sessionOwner->snapshot().data().selection==sessionBefore.data().selection,"Session replay substituted destination selection");
+  for(int i=0;i<8;++i)for(int j=0;j<8;++j){const auto &pixels=report["rgb_session"]["after"][i];const double r=j<2 && i==6?85:20,g=j<2 && i==7?170:30,blue=j<2?(i==6?175:170):30;require(pixels[3*j]==r && pixels[3*j+1]==g && pixels[3*j+2]==blue,"Session translated revisit/selection/stack composition differs");}
+  press("cancel");w.action("undo");report["rgb_session"]["undone"]=sessionPixels();report["rgb_session"]["display_undone"]=metadataJson(sessionOwner->snapshot().display().properties);require(sessionOwner->snapshot().shares_data(sessionBefore),"Session replay Undo failed");w.action("redo");report["rgb_session"]["redone"]=sessionPixels();report["rgb_session"]["display_redone"]=metadataJson(sessionOwner->snapshot().display().properties);require(report["rgb_session"]["redone"]==report["rgb_session"]["after"],"Session replay Redo differs");session->close();w.workflow=sessionPreviousTable;w.setActiveIndex(sessionPreviousIndex);
   Json members = Json::array();
   for (const auto &entry : fs::directory_iterator(dir))
     members.push_back(entry.path().filename().u8string());

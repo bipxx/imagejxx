@@ -96,6 +96,7 @@ ResolvedRgbContrastSessionCommand resolve_rgb_contrast_session_command(const Doc
   return ResolvedRgbContrastSessionCommand(std::make_shared<const ResolvedRgbContrastSessionCommand::Data>(ResolvedRgbContrastSessionCommand::Data{std::move(capture),plan,std::move(record)}));
 }
 void validate_rgb_contrast_session_command_record(const MetadataObject &record,std::size_t cap){(void)decode(record,cap);}
+RgbContrastSessionPlan rgb_contrast_session_plan_from_record(const MetadataObject &record,std::size_t cap){return decode(record,cap).plan;}
 ResolvedRgbContrastSessionCommand rgb_contrast_session_command_from_record(const DocumentSnapshot &source,const MetadataObject &record,const ContrastApplyCommandLimits &limits){
   const auto decoded=decode(record,limits.max_record_bytes);(void)rgb_contrast_apply_command_from_record(source,decoded.capture,limits);
   return resolve_rgb_contrast_session_command(source,decoded.plan,limits);

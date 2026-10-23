@@ -806,3 +806,49 @@ workflow/Batch, saved-stage review or main-panel navigation transitions. Those
 adapters must preserve the complete session before the panel begins retaining
 visits. Combined upstream promotion/navigation/final-stack traces and full widget/
 platform/resource acceptance remain open.
+
+
+### Portable complete-history session workflows
+
+`make_rgb_contrast_session_workflow_step` creates a native portable operation
+with `rgb_contrast_session`, empty parameters and the complete unchanged command
+in `original`. Its singleton Positions/WholePlane target is the destination
+anchor for the final saved visit, not the processing extent. All saved T/C/Z
+positions receive the same checked offset from the saved final visit to this
+anchor. Ordering, revisits, mappings, whole-active-plane flags and historical
+XY selections remain attached to their stages. Final entire-stack policy maps
+the destination's entire TCZ stack. Destination navigation, live selection,
+calibration and unrelated metadata survive. Current selections and positioned
+ROIs do not replace saved historical membership. Unused ranges, parameters,
+filter/calibration overrides, volume mode and new-document destinations fail.
+
+The complete original is validated against its own descriptor before any
+translation or destination interpretation. `rgb_contrast_session_plan_from_record`
+returns that validated detached plan without binding a destination or reading
+samples. Workflow translation then checks every shifted visit and saved geometry
+against the destination. This permits histories saved in a larger cube to run in
+a smaller destination when the explicit offset makes every visit fit; absolute
+source rebinding before translation would incorrectly refuse this case. Negative
+or overflowing shifts and incompatible masks are rejected before prefix samples.
+Saved original records are never rewritten, and existing container versions and
+scalar/uniform/stack profiles retain their meanings.
+
+Metadata preflight uses the exact active/other processor membership shared with
+session evaluation. Empty membership retains the input descriptor and performs
+no IO or history change. Nonempty output uses a descriptor that throws on sample
+access. All enabled sessions request paired all-revision publication, including
+empty cases, so pending display/selection changes still reject stale proposals.
+Full execution composes the session against the preceding stage and publishes
+one final paired workflow transaction. Run, portable program JSON and session
+Batch use this same implementation; Batch retains input files, results/workflow
+tables and unselected documents.
+
+The shared ImGui review reads raw captures and portable programs, shows saved
+visit counts and final stack policy, inspects a chosen visit and its clipped list
+of mappings/selections, and edits a final T/C/Z anchor. Inspection changes no
+processing intent. Anchor edits translate history together; the kept program
+retains the complete original. Preview remains private and cannot be published
+as an incomplete full result. Apply publishes the prepared complete workflow
+without appending a different recorder entry. Dedicated editing of saved mapping
+choices, per-visit independent relocation and the main contrast panel's outgoing
+snapshot/selection/navigation handling remain open.

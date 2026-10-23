@@ -21,6 +21,10 @@ ResolvedRgbContrastSessionCommand resolve_rgb_contrast_session_command(
     const DocumentSnapshot &,const RgbContrastSessionPlan &,const ContrastApplyCommandLimits & = {});
 void validate_rgb_contrast_session_command_record(const MetadataObject &,
     std::size_t max_record_bytes=8ULL*1024*1024);
+// Descriptor-only complete original validation and detached historical plan.
+// Useful before explicit coordinate translation; no destination is inferred.
+RgbContrastSessionPlan rgb_contrast_session_plan_from_record(const MetadataObject &,
+    std::size_t max_record_bytes=8ULL*1024*1024);
 ResolvedRgbContrastSessionCommand rgb_contrast_session_command_from_record(
     const DocumentSnapshot &,const MetadataObject &,const ContrastApplyCommandLimits & = {});
 // Explicit new source: validate the complete original first, then preserve ALL

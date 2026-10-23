@@ -85,6 +85,20 @@ RgbContrastSessionEstimate estimate_rgb_contrast_session(const DocumentSnapshot 
   }
   return out;
 }
+bool detail::rgb_contrast_session_has_membership(const DocumentSnapshot &source,const RgbContrastSessionPlan &plan){
+  const auto shape=source.data().dataset.shape();
+  for(const auto &visit:plan.visits)for(const auto &step:visit.stages){
+    kernel_checkpoint();
+    if(step.whole_plane)return true;
+    const auto masks=rgb_contrast_processor_regions(step.selection,shape);
+    if(rgb_contrast_region_has_membership(masks.active))return true;
+  }
+  if(plan.entire_stack && shape.plane_count()>1){
+    const auto masks=rgb_contrast_processor_regions(plan.visits.back().stages.back().selection,shape);
+    return rgb_contrast_region_has_membership(masks.other);
+  }
+  return false;
+}
 DocumentTransaction prepare_rgb_contrast_session(const DocumentSnapshot &requested,
     const RgbContrastSessionPlan &requested_plan,const ContrastApplyCommandLimits &requested_limits,
     const ExecutionControl &requested_control){
