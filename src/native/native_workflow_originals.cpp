@@ -4,6 +4,7 @@
 #include "native_workflow_internal.hpp"
 #include "contrast_apply_workflow.hpp"
 #include "selection_enlargement_workflow.hpp"
+#include "selection_creation_workflow.hpp"
 #include "contrast_apply_internal.hpp"
 #include "histogram_command_internal.hpp"
 #include "rgb_dataset_internal.hpp"
@@ -202,6 +203,7 @@ ResolvedSelectionEnlargementCommand workflow_selection_enlargement(const Documen
 void validate_native_workflow_operation_original(
     const std::string &id, const OperationParameters &parameters,
     const MetadataObject &r) {
+  if(id=="selection_creation"){validate_selection_creation_command_record(r);return;}
   if(id=="selection_enlargement"){validate_selection_enlargement_command_record(r);return;}
   if(id=="rgb_contrast_session"){require(parameters.empty(),"RGB session workflow retains saved history");validate_rgb_contrast_session_command_record(r);return;}
   if(id=="rgb_contrast_stack"){require(parameters.empty(),"RGB stack workflow retains saved mappings");validate_rgb_contrast_stack_command_record(r);return;}
@@ -234,6 +236,10 @@ void validate_native_workflow_operation_original(
 }
 void validate_native_workflow_operation_intent(
     const NativeWorkflowOperation &v) {
+  if(v.operation=="selection_creation") {
+    validate_selection_creation_workflow_intent(v, SelectionCreationLimits{}.max_working_bytes);return;
+  }
+  require(!v.selection_creation,"Authored selection choices require selection_creation");
   if(v.operation=="selection_enlargement"){(void)selection_enlargement_workflow_request(v);return;}
   if(v.operation=="rgb_contrast_session"){validate_rgb_contrast_session_workflow_intent(v);return;}
   if(v.operation=="rgb_contrast_stack"){validate_rgb_contrast_stack_workflow_intent(v);return;}

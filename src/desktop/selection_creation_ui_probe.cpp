@@ -5,6 +5,7 @@
 #include "gaussian_cancellation_internal.hpp"
 #include "headless_session_internal.hpp"
 #include <imagejxx/selection_creation.hpp>
+#include <imagejxx/native_workflow_program.hpp>
 #include <imagejxx/selection_edit.hpp>
 #include <imagejxx/session.hpp>
 #include <imgui.h>
@@ -187,12 +188,16 @@ public:
       {"scroll_observations",Json::array()},
       {"api_observations",Json::array()},{"files",Json::object()},{"fixture_sources",Json::object()},
       {"lifecycle",Json::array()},{"detached_sources",Json::object()}};
-    source_=addFixture("source", id_=="Q02");
+    source_=addFixture("source", id_=="Q02" || id_=="Q04");
     if(id_=="Q01" || id_=="Q02" || id_=="Q03") {
       report_["contract_id"]="p12q.regional-creation-ui.001";
       source_->select(id_=="Q03" ? Selection("rectangle",{{-2,0},{1,1}})
                                    : Selection::from_packed_region(3,1,{0xa0},{-2,0}));
       if(id_=="Q02")window_.action("create_roi");
+    }
+    if(id_=="Q04") {
+      report_["contract_id"]="p12r.creation-workflow-ui.001";
+      source_->select(Selection::from_packed_region(3,1,{0xa0},{-2,0}));
     }
     if(id_=="S12"||id_=="S14"||id_=="S15")other_=addFixture("other");
     if(id_=="S16")other_=addFixture("scientific",true);
@@ -208,7 +213,8 @@ public:
     HeadlessInputSession session(window_);report_["lifecycle"].push_back(session.lifecycle());
     try {
       frame(session,"warmup.1");frame(session,"warmup.2");checkpoint(session,"initial");
-      if(id_=="Q01" || id_=="Q02" || id_=="Q03") {
+      if(id_=="Q04")workflowCreation(session);
+      else if(id_=="Q01" || id_=="Q02" || id_=="Q03") {
         if(id_=="Q03")click(session,"selection_creation.full_geometry");
         basic(session,"regional.add",{"Shift"},{18,6},{{21,8},{25,10}});
       }
@@ -294,6 +300,10 @@ private:
     auto state=collection(true);state["frame_ordinal"]=report_["frames"].size();report_["states"][label]=std::move(state);
   }
   Json control(const std::string &selector)const{
+    if(selector.rfind("program.",0)==0)
+      return last_.at("native_workflow").at("controls").at(selector.substr(8));
+    if(selector.rfind("parameters.",0)==0)
+      return last_.at("native_workflow").at("editor").at("controls").at(selector.substr(11));
     if(selector.rfind("selection_properties.",0)==0) {
       const auto name=selector.substr(21);const auto &panel=last_.at("selection_properties");
       const auto &state=panel.at("control_states").at(name);
@@ -409,11 +419,76 @@ private:
     window_.action("wait_jobs",{{"timeout_ms",1500}});window_.poll();}
   void write(const char *name)const{const auto value=report_.dump();require(value.size()<=maxReport,"Selection report exceeded16MiB");
     writeBytes((directory_/name).u8string(),std::vector<unsigned char>(value.begin(),value.end()));}
+  void workflowCreation(HeadlessInputSession&);
   void lateModifiers(HeadlessInputSession&);void intersection(HeadlessInputSession&);void exclusive(HeadlessInputSession&);
   void ellipses(HeadlessInputSession&);void polygonCase(HeadlessInputSession&);void cancels(HeadlessInputSession&);
   void owners(HeadlessInputSession&);void noops(HeadlessInputSession&);void guards(HeadlessInputSession&);
   void records(HeadlessInputSession&);void unsupported(HeadlessInputSession&);void rounded(HeadlessInputSession&);void roundedSaved(HeadlessInputSession&);
 };
+
+void Driver::workflowCreation(HeadlessInputSession &session) {
+  api("workflow_capture_preparation",{{"method","resolve_selection_creation_command"}},[&](Json &) {
+    const auto capture=resolve_selection_creation_command(source_->snapshot(),
+        {SelectionCreationOperation::Add,Selection("rectangle",{{18,6},{26,14}}),
+         SelectionCreationGeometry::FullRegionV3});
+    NativeWorkflowHistogram histogram;histogram.name="area.csv";
+    histogram.authored_options=NativeWorkflowHistogramOptions{};
+    window_.workflow=Json::array({metadataJson(capture.record()),
+        metadataJson(make_native_workflow_program({histogram}).record())});
+    report_["original_creation"]=metadataJson(capture.record());
+  });
+  frame(session,"workflow.seeded");
+  auto settle=[&] {
+    const auto until=Clock::now()+std::chrono::seconds(5);
+    do {
+      require(Clock::now()<until,"Creation workflow worker timeout");
+      std::this_thread::sleep_for(std::chrono::milliseconds(3));
+      frame(session,"workflow.wait");
+    } while(last_.at("native_workflow").at("working").get<bool>());
+  };
+  auto press=[&](const std::string &selector) {
+    for(int retry=0;retry<30;++retry) {
+      const auto hit=control(selector);
+      if(hit.at("visible").get<bool>()) {click(session,selector);return;}
+      const auto bounds=selector.rfind("parameters.",0)==0
+          ?last_.at("native_workflow").at("editor").at("window")
+          :last_.at("native_workflow").at("window");
+      frame(session,"workflow.scroll.position",Json::array({{{"type","position"},{"space","screen"},
+          {"point",{bounds[2].get<double>()-14,(bounds[1].get<double>()+bounds[3].get<double>())/2}}}}));
+      frame(session,"workflow.scroll",Json::array({{{"type","wheel"},{"x",0},
+          {"y",hit.at("point")[1].get<double>()>bounds[3].get<double>()?-4:4}}}));
+    }
+    throw std::runtime_error("Creation workflow control is outside the viewport");
+  };
+  click(session,"workflow.run");
+  press("program.edit_parameters");settle();
+  checkpoint(session,"workflow.parameters_open");
+  text(session,"parameters.points","[[18,6],[22,10]]","workflow.vertices");
+  text(session,"parameters.width","3","workflow.width",true);
+  press("parameters.keep_parameters");
+  require(!last_.at("native_workflow").at("editor").value("visible",false),
+          "Creation parameter edits were refused");
+  checkpoint(session,"workflow.parameters_kept");
+  for(const auto *step:{"program.step.0","program.step.1"}) {
+    press(step);press("program.confirm");
+  }
+  press("program.prepare_program");settle();
+  require(last_.at("native_workflow").at("program_ready").get<bool>(),
+          "Creation portable program was not ready");
+  press("program.keep_program");
+  report_["portable_program"]=window_.workflow.at(0);
+  checkpoint(session,"workflow.portable_kept");
+  click(session,"workflow.run");
+  for(const auto *step:{"program.step.0","program.step.1"}) {
+    press(step);press("program.confirm");
+  }
+  press("program.prepare");settle();
+  require(last_.at("native_workflow").at("ready").get<bool>(),
+          "Creation workflow was not ready for publication");
+  report_["prepared_review"]=last_.at("native_workflow");
+  checkpoint(session,"workflow.prepared");
+  press("program.apply");checkpoint(session,"workflow.applied");
+}
 
 void Driver::lateModifiers(HeadlessInputSession&s){
   tool(s,"rectangle");keys(s,{"Shift"},true,"early.shift.down");press(s,{18,6},"early.press");checkpoint(s,"early.opened");
@@ -576,7 +651,7 @@ void Driver::unsupported(HeadlessInputSession&s){
 }
 } // namespace
 Json selectionCreationUiCase(Window &window,const std::string &caseId,const std::string &context,const std::string &directory){
-  window.checkThread();require(caseId=="Q01" || caseId=="Q02" || caseId=="Q03" || caseId=="R01" || caseId=="R02" || caseId=="R03" || std::find(caseIds.begin(),caseIds.end(),caseId)!=caseIds.end(),"Unknown fixed selection creation UI case");
+  window.checkThread();require(caseId=="Q01" || caseId=="Q02" || caseId=="Q03" || caseId=="Q04" || caseId=="R01" || caseId=="R02" || caseId=="R03" || std::find(caseIds.begin(),caseIds.end(),caseId)!=caseIds.end(),"Unknown fixed selection creation UI case");
   require(context=="imgui_cpp"||context=="imgui_python","Selection creation requires an actual ImGui launch context");
   require(window.documents().empty()&&window.workflow.empty()&&window.results.empty()&&!window.busy(),"Selection creation case needs a fresh idle editor");
   return Driver(window,caseId,context,freshDirectory(directory)).run();

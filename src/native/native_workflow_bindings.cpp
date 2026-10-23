@@ -2,6 +2,7 @@
 #include "native_workflow_batch_internal.hpp"
 #include "native_workflow_internal.hpp"
 #include "native_workflow_program_internal.hpp"
+#include "selection_creation_workflow.hpp"
 #include <imagejxx/native_workflow_batch_setup.hpp>
 namespace py = pybind11;
 using namespace imagejxx;
@@ -92,7 +93,7 @@ void bind_native_workflow(py::module_ &m) {
       .def(
           py::init([](std::string name, py::dict params, TargetRequest target,
                       py::object record, py::object consent, py::object options,
-                      py::object enabled) {
+                      py::object enabled, py::object creation) {
             std::optional<NativeWorkflowFilterOptions> filter;
             if (!options.is_none()) {
               if (py::isinstance<GaussianBlurCommandOptions>(options))
@@ -103,17 +104,25 @@ void bind_native_workflow(py::module_ &m) {
                 throw py::type_error(
                     "Workflow filter options require Gaussian or rank options");
             }
+            std::optional<SelectionCreationRequest> authored;
+            if(!creation.is_none()) {
+              const auto &request=creation.cast<const SelectionCreationRequest &>();
+              (void)detail::selection_creation_request_bytes(request, SelectionCreationLimits{}.max_working_bytes);
+              authored=request;
+            }
             return NativeWorkflowOperation{
                 std::move(name),   operation_parameters_from_python(params),
                 std::move(target), original(record),
                 flag(consent),     std::move(filter),
-                flag(enabled)};
+                flag(enabled), std::move(authored)};
           }),
           py::arg("operation"), py::arg("parameters"), py::arg("target"),
           py::arg("original") = py::none(),
           py::arg("use_destination_calibration") = false,
-          py::arg("filter_options") = py::none(), py::arg("enabled") = true)
-      .def_readonly("enabled", &NativeWorkflowOperation::enabled);
+          py::arg("filter_options") = py::none(), py::arg("enabled") = true,
+          py::arg("selection_creation") = py::none())
+      .def_readonly("enabled", &NativeWorkflowOperation::enabled)
+      .def_property_readonly("selection_creation",[](const NativeWorkflowOperation &v) {return v.selection_creation;});
   py::class_<NativeWorkflowHistogramOptions>(m,"NativeWorkflowHistogramOptions")
       .def(py::init([](py::object options,py::object log) {
         return NativeWorkflowHistogramOptions{options.is_none()?TargetHistogramOptions{}:options.cast<TargetHistogramOptions>(),flag(log)};

@@ -14,6 +14,9 @@ void native_workflow_json_budget(const MetadataObject &, std::size_t);
 std::size_t
 native_workflow_intent_bytes(const std::vector<NativeWorkflowStepRef> &,
                              std::size_t max_steps, std::size_t cap);
+// Borrowed input-storage admission, without serialization or destination work.
+std::size_t native_workflow_inputs_bytes(const std::vector<NativeWorkflowStepRef> &,
+                                        std::size_t cap);
 // Source-independent retained intent admission; no export resolution or
 // datasets.
 std::size_t

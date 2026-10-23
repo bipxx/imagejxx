@@ -6,6 +6,7 @@
 #include "kernel_control.hpp"
 #include "regional_geometry.hpp"
 #include "selection_region_boolean_internal.hpp"
+#include "selection_creation_workflow.hpp"
 #include "session_metadata.hpp"
 #include <algorithm>
 #include <cmath>
@@ -1086,6 +1087,106 @@ DocumentTransaction prepare_selection_creation(
   if (command.changes_) transaction.select(command.result_);
   finish_progress(); return transaction;
 }
+namespace detail {
+namespace {
+SelectionCreationLimits creation_workflow_limits(std::size_t cap) {
+  SelectionCreationLimits limits;
+  limits.max_working_bytes = std::min(limits.max_working_bytes, cap);
+  return limits;
+}
+const char *creation_geometry_name(SelectionCreationGeometry mode) {
+  switch (mode) {
+  case SelectionCreationGeometry::Automatic: return "automatic";
+  case SelectionCreationGeometry::CanvasV1: return "canvas_v1";
+  case SelectionCreationGeometry::FullRegionV3: return "full_region_v3";
+  }
+  invalid("Unknown selection creation geometry mode");
+}
+SelectionCreationGeometry creation_geometry_from(const MetadataValue &value) {
+  const auto &name = text_value(value);
+  if (name == "automatic") return SelectionCreationGeometry::Automatic;
+  if (name == "canvas_v1") return SelectionCreationGeometry::CanvasV1;
+  if (name == "full_region_v3") return SelectionCreationGeometry::FullRegionV3;
+  invalid("Unknown selection creation geometry mode");
+}
+}
+std::size_t selection_creation_request_bytes(const SelectionCreationRequest &request,
+                                             std::size_t cap) {
+  const auto limits = creation_workflow_limits(cap);
+  (void)operation_name(request.operation);
+  (void)creation_geometry_name(request.geometry);
+  const auto geometry = geometry_size(request.candidate, limits);
+  candidate_admission(request.candidate, DatasetShape{1,1,1,1,1,1}, limits);
+  for (const auto &[key,value] : request.candidate.attributes)
+    regional_wire_depth(value, 3);
+  const auto bytes = add(32 * node_bytes,
+      mul(4, add(sizeof(request), add(geometry, wire_size(request.candidate, limits)))));
+  budget(bytes, limits);
+  return bytes;
+}
+MetadataObject selection_creation_request_value(const SelectionCreationRequest &request,
+                                                 std::size_t cap) {
+  (void)selection_creation_request_bytes(request, cap);
+  const ExecutionControl quiet;
+  ExecutionScope scope(quiet);
+  return {{"operation", std::string(operation_name(request.operation))},
+          {"geometry", std::string(creation_geometry_name(request.geometry))},
+          {"candidate", encode_selection(request.candidate, true)}};
+}
+SelectionCreationRequest selection_creation_request_from_value(const MetadataObject &value,
+                                                               std::size_t cap) {
+  const auto limits = creation_workflow_limits(cap);
+  const auto bytes = metadata_size(value, limits);
+  regional_record_depth(value);
+  fields(value, {"operation","geometry","candidate"});
+  const auto operation = read_operation(value.at("operation"));
+  const auto geometry = creation_geometry_from(value.at("geometry"));
+  const auto shape = DatasetShape{1,1,1,1,1,1};
+  const auto wire = inspect_wire(value.at("candidate"), shape, true, limits, true);
+  budget(add(bytes, add(32 * node_bytes, mul(4, wire_geometry_size(wire, shape, limits)))), limits);
+  const ExecutionControl quiet;
+  ExecutionScope scope(quiet);
+  SelectionCreationRequest result{operation, decode_selection(wire, shape), geometry};
+  (void)selection_creation_request_bytes(result, cap);
+  return result;
+}
+SelectionCreationRequest selection_creation_record_request(const MetadataObject &record,
+                                                           std::size_t cap) {
+  const auto limits = creation_workflow_limits(cap);
+  const auto view = inspect_record(record, limits);
+  const ExecutionControl quiet;
+  ExecutionScope scope(quiet);
+  return decode_record(view, limits).request;
+}
+void validate_selection_creation_workflow_intent(const NativeWorkflowOperation &v,
+                                                std::size_t cap) {
+  if (v.operation != "selection_creation" || !v.parameters.empty() || v.filter_options ||
+      v.use_destination_calibration)
+    invalid("Selection creation requires typed choices and empty registry parameters");
+  if (v.target.scope != TargetScope::CurrentPlane || v.target.roi != RoiPolicy::ActiveSelection ||
+      v.target.mode != ExecutionMode::Planes || v.target.destination != OutputDestination::InPlace ||
+      v.target.t || v.target.c || v.target.z || !v.target.positions.empty())
+    invalid("Selection creation uses the preceding stage selection and position");
+  if (!v.original && !v.selection_creation)
+    invalid("Selection creation requires a capture or authored choices");
+  if (v.original) {
+    const auto limits = creation_workflow_limits(cap);
+    validate_selection_creation_command_record(*v.original, limits);
+  }
+  if (v.selection_creation) (void)selection_creation_request_bytes(*v.selection_creation, cap);
+}
+SelectionCreationRequest selection_creation_workflow_request(const NativeWorkflowOperation &v,
+                                                             std::size_t cap) {
+  validate_selection_creation_workflow_intent(v, cap);
+  return v.selection_creation ? *v.selection_creation : selection_creation_record_request(*v.original, cap);
+}
+ResolvedSelectionCreationCommand workflow_selection_creation(const DocumentSnapshot &source,
+    const NativeWorkflowOperation &v, std::size_t cap, const ExecutionControl &control) {
+  const auto limits = creation_workflow_limits(cap);
+  const auto request = selection_creation_workflow_request(v, cap);
+  return resolve_selection_creation_command(source, request, limits, control);
+}
+} // namespace detail
 namespace {
 constexpr const char *enlargement_schema="imagejxx.selection-enlargement-command";
 SelectionEditLimits enlargement_geometry_limits(const SelectionCreationLimits &limits){

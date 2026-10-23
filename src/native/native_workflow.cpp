@@ -6,6 +6,7 @@
 #include "native_workflow_internal.hpp"
 #include "contrast_apply_workflow.hpp"
 #include "selection_enlargement_workflow.hpp"
+#include "selection_creation_workflow.hpp"
 #include "native_workflow_program_internal.hpp"
 #include "rgb_dataset_internal.hpp"
 #include "color_stack_internal.hpp"
@@ -49,10 +50,20 @@ struct Budget {
 void checkpoint(const ExecutionControl &c) {
   if (c.cancellation && c.cancellation->canceled())
     throw OperationCancelled();
-  if (c.checkpoint)
-    c.checkpoint();
+  if(current_execution_scope && &current_execution_scope->control==&c)
+    kernel_checkpoint();
+  else {
+    ExecutionScope scope(c);kernel_checkpoint();
+  }
   if (c.cancellation && c.cancellation->canceled())
     throw OperationCancelled();
+}
+void workflow_progress(const ExecutionControl &c,std::size_t done,std::size_t total) {
+  if(current_execution_scope && &current_execution_scope->control==&c)
+    execution_stage_progress("workflow",done,total);
+  else {
+    ExecutionScope scope(c);execution_stage_progress("workflow",done,total);
+  }
 }
 bool calibration_equal(const SpatialCalibration &a,
                        const SpatialCalibration &b) {
@@ -160,6 +171,15 @@ PixelType conversion_type(const OperationParameters &parameters) {
   if(name=="float64")return PixelType::Float64;
   throw std::invalid_argument("Invalid workflow conversion dtype");
 }
+// Preflight owns a parent execution scope. Delegated command APIs provide
+// their own callback scope; silence this parent until that step returns so a
+// callback's native work cannot recursively redispatch the same callable.
+struct PreflightStepDispatch {
+  ExecutionScope &scope;bool previous;
+  explicit PreflightStepDispatch(ExecutionScope &value)
+      :scope(value),previous(value.dispatching_callback) {scope.dispatching_callback=true;}
+  ~PreflightStepDispatch(){scope.dispatching_callback=previous;}
+};
 void preflight(const DocumentSnapshot &initial,
                const std::vector<detail::NativeWorkflowStepRef> &steps,
                Budget &budget, const ExecutionControl &control) {
@@ -168,6 +188,7 @@ void preflight(const DocumentSnapshot &initial,
   std::set<std::string> names;
   for (const auto &step : steps) {
     checkpoint(control);
+    PreflightStepDispatch dispatch(scope);
     std::visit(
         [&](const auto *pointer) {
           const auto &v = *pointer;
@@ -182,7 +203,6 @@ void preflight(const DocumentSnapshot &initial,
               require(names.insert(v.name).second,
                       "Duplicate workflow output name");
             }
-            ExecutionScope intent_scope(control);
             budget.add(detail::validate_disabled_native_workflow_step(
                 step, budget.cap - budget.used));
             return;
@@ -193,8 +213,16 @@ void preflight(const DocumentSnapshot &initial,
           if constexpr (std::is_same_v<T, NativeWorkflowOperation>) {
             budget.add(v.operation.size());parameters_budget(budget,v.parameters);
             budget.product(v.target.positions.size(),sizeof(PlanePosition));
+            if(v.selection_creation)
+              budget.add(detail::selection_creation_request_bytes(*v.selection_creation,budget.cap-budget.used));
+            if(v.operation=="selection_creation") {
+              const auto cap=budget.cap-budget.used;
+              const auto command=detail::workflow_selection_creation(source,v,cap,control);
+              budget.add(command.estimate().working_bytes);budget.record(command.record());
+              auto edit=prepare_selection_creation(command,control,cap);
+              source=edit.preview();return;
+            }
             if(v.operation=="selection_enlargement") {
-              ExecutionScope intent_scope(control);
               const auto limits=detail::selection_enlargement_workflow_limits(budget.cap-budget.used);
               const auto command=detail::workflow_selection_enlargement(source,v,limits,control);
               budget.add(command.estimate().working_bytes);budget.record(command.record());
@@ -202,7 +230,6 @@ void preflight(const DocumentSnapshot &initial,
               source=edit.preview();return;
             }
             if(v.operation=="rgb_contrast_session") {
-              ExecutionScope intent_scope(control);
               const auto limits=detail::contrast_apply_workflow_limits(budget.cap-budget.used);
               const auto command=detail::workflow_rgb_contrast_session(source,v,limits);
               budget.add(estimate_rgb_contrast_session_command(command,limits).working_bytes);
@@ -210,7 +237,6 @@ void preflight(const DocumentSnapshot &initial,
               source=detail::rgb_contrast_session_metadata_preview(command);return;
             }
             if(v.operation=="rgb_contrast_stack") {
-              ExecutionScope intent_scope(control);
               const auto limits=detail::contrast_apply_workflow_limits(budget.cap-budget.used);
               const auto command=detail::workflow_rgb_contrast_stack(source,v,limits);
               budget.add(estimate_rgb_contrast_stack_command(command,limits).working_bytes);
@@ -446,6 +472,11 @@ DocumentTransaction PreparedNativeWorkflow::begin_edit() const {
   return tx;
 }
 struct detail::NativeWorkflowAccess {
+  static PreparedNativeWorkflow with_retention(PreparedNativeWorkflow result,
+                                               std::size_t minimum) {
+    result.retained_bytes_=std::max(result.retained_bytes_,minimum);
+    return result;
+  }
   static PreparedNativeWorkflow make(DocumentSnapshot source,
                                      DocumentSnapshot preview,
                                      std::vector<NativeWorkflowOutput> outputs,
@@ -461,13 +492,32 @@ prepare_native_workflow(const DocumentSnapshot &source,
                         const std::vector<NativeWorkflowStep> &steps,
                         const NativeWorkflowLimits &limits,
                         const ExecutionControl &control) {
-  require(steps.size() <= limits.max_steps, "Native workflow step limit");
+  const auto owned_limits=limits;
+  const auto owned_control=control;
+  require(owned_limits.max_steps>0 && owned_limits.max_steps<=4096 &&
+          steps.size()<=owned_limits.max_steps && owned_limits.max_retained_bytes>0,
+          "Native workflow step limit");
   std::vector<detail::NativeWorkflowStepRef> refs;
   refs.reserve(steps.size());
   for (const auto &step : steps)
     std::visit([&](const auto &v) { refs.emplace_back(&v); }, step);
-  return detail::prepare_native_workflow_borrowed(source, refs, limits,
-                                                  control);
+  std::size_t captured_bytes=0;
+  {
+    ExecutionControl quiet;quiet.cancellation=owned_control.cancellation;
+    ExecutionScope scope(quiet);
+    Budget captured{owned_limits.max_retained_bytes};
+    captured.data(source);captured.record(source.display().properties);
+    captured.add(sizeof(DocumentSnapshot));
+    captured.add(detail::native_workflow_inputs_bytes(refs,captured.cap-captured.used));
+    captured_bytes=captured.used;
+  }
+  const auto owned_source=source;
+  const auto owned_steps=steps;
+  refs.clear();
+  for(const auto &step:owned_steps)
+    std::visit([&](const auto &v){refs.emplace_back(&v);},step);
+  auto prepared=detail::prepare_native_workflow_borrowed(owned_source,refs,owned_limits,owned_control);
+  return detail::NativeWorkflowAccess::with_retention(std::move(prepared),captured_bytes);
 }
 std::size_t detail::admit_native_workflow(
     const DocumentSnapshot &source,
@@ -496,8 +546,7 @@ PreparedNativeWorkflow detail::prepare_native_workflow_borrowed(
   for (std::size_t index = 0; index < steps.size(); ++index) {
     checkpoint(control);
     if (!std::visit([](const auto *v) { return v->enabled; }, steps[index])) {
-      if (control.stage_progress)
-        control.stage_progress("workflow", index + 1, steps.size());
+      workflow_progress(control,index+1,steps.size());
       checkpoint(control);
       continue;
     }
@@ -517,7 +566,11 @@ PreparedNativeWorkflow detail::prepare_native_workflow_borrowed(
               checkpoint(control);
               working.commit(edit);
             };
-            if(v.operation=="selection_enlargement") {
+            if(v.operation=="selection_creation") {
+              const auto command=detail::workflow_selection_creation(current,v,limits.max_retained_bytes,control);
+              auto edit=prepare_selection_creation(command,control,limits.max_retained_bytes);
+              guard_display=true;checkpoint(control);working.commit(edit);
+            } else if(v.operation=="selection_enlargement") {
               const auto step_limits=detail::selection_enlargement_workflow_limits(limits.max_retained_bytes);
               const auto command=detail::workflow_selection_enlargement(current,v,step_limits,control);
               auto edit=prepare_selection_enlargement(command,control,step_limits.max_working_bytes);
@@ -611,8 +664,7 @@ PreparedNativeWorkflow detail::prepare_native_workflow_borrowed(
         steps[index]);
     ++completed;
     checkpoint(control);
-    if (control.stage_progress)
-      control.stage_progress("workflow", index + 1, steps.size());
+    workflow_progress(control,index+1,steps.size());
   }
   checkpoint(control);
   return NativeWorkflowAccess::make(source, working.snapshot(),

@@ -4,6 +4,7 @@
 #include <imagejxx/imagej_annotation_export.hpp>
 #include <imagejxx/rank_command.hpp>
 #include <imagejxx/histogram_command.hpp>
+#include <imagejxx/selection_creation.hpp>
 
 namespace imagejxx {
 namespace detail {
@@ -34,6 +35,9 @@ struct NativeWorkflowOperation {
   // Requires empty registry parameters and a matching Gaussian/rank operation.
   std::optional<NativeWorkflowFilterOptions> filter_options;
   bool enabled = true;
+  // Authored area intent for selection_creation, independent of immutable
+  // original provenance. Without it, retain the original command's choices.
+  std::optional<SelectionCreationRequest> selection_creation;
 };
 struct NativeWorkflowImport {
   std::vector<ImageJAnnotationImportItem> items;

@@ -895,7 +895,8 @@
           "docs/parity/reviews/p12n-saved-region001.json",
           "docs/parity/reviews/p12o-region-boolean001.json",
           "docs/parity/reviews/p12p-creation-capture001.json",
-          "docs/parity/reviews/p12q-region-creation001.json"
+          "docs/parity/reviews/p12q-region-creation001.json",
+          "docs/parity/reviews/p12r-creation-workflow001.json"
         ],
         "implementation": [
           "include/imagejxx/selection_edit.hpp",

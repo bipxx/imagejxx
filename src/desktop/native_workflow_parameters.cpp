@@ -4,6 +4,7 @@
 #include "../native/native_workflow_program_internal.hpp"
 #include "../native/color_stack_internal.hpp"
 #include "../native/selection_enlargement_workflow.hpp"
+#include "../native/selection_creation_workflow.hpp"
 #include "../native/indexed_dataset_internal.hpp"
 #include "../native/indexed_rgb_internal.hpp"
 #include <cstring>
@@ -62,7 +63,7 @@ struct NativeWorkflowParameters::State {
   Json root, controls = Json::object();
   std::vector<Field> fields;
   std::size_t cap, processing_cap;
-  bool open = true, focus = true, gaussian = false, rank = false, color_stack = false;
+  bool open = true, focus = true, gaussian = false, rank = false, color_stack = false, creation = false;
   std::string error;
   Json bounds = Json::array();
   State(const DocumentSnapshot &s, std::size_t limit, std::size_t processing) : source(s), cap(limit), processing_cap(processing) {}
@@ -107,12 +108,23 @@ struct NativeWorkflowParameters::State {
       require(std::strlen(field.text.data()) + 1 < field.text.size(),
               "Parameter input reached its memory limit; shorten it or "
               "increase the processing setting");
-      if (gaussian || rank)
+      if (creation) {
+        if(field.name=="corner_diameter")continue;
+        if(field.name=="operation" || field.name=="geometry")
+          step["selection_creation"][field.name]=field.value(cap);
+        else step["selection_creation"]["candidate"][field.name]=field.value(cap);
+      } else if (gaussian || rank)
         step["filter_options"][field.name] = field.value(cap);
       else
         step["parameters"][field.name] = {{"kind", field.kind},
                                           {"value", field.value(cap)}};
       admit();
+    }
+    if(creation && step["selection_creation"]["candidate"]["kind"]=="rounded_rectangle") {
+      auto &attributes=step["selection_creation"]["candidate"]["attributes"];
+      require(!attributes.contains("corner_diameter"), "Use the Corner diameter field for rounded boxes");
+      for(const auto &field:fields)if(field.name=="corner_diameter")
+        attributes["corner_diameter"]=field.value(cap);
     }
     auto program = native_workflow_program_from_record(
         metadataObjectFromJson(record), {1, cap});
@@ -122,7 +134,9 @@ struct NativeWorkflowParameters::State {
     const auto shape = source.data().dataset.shape();
     if (!result.enabled)
       return result;
-    if(result.operation=="selection_enlargement") {
+    if(result.operation=="selection_creation") {
+      (void)detail::workflow_selection_creation(source,result,processing_cap);
+    } else if(result.operation=="selection_enlargement") {
       (void)detail::workflow_selection_enlargement(source,result,detail::selection_enlargement_workflow_limits(processing_cap));
     } else if(result.operation=="rgb_contrast_apply") {
       (void)detail::workflow_rgb_contrast_apply(source,result,detail::contrast_apply_workflow_limits(processing_cap));
@@ -181,6 +195,8 @@ NativeWorkflowParameters::NativeWorkflowParameters(
           parse_rank_filter_method(raw.at("method").get<std::string>()),
           raw.at("radius").get<double>()};
   }
+  if(operation.operation=="selection_creation")
+    operation.selection_creation=detail::selection_creation_workflow_request(operation,cap/8);
   if(operation.operation=="rgb_contrast_apply") {
     operation.parameters=detail::rgb_contrast_apply_workflow_parameters(detail::rgb_contrast_apply_workflow_options(operation));
   } else if(operation.operation=="contrast_apply") {
@@ -192,7 +208,7 @@ NativeWorkflowParameters::NativeWorkflowParameters(
     operation.parameters=detail::indexed_dataset_workflow_parameters(detail::indexed_dataset_workflow_request(operation.parameters,*operation.original));
   } else if(operation.operation=="indexed_rgb") {
     operation.parameters=detail::indexed_rgb_workflow_parameters(detail::indexed_rgb_workflow_request(operation.parameters,*operation.original));
-  } else if (!operation.filter_options && operation.operation!="selection_enlargement") {
+  } else if (!operation.filter_options && operation.operation!="selection_creation" && operation.operation!="selection_enlargement") {
     OperationDefaultContext context;
     const auto shape = source.data().dataset.shape();
     context.width = shape.x;
@@ -236,10 +252,10 @@ NativeWorkflowParameters::NativeWorkflowParameters(
     // Scalar edits have small fixed buffers. Structured/text fields share one
     // bounded allowance; ImGui never receives an unbounded resize callback.
     const bool large = field.kind == "array" || field.kind == "image" ||
-                       field.kind == "text" || field.optional ||
+                       field.kind == "text" || field.kind == "structured" || field.optional ||
                        field.array_allowed;
     const auto count =
-        operation.filter_options
+        operation.selection_creation ? std::size_t(8) : operation.filter_options
             ? std::size_t(2)
             : std::max(std::size_t(1), operation.parameters.size());
     const auto bytes =
@@ -251,7 +267,28 @@ NativeWorkflowParameters::NativeWorkflowParameters(
     s.fields.push_back(std::move(field));
   };
   s.color_stack=operation.operation=="color_stack";
-  if(operation.operation=="selection_enlargement") {
+  s.creation=operation.operation=="selection_creation";
+  if(operation.operation=="selection_creation") {
+    const auto &choice=step["selection_creation"];
+    const auto &candidate=choice["candidate"];
+    add("operation","Selection mode","text",choice["operation"]);
+    s.fields.back().choices={"replace","add","subtract","intersect","xor"};
+    s.fields.back().choice_labels={"Replace","Add","Subtract","Intersect","XOR"};
+    add("geometry","Geometry","text",choice["geometry"]);
+    s.fields.back().choices={"automatic","canvas_v1","full_region_v3"};
+    s.fields.back().choice_labels={"Automatic","Canvas","Preserve off-image geometry"};
+    add("kind","Shape","text",candidate["kind"]);
+    s.fields.back().choices={"rectangle","ellipse","rounded_rectangle","polygon","freehand"};
+    s.fields.back().choice_labels={"Rectangle","Ellipse","Rounded rectangle","Polygon","Freehand"};
+    add("points","Vertices (x, y pairs)","structured",candidate["points"]);
+    add("width","Stroke width","real",candidate["width"]);
+    auto attributes=candidate["attributes"];Json corner=0;
+    if(candidate["kind"]=="rounded_rectangle") {
+      corner=attributes.at("corner_diameter");attributes.erase("corner_diameter");
+    }
+    add("corner_diameter","Corner diameter (pixels)","int64",corner);
+    add("attributes","Additional attributes","structured",std::move(attributes));
+  } else if(operation.operation=="selection_enlargement") {
     const auto value=[&](const char *name){return step["parameters"].at(name).at("value");};
     add("distance","Signed distance (negative shrinks)","real",value("distance"));
     add("units","Distance units","text",value("units"));s.fields.back().choices={"pixels","calibrated"};
@@ -338,6 +375,10 @@ void NativeWorkflowParameters::draw(
                     false);
   ImGui::BeginDisabled(!enabled);
   for (auto &field : s.fields) {
+    if(s.creation && field.name=="corner_diameter") {
+      const auto kind=std::find_if(s.fields.begin(),s.fields.end(),[](const auto &v){return v.name=="kind";});
+      if(kind==s.fields.end() || std::string(kind->text.data())!="rounded_rectangle")continue;
+    }
     ImGui::PushID(field.name.c_str());
     if (field.optional) {
       bool automatic = field.kind == "null";
@@ -402,7 +443,7 @@ void NativeWorkflowParameters::draw(
         ImGui::EndCombo();
       }
     } else if (field.kind == "array" || field.kind == "image" ||
-               field.kind == "text") {
+               field.kind == "text" || field.kind == "structured") {
       if (field.kind == "text" &&
           ImGui::Checkbox("Escaped JSON text", &field.escaped)) {
         try {

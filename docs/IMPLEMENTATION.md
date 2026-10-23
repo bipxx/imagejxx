@@ -20,6 +20,24 @@ algebra and manager integration; next is creation/modifier command migration
 and continuous-path/rotation work. See [the scoped receipt](parity/reviews/p12o-region-boolean001.json).
 See [the contract](parity/REGION_BOOLEAN.md).
 
+**Native creation workflows, 2026-10-23 (scoped integration):**
+Typed creation steps now participate in staged native programs, shared Run
+review, sessions and batch. V6 stores complete authored candidates and retains
+immutable V1/V2/V3 captures. Later steps consume preceding selections; final
+publication is atomic and guards navigation. Shared parameter editing changes
+vertices, mode, geometry and style without rewriting history. Public C++ input
+capture and delegated callback dispatch prevent mutation and recursive dispatch.
+Windows/Linux each pass 7,860 installed Python checks (85 new), nine native
+groups, the 214-check workflow SDK client and 37 standalone UI recipes. The
+paired Q04 recipe edits, keeps, reopens, prepares and applies a regional
+creation/histogram program. All prior 2,116 focused IDs remain included;
+failure/error/skip counts are zero. Verified archives precede removal of
+1,359,267,017 owned scratch bytes. Original requirements and historical
+expectations remain unchanged; the historical Auto fingerprint gate stays open.
+Next are regional rotation, continuous paths and axis/planar remapping. See
+[the contract](parity/CREATION_WORKFLOW.md) and
+[the scoped receipt](parity/reviews/p12r-creation-workflow001.json).
+
 **Full-region selection creation, 2026-10-23 (scoped integration):**
 Creation retains complete off-image pixel geometry through automatic regional
 bases or explicit full mode. Closed V3 records validate original equations and
