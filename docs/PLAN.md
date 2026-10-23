@@ -1,5 +1,16 @@
 # ImageJ and Fiji gap closure plan
 
+**RGB navigation gap evidence, 2026-10-22 (open):**
+A new actual ImageJ reference captures 378 T/C/Z navigation, selection and Reset
+cases. Two independent runs reproduce the fixture exactly. The installed native
+editor matches 36/48 checks across six round trips; twelve returning Reset/remap
+checks differ because pending per-plane visits are discarded. This is gap
+evidence, not completed feature qualification. Implement native session state,
+complete captured jobs/replay, then shared ImGui transitions and full regression
+qualification in that order. See [the execution plan](parity/RGB_NAVIGATION.md)
+and [the evidence receipt](parity/reviews/p11s-rgb-navigation001.json).
+All 99 requirement/status triples and the old Auto evidence gate stay unchanged.
+
 **RGB main-panel stack checkpoint, 2026-10-22 (work in progress):**
 The shared ImGui brightness/contrast panel now previews and applies exact ImageJ
 entire-stack RGB mappings. The checkbox keeps compatible current-plane component

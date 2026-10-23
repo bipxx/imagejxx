@@ -2430,7 +2430,9 @@
           "docs/parity/reviews/p11o-rgb-stack001.json",
           "docs/parity/reviews/p11p-rgb-stack-command001.json",
           "docs/parity/reviews/p11q-rgb-stack-workflow001.json",
-          "docs/parity/reviews/p11r-rgb-stack-panel001.json"
+          "docs/parity/reviews/p11r-rgb-stack-panel001.json",
+          "docs/parity/RGB_NAVIGATION.md",
+          "docs/parity/reviews/p11s-rgb-navigation001.json"
         ],
         "implementation": [
           "include/imagejxx/document.hpp",
@@ -2529,9 +2531,9 @@
       "remaining": [
         "The shared Window/ImGui host exposes scalar Apply and guarded saved-command rebind review with native captured jobs, T/C/Z/ROI controls, busy/wait/cancel/close, staged submission-time recording and paired pixel/display Undo/Redo. Extend range/text/positioned-ROI widget, failure-injection and upstream/platform/resource qualification; this does not close G057.",
         "Native workflow/Run/session Batch now support saved and authored scalar Apply, complete original validation, reset-aware metadata-only preflight, closed program/Batch setup codecs, editable mapping/target review, ordered intermediate histograms and one paired final Run commit. Extend operation/output combinations, actual target widgets, failure injection and full upstream/resource/platform qualification; these scoped adapters do not close G057.",
-        "Independent RGB transform/estimate/target-transaction C++/Python APIs now match 273 actual ImageJ preview/commit/snapshot reference rows, including seven component masks and fractional/extreme arithmetic. Add captured RGB records/replay/rebind, native worker jobs, exact baseline/component preview and shared Apply controls, then workflow/Batch adapters. Qualify the separate current/stack controller behavior before enabling RGB UI; RGBA is a separate extension and floating Apply remains unavailable.",
+        "Native RGB mapping, captured commands/jobs, promoted histogram/Auto, exact entire-stack Apply, shared ImGui preview/Apply and portable workflow/Batch adapters now have scoped evidence. ImageJ per-plane snapshot/selection/navigation retention remains open: p11s captures 378 upstream cases and demonstrates twelve returning Reset/remap mismatches in six installed-editor round trips. Implement complete native session state/capture/jobs/replay before enabling navigation retention; see docs/parity/RGB_NAVIGATION.md. RGBA and floating Apply remain separate gaps.",
         "Processor reset now clears threshold, preserves palettes and uses observed UInt16 or configured full display bounds. Broader multi-channel representative-plane, empty-target, custom default-range, signed/intensity calibration and UI reference acceptance remain open. Empty masks retain the explicit native no-change/no-IO extension.",
-        "Exact upstream slider normalization, log histogram/control/calibration and Set/Reset traces remain unqualified. Float64, IEEE-preserving Float32 and packed RGB/RGBA histogram/Auto are not enabled in the current panel.",
+        "Exact upstream slider normalization, log histogram/control/calibration and Set/Reset traces remain unqualified. Finite UInt8 RGB histogram/Auto is now enabled with scoped promotion and stack evidence; Float64, IEEE-preserving Float32 and RGBA histogram/Auto remain unavailable in this panel.",
         "Finite legacy automatic range scans and other analysis/editing paths can still acquire pixels synchronously. Source caches, allocator/frontend and publication/history allocations are outside declared job reservations; full responsiveness/resource/platform acceptance remains open."
       ],
       "required_work": "Non-destructive histogram-linked sliders, brightness/contrast/window/level controls, saturation-aware auto, reset/set/apply and channel targeting",

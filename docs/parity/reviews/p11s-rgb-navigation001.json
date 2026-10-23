@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "id": "p11s.rgb-navigation.reference.001",
+  "date": "2026-10-22",
+  "state": "gap-demonstrated",
+  "acceptance": false,
+  "complete_requirement_coverage": false,
+  "baseline_commit": "5826cbabaec830f6a1a5ed50137f770901d41b50",
+  "scope": "Reference evidence and dependency-ordered implementation plan only. Actual unmodified ImageJ 1.54r setup/setPosition/mapping/masking/Reset produces 378 cases over three axes, both directions, seven component masks and nine selection forms. Selection changes retain the snapshot; leaving a plane retains mapped pixels; returning establishes those pixels as the new Reset/remap baseline. Direct ContrastAdjuster inheritance avoids the older histogram harness Reset override. Two fresh compilations/runs reproduce the fixture byte for byte. An actual disposable installed Python venv executes the shared native editor across six none-to-rectangle, All-component round trips: 36 of 48 checks match and twelve returning Reset/remap checks differ; probe exit 1 is expected evidence of the open gap, not passing acceptance. Source pixels remain unchanged in every native case. All three installed native modules match the preceding qualified main binaries. No production implementation or dependency changes; no broad regression rerun claimed. The full 378 rows remain to be consumed by native session tests, followed by complete capture/jobs/replay and shared UI qualification. All 99 original requirement/status triples remain unchanged. Temporary venv and generated class trees are ZIP CRC and every-member SHA verified before confined removal; final prior qualified products and current raw evidence remain. The old Auto evidence gate is not repinned or relaxed.",
+  "reference_cases": 378,
+  "native_probe": {
+    "cases": 6,
+    "checks": 48,
+    "matched": 36,
+    "mismatched": 12,
+    "exit_code": 1,
+    "platform": "Windows",
+    "actual_installed_interpreter": true
+  },
+  "requirements": {
+    "count": 99,
+    "statuses": {
+      "in_progress": 47,
+      "open": 52
+    },
+    "original_triples_unchanged": true
+  },
+  "sources": [
+    {
+      "path": "tests/reference/RgbContrastNavigationReference.java",
+      "bytes": 6467,
+      "sha256": "54a5cf31dc5f2e55853233cd9bf454768c09e6b61e580f1d295a3988ca1a54d5"
+    },
+    {
+      "path": "tests/reference/extract_rgb_navigation_fixture.py",
+      "bytes": 5292,
+      "sha256": "7cfcc6472370a7d85976b836a9c4c8165dd78c9007b55e990c1e1c7ebdde9eec"
+    },
+    {
+      "path": "tests/reference/compare_rgb_navigation_editor.py",
+      "bytes": 5166,
+      "sha256": "456ad247768f253fa380d688baea533bfa1e2e989bdac22333124b08263dbe17"
+    },
+    {
+      "path": "tests/fixtures/rgb-contrast-navigation-imagej154r.json",
+      "bytes": 382411,
+      "sha256": "30d62070b70753031d5626de12c6033f288d51eb685828dd0243c6424a7ae282"
+    },
+    {
+      "path": "docs/parity/RGB_NAVIGATION.md",
+      "bytes": 8400,
+      "sha256": "8928e78f04340081212d619d264c4437826f9dc5c98d95e8e85f87ca879dc576"
+    },
+    {
+      "path": "docs/PLAN.md",
+      "bytes": 457409,
+      "sha256": "4bfeffcccac83a2d7a774077a49fd36a7dfda11c472e744b13ceeb954cf242ac"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "build/p11s-rgb-navigation001/oracle001/reference.stdout",
+      "bytes": 225288,
+      "sha256": "d5fb2e9d5d7dbc71ad0583bb1cb16692cfc6f9a15a5b5bc54f22c44f731d2c65"
+    },
+    {
+      "path": "build/p11s-rgb-navigation001/oracle001/reference.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p11s-rgb-navigation001/oracle001/compile.stderr",
+      "bytes": 4744,
+      "sha256": "f68ee89c48cf266113750b54cecd5c049277820dc5623905eb9b5f7a552b9e72"
+    },
+    {
+      "path": "build/p11s-rgb-navigation001/oracle002/reference.stdout",
+      "bytes": 225288,
+      "sha256": "d5fb2e9d5d7dbc71ad0583bb1cb16692cfc6f9a15a5b5bc54f22c44f731d2c65"
+    },
+    {
+      "path": "build/p11s-rgb-navigation001/oracle002/reference.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p11s-rgb-navigation001/oracle002/compile.stderr",
+      "bytes": 4744,
+      "sha256": "f68ee89c48cf266113750b54cecd5c049277820dc5623905eb9b5f7a552b9e72"
+    },
+    {
+      "path": "build/p11s-rgb-navigation001/native-comparison002/report.json",
+      "bytes": 12539,
+      "sha256": "e291adbb8e9f5c1b716929798732fc783394ccffa235459db1dbe554b2d44b09"
+    },
+    {
+      "path": "build/p11s-rgb-navigation001/environment.json",
+      "bytes": 288,
+      "sha256": "bb624d6490337048ba7f8f4c654ec30126dc9a477af37c078bbf0e9a44dfb70a"
+    },
+    {
+      "path": "build/p11s-rgb-navigation001/cleanup001.json",
+      "bytes": 8583,
+      "sha256": "3ac52d2c7f67bc16f44418690e3f7f80211248f3b55fc39f1d70597d01724cd2"
+    },
+    {
+      "path": "build/p11s-rgb-navigation001/native-differential001.py",
+      "bytes": 3399,
+      "sha256": "dbc576d1261fddd6b976a9cec23e10e2efc9bbf85567868c7e5b508c55028e8b"
+    },
+    {
+      "path": "build/p11s-rgb-navigation001/native-differential001.json",
+      "bytes": 8616,
+      "sha256": "ba08e3e1b3034423ff2b17e930d7a9d0b85c339578923ff32b85d283e6b5ce2b"
+    },
+    {
+      "path": "build/p11s-rgb-navigation001/run-comparison002.py",
+      "bytes": 409,
+      "sha256": "9455e0dce0097f2dfa56d57eefe8380531ff9b11d4929dcda38c70c01d61b27f"
+    },
+    {
+      "path": "build/p11s-rgb-navigation001/check_licenses001.log",
+      "bytes": 62,
+      "sha256": "939b266b092bfdc37d1814f66b75a21469497e36e30a2050805031da4f97b417"
+    },
+    {
+      "path": "build/p11s-rgb-navigation001/check_plan001.log",
+      "bytes": 151,
+      "sha256": "5741e4b9133f374434cac8973e1f1c6131200e632958a012913a739c28d47006"
+    }
+  ],
+  "remaining": [
+    "Implement and qualify native per-plane session state against every reference checkpoint.",
+    "Complete immutable capture, resource-admitted jobs, original-owner paired publication and portable replay/Batch.",
+    "Integrate shared ImGui navigation/selection transitions and full C++/Python Windows/Linux coverage.",
+    "Extend upstream promotion/navigation/final stack Apply reference traces and actual widget coverage.",
+    "Keep broader G057 and full ImageJ/Fiji/platform/resource requirements open."
+  ],
+  "checks": {
+    "commercial_dependencies": "passed",
+    "plan_inventory": "existing Auto producer-source fingerprint failure unchanged; not passed",
+    "production_changes": false,
+    "broad_regression_rerun": false,
+    "reference_reproducibility": "378 cases, two fresh compiles/runs, byte-identical fixture",
+    "cleanup_reclaimed_bytes": 26445284
+  }
+}
