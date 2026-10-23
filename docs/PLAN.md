@@ -1,5 +1,19 @@
 # ImageJ and Fiji gap closure plan
 
+**Fresh scalar Auto qualification, 2026-10-23 (work in progress):**
+Current Windows/Linux builds each pass 64 native cases (1,286 checks), 13
+installed C++ SDK cases (485 checks), and 396 installed Python checks, including
+all 16 paired Auto UI cases. Every original 362 API test ID remains covered.
+Fresh Windows observations pass all 144 four-context composition assertions;
+35 non-file-identity expectations per context are unchanged. Separate current
+contracts bind fresh preference paths/hashes; historical records are untouched.
+The composition retains the existing 64 MiB bound and pins full desktop binary
+bodies separately in product ledgers. No production change or full parity
+acceptance is claimed. The historical gate still needs exact old source and
+native-executable bytes. Actual RGB selection/navigation/Auto/Reset input and
+stage/visit authoring remain next editor gaps. All99 triples are unchanged.
+See [Auto requalification](parity/AUTO_REQUALIFICATION.md).
+
 **Combined RGB promotion/navigation/Auto reference, 2026-10-23 (work in progress):**
 A new independent ImageJ 1.54r oracle combines actual component callbacks,
 selection changes, plane departure/return, replacing/resetting a returning draft,

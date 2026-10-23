@@ -2438,7 +2438,9 @@
           "docs/parity/reviews/p11v-rgb-session-workflow001.json",
           "docs/parity/reviews/p11w-rgb-session-editor001.json",
           "docs/parity/reviews/p11x-rgb-session-panel001.json",
-          "docs/parity/reviews/p11y-rgb-combined001.json"
+          "docs/parity/reviews/p11y-rgb-combined001.json",
+          "docs/parity/reviews/p11z-auto-requalification001.json",
+          "docs/parity/AUTO_REQUALIFICATION.md"
         ],
         "implementation": [
           "include/imagejxx/document.hpp",

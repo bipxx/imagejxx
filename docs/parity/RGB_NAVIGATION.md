@@ -122,10 +122,13 @@ headless input session. Windows/Linux each pass all 9,156 installed checks; see
 navigation gestures, returning Auto/Reset widget delivery beyond these action
 checks, richer visit orders and dedicated stage authoring still need coverage.
 
-The next independent evidence task is fresh qualification of the existing scalar
-Auto producer against current C++/ImGui interfaces. Preserve its original expected
-outputs and historical record; do not repin a fingerprint or relax the verifier
-to turn the currently failing old-source gate green.
+Fresh scalar Auto qualification now passes the current native/SDK/API/UI checks
+on Windows and Linux, plus all 144 Windows composition assertions. Separate
+current contracts bind fresh persisted-file identities while preserving all
+non-file-identity expectations. See [the scoped report](AUTO_REQUALIFICATION.md).
+The historical source gate remains open pending exact original source/executable
+recovery. Next editor work covers real selection/navigation/returning Auto/Reset
+input and independent stage/visit authoring.
 
 ## Observed behavior
 
