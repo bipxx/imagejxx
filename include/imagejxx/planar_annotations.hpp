@@ -34,6 +34,8 @@ bool planar_annotation_visible(const PlanarAnnotation &, Plane, int coordinate,
 // Versioned native extension over the existing lossless session metadata codec.
 // The extent binding prevents shape-changing operations from silently retaining
 // stale plane geometry. Such operations must explicitly remap or clear it.
+// V1 retains legacy vectors/canvas masks. V2 requires at least one intrinsic
+// region and preserves complete off-plane-canvas geometry in every row.
 // Bounds:4096 rows,65536 vertices/row,16MiB logical metadata,1M nodes.
 MetadataValue encode_planar_annotations(DatasetShape,
                                       const std::vector<PlanarAnnotation> &);

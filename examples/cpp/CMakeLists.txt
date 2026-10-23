@@ -4,6 +4,8 @@ include(CTest)
 find_package(imagejxx CONFIG REQUIRED)
 add_executable(imagejxx_creation_workflow_example selection_creation_workflow.cpp)
 add_executable(imagejxx_region_rotation_example selection_region_rotation.cpp)
+add_executable(imagejxx_planar_region_remap_example planar_region_remap.cpp)
+target_link_libraries(imagejxx_planar_region_remap_example PRIVATE imagejxx::core)
 target_link_libraries(imagejxx_region_rotation_example PRIVATE imagejxx::core)
 target_link_libraries(imagejxx_creation_workflow_example PRIVATE imagejxx::core)
 

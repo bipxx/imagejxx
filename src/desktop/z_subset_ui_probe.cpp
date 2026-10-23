@@ -4,22 +4,30 @@
 #include "headless_session_internal.hpp"
 #include "window.hpp"
 #include <imagejxx/session.hpp>
+#include <imagejxx/planar_annotations.hpp>
 #include <stdexcept>
 namespace imagejxx::desktop {
 namespace {
 void require(bool v,const char *message){if(!v)throw std::runtime_error(message);}
-Json state(Window &window) {
+Json state(Window &window, bool regional) {
   const auto source=window.nativeSnapshot();const auto &data=source.data();
   const auto shape=data.dataset.shape();const auto cal=data.dataset.calibration();Json pixels=Json::array(),rois=Json::array();
   for(int t=0;t<shape.t;++t)for(int c=0;c<shape.c;++c)for(int z=0;z<shape.z;++z)pixels.push_back(data.dataset.plane({t,c,z})->pixels);
   for(const auto &roi:data.rois)rois.push_back({{"name",roi.name},{"z",roi.z?Json(*roi.z):Json()},{"selection",selectionJson(roi.selection)}});
-  return {{"shape",shape.dimensions()},{"pixels",pixels},{"origin",cal.origin},{"spacing",cal.spacing},
+  Json result{{"shape",shape.dimensions()},{"pixels",pixels},{"origin",cal.origin},{"spacing",cal.spacing},
     {"rois",rois},{"crosshair",source.display().crosshair},{"t",source.display().t},{"c",source.display().c},
     {"undo",window.nativeDocument(source.id())->undo_steps()},{"workflow",window.workflow},
     {"document_count",window.documents().size()}};
+  if(regional) {
+    result["planar"]=metadataJson(encode_planar_annotations(shape,planar_annotations(data)));
+    result["selection"]=data.selection?selectionJson(*data.selection):Json();
+    result["previous_selection"]=data.previous_selection?selectionJson(*data.previous_selection):Json();
+    result["extensions"]=metadataJson(data.metadata.extensions);
+  }
+  return result;
 }
 }
-Json zSubsetUiCase(Window &window,const std::string &context,const std::string &fresh_directory) {
+Json zSubsetUiCase(Window &window,const std::string &context,const std::string &fresh_directory, bool regional) {
   namespace fs=std::filesystem;const auto directory=fs::absolute(fs::u8path(fresh_directory));
   require((context=="imgui_cpp" || context=="imgui_python") && !fs::exists(directory) && window.documents().empty(),"Fresh Z subset UI fixture required");
   fs::create_directories(directory);
@@ -33,10 +41,28 @@ Json zSubsetUiCase(Window &window,const std::string &context,const std::string &
   DocumentData data{Dataset::from_planes({2,2,5,5,7,1},std::move(planes),cal)};
   Selection selection("rectangle",{{1,1},{5,4}});
   data.rois={{"zero",selection,0,0,0,{}},{"first",selection,0,0,1,{}},{"last",selection,1,1,3,{}},{"wild",selection,{},{},{},{}}};
+  if(regional) {
+    auto pattern=[](int w,int h,std::array<int,2> origin) {
+      std::vector<unsigned char> bytes((std::size_t(w)*h+7)/8,0);
+      for(int y=0;y<h;++y)for(int x=0;x<w;++x)if(x==y%w) {
+        const auto i=y*w+x;bytes[i/8]|=static_cast<unsigned char>(0x80u>>(i%8));
+      }
+      auto value=Selection::from_packed_region(w,h,std::move(bytes),origin);
+      value.width=2.5;value.attributes={{"opaque",metadata_array({true,std::uint64_t(-1),std::string("kept")})}};
+      return value;
+    };
+    const auto xz=pattern(3,9,{-2,-2}),yz=pattern(4,7,{-1,0});
+    data.selection=xz;data.previous_selection=yz;
+    data.metadata.extensions[planar_annotations_extension]=encode_planar_annotations(data.dataset.shape(),{
+      {"xz",xz,Plane::XZ,2,1,1,{{"row",std::string("xz")}}},
+      {"yz",yz,Plane::YZ,3,{},{},{{"row",std::string("yz")}}},
+      {"xy kept",xz,Plane::XY,3,{},{},{}},
+      {"xy removed",yz,Plane::XY,0,{},{},{}}});
+  }
   auto owner=std::make_shared<imagejxx::Document>(std::move(data));auto view=owner->snapshot().display();view.t=1;view.c=1;view.crosshair={3,2,4};owner->set_display(view);
   window.addNativeDocument(owner);window.recording=true;
-  Json report{{"contract","p06m.z-subset.ui.001"},{"context",context},{"acceptance_claim",false},
-      {"frames",Json::array()},{"controls",Json::array()},{"states",{{"before",state(window)}}},
+  Json report{{"contract",regional?"p12t.planar-region-ui.001":"p06m.z-subset.ui.001"},{"context",context},{"acceptance_claim",false},
+      {"frames",Json::array()},{"controls",Json::array()},{"states",{{"before",state(window,regional)}}},
       {"api_fixture_actions",{"dataset/ROI attachment","session Save/Open"}}};
   HeadlessInputSession session(window);Json last;
   auto frame=[&](const Json &events=Json::array()){
@@ -60,20 +86,20 @@ Json zSubsetUiCase(Window &window,const std::string &context,const std::string &
   click(last.at("host_controls").at("menu.z_subset"),"menu.z_subset");
   edit("first","2");edit("last","5");edit("step","2");
   click(last.at("dialog").at("controls").at("replace"),"replace");
-  click(last.at("dialog").at("controls").at("apply"),"apply");frame();report["states"]["applied"]=state(window);
+  click(last.at("dialog").at("controls").at("apply"),"apply");frame();report["states"]["applied"]=state(window,regional);
   click(last.at("host_controls").at("menu.Edit"),"menu.Edit");
-  click(last.at("host_controls").at("menu.Edit.Undo"),"undo");report["states"]["undone"]=state(window);
+  click(last.at("host_controls").at("menu.Edit.Undo"),"undo");report["states"]["undone"]=state(window,regional);
   click(last.at("host_controls").at("menu.Edit"),"menu.Edit");
-  click(last.at("host_controls").at("menu.Edit.Redo"),"redo");report["states"]["redone"]=state(window);
+  click(last.at("host_controls").at("menu.Edit.Redo"),"redo");report["states"]["redone"]=state(window,regional);
   click(last.at("host_controls").at("workflow.z_subset.0.rebind"),"workflow.rebind");
   edit("first","1");edit("last","2");edit("step","1");
   click(last.at("dialog").at("controls").at("replace"),"new_document");
   click(last.at("dialog").at("controls").at("apply"),"rebind.apply");
-  frame();report["states"]["rebound"]=state(window);
+  frame();report["states"]["rebound"]=state(window,regional);
   session.close();
   window.action("save_document",{{"path",(directory/"subset.ijx").u8string()}});
   Window reopened((directory/"reopened.json").u8string());reopened.openFile((directory/"subset.ijx").u8string());
-  report["states"]["reopened"]=state(reopened);
+  report["states"]["reopened"]=state(reopened,regional);
   report["state"]="observed";report["error"]=window.error();
   require(report.dump().size()<=16*1024*1024,"Z subset report byte bound");
   writeJson((directory/"case.json").u8string(),report);return report;

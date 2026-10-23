@@ -19,7 +19,7 @@ add_library(imagejxx_core STATIC
   src/native/avi_movie.cpp
   src/native/image.cpp src/native/filters.cpp src/native/shadow.cpp src/native/gaussian.cpp src/native/gaussian_command.cpp src/native/rank.cpp src/native/rank_command.cpp src/native/axis_extraction_command.cpp src/native/transforms.cpp
   src/native/segmentation.cpp src/native/analysis.cpp src/native/frequency.cpp src/native/binary.cpp src/native/conversion.cpp
-  src/native/dataset.cpp src/native/settings.cpp src/native/preferences.cpp src/native/document.cpp src/native/axis_remap.cpp src/native/z_subset_command.cpp src/native/manual_threshold.cpp src/native/manual_threshold_command.cpp src/native/selection_edit.cpp src/native/selection_boolean.cpp src/native/selection_region_boolean.cpp src/native/selection_region_rotation.cpp src/native/roi_style.cpp src/native/application.cpp src/native/metadata.cpp src/native/session_metadata.cpp src/native/operations.cpp src/native/targets.cpp src/native/execution.cpp src/native/jobs.cpp src/native/kernel_control.cpp)
+  src/native/dataset.cpp src/native/settings.cpp src/native/preferences.cpp src/native/document.cpp src/native/axis_remap.cpp src/native/axis_region_remap.cpp src/native/z_subset_command.cpp src/native/manual_threshold.cpp src/native/manual_threshold_command.cpp src/native/selection_edit.cpp src/native/selection_boolean.cpp src/native/selection_region_boolean.cpp src/native/selection_region_rotation.cpp src/native/roi_style.cpp src/native/application.cpp src/native/metadata.cpp src/native/session_metadata.cpp src/native/operations.cpp src/native/targets.cpp src/native/execution.cpp src/native/jobs.cpp src/native/kernel_control.cpp)
 add_library(imagejxx::core ALIAS imagejxx_core)
 set(IMAGEJXX_PRIVATE_ZLIB_SOURCES
   third_party/zlib/adler32.c third_party/zlib/compress.c
@@ -706,6 +706,10 @@ if(BUILD_TESTING)
   set_tests_properties(native_session_metadata PROPERTIES TIMEOUT 30)
   add_executable(imagejxx_creation_workflow_tests examples/cpp/selection_creation_workflow.cpp)
   add_executable(imagejxx_region_rotation_tests examples/cpp/selection_region_rotation.cpp)
+  add_executable(imagejxx_planar_region_remap_tests examples/cpp/planar_region_remap.cpp)
+  target_link_libraries(imagejxx_planar_region_remap_tests PRIVATE imagejxx::core)
+  add_test(NAME native_planar_region_remap COMMAND imagejxx_planar_region_remap_tests)
+  set_tests_properties(native_planar_region_remap PROPERTIES TIMEOUT 30)
   target_link_libraries(imagejxx_region_rotation_tests PRIVATE imagejxx::core)
   add_test(NAME native_region_rotation COMMAND imagejxx_region_rotation_tests)
   set_tests_properties(native_region_rotation PROPERTIES TIMEOUT 30)

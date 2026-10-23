@@ -28,7 +28,10 @@ struct PreparedAxisRemap {
 // Eager shared-plane table; never reads or copies sample buffers. Remaps Z
 // calibration/origin, positioned ROIs/overlays, slice/plane labels, active Z and
 // saved manual-threshold position. Removed positioned records are dropped;
-// wildcard/XY geometry and opaque metadata remain unchanged. Fourier state is
+// wildcard/XY geometry and opaque metadata remain unchanged. XZ/YZ regional
+// masks gather the full global Z sampling lattice, including off-volume rows.
+// Their intrinsic horizontal frame and style survive; canvas masks remain
+// clipped to the output volume. Fourier state is
 // refused for a nonidentity mapping instead of retaining stale derived data.
 PreparedAxisRemap prepare_z_axis_remap(const DocumentSnapshot &, const ZSubsetRequest &,
                                       const ExecutionControl & = {});

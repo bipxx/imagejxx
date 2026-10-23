@@ -1,6 +1,7 @@
 #include <imagejxx/planar_annotation_command.hpp>
 #include "axis_command_record.hpp"
 #include <limits>
+#include <algorithm>
 namespace imagejxx {
 namespace {
 using namespace detail::axis_command_record;
@@ -33,8 +34,17 @@ struct Decoded {SourceRecord source;PlanarAnnotationRequest request;MetadataValu
 Decoded decode(const MetadataObject &record) {
   validate_metadata(record);
   exact_fields(record,{"schema","version","source","operation","index","annotation","before","after","destination"});
-  if(text_value(record.at("schema"))!="imagejxx.planar-annotation-command" || unsigned_value(record.at("version"))!=1 ||
+  const auto version=unsigned_value(record.at("version"));
+  if(text_value(record.at("schema"))!="imagejxx.planar-annotation-command" || (version!=1 && version!=2) ||
      text_value(record.at("destination"))!="in_place")throw std::invalid_argument("Unsupported planar annotation command");
+  bool regional=false;
+  for(const auto *key:{"annotation","before","after"})
+    if(!std::holds_alternative<std::monostate>(record.at(key))) {
+      const auto &nested=object_value(record.at(key));
+      const auto it=nested.find("version");
+      if(it!=nested.end() && unsigned_value(it->second)==2)regional=true;
+    }
+  if((version==2)!=regional)throw std::invalid_argument("Planar command version must match regional geometry");
   auto source=read_source(object_value(record.at("source")));
   const auto &operation=text_value(record.at("operation"));
   PlanarAnnotationRequest request;
@@ -83,7 +93,9 @@ PlanarAnnotationRequest decode_planar_annotation_request(DatasetShape shape,cons
 ResolvedPlanarAnnotationCommand resolve_planar_annotation_command(const DocumentSnapshot &source,const PlanarAnnotationRequest &request) {
   const auto descriptor=source_metadata(source);const auto rows=planar_annotations(source.data());
   const auto after=encode_planar_annotations(descriptor.shape,apply(descriptor.shape,rows,request));
-  MetadataObject record{{"schema",std::string("imagejxx.planar-annotation-command")},{"version",1},
+  const bool regional=std::any_of(rows.begin(),rows.end(),[](const auto &r){return r.selection.is_region();}) ||
+      (request.annotation && request.annotation->selection.is_region());
+  MetadataObject record{{"schema",std::string("imagejxx.planar-annotation-command")},{"version",regional?2:1},
       {"source",metadata_object(source_record(descriptor))},{"operation",std::string(operation_name(request.operation))},
       {"index",request.index?MetadataValue(std::uint64_t(*request.index)):MetadataValue{}},
       {"annotation",request.annotation?encode_planar_annotations(descriptor.shape,{*request.annotation}):MetadataValue{}},

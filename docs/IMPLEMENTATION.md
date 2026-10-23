@@ -20,6 +20,24 @@ algebra and manager integration; next is creation/modifier command migration
 and continuous-path/rotation work. See [the scoped receipt](parity/reviews/p12o-region-boolean001.json).
 See [the contract](parity/REGION_BOOLEAN.md).
 
+**Planar regional geometry and Z subsets, 2026-10-23 (scoped integration):**
+V2 planar annotation sets/commands retain intrinsic regions, while V1
+remains closed to them. Regular Z subsets gather the full XZ/YZ sampling
+lattice including off-volume rows, preserve full XY regions and remap fixed
+coordinates. Style, metadata, physical landmarks and source words survive.
+Public C++ remapping freezes callback inputs and admits regional integer
+frames before callbacks. Actual subset dialog apply, undo/redo, rebind, new
+document and Save/Open use the same implementation.
+Windows/Linux each pass 8,779 installed Python checks (81 new), eleven
+native groups, a 13-check installed SDK client and 40 standalone UI recipes.
+All prior 8,555 IDs remain included; failure/error/skip counts are zero.
+Verified archives precede removal of 570,083,313 owned scratch bytes.
+Original requirement statuses and historical expectations remain unchanged;
+the historical Auto fingerprint gate remains open. Continuous paths, other
+axis/affine/display-annotation remapping and original gaps remain. See
+[the contract](parity/PLANAR_REGIONS.md) and
+[the scoped receipt](parity/reviews/p12t-planar-region001.json).
+
 **Regional raster rotation, 2026-10-23 (scoped integration):**
 Full regional selections now rotate through the native/Python editor and
 saved-row handle/numeric UI without projecting to the document canvas.

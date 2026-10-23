@@ -46,8 +46,8 @@ void preflight(const MetadataValue &value) {
   validate_metadata(value);std::size_t nodes=0,bytes=0;charge(value,nodes,bytes);
 }
 Json extent(DatasetShape shape) {shape.validate();return Json::array({shape.t,shape.c,shape.z,shape.y,shape.x});}
-Json row_json(const PlanarAnnotation &row) {
-  return {{"name",row.name},{"selection",detail::selection_codec::encode_selection(row.selection)},
+Json row_json(const PlanarAnnotation &row, bool regional) {
+  return {{"name",row.name},{"selection",detail::selection_codec::encode_selection(row.selection, regional)},
       {"plane",plane_name(row.plane)},{"coordinate",row.coordinate},
       {"t",row.t?Json(*row.t):Json()},{"c",row.c?Json(*row.c):Json()},
       {"attributes",codec::to_json(row.attributes)}};
@@ -112,8 +112,9 @@ MetadataValue encode_planar_annotations(DatasetShape shape,const std::vector<Pla
     for(const auto *object:{&row.attributes,&row.selection.attributes})
       for(const auto &[key,value]:*object) {require(key.size()<=max_bytes-bytes,"Annotation key cap");bytes+=key.size();charge(value,nodes,bytes);}
   }
-  for(const auto &row:rows)list.push_back(row_json(row));
-  auto result=codec::from_json({{"schema","imagejxx.planar-annotations"},{"version",1},{"extent",extent(shape)},{"rows",std::move(list)}});
+  const bool regional=std::any_of(rows.begin(),rows.end(),[](const auto &row){return row.selection.is_region();});
+  for(const auto &row:rows)list.push_back(row_json(row,regional));
+  auto result=codec::from_json({{"schema","imagejxx.planar-annotations"},{"version",regional?2:1},{"extent",extent(shape)},{"rows",std::move(list)}});
   preflight(result);return result;
 }
 std::vector<PlanarAnnotation> planar_annotations(const DocumentData &data) {
@@ -124,18 +125,24 @@ std::vector<PlanarAnnotation> planar_annotations(const DocumentData &data) {
 std::vector<PlanarAnnotation> decode_planar_annotations(DatasetShape shape,const MetadataValue &value) {
   preflight(value);const auto record=codec::to_json(value);
   fields(record,{"schema","version","extent","rows"});
-  require(record.at("schema")=="imagejxx.planar-annotations" && index(record.at("version"))==1,"Unsupported planar annotation schema");
+  const auto version=index(record.at("version"));
+  require(record.at("schema")=="imagejxx.planar-annotations" && (version==1 || version==2),"Unsupported planar annotation schema");
   const auto &dimensions=record.at("extent");require(dimensions.is_array() && dimensions.size()==5,"Invalid annotation extent");
   for(const auto &v:dimensions)(void)index(v,true);
   require(dimensions==extent(shape),"Planar annotations require explicit remapping for this extent change");
   const auto &rows=record.at("rows");require(rows.is_array() && rows.size()<=max_rows,"Invalid annotation rows");
+  const bool regional=std::any_of(rows.begin(),rows.end(),[](const auto &row){
+    return row.is_object() && row.contains("selection") && row["selection"].is_object() &&
+        row["selection"].value("kind",std::string{})=="region";
+  });
+  require((version==2)==regional,"Planar annotation version must match regional geometry");
   std::vector<PlanarAnnotation> result;result.reserve(rows.size());SessionLimits limits;limits.max_working_bytes=max_bytes;
   for(const auto &row:rows) {
     fields(row,{"name","selection","plane","coordinate","t","c","attributes"});
     require(row.at("name").is_string() && row.at("plane").is_string(),"Invalid annotation text");
     const auto name=row.at("plane").get<std::string>();
     require(name=="XY" || name=="XZ" || name=="YZ","Invalid annotation plane name");
-    PlanarAnnotation value{row.at("name").get<std::string>(),detail::selection_codec::decode_selection(row.at("selection"),limits),
+    PlanarAnnotation value{row.at("name").get<std::string>(),detail::selection_codec::decode_selection(row.at("selection"),limits,version==2),
       parse_plane(name),index(row.at("coordinate")),optional_index(row.at("t")),optional_index(row.at("c")),codec::object_from_json(row.at("attributes"))};
     value.validate(shape);result.push_back(std::move(value));
   }

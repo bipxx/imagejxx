@@ -198,6 +198,11 @@ PYBIND11_MODULE(_desktop, m) {
                                                directory)
                  .dump();
            })
+      .def("_regional_z_subset_ui_case",
+           [](Window &window, const std::string &directory) {
+             py::gil_scoped_release release;
+             return zSubsetUiCase(window, "imgui_python", directory, true).dump();
+           })
       .def("_z_subset_ui_case",
            [](Window &window, const std::string &directory) {
              py::gil_scoped_release release;

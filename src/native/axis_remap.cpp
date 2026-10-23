@@ -3,6 +3,7 @@
 #include <imagejxx/manual_threshold.hpp>
 #include "session_metadata.hpp"
 #include "kernel_control.hpp"
+#include "axis_region_remap.hpp"
 #include <algorithm>
 #include <limits>
 
@@ -55,7 +56,7 @@ MetadataValue labels(const MetadataValue &value,const RegularAxisMapping &map,
   return codec::from_json(output);
 }
 }
-PreparedAxisRemap prepare_z_axis_remap(const DocumentSnapshot &source,const ZSubsetRequest &request,
+static PreparedAxisRemap prepare_z_axis_remap_frozen(const DocumentSnapshot &source,const ZSubsetRequest &request,
                                       const ExecutionControl &control) {
   ExecutionScope scope(control);kernel_checkpoint();
   const auto &data=source.data();const auto shape=data.dataset.shape();
@@ -93,7 +94,9 @@ PreparedAxisRemap prepare_z_axis_remap(const DocumentSnapshot &source,const ZSub
         // offset. Packed masks gather the retained source Z rows exactly.
         for(auto &point:row.selection.points)
           point[1]=(point[1]-.5-request.first)/request.step+.5;
-        if(row.selection.kind=="mask") {
+        if(row.selection.is_region()) {
+          row.selection=detail::region_z_subset(row.selection,request);
+        } else if(row.selection.kind=="mask") {
           const auto width=row.selection.mask_width();
           const auto bits=std::size_t(width)*std::size_t(map.count());
           if(bits>16*1024*1024*8ULL)throw std::invalid_argument("Mapped planar mask exceeds its metadata cap");
@@ -165,5 +168,17 @@ PreparedAxisRemap prepare_z_axis_remap(const DocumentSnapshot &source,const ZSub
   }
   edit.set_axis_remap_display(display);
   kernel_checkpoint();return {std::move(edit),std::move(display)};
+}
+PreparedAxisRemap prepare_z_axis_remap(const DocumentSnapshot &source,const ZSubsetRequest &request,
+                                      const ExecutionControl &control) {
+  const auto owned_source=source;
+  const auto owned_request=request;
+  const auto owned_control=control;
+  const RegularAxisMapping mapping(owned_source.data().dataset.shape().z,
+      owned_request.first,owned_request.last,owned_request.step);
+  if(!mapping.identity())for(const auto &row:planar_annotations(owned_source.data()))
+    if(row.plane!=Plane::XY && row.selection.is_region())
+      detail::admit_region_z_subset(row.selection,owned_request);
+  return prepare_z_axis_remap_frozen(owned_source,owned_request,owned_control);
 }
 } // namespace imagejxx

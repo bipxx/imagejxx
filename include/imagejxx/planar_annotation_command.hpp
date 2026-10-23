@@ -21,7 +21,8 @@ private:
   PlanarAnnotationRequest request_;
   MetadataObject record_;
 };
-// Metadata-only, closed V1 equation: captured before + complete request = after.
+// Metadata-only equation: captured before + complete request = after. V1 stays
+// closed to regional sets. V2 requires a regional V2 set in before/request/after.
 // Each encoded set retains the native annotation limits. No pixel acquisition.
 ResolvedPlanarAnnotationCommand resolve_planar_annotation_command(const DocumentSnapshot &,const PlanarAnnotationRequest &);
 PlanarAnnotationRequest decode_planar_annotation_request(DatasetShape,const MetadataObject &);
