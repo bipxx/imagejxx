@@ -263,6 +263,24 @@ Captured RGB records/jobs and shared preview/Apply/
 Rebind/workflow integration remain the next steps; RGB controls stay disabled.
 See [Apply details](CONTRAST_APPLY.md).
 
+**Recorded enlargement and shared dialog, 2026-10-23 (work in progress):**
+C++/Python enlargement commands now capture owner/descriptor, original/result
+geometry, TCZ and X calibration with admitted records, strict replay and explicit
+rebind. Preparation guards all revisions and preserves pixels, dirty state and
+pixel Undo/Redo. The shared Expand/Shrink dialog exposes signed distance and
+units, conversion, anisotropy warnings, preserved invalid drafts and Cancel.
+Independent persistent defaults are consumed; changed recording appends once,
+with dedicated workflow Replay/Rebind controls. New checks cover both units over
+all 144 ImageJ rows, IEEE/session preservation, refusal/resource/callback behavior
+and ordinary aliases; native input covers scalar/RGB/IEEE dialogs. Windows/Linux
+each pass 7,788 installed checks, 16 native groups, an installed SDK consumer and
+three standalone app probes, zero failure/error/skip. Verified scratch cleanup
+retains final installs, carriers and reports. Off-grid irregular retention,
+remembered last-use behavior, generic batch integration, large-ROI managed UI,
+paired launch gestures and complete feature/platform/resource acceptance remain
+open. All99 triples and the historical Auto gate are unchanged. See
+[selection enlargement](parity/SELECTION_ENLARGEMENT.md).
+
 **Native enlargement geometry, 2026-10-23 (work in progress):**
 The C++/Python SelectionEditor now supplies admitted, cancellable pixel-distance
 Enlarge/Shrink geometry. It matches 144 actual ImageJ 1.54r observations, including

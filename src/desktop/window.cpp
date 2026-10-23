@@ -73,6 +73,7 @@
 #include <deque>
 #include <exception>
 #include <imagejxx/selection_edit.hpp>
+#include <imagejxx/selection_enlargement.hpp>
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
@@ -1133,6 +1134,7 @@ struct Window::Impl {
     Json controls = Json::object();
     std::function<void(Json)> submit;
     bool open = false, operation = false;
+    std::optional<DocumentSnapshot> enlargementSource;
     std::optional<DocumentSnapshot> axisPlaneSource;
     std::string axisIndexLabel;
     std::optional<DocumentSnapshot> axisRangeSource;
@@ -1567,6 +1569,9 @@ struct Window::Impl {
       return dataset.shape().s == 1 && dataset.shared_planes() &&
              dataset.sample_policy() == FloatingSamplePolicy::FiniteOnly;
     }
+    if(action=="enlarge_selection" || action=="grow_selection" || action=="shrink_selection" ||
+       action=="show_selection_enlargement" || action=="replay_selection_enlargement")
+      return !owner.busy() && owner.controller_->active_document_id()==source->id;
     if(action=="select_all" || action=="select_none" || action=="restore_selection" || action=="invert_selection")
       return !owner.busy() && owner.controller_->active_document_id()==source->id;
     if (action == "create_roi" || action == "add_roi" || action == "select_roi" || action == "update_roi" ||
@@ -2272,6 +2277,29 @@ struct Window::Impl {
     autoJob.reset();
     autoOwner = 0;
     autoRecording = false;
+  }
+  SelectionEnlargementRequest enlargementRequest(const Json &values,bool rebind=false) const {
+    if(!values.is_object())throw std::invalid_argument("Enlargement parameters must be an object");
+    for(const auto &[key,value]:values.items())
+      if(key!="distance" && key!="units" && !(key=="document_id" && !rebind))throw std::invalid_argument("Unknown enlargement parameter");
+    if(!values.contains("distance") || !values.at("distance").is_number())throw std::invalid_argument("Enlargement distance must be numeric");
+    const auto distance=values.at("distance").get<double>();require_finite(distance,"Enlargement distance");
+    if(rebind && !values.contains("units"))throw std::invalid_argument("Rebind requires explicit distance and units");
+    const auto units=values.value("units",std::string("pixels"));
+    if(units!="pixels" && units!="calibrated")throw std::invalid_argument("Unknown enlargement units");
+    return {distance,units=="pixels"?SelectionEnlargementUnits::Pixels:SelectionEnlargementUnits::Calibrated};
+  }
+  void publishEnlargement(const ResolvedSelectionEnlargementCommand &command) {
+    const auto current=owner.nativeSnapshot(command.source().id());
+    if(owner.busy() || owner.controller_->active_document_id()!=current.id())throw std::invalid_argument("Enlargement requires the idle active document");
+    if(!command.source().same_document(current) || !command.source().revisions().matches(current.revisions(),Change::All))throw RevisionConflict();
+    if(!command.changes_selection()){status="Selection unchanged";return;}
+    auto edit=prepare_selection_enlargement(command,{},selectionCreationLimits().max_working_bytes);
+    OutputPublication outputs(owner.results,owner.workflow,ComponentCounts{},"",owner.recording?metadataJson(command.record()):Json(nullptr));
+    cancelCreations("enlargement");cancelSavedRoiGeometry("enlargement");
+    const auto facade=owner.documentById(current.id());
+    if(facade->scientific())owner.controller_->commit(edit);else facade->commitNative(edit);
+    outputs.publish();tickContrast();status="Selection enlarged";
   }
   SelectionCreationLimits selectionCreationLimits() const {
     SelectionCreationLimits limits;
@@ -6303,6 +6331,45 @@ void Window::action(const std::string &name, const Json &p) {
                 Json::array({"FPS","Calibrated time"}):Json::array({"FPS"})}}}),"animation_options");
     return;
   }
+  if(name=="show_selection_enlargement"){
+    for(const auto &[key,value]:p.items())if(key!="document_id" && key!="shrink")throw std::invalid_argument("Unknown enlargement dialog parameter");
+    if(p.contains("shrink") && !p.at("shrink").is_boolean())throw std::invalid_argument("Shrink flag must be Boolean");
+    const auto source=nativeSnapshot(targetId);
+    if(busy() || source.id()!=controller_->active_document_id())throw std::invalid_argument("Enlargement requires the idle active document");
+    (void)estimate_selection_enlargement_command(source,{0,SelectionEnlargementUnits::Pixels},impl->selectionCreationLimits());
+    const auto &cal=source.data().dataset.calibration();const auto units=impl->preferenceState.settings.text("selection_enlargement_units");
+    double distance=impl->preferenceState.settings.number("selection_enlargement_distance");
+    if(p.value("shrink",false))distance=-distance;if(units=="calibrated")distance*=cal.spacing[0];
+    require_finite(distance,"Default enlargement distance");
+    impl->ask("Enlarge selection",{{"distance",distance},{"units",units}},[this,source](Json values){
+      const auto current=nativeSnapshot(source.id());
+      if(!source.same_document(current) || !source.revisions().matches(current.revisions(),Change::All))throw RevisionConflict();
+      const auto request=impl->enlargementRequest(values);
+      impl->publishEnlargement(resolve_selection_enlargement_command(source,request,impl->selectionCreationLimits()));
+    },Json::array({{{"name","distance"},{"label","Distance (negative shrinks)"},{"kind","float"}},
+        {{"name","units"},{"label","Units"},{"kind","choice"},{"choices",{"pixels","calibrated"}}}}),"selection_enlargement");
+    impl->dialog.enlargementSource=source;return;
+  }
+  if(name=="enlarge_selection" || name=="grow_selection" || name=="shrink_selection"){
+    Json values=p;
+    if(name!="enlarge_selection"){
+      for(const auto &[key,value]:p.items())if(key!="radius" && key!="units" && key!="document_id")throw std::invalid_argument("Unknown enlargement parameter");
+      const auto radius=p.value("radius",Json(1.));if(!radius.is_number() || radius.get<double>()<0)throw std::invalid_argument("Selection radius must be a nonnegative number");
+      values.erase("radius");values["distance"]=(name=="shrink_selection"?-1.:1.)*radius.get<double>();
+    }
+    const auto request=impl->enlargementRequest(values);const auto source=nativeSnapshot(targetId);
+    if(busy() || source.id()!=controller_->active_document_id())throw std::invalid_argument("Enlargement requires the idle active document");
+    impl->publishEnlargement(resolve_selection_enlargement_command(source,request,impl->selectionCreationLimits()));return;
+  }
+  if(name=="replay_selection_enlargement"){
+    for(const auto &[key,value]:p.items())if(key!="record" && key!="rebind" && key!="document_id")throw std::invalid_argument("Unknown enlargement replay parameter");
+    if(!p.contains("record") || !p.at("record").is_object())throw std::invalid_argument("Supply a complete enlargement record");
+    const auto record=metadataObjectFromJson(p.at("record"));const auto source=nativeSnapshot(targetId);
+    if(busy() || source.id()!=controller_->active_document_id())throw std::invalid_argument("Enlargement replay requires the idle active document");
+    const auto command=p.contains("rebind")?rebind_selection_enlargement_command(source,record,impl->enlargementRequest(p.at("rebind"),true),impl->selectionCreationLimits()):
+        selection_enlargement_command_from_record(source,record,impl->selectionCreationLimits());
+    impl->publishEnlargement(command);return;
+  }
   if(name=="select_all" || name=="select_none" || name=="restore_selection" || name=="invert_selection"){
     const auto facade=documentById(targetId);
     if(facade->scientific()){
@@ -8753,8 +8820,12 @@ void Window::Impl::menu() {
       item("Deselect", "select_none");
       item("Restore", "restore_selection");
       item("Invert", "invert_selection");
-      form("Expand...", "grow_selection", {{"radius", 1}});
-      form("Shrink...", "shrink_selection", {{"radius", 1}});
+      for(bool shrink:{false,true}){
+        const bool enabled=actionAllowed("enlarge_selection");
+        const bool selected=ImGui::MenuItem(shrink?"Shrink...":"Expand...",nullptr,false,enabled);
+        observeControl(shrink?"menu.form.shrink_selection":"menu.form.grow_selection",enabled);
+        if(selected)guard([&]{owner.action("show_selection_enlargement",{{"shrink",shrink}});});
+      }
       form("Move...", "move_selection", {{"dx", 0}, {"dy", 0}});
       item("Geometry and properties...", "show_selection_properties");
       item("Create mask", "selection_mask");
@@ -9898,6 +9969,13 @@ void Window::Impl::recorder() {
       if(rebind)guard([&]{owner.action("show_z_subset",{{"record",step}});});
       ImGui::EndDisabled();ImGui::PopID();
     }
+    if(get(step,"schema")=="imagejxx.selection-enlargement-command"){
+      ImGui::PushID(static_cast<int>(i));ImGui::BeginDisabled(owner.documents_.empty() || owner.busy() || !actionAllowed("replay_selection_enlargement"));
+      if(ImGui::Button("Replay captured enlargement"))guard([&]{owner.action("replay_selection_enlargement",{{"record",step}});});
+      observeControl("workflow.enlargement."+std::to_string(i)+".replay");
+      if(ImGui::Button("Rebind distance to current selection"))guard([&]{owner.action("replay_selection_enlargement",{{"record",step},{"rebind",{{"distance",step.at("distance")},{"units",step.at("units")}}}});});
+      observeControl("workflow.enlargement."+std::to_string(i)+".rebind");ImGui::EndDisabled();ImGui::PopID();
+    }
     if (get(step, "schema") == "imagejxx.channel-display-command") {
       ImGui::PushID(static_cast<int>(i));
       ImGui::BeginDisabled(owner.documents_.empty() || owner.busy());
@@ -11014,6 +11092,13 @@ void Window::Impl::dialogs() {
           value = v;
           if(dialog.id=="auto_mask" && name=="stack_histogram" && v)allSlices=true;
         }
+      } else if(kind=="float" && dialog.id=="selection_enlargement"){
+        ImGui::SetNextItemWidth(390);const auto editorId=ImGui::GetID(label.c_str());
+        ImGui::InputText(label.c_str(),&text);
+        try{const auto parsed=Json::parse(text);value=parsed.is_number() && std::isfinite(parsed.get<double>())?parsed:Json(nullptr);}
+        catch(const Json::exception &){value=nullptr;}
+        fieldControl=itemControl();fieldControl["id"]=editorId;fieldControl["draft"]=text;
+        fieldControl["identity_source"]="current_scoped_InputText_label_id";
       } else if (kind == "float" && spacingRange && value.is_number()) {
         double v = number(value);
         ImGui::SetNextItemWidth(390);
@@ -11120,6 +11205,14 @@ void Window::Impl::dialogs() {
           for (const auto &choice : choices) {
             auto option = choiceLabel(choice);
             if (ImGui::Selectable(option.c_str(), option == current)) {
+              if(option!=current && dialog.id=="selection_enlargement" && name=="units" && dialog.enlargementSource){
+                const auto spacing=dialog.enlargementSource->data().dataset.calibration().spacing[0];
+                if(dialog.values.at("distance").is_number()){
+                  const double converted=option=="calibrated"?number(dialog.values.at("distance"))*spacing:number(dialog.values.at("distance"))/spacing;
+                  if(std::isfinite(converted)){dialog.values["distance"]=converted;dialog.text["distance"]=dialog.values["distance"].dump();}
+                  else {dialog.values["distance"]=nullptr;dialog.text["distance"]="invalid distance";}
+                }
+              }
               value = choice;
               text = option;
               if (option != current && dialog.id == "axis_plane_export" && name == "plane" &&
@@ -11216,7 +11309,7 @@ void Window::Impl::dialogs() {
       if (fieldControl.is_null())
         fieldControl = itemControl();
       const auto point =
-          kind == "int" || (kind == "float" && (dialog.id == "convert_image" || spacingRange))
+          kind == "int" || (kind == "float" && (dialog.id == "convert_image" || spacingRange || dialog.id=="selection_enlargement"))
               ? ImVec2(float(number(fieldControl["rect"][0])) + 80,
                        float(number(fieldControl["point"][1])))
               : ImVec2(float(number(fieldControl["point"][0])),
@@ -11534,11 +11627,26 @@ void Window::Impl::dialogs() {
       ImGui::BeginDisabled(!extractionReady ||
                            (spacingRange && !spacingRenderReady) ||
                            (slicerRange && !slicerApplyReady));
+    if(dialog.id=="selection_enlargement" && dialog.enlargementSource){
+      const auto &cal=dialog.enlargementSource->data().dataset.calibration();
+      ImGui::TextWrapped("Irregular selections are clipped to the image boundary.");
+      ImGui::Text("Calibrated units: %s; X spacing: %.17g.",cal.unit.c_str(),cal.spacing[0]);
+      if(dialog.values.value("units",std::string("pixels"))=="calibrated" && cal.spacing[0]!=cal.spacing[1]){
+        ImGui::TextWrapped("X and Y scales differ. Calibrated distance uses X spacing: %.17g %s.",cal.spacing[0],cal.unit.c_str());
+        dialog.controls["anisotropy_warning"]=itemControl(false);
+      }
+    }
+    if(dialog.id=="selection_enlargement"){
+      const bool valid=dialog.values.at("distance").is_number();
+      if(!valid)ImGui::TextWrapped("Enter a finite numeric distance.");
+      ImGui::BeginDisabled(!valid);
+    }
     const bool submitClicked = ImGui::Button(integerRange ? "Submit" :
                                              dialog.operation ? "Apply" : "OK");
     dialog.controls["apply"] = itemControl(extractionReady && (!spacingRange || spacingRenderReady) && (!slicerRange || slicerApplyReady));
     if (spacingRange || slicerRange || dialog.scientificExtraction || orientationRange)
       ImGui::EndDisabled();
+    if(dialog.id=="selection_enlargement")ImGui::EndDisabled();
     if (integerRange)
       dialog.controls["submit"] = dialog.controls["apply"];
     if (submitClicked)
@@ -11602,6 +11710,7 @@ void Window::Impl::dialogs() {
     }
     ImGui::EndPopup();
   }
+  if(!dialog.open && dialog.id=="selection_enlargement"){dialog.enlargementSource.reset();dialog.submit={};}
   if (!dialog.open && dialog.id == "axis_plane_export") {
     dialog.axisPlaneSource.reset();
     dialog.submit = {};
@@ -12402,6 +12511,11 @@ Json Window::Impl::headlessReport() {
              ? "captured_native_execution_source"
              : "observed_at_ask_not_a_captured_execution_source"},
         {"controls", dialog.controls}};
+    if(dialog.id=="selection_enlargement"){
+      result["dialog"]["opened_document_id_semantics"]="captured_native_execution_source";
+      result["dialog"]["retained_source"]=dialog.enlargementSource.has_value();
+      if(dialog.enlargementSource){const auto &source=*dialog.enlargementSource;result["dialog"]["captured_t"]=source.display().t;result["dialog"]["captured_c"]=source.display().c;result["dialog"]["captured_z"]=source.display().crosshair[2];}
+    }
     if (const auto source = dialog.axisPlaneSource ? &*dialog.axisPlaneSource :
                             dialog.axisRangeSource ? &*dialog.axisRangeSource :
                             dialog.axisRangeOrientationSource ? &*dialog.axisRangeOrientationSource :
@@ -12817,7 +12931,7 @@ Json Window::renderHeadless(int frames, bool exercise, bool exerciseCamera,
       (exercise || exerciseCamera || exercisePreferences || documents_.empty() ||
        (impl->dialog.open && !impl->dialog.operation &&
         impl->dialog.id != "axis_plane_export" && impl->dialog.id != "axis_range_reslice" &&
-        impl->dialog.id != "animation_options") ||
+        impl->dialog.id != "animation_options" && impl->dialog.id != "selection_enlargement") ||
        impl->browser.open))
     throw std::invalid_argument(
         "Headless input needs an image canvas, Preferences or operation dialog");

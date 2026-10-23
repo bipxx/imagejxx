@@ -953,6 +953,25 @@ std::vector<float> enlargement_edm(const Image &mask,bool grow) {
 }
 }
 
+SelectionEnlargementEstimate estimate_selection_enlargement_geometry(
+    const Selection &selection,int width,int height,double pixels,
+    const SelectionEditLimits &limits,const ExecutionControl &control) {
+  geometry_preflight(selection,width,height,limits,control);
+  std::array<double,4> bounds{};bool found=false;
+  const auto include=[&](double x,double y,double right,double bottom){
+    if(!found){bounds={x,y,right,bottom};found=true;}
+    else {bounds[0]=std::min(bounds[0],x);bounds[1]=std::min(bounds[1],y);bounds[2]=std::max(bounds[2],right);bounds[3]=std::max(bounds[3],bottom);}
+  };
+  if(selection.kind=="rotated_rectangle" || selection.kind=="rotated_ellipse" || selection.kind=="rotated_rounded_rectangle"){
+    bounds=selection.box_frame()->bounds(selection.kind=="rotated_ellipse");found=true;
+  } else if(selection.kind=="mask") {
+    for(int y=0;y<height;++y)for(int x=0;x<width;++x){
+      const auto i=static_cast<std::size_t>(y)*width+x;if((i&1023u)==0)geometry_canceled(control);
+      if(bit(selection,i))include(x,y,x+1.,y+1.);
+    }
+  } else for(const auto &point:selection.points){geometry_canceled(control);include(point[0],point[1],point[0],point[1]);}
+  return enlargement_plan(selection,width,height,bounds,found,pixels,limits,control).estimate;
+}
 SelectionEnlargementEstimate SelectionEditor::estimate_enlargement(
     double pixels,const SelectionEditLimits &limits) const {
   return enlargement_plan(selection_,width_,height_,bounds_,has_bounds_,pixels,limits,{}).estimate;

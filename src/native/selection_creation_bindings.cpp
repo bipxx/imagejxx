@@ -1,5 +1,6 @@
 #include "binding_metadata.hpp"
 #include <imagejxx/selection_creation.hpp>
+#include <imagejxx/selection_enlargement.hpp>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <utility>
@@ -190,6 +191,62 @@ void bind_selection_creation(py::module_ &m) {
   py::enum_<SelectionCreationBoxKind>(m, "SelectionCreationBoxKind")
       .value("RECTANGLE", SelectionCreationBoxKind::Rectangle)
       .value("ELLIPSE", SelectionCreationBoxKind::Ellipse);
+  m.attr("SelectionEnlargementCommandLimits")=m.attr("SelectionCreationLimits");
+  py::enum_<SelectionEnlargementUnits>(m,"SelectionEnlargementUnits")
+      .value("PIXELS",SelectionEnlargementUnits::Pixels).value("CALIBRATED",SelectionEnlargementUnits::Calibrated);
+  py::class_<SelectionEnlargementRequest>(m,"SelectionEnlargementRequest")
+      .def(py::init([](py::handle distance,SelectionEnlargementUnits units){
+        if(boolean(distance))throw py::type_error("Enlargement distance must not be Boolean");
+        return SelectionEnlargementRequest{py::cast<double>(distance),units};
+      }),py::arg("distance")=1.,py::arg("units")=SelectionEnlargementUnits::Pixels)
+      .def_property("distance",[](const SelectionEnlargementRequest &v){return v.distance;},[](SelectionEnlargementRequest &v,py::handle x){
+        if(boolean(x))throw py::type_error("Enlargement distance must not be Boolean");v.distance=py::cast<double>(x);
+      }).def_readwrite("units",&SelectionEnlargementRequest::units);
+  py::class_<SelectionEnlargementCommandEstimate>(m,"SelectionEnlargementCommandEstimate")
+      .def_readonly("pixel_distance",&SelectionEnlargementCommandEstimate::pixel_distance)
+      .def_readonly("retained_bytes",&SelectionEnlargementCommandEstimate::retained_bytes)
+      .def_readonly("working_bytes",&SelectionEnlargementCommandEstimate::working_bytes);
+  py::class_<ResolvedSelectionEnlargementCommand>(m,"ResolvedSelectionEnlargementCommand")
+      .def_property_readonly("source",[](const ResolvedSelectionEnlargementCommand &v){return v.source();})
+      .def_property_readonly("request",[](const ResolvedSelectionEnlargementCommand &v){return v.request();})
+      .def_property_readonly("result",[](const ResolvedSelectionEnlargementCommand &v){return v.result();})
+      .def_property_readonly("estimate",[](const ResolvedSelectionEnlargementCommand &v){return v.estimate();})
+      .def_property_readonly("changes_selection",&ResolvedSelectionEnlargementCommand::changes_selection)
+      .def("record",[](const ResolvedSelectionEnlargementCommand &v){return bindings::metadata_python(v.record());});
+  m.def("estimate_selection_enlargement_command",[](const DocumentSnapshot &source,SelectionEnlargementRequest request,SelectionCreationLimits limits){
+    py::gil_scoped_release release;return estimate_selection_enlargement_command(source,request,limits);
+  },py::arg("source"),py::arg("request"),py::arg("limits")=SelectionCreationLimits{});
+  m.def("resolve_selection_enlargement_command",[](const DocumentSnapshot &source,SelectionEnlargementRequest request,SelectionCreationLimits limits,
+      std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint){
+    const auto control=axis_range_python_control(std::move(cancellation),std::move(progress),std::move(checkpoint));
+    py::gil_scoped_release release;return resolve_selection_enlargement_command(source,request,limits,control);
+  },py::arg("source"),py::arg("request"),py::arg("limits")=SelectionCreationLimits{},py::kw_only(),
+    py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none());
+  m.def("validate_selection_enlargement_command_record",[](py::dict record,SelectionCreationLimits limits,
+      std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint){
+    const auto captured=bindings::metadata_object_value(record);const auto control=axis_range_python_control(std::move(cancellation),std::move(progress),std::move(checkpoint));
+    py::gil_scoped_release release;validate_selection_enlargement_command_record(captured,limits,control);
+  },py::arg("record"),py::arg("limits")=SelectionCreationLimits{},py::kw_only(),
+    py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none());
+  m.def("selection_enlargement_command_from_record",[](const DocumentSnapshot &source,py::dict record,SelectionCreationLimits limits,
+      std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint){
+    const auto captured=bindings::metadata_object_value(record);const auto control=axis_range_python_control(std::move(cancellation),std::move(progress),std::move(checkpoint));
+    py::gil_scoped_release release;return selection_enlargement_command_from_record(source,captured,limits,control);
+  },py::arg("source"),py::arg("record"),py::arg("limits")=SelectionCreationLimits{},py::kw_only(),
+    py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none());
+  m.def("rebind_selection_enlargement_command",[](const DocumentSnapshot &source,py::dict record,SelectionEnlargementRequest request,SelectionCreationLimits limits,
+      std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint){
+    const auto captured=bindings::metadata_object_value(record);const auto control=axis_range_python_control(std::move(cancellation),std::move(progress),std::move(checkpoint));
+    py::gil_scoped_release release;return rebind_selection_enlargement_command(source,captured,request,limits,control);
+  },py::arg("source"),py::arg("record"),py::arg("request"),py::arg("limits")=SelectionCreationLimits{},py::kw_only(),
+    py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none());
+  m.def("prepare_selection_enlargement",[](const ResolvedSelectionEnlargementCommand &command,
+      std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint,py::handle cap){
+    const auto bytes=size_value(cap);const auto control=axis_range_python_control(std::move(cancellation),std::move(progress),std::move(checkpoint));
+    py::gil_scoped_release release;return prepare_selection_enlargement(command,control,bytes);
+  },py::arg("command"),py::kw_only(),py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none(),
+    py::arg("execution_max_working_bytes")=py::int_(std::numeric_limits<std::size_t>::max()));
+
   py::class_<SelectionCreationBoxState>(m, "SelectionCreationBoxState")
       .def_readonly("kind", &SelectionCreationBoxState::kind)
       .def_readonly("image_width", &SelectionCreationBoxState::image_width)

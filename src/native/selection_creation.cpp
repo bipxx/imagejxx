@@ -1,4 +1,5 @@
 #include <imagejxx/selection_creation.hpp>
+#include <imagejxx/selection_enlargement.hpp>
 #include <imagejxx/imagej_roi.hpp>
 
 #include "kernel_control.hpp"
@@ -914,4 +915,180 @@ DocumentTransaction prepare_selection_creation(
   if (command.changes_) transaction.select(command.result_);
   finish_progress(); return transaction;
 }
+namespace {
+constexpr const char *enlargement_schema="imagejxx.selection-enlargement-command";
+SelectionEditLimits enlargement_geometry_limits(const SelectionCreationLimits &limits){
+  return {limits.max_pixels,limits.max_candidate_vertices,limits.max_working_bytes};
+}
+const char *enlargement_units(SelectionEnlargementUnits units){
+  if(units==SelectionEnlargementUnits::Pixels)return "pixels";
+  if(units==SelectionEnlargementUnits::Calibrated)return "calibrated";
+  invalid("Unknown selection enlargement units");
+}
+double enlargement_pixels(const SelectionEnlargementRequest &request,double spacing){
+  (void)enlargement_units(request.units);require_finite(request.distance,"Enlargement distance");
+  require_finite(spacing,"Enlargement pixel width");if(spacing<=0)invalid("Enlargement pixel width must be positive");
+  const auto pixels=request.units==SelectionEnlargementUnits::Pixels?request.distance:request.distance/spacing;
+  require_finite(pixels,"Enlargement pixel distance");return pixels;
+}
+ExecutionControl enlargement_kernel_control(const ExecutionControl &control){
+  auto kernel=control;kernel.progress={};return kernel;
+}
+SelectionEnlargementCommandEstimate enlargement_estimate(const Source &source,const Selection &base,
+    const SelectionEnlargementRequest &request,double spacing,const std::string &unit,
+    const SelectionCreationLimits &limits,const DocumentSnapshot *snapshot=nullptr,
+    std::size_t original_record_bytes=0,const ExecutionControl &control={}){
+  const auto pixels=source_admission(source,limits);
+  if(!area(base))invalid("Selection enlargement requires an area selection");
+  const auto base_bytes=geometry_size(base,limits),attributes=metadata_size(base.attributes,limits);
+  const auto pixel_distance=enlargement_pixels(request,spacing);
+  const auto geometry=estimate_selection_enlargement_geometry(base,source.shape.x,source.shape.y,
+      pixel_distance,enlargement_geometry_limits(limits),control);
+  const auto result_bytes=std::max(base_bytes,add(sizeof(Selection)+32*node_bytes,add(attributes,packed_size(pixels))));
+  const auto result_wire=std::max(wire_size(base,limits),add(64*node_bytes,add(attributes,base64_size(packed_size(pixels)))));
+  const auto record_bytes=std::max(original_record_bytes,add(128*node_bytes,add(unit.size(),add(wire_size(base,limits),result_wire))));
+  auto retained=add(sizeof(ResolvedSelectionEnlargementCommand),add(mul(3,record_bytes),add(mul(2,base_bytes),mul(2,result_bytes))));
+  auto working=add(retained,add(geometry.working_bytes,4*codec_scratch));
+  if(snapshot){const auto display=display_size(snapshot->display(),limits);retained=add(retained,display);working=add(working,add(display,mul(2,data_copy_size(*snapshot,limits))));}
+  budget(working,limits);return {pixel_distance,retained,working};
+}
+Selection enlargement_result(const Selection &base,DatasetShape shape,double pixels,
+    const SelectionCreationLimits &limits,const ExecutionControl &control){
+  // The geometry service has its own coarse progress pair. Forward its kernel
+  // callbacks once while suppressing duplicate outer coarse/forwarded callbacks.
+  struct ChildDispatch {
+    ExecutionScope *scope=nullptr;bool previous=false;
+    explicit ChildDispatch(const ExecutionControl &control){
+      if(current_execution_scope && &current_execution_scope->control==&control){scope=current_execution_scope;previous=scope->dispatching_callback;scope->dispatching_callback=true;}
+    }
+    ~ChildDispatch(){if(scope)scope->dispatching_callback=previous;}
+  } dispatch(control);
+  auto kernel=enlargement_kernel_control(control);
+  SelectionEditor editor(base,shape.x,shape.y,enlargement_geometry_limits(limits),kernel);
+  return editor.enlarged(pixels,enlargement_geometry_limits(limits),kernel);
+}
+MetadataObject enlargement_record(const DocumentSnapshot &snapshot,const SelectionEnlargementRequest &request,const Selection &result){
+  const auto source=source_info(snapshot);MetadataArray dimensions;
+  for(int extent:source.shape.dimensions())dimensions.emplace_back(std::int64_t(extent));
+  MetadataObject binding{{"id",source.id},{"pixels_revision",source.revisions.pixels},{"metadata_revision",source.revisions.metadata},
+      {"selection_revision",source.revisions.selection},{"shape",metadata_array(std::move(dimensions))},
+      {"type",std::string(type_name(source.type))},{"sample_policy",std::string(policy_name(source.policy))}};
+  const auto &calibration=snapshot.data().dataset.calibration();
+  return {{"schema",std::string(enlargement_schema)},{"version",std::int64_t(1)},{"source",metadata_object(std::move(binding))},
+      {"position",metadata_object({{"t",std::int64_t(source.position.t)},{"c",std::int64_t(source.position.c)},{"z",std::int64_t(source.position.z)}})},
+      {"distance",request.distance},{"units",std::string(enlargement_units(request.units))},
+      {"pixel_width",calibration.spacing[0]},{"unit",calibration.unit},
+      {"base",encode_selection(*snapshot.data().selection)},{"result",encode_selection(result)}};
+}
+struct EnlargementDecoded {
+  Source source;SelectionEnlargementRequest request;double spacing;std::string unit;
+  Selection base,result;MetadataObject record;SelectionEnlargementCommandEstimate estimate;
+};
+EnlargementDecoded inspect_enlargement(const MetadataObject &record,const SelectionCreationLimits &limits,const ExecutionControl &control){
+  const auto bytes=metadata_size(record,limits);
+  fields(record,{"schema","version","source","position","distance","units","pixel_width","unit","base","result"});
+  if(text_value(record.at("schema"))!=enlargement_schema || uint_value(record.at("version"))!=1)
+    invalid("Unsupported selection enlargement schema/version");
+  const auto source=read_source(object_value(record.at("source")),object_value(record.at("position")));
+  (void)source_admission(source,limits);
+  const auto &units=text_value(record.at("units"));SelectionEnlargementUnits mode;
+  if(units=="pixels")mode=SelectionEnlargementUnits::Pixels;
+  else if(units=="calibrated")mode=SelectionEnlargementUnits::Calibrated;
+  else invalid("Unknown recorded enlargement units");
+  const SelectionEnlargementRequest request{number_value(record.at("distance")),mode};
+  const auto spacing=number_value(record.at("pixel_width"));(void)enlargement_pixels(request,spacing);
+  const auto &unit=text_value(record.at("unit"));
+  const auto base_wire=inspect_wire(record.at("base"),source.shape,false,limits),result_wire=inspect_wire(record.at("result"),source.shape,false,limits);
+  if(base_wire.points->size()>limits.max_candidate_vertices || result_wire.points->size()>limits.max_candidate_vertices)
+    invalid("Enlargement record exceeds vertex limit");
+  // Borrowed record charge precedes owned decoding/copying, callbacks or rasters.
+  const auto decoded_bytes=add(mul(6,bytes),add(mul(6,wire_geometry_size(base_wire,source.shape,limits)),mul(4,wire_geometry_size(result_wire,source.shape,limits))));
+  budget(decoded_bytes,limits);ExecutionControl admission;admission.cancellation=control.cancellation;ExecutionScope scope(admission);
+  auto base=decode_selection(base_wire,source.shape),result=decode_selection(result_wire,source.shape);
+  if(!area(base) || !area(result))invalid("Enlargement record requires area geometry");
+  auto estimate=enlargement_estimate(source,base,request,spacing,unit,limits,nullptr,bytes,admission);
+  estimate.working_bytes=add(estimate.working_bytes,decoded_bytes);budget(estimate.working_bytes,limits);
+  return {source,request,spacing,unit,std::move(base),std::move(result),record,estimate};
+}
+void enlargement_equation(const EnlargementDecoded &decoded,const SelectionCreationLimits &limits,const ExecutionControl &control){
+  const auto result=enlargement_result(decoded.base,decoded.source.shape,decoded.estimate.pixel_distance,limits,control);
+  if(!selection_equal(result,decoded.result))invalid("Enlargement result differs from its original operation");
+}
+SelectionEnlargementCommandEstimate enlargement_publication_estimate(const EnlargementDecoded &decoded,
+    const DocumentSnapshot &source,const SelectionCreationLimits &limits){
+  auto estimate=decoded.estimate;const auto display=display_size(source.display(),limits);estimate.retained_bytes=add(estimate.retained_bytes,display);estimate.working_bytes=add(estimate.working_bytes,add(display,mul(2,data_copy_size(source,limits))));
+  budget(estimate.working_bytes,limits);return estimate;
+}
+[[noreturn]] void enlargement_reject_after_original(const EnlargementDecoded &decoded,const SelectionCreationLimits &limits,
+    const ExecutionControl &control,std::exception_ptr exception){
+  ExecutionControl admission;admission.cancellation=control.cancellation;ExecutionScope scope(admission);
+  enlargement_equation(decoded,limits,admission);std::rethrow_exception(exception);
+}
+}
+ResolvedSelectionEnlargementCommand::ResolvedSelectionEnlargementCommand(DocumentSnapshot source,
+    SelectionEnlargementRequest request,Selection result,MetadataObject record,
+    SelectionEnlargementCommandEstimate estimate,SelectionCreationLimits limits)
+    :source_(std::move(source)),request_(request),result_(std::move(result)),record_(std::move(record)),estimate_(estimate),limits_(limits),
+     changes_(!source_.data().selection || !selection_equal(*source_.data().selection,result_)){}
+SelectionEnlargementCommandEstimate estimate_selection_enlargement_command(const DocumentSnapshot &source,
+    const SelectionEnlargementRequest &request,const SelectionCreationLimits &limits){
+  if(!source.data().selection)invalid("Draw an area selection first");
+  const auto &calibration=source.data().dataset.calibration();
+  return enlargement_estimate(source_info(source),*source.data().selection,request,calibration.spacing[0],calibration.unit,limits,&source);
+}
+ResolvedSelectionEnlargementCommand resolve_selection_enlargement_command(const DocumentSnapshot &source,
+    const SelectionEnlargementRequest &request,const SelectionCreationLimits &limits,const ExecutionControl &control){
+  const auto frozen_request=request;const auto frozen_limits=limits;const auto frozen_control=control;
+  const auto estimate=estimate_selection_enlargement_command(source,frozen_request,frozen_limits);
+  const auto frozen_source=source;
+  ExecutionScope scope(frozen_control);start_progress();
+  auto result=enlargement_result(*frozen_source.data().selection,frozen_source.data().dataset.shape(),estimate.pixel_distance,frozen_limits,frozen_control);
+  auto record=enlargement_record(frozen_source,frozen_request,result);
+  ResolvedSelectionEnlargementCommand command(frozen_source,frozen_request,std::move(result),std::move(record),estimate,frozen_limits);
+  finish_progress();return command;
+}
+void validate_selection_enlargement_command_record(const MetadataObject &record,const SelectionCreationLimits &limits,const ExecutionControl &control){
+  const auto frozen_limits=limits;const auto frozen_control=control;
+  const auto decoded=inspect_enlargement(record,frozen_limits,frozen_control);
+  ExecutionScope scope(frozen_control);start_progress();enlargement_equation(decoded,frozen_limits,frozen_control);finish_progress();
+}
+ResolvedSelectionEnlargementCommand selection_enlargement_command_from_record(const DocumentSnapshot &source,
+    const MetadataObject &record,const SelectionCreationLimits &limits,const ExecutionControl &control){
+  const auto frozen_limits=limits;const auto frozen_control=control;auto decoded=inspect_enlargement(record,frozen_limits,frozen_control);
+  SelectionEnlargementCommandEstimate estimate;
+  try{estimate=enlargement_publication_estimate(decoded,source,frozen_limits);}
+  catch(...){enlargement_reject_after_original(decoded,frozen_limits,frozen_control,std::current_exception());}
+  const auto frozen_source=source;
+  ExecutionScope scope(frozen_control);start_progress();enlargement_equation(decoded,frozen_limits,frozen_control);
+  require_binding(decoded.source,source_info(frozen_source));
+  const auto current=source_info(frozen_source);const auto &cal=frozen_source.data().dataset.calibration();
+  if(current.position.t!=decoded.source.position.t || current.position.c!=decoded.source.position.c || current.position.z!=decoded.source.position.z)
+    invalid("Enlargement replay requires its captured T/C/Z; use explicit rebind");
+  if(cal.spacing[0]!=decoded.spacing || cal.unit!=decoded.unit)invalid("Enlargement replay calibration differs");
+  ResolvedSelectionEnlargementCommand command(frozen_source,decoded.request,std::move(decoded.result),std::move(decoded.record),estimate,frozen_limits);
+  finish_progress();return command;
+}
+ResolvedSelectionEnlargementCommand rebind_selection_enlargement_command(const DocumentSnapshot &source,
+    const MetadataObject &record,const SelectionEnlargementRequest &request,const SelectionCreationLimits &limits,const ExecutionControl &control){
+  const auto frozen_request=request;const auto frozen_limits=limits;const auto frozen_control=control;
+  auto decoded=inspect_enlargement(record,frozen_limits,frozen_control);SelectionEnlargementCommandEstimate estimate;
+  try{estimate=estimate_selection_enlargement_command(source,frozen_request,frozen_limits);
+    estimate.working_bytes=add(estimate.working_bytes,decoded.estimate.working_bytes);budget(estimate.working_bytes,frozen_limits);}
+  catch(...){enlargement_reject_after_original(decoded,frozen_limits,frozen_control,std::current_exception());}
+  const auto frozen_source=source;
+  ExecutionScope scope(frozen_control);start_progress();enlargement_equation(decoded,frozen_limits,frozen_control);
+  auto result=enlargement_result(*frozen_source.data().selection,frozen_source.data().dataset.shape(),estimate.pixel_distance,frozen_limits,frozen_control);
+  auto rebound=enlargement_record(frozen_source,frozen_request,result);
+  ResolvedSelectionEnlargementCommand command(frozen_source,frozen_request,std::move(result),std::move(rebound),estimate,frozen_limits);
+  finish_progress();return command;
+}
+DocumentTransaction prepare_selection_enlargement(const ResolvedSelectionEnlargementCommand &command,
+    const ExecutionControl &control,std::size_t execution_max_working_bytes){
+  auto limits=command.limits_;limits.max_working_bytes=std::min(limits.max_working_bytes,execution_max_working_bytes);
+  budget(command.estimate_.working_bytes,limits);const auto frozen_control=control;ExecutionScope scope(frozen_control);start_progress();
+  auto transaction=command.source_.begin_edit(Change::All);
+  if(command.changes_)transaction.select(command.result_);
+  finish_progress();return transaction;
+}
+
 } // namespace imagejxx

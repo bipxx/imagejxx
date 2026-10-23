@@ -28,6 +28,11 @@ struct SelectionEnlargementEstimate {
   int rounded_pixels = 0;
   std::size_t padded_pixels = 0, working_bytes = 0;
 };
+// Borrowed geometry admission for command hosts, without constructing an editor
+// or allocating a raster. Control is used for cancellation only, not callbacks.
+SelectionEnlargementEstimate estimate_selection_enlargement_geometry(
+    const Selection &, int width, int height, double pixels,
+    const SelectionEditLimits & = {}, const ExecutionControl & = {});
 // Immutable geometry operations. Coordinates are image-cell boundaries, as in
 // Selection. This class stages geometry; the caller commits a document edit.
 class SelectionEditor {

@@ -704,6 +704,9 @@ if(BUILD_TESTING)
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party/nlohmann_json/include)
   add_test(NAME native_session_metadata COMMAND imagejxx_session_metadata_tests)
   set_tests_properties(native_session_metadata PROPERTIES TIMEOUT 30)
+  add_executable(imagejxx_selection_enlargement_command_tests examples/cpp/selection_enlargement_command.cpp)
+  target_link_libraries(imagejxx_selection_enlargement_command_tests PRIVATE imagejxx::core)
+  add_test(NAME native_selection_enlargement_command COMMAND imagejxx_selection_enlargement_command_tests)
   add_executable(imagejxx_selection_enlargement_tests examples/cpp/selection_enlargement.cpp)
   target_link_libraries(imagejxx_selection_enlargement_tests PRIVATE imagejxx::core)
   add_test(NAME native_selection_enlargement COMMAND imagejxx_selection_enlargement_tests)
@@ -1103,6 +1106,14 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     target_link_libraries(imagejxx_desktop PRIVATE comdlg32 gdi32)
   endif()
   if(BUILD_TESTING)
+    add_executable(imagejxx_enlargement_dialog_tests tests/native/test_enlargement_dialog.cpp)
+    target_link_libraries(imagejxx_enlargement_dialog_tests PRIVATE imagejxx_desktop)
+    add_test(NAME desktop_enlargement_dialog COMMAND ${CMAKE_COMMAND}
+      -DTEST_EXECUTABLE=$<TARGET_FILE:imagejxx_enlargement_dialog_tests>
+      -DWORK_ROOT=${CMAKE_CURRENT_BINARY_DIR}/enlargement-dialog-tests
+      -DTEST_TIMEOUT_SECONDS=30
+      -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/RunOwnedFixtureTest.cmake)
+    set_tests_properties(desktop_enlargement_dialog PROPERTIES TIMEOUT 35)
     add_executable(imagejxx_native_selection_menu_tests tests/native/test_native_selection_menu.cpp)
     target_link_libraries(imagejxx_native_selection_menu_tests PRIVATE imagejxx_desktop)
     add_test(NAME desktop_native_selection_menu COMMAND ${CMAKE_COMMAND}

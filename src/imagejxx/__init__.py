@@ -148,6 +148,19 @@ from ._native import (
     resolve_roi_style as resolve_roi_style,
     render_roi_style as render_roi_style,
 )
+from ._native import (
+    SelectionEnlargementCommandLimits as SelectionEnlargementCommandLimits,
+    SelectionEnlargementUnits as SelectionEnlargementUnits,
+    SelectionEnlargementRequest as SelectionEnlargementRequest,
+    SelectionEnlargementCommandEstimate as SelectionEnlargementCommandEstimate,
+    ResolvedSelectionEnlargementCommand as ResolvedSelectionEnlargementCommand,
+    estimate_selection_enlargement_command as estimate_selection_enlargement_command,
+    resolve_selection_enlargement_command as resolve_selection_enlargement_command,
+    validate_selection_enlargement_command_record as validate_selection_enlargement_command_record,
+    selection_enlargement_command_from_record as selection_enlargement_command_from_record,
+    rebind_selection_enlargement_command as rebind_selection_enlargement_command,
+    prepare_selection_enlargement as prepare_selection_enlargement,
+)
 from ._native import BinaryMorphologyOptions as BinaryMorphologyOptions
 from ._native import ConversionOptions as ConversionOptions
 from ._native import (

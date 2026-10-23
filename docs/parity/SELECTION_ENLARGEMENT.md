@@ -2,7 +2,9 @@
 
 `SelectionEditor::enlarged` and Python `SelectionEditor.enlarged` now provide the
 geometry service for scientific Enlarge/Shrink. Image processing remains in C++.
-This checkpoint does not enable the scientific desktop dialogs yet.
+Edit → Selection → Expand/Shrink now opens the shared native dialog in both
+desktop frontends. The dialog captures its document, selection, calibration and
+C/Z/T position before editing parameters.
 
 ```python
 geometry = imagejxx.SelectionEditor(selection, (height, width))
@@ -63,9 +65,71 @@ Reproduce the reference with
 `RoiEnlarger` methods and implements no enlargement algorithm. Its receipt pins
 the driver, selected source/classes, Java tools and upstream public-domain notice.
 
-Next, the scientific dialogs must consume this service with pixel/calibrated
-units, reusable defaults, captured owner/TCZ/ROI, admitted command records and
-strict replay/rebind. Physical dialog input, Save/Open, cancellation and history
-must be qualified in both launch modes. These requirements, off-grid irregular
-geometry, broader source/reference/resource/platform cases and all original
-feature families remain open. See [the scoped receipt](reviews/p12g-selection-enlarge001.json).
+## Recorded commands and desktop controls
+
+The public C++ command interface is in `imagejxx/selection_enlargement.hpp`.
+`SelectionEnlargementRequest` contains a signed distance and Pixels/Calibrated
+units. Calibrated distance is divided by the captured X spacing, matching
+ImageJ's rule. The dialog displays the source unit and warns when X and Y spacing
+differ. Changing units converts a valid current distance. Incomplete/invalid
+text stays visible and disables Apply; Cancel publishes nothing.
+
+The persistent Selection preferences `selection_enlargement_distance` (15 pixels)
+and `selection_enlargement_units` (calibrated) supply new-dialog defaults. Shrink
+negates the magnitude. These defaults are configured independently: editing an
+individual command does not overwrite them or couple preference-file writes to
+selection publication. This differs from ImageJ's remembered last-used distance.
+
+Python editor calls use the same compiled service:
+
+```python
+editor.action("enlarge_selection", distance=1.0, units="calibrated")
+editor.action("grow_selection", radius=2.0)    # pixels by default
+editor.action("shrink_selection", radius=2.0)
+```
+
+The grow/shrink aliases now use this service for ordinary and scientific
+documents. Missing/non-area selections and invalid fields are refused. The old
+square-mask alias implementation is no longer used by these actions.
+
+`resolve_selection_enlargement_command` freezes the request and produces a
+complete `imagejxx.selection-enlargement-command` version-1 record. It contains
+the original area, result, source identity/descriptor/revisions, TCZ position,
+requested distance/units, X spacing and unit label. Validation recomputes the
+original equation. Destination resource failures cannot bypass original-equation
+validation or silently substitute a rebind. Commands, records and preparation have admitted metadata/geometry
+working estimates; preparation can tighten the captured cap.
+
+`selection_enlargement_command_from_record` replays the recorded geometry, even
+if the live selection has since changed. Source owner, pixels/metadata,
+descriptor, TCZ and X calibration must still match. Applying to live destination
+geometry requires `rebind_selection_enlargement_command` and an explicit request.
+Preparation captures fresh publication guards, including selection and full
+Display revisions. A subsequent camera or navigation change therefore refuses
+publication. Preparation exposes no pixel edit or pixel Undo/Redo step.
+
+Changed desktop publications append exactly one complete record when recording
+is enabled. Exact no-ops append nothing. The Workflow panel provides dedicated
+captured Replay and explicit Rebind controls. Records round-trip through native
+sessions; reopened owners require explicit rebind. Generic workflow/batch-program
+integration remains a separate requirement.
+
+The core command bound includes retained display/record/geometry, enlargement
+scratch and preparation's document metadata/annotations. Existing pixels/history,
+caller-owned arguments, Python/desktop argument conversion, GUI retained state,
+opaque callbacks, allocator overhead and host publication copies are outside it.
+Resolve/validate/replay/rebind/prepare report one coarse progress pair, with
+cancellable kernel checkpoints. Finish-callback failure returns no result and
+publishes nothing. The desktop Apply is synchronous; managed execution and
+mid-computation GUI cancellation for large selections remain required.
+
+New qualification adds both units over all 144 reference rows, complete JSON
+records, IEEE-word/session preservation, stale/refusal/rebind/resource/finish
+callback cases, preferences reopen and ordinary aliases. Actual C++ ImGui input
+checks scalar/RGB/IEEE dialogs, unit conversion, warnings, invalid drafts, literal
+21-cell output, recording, Cancel and stale navigation. Python Editor API tests
+exercise the compiled owner separately; these are not new OS/OpenGL or paired
+Python-launch gesture acceptance. Off-grid irregular retention, remaining
+reference/presentation/platform/resource cases and all original families remain
+open. See [the geometry receipt](reviews/p12g-selection-enlarge001.json) and
+[command/editor receipt](reviews/p12h-enlargement-command001.json).

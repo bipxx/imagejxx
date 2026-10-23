@@ -884,20 +884,29 @@
       "evidence": {
         "documentation": [
           "docs/parity/SELECTION_ENLARGEMENT.md",
-          "docs/parity/reviews/p12g-selection-enlarge001.json"
+          "docs/parity/reviews/p12g-selection-enlarge001.json",
+          "docs/parity/reviews/p12h-enlargement-command001.json"
         ],
         "implementation": [
           "include/imagejxx/selection_edit.hpp",
           "src/native/selection_edit.cpp",
           "src/native/document_bindings.cpp",
-          "src/imagejxx/__init__.py"
+          "src/imagejxx/__init__.py",
+          "include/imagejxx/selection_enlargement.hpp",
+          "src/native/selection_creation.cpp",
+          "src/native/selection_creation_bindings.cpp",
+          "src/native/settings.cpp",
+          "src/desktop/window.cpp"
         ],
         "tests": [
           "tests/python/test_selection_enlargement.py",
           "tests/fixtures/selection-enlargement-imagej154r.json",
           "tests/reference/SelectionEnlargementReference.java",
           "tests/reference/extract_selection_enlargement_fixture.py",
-          "examples/cpp/selection_enlargement.cpp"
+          "examples/cpp/selection_enlargement.cpp",
+          "tests/python/test_selection_enlargement_command.py",
+          "tests/native/test_enlargement_dialog.cpp",
+          "examples/cpp/selection_enlargement_command.cpp"
         ]
       },
       "id": "G018",
