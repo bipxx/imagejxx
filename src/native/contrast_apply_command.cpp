@@ -36,6 +36,7 @@ ContrastApplyCommandEstimate estimate(const ResolvedTarget &t,ContrastApplyOptio
   result.processing_bytes=detail::contrast_apply_working_bytes(t,o,limits.processing);
   result.pixels=mul(mul(std::size_t(d.shape().x),std::size_t(d.shape().y)),t.position_count());
   result.metadata_bytes=source_budget(t.source(),limits.max_record_bytes);
+  (void)detail::contrast_command_record::regional_target(t);
   result.record_bytes=add(mul(result.metadata_bytes,4),add(65536,mul(t.scope()==TargetScope::Positions?t.position_count():0,1024)));
   if(result.record_bytes>limits.max_record_bytes)invalid("Apply command record allowance exceeds limit");
   // Transaction/preview/source metadata copies, wire intermediates, ROI raster
@@ -58,7 +59,9 @@ struct Decoded {
 Decoded decode(const MetadataObject &record,std::size_t cap){
   Budget{cap}.object(record);validate_metadata(record);
   wire::exact_fields(record,{"schema","schema_version","operation","profile","source","target","display_revision","display_properties","reset_anchor","options","selection","rois","reset"});
-  if(wire::text_value(record.at("schema"))!="imagejxx.contrast-apply-command" || wire::unsigned_value(record.at("schema_version"))!=1 ||
+  const auto version=wire::unsigned_value(record.at("schema_version"));
+  if(version==2)detail::regional_record_depth(record);
+  if(wire::text_value(record.at("schema"))!="imagejxx.contrast-apply-command" || (version!=1 && version!=2) ||
       wire::text_value(record.at("operation"))!="contrast_apply" || wire::text_value(record.at("profile"))!="scalar_integer_apply_v1")invalid("Unsupported Apply command record");
   auto source=wire::read_source(wire::object_value(record.at("source")));
   auto target=detail::decode_target_record(wire::object_value(record.at("target")));
@@ -85,16 +88,16 @@ Decoded decode(const MetadataObject &record,std::size_t cap){
   SessionLimits session;session.max_json_bytes=cap;session.max_encoded_bytes=cap;session.max_working_bytes=mul(cap,16);session.max_nodes=cap/64;session.max_depth=128;
   std::optional<Selection> selection;
   if(!std::holds_alternative<std::monostate>(record.at("selection"))){
-    const auto json=scalar::to_json(record.at("selection"));selection=geometry::decode_selection(json,session);selection->validate(source.shape.x,source.shape.y);
-    if(geometry::encode_selection(*selection)!=json)invalid("Noncanonical Apply selection");
+    const auto json=scalar::to_json(record.at("selection"));selection=geometry::decode_selection(json,session,version==2);selection->validate(source.shape.x,source.shape.y);
+    if(geometry::encode_selection(*selection,version==2)!=json)invalid("Noncanonical Apply selection");
   }
   if(target.request.roi!=RoiPolicy::ActiveSelection && selection)invalid("Apply selection policy differs");
   std::vector<Roi> rois;
   const auto roi_json=scalar::to_json(record.at("rois"));
   if(!roi_json.is_array())invalid("Apply positioned ROIs require an array");
   for(const auto &json:roi_json){
-    auto roi=geometry::decode_roi(json,session);roi.validate(source.shape);
-    if(geometry::encode_roi(roi)!=json)invalid("Noncanonical Apply positioned ROI");rois.push_back(std::move(roi));
+    auto roi=geometry::decode_roi(json,session,version==2);roi.validate(source.shape);
+    if(geometry::encode_roi(roi,version==2)!=json)invalid("Noncanonical Apply positioned ROI");rois.push_back(std::move(roi));
   }
   if(target.request.roi!=RoiPolicy::PositionedRois && !rois.empty())invalid("Apply positioned ROI policy differs");
   return {options,std::move(source),std::move(target),wire::unsigned_value(record.at("display_revision")),anchor,properties,std::move(selection),std::move(rois)};
@@ -110,13 +113,14 @@ ResolvedContrastApplyCommand resolve_contrast_apply_command(const DocumentSnapsh
   source_budget(source,limits.max_record_bytes);
   if(request.positions.size()>limits.max_record_bytes/1024)invalid("Apply explicit position record limit");
   auto target=resolve_target(source,request);estimate(target,options,limits);
-  MetadataObject record{{"schema",std::string("imagejxx.contrast-apply-command")},{"schema_version",1},
+  const auto regional=detail::contrast_command_record::regional_target(target);
+  MetadataObject record{{"schema",std::string("imagejxx.contrast-apply-command")},{"schema_version",regional?2:1},
     {"operation",std::string("contrast_apply")},{"profile",std::string("scalar_integer_apply_v1")},
     {"source",metadata_object(wire::source_record(wire::source_metadata(source)))},{"target",metadata_object(target.record())},
     {"display_revision",source.revisions().display},{"display_properties",metadata_object(source.display().properties)},
     {"reset_anchor",metadata_array({source.display().t,source.display().c,source.display().crosshair[2]})},
     {"options",metadata_object({{"minimum",options.minimum},{"maximum",options.maximum},{"unsigned16_bits",options.unsigned16_bits}})},
-    {"selection",selected(target)},{"rois",rois(target)},
+    {"selection",selected(target,regional)},{"rois",rois(target,regional)},
     {"reset",metadata_object({{"policy",std::string("imagej_scalar_reset_v1")},{"range",source.data().dataset.pixel_type()==PixelType::UInt16 && !options.unsigned16_bits?MetadataValue{}:metadata_array({0.,source.data().dataset.pixel_type()==PixelType::UInt8?255.:double((1u<<options.unsigned16_bits)-1)})},
       {"threshold",std::string("clear")},{"channel_plane",std::string("active_if_affected_else_first")},{"indexed_palette",std::string("preserve")}})}};
   Budget{limits.max_record_bytes}.object(record);

@@ -1,4 +1,5 @@
 #include <imagejxx/dataset_histogram.hpp>
+#include "regional_geometry.hpp"
 #include <imagejxx/target_histogram.hpp>
 #include "dataset_histogram_internal.hpp"
 #include <imagejxx/operations.hpp>
@@ -78,7 +79,7 @@ struct Charge {
 bool area_kind(const std::string &kind) {
   return kind == "rounded_rectangle" || kind == "rotated_rounded_rectangle" || kind == "rectangle" || kind == "ellipse" || kind == "polygon" ||
          kind == "freehand" || kind == "rotated_rectangle" ||
-         kind == "rotated_ellipse" || kind == "mask";
+         kind == "rotated_ellipse" || kind == "mask" || kind == "region";
 }
 
 // Selection::mask uses float-relative polygon coordinates. Refuse its known
@@ -109,7 +110,7 @@ std::size_t selection_charge(const Selection &selection, DatasetShape shape,
                              const DatasetHistogramLimits &limits) {
   if (!area_kind(selection.kind))
     invalid("Dataset histogram requires an area ROI");
-  if (selection.kind != "mask" &&
+  if (!selection.is_mask() &&
       (selection.mask_width() != 0 || selection.mask_height() != 0 ||
        !selection.packed_mask().empty()))
     invalid("Selection geometry contains hidden mask storage");
@@ -120,6 +121,7 @@ std::size_t selection_charge(const Selection &selection, DatasetShape shape,
   charge.object(selection.attributes);
   charge.take(selection.packed_mask().size());
   selection.validate(shape.x, shape.y);
+  detail::validate_region_storage(selection);
   polygon_domain(selection);
   if (selection.kind == "rotated_rectangle") {
     const auto frame = *selection.box_frame();

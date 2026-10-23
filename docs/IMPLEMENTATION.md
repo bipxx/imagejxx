@@ -1,5 +1,22 @@
 # Implementation progress
 
+**Regional analysis and contrast, 2026-10-23 (scoped integration):**
+Histogram admission now accepts full regional geometry and projects membership
+only at the consumption canvas. Scalar Auto and scalar/RGB Apply capture V2 when
+they serialize regions; legacy captures and mathematical profiles remain V1.
+RGB stack/session commands preserve historical regional stages independently of
+the live selection. Complete transport-depth and packed-storage validation occur
+before processing. Full frames survive strict replay, workflows and undo.
+Windows/Linux each pass 41,120 installed checks (59 new regional cases, all
+21,445 prior IDs retained, 19,616 additional existing analysis regressions),
+20 native groups, an installed SDK consumer, three existing standalone probes
+and actual ImGui Auto/Apply input. Failure/error/skip counts are zero. Verified
+archives precede removal of 1,478,677,578 owned scratch bytes. All original
+requirements and historical expectations remain unchanged; the historical Auto
+producer fingerprint check still fails. Next are regional Boolean/rotation and
+saved ROI commands. See [the scoped receipt](parity/reviews/p12m-region-analysis001.json).
+See [the regional analysis contract](parity/REGIONAL_ANALYSIS.md).
+
 **Full-region enlargement commands, 2026-10-23 (scoped integration):**
 New V2 captures retain full base/result geometry and signed packed-region frames.
 Replay/rebind validate the complete equation; resource admission includes output

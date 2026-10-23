@@ -27,7 +27,7 @@ PlanePosition position(const DatasetShape &s,std::size_t i){
 void detail::validate_rgb_contrast_session_selection(const std::optional<Selection> &selected,const DatasetShape &shape){
   if(!selected)return;
   const auto &s=*selected;s.validate(shape.x,shape.y);
-  if(s.is_region())invalid("Full region RGB session commands are not integrated yet");
+  detail::validate_region_storage(s);
   if(!selection_is_area(s)){
     if(s.points.empty())invalid("RGB session non-area selection requires a coordinate");
     if(s.kind!="line" && s.kind!="point" && s.kind!="multipoint" && s.kind!="polyline" && s.kind!="angle")

@@ -12,6 +12,7 @@ using detail::contrast_command_record::invalid;
 ContrastApplyCommandEstimate estimate(const DocumentSnapshot &source,
     const std::vector<RgbContrastStackStep> &steps,const ContrastApplyCommandLimits &limits) {
   const auto raw=estimate_rgb_contrast_stack(source,steps,limits);
+  if(source.data().selection && source.data().selection->is_region())detail::contrast_command_record::regional_capture_depth(source,1);
   if(source.display().properties.count("channel_display"))invalid("RGB stack cannot use scalar channel display state");
   ContrastApplyCommandEstimate out;out.pixels=raw.pixels;out.processing_bytes=raw.working_bytes;out.metadata_bytes=raw.metadata_bytes;
   out.record_bytes=add(add(mul(raw.metadata_bytes,4),65536+8192),mul(steps.size(),1024));
@@ -24,9 +25,12 @@ struct Decoded {MetadataObject capture;std::vector<RgbContrastStackStep> steps;}
 Decoded decode(const MetadataObject &requested,std::size_t cap) {
   Budget{cap}.object(requested);const auto record=requested;validate_metadata(record);
   wire::exact_fields(record,{"schema","schema_version","operation","profile","capture","stages"});
-  if(wire::text_value(record.at("schema"))!="imagejxx.rgb-contrast-stack-command" || wire::unsigned_value(record.at("schema_version"))!=1 ||
+  const auto version=wire::unsigned_value(record.at("schema_version"));
+  if(version==2)detail::regional_record_depth(record);
+  if(wire::text_value(record.at("schema"))!="imagejxx.rgb-contrast-stack-command" || (version!=1 && version!=2) ||
       wire::text_value(record.at("operation"))!="rgb_contrast_stack" || wire::text_value(record.at("profile"))!="imagej_rgb_stack_v1")invalid("Unsupported RGB stack command record");
   const auto &capture=wire::object_value(record.at("capture"));validate_rgb_contrast_apply_command_record(capture,cap);
+  if(version==1 && wire::unsigned_value(capture.at("schema_version"))!=1)invalid("Regional RGB stack capture requires version 2");
   const auto target=detail::decode_target_record(wire::object_value(capture.at("target")));
   const auto &anchor=wire::array_value(capture.at("reset_anchor"));
   if(target.request.scope!=TargetScope::Ranges || target.request.roi!=RoiPolicy::ActiveSelection)invalid("RGB stack capture requires its singleton active selection target");
@@ -58,7 +62,7 @@ ResolvedRgbContrastStackCommand resolve_rgb_contrast_stack_command(const Documen
   auto capture=resolve_rgb_contrast_apply_command(source,steps.back().options,target,limits);
   MetadataArray stages;stages.reserve(steps.size());
   for(const auto &s:steps)stages.push_back(metadata_object({{"minimum",s.options.minimum},{"maximum",s.options.maximum},{"channels",s.options.channels},{"whole_plane",s.whole_plane}}));
-  MetadataObject record{{"schema",std::string("imagejxx.rgb-contrast-stack-command")},{"schema_version",1},{"operation",std::string("rgb_contrast_stack")},
+  MetadataObject record{{"schema",std::string("imagejxx.rgb-contrast-stack-command")},{"schema_version",source.data().selection && source.data().selection->is_region()?2:1},{"operation",std::string("rgb_contrast_stack")},
     {"profile",std::string("imagej_rgb_stack_v1")},{"capture",metadata_object(capture.record())},{"stages",metadata_array(std::move(stages))}};
   Budget{limits.max_record_bytes}.object(record);
   return ResolvedRgbContrastStackCommand(std::make_shared<const ResolvedRgbContrastStackCommand::Data>(ResolvedRgbContrastStackCommand::Data{std::move(capture),steps,std::move(record)}));

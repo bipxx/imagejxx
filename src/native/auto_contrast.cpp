@@ -4,6 +4,7 @@
 #include "channel_display_command_internal.hpp"
 #include "kernel_control.hpp"
 #include "session_metadata.hpp"
+#include "regional_geometry.hpp"
 #include <algorithm>
 #include <cmath>
 #include <initializer_list>
@@ -230,13 +231,14 @@ std::size_t selection_size(const Selection &selection, DatasetShape shape,
                            const AutoContrastLimits &limits) {
   if (selection.points.size() > limits.max_selection_vertices)
     invalid("Auto contrast selection exceeds vertex limit");
-  if (selection.kind != "mask" && (selection.mask_width() || selection.mask_height() ||
+  if (!selection.is_mask() && (selection.mask_width() || selection.mask_height() ||
                                     !selection.packed_mask().empty()))
     invalid("Auto contrast selection hides mask storage");
   Charge charge{limits}; charge.take(sizeof(Selection)); charge.text(selection.kind);
   charge.take(mul(selection.points.size(), sizeof(std::array<double, 2>)));
   charge.object(selection.attributes, 2); charge.take(selection.packed_mask().size());
   selection.validate(shape.x, shape.y);
+  detail::validate_region_storage(selection);
   if (!selection_is_area(selection) && !nonarea(selection.kind))
     invalid("Unknown Auto contrast selection kind");
   return charge.bytes;
@@ -247,8 +249,12 @@ std::size_t selection_wire_bound(const Selection *selection,
   auto bytes = add(metadata_size(selection->attributes, limits, 2, true), 32 * node_bytes);
   bytes = add(bytes, mul(selection->points.size(), 6 * node_bytes));
   bytes = add(bytes, add(selection->kind.size(), 1));
-  if (selection->kind == "mask")
+  if (selection->is_mask())
     bytes = add(bytes, base64_size(selection->packed_mask().size()));
+  if(selection->is_region()) {
+    for(const auto &[key,value]:selection->attributes)detail::regional_wire_depth(value,4);
+    bytes=add(bytes,16*node_bytes);
+  }
   record_budget(bytes, limits); return bytes;
 }
 std::size_t state_size(const ChannelDisplayState &state,
@@ -352,7 +358,7 @@ std::string encode_mask(const std::vector<unsigned char> &bytes) {
 MetadataValue encode_selection(const std::optional<Selection> &selection) {
   if (!selection) return {};
   kernel_checkpoint();
-  MetadataObject wire = selection->attributes;
+  MetadataObject wire=selection->is_region()?MetadataObject{{"attributes",metadata_object(selection->attributes)}}:selection->attributes;
   MetadataArray points; points.reserve(selection->points.size());
   for (const auto &point : selection->points) {
     kernel_checkpoint_periodic();
@@ -361,7 +367,8 @@ MetadataValue encode_selection(const std::optional<Selection> &selection) {
   wire.emplace("kind", selection->kind);
   wire.emplace("points", metadata_array(std::move(points)));
   wire.emplace("width", selection->width);
-  if (selection->kind == "mask") {
+  if (selection->is_mask()) {
+    if(selection->is_region())wire.emplace("origin",metadata_array({selection->mask_origin()[0],selection->mask_origin()[1]}));
     wire.emplace("shape", metadata_array({selection->mask_height(), selection->mask_width()}));
     wire.emplace("mask", encode_mask(selection->packed_mask()));
   }
@@ -403,9 +410,21 @@ struct SelectionWire {
   double width;
   const std::string *mask;
   std::size_t native_bytes;
+  const MetadataObject *attributes=nullptr;
+  int stored_width=0,stored_height=0;
+  std::array<int,2> origin{0,0};
 };
+int regional_index(const MetadataValue &value) {
+  if(const auto n=std::get_if<std::int64_t>(&value)) {
+    if(*n<std::numeric_limits<int>::min() || *n>std::numeric_limits<int>::max())invalid("Auto regional origin exceeds int32");
+    return static_cast<int>(*n);
+  }
+  const auto n=uint_value(value);
+  if(n>std::uint64_t(std::numeric_limits<int>::max()))invalid("Auto regional origin exceeds int32");
+  return static_cast<int>(n);
+}
 SelectionWire inspect_selection(const MetadataValue &value, DatasetShape shape,
-                                 const AutoContrastLimits &limits) {
+                                 const AutoContrastLimits &limits,bool regional=false) {
   const auto &wire = object_value(value);
   for (const auto *key : {"kind", "points", "width"})
     if (!wire.count(key)) invalid("Auto contrast selection geometry is incomplete");
@@ -420,30 +439,43 @@ SelectionWire inspect_selection(const MetadataValue &value, DatasetShape shape,
     (void)number_value(point[0]); (void)number_value(point[1]);
   }
   const std::string *mask = nullptr;
-  if (kind == "mask") {
+  int stored_width=shape.x,stored_height=shape.y;std::array<int,2> origin{0,0};
+  const MetadataObject *attributes=nullptr;
+  if(kind=="region") {
+    if(!regional)invalid("Regional selection requires Auto command version 2");
+    fields(wire,{"kind","points","width","attributes","shape","mask","origin"});
+    if(!points.empty())invalid("Regional mask cannot contain vector points");
+    attributes=&object_value(wire.at("attributes"));
+    const auto &xy=array_value(wire.at("origin"));
+    if(xy.size()!=2)invalid("Regional origin requires two integers");
+    origin={regional_index(xy[0]),regional_index(xy[1])};
+  }
+  if (kind == "mask" || kind=="region") {
     if (!wire.count("shape") || !wire.count("mask")) invalid("Auto contrast mask storage is incomplete");
     const auto &dimensions = array_value(wire.at("shape"));
-    if (dimensions.size() != 2 || index_value(dimensions[0]) != shape.y ||
-        index_value(dimensions[1]) != shape.x) invalid("Auto contrast mask shape mismatch");
+    if(dimensions.size()!=2)invalid("Auto mask requires two dimensions");
+    stored_height=index_value(dimensions[0]);stored_width=index_value(dimensions[1]);
+    if(stored_height<=0 || stored_width<=0 || (kind=="mask" && (stored_height!=shape.y || stored_width!=shape.x)))invalid("Auto contrast mask shape mismatch");
     mask = &text_value(wire.at("mask"));
-    base64_valid(*mask, packed_size(xy_size(shape)));
+    base64_valid(*mask, packed_size(mul(stored_width,stored_height)));
   }
   const auto native = add(sizeof(Selection), add(kind.size() + 1,
       add(mul(points.size(), sizeof(std::array<double, 2>)),
-          add(metadata_size(wire, limits, 2, true), mask ? packed_size(xy_size(shape)) : 0))));
+          add(metadata_size(wire, limits, 2, true), mask ? packed_size(mul(stored_width,stored_height)) : 0))));
   working(add(native, codec_scratch), limits);
-  return {&wire, &points, &kind, width, mask, native};
+  return {&wire, &points, &kind, width, mask, native,attributes,stored_width,stored_height,origin};
 }
 Selection decode_selection(const SelectionWire &wire, DatasetShape shape) {
   auto selection = [&] {
     if (!wire.mask) return Selection(*wire.kind);
-    std::vector<unsigned char> bytes; bytes.reserve(packed_size(xy_size(shape)));
+    std::vector<unsigned char> bytes; bytes.reserve(packed_size(mul(wire.stored_width,wire.stored_height)));
     for (std::size_t first = 0; first < wire.mask->size();) {
       const auto length = std::min<std::size_t>(4096, wire.mask->size() - first);
       const auto chunk = detail::session_metadata::decode_base64(wire.mask->substr(first, length));
       bytes.insert(bytes.end(), chunk.begin(), chunk.end()); first += length;
     }
-    return Selection::from_packed_mask(shape.x, shape.y, std::move(bytes));
+    return *wire.kind=="region"?Selection::from_packed_region(wire.stored_width,wire.stored_height,std::move(bytes),wire.origin)
+        :Selection::from_packed_mask(wire.stored_width,wire.stored_height,std::move(bytes));
   }();
   selection.width = wire.width;
   selection.points.reserve(wire.points->size());
@@ -451,11 +483,13 @@ Selection decode_selection(const SelectionWire &wire, DatasetShape shape) {
     const auto &point = array_value(item);
     selection.points.push_back({number_value(point[0]), number_value(point[1])});
   }
-  for (const auto &[key, value] : *wire.object)
+  if(wire.attributes)selection.attributes=*wire.attributes;
+  else for (const auto &[key, value] : *wire.object)
     if (key != "kind" && key != "points" && key != "width" &&
         (!wire.mask || (key != "shape" && key != "mask")))
       selection.attributes.emplace(key, value);
   selection.validate(shape.x, shape.y);
+  detail::validate_region_storage(selection);
   if (!selection_is_area(selection) && !nonarea(selection.kind))
     invalid("Unknown Auto contrast selection kind");
   return selection;
@@ -527,7 +561,7 @@ MetadataObject encode_record(const ResolvedChannelDisplayCommand &effect,
   MetadataValue encoded_indices, encoded_candidate;
   if (indices) encoded_indices = metadata_array({(*indices)[0], (*indices)[1]});
   if (candidate) encoded_candidate = metadata_array({(*candidate)[0], (*candidate)[1]});
-  return {{"schema", std::string(schema)}, {"version", 1}, {"effect", metadata_object(effect.record())},
+  return {{"schema", std::string(schema)}, {"version", selection && selection->is_region()?2:1}, {"effect", metadata_object(effect.record())},
     {"roi", metadata_object({{"policy", std::string(roi_name(request.roi))},
       {"effective", std::string(effective_roi(request.roi, selection))},
       {"selection_revision", selection_revision}, {"selection", encode_selection(selection)}})},
@@ -606,8 +640,10 @@ Decoded decode_record(const MetadataObject &record, const AutoContrastLimits &li
   record_budget(bytes, limits);
   fields(record, {"schema", "version", "effect", "roi", "display_dependency", "cycle",
     "scope", "unsigned16_bits", "channels", "histogram", "decision"});
-  if (text_value(record.at("schema")) != schema || uint_value(record.at("version")) != 1)
+  const auto version=uint_value(record.at("version"));
+  if (text_value(record.at("schema")) != schema || (version!=1 && version!=2))
     invalid("Unsupported Auto contrast command schema/version");
+  if(version==2)detail::regional_record_depth(record);
   const auto &effect = object_value(record.at("effect"));
   // Bound decoded inline LUT/state storage before invoking the owning decoder.
   const auto &state_wire = object_value(required(effect, "state"));
@@ -635,7 +671,7 @@ Decoded decode_record(const MetadataObject &record, const AutoContrastLimits &li
   else invalid("Unknown Auto contrast ROI policy");
   result.selection_revision = uint_value(roi.at("selection_revision"));
   if (!is_null(roi.at("selection"))) {
-    const auto selection = inspect_selection(roi.at("selection"), result.descriptor.shape, limits);
+    const auto selection = inspect_selection(roi.at("selection"), result.descriptor.shape, limits,version==2);
     result.estimate.selection_bytes = selection.native_bytes;
     working(add(codec_scratch, add(mul(4, bytes),
         add(mul(5, typed_bound), mul(2, selection.native_bytes)))), limits);
@@ -656,6 +692,10 @@ Decoded decode_record(const MetadataObject &record, const AutoContrastLimits &li
   validate_summary(result.histogram, result.descriptor.shape, result.descriptor.type, result.descriptor.policy,
       result.selection && selection_is_area(*result.selection));
   // A literal empty packed area cannot substantiate a successful finite count.
+  if(result.selection && result.selection->is_region()) {
+    if(detail::regional_visible_members(*result.selection,result.descriptor.shape.x,result.descriptor.shape.y)!=result.histogram.visited_count)
+      invalid("Auto regional visible membership contradicts counts");
+  }
   if (result.selection && result.selection->kind == "mask") {
     const auto &mask = result.selection->packed_mask();
     std::uint64_t members = 0;

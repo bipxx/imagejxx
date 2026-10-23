@@ -3,6 +3,7 @@
 #include "axis_command_record.hpp"
 #include "selection_codec.hpp"
 #include "session_metadata.hpp"
+#include "regional_geometry.hpp"
 #include <cmath>
 namespace imagejxx::detail::contrast_command_record {
 namespace wire=axis_command_record;
@@ -41,13 +42,37 @@ inline std::size_t source_budget(const DocumentSnapshot &s,std::size_t limit){
   for(const auto &r:d.rois)b.roi(r);for(const auto &o:d.overlays)b.object(o);
   return b.used;
 }
-inline MetadataValue selected(const ResolvedTarget &t){
-  const auto &s=t.source().data().selection;
-  return t.roi_policy()==RoiPolicy::ActiveSelection && s?scalar::from_json(geometry::encode_selection(*s)):MetadataValue{};
+inline bool regional_target(const ResolvedTarget &t){
+  const auto &data=t.source().data();bool regional=false;
+  if(t.roi_policy()==RoiPolicy::ActiveSelection)regional=data.selection && data.selection->is_region();
+  if(t.roi_policy()==RoiPolicy::PositionedRois)for(const auto &r:data.rois)regional=regional || r.selection.is_region();
+  if(!regional)return false;
+  for(const auto &[key,value]:t.source().display().properties)regional_wire_depth(value,2);
+  if(t.roi_policy()==RoiPolicy::ActiveSelection && data.selection) {
+    validate_region_storage(*data.selection);
+    for(const auto &[key,value]:data.selection->attributes)regional_wire_depth(value,3);
+  }
+  if(t.roi_policy()==RoiPolicy::PositionedRois)for(const auto &r:data.rois) {
+    validate_region_storage(r.selection);
+    for(const auto &[key,value]:r.selection.attributes)regional_wire_depth(value,5);
+    for(const auto &[key,value]:r.attributes)regional_wire_depth(value,4);
+  }
+  return true;
 }
-inline MetadataValue rois(const ResolvedTarget &t){
+inline void regional_capture_depth(const DocumentSnapshot &source,unsigned extra){
+  for(const auto &[key,value]:source.display().properties)regional_wire_depth(value,2+extra);
+  if(source.data().selection) {
+    validate_region_storage(*source.data().selection);
+    for(const auto &[key,value]:source.data().selection->attributes)regional_wire_depth(value,3+extra);
+  }
+}
+inline MetadataValue selected(const ResolvedTarget &t,bool regional=false){
+  const auto &s=t.source().data().selection;
+  return t.roi_policy()==RoiPolicy::ActiveSelection && s?scalar::from_json(geometry::encode_selection(*s,regional)):MetadataValue{};
+}
+inline MetadataValue rois(const ResolvedTarget &t,bool regional=false){
   MetadataArray result;
-  if(t.roi_policy()==RoiPolicy::PositionedRois)for(const auto &r:t.source().data().rois)result.push_back(scalar::from_json(geometry::encode_roi(r)));
+  if(t.roi_policy()==RoiPolicy::PositionedRois)for(const auto &r:t.source().data().rois)result.push_back(scalar::from_json(geometry::encode_roi(r,regional)));
   return metadata_array(std::move(result));
 }
 } // namespace imagejxx::detail::contrast_command_record

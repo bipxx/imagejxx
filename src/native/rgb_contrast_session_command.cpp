@@ -13,9 +13,20 @@ using detail::contrast_command_record::Budget;
 using detail::contrast_command_record::add;
 using detail::contrast_command_record::mul;
 using detail::contrast_command_record::invalid;
+bool regional_plan(const DocumentSnapshot &source,const RgbContrastSessionPlan &plan){
+  if(source.data().selection && source.data().selection->is_region())return true;
+  for(const auto &visit:plan.visits)for(const auto &step:visit.stages)
+    if(step.selection && step.selection->is_region())return true;
+  return false;
+}
 ContrastApplyCommandEstimate estimate(const DocumentSnapshot &source,const RgbContrastSessionPlan &plan,
     const ContrastApplyCommandLimits &limits){
   const auto raw=estimate_rgb_contrast_session(source,plan,limits);
+  if(regional_plan(source,plan)) {
+    detail::contrast_command_record::regional_capture_depth(source,1);
+    for(const auto &visit:plan.visits)for(const auto &step:visit.stages)if(step.selection)
+      for(const auto &[key,value]:step.selection->attributes)detail::regional_wire_depth(value,7);
+  }
   if(source.display().properties.count("channel_display"))invalid("RGB session cannot use scalar channel display state");
   ContrastApplyCommandEstimate out;out.pixels=raw.pixels;out.processing_bytes=raw.working_bytes;out.metadata_bytes=raw.metadata_bytes;
   out.record_bytes=add(add(mul(raw.metadata_bytes,4),65536+8192),add(mul(raw.visits,1024),mul(raw.stages,1024)));
@@ -32,9 +43,12 @@ struct Decoded {MetadataObject capture;RgbContrastSessionPlan plan;};
 Decoded decode(const MetadataObject &requested,std::size_t cap){
   Budget{cap}.object(requested);const auto record=requested;validate_metadata(record);
   wire::exact_fields(record,{"schema","schema_version","operation","profile","capture","entire_stack","visits"});
-  if(wire::text_value(record.at("schema"))!="imagejxx.rgb-contrast-session-command" || wire::unsigned_value(record.at("schema_version"))!=1 ||
+  const auto version=wire::unsigned_value(record.at("schema_version"));
+  if(version==2)detail::regional_record_depth(record);
+  if(wire::text_value(record.at("schema"))!="imagejxx.rgb-contrast-session-command" || (version!=1 && version!=2) ||
       wire::text_value(record.at("operation"))!="rgb_contrast_session" || wire::text_value(record.at("profile"))!="imagej_rgb_session_v1")invalid("Unsupported RGB session command record");
   const auto &capture=wire::object_value(record.at("capture"));validate_rgb_contrast_apply_command_record(capture,cap);
+  if(version==1 && wire::unsigned_value(capture.at("schema_version"))!=1)invalid("Regional RGB session capture requires version 2");
   const auto target=detail::decode_target_record(wire::object_value(capture.at("target")));
   const auto &anchor=wire::array_value(capture.at("reset_anchor"));
   if(target.request.scope!=TargetScope::Ranges || target.request.roi!=RoiPolicy::ActiveSelection)invalid("RGB session capture requires singleton active selection target");
@@ -59,8 +73,8 @@ Decoded decode(const MetadataObject &requested,std::size_t cap){
       if(!std::isfinite(step.options.minimum) || !std::isfinite(step.options.maximum) || step.options.minimum>step.options.maximum || step.options.channels<1 || step.options.channels>7)invalid("Invalid RGB session stage");
       step.whole_plane=boolean(stage.at("whole_plane"));
       if(!std::holds_alternative<std::monostate>(stage.at("selection"))){
-        const auto json=scalar::to_json(stage.at("selection"));step.selection=geometry::decode_selection(json,session);
-        if(geometry::encode_selection(*step.selection)!=json)invalid("Noncanonical RGB session selection");
+        const auto json=scalar::to_json(stage.at("selection"));step.selection=geometry::decode_selection(json,session,version==2);
+        if(geometry::encode_selection(*step.selection,version==2)!=json)invalid("Noncanonical RGB session selection");
       }
       detail::validate_rgb_contrast_session_selection(step.selection,shape);
       visit.stages.push_back(std::move(step));
@@ -83,14 +97,15 @@ ResolvedRgbContrastSessionCommand resolve_rgb_contrast_session_command(const Doc
   const auto source=requested;const auto plan=requested_plan;const auto limits=requested_limits;
   TargetRequest target;target.roi=RoiPolicy::ActiveSelection;
   auto capture=resolve_rgb_contrast_apply_command(source,plan.visits.back().stages.back().options,target,limits);
+  const auto regional=regional_plan(source,plan);
   MetadataArray visits;visits.reserve(plan.visits.size());
   for(const auto &visit:plan.visits){
     MetadataArray stages;stages.reserve(visit.stages.size());
     for(const auto &step:visit.stages)stages.push_back(metadata_object({{"minimum",step.options.minimum},{"maximum",step.options.maximum},{"channels",step.options.channels},{"whole_plane",step.whole_plane},
-      {"selection",step.selection?scalar::from_json(geometry::encode_selection(*step.selection)):MetadataValue{}}}));
+      {"selection",step.selection?scalar::from_json(geometry::encode_selection(*step.selection,regional)):MetadataValue{}}}));
     visits.push_back(metadata_object({{"position",metadata_array({visit.position.t,visit.position.c,visit.position.z})},{"stages",metadata_array(std::move(stages))}}));
   }
-  MetadataObject record{{"schema",std::string("imagejxx.rgb-contrast-session-command")},{"schema_version",1},{"operation",std::string("rgb_contrast_session")},{"profile",std::string("imagej_rgb_session_v1")},
+  MetadataObject record{{"schema",std::string("imagejxx.rgb-contrast-session-command")},{"schema_version",regional?2:1},{"operation",std::string("rgb_contrast_session")},{"profile",std::string("imagej_rgb_session_v1")},
     {"capture",metadata_object(capture.record())},{"entire_stack",plan.entire_stack},{"visits",metadata_array(std::move(visits))}};
   Budget{limits.max_record_bytes}.object(record);
   return ResolvedRgbContrastSessionCommand(std::make_shared<const ResolvedRgbContrastSessionCommand::Data>(ResolvedRgbContrastSessionCommand::Data{std::move(capture),plan,std::move(record)}));

@@ -84,18 +84,19 @@ Canonical storage and files:
   mode. Portable operation parameters can explicitly select `full_region_v2`;
   legacy two-parameter steps retain V1, while V2 provenance infers full mode if no
   override is supplied. Parameter editing preserves that intent.
-- Histogram/contrast commands, rotation, Boolean editing, saved ROI geometry
-  commands and ROI interchange still require integration. These paths can refuse
-  regions produced by the new dialog. Generic filter and selection-only workflow/
-  batch chains are supported; this is not complete editor interoperability.
+- Histogram, Auto and contrast Apply now consume regional membership without
+  replacing the stored geometry. Auto/Apply and RGB stack/session records use V2
+  when regional geometry is captured. Rotation, Boolean editing, saved ROI
+  geometry commands and ROI interchange still require integration. This is not
+  complete editor interoperability.
 - Adding the origin changes native Selection/DocumentData layout. Rebuild all
   consumers, including the scientific I/O extension, against matching headers.
 
 Remaining integration work, in dependency order:
 
-1. Integrate regional histogram/contrast targets and typed saved ROI commands.
-   Preserve full geometry across clipping-only consumers and shared replay. Keep
-   old record equations intact and version new captures where required.
+1. Integrate typed saved ROI geometry commands with full regional storage.
+   Histogram/Auto/Apply and RGB history consumers now preserve regions; extend
+   that contract through remaining editing commands and shared replay.
 2. Extend full-frame transformation/creation command codecs and source guards;
    never feed regional packed storage to a canvas-indexed V1 consumer.
 3. Make masks for filtering, histograms and display at their consumption canvas.
