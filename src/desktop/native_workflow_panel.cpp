@@ -233,6 +233,7 @@ std::vector<Entry> compile(const Json &table, std::size_t cap) {
       validate_selection_enlargement_command_record(record);
       NativeWorkflowOperation value;value.operation="selection_enlargement";value.original=record;
       value.parameters={{"distance",raw.at("distance").get<double>()},{"units",raw.at("units").get<std::string>()}};
+      if(raw.at("version")==2)value.parameters.emplace("geometry",std::string("full_region_v2"));
       step=std::move(value);title="Enlarge / shrink selection";
     } else if(schema=="imagejxx.rgb-contrast-session-command") {
       validate_rgb_contrast_session_command_record(record);

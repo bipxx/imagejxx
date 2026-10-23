@@ -4,8 +4,11 @@
 `region` selection with intrinsic YX dimensions and a signed integer XY origin.
 Current selections, Previous and saved ROI rows retain that value. Pixel consumers
 project it at the document canvas; native translation and enlargement keep its
-full geometry. The off-image editor gap remains open until recorded commands,
-interchange, workflows and the remaining transformations are integrated.
+full geometry. Full-region enlargement commands now use a V2 equation and closed
+geometry codec. The shared ImGui dialog captures V2, while recorded V1 equations
+retain their original clipping. Authored workflows, captured-step adoption and
+session batches retain the full-mode intent. Histogram/contrast consumers,
+interchange and the remaining transformations still require regional integration.
 
 `SelectionRegion` retains an area selection in a local coordinate frame and an
 explicit integer XY origin. A packed mask's dimensions belong to that geometry;
@@ -70,21 +73,31 @@ Canonical storage and files:
   public legacy file grammar remains closed. Native desktop loading recognizes
   V4 and draws visible regional mask outlines.
 - Generic filtering consumes projected membership while retaining canonical
-  owner geometry. Recorded enlargement/histogram commands, rotation, Boolean
-  editing and saved ROI geometry commands do not yet accept regional inputs;
-  they refuse them before publication. The existing UI probes establish
-  regressions only, not new regional gesture acceptance.
+  owner geometry. V2 enlargement captures complete base/result values, validates
+  the full equation before replay/rebind and includes off-image output in resource
+  admission. Zero distance, empty masks and shrink-erased originals preserve
+  the exact original selection value. Current
+  Previous and publication guards remain fresh when replay uses captured geometry.
+- The shared ImGui enlargement dialog now captures V2. Explicit editor actions
+  accept `geometry="full_region_v2"`; existing action/API defaults remain V1 for
+  compatibility. Recorded workflow rebind controls retain the captured geometry
+  mode. Portable operation parameters can explicitly select `full_region_v2`;
+  legacy two-parameter steps retain V1, while V2 provenance infers full mode if no
+  override is supplied. Parameter editing preserves that intent.
+- Histogram/contrast commands, rotation, Boolean editing, saved ROI geometry
+  commands and ROI interchange still require integration. These paths can refuse
+  regions produced by the new dialog. Generic filter and selection-only workflow/
+  batch chains are supported; this is not complete editor interoperability.
 - Adding the origin changes native Selection/DocumentData layout. Rebuild all
   consumers, including the scientific I/O extension, against matching headers.
 
 Remaining integration work, in dependency order:
 
-1. Version recorded selection commands for regional inputs and full outputs.
-   Keep old validation/replay equations unchanged. Admit intrinsic geometry,
-   signed origins and payloads before copying or rasterizing. Update captured
-   source guards and command estimates instead of passing regions to V1 codecs.
-2. Integrate regional histogram/contrast targets and typed saved ROI commands.
-   Preserve full geometry across clipping-only consumers and shared replay.
+1. Integrate regional histogram/contrast targets and typed saved ROI commands.
+   Preserve full geometry across clipping-only consumers and shared replay. Keep
+   old record equations intact and version new captures where required.
+2. Extend full-frame transformation/creation command codecs and source guards;
+   never feed regional packed storage to a canvas-indexed V1 consumer.
 3. Make masks for filtering, histograms and display at their consumption canvas.
    Keep full geometry for selection transformations, Previous and saved ROIs.
    Cover axis remapping, slicing/resizing, geometry editing and Boolean operations
@@ -101,4 +114,5 @@ and metadata outside the requested edits. Core-only region tests do not establis
 that editor-level completion.
 
 See the [scoped foundation receipt](reviews/p12j-selection-region001.json) and
-[storage/session receipt](reviews/p12k-region-storage001.json).
+[storage/session receipt](reviews/p12k-region-storage001.json), plus the
+[full-region command receipt](reviews/p12l-region-command001.json).

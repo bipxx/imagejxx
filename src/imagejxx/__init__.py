@@ -151,6 +151,7 @@ from ._native import (
 from ._native import (
     SelectionEnlargementCommandLimits as SelectionEnlargementCommandLimits,
     SelectionEnlargementUnits as SelectionEnlargementUnits,
+    SelectionEnlargementGeometry as SelectionEnlargementGeometry,
     SelectionEnlargementRequest as SelectionEnlargementRequest,
     SelectionEnlargementCommandEstimate as SelectionEnlargementCommandEstimate,
     ResolvedSelectionEnlargementCommand as ResolvedSelectionEnlargementCommand,

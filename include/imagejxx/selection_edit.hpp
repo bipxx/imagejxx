@@ -33,6 +33,10 @@ struct SelectionEnlargementEstimate {
 SelectionEnlargementEstimate estimate_selection_enlargement_geometry(
     const Selection &, int width, int height, double pixels,
     const SelectionEditLimits & = {}, const ExecutionControl & = {});
+// Borrowed full-frame admission, including intrinsic regional mask storage.
+SelectionEnlargementEstimate estimate_selection_region_enlargement_geometry(
+    const Selection &, int width, int height, double pixels,
+    const SelectionEditLimits & = {}, const ExecutionControl & = {});
 // Immutable geometry operations. Coordinates are image-cell boundaries, as in
 // Selection. This class stages geometry; the caller commits a document edit.
 class SelectionRegion;

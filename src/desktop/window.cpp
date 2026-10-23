@@ -2281,13 +2281,16 @@ struct Window::Impl {
   SelectionEnlargementRequest enlargementRequest(const Json &values,bool rebind=false) const {
     if(!values.is_object())throw std::invalid_argument("Enlargement parameters must be an object");
     for(const auto &[key,value]:values.items())
-      if(key!="distance" && key!="units" && !(key=="document_id" && !rebind))throw std::invalid_argument("Unknown enlargement parameter");
+      if(key!="distance" && key!="units" && key!="geometry" && !(key=="document_id" && !rebind))throw std::invalid_argument("Unknown enlargement parameter");
     if(!values.contains("distance") || !values.at("distance").is_number())throw std::invalid_argument("Enlargement distance must be numeric");
     const auto distance=values.at("distance").get<double>();require_finite(distance,"Enlargement distance");
     if(rebind && !values.contains("units"))throw std::invalid_argument("Rebind requires explicit distance and units");
     const auto units=values.value("units",std::string("pixels"));
     if(units!="pixels" && units!="calibrated")throw std::invalid_argument("Unknown enlargement units");
-    return {distance,units=="pixels"?SelectionEnlargementUnits::Pixels:SelectionEnlargementUnits::Calibrated};
+    const auto geometry=values.value("geometry",std::string("canvas_v1"));
+    if(geometry!="canvas_v1" && geometry!="full_region_v2")throw std::invalid_argument("Unknown enlargement geometry mode");
+    return {distance,units=="pixels"?SelectionEnlargementUnits::Pixels:SelectionEnlargementUnits::Calibrated,
+        geometry=="full_region_v2"?SelectionEnlargementGeometry::FullRegionV2:SelectionEnlargementGeometry::CanvasV1};
   }
   void publishEnlargement(const ResolvedSelectionEnlargementCommand &command) {
     const auto current=owner.nativeSnapshot(command.source().id());
@@ -6336,7 +6339,7 @@ void Window::action(const std::string &name, const Json &p) {
     if(p.contains("shrink") && !p.at("shrink").is_boolean())throw std::invalid_argument("Shrink flag must be Boolean");
     const auto source=nativeSnapshot(targetId);
     if(busy() || source.id()!=controller_->active_document_id())throw std::invalid_argument("Enlargement requires the idle active document");
-    (void)estimate_selection_enlargement_command(source,{0,SelectionEnlargementUnits::Pixels},impl->selectionCreationLimits());
+    (void)estimate_selection_enlargement_command(source,{0,SelectionEnlargementUnits::Pixels,SelectionEnlargementGeometry::FullRegionV2},impl->selectionCreationLimits());
     const auto &cal=source.data().dataset.calibration();const auto units=impl->preferenceState.settings.text("selection_enlargement_units");
     double distance=impl->preferenceState.settings.number("selection_enlargement_distance");
     if(p.value("shrink",false))distance=-distance;if(units=="calibrated")distance*=cal.spacing[0];
@@ -6344,7 +6347,7 @@ void Window::action(const std::string &name, const Json &p) {
     impl->ask("Enlarge selection",{{"distance",distance},{"units",units}},[this,source](Json values){
       const auto current=nativeSnapshot(source.id());
       if(!source.same_document(current) || !source.revisions().matches(current.revisions(),Change::All))throw RevisionConflict();
-      const auto request=impl->enlargementRequest(values);
+      auto request=impl->enlargementRequest(values);request.geometry=SelectionEnlargementGeometry::FullRegionV2;
       impl->publishEnlargement(resolve_selection_enlargement_command(source,request,impl->selectionCreationLimits()));
     },Json::array({{{"name","distance"},{"label","Distance (negative shrinks)"},{"kind","float"}},
         {{"name","units"},{"label","Units"},{"kind","choice"},{"choices",{"pixels","calibrated"}}}}),"selection_enlargement");
@@ -6353,7 +6356,7 @@ void Window::action(const std::string &name, const Json &p) {
   if(name=="enlarge_selection" || name=="grow_selection" || name=="shrink_selection"){
     Json values=p;
     if(name!="enlarge_selection"){
-      for(const auto &[key,value]:p.items())if(key!="radius" && key!="units" && key!="document_id")throw std::invalid_argument("Unknown enlargement parameter");
+      for(const auto &[key,value]:p.items())if(key!="radius" && key!="units" && key!="geometry" && key!="document_id")throw std::invalid_argument("Unknown enlargement parameter");
       const auto radius=p.value("radius",Json(1.));if(!radius.is_number() || radius.get<double>()<0)throw std::invalid_argument("Selection radius must be a nonnegative number");
       values.erase("radius");values["distance"]=(name=="shrink_selection"?-1.:1.)*radius.get<double>();
     }
@@ -9973,7 +9976,7 @@ void Window::Impl::recorder() {
       ImGui::PushID(static_cast<int>(i));ImGui::BeginDisabled(owner.documents_.empty() || owner.busy() || !actionAllowed("replay_selection_enlargement"));
       if(ImGui::Button("Replay captured enlargement"))guard([&]{owner.action("replay_selection_enlargement",{{"record",step}});});
       observeControl("workflow.enlargement."+std::to_string(i)+".replay");
-      if(ImGui::Button("Rebind distance to current selection"))guard([&]{owner.action("replay_selection_enlargement",{{"record",step},{"rebind",{{"distance",step.at("distance")},{"units",step.at("units")}}}});});
+      if(ImGui::Button("Rebind distance to current selection"))guard([&]{owner.action("replay_selection_enlargement",{{"record",step},{"rebind",{{"distance",step.at("distance")},{"units",step.at("units")},{"geometry",step.at("version")==2?"full_region_v2":"canvas_v1"}}}});});
       observeControl("workflow.enlargement."+std::to_string(i)+".rebind");ImGui::EndDisabled();ImGui::PopID();
     }
     if (get(step, "schema") == "imagejxx.channel-display-command") {
@@ -11629,7 +11632,7 @@ void Window::Impl::dialogs() {
                            (slicerRange && !slicerApplyReady));
     if(dialog.id=="selection_enlargement" && dialog.enlargementSource){
       const auto &cal=dialog.enlargementSource->data().dataset.calibration();
-      ImGui::TextWrapped("Irregular selections are clipped to the image boundary.");
+      ImGui::TextWrapped("Selections retain their geometry beyond the image boundary.");
       ImGui::Text("Calibrated units: %s; X spacing: %.17g.",cal.unit.c_str(),cal.spacing[0]);
       if(dialog.values.value("units",std::string("pixels"))=="calibrated" && cal.spacing[0]!=cal.spacing[1]){
         ImGui::TextWrapped("X and Y scales differ. Calibrated distance uses X spacing: %.17g %s.",cal.spacing[0],cal.unit.c_str());

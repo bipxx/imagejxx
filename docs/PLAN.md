@@ -1,5 +1,25 @@
 # ImageJ and Fiji gap closure plan
 
+**Full-region enlargement commands, 2026-10-23 (scoped integration):**
+New V2 captures retain full base/result geometry and signed packed-region frames.
+Replay/rebind validate the complete equation; resource admission includes output
+beyond the image canvas. The shared ImGui dialog now captures V2, while existing
+programmatic defaults and recorded V1 equations keep their clipping behavior.
+Portable workflow intent, recorded-step adoption and session batches retain full
+mode across repeated edits and generic filtering. Preparation now freezes its
+admitted command before C++ callbacks; a failing reassignment executable and
+source are retained. Histogram/contrast, Boolean/rotation, saved ROI command and
+ImageJ interchange migration remain required.
+Windows/Linux each pass 21,445 installed checks (196 new; all 21,249 prior IDs
+retained), 19 native groups, an installed SDK consumer, historical V1-to-V2
+upgrade probe, three existing standalone probes and an actual off-image shared
+ImGui dialog/workflow case. Failure/error/skip counts are zero. Verified archives
+precede removal of 3,011,692,625 owned scratch bytes. Original requirements,
+historical runs and Auto expectations stay unchanged; the historical Auto producer
+fingerprint check still fails. Next is regional histogram/contrast interoperability.
+See [the migration plan](parity/SELECTION_REGION.md) and
+[scoped receipt](parity/reviews/p12l-region-command001.json).
+
 **Canonical region storage and V4 sessions, 2026-10-23 (scoped integration):**
 Full packed regions now survive native document selections, Previous and saved
 ROI rows. Sessions containing those values use V4; legacy-only captures retain

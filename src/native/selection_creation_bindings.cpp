@@ -194,14 +194,19 @@ void bind_selection_creation(py::module_ &m) {
   m.attr("SelectionEnlargementCommandLimits")=m.attr("SelectionCreationLimits");
   py::enum_<SelectionEnlargementUnits>(m,"SelectionEnlargementUnits")
       .value("PIXELS",SelectionEnlargementUnits::Pixels).value("CALIBRATED",SelectionEnlargementUnits::Calibrated);
+  py::enum_<SelectionEnlargementGeometry>(m,"SelectionEnlargementGeometry")
+      .value("CANVAS_V1",SelectionEnlargementGeometry::CanvasV1)
+      .value("FULL_REGION_V2",SelectionEnlargementGeometry::FullRegionV2);
   py::class_<SelectionEnlargementRequest>(m,"SelectionEnlargementRequest")
-      .def(py::init([](py::handle distance,SelectionEnlargementUnits units){
+      .def(py::init([](py::handle distance,SelectionEnlargementUnits units,SelectionEnlargementGeometry geometry){
         if(boolean(distance))throw py::type_error("Enlargement distance must not be Boolean");
-        return SelectionEnlargementRequest{py::cast<double>(distance),units};
-      }),py::arg("distance")=1.,py::arg("units")=SelectionEnlargementUnits::Pixels)
+        return SelectionEnlargementRequest{py::cast<double>(distance),units,geometry};
+      }),py::arg("distance")=1.,py::arg("units")=SelectionEnlargementUnits::Pixels,
+          py::arg("geometry")=SelectionEnlargementGeometry::CanvasV1)
       .def_property("distance",[](const SelectionEnlargementRequest &v){return v.distance;},[](SelectionEnlargementRequest &v,py::handle x){
         if(boolean(x))throw py::type_error("Enlargement distance must not be Boolean");v.distance=py::cast<double>(x);
-      }).def_readwrite("units",&SelectionEnlargementRequest::units);
+      }).def_readwrite("units",&SelectionEnlargementRequest::units)
+      .def_readwrite("geometry",&SelectionEnlargementRequest::geometry);
   py::class_<SelectionEnlargementCommandEstimate>(m,"SelectionEnlargementCommandEstimate")
       .def_readonly("pixel_distance",&SelectionEnlargementCommandEstimate::pixel_distance)
       .def_readonly("retained_bytes",&SelectionEnlargementCommandEstimate::retained_bytes)

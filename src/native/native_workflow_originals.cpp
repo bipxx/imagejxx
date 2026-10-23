@@ -173,8 +173,9 @@ SelectionEnlargementRequest selection_enlargement_workflow_request(const NativeW
               !v.target.t && !v.target.c && !v.target.z && v.target.positions.empty(),
           "Selection enlargement uses the current stage selection and view");
   if(v.original)validate_selection_enlargement_command_record(*v.original);
-  require(v.parameters.size()==2 && v.parameters.count("distance") && v.parameters.count("units"),
-          "Selection enlargement requires distance and units only");
+  require((v.parameters.size()==2 || (v.parameters.size()==3 && v.parameters.count("geometry"))) &&
+              v.parameters.count("distance") && v.parameters.count("units"),
+          "Selection enlargement requires distance, units and optional geometry");
   const auto distance=std::visit([](const auto &value)->double {
     using T=std::decay_t<decltype(value)>;
     if constexpr(std::is_same_v<T,double> || std::is_same_v<T,std::int64_t> || std::is_same_v<T,std::uint64_t>)
@@ -184,7 +185,14 @@ SelectionEnlargementRequest selection_enlargement_workflow_request(const NativeW
   require(std::isfinite(distance),"Selection enlargement distance must be finite");
   const auto *units=std::get_if<std::string>(&v.parameters.at("units"));
   require(units && (*units=="pixels" || *units=="calibrated"),"Unknown selection enlargement units");
-  return {distance,*units=="pixels"?SelectionEnlargementUnits::Pixels:SelectionEnlargementUnits::Calibrated};
+  auto geometry=SelectionEnlargementGeometry::CanvasV1;
+  if(v.original && axis_command_record::unsigned_value(v.original->at("version"))==2)geometry=SelectionEnlargementGeometry::FullRegionV2;
+  if(const auto found=v.parameters.find("geometry");found!=v.parameters.end()) {
+    const auto *mode=std::get_if<std::string>(&found->second);
+    require(mode && (*mode=="canvas_v1" || *mode=="full_region_v2"),"Unknown selection enlargement geometry");
+    geometry=*mode=="full_region_v2"?SelectionEnlargementGeometry::FullRegionV2:SelectionEnlargementGeometry::CanvasV1;
+  }
+  return {distance,*units=="pixels"?SelectionEnlargementUnits::Pixels:SelectionEnlargementUnits::Calibrated,geometry};
 }
 ResolvedSelectionEnlargementCommand workflow_selection_enlargement(const DocumentSnapshot &source,
     const NativeWorkflowOperation &v,const SelectionEnlargementCommandLimits &limits,const ExecutionControl &control) {

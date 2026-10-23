@@ -876,7 +876,7 @@ EnlargementPlan enlargement_plan(const Selection &selection,int width,int height
   const bool analytic=selection.kind=="rectangle" || selection.kind=="ellipse" || selection.kind=="rounded_rectangle";
   if(!analytic && selection.kind!="polygon" && selection.kind!="freehand" &&
       selection.kind!="rotated_rectangle" && selection.kind!="rotated_ellipse" &&
-      selection.kind!="rotated_rounded_rectangle" && selection.kind!="mask")
+      selection.kind!="rotated_rounded_rectangle" && !selection.is_mask())
     throw std::invalid_argument("Selection enlargement requires an area selection");
   const double rounded=std::floor(pixels+.5);
   if(std::abs(rounded)>std::numeric_limits<int>::max()/4)
@@ -979,9 +979,9 @@ std::vector<float> enlargement_edm(const Image &mask,bool grow) {
 }
 }
 
-SelectionEnlargementEstimate estimate_selection_enlargement_geometry(
+static SelectionEnlargementEstimate enlargement_geometry_estimate(
     const Selection &selection,int width,int height,double pixels,
-    const SelectionEditLimits &limits,const ExecutionControl &control) {
+    const SelectionEditLimits &limits,const ExecutionControl &control,bool full) {
   geometry_preflight(selection,width,height,limits,control);
   std::array<double,4> bounds{};bool found=false;
   const auto include=[&](double x,double y,double right,double bottom){
@@ -990,13 +990,33 @@ SelectionEnlargementEstimate estimate_selection_enlargement_geometry(
   };
   if(selection.kind=="rotated_rectangle" || selection.kind=="rotated_ellipse" || selection.kind=="rotated_rounded_rectangle"){
     bounds=selection.box_frame()->bounds(selection.kind=="rotated_ellipse");found=true;
-  } else if(selection.kind=="mask") {
-    for(int y=0;y<height;++y)for(int x=0;x<width;++x){
-      const auto i=static_cast<std::size_t>(y)*width+x;if((i&1023u)==0)geometry_canceled(control);
-      if(bit(selection,i))include(x,y,x+1.,y+1.);
+  } else if(selection.is_mask()) {
+    const auto origin=selection.mask_origin();const auto w=selection.mask_width(),h=selection.mask_height();
+    for(int y=0;y<h;++y)for(int x=0;x<w;++x){
+      const auto i=static_cast<std::size_t>(y)*w+x;if((i&1023u)==0)geometry_canceled(control);
+      if(bit(selection,i))include(double(x)+origin[0],double(y)+origin[1],double(x)+origin[0]+1,double(y)+origin[1]+1);
     }
   } else for(const auto &point:selection.points){geometry_canceled(control);include(point[0],point[1],point[0],point[1]);}
-  return enlargement_plan(selection,width,height,bounds,found,pixels,limits,control).estimate;
+  auto result=enlargement_plan(selection,width,height,bounds,found,pixels,limits,control,full).estimate;
+  if(selection.is_region()) {
+    // Normalization creates a local legacy-mask editor. Admit its two-double-
+    // raster geometry floor without making that copy or allocating a raster.
+    result.working_bytes=geometry_add(result.working_bytes,geometry_multiply(16,
+        geometry_multiply(selection.mask_width(),selection.mask_height())));
+    if(result.working_bytes>limits.max_working_bytes)throw std::length_error("Full enlargement geometry working limit exceeded");
+  }
+  return result;
+}
+SelectionEnlargementEstimate estimate_selection_enlargement_geometry(
+    const Selection &selection,int width,int height,double pixels,
+    const SelectionEditLimits &limits,const ExecutionControl &control) {
+  if(selection.is_region())throw std::invalid_argument("Regional geometry requires full-region enlargement");
+  return enlargement_geometry_estimate(selection,width,height,pixels,limits,control,false);
+}
+SelectionEnlargementEstimate estimate_selection_region_enlargement_geometry(
+    const Selection &selection,int width,int height,double pixels,
+    const SelectionEditLimits &limits,const ExecutionControl &control) {
+  return enlargement_geometry_estimate(selection,width,height,pixels,limits,control,true);
 }
 SelectionEnlargementEstimate SelectionEditor::estimate_enlargement(
     double pixels,const SelectionEditLimits &limits) const {

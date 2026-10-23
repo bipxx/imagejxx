@@ -889,7 +889,8 @@
           "docs/parity/reviews/p12i-workflow-enlargement001.json",
           "docs/parity/SELECTION_REGION.md",
           "docs/parity/reviews/p12j-selection-region001.json",
-          "docs/parity/reviews/p12k-region-storage001.json"
+          "docs/parity/reviews/p12k-region-storage001.json",
+          "docs/parity/reviews/p12l-region-command001.json"
         ],
         "implementation": [
           "include/imagejxx/selection_edit.hpp",

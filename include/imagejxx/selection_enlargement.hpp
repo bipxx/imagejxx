@@ -5,9 +5,12 @@
 namespace imagejxx {
 using SelectionEnlargementCommandLimits = SelectionCreationLimits;
 enum class SelectionEnlargementUnits { Pixels, Calibrated };
+// V1 retains historical canvas clipping. V2 stores the complete region.
+enum class SelectionEnlargementGeometry { CanvasV1, FullRegionV2 };
 struct SelectionEnlargementRequest {
   double distance = 1;
   SelectionEnlargementUnits units = SelectionEnlargementUnits::Pixels;
+  SelectionEnlargementGeometry geometry = SelectionEnlargementGeometry::CanvasV1;
 };
 struct SelectionEnlargementCommandEstimate {
   double pixel_distance = 0;

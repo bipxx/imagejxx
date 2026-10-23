@@ -1,5 +1,6 @@
 #include <imagejxx/selection_creation.hpp>
 #include <imagejxx/selection_enlargement.hpp>
+#include <imagejxx/selection_region.hpp>
 #include <imagejxx/imagej_roi.hpp>
 
 #include "kernel_control.hpp"
@@ -85,14 +86,14 @@ std::size_t geometry_size(const Selection &selection,
                           const SelectionCreationLimits &limits) {
   // A mutable public kind must not hide an old private mask payload: V3 writes
   // mask storage only for kind=mask and could not round-trip such a hybrid.
-  if (selection.kind != "mask" && (selection.mask_width() != 0 ||
+  if (!selection.is_mask() && (selection.mask_width() != 0 ||
       selection.mask_height() != 0 || !selection.packed_mask().empty()))
     invalid("Selection geometry contains hidden mask storage");
   Charge charge{limits};
   charge.take(sizeof(Selection)); charge.text(selection.kind);
   charge.take(mul(selection.points.size(), sizeof(selection.points[0])));
   charge.object(selection.attributes);
-  if (selection.kind == "mask")
+  if (selection.is_mask())
     charge.take(add(node_bytes, selection.packed_mask().size()));
   return charge.bytes;
 }
@@ -102,8 +103,8 @@ std::size_t wire_size(const Selection &selection,
   // One immutable row node, two scalar values, array slot/container, and slack.
   bytes = add(bytes, mul(selection.points.size(), 6 * node_bytes));
   bytes = add(bytes, selection.kind.size());
-  if (selection.kind == "mask")
-    bytes = add(bytes, add(8 * node_bytes,
+  if (selection.is_mask())
+    bytes = add(bytes, add((selection.is_region()?16:8) * node_bytes,
                            base64_size(selection.packed_mask().size())));
   budget(bytes, limits); return bytes;
 }
@@ -410,7 +411,7 @@ bool value_equal(const MetadataValue &a, const MetadataValue &b) {
 bool selection_equal(const Selection &a, const Selection &b) {
   if (!text_equal(a.kind, b.kind) || a.width != b.width ||
       a.points.size() != b.points.size() || a.mask_width() != b.mask_width() ||
-      a.mask_height() != b.mask_height()) return false;
+      a.mask_height() != b.mask_height() || a.mask_origin()!=b.mask_origin()) return false;
   for (std::size_t i = 0; i < a.points.size(); ++i) {
     kernel_checkpoint_periodic();
     if (a.points[i] != b.points[i]) return false;
@@ -437,9 +438,10 @@ std::string encode_mask(const std::vector<unsigned char> &bytes) {
   }
   kernel_checkpoint(); return encoded;
 }
-MetadataValue encode_selection(const Selection &selection) {
+MetadataValue encode_selection(const Selection &selection,bool structured=false) {
   kernel_checkpoint();
-  MetadataObject object = selection.attributes;
+  if(selection.is_region() && !structured)invalid("Regional selection requires a V2 command codec");
+  MetadataObject object=structured?MetadataObject{{"attributes",metadata_object(selection.attributes)}}:selection.attributes;
   MetadataArray points; points.reserve(selection.points.size());
   for (const auto &point : selection.points) {
     kernel_checkpoint_periodic();
@@ -448,7 +450,8 @@ MetadataValue encode_selection(const Selection &selection) {
   object.emplace("kind", selection.kind);
   object.emplace("points", metadata_array(std::move(points)));
   object.emplace("width", selection.width);
-  if (selection.kind == "mask") {
+  if (selection.is_mask()) {
+    if(selection.is_region())object.emplace("origin",metadata_array({std::int64_t(selection.mask_origin()[0]),std::int64_t(selection.mask_origin()[1])}));
     object.emplace("shape", metadata_array({std::int64_t(selection.mask_height()),
                                              std::int64_t(selection.mask_width())}));
     object.emplace("mask", encode_mask(selection.packed_mask()));
@@ -572,15 +575,29 @@ Source read_source(const MetadataObject &object, const MetadataObject &position)
     {index_value(position.at("t")), index_value(position.at("c")), index_value(position.at("z"))}};
 }
 
+int signed_index_value(const MetadataValue &value) {
+  if(const auto n=std::get_if<std::int64_t>(&value)) {
+    if(*n<std::numeric_limits<int>::min() || *n>std::numeric_limits<int>::max())invalid("Regional origin exceeds int32");
+    return static_cast<int>(*n);
+  }
+  if(const auto n=std::get_if<std::uint64_t>(&value)) {
+    if(*n>std::uint64_t(std::numeric_limits<int>::max()))invalid("Regional origin exceeds int32");
+    return static_cast<int>(*n);
+  }
+  invalid("Regional origin requires exact signed integers");
+}
 struct Wire {
   const MetadataObject *object;
   const MetadataArray *points;
   const std::string *kind;
   double width;
   const std::string *mask = nullptr;
+  const MetadataObject *attributes = nullptr;
+  int stored_width=0,stored_height=0;
+  std::array<int,2> origin{0,0};
 };
 Wire inspect_wire(const MetadataValue &value, DatasetShape shape,
-                   bool candidate, const SelectionCreationLimits &limits) {
+                   bool candidate, const SelectionCreationLimits &limits,bool structured=false) {
   const auto &object = object_value(value);
   for (const auto *field : {"kind", "points", "width"})
     if (!object.count(field)) invalid("Selection geometry is incomplete");
@@ -611,13 +628,29 @@ Wire inspect_wire(const MetadataValue &value, DatasetShape shape,
         invalid("Selection candidate has no complete XY extent");
   }
   Wire wire{&object, &points, &kind, width};
-  if (kind == "mask") {
+  wire.stored_width=shape.x;wire.stored_height=shape.y;
+  if(structured) {
+    if(kind=="region")fields(object,{"kind","points","width","attributes","shape","mask","origin"});
+    else if(kind=="mask")fields(object,{"kind","points","width","attributes","shape","mask"});
+    else fields(object,{"kind","points","width","attributes"});
+    wire.attributes=&object_value(object.at("attributes"));
+  } else if(kind=="region")invalid("Regional selection requires command version 2");
+  if (kind == "mask" || kind=="region") {
     if (!object.count("shape") || !object.count("mask")) invalid("Mask storage is incomplete");
     const auto &dimensions = array_value(object.at("shape"));
-    if (dimensions.size() != 2 || index_value(dimensions[0], true) != shape.y ||
-        index_value(dimensions[1], true) != shape.x) invalid("Selection mask shape mismatch");
+    if(dimensions.size()!=2)invalid("Selection mask requires two dimensions");
+    wire.stored_height=index_value(dimensions[0],true);wire.stored_width=index_value(dimensions[1],true);
+    if(kind=="mask" && (wire.stored_height!=shape.y || wire.stored_width!=shape.x))invalid("Selection mask shape mismatch");
+    if(kind=="region") {
+      if(!points.empty())invalid("Regional mask cannot contain vector points");
+      const auto &origin=array_value(object.at("origin"));
+      if(origin.size()!=2)invalid("Regional origin requires two integers");
+      wire.origin={signed_index_value(origin[0]),signed_index_value(origin[1])};
+    }
+    const auto stored=mul(wire.stored_width,wire.stored_height);
+    if(stored>limits.max_pixels)invalid("Regional mask exceeds pixel limit");
     wire.mask = &text_value(object.at("mask"));
-    if (wire.mask->size() != base64_size(packed_size(mul(shape.x, shape.y))))
+    if (wire.mask->size() != base64_size(packed_size(stored)))
       invalid("Selection mask encoded size mismatch");
   }
   return wire;
@@ -642,10 +675,12 @@ std::vector<unsigned char> decode_mask(const std::string &encoded, std::size_t e
 }
 Selection decode_selection(const Wire &wire, DatasetShape shape) {
   kernel_checkpoint();
-  auto selection = wire.mask
-      ? Selection::from_packed_mask(shape.x, shape.y, decode_mask(*wire.mask,
-          packed_size(mul(shape.x, shape.y))))
-      : Selection(*wire.kind);
+  auto selection=[&] {
+    if(!wire.mask)return Selection(*wire.kind);
+    auto bytes=decode_mask(*wire.mask,packed_size(mul(wire.stored_width,wire.stored_height)));
+    return *wire.kind=="region"?Selection::from_packed_region(wire.stored_width,wire.stored_height,std::move(bytes),wire.origin)
+        :Selection::from_packed_mask(wire.stored_width,wire.stored_height,std::move(bytes));
+  }();
   selection.width = wire.width;
   selection.points.reserve(wire.points->size());
   for (const auto &point_value : *wire.points) {
@@ -653,7 +688,8 @@ Selection decode_selection(const Wire &wire, DatasetShape shape) {
     const auto &point = array_value(point_value);
     selection.points.push_back({number_value(point[0]), number_value(point[1])});
   }
-  for (const auto &[key, value] : *wire.object) {
+  if(wire.attributes)selection.attributes=*wire.attributes;
+  else for (const auto &[key, value] : *wire.object) {
     kernel_checkpoint_periodic();
     if (key != "kind" && key != "points" && key != "width" &&
         (!wire.mask || (key != "shape" && key != "mask")))
@@ -677,12 +713,13 @@ std::size_t wire_geometry_size(const Wire &wire, DatasetShape shape,
   charge.take(sizeof(Selection)); charge.text(*wire.kind);
   charge.take(mul(wire.points->size(), sizeof(std::array<double, 2>)));
   charge.take(sizeof(MetadataObject));
-  for (const auto &[key, value] : *wire.object)
+  if(wire.attributes)charge.object(*wire.attributes);
+  else for (const auto &[key, value] : *wire.object)
     if (key != "kind" && key != "points" && key != "width" &&
         (!wire.mask || (key != "shape" && key != "mask"))) {
       charge.text(key); charge.value(value);
     }
-  if (wire.mask) charge.take(add(node_bytes, packed_size(mul(shape.x, shape.y))));
+  if (wire.mask) charge.take(add(node_bytes, packed_size(mul(wire.stored_width,wire.stored_height))));
   return charge.bytes;
 }
 std::size_t wire_encoded_size(const Wire &wire, DatasetShape shape,
@@ -925,6 +962,27 @@ const char *enlargement_units(SelectionEnlargementUnits units){
   if(units==SelectionEnlargementUnits::Calibrated)return "calibrated";
   invalid("Unknown selection enlargement units");
 }
+// Count the transport root too, including typed string arrays that native
+// MetadataValue otherwise treats as a scalar alternative. Every V2 record must
+// round-trip through the same 128-container Python/JSON boundary.
+void enlargement_wire_depth(const MetadataValue &value,unsigned depth){
+  if(std::get_if<std::vector<std::string>>(&value)) {
+    if(depth>=128)invalid("V2 command metadata nesting exceeds 128 containers");
+    return;
+  }
+  const auto node=std::get_if<std::shared_ptr<const MetadataTree>>(&value);
+  if(!node)return;
+  if(!*node)invalid("Metadata container must not be null");
+  if(depth>=128)invalid("V2 command metadata nesting exceeds 128 containers");
+  if(const auto object=std::get_if<MetadataObject>(&(*node)->value))
+    for(const auto &[key,child]:*object)enlargement_wire_depth(child,depth+1);
+  else for(const auto &child:std::get<MetadataArray>((*node)->value))enlargement_wire_depth(child,depth+1);
+}
+bool enlargement_full(const SelectionEnlargementRequest &request){
+  if(request.geometry==SelectionEnlargementGeometry::CanvasV1)return false;
+  if(request.geometry==SelectionEnlargementGeometry::FullRegionV2)return true;
+  invalid("Unknown selection enlargement geometry mode");
+}
 double enlargement_pixels(const SelectionEnlargementRequest &request,double spacing){
   (void)enlargement_units(request.units);require_finite(request.distance,"Enlargement distance");
   require_finite(spacing,"Enlargement pixel width");if(spacing<=0)invalid("Enlargement pixel width must be positive");
@@ -939,13 +997,17 @@ SelectionEnlargementCommandEstimate enlargement_estimate(const Source &source,co
     const SelectionCreationLimits &limits,const DocumentSnapshot *snapshot=nullptr,
     std::size_t original_record_bytes=0,const ExecutionControl &control={}){
   const auto pixels=source_admission(source,limits);
-  if(!area(base))invalid("Selection enlargement requires an area selection");
+  const auto full=enlargement_full(request);
+  if(full)for(const auto &[key,value]:base.attributes)enlargement_wire_depth(value,3);
+  if(!area(base) && !(full && base.is_region()))invalid("Selection enlargement requires an area selection");
   const auto base_bytes=geometry_size(base,limits),attributes=metadata_size(base.attributes,limits);
   const auto pixel_distance=enlargement_pixels(request,spacing);
-  const auto geometry=estimate_selection_enlargement_geometry(base,source.shape.x,source.shape.y,
+  const auto geometry=full?estimate_selection_region_enlargement_geometry(base,source.shape.x,source.shape.y,
+      pixel_distance,enlargement_geometry_limits(limits),control):estimate_selection_enlargement_geometry(base,source.shape.x,source.shape.y,
       pixel_distance,enlargement_geometry_limits(limits),control);
-  const auto result_bytes=std::max(base_bytes,add(sizeof(Selection)+32*node_bytes,add(attributes,packed_size(pixels))));
-  const auto result_wire=std::max(wire_size(base,limits),add(64*node_bytes,add(attributes,base64_size(packed_size(pixels)))));
+  const auto result_pixels=full?std::max({pixels,geometry.padded_pixels,mul(base.mask_width(),base.mask_height())}):pixels;
+  const auto result_bytes=std::max(base_bytes,add(sizeof(Selection)+32*node_bytes,add(attributes,packed_size(result_pixels))));
+  const auto result_wire=std::max(wire_size(base,limits),add(64*node_bytes,add(attributes,base64_size(packed_size(result_pixels)))));
   const auto record_bytes=std::max(original_record_bytes,add(128*node_bytes,add(unit.size(),add(wire_size(base,limits),result_wire))));
   auto retained=add(sizeof(ResolvedSelectionEnlargementCommand),add(mul(3,record_bytes),add(mul(2,base_bytes),mul(2,result_bytes))));
   auto working=add(retained,add(geometry.working_bytes,4*codec_scratch));
@@ -953,7 +1015,7 @@ SelectionEnlargementCommandEstimate enlargement_estimate(const Source &source,co
   budget(working,limits);return {pixel_distance,retained,working};
 }
 Selection enlargement_result(const Selection &base,DatasetShape shape,double pixels,
-    const SelectionCreationLimits &limits,const ExecutionControl &control){
+    const SelectionCreationLimits &limits,const ExecutionControl &control,bool full=false){
   // The geometry service has its own coarse progress pair. Forward its kernel
   // callbacks once while suppressing duplicate outer coarse/forwarded callbacks.
   struct ChildDispatch {
@@ -964,6 +1026,14 @@ Selection enlargement_result(const Selection &base,DatasetShape shape,double pix
     ~ChildDispatch(){if(scope)scope->dispatching_callback=previous;}
   } dispatch(control);
   auto kernel=enlargement_kernel_control(control);
+  if(full) {
+    if(pixels==0)return base;
+    const SelectionRegion original(base,shape.x,shape.y,{0,0},enlargement_geometry_limits(limits));
+    const auto result=original.enlarged(pixels,enlargement_geometry_limits(limits),kernel);
+    if(result.origin()==original.origin() && result.shape()==original.shape() &&
+        result.local_selection()==original.local_selection())return base;
+    return result.as_selection();
+  }
   SelectionEditor editor(base,shape.x,shape.y,enlargement_geometry_limits(limits),kernel);
   return editor.enlarged(pixels,enlargement_geometry_limits(limits),kernel);
 }
@@ -974,11 +1044,12 @@ MetadataObject enlargement_record(const DocumentSnapshot &snapshot,const Selecti
       {"selection_revision",source.revisions.selection},{"shape",metadata_array(std::move(dimensions))},
       {"type",std::string(type_name(source.type))},{"sample_policy",std::string(policy_name(source.policy))}};
   const auto &calibration=snapshot.data().dataset.calibration();
-  return {{"schema",std::string(enlargement_schema)},{"version",std::int64_t(1)},{"source",metadata_object(std::move(binding))},
+  const auto full=enlargement_full(request);
+  return {{"schema",std::string(enlargement_schema)},{"version",std::int64_t(full?2:1)},{"source",metadata_object(std::move(binding))},
       {"position",metadata_object({{"t",std::int64_t(source.position.t)},{"c",std::int64_t(source.position.c)},{"z",std::int64_t(source.position.z)}})},
       {"distance",request.distance},{"units",std::string(enlargement_units(request.units))},
       {"pixel_width",calibration.spacing[0]},{"unit",calibration.unit},
-      {"base",encode_selection(*snapshot.data().selection)},{"result",encode_selection(result)}};
+      {"base",encode_selection(*snapshot.data().selection,full)},{"result",encode_selection(result,full)}};
 }
 struct EnlargementDecoded {
   Source source;SelectionEnlargementRequest request;double spacing;std::string unit;
@@ -987,31 +1058,35 @@ struct EnlargementDecoded {
 EnlargementDecoded inspect_enlargement(const MetadataObject &record,const SelectionCreationLimits &limits,const ExecutionControl &control){
   const auto bytes=metadata_size(record,limits);
   fields(record,{"schema","version","source","position","distance","units","pixel_width","unit","base","result"});
-  if(text_value(record.at("schema"))!=enlargement_schema || uint_value(record.at("version"))!=1)
+  const auto version=uint_value(record.at("version"));
+  if(text_value(record.at("schema"))!=enlargement_schema || (version!=1 && version!=2))
     invalid("Unsupported selection enlargement schema/version");
+  const bool full=version==2;
+  if(full)for(const auto &[key,value]:record)enlargement_wire_depth(value,1);
   const auto source=read_source(object_value(record.at("source")),object_value(record.at("position")));
   (void)source_admission(source,limits);
   const auto &units=text_value(record.at("units"));SelectionEnlargementUnits mode;
   if(units=="pixels")mode=SelectionEnlargementUnits::Pixels;
   else if(units=="calibrated")mode=SelectionEnlargementUnits::Calibrated;
   else invalid("Unknown recorded enlargement units");
-  const SelectionEnlargementRequest request{number_value(record.at("distance")),mode};
+  const SelectionEnlargementRequest request{number_value(record.at("distance")),mode,
+      full?SelectionEnlargementGeometry::FullRegionV2:SelectionEnlargementGeometry::CanvasV1};
   const auto spacing=number_value(record.at("pixel_width"));(void)enlargement_pixels(request,spacing);
   const auto &unit=text_value(record.at("unit"));
-  const auto base_wire=inspect_wire(record.at("base"),source.shape,false,limits),result_wire=inspect_wire(record.at("result"),source.shape,false,limits);
+  const auto base_wire=inspect_wire(record.at("base"),source.shape,false,limits,full),result_wire=inspect_wire(record.at("result"),source.shape,false,limits,full);
   if(base_wire.points->size()>limits.max_candidate_vertices || result_wire.points->size()>limits.max_candidate_vertices)
     invalid("Enlargement record exceeds vertex limit");
   // Borrowed record charge precedes owned decoding/copying, callbacks or rasters.
   const auto decoded_bytes=add(mul(6,bytes),add(mul(6,wire_geometry_size(base_wire,source.shape,limits)),mul(4,wire_geometry_size(result_wire,source.shape,limits))));
   budget(decoded_bytes,limits);ExecutionControl admission;admission.cancellation=control.cancellation;ExecutionScope scope(admission);
   auto base=decode_selection(base_wire,source.shape),result=decode_selection(result_wire,source.shape);
-  if(!area(base) || !area(result))invalid("Enlargement record requires area geometry");
+  if((!area(base) && !(full && base.is_region())) || (!area(result) && !(full && result.is_region())))invalid("Enlargement record requires area geometry");
   auto estimate=enlargement_estimate(source,base,request,spacing,unit,limits,nullptr,bytes,admission);
   estimate.working_bytes=add(estimate.working_bytes,decoded_bytes);budget(estimate.working_bytes,limits);
   return {source,request,spacing,unit,std::move(base),std::move(result),record,estimate};
 }
 void enlargement_equation(const EnlargementDecoded &decoded,const SelectionCreationLimits &limits,const ExecutionControl &control){
-  const auto result=enlargement_result(decoded.base,decoded.source.shape,decoded.estimate.pixel_distance,limits,control);
+  const auto result=enlargement_result(decoded.base,decoded.source.shape,decoded.estimate.pixel_distance,limits,control,enlargement_full(decoded.request));
   if(!selection_equal(result,decoded.result))invalid("Enlargement result differs from its original operation");
 }
 SelectionEnlargementCommandEstimate enlargement_publication_estimate(const EnlargementDecoded &decoded,
@@ -1042,7 +1117,7 @@ ResolvedSelectionEnlargementCommand resolve_selection_enlargement_command(const 
   const auto estimate=estimate_selection_enlargement_command(source,frozen_request,frozen_limits);
   const auto frozen_source=source;
   ExecutionScope scope(frozen_control);start_progress();
-  auto result=enlargement_result(*frozen_source.data().selection,frozen_source.data().dataset.shape(),estimate.pixel_distance,frozen_limits,frozen_control);
+  auto result=enlargement_result(*frozen_source.data().selection,frozen_source.data().dataset.shape(),estimate.pixel_distance,frozen_limits,frozen_control,enlargement_full(frozen_request));
   auto record=enlargement_record(frozen_source,frozen_request,result);
   ResolvedSelectionEnlargementCommand command(frozen_source,frozen_request,std::move(result),std::move(record),estimate,frozen_limits);
   finish_progress();return command;
@@ -1077,7 +1152,7 @@ ResolvedSelectionEnlargementCommand rebind_selection_enlargement_command(const D
   catch(...){enlargement_reject_after_original(decoded,frozen_limits,frozen_control,std::current_exception());}
   const auto frozen_source=source;
   ExecutionScope scope(frozen_control);start_progress();enlargement_equation(decoded,frozen_limits,frozen_control);
-  auto result=enlargement_result(*frozen_source.data().selection,frozen_source.data().dataset.shape(),estimate.pixel_distance,frozen_limits,frozen_control);
+  auto result=enlargement_result(*frozen_source.data().selection,frozen_source.data().dataset.shape(),estimate.pixel_distance,frozen_limits,frozen_control,enlargement_full(frozen_request));
   auto rebound=enlargement_record(frozen_source,frozen_request,result);
   ResolvedSelectionEnlargementCommand command(frozen_source,frozen_request,std::move(result),std::move(rebound),estimate,frozen_limits);
   finish_progress();return command;
@@ -1085,9 +1160,10 @@ ResolvedSelectionEnlargementCommand rebind_selection_enlargement_command(const D
 DocumentTransaction prepare_selection_enlargement(const ResolvedSelectionEnlargementCommand &command,
     const ExecutionControl &control,std::size_t execution_max_working_bytes){
   auto limits=command.limits_;limits.max_working_bytes=std::min(limits.max_working_bytes,execution_max_working_bytes);
-  budget(command.estimate_.working_bytes,limits);const auto frozen_control=control;ExecutionScope scope(frozen_control);start_progress();
-  auto transaction=command.source_.begin_edit(Change::All);
-  if(command.changes_)transaction.select(command.result_);
+  budget(command.estimate_.working_bytes,limits);
+  const auto frozen=command;const auto frozen_control=control;ExecutionScope scope(frozen_control);start_progress();
+  auto transaction=frozen.source_.begin_edit(Change::All);
+  if(frozen.changes_)transaction.select(frozen.result_);
   finish_progress();return transaction;
 }
 

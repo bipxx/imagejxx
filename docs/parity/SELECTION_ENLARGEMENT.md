@@ -1,5 +1,30 @@
 # Native selection enlargement service
 
+The shared ImGui dialog now captures full-region V2 commands. Use
+`SelectionEnlargementRequest(distance, units,
+SelectionEnlargementGeometry.FULL_REGION_V2)` from Python (C++ `FullRegionV2`).
+The request's default `CanvasV1` preserves existing programmatic behavior and V1
+record equations. V2 uses closed nested-attribute base/result values, intrinsic
+packed extents and signed integer origins. Validation/replay recompute the full
+equation, and explicit rebind uses the destination's geometry and X calibration.
+The command estimate admits full padded output, retained records and publication
+copies before allocation/callbacks. Preparation freezes its admitted command
+before callbacks, including when C++ callers assign over their source value.
+
+Portable `selection_enlargement` steps accept an optional `geometry` string:
+`full_region_v2` or `canvas_v1`. Captured V2 steps retain full mode through
+adoption, parameter editing, JSON programs, stage preparation and session batches.
+Legacy two-parameter authored steps stay V1 unless V2 provenance supplies the
+mode. V1 originals remain validated under their original clipped equation.
+
+Below, the canvas-clipping description applies to legacy mask inputs and V1
+commands. Full-region commands and regional inputs retain complete geometry;
+zero-distance, empty-mask and shrink-erased commands preserve exact input values.
+V2 metadata depth admission counts the complete transport root, including typed
+string arrays, so accepted records can re-enter through Python/JSON. Histogram/contrast, Boolean/
+rotation, saved ROI geometry and interchange consumers still require migration.
+See [regional integration](SELECTION_REGION.md).
+
 `SelectionEditor::enlarged` and Python `SelectionEditor.enlarged` now provide the
 geometry service for scientific Enlarge/Shrink. Image processing remains in C++.
 Edit → Selection → Expand/Shrink now opens the shared native dialog in both
