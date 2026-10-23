@@ -39,3 +39,6 @@ specified wire layout and float rounding, legacy masks, XYZ positioning,
 metadata/style, stale geometry, malformed/truncated payloads and resource
 limits. A standalone installed C++ SDK client exercises the same public API.
 Qualification details are recorded in `reviews/p12z-path-wire001.json`.
+
+The follow-up [native path envelope integration](PATH_ENVELOPES.md) adds V3
+source/current geometry transport and core import, pairing and export coverage.

@@ -1,4 +1,5 @@
 #include "imagej_roi_internal.hpp"
+#include "imagej_roi_source_envelope.hpp"
 #include "kernel_control.hpp"
 #include "session_metadata.hpp"
 #include <climits>
@@ -45,8 +46,8 @@ bool same_extent(DatasetShape a, DatasetShape b) {
   return a.dimensions() == b.dimensions();
 }
 } // namespace
-Bytes encode_imagej_roi_envelope(const MappedImageJRoi &mapped,
-                                 const ImageJRoiLimits &limits) {
+static Bytes encode_source_binding(const MappedImageJRoi &mapped,
+                                   const ImageJRoiLimits &limits, bool native_path) {
   validate_imagej_roi_mapping(mapped, limits);
   const auto &mapping = mapped.source_mapping();
   const auto original = map_imagej_roi(mapped.source_record(), mapping, limits);
@@ -56,8 +57,9 @@ Bytes encode_imagej_roi_envelope(const MappedImageJRoi &mapped,
   const auto binding = encode_imagej_roi(mapped.source_record(), limits);
   const auto geometry =
       planar_annotation_geometry(mapping.extent, mapping.plane);
-  auto standard =
-      decode_imagej_roi(binding, limits, geometry.width, geometry.height);
+  auto standard = native_path
+      ? decode_imagej_composite_roi(binding, limits)
+      : decode_imagej_roi(binding, limits, geometry.width, geometry.height);
   require(encode_imagej_roi(standard, limits) == binding,
           "ROI standard projection is not canonical");
   const auto &properties = standard.properties;
@@ -87,12 +89,10 @@ Bytes encode_imagej_roi_envelope(const MappedImageJRoi &mapped,
   kernel_checkpoint();
   return encode_imagej_roi(standard, limits);
 }
-MappedImageJRoi decode_imagej_roi_envelope(const Bytes &bytes,
-                                           const ImageJRoiLimits &limits) {
+static MappedImageJRoi decode_source_binding(const Bytes &bytes,
+                                             const ImageJRoiLimits &limits,
+                                             bool native_path) {
   const auto properties = detail::preview_imagej_roi_properties(bytes, limits);
-  if (properties.compare(0, sizeof("imagejxx.roi.v2: ") - 1,
-                         "imagejxx.roi.v2: ") == 0)
-    return decode_imagej_roi_native_envelope(bytes, limits);
   require(properties.compare(0, sizeof(prefix) - 1, prefix) == 0 &&
               !properties.empty() && properties.back() == '\n',
           "Missing or unsupported ROI envelope");
@@ -129,18 +129,44 @@ MappedImageJRoi decode_imagej_roi_envelope(const Bytes &bytes,
       planar_annotation_geometry(mapping.extent, mapping.plane);
   // Validate the stored original before interpreting the outer record. A stale
   // source cannot be repaired by substituting a new target extent or plane.
-  auto original = decode_imagej_roi_mapped(binding, mapping, limits);
+  auto original = native_path
+      ? decode_imagej_composite_roi_mapped(binding, mapping, limits)
+      : decode_imagej_roi_mapped(binding, mapping, limits);
   require(original.source_record().properties ==
               std::string(raw_properties.begin(), raw_properties.end()),
           "ROI envelope original properties disagree");
   require(encode_imagej_roi(original.source_record(), limits) == binding,
           "Noncanonical ROI envelope standard binding");
-  auto actual =
-      decode_imagej_roi(bytes, limits, geometry.width, geometry.height);
+  auto actual = native_path
+      ? decode_imagej_composite_roi(bytes, limits)
+      : decode_imagej_roi(bytes, limits, geometry.width, geometry.height);
   actual.properties = original.source_record().properties;
   require(encode_imagej_roi(actual, limits) == binding,
           "Stale ROI envelope: standard geometry or metadata changed");
   kernel_checkpoint();
   return original;
+}
+Bytes encode_imagej_roi_envelope(const MappedImageJRoi &mapped,
+                                 const ImageJRoiLimits &limits) {
+  require(!mapped.source_record().roi.selection.is_path(),
+          "Native path source requires a version3 native ROI envelope");
+  return encode_source_binding(mapped, limits, false);
+}
+MappedImageJRoi decode_imagej_roi_envelope(const Bytes &bytes,
+                                          const ImageJRoiLimits &limits) {
+  const auto properties = detail::preview_imagej_roi_properties(bytes, limits);
+  if (properties.compare(0, sizeof("imagejxx.roi.v2: ") - 1, "imagejxx.roi.v2: ") == 0 ||
+      properties.compare(0, sizeof("imagejxx.roi.v3: ") - 1, "imagejxx.roi.v3: ") == 0)
+    return decode_imagej_roi_native_envelope(bytes, limits);
+  return decode_source_binding(bytes, limits, false);
+}
+Bytes detail::encode_imagej_roi_source_binding(const MappedImageJRoi &mapped,
+                                               const ImageJRoiLimits &limits) {
+  return encode_source_binding(mapped, limits,
+                               mapped.source_record().roi.selection.is_path());
+}
+MappedImageJRoi detail::decode_imagej_roi_source_binding(
+    const Bytes &bytes, const ImageJRoiLimits &limits, bool native_path) {
+  return decode_source_binding(bytes, limits, native_path);
 }
 } // namespace imagejxx

@@ -1,5 +1,6 @@
 #include <imagejxx/imagej_roi_projection.hpp>
 #include "imagej_roi_internal.hpp"
+#include "imagej_roi_source_envelope.hpp"
 #include "kernel_control.hpp"
 #include "session_metadata.hpp"
 #include <climits>
@@ -12,7 +13,8 @@ namespace {
 using Bytes = std::vector<unsigned char>;
 using Json = nlohmann::json;
 namespace codec = detail::session_metadata;
-constexpr char prefix[] = "imagejxx.roi.v2: ";
+constexpr char prefix2[] = "imagejxx.roi.v2: ";
+constexpr char prefix3[] = "imagejxx.roi.v3: ";
 void require(bool value, const char *message) {
   if (!value)
     throw std::invalid_argument(message);
@@ -99,10 +101,39 @@ Bytes projection_bytes(const PlanarAnnotation &row, DatasetShape extent,
     const auto geometry=planar_annotation_geometry(extent,row.plane);
     expected=imagej_roi_standard_projection(std::move(expected),geometry.width,geometry.height,limits);
   }
+  if (row.selection.is_path())
+    expected.composite_path.clear(); // Compare the native geometry at wire precision.
   const auto bytes = encode_imagej_roi(projection, limits);
   require(encode_imagej_roi(expected, limits) == bytes,
           "Native ROI standard projection disagrees with native annotation");
   return bytes;
+}
+std::string row_json(DatasetShape extent, const PlanarAnnotation &row) {
+  return codec::to_json(encode_planar_annotations(extent, {row})).dump(-1, ' ', true);
+}
+PlanarAnnotation read_row(const Bytes &bytes, DatasetShape extent) {
+  const auto value = parse(bytes);
+  require(value.dump(-1, ' ', true) == std::string(bytes.begin(), bytes.end()),
+          "Noncanonical native ROI JSON");
+  const auto rows = decode_planar_annotations(extent, codec::from_json(value));
+  require(rows.size() == 1, "Native ROI envelope requires one annotation");
+  return rows[0];
+}
+MappedImageJRoi restore_path_source(const MappedImageJRoi &wire_source,
+                                   const Bytes &json, const ImageJRoiLimits &limits) {
+  const auto &mapping = wire_source.source_mapping();
+  const auto row = read_row(json, mapping.extent);
+  require(row.selection.is_path(), "Native ROI source row requires path geometry");
+  auto record = wire_source.source_record();
+  record.roi.selection = row.selection;
+  record.composite_path.clear();
+  require(encode_imagej_roi(record, limits) ==
+              encode_imagej_roi(wire_source.source_record(), limits),
+          "Native ROI source geometry disagrees with wire binding");
+  auto restored = map_imagej_roi(record, mapping, limits);
+  require(restored.annotation() == row,
+          "Native ROI source row disagrees with original mapping");
+  return restored;
 }
 } // namespace
 Bytes encode_imagej_roi_native_envelope(const MappedImageJRoi &mapped,
@@ -113,26 +144,33 @@ Bytes encode_imagej_roi_native_envelope(const MappedImageJRoi &mapped,
       mapped.annotation(), mapped.target_extent(), projection, limits);
   const auto source =
       map_imagej_roi(mapped.source_record(), mapped.source_mapping(), limits);
-  const auto original = encode_imagej_roi_envelope(source, limits);
-  const auto json =
-      codec::to_json(encode_planar_annotations(mapped.target_extent(),
-                                               {mapped.annotation()}))
-          .dump(-1, ' ', true);
+  const bool source_path = source.annotation().selection.is_path();
+  const bool paths = source_path || mapped.annotation().selection.is_path();
+  const auto *prefix = paths ? prefix3 : prefix2;
+  const auto original = detail::encode_imagej_roi_source_binding(source, limits);
+  const auto source_json = source_path ? row_json(source.source_mapping().extent,
+                                                 source.annotation()) : std::string{};
+  const auto json = row_json(mapped.target_extent(), mapped.annotation());
   // Include fixed fields, length words and ASCII base64/UTF16 expansion before
   // constructing the aggregate payload. Each borrowed native row was
   // preflighted by the existing bounded planar codec before JSON
   // materialization.
   const auto cap = limits.max_text_bytes / 2;
-  require(cap >= sizeof(prefix), "Native ROI envelope text limit");
-  auto remaining = (cap - sizeof(prefix)) / 4 * 3;
-  require(remaining >= 40, "Native ROI envelope text limit");
-  remaining -= 40;
-  for (auto n : {original.size(), json.size(), binding.size()}) {
+  require(cap >= sizeof(prefix2), "Native ROI envelope text limit");
+  auto remaining = (cap - sizeof(prefix2)) / 4 * 3;
+  const std::size_t fixed = paths ? 48 : 40;
+  require(remaining >= fixed, "Native ROI envelope text limit");
+  remaining -= fixed;
+  for (auto n : {original.size(), source_json.size(), json.size(), binding.size()}) {
     require(n <= remaining, "Native ROI envelope text limit");
     remaining -= n;
   }
-  Bytes payload{'I', 'J', 'X', 2};
+  Bytes payload{'I', 'J', 'X', static_cast<unsigned char>(paths ? 3 : 2)};
   append(payload, original);
+  if (paths) {
+    put(payload, source_path ? 1 : 0);
+    append(payload, Bytes(source_json.begin(), source_json.end()));
+  }
   for (int n : mapped.target_extent().dimensions())
     put(payload, std::uint32_t(n));
   append(payload, Bytes(json.begin(), json.end()));
@@ -146,16 +184,18 @@ MappedImageJRoi
 decode_imagej_roi_native_envelope(const Bytes &bytes,
                                   const ImageJRoiLimits &limits) {
   const auto properties = detail::preview_imagej_roi_properties(bytes, limits);
-  require(properties.compare(0, sizeof(prefix) - 1, prefix) == 0 &&
+  const bool paths = properties.compare(0, sizeof(prefix3) - 1, prefix3) == 0;
+  const auto *prefix = paths ? prefix3 : prefix2;
+  require(properties.compare(0, sizeof(prefix2) - 1, prefix) == 0 &&
               !properties.empty() && properties.back() == '\n',
           "Missing or unsupported native ROI envelope");
   const auto encoded =
-      properties.substr(sizeof(prefix) - 1, properties.size() - sizeof(prefix));
+      properties.substr(sizeof(prefix2) - 1, properties.size() - sizeof(prefix2));
   const auto payload = codec::decode_base64(encoded);
   require(codec::encode_base64(payload) == encoded,
           "Noncanonical native ROI envelope base64");
   Cursor cursor{payload};
-  require(cursor.get() == 0x494a5802,
+  require(cursor.get() == (paths ? 0x494a5803u : 0x494a5802u),
           "Unsupported native ROI envelope version");
   const auto original = cursor.blob();
   require(detail::preview_imagej_roi_properties(original, limits)
@@ -164,7 +204,15 @@ decode_imagej_roi_native_envelope(const Bytes &bytes,
           "Native ROI provenance must be a version1 source binding");
   // Admit the retained original before parsing target/native state. Only one
   // nonrecursive source envelope is allowed, never an envelope chain.
-  auto source = decode_imagej_roi_envelope(original, limits);
+  const auto source_mode = paths ? cursor.get() : 0;
+  require(source_mode <= 1, "Unsupported native ROI source mode");
+  const auto source_json = paths ? cursor.blob() : Bytes{};
+  require((source_mode == 1) == !source_json.empty(),
+          "Native ROI source mode/row mismatch");
+  auto source = detail::decode_imagej_roi_source_binding(
+      original, limits, source_mode == 1);
+  if (!source_json.empty())
+    source = restore_path_source(source, source_json, limits);
   std::array<int, 6> dimensions{};
   for (auto &n : dimensions) {
     const auto value = cursor.get();
@@ -177,19 +225,18 @@ decode_imagej_roi_native_envelope(const Bytes &bytes,
   const auto json = cursor.blob(), binding = cursor.blob();
   require(cursor.offset == payload.size(),
           "Trailing native ROI envelope fields");
-  const auto value = parse(json);
-  require(value.dump(-1, ' ', true) == std::string(json.begin(), json.end()),
-          "Noncanonical native ROI JSON");
-  const auto rows = decode_planar_annotations(target, codec::from_json(value));
-  require(rows.size() == 1, "Native ROI envelope requires one annotation");
-  const auto &row = rows[0];
+  const auto row = read_row(json, target);
+  require(paths == (source.annotation().selection.is_path() || row.selection.is_path()),
+          "Native ROI envelope version must match path geometry");
   const auto geometry = planar_annotation_geometry(target, row.plane);
-  auto projection =
-      decode_imagej_roi(binding, limits, geometry.width, geometry.height);
+  auto projection = row.selection.is_path()
+      ? decode_imagej_composite_roi(binding, limits)
+      : decode_imagej_roi(binding, limits, geometry.width, geometry.height);
   require(projection_bytes(row, target, projection, limits) == binding,
           "Noncanonical native ROI standard binding");
-  auto actual =
-      decode_imagej_roi(bytes, limits, geometry.width, geometry.height);
+  auto actual = row.selection.is_path()
+      ? decode_imagej_composite_roi(bytes, limits)
+      : decode_imagej_roi(bytes, limits, geometry.width, geometry.height);
   actual.properties = projection.properties;
   require(encode_imagej_roi(actual, limits) == binding,
           "Stale native ROI envelope: standard geometry or metadata changed");

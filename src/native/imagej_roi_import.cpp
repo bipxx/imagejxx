@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <climits>
 #include <imagejxx/imagej_roi_import.hpp>
+#include <imagejxx/composite_path.hpp>
 #include <set>
 
 namespace imagejxx {
@@ -85,6 +86,10 @@ void selection(const Selection &s, std::size_t &bytes, std::size_t &nodes,
   add_decoded(bytes, s.kind.size(), 1, cap);
   add_decoded(bytes, s.points.size(), sizeof(std::array<double, 2>), cap);
   add_decoded(bytes, s.packed_mask().size(), 1, cap);
+  if (s.is_path()) {
+    add_decoded(bytes, 1, sizeof(ImageJCompositePath) + sizeof(std::vector<double>), cap);
+    add_decoded(bytes, s.path_commands().size(), sizeof(double), cap);
+  }
   attributes(s.attributes, bytes, nodes, cap);
 }
 void row(const PlanarAnnotation &r, std::size_t &bytes, std::size_t &nodes,
@@ -185,6 +190,14 @@ std::optional<ImageJRoiNativeReplacement> read_replacement(const Json &j) {
   shape.validate();
   auto rows = codec::to_json(encode_planar_annotations(shape, {}));
   rows["rows"] = Json::array({j.at("annotation")});
+  const auto &annotation = j.at("annotation");
+  std::string kind;
+  if (annotation.is_object() && annotation.contains("selection") &&
+      annotation["selection"].is_object() &&
+      annotation["selection"].contains("kind") &&
+      annotation["selection"]["kind"].is_string())
+    kind = annotation["selection"]["kind"].get<std::string>();
+  rows["version"] = kind == "path" ? 3 : kind == "region" ? 2 : 1;
   auto decoded = decode_planar_annotations(shape, codec::from_json(rows));
   return ImageJRoiNativeReplacement{shape, std::move(decoded.at(0))};
 }

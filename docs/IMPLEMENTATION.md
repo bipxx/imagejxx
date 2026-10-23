@@ -1,5 +1,18 @@
 # Implementation progress
 
+**Native path envelopes and core import/export, 2026-10-23 (scoped integration):**
+V3 retains full native source/current path geometry and checks both against
+explicit ImageJ wire bindings. Source modes, mapping equations, import
+replacements and private geometry retention budgets are validated. Core
+import, pairing, export, replay, sessions and history have coverage. Both
+hosts pass 2,280 installed Python checks (43 new), ten native groups and
+a 17-check installed SDK client. Pinned ImageJ performs 36 positive read/save
+roundtrips and 36 changed-group-color refusal controls. Verified cleanup
+removed 84,572,291 bytes. Desktop path tools, bare-file native import and saved
+workflow intent remain open; no capability family is closed. See
+[the contract](parity/PATH_ENVELOPES.md) and
+[qualification receipt](parity/reviews/p13a-path-envelope001.json).
+
 **Native ImageJ composite path interchange, 2026-10-23 (scoped integration):**
 Explicit C++/Python composite decoders and XY/XZ/YZ mapping retain continuous
 curves without a canvas. Native path export checks retained geometry and rounds
