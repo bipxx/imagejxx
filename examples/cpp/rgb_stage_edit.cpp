@@ -24,6 +24,11 @@ int main(){try{
   area.set_saved_selection(0,0,area.plan().visits[0].stages[0].selection,true);
   selected=execute_rgb_contrast_session_command(area.command()).preview().data().dataset.plane();
   if(selected->at(0,0,0)!=170 || selected->at(1,0,0)!=170)throw std::runtime_error("Whole-plane area differs");
+  RgbContrastSessionEditor visits(before);visits.insert_saved_visit(0,{0,0,0},{{{10,70,7},std::nullopt,false}});
+  visits.insert_saved_visit(1,{0,0,0},{{{0,170,7},std::nullopt,false}});visits.move_saved_visit(1,0);
+  if(execute_rgb_contrast_session_command(visits.command()).preview().data().dataset.plane()->at(0,0,0)!=149)throw std::runtime_error("Visit order differs");
+  visits.set_saved_visit_position(0,{0,0,0});visits.remove_saved_visit(1);visits.set_range(10,70);visits.promote();visits.transfer_saved_stage(1,0,0,0);
+  if(execute_rgb_contrast_session_command(visits.command()).preview().data().dataset.plane()->at(0,0,0)!=128)throw std::runtime_error("Visit transfer differs");
   std::cout<<"PASS installed RGB saved-stage update/order/removal and paired history\n";
   return 0;
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

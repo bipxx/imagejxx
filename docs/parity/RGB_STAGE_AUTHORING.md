@@ -30,8 +30,8 @@ ordinary no-selection policy. Future live selection changes do not rewrite the
 saved mask.
 
 The final visit's last stage is the live draft and is excluded from this editor.
-A historical visit must retain at least one stage. Reordering across visits and
-authoring arbitrary plane visits remain open.
+A historical visit must retain at least one stage. To remove its last adjustment,
+remove the entire visit explicitly.
 Real selection/navigation/returning Auto/Reset input coverage and the
 historical Auto evidence-retention gate also remain open. This feature does not
 establish complete ImageJ/Fiji parity or change the original 99 requirements.
@@ -57,6 +57,34 @@ action `update_rgb_contrast_stage_area` takes exactly `visit`, `stage` and
 incompatible, scalar and uniform-target contexts just like the other saved-stage
 actions.
 
+Open **Plane visits** to author history without navigating the source. Enter
+one-based time, channel and slice coordinates, then **Insert visit before live
+draft**. The new historical visit captures an identity adjustment and the current
+selection. Edit that adjustment under Saved RGB adjustments. Select a historical
+visit to change its position, move it earlier/later, or remove it. Visits may
+repeat the same plane; their order determines the accumulated result there.
+
+For **Move adjustment to visit**, enter a one-based destination visit under the
+selected saved adjustment. The complete mapping, frozen selection and whole-plane
+policy move to the beginning of that visit; use ordinary stage ordering afterward
+if needed. Same-visit transfers are refused in favor of the existing ordering
+controls. Transfer preserves a historical source visit's nonempty membership and
+never moves the live draft. Explicit visit removal can remove an entire saved
+visit without publishing pixels. Apply records every remaining stage and visit
+in one paired transaction.
+
+The C++/Python editor adds `insert_saved_visit(before, position, stages)`,
+`set_saved_visit_position(visit, position)`, `remove_saved_visit(visit)`,
+`move_saved_visit(visit, destination)` and
+`transfer_saved_stage(visit, stage, destination_visit, before_stage)`. API indices
+and `PlanePosition` coordinates are zero-based. Insertions precede an existing
+visit; historical visits precede the protected final live visit. Transfer may
+insert before a saved stage or the live draft, or append to a historical visit.
+All inputs pass the existing complete record/resource/geometry admission before
+state replacement, with no sample reads. The shared actions use the corresponding
+`insert/select/update/remove/move_rgb_contrast_visit` names and
+`transfer_rgb_contrast_stage`; fields are strict and positions use `[T,C,Z]`.
+
 The new installed tests use independent byte expectations: an all-30 RGB image
 maps 30 to 170 with bounds 10..40, then 170 to 255 with bounds 0..170. Changing
 selection after Keep leaves the first mask frozen; disjoint new pixels map 30 to
@@ -76,3 +104,9 @@ Historical selection editing is qualified separately in
 [the area-editing receipt](reviews/p12c-rgb-stage-area001.json), including actual
 area button delivery, strict addressing/policy types, invalid masks and budget
 refusal, earlier visits and exact region pixels with paired history.
+Visit authoring is qualified in [its scoped receipt](reviews/p12d-rgb-visit001.json),
+with exact repeated-plane order, all seven components and all three axes, protected
+live intent, frozen transfer, invalid/budget refusal, JSON replay, SDK consumption,
+real T/C/Z and visit controls, and complete recording/history. Broader physical
+canvas selection/navigation/returning Auto/Reset delivery and full ImageJ/Fiji
+platform/resource acceptance remain open.

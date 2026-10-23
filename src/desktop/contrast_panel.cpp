@@ -32,7 +32,7 @@ void unit(double value){if(!std::isfinite(value)||value<0||value>1)throw std::in
 ContrastPanel::~ContrastPanel(){try{close();}catch(...){}}
 bool ContrastPanel::handles(const std::string &name){
   static const std::set<std::string> names{"show_contrast","close_contrast","contrast_range","contrast_window_level",
-    "restart_rgb_contrast_session","promote_rgb_contrast_stage","select_rgb_contrast_stage","update_rgb_contrast_stage","update_rgb_contrast_stage_area","remove_rgb_contrast_stage","move_rgb_contrast_stage","contrast_brightness","contrast_contrast","contrast_rgb_channels","contrast_rgb_stack","cancel_rgb_contrast_preview","refresh_rgb_contrast_preview","contrast_reset","contrast_auto","contrast_apply","configure_contrast_target","cancel_contrast_apply","refresh_contrast_histogram","cancel_contrast_histogram"};
+    "restart_rgb_contrast_session","promote_rgb_contrast_stage","insert_rgb_contrast_visit","select_rgb_contrast_visit","update_rgb_contrast_visit","remove_rgb_contrast_visit","move_rgb_contrast_visit","transfer_rgb_contrast_stage","select_rgb_contrast_stage","update_rgb_contrast_stage","update_rgb_contrast_stage_area","remove_rgb_contrast_stage","move_rgb_contrast_stage","contrast_brightness","contrast_contrast","contrast_rgb_channels","contrast_rgb_stack","cancel_rgb_contrast_preview","refresh_rgb_contrast_preview","contrast_reset","contrast_auto","contrast_apply","configure_contrast_target","cancel_contrast_apply","refresh_contrast_histogram","cancel_contrast_histogram"};
   return names.count(name)!=0;
 }
 void ContrastPanel::request_cancel(JobScheduler &scheduler){++rebindCancelEpoch_;++cancelEpoch_;if(const auto id=cancelId_.load())scheduler.cancel(id);if(const auto id=rgbCancelId_.load())scheduler.cancel(id);if(const auto id=rgbAutoCancelId_.load())scheduler.cancel(id);if(const auto id=rgbAutoBaselineCancelId_.load())scheduler.cancel(id);}
@@ -144,7 +144,12 @@ void ContrastPanel::configureTarget(const TargetRequest &request){
 }
 void ContrastPanel::action(const std::string &name,const Json &p,bool busy,const Publish &effect,const Auto &automatic,int bits,const Apply &apply){
   if(!open_)throw std::invalid_argument("Open Brightness/Contrast first");
-  const std::vector<std::string> fields=name=="update_rgb_contrast_stage_area"?std::vector<std::string>{"visit","stage","policy"}:
+  const std::vector<std::string> fields=name=="insert_rgb_contrast_visit"?std::vector<std::string>{"before","position"}:
+    name=="select_rgb_contrast_visit"||name=="remove_rgb_contrast_visit"?std::vector<std::string>{"visit"}:
+    name=="update_rgb_contrast_visit"?std::vector<std::string>{"visit","position"}:
+    name=="move_rgb_contrast_visit"?std::vector<std::string>{"visit","destination"}:
+    name=="transfer_rgb_contrast_stage"?std::vector<std::string>{"visit","stage","destination_visit","before_stage"}:
+    name=="update_rgb_contrast_stage_area"?std::vector<std::string>{"visit","stage","policy"}:
     name=="update_rgb_contrast_stage"?std::vector<std::string>{"visit","stage","minimum","maximum","channels"}:
     name=="move_rgb_contrast_stage"?std::vector<std::string>{"visit","stage","destination"}:
     name=="select_rgb_contrast_stage"||name=="remove_rgb_contrast_stage"?std::vector<std::string>{"visit","stage"}:
@@ -156,6 +161,7 @@ void ContrastPanel::action(const std::string &name,const Json &p,bool busy,const
   if(!p.is_object() || p.size()!=fields.size())throw std::invalid_argument("Contrast request requires its exact numeric fields");
   for(const auto &field:p.items())if(std::find(fields.begin(),fields.end(),field.key())==fields.end())throw std::invalid_argument("Unknown contrast field");
   if(name=="restart_rgb_contrast_session"){if(busy)throw std::invalid_argument("Wait for the current edit before restarting RGB contrast");restartRgbSession();}
+  else if(name=="insert_rgb_contrast_visit" || name=="select_rgb_contrast_visit" || name=="update_rgb_contrast_visit" || name=="remove_rgb_contrast_visit" || name=="move_rgb_contrast_visit" || name=="transfer_rgb_contrast_stage")savedRgbVisitAction(name,p,busy);
   else if(name=="select_rgb_contrast_stage" || name=="update_rgb_contrast_stage" || name=="update_rgb_contrast_stage_area" || name=="remove_rgb_contrast_stage" || name=="move_rgb_contrast_stage")savedRgbStageAction(name,p,busy);
   else if(name=="promote_rgb_contrast_stage")promoteRgbStage(busy);
   else if(name=="contrast_range")publish({numeric(p,"minimum"),numeric(p,"maximum")},busy,effect);
@@ -237,6 +243,7 @@ void ContrastPanel::draw(bool busy,const Publish &effect,const Auto &automatic,c
     ImGui::EndDisabled();
     ImGui::TextWrapped("Keep freezes this adjustment and its selection, then starts a fresh range for the same components. Reset changes only the new adjustment. Apply commits all saved adjustments.");
     drawSavedRgbStages(busy);
+    drawSavedRgbVisits(busy);
     if(rgbJob_ && !rgbPreview_)ImGui::TextUnformatted("Preparing RGB preview...");
   }
   if(!heights_.empty()){

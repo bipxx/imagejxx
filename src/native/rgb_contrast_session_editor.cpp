@@ -26,6 +26,9 @@ std::size_t saved_stages(const RgbContrastSessionPlan &plan,std::size_t visit){
 void saved_stage(const RgbContrastSessionPlan &plan,std::size_t visit,std::size_t stage){
   if(stage>=saved_stages(plan,visit))throw std::out_of_range("Choose a saved RGB stage, not the live draft");
 }
+void saved_visit(const RgbContrastSessionPlan &plan,std::size_t visit){
+  if(visit>=plan.visits.size()-1)throw std::out_of_range("Choose a historical RGB visit, not the live visit");
+}
 }
 struct RgbContrastSessionEditor::Data {
   ResolvedRgbContrastSessionCommand command;
@@ -107,6 +110,35 @@ void RgbContrastSessionEditor::move_saved_stage(std::size_t visit,std::size_t st
 }
 void RgbContrastSessionEditor::set_entire_stack(bool enabled){
   if(plan().entire_stack==enabled)return;auto candidate=plan();candidate.entire_stack=enabled;adopt(source(),candidate,limits());
+}
+void RgbContrastSessionEditor::insert_saved_visit(std::size_t before,PlanePosition position,
+    const std::vector<RgbContrastSessionStep> &stages){
+  if(before>=plan().visits.size())throw std::out_of_range("Insert a saved RGB visit before an existing visit");
+  if(stages.empty())throw std::invalid_argument("A saved RGB visit requires at least one stage");
+  auto candidate=plan();candidate.visits.insert(candidate.visits.begin()+before,{position,stages});adopt(source(),candidate,limits());
+}
+void RgbContrastSessionEditor::set_saved_visit_position(std::size_t visit,PlanePosition position){
+  saved_visit(plan(),visit);auto candidate=plan();candidate.visits[visit].position=position;adopt(source(),candidate,limits());
+}
+void RgbContrastSessionEditor::remove_saved_visit(std::size_t visit){
+  saved_visit(plan(),visit);auto candidate=plan();candidate.visits.erase(candidate.visits.begin()+visit);adopt(source(),candidate,limits());
+}
+void RgbContrastSessionEditor::move_saved_visit(std::size_t visit,std::size_t destination){
+  saved_visit(plan(),visit);saved_visit(plan(),destination);if(visit==destination)return;
+  auto candidate=plan();auto &visits=candidate.visits;
+  if(visit<destination)std::rotate(visits.begin()+visit,visits.begin()+visit+1,visits.begin()+destination+1);
+  else std::rotate(visits.begin()+destination,visits.begin()+visit,visits.begin()+visit+1);
+  adopt(source(),candidate,limits());
+}
+void RgbContrastSessionEditor::transfer_saved_stage(std::size_t visit,std::size_t stage,
+    std::size_t destination_visit,std::size_t before_stage){
+  saved_stage(plan(),visit,stage);
+  if(visit==destination_visit)throw std::invalid_argument("Use within-visit ordering for stages in the same visit");
+  if(before_stage>saved_stages(plan(),destination_visit))throw std::out_of_range("Insert before a saved stage or the live draft");
+  if(plan().visits[visit].stages.size()==1)throw std::invalid_argument("A historical RGB visit must retain a stage");
+  auto candidate=plan();const auto saved=candidate.visits[visit].stages[stage];
+  candidate.visits[visit].stages.erase(candidate.visits[visit].stages.begin()+stage);
+  auto &target=candidate.visits[destination_visit].stages;target.insert(target.begin()+before_stage,saved);adopt(source(),candidate,limits());
 }
 void RgbContrastSessionEditor::set_limits(const ContrastApplyCommandLimits &limits){adopt(source(),plan(),limits);}
 } // namespace imagejxx

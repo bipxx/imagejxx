@@ -36,6 +36,18 @@ public:
       const std::optional<Selection> &,bool whole_plane=false);
   void remove_saved_stage(std::size_t visit,std::size_t stage);
   void move_saved_stage(std::size_t visit,std::size_t stage,std::size_t destination);
+  // Historical visits precede the final live visit. Insert before any visit,
+  // including the live visit; never move/remove/reposition the live visit.
+  void insert_saved_visit(std::size_t before,PlanePosition,
+      const std::vector<RgbContrastSessionStep> &);
+  void set_saved_visit_position(std::size_t visit,PlanePosition);
+  void remove_saved_visit(std::size_t visit);
+  void move_saved_visit(std::size_t visit,std::size_t destination);
+  // Transfer preserves the entire frozen stage. Destination insertion precedes
+  // a stage or appends to a historical visit; the live draft stays last.
+  // Same-visit transfers and emptying a historical visit are refused.
+  void transfer_saved_stage(std::size_t visit,std::size_t stage,
+      std::size_t destination_visit,std::size_t before_stage);
   void set_entire_stack(bool);
   void set_limits(const ContrastApplyCommandLimits &);
 private:

@@ -138,8 +138,11 @@ Saved stage selection, mapping edits, within-visit ordering and deletion are now
 available through the admitted native editor and shared panel. The final live
 draft and historical visit membership are protected. Historical selection replacement and whole-plane policy editing are now
 available through admitted native/Python methods and shared area buttons.
-Cross-visit movement and arbitrary visit authoring remain open, alongside real
-transition-input qualification. See `reviews/p12b-rgb-stage-edit001.json`.
+Historical visit insertion, repositioning, ordering/removal and frozen-stage
+transfer are now implemented in the native editor and shared ImGui controls.
+The final live visit remains protected; all authored history is admitted before
+adoption. Broader real transition-input and platform/resource qualification
+remain open. See `reviews/p12d-rgb-visit001.json`. See `reviews/p12b-rgb-stage-edit001.json`.
 
 ## Observed behavior
 

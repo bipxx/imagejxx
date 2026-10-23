@@ -95,6 +95,12 @@ private:
   bool rgbStageOpen_=false;
   double rgbStageMinimum_=0,rgbStageMaximum_=255;
   int rgbStageChannels_=7;
+  void savedRgbVisitAction(const std::string &,const Json &,bool busy);
+  void drawSavedRgbVisits(bool busy);
+  std::optional<std::size_t> rgbVisitSelection_;
+  bool rgbVisitOpen_=false;
+  std::array<int,3> rgbVisitPosition_{1,1,1};
+  int rgbStageDestinationVisit_=1;
   void selectRgbStack(bool);
   void clearRgbSequence();
   static bool rgbCompatible(const DocumentSnapshot &,const DocumentSnapshot &);

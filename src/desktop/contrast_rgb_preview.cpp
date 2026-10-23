@@ -1,5 +1,6 @@
 #include "contrast_panel.hpp"
 #include <imgui.h>
+#include <limits>
 #include <cmath>
 #include <set>
 #include <tuple>
@@ -24,7 +25,7 @@ bool ContrastPanel::rgbCompatible(const DocumentSnapshot &a,const DocumentSnapsh
     x.dataset.shape().dimensions()==y.dataset.shape().dimensions() && x.dataset.pixel_type()==y.dataset.pixel_type() && x.dataset.sample_policy()==y.dataset.sample_policy() &&
     x.selection==y.selection && x.rois==y.rois && a.display().t==b.display().t && a.display().c==b.display().c && a.display().crosshair[2]==b.display().crosshair[2];
 }
-void ContrastPanel::clearRgbSequence(){rgbStageSelection_.reset();rgbStageOpen_=false;rgbPrefix_.clear();rgbStackPrefix_.clear();rgbSession_.reset();rgbSessionActive_=false;rgbUniformTarget_=false;rgbSessionRefused_.clear();}
+void ContrastPanel::clearRgbSequence(){rgbVisitSelection_.reset();rgbVisitOpen_=false;rgbVisitPosition_={1,1,1};rgbStageDestinationVisit_=1;rgbStageSelection_.reset();rgbStageOpen_=false;rgbPrefix_.clear();rgbStackPrefix_.clear();rgbSession_.reset();rgbSessionActive_=false;rgbUniformTarget_=false;rgbSessionRefused_.clear();}
 void ContrastPanel::promoteRgbStage(bool busy){
   if(busy || !open_ || !resolved_ || !rgbSource() || !rgbSession_ || rgbUniformTarget_ || !rgbSessionRefused_.empty())
     throw std::invalid_argument("Choose an idle current RGB session before keeping an adjustment");
@@ -106,7 +107,57 @@ void ContrastPanel::drawSavedRgbStages(bool busy){
     if(ImGui::Button("Move later"))attempt([&]{auto p=request;p["destination"]=stage+1;savedRgbStageAction("move_rgb_contrast_stage",p,busy);});control("move_saved_rgb_later",enabled&&stage+1<count);ImGui::EndDisabled();
     ImGui::BeginDisabled(stages.size()==1);
     if(ImGui::Button("Remove saved adjustment"))attempt([&]{savedRgbStageAction("remove_rgb_contrast_stage",request,busy);});control("remove_saved_rgb_stage",enabled&&stages.size()>1);ImGui::EndDisabled();
+    ImGui::InputInt("Destination visit",&rgbStageDestinationVisit_);control("saved_rgb_destination_visit",enabled);
+    const bool transferable=rgbStageDestinationVisit_>0 && std::size_t(rgbStageDestinationVisit_)<=plan.visits.size() && std::size_t(rgbStageDestinationVisit_-1)!=visit && stages.size()>1;
+    ImGui::BeginDisabled(!transferable);
+    if(ImGui::Button("Move adjustment to visit"))attempt([&]{auto p=request;p["destination_visit"]=rgbStageDestinationVisit_-1;p["before_stage"]=0;savedRgbVisitAction("transfer_rgb_contrast_stage",p,busy);});control("transfer_saved_rgb_stage",enabled&&transferable);ImGui::EndDisabled();
     ImGui::TextWrapped("Mapping and order changes keep the frozen area and plane. Area buttons explicitly replace that policy. The live draft stays separate. Apply commits the complete result; Restart discards saved intent.");
+  }
+  ImGui::EndDisabled();
+}
+void ContrastPanel::savedRgbVisitAction(const std::string &name,const Json &p,bool busy){
+  if(busy || !open_ || !resolved_ || !rgbSource() || !rgbSession_ || rgbUniformTarget_ || !rgbSessionRefused_.empty())
+    throw std::invalid_argument("Choose an idle current RGB session before authoring visits");
+  const auto index=[&](const char *key){const auto &v=p.at(key);if(!v.is_number_integer() || v<0)throw std::invalid_argument("RGB visit indices require nonnegative integers");return v.get<std::size_t>();};
+  const auto position=[&]{const auto &v=p.at("position");if(!v.is_array() || v.size()!=3)throw std::invalid_argument("RGB visit position requires T/C/Z integers");
+    std::array<int,3> xyz;for(int i=0;i<3;++i){if(!v[i].is_number_integer() || v[i]<0 || v[i]>std::numeric_limits<int>::max())throw std::invalid_argument("RGB visit coordinates require nonnegative integers");xyz[i]=v[i].get<int>();}return PlanePosition{xyz[0],xyz[1],xyz[2]};};
+  const auto select=[&](std::size_t visit){const auto &plan=rgbSession_->plan();if(visit>=plan.visits.size()-1)throw std::invalid_argument("Choose a historical RGB visit, not the live visit");
+    const auto &v=plan.visits[visit].position;rgbVisitSelection_=visit;rgbVisitPosition_={v.t+1,v.c+1,v.z+1};rgbVisitOpen_=true;};
+  if(name=="select_rgb_contrast_visit"){select(index("visit"));return;}
+  auto candidate=*rgbSession_;std::optional<std::size_t> selected;
+  if(name=="insert_rgb_contrast_visit"){
+    selected=index("before");candidate.insert_saved_visit(*selected,position(),{{{0,255,rgbChannels_},source_->data().selection,false}});
+  }else if(name=="update_rgb_contrast_visit"){selected=index("visit");candidate.set_saved_visit_position(*selected,position());}
+  else if(name=="remove_rgb_contrast_visit")candidate.remove_saved_visit(index("visit"));
+  else if(name=="move_rgb_contrast_visit"){selected=index("destination");candidate.move_saved_visit(index("visit"),*selected);}
+  else {selected=index("destination_visit");candidate.transfer_saved_stage(index("visit"),index("stage"),*selected,index("before_stage"));}
+  rgbSession_=std::move(candidate);rgbSessionActive_=true;rgbPrefix_.clear();rgbStackPrefix_.clear();invalidateRgb();rgbAutoDivisor_=0;error_.clear();rgbStageSelection_.reset();rgbVisitSelection_.reset();rgbVisitOpen_=true;
+  if(selected){
+    if(*selected+1<rgbSession_->plan().visits.size())select(*selected);
+    selectSavedRgbStage(*selected,name=="transfer_rgb_contrast_stage"?index("before_stage"):0);
+  }
+}
+void ContrastPanel::drawSavedRgbVisits(bool busy){
+  if(!rgbSession_)return;
+  ImGui::SetNextItemOpen(rgbVisitOpen_,ImGuiCond_Always);rgbVisitOpen_=ImGui::CollapsingHeader("Plane visits");control("saved_rgb_visits");if(!rgbVisitOpen_)return;
+  const bool enabled=!busy && resolved_ && !rgbUniformTarget_ && rgbSessionRefused_.empty();
+  const auto plan=rgbSession_->plan();const auto attempt=[&](auto operation){try{operation();}catch(const std::exception &e){error_=e.what();}};
+  ImGui::BeginDisabled(!enabled);
+  for(std::size_t v=0;v+1<plan.visits.size();++v){const auto &visit=plan.visits[v];const auto label="Visit "+std::to_string(v+1)+" (T "+std::to_string(visit.position.t+1)+", C "+std::to_string(visit.position.c+1)+", Z "+std::to_string(visit.position.z+1)+")";
+    if(ImGui::Selectable(label.c_str(),rgbVisitSelection_ && *rgbVisitSelection_==v))attempt([&]{savedRgbVisitAction("select_rgb_contrast_visit",{{"visit",v}},busy);});control(("saved_rgb_visit_"+std::to_string(v)).c_str(),enabled);
+  }
+  ImGui::TextUnformatted("The last visit contains the live draft and stays at the current image position.");
+  for(int i=0;i<3;++i){ImGui::InputInt(i==0?"Visit time":i==1?"Visit channel":"Visit slice",&rgbVisitPosition_[i]);control(i==0?"saved_rgb_visit_t":i==1?"saved_rgb_visit_c":"saved_rgb_visit_z",enabled);}
+  const auto coordinates=[&]{Json result=Json::array();for(int i:rgbVisitPosition_){if(i<1)throw std::invalid_argument("Visit coordinates start at 1");result.push_back(i-1);}return result;};
+  if(ImGui::Button("Insert visit before live draft"))attempt([&]{savedRgbVisitAction("insert_rgb_contrast_visit",{{"before",rgbSession_->plan().visits.size()-1},{"position",coordinates()}},busy);});control("insert_saved_rgb_visit",enabled);
+  ImGui::TextWrapped("A new visit starts with an identity adjustment and the current selection. Choose its saved adjustment to edit the mapping. Inserting and moving visits does not navigate the image.");
+  if(rgbVisitSelection_){const auto visit=*rgbVisitSelection_;const auto request=Json{{"visit",visit}};
+    if(ImGui::Button("Update visit position"))attempt([&]{auto p=request;p["position"]=coordinates();savedRgbVisitAction("update_rgb_contrast_visit",p,busy);});control("update_saved_rgb_visit",enabled);
+    ImGui::BeginDisabled(visit==0);
+    if(ImGui::Button("Visit earlier"))attempt([&]{auto p=request;p["destination"]=visit-1;savedRgbVisitAction("move_rgb_contrast_visit",p,busy);});control("move_saved_rgb_visit_earlier",enabled&&visit>0);ImGui::EndDisabled();
+    ImGui::SameLine();ImGui::BeginDisabled(visit+2>=plan.visits.size());
+    if(ImGui::Button("Visit later"))attempt([&]{auto p=request;p["destination"]=visit+1;savedRgbVisitAction("move_rgb_contrast_visit",p,busy);});control("move_saved_rgb_visit_later",enabled&&visit+2<plan.visits.size());ImGui::EndDisabled();
+    if(ImGui::Button("Remove saved visit"))attempt([&]{savedRgbVisitAction("remove_rgb_contrast_visit",request,busy);});control("remove_saved_rgb_visit",enabled);
   }
   ImGui::EndDisabled();
 }
@@ -319,7 +370,7 @@ ContrastApplyJob ContrastPanel::takeRgbPreview(const ResolvedRgbContrastApplyCom
   rgbAttempted_=true;++rgbGeneration_;return result;
 }
 Json ContrastPanel::rgbDiagnostics()const {
-  return {{"stage_editor",{{"open",rgbStageOpen_},{"visit",rgbStageSelection_?Json(rgbStageSelection_->first):Json(nullptr)},{"stage",rgbStageSelection_?Json(rgbStageSelection_->second):Json(nullptr)},{"minimum",rgbStageMinimum_},{"maximum",rgbStageMaximum_},{"channels",rgbStageChannels_}}},{"session_active",rgbSessionActive_},{"session_visits",rgbSession_?rgbSession_->plan().visits.size():0},{"session_refused",!rgbSessionRefused_.empty()},{"entire_stack",rgbEntireStack_},{"supported",rgbSource()},{"channels",rgbChannels_},{"pending",bool(rgbJob_)&&!rgbPreview_},
+  return {{"visit_editor",{{"open",rgbVisitOpen_},{"selected_visit",rgbVisitSelection_?Json(*rgbVisitSelection_):Json(nullptr)},{"position_one_based",rgbVisitPosition_},{"stage_destination_one_based",rgbStageDestinationVisit_}}},{"stage_editor",{{"open",rgbStageOpen_},{"visit",rgbStageSelection_?Json(rgbStageSelection_->first):Json(nullptr)},{"stage",rgbStageSelection_?Json(rgbStageSelection_->second):Json(nullptr)},{"minimum",rgbStageMinimum_},{"maximum",rgbStageMaximum_},{"channels",rgbStageChannels_}}},{"session_active",rgbSessionActive_},{"session_visits",rgbSession_?rgbSession_->plan().visits.size():0},{"session_refused",!rgbSessionRefused_.empty()},{"entire_stack",rgbEntireStack_},{"supported",rgbSource()},{"channels",rgbChannels_},{"pending",bool(rgbJob_)&&!rgbPreview_},
     {"promoted_stages",rgbSessionActive_?rgbSession_->plan().visits.back().stages.size()-1:(rgbEntireStack_?rgbStackPrefix_.size():rgbPrefix_.size())},{"auto_baseline_pending",bool(rgbAutoBaselineJob_)&&!rgbAutoBaseline_},{"auto_divisor",rgbAutoDivisor_},{"auto_pending",rgbAutoRequested_||bool(rgbAutoJob_)},{"auto_whole_planes",rgbAutoWhole_},{"weights",rgbWeights_},
     {"ready",source_ && bool(rgbPreview(*source_))},{"generation",rgbGeneration_},
     {"submitted",rgbSubmitted_},{"discarded",rgbDiscarded_},

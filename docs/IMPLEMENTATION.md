@@ -263,6 +263,24 @@ Captured RGB records/jobs and shared preview/Apply/
 Rebind/workflow integration remain the next steps; RGB controls stay disabled.
 See [Apply details](CONTRAST_APPLY.md).
 
+**RGB visit authoring and cross-visit transfer, 2026-10-23 (work in progress):**
+The native editor and Python binding now insert, reposition, reorder and remove
+historical visits, and transfer complete frozen stages between visits. The final
+live visit/draft stays protected. Transfer cannot empty a historical visit;
+whole-visit removal remains explicit. New visit positions, geometry, records and
+resource estimates are admitted before immutable state replacement without reads.
+The shared ImGui Plane visits controls author T/C/Z positions, insert identity
+visits, change order and remove visits. Saved adjustment controls transfer a
+stage to another visit. None of these operations navigates or publishes pixels.
+Windows/Linux each pass 6,583 installed Python checks (238 new), six native
+groups including real T/C/Z and visit/transfer controls, an installed SDK consumer
+and three standalone UI probes, with zero failures/errors/skips. Checks cover
+repeated-plane order, all components/axes, frozen transfer, invalid/budget refusal,
+full JSON replay, complete recording and paired history. Broader real canvas/
+navigation/Auto/Reset input and full ImageJ/Fiji/platform/resource acceptance
+remain open. All99 triples and the historical Auto evidence gate are unchanged.
+See [RGB stage authoring](parity/RGB_STAGE_AUTHORING.md).
+
 **Historical RGB selection editing, 2026-10-23 (work in progress):**
 The native session editor and Python binding now replace a saved stage's
 selection/whole-plane policy through admitted immutable candidates. Mapping,

@@ -35,6 +35,21 @@ void savedSelection(){
   result=execute_rgb_contrast_session_command(editor.command()).preview().data().dataset.plane();
   check(result->at(0,0,0)==170 && result->at(1,0,0)==170 && owner.undo_steps()==0,"Whole-plane area changes private output without publication");
 }
+void savedVisits(){
+  Image image(2,1,3,PixelType::UInt8);std::fill(image.pixels.begin(),image.pixels.end(),30);
+  auto reads=std::make_shared<DatasetReadObserver>();Document owner(Dataset::from_planes({1,1,2,1,2,3},Stack(2,image)).observe_reads(*reads));
+  RgbContrastSessionEditor editor(owner.snapshot());const auto draft=editor.plan().visits.back();
+  editor.insert_saved_visit(0,{0,0,0},{{{10,70,7},std::nullopt,false}});
+  editor.insert_saved_visit(1,{0,0,0},{{{0,170,7},std::nullopt,false}});editor.move_saved_visit(1,0);
+  check(editor.plan().visits.back().position.z==draft.position.z && reads->counts().plane_reads==0,"Visit authoring is metadata-only and protects live position");
+  auto mapped=execute_rgb_contrast_session_command(editor.command()).preview();check(mapped.data().dataset.plane()->at(0,0,0)==149,"Repeated visits respect explicit history order");
+  editor.set_saved_visit_position(0,{0,0,1});editor.remove_saved_visit(1);
+  editor.set_range(10,70);editor.promote();editor.transfer_saved_stage(1,0,0,0);
+  const auto old=editor.command().record();bool refused=false;try{editor.remove_saved_visit(1);}catch(const std::out_of_range &){refused=true;}
+  check(refused && metadata_equal(old,editor.command().record()),"Live visit refusal preserves complete history");
+  mapped=execute_rgb_contrast_session_command(editor.command()).preview();
+  check(mapped.data().dataset.plane({0,0,0})->at(0,0,0)==30 && mapped.data().dataset.plane({0,0,1})->at(0,0,0)==128 && owner.undo_steps()==0,"Cross-visit transfer keeps mappings and leaves owner private");
+}
 void run(){
   auto reads=std::make_shared<DatasetReadObserver>();Image image(2,1,3,PixelType::UInt8);
   for(int x=0;x<2;++x){image.at(x,0,0)=20;image.at(x,0,1)=30;image.at(x,0,2)=30;}
@@ -68,4 +83,4 @@ void run(){
   check(owner.undo_steps()==history,"Private transition state never publishes edits");
 }
 }
-int main(){try{run();savedEditing();savedSelection();std::cout<<"PASS native RGB session transitions, admission and preview/Apply separation\n";return 0;}catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}
+int main(){try{run();savedEditing();savedSelection();savedVisits();std::cout<<"PASS native RGB session transitions, admission and preview/Apply separation\n";return 0;}catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}
