@@ -1,5 +1,20 @@
 # ImageJ and Fiji gap closure plan
 
+**Selection creation input capture, 2026-10-23 (scoped prerequisite):**
+Creation and replay now freeze admitted owner, operands, wire records, limits
+and execution controls before callbacks. Callback reassignment cannot redirect
+preparation or detach the captured cancellation token. Memory admission includes
+retained command/transport copies; V1/V2 equations remain unchanged.
+Windows/Linux each pass 1,231 native creation checks, six native groups, an
+installed SDK client with 1,231 checks and 1,376 focused installed Python
+checks, with zero failures/errors/skips. Verified archives precede removal of
+169,916,649 owned scratch bytes. Regional modifier drawing is still open. Next
+are borrowed full-region admission, V3 creation records and shared modifier UI
+integration. The historical Auto fingerprint gate remains open; original
+requirements and historical expectations are unchanged. See the
+[contract and next steps](parity/SELECTION_CREATION_CAPTURE.md) and
+[scoped receipt](parity/reviews/p12p-creation-capture001.json).
+
 **Complete regional Boolean core and manager, 2026-10-23 (scoped integration):**
 New full-region area algebra retains cells outside the image boundary. Union/XOR
 use a complete envelope; subtraction/intersection avoid distant empty spans.

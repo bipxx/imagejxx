@@ -76,8 +76,11 @@ SelectionCreationEstimate estimate_selection_creation(
 // No record serialization and no dataset/sample reads. UI draft composition and
 // completion use this same admitted native algebra. Controlled public actions
 // report one coarse (0,1)/(1,1) progress pair, after admission/before return;
-// estimates and resource refusals invoke no user callbacks. Callback exceptions
-// and cancellation abort without publication, including at the finish callback.
+// estimates and resource refusals invoke no user callbacks. Admitted source,
+// operands, limits, records and controls are frozen before the first callback;
+// reassignment by a callback cannot redirect preparation, validation or replay.
+// Callback exceptions and cancellation abort without publication, including at
+// the finish callback.
 Selection compose_selection_creation(
     const DocumentSnapshot &, const SelectionCreationRequest &,
     const SelectionCreationLimits & = {}, const ExecutionControl & = {});

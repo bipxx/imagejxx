@@ -795,6 +795,134 @@ void storage() {
             std::memcmp(actual->pixels.data(), original.data(), original.size() * sizeof(double)) == 0,
         "Selection command changed quiet-NaN payload, signed zero or source address");
 }
+// A native caller can reassign every argument from its own callback. The
+// operation must retain the admitted owner, operands, transport and controls.
+void captured_inputs() {
+  for (int phase : {0, 1, 2}) {
+    for (int action = 0; action < 6; ++action) {
+      Document owner(fixture()), other(fixture());
+      const auto before = owner.snapshot();
+      const auto other_before = other.snapshot();
+      const auto history = owner.history();
+      auto source = before;
+      auto input = request();
+      const auto expected = resolve_selection_creation_command(before, input);
+      auto record = expected.record();
+      auto command = expected;
+      SelectionCreationLimits cap;
+      ExecutionControl control;
+      bool changed = false;
+      int progress_calls = 0;
+      const auto mutate = [&] {
+        if (changed) return;
+        changed = true;
+        source = other_before;
+        input = {Operation::Replace, Selection("rectangle", {{3, 0}, {5, 1}})};
+        record.clear();
+        command = resolve_selection_creation_command(other_before, input);
+        cap.max_pixels = cap.max_candidate_vertices = cap.max_working_bytes = 0;
+        control.checkpoint = [] { throw std::runtime_error("Replacement checkpoint ran"); };
+        control.progress = [](std::size_t, std::size_t) {
+          throw std::runtime_error("Replacement progress ran");
+        };
+      };
+      control.checkpoint = [&] { if (phase == 0) mutate(); };
+      control.progress = [&](std::size_t done, std::size_t total) {
+        ++progress_calls;
+        check(total == 1, "Captured progress total changed");
+        if ((phase == 1 && done == 0) || (phase == 2 && done == 1)) mutate();
+      };
+      if (action == 0) {
+        exact(compose_selection_creation(source, input, cap, control), add_rows);
+      } else if (action == 1) {
+        const auto result = resolve_selection_creation_command(source, input, cap, control);
+        check(metadata_equal(result.record(), expected.record()) && result.source().same_document(before),
+              "Resolve followed reassigned arguments");
+      } else if (action == 2) {
+        validate_selection_creation_command_record(record, cap, control);
+      } else if (action == 3) {
+        const auto result = selection_creation_command_from_record(source, record, cap, control);
+        check(metadata_equal(result.record(), expected.record()) && result.source().same_document(before),
+              "Replay followed reassigned source/record");
+      } else if (action == 4) {
+        const auto result = rebind_selection_creation_command(source, record, input, cap, control);
+        check(metadata_equal(result.record(), expected.record()) && result.source().same_document(before),
+              "Rebind followed reassigned arguments");
+      } else {
+        auto tx = prepare_selection_creation(command, control);
+        exact(*tx.preview().data().selection, add_rows);
+        owner.commit(tx);
+        check(owner.snapshot().data().previous_selection == before.data().selection,
+              "Prepare captured another owner's Previous");
+        same_records(owner.snapshot(), before);
+      }
+      check(changed && progress_calls == 2, "Captured callbacks did not finish exactly once");
+      if (action != 5) unchanged(owner, before, history);
+      check(other.snapshot().shares_data(other_before), "Captured operation changed other owner");
+    }
+  }
+  // Control replacement must not detach the captured cancellation token.
+  Document owner(fixture());
+  const auto before = owner.snapshot();
+  const auto history = owner.history();
+  const auto command = resolve_selection_creation_command(before, request());
+  for (int action = 0; action < 6; ++action) {
+    auto token = std::make_shared<CancellationToken>();
+    ExecutionControl control;
+    control.cancellation = token;
+    control.checkpoint = [&] {
+      control = {};
+      token->cancel();
+    };
+    rejects<OperationCancelled>([&] {
+      if (action == 0) (void)compose_selection_creation(before, request(), {}, control);
+      if (action == 1) (void)resolve_selection_creation_command(before, request(), {}, control);
+      if (action == 2) validate_selection_creation_command_record(command.record(), {}, control);
+      if (action == 3) (void)selection_creation_command_from_record(before, command.record(), {}, control);
+      if (action == 4) (void)rebind_selection_creation_command(before, command.record(), request(), {}, control);
+      if (action == 5) (void)prepare_selection_creation(command, control);
+    }, "Replacing control detached captured cancellation");
+    unchanged(owner, before, history);
+  }
+}
+
+void captured_rebind_admission() {
+  Document owner(fixture());
+  const auto before = owner.snapshot();
+  const auto history = owner.history();
+  auto original = request(Operation::Replace);
+  original.candidate.attributes["large"] = std::string(512 * 1024, 'x');
+  const auto command = resolve_selection_creation_command(before, original);
+  const auto record = command.record();
+  // Find the strict original-validation boundary without private estimators.
+  // That bound is insufficient once the replacement request is captured too.
+  SelectionCreationLimits limits;
+  std::size_t low = 0, high = command.estimate().working_bytes;
+  limits.max_working_bytes = high;
+  validate_selection_creation_command_record(record, limits);
+  while (low < high) {
+    const auto middle = low + (high - low) / 2;
+    limits.max_working_bytes = middle;
+    try {
+      validate_selection_creation_command_record(record, limits);
+      high = middle;
+    } catch (const std::invalid_argument &) {
+      low = middle + 1;
+    }
+  }
+  limits.max_working_bytes = high;
+  validate_selection_creation_command_record(record, limits);
+  int callbacks = 0;
+  ExecutionControl control;
+  control.checkpoint = [&] { ++callbacks; };
+  control.progress = [&](std::size_t, std::size_t) { ++callbacks; };
+  rejects([&] {
+    (void)rebind_selection_creation_command(before, record, request(), limits, control);
+  }, "Original validation cap omitted simultaneous replacement capture");
+  check(callbacks == 0, "Rebind capture refusal invoked callbacks");
+  unchanged(owner, before, history);
+}
+
 void rounded_creation() {
   Document owner(fixture());
   Selection candidate("rounded_rectangle", {{1,1},{4,3}});
@@ -823,7 +951,9 @@ int main(int argc, char **argv) {
     const std::vector<std::pair<std::string, std::function<void()>>> groups{
         {"geometry", geometry}, {"admission", admission}, {"publication", publication},
         {"records", records}, {"replay", replay}, {"limits", limits},
-        {"control", control}, {"storage", storage}, {"rounded_creation", rounded_creation}};
+        {"control", control}, {"storage", storage}, {"captured_inputs", captured_inputs},
+        {"captured_rebind_admission", captured_rebind_admission},
+        {"rounded_creation", rounded_creation}};
     bool found = group == "all";
     for (const auto &[name, run] : groups)
       if (group == "all" || group == name) { found = true; run(); }

@@ -309,10 +309,10 @@ SelectionCreationEstimate estimate_parts(
       source.shape, base, request, limits));
   std::size_t prepare_bytes = 0;
   if (snapshot) {
-    prepare_bytes = add(sizeof(DocumentTransaction),
-                         add(data_copy_size(*snapshot, limits),
-                             add(optional_size(snapshot->data().selection, limits),
-                                 result_bytes)));
+    prepare_bytes = add(estimate.retained_bytes,
+        add(sizeof(DocumentTransaction),
+            add(data_copy_size(*snapshot, limits),
+                add(optional_size(snapshot->data().selection, limits), result_bytes))));
   }
   estimate.working_bytes = add(estimate.retained_bytes,
                                 std::max(resolve_bytes, prepare_bytes));
@@ -786,7 +786,8 @@ RecordView inspect_record(const MetadataObject &record,
         rounded_kind(*candidate.kind) || rounded_kind(*base->kind)));
     scratch = std::max(scratch, codec_scratch);
   }
-  const auto peak = add(decoded_bytes, scratch);
+  // Freeze the admitted wire tree before user code can replace its map entries.
+  const auto peak = add(bytes, add(decoded_bytes, scratch));
   budget(peak, limits);
   return {source, operation, std::move(base), candidate, result, bytes, peak};
 }
@@ -819,9 +820,9 @@ SelectionCreationEstimate estimate_record_command(
     resolve = add(resolve, rounded_scratch(estimate.pixels,
         rounded_kind(*view.candidate.kind) || rounded_kind(*view.base->kind)));
   }
-  const auto prepare = add(sizeof(DocumentTransaction),
-      add(data_copy_size(snapshot, limits),
-          add(optional_size(snapshot.data().selection, limits), result)));
+  const auto prepare = add(estimate.retained_bytes,
+      add(sizeof(DocumentTransaction), add(data_copy_size(snapshot, limits),
+          add(optional_size(snapshot.data().selection, limits), result))));
   estimate.working_bytes = std::max(view.validation_peak,
       add(estimate.retained_bytes, std::max(resolve, prepare)));
   budget(estimate.working_bytes, limits);
@@ -884,35 +885,52 @@ SelectionCreationEstimate estimate_selection_creation(
     const SelectionCreationLimits &limits) {
   return estimate_parts(source_info(source), source.data().selection, request, limits, &source);
 }
-Selection compose_selection_creation(const DocumentSnapshot &source,
-    const SelectionCreationRequest &request, const SelectionCreationLimits &limits,
-    const ExecutionControl &control) {
-  (void)estimate_selection_creation(source, request, limits);
+Selection compose_selection_creation(const DocumentSnapshot &source_input,
+    const SelectionCreationRequest &request_input, const SelectionCreationLimits &limits_input,
+    const ExecutionControl &control_input) {
+  (void)estimate_selection_creation(source_input, request_input, limits_input);
+  const auto source = source_input;
+  const auto request = request_input;
+  const auto control = control_input;
   ExecutionScope scope(control); start_progress();
   auto result = algebra(source.data().dataset.shape(), source.data().selection, request);
   finish_progress(); return result;
 }
 ResolvedSelectionCreationCommand resolve_selection_creation_command(
-    const DocumentSnapshot &source, const SelectionCreationRequest &request,
-    const SelectionCreationLimits &limits, const ExecutionControl &control) {
-  const auto estimate = estimate_selection_creation(source, request, limits);
+    const DocumentSnapshot &source_input, const SelectionCreationRequest &request_input,
+    const SelectionCreationLimits &limits_input, const ExecutionControl &control_input) {
+  const auto estimate = estimate_selection_creation(source_input, request_input, limits_input);
+  auto source = source_input;
+  auto request = request_input;
+  const auto limits = limits_input;
+  const auto control = control_input;
   ExecutionScope scope(control); start_progress();
   auto result = algebra(source.data().dataset.shape(), source.data().selection, request);
   auto record = encode_record(source_info(source), source.data().selection, request, result);
-  ResolvedSelectionCreationCommand command{source, request, source.data().selection,
+  auto base = source.data().selection;
+  ResolvedSelectionCreationCommand command{std::move(source), std::move(request), std::move(base),
       std::move(result), std::move(record), estimate, limits};
   finish_progress(); return command;
 }
-void validate_selection_creation_command_record(const MetadataObject &record,
-    const SelectionCreationLimits &limits, const ExecutionControl &control) {
+void validate_selection_creation_command_record(const MetadataObject &record_input,
+    const SelectionCreationLimits &limits_input, const ExecutionControl &control_input) {
+  (void)inspect_record(record_input, limits_input);
+  const auto record = record_input;
+  const auto limits = limits_input;
+  const auto control = control_input;
   const auto view = inspect_record(record, limits);
   ExecutionScope scope(control); start_progress();
   (void)decode_record(view, limits);
   finish_progress();
 }
 ResolvedSelectionCreationCommand selection_creation_command_from_record(
-    const DocumentSnapshot &source, const MetadataObject &record,
-    const SelectionCreationLimits &limits, const ExecutionControl &control) {
+    const DocumentSnapshot &source_input, const MetadataObject &record_input,
+    const SelectionCreationLimits &limits_input, const ExecutionControl &control_input) {
+  (void)inspect_record(record_input, limits_input);
+  auto source = source_input;
+  auto record = record_input;
+  const auto limits = limits_input;
+  const auto control = control_input;
   const auto view = inspect_record(record, limits);
   SelectionCreationEstimate estimate;
   try { estimate = estimate_record_command(view, source, limits); }
@@ -920,32 +938,52 @@ ResolvedSelectionCreationCommand selection_creation_command_from_record(
   ExecutionScope scope(control); start_progress();
   auto decoded = decode_record(view, limits);
   require_binding(decoded.source, source_info(source));
-  ResolvedSelectionCreationCommand command{source, std::move(decoded.request),
-      std::move(decoded.base), std::move(decoded.result), record, estimate, limits};
+  ResolvedSelectionCreationCommand command{std::move(source), std::move(decoded.request),
+      std::move(decoded.base), std::move(decoded.result), std::move(record), estimate, limits};
   finish_progress(); return command;
 }
 ResolvedSelectionCreationCommand rebind_selection_creation_command(
-    const DocumentSnapshot &source, const MetadataObject &record,
-    const SelectionCreationRequest &request, const SelectionCreationLimits &limits,
-    const ExecutionControl &control) {
+    const DocumentSnapshot &source_input, const MetadataObject &record_input,
+    const SelectionCreationRequest &request_input, const SelectionCreationLimits &limits_input,
+    const ExecutionControl &control_input) {
+  (void)inspect_record(record_input, limits_input);
+  auto source = source_input;
+  auto record = record_input;
+  const auto limits = limits_input;
+  const auto control = control_input;
   const auto view = inspect_record(record, limits);
   SelectionCreationEstimate estimate;
-  try { estimate = estimate_selection_creation(source, request, limits); }
+  try {
+    estimate = estimate_selection_creation(source, request_input, limits);
+    // Original validation and the frozen replacement request coexist before
+    // the new equation is evaluated. Bound that peak independently of the
+    // replacement command's (possibly much smaller) algebra/retention estimate.
+    const auto original_peak = add(view.validation_peak,
+        add(geometry_size(request_input.candidate, limits),
+            display_size(source.display(), limits)));
+    estimate.working_bytes = std::max(original_peak,
+        add(estimate.working_bytes, view.bytes));
+    budget(estimate.working_bytes, limits);
+  }
   catch (...) { reject_after_original(view, limits, control, std::current_exception()); }
+  auto request = request_input;
   ExecutionScope scope(control); start_progress();
   (void)decode_record(view, limits);
   auto result = algebra(source.data().dataset.shape(), source.data().selection, request);
   auto rebound_record = encode_record(source_info(source), source.data().selection, request, result);
-  ResolvedSelectionCreationCommand command{source, request, source.data().selection,
+  auto base = source.data().selection;
+  ResolvedSelectionCreationCommand command{std::move(source), std::move(request), std::move(base),
       std::move(result), std::move(rebound_record), estimate, limits};
   finish_progress(); return command;
 }
 DocumentTransaction prepare_selection_creation(
-    const ResolvedSelectionCreationCommand &command, const ExecutionControl &control,
+    const ResolvedSelectionCreationCommand &command_input, const ExecutionControl &control_input,
     std::size_t execution_max_working_bytes) {
-  auto limits = command.limits_;
+  auto limits = command_input.limits_;
   limits.max_working_bytes = std::min(limits.max_working_bytes, execution_max_working_bytes);
-  budget(command.estimate_.working_bytes, limits);
+  budget(command_input.estimate_.working_bytes, limits);
+  const auto command = command_input;
+  const auto control = control_input;
   ExecutionScope scope(control); start_progress();
   auto transaction = command.source_.begin_edit(Change::Data);
   kernel_checkpoint();
