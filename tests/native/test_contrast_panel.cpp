@@ -476,6 +476,39 @@ void rgbKeepUi(const std::filesystem::path &root){
   check(owner->undo_steps()==1 && w.workflow.size()==1 && w.workflow[0].at("schema")=="imagejxx.rgb-contrast-session-command" && w.workflow[0].at("visits")[0].at("stages").size()==2,"Keep records both stages in one paired edit");
   owner->undo();check(owner->snapshot().shares_data(before),"Kept-stage Undo restores original source");owner->redo();check(owner->snapshot().shares_data(after),"Kept-stage Redo restores composed output");w.action("close_contrast");
 }
+void rgbSavedEditUi(const std::filesystem::path &root){
+  Image image(4,2,3,PixelType::UInt8);std::fill(image.pixels.begin(),image.pixels.end(),30);
+  auto owner=std::make_shared<Document>(Dataset::from_stack({image}));const auto before=owner->snapshot();
+  Window w((root/"rgb-saved-edit-ui.json").u8string());w.addVirtualDocument(owner);w.action("show_contrast");
+  for(const auto bounds:std::array<std::array<double,2>,2>{{{10,40},{0,170}}}){w.action("contrast_range",{{"minimum",bounds[0]},{"maximum",bounds[1]}});w.action("promote_rgb_contrast_stage");}
+  w.action("select_rgb_contrast_stage",{{"visit",0},{"stage",0}});w.action("wait_jobs");
+  HeadlessInputSession session(w);auto report=session.frame();report=session.frame();
+  const auto anchor=report.at("contrast_panel").at("controls").at("rgb_components_7").at("point");
+  const auto click=[&](const char *name){
+    auto hit=report.at("contrast_panel").at("controls").at(name);
+    for(int i=0;i<20 && !hit.at("visible").get<bool>();++i){
+      session.frame(Json::array({{{"type","position"},{"space","screen"},{"point",anchor}}}));
+      session.frame(Json::array({{{"type","wheel"},{"x",0},{"y",hit.at("point")[1].get<double>()>700?-4:4}}}));report=session.frame();hit=report.at("contrast_panel").at("controls").at(name);
+    }
+    check(hit.at("visible") && hit.at("enabled"),"Saved adjustment control visible and admitted");
+    session.frame(Json::array({{{"type","position"},{"space","screen"},{"point",hit.at("point")}}}));
+    for(bool down:{true,false})report=session.frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));
+  };
+  click("saved_rgb_stage_0_1");check(report.at("contrast_panel").at("rgb").at("stage_editor").at("stage")==1,"Physical saved-stage selection chooses the requested adjustment");
+  click("saved_rgb_stage_0_0");
+  click("saved_rgb_maximum");session.frame(Json::array({key("Ctrl",true),key("A",true)}));session.frame(Json::array({key("A",false),key("Ctrl",false)}));
+  session.frame(Json::array({{{"type","text"},{"value","70"}}}));session.frame(Json::array({key("Enter",true)}));report=session.frame(Json::array({key("Enter",false)}));
+  click("update_saved_rgb_stage");w.action("wait_jobs");report=session.frame();
+  check(report.at("contrast_panel").at("rgb").at("stage_editor").at("maximum")==70,"Physical saved range editing reaches native session");
+  click("move_saved_rgb_later");w.action("wait_jobs");report=session.frame();
+  check(report.at("contrast_panel").at("rgb").at("stage_editor").at("stage")==1,"Physical Move later changes stage order");
+  click("remove_saved_rgb_stage");w.action("wait_jobs");report=session.frame();
+  check(report.at("contrast_panel").at("rgb").at("promoted_stages")==1 && owner->snapshot().shares_data(before),"Physical removal keeps remaining stage private");
+  w.recording=true;w.action("contrast_apply");w.action("wait_jobs");const auto after=owner->snapshot();
+  const auto plane=after.data().dataset.plane();check(std::all_of(plane->pixels.begin(),plane->pixels.end(),[](double value){return value==45;}),"Physical saved edit/reorder/remove evaluates remaining mapping");
+  check(w.workflow.size()==1 && w.workflow[0].at("visits")[0].at("stages").size()==2 && owner->undo_steps()==1,"Historical UI authoring commits one complete edit");
+  owner->undo();check(owner->snapshot().shares_data(before),"Historical editing Undo restores source");owner->redo();check(owner->snapshot().shares_data(after),"Historical editing Redo restores full result");w.action("close_contrast");
+}
 void rgbStackCancel(const std::filesystem::path &root){
   auto source=std::make_shared<RgbSource>();OpenOnExit release{source};Window w((root/"rgb-stack-cancel.json").u8string());auto owner=std::make_shared<Document>(Dataset(source));w.addVirtualDocument(owner);const auto before=owner->snapshot();
   w.action("show_contrast");until([&]{return source->entered>0;});w.action("contrast_rgb_stack",{{"enabled",true}});const auto previous=source->entered.load();w.poll();until([&]{return source->entered>previous;});std::thread cancel([&]{w.cancel();});cancel.join();const auto scheduler=imagejxx::desktop::HistogramAsyncUiProbeAccess::scheduler(w);
@@ -502,6 +535,6 @@ void rgbAutoUi(const std::filesystem::path &root){
 int main(int argc,char **argv){try{
   check(argc==2,"Owned fixture path required");const auto root=std::filesystem::absolute(std::filesystem::u8path(argv[1]));
   check(!std::filesystem::exists(root),"Fresh fixture required");std::filesystem::create_directories(root);
-  math();seeded();captured(root);canceled(root);applyHost(root);applyAbandoned(root);rebindUi(root);rebindStale(root);workflowUi(root);rgbWorkflowUi(root);ui(root);rgbUi(root);rgbCancel(root);rgbPositionsUi(root);rgbAutoUi(root);rgbStackUi(root);rgbStackCancel(root);rgbSessionUi(root);rgbKeepUi(root);
+  math();seeded();captured(root);canceled(root);applyHost(root);applyAbandoned(root);rebindUi(root);rebindStale(root);workflowUi(root);rgbWorkflowUi(root);ui(root);rgbUi(root);rgbCancel(root);rgbPositionsUi(root);rgbAutoUi(root);rgbStackUi(root);rgbStackCancel(root);rgbSessionUi(root);rgbKeepUi(root);rgbSavedEditUi(root);
   std::cout<<"PASS native modeless contrast math, captured histogram, active channel, Auto, cancellation and actual widgets\n";return 0;
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

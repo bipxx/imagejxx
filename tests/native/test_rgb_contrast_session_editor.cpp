@@ -5,6 +5,21 @@ using namespace imagejxx;
 namespace {
 void check(bool value,const char *message){if(!value)throw std::runtime_error(message);}
 template<class F>void refuses(F f){bool refused=false;try{f();}catch(const std::invalid_argument &){refused=true;}check(refused,"Expected admission refusal");}
+void savedEditing(){
+  Image image(2,1,3,PixelType::UInt8);std::fill(image.pixels.begin(),image.pixels.end(),30);
+  auto reads=std::make_shared<DatasetReadObserver>();Document owner(Dataset::from_stack({image}).observe_reads(*reads));
+  RgbContrastSessionEditor editor(owner.snapshot());editor.set_range(10,40);editor.promote();editor.set_range(0,170);editor.promote();
+  const auto original=editor.command();editor.set_saved_stage(0,0,{0,60,4});
+  check(editor.plan().visits[0].stages[0].options.channels==4 && original.plan().visits[0].stages[0].options.channels==7,"Saved mapping edit retains independent prior capture");
+  editor.move_saved_stage(0,1,0);check(editor.plan().visits[0].stages[0].options.maximum==170,"Saved order changes explicitly");
+  editor.remove_saved_stage(0,1);check(editor.plan().visits[0].stages.size()==2 && editor.plan().visits[0].stages.back().options.maximum==255,"Removal preserves live identity draft");
+  const auto stable=editor.command().record();refuses([&]{editor.set_saved_stage(0,0,{20,10,7});});refuses([&]{editor.set_saved_stage(0,0,{0,255,0});});
+  bool refused=false;try{editor.remove_saved_stage(0,1);}catch(const std::out_of_range &){refused=true;}
+  check(refused && metadata_equal(stable,editor.command().record()),"Draft refusal and invalid mapping preserve complete plan");
+  check(reads->counts().plane_reads==0 && owner.undo_steps()==0,"Historical editing remains metadata-only and private");
+  const auto plane=execute_rgb_contrast_session_command(editor.command()).preview().data().dataset.plane();
+  check(plane->at(0,0,0)==45 && plane->at(0,0,1)==45 && plane->at(0,0,2)==45,"Saved edit/delete evaluates exact remaining mapping");
+}
 void run(){
   auto reads=std::make_shared<DatasetReadObserver>();Image image(2,1,3,PixelType::UInt8);
   for(int x=0;x<2;++x){image.at(x,0,0)=20;image.at(x,0,1)=30;image.at(x,0,2)=30;}
@@ -38,4 +53,4 @@ void run(){
   check(owner.undo_steps()==history,"Private transition state never publishes edits");
 }
 }
-int main(){try{run();std::cout<<"PASS native RGB session transitions, admission and preview/Apply separation\n";return 0;}catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}
+int main(){try{run();savedEditing();std::cout<<"PASS native RGB session transitions, admission and preview/Apply separation\n";return 0;}catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

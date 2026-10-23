@@ -1,5 +1,22 @@
 # ImageJ and Fiji gap closure plan
 
+**Saved RGB stage editing, 2026-10-23 (work in progress):**
+The admitted C++ session editor and Python binding now update saved mapping
+bounds/components, reorder stages within a visit and remove stages. Frozen
+geometry and plane identity stay attached to each stage; the live final draft
+is protected, and a historical visit cannot become empty. Every candidate is
+validated before state replacement without sample reads. The shared ImGui panel
+lists saved stages and exposes selection, range/components, update, order and
+remove controls. Changes recompute the private preview and commit only at Apply.
+Windows/Linux each pass 6,219 installed Python checks (65 new), six native groups,
+an extended real-input UI test, an installed public SDK consumer and three
+standalone probes, with zero failures/errors/skips. Literal expectations
+distinguish update, order and removal; complete recording and paired history are
+checked. Historical geometry editing, cross-visit movement, arbitrary visit
+authoring and broader real transition input remain open. All99 triples and the
+historical Auto evidence gate remain unchanged. See
+[RGB stage authoring](parity/RGB_STAGE_AUTHORING.md).
+
 **Explicit RGB stage creation, 2026-10-23 (work in progress):**
 The main C++/Python ImGui contrast panel now offers Keep current adjustment.
 It freezes the current stage and selection, then begins an identity draft with

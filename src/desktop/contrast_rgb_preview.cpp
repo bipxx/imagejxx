@@ -1,4 +1,5 @@
 #include "contrast_panel.hpp"
+#include <imgui.h>
 #include <cmath>
 #include <set>
 #include <tuple>
@@ -23,13 +24,80 @@ bool ContrastPanel::rgbCompatible(const DocumentSnapshot &a,const DocumentSnapsh
     x.dataset.shape().dimensions()==y.dataset.shape().dimensions() && x.dataset.pixel_type()==y.dataset.pixel_type() && x.dataset.sample_policy()==y.dataset.sample_policy() &&
     x.selection==y.selection && x.rois==y.rois && a.display().t==b.display().t && a.display().c==b.display().c && a.display().crosshair[2]==b.display().crosshair[2];
 }
-void ContrastPanel::clearRgbSequence(){rgbPrefix_.clear();rgbStackPrefix_.clear();rgbSession_.reset();rgbSessionActive_=false;rgbUniformTarget_=false;rgbSessionRefused_.clear();}
+void ContrastPanel::clearRgbSequence(){rgbStageSelection_.reset();rgbStageOpen_=false;rgbPrefix_.clear();rgbStackPrefix_.clear();rgbSession_.reset();rgbSessionActive_=false;rgbUniformTarget_=false;rgbSessionRefused_.clear();}
 void ContrastPanel::promoteRgbStage(bool busy){
   if(busy || !open_ || !resolved_ || !rgbSource() || !rgbSession_ || rgbUniformTarget_ || !rgbSessionRefused_.empty())
     throw std::invalid_argument("Choose an idle current RGB session before keeping an adjustment");
   auto candidate=*rgbSession_;candidate.promote();
   rgbSession_=std::move(candidate);rgbSessionActive_=true;rgbPrefix_.clear();rgbStackPrefix_.clear();
   invalidateRgb();rgbAutoWhole_=false;rgbAutoDivisor_=0;draft({0,255});resolved_=true;error_.clear();
+}
+void ContrastPanel::selectSavedRgbStage(std::size_t visit,std::size_t stage){
+  if(!rgbSession_)throw std::invalid_argument("No saved RGB session");
+  const auto &plan=rgbSession_->plan();
+  if(visit>=plan.visits.size() || stage>=plan.visits[visit].stages.size() ||
+     (visit+1==plan.visits.size() && stage+1==plan.visits[visit].stages.size()))
+    throw std::invalid_argument("Choose a saved RGB stage, not the live draft");
+  const auto &options=plan.visits[visit].stages[stage].options;
+  rgbStageSelection_={{visit,stage}};rgbStageMinimum_=options.minimum;rgbStageMaximum_=options.maximum;rgbStageChannels_=options.channels;rgbStageOpen_=true;
+}
+void ContrastPanel::savedRgbStageAction(const std::string &name,const Json &p,bool busy){
+  if(busy || !open_ || !resolved_ || !rgbSource() || !rgbSession_ || rgbUniformTarget_ || !rgbSessionRefused_.empty())
+    throw std::invalid_argument("Choose an idle current RGB session before editing saved stages");
+  const auto index=[&](const char *key){const auto &v=p.at(key);if(!v.is_number_integer() || v<0)throw std::invalid_argument("RGB stage indices require nonnegative integers");return v.get<std::size_t>();};
+  const auto visit=index("visit"),stage=index("stage");
+  if(name=="select_rgb_contrast_stage"){selectSavedRgbStage(visit,stage);return;}
+  auto candidate=*rgbSession_;
+  std::size_t selected=stage;
+  if(name=="update_rgb_contrast_stage"){
+    const auto &channels=p.at("channels");if(!channels.is_number_integer() || channels<1 || channels>7)throw std::invalid_argument("RGB components require integer bits 1..7");
+    if(!p.at("minimum").is_number() || !p.at("maximum").is_number())throw std::invalid_argument("RGB stage bounds require finite numbers");
+    candidate.set_saved_stage(visit,stage,{p.at("minimum").get<double>(),p.at("maximum").get<double>(),channels.get<int>()});
+  }else if(name=="remove_rgb_contrast_stage")candidate.remove_saved_stage(visit,stage);
+  else {selected=index("destination");candidate.move_saved_stage(visit,stage,selected);}
+  rgbSession_=std::move(candidate);rgbSessionActive_=true;rgbPrefix_.clear();rgbStackPrefix_.clear();invalidateRgb();rgbAutoDivisor_=0;error_.clear();
+  if(name=="remove_rgb_contrast_stage")rgbStageSelection_.reset();else selectSavedRgbStage(visit,selected);
+}
+void ContrastPanel::drawSavedRgbStages(bool busy){
+  if(!rgbSession_)return;
+  ImGui::SetNextItemOpen(rgbStageOpen_,ImGuiCond_Always);
+  rgbStageOpen_=ImGui::CollapsingHeader("Saved RGB adjustments");control("saved_rgb_stages");
+  if(!rgbStageOpen_)return;
+  const bool enabled=!busy && resolved_ && !rgbUniformTarget_ && rgbSessionRefused_.empty();
+  const auto attempt=[&](auto operation){try{operation();}catch(const std::exception &e){error_=e.what();}};
+  ImGui::BeginDisabled(!enabled);
+  static const char *components[]={"Blue","Green","Green + Blue","Red","Red + Blue","Red + Green","All"};
+  const auto plan=rgbSession_->plan();
+  bool any=false;
+  for(std::size_t v=0;v<plan.visits.size();++v){
+    const auto &visit=plan.visits[v];const auto count=visit.stages.size()-(v+1==plan.visits.size()?1:0);
+    if(!count)continue;
+    ImGui::Text("Visit %zu: T %d C %d Z %d",v+1,visit.position.t+1,visit.position.c+1,visit.position.z+1);
+    for(std::size_t s=0;s<count;++s){
+      any=true;const auto &step=visit.stages[s];const auto label="Adjustment "+std::to_string(s+1)+"##saved_rgb_"+std::to_string(v)+"_"+std::to_string(s);
+      if(ImGui::Selectable(label.c_str(),rgbStageSelection_ && *rgbStageSelection_==std::make_pair(v,s)))attempt([&]{selectSavedRgbStage(v,s);});
+      control(("saved_rgb_stage_"+std::to_string(v)+"_"+std::to_string(s)).c_str(),enabled);
+      ImGui::Text("  %.10g to %.10g, %s, %s",step.options.minimum,step.options.maximum,components[step.options.channels-1],step.whole_plane?"whole plane":"frozen selection");
+    }
+  }
+  if(!any)ImGui::TextWrapped("Keep an adjustment or visit another plane to save a stage.");
+  if(rgbStageSelection_){
+    const auto [visit,stage]=*rgbStageSelection_;const auto &stages=plan.visits.at(visit).stages;
+    const auto count=stages.size()-(visit+1==plan.visits.size()?1:0);
+    ImGui::InputDouble("Saved minimum",&rgbStageMinimum_,0,0,"%.10g");control("saved_rgb_minimum",enabled);
+    ImGui::InputDouble("Saved maximum",&rgbStageMaximum_,0,0,"%.10g");control("saved_rgb_maximum",enabled);
+    int selected=rgbStageChannels_-1;if(ImGui::Combo("Saved components",&selected,components,7))rgbStageChannels_=selected+1;control("saved_rgb_channels",enabled);
+    const auto request=Json{{"visit",visit},{"stage",stage}};
+    if(ImGui::Button("Update saved adjustment"))attempt([&]{auto p=request;p["minimum"]=rgbStageMinimum_;p["maximum"]=rgbStageMaximum_;p["channels"]=rgbStageChannels_;savedRgbStageAction("update_rgb_contrast_stage",p,busy);});control("update_saved_rgb_stage",enabled);
+    ImGui::BeginDisabled(stage==0);
+    if(ImGui::Button("Move earlier"))attempt([&]{auto p=request;p["destination"]=stage-1;savedRgbStageAction("move_rgb_contrast_stage",p,busy);});control("move_saved_rgb_earlier",enabled&&stage>0);ImGui::EndDisabled();
+    ImGui::SameLine();ImGui::BeginDisabled(stage+1>=count);
+    if(ImGui::Button("Move later"))attempt([&]{auto p=request;p["destination"]=stage+1;savedRgbStageAction("move_rgb_contrast_stage",p,busy);});control("move_saved_rgb_later",enabled&&stage+1<count);ImGui::EndDisabled();
+    ImGui::BeginDisabled(stages.size()==1);
+    if(ImGui::Button("Remove saved adjustment"))attempt([&]{savedRgbStageAction("remove_rgb_contrast_stage",request,busy);});control("remove_saved_rgb_stage",enabled&&stages.size()>1);ImGui::EndDisabled();
+    ImGui::TextWrapped("Changes keep this stage's frozen area and plane. The live draft stays separate. Apply commits the complete result; Restart discards saved intent.");
+  }
+  ImGui::EndDisabled();
 }
 void ContrastPanel::restartRgbSession(){
   clearRgbSequence();invalidateRgb();rgbSource_.reset();key_.clear();rangeKey_=nullptr;rgbAutoWhole_=false;rgbAutoDivisor_=0;error_.clear();resolved_=false;
@@ -240,7 +308,7 @@ ContrastApplyJob ContrastPanel::takeRgbPreview(const ResolvedRgbContrastApplyCom
   rgbAttempted_=true;++rgbGeneration_;return result;
 }
 Json ContrastPanel::rgbDiagnostics()const {
-  return {{"session_active",rgbSessionActive_},{"session_visits",rgbSession_?rgbSession_->plan().visits.size():0},{"session_refused",!rgbSessionRefused_.empty()},{"entire_stack",rgbEntireStack_},{"supported",rgbSource()},{"channels",rgbChannels_},{"pending",bool(rgbJob_)&&!rgbPreview_},
+  return {{"stage_editor",{{"open",rgbStageOpen_},{"visit",rgbStageSelection_?Json(rgbStageSelection_->first):Json(nullptr)},{"stage",rgbStageSelection_?Json(rgbStageSelection_->second):Json(nullptr)},{"minimum",rgbStageMinimum_},{"maximum",rgbStageMaximum_},{"channels",rgbStageChannels_}}},{"session_active",rgbSessionActive_},{"session_visits",rgbSession_?rgbSession_->plan().visits.size():0},{"session_refused",!rgbSessionRefused_.empty()},{"entire_stack",rgbEntireStack_},{"supported",rgbSource()},{"channels",rgbChannels_},{"pending",bool(rgbJob_)&&!rgbPreview_},
     {"promoted_stages",rgbSessionActive_?rgbSession_->plan().visits.back().stages.size()-1:(rgbEntireStack_?rgbStackPrefix_.size():rgbPrefix_.size())},{"auto_baseline_pending",bool(rgbAutoBaselineJob_)&&!rgbAutoBaseline_},{"auto_divisor",rgbAutoDivisor_},{"auto_pending",rgbAutoRequested_||bool(rgbAutoJob_)},{"auto_whole_planes",rgbAutoWhole_},{"weights",rgbWeights_},
     {"ready",source_ && bool(rgbPreview(*source_))},{"generation",rgbGeneration_},
     {"submitted",rgbSubmitted_},{"discarded",rgbDiscarded_},

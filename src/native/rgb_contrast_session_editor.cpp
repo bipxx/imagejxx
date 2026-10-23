@@ -1,5 +1,6 @@
 #include <imagejxx/rgb_contrast_session_editor.hpp>
 #include "contrast_command_record.hpp"
+#include <algorithm>
 
 namespace imagejxx {
 namespace {
@@ -17,6 +18,13 @@ bool compatible(const DocumentSnapshot &a,const DocumentSnapshot &b){
 }
 RgbContrastSessionStep identity(const DocumentSnapshot &source,int channels){
   return {{0,255,channels},source.data().selection,false};
+}
+std::size_t saved_stages(const RgbContrastSessionPlan &plan,std::size_t visit){
+  if(visit>=plan.visits.size())throw std::out_of_range("RGB visit index is outside the saved session");
+  return plan.visits[visit].stages.size()-(visit+1==plan.visits.size()?1:0);
+}
+void saved_stage(const RgbContrastSessionPlan &plan,std::size_t visit,std::size_t stage){
+  if(stage>=saved_stages(plan,visit))throw std::out_of_range("Choose a saved RGB stage, not the live draft");
 }
 }
 struct RgbContrastSessionEditor::Data {
@@ -75,6 +83,23 @@ void RgbContrastSessionEditor::promote(){
   candidate.visits.back().stages.push_back(identity(source(),channels));adopt(source(),candidate,limits());
 }
 void RgbContrastSessionEditor::reset(){set_range(0,255);}
+void RgbContrastSessionEditor::set_saved_stage(std::size_t visit,std::size_t stage,const RgbContrastApplyOptions &options){
+  saved_stage(plan(),visit,stage);auto candidate=plan();candidate.visits[visit].stages[stage].options=options;
+  adopt(source(),candidate,limits());
+}
+void RgbContrastSessionEditor::remove_saved_stage(std::size_t visit,std::size_t stage){
+  saved_stage(plan(),visit,stage);auto candidate=plan();auto &stages=candidate.visits[visit].stages;
+  if(stages.size()==1)throw std::invalid_argument("A saved visit must retain at least one stage");
+  stages.erase(stages.begin()+stage);adopt(source(),candidate,limits());
+}
+void RgbContrastSessionEditor::move_saved_stage(std::size_t visit,std::size_t stage,std::size_t destination){
+  saved_stage(plan(),visit,stage);saved_stage(plan(),visit,destination);
+  if(stage==destination)return;
+  auto candidate=plan();auto &stages=candidate.visits[visit].stages;
+  if(stage<destination)std::rotate(stages.begin()+stage,stages.begin()+stage+1,stages.begin()+destination+1);
+  else std::rotate(stages.begin()+destination,stages.begin()+stage,stages.begin()+stage+1);
+  adopt(source(),candidate,limits());
+}
 void RgbContrastSessionEditor::set_entire_stack(bool enabled){
   if(plan().entire_stack==enabled)return;auto candidate=plan();candidate.entire_stack=enabled;adopt(source(),candidate,limits());
 }

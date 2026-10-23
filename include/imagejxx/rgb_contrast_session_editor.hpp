@@ -26,6 +26,12 @@ public:
   void reset();
   // Explicit snapshot boundary, including same-component promotions.
   void promote();
+  // Zero-based historical indices. The final visit's last stage is the live
+  // draft and cannot be addressed here. Mapping edits retain frozen geometry;
+  // moves stay within one visit. Removing a visit's only stage is refused.
+  void set_saved_stage(std::size_t visit,std::size_t stage,const RgbContrastApplyOptions &);
+  void remove_saved_stage(std::size_t visit,std::size_t stage);
+  void move_saved_stage(std::size_t visit,std::size_t stage,std::size_t destination);
   void set_entire_stack(bool);
   void set_limits(const ContrastApplyCommandLimits &);
 private:

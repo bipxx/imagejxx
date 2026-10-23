@@ -88,6 +88,13 @@ private:
   std::optional<ResolvedTarget> rgbStackTarget_;
   void selectRgbChannels(int);
   void promoteRgbStage(bool busy);
+  void savedRgbStageAction(const std::string &,const Json &,bool busy);
+  void selectSavedRgbStage(std::size_t,std::size_t);
+  void drawSavedRgbStages(bool busy);
+  std::optional<std::pair<std::size_t,std::size_t>> rgbStageSelection_;
+  bool rgbStageOpen_=false;
+  double rgbStageMinimum_=0,rgbStageMaximum_=255;
+  int rgbStageChannels_=7;
   void selectRgbStack(bool);
   void clearRgbSequence();
   static bool rgbCompatible(const DocumentSnapshot &,const DocumentSnapshot &);

@@ -201,6 +201,9 @@ void bind_contrast_apply(py::module_ &m) {
     .def("set_range",&RgbContrastSessionEditor::set_range,py::arg("minimum"),py::arg("maximum"),py::arg("whole_plane")=false)
     .def("set_channels",[](RgbContrastSessionEditor &v,py::object channels){v.set_channels(integer<int>(std::move(channels)));},py::arg("channels"))
     .def("promote",&RgbContrastSessionEditor::promote)
+    .def("set_saved_stage",[](RgbContrastSessionEditor &v,py::object visit,py::object stage,const RgbContrastApplyOptions &options){v.set_saved_stage(integer<std::size_t>(visit),integer<std::size_t>(stage),options);},py::arg("visit"),py::arg("stage"),py::arg("options"))
+    .def("remove_saved_stage",[](RgbContrastSessionEditor &v,py::object visit,py::object stage){v.remove_saved_stage(integer<std::size_t>(visit),integer<std::size_t>(stage));},py::arg("visit"),py::arg("stage"))
+    .def("move_saved_stage",[](RgbContrastSessionEditor &v,py::object visit,py::object stage,py::object destination){v.move_saved_stage(integer<std::size_t>(visit),integer<std::size_t>(stage),integer<std::size_t>(destination));},py::arg("visit"),py::arg("stage"),py::arg("destination"))
     .def("reset",&RgbContrastSessionEditor::reset)
     .def("set_entire_stack",[](RgbContrastSessionEditor &v,py::object enabled){if(!py::isinstance<py::bool_>(enabled))throw py::type_error("enabled requires bool");v.set_entire_stack(enabled.cast<bool>());},py::arg("enabled"))
     .def("set_limits",&RgbContrastSessionEditor::set_limits,py::arg("limits"));

@@ -134,8 +134,11 @@ The main panel now exposes explicit same-component stage creation through
 **Keep current adjustment**. It freezes mapping/selection and starts an identity
 draft without publishing source pixels. Native admission is atomic; Reset and
 Apply retain the saved stage. See [stage authoring](RGB_STAGE_AUTHORING.md).
-Earlier stage selection/editing/reordering/deletion and arbitrary visit authoring
-remain open, alongside real transition-input qualification.
+Saved stage selection, mapping edits, within-visit ordering and deletion are now
+available through the admitted native editor and shared panel. The final live
+draft and historical visit membership are protected. Historical geometry editing,
+cross-visit movement and arbitrary visit authoring remain open, alongside real
+transition-input qualification. See `reviews/p12b-rgb-stage-edit001.json`.
 
 ## Observed behavior
 
