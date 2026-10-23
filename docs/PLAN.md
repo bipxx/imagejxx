@@ -1,5 +1,18 @@
 # ImageJ and Fiji gap closure plan
 
+**Native enlargement geometry, 2026-10-23 (work in progress):**
+The C++/Python SelectionEditor now supplies admitted, cancellable pixel-distance
+Enlarge/Shrink geometry. It matches 144 actual ImageJ 1.54r observations, including
+fractional rounding, analytic bounds, byte/float EDM and collapse preservation.
+Native rotated/style/resource/invalid-input checks and an empty-raster regression
+bring the new Python set to 181. Windows/Linux each pass 7,436 installed checks,
+13 native groups, the installed SDK consumer and three standalone app probes,
+with zero failures/errors/skips. This is the
+geometry service: scientific dialogs, calibrated units/defaults, complete command
+records/replay and off-grid irregular result retention remain required. No family
+status or historical Auto evidence is reclassified. See
+[selection enlargement](parity/SELECTION_ENLARGEMENT.md).
+
 **Native scientific Invert Selection, 2026-10-23 (work in progress):**
 The shared editor now complements scientific XY areas through the bounded C++
 selection-command service. No-selection inversion selects the image; non-area

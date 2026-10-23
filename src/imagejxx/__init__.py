@@ -152,6 +152,8 @@ from ._native import BinaryMorphologyOptions as BinaryMorphologyOptions
 from ._native import ConversionOptions as ConversionOptions
 from ._native import (
     SelectionEditor as SelectionEditor,
+    SelectionEditLimits as SelectionEditLimits,
+    SelectionEnlargementEstimate as SelectionEnlargementEstimate,
     SelectionHandle as SelectionHandle,
     SelectionHandleKind as SelectionHandleKind,
     SelectionFrame as SelectionFrame,

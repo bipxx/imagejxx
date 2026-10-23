@@ -4,6 +4,15 @@ The original imagejxx C++ and Python code is licensed under MIT (see `LICENSE`).
 No ImageJ Java source, Fiji plugin source, JARs or pretrained models are redistributed.
 Non-commercial, research-only, unlicensed and unreviewed components are excluded.
 
+The native selection-enlargement compatibility implementation follows the
+public-domain ImageJ 1.54r RoiEnlarger and EDM behavior, including Michael
+Schmid's EDM candidate propagation. The C++ implementation is original imagejxx
+code; no ImageJ Java source or classes are included in product distributions.
+The reviewed upstream source/class fingerprints and license evidence are recorded
+in `docs/parity/reviews/p12g-selection-enlarge001.json`. ImageJ's public-domain
+statement is available at https://imagej.net/ij/disclaimer.html.
+
+
 The headless native preferences and scientific session codecs privately compile **nlohmann/json 3.12.0**
 under MIT. Its complete reviewed modular headers and license are retained in
 `third_party/nlohmann_json`, with exact input fingerprints in `SOURCE.json`.

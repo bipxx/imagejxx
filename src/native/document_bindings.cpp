@@ -12,6 +12,7 @@
 
 namespace py = pybind11;
 using namespace imagejxx;
+ExecutionControl axis_range_python_control(std::shared_ptr<CancellationToken>,py::object,py::object);
 namespace {
 SelectionBooleanOperation boolean_operation(const std::string &operation) {
   if (operation == "union")
@@ -209,6 +210,15 @@ void bind_document(py::module_ &m) {
       .def_readonly("kind", &SelectionHandle::kind)
       .def_readonly("index", &SelectionHandle::index)
       .def_readonly("position", &SelectionHandle::position);
+  py::class_<SelectionEditLimits>(m,"SelectionEditLimits")
+      .def(py::init<>())
+      .def_readwrite("max_xy_pixels",&SelectionEditLimits::max_xy_pixels)
+      .def_readwrite("max_vertices",&SelectionEditLimits::max_vertices)
+      .def_readwrite("max_working_bytes",&SelectionEditLimits::max_working_bytes);
+  py::class_<SelectionEnlargementEstimate>(m,"SelectionEnlargementEstimate")
+      .def_readonly("rounded_pixels",&SelectionEnlargementEstimate::rounded_pixels)
+      .def_readonly("padded_pixels",&SelectionEnlargementEstimate::padded_pixels)
+      .def_readonly("working_bytes",&SelectionEnlargementEstimate::working_bytes);
   py::class_<SelectionEditor>(m, "SelectionEditor")
       .def(py::init([](Selection selection, std::array<int, 2> shape) {
              return SelectionEditor(std::move(selection), shape[1], shape[0]);
@@ -219,6 +229,15 @@ void bind_document(py::module_ &m) {
           "selection",
           [](const SelectionEditor &editor) { return editor.selection(); })
       .def_property_readonly("bounds", &SelectionEditor::bounds)
+      .def("estimate_enlargement",[](const SelectionEditor &editor,double pixels,SelectionEditLimits limits){
+        py::gil_scoped_release release;return editor.estimate_enlargement(pixels,limits);
+      },py::arg("pixels"),py::arg("limits")=SelectionEditLimits{})
+      .def("enlarged",[](const SelectionEditor &editor,double pixels,SelectionEditLimits limits,
+          std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint){
+        const auto control=axis_range_python_control(std::move(cancellation),std::move(progress),std::move(checkpoint));
+        py::gil_scoped_release release;return editor.enlarged(pixels,limits,control);
+      },py::arg("pixels"),py::arg("limits")=SelectionEditLimits{},py::kw_only(),
+        py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none())
       .def("handles", py::overload_cast<>(
           &SelectionEditor::handles, py::const_))
       .def("rotation_handle", &SelectionEditor::rotation_handle,

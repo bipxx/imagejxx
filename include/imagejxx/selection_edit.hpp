@@ -24,6 +24,10 @@ struct SelectionEditLimits {
   std::size_t max_vertices = 65536;
   std::size_t max_working_bytes = 268435456;
 };
+struct SelectionEnlargementEstimate {
+  int rounded_pixels = 0;
+  std::size_t padded_pixels = 0, working_bytes = 0;
+};
 // Immutable geometry operations. Coordinates are image-cell boundaries, as in
 // Selection. This class stages geometry; the caller commits a document edit.
 class SelectionEditor {
@@ -99,6 +103,16 @@ public:
                          std::array<double, 2> size, double degrees,
                          const SelectionEditLimits &limits,
                          const ExecutionControl &control = {}) const;
+  // ImageJ-compatible pixel distance: half-up integer rounding, analytic
+  // rectangle/oval bounds, byte EDM below |distance|=256 and float EDM above.
+  // Irregular results are clipped packed masks on this editor's XY grid.
+  // A completely erased ROI retains its original geometry. No dataset IO.
+  // The estimate admits geometry/copies, padded raster/EDM/buffers and result;
+  // caller-owned editor, document/history and later serialization are excluded.
+  SelectionEnlargementEstimate estimate_enlargement(
+      double pixels, const SelectionEditLimits &limits = {}) const;
+  Selection enlarged(double pixels, const SelectionEditLimits &limits = {},
+                     const ExecutionControl &control = {}) const;
   Selection properties(double width, const MetadataObject &patch = {}) const;
   Selection roi_style(const MetadataObject &patch) const;
 

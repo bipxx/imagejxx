@@ -839,4 +839,180 @@ Selection SelectionEditor::box_geometry(
         return editor.box_geometry(center, size, degrees);
       });
 }
+namespace {
+struct EnlargementPlan {
+  SelectionEnlargementEstimate estimate;
+  int width=0,height=0;
+  double left=0,top=0,right=0,bottom=0;
+  bool analytic=false,unchanged=false,byte_edm=false;
+};
+EnlargementPlan enlargement_plan(const Selection &selection,int width,int height,
+    std::array<double,4> bounds,bool has_bounds,double pixels,
+    const SelectionEditLimits &limits,const ExecutionControl &control) {
+  geometry_preflight(selection,width,height,limits,control);
+  require_finite(pixels,"Selection enlargement distance");
+  const bool analytic=selection.kind=="rectangle" || selection.kind=="ellipse" || selection.kind=="rounded_rectangle";
+  if(!analytic && selection.kind!="polygon" && selection.kind!="freehand" &&
+      selection.kind!="rotated_rectangle" && selection.kind!="rotated_ellipse" &&
+      selection.kind!="rotated_rounded_rectangle" && selection.kind!="mask")
+    throw std::invalid_argument("Selection enlargement requires an area selection");
+  const double rounded=std::floor(pixels+.5);
+  if(std::abs(rounded)>std::numeric_limits<int>::max()/4)
+    throw std::invalid_argument("Selection enlargement distance exceeds integer range");
+  EnlargementPlan plan;plan.estimate.rounded_pixels=static_cast<int>(rounded);
+  plan.analytic=analytic;plan.byte_edm=std::abs(pixels)<256;
+  plan.unchanged=pixels==0 || !has_bounds;
+  GeometryStorage storage(limits.max_working_bytes,control);
+  storage.add(sizeof(Selection));storage.add(selection.kind.size());
+  storage.add(geometry_multiply(selection.points.size(),sizeof(selection.points[0])));
+  storage.object(selection.attributes);storage.add(selection.packed_mask().size());
+  // Frozen geometry, result and intermediate/return copies; packed output can
+  // coexist with the padded raster and EDM. Allocation bookkeeping is excluded.
+  auto bytes=geometry_add(16384,geometry_multiply(6,storage.bytes()));
+  bytes=geometry_add(bytes,geometry_multiply(4,(geometry_multiply(width,height)+7)/8));
+  if(analytic && !plan.unchanged) {
+    plan.left=std::trunc(std::min(selection.points[0][0],selection.points[1][0]));
+    plan.top=std::trunc(std::min(selection.points[0][1],selection.points[1][1]));
+    plan.right=plan.left+std::ceil(std::abs(selection.points[1][0]-selection.points[0][0]));
+    plan.bottom=plan.top+std::ceil(std::abs(selection.points[1][1]-selection.points[0][1]));
+    if(plan.right-plan.left+2*rounded<=0 || plan.bottom-plan.top+2*rounded<=0)plan.unchanged=true;
+    else {
+      plan.left-=rounded;plan.top-=rounded;plan.right+=rounded;plan.bottom+=rounded;
+      for(double value:{plan.left,plan.top,plan.right,plan.bottom})
+        if(value<std::numeric_limits<int>::min() || value>std::numeric_limits<int>::max())
+          throw std::invalid_argument("Enlarged selection bounds exceed integer range");
+    }
+  } else if(!plan.unchanged) {
+    const double margin=rounded>=0?rounded+1:1;
+    plan.left=std::floor(bounds[0])-margin;plan.top=std::floor(bounds[1])-margin;
+    plan.right=std::ceil(bounds[2])+margin;plan.bottom=std::ceil(bounds[3])+margin;
+    const double pw=plan.right-plan.left,ph=plan.bottom-plan.top;
+    // Keep ImageJ's signed squared-distance arithmetic in its valid domain.
+    if(pw<=0 || ph<=0 || pw>32767 || ph>32767)
+      throw std::length_error("Enlargement padded EDM dimensions exceed 32767");
+    plan.width=static_cast<int>(pw);plan.height=static_cast<int>(ph);
+    plan.estimate.padded_pixels=geometry_multiply(plan.width,plan.height);
+    if(plan.estimate.padded_pixels>limits.max_xy_pixels)
+      throw std::length_error("Enlargement padded raster exceeds pixel limit");
+    // Conservative simultaneous raster/rounded-path scratch, float EDM, two
+    // point-row buffers and packed return staging. No TCZ sample volume exists.
+    bytes=geometry_add(bytes,geometry_multiply(64,plan.estimate.padded_pixels));
+    bytes=geometry_add(bytes,geometry_multiply(32,plan.width));
+    bytes=geometry_add(bytes,512*1024);
+  }
+  plan.estimate.working_bytes=bytes;
+  if(bytes>limits.max_working_bytes)
+    throw std::length_error("Selection enlargement working limit exceeded");
+  geometry_canceled(control);return plan;
+}
+
+// Native implementation of the nearest-background candidate propagation used
+// by the reviewed public-domain ImageJ 1.54r EDM. Float rounding and candidate
+// tie order are intentional; a mathematically exact EDT differs for rare large
+// distances and does not replace the ImageJ byte/float threshold conventions.
+std::vector<float> enlargement_edm(const Image &mask,bool grow) {
+  const auto count=mask.pixels.size();std::vector<float> distance(count);
+  using Point=std::array<int,2>;const Point none{-1,-1};
+  std::array<std::vector<Point>,2> rows{
+      std::vector<Point>(mask.width,none),std::vector<Point>(mask.width,none)};
+  const auto seed=[&](std::size_t i){return (mask.pixels[i]!=0)==grow;};
+  const KernelStage initial("Enlarge EDM initialization",count);
+  for(std::size_t i=0;i<count;++i){initial.periodic(i);distance[i]=seed(i)?0:std::numeric_limits<float>::max();}
+  initial.finish();
+  for(int vertical:{1,-1}) {
+    for(auto &row:rows)std::fill(row.begin(),row.end(),none);
+    const KernelStage stage(vertical==1?"Enlarge EDM forward":"Enlarge EDM backward",count);
+    std::size_t visited=0;
+    for(int y=vertical==1?0:mask.height-1;y>=0 && y<mask.height;y+=vertical) {
+      for(int horizontal:{1,-1}) {
+        auto &row=rows[horizontal==1?0:1];Point previous=none,diagonal=none;
+        for(int x=horizontal==1?0:mask.width-1;x>=0 && x<mask.width;x+=horizontal) {
+          stage.periodic(visited++/2);
+          const auto i=static_cast<std::size_t>(y)*mask.width+x;
+          const auto old=row[x];
+          if(seed(i))row[x]={x,y};
+          else {
+            auto nearest=old;int best=std::numeric_limits<int>::max();
+            const auto consider=[&](Point point){
+              if(point==none)return;
+              const int dx=x-point[0],dy=y-point[1],square=dx*dx+dy*dy;
+              if(square<best){best=square;nearest=point;}
+            };
+            consider(old);if(diagonal!=old)consider(diagonal);if(previous!=diagonal)consider(previous);
+            row[x]=nearest;distance[i]=std::min(distance[i],static_cast<float>(best));
+          }
+          previous=row[x];diagonal=old;
+        }
+      }
+    }
+    stage.finish();
+  }
+  const KernelStage finish("Enlarge EDM distances",count);
+  for(std::size_t i=0;i<count;++i){finish.periodic(i);distance[i]=std::sqrt(distance[i]);}
+  finish.finish();return distance;
+}
+}
+
+SelectionEnlargementEstimate SelectionEditor::estimate_enlargement(
+    double pixels,const SelectionEditLimits &limits) const {
+  return enlargement_plan(selection_,width_,height_,bounds_,has_bounds_,pixels,limits,{}).estimate;
+}
+Selection SelectionEditor::enlarged(double pixels,const SelectionEditLimits &limits,
+                                   const ExecutionControl &control) const {
+  // Freeze scalar limits/control before callbacks; preflight borrows geometry
+  // and performs no image allocation or user callback.
+  const auto frozen_limits=limits;const auto frozen_control=control;
+  const auto plan=enlargement_plan(selection_,width_,height_,bounds_,has_bounds_,pixels,frozen_limits,frozen_control);
+  ExecutionScope scope(frozen_control);kernel_checkpoint();execution_progress(0,1);kernel_checkpoint();
+  const auto source=selection_;
+  const auto finish=[&](Selection result){kernel_checkpoint();execution_progress(1,1);kernel_checkpoint();return result;};
+  if(plan.unchanged)return finish(source);
+  if(plan.analytic) {
+    auto attributes=source.attributes;attributes.erase("corner_diameter");
+    Selection result(source.kind=="ellipse"?"ellipse":"rectangle",
+        {{plan.left,plan.top},{plan.right,plan.bottom}},source.width);
+    result.attributes=std::move(attributes);return finish(std::move(result));
+  }
+  Image mask(plan.width,plan.height,1,PixelType::UInt8);
+  if(source.kind=="mask") {
+    const KernelStage stage("Enlarge packed source",static_cast<std::size_t>(width_)*height_);
+    for(int y=0;y<height_;++y)for(int x=0;x<width_;++x) {
+      const auto i=static_cast<std::size_t>(y)*width_+x;stage.periodic(i);
+      if(bit(source,i))mask.at(static_cast<int>(x-plan.left),static_cast<int>(y-plan.top))=255;
+    }
+    stage.finish();
+  } else {
+    auto shifted=source;
+    for(auto &point:shifted.points){kernel_checkpoint_periodic();point[0]-=plan.left;point[1]-=plan.top;}
+    mask=shifted.mask(plan.width,plan.height);
+  }
+  bool occupied=false;
+  const KernelStage membership("Enlarge source membership",mask.pixels.size());
+  for(std::size_t i=0;i<mask.pixels.size();++i){membership.periodic(i);occupied|=mask.pixels[i]!=0;}
+  membership.finish();
+  if(!occupied)return finish(source);
+  const bool grow=plan.estimate.rounded_pixels>=0;
+  auto distances=enlargement_edm(mask,grow);
+  const auto count=static_cast<std::size_t>(width_)*height_;
+  std::vector<unsigned char> packed((count+7)/8,0);bool any=false;
+  const KernelStage stage("Enlarge result",distances.size());
+  for(int y=0;y<plan.height;++y)for(int x=0;x<plan.width;++x) {
+    const auto i=static_cast<std::size_t>(y)*plan.width+x;stage.periodic(i);
+    float distance=distances[i];
+    if(plan.byte_edm)distance=std::floor(std::min(255.f,distance+.5f));
+    const bool selected=grow ? distance<=plan.estimate.rounded_pixels : distance>=-plan.estimate.rounded_pixels+1;
+    any|=selected;
+    const double gx=x+plan.left,gy=y+plan.top;
+    if(selected && gx>=0 && gx<width_ && gy>=0 && gy<height_) {
+      const auto p=static_cast<std::size_t>(gy)*width_+static_cast<std::size_t>(gx);
+      packed[p/8]|=static_cast<unsigned char>(1u<<(7-p%8));
+    }
+  }
+  stage.finish();
+  if(!any)return finish(source); // ImageJ preserves the ROI if shrinking erases it.
+  auto result=Selection::from_packed_mask(width_,height_,std::move(packed));
+  result.width=source.width;result.attributes=source.attributes;result.attributes.erase("corner_diameter");
+  result.validate(width_,height_);return finish(std::move(result));
+}
+
 } // namespace imagejxx
