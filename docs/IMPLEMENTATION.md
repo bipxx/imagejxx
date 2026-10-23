@@ -1,5 +1,18 @@
 # Implementation progress
 
+**Saved ROI path commands, 2026-10-23 (scoped integration):**
+V4 saved-row geometry commands retain full continuous paths in original and
+replacement records. Capture/replay/rebind, source guards, atomic publication,
+no-op and undo/redo use the existing native controller. Metadata-only accounting
+includes path storage and handles; opcode/control bounds remain consistent
+under close-heavy paths and very generous caller limits. Both hosts pass 2,629
+installed Python checks, 20 native groups, an 18-check installed SDK client
+using a throwing PlaneSource, and paired regional ImGui readers. No capability
+family is closed. General workflow saved-row intent, planar paths, native
+ImageJ mapping and desktop path tools remain required. See
+[the contract](parity/PATH_ROI_COMMAND.md) and
+[the scoped receipt](parity/reviews/p12x-path-command001.json).
+
 **Native path selections and V5 sessions, 2026-10-23 (scoped integration):**
 Native selections retain immutable curves, holes, islands and off-canvas
 contours through moves, rotations, control-point edits and V5 sessions. Metadata

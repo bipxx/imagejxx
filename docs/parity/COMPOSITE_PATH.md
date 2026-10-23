@@ -34,7 +34,7 @@ codec, with its documented binary32 wire quantization.
 This foundation is independent of document selection storage. Native path
 selections, geometry editing, continuous hit testing and V5 session transport
 are now described in [the path selection contract](PATH_SELECTION.md). Desktop
-path tools, saved-row/workflow command migration, planar path annotations and
+path tools, saved-row UI/workflow integration, planar path annotations and
 continuous path Boolean operations remain required. The interchange-record
 transform above still uses an explicit processing mask. No capability family
 is marked complete by the foundation packet.

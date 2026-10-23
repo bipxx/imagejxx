@@ -1,5 +1,6 @@
 #include <imagejxx/saved_roi_geometry.hpp>
 #include <imagejxx/selection_edit.hpp>
+#include <imagejxx/composite_path.hpp>
 
 #include "kernel_control.hpp"
 #include "saved_roi_geometry_internal.hpp"
@@ -160,7 +161,11 @@ bool same_geometry_style(const Selection &a, const Selection &b) {
 bool area_kind(const std::string &kind) {
   return kind == "rounded_rectangle" || kind == "rotated_rounded_rectangle" || kind == "rectangle" || kind == "ellipse" ||
       kind == "rotated_rectangle" || kind == "rotated_ellipse" ||
-      kind == "polygon" || kind == "freehand" || kind == "mask" || kind == "region";
+      kind == "polygon" || kind == "freehand" || kind == "mask" || kind == "region" || kind == "path";
+}
+std::size_t geometry_vertices(const Selection &selection) {
+  return selection.is_path() ?
+      (selection.path_commands().size()-selection.path_geometry().segment_count())/2 : selection.points.size();
 }
 Size selection_size(const Selection &selection, DatasetShape shape,
                     const SavedRoiGeometryLimits &limits, bool require_area,
@@ -168,7 +173,7 @@ Size selection_size(const Selection &selection, DatasetShape shape,
 
   if (require_area && !area_kind(selection.kind))
     invalid("Saved ROI geometry requires an area selection");
-  within(selection.points.size(), limits.max_vertices);
+  within(geometry_vertices(selection), limits.max_vertices);
   const auto point_bytes = mul(selection.points.size(), sizeof(std::array<double, 2>));
   within(point_bytes, limits.max_working_bytes);
   auto attributes = MetadataSize(limits).object(selection.attributes);
@@ -192,6 +197,12 @@ Size selection_size(const Selection &selection, DatasetShape shape,
       add(256, add(string_wire(selection.kind.size()),
                    mul(selection.points.size(), 96))),
       add(16, mul(selection.points.size(), 3))};
+  if(selection.is_path()) {
+    const auto count=selection.path_commands().size();
+    result.native=add(result.native,add(sizeof(ImageJCompositePath)+sizeof(std::vector<double>),mul(count,sizeof(double))));
+    result.wire=add(result.wire,add(32,mul(count,32)));
+    result.nodes=add(result.nodes,add(2,count));
+  }
   if(selection.is_region()) {
     result.wire=add(result.wire,128);
     result.nodes=add(result.nodes,16);
@@ -321,7 +332,7 @@ SavedRoiGeometryEstimate layout(const DocumentSnapshot &source,
                                    sizeof(std::complex<double>))));
   e.original_selection_bytes = original_size.native;
   e.replacement_selection_bytes = replacement_size.native;
-  e.vertices = add(original.selection.points.size(), replacement.points.size());
+  e.vertices = add(geometry_vertices(original.selection), geometry_vertices(replacement));
   const auto original_roi = roi_size(original, shape, limits, true);
   // Structural upper bounds for the normalized seven-field record and its
   // canonical nativeV3 nested values; never discover size by formatting it.
@@ -392,12 +403,32 @@ void fields(const MetadataObject &object, std::initializer_list<const char *> na
     if (!object.count(name)) invalid("Saved ROI record has missing or unknown fields");
 }
 void preflight_selection_wire(const MetadataObject &value, DatasetShape shape,
-                             const SavedRoiGeometryLimits &limits,bool regional) {
+                             const SavedRoiGeometryLimits &limits,bool regional,bool paths) {
   const auto kind_entry = value.find("kind");
   if (kind_entry == value.end()) invalid("Missing saved ROI selection kind");
   const auto &kind = text_value(kind_entry->second);
   if (!area_kind(kind)) invalid("Saved ROI record requires an area");
-  if(kind=="region") {
+  if(kind=="path") {
+    if(!paths)invalid("Path saved ROI geometry requires command version 4");
+    fields(value,{"kind","points","width","attributes","path"});
+    const auto &path=array_value(value.at("path"));
+    within(mul(path.size(),sizeof(double)),limits.max_working_bytes);
+    within(mul(path.size(),sizeof(double)),ImageJRoiLimits{}.max_bytes);
+    if(path.empty())invalid("Empty saved ROI path");
+    bool active=false;std::size_t segments=0,vertices=0;
+    for(std::size_t at=0;at<path.size();) {
+      const double opcode=number_value(path[at++]);
+      if(opcode<0 || opcode>4 || std::floor(opcode)!=opcode)invalid("Invalid saved ROI path opcode");
+      const int op=int(opcode);const auto n=op==4?0u:op==3?6u:op==2?4u:2u;
+      if(n>path.size()-at)invalid("Truncated saved ROI path segment");
+      if(op!=0 && !active)invalid("Saved ROI path must begin with move");
+      active=true;within(++segments,ImageJRoiLimits{}.max_vertices);
+      vertices=add(vertices,n/2);within(vertices,limits.max_vertices);
+      for(unsigned i=0;i<n;++i)if(std::abs(number_value(path[at+i]))>1e9)
+        invalid("Saved ROI path coordinate range");
+      at+=n;
+    }
+  } else if(kind=="region") {
     if(!regional)invalid("Regional saved ROI geometry requires command version 3");
     fields(value,{"kind","points","width","attributes","shape","mask","origin"});
     const auto &origin=array_value(value.at("origin"));
@@ -424,6 +455,7 @@ void preflight_selection_wire(const MetadataObject &value, DatasetShape shape,
   if (number_value(value.at("width")) <= 0) invalid("Saved ROI width must be positive");
   (void)object_value(value.at("attributes"));
   if(kind=="region" && !points.empty())invalid("Regional saved ROI cannot contain points");
+  if(kind=="path" && !points.empty())invalid("Path saved ROI cannot contain points");
   if (kind == "mask" || kind=="region") {
     const auto &mask_shape = array_value(value.at("shape"));
     if(mask_shape.size()!=2)invalid("Saved ROI mask requires two dimensions");
@@ -449,13 +481,14 @@ struct RecordView {
   const MetadataObject *replacement;
   Size size;
   bool regional;
+  bool paths;
 };
 RecordView inspect_record(const MetadataObject &record, const SavedRoiGeometryLimits &limits) {
   limits_valid(limits);
   const auto size = MetadataSize(limits).object(record);
   within(size.wire, limits.max_record_bytes);
   fields(record, {"schema", "version", "operation", "source", "position", "original", "replacement"});
-  if (text_value(record.at("schema")) != schema || (uint_value(record.at("version")) != 1 && uint_value(record.at("version")) != 2 && uint_value(record.at("version")) != 3) ||
+  if (text_value(record.at("schema")) != schema || (uint_value(record.at("version")) != 1 && uint_value(record.at("version")) != 2 && uint_value(record.at("version")) != 3 && uint_value(record.at("version")) != 4) ||
       text_value(record.at("operation")) != operation)
     invalid("Unsupported saved ROI command schema/version/operation");
   const auto &source = object_value(record.at("source"));
@@ -498,15 +531,16 @@ RecordView inspect_record(const MetadataObject &record, const SavedRoiGeometryLi
   const auto &replacement = object_value(record.at("replacement"));
   const auto version=uint_value(record.at("version"));
   const auto &old_selection=object_value(roi.at("selection"));
-  preflight_selection_wire(old_selection, shape, limits,version==3);
-  preflight_selection_wire(replacement, shape, limits,version==3);
+  preflight_selection_wire(old_selection, shape, limits,version>=3,version==4);
+  preflight_selection_wire(replacement, shape, limits,version>=3,version==4);
+  const bool hasPath=text_value(old_selection.at("kind"))=="path" || text_value(replacement.at("kind"))=="path";
   const bool hasRegion=text_value(old_selection.at("kind"))=="region" || text_value(replacement.at("kind"))=="region";
   const auto rounded = [](const MetadataObject &selection) {
     const auto &kind = text_value(selection.at("kind"));
     return kind == "rounded_rectangle" || kind == "rotated_rounded_rectangle";
   };
   const bool hasRounded = rounded(object_value(roi.at("selection"))) || rounded(replacement);
-  if (uint_value(record.at("version")) != (hasRegion ? 3u : hasRounded ? 2u : 1u))
+  if (uint_value(record.at("version")) != (hasPath ? 4u : hasRegion ? 3u : hasRounded ? 2u : 1u))
     invalid("Saved ROI record version does not match geometry");
   const auto &position = object_value(record.at("position"));
   fields(position, {"t", "c", "z"});
@@ -521,11 +555,15 @@ RecordView inspect_record(const MetadataObject &record, const SavedRoiGeometryLi
   return {shape, pixel_type, sample_policy, id,
       {uint_value(source.at("pixels_revision")), uint_value(source.at("metadata_revision")),
        uint_value(source.at("selection_revision")), 0},
-      p, count, index, &roi, &replacement, size, version==3};
+      p, count, index, &roi, &replacement, size, version>=3,version==4};
 }
-SessionLimits codec_limits(const SavedRoiGeometryLimits &limits) {
+SessionLimits codec_limits(const SavedRoiGeometryLimits &limits,bool paths) {
   SessionLimits result;
-  result.max_nodes = limits.max_vertices;
+  // A segment contributes at most three control pairs. Clamp a generous caller
+  // cap to the native path domain before deriving scalar counts, avoiding
+  // overflow for an otherwise valid request with max_vertices == SIZE_MAX.
+  const auto segments=ImageJRoiLimits{}.max_vertices;
+  result.max_nodes = paths ? add(segments,mul(2,std::min(limits.max_vertices,mul(3,segments)))) : limits.max_vertices;
   result.max_samples = limits.max_xy_pixels;
   result.max_json_bytes = limits.max_record_bytes;
   result.max_encoded_bytes = limits.max_record_bytes;
@@ -539,9 +577,9 @@ struct Decoded {
 };
 Decoded decode_record(const RecordView &view, const SavedRoiGeometryLimits &limits) {
   auto original = detail::selection_codec::decode_roi(
-      detail::session_metadata::to_json(*view.roi), codec_limits(limits),view.regional);
+      detail::session_metadata::to_json(*view.roi), codec_limits(limits,view.paths),view.regional,view.paths);
   auto replacement = detail::selection_codec::decode_selection(
-      detail::session_metadata::to_json(*view.replacement), codec_limits(limits),view.regional);
+      detail::session_metadata::to_json(*view.replacement), codec_limits(limits,view.paths),view.regional,view.paths);
   // Only callback-free state reconstructed from wire crosses this boundary.
   // Match the session codec's public invalid-wire exception contract without
   // intercepting callback exceptions or later live-owner binding failures.
@@ -562,10 +600,11 @@ MetadataObject encode_record(const DocumentSnapshot &source, std::size_t index,
   const auto r = source.revisions();
   const auto p = current_position(source);
   const bool regional=original.selection.is_region() || replacement.is_region();
+  const bool paths=original.selection.is_path() || replacement.is_path();
   MetadataArray dimensions;
   dimensions.reserve(6);
   for (const auto value : shape.dimensions()) dimensions.emplace_back(value);
-  return {{"schema", std::string(schema)}, {"version", regional ? 3 : original.selection.is_rounded_box() || replacement.is_rounded_box() ? 2 : 1}, {"operation", std::string(operation)},
+  return {{"schema", std::string(schema)}, {"version", paths ? 4 : regional ? 3 : original.selection.is_rounded_box() || replacement.is_rounded_box() ? 2 : 1}, {"operation", std::string(operation)},
       {"source", metadata_object({{"id", source.id()}, {"pixels_revision", r.pixels},
           {"metadata_revision", r.metadata}, {"selection_revision", r.selection},
           {"shape", metadata_array(std::move(dimensions))},
@@ -574,8 +613,8 @@ MetadataObject encode_record(const DocumentSnapshot &source, std::size_t index,
           {"roi_count", std::uint64_t(source.data().rois.size())}})},
       {"position", metadata_object({{"t", p.t}, {"c", p.c}, {"z", p.z}})},
       {"original", metadata_object({{"index", std::uint64_t(index)},
-          {"roi", detail::session_metadata::from_json(detail::selection_codec::encode_roi(original,regional))}})},
-      {"replacement", detail::session_metadata::from_json(detail::selection_codec::encode_selection(replacement,regional))}};
+          {"roi", detail::session_metadata::from_json(detail::selection_codec::encode_roi(original,regional,paths))}})},
+      {"replacement", detail::session_metadata::from_json(detail::selection_codec::encode_selection(replacement,regional,paths))}};
 }
 void canceled(const ExecutionControl &control) {
   if (control.cancellation && control.cancellation->canceled()) throw OperationCancelled();

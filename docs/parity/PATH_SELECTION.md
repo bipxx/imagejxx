@@ -30,18 +30,19 @@ previous selections and saved ROI rows. V5 sessions encode a strict five-field
 path selection with the entire command stream; V3 and V4 remain unchanged for
 earlier geometry. V5 requires at least one native path and also admits regions.
 Its framing, structural limits, typed sample policy and publication guarantees
-follow the native session codec. Legacy dictionary adapters and command codecs
-refuse paths until they have an explicit path-capable version. Auto/RGB command
+follow the native session codec. Legacy dictionary adapters and older command
+codecs refuse paths until they have an explicit path-capable version. Saved-row
+geometry commands now have [V4 path support](PATH_ROI_COMMAND.md). Auto/RGB command
 admission and regional Boolean admission likewise refuse unsupported path
 contracts. Existing conversion metadata budgets include retained path storage.
 
 This packet does not add desktop path drawing/editing, native path ImageJ
-import/export mapping, path-enabled workflow/saved-row/filter command records,
+import/export mapping, path-enabled workflow/filter command records,
 planar path annotations, continuous Boolean algebra, curve segment insertion,
 or affine box-resize controls. Those remain required; no capability family is
-complete. Next migrate the shared saved-row/workflow command and planar codecs
+complete. Next migrate the workflow and planar codecs
 with complete source/equation validation, then route desktop controls and both
-launch modes through those typed commands. Continuous Boolean operations need
+launch modes through those typed commands and saved-row V4. Continuous Boolean operations need
 independent curve/hole/island reference evidence.
 
 Validation uses independent polynomial fill expectations, transformed points,

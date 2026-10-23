@@ -1,5 +1,22 @@
 # ImageJ and Fiji gap closure plan
 
+**Saved ROI path commands, 2026-10-23 (scoped integration):**
+Command V4 carries complete original/replacement curves through capture,
+validation, strict replay, explicit rebind and atomic saved-row publication.
+Path control storage, command scalars, record nodes and source annotations are
+admitted without rasterization or source reads. Close-heavy paths and generous
+vertex caps now use a consistent bounded codec allowance. V1/V2/V3 remain
+closed to paths; unrelated path carriers do not upgrade legacy records.
+Both hosts pass 2,629 installed Python checks (55 new), 20 native groups, an
+18-check installed C++ client with a throwing PlaneSource, and paired regional
+ImGui readers. All previous 2,522 focused IDs remain included. No dependency
+is added. Original requirements and historical verification records remain
+unchanged; the historical Auto fingerprint gate stays open. Next implement
+typed native workflow saved-row intent and planar path codecs, then complete
+native ImageJ mapping and desktop path controls through these shared contracts.
+See [the contract](parity/PATH_ROI_COMMAND.md) and
+[the scoped receipt](parity/reviews/p12x-path-command001.json).
+
 **Native path selections and V5 sessions, 2026-10-23 (scoped integration):**
 Immutable continuous paths now survive native selection translation, rotation,
 control-point edits, metadata-edit history and active/previous/saved session
