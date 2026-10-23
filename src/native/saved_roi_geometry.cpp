@@ -5,6 +5,7 @@
 #include "saved_roi_geometry_internal.hpp"
 #include "selection_codec.hpp"
 #include "session_metadata.hpp"
+#include "regional_geometry.hpp"
 #include <algorithm>
 #include <cmath>
 #include <initializer_list>
@@ -159,13 +160,12 @@ bool same_geometry_style(const Selection &a, const Selection &b) {
 bool area_kind(const std::string &kind) {
   return kind == "rounded_rectangle" || kind == "rotated_rounded_rectangle" || kind == "rectangle" || kind == "ellipse" ||
       kind == "rotated_rectangle" || kind == "rotated_ellipse" ||
-      kind == "polygon" || kind == "freehand" || kind == "mask";
+      kind == "polygon" || kind == "freehand" || kind == "mask" || kind == "region";
 }
 Size selection_size(const Selection &selection, DatasetShape shape,
                     const SavedRoiGeometryLimits &limits, bool require_area,
                     bool validate_geometry = true) {
-  if (selection.is_region())
-    invalid("Full region saved ROI geometry commands are not integrated yet");
+
   if (require_area && !area_kind(selection.kind))
     invalid("Saved ROI geometry requires an area selection");
   within(selection.points.size(), limits.max_vertices);
@@ -174,6 +174,10 @@ Size selection_size(const Selection &selection, DatasetShape shape,
   auto attributes = MetadataSize(limits).object(selection.attributes);
   const auto packed = selection.packed_mask().size();
   within(packed, limits.max_working_bytes);
+  if(selection.is_region()) {
+    detail::validate_region_storage(selection);
+    within(mul(std::size_t(selection.mask_width()),std::size_t(selection.mask_height())),limits.max_xy_pixels);
+  }
   if (selection.kind == "mask" && validate_geometry) {
     const auto xy = xy_size(shape, limits);
     if (selection.mask_width() != shape.x || selection.mask_height() != shape.y ||
@@ -188,7 +192,11 @@ Size selection_size(const Selection &selection, DatasetShape shape,
       add(256, add(string_wire(selection.kind.size()),
                    mul(selection.points.size(), 96))),
       add(16, mul(selection.points.size(), 3))};
-  if (selection.kind == "mask") {
+  if(selection.is_region()) {
+    result.wire=add(result.wire,128);
+    result.nodes=add(result.nodes,16);
+  }
+  if (selection.is_mask()) {
     result.wire = add(result.wire, add(2, base64_size(packed)));
     result.native = add(result.native, packed);
   }
@@ -320,7 +328,7 @@ SavedRoiGeometryEstimate layout(const DocumentSnapshot &source,
   e.record_wire_bytes = add(4096, add(original_roi.wire, replacement_size.wire));
   e.record_metadata_bytes = add(e.record_wire_bytes,
       mul(add(80, add(original_roi.nodes, replacement_size.nodes)), node_bytes));
-  finish_estimate(e, original.selection.kind == "mask" || replacement.kind == "mask", limits);
+  finish_estimate(e, original.selection.is_mask() || replacement.is_mask(), limits);
   return e;
 }
 
@@ -384,12 +392,25 @@ void fields(const MetadataObject &object, std::initializer_list<const char *> na
     if (!object.count(name)) invalid("Saved ROI record has missing or unknown fields");
 }
 void preflight_selection_wire(const MetadataObject &value, DatasetShape shape,
-                             const SavedRoiGeometryLimits &limits) {
+                             const SavedRoiGeometryLimits &limits,bool regional) {
   const auto kind_entry = value.find("kind");
   if (kind_entry == value.end()) invalid("Missing saved ROI selection kind");
   const auto &kind = text_value(kind_entry->second);
   if (!area_kind(kind)) invalid("Saved ROI record requires an area");
-  if (kind == "mask") fields(value, {"kind", "points", "width", "attributes", "shape", "mask"});
+  if(kind=="region") {
+    if(!regional)invalid("Regional saved ROI geometry requires command version 3");
+    fields(value,{"kind","points","width","attributes","shape","mask","origin"});
+    const auto &origin=array_value(value.at("origin"));
+    if(origin.size()!=2)invalid("Regional saved ROI origin requires two integers");
+    for(const auto &item:origin) {
+      if(const auto n=std::get_if<std::int64_t>(&item)) {
+        if(*n<std::numeric_limits<int>::min() || *n>std::numeric_limits<int>::max())invalid("Regional saved ROI origin exceeds int32");
+      } else if(const auto positive=std::get_if<std::uint64_t>(&item)) {
+        if(*positive>std::uint64_t(std::numeric_limits<int>::max()))invalid("Regional saved ROI origin exceeds int32");
+      } else invalid("Regional saved ROI origin requires exact signed integers");
+    }
+  }
+  else if (kind == "mask") fields(value, {"kind", "points", "width", "attributes", "shape", "mask"});
   else fields(value, {"kind", "points", "width", "attributes"});
   const auto &points = array_value(value.at("points"));
   within(points.size(), limits.max_vertices);
@@ -402,12 +423,16 @@ void preflight_selection_wire(const MetadataObject &value, DatasetShape shape,
   }
   if (number_value(value.at("width")) <= 0) invalid("Saved ROI width must be positive");
   (void)object_value(value.at("attributes"));
-  if (kind == "mask") {
+  if(kind=="region" && !points.empty())invalid("Regional saved ROI cannot contain points");
+  if (kind == "mask" || kind=="region") {
     const auto &mask_shape = array_value(value.at("shape"));
-    if (mask_shape.size() != 2 || index_value(mask_shape[0]) != shape.y ||
-        index_value(mask_shape[1]) != shape.x)
+    if(mask_shape.size()!=2)invalid("Saved ROI mask requires two dimensions");
+    const auto h=index_value(mask_shape[0]),w=index_value(mask_shape[1]);
+    if(!h || !w || (kind=="mask" && (h!=shape.y || w!=shape.x)))
       invalid("Saved ROI record mask shape differs from source");
-    const auto packed = add(xy_size(shape, limits), 7) / 8;
+    const auto samples=mul(std::size_t(h),std::size_t(w));
+    within(samples,limits.max_xy_pixels);
+    const auto packed = add(samples, 7) / 8;
     if (text_value(value.at("mask")).size() != base64_size(packed))
       invalid("Saved ROI record mask length differs from source");
   }
@@ -423,13 +448,14 @@ struct RecordView {
   const MetadataObject *roi;
   const MetadataObject *replacement;
   Size size;
+  bool regional;
 };
 RecordView inspect_record(const MetadataObject &record, const SavedRoiGeometryLimits &limits) {
   limits_valid(limits);
   const auto size = MetadataSize(limits).object(record);
   within(size.wire, limits.max_record_bytes);
   fields(record, {"schema", "version", "operation", "source", "position", "original", "replacement"});
-  if (text_value(record.at("schema")) != schema || (uint_value(record.at("version")) != 1 && uint_value(record.at("version")) != 2) ||
+  if (text_value(record.at("schema")) != schema || (uint_value(record.at("version")) != 1 && uint_value(record.at("version")) != 2 && uint_value(record.at("version")) != 3) ||
       text_value(record.at("operation")) != operation)
     invalid("Unsupported saved ROI command schema/version/operation");
   const auto &source = object_value(record.at("source"));
@@ -470,15 +496,18 @@ RecordView inspect_record(const MetadataObject &record, const SavedRoiGeometryLi
   (void)text_value(roi.at("name"));
   (void)object_value(roi.at("attributes"));
   const auto &replacement = object_value(record.at("replacement"));
-  preflight_selection_wire(object_value(roi.at("selection")), shape, limits);
-  preflight_selection_wire(replacement, shape, limits);
+  const auto version=uint_value(record.at("version"));
+  const auto &old_selection=object_value(roi.at("selection"));
+  preflight_selection_wire(old_selection, shape, limits,version==3);
+  preflight_selection_wire(replacement, shape, limits,version==3);
+  const bool hasRegion=text_value(old_selection.at("kind"))=="region" || text_value(replacement.at("kind"))=="region";
   const auto rounded = [](const MetadataObject &selection) {
     const auto &kind = text_value(selection.at("kind"));
     return kind == "rounded_rectangle" || kind == "rotated_rounded_rectangle";
   };
   const bool hasRounded = rounded(object_value(roi.at("selection"))) || rounded(replacement);
-  if (uint_value(record.at("version")) != (hasRounded ? 2u : 1u))
-    invalid("Saved ROI record version does not match rounded geometry");
+  if (uint_value(record.at("version")) != (hasRegion ? 3u : hasRounded ? 2u : 1u))
+    invalid("Saved ROI record version does not match geometry");
   const auto &position = object_value(record.at("position"));
   fields(position, {"t", "c", "z"});
   PlanePosition p{index_value(position.at("t")), index_value(position.at("c")), index_value(position.at("z"))};
@@ -492,7 +521,7 @@ RecordView inspect_record(const MetadataObject &record, const SavedRoiGeometryLi
   return {shape, pixel_type, sample_policy, id,
       {uint_value(source.at("pixels_revision")), uint_value(source.at("metadata_revision")),
        uint_value(source.at("selection_revision")), 0},
-      p, count, index, &roi, &replacement, size};
+      p, count, index, &roi, &replacement, size, version==3};
 }
 SessionLimits codec_limits(const SavedRoiGeometryLimits &limits) {
   SessionLimits result;
@@ -510,9 +539,9 @@ struct Decoded {
 };
 Decoded decode_record(const RecordView &view, const SavedRoiGeometryLimits &limits) {
   auto original = detail::selection_codec::decode_roi(
-      detail::session_metadata::to_json(*view.roi), codec_limits(limits));
+      detail::session_metadata::to_json(*view.roi), codec_limits(limits),view.regional);
   auto replacement = detail::selection_codec::decode_selection(
-      detail::session_metadata::to_json(*view.replacement), codec_limits(limits));
+      detail::session_metadata::to_json(*view.replacement), codec_limits(limits),view.regional);
   // Only callback-free state reconstructed from wire crosses this boundary.
   // Match the session codec's public invalid-wire exception contract without
   // intercepting callback exceptions or later live-owner binding failures.
@@ -532,10 +561,11 @@ MetadataObject encode_record(const DocumentSnapshot &source, std::size_t index,
   const auto shape = source.data().dataset.shape();
   const auto r = source.revisions();
   const auto p = current_position(source);
+  const bool regional=original.selection.is_region() || replacement.is_region();
   MetadataArray dimensions;
   dimensions.reserve(6);
   for (const auto value : shape.dimensions()) dimensions.emplace_back(value);
-  return {{"schema", std::string(schema)}, {"version", original.selection.is_rounded_box() || replacement.is_rounded_box() ? 2 : 1}, {"operation", std::string(operation)},
+  return {{"schema", std::string(schema)}, {"version", regional ? 3 : original.selection.is_rounded_box() || replacement.is_rounded_box() ? 2 : 1}, {"operation", std::string(operation)},
       {"source", metadata_object({{"id", source.id()}, {"pixels_revision", r.pixels},
           {"metadata_revision", r.metadata}, {"selection_revision", r.selection},
           {"shape", metadata_array(std::move(dimensions))},
@@ -544,8 +574,8 @@ MetadataObject encode_record(const DocumentSnapshot &source, std::size_t index,
           {"roi_count", std::uint64_t(source.data().rois.size())}})},
       {"position", metadata_object({{"t", p.t}, {"c", p.c}, {"z", p.z}})},
       {"original", metadata_object({{"index", std::uint64_t(index)},
-          {"roi", detail::session_metadata::from_json(detail::selection_codec::encode_roi(original))}})},
-      {"replacement", detail::session_metadata::from_json(detail::selection_codec::encode_selection(replacement))}};
+          {"roi", detail::session_metadata::from_json(detail::selection_codec::encode_roi(original,regional))}})},
+      {"replacement", detail::session_metadata::from_json(detail::selection_codec::encode_selection(replacement,regional))}};
 }
 void canceled(const ExecutionControl &control) {
   if (control.cancellation && control.cancellation->canceled()) throw OperationCancelled();
@@ -608,8 +638,8 @@ SavedRoiGeometryEstimate estimate_saved_roi_geometry_preparation(
                                         retained.source_data_bytes);
   estimate.record_metadata_bytes = std::max(estimate.record_metadata_bytes, record.size.native);
   estimate.record_wire_bytes = std::max(estimate.record_wire_bytes, record.size.wire);
-  finish_estimate(estimate, command.original_roi().selection.kind == "mask" ||
-                            command.replacement().kind == "mask", limits);
+  finish_estimate(estimate, command.original_roi().selection.is_mask() ||
+                            command.replacement().is_mask(), limits);
   return estimate;
 }
 } // namespace detail
@@ -679,7 +709,7 @@ ResolvedSavedRoiGeometryCommand saved_roi_geometry_from_record(const DocumentSna
   auto estimate = layout(source, view.index, decoded.replacement, limits, false);
   estimate.record_metadata_bytes = std::max(estimate.record_metadata_bytes, view.size.native);
   estimate.record_wire_bytes = std::max(estimate.record_wire_bytes, view.size.wire);
-  finish_estimate(estimate, decoded.original.selection.kind == "mask" || decoded.replacement.kind == "mask", limits);
+  finish_estimate(estimate, decoded.original.selection.is_mask() || decoded.replacement.is_mask(), limits);
   const auto owned_source = source;
   const auto owned_record = record;
   const auto owned_limits = limits;

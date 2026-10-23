@@ -1,5 +1,24 @@
 # ImageJ and Fiji gap closure plan
 
+**Saved regional ROI commands, 2026-10-23 (scoped integration):**
+Saved row replacement now retains full regional geometry, including intrinsic
+packed extents and signed origins. Unrelated regional saved rows, active and
+Previous selections remain valid retained state. New captures use V3 when the
+original or replacement is regional; ordinary V1 and rounded V2 stay unchanged.
+Strict replay, explicit rebind, controller staging, undo and V4 sessions retain
+full frames. Shared ImGui numeric movement uses the same command path. Regional
+rotation, Boolean editing, axis/planar remapping and ROI interchange remain open.
+Windows/Linux each pass 2,211 focused installed checks (40 new, 2,171 existing),
+24 native groups, an installed SDK consumer and 15 standalone UI probes. Twelve
+saved-area budget/pointer/modifier recipes also pass through the Python UI, and
+actual numeric typing/Apply publishes a regional V3 row. Failure/error/skip
+counts are zero. Verified archives precede removal of 1,006,137,037 owned
+scratch bytes. Original requirements and historical expectations stay unchanged;
+the historical Auto fingerprint gate remains open. This focused matrix does not
+repeat the prior full 41,120-case run. Next are regional Boolean/rotation and
+pointer qualification. See [the scoped receipt](parity/reviews/p12n-saved-region001.json).
+See [the contract](parity/SAVED_REGIONAL_GEOMETRY.md).
+
 **Regional analysis and contrast, 2026-10-23 (scoped integration):**
 Histogram admission now accepts full regional geometry and projects membership
 only at the consumption canvas. Scalar Auto and scalar/RGB Apply capture V2 when

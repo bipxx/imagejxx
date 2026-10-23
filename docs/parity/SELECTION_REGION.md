@@ -86,17 +86,19 @@ Canonical storage and files:
   override is supplied. Parameter editing preserves that intent.
 - Histogram, Auto and contrast Apply now consume regional membership without
   replacing the stored geometry. Auto/Apply and RGB stack/session records use V2
-  when regional geometry is captured. Rotation, Boolean editing, saved ROI
-  geometry commands and ROI interchange still require integration. This is not
-  complete editor interoperability.
+  when regional geometry is captured. Saved row replacement now captures V3
+  for regional geometry and supports numeric movement in the shared panel.
+  Rotation, Boolean editing and ROI interchange still require integration.
+  This is not complete editor interoperability.
 - Adding the origin changes native Selection/DocumentData layout. Rebuild all
   consumers, including the scientific I/O extension, against matching headers.
 
 Remaining integration work, in dependency order:
 
-1. Integrate typed saved ROI geometry commands with full regional storage.
-   Histogram/Auto/Apply and RGB history consumers now preserve regions; extend
-   that contract through remaining editing commands and shared replay.
+1. Extend full-frame editing through rotation and Boolean operations. Saved
+   row replacement/replay and numeric movement now retain regions, alongside
+   histogram/Auto/Apply and RGB histories. Qualify regional pointer gestures and
+   the remaining geometry tools against independent reference behavior.
 2. Extend full-frame transformation/creation command codecs and source guards;
    never feed regional packed storage to a canvas-indexed V1 consumer.
 3. Make masks for filtering, histograms and display at their consumption canvas.

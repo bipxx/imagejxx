@@ -1,0 +1,509 @@
+{
+  "schema_version": 1,
+  "id": "p12n.saved-regional-geometry.001",
+  "date": "2026-10-23",
+  "state": "scoped-qualified",
+  "acceptance": false,
+  "complete_requirement_coverage": false,
+  "baseline_commit": "5a508a178a6d422df0822b2dca4a2afceb49fa30",
+  "scope": "Saved ROI replacement commands accept full regional geometry and retain intrinsic extents, signed origins and opaque attributes. Other regional saved rows, active and Previous selections remain valid source state. Captures use V3 only when original/replacement geometry is regional; V1 ordinary and V2 rounded contracts are preserved. Borrowed admission bounds intrinsic packed samples, metadata in the full record envelope, retained state, controller staging and history before callbacks or pixel reads. Strict replay, explicit rebind, source guards, exact no-op, atomic publication, undo and V4 sessions retain full geometry. Shared ImGui numeric typing and Apply publish the same V3 command without replacing the global selection. Rotation, Boolean operations, regional pointer qualification, axis/planar transforms and ImageJ ROI interchange remain open; this is not complete editor or platform acceptance.",
+  "qualification": {
+    "source_generation": "001",
+    "source_inputs": 762,
+    "matrix": "Focused saved ROI, selection, regional consumer, document and session regressions; this does not repeat the preceding 41,120-case matrix in full.",
+    "hosts": {
+      "windows": {
+        "state": "passed",
+        "installed_python_checks": 2211,
+        "new_regional_checks": 40,
+        "existing_focused_regressions": 2171,
+        "selected_previous_matrix_ids_retained": 2147,
+        "additional_existing_saved_roi_checks": 24,
+        "native_groups": 24,
+        "installed_sdk_consumers": 1,
+        "existing_standalone_ui_probes": 15,
+        "paired_saved_budget_pointer_modifier_cases": 12,
+        "actual_shared_imgui_regional_numeric_typing_and_apply_cases": 1,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0,
+        "archived_scratch_bytes": 507472875
+      },
+      "linux": {
+        "state": "passed",
+        "installed_python_checks": 2211,
+        "new_regional_checks": 40,
+        "existing_focused_regressions": 2171,
+        "selected_previous_matrix_ids_retained": 2147,
+        "additional_existing_saved_roi_checks": 24,
+        "native_groups": 24,
+        "installed_sdk_consumers": 1,
+        "existing_standalone_ui_probes": 15,
+        "paired_saved_budget_pointer_modifier_cases": 12,
+        "actual_shared_imgui_regional_numeric_typing_and_apply_cases": 1,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0,
+        "archived_scratch_bytes": 498664162
+      }
+    },
+    "total_archived_scratch_bytes": 1006137037,
+    "reference": "Existing tests, fixtures, historical verification runs and Auto expectations remain unchanged. New regional tests use literal signed origins and storage/transaction invariants, source words including quiet NaNs and IEEE values, plus old native/API/provider and paired actual-input regressions. No new ImageJ oracle acquisition or full regional rotation/Boolean equivalence is claimed.",
+    "actual_ui": "Real keyboard input types Move X=-5 and Move Y=3 and pointer input clicks Apply in a single shared ImGui renderer lifetime. The regional saved row retains its complete frame while active/Previous selections remain independent. Twelve existing budget/pointer/modifier recipes run through both installed standalone C++ and Python launch paths; three additional standalone regressions also run. This is not OS-input or new regional standalone-launch certification.",
+    "failed_attempts": "The first native patch inspected kind before its required-field preflight and leaked std::out_of_range on a malformed record. Its retained executable reproduces the error; reordering restores the invalid-wire contract, and the original 16 native cases/1600 checks pass. Initial new tests mistakenly classified a different valid intrinsic shape with the same packed length as malformed, used the wrong control diagnostics fields, and tried to retain a saved draft across renderer teardown. Only these new test assumptions were corrected; actual typing and Apply now share one renderer lifetime. One Linux launch occurred before helper synchronization finished, returned missing-script, and was started once the script existed. Final production/test sources were frozen before both qualified builds."
+  },
+  "requirements": {
+    "original_requirements": 99,
+    "statuses": {
+      "in_progress": 47,
+      "open": 52
+    },
+    "unchanged": true,
+    "historical_verification_runs_unchanged": true,
+    "historical_auto_expectations_unchanged": true
+  },
+  "checks": {
+    "commercial_licenses": "passed",
+    "plan_inventory": "Known historical first failure: histogram-auto-consumer-p06c4-windows-001 trace.auto_contrast.cpp_api: producer_source byte fingerprint changed; the inventory validator is not green."
+  },
+  "remaining": [
+    "Full regional rotation and Boolean operations with independent reference coverage and versioned command integration.",
+    "Qualify regional saved-row pointer gestures in both launch paths; finish remaining geometry tools.",
+    "Axis/planar remapping, slicing/resizing and ImageJ ROI interchange for full geometry.",
+    "Remaining editor/UI/platform/accessibility and managed large-ROI acceptance against all original requirements."
+  ],
+  "sources": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 114908,
+      "sha256": "cc62dcc813a4ef6cf3c8e0e9c82e5a5e498fd045ecb824315fe862567513c011"
+    },
+    {
+      "path": "examples/cpp/CMakeLists.txt",
+      "bytes": 18684,
+      "sha256": "1f3e3b26f5d307db01dd54d1d43eb8ba5194ea8d7cf2614bf34cdd37a553c23c"
+    },
+    {
+      "path": "examples/cpp/saved_region_geometry.cpp",
+      "bytes": 2137,
+      "sha256": "086456467631213908820e66b60f20c9303a9a8d2bc82cb97734300739207cb3"
+    },
+    {
+      "path": "src/native/saved_roi_geometry.cpp",
+      "bytes": 39185,
+      "sha256": "96b21f0793033c0ba165833f0fc75e80391d46556b68379bf43f48265a8531a1"
+    },
+    {
+      "path": "tests/python/test_saved_regional_geometry.py",
+      "bytes": 11711,
+      "sha256": "74f55dda61cd76e2fe73f170f54754b6f8c3409276487d52a25a89d1e364e314"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "build/p12n-saved-region001/windows-qualified001/final-observation.json",
+      "bytes": 153815,
+      "sha256": "97c681b2735268cccc687675c416c6f1291ed89544c492fb90f98f3669cfa491"
+    },
+    {
+      "path": "build/p12n-saved-region001/windows-qualified001/program-observation.json",
+      "bytes": 99313,
+      "sha256": "917404079a10ba0b222fc054b97db045a7caa735f92f1486954b728225186dfd"
+    },
+    {
+      "path": "build/p12n-saved-region001/windows-qualified001/receipt.json",
+      "bytes": 86981,
+      "sha256": "1f08ce845c3740ff4fa3f8cdde10b6abe97f9cd237316e15e2b7aed83cbc0d06"
+    },
+    {
+      "path": "build/p12n-saved-region001/windows-qualified001/regional-saved-row-applied.json",
+      "bytes": 405738,
+      "sha256": "0aedd15ff831a1861233d6152d2039846a5bf9a0efaa557bfe61b79e3e92cc36"
+    },
+    {
+      "path": "build/p12n-saved-region001/windows-qualified001/regional-saved-row-draft.json",
+      "bytes": 99437,
+      "sha256": "92608e4c7e9eae4034ba9e51d1e0a9ea2b30a63dfb98df7e83faf528cd9061fc"
+    },
+    {
+      "path": "build/p12n-saved-region001/windows-python001/collection.json",
+      "bytes": 263647,
+      "sha256": "f09994562521632415dad7c0941f0cce93f944111ce51c83eb77dfa407f02fff"
+    },
+    {
+      "path": "build/p12n-saved-region001/windows-python001/receipt.json",
+      "bytes": 5246,
+      "sha256": "9465159112e80d27b233120e179dfb7afe0d00786be23716d160d58bbdf0814c"
+    },
+    {
+      "path": "build/p12n-saved-region001/windows-sdk001/receipt.json",
+      "bytes": 447,
+      "sha256": "eec2601d119e1e7e45e77db85ec9565bcd1a547c0bbe64e4f2fa294065b3826a"
+    },
+    {
+      "path": "build/p12n-saved-region001/windows-ui001/batch-case-retained.json",
+      "bytes": 21105081,
+      "sha256": "be53bda1103d5c324f1f536057cbc0efc9780ccc28b5f1110f2c98aab9755c21"
+    },
+    {
+      "path": "build/p12n-saved-region001/windows-ui001/budget-finite-axis-case-retained.json",
+      "bytes": 4273357,
+      "sha256": "18f4a9cf16b53f6dd87d7a42d6a9976405c563f9fe4bd93482b9bdba40c07793"
+    },
+    {
+      "path": "build/p12n-saved-region001/windows-ui001/budget-finite-rotated-case-retained.json",
+      "bytes": 4302449,
+      "sha256": "690a4cd68ed00d49214dc85369acc90dbea6cbd031eb3751556fcee82b9bfd60"
+    },
+    {
+      "path": "build/p12n-saved-region001/windows-ui001/budget-ieee-axis-case-retained.json",
+      "bytes": 4252154,
+      "sha256": "415f734fe0c6ee38d2e8a16aacabe83601510d7bc729fcb533b218f322b05c4c"
+    },
+    {
+      "path": "build/p12n-saved-region001/windows-ui001/budget-ieee-rotated-case-retained.json",
+      "bytes": 4281185,
+      "sha256": "c73af937865924dd8bb71eb1478f4120eafcf0b7847dd01bb365c78a8e6cd1e7"
+    },
+    {
+      "path": "build/p12n-saved-region001/windows-ui001/modifiers-finite-axis-modifiers-case-retained.json",
+      "bytes": 25001331,
+      "sha256": "855c6160f04ee6f01a6326568e262379a1dde6ca9335e25f19b54a9fc7d6dad4"
+    },
+    {
+      "path": "build/p12n-saved-region001/windows-ui001/modifiers-finite-rotated-modifiers-case-retained.json",
+      "bytes": 25169044,
+      "sha256": "f85f4ae6921c87d70c9064937b9b54d5be7ad1c0a0edc60b7a855e3a31a487eb"
+    },
+    {
+      "path": "build/p12n-saved-region001/windows-ui001/modifiers-ieee-axis-modifiers-case-retained.json",
+      "bytes": 24886915,
+      "sha256": "48e9ab63705ff2b66eaf769313ddb05469874e9c9c4f8ef7ce7a145e1d5cddbc"
+    },
+    {
+      "path": "build/p12n-saved-region001/windows-ui001/modifiers-ieee-rotated-modifiers-case-retained.json",
+      "bytes": 25054628,
+      "sha256": "df151a530ad939e2658d1575d9599eaee20f2b5944a2800141c93443633ed6d9"
+    },
+    {
+      "path": "build/p12n-saved-region001/windows-ui001/pointer-finite-axis-case-retained.json",
+      "bytes": 8014197,
+      "sha256": "474b50f745351c7c1a743b33d1651cfee745a8ecd46e0fbf46517ca9974ab96c"
+    },
+    {
+      "path": "build/p12n-saved-region001/windows-ui001/pointer-finite-rotated-case-retained.json",
+      "bytes": 8110668,
+      "sha256": "ef7dcaa7ed79972f0d450f1af5fc0a73ef1c6ad1f04b6d86699a6399f19e3a19"
+    },
+    {
+      "path": "build/p12n-saved-region001/windows-ui001/pointer-ieee-axis-case-retained.json",
+      "bytes": 7979257,
+      "sha256": "e6bfc1264f30f20f48b3e06fbc0fe2802d9e2bb990195bfddb8fca655eee49ff"
+    },
+    {
+      "path": "build/p12n-saved-region001/windows-ui001/pointer-ieee-rotated-case-retained.json",
+      "bytes": 8072569,
+      "sha256": "a14f66fc37d54c898a82612370a7792779d87eb4fd19b9ba314b640b0edff5a0"
+    },
+    {
+      "path": "build/p12n-saved-region001/windows-ui001/receipt.json",
+      "bytes": 4582,
+      "sha256": "72665500883217fd121121449e950acbb8eed09706a568e16aeafb54c33ede35"
+    },
+    {
+      "path": "build/p12n-saved-region001/windows-ui001/rgb-case-retained.json",
+      "bytes": 69817139,
+      "sha256": "8593190605c43fad4da2e23f1ba682be7b82f8646ec2907d8c01582424a6cf2d"
+    },
+    {
+      "path": "build/p12n-saved-region001/windows-ui001/workflow-case-retained.json",
+      "bytes": 51295123,
+      "sha256": "34774e6bd021a8d05facc17ef734a1ef74a0f377fca6da5a226e836ca5cb21f1"
+    },
+    {
+      "path": "build/p12n-saved-region001/windows-cleanup001.json",
+      "bytes": 288155,
+      "sha256": "e33eca5f1eeeaba67d06dd03ccad59ecbc08bb458f5ad245c5ae0e402a0493af"
+    },
+    {
+      "path": "build/p12n-saved-region001/windows-products001.json",
+      "bytes": 9159,
+      "sha256": "da3d29a6a53eeea0b3eef5db493b3f786453dea11a3e62b969d5c602636f27d7"
+    },
+    {
+      "path": "build/p12n-saved-region001/windows-qualified001/native.xml",
+      "bytes": 8151,
+      "sha256": "48edd007354ee1bcb2ebb3a86878d8b073e63c43d4e7ee70360f201efd9885b6"
+    },
+    {
+      "path": "build/p12n-saved-region001/windows-python001/pytest.xml",
+      "bytes": 339218,
+      "sha256": "5aa02bd8d039374dda17f750dcd62d1cdeb5342f3ac2da9ebb6cb53997d6e469"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-qualified001/final-observation.json",
+      "bytes": 153757,
+      "sha256": "f10da7ce32add52a353569c437f76dd9b47d196e80287bd9a8544cd920a4bb61"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-qualified001/program-observation.json",
+      "bytes": 99255,
+      "sha256": "d11ad93d1cba986c821fe1b8dbb6038174e194e4d1ab7fb14401e1d24ab4a805"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-qualified001/receipt.json",
+      "bytes": 86083,
+      "sha256": "806ab1faa6dab9a123606fdd341b9b97e0d4ba75010e8ea9c159ea31c33d9240"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-qualified001/regional-saved-row-applied.json",
+      "bytes": 405586,
+      "sha256": "9971dce714ff23e55d9b828fe21e56ab95b4836531fb7ea2b920beaff1320dc4"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-qualified001/regional-saved-row-draft.json",
+      "bytes": 99366,
+      "sha256": "1ec0ac1009762992cd4d3910f99eb95eaeb9bfd9d14e0bb55b71f606e9c85566"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-python001/collection.json",
+      "bytes": 261434,
+      "sha256": "5869e8f73f59b2532d90e4ef8507750ac4c58bba5fcc9ca2be539bd027efd99c"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-python001/receipt.json",
+      "bytes": 5026,
+      "sha256": "3e7094fe97b999b89843f1a21ad34cc7a916a4df949f840768804b2ed95b8723"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-sdk001/receipt.json",
+      "bytes": 420,
+      "sha256": "00e657324a16d3f4aa02b319eb8645695eb56d33114064ffac8f5d0a760cdb43"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-ui001/batch-case-retained.json",
+      "bytes": 21278465,
+      "sha256": "e9e54c25b378f59d497885df93c8b66481985303e5c0962c8e7d6d1d52357bb8"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-ui001/budget-finite-axis-case-retained.json",
+      "bytes": 4273296,
+      "sha256": "2241c70e262ae530abe5ae63c8ef3f33820d73f349dfd3a15a8ae8555266bed9"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-ui001/budget-finite-rotated-case-retained.json",
+      "bytes": 4302388,
+      "sha256": "0fc2233acb5fde43388d6cb8fdde53791b4a1f2440127d6144d2c1d4c692ab5f"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-ui001/budget-ieee-axis-case-retained.json",
+      "bytes": 4252154,
+      "sha256": "545ed94a8aeac21c6bba08e99dc9bac0d1333d546c3661a457b620020b6ee537"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-ui001/budget-ieee-rotated-case-retained.json",
+      "bytes": 4281246,
+      "sha256": "bea8c8aaa650e12e6dbfd8aacffec19621c0d42e73fc0508a821cb9e01ae6682"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-ui001/modifiers-finite-axis-modifiers-case-retained.json",
+      "bytes": 25001331,
+      "sha256": "df4139f8818c5793030ace1cffa9c1bd0f7cfb5272cbc526f7fc11df0c13c58e"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-ui001/modifiers-finite-rotated-modifiers-case-retained.json",
+      "bytes": 25169131,
+      "sha256": "dd8d767db91b8d2b0d91dd74478ddc928db4c8378e873e50e753617bef5d8c1b"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-ui001/modifiers-ieee-axis-modifiers-case-retained.json",
+      "bytes": 24886915,
+      "sha256": "073c1b2ed5be8f183174db8f176320cb73751577aab0dee705d3a6f4293e06cf"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-ui001/modifiers-ieee-rotated-modifiers-case-retained.json",
+      "bytes": 25054715,
+      "sha256": "3dde1e6e0c5f9232ba38ab2852216624d2ba86af81facebd38024ef3feecba7f"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-ui001/pointer-finite-axis-case-retained.json",
+      "bytes": 8016054,
+      "sha256": "457b0a04b71d1f1c6459fc28740d0541c61e911dd044912ff996cb54ea413f32"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-ui001/pointer-finite-rotated-case-retained.json",
+      "bytes": 8112031,
+      "sha256": "9dfc63c0415537480870faf748cee4743bdd1246013f4a5ea0f03034ef536bcb"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-ui001/pointer-ieee-axis-case-retained.json",
+      "bytes": 7978702,
+      "sha256": "3b9fe11a92b309e3423476f919ed7cc847bb6e04b1ad12824d19b880c813751b"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-ui001/pointer-ieee-rotated-case-retained.json",
+      "bytes": 8072630,
+      "sha256": "8b771fcc2dec97b160df78bd53d519125803c1dcdb8c5265121a22fbc6cf4555"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-ui001/receipt.json",
+      "bytes": 3989,
+      "sha256": "8298d38e779c42a8ee139312d32f77708efa68edda568fc0a64872a3595e8c80"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-ui001/rgb-case-retained.json",
+      "bytes": 69789591,
+      "sha256": "c2403463bf72c79f31e9ce1f14571eb200938f7b97f51c7dae5d24ee44d7ea2a"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-ui001/workflow-case-retained.json",
+      "bytes": 51264617,
+      "sha256": "c6620841d04316ceca2aa090c725dbb63e173002a6fbb8a445e52bee2ccafc0c"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-cleanup001.json",
+      "bytes": 512528,
+      "sha256": "90f90735e43b65b480a94a94ba41a7389889db7aacbbef910c15d74903ba2699"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-products001.json",
+      "bytes": 8772,
+      "sha256": "585997b81cac326e2028479c84ff31c276622631b6b22eb2127636e11e78e1f1"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-qualified001/native.xml",
+      "bytes": 8060,
+      "sha256": "878fe66f64a76b63cbc8cec2c879505dbc6deb7e1d523ae8b94561eb15fee7f3"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-python001/pytest.xml",
+      "bytes": 339219,
+      "sha256": "925b5883eeea0752d49bb22770af12f00ee72b010070270771445307da22f7a2"
+    },
+    {
+      "path": "build/p12n-saved-region001/source-manifest001.json",
+      "bytes": 84681,
+      "sha256": "f9a5496f5375f7e969affb471e96a65073c2f72631d6aecdb4fe9a865f2e1521"
+    },
+    {
+      "path": "build/p12n-saved-region001/modules001.json",
+      "bytes": 695,
+      "sha256": "98977e7292a640a0f5bf71bb57e70f0b75992d684c54a5dd720742758c28dd08"
+    },
+    {
+      "path": "build/p12n-saved-region001/prepare001.py",
+      "bytes": 3821,
+      "sha256": "c9b6c21fd3acaf3f28d76b649710a6f483bff45efbf123562f5e37b4c2198323"
+    },
+    {
+      "path": "build/p12n-saved-region001/qualify001.py",
+      "bytes": 4388,
+      "sha256": "17b036b8f7dbb66b2d7317d2c1f5cd4f703281eeb2cc5c0228a4994336ab2a53"
+    },
+    {
+      "path": "build/p12n-saved-region001/python001.py",
+      "bytes": 3071,
+      "sha256": "46f9df9672e0353efe38e97ba5a61dc14e9f72b77ccb60b91d746371af6530f4"
+    },
+    {
+      "path": "build/p12n-saved-region001/sdk001.py",
+      "bytes": 1669,
+      "sha256": "51fba12bd790a07bc8afc13c4cdbbb5f6e212aa7f734c3609be0d7d91edff8b3"
+    },
+    {
+      "path": "build/p12n-saved-region001/standalone001.py",
+      "bytes": 2289,
+      "sha256": "fedbe2a73a8e9b7d00ee8bebcde163c981e74cd4ac7080a0457d2318e4bc1b61"
+    },
+    {
+      "path": "build/p12n-saved-region001/cleanup001.py",
+      "bytes": 4401,
+      "sha256": "8e6efaddf742b8e9e58dd0ef551805ee4c24f20ec69a301a79dbacaab2ed920f"
+    },
+    {
+      "path": "build/p12n-saved-region001/finalize001.py",
+      "bytes": 9716,
+      "sha256": "6b595b9b67e83aa38b12274750e0a3c6df9747fcb23f400f03e5bf3ef8bd97c9"
+    },
+    {
+      "path": "build/p12n-saved-region001/edit001.py",
+      "bytes": 6125,
+      "sha256": "df610a2e6462ec31a0402aaedbef4d0539cd0fa0fbb6d4461286f73d6515a5b6"
+    },
+    {
+      "path": "build/p12n-saved-region001/fix001.py",
+      "bytes": 739,
+      "sha256": "2ff1f22022915151006c1c3f611d2d3251f6e783cff6528b8d58dcc65df01931"
+    },
+    {
+      "path": "build/p12n-saved-region001/native001.py",
+      "bytes": 1478,
+      "sha256": "184ed406539f583395511255fd0df5e8b2a0272de6075d57c2ba961c10fa90d0"
+    },
+    {
+      "path": "build/p12n-saved-region001/native-fixed001.log",
+      "bytes": 913,
+      "sha256": "246e8057bf2513a3590690f5d2dad3ab4314877fd35d72362b6af90bd678ffbe"
+    },
+    {
+      "path": "build/p12n-saved-region001/preimage001/receipt.json",
+      "bytes": 511,
+      "sha256": "b7f320457d5cd41fd3a47037e6df40a2eaec5e64a19922d6e15521236ccd9a21"
+    },
+    {
+      "path": "build/p12n-saved-region001/preimage001/reproduction.log",
+      "bytes": 286,
+      "sha256": "d44722b2338c23a866a00703ca0ec941c91931a60ab984a1b9f61dcd55d14ecd"
+    },
+    {
+      "path": "build/p12n-saved-region001/smoke001.log",
+      "bytes": 1753,
+      "sha256": "e602d673067332036bc1fad5f86efd72f5597fc786d238884b997d01bf7008ff"
+    },
+    {
+      "path": "build/p12n-saved-region001/smoke002.log",
+      "bytes": 967,
+      "sha256": "9b0229723fa4d139eb69c55284d7dc6a07bc0b3e702580cdf85554b9c096433c"
+    },
+    {
+      "path": "build/p12n-saved-region001/smoke003.log",
+      "bytes": 1364,
+      "sha256": "f7995d3efd5ea1fdde42b24181908f0f23b7da7420051c05955b2b22de15f41a"
+    },
+    {
+      "path": "build/p12n-saved-region001/smoke004.log",
+      "bytes": 1106,
+      "sha256": "b10a8f3bd41b72030e9a0ce6f432c61694e7791a5560a4cfd1ea1f30ed421262"
+    },
+    {
+      "path": "build/p12n-saved-region001/smoke005.log",
+      "bytes": 306,
+      "sha256": "9a5979ed5e3b1d1c9f6aed0ad1a88ce87c8ad1b2914cc6d11db4e43bad03bdea"
+    },
+    {
+      "path": "build/p12n-saved-region001/smoke006.log",
+      "bytes": 306,
+      "sha256": "9a5979ed5e3b1d1c9f6aed0ad1a88ce87c8ad1b2914cc6d11db4e43bad03bdea"
+    },
+    {
+      "path": "build/p12n-saved-region001/licenses001.log",
+      "bytes": 53,
+      "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+    },
+    {
+      "path": "build/p12n-saved-region001/linux-run001.log",
+      "bytes": 210,
+      "sha256": "bcc1c11f7e1563f34e9b2bf6fc480275564d7b54c2e24b626d1b0dad4c9574ae"
+    },
+    {
+      "path": "build/p12n-saved-region001/plan-final002.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    },
+    {
+      "path": "build/p12n-saved-region001/seal002.py",
+      "bytes": 1458,
+      "sha256": "1e278e89d6b79c837049443b53159fc5105e4a6ff0415a5fdff6f06fd5e97821"
+    }
+  ]
+}
