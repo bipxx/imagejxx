@@ -466,6 +466,7 @@ from ._native import (
 )
 from ._native import (
     SelectionCreationOperation as SelectionCreationOperation,
+    SelectionCreationGeometry as SelectionCreationGeometry,
     SelectionCreationRequest as SelectionCreationRequest,
     SelectionCreationLimits as SelectionCreationLimits,
     SelectionCreationEstimate as SelectionCreationEstimate,

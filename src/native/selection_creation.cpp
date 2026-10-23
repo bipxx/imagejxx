@@ -4,6 +4,8 @@
 #include <imagejxx/imagej_roi.hpp>
 
 #include "kernel_control.hpp"
+#include "regional_geometry.hpp"
+#include "selection_region_boolean_internal.hpp"
 #include "session_metadata.hpp"
 #include <algorithm>
 #include <cmath>
@@ -191,10 +193,49 @@ void candidate_admission(const Selection &candidate, DatasetShape shape,
     if (!std::isfinite(high[axis] - low[axis]) || high[axis] <= low[axis])
       invalid("Selection candidate has no complete XY extent");
 }
+bool full_creation(const std::optional<Selection> &base,
+                   const SelectionCreationRequest &request) {
+  switch (request.geometry) {
+  case SelectionCreationGeometry::Automatic: return base && base->is_region();
+  case SelectionCreationGeometry::CanvasV1:
+    if (base && base->is_region()) invalid("Canvas creation cannot retain regional geometry");
+    return false;
+  case SelectionCreationGeometry::FullRegionV3: return true;
+  }
+  invalid("Unknown selection creation geometry mode");
+}
+SelectionBooleanOperation creation_boolean(SelectionCreationOperation operation) {
+  switch (operation) {
+  case SelectionCreationOperation::Add: return SelectionBooleanOperation::Union;
+  case SelectionCreationOperation::Subtract: return SelectionBooleanOperation::Subtraction;
+  case SelectionCreationOperation::Intersect: return SelectionBooleanOperation::Intersection;
+  case SelectionCreationOperation::Xor: return SelectionBooleanOperation::Xor;
+  default: invalid("Invalid selection creation combination");
+  }
+}
+SelectionEditLimits creation_region_limits(const Selection &base,
+    const SelectionCreationRequest &request, const SelectionCreationLimits &limits) {
+  // Candidate cardinality is admitted separately. Existing base vertices do not
+  // consume the candidate allowance, but all pointer/geometry storage is charged.
+  return {limits.max_pixels, add(base.points.size(), request.candidate.points.size()),
+          limits.max_working_bytes};
+}
 void operands_admission(DatasetShape shape, const std::optional<Selection> &base,
                         const SelectionCreationRequest &request,
                         const SelectionCreationLimits &limits) {
   (void)operation_name(request.operation);
+  const auto full = full_creation(base, request);
+  if (full) {
+    for (const auto &[key, value] : request.candidate.attributes)
+      detail::regional_wire_depth(value, 3);
+    if (base) {
+      for (const auto &[key, value] : base->attributes)
+        detail::regional_wire_depth(value, 3);
+      detail::validate_region_storage(*base);
+      if (base->is_mask() && mul(base->mask_width(), base->mask_height()) > limits.max_pixels)
+        invalid("Regional creation base exceeds pixel limit");
+    }
+  }
   candidate_admission(request.candidate, shape, limits);
   if (base) base->validate(shape.x, shape.y);
   if (request.operation == SelectionCreationOperation::Replace) return;
@@ -202,7 +243,7 @@ void operands_admission(DatasetShape shape, const std::optional<Selection> &base
     if (request.operation == SelectionCreationOperation::Add) return;
     invalid("Selection combination requires an existing area base");
   }
-  if (!area(*base)) invalid("Selection combination requires an area base");
+  if (!area(*base) && !(full && base->is_region())) invalid("Selection combination requires an area base");
 }
 
 const char *type_name(PixelType type) {
@@ -290,12 +331,22 @@ SelectionCreationEstimate estimate_parts(
   const auto base_bytes = optional_size(base, limits);
   operands_admission(source.shape, base, request, limits);
   const bool boolean = combines(request.operation, base);
-  const auto result_bytes = known_result ? geometry_size(*known_result, limits)
-      : boolean ? add(sizeof(Selection) + node_bytes, packed_size(estimate.pixels))
-                : candidate_bytes;
-  const auto result_wire = known_result ? wire_size(*known_result, limits)
-      : boolean ? add(24 * node_bytes, base64_size(packed_size(estimate.pixels)))
-                : wire_size(request.candidate, limits);
+  const auto full = full_creation(base, request);
+  std::optional<SelectionRegionBooleanEstimate> regional;
+  if (full && boolean)
+    regional = detail::estimate_region_pair(source.shape.x, source.shape.y, *base,
+        request.candidate, creation_boolean(request.operation),
+        creation_region_limits(*base, request, limits));
+  const auto output_pixels = regional ? regional->pixels : estimate.pixels;
+  auto result_bytes = boolean ? add(sizeof(Selection) + node_bytes, packed_size(output_pixels))
+                              : candidate_bytes;
+  auto result_wire = boolean ? add((full ? 40 : 24) * node_bytes,
+                                   base64_size(packed_size(output_pixels)))
+                             : wire_size(request.candidate, limits);
+  if (known_result) {
+    result_bytes = std::max(result_bytes, geometry_size(*known_result, limits));
+    result_wire = std::max(result_wire, wire_size(*known_result, limits));
+  }
   auto record_bytes = add(96 * node_bytes,
                           add(base ? wire_size(*base, limits) : node_bytes,
                               add(wire_size(request.candidate, limits), result_wire)));
@@ -305,8 +356,8 @@ SelectionCreationEstimate estimate_parts(
   if (snapshot)
     estimate.retained_bytes = add(estimate.retained_bytes,
                                   display_size(snapshot->display(), limits));
-  const auto resolve_bytes = add(codec_scratch, algebra_scratch(
-      source.shape, base, request, limits));
+  const auto resolve_bytes = add(codec_scratch, regional ? regional->working_bytes
+      : algebra_scratch(source.shape, base, request, limits));
   std::size_t prepare_bytes = 0;
   if (snapshot) {
     prepare_bytes = add(estimate.retained_bytes,
@@ -321,9 +372,13 @@ SelectionCreationEstimate estimate_parts(
 }
 
 Selection algebra(DatasetShape shape, const std::optional<Selection> &base,
-                   const SelectionCreationRequest &request) {
+                   const SelectionCreationRequest &request,
+                   const SelectionCreationLimits &limits) {
   kernel_checkpoint();
   if (!combines(request.operation, base)) return request.candidate;
+  if (full_creation(base, request))
+    return detail::combine_region_pair(shape.x, shape.y, *base, request.candidate,
+        creation_boolean(request.operation), creation_region_limits(*base, request, limits));
   SelectionBooleanOperation operation;
   switch (request.operation) {
   case SelectionCreationOperation::Add: operation = SelectionBooleanOperation::Union; break;
@@ -463,6 +518,7 @@ MetadataObject encode_record(const Source &source,
                              const std::optional<Selection> &base,
                              const SelectionCreationRequest &request,
                              const Selection &result) {
+  const auto full = full_creation(base, request);
   MetadataArray dimensions; dimensions.reserve(6);
   for (const int extent : source.shape.dimensions()) dimensions.emplace_back(std::int64_t(extent));
   MetadataObject binding{{"id", source.id},
@@ -472,16 +528,16 @@ MetadataObject encode_record(const Source &source,
     {"shape", metadata_array(std::move(dimensions))},
     {"type", std::string(type_name(source.type))},
     {"sample_policy", std::string(policy_name(source.policy))}};
-  return {{"schema", std::string(schema)}, {"version", std::int64_t(request.candidate.is_rounded_box() ||
+  return {{"schema", std::string(schema)}, {"version", std::int64_t(full ? 3 : request.candidate.is_rounded_box() ||
       (base && base->is_rounded_box()) || result.is_rounded_box() ? 2 : 1)},
     {"source", metadata_object(std::move(binding))},
     {"position", metadata_object({{"t", std::int64_t(source.position.t)},
                                    {"c", std::int64_t(source.position.c)},
                                    {"z", std::int64_t(source.position.z)}})},
     {"operation", std::string(operation_name(request.operation))},
-    {"base", base ? encode_selection(*base) : MetadataValue{}},
-    {"candidate", encode_selection(request.candidate)},
-    {"result", encode_selection(result)}};
+    {"base", base ? encode_selection(*base, full) : MetadataValue{}},
+    {"candidate", encode_selection(request.candidate, full)},
+    {"result", encode_selection(result, full)}};
 }
 
 void fields(const MetadataObject &object,
@@ -706,6 +762,7 @@ struct RecordView {
   Wire candidate, result;
   std::size_t bytes;
   std::size_t validation_peak;
+  bool full = false;
 };
 std::size_t wire_geometry_size(const Wire &wire, DatasetShape shape,
                                const SelectionCreationLimits &limits) {
@@ -744,26 +801,28 @@ RecordView inspect_record(const MetadataObject &record,
   const auto bytes = metadata_size(record, limits);
   fields(record, {"schema", "version", "source", "position", "operation", "base", "candidate", "result"});
   const auto version = uint_value(record.at("version"));
-  if (text_value(record.at("schema")) != schema || (version != 1 && version != 2))
+  if (text_value(record.at("schema")) != schema || (version != 1 && version != 2 && version != 3))
     invalid("Unsupported selection creation command schema/version");
+  const bool full = version == 3;
+  if (full) detail::regional_record_depth(record);
   auto source = read_source(object_value(record.at("source")), object_value(record.at("position")));
   const auto pixels = source_admission(source, limits);
   const auto operation = read_operation(record.at("operation"));
   std::optional<Wire> base;
   if (!std::holds_alternative<std::monostate>(record.at("base")))
-    base = inspect_wire(record.at("base"), source.shape, false, limits);
-  auto candidate = inspect_wire(record.at("candidate"), source.shape, true, limits);
-  auto result = inspect_wire(record.at("result"), source.shape, false, limits);
+    base = inspect_wire(record.at("base"), source.shape, false, limits, full);
+  auto candidate = inspect_wire(record.at("candidate"), source.shape, true, limits, full);
+  auto result = inspect_wire(record.at("result"), source.shape, false, limits, full);
   const bool rounded = rounded_kind(*candidate.kind) || rounded_kind(*result.kind) ||
                        (base && rounded_kind(*base->kind));
-  if (version != (rounded ? 2u : 1u))
+  if (!full && version != (rounded ? 2u : 1u))
     invalid("Selection creation version does not match rounded geometry");
   if (operation != SelectionCreationOperation::Replace && !base && operation != SelectionCreationOperation::Add)
     invalid("Selection combination requires an original base");
   if (operation != SelectionCreationOperation::Replace && base) {
     const auto &kind = *base->kind;
     if (kind != "rectangle" && kind != "ellipse" && kind != "polygon" && kind != "freehand" &&
-        kind != "rotated_rectangle" && kind != "rotated_ellipse" && kind != "mask" && !rounded_kind(kind))
+        kind != "rotated_rectangle" && kind != "rotated_ellipse" && kind != "mask" && !rounded_kind(kind) && !(full && kind == "region"))
       invalid("Selection combination requires an original area base");
   }
   // The caller's wire tree is borrowed. Count decoded native geometries rather
@@ -774,6 +833,27 @@ RecordView inspect_record(const MetadataObject &record,
   const auto result_bytes = wire_geometry_size(result, source.shape, limits);
   const auto decoded_bytes = add(3 * sizeof(Selection) + sizeof(Source),
                                   add(base_bytes, add(candidate_bytes, result_bytes)));
+  if (full) {
+    // Bound encoded and decoded storage before materializing untrusted geometry.
+    // Full bounds are then scanned on that bounded representation before any
+    // user callback or raster allocation. Quiet scope suppresses decoder polls.
+    const auto decode_peak = add(bytes, add(decoded_bytes, 2 * codec_scratch));
+    budget(decode_peak, limits);
+    const ExecutionControl quiet;
+    ExecutionScope scope(quiet);
+    std::optional<Selection> native_base;
+    if (base) native_base = decode_selection(*base, source.shape);
+    SelectionCreationRequest request{operation, decode_selection(candidate, source.shape),
+                                    SelectionCreationGeometry::FullRegionV3};
+    const auto native_result = decode_selection(result, source.shape);
+    detail::validate_region_storage(native_result);
+    const auto estimate = estimate_parts(source, native_base, request, limits, nullptr,
+                                          &native_result, bytes);
+    const auto peak = std::max(decode_peak,
+        add(bytes, add(decoded_bytes, estimate.working_bytes)));
+    budget(peak, limits);
+    return {source, operation, std::move(base), candidate, result, bytes, peak, true};
+  }
   const auto vertices = std::max<std::size_t>(4, std::max(candidate.points->size(),
                                       base ? base->points->size() : 0));
   auto scratch = std::max(codec_scratch, candidate_bytes);
@@ -794,6 +874,20 @@ RecordView inspect_record(const MetadataObject &record,
 SelectionCreationEstimate estimate_record_command(
     const RecordView &view, const DocumentSnapshot &snapshot,
     const SelectionCreationLimits &limits) {
+  if (view.full) {
+    const ExecutionControl quiet;
+    ExecutionScope scope(quiet);
+    std::optional<Selection> base;
+    if (view.base) base = decode_selection(*view.base, view.source.shape);
+    SelectionCreationRequest request{view.operation,
+        decode_selection(view.candidate, view.source.shape), SelectionCreationGeometry::FullRegionV3};
+    const auto result = decode_selection(view.result, view.source.shape);
+    auto estimate = estimate_parts(view.source, base, request, limits, &snapshot, &result, view.bytes);
+    estimate.working_bytes = std::max(estimate.working_bytes,
+        add(view.validation_peak, display_size(snapshot.display(), limits)));
+    budget(estimate.working_bytes, limits);
+    return estimate;
+  }
   SelectionCreationEstimate estimate;
   estimate.pixels = source_admission(view.source, limits);
   estimate.candidate_vertices = view.candidate.points->size();
@@ -840,10 +934,11 @@ Decoded decode_record(const RecordView &view,
   kernel_checkpoint();
   std::optional<Selection> base;
   if (view.base) base = decode_selection(*view.base, view.source.shape);
-  SelectionCreationRequest request{view.operation, decode_selection(view.candidate, view.source.shape)};
+  SelectionCreationRequest request{view.operation, decode_selection(view.candidate, view.source.shape),
+      view.full ? SelectionCreationGeometry::FullRegionV3 : SelectionCreationGeometry::CanvasV1};
   auto result = decode_selection(view.result, view.source.shape);
   operands_admission(view.source.shape, base, request, limits);
-  const auto recomputed = algebra(view.source.shape, base, request);
+  const auto recomputed = algebra(view.source.shape, base, request, limits);
   if (!selection_equal(recomputed, result))
     invalid("Selection command result differs from its original operation");
   kernel_checkpoint();
@@ -891,9 +986,10 @@ Selection compose_selection_creation(const DocumentSnapshot &source_input,
   (void)estimate_selection_creation(source_input, request_input, limits_input);
   const auto source = source_input;
   const auto request = request_input;
+  const auto limits = limits_input;
   const auto control = control_input;
   ExecutionScope scope(control); start_progress();
-  auto result = algebra(source.data().dataset.shape(), source.data().selection, request);
+  auto result = algebra(source.data().dataset.shape(), source.data().selection, request, limits);
   finish_progress(); return result;
 }
 ResolvedSelectionCreationCommand resolve_selection_creation_command(
@@ -905,7 +1001,7 @@ ResolvedSelectionCreationCommand resolve_selection_creation_command(
   const auto limits = limits_input;
   const auto control = control_input;
   ExecutionScope scope(control); start_progress();
-  auto result = algebra(source.data().dataset.shape(), source.data().selection, request);
+  auto result = algebra(source.data().dataset.shape(), source.data().selection, request, limits);
   auto record = encode_record(source_info(source), source.data().selection, request, result);
   auto base = source.data().selection;
   ResolvedSelectionCreationCommand command{std::move(source), std::move(request), std::move(base),
@@ -969,7 +1065,7 @@ ResolvedSelectionCreationCommand rebind_selection_creation_command(
   auto request = request_input;
   ExecutionScope scope(control); start_progress();
   (void)decode_record(view, limits);
-  auto result = algebra(source.data().dataset.shape(), source.data().selection, request);
+  auto result = algebra(source.data().dataset.shape(), source.data().selection, request, limits);
   auto rebound_record = encode_record(source_info(source), source.data().selection, request, result);
   auto base = source.data().selection;
   ResolvedSelectionCreationCommand command{std::move(source), std::move(request), std::move(base),

@@ -187,7 +187,13 @@ public:
       {"scroll_observations",Json::array()},
       {"api_observations",Json::array()},{"files",Json::object()},{"fixture_sources",Json::object()},
       {"lifecycle",Json::array()},{"detached_sources",Json::object()}};
-    source_=addFixture("source");
+    source_=addFixture("source", id_=="Q02");
+    if(id_=="Q01" || id_=="Q02" || id_=="Q03") {
+      report_["contract_id"]="p12q.regional-creation-ui.001";
+      source_->select(id_=="Q03" ? Selection("rectangle",{{-2,0},{1,1}})
+                                   : Selection::from_packed_region(3,1,{0xa0},{-2,0}));
+      if(id_=="Q02")window_.action("create_roi");
+    }
     if(id_=="S12"||id_=="S14"||id_=="S15")other_=addFixture("other");
     if(id_=="S16")other_=addFixture("scientific",true);
     activate(source_);window_.recording=true;
@@ -202,7 +208,11 @@ public:
     HeadlessInputSession session(window_);report_["lifecycle"].push_back(session.lifecycle());
     try {
       frame(session,"warmup.1");frame(session,"warmup.2");checkpoint(session,"initial");
-      if(id_=="R02" || id_=="R03")roundedSaved(session);
+      if(id_=="Q01" || id_=="Q02" || id_=="Q03") {
+        if(id_=="Q03")click(session,"selection_creation.full_geometry");
+        basic(session,"regional.add",{"Shift"},{18,6},{{21,8},{25,10}});
+      }
+      else if(id_=="R02" || id_=="R03")roundedSaved(session);
       else if(id_=="R01")rounded(session);
       else if(id_=="S01")basic(session,"replace",{}, {18,6},{{21,8},{25,10}});
       else if(id_=="S02")basic(session,"add",{"Shift"},{18,6},{{21,8},{25,10}});
@@ -566,7 +576,7 @@ void Driver::unsupported(HeadlessInputSession&s){
 }
 } // namespace
 Json selectionCreationUiCase(Window &window,const std::string &caseId,const std::string &context,const std::string &directory){
-  window.checkThread();require(caseId=="R01" || caseId=="R02" || caseId=="R03" || std::find(caseIds.begin(),caseIds.end(),caseId)!=caseIds.end(),"Unknown fixed selection creation UI case");
+  window.checkThread();require(caseId=="Q01" || caseId=="Q02" || caseId=="Q03" || caseId=="R01" || caseId=="R02" || caseId=="R03" || std::find(caseIds.begin(),caseIds.end(),caseId)!=caseIds.end(),"Unknown fixed selection creation UI case");
   require(context=="imgui_cpp"||context=="imgui_python","Selection creation requires an actual ImGui launch context");
   require(window.documents().empty()&&window.workflow.empty()&&window.results.empty()&&!window.busy(),"Selection creation case needs a fresh idle editor");
   return Driver(window,caseId,context,freshDirectory(directory)).run();

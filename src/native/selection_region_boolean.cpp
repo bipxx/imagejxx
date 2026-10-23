@@ -3,6 +3,7 @@
 #include <imagejxx/imagej_roi.hpp>
 #include "kernel_control.hpp"
 #include "regional_geometry.hpp"
+#include "selection_region_boolean_internal.hpp"
 #include <algorithm>
 #include <cmath>
 #include <limits>
@@ -308,7 +309,7 @@ Inputs references(const std::vector<Selection> &operands,
     out.push_back(&s);
   return out;
 }
-Selection combine(const std::vector<Selection> &operands,
+Selection combine(const Inputs &operands,
                   SelectionBooleanOperation operation, const Layout &plan) {
   const int width = plan.estimate.shape[1], height = plan.estimate.shape[0];
   const auto origin = plan.estimate.origin;
@@ -320,7 +321,7 @@ Selection combine(const std::vector<Selection> &operands,
                       double(origin[1]) + height};
   for (std::size_t operand = 0; operand < operands.size(); ++operand) {
     kernel_checkpoint();
-    const auto &s = operands[operand];
+    const auto &s = *operands[operand];
     std::optional<Image> raster;
     const auto b = bounds(s, {});
     if (!s.is_mask() && b && overlaps(output, *b)) {
@@ -444,6 +445,26 @@ std::size_t source_storage(const DocumentSnapshot &source,
   return cost.bytes;
 }
 } // namespace
+namespace detail {
+SelectionRegionBooleanEstimate estimate_region_pair(int width, int height,
+    const Selection &a, const Selection &b, SelectionBooleanOperation operation,
+    const SelectionEditLimits &limits) {
+  const ExecutionControl quiet;
+  ExecutionScope scope(quiet);
+  return layout(width, height, Inputs{&a, &b}, operation, limits, {}).estimate;
+}
+Selection combine_region_pair(int width, int height, const Selection &a,
+    const Selection &b, SelectionBooleanOperation operation,
+    const SelectionEditLimits &limits) {
+  Layout plan;
+  {
+    const ExecutionControl quiet;
+    ExecutionScope scope(quiet);
+    plan = layout(width, height, Inputs{&a, &b}, operation, limits, {});
+  }
+  return combine(Inputs{&a, &b}, operation, plan);
+}
+} // namespace detail
 SelectionRegionBooleanEstimate estimate_selection_region_boolean(
     int width, int height, const std::vector<Selection> &operands,
     SelectionBooleanOperation operation, const SelectionEditLimits &limits) {
@@ -470,7 +491,7 @@ Selection combine_selection_regions(int width, int height,
   ExecutionScope scope(owned_control);
   kernel_checkpoint();
   execution_progress(0, 1);
-  auto out = combine(frozen, operation, plan);
+  auto out = combine(references(frozen, owned_limits), operation, plan);
   execution_progress(1, 1);
   kernel_checkpoint();
   return out;
@@ -518,7 +539,7 @@ DocumentTransaction prepare_roi_region_boolean(const DocumentSnapshot &source,
   ExecutionScope scope(owned_control);
   kernel_checkpoint();
   execution_progress(0, 1);
-  auto result = combine(selections, operation, plan);
+  auto result = combine(references(selections, owned_limits), operation, plan);
   auto transaction = frozen_source.begin_edit(Change::Data);
   if (!frozen_source.data().selection || *frozen_source.data().selection != result)
     transaction.select(std::move(result));

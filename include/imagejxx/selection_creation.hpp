@@ -6,6 +6,7 @@
 namespace imagejxx {
 
 enum class SelectionCreationOperation { Replace, Add, Subtract, Intersect, Xor };
+enum class SelectionCreationGeometry { Automatic, CanvasV1, FullRegionV3 };
 
 // A complete area candidate, independent of any pointer/modifier timeline.
 // Creation accepts rectangle/rounded_rectangle/ellipse/polygon/freehand; native area bases may
@@ -13,6 +14,8 @@ enum class SelectionCreationOperation { Replace, Add, Subtract, Intersect, Xor }
 struct SelectionCreationRequest {
   SelectionCreationOperation operation = SelectionCreationOperation::Replace;
   Selection candidate;
+  // Automatic retains canvas behavior unless the captured base is regional.
+  SelectionCreationGeometry geometry = SelectionCreationGeometry::Automatic;
 };
 
 struct SelectionCreationLimits {
@@ -88,7 +91,7 @@ ResolvedSelectionCreationCommand resolve_selection_creation_command(
     const DocumentSnapshot &, const SelectionCreationRequest &,
     const SelectionCreationLimits & = {}, const ExecutionControl & = {});
 
-// Strict V1 (legacy geometry) / V2 (rounded geometry) source/result validation, including recomputing
+// Strict V1/V2 canvas and V3 full-region source/result validation, including recomputing
 // the original equation, completes before checking owner/revisions or rebinding.
 void validate_selection_creation_command_record(
     const MetadataObject &, const SelectionCreationLimits & = {},

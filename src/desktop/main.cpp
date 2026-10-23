@@ -137,7 +137,7 @@ int run(const std::vector<std::string> &arguments) {
   }
   if (!arguments.empty() && arguments[0] == "--selection-creation-ui-case") {
     if (arguments.size() != 3)
-      throw std::invalid_argument("Use --selection-creation-ui-case S01..S16|R01..R03 FRESH_DIRECTORY");
+      throw std::invalid_argument("Use --selection-creation-ui-case S01..S16|R01..R03|Q01..Q03 FRESH_DIRECTORY");
     const auto output = std::filesystem::absolute(std::filesystem::u8path(arguments[2]));
     imagejxx::desktop::Window editor((output.parent_path() / "preferences.json").u8string());
     imagejxx::desktop::selectionCreationUiCase(editor, arguments[1], "imgui_cpp", arguments[2]);

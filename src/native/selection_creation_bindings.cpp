@@ -64,13 +64,20 @@ void bind_selection_creation(py::module_ &m) {
       .value("SUBTRACT", SelectionCreationOperation::Subtract)
       .value("INTERSECT", SelectionCreationOperation::Intersect)
       .value("XOR", SelectionCreationOperation::Xor);
+  py::enum_<SelectionCreationGeometry>(m, "SelectionCreationGeometry")
+      .value("AUTOMATIC", SelectionCreationGeometry::Automatic)
+      .value("CANVAS_V1", SelectionCreationGeometry::CanvasV1)
+      .value("FULL_REGION_V3", SelectionCreationGeometry::FullRegionV3);
   py::class_<SelectionCreationRequest>(m, "SelectionCreationRequest")
-      .def(py::init([](Selection candidate, SelectionCreationOperation operation) {
-        return SelectionCreationRequest{operation, std::move(candidate)};
+      .def(py::init([](Selection candidate, SelectionCreationOperation operation,
+                       SelectionCreationGeometry geometry) {
+        return SelectionCreationRequest{operation, std::move(candidate), geometry};
       }), py::arg("candidate"),
-          py::arg("operation") = SelectionCreationOperation::Replace)
+          py::arg("operation") = SelectionCreationOperation::Replace,
+          py::arg("geometry") = SelectionCreationGeometry::Automatic)
       .def_readwrite("operation", &SelectionCreationRequest::operation)
-      .def_readwrite("candidate", &SelectionCreationRequest::candidate);
+      .def_readwrite("candidate", &SelectionCreationRequest::candidate)
+      .def_readwrite("geometry", &SelectionCreationRequest::geometry);
   py::class_<SelectionCreationLimits>(m, "SelectionCreationLimits")
       .def(py::init<>())
       .def_property("max_pixels",

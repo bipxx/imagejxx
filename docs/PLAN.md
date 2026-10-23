@@ -1,5 +1,23 @@
 # ImageJ and Fiji gap closure plan
 
+**Full-region selection creation, 2026-10-23 (scoped integration):**
+Creation retains complete off-image pixel geometry through automatic regional
+bases or explicit full mode. Closed V3 records validate original equations and
+retain intrinsic origin/extent through replay, rebinding, preparation and native
+sessions; V1/V2 canvas behavior remains available. Native and Python requests
+share the same core. Shared modifier drawing and Preserve off-image geometry
+use captured full geometry, transient previews and scientific metadata publication.
+Windows/Linux each pass 2,116 installed Python checks (119 new), eight native
+groups, 1,297 native creation/installed SDK checks, 19 standalone UI recipes and
+three new paired ordinary/scientific/option recipes. All 16 historical paired
+drawing recipes and 70 ImageJ membership sequences pass; failure/error/skip
+counts are zero. Verified archives precede removal of 237,332,554 owned scratch
+bytes. Original requirements and historical expectations remain unchanged; the
+historical Auto fingerprint gate stays open. Next are native workflow-program
+creation steps, regional rotation and continuous-path/remapping work. See the
+[contract](parity/REGIONAL_CREATION.md) and
+[scoped receipt](parity/reviews/p12q-region-creation001.json).
+
 **Selection creation input capture, 2026-10-23 (scoped prerequisite):**
 Creation and replay now freeze admitted owner, operands, wire records, limits
 and execution controls before callbacks. Callback reassignment cannot redirect

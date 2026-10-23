@@ -923,6 +923,93 @@ void captured_rebind_admission() {
   unchanged(owner, before, history);
 }
 
+void regional_creation() {
+  auto data = fixture();
+  const auto base = Selection::from_packed_region(3, 1, {0xa0}, {-2, 0});
+  data.selection = base;
+  Document owner(std::move(data));
+  const auto before = owner.snapshot();
+  const auto history = owner.history();
+  const Selection candidate("rectangle", {{-1, 0}, {2, 1}});
+  const std::array<Operation, 4> operations{Operation::Add, Operation::Subtract,
+                                         Operation::Intersect, Operation::Xor};
+  const std::array<unsigned char, 4> bytes{0xf0, 0x80, 0x40, 0xd0};
+  const std::array<int, 4> widths{4, 3, 2, 4};
+  for (std::size_t i = 0; i < operations.size(); ++i) {
+    SelectionCreationRequest input{operations[i], candidate};
+    const auto command = resolve_selection_creation_command(before, input);
+    const auto expected = Selection::from_packed_region(widths[i], 1, {bytes[i]},
+        {i == 2 ? -1 : -2, 0});
+    check(command.result() == expected, "Full creation lost literal off-image cells");
+    check(std::get<std::int64_t>(command.record().at("version")) == 3,
+          "Regional creation did not capture V3");
+    validate_selection_creation_command_record(command.record());
+    const auto replay = selection_creation_command_from_record(before, command.record());
+    check(replay.result() == expected && replay.base() == base &&
+              replay.request().geometry == SelectionCreationGeometry::FullRegionV3,
+          "V3 replay lost equation or intrinsic provenance");
+    const auto rebound = rebind_selection_creation_command(before, command.record(), input);
+    check(rebound.result() == expected, "V3 rebind changed full equation");
+    auto tx = prepare_selection_creation(command);
+    check(tx.preview().data().selection == expected &&
+              tx.preview().data().previous_selection == base,
+          "Full creation preparation lost current/Previous");
+    same_records(tx.preview(), before);
+    unchanged(owner, before, history);
+    auto cap = SelectionCreationLimits{};
+    cap.max_working_bytes = command.estimate().working_bytes;
+    (void)resolve_selection_creation_command(before, input, cap);
+    cap.max_working_bytes--;
+    int callbacks = 0;
+    ExecutionControl control;
+    control.checkpoint = [&] { ++callbacks; };
+    rejects([&] { (void)resolve_selection_creation_command(before, input, cap, control); },
+            "Full creation admitted below its working estimate");
+    check(callbacks == 0, "Full creation budget refusal dispatched callbacks");
+    auto downgraded = command.record(); downgraded["version"] = std::int64_t(2);
+    rejects([&] { validate_selection_creation_command_record(downgraded); },
+            "Legacy creation record admitted regional storage");
+    auto forged = changed(command.record(), "result", [](MetadataObject &value) {
+      value["mask"] = std::string("AA==");
+    });
+    rejects([&] { validate_selection_creation_command_record(forged); },
+            "V3 accepted a forged result equation");
+  }
+  SelectionCreationRequest canvas{Operation::Add, candidate, SelectionCreationGeometry::CanvasV1};
+  rejects([&] { (void)compose_selection_creation(before, canvas); },
+          "Canvas mode admitted a regional base");
+  const auto replacement = resolve_selection_creation_command(before,
+      {Operation::Replace, styled(candidate)});
+  check(replacement.result() == styled(candidate) && replacement.base() == base &&
+            std::get<std::int64_t>(replacement.record().at("version")) == 3,
+        "Regional replacement lost vector style or full provenance");
+  Document other(fixture());
+  const SelectionCreationRequest explicit_full{Operation::Add, candidate,
+      SelectionCreationGeometry::FullRegionV3};
+  const auto explicit_command = resolve_selection_creation_command(other.snapshot(), explicit_full);
+  check(explicit_command.result().is_region(), "Explicit full mode returned a canvas bitmap");
+  validate_selection_creation_command_record(explicit_command.record());
+  // Freeze both operands through full-algebra callbacks, including cancellation.
+  auto source = before;
+  auto input = SelectionCreationRequest{Operation::Add, candidate};
+  auto token = std::make_shared<CancellationToken>();
+  ExecutionControl control;
+  control.checkpoint = [&] {
+    source = other.snapshot();
+    input.candidate = Selection("rectangle", {{3, 1}, {5, 3}});
+  };
+  const auto captured = resolve_selection_creation_command(source, input, {}, control);
+  check(captured.source().same_document(before) && captured.result().packed_mask()[0] == 0xf0,
+        "Full algebra followed caller mutation");
+  control.cancellation = token;
+  control.checkpoint = [&] { token->cancel(); };
+  rejects<OperationCancelled>([&] {
+    (void)compose_selection_creation(before, {Operation::Add, candidate}, {}, control);
+  }, "Full creation ignored cancellation");
+  unchanged(owner, before, history);
+  std::cout << "regional_creation: full V3 equations/replay/rebind/admission/capture passed\n";
+}
+
 void rounded_creation() {
   Document owner(fixture());
   Selection candidate("rounded_rectangle", {{1,1},{4,3}});
@@ -953,7 +1040,7 @@ int main(int argc, char **argv) {
         {"records", records}, {"replay", replay}, {"limits", limits},
         {"control", control}, {"storage", storage}, {"captured_inputs", captured_inputs},
         {"captured_rebind_admission", captured_rebind_admission},
-        {"rounded_creation", rounded_creation}};
+        {"regional_creation", regional_creation}, {"rounded_creation", rounded_creation}};
     bool found = group == "all";
     for (const auto &[name, run] : groups)
       if (group == "all" || group == name) { found = true; run(); }

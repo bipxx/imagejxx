@@ -136,8 +136,20 @@ bool creationTool(const std::string &value) {
   return value == "rounded_rectangle" || value == "rectangle" || value == "ellipse" ||
          value == "polygon" || value == "freehand";
 }
+SelectionCreationGeometry creationGeometry(const std::optional<MetadataObject> &original) {
+  if (original) {
+    const auto found = original->find("version");
+    if (found != original->end()) {
+      if (const auto v = std::get_if<std::int64_t>(&found->second); v && *v == 3)
+        return SelectionCreationGeometry::FullRegionV3;
+      if (const auto v = std::get_if<std::uint64_t>(&found->second); v && *v == 3)
+        return SelectionCreationGeometry::FullRegionV3;
+    }
+  }
+  return SelectionCreationGeometry::Automatic;
+}
 bool creationArea(const Selection &value) {
-  return creationTool(value.kind) || value.kind == "rotated_rounded_rectangle" || value.kind == "mask" ||
+  return creationTool(value.kind) || value.kind == "rotated_rounded_rectangle" || value.is_mask() ||
          value.kind == "rotated_rectangle" || value.kind == "rotated_ellipse";
 }
 ChannelDisplayRequest channelDisplayRequest(const DocumentSnapshot &source,
@@ -961,6 +973,7 @@ struct Window::Impl {
       PlanePosition position{};
       std::string tool;
       SelectionCreationOperation operation = SelectionCreationOperation::Replace;
+      SelectionCreationGeometry geometry = SelectionCreationGeometry::Automatic;
       std::array<double, 2> down{};
       std::vector<std::array<double, 2>> points;
       std::optional<SelectionCreationBoxState> box;
@@ -1067,6 +1080,7 @@ struct Window::Impl {
       status = "Open an image or create a document";
   std::string tool = "rectangle";
   SelectionCreationOperation creationMode = SelectionCreationOperation::Replace;
+  bool creationFullGeometry = false;
   std::optional<MetadataObject> creationRebind;
   std::uint64_t creationRebindOwner = 0;
   std::string creationAdmission = "hidden", creationLastCancel;
@@ -2724,7 +2738,7 @@ struct Window::Impl {
       candidate->kind = "rounded_rectangle";
       candidate->attributes["corner_diameter"] = std::int64_t(draft.cornerDiameter);
     }
-    SelectionCreationRequest request{draft.operation, std::move(*candidate)};
+    SelectionCreationRequest request{draft.operation, std::move(*candidate), draft.geometry};
     const auto limits = selectionCreationLimits();
     const auto estimate = estimate_selection_creation(draft.source, request, limits);
     if (draft.retained > limits.max_working_bytes ||
@@ -2763,6 +2777,8 @@ struct Window::Impl {
     Pane::CreationGesture draft(source);
     draft.position = pane.doc->position(); draft.tool = tool;
     draft.operation = mode; draft.down = point;
+    draft.geometry = creationFullGeometry ? SelectionCreationGeometry::FullRegionV3
+                                          : creationGeometry(creationRebind);
     draft.width = preferenceState.settings.number("line_width");
     draft.cornerDiameter = int(preferenceState.settings.integer("rounded_corner_diameter"));
     draft.origin = pane.origin; draft.extent = pane.extent;
@@ -2788,7 +2804,7 @@ struct Window::Impl {
     auto draft = std::move(*pane.creation);
     cancelCreation(pane, "");
     if (!draft.candidate) return;
-    SelectionCreationRequest request{draft.operation, std::move(*draft.candidate)};
+    SelectionCreationRequest request{draft.operation, std::move(*draft.candidate), draft.geometry};
     // Release the old preview before resolving/preparing the final action.
     draft.preview.reset(); draft.previewGeometry = Json::object();
     draft.candidateGeometry = Json::object();
@@ -9156,6 +9172,12 @@ void Window::Impl::tools() {
     }
     ImGui::EndDisabled();
     ImGui::TextWrapped("Shift adds; Alt subtracts from an area base. The mode is captured on the first press. Shift/Ctrl also constrain box geometry.");
+    ImGui::BeginDisabled(!creationEnabled || owner.busy() || owner.documents_.empty());
+    if (ImGui::Checkbox("Preserve off-image geometry", &creationFullGeometry))
+      cancelCreations("geometry_changed");
+    observeControl("selection_creation.full_geometry",
+                   creationEnabled && !owner.busy() && !owner.documents_.empty());
+    ImGui::EndDisabled();
     ImGui::Separator();
   }
   if (creationRebind) {
