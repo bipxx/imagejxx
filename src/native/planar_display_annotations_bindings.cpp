@@ -182,22 +182,34 @@ void bind_planar_display_annotations(py::module_ &m) {
   py::class_<PlanarDisplayAnnotation>(m, "PlanarDisplayAnnotation")
       .def(py::init([](py::str name, DisplayAnnotationPayload payload,
                        const std::string &plane, py::handle coordinate,
-                       py::handle t, py::handle c, py::dict attributes) {
+                       py::handle t, py::handle c, py::dict attributes, py::handle transform) {
              auto fixed = axis(coordinate);
              if (!fixed)
                throw py::type_error(
                    "Display annotation requires a fixed coordinate");
-             return PlanarDisplayAnnotation{text(name, 4096),
+             PlanarDisplayAnnotation result{text(name, 4096),
                                             std::move(payload),
                                             parse_plane(plane),
                                             *fixed,
                                             axis(t),
                                             axis(c),
                                             object(attributes)};
+             if(!transform.is_none()) {
+               if(PyUnicode_Check(transform.ptr()) || PyBytes_Check(transform.ptr()) || !PySequence_Check(transform.ptr()))
+                 throw py::type_error("Display transform requires six numeric values");
+               auto values=py::reinterpret_borrow<py::sequence>(transform);
+               if(values.size()!=6)throw py::value_error("Display transform requires six numeric values");
+               for(std::size_t i=0;i<6;++i) {
+                 auto value=values[i];if(PyBool_Check(value.ptr()) || PyUnicode_Check(value.ptr()) || PyBytes_Check(value.ptr()))
+                   throw py::type_error("Display transform requires numbers, not booleans or strings");
+                 result.transform[i]=py::cast<double>(value);
+               }
+             }
+             result.validate_transform();return result;
            }),
            py::arg("name"), py::arg("payload"), py::arg("plane"),
            py::arg("coordinate"), py::arg("t") = py::none(),
-           py::arg("c") = py::none(), py::arg("attributes") = py::dict())
+           py::arg("c") = py::none(), py::arg("attributes") = py::dict(), py::arg("transform") = py::none())
       .def_readonly("name", &PlanarDisplayAnnotation::name)
       .def_property_readonly(
           "payload", [](const PlanarDisplayAnnotation &p) { return p.payload; })
@@ -207,6 +219,10 @@ void bind_planar_display_annotations(py::module_ &m) {
             return std::array<const char *, 3>{"xy", "xz", "yz"}.at(
                 std::size_t(p.plane));
           })
+      .def_readonly("transform", &PlanarDisplayAnnotation::transform)
+      .def_property_readonly("has_transform", &PlanarDisplayAnnotation::has_transform)
+      .def("map_point", &PlanarDisplayAnnotation::map_point)
+      .def("unmap_point", &PlanarDisplayAnnotation::unmap_point)
       .def_readonly("coordinate", &PlanarDisplayAnnotation::coordinate)
       .def_readonly("t", &PlanarDisplayAnnotation::t)
       .def_readonly("c", &PlanarDisplayAnnotation::c)

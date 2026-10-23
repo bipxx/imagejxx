@@ -199,6 +199,7 @@ Bytes projected(const MappedImageJDisplayRoi &mapped,
                 const ImageJDisplayProjectionOptions &options,
                 const ImageJDisplayRoiLimits &l) {
   const auto &row = mapped.annotation();
+  need(!row.has_transform(),"Affine display annotations require explicit flattening before ImageJ export");
   need(projection.index() == row.payload.index(),
        "Display projection kind differs from native payload");
   std::visit([](const auto &r) { bare_properties(r.properties); }, projection);

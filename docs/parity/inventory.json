@@ -898,7 +898,8 @@
           "docs/parity/reviews/p12q-region-creation001.json",
           "docs/parity/reviews/p12r-creation-workflow001.json",
           "docs/parity/reviews/p12s-region-rotation001.json",
-          "docs/parity/reviews/p12t-planar-region001.json"
+          "docs/parity/reviews/p12t-planar-region001.json",
+          "docs/parity/reviews/p12u-display-remap001.json"
         ],
         "implementation": [
           "include/imagejxx/selection_edit.hpp",

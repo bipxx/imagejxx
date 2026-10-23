@@ -126,6 +126,8 @@ EDITOR_READERS = {
     "planar-rebind": ("--planar-annotation-rebind-ui-case", "IMAGEJXX_PLANAR_REBIND_CPP_REPORT"),
     "planar-tools": ("--planar-annotation-tools-ui-case", "IMAGEJXX_PLANAR_TOOLS_CPP_REPORT"),
     "z-subset": ("--z-subset-ui-case", "IMAGEJXX_Z_SUBSET_CPP_REPORT"),
+    "planar-region": ("--regional-z-subset-ui-case", "IMAGEJXX_PLANAR_REGION_CPP_REPORT"),
+    "display-remap": ("--display-z-subset-ui-case", "IMAGEJXX_DISPLAY_REMAP_CPP_REPORT"),
     "axis-spacing": ("--axis-spacing-ui-case", "IMAGEJXX_SPACING_CPP_REPORT"),
     "slicer-resize": ("--slicer-resize-ui-case", "IMAGEJXX_SLICER_CPP_REPORT"),
     "roi-manager": ("--scientific-roi-manager-ui-case", "IMAGEJXX_ROI_MANAGER_CPP_REPORT"),
@@ -198,7 +200,9 @@ def shadow_demo_cases():
 def cases():
     groups = [
         ("rank", "--rank-ui-case", [f"R{i:02d}" for i in range(1, 60)]),
-        ("selection", "--selection-creation-ui-case", ["R01", "R02", "R03"]),
+        ("selection", "--selection-creation-ui-case", ["R01", "R02", "R03", "Q01", "Q02", "Q03", "Q04"]),
+        ("selection-legacy", "--selection-creation-ui-test", [None]),
+        ("regional-rotation", "--saved-roi-geometry-ui-case", ["PX11"]),
         ("rounded-export", "--rounded-roi-export-ui-case",
          ["axis", "rotated", "oversized", "zero", "precision"]),
         ("legacy-export", "--roi-export-ui-case", [None]),
@@ -275,6 +279,10 @@ def reader_environment(output):
     environment = {
         "IMAGEJXX_VIRTUAL_TIFF_CPP_ROOT": reports / "virtual-tiff",
         "IMAGEJXX_ROUNDED_CPP_CASE": reports / "selection/R01",
+        "IMAGEJXX_REGIONAL_CREATION_CPP_BASE": reports / "selection",
+        "IMAGEJXX_CREATION_WORKFLOW_CPP_REPORT": reports / "selection/Q04/case.json",
+        "IMAGEJXX_SELECTION_CREATION_CPP_REPORT": reports / "selection-legacy/legacy/imgui-cpp.json",
+        "IMAGEJXX_REGION_ROTATION_CPP_REPORT": reports / "regional-rotation/PX11/case.json",
         "IMAGEJXX_ROUNDED_SAVED_CPP_BASE": reports / "selection",
         "IMAGEJXX_ROUNDED_EXPORT_CPP_BASE": reports / "rounded-export",
         "IMAGEJXX_ROI_EXPORT_CPP_REPORT": reports / "legacy-export/legacy/case.json",
@@ -438,7 +446,7 @@ def capture(output, executable, root, environment=None):
             if process.returncode:
                 raise subprocess.CalledProcessError(process.returncode, argv)
             report = actual / ("report.json" if group == "ieee-viewing" else
-                               "imgui-cpp.json" if group == "headless-session" else "case.json")
+                               "imgui-cpp.json" if group in ("headless-session", "selection-legacy") else "case.json")
             if not report.is_file() or report.stat().st_size > 128 * 1024 * 1024:
                 raise ValueError(f"Missing or oversized observation report: {report}")
             observation = json.loads(report.read_bytes())

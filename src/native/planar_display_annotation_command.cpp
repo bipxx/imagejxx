@@ -2,6 +2,7 @@
 #include "display_annotation_internal.hpp"
 #include <imagejxx/planar_display_annotation_command.hpp>
 #include <limits>
+#include <algorithm>
 namespace imagejxx {
 namespace {
 using namespace detail::axis_command_record;
@@ -51,11 +52,18 @@ Decoded decode(const MetadataObject &record) {
   detail::preflight_display_annotation_record(record);
   exact_fields(record, {"schema", "version", "source", "operation", "index",
                         "annotation", "before", "after", "destination"});
+  const auto version=unsigned_value(record.at("version"));
   if (text_value(record.at("schema")) !=
           "imagejxx.planar-display-annotation-command" ||
-      unsigned_value(record.at("version")) != 1 ||
+      (version!=1 && version!=2) ||
       text_value(record.at("destination")) != "in_place")
     throw std::invalid_argument("Unsupported planar annotation command");
+  bool affine=false;
+  for(const auto *key:{"annotation","before","after"})if(!std::holds_alternative<std::monostate>(record.at(key))) {
+    const auto &nested=object_value(record.at(key));const auto it=nested.find("version");
+    if(it!=nested.end() && unsigned_value(it->second)==2)affine=true;
+  }
+  if((version==2)!=affine)throw std::invalid_argument("Unsupported planar annotation command");
   auto source = read_source(object_value(record.at("source")));
   const auto &operation = text_value(record.at("operation"));
   PlanarDisplayAnnotationRequest request;
@@ -130,9 +138,11 @@ resolve_planar_display_annotation_command(
   const auto rows = planar_display_annotations(source.data());
   const auto after = encode_planar_display_annotations(
       descriptor.shape, apply(descriptor.shape, rows, request));
+  const bool affine=std::any_of(rows.begin(),rows.end(),[](const auto &row){return row.has_transform();}) ||
+      (request.annotation && request.annotation->has_transform());
   MetadataObject record{
       {"schema", std::string("imagejxx.planar-display-annotation-command")},
-      {"version", 1},
+      {"version", affine?2:1},
       {"source", metadata_object(source_record(descriptor))},
       {"operation", std::string(operation_name(request.operation))},
       {"index", request.index ? MetadataValue(std::uint64_t(*request.index))

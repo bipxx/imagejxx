@@ -93,6 +93,7 @@ display_projection(const PlanarDisplayAnnotation &row,
                    std::optional<ImageJAnnotationProjection> source, bool reset,
                    bool regenerate,
                    const ImageJDisplayProjectionOptions &options) {
+  if(row.has_transform())throw std::invalid_argument("Affine display annotations require explicit flattening before ImageJ export");
   if (const auto text = std::get_if<TextAnnotationPayload>(&row.payload)) {
     if (!options.round_font_size &&
         text->font_size != std::round(text->font_size))

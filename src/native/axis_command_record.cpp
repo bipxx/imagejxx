@@ -227,6 +227,8 @@ const char *sample_policy_name(FloatingSamplePolicy policy) {
   case FloatingSamplePolicy::FiniteOnly: return "finite_only";
   case FloatingSamplePolicy::PreserveQuietNaNFloat32:
     return "preserve_quiet_nan_float32";
+  case FloatingSamplePolicy::PreserveIEEEFloat32:
+    return "preserve_ieee_float32";
   }
   throw std::invalid_argument("Invalid axis extraction source sample policy");
 }
@@ -236,6 +238,8 @@ FloatingSamplePolicy read_sample_policy(const MetadataValue &value) {
   if (name == "finite_only") return FloatingSamplePolicy::FiniteOnly;
   if (name == "preserve_quiet_nan_float32")
     return FloatingSamplePolicy::PreserveQuietNaNFloat32;
+  if (name == "preserve_ieee_float32")
+    return FloatingSamplePolicy::PreserveIEEEFloat32;
   throw std::invalid_argument("Unknown axis extraction source sample policy");
 }
 
@@ -246,6 +250,9 @@ void validate_sample_policy(DatasetShape shape, PixelType type,
       (type != PixelType::Float32 || shape.s != 1))
     throw std::invalid_argument(
         "Axis extraction quiet-NaN policy requires grayscale Float32");
+  if (policy == FloatingSamplePolicy::PreserveIEEEFloat32 &&
+      (type != PixelType::Float32 || shape.s != 1))
+    throw std::invalid_argument("Axis extraction IEEE policy requires grayscale Float32");
 }
 
 const char *plane_name(Plane plane) {

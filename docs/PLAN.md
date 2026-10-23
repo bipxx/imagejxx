@@ -1,5 +1,24 @@
 # ImageJ and Fiji gap closure plan
 
+**Affine display annotations and Z alignment, 2026-10-23 (scoped integration):**
+V2 display sets/commands retain complete payload-to-plane transforms. Z
+subsets compose XZ/YZ mappings and remap XY positions without rewriting
+text style or embedded image bytes. Native/Python point mapping, strict
+versions, numeric transform edits, actual glyph/image vertices and native
+OpenGL captures have coverage. Shared source metadata now retains admitted
+grayscale IEEE Float32 policies through annotation and subset replay.
+Windows/Linux each pass 9,001 installed Python checks (147 new), fourteen
+native groups, an 18-check installed SDK client and 42 standalone UI recipes.
+All prior 8,779 IDs remain included; failure/error/skip counts are zero.
+Eight added CI capture routes and six newer reader bindings pass separately
+on both hosts; this does not claim full CI acceptance.
+Verified archives precede removal of 1,938,914,749 owned scratch bytes.
+Original requirement statuses and historical expectations remain unchanged;
+the historical Auto fingerprint gate remains open. Continuous paths, other
+axis policies and explicit affine ImageJ export remain. See
+[the contract](parity/DISPLAY_ANNOTATION_REMAP.md) and
+[the scoped receipt](parity/reviews/p12u-display-remap001.json).
+
 **Planar regional geometry and Z subsets, 2026-10-23 (scoped integration):**
 V2 planar annotation sets/commands retain intrinsic regions, while V1
 remains closed to them. Regular Z subsets gather the full XZ/YZ sampling

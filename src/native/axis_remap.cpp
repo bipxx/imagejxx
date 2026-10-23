@@ -4,6 +4,7 @@
 #include "session_metadata.hpp"
 #include "kernel_control.hpp"
 #include "axis_region_remap.hpp"
+#include <imagejxx/planar_display_annotations.hpp>
 #include <algorithm>
 #include <limits>
 
@@ -119,6 +120,23 @@ static PreparedAxisRemap prepare_z_axis_remap_frozen(const DocumentSnapshot &sou
     }
     if(mapped.empty())edit.remove_extension(planar_annotations_extension);
     else edit.set_extension(planar_annotations_extension,encode_planar_annotations(output_shape,mapped));
+  }
+  if(data.metadata.extensions.count(planar_display_annotations_extension)) {
+    auto annotations=planar_display_annotations(data);std::vector<PlanarDisplayAnnotation> mapped;
+    for(auto row:annotations) {
+      kernel_checkpoint();
+      if(row.plane==Plane::XY) {
+        const auto coordinate=map.output_index(row.coordinate);if(!coordinate)continue;
+        row.coordinate=*coordinate;
+      } else {
+        auto &a=row.transform;
+        a[3]/=request.step;a[4]/=request.step;
+        a[5]=a[5]/request.step+.5-(double(request.first)+.5)/request.step;
+      }
+      row.validate(output_shape);mapped.push_back(std::move(row));
+    }
+    if(mapped.empty())edit.remove_extension(planar_display_annotations_extension);
+    else edit.set_extension(planar_display_annotations_extension,encode_planar_display_annotations(output_shape,mapped));
   }
   std::vector<Roi> rois;rois.reserve(data.rois.size());
   for(auto roi:data.rois) {

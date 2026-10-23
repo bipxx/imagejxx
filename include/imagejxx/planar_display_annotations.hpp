@@ -35,10 +35,20 @@ struct PlanarDisplayAnnotation {
   int coordinate = 0;
   std::optional<int> t, c;
   MetadataObject attributes;
+  // Payload-local boundary coordinates to plane-local boundaries, row-major
+  // 2x3 affine transform. Payload text/style and source image bytes stay exact.
+  // Coefficients must be finite, within +/-1e9, and have nonzero determinant.
+  std::array<double, 6> transform{1, 0, 0, 0, 1, 0};
+  bool has_transform() const;
+  void validate_transform() const;
+  std::array<double, 2> map_point(std::array<double, 2>) const;
+  std::array<double, 2> unmap_point(std::array<double, 2>) const;
   void validate(DatasetShape) const;
   bool operator==(const PlanarDisplayAnnotation &) const;
 };
-// Closed V1, all six dimensions bound. At most4096 rows,1MiB text/row,
+// V1 is closed to affine fields; V2 requires at least one nonidentity transform
+// and carries complete transforms on every row. All six dimensions are bound.
+// At most4096 rows,1MiB text/row,
 // 1Mi image pixels/row (RGB8/RGBA8),16MiB logical encoded metadata,1M nodes.
 // No font discovery/layout, rasterization, filesystem or source pixel reads.
 MetadataValue

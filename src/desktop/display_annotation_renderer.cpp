@@ -59,7 +59,12 @@ TextLayout layout(const TextAnnotationPayload &p, ImFont *font) {
   }
   return result;
 }
-Json draw_text(const TextAnnotationPayload &p, const PlanarCanvas &canvas,
+ImVec2 mapped_screen(const PlanarDisplayAnnotation &row,const PlanarCanvas &canvas,double u,double v) {
+  if(!row.has_transform())return screen(canvas,u,v);
+  const auto &a=row.transform;
+  return screen(canvas,a[0]*u+a[1]*v+a[2],a[3]*u+a[4]*v+a[5]);
+}
+Json draw_text(const PlanarDisplayAnnotation &row,const TextAnnotationPayload &p, const PlanarCanvas &canvas,
                ImDrawList *draw) {
   if (p.font_name != "SansSerif" && p.font_name != "ImGui UI font")
     throw std::invalid_argument("Font is not mapped: " + p.font_name +
@@ -73,7 +78,7 @@ Json draw_text(const TextAnnotationPayload &p, const PlanarCanvas &canvas,
                cx = b[0] + b[2] / 2, cy = b[1] + b[3] / 2;
   auto point = [&](double x, double y) {
     const auto dx = x - cx, dy = y - cy;
-    return screen(canvas, cx + cs * dx - sn * dy, cy + sn * dx + cs * dy);
+    return mapped_screen(row,canvas, cx + cs * dx - sn * dy, cy + sn * dx + cs * dy);
   };
   if (p.background)
     draw->AddQuadFilled(point(b[0], b[1]), point(b[0] + b[2], b[1]),
@@ -222,11 +227,13 @@ Json DisplayAnnotationRenderer::draw(const DocumentSnapshot &source,
                                std::size_t(row.plane))},
                  {"coordinate", row.coordinate},
                  {"clipped_to_canvas", true}};
+    if(row.has_transform())info["transform"]=row.transform;
+    const auto vertex_begin=draw->VtxBuffer.Size;
     const auto draw_begin = draw->IdxBuffer.Size;
     try {
       if (const auto p = std::get_if<TextAnnotationPayload>(&row.payload)) {
         info["kind"] = "text";
-        info["layout"] = draw_text(*p, canvas, draw);
+        info["layout"] = draw_text(row,*p, canvas, draw);
       } else {
         info["kind"] = "image";
         const auto &image_payload =
@@ -267,9 +274,11 @@ Json DisplayAnnotationRenderer::draw(const DocumentSnapshot &source,
           glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(binding));
         }
         const auto &b = image_payload.bounds;
-        draw->AddImage(static_cast<ImTextureID>(gl ? t.id : 1),
-                       screen(canvas, b[0], b[1]),
-                       screen(canvas, b[0] + b[2], b[1] + b[3]));
+        if(row.has_transform())draw->AddImageQuad(static_cast<ImTextureID>(gl ? t.id : 1),
+            mapped_screen(row,canvas,b[0],b[1]),mapped_screen(row,canvas,b[0]+b[2],b[1]),
+            mapped_screen(row,canvas,b[0]+b[2],b[1]+b[3]),mapped_screen(row,canvas,b[0],b[1]+b[3]));
+        else draw->AddImage(static_cast<ImTextureID>(gl ? t.id : 1),
+                       screen(canvas, b[0], b[1]),screen(canvas, b[0] + b[2], b[1] + b[3]));
         if (diagnostics) {
           info["rgba_bytes"] = t.rgba.size();
           info["rgba_prefix"] = std::vector<unsigned char>(
@@ -283,10 +292,17 @@ Json DisplayAnnotationRenderer::draw(const DocumentSnapshot &source,
       info["error"] = e.what();
       const auto bounds =
           std::visit([](const auto &p) { return p.bounds; }, row.payload);
-      draw->AddText(screen(canvas, bounds[0], bounds[1]),
+      draw->AddText(mapped_screen(row,canvas, bounds[0], bounds[1]),
                     IM_COL32(255, 100, 100, 255), e.what());
     }
     if (diagnostics) {
+      info["canvas_origin"]=canvas.origin;info["canvas_scale"]=canvas.scale;
+      info["screen_vertices"]=Json::array();
+      for(int v=vertex_begin;v<std::min(vertex_begin+4,draw->VtxBuffer.Size);++v) {
+        const auto &vertex=draw->VtxBuffer[v];
+        info["screen_vertices"].push_back({{"position",{vertex.pos.x,vertex.pos.y}},
+            {"uv",{vertex.uv.x,vertex.uv.y}},{"color",vertex.col}});
+      }
       info["draw_index_begin"] = draw_begin;
       info["draw_index_end"] = draw->IdxBuffer.Size;
       result.push_back(std::move(info));

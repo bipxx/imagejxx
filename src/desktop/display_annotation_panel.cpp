@@ -41,6 +41,7 @@ struct DisplayAnnotationPanel::State {
   bool all_t = false, all_c = false, bold = false, italic = false,
        baseline = false, zero = false;
   std::array<std::string, 4> bounds;
+  std::array<std::string,6> transform;
   std::string name, text, font, font_size, angle, foreground, background, error,
       reason;
   Json controls = Json::object();
@@ -68,6 +69,7 @@ struct DisplayAnnotationPanel::State {
     base = std::move(row);
     selected = index;
     name = base.name;
+    for(std::size_t i=0;i<6;++i)transform[i]=geometry_number_text(base.transform[i]);
     plane = int(base.plane);
     coordinate = base.coordinate;
     all_t = !base.t;
@@ -116,6 +118,7 @@ struct DisplayAnnotationPanel::State {
   }
   PlanarDisplayAnnotation value() const {
     auto row = base;
+    for(std::size_t i=0;i<6;++i)row.transform[i]=parse_geometry_number(transform[i]);
     row.name = name;
     row.plane = Plane(plane);
     row.coordinate = coordinate;
@@ -372,6 +375,19 @@ void DisplayAnnotationPanel::draw(
     s.observe("opacity", 100, id);
     ImGui::Checkbox("Black RGB is transparent", &s.zero);
     s.observe("zero");
+  }
+  if(s.base.has_transform()) {
+    ImGui::TextUnformatted("Payload coordinates use the retained plane transform.");
+    const bool transform_open=ImGui::CollapsingHeader("Plane transform");s.observe("transform.section");
+    if(transform_open) {
+      const char *labels[]={"M00","M01","Offset U","M10","M11","Offset V"};
+      for(std::size_t i=0;i<6;++i)s.input(labels[i],s.transform[i],("transform."+std::to_string(i)).c_str(),110);
+      if(ImGui::Button("Reset transform to identity")) {
+        const std::array<double,6> identity{1,0,0,0,1,0};
+        for(std::size_t i=0;i<6;++i)s.transform[i]=geometry_number_text(identity[i]);
+      }
+      s.observe("transform.reset");
+    }
   }
   auto publish_request = [&](const PlanarDisplayAnnotationRequest &request) {
     const auto command =

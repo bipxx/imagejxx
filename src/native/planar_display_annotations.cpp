@@ -3,6 +3,7 @@
 #include "kernel_control.hpp"
 #include "session_metadata.hpp"
 #include <cmath>
+#include <algorithm>
 #include <imagejxx/planar_display_annotations.hpp>
 #include <limits>
 
@@ -243,7 +244,33 @@ bool ImageAnnotationPayload::operator==(const ImageAnnotationPayload &v) const {
          channels == v.channels && pixels == v.pixels && opacity == v.opacity &&
          zero_transparent == v.zero_transparent;
 }
+bool PlanarDisplayAnnotation::has_transform() const {
+  return transform!=std::array<double,6>{1,0,0,0,1,0};
+}
+void PlanarDisplayAnnotation::validate_transform() const {
+  for(const auto n:transform)require(std::isfinite(n) && std::abs(n)<=1e9,
+      "Display annotation transform must be finite and bounded");
+  const auto determinant=transform[0]*transform[4]-transform[1]*transform[3];
+  require(std::isfinite(determinant) && determinant!=0,
+      "Display annotation transform must be invertible");
+}
+std::array<double,2> PlanarDisplayAnnotation::map_point(std::array<double,2> point) const {
+  validate_transform();for(auto n:point)require(std::isfinite(n),"Display annotation point must be finite");
+  const auto &a=transform;
+  std::array<double,2> result{a[0]*point[0]+a[1]*point[1]+a[2],a[3]*point[0]+a[4]*point[1]+a[5]};
+  for(auto n:result)require(std::isfinite(n),"Mapped display annotation point overflow");
+  return result;
+}
+std::array<double,2> PlanarDisplayAnnotation::unmap_point(std::array<double,2> point) const {
+  validate_transform();for(auto n:point)require(std::isfinite(n),"Display annotation point must be finite");
+  const auto &a=transform;const auto x=point[0]-a[2],y=point[1]-a[5];
+  const auto determinant=a[0]*a[4]-a[1]*a[3];
+  std::array<double,2> result{(a[4]*x-a[1]*y)/determinant,(-a[3]*x+a[0]*y)/determinant};
+  for(auto n:result)require(std::isfinite(n),"Inverse display annotation point overflow");
+  return result;
+}
 void PlanarDisplayAnnotation::validate(DatasetShape shape) const {
+  validate_transform();
   const auto axes = planar_annotation_geometry(shape, plane);
   const std::array<int, 3> dimensions{shape.x, shape.y, shape.z};
   require(coordinate >= 0 && coordinate < dimensions[axes.fixed_axis] &&
@@ -258,7 +285,7 @@ bool PlanarDisplayAnnotation::operator==(
     const PlanarDisplayAnnotation &v) const {
   return name == v.name && payload == v.payload && plane == v.plane &&
          coordinate == v.coordinate && t == v.t && c == v.c &&
-         metadata_equal(attributes, v.attributes);
+         metadata_equal(attributes, v.attributes) && transform==v.transform;
 }
 bool planar_display_annotation_visible(const PlanarDisplayAnnotation &row,
                                        Plane plane, int coordinate, int t,
@@ -287,22 +314,28 @@ MetadataValue encode_planar_display_annotations(
       charge(item, bytes, nodes, max_bytes, 0);
     }
   }
+  const bool affine=std::any_of(rows.begin(),rows.end(),[](const auto &row){return row.has_transform();});
   MetadataArray list;
   list.reserve(rows.size());
   for (const auto &row : rows) {
     kernel_checkpoint();
-    list.push_back(metadata_object(
+    MetadataObject encoded
         {{"name", row.name},
          {"payload", metadata_object(payload_record(row.payload))},
          {"plane", std::string(plane_name(row.plane))},
          {"coordinate", row.coordinate},
          {"t", row.t ? MetadataValue(*row.t) : MetadataValue{}},
          {"c", row.c ? MetadataValue(*row.c) : MetadataValue{}},
-         {"attributes", metadata_object(row.attributes)}}));
+         {"attributes", metadata_object(row.attributes)}};
+    if(affine) {
+      MetadataArray matrix;for(auto n:row.transform)matrix.emplace_back(n);
+      encoded["transform"]=metadata_array(std::move(matrix));
+    }
+    list.push_back(metadata_object(std::move(encoded)));
   }
   auto result = metadata_object(
       {{"schema", std::string("imagejxx.planar-display-annotations")},
-       {"version", 1},
+       {"version", affine?2:1},
        {"extent", extent(shape)},
        {"rows", metadata_array(std::move(list))}});
   detail::preflight_display_annotation_metadata(result);
@@ -314,9 +347,10 @@ decode_planar_display_annotations(DatasetShape shape,
   detail::preflight_display_annotation_metadata(value);
   const auto &record = object_value(value);
   exact_fields(record, {"schema", "version", "extent", "rows"});
+  const auto version=unsigned_value(record.at("version"));
   require(text_value(record.at("schema")) ==
                   "imagejxx.planar-display-annotations" &&
-              unsigned_value(record.at("version")) == 1,
+              (version==1 || version==2),
           "Unsupported display annotation schema");
   const auto &dimensions = array_value(record.at("extent"));
   const auto expected = shape.dimensions();
@@ -332,8 +366,8 @@ decode_planar_display_annotations(DatasetShape shape,
   for (const auto &item : list) {
     kernel_checkpoint();
     const auto &row = object_value(item);
-    exact_fields(row, {"name", "payload", "plane", "coordinate", "t", "c",
-                       "attributes"});
+    if(version==1)exact_fields(row, {"name", "payload", "plane", "coordinate", "t", "c", "attributes"});
+    else exact_fields(row, {"name", "payload", "plane", "coordinate", "t", "c", "attributes", "transform"});
     auto optional_axis = [](const MetadataValue &v) -> std::optional<int> {
       return std::holds_alternative<std::monostate>(v) ? std::optional<int>{}
                                                        : index_value(v);
@@ -343,9 +377,15 @@ decode_planar_display_annotations(DatasetShape shape,
         read_plane(row.at("plane")),       index_value(row.at("coordinate")),
         optional_axis(row.at("t")),        optional_axis(row.at("c")),
         object_value(row.at("attributes"))};
+    if(version==2) {
+      const auto &matrix=array_value(row.at("transform"));require(matrix.size()==6,"Display transform requires six numbers");
+      for(std::size_t i=0;i<6;++i)p.transform[i]=number_value(matrix[i]);
+    }
     p.validate(shape);
     result.push_back(std::move(p));
   }
+  require((version==2)==std::any_of(result.begin(),result.end(),[](const auto &row){return row.has_transform();}),
+      "Display annotation version must match affine geometry");
   // Apply the same conservative retained-input budget to fresh and decoded
   // sets.
   (void)encode_planar_display_annotations(shape, result);
