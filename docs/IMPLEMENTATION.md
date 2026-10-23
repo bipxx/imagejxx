@@ -263,6 +263,21 @@ Captured RGB records/jobs and shared preview/Apply/
 Rebind/workflow integration remain the next steps; RGB controls stay disabled.
 See [Apply details](CONTRAST_APPLY.md).
 
+**Explicit RGB stage creation, 2026-10-23 (work in progress):**
+The main C++/Python ImGui contrast panel now offers Keep current adjustment.
+It freezes the current stage and selection, then begins an identity draft with
+the same components. Reset preserves saved stages; Apply records and publishes
+all stages in one paired edit. Native admission precedes mutation, with busy,
+stale, scalar and uniform-target refusal. New tests check all seven component
+combinations, stack/selection choices, actual button delivery, recording and
+Undo/Redo against independent byte expectations. Windows/Linux each pass 20,479
+installed Python checks (59 new), six native groups, the extended contrast-panel
+group and three standalone UI probes, with zero failures/errors/skips.
+Editing/reordering/deleting earlier stages, explicit visit authoring, broader
+real transition input and full ImageJ/Fiji parity remain open. All99 triples and
+the historical Auto evidence gate remain unchanged. See
+[RGB stage authoring](parity/RGB_STAGE_AUTHORING.md).
+
 **Fresh scalar Auto qualification, 2026-10-23 (work in progress):**
 Current Windows/Linux builds each pass 64 native cases (1,286 checks), 13
 installed C++ SDK cases (485 checks), and 396 installed Python checks, including

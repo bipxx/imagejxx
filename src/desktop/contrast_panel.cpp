@@ -32,7 +32,7 @@ void unit(double value){if(!std::isfinite(value)||value<0||value>1)throw std::in
 ContrastPanel::~ContrastPanel(){try{close();}catch(...){}}
 bool ContrastPanel::handles(const std::string &name){
   static const std::set<std::string> names{"show_contrast","close_contrast","contrast_range","contrast_window_level",
-    "restart_rgb_contrast_session","contrast_brightness","contrast_contrast","contrast_rgb_channels","contrast_rgb_stack","cancel_rgb_contrast_preview","refresh_rgb_contrast_preview","contrast_reset","contrast_auto","contrast_apply","configure_contrast_target","cancel_contrast_apply","refresh_contrast_histogram","cancel_contrast_histogram"};
+    "restart_rgb_contrast_session","promote_rgb_contrast_stage","contrast_brightness","contrast_contrast","contrast_rgb_channels","contrast_rgb_stack","cancel_rgb_contrast_preview","refresh_rgb_contrast_preview","contrast_reset","contrast_auto","contrast_apply","configure_contrast_target","cancel_contrast_apply","refresh_contrast_histogram","cancel_contrast_histogram"};
   return names.count(name)!=0;
 }
 void ContrastPanel::request_cancel(JobScheduler &scheduler){++rebindCancelEpoch_;++cancelEpoch_;if(const auto id=cancelId_.load())scheduler.cancel(id);if(const auto id=rgbCancelId_.load())scheduler.cancel(id);if(const auto id=rgbAutoCancelId_.load())scheduler.cancel(id);if(const auto id=rgbAutoBaselineCancelId_.load())scheduler.cancel(id);}
@@ -152,6 +152,7 @@ void ContrastPanel::action(const std::string &name,const Json &p,bool busy,const
   if(!p.is_object() || p.size()!=fields.size())throw std::invalid_argument("Contrast request requires its exact numeric fields");
   for(const auto &field:p.items())if(std::find(fields.begin(),fields.end(),field.key())==fields.end())throw std::invalid_argument("Unknown contrast field");
   if(name=="restart_rgb_contrast_session"){if(busy)throw std::invalid_argument("Wait for the current edit before restarting RGB contrast");restartRgbSession();}
+  else if(name=="promote_rgb_contrast_stage")promoteRgbStage(busy);
   else if(name=="contrast_range")publish({numeric(p,"minimum"),numeric(p,"maximum")},busy,effect);
   else if(name=="contrast_window_level")publish(windowLevel(numeric(p,"window"),numeric(p,"level")),busy,effect);
   else if(name=="contrast_brightness"||name=="contrast_contrast"){
@@ -225,6 +226,11 @@ void ContrastPanel::draw(bool busy,const Publish &effect,const Auto &automatic,c
     }
     ImGui::EndDisabled();
     ImGui::TextWrapped("Changing components keeps the current adjustment and resets the range. Endpoint changes replace the current adjustment; Apply commits the complete result.");
+    const bool keepReady=rgbSession_ && !rgbUniformTarget_ && rgbSessionRefused_.empty() && resolved_;
+    ImGui::BeginDisabled(busy||!keepReady);
+    if(ImGui::Button("Keep current adjustment"))attempt([&]{promoteRgbStage(busy);});control("keep_rgb_adjustment",!busy&&keepReady);
+    ImGui::EndDisabled();
+    ImGui::TextWrapped("Keep freezes this adjustment and its selection, then starts a fresh range for the same components. Reset changes only the new adjustment. Apply commits all saved adjustments.");
     if(rgbJob_ && !rgbPreview_)ImGui::TextUnformatted("Preparing RGB preview...");
   }
   if(!heights_.empty()){

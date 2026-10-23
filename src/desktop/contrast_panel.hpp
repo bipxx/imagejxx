@@ -87,6 +87,7 @@ private:
   std::vector<RgbContrastStackStep> rgbStackPrefix_;
   std::optional<ResolvedTarget> rgbStackTarget_;
   void selectRgbChannels(int);
+  void promoteRgbStage(bool busy);
   void selectRgbStack(bool);
   void clearRgbSequence();
   static bool rgbCompatible(const DocumentSnapshot &,const DocumentSnapshot &);

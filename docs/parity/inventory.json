@@ -2440,6 +2440,8 @@
           "docs/parity/reviews/p11x-rgb-session-panel001.json",
           "docs/parity/reviews/p11y-rgb-combined001.json",
           "docs/parity/reviews/p11z-auto-requalification001.json",
+          "docs/parity/reviews/p12a-rgb-stage001.json",
+          "docs/parity/RGB_STAGE_AUTHORING.md",
           "docs/parity/AUTO_REQUALIFICATION.md"
         ],
         "implementation": [
@@ -2547,6 +2549,7 @@
           "tests/python/test_rgb_session_panel.py",
           "tests/python/test_rgb_session_xyz.py",
           "tests/python/test_rgb_combined.py",
+          "tests/python/test_rgb_stage_panel.py",
           "tests/reference/RgbContrastCombinedReference.java",
           "tests/reference/extract_rgb_combined_fixture.py",
           "tests/fixtures/rgb-contrast-combined-imagej154r.json"

@@ -130,6 +130,13 @@ The historical source gate remains open pending exact original source/executable
 recovery. Next editor work covers real selection/navigation/returning Auto/Reset
 input and independent stage/visit authoring.
 
+The main panel now exposes explicit same-component stage creation through
+**Keep current adjustment**. It freezes mapping/selection and starts an identity
+draft without publishing source pixels. Native admission is atomic; Reset and
+Apply retain the saved stage. See [stage authoring](RGB_STAGE_AUTHORING.md).
+Earlier stage selection/editing/reordering/deletion and arbitrary visit authoring
+remain open, alongside real transition-input qualification.
+
 ## Observed behavior
 
 `RgbContrastNavigationReference.java` invokes actual ImageJ 1.54r

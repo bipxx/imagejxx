@@ -456,6 +456,26 @@ void rgbSessionUi(const std::filesystem::path &root){
   w.action("restart_rgb_contrast_session");w.action("wait_jobs");report=session.frame();check(!report.at("contrast_panel").at("rgb").at("session_refused") && report.at("contrast_panel").at("range")==Json::array({0.,255.}),"Explicit restart adopts new source without publishing old work");
   w.closeDocument(w.document()->id,true);
 }
+void rgbKeepUi(const std::filesystem::path &root){
+  Image image(4,2,3,PixelType::UInt8);std::fill(image.pixels.begin(),image.pixels.end(),30);
+  auto owner=std::make_shared<Document>(Dataset::from_stack({image}));const auto before=owner->snapshot();
+  Window w((root/"rgb-keep-ui.json").u8string());w.addVirtualDocument(owner);w.action("show_contrast");
+  w.action("contrast_range",{{"minimum",10.},{"maximum",40.}});w.action("wait_jobs");
+  HeadlessInputSession session(w);auto report=session.frame();report=session.frame();
+  const auto hit=report.at("contrast_panel").at("controls").at("keep_rgb_adjustment");
+  check(hit.at("visible") && hit.at("enabled"),"Keep adjustment widget is available");
+  session.frame(Json::array({{{"type","position"},{"space","screen"},{"point",hit.at("point")}}}));
+  for(bool down:{true,false})report=session.frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));
+  w.action("wait_jobs");report=session.frame();
+  check(report.at("contrast_panel").at("rgb").at("session_active") && report.at("contrast_panel").at("rgb").at("promoted_stages")==1 && report.at("contrast_panel").at("range")==Json::array({0.,255.}),"Physical Keep freezes one stage and starts identity draft");
+  w.action("contrast_range",{{"minimum",0.},{"maximum",170.}});w.action("contrast_reset");w.action("wait_jobs");
+  check(owner->snapshot().shares_data(before) && owner->undo_steps()==0,"Keeping and Reset leave source and history unchanged");
+  w.action("contrast_range",{{"minimum",0.},{"maximum",170.}});w.action("wait_jobs");w.recording=true;w.action("contrast_apply");w.action("wait_jobs");
+  const auto after=owner->snapshot();const auto plane=after.data().dataset.plane();
+  check(std::all_of(plane->pixels.begin(),plane->pixels.end(),[](double v){return v==255;}),"Same-component stages compose 30 to 170 to 255");
+  check(owner->undo_steps()==1 && w.workflow.size()==1 && w.workflow[0].at("schema")=="imagejxx.rgb-contrast-session-command" && w.workflow[0].at("visits")[0].at("stages").size()==2,"Keep records both stages in one paired edit");
+  owner->undo();check(owner->snapshot().shares_data(before),"Kept-stage Undo restores original source");owner->redo();check(owner->snapshot().shares_data(after),"Kept-stage Redo restores composed output");w.action("close_contrast");
+}
 void rgbStackCancel(const std::filesystem::path &root){
   auto source=std::make_shared<RgbSource>();OpenOnExit release{source};Window w((root/"rgb-stack-cancel.json").u8string());auto owner=std::make_shared<Document>(Dataset(source));w.addVirtualDocument(owner);const auto before=owner->snapshot();
   w.action("show_contrast");until([&]{return source->entered>0;});w.action("contrast_rgb_stack",{{"enabled",true}});const auto previous=source->entered.load();w.poll();until([&]{return source->entered>previous;});std::thread cancel([&]{w.cancel();});cancel.join();const auto scheduler=imagejxx::desktop::HistogramAsyncUiProbeAccess::scheduler(w);
@@ -482,6 +502,6 @@ void rgbAutoUi(const std::filesystem::path &root){
 int main(int argc,char **argv){try{
   check(argc==2,"Owned fixture path required");const auto root=std::filesystem::absolute(std::filesystem::u8path(argv[1]));
   check(!std::filesystem::exists(root),"Fresh fixture required");std::filesystem::create_directories(root);
-  math();seeded();captured(root);canceled(root);applyHost(root);applyAbandoned(root);rebindUi(root);rebindStale(root);workflowUi(root);rgbWorkflowUi(root);ui(root);rgbUi(root);rgbCancel(root);rgbPositionsUi(root);rgbAutoUi(root);rgbStackUi(root);rgbStackCancel(root);rgbSessionUi(root);
+  math();seeded();captured(root);canceled(root);applyHost(root);applyAbandoned(root);rebindUi(root);rebindStale(root);workflowUi(root);rgbWorkflowUi(root);ui(root);rgbUi(root);rgbCancel(root);rgbPositionsUi(root);rgbAutoUi(root);rgbStackUi(root);rgbStackCancel(root);rgbSessionUi(root);rgbKeepUi(root);
   std::cout<<"PASS native modeless contrast math, captured histogram, active channel, Auto, cancellation and actual widgets\n";return 0;
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

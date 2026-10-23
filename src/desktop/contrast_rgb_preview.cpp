@@ -24,6 +24,13 @@ bool ContrastPanel::rgbCompatible(const DocumentSnapshot &a,const DocumentSnapsh
     x.selection==y.selection && x.rois==y.rois && a.display().t==b.display().t && a.display().c==b.display().c && a.display().crosshair[2]==b.display().crosshair[2];
 }
 void ContrastPanel::clearRgbSequence(){rgbPrefix_.clear();rgbStackPrefix_.clear();rgbSession_.reset();rgbSessionActive_=false;rgbUniformTarget_=false;rgbSessionRefused_.clear();}
+void ContrastPanel::promoteRgbStage(bool busy){
+  if(busy || !open_ || !resolved_ || !rgbSource() || !rgbSession_ || rgbUniformTarget_ || !rgbSessionRefused_.empty())
+    throw std::invalid_argument("Choose an idle current RGB session before keeping an adjustment");
+  auto candidate=*rgbSession_;candidate.promote();
+  rgbSession_=std::move(candidate);rgbSessionActive_=true;rgbPrefix_.clear();rgbStackPrefix_.clear();
+  invalidateRgb();rgbAutoWhole_=false;rgbAutoDivisor_=0;draft({0,255});resolved_=true;error_.clear();
+}
 void ContrastPanel::restartRgbSession(){
   clearRgbSequence();invalidateRgb();rgbSource_.reset();key_.clear();rangeKey_=nullptr;rgbAutoWhole_=false;rgbAutoDivisor_=0;error_.clear();resolved_=false;
 }
