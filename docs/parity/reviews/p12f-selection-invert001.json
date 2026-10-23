@@ -1,0 +1,731 @@
+{
+  "schema_version": 1,
+  "id": "p12f.native-selection-inverse.001",
+  "date": "2026-10-23",
+  "state": "scoped-qualified",
+  "acceptance": false,
+  "complete_requirement_coverage": false,
+  "baseline_commit": "e0441d2",
+  "previous_goal_turn": "progress: committed and pushed native selection menus and combined RGB UI qualification",
+  "scope": "Native scientific Invert now uses admitted C++ full-image XOR or no-selection Replace, retaining the legacy-compatible route. It requires idle active owner and exact document-ID fields. Existing native packed area masks preserve holes/disconnected regions and explicit empty results. Every current native area kind is covered. Preparation/record staging precedes publication; changed inversions append the existing complete selection-creation record when recording, and malformed/owner/resource refusals leave source/history/recorder untouched. Pixels, dirty state, navigation and pixel Undo/Redo are preserved. Source samples are not read by API/SDK inversion. Selection command source descriptors and strict codec now admit preserve_ieee_float32; both nonfinite policies require scalar Float32, with no source-policy downgrade. All five composition modes, record validation/replay/rebind and exact source IEEE words are covered. Actual C++ HeadlessInputSession menu clicks qualify six source modes and record control identities/points; rendering itself may read the visible source. This is shared ImGui input, not OS/real ImageJ AWT/OpenGL acceptance or a new pinned upstream runtime fixture. Installed Python Editor exercises the same compiled owner separately. Installed SDK consumers link only the public core, proving literal complements, three source policies, below-estimate refusal and no provider/sample reads; nonfinite datasets retain their established eager admission, while finite uses a throwing virtual provider. Initial compilation caught a deleted default request initializer; corrected to aggregate construction. Initial Python fixtures incorrectly assigned a copied crosshair and supplied a floating corner diameter; corrected fixtures only. The resource refusal worked, but an initial test regex expected budget instead of the existing working-memory-limit message; corrected assertion wording only. Initial SDK nonfinite virtual fixtures were refused by existing eager admission; corrected to admitted eager sources, preserving the finite throwing provider. GCC then rejected binding an rvalue transaction to the public lvalue commit parameter; named the transaction and reran both installed SDK consumers. All preceding7066 installed test IDs remain in each final7255 run;92 new inversion/policy cases and97 additional existing rounded-creation regressions explain the increase. Final native and Python checks have zero failures/errors/skips. Source manifests bind551 compiled inputs; tested installs/carriers, actual menu observations, SDK executables, reports and logs remain. Disposable environments, SDK builds, test fixtures and standalone raw roots were archived and CRC/every-member-SHA verified before confined removal. No requirement family, historical verification run, Auto expectation or original99 triple is reclassified.",
+  "sources": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 112420,
+      "sha256": "05424c5a93827c7d9ca0f934e9ee2dcec63b58c15cc1d8a45b9c7dbefad1ef26"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 709187,
+      "sha256": "241cd180c5482b6f27aef09c78ca6922863b67f80733e45665d542437c08a02c"
+    },
+    {
+      "path": "src/native/selection_creation.cpp",
+      "bytes": 47668,
+      "sha256": "ea9ae38c261c8f87dc64bba527e113898b7f999c576d79eb721ce1ed912befac"
+    },
+    {
+      "path": "tests/native/test_native_selection_menu.cpp",
+      "bytes": 4252,
+      "sha256": "18ef40d272bca030d72f945191cf68fe768183515643d5874d1c2397f374d4d6"
+    },
+    {
+      "path": "tests/python/test_native_selection_invert.py",
+      "bytes": 8981,
+      "sha256": "abad79e6725ca77eaa42d2fff3e618e53aaddb11dfcb73494a60b20fa50f6831"
+    },
+    {
+      "path": "examples/cpp/selection_inverse.cpp",
+      "bytes": 3231,
+      "sha256": "8e7d067794d6f37675ffa6e62011c973fb714c5f6c299e6d04e87318ed39c5cc"
+    },
+    {
+      "path": "examples/cpp/CMakeLists.txt",
+      "bytes": 16737,
+      "sha256": "1058115826f296042a43f9771f0ca3f755d6bc1d93f15b8267436f31064fe9b0"
+    },
+    {
+      "path": "docs/parity/SELECTION_INVERSE.md",
+      "bytes": 3680,
+      "sha256": "6851dc42f3603cf761940bbb4644975b05ebe104716d4c1b6a7b5c26e8972978"
+    },
+    {
+      "path": "docs/PLAN.md",
+      "bytes": 472896,
+      "sha256": "b1f4022e9b1fe06f151871998d5868d1b3b99bbef11933f99cfe92161cbd7405"
+    },
+    {
+      "path": "docs/IMPLEMENTATION.md",
+      "bytes": 178120,
+      "sha256": "073cf9c08d83d08bad7cf3f3b48c2f7dd6141e30ca2bb68cefbaa69eeabfb7a1"
+    },
+    {
+      "path": "docs/parity/inventory.json",
+      "bytes": 11019945,
+      "sha256": "51a5394003289b4d70ae5d361751ac592e81f6339a5d6d72093fda3aebe01964"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "build/p12f-selection-invert001/check_licenses001.log",
+      "bytes": 53,
+      "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+    },
+    {
+      "path": "build/p12f-selection-invert001/check_plan001.log",
+      "bytes": 142,
+      "sha256": "5d4c525b726f725e79b88cab7c12eb43317f4dafd77d7bc48e2bb53e731fd830"
+    },
+    {
+      "path": "build/p12f-selection-invert001/cleanup001.py",
+      "bytes": 5738,
+      "sha256": "9d35e08315043b058b4b6e5351ad94de6b4cd4be8adf69b8c54c64006e7958db"
+    },
+    {
+      "path": "build/p12f-selection-invert001/edit001.py",
+      "bytes": 1756,
+      "sha256": "0cbe38ca974d2dcaac40fa52561e022c032490fd4e2507a8580e588f5739f589"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-cleanup001.json",
+      "bytes": 656707,
+      "sha256": "837c5e6fb61d644a97297e57dac7598bc3b2982a597ef9b85cb445bfaa7455b4"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-products001.json",
+      "bytes": 4251,
+      "sha256": "05a4d41e65b0c9c8e4f58541dec74e253dfd83ea393ccf08ac93cbe4c547c45f"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-python002/collection.json",
+      "bytes": 965881,
+      "sha256": "c48ddaedae97ef9f6d660c04d5ff8197b891cf55bf50e528dc28830dbd173644"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-python002/pytest.xml",
+      "bytes": 6835,
+      "sha256": "7939cfae5cee3ed607bf64d45def9ef26ce7ea84b3597bc8944af691e37efef1"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-python002/receipt.json",
+      "bytes": 3365,
+      "sha256": "32f0e8a81431470555c5a7b08a53d43e5f19640f79fd94ed89b86c66d008e81e"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-python003/collection.json",
+      "bytes": 965881,
+      "sha256": "c48ddaedae97ef9f6d660c04d5ff8197b891cf55bf50e528dc28830dbd173644"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-python003/pytest.xml",
+      "bytes": 14394,
+      "sha256": "52455af663bf21a297175730b71ae252d2c4659bc5b3e3c57f3881423d78331b"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-python003/receipt.json",
+      "bytes": 3365,
+      "sha256": "e26fc7d452319d6525782f5eb8476c6c41781bfd9421116dddac5638fc006226"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-python004/collection.json",
+      "bytes": 965881,
+      "sha256": "c48ddaedae97ef9f6d660c04d5ff8197b891cf55bf50e528dc28830dbd173644"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-python004/pytest.xml",
+      "bytes": 1220161,
+      "sha256": "63bd63590b053fe3cda6eba6e125c273c8312dc0aa15e4e76c8df96d1d4cdb26"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-python004/receipt.json",
+      "bytes": 3367,
+      "sha256": "8ca2d38b1e84abecdd53cc8f0dcef6e9655b2110413f1626b7c50f7473566de2"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-qualified001/build.log",
+      "bytes": 3446,
+      "sha256": "ff12003c355f7636857d940f7b6b135b6d404076a999a5bf93ea6f3915ee70ea"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-qualified001/configure.log",
+      "bytes": 544,
+      "sha256": "830710e25d6dcac49c54a0a8db9e9ace89fce075ff063fb8e38340a877f954a3"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-qualified002/build.log",
+      "bytes": 3334,
+      "sha256": "1277b50cf8ecadd70b16e4dbf779119c8d8557704aab7420ede67642dbf174df"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-qualified002/configure.log",
+      "bytes": 545,
+      "sha256": "52509290c492225e6632b50bbd4412fe8b5120368e61e401953d0d0bd4e78909"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-qualified002/install-desktop.log",
+      "bytes": 2962,
+      "sha256": "e41c3fcd419edc908a75cbc71c9040b3113fc69cc81294b27e20e67d15eb925f"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-qualified002/install-development.log",
+      "bytes": 16028,
+      "sha256": "fcda949b2aa473e0ae71c6da7ecc9732b98bbb201a8fcd471f921e714a64d1b9"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-qualified002/install-io-development.log",
+      "bytes": 716,
+      "sha256": "bece81007b688d4ab62c324fc0f91691bcaaaeeba14b16f097ec8c5a6e252585"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-qualified002/install-processing-python.log",
+      "bytes": 4725,
+      "sha256": "31c3bc3e90a906573bc166bfd7f420d9408f0c672e993545e5a591fe6add7fe9"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-qualified002/install-scientific-python.log",
+      "bytes": 4879,
+      "sha256": "9df748111883b73d664c5901bb12c2eb513553be81673fecefab6c95a56e9af0"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-qualified002/install-Unspecified.log",
+      "bytes": 3086,
+      "sha256": "523a7f56061265aa86644febbf72e67573b83e2b93ac0e58bcaca76265b3f1e1"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-qualified002/menu-results-retained001.json",
+      "bytes": 31281,
+      "sha256": "aa3f0f51445fa946e70ed2363a008f5bdfc73c940e73ef080d30434c86d2625d"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-qualified002/native.log",
+      "bytes": 1595,
+      "sha256": "e29a884804339bdc5e90895ce09aa8d06a884a50f298ee7c61d2997056932598"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-qualified002/native.xml",
+      "bytes": 3999,
+      "sha256": "75b008d97a36f6a40b3e6afad505d113f78ffe5a07d09d063a679cfdb2066bba"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-qualified002/receipt.json",
+      "bytes": 62119,
+      "sha256": "41736df22eb3e45b4fda926b79b39289cca51c1ffdc13e9eb8a0bdbbde919a74"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-qualified002/venv-install-processing-python.log",
+      "bytes": 5021,
+      "sha256": "a68b611b36c7ddb95ea5f57391918cdc12fc5d998536e45e19a8e281b94ed332"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-qualified002/venv-install-scientific-python.log",
+      "bytes": 5183,
+      "sha256": "98f01ad0a3eb8b00759e1eb41ad85464849dc2ce90f2ee818013cb6b46eb623a"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-qualified002/venv-install-Unspecified.log",
+      "bytes": 3270,
+      "sha256": "2e94a0b8a3e42971d23a55cb9c69146c6f6f243aa25472c53f377ff613cf81da"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-qualified002/venv.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-sdk002/build.log",
+      "bytes": 1955,
+      "sha256": "c02b37712587f8e8a205ea72f615f4a154c494353fd0450a306a01355431742e"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-sdk002/configure.log",
+      "bytes": 560,
+      "sha256": "173f9a4989b4a2809c4aed10fbdb413b867131acb4912084870a954977aff028"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-sdk003/build.log",
+      "bytes": 221,
+      "sha256": "ec91583dcf2ee2a17635ab43868d6cf14cb449b21e9e364f4f4f98ec9e62a909"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-sdk003/configure.log",
+      "bytes": 559,
+      "sha256": "35af3d3218b3f16c9c0b214c6f680d1d48c7ee630718dfce6cceb2a01eb5c81b"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-sdk003/execute.log",
+      "bytes": 78,
+      "sha256": "cd0a0f934bf53b30b119f0df6cf318b3693593527e9af122bd5e1ca9e04f995d"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-sdk003/receipt.json",
+      "bytes": 420,
+      "sha256": "04fbb107e3f25ceab569c89bc28229975096758b62edbced06d66aa46002d928"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-ui001/batch-case-retained001.json",
+      "bytes": 21262300,
+      "sha256": "4fe8bedd2954575e21dba2ad51738444ad4041f5bdc570cea3b9c5a2d1e2e77e"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-ui001/batch.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-ui001/receipt.json",
+      "bytes": 834,
+      "sha256": "1e0ebb28fcc31359ed7c31855d6dd9b38bddbe6c397e558bd631468f0277c7e3"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-ui001/rgb-case-retained001.json",
+      "bytes": 69755423,
+      "sha256": "9aafee5f998ddb103f7cf43b8f7da8690eb0fa971985c9ab82b591faca8672a0"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-ui001/rgb.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-ui001/workflow-case-retained001.json",
+      "bytes": 51316428,
+      "sha256": "5f42726001b7ac283ece4e7ead98d66c73e407730184060b5f3771fe48f2547b"
+    },
+    {
+      "path": "build/p12f-selection-invert001/linux-ui001/workflow.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12f-selection-invert001/prepare001.py",
+      "bytes": 1163,
+      "sha256": "9cbb7168b86e93591cf2571a9950dcdbd40ce39c9199d2ae668e4016645af771"
+    },
+    {
+      "path": "build/p12f-selection-invert001/python001.py",
+      "bytes": 2750,
+      "sha256": "187549aa990b2968056a70c31654fa4a0a7a08cde93fc65d72c73e592e5e1a6e"
+    },
+    {
+      "path": "build/p12f-selection-invert001/python002.py",
+      "bytes": 2750,
+      "sha256": "37f6f73fa7c65966c4163966bf117643b5fcfa3067771a53a4b3867a7e9b765b"
+    },
+    {
+      "path": "build/p12f-selection-invert001/python003.py",
+      "bytes": 2750,
+      "sha256": "7ec5b4932747cd1a1830428955f2838696ef8d9641c05d7d6201b55ffd129fa9"
+    },
+    {
+      "path": "build/p12f-selection-invert001/python004.py",
+      "bytes": 2750,
+      "sha256": "8dc1c86d883f0a090267343c8c0900a8df751cbe339e63c853e9e216c2d74c42"
+    },
+    {
+      "path": "build/p12f-selection-invert001/qualify001.py",
+      "bytes": 3274,
+      "sha256": "5c7d785f321b91414a53676e2b3c1ca2ab492519f8614bdddefed8f847509b0b"
+    },
+    {
+      "path": "build/p12f-selection-invert001/qualify002.py",
+      "bytes": 3274,
+      "sha256": "1f9c0093dc320cf021a3b9cde5e07f9b582ce526dec594f029e2a460a5305535"
+    },
+    {
+      "path": "build/p12f-selection-invert001/sdk001.py",
+      "bytes": 1604,
+      "sha256": "f93c7438f8ad44e1a309b10a31bffeefb37d3618c021e363513a1a643bcaf871"
+    },
+    {
+      "path": "build/p12f-selection-invert001/sdk002.py",
+      "bytes": 1604,
+      "sha256": "844544956dfbf28a969d60a05871cdb60ef5287c40a1d4f0d519aec41c22f839"
+    },
+    {
+      "path": "build/p12f-selection-invert001/sdk003.py",
+      "bytes": 1604,
+      "sha256": "bd28bf0cca548569ff84aba538d336ec0c14fbdba575fbbd3bc1066842475762"
+    },
+    {
+      "path": "build/p12f-selection-invert001/seal001.py",
+      "bytes": 8590,
+      "sha256": "b498fc46bcfc7f5148580ce19d49bb254f59aef62fc97d223b3ce18ae03f1a04"
+    },
+    {
+      "path": "build/p12f-selection-invert001/selection-inverse-initial001.cpp",
+      "bytes": 2853,
+      "sha256": "f863fe7af6156b31e906bac6a3dc62762ad89ee11fb3b032634714d74b8e3a38"
+    },
+    {
+      "path": "build/p12f-selection-invert001/selection-inverse-rvalue002.cpp",
+      "bytes": 3211,
+      "sha256": "88dd6d155c229ba815b3c7ddbdc02d96981ee016420bb34d18d545f31755bc7e"
+    },
+    {
+      "path": "build/p12f-selection-invert001/source-manifest001.json",
+      "bytes": 61179,
+      "sha256": "d50feaf2edca50e0389123841f416bdf8599d5d73ec50f56ce1d7a34e0db2e7d"
+    },
+    {
+      "path": "build/p12f-selection-invert001/source-manifest002.json",
+      "bytes": 61179,
+      "sha256": "cf5c4a6937098bf3e3f5153506fddf14fa8c3ffb87ace6d1c940ddcbc121788f"
+    },
+    {
+      "path": "build/p12f-selection-invert001/standalone001.py",
+      "bytes": 1300,
+      "sha256": "1265ebc226541fedf0cdb0a93894fa2de330e2b7e9eb3172f53e67457defaa8b"
+    },
+    {
+      "path": "build/p12f-selection-invert001/test-native-selection-invert-budget003.py",
+      "bytes": 8967,
+      "sha256": "18aa27e1cf527c05a4680455835fc769b60a15a87da788f3f39125c04fcc15c2"
+    },
+    {
+      "path": "build/p12f-selection-invert001/test-native-selection-invert-corner002.py",
+      "bytes": 8969,
+      "sha256": "13c5ad26b8c27935067ebed7131a7bbbb7184014530d5de6b69e2eae6056fa3c"
+    },
+    {
+      "path": "build/p12f-selection-invert001/test-native-selection-invert-initial001.py",
+      "bytes": 8958,
+      "sha256": "f6bd0f9754f2cabadc6e589c3ae57d95812f729b7d647b0b4e15a3662c4e2fa4"
+    },
+    {
+      "path": "build/p12f-selection-invert001/test_selection_invert_draft004.py",
+      "bytes": 8981,
+      "sha256": "abad79e6725ca77eaa42d2fff3e618e53aaddb11dfcb73494a60b20fa50f6831"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-cleanup001.json",
+      "bytes": 297046,
+      "sha256": "3980e098275810cf7713f325641c7d6c7970f41171e8fb033cf8e808708103b0"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-draft004.log",
+      "bytes": 162,
+      "sha256": "71ecdd43417c05c0f49a520444ab45aca17b3bdafaaade7f62a2204a6dbf20ea"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-products001.json",
+      "bytes": 5747,
+      "sha256": "4edd569c12d05ac7a9c61be5e3c7d7b39276b502791d6d7a1eea8eca4df19502"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-python001/collection.json",
+      "bytes": 973138,
+      "sha256": "a275301ba80e423e3d8e3548b40c091759e07d01aac88c39c45f39ba2b3a2f78"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-python001/pytest.xml",
+      "bytes": 1181,
+      "sha256": "833222d24ad22093aac497e1f037b8dce8527d77eaab960e9cf6f7f310a6784c"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-python001/receipt.json",
+      "bytes": 3558,
+      "sha256": "3ba9f6a258a9e892d19cbccd522425590cdea39f9b52d881ef5608f803059899"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-python001.log",
+      "bytes": 1036,
+      "sha256": "fef10efde1ef40252700eb210dcb59292528f6c4b97dfaa683fb6d4708d9674b"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-python002/collection.json",
+      "bytes": 973138,
+      "sha256": "a275301ba80e423e3d8e3548b40c091759e07d01aac88c39c45f39ba2b3a2f78"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-python002/pytest.xml",
+      "bytes": 6835,
+      "sha256": "81a211ffa7a328c5c4e0784b3aaf1d31998cf49fd75ede611f93c1f0073b07e3"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-python002/receipt.json",
+      "bytes": 3559,
+      "sha256": "d8bdbf0292f646f5cf53f54e22588592776f514b613b94dd64eeef3e192e4a6c"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-python002.log",
+      "bytes": 861,
+      "sha256": "37aa869ca2f67efba86bd6cca5ddb7fef572ea24b0ac3c346089fe261cc3613c"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-python003/collection.json",
+      "bytes": 973138,
+      "sha256": "a275301ba80e423e3d8e3548b40c091759e07d01aac88c39c45f39ba2b3a2f78"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-python003/pytest.xml",
+      "bytes": 14443,
+      "sha256": "4ce44e2e05577dedd67c40fd9b0912c0ff48097785a6a82dee4b6ee105c437ae"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-python003/receipt.json",
+      "bytes": 3559,
+      "sha256": "f1f9ceac419e9dec4d7ef094646723bd0421f380d1c2412ec098101ce0ae0788"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-python003.log",
+      "bytes": 1464,
+      "sha256": "677ec1f64d755870addb68be195a6f1e60aece07f261fb00a4da917ec46392a8"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-python004/collection.json",
+      "bytes": 973138,
+      "sha256": "a275301ba80e423e3d8e3548b40c091759e07d01aac88c39c45f39ba2b3a2f78"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-python004/pytest.xml",
+      "bytes": 1220160,
+      "sha256": "c0842a404ecbef573ba9d306ea0e49588bf71a878ed98dab5c72d1bfd7b6584c"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-python004/receipt.json",
+      "bytes": 3561,
+      "sha256": "de541e6b257cdd5ed06c4861a40dbab01c7d2e2178ce0330478897ffcf2dcc1b"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-python004.log",
+      "bytes": 8297,
+      "sha256": "6b284f3dd2d1d3a87c49a6e4225f6c4a67396edd8d92d7d70983b4b2139bae60"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-qualified001/build.log",
+      "bytes": 4763,
+      "sha256": "b505e188c2913b59299b5384a9baffe76de5bf271212497d75e2a1034ad2e303"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-qualified001/configure.log",
+      "bytes": 606,
+      "sha256": "30fafe9c89677aa7e0b1a8362e82c0e4498ab1349ee22c65a18fce5b314f551f"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-qualified002/build.log",
+      "bytes": 10221,
+      "sha256": "a349370b8dd48abd6f174be1ee218d4b81222e3c6fed4a624f0ba8d3b60ab0cf"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-qualified002/configure.log",
+      "bytes": 606,
+      "sha256": "11ded8f6f942274f4c327d142132cb88052950424333d2a7545512b8f43b8756"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-qualified002/install-desktop.log",
+      "bytes": 4525,
+      "sha256": "16fb338bdcd83cfb7b7693d32d99e792ce5f041525ab128b7131eb4a30c2da02"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-qualified002/install-development.log",
+      "bytes": 19411,
+      "sha256": "7b6654b69e87c4a9f72715660cf3210a52be944010875696b60cef479fb2eb5e"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-qualified002/install-io-development.log",
+      "bytes": 2188,
+      "sha256": "ba51ae7cb9b8dd6f02bb78b4b6f43a503b99c798cd03395b51ece33ccc6133f1"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-qualified002/install-processing-python.log",
+      "bytes": 6002,
+      "sha256": "0e321325f7b7f59008a8c09c0fe2608cd0a7e84c3945d4d0647eb6fb319230b0"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-qualified002/install-scientific-python.log",
+      "bytes": 6749,
+      "sha256": "9f7cd52c8ff318e8305e08634b3ac5e5cb6d58ac23129d7bab4eac3243ab42c5"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-qualified002/install-Unspecified.log",
+      "bytes": 4693,
+      "sha256": "a8ae7002276dd6948fba38fc210ed6780976b926fac05b84d677415a6c3b3e5d"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-qualified002/menu-results-retained001.json",
+      "bytes": 32721,
+      "sha256": "189eb9f9670e48e32b17eaf0fb9f838017bb0515844b03f76ea583c7c5314967"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-qualified002/native.log",
+      "bytes": 1567,
+      "sha256": "fdec6bea5887a177459bc024bf7f9cff6a2283d183a4d379e56713ebe059ca9d"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-qualified002/native.xml",
+      "bytes": 4027,
+      "sha256": "ac9b328aff345ca17ecb9b4e8cfbbb21321067eb501ab31153e8a441cd002ab4"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-qualified002/receipt.json",
+      "bytes": 62826,
+      "sha256": "5a2b573b1e4eddac9da7c364523cc2b2442f2d376f5429e36d7ec77572de3325"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-qualified002/venv-install-processing-python.log",
+      "bytes": 5963,
+      "sha256": "f85220aa4a96d5a9b8f1391e2aa8454ac7e298c131eb66bf253ae0597933d135"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-qualified002/venv-install-scientific-python.log",
+      "bytes": 6705,
+      "sha256": "8bfec2a6e43805edb7f75b99b30048524aef4b0efa38773d858bd2d0cbc693bc"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-qualified002/venv-install-Unspecified.log",
+      "bytes": 4663,
+      "sha256": "3ac657036ae42c15d6975e26d5d3de1f9d46b34c3e983a70d05f3f1a339fe2b3"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-qualified002/venv.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-sdk001/build.log",
+      "bytes": 374,
+      "sha256": "ded9a0becba5552dfa13f1798afd913beb6c69d3a90f61817290ead4dc3eb7c1"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-sdk001/configure.log",
+      "bytes": 958,
+      "sha256": "89ed18f62cde6ca0d00fc552a723302232a75acecf2b1efcad988c854c8a291b"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-sdk001/execute.log",
+      "bytes": 86,
+      "sha256": "c610ddc83607d5e60db96f7132cf5fccd1694f90d1771c16e13a608cfc9b4208"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-sdk002/build.log",
+      "bytes": 374,
+      "sha256": "5a2f617748ac8afd7c84ffa3f275ad071d5bc0f004ccdf6c0419e5a28beea365"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-sdk002/configure.log",
+      "bytes": 958,
+      "sha256": "ac0f0e6507a633f643d491f73917e6806d902f9aeb8983088320c0be3bcd3cb2"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-sdk002/execute.log",
+      "bytes": 81,
+      "sha256": "e426f3daf96f053fcbb442dbecf4abf355853957c9ba7d99c4aefd80536530a6"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-sdk002/receipt.json",
+      "bytes": 447,
+      "sha256": "228c123f851e7fe3d8249c797c08da2273495d9daaa309342cc5d13b756f7260"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-sdk003/build.log",
+      "bytes": 374,
+      "sha256": "50a343fdb187d3399c40a3733f514d69a65745e091de86a334cdd9e572b3c730"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-sdk003/configure.log",
+      "bytes": 958,
+      "sha256": "bb205ab5d6dcc27032df2216974d1610c7dd480636ab4618e2f5b014b6fd4449"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-sdk003/execute.log",
+      "bytes": 81,
+      "sha256": "e426f3daf96f053fcbb442dbecf4abf355853957c9ba7d99c4aefd80536530a6"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-sdk003/receipt.json",
+      "bytes": 447,
+      "sha256": "cfa0b6f107d5e660de40c4fd6aef350abdae0db99b71a1c1748d901bf8c17e1d"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-ui001/batch-case-retained001.json",
+      "bytes": 21142770,
+      "sha256": "d0697722a8f226e323af456e977e01e0ce79c23e954800518f40ca8bc8f083ca"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-ui001/batch.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-ui001/receipt.json",
+      "bytes": 991,
+      "sha256": "b3bb21864cc30ad6ff448f2ae02f89d027446b9ca29f1fcc901796e206990060"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-ui001/rgb-case-retained001.json",
+      "bytes": 69764752,
+      "sha256": "92a011d914942b50e5cf4ff6496d6711fbdaf4b771ddee639e02439d4cdbdb2a"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-ui001/rgb.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-ui001/workflow-case-retained001.json",
+      "bytes": 51339755,
+      "sha256": "b2d74dcd80e2be3e346cb2a44bd5c885820644bc9579615268976cef9cd6428b"
+    },
+    {
+      "path": "build/p12f-selection-invert001/windows-ui001/workflow.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "qualification": {
+    "platforms": {
+      "windows": {
+        "installed_checks": 7255,
+        "new_selection_inverse_checks": 92,
+        "preceding_installed_ids_retained": 7066,
+        "additional_rounded_creation_regressions": 97,
+        "native_test_groups": 11,
+        "actual_imgui_source_modes": 6,
+        "actual_imgui_inverse_deliveries": 12,
+        "installed_sdk_policies": 3,
+        "standalone_application_probes": 3,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      },
+      "linux": {
+        "installed_checks": 7255,
+        "new_selection_inverse_checks": 92,
+        "preceding_installed_ids_retained": 7066,
+        "additional_rounded_creation_regressions": 97,
+        "native_test_groups": 11,
+        "actual_imgui_source_modes": 6,
+        "actual_imgui_inverse_deliveries": 12,
+        "installed_sdk_policies": 3,
+        "standalone_application_probes": 3,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    "archived_scratch_bytes": {
+      "windows": 192624282,
+      "linux": 196823579
+    },
+    "total_archived_scratch_bytes": 389447861,
+    "upstream_runtime_reference": false,
+    "os_or_opengl_acceptance": false
+  },
+  "requirements": {
+    "count": 99,
+    "statuses": {
+      "in_progress": 47,
+      "open": 52
+    },
+    "original_triples_unchanged": true
+  },
+  "checks": {
+    "commercial_dependencies": "passed",
+    "plan_inventory": "historical Auto producer-source fingerprint mismatch remains unresolved; not passed"
+  },
+  "remaining": [
+    "Scientific Grow/Shrink and the remaining selection transforms/conversions need their own pinned geometry/calibration/preview/resource and recorded-command consumers.",
+    "Complete broader scientific editor, configuration, filters, slicing, file, analysis, eligible Fiji and supported-platform/resource requirements in the original plan.",
+    "Recover exact historical Auto source/executable preimages without changing old expectations or bypassing the verifier."
+  ]
+}

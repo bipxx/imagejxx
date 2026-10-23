@@ -662,7 +662,9 @@
           "docs/IMPLEMENTATION.md",
           "docs/DESKTOP.md",
           "docs/PLAN.md",
-          "docs/COMPATIBILITY.md"
+          "docs/COMPATIBILITY.md",
+          "docs/parity/SELECTION_INVERSE.md",
+          "docs/parity/reviews/p12f-selection-invert001.json"
         ],
         "implementation": [
           "include/imagejxx/document.hpp",
@@ -679,7 +681,8 @@
           "src/desktop/selection_panel.hpp",
           "src/desktop/selection_panel.cpp",
           "src/desktop/rendering.cpp",
-          "src/imagejxx/ui/model.py"
+          "src/imagejxx/ui/model.py",
+          "src/native/selection_creation.cpp"
         ],
         "tests": [
           "tests/native/test_document.cpp",
@@ -689,7 +692,10 @@
           "tests/native/test_desktop.cpp",
           "tests/python/test_selection_edit.py",
           "examples/cpp/selection.cpp",
-          "tests/python/test_selection_rotation.py"
+          "tests/python/test_selection_rotation.py",
+          "tests/python/test_native_selection_invert.py",
+          "tests/native/test_native_selection_menu.cpp",
+          "examples/cpp/selection_inverse.cpp"
         ]
       },
       "id": "G013",

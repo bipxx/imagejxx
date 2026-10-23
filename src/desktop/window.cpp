@@ -1567,7 +1567,7 @@ struct Window::Impl {
       return dataset.shape().s == 1 && dataset.shared_planes() &&
              dataset.sample_policy() == FloatingSamplePolicy::FiniteOnly;
     }
-    if(action=="select_all" || action=="select_none" || action=="restore_selection")
+    if(action=="select_all" || action=="select_none" || action=="restore_selection" || action=="invert_selection")
       return !owner.busy() && owner.controller_->active_document_id()==source->id;
     if (action == "create_roi" || action == "add_roi" || action == "select_roi" || action == "update_roi" ||
         action == "rename_roi" || action == "delete_roi" || action == "roi_properties")
@@ -6303,7 +6303,7 @@ void Window::action(const std::string &name, const Json &p) {
                 Json::array({"FPS","Calibrated time"}):Json::array({"FPS"})}}}),"animation_options");
     return;
   }
-  if(name=="select_all" || name=="select_none" || name=="restore_selection"){
+  if(name=="select_all" || name=="select_none" || name=="restore_selection" || name=="invert_selection"){
     const auto facade=documentById(targetId);
     if(facade->scientific()){
       if(busy() || facade->id!=controller_->active_document_id())throw std::invalid_argument("Selection commands require the idle active document");
@@ -6311,6 +6311,19 @@ void Window::action(const std::string &name, const Json &p) {
       const auto source=facade->nativeSnapshot();std::optional<Selection> selected;
       if(name=="select_all"){const auto shape=source.data().dataset.shape();selected=Selection("rectangle",{{0,0},{double(shape.x),double(shape.y)}});}
       else if(name=="restore_selection")selected=source.data().previous_selection;
+      else if(name=="invert_selection"){
+        const auto shape=source.data().dataset.shape();
+        const SelectionCreationRequest request{
+            source.data().selection ? SelectionCreationOperation::Xor : SelectionCreationOperation::Replace,
+            Selection("rectangle",{{0,0},{double(shape.x),double(shape.y)}})};
+        const auto limits=impl->selectionCreationLimits();
+        const auto command=resolve_selection_creation_command(source,request,limits);
+        OutputPublication outputs(results,workflow,ComponentCounts{},"",
+            recording && command.changes_selection() ? metadataJson(command.record()) : Json(nullptr));
+        auto edit=prepare_selection_creation(command,{},limits.max_working_bytes);
+        impl->cancelCreations("selection_command");impl->cancelSavedRoiGeometry("selection_command");
+        controller_->commit(edit);outputs.publish();impl->tickContrast();return;
+      }
       impl->cancelCreations("selection_command");impl->cancelSavedRoiGeometry("selection_command");
       controller_->select(std::move(selected),facade->id);impl->tickContrast();return;
     }

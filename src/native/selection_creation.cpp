@@ -217,6 +217,8 @@ const char *policy_name(FloatingSamplePolicy policy) {
   case FloatingSamplePolicy::FiniteOnly: return "finite_only";
   case FloatingSamplePolicy::PreserveQuietNaNFloat32:
     return "preserve_quiet_nan_float32";
+  case FloatingSamplePolicy::PreserveIEEEFloat32:
+    return "preserve_ieee_float32";
   }
   invalid("Unknown selection source sample policy");
 }
@@ -233,9 +235,9 @@ std::size_t source_admission(const Source &source,
   if (!source.id) invalid("Selection command requires a positive source ID");
   source.shape.validate();
   (void)type_name(source.type); (void)policy_name(source.policy);
-  if (source.policy == FloatingSamplePolicy::PreserveQuietNaNFloat32 &&
+  if (source.policy != FloatingSamplePolicy::FiniteOnly &&
       (source.type != PixelType::Float32 || source.shape.s != 1))
-    invalid("Quiet NaN selection source requires scalar Float32");
+    invalid("Nonfinite selection source requires scalar Float32");
   if (source.position.t < 0 || source.position.t >= source.shape.t ||
       source.position.c < 0 || source.position.c >= source.shape.c ||
       source.position.z < 0 || source.position.z >= source.shape.z)
@@ -561,6 +563,7 @@ Source read_source(const MetadataObject &object, const MetadataObject &position)
   const auto &policy_text = text_value(object.at("sample_policy"));
   if (policy_text == "finite_only") policy = FloatingSamplePolicy::FiniteOnly;
   else if (policy_text == "preserve_quiet_nan_float32") policy = FloatingSamplePolicy::PreserveQuietNaNFloat32;
+  else if (policy_text == "preserve_ieee_float32") policy = FloatingSamplePolicy::PreserveIEEEFloat32;
   else invalid("Unknown selection command sample policy");
   return {uint_value(object.at("id")),
     {uint_value(object.at("pixels_revision")), uint_value(object.at("metadata_revision")),

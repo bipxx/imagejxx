@@ -1,5 +1,18 @@
 # ImageJ and Fiji gap closure plan
 
+**Native scientific Invert Selection, 2026-10-23 (work in progress):**
+The shared editor now complements scientific XY areas through the bounded C++
+selection-command service. No-selection inversion selects the image; non-area
+geometry is refused. Pixels, dirty state, TCZ and pixel Undo/Redo remain intact.
+Changed inversions record the existing complete XOR/Replace command. The core
+command codec also admits explicit IEEE Float32 policy without reading samples
+or changing their bits. Windows/Linux each pass 7,255 installed checks, including 92 new
+inversion/policy checks, 11 native groups, three-policy installed SDK consumers
+and three standalone app probes, with zero failures/errors/skips. Actual ImGui menus
+cover six source types/policies. Full upstream geometry/presentation/resource
+acceptance and other selection commands remain open; all99 statuses and the
+historical Auto failure are unchanged. See [selection inversion](parity/SELECTION_INVERSE.md).
+
 **Native selection menus and combined RGB input, 2026-10-23 (work in progress):**
 Scientific/native documents now support Select all, Deselect and Restore through
 the native selection controller, with idle active-owner checks and no pixel IO.

@@ -1100,6 +1100,14 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     target_link_libraries(imagejxx_desktop PRIVATE comdlg32 gdi32)
   endif()
   if(BUILD_TESTING)
+    add_executable(imagejxx_native_selection_menu_tests tests/native/test_native_selection_menu.cpp)
+    target_link_libraries(imagejxx_native_selection_menu_tests PRIVATE imagejxx_desktop)
+    add_test(NAME desktop_native_selection_menu COMMAND ${CMAKE_COMMAND}
+      -DTEST_EXECUTABLE=$<TARGET_FILE:imagejxx_native_selection_menu_tests>
+      -DWORK_ROOT=${CMAKE_CURRENT_BINARY_DIR}/native-selection-menu-tests
+      -DTEST_TIMEOUT_SECONDS=30
+      -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/RunOwnedFixtureTest.cmake)
+    set_tests_properties(desktop_native_selection_menu PROPERTIES TIMEOUT 35)
     add_executable(imagejxx_rgb_combined_input_tests tests/native/test_rgb_combined_input.cpp)
     target_link_libraries(imagejxx_rgb_combined_input_tests PRIVATE imagejxx_desktop)
     add_test(NAME desktop_rgb_combined_input COMMAND ${CMAKE_COMMAND}
