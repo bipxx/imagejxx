@@ -3,6 +3,12 @@
 Status: open; reference and installed-editor gap evidence captured on 2026-10-22.
 This is part of G057, not a change to the original ImageJ/Fiji scope or acceptance.
 
+Current checkpoint: shared main-panel session transitions and complete Apply are
+connected; the unchanged six-case editor probe now matches all 48 checks on both
+hosts. The paragraphs below preserve the earlier dependency milestones; their
+remaining-work statements describe those checkpoints. Current integration and
+qualification limits appear before Observed behavior.
+
 The native session value plan and evaluator are now implemented in
 `rgb_contrast_session.hpp` with installed Python bindings. They compose frozen
 visit stages against the immutable original and prepare one paired transaction.
@@ -74,6 +80,27 @@ handling remains an explicit integration task, not passing editor acceptance.
    Qualify standalone C++ and optional Python launches on Windows/Linux before
    changing the editor gap claims below.
 
+The main shared ImGui panel is now connected to the native controller. It
+synchronizes before replacing the outgoing source/range, preserves rejected
+intent, and exposes explicit restart. Compatible changes refresh captures;
+identity-only fresh drafts may adopt a new source after completed Apply/Undo.
+An incompatible external edit with pending history is refused. Explicit uniform
+targets remain in their own existing profile and cannot silently become visits.
+Selection/navigation boundaries switch complete processing, preview and recording
+to the session profile; simple single-visit profiles stay available. Frozen
+historical masks make stack-policy switching safe for non-area session stages.
+The preview target covers whole logical visited planes, including historical
+pixels outside the current selection. Auto evaluates the retained current-visit
+baseline on workers. Apply captures the full session; only an identical READY
+command can be reused, while final stack policy prepares its own guarded job.
+Virtual XYZ sampling uses workers even when ordinary async rendering is disabled.
+Windows/Linux qualify 29,248 unique installed Python checks, including all 6,086
+affected frontend cases rerun after the final busy-state guard. Six native groups
+and three installed standalone UI probes also pass. See
+`reviews/p11x-rgb-session-panel001.json`. Broader
+actual navigation/selection gesture coverage, combined upstream promotion plus
+navigation/final-stack traces and dedicated saved-stage authoring remain open.
+
 ## Observed behavior
 
 `RgbContrastNavigationReference.java` invokes actual ImageJ 1.54r
@@ -100,12 +127,13 @@ storage. The driver checks these invariants before emitting any row:
 Two fresh compilations/runs reproduce the fixture byte for byte. The fixture
 pins driver sources, relevant ImageJ source/classes and Java/Javac executables.
 
-The installed shared native editor probe covers six All-component cases with
-none-to-rectangle selection, every axis and both directions. It matches 36/48
-checks: first maps, selection replacement, selection Reset, first B visits, B
-maps and unchanged source pixels. All twelve returning Reset/remap checks
-disagree. Exit 1 from this probe is a demonstrated gap, not passing acceptance.
-The full 378 rows have not yet been run through the native implementation.
+The original installed-editor probe captured six All-component cases with
+none-to-rectangle selection, every axis and both directions. Its twelve returning
+Reset/remap mismatches (36/48 checks) are preserved in the earlier gap evidence.
+The unchanged probe now matches 48/48 checks on Windows/Linux. The panel reference
+matrix additionally checks all 378 rows through installed shared panel actions,
+without changing the ImageJ expected hashes. This does not by itself prove every
+real selection/navigation gesture, platform or combined upstream trace.
 
 ## Required model
 
@@ -201,8 +229,8 @@ python -I -X utf8 -B tests/reference/compare_rgb_navigation_editor.py --fixture 
 ```
 
 The probe writes exact installed module hashes, numerical observations and a
-match count. Exit 1 currently identifies twelve mismatches. It must pass without
-changing its expected ImageJ hashes when the six covered transitions are fixed.
+match count. It now exits 0 for all 48 checks, with the expected ImageJ hashes
+unchanged. The earlier twelve mismatches remain in the original gap evidence.
 The fixture, drivers and probe are commercial-use project code and introduce
 no production dependency. Broader sliders/log-plot/Set/calibration, workflow
 stage editing and other ImageJ/Fiji/platform gaps remain tracked separately.

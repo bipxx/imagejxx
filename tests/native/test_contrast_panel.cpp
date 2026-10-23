@@ -38,6 +38,7 @@ struct Source:PlaneSource {
 struct OpenOnExit{std::shared_ptr<Source> source;~OpenOnExit(){source->open();}};
 std::array<double,2> range(Window &w){const auto s=w.nativeSnapshot();if(const auto c=recognized_channel_display(s.display(),s.data().dataset))return c->channels.at(s.display().c).range;return imagejxx::desktop::metadataJson(s.display().properties.at("display_range")).get<std::array<double,2>>();}
 void math(){
+  ContrastPanel panel;panel.open();refuses([&]{panel.action("restart_rgb_contrast_session",Json::object(),true,{}, {},0);});
   check(ContrastPanel::windowLevel(40,25)==std::array<double,2>{5,45},"Window/level endpoints");
   check(ContrastPanel::brightness({5,45},{0,100},.75)==std::array<double,2>{5,45},"Brightness preserves window and maps level");
   check(ContrastPanel::brightness({5,45},{0,100},.5)==std::array<double,2>{30,70},"Brightness midpoint");
@@ -426,6 +427,35 @@ void rgbStackUi(const std::filesystem::path &root){
   for(int t=0;t<2;++t)for(int c=0;c<2;++c)for(int z=0;z<2;++z){const auto plane=owner->snapshot().data().dataset.plane({t,c,z});const bool active=t==1 && c==1 && z==1;check(plane->pixels[0]==(active?255:85) && plane->pixels[1]==(active?170:30) && plane->pixels[2]==(active?255:40),"Actual stack Apply preserves active promotions and narrows other planes");}
   owner->undo();check(owner->snapshot().shares_data(before) && owner->snapshot().display().properties==before.display().properties,"Stack widget Undo restores pixels/display");owner->redo();check(owner->snapshot().data().dataset.plane({1,1,1})->pixels[0]==255,"Stack widget Redo restores pixels");w.action("close_contrast");
 }
+void rgbSessionUi(const std::filesystem::path &root){
+  Image image(4,2,3,PixelType::UInt8);for(int i=0;i<8;++i){image.pixels[3*i]=20;image.pixels[3*i+1]=30;image.pixels[3*i+2]=30;}
+  auto owner=std::make_shared<Document>(Dataset::from_planes({2,2,2,2,4,3},Stack(8,image)));owner->select(Selection("rectangle",{{0,0},{2,1}}));
+  Window w((root/"rgb-session-ui.json").u8string());w.addVirtualDocument(owner);const auto original=owner->snapshot();
+  w.action("show_contrast");w.action("contrast_rgb_channels",{{"channels",4}});w.action("contrast_range",{{"minimum",10.},{"maximum",40.}});w.action("wait_jobs");
+  HeadlessInputSession session(w);auto report=session.frame();report=session.frame();
+  const auto click=[&](const char *name){const auto hit=report.at("contrast_panel").at("controls").at(name);check(hit.at("visible") && hit.at("enabled"),"Session widget available");session.frame(Json::array({{{"type","position"},{"space","screen"},{"point",hit.at("point")}}}));for(bool down:{true,false})report=session.frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));};
+  click("rgb_components_2");w.action("contrast_range",{{"minimum",10.},{"maximum",40.}});w.action("wait_jobs");
+  w.action("cancel_rgb_contrast_preview");report=session.frame();w.action("wait_jobs");const auto scheduler=imagejxx::desktop::HistogramAsyncUiProbeAccess::scheduler(w);until([&]{w.poll();return scheduler->usage().reserved_bytes==0;});
+  w.updateSettings({{"processing_memory_mb",1}},false);auto view=owner->snapshot().display();view.crosshair[2]=1;owner->set_display(view);w.poll();report=session.frame();
+  check(report.at("contrast_panel").at("rgb").at("session_refused") && report.at("contrast_panel").at("rgb").at("session_visits")==1 && !report.at("contrast_panel").at("controls").at("apply").at("enabled"),"Refused navigation preserves outgoing visit and refuses stale Apply");
+  w.updateSettings({{"processing_memory_mb",512}},false);w.action("wait_jobs");report=session.frame();
+  check(report.at("contrast_panel").at("rgb").at("session_active") && report.at("contrast_panel").at("rgb").at("session_visits")==2,"Readmission adopts navigation without dropping promoted intent");
+  w.action("contrast_range",{{"minimum",0.},{"maximum",60.}});w.action("wait_jobs");view.crosshair[2]=0;owner->set_display(view);w.action("wait_jobs");w.action("contrast_reset");w.action("wait_jobs");report=session.frame();
+  check(report.at("contrast_panel").at("rgb").at("session_visits")==3 && owner->snapshot().data().dataset.shares_pixels(original.data().dataset),"Returning Reset retains three visits privately");
+  const auto before=owner->snapshot();const auto history=owner->undo_steps();const auto ready=report.at("contrast_panel").at("rgb").at("job_id").get<std::uint64_t>();w.recording=true;click("apply");
+  check(w.jobInfo()->id==ready,"Complete non-stack session reuses its matching READY job");w.action("wait_jobs");
+  const auto after=owner->snapshot();const auto a=after.data().dataset.plane({0,0,0}),other=after.data().dataset.plane({0,0,1});
+  check(a->pixels[0]==85 && a->pixels[1]==170 && a->pixels[2]==30 && other->pixels[0]==20 && other->pixels[1]==128 && other->pixels[2]==30,"Actual session Apply retains promoted and prior-visit pixels");
+  check(a->pixels[6]==20 && a->pixels[7]==30 && other->pixels[6]==20 && other->pixels[7]==30,"Historical selections stay attached to visits");
+  check(owner->undo_steps()==history+1 && w.workflow.size()==1 && w.workflow[0].at("schema")=="imagejxx.rgb-contrast-session-command" && w.workflow[0].at("visits").size()==3,"Session Apply records one complete paired edit");
+  check(after.data().selection==before.data().selection && after.display().crosshair==before.display().crosshair,"Session Apply preserves current selection and navigation");
+  owner->undo();check(owner->snapshot().shares_data(before),"Session Undo restores paired source");owner->redo();check(owner->snapshot().shares_data(after),"Session Redo restores all visit output");
+  w.action("wait_jobs");w.action("contrast_range",{{"minimum",10.},{"maximum",40.}});w.action("wait_jobs");
+  auto edit=owner->snapshot().begin_edit(Change::Metadata);auto cal=after.data().dataset.calibration();cal.spacing[0]=2;edit.set_calibration(cal);owner->commit(edit);w.poll();report=session.frame();
+  check(report.at("contrast_panel").at("rgb").at("session_refused"),"External incompatible edit keeps pending intent until explicit restart");
+  w.action("restart_rgb_contrast_session");w.action("wait_jobs");report=session.frame();check(!report.at("contrast_panel").at("rgb").at("session_refused") && report.at("contrast_panel").at("range")==Json::array({0.,255.}),"Explicit restart adopts new source without publishing old work");
+  w.closeDocument(w.document()->id,true);
+}
 void rgbStackCancel(const std::filesystem::path &root){
   auto source=std::make_shared<RgbSource>();OpenOnExit release{source};Window w((root/"rgb-stack-cancel.json").u8string());auto owner=std::make_shared<Document>(Dataset(source));w.addVirtualDocument(owner);const auto before=owner->snapshot();
   w.action("show_contrast");until([&]{return source->entered>0;});w.action("contrast_rgb_stack",{{"enabled",true}});const auto previous=source->entered.load();w.poll();until([&]{return source->entered>previous;});std::thread cancel([&]{w.cancel();});cancel.join();const auto scheduler=imagejxx::desktop::HistogramAsyncUiProbeAccess::scheduler(w);
@@ -452,6 +482,6 @@ void rgbAutoUi(const std::filesystem::path &root){
 int main(int argc,char **argv){try{
   check(argc==2,"Owned fixture path required");const auto root=std::filesystem::absolute(std::filesystem::u8path(argv[1]));
   check(!std::filesystem::exists(root),"Fresh fixture required");std::filesystem::create_directories(root);
-  math();seeded();captured(root);canceled(root);applyHost(root);applyAbandoned(root);rebindUi(root);rebindStale(root);workflowUi(root);rgbWorkflowUi(root);ui(root);rgbUi(root);rgbCancel(root);rgbPositionsUi(root);rgbAutoUi(root);rgbStackUi(root);rgbStackCancel(root);
+  math();seeded();captured(root);canceled(root);applyHost(root);applyAbandoned(root);rebindUi(root);rebindStale(root);workflowUi(root);rgbWorkflowUi(root);ui(root);rgbUi(root);rgbCancel(root);rgbPositionsUi(root);rgbAutoUi(root);rgbStackUi(root);rgbStackCancel(root);rgbSessionUi(root);
   std::cout<<"PASS native modeless contrast math, captured histogram, active channel, Auto, cancellation and actual widgets\n";return 0;
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

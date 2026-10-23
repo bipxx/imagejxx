@@ -1,5 +1,25 @@
 # ImageJ and Fiji gap closure plan
 
+**Shared RGB session panel, 2026-10-23 (work in progress):**
+The main ImGui contrast panel now retains complete RGB histories across live
+selection and T/C/Z changes. Native admission precedes source/range adoption;
+refusal keeps saved intent and blocks stale Apply, with budget/source retry and
+explicit restart. Existing simple single-visit and uniform-target records remain
+available; historical boundaries use complete session captures. Historical masks
+stay frozen during component promotion, Reset and stack-policy switching. Preview
+renders baked logical output on every visited plane; final entire-stack mapping
+occurs only during Apply. Session replay, recording, guarded paired publication
+and matching non-stack READY reuse are connected. A fresh identity draft can adopt
+Undo after a completed Apply; external edits with pending intent require restart.
+Virtual XYZ now uses worker sampling even with ordinary async rendering disabled.
+Windows/Linux qualify 29,248 unique installed Python checks (390 new), including
+all 6,086 affected frontend cases rerun after the final busy-state guard. Six native
+groups and three standalone UI probes also pass.
+The unchanged six-case editor probe matches all 48
+checks on both hosts; final qualification also exercises the full navigation
+matrix, source/selection preservation, recovery and linked eager/virtual views.
+Original 99 requirement/status triples and the old Auto evidence gate are unchanged.
+
 **Native RGB session transition state, 2026-10-22 (work in progress):**
 `RgbContrastSessionEditor` now owns admitted native editing intent: selection
 changes replace the current draft mask; component/snapshot promotions retain

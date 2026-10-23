@@ -1023,12 +1023,19 @@ def test_rgb_entire_stack_compact_promotions_survive_compatible_source_changes(c
 
 
 @pytest.mark.parametrize("stack",[False,True])
-def test_rgb_entire_stack_mode_refuses_nonarea_prefix_reinterpretation(stack,tmp_path):
+def test_rgb_session_stack_switch_preserves_frozen_nonarea_prefix(stack,tmp_path):
     owner,editor,_=promoted_rgb_editor(tmp_path);owner.select(ij.Selection("line",[(0,0),(3,1)]));editor.action("wait_jobs")
     if stack:editor.action("contrast_rgb_stack",enabled=True)
     editor.action("contrast_range",minimum=10.9,maximum=40.1);editor.action("contrast_rgb_channels",channels=2);editor.action("wait_jobs");before=editor.render_headless()["contrast_panel"]
-    assert before["rgb"]["promoted_stages"]==1
-    with pytest.raises((ValueError,RuntimeError)):editor.action("contrast_rgb_stack",enabled=not stack)
-    after=editor.render_headless()["contrast_panel"]
-    assert after["rgb"]["entire_stack"]==stack and after["rgb"]["job_id"]==before["rgb"]["job_id"] and after["range"]==before["range"] and owner.undo_steps==0
+    expected=rgb_editor_hash(editor)
+    assert before["rgb"]["promoted_stages"]==1 and before["rgb"]["session_active"]
+    editor.action("contrast_rgb_stack",enabled=not stack);editor.action("wait_jobs");after=editor.render_headless()["contrast_panel"]
+    assert after["rgb"]["entire_stack"]==(not stack) and after["range"]==before["range"]
+    assert after["rgb"]["promoted_stages"]==1 and rgb_editor_hash(editor)==expected
+    editor.recording=True;editor.action("contrast_apply");editor.action("wait_jobs")
+    record=editor.workflow[-1]
+    assert record["schema"]=="imagejxx.rgb-contrast-session-command" and len(record["visits"])==1
+    assert len(record["visits"][0]["stages"])==2
+    assert all(stage["selection"]["kind"]=="line" for stage in record["visits"][0]["stages"])
+    assert hashlib.sha256(owner.snapshot().dataset.numpy("YXS").tobytes()).hexdigest()==expected
     editor.action("close_contrast")

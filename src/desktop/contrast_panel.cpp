@@ -32,7 +32,7 @@ void unit(double value){if(!std::isfinite(value)||value<0||value>1)throw std::in
 ContrastPanel::~ContrastPanel(){try{close();}catch(...){}}
 bool ContrastPanel::handles(const std::string &name){
   static const std::set<std::string> names{"show_contrast","close_contrast","contrast_range","contrast_window_level",
-    "contrast_brightness","contrast_contrast","contrast_rgb_channels","contrast_rgb_stack","cancel_rgb_contrast_preview","refresh_rgb_contrast_preview","contrast_reset","contrast_auto","contrast_apply","configure_contrast_target","cancel_contrast_apply","refresh_contrast_histogram","cancel_contrast_histogram"};
+    "restart_rgb_contrast_session","contrast_brightness","contrast_contrast","contrast_rgb_channels","contrast_rgb_stack","cancel_rgb_contrast_preview","refresh_rgb_contrast_preview","contrast_reset","contrast_auto","contrast_apply","configure_contrast_target","cancel_contrast_apply","refresh_contrast_histogram","cancel_contrast_histogram"};
   return names.count(name)!=0;
 }
 void ContrastPanel::request_cancel(JobScheduler &scheduler){++rebindCancelEpoch_;++cancelEpoch_;if(const auto id=cancelId_.load())scheduler.cancel(id);if(const auto id=rgbCancelId_.load())scheduler.cancel(id);if(const auto id=rgbAutoCancelId_.load())scheduler.cancel(id);if(const auto id=rgbAutoBaselineCancelId_.load())scheduler.cancel(id);}
@@ -64,11 +64,12 @@ void ContrastPanel::refresh(){cancelHistogram();histogram_.reset();heights_.clea
 void ContrastPanel::tick(const std::optional<DocumentSnapshot> &current,bool busy,JobScheduler &scheduler,DatasetHistogramLimits limits,const ContrastApplyCommandLimits &applyLimits){
   if(!open_)return;
   if(!current){sourceClosed(source_?source_->id():0);focused_=false;return;}
+  if(!synchronizeRgbSession(*current,applyLimits))return;
   const auto &d=current->data().dataset;const auto &v=current->display();
   const auto key=Json{{"owner",current->id()},{"data",current->data_identity().value_or(0)},{"pixels",current->revisions().pixels},
     {"tcz",{v.t,v.c,v.crosshair[2]}},{"max_pixels",limits.max_pixels},{"max_bytes",limits.max_working_bytes}}.dump();
   if(key!=key_){
-    const bool retain=source_ && d.shape().s==3 && d.pixel_type()==PixelType::UInt8 && rgbCompatible(*source_,*current);
+    const bool retain=source_ && d.shape().s==3 && d.pixel_type()==PixelType::UInt8 && (rgbSession_ || rgbCompatible(*source_,*current));
     if(!retain){target_.capture(*current);rangeKey_=nullptr;}
     refresh();key_=key;domain_={0,type_max(d.pixel_type())};
   }
@@ -102,7 +103,11 @@ void ContrastPanel::tick(const std::optional<DocumentSnapshot> &current,bool bus
   resolved_=bool(recognized_channel_display(current->display(),d)) || get(properties,"display_range").is_array() ||
     bool(histogram_) || rgbSource() || (!v.orthogonal && (d.pixel_type()==PixelType::UInt8 || d.pixel_type()==PixelType::UInt16));
   const auto next=Json{{"owner",current->id()},{"position",{v.t,v.c,v.crosshair[2]}},{"range",displayRangeValue(r)}};
-  if(next!=rangeKey_){draft(r);rangeKey_=next;rgbAutoWhole_=false;invalidateRgb();}
+  if(next!=rangeKey_){
+    if(rgbSession_){const auto &draftOptions=rgbSession_->plan().visits.back().stages.back().options;draft({draftOptions.minimum,draftOptions.maximum});}
+    else{draft(r);rgbAutoWhole_=false;}
+    rangeKey_=next;invalidateRgb();
+  }
   tickRgb(busy,scheduler,applyLimits);
 }
 std::array<double,2> ContrastPanel::windowLevel(double w,double level){
@@ -120,7 +125,7 @@ std::array<double,2> ContrastPanel::contrast(std::array<double,2> r,std::array<d
 void ContrastPanel::publish(std::array<double,2> r,bool busy,const Publish &effect){
   if(!source_ || busy)throw std::invalid_argument("Choose an idle image before changing contrast");
   finiteRange(r);
-  if(rgbSource()){draft(r);rgbAutoWhole_=false;invalidateRgb();}else{effect(*source_,r);draft(r);}
+  if(rgbSource()){if(!rgbSessionRefused_.empty())throw std::invalid_argument("Restart or refresh the saved RGB session before editing");if(rgbSession_)rgbSession_->set_range(r[0],r[1]);draft(r);rgbAutoWhole_=false;invalidateRgb();}else{effect(*source_,r);draft(r);}
   resolved_=true;error_.clear();
 }
 std::array<double,2> ContrastPanel::resetRange(int bits)const{
@@ -134,7 +139,8 @@ std::array<double,2> ContrastPanel::resetRange(int bits)const{
 void ContrastPanel::configureTarget(const TargetRequest &request){
   if(!open_ || !source_)throw std::invalid_argument("Open Brightness/Contrast with a source first");
   if(rgbSource() && rgbEntireStack_)throw std::invalid_argument("Entire-stack RGB Apply uses the current selection and every stack plane. Switch off stack mode to choose uniform targets.");
-  target_.configure(*source_,request,rgbSource());rgbAutoWhole_=false;invalidateRgb();
+  if(rgbSessionActive_)throw std::invalid_argument("Saved RGB visits retain their plane positions and selections. Restart the RGB session before choosing uniform targets.");
+  target_.configure(*source_,request,rgbSource());if(rgbSource()){rgbSession_.reset();rgbUniformTarget_=true;}rgbAutoWhole_=false;invalidateRgb();
 }
 void ContrastPanel::action(const std::string &name,const Json &p,bool busy,const Publish &effect,const Auto &automatic,int bits,const Apply &apply){
   if(!open_)throw std::invalid_argument("Open Brightness/Contrast first");
@@ -145,7 +151,8 @@ void ContrastPanel::action(const std::string &name,const Json &p,bool busy,const
     name=="contrast_brightness"||name=="contrast_contrast"?std::vector<std::string>{"value"}:std::vector<std::string>{};
   if(!p.is_object() || p.size()!=fields.size())throw std::invalid_argument("Contrast request requires its exact numeric fields");
   for(const auto &field:p.items())if(std::find(fields.begin(),fields.end(),field.key())==fields.end())throw std::invalid_argument("Unknown contrast field");
-  if(name=="contrast_range")publish({numeric(p,"minimum"),numeric(p,"maximum")},busy,effect);
+  if(name=="restart_rgb_contrast_session"){if(busy)throw std::invalid_argument("Wait for the current edit before restarting RGB contrast");restartRgbSession();}
+  else if(name=="contrast_range")publish({numeric(p,"minimum"),numeric(p,"maximum")},busy,effect);
   else if(name=="contrast_window_level")publish(windowLevel(numeric(p,"window"),numeric(p,"level")),busy,effect);
   else if(name=="contrast_brightness"||name=="contrast_contrast"){
     if(!resolved_)throw std::invalid_argument("Wait for the source range or set finite endpoints first");
@@ -163,6 +170,7 @@ void ContrastPanel::action(const std::string &name,const Json &p,bool busy,const
   else if(name=="cancel_rgb_contrast_preview" || name=="refresh_rgb_contrast_preview"){
     if(!rgbSource())throw std::invalid_argument("Choose an RGB contrast source first");
     if(name=="refresh_rgb_contrast_preview" && busy)throw std::invalid_argument("Wait for the current edit");
+    if(name=="refresh_rgb_contrast_preview")rgbSessionRefused_.clear();
     invalidateRgb(name=="refresh_rgb_contrast_preview");rgbCancelEpoch_=cancelEpoch_.load();
   }
   else if(name=="contrast_reset"){if(rgbSource())rgbAutoDivisor_=0;publish(resetRange(bits),busy,effect);}
@@ -192,7 +200,7 @@ void ContrastPanel::draw(bool busy,const Publish &effect,const Auto &automatic,c
   focused_=ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows);
   if(!expanded){ImGui::End();return;}
   auto attempt=[&](auto operation){try{operation();}catch(const std::exception &e){error_=e.what();}};
-  if(!source_){ImGui::TextUnformatted("Choose an image to adjust its display.");ImGui::End();return;}
+  if(!source_){ImGui::TextUnformatted("Choose an image to adjust its display.");if(!error_.empty())ImGui::TextWrapped("%s",error_.c_str());ImGui::End();return;}
   const auto &d=source_->data().dataset;const auto &v=source_->display();
   ImGui::Text("Source: T %d  C %d  Z %d",v.t+1,v.c+1,v.crosshair[2]+1);
   if(d.shape().c>1){int c=v.c+1;ImGui::BeginDisabled(busy);if(ImGui::SliderInt("Channel",&c,1,d.shape().c))attempt([&]{select(c-1);});control("channel",!busy);ImGui::EndDisabled();}
@@ -207,7 +215,8 @@ void ContrastPanel::draw(bool busy,const Publish &effect,const Auto &automatic,c
   ImGui::TextWrapped("Apply changes source pixels and display together; Undo restores both.");
   target_.clearControls();
   if(rgbSource() && rgbEntireStack_)ImGui::TextWrapped("Stack Apply keeps promoted adjustments on the active processor. Other T/C/Z planes use the current component and processor-narrowed bounds with the current selection. Auto keeps its whole-active-plane policy.");
-  else if(ImGui::CollapsingHeader("Apply target") && target_.draw(!busy,false,"Target planes and area")){rgbAutoWhole_=false;invalidateRgb();}
+  else if(rgbSessionActive_)ImGui::TextWrapped("Apply keeps every saved plane visit and its selections. Restart the RGB session to choose a uniform target.");
+  else if(ImGui::CollapsingHeader("Apply target") && target_.draw(!busy,false,"Target planes and area")){if(rgbSource()){rgbSession_.reset();rgbUniformTarget_=true;}rgbAutoWhole_=false;invalidateRgb();}
   if(rgbSource()){
     ImGui::TextUnformatted("RGB components");ImGui::BeginDisabled(busy);
     for(const auto &[label,bits]:std::array<std::pair<const char *,int>,7>{{{"All",7},{"Red",4},{"Green",2},{"Blue",1},{"Red + Green",6},{"Red + Blue",5},{"Green + Blue",3}}}){
@@ -273,6 +282,7 @@ void ContrastPanel::draw(bool busy,const Publish &effect,const Auto &automatic,c
   else ImGui::TextWrapped("Auto measures baseline intensity using RGB conversion weights, then maps whole selected planes. Component plots ignore selection for Red, Green or Blue.");
   ImGui::EndDisabled();
   if(!error_.empty())ImGui::TextWrapped("%s",error_.c_str());
+  if(rgbSession_ || !rgbSessionRefused_.empty()){ImGui::BeginDisabled(busy);if(ImGui::Button("Restart RGB session"))attempt([&]{restartRgbSession();});control("restart_rgb_session",!busy);ImGui::EndDisabled();}
   ImGui::TextWrapped("Range adjustments leave source pixels unchanged until Apply.");
   ImGui::End();
 }

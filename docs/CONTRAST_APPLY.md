@@ -875,3 +875,26 @@ omits that final policy while retaining every historical visit. This prevents
 premature mapping of an unvisited plane during navigation. Both use the existing
 session record/job/portable workflow adapters. These APIs do not yet replace the
 main ImGui panel's legacy preview state or its Apply dispatch.
+
+The shared ImGui contrast panel now mirrors native editing intent from the first
+current-plane draft. Selection or navigation boundaries activate complete session
+preview/capture/publication, preserving the existing scalar, uniform RGB and
+simple stack profiles for their original cases. Explicit uniform targets keep
+that profile and refuse incompatible adoption instead of silently dropping intent.
+Session previews retain ordered visits but omit final noncurrent-stack mapping;
+baked logical whole-plane targets expose historical pixels outside the live ROI.
+Component switches, Reset, selection changes and Auto update native session intent;
+Auto obtains its current-visit baseline on a worker with only the current draft
+reset. Safe session stack-policy switching retains frozen non-area masks rather
+than reinterpreting them. Host Apply records the entire capture and publishes one
+all-revision paired transaction. A matching non-stack READY job can be reused;
+final stack Apply is separately admitted, releases its obsolete preview and
+prepares with the final policy. Replay accepts strict sessions or explicit empty
+rebinding that preserves saved absolute visits/selections; Run review provides
+uniform anchor translation. Unused overrides are rejected. Source/budget refusal
+keeps complete intent and disables stale Apply; a changed source/limit or explicit
+refresh retries admission. Restart explicitly discards private intent and adopts
+the new source. Successful Apply clears intent; an untouched identity draft can
+start afresh after Undo/Redo. Closed sources cancel jobs and release private state.
+Virtual XYZ uses worker sampling even when ordinary async rendering is disabled;
+that preference continues to control ordinary virtual XY background rendering.

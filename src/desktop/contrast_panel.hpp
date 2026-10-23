@@ -4,6 +4,7 @@
 #include <imagejxx/histogram_job.hpp>
 #include <imagejxx/rgb_contrast_sequence_job.hpp>
 #include <imagejxx/rgb_contrast_stack_job.hpp>
+#include <imagejxx/rgb_contrast_session_editor.hpp>
 #include <functional>
 #include <atomic>
 
@@ -40,6 +41,11 @@ public:
   void rgbWeights(std::array<double,3>);
   int rgbChannels()const{return rgbChannels_;}
   bool rgbEntireStack()const{return rgbEntireStack_;}
+  bool rgbSessionActive()const{return rgbSessionActive_;}
+  ResolvedRgbContrastSessionCommand currentRgbSessionCommand(const DocumentSnapshot &)const;
+  ContrastApplyJob takeRgbPreview(const ResolvedRgbContrastSessionCommand &);
+  void restartRgbSession();
+  void releaseRgbPreviewForApply(){invalidateRgb(false);}
   ResolvedRgbContrastStackCommand currentRgbStackCommand(const DocumentSnapshot &)const;
   std::optional<DocumentSnapshot> rgbPreview(const DocumentSnapshot &)const;
   const ResolvedTarget *rgbPreviewTarget(const DocumentSnapshot &)const;
@@ -70,6 +76,12 @@ private:
   };
   std::optional<RebindReview> rebind_;
   std::atomic<std::uint64_t> rebindCancelEpoch_{0};
+  std::optional<RgbContrastSessionEditor> rgbSession_;
+  std::optional<ResolvedRgbContrastSessionCommand> rgbSessionCommand_;
+  std::optional<ResolvedTarget> rgbSessionTarget_;
+  bool rgbSessionActive_=false,rgbUniformTarget_=false;
+  std::string rgbSessionRefused_;
+  bool synchronizeRgbSession(const DocumentSnapshot &,const ContrastApplyCommandLimits &);
   OperationTargetPanel target_;
   std::vector<ResolvedRgbContrastApplyCommand> rgbPrefix_;
   std::vector<RgbContrastStackStep> rgbStackPrefix_;
