@@ -1,5 +1,21 @@
 # ImageJ and Fiji gap closure plan
 
+**Planar paths and XYZ subset alignment, 2026-10-23 (scoped integration):**
+V3 planar sets/commands retain complete curves in XY/XZ/YZ, including holes,
+disconnected and off-volume contours. Z subsets transform every XZ/YZ control
+pair while retaining XY coordinates and remapping fixed Z positions. Native
+world landmarks, style, sessions, source samples and history have coverage.
+Both subset entry points preflight mapped domains before callbacks; the higher
+level now freezes command/control and forwards cancellation through remapping.
+V1/V2 remain closed to paths, and desktop owners refuse unsupported path sets
+before publication. Both hosts pass 2,842 installed Python checks (68 new),
+26 native groups and a 17-check installed SDK client. Existing actual regional
+subset input runs through standalone and Python ImGui hosts. No dependency is
+added. Original requirement statuses and historical verification records remain
+unchanged. Next complete native ImageJ path mapping, desktop path rendering/
+controls and typed workflow intent. See [the contract](parity/PLANAR_PATHS.md)
+and [the scoped receipt](parity/reviews/p12y-planar-path001.json).
+
 **Saved ROI path commands, 2026-10-23 (scoped integration):**
 Command V4 carries complete original/replacement curves through capture,
 validation, strict replay, explicit rebind and atomic saved-row publication.

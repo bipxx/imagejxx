@@ -1,5 +1,18 @@
 # Implementation progress
 
+**Planar paths and XYZ subset alignment, 2026-10-23 (scoped integration):**
+Plane-native path sets and commands use strict V3 geometry with complete
+before/request/after equations. Continuous control coordinates survive XY/XZ/YZ
+storage, physical Z remapping, native sessions and metadata history. Subset
+preflight now covers both entry points before callbacks, freezes the captured
+command/control and preserves cancellation during remapping. Windows/Linux
+each pass 2,842 installed Python checks, 26 native groups and a 17-check installed
+C++ client, including existing regional ImGui subset interaction. Desktop path
+rendering/editing, native ImageJ mapping, workflow/filter intent and continuous
+Boolean/topology/resize work remain required. See
+[the contract](parity/PLANAR_PATHS.md) and
+[the scoped receipt](parity/reviews/p12y-planar-path001.json).
+
 **Saved ROI path commands, 2026-10-23 (scoped integration):**
 V4 saved-row geometry commands retain full continuous paths in original and
 replacement records. Capture/replay/rebind, source guards, atomic publication,

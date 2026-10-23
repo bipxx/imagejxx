@@ -38,9 +38,10 @@ contracts. Existing conversion metadata budgets include retained path storage.
 
 This packet does not add desktop path drawing/editing, native path ImageJ
 import/export mapping, path-enabled workflow/filter command records,
-planar path annotations, continuous Boolean algebra, curve segment insertion,
+continuous Boolean algebra, curve segment insertion,
 or affine box-resize controls. Those remain required; no capability family is
-complete. Next migrate the workflow and planar codecs
+complete. Planar sets/commands now have [V3 path support](PLANAR_PATHS.md).
+Next migrate workflow intent and native ImageJ mapping
 with complete source/equation validation, then route desktop controls and both
 launch modes through those typed commands and saved-row V4. Continuous Boolean operations need
 independent curve/hole/island reference evidence.

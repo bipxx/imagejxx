@@ -4,8 +4,10 @@
 #include "session_metadata.hpp"
 #include "kernel_control.hpp"
 #include "axis_region_remap.hpp"
+#include <imagejxx/composite_path.hpp>
 #include <imagejxx/planar_display_annotations.hpp>
 #include <algorithm>
+#include <cmath>
 #include <limits>
 
 namespace imagejxx {
@@ -95,7 +97,12 @@ static PreparedAxisRemap prepare_z_axis_remap_frozen(const DocumentSnapshot &sou
         // offset. Packed masks gather the retained source Z rows exactly.
         for(auto &point:row.selection.points)
           point[1]=(point[1]-.5-request.first)/request.step+.5;
-        if(row.selection.is_region()) {
+        if(row.selection.is_path()) {
+          auto geometry=Selection::from_path(row.selection.path_geometry().transformed(
+              {1,0,0,0,1./request.step,.5-(double(request.first)+.5)/request.step}));
+          geometry.width=row.selection.width;geometry.attributes=row.selection.attributes;
+          row.selection=std::move(geometry);
+        } else if(row.selection.is_region()) {
           row.selection=detail::region_z_subset(row.selection,request);
         } else if(row.selection.kind=="mask") {
           const auto width=row.selection.mask_width();
@@ -187,16 +194,32 @@ static PreparedAxisRemap prepare_z_axis_remap_frozen(const DocumentSnapshot &sou
   edit.set_axis_remap_display(display);
   kernel_checkpoint();return {std::move(edit),std::move(display)};
 }
+void detail::admit_z_axis_annotations(const DocumentSnapshot &source,const ZSubsetRequest &request) {
+  const RegularAxisMapping mapping(source.data().dataset.shape().z,request.first,request.last,request.step);
+  if(!mapping.identity())for(const auto &row:planar_annotations(source.data())) {
+    if(row.plane!=Plane::XY && row.selection.is_region())
+      detail::admit_region_z_subset(row.selection,request);
+    if(row.plane!=Plane::XY && row.selection.is_path()) {
+      const auto &path=row.selection.path_commands();
+      const double scale=1./request.step,offset=.5-(double(request.first)+.5)/request.step;
+      for(std::size_t at=0;at<path.size();) {
+        const int op=int(path[at++]);const auto n=op==4?0u:op==3?6u:op==2?4u:2u;
+        for(unsigned i=1;i<n;i+=2) {
+          const double y=scale*path[at+i]+offset;
+          if(!std::isfinite(y) || std::abs(y)>1e9)throw std::invalid_argument("Mapped planar path exceeds coordinate range");
+        }
+        at+=n;
+      }
+    }
+  }
+}
 PreparedAxisRemap prepare_z_axis_remap(const DocumentSnapshot &source,const ZSubsetRequest &request,
                                       const ExecutionControl &control) {
   const auto owned_source=source;
   const auto owned_request=request;
   const auto owned_control=control;
-  const RegularAxisMapping mapping(owned_source.data().dataset.shape().z,
-      owned_request.first,owned_request.last,owned_request.step);
-  if(!mapping.identity())for(const auto &row:planar_annotations(owned_source.data()))
-    if(row.plane!=Plane::XY && row.selection.is_region())
-      detail::admit_region_z_subset(row.selection,owned_request);
+  {const ExecutionControl quiet;ExecutionScope preflight(quiet);
+   detail::admit_z_axis_annotations(owned_source,owned_request);}
   return prepare_z_axis_remap_frozen(owned_source,owned_request,owned_control);
 }
 } // namespace imagejxx

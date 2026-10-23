@@ -15,6 +15,7 @@
 #include <imagejxx/manual_threshold.hpp>
 #include <imagejxx/channel_display.hpp>
 #include <imagejxx/channel_display_command.hpp>
+#include <imagejxx/planar_annotations.hpp>
 #include <imagejxx/selection_creation.hpp>
 #include <imagejxx/targets.hpp>
 #include <stdexcept>
@@ -358,6 +359,15 @@ void validateDesktop(const DocumentData &data, const DisplayState &display,
   if(path(data.selection) || path(data.previous_selection) ||
       std::any_of(data.rois.begin(),data.rois.end(),[](const auto &row){return row.selection.is_path();}))
     throw std::invalid_argument("Desktop path selections require versioned path support");
+  if(const auto found=data.metadata.extensions.find(planar_annotations_extension);found!=data.metadata.extensions.end())
+    if(const auto node=std::get_if<std::shared_ptr<const MetadataTree>>(&found->second);node && *node)
+      if(const auto object=std::get_if<MetadataObject>(&(*node)->value))
+        if(const auto version=object->find("version");version!=object->end()) {
+          const auto signed_version=std::get_if<std::int64_t>(&version->second);
+          const auto unsigned_version=std::get_if<std::uint64_t>(&version->second);
+          if((signed_version && *signed_version==3) || (unsigned_version && *unsigned_version==3))
+            throw std::invalid_argument("Desktop planar path annotations require versioned path support");
+        }
   const auto shape = data.dataset.shape();
   manual_threshold_state(display, shape);
   recognized_channel_display(display, data.dataset);

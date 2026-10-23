@@ -2,6 +2,7 @@
 #include <imagejxx/axis_remap.hpp>
 
 namespace imagejxx::detail {
+void admit_z_axis_annotations(const DocumentSnapshot &, const ZSubsetRequest &);
 // Global Z sampling lattice continues outside the volume. Region storage is
 // retained independently of the new volume's visible Z range.
 void admit_region_z_subset(const Selection &, const ZSubsetRequest &);

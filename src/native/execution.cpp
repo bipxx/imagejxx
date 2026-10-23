@@ -6,6 +6,7 @@
 #include "indexed_dataset_internal.hpp"
 #include "indexed_rgb_internal.hpp"
 #include "indexed_type_internal.hpp"
+#include "axis_region_remap.hpp"
 #include "workflow_stage_metadata.hpp"
 #include <imagejxx/manual_threshold.hpp>
 #include <imagejxx/auto_threshold_stack.hpp>
@@ -851,15 +852,19 @@ PreparedOperation prepare_indexed_rgb(const ResolvedIndexedRgbCommand &command,c
 }
 
 PreparedOperation prepare_z_subset(const ResolvedZSubsetCommand &command,const ExecutionControl &control) {
-  ExecutionScope scope(control);kernel_checkpoint();
-  auto remapped=prepare_z_axis_remap(command.source(),command.request());
+  const auto frozen_command=command;
+  const auto frozen_control=control;
+  {const ExecutionControl quiet;ExecutionScope preflight(quiet);
+   detail::admit_z_axis_annotations(frozen_command.source(),frozen_command.request());}
+  ExecutionScope scope(frozen_control);kernel_checkpoint();
+  auto remapped=prepare_z_axis_remap(frozen_command.source(),frozen_command.request(),frozen_control);
   TargetRequest request;request.scope=TargetScope::Ranges;
-  const auto shape=command.source().data().dataset.shape();
+  const auto shape=frozen_command.source().data().dataset.shape();
   request.t=AxisRange{0,shape.t,1};request.c=AxisRange{0,shape.c,1};request.z=AxisRange{0,shape.z,1};
-  request.destination=command.request().destination;
-  auto target=resolve_target(command.source(),request);
+  request.destination=frozen_command.request().destination;
+  auto target=resolve_target(frozen_command.source(),request);
   if(request.destination==OutputDestination::NewDocument)
-    remapped.transaction.set_title(command.source().data().metadata.title+" Z subset");
+    remapped.transaction.set_title(frozen_command.source().data().metadata.title+" Z subset");
   auto state=std::make_shared<PreparedOperation::State>(std::move(target),"z_subset",OperationParameters{},
       std::move(remapped.transaction),std::move(remapped.display),ExecutionOptions{},std::vector<PlaneExecutionOutput>{},execution_cancellation());
   if(request.destination==OutputDestination::NewDocument) {

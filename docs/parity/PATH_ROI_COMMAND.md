@@ -42,7 +42,7 @@ separate private provider remain regression gates.
 Desktop path drawing/editing and ImageJ path mapping remain open. The general
 native workflow engine also still needs a typed saved-row step and complete
 path-aware authored intent; this packet provides its command prerequisite.
-Planar path annotations, path-enabled filter commands, topology/resize tools
+Planar paths now have [V3 native support](PLANAR_PATHS.md). Path-enabled filter commands, topology/resize tools
 and continuous Boolean operations remain required. No capability family is
 marked complete. Qualification is recorded in
 [the scoped receipt](reviews/p12x-path-command001.json).
