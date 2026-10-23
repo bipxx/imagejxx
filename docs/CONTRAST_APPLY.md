@@ -852,3 +852,26 @@ as an incomplete full result. Apply publishes the prepared complete workflow
 without appending a different recorder entry. Dedicated editing of saved mapping
 choices, per-visit independent relocation and the main contrast panel's outgoing
 snapshot/selection/navigation handling remain open.
+
+The public `RgbContrastSessionEditor` is a native transition controller over the
+complete session command. `synchronize(snapshot)` distinguishes unchanged,
+compatible metadata refresh, changed selection and a new plane visit. Selection
+changes replace only the current draft membership and clear its whole-plane
+flag; promoted stage selections stay frozen. A new visit retains all outgoing
+stages, uses the new live selection, carries the selected components and starts
+at 0..255. `set_channels` promotes a nonidentity draft before changing components;
+`promote` explicitly snapshots even a same-component draft. `reset` clears only
+the current draft. State copies share immutable captures and then diverge.
+Every candidate is fully command/job admitted before adoption. Rejected editing,
+limit readmission or live-source adoption preserves the original complete state;
+clients must refuse publication against a changed live source. A new owner,
+external pixel edit, storage replacement or calibration change requires an
+explicit new editor. Camera, title, ROI and unrelated metadata refreshes retain
+history. Editing and admission acquire no pixel samples or callbacks. Estimates
+cover declared native work; caller copies, provider caches, frontend buffers,
+publication/history staging and process RSS remain external.
+`command` carries the final entire-stack Apply policy; `preview_command()` always
+omits that final policy while retaining every historical visit. This prevents
+premature mapping of an unvisited plane during navigation. Both use the existing
+session record/job/portable workflow adapters. These APIs do not yet replace the
+main ImGui panel's legacy preview state or its Apply dispatch.

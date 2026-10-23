@@ -2435,7 +2435,8 @@
           "docs/parity/reviews/p11s-rgb-navigation001.json",
           "docs/parity/reviews/p11t-rgb-session-core001.json",
           "docs/parity/reviews/p11u-rgb-session-command001.json",
-          "docs/parity/reviews/p11v-rgb-session-workflow001.json"
+          "docs/parity/reviews/p11v-rgb-session-workflow001.json",
+          "docs/parity/reviews/p11w-rgb-session-editor001.json"
         ],
         "implementation": [
           "include/imagejxx/document.hpp",
@@ -2502,6 +2503,8 @@
           "src/native/rgb_contrast_session_command.cpp",
           "src/native/rgb_contrast_session_internal.hpp",
           "include/imagejxx/rgb_contrast_session_workflow.hpp",
+          "include/imagejxx/rgb_contrast_session_editor.hpp",
+          "src/native/rgb_contrast_session_editor.cpp",
           "src/native/rgb_contrast_session_workflow.cpp"
         ],
         "tests": [
@@ -2534,7 +2537,9 @@
           "tests/python/test_rgb_contrast_session.py",
           "tests/fixtures/rgb-contrast-navigation-imagej154r.json",
           "tests/python/test_rgb_contrast_session_command.py",
-          "tests/python/test_rgb_session_workflow.py"
+          "tests/python/test_rgb_session_workflow.py",
+          "tests/native/test_rgb_contrast_session_editor.cpp",
+          "tests/python/test_rgb_contrast_session_editor.py"
         ]
       },
       "id": "G057",

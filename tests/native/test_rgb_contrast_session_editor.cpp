@@ -1,0 +1,41 @@
+#include <imagejxx/rgb_contrast_session_editor.hpp>
+#include <iostream>
+#include <limits>
+using namespace imagejxx;
+namespace {
+void check(bool value,const char *message){if(!value)throw std::runtime_error(message);}
+template<class F>void refuses(F f){bool refused=false;try{f();}catch(const std::invalid_argument &){refused=true;}check(refused,"Expected admission refusal");}
+void run(){
+  auto reads=std::make_shared<DatasetReadObserver>();Image image(2,1,3,PixelType::UInt8);
+  for(int x=0;x<2;++x){image.at(x,0,0)=20;image.at(x,0,1)=30;image.at(x,0,2)=30;}
+  Document owner(Dataset::from_planes({1,1,2,1,2,3},Stack(2,image)).observe_reads(*reads));
+  const auto original=owner.snapshot();RgbContrastSessionEditor editor(original);editor.set_channels(4);editor.set_range(10,40);
+  check(editor.synchronize(original)==RgbContrastSessionTransition::Unchanged,"Identical source has no transition");
+  owner.select(Selection("rectangle",{{0,0},{1,1}}));
+  check(editor.synchronize(owner.snapshot())==RgbContrastSessionTransition::Selection,"Selection replaces draft membership");
+  editor.set_channels(2);editor.set_range(10,40);
+  auto view=owner.snapshot().display();view.crosshair[2]=1;owner.set_display(view);
+  check(editor.synchronize(owner.snapshot())==RgbContrastSessionTransition::Visit,"Navigation captures outgoing visit");
+  editor.set_range(0,60);view.crosshair[2]=0;owner.set_display(view);editor.synchronize(owner.snapshot());editor.reset();
+  check(editor.plan().visits.size()==3 && editor.plan().visits[0].stages.size()==2,"Revisits and component promotions survive Reset");
+  auto saved=editor.command();auto copy=editor;editor.set_channels(4);editor.set_range(0,170);editor.set_entire_stack(true);
+  check(copy.plan().visits.back().stages.back().options.channels==2 && saved.plan().visits.size()==3,"Copies retain independent immutable intent");
+  const auto stable=editor.command().record();
+  refuses([&]{editor.set_range(std::numeric_limits<double>::quiet_NaN(),10);});
+  refuses([&]{editor.set_channels(0);});auto limits=editor.limits();limits.max_record_bytes=1;
+  refuses([&]{editor.set_limits(limits);});check(metadata_equal(stable,editor.command().record()),"Refusal preserves full source and history");
+  Document other(original);refuses([&]{editor.synchronize(other.snapshot());});
+  auto changed=owner.snapshot().begin_edit(Change::Metadata);auto cal=owner.snapshot().data().dataset.calibration();cal.spacing[0]=2;changed.set_calibration(cal);owner.commit(changed);
+  refuses([&]{editor.synchronize(owner.snapshot());});check(metadata_equal(stable,editor.command().record()),"Incompatible source is never silently adopted");
+  check(reads->counts().plane_reads==0,"All editing and admission remains sample free");
+  const auto history=owner.undo_steps();
+  auto preview=execute_rgb_contrast_session_command(editor.preview_command()).preview();
+  const auto a=preview.data().dataset.plane({0,0,0}),b=preview.data().dataset.plane({0,0,1});
+  check(a->at(0,0,0)==128 && a->at(0,0,1)==170 && b->at(0,0,0)==20 && b->at(0,0,1)==128,"Navigation preview contains historical output without final stack mapping");
+  auto result=execute_rgb_contrast_session_command(editor.command()).preview();
+  check(result.data().dataset.plane({0,0,1})->at(0,0,0)==30,"Final stack mapping occurs only in Apply command");
+  check(original.shares_data(editor.source())==false && original.data().dataset.shares_pixels(editor.source().data().dataset),"Selection source adoption preserves original pixels");
+  check(owner.undo_steps()==history,"Private transition state never publishes edits");
+}
+}
+int main(){try{run();std::cout<<"PASS native RGB session transitions, admission and preview/Apply separation\n";return 0;}catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

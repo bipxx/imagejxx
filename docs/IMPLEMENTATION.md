@@ -263,6 +263,20 @@ Captured RGB records/jobs and shared preview/Apply/
 Rebind/workflow integration remain the next steps; RGB controls stay disabled.
 See [Apply details](CONTRAST_APPLY.md).
 
+**Native RGB session transition state, 2026-10-22 (work in progress):**
+`RgbContrastSessionEditor` now owns admitted native editing intent: selection
+changes replace the current draft mask; component/snapshot promotions retain
+frozen stages; T/C/Z changes freeze outgoing visits and start identity drafts
+on accumulated logical output. Reset preserves promotions and earlier visits.
+Compatible camera/title/metadata changes refresh captures. Incompatible owner,
+pixels, storage or calibration changes refuse adoption, preserving saved intent.
+All candidates pass command/job admission before replacing state, without sample
+IO. Navigation previews retain all visits and omit the final stack Apply policy.
+C++ and installed Python APIs are available; Windows/Linux each pass four native suites, one installed SDK consumer and
+23,162 installed Python checks (5,681 new). The main
+ImGui panel still needs to consume this controller and the editor gap probe
+remains open. Original 99 requirement/status triples are unchanged.
+
 
 **Contrast Apply workflow/batch checkpoint, 2026-10-22 (work in progress):**
 Saved and authored scalar Apply now execute in native programs, Run review and

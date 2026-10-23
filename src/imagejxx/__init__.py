@@ -1685,6 +1685,8 @@ from ._native import ResolvedRgbContrastSessionCommand, resolve_rgb_contrast_ses
 
 from ._native import make_rgb_contrast_session_workflow_step, rgb_contrast_session_plan_from_record
 
+from ._native import RgbContrastSessionEditor, RgbContrastSessionTransition
+
 __all__ = [
     name
     for name, value in list(globals().items())

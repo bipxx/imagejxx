@@ -4,6 +4,7 @@
 #include <imagejxx/rgb_contrast_sequence_job.hpp>
 #include <imagejxx/rgb_contrast_stack.hpp>
 #include <imagejxx/rgb_contrast_session.hpp>
+#include <imagejxx/rgb_contrast_session_editor.hpp>
 #include <imagejxx/rgb_contrast_session_job.hpp>
 #include <imagejxx/rgb_contrast_stack_job.hpp>
 #include <imagejxx/rgb_contrast_stack_workflow.hpp>
@@ -186,6 +187,23 @@ void bind_contrast_apply(py::module_ &m) {
   m.def("submit_rgb_contrast_session",[](JobScheduler &scheduler,ResolvedRgbContrastSessionCommand command,ContrastApplyCommandLimits limits,JobOptions options){
     py::gil_scoped_release release;return submit_rgb_contrast_session(scheduler,command,limits,std::move(options));
   },py::arg("scheduler"),py::arg("command"),py::arg("limits")=ContrastApplyCommandLimits{},py::arg("job_options")=JobOptions{});
+  py::enum_<RgbContrastSessionTransition>(m,"RgbContrastSessionTransition")
+    .value("Unchanged",RgbContrastSessionTransition::Unchanged).value("Refreshed",RgbContrastSessionTransition::Refreshed)
+    .value("Selection",RgbContrastSessionTransition::Selection).value("Visit",RgbContrastSessionTransition::Visit);
+  py::class_<RgbContrastSessionEditor>(m,"RgbContrastSessionEditor")
+    .def(py::init<const DocumentSnapshot &,const ContrastApplyCommandLimits &>(),py::arg("source"),py::arg("limits")=ContrastApplyCommandLimits{})
+    .def_property_readonly("source",[](const RgbContrastSessionEditor &v){return v.source();})
+    .def_property_readonly("plan",[](const RgbContrastSessionEditor &v){return v.plan();})
+    .def_property_readonly("limits",[](const RgbContrastSessionEditor &v){return v.limits();})
+    .def_property_readonly("command",[](const RgbContrastSessionEditor &v){return v.command();})
+    .def("preview_command",&RgbContrastSessionEditor::preview_command)
+    .def("synchronize",&RgbContrastSessionEditor::synchronize,py::arg("source"))
+    .def("set_range",&RgbContrastSessionEditor::set_range,py::arg("minimum"),py::arg("maximum"),py::arg("whole_plane")=false)
+    .def("set_channels",[](RgbContrastSessionEditor &v,py::object channels){v.set_channels(integer<int>(std::move(channels)));},py::arg("channels"))
+    .def("promote",&RgbContrastSessionEditor::promote)
+    .def("reset",&RgbContrastSessionEditor::reset)
+    .def("set_entire_stack",[](RgbContrastSessionEditor &v,py::object enabled){if(!py::isinstance<py::bool_>(enabled))throw py::type_error("enabled requires bool");v.set_entire_stack(enabled.cast<bool>());},py::arg("enabled"))
+    .def("set_limits",&RgbContrastSessionEditor::set_limits,py::arg("limits"));
   py::class_<ResolvedRgbContrastStackCommand>(m,"ResolvedRgbContrastStackCommand")
     .def_property_readonly("target",[](const ResolvedRgbContrastStackCommand &v){return v.target();})
     .def_property_readonly("steps",[](const ResolvedRgbContrastStackCommand &v){return v.steps();})

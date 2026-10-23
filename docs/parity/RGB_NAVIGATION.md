@@ -40,6 +40,40 @@ mapping editing and independent per-visit relocation remain open. Windows/Linux 
 corrected UI/Batch tail completes the initial full prefix; its report-path setup
 error remains recorded. See `reviews/p11v-rgb-session-workflow001.json`. Main brightness/contrast transitions are the next integration gate.
 
+The native transition controller `rgb_contrast_session_editor.hpp` now implements
+admitted draft replacement, selection synchronization, explicit/component
+promotion, returning visits, Reset and compatible capture refresh. All candidates
+validate before adoption; a refusal preserves the previous complete capture.
+External pixels/storage/calibration or owner changes require a new controller.
+`preview_command()` retains full history without the final stack Apply policy;
+`command()` includes that policy. Windows/Linux each pass four native suites, one installed SDK consumer and
+23,162 installed Python checks (5,681 new). Main ImGui transition
+handling remains an explicit integration task, not passing editor acceptance.
+
+### Main-panel integration packet
+
+1. Adopt the native controller before `tick` replaces `source_` or resets range.
+   Admit outgoing visit plus the new source first. Preserve the old intent on
+   refusal, show the error and disable stale Apply. Retry only on explicit retry
+   or changed limits/source. Handle external edits with an explicit new-session
+   action; never silently discard accumulated visits.
+2. Route range, Reset, component, Auto and selection events through native state.
+   Auto measures a worker-evaluated current-visit baseline with its draft reset;
+   all promoted stages and prior visits remain. Keep explicit uniform multi-plane
+   targets representable: do not silently narrow them into current-plane visits.
+3. Submit complete session previews on workers. Display their baked logical plane
+   outputs for every visited position, including pixels outside the current live
+   selection. Keep linked XYZ and histogram consumers generation guarded.
+4. Add session dispatch to host Apply and recorder validation. Reuse a READY job
+   only if the complete command matches; entire-stack final Apply may need a new
+   worker because navigation preview excludes its noncurrent-plane policy.
+   Publication remains one original-owner/all-revision paired edit.
+5. Run the unchanged six-case installed editor probe, then all 378 traces through
+   real panel actions/widgets, including blocked/canceled/READY transitions,
+   resource refusal/recovery, complete capture/portable replay and paired Undo.
+   Qualify standalone C++ and optional Python launches on Windows/Linux before
+   changing the editor gap claims below.
+
 ## Observed behavior
 
 `RgbContrastNavigationReference.java` invokes actual ImageJ 1.54r

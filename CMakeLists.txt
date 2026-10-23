@@ -37,7 +37,7 @@ target_sources(imagejxx_core PRIVATE
   src/native/float32_display.cpp
   src/native/channel_display.cpp src/native/channel_display_command.cpp
   src/native/dataset_histogram.cpp src/native/rgb_histogram.cpp src/native/histogram_command.cpp src/native/histogram_job.cpp
-  src/native/auto_contrast.cpp src/native/auto_contrast_job.cpp src/native/contrast_apply.cpp src/native/contrast_apply_command.cpp src/native/rgb_contrast_apply_command.cpp src/native/rgb_contrast_stack.cpp src/native/rgb_contrast_session.cpp src/native/rgb_contrast_session_command.cpp src/native/rgb_contrast_stack_command.cpp src/native/rgb_contrast_stack_workflow.cpp src/native/rgb_contrast_session_workflow.cpp src/native/contrast_apply_job.cpp
+  src/native/auto_contrast.cpp src/native/auto_contrast_job.cpp src/native/contrast_apply.cpp src/native/contrast_apply_command.cpp src/native/rgb_contrast_apply_command.cpp src/native/rgb_contrast_stack.cpp src/native/rgb_contrast_session_editor.cpp src/native/rgb_contrast_session.cpp src/native/rgb_contrast_session_command.cpp src/native/rgb_contrast_stack_command.cpp src/native/rgb_contrast_stack_workflow.cpp src/native/rgb_contrast_session_workflow.cpp src/native/contrast_apply_job.cpp
   src/native/selection_creation.cpp
   src/native/selection_creation_geometry.cpp
   src/native/roi_manager.cpp
@@ -845,6 +845,9 @@ if(BUILD_TESTING)
   add_executable(imagejxx_native_workflow_batch_tests tests/native/test_native_workflow_batch.cpp)
   target_link_libraries(imagejxx_native_workflow_batch_tests PRIVATE imagejxx::core)
   add_test(NAME native_workflow_batch COMMAND imagejxx_native_workflow_batch_tests "${IMAGEJXX_SESSION_TEST_ARTIFACT_DIR}/batch")
+  add_executable(imagejxx_rgb_contrast_session_editor_tests tests/native/test_rgb_contrast_session_editor.cpp)
+  target_link_libraries(imagejxx_rgb_contrast_session_editor_tests PRIVATE imagejxx::core)
+  add_test(NAME native_rgb_contrast_session_editor COMMAND imagejxx_rgb_contrast_session_editor_tests)
   add_executable(imagejxx_native_workflow_tests tests/native/test_native_workflow.cpp)
   target_link_libraries(imagejxx_native_workflow_tests PRIVATE imagejxx::core)
   add_test(NAME native_workflow COMMAND imagejxx_native_workflow_tests)
