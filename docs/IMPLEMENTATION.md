@@ -1,5 +1,29 @@
 # Implementation progress
 
+**RGB main-panel stack checkpoint, 2026-10-22 (work in progress):**
+The shared ImGui brightness/contrast panel now previews and applies exact ImageJ
+entire-stack RGB mappings. The checkbox keeps compatible current-plane component
+promotions; endpoint drafts replace the current map, Auto measures its promoted
+baseline and retains the whole-active-plane policy. Apply reuses its READY
+native stack job and records the complete capture for workflow replay. Ordinary
+and XYZ views use one compact whole-stack preview target on eager/virtual data.
+Typed stack stages avoid retaining a full legacy capture for each promotion.
+Windows/Linux each pass 22 native suites, three existing standalone C++ UI
+regression probes, an installed C++ SDK consumer, ten background repetitions,
+four hidden GL contexts and 33,915 installed Python checks (2,680 new), zero
+failure/error/skip. Exact owned scratch is CRC/member-SHA archived before
+cleanup; qualified installs/probes remain. See the
+[scoped receipt](parity/reviews/p11r-rgb-stack-panel001.json).
+
+
+Mode changes refuse noncurrent/positioned or incompatible non-area promoted
+masks before retiring the existing preview. Source/selection/navigation snapshot
+transitions, exact slider/log-plot/Set/reset/calibration, dedicated workflow
+stage-choice editing and broader G057/ImageJ/Fiji/platform/resource acceptance
+remain open. Promoted Auto currently composes a private stack baseline before
+sampling its active plane; active-only composition is further optimization.
+The existing Auto producer-source evidence gate is unchanged.
+
 **RGB portable-stack workflow checkpoint, 2026-10-22 (work in progress):**
 Exact captured RGB stack mappings now replay through native portable workflows,
 session batches and the shared workflow review. The explicit singleton target

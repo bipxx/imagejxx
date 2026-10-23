@@ -32,14 +32,14 @@ void unit(double value){if(!std::isfinite(value)||value<0||value>1)throw std::in
 ContrastPanel::~ContrastPanel(){try{close();}catch(...){}}
 bool ContrastPanel::handles(const std::string &name){
   static const std::set<std::string> names{"show_contrast","close_contrast","contrast_range","contrast_window_level",
-    "contrast_brightness","contrast_contrast","contrast_rgb_channels","cancel_rgb_contrast_preview","refresh_rgb_contrast_preview","contrast_reset","contrast_auto","contrast_apply","configure_contrast_target","cancel_contrast_apply","refresh_contrast_histogram","cancel_contrast_histogram"};
+    "contrast_brightness","contrast_contrast","contrast_rgb_channels","contrast_rgb_stack","cancel_rgb_contrast_preview","refresh_rgb_contrast_preview","contrast_reset","contrast_auto","contrast_apply","configure_contrast_target","cancel_contrast_apply","refresh_contrast_histogram","cancel_contrast_histogram"};
   return names.count(name)!=0;
 }
 void ContrastPanel::request_cancel(JobScheduler &scheduler){++rebindCancelEpoch_;++cancelEpoch_;if(const auto id=cancelId_.load())scheduler.cancel(id);if(const auto id=rgbCancelId_.load())scheduler.cancel(id);if(const auto id=rgbAutoCancelId_.load())scheduler.cancel(id);if(const auto id=rgbAutoBaselineCancelId_.load())scheduler.cancel(id);}
 void ContrastPanel::open(){open_=focus_=true;}
 void ContrastPanel::cancelHistogram(){cancelId_.store(0);if(job_){job_->cancel();job_.reset();++discarded_;}}
-void ContrastPanel::close(){rgbAutoWhole_=false;rgbAutoDivisor_=0;clearRgbSequence();invalidateRgb(false);rgbSource_.reset();cancelRebind();cancelHistogram();histogram_.reset();heights_.clear();source_.reset();key_.clear();rangeKey_=nullptr;controls_=Json::object();open_=focus_=focused_=histogramAttempted_=resolved_=false;}
-void ContrastPanel::sourceClosed(std::uint64_t id){if(rebind_ && rebind_->source.id()==id)cancelRebind();if(source_ && source_->id()==id){rgbAutoWhole_=false;clearRgbSequence();invalidateRgb(false);rgbSource_.reset();cancelHistogram();histogram_.reset();source_.reset();key_.clear();rangeKey_=nullptr;heights_.clear();resolved_=focused_=false;}}
+void ContrastPanel::close(){rgbEntireStack_=false;rgbAutoWhole_=false;rgbAutoDivisor_=0;clearRgbSequence();invalidateRgb(false);rgbSource_.reset();cancelRebind();cancelHistogram();histogram_.reset();heights_.clear();source_.reset();key_.clear();rangeKey_=nullptr;controls_=Json::object();open_=focus_=focused_=histogramAttempted_=resolved_=false;}
+void ContrastPanel::sourceClosed(std::uint64_t id){if(rebind_ && rebind_->source.id()==id)cancelRebind();if(source_ && source_->id()==id){rgbEntireStack_=false;rgbAutoWhole_=false;clearRgbSequence();invalidateRgb(false);rgbSource_.reset();cancelHistogram();histogram_.reset();source_.reset();key_.clear();rangeKey_=nullptr;heights_.clear();resolved_=focused_=false;}}
 bool ContrastPanel::inputActive()const{return (open_ && focused_) || (rebind_ && rebind_->focused);}
 bool ContrastPanel::histogramSupported(const Dataset &d)const{
   return d.shape().s==1 && (d.pixel_type()==PixelType::UInt8 || d.pixel_type()==PixelType::UInt16 || d.pixel_type()==PixelType::Float32) &&
@@ -133,12 +133,14 @@ std::array<double,2> ContrastPanel::resetRange(int bits)const{
 }
 void ContrastPanel::configureTarget(const TargetRequest &request){
   if(!open_ || !source_)throw std::invalid_argument("Open Brightness/Contrast with a source first");
+  if(rgbSource() && rgbEntireStack_)throw std::invalid_argument("Entire-stack RGB Apply uses the current selection and every stack plane. Switch off stack mode to choose uniform targets.");
   target_.configure(*source_,request,rgbSource());rgbAutoWhole_=false;invalidateRgb();
 }
 void ContrastPanel::action(const std::string &name,const Json &p,bool busy,const Publish &effect,const Auto &automatic,int bits,const Apply &apply){
   if(!open_)throw std::invalid_argument("Open Brightness/Contrast first");
   const std::vector<std::string> fields=name=="contrast_range"?std::vector<std::string>{"minimum","maximum"}:
     name=="contrast_rgb_channels"?std::vector<std::string>{"channels"}:
+    name=="contrast_rgb_stack"?std::vector<std::string>{"enabled"}:
     name=="contrast_window_level"?std::vector<std::string>{"window","level"}:
     name=="contrast_brightness"||name=="contrast_contrast"?std::vector<std::string>{"value"}:std::vector<std::string>{};
   if(!p.is_object() || p.size()!=fields.size())throw std::invalid_argument("Contrast request requires its exact numeric fields");
@@ -148,6 +150,10 @@ void ContrastPanel::action(const std::string &name,const Json &p,bool busy,const
   else if(name=="contrast_brightness"||name=="contrast_contrast"){
     if(!resolved_)throw std::invalid_argument("Wait for the source range or set finite endpoints first");
     publish(name=="contrast_brightness"?brightness(range_,domain_,numeric(p,"value")):contrast(range_,domain_,numeric(p,"value")),busy,effect);
+  }
+  else if(name=="contrast_rgb_stack"){
+    if(busy || !p.at("enabled").is_boolean())throw std::invalid_argument("RGB stack mode requires an idle source and Boolean enabled flag");
+    selectRgbStack(p.at("enabled").get<bool>());
   }
   else if(name=="contrast_rgb_channels"){
     const auto &value=p.at("channels");
@@ -190,6 +196,7 @@ void ContrastPanel::draw(bool busy,const Publish &effect,const Auto &automatic,c
   const auto &d=source_->data().dataset;const auto &v=source_->display();
   ImGui::Text("Source: T %d  C %d  Z %d",v.t+1,v.c+1,v.crosshair[2]+1);
   if(d.shape().c>1){int c=v.c+1;ImGui::BeginDisabled(busy);if(ImGui::SliderInt("Channel",&c,1,d.shape().c))attempt([&]{select(c-1);});control("channel",!busy);ImGui::EndDisabled();}
+  if(rgbSource()){ImGui::BeginDisabled(busy);bool stack=rgbEntireStack_;if(ImGui::Checkbox("ImageJ entire stack",&stack))attempt([&]{selectRgbStack(stack);});control("rgb_stack",!busy);ImGui::EndDisabled();}
   const bool applyReady=bool(apply) && resolved_ && ((d.shape().s==1 &&
     (d.pixel_type()==PixelType::UInt8 || d.pixel_type()==PixelType::UInt16)) || (rgbSource() && bool(rgbPreview(*source_)))) &&
     d.sample_policy()==FloatingSamplePolicy::FiniteOnly && !boolean(get(metadataJson(source_->data().metadata.extensions),"labels")) && std::isfinite(range_[0]) && std::isfinite(range_[1]);
@@ -199,7 +206,8 @@ void ContrastPanel::draw(bool busy,const Publish &effect,const Auto &automatic,c
   if(applying && cancel){ImGui::SameLine();if(ImGui::Button("Cancel Apply"))cancel();control("cancel_apply");}
   ImGui::TextWrapped("Apply changes source pixels and display together; Undo restores both.");
   target_.clearControls();
-  if(ImGui::CollapsingHeader("Apply target") && target_.draw(!busy,false,"Target planes and area")){rgbAutoWhole_=false;invalidateRgb();}
+  if(rgbSource() && rgbEntireStack_)ImGui::TextWrapped("Stack Apply keeps promoted adjustments on the active processor. Other T/C/Z planes use the current component and processor-narrowed bounds with the current selection. Auto keeps its whole-active-plane policy.");
+  else if(ImGui::CollapsingHeader("Apply target") && target_.draw(!busy,false,"Target planes and area")){rgbAutoWhole_=false;invalidateRgb();}
   if(rgbSource()){
     ImGui::TextUnformatted("RGB components");ImGui::BeginDisabled(busy);
     for(const auto &[label,bits]:std::array<std::pair<const char *,int>,7>{{{"All",7},{"Red",4},{"Green",2},{"Blue",1},{"Red + Green",6},{"Red + Blue",5},{"Green + Blue",3}}}){

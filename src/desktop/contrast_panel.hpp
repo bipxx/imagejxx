@@ -3,6 +3,7 @@
 #include "operation_target_panel.hpp"
 #include <imagejxx/histogram_job.hpp>
 #include <imagejxx/rgb_contrast_sequence_job.hpp>
+#include <imagejxx/rgb_contrast_stack_job.hpp>
 #include <functional>
 #include <atomic>
 
@@ -38,12 +39,15 @@ public:
   TargetRequest applyTarget()const;
   void rgbWeights(std::array<double,3>);
   int rgbChannels()const{return rgbChannels_;}
+  bool rgbEntireStack()const{return rgbEntireStack_;}
+  ResolvedRgbContrastStackCommand currentRgbStackCommand(const DocumentSnapshot &)const;
   std::optional<DocumentSnapshot> rgbPreview(const DocumentSnapshot &)const;
   const ResolvedTarget *rgbPreviewTarget(const DocumentSnapshot &)const;
   bool rgbPreviewAffects(const DocumentSnapshot &,PlanePosition)const;
   std::vector<ResolvedTarget> rgbPreviewTargets(const DocumentSnapshot &)const;
   std::uint64_t rgbPreviewGeneration()const{return rgbGeneration_;}
   ContrastApplyJob takeRgbPreview(const ResolvedRgbContrastApplyCommand &);
+  ContrastApplyJob takeRgbPreview(const ResolvedRgbContrastStackCommand &);
   void sourceClosed(std::uint64_t);
   void tick(const std::optional<DocumentSnapshot> &,bool,JobScheduler &,DatasetHistogramLimits,const ContrastApplyCommandLimits & = {});
   void draw(bool,const Publish &,const Auto &,const std::function<void(int)> &,int unsigned16_bits,const Apply & = {},bool applying=false,const std::function<void()> &cancel={});
@@ -68,10 +72,15 @@ private:
   std::atomic<std::uint64_t> rebindCancelEpoch_{0};
   OperationTargetPanel target_;
   std::vector<ResolvedRgbContrastApplyCommand> rgbPrefix_;
+  std::vector<RgbContrastStackStep> rgbStackPrefix_;
+  std::optional<ResolvedTarget> rgbStackTarget_;
   void selectRgbChannels(int);
+  void selectRgbStack(bool);
   void clearRgbSequence();
   static bool rgbCompatible(const DocumentSnapshot &,const DocumentSnapshot &);
   std::optional<ResolvedRgbContrastApplyCommand> rgbCommand_;
+  std::optional<ResolvedRgbContrastStackCommand> rgbStackCommand_;
+  bool rgbEntireStack_=false;
   std::optional<ContrastApplyJob> rgbJob_;
   std::optional<DocumentSnapshot> rgbPreview_;
   std::optional<DocumentSnapshot> rgbSource_;

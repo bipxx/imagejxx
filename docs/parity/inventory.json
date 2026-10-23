@@ -2429,7 +2429,8 @@
           "docs/parity/reviews/p11n-rgb-component-ui001.json",
           "docs/parity/reviews/p11o-rgb-stack001.json",
           "docs/parity/reviews/p11p-rgb-stack-command001.json",
-          "docs/parity/reviews/p11q-rgb-stack-workflow001.json"
+          "docs/parity/reviews/p11q-rgb-stack-workflow001.json",
+          "docs/parity/reviews/p11r-rgb-stack-panel001.json"
         ],
         "implementation": [
           "include/imagejxx/document.hpp",
@@ -2554,7 +2555,8 @@
         "p11n.rgb-component.editor.001",
         "p11o.rgb-stack.core.001",
         "p11p.rgb-stack.command-jobs.001",
-        "p11q.rgb-stack.workflow.001"
+        "p11q.rgb-stack.workflow.001",
+        "p11r.rgb-stack.panel.001"
       ]
     },
     {
@@ -181834,6 +181836,29 @@
         "total": 31235
       },
       "scope": "Exact captured RGB stacks now replay as rgb_contrast_stack native portable operations and session batches. A singleton explicit ActiveSelection Positions target identifies the active processor while execution maps the entire current TCZ stack; it requires empty free parameters, complete original, in-place plane execution, no unused ranges/calibration/filter overrides. The original is completely validated and retained unchanged before rebinding saved mappings to destination selection and the authored anchor. Destination T/C/Z, crosshair, zoom and pan survive paired publication. Shared exact processor membership produces sample-free metadata descriptors after conservative admission; descriptor sample acquisition throws, invalid later intent/storage/anchor/limits fails before prefix samples, and empty enabled stack steps retain Change::All dependencies without reads/history. All 5292 unchanged actual ImageJ 1.54r stack reference rows pass portable record/JSON roundtrip, explicit original-anchor replay after destination navigation changes, complete stack hashes, geometry, one paired Undo/Redo and immutable original assertions. Fifteen ambiguous-intent cases, five late/preflight cases, four stale revisions, three cancellation/callback cases, one disabled incompatible anchor and two scientific session batches pass. Actual shared workflow widgets load a plain complete capture, edit active Z, keep/reopen a portable program, preview/Apply promoted active pixels and narrowed other-plane pixels, preserve navigation/recorder and perform paired Undo/Redo in standalone C++ and Python launches. Saved mapping choices remain read-only in workflow review. Windows/Linux each pass 22 native suites, three full standalone workflow/batch/RGB UI probes, one installed SDK consumer, ten background repetitions, four hidden GL contexts and 31235 installed Python checks (5323 new), zero failure/error/skip. SDK consumers explicitly retarget the anchor and exercise record/JSON replay, publication and Undo. A failed SDK example include and strict GCC temporary-reference error, plus the Python out-of-range IndexError expectation, were corrected only in test/SDK consumers; final native/production/UI bytes are unchanged and both SDKs pass. Actual source/module origins and 5475 native Linux test/config/fixture files are pinned. One previously unused compiled-source-cache Python UI test matched exact initial Git 0aa3acc bytes; its controlled migration is recorded, while all prior and current Python qualification uses separate SHA-verified native snapshots. Full installed suites use actual disposable venv interpreters. Exact owned scratch is CRC/member-SHA archived before confined removal; final installs, native/SDK probes and useful caches remain. Source/provider caches, frontend copies, phase-local codec work and total RSS remain external to retained-byte estimates. Main brightness/contrast stack controls, stage-choice editing, snapshot/selection/navigation transitions and full G057/ImageJ/Fiji/platform/resource acceptance remain open. Existing scalar/uniform-RGB wire profiles, portable container fields, general registrations, commercial-use inventory and all 99 requirement/status triples remain unchanged. The old Auto producer-source gate remains open."
+    },
+    {
+      "acceptance": false,
+      "complete_requirement_coverage": false,
+      "date": "2026-10-22",
+      "id": "p11r.rgb-stack.panel.001",
+      "identity": {
+        "qualification": {
+          "path": "docs/parity/reviews/p11r-rgb-stack-panel001.json",
+          "bytes": 31564,
+          "sha256": "255068037a83252e880932516054811c4b0c32c5aacbb39afba9614820e72bb2"
+        }
+      },
+      "platform": "Windows/Linux installed C++/Python main ImGui exact RGB stack preview/Auto/Apply",
+      "python": {
+        "errors": 0,
+        "failed": 0,
+        "passed": 33915,
+        "report": "build/p11r-rgb-stack-panel001/windows-python002/pytest.xml",
+        "skipped": 0,
+        "total": 33915
+      },
+      "scope": "The main shared ImGui brightness/contrast panel now exposes ImageJ entire-stack RGB preview and Apply to standalone C++ and optional Python launches. It composes compact typed current-plane promotions and current draft, preserves compatible mode/metadata changes, reads Auto from the promoted private baseline, and reuses the exact READY native stack job for guarded paired publication and complete capture recording. One compact whole-TCZ target selects ordinary and XYZ preview planes without duplicate display mapping. All 2646 manual ImageJ 1.54r reference rows (seven endpoint pairs, seven components, nine selection forms, three anchors, optional promoted prefix) pass panel active-preview hash, READY job ID reuse, full-stack Apply hash, complete original capture, portable replay and Undo/Redo. Nine actual promoted Auto reference cases preserve measured range, active whole-plane policy and complete three-stage captures. Four eager/virtual XY/XYZ cases check source/rendered readbacks and complete output; mode/cancellation/close/new intent/compatible metadata/source guard cases, exact Boolean controls, no ignored uniform targets, explicit editor replay/rebind and cumulative admission pass. A successful 64-stage compact frontend sequence and rejected 65th promotion preserve READY intent. A prototype line-selection regression demonstrated mode conversion could reinterpret promoted masks; final production guards reject incompatible non-area masks in both directions and noncurrent/positioned promotions before retiring old state. Native fixtures click actual stack, component and Apply widgets, check nonuniform active/other TCZ pixels and paired history, and prove blocked stack reads occur on workers and cancel/refresh/close without publication or residual reservations. Stack promotions use bounded typed stages rather than a full legacy record per component; expansion to uniform mode is admitted using shared worst-case probes before allocating legacy captures. Promoted Auto currently composes a private admitted stack baseline and samples only its active plane; composition may read other planes and active-only work is still an optimization. Source/provider caches, frontend copies, history/publication staging and total RSS remain external to estimates. Windows/Linux each pass 22 native suites, three existing full C++ workflow/batch/RGB UI probes, installed SDK consumer, ten background repetitions, four hidden GL contexts and 33915 installed Python checks (2680 new), zero failure/error/skip. Both complete suites use actual disposable venv interpreters; actual sources/module origins and 5475 native Linux test/config/fixture files are pinned. Exact owned scratch is CRC/member-SHA archived before confined removal, retaining final installs/probes and useful caches. ImageJ snapshot/selection/navigation transitions, slider/log-plot/Set/reset/calibration, workflow stage-choice editing and broad G057/ImageJ/Fiji/platform/resource acceptance remain open. No existing scalar/uniform-RGB/stack wire profile, general registration, dependency inventory or original 99 requirement/status triple changes; the old Auto producer-source gate is unchanged."
     }
   ]
 }

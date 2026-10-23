@@ -2133,8 +2133,12 @@ struct Window::Impl {
     const auto it=record.find("schema");const auto value=it==record.end()?nullptr:std::get_if<std::string>(&it->second);
     return value && *value=="imagejxx.rgb-contrast-apply-command";
   }
+  static bool rgbStackContrastRecord(const MetadataObject &record){
+    const auto it=record.find("schema");const auto value=it==record.end()?nullptr:std::get_if<std::string>(&it->second);
+    return value && *value=="imagejxx.rgb-contrast-stack-command";
+  }
   static void validateContrastRecord(const MetadataObject &record,std::size_t cap){
-    if(rgbContrastRecord(record))validate_rgb_contrast_apply_command_record(record,cap);else validate_contrast_apply_command_record(record,cap);
+    if(rgbStackContrastRecord(record))validate_rgb_contrast_stack_command_record(record,cap);else if(rgbContrastRecord(record))validate_rgb_contrast_apply_command_record(record,cap);else validate_contrast_apply_command_record(record,cap);
   }
   ContrastApplyCommandLimits contrastApplyLimits() const {
     ContrastApplyCommandLimits limits;
@@ -2153,7 +2157,10 @@ struct Window::Impl {
     std::string pendingStatus="Applying brightness/contrast...";
     JobOptions options;options.label="Apply brightness/contrast";
     auto submitted=[&]{
-      if constexpr(std::is_same_v<Command,ResolvedRgbContrastApplyCommand>){
+      if constexpr(std::is_same_v<Command,ResolvedRgbContrastStackCommand>){
+        if(reusePreview)return contrastPanel.takeRgbPreview(command);
+        return submit_rgb_contrast_stack(*owner.controller_->job_scheduler(),command,contrastApplyLimits(),std::move(options));
+      }else if constexpr(std::is_same_v<Command,ResolvedRgbContrastApplyCommand>){
         if(reusePreview)return contrastPanel.takeRgbPreview(command);
         return submit_rgb_contrast_apply(*owner.controller_->job_scheduler(),command,contrastApplyLimits(),std::move(options));
       }else return submit_contrast_apply(*owner.controller_->job_scheduler(),command,contrastApplyLimits(),std::move(options));
@@ -2170,6 +2177,7 @@ struct Window::Impl {
     if(owner.busy())throw std::invalid_argument("Wait for the current edit");
     const auto epoch=contrastApplyCancelEpoch.load();
     if(source.data().dataset.shape().s==3){
+      if(contrastPanel.rgbEntireStack()){beginContrastApply(contrastPanel.currentRgbStackCommand(source),epoch,true);return;}
       beginContrastApply(resolve_rgb_contrast_apply_command(source,{range[0],range[1],contrastPanel.rgbChannels()},target,contrastApplyLimits()),epoch,true);return;
     }
     ContrastApplyOptions options;options.minimum=range[0];options.maximum=range[1];
@@ -5913,6 +5921,7 @@ void Window::action(const std::string &name, const Json &p) {
     if(busy())throw std::invalid_argument("Wait for the current edit");
     const auto source=nativeSnapshot();
     if(boolean(get(metadataJson(source.data().metadata.extensions),"labels")))throw std::invalid_argument("Disable label coloring before Apply");
+    if(Impl::rgbStackContrastRecord(record))throw std::invalid_argument("Review stack captures with Run workflow to choose their active processor.");
     impl->contrastPanel.showRebind(source,record,limits);impl->animating=false;return;
   }
   if(name=="configure_contrast_rebind_target"){
@@ -5935,6 +5944,11 @@ void Window::action(const std::string &name, const Json &p) {
     const auto limits=impl->contrastApplyLimits();Impl::validateContrastRecord(record,limits.max_record_bytes);
     if(busy())throw std::invalid_argument("Wait for the current edit");
     const auto source=nativeSnapshot();
+    if(Impl::rgbStackContrastRecord(record)){
+      if(p.contains("contrast_rebind") && (!p.at("contrast_rebind").is_object() || !p.at("contrast_rebind").empty()))throw std::invalid_argument("Stack replay rebinding uses the destination's current processor and selection; use an empty contrast_rebind object or Run workflow for an explicit anchor.");
+      const auto command=p.contains("contrast_rebind")?rebind_rgb_contrast_stack_command(source,record,limits):rgb_contrast_stack_command_from_record(source,record,limits);
+      impl->beginContrastApply(command,epoch);return;
+    }
     if(Impl::rgbContrastRecord(record)){
       const auto command=p.contains("contrast_rebind")
         ?rebind_rgb_contrast_apply_command(source,record,gaussianRebindRequest(p.at("contrast_rebind")),limits)

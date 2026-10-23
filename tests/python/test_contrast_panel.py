@@ -850,3 +850,185 @@ def test_rgb_editor_promoted_auto_preserves_whole_plane_policy_across_view_refre
     editor.action("wait_jobs");report=editor.render_headless()["contrast_panel"]
     assert report["rgb"]["auto_whole_planes"] and report["rgb"]["promoted_stages"]==2 and report["range"]==row["auto_range"] and rgb_editor_hash(editor)==row["auto_sha256"]
     assert owner.undo_steps==0;editor.action("close_contrast")
+
+
+from test_contrast_apply import STACK_FIXTURE, rgb_stack_owner
+
+
+@pytest.mark.parametrize("row",[r for r in STACK_FIXTURE["rows"] if not r["whole_plane"]],ids=lambda r:f'stack-panel-r{r["range_index"]}-c{r["channels"]}-roi{r["roi"]}-a{r["anchor"]}-p{int(r["prefix"])}')
+def test_rgb_entire_stack_panel_matches_actual_imagej_and_records_complete_capture(row,tmp_path):
+    owner=rgb_stack_owner(row);editor=Editor(preferences=tmp_path/"preferences.json");editor._editor.add_virtual_document(owner);before=owner.snapshot()
+    editor.action("show_contrast");editor.action("contrast_rgb_stack",enabled=True)
+    if row["prefix"]:
+        editor.action("contrast_range",minimum=STACK_FIXTURE["prefix_range"][0],maximum=STACK_FIXTURE["prefix_range"][1])
+        editor.action("contrast_rgb_channels",channels=2 if row["channels"]==7 else row["channels"])
+    editor.action("contrast_rgb_channels",channels=row["channels"])
+    low,high=STACK_FIXTURE["ranges"][row["range_index"]];editor.action("contrast_range",minimum=low,maximum=high);editor.action("wait_jobs")
+    assert rgb_editor_hash(editor)==row["active_sha256"] and owner.snapshot().shares_data(before) and owner.undo_steps==0
+    report=editor.render_headless()["contrast_panel"];assert report["rgb"]["entire_stack"] and report["rgb"]["promoted_stages"]==int(row["prefix"])
+    ready=report["rgb"]["job_id"];editor.recording=True;editor.action("contrast_apply");assert editor.job_info.id==ready;editor.action("wait_jobs")
+    assert hashlib.sha256(owner.snapshot().dataset.numpy("TCZYXS").tobytes()).hexdigest()==row["stack_sha256"] and owner.undo_steps==int(row["roi"]!=3)
+    record=editor.workflow[0];ij.validate_rgb_contrast_stack_command_record(record);assert record["capture"]["reset_anchor"]==STACK_FIXTURE["anchors"][row["anchor"]] and len(record["stages"])==1+int(row["prefix"])
+    assert record["stages"][-1]=={"minimum":low,"maximum":high,"channels":row["channels"],"whole_plane":False}
+    replay=ij.Document(before);request=ij.TargetRequest(ij.TargetScope.POSITIONS,positions=[ij.PlanePosition(*STACK_FIXTURE["anchors"][row["anchor"]])])
+    step=ij.NativeWorkflowOperation("rgb_contrast_stack",{},request,original=record);replay.commit(ij.prepare_native_workflow(replay.snapshot(),[step]).begin_edit())
+    assert hashlib.sha256(replay.snapshot().dataset.numpy("TCZYXS").tobytes()).hexdigest()==row["stack_sha256"]
+    if row["roi"]!=3:
+        owner.undo();assert owner.snapshot().shares_data(before);owner.redo();assert hashlib.sha256(owner.snapshot().dataset.numpy("TCZYXS").tobytes()).hexdigest()==row["stack_sha256"]
+    else:assert owner.snapshot().shares_data(before) and owner.snapshot().display.properties==before.display.properties
+    editor.action("close_contrast")
+
+
+@pytest.mark.parametrize("roi",[0,1,2])
+@pytest.mark.parametrize("first",[1,4,7])
+def test_rgb_entire_stack_promoted_auto_matches_actual_imagej_and_records_whole_policy(roi,first,tmp_path):
+    second=2 if first!=2 else 4
+    row=next(r for r in SEQUENCE_FIXTURE["rows"] if r["range_index"]==0 and r["first_channels"]==first and r["second_channels"]==second and r["roi"]==roi)
+    owner,editor,_=promoted_rgb_editor(tmp_path,row);before=owner.snapshot();editor.action("contrast_rgb_stack",enabled=True)
+    editor.action("contrast_range",minimum=10.9,maximum=40.1);editor.action("contrast_rgb_channels",channels=second)
+    editor.action("contrast_range",minimum=-10.2,maximum=160.9);editor.action("contrast_rgb_channels",channels=first)
+    editor.action("contrast_auto");editor.action("wait_jobs");report=editor.render_headless()["contrast_panel"]
+    assert report["range"]==row["auto_range"] and report["rgb"]["auto_whole_planes"] and report["rgb"]["promoted_stages"]==2 and rgb_editor_hash(editor)==row["auto_sha256"]
+    editor.recording=True;editor.action("contrast_apply");editor.action("wait_jobs");record=editor.workflow[0]
+    assert len(record["stages"])==3 and record["stages"][-1]["whole_plane"] and record["stages"][-1]["channels"]==first
+    assert hashlib.sha256(owner.snapshot().dataset.numpy("YXS").tobytes()).hexdigest()==row["auto_sha256"]
+    owner.undo();assert owner.snapshot().shares_data(before);editor.action("close_contrast")
+
+
+@pytest.mark.parametrize("virtual",[False,True])
+@pytest.mark.parametrize("xyz",[False,True])
+def test_rgb_entire_stack_preview_covers_all_planes_on_eager_virtual_xy_xyz(virtual,xyz,tmp_path):
+    pixels=np.tile(np.array([20,30,40],np.uint8),(2,2,3,3,4,1));dataset=ij.Dataset(pixels,axes="TCZYXS")
+    if virtual:
+        from test_virtual_tiff import write
+        from imagejxx import scientific_io as io
+        path=tmp_path/"stack.tif";write(path,pixels,io.ImageFileFormat.SCIENTIFIC_TIFF_RGB8_V1);dataset=io.open_virtual_image_series(path).dataset
+    owner=ij.Document(dataset);owner.select(ij.Selection("rectangle",[(1,0),(3,2)]));view=owner.snapshot().display;view.t=view.c=1;view.crosshair=[1,1,1];view.orthogonal=xyz;view.properties={"display_range":[12.,220.]};owner.set_display(view)
+    before=owner.snapshot();editor=Editor(preferences=tmp_path/"preferences.json");editor.update_settings(async_viewport=True,persist=False);editor._editor.add_virtual_document(owner)
+    editor.action("show_contrast");editor.action("contrast_rgb_stack",enabled=True);editor.action("contrast_range",minimum=10.,maximum=40.);editor.action("contrast_rgb_channels",channels=4);editor.action("contrast_range",minimum=10.9,maximum=40.1);editor.action("wait_jobs");editor.action("show_channel_display")
+    expected=pixels.copy();expected[:,:,:,:2,1:3,0]=85;expected[1,1,1,:2,1:3]=[255,170,255]
+    end=time.monotonic()+10
+    while True:
+        report=editor.render_headless(frames=8);planes=report["orthogonal_planes"] if xyz else [report["ordinary_pixels"]]
+        if len(planes)==(3 if xyz else 1) and all(p["readback"]["available"] for p in planes):break
+        assert time.monotonic()<end
+    for i,plane in enumerate(planes):
+        wanted=expected[1,1,1] if i==0 else expected[1,1,:,1] if i==1 else expected[1,1,:,:,1]
+        for field in ["source","rendered_rgb"]:assert plane["readback"][field]["pixels"]==wanted.ravel().tolist()
+    assert owner.snapshot().shares_data(before);editor.action("contrast_apply");editor.action("wait_jobs");np.testing.assert_array_equal(owner.snapshot().dataset.numpy("TCZYXS"),expected)
+    owner.undo();assert owner.snapshot().shares_data(before);editor.action("close_contrast")
+
+
+@pytest.mark.parametrize("before_switch",[False,True])
+def test_rgb_entire_stack_mode_switch_preserves_current_plane_promotions(before_switch,tmp_path):
+    owner,editor,row=promoted_rgb_editor(tmp_path)
+    editor.action("contrast_range",minimum=10.9,maximum=40.1);editor.action("contrast_rgb_channels",channels=2);editor.action("contrast_range",minimum=-10.2,maximum=160.9)
+    if before_switch:editor.action("wait_jobs")
+    editor.action("contrast_rgb_stack",enabled=True);editor.action("wait_jobs");assert rgb_editor_hash(editor)==row["moved_sha256"]
+    report=editor.render_headless()["contrast_panel"];ready=report["rgb"]["job_id"];editor.action("contrast_rgb_stack",enabled=True)
+    assert editor.render_headless()["contrast_panel"]["rgb"]["job_id"]==ready
+    editor.action("contrast_rgb_stack",enabled=False);editor.action("wait_jobs");assert rgb_editor_hash(editor)==row["moved_sha256"] and owner.undo_steps==0
+    editor.action("close_contrast")
+
+
+def test_rgb_entire_stack_mode_rejects_noncurrent_promoted_targets_without_changing_intent(tmp_path):
+    pixels=np.tile(np.array([20,30,40],np.uint8),(1,1,2,2,4,1));owner=ij.Document(ij.Dataset(pixels,axes="TCZYXS"));view=owner.snapshot().display;view.crosshair=[0,0,1];owner.set_display(view)
+    editor=Editor(preferences=tmp_path/"preferences.json");editor._editor.add_virtual_document(owner);editor.action("show_contrast")
+    editor.action("configure_contrast_target",target={"scope":"positions","positions":[[0,0,0]],"roi":"whole_plane"});editor.action("contrast_range",minimum=10.,maximum=40.);editor.action("contrast_rgb_channels",channels=4);editor.action("wait_jobs")
+    before=editor.render_headless()["contrast_panel"]
+    with pytest.raises((ValueError,RuntimeError)):editor.action("contrast_rgb_stack",enabled=True)
+    after=editor.render_headless()["contrast_panel"];assert not after["rgb"]["entire_stack"]
+    for field in ["job_id","promoted_stages","channels"]:assert after["rgb"][field]==before["rgb"][field]
+    assert after["range"]==before["range"] and owner.undo_steps==0;editor.action("close_contrast")
+
+
+@pytest.mark.parametrize("bad",[1,0,"true",None])
+def test_rgb_entire_stack_mode_requires_boolean(bad,tmp_path):
+    owner,editor,_=promoted_rgb_editor(tmp_path)
+    with pytest.raises((ValueError,RuntimeError)):editor.action("contrast_rgb_stack",enabled=bad)
+    assert not editor.render_headless()["contrast_panel"]["rgb"]["entire_stack"] and owner.undo_steps==0;editor.action("close_contrast")
+
+
+@pytest.mark.parametrize("failure",["cancel_refresh","close","selection","range","mode"])
+def test_rgb_entire_stack_pending_intent_cannot_publish_old_pixels(failure,tmp_path):
+    owner,editor,_=promoted_rgb_editor(tmp_path);before=owner.snapshot();editor.action("contrast_rgb_stack",enabled=True);editor.action("contrast_range",minimum=10.9,maximum=40.1);editor.action("contrast_rgb_channels",channels=2)
+    if failure=="cancel_refresh":editor.cancel();editor.action("wait_jobs");editor.action("refresh_rgb_contrast_preview")
+    elif failure=="close":editor.action("close_contrast")
+    elif failure=="selection":owner.select(ij.Selection("rectangle",[(1,0),(4,2)]))
+    elif failure=="range":editor.action("contrast_range",minimum=20.,maximum=80.)
+    else:editor.action("contrast_rgb_stack",enabled=False)
+    editor.action("wait_jobs");report=editor.render_headless()["contrast_panel"]
+    assert owner.undo_steps==0 and not editor.workflow
+    if failure!="selection":assert owner.snapshot().shares_data(before)
+    else:assert owner.snapshot().dataset.shares_pixels(before.dataset)
+    if failure=="close":assert not report["open"] and not report["rgb"]["entire_stack"]
+    elif failure=="mode":assert not report["rgb"]["entire_stack"]
+    else:assert report["rgb"]["entire_stack"] and report["rgb"]["ready"]
+    editor.action("close_contrast")
+
+
+def test_rgb_entire_stack_capture_replays_with_explicit_current_source_rebind(tmp_path):
+    owner,editor,row=promoted_rgb_editor(tmp_path);before=owner.snapshot();editor.action("contrast_rgb_stack",enabled=True);editor.action("contrast_range",minimum=10.9,maximum=40.1);editor.action("wait_jobs");editor.recording=True;editor.action("contrast_apply");editor.action("wait_jobs")
+    record=editor.workflow[0];expected=owner.snapshot().dataset.numpy("YXS").copy();owner.undo();editor.action("close_contrast")
+    with pytest.raises(ij.RevisionConflict):editor.action("replay_contrast_apply",record=record)
+    with pytest.raises((ValueError,RuntimeError)):editor.action("replay_contrast_apply",record=record,contrast_rebind={"scope":"all_z"})
+    assert owner.snapshot().shares_data(before) and owner.undo_steps==0
+    editor.action("replay_contrast_apply",record=record,contrast_rebind={});editor.action("wait_jobs");np.testing.assert_array_equal(owner.snapshot().dataset.numpy("YXS"),expected)
+    assert owner.undo_steps==1 and len(editor.workflow)==2
+
+
+def test_rgb_entire_stack_cumulative_budget_refusal_keeps_ready_uniform_preview(tmp_path):
+    pixels=np.tile(np.array([20,30,40],np.uint8),(2,3,64,8,256,1));owner=ij.Document(ij.Dataset(pixels,axes="TCZYXS"));editor=Editor(preferences=tmp_path/"preferences.json");editor.update_settings(processing_memory_mb=8,persist=False);editor._editor.add_virtual_document(owner)
+    editor.action("show_contrast");editor.action("contrast_range",minimum=10.9,maximum=40.1);editor.action("wait_jobs");before=editor.render_headless()["contrast_panel"]
+    assert before["rgb"]["ready"]
+    with pytest.raises((ValueError,RuntimeError)):editor.action("contrast_rgb_stack",enabled=True)
+    after=editor.render_headless()["contrast_panel"];assert not after["rgb"]["entire_stack"] and after["rgb"]["job_id"]==before["rgb"]["job_id"] and after["range"]==before["range"] and owner.undo_steps==0
+    editor.action("close_contrast")
+
+
+def test_rgb_entire_stack_rejects_unused_uniform_target_configuration(tmp_path):
+    owner,editor,_=promoted_rgb_editor(tmp_path);editor.action("contrast_rgb_stack",enabled=True);editor.action("wait_jobs");before=editor.render_headless()["contrast_panel"]
+    with pytest.raises((ValueError,RuntimeError)):editor.action("configure_contrast_target",target={"scope":"all_z","roi":"whole_plane"})
+    after=editor.render_headless()["contrast_panel"];assert after["rgb"]["job_id"]==before["rgb"]["job_id"] and after["rgb"]["entire_stack"] and owner.undo_steps==0;editor.action("close_contrast")
+
+
+
+def test_rgb_entire_stack_compact_promotions_admit_64_stages_and_refuse_65_without_replacing_preview(tmp_path):
+    owner,editor,_=promoted_rgb_editor(tmp_path);before=owner.snapshot();editor.action("contrast_rgb_stack",enabled=True);channels=4
+    for _ in range(63):
+        editor.action("contrast_range",minimum=10.9,maximum=40.1);channels=2 if channels==4 else 4;editor.action("contrast_rgb_channels",channels=channels)
+    editor.action("contrast_range",minimum=20.,maximum=200.);editor.action("wait_jobs");report=editor.render_headless()["contrast_panel"]
+    assert report["rgb"]["promoted_stages"]==63 and report["rgb"]["ready"] and owner.snapshot().shares_data(before)
+    with pytest.raises((ValueError,RuntimeError)):editor.action("contrast_rgb_channels",channels=2 if channels==4 else 4)
+    after=editor.render_headless()["contrast_panel"]
+    assert after["rgb"]["job_id"]==report["rgb"]["job_id"] and after["rgb"]["promoted_stages"]==63 and after["range"]==report["range"]
+    editor.recording=True;editor.action("contrast_apply");editor.action("wait_jobs");assert len(editor.workflow[0]["stages"])==64 and owner.undo_steps==1
+    owner.undo();assert owner.snapshot().shares_data(before);editor.action("close_contrast")
+
+
+@pytest.mark.parametrize("change",["zoom","title","display_range"])
+def test_rgb_entire_stack_compact_promotions_survive_compatible_source_changes(change,tmp_path):
+    owner,editor,row=promoted_rgb_editor(tmp_path);editor.action("contrast_rgb_stack",enabled=True);editor.action("contrast_range",minimum=10.9,maximum=40.1);editor.action("contrast_rgb_channels",channels=2);editor.action("contrast_range",minimum=-10.2,maximum=160.9);editor.action("wait_jobs")
+    if change=="title":
+        edit=owner.begin_edit();edit.set_title("stack title");owner.commit(edit)
+    else:
+        view=owner.snapshot().display
+        if change=="zoom":view.zoom=2
+        else:view.properties={"display_range":[20.,80.]}
+        owner.set_display(view)
+    stable=owner.snapshot();history=owner.undo_steps;editor.action("wait_jobs");report=editor.render_headless()["contrast_panel"]
+    assert report["rgb"]["entire_stack"] and report["rgb"]["promoted_stages"]==1 and report["range"]==[-10.2,160.9] and rgb_editor_hash(editor)==row["moved_sha256"]
+    editor.action("contrast_apply");editor.action("wait_jobs");assert owner.undo_steps==history+1;owner.undo();assert owner.snapshot().shares_data(stable);editor.action("close_contrast")
+
+
+
+@pytest.mark.parametrize("stack",[False,True])
+def test_rgb_entire_stack_mode_refuses_nonarea_prefix_reinterpretation(stack,tmp_path):
+    owner,editor,_=promoted_rgb_editor(tmp_path);owner.select(ij.Selection("line",[(0,0),(3,1)]));editor.action("wait_jobs")
+    if stack:editor.action("contrast_rgb_stack",enabled=True)
+    editor.action("contrast_range",minimum=10.9,maximum=40.1);editor.action("contrast_rgb_channels",channels=2);editor.action("wait_jobs");before=editor.render_headless()["contrast_panel"]
+    assert before["rgb"]["promoted_stages"]==1
+    with pytest.raises((ValueError,RuntimeError)):editor.action("contrast_rgb_stack",enabled=not stack)
+    after=editor.render_headless()["contrast_panel"]
+    assert after["rgb"]["entire_stack"]==stack and after["rgb"]["job_id"]==before["rgb"]["job_id"] and after["range"]==before["range"] and owner.undo_steps==0
+    editor.action("close_contrast")

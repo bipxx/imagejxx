@@ -414,6 +414,23 @@ void ui(const std::filesystem::path &root){
 }
 } // namespace
 namespace {
+void rgbStackUi(const std::filesystem::path &root){
+  Image image(4,2,3,PixelType::UInt8);for(int i=0;i<8;++i){image.pixels[3*i]=20;image.pixels[3*i+1]=30;image.pixels[3*i+2]=40;}
+  DatasetShape shape{2,2,2,2,4,3};auto owner=std::make_shared<Document>(Dataset::from_planes(shape,Stack(8,image)));Window w((root/"rgb-stack-ui.json").u8string());w.addVirtualDocument(owner);
+  auto view=owner->snapshot().display();view.t=view.c=1;view.crosshair={1,1,1};view.properties["display_range"]=metadata_array({12.,220.});w.setNativeDisplay(view);const auto before=owner->snapshot();
+  w.action("show_contrast");w.action("contrast_range",{{"minimum",10.},{"maximum",40.}});w.action("wait_jobs");HeadlessInputSession session(w);auto report=session.frame();report=session.frame();
+  const auto click=[&](const char *name){auto hit=report.at("contrast_panel").at("controls").at(name);check(hit.at("visible") && hit.at("enabled"),"RGB stack widget visible and enabled");session.frame(Json::array({{{"type","position"},{"space","screen"},{"point",hit.at("point")}}}));for(bool down:{true,false})report=session.frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));};
+  click("rgb_stack");w.action("wait_jobs");report=session.frame();check(report.at("contrast_panel").at("rgb").at("entire_stack") && report.at("contrast_panel").at("range")==Json::array({10.,40.}),"Actual stack checkbox preserves pending range");
+  click("rgb_components_4");w.action("contrast_range",{{"minimum",10.9},{"maximum",40.1}});w.action("wait_jobs");report=session.frame();check(owner->snapshot().shares_data(before),"Stack preview remains private");w.recording=true;click("apply");w.action("wait_jobs");
+  check(owner->undo_steps()==1 && w.workflow.size()==1 && w.workflow[0].at("schema")=="imagejxx.rgb-contrast-stack-command" && w.workflow[0].at("stages").size()==2,"Actual stack Apply records one complete paired edit");
+  for(int t=0;t<2;++t)for(int c=0;c<2;++c)for(int z=0;z<2;++z){const auto plane=owner->snapshot().data().dataset.plane({t,c,z});const bool active=t==1 && c==1 && z==1;check(plane->pixels[0]==(active?255:85) && plane->pixels[1]==(active?170:30) && plane->pixels[2]==(active?255:40),"Actual stack Apply preserves active promotions and narrows other planes");}
+  owner->undo();check(owner->snapshot().shares_data(before) && owner->snapshot().display().properties==before.display().properties,"Stack widget Undo restores pixels/display");owner->redo();check(owner->snapshot().data().dataset.plane({1,1,1})->pixels[0]==255,"Stack widget Redo restores pixels");w.action("close_contrast");
+}
+void rgbStackCancel(const std::filesystem::path &root){
+  auto source=std::make_shared<RgbSource>();OpenOnExit release{source};Window w((root/"rgb-stack-cancel.json").u8string());auto owner=std::make_shared<Document>(Dataset(source));w.addVirtualDocument(owner);const auto before=owner->snapshot();
+  w.action("show_contrast");until([&]{return source->entered>0;});w.action("contrast_rgb_stack",{{"enabled",true}});const auto previous=source->entered.load();w.poll();until([&]{return source->entered>previous;});std::thread cancel([&]{w.cancel();});cancel.join();const auto scheduler=imagejxx::desktop::HistogramAsyncUiProbeAccess::scheduler(w);
+  until([&]{w.poll();return scheduler->usage().reserved_bytes==0;});check(source->mainReads==0 && before.shares_data(owner->snapshot()) && owner->undo_steps()==0,"Stack canceled readers stay on workers and never publish");source->open();w.action("refresh_rgb_contrast_preview");w.action("wait_jobs");auto report=w.renderHeadless();check(report.at("contrast_panel").at("rgb").at("entire_stack") && report.at("contrast_panel").at("rgb").at("ready"),"Stack refresh retries canceled intent");w.closeDocument(w.document()->id,true);until([&]{w.poll();return scheduler->usage().reserved_bytes==0;});
+}
 void rgbAutoUi(const std::filesystem::path &root){
   Image image(200,2,3,PixelType::UInt8);for(int y=0;y<2;++y)for(int x=0;x<200;++x)for(int c=0;c<3;++c)image.pixels[(y*200+x)*3+c]=10+x;
   auto owner=std::make_shared<Document>(Dataset::from_stack({image}));Selection area("rectangle",{{100,0},{200,2}});owner->select(area);
@@ -435,6 +452,6 @@ void rgbAutoUi(const std::filesystem::path &root){
 int main(int argc,char **argv){try{
   check(argc==2,"Owned fixture path required");const auto root=std::filesystem::absolute(std::filesystem::u8path(argv[1]));
   check(!std::filesystem::exists(root),"Fresh fixture required");std::filesystem::create_directories(root);
-  math();seeded();captured(root);canceled(root);applyHost(root);applyAbandoned(root);rebindUi(root);rebindStale(root);workflowUi(root);rgbWorkflowUi(root);ui(root);rgbUi(root);rgbCancel(root);rgbPositionsUi(root);rgbAutoUi(root);
+  math();seeded();captured(root);canceled(root);applyHost(root);applyAbandoned(root);rebindUi(root);rebindStale(root);workflowUi(root);rgbWorkflowUi(root);ui(root);rgbUi(root);rgbCancel(root);rgbPositionsUi(root);rgbAutoUi(root);rgbStackUi(root);rgbStackCancel(root);
   std::cout<<"PASS native modeless contrast math, captured histogram, active channel, Auto, cancellation and actual widgets\n";return 0;
 }catch(const std::exception &e){std::cerr<<e.what()<<'\n';return 1;}}

@@ -657,3 +657,67 @@ and the main brightness/contrast panel's stack controls remain separate work.
 The actual-widget fixture covers anchor editing, program retention/reopen,
 preview, Apply, paired Undo/Redo and preserved navigation in both launch modes.
 This scoped integration does not complete G057 or full ImageJ/Fiji parity.
+
+
+### Main brightness/contrast stack mode
+
+The shared native ImGui panel exposes **ImageJ entire stack** for finite UInt8
+RGB sources. C++ UI and optional Python UI share this controller; Python can
+use `editor.action("contrast_rgb_stack", enabled=True)` with an exact Boolean.
+The initial selected-plane mode preserves the existing uniform target behavior.
+Stack mode uses every T/C/Z plane, the current active processor and the source
+selection. Its target controls are replaced by the stack explanation; unused
+`configure_contrast_target` requests are refused while stack mode is active.
+
+Compatible current-plane component promotions and current endpoints survive
+mode changes, including pending drafts. Switching modes cannot reinterpret
+noncurrent or positioned target captures, or promoted non-area masks with
+different native/ImageJ semantics. Those cases fail before canceling the
+previous preview or changing mode/range/history; close and reopen the panel to
+start a new adjustment. Re-selecting the current mode is a no-op. Closing the
+panel resets the mode. Compatible title/camera/display changes retain compact
+promotions; the existing policy clears them on incompatible pixel/selection/
+position changes. Exact ImageJ snapshot transitions through those changes still
+require qualification.
+
+Stack promotions retain typed ranges/components/whole-plane policies, with one
+immutable source capture for the prepared complete command. They do not keep
+one complete legacy record per component. Before expanding back to uniform
+captures, shared worst-case current-selection probes admit the complete legacy
+sequence. The complete stack remains bounded to 64 stages; a 65th promotion
+fails without retiring the previous READY preview. Range edits replace the
+current draft and do not append another stage.
+
+Stack preview runs in the native resource-leased job service and displays its
+complete paired result through one compact whole-TCZ target. XY and linked
+XY/XZ/YZ views show promoted active pixels and processor-narrowed other planes
+without remapping display range. Apply takes the exact READY job, captures
+recording policy and publishes one guarded paired transaction. Its record is
+the complete independent stack command, including every promoted mapping and
+the last whole-active-plane policy. Empty membership remains the native no-read/
+no-history extension; recording can still retain the complete requested intent.
+
+Auto measures the promoted baseline using the existing ImageJ histogram and
+conversion-weight rules, then creates a whole-active-plane current mapping.
+The baseline is a private admitted stack job; composition can acquire other
+stack planes even though the subsequent Auto histogram samples its active
+plane. Neither baseline nor preview is published before Apply. Cancellation,
+close, newer intent and incompatible source revisions retire stale work. Owned
+command/result/job work and caller resource minima are admitted; source/provider
+caches, frontend copies, publication/history staging and total RSS remain
+external. Active-only Auto baseline composition is a remaining optimization.
+
+`replay_contrast_apply` accepts complete stack captures. Strict replay checks
+the saved owner/revisions; an explicit empty `contrast_rebind={}` adopts the
+destination's current processor and selection. Unused uniform target overrides
+are refused. Run workflow provides the qualified explicit-anchor review path
+for stack captures; the older uniform-target rebind dialog does not reinterpret
+them. Saved workflow stage-choice editing remains open.
+
+Qualification covers 2,646 actual ImageJ manual entire-stack cases through panel
+preview/READY Apply/record/portable replay/Undo/Redo; nine actual promoted Auto
+reference cases; eager/virtual XY/XYZ views; pending/compatible changes; strict
+mode controls, resource admission and 64/65-stage behavior. Native fixtures
+click actual stack/component/Apply widgets and cancel a blocked stack reader
+before refreshing or closing. This scope does not complete G057 or full
+ImageJ/Fiji acceptance.
