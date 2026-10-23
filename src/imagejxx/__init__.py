@@ -358,6 +358,8 @@ from ._native import (
     imagej_spline_selection as imagej_spline_selection,
     imagej_arrow_mask as imagej_arrow_mask,
     imagej_shape_mask as imagej_shape_mask,
+    ImageJCompositePath as ImageJCompositePath,
+    transform_imagej_composite_roi as transform_imagej_composite_roi,
     imagej_rounded_rectangle_mask as imagej_rounded_rectangle_mask,
     rounded_rectangle_path as rounded_rectangle_path,
     ImageJRoiLimits as ImageJRoiLimits,

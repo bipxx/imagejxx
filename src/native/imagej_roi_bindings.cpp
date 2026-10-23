@@ -1,5 +1,7 @@
 #include <imagejxx/imagej_roi_projection.hpp>
+#include <imagejxx/composite_path.hpp>
 #include "binding_arrays.hpp"
+#include <algorithm>
 #include <climits>
 #include <limits>
 #include <imagejxx/imagej_roi.hpp>
@@ -9,6 +11,31 @@
 namespace py = pybind11;
 using namespace imagejxx;
 namespace {
+std::vector<double> path_numbers(py::handle value, std::size_t maximum) {
+  if (PyUnicode_Check(value.ptr()) || PyBytes_Check(value.ptr()) ||
+      !PySequence_Check(value.ptr()))
+    throw py::type_error("Composite geometry requires a numeric sequence");
+  const auto sequence = py::reinterpret_borrow<py::sequence>(value);
+  if (std::size_t(py::len(sequence)) > maximum)
+    throw py::value_error("Composite geometry sequence limit");
+  std::vector<double> result;
+  result.reserve(py::len(sequence));
+  for (auto item : sequence) {
+    if (PyBool_Check(item.ptr()) ||
+        (!PyFloat_Check(item.ptr()) && !PyLong_Check(item.ptr())))
+      throw py::type_error("Composite geometry requires numbers excluding bool");
+    result.push_back(py::cast<double>(item));
+  }
+  return result;
+}
+std::array<double, 6> path_matrix(py::handle value) {
+  const auto numbers = path_numbers(value, 6);
+  if (numbers.size() != 6)
+    throw py::value_error("Composite transform requires six numbers");
+  std::array<double, 6> result;
+  std::copy(numbers.begin(), numbers.end(), result.begin());
+  return result;
+}
 std::size_t size(py::handle value) {
   if (PyBool_Check(value.ptr()) || !PyLong_Check(value.ptr()))
     throw py::type_error("ImageJ ROI limits require integers");
@@ -464,6 +491,25 @@ void bind_imagej_roi(py::module_ &m) {
       },
       py::arg("data"), py::arg("limits") = ImageJRoiLimits{},
       py::arg("mask_width") = 0, py::arg("mask_height") = 0);
+  py::class_<ImageJCompositePath>(m, "ImageJCompositePath")
+      .def(py::init([](py::handle commands, ImageJRoiLimits limits) {
+        return ImageJCompositePath(path_numbers(commands, limits.max_bytes / sizeof(double)), limits);
+      }), py::arg("commands"), py::arg("limits") = ImageJRoiLimits{})
+      .def_property_readonly("commands", [](const ImageJCompositePath &p) { return p.commands(); })
+      .def_property_readonly("segment_count", &ImageJCompositePath::segment_count)
+      .def_property_readonly("bounds", &ImageJCompositePath::bounds)
+      .def("transformed", [](const ImageJCompositePath &p, py::handle matrix, ImageJRoiLimits limits) {
+        return p.transformed(path_matrix(matrix), limits);
+      }, py::arg("matrix"), py::arg("limits") = ImageJRoiLimits{})
+      .def("mask", &ImageJCompositePath::mask, py::arg("width"), py::arg("height"),
+           py::arg("limits") = ImageJRoiLimits{}, py::call_guard<py::gil_scoped_release>());
+  m.def("transform_imagej_composite_roi", [](ImageJRoi source, py::handle matrix,
+      int width, int height, ImageJRoiLimits limits) {
+    const auto transform = path_matrix(matrix);
+    py::gil_scoped_release release;
+    return transform_imagej_composite_roi(source, transform, width, height, limits);
+  }, py::arg("source"), py::arg("matrix"), py::arg("width"), py::arg("height"),
+     py::arg("limits") = ImageJRoiLimits{});
   m.def("imagej_shape_mask", &imagej_shape_mask, py::arg("path"),
         py::arg("width"), py::arg("height"),
         py::arg("limits") = ImageJRoiLimits{},

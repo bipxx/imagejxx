@@ -1,5 +1,19 @@
 # ImageJ and Fiji gap closure plan
 
+**Continuous composite path foundation, 2026-10-23 (scoped native/Python work):**
+`ImageJCompositePath` retains M/L/Q/C/Z contours with analytic curve bounds and
+bounded affine transforms. A checked interchange-record operation rebuilds the
+processing mask while retaining curves, holes, islands, off-canvas contours and
+metadata. Windows/Linux each pass 1,608 focused installed Python checks, two
+native groups and a 16-check installed C++ client. No new dependency is added.
+This does not introduce a native document path selection or desktop path tools.
+Next, integrate the immutable path into explicitly versioned selection/session
+and command codecs, then saved-row editing, handles and both UI launch modes;
+continuous Boolean algebra follows with independent reference coverage.
+Original requirement statuses and historical verification records remain
+unchanged. See [the contract](parity/COMPOSITE_PATH.md) and
+[the scoped receipt](parity/reviews/p12v-composite-path001.json).
+
 **Affine display annotations and Z alignment, 2026-10-23 (scoped integration):**
 V2 display sets/commands retain complete payload-to-plane transforms. Z
 subsets compose XZ/YZ mappings and remap XY positions without rewriting

@@ -45,6 +45,7 @@ target_sources(imagejxx_core PRIVATE
   src/native/planar_display_annotations.cpp src/native/planar_display_annotation_command.cpp
   src/native/imagej_roi.cpp
   src/native/imagej_shape.cpp
+  src/native/composite_path.cpp
   src/native/imagej_arrow.cpp
   src/native/imagej_spline.cpp
   src/native/imagej_image.cpp
@@ -904,6 +905,10 @@ if(BUILD_TESTING)
   add_executable(imagejxx_imagej_roi_tests tests/native/test_imagej_roi.cpp)
   target_link_libraries(imagejxx_imagej_roi_tests PRIVATE imagejxx::core)
   add_test(NAME native_imagej_roi COMMAND imagejxx_imagej_roi_tests)
+  add_executable(imagejxx_composite_path_tests tests/native/test_composite_path.cpp)
+  target_link_libraries(imagejxx_composite_path_tests PRIVATE imagejxx::core)
+  add_test(NAME native_composite_path COMMAND imagejxx_composite_path_tests)
+  set_tests_properties(native_composite_path PROPERTIES TIMEOUT 30)
   add_executable(imagejxx_planar_annotation_command_tests tests/native/test_planar_annotation_command.cpp)
   target_link_libraries(imagejxx_planar_annotation_command_tests PRIVATE imagejxx::core)
   add_test(NAME native_planar_annotation_command COMMAND imagejxx_planar_annotation_command_tests)

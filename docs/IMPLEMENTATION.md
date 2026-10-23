@@ -1,5 +1,17 @@
 # Implementation progress
 
+**Continuous composite path foundation, 2026-10-23 (scoped native/Python work):**
+Immutable M/L/Q/C/Z geometry now exposes exact curve extrema, affine transforms
+and explicit raster consumption through C++ and Python. Checked composite ROI
+transforms preserve original contours and metadata while rebuilding the mask
+on a requested canvas. Both Windows and Linux pass 1,608 focused installed
+Python checks, two native groups and a 16-check installed SDK consumer. No
+dependency is added. Document path selections, versioned sessions/commands,
+desktop path editing and continuous Boolean operations remain open. This is a
+foundation packet, not family completion or full editor qualification. See
+[the contract](parity/COMPOSITE_PATH.md) and
+[the scoped receipt](parity/reviews/p12v-composite-path001.json).
+
 **Complete regional Boolean core and manager, 2026-10-23 (scoped integration):**
 New full-region area algebra retains cells outside the image boundary. Union/XOR
 use a complete envelope; subtraction/intersection avoid distant empty spans.
