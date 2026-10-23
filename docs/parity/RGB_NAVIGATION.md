@@ -35,8 +35,10 @@ are checked against the destination. Current destination selections are not
 substituted. Metadata-only membership preflight, empty no-IO/no-history behavior,
 paired all-revision publication and existing container versions are retained.
 The review inspects saved visits/mappings and authors the final anchor; saved
-mapping editing and independent per-visit relocation remain open. Qualification
-is running. Main brightness/contrast transitions are the next integration gate.
+mapping editing and independent per-visit relocation remain open. Windows/Linux each qualify
+22 native suites and 51,397 unique installed Python checks (6,078 new). The
+corrected UI/Batch tail completes the initial full prefix; its report-path setup
+error remains recorded. See `reviews/p11v-rgb-session-workflow001.json`. Main brightness/contrast transitions are the next integration gate.
 
 ## Observed behavior
 
