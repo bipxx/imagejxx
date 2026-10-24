@@ -1,0 +1,299 @@
+{
+  "schema": "p13i.display-lifecycle-progress.001",
+  "state": "TopHattransientdisplay and13lifecycle recipes scoped-qualified;P13i incomplete",
+  "slice_qualified": true,
+  "packet_scope_qualified": false,
+  "base_commit": "4a80b3570c59e547f2571c7fc2b95d85a5b66d0e",
+  "compiled_source_manifests": {
+    "windows": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\display-lifecycle-windows002\\source-manifest.json",
+      "bytes": 948591,
+      "sha256": "006eb5c3d0bdf9324d3db938f676af04396f7335170346ea74e142d1d8f57f82",
+      "availability": "available at review"
+    },
+    "linux": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\display-lifecycle-linux002\\source-manifest.json",
+      "bytes": 941568,
+      "sha256": "76cc172fa82d1eb102b1db9f74d1635615edba6d56a404ad16dbe7d80111686c",
+      "availability": "available at review"
+    },
+    "same_entries": true,
+    "files": 7021
+  },
+  "preserved_consumed_source_versions": [
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\display-lifecycle-source-versions001\\src\\desktop\\path_filter_ui_probe.cpp",
+      "bytes": 79526,
+      "sha256": "54318c0e483a923be0a1e3b6bbfd26675a5a185ac26311fda36ce284bbb33313",
+      "availability": "available at review"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\display-lifecycle-source-versions001\\CMakeLists.txt",
+      "bytes": 124319,
+      "sha256": "b14fdadc86fe37a724293a2acaece10a0877cfda27ee6ebf5d495f68417a9ba6",
+      "availability": "available at review"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\display-lifecycle-source-versions001\\scripts\\ci_observations.py",
+      "bytes": 45120,
+      "sha256": "afac36b0470f4b9ba2c5f3df321f3523d8a5089f72fad14e8b0bb9eb07ee80dd",
+      "availability": "available at review"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\display-lifecycle-source-versions001\\tests\\python\\test_path_filter_capture_profile.py",
+      "bytes": 3078,
+      "sha256": "13a012c2ca15f5fb2fe2a9c7f0be1b78599ed595339ccfb6b9aa45979ecbaa64",
+      "availability": "available at review"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\display-lifecycle-source-versions001\\tests\\python\\test_path_filter_lifecycle_ui.py",
+      "bytes": 12327,
+      "sha256": "c94131f42f222a01a895961b5babcd4d5fd9df59541a386e9d4110bfed0c8925",
+      "availability": "available at review"
+    }
+  ],
+  "current_test_addendum": {
+    "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\tests\\python\\test_path_filter_lifecycle_ui.py",
+    "bytes": 12651,
+    "sha256": "b4b2f6fffdb958cf3f22d8a7ed31e8cfd8ec3bea0ddb93000f18a37e17a570a5",
+    "availability": "available at review"
+  },
+  "test_addendum_linux_copy_receipt": {
+    "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\lifecycle-corrected-reader-linux002.json",
+    "bytes": 465,
+    "sha256": "db0942d0c9c2f8dbc949798562abc16d163ed64879be323b24a24369b4829d34",
+    "availability": "available at review"
+  },
+  "platforms": {
+    "windows": {
+      "build_receipt": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\display-lifecycle-windows002\\receipt.json",
+        "bytes": 3549,
+        "sha256": "5312162c2d3adb1eb64e37fd338dbe2054acbff3241477442af031f2505a3195",
+        "availability": "available at review"
+      },
+      "native": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "report": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\display-lifecycle-windows002\\native.xml",
+          "bytes": 3337,
+          "sha256": "b24a5fe9b972676c9df8529e8146b305f28884f9145e41a22426a9c23e1cc4d9",
+          "availability": "available at review"
+        }
+      },
+      "actual46recipes_two_launches": {
+        "tests": 92,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "archive": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\display-lifecycle-ui-windows003.tar.gz",
+          "bytes": 18347425,
+          "sha256": "1e333795c49c02402e6d00038074fe9b80f4a7a7481f3068f7693ed177f9ef12",
+          "availability": "available at review"
+        },
+        "member": "ui.xml",
+        "member_sha256": "97e52355fd12224f05c65f737e578b986446b14b42c1b2a191564ed55311bed4",
+        "bytes": 17655
+      },
+      "cpp_reports": {
+        "archive": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\display-lifecycle-ui-windows002.tar.gz",
+          "bytes": 36682956,
+          "sha256": "f2592d619fb24ec1e8782e35d03e2b981e615fd07e40f47baf1c43db56ecd6db",
+          "availability": "available at review"
+        },
+        "members": "cpp-CASE/capture/case.json",
+        "scope": "46actual producers succeeded; only reader globalworkflow expectation corrected afterward"
+      }
+    },
+    "linux": {
+      "build_receipt": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\display-lifecycle-linux002\\receipt.json",
+        "bytes": 2740,
+        "sha256": "8044e9bd828bb9f21f2d12e587824001effc6bf717c60bb39c2c8f9c30bcffbb",
+        "availability": "available at review"
+      },
+      "native": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "report": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\display-lifecycle-linux002\\native.xml",
+          "bytes": 3255,
+          "sha256": "a183e302c738ef549d91d5fea849c6dbdfae0bffd600bce27f6ada2bb910a096",
+          "availability": "available at review"
+        }
+      },
+      "actual46recipes_two_launches": {
+        "tests": 92,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "archive": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\display-lifecycle-ui-linux002-native.tar.gz",
+          "bytes": 36675256,
+          "sha256": "5b7fb17535e304c97767e5b1f99be1e429c115269acfcf0a27d9abb5bd37c2d9",
+          "availability": "available at review"
+        },
+        "member": "ui.xml",
+        "member_sha256": "8d14848513656ca80fc31a1fa3032a05072475b2559289bb5d33b0671dcee397",
+        "bytes": 17655
+      }
+    }
+  },
+  "products": [
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+      "bytes": 17708032,
+      "sha256": "f8b3e0eba197f23c991107bff3d9c3d25597eacda2e03d6b8ca3f598c74216de",
+      "availability": "available at review"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+      "bytes": 17579008,
+      "sha256": "087b07f39b09cfd556211727b7eee4a29d079da725f27a407b5953fdf9072ea3",
+      "availability": "available at review"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\linux\\app-installed\\bin\\imagejxx",
+      "bytes": 35975504,
+      "sha256": "40c2d8a0794ea92fdd381a331dc1859e49fc57d64250917abe597896f6191c4a",
+      "availability": "available at review"
+    },
+    {
+      "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\p13g-probe-env003\\lib\\python3.12\\site-packages\\imagejxx\\_desktop.cpython-312-x86_64-linux-gnu.so",
+      "bytes": 33757912,
+      "sha256": "2651ff2203893d14f025aeb4b78e4b2c6bc6200d3fc1c283f5a14637b50089a9",
+      "availability": "available at review"
+    }
+  ],
+  "phase_reference": {
+    "fixture": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\tests\\fixtures\\path-top-hat-display-imagej154r.json.gz",
+      "bytes": 6555,
+      "sha256": "2c675c1fb848a51e4810ebca4971579bb4609a40f93733bea2f147a92b5dae25",
+      "availability": "available at review"
+    },
+    "observations": 16,
+    "total_reference_observations": 521,
+    "prepared_reference": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\prepare011\\receipt.json",
+      "bytes": 441615,
+      "sha256": "c1bde9558df5f8230a9884f4ca6eb74cfbaebf60ea7ac528da3305275f836f4a",
+      "availability": "available at review"
+    },
+    "prior474class_equivalence": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\prepare011\\existing-class-equivalence.json",
+      "bytes": 100,
+      "sha256": "7b7f0d60456a420eb1b50d8f299fbae1dcf023d5269e3c8819a25ad798586110",
+      "availability": "available at review"
+    },
+    "raw_capture_archive": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\top-hat-display-capture001.tar.gz",
+      "bytes": 23276,
+      "sha256": "8ed424463561d8df116ef4f5660e8beb85d60f671d6d0de3052410ba310f62e7",
+      "availability": "available at review"
+    },
+    "raw_preview_unselected_writes": 36,
+    "native_policy": "Requireoriginalunselectedwords; preserveJavaROI/mask sideeffects asreferenceobservationsonly"
+  },
+  "reference_and_transport_guards": {
+    "tests": 574,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "report": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\reference-tool-tests013.xml",
+      "bytes": 95867,
+      "sha256": "2319e71c9761d5e6044679864530177f4176f0590b8ae341c732c5fb3650dab4",
+      "availability": "available at review"
+    }
+  },
+  "verified_behavior": [
+    "ActualTopHatphase ranges and literalRGBatunchangedpixel0,all8optionsbothlaunches/platforms",
+    "Value-onlyproposal:fieldguardedliveoverrides,ownedthresholdreset,channels/linkedXYXZ YZ and realasync renderer outputs/cache/supersession",
+    "Lifecycle13:supersede/invalideditable/invalidexternal/activeownerreplacement/selection/pixel/calibration revisions;no stalepublication;weakleasesexpire",
+    "Externalmutations and workerbarriers explicitlylabeled; noactualUIcreditforfaultinjection"
+  ],
+  "failure_preservation": [
+    {
+      "archive": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\display-lifecycle-ui-windows001.tar.gz",
+        "bytes": 36687869,
+        "sha256": "b909e24ae38e568beb68564acdef6a9335356b73c254a2edc4bafe3e1eaa51e5",
+        "availability": "available at review"
+      },
+      "diagnosis": "Cstageassertionboundtofirstanystageinsteadheldsourcecopy;ownercheckpointprecededactualreadback",
+      "failed_reader": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\display-lifecycle-ui-windows001-lifecycle-reader-source.py",
+        "bytes": 12298,
+        "sha256": "149fa814796f7bfdb58e08732ad69e802a10ec5eea4e5886dcd207f14a9d329b",
+        "availability": "available at review"
+      }
+    },
+    {
+      "archive": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\display-lifecycle-ui-windows002.tar.gz",
+        "bytes": 36682956,
+        "sha256": "f2592d619fb24ec1e8782e35d03e2b981e615fd07e40f47baf1c43db56ecd6db",
+        "availability": "available at review"
+      },
+      "diagnosis": "Cworkflowexpectationcorrected:FileOpenrestores savedsessionglobalworkflow;ownerhistory remainsunchanged",
+      "failed_reader": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\display-lifecycle-ui-windows002-lifecycle-reader-source.py",
+        "bytes": 12327,
+        "sha256": "c94131f42f222a01a895961b5babcd4d5fd9df59541a386e9d4110bfed0c8925",
+        "availability": "available at review"
+      }
+    },
+    {
+      "top_hat_regression_receipt": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\top-hat-display-ui-failure001\\receipt.json",
+        "bytes": 540,
+        "sha256": "5e24793d8b25189de81400519e2d2d1a6a71559c28aebe754ae3dc9bb8089419",
+        "availability": "available at review"
+      },
+      "diagnosis": "FournewpinnedTopHatrangeassertionsreproducedlive-range rendereromission beforefix"
+    }
+  ],
+  "prior_product_availability_changes": [
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+      "prior_sha256": "8a36018d7947a8ab0da6e33fa98cbe32d281f19c36b2b65dde09aaffb14c1233",
+      "prior_availability": "superseded installed bytes not retained",
+      "current_sha256": "f8b3e0eba197f23c991107bff3d9c3d25597eacda2e03d6b8ca3f598c74216de"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+      "prior_sha256": "db210da3e77aca425319276d234fb456fb87ea670568f6a7edcb10e8d5620c44",
+      "prior_availability": "superseded installed bytes not retained",
+      "current_sha256": "087b07f39b09cfd556211727b7eee4a29d079da725f27a407b5953fdf9072ea3"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\linux\\app-installed\\bin\\imagejxx",
+      "prior_sha256": "5e7d1b88ef4a12c38da58fdd35bf0f63b34005e8432fb02da63a3152e6cead1a",
+      "prior_availability": "superseded installed bytes not retained",
+      "current_sha256": "40c2d8a0794ea92fdd381a331dc1859e49fc57d64250917abe597896f6191c4a"
+    },
+    {
+      "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\p13g-probe-env003\\lib\\python3.12\\site-packages\\imagejxx\\_desktop.cpython-312-x86_64-linux-gnu.so",
+      "prior_sha256": "3972db508d167216d93997086c67c54265bde66dac97f518874b8e0211afdbd7",
+      "prior_availability": "superseded installed bytes not retained",
+      "current_sha256": "2651ff2203893d14f025aeb4b78e4b2c6bc6200d3fc1c283f5a14637b50089a9"
+    }
+  ],
+  "remaining": [
+    "E5eightemptytargetrecipes source-ready unverified",
+    "E6legacygeneric/pooled/mixedworkflow actual-input acceptance;capfixture unqualified",
+    "E7final common-source regression/dependencies/commercial/SDK/profile/cleanup/landing",
+    "Existinghistoricalexclusion,G016/Autoproof,macOS/OSGPU/accessibility andfullM0-M13 remainopen"
+  ],
+  "next": "E5 empty-target source and isolatedworkerread counters;E6 cap fixture verification",
+  "acceptance": false,
+  "complete_requirement_coverage": false
+}

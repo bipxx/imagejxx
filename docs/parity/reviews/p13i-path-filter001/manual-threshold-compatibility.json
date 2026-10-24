@@ -1,0 +1,42 @@
+{
+  "schema": "p13i.manual-threshold-compatibility.001",
+  "state": "explicit_current-contract_decision_before_replacement_checks",
+  "requirement": "P13i E6 every changed-mask consumer; supported captured AllZ threshold and exact native-path recording",
+  "new_record": {
+    "schema_version": 3,
+    "profile": "manual_raw_inclusive_v3",
+    "fields": [
+      "schema_version",
+      "operation",
+      "profile",
+      "lower",
+      "upper",
+      "target",
+      "selection"
+    ],
+    "writer_scope": "ActiveSelection with native path only",
+    "selection_codec": "Existing strict native path grammar, allow_regions=false/allow_paths=true; exact binary64 commands",
+    "unchanged": "Legacy V1/V2 grammar, defaults, strict replay/rebind APIs and their path refusals; V4 paths/V8 workflows/V5 sessions unchanged"
+  },
+  "ordinary_singleplane": "Active native paths take typed V3 record as well as scientific/pooled hosts",
+  "preserved_historical_test": {
+    "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\docs\\parity\\reviews\\p13i-path-filter001\\manual-threshold-pre-v3-test.cpp.txt",
+    "bytes": 3456,
+    "sha256": "41d35ebc0c310f1c61fcd6c52fa7be388bc6c678530b3b964457abd17d4dd030"
+  },
+  "baseline": {
+    "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\manual-threshold-legacy-baseline001\\receipt.json",
+    "bytes": 1021,
+    "sha256": "4c23f010f2faa32aae03fd616857a5ab8a66d3119fb8c316cafc9bf08f57bca5"
+  },
+  "baseline_failure_log": {
+    "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\manual-threshold-legacy-baseline001\\test.log",
+    "bytes": 18,
+    "sha256": "6f5069815f71f46437be0ba29c44324a3d05fcebcf7dffadcb7d16d0499fa699"
+  },
+  "current_test_correction": "Old current-unit AllZ refusal contradicts already-supported AllZ in header/implementation and scientific tests. Replace only that assertion with positive captured three-plane T/C/Z checks plus valid V2 record/replay checks. Every other original assertion remains. Preserve original source bytes and historical fingerprints; no new exclusion or repinned reference.",
+  "proof_boundary": "Baseline unmodified test fails against exact already-built pre-V3 core (dependency rebuild disabled and core SHA verified unchanged). This is distinct from the newly reproduced native-path recording failure. Both current compatibility checks must run after repair.",
+  "residual": "NativeWorkflowProgram/Run typed manual-threshold V1/V2/V3 family integration remains unsupported as before and explicitly open; direct replay/rebind is supported. No threshold-family closure claimed.",
+  "acceptance": false,
+  "complete_requirement_coverage": false
+}

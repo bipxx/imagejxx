@@ -1,4 +1,5 @@
 #pragma once
+#include <limits>
 #include <imagejxx/execution.hpp>
 #include <imagejxx/gaussian_command.hpp>
 #include <imagejxx/imagej_annotation_export.hpp>
@@ -98,6 +99,12 @@ struct NativeWorkflowLimits {
   // Includes complete output backing per processing step even when later freed.
   // Phase-local codec/kernel scratch and custom reader caches are separate.
   std::size_t max_retained_bytes = 512ULL * 1024 * 1024;
+  // Separate managed peak: cumulative retained accounting (including owned
+  // input captures) plus one reusable target-mask packed/raster scratch peak.
+  // Other kernel/codec scratch and custom reader caches are not included.
+  // Hosts supply their actual remaining allowance; the unbounded default
+  // preserves existing two-field aggregate/API calls.
+  std::size_t max_working_bytes = std::numeric_limits<std::size_t>::max();
 };
 struct NativeWorkflowOutput {
   std::size_t step_index;

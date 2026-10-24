@@ -1,6 +1,7 @@
 #include "binding_arrays.hpp"
 #include <cmath>
 #include <algorithm>
+#include <limits>
 #include <imagejxx/application.hpp>
 #include <imagejxx/operations.hpp>
 #include <pybind11/pybind11.h>
@@ -9,6 +10,13 @@
 namespace py = pybind11;
 using namespace imagejxx;
 namespace {
+std::size_t target_mask_limit(py::handle value) {
+  if (!PyLong_Check(value.ptr()) || PyBool_Check(value.ptr()))
+    throw py::type_error("Target mask byte limit requires an integer");
+  const auto result = PyLong_AsSize_t(value.ptr());
+  if (PyErr_Occurred()) throw py::error_already_set();
+  return result;
+}
 NumericArray numeric_array(py::handle value) {
   auto array = py::array::ensure(value);
   if (!array)
@@ -475,15 +483,23 @@ void bind_execution(py::module_ &m) {
   py::enum_<ExecutionPhase>(m, "ExecutionPhase")
       .value("APPLY", ExecutionPhase::Apply).value("PREVIEW", ExecutionPhase::Preview);
   py::class_<ExecutionOptions>(m, "ExecutionOptions")
-      .def(py::init([](DatasetPolicy dataset, GeometryPolicy geometry) {
-             return ExecutionOptions{dataset, geometry};
+      .def(py::init([](DatasetPolicy dataset, GeometryPolicy geometry, py::object mask_bytes) {
+             ExecutionOptions result{dataset, geometry};
+             result.max_target_mask_bytes = target_mask_limit(mask_bytes);
+             return result;
            }),
            py::arg("dataset") = DatasetPolicy::PreserveUntargeted,
-           py::arg("geometry") = GeometryPolicy::RequireTransform)
+           py::arg("geometry") = GeometryPolicy::RequireTransform, py::kw_only(),
+           py::arg("max_target_mask_bytes") = std::numeric_limits<std::size_t>::max())
       .def_readwrite("dataset", &ExecutionOptions::dataset)
       .def_readwrite("geometry", &ExecutionOptions::geometry)
       .def_readwrite("reset_manual_threshold", &ExecutionOptions::reset_manual_threshold)
-      .def_readwrite("phase", &ExecutionOptions::phase);
+      .def_readwrite("phase", &ExecutionOptions::phase)
+      .def_property("max_target_mask_bytes",
+          [](const ExecutionOptions &value) { return value.max_target_mask_bytes; },
+          [](ExecutionOptions &value, py::object bytes) {
+            value.max_target_mask_bytes = target_mask_limit(bytes);
+          });
   py::class_<CancellationToken, std::shared_ptr<CancellationToken>>(
       m, "CancellationToken")
       .def(py::init<>())

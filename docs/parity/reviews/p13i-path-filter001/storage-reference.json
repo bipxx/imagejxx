@@ -1,0 +1,18 @@
+{
+  "roots": {
+    "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification": 2017911906,
+    "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification": 281979068,
+    "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13h-verification": 3106313437,
+    "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001": 1748570520,
+    "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-probe-env003": 50591698,
+    "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed": 19006692,
+    "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-client": 489,
+    "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification": 1454031,
+    "C:\\Users\\HEQ\\Projects\\imagejxx\\.venv": 436156589,
+    "/home/heq/.cache/imagejxx-build/p08k-001-5zn6rc00/python001": 232157751,
+    "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/p13h-verification": 0
+  },
+  "bytes": 7894142181,
+  "limit_bytes": 8589934592,
+  "policy": "Current active caches/runtimes/evidence; no linked-directory traversal"
+}

@@ -1,0 +1,304 @@
+{
+  "schema": "p13i.empty-target-progress.001",
+  "state": "E5 eight empty-target routes scoped-qualified on Windows/Linux; P13i incomplete",
+  "base_commit": "4a80b3570c59e547f2571c7fc2b95d85a5b66d0e",
+  "slice_qualified": true,
+  "packet_scope_qualified": false,
+  "acceptance": false,
+  "complete_requirement_coverage": false,
+  "compiled_source_manifests": {
+    "windows": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\empty-windows001\\source-manifest.json",
+      "bytes": 949231,
+      "sha256": "e20a6a8294729241505244eafe526f8b9f1e20f0bdbca2743007d17e7f5d1c51",
+      "availability": "available at review"
+    },
+    "linux": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\empty-linux003\\source-manifest.json",
+      "bytes": 942203,
+      "sha256": "44e1e0120d2d48c6496241247d5e2779f74367405e6f07f675b0b3722570ded5",
+      "availability": "available at review"
+    },
+    "files": 7026,
+    "same_product_inputs": true,
+    "full_manifest_differences": [
+      "tests/python/test_path_empty_filter_ui.py"
+    ],
+    "explanation": "Only independent E5 reader changed after Windows compile; all consumed product/probe/native-test inputs identical. Corrected reader and same 108-case collection consumed on both platforms."
+  },
+  "current_consumed_inputs": {
+    "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\empty-consumed-inputs003.json",
+    "bytes": 949231,
+    "sha256": "516615edeb6f17aa33bb7045193a1504b0890d12a86b5d29ff90d54afab314f0",
+    "availability": "available at review"
+  },
+  "current_reader": {
+    "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\tests\\python\\test_path_empty_filter_ui.py",
+    "bytes": 10128,
+    "sha256": "8e05cbe5125b22fab33d218aff3af8925907d109c0806e8fcd0d2b19bb0f880c",
+    "availability": "available at review"
+  },
+  "compiled_windows_reader_preimage": {
+    "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\empty-ui-windows001-reader-source.py",
+    "bytes": 8012,
+    "sha256": "9836e62d874b6893dea875f608ee6f89e47bdc9b917a1737843c98cb107693a3",
+    "availability": "available at review"
+  },
+  "selected_reader_ids": {
+    "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\empty-ui-collection003.json",
+    "bytes": 16885,
+    "sha256": "2f4ad863b0914857fc3b34ae8250a2028a0c2d955d0b9a5900f8e8e98e098ef5",
+    "availability": "available at review"
+  },
+  "platforms": {
+    "windows": {
+      "build_receipt": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\empty-windows001\\receipt.json",
+        "bytes": 3529,
+        "sha256": "e865042789db3c869d27c6d949944d841193cb2330a11b6266bd4a000df179a7",
+        "availability": "available at review"
+      },
+      "native_report": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\empty-windows001\\native.xml",
+        "bytes": 3336,
+        "sha256": "71579412f734d1dc9ede977b650c8f4a0272673d3560ec5d1b99c9d5476acf98",
+        "availability": "available at review"
+      },
+      "native_groups": 6,
+      "ui": {
+        "archive": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\empty-ui-windows003.tar.gz",
+          "bytes": 43333823,
+          "sha256": "f1dee6fc37ea4518ce5b732f01c61098b525c0f1a8de14a496eb7ddbb5025a1c",
+          "availability": "available at review"
+        },
+        "retention_receipt": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\empty-ui-windows003-retention.json",
+          "bytes": 40255,
+          "sha256": "803e99204046e40239d8d65d4326c67f1321efd29fc3d69a03c86dd4923ccae8",
+          "availability": "available at review"
+        },
+        "readers": 108,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "products": [
+        {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+          "bytes": 17764352,
+          "sha256": "3130149da571752a90cb3db62abd435c5ffc4a7b2dce26294398965c5efba4bb",
+          "availability": "available at review"
+        },
+        {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+          "bytes": 17634816,
+          "sha256": "4f275a26ad17ba65233d10dbf14defca060b14e8cfc86e1c8f3f901ee9fd59fc",
+          "availability": "available at review"
+        }
+      ]
+    },
+    "linux": {
+      "build_receipt": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\empty-linux003\\receipt.json",
+        "bytes": 2719,
+        "sha256": "e7c03a8b33301b0e4247c5eba79d1c3b97be33a82b01c60fb7504e32a016036d",
+        "availability": "available at review"
+      },
+      "native_report": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\empty-linux003\\native.xml",
+        "bytes": 3257,
+        "sha256": "f9608998ae26b18524a6c83b8edc98e1759901f3faefba74faeabf5992abf3e1",
+        "availability": "available at review"
+      },
+      "native_groups": 6,
+      "ui": {
+        "archive": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\empty-ui-linux003-native.tar.gz",
+          "bytes": 43763311,
+          "sha256": "d3e9425261d36ed47c26d75accd335ebeac193703ef7d558340e0ce80e45f871",
+          "availability": "available at review"
+        },
+        "retention_receipt": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\empty-ui-linux003-native-retention.json",
+          "bytes": 76957,
+          "sha256": "6d8159587723605e8cafee1ba6019da3d17bb66534bb3bdd91ad000392f7cabd",
+          "availability": "available at review"
+        },
+        "readers": 108,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "products": [
+        {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\linux\\app-installed\\bin\\imagejxx",
+          "bytes": 36078696,
+          "sha256": "6d81110e54c975e15f3a3c4672ae3f43f6e5c5a826b66875cc8fad54a4441bd0",
+          "availability": "available at review"
+        },
+        {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\p13g-probe-env003\\lib\\python3.12\\site-packages\\imagejxx\\_desktop.cpython-312-x86_64-linux-gnu.so",
+          "bytes": 33852248,
+          "sha256": "0db46742dd1207bdae6ad89bf2593fd6177b62ba584e2abd513e4ebc0446da65",
+          "availability": "available at review"
+        }
+      ]
+    }
+  },
+  "fixtures": {
+    "legacy_shape": [
+      1,
+      1,
+      1,
+      17,
+      23,
+      1
+    ],
+    "scientific_shape": [
+      2,
+      3,
+      4,
+      17,
+      23,
+      1
+    ],
+    "operations": [
+      "Gaussian sigma1",
+      "Mean radius2.5"
+    ],
+    "kinds": [
+      "active-zero-area",
+      "active-one-axis-zero",
+      "active-off-canvas",
+      "positioned-unmatched"
+    ],
+    "scientific_apply_order": [
+      [
+        0,
+        0,
+        1
+      ],
+      [
+        0,
+        0,
+        3
+      ],
+      [
+        0,
+        2,
+        1
+      ],
+      [
+        0,
+        2,
+        3
+      ],
+      [
+        1,
+        0,
+        1
+      ],
+      [
+        1,
+        0,
+        3
+      ],
+      [
+        1,
+        2,
+        1
+      ],
+      [
+        1,
+        2,
+        3
+      ]
+    ],
+    "scientific_preview": [
+      1,
+      0,
+      3
+    ],
+    "recording": "Gaussian no-op appends one accepted command; Mean no-op appends none; scientific Draw has independent prior history/record"
+  },
+  "assertions": [
+    "Exact declared F32 and storage F64 words for all planes, previews and every captured open owner",
+    "Selection/Previous/saved rows, metadata, data identity, revisions and original/reopened history preserved",
+    "Actual Preview/Cancel/reopen/Apply/save/open; actual scientific Show Preview Plane preserves generation",
+    "Preview and Apply worker-entry fences: eager source, already-idle/null viewport, complete creator frame, no UI frames or source reads during wait, counters unchanged and no overflow",
+    "All outputs skipped and source pixels shared; explicit output order independently checked",
+    "No accidental WholePlane: nonconstant input and nonzero Gaussian/rank parameters"
+  ],
+  "claim_boundary": "Zero processing-provider reads applies only to isolated worker intervals; renderer/state captures outside them may read. No UI zero-user-callback claim. No aggregate RSS guarantee.",
+  "reader_only_failures": [
+    {
+      "archive": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\empty-ui-windows001.tar.gz",
+        "bytes": 43772565,
+        "sha256": "8ce844a2e665ba8204bf3527fb859530a56586fa29ec5e0f1992c4ca84a94e0e",
+        "availability": "available at review"
+      },
+      "retention_receipt": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\empty-ui-windows001-retention.json",
+        "bytes": 68990,
+        "sha256": "259c962becb18b1a697676c51a264d0f90ddb5145d5e2b2aacffc90de124b2b1",
+        "availability": "available at review"
+      },
+      "reader": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\empty-ui-windows001-reader-source.py",
+        "bytes": 8012,
+        "sha256": "9836e62d874b6893dea875f608ee6f89e47bdc9b917a1737843c98cb107693a3",
+        "availability": "available at review"
+      },
+      "diagnosis": "Legacy facade has one-plane ranges, not explicit positions; corrected reader asserts exact ranges and output positions."
+    },
+    {
+      "retirement_receipt": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\empty-reader-failure002-retirement.json",
+        "bytes": 859,
+        "sha256": "f19010ef06bbee02065c0a54d27ca4b89ef3ad5bb89bc4458ab7a62aac2c5e32",
+        "availability": "available at review"
+      },
+      "reader": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\empty-ui-windows002-reader-source.py",
+        "bytes": 9840,
+        "sha256": "bf62058816e38468c50ed02e6a4a84fb9a8dcd19ae9b776faa1c7cc0cd2a9279",
+        "availability": "available at review"
+      },
+      "failure_xml": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\empty-reader-failure002-receipts\\ui.xml",
+        "bytes": 24493,
+        "sha256": "2853bd24f5f0f40274085a3e97110df3fd7272bde53f8bd99c1f4036e3a2c291",
+        "availability": "available at review"
+      },
+      "diagnosis": "No canvas-hit field emitted when no actual hits; strict absence asserted for seeded legacy paths, exact three hits for scientific Draw."
+    }
+  ],
+  "storage": {
+    "before_linux": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13h-verification\\storage-p13i-before-empty-linux003.json",
+      "bytes": 1060,
+      "sha256": "3480b6631c7b4296ba5aac6cb655e1ee84b6070f0db37c7e13ee83547366820a",
+      "availability": "available at review"
+    },
+    "after": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13h-verification\\storage-p13i-after-empty003.json",
+      "bytes": 1060,
+      "sha256": "8de3921c63dca010cb71298e8f05c502a561bc1383c47a7965ba8d978103dacc",
+      "availability": "available at review"
+    },
+    "superseded_capture_retirement": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\docs\\parity\\reviews\\p13i-path-filter001\\superseded-ui-retirement.json",
+      "bytes": 10037,
+      "sha256": "531e8c490380abfe72b771a3a6961dc0fd29c5eeee1e2dfffedf5a88838770d6",
+      "availability": "available at review"
+    },
+    "raw_scratch_removed": true
+  },
+  "remaining": [
+    "E6 fixed cap fixture and four downstream actual-input routes",
+    "E7 final common-source regression/dependencies/commercial/SDK/profile/cleanup/landing",
+    "Original G016 unavailable evidence, Auto proof, scientific-owner exclusion, macOS/OSGPU/accessibility and all remaining M0-M13 capability clauses"
+  ]
+}

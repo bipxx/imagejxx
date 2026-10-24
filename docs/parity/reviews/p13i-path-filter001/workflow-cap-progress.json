@@ -1,0 +1,333 @@
+{
+  "schema": "p13i.workflow-cap-progress.001",
+  "state": "E6 fixed1MiB fixture native-qualified; four actual-input routes still pending",
+  "fixture_qualified": true,
+  "slice_qualified": true,
+  "packet_scope_qualified": false,
+  "acceptance": false,
+  "complete_requirement_coverage": false,
+  "platforms": {
+    "windows": {
+      "build_receipt": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\cap-windows001\\receipt.json",
+        "bytes": 1871,
+        "sha256": "a154a5554c59bda94630879c1cec92531d441da68232cdefa7173fbd2b9bd8a4",
+        "availability": "available at review"
+      },
+      "source_manifest": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\cap-windows001\\source-manifest.json",
+        "bytes": 949365,
+        "sha256": "e92d90a193e8b8d3b855f1800e71f026daa6ba3e6995bb0e351c3ec18c5d616c",
+        "availability": "available at review"
+      },
+      "native_report": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\cap-windows001\\native.xml",
+        "bytes": 1546,
+        "sha256": "4a1b6064d868a26f80c11727f8f552f9f318f75dec768296bb5d3aec27855c0b",
+        "availability": "available at review"
+      },
+      "full_verbose_log": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\cap-windows001\\native.log",
+        "bytes": 4771,
+        "sha256": "7fe8f63b30e51b0e528287414c2827555087b09e43cbbb27bba4cface4aea40b",
+        "availability": "available at review"
+      },
+      "measured_terms": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\cap-windows001\\terms.json",
+        "bytes": 2718,
+        "sha256": "25d3e4ccaf9e4c7051375ca26eae22693884c8f01792531e13172689f45fa1a8",
+        "availability": "available at review"
+      },
+      "internal_cases_passed": 8,
+      "fixture": {
+        "available": 1048576,
+        "contract": "p13i.e6.workflow-mask-cap.001",
+        "display_record_bytes": 109,
+        "execution_callbacks": [
+          0,
+          0,
+          0
+        ],
+        "host_cap": 1048576,
+        "inherited_callbacks": [
+          0,
+          0,
+          0
+        ],
+        "mask_scratch": 9704,
+        "minimum_retained_margin": 1024,
+        "native_input_bytes": 5404,
+        "one_byte_under_refusal": "ImageJ shape exceeds working-byte limit",
+        "panel_admit_refusal": "ImageJ shape exceeds working-byte limit",
+        "panel_floor": 0,
+        "panel_prepare_refusal": "ImageJ shape exceeds working-byte limit",
+        "panel_record_bytes": 0,
+        "path_retained": 1040896,
+        "prefix_retained": 693712,
+        "program_utf8_bytes": 635,
+        "provider_reads": 0,
+        "public_captured_floor": 352213,
+        "public_prepare_refusal": "ImageJ shape exceeds working-byte limit",
+        "required_working": 1050600,
+        "retained_margin": 7680,
+        "selection_commands": [
+          0.0,
+          2.2,
+          1.2,
+          1.0,
+          9.2,
+          1.2,
+          1.0,
+          2.2,
+          8.2,
+          4.0
+        ],
+        "serialized_program": {
+          "schema": "imagejxx.native-workflow-program",
+          "steps": [
+            {
+              "filter_options": null,
+              "kind": "operation",
+              "operation": "add",
+              "original": null,
+              "parameters": {
+                "value": {
+                  "kind": "real",
+                  "value": 1.0
+                }
+              },
+              "target": {
+                "c": null,
+                "destination": "in_place",
+                "mode": 0,
+                "positions": [],
+                "roi": 0,
+                "scope": 0,
+                "t": null,
+                "z": null
+              },
+              "use_destination_calibration": false
+            },
+            {
+              "filter_options": {
+                "kind": "gaussian",
+                "scaled_units": false,
+                "sigma": 0.0
+              },
+              "kind": "operation",
+              "operation": "gaussian_blur_imagej",
+              "original": null,
+              "parameters": {},
+              "target": {
+                "c": null,
+                "destination": "in_place",
+                "mode": 0,
+                "positions": [],
+                "roi": 1,
+                "scope": 0,
+                "t": null,
+                "z": null
+              },
+              "use_destination_calibration": false
+            }
+          ],
+          "version": 2
+        },
+        "shape": [
+          1,
+          1,
+          1,
+          207,
+          209,
+          1
+        ],
+        "snapshot_object_bytes": 216,
+        "source_constant": 10,
+        "source_display": {
+          "display_range": [
+            0.0,
+            20.0
+          ]
+        },
+        "source_metadata": {
+          "extensions": {},
+          "properties": {},
+          "record_layout": {},
+          "title": "Untitled"
+        },
+        "source_retained_bytes": 346484,
+        "state": "qualified_metadata_only",
+        "three_double_payloads": 1038312,
+        "whole_retained": 1040896
+      }
+    },
+    "linux": {
+      "build_receipt": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\cap-linux001\\receipt.json",
+        "bytes": 1410,
+        "sha256": "e38510e3c06ac77b466814d28c674f5e5804ffad25290182b65dad0ff51dac7c",
+        "availability": "available at review"
+      },
+      "source_manifest": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\cap-linux001\\source-manifest.json",
+        "bytes": 942336,
+        "sha256": "7b6c45845414f8461aff4834b2f5cb0eb72d91caa0d8acc80299aa32abe69c94",
+        "availability": "available at review"
+      },
+      "native_report": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\cap-linux001\\native.xml",
+        "bytes": 1489,
+        "sha256": "694d272e2e3542353a09428e99a57d5486c922cc0f6346da4f01641927a2d133",
+        "availability": "available at review"
+      },
+      "full_verbose_log": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\cap-linux001\\native.log",
+        "bytes": 4759,
+        "sha256": "60ddc991f93e6660bdde44ff4e9330cbb279e7dd350e4adbf3be3d657cf41097",
+        "availability": "available at review"
+      },
+      "measured_terms": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\cap-linux001\\terms.json",
+        "bytes": 2718,
+        "sha256": "db679a30f46ec6e00e30624137b88a763c31564f194688ba9fb78c74571e7c72",
+        "availability": "available at review"
+      },
+      "internal_cases_passed": 8,
+      "fixture": {
+        "available": 1048576,
+        "contract": "p13i.e6.workflow-mask-cap.001",
+        "display_record_bytes": 109,
+        "execution_callbacks": [
+          0,
+          0,
+          0
+        ],
+        "host_cap": 1048576,
+        "inherited_callbacks": [
+          0,
+          0,
+          0
+        ],
+        "mask_scratch": 9704,
+        "minimum_retained_margin": 1024,
+        "native_input_bytes": 5404,
+        "one_byte_under_refusal": "ImageJ shape exceeds working-byte limit",
+        "panel_admit_refusal": "ImageJ shape exceeds working-byte limit",
+        "panel_floor": 0,
+        "panel_prepare_refusal": "ImageJ shape exceeds working-byte limit",
+        "panel_record_bytes": 0,
+        "path_retained": 1041312,
+        "prefix_retained": 693936,
+        "program_utf8_bytes": 635,
+        "provider_reads": 0,
+        "public_captured_floor": 352277,
+        "public_prepare_refusal": "ImageJ shape exceeds working-byte limit",
+        "required_working": 1051016,
+        "retained_margin": 7264,
+        "selection_commands": [
+          0.0,
+          2.2,
+          1.2,
+          1.0,
+          9.2,
+          1.2,
+          1.0,
+          2.2,
+          8.2,
+          4.0
+        ],
+        "serialized_program": {
+          "schema": "imagejxx.native-workflow-program",
+          "steps": [
+            {
+              "filter_options": null,
+              "kind": "operation",
+              "operation": "add",
+              "original": null,
+              "parameters": {
+                "value": {
+                  "kind": "real",
+                  "value": 1.0
+                }
+              },
+              "target": {
+                "c": null,
+                "destination": "in_place",
+                "mode": 0,
+                "positions": [],
+                "roi": 0,
+                "scope": 0,
+                "t": null,
+                "z": null
+              },
+              "use_destination_calibration": false
+            },
+            {
+              "filter_options": {
+                "kind": "gaussian",
+                "scaled_units": false,
+                "sigma": 0.0
+              },
+              "kind": "operation",
+              "operation": "gaussian_blur_imagej",
+              "original": null,
+              "parameters": {},
+              "target": {
+                "c": null,
+                "destination": "in_place",
+                "mode": 0,
+                "positions": [],
+                "roi": 1,
+                "scope": 0,
+                "t": null,
+                "z": null
+              },
+              "use_destination_calibration": false
+            }
+          ],
+          "version": 2
+        },
+        "shape": [
+          1,
+          1,
+          1,
+          207,
+          209,
+          1
+        ],
+        "snapshot_object_bytes": 248,
+        "source_constant": 10,
+        "source_display": {
+          "display_range": [
+            0.0,
+            20.0
+          ]
+        },
+        "source_metadata": {
+          "extensions": {},
+          "properties": {},
+          "record_layout": {},
+          "title": "Untitled"
+        },
+        "source_retained_bytes": 346516,
+        "state": "qualified_metadata_only",
+        "three_double_payloads": 1038312,
+        "whole_retained": 1041312
+      }
+    }
+  },
+  "implementation_handoff": {
+    "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\cap-integration-handoff001.json",
+    "bytes": 660,
+    "sha256": "d7e2fa34c8a6350fcedecdede72796c7270e25784ea11cbd66590f056d2da94a",
+    "availability": "available at review"
+  },
+  "limits": "Run record_operation=false, record_bytes0, borrowed floor0; public owning floor measured separately. Transport JSON length is not subtracted.",
+  "remaining": [
+    "E6 four real-control downstream routes in standalone/Python on Windows/Linux",
+    "E7 full scoped packet qualification",
+    "Full M0-M13 family/release acceptance remains open"
+  ],
+  "same_source_entries": 7027,
+  "same_source_inputs": true
+}

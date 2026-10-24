@@ -920,6 +920,7 @@ struct Window::Impl {
     PlanePosition pixelsPosition{}, rangePosition{};
     std::array<double, 2> effectiveRange{0, 1};
     Json channelDisplayKey = nullptr, channelDisplayReadback = nullptr;
+    Json previewDisplayKey = Json::object();
     FloatingSamplePolicy sourceReadbackPolicy = FloatingSamplePolicy::FiniteOnly;
     uint64_t outlineRevision = ~uint64_t(0);
     int outlineT = -1, outlineC = -1;
@@ -2991,7 +2992,9 @@ struct Window::Impl {
                 {"range", displayRangeValue(pane.effectiveRange)},
                 {"range_tcz", {pane.rangePosition.t, pane.rangePosition.c,
                                 pane.rangePosition.z}},
-                {"contrast_source", "live"}};
+                {"contrast_source", pane.previewDisplayKey.value("contrast_source", "live")},
+                {"threshold_source", pane.previewDisplayKey.value("threshold_source", "live")},
+                {"preview_display_effects", pane.previewDisplayKey.value("effects", Json::array())}};
     if (!pane.channelDisplayReadback.is_null())
       result["channel_display"] = pane.channelDisplayReadback;
     if (readback)
@@ -3391,7 +3394,9 @@ struct Window::Impl {
         {"all_slices", thresholdPanel.stackHistogram()}, {"slice_index", thresholdPosition().z},
         {"selection", source.data().selection ? selectionJson(*source.data().selection) : Json()},
         {"dataset_policy", "preserve_untargeted"}} : Json();
-    if (owner.recording && (thresholdPanel.scientificTargets() || thresholdPanel.stackHistogram() || owner.documentById(source.id())->scientific()))
+    const bool nativePath = command.target().roi_policy() == RoiPolicy::ActiveSelection &&
+                            source.data().selection && source.data().selection->is_path();
+    if (owner.recording && (nativePath || thresholdPanel.scientificTargets() || thresholdPanel.stackHistogram() || owner.documentById(source.id())->scientific()))
       step = metadataJson(command.record());
     submitThreshold(command, std::move(step), cancelEpoch);
   }
@@ -3864,16 +3869,8 @@ struct Window::Impl {
     options.label = label.empty() ? (jobTitle.empty() ? "Image task" : jobTitle)
                                   : std::move(label);
     options.document_id = jobDocument ? jobDocument->id : 0;
-    if (jobDocument) {
-      const auto shape = jobDocument->nativeSnapshot().data().dataset.shape();
-      const auto plane =
-          std::size_t(shape.x) * shape.y * shape.s * sizeof(double);
-      if (plane >
-          std::numeric_limits<std::size_t>::max() / (std::size_t(shape.z) + 16))
-        throw std::invalid_argument(
-            "Job reservation overflows addressable memory");
-      options.resource_bytes = plane * (std::size_t(shape.z) + 16);
-    }
+    if (jobDocument)
+      options.resource_bytes = legacy_job_base_workspace(jobDocument->nativeSnapshot());
     if (extraWorkspace >
         std::numeric_limits<std::size_t>::max() - options.resource_bytes)
       throw std::invalid_argument(
@@ -4515,7 +4512,7 @@ struct Window::Impl {
     try {
     const auto liveSnapshot = pane.doc->nativeSnapshot();
     const auto position = pane.doc->position();
-    const auto channelState = recognized_channel_display(liveSnapshot.display(), liveSnapshot.data().dataset);
+    auto channelState = recognized_channel_display(liveSnapshot.display(), liveSnapshot.data().dataset);
     const auto preview = planeOperationPreview(*pane.doc, !channelState.has_value());
     const bool rgbContrast=bool(preview) && bool(contrastPanel.rgbPreview(liveSnapshot));
     const auto previewGeneration = preview ? operationPreviewGeneration(*pane.doc) : 0;
@@ -4525,6 +4522,17 @@ struct Window::Impl {
         previewTarget ? std::optional<ResolvedTarget>(*previewTarget) : std::nullopt,
         previewGeneration, position) : std::nullopt;
     const bool activePreview = sources ? sources->usesPreview(position.c) : bool(preview);
+    const auto displayEffects = preview && !rgbContrast && !shadowDemo.active()
+        ? collectPlanePreviewDisplayEffects(liveSnapshot, position, channelState,
+            sources ? &*sources : nullptr, activePreview,
+            [this](const DocumentSnapshot &current, PlanePosition candidate) {
+              return gaussianJobs.preview_display_effects(current, candidate);
+            }, channelLimits())
+        : std::vector<PlanePreviewDisplayEffects>{};
+    Json displayMetadata{{"display_range", get(pane.doc->state().metadata, "display_range")}};
+    if (rgbContrast) displayMetadata["display_range"] = {0., 255.};
+    projectPlanePreviewDisplayEffects(displayMetadata, channelState, position, displayEffects);
+    const auto displayKey = planePreviewDisplayKey(liveSnapshot, position, displayMetadata, channelState, displayEffects);
     // Shape and overlay geometry do not require a decoded source plane.
     const auto dimensions=(!sources && preview)?preview->data().dataset.shape():liveSnapshot.data().dataset.shape();
     const std::array<int, 2> shape{dimensions.x, dimensions.y};
@@ -4561,7 +4569,7 @@ struct Window::Impl {
     const auto identity = reinterpret_cast<std::uintptr_t>(
         activePreview ? &preview->data() : &liveSnapshot.data());
     const auto channelKey = sources ? channelDisplayDiagnostics(*channelState,
-        *sources, Plane::XY, position.z, position.t, position.c, false, channelLimits()) : Json(nullptr);
+        *sources, Plane::XY, position.z, position.t, position.c, false, channelLimits(), displayEffects) : Json(nullptr);
     bool uncachedPreview = false;
     if (sources && sources->generation() == 0)
       for (const auto &item : channelKey.at("contributors"))
@@ -4570,11 +4578,14 @@ struct Window::Impl {
         pane.pixelsPosition.t != position.t || pane.pixelsPosition.c != position.c ||
         pane.slice != pane.doc->slice() || pane.previewActive != activePreview ||
         pane.previewGeneration != generation || pane.pixelsIdentity != identity ||
-        pane.channelDisplayKey != channelKey || uncachedPreview ||
+        pane.channelDisplayKey != channelKey || pane.previewDisplayKey != displayKey || uncachedPreview ||
         (gl && (pane.textureDirty || !pane.texture));
     const bool missingReadback = capture && (!pane.sourceReadback || !pane.renderedReadback);
     if (!rebuild && !missingReadback)
       return true;
+    auto metadata = pane.doc->state().metadata;
+    if (rgbContrast) metadata["display_range"] = {0., 255.};
+    projectPlanePreviewDisplayEffects(metadata, channelState, position, displayEffects);
     const auto memoryPlan=RenderMemory::plan(shape[0],shape[1],dimensions.s,gl,capture,bool(rankProbe));
     RenderMemory::Lease memory;
     std::optional<ViewportJobs::Frame> asynchronous;
@@ -4585,9 +4596,9 @@ struct Window::Impl {
       pane.doc->admitView();
       ViewportRender spec{liveSnapshot};spec.preview=preview;spec.previewGeneration=previewGeneration;spec.position=position;spec.coordinate=position.z;
       if(previewTarget)spec.target=*previewTarget;if(rgbContrast)spec.previewTargets=contrastPanel.rgbPreviewTargets(liveSnapshot);
-      spec.metadata=pane.doc->state().metadata;if(rgbContrast)spec.metadata["display_range"]={0.,255.};spec.layered=pane.layeredOverlays;spec.capture=capture;spec.channelLimits=channelLimits();
+      spec.metadata=metadata;spec.previewDisplayEffects=displayEffects;spec.layered=pane.layeredOverlays;spec.capture=capture;spec.channelLimits=channelLimits();
       const auto key=Json{{"identity",identity},{"live",liveSnapshot.data_identity().value_or(0)},{"revision",pane.doc->renderRevision()},
-          {"tcz",{position.t,position.c,position.z}},{"preview",generation},{"channels",channelKey},{"capture",capture},{"gl",gl}}.dump();
+          {"tcz",{position.t,position.c,position.z}},{"preview",generation},{"channels",channelKey},{"display_effects",displayKey},{"capture",capture},{"gl",gl}}.dump();
       auto ready=viewJobs().request(pane.doc->id,0,key,memoryPlan.peak,[spec=std::move(spec)](const ExecutionControl &){return renderViewport(spec);});
       if(!ready){pane.viewportPending=true;pane.sampledSurface.reset();pane.sampleMemory.reset();pane.sourceReadback.reset();pane.renderedReadback.reset();pane.readbackMemory.reset();status="Loading view...";return false;}
       asynchronous.emplace(std::move(*ready));memory=std::move(asynchronous->reservation);
@@ -4614,15 +4625,14 @@ struct Window::Impl {
     pane.previewActive = activePreview;
     pane.channelDisplayKey = channelKey;
     pane.channelDisplayReadback = sources ? channelDisplayDiagnostics(*channelState,
-        *sources, Plane::XY, position.z, position.t, position.c, capture, channelLimits()) : Json(nullptr);
+        *sources, Plane::XY, position.z, position.t, position.c, capture, channelLimits(), displayEffects) : Json(nullptr);
     pane.previewGeneration = generation;
     pane.pixelsIdentity = identity;
     pane.pixelsPosition = position;
     pane.rangePosition = position;
-    auto metadata = pane.doc->state().metadata;
-    if(rgbContrast)metadata["display_range"]={0.,255.};
-    // Preview changes pixels, not the live display range. Freeze the ordinary
-    // floating auto-range from the live source when no explicit range exists.
+    // Ordinary filters retain live contrast. Only a matching Top Hat display
+    // proposal has changed the render-local range above. Otherwise freeze the
+    // ordinary floating auto-range from live pixels when no range is explicit.
     std::optional<std::array<std::uint32_t,2>> computed;
     std::optional<std::array<double,2>> automaticBounds;
     if (!channelState && !get(metadata, "display_range").is_array() &&
@@ -4644,11 +4654,13 @@ struct Window::Impl {
     const bool activeContributes = !channelState || std::any_of(
         channelKey.at("contributors").begin(), channelKey.at("contributors").end(),
         [&](const Json &item) { return item.at("c") == position.c; });
-    if (activeContributes)
+    const auto *displayEffect = planePreviewDisplayEffect(displayEffects, position);
+    if (activeContributes && !(displayEffect && displayEffect->suppress_threshold_overlay))
       renderThresholdOverlay(image, pane.doc->frame(), liveSnapshot,
                                {liveSnapshot.display().t, liveSnapshot.display().c, pane.doc->slice()});
     rendered=std::move(image);
     }
+    pane.previewDisplayKey=displayKey;
     pane.viewportPending=false;
     const auto &frame=*framePixels;
     auto &image=*rendered;
@@ -8633,17 +8645,22 @@ void Window::applyOperation(const std::string &id, const Json &params, bool all,
                    {"all_slices", all},
                    {"slice_index", d->slice()},
                    {"selection", get(d->state().metadata, "selection")}};
-  if (asynchronous)
+  // Both exposed execution modes obey the live host's finite workspace cap.
+  // Only the asynchronous mode acquires a scheduler reservation.
+  const auto source = d->nativeSnapshot();
+  const auto memoryBudget = controller_->job_scheduler()->limits().memory_budget;
+  const auto extra = extraWorkspace(id, d->frame(), merged);
+  const auto workspace = legacy_operation_workspace(
+      id, source, all, source.display().crosshair[2], extra, memoryBudget);
+  if (asynchronous) {
     impl->start(
         [source = d->snapshot(), id, merged, all] {
           ComponentCounts counts;
           auto state = source.compute(id, merged, all, &counts);
           return Impl::JobResult(std::move(state), std::move(counts));
         },
-        d, false, "", string(get(*found, "title")),
-        legacy_operation_workspace(id,d->nativeSnapshot(),all,d->slice(),
-                                   extraWorkspace(id, d->frame(), merged)));
-  else {
+        d, false, "", string(get(*found, "title")), workspace);
+  } else {
     ComponentCounts counts;
     auto proposed = d->compute(id, merged, all, &counts);
     OutputPublication outputs(results, workflow, counts,
@@ -8945,9 +8962,12 @@ void Window::Impl::menu() {
     observeControl("menu.Image.Lookup_table");
     if (lookupTableOpen) {
       for (auto lut : {"Grays", "Inverted", "Red", "Green", "Blue", "Fire",
-                       "Ice", "Spectrum"})
+                       "Ice", "Spectrum"}) {
         if (ImGui::MenuItem(lut))
           guard([&] { owner.action("lut", {{"name", lut}}); });
+        if (std::string(lut) == "Grays" || std::string(lut) == "Inverted")
+          observeControl(std::string("menu.Image.Lookup_table.") + lut);
+      }
       path("Import LUT...", "load_lut", false);
       path("Export LUT...", "save_lut", true, "colors.json");
       ImGui::EndMenu();
@@ -10055,7 +10075,8 @@ void Window::Impl::recorder() {
       ImGui::PopID();
     }
     if (get(step, "operation") == "threshold" && step.contains("schema_version") &&
-        (get(step, "profile") == "manual_raw_inclusive_v1" || get(step, "profile") == "manual_raw_inclusive_v2")) {
+        (get(step, "profile") == "manual_raw_inclusive_v1" || get(step, "profile") == "manual_raw_inclusive_v2" ||
+         get(step, "profile") == "manual_raw_inclusive_v3")) {
       ImGui::PushID(static_cast<int>(i));
       ImGui::BeginDisabled(owner.documents_.empty() || owner.busy() ||
                           !actionAllowed("replay_manual_threshold"));
@@ -10418,6 +10439,10 @@ void Window::Impl::canvas(Pane &pane) {
     pane.keyboardAdmission = blocked.empty() ? "admitted" : blocked;
     OrthogonalInputContext input;
     if(preview && contrastPanel.rgbPreview(d->nativeSnapshot())){input.preview_display_range=std::array<double,2>{0,255};input.preview_targets=contrastPanel.rgbPreviewTargets(d->nativeSnapshot());}
+    else if (preview && !shadowDemo.active())
+      input.preview_display_effects = [this](const DocumentSnapshot &current, PlanePosition candidate) {
+        return gaussianJobs.preview_display_effects(current, candidate);
+      };
     input.active_document = owner.controller_->active_document_id() == d->id;
     input.input_enabled = !owner.busy() && !(context.CurrentItemFlags & ImGuiItemFlags_Disabled);
     input.keyboard_admitted = blocked.empty();
@@ -11862,10 +11887,14 @@ void Window::Impl::dialogs() {
         guard([&] {
           auto p = parse();
           auto d = doc();
+          d->requireLegacyEditable();
           auto id = dialog.id;
+          const auto source = d->nativeSnapshot();
+          const auto memoryBudget = owner.controller_->job_scheduler()->limits().memory_budget;
           const bool poolPreview=id=="auto_mask" && p.value("stack_histogram",false) && allSlices;
-          const auto workspace = legacy_operation_workspace(id,d->nativeSnapshot(),poolPreview,d->slice(),
-                                                             extraWorkspace(id, d->frame(), p));
+          const auto extra = extraWorkspace(id, d->frame(), p);
+          const auto workspace = legacy_operation_workspace(
+              id, source, poolPreview, source.display().crosshair[2], extra, memoryBudget);
           start([source = d->snapshot(), id,
                  p = std::move(p),poolPreview] { return source.compute(id, p, poolPreview); },
                 d, false, "", "Preview: " + dialog.title, workspace);

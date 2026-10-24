@@ -8,8 +8,11 @@ Use exactly three execution agents total, with the coordinator in role C.
 The material below retains historical contracts and observations; old build
 paths may now be retired evidence. Do not recreate historical build generations.
 Model and effort remain the user's runtime choices. P13h is scoped-qualified
-([receipt](parity/reviews/p13h-path-authoring001/receipt.json)); resume P13i's
-reference/runtime prerequisite, without replaying old construction prompts.
+([receipt](parity/reviews/p13h-path-authoring001/receipt.json)); P13i now also has
+[scoped qualification](parity/reviews/p13i-path-filter001/receipt.json).
+Resume reviewed landing and successor CG0/CFG1 gates, without replaying reference
+restoration or old construction prompts. Use the [detailed three-agent delivery specifications](packets/THREE_AGENT_DELIVERY_SPECS.md)
+for dispatch, successor entry gates and remaining workflow acceptance.
 
 **Saved-area pointer-budget checkpoint, 2026-10-20 (work in progress):**
 new pointer gestures and no-movement draft recreation now read current resource
@@ -3366,7 +3369,7 @@ ownership. Return changes/hashes, actual results/paths, findings and next action
 
 ### Ready parallel work
 
-Use the [current three-agent queue](THREE_AGENT_EXECUTION.md#ordered-queue-and-complete-delivery-horizon) and [P13i integration order](packets/P13i-path-filter-targets.md#execution-sequence-and-exit). The four-role table below records historical P06j assignments only; it does not authorize a fourth agent or current shared-file writes. Earlier products, failures and obligations retain their original identities and availability limitations.
+Use the [current three-agent queue](THREE_AGENT_EXECUTION.md#ordered-queue-and-complete-delivery-horizon) and [P13i integration order](packets/P13i-path-filter-targets.md#staged-execution-handoff-and-exit). The four-role table below records historical P06j assignments only; it does not authorize a fourth agent or current shared-file writes. Earlier products, failures and obligations retain their original identities and availability limitations.
 
 | Phase | Root | Worker slot1 | Worker slot2 | Worker slot3 |
 | --- | --- | --- | --- | --- |
@@ -3408,7 +3411,7 @@ The [artifact procedure](SOL_ULTRA_WINDOWS.md#4-record-once-and-refresh-archives
 
 ## Copyable implementation handoff
 
-The prompt below is archived. Use the current [A/B/C assignments](packets/P13i-path-filter-targets.md#exactly-three-owners); do not execute this older P06j queue or recreate its retired build paths.
+The prompt below is archived. Use the current [A/B/C assignments](packets/P13i-path-filter-targets.md#exactly-three-owners-and-file-boundaries); do not execute this older P06j queue or recreate its retired build paths.
 
 ~~~text
 Execute docs/SOL_ULTRA.md with my selected Sol model and Ultra.

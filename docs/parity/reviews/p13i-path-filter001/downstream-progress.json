@@ -1,0 +1,337 @@
+{
+  "schema": "p13i.downstream-progress.001",
+  "state": "E6 four downstream routes and synchronous host/manual-path fixes scoped-qualified; P13i E7 pending",
+  "slice_qualified": true,
+  "packet_scope_qualified": false,
+  "acceptance": false,
+  "complete_requirement_coverage": false,
+  "base_commit": "4a80b3570c59e547f2571c7fc2b95d85a5b66d0e",
+  "same_source_inputs": true,
+  "source_input_files": 7037,
+  "source_manifests": {
+    "windows": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\manual-v3-windows001\\source-manifest.json",
+      "bytes": 950667,
+      "sha256": "00b8a9f36a20ece8bd23f31c88ac0f046c393ac5afdf84856e79e64f2de87ee6",
+      "availability": "available at review"
+    },
+    "linux": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\manual-v3-linux001\\source-manifest.json",
+      "bytes": 943628,
+      "sha256": "e8950e7a20e66b1aa4d1eba6b77f74cc4e3997dc4e98ece9b54fc4fa6f4d9136",
+      "availability": "available at review"
+    }
+  },
+  "selected_api_ids": {
+    "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\manual-v3-api-collection001.json",
+    "bytes": 5165,
+    "sha256": "6f372bbe00f82c7a436f89efe61f90c1c8f1c76369d36810de902069a86ca6e3",
+    "availability": "available at review"
+  },
+  "platforms": {
+    "windows": {
+      "build_receipt": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\manual-v3-windows001\\receipt.json",
+        "bytes": 5562,
+        "sha256": "02707a1170b1dbbf0a2bddd8d67b9db7285ba69049b211b04fff7574d7e14d1d",
+        "availability": "available at review"
+      },
+      "native_groups": 10,
+      "native_report": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\manual-v3-windows001\\native.xml",
+        "bytes": 6005,
+        "sha256": "a488fee3f8587645fd521862e4a3bf45181dc13246d79afaddfd2b9cc5d99972",
+        "availability": "available at review"
+      },
+      "native_full_log": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\manual-v3-windows001\\native.log",
+        "bytes": 12687,
+        "sha256": "d6dc25995c98d1062a0e091281e8139db329f5663fdd24e194dc6955c03adcaf",
+        "availability": "available at review"
+      },
+      "api": {
+        "archive": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\manual-v3-api-windows001.tar.gz",
+          "bytes": 4871,
+          "sha256": "2797cdfafcc5f5e6c32760f7684edc4cb1ca33c35513318feca59a46bc344e27",
+          "availability": "available at review"
+        },
+        "retention_receipt": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\manual-v3-api-windows001-retention.json",
+          "bytes": 811,
+          "sha256": "b08f22d8b3976071b81effd64451b9ffa67212501d06892c7c3b90780761b560",
+          "availability": "available at review"
+        },
+        "report_member": "report.xml",
+        "passed": 41,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "ui": {
+        "archive": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\downstream-ui-windows002.tar.gz",
+          "bytes": 900961,
+          "sha256": "fa01157f14ae81ea479a1afcb17551fb0a16ee830f5d75ad8af2573935edd89a",
+          "availability": "available at review"
+        },
+        "retention_receipt": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\downstream-ui-windows002-retention.json",
+          "bytes": 6464,
+          "sha256": "803ef770934ad97f6fe9b26b8b66190a7eb1870f8cd8ded8d81d286cc163dcaf",
+          "availability": "available at review"
+        },
+        "report_member": "ui.xml",
+        "passed": 8,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "products": [
+        {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+          "bytes": 7572480,
+          "sha256": "9c86cfa96367e367757d4e96df207086c00ce0834b460dc14f9d0dcb09514176",
+          "availability": "available at review"
+        },
+        {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+          "bytes": 17714176,
+          "sha256": "dc922317c250f66e7ce915405f4b1b5db4f44b0b881ffdc2d6537e39a9f1721e",
+          "availability": "available at review"
+        },
+        {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_scientific_io.cp312-win_amd64.pyd",
+          "bytes": 591360,
+          "sha256": "f53765c5856c2f33fa130e053bc3fb3b57b0e83ffa8123b0be81c1725ed9f7b5",
+          "availability": "available at review"
+        },
+        {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+          "bytes": 17843200,
+          "sha256": "9be1d5dd3075613ad34250baef76438d1246c1cabbd30a5a1f1f6c98892559fc",
+          "availability": "available at review"
+        }
+      ]
+    },
+    "linux": {
+      "build_receipt": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\manual-v3-linux001\\receipt.json",
+        "bytes": 4408,
+        "sha256": "fe1fc20cd29c783654b1ba08b9b14d9b522764aeba3df012978bf023f01c8bae",
+        "availability": "available at review"
+      },
+      "native_groups": 10,
+      "native_report": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\manual-v3-linux001\\native.xml",
+        "bytes": 5869,
+        "sha256": "902625a1cd1aa30f9ed6ac29327d810289cecb75efcc966b3600cda90d641bac",
+        "availability": "available at review"
+      },
+      "native_full_log": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\manual-v3-linux001\\native.log",
+        "bytes": 12571,
+        "sha256": "19e50edcb92f04b428af92d07e646421f9479fe67aff3062ff682fb42bc66a85",
+        "availability": "available at review"
+      },
+      "api": {
+        "archive": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\manual-v3-api-linux001-native.tar.gz",
+          "bytes": 3812,
+          "sha256": "28cf2c1b9e823351564fa5f506613acd1847ac6f7eba68895714d6b6323b9e23",
+          "availability": "available at review"
+        },
+        "retention_receipt": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\manual-v3-api-linux001-native-retention.json",
+          "bytes": 2303,
+          "sha256": "a616c4f4013cacad9cda71968b39966f8164f6e24237b201e1cd1bb6e60bebe3",
+          "availability": "available at review"
+        },
+        "report_member": "report.xml",
+        "passed": 41,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "ui": {
+        "archive": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\downstream-ui-linux002-native.tar.gz",
+          "bytes": 905540,
+          "sha256": "8e25c42f595f57e4e43b62f859ccd400e485769a060fac91c0ffb37bd0c9ece2",
+          "availability": "available at review"
+        },
+        "retention_receipt": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\downstream-ui-linux002-native-retention.json",
+          "bytes": 7666,
+          "sha256": "606ffe6c8ac683cfd00bcf6de0971685c7d28fa83a63c076769c285a624a9182",
+          "availability": "available at review"
+        },
+        "report_member": "ui.xml",
+        "passed": 8,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "products": [
+        {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\p13g-probe-env003\\lib\\python3.12\\site-packages\\imagejxx\\_native.cpython-312-x86_64-linux-gnu.so",
+          "bytes": 12658208,
+          "sha256": "0043cd40d0275723b48ab8bcd710830f853bfbf9d61d618b37470cbe53a1064b",
+          "availability": "available at review"
+        },
+        {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\p13g-probe-env003\\lib\\python3.12\\site-packages\\imagejxx\\_desktop.cpython-312-x86_64-linux-gnu.so",
+          "bytes": 33975128,
+          "sha256": "edd5ea52b69ae8dae964ba2d15f1e85c58fd481a2fed2f093efef9f2fea17a26",
+          "availability": "available at review"
+        },
+        {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\p13g-probe-env003\\lib\\python3.12\\site-packages\\imagejxx\\_scientific_io.cpython-312-x86_64-linux-gnu.so",
+          "bytes": 4488280,
+          "sha256": "4f7e2d4f29ffcdccb73f0999ac1345780945d21b05e5c3987f93c8a2e1d29773",
+          "availability": "available at review"
+        },
+        {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\linux\\app-installed\\bin\\imagejxx",
+          "bytes": 36208392,
+          "sha256": "ced60fda4678e757ace8c06c17db26a502cd20d1106c1b08820fce2311133580",
+          "availability": "available at review"
+        }
+      ]
+    }
+  },
+  "routes": [
+    "admission-legacy-invert-path",
+    "admission-pooled-mask-mean-path",
+    "admission-pooled-display-mean-path",
+    "admission-workflow-later-path-refusal"
+  ],
+  "changes": [
+    "All generic Window applyOperation execution modes now share live B+E+M admission; unchanged async reservation",
+    "Additive manual raw inclusive V3 active native-path records using existing strict native selection codec; legacyV1/V2 unchanged and path-refusing",
+    "Ordinary single-plane and scientific/pooled Window threshold recorders route native paths toV3; direct replay/rebind row classifier recognizesV3",
+    "Actual reviewed operation target diagnostic is bounded scalar chosen_target; no cloned paths/position arrays",
+    "Probe waits fail immediately on manual panel errors and recognize completed workflow publication while review remains visible"
+  ],
+  "compatibility_decision": {
+    "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\docs\\parity\\reviews\\p13i-path-filter001\\manual-threshold-compatibility.json",
+    "bytes": 2717,
+    "sha256": "eb2390345682242030b917bd7c804ae490d02946323994876251df8bc75ed2cd",
+    "availability": "available at review"
+  },
+  "fixed_cap_fixture": {
+    "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\docs\\parity\\reviews\\p13i-path-filter001\\workflow-cap-progress.json",
+    "bytes": 11165,
+    "sha256": "c7cc8d7cc4f8ac95f4a242f08bd1e4f84c305b5e1e3dcc5a1736d56fb46a9566",
+    "availability": "available at review"
+  },
+  "assertions": [
+    "Exact pinned28-cell native-path membership for invert and pooled masks, original words outside; strictU8 declared bytes and originalF64 storage words across all owners",
+    "Native RAW Mean100.5 from56 selected samples, matched28; separate manual histogram ROI and actual Apply ActiveSelection/currentTC/allZ ranges",
+    "Preview/Auto/Cancel/reopen/Apply/UndoRedo/save/reopen through actual controls in both launches",
+    "Low1MiB workflow mask-specific later-step refusal with no prefix/READY/publication; actual Preferences64 recovery, two completed steps, one publication/history, unchanged replay table",
+    "ManualV3 binary64 commands/attributes, malformed variants, strict identity/revision/selection replay, explicit destination rebind, source/history/session preservation",
+    "No new exclusions; original staleAllZ assertion preserved exactly and current test aligned with previously documented capturedAllZ semantics"
+  ],
+  "claim_boundaries": [
+    "UI renderer/state reads are not native quiet-admission counts; generic host sources are eager-only",
+    "Pooled display has finite synchronous logical allowance and no scheduler reservation; reservations do not equalRSS",
+    "Mean100.5 is native RAWsum/count, not JavaMean equivalence",
+    "NativeWorkflowProgram/Run typed manual-threshold V1/V2/V3 integration remains explicitly unsupported; direct replay/rebind passes",
+    "Only eight new UI readers ran on this final source; prior54routes/full116reader matrix remains E7"
+  ],
+  "failures_preserved": {
+    "sync_budget_baseline": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\host-budget-baseline001.json",
+      "bytes": 1407,
+      "sha256": "ef1637aa3bccdffbe829899de8db43cd4ca69b5265f37530b322cb9e7b48cde7",
+      "availability": "available at review"
+    },
+    "sync_baseline_archive": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\host-budget-windows-baseline001-retention.json",
+      "bytes": 437,
+      "sha256": "bd950fa9a2590b37447c02291c2b3a0b18bed450e5dab31be86b046330c92e4d",
+      "availability": "available at review"
+    },
+    "manual_codec_ui": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\downstream-ui-windows001-retention.json",
+      "bytes": 2714,
+      "sha256": "cb6e91ab697f6f006c9b6dcbdb019f2782c908a48c926a3f44cc7cb34ed0c45b",
+      "availability": "available at review"
+    },
+    "workflow_probe_wait": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\downstream-workflow-windows001-retention.json",
+      "bytes": 1071,
+      "sha256": "bec6df175d4ab16d6fa5443449cacf9f812c4eeb94b67187c3329f26603d6ff2",
+      "availability": "available at review"
+    },
+    "old_native_test_baseline": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\manual-threshold-legacy-baseline001\\receipt.json",
+      "bytes": 1021,
+      "sha256": "4c23f010f2faa32aae03fd616857a5ab8a66d3119fb8c316cafc9bf08f57bca5",
+      "availability": "available at review"
+    }
+  },
+  "tool_guard_result": {
+    "archive": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\downstream-profile-tools001.tar.gz",
+      "bytes": 109015,
+      "sha256": "69d2d43465d81aae860acc363186c783812e8f0edea52ddee5e1edc2d929a093",
+      "availability": "available at review"
+    },
+    "retention_receipt": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\downstream-profile-tools001-retention.json",
+      "bytes": 7569,
+      "sha256": "a48ba6a62c26b87793746cff247e4cb9e4bd2745b34c52b898d0a3aa0b9ddc83",
+      "availability": "available at review"
+    },
+    "report_member": "report.xml",
+    "passed": 9,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "storage": {
+    "after": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13h-verification\\storage-p13i-after-downstream002.json",
+      "bytes": 1060,
+      "sha256": "f49c0ff1d51bcdd60c4d592775d24ee238c50d9eff5b6afaf65a2fe8599d677e",
+      "availability": "available at review"
+    },
+    "normal_limit_bytes": 8589934592,
+    "owned_scratch_removed_after_hash_verified_retention": true,
+    "next_run_policy": "Bounded UI-family chunks; no full116 capture scratch at once"
+  },
+  "prior_product_availability_changes": [
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+      "prior_sha256": "3130149da571752a90cb3db62abd435c5ffc4a7b2dce26294398965c5efba4bb",
+      "prior_availability": "superseded installed bytes not retained",
+      "current_sha256": "9be1d5dd3075613ad34250baef76438d1246c1cabbd30a5a1f1f6c98892559fc"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+      "prior_sha256": "4f275a26ad17ba65233d10dbf14defca060b14e8cfc86e1c8f3f901ee9fd59fc",
+      "prior_availability": "superseded installed bytes not retained",
+      "current_sha256": "dc922317c250f66e7ce915405f4b1b5db4f44b0b881ffdc2d6537e39a9f1721e"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\linux\\app-installed\\bin\\imagejxx",
+      "prior_sha256": "6d81110e54c975e15f3a3c4672ae3f43f6e5c5a826b66875cc8fad54a4441bd0",
+      "prior_availability": "superseded installed bytes not retained",
+      "current_sha256": "ced60fda4678e757ace8c06c17db26a502cd20d1106c1b08820fce2311133580"
+    },
+    {
+      "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\p13g-probe-env003\\lib\\python3.12\\site-packages\\imagejxx\\_desktop.cpython-312-x86_64-linux-gnu.so",
+      "prior_sha256": "0db46742dd1207bdae6ad89bf2593fd6177b62ba584e2abd513e4ebc0446da65",
+      "prior_availability": "superseded installed bytes not retained",
+      "current_sha256": "edd5ea52b69ae8dae964ba2d15f1e85c58fd481a2fed2f093efef9f2fea17a26"
+    }
+  ],
+  "remaining": [
+    "E7 final common-source affected native/API/wire/type/scope and full four-contextUI regression",
+    "Updated installedSDK/header/client and optional-runtime/dependency/commercial boundaries",
+    "Genuine current CIprofile captures/readers, final source/product/report ledger, cleanup and scoped landing",
+    "Original99families47in_progress/52open/0complete; historicalG016/Auto/scientific-owner exclusion/macOS/OSGPU/accessibility and fullM0-M13 remain open"
+  ]
+}

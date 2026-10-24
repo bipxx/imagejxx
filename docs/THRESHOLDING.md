@@ -350,3 +350,25 @@ Auto is synchronous and bounded; complete background execution, arbitrary-list
 UI targets, volume/color/nonfinite policies, standalone histogram range/bin/log
 and export controls, method-level recording, and full performance/reference/
 platform/accessibility qualification remain unfinished.
+
+
+### Native path command records
+
+Active native paths use command schema version three and profile
+`manual_raw_inclusive_v3`, including ordinary single-plane and pooled/scientific
+Apply. Its seven fields are `schema_version`, `operation`, `profile`, `lower`,
+`upper`, `target` and `selection`. Selection retains the native path's exact
+binary64 commands, width and attributes through the existing strict native codec.
+V3 requires an active nonnull path; it does not widen the legacy selection grammar.
+Primitive single-position V1 and multi-plane V2 records remain unchanged.
+
+Strict replay still checks source identity, data/selection revisions and the
+captured selection. Explicit rebind uses the destination selection. Command and
+display-overlay records have independent version numbers. Newly written path
+records require a matching current reader/library; V4 paths, V8 authoring workflow
+intent and V5 session formats are unchanged. The installed C++ SDK and Python
+interfaces share this implementation. Eager finite scalar source limits remain.
+
+Recorded V3 rows support the existing direct replay/rebind controls. General
+NativeWorkflowProgram/Run integration of typed manual-threshold V1/V2/V3 records
+remains unfinished; the path-record repair does not claim batch-family closure.

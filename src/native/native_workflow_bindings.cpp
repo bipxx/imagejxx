@@ -5,6 +5,7 @@
 #include "selection_creation_workflow.hpp"
 #include "annotation_workflow.hpp"
 #include <imagejxx/native_workflow_batch_setup.hpp>
+#include <limits>
 namespace py = pybind11;
 using namespace imagejxx;
 // Reuse the existing bounded borrowed-before-copy DTO adapters.
@@ -79,17 +80,19 @@ void preflight_program_python(py::handle value, std::size_t &remaining,
 } // namespace
 void bind_native_workflow(py::module_ &m) {
   py::class_<NativeWorkflowLimits>(m, "NativeWorkflowLimits")
-      .def(py::init([](py::object steps, py::object bytes) {
-             auto n = integer(steps), b = integer(bytes);
-             if (!n || n > 4096 || !b)
+      .def(py::init([](py::object steps, py::object bytes, py::object working) {
+             auto n = integer(steps), b = integer(bytes), w = integer(working);
+             if (!n || n > 4096 || !b || !w)
                throw py::value_error("Workflow limits out of range");
-             return NativeWorkflowLimits{n, b};
+             return NativeWorkflowLimits{n, b, w};
            }),
            py::arg("max_steps") = 64,
-           py::arg("max_retained_bytes") = 512ULL * 1024 * 1024)
+           py::arg("max_retained_bytes") = 512ULL * 1024 * 1024, py::kw_only(),
+           py::arg("max_working_bytes") = std::numeric_limits<std::size_t>::max())
       .def_readonly("max_steps", &NativeWorkflowLimits::max_steps)
       .def_readonly("max_retained_bytes",
-                    &NativeWorkflowLimits::max_retained_bytes);
+                    &NativeWorkflowLimits::max_retained_bytes)
+      .def_readonly("max_working_bytes", &NativeWorkflowLimits::max_working_bytes);
   py::class_<NativeWorkflowAnnotationIntent>(m,"NativeWorkflowAnnotationIntent")
       .def(py::init([](py::sequence dimensions,py::object value) {
         if(py::len(dimensions)!=6)throw py::value_error("Annotation intent requires TCZYXS extent");

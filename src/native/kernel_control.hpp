@@ -20,6 +20,31 @@ void kernel_checkpoint();
 // Keep constant initialization visible at the hot polling sites. In particular,
 // MSVC otherwise adds an on-demand TLS initialization guard to every sample.
 inline thread_local ExecutionScope *current_execution_scope = nullptr;
+// Admission must retain cancellation from every inherited scope without
+// dispatching user code. A cancellation-only child scope alone cannot do this:
+// kernel dispatch deliberately walks the linked parent scopes as well.
+namespace detail {
+struct QuietExecutionDispatch {
+  ExecutionScope &scope;
+  bool previous;
+  explicit QuietExecutionDispatch(ExecutionScope &value)
+      : scope(value), previous(value.dispatching_callback) {
+    scope.dispatching_callback = true;
+  }
+  ~QuietExecutionDispatch() { scope.dispatching_callback = previous; }
+};
+template <class Function>
+auto quiet_execution_chain(ExecutionScope *scope, Function &function)
+    -> decltype(function()) {
+  if (!scope) return function();
+  QuietExecutionDispatch quiet(*scope);
+  return quiet_execution_chain(scope->previous, function);
+}
+template <class Function>
+auto without_execution_callbacks(Function function) -> decltype(function()) {
+  return quiet_execution_chain(current_execution_scope, function);
+}
+} // namespace detail
 inline void kernel_checkpoint_periodic() {
   if (!current_execution_scope)
     return;

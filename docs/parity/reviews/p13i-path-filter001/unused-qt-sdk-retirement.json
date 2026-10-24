@@ -1,0 +1,12 @@
+{
+  "schema": "p13i.unused-qt-sdk-retirement.001",
+  "state": "retired_unavailable",
+  "reason": "Unused Qt5 dependency SDK superseded by user-requested Dear ImGui architecture; active compiler cache has no Qt/Tcl references; SDK has no tracked source files",
+  "removed_bytes": 1246804559,
+  "members_verified": 4898,
+  "manifest": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\qt5-sdk-retirement001.json",
+  "manifest_sha256": "3433309c44e7a0fc2f157070a2c8c73479c9669394b3ef16328f59b20cc24a8f",
+  "availability": "Exact retired inactive Qt SDK bytes unavailable; recorded identities preserved. Active ImGui SDK untouched.",
+  "storage_measurement_correction": "Subsequent measurements include remaining .tools dependencies/tools; prior measurement receipts/fingerprints are unchanged.",
+  "acceptance": false
+}

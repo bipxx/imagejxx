@@ -1,0 +1,179 @@
+{
+  "schema": "p13i.superseded-ui-retirement.001",
+  "state": "retired",
+  "reason": "E1/E2/E3 full UI captures superseded by retained E3/E4 captures; bounded storage before E5",
+  "superseding_receipt": "docs/parity/reviews/p13i-path-filter001/display-lifecycle-progress.json",
+  "superseding_receipt_sha256": "633e8d29c313e68eb95cc7b568bbf72d89251a05d2cfa46893f76da43406474d",
+  "effect": "Exact retired archive bytes become unavailable historical evidence; original identities/expectations remain unchanged",
+  "protected": "Latest E3/E4 pass captures, dedicated Top Hat failure samples, source preimages, all thirteen final P13h qualification archives",
+  "files": [
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\python-windows003.tar.gz",
+      "bytes": 21358063,
+      "sha256": "930d69c3193fd035eb02f9f2a429dbc4cd1224d55dac76d1257cfc9ce85294e8",
+      "retention_receipt": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\python-windows003-retention.json",
+      "preserved_receipt": ".tmp/p13i-verification/superseded-p13i-receipts001/python-windows003/original-retention.json",
+      "retention_receipt_sha256": "f9d6b65a863ce8b9108200634fb450f4a19cae35fcc4e599470588650567cf95",
+      "members_verified": 110,
+      "concise_reports": [
+        {
+          "path": ".tmp/p13i-verification/superseded-p13i-receipts001/python-windows003/api.xml",
+          "bytes": 64557,
+          "sha256": "55a7134fbdccf2ba4958e68765f861ee50d873a36694a67241ca7e00b36d6ee9"
+        },
+        {
+          "path": ".tmp/p13i-verification/superseded-p13i-receipts001/python-windows003/receipt.json",
+          "bytes": 7464,
+          "sha256": "48af3d25eebe9bf02a40f8f767221122668cd745f6e79345d912510d06d6f7d1"
+        },
+        {
+          "path": ".tmp/p13i-verification/superseded-p13i-receipts001/python-windows003/ui.xml",
+          "bytes": 5196,
+          "sha256": "5872f2ca4559cfbc36929cbc571145067cff30f9b8e8417f0b1c3dee8638ecb4"
+        }
+      ],
+      "state": "retired_unavailable"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\budget-ui-windows002.tar.gz",
+      "bytes": 31832341,
+      "sha256": "9d847015c2ec1b3f2fb89107a0de3ee96bb6114a27ba6296b1eb0abc8b4c8d29",
+      "retention_receipt": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\budget-ui-windows002-retention.json",
+      "preserved_receipt": ".tmp/p13i-verification/superseded-p13i-receipts001/budget-ui-windows002/original-retention.json",
+      "retention_receipt_sha256": "5d66a49446c11657364cb40aa39120d9cc987f2a87faeda2b9def6050c501f2e",
+      "members_verified": 119,
+      "concise_reports": [
+        {
+          "path": ".tmp/p13i-verification/superseded-p13i-receipts001/budget-ui-windows002/receipt.json",
+          "bytes": 8390,
+          "sha256": "22f50a198b2d5efe721322d10d2730922c0a3ca19604cc1d1e97c5e8e26b656c"
+        },
+        {
+          "path": ".tmp/p13i-verification/superseded-p13i-receipts001/budget-ui-windows002/ui.xml",
+          "bytes": 5860,
+          "sha256": "be0c0e69918a65ea570c11a1cb74ebb9d458336508fc071c77a2356534162af2"
+        }
+      ],
+      "state": "retired_unavailable"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\specialized-ui-windows001.tar.gz",
+      "bytes": 34588104,
+      "sha256": "c49115502431d41a7da548dc0fc89ef36ad49e2a828537c324c5c4db63db97c5",
+      "retention_receipt": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\specialized-ui-windows001-retention.json",
+      "preserved_receipt": ".tmp/p13i-verification/superseded-p13i-receipts001/specialized-ui-windows001/original-retention.json",
+      "retention_receipt_sha256": "7f46e2dde3dc0a115d90c2f5ea5d223d208a580fbe9bf534042aaec18566cb0b",
+      "members_verified": 231,
+      "concise_reports": [
+        {
+          "path": ".tmp/p13i-verification/superseded-p13i-receipts001/specialized-ui-windows001/receipt.json",
+          "bytes": 16813,
+          "sha256": "8a2685a5a2365c39d8d7e63c47b84fbdeaafedf9dd01e476cd0f7f175236100c"
+        },
+        {
+          "path": ".tmp/p13i-verification/superseded-p13i-receipts001/specialized-ui-windows001/ui.xml",
+          "bytes": 137455,
+          "sha256": "8ea56d70f3f0f7f8e82fbb0b7fa886c9eb0870adf9fce6313af9cec353eaab04"
+        }
+      ],
+      "state": "retired_unavailable"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\specialized-ui-windows002.tar.gz",
+      "bytes": 17298650,
+      "sha256": "1eccb3fe3d2c05f37bb8f4664b53ea1fd3770b7fa170bfbf8b34cef81a68c8c0",
+      "retention_receipt": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\specialized-ui-windows002-retention.json",
+      "preserved_receipt": ".tmp/p13i-verification/superseded-p13i-receipts001/specialized-ui-windows002/original-retention.json",
+      "retention_receipt_sha256": "da67dbd19b42849e95127c50fd81d4484aced9dcd078044330575e3924526167",
+      "members_verified": 101,
+      "concise_reports": [
+        {
+          "path": ".tmp/p13i-verification/superseded-p13i-receipts001/specialized-ui-windows002/receipt.json",
+          "bytes": 608,
+          "sha256": "01a597ddd5e3a0024b876107bc558601175cde1a3722b1019fcf050efa715b24"
+        },
+        {
+          "path": ".tmp/p13i-verification/superseded-p13i-receipts001/specialized-ui-windows002/ui.xml",
+          "bytes": 12384,
+          "sha256": "f061c58220c43cdb50f11c93e3c1c6ff22eb14e145c38c1293cb8609ab94af5d"
+        }
+      ],
+      "state": "retired_unavailable"
+    },
+    {
+      "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\python-linux004-native.tar.gz",
+      "bytes": 21363686,
+      "sha256": "c4bdb8c015fff9fa2a92e5e54cf3babf4cb91b6c4e45a35579384933549d7053",
+      "retention_receipt": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\python-linux004-native-retention.json",
+      "preserved_receipt": ".tmp/p13i-verification/superseded-p13i-receipts001/python-linux004-native/original-retention.json",
+      "retention_receipt_sha256": "a6b509a40de45a7c2ad752995590e22c6cca20e9ae1a347f6ed061eb005f7713",
+      "members_verified": 113,
+      "concise_reports": [
+        {
+          "path": ".tmp/p13i-verification/superseded-p13i-receipts001/python-linux004-native/api.xml",
+          "bytes": 64556,
+          "sha256": "97c34ff88639e735eb4b692b703d966bbe87827b9093276b3dc2abb29eed020e"
+        },
+        {
+          "path": ".tmp/p13i-verification/superseded-p13i-receipts001/python-linux004-native/receipt.json",
+          "bytes": 7371,
+          "sha256": "4cba4fae6bfcbd5b98cd9d4eca1b093a4a83c3b3acc88e97d3a8e84ce113b342"
+        },
+        {
+          "path": ".tmp/p13i-verification/superseded-p13i-receipts001/python-linux004-native/ui.xml",
+          "bytes": 5196,
+          "sha256": "f8a27a87f02209e9cb2d8272d5aec63e736ce3e571b28606bd06e562cc7e0b0c"
+        }
+      ],
+      "state": "retired_unavailable"
+    },
+    {
+      "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\budget-ui-linux001-native.tar.gz",
+      "bytes": 31837704,
+      "sha256": "d15b53a001807d9ec85ca491836ab2f132a3de50ba7fd6a882b6a2e1604b6434",
+      "retention_receipt": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\budget-ui-linux001-native-retention.json",
+      "preserved_receipt": ".tmp/p13i-verification/superseded-p13i-receipts001/budget-ui-linux001-native/original-retention.json",
+      "retention_receipt_sha256": "4607c2d8b8e867002ac93ad009f8c2598848345dfd881540f13b50bbe1fd489f",
+      "members_verified": 123,
+      "concise_reports": [
+        {
+          "path": ".tmp/p13i-verification/superseded-p13i-receipts001/budget-ui-linux001-native/receipt.json",
+          "bytes": 8277,
+          "sha256": "58bec91be8086328fe4018479b2956d35a9a7621f569edd887c7cc4c8a33d6de"
+        },
+        {
+          "path": ".tmp/p13i-verification/superseded-p13i-receipts001/budget-ui-linux001-native/ui.xml",
+          "bytes": 5860,
+          "sha256": "340127a21b3f21962338f76ce1bc8f9cfab59dacb043567789b14fac692224b3"
+        }
+      ],
+      "state": "retired_unavailable"
+    },
+    {
+      "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\specialized-ui-linux001-native.tar.gz",
+      "bytes": 34587431,
+      "sha256": "c86e3eabcb457c647173119974413ad157362978b7ee0949095b0817bd5b848d",
+      "retention_receipt": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\specialized-ui-linux001-native-retention.json",
+      "preserved_receipt": ".tmp/p13i-verification/superseded-p13i-receipts001/specialized-ui-linux001-native/original-retention.json",
+      "retention_receipt_sha256": "bb89832a57189540726000839ce35f4b289963e05e81b45c2ff311e74680927b",
+      "members_verified": 236,
+      "concise_reports": [
+        {
+          "path": ".tmp/p13i-verification/superseded-p13i-receipts001/specialized-ui-linux001-native/receipt.json",
+          "bytes": 16572,
+          "sha256": "722722ca930406051d2a711cf5194de123f16dcafce19e05cc5ba2a0fc73c927"
+        },
+        {
+          "path": ".tmp/p13i-verification/superseded-p13i-receipts001/specialized-ui-linux001-native/ui.xml",
+          "bytes": 12384,
+          "sha256": "51de2abc416794d76edbffde70548b6bcac45fb11c1381dfca62120409338e3f"
+        }
+      ],
+      "state": "retired_unavailable"
+    }
+  ],
+  "acceptance": false,
+  "complete_requirement_coverage": false,
+  "removed_bytes": 192865979,
+  "ended": 1792863050.060928
+}

@@ -1,5 +1,6 @@
 #pragma once
 #include "viewport_jobs.hpp"
+#include "gaussian_jobs.hpp"
 #include <imagejxx/channel_display.hpp>
 #include <imagejxx/targets.hpp>
 
@@ -12,6 +13,7 @@ struct ViewportRender {
   std::optional<ResolvedTarget> target;
   std::vector<ResolvedTarget> previewTargets;
   std::uint64_t previewGeneration = 0;
+  std::vector<PlanePreviewDisplayEffects> previewDisplayEffects;
   PlanePosition position{};
   Plane plane = Plane::XY;
   int coordinate = 0;

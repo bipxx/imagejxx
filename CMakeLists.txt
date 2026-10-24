@@ -584,6 +584,20 @@ if(BUILD_TESTING)
   add_executable(imagejxx_gaussian_command_tests tests/native/test_gaussian_command.cpp)
   target_link_libraries(imagejxx_gaussian_command_tests PRIVATE imagejxx::core)
   add_test(NAME native_gaussian_command COMMAND imagejxx_gaussian_command_tests)
+  add_executable(imagejxx_filter_region_masks_tests tests/native/test_filter_region_masks.cpp)
+  target_link_libraries(imagejxx_filter_region_masks_tests PRIVATE imagejxx::core)
+  add_test(NAME native_filter_region_masks COMMAND imagejxx_filter_region_masks_tests)
+  set_tests_properties(native_filter_region_masks PROPERTIES TIMEOUT 60)
+  add_executable(imagejxx_path_filter_plan_tests tests/native/test_path_filter_plan.cpp)
+  target_link_libraries(imagejxx_path_filter_plan_tests PRIVATE imagejxx::core)
+  add_test(NAME native_path_filter_plan COMMAND imagejxx_path_filter_plan_tests)
+  set_tests_properties(native_path_filter_plan PROPERTIES TIMEOUT 60)
+  add_executable(imagejxx_path_filter_admission_tests tests/native/test_path_filter_admission.cpp)
+  target_link_libraries(imagejxx_path_filter_admission_tests PRIVATE imagejxx::core)
+  target_include_directories(imagejxx_path_filter_admission_tests SYSTEM PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/nlohmann_json/include)
+  add_test(NAME native_path_filter_admission COMMAND imagejxx_path_filter_admission_tests)
+  set_tests_properties(native_path_filter_admission PROPERTIES TIMEOUT 60)
 
   add_executable(imagejxx_axis_extraction_command_tests tests/native/test_axis_extraction_command.cpp)
   target_link_libraries(imagejxx_axis_extraction_command_tests PRIVATE imagejxx::core)
@@ -761,6 +775,12 @@ if(BUILD_TESTING)
   target_link_libraries(imagejxx_manual_threshold_command_tests PRIVATE imagejxx::core)
   add_test(NAME native_manual_threshold_command COMMAND imagejxx_manual_threshold_command_tests)
   set_tests_properties(native_manual_threshold_command PROPERTIES TIMEOUT 30)
+  add_executable(imagejxx_manual_threshold_path_command_tests tests/native/test_manual_threshold_path_command.cpp)
+  target_link_libraries(imagejxx_manual_threshold_path_command_tests PRIVATE imagejxx::core)
+  target_include_directories(imagejxx_manual_threshold_path_command_tests SYSTEM PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/nlohmann_json/include)
+  add_test(NAME native_manual_threshold_path_command COMMAND imagejxx_manual_threshold_path_command_tests)
+  set_tests_properties(native_manual_threshold_path_command PROPERTIES TIMEOUT 60)
   add_executable(imagejxx_z_subset_tests tests/native/test_z_subset.cpp)
   target_link_libraries(imagejxx_z_subset_tests PRIVATE imagejxx::core)
   add_test(NAME native_z_subset COMMAND imagejxx_z_subset_tests)
@@ -985,6 +1005,11 @@ if(BUILD_TESTING)
   target_link_libraries(imagejxx_operation_job_probe_tests PRIVATE imagejxx::core)
   add_test(NAME native_operation_job_probe COMMAND imagejxx_operation_job_probe_tests)
   set_tests_properties(native_operation_job_probe PROPERTIES TIMEOUT 60)
+  add_executable(imagejxx_preview_display_effects_tests
+    tests/native/test_preview_display_effects.cpp src/desktop/gaussian_jobs.cpp)
+  target_link_libraries(imagejxx_preview_display_effects_tests PRIVATE imagejxx::core)
+  add_test(NAME native_preview_display_effects COMMAND imagejxx_preview_display_effects_tests)
+  set_tests_properties(native_preview_display_effects PROPERTIES TIMEOUT 60)
   add_executable(imagejxx_gaussian_preview_jobs_tests
     tests/native/test_gaussian_preview_jobs.cpp src/desktop/gaussian_jobs.cpp)
   target_link_libraries(imagejxx_gaussian_preview_jobs_tests PRIVATE imagejxx::core)
@@ -1095,6 +1120,15 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     src/desktop/orthogonal_keyboard.cpp
     src/desktop/settings_io.cpp src/desktop/settings_panel.cpp src/desktop/startup_panel.cpp src/desktop/jobs_panel.cpp src/desktop/selection_panel.cpp src/desktop/path_segment_controls.cpp src/desktop/path_segment_ui_probe.cpp
     src/desktop/path_authoring_controls.cpp src/desktop/path_authoring_ui_probe.cpp
+    src/desktop/path_filter_ui_probe.cpp
+    src/desktop/path_rank_filter_ui_probe.cpp
+    src/desktop/path_scientific_filter_ui_probe.cpp
+    src/desktop/path_filter_budget_ui_probe.cpp
+    src/desktop/path_specialized_filter_ui_probe.cpp
+    src/desktop/path_filter_lifecycle_ui_probe.cpp
+    src/desktop/path_empty_filter_ui_probe.cpp
+    src/desktop/path_filter_admission_ui_probe.cpp
+    src/desktop/path_filter_stack_ui_probe.cpp
     src/desktop/path_authoring_edge_ui_probe.cpp
     src/desktop/shortcut_input.cpp src/desktop/shortcut_editor.cpp
     src/desktop/shortcuts_ui_probe.cpp src/desktop/shortcut_policy_observations.cpp
@@ -1235,6 +1269,18 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
       -DTEST_TIMEOUT_SECONDS=30
       -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/RunOwnedFixtureTest.cmake)
     set_tests_properties(desktop_background_views PROPERTIES TIMEOUT 35)
+    add_executable(imagejxx_preview_rendering_tests tests/native/test_preview_rendering.cpp)
+    target_link_libraries(imagejxx_preview_rendering_tests PRIVATE imagejxx_desktop)
+    add_test(NAME desktop_preview_rendering COMMAND imagejxx_preview_rendering_tests)
+    add_executable(imagejxx_sync_path_filter_admission_tests tests/native/test_sync_path_filter_admission.cpp)
+    target_link_libraries(imagejxx_sync_path_filter_admission_tests PRIVATE imagejxx_desktop)
+    set(IMAGEJXX_SYNC_PATH_FILTER_TEST_SCRATCH
+      "${CMAKE_CURRENT_BINARY_DIR}/Testing/Temporary/sync-path-filter-admission"
+      CACHE PATH "Owned fresh scratch for synchronous path-filter admission tests")
+    add_test(NAME desktop_sync_path_filter_admission
+      COMMAND imagejxx_sync_path_filter_admission_tests "${IMAGEJXX_SYNC_PATH_FILTER_TEST_SCRATCH}")
+    set_tests_properties(desktop_sync_path_filter_admission PROPERTIES TIMEOUT 60)
+    set_tests_properties(desktop_preview_rendering PROPERTIES TIMEOUT 60)
     add_executable(imagejxx_viewport_jobs_tests tests/native/test_viewport_jobs.cpp)
     target_link_libraries(imagejxx_viewport_jobs_tests PRIVATE imagejxx_desktop)
     add_test(NAME desktop_viewport_jobs COMMAND imagejxx_viewport_jobs_tests)

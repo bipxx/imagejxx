@@ -1,0 +1,316 @@
+{
+  "schema": "p13i.budget-progress.001",
+  "state": "E2 budget recovery slice passed; P13i incomplete",
+  "base_commit": "4a80b3570c59e547f2571c7fc2b95d85a5b66d0e",
+  "source_manifests": {
+    "windows": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\budget-windows001\\source-manifest.json",
+      "bytes": 946688,
+      "sha256": "44fb078572b9ae11a837e376e539910c9b4c2abfe5f8b935ccc5de0f63b9c770",
+      "availability": "available at review"
+    },
+    "linux": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\budget-linux001\\source-manifest.json",
+      "bytes": 939680,
+      "sha256": "170c551804478cb0684a5161f2717c83eda50288af78050cc97223c8634b0a76",
+      "availability": "available at review"
+    },
+    "canonical_sorted_entries_sha256": "618315b3f4a755dd6f3711240f54cb2b5ab81f2200354d5ec2a26b96e99a34de",
+    "same_path_hash_entries": true,
+    "serialization": "native newlines; compare entries, preserve each raw manifest identity"
+  },
+  "source_files": 7006,
+  "scope": "Gaussian/Mean path Preview READY, actual Preferences lower refusal, release, accepted lower, Apply refusal, restore/reopen/Apply and history; regression of all17path UI recipes in both launches/platforms",
+  "platforms": {
+    "windows": {
+      "build_install_receipt": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\budget-windows001\\receipt.json",
+        "bytes": 2407,
+        "sha256": "9b567c1ca019828744741f58e5d00687b019727a20ebc79c0d0281049c891a5f",
+        "availability": "available at review"
+      },
+      "all_existing_and_budget_ui": {
+        "tests": 34,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "archive": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\budget-ui-windows002.tar.gz",
+          "bytes": 31832341,
+          "sha256": "9d847015c2ec1b3f2fb89107a0de3ee96bb6114a27ba6296b1eb0abc8b4c8d29",
+          "availability": "available at review"
+        },
+        "member": "ui.xml",
+        "member_sha256": "be0c0e69918a65ea570c11a1cb74ebb9d458336508fc071c77a2356534162af2",
+        "bytes": 5860
+      },
+      "genuine_ci_profile_reader": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "archive": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\budget-profile-windows001.tar.gz",
+          "bytes": 10480851,
+          "sha256": "16986e9d37dc0bcd5cc01dbdd41accd2422182361defb9bd811fcddeb10345b7",
+          "availability": "available at review"
+        },
+        "member": "reader.xml",
+        "member_sha256": "ebe040e91bf1103ebe2fd26d9cad9530b442c5c63075ff1fd1d6f19641e709f7",
+        "bytes": 570
+      },
+      "budget_reports": [
+        {
+          "case": "budget-gaussian",
+          "report_member": "cpp-budget-gaussian/capture/case.json",
+          "bytes": 13370159,
+          "sha256": "50b0dbc5f50ac9ab96386b933bf0d3fa0cc00a873ea74f3f1b1c5acc41dc4c25",
+          "frames": 197,
+          "ready_reservation_bytes": 5383528,
+          "memory_requests": [
+            [
+              "lower_rejected",
+              1
+            ],
+            [
+              "low_accepted",
+              1
+            ],
+            [
+              "restored",
+              64
+            ]
+          ]
+        },
+        {
+          "case": "budget-rank-mean",
+          "report_member": "cpp-budget-rank-mean/capture/case.json",
+          "bytes": 13583156,
+          "sha256": "a3ac155515850ca2193b4663a5d0a0c4d66565ffce369239b6170655e9070a98",
+          "frames": 213,
+          "ready_reservation_bytes": 5252148,
+          "memory_requests": [
+            [
+              "lower_rejected",
+              1
+            ],
+            [
+              "low_accepted",
+              1
+            ],
+            [
+              "restored",
+              64
+            ]
+          ]
+        }
+      ]
+    },
+    "linux": {
+      "build_install_receipt": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\budget-linux001\\receipt.json",
+        "bytes": 1789,
+        "sha256": "37a2327846de7f66f20bce77fd102156af623252830966fafd324091aa153d8e",
+        "availability": "available at review"
+      },
+      "all_existing_and_budget_ui": {
+        "tests": 34,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "archive": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\budget-ui-linux001-native.tar.gz",
+          "bytes": 31837704,
+          "sha256": "d15b53a001807d9ec85ca491836ab2f132a3de50ba7fd6a882b6a2e1604b6434",
+          "availability": "available at review"
+        },
+        "member": "ui.xml",
+        "member_sha256": "340127a21b3f21962338f76ce1bc8f9cfab59dacb043567789b14fac692224b3",
+        "bytes": 5860
+      },
+      "genuine_ci_profile_reader": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "archive": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\budget-profile-linux001-native.tar.gz",
+          "bytes": 10494294,
+          "sha256": "f06268883a00299e8a53fbd31f81dccbcf38d8c23cdbf39194a2920f95ce76ed",
+          "availability": "available at review"
+        },
+        "member": "reader.xml",
+        "member_sha256": "4591767356eb8c60d7165b295396a5dc3014fe85d30c87326c6ae68c1c1a9065",
+        "bytes": 570
+      },
+      "budget_reports": [
+        {
+          "case": "budget-gaussian",
+          "report_member": "cpp-budget-gaussian/capture/case.json",
+          "bytes": 13370859,
+          "sha256": "6ad9bcd13cba677d9d0ea0a850d7b11be8de6b6a9b36fb0680d76f5fb123b40c",
+          "frames": 197,
+          "ready_reservation_bytes": 5383528,
+          "memory_requests": [
+            [
+              "lower_rejected",
+              1
+            ],
+            [
+              "low_accepted",
+              1
+            ],
+            [
+              "restored",
+              64
+            ]
+          ]
+        },
+        {
+          "case": "budget-rank-mean",
+          "report_member": "cpp-budget-rank-mean/capture/case.json",
+          "bytes": 13583612,
+          "sha256": "4d7217c1346a391885e5ef1456fb395462f578332c70172804735c1009117366",
+          "frames": 213,
+          "ready_reservation_bytes": 5252148,
+          "memory_requests": [
+            [
+              "lower_rejected",
+              1
+            ],
+            [
+              "low_accepted",
+              1
+            ],
+            [
+              "restored",
+              64
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  "products": [
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+      "bytes": 17592320,
+      "sha256": "98a87f1958cce968d885799381d34be5a9ff791f0bb0a4cd0ddb5a372dd7d99e",
+      "availability": "available at review"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+      "bytes": 17462784,
+      "sha256": "4ac3efa6be46cecf01e7015a72db21f147975a6e455221a5c7320c24297508af",
+      "availability": "available at review"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+      "bytes": 7570944,
+      "sha256": "9686a49fb6c036ddc006423c766f29e557451d08410349e6abc440f773f556d4",
+      "availability": "available at review"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_scientific_io.cp312-win_amd64.pyd",
+      "bytes": 591360,
+      "sha256": "e96ae40ed804e4e7fc75df680453e6efe89490e8b6b42d6a63d6d04036eb0f56",
+      "availability": "available at review"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\linux\\app-installed\\bin\\imagejxx",
+      "bytes": 35784888,
+      "sha256": "5448e37a8aadc8a35d969eecec149f808bd2a15721c73a7200bb6c82e26fa65b",
+      "availability": "available at review"
+    },
+    {
+      "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\p13g-probe-env003\\lib\\python3.12\\site-packages\\imagejxx\\_scientific_io.cpython-312-x86_64-linux-gnu.so",
+      "bytes": 4488280,
+      "sha256": "4f7e2d4f29ffcdccb73f0999ac1345780945d21b05e5c3987f93c8a2e1d29773",
+      "availability": "available at review"
+    },
+    {
+      "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\p13g-probe-env003\\lib\\python3.12\\site-packages\\imagejxx\\_desktop.cpython-312-x86_64-linux-gnu.so",
+      "bytes": 33585624,
+      "sha256": "593d89419b1e1b2efda7ba952a75513328fda3c933891f18c939b76a961bfa0a",
+      "availability": "available at review"
+    },
+    {
+      "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\p13g-probe-env003\\lib\\python3.12\\site-packages\\imagejxx\\_native.cpython-312-x86_64-linux-gnu.so",
+      "bytes": 12658176,
+      "sha256": "8c058204a3f67a14efb4fb02c6f05acd9d7ac53df3a06ed83a1e7ce3eaccccb7",
+      "availability": "available at review"
+    }
+  ],
+  "reference_fixture": {
+    "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\tests\\fixtures\\path-budget-targets-imagej154r.json.gz",
+    "bytes": 251486,
+    "sha256": "3a08bf628dd636c81681e3d75bbe36641d5ce8eb7ab89bfa88e26382e876ddcd",
+    "availability": "available at review"
+  },
+  "reference_and_transport_guards": {
+    "tests": 548,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "report": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\reference-tool-tests009.xml",
+      "bytes": 91717,
+      "sha256": "eb1a30a4389cf0c0adae32778de3834e30dd95eb1f269279ff87204ac3daaa3d",
+      "availability": "available at review"
+    }
+  },
+  "e1_product_availability_changes": [
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+      "prior_sha256": "b886ce6aab4d59ec4fca51daf7c8e4307275c92c316fe56692fbce0dfa826f24",
+      "prior_availability": "superseded installed product; prior exact bytes not retained",
+      "current_sha256": "98a87f1958cce968d885799381d34be5a9ff791f0bb0a4cd0ddb5a372dd7d99e"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+      "prior_sha256": "932c668e19130f00c058b529a09b50c0d196531aaafd0958b7856f572104b9ea",
+      "prior_availability": "superseded installed product; prior exact bytes not retained",
+      "current_sha256": "4ac3efa6be46cecf01e7015a72db21f147975a6e455221a5c7320c24297508af"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\linux\\app-installed\\bin\\imagejxx",
+      "prior_sha256": "d62d7bb8dc097509a4cb94c0a37877c6adde8a5dbe18b5f844d7d7841a984f96",
+      "prior_availability": "superseded installed product; prior exact bytes not retained",
+      "current_sha256": "5448e37a8aadc8a35d969eecec149f808bd2a15721c73a7200bb6c82e26fa65b"
+    },
+    {
+      "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\p13g-probe-env003\\lib\\python3.12\\site-packages\\imagejxx\\_desktop.cpython-312-x86_64-linux-gnu.so",
+      "prior_sha256": "6b847495eea65282232c636ab79cba412263f48f8793263de4fc6917ce20c34a",
+      "prior_availability": "superseded installed product; prior exact bytes not retained",
+      "current_sha256": "593d89419b1e1b2efda7ba952a75513328fda3c933891f18c939b76a961bfa0a"
+    }
+  ],
+  "failures": [
+    {
+      "scope": "operational runner isolation",
+      "diagnosis": "C runner gave both standalone cases a shared Preferences parent; second correctly refused fresh-file requirement",
+      "product_changes": "none; runner now owns a private parent per case",
+      "archive": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\budget-ui-windows001.tar.gz",
+        "bytes": 13551056,
+        "sha256": "7001c6cd37e7034cec12e9526f7654beb3bbbd84232c8851b34e6d6b4b58f71f",
+        "availability": "available at review"
+      },
+      "failed_driver": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\run_budget_ui-failure001.py",
+        "bytes": 2626,
+        "sha256": "5c32f3b2e55477825ab594814d385c52b727d54880d0c20af7d3f143f138c441",
+        "availability": "available at review"
+      }
+    }
+  ],
+  "remaining": [
+    "E3 specialized method/LUT/nonfinite path actual-input matrix",
+    "E4 lifecycle/invalidations; E5 empty paths; E6 downstream/mixed workflow",
+    "E7 common-source final qualification and commercial/dependency audit",
+    "Original historical exclusion/G016/Auto and full M0-M13 obligations unchanged"
+  ],
+  "next": "E3 sixteen specialized-filter recipes; source in progress, not qualified",
+  "acceptance": false,
+  "complete_requirement_coverage": false
+}

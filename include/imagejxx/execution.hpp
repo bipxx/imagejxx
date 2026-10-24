@@ -1,6 +1,7 @@
 #pragma once
 
 #include <atomic>
+#include <limits>
 #include <imagejxx/operations.hpp>
 #include <imagejxx/targets.hpp>
 #include <string_view>
@@ -23,6 +24,10 @@ struct ExecutionOptions {
   bool reset_manual_threshold = false;
   // Preview proposals are transient and cannot be committed or published.
   ExecutionPhase phase = ExecutionPhase::Apply;
+  // Additional packed/flatten/scan scratch only. Dense images, kernel work,
+  // source/history and provider caches retain their existing owning budgets.
+  // SIZE_MAX preserves direct-core calls without an explicit byte allowance.
+  std::size_t max_target_mask_bytes = std::numeric_limits<std::size_t>::max();
 };
 class OperationCancelled : public std::runtime_error {
 public:

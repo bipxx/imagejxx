@@ -1,5 +1,6 @@
 #include <imagejxx/manual_threshold_command.hpp>
 #include "session_metadata.hpp"
+#include "selection_codec.hpp"
 #include "target_record_internal.hpp"
 #include <cmath>
 #include <set>
@@ -41,7 +42,8 @@ Record decode(const MetadataObject &record) {
   fields(value, {"schema_version", "operation", "profile", "lower", "upper", "target", "selection"});
   const bool v1=value["schema_version"]==1 && value["profile"]=="manual_raw_inclusive_v1";
   const bool v2=value["schema_version"]==2 && value["profile"]=="manual_raw_inclusive_v2";
-  if (!value["schema_version"].is_number_integer() || (!v1 && !v2) || value["operation"]!="threshold")
+  const bool v3=value["schema_version"]==3 && value["profile"]=="manual_raw_inclusive_v3";
+  if (!value["schema_version"].is_number_integer() || (!v1 && !v2 && !v3) || value["operation"]!="threshold")
     throw std::invalid_argument("Unsupported manual threshold command record");
   // Accept only lossless real bounds, including JSON integers. Booleans and
   // large integers must not silently become a different threshold.
@@ -66,11 +68,22 @@ Record decode(const MetadataObject &record) {
   request_valid(target.request);
   if (target.source_shape.s != 1 || (v1 && (target.request.scope != TargetScope::Positions || target.request.positions.size()!=1 || target.request.roi==RoiPolicy::PositionedRois)))
     throw std::invalid_argument("Threshold record requires a captured scalar position");
+  // V3 is the explicit native-path selection carrier. Earlier records retain
+  // their closed legacy grammar; unused paths do not select a newer version.
+  if (v3 && (target.request.roi != RoiPolicy::ActiveSelection ||
+             !value["selection"].is_object() ||
+             value["selection"].value("kind", Json()) != "path"))
+    throw std::invalid_argument("Threshold V3 requires an active native path selection");
   std::optional<Selection> selection;
   if (!value["selection"].is_null()) {
-    selection = codec::selection_from_json(value["selection"]);
+    selection = v3
+        ? detail::selection_codec::decode_selection(value["selection"], SessionLimits{}, false, true)
+        : codec::selection_from_json(value["selection"]);
     selection->validate(target.source_shape.x, target.source_shape.y);
-    if (codec::selection_to_json(*selection) != value["selection"])
+    const auto canonical = v3
+        ? detail::selection_codec::encode_selection(*selection, false, true)
+        : codec::selection_to_json(*selection);
+    if (canonical != value["selection"])
       throw std::invalid_argument("Threshold selection must be canonical");
   }
   if (target.request.roi != RoiPolicy::ActiveSelection && selection)
@@ -88,12 +101,16 @@ OperationParameters ResolvedManualThresholdCommand::parameters() const {
 MetadataObject ResolvedManualThresholdCommand::record() const {
   const auto &selection = target_.source().data().selection;
   const bool single=target_.scope()==TargetScope::Positions && target_.position_count()==1 && target_.roi_policy()!=RoiPolicy::PositionedRois;
-  return {{"schema_version", single?1:2}, {"operation", std::string("threshold")},
-      {"profile", std::string(single?"manual_raw_inclusive_v1":"manual_raw_inclusive_v2")},
+  const bool path=target_.roi_policy()==RoiPolicy::ActiveSelection && selection && selection->is_path();
+  return {{"schema_version", path?3:single?1:2}, {"operation", std::string("threshold")},
+      {"profile", std::string(path?"manual_raw_inclusive_v3":single?"manual_raw_inclusive_v1":"manual_raw_inclusive_v2")},
       {"lower", range_.lower}, {"upper", range_.upper},
       {"target", metadata_object(target_.record())},
       {"selection", target_.roi_policy() == RoiPolicy::ActiveSelection && selection
-          ? codec::from_json(codec::selection_to_json(*selection)) : MetadataValue{std::monostate{}}}};
+          ? codec::from_json(path
+                ? detail::selection_codec::encode_selection(*selection, false, true)
+                : codec::selection_to_json(*selection))
+          : MetadataValue{std::monostate{}}}};
 }
 ResolvedManualThresholdCommand resolve_manual_threshold_command(
     const DocumentSnapshot &source, ManualThresholdRange range, const TargetRequest &request) {

@@ -14,6 +14,15 @@
 
 namespace imagejxx::desktop {
 
+// A frozen presentation delta, never a source/result/resource owner. Consumers
+// may copy it into a viewport worker request after the host-thread query.
+struct PlanePreviewDisplayEffects {
+  PlanePosition position;
+  std::uint64_t generation;
+  std::optional<std::array<double, 2>> range;
+  bool suppress_threshold_overlay = false;
+};
+
 // Host-thread controller. Application must outlive this object; workers only
 // receive immutable native command/parameter copies. It owns no workflow state.
 class GaussianJobs {
@@ -62,6 +71,14 @@ public:
   preview_snapshot(std::uint64_t document_id) const;
   std::optional<std::uint64_t>
   preview_generation(std::uint64_t document_id) const;
+  // Host-thread only. The candidate is the final scalar plane or individual
+  // composite contributor. Only an installed Top Hat subtraction proposal may
+  // supply a delta. Live range/threshold edits override their respective fields;
+  // navigation and unrelated display changes leave matching fields eligible.
+  // No provider reads or result-resource ownership escape this value query.
+  std::optional<PlanePreviewDisplayEffects>
+  preview_display_effects(const DocumentSnapshot &current,
+                          PlanePosition candidate) const;
   // Detailed inspection is host-thread-only and returns scalar metadata. The
   // default avoids eager plane-table inspection and preserves its old shape.
   MetadataObject diagnostics(bool detailed = false) const;
@@ -104,6 +121,7 @@ private:
   Lane preview_, apply_;
   MetadataObject last_captured_command_record_;
   std::optional<DocumentSnapshot> installed_preview_;
+  bool installed_preview_processed_ = false;
   std::optional<std::uint64_t> requested_generation_, installed_generation_;
   std::array<std::optional<std::uint64_t>, 2> operation_generations_{};
   std::optional<std::uint64_t> active_installed_generation_;

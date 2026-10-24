@@ -1815,7 +1815,7 @@ void NativeWorkflowPanel::draw(
                 std::visit([&](const auto &v) { refs.emplace_back(&v); },
                            *step);
               auto prepared = detail::prepare_native_workflow_borrowed(
-                  source, refs, {64, prefix_cap}, control);
+                  source, refs, {64, prefix_cap, prefix_cap}, control);
               auto ready = std::make_shared<Ready>(prepared.preview(),
                                                    prepared.retained_bytes());
               ready->prefix_completed = prepared.completed_steps();
@@ -2143,7 +2143,7 @@ void NativeWorkflowPanel::draw(
                            *step);
               ExecutionScope scope(control);
               auto prepared = detail::prepare_native_workflow_borrowed(
-                  source, refs, {64, cap / 2}, control);
+                  source, refs, {64, cap / 2, cap / 2}, control);
               kernel_checkpoint();
               admit_native_workflow_viewport(prepared.preview(), cap / 2);
               auto ready = std::make_shared<Ready>(std::move(prepared));
@@ -2306,6 +2306,7 @@ void NativeWorkflowPanel::draw(
         batch_options.max_working_bytes = cap;
         batch_options.histogram_statistics=s.histogram_statistics;
         batch_options.workflow.max_retained_bytes = cap;
+        batch_options.workflow.max_working_bytes = cap;
         auto progress = std::make_shared<BatchProgress>();
         progress->states.resize(inputs.size(),
                                 NativeWorkflowBatchState::Queued);
@@ -2349,7 +2350,7 @@ void NativeWorkflowPanel::draw(
                 return;
               }
               auto prepared = detail::prepare_native_workflow_borrowed(
-                  source, refs, {64, cap - record_bytes}, control);
+                  source, refs, {64, cap - record_bytes, cap - record_bytes}, control);
               auto ready = std::make_shared<Ready>(std::move(prepared));
               ready->operation_record = std::move(operation_record);
               ready->resources = context.result_resource_guard();
@@ -2575,7 +2576,25 @@ void NativeWorkflowPanel::draw(
 Json NativeWorkflowPanel::diagnostics() const {
   const auto &s = *state_;
   Json entries = Json::array(), files = Json::array();
-  for (const auto &e : s.entries)
+  for (const auto &e : s.entries) {
+    Json chosen;
+    if (const auto *operation = std::get_if<NativeWorkflowOperation>(e.step.get())) {
+      const auto &target = operation->target;
+      const auto axis = [&](int index, const std::optional<AxisRange> &retained) -> Json {
+        if (e.retained_target)
+          return retained ? Json{retained->start, retained->stop ? Json(*retained->stop) : Json(), retained->step} : Json();
+        return e.scope == int(TargetScope::Ranges)
+            ? Json{e.first[index], e.stop[index], e.stride[index]} : Json();
+      };
+      // Project the actual effective() target branch without cloning a step,
+      // its geometry, or its potentially large explicit-position array.
+      chosen = {{"scope", e.retained_target ? int(target.scope) : e.scope},
+                {"roi", e.retained_target ? int(target.roi) : e.roi},
+                {"mode", int(target.mode)},
+                {"t", axis(0, target.t)}, {"c", axis(1, target.c)}, {"z", axis(2, target.z)},
+                {"positions_count", e.retained_target ? target.positions.size()
+                    : e.scope == int(TargetScope::Positions) ? e.positions.size() : std::size_t(0)}};
+    }
     entries.push_back({{"title", e.title},
                        {"enabled", e.enabled},
                        {"confirmed", e.confirmed},
@@ -2583,7 +2602,9 @@ Json NativeWorkflowPanel::diagnostics() const {
                        {"output_token",e.output_token},
                        {"histogram_authored",e.histogram_authored},
                        {"authored", e.authored},
-                       {"choice_bytes", e.choice_bytes}});
+                       {"choice_bytes", e.choice_bytes},
+                       {"chosen_target", std::move(chosen)}});
+  }
   if (s.ready)
     for (const auto &f : s.ready->files)
       files.push_back({{"path", f.path}, {"published", f.published}});

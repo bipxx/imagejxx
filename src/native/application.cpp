@@ -71,8 +71,10 @@ OperationJob Application::submit(const std::string &operation,
                                  const OperationParameters &parameters,
                                  ExecutionOptions options,
                                  JobOptions job_options) {
-  auto normalized =
-      validate_execution_parameters(operation, target, parameters, options);
+  auto normalized = detail::without_execution_callbacks([&] {
+    kernel_checkpoint();
+    return validate_execution_parameters(operation, target, parameters, options);
+  });
   const auto shape = target.source().data().dataset.shape();
   auto multiply = [](std::size_t a, std::size_t b) {
     if (b && a > std::numeric_limits<std::size_t>::max() / b)
@@ -87,28 +89,16 @@ OperationJob Application::submit(const std::string &operation,
   const auto staged = multiply(plane, target.position_count());
   const auto workspace =
       multiply(pixels, multiply(std::size_t(shape.s), 16 * sizeof(double)));
-  const auto extra =
-      operation_extra_workspace(operation,
-                                {shape.x,
-                                 shape.y,
-                                 shape.s,
-                                 target.source().data().dataset.pixel_type(),
-                                 {}},
-                                normalized);
+  const auto extra = detail::without_execution_callbacks([&] {
+    return operation_extra_workspace(operation,
+                                     {shape.x, shape.y, shape.s,
+                                      target.source().data().dataset.pixel_type(), {}},
+                                     normalized);
+  });
   if (staged > std::numeric_limits<std::size_t>::max() - workspace)
     throw std::invalid_argument("Job reservation overflows addressable memory");
   if (extra > std::numeric_limits<std::size_t>::max() - staged - workspace)
     throw std::invalid_argument("Job reservation overflows addressable memory");
-  const auto rounded = detail::target_rounded_mask_workspace(target);
-  if (rounded > std::numeric_limits<std::size_t>::max() - staged - workspace - extra)
-    throw std::invalid_argument("Job reservation overflows addressable memory");
-  job_options.resource_bytes =
-      std::max(job_options.resource_bytes, staged + workspace + extra + rounded);
-  job_options.document_id = target.document_id();
-  if (job_options.label.empty())
-    job_options.label = operation;
-  auto result = std::make_shared<OperationJob::ResultCell>(
-      job_options.retain_result_resources);
   std::shared_ptr<JobScheduler> scheduler;
   {
     std::lock_guard<std::mutex> lock(mutex_);
@@ -117,6 +107,22 @@ OperationJob Application::submit(const std::string &operation,
       scheduler_ = std::make_shared<JobScheduler>();
     scheduler = scheduler_;
   }
+  const auto configured = scheduler->limits().memory_budget;
+  const auto cap = configured ? configured : std::numeric_limits<std::size_t>::max();
+  const auto base = staged + workspace + extra;
+  if (base > cap || job_options.resource_bytes > cap)
+    throw std::invalid_argument("Job reservation exceeds the processing memory budget");
+  // Per-job admission preserves queue semantics: other jobs' reservations are
+  // not subtracted here. The scheduler owns aggregate acquisition/rechecks.
+  options.max_target_mask_bytes = std::min(options.max_target_mask_bytes, cap - base);
+  const auto mask = detail::target_mask_workspace(target, operation,
+                                                  options.max_target_mask_bytes);
+  job_options.resource_bytes = std::max(job_options.resource_bytes, base + mask);
+  job_options.document_id = target.document_id();
+  if (job_options.label.empty())
+    job_options.label = operation;
+  auto result = std::make_shared<OperationJob::ResultCell>(
+      job_options.retain_result_resources);
   // Supersession may destroy reader/cache captures that reenter this
   // controller. Keep admission outside the application lock, then catch a
   // concurrent close.

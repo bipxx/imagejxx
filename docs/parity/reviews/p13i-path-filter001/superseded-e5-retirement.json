@@ -1,0 +1,266 @@
+{
+  "schema": "p13i.superseded-e5-retirement.001",
+  "state": "retired",
+  "reason": "Windows E7 same-current-product 64-route result supersedes E5 full captures; bounded storage before Linux E7",
+  "superseding_audit_sha256": "27eb832ffd678261a0ad44d5fae51bd09af62d313c92b492b27838c9cfaf0ff2",
+  "effect": "Original archive bytes become unavailable; original identities and concise diagnostics remain",
+  "files": [
+    {
+      "archive": "empty-ui-windows001.tar.gz",
+      "bytes": 43772565,
+      "sha256": "8ce844a2e665ba8204bf3527fb859530a56586fa29ec5e0f1992c4ca84a94e0e",
+      "members_verified": 352,
+      "preserved_diagnostics": [
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-budget-gaussian.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-budget-rank-mean.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-draw-gaussian.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-empty-gaussian-active-off-canvas.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-empty-gaussian-active-one-axis-zero.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-empty-gaussian-active-zero-area.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-empty-gaussian-positioned-unmatched.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-empty-rank-mean-active-off-canvas.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-empty-rank-mean-active-one-axis-zero.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-empty-rank-mean-active-zero-area.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-empty-rank-mean-positioned-unmatched.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-lifecycle-gaussian-calibration-revision.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-lifecycle-gaussian-invalid-editor.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-lifecycle-gaussian-invalid-external.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-lifecycle-gaussian-owner-replace.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-lifecycle-gaussian-pixel-revision.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-lifecycle-gaussian-selection-revision.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-lifecycle-gaussian-supersede.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-lifecycle-rank-mean-calibration-revision.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-lifecycle-rank-mean-invalid-editor.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-lifecycle-rank-mean-owner-replace.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-lifecycle-rank-mean-pixel-revision.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-lifecycle-rank-mean-selection-revision.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-lifecycle-rank-mean-supersede.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-rank-maximum-in-place.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-rank-maximum-new-document.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-rank-mean-in-place.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-rank-mean-new-document.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-rank-median-in-place.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-rank-median-new-document.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-rank-minimum-in-place.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-rank-minimum-new-document.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-rank-variance-in-place.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-rank-variance-new-document.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-scientific-gaussian-active.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-scientific-gaussian-positioned.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-scientific-rank-mean-active.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-scientific-rank-mean-positioned.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-specialized-despeckle.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-specialized-outliers-bright-grays.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-specialized-outliers-bright-inverted.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-specialized-outliers-dark-grays.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-specialized-outliers-dark-inverted.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-specialized-remove-nans-finite.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-specialized-remove-nans-ieee.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-specialized-remove-nans-quiet.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-specialized-top-hat-dark-no-subtract-grays.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-specialized-top-hat-dark-no-subtract-inverted.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-specialized-top-hat-dark-subtract-grays.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-specialized-top-hat-dark-subtract-inverted.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-specialized-top-hat-light-no-subtract-grays.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-specialized-top-hat-light-no-subtract-inverted.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-specialized-top-hat-light-subtract-grays.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/cpp-specialized-top-hat-light-subtract-inverted.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/receipt.json",
+          "sha256": "c1640ccdf349498655b748b952d6e41f1bf865c7d0aeb251696ab9d518c6bfe7"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows001/ui.xml",
+          "sha256": "16e12c695905773feaec0af93461beda935c3ed80c9521452bb32be56bf5d3fb"
+        }
+      ],
+      "state": "retired_unavailable"
+    },
+    {
+      "archive": "empty-ui-windows003.tar.gz",
+      "bytes": 43333823,
+      "sha256": "f1dee6fc37ea4518ce5b732f01c61098b525c0f1a8de14a496eb7ddbb5025a1c",
+      "members_verified": 204,
+      "preserved_diagnostics": [
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows003/receipt.json",
+          "sha256": "6e328ae73bd6db1174f40a5a965e66415ea06f22d8a862c2b9aeb7ae1c6859e6"
+        },
+        {
+          "path": "superseded-e5-receipts001/empty-ui-windows003/ui.xml",
+          "sha256": "703d41481eb88fc2544357831dac3d02d31e7fa810215bd2fb69a5cb44e64d53"
+        }
+      ],
+      "state": "retired_unavailable"
+    }
+  ],
+  "acceptance": false,
+  "removed_bytes": 87106388,
+  "preserved_bytes": 184357,
+  "local_retirement_receipt": {
+    "locator": ".tmp/p13i-verification/superseded-e5-retirement001.json",
+    "sha256": "a90c66b603640decc9d6465089baca8482910de0a1aedc9cdb6e220af330ba45"
+  }
+}

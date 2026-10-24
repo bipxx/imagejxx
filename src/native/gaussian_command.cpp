@@ -1,4 +1,5 @@
 #include "kernel_control.hpp"
+#include "imagej_shape_plan.hpp"
 #include "target_record_internal.hpp"
 #include <imagejxx/gaussian_command.hpp>
 
@@ -232,23 +233,14 @@ GaussianBlurExtent clipped_bounds(std::array<double, 4> bounds, int width,
 
 Image area_mask(const Selection &selection, int width, int height) {
   kernel_checkpoint();
-  selection.validate(width, height);
-  if (selection.kind != "mask")
-    return selection.mask(width, height);
-  Image result(width, height, 1, PixelType::UInt8);
-  const auto &packed = selection.packed_mask();
-  kernel_blocks("Gaussian command mask", result.pixels.size(),
-                [&](std::size_t first, std::size_t last) {
-                  for (auto i = first; i < last; ++i)
-                    result.pixels[i] =
-                        (packed[i / 8] & (1u << (7 - i % 8))) ? 255.0 : 0.0;
-                });
-  return result;
+  // Packed regions carry their own origin and intrinsic dimensions. The
+  // shared decoder handles them and legacy canvas masks in their own frames.
+  return selection.mask(width, height);
 }
 
 GaussianBlurExtent area_bounds(const Selection &selection, const Image &mask) {
   const auto width = mask.width, height = mask.height;
-  if (selection.is_rounded_box() || selection.kind == "mask") {
+  if (selection.is_rounded_box() || selection.is_mask()) {
     int left = width, top = height, right = 0, bottom = 0;
     kernel_blocks("Gaussian command mask bounds", mask.pixels.size(),
                   [&](std::size_t first, std::size_t last) {
@@ -284,6 +276,32 @@ GaussianBlurExtent area_bounds(const Selection &selection, const Image &mask) {
     kernel_checkpoint_periodic();
   }
   return clipped_bounds(bounds, width, height);
+}
+
+GaussianBlurCommandRegion area_region(const Selection &selection, int width, int height) {
+  if (!selection.is_path()) {
+    auto mask = area_mask(selection, width, height);
+    const auto extent = area_bounds(selection, mask);
+    return {extent, std::move(mask)};
+  }
+  const auto plan = detail::plan_imagej_shape_mask(selection.path_commands(), width, height);
+  const auto &bounds = plan.clipped_bounds;
+  if (bounds[2] == 0 || bounds[3] == 0)
+    return {GaussianBlurExtent{0, 0, 0, 0}, Image(width, height, 1, PixelType::UInt8)};
+  auto mask = area_mask(selection, width, height);
+  // ShapeRoi stores its integer bounds before local float translation. A large
+  // translation can round a path beyond those bounds; the processor mask is
+  // nevertheless confined to the original stored rectangle. Generic Selection
+  // rasterization retains its established canvas behavior.
+  kernel_blocks("Gaussian path processor mask", mask.pixels.size(),
+                [&](std::size_t first, std::size_t last) {
+    for (auto i = first; i < last; ++i) {
+      const int x = int(i % width), y = int(i / width);
+      if (x < bounds[0] || x >= bounds[0] + bounds[2] ||
+          y < bounds[1] || y >= bounds[1] + bounds[3]) mask.pixels[i] = 0;
+    }
+  });
+  return {GaussianBlurExtent{bounds[0], bounds[1], bounds[2], bounds[3]}, std::move(mask)};
 }
 
 void union_extent(std::optional<GaussianBlurExtent> &combined,
@@ -402,9 +420,7 @@ GaussianBlurCommandRegion gaussian_command_region(const ResolvedTarget &target,
     const auto &selection = *data.selection;
     if (non_area(selection))
       return {};
-    auto mask = area_mask(selection, shape.x, shape.y);
-    const auto extent = area_bounds(selection, mask);
-    return {extent, std::move(mask)};
+    return area_region(selection, shape.x, shape.y);
   }
 
   // A matching non-area ROI is whole-plane command intent, independent of any
@@ -425,8 +441,9 @@ GaussianBlurCommandRegion gaussian_command_region(const ResolvedTarget &target,
     kernel_checkpoint();
     if (!matches(roi))
       continue;
-    auto mask = area_mask(roi.selection, shape.x, shape.y);
-    union_extent(extent, area_bounds(roi.selection, mask));
+    const auto region = area_region(roi.selection, shape.x, shape.y);
+    union_extent(extent, *region.extent);
+    const auto &mask = *region.mask;
     kernel_blocks("Gaussian command ROI union", combined.pixels.size(),
                   [&](std::size_t first, std::size_t last) {
                     for (auto i = first; i < last; ++i)

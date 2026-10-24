@@ -1,6 +1,11 @@
 #include "gaussian_jobs.hpp"
 #include "gaussian_resource_diagnostics.hpp"
+#include "../native/axis_command_record.hpp"
+#include <imagejxx/channel_display.hpp>
+#include <imagejxx/manual_threshold.hpp>
 
+#include <algorithm>
+#include <cmath>
 #include <exception>
 #include <stdexcept>
 #include <utility>
@@ -28,6 +33,31 @@ std::string failure_text(const char *name = "Gaussian") {
   } catch (...) {
     return std::string("Unknown ") + name + " job failure";
   }
+}
+
+const MetadataValue *display_field(const DisplayState &display,
+                                   const char *name) {
+  const auto found = display.properties.find(name);
+  return found == display.properties.end() ? nullptr : &found->second;
+}
+
+bool same_field(const MetadataValue *a, const MetadataValue *b) {
+  return (!a && !b) || (a && b && metadata_equal(*a, *b));
+}
+
+std::optional<std::array<double, 2>> legacy_range(const DisplayState &display) {
+  const auto *field = display_field(display, "display_range");
+  if (!field || std::holds_alternative<std::monostate>(*field))
+    return std::nullopt;
+  const auto &values = detail::axis_command_record::array_value(*field);
+  if (values.size() != 2)
+    throw std::invalid_argument("Preview display range requires two endpoints");
+  const std::array<double, 2> range{
+      detail::axis_command_record::number_value(values[0]),
+      detail::axis_command_record::number_value(values[1])};
+  if (!std::isfinite(range[0]) || !std::isfinite(range[1]) || range[0] > range[1])
+    throw std::invalid_argument("Preview display range must be finite and ordered");
+  return range;
 }
 
 MetadataValue optional_generation(std::optional<std::uint64_t> value) {
@@ -118,6 +148,7 @@ void GaussianJobs::release(Lane &lane, const char *exit, std::string error) {
 
 void GaussianJobs::discard_preview(const char *exit, std::string error) {
   installed_preview_.reset();
+  installed_preview_processed_ = false;
   active_installed_generation_.reset();
   release(preview_, exit, std::move(error));
 }
@@ -280,6 +311,9 @@ void GaussianJobs::poll(const std::optional<DocumentSnapshot> &current,
           auto snapshot = prepared.preview();
           prepared.target().validate_source(*current);
           application_.validate_target(target(*preview_.command));
+          installed_preview_processed_ = std::any_of(
+              prepared.outputs().begin(), prepared.outputs().end(),
+              [](const PlaneExecutionOutput &output) { return !output.skipped; });
           installed_preview_ = std::move(snapshot);
           installed_generation_ = requested_generation_;
           active_installed_generation_ = requested_generation_;
@@ -386,6 +420,79 @@ GaussianJobs::preview_snapshot(std::uint64_t document_id) const {
 std::optional<std::uint64_t>
 GaussianJobs::preview_generation(std::uint64_t document_id) const {
   return preview_snapshot(document_id) ? active_installed_generation_ : std::nullopt;
+}
+
+std::optional<PlanePreviewDisplayEffects>
+GaussianJobs::preview_display_effects(const DocumentSnapshot &current,
+                                      PlanePosition candidate) const {
+  const auto *captured_target = preview_target(current.id());
+  if (!captured_target || !installed_preview_processed_ ||
+      !captured_target->contains(candidate))
+    return std::nullopt;
+  const auto *rank = std::get_if<ResolvedRankFilterCommand>(&*preview_.command);
+  if (!rank || !rank->top_hat_options() || rank->top_hat_options()->dont_subtract)
+    return std::nullopt;
+  const auto &captured = captured_target->source();
+  // Match the pixel-preview Data gate even for whole-plane commands, whose
+  // publication dependency can otherwise exclude the active selection. Check
+  // actual Application membership too: an old caller snapshot cannot conceal
+  // a native data edit or source close. Display-only navigation is independent.
+  std::optional<DocumentSnapshot> actual;
+  try {
+    captured_target->validate_source(current);
+    actual.emplace(application_.snapshot(current.id()));
+    if (!current.revisions().matches(captured.revisions(), Change::Data) ||
+        !actual->revisions().matches(captured.revisions(), Change::Data))
+      return std::nullopt;
+  } catch (const std::exception &) {
+    return std::nullopt;
+  }
+
+  const auto &proposed = installed_preview_->display();
+  const auto &baseline = captured.display();
+  const auto &live = current.display();
+  // Compare owned fields with both the frame snapshot and actual owner. A
+  // stale caller cannot conceal a manual override; unrelated display revisions
+  // (including navigation) remain irrelevant to these field-level guards.
+  const auto &dataset = captured.data().dataset;
+  const auto captured_channels = recognized_channel_display(baseline, dataset);
+  const auto proposed_channels = recognized_channel_display(proposed, dataset);
+  const auto live_channels = recognized_channel_display(live, dataset);
+  const auto actual_channels = recognized_channel_display(actual->display(), dataset);
+  PlanePreviewDisplayEffects effects{candidate, *active_installed_generation_,
+                                     std::nullopt, false};
+  if (captured_channels && proposed_channels && live_channels && actual_channels) {
+    const auto &old_range = captured_channels->channels.at(candidate.c).range;
+    const auto &new_range = proposed_channels->channels.at(candidate.c).range;
+    // Other channel ranges, LUTs, mode, projection and visibility are live.
+    if (live_channels->channels.at(candidate.c).range == old_range &&
+        actual_channels->channels.at(candidate.c).range == old_range &&
+        new_range != old_range)
+      effects.range = new_range;
+  } else if (!captured_channels && !proposed_channels && !live_channels && !actual_channels) {
+    const auto *old_range = display_field(baseline, "display_range");
+    const auto *new_range = display_field(proposed, "display_range");
+    if (same_field(old_range, display_field(live, "display_range")) &&
+        same_field(old_range, display_field(actual->display(), "display_range")) &&
+        !same_field(old_range, new_range))
+      effects.range = legacy_range(proposed);
+  }
+
+  const auto *old_threshold = display_field(baseline, manual_threshold_property);
+  if (old_threshold && !display_field(proposed, manual_threshold_property) &&
+      same_field(old_threshold, display_field(live, manual_threshold_property)) &&
+      same_field(old_threshold, display_field(actual->display(), manual_threshold_property))) {
+    const auto threshold = manual_threshold_state(baseline, dataset.shape());
+    effects.suppress_threshold_overlay =
+        threshold && manual_threshold_contains(*threshold, candidate);
+  }
+  // A copied job handle can cancel READY work between two host polls. Do not
+  // expose a newly queried effect after that cancellation, and never retain the
+  // installed snapshot or its resource guard in the returned value.
+  if ((!effects.range && !effects.suppress_threshold_overlay) ||
+      !preview_target(current.id()))
+    return std::nullopt;
+  return effects;
 }
 
 void GaussianJobs::record_publication(

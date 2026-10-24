@@ -1885,19 +1885,27 @@ OperationParameters validate_execution_parameters(
   (void)detail::validate_indexed_filter_eligibility(source,operation);
   return normalized;
 }
-PreparedOperation prepare_operation(const std::string &operation,
-                                    const ResolvedTarget &target,
+PreparedOperation prepare_operation(const std::string &requested_operation,
+                                    const ResolvedTarget &requested_target,
                                     const OperationParameters &parameters,
                                     ExecutionOptions options,
-                                    const ExecutionControl &control) {
+                                    const ExecutionControl &requested_control) {
+  // Freeze execution handles before the first user callback. Normalization
+  // owns the parameter values before callbacks can mutate caller-owned intent.
+  const auto operation = requested_operation;
+  const auto target = requested_target;
+  const auto control = requested_control;
   ExecutionScope scope(control);
+  auto normalized = detail::without_execution_callbacks([&] {
+    kernel_checkpoint();
+    auto values = validate_execution_parameters(operation, target, parameters, options);
+    // Admit the complete frozen target, including later positioned masks,
+    // before any provider read or user callback. Direct calls retain intrinsic
+    // limits even when no explicit additional-mask byte cap was configured.
+    (void)detail::target_mask_workspace(target, operation, options.max_target_mask_bytes);
+    return values;
+  });
   checkpoint(control);
-  auto normalized =
-      validate_execution_parameters(operation, target, parameters, options);
-  // Admit intrinsic rounded raster limits for the complete frozen target
-  // before processing its first plane. Direct core execution has no scheduler
-  // budget, but must not read early planes before discovering a later refusal.
-  (void)detail::target_rounded_mask_workspace(target);
   const auto &source = target.source();
   auto shape = source.data().dataset.shape();
   const auto source_type = source.data().dataset.pixel_type();

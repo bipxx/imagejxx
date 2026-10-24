@@ -18,7 +18,8 @@ ViewportSurface renderViewport(const ViewportRender &s) {
     for(const auto &target:s.previewTargets)target.validate_source(s.live);
   }
   auto metadata = s.metadata;
-  const auto channels = recognized_channel_display(s.live.display(), live);
+  auto channels = recognized_channel_display(s.live.display(), live);
+  projectPlanePreviewDisplayEffects(metadata, channels, s.position, s.previewDisplayEffects);
   const ChannelDisplaySources sources(s.live, s.preview, s.target,
                                       s.previewGeneration, s.position);
   // Unchanneled previews are already selected/gated by the host. Channel
@@ -50,7 +51,8 @@ ViewportSurface renderViewport(const ViewportRender &s) {
       computed = displayRangeBits(result.range);
     else metadata["display_range"] = result.range;
   } else result.range = {0, type_max(result.source->type)};
-  // XYZ always freezes the live XY range across all linked orientations.
+  // XYZ freezes the final active XY range across all linked orientations.
+  // A captured Top Hat proposal is already projected into local display values.
   if (s.linked && !channels) {
     if (result.policy == FloatingSamplePolicy::PreserveIEEEFloat32)
       computed = displayRangeBits(result.range);
@@ -66,7 +68,7 @@ ViewportSurface renderViewport(const ViewportRender &s) {
     if (s.plane == Plane::XY && !s.layered)
       renderDisplayOverlays(*result.rgb, metadata, s.position);
     result.channels = channelDisplayDiagnostics(*channels, sources, s.plane,
-                        s.coordinate, s.position.t, s.position.c, s.capture, s.channelLimits);
+                        s.coordinate, s.position.t, s.position.c, s.capture, s.channelLimits, s.previewDisplayEffects);
   } else result.rgb = s.plane == Plane::XY
       ? renderImage(*result.source, metadata, !s.layered, result.policy, s.position, computed)
       : displayImage(*result.source, metadata, result.policy, computed);
@@ -76,7 +78,8 @@ ViewportSurface renderViewport(const ViewportRender &s) {
                             s.coordinate, s.position.t, s.position.c, s.channelLimits);
     for (int c : estimate.contributing_channels) active |= c == s.position.c;
   }
-  if (s.plane == Plane::XY && active)
+  const auto *effect = planePreviewDisplayEffect(s.previewDisplayEffects, s.position);
+  if (s.plane == Plane::XY && active && !(effect && effect->suppress_threshold_overlay))
     renderThresholdOverlay(*result.rgb, original(), s.live, s.position);
   kernel_checkpoint();
   return result;

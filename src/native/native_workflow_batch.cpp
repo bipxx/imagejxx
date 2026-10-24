@@ -509,6 +509,8 @@ PreparedNativeWorkflowBatch detail::prepare_native_workflow_batch_borrowed(
         auto limits = o.workflow;
         limits.max_retained_bytes =
             std::min(limits.max_retained_bytes, available);
+        limits.max_working_bytes =
+            std::min(limits.max_working_bytes, available);
         auto prepared = prepare_native_workflow_borrowed(
             capture.documents[d], effective_steps, limits, control);
         for (const auto &out : prepared.outputs()) {

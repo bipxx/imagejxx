@@ -202,6 +202,38 @@ def shadow_demo_cases():
 
 PATH_SEGMENT_MODES = ("active", "saved", "xy", "xz", "yz")
 PATH_AUTHORING_MODES = ("active", "scientific-active", "saved", "xy", "xz", "yz")
+PATH_FILTER_CASES = ("draw-gaussian",) + tuple(
+    f"rank-{method}-{destination}"
+    for method in ("minimum", "maximum", "median", "mean", "variance")
+    for destination in ("in-place", "new-document")) + tuple(
+    f"scientific-{operation}-{roi}"
+    for operation in ("gaussian", "rank-mean") for roi in ("active", "positioned")) + ("budget-gaussian", "budget-rank-mean")
+PATH_SPECIALIZED_FILTER_CASES = ("specialized-despeckle",) + tuple(
+    f"specialized-outliers-{which}-{lut}" for which in ("bright", "dark")
+    for lut in ("grays", "inverted")) + tuple(
+    f"specialized-top-hat-{background}-{subtract}-{lut}"
+    for background in ("dark", "light") for subtract in ("subtract", "no-subtract")
+    for lut in ("grays", "inverted")) + tuple(
+    f"specialized-remove-nans-{policy}" for policy in ("finite", "quiet", "ieee"))
+PATH_FILTER_CASES += PATH_SPECIALIZED_FILTER_CASES
+PATH_FILTER_LIFECYCLE_CASES = tuple(
+    f"lifecycle-{operation}-{kind}" for operation in ("gaussian", "rank-mean")
+    for kind in ("supersede", "invalid-editor", "owner-replace", "selection-revision", "pixel-revision", "calibration-revision")) + ("lifecycle-gaussian-invalid-external",)
+PATH_FILTER_CASES += PATH_FILTER_LIFECYCLE_CASES
+PATH_EMPTY_FILTER_CASES = tuple(
+    f"empty-{operation}-{kind}" for operation in ("gaussian", "rank-mean")
+    for kind in ("active-zero-area", "active-one-axis-zero", "active-off-canvas", "positioned-unmatched"))
+PATH_FILTER_CASES += PATH_EMPTY_FILTER_CASES
+PATH_FILTER_ADMISSION_CASES = (
+    "admission-legacy-invert-path", "admission-pooled-mask-mean-path",
+    "admission-pooled-display-mean-path", "admission-workflow-later-path-refusal")
+PATH_FILTER_CASES += PATH_FILTER_ADMISSION_CASES
+PATH_FILTER_STACK_CASES = tuple(
+    f"stack-{operation}-{choice}" for operation in ("gaussian", "rank-mean")
+    for choice in ("yes", "no", "cancel"))
+PATH_FILTER_CASES += PATH_FILTER_STACK_CASES
+
+
 PATH_AUTHORING_EDGE_CASES = ("input-ownership", "pointer-recovery-dpi", "numeric-stale", "budget", "extent-rebind")
 
 
@@ -213,6 +245,8 @@ def path_authoring_edge_cases():
 
 
 def cases():
+    for case in PATH_FILTER_CASES:
+        yield "path-filters", case, ["--path-filter-ui-case", case]
     for case, carrier in path_authoring_edge_cases():
         yield "path-authoring-edges", case + "." + carrier, ["--path-authoring-edge-ui-case", case, carrier]
     for mode in ("ordinary", "linked", "workflow"):
@@ -368,6 +402,10 @@ def reader_environment(output):
         mode: str(reports / "path-authoring" / mode / "case.json")
         for mode in PATH_AUTHORING_MODES
     })
+    environment["IMAGEJXX_PATH_FILTER_CPP_REPORTS"] = json.dumps({
+        case: str(reports / "path-filters" / case / "case.json")
+        for case in PATH_FILTER_CASES
+    })
     return {name: str(path) for name, path in environment.items()}
 
 
@@ -517,7 +555,8 @@ def capture(output, executable, root, environment=None, *, selected_cases=None,
                 raise subprocess.CalledProcessError(process.returncode, argv)
             report = actual / ("report.json" if group == "ieee-viewing" else
                                "imgui-cpp.json" if group in ("headless-session", "selection-legacy") else "case.json")
-            if not report.is_file() or report.stat().st_size > 128 * 1024 * 1024:
+            if (not report.is_file() or report.stat().st_size > 128 * 1024 * 1024
+                    or (group == "path-filters" and report.stat().st_size >= 16 * 1024 * 1024)):
                 raise ValueError(f"Missing or oversized observation report: {report}")
             observation = json.loads(report.read_bytes())
             if group == "headless-session":
@@ -597,6 +636,17 @@ def capture(output, executable, root, environment=None, *, selected_cases=None,
                         or observation.get("acceptance_claim") is not False):
                     raise ValueError(f"Unexpected path authoring edge observation: {report}")
                 item["path_authoring_edge_contract"] = observation["contract"]
+            elif group == "path-filters":
+                if (observation.get("contract") != "p13i.path-filter.ui.001"
+                        or observation.get("case_id") != case
+                        or observation.get("context") != "imgui_cpp"
+                        or observation.get("state") != "observed"
+                        or observation.get("error") != ""
+                        or not observation.get("frames") or not observation.get("controls")
+                        or observation.get("acceptance_claim") is not False
+                        or len(observation["frames"]) > 750):
+                    raise ValueError(f"Unexpected path filter observation: {report}")
+                item["path_filter_contract"] = observation["contract"]
             elif group == "path-authoring":
                 if (observation.get("contract") != "p13h.path-authoring.ui.001"
                         or observation.get("mode") != case

@@ -1,6 +1,7 @@
 #pragma once
 #include "render_memory.hpp"
 #include "desktop.hpp"
+#include "rendering.hpp"
 #include "planar_annotation_panel.hpp"
 #include <imagejxx/channel_display.hpp>
 #include <imagejxx/targets.hpp>
@@ -16,6 +17,8 @@ struct OrthogonalInputContext {
   // Mapped RGB contrast pixels require a neutral display range.
   std::optional<std::array<double,2>> preview_display_range;
   std::vector<ResolvedTarget> preview_targets;
+  // Host-only query after linked navigation; only its value result enters workers.
+  PlanePreviewDisplayQuery preview_display_effects;
   bool active_document = false;
   bool input_enabled = false;
   bool keyboard_admitted = false;
@@ -43,7 +46,8 @@ class OrthogonalViews {
 public:
   // Borrowed pixels only: the snapshot is never retained past this draw.
   // Change generation when replacing preview contents; zero samples afresh.
-  // Live navigation, calibration, annotations and contrast remain authoritative.
+  // Live navigation, calibration and annotations remain authoritative. A
+  // matching Top Hat effect may project contrast into this frame only.
   // A supplied target is borrowed only for this draw; final T/C/Z membership
   // after all inputs gates all three actual plane providers and cache markers.
   OrthogonalInputResult
@@ -106,6 +110,7 @@ private:
     // Scalar identity above describes active-C readback. Composite output also
     // depends on every contributing channel's retained source and display state.
     Json channelDisplayKey = nullptr, channelDisplay = nullptr;
+    Json previewDisplayKey = Json::object();
     // Diagnostic value copies only: they never prolong preview/source leases.
     std::optional<Image> readbackSource, readbackDisplay;
     FloatingSamplePolicy readbackSamplePolicy = FloatingSamplePolicy::FiniteOnly;

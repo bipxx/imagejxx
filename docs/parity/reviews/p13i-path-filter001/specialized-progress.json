@@ -1,0 +1,215 @@
+{
+  "schema": "p13i.specialized-progress.001",
+  "state": "E3 pixel/options/payload/history slice passed; new triangle display-phase oracle pending",
+  "scope": "Sixteen specialized path recipes plus all17preceding routes; Despeckle direct; Outliers4;TopHat8;RemoveNaNs3;all66independent UI readers pass each platform",
+  "base_commit": "4a80b3570c59e547f2571c7fc2b95d85a5b66d0e",
+  "compiled_source_manifests": {
+    "windows": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\specialized-windows001\\source-manifest.json",
+      "bytes": 947480,
+      "sha256": "21dc280397f8a5e491d3fe944dd9916102fd6056dabfb256d4625fc4d25c0dc4",
+      "availability": "available at review"
+    },
+    "linux": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\specialized-linux001\\source-manifest.json",
+      "bytes": 940466,
+      "sha256": "e7fc52e44c0ef0b76fe2e3aab9d7ef29ef7a8186750450549bb2748d66ce9302",
+      "availability": "available at review"
+    },
+    "files": 7012,
+    "same_entries": true
+  },
+  "corrected_reader": {
+    "source": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\tests\\python\\test_path_specialized_filter_ui.py",
+      "bytes": 8852,
+      "sha256": "48f3e86e6f7ff71e9bb610342c231fd37a565dc620a0a9951bdf1461c8791624",
+      "availability": "available at review"
+    },
+    "compiled_manifest_reader_sha256": "caf3fb3654ad3e87b30f4fd1fc4462e6e038606c82c2afe8eb7a8d7aed845965",
+    "linux_copy_receipt": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\specialized-corrected-reader-linux001.json",
+      "bytes": 535,
+      "sha256": "1a5837e765f29f2af5309fe1188996a79baa4f8e43604c5e4aff5f843dec4962",
+      "availability": "available at review"
+    },
+    "product_changes": "none; only new reader assertions corrected and rerun"
+  },
+  "platforms": {
+    "windows": {
+      "build_receipt": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\specialized-windows001\\receipt.json",
+        "bytes": 2408,
+        "sha256": "c281b64f6319cbbbcb4227f5dd70e2f1cfdb66fb72d7e374e7ae1904812823c8",
+        "availability": "available at review"
+      },
+      "all33recipes_both_launches": {
+        "tests": 66,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "archive": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\specialized-ui-windows002.tar.gz",
+          "bytes": 17298650,
+          "sha256": "1eccb3fe3d2c05f37bb8f4664b53ea1fd3770b7fa170bfbf8b34cef81a68c8c0",
+          "availability": "available at review"
+        },
+        "member": "ui.xml",
+        "member_sha256": "f061c58220c43cdb50f11c93e3c1c6ff22eb14e145c38c1293cb8609ab94af5d",
+        "bytes": 12384
+      },
+      "top_hat_native_phase_display_command_algorithm": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "report": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\top-hat-native-windows001\\native.xml",
+          "bytes": 1029,
+          "sha256": "18eb6a1d0ec405815019a8bb82f911f41ede9a1c48321f9e9f3a515dbfe3d6b5",
+          "availability": "available at review"
+        }
+      }
+    },
+    "linux": {
+      "build_receipt": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\specialized-linux001\\receipt.json",
+        "bytes": 1787,
+        "sha256": "a0147fa54e9c28e6b248f03f1f7ed13f8bb9964e277f6dff32a0b77e74c2cc2a",
+        "availability": "available at review"
+      },
+      "all33recipes_both_launches": {
+        "tests": 66,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "archive": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\specialized-ui-linux001-native.tar.gz",
+          "bytes": 34587431,
+          "sha256": "c86e3eabcb457c647173119974413ad157362978b7ee0949095b0817bd5b848d",
+          "availability": "available at review"
+        },
+        "member": "ui.xml",
+        "member_sha256": "51de2abc416794d76edbffde70548b6bcac45fb11c1381dfca62120409338e3f",
+        "bytes": 12384
+      },
+      "top_hat_native_phase_display_command_algorithm": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "report": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\top-hat-native-linux001\\native.xml",
+          "bytes": 997,
+          "sha256": "8c95452eb962170f276b9c3ebadc5d0ffb926f6ed6ab2619cb32aeca8831a5aa",
+          "availability": "available at review"
+        }
+      }
+    }
+  },
+  "products": [
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+      "bytes": 17610752,
+      "sha256": "8a36018d7947a8ab0da6e33fa98cbe32d281f19c36b2b65dde09aaffb14c1233",
+      "availability": "available at review"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+      "bytes": 17481728,
+      "sha256": "db210da3e77aca425319276d234fb456fb87ea670568f6a7edcb10e8d5620c44",
+      "availability": "available at review"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\linux\\app-installed\\bin\\imagejxx",
+      "bytes": 35818752,
+      "sha256": "5e7d1b88ef4a12c38da58fdd35bf0f63b34005e8432fb02da63a3152e6cead1a",
+      "availability": "available at review"
+    },
+    {
+      "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\p13g-probe-env003\\lib\\python3.12\\site-packages\\imagejxx\\_desktop.cpython-312-x86_64-linux-gnu.so",
+      "bytes": 33614360,
+      "sha256": "3972db508d167216d93997086c67c54265bde66dac97f518874b8e0211afdbd7",
+      "availability": "available at review"
+    }
+  ],
+  "reference_fixture": {
+    "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\tests\\fixtures\\path-rank-targets-imagej154r.json.gz",
+    "bytes": 153345,
+    "sha256": "127ac9b8dfa1829213d0dc9e4b524f1cb70d188c9541fa607deae3a31cc3fd1b",
+    "availability": "available at review"
+  },
+  "failure_preservation": {
+    "archive": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\specialized-ui-windows001.tar.gz",
+      "bytes": 34588104,
+      "sha256": "c49115502431d41a7da548dc0fc89ef36ad49e2a828537c324c5c4db63db97c5",
+      "availability": "available at review"
+    },
+    "failed_reader": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\specialized-ui-windows001-reader-source.py",
+      "bytes": 8462,
+      "sha256": "caf3fb3654ad3e87b30f4fd1fc4462e6e038606c82c2afe8eb7a8d7aed845965",
+      "availability": "available at review"
+    },
+    "initial_result": {
+      "tests": 66,
+      "passed": 44,
+      "failures": 22,
+      "errors": 0,
+      "skipped": 0
+    },
+    "diagnoses": [
+      "Outliers wire uses which",
+      "RemoveNaNs captures no LUT field",
+      "Undo/Redo display revision advances while content restores"
+    ],
+    "cpp_reports": "All33executed successfully; unchanged reports re-read under corrected assertions; archive cpp-CASE/capture/case.json members"
+  },
+  "reference_guards": {
+    "tests": 548,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "report": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\reference-tool-tests010.xml",
+      "bytes": 91717,
+      "sha256": "cfcc8a605a95b28fb6ffbc6d3831c8291aba5c4c8d21e22281b9b8d61e8ba2b6",
+      "availability": "available at review"
+    }
+  },
+  "prior_product_availability_changes": [
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+      "prior_sha256": "98a87f1958cce968d885799381d34be5a9ff791f0bb0a4cd0ddb5a372dd7d99e",
+      "prior_availability": "superseded installed desktop bytes not retained",
+      "current_sha256": "8a36018d7947a8ab0da6e33fa98cbe32d281f19c36b2b65dde09aaffb14c1233"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+      "prior_sha256": "4ac3efa6be46cecf01e7015a72db21f147975a6e455221a5c7320c24297508af",
+      "prior_availability": "superseded installed desktop bytes not retained",
+      "current_sha256": "db210da3e77aca425319276d234fb456fb87ea670568f6a7edcb10e8d5620c44"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\linux\\app-installed\\bin\\imagejxx",
+      "prior_sha256": "5448e37a8aadc8a35d969eecec149f808bd2a15721c73a7200bb6c82e26fa65b",
+      "prior_availability": "superseded installed desktop bytes not retained",
+      "current_sha256": "5e7d1b88ef4a12c38da58fdd35bf0f63b34005e8432fb02da63a3152e6cead1a"
+    },
+    {
+      "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\p13g-probe-env003\\lib\\python3.12\\site-packages\\imagejxx\\_desktop.cpython-312-x86_64-linux-gnu.so",
+      "prior_sha256": "593d89419b1e1b2efda7ba952a75513328fda3c933891f18c939b76a961bfa0a",
+      "prior_availability": "superseded installed desktop bytes not retained",
+      "current_sha256": "3972db508d167216d93997086c67c54265bde66dac97f518874b8e0211afdbd7"
+    }
+  ],
+  "remaining": [
+    "TopHat new triangle exact Preview/Apply display ranges; existing native216+2phase references pass separately",
+    "E4 lifecycle, E5 empty, E6 downstream/mixed workflows and E7 final qualification",
+    "Original99families and fullM0-M13 remain incomplete"
+  ],
+  "next": "Adapt retained top-hat Java phase drivers into bounded active harness; E4 design in parallel",
+  "acceptance": false,
+  "complete_requirement_coverage": false
+}

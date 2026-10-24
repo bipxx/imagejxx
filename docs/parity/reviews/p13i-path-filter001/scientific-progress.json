@@ -1,0 +1,268 @@
+{
+  "schema": "p13i.scientific-progress.001",
+  "state": "E1 scientific/admission slice passed; P13i incomplete",
+  "base_commit": "4a80b3570c59e547f2571c7fc2b95d85a5b66d0e",
+  "source_manifest": {
+    "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\planner-windows004\\source-manifest.json",
+    "bytes": 946185,
+    "sha256": "56234fa5873bd457b702a54505568514cbdfad15f909315faa025079f7d48d1a",
+    "availability": "available at review"
+  },
+  "source_files": 7002,
+  "scope": "Same frozen source: scientific active/positioned Gaussian/Mean actual-input routes, seven admission subcases, preview lifecycle native suites and affected wire/type/scope regression",
+  "platforms": {
+    "windows": {
+      "native": {
+        "tests": 16,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "disabled": 0,
+        "report": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\planner-windows004\\native.xml",
+          "bytes": 6958,
+          "sha256": "79b512ba0579664ef9a44039d9913772b85dc1ed4444032b17baa4122a2c9855",
+          "availability": "available at review"
+        }
+      },
+      "api": {
+        "tests": 394,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "disabled": 0,
+        "report": {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\python-windows003.tar.gz",
+            "bytes": 21358063,
+            "sha256": "930d69c3193fd035eb02f9f2a429dbc4cd1224d55dac76d1257cfc9ce85294e8",
+            "availability": "available at review"
+          },
+          "member": "api.xml",
+          "member_sha256": "55a7134fbdccf2ba4958e68765f861ee50d873a36694a67241ca7e00b36d6ee9",
+          "bytes": 64557
+        }
+      },
+      "ui": {
+        "tests": 30,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "disabled": 0,
+        "report": {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\python-windows003.tar.gz",
+            "bytes": 21358063,
+            "sha256": "930d69c3193fd035eb02f9f2a429dbc4cd1224d55dac76d1257cfc9ce85294e8",
+            "availability": "available at review"
+          },
+          "member": "ui.xml",
+          "member_sha256": "5872f2ca4559cfbc36929cbc571145067cff30f9b8e8417f0b1c3dee8638ecb4",
+          "bytes": 5196
+        }
+      },
+      "affected_wire_types_scopes": {
+        "tests": 1602,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "disabled": 0,
+        "report": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\wire-regression-windows001\\report.xml",
+          "bytes": 315149,
+          "sha256": "ae6f13831f04ee50db6a05828be5010b95a2258d28f9f8d0f78155d91e125c9d",
+          "availability": "available at review"
+        }
+      },
+      "sdk": {
+        "checks": [
+          404,
+          35
+        ],
+        "headers": 96,
+        "receipt": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\sdk-windows003\\receipt.json",
+          "bytes": 13340,
+          "sha256": "925d7c977a04c347b296a52669edb13554c4b715ad337ed92bed4923c2d93430",
+          "availability": "available at review"
+        }
+      },
+      "native_creation": {
+        "report": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\wire-native-windows001\\native.xml",
+          "bytes": 923,
+          "sha256": "8e71db957eb406b7aab3b9af2a7beff3e91411a75a2c214e719f82f4edb9cdf4",
+          "availability": "available at review"
+        },
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "disabled": 0
+      }
+    },
+    "linux": {
+      "native": {
+        "tests": 16,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "disabled": 0,
+        "report": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\planner-linux004\\native.xml",
+          "bytes": 6820,
+          "sha256": "027aec83817b0e21d10245e37884aab5aa528c0eff2818c706c4c28f2d4e0288",
+          "availability": "available at review"
+        }
+      },
+      "api": {
+        "tests": 394,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "disabled": 0,
+        "report": {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\python-linux004-native.tar.gz",
+            "bytes": 21363686,
+            "sha256": "c4bdb8c015fff9fa2a92e5e54cf3babf4cb91b6c4e45a35579384933549d7053",
+            "availability": "available at review"
+          },
+          "member": "api.xml",
+          "member_sha256": "97c34ff88639e735eb4b692b703d966bbe87827b9093276b3dc2abb29eed020e",
+          "bytes": 64556
+        }
+      },
+      "ui": {
+        "tests": 30,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "disabled": 0,
+        "report": {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\python-linux004-native.tar.gz",
+            "bytes": 21363686,
+            "sha256": "c4bdb8c015fff9fa2a92e5e54cf3babf4cb91b6c4e45a35579384933549d7053",
+            "availability": "available at review"
+          },
+          "member": "ui.xml",
+          "member_sha256": "f8a27a87f02209e9cb2d8272d5aec63e736ce3e571b28606bd06e562cc7e0b0c",
+          "bytes": 5196
+        }
+      },
+      "affected_wire_types_scopes": {
+        "tests": 1602,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "disabled": 0,
+        "report": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\wire-regression-linux001\\report.xml",
+          "bytes": 315149,
+          "sha256": "aeb4a8cde1f4b3944db4c649cf039f1077f839603d8dd42aa1f384c198695777",
+          "availability": "available at review"
+        }
+      },
+      "sdk": {
+        "checks": [
+          404,
+          35
+        ],
+        "headers": 96,
+        "receipt": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\sdk-linux002\\receipt.json",
+          "bytes": 12802,
+          "sha256": "6409d4e2dfce68550132da3d9a082e0f21f9df4e610083f7838258fd1c0b1219",
+          "availability": "available at review"
+        }
+      },
+      "native_creation": {
+        "report": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\wire-native-linux001\\native.xml",
+          "bytes": 898,
+          "sha256": "ee7d8258342bc1a9f5d6421d5477f25cd1f6942795b3597e5f02e610301dd4f5",
+          "availability": "available at review"
+        },
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "disabled": 0
+      }
+    }
+  },
+  "products": [
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+      "bytes": 17529856,
+      "sha256": "b886ce6aab4d59ec4fca51daf7c8e4307275c92c316fe56692fbce0dfa826f24",
+      "availability": "available at review"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+      "bytes": 17400320,
+      "sha256": "932c668e19130f00c058b529a09b50c0d196531aaafd0958b7856f572104b9ea",
+      "availability": "available at review"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+      "bytes": 7570944,
+      "sha256": "9686a49fb6c036ddc006423c766f29e557451d08410349e6abc440f773f556d4",
+      "availability": "available at review"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_scientific_io.cp312-win_amd64.pyd",
+      "bytes": 591360,
+      "sha256": "e96ae40ed804e4e7fc75df680453e6efe89490e8b6b42d6a63d6d04036eb0f56",
+      "availability": "available at review"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\linux\\app-installed\\bin\\imagejxx",
+      "bytes": 35684328,
+      "sha256": "d62d7bb8dc097509a4cb94c0a37877c6adde8a5dbe18b5f844d7d7841a984f96",
+      "availability": "available at review"
+    },
+    {
+      "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\p13g-probe-env003\\lib\\python3.12\\site-packages\\imagejxx\\_scientific_io.cpython-312-x86_64-linux-gnu.so",
+      "bytes": 4488280,
+      "sha256": "4f7e2d4f29ffcdccb73f0999ac1345780945d21b05e5c3987f93c8a2e1d29773",
+      "availability": "available at review"
+    },
+    {
+      "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\p13g-probe-env003\\lib\\python3.12\\site-packages\\imagejxx\\_desktop.cpython-312-x86_64-linux-gnu.so",
+      "bytes": 33495448,
+      "sha256": "6b847495eea65282232c636ab79cba412263f48f8793263de4fc6917ce20c34a",
+      "availability": "available at review"
+    },
+    {
+      "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\p13g-probe-env003\\lib\\python3.12\\site-packages\\imagejxx\\_native.cpython-312-x86_64-linux-gnu.so",
+      "bytes": 12658176,
+      "sha256": "8c058204a3f67a14efb4fb02c6f05acd9d7ac53df3a06ed83a1e7ce3eaccccb7",
+      "availability": "available at review"
+    }
+  ],
+  "supplemental_reference_tool_tests": {
+    "tests": 548,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "disabled": 0,
+    "report": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\reference-tool-tests008.xml",
+      "bytes": 91717,
+      "sha256": "50df7d61233a5a085edd961c5491921a360aa10b020efc7f1547f204df01307b",
+      "availability": "available at review"
+    },
+    "scope": "later reference/test-only source additions; not part of baseline004 product manifest"
+  },
+  "limitations": [
+    "No full packet qualification: I-UI06..12 remain pending, including budget UI",
+    "Existing excluded scientific-owner guard remains unresolved",
+    "Retired G016 evidence unavailable; old Auto proof unresolved",
+    "macOS, OS/GPU input and accessibility remain unqualified"
+  ],
+  "next": "E2 Preferences budget refusal/recovery routes; numerical refs independently captured",
+  "acceptance": false,
+  "complete_requirement_coverage": false
+}

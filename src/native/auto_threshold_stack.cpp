@@ -8,17 +8,21 @@
 #include <numeric>
 
 namespace imagejxx {
-std::size_t detail::pooled_threshold_working_bytes(const ResolvedTarget &target,int count,bool include_histogram) {
+std::size_t detail::pooled_threshold_working_bytes(const ResolvedTarget &target,int count,bool include_histogram,std::size_t cap) {
   if(count<2 || count>65536)throw std::invalid_argument("Pooled threshold requires 2..65536 bins");
   const auto shape=target.source().data().dataset.shape();
-  const auto pixels=std::size_t(shape.x)*shape.y;
-  const auto rounded=detail::target_rounded_mask_workspace(target);
-  if(rounded>SIZE_MAX-65536 || pixels>(SIZE_MAX-rounded-65536)/ (2*sizeof(double)) || std::size_t(count+1)>(SIZE_MAX-rounded-65536-pixels*2*sizeof(double))/(24*sizeof(double)))
+  if(std::size_t(shape.x)>SIZE_MAX/std::size_t(shape.y))
     throw std::invalid_argument("Pooled threshold workspace overflows size_t");
-  const auto base=rounded+65536+pixels*2*sizeof(double)+std::size_t(count+1)*24*sizeof(double);
+  const auto pixels=std::size_t(shape.x)*shape.y;
+  if(pixels>(SIZE_MAX-65536)/(2*sizeof(double)) || std::size_t(count+1)>(SIZE_MAX-65536-pixels*2*sizeof(double))/(24*sizeof(double)))
+    throw std::invalid_argument("Pooled threshold workspace overflows size_t");
+  const auto base=65536+pixels*2*sizeof(double)+std::size_t(count+1)*24*sizeof(double);
   const auto retained=include_histogram?(std::size_t(count)*2+1)*sizeof(double):0;
   if(retained>SIZE_MAX-base)throw std::invalid_argument("Pooled histogram retention workspace overflow");
-  return base+retained;
+  const auto owned=base+retained;
+  if(owned>cap)throw std::invalid_argument("Pooled threshold exceeds working-byte limit");
+  const auto mask=detail::target_mask_workspace(target,"auto_mask",cap-owned);
+  return owned+mask;
 }
 PooledThresholdResult pooled_auto_threshold(const ResolvedTarget &target,const std::string &method,int bins,bool black,bool white,std::size_t cap,const ExecutionControl &control) {
   return pooled_auto_threshold(target,method,bins,black,white,cap,control,false);
@@ -27,16 +31,16 @@ PooledThresholdResult pooled_auto_threshold(const ResolvedTarget &requested,cons
   // Freeze every caller-owned argument before the first execution callback.
   const auto target=requested;const std::string name=method;const auto captured=control;
   const auto &dataset=target.source().data().dataset;const auto shape=dataset.shape();
-  if(shape.s!=1 || dataset.sample_policy()!=FloatingSamplePolicy::FiniteOnly || target.execution_mode()!=ExecutionMode::Planes)
-    throw std::invalid_argument("Pooled threshold requires finite scalar plane targets");
-  const auto normalized=validate_operation("auto_mask",OperationDefaultContext{shape.x,shape.y,shape.s,dataset.pixel_type(),{}},{{"method",name},{"bins",std::int64_t(bins)}});
-  (void)normalized;
   const int count=bins==0?256:bins;
-  if(count<2 || count>65536)throw std::invalid_argument("Pooled threshold requires 2..65536 bins");
-  const auto working=detail::pooled_threshold_working_bytes(target,count,include_histogram);
-  if(working>cap)throw std::invalid_argument("Pooled threshold exceeds working-byte limit");
-  if(captured.cancellation && captured.cancellation->canceled())throw OperationCancelled();
-  ExecutionScope scope(captured);kernel_checkpoint();
+  ExecutionScope scope(captured);
+  const auto working=detail::without_execution_callbacks([&] {
+    kernel_checkpoint();
+    if(shape.s!=1 || dataset.sample_policy()!=FloatingSamplePolicy::FiniteOnly || target.execution_mode()!=ExecutionMode::Planes)
+      throw std::invalid_argument("Pooled threshold requires finite scalar plane targets");
+    (void)validate_operation("auto_mask",OperationDefaultContext{shape.x,shape.y,shape.s,dataset.pixel_type(),{}},{{"method",name},{"bins",std::int64_t(bins)}});
+    return detail::pooled_threshold_working_bytes(target,count,include_histogram,cap);
+  });
+  kernel_checkpoint();
   if(captured.progress)execution_progress(0,1);
   double low=std::numeric_limits<double>::infinity(),high=-low,sum=0;
   std::uint64_t samples=0;

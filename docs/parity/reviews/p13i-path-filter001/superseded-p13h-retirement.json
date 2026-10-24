@@ -1,0 +1,70 @@
+{
+  "state": "retired",
+  "reason": "Superseded P13h generations; preserve final source19 qualification archives and original assertions/identities",
+  "protected_archives": [
+    "focused-regression002-native.tar.gz",
+    "linux-dependency-source019-no-python-capture-native.tar.gz",
+    "linux-focused-edges002-cpp-observations-native.tar.gz",
+    "linux-focused-edges002-scratch-native.tar.gz",
+    "linux-focused-primary003-cpp-observations-native.tar.gz",
+    "linux-focused-primary003-scratch-native.tar.gz",
+    "windows-dependency-source019-no-python-capture.tar.gz",
+    "windows-focused-edges002-cpp-observations.tar.gz",
+    "windows-focused-edges002-scratch.tar.gz",
+    "windows-focused-primary004-cpp-observations.tar.gz",
+    "windows-focused-primary004-scratch.tar.gz",
+    "windows-focused-regression003-cpp-observations.tar.gz",
+    "windows-focused-regression003-scratch.tar.gz"
+  ],
+  "effect": "Retired older captures become unavailable evidence; no repinning/substitution or acceptance claim",
+  "files": [
+    {
+      "path": ".tmp/p13h-verification/windows-focused-primary002-cpp-observations.tar.gz",
+      "bytes": 133989478,
+      "sha256": "2ef38f3e34f5b04f476c5109a7170009a5da703eb56d51efb061887f0d1fa271",
+      "retention_receipt": ".tmp/p13h-verification/windows-focused-primary002-cpp-observations-retention.json",
+      "retention_receipt_sha256": "2bcb664f2e8396c80525993894a7b422feb8bba4dc77edd08b92938be55c88af",
+      "members_verified": 31,
+      "state": "retired_unavailable"
+    },
+    {
+      "path": ".tmp/p13h-verification/windows-focused-primary003-cpp-observations.tar.gz",
+      "bytes": 81524306,
+      "sha256": "c3c0de49aa320ff27619c14f8427a03dc546c456a65fc95d7d9b2c4584672eaa",
+      "retention_receipt": ".tmp/p13h-verification/windows-focused-primary003-cpp-observations-retention.json",
+      "retention_receipt_sha256": "f511afba0d786a035ad133e1d09e8764a2d74ecad8cc2abc8a849effe9c5e215",
+      "members_verified": 31,
+      "state": "retired_unavailable"
+    },
+    {
+      "path": ".tmp/p13h-verification/linux-focused-primary002-cpp-observations-native.tar.gz",
+      "bytes": 81495633,
+      "sha256": "beb555d19e4af13544a294b1b710b016945fad1810d1d276968f70d90021568b",
+      "retention_receipt": ".tmp/p13h-verification/linux-focused-primary002-cpp-observations-native-retention.json",
+      "retention_receipt_sha256": "ef0656c3a3e30392cbf538cf40e4ac1c71d5835e7c4196d91c76cbd2c5aafabd",
+      "members_verified": 31,
+      "state": "retired_unavailable"
+    },
+    {
+      "path": ".tmp/p13h-verification/windows-focused-regression002-cpp-observations.tar.gz",
+      "bytes": 88374504,
+      "sha256": "0e636beb5394fac0f124ea8e7ac372e07e0aef3ee745f2bf294347b4305faeb1",
+      "retention_receipt": ".tmp/p13h-verification/windows-focused-regression002-cpp-observations-retention.json",
+      "retention_receipt_sha256": "e7502cf9f452bbc0a5e5ef603e439133dab82f4db31a074720ccd3239621aeb7",
+      "members_verified": 80,
+      "state": "retired_unavailable"
+    },
+    {
+      "path": ".tmp/p13h-verification/linux-focused-regression001-cpp-observations-native.tar.gz",
+      "bytes": 89249052,
+      "sha256": "7e9ccf1f1634893854947c185e236864fede808cdbae6cc205f014fd12a78015",
+      "retention_receipt": ".tmp/p13h-verification/linux-focused-regression001-cpp-observations-native-retention.json",
+      "retention_receipt_sha256": "34391f3f439fafb9c7537fa8da91a3f33fc77a52475fb39a371888a24daf71e3",
+      "members_verified": 80,
+      "state": "retired_unavailable"
+    }
+  ],
+  "acceptance": false,
+  "removed_bytes": 474632973,
+  "ended": 1792847010.1881142
+}

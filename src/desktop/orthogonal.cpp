@@ -135,7 +135,7 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
   }
   // Interpretation is explicit and precedes navigation or plane reads. A
   // present future/malformed state never silently falls back to legacy pixels.
-  const auto channelState = recognized_channel_display(live.display(), liveDataset);
+  auto channelState = recognized_channel_display(live.display(), liveDataset);
   if (transient_target) {
     if (!transient)
       throw std::invalid_argument("Orthogonal preview target requires pixels");
@@ -646,6 +646,9 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
   const bool previewActive = channelSources
       ? channelSources->usesPreview(currentPosition.c)
       : transient && (input.preview_targets.empty()?(!transient_target || transient_target->contains(currentPosition)):std::any_of(input.preview_targets.begin(),input.preview_targets.end(),[&](const auto &target){return target.contains(currentPosition);}));
+  const auto displayEffects = collectPlanePreviewDisplayEffects(live, currentPosition,
+      channelState, channelSources ? &*channelSources : nullptr, previewActive,
+      input.preview_display_effects, channel_limits);
   const Dataset *pixelsDataset = previewActive ? &transient->data().dataset : &liveDataset;
   const auto previewGeneration = previewActive ? preview_generation : 0;
   // Borrowed snapshots/targets never enter the caches; keys retain only value
@@ -666,6 +669,14 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
   auto displayProperties = displayFinal.properties;
   const auto previewRange=previewActive?input.preview_display_range:std::nullopt;
   if(previewRange)displayProperties["display_range"]=metadata_array({(*previewRange)[0],(*previewRange)[1]});
+  Json displayMetadata{{"display_range", get(d.state().metadata, "display_range")}};
+  if (previewRange) displayMetadata["display_range"] = *previewRange;
+  projectPlanePreviewDisplayEffects(displayMetadata, channelState, currentPosition, displayEffects);
+  const auto *activeDisplayEffect = planePreviewDisplayEffect(displayEffects, currentPosition);
+  if (!channelState && activeDisplayEffect && activeDisplayEffect->range)
+    displayProperties["display_range"] = metadata_array(
+        {(*activeDisplayEffect->range)[0], (*activeDisplayEffect->range)[1]});
+  const auto displayKey = planePreviewDisplayKey(live, currentPosition, displayMetadata, channelState, displayEffects);
   const bool background=input.viewport_jobs!=nullptr;
   if(!background){
   if (channelState) {
@@ -675,7 +686,7 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
     rangeDocument_ = live.id();
     rangeDataIdentity_ = reinterpret_cast<std::uintptr_t>(&live.data());
     rangeTransient_ = false;
-    rangePreviewGeneration_ = 0;
+    rangePreviewGeneration_ = activeDisplayEffect && activeDisplayEffect->range ? activeDisplayEffect->generation : 0;
     rangeT_ = currentPosition.t;
     rangeC_ = currentPosition.c;
     rangeSlice_ = currentPosition.z;
@@ -687,7 +698,7 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
       rangeRevision_ != pixelRevision || rangePixelMetadataGeneration_ != pixelMetadataGeneration_ || rangeT_ != currentPosition.t ||
       rangeC_ != currentPosition.c || rangeSlice_ != currentPosition.z ||
       !metadata_equal(rangeProperties_, displayProperties)) {
-    const auto &range = get(d.state().metadata, "display_range");
+    const auto &range = get(displayMetadata, "display_range");
     if(previewRange)range_=*previewRange;
     else if (range.is_array() && range.size() == 2)
       range_ = {number(range[0]), number(range[1])};
@@ -717,7 +728,7 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
     const auto channelKey = channelSources
         ? channelDisplayDiagnostics(*channelState, *channelSources, views[i],
                                     coordinate, currentPosition.t,
-                                    currentPosition.c, false, channel_limits)
+                                    currentPosition.c, false, channel_limits, displayEffects)
         : Json(nullptr);
     auto channelCacheKey=channelKey;
     if(channelSources)for(auto &contributor:channelCacheKey["contributors"])
@@ -737,7 +748,7 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
         cache.revision != pixelRevision || cache.pixelMetadataGeneration != pixelMetadataGeneration_ || cache.coordinate != coordinate ||
         cache.t != currentPosition.t || cache.c != currentPosition.c ||
         ((channelState || background) && cache.z != currentPosition.z) ||
-        cache.channelDisplayKey != channelCacheKey ||
+        cache.channelDisplayKey != channelCacheKey || cache.previewDisplayKey != displayKey ||
         (!background && !sameDisplayRange(cache.range,range_)) ||
         !metadata_equal(cache.displayProperties, displayProperties) ||
         (gl && (!cache.texture || cache.textureDirty));
@@ -755,12 +766,12 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
         d.admitView(i!=0);
         ViewportRender spec{live};spec.position=currentPosition;spec.plane=views[i];spec.coordinate=coordinate;
         if(transient)spec.preview=*transient;if(transient_target)spec.target=*transient_target;spec.previewTargets=input.preview_targets;
-        spec.previewGeneration=preview_generation;spec.metadata=d.state().metadata;if(previewRange)spec.metadata["display_range"]=*previewRange;spec.linked=true;
+        spec.previewGeneration=preview_generation;spec.metadata=d.state().metadata;if(previewRange)spec.metadata["display_range"]=*previewRange;spec.previewDisplayEffects=displayEffects;spec.linked=true;
         spec.layered=i==0 && hasStyledOverlays(spec.metadata,currentPosition);spec.capture=capture_readback;spec.channelLimits=channel_limits;
         const auto key=Json{{"data",live.data_identity().value_or(0)},{"pixels",pixelRevision},{"meta",pixelMetadataGeneration_},
           {"display",metadataJson(displayProperties)},{"tcz",{currentPosition.t,currentPosition.c,currentPosition.z}},
           {"plane",i},{"coordinate",coordinate},{"preview",previewGeneration},{"preview_data",dataIdentity},
-          {"channels",channelKey},{"capture",capture_readback},{"gl",gl}}.dump();
+          {"channels",channelKey},{"display_effects",displayKey},{"capture",capture_readback},{"gl",gl}}.dump();
         auto ready=input.viewport_jobs->request(d.id,i+1,key,declared,[spec=std::move(spec)](const ExecutionControl &){return renderViewport(spec);});
         if(!ready){
           cache.pending=true;cache.readbackSource.reset();cache.readbackDisplay.reset();cache.readbackMemory.reset();
@@ -819,7 +830,8 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
           readbackPixels = std::move(pixels);
         return rgb;
       }();
-      if (!completed && i == 0 && activeContributes) {
+      if (!completed && i == 0 && activeContributes &&
+          !(activeDisplayEffect && activeDisplayEffect->suppress_threshold_overlay)) {
         const auto original = liveDataset.plane(currentPosition);
         renderThresholdOverlay(display, *original, live, currentPosition);
       }
@@ -860,11 +872,12 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
       cache.range = range_;
       cache.displayProperties = displayProperties;
       cache.channelDisplayKey = channelCacheKey;
+      cache.previewDisplayKey = displayKey;
       if (channelSources)
         cache.channelDisplay = capture_readback
             ? channelDisplayDiagnostics(*channelState, *channelSources, views[i],
                                         coordinate, currentPosition.t,
-                                        currentPosition.c, true, channel_limits)
+                                        currentPosition.c, true, channel_limits, displayEffects)
             : channelKey;
       if (capture_readback) {
         cache.readbackSource = std::move(readbackPixels);
@@ -879,7 +892,7 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
     }
     if(channelSources && !rebuild && !missingReadback)
       cache.channelDisplay=channelDisplayDiagnostics(*channelState,*channelSources,views[i],coordinate,
-          currentPosition.t,currentPosition.c,capture_readback,channel_limits);
+          currentPosition.t,currentPosition.c,capture_readback,channel_limits,displayEffects);
     if (i == 0) {
       // A saved-row draft changes annotations only. Keep this key out of the
       // scalar/RGB/texture rebuild predicate, including the XZ/YZ providers.
@@ -1184,8 +1197,12 @@ Json OrthogonalViews::diagnostics(bool include_readback) const {
     result.back()["preview_generation"] = cache.previewGeneration;
     result.back()["source_document_id"] = cache.documentId;
     result.back()["range"] = displayRangeValue(cache.range);
-    result.back()["range_policy"] = cache.channelDisplay.is_null()
-                                        ? "live_document" : "channel_display";
+    result.back()["range_policy"] = cache.previewDisplayKey.value("contrast_source", "live") == "top_hat_preview"
+        ? "top_hat_preview" : cache.channelDisplay.is_null() ? "live_document" : "channel_display";
+    result.back()["contrast_source"] = cache.previewDisplayKey.value("contrast_source", "live");
+    result.back()["threshold_source"] = i == 0
+        ? cache.previewDisplayKey.value("threshold_source", "live") : "not_applicable";
+    result.back()["preview_display_effects"] = cache.previewDisplayKey.value("effects", Json::array());
     if (!cache.channelDisplay.is_null())
       result.back()["channel_display"] = cache.channelDisplay;
     result.back()["range_source_document_id"] = rangeDocument_;

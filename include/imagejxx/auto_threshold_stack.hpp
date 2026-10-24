@@ -12,8 +12,8 @@ struct PooledThresholdResult {
 // Whole source planes are validated; empty masks do not acquire a source plane.
 // No pixels are concatenated or changed. Providers must be immutable across
 // reads. The scratch estimate covers dense planes/masks, histogram tables and
-// rounded raster admission. Frozen arguments, other ROI geometry scratch,
-// provider caches, source/history and allocator overhead are external.
+// shared path/rounded raster admission. Frozen arguments, other ROI geometry
+// scratch, provider caches, source/history and allocator overhead are external.
 // Optional raw histogram retention adds its counts/edges to working admission.
 // Requested histograms are raw, including endpoint bins. Constants can retain
 // counts without another scan; raw means retain their exact numerical level.

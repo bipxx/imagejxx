@@ -54,7 +54,30 @@ void run() {
   rejects([&]{validate_manual_threshold_command_record(invalid);});
   rejects([&]{rebind_manual_threshold_command(owner->snapshot(),invalid,{});});
   auto request=TargetRequest{};request.scope=TargetScope::AllZ;
-  rejects([&]{resolve_manual_threshold_command(owner->snapshot(),{0,255},request);});
+  const auto allSource=owner->snapshot();
+  const auto all=resolve_manual_threshold_command(allSource,{0,255},request);
+  check(all.target().position_count()==3,"AllZ did not capture all three planes");
+  for(std::size_t z=0;z<3;++z) {
+    const auto position=all.target().position(z);
+    check(position.t==0 && position.c==0 && position.z==int(z),
+          "AllZ did not freeze the current T/C and ordered Z planes");
+  }
+  const auto allRecord=all.record();validate_manual_threshold_command_record(allRecord);
+  check(std::get<std::int64_t>(allRecord.at("schema_version"))==2 &&
+        std::get<std::string>(allRecord.at("profile"))=="manual_raw_inclusive_v2",
+        "AllZ did not retain the existing V2 record");
+  auto allView=allSource.display();allView.t=1;allView.c=1;allView.crosshair[2]=2;
+  owner->set_display(allView);
+  const auto allReplay=manual_threshold_command_from_record(owner->snapshot(),allRecord);
+  check(allReplay.target().position_count()==3,"AllZ replay changed target cardinality");
+  for(std::size_t z=0;z<3;++z) {
+    const auto position=allReplay.target().position(z);
+    check(position.t==0 && position.c==0 && position.z==int(z),
+          "AllZ replay followed later display navigation");
+  }
+  check(metadata_equal(allReplay.record(),allRecord) && owner->snapshot().shares_data(allSource),
+        "AllZ capture/replay mutated the command or source");
+  owner->set_display(allSource.display());
   owner->select(std::nullopt);
   auto next=resolve_manual_threshold_command(owner->snapshot(),{0,255});
   auto stale=app.prepare("threshold",next.target(),next.parameters());

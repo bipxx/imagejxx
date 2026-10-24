@@ -16,11 +16,74 @@
 #include <stb_truetype.h>
 
 namespace imagejxx::desktop {
+const PlanePreviewDisplayEffects *planePreviewDisplayEffect(
+    const std::vector<PlanePreviewDisplayEffects> &effects, PlanePosition position) {
+  for (const auto &effect : effects)
+    if (effect.position.t == position.t && effect.position.c == position.c &&
+        effect.position.z == position.z)
+      return &effect;
+  return nullptr;
+}
+
+std::vector<PlanePreviewDisplayEffects> collectPlanePreviewDisplayEffects(
+    const DocumentSnapshot &current, PlanePosition position,
+    const std::optional<ChannelDisplayState> &channels,
+    const ChannelDisplaySources *sources, bool active_preview,
+    const PlanePreviewDisplayQuery &query, ChannelDisplayLimits limits) {
+  std::vector<PlanePreviewDisplayEffects> result;
+  if (!query) return result;
+  const auto append = [&](PlanePosition candidate) {
+    if (auto effect = query(current, candidate)) result.push_back(*effect);
+  };
+  if (channels && sources) {
+    const auto estimate = estimate_channel_display(current.data().dataset,
+        *channels, Plane::XY, position.z, position.t, position.c, limits);
+    for (int c : estimate.contributing_channels)
+      if (sources->usesPreview(c)) append({position.t, c, position.z});
+  } else if (!channels && active_preview) append(position);
+  return result;
+}
+
+void projectPlanePreviewDisplayEffects(
+    Json &metadata, std::optional<ChannelDisplayState> &channels,
+    PlanePosition position, const std::vector<PlanePreviewDisplayEffects> &effects) {
+  if (channels) {
+    for (const auto &effect : effects)
+      if (effect.range && effect.position.t == position.t && effect.position.z == position.z &&
+          effect.position.c >= 0 && std::size_t(effect.position.c) < channels->channels.size())
+        channels->channels[std::size_t(effect.position.c)].range = *effect.range;
+  } else if (const auto *effect = planePreviewDisplayEffect(effects, position)) {
+    if (effect->range) metadata["display_range"] = *effect->range;
+  }
+}
+
+Json planePreviewDisplayKey(
+    const DocumentSnapshot &live, PlanePosition position, const Json &metadata,
+    const std::optional<ChannelDisplayState> &channels,
+    const std::vector<PlanePreviewDisplayEffects> &effects) {
+  Json values = Json::array();
+  for (const auto &effect : effects)
+    values.push_back({{"position", {effect.position.t, effect.position.c, effect.position.z}},
+      {"generation", effect.generation}, {"range", effect.range ? displayRangeValue(*effect.range) : Json()},
+      {"suppress_threshold_overlay", effect.suppress_threshold_overlay}});
+  const auto *active = planePreviewDisplayEffect(effects, position);
+  const bool suppress = active && active->suppress_threshold_overlay;
+  const auto threshold = live.display().properties.find(manual_threshold_property);
+  return {{"effects", std::move(values)},
+    {"range", channels ? displayRangeValue(channels->channels.at(position.c).range)
+                        : get(metadata, "display_range")},
+    {"threshold", !suppress && threshold != live.display().properties.end()
+                       ? metadataJson(threshold->second) : Json()},
+    {"contrast_source", active && active->range ? "top_hat_preview" : "live"},
+    {"threshold_source", suppress ? "top_hat_preview" : "live"}};
+}
+
 Json channelDisplayDiagnostics(const ChannelDisplayState &state,
                                const ChannelDisplaySources &sources,
                                Plane plane, int coordinate, int t, int active_c,
                                bool include_z_strips,
-                               ChannelDisplayLimits limits) {
+                               ChannelDisplayLimits limits,
+                               const std::vector<PlanePreviewDisplayEffects> &effects) {
   const auto &dataset = sources.live().data().dataset;
   const auto estimate = estimate_channel_display(
       dataset, state, plane, coordinate, t, active_c, limits);
@@ -33,6 +96,18 @@ Json channelDisplayDiagnostics(const ChannelDisplayState &state,
         {"generation", preview ? sources.generation() : 0},
         {"data_identity", sources.dataIdentity(c)},
         {"range", displayRangeValue(state.channels[static_cast<std::size_t>(c)].range)}};
+    if (!effects.empty()) {
+      const auto effect = std::find_if(effects.begin(), effects.end(), [&](const auto &value) {
+        return preview && value.position.t == t && value.position.c == c &&
+               (plane != Plane::XY || value.position.z == coordinate);
+      });
+      contributor["contrast_source"] = effect != effects.end() && effect->range
+          ? "top_hat_preview" : "live";
+      if (effect != effects.end())
+        contributor["display_effect"] = {{"position", {effect->position.t, effect->position.c, effect->position.z}},
+          {"generation", effect->generation}, {"range", effect->range ? displayRangeValue(*effect->range) : Json()},
+          {"suppress_threshold_overlay", effect->suppress_threshold_overlay}};
+    }
     if (include_z_strips) {
       Json strips = Json::array();
       if (preview)

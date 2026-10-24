@@ -11,6 +11,8 @@ public:
   ManualThresholdRange range() const { return range_; }
   const ResolvedTarget &target() const { return target_; }
   OperationParameters parameters() const;
+  // V1/V2 keep their legacy selection grammar. An active native path emits
+  // V3 with the strict native selection carrier; all other intent is unchanged.
   MetadataObject record() const;
 private:
   friend ResolvedManualThresholdCommand resolve_manual_threshold_command(

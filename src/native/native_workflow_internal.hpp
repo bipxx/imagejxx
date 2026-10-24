@@ -15,11 +15,15 @@ using NativeWorkflowStepRef =
 void validate_native_workflow_histogram_intent(const NativeWorkflowHistogram &);
 // Metadata-only admission of source, targets, parameters and retained/output
 // budgets. Acquires no source samples; execution performs this admission again.
+// Owning callers supply the captured-input floor; it shares the finite working
+// allowance with the maximum serial target-mask scratch, never a second cap.
 std::size_t admit_native_workflow(
     const DocumentSnapshot &, const std::vector<NativeWorkflowStepRef> &,
-    const NativeWorkflowLimits &, const ExecutionControl & = {});
+    const NativeWorkflowLimits &, const ExecutionControl & = {},
+    std::size_t minimum_retained_bytes = 0);
 // Synchronous only. Caller retains immutable requests until this returns.
 PreparedNativeWorkflow prepare_native_workflow_borrowed(
     const DocumentSnapshot &, const std::vector<NativeWorkflowStepRef> &,
-    const NativeWorkflowLimits &, const ExecutionControl &);
+    const NativeWorkflowLimits &, const ExecutionControl &,
+    std::size_t minimum_retained_bytes = 0);
 } // namespace imagejxx::detail

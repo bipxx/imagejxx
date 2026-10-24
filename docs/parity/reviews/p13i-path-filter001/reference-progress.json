@@ -1,0 +1,171 @@
+{
+  "schema": "p13i.reference-progress.001",
+  "state": "reference-validated; product implementation in progress",
+  "base_commit": "4a80b3570c59e547f2571c7fc2b95d85a5b66d0e",
+  "scope": "125 pinned Java path/Gaussian observations and tooling integrity only",
+  "fixture": {
+    "path": "tests/fixtures/path-filter-targets-imagej154r.json.gz",
+    "bytes": 30756,
+    "sha256": "fa9d541349a05e38404fa81387ef9fba4625b595f0be81a520dbe309d55bd2de"
+  },
+  "inputs": [
+    {
+      "path": "tests/reference/ObservePathFilterTargets.java",
+      "bytes": 20160,
+      "sha256": "5b6bfe10c16662e3120a0b09565ee233abcf4d8439bb70b6c6b918a8c7eec414"
+    },
+    {
+      "path": "scripts/capture_path_filter_reference.py",
+      "bytes": 14512,
+      "sha256": "7cde60e2a9bf2fc068a40170deb5d3b52d9b9a11e2c925aa7e0abce53f4a2d10"
+    },
+    {
+      "path": "scripts/verify_path_filter_reference.py",
+      "bytes": 8133,
+      "sha256": "0e62b16e2aad271923fa8746d706e046276da06544bef0686f1c3897e5df7624"
+    },
+    {
+      "path": "tests/python/test_path_filter_reference.py",
+      "bytes": 10170,
+      "sha256": "75a0a9a940fd62f6213718861f4a89da2d2e460bab6ee089515038f033f8932d"
+    },
+    {
+      "path": "docs/parity/reference-pins.json",
+      "bytes": 1903,
+      "sha256": "68116b0da051748e583dbe82b6e1df7e269056386d10fb4b66c7833d4f1996bc"
+    },
+    {
+      "path": "tests/fixtures/tophat-mask-imagej154r.json",
+      "bytes": 104541,
+      "sha256": "f825048421085b33a78cff53685d9cce4d3898a99e2c4c94b5d81d385b2f87a1"
+    },
+    {
+      "path": "tests/fixtures/imagej-roi-composite-imagej154r.json",
+      "bytes": 52698,
+      "sha256": "f47900da8073470c9dff9448f78392944f548a395f1c2f6480b0b0961dedc8da"
+    }
+  ],
+  "reference": {
+    "imagej_commit": "62db90a269cccc1ac79f658e4602043214ed055b",
+    "source_archive_sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665",
+    "reviewed_runtime_members": 581,
+    "primary_cases": 121,
+    "degenerate_cases": 4,
+    "recapture_raw_identities_unchanged": true,
+    "sample_comparator": "selected reference F32 words; exact original words outside native target",
+    "raw_unselected_side_effects": {
+      "composite-03-sigma1": 10,
+      "outside-canvas-sigma1": 30,
+      "vertical-zero-width-sigma1": 40
+    }
+  },
+  "reports": [
+    {
+      "path": ".tmp/p13i-verification/reference-tool-tests004.xml",
+      "bytes": 23094,
+      "sha256": "3e983809ab33505a4b3185916e34c28d3800e95f5c69bb9de9779cf32bf2d798"
+    }
+  ],
+  "local_retention": [
+    {
+      "path": ".tmp/p13i-verification/capture002-retention.json",
+      "bytes": 40353,
+      "sha256": "3da08d5dda76b5d78c742a092563608268b46ec66077d1ed814000e7746479ed"
+    },
+    {
+      "path": ".tmp/p13i-verification/capture-degenerate002-retention.json",
+      "bytes": 1964,
+      "sha256": "24c440b7f5a047e69c479251e2141f37df03fa4460f635b4119b7a313830a665"
+    },
+    {
+      "path": ".tmp/p13i-verification/region-windows001-retention.json",
+      "bytes": 1175,
+      "sha256": "887ae7d730387d3e7017e96e9c73315c619ae5a78c71578537a547b6a379d2d8"
+    }
+  ],
+  "availability": "Compressed observation fixture is repository portable. Full raw stdout/receipts/logs are locally retained in verified archives; locators may become unavailable after explicit retirement.",
+  "tool_tests": {
+    "selected": 144,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "native_slice": {
+    "platform": "Windows",
+    "scope": "regional-mask bounds repair before planner integration",
+    "groups": [
+      "native_filter_region_masks",
+      "native_gaussian_command",
+      "native_rank_command",
+      "native_remove_nans_command"
+    ],
+    "outcome": "passed",
+    "current_packet_qualification": false
+  },
+  "material_scope": "Reference observations from pinned ImageJ and reviewed Java; generated dyadic samples; no third-party runtime or reference implementation incorporated into product. Original licensing records remain binding.",
+  "pending": [
+    "rank operation/type/policy reference matrix",
+    "shared planner and all pre-read/callback admission consumers",
+    "actual draw/filter UI and remaining recipe families",
+    "independent installed native/Python/SDK checks on Windows/Linux",
+    "final common-source regression and commercial/retention audit",
+    "full-family and M13 acceptance"
+  ],
+  "packet_scope_qualified": false,
+  "full_ci_qualified": false,
+  "acceptance": false,
+  "complete_requirement_coverage": false,
+  "storage": {
+    "after_bytes": 7894142181,
+    "limit_bytes": 8589934592,
+    "report": {
+      "path": "docs/parity/reviews/p13i-path-filter001/storage-reference.json",
+      "bytes": 1073,
+      "sha256": "00643fec73a31669cfafcbf2409e7ed283bd73c9931f0821e8e7846262c3799e"
+    },
+    "measurement_scope": "Active compiler caches/runtimes/SDK, existing Windows and Linux verification dependencies, references, current scratch and retained local evidence; no linked traversal."
+  },
+  "planner_slice": {
+    "platform": "Windows",
+    "state": "native and installed API passed; UI replay assertion failed",
+    "source_manifest": {
+      "archive_path": ".tmp/p13i-verification/planner-windows002.tar.gz",
+      "archive_sha256": "da08c99757a07e2f96407651cdff9d747a4730be45082f1db3e19f004bb90a03",
+      "member": "source-manifest.json",
+      "bytes": 943865,
+      "sha256": "4dd30a2acda88fd2e09d30404488867d3099462ac94e5b7e9df5ecf8e50139d9",
+      "availability": "locally retained and member-hash verified"
+    },
+    "native_report": {
+      "archive_path": ".tmp/p13i-verification/planner-windows002.tar.gz",
+      "archive_sha256": "da08c99757a07e2f96407651cdff9d747a4730be45082f1db3e19f004bb90a03",
+      "member": "native.xml",
+      "bytes": 4538,
+      "sha256": "98a9b4793baecfa6eb7b1c206ef76d038bd62ab1c7e980a49332cc29fb85ba36",
+      "availability": "locally retained and member-hash verified"
+    },
+    "api_report": {
+      "archive_path": ".tmp/p13i-verification/python-windows001.tar.gz",
+      "archive_sha256": "eb1e47ac5f4542e309f801474f944f0956fb23aecf13d1258e1692175b94a29b",
+      "member": "api.xml",
+      "bytes": 20343,
+      "sha256": "740ce06f2427fdf7f6fec1042974ca71d3f99728ac74e4dc02e780d31b867737",
+      "availability": "locally retained and member-hash verified"
+    },
+    "ui_report": {
+      "archive_path": ".tmp/p13i-verification/python-windows001.tar.gz",
+      "archive_sha256": "eb1e47ac5f4542e309f801474f944f0956fb23aecf13d1258e1692175b94a29b",
+      "member": "ui.xml",
+      "bytes": 9049,
+      "sha256": "5cce0575ce314560a6331876c45a331a8191a0c53e3ad18bd6a5a889341d3af0",
+      "availability": "locally retained and member-hash verified"
+    },
+    "native_groups": 13,
+    "api_cases": 124,
+    "native_failures": 0,
+    "api_failures": 0,
+    "ui_cases_failed": 2,
+    "ui_failure": "Probe omitted explicit Active Selection review destination. Producer repair is source-complete; independent assertion unchanged; next common-source run must verify it.",
+    "not_current_source_qualification": "Native admission and legacy consumer migration continues after this source identity."
+  }
+}

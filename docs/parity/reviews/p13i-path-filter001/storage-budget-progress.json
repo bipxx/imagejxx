@@ -1,0 +1,56 @@
+{
+  "schema": "p13i.storage-progress.001",
+  "scope": "after E2 terminal tests and verified retention; reused active Windows/Linux caches/runtimes",
+  "measurement": {
+    "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13h-verification\\storage-p13i-after-budget-cleanup003.json",
+    "sha256": "8a7065d7d4e37ed1e08151763c4948425fcb228f578549f9e2617a8b203841c1",
+    "roots": {
+      "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification": 2042572420,
+      "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification": 282919673,
+      "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13h-verification": 2631685764,
+      "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001": 1764914735,
+      "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-probe-env003": 51132541,
+      "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed": 19162879,
+      "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-client": 489,
+      "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification": 119891098,
+      "C:\\Users\\HEQ\\Projects\\imagejxx\\.venv": 436156589,
+      "/home/heq/.cache/imagejxx-build/p08k-001-5zn6rc00/python001": 232157751,
+      "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001": 473425189
+    },
+    "bytes": 8054019128,
+    "limit_bytes": 8589934592,
+    "policy": "Current active caches/runtimes/evidence; no linked-directory traversal"
+  },
+  "selected_retention_receipts": [
+    {
+      "receipt": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\budget-ui-windows001-retention.json",
+      "receipt_sha256": "b6c0d6c7e2140f8bdf6c4e19e2c71d44e82f1ab681473a423a898a9fbd980caa",
+      "removed_bytes": 73501568,
+      "retained_bytes": 13551056,
+      "archive_sha256": "7001c6cd37e7034cec12e9526f7654beb3bbbd84232c8851b34e6d6b4b58f71f"
+    },
+    {
+      "receipt": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\budget-ui-windows002-retention.json",
+      "receipt_sha256": "5d66a49446c11657364cb40aa39120d9cc987f2a87faeda2b9def6050c501f2e",
+      "removed_bytes": 171669978,
+      "retained_bytes": 31832341,
+      "archive_sha256": "9d847015c2ec1b3f2fb89107a0de3ee96bb6114a27ba6296b1eb0abc8b4c8d29"
+    },
+    {
+      "receipt": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\budget-profile-windows001-retention.json",
+      "receipt_sha256": "5ecb01e89a76f03847a36a0ddf48f65a5bca5b6734f3300e934311b71fecc2f8",
+      "removed_bytes": 53942726,
+      "retained_bytes": 10480851,
+      "archive_sha256": "16986e9d37dc0bcd5cc01dbdd41accd2422182361defb9bd811fcddeb10345b7"
+    },
+    {
+      "receipt": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\reference-tool-tests009-scratch-retention.json",
+      "receipt_sha256": "7e90a9e68f869a287fcd07ac8b728acaeb5fad9fc93bac082e0c415ffa2e12a3",
+      "removed_bytes": 17134047,
+      "retained_bytes": 113966,
+      "archive_sha256": "acef58fb9dd0cd1dcec9a8419c2b0e2ec89720352d7fa158d8719d13a47e73a8"
+    }
+  ],
+  "policy": "Archive necessary captures losslessly and verify every member before owned scratch deletion; SDK consumer caches stripped rather than archived",
+  "acceptance": false
+}

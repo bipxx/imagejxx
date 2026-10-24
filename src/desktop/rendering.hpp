@@ -1,12 +1,33 @@
 #pragma once
 
 #include "desktop.hpp"
+#include "gaussian_jobs.hpp"
 #include <imagejxx/channel_display.hpp>
 #include <array>
 #include <optional>
 
 namespace imagejxx::desktop {
 class ChannelDisplaySources;
+
+// Queried only on the host thread after the final navigation input. The
+// resulting values can cross a worker boundary; the query never does.
+using PlanePreviewDisplayQuery = std::function<std::optional<PlanePreviewDisplayEffects>(
+    const DocumentSnapshot &, PlanePosition)>;
+std::vector<PlanePreviewDisplayEffects> collectPlanePreviewDisplayEffects(
+    const DocumentSnapshot &current, PlanePosition position,
+    const std::optional<ChannelDisplayState> &channels,
+    const ChannelDisplaySources *sources, bool active_preview,
+    const PlanePreviewDisplayQuery &query, ChannelDisplayLimits limits = {});
+const PlanePreviewDisplayEffects *planePreviewDisplayEffect(
+    const std::vector<PlanePreviewDisplayEffects> &, PlanePosition);
+// Mutate only render-local metadata/channel copies, never the owner's display.
+void projectPlanePreviewDisplayEffects(
+    Json &metadata, std::optional<ChannelDisplayState> &channels,
+    PlanePosition position, const std::vector<PlanePreviewDisplayEffects> &);
+Json planePreviewDisplayKey(
+    const DocumentSnapshot &live, PlanePosition position, const Json &metadata,
+    const std::optional<ChannelDisplayState> &channels,
+    const std::vector<PlanePreviewDisplayEffects> &effects);
 
 // Paint annotations onto an already display-mapped RGB image exactly once.
 // This does not perform intensity conversion, LUT mapping or threshold tinting.
@@ -28,7 +49,8 @@ Json channelDisplayDiagnostics(const ChannelDisplayState &state,
                                const ChannelDisplaySources &sources,
                                Plane plane, int coordinate, int t, int active_c,
                                bool include_z_strips,
-                               ChannelDisplayLimits limits = {});
+                               ChannelDisplayLimits limits = {},
+                               const std::vector<PlanePreviewDisplayEffects> &effects = {});
 
 // Private display-only policy. Callers must obtain it from the immutable
 // Dataset whose pixels are displayed; no processing Settings flag is used.

@@ -56,25 +56,31 @@ AutomaticThresholdDisplayResult automatic_threshold_display(const Dataset &input
 AutomaticThresholdDisplayResult pooled_automatic_threshold_display(const ResolvedTarget &input,const std::string &method,int bins,bool bright,bool black,bool white,const ManualThresholdLimits &limits,const ExecutionControl &control) {
   const auto target=input;const std::string name=method;const auto cap=limits;const auto captured=control;
   const auto &data=target.source().data().dataset;const auto shape=data.shape();
-  if(data.sample_policy()!=FloatingSamplePolicy::FiniteOnly || shape.s!=1 || target.execution_mode()!=ExecutionMode::Planes)
-    throw std::invalid_argument("Pooled display requires finite scalar plane targets");
-  const auto estimate=estimate_manual_threshold(shape,data.pixel_type(),target.position(0),cap);
-  if(target.position_count()>cap.max_pixels/estimate.pixel_count)
-    throw std::invalid_argument("Pooled display total pixel limit");
-  const auto pixels=estimate.pixel_count*target.position_count();
-  if(pixels>9007199254740991ULL)throw std::invalid_argument("Pooled display sample count overflow");
-  (void)validate_operation("auto_mask",OperationDefaultContext{shape.x,shape.y,shape.s,data.pixel_type(),{}},{{"method",name},{"bins",std::int64_t(bins)}});
-  const auto pooled_bytes=detail::pooled_threshold_working_bytes(target,bins?bins:256,true);
-  if(pixels==SIZE_MAX || pooled_bytes>SIZE_MAX-pixels-1 || estimate.analysis_bytes>SIZE_MAX-pooled_bytes-pixels-1)
-    throw std::invalid_argument("Pooled display workspace overflow");
-  const auto working=pooled_bytes+pixels+1+estimate.analysis_bytes;
-  if(working>cap.max_working_bytes)throw std::invalid_argument("Pooled display working-byte limit");
-  if(captured.cancellation && captured.cancellation->canceled())throw OperationCancelled();
-  ExecutionScope scope(captured);kernel_checkpoint();if(captured.progress)execution_progress(0,1);
+  ExecutionScope scope(captured);
+  std::size_t pixels=0, pooled_allowance=0;
+  const auto working=detail::without_execution_callbacks([&] {
+    kernel_checkpoint();
+    if(data.sample_policy()!=FloatingSamplePolicy::FiniteOnly || shape.s!=1 || target.execution_mode()!=ExecutionMode::Planes)
+      throw std::invalid_argument("Pooled display requires finite scalar plane targets");
+    const auto estimate=estimate_manual_threshold(shape,data.pixel_type(),target.position(0),cap);
+    if(target.position_count()>cap.max_pixels/estimate.pixel_count)
+      throw std::invalid_argument("Pooled display total pixel limit");
+    pixels=estimate.pixel_count*target.position_count();
+    if(pixels>9007199254740991ULL)throw std::invalid_argument("Pooled display sample count overflow");
+    (void)validate_operation("auto_mask",OperationDefaultContext{shape.x,shape.y,shape.s,data.pixel_type(),{}},{{"method",name},{"bins",std::int64_t(bins)}});
+    if(pixels==SIZE_MAX || estimate.analysis_bytes>SIZE_MAX-pixels-1)
+      throw std::invalid_argument("Pooled display workspace overflow");
+    const auto additional=pixels+1+estimate.analysis_bytes;
+    if(additional>cap.max_working_bytes)throw std::invalid_argument("Pooled display working-byte limit");
+    pooled_allowance=cap.max_working_bytes-additional;
+    const auto pooled_bytes=detail::pooled_threshold_working_bytes(target,bins?bins:256,true,pooled_allowance);
+    return pooled_bytes+additional;
+  });
+  kernel_checkpoint();if(captured.progress)execution_progress(0,1);
   // The default child scope inherits cancellation/checkpoints from the outer
   // scope, without emitting an intermediate completion progress callback.
   const ExecutionControl nested;
-  auto pooled=pooled_auto_threshold(target,name,bins,black,white,cap.max_working_bytes,nested,true);
+  auto pooled=pooled_auto_threshold(target,name,bins,black,white,pooled_allowance,nested,true);
   const auto level=pooled.threshold;
   const bool integer=data.pixel_type()==PixelType::UInt8 || data.pixel_type()==PixelType::UInt16;
   double lower=integer?std::floor(level)+1:std::nextafter(level,std::numeric_limits<double>::infinity());

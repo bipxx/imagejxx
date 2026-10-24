@@ -1,0 +1,3054 @@
+{
+  "schema": "p13i.scoped-qualification.001",
+  "state": "scoped-qualified",
+  "acceptance": false,
+  "complete_requirement_coverage": false,
+  "packet_scope_qualified": true,
+  "platforms": {
+    "windows": {
+      "actual_ui_readers": 128,
+      "routes": [
+        "admission-legacy-invert-path",
+        "admission-pooled-display-mean-path",
+        "admission-pooled-mask-mean-path",
+        "admission-workflow-later-path-refusal",
+        "budget-gaussian",
+        "budget-rank-mean",
+        "draw-gaussian",
+        "empty-gaussian-active-off-canvas",
+        "empty-gaussian-active-one-axis-zero",
+        "empty-gaussian-active-zero-area",
+        "empty-gaussian-positioned-unmatched",
+        "empty-rank-mean-active-off-canvas",
+        "empty-rank-mean-active-one-axis-zero",
+        "empty-rank-mean-active-zero-area",
+        "empty-rank-mean-positioned-unmatched",
+        "lifecycle-gaussian-calibration-revision",
+        "lifecycle-gaussian-invalid-editor",
+        "lifecycle-gaussian-invalid-external",
+        "lifecycle-gaussian-owner-replace",
+        "lifecycle-gaussian-pixel-revision",
+        "lifecycle-gaussian-selection-revision",
+        "lifecycle-gaussian-supersede",
+        "lifecycle-rank-mean-calibration-revision",
+        "lifecycle-rank-mean-invalid-editor",
+        "lifecycle-rank-mean-owner-replace",
+        "lifecycle-rank-mean-pixel-revision",
+        "lifecycle-rank-mean-selection-revision",
+        "lifecycle-rank-mean-supersede",
+        "rank-maximum-in-place",
+        "rank-maximum-new-document",
+        "rank-mean-in-place",
+        "rank-mean-new-document",
+        "rank-median-in-place",
+        "rank-median-new-document",
+        "rank-minimum-in-place",
+        "rank-minimum-new-document",
+        "rank-variance-in-place",
+        "rank-variance-new-document",
+        "scientific-gaussian-active",
+        "scientific-gaussian-positioned",
+        "scientific-rank-mean-active",
+        "scientific-rank-mean-positioned",
+        "specialized-despeckle",
+        "specialized-outliers-bright-grays",
+        "specialized-outliers-bright-inverted",
+        "specialized-outliers-dark-grays",
+        "specialized-outliers-dark-inverted",
+        "specialized-remove-nans-finite",
+        "specialized-remove-nans-ieee",
+        "specialized-remove-nans-quiet",
+        "specialized-top-hat-dark-no-subtract-grays",
+        "specialized-top-hat-dark-no-subtract-inverted",
+        "specialized-top-hat-dark-subtract-grays",
+        "specialized-top-hat-dark-subtract-inverted",
+        "specialized-top-hat-light-no-subtract-grays",
+        "specialized-top-hat-light-no-subtract-inverted",
+        "specialized-top-hat-light-subtract-grays",
+        "specialized-top-hat-light-subtract-inverted",
+        "stack-gaussian-cancel",
+        "stack-gaussian-no",
+        "stack-gaussian-yes",
+        "stack-rank-mean-cancel",
+        "stack-rank-mean-no",
+        "stack-rank-mean-yes"
+      ],
+      "products": {
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe": "2515893f3a3fb1ab932b0f5639af738245b38bfbfea807c32a3ea5fcf174ffe2",
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd": "b9524c2abcf36cd833e91d4d140ff810f1c3890a03c2d64a91d2836c890005ab",
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd": "9c86cfa96367e367757d4e96df207086c00ce0834b460dc14f9d0dcb09514176"
+      },
+      "ui_chunks": [
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-01.tar.gz",
+            "bytes": 9387414,
+            "sha256": "e252559f972f3f898af34ff7171877e75be17330345b662f04f029cca106cccb",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-01-retention.json",
+            "bytes": 3442,
+            "sha256": "0feb0218e5a546794deba63969edd18a18b368d627272d09a0c5d104379b7a3d",
+            "availability": "verified available"
+          },
+          "members_verified": 17,
+          "removed_raw_bytes": 44670580,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2870,
+              "sha256": "0f7769a43a716fedf02013ffb663616634c3089f29f8e740c79efd944d36ebd1"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 935,
+              "sha256": "3c924f0684a6d3cc77d067455c11f006993b91c1fba826c867116eb66265f7b8"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 563,
+              "sha256": "0edef49564d43a3e82f72bf7f61fca1d6a8fe26efe3fc8e14b651b1be8c9d654"
+            }
+          ],
+          "routes": [
+            "scientific-gaussian-active",
+            "scientific-gaussian-positioned"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-02.tar.gz",
+            "bytes": 9467605,
+            "sha256": "b6bdac673d8e063df8cfa3dbbfbea43ce5443424a47fc61fe38ef0e2c0b38245",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-02-retention.json",
+            "bytes": 3450,
+            "sha256": "6ebcba11609fab2900421fd9057b949f708b1ef8c8a2acf2b57356796ee435b7",
+            "availability": "verified available"
+          },
+          "members_verified": 17,
+          "removed_raw_bytes": 45908959,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2878,
+              "sha256": "c29db446dca3788d90fc1965e569576e951e90c95dc52b90d35d1f5f6fa7239e"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 939,
+              "sha256": "6b98fc69dd7a7e429cb5c1b1dac6c73d2f33caa6d34ff58f569abbb668290460"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 567,
+              "sha256": "9ad5861a158d883391772b6110237540a38c73cc249e7cb93a008615d9e53e08"
+            }
+          ],
+          "routes": [
+            "scientific-rank-mean-active",
+            "scientific-rank-mean-positioned"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-03.tar.gz",
+            "bytes": 6144846,
+            "sha256": "2998938d34d3f4dea794a8fa9117a064d5247b332f1812be0d4af184cd83e0bf",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-03-retention.json",
+            "bytes": 3499,
+            "sha256": "59ec745af5f90e7469a2b418e25c706746781ec9102a86148c0154fbd4e0858e",
+            "availability": "verified available"
+          },
+          "members_verified": 17,
+          "removed_raw_bytes": 32811864,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2929,
+              "sha256": "f70ffbeacd3435460d77b966f790b5fe96ec2f63143cda2c1a19c988e488246a"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 1033,
+              "sha256": "ab6c68dafc9a45ba04bf3086db51d422d10328fc5509b1901dbe2d003dc4f0b2"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 661,
+              "sha256": "fdc16e102bf72d031743a1b33732512c87092c4aba8a9f9336e8dcebb1c386da"
+            }
+          ],
+          "routes": [
+            "empty-gaussian-positioned-unmatched",
+            "empty-rank-mean-positioned-unmatched"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-04.tar.gz",
+            "bytes": 480713,
+            "sha256": "3ed2f828a49af297b99935d9bb6934cbdc591fc0351cd77229e10f6fc26909ec",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-04-retention.json",
+            "bytes": 3720,
+            "sha256": "1a40b47b99434ea9ef80ba6087c81c72636f8a00290229b24383a105fec0dfbf",
+            "availability": "verified available"
+          },
+          "members_verified": 19,
+          "removed_raw_bytes": 5377745,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2782,
+              "sha256": "800e68152b319dfeeb6fa63a7ae58a8e62a5d1bd4929af169e3b4201e7cfcdb0"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 849,
+              "sha256": "4543972a00c3149c8f15cc9095b64b1e1dd9a5b110177cb8fc76b3ba6e4b2e34"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 477,
+              "sha256": "4b33fe38cb95eca07a9bb26817d1a978db65d7e100ad17cdf9990933140e3437"
+            }
+          ],
+          "routes": [
+            "draw-gaussian",
+            "rank-minimum-in-place"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-05.tar.gz",
+            "bytes": 452530,
+            "sha256": "725c6c6bb01d45a6fae774c3eb3adcecfd06121d0a83eded885db98c2194dbe8",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-05-retention.json",
+            "bytes": 3388,
+            "sha256": "992eb952055d390ca633c7b77d94ef3166fc9514d111ebb8eec013e3140e97ac",
+            "availability": "verified available"
+          },
+          "members_verified": 17,
+          "removed_raw_bytes": 4956878,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2830,
+              "sha256": "3caf895e75bb1dffcad9ab9e15393ffe7f54d17e9b9983a3995002c6c1d26ec4"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 899,
+              "sha256": "45a58ee29abac234b792a438ca3a5e7528ee172aa6483a5d0345244c1f2b77ca"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 527,
+              "sha256": "db2823e6da3a97646037629bfb1048c99da7b6e347c19cceffc67f37da33414d"
+            }
+          ],
+          "routes": [
+            "rank-minimum-new-document",
+            "rank-maximum-in-place"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-06.tar.gz",
+            "bytes": 456364,
+            "sha256": "4397703d51965558979c570895c861ba0243a6f8ada53928a252fbdab9e3e7ed",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-06-retention.json",
+            "bytes": 3384,
+            "sha256": "29d2bd0ceed170a8474e2114f6c9e6f72be602b7ff159dc4b9709fa1ddeef003",
+            "availability": "verified available"
+          },
+          "members_verified": 17,
+          "removed_raw_bytes": 4957711,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2826,
+              "sha256": "8430b07ed0b0a908d0ac438e587d75df631e7551f35ae02e564825cc269ae2fa"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 897,
+              "sha256": "e22e10d1824c45c7b548cc78f820a3265a1979537d3fbb92ba654b4158726a90"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 525,
+              "sha256": "8c97d7637f2ed982b785104685cde5b2e7e37ebde87b6337f41db0daa4d38ad4"
+            }
+          ],
+          "routes": [
+            "rank-maximum-new-document",
+            "rank-median-in-place"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-07.tar.gz",
+            "bytes": 468964,
+            "sha256": "7c5a5f42bff25ebfc9672f01ad8407c5f404a4f70c724961f4c08727c9349020",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-07-retention.json",
+            "bytes": 3372,
+            "sha256": "df7538ef39b51dcf11b523f2b8520cfd72cc3e35d06a89984ed9c54602338f60",
+            "availability": "verified available"
+          },
+          "members_verified": 17,
+          "removed_raw_bytes": 4961778,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2814,
+              "sha256": "d8f6be6e3dabff144c8f994d25fe3a62c91b9bd7c3623a960fc6d2437e576415"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 891,
+              "sha256": "10ad6dca0342a8c4a7980790258410b2310c99118f33cbdd9e041fa00b89d324"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 519,
+              "sha256": "992855010b70fc0ac1a009f48c47979864d64edb408e83d1c42f3d3700e24236"
+            }
+          ],
+          "routes": [
+            "rank-median-new-document",
+            "rank-mean-in-place"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-08.tar.gz",
+            "bytes": 476256,
+            "sha256": "4b77d20c2a9a92f7307cacf80ad15b2019c89e8263916d166a5275a950d66625",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-08-retention.json",
+            "bytes": 3380,
+            "sha256": "ff958db9dc8d89289efd1877e2e25c327d6b77ad9c0e2eb130f7d4e69f9fe6a4",
+            "availability": "verified available"
+          },
+          "members_verified": 17,
+          "removed_raw_bytes": 4961533,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2822,
+              "sha256": "feb01968b7675b6bd359383a8b6f22bdc7eb1e9ae8168c4ee6e62cdb33e57938"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 895,
+              "sha256": "61a35a5dbbc728715fc68280878bcbcd90d3a7c20516ce2699b9d705f5adb43b"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 523,
+              "sha256": "8ec8e9ddd633347a145d740431925b089a23ffb17386d1f93f32b17b49a95c1a"
+            }
+          ],
+          "routes": [
+            "rank-mean-new-document",
+            "rank-variance-in-place"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-09.tar.gz",
+            "bytes": 5752778,
+            "sha256": "b41f4114136830ccb2f0ef92b166e47fa9776eabbc2dcbfaf0d97faab3ee4fff",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-09-retention.json",
+            "bytes": 2988,
+            "sha256": "7669e6461b1311cccc876914b58d92a879704ffa04f535d427632f9f448f0891",
+            "availability": "verified available"
+          },
+          "members_verified": 15,
+          "removed_raw_bytes": 31022973,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2810,
+              "sha256": "99b9b374f5cb1ab758e716441427c3077e3b37fbb4d157db4815a11c03e8aff8"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 907,
+              "sha256": "42df2a89660e4a5cca484785d47f4c59a83ee930bf5663bdf44a10f12c2db230"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 535,
+              "sha256": "7aa42a558f5a18cb2864d2373f59f9f145b0eddeab4b36db8ed8a612cebe2a9f"
+            }
+          ],
+          "routes": [
+            "rank-variance-new-document",
+            "budget-gaussian"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-10.tar.gz",
+            "bytes": 5697631,
+            "sha256": "ea5f5b003eb31b71339c6ec53ce6b397c1d0b366f5a1888fbc1eb37cec656203",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-10-retention.json",
+            "bytes": 2969,
+            "sha256": "e993a9c8681aa56a59db0085227d3d5f1b11227a86f22f46feae6c69d1ba882a",
+            "availability": "verified available"
+          },
+          "members_verified": 15,
+          "removed_raw_bytes": 30691619,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2793,
+              "sha256": "a6fa0717fe2ceb62f1c2abf2be50244d38dca9b2f7e90e6755a4dcb497c41871"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 951,
+              "sha256": "395dea0fdac6a697f9e21b4cfea6b639ecbdf9f2c18d639947c2365e5edb637d"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 579,
+              "sha256": "a479639bc00b297c82b7e3b47667c33097232457d63d96e83a4abc2eafb97e7f"
+            }
+          ],
+          "routes": [
+            "budget-rank-mean",
+            "specialized-despeckle"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-11.tar.gz",
+            "bytes": 359875,
+            "sha256": "f8ec06db384f687d26ed19c490e9017b771ebecb7a85dc893fa1abbf3ddb9747",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-11-retention.json",
+            "bytes": 3477,
+            "sha256": "f936d00b29d71abecbb1a1ac115279c9e71358f3954e490208c54745411c7098",
+            "availability": "verified available"
+          },
+          "members_verified": 17,
+          "removed_raw_bytes": 3834203,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2921,
+              "sha256": "213227005e7d7abe3f92632928de9204a2f24f50001613d1cbe9f63af1ebdc10"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 1049,
+              "sha256": "b42a6be2774386228e8a171ba67f061ed5b9836676ea91a55acb8fe927a1873f"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 677,
+              "sha256": "c6210a455684105e7d03183a5dc4c1f47f1e424a42b6ee9fa016491f235f1548"
+            }
+          ],
+          "routes": [
+            "specialized-outliers-bright-grays",
+            "specialized-outliers-bright-inverted"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-12.tar.gz",
+            "bytes": 358114,
+            "sha256": "06ddbca17ce5241222f42b0471483f214e21f5d5acd0242c59d787811aee89bb",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-12-retention.json",
+            "bytes": 3461,
+            "sha256": "676abaad544b77b5eaba428a240cf8e8ed8740b0967c9bf669b5064003006469",
+            "availability": "verified available"
+          },
+          "members_verified": 17,
+          "removed_raw_bytes": 3833419,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2905,
+              "sha256": "8a3f82133750ad7e855b9d18272b3ba7a7502e1c2ceeedeadfa5376307983866"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 1041,
+              "sha256": "c128da541e820c233ef24adc4a131fc0159e44ac73a6b36a8784e11ec1bcf544"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 669,
+              "sha256": "5fadd6055aa1b2570e3d9bbff0a696a5071290bbc192ac1112162b6595864f95"
+            }
+          ],
+          "routes": [
+            "specialized-outliers-dark-grays",
+            "specialized-outliers-dark-inverted"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-13.tar.gz",
+            "bytes": 368232,
+            "sha256": "affa0a7a1ad6b93e858c058414cae1c6e3596a377e3a460fc91981dbf8ba4768",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-13-retention.json",
+            "bytes": 3525,
+            "sha256": "f0ff78bbde179a2217eab872030b1bb69b436f4bbe2d28313eba4ad16414f531",
+            "availability": "verified available"
+          },
+          "members_verified": 17,
+          "removed_raw_bytes": 3588126,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2970,
+              "sha256": "b6d68183096d4f10ad8d59e0d873f5bfa155dfba60859c6efbc2a34eb3d849a2"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 1073,
+              "sha256": "96d34996e642e492931b0158517ae363b85b82fe6303a94670e8d937f398fa08"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 701,
+              "sha256": "ec3875ddd70b2f45ed897ee835ff0dd2b8b76e9dbfc84456a8e219107f44da83"
+            }
+          ],
+          "routes": [
+            "specialized-top-hat-dark-subtract-grays",
+            "specialized-top-hat-dark-subtract-inverted"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-14.tar.gz",
+            "bytes": 355165,
+            "sha256": "97eb17807fb2b97146f1c9ace5682fb1c655ab28df3c5280aebe6400262778b1",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-14-retention.json",
+            "bytes": 3549,
+            "sha256": "1dd3e438a61b1f54662c7f0e223b7f5afe5de63e588e306ba04a8bcda54130d1",
+            "availability": "verified available"
+          },
+          "members_verified": 17,
+          "removed_raw_bytes": 3646654,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2994,
+              "sha256": "c46e16455b989856627432948abc7f92af483900775ae8c8f49a12cbabebda00"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 1085,
+              "sha256": "d28411b47c5cca1299820b4f721e230a71d17b9dce7925815d4c64f59b1b9e39"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 713,
+              "sha256": "154cb8b708130b846cc4e3a8c5ff19fe50330c79123392a35e0959f5d4024546"
+            }
+          ],
+          "routes": [
+            "specialized-top-hat-dark-no-subtract-grays",
+            "specialized-top-hat-dark-no-subtract-inverted"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-15.tar.gz",
+            "bytes": 366321,
+            "sha256": "d10d342d23130c1b12c3577edd926283944f5b5127fc557b75ecd5aa2e9eca80",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-15-retention.json",
+            "bytes": 3533,
+            "sha256": "516be1aef03867076d6753dcbcd8175970a403542e143a332df00ede9fb084c8",
+            "availability": "verified available"
+          },
+          "members_verified": 17,
+          "removed_raw_bytes": 3654391,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2977,
+              "sha256": "0da186bbd9a45ca45552040577e08ca7bf5eb667da7862580d4ddb7ff0dd7454"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 1077,
+              "sha256": "102fd5822fc0136461216a64270ebdf88f8534f2860dda1408eca45d53976e40"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 705,
+              "sha256": "53792a5aaf53a70fd8bc26975a8ec88443b20aea36a40198ce1b1092a674ae4c"
+            }
+          ],
+          "routes": [
+            "specialized-top-hat-light-subtract-grays",
+            "specialized-top-hat-light-subtract-inverted"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-16.tar.gz",
+            "bytes": 354278,
+            "sha256": "58c19f691a2a7d03200f858b9e5ba040c97e09f6a9adaaa80ba7f53eea09abe3",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-16-retention.json",
+            "bytes": 3557,
+            "sha256": "006e169a14890d1dbb16911e09cc0dcb0f3f8fc0d1d81225d1d13534d2ec365d",
+            "availability": "verified available"
+          },
+          "members_verified": 17,
+          "removed_raw_bytes": 3706380,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 3002,
+              "sha256": "ec0e5d210b1b26aa8c75ebe7085d393ec430310243e04f81668d673e24bc3f98"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 1089,
+              "sha256": "8e1b03d96f544111d456129f3461add697d7ea73e915679b2b5fe7291cfc32d6"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 717,
+              "sha256": "0ee92ee3ffbd8b018297aa003127708d5afe9f8452ec761b0858e9df3e2da498"
+            }
+          ],
+          "routes": [
+            "specialized-top-hat-light-no-subtract-grays",
+            "specialized-top-hat-light-no-subtract-inverted"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-17.tar.gz",
+            "bytes": 318500,
+            "sha256": "c1f4eff3ffc136a8b99883c0136861def0c977da275b2d84a2370e41fbeec407",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-17-retention.json",
+            "bytes": 3437,
+            "sha256": "35dae51c4397f1021a8afe57b07aeda6a47bb9b11e57946d7ce91250085ffa6f",
+            "availability": "verified available"
+          },
+          "members_verified": 17,
+          "removed_raw_bytes": 3354100,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2882,
+              "sha256": "c2181413017a974fdfffbdfeecef8f750d0bb9b15957338594099a33d122b0a4"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 1029,
+              "sha256": "6c945b5b45920bbd41fc09667e780f77873bb62cb785e29ce5e332dbb8b5ecfc"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 657,
+              "sha256": "f2f00c22e46b18d5b327ba88075325a8211233b618b39118b496c67666c399ae"
+            }
+          ],
+          "routes": [
+            "specialized-remove-nans-finite",
+            "specialized-remove-nans-quiet"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-18.tar.gz",
+            "bytes": 320003,
+            "sha256": "28da0b9c0b49e48b9b26ca56115684fd193fc3efdd2f286878a2241f416021c5",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-18-retention.json",
+            "bytes": 3032,
+            "sha256": "9b40cc48214dcd2286dd75c3d7b620432267e3b3dc6c099b6bef3f9b9df3b18c",
+            "availability": "verified available"
+          },
+          "members_verified": 15,
+          "removed_raw_bytes": 3367545,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2868,
+              "sha256": "d2e28a6318616fadeb0cc5f01955ab163a8b32d616837e02f9c1726a863e15b3"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 1025,
+              "sha256": "9cac50835757e1936474e331f96e93b7cba4622676b1dcb043b214991c6aa35b"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 653,
+              "sha256": "62cbc9e57a5be971d8cc73fa5e9e70469f6de517e974958c29bed52f45420d3b"
+            }
+          ],
+          "routes": [
+            "specialized-remove-nans-ieee",
+            "lifecycle-gaussian-supersede"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-19.tar.gz",
+            "bytes": 347922,
+            "sha256": "d6a490cea7650cc8c035f4114a3df582c13791891eff6512eca0620e0acac399",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-19-retention.json",
+            "bytes": 2666,
+            "sha256": "187bf2c181b4b4cc62a1beb56f31789469d06c60489b07da5ecb55463a765212",
+            "availability": "verified available"
+          },
+          "members_verified": 13,
+          "removed_raw_bytes": 3879285,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2906,
+              "sha256": "f184741e22cd0a93381ba0b42646720e95cd40b3344db625a9d423f0bbddcafd"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 1045,
+              "sha256": "4a9eb28392bd7b264a0b372262566ff59889ac239a553dcf6c6c5f192d49f05e"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 673,
+              "sha256": "92a25439e0e075cc6dbb3402741e6d325cce0dc2b1ca9f775b2da0fc4d6bc5fd"
+            }
+          ],
+          "routes": [
+            "lifecycle-gaussian-invalid-editor",
+            "lifecycle-gaussian-owner-replace"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-20.tar.gz",
+            "bytes": 306056,
+            "sha256": "51c96aa206845aebe7e3bc6dd1d160e14ec793db7691a4406fb8b1fe0d9e1512",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-20-retention.json",
+            "bytes": 2681,
+            "sha256": "35a85eb0687ecde3face10305f5deff78f8680efff16b6c612961c1312ae998f",
+            "availability": "verified available"
+          },
+          "members_verified": 13,
+          "removed_raw_bytes": 3364320,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2926,
+              "sha256": "b0dfcb65da2193f582c50302ebcaeb612f99cb6a91cd43806a96cc9645508ef6"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 1055,
+              "sha256": "b931df0d5b6f97d2f6c8028d029ad87c15970c530fa65bcb683310de1280bedf"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 683,
+              "sha256": "8787abed101b2059ff99691732c1fc4a4d1edbcc6a92f50ba4797cb6e10938f4"
+            }
+          ],
+          "routes": [
+            "lifecycle-gaussian-selection-revision",
+            "lifecycle-gaussian-pixel-revision"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-21.tar.gz",
+            "bytes": 298822,
+            "sha256": "2d2432d1ef904aa67c2e53fe28cbf3992c7d83d8696c67348e4721aece171155",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-21-retention.json",
+            "bytes": 2675,
+            "sha256": "ec173e3945aee08b686e0129f19f6385890d86f788f08c896d4b5b92f648c89b",
+            "availability": "verified available"
+          },
+          "members_verified": 13,
+          "removed_raw_bytes": 3171529,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2918,
+              "sha256": "166e904d40ba4016d5226364770c8cd27687e124a24188fba43453ad32adc211"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 1051,
+              "sha256": "86a0b4239a5896a853532f4b15ae69a6fd8380eb7eab7a5583c7e78dbfcab163"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 679,
+              "sha256": "1ebfab37d1002a361179c8de97e42e9455278a17a9615e2e2b880af074d0d364"
+            }
+          ],
+          "routes": [
+            "lifecycle-gaussian-calibration-revision",
+            "lifecycle-rank-mean-supersede"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-22.tar.gz",
+            "bytes": 382964,
+            "sha256": "4692d79ad0760b2bf4603b56ebc44bd8eb935cca848f7ad176af840bb20f1a36",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-22-retention.json",
+            "bytes": 2676,
+            "sha256": "1feb935900d415b030c54324d6212698e76032cdeb5a6efe37f8dc01784e4019",
+            "availability": "verified available"
+          },
+          "members_verified": 13,
+          "removed_raw_bytes": 4200730,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2914,
+              "sha256": "36ff7e8be4054cf80f2bff47013740889ac0efed110a77f884fa4b4007804979"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 1049,
+              "sha256": "9589747351bc695d9b5acaa7109955541b523684792a04c83df5be0e3e59e043"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 677,
+              "sha256": "911b35dcbeabf7f0099ad3a0f3922460a4b858f952aff78f3f34cd99213771ce"
+            }
+          ],
+          "routes": [
+            "lifecycle-rank-mean-invalid-editor",
+            "lifecycle-rank-mean-owner-replace"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-23.tar.gz",
+            "bytes": 337929,
+            "sha256": "1a3ce070670e6029fcee55eac2abcffc9ab81680582690615e5b2b13a7ad26c6",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-23-retention.json",
+            "bytes": 2689,
+            "sha256": "18ca6392449d37ff0f829e8c301542265c68ab5a1a0ae3a6cb069e7822f56306",
+            "availability": "verified available"
+          },
+          "members_verified": 13,
+          "removed_raw_bytes": 3850858,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2933,
+              "sha256": "b684b5c060fbe5aeb1d46f63c1da7b43eb8122c48f2e36a369fa2ff44461446b"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 1059,
+              "sha256": "57a09698b119699dcc677359c77086b2b1cf15c6c93de364969df6c3017aac47"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 687,
+              "sha256": "a1e25fe8fafba777f7dc9ea2e8940ee7ef7afde423b8dcc7ea91d5499f580dc7"
+            }
+          ],
+          "routes": [
+            "lifecycle-rank-mean-selection-revision",
+            "lifecycle-rank-mean-pixel-revision"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-24.tar.gz",
+            "bytes": 278578,
+            "sha256": "5d5192f662c39b04e4a020995f3da7e294496055eb8b2967195601953c62e624",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-24-retention.json",
+            "bytes": 2696,
+            "sha256": "36bf1d793b65f346787fd2068711fbeb2d58311c11f3531988609f0caa978f03",
+            "availability": "verified available"
+          },
+          "members_verified": 13,
+          "removed_raw_bytes": 2950709,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2946,
+              "sha256": "82184a6574ebc9a9bb030c60c810754627009370fc46cd092238f7988a8d68c0"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 1065,
+              "sha256": "21f49ad81f96694c82c7657f16744c6612e52780116f54ae9ff1912d0c0c1cbf"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 693,
+              "sha256": "ba63eb9d1572d7e694c45de54f138864e62824c34857a73f0d9ea3adad137e86"
+            }
+          ],
+          "routes": [
+            "lifecycle-rank-mean-calibration-revision",
+            "lifecycle-gaussian-invalid-external"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-25.tar.gz",
+            "bytes": 326922,
+            "sha256": "aa2da3cf2251c850295130c07cadb388e825a02c46334d2b17ebd2435a4e62c6",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-25-retention.json",
+            "bytes": 3465,
+            "sha256": "9399cd7b84fca1e4ba3fbc4f7c9f6642592526986f2c85d9c0ea9e9b0bdc890a",
+            "availability": "verified available"
+          },
+          "members_verified": 17,
+          "removed_raw_bytes": 3319244,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2909,
+              "sha256": "70f71258e7dda37fa37ada19fe4a8b28c44257bd6cc7bf8068d9573611686b10"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 1023,
+              "sha256": "ee8942937d5b360a6f351b21e1dbe743f4c0456ee21f5db449caa47d25ccf3ee"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 651,
+              "sha256": "742d78637c8de9bb368340942a0a5d93a64f35a702b6e4b59f2880200a0c1388"
+            }
+          ],
+          "routes": [
+            "empty-gaussian-active-zero-area",
+            "empty-gaussian-active-one-axis-zero"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-26.tar.gz",
+            "bytes": 330475,
+            "sha256": "10882ee780581e82d2ef33c8775b75597334bafa4f65e72087242dc8871862d0",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-26-retention.json",
+            "bytes": 3457,
+            "sha256": "0fa6bd29fe896d4d23bccba476d51ea14535f4aa28805132f5398f4332dc7aa4",
+            "availability": "verified available"
+          },
+          "members_verified": 17,
+          "removed_raw_bytes": 3603664,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2902,
+              "sha256": "ad874b8b45c5cd2ca614de426cd4dacc554dd52f27b62677e015fd098f656579"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 1019,
+              "sha256": "d3d10d902a658e132c745dba6eab16467fc191c3ca669ed5f218daf62c12d23a"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 647,
+              "sha256": "e6717ffc477150eb4d6f0001c0d1389845aca8ed933381e8d633cf8cae33a468"
+            }
+          ],
+          "routes": [
+            "empty-gaussian-active-off-canvas",
+            "empty-rank-mean-active-zero-area"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-27.tar.gz",
+            "bytes": 336825,
+            "sha256": "14fcbcfb793f3d9e7ce54a68e2d14fe942c794db51d0f24fdc6155a9da79cf67",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-27-retention.json",
+            "bytes": 3477,
+            "sha256": "d360706fda44da01dac9e8a6908e4f5584cd608ace3e4d198d980e578f1dbe99",
+            "availability": "verified available"
+          },
+          "members_verified": 17,
+          "removed_raw_bytes": 3888263,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2922,
+              "sha256": "caf6c99923186d416890f9916ca4a67715c4710a6b2a06c49905506feb2c55b8"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 1029,
+              "sha256": "b16d27a03029c635b9b9b33685507801d5e3804089a2c038fc4da1977c91ebaf"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 657,
+              "sha256": "114584318e12b0ac92d31ffc25bf6ea07a2217c178bab8cd1a94da406d2f26a3"
+            }
+          ],
+          "routes": [
+            "empty-rank-mean-active-one-axis-zero",
+            "empty-rank-mean-active-off-canvas"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-28.tar.gz",
+            "bytes": 328570,
+            "sha256": "fb1e739ac5ebfa3440d9935564baea5fb499abffd22cb0f99173248d2eccbea9",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-28-retention.json",
+            "bytes": 3436,
+            "sha256": "e6b84f51a8d311af20951769ed7ab5383a4c0babf985d87ba7c5be52a60a3805",
+            "availability": "verified available"
+          },
+          "members_verified": 17,
+          "removed_raw_bytes": 4258964,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2881,
+              "sha256": "d35cbe1caeab5883304f19f5d7632b77828643f170d424b1343624e493ad7b22"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 945,
+              "sha256": "b02170ccab4d883e746d4b1d14b2fafc3658de540925e29cf183b5a23970f8e4"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 573,
+              "sha256": "bc6f233aba4766471904e2cc77f814e27e52b97286a72e75b8b16530f0cf9ba4"
+            }
+          ],
+          "routes": [
+            "admission-legacy-invert-path",
+            "admission-pooled-mask-mean-path"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-29.tar.gz",
+            "bytes": 576268,
+            "sha256": "7a014356709271f4a23ab68cdfbf4e0a531d04f289c9a3d3b8bce8d453f8e92d",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ui-windows001-29-retention.json",
+            "bytes": 3876,
+            "sha256": "a34dc9fcc16f15a83165eb666fa9296be058babe783a946a3ecfd33fbbc67713",
+            "availability": "verified available"
+          },
+          "members_verified": 19,
+          "removed_raw_bytes": 30909764,
+          "report_members": [
+            {
+              "path": "receipt.json",
+              "bytes": 2928,
+              "sha256": "1364fe7f6ab4a709d128977ed139022132be44aab9fa7970936d66f7e331c678"
+            },
+            {
+              "path": "report.xml",
+              "bytes": 921,
+              "sha256": "6039ea7e88a707fe999d9f2fe46b4d98e575d990c730fbb07e1b3145c9658f83"
+            },
+            {
+              "path": "selected-ids.json",
+              "bytes": 549,
+              "sha256": "bb33ed0b50fef9e42b0b3cdc688a953f978f337ec11ebc56174fa3b779bf3fb4"
+            }
+          ],
+          "routes": [
+            "admission-pooled-display-mean-path",
+            "admission-workflow-later-path-refusal"
+          ],
+          "readers": 4
+        }
+      ],
+      "stack_supplement": {
+        "archive": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\stack-ui-windows001.tar.gz",
+          "bytes": 991969,
+          "sha256": "70c5acc5404b6bbe83bfb5d661511b86a66184bdaf91ceda5d7786f06b9111e5",
+          "availability": "verified available"
+        },
+        "retention_receipt": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\stack-ui-windows001-retention.json",
+          "bytes": 3866,
+          "sha256": "c0948611e5b4299dcf20612aa828a1409e527a7ad36e51372e20fbc2f053185b",
+          "availability": "verified available"
+        },
+        "members_verified": 20,
+        "removed_raw_bytes": 11080441,
+        "report_members": [
+          {
+            "path": "receipt.json",
+            "bytes": 3140,
+            "sha256": "ad5554593023255ff78a690de8c26fe79f542fd5ff2e10840d37e02851e8274f"
+          },
+          {
+            "path": "ui.xml",
+            "bytes": 2566,
+            "sha256": "e6775adb234c944da96d9d888a8cec21b215fd9bde50dd6f3a721d76b3b57088"
+          }
+        ]
+      },
+      "genuine_ci_selected_readers": 4,
+      "genuine_ci": {
+        "archive": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ci-windows001.tar.gz",
+          "bytes": 6283898,
+          "sha256": "c96586de0a25489658fc16d3c308887d4faba81642e88c63d706b0b75dc88586",
+          "availability": "verified available"
+        },
+        "retention_receipt": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-ci-windows001-retention.json",
+          "bytes": 5257,
+          "sha256": "5a9e0acffac55401e4d0b18075f4ba7e9fa7752edce23ae363ca1f8b3dee5a0a",
+          "availability": "verified available"
+        },
+        "members_verified": 25,
+        "removed_raw_bytes": 61571430,
+        "report_members": [
+          {
+            "path": "receipt.json",
+            "bytes": 1964,
+            "sha256": "9238d75162c492f81f4b5bd38aa214c62200755e33693739b59d326adc117f4e"
+          },
+          {
+            "path": "report.xml",
+            "bytes": 933,
+            "sha256": "9bfcdc329f759d00a46f6e7434a16aa1fb19a1a524989cde537141b5b776ff5d"
+          },
+          {
+            "path": "selected-ids.json",
+            "bytes": 561,
+            "sha256": "fe49f241abe0efc5c26f2b145f144fd5e232e00cb9d78a5c499b06154263a4bf"
+          }
+        ]
+      },
+      "native_groups": 24,
+      "native_receipt": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\stack-final-windows001\\receipt.json",
+        "bytes": 6494,
+        "sha256": "66f5b1520fb57c9530f0431f8aa813513164759e1206f6d7548af2bba0238c21",
+        "availability": "verified available"
+      },
+      "native_report": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\stack-final-windows001\\native.xml",
+        "bytes": 11049,
+        "sha256": "04cd2909b2924e5e9e8fee2b541ae967824ae1b1b6885a42c3ca6a6a7958d2a0",
+        "availability": "verified available"
+      },
+      "regression_cases": 2376,
+      "regression": {
+        "archive": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-regression-windows001.tar.gz",
+          "bytes": 37341,
+          "sha256": "62c0a970043c137ac65248a7fac7a00183f78b0e270c9228a63dead3aae6053b",
+          "availability": "verified available"
+        },
+        "retention_receipt": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-regression-windows001-retention.json",
+          "bytes": 1132,
+          "sha256": "4a838df9bf1f530ecf8a9658837b4dfe7aad5a8531fc102275f15cb5e09e6373",
+          "availability": "verified available"
+        },
+        "members_verified": 5,
+        "removed_raw_bytes": 784879,
+        "report_members": [
+          {
+            "path": "receipt.json",
+            "bytes": 2109,
+            "sha256": "7e164a593129d0db90346f775bc9189cb53ba23f1bd40caf604bd1bc0bc22e4f"
+          },
+          {
+            "path": "report.xml",
+            "bytes": 429513,
+            "sha256": "76f778144c8500befe3941da96bb0e0d69b89a0fb2f3d40750982cfe4536ceae"
+          },
+          {
+            "path": "selected-ids.json",
+            "bytes": 348489,
+            "sha256": "f60d4b323cb41dcd0283b9661f2db9189a45bd2582c62a9dcd9e1327f7d4a384"
+          }
+        ]
+      },
+      "manual_synchronous_API_cases": 41,
+      "manual_synchronous_API": {
+        "archive": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-host-api-windows001.tar.gz",
+          "bytes": 3381,
+          "sha256": "a23d35cabf1e80ab1e3d932c54fe55bff9cc78792829a4e627d3bfe31b5dc5a5",
+          "availability": "verified available"
+        },
+        "retention_receipt": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-host-api-windows001-retention.json",
+          "bytes": 813,
+          "sha256": "51e4bfde7ad3138078a4a875707c7ab014399f074bb4932e8f62608f8922cca1",
+          "availability": "verified available"
+        },
+        "members_verified": 3,
+        "removed_raw_bytes": 10546,
+        "report_members": [
+          {
+            "path": "report.xml",
+            "bytes": 6796,
+            "sha256": "27fbd39711264c4974907000beae9a8144edcdbb2ffd836de8d909220368fdf4"
+          }
+        ]
+      },
+      "batch_path_and_controls_cases": 46,
+      "batch_path_and_controls": {
+        "archive": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-batch-windows001.tar.gz",
+          "bytes": 73536,
+          "sha256": "f49d41e027f7b59c8c5ca8fa6c931b04fbc6812c6211d165e659064d7785db81",
+          "availability": "verified available"
+        },
+        "retention_receipt": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-batch-windows001-retention.json",
+          "bytes": 29654,
+          "sha256": "3bca7dc9c4fab8e7ba6e2e79754c64fb2fdefc6a02761eaf39c6f00412d9f2a9",
+          "availability": "verified available"
+        },
+        "members_verified": 153,
+        "removed_raw_bytes": 262359,
+        "report_members": [
+          {
+            "path": "receipt.json",
+            "bytes": 6635,
+            "sha256": "fe4160fed26105b35b8143f274db414fc82e6e32ee565932e36a10b2e1c291ac"
+          },
+          {
+            "path": "report.xml",
+            "bytes": 7584,
+            "sha256": "3054cc605d9495bd5bff1c49449283533f5649807e3d0133f7d84b6d3ea35086"
+          },
+          {
+            "path": "selected-ids.json",
+            "bytes": 5783,
+            "sha256": "9b81660a5762c972af720a3c76361efa0653325782e8f5ea3a24a81ccb83988f"
+          }
+        ]
+      },
+      "standalone_dependency_boundary": {
+        "archive": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-dependency-windows001.tar.gz",
+          "bytes": 83476,
+          "sha256": "6b474eff706b1ed52516af71fbddbf75487cbe5b806666ed3c188c9150c4e5d8",
+          "availability": "verified available"
+        },
+        "retention_receipt": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-dependency-windows001-retention.json",
+          "bytes": 925,
+          "sha256": "dbe66b88a1b6dfc9dd3c2d0c15af2f2c639af865bdf02a196e3a801d24ca3858",
+          "availability": "verified available"
+        },
+        "members_verified": 4,
+        "removed_raw_bytes": 873099,
+        "report_members": [
+          {
+            "path": "receipt.json",
+            "bytes": 2162,
+            "sha256": "f5db2b937b5926ae2e4f23e76db223add1ae97af7551f08a53324b2158b1827f"
+          }
+        ]
+      },
+      "SDK_receipt": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\sdk-windows005\\receipt.json",
+        "bytes": 13344,
+        "sha256": "a48e69579893d461f2c63e3c7a8e779a91ddd6b24ad31bd58c09b72a525487ce",
+        "availability": "verified available"
+      },
+      "SDK_cases": [
+        414,
+        35
+      ],
+      "SDK_headers": 96,
+      "installed_Python_source_modules": 12,
+      "licenses": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-licenses-windows001\\receipt.json",
+        "bytes": 710,
+        "sha256": "20af32e54e037fd170bff735e30ac7637483482a38a495226ff3c5e4f490bc92",
+        "availability": "verified available"
+      },
+      "license_report": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-licenses-windows001\\check.log",
+        "bytes": 53,
+        "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915",
+        "availability": "verified available"
+      }
+    },
+    "linux": {
+      "actual_ui_readers": 128,
+      "routes": [
+        "admission-legacy-invert-path",
+        "admission-pooled-display-mean-path",
+        "admission-pooled-mask-mean-path",
+        "admission-workflow-later-path-refusal",
+        "budget-gaussian",
+        "budget-rank-mean",
+        "draw-gaussian",
+        "empty-gaussian-active-off-canvas",
+        "empty-gaussian-active-one-axis-zero",
+        "empty-gaussian-active-zero-area",
+        "empty-gaussian-positioned-unmatched",
+        "empty-rank-mean-active-off-canvas",
+        "empty-rank-mean-active-one-axis-zero",
+        "empty-rank-mean-active-zero-area",
+        "empty-rank-mean-positioned-unmatched",
+        "lifecycle-gaussian-calibration-revision",
+        "lifecycle-gaussian-invalid-editor",
+        "lifecycle-gaussian-invalid-external",
+        "lifecycle-gaussian-owner-replace",
+        "lifecycle-gaussian-pixel-revision",
+        "lifecycle-gaussian-selection-revision",
+        "lifecycle-gaussian-supersede",
+        "lifecycle-rank-mean-calibration-revision",
+        "lifecycle-rank-mean-invalid-editor",
+        "lifecycle-rank-mean-owner-replace",
+        "lifecycle-rank-mean-pixel-revision",
+        "lifecycle-rank-mean-selection-revision",
+        "lifecycle-rank-mean-supersede",
+        "rank-maximum-in-place",
+        "rank-maximum-new-document",
+        "rank-mean-in-place",
+        "rank-mean-new-document",
+        "rank-median-in-place",
+        "rank-median-new-document",
+        "rank-minimum-in-place",
+        "rank-minimum-new-document",
+        "rank-variance-in-place",
+        "rank-variance-new-document",
+        "scientific-gaussian-active",
+        "scientific-gaussian-positioned",
+        "scientific-rank-mean-active",
+        "scientific-rank-mean-positioned",
+        "specialized-despeckle",
+        "specialized-outliers-bright-grays",
+        "specialized-outliers-bright-inverted",
+        "specialized-outliers-dark-grays",
+        "specialized-outliers-dark-inverted",
+        "specialized-remove-nans-finite",
+        "specialized-remove-nans-ieee",
+        "specialized-remove-nans-quiet",
+        "specialized-top-hat-dark-no-subtract-grays",
+        "specialized-top-hat-dark-no-subtract-inverted",
+        "specialized-top-hat-dark-subtract-grays",
+        "specialized-top-hat-dark-subtract-inverted",
+        "specialized-top-hat-light-no-subtract-grays",
+        "specialized-top-hat-light-no-subtract-inverted",
+        "specialized-top-hat-light-subtract-grays",
+        "specialized-top-hat-light-subtract-inverted",
+        "stack-gaussian-cancel",
+        "stack-gaussian-no",
+        "stack-gaussian-yes",
+        "stack-rank-mean-cancel",
+        "stack-rank-mean-no",
+        "stack-rank-mean-yes"
+      ],
+      "products": {
+        "/mnt/c/Users/HEQ/Projects/imagejxx/.tmp/p13g-verification/linux/app-installed/bin/imagejxx": "4bb8e1e241c1aa76647f8ec6b280f125f1ba8b2d348dc20604c2192df4e7921a",
+        "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-probe-env003/lib/python3.12/site-packages/imagejxx/_desktop.cpython-312-x86_64-linux-gnu.so": "b3653d10c342605d321d04cc310635e98d6156f744e785d274f1ce2a78765373",
+        "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-probe-env003/lib/python3.12/site-packages/imagejxx/_native.cpython-312-x86_64-linux-gnu.so": "0043cd40d0275723b48ab8bcd710830f853bfbf9d61d618b37470cbe53a1064b"
+      },
+      "ui_chunks": [
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-01-native.tar.gz",
+            "bytes": 9386893,
+            "sha256": "cb2a209b711f982005e0698788602e1e7695341223b50adef66b79a9700d710a",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-01-native-retention.json",
+            "bytes": 4110,
+            "sha256": "2611928ab73741d2d10edc9360ccf262cae0615161cb2cec62e9792020ddbcf3",
+            "availability": "verified available"
+          },
+          "members_verified": 18,
+          "removed_raw_bytes": 44682145,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 557,
+              "sha256": "a9fb98feed46f71ae83c5fbc5a07037e11572723861e146357dae3b861a21ea4"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2844,
+              "sha256": "003b54390388c1cc2245bab85d0518d2b259110995b65a382d0678bb36cb8f8c"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 935,
+              "sha256": "d6b96dae6d0ad9fa793c22ddb0da47f26e669224710f6ed4a3db810b44506487"
+            }
+          ],
+          "routes": [
+            "scientific-gaussian-active",
+            "scientific-gaussian-positioned"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-02-native.tar.gz",
+            "bytes": 9465352,
+            "sha256": "215b2785d7f6788f85e7a79ef02c74d451ff7e5e22c02918eb84130587ada1e0",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-02-native-retention.json",
+            "bytes": 4118,
+            "sha256": "4bce25ec4e5f0b46948cf1af29efc286b35c0744aa21ded7a7e66f5e2aa21328",
+            "availability": "verified available"
+          },
+          "members_verified": 18,
+          "removed_raw_bytes": 45905625,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 561,
+              "sha256": "2ba7e9a11521530f516427e52ef5721785019c281fb4882edb55bc279fd5665b"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2853,
+              "sha256": "b1083ae20f8ff01981556fecdcd6c530132df9dc1ce14375cc9d270eadcfa2ba"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 939,
+              "sha256": "b3190151eca9535b4a3a170217eda495044e81fcb6519068aceb3495396ad3de"
+            }
+          ],
+          "routes": [
+            "scientific-rank-mean-active",
+            "scientific-rank-mean-positioned"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-03-native.tar.gz",
+            "bytes": 6150760,
+            "sha256": "9d458c16f8a369bea2616ccaff3892349c5504987772cf9f44dc6f7f88f97023",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-03-native-retention.json",
+            "bytes": 4167,
+            "sha256": "8c407cb32095b2cc629aca9dcea65b9eda1af8f59386a7bb486f6b57d4ebf91c",
+            "availability": "verified available"
+          },
+          "members_verified": 18,
+          "removed_raw_bytes": 32805329,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 655,
+              "sha256": "6b87821fbbf687a7cba2fb8a2a592e7f3d44d04a60a496569e28d11982adefe8"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2905,
+              "sha256": "6b7bf4bcfc04026ef9d84da348365e9b4cdeaf02c2270ba9abd08bed12bc7625"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 1033,
+              "sha256": "76d9b0156da5c37c80b327bae206307ad3d0a9fc6e968bbfda7e1effdf3fce8a"
+            }
+          ],
+          "routes": [
+            "empty-gaussian-positioned-unmatched",
+            "empty-rank-mean-positioned-unmatched"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-04-native.tar.gz",
+            "bytes": 477911,
+            "sha256": "41410e3f620d7e72560eaeda974bc2b9c10f6e8c5b98aa1dee2637c4a011bcad",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-04-native-retention.json",
+            "bytes": 4685,
+            "sha256": "c85ad7765327de46775e430dd1a2dd7ce7ebd06549ce31279371ecb24f452e62",
+            "availability": "verified available"
+          },
+          "members_verified": 21,
+          "removed_raw_bytes": 5384952,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 471,
+              "sha256": "00efcff09ba1388877e73a25089484ebf3f859339250bed3602effeedf3f75bd"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2757,
+              "sha256": "a0dd06ca0590a3084cb1791748edc1451f135b7f6e96f9e1fa3ad8ed10651f9e"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 849,
+              "sha256": "535c459e425fffbe3965e24c004a559f4c38a9d51fa0008d8aed37c335191caf"
+            }
+          ],
+          "routes": [
+            "draw-gaussian",
+            "rank-minimum-in-place"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-05-native.tar.gz",
+            "bytes": 452806,
+            "sha256": "8757da21785b357480612d86762db74c1447255c1477257d1df1707a0b8e07dd",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-05-native-retention.json",
+            "bytes": 4056,
+            "sha256": "580853181fe0c1ae2f9826486bfbfeaf31e1e6503c5ff4123d7025ea402c2c94",
+            "availability": "verified available"
+          },
+          "members_verified": 18,
+          "removed_raw_bytes": 4963042,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 521,
+              "sha256": "9e4220c56bfb3a06ba3cc45c19c9a2d6270cd797646a2ba6de60a96ce412fe88"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2805,
+              "sha256": "07280f686112587ec41b209fe5b84284530dc605d435cb9e468d92c9dd2528e9"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 899,
+              "sha256": "adea9af3a4b241b8989170d89426681d9158d0389319363997dc6f976d6f0296"
+            }
+          ],
+          "routes": [
+            "rank-minimum-new-document",
+            "rank-maximum-in-place"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-06-native.tar.gz",
+            "bytes": 455706,
+            "sha256": "3c4ad1e8c1a593605f02ad82bb1c730bfbd4e48fa3274cb2d9a308684ccff776",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-06-native-retention.json",
+            "bytes": 4052,
+            "sha256": "6fd284f388b673f6d2d44ecf8a89e179b9836048e77987a9db9e34ee4cc3df38",
+            "availability": "verified available"
+          },
+          "members_verified": 18,
+          "removed_raw_bytes": 4964130,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 519,
+              "sha256": "2c836d3757835687b9cb8c6c589dcbfff2cdee16c78a9b38f7ca3de9088044f8"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2801,
+              "sha256": "e7db8e54ea61bbb04d32df32ee49adef6d0d0456aa8206a18c3b6924e9b5ae6f"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 897,
+              "sha256": "dce8d78b14b0be97ad494a9147297b7bd40b524473fdcfecdf95fe8482ddc2c9"
+            }
+          ],
+          "routes": [
+            "rank-maximum-new-document",
+            "rank-median-in-place"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-07-native.tar.gz",
+            "bytes": 467520,
+            "sha256": "8ddc9166c9ed0f34bdc9696b95786b7bc77fc264729b0e1bc3d77e85531ee885",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-07-native-retention.json",
+            "bytes": 4040,
+            "sha256": "bd0f8c4f1253f704318643167cdf54d31e88f830fe52757628952ebdcb3b83fe",
+            "availability": "verified available"
+          },
+          "members_verified": 18,
+          "removed_raw_bytes": 4967308,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 513,
+              "sha256": "423199ad5ea60b85e67d28f6a1107779c34a5cb1e8bc9bb55aa8e871368d6d45"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2788,
+              "sha256": "8f01b6cb65e4e2f79903f10b31e989d9824d002536818aadb35c4ac242c68ffa"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 891,
+              "sha256": "e0c27542108522648d65ff24c01aab46b14c085fe3fe9feca2df136035dc3a19"
+            }
+          ],
+          "routes": [
+            "rank-median-new-document",
+            "rank-mean-in-place"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-08-native.tar.gz",
+            "bytes": 478249,
+            "sha256": "794441f25e863dd28ebd172059e02fea2ef914fc5c2c0fff5bd8e5d0ffad3c71",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-08-native-retention.json",
+            "bytes": 4048,
+            "sha256": "d08e5c03c3a849019a6a45fb4809a2aa2174c3cf51c45f5d9a82248747861105",
+            "availability": "verified available"
+          },
+          "members_verified": 18,
+          "removed_raw_bytes": 4964554,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 517,
+              "sha256": "847691b15ec4dbee4b1ecb6787ec078d6733f6fe3d8ab63f7bb3d443779fbf24"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2796,
+              "sha256": "e54c8caeeddf2d3807c8166756012e7e3c8a8d64d08acf2a75a097b1aecda978"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 895,
+              "sha256": "359fa53b54dc434753066ced069c76fc8f5494af039f4c00f4eeb69668af6266"
+            }
+          ],
+          "routes": [
+            "rank-mean-new-document",
+            "rank-variance-in-place"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-09-native.tar.gz",
+            "bytes": 5753024,
+            "sha256": "d9c96b98f5a8526d65ce1b79381b7ab956320a8e8262010a9a27b02770821e84",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-09-native-retention.json",
+            "bytes": 3885,
+            "sha256": "8c24d346f2a1a8f1e9b73c2c671feb4eb8d1f711ac1ada725f2c1d79eb26d789",
+            "availability": "verified available"
+          },
+          "members_verified": 17,
+          "removed_raw_bytes": 31033262,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 529,
+              "sha256": "ada2092f5d9e8b9489c28e19071a7a1cb3be48d2899ea2d81b62fc808142bcb0"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2785,
+              "sha256": "6c67b4098cdad57216d7e80d187d68154bd1dc6ba88a8875315781cc2332193a"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 907,
+              "sha256": "d7b2ac99abc9f3f290edcb551b16e649738b955edb96baf312e9ddcc60d0781a"
+            }
+          ],
+          "routes": [
+            "rank-variance-new-document",
+            "budget-gaussian"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-10-native.tar.gz",
+            "bytes": 5697808,
+            "sha256": "ad205dff7335f55202893191cb64c4f53416d5ab182e38f84873e09bd18e856d",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-10-native-retention.json",
+            "bytes": 3866,
+            "sha256": "687c87c2f646fcb607fb510f4980979d055cbe12165dd7ffff1e1505e360aeb5",
+            "availability": "verified available"
+          },
+          "members_verified": 17,
+          "removed_raw_bytes": 30703186,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 573,
+              "sha256": "05b256ddd1df07bc819beac09d2ce9c3e4fbf1699c5def133ffa224879a6d555"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2769,
+              "sha256": "cfa823dec21b4ba592370876ee545f1735d8ca1adfc2ebd4ce41a490338f3a7e"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 951,
+              "sha256": "5dea147d8ac729e31325e5062c75cc059565d7ed2c45bfdd8b312f5a388b1ab5"
+            }
+          ],
+          "routes": [
+            "budget-rank-mean",
+            "specialized-despeckle"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-11-native.tar.gz",
+            "bytes": 361646,
+            "sha256": "ef00ce6481d4136db99147fa1788b8d6ba7f27d3158c015586a14dfb82959632",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-11-native-retention.json",
+            "bytes": 4145,
+            "sha256": "62b2f35714265f39750b985a89bf45333991994e2f994bfb2bcff715c64c46b8",
+            "availability": "verified available"
+          },
+          "members_verified": 18,
+          "removed_raw_bytes": 3841441,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 671,
+              "sha256": "c0248965c488512e5e718e3718189b9cb9cbcfdeac7b8fc8ed9f3c409701295e"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2897,
+              "sha256": "fb97387d49452502dcabbf012f8538584707b9696548084591a0493071e7dc9e"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 1049,
+              "sha256": "da16ac3d7d4008880e49924d17aab59c9c9587dd24aa3c6be2522ad5e7de55e4"
+            }
+          ],
+          "routes": [
+            "specialized-outliers-bright-grays",
+            "specialized-outliers-bright-inverted"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-12-native.tar.gz",
+            "bytes": 358809,
+            "sha256": "f5cfe8a7dfed01937cdc198d277f4f36501ae231170367f489410cbea7868dcd",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-12-native-retention.json",
+            "bytes": 4129,
+            "sha256": "c9f96a08c221b2c23ea696b4b4d8cd5c07a473002d9e45e4b0d3a5e0efb45951",
+            "availability": "verified available"
+          },
+          "members_verified": 18,
+          "removed_raw_bytes": 3840137,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 663,
+              "sha256": "75f6194499099ce59ccac7c973e58f20bba4e2ef84e1d3f0850dcdb03106eadd"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2881,
+              "sha256": "86e8bf8c7f0cff5b3060a64bcb6ac6b09ecead52742a1549b1a387a7276d059c"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 1041,
+              "sha256": "d4df45846b20416c56044a18a9782ad8a98733195c9d971c0dbb109e63256b30"
+            }
+          ],
+          "routes": [
+            "specialized-outliers-dark-grays",
+            "specialized-outliers-dark-inverted"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-13-native.tar.gz",
+            "bytes": 364052,
+            "sha256": "1b84a14f2c7edf17ae7e4c48f461e9458b1479f1a98aeecdbb5c6171ae439a89",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-13-native-retention.json",
+            "bytes": 4193,
+            "sha256": "76cf10f0d783a1ceb352ee8d6c49b00fb48fccd68972e8e5a0347bde32c63105",
+            "availability": "verified available"
+          },
+          "members_verified": 18,
+          "removed_raw_bytes": 3594138,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 695,
+              "sha256": "f94d2ba1f74c15436f3b52c4eb9ae679cadf888de7dce3a8c5a2331d4e085c55"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2944,
+              "sha256": "acc37e26de4eaa47e2b605aac4a4ee358d5eeda3165c0e4144099efa42f38533"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 1073,
+              "sha256": "e22c104dcbcbe05bfe68fef21dbd0295367cf531e49f9123b05b690ab07f794b"
+            }
+          ],
+          "routes": [
+            "specialized-top-hat-dark-subtract-grays",
+            "specialized-top-hat-dark-subtract-inverted"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-14-native.tar.gz",
+            "bytes": 351721,
+            "sha256": "e079e18077d972aba98974d9a8e02916754e983fc2f6738edef04e3a7a4e4a30",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-14-native-retention.json",
+            "bytes": 4217,
+            "sha256": "ca461bdecf2c14ebcaf6bfc71b8cc69d20bea3fda652b745ea47cf8c5f4fa50f",
+            "availability": "verified available"
+          },
+          "members_verified": 18,
+          "removed_raw_bytes": 3648614,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 707,
+              "sha256": "fedf5e19b175bb5009e56e0a7f44e37fe10a81ddc4cd0c2fa7866ecd1f2b0c33"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2969,
+              "sha256": "b655ba64bd741bf31c362e1096d77d1482442f4a4322cc1373aff44b9757b190"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 1085,
+              "sha256": "0db9803885c686600c0483cfc0e9c4e9229d5cbac44bc1fb40abd1500849da95"
+            }
+          ],
+          "routes": [
+            "specialized-top-hat-dark-no-subtract-grays",
+            "specialized-top-hat-dark-no-subtract-inverted"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-15-native.tar.gz",
+            "bytes": 367094,
+            "sha256": "3b0e8efb10a1036d6707a941851c522b60a610ad237ef80111053a557f59e2ad",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-15-native-retention.json",
+            "bytes": 4201,
+            "sha256": "fbb748986a7e472f7ee4388639e1eec3a867519c7a626d7fd81dd54b5414c209",
+            "availability": "verified available"
+          },
+          "members_verified": 18,
+          "removed_raw_bytes": 3660712,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 699,
+              "sha256": "ea9ecb83ada4718442e84d247273f3686d18ca2c2c8ada160c5786ac97c4600b"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2953,
+              "sha256": "154cabe59427f9d4f2bde6043c98451a4b0b8f14b12177abe24b9121bb05a744"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 1077,
+              "sha256": "7c3d13afa686c134b4a412630294ffc8ac5c807c156840b259ab3ef9b0d6853d"
+            }
+          ],
+          "routes": [
+            "specialized-top-hat-light-subtract-grays",
+            "specialized-top-hat-light-subtract-inverted"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-16-native.tar.gz",
+            "bytes": 354740,
+            "sha256": "5c4b337d85158bfa874bd1ccc297361d8c3bce08224ba6453f13b372ab693ec2",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-16-native-retention.json",
+            "bytes": 4225,
+            "sha256": "d480c3e137251b4c4307a3da9974fb7676e08c665bae2401e0607cdb4dc3ccf4",
+            "availability": "verified available"
+          },
+          "members_verified": 18,
+          "removed_raw_bytes": 3704749,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 711,
+              "sha256": "c5a6496538796a7614f58d235425a827be740926c031facaf93786ca7df899bf"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2976,
+              "sha256": "e7b2d30643332d1879dfb8f49c718503341190280fe18cc5e07f41f94f6e77ce"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 1089,
+              "sha256": "38f11169876366da18a37d0effc0c31bf0a37308b3ef17423a205a3feb4699d2"
+            }
+          ],
+          "routes": [
+            "specialized-top-hat-light-no-subtract-grays",
+            "specialized-top-hat-light-no-subtract-inverted"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-17-native.tar.gz",
+            "bytes": 317626,
+            "sha256": "480f6c90e98775cfc538e6a163151b337192f189a75ffac7ff121acb37f3e0e6",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-17-native-retention.json",
+            "bytes": 4105,
+            "sha256": "ddff79cf4c9466e6d1212f23ad0f1896823f1091adc0528797e4798081d50f39",
+            "availability": "verified available"
+          },
+          "members_verified": 18,
+          "removed_raw_bytes": 3353367,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 651,
+              "sha256": "7357b253c11a79760431b8b0799b7edc98e42339ba199ce128616544ec253def"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2857,
+              "sha256": "5faa35164e4165a5c4cc34d114ae7a10187cd0540cc9e22db759eba66ef3d7c5"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 1029,
+              "sha256": "8e799c2024b6e5b32e0498661cf25c022a8bb2d2f159e138b57ef4abd888faff"
+            }
+          ],
+          "routes": [
+            "specialized-remove-nans-finite",
+            "specialized-remove-nans-quiet"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-18-native.tar.gz",
+            "bytes": 317862,
+            "sha256": "8fc6f7c4e672ec2686d54cfc9118ebda6620905100fc5fc55dd82f6c31b5c31f",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-18-native-retention.json",
+            "bytes": 3929,
+            "sha256": "fdc287df712bf289ffe4059f23aaed612679d40a652b08cc00b482d474e6cad5",
+            "availability": "verified available"
+          },
+          "members_verified": 17,
+          "removed_raw_bytes": 3374292,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 647,
+              "sha256": "475b5d950c546e5eb91c505dd0dd1b476c78a978b6896ddbba6a393f582cc5b0"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2845,
+              "sha256": "acda72654f898b17a2b34301c19cee4e717ae8066225ee8a8817bd6785de59b4"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 1025,
+              "sha256": "aaf9229bf933b4189fea7d8c16209a4e259bed2db18e7b9f8879ca04881a9dec"
+            }
+          ],
+          "routes": [
+            "specialized-remove-nans-ieee",
+            "lifecycle-gaussian-supersede"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-19-native.tar.gz",
+            "bytes": 352614,
+            "sha256": "f6eb95602e86b5c9eac48e21aaf2d57b8735653b1b46f77af3ef07fbeb37d74a",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-19-native-retention.json",
+            "bytes": 3266,
+            "sha256": "5bf75fe4da218403c91ef2b03e5f656aa112f70d36dae0abaf96a5de83d5434e",
+            "availability": "verified available"
+          },
+          "members_verified": 14,
+          "removed_raw_bytes": 3887290,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 667,
+              "sha256": "3aff346c02eeb497e298c2361a0f3d67f12508f6d6c478024c9054d456e74a2e"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2881,
+              "sha256": "5ce634de45b2545dae30c9b4f7daacb8ca76ba51cc7e5b1c3df49524b4806134"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 1045,
+              "sha256": "75e92dfc9079a9b61b0a6a9bb840f374930825cc3e53f548d325c0c8ec2b2c86"
+            }
+          ],
+          "routes": [
+            "lifecycle-gaussian-invalid-editor",
+            "lifecycle-gaussian-owner-replace"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-20-native.tar.gz",
+            "bytes": 305809,
+            "sha256": "9921fa38aa4c70d97ebaa9dfaadde8547e8db150149339cd3d8b12359901a4e1",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-20-native-retention.json",
+            "bytes": 3281,
+            "sha256": "f3a2370519a6321e2d2fa0b4605f11ad7dfae9d68d97c923913bc7940a41514b",
+            "availability": "verified available"
+          },
+          "members_verified": 14,
+          "removed_raw_bytes": 3370178,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 677,
+              "sha256": "6d00347618b548c0daf01b7daed2ccfe253fe16972c117cf6205323edc588e5c"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2901,
+              "sha256": "38aa2138b3b3c8db1dbe958854604d85c5cddc6d44858dfc7963c9183d99400f"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 1055,
+              "sha256": "197d5ddfbba39ae3f1f69929d9c34aaa3af1e8f3317009cab3896080167da74e"
+            }
+          ],
+          "routes": [
+            "lifecycle-gaussian-selection-revision",
+            "lifecycle-gaussian-pixel-revision"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-21-native.tar.gz",
+            "bytes": 298696,
+            "sha256": "7f2b57a18e4b10a5289795d9ed3202e804c3902e0b2441763baf3b99d3fc82af",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-21-native-retention.json",
+            "bytes": 3275,
+            "sha256": "bdf2185fea03eb0ace83e25cfeeb5938dd167b82277d179135056d900f6ae4fa",
+            "availability": "verified available"
+          },
+          "members_verified": 14,
+          "removed_raw_bytes": 3177026,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 673,
+              "sha256": "b2fbc70c214231c11c81d7e792fda0b4acaf1528844913c790c3c751a4314d5c"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2892,
+              "sha256": "977b9d65ef946e796618edf52fcf787f5e07b2ffbc838cc65465f8fe0d3b4a0f"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 1051,
+              "sha256": "52e3f49463bdc72276df3b63182a67dde0053e9144339cd939a992454009f37f"
+            }
+          ],
+          "routes": [
+            "lifecycle-gaussian-calibration-revision",
+            "lifecycle-rank-mean-supersede"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-22-native.tar.gz",
+            "bytes": 383182,
+            "sha256": "fe4de1d4474f43d5ba20a0550b3fa6fd3960fb77f2058688987cd2ddeddd3890",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-22-native-retention.json",
+            "bytes": 3275,
+            "sha256": "90e4febd2998caec836b389791a050aa15d2f0e6dc389f2d7e8548f0cc0b38ac",
+            "availability": "verified available"
+          },
+          "members_verified": 14,
+          "removed_raw_bytes": 4203269,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 671,
+              "sha256": "b558670ea6d4027b44743bcf4d5275ea2a282ed86359e03f5664673aea0aea32"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2888,
+              "sha256": "ee8295bbc2f0b5a545e6b727d90ff2b07c14f1ef56a17b1b263ded5e3618c8ff"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 1049,
+              "sha256": "4c7f37f629944508f544c65b25c779fe1b33d63645d158a8259146500ffb3354"
+            }
+          ],
+          "routes": [
+            "lifecycle-rank-mean-invalid-editor",
+            "lifecycle-rank-mean-owner-replace"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-23-native.tar.gz",
+            "bytes": 338947,
+            "sha256": "3ea34e0e6f0b88cdf042bf47cf9220054fd1175823888c51a295326d19245d92",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-23-native-retention.json",
+            "bytes": 3289,
+            "sha256": "e1995d4e342e28a78fa13961ae5848867098931269627d1a8c0fd1321789e487",
+            "availability": "verified available"
+          },
+          "members_verified": 14,
+          "removed_raw_bytes": 3859762,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 681,
+              "sha256": "840adab6394010b3e25608e89424b2c6c6c5e65559419dd25be0e3f3cb6e8a51"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2907,
+              "sha256": "e2ecc565fd441bd797ffe2e36f06aabecc9bcb9a7eaadfaaf90ca1da2e556e3f"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 1059,
+              "sha256": "19e6463399113b9ccc6a9161dc7f7e940559bfe041bc5f2802858a3564bf5fee"
+            }
+          ],
+          "routes": [
+            "lifecycle-rank-mean-selection-revision",
+            "lifecycle-rank-mean-pixel-revision"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-24-native.tar.gz",
+            "bytes": 277779,
+            "sha256": "f903ddc577bcb99d55ccdf122958ac751e95c71c0e5a387ce48901fd957ac596",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-24-native-retention.json",
+            "bytes": 3296,
+            "sha256": "df42b2b60da37d92dc8b88d1e0c18f4dc0306e8114ebdb187c8235ab58c8fdce",
+            "availability": "verified available"
+          },
+          "members_verified": 14,
+          "removed_raw_bytes": 2953745,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 687,
+              "sha256": "a06610ce230031c5c56cbe79217db310b646e835d4a27adab5a12eb4ec49b396"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2920,
+              "sha256": "213167ab6f4c2a9132d92bedb37b70c60630215e299c99c0c3885d222d5e2e0c"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 1065,
+              "sha256": "da65ded4713f3a79de1dab80430913551195a086ca0da01163a0b7862fbb0891"
+            }
+          ],
+          "routes": [
+            "lifecycle-rank-mean-calibration-revision",
+            "lifecycle-gaussian-invalid-external"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-25-native.tar.gz",
+            "bytes": 324155,
+            "sha256": "b922f6755acf75fabe785a7827ae78aa1939158da05420e552874782fae79f96",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-25-native-retention.json",
+            "bytes": 4133,
+            "sha256": "62cabda348f3ea4866220b5416dbfeb073d188f0ee3a539ee3e4b83d752b6142",
+            "availability": "verified available"
+          },
+          "members_verified": 18,
+          "removed_raw_bytes": 3318456,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 645,
+              "sha256": "6e627767439c57a9feb77fbe0dc6f8068d21a1738d5f6ef7739767e8ff70377e"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2885,
+              "sha256": "8ca379199c3f6907461b1123cd25a1d9006cdbf2b69bdd56cf65a151c2056ad3"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 1023,
+              "sha256": "36860aee7da4d716f60a8dabbf173a722670e18bb1a30e2c64536e67b7557ec5"
+            }
+          ],
+          "routes": [
+            "empty-gaussian-active-zero-area",
+            "empty-gaussian-active-one-axis-zero"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-26-native.tar.gz",
+            "bytes": 331200,
+            "sha256": "79d0451379685a2248ff5550a7afd04b1abe683ed9e8907af58fa2e87837139c",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-26-native-retention.json",
+            "bytes": 4125,
+            "sha256": "2e4dc0a222ea8c3233f9bf483b66e06096d3ead00c47a8fdce0216a98f491ce3",
+            "availability": "verified available"
+          },
+          "members_verified": 18,
+          "removed_raw_bytes": 3602391,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 641,
+              "sha256": "3e34a942b6ea7e6af5ed930871352dd5ddc5c2645554ad8973c5dce95429ae5a"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2877,
+              "sha256": "5f1279ce46b8a1ba1f261780d82ae531021d01c0bc987f3323d3174e4dc06ca4"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 1019,
+              "sha256": "2ba7cb8633873e5ef50c2db164a9940f3603b057dfaa506d61c56966f7e53c0c"
+            }
+          ],
+          "routes": [
+            "empty-gaussian-active-off-canvas",
+            "empty-rank-mean-active-zero-area"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-27-native.tar.gz",
+            "bytes": 339706,
+            "sha256": "d252cf2472ba519338229842a64e8f0483f79dd3de896426501cf51d234c9867",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-27-native-retention.json",
+            "bytes": 4145,
+            "sha256": "bee05b3ecb4f2e2d4e72868aa7aad8e565fcee1fac9177bfb730bcd83987d801",
+            "availability": "verified available"
+          },
+          "members_verified": 18,
+          "removed_raw_bytes": 3887030,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 651,
+              "sha256": "c02a23a3302b61e36268d00b07c83e94d0d53798448fb31a87299a151ea148bb"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2897,
+              "sha256": "26ff6a5b665e3a980e8a85e7c50222893fd4c4088d3ee5a8acbd810726796a24"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 1029,
+              "sha256": "a79fb3ff05d1375e5a0d146eb0d7a837a3a37029fa8626c47c31791b30c1cb0a"
+            }
+          ],
+          "routes": [
+            "empty-rank-mean-active-one-axis-zero",
+            "empty-rank-mean-active-off-canvas"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-28-native.tar.gz",
+            "bytes": 327801,
+            "sha256": "05fda9bb505d09e64544126226359690aa961cb84dc281055bbcbc416e083638",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-28-native-retention.json",
+            "bytes": 4104,
+            "sha256": "d81c3f2524cb130eb3e606e62076aee6e8921b5dc6764d6ef53838396e16343f",
+            "availability": "verified available"
+          },
+          "members_verified": 18,
+          "removed_raw_bytes": 4264833,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 567,
+              "sha256": "e54ac4cdb7c69c031d8294698f6063a0102b0cb74c74cdd63b48e5ee375d37d1"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2857,
+              "sha256": "daf2f1c150a3c93867e62fd7e821397d19184237ab1e4053f36d998315690dc3"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 945,
+              "sha256": "40e4b4f884d67d6dca50e6cf24b419119fd98a2a76f2a98e7a61252d9909d1f5"
+            }
+          ],
+          "routes": [
+            "admission-legacy-invert-path",
+            "admission-pooled-mask-mean-path"
+          ],
+          "readers": 4
+        },
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-29-native.tar.gz",
+            "bytes": 578353,
+            "sha256": "fd9e46c4322a14c8e03812d080160275e53d0419a6b96b2ddbb572b146e19de8",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ui-linux001-29-native-retention.json",
+            "bytes": 4841,
+            "sha256": "2dddedecb87e60498298c0f5aff1dce41db86b01e05d789d76c37f9fc3dd1bc2",
+            "availability": "verified available"
+          },
+          "members_verified": 21,
+          "removed_raw_bytes": 30915854,
+          "report_members": [
+            {
+              "path": "selected-ids.json",
+              "kind": "file",
+              "bytes": 543,
+              "sha256": "769dd0cf1ff9a5d3dcc479782903b0f88fee9e2a2ba162794038017f5b620af1"
+            },
+            {
+              "path": "receipt.json",
+              "kind": "file",
+              "bytes": 2904,
+              "sha256": "1e52ac763a342e413626e190b361de32b2c4e7c400ba5db5cd2297480a8d71ff"
+            },
+            {
+              "path": "report.xml",
+              "kind": "file",
+              "bytes": 921,
+              "sha256": "c13f67d664c6bb07f0a076c50a3add392f2c5e64000f0c5cd62398dcecc281a7"
+            }
+          ],
+          "routes": [
+            "admission-pooled-display-mean-path",
+            "admission-workflow-later-path-refusal"
+          ],
+          "readers": 4
+        }
+      ],
+      "stack_supplement": {
+        "archive": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\stack-ui-linux001-native.tar.gz",
+          "bytes": 990190,
+          "sha256": "92a0941d232591b6ad4d26757ca36c29fd0691ee605ef528c2006146765d5964",
+          "availability": "verified available"
+        },
+        "retention_receipt": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\stack-ui-linux001-native-retention.json",
+          "bytes": 4589,
+          "sha256": "a4c3bc89afcee29a2b30d8de223a0e28a228b54c9ecd1593219a07b887fbd50e",
+          "availability": "verified available"
+        },
+        "members_verified": 21,
+        "removed_raw_bytes": 11090120,
+        "report_members": [
+          {
+            "path": "receipt.json",
+            "kind": "file",
+            "bytes": 3082,
+            "sha256": "ad3081b409ab566174e9cc98caa87fe012ca944865d83fcf8526a39aada9cdb3"
+          },
+          {
+            "path": "ui.xml",
+            "kind": "file",
+            "bytes": 2566,
+            "sha256": "97fcf28cf56b6d8a0bbbd6840f46f8db931763a83f4e4ebbb3b543725161bf23"
+          }
+        ]
+      },
+      "genuine_ci_selected_readers": 4,
+      "genuine_ci": {
+        "archive": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ci-linux001-native.tar.gz",
+          "bytes": 6281070,
+          "sha256": "d83b15ef295114f12c26657d37ef80e6c6541b7d3a108f198566381522bb06d7",
+          "availability": "verified available"
+        },
+        "retention_receipt": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-ci-linux001-native-retention.json",
+          "bytes": 6838,
+          "sha256": "402e91450623782660e56eb4f699c9984c3ae8de1b1cc979c0e7ea9abed509eb",
+          "availability": "verified available"
+        },
+        "members_verified": 29,
+        "removed_raw_bytes": 61606401,
+        "report_members": [
+          {
+            "path": "selected-ids.json",
+            "kind": "file",
+            "bytes": 555,
+            "sha256": "14df79daab024ba6d1464307456f229178f3fcd0414a86b467e700ded7a5882f"
+          },
+          {
+            "path": "receipt.json",
+            "kind": "file",
+            "bytes": 1948,
+            "sha256": "b30ff4854bb60695e67a3e1f73fab8258899e56e6c970ceb2b2d10b5dc26a3e9"
+          },
+          {
+            "path": "report.xml",
+            "kind": "file",
+            "bytes": 933,
+            "sha256": "9a6f04fd80443ce418f273f922ea0195da2d12e1ad8ba8d4572a9ab5e057cb00"
+          }
+        ]
+      },
+      "native_groups": 24,
+      "native_receipt": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\stack-final-linux001\\receipt.json",
+        "bytes": 5322,
+        "sha256": "10ddd62a5cce2f5601441e7172e3e6f9b46ec018d982c00391df4ccb2b161ecf",
+        "availability": "verified available"
+      },
+      "native_report": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\stack-final-linux001\\native.xml",
+        "bytes": 10826,
+        "sha256": "e0b84caae7e8d3f6175bfdf1f4ae1e8c6ea87a8e3d49410fa797cd8c68b492db",
+        "availability": "verified available"
+      },
+      "regression_cases": 2376,
+      "regression": {
+        "archive": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-regression-linux001-native.tar.gz",
+          "bytes": 36832,
+          "sha256": "10634ecaf8e88825fe34942a6185b4b6e2d1445847bb40d86c6bebec505eb7fc",
+          "availability": "verified available"
+        },
+        "retention_receipt": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-regression-linux001-native-retention.json",
+          "bytes": 1869,
+          "sha256": "e2fe0b808adcd3844d0df63f15ef34e971e283d42fda048a24ee653a8f323e44",
+          "availability": "verified available"
+        },
+        "members_verified": 7,
+        "removed_raw_bytes": 782467,
+        "report_members": [
+          {
+            "path": "selected-ids.json",
+            "kind": "file",
+            "bytes": 346111,
+            "sha256": "64f8bcf850c1471cd561ff155923535793bdad410a1bba07929b3efd868a7376"
+          },
+          {
+            "path": "receipt.json",
+            "kind": "file",
+            "bytes": 2076,
+            "sha256": "a6e4ac9eb204275d277ebdc14fa1d7b3f4646a0b57731fa4695a986748d88a3b"
+          },
+          {
+            "path": "report.xml",
+            "kind": "file",
+            "bytes": 429512,
+            "sha256": "8a4a9747a1037ad32bf660285dbab6c35cbb05ba49c8329a6a0499ea8f1a05a7"
+          }
+        ]
+      },
+      "manual_synchronous_API_cases": 41,
+      "manual_synchronous_API": {
+        "archive": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-host-api-linux001-native.tar.gz",
+          "bytes": 3897,
+          "sha256": "ce85cf6ae188f1cc81461d4ba734a5e0e0d17a92af19b8e3fff90ee362c18e12",
+          "availability": "verified available"
+        },
+        "retention_receipt": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-host-api-linux001-native-retention.json",
+          "bytes": 2310,
+          "sha256": "50e2e8c1f17e5c1239bfdf05922962ecfcd31f94004ee97d0065486bfddc8d05",
+          "availability": "verified available"
+        },
+        "members_verified": 8,
+        "removed_raw_bytes": 10546,
+        "report_members": [
+          {
+            "path": "report.xml",
+            "kind": "file",
+            "bytes": 6796,
+            "sha256": "fa9d62dee717a1f97e6966648309c81423a7a1dfc50bf599cd477f433cc7225e"
+          }
+        ]
+      },
+      "batch_path_and_controls_cases": 46,
+      "batch_path_and_controls": {
+        "archive": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-batch-linux001-native.tar.gz",
+          "bytes": 69369,
+          "sha256": "c6ce8247155020429a63d6f71b69757dce68d5550f03e7f31277bf979d095a2c",
+          "availability": "verified available"
+        },
+        "retention_receipt": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-batch-linux001-native-retention.json",
+          "bytes": 35791,
+          "sha256": "259c0e62a07951678ed555c2fff2b83f0de8bfcdd2a855976747fb4cc20a524b",
+          "availability": "verified available"
+        },
+        "members_verified": 166,
+        "removed_raw_bytes": 262263,
+        "report_members": [
+          {
+            "path": "selected-ids.json",
+            "kind": "file",
+            "bytes": 5735,
+            "sha256": "82055884f1ca3b047dfd782174bfcd4c5553c072fd8137e5924cb56169441ebe"
+          },
+          {
+            "path": "receipt.json",
+            "kind": "file",
+            "bytes": 6587,
+            "sha256": "b8925226662a9eaebde11fa8876d8b39d7437c72e338cd9ee78443a4a072a493"
+          },
+          {
+            "path": "report.xml",
+            "kind": "file",
+            "bytes": 7584,
+            "sha256": "dfe1d218a168c120b8f489c6ce6b96f02b4e810e946b8f6a75785d0f5f1cb94d"
+          }
+        ]
+      },
+      "standalone_dependency_boundary": {
+        "archive": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-dependency-linux001-native.tar.gz",
+          "bytes": 84708,
+          "sha256": "62c98ae73bc075ccd637d067900d0a1783205a6e281211e4d2931f203cd3bf4f",
+          "availability": "verified available"
+        },
+        "retention_receipt": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-dependency-linux001-native-retention.json",
+          "bytes": 1109,
+          "sha256": "816771f533aa3869627f9e6f50364eba92eafb77651eaf1d648963658afe7d48",
+          "availability": "verified available"
+        },
+        "members_verified": 4,
+        "removed_raw_bytes": 876616,
+        "report_members": [
+          {
+            "path": "receipt.json",
+            "kind": "file",
+            "bytes": 1562,
+            "sha256": "4fefb3d0b0db2f623db84b880cb52de4f1cb0517ed9daa9bf194b0ac7347ff73"
+          }
+        ]
+      },
+      "SDK_receipt": {
+        "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\sdk-linux003\\receipt.json",
+        "bytes": 12801,
+        "sha256": "eeb7d378eb42ee9005abb2083f2c7dc56fecbb259e145c7337b5b1a66abc9258",
+        "availability": "verified available"
+      },
+      "SDK_cases": [
+        414,
+        35
+      ],
+      "SDK_headers": 96,
+      "installed_Python_source_modules": 12,
+      "licenses": {
+        "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-licenses-linux002\\receipt.json",
+        "bytes": 630,
+        "sha256": "5db2d41ced6c4f998d4eeca23f983e8e9ebb2326ff8cc8b6853441015af2cf1c",
+        "availability": "verified available"
+      },
+      "license_report": {
+        "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\p13i-verification\\final-licenses-linux002\\check.log",
+        "bytes": 52,
+        "sha256": "6d57d04a19e91f366c3ad1f52e6feb4edba97e1bd76f08db19331d9bf3ff8f2f",
+        "availability": "verified available"
+      }
+    }
+  },
+  "same_product_inputs": true,
+  "compiled_manifest_differences": [
+    "docs/packets/P13i-three-agent-handoff.md",
+    "tests/python/test_path_filter_stack_ui.py",
+    "docs/PLAN.md",
+    "docs/SOL_ULTRA.md",
+    "docs/THREE_AGENT_EXECUTION.md",
+    "docs/packets/P13i-path-filter-targets.md"
+  ],
+  "compiled_source_manifests": {
+    "windows": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\stack-final-windows001\\source-manifest.json",
+      "bytes": 951300,
+      "sha256": "5726f2119532993ce48891b783926b4148af34db3ceac9a1e28cb4904681f78c",
+      "availability": "verified available"
+    },
+    "linux": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\stack-final-linux001\\source-manifest.json",
+      "bytes": 944256,
+      "sha256": "0c21b7dac5e343780081ea528dee9ed1f8a5721259a3cafb615c11308a7f588a",
+      "availability": "verified available"
+    }
+  },
+  "common_non_documentation_inputs": {
+    "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-qualified-inputs002.json",
+    "bytes": 890288,
+    "sha256": "a1b10a5260f4ef2e70f66abdbf59a7e229b8685744fb58ef66de12e09e3557bf",
+    "availability": "verified available"
+  },
+  "current_reader_inputs": {
+    "tests/python/test_path_filter_ui.py": "9b9c26c9cbc755feee5e0763ebc712729ed7da10ef4990512dce2d877e2728bc",
+    "tests/python/test_path_specialized_filter_ui.py": "5515e5fa058faf9324ef974ecb62c0a5046093500b51c46f23169f73e3f4943a",
+    "tests/python/test_path_filter_lifecycle_ui.py": "b4b2f6fffdb958cf3f22d8a7ed31e8cfd8ec3bea0ddb93000f18a37e17a570a5",
+    "tests/python/test_path_empty_filter_ui.py": "8e05cbe5125b22fab33d218aff3af8925907d109c0806e8fcd0d2b19bb0f880c",
+    "tests/python/test_path_filter_admission_ui.py": "70b3f981e84b9c51810515a0f0e33d1b270fe93a61aaa73f51e24c5209a92d2e",
+    "tests/python/test_path_filter_stack_ui.py": "35bcd8a63ebc63006eae52ccd0545123db6398b36e219627681f116fab7dbd22",
+    "scripts/ci_observations.py": "0662564291a3f5bb1ad1ee30ce6842b97731f083034a314c2a019cdcffa17797"
+  },
+  "reference_transport_guards": {
+    "cases": 574,
+    "report": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\reference-tool-tests014.xml",
+      "bytes": 95867,
+      "sha256": "2c1105d880e8baba136128d49cde732cd50b737137e6b2b4fd49f0e3d64ae3e5",
+      "availability": "verified available"
+    }
+  },
+  "limitations": [
+    "Scoped Windows/Linux P13i qualification only; no original family or full M0-M13 completion",
+    "G016 historical build/plan-implementation/p05e-roi-boolean-001/native-local-checkpoint-001.json remains unavailable; old Auto proof remains unresolved",
+    "Historical scientific-owner exclusion remains open; no new exclusions",
+    "macOS, real OS/GPU input, accessibility, complete hostedCI, release/wheel matrix and later plan waves remain open",
+    "Linux actual runtime/io/test/desktop license graph checked; optional wheel Python build-backend graph absent/unqualified; failed build-graph invocation retained",
+    "NativePathV4/workflowV8/sessionV5 remain fixed; manual threshold V3 direct replay does not implement typed NativeWorkflowProgram/Run integration",
+    "Managed retained/serial mask reservations are not RSS or atomic aggregate main-thread reservations; unrelated kernel/codec/provider scratch outside added mask limits",
+    "Batch file I/O/status and legacy eager frame lookup precede documented mask-admission seams; no blanket zero-I/O/callback claim",
+    "Earlier historical installed products may be overwritten; current available bytes are identified in this receipt and retirement addenda preserve original identity/availability",
+    "CG0 numerical/algorithm/reference gates and CFG1 actual-input setting-consumer work are prepared, unimplemented successor work"
+  ],
+  "packet_id": "P13i",
+  "base_commit": "4a80b3570c59e547f2571c7fc2b95d85a5b66d0e",
+  "reviewed_at_utc": "2026-10-24T20:23:19.508311+00:00",
+  "full_ci_qualified": false,
+  "source_manifest": {
+    "path": "docs/parity/reviews/p13i-path-filter001/qualified-inputs.json",
+    "sha256": "a1b10a5260f4ef2e70f66abdbf59a7e229b8685744fb58ef66de12e09e3557bf",
+    "entries": 6544,
+    "scope": "Exact common non-documentation inputs plus additive batch regression; no product changes after final platform build"
+  },
+  "clause_ledger": {
+    "path": "docs/packets/P13i-qualification-ledger.md",
+    "sha256": "edfa89aea14c60ec3f89142fb996ce8c094b44ad02d24ce83d52b082b120fa71"
+  },
+  "final_independent_audit": {
+    "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-e7-audit002.json",
+    "bytes": 125461,
+    "sha256": "9ac0767530b49fd4d181e43c1f1bdbf773ec847a44a1bdaa9e78b9585f34ef1e",
+    "availability": "verified available at final review"
+  },
+  "toolchains": [
+    {
+      "config": ".cache\\native-verification\\windows\\CMakeFiles\\3.31.6-msvc6\\CMakeCXXCompiler.cmake",
+      "CMAKE_CXX_COMPILER": "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe",
+      "CMAKE_CXX_COMPILER_ID": "MSVC",
+      "CMAKE_CXX_COMPILER_VERSION": "19.44.35225.0"
+    },
+    {
+      "config": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\cache-native001\\CMakeFiles\\3.28.3\\CMakeCXXCompiler.cmake",
+      "CMAKE_CXX_COMPILER": "/usr/bin/c++",
+      "CMAKE_CXX_COMPILER_ID": "GNU",
+      "CMAKE_CXX_COMPILER_VERSION": "13.3.0"
+    }
+  ],
+  "SDK_current_build_library_match": [
+    {
+      "build_library": ".cache\\native-verification\\windows\\Release\\imagejxx_core.lib",
+      "SDK_library": ".tmp\\p13g-verification\\windows\\sdk-installed\\lib\\imagejxx_core.lib",
+      "sha256": "1cfdc9c3136af05394e83c6f28ec3168958f497a9fa64e21a368b0b5794c1323"
+    },
+    {
+      "build_library": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\cache-native001\\libimagejxx_core.a",
+      "SDK_library": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\p13g-resumed-sdk-installed\\lib\\libimagejxx_core.a",
+      "sha256": "dc7bd11d4dae6f1aabcf3ed991f48b5fcacb56b767532b12fa66a674f689dbca"
+    }
+  ],
+  "verification_driver_sources": [
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-verification-drivers001.json",
+      "bytes": 3243,
+      "sha256": "afb3fbfc29b239c61d0c8905dec660fbd429dbd38c5471cd9c9339a28cec8802",
+      "availability": "verified available at final review"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\final-verification-drivers002.json",
+      "bytes": 1332,
+      "sha256": "9574289bfbf4bba7614d03a627193d228a9c1883b33ba18150af082dee578cbe",
+      "availability": "verified available at final review"
+    }
+  ],
+  "storage": {
+    "final_measurement": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13h-verification\\storage-p13i-final002.json",
+      "bytes": 1121,
+      "sha256": "2e932f987f1d0a14af2a3128834f87ed3ee7e74236eccf10d02df8747dc23239",
+      "availability": "verified available at final review"
+    },
+    "bytes": 8495269129,
+    "normal_limit_bytes": 8589934592,
+    "headroom_at_measurement": 94665463,
+    "all_terminal_UI_and_API_batch_scratch_hash_verified_then_removed": true,
+    "one_cache_and_runtime_per_platform": true,
+    "retired_build_not_recreated": true,
+    "retirement_records": [
+      "superseded-ui-retirement.json",
+      "superseded-e5-retirement.json",
+      "unused-qt-sdk-retirement.json"
+    ]
+  },
+  "owner_review": {
+    "A": "Call-site accounting review complete; missing batch path-specific boundary identified and closed by46-case per-platform supplement",
+    "B": "All64 declared route/control/state families accounted; no remaining declared P13i interaction blocker",
+    "C": "Verified all archive/member hashes, exact UI unions/current product hashes, native/API/SDK/batch/reference/profile/install and commercial scopes; clause ledger checked"
+  },
+  "historical_excluded_ids": [
+    "tests/python/test_desktop_owner.py::test_scientific_attachment_navigates_without_legacy_edits"
+  ],
+  "new_exclusions": [],
+  "inventory": {
+    "families": 99,
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0,
+    "sha256": "6a234b38cef8813d084b0f1ed14c50e9096fd50bdd94fbacbb4119adf583dae8",
+    "unchanged_from_base": true
+  },
+  "next_action": "Land reviewed P13i, then ratify CG0/reference feasibility and execute independent CFG1 Wand preference/consumer/persistence packet",
+  "python_versions": {
+    "windows": "Python 3.12.8",
+    "linux": "Python 3.12.3"
+  },
+  "landing": "Git commit/push identity is recorded separately; qualification is bound to exact source/product/report hashes"
+}

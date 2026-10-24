@@ -8,6 +8,15 @@ own native contracts, shared ImGui behavior, and acceptance/integration; the
 coordinator is the third agent. Full M0–M13 requirements and the 99-area mapping
 remain unchanged. P13h now has the scoped implementation evidence below.
 
+The reviewed [three-agent delivery specifications](packets/THREE_AGENT_DELIVERY_SPECS.md)
+add detailed ownership, handoffs, continuous-geometry entry decisions and bounded
+configuration, selection, filtering, XYZ/slicing and later delivery contracts.
+P13i is now [scoped-qualified](parity/reviews/p13i-path-filter001/receipt.json):
+each Windows/Linux platform passes 24 native groups, 2,376 regression, 41 affected
+API, 46 batch, 128 UI and four genuine profile readers, plus 414+35 SDK checks.
+Next: reviewed landing, CG0 design/reference gates and independent CFG1 Wand
+preference/consumer/persistence acceptance. Full-family/M13 acceptance remains open.
+
 **Interactive path drawing and resize, 2026-10-24 (scoped P13h integration):**
 Native M/L/Q/C/Z click authoring and explicit Bounds resize now work through the
 shared ImGui desktop in both launches, including saved ROIs and XY/XZ/YZ paths.
@@ -23,8 +32,17 @@ acceptance remain open. Generated caches/runtimes/evidence measure 6.39 GiB afte
 verified scratch retention/cleanup; retired build generations were not recreated.
 See the [packet](packets/P13h-interactive-path-authoring.md) and
 [scoped receipt](parity/reviews/p13h-path-authoring001/receipt.json).
-Next: [P13i path-filter targets](packets/P13i-path-filter-targets.md); source is
-restored, while the exact Java runtime and numerical capture remain prerequisites.
+Active: [P13i path-filter targets](packets/P13i-path-filter-targets.md).
+Use the [three-agent execution handoff](packets/P13i-three-agent-handoff.md) for
+current partial verification, remaining scenarios and exact responsibilities.
+The planner, scientific targets, budget recovery, specialized methods and lifecycle
+have passing installed slices on Windows/Linux in both launches. The latest
+[display/lifecycle receipt](parity/reviews/p13i-path-filter001/display-lifecycle-progress.json)
+records six native groups and 92 UI readers per platform. [E5 empty targets](parity/reviews/p13i-path-filter001/empty-progress.json)
+now also pass 108 UI readers and six native groups per platform. [E6 downstream integration](parity/reviews/p13i-path-filter001/downstream-progress.json)
+passes ten native groups, 41 API and eight new UI readers per platform, including
+synchronous host admission and path-capable manual threshold V3 recording. E7
+final common-source qualification remains open; full capability families are unchanged. Historical progress receipts retain their original scope.
 
 **ImGui path segment authoring, 2026-10-24 (scoped integration):**
 Active selections, saved ROIs and XY/XZ/YZ annotations now share exact numeric

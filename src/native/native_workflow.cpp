@@ -2,6 +2,7 @@
 #include "imagej_annotation_import_internal.hpp"
 #include "imagej_roi_import_internal.hpp"
 #include "kernel_control.hpp"
+#include "target_mask_resources.hpp"
 #include "operation_internal.hpp"
 #include "native_workflow_internal.hpp"
 #include "contrast_apply_workflow.hpp"
@@ -29,9 +30,24 @@ void require(bool value, const char *message) {
 }
 struct Budget {
   std::size_t cap, used = 0;
+  std::size_t working_cap = std::numeric_limits<std::size_t>::max();
+  std::size_t minimum_retained = 0, mask_peak = 0;
+  std::size_t retained() const { return std::max(used, minimum_retained); }
+  void check_working() const {
+    require(retained() <= working_cap && mask_peak <= working_cap - retained(),
+            "Native workflow retained plus target-mask working-byte limit");
+  }
   void add(std::size_t n) {
     require(n <= cap - used, "Native workflow retained-byte limit");
     used += n;
+    check_working();
+  }
+  void mask(const ResolvedTarget &target, const std::string &operation) {
+    check_working();
+    const auto next = detail::target_mask_workspace(target, operation,
+                                                    working_cap - retained());
+    mask_peak = std::max(mask_peak, next);
+    check_working();
   }
   void product(std::size_t a, std::size_t b) {
     require(!a || b <= (cap - used) / a, "Native workflow retained-byte limit");
@@ -195,31 +211,45 @@ struct PreflightStepDispatch {
       :scope(value),previous(value.dispatching_callback) {scope.dispatching_callback=true;}
   ~PreflightStepDispatch(){scope.dispatching_callback=previous;}
 };
-// A V4/V8 workflow admits every stage before calling user code. Kernel
-// dispatch walks all inherited scopes, so a cancellation-only child alone is
-// insufficient. Guard the existing chain without allocating another container;
-// each guard restores its prior dispatch state on success or exception. The
-// scopes stay linked, preserving every inherited cancellation token.
+// Path-aware workflows and explicitly capped working admission validate the
+// complete program before dispatching any user callback, including inherited
+// scopes. Import/annotation stages can introduce a path into a later target.
+// Legacy unbounded workflows without these carriers retain their timing.
 template<class Function>
-auto without_inherited_callbacks(ExecutionScope *scope, Function &function)
-    -> decltype(function()) {
-  if(!scope)return function();
-  PreflightStepDispatch dispatch(*scope);
-  return without_inherited_callbacks(scope->previous,function);
-}
-template<class Function>
-auto workflow_admission_callbacks(
+auto workflow_admission_callbacks(const DocumentSnapshot &source,
     const std::vector<detail::NativeWorkflowStepRef> &steps,
-    const ExecutionControl &control, Function function) -> decltype(function(control)) {
-  const bool path_intent=std::any_of(steps.begin(),steps.end(),[](const auto &step) {
-    const auto p=std::get_if<const NativeWorkflowOperation *>(&step);
-    return p && detail::native_path_creation_intent(**p);
-  });
-  if(!path_intent)return function(control); // Preserve legacy callback timing.
+    const ExecutionControl &control, bool finite_working_cap,
+    Function function) -> decltype(function(control)) {
+  const bool path_intent=[&] {
+    ExecutionControl detection;detection.cancellation=control.cancellation;
+    ExecutionScope scope(detection);
+    return detail::without_execution_callbacks([&] {
+      kernel_checkpoint();
+      const auto &data=source.data();
+      if((data.selection && data.selection->is_path()) ||
+         (data.previous_selection && data.previous_selection->is_path()))return true;
+      for(const auto &roi:data.rois) {
+        kernel_checkpoint_periodic();
+        if(roi.selection.is_path())return true;
+      }
+      for(const auto &step:steps) {
+        kernel_checkpoint_periodic();
+        if(const auto p=std::get_if<const NativeWorkflowOperation *>(&step)) {
+          if(detail::native_path_creation_intent(**p) ||
+             ((*p)->enabled && detail::annotation_workflow_operation((*p)->operation)))return true;
+        } else if(const auto p=std::get_if<const NativeWorkflowImport *>(&step)) {
+          if((*p)->enabled)return true;
+        }
+      }
+      return false;
+    });
+  }();
+  if(!path_intent && !finite_working_cap)return function(control);
   ExecutionControl quiet;quiet.cancellation=control.cancellation;
   ExecutionScope scope(quiet);
-  auto admit=[&] { kernel_checkpoint();return function(quiet); };
-  return without_inherited_callbacks(current_execution_scope,admit);
+  return detail::without_execution_callbacks([&] {
+    kernel_checkpoint();return function(quiet);
+  });
 }
 void path_grid_preflight(const std::vector<detail::NativeWorkflowStepRef> &steps) {
   const bool paths=std::any_of(steps.begin(),steps.end(),[](const auto &step){
@@ -407,6 +437,9 @@ void preflight(const DocumentSnapshot &initial,
               } else if(detail::native_workflow_bound_operation_original(*v.original) && (v.operation=="rank_filter_imagej" || v.operation=="remove_outliers_imagej" || v.operation=="top_hat_imagej" || v.operation=="remove_nans_imagej"))
                 (void)rebind_rank_command(source,*v.original,v.target);
             }
+            // Retained carriers are already owned by Budget::data. Reuse one
+            // additional raster peak across every serial target and stage.
+            budget.mask(resolved,v.operation);
             if(v.operation=="convert_image")source=detail::scalar_conversion_metadata_preview(source,conversion_type(*normalized));
             else source=detail::workflow_filter_metadata_preview(source,v.operation,normalized?*normalized:v.parameters,resolved);
           } else if constexpr (std::is_same_v<T, NativeWorkflowHistogram>) {
@@ -571,15 +604,17 @@ prepare_native_workflow(const DocumentSnapshot &source,
   require(owned_limits.max_steps>0 && owned_limits.max_steps<=4096 &&
           steps.size()<=owned_limits.max_steps && owned_limits.max_retained_bytes>0,
           "Native workflow step limit");
+  require(owned_limits.max_working_bytes>0, "Native workflow working-byte limit");
   std::vector<detail::NativeWorkflowStepRef> refs;
   refs.reserve(steps.size());
   for (const auto &step : steps)
     std::visit([&](const auto &v) { refs.emplace_back(&v); }, step);
-  const auto captured_bytes=workflow_admission_callbacks(refs,owned_control,
+  const auto captured_bytes=workflow_admission_callbacks(source,refs,owned_control,
+      owned_limits.max_working_bytes!=std::numeric_limits<std::size_t>::max(),
       [&](const ExecutionControl &admission) {
     ExecutionControl quiet;quiet.cancellation=admission.cancellation;
     ExecutionScope scope(quiet);
-    Budget captured{owned_limits.max_retained_bytes};
+    Budget captured{owned_limits.max_retained_bytes,0,owned_limits.max_working_bytes};
     captured.data(source);captured.record(source.display().properties);
     captured.add(sizeof(DocumentSnapshot));
     captured.add(detail::native_workflow_inputs_bytes(refs,captured.cap-captured.used));
@@ -590,29 +625,36 @@ prepare_native_workflow(const DocumentSnapshot &source,
   refs.clear();
   for(const auto &step:owned_steps)
     std::visit([&](const auto &v){refs.emplace_back(&v);},step);
-  auto prepared=detail::prepare_native_workflow_borrowed(owned_source,refs,owned_limits,owned_control);
+  auto prepared=detail::prepare_native_workflow_borrowed(owned_source,refs,owned_limits,owned_control,captured_bytes);
   return detail::NativeWorkflowAccess::with_retention(std::move(prepared),captured_bytes);
 }
 std::size_t detail::admit_native_workflow(
     const DocumentSnapshot &source,
     const std::vector<NativeWorkflowStepRef> &steps,
-    const NativeWorkflowLimits &limits, const ExecutionControl &control) {
+    const NativeWorkflowLimits &limits, const ExecutionControl &control,
+    std::size_t minimum_retained_bytes) {
   require(limits.max_steps > 0 && limits.max_steps <= 4096 &&
               steps.size() <= limits.max_steps,
           "Native workflow step limit");
-  require(limits.max_retained_bytes > 0, "Native workflow retained-byte limit");
-  return workflow_admission_callbacks(steps,control,[&](const ExecutionControl &admission) {
-    Budget budget{limits.max_retained_bytes};
+  require(limits.max_retained_bytes > 0 && minimum_retained_bytes<=limits.max_retained_bytes,
+          "Native workflow retained-byte limit");
+  require(limits.max_working_bytes>0, "Native workflow working-byte limit");
+  return workflow_admission_callbacks(source,steps,control,
+      limits.max_working_bytes!=std::numeric_limits<std::size_t>::max(),
+      [&](const ExecutionControl &admission) {
+    Budget budget{limits.max_retained_bytes,0,limits.max_working_bytes,minimum_retained_bytes};
+    budget.check_working();
     budget.data(source);
     preflight(source, steps, budget, admission);
-    return budget.used;
+    return budget.retained();
   });
 }
 PreparedNativeWorkflow detail::prepare_native_workflow_borrowed(
     const DocumentSnapshot &source,
     const std::vector<NativeWorkflowStepRef> &steps,
-    const NativeWorkflowLimits &limits, const ExecutionControl &control) {
-  const auto admitted = admit_native_workflow(source, steps, limits, control);
+    const NativeWorkflowLimits &limits, const ExecutionControl &control,
+    std::size_t minimum_retained_bytes) {
+  const auto admitted = admit_native_workflow(source, steps, limits, control,minimum_retained_bytes);
   std::vector<NativeWorkflowOutput> outputs;
   std::vector<NativeWorkflowHistogramOutput> histograms;
   std::size_t completed = 0;
@@ -634,8 +676,10 @@ PreparedNativeWorkflow detail::prepare_native_workflow_borrowed(
           if constexpr (std::is_same_v<T, NativeWorkflowOperation>) {
             auto execute = [&](const ResolvedTarget &target,
                                const OperationParameters &parameters) {
+              ExecutionOptions execution;
+              execution.max_target_mask_bytes=limits.max_working_bytes-admitted;
               auto prepared = prepare_operation(v.operation, target, parameters,
-                                                {}, control);
+                                                execution, control);
 
               auto edit = prepared.begin_edit();
               paired_display = paired_display || bool(edit.axis_remap_display());
