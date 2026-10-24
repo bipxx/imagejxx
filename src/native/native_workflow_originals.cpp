@@ -5,6 +5,8 @@
 #include "contrast_apply_workflow.hpp"
 #include "selection_enlargement_workflow.hpp"
 #include "selection_creation_workflow.hpp"
+#include "annotation_workflow.hpp"
+#include <imagejxx/native_workflow_program.hpp>
 #include "contrast_apply_internal.hpp"
 #include "histogram_command_internal.hpp"
 #include "rgb_dataset_internal.hpp"
@@ -236,6 +238,10 @@ void validate_native_workflow_operation_original(
 }
 void validate_native_workflow_operation_intent(
     const NativeWorkflowOperation &v) {
+  if(annotation_workflow_operation(v.operation)) {
+    validate_annotation_workflow_intent(v,NativeWorkflowProgramLimits::hard_max_record_bytes);return;
+  }
+  require(!v.annotation_intent,"Annotation choices require an annotation workflow operation");
   if(v.operation=="selection_creation") {
     validate_selection_creation_workflow_intent(v, SelectionCreationLimits{}.max_working_bytes);return;
   }

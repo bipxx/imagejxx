@@ -233,6 +233,11 @@ void bind_saved_roi_geometry(py::module_ &m) {
          py::kw_only(), py::arg("cancellation") = py::none(),
          py::arg("progress") = py::none(), py::arg("checkpoint") = py::none(),
          py::arg("stage_progress") = py::none());
+  m.def("decode_saved_roi_geometry_request",
+      [](py::object value,SavedRoiGeometryLimits limits) {
+        const auto record=bindings::metadata_object_value(value);
+        py::gil_scoped_release release;return decode_saved_roi_geometry_request(record,limits);
+      },py::arg("record"),py::arg("limits")=SavedRoiGeometryLimits{});
   m.def("validate_saved_roi_geometry_record",
       [](py::object value, SavedRoiGeometryLimits limits) {
         const auto record = bindings::metadata_object_value(value);

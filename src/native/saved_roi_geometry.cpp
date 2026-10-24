@@ -729,6 +729,13 @@ ResolvedSavedRoiGeometryCommand resolve_saved_roi_geometry(const DocumentSnapsho
           original, owned_request.replacement, current_position(owned_source),
           std::move(record), estimate, owned_limits, false}));
 }
+SavedRoiGeometryRequest decode_saved_roi_geometry_request(const MetadataObject &record,
+    const SavedRoiGeometryLimits &limits) {
+  const ExecutionControl quiet;ExecutionScope scope(quiet);
+  const auto view=inspect_record(record,limits);
+  auto decoded=decode_record(view,limits);
+  return SavedRoiGeometryRequest{view.index,std::move(decoded.replacement)};
+}
 void validate_saved_roi_geometry_record(const MetadataObject &record,
                                        const SavedRoiGeometryLimits &limits) {
   const ExecutionControl quiet;

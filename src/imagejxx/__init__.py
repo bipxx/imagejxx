@@ -1665,7 +1665,7 @@ def fft_bandpass(image, low_cutoff: float = 0, high_cutoff: float = 0) -> np.nda
 from .editor import Editor as Editor
 from .io import imread as imread, imwrite as imwrite
 
-from ._native import (NativeWorkflowLimits, NativeWorkflowOperation, NativeWorkflowImport,
+from ._native import (NativeWorkflowAnnotationIntent, decode_saved_roi_geometry_request, NativeWorkflowLimits, NativeWorkflowOperation, NativeWorkflowImport,
                       NativeWorkflowExport, NativeWorkflowHistogram, NativeWorkflowHistogramOptions, PreparedNativeWorkflow, prepare_native_workflow)
 
 from ._native import (NativeWorkflowBatchInput, NativeWorkflowBatchOptions, NativeWorkflowBatchState,

@@ -5,6 +5,8 @@
 #include <imagejxx/rank_command.hpp>
 #include <imagejxx/histogram_command.hpp>
 #include <imagejxx/selection_creation.hpp>
+#include <imagejxx/planar_annotation_command.hpp>
+#include <imagejxx/saved_roi_geometry.hpp>
 
 namespace imagejxx {
 namespace detail {
@@ -25,6 +27,15 @@ struct NativeWorkflowAccess;
 // records.
 using NativeWorkflowFilterOptions =
     std::variant<GaussianBlurCommandOptions, RankFilterCommandOptions>;
+// Complete authored annotation intent. The reference extent must match the
+// destination stage; changing it requires an explicit new authored request.
+struct NativeWorkflowAnnotationIntent {
+  DatasetShape extent;
+  std::variant<PlanarAnnotationRequest,SavedRoiGeometryRequest> request;
+  NativeWorkflowAnnotationIntent(DatasetShape shape,
+      std::variant<PlanarAnnotationRequest,SavedRoiGeometryRequest> value)
+      :extent(shape),request(std::move(value)) {}
+};
 struct NativeWorkflowOperation {
   std::string operation;
   OperationParameters parameters;
@@ -38,6 +49,9 @@ struct NativeWorkflowOperation {
   // Authored area intent for selection_creation, independent of immutable
   // original provenance. Without it, retain the original command's choices.
   std::optional<SelectionCreationRequest> selection_creation;
+  // planar_annotation / saved_roi_geometry only. Absent: retain the complete
+  // validated original request. Never changes the original capture.
+  std::optional<NativeWorkflowAnnotationIntent> annotation_intent;
 };
 struct NativeWorkflowImport {
   std::vector<ImageJAnnotationImportItem> items;

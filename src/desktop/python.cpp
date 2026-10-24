@@ -398,6 +398,11 @@ PYBIND11_MODULE(_desktop, m) {
            [](Window &editor,const std::string &directory) {
              return nativeBareImportUiCase(editor,"imgui_python",directory).dump();
            })
+      .def("_annotation_workflow_ui_case",
+           [](Window &window,const std::string &directory) {
+             py::gil_scoped_release release;
+             return annotationWorkflowUiCase(window,"imgui_python",directory).dump();
+           })
       .def("_planar_path_ui_case",
            [](Window &window, const std::string &directory) {
              py::gil_scoped_release release;

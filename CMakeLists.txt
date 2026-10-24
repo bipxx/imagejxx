@@ -57,7 +57,7 @@ target_sources(imagejxx_core PRIVATE
   src/native/imagej_roi_import.cpp
   src/native/native_workflow_batch.cpp
   src/native/native_workflow_batch_setup.cpp
-  src/native/workflow_stage_metadata.cpp src/native/native_workflow.cpp
+  src/native/workflow_stage_metadata.cpp src/native/annotation_workflow.cpp src/native/native_workflow.cpp
     src/native/rgb_dataset_command.cpp src/native/indexed_color.cpp src/native/indexed_palette.cpp src/native/indexed_type.cpp src/native/indexed_dataset_command.cpp src/native/indexed_rgb_command.cpp src/native/legacy_rgb_palette.cpp src/native/color_components.cpp src/native/color_stack_command.cpp
   src/native/native_workflow_program.cpp
   src/native/native_workflow_originals.cpp
@@ -917,6 +917,9 @@ if(BUILD_TESTING)
   add_executable(imagejxx_path_envelope_tests examples/cpp/path_envelope.cpp)
   target_link_libraries(imagejxx_path_envelope_tests PRIVATE imagejxx::core)
   add_test(NAME native_path_envelope COMMAND imagejxx_path_envelope_tests)
+  add_executable(imagejxx_annotation_workflow_tests examples/cpp/annotation_workflow.cpp)
+  target_link_libraries(imagejxx_annotation_workflow_tests PRIVATE imagejxx::core)
+  add_test(NAME native_annotation_workflow COMMAND imagejxx_annotation_workflow_tests)
   add_executable(imagejxx_native_bare_import_tests examples/cpp/native_bare_import.cpp)
   target_link_libraries(imagejxx_native_bare_import_tests PRIVATE imagejxx::core)
   add_test(NAME native_bare_path_import COMMAND imagejxx_native_bare_import_tests)
@@ -1082,7 +1085,7 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     src/desktop/saved_roi_edit.cpp
     src/desktop/saved_roi_geometry_ui_probe.cpp
     src/desktop/saved_roi_geometry_dependencies.cpp
-    src/desktop/gaussian_panel.cpp src/desktop/rank_panel.cpp src/desktop/operation_target_panel.cpp src/desktop/gaussian_jobs.cpp src/desktop/threshold_panel.cpp src/desktop/histogram_panel.cpp src/desktop/histogram_ui_probe.cpp src/desktop/histogram_defaults_ui_probe.cpp src/desktop/histogram_recorder_ui_probe.cpp src/desktop/histogram_async_ui_probe.cpp src/desktop/target_histogram_ui_probe.cpp src/desktop/manual_threshold_ui_probe.cpp src/desktop/z_subset_ui_probe.cpp src/desktop/axis_spacing_ui_probe.cpp src/desktop/slicer_resize_ui_probe.cpp src/desktop/path_visual.cpp src/desktop/planar_path_ui_probe.cpp src/desktop/native_bare_import_ui_probe.cpp src/desktop/planar_annotation_panel.cpp src/desktop/planar_annotation_ui_probe.cpp src/desktop/planar_annotation_rebind.cpp src/desktop/planar_annotation_matrix.cpp
+    src/desktop/gaussian_panel.cpp src/desktop/rank_panel.cpp src/desktop/operation_target_panel.cpp src/desktop/gaussian_jobs.cpp src/desktop/threshold_panel.cpp src/desktop/histogram_panel.cpp src/desktop/histogram_ui_probe.cpp src/desktop/histogram_defaults_ui_probe.cpp src/desktop/histogram_recorder_ui_probe.cpp src/desktop/histogram_async_ui_probe.cpp src/desktop/target_histogram_ui_probe.cpp src/desktop/manual_threshold_ui_probe.cpp src/desktop/z_subset_ui_probe.cpp src/desktop/axis_spacing_ui_probe.cpp src/desktop/slicer_resize_ui_probe.cpp src/desktop/path_visual.cpp src/desktop/planar_path_ui_probe.cpp src/desktop/annotation_workflow_ui_probe.cpp src/desktop/native_bare_import_ui_probe.cpp src/desktop/planar_annotation_panel.cpp src/desktop/planar_annotation_ui_probe.cpp src/desktop/planar_annotation_rebind.cpp src/desktop/planar_annotation_matrix.cpp
     src/desktop/native_workflow_batch_ui_probe.cpp
     src/desktop/native_workflow_ui_probe.cpp
     src/desktop/histogram_workflow_ui_probe.cpp

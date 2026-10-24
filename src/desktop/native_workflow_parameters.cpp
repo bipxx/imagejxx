@@ -5,11 +5,19 @@
 #include "../native/color_stack_internal.hpp"
 #include "../native/selection_enlargement_workflow.hpp"
 #include "../native/selection_creation_workflow.hpp"
+#include "../native/annotation_workflow.hpp"
+#include "planar_annotation_rebind.hpp"
+#include "path_visual.hpp"
+#include "geometry_number.hpp"
+#include <imagejxx/selection_edit.hpp>
+#include <charconv>
+#include <cmath>
 #include "../native/indexed_dataset_internal.hpp"
 #include "../native/indexed_rgb_internal.hpp"
 #include <cstring>
 #include <imagejxx/native_workflow_program.hpp>
 #include <imgui_internal.h>
+#include <imgui_stdlib.h>
 namespace imagejxx::desktop {
 namespace {
 void require(bool value, const char *message) {
@@ -66,6 +74,48 @@ struct NativeWorkflowParameters::State {
   bool open = true, focus = true, gaussian = false, rank = false, color_stack = false, creation = false;
   std::string error;
   Json bounds = Json::array();
+  std::shared_ptr<const NativeWorkflowOperation> annotation_step;
+  std::unique_ptr<PlanarAnnotationRebind> planar_editor;
+  std::optional<Selection> saved_geometry;
+  std::vector<std::array<double,2>> saved_points;
+  std::string saved_row,saved_u,saved_v,move_u="0",move_v="0";
+  std::array<std::string,5> saved_box;
+  int saved_vertex=1;bool saved_confirm=false,saved_dirty=false;
+  void refresh_saved() {
+    saved_points=planarControlPoints(*saved_geometry);
+    if(saved_vertex>=1 && std::size_t(saved_vertex)<=saved_points.size()) {
+      saved_u=geometry_number_text(saved_points[std::size_t(saved_vertex-1)][0]);
+      saved_v=geometry_number_text(saved_points[std::size_t(saved_vertex-1)][1]);
+    }
+    if(const auto box=saved_geometry->box_frame()) {
+      const std::array<double,5> values{box->center[0],box->center[1],2*std::hypot(box->u[0],box->u[1]),
+          2*std::hypot(box->v[0],box->v[1]),std::atan2(box->u[1],box->u[0])*180/std::acos(-1.)};
+      for(int i=0;i<5;++i)saved_box[i]=geometry_number_text(values[i]);
+    }
+    saved_dirty=false;
+  }
+  std::size_t row_index() const {
+    std::size_t value=0;const auto parsed=std::from_chars(saved_row.data(),saved_row.data()+saved_row.size(),value);
+    require(parsed.ec==std::errc{} && parsed.ptr==saved_row.data()+saved_row.size() && value>0,"Choose a positive 1-based saved row");
+    return value-1;
+  }
+  void stage_saved() {
+    if(!saved_dirty)return;
+    const auto shape=source.data().dataset.shape();
+    if(saved_geometry->box_frame()) {
+      std::array<double,5> v{};for(int i=0;i<5;++i)v[i]=parse_geometry_number(saved_box[i]);
+      const bool ellipse=saved_geometry->kind=="ellipse" || saved_geometry->kind=="rotated_ellipse";
+      Selection unit(saved_geometry->is_rounded_box()?"rounded_rectangle":ellipse?"ellipse":"rectangle",{{0,0},{1,1}},saved_geometry->width);
+      unit.attributes=saved_geometry->attributes;
+      saved_geometry=SelectionEditor(unit,shape.x,shape.y).box_geometry({v[0],v[1]},{v[2],v[3]},v[4]);
+      refresh_saved();return;
+    }
+    if(saved_points.empty())return;
+    require(saved_vertex>=1 && std::size_t(saved_vertex)<=saved_points.size(),"Choose a valid endpoint/control point");
+    saved_geometry=SelectionEditor(*saved_geometry,shape.x,shape.y).moved_vertex(std::size_t(saved_vertex-1),{parse_geometry_number(saved_u),parse_geometry_number(saved_v)});
+    refresh_saved();
+  }
+  void draw_saved(bool,const std::function<void(const NativeWorkflowOperation &)> &);
   State(const DocumentSnapshot &s, std::size_t limit, std::size_t processing) : source(s), cap(limit), processing_cap(processing) {}
   void observe(const std::string &name) {
     const auto a = ImGui::GetItemRectMin(), b = ImGui::GetItemRectMax();
@@ -175,6 +225,69 @@ struct NativeWorkflowParameters::State {
     return result;
   }
 };
+void NativeWorkflowParameters::State::draw_saved(bool enabled,
+    const std::function<void(const NativeWorkflowOperation &)> &keep) {
+  controls=Json::object();
+  if(focus)ImGui::SetNextWindowFocus();focus=false;
+  ImGui::SetNextWindowSize({650,560},ImGuiCond_FirstUseEver);
+  ImGui::Begin("Edit saved ROI workflow geometry",&open);
+  const auto a=ImGui::GetCurrentWindow()->InnerRect.Min,b=ImGui::GetCurrentWindow()->InnerRect.Max;
+  bounds={a.x,a.y,b.x,b.y};
+  ImGui::TextWrapped("Edit saved-row geometry on this workflow stage. The image stays unchanged until the workflow is published; row names, positions, width and attributes are preserved.");
+  const auto shape=source.data().dataset.shape();
+  ImGui::Text("Stage extent T/C/Z/Y/X/S: %d/%d/%d/%d/%d/%d",shape.t,shape.c,shape.z,shape.y,shape.x,shape.s);
+  ImGui::BeginDisabled(!enabled);
+  ImGui::Checkbox("Use this stage's extent",&saved_confirm);observe("confirm_extent");
+  ImGui::SetNextItemWidth(120);ImGui::InputText("Saved row (1-based)",&saved_row);observe("row");
+  const auto &rows=source.data().rois;
+  if(ImGui::BeginCombo("Choose saved row","Select a destination row")) {
+    ImGuiListClipper clip;clip.Begin(int(std::min<std::size_t>(rows.size(),INT32_MAX)));
+    while(clip.Step())for(int i=clip.DisplayStart;i<clip.DisplayEnd;++i) {
+      ImGui::PushID(i);if(ImGui::Selectable(rows[std::size_t(i)].name.c_str()))saved_row=std::to_string(i+1);
+      observe("row."+std::to_string(i));ImGui::PopID();
+    }
+    ImGui::EndCombo();
+  }observe("row_choice");
+  if(ImGui::Button("Use selected row geometry"))try {
+    const auto index=row_index();require(index<rows.size(),"Choose an existing saved row");
+    saved_geometry=rows[index].selection;saved_vertex=1;refresh_saved();error.clear();
+  }catch(const std::exception &e){error=e.what();}
+  observe("load_geometry");
+  ImGui::Text("Geometry: %s; %zu endpoints/control points",saved_geometry->kind.c_str(),saved_points.size());
+  if(saved_geometry->box_frame()) {
+    const char *labels[]{"Center U","Center V","Width","Height","Angle"};
+    const char *keys[]{"center_u","center_v","width","height","angle"};
+    for(int i=0;i<5;++i){ImGui::SetNextItemWidth(130);saved_dirty|=ImGui::InputText(labels[i],&saved_box[i]);observe(keys[i]);}
+  } else if(!saved_points.empty()) {
+    ImGui::SetNextItemWidth(90);
+    if(ImGui::InputInt("Endpoint/control (1-based)",&saved_vertex,0,0))refresh_saved();observe("vertex");
+    ImGui::SetNextItemWidth(150);saved_dirty|=ImGui::InputText("U",&saved_u);observe("vertex_u");ImGui::SameLine();
+    ImGui::SetNextItemWidth(150);saved_dirty|=ImGui::InputText("V",&saved_v);observe("vertex_v");
+    if(ImGui::Button("Stage endpoint/control"))try {stage_saved();error.clear();}catch(const std::exception &e){error=e.what();}
+    observe("stage_vertex");
+    ImGui::TextWrapped("Stage each control before choosing another. Keep includes the current control; curve commands are retained.");
+  }
+  ImGui::SetNextItemWidth(120);ImGui::InputText("Translate U",&move_u);observe("move_u");ImGui::SameLine();
+  ImGui::SetNextItemWidth(120);ImGui::InputText("Translate V",&move_v);observe("move_v");
+  if(ImGui::Button("Stage translation"))try {
+    stage_saved();saved_geometry=SelectionEditor(*saved_geometry,shape.x,shape.y).moved({parse_geometry_number(move_u),parse_geometry_number(move_v)});
+    refresh_saved();move_u=move_v="0";error.clear();
+  }catch(const std::exception &e){error=e.what();}
+  observe("translate");
+  const bool accepted=ImGui::Button("Keep geometry choices");observe("keep_parameters");
+  ImGui::EndDisabled();ImGui::SameLine();
+  const bool discard=ImGui::Button("Discard geometry edits");observe("discard");
+  const bool escape=ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows) && ImGui::IsKeyPressed(ImGuiKey_Escape);
+  if(!error.empty())ImGui::TextWrapped("%s",error.c_str());
+  ImGui::End();if(!open || discard || escape){open=false;return;}
+  if(accepted)try {
+    require(saved_confirm,"Confirm the current stage extent");stage_saved();
+    auto next=*annotation_step;
+    next.annotation_intent=NativeWorkflowAnnotationIntent{shape,SavedRoiGeometryRequest{row_index(),*saved_geometry}};
+    (void)detail::prepare_annotation_workflow(source,next,processing_cap);
+    keep(next);open=false;
+  }catch(const std::exception &e){error=e.what();}
+}
 NativeWorkflowParameters::NativeWorkflowParameters(
     const DocumentSnapshot &source,
     std::shared_ptr<const NativeWorkflowOperation> original, std::size_t cap) {
@@ -184,6 +297,18 @@ NativeWorkflowParameters::NativeWorkflowParameters(
   auto admitted = detail::make_native_workflow_program_borrowed(
       {detail::NativeWorkflowStepRef{original.get()}}, {1, cap / 8});
   auto operation = std::get<NativeWorkflowOperation>(admitted.steps()[0]);
+  if(detail::annotation_workflow_operation(operation.operation)) {
+    state_=std::make_unique<State>(source,cap,cap);auto &s=*state_;
+    s.annotation_step=std::make_shared<const NativeWorkflowOperation>(operation);
+    const auto intent=detail::annotation_workflow_request(operation,cap/8);
+    if(const auto request=std::get_if<PlanarAnnotationRequest>(&intent.request)) {
+      s.planar_editor=std::make_unique<PlanarAnnotationRebind>();s.planar_editor->show_request(source,*request);
+    } else {
+      const auto &saved_request=std::get<SavedRoiGeometryRequest>(intent.request);s.saved_geometry=saved_request.replacement;
+      s.saved_row=saved_request.row_index==SIZE_MAX?"0":std::to_string(saved_request.row_index+1);s.refresh_saved();
+    }
+    return;
+  }
   if (operation.operation!="rgb_contrast_apply" && operation.operation!="contrast_apply" && !operation.filter_options && operation.original &&
       detail::native_workflow_bound_operation_original(*operation.original)) {
     const auto raw = metadataJson(operation.original->at("options"));
@@ -348,13 +473,21 @@ NativeWorkflowParameters::NativeWorkflowParameters(
 }
 NativeWorkflowParameters::~NativeWorkflowParameters() = default;
 bool NativeWorkflowParameters::visible() const { return state_->open; }
-void NativeWorkflowParameters::cancel() { state_->open = false; }
+void NativeWorkflowParameters::cancel() { state_->open = false;if(state_->planar_editor)state_->planar_editor->cancel("canceled"); }
 void NativeWorkflowParameters::draw(
     bool enabled,
     const std::function<void(const NativeWorkflowOperation &)> &keep) {
   auto &s = *state_;
   if (!s.open)
     return;
+  if(s.planar_editor) {
+    s.planar_editor->draw(s.source,!enabled,[&](const ResolvedPlanarAnnotationCommand &command) {
+      auto next=*s.annotation_step;next.annotation_intent=NativeWorkflowAnnotationIntent{s.source.data().dataset.shape(),command.request()};
+      keep(next);s.open=false;
+    });
+    if(!s.planar_editor->visible())s.open=false;return;
+  }
+  if(s.saved_geometry){s.draw_saved(enabled,keep);return;}
   s.controls = Json::object();
   ImGui::SetNextWindowSize({700, 590}, ImGuiCond_FirstUseEver);
   if (s.focus) {
@@ -501,6 +634,7 @@ void NativeWorkflowParameters::draw(
 }
 Json NativeWorkflowParameters::diagnostics() const {
   const auto &s = *state_;
+  if(s.planar_editor){auto result=s.planar_editor->diagnostics();result["parameters"]=true;result["annotation"]=true;return result;}
   Json fields = Json::array();
   for (const auto &f : s.fields)
     fields.push_back(
@@ -512,6 +646,6 @@ Json NativeWorkflowParameters::diagnostics() const {
          {"boolean", f.boolean}});
   return {{"visible", s.open},      {"parameters", true}, {"fields", fields},
           {"controls", s.controls}, {"window", s.bounds}, {"error", s.error},
-          {"gaussian", s.gaussian}, {"rank", s.rank}, {"color_stack",s.color_stack}};
+          {"gaussian", s.gaussian}, {"rank", s.rank}, {"color_stack",s.color_stack},{"annotation",bool(s.annotation_step)}};
 }
 } // namespace imagejxx::desktop

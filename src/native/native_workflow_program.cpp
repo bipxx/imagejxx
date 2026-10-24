@@ -6,6 +6,7 @@
 #include "native_workflow_program_internal.hpp"
 #include "session_metadata.hpp"
 #include "selection_creation_workflow.hpp"
+#include "annotation_workflow.hpp"
 #include "regional_geometry.hpp"
 #include <algorithm>
 #include <cmath>
@@ -402,6 +403,9 @@ void charge_step(const detail::NativeWorkflowStepRef &step, Budget &b) {
           b.add(v.operation.size());
           if(v.selection_creation)
             b.add(detail::selection_creation_request_bytes(*v.selection_creation,b.cap-b.used));
+          if(detail::annotation_workflow_operation(v.operation) && v.original)
+            detail::validate_annotation_workflow_original(v.operation,*v.original,b.cap-b.used);
+          if(v.annotation_intent)b.add(detail::annotation_workflow_intent_bytes(*v.annotation_intent,b.cap-b.used));
           if (v.filter_options)
             b.add(512);
           b.product(v.target.positions.size(), 256);
@@ -463,7 +467,7 @@ void preflight(const std::vector<detail::NativeWorkflowStepRef> &steps,
           using T = std::decay_t<decltype(v)>;
           if constexpr (std::is_same_v<T, NativeWorkflowOperation>) {
             valid_target(v.target);
-            require(v.operation=="selection_creation" || v.operation=="selection_enlargement" || v.operation=="rgb_contrast_session" || v.operation=="rgb_contrast_stack" || v.operation=="rgb_contrast_apply" || v.operation=="contrast_apply" || v.operation=="rgb_dataset" || v.operation=="color_stack" || v.operation=="indexed_dataset" || v.operation=="indexed_rgb" || operation_spec(v.operation).geometry ==
+            require(detail::annotation_workflow_operation(v.operation) || v.operation=="selection_creation" || v.operation=="selection_enlargement" || v.operation=="rgb_contrast_session" || v.operation=="rgb_contrast_stack" || v.operation=="rgb_contrast_apply" || v.operation=="contrast_apply" || v.operation=="rgb_dataset" || v.operation=="color_stack" || v.operation=="indexed_dataset" || v.operation=="indexed_rgb" || operation_spec(v.operation).geometry ==
                         GeometryEffect::Preserve || v.operation == "convert_image",
                     "Program geometry requires explicit remap");
             detail::validate_native_workflow_operation_intent(v);
@@ -545,6 +549,10 @@ MetadataObject encode(const std::vector<detail::NativeWorkflowStepRef> &steps,
     const auto p=std::get_if<const NativeWorkflowOperation *>(&ref);
     return p && (*p)->operation=="selection_creation";
   });
+  const bool v7=std::any_of(steps.begin(),steps.end(),[](const auto &ref) {
+    const auto p=std::get_if<const NativeWorkflowOperation *>(&ref);
+    return p && detail::annotation_workflow_operation((*p)->operation);
+  });
   MetadataArray records;
   std::set<std::string> outputs;
   for (const auto &step : steps)
@@ -564,17 +572,20 @@ MetadataObject encode(const std::vector<detail::NativeWorkflowStepRef> &steps,
             r["parameters"] = metadata_object(std::move(params));
             r["target"] = target_value(v.target);
             r["use_destination_calibration"] = v.use_destination_calibration;
-            if (v2 || v3 || v4 || v6)
+            if (v2 || v3 || v4 || v6 || v7)
               r["filter_options"] = filter_options_value(v.filter_options);
-            if(v6) r["selection_creation"] = v.selection_creation
+            if(v6 || v7) r["selection_creation"] = v.selection_creation
                 ? metadata_object(detail::selection_creation_request_value(*v.selection_creation,limits.max_record_bytes))
+                : MetadataValue{};
+            if(v7)r["annotation_intent"]=v.annotation_intent
+                ? metadata_object(detail::annotation_workflow_intent_value(*v.annotation_intent,limits.max_record_bytes))
                 : MetadataValue{};
           } else if constexpr (std::is_same_v<T, NativeWorkflowHistogram>) {
             require(outputs.insert(v.name).second, "Duplicate workflow output name");
             r["kind"] = std::string("histogram");
             r["name"] = v.name;
             r["target"] = target_value(v.target);
-            if(v5 || v6)r["options"]=histogram_options_value(v.authored_options);
+            if(v5 || v6 || v7)r["options"]=histogram_options_value(v.authored_options);
             r["limits"] = metadata_object({
                 {"max_pixels", std::uint64_t(v.limits.processing.max_pixels)},
                 {"max_working_bytes", std::uint64_t(v.limits.processing.max_working_bytes)},
@@ -602,14 +613,15 @@ MetadataObject encode(const std::vector<detail::NativeWorkflowStepRef> &steps,
             r["choices"] = detail::imagej_annotation_export_choices_value(
                 {v.items, v.limits, v.zip, v.zip && v.compress});
           }
-          if (v3 || v4 || v6)
+          if (v3 || v4 || v6 || v7)
             r["enabled"] = v.enabled;
           records.push_back(metadata_object(std::move(r)));
         },
         step);
   MetadataObject result{
       {"schema", std::string("imagejxx.native-workflow-program")},
-      {"version", v6   ? 6
+      {"version", v7   ? 7
+                  : v6 ? 6
                   : v5 ? 5
                   : v4 ? 4
                   : v3 ? 3
@@ -617,7 +629,7 @@ MetadataObject encode(const std::vector<detail::NativeWorkflowStepRef> &steps,
                        : 1},
       {"steps", metadata_array(std::move(records))}};
   record_budget(result, limits.max_record_bytes);
-  if(v6)detail::regional_record_depth(result);
+  if(v6 || v7)detail::regional_record_depth(result);
   validate_metadata(result);
   return result;
 }
@@ -688,9 +700,9 @@ native_workflow_program_from_record(const MetadataObject &r,
   exact_fields(r, {"schema", "version", "steps"});
   const auto version = unsigned_value(r.at("version"));
   require(text_value(r.at("schema")) == "imagejxx.native-workflow-program" &&
-              (version >= 1 && version <= 6),
+              (version >= 1 && version <= 7),
           "Unsupported native program record");
-  if(version==6)detail::regional_record_depth(r);
+  if(version>=6)detail::regional_record_depth(r);
   const auto &records = array(r.at("steps"));
   require(!records.empty() && records.size() <= limits.max_steps,
           "Program step count limit");
@@ -702,6 +714,15 @@ native_workflow_program_from_record(const MetadataObject &r,
           text_value(kind->second)=="operation" && text_value(operation->second)=="selection_creation";
     });
     require(creation,"Native program V6 requires selection creation intent");
+  }
+  if(version==7) {
+    const bool annotation=std::any_of(records.begin(),records.end(),[](const auto &value) {
+      const auto &row=object_value(value);
+      const auto kind=row.find("kind"),operation=row.find("operation");
+      return kind!=row.end() && operation!=row.end() && text_value(kind->second)=="operation" &&
+          detail::annotation_workflow_operation(text_value(operation->second));
+    });
+    require(annotation,"Native program V7 requires annotation intent");
   }
   std::vector<NativeWorkflowStep> steps;
   steps.reserve(records.size());
@@ -723,16 +744,24 @@ native_workflow_program_from_record(const MetadataObject &r,
         exact_fields(s, {"kind", "original", "operation", "parameters",
                          "target", "use_destination_calibration",
                          "filter_options", "enabled"});
-      else exact_fields(s, {"kind", "original", "operation", "parameters",
+      else if(version==6)exact_fields(s, {"kind", "original", "operation", "parameters",
                          "target", "use_destination_calibration",
                          "filter_options", "enabled", "selection_creation"});
+      else exact_fields(s, {"kind", "original", "operation", "parameters",
+                         "target", "use_destination_calibration",
+                         "filter_options", "enabled", "selection_creation", "annotation_intent"});
       NativeWorkflowOperation op;
       op.operation = text_value(s.at("operation"));
+      require(version>=7 || !detail::annotation_workflow_operation(op.operation),"Annotation intent requires native program V7");
       require(version>=6 || op.operation!="selection_creation", "Selection creation requires program V6");
       if(version>=6 && !null(s.at("selection_creation")))
         op.selection_creation=detail::selection_creation_request_from_value(
             object_value(s.at("selection_creation")),limits.max_record_bytes);
       op.original = original_from(s.at("original"));
+      if(version>=7 && detail::annotation_workflow_operation(op.operation) && op.original)
+        detail::validate_annotation_workflow_original(op.operation,*op.original,limits.max_record_bytes);
+      if(version>=7 && !null(s.at("annotation_intent")))
+        op.annotation_intent=detail::annotation_workflow_intent_from_value(object_value(s.at("annotation_intent")),limits.max_record_bytes);
       for (const auto &[name, value] : object_value(s.at("parameters")))
         op.parameters[name] = parameter_from(value);
       op.target = target_from(s.at("target"));

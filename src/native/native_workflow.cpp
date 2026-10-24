@@ -7,6 +7,7 @@
 #include "contrast_apply_workflow.hpp"
 #include "selection_enlargement_workflow.hpp"
 #include "selection_creation_workflow.hpp"
+#include "annotation_workflow.hpp"
 #include "native_workflow_program_internal.hpp"
 #include "rgb_dataset_internal.hpp"
 #include "color_stack_internal.hpp"
@@ -38,6 +39,12 @@ struct Budget {
   void record(const MetadataObject &r) {
     add(detail::imagej_roi_record_bytes(r, cap - used));
   }
+  void selection(const Selection &value) {
+    add(sizeof(Selection));add(value.kind.size());
+    product(value.points.size(),3*sizeof(std::array<double,2>));
+    product(value.packed_mask().size(),3);product(value.path_commands().size(),3*sizeof(double));
+    record(value.attributes);
+  }
   void data(const DocumentSnapshot &s) {
     const auto shape = s.data().dataset.shape();
     product(shape.pixel_count(), sizeof(double));
@@ -45,6 +52,13 @@ struct Budget {
     record(s.data().metadata.properties);
     record(s.data().metadata.record_layout);
     add(s.data().metadata.title.size());
+    if(s.data().selection)selection(*s.data().selection);
+    if(s.data().previous_selection)selection(*s.data().previous_selection);
+    product(s.data().rois.size(),3*sizeof(Roi));
+    for(const auto &row:s.data().rois) {
+      add(row.name.size());selection(row.selection);record(row.attributes);
+    }
+    for(const auto &overlay:s.data().overlays)record(overlay);
   }
 };
 void checkpoint(const ExecutionControl &c) {
@@ -215,6 +229,12 @@ void preflight(const DocumentSnapshot &initial,
             budget.product(v.target.positions.size(),sizeof(PlanePosition));
             if(v.selection_creation)
               budget.add(detail::selection_creation_request_bytes(*v.selection_creation,budget.cap-budget.used));
+            if(v.annotation_intent)budget.add(detail::annotation_workflow_intent_bytes(*v.annotation_intent,budget.cap-budget.used));
+            if(detail::annotation_workflow_operation(v.operation)) {
+              std::size_t working=0;
+              auto edit=detail::prepare_annotation_workflow(source,v,budget.cap-budget.used,control,&working);
+              budget.add(working);source=edit.preview();return;
+            }
             if(v.operation=="selection_creation") {
               const auto cap=budget.cap-budget.used;
               const auto command=detail::workflow_selection_creation(source,v,cap,control);
@@ -566,7 +586,11 @@ PreparedNativeWorkflow detail::prepare_native_workflow_borrowed(
               checkpoint(control);
               working.commit(edit);
             };
-            if(v.operation=="selection_creation") {
+            if(detail::annotation_workflow_operation(v.operation)) {
+              auto edit=detail::prepare_annotation_workflow(current,v,limits.max_retained_bytes,control);
+              guard_display=guard_display || v.operation=="saved_roi_geometry";
+              checkpoint(control);working.commit(edit);
+            } else if(v.operation=="selection_creation") {
               const auto command=detail::workflow_selection_creation(current,v,limits.max_retained_bytes,control);
               auto edit=prepare_selection_creation(command,control,limits.max_retained_bytes);
               guard_display=true;checkpoint(control);working.commit(edit);

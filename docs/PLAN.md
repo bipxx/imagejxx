@@ -1,5 +1,25 @@
 # ImageJ and Fiji gap closure plan
 
+**Annotation workflow intent, 2026-10-23 (scoped integration):**
+C++/Python workflows now retain typed planar and saved-ROI geometry intent
+in closed V7 programs, with explicit stage extents and immutable originals.
+Both ImGui hosts provide private geometry editing and portable workflow
+publication; saved native path authoring is retained as a disabled step
+until root desktop path carriers are integrated. Preparation accounts for
+unrelated active/previous/saved geometry before cloning its working owner.
+Windows/Linux each pass 1,123 installed workflow checks and 2,341 path/import
+compatibility checks, with no failures/skips; suites overlap. Twenty actual
+headless host/recipe runs cover annotation/Creation workflows and path/import
+regressions. Native and independent installed SDK clients pass thirteen
+checks each per host with a throwing source. All 819 build/test inputs match.
+Cleanup removed 769,011,333 logical temporary bytes and retained reports,
+sessions and installed products. Commercial dependency checks pass. Original
+99 requirements and verification records remain unchanged; the historical
+Auto fingerprint gate stays open. Next integrate root active/previous/saved
+desktop paths, then creation/topology/resize, filters and continuous Boolean
+operations. See [the contract](parity/ANNOTATION_WORKFLOW.md) and
+[scoped receipt](parity/reviews/p13d-annotation-workflow001.json).
+
 **Native bare composite import, 2026-10-23 (scoped integration):**
 C++/Python import items now carry an explicit curve-preserving decode choice.
 Versioned source archives and command equations retain original bytes, mapping

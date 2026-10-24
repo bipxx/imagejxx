@@ -12294,7 +12294,7 @@ void Window::Impl::draw() {
           }
           outputs.resultArray=OutputPublication::reserve(owner.results,outputs.rows.size(),"Results");
         }
-        publishFiles();owner.controller_->commit(edit);outputs.publish();
+        publishFiles();owner.document()->commitPlanarNative(edit);outputs.publish();
       },[this](const DocumentSnapshot &source,const std::function<void()> &publishFiles){
         if(workflowOtherBusy()||owner.controller_->active_document_id()!=source.id())throw std::invalid_argument("Batch publication requires its idle active anchor");
         const auto current=owner.nativeSnapshot();if(!source.same_document(current)||!current.revisions().matches(source.revisions(),Change::Data))throw RevisionConflict();

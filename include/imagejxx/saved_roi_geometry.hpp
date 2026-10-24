@@ -70,6 +70,9 @@ SavedRoiGeometryEstimate estimate_saved_roi_geometry(
 ResolvedSavedRoiGeometryCommand resolve_saved_roi_geometry(
     const DocumentSnapshot &, const SavedRoiGeometryRequest &,
     const SavedRoiGeometryLimits & = {}, const ExecutionControl & = {});
+// Source-independent complete capture admission before exposing its intent.
+SavedRoiGeometryRequest decode_saved_roi_geometry_request(
+    const MetadataObject &,const SavedRoiGeometryLimits & = {});
 void validate_saved_roi_geometry_record(
     const MetadataObject &, const SavedRoiGeometryLimits & = {});
 // Validate the complete original record before binding. Historical Selection

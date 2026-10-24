@@ -8,6 +8,8 @@ public:
   PlanarAnnotationRebind();
   ~PlanarAnnotationRebind();
   void show(const DocumentSnapshot &,const MetadataObject &original);
+  // Workflow draft: complete choices on a private preceding-stage snapshot.
+  void show_request(const DocumentSnapshot &,const PlanarAnnotationRequest &);
   void draw(const std::optional<DocumentSnapshot> &,bool busy,const PlanarAnnotationPublisher &);
   void cancel(const char *reason);
   bool visible() const;

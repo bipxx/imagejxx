@@ -3,6 +3,7 @@
 #include "native_workflow_internal.hpp"
 #include "native_workflow_program_internal.hpp"
 #include "selection_creation_workflow.hpp"
+#include "annotation_workflow.hpp"
 #include <imagejxx/native_workflow_batch_setup.hpp>
 namespace py = pybind11;
 using namespace imagejxx;
@@ -89,11 +90,30 @@ void bind_native_workflow(py::module_ &m) {
       .def_readonly("max_steps", &NativeWorkflowLimits::max_steps)
       .def_readonly("max_retained_bytes",
                     &NativeWorkflowLimits::max_retained_bytes);
+  py::class_<NativeWorkflowAnnotationIntent>(m,"NativeWorkflowAnnotationIntent")
+      .def(py::init([](py::sequence dimensions,py::object value) {
+        if(py::len(dimensions)!=6)throw py::value_error("Annotation intent requires TCZYXS extent");
+        std::array<int,6> d{};
+        for(int i=0;i<6;++i){const auto n=integer(dimensions[i]);if(!n || n>INT32_MAX)throw py::value_error("Annotation extent must be positive int32");d[i]=int(n);}
+        const DatasetShape shape{d[0],d[1],d[2],d[3],d[4],d[5]};shape.validate();
+        const auto cap=NativeWorkflowProgramLimits{}.max_record_bytes;
+        if(py::isinstance<PlanarAnnotationRequest>(value)) {
+          const auto &request=value.cast<const PlanarAnnotationRequest &>();
+          (void)detail::annotation_workflow_request_bytes(shape,request,cap);
+          return NativeWorkflowAnnotationIntent{shape,request};
+        }
+        if(!py::isinstance<SavedRoiGeometryRequest>(value))throw py::type_error("Annotation intent requires a complete planar or saved ROI request");
+        const auto &request=value.cast<const SavedRoiGeometryRequest &>();
+        (void)detail::annotation_workflow_request_bytes(shape,request,cap);
+        return NativeWorkflowAnnotationIntent{shape,request};
+      }),py::arg("extent"),py::arg("request"))
+      .def_property_readonly("extent",[](const NativeWorkflowAnnotationIntent &v){return v.extent.dimensions();})
+      .def_property_readonly("request",[](const NativeWorkflowAnnotationIntent &v)->py::object {return std::visit([](const auto &q){return py::cast(q);},v.request);});
   py::class_<NativeWorkflowOperation>(m, "NativeWorkflowOperation")
       .def(
           py::init([](std::string name, py::dict params, TargetRequest target,
                       py::object record, py::object consent, py::object options,
-                      py::object enabled, py::object creation) {
+                      py::object enabled, py::object creation,py::object annotation) {
             std::optional<NativeWorkflowFilterOptions> filter;
             if (!options.is_none()) {
               if (py::isinstance<GaussianBlurCommandOptions>(options))
@@ -114,13 +134,14 @@ void bind_native_workflow(py::module_ &m) {
                 std::move(name),   operation_parameters_from_python(params),
                 std::move(target), original(record),
                 flag(consent),     std::move(filter),
-                flag(enabled), std::move(authored)};
+                flag(enabled), std::move(authored),annotation.is_none()?std::optional<NativeWorkflowAnnotationIntent>{}:annotation.cast<NativeWorkflowAnnotationIntent>()};
           }),
           py::arg("operation"), py::arg("parameters"), py::arg("target"),
           py::arg("original") = py::none(),
           py::arg("use_destination_calibration") = false,
           py::arg("filter_options") = py::none(), py::arg("enabled") = true,
-          py::arg("selection_creation") = py::none())
+          py::arg("selection_creation") = py::none(),py::arg("annotation_intent") = py::none())
+      .def_property_readonly("annotation_intent",[](const NativeWorkflowOperation &v){return v.annotation_intent;})
       .def_readonly("enabled", &NativeWorkflowOperation::enabled)
       .def_property_readonly("selection_creation",[](const NativeWorkflowOperation &v) {return v.selection_creation;});
   py::class_<NativeWorkflowHistogramOptions>(m,"NativeWorkflowHistogramOptions")

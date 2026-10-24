@@ -17,7 +17,7 @@ struct PlanarAnnotationRebind::State {
   std::string name,stroke,fill,stroke_width,error,cancel_reason;
   std::array<std::string,5> box;
   std::array<std::string,2> point;
-  Json controls=Json::object();
+  Json controls=Json::object(),bounds=Json::array();
   void seed(const PlanarAnnotation &value) {
     replacement=value;name=value.name;plane=int(value.plane);coordinate=value.coordinate;
     all_t=!value.t;all_c=!value.c;t=value.t.value_or(0)+1;c=value.c.value_or(0)+1;
@@ -66,7 +66,7 @@ struct PlanarAnnotationRebind::State {
       std::array<double,5> values;
       for(int i=0;i<5;++i)values[i]=parse_geometry_number(box[i]);
       const bool ellipse=value.selection.kind=="ellipse" || value.selection.kind=="rotated_ellipse";
-      Selection unit(ellipse?"ellipse":"rectangle",{{0,0},{1,1}},value.selection.width);
+      Selection unit(value.selection.is_rounded_box()?"rounded_rectangle":ellipse?"ellipse":"rectangle",{{0,0},{1,1}},value.selection.width);
       unit.attributes=value.selection.attributes;
       const auto dimensions=planar_annotation_geometry(source->data().dataset.shape(),value.plane);
       value.selection=SelectionEditor(unit,dimensions.width,dimensions.height,SelectionEditLimits{})
@@ -101,6 +101,15 @@ void PlanarAnnotationRebind::show(const DocumentSnapshot &source,const MetadataO
   else next.seed({"Annotation",Selection("rectangle",{{0,0},{1,1}}),Plane::XY,source.display().crosshair[2],source.display().t,source.display().c,{}});
   *state_=std::move(next);
 }
+void PlanarAnnotationRebind::show_request(const DocumentSnapshot &source,const PlanarAnnotationRequest &request) {
+  State next;next.source=source;next.open=next.focus=true;
+  next.operation=request.operation==PlanarAnnotationOperation::Store?0:request.operation==PlanarAnnotationOperation::Update?1:2;
+  if(request.index && *request.index<std::size_t(INT32_MAX))next.target=int(*request.index)+1;
+  if(request.annotation)next.seed(*request.annotation);
+  else next.seed({"Annotation",Selection("rectangle",{{0,0},{1,1}}),Plane::XY,
+      source.display().crosshair[2],source.display().t,source.display().c,{}});
+  *state_=std::move(next);
+}
 void PlanarAnnotationRebind::draw(const std::optional<DocumentSnapshot> &current,bool busy,const PlanarAnnotationPublisher &publish) {
   auto &s=*state_;s.controls=Json::object();if(!s.open)return;
   if(!current || !s.source || !s.source->same_document(*current) ||
@@ -109,7 +118,12 @@ void PlanarAnnotationRebind::draw(const std::optional<DocumentSnapshot> &current
   if(s.focus)ImGui::SetNextWindowFocus();
   ImGui::SetNextWindowSize({600,630},ImGuiCond_FirstUseEver);
   ImGui::Begin("Rebind planar annotation",&s.open);s.focus=false;
-  ImGui::TextWrapped("Choose the destination and complete replacement. Apply creates a new command for this image; the captured command stays unchanged.");
+  const auto a=ImGui::GetCurrentWindow()->InnerRect.Min,b=ImGui::GetCurrentWindow()->InnerRect.Max;s.bounds={a.x,a.y,b.x,b.y};
+  if(s.original.empty()) {
+    ImGui::TextWrapped("Edit this workflow annotation. Apply keeps new choices; the image stays unchanged until the workflow is published.");
+    const auto shape=current->data().dataset.shape();
+    ImGui::Text("Stage extent T/C/Z/Y/X/S: %d/%d/%d/%d/%d/%d",shape.t,shape.c,shape.z,shape.y,shape.x,shape.s);
+  } else ImGui::TextWrapped("Choose the destination and complete replacement. Apply creates a new command for this image; the captured command stays unchanged.");
   ImGui::Text("Destination: %s",current->data().metadata.title.c_str());
   if(ImGui::BeginCombo("Operation",s.operation==0?"Store new":s.operation==1?"Update existing":"Delete existing")) {
     for(int i=0;i<3;++i) {
@@ -170,12 +184,13 @@ void PlanarAnnotationRebind::draw(const std::optional<DocumentSnapshot> &current
   ImGui::End();
   if(!s.open || canceled) {cancel("canceled");return;}
   if(apply)try {
-    const auto command=rebind_planar_annotation_command(*s.source,s.original,s.request());
+    const auto command=s.original.empty()?resolve_planar_annotation_command(*s.source,s.request()):
+        rebind_planar_annotation_command(*s.source,s.original,s.request());
     publish(command);cancel("accepted");
   }catch(const std::exception &e) {s.error=e.what();}
 }
 Json PlanarAnnotationRebind::diagnostics() const {
-  const auto &s=*state_;return {{"visible",s.open},{"controls",s.controls},{"error",s.error},{"cancel_reason",s.cancel_reason},
+  const auto &s=*state_;return {{"visible",s.open},{"window",s.bounds},{"controls",s.controls},{"error",s.error},{"cancel_reason",s.cancel_reason},
       {"operation",s.operation},{"destination_row",s.target},{"source_document_id",s.source?s.source->id():0}};
 }
 } // namespace imagejxx::desktop
