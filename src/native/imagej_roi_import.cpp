@@ -156,6 +156,13 @@ std::optional<ImageJRoiPlaneMapping> read_mapping(const Json &j) {
   m.legacy_position = static_cast<ImageJLegacyPositionMapping>(legacy);
   return m;
 }
+bool native_choice(const Json &entry,bool allowed) {
+  if(!entry.contains("native_path"))return false;
+  require(allowed,"Native path choice requires a versioned import archive");
+  require(entry.at("native_path").is_boolean() && entry.at("native_path").get<bool>(),
+          "Native path choice must be canonical true");
+  return true;
+}
 void name_ok(const std::string &name) {
   require(!name.empty() && name.size() <= 1024, "ROI import label limit");
   for (unsigned char c : name)
@@ -205,10 +212,13 @@ MappedImageJRoi admit(const ImageJRoiImportItem &item,
                       const ImageJRoiImportLimits &limits,
                       bool allow_bare_replacement = false) {
   name_ok(item.name);
-  auto original =
-      item.mapping
-          ? decode_imagej_roi_mapped(item.data, *item.mapping, limits.roi)
-          : decode_imagej_roi_envelope(item.data, limits.roi);
+  require(!item.native_path || bool(item.mapping),
+          "Native path decoding requires an explicit bare ROI mapping");
+  auto original = item.native_path
+          ? decode_imagej_composite_roi_mapped(item.data, *item.mapping, limits.roi)
+          : item.mapping
+              ? decode_imagej_roi_mapped(item.data, *item.mapping, limits.roi)
+              : decode_imagej_roi_envelope(item.data, limits.roi);
   if (!item.native_replacement)
     return original;
   require(!item.mapping || allow_bare_replacement,
@@ -233,15 +243,17 @@ Json existing_sources(const std::optional<MetadataValue> &previous,
   fields(archive, {"schema", "version", "entries"});
   const auto version = integer(archive.at("version"));
   require(archive.at("schema") == "imagejxx.imagej-roi-import-sources" &&
-              (version == 1 || version == 2),
+              (version == 1 || version == 2 || version == 5),
           "Unsupported ROI import provenance");
   const auto &entries = archive.at("entries");
   require(entries.is_array() && entries.size() <= l.max_entries,
           "ROI import provenance entry limit");
-  bool replaced = false;
+  bool replaced = false, native = false;
   for (const auto &entry : entries) {
     if (version == 1)
       fields(entry, {"name", "data", "mapping"});
+    else if(entry.contains("native_path"))
+      fields(entry, {"name", "data", "mapping", "native_replacement", "native_path"});
     else
       fields(entry, {"name", "data", "mapping", "native_replacement"});
     require(entry.at("name").is_string() && entry.at("data").is_string(),
@@ -259,8 +271,9 @@ Json existing_sources(const std::optional<MetadataValue> &previous,
     ImageJRoiImportItem item{entry.at("name").get<std::string>(),
                              std::move(data),
                              read_mapping(entry.at("mapping"))};
+    item.native_path=native_choice(entry,version==5);native=native||item.native_path;
     auto original = admit(item, l);
-    if (version == 2 && !entry.at("native_replacement").is_null()) {
+    if (version != 1 && !entry.at("native_replacement").is_null()) {
       require(!item.mapping,
               "Native replacement and bare mapping are mutually exclusive");
       item.native_replacement =
@@ -270,28 +283,36 @@ Json existing_sources(const std::optional<MetadataValue> &previous,
       replaced = true;
     }
   }
-  require(version == 1 || replaced,
+  require(version == 5 ? native : !native && (version == 1 || replaced),
           "Noncanonical ROI import provenance version");
   return archive;
 }
 } // namespace
 
 MetadataValue detail::imagej_roi_import_item_metadata(const ImageJRoiImportItem &v) {
-  return codec::from_json(Json{{"name", v.name}, {"data", codec::encode_base64(v.data)},
+  Json result{{"name", v.name}, {"data", codec::encode_base64(v.data)},
       {"mapping", mapping_json(v.mapping)},
-      {"native_replacement", replacement_json(v.native_replacement)}});
+      {"native_replacement", replacement_json(v.native_replacement)}};
+  if(v.native_path)result["native_path"]=true;
+  return codec::from_json(result);
 }
 std::pair<ImageJRoiImportItem, MappedImageJRoi>
-detail::admit_imagej_roi_import_metadata(const MetadataValue &v, const ImageJRoiImportLimits &l,bool allow_bare_replacement) {
+detail::admit_imagej_roi_import_metadata(const MetadataValue &v, const ImageJRoiImportLimits &l,bool allow_bare_replacement,bool allow_native_path) {
   const auto j = codec::to_json(v);
-  fields(j, {"name", "data", "mapping", "native_replacement"});
+  const bool native=j.contains("native_path");
+  if(native) {
+    require(allow_native_path,"Native path choice requires a versioned import archive");
+    fields(j, {"name", "data", "mapping", "native_replacement", "native_path"});
+    require(j.at("native_path").is_boolean() && j.at("native_path").get<bool>(),
+            "Native path choice must be canonical true");
+  } else fields(j, {"name", "data", "mapping", "native_replacement"});
   require(j.at("name").is_string() && j.at("data").is_string(),
           "Invalid ROI import entry text");
   const auto &encoded = j.at("data").get_ref<const std::string &>();
   auto data = codec::decode_base64(encoded);
   require(codec::encode_base64(data) == encoded, "Noncanonical ROI import base64");
   ImageJRoiImportItem item{j.at("name").get<std::string>(), std::move(data),
-                          read_mapping(j.at("mapping"))};
+                          read_mapping(j.at("mapping")),{},native};
   auto original=admit(item,l);
   if (!j.at("native_replacement").is_null()) {
     require(!item.mapping || allow_bare_replacement,"Native replacement and bare mapping are mutually exclusive");
@@ -368,7 +389,8 @@ MappedImageJRoi detail::imagej_roi_pairing_capture_member(
       read_mapping(codec::to_json(entry.at("mapping"))),
       replacement == entry.end()
           ? std::optional<ImageJRoiNativeReplacement>{}
-          : read_replacement(codec::to_json(replacement->second))};
+          : read_replacement(codec::to_json(replacement->second)),
+      native_choice(codec::to_json(entries.at(source_index)),true)};
   auto mapped = rebind_imagej_roi_mapping(
       admit(item, capture.limits), capture.shape,
       capture.rows[annotation_index], capture.limits.roi);
@@ -407,7 +429,7 @@ detail::imagej_roi_source_summaries(const std::optional<MetadataValue> &value,
                          (!text.empty() && text.back() == '=') -
                          (text.size() > 1 && text[text.size() - 2] == '=');
     summaries.push_back({i, decoded, name, !entry.at("mapping").is_null(),
-                         archive.at("version") == 2 &&
+                         archive.at("version") != 1 &&
                              !entry.at("native_replacement").is_null()});
   }
   return summaries;
@@ -428,7 +450,7 @@ detail::ImageJRoiPairData detail::resolve_imagej_roi_pairing_data(
   const auto rows = decode_planar_annotations(shape, annotations);
   require(annotation_index < rows.size(), "ROI annotation index out of range");
   const auto &entry = archive.at("entries").at(source_index);
-  if (sources && archive.at("version") == 2) {
+  if (sources && archive.at("version") != 1) {
     // Borrow the immutable serialized choice before allocating its native copy.
     namespace wire = detail::axis_command_record;
     const auto &source_entries =
@@ -441,9 +463,10 @@ detail::ImageJRoiPairData detail::resolve_imagej_roi_pairing_data(
       entry.at("name").get<std::string>(),
       codec::decode_base64(entry.at("data").get_ref<const std::string &>()),
       read_mapping(entry.at("mapping")),
-      archive.at("version") == 2
+      archive.at("version") != 1
           ? read_replacement(entry.at("native_replacement"))
-          : std::optional<ImageJRoiNativeReplacement>{}};
+          : std::optional<ImageJRoiNativeReplacement>{},
+      native_choice(entry,archive.at("version")==5)};
   charge_imagej_roi_import_replacement(item, limits, retained, retained_nodes);
   auto mapped = rebind_imagej_roi_mapping(admit(item, limits), shape,
                                           rows[annotation_index], limits.roi);
@@ -462,11 +485,11 @@ int detail::imagej_roi_import_archive_version(const MetadataValue &value) {
           "Unsupported ROI import provenance");
   const auto &v = object->at("version");
   if (auto n = std::get_if<std::int64_t>(&v)) {
-    require(*n == 1 || *n == 2, "Unsupported ROI import provenance");
+    require(*n == 1 || *n == 2 || *n == 5, "Unsupported ROI import provenance");
     return int(*n);
   }
   if (auto n = std::get_if<std::uint64_t>(&v)) {
-    require(*n == 1 || *n == 2, "Unsupported ROI import provenance");
+    require(*n == 1 || *n == 2 || *n == 5, "Unsupported ROI import provenance");
     return int(*n);
   }
   throw std::invalid_argument("Invalid ROI import provenance version");
@@ -520,6 +543,12 @@ detail::ImageJRoiImportData detail::resolve_imagej_roi_import_data(
     charge(codec::from_json(archive), bytes, nodes,
            limits.max_provenance_bytes);
   }
+  const bool native=std::any_of(items.begin(),items.end(),[](const auto &item){return item.native_path;});
+  if(native && archive["version"]!=5) {
+    if(archive["version"]==1)for(auto &entry:archive["entries"])entry["native_replacement"]=nullptr;
+    archive["version"]=5;bytes=nodes=0;
+    charge(codec::from_json(archive),bytes,nodes,limits.max_provenance_bytes);
+  }
   require(total <= limits.max_total_bytes - old_total,
           "ROI import aggregate input byte limit");
   require(items.size() <= limits.max_entries - archive["entries"].size(),
@@ -543,8 +572,9 @@ detail::ImageJRoiImportData detail::resolve_imagej_roi_import_data(
     Json entry = {{"name", item.name},
                   {"data", codec::encode_base64(item.data)},
                   {"mapping", mapping_json(item.mapping)}};
-    if (archive["version"] == 2)
+    if (archive["version"] != 1)
       entry["native_replacement"] = replacement_json(item.native_replacement);
+    if(item.native_path)entry["native_path"]=true;
     charge(codec::from_json(entry), bytes, nodes, limits.max_provenance_bytes);
     archive["entries"].push_back(std::move(entry));
   }
@@ -598,9 +628,10 @@ detail::imagej_roi_import_items(const MetadataValue &value,
         entry.at("name").get<std::string>(),
         codec::decode_base64(entry.at("data").get_ref<const std::string &>()),
         read_mapping(entry.at("mapping")),
-        archive.at("version") == 2
+        archive.at("version") != 1
             ? read_replacement(entry.at("native_replacement"))
-            : std::optional<ImageJRoiNativeReplacement>{}};
+            : std::optional<ImageJRoiNativeReplacement>{},
+        native_choice(entry,archive.at("version")==5)};
     charge_imagej_roi_import_replacement(item, limits, replacement_bytes,
                                          replacement_nodes);
     result.push_back(std::move(item));

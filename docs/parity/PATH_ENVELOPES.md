@@ -46,6 +46,8 @@ processing filters, continuous Boolean tools or saved native workflow intent.
 The subsequent [planar path UI integration](PLANAR_PATH_UI.md) adds shared
 desktop rendering and control-point editing for typed planar geometry. Legacy
 active/previous/saved desktop selection adapters retain their guards.
+The [native bare import integration](NATIVE_BARE_PATH_IMPORT.md) also supplies
+an explicit curve-preserving interpretation for bare ROI/ZIP members.
 Envelope qualification is recorded in `reviews/p13a-path-envelope001.json`.
 
 The pinned ImageJ reference performs 36 positive read/save roundtrips across

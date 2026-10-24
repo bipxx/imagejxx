@@ -50,7 +50,7 @@ domain preflight and desktop atomic refusal. The installed SDK consumer and
 existing regional actual-input subset recipe provide separate regression
 evidence. See [the scoped receipt](reviews/p12y-planar-path001.json).
 
-Shared desktop planar rendering/control editing and native ImageJ path mapping
-now have separate scoped evidence. Desktop path drawing, bare-file native
-import, general workflow path intent, path-enabled filters and continuous
+Shared desktop planar rendering/control editing, native ImageJ path mapping
+and [native bare imports](NATIVE_BARE_PATH_IMPORT.md) now have separate scoped
+evidence. Desktop path drawing, general workflow path intent, path-enabled filters and continuous
 Boolean/topology/resize operations remain required. No capability family is complete.

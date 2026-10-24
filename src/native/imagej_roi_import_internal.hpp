@@ -6,7 +6,8 @@ namespace imagejxx::detail {
 MetadataValue imagej_roi_import_item_metadata(const ImageJRoiImportItem &);
 std::pair<ImageJRoiImportItem, MappedImageJRoi>
 admit_imagej_roi_import_metadata(const MetadataValue &, const ImageJRoiImportLimits &,
-                                bool allow_bare_replacement = false);
+                                bool allow_bare_replacement = false,
+                                bool allow_native_path = false);
 MappedImageJRoi admit_imagej_roi_import_item(const ImageJRoiImportItem &,
                                              const ImageJRoiImportLimits &,
                                              bool allow_bare_replacement = false);

@@ -209,6 +209,19 @@ bool bare_edit(const ImageJAnnotationImportItem &i) {
 bool bare_edits(const std::vector<ImageJAnnotationImportItem> &items) {
   return std::any_of(items.begin(),items.end(),bare_edit);
 }
+bool native_paths(const std::vector<ImageJAnnotationImportItem> &items) {
+  return std::any_of(items.begin(),items.end(),[](const auto &item){
+    const auto g=std::get_if<ImageJRoiImportItem>(&item);return g && g->native_path;
+  });
+}
+int archive_version(const std::vector<ImageJAnnotationImportItem> &items) {
+  return native_paths(items)?6:bare_edits(items)?4:3;
+}
+bool native_archive(const MetadataValue &value) {
+  if(std::holds_alternative<std::monostate>(value))return false;
+  const auto version=unsigned_value(object_value(value).at("version"));
+  return version==5 || version==6;
+}
 MetadataValue
 archive_value(const std::vector<ImageJAnnotationImportItem> &items) {
   MetadataArray entries;
@@ -217,7 +230,7 @@ archive_value(const std::vector<ImageJAnnotationImportItem> &items) {
     entries.push_back(entry_value(i));
   return metadata_object(
       {{"schema", std::string("imagejxx.imagej-roi-import-sources")},
-       {"version", bare_edits(items)?4:3},
+       {"version", archive_version(items)},
        {"entries", metadata_array(std::move(entries))}});
 }
 std::vector<ImageJAnnotationImportItem>
@@ -234,7 +247,7 @@ read_archive(const std::optional<MetadataValue> &v,
   require(text_value(o.at("schema")) == "imagejxx.imagej-roi-import-sources",
           "Unsupported mixed ROI archive");
   const auto version = unsigned_value(o.at("version"));
-  if (version == 1 || version == 2) {
+  if (version == 1 || version == 2 || version == 5) {
     auto legacy = detail::imagej_roi_import_items(*v, l.batch, 0);
     std::vector<ImageJAnnotationImportItem> out;
     out.reserve(legacy.size());
@@ -242,7 +255,7 @@ read_archive(const std::optional<MetadataValue> &v,
       out.emplace_back(std::move(i));
     return out;
   }
-  require(version == 3 || version == 4, "Unsupported mixed ROI archive version");
+  require(version == 3 || version == 4 || version == 6, "Unsupported mixed ROI archive version");
   // Python/session codecs also represent an empty array as vector<string>.
   if (const auto empty =
           std::get_if<std::vector<std::string>>(&o.at("entries"));
@@ -262,14 +275,17 @@ read_archive(const std::optional<MetadataValue> &v,
     exact_fields(outer, {"kind", "source"});
     const auto &kind = text_value(outer.at("kind"));
     const auto &s = object_value(outer.at("source"));
-    exact_fields(s, {"name", "data", "mapping", "native_replacement"});
+    if(s.count("native_path")) {
+      require(version==6 && kind=="selection","Native path choice requires mixed archive V6");
+      exact_fields(s, {"name", "data", "mapping", "native_replacement", "native_path"});
+    } else exact_fields(s, {"name", "data", "mapping", "native_replacement"});
     const auto &encoded = text_value(s.at("data"));
     require(encoded.size() <= (l.batch.roi.max_bytes + 2) / 3 * 4 &&
                 encoded.size() <= (l.batch.max_total_bytes - total + 2) / 3 * 4,
             "Mixed ROI archive input limit");
     if (kind == "selection") {
       auto [item, mapped] =
-          detail::admit_imagej_roi_import_metadata(outer.at("source"), l.batch,version==4);
+          detail::admit_imagej_roi_import_metadata(outer.at("source"), l.batch,version!=3,version==6);
       wire_budget(item, total, l);
       charge_mapped(mapped, retained, retained_nodes,
                     l.batch.max_decoded_bytes);
@@ -285,7 +301,7 @@ read_archive(const std::optional<MetadataValue> &v,
       // Admit the exact transport before interpreting any native replacement.
       auto mapped = admit_display(item, l);
       if (!std::holds_alternative<std::monostate>(s.at("native_replacement"))) {
-        require(!item.mapping || version==4,
+        require(!item.mapping || version!=3,
                 "Display replacement and bare mapping are mutually exclusive");
         const auto &replacement = object_value(s.at("native_replacement"));
         const auto shape = read_shape(replacement.at("extent"));
@@ -306,7 +322,7 @@ read_archive(const std::optional<MetadataValue> &v,
     require(metadata_equal(entry_value(out.back()), e),
             "Noncanonical mixed ROI archive entry");
   }
-  require(version==(bare_edits(out)?4u:3u),"Noncanonical mixed archive version");
+  require(version==unsigned(archive_version(out)),"Noncanonical mixed archive version");
   return out;
 }
 struct Applied {
@@ -399,7 +415,7 @@ Applied apply(DatasetShape shape, const MetadataValue &before,
           std::move(display_annotations),
           metadata_object(
               {{"schema", std::string("imagejxx.imagej-roi-import-sources")},
-               {"version", bare_edits(historical)||bare_edits(items)?4:3},
+               {"version", native_paths(historical)||native_paths(items)?6:bare_edits(historical)||bare_edits(items)?4:3},
                {"entries", metadata_array(std::move(entries))}})};
 }
 MetadataValue limits_value(const ImageJAnnotationImportLimits &l) {
@@ -437,7 +453,7 @@ Decoded decode(const MetadataObject &r) {
                    "after_sources", "destination"});
   require(text_value(r.at("schema")) ==
                   "imagejxx.imagej-annotation-import-command" &&
-              unsigned_value(r.at("version")) == 1 &&
+              (unsigned_value(r.at("version")) == 1 || unsigned_value(r.at("version")) == 2) &&
               text_value(r.at("destination")) == "in_place",
           "Unsupported mixed ROI import command");
   auto source = read_source(object_value(r.at("source")));
@@ -449,6 +465,8 @@ Decoded decode(const MetadataObject &r) {
   std::optional<MetadataValue> sources;
   if (!std::holds_alternative<std::monostate>(r.at("before_sources")))
     sources = r.at("before_sources");
+  const auto expected_version=native_archive(r.at("before_sources")) || native_archive(r.at("after_sources"))?2u:1u;
+  require(unsigned_value(r.at("version"))==expected_version,"Noncanonical mixed import command version");
   auto prior = read_archive(sources, l);
   auto after = read_archive(r.at("after_sources"), l);
   const auto start = m == ImageJRoiImportMode::Append ? prior.size() : 0;
@@ -510,7 +528,7 @@ ResolvedImageJAnnotationImport resolve_imagej_annotation_import(
   auto data = apply(shape, before, display, sources, items, mode, l);
   MetadataObject record{
       {"schema", std::string("imagejxx.imagej-annotation-import-command")},
-      {"version", 1},
+      {"version", (sources && native_archive(*sources)) || native_archive(data.provenance)?2:1},
       {"source", metadata_object(source_record(source_metadata(source)))},
       {"mode", std::string(mode_name(mode))},
       {"limits", limits_value(l)},

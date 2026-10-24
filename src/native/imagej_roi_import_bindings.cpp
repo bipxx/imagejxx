@@ -75,17 +75,19 @@ void bind_imagej_roi_import(py::module_ &m) {
               [](std::string name, py::bytes data,
                  std::optional<ImageJRoiPlaneMapping> mapping,
                    std::optional<ImageJRoiNativeReplacement> native_replacement,
-                   py::handle max_input_bytes) {
+                   py::handle max_input_bytes, bool native_path) {
                   const auto cap=integer(max_input_bytes);
                   if(!cap || cap>64*1024*1024)throw py::value_error("ROI input ownership cap must be1..64MiB");
                 return ImageJRoiImportItem{
                       std::move(name), bytes(data, cap),
-                    std::move(mapping), std::move(native_replacement)};
+                    std::move(mapping), std::move(native_replacement),native_path};
               }),
           py::arg("name"), py::arg("data"), py::arg("mapping") = py::none(),
             py::arg("native_replacement") = py::none(),
-            py::arg("max_input_bytes") = ImageJRoiLimits{}.max_bytes)
+            py::arg("max_input_bytes") = ImageJRoiLimits{}.max_bytes,
+            py::arg("native_path") = false)
       .def_readonly("name", &ImageJRoiImportItem::name)
+      .def_readonly("native_path", &ImageJRoiImportItem::native_path)
       .def_property_readonly(
           "data",
           [](const ImageJRoiImportItem &v) {

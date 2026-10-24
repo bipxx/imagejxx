@@ -48,6 +48,11 @@ ImageJRoiImportLimits read_limits(const MetadataObject &v) {
   l.roi.max_image_pixels = size("roi_max_image_pixels");
   return l;
 }
+unsigned command_version(const MetadataValue &after,const std::optional<MetadataValue> &before) {
+  const auto a=detail::imagej_roi_import_archive_version(after);
+  const auto b=before?detail::imagej_roi_import_archive_version(*before):1;
+  return a==5 || b==5 ? 3u : a==2 || b==2 ? 2u : 1u;
+}
 struct Decoded {
   SourceRecord source;
   std::vector<ImageJRoiImportItem> items;
@@ -63,7 +68,7 @@ Decoded decode(const MetadataObject &record) {
                 "before_sources", "after", "after_sources", "destination"});
   const auto version = unsigned_value(record.at("version"));
   if (text_value(record.at("schema")) != "imagejxx.imagej-roi-import-command" ||
-      (version != 1 && version != 2) ||
+      (version != 1 && version != 2 && version != 3) ||
       text_value(record.at("destination")) != "in_place")
     throw std::invalid_argument("Unsupported ROI import command");
   auto source = read_source(object_value(record.at("source")));
@@ -92,13 +97,7 @@ Decoded decode(const MetadataObject &record) {
                                                limits, start);
   auto expected = detail::resolve_imagej_roi_import_data(
       source.shape, record.at("before"), before_sources, items, mode, limits);
-  const auto expected_version =
-      detail::imagej_roi_import_archive_version(record.at("after_sources")) ==
-                  2 ||
-              (before_sources &&
-               detail::imagej_roi_import_archive_version(*before_sources) == 2)
-          ? 2u
-          : 1u;
+  const auto expected_version = command_version(record.at("after_sources"),before_sources);
   if (version != expected_version)
     throw std::invalid_argument("Noncanonical ROI import command version");
   (void)decode_planar_annotations(source.shape, record.at("after"));
@@ -128,11 +127,7 @@ MetadataObject detail::imagej_roi_import_record(
     const MetadataValue &after, const MetadataValue &after_sources) {
   MetadataObject record{
       {"schema", std::string("imagejxx.imagej-roi-import-command")},
-      {"version", imagej_roi_import_archive_version(after_sources) == 2 ||
-                          (before_sources && imagej_roi_import_archive_version(
-                                                 *before_sources) == 2)
-                      ? 2
-                      : 1},
+      {"version", int(command_version(after_sources,before_sources))},
       {"source", metadata_object(source_record(source_metadata(source)))},
       {"mode", std::string(mode_name(mode))},
       {"limits", metadata_object(encode_limits(limits))},

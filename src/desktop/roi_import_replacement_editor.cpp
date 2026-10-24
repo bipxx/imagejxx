@@ -1,5 +1,6 @@
 #include "roi_import_replacement_editor.hpp"
 #include "geometry_number.hpp"
+#include "path_visual.hpp"
 #include <cmath>
 #include <charconv>
 #include <imagejxx/roi_style.hpp>
@@ -42,17 +43,22 @@ void RoiImportReplacementEditor::seed(const PlanarAnnotation &row) {
   }
 }
 void RoiImportReplacementEditor::load_vertex() {
-  if (vertex_ > 0 && std::size_t(vertex_) <= base_.selection.points.size())
+  const auto controls=planarControlPoints(base_.selection);
+  if (vertex_ > 0 && std::size_t(vertex_) <= controls.size())
     for (int i = 0; i < 2; ++i)
-      point_[i] = geometry_number_text(base_.selection.points[vertex_ - 1][i]);
+      point_[i] = geometry_number_text(controls[vertex_ - 1][i]);
   point_dirty_ = false;
 }
 Selection RoiImportReplacementEditor::vertex_geometry() const {
-  if (vertex_ < 1 || std::size_t(vertex_) > base_.selection.points.size())
+  if (vertex_ < 1 || std::size_t(vertex_) > planarControlPoints(base_.selection).size())
     throw std::invalid_argument("Choose a valid vertex");
   auto geometry = base_.selection;
-  geometry.points[vertex_ - 1] = {parse_geometry_number(point_[0]),
-                                  parse_geometry_number(point_[1])};
+  const std::array<double,2> point{parse_geometry_number(point_[0]),parse_geometry_number(point_[1])};
+  if(geometry.is_path()) {
+    const auto dims=planar_annotation_geometry(recorded_,Plane(plane_));
+    return SelectionEditor(geometry,dims.width,dims.height).moved_vertex(std::size_t(vertex_-1),point);
+  }
+  geometry.points[vertex_ - 1] = point;
   return geometry;
 }
 void RoiImportReplacementEditor::change_geometry(int kind,
@@ -256,10 +262,10 @@ int RoiImportReplacementEditor::draw(
     geometry_dirty_ |= text("Angle", box_[4], "angle", 80);
     if (base_.selection.is_rounded_box())
       text("Corner diameter", corner_diameter_, "corner_diameter");
-  } else if (base_.selection.kind != "mask" &&
-             !base_.selection.points.empty()) {
-    ImGui::Text("%s: %zu vertices", base_.selection.kind.c_str(),
-                base_.selection.points.size());
+  } else if (base_.selection.is_path() || (base_.selection.kind != "mask" &&
+             !base_.selection.points.empty())) {
+    ImGui::Text("%s: %zu endpoints/control points", base_.selection.kind.c_str(),
+                planarControlPoints(base_.selection).size());
     ImGui::SetNextItemWidth(80);
     int next = vertex_;
     const auto id = ImGui::GetID("Vertex (1-based)");
@@ -358,6 +364,6 @@ Json RoiImportReplacementEditor::diagnostics() const {
           {"slice", slice_},
           {"kind", base_.selection.kind},
           {"corner_diameter", corner_diameter_},
-          {"vertices", base_.selection.points.size()}};
+          {"vertices", planarControlPoints(base_.selection).size()}};
 }
 } // namespace imagejxx::desktop

@@ -445,9 +445,9 @@ struct RoiImportPanel::State {
       return false;
     const auto &v = object->at("version");
     if (auto n = std::get_if<std::int64_t>(&v))
-      return *n == 3 || *n == 4;
+      return *n == 3 || *n == 4 || *n == 6;
     if (auto n = std::get_if<std::uint64_t>(&v))
-      return *n == 3 || *n == 4;
+      return *n == 3 || *n == 4 || *n == 6;
     return false;
   }
   static std::vector<ImageJAnnotationImportItem> typed_request(const std::vector<Entry> &entries,const DocumentSnapshot &source,bool original,bool destination_confirmed) {
@@ -820,14 +820,16 @@ void RoiImportPanel::draw(
       auto &e = s.entries.at(std::size_t(s.selected));
       if (e.display)
         ImGui::Text("Type: %s annotation", e.is_text ? "text" : "image");
-      int format = e.envelope ? 1 : 0;
+      int format = e.envelope ? 1 : e.item.native_path ? 2 : 0;
       const char *formats[]{"Standard ImageJ ROI",
-                            "Native envelope (stored mapping)"};
+                            "Native envelope (stored mapping)",
+                            "Composite ROI (preserve curves)"};
       ImGui::BeginDisabled(
           bool(e.item.native_replacement) || bool(e.replacement) ||
           bool(e.display_original_replacement) || bool(e.display_replacement));
-      if (s.combo("Interpretation", format, formats, 2, "format", !running)) {
+      if (s.combo("Interpretation", format, formats, e.display?2:3, "format", !running)) {
         e.envelope = format == 1;
+        e.item.native_path = format == 2;
         s.invalidate();
       }
       ImGui::EndDisabled();
@@ -1147,7 +1149,7 @@ Json RoiImportPanel::diagnostics() const {
   Json entries = Json::array(), review = Json::array();
   for (const auto &e : s.entries)
     entries.push_back({{"name", e.item.name},
-                       {"envelope", e.envelope},{"native_edit",e.has_edit()},{"mapping_frozen",bool(e.edited_mapping)},{"source_extent",e.edited_mapping?Json(e.edited_mapping->extent.dimensions()):Json(nullptr)},
+                       {"envelope", e.envelope},{"native_path",e.item.native_path},{"native_edit",e.has_edit()},{"mapping_frozen",bool(e.edited_mapping)},{"source_extent",e.edited_mapping?Json(e.edited_mapping->extent.dimensions()):Json(nullptr)},
                        {"plane", e.plane},
                        {"explicit_slice", e.explicit_slice},
                        {"slice", e.slice},

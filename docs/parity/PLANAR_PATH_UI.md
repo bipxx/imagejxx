@@ -30,19 +30,21 @@ culling, resource refusal and import-preview construction. These checks are
 headless input/render evidence; they do not establish OS window, GPU backend
 or general visual parity. See [the receipt](reviews/p13b-planar-path-ui001.json).
 
+The subsequent [native bare import integration](NATIVE_BARE_PATH_IMPORT.md)
+adds explicit per-member composite decoding to the import queue, with source
+mapping, previews and provenance retained through both UI hosts.
+
 Remaining integration work, in dependency order:
 
-1. Add explicit native decoding to the bare-file ROI import queue, with source
-   mapping, previews and provenance preserved through both UI hosts.
-2. Add versioned native workflow intent for planar paths and saved native ROI
+1. Add versioned native workflow intent for planar paths and saved native ROI
    edits, including strict replay/rebind and atomic batch behavior.
-3. Integrate active/previous/saved native selections into the desktop controller,
+2. Integrate active/previous/saved native selections into the desktop controller,
    replacing legacy adapter guards with typed commands and renderer support.
-4. Implement path creation, segment insertion/deletion and resize tools using
+3. Implement path creation, segment insertion/deletion and resize tools using
    shared native geometry operations, then expose them in both UI hosts.
-5. Connect path selections to processing/filter commands with explicit raster
+4. Connect path selections to processing/filter commands with explicit raster
    consumption, target admission, cancellation and history accounting.
-6. Implement continuous Boolean tools and complete family-level parity checks.
+5. Implement continuous Boolean tools and complete family-level parity checks.
 
 Each step needs C++ core, installed Python and actual shared-ImGui evidence.
 The original 99 capability requirements remain unchanged; this packet does

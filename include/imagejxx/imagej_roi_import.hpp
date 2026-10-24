@@ -20,6 +20,9 @@ struct ImageJRoiImportItem {
   // API also accepts an explicitly mapped bare source plus this edited native
   // row, retaining both independently in source archive V4. Never inferred.
   std::optional<ImageJRoiNativeReplacement> native_replacement;
+  // Explicit bare composite-only decoding; retains curves without a mask.
+  // Requires a mapping. Envelopes and non-composite records refuse this mode.
+  bool native_path = false;
 };
 struct ImageJRoiImportLimits {
   ImageJRoiLimits roi;

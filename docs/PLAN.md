@@ -1,5 +1,24 @@
 # ImageJ and Fiji gap closure plan
 
+**Native bare composite import, 2026-10-23 (scoped integration):**
+C++/Python import items now carry an explicit curve-preserving decode choice.
+Versioned source archives and command equations retain original bytes, mapping
+and native source geometry through inspection, pairing, replay and history.
+Both ImGui hosts expose per-member XYZ interpretation and native replacement
+control editing without flattening stored curves. Windows/Linux each pass
+2,341 installed Python checks (40 new, plus eight existing import UI checks),
+twelve native groups and a 15-check installed SDK client with a throwing source.
+All previous 2,293 focused IDs remain. Actual standalone/Python runs cover
+new native imports and existing import/path UI recipes on both hosts.
+Cleanup removed 794,313,443 logical temporary bytes after retaining captures,
+sessions and final products. No dependency or restricted feature is added.
+Original requirements and historical verification records remain unchanged;
+the historical Auto producer fingerprint gate remains open. Next implement
+typed planar/saved-path workflow intent, then active/saved desktop tools,
+creation/topology/resize, filters and continuous Boolean operations. See
+[the contract](parity/NATIVE_BARE_PATH_IMPORT.md) and
+[qualification receipt](parity/reviews/p13c-native-bare-import001.json).
+
 **Planar path ImGui viewing/editing, 2026-10-23 (scoped integration):**
 Both desktop launch modes render continuous paths on XY/XZ/YZ and edit
 endpoints/control points through actual dragging and binary64 numeric fields.
