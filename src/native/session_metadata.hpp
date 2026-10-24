@@ -41,7 +41,8 @@ std::vector<unsigned char> decode_base64(const std::string &data);
 Selection selection_from_json(const Json &value);
 Json selection_to_json(const Selection &value);
 SpatialCalibration calibration_from_json(const Json &value);
-Json wire_metadata(const ScalarRecord &data);
+// Explicit native-path bridge for desktop State projections; legacy callers stay closed.
+Json wire_metadata(const ScalarRecord &data, bool allow_paths = false);
 Json view_json(const DisplayState &value);
 DisplayState parse_view(const Json &parameters, DisplayState view,
                         int width, int height, int plane_count, int slice_index);
@@ -52,7 +53,7 @@ DisplayState parse_view(const Json &parameters, DisplayState view,
 // keys. Geometry is validated against descriptors without allocating a raster.
 std::string session_wire_metadata_json(const std::string &metadata_json,
                                       const std::string &scalar_wire_json,
-                                      int width, int height, int plane_count);
+                                      int width, int height, int plane_count, bool allow_paths = false);
 
 // Strict scalar-only first-load inference. Positive int32 plane count is the
 // only image descriptor needed. Pixel/spectrum transport fields are forbidden.

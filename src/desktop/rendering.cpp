@@ -1,4 +1,5 @@
 #include "rendering.hpp"
+#include "path_visual.hpp"
 #include "../native/kernel_control.hpp"
 #include "../native/manual_threshold_display_internal.hpp"
 #include "channel_display_sources.hpp"
@@ -61,6 +62,7 @@ RoiVisual roiVisual(const Json &json, int width, int height,
                     RoiColor fallback) {
   const auto selection = selectionFromJson(json);
   selection.validate(width, height);
+  if(selection.is_path())return pathVisual(selection,width,height,{1,1},128ULL*1024*1024,fallback);
   RoiVisual result;
   result.style = resolve_roi_style(selection, fallback);
   result.area = selection_is_area(selection);

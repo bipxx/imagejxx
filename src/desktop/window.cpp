@@ -1,4 +1,5 @@
 #include "window.hpp"
+#include "path_visual.hpp"
 #include <imagejxx/playback.hpp>
 #include "shadow_demo.hpp"
 #include "legacy_target_resources.hpp"
@@ -919,6 +920,7 @@ struct Window::Impl {
     int outlineT = -1, outlineC = -1;
     std::map<const Json *, std::vector<Rect>> maskOutlines;
     std::map<const Json *, RoiVisual> roiVisuals;
+    std::size_t roiVisualCap=0;
     Json transientStyle;
     RoiColor transientFallback{};
     std::array<int, 2> transientShape{};
@@ -2664,11 +2666,11 @@ struct Window::Impl {
         if (delta[0] || delta[1]) {
           if (savedRoiVertex) {
             observed["phase"] = "nudged_vertex";
-            auto target = selection.points.at(*savedRoiVertex);
+            auto target = selectionControlPoint(selection,*savedRoiVertex);
             target[0] += delta[0]; target[1] += delta[1];
             applySavedRoiNumeric(editor.moved_vertex(*savedRoiVertex, target, limits));
           } else { observed["phase"] = "nudged"; applySavedRoiNumeric(editor.moved(delta, true, limits)); }
-        } else if (remove && savedRoiVertex) {
+        } else if (remove && savedRoiVertex && !selection.is_path()) {
           observed["phase"] = "removed_vertex";
           applySavedRoiNumeric(editor.removed_vertex(*savedRoiVertex, limits));
         }
@@ -5864,7 +5866,10 @@ Json Window::publishSavedRoiGeometry(
   // Native consumption performs the final owner/activation/Data/row/TCZ and
   // optional Pointer Display guard atomically. All frontend values and array
   // capacity already exist; no callback/allocation follows changed publication.
-  const auto publication = controller_->publish_saved_roi_geometry(prepared);
+  SavedRoiGeometryPublication publication{};
+  if(command.replacement().is_path())
+    documentById(capture.document_id())->publishNativePaths([&]{publication=controller_->publish_saved_roi_geometry(prepared);});
+  else publication=controller_->publish_saved_roi_geometry(prepared);
   if (publication.changed) {
     outputs.publish();
     impl->roiManagerSource.swap(managerSource);
@@ -9189,7 +9194,9 @@ void Window::Impl::tools() {
     observeControl("selection_creation.rebind.cancel");
   }
   if (tool == "edit_roi") {
-    ImGui::TextWrapped(
+    const bool path=!owner.documents_.empty() && doc()->nativeSnapshot().data().selection && doc()->nativeSnapshot().data().selection->is_path();
+    if(path)ImGui::TextWrapped("Drag inside to move; drag endpoints and curve controls. Shift constrains movement. Arrows nudge (Shift: 10 pixels). Escape cancels a drag.");
+    else ImGui::TextWrapped(
         "Drag inside to move; drag handles to resize or edit vertices. Shift "
         "constrains movement/aspect; Ctrl resizes from center. Alt-click "
         "inserts a vertex; Delete removes the active vertex. Arrows nudge "
@@ -10090,30 +10097,44 @@ void Window::Impl::plots() {
 void Window::Impl::geometry(const Json &o, Pane &pane, ImU32 tint, bool cache,
                             const char *role) {
   auto draw = ImGui::GetWindowDrawList();
-  if (o.contains(roi_style_attribute)) {
+  const bool nativePath=get(o,"kind")=="path";
+  if (o.contains(roi_style_attribute) || nativePath) {
     const auto rgba = ImGui::ColorConvertU32ToFloat4(tint);
     const RoiColor fallback{static_cast<unsigned char>(rgba.x * 255 + .5f),
                             static_cast<unsigned char>(rgba.y * 255 + .5f),
                             static_cast<unsigned char>(rgba.z * 255 + .5f),
                             static_cast<unsigned char>(rgba.w * 255 + .5f)};
+    if(nativePath && pane.roiVisualCap!=rgbCap()){pane.roiVisuals.clear();pane.transientVisual.reset();pane.roiVisualCap=rgbCap();}
     auto found = pane.roiVisuals.find(&o);
+    const std::array<float,2> pathScale{pane.zoom,pane.zoom*pane.aspectY};
+    auto buildVisual=[&](int width,int height,const RoiVisual *replaced=nullptr) {
+      if(!nativePath)return roiVisual(o,width,height,fallback);
+      const auto cap=rgbCap();std::size_t retained=0;
+      auto charge=[&](const RoiVisual &v){if(&v==replaced)return;const auto n=pathVisualBytes(v);if(n>cap-retained)throw std::invalid_argument("Root path visuals exceed processing memory");retained+=n;};
+      for(const auto &[key,v]:pane.roiVisuals)charge(v);
+      if(pane.transientVisual)charge(*pane.transientVisual);
+      return pathVisual(selectionFromJson(o),width,height,pathScale,cap-retained,fallback);
+    };
     if (!cache) {
       const std::array<int, 2> shape{pane.doc->shape().x,
                                      pane.doc->shape().y};
       if (!pane.transientVisual || pane.transientStyle != o ||
-          pane.transientShape != shape || pane.transientFallback != fallback) {
-        pane.transientVisual = roiVisual(o, shape[0], shape[1], fallback);
+          pane.transientShape != shape || pane.transientFallback != fallback ||
+          (nativePath && (pane.transientVisual->screenKey[2]!=pathScale[0] || pane.transientVisual->screenKey[3]!=pathScale[1]))) {
+        auto next=buildVisual(shape[0],shape[1],pane.transientVisual?&*pane.transientVisual:nullptr);
+        next.screenKey[2]=pathScale[0];next.screenKey[3]=pathScale[1];
+        pane.transientVisual = std::move(next);
         pane.transientOutline.reset();
         pane.transientStyle = o;
         pane.transientShape = shape;
         pane.transientFallback = fallback;
         ++maskOutlineBuilds;
       }
-    } else if (found == pane.roiVisuals.end()) {
-      found = pane.roiVisuals
-                  .emplace(&o, roiVisual(o, pane.doc->shape().x,
-                                         pane.doc->shape().y, fallback))
-                  .first;
+    } else if (found == pane.roiVisuals.end() || (nativePath &&
+        (found->second.screenKey[2]!=pathScale[0] || found->second.screenKey[3]!=pathScale[1]))) {
+      auto next=buildVisual(pane.doc->shape().x,pane.doc->shape().y,found==pane.roiVisuals.end()?nullptr:&found->second);
+      next.screenKey[2]=pathScale[0];next.screenKey[3]=pathScale[1];
+      found=pane.roiVisuals.insert_or_assign(&o,std::move(next)).first;
       ++maskOutlineBuilds;
     }
     const auto &visual = cache ? found->second : *pane.transientVisual;
@@ -10424,7 +10445,7 @@ void Window::Impl::canvas(Pane &pane) {
     if (!preserveVertex || !pane.selectionEditor ||
         (pane.selectionVertex &&
          *pane.selectionVertex >=
-             pane.selectionEditor->selection().points.size()))
+             selectionControlPointCount(pane.selectionEditor->selection())))
       pane.selectionVertex.reset();
   };
   if (!pane.selectionSource ||
@@ -10755,7 +10776,7 @@ void Window::Impl::canvas(Pane &pane) {
             auto target = position;
             if (io.KeyShift) {
               const auto original =
-                  editor.selection().points[gesture.handle.index];
+                  selectionControlPoint(editor.selection(),gesture.handle.index);
               if (std::abs(target[0] - original[0]) >=
                   std::abs((target[1] - original[1]) * pane.aspectY))
                 target[1] = original[1];
@@ -10796,7 +10817,7 @@ void Window::Impl::canvas(Pane &pane) {
       if (delta[0] || delta[1]) {
         if (pane.selectionVertex) {
           auto p =
-              pane.selectionEditor->selection().points[*pane.selectionVertex];
+              selectionControlPoint(pane.selectionEditor->selection(),*pane.selectionVertex);
           p[0] += delta[0];
           p[1] += delta[1];
           commitSelection(
@@ -10806,7 +10827,7 @@ void Window::Impl::canvas(Pane &pane) {
           commitSelection(pane.selectionEditor->moved(delta, true),
                           *pane.selectionSource);
       }
-      if (pressed(ImGuiKey_Delete) && pane.selectionVertex) {
+      if (pressed(ImGuiKey_Delete) && pane.selectionVertex && !pane.selectionEditor->selection().is_path()) {
         auto changed =
             pane.selectionEditor->removed_vertex(*pane.selectionVertex);
         commitSelection(changed, *pane.selectionSource);

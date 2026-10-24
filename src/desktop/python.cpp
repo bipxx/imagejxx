@@ -18,6 +18,7 @@
 #include "planar_annotation_matrix.hpp"
 #include "planar_annotation_ui_probe.hpp"
 #include "planar_path_ui_probe.hpp"
+#include "root_path_ui_probe.hpp"
 #include "native_bare_import_ui_probe.hpp"
 #include "rank_runtime_probe.hpp"
 #include "rank_ui_probe.hpp"
@@ -397,6 +398,11 @@ PYBIND11_MODULE(_desktop, m) {
       .def("_native_bare_import_ui_case",
            [](Window &editor,const std::string &directory) {
              return nativeBareImportUiCase(editor,"imgui_python",directory).dump();
+           })
+      .def("_root_path_ui_case",
+           [](Window &window,const std::string &mode,const std::string &directory) {
+             py::gil_scoped_release release;
+             return rootPathUiCase(window,mode,"imgui_python",directory).dump();
            })
       .def("_annotation_workflow_ui_case",
            [](Window &window,const std::string &directory) {

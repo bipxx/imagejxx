@@ -1085,7 +1085,7 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     src/desktop/saved_roi_edit.cpp
     src/desktop/saved_roi_geometry_ui_probe.cpp
     src/desktop/saved_roi_geometry_dependencies.cpp
-    src/desktop/gaussian_panel.cpp src/desktop/rank_panel.cpp src/desktop/operation_target_panel.cpp src/desktop/gaussian_jobs.cpp src/desktop/threshold_panel.cpp src/desktop/histogram_panel.cpp src/desktop/histogram_ui_probe.cpp src/desktop/histogram_defaults_ui_probe.cpp src/desktop/histogram_recorder_ui_probe.cpp src/desktop/histogram_async_ui_probe.cpp src/desktop/target_histogram_ui_probe.cpp src/desktop/manual_threshold_ui_probe.cpp src/desktop/z_subset_ui_probe.cpp src/desktop/axis_spacing_ui_probe.cpp src/desktop/slicer_resize_ui_probe.cpp src/desktop/path_visual.cpp src/desktop/planar_path_ui_probe.cpp src/desktop/annotation_workflow_ui_probe.cpp src/desktop/native_bare_import_ui_probe.cpp src/desktop/planar_annotation_panel.cpp src/desktop/planar_annotation_ui_probe.cpp src/desktop/planar_annotation_rebind.cpp src/desktop/planar_annotation_matrix.cpp
+    src/desktop/gaussian_panel.cpp src/desktop/rank_panel.cpp src/desktop/operation_target_panel.cpp src/desktop/gaussian_jobs.cpp src/desktop/threshold_panel.cpp src/desktop/histogram_panel.cpp src/desktop/histogram_ui_probe.cpp src/desktop/histogram_defaults_ui_probe.cpp src/desktop/histogram_recorder_ui_probe.cpp src/desktop/histogram_async_ui_probe.cpp src/desktop/target_histogram_ui_probe.cpp src/desktop/manual_threshold_ui_probe.cpp src/desktop/z_subset_ui_probe.cpp src/desktop/axis_spacing_ui_probe.cpp src/desktop/slicer_resize_ui_probe.cpp src/desktop/path_visual.cpp src/desktop/planar_path_ui_probe.cpp src/desktop/annotation_workflow_ui_probe.cpp src/desktop/root_path_ui_probe.cpp src/desktop/native_bare_import_ui_probe.cpp src/desktop/planar_annotation_panel.cpp src/desktop/planar_annotation_ui_probe.cpp src/desktop/planar_annotation_rebind.cpp src/desktop/planar_annotation_matrix.cpp
     src/desktop/native_workflow_batch_ui_probe.cpp
     src/desktop/native_workflow_ui_probe.cpp
     src/desktop/histogram_workflow_ui_probe.cpp
@@ -1307,6 +1307,9 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     target_include_directories(test_ieee_saved_geometry_host PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/desktop)
     target_link_libraries(test_ieee_saved_geometry_host PRIVATE imagejxx_desktop)
     add_test(NAME desktop_ieee_saved_geometry COMMAND test_ieee_saved_geometry_host)
+    add_executable(imagejxx_desktop_root_path_tests tests/native/test_desktop_root_paths.cpp)
+    target_link_libraries(imagejxx_desktop_root_path_tests PRIVATE imagejxx_desktop)
+    add_test(NAME desktop_root_paths COMMAND imagejxx_desktop_root_path_tests)
     add_executable(test_saved_roi_geometry_host tests/native/test_saved_roi_geometry_host.cpp)
     add_executable(test_planar_annotation_host tests/native/test_planar_annotation_host.cpp)
     target_link_libraries(test_planar_annotation_host PRIVATE imagejxx_desktop)

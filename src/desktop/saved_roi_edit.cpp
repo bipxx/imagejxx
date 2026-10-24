@@ -1,4 +1,5 @@
 #include "saved_roi_edit.hpp"
+#include "path_visual.hpp"
 #include <algorithm>
 #include <cmath>
 
@@ -114,8 +115,8 @@ void SavedRoiEdit::begin_pointer(
         (!selection.box_frame() || hit.index >= 8))
       throw std::invalid_argument("Invalid saved area resize handle");
     if (hit.kind == SelectionHandleKind::Vertex &&
-        ((selection.kind != "polygon" && selection.kind != "freehand") ||
-         hit.index >= selection.points.size()))
+        ((!selection.is_path() && selection.kind != "polygon" && selection.kind != "freehand") ||
+         hit.index >= selectionControlPointCount(selection)))
       throw std::invalid_argument("Invalid saved area vertex handle");
     if (hit.kind != SelectionHandleKind::Move && hit.kind != SelectionHandleKind::Resize &&
         hit.kind != SelectionHandleKind::Vertex && hit.kind != SelectionHandleKind::Rotate)
@@ -164,7 +165,7 @@ void SavedRoiEdit::update_pointer(
     } else {
       auto target = point;
       if (modifiers.shift) {
-        const auto original = editor.selection().points[next->hit.index];
+        const auto original = selectionControlPoint(editor.selection(),next->hit.index);
         if (std::abs(target[0] - original[0]) >= std::abs((target[1] - original[1]) * aspect))
           target[1] = original[1];
         else target[0] = original[0];

@@ -816,7 +816,10 @@ Json v2_display_keys(const Json &item) {
   return result;
 }
 std::shared_ptr<Document> decode_v2_document(const Json &item, const Json *marked,
-                                           const SessionLimits &limits,bool allow_regions=false) {
+                                           const SessionLimits &limits,bool allow_regions=false,bool allow_paths=false) {
+  auto geometry=[&](const Json &value) {
+    return allow_paths && field(value,"kind")=="path" ? detail::selection_codec::decode_selection(value,limits,true,true) : scalar::selection_from_json(value);
+  };
   const auto shape = v2_shape(item);
   const auto type = pixel_type(field(item, "dtype"));
   if (item.contains("pixel_sample_policy") &&
@@ -841,7 +844,7 @@ std::shared_ptr<Document> decode_v2_document(const Json &item, const Json *marke
     declared = metadata(marked->at("metadata"));
     const auto projected = validate_wire_state([&] {
       return scalar::session_wire_metadata_json(
-          marked->at("metadata").dump(), wire.dump(), shape.x, shape.y, shape.z);
+          marked->at("metadata").dump(), wire.dump(), shape.x, shape.y, shape.z, allow_paths);
     });
     if (projected != wire.dump()) fail("Native legacy metadata contradicts serialized document");
   } else {
@@ -869,7 +872,7 @@ std::shared_ptr<Document> decode_v2_document(const Json &item, const Json *marke
   for (const auto *key : {"selection", "previous_selection"}) {
     const auto &value = field(merged, key);
     if (!value.empty()) {
-      auto decoded = scalar::selection_from_json(value);
+      auto decoded = geometry(value);
       if (std::string_view(key) == "selection") data.selection = std::move(decoded);
       else data.previous_selection = std::move(decoded);
     }
@@ -881,7 +884,7 @@ std::shared_ptr<Document> decode_v2_document(const Json &item, const Json *marke
     auto attrs = item_roi;
     for (const auto *key : {"name", "selection", "slice_index"}) attrs.erase(key);
     data.rois.push_back({field(item_roi, "name").is_null() ? "" : text(item_roi.at("name")),
-        scalar::selection_from_json(field(item_roi, "selection")), {}, {},
+        geometry(field(item_roi, "selection")), {}, {},
         optional_index(field(item_roi, "slice_index")), scalar::object_from_json(attrs)});
   }
   const auto &legacy_overlays = field(merged, "overlays");
@@ -1052,7 +1055,7 @@ std::vector<unsigned char> encode_session(const SessionCapture &capture,
   throw std::invalid_argument(error.what());
 }
 static DecodedSession decode_session_impl(const std::vector<unsigned char> &bytes,
-    const SessionLimits &limits, const ExecutionControl &control,bool allow_legacy_regions) try {
+    const SessionLimits &limits, const ExecutionControl &control,bool allow_legacy_regions,bool allow_legacy_paths=false) try {
   limits_valid(limits);
   within(bytes.size(), limits.max_encoded_bytes, "Encoded session byte limit exceeded");
   ExecutionScope scope(control);
@@ -1122,7 +1125,7 @@ static DecodedSession decode_session_impl(const std::vector<unsigned char> &byte
   for (std::size_t i = 0; i < documents.size(); ++i) {
     kernel_checkpoint();
     result.documents.push_back(version >= 3 ? decode_v3_document(documents[i], limits,version>=4,version==5) :
-        decode_v2_document(documents[i], marker ? &(*marker)[i] : nullptr, limits,allow_legacy_regions));
+        decode_v2_document(documents[i], marker ? &(*marker)[i] : nullptr, limits,allow_legacy_regions,allow_legacy_paths));
   }
   if(version==5 && !std::any_of(result.documents.begin(),result.documents.end(),
       [](const auto &document){return has_paths(document->snapshot().data());}))
@@ -1147,8 +1150,17 @@ std::vector<unsigned char> upgrade_regional_legacy_session(const std::vector<uns
   if(capture_version(capture)!=4)fail("Regional facade upgrade requires regional geometry");
   return encode_session(capture,limits);
 }
+std::vector<unsigned char> upgrade_path_legacy_session(const std::vector<unsigned char> &bytes,const SessionLimits &limits) {
+  if(bytes.size()<v2_header || !std::equal(v2_magic,v2_magic+10,bytes.begin()))
+    fail("Native path facade upgrade requires a legacy transport container");
+  auto decoded=decode_session_impl(bytes,limits,{},true,true);
+  SessionCapture capture;capture.results=std::move(decoded.results);capture.workflow=std::move(decoded.workflow);capture.extensions=std::move(decoded.extensions);
+  for(const auto &owner:decoded.documents)capture.documents.push_back(owner->snapshot());
+  if(capture_version(capture)!=5)fail("Native path facade upgrade requires path geometry");
+  return encode_session(capture,limits);
+}
 std::string session_legacy_record_json(const DocumentSnapshot &snapshot,
-                                       const SessionLimits &limits) try {
+                                       const SessionLimits &limits,bool allow_paths) try {
   const auto &data = snapshot.data();
   const auto shape = data.dataset.shape();
   if (shape.t != 1 || shape.c != 1 || snapshot.display().t || snapshot.display().c)
@@ -1212,7 +1224,7 @@ std::string session_legacy_record_json(const DocumentSnapshot &snapshot,
   record.previous_selection = data.previous_selection;
   record.rois = data.rois;
   record.overlays = data.overlays;
-  auto wire = scalar::wire_metadata(record);
+  auto wire = scalar::wire_metadata(record,allow_paths);
   for (const auto *key : {"display_range", "lut", "custom_lut", manual_threshold_property}) {
     const auto found = snapshot.display().properties.find(key);
     if (found == snapshot.display().properties.end()) wire.erase(key);
@@ -1223,7 +1235,7 @@ std::string session_legacy_record_json(const DocumentSnapshot &snapshot,
   const auto declared = metadata_json(data.metadata);
   const auto scalar_text = wire.dump();
   const auto regenerated = scalar::session_wire_metadata_json(
-      declared.dump(), scalar_text, shape.x, shape.y, shape.z);
+      declared.dump(), scalar_text, shape.x, shape.y, shape.z, allow_paths);
   if (regenerated != scalar_text)
     fail("Detached legacy metadata is not losslessly representable");
   const bool stack = boolean(wire.at("is_stack"));

@@ -1,4 +1,5 @@
 #include "orthogonal.hpp"
+#include "path_visual.hpp"
 #include "rendering.hpp"
 #include "viewport_renderer.hpp"
 #include "channel_display_sources.hpp"
@@ -246,8 +247,8 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
           SelectionEditor editor(selection, shape.x, shape.y, limits);
           auto *vertex = saved_roi->selected_vertex;
           if (vertex && *vertex &&
-              ((selection.kind != "polygon" && selection.kind != "freehand") ||
-               **vertex >= selection.points.size())) vertex->reset();
+              ((!selection.is_path() && selection.kind != "polygon" && selection.kind != "freehand") ||
+               **vertex >= selectionControlPointCount(selection))) vertex->reset();
           const auto selected = vertex ? *vertex : std::optional<std::size_t>{};
           auto &observed = caches_[0].savedRoiInput;
           observed = {{"phase", "keyboard"}, {"frame", frame},
@@ -257,7 +258,7 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
               {"selected_vertex", selected ? Json(*selected) : Json()}};
           if (nudge[0] || nudge[1]) {
             if (selected) {
-              auto target = selection.points.at(*selected);
+              auto target = selectionControlPoint(selection,*selected);
               target[0] += nudge[0]; target[1] += nudge[1];
               observed["phase"] = "nudged_vertex";
               saved_roi->accept_numeric(editor.moved_vertex(*selected, target, limits));
@@ -265,7 +266,7 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
               observed["phase"] = "nudged";
               saved_roi->accept_numeric(editor.moved(nudge, true, limits));
             }
-          } else if (remove && selected) {
+          } else if (remove && selected && !selection.is_path()) {
             observed["phase"] = "deleted_vertex";
             saved_roi->accept_numeric(editor.removed_vertex(*selected, limits));
           }
@@ -328,9 +329,11 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
   ImGui::Dummy({0, ImGui::GetTextLineHeight()});
   ImGui::TextUnformatted("Click/drag: crosshair  |  Wheel: slice  |  "
                          "Ctrl-wheel: linked zoom  |  Middle drag: pan");
-  if (savedOwner())
-    ImGui::TextUnformatted("Saved ROI in XY: drag handles; Alt-click: insert vertex  |  "
-                           "Arrows: nudge (Shift: 10); Delete: vertex  |  Escape: cancel");
+  if (savedOwner()) {
+    const bool path=saved_roi->edit->candidate()?saved_roi->edit->candidate()->is_path():saved_roi->edit->original().is_path();
+    ImGui::TextUnformatted(path?"Saved path in XY: drag endpoints and curve controls  |  Arrows: nudge (Shift: 10)  |  Escape: cancel":
+        "Saved ROI in XY: drag handles; Alt-click: insert vertex  |  Arrows: nudge (Shift: 10); Delete: vertex  |  Escape: cancel");
+  }
   else
     ImGui::TextUnformatted("Focused canvas: Up/Down or PageUp/PageDown: slice  |  "
                            "Shift-arrows: global XY  |  Escape: exit views");
@@ -887,19 +890,31 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
         draft = selectionJson(*saved_roi->edit->candidate());
       }
       const auto revisions = annotationSource.revisions();
-      const Json annotationKey{{"document_id", annotationSource.id()},
+      Json annotationKey{{"document_id", annotationSource.id()},
           {"data_identity", annotationSource.data_identity().value_or(0)},
           {"metadata_revision", revisions.metadata}, {"selection_revision", revisions.selection},
           {"position", {currentPosition.t, currentPosition.c, currentPosition.z}},
           {"shape", {cache.width, cache.height}},
           {"private_row", draftRow ? Json(*draftRow) : Json()}, {"private_geometry", draft}};
+      const bool rootPaths=(annotationSource.data().selection && annotationSource.data().selection->is_path()) ||
+          std::any_of(annotationSource.data().rois.begin(),annotationSource.data().rois.end(),[](const auto &row){return row.selection.is_path();}) ||
+          (!draft.is_null() && get(draft,"kind")=="path");
+      if(rootPaths)annotationKey["native_path_scale"]={cache.scale.x,cache.scale.y};
+      if(rootPaths)annotationKey["native_path_cap"]=channel_limits.max_working_bytes;
       if (cache.annotationKey != annotationKey) {
         cache.selectionOutline.clear(); cache.roiOutline.clear();
         cache.styledSelection.clear(); cache.styledRois.clear(); cache.styledRoiIndices.clear();
         cache.savedRoiLayers = Json::array();
+        auto visual=[&](const Json &geometry,RoiColor fallback) {
+          if(get(geometry,"kind")!="path")return roiVisual(geometry,cache.width,cache.height,fallback);
+          const auto cap=channel_limits.max_working_bytes;std::size_t retained=0;
+          auto charge=[&](const RoiVisual &v){const auto n=pathVisualBytes(v);if(n>cap-retained)throw std::invalid_argument("Linked root path visuals exceed processing memory");retained+=n;};
+          for(const auto &v:cache.styledSelection)charge(v);for(const auto &v:cache.styledRois)charge(v);
+          return pathVisual(selectionFromJson(geometry),cache.width,cache.height,{cache.scale.x,cache.scale.y},cap-retained,fallback);
+        };
         const auto &selected = get(d.state().metadata, "selection");
-        if (!selected.empty() && selected.contains(roi_style_attribute))
-          cache.styledSelection.push_back(roiVisual(selected, cache.width, cache.height, {255, 213, 75, 220}));
+        if (!selected.empty() && (selected.contains(roi_style_attribute) || get(selected,"kind")=="path"))
+          cache.styledSelection.push_back(visual(selected, {255, 213, 75, 220}));
         else if (!selected.empty())
           cache.selectionOutline = selectionOutlineSpans(selected, cache.width, cache.height);
         const auto visible = d.visibleRoiIndices();
@@ -913,9 +928,9 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
               {"metadata_revision", revisions.metadata}, {"selection_revision", revisions.selection},
               {"tcz", {currentPosition.t, currentPosition.c, currentPosition.z}},
               {"geometry", selection}});
-          if (selection.contains(roi_style_attribute)) {
+          if (selection.contains(roi_style_attribute) || get(selection,"kind")=="path") {
             cache.styledRoiIndices.push_back(index);
-            cache.styledRois.push_back(roiVisual(selection, cache.width, cache.height, {64, 210, 240, 180}));
+            cache.styledRois.push_back(visual(selection, {64, 210, 240, 180}));
           } else {
             auto spans = selectionOutlineSpans(selection, cache.width, cache.height);
             cache.roiOutline.insert(cache.roiOutline.end(), spans.begin(), spans.end());

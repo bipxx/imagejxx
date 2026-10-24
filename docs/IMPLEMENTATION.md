@@ -1,5 +1,25 @@
 # Implementation progress
 
+**Native root paths, 2026-10-23 (scoped integration):**
+Active, Previous and saved native paths now survive desktop V5 Open/save,
+control/numeric editing and ordinary or anisotropic linked XY rendering.
+Typed saved-path workflows can publish from legacy facades with admission
+rollback on failure. Optional Python model/persistence uses explicit native
+V5 adapters; public legacy codecs retain their existing refusal. Windows
+and Linux each pass 3,978 installed Python cases with zero skips, native
+groups with 28 root-path and 13 workflow checks, and 13 installed SDK checks.
+Thirty-two actual headless ImGui recipe runs include twelve new root runs.
+All 824 build/test inputs match both source trees. Cleanup removed
+833,862,417 temporary bytes with installed products and captures retained.
+One unchanged historical scientific-action guard test fails against both
+preceding installs and is explicitly excluded. The historical Auto fingerprint
+gate remains open. Commercial dependency checks pass. Original 99 requirements
+and verification records remain unchanged; full implementation is incomplete.
+Next: path creation/topology/resize, typed filters/resource integration,
+continuous Booleans and feature-family qualification. See
+[the contract](parity/NATIVE_ROOT_PATHS.md) and
+[scoped receipt](parity/reviews/p13e-root-path001.json).
+
 **Annotation workflow intent, 2026-10-23 (scoped integration):**
 C++/Python workflows now retain typed planar and saved-ROI geometry intent
 in closed V7 programs, with explicit stage extents and immutable originals.

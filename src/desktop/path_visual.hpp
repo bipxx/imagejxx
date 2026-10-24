@@ -10,4 +10,6 @@ RoiVisual pathVisual(const Selection &, int width, int height,
 std::size_t pathVisualBytes(const RoiVisual &);
 Json planarSelectionJson(const Selection &);
 std::vector<std::array<double, 2>> planarControlPoints(const Selection &);
+std::size_t selectionControlPointCount(const Selection &);
+std::array<double,2> selectionControlPoint(const Selection &,std::size_t);
 } // namespace imagejxx::desktop

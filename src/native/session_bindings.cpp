@@ -59,10 +59,10 @@ void bind_session(py::module_ &m) {
       .def_readwrite("max_working_bytes", &SessionLimits::max_working_bytes)
       .def_readwrite("max_nodes", &SessionLimits::max_nodes)
       .def_readwrite("max_depth", &SessionLimits::max_depth);
-  m.def("_session_legacy_record_json",
-      [](DocumentSnapshot snapshot, SessionLimits limits) {
+  for(bool allow_paths:{false,true})m.def(allow_paths?"_session_path_record_json":"_session_legacy_record_json",
+      [allow_paths](DocumentSnapshot snapshot, SessionLimits limits) {
         py::gil_scoped_release release;
-        return detail::session_legacy_record_json(snapshot, limits);
+        return detail::session_legacy_record_json(snapshot, limits, allow_paths);
       }, py::arg("snapshot"), py::arg("limits") = SessionLimits{},
       "Private checked projection for the detached eager-Z compatibility reader.");
   py::class_<SessionEstimate>(m, "SessionEstimate")
@@ -120,7 +120,7 @@ void bind_session(py::module_ &m) {
   }, py::arg("capture"), py::arg("limits") = SessionLimits{}, py::kw_only(),
       py::arg("cancellation") = nullptr, py::arg("checkpoint") = py::none(),
       py::arg("stage_progress") = py::none());
-  m.def("_upgrade_regional_legacy_session",[](py::bytes input,SessionLimits limits){
+  for(bool allow_paths:{false,true})m.def(allow_paths?"_upgrade_path_legacy_session":"_upgrade_regional_legacy_session",[allow_paths](py::bytes input,SessionLimits limits){
     char *data=nullptr;Py_ssize_t size=0;
     if(PyBytes_AsStringAndSize(input.ptr(),&data,&size)!=0)throw py::error_already_set();
     if(static_cast<std::size_t>(size)>limits.max_encoded_bytes || static_cast<std::size_t>(size)>limits.max_working_bytes)
@@ -128,7 +128,7 @@ void bind_session(py::module_ &m) {
     std::vector<unsigned char> output;
     {py::gil_scoped_release release;
       std::vector<unsigned char> bytes(data,data+size);
-      output=detail::upgrade_regional_legacy_session(bytes,limits);
+      output=allow_paths?detail::upgrade_path_legacy_session(bytes,limits):detail::upgrade_regional_legacy_session(bytes,limits);
     }
     return py::bytes(reinterpret_cast<const char *>(output.data()),output.size());
   },py::arg("input"),py::arg("limits")=SessionLimits{});

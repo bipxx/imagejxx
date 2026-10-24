@@ -221,6 +221,7 @@ public:
 private:
   struct PathAdmission;
   std::shared_ptr<PathAdmission> pathAdmission_;
+  void publishNativePaths(const std::function<void()> &);
   void commitPlanarNative(DocumentTransaction &);
   struct WorkerTag {};
   friend class Window;

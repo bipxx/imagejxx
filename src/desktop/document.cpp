@@ -1,4 +1,5 @@
 #include "desktop.hpp"
+#include "../native/selection_codec.hpp"
 #include <imagejxx/imagej_roi_import.hpp>
 #include <imagejxx/imagej_annotation_import.hpp>
 #include <imagejxx/indexed_palette.hpp>
@@ -192,9 +193,11 @@ Image selectionMask(const Json &selection, int w, int h) {
   return selectionFromJson(selection).mask(w, h);
 }
 Selection selectionFromJson(const Json &value) {
+  if(get(value,"kind")=="path")return imagejxx::detail::selection_codec::decode_selection(value,SessionLimits{},true,true);
   return session_metadata::selection_from_json(value);
 }
 Json selectionJson(const Selection &value) {
+  if(value.is_path())return imagejxx::detail::selection_codec::encode_selection(value,true,true);
   return session_metadata::selection_to_json(value);
 }
 void preserveDisplay(Json &destination, const Json &source) {
@@ -357,8 +360,8 @@ void validateDesktop(const DocumentData &data, const DisplayState &display,
                      bool eagerAdmitted = false, bool allowVirtual=false,
                      bool allowPlanarPaths=false) {
   const auto path=[](const std::optional<Selection> &value){return value && value->is_path();};
-  if(path(data.selection) || path(data.previous_selection) ||
-      std::any_of(data.rois.begin(),data.rois.end(),[](const auto &row){return row.selection.is_path();}))
+  if(!allowPlanarPaths && (path(data.selection) || path(data.previous_selection) ||
+      std::any_of(data.rois.begin(),data.rois.end(),[](const auto &row){return row.selection.is_path();})))
     throw std::invalid_argument("Desktop path selections require versioned path support");
   if(!allowPlanarPaths)
   if(const auto found=data.metadata.extensions.find(planar_annotations_extension);found!=data.metadata.extensions.end())
@@ -467,7 +470,7 @@ Json nativeMetadata(const DocumentData &data) {
   scalar.previous_selection = data.previous_selection;
   scalar.rois = data.rois;
   scalar.overlays = data.overlays;
-  return session_metadata::wire_metadata(scalar);
+  return session_metadata::wire_metadata(scalar,true);
 }
 } // namespace
 Document::Document(Stack frames, std::string title, Json metadata,
@@ -783,14 +786,15 @@ void Document::setNativeDisplay(DisplayState display) {
   else
     native_->set_display(std::move(display));
 }
-void Document::commitPlanarNative(DocumentTransaction &transaction) {
+void Document::publishNativePaths(const std::function<void()> &publish) {
   if(std::this_thread::get_id()!=pathAdmission_->thread)
     throw std::runtime_error("Desktop documents must be edited on their creator thread");
   const bool before=pathAdmission_->enabled;
   pathAdmission_->enabled=true;
-  try {
-    if(controller_)controller_->commit(transaction);else native_->commit(transaction);
-  } catch(...) {pathAdmission_->enabled=before;throw;}
+  try { publish(); } catch(...) {pathAdmission_->enabled=before;throw;}
+}
+void Document::commitPlanarNative(DocumentTransaction &transaction) {
+  publishNativePaths([&]{if(controller_)controller_->commit(transaction);else native_->commit(transaction);});
 }
 void Document::commitPlanarAnnotation(DocumentTransaction &transaction) {
   if(transaction.axis_remap_display())

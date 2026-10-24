@@ -472,7 +472,9 @@ def _session_project_wire(metadata, wire, dimensions):
 
     _validate_session_native_metadata(metadata)
     _validate_marked_json(wire)
-    projected = json.loads(_native._session_wire_metadata_json(
+    from .model import _session_has_paths
+    project = _native._session_path_wire_metadata_json if _session_has_paths(wire) else _native._session_wire_metadata_json
+    projected = json.loads(project(
         json.dumps(metadata, allow_nan=False), json.dumps(wire, allow_nan=False),
         *dimensions,
     ))
@@ -595,9 +597,16 @@ def save_session(path, documents, *, results=(), workflow=()):
         or any(roi.selection.kind == "region" for roi in owner.rois)
         for owner in owners
     )
-    if regional:
+    native_paths = any(
+        (owner.selection is not None and owner.selection.kind == "path")
+        or (owner.previous_selection is not None and owner.previous_selection.kind == "path")
+        or any(roi.selection.kind == "path" for roi in owner.rois)
+        for owner in owners
+    )
+    if regional or native_paths:
         from imagejxx import _native
-        encoded = _native._upgrade_regional_legacy_session(encoded)
+        upgrade = _native._upgrade_path_legacy_session if native_paths else _native._upgrade_regional_legacy_session
+        encoded = upgrade(encoded)
     stream = None
     temporary = None
     try:
@@ -633,7 +642,7 @@ def save_session(path, documents, *, results=(), workflow=()):
 def load_session(path, *, extensions=None):
     """Load detached documents, results and workflow from a session archive.
 
-    Native v3/v4 archives use the bounded C++ codec. Their opaque root extensions
+    Native v3/v4/v5 archives use the bounded C++ codec. Their opaque root extensions
     require an explicit mutable mapping destination, replaced after every
     document has been validated and converted to the legacy Python model.
     """
@@ -642,7 +651,7 @@ def load_session(path, *, extensions=None):
     source = Path(path)
     with source.open("rb") as stream:
         header = stream.read(10)
-    if header in (b"IMAGEJXX3\n", b"IMAGEJXX4\n"):
+    if header in (b"IMAGEJXX3\n", b"IMAGEJXX4\n", b"IMAGEJXX5\n"):
         from imagejxx import _native
 
         decoded = ij.load_session(str(source))
@@ -651,7 +660,8 @@ def load_session(path, *, extensions=None):
             raise ValueError("A session extensions destination is required")
         documents = []
         for owner in decoded.documents:
-            record = json.loads(_native._session_legacy_record_json(owner.snapshot()))
+            project = _native._session_path_record_json if header == b"IMAGEJXX5\n" else _native._session_legacy_record_json
+            record = json.loads(project(owner.snapshot()))
             documents.append(_deserialize_document(
                 record["document"], native_state=record["native_state"],
             ))
@@ -695,6 +705,10 @@ def load_session(path, *, extensions=None):
     _validate_session_json_numbers(manifest)
     if manifest.get("format") != "imagejxx-session" or manifest.get("version") != 2:
         raise ValueError("Unsupported session version")
+    from .model import _session_has_paths
+    items = manifest.get("documents")
+    if isinstance(items, list) and any(isinstance(item, dict) and _session_has_paths(item) for item in items):
+        raise ValueError("Native path geometry requires a V5 session")
     if marked:
         records = _session_loaded_native_records(manifest)
         documents = [
@@ -758,6 +772,10 @@ def deserialize_document(item):
 def _deserialize_document(item, *, native_state=None):
     if not isinstance(item, dict):
         raise ValueError("Session document must be an object")
+    if native_state is None:
+        from .model import _session_has_paths
+        if _session_has_paths(item):
+            raise ValueError("Native path geometry requires a V5 session")
     if "channel_display" in item:
         raise ValueError("Channel display requires native V3 sessions")
     _validate_session_json_numbers(item)

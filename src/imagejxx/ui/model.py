@@ -62,12 +62,20 @@ class Selection:
     bitmap: np.ndarray | None = None
     attributes: dict = field(default_factory=dict)
     origin: tuple[int, int] = (0, 0)
+    path: list[float] | None = None
 
     def clone(self):
         return deepcopy(self)
 
     def native(self):
         """Adapt geometry and attributes without reimplementing native ROI styles."""
+        if self.kind == "path":
+            if self.path is None or self.points or self.bitmap is not None or self.origin != (0, 0):
+                raise ValueError("Native path requires commands without vector or packed storage")
+            native = ij.Selection.from_path(ij.ImageJCompositePath(self.path))
+            return ij.SelectionEditor(native, (1, 1)).properties(self.width, self.attributes)
+        if self.path is not None:
+            raise ValueError("Path commands require native path geometry")
         if self.kind in ("mask", "region"):
             if self.kind == "region" and self.points:
                 raise ValueError("Packed region must not contain vector points")
@@ -116,9 +124,9 @@ class Selection:
 
     def moved(self, dx, dy, shape):
         selection = self.clone()
-        if self.kind == "region":
+        if self.kind in ("region", "path"):
             moved = ij.SelectionEditor(self.native(), shape[:2]).moved((dx, dy))
-            return Selection.from_dict(moved.to_dict())
+            return Selection.from_native(moved)
         if self.kind == "mask":
             selection.bitmap = ij.translate(
                 self.mask(shape), dx, dy, interpolation="nearest"
@@ -129,6 +137,10 @@ class Selection:
         return selection
 
     def to_dict(self):
+        if self.kind == "path":
+            native = self.native()
+            return {"kind": "path", "points": [], "width": native.width,
+                    "attributes": deepcopy(native.attributes), "path": list(native.path.commands)}
         if self.kind == "region":
             return self.native().to_dict()
         reserved = {"kind", "points", "width"}
@@ -160,7 +172,7 @@ class Selection:
 
     @classmethod
     def _from_session_dict(cls, value):
-        if value["kind"] == "region":
+        if value["kind"] in ("region", "path"):
             return cls.from_dict(value)
         if value["kind"] != "mask":
             # Native non-mask shape/mask members are opaque attributes. The
@@ -183,7 +195,20 @@ class Selection:
         return result
 
     @classmethod
+    def from_native(cls, value):
+        if value.is_path:
+            return cls.from_dict({"kind": "path", "points": [], "width": value.width,
+                                  "attributes": deepcopy(value.attributes), "path": list(value.path.commands)})
+        return cls.from_dict(value.to_dict())
+
+    @classmethod
     def from_dict(cls, value):
+        if value["kind"] == "path":
+            if set(value) != {"kind", "points", "width", "attributes", "path"} or type(value["points"]) is not list or value["points"]:
+                raise ValueError("Native path record requires exact versioned geometry fields")
+            result = cls("path", [], value["width"], attributes=deepcopy(value["attributes"]), path=deepcopy(value["path"]))
+            result.native()
+            return result
         if value["kind"] == "region":
             canonical = ij.Selection.from_dict(value).to_dict()
             shape = tuple(canonical["shape"])
@@ -495,8 +520,18 @@ def _session_legacy_state(value, plane_count):
     ))
 
 
+def _session_has_paths(wire):
+    def path(value):
+        return isinstance(value, dict) and value.get("kind") == "path"
+    rows = wire.get("rois")
+    return path(wire.get("selection")) or path(wire.get("previous_selection")) or (
+        isinstance(rows, list) and any(isinstance(row, dict) and path(row.get("selection")) for row in rows)
+    )
+
+
 def _session_project(metadata, wire, shape, planes):
-    return json.loads(ij._native._session_wire_metadata_json(
+    project = ij._native._session_path_wire_metadata_json if _session_has_paths(wire) else ij._native._session_wire_metadata_json
+    return json.loads(project(
         _session_json(metadata), _session_json(wire), int(shape[1]),
         int(shape[0]), int(planes),
     ))

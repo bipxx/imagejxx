@@ -97,9 +97,9 @@ void bind_document(py::module_ &m) {
       },
       py::arg("metadata_json"), py::arg("plane_count"),
       "Private scalar session-state inference; no pixel or geometry validation.");
-  m.def(
-      "_session_wire_metadata_json",
-      [](py::handle metadata_json, py::handle scalar_wire_json,
+  for(bool allow_paths:{false,true})m.def(
+      allow_paths?"_session_path_wire_metadata_json":"_session_wire_metadata_json",
+      [allow_paths](py::handle metadata_json, py::handle scalar_wire_json,
          py::handle width, py::handle height, py::handle plane_count) {
         auto descriptor = [](py::handle value, const char *name) {
           if (!PyLong_CheckExact(value.ptr()))
@@ -130,7 +130,7 @@ void bind_document(py::module_ &m) {
         const auto wire = owned_text(scalar_wire_json, "scalar_wire_json");
         py::gil_scoped_release release;
         return imagejxx::detail::session_metadata::session_wire_metadata_json(
-            declared, wire, columns, rows, planes);
+            declared, wire, columns, rows, planes, allow_paths);
       },
       py::arg("metadata_json"), py::arg("scalar_wire_json"), py::arg("width"),
       py::arg("height"), py::arg("plane_count"),

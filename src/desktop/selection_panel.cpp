@@ -1,4 +1,6 @@
 #include "selection_panel.hpp"
+#include "path_visual.hpp"
+#include <imagejxx/composite_path.hpp>
 #include "geometry_number.hpp"
 #include <algorithm>
 #include <charconv>
@@ -85,7 +87,7 @@ void SelectionPanel::initialize(
   else
     next.editor_.emplace(selection, shape.x, shape.y);
   next.preview_ = selection;
-  next.points_ = next.preview_->points;
+  next.points_ = planarControlPoints(*next.preview_);
   next.width_ = next.preview_->width;
   next.rounded_ = next.preview_->is_rounded_box();
   if (next.rounded_) next.cornerDiameter_ = next.preview_->corner_diameter();
@@ -110,7 +112,7 @@ void SelectionPanel::initialize(
                   2 * std::hypot(frame->v[0], frame->v[1])};
     next.angle_ = std::atan2(frame->u[1], frame->u[0]) * 180 / std::acos(-1.);
   }
-  const auto json = selectionJson(*next.preview_);
+  const auto json = next.preview_->is_path()?metadataJson(next.preview_->attributes):selectionJson(*next.preview_);
   next.label_ = string(get(json, "label"));
   if (get(json, "color").is_string()) {
     const auto value = string(get(json, "color"));
@@ -141,7 +143,17 @@ void SelectionPanel::rebuild(const ExecutionControl &control) {
           ? editor_->box_geometry(center_, size_, angle_, geometryLimits_, control)
           : editor_->box_geometry(center_, size_, angle_);
     else {
-      result.points = points_;
+      if(result.is_path()) {
+        if(points_.size()!=selectionControlPointCount(result))throw std::invalid_argument("Path controls cannot change segment topology");
+        auto commands=result.path_commands();std::size_t index=0;
+        for(std::size_t at=0;at<commands.size();) {
+          const int op=int(commands[at++]);const auto n=op==4?0u:op==3?6u:op==2?4u:2u;
+          for(unsigned i=0;i<n;i+=2){commands[at+i]=points_[index][0];commands[at+i+1]=points_[index++][1];}
+          at+=n;
+        }
+        auto replacement=Selection::from_path(ImageJCompositePath(std::move(commands)));
+        replacement.width=result.width;replacement.attributes=result.attributes;result=std::move(replacement);
+      } else result.points = points_;
       result.validate(shape.x, shape.y);
       if (geometryOnly_) {
         result = SelectionEditor(result, shape.x, shape.y, geometryLimits_, control)
@@ -219,7 +231,7 @@ void SelectionPanel::patch(const Json &values, const ExecutionControl &control) 
       if (!box_)
         throw std::invalid_argument(
             "Center/size fields require a box selection");
-      (name == "center" ? next.center_ : next.size_) = pair(value, geometryOnly_);
+      (name == "center" ? next.center_ : next.size_) = pair(value, geometryOnly_ || editor_->selection().is_path());
       next.geometryChanged_ = true;
     } else if (name == "angle" || name == "rotation" || name == "width" ||
                name == "stroke_width") {
@@ -243,17 +255,19 @@ void SelectionPanel::patch(const Json &values, const ExecutionControl &control) 
     } else if (name == "translation") {
       if (box_)
         throw std::invalid_argument("Box position uses center coordinates");
-      next.translation_ = pair(value, geometryOnly_);
+      next.translation_ = pair(value, geometryOnly_ || editor_->selection().is_path());
       next.geometryChanged_ = true;
     } else if (name == "points") {
       if (box_ || editor_->selection().kind == "mask" || !value.is_array())
         throw std::invalid_argument(
             "This selection does not expose vertex coordinates");
+      if(editor_->selection().is_path() && value.size()!=points_.size())
+        throw std::invalid_argument("Path controls cannot change segment topology");
       if (geometryOnly_ && value.size() > geometryLimits_.max_vertices)
         throw std::invalid_argument("Saved area vertex limit exceeded");
       next.points_.clear();
       for (const auto &point : value)
-        next.points_.push_back(pair(point, geometryOnly_));
+        next.points_.push_back(pair(point, geometryOnly_ || editor_->selection().is_path()));
       next.geometryChanged_ = true;
     } else if (name == "stroke_color" || name == "fill_color") {
       if (name == "fill_color" && !area_)
@@ -283,7 +297,7 @@ void SelectionPanel::patch(const Json &values, const ExecutionControl &control) 
     } else
       throw std::invalid_argument("Unknown selection property");
   }
-  if (geometryOnly_) {
+  if (geometryOnly_ || editor_->selection().is_path()) {
     for (const auto &entry : values.items()) {
       const auto &name = entry.key();
       if (name == "center") {
@@ -374,7 +388,7 @@ void SelectionPanel::draw(const std::optional<DocumentSnapshot> &current,
         {"disabled", disabled || (!outsideBusy && busy)}};
   };
   auto number = [&](const char *name, double *value, bool disabled = false) {
-    if (geometryOnly_) {
+    if (geometryOnly_ || editor_->selection().is_path()) {
       const std::string key = std::string(name) +
           ((std::string(name) == "Vertex X" || std::string(name) == "Vertex Y")
                ? "@" + std::to_string(vertex_) : std::string());
@@ -417,7 +431,9 @@ void SelectionPanel::draw(const std::optional<DocumentSnapshot> &current,
     changed |= number("Move Y", &translation_[1]);
     changed |= number("Rotate (degrees)", &rotation_);
     if (!points_.empty() && editor_->selection().kind != "mask") {
-      ImGui::InputInt("Vertex", &vertex_);
+      if(editor_->selection().is_path())ImGui::InputInt("Vertex", &vertex_,0,0);
+      else ImGui::InputInt("Vertex", &vertex_);
+      control("Vertex");
       vertex_ = std::clamp(vertex_, 0, int(points_.size() - 1));
       changed |= number("Vertex X", &points_[vertex_][0]);
       changed |= number("Vertex Y", &points_[vertex_][1]);
@@ -479,7 +495,7 @@ void SelectionPanel::draw(const std::optional<DocumentSnapshot> &current,
       "Zero draws one device pixel; positive values use image pixels.");
   ImGui::EndDisabled();
   ImGui::EndDisabled();
-  if (geometryOnly_)
+  if (geometryOnly_ || editor_->selection().is_path())
     for (const auto &entry : rawNumbers_)
       try { (void)parse_geometry_number(entry.second); }
       catch (const std::exception &e) {

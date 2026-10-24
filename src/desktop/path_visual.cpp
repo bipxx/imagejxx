@@ -26,6 +26,20 @@ Json planarSelectionJson(const Selection &selection) {
           {"width", selection.width}, {"attributes", metadataJson(selection.attributes)},
           {"path", selection.path_commands()}};
 }
+std::size_t selectionControlPointCount(const Selection &selection) {
+  if(!selection.is_path())return selection.points.size();
+  return (selection.path_commands().size()-selection.path_geometry().segment_count())/2;
+}
+std::array<double,2> selectionControlPoint(const Selection &selection,std::size_t index) {
+  if(!selection.is_path())return selection.points.at(index);
+  const auto &commands=selection.path_commands();
+  for(std::size_t at=0;at<commands.size();) {
+    const auto n=arity(int(commands[at++]));
+    if(index<n/2)return {commands[at+2*index],commands[at+2*index+1]};
+    index-=n/2;at+=n;
+  }
+  throw std::invalid_argument("Path control point outside geometry");
+}
 std::vector<Point> planarControlPoints(const Selection &selection) {
   if (!selection.is_path())
     return selection.points;

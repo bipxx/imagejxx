@@ -30,7 +30,8 @@ bool nativeSessionFile(const std::string &path) {
   stream.read(header, sizeof(header));
   return stream.gcount() == sizeof(header) &&
          (std::string_view(header, sizeof(header)) == "IMAGEJXX3\n" ||
-          std::string_view(header, sizeof(header)) == "IMAGEJXX4\n");
+          std::string_view(header, sizeof(header)) == "IMAGEJXX4\n" ||
+          std::string_view(header, sizeof(header)) == "IMAGEJXX5\n");
 }
 
 void saveNativeSession(const std::string &path, const Documents &documents,

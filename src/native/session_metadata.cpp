@@ -632,7 +632,10 @@ DisplayState parse_view(const Json &parameters, DisplayState view,
   return proposed;
 }
 
-Json wire_metadata(const ScalarRecord &data) {
+Json wire_metadata(const ScalarRecord &data, bool allow_paths) {
+  auto geometry=[&](const Selection &value) {
+    return allow_paths && value.is_path() ? detail::selection_codec::encode_selection(value,true,true) : selection_to_json(value);
+  };
   Json result = Json::object();
   for (const auto &[key, value] : data.metadata.extensions)
     if (key != "calibration")
@@ -675,11 +678,11 @@ Json wire_metadata(const ScalarRecord &data) {
   result["calibration"] = std::move(serialized);
   if (data.selection || present("selection") || data.previous_selection)
     result["selection"] =
-        data.selection ? selection_to_json(*data.selection) : Json();
+        data.selection ? geometry(*data.selection) : Json();
   if (data.previous_selection || present("previous_selection") ||
       data.selection)
     result["previous_selection"] = data.previous_selection
-                                       ? selection_to_json(*data.previous_selection)
+                                       ? geometry(*data.previous_selection)
                                        : Json();
   if (!data.metadata.properties.empty() || present("native_properties"))
     result["native_properties"] =
@@ -692,7 +695,7 @@ Json wire_metadata(const ScalarRecord &data) {
       const auto &roi = data.rois[i];
       auto item = to_json(roi.attributes);
       item.update(
-          {{"name", roi.name}, {"selection", selection_to_json(roi.selection)}});
+          {{"name", roi.name}, {"selection", geometry(roi.selection)}});
       if (roi.z || canonical || has("roi_slice_fields", std::to_string(i)))
         item["slice_index"] = roi.z ? Json(*roi.z) : Json();
       rois.push_back(std::move(item));
@@ -800,7 +803,10 @@ void validate_line_mask_segments(const Selection &selection) {
   }
 }
 ScalarRecord scalar_record(DocumentMetadata metadata, const Json &wire,
-                            int width, int height, int plane_count) {
+                            int width, int height, int plane_count, bool allow_paths = false) {
+  auto geometry=[&](const Json &value) {
+    return allow_paths && field(value,"kind")=="path" ? detail::selection_codec::decode_selection(value,SessionLimits{},true,true) : selection_from_json(value);
+  };
   ScalarRecord result;
   result.metadata = std::move(metadata);
   result.plane_count = plane_count;
@@ -819,13 +825,13 @@ ScalarRecord scalar_record(DocumentMetadata metadata, const Json &wire,
   result.calibration = calibration_from_json(calibration);
   const auto &selected = field(merged, "selection");
   if (!selected.empty()) {
-    result.selection = selection_from_json(selected);
+    result.selection = geometry(selected);
     result.selection->validate(width, height);
     validate_line_mask_segments(*result.selection);
   }
   const auto &previous = field(merged, "previous_selection");
   if (!previous.empty()) {
-    result.previous_selection = selection_from_json(previous);
+    result.previous_selection = geometry(previous);
     // Previous geometry may refer to an earlier extent after crop/resize.
     validate_metadata(result.previous_selection->attributes);
     roi_style(*result.previous_selection);
@@ -835,7 +841,7 @@ ScalarRecord scalar_record(DocumentMetadata metadata, const Json &wire,
     throw std::invalid_argument("Invalid session ROIs");
   for (const auto &roi : rois) {
     Roi value{text(field(roi, "name")),
-              selection_from_json(field(roi, "selection")), {}, {}, {}};
+              geometry(field(roi, "selection")), {}, {}, {}};
     if (!field(roi, "slice_index").is_null())
       value.z = scalar_integer(field(roi, "slice_index"));
     value.attributes = record_attributes(roi, {"name", "selection", "slice_index"});
@@ -861,7 +867,7 @@ ScalarRecord scalar_record(DocumentMetadata metadata, const Json &wire,
 
 std::string session_wire_metadata_json(const std::string &metadata_json,
                                       const std::string &scalar_wire_json,
-                                      int width, int height, int plane_count) {
+                                      int width, int height, int plane_count, bool allow_paths) {
   if (width <= 0 || height <= 0 || plane_count <= 0)
     throw std::invalid_argument("Scalar descriptors must be positive int32");
   MetadataDtoCheck dto_check;
@@ -877,7 +883,7 @@ std::string session_wire_metadata_json(const std::string &metadata_json,
     if (wire.contains("channel_display"))
       throw std::invalid_argument("Channel display requires native V3 sessions");
     const auto record = scalar_record(metadata_dto(declared), wire,
-                                      width, height, plane_count);
+                                      width, height, plane_count, allow_paths);
     const int slice = scalar_integer(field(wire, "slice_index"));
     if (slice < 0 || slice >= plane_count)
       throw std::invalid_argument("Invalid session slice index");
@@ -896,7 +902,7 @@ std::string session_wire_metadata_json(const std::string &metadata_json,
         display = parse_view(saved_view, std::move(display), width, height,
                               plane_count, slice);
     }
-    auto generated = wire_metadata(record);
+    auto generated = wire_metadata(record,allow_paths);
     // Native restoration applies exactly the serialized display keys, then
     // derives slice navigation and the complete six-field camera record.
     for (const auto *key : {"display_range", "lut", "custom_lut", manual_threshold_property})
