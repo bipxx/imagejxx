@@ -45,6 +45,7 @@ target_sources(imagejxx_core PRIVATE
   src/native/planar_display_annotations.cpp src/native/planar_display_annotation_command.cpp
   src/native/imagej_roi.cpp
   src/native/imagej_shape.cpp
+  src/native/path_edit.cpp
   src/native/composite_path.cpp
   src/native/imagej_arrow.cpp
   src/native/imagej_spline.cpp
@@ -905,6 +906,9 @@ if(BUILD_TESTING)
   add_executable(imagejxx_imagej_roi_tests tests/native/test_imagej_roi.cpp)
   target_link_libraries(imagejxx_imagej_roi_tests PRIVATE imagejxx::core)
   add_test(NAME native_imagej_roi COMMAND imagejxx_imagej_roi_tests)
+  add_executable(imagejxx_path_edit_tests tests/native/test_path_edit.cpp)
+  target_link_libraries(imagejxx_path_edit_tests PRIVATE imagejxx::core)
+  add_test(NAME native_path_edit COMMAND imagejxx_path_edit_tests)
   add_executable(imagejxx_composite_path_tests tests/native/test_composite_path.cpp)
   target_link_libraries(imagejxx_composite_path_tests PRIVATE imagejxx::core)
   add_test(NAME native_composite_path COMMAND imagejxx_composite_path_tests)

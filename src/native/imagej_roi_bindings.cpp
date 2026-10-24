@@ -1,5 +1,6 @@
 #include <imagejxx/imagej_roi_projection.hpp>
 #include <imagejxx/composite_path.hpp>
+#include <imagejxx/path_edit.hpp>
 #include "binding_arrays.hpp"
 #include <algorithm>
 #include <climits>
@@ -9,6 +10,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 namespace py = pybind11;
+imagejxx::ExecutionControl axis_range_python_control(std::shared_ptr<imagejxx::CancellationToken>,py::object,py::object);
 using namespace imagejxx;
 namespace {
 std::vector<double> path_numbers(py::handle value, std::size_t maximum) {
@@ -520,6 +522,33 @@ void bind_imagej_roi(py::module_ &m) {
         return decode_imagej_composite_roi_mapped(data, mapping, limits);
       }, py::arg("data"), py::arg("mapping"),
       py::arg("limits") = ImageJRoiLimits{});
+  py::enum_<PathSegmentEdit>(m, "PathSegmentEdit")
+      .value("Replace", PathSegmentEdit::Replace)
+      .value("InsertBefore", PathSegmentEdit::InsertBefore)
+      .value("Remove", PathSegmentEdit::Remove);
+  py::class_<PathEditLimits>(m, "PathEditLimits")
+      .def(py::init<>())
+      .def_readwrite("max_segments", &PathEditLimits::max_segments)
+      .def_readwrite("max_command_scalars", &PathEditLimits::max_command_scalars)
+      .def_readwrite("max_working_bytes", &PathEditLimits::max_working_bytes);
+  m.def("edit_composite_path", [](ImageJCompositePath source, PathSegmentEdit operation,
+      std::size_t index, py::handle segment, PathEditLimits limits,
+      std::shared_ptr<CancellationToken> cancellation, py::object progress, py::object checkpoint) {
+    const auto command = path_numbers(segment, 7);
+    const auto control = axis_range_python_control(std::move(cancellation), std::move(progress), std::move(checkpoint));
+    py::gil_scoped_release release;
+    return edit_composite_path(source, operation, index, command, limits, control);
+  }, py::arg("path"), py::arg("operation"), py::arg("index"), py::arg("segment") = py::tuple(),
+     py::arg("limits") = PathEditLimits{}, py::kw_only(), py::arg("cancellation") = nullptr,
+     py::arg("progress") = py::none(), py::arg("checkpoint") = py::none());
+  m.def("split_composite_path", [](ImageJCompositePath source, std::size_t index, double t,
+      PathEditLimits limits, std::shared_ptr<CancellationToken> cancellation,
+      py::object progress, py::object checkpoint) {
+    const auto control = axis_range_python_control(std::move(cancellation), std::move(progress), std::move(checkpoint));
+    py::gil_scoped_release release;
+    return split_composite_path(source, index, t, limits, control);
+  }, py::arg("path"), py::arg("index"), py::arg("t") = .5, py::arg("limits") = PathEditLimits{},
+     py::kw_only(), py::arg("cancellation") = nullptr, py::arg("progress") = py::none(), py::arg("checkpoint") = py::none());
   py::class_<ImageJCompositePath>(m, "ImageJCompositePath")
       .def(py::init([](py::handle commands, ImageJRoiLimits limits) {
         return ImageJCompositePath(path_numbers(commands, limits.max_bytes / sizeof(double)), limits);

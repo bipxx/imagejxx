@@ -1,5 +1,21 @@
 # Implementation progress
 
+**Native path authoring core, 2026-10-23 (scoped milestone):**
+C++ and Python now provide immutable command insertion/replacement/removal
+and continuous line/quadratic/cubic/close-edge subdivision, with strict grammar,
+logical resource admission, cancellation and callback-safe private results.
+Both hosts pass 360 focused Python cases without skips (43 new), three native
+groups and an independent installed SDK consumer with 36 authoring checks.
+All 828 source/test inputs match both trees. Exact owned cleanup removed
+3,717,764 temporary bytes; installed products and test evidence are retained.
+This does not add segment-authoring UI yet. Next connect the core to active,
+saved and planar ImGui drafts with preview/cancel/atomic Apply, then drawing
+and resizing, typed workflow/history/session qualification, filters and
+continuous Booleans. Original 99 requirement states remain unchanged.
+Commercial dependency checks pass; the historical Auto fingerprint gate
+remains open. See [authoring contract](parity/PATH_AUTHORING.md) and
+[scoped receipt](parity/reviews/p13f-path-authoring-core001.json).
+
 **Native root paths, 2026-10-23 (scoped integration):**
 Active, Previous and saved native paths now survive desktop V5 Open/save,
 control/numeric editing and ordinary or anisotropic linked XY rendering.
