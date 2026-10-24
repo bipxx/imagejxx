@@ -1,5 +1,13 @@
 # ImageJ and Fiji gap closure plan
 
+**Current execution plan, 2026-10-24:** use the
+[three-agent plan](THREE_AGENT_EXECUTION.md#authority-and-resume-card) and
+[P13h detailed specification](packets/P13h-interactive-path-authoring.md).
+They supersede older scheduling/resume instructions below. Exactly three agents
+own native contracts, shared ImGui behavior, and acceptance/integration; the
+coordinator is the third agent. Full M0–M13 requirements and the 99-area mapping
+remain unchanged. This is a plan update, not new implementation evidence.
+
 **ImGui path segment authoring, 2026-10-24 (scoped integration):**
 Active selections, saved ROIs and XY/XZ/YZ annotations now share exact numeric
 M/L/Q/C/Z segment controls, composed private previews, Apply/Cancel and
@@ -3695,9 +3703,9 @@ finite boundary. P06j startup is completed and immutable. Next: captured
 scientific manual threshold → regular Z subset. Full manager options and
 ROI/ZIP remain required. This card supersedes older scheduling/count snapshots.
 
-**Execution entry point:** [Sol Ultra execution guide](SOL_ULTRA.md#resume-card). It contains the single scheduling queue, bounded packet format, team ownership, validation rules and a copyable resume prompt. This document retains the full product requirements and milestone acceptance contracts; delivery tables describe workstreams.
+**Execution entry point:** [Three-agent execution plan](THREE_AGENT_EXECUTION.md#authority-and-resume-card). It owns the current queue, exactly three roles, bounded packet contracts, verification and storage rules. [P13h](packets/P13h-interactive-path-authoring.md) provides the next detailed assignments. This document retains the full product requirements and milestone acceptance contracts; older delivery tables are historical workstream descriptions.
 
-**Current boundary, 2026-10-17:** [P06j saved-workspace startup](packets/P06j-saved-workspace-startup.md#current-execution-card) has adopted its functional checkpoint and [formal/settings handoff](../build/p06j-001/formal-adoption002/adoption001.json):166 actual fields across four contexts, two startup consumers/eight consumer contexts and45 eligible owned sources (31 product/public-SDK plus14 support). Matching wheel99 and installed API12 pass; preserve native17, source-Python197 passed/one existing skip, actual ImGui20, normal OS-launch24, public SDK6 plus its settings consumer and actual40-definition export. The final source/member/notices gate is open at this freeze. The [current final receipt](../build/p06j-001/final-distribution001.json) controls subsequent artifact readiness: only a passed receipt matching these source/product identities closes that boundary; absence or any other state leaves it open. Preserve [P06i's qualified final receipt](../build/p06i-001/final-distribution001.json) and immutable789-source/98-wheel/54-SDK/25-standalone products, P06h's774-source/97-wheel/53-SDK handoff and P06g's729-source/103-wheel/52-SDK handoff. P06g's generic numerical fixture projection and all broader family/platform/performance work remain separately open. All99 families and eligible pinned Fiji/M0 remain required:40 in progress,59 open,0 complete. The active card and single queue own scheduling.
+**Historical boundary, 2026-10-17 (superseded for scheduling):** [P06j saved-workspace startup](packets/P06j-saved-workspace-startup.md#current-execution-card) has adopted its functional checkpoint and [formal/settings handoff](../build/p06j-001/formal-adoption002/adoption001.json):166 actual fields across four contexts, two startup consumers/eight consumer contexts and45 eligible owned sources (31 product/public-SDK plus14 support). Matching wheel99 and installed API12 pass; preserve native17, source-Python197 passed/one existing skip, actual ImGui20, normal OS-launch24, public SDK6 plus its settings consumer and actual40-definition export. The final source/member/notices gate is open at this freeze. The [current final receipt](../build/p06j-001/final-distribution001.json) controls subsequent artifact readiness: only a passed receipt matching these source/product identities closes that boundary; absence or any other state leaves it open. Preserve [P06i's qualified final receipt](../build/p06i-001/final-distribution001.json) and immutable789-source/98-wheel/54-SDK/25-standalone products, P06h's774-source/97-wheel/53-SDK handoff and P06g's729-source/103-wheel/52-SDK handoff. P06g's generic numerical fixture projection and all broader family/platform/performance work remain separately open. All99 families and eligible pinned Fiji/M0 remain required:40 in progress,59 open,0 complete. The active card and single queue own scheduling.
 
 **Sol Ultra review, 2026-10-12:** keep one integrating child, bounded disjoint worker outputs and one root integration owner. Load the active card and consumed contracts; retrieve history for a specific dependency or invalidation. Ready actions proceed to implementation or their declared gate; repeated preparation requires changed evidence. Reuse generic tools and unchanged evidence by verified identity, with explicit source-only package qualification where appropriate. Update entry links together and keep live status in the active card. Review prose with traceability/link/preservation checks; product acceptance requires executed gates. Detailed P00/P01 contracts remain in [their reference](SOL_ULTRA_WORKSTREAMS.md). Configuration, filtering, selections, slicing, XYZ/CZT, all UI behavior and every commercially eligible pinned Fiji/M0 discovery remain required.
 
@@ -3708,7 +3716,7 @@ The native document/controller model owns eager-Z editing, publication and histo
 This document defines the acceptance contract. Implementation has started and is tracked in [implementation progress](IMPLEMENTATION.md) and the [coverage inventory](parity/inventory.json). The dated audit remains the original baseline; partial work does not certify a milestone complete. The **2026-10-12 Sol Ultra review** aligns the remaining work and implementation handoffs with the current packet, while preserving the original requirements.
 
 The milestone sequence below describes dependencies and product scope. Use the
-[execution queue](SOL_ULTRA.md#execution-queue) to choose the next packet;
+[execution queue](THREE_AGENT_EXECUTION.md#ordered-queue-and-complete-delivery-horizon) to choose the next packet;
 independent work can proceed when its concrete prerequisites pass.
 
 1. **Freeze the complete reference inventory and commercial eligibility, M0.** Expand the 99 audit areas into commands, options, tools, formats and plugin workflows. Pin ImageJ and the selected Fiji distribution, including its update sites.
@@ -3718,7 +3726,7 @@ independent work can proceed when its concrete prerequisites pass.
 5. **Finish viewers, large-data and Fiji workflows, M9–M11.** Deliver native 3D, bounded-memory virtual/pyramid sources and every eligible pinned plugin workflow, including capabilities found beyond the ten highlighted families.
 6. **Finish automation and the release gate, M12–M13.** Complete workflow/script/macro/plugin tools and certify numerical, UI, compatibility, performance, license and installed-package coverage. Recording hooks and these checks accompany earlier deliveries.
 
-The milestone sections give the requirements; the [current gap summary](#current-gap-summary) describes acceptance status. The [execution queue](SOL_ULTRA.md#execution-queue) chooses the next bounded packet. Native/Python/SDK evidence covers the shared owner, resolved targets and plane executor in the headless controller and existing eager-Z desktop. M0 now has verified archive pins and three reproducible candidate manifests. Finish the remaining execution and reference contracts while delivering configuration, editable selections and linked XYZ interactions against the existing native owner. Scientific desktop controls and full upstream coverage remain required.
+The milestone sections give the requirements; the [current gap summary](#current-gap-summary) describes acceptance status. The [execution queue](THREE_AGENT_EXECUTION.md#ordered-queue-and-complete-delivery-horizon) chooses the next bounded packet. Native/Python/SDK evidence covers the shared owner, resolved targets and plane executor in the headless controller and existing eager-Z desktop. M0 now has verified archive pins and three reproducible candidate manifests. Finish the remaining execution and reference contracts while delivering configuration, editable selections and linked XYZ interactions against the existing native owner. Scientific desktop controls and full upstream coverage remain required.
 
 ## Scope and completion rule
 
@@ -3733,26 +3741,28 @@ An audit area is complete only when **all its required options** are available t
 
 ## Current gap summary
 
-The recorded inventory checked on **2026-10-21** contains **99 families: 44 in progress, 55 open and 0 complete**. These are family counts, not percentages of implemented commands or estimates of remaining effort. An open family can already contain useful kernels or controls; it still needs its full option and interaction contract. P06k adds partial G021 manager verification; no family is complete.
+The recorded inventory checked on **2026-10-24** contains **99 families: 47 in progress, 52 open and 0 complete**. These are family counts, not percentages of implemented commands or estimates of remaining effort. An open family can already contain useful kernels or controls; it still needs its full option and interaction contract. The latest scoped product milestone is p13g. Use the [three-agent queue](THREE_AGENT_EXECUTION.md) for current work; no family is complete.
 
-The [P06j formal/settings adoption](../build/p06j-001/formal-adoption002/adoption001.json)
+Historical context: the [P06j formal/settings adoption](../build/p06j-001/formal-adoption002/adoption001.json)
 retains79 requirements/35 surface contracts,140 surface proofs,25 run bindings
 and49 verification runs. Four current proofs bind166 actual fields. There are
 four definition bindings, eight live assignments/eight consumer contracts and32
 consumer proofs; two startup consumers add eight current contexts. The actual40-
 definition export is bound separately from immutable historical38-definition
 exports. All43 historical ownership obligations remain, plus two additions=45.
-Scoped eligibility covers45 owned sources; no family is complete. Final artifact
-readiness is owned solely by the current final receipt described above.
+Scoped eligibility covered45 owned sources at that checkpoint; no family was
+complete. These are historical identities, not current artifact availability.
+The current full plan gate first refuses retired G016 evidence, as recorded in
+[the p13g receipt](parity/reviews/p13g-path-segment-ui001.json).
 
 | Audit families | In progress / open | Required closure work | Milestones |
 | --- | --- | --- | --- |
 | G001–G012 Configuration and defaults | 12 / 0 | Consumed preferences for appearance, tools, conversion, binary processing, measurements, files and resources; portable configuration, reset/import/export, shortcuts and startup behavior. | M1, M2 and each setting's consuming feature |
 | G013–G025 Selections and pixel editing | 7 / 6 | Complete tools, move/resize/rotate and vertex editing, numeric properties, Boolean regions, fitting/conversion, ROI manager/positions/interchange, movable paste, drawing, text and overlays. | M2, M4–M8 as assigned below |
-| G026–G041 Slicing, axes and viewers | 6 / 10 | Linked calibrated XY/XZ/YZ input, axis-aligned/oblique/curved reslice, stack organization, projection/montage/animation, C/Z/T and composites, profiles, 3D and large-source viewing. | M1, M3, M5, M7–M10 |
-| G042–G065 Processing and display | 14 / 10 | Every 2D/3D filter and threshold option; specialized previews and targets, background/contrast, binary/maxima/frequency/equations, display/LUT/type conversion, geometry, calculator and zoom/pan. | M1–M6, M8 as assigned below |
-| G066–G073 Analysis and annotations | 1 / 7 | Configurable calibrated measurements and particles, histograms/profiles, linked results/plots, annotation utilities and analysis tools. | M1, M3–M7 |
-| G074–G089 Files and application workflows | 3 / 13 | Format/variant and metadata coverage, scientific/sequence I/O, interchange, recovery and printing; menus/windows/accessibility, recording/batch/macros/extensions, jobs and Python control. | M1–M3, M4–M6, M8–M10, M12 |
+| G026–G041 Slicing, axes and viewers | 7 / 9 | Linked calibrated XY/XZ/YZ input, axis-aligned/oblique/curved reslice, stack organization, projection/montage/animation, C/Z/T and composites, profiles, 3D and large-source viewing. | M1, M3, M5, M7–M10 |
+| G042–G065 Processing and display | 15 / 9 | Every 2D/3D filter and threshold option; specialized previews and targets, background/contrast, binary/maxima/frequency/equations, display/LUT/type conversion, geometry, calculator and zoom/pan. | M1–M6, M8 as assigned below |
+| G066–G073 Analysis and annotations | 2 / 6 | Configurable calibrated measurements and particles, histograms/profiles, linked results/plots, annotation utilities and analysis tools. | M1, M3–M7 |
+| G074–G089 Files and application workflows | 4 / 12 | Format/variant and metadata coverage, scientific/sequence I/O, interchange, recovery and printing; menus/windows/accessibility, recording/batch/macros/extensions, jobs and Python control. | M1–M3, M4–M6, M8–M10, M12 |
 | G090–G099 Highlighted Fiji families | 0 / 10 | BigDataViewer, 3D Viewer, MorphoLibJ, registration, stitching, deconvolution, TrackMate, AnalyzeSkeleton, Coloc 2 and interactive/trainable segmentation, including their complete eligible options and UI workflows. | M9–M11 |
 
 The [full traceability table](#traceability-for-all-99-audited-capability-areas) maps each family's ID, name and owning milestones. Its exact required work remains in the [coverage inventory](parity/inventory.json) and dated audit; the table's abbreviated names do not replace those requirements. M0 must also assign every eligible command discovered beyond these families. The historical [ImageJ user guide](https://imagej.net/ij/docs/guide/toc.html) supplies a menu/tool checklist; the pinned source and running reference determine the actual version's behavior.
@@ -4168,7 +4178,7 @@ validators. All applicable C++ API, Python API and shared ImGui surfaces remain
 required for every delivered slice.
 
 The near-term sequence is selected in the
-[execution queue](SOL_ULTRA.md#execution-queue): preserve P05l's verified
+[execution queue](THREE_AGENT_EXECUTION.md#ordered-queue-and-complete-delivery-horizon): preserve P05l's verified
 scoped exit, Max/Min's verified runtime/artifact exits and Auto's qualified
 checkpoint and rank/P06g's passed finite handoffs. The active card linked by that
 queue owns the next action; do not restart prior green gates.
@@ -4665,7 +4675,7 @@ After this editor increment, the dependency table defines prerequisites for scie
 
 ## Immediate implementation backlog
 
-These packages retain the scope of the immediate backlog; use the [execution queue](SOL_ULTRA.md#execution-queue) to select a bounded child. Their IDs describe planned work, not completion records. Preserve all original G001–G099 requirements and add command/option requirements under them as M0 proceeds. A package containing several services or workflows requires multiple reviewable packets and evidence before its acceptance status changes.
+These packages retain the scope of the immediate backlog; use the [execution queue](THREE_AGENT_EXECUTION.md#ordered-queue-and-complete-delivery-horizon) to select a bounded child. Their IDs describe planned work, not completion records. Preserve all original G001–G099 requirements and add command/option requirements under them as M0 proceeds. A package containing several services or workflows requires multiple reviewable packets and evidence before its acceptance status changes.
 
 | Order / package | Work and implementation boundary | Acceptance evidence |
 | --- | --- | --- |
@@ -5211,13 +5221,13 @@ M13 closes the project only when:
 
 ## Delivery sequence
 
-Follow the [single execution queue](SOL_ULTRA.md#execution-queue): retain every accepted slice through P05c and P01c1 exact/finite-float tooling plus P05b's local receipt. The [P05g card](packets/P05g-integer-range-reslice.md#current-execution-card) retains its qualified integer-range local exit and archive; P05e retains its adopted scoped Boolean evidence; [P04c](packets/P04c-marked-session-interchange.md#current-execution-card) retains its verified local exit; [P04b](packets/P04b-session-metadata-projection.md#current-execution-card), [P04a](packets/P04a-atomic-session-save.md#current-execution-card) and [P05d](packets/P05d-xyz-numeric-zoom.md#current-execution-card) retain historical verified source/artifact pairings. Preserve [P02a's recorded checkpoint](packets/P02a-gaussian-command.md#current-execution-card) and its remaining requirements. Ready reference/foundation/editor/scientific/viewer/Fiji/automation children can prepare disjoint outputs under the guide's ownership rules, with one integrating child. The prerequisite contracts above determine when an individual packet can start; unfinished unrelated certification validators do not prohibit a locally ready editor feature. Preserve native ownership and existing adapters. Complete M0's entire eligible baseline and all certification gates before claiming parity, while continuing feature-local inventory work with each delivery.
+Follow the [single execution queue](THREE_AGENT_EXECUTION.md#ordered-queue-and-complete-delivery-horizon): retain every accepted slice through P05c and P01c1 exact/finite-float tooling plus P05b's local receipt. The [P05g card](packets/P05g-integer-range-reslice.md#current-execution-card) retains its qualified integer-range local exit and archive; P05e retains its adopted scoped Boolean evidence; [P04c](packets/P04c-marked-session-interchange.md#current-execution-card) retains its verified local exit; [P04b](packets/P04b-session-metadata-projection.md#current-execution-card), [P04a](packets/P04a-atomic-session-save.md#current-execution-card) and [P05d](packets/P05d-xyz-numeric-zoom.md#current-execution-card) retain historical verified source/artifact pairings. Preserve [P02a's recorded checkpoint](packets/P02a-gaussian-command.md#current-execution-card) and its remaining requirements. Ready reference/foundation/editor/scientific/viewer/Fiji/automation children can prepare disjoint outputs under the guide's ownership rules, with one integrating child. The prerequisite contracts above determine when an individual packet can start; unfinished unrelated certification validators do not prohibit a locally ready editor feature. Preserve native ownership and existing adapters. Complete M0's entire eligible baseline and all certification gates before claiming parity, while continuing feature-local inventory work with each delivery.
 
 Milestones are acceptance gates, not calendar promises. Produce implementation estimates after M0 exposes command-level work and M1 establishes the cost of the shared foundations; track progress by completed requirements and release evidence.
 
 ## Next reviewable deliveries
 
-This table describes delivery outcomes and regression foundations; its row numbers do not schedule implementation. Use the [execution queue](SOL_ULTRA.md#execution-queue) and split these outcomes into bounded packets without reducing the M0–M13 scope. Each delivery must have a usable C++ contract, the applicable shared ImGui controls, Python exposure, persistence/migration coverage and recorded checks before its requirements are marked complete. Run M0 reference/option/license work with each delivery and freeze the complete eligible baseline before claiming editor parity.
+This table describes delivery outcomes and regression foundations; its row numbers do not schedule implementation. Use the [execution queue](THREE_AGENT_EXECUTION.md#ordered-queue-and-complete-delivery-horizon) and split these outcomes into bounded packets without reducing the M0–M13 scope. Each delivery must have a usable C++ contract, the applicable shared ImGui controls, Python exposure, persistence/migration coverage and recorded checks before its requirements are marked complete. Run M0 reference/option/license work with each delivery and freeze the complete eligible baseline before claiming editor parity.
 
 | Workstream | Delivery | Concrete completion evidence |
 | --- | --- | --- |
@@ -5341,7 +5351,7 @@ Deliveries 3a and 3b have native/Python and installed-SDK evidence for compact r
 
 ### Delivery 3 implementation batches
 
-The following batches describe foundation contracts. Existing verified 3a/3b implementations remain regression gates; execute remaining work through bounded children in the [execution queue](SOL_ULTRA.md#execution-queue). Each batch keeps the eager-Z owner and legacy behavior working; the whole delivery closes only after every batch passes. C/Z/T types and headless targets belong here, while scientific desktop navigation and channel panels remain M5.
+The following batches describe foundation contracts. Existing verified 3a/3b implementations remain regression gates; execute remaining work through bounded children in the [execution queue](THREE_AGENT_EXECUTION.md#ordered-queue-and-complete-delivery-horizon). Each batch keeps the eager-Z owner and legacy behavior working; the whole delivery closes only after every batch passes. C/Z/T types and headless targets belong here, while scientific desktop navigation and channel panels remain M5.
 
 | Batch | Implementation boundary | Review gate |
 | --- | --- | --- |

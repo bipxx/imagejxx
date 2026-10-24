@@ -1,5 +1,14 @@
 # Sol Ultra execution guide
 
+**Current execution authority, 2026-10-24:** the
+[three-agent execution plan](THREE_AGENT_EXECUTION.md#authority-and-resume-card)
+and [P13h specification](packets/P13h-interactive-path-authoring.md) replace this
+file's older queues, resume prompts and root-plus-three-worker ownership rules.
+Use exactly three execution agents total, with the coordinator in role C.
+The material below retains historical contracts and observations; old build
+paths may now be retired evidence. Do not recreate historical build generations.
+Model and effort remain the user's runtime choices.
+
 **Saved-area pointer-budget checkpoint, 2026-10-20 (work in progress):**
 new pointer gestures and no-movement draft recreation now read current resource
 settings. A saved-area panel opened under a higher budget previously admitted a
@@ -3063,11 +3072,13 @@ scientific manual threshold → regular Z subset. Full manager options and ROI/Z
 remain required. This card supersedes older P06j entry prompts/count snapshots;
 do not repeat green historical gates for status prose.
 
-Use this guide with the user's selected Sol model and Ultra. [PLAN.md](PLAN.md) owns the full product requirements; this guide owns scheduling and execution. Repository instructions do not change the host's model configuration.
+The following guide records the earlier Sol Ultra workflow. [PLAN.md](PLAN.md) owns the full product requirements; the [three-agent plan](THREE_AGENT_EXECUTION.md) now owns scheduling and execution. Repository instructions do not change the host's model configuration.
 
 Ultra supports parallel subagents for independent parts of complex work. OpenAI recommends bounded assignments, distilled results and care with concurrent writes. This guide applies that guidance through disjoint ownership, one integration owner and small verified milestones. Sources checked on **2026-10-12**: [model guidance](https://learn.chatgpt.com/docs/models), [subagent guidance](https://learn.chatgpt.com/docs/agent-configuration/subagents), [long-running implementation guidance](https://developers.openai.com/blog/run-long-horizon-tasks-with-codex). Preserve the user's selected Sol version and effort; these instructions do not select or upgrade a model.
 
 ## Resume card
+
+Current resume card: [three-agent execution](THREE_AGENT_EXECUTION.md#authority-and-resume-card). The table below is a historical entry index; it does not select the next task.
 
 | Read first | Purpose |
 | --- | --- |
@@ -3086,11 +3097,11 @@ Ultra supports parallel subagents for independent parts of complex work. OpenAI 
 
 The active implementation goal is **implement the updated plan**. A plan review changes instructions and records observed status; it adds no product acceptance. Implementation was previously authorized. Honor later user steering or an explicit pause; documentation alone cannot change the goal's status.
 
-Preserve all **99 audited families** and every commercially eligible pinned Fiji/M0 discovery. The recorded inventory has 40 families in progress, 59 open and 0 complete. Configuration, filters, selections, slicing, XYZ/CZT, every applicable UI option, scientific workflows and release evidence remain required. Copyleft alone is not a non-commercial restriction; review concrete versions and their transitive code, models and assets before incorporation. Pending, unlicensed, NC and research-only material cannot enter the product.
+Preserve all **99 audited families** and every commercially eligible pinned Fiji/M0 discovery. The inventory checked on 2026-10-24 has 47 families in progress, 52 open and 0 complete. Configuration, filters, selections, slicing, XYZ/CZT, every applicable UI option, scientific workflows and release evidence remain required. Copyleft alone is not a non-commercial restriction; review concrete versions and their transitive code, models and assets before incorporation. Pending, unlicensed, NC and research-only material cannot enter the product.
 
 C++17 owns processing, documents, storage, coordinates, jobs and history. The standalone C++ desktop and optional Python launcher share the same **Dear ImGui** panels. Python exposes the core and compatibility adapters. Preserve public defaults, action records, settings and v2 sessions; implement migrations explicitly.
 
-On resume, read the active card, selected inventory records and relevant PLAN contract only. Check live handles and entry states; choose the card's next action. In this four-slot session, root can delegate up to three independent supporting outputs with exact ownership while advancing integration. Use the actual slot limit in another session. Keep verbose logs and historical hashes in linked artifacts; return a compact result with changed files, actual checks, unresolved issue and next action. Load historical details only to settle a specific dependency or invalidation.
+On resume, read the [current three-agent card](THREE_AGENT_EXECUTION.md#authority-and-resume-card), selected inventory records and relevant PLAN contract only. Check live handles and entry states. Use exactly three execution agents total: root occupies C and delegates A/B with exact ownership. Keep verbose logs and historical hashes in linked artifacts; return a compact result with changed files, actual checks, unresolved issue and next action. Load historical details only to settle a specific dependency or invalidation.
 
 The active card owns changing status and commands. This guide owns execution rules, PLAN owns requirements, and receipts retain immutable observations. Other entry documents link to the card instead of copying its live ledger. If the card is stale, reconcile it with actual terminal reports and identities before dependent work; a summary cannot promote a failed or unexecuted gate.
 
@@ -3101,6 +3112,8 @@ The [P06a card](packets/P06a-scientific-session-codec.md#current-execution-card)
 P02a requires all **61 shared UI variants / 122 installed launch observations**, plus its API, reference, resource, scientific, platform and release obligations. A passing subset gives credit only to that subset. Generated fixtures, compiled code, developer-executable tests and installed reference matches are different evidence states. Full family and release closure follow PLAN's completion rule.
 
 ## Execution queue
+
+This queue is historical. Follow the [current ordered queue](THREE_AGENT_EXECUTION.md#ordered-queue-and-complete-delivery-horizon); preserve these older contracts without recreating retired evidence.
 
 This is the single scheduling queue. PLAN's milestone, ticket and delivery tables define scope and dependencies. Instantiate one bounded child before implementation; a workstream row requires several patches when it contains independent outcomes.
 
@@ -3167,6 +3180,8 @@ separate exits. Other horizon rows create no parallel Window integrations, and
 full split/merge or volume work is not a blanket projection prerequisite.
 
 ### Near-term delivery order
+
+Historical delivery order; superseded by the [three-agent queue](THREE_AGENT_EXECUTION.md#ordered-queue-and-complete-delivery-horizon).
 
 The following makes the queue executable. The active card remains the sole live
 gate ledger. Only the next two product candidates need detailed entry contracts;
@@ -3321,9 +3336,9 @@ At each handoff, identify the actual advance: changed product behavior, a resolv
 
 ### Sol Ultra team contract
 
-Use the host's available slots; this session has **four including root**. Root owns the active integration packet, shared files, source freezes, builds/installations and acceptance. Delegate independent production, assertion/reference work and read-only review with distinct outputs. Nested workers use the same capacity. Reuse workers for related follow-ups; allocate slots to useful independent outputs and recheck capacity when resuming in another session.
+The current contract uses **exactly three execution agents including root**. Follow the [A/B/C ownership table](THREE_AGENT_EXECUTION.md#exactly-three-execution-agents): A owns native contracts and feature bindings; B owns shared ImGui and host wiring; root occupies C for independent acceptance, registration, source freezes, builds/installations and integration. Do not create nested workers or a fourth integrator.
 
-Workers inherit the selected model/reasoning settings unless the user or applicable configuration chooses otherwise. Give each worker the active contract and relevant extracts. Tell them they share the checkout, must preserve others' edits and must request shared-file changes from root. Assign one owner per shared file; root coordinates Window, CMake, CLI, registry, settings and bindings.
+Workers inherit the selected model/reasoning settings unless the user or applicable configuration chooses otherwise. Give each worker the active contract and relevant extracts. Tell them they share the checkout and must preserve others' edits. Assign one owner per file under the current packet; request changes from that owner. B owns Window/CLI/desktop Python, A owns feature bindings, and C owns CMake/central registration and integration. Historical root-only file assignments below are superseded.
 
 Each assignment ends at its named deliverable and write hold. Workers return source changes, actual checks/report paths, concrete findings and next action. Root reviews the named deliverables against the frozen contract once, integrates them and runs affected gates. Name any required producer/assertion pairing in the packet. Source-complete work has no runtime or acceptance credit.
 
@@ -3349,13 +3364,7 @@ ownership. Return changes/hashes, actual results/paths, findings and next action
 
 ### Ready parallel work
 
-Read the active [P06j card](packets/P06j-saved-workspace-startup.md#current-execution-card)
-and its next executable action. P06g has a passed finite artifact handoff;
-retain its generic numerical projection as the separate supporting assignment.
-Root is the sole shared Application/Document/Window/CMake/bindings/build/install/manifest owner. Use at
-most three workers, with exact disjoint files and a declared write hold. Earlier
-products, failures and obligations are indexed in [Current checkpoint](#current-checkpoint);
-open their history only for a consumed dependency or invalidation.
+Use the [current three-agent queue](THREE_AGENT_EXECUTION.md#ordered-queue-and-complete-delivery-horizon) and [P13h integration order](packets/P13h-interactive-path-authoring.md#integration-order-and-scoped-exit). The four-role table below records historical P06j assignments only; it does not authorize a fourth agent or current shared-file writes. Earlier products, failures and obligations retain their original identities and availability limitations.
 
 | Phase | Root | Worker slot1 | Worker slot2 | Worker slot3 |
 | --- | --- | --- | --- | --- |
@@ -3396,6 +3405,8 @@ Use the [Windows runbook](SOL_ULTRA_WINDOWS.md#windows-validation-runbook) for a
 The [artifact procedure](SOL_ULTRA_WINDOWS.md#4-record-once-and-refresh-archives-after-metadata-changes) retains this link target. Use the current packet's bound paths and identities; accepted records remain immutable.
 
 ## Copyable implementation handoff
+
+The prompt below is archived. Use the current [A/B/C task starts](packets/P13h-interactive-path-authoring.md#integration-order-and-scoped-exit); do not execute this older P06j queue or recreate its retired build paths.
 
 ~~~text
 Execute docs/SOL_ULTRA.md with my selected Sol model and Ultra.

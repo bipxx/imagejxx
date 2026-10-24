@@ -1,5 +1,12 @@
 # Implementation progress
 
+**Current execution plan, 2026-10-24:** see the
+[three-agent queue](THREE_AGENT_EXECUTION.md) and
+[next packet specification](packets/P13h-interactive-path-authoring.md).
+The latest product milestone remains p13g below. This planning review changes
+no product behavior, historical assertions, evidence fingerprints or capability
+status: the inventory remains 47 in progress, 52 open and 0 complete.
+
 **ImGui path segment authoring, 2026-10-24 (scoped integration):**
 Active selections, saved ROIs and XY/XZ/YZ annotations now share exact numeric
 M/L/Q/C/Z segment controls, composed private previews, Apply/Cancel and
@@ -1941,7 +1948,7 @@ The regular image canvas also displays calibrated aspect and world coordinates a
 
 Navigation does not mark pixels dirty or add undo steps. Pixel undo/redo preserves the current crosshair, camera and slice, with bounds normalization after dimension changes. Views round-trip through native/Python session interchange.
 
-The new orthogonal panels currently navigate Z-stack documents. Full desktop C/Z/T, projected/interactive ROIs on orthogonal planes, oblique/curved controls and all remaining stack options are still required. XY annotations can display in the viewer; selection editing continues through the regular image canvas. GPU volume/surface rendering is a later milestone.
+The original XYZ increment described above began with Z-stack navigation. Later scientific navigation and typed planar/path editing added C/Z/T contexts and editable annotations on XY/XZ/YZ; see [planar path editing](parity/PLANAR_PATH_UI.md), [root paths](parity/NATIVE_ROOT_PATHS.md) and [segment controls](parity/PATH_SEGMENT_UI.md). Interactive path drawing/resize, full stack/channel options, oblique/curved controls and GPU volume/surface viewing remain incomplete. The [three-agent plan](THREE_AGENT_EXECUTION.md) owns their delivery order.
 
 ## Efficient Python document control
 

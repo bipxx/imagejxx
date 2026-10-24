@@ -1,5 +1,13 @@
 # Planar path viewing and control-point editing
 
+**Current status, 2026-10-24:** the p13b results below are historical.
+[Annotation workflow intent](ANNOTATION_WORKFLOW.md),
+[root desktop paths](NATIVE_ROOT_PATHS.md) and
+[segment editing](PATH_SEGMENT_UI.md) have since supplied their scoped
+integrations. Segment insertion/removal is now available. Interactive drawing
+and affine resize are the next [P13h packet](../packets/P13h-interactive-path-authoring.md);
+typed path filters/resources and continuous Booleans remain open.
+
 The standalone C++ application and optional Python ImGui host share native
 rendering and editing of continuous planar paths in XY, XZ and YZ. Native
 document entry and typed planar/import publication admit these paths; active,
@@ -19,8 +27,9 @@ Endpoints and curve controls can be dragged or edited through the existing
 edit keeps the selected control index; cancellation and unchanged edits add no
 history. Invalid coordinates refuse before publication. Undo/redo and native
 session save/reopen retain the original commands, opaque metadata and pixels.
-Adding or removing path segments remains unavailable and its controls are
-disabled. Typed ROI import/export previews use the same scale-aware renderer.
+At the p13b checkpoint, adding/removing segments was unavailable; p13g now
+supplies those controls through the shared segment editor. Typed ROI import/export
+previews use the same scale-aware renderer.
 
 Qualification uses actual ImGui input in both launch modes on Windows and
 Linux: XYZ rendering with emitted draw buffers, pointer movement and cancel,
@@ -34,7 +43,8 @@ The subsequent [native bare import integration](NATIVE_BARE_PATH_IMPORT.md)
 adds explicit per-member composite decoding to the import queue, with source
 mapping, previews and provenance retained through both UI hosts.
 
-Remaining integration work, in dependency order:
+Historical p13b follow-on list (the current queue is in the
+[three-agent plan](../THREE_AGENT_EXECUTION.md)):
 
 1. Add versioned native workflow intent for planar paths and saved native ROI
    edits, including strict replay/rebind and atomic batch behavior.

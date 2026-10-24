@@ -11,6 +11,9 @@ tracks configuration, selection editing, slicing, linked XY/XZ/YZ views,
 C/Z/T hyperstacks, 3D viewing and the broader Fiji workflow backlog.
 The [directional shadow guide](docs/SHADOWS.md) covers the eight native presets,
 shared desktop controls, supported pixel layouts and remaining family work.
+The [three-agent execution plan](docs/THREE_AGENT_EXECUTION.md) and
+[next detailed packet](docs/packets/P13h-interactive-path-authoring.md) define the
+current implementation queue, file ownership, behavior and acceptance checks.
 The [gap closure plan](docs/PLAN.md) assigns all 99 audited capability areas to
 milestones, dependencies and acceptance checks. Its [current gap summary](docs/PLAN.md#current-gap-summary)
 prioritizes configuration, editable selections, filtering and linked XYZ/slicing
