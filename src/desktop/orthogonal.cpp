@@ -395,13 +395,18 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
   if (ImGui::BeginTable("orthogonal_planes", 3,
                         ImGuiTableFlags_Resizable |
                             ImGuiTableFlags_SizingStretchSame)) {
+    // Native admission/publication may throw while a plane owns ImGui scopes.
+    // Unwind them before the host catches and presents the error modal.
+    struct EndPlaneTable { ~EndPlaneTable() { ImGui::EndTable(); } } endTable;
     for (int i = 0; i < 3; ++i) {
       ImGui::TableNextColumn();
       ImGui::PushID(i);
+      struct PopPlaneId { ~PopPlaneId() { ImGui::PopID(); } } popPlaneId;
       ImGui::BeginChild("plane", {0, height},
                         ImGuiChildFlags_Borders | ImGuiChildFlags_NavFlattened,
                         ImGuiWindowFlags_NoScrollbar |
                             ImGuiWindowFlags_NoScrollWithMouse);
+      struct EndPlaneChild { ~EndPlaneChild() { ImGui::EndChild(); } } endChild;
       auto &cache = caches_[i];
       cache.styledLayers = Json::array();
       cache.overlayLayers = Json::array();
@@ -473,7 +478,7 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
       try {
         savedConsumedLeft = planar_.pointer(d,
             {views[i],d.view().crosshair[fixed[i]],sizes[horizontal[i]],sizes[vertical[i]],cache.canvasId,
-             {cache.origin.x,cache.origin.y},{cache.scale.x,cache.scale.y},{cache.extent.x,cache.extent.y}},
+             {cache.origin.x,cache.origin.y},{cache.scale.x,cache.scale.y},{cache.extent.x,cache.extent.y},{a.x,a.y},{b.x,b.y},input.annotation_gui_scale},
             input.annotation_admitted && !input.read_only && input.input_enabled && input.active_document && cache.canvasVisible && !savedOwner(),plane.hovered,input.planar_publish);
       } catch (...) {planar_.cancel("error");throw;}
       if (i == 0 && savedOwner()) {
@@ -514,7 +519,7 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
               else cancelSaved();
             } else if (ImGui::IsMouseDown(ImGuiMouseButton_Left)) {
               // A click selects a vertex without inventing a delivered drag.
-              if (io.MouseDelta.x || io.MouseDelta.y) {
+              if (io.MouseDelta.x || io.MouseDelta.y || saved_roi->edit->path_transform()) {
                 event("updated");
                 if (saved_roi->update)
                   saved_roi->update(point, {io.KeyShift, io.KeyCtrl, io.KeyAlt}, transform);
@@ -610,10 +615,7 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
           d.setView({{"pan", pan}});
         }
       }
-      ImGui::EndChild();
-      ImGui::PopID();
     }
-    ImGui::EndTable();
   }
   // Every numeric, slice, pointer and wheel change has now been applied.
   // All retained draw lists receive the same final scientific XYZ this frame.
@@ -969,7 +971,7 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
     const auto importSource=d.nativeSnapshot();
     const auto importActive=input.import_preview && input.import_preview->matches(importSource,input.annotation_max_working_bytes);
     const PlanarCanvas annotationCanvas{views[i],coordinate,cache.width,cache.height,cache.canvasId,
-        {cache.origin.x,cache.origin.y},{cache.scale.x,cache.scale.y},{cache.extent.x,cache.extent.y}};
+        {cache.origin.x,cache.origin.y},{cache.scale.x,cache.scale.y},{cache.extent.x,cache.extent.y},{a.x,a.y},{b.x,b.y},input.annotation_gui_scale};
     cache.importPreviewActive=importActive;cache.importPreviewReplace=importActive && input.import_preview->replaces();
     cache.importPreviewLayers=Json::array();cache.importPreviewError.clear();
     planar_.draw(d,annotationCanvas,draw,showRois && !cache.importPreviewReplace,!importActive && !input.read_only);
@@ -1066,7 +1068,13 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
                 {"row_index", saved_roi->edit->row_index()}, {"canvas_id", cache.canvasId},
                 {"selected", selected}});
           }
-        } catch (...) { cancelSaved(); throw; }
+        } catch(const std::exception &error) {
+          if(!savedOwner() || !saved_roi->edit->original().is_path()) {cancelSaved();throw;}
+          cache.savedRoiHandles=Json::array();
+          cache.savedRoiInput["handle_error"]=error.what();
+          cache.savedRoiInput["handle_notice"]="Saved path editing: "+std::string(error.what())+
+              ". Adjust Processing memory in Preferences.";
+        }
       }
     }
     float hx = cache.origin.x +
@@ -1076,6 +1084,12 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
     draw->AddLine({hx, a.y}, {hx, b.y}, IM_COL32(255, 213, 75, 220));
     draw->AddLine({a.x, vy}, {b.x, vy}, IM_COL32(255, 213, 75, 220));
     draw->PopClipRect();
+    if(cache.savedRoiInput.contains("handle_notice")) {
+      const auto notice=cache.savedRoiInput.at("handle_notice").get<std::string>();
+      draw->AddText(ImGui::GetFont(),ImGui::GetFontSize(),
+          {a.x+8*input.annotation_gui_scale,a.y+8*input.annotation_gui_scale},IM_COL32(255,213,75,255),
+          notice.c_str(),nullptr,std::max(1.f,cache.extent.x-16*input.annotation_gui_scale));
+    }
     if (context->NavId == cache.canvasId && cache.canvasVisible)
       draw->AddRect(a, b, ImGui::GetColorU32(ImGuiCol_NavCursor), 0, 0, 2.f);
     plane.draw->PopClipRect();

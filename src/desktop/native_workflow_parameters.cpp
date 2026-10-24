@@ -44,6 +44,8 @@ struct Field {
   std::vector<char> text;
   std::vector<Json> choices;
   std::vector<std::string> choice_labels;
+  std::vector<bool> choice_enabled;
+  std::string choice_reason;
   bool boolean = false, optional = false, numeric = false, escaped = false,
        array_allowed = false;
   std::string default_kind;
@@ -72,6 +74,8 @@ struct NativeWorkflowParameters::State {
   std::vector<Field> fields;
   std::size_t cap, processing_cap;
   bool open = true, focus = true, gaussian = false, rank = false, color_stack = false, creation = false;
+  bool creation_rebind_extent = false;
+  Json creation_reference_extent;
   std::string error;
   Json bounds = Json::array();
   std::shared_ptr<const NativeWorkflowOperation> annotation_step;
@@ -119,7 +123,9 @@ struct NativeWorkflowParameters::State {
   State(const DocumentSnapshot &s, std::size_t limit, std::size_t processing) : source(s), cap(limit), processing_cap(processing) {}
   void observe(const std::string &name) {
     const auto a = ImGui::GetItemRectMin(), b = ImGui::GetItemRectMax();
+    const auto *window = ImGui::GetCurrentWindowRead(); const auto clip = window->ClipRect;
     controls[name] = {
+        {"window_name",window->Name},{"clip_rect",{clip.Min.x,clip.Min.y,clip.Max.x,clip.Max.y}},
         {"id", ImGui::GetItemID()},
         {"enabled", !(ImGui::GetCurrentContext()->LastItemData.ItemFlags &
                       ImGuiItemFlags_Disabled)},
@@ -130,6 +136,10 @@ struct NativeWorkflowParameters::State {
   NativeWorkflowOperation proposal() const {
     auto record = root;
     auto &step = record["steps"][0];
+    if(creation_rebind_extent) {
+      const auto shape=source.data().dataset.shape();
+      step["selection_creation_extent"]=Json::array({shape.t,shape.c,shape.z,shape.y,shape.x,shape.s});
+    }
     auto admit = [&] {
       std::size_t remaining = cap;
       std::function<void(const Json &, std::size_t)> visit =
@@ -320,8 +330,12 @@ NativeWorkflowParameters::NativeWorkflowParameters(
           parse_rank_filter_method(raw.at("method").get<std::string>()),
           raw.at("radius").get<double>()};
   }
-  if(operation.operation=="selection_creation")
+  if(operation.operation=="selection_creation") {
+    const auto extent=detail::selection_creation_workflow_extent(operation,cap/8);
     operation.selection_creation=detail::selection_creation_workflow_request(operation,cap/8);
+    if(operation.selection_creation->geometry==SelectionCreationGeometry::NativePathV4)
+      operation.selection_creation_extent=extent;
+  }
   if(operation.operation=="rgb_contrast_apply") {
     operation.parameters=detail::rgb_contrast_apply_workflow_parameters(detail::rgb_contrast_apply_workflow_options(operation));
   } else if(operation.operation=="contrast_apply") {
@@ -353,6 +367,7 @@ NativeWorkflowParameters::NativeWorkflowParameters(
   auto &s = *state_;
   s.root = metadataJson(program.record());
   auto &step = s.root["steps"][0];
+  if(operation.selection_creation_extent)s.creation_reference_extent=step["selection_creation_extent"];
   auto add = [&](std::string name, std::string label, std::string kind,
                  Json value, const OperationParameter *descriptor = nullptr) {
     Field field;
@@ -396,16 +411,28 @@ NativeWorkflowParameters::NativeWorkflowParameters(
   if(operation.operation=="selection_creation") {
     const auto &choice=step["selection_creation"];
     const auto &candidate=choice["candidate"];
+    const bool pathForm=candidate["kind"]=="path",nativeForm=choice["geometry"]=="native_path_v4";
     add("operation","Selection mode","text",choice["operation"]);
     s.fields.back().choices={"replace","add","subtract","intersect","xor"};
     s.fields.back().choice_labels={"Replace","Add","Subtract","Intersect","XOR"};
+    if(nativeForm) {
+      s.fields.back().choice_enabled={true,false,false,false,false};
+      s.fields.back().choice_reason="Paths currently support Replace. Other selection combinations are not available yet.";
+    }
     add("geometry","Geometry","text",choice["geometry"]);
-    s.fields.back().choices={"automatic","canvas_v1","full_region_v3"};
-    s.fields.back().choice_labels={"Automatic","Canvas","Preserve off-image geometry"};
+    s.fields.back().choices={"automatic","canvas_v1","full_region_v3","native_path_v4"};
+    s.fields.back().choice_labels={"Automatic","Canvas","Preserve off-image geometry","Native continuous path"};
+    s.fields.back().choice_enabled={!(pathForm || nativeForm),!(pathForm || nativeForm),!(pathForm || nativeForm),nativeForm};
+    s.fields.back().choice_reason=nativeForm
+        ? "This step keeps its current geometry mode. Changing that mode is not available in this editor yet."
+        : "Creating a path from this shape is not available in this editor yet.";
     add("kind","Shape","text",candidate["kind"]);
-    s.fields.back().choices={"rectangle","ellipse","rounded_rectangle","polygon","freehand"};
-    s.fields.back().choice_labels={"Rectangle","Ellipse","Rounded rectangle","Polygon","Freehand"};
-    add("points","Vertices (x, y pairs)","structured",candidate["points"]);
+    s.fields.back().choices={"rectangle","ellipse","rounded_rectangle","polygon","freehand","path"};
+    s.fields.back().choice_labels={"Rectangle","Ellipse","Rounded rectangle","Polygon","Freehand","Native path"};
+    s.fields.back().choice_enabled={!pathForm,!pathForm,!pathForm,!pathForm,!pathForm,pathForm};
+    s.fields.back().choice_reason="Converting between paths and other shapes is not available here yet. You can edit coordinates, width and attributes.";
+    if(candidate["kind"]=="path")add("path","Native M/L/Q/C/Z commands","structured",candidate["path"]);
+    else add("points","Vertices (x, y pairs)","structured",candidate["points"]);
     add("width","Stroke width","real",candidate["width"]);
     auto attributes=candidate["attributes"];Json corner=0;
     if(candidate["kind"]=="rounded_rectangle") {
@@ -503,6 +530,16 @@ void NativeWorkflowParameters::draw(
       "the original capture and live image stay unchanged. Confirm this and "
       "later steps again.");
   if(s.color_stack)ImGui::TextWrapped("Preserving Z and time retains physical calibration. ImageJ layouts can turn time/channels into Z or consume Z as components; they require explicit calibration reset and, when needed, XZ/YZ annotation removal. Originals remain as provenance. Authored choices use the current stage view.");
+  if(!s.creation_reference_extent.is_null()) {
+    const auto shape=s.source.data().dataset.shape();
+    const Json current=Json::array({shape.t,shape.c,shape.z,shape.y,shape.x,shape.s});
+    ImGui::Text("Captured path extent TCZYXS: %s",s.creation_reference_extent.dump().c_str());
+    ImGui::Text("Current stage extent: %s",current.dump().c_str());
+    if(current!=s.creation_reference_extent) {
+      ImGui::BeginDisabled(!enabled);ImGui::Checkbox("Use current stage extent (explicit rebind)",&s.creation_rebind_extent);
+      s.observe("confirm_creation_extent");ImGui::EndDisabled();
+    }
+  }
   ImGui::BeginChild("Parameter fields",
                     {0, std::max(80.f, ImGui::GetContentRegionAvail().y - 95)},
                     false);
@@ -569,9 +606,12 @@ void NativeWorkflowParameters::draw(
           const auto value =
               choice.is_string() ? choice.get<std::string>() : choice.dump();
           const auto label=i<field.choice_labels.size()?field.choice_labels[i]:value;
+          const bool available=field.choice_enabled.empty() || field.choice_enabled.at(i);
+          ImGui::BeginDisabled(!available);
           if (ImGui::Selectable(label.c_str(), value == current))
             field.write(value);
           s.observe(field.name + ".choice." + std::to_string(i));
+          ImGui::EndDisabled();
         }
         ImGui::EndCombo();
       }
@@ -608,6 +648,7 @@ void NativeWorkflowParameters::draw(
                        field.text.size());
     if (field.kind != "bool")
       s.observe(field.name);
+    if(!field.choice_reason.empty())ImGui::TextWrapped("%s",field.choice_reason.c_str());
     ImGui::PopID();
   }
   ImGui::EndDisabled();
@@ -643,9 +684,10 @@ Json NativeWorkflowParameters::diagnostics() const {
          {"bytes", std::strlen(f.text.data())},
          {"text",
           std::strlen(f.text.data()) <= 256 ? Json(f.text.data()) : Json()},
-         {"boolean", f.boolean}});
+         {"boolean", f.boolean},{"choice_enabled",f.choice_enabled},{"choice_reason",f.choice_reason}});
   return {{"visible", s.open},      {"parameters", true}, {"fields", fields},
           {"controls", s.controls}, {"window", s.bounds}, {"error", s.error},
+          {"creation_reference_extent",s.creation_reference_extent},{"creation_rebind_extent",s.creation_rebind_extent},
           {"gaussian", s.gaussian}, {"rank", s.rank}, {"color_stack",s.color_stack},{"annotation",bool(s.annotation_step)}};
 }
 } // namespace imagejxx::desktop

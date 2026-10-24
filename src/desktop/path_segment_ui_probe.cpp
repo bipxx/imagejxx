@@ -40,6 +40,9 @@ Json pathSegmentUiCase(Window &window,const std::string &mode,const std::string 
   window.recording=true;
   auto open=[&]{if(!planar){if(saved)window.action("edit_saved_roi_geometry",{{"index",0}});window.action("show_selection_properties");}};
   open();Json report{{"contract","p13g.path-segments.ui.001"},{"context",context},{"mode",mode},{"frames",Json::array()},{"controls",Json::array()},{"states",{{"before",state(window)}}}};
+  struct Failure {Json &report;fs::path directory;bool complete=false;~Failure(){if(!complete)try {
+    report["state"]="failed";writeJson((directory/"failure.json").u8string(),report);
+  }catch(...){}}} failure{report,directory};
   HeadlessInputSession session(window);Json last;
   auto frame=[&](const Json &events=Json::array()) {
     require(report["frames"].size()<600,"Path segment UI frame limit");last=session.frame(events);
@@ -57,14 +60,34 @@ Json pathSegmentUiCase(Window &window,const std::string &mode,const std::string 
     for(int attempt=0;attempt<40;++attempt) {
       hit=control(name);require(hit.at("enabled").get<bool>(),"Unavailable segment UI control: "+name);
       auto *w=name.rfind("host.",0)==0?nullptr:ImGui::FindWindowByName(planar?"Images":saved?"Saved area geometry":"Selection properties");
-      if(!w || (hit["point"][1].get<float>()>=w->InnerRect.Min.y && hit["point"][1].get<float>()<=w->InnerRect.Max.y))break;
+      if(!w)break;
+      const auto clip=w->InnerClipRect;const auto rect=hit.at("rect").get<std::array<float,4>>();
+      const ImVec2 physical{std::floor(hit["point"][0].get<float>()),std::floor(hit["point"][1].get<float>())};
+      require(rect[0]>=clip.Min.x && rect[2]<=clip.Max.x,"Segment control horizontally clipped: "+name);
+      if(rect[1]>=clip.Min.y && rect[3]<=clip.Max.y && clip.Contains(physical))break;
       require(attempt<39,"Segment control not exposed: "+name);
-      frame(Json::array({{{"type","position"},{"space","screen"},{"point",{w->InnerRect.Max.x-14,(w->InnerRect.Min.y+w->InnerRect.Max.y)/2}}}}));
-      frame(Json::array({{{"type","wheel"},{"x",0},{"y",hit["point"][1].get<float>()>w->InnerRect.Max.y?-3:3}}}));
+      // Wheel the owning window's empty gutter, outside the linked canvases.
+      frame(Json::array({{{"type","position"},{"space","screen"},{"point",{clip.Min.x+2,(clip.Min.y+clip.Max.y)/2}}}}));
+      require(ImGui::GetCurrentContext()->HoveredWindow==w,"Segment scroll did not target its owning window");
+      frame(Json::array({{{"type","wheel"},{"x",0},{"y",rect[3]>clip.Max.y?-3:3}}}));
     }
     report["controls"].push_back({{"name",name},{"control",hit}});
     frame(Json::array({{{"type","position"},{"space","screen"},{"point",hit["point"]}}}));
-    for(bool down:{true,false})frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));frame();
+    const auto *input=ImGui::GetCurrentContext();
+    auto *controlWindow=name.rfind("host.",0)==0?nullptr:ImGui::FindWindowByName(planar?"Images":saved?"Saved area geometry":"Selection properties");
+    report["controls"].back()["hover"]={{"id",input->HoveredId},{"window",input->HoveredWindow?input->HoveredWindow->Name:""}};
+    if(controlWindow)report["controls"].back()["clip"]={controlWindow->InnerClipRect.Min.x,controlWindow->InnerClipRect.Min.y,controlWindow->InnerClipRect.Max.x,controlWindow->InnerClipRect.Max.y};
+    report["controls"].back()["physical_point"]={input->IO.MousePos.x,input->IO.MousePos.y};
+    require(input->HoveredId==hit.at("id").get<ImGuiID>(),"Segment control is not actual hovered item: "+name);
+    if(controlWindow)require(controlWindow->InnerClipRect.Contains(input->IO.MousePos),"Segment click outside actual clip: "+name);
+    if(hit.contains("rect")) {const auto rect=hit.at("rect").get<std::array<float,4>>();
+      require(input->IO.MousePos.x>=rect[0] && input->IO.MousePos.x<rect[2] && input->IO.MousePos.y>=rect[1] && input->IO.MousePos.y<rect[3],"Segment click outside item: "+name);}
+    for(bool down:{true,false}) {
+      frame(Json::array({{{"type","button"},{"name","left"},{"down",down}}}));
+      if(down) {const auto *pressed=ImGui::GetCurrentContext();
+        report["controls"].back()["pressed"]={{"active_id",pressed->ActiveId},{"hovered_id",pressed->HoveredId},{"nav_id",pressed->NavId}};
+        require(pressed->ActiveId==hit.at("id").get<ImGuiID>() || pressed->HoveredId==hit.at("id").get<ImGuiID>() || pressed->NavId==hit.at("id").get<ImGuiID>(),"Segment press did not reach reported item: "+name);}
+    }frame();
   };
   auto text=[&](const std::string &name,const std::string &value) {
     click(name);for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",{{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}}}}}));
@@ -93,6 +116,6 @@ Json pathSegmentUiCase(Window &window,const std::string &mode,const std::string 
   click("host.menu.Edit");click("host.menu.Edit.Redo");frame();report["states"]["redone"]=state(window);
   session.close();const auto savedPath=(directory/"authored.ijx").u8string();window.action("save_document",{{"path",savedPath}});
   Window reopened((directory/"reopened.json").u8string());reopened.openFile(savedPath);report["states"]["reopened"]=state(reopened);
-  report["state"]="observed";report["error"]=window.error();require(report.dump().size()<64*1024*1024,"Segment report byte limit");writeJson((directory/"case.json").u8string(),report);return report;
+  report["state"]="observed";report["error"]=window.error();require(report.dump().size()<64*1024*1024,"Segment report byte limit");writeJson((directory/"case.json").u8string(),report);failure.complete=true;return report;
 }
 } // namespace imagejxx::desktop

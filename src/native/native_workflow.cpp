@@ -17,6 +17,7 @@
 #include "session_metadata.hpp"
 #include <imagejxx/gaussian_command.hpp>
 #include <imagejxx/rank_command.hpp>
+#include <algorithm>
 #include <set>
 #include <type_traits>
 
@@ -194,9 +195,57 @@ struct PreflightStepDispatch {
       :scope(value),previous(value.dispatching_callback) {scope.dispatching_callback=true;}
   ~PreflightStepDispatch(){scope.dispatching_callback=previous;}
 };
+// A V4/V8 workflow admits every stage before calling user code. Kernel
+// dispatch walks all inherited scopes, so a cancellation-only child alone is
+// insufficient. Guard the existing chain without allocating another container;
+// each guard restores its prior dispatch state on success or exception. The
+// scopes stay linked, preserving every inherited cancellation token.
+template<class Function>
+auto without_inherited_callbacks(ExecutionScope *scope, Function &function)
+    -> decltype(function()) {
+  if(!scope)return function();
+  PreflightStepDispatch dispatch(*scope);
+  return without_inherited_callbacks(scope->previous,function);
+}
+template<class Function>
+auto workflow_admission_callbacks(
+    const std::vector<detail::NativeWorkflowStepRef> &steps,
+    const ExecutionControl &control, Function function) -> decltype(function(control)) {
+  const bool path_intent=std::any_of(steps.begin(),steps.end(),[](const auto &step) {
+    const auto p=std::get_if<const NativeWorkflowOperation *>(&step);
+    return p && detail::native_path_creation_intent(**p);
+  });
+  if(!path_intent)return function(control); // Preserve legacy callback timing.
+  ExecutionControl quiet;quiet.cancellation=control.cancellation;
+  ExecutionScope scope(quiet);
+  auto admit=[&] { kernel_checkpoint();return function(quiet); };
+  return without_inherited_callbacks(current_execution_scope,admit);
+}
+void path_grid_preflight(const std::vector<detail::NativeWorkflowStepRef> &steps) {
+  const bool paths=std::any_of(steps.begin(),steps.end(),[](const auto &step){
+    const auto p=std::get_if<const NativeWorkflowOperation *>(&step);
+    return p && (*p)->enabled && detail::native_path_creation_intent(**p);
+  });
+  if(!paths)return;
+  for(const auto &step:steps)if(const auto p=std::get_if<const NativeWorkflowOperation *>(&step)) {
+    const auto &v=**p;if(!v.enabled)continue;
+    // These dataset conversions alter axis/sample interpretation. An authored
+    // history remapping contract must be supplied before combining them in V8.
+    if(v.operation=="rgb_dataset" || v.operation=="color_stack" ||
+       v.operation=="indexed_dataset" || v.operation=="indexed_rgb")
+      throw std::invalid_argument("Path workflow coordinate remapping requires an explicit history policy");
+    if(detail::annotation_workflow_operation(v.operation) || v.operation=="selection_creation" ||
+       v.operation=="selection_enlargement" || v.operation=="rgb_contrast_session" ||
+       v.operation=="rgb_contrast_stack" || v.operation=="rgb_contrast_apply" ||
+       v.operation=="contrast_apply" || v.operation=="convert_image")continue;
+    require(operation_spec(v.operation).geometry==GeometryEffect::Preserve,
+            "Path workflow coordinate remapping requires an explicit history policy");
+  }
+}
 void preflight(const DocumentSnapshot &initial,
                const std::vector<detail::NativeWorkflowStepRef> &steps,
                Budget &budget, const ExecutionControl &control) {
+  path_grid_preflight(steps);
   ExecutionScope scope(control);
   auto source=initial;
   std::set<std::string> names;
@@ -207,6 +256,9 @@ void preflight(const DocumentSnapshot &initial,
         [&](const auto *pointer) {
           const auto &v = *pointer;
           using T = std::decay_t<decltype(v)>;
+          if constexpr(std::is_same_v<T,NativeWorkflowOperation>)
+            if(v.selection_creation_extent)
+              (void)detail::selection_creation_workflow_extent(v,budget.cap-budget.used);
           if (!v.enabled) {
             if constexpr (std::is_same_v<T, NativeWorkflowExport> || std::is_same_v<T, NativeWorkflowHistogram>) {
               require(!v.name.empty() && v.name.size() <= 240 &&
@@ -474,8 +526,10 @@ DocumentTransaction PreparedNativeWorkflow::begin_edit() const {
   if (!metadata_equal(before.metadata.record_layout,
                       after.metadata.record_layout))
     tx.set_record_layout(after.metadata.record_layout);
-  if (before.selection != after.selection)
+  if (before.selection != after.selection) {
     tx.select(after.selection);
+    if(selection_history_)tx.retain_selection_history();
+  }
   if (before.previous_selection != after.previous_selection)
     tx.set_previous_selection(after.previous_selection);
   if (before.rois != after.rois)
@@ -502,9 +556,9 @@ struct detail::NativeWorkflowAccess {
                                      std::vector<NativeWorkflowOutput> outputs,
                                      std::vector<NativeWorkflowHistogramOutput> histograms,
                                      std::size_t completed, std::size_t bytes,
-                                     bool paired_display, bool guard_display) {
+                                     bool paired_display, bool guard_display, bool selection_history) {
     return PreparedNativeWorkflow(std::move(source), std::move(preview),
-                                  std::move(outputs), std::move(histograms), completed, bytes, paired_display, guard_display);
+                                  std::move(outputs), std::move(histograms), completed, bytes, paired_display, guard_display, selection_history);
   }
 };
 PreparedNativeWorkflow
@@ -521,16 +575,16 @@ prepare_native_workflow(const DocumentSnapshot &source,
   refs.reserve(steps.size());
   for (const auto &step : steps)
     std::visit([&](const auto &v) { refs.emplace_back(&v); }, step);
-  std::size_t captured_bytes=0;
-  {
-    ExecutionControl quiet;quiet.cancellation=owned_control.cancellation;
+  const auto captured_bytes=workflow_admission_callbacks(refs,owned_control,
+      [&](const ExecutionControl &admission) {
+    ExecutionControl quiet;quiet.cancellation=admission.cancellation;
     ExecutionScope scope(quiet);
     Budget captured{owned_limits.max_retained_bytes};
     captured.data(source);captured.record(source.display().properties);
     captured.add(sizeof(DocumentSnapshot));
     captured.add(detail::native_workflow_inputs_bytes(refs,captured.cap-captured.used));
-    captured_bytes=captured.used;
-  }
+    return captured.used;
+  });
   const auto owned_source=source;
   const auto owned_steps=steps;
   refs.clear();
@@ -547,10 +601,12 @@ std::size_t detail::admit_native_workflow(
               steps.size() <= limits.max_steps,
           "Native workflow step limit");
   require(limits.max_retained_bytes > 0, "Native workflow retained-byte limit");
-  Budget budget{limits.max_retained_bytes};
-  budget.data(source);
-  preflight(source, steps, budget, control);
-  return budget.used;
+  return workflow_admission_callbacks(steps,control,[&](const ExecutionControl &admission) {
+    Budget budget{limits.max_retained_bytes};
+    budget.data(source);
+    preflight(source, steps, budget, admission);
+    return budget.used;
+  });
 }
 PreparedNativeWorkflow detail::prepare_native_workflow_borrowed(
     const DocumentSnapshot &source,
@@ -560,7 +616,7 @@ PreparedNativeWorkflow detail::prepare_native_workflow_borrowed(
   std::vector<NativeWorkflowOutput> outputs;
   std::vector<NativeWorkflowHistogramOutput> histograms;
   std::size_t completed = 0;
-  bool paired_display = false, guard_display = false;
+  bool paired_display = false, guard_display = false, selection_history = false;
   Document working(source);
   working.set_history_policy(1);
   for (std::size_t index = 0; index < steps.size(); ++index) {
@@ -593,6 +649,8 @@ PreparedNativeWorkflow detail::prepare_native_workflow_borrowed(
             } else if(v.operation=="selection_creation") {
               const auto command=detail::workflow_selection_creation(current,v,limits.max_retained_bytes,control);
               auto edit=prepare_selection_creation(command,control,limits.max_retained_bytes);
+              selection_history=selection_history ||
+                  (command.changes_selection() && command.request().geometry==SelectionCreationGeometry::NativePathV4);
               guard_display=true;checkpoint(control);working.commit(edit);
             } else if(v.operation=="selection_enlargement") {
               const auto step_limits=detail::selection_enlargement_workflow_limits(limits.max_retained_bytes);
@@ -691,7 +749,16 @@ PreparedNativeWorkflow detail::prepare_native_workflow_borrowed(
     workflow_progress(control,index+1,steps.size());
   }
   checkpoint(control);
+  if(selection_history) {
+    const auto final=working.snapshot();
+    const auto &previous=final.data().selection==source.data().selection?
+        source.data().previous_selection:source.data().selection;
+    if(final.data().previous_selection!=previous) {
+      auto edit=final.begin_edit(Change::Data);edit.set_previous_selection(previous);working.commit(edit);
+    }
+  }
+  checkpoint(control);
   return NativeWorkflowAccess::make(source, working.snapshot(),
-                                    std::move(outputs), std::move(histograms), completed, admitted, paired_display, guard_display);
+                                    std::move(outputs), std::move(histograms), completed, admitted, paired_display, guard_display, selection_history);
 }
 } // namespace imagejxx

@@ -12,8 +12,14 @@ C/Z/T hyperstacks, 3D viewing and the broader Fiji workflow backlog.
 The [directional shadow guide](docs/SHADOWS.md) covers the eight native presets,
 shared desktop controls, supported pixel layouts and remaining family work.
 The [three-agent execution plan](docs/THREE_AGENT_EXECUTION.md) and
-[next detailed packet](docs/packets/P13h-interactive-path-authoring.md) define the
+[next detailed packet](docs/packets/P13i-path-filter-targets.md) define the
 current implementation queue, file ownership, behavior and acceptance checks.
+[Interactive native path drawing and Bounds resize](docs/packets/P13h-interactive-path-authoring.md)
+now share atomic history, workflow replay and saved/XY/XZ/YZ editing in both
+launches. The [installed C++ example](examples/cpp/path_authoring.cpp) demonstrates
+the explicit Bounds API; Python uses `resized(..., mode=SelectionHandleMode.BOUNDS)`.
+The [scoped receipt](docs/parity/reviews/p13h-path-authoring001/receipt.json) records
+Windows/Linux checks and the remaining full-parity limitations.
 The [gap closure plan](docs/PLAN.md) assigns all 99 audited capability areas to
 milestones, dependencies and acceptance checks. Its [current gap summary](docs/PLAN.md#current-gap-summary)
 prioritizes configuration, editable selections, filtering and linked XYZ/slicing

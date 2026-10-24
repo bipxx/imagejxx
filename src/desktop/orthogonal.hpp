@@ -23,6 +23,7 @@ struct OrthogonalInputContext {
   bool annotation_admitted = false;
   bool read_only = false;
   std::size_t annotation_max_working_bytes = 256*1048576;
+  float annotation_gui_scale = 1;
   PlanarAnnotationPublisher planar_publish;
   std::function<Json(const PlanarCanvas &,ImDrawList *)> display_annotations;
   std::shared_ptr<const RoiImportPreview> import_preview;

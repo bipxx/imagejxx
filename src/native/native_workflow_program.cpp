@@ -390,6 +390,19 @@ std::optional<NativeWorkflowHistogramOptions> histogram_options_from(const Metad
   }
   out.log_counts=flag(o.at("log_counts"));return out;
 }
+MetadataValue creation_extent_value(const std::optional<DatasetShape> &shape) {
+  if(!shape)return {};
+  shape->validate();MetadataArray values;
+  for(const int n:shape->dimensions())values.emplace_back(std::int64_t(n));
+  return metadata_array(std::move(values));
+}
+std::optional<DatasetShape> creation_extent_from(const MetadataValue &value) {
+  if(null(value))return {};
+  const auto &d=array(value);require(d.size()==6,"Creation extent requires six TCZYXS axes");
+  DatasetShape shape{index_value(d[0],true),index_value(d[1],true),index_value(d[2],true),
+      index_value(d[3],true),index_value(d[4],true),index_value(d[5],true)};
+  shape.validate();return shape;
+}
 void charge_step(const detail::NativeWorkflowStepRef &step, Budget &b) {
   std::visit(
       [&](const auto *p) {
@@ -401,6 +414,11 @@ void charge_step(const detail::NativeWorkflowStepRef &step, Budget &b) {
           b.add(detail::imagej_roi_record_bytes(*v.original, b.cap - b.used));
         if constexpr (std::is_same_v<T, NativeWorkflowOperation>) {
           b.add(v.operation.size());
+          if(v.selection_creation_extent) {
+            b.add(512);
+            require(detail::native_path_creation_intent(v),"Creation extent requires path-aware creation intent");
+            v.selection_creation_extent->validate();
+          }
           if(v.selection_creation)
             b.add(detail::selection_creation_request_bytes(*v.selection_creation,b.cap-b.used));
           if(detail::annotation_workflow_operation(v.operation) && v.original)
@@ -553,6 +571,10 @@ MetadataObject encode(const std::vector<detail::NativeWorkflowStepRef> &steps,
     const auto p=std::get_if<const NativeWorkflowOperation *>(&ref);
     return p && detail::annotation_workflow_operation((*p)->operation);
   });
+  const bool v8=std::any_of(steps.begin(),steps.end(),[](const auto &ref) {
+    const auto p=std::get_if<const NativeWorkflowOperation *>(&ref);
+    return p && detail::native_path_creation_intent(**p);
+  });
   MetadataArray records;
   std::set<std::string> outputs;
   for (const auto &step : steps)
@@ -572,20 +594,21 @@ MetadataObject encode(const std::vector<detail::NativeWorkflowStepRef> &steps,
             r["parameters"] = metadata_object(std::move(params));
             r["target"] = target_value(v.target);
             r["use_destination_calibration"] = v.use_destination_calibration;
-            if (v2 || v3 || v4 || v6 || v7)
+            if (v2 || v3 || v4 || v6 || v7 || v8)
               r["filter_options"] = filter_options_value(v.filter_options);
-            if(v6 || v7) r["selection_creation"] = v.selection_creation
+            if(v6 || v7 || v8) r["selection_creation"] = v.selection_creation
                 ? metadata_object(detail::selection_creation_request_value(*v.selection_creation,limits.max_record_bytes))
                 : MetadataValue{};
-            if(v7)r["annotation_intent"]=v.annotation_intent
+            if(v7 || v8)r["annotation_intent"]=v.annotation_intent
                 ? metadata_object(detail::annotation_workflow_intent_value(*v.annotation_intent,limits.max_record_bytes))
                 : MetadataValue{};
+            if(v8)r["selection_creation_extent"]=creation_extent_value(v.selection_creation_extent);
           } else if constexpr (std::is_same_v<T, NativeWorkflowHistogram>) {
             require(outputs.insert(v.name).second, "Duplicate workflow output name");
             r["kind"] = std::string("histogram");
             r["name"] = v.name;
             r["target"] = target_value(v.target);
-            if(v5 || v6 || v7)r["options"]=histogram_options_value(v.authored_options);
+            if(v5 || v6 || v7 || v8)r["options"]=histogram_options_value(v.authored_options);
             r["limits"] = metadata_object({
                 {"max_pixels", std::uint64_t(v.limits.processing.max_pixels)},
                 {"max_working_bytes", std::uint64_t(v.limits.processing.max_working_bytes)},
@@ -613,14 +636,15 @@ MetadataObject encode(const std::vector<detail::NativeWorkflowStepRef> &steps,
             r["choices"] = detail::imagej_annotation_export_choices_value(
                 {v.items, v.limits, v.zip, v.zip && v.compress});
           }
-          if (v3 || v4 || v6 || v7)
+          if (v3 || v4 || v6 || v7 || v8)
             r["enabled"] = v.enabled;
           records.push_back(metadata_object(std::move(r)));
         },
         step);
   MetadataObject result{
       {"schema", std::string("imagejxx.native-workflow-program")},
-      {"version", v7   ? 7
+      {"version", v8   ? 8
+                  : v7 ? 7
                   : v6 ? 6
                   : v5 ? 5
                   : v4 ? 4
@@ -629,7 +653,7 @@ MetadataObject encode(const std::vector<detail::NativeWorkflowStepRef> &steps,
                        : 1},
       {"steps", metadata_array(std::move(records))}};
   record_budget(result, limits.max_record_bytes);
-  if(v6 || v7)detail::regional_record_depth(result);
+  if(v6 || v7 || v8)detail::regional_record_depth(result);
   validate_metadata(result);
   return result;
 }
@@ -700,7 +724,7 @@ native_workflow_program_from_record(const MetadataObject &r,
   exact_fields(r, {"schema", "version", "steps"});
   const auto version = unsigned_value(r.at("version"));
   require(text_value(r.at("schema")) == "imagejxx.native-workflow-program" &&
-              (version >= 1 && version <= 7),
+              (version >= 1 && version <= 8),
           "Unsupported native program record");
   if(version>=6)detail::regional_record_depth(r);
   const auto &records = array(r.at("steps"));
@@ -747,9 +771,12 @@ native_workflow_program_from_record(const MetadataObject &r,
       else if(version==6)exact_fields(s, {"kind", "original", "operation", "parameters",
                          "target", "use_destination_calibration",
                          "filter_options", "enabled", "selection_creation"});
-      else exact_fields(s, {"kind", "original", "operation", "parameters",
+      else if(version==7)exact_fields(s, {"kind", "original", "operation", "parameters",
                          "target", "use_destination_calibration",
                          "filter_options", "enabled", "selection_creation", "annotation_intent"});
+      else exact_fields(s, {"kind", "original", "operation", "parameters",
+                         "target", "use_destination_calibration", "filter_options", "enabled",
+                         "selection_creation", "annotation_intent", "selection_creation_extent"});
       NativeWorkflowOperation op;
       op.operation = text_value(s.at("operation"));
       require(version>=7 || !detail::annotation_workflow_operation(op.operation),"Annotation intent requires native program V7");
@@ -758,6 +785,8 @@ native_workflow_program_from_record(const MetadataObject &r,
         op.selection_creation=detail::selection_creation_request_from_value(
             object_value(s.at("selection_creation")),limits.max_record_bytes);
       op.original = original_from(s.at("original"));
+      require(version>=8 || !detail::native_path_creation_intent(op),"Path creation requires native program V8");
+      if(version>=8)op.selection_creation_extent=creation_extent_from(s.at("selection_creation_extent"));
       if(version>=7 && detail::annotation_workflow_operation(op.operation) && op.original)
         detail::validate_annotation_workflow_original(op.operation,*op.original,limits.max_record_bytes);
       if(version>=7 && !null(s.at("annotation_intent")))
@@ -824,6 +853,10 @@ native_workflow_program_from_record(const MetadataObject &r,
         },
         steps.back());
   }
+  if(version==8)require(std::any_of(steps.begin(),steps.end(),[](const auto &step){
+    const auto p=std::get_if<NativeWorkflowOperation>(&step);
+    return p && detail::native_path_creation_intent(*p);
+  }),"Native program V8 requires path-aware selection creation");
   // Entire decoded intent is admitted without a dataset/provider or execution.
   (void)encode(refs(steps), limits);
   return detail::NativeWorkflowProgramAccess::make(std::move(steps), limits);

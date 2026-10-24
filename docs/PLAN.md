@@ -2,11 +2,29 @@
 
 **Current execution plan, 2026-10-24:** use the
 [three-agent plan](THREE_AGENT_EXECUTION.md#authority-and-resume-card) and
-[P13h detailed specification](packets/P13h-interactive-path-authoring.md).
+[P13i detailed specification](packets/P13i-path-filter-targets.md).
 They supersede older scheduling/resume instructions below. Exactly three agents
 own native contracts, shared ImGui behavior, and acceptance/integration; the
 coordinator is the third agent. Full M0–M13 requirements and the 99-area mapping
-remain unchanged. This is a plan update, not new implementation evidence.
+remain unchanged. P13h now has the scoped implementation evidence below.
+
+**Interactive path drawing and resize, 2026-10-24 (scoped P13h integration):**
+Native M/L/Q/C/Z click authoring and explicit Bounds resize now work through the
+shared ImGui desktop in both launches, including saved ROIs and XY/XZ/YZ paths.
+V4 creation/V8 workflow intent, one-step history, exact V5 reopen, cancellation,
+live budget recovery and unrelated metadata preservation are qualified. Legacy
+no-mode path-resize refusal remains intact. Windows/Linux each pass 4,539
+selected Python checks, 30 native groups and 35 installed SDK checks; the one
+previously documented scientific-owner exclusion remains explicit. Actual ImGui
+primary/edge scenarios cover all four platform/launch contexts. Standalone
+recipes also pass with Python search paths removed. Commercial inventory passes;
+strict historical G016/Auto, macOS, GPU/OS input, accessibility and full-family
+acceptance remain open. Generated caches/runtimes/evidence measure 6.39 GiB after
+verified scratch retention/cleanup; retired build generations were not recreated.
+See the [packet](packets/P13h-interactive-path-authoring.md) and
+[scoped receipt](parity/reviews/p13h-path-authoring001/receipt.json).
+Next: [P13i path-filter targets](packets/P13i-path-filter-targets.md); source is
+restored, while the exact Java runtime and numerical capture remain prerequisites.
 
 **ImGui path segment authoring, 2026-10-24 (scoped integration):**
 Active selections, saved ROIs and XY/XZ/YZ annotations now share exact numeric
@@ -3703,7 +3721,7 @@ finite boundary. P06j startup is completed and immutable. Next: captured
 scientific manual threshold → regular Z subset. Full manager options and
 ROI/ZIP remain required. This card supersedes older scheduling/count snapshots.
 
-**Execution entry point:** [Three-agent execution plan](THREE_AGENT_EXECUTION.md#authority-and-resume-card). It owns the current queue, exactly three roles, bounded packet contracts, verification and storage rules. [P13h](packets/P13h-interactive-path-authoring.md) provides the next detailed assignments. This document retains the full product requirements and milestone acceptance contracts; older delivery tables are historical workstream descriptions.
+**Execution entry point:** [Three-agent execution plan](THREE_AGENT_EXECUTION.md#authority-and-resume-card). It owns the current queue, exactly three roles, bounded packet contracts, verification and storage rules. [P13i](packets/P13i-path-filter-targets.md) provides the next detailed assignments. This document retains the full product requirements and milestone acceptance contracts; older delivery tables are historical workstream descriptions.
 
 **Historical boundary, 2026-10-17 (superseded for scheduling):** [P06j saved-workspace startup](packets/P06j-saved-workspace-startup.md#current-execution-card) has adopted its functional checkpoint and [formal/settings handoff](../build/p06j-001/formal-adoption002/adoption001.json):166 actual fields across four contexts, two startup consumers/eight consumer contexts and45 eligible owned sources (31 product/public-SDK plus14 support). Matching wheel99 and installed API12 pass; preserve native17, source-Python197 passed/one existing skip, actual ImGui20, normal OS-launch24, public SDK6 plus its settings consumer and actual40-definition export. The final source/member/notices gate is open at this freeze. The [current final receipt](../build/p06j-001/final-distribution001.json) controls subsequent artifact readiness: only a passed receipt matching these source/product identities closes that boundary; absence or any other state leaves it open. Preserve [P06i's qualified final receipt](../build/p06i-001/final-distribution001.json) and immutable789-source/98-wheel/54-SDK/25-standalone products, P06h's774-source/97-wheel/53-SDK handoff and P06g's729-source/103-wheel/52-SDK handoff. P06g's generic numerical fixture projection and all broader family/platform/performance work remain separately open. All99 families and eligible pinned Fiji/M0 remain required:40 in progress,59 open,0 complete. The active card and single queue own scheduling.
 
@@ -3741,7 +3759,7 @@ An audit area is complete only when **all its required options** are available t
 
 ## Current gap summary
 
-The recorded inventory checked on **2026-10-24** contains **99 families: 47 in progress, 52 open and 0 complete**. These are family counts, not percentages of implemented commands or estimates of remaining effort. An open family can already contain useful kernels or controls; it still needs its full option and interaction contract. The latest scoped product milestone is p13g. Use the [three-agent queue](THREE_AGENT_EXECUTION.md) for current work; no family is complete.
+The recorded inventory checked on **2026-10-24** contains **99 families: 47 in progress, 52 open and 0 complete**. These are family counts, not percentages of implemented commands or estimates of remaining effort. An open family can already contain useful kernels or controls; it still needs its full option and interaction contract. The latest scoped product milestone is P13h, qualified by its [receipt](parity/reviews/p13h-path-authoring001/receipt.json). Use the [three-agent queue](THREE_AGENT_EXECUTION.md) for current work; no family is complete.
 
 Historical context: the [P06j formal/settings adoption](../build/p06j-001/formal-adoption002/adoption001.json)
 retains79 requirements/35 surface contracts,140 surface proofs,25 run bindings

@@ -109,6 +109,9 @@ INDEXED_READERS = {
 
 # Existing one-report editors; every report is copied without rewriting paths.
 EDITOR_READERS = {
+    "annotation-workflow": ("--annotation-workflow-ui-case", "IMAGEJXX_ANNOTATION_WORKFLOW_CPP_REPORT"),
+    "planar-path": ("--planar-path-ui-case", "IMAGEJXX_PLANAR_PATH_CPP_REPORT"),
+    "native-bare-import": ("--native-bare-import-ui-case", "IMAGEJXX_NATIVE_BARE_CPP_REPORT"),
     "rgb-dataset": ("--rgb-dataset-ui-case", "IMAGEJXX_RGB_CPP_REPORT"),
     "scientific-process": ("--scientific-process-ui-case", "IMAGEJXX_SCIENTIFIC_PROCESS_CPP_REPORT"),
     "bare-edit": ("--bare-edit-ui-case", "IMAGEJXX_BARE_EDIT_CPP_REPORT"),
@@ -198,9 +201,24 @@ def shadow_demo_cases():
 
 
 PATH_SEGMENT_MODES = ("active", "saved", "xy", "xz", "yz")
+PATH_AUTHORING_MODES = ("active", "scientific-active", "saved", "xy", "xz", "yz")
+PATH_AUTHORING_EDGE_CASES = ("input-ownership", "pointer-recovery-dpi", "numeric-stale", "budget", "extent-rebind")
+
+
+def path_authoring_edge_cases():
+    for case in PATH_AUTHORING_EDGE_CASES:
+        for carrier in (PATH_AUTHORING_MODES[:2] if case == "extent-rebind" else
+                        PATH_AUTHORING_MODES + ("saved-linked",) if case == "budget" else PATH_AUTHORING_MODES):
+            yield case, carrier
 
 
 def cases():
+    for case, carrier in path_authoring_edge_cases():
+        yield "path-authoring-edges", case + "." + carrier, ["--path-authoring-edge-ui-case", case, carrier]
+    for mode in ("ordinary", "linked", "workflow"):
+        yield "root-paths", mode, ["--root-path-ui-case", mode]
+    for mode in PATH_AUTHORING_MODES:
+        yield "path-authoring", mode, ["--path-authoring-ui-case", mode]
     for mode in PATH_SEGMENT_MODES:
         yield "path-segments", mode, ["--path-segment-ui-case", mode]
     groups = [
@@ -338,6 +356,18 @@ def reader_environment(output):
         mode: str(reports / "path-segments" / mode / "case.json")
         for mode in PATH_SEGMENT_MODES
     })
+    environment["IMAGEJXX_PATH_AUTHORING_EDGE_CPP_REPORTS"] = json.dumps({
+        case + "/" + carrier: str(reports / "path-authoring-edges" / (case + "." + carrier) / "case.json")
+        for case, carrier in path_authoring_edge_cases()
+    })
+    environment["IMAGEJXX_ROOT_PATH_CPP_REPORTS"] = json.dumps({
+        mode: str(reports / "root-paths" / mode / "case.json")
+        for mode in ("ordinary", "linked", "workflow")
+    })
+    environment["IMAGEJXX_PATH_AUTHORING_CPP_REPORTS"] = json.dumps({
+        mode: str(reports / "path-authoring" / mode / "case.json")
+        for mode in PATH_AUTHORING_MODES
+    })
     return {name: str(path) for name, path in environment.items()}
 
 
@@ -388,7 +418,38 @@ def write_case_index(output, group, items, elapsed):
     return {"path": str(path), **pin(path)}
 
 
-def capture(output, executable, root, environment=None):
+def select_cases(selected_cases=None):
+    """Resolve declared routes before launch; preserve the complete default."""
+    available = list(cases())
+    if selected_cases is None:
+        return available
+    if not isinstance(selected_cases, list) or not selected_cases:
+        raise ValueError("Focused observation selection must be nonempty")
+    keys = []
+    for row in selected_cases:
+        if (not isinstance(row, (list, tuple)) or len(row) != 2
+                or any(not isinstance(value, str) or not value for value in row)):
+            raise ValueError("Each observation selector requires group and case")
+        keys.append(tuple(row))
+    if len(set(keys)) != len(keys):
+        raise ValueError("Duplicate observation selector")
+    index = {(group, case): (group, case, arguments)
+             for group, case, arguments in available}
+    if set(keys) - set(index):
+        raise ValueError(f"Unknown required observation routes: {sorted(set(keys) - set(index))}")
+    for group in INDEXED_READERS:
+        chosen = {case for candidate, case in keys if candidate == group}
+        required = {case for candidate, case, _ in available if candidate == group}
+        if chosen and chosen != required:
+            raise ValueError(f"Indexed observation group must be complete: {group}")
+    return [index[key] for key in keys]
+
+
+def capture(output, executable, root, environment=None, *, selected_cases=None,
+            case_timeout=120):
+    selected = select_cases(selected_cases)
+    if type(case_timeout) is not int or not 1 <= case_timeout <= 3600:
+        raise ValueError("Observation timeout must be an integer in [1,3600]")
     output = Path(output).resolve()
     executable = Path(executable).resolve(strict=True)
     if not executable.is_file() or not os.access(executable, os.X_OK):
@@ -407,7 +468,7 @@ def capture(output, executable, root, environment=None):
     save()
     indexed_starts = {}
     try:
-        for group, case, arguments in cases():
+        for group, case, arguments in selected:
             if group in INDEXED_READERS and group not in indexed_starts:
                 indexed_starts[group] = time.monotonic()
             # main.cpp places preferences next to the capture directory. Sharing
@@ -450,7 +511,7 @@ def capture(output, executable, root, environment=None):
             print(f"C++ observation: {group}/{case}", flush=True)
             with (private / "process.log").open("wb") as log:
                 process = subprocess.run(argv, cwd=root, env=environment, stdout=log,
-                                         stderr=subprocess.STDOUT, timeout=120, check=False)
+                                         stderr=subprocess.STDOUT, timeout=case_timeout, check=False)
             item.update(exit_code=process.returncode, elapsed_seconds=time.monotonic() - started)
             if process.returncode:
                 raise subprocess.CalledProcessError(process.returncode, argv)
@@ -500,6 +561,52 @@ def capture(output, executable, root, environment=None):
                             or observation.get("contract") != "scientific-process-review.ui.001"))):
                     raise ValueError(f"Legacy editor probe did not finish: {report}")
                 item["legacy_probe_envelope"] = True
+            elif group in ("annotation-workflow", "planar-path", "native-bare-import"):
+                contracts = {"annotation-workflow": "p13d.annotation-workflow.ui.001",
+                             "planar-path": "p13b.planar-path.ui.001",
+                             "native-bare-import": "p13c.native-bare-import.ui.001"}
+                # Earlier p13b/d producers have no acceptance field. Validate
+                # their explicit observation envelope without rewriting bytes.
+                if (observation.get("contract") != contracts[group]
+                        or observation.get("context") != "imgui_cpp"
+                        or observation.get("state") != "observed"
+                        or observation.get("error") != ""
+                        or not observation.get("frames") or not observation.get("controls")
+                        or observation.get("acceptance_claim", False) is not False):
+                    raise ValueError(f"Unexpected legacy path/workflow observation: {report}")
+                item["legacy_path_contract"] = contracts[group]
+            elif group == "root-paths":
+                if (observation.get("contract") != "p13e.root-path.ui.001"
+                        or observation.get("mode") != case
+                        or observation.get("context") != "imgui_cpp"
+                        or observation.get("state") != "observed"
+                        or observation.get("error") != ""
+                        or not observation.get("frames") or not observation.get("controls")
+                        or observation.get("acceptance_claim", False) is not False):
+                    raise ValueError(f"Unexpected root path observation: {report}")
+                item["root_path_contract"] = observation["contract"]
+            elif group == "path-authoring-edges":
+                case_id, carrier = case.split(".", 1)
+                if (observation.get("contract") != "p13h.path-authoring.edge-ui.001"
+                        or observation.get("case_id") != case_id
+                        or observation.get("carrier") != carrier
+                        or observation.get("context") != "imgui_cpp"
+                        or observation.get("state") != "observed"
+                        or observation.get("error") != ""
+                        or not observation.get("frames") or not observation.get("controls")
+                        or observation.get("acceptance_claim") is not False):
+                    raise ValueError(f"Unexpected path authoring edge observation: {report}")
+                item["path_authoring_edge_contract"] = observation["contract"]
+            elif group == "path-authoring":
+                if (observation.get("contract") != "p13h.path-authoring.ui.001"
+                        or observation.get("mode") != case
+                        or observation.get("context") != "imgui_cpp"
+                        or observation.get("state") != "observed"
+                        or observation.get("error") != ""
+                        or not observation.get("frames") or not observation.get("controls")
+                        or observation.get("acceptance_claim") is not False):
+                    raise ValueError(f"Unexpected path authoring observation: {report}")
+                item["path_authoring_contract"] = observation["contract"]
             elif group == "path-segments":
                 if (observation.get("contract") != "p13g.path-segments.ui.001"
                         or observation.get("mode") != case

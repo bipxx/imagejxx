@@ -11,6 +11,8 @@ struct PlanarCanvas {
   int coordinate, width, height;
   std::uint64_t id;
   std::array<float,2> origin,scale,extent;
+  std::array<float,2> viewport_low{}, viewport_high{};
+  float gui_scale = 1;
   bool operator==(const PlanarCanvas &) const;
 };
 // One creator-thread lane shared by all three canvases. Nothing publishes until

@@ -2,10 +2,28 @@
 
 **Current execution plan, 2026-10-24:** see the
 [three-agent queue](THREE_AGENT_EXECUTION.md) and
-[next packet specification](packets/P13h-interactive-path-authoring.md).
-The latest product milestone remains p13g below. This planning review changes
-no product behavior, historical assertions, evidence fingerprints or capability
-status: the inventory remains 47 in progress, 52 open and 0 complete.
+[next packet specification](packets/P13i-path-filter-targets.md).
+P13h is scoped-qualified; all family states remain 47 in progress, 52 open and
+0 complete. Historical assertions and evidence fingerprints are unchanged.
+
+**Interactive path drawing and resize, 2026-10-24 (scoped P13h integration):**
+Native M/L/Q/C/Z click authoring and explicit Bounds resize now work through the
+shared ImGui desktop in both launches, including saved ROIs and XY/XZ/YZ paths.
+V4 creation/V8 workflow intent, one-step history, exact V5 reopen, cancellation,
+live budget recovery and unrelated metadata preservation are qualified. Legacy
+no-mode path-resize refusal remains intact. Windows/Linux each pass 4,539
+selected Python checks, 30 native groups and 35 installed SDK checks; the one
+previously documented scientific-owner exclusion remains explicit. Actual ImGui
+primary/edge scenarios cover all four platform/launch contexts. Standalone
+recipes also pass with Python search paths removed. Commercial inventory passes;
+strict historical G016/Auto, macOS, GPU/OS input, accessibility and full-family
+acceptance remain open. Generated caches/runtimes/evidence measure 6.39 GiB after
+verified scratch retention/cleanup; retired build generations were not recreated.
+See the [packet](packets/P13h-interactive-path-authoring.md) and
+[scoped receipt](parity/reviews/p13h-path-authoring001/receipt.json).
+Next: [P13i path-filter targets](packets/P13i-path-filter-targets.md); source is
+restored, while the exact Java runtime and numerical capture remain prerequisites.
+
 
 **ImGui path segment authoring, 2026-10-24 (scoped integration):**
 Active selections, saved ROIs and XY/XZ/YZ annotations now share exact numeric

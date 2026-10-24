@@ -1,8 +1,10 @@
 # Three-agent execution plan
 
-Reviewed **2026-10-24**, against product commit
-`8d83fdf6711d96c5820f2ac376741a01f53fc98a`.
-This is a planning update; none of its proposed features or gates has run.
+Reviewed **2026-10-24**. Current scoped milestone: **P13h**,
+[source19 qualification](parity/reviews/p13h-path-authoring001/receipt.json).
+Its previous product baseline was `8d83fdf6711d96c5820f2ac376741a01f53fc98a`
+(P13g); planning HEAD was `37548d5aca3f8f91651f4d409f2585f4e1bbc355`.
+No original acceptance family is closed. Next product packet: **P13i**.
 
 ## Authority and resume card
 
@@ -17,18 +19,22 @@ require rebuilding retired artifacts to start an independent, ready feature.
 Read, in order:
 
 1. [Repository storage rules](../AGENTS.md), this card and the working tree status.
-2. [P13h detailed specification](packets/P13h-interactive-path-authoring.md),
-   the next product packet; freeze its shared interfaces before concurrent edits.
-3. [P13g contract](parity/PATH_SEGMENT_UI.md) and its
-   [scoped receipt](parity/reviews/p13g-path-segment-ui001.json).
-4. Only the selected requirement records, consumed source contracts and relevant
-   historical evidence. Do not reload the entire progress history per task.
+2. [P13h scoped receipt](parity/reviews/p13h-path-authoring001/receipt.json) and
+   [contract](packets/P13h-interactive-path-authoring.md) for consumed interfaces.
+3. [P13i detailed specification](packets/P13i-path-filter-targets.md), especially
+   reference readiness and the processor-compatible extent contract.
+4. Only the selected requirement records and relevant historical evidence.
+   Do not reload the entire progress history or rerun qualified unchanged inputs.
 
-**Next execution:** start P13h-A, P13h-B and P13h-C under the assignments below.
-C first freezes the input/ownership manifest; A and B agree the small shared
-interfaces. C0 evidence/tooling work proceeds alongside their implementation.
+**Next execution:** enter P13i's reference prerequisite. C restores the exact
+reviewed Java runtime and runs bounded pinned observations; A audits their
+bounds/mask/admission implications; B freezes existing target/preview consumers.
+The source archive is restored and a bounded observer is prepared but uncompiled
+and unexecuted. Do not freeze numerical behavior from source-derived predictions.
+Use the existing caches/runtimes and the three owners below; no fourth agent.
+
 No feature implementation is authorized *by this document alone*: follow the
-user's active task and any pause. This review changes no goal status.
+user's active task and any pause. The full M0–M13 goal remains active.
 
 ## Verified baseline and review findings
 
@@ -46,9 +52,9 @@ scoped results, not a fresh run or full ImageJ/Fiji acceptance.
 | Finding from source and records | Scheduling consequence |
 | --- | --- |
 | The old execution guide points to P06j while the product is at p13g. Several summary counts and planar/XYZ limitations are stale. | Use this queue and the current inventory; keep older observations clearly dated. |
-| `SelectionEditor` supplies path control handles but `resized()` accepts box shapes only. | P13h adds bounded affine path resize through the existing editor. |
-| `selection_creation` refuses native paths; V1–V3 creation and V6/V7 workflow grammars are closed. Its retained-geometry accounting also omits path operands in other carriers. | P13h extends explicit versions, accounts for all retained path carriers and adds portable active authoring before claiming a complete drawing workflow. |
-| Workflow publication does not currently propagate opt-in selection history. | P13h must qualify direct and workflow Apply/Undo/Redo, including selection-only workflows. |
+| P13h source19 qualifies explicit Bounds resize and preserves historical no-mode path refusal. | Preserve that interface and its exact geometry/degeneracy/legacy controls; rerun only invalidated consumers. |
+| P13h working-tree code adds NativePathV4 creation, V8 workflow extent intent and retained path accounting. | Freeze these versions; check strict legacy grammars, explicit rebind, disabled originals and all retained carriers. |
+| P13h implements opt-in authored workflow history and final Previous-selection composition. | Qualify direct/mixed/selection-only Apply and A→B→C / A→B→A history without changing older edit policies. |
 | Typed Gaussian ROI bounds still expect point-based geometry; rank uses the same region helper. Path raster accounting is not complete. | P13i repairs the shared target/admission seam, then integrates both filters and all affected hosts. |
 | Root and planar resize modifier conventions differ. | Freeze a path-specific common contract; do not incidentally rewrite legacy tool gestures. |
 | The global plan checker first fails on retired G016 evidence. Earlier Auto fingerprint issues are also unresolved. | C0 reports unavailable evidence honestly; current feature checks must not depend on recreating historical build trees. |
@@ -111,9 +117,80 @@ contracts/reference fixtures; use idle capacity for named missing evidence,
 not a second overlapping Window/core integration. Each handoff reports changed
 files, API/record deltas, executed checks, exact blockers, storage and next action.
 
+## Immediate three-agent closeout: P13h and C0
+
+**Scoped closeout completed:** source19 passes the full declared Windows/Linux
+matrix: 4,539 selected Python IDs per platform, 30 native groups and 35 installed
+SDK checks per platform, with no failures/errors/skips. One unchanged historical
+exclusion remains explicit. See the [receipt](parity/reviews/p13h-path-authoring001/receipt.json).
+The following closeout steps record the completed protocol and failure controls;
+resume P13i above rather than restarting R1 or the construction prompts.
+
+The local operational record contains stale status/count fields as well as newer
+results. It is a locator, not a portable acceptance receipt. C resolves each
+terminal result from its actual source manifest and report; no presumed live
+handle, old summary count or pooled cross-generation pass qualifies a clause.
+
+| Order | A — native | B — UI | C/root — acceptance and integration |
+| --- | --- | --- | --- |
+| R0: reconcile | Hold existing V4/V8/Bounds implementation; review public header/codec delta | Hold shared controls and probes; report exact remaining interaction failures | Inventory dirty files, actual terminal jobs and source/report identities; freeze clause ledger and storage budget |
+| R1: unblock | Review saved-command admission layers if B identifies a native defect | Diagnose saved-linked high-budget entry refusal; distinguish fixture headroom from production accounting | Preserve failing capture and independent estimate; approve only an evidence-backed fixture correction or request owner repair |
+| R2: qualify | Repair only reproduced native failures; preserve callback and tiny-scale regressions | Repair only reproduced interactions; rerun through actual controls and expose settings/diagnostics | Complete 27 edge routes and six primary modes on Windows/Linux in both launches; run independent readers, not process-exit-only checks |
+| R3: regress | Review API/record compatibility and cancellation results | Review legacy interaction preservation and unsupported-option explanations | Recollect exact affected IDs, run genuine focused profile(s), native groups, SDK, legacy routes, installed dependency and commercial checks |
+| R4: land | Supply handoff with remaining native clauses | Supply handoff with remaining UI clauses | Audit complete scoped matrix, retain verified evidence, clean owned scratch, update receipt/docs, then commit/push within existing authorization |
+| Parallel preparation only | Audit P13i call sites and processor-bound contract | Audit P13i target/preview/budget consumers | Restore/verify bounded P13i reference inputs and independent capture prerequisites |
+
+**Resolved R1 cause and current gate.** The saved-linked 64 MiB entry failure
+was a frozen record-wire underestimate: path arrays omitted one separator byte
+per scalar. The checked estimate now reserves 33 bytes per scalar and retains
+all original production limits and final actual-versus-estimated checks. Exact
+64 MiB entry, numeric Apply/Undo and low-budget pointer refusal/recovery execute
+successfully; no fixture budget was raised. Subsequent checks repaired ImGui
+scope unwinding on refusal and Store ROI's loss of opaque record-layout fields.
+
+Source19 restores historical no-mode path-resize refusal and adds explicit
+Bounds overloads for the new feature. Both platforms pass 30 selected native
+groups and 35 installed SDK checks at that revision. Source15/17 primary and
+edge matrices passed at their recorded identities; refresh consumers invalidated
+by the new API. The source19 regression/profile matrix is now qualified; do not restart
+investigation of the resolved 64 MiB entry failure. The recorded
+Windows source18 run was 4,222 passed / one legacy-resize compatibility failure;
+its original assertion remains unchanged and no exclusion was added.
+
+**Required route manifest.** Six primary modes are `active`,
+`scientific-active`, `saved`, `xy`, `xz`, `yz`. Edge scenarios are
+`input-ownership`, `pointer-recovery-dpi`, `numeric-stale`, and `budget` for all
+six; `budget/saved-linked` is additional; `extent-rebind` applies to the two
+active modes. This is 27 edge routes per platform/launch context (108 total),
+plus 24 primary combinations. Reuse only results whose consumed inputs remain
+identical; these numbers describe required coverage, not completed runs.
+Preserved regression routes and component/native/API tests are additional.
+
+Each clause ledger row records case ID, requirement, expected behavior, test or
+recipe selector, consumed source manifest, product identity, platform/host,
+report locator/hash, outcome, invalidating delta and next owner/action. A row is
+`pending`, `passed`, `failed` or `unavailable`; expected-only and missing outputs
+cannot become passes. Profiles can be batched within the storage budget, but C
+must prove their exact union covers the frozen required set with no undeclared
+omissions. Keep the one existing historical exclusion explicit.
+
+Preserve two repaired native boundary clauses: V8 preflight rejects invalid
+first/tail/disabled retained originals before user checkpoint/progress/stage
+callbacks, including inherited execution scopes, while cancellation remains
+active; nonzero diagonal scales remain usable when their determinant product
+underflows (unit square at scale `1e-200`). Check scope restoration, zero-axis
+refusal and unchanged general-affine behavior as controls.
+
+C0 is implemented but still needs a genuine focused-profile execution and packet
+aggregation. The read-only inventory distinguishes unavailable evidence from
+identity failure; strict historical certification remains separate. Documentation
+updates do not invalidate unchanged binaries, but any consumed product/test/
+fixture/driver change invalidates the affected result. Do not rerun unaffected
+expensive groups without an identified dependency.
+
 ## Ordered queue and complete delivery horizon
 
-The first two packets have fixed specifications below/in the linked card. Later
+The first two packets have detailed specifications in their linked cards. Later
 waves must be split into similarly bounded, complete user workflows at entry.
 Milestones are acceptance gates, not a mandatory sequential chain. A narrowly
 blocked reference or platform check blocks its consumers, not unrelated work.
@@ -121,9 +198,9 @@ No estimate of total completion is implied by the number of waves.
 
 | Order / packet | Scope and dependencies | A / B / C outputs and exit |
 | --- | --- | --- |
-| **C0, alongside P13h** | Portable current verification and retired-evidence visibility; consumes p13g receipt and storage rules. | C inventories missing evidence, separates integrity from availability, makes focused runner inputs explicit and writes omission/identity tests. A/B supply feature selectors. Strict historical/certification failures remain visible. |
-| **1 — P13h** | Interactive path creation and affine resize, portable authoring/history. Depends on p13f/p13g geometry and V5 sessions; does not require continuous Booleans. G013/G015/G017/G021/G022/G085/G089. | A native resize + explicit creation/workflow versions; B one path controller for active/saved/planar editing and creation; C independent geometry/history/replay/UI/SDK matrix. Detailed [specification](packets/P13h-interactive-path-authoring.md). |
-| **2 — P13i** | Typed Gaussian/rank consumption of path selections; shared resource admission, live budgets and targets. Depends on P13h portable intent for drawing→filter workflows, but shared extent/accounting research can start earlier. G010/G042/G044/G045/G088. | A one shared analytic extent/raster accounting path and typed command support; B usable target/preview/cancel/Apply/budget feedback; C exact sample oracles, no-read-before-refusal, callback/revision and both-host checks. See specification below. |
+| **C0, scoped-qualified alongside P13h** | Portable current verification and retired-evidence visibility; consumes p13g receipt and storage rules. | C inventories missing evidence, separates integrity from availability, makes focused runner inputs explicit and writes omission/identity tests. A/B supply feature selectors. Strict historical/certification failures remain visible. |
+| **1 — P13h (scoped-qualified)** | Interactive path creation and affine resize, portable authoring/history. Depends on p13f/p13g geometry and V5 sessions; does not require continuous Booleans. G013/G015/G017/G021/G022/G085/G089. | A native resize + explicit creation/workflow versions; B one path controller for active/saved/planar editing and creation; C independent geometry/history/replay/UI/SDK matrix. Detailed [specification](packets/P13h-interactive-path-authoring.md). |
+| **2 — P13i (next)** | Typed Gaussian/rank consumption of path selections; shared resource admission, live budgets and targets. Depends on P13h portable intent for drawing→filter workflows, but shared extent/accounting research can start earlier. G010/G042/G044/G045/G088. | A one shared processor-compatible extent/raster accounting path and typed command support; B usable target/preview/cancel/Apply/budget feedback; C exact sample oracles, no-read-before-refusal, callback/revision and both-host checks. See the [detailed specification](packets/P13i-path-filter-targets.md) and summary below. |
 | **3 — continuous geometry** | Curve-preserving union/intersection/difference/XOR; path+path and declared primitive promotion, holes, islands, self-intersections and off-canvas contours. G016/G018/G019. | A reviewed bounded arrangement/intersection algorithm or eligible dependency; B Boolean controls/modifiers and empty-result behavior; C analytic/pinned reference cases and numerical/resource boundaries. Do not pass raster masks off as continuous results. Freeze numerical topology policy before code. |
 | **4 — complete selection/pixel workflows** | Finish remaining tools, portable authored move/rotate/control-point/segment intent, fitting/conversion, ROI manager scope/positions/interchange, floating paste, clipboard, draw/fill/clear, text and overlays. G013–G025/G080. | A commands + pixel/geometry/history policies; B full tool/manager/paste/text interactions; C mixed geometry, positioned C/Z/T, encoding, platform clipboard and undo/reference matrix. Deliver one named tool/workflow per packet. |
 | **5 — configuration and linked viewing** | Finish G001–G012/G026–G038/G062/G065/G068 plus associated shell behavior. Reuse existing settings, XYZ sampler, scientific navigation, reslice and channel commands. | A validated settings/axes/calibration/derived-output policies; B all missing controls for XY/XZ/YZ, C/Z/T, stack/range/spacing/orientation/interpolation, projections/montage/animation; C asymmetric calibrated volumes, setting-consumer graph, migration and actual keyboard/pointer acceptance. Oblique/curved reslicing gets its own sampler/interaction packet. |
@@ -142,11 +219,26 @@ stable child ID and owner; difficulty or missing code is not an exclusion reason
 
 ## P13i specification: path filters and resource integration
 
+The [P13i packet](packets/P13i-path-filter-targets.md) owns detailed entry gates,
+file candidates, reference acquisition/capture, shared interfaces, UI states,
+case IDs and exit sequence. This section is its scheduling summary. The exact source is restored, while the reviewed Java runtime and executed
+observations remain pending. Restore the remaining exact reviewed inputs before
+freezing processor bounds. A audits native callers; B
+names the existing panels plus `legacy_target_resources.hpp` and scheduler
+consumers; C owns reference tooling and independent observations. P13h's scoped exit is qualified; P13i may now start its own entry gates.
+
 **Input contract.** Freeze the complete Gaussian and rank command variants,
 pixel policies and target forms already supported by those APIs. Path support
 is an extension of those types, not a new filter implementation or an implicit
-scientific-axis conversion. Use conservative analytic path bounds for iteration
-limits and the existing processing-mask sampling convention:
+scientific-axis conversion. Freeze path processor bounds from pinned ImageJ
+observations before changing the extent planner: geometric extent affects the
+Gaussian resampling alignment for sigma greater than 8.5, so occupied-mask bounds
+are not an interchangeable substitute. Capture ShapeRoi bounds, processor bounds,
+mask and sigma-1/sigma-12 outputs. Float32 local-coordinate rasterization can also
+make unadjusted binary64 bounds nonconservative (the proposed negative-billion
+boundary fixture must be checked against the pinned reference).
+
+Keep the existing processing-mask sampling convention:
 `Selection::mask()` uses the bounded `imagej_shape_mask` rasterizer. Continuous
 `ImageJCompositePath::contains()` is a different query; do not substitute
 `contains(pixel_center)` as the processing oracle. Preserve the kernel's image
@@ -157,18 +249,31 @@ Rasterization is an explicit processing view; it never replaces the selection.
 **A ownership.** Name the touched files at entry from `gaussian_command.cpp`,
 `rank_command.cpp`, `target_mask_resources.hpp`, `targets.cpp`, `execution.cpp`,
 `jobs.cpp` and their relevant public/feature-binding contracts. Audit existing
-call sites before changing shared estimates. Rank already delegates its region
-calculation to Gaussian; repair/extract one shared seam. Include active and
+call sites before changing shared estimates. Rank and Remove NaNs already
+delegate their region calculation to Gaussian; repair/extract one shared seam
+and preserve primitive/rounded extents. Include packed regional masks as a
+compatibility case. Generic target masks and ImageJ-filter targets have different
+non-area ROI semantics and must not be conflated. Include active and
 positioned saved selections, unrelated path-bearing retained state, path
 command/codec copies, one serial raster peak, result/preview retention and
 publication/history reservations in their actual owning layers. Do not double
 count shared backing or claim that a logical estimate bounds total process RSS.
 
+The shared target-mask plan must reach Application submission, prepare_operation,
+the legacy desktop scheduler, pooled-threshold workspace and native-workflow
+preflight against its metadata-replayed stage source. Admit every relevant
+plane/ROI before earlier provider reads or the first user checkpoint; workflow
+Budget::data already charges retained path carriers, so do not add those charges
+again. Reuse serial raster scratch rather than retaining a raster per row/plane.
+Preserve empty-target behavior separately for the legacy and scientific lanes.
+
 **B ownership.** Extend the existing Gaussian/rank panels and target selectors.
 Automatic preview, explicit Preview and Apply use the same frozen request and
 target semantics. Superseded previews cannot replace newer ones; Cancel releases
-owned drafts/reservations. Lowering the live resource budget before admission or
-Apply must refuse visibly and recover after a valid budget change. A selected
+owned drafts/reservations. Preserve the current settings refusal when a lowered
+budget would undercut an existing retained-preview reservation. To qualify a
+lower-budget Apply, release the preview, lower the budget, then submit; admission
+must refuse visibly and recover after a valid budget change. A selected
 unsupported target must have the same diagnostic in API and UI; no silent whole
 plane fallback. Record/replay drawing→filter→Undo/Redo in both launches.
 
@@ -211,9 +316,11 @@ unchanged. Source/build registration for P13h remains C's separate responsibilit
    Locate artifacts from the frozen manifest, not `build/wheel` or a guessed
    Linux filename. Preserve strict full-CI profiles and their existing required
    routes. Local incremental verification must not call a fresh-cache-only driver.
-3. A focused profile records selected test IDs/modules, deselections/exclusions
-   and reasons, expected native test names, registered UI modes and all four
-   Windows/Linux × standalone/Python contexts. Missing required routes, empty
+3. Each platform's focused profile records selected test IDs/modules,
+   deselections/exclusions and reasons, expected native test names and registered
+   standalone UI routes; selected Python IDs include Python-host scenarios.
+   The packet's aggregation requires all four Windows/Linux × standalone/Python
+   contexts. Missing required routes, empty
    test collection, source drift, unbound artifacts and skipped required cases
    fail that profile. A deliberately smaller profile cannot report full CI.
 4. Add omission/identity/portability tests: absent executable, stale compiled
@@ -233,14 +340,21 @@ historical proof into a passed release gate. C0's success is accurate reporting
 and a reproducible current scoped runner, not making that old gate green.
 
 The focused profile schema has `schema_version: 1`, `profile: focused`,
-`packet_id`, `repository`, `source_manifest`, `toolchain`, `dependencies`,
+`packet_id`, `platform`, `repository`, `source_manifest`, `toolchain`, `dependencies`,
 `native_cache`, `products` (explicit application, interpreter, installed
 modules/provider and SDK identities),
 `python_modules`, `expected_collected_ids`, `excluded_ids` with reasons,
-`native_groups`, `sdk_cases`, `ui_cases` (mode/scenario/platform/host records), `scratch_root`,
+`native_groups`, `native_reports`, `sdk_cases`, `ui_cases` (group/case selectors), `scratch_root`,
 `report_root`, `timeouts` and `resource_limits`. Reject unknown profile fields,
 missing required products, duplicate IDs, undeclared exclusions and output roots
 escaping the owned directory. A profile never overwrites a prior receipt.
+Dependency identities may name an existing reviewed `python_path` for a no-pip
+verification environment; append it after the installed runtime's own package
+path. This reuses dependency installations rather than creating another venv.
+The generic focused runner can qualify only its selected profile. It writes
+`profile_scope_qualified: true` on success while leaving
+`packet_scope_qualified: false`; C's separate audit of every packet clause and
+required context owns any later packet qualification.
 
 Local native execution uses the installed CMake tool directly with the existing
 configured cache: inspect its source/toolchain identity, run
@@ -318,6 +432,7 @@ until then, focused qualification remains limited. Headless ImGui input alone
 does not certify OS input, accessibility or graphics backend parity. macOS and
 full release certification remain separately required.
 
-For this **documentation-only review**, validate local links/anchors, inventory
+For **documentation-only updates**, validate local links/anchors, inventory
 counts/assignments, preserved manifest bytes and diff hygiene. Do not compile
-the product or generate screenshot/test scratch just to update the plan.
+the product or generate screenshot/test scratch just to update the plan. Product
+execution resumes from the closeout card, not from an old construction prompt.

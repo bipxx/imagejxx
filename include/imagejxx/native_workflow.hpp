@@ -52,6 +52,9 @@ struct NativeWorkflowOperation {
   // planar_annotation / saved_roi_geometry only. Absent: retain the complete
   // validated original request. Never changes the original capture.
   std::optional<NativeWorkflowAnnotationIntent> annotation_intent;
+  // V8 only: mandatory for authored path-aware creation; original-only V4
+  // derives its reference extent from that immutable capture. No rescaling.
+  std::optional<DatasetShape> selection_creation_extent;
 };
 struct NativeWorkflowImport {
   std::vector<ImageJAnnotationImportItem> items;
@@ -132,15 +135,15 @@ private:
   PreparedNativeWorkflow(DocumentSnapshot source, DocumentSnapshot preview,
                          std::vector<NativeWorkflowOutput> outputs,
                          std::vector<NativeWorkflowHistogramOutput> histograms,
-                         std::size_t completed, std::size_t bytes, bool paired_display, bool guard_display)
+                         std::size_t completed, std::size_t bytes, bool paired_display, bool guard_display, bool selection_history)
       : source_(std::move(source)), preview_(std::move(preview)),
         outputs_(std::move(outputs)), histograms_(std::move(histograms)), completed_steps_(completed),
-        retained_bytes_(bytes), paired_display_(paired_display), guard_display_(guard_display) {}
+        retained_bytes_(bytes), paired_display_(paired_display), guard_display_(guard_display), selection_history_(selection_history) {}
   DocumentSnapshot source_, preview_;
   std::vector<NativeWorkflowOutput> outputs_;
   std::vector<NativeWorkflowHistogramOutput> histograms_;
   std::size_t completed_steps_ = 0, retained_bytes_ = 0;
-  bool paired_display_ = false, guard_display_ = false;
+  bool paired_display_ = false, guard_display_ = false, selection_history_ = false;
 };
 // Preflight the entire request, then execute in order on a detached scientific
 // owner with at most one internal undo entry. Each later step sees earlier

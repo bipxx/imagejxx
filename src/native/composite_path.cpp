@@ -64,6 +64,7 @@ ImageJCompositePath::ImageJCompositePath(const std::vector<double> &commands,
   Point current{}, start{};
   bool active = false;
   for (std::size_t at = 0; at < commands.size();) {
+    kernel_checkpoint_periodic();
     const double opcode = commands[at++];
     require(std::isfinite(opcode) && opcode >= 0 && opcode <= 4 &&
                 std::floor(opcode) == opcode,
@@ -124,17 +125,26 @@ ImageJCompositePath::transformed(const std::array<double, 6> &matrix,
   for (double v : matrix)
     coordinate(v);
   const auto &m = matrix;
-  require(m[0] * m[4] - m[1] * m[3] != 0,
+  // Axis-preserving resize matrices are invertible exactly when each scale
+  // is nonzero. Multiplying two tiny valid scales can underflow binary64 and
+  // must not turn their representable result into a false singular refusal.
+  // Keep the established general-affine determinant contract unchanged.
+  const bool diagonal=m[1]==0 && m[3]==0;
+  require(diagonal ? m[0]!=0 && m[4]!=0 : m[0]*m[4]-m[1]*m[3]!=0,
           "Composite path transform must be invertible");
   if (m == std::array<double, 6>{1, 0, 0, 0, 1, 0})
     return *this;
   auto output = commands();
   for (std::size_t at = 0; at < output.size();) {
+    kernel_checkpoint_periodic();
     const auto n = arity(int(output[at++]));
     for (std::size_t i = 0; i < n; i += 2) {
       const double x = output[at + i], y = output[at + i + 1];
-      output[at + i] = m[0] * x + m[1] * y + m[2];
-      output[at + i + 1] = m[3] * x + m[4] * y + m[5];
+      // Preserve untouched coordinate rows exactly, including signed zero.
+      if (!(m[0]==1 && m[1]==0 && m[2]==0))
+        output[at + i] = m[0] * x + m[1] * y + m[2];
+      if (!(m[3]==0 && m[4]==1 && m[5]==0))
+        output[at + i + 1] = m[3] * x + m[4] * y + m[5];
     }
     at += n;
   }

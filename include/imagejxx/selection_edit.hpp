@@ -11,6 +11,8 @@ public:
 };
 
 enum class SelectionHandleKind { Move, Resize, Vertex, Rotate };
+// Bounds is an explicit path-resize mode. Existing calls keep vertex handles.
+enum class SelectionHandleMode { ControlPoints, Bounds };
 struct SelectionHandle {
   SelectionHandleKind kind;
   std::size_t index;
@@ -64,6 +66,9 @@ public:
     return bounds_;
   } // left, top, right, bottom
   std::vector<SelectionHandle> handles() const;
+  std::vector<SelectionHandle> handles(SelectionHandleMode) const;
+  std::vector<SelectionHandle> handles(SelectionHandleMode,
+      const SelectionEditLimits &, const ExecutionControl & = {}) const;
   std::vector<SelectionHandle> handles(const SelectionEditLimits &limits,
                                        const ExecutionControl &control = {}) const;
   std::optional<SelectionHandle>
@@ -76,17 +81,37 @@ public:
            std::optional<SelectionHandle> rotation,
            const SelectionEditLimits &limits,
            const ExecutionControl &control = {}) const;
+  // Bounds mode tests only the available path resize handles; no move/rotate
+  // fallback. ControlPoints preserves the original hit-test contract.
+  std::optional<SelectionHandle> hit_test(std::array<double, 2> point,
+      std::array<double, 2> tolerance, std::optional<SelectionHandle> rotation,
+      SelectionHandleMode) const;
+  std::optional<SelectionHandle> hit_test(std::array<double, 2> point,
+      std::array<double, 2> tolerance, std::optional<SelectionHandle> rotation,
+      SelectionHandleMode, const SelectionEditLimits &,
+      const ExecutionControl & = {}) const;
   Selection moved(std::array<double, 2> delta, bool keep_inside = false) const;
   Selection moved(std::array<double, 2> delta, bool keep_inside,
                   const SelectionEditLimits &limits,
                   const ExecutionControl &control = {}) const;
   // Resize indices go clockwise: NW, N, NE, E, SE, S, SW, W.
+  // Existing no-mode calls retain rectangle/ellipse resize and refuse paths.
   Selection resized(std::size_t handle, std::array<double, 2> point,
                     bool preserve_aspect = false,
                     bool from_center = false) const;
   Selection resized(std::size_t handle, std::array<double, 2> point,
                     bool preserve_aspect, bool from_center,
                     const SelectionEditLimits &limits,
+                    const ExecutionControl &control = {}) const;
+  // Bounds explicitly admits affine path resize. ControlPoints delegates to
+  // the legacy no-mode contract; Bounds refuses non-path selections. Mode is
+  // first so existing bool/limits arguments, including {}, remain unambiguous.
+  Selection resized(SelectionHandleMode mode, std::size_t handle,
+                    std::array<double, 2> point, bool preserve_aspect = false,
+                    bool from_center = false) const;
+  Selection resized(SelectionHandleMode mode, std::size_t handle,
+                    std::array<double, 2> point, bool preserve_aspect,
+                    bool from_center, const SelectionEditLimits &limits,
                     const ExecutionControl &control = {}) const;
   Selection moved_vertex(std::size_t index, std::array<double, 2> point) const;
   Selection moved_vertex(std::size_t index, std::array<double, 2> point,

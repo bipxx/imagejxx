@@ -25,7 +25,8 @@ public:
   SavedRoiEdit &operator=(const SavedRoiEdit &) = delete;
   SavedRoiEdit(SavedRoiEdit &&) noexcept = default;
   SavedRoiEdit &operator=(SavedRoiEdit &&other) noexcept {
-    if (this != &other) { cancel(); state_ = std::move(other.state_); }
+    if (this != &other) { cancel(); state_ = std::move(other.state_);
+      pathTransform_=other.pathTransform_;pathAspect_=other.pathAspect_;pathCenter_=other.pathCenter_; }
     return *this;
   }
   void begin(const SavedRoiGeometryCapture &, std::size_t row,
@@ -44,11 +45,16 @@ public:
   PreparedSavedRoiGeometryEdit prepare(
       Application &, SavedRoiGeometryInteraction,
       const ExecutionControl & = {});
+  void working_limit(std::size_t cap);
   void invalidate_preview() noexcept;
   void cancel() noexcept;
 
   bool active() const noexcept;
   bool pointer_active() const noexcept;
+  bool pointer_valid() const noexcept;
+  void path_transform(bool value) { pathTransform_ = value; }
+  bool path_transform() const { return pathTransform_; }
+  void path_flags(bool aspect, bool center) { pathAspect_ = aspect; pathCenter_ = center; }
   std::size_t row_index() const;
   const SavedRoiGeometryCapture &capture() const;
   const DocumentSnapshot &source() const;
@@ -71,6 +77,7 @@ public:
 private:
   struct State;
   std::shared_ptr<State> state_;
+  bool pathTransform_ = false, pathAspect_ = false, pathCenter_ = false;
   const State &require() const;
 };
 

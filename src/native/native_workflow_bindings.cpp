@@ -113,7 +113,7 @@ void bind_native_workflow(py::module_ &m) {
       .def(
           py::init([](std::string name, py::dict params, TargetRequest target,
                       py::object record, py::object consent, py::object options,
-                      py::object enabled, py::object creation,py::object annotation) {
+                      py::object enabled, py::object creation,py::object annotation,py::object extent) {
             std::optional<NativeWorkflowFilterOptions> filter;
             if (!options.is_none()) {
               if (py::isinstance<GaussianBlurCommandOptions>(options))
@@ -130,17 +130,27 @@ void bind_native_workflow(py::module_ &m) {
               (void)detail::selection_creation_request_bytes(request, SelectionCreationLimits{}.max_working_bytes);
               authored=request;
             }
+            std::optional<DatasetShape> reference_extent;
+            if(!extent.is_none()) {
+              const auto d=extent.cast<py::sequence>();
+              if(py::len(d)!=6)throw py::value_error("Creation extent requires six TCZYXS axes");
+              std::array<int,6> axes{};
+              for(int i=0;i<6;++i){const auto n=integer(d[i]);if(!n || n>INT32_MAX)throw py::value_error("Creation extent must be positive int32");axes[i]=int(n);}
+              reference_extent=DatasetShape{axes[0],axes[1],axes[2],axes[3],axes[4],axes[5]};reference_extent->validate();
+            }
             return NativeWorkflowOperation{
                 std::move(name),   operation_parameters_from_python(params),
                 std::move(target), original(record),
                 flag(consent),     std::move(filter),
-                flag(enabled), std::move(authored),annotation.is_none()?std::optional<NativeWorkflowAnnotationIntent>{}:annotation.cast<NativeWorkflowAnnotationIntent>()};
+                flag(enabled), std::move(authored),annotation.is_none()?std::optional<NativeWorkflowAnnotationIntent>{}:annotation.cast<NativeWorkflowAnnotationIntent>(),reference_extent};
           }),
           py::arg("operation"), py::arg("parameters"), py::arg("target"),
           py::arg("original") = py::none(),
           py::arg("use_destination_calibration") = false,
           py::arg("filter_options") = py::none(), py::arg("enabled") = true,
-          py::arg("selection_creation") = py::none(),py::arg("annotation_intent") = py::none())
+          py::arg("selection_creation") = py::none(),py::arg("annotation_intent") = py::none(),
+          py::arg("selection_creation_extent") = py::none())
+      .def_property_readonly("selection_creation_extent",[](const NativeWorkflowOperation &v)->py::object {return v.selection_creation_extent?py::cast(v.selection_creation_extent->dimensions()):py::none();})
       .def_property_readonly("annotation_intent",[](const NativeWorkflowOperation &v){return v.annotation_intent;})
       .def_readonly("enabled", &NativeWorkflowOperation::enabled)
       .def_property_readonly("selection_creation",[](const NativeWorkflowOperation &v) {return v.selection_creation;});

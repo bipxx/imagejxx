@@ -282,6 +282,22 @@ std::vector<SelectionHandle> SelectionEditor::handles() const {
   }
   return result;
 }
+std::vector<SelectionHandle> SelectionEditor::handles(SelectionHandleMode mode) const {
+  if (mode == SelectionHandleMode::ControlPoints) return handles();
+  if (mode != SelectionHandleMode::Bounds)
+    throw std::invalid_argument("Unknown selection handle mode");
+  if (!selection_.is_path())
+    throw std::invalid_argument("Bounds handles require a native path");
+  const std::array<int,8> xs{{-1,0,1,1,1,0,-1,-1}}, ys{{-1,-1,-1,0,1,1,1,0}};
+  const auto &b=bounds_; std::vector<SelectionHandle> result; result.reserve(8);
+  for (std::size_t i=0;i<8;++i) {
+    if ((xs[i] && b[2]==b[0]) || (ys[i] && b[3]==b[1])) continue;
+    result.push_back({SelectionHandleKind::Resize,i,
+        {xs[i]<0?b[0]:xs[i]>0?b[2]:(b[0]+b[2])/2,
+         ys[i]<0?b[1]:ys[i]>0?b[3]:(b[1]+b[3])/2}});
+  }
+  return result;
+}
 std::optional<SelectionHandle>
 SelectionEditor::rotation_handle(double distance,
                                  std::array<double, 2> metric) const {
@@ -421,6 +437,22 @@ SelectionEditor::hit_test(std::array<double, 2> point,
     return SelectionHandle{SelectionHandleKind::Move, 0, point};
   return {};
 }
+std::optional<SelectionHandle> SelectionEditor::hit_test(
+    std::array<double,2> point, std::array<double,2> tolerance,
+    std::optional<SelectionHandle> rotation, SelectionHandleMode mode) const {
+  if (mode==SelectionHandleMode::ControlPoints) return hit_test(point,tolerance,rotation);
+  finite_point(point); finite_point(tolerance);
+  if (tolerance[0]<=0 || tolerance[1]<=0)
+    throw std::invalid_argument("Selection hit tolerance must be positive");
+  if (rotation) throw std::invalid_argument("Path bounds mode has no rotation handle");
+  std::optional<SelectionHandle> result; double closest=1;
+  for (const auto &handle:handles(mode)) {
+    const auto distance=std::hypot((point[0]-handle.position[0])/tolerance[0],
+                                    (point[1]-handle.position[1])/tolerance[1]);
+    if (distance<=closest) { closest=distance;result=handle; }
+  }
+  return result;
+}
 Selection SelectionEditor::checked(Selection value) const {
   kernel_checkpoint();
   value.validate(width_, height_);
@@ -484,6 +516,43 @@ Selection SelectionEditor::moved(std::array<double, 2> delta,
     p[1] += delta[1];
   }
   return checked(std::move(result));
+}
+Selection SelectionEditor::resized(SelectionHandleMode mode, std::size_t handle,
+    std::array<double, 2> point, bool preserve_aspect, bool from_center) const {
+  if (mode == SelectionHandleMode::ControlPoints)
+    return resized(handle, point, preserve_aspect, from_center);
+  if (mode != SelectionHandleMode::Bounds)
+    throw std::invalid_argument("Unknown selection handle mode");
+  finite_point(point);
+  if (!selection_.is_path() || handle >= 8)
+    throw std::invalid_argument("Bounds resize requires a native path handle");
+  const std::array<int, 8> xs{{-1, 0, 1, 1, 1, 0, -1, -1}},
+      ys{{-1, -1, -1, 0, 1, 1, 1, 0}};
+  const auto &b=bounds_;
+  const std::array<double,2> extent{b[2]-b[0],b[3]-b[1]},
+      center{(b[0]+b[2])/2,(b[1]+b[3])/2};
+  const std::array<int,2> direction{xs[handle],ys[handle]};
+  std::array<double,2> anchor=center, scale{1,1};
+  if (preserve_aspect && (extent[0]==0 || extent[1]==0))
+    throw std::invalid_argument("Cannot preserve a degenerate path aspect ratio");
+  for (int axis=0;axis<2;++axis) if (direction[axis]) {
+    if (extent[axis]==0) throw std::invalid_argument("Path resize controls a degenerate source axis");
+    const auto h=b[axis+(direction[axis]>0?2:0)];
+    anchor[axis]=from_center?center[axis]:b[axis+(direction[axis]<0?2:0)];
+    scale[axis]=(point[axis]-anchor[axis])/(h-anchor[axis]);
+    if (!std::isfinite(scale[axis])) throw std::invalid_argument("Path resize scale is not finite");
+    if (scale[axis]==0) throw CollapsedSelectionResize();
+  }
+  if (preserve_aspect) {
+    const double magnitude=direction[0]==0?std::abs(scale[1]):direction[1]==0?
+        std::abs(scale[0]):std::max(std::abs(scale[0]),std::abs(scale[1]));
+    for (int axis=0;axis<2;++axis) scale[axis]=direction[axis]?
+        std::copysign(magnitude,scale[axis]):magnitude;
+  }
+  if (scale==std::array<double,2>{1,1}) return selection_;
+  const std::array<double,6> matrix{scale[0],0,anchor[0]*(1-scale[0]),
+                                   0,scale[1],anchor[1]*(1-scale[1])};
+  return checked(path_result(selection_,selection_.path_geometry().transformed(matrix)));
 }
 Selection SelectionEditor::resized(std::size_t handle,
                                    std::array<double, 2> point,
@@ -798,6 +867,27 @@ std::optional<SelectionHandle> SelectionEditor::hit_test(
         return editor.hit_test(point, tolerance, rotation);
       });
 }
+std::vector<SelectionHandle> SelectionEditor::handles(SelectionHandleMode mode,
+    const SelectionEditLimits &limits,const ExecutionControl &control) const {
+  if (mode!=SelectionHandleMode::ControlPoints && mode!=SelectionHandleMode::Bounds)
+    throw std::invalid_argument("Unknown selection handle mode");
+  if (mode==SelectionHandleMode::Bounds && !selection_.is_path())
+    throw std::invalid_argument("Bounds handles require a native path");
+  return controlled_geometry(*this,width_,height_,limits,control,0,
+      [mode](const auto &editor){return editor.handles(mode);});
+}
+std::optional<SelectionHandle> SelectionEditor::hit_test(std::array<double,2> point,
+    std::array<double,2> tolerance,std::optional<SelectionHandle> rotation,
+    SelectionHandleMode mode,const SelectionEditLimits &limits,const ExecutionControl &control) const {
+  finite_point(point);finite_point(tolerance);
+  if (tolerance[0]<=0 || tolerance[1]<=0)
+    throw std::invalid_argument("Selection hit tolerance must be positive");
+  if (mode==SelectionHandleMode::ControlPoints) return hit_test(point,tolerance,rotation,limits,control);
+  if (mode!=SelectionHandleMode::Bounds || !selection_.is_path() || rotation)
+    throw std::invalid_argument("Path bounds hit test requires a path and no rotation handle");
+  return controlled_geometry(*this,width_,height_,limits,control,0,
+      [point,tolerance,mode](const auto &editor){return editor.hit_test(point,tolerance,{},mode);});
+}
 Selection SelectionEditor::moved(std::array<double, 2> delta, bool keep_inside,
                                   const SelectionEditLimits &limits,
                                   const ExecutionControl &control) const {
@@ -809,6 +899,28 @@ Selection SelectionEditor::moved(std::array<double, 2> delta, bool keep_inside,
       [delta, keep_inside](const auto &editor) {
         return editor.moved(delta, keep_inside);
       });
+}
+Selection SelectionEditor::resized(SelectionHandleMode mode, std::size_t handle,
+    std::array<double, 2> point, bool preserve_aspect, bool from_center,
+    const SelectionEditLimits &limits, const ExecutionControl &control) const {
+  if (mode == SelectionHandleMode::ControlPoints)
+    return resized(handle, point, preserve_aspect, from_center, limits, control);
+  if (mode != SelectionHandleMode::Bounds)
+    throw std::invalid_argument("Unknown selection handle mode");
+  finite_point(point);
+  if (!selection_.is_path() || handle >= 8)
+    throw std::invalid_argument("Bounds resize requires a native path handle");
+  const auto frozen_limits=limits;const auto frozen_control=control;
+  geometry_preflight(selection_,width_,height_,frozen_limits,frozen_control);
+  auto result=[&] {
+    ExecutionControl quiet;quiet.cancellation=frozen_control.cancellation;
+    ExecutionScope scope(quiet);
+    const auto frozen=*this;
+    return frozen.resized(mode,handle,point,preserve_aspect,from_center);
+  }();
+  ExecutionScope scope(frozen_control);
+  kernel_checkpoint();execution_progress(0,1);kernel_checkpoint();
+  execution_progress(1,1);kernel_checkpoint();return result;
 }
 Selection SelectionEditor::resized(
     std::size_t handle, std::array<double, 2> point, bool preserve_aspect,

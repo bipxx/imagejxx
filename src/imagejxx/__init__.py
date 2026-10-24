@@ -173,6 +173,7 @@ from ._native import (
     estimate_selection_region_rotation as estimate_selection_region_rotation,
     SelectionHandle as SelectionHandle,
     SelectionHandleKind as SelectionHandleKind,
+    SelectionHandleMode as SelectionHandleMode,
     SelectionFrame as SelectionFrame,
 )
 from ._native import FourierState as FourierState

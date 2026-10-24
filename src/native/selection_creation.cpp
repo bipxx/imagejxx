@@ -2,6 +2,7 @@
 #include <imagejxx/selection_enlargement.hpp>
 #include <imagejxx/selection_region.hpp>
 #include <imagejxx/imagej_roi.hpp>
+#include <imagejxx/composite_path.hpp>
 
 #include "kernel_control.hpp"
 #include "regional_geometry.hpp"
@@ -92,8 +93,18 @@ std::size_t geometry_size(const Selection &selection,
   if (!selection.is_mask() && (selection.mask_width() != 0 ||
       selection.mask_height() != 0 || !selection.packed_mask().empty()))
     invalid("Selection geometry contains hidden mask storage");
+  if ((!selection.is_path() && !selection.path_commands().empty()) ||
+      (selection.is_path() && (!selection.points.empty() || selection.is_mask())))
+    invalid("Selection geometry contains hidden path storage");
   Charge charge{limits};
   charge.take(sizeof(Selection)); charge.text(selection.kind);
+  if (selection.is_path()) {
+    if (!limits.max_path_segments || !limits.max_path_command_scalars ||
+        selection.path_geometry().segment_count()>limits.max_path_segments ||
+        selection.path_commands().size()>limits.max_path_command_scalars)
+      invalid("Selection creation path command limit exceeded");
+    charge.take(add(sizeof(ImageJCompositePath),mul(selection.path_commands().size(),sizeof(double))));
+  }
   charge.take(mul(selection.points.size(), sizeof(selection.points[0])));
   charge.object(selection.attributes);
   if (selection.is_mask())
@@ -106,6 +117,7 @@ std::size_t wire_size(const Selection &selection,
   // One immutable row node, two scalar values, array slot/container, and slack.
   bytes = add(bytes, mul(selection.points.size(), 6 * node_bytes));
   bytes = add(bytes, selection.kind.size());
+  if (selection.is_path()) bytes=add(bytes,add(4*node_bytes,mul(selection.path_commands().size(),node_bytes)));
   if (selection.is_mask())
     bytes = add(bytes, add((selection.is_region()?16:8) * node_bytes,
                            base64_size(selection.packed_mask().size())));
@@ -173,7 +185,14 @@ bool combines(SelectionCreationOperation operation,
   return operation != SelectionCreationOperation::Replace && bool(base);
 }
 void candidate_admission(const Selection &candidate, DatasetShape shape,
-                         const SelectionCreationLimits &limits) {
+                         const SelectionCreationLimits &limits, bool paths=false) {
+  if (candidate.is_path()) {
+    if (!paths) invalid("Native paths require a versioned selection creation command");
+    (void)geometry_size(candidate,limits);
+    if((candidate.path_commands().size()-candidate.path_geometry().segment_count())/2>limits.max_candidate_vertices)
+      invalid("Selection candidate exceeds vertex limit");
+    candidate.validate(shape.x,shape.y);return;
+  }
   if (candidate.kind != "rectangle" && candidate.kind != "ellipse" &&
       candidate.kind != "polygon" && candidate.kind != "freehand" &&
       candidate.kind != "rounded_rectangle")
@@ -201,7 +220,8 @@ bool full_creation(const std::optional<Selection> &base,
   case SelectionCreationGeometry::CanvasV1:
     if (base && base->is_region()) invalid("Canvas creation cannot retain regional geometry");
     return false;
-  case SelectionCreationGeometry::FullRegionV3: return true;
+  case SelectionCreationGeometry::FullRegionV3:
+  case SelectionCreationGeometry::NativePathV4: return true;
   }
   invalid("Unknown selection creation geometry mode");
 }
@@ -225,7 +245,10 @@ void operands_admission(DatasetShape shape, const std::optional<Selection> &base
                         const SelectionCreationRequest &request,
                         const SelectionCreationLimits &limits) {
   (void)operation_name(request.operation);
-  if((base && base->is_path()) || request.candidate.is_path())
+  const bool paths=request.geometry==SelectionCreationGeometry::NativePathV4;
+  if(paths && request.operation!=SelectionCreationOperation::Replace)
+    invalid("Native path creation supports Replace only; continuous Boolean operations are unavailable");
+  if(!paths && ((base && base->is_path()) || request.candidate.is_path()))
     invalid("Native paths require a versioned selection creation command");
   const auto full = full_creation(base, request);
   if (full) {
@@ -239,7 +262,7 @@ void operands_admission(DatasetShape shape, const std::optional<Selection> &base
         invalid("Regional creation base exceeds pixel limit");
     }
   }
-  candidate_admission(request.candidate, shape, limits);
+  candidate_admission(request.candidate, shape, limits, paths);
   if (base) base->validate(shape.x, shape.y);
   if (request.operation == SelectionCreationOperation::Replace) return;
   if (!base) {
@@ -328,7 +351,9 @@ SelectionCreationEstimate estimate_parts(
     std::size_t known_record_bytes = 0) {
   SelectionCreationEstimate estimate;
   estimate.pixels = source_admission(source, limits);
-  estimate.candidate_vertices = request.candidate.points.size();
+  estimate.candidate_vertices = request.candidate.is_path()?
+      (request.candidate.path_commands().size()-request.candidate.path_geometry().segment_count())/2:
+      request.candidate.points.size();
   // Charge before validate() traverses attributes, and before any owned copies.
   const auto candidate_bytes = geometry_size(request.candidate, limits);
   const auto base_bytes = optional_size(base, limits);
@@ -469,7 +494,8 @@ bool value_equal(const MetadataValue &a, const MetadataValue &b) {
 bool selection_equal(const Selection &a, const Selection &b) {
   if (!text_equal(a.kind, b.kind) || a.width != b.width ||
       a.points.size() != b.points.size() || a.mask_width() != b.mask_width() ||
-      a.mask_height() != b.mask_height() || a.mask_origin()!=b.mask_origin()) return false;
+      a.mask_height() != b.mask_height() || a.mask_origin()!=b.mask_origin() ||
+      a.path_commands()!=b.path_commands()) return false;
   for (std::size_t i = 0; i < a.points.size(); ++i) {
     kernel_checkpoint_periodic();
     if (a.points[i] != b.points[i]) return false;
@@ -496,8 +522,8 @@ std::string encode_mask(const std::vector<unsigned char> &bytes) {
   }
   kernel_checkpoint(); return encoded;
 }
-MetadataValue encode_selection(const Selection &selection,bool structured=false) {
-  if(selection.is_path())invalid("Native paths require a versioned creation selection codec");
+MetadataValue encode_selection(const Selection &selection,bool structured=false,bool paths=false) {
+  if(selection.is_path() && !paths)invalid("Native paths require a versioned creation selection codec");
   kernel_checkpoint();
   if(selection.is_region() && !structured)invalid("Regional selection requires a V2 command codec");
   MetadataObject object=structured?MetadataObject{{"attributes",metadata_object(selection.attributes)}}:selection.attributes;
@@ -509,6 +535,11 @@ MetadataValue encode_selection(const Selection &selection,bool structured=false)
   object.emplace("kind", selection.kind);
   object.emplace("points", metadata_array(std::move(points)));
   object.emplace("width", selection.width);
+  if(selection.is_path()) {
+    MetadataArray commands;commands.reserve(selection.path_commands().size());
+    for(double value:selection.path_commands()){kernel_checkpoint_periodic();commands.emplace_back(value);}
+    object.emplace("path",metadata_array(std::move(commands)));
+  }
   if (selection.is_mask()) {
     if(selection.is_region())object.emplace("origin",metadata_array({std::int64_t(selection.mask_origin()[0]),std::int64_t(selection.mask_origin()[1])}));
     object.emplace("shape", metadata_array({std::int64_t(selection.mask_height()),
@@ -523,6 +554,7 @@ MetadataObject encode_record(const Source &source,
                              const SelectionCreationRequest &request,
                              const Selection &result) {
   const auto full = full_creation(base, request);
+  const bool paths=request.geometry==SelectionCreationGeometry::NativePathV4;
   MetadataArray dimensions; dimensions.reserve(6);
   for (const int extent : source.shape.dimensions()) dimensions.emplace_back(std::int64_t(extent));
   MetadataObject binding{{"id", source.id},
@@ -532,16 +564,16 @@ MetadataObject encode_record(const Source &source,
     {"shape", metadata_array(std::move(dimensions))},
     {"type", std::string(type_name(source.type))},
     {"sample_policy", std::string(policy_name(source.policy))}};
-  return {{"schema", std::string(schema)}, {"version", std::int64_t(full ? 3 : request.candidate.is_rounded_box() ||
+  return {{"schema", std::string(schema)}, {"version", std::int64_t(paths ? 4 : full ? 3 : request.candidate.is_rounded_box() ||
       (base && base->is_rounded_box()) || result.is_rounded_box() ? 2 : 1)},
     {"source", metadata_object(std::move(binding))},
     {"position", metadata_object({{"t", std::int64_t(source.position.t)},
                                    {"c", std::int64_t(source.position.c)},
                                    {"z", std::int64_t(source.position.z)}})},
     {"operation", std::string(operation_name(request.operation))},
-    {"base", base ? encode_selection(*base, full) : MetadataValue{}},
-    {"candidate", encode_selection(request.candidate, full)},
-    {"result", encode_selection(result, full)}};
+    {"base", base ? encode_selection(*base, full, paths) : MetadataValue{}},
+    {"candidate", encode_selection(request.candidate, full, paths)},
+    {"result", encode_selection(result, full, paths)}};
 }
 
 void fields(const MetadataObject &object,
@@ -655,9 +687,11 @@ struct Wire {
   const MetadataObject *attributes = nullptr;
   int stored_width=0,stored_height=0;
   std::array<int,2> origin{0,0};
+  const MetadataArray *path=nullptr;
+  std::size_t path_segments=0;
 };
 Wire inspect_wire(const MetadataValue &value, DatasetShape shape,
-                   bool candidate, const SelectionCreationLimits &limits,bool structured=false) {
+                   bool candidate, const SelectionCreationLimits &limits,bool structured=false,bool paths=false) {
   const auto &object = object_value(value);
   for (const auto *field : {"kind", "points", "width"})
     if (!object.count(field)) invalid("Selection geometry is incomplete");
@@ -677,7 +711,8 @@ Wire inspect_wire(const MetadataValue &value, DatasetShape shape,
       low[axis] = std::min(low[axis], coordinate); high[axis] = std::max(high[axis], coordinate);
     }
   }
-  if (candidate) {
+  if (kind=="path" && (!paths || !points.empty())) invalid("Native path payload requires V4 and empty points");
+  if (candidate && kind!="path") {
     if (kind != "rectangle" && kind != "ellipse" && kind != "polygon" && kind != "freehand" && kind != "rounded_rectangle")
       invalid("Unsupported selection creation candidate kind");
     if (((kind == "rectangle" || kind == "ellipse" || kind == "rounded_rectangle") && points.size() != 2) ||
@@ -690,11 +725,19 @@ Wire inspect_wire(const MetadataValue &value, DatasetShape shape,
   Wire wire{&object, &points, &kind, width};
   wire.stored_width=shape.x;wire.stored_height=shape.y;
   if(structured) {
-    if(kind=="region")fields(object,{"kind","points","width","attributes","shape","mask","origin"});
+    if(kind=="path")fields(object,{"kind","points","width","attributes","path"});
+    else if(kind=="region")fields(object,{"kind","points","width","attributes","shape","mask","origin"});
     else if(kind=="mask")fields(object,{"kind","points","width","attributes","shape","mask"});
     else fields(object,{"kind","points","width","attributes"});
     wire.attributes=&object_value(object.at("attributes"));
   } else if(kind=="region")invalid("Regional selection requires command version 2");
+  if (kind=="path") {
+    wire.path=&array_value(object.at("path"));wire.path_segments=limits.max_path_segments;
+    if(!limits.max_path_segments || !limits.max_path_command_scalars || wire.path->empty() ||
+        wire.path->size()>limits.max_path_command_scalars)
+      invalid("Selection creation path command limit exceeded");
+    for(const auto &scalar:*wire.path)(void)number_value(scalar);
+  }
   if (kind == "mask" || kind=="region") {
     if (!object.count("shape") || !object.count("mask")) invalid("Mask storage is incomplete");
     const auto &dimensions = array_value(object.at("shape"));
@@ -736,6 +779,13 @@ std::vector<unsigned char> decode_mask(const std::string &encoded, std::size_t e
 Selection decode_selection(const Wire &wire, DatasetShape shape) {
   kernel_checkpoint();
   auto selection=[&] {
+    if(wire.path) {
+      std::vector<double> commands;commands.reserve(wire.path->size());
+      for(const auto &value:*wire.path){kernel_checkpoint_periodic();commands.push_back(number_value(value));}
+      ImageJRoiLimits path_limits;path_limits.max_vertices=wire.path_segments;
+      path_limits.max_bytes=mul(commands.size(),sizeof(double));
+      return Selection::from_path(ImageJCompositePath(commands,path_limits));
+    }
     if(!wire.mask)return Selection(*wire.kind);
     auto bytes=decode_mask(*wire.mask,packed_size(mul(wire.stored_width,wire.stored_height)));
     return *wire.kind=="region"?Selection::from_packed_region(wire.stored_width,wire.stored_height,std::move(bytes),wire.origin)
@@ -767,12 +817,15 @@ struct RecordView {
   std::size_t bytes;
   std::size_t validation_peak;
   bool full = false;
+  bool paths = false;
 };
 std::size_t wire_geometry_size(const Wire &wire, DatasetShape shape,
                                const SelectionCreationLimits &limits) {
   Charge charge{limits};
   charge.take(sizeof(Selection)); charge.text(*wire.kind);
   charge.take(mul(wire.points->size(), sizeof(std::array<double, 2>)));
+  // Include the temporary scalar vector and immutable path created by decoding.
+  if(wire.path)charge.take(add(sizeof(ImageJCompositePath),mul(wire.path->size(),2*sizeof(double))));
   charge.take(sizeof(MetadataObject));
   if(wire.attributes)charge.object(*wire.attributes);
   else for (const auto &[key, value] : *wire.object)
@@ -805,18 +858,20 @@ RecordView inspect_record(const MetadataObject &record,
   const auto bytes = metadata_size(record, limits);
   fields(record, {"schema", "version", "source", "position", "operation", "base", "candidate", "result"});
   const auto version = uint_value(record.at("version"));
-  if (text_value(record.at("schema")) != schema || (version != 1 && version != 2 && version != 3))
+  if (text_value(record.at("schema")) != schema || (version != 1 && version != 2 && version != 3 && version != 4))
     invalid("Unsupported selection creation command schema/version");
-  const bool full = version == 3;
+  const bool paths=version==4;
+  const bool full = version >= 3;
   if (full) detail::regional_record_depth(record);
   auto source = read_source(object_value(record.at("source")), object_value(record.at("position")));
   const auto pixels = source_admission(source, limits);
   const auto operation = read_operation(record.at("operation"));
+  if(paths && operation!=SelectionCreationOperation::Replace)invalid("Native path creation supports Replace only");
   std::optional<Wire> base;
   if (!std::holds_alternative<std::monostate>(record.at("base")))
-    base = inspect_wire(record.at("base"), source.shape, false, limits, full);
-  auto candidate = inspect_wire(record.at("candidate"), source.shape, true, limits, full);
-  auto result = inspect_wire(record.at("result"), source.shape, false, limits, full);
+    base = inspect_wire(record.at("base"), source.shape, false, limits, full, paths);
+  auto candidate = inspect_wire(record.at("candidate"), source.shape, true, limits, full, paths);
+  auto result = inspect_wire(record.at("result"), source.shape, false, limits, full, paths);
   const bool rounded = rounded_kind(*candidate.kind) || rounded_kind(*result.kind) ||
                        (base && rounded_kind(*base->kind));
   if (!full && version != (rounded ? 2u : 1u))
@@ -848,15 +903,17 @@ RecordView inspect_record(const MetadataObject &record,
     std::optional<Selection> native_base;
     if (base) native_base = decode_selection(*base, source.shape);
     SelectionCreationRequest request{operation, decode_selection(candidate, source.shape),
-                                    SelectionCreationGeometry::FullRegionV3};
+                                    paths?SelectionCreationGeometry::NativePathV4:SelectionCreationGeometry::FullRegionV3};
     const auto native_result = decode_selection(result, source.shape);
     detail::validate_region_storage(native_result);
+    if(paths && !selection_equal(request.candidate,native_result))
+      invalid("Selection command result differs from its original operation");
     const auto estimate = estimate_parts(source, native_base, request, limits, nullptr,
                                           &native_result, bytes);
     const auto peak = std::max(decode_peak,
         add(bytes, add(decoded_bytes, estimate.working_bytes)));
     budget(peak, limits);
-    return {source, operation, std::move(base), candidate, result, bytes, peak, true};
+    return {source, operation, std::move(base), candidate, result, bytes, peak, true, paths};
   }
   const auto vertices = std::max<std::size_t>(4, std::max(candidate.points->size(),
                                       base ? base->points->size() : 0));
@@ -884,7 +941,7 @@ SelectionCreationEstimate estimate_record_command(
     std::optional<Selection> base;
     if (view.base) base = decode_selection(*view.base, view.source.shape);
     SelectionCreationRequest request{view.operation,
-        decode_selection(view.candidate, view.source.shape), SelectionCreationGeometry::FullRegionV3};
+        decode_selection(view.candidate, view.source.shape), view.paths?SelectionCreationGeometry::NativePathV4:SelectionCreationGeometry::FullRegionV3};
     const auto result = decode_selection(view.result, view.source.shape);
     auto estimate = estimate_parts(view.source, base, request, limits, &snapshot, &result, view.bytes);
     estimate.working_bytes = std::max(estimate.working_bytes,
@@ -939,7 +996,7 @@ Decoded decode_record(const RecordView &view,
   std::optional<Selection> base;
   if (view.base) base = decode_selection(*view.base, view.source.shape);
   SelectionCreationRequest request{view.operation, decode_selection(view.candidate, view.source.shape),
-      view.full ? SelectionCreationGeometry::FullRegionV3 : SelectionCreationGeometry::CanvasV1};
+      view.paths?SelectionCreationGeometry::NativePathV4:view.full ? SelectionCreationGeometry::FullRegionV3 : SelectionCreationGeometry::CanvasV1};
   auto result = decode_selection(view.result, view.source.shape);
   operands_admission(view.source.shape, base, request, limits);
   const auto recomputed = algebra(view.source.shape, base, request, limits);
@@ -1087,7 +1144,11 @@ DocumentTransaction prepare_selection_creation(
   ExecutionScope scope(control); start_progress();
   auto transaction = command.source_.begin_edit(Change::Data);
   kernel_checkpoint();
-  if (command.changes_) transaction.select(command.result_);
+  if (command.changes_) {
+    transaction.select(command.result_);
+    if(command.request_.geometry==SelectionCreationGeometry::NativePathV4)
+      transaction.retain_selection_history();
+  }
   finish_progress(); return transaction;
 }
 namespace detail {
@@ -1102,6 +1163,7 @@ const char *creation_geometry_name(SelectionCreationGeometry mode) {
   case SelectionCreationGeometry::Automatic: return "automatic";
   case SelectionCreationGeometry::CanvasV1: return "canvas_v1";
   case SelectionCreationGeometry::FullRegionV3: return "full_region_v3";
+  case SelectionCreationGeometry::NativePathV4: return "native_path_v4";
   }
   invalid("Unknown selection creation geometry mode");
 }
@@ -1110,6 +1172,7 @@ SelectionCreationGeometry creation_geometry_from(const MetadataValue &value) {
   if (name == "automatic") return SelectionCreationGeometry::Automatic;
   if (name == "canvas_v1") return SelectionCreationGeometry::CanvasV1;
   if (name == "full_region_v3") return SelectionCreationGeometry::FullRegionV3;
+  if (name == "native_path_v4") return SelectionCreationGeometry::NativePathV4;
   invalid("Unknown selection creation geometry mode");
 }
 }
@@ -1119,7 +1182,9 @@ std::size_t selection_creation_request_bytes(const SelectionCreationRequest &req
   (void)operation_name(request.operation);
   (void)creation_geometry_name(request.geometry);
   const auto geometry = geometry_size(request.candidate, limits);
-  candidate_admission(request.candidate, DatasetShape{1,1,1,1,1,1}, limits);
+  const bool paths=request.geometry==SelectionCreationGeometry::NativePathV4;
+  if(paths && request.operation!=SelectionCreationOperation::Replace)invalid("Native path creation supports Replace only");
+  candidate_admission(request.candidate, DatasetShape{1,1,1,1,1,1}, limits, paths);
   for (const auto &[key,value] : request.candidate.attributes)
     regional_wire_depth(value, 3);
   const auto bytes = add(32 * node_bytes,
@@ -1134,7 +1199,7 @@ MetadataObject selection_creation_request_value(const SelectionCreationRequest &
   ExecutionScope scope(quiet);
   return {{"operation", std::string(operation_name(request.operation))},
           {"geometry", std::string(creation_geometry_name(request.geometry))},
-          {"candidate", encode_selection(request.candidate, true)}};
+          {"candidate", encode_selection(request.candidate, true,request.geometry==SelectionCreationGeometry::NativePathV4)}};
 }
 SelectionCreationRequest selection_creation_request_from_value(const MetadataObject &value,
                                                                std::size_t cap) {
@@ -1145,7 +1210,7 @@ SelectionCreationRequest selection_creation_request_from_value(const MetadataObj
   const auto operation = read_operation(value.at("operation"));
   const auto geometry = creation_geometry_from(value.at("geometry"));
   const auto shape = DatasetShape{1,1,1,1,1,1};
-  const auto wire = inspect_wire(value.at("candidate"), shape, true, limits, true);
+  const auto wire = inspect_wire(value.at("candidate"), shape, true, limits, true,geometry==SelectionCreationGeometry::NativePathV4);
   budget(add(bytes, add(32 * node_bytes, mul(4, wire_geometry_size(wire, shape, limits)))), limits);
   const ExecutionControl quiet;
   ExecutionScope scope(quiet);
@@ -1160,6 +1225,16 @@ SelectionCreationRequest selection_creation_record_request(const MetadataObject 
   const ExecutionControl quiet;
   ExecutionScope scope(quiet);
   return decode_record(view, limits).request;
+}
+bool native_path_creation_intent(const NativeWorkflowOperation &v) {
+  if(v.operation!="selection_creation")return false;
+  if(v.selection_creation && v.selection_creation->geometry==SelectionCreationGeometry::NativePathV4)return true;
+  if(!v.original)return false;
+  const auto version=v.original->find("version");
+  if(version==v.original->end())return false;
+  if(const auto n=std::get_if<std::int64_t>(&version->second))return *n==4;
+  if(const auto n=std::get_if<std::uint64_t>(&version->second))return *n==4;
+  return false;
 }
 void validate_selection_creation_workflow_intent(const NativeWorkflowOperation &v,
                                                 std::size_t cap) {
@@ -1177,6 +1252,32 @@ void validate_selection_creation_workflow_intent(const NativeWorkflowOperation &
     validate_selection_creation_command_record(*v.original, limits);
   }
   if (v.selection_creation) (void)selection_creation_request_bytes(*v.selection_creation, cap);
+  const bool path_intent=native_path_creation_intent(v);
+  if(path_intent && v.selection_creation &&
+      v.selection_creation->geometry!=SelectionCreationGeometry::NativePathV4)
+    invalid("A V4 original requires an explicit NativePathV4 authored override");
+  if(!path_intent && v.selection_creation_extent)
+    invalid("Selection creation extent requires explicit V4 path intent or original");
+  if(path_intent && v.selection_creation && !v.selection_creation_extent)
+    invalid("Authored path creation requires an explicit TCZYXS reference extent");
+  if(v.selection_creation_extent) {
+    v.selection_creation_extent->validate();
+    if(!v.selection_creation) {
+      const auto view=inspect_record(*v.original,creation_workflow_limits(cap));
+      if(view.source.shape.dimensions()!=v.selection_creation_extent->dimensions())
+        invalid("Changing the original path extent requires an authored rebind");
+    }
+  }
+}
+std::optional<DatasetShape> selection_creation_workflow_extent(const NativeWorkflowOperation &v,std::size_t cap) {
+  if(v.operation!="selection_creation") {
+    if(v.selection_creation_extent)invalid("Selection creation extent is forbidden on another operation");
+    return {};
+  }
+  validate_selection_creation_workflow_intent(v,cap);
+  if(!native_path_creation_intent(v))return {};
+  if(v.selection_creation_extent)return v.selection_creation_extent;
+  return inspect_record(*v.original,creation_workflow_limits(cap)).source.shape;
 }
 SelectionCreationRequest selection_creation_workflow_request(const NativeWorkflowOperation &v,
                                                              std::size_t cap) {
@@ -1187,6 +1288,9 @@ ResolvedSelectionCreationCommand workflow_selection_creation(const DocumentSnaps
     const NativeWorkflowOperation &v, std::size_t cap, const ExecutionControl &control) {
   const auto limits = creation_workflow_limits(cap);
   const auto request = selection_creation_workflow_request(v, cap);
+  const auto extent=selection_creation_workflow_extent(v,cap);
+  if(extent && extent->dimensions()!=source.data().dataset.shape().dimensions())
+    invalid("Path creation reference extent differs from destination; author an explicit rebind");
   return resolve_selection_creation_command(source, request, limits, control);
 }
 } // namespace detail

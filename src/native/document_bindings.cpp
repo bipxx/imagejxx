@@ -193,6 +193,9 @@ void bind_document(py::module_ &m) {
       .def_readonly("display", &Revisions::display)
       .def("matches", &Revisions::matches, py::arg("expected"),
            py::arg("dependencies") = Change::Data);
+  py::enum_<SelectionHandleMode>(m,"SelectionHandleMode")
+      .value("CONTROL_POINTS",SelectionHandleMode::ControlPoints)
+      .value("BOUNDS",SelectionHandleMode::Bounds);
   py::enum_<SelectionHandleKind>(m, "SelectionHandleKind")
       .value("MOVE", SelectionHandleKind::Move)
       .value("RESIZE", SelectionHandleKind::Resize)
@@ -285,6 +288,20 @@ void bind_document(py::module_ &m) {
         py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none())
       .def("handles", py::overload_cast<>(
           &SelectionEditor::handles, py::const_))
+      .def("handles",[](const SelectionEditor &editor,SelectionHandleMode mode,SelectionEditLimits limits,
+          std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint){
+        const auto control=axis_range_python_control(std::move(cancellation),std::move(progress),std::move(checkpoint));
+        py::gil_scoped_release release;return editor.handles(mode,limits,control);
+      },py::arg("mode"),py::arg("limits")=SelectionEditLimits{},py::kw_only(),
+        py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none())
+      .def("hit_test",[](const SelectionEditor &editor,std::array<double,2> point,std::array<double,2> tolerance,
+          SelectionHandleMode mode,std::optional<SelectionHandle> rotation,SelectionEditLimits limits,
+          std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint){
+        const auto control=axis_range_python_control(std::move(cancellation),std::move(progress),std::move(checkpoint));
+        py::gil_scoped_release release;return editor.hit_test(point,tolerance,rotation,mode,limits,control);
+      },py::arg("point"),py::arg("tolerance"),py::arg("mode"),py::arg("rotation")=py::none(),
+        py::arg("limits")=SelectionEditLimits{},py::kw_only(),py::arg("cancellation")=nullptr,
+        py::arg("progress")=py::none(),py::arg("checkpoint")=py::none())
       .def("rotation_handle", &SelectionEditor::rotation_handle,
            py::arg("distance"), py::arg("metric") = std::array<double, 2>{1, 1})
       .def("hit_test", py::overload_cast<std::array<double, 2>, std::array<double, 2>, std::optional<SelectionHandle>>(
@@ -298,6 +315,23 @@ void bind_document(py::module_ &m) {
           &SelectionEditor::resized, py::const_), py::arg("handle"),
            py::arg("point"), py::kw_only(), py::arg("preserve_aspect") = false,
            py::arg("from_center") = false)
+      .def("resized",[](const SelectionEditor &editor,std::size_t handle,std::array<double,2> point,
+          bool preserve_aspect,bool from_center,SelectionEditLimits limits,
+          std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint){
+        const auto control=axis_range_python_control(std::move(cancellation),std::move(progress),std::move(checkpoint));
+        py::gil_scoped_release release;return editor.resized(handle,point,preserve_aspect,from_center,limits,control);
+      },py::arg("handle"),py::arg("point"),py::kw_only(),py::arg("preserve_aspect")=false,
+        py::arg("from_center")=false,py::arg("limits")=SelectionEditLimits{},
+        py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none())
+      .def("resized",[](const SelectionEditor &editor,std::size_t handle,std::array<double,2> point,
+          SelectionHandleMode mode,bool preserve_aspect,bool from_center,SelectionEditLimits limits,
+          std::shared_ptr<CancellationToken> cancellation,py::object progress,py::object checkpoint){
+        const auto control=axis_range_python_control(std::move(cancellation),std::move(progress),std::move(checkpoint));
+        py::gil_scoped_release release;return editor.resized(mode,handle,point,preserve_aspect,from_center,limits,control);
+      },py::arg("handle"),py::arg("point"),py::kw_only(),py::arg("mode"),
+        py::arg("preserve_aspect")=false,py::arg("from_center")=false,
+        py::arg("limits")=SelectionEditLimits{},py::arg("cancellation")=nullptr,
+        py::arg("progress")=py::none(),py::arg("checkpoint")=py::none())
       .def("moved_vertex", py::overload_cast<std::size_t, std::array<double, 2>>(
           &SelectionEditor::moved_vertex, py::const_), py::arg("index"),
            py::arg("point"))

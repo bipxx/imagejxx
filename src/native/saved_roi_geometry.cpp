@@ -200,7 +200,9 @@ Size selection_size(const Selection &selection, DatasetShape shape,
   if(selection.is_path()) {
     const auto count=selection.path_commands().size();
     result.native=add(result.native,add(sizeof(ImageJCompositePath)+sizeof(std::vector<double>),mul(count,sizeof(double))));
-    result.wire=add(result.wire,add(32,mul(count,32)));
+    // MetadataSize charges a separator as well as the 32-byte scalar bound
+    // for every array entry. Reserve both before encoding large path records.
+    result.wire=add(result.wire,add(32,mul(count,33)));
     result.nodes=add(result.nodes,add(2,count));
   }
   if(selection.is_region()) {

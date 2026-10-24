@@ -67,7 +67,8 @@ void bind_selection_creation(py::module_ &m) {
   py::enum_<SelectionCreationGeometry>(m, "SelectionCreationGeometry")
       .value("AUTOMATIC", SelectionCreationGeometry::Automatic)
       .value("CANVAS_V1", SelectionCreationGeometry::CanvasV1)
-      .value("FULL_REGION_V3", SelectionCreationGeometry::FullRegionV3);
+      .value("FULL_REGION_V3", SelectionCreationGeometry::FullRegionV3)
+      .value("NATIVE_PATH_V4", SelectionCreationGeometry::NativePathV4);
   py::class_<SelectionCreationRequest>(m, "SelectionCreationRequest")
       .def(py::init([](Selection candidate, SelectionCreationOperation operation,
                        SelectionCreationGeometry geometry) {
@@ -88,7 +89,13 @@ void bind_selection_creation(py::module_ &m) {
           [](SelectionCreationLimits &v, py::handle x) { v.max_candidate_vertices = size_value(x); })
       .def_property("max_working_bytes",
           [](const SelectionCreationLimits &v) { return v.max_working_bytes; },
-          [](SelectionCreationLimits &v, py::handle x) { v.max_working_bytes = size_value(x); });
+          [](SelectionCreationLimits &v, py::handle x) { v.max_working_bytes = size_value(x); })
+      .def_property("max_path_segments",
+          [](const SelectionCreationLimits &v){return v.max_path_segments;},
+          [](SelectionCreationLimits &v,py::handle x){v.max_path_segments=size_value(x);})
+      .def_property("max_path_command_scalars",
+          [](const SelectionCreationLimits &v){return v.max_path_command_scalars;},
+          [](SelectionCreationLimits &v,py::handle x){v.max_path_command_scalars=size_value(x);});
   py::class_<SelectionCreationEstimate>(m, "SelectionCreationEstimate")
       .def_readonly("pixels", &SelectionCreationEstimate::pixels)
       .def_readonly("candidate_vertices", &SelectionCreationEstimate::candidate_vertices)

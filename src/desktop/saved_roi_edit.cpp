@@ -46,12 +46,13 @@ ExecutionControl draftControl(const ExecutionControl &input,
 struct SavedRoiEdit::State {
   State(SavedRoiGeometryCapture capture, const ResolvedSavedRoiGeometryCommand &admitted,
         SavedRoiGeometryLimits limits)
-      : capture(std::move(capture)), row(admitted.row_index()), limits(limits),
+      : capture(std::move(capture)), row(admitted.row_index()), limits(limits), admitted_cap(limits.max_working_bytes),
         candidate(admitted.replacement()), token(std::make_shared<CancellationToken>()),
         working_bytes(admitted.estimate().working_bytes) {}
   const SavedRoiGeometryCapture capture;
   const std::size_t row;
-  const SavedRoiGeometryLimits limits;
+  SavedRoiGeometryLimits limits;
+  const std::size_t admitted_cap;
   std::optional<SelectionEditor> editor;
   std::optional<Selection> candidate;
   std::shared_ptr<CancellationToken> token;
@@ -59,7 +60,8 @@ struct SavedRoiEdit::State {
   SelectionHandle hit{SelectionHandleKind::Move, 0, {0, 0}};
   std::array<double, 2> down{}, last{};
   std::size_t working_bytes;
-  bool ready = false, pointer = false;
+  bool ready = false, pointer = false, invalid = false;
+  std::string error;
 };
 
 bool SavedRoiCanvasTransform::operator==(const SavedRoiCanvasTransform &b) const {
@@ -112,7 +114,7 @@ void SavedRoiEdit::begin_pointer(
       throw std::invalid_argument("Saved area row is outside the captured owner");
     const auto &selection = ownedCapture.source().data().rois[row].selection;
     if (hit.kind == SelectionHandleKind::Resize &&
-        (!selection.box_frame() || hit.index >= 8))
+        ((!selection.box_frame() && !selection.is_path()) || hit.index >= 8))
       throw std::invalid_argument("Invalid saved area resize handle");
     if (hit.kind == SelectionHandleKind::Vertex &&
         ((!selection.is_path() && selection.kind != "polygon" && selection.kind != "freehand") ||
@@ -155,9 +157,13 @@ void SavedRoiEdit::update_pointer(
       }
       value = editor.moved(delta, !modifiers.alt, limits, ownedControl);
     } else if (next->hit.kind == SelectionHandleKind::Resize) {
-      value = editor.resized(next->hit.index,
-          {std::clamp(point[0], 0., double(shape.x)), std::clamp(point[1], 0., double(shape.y))},
-          modifiers.shift, modifiers.ctrl, limits, ownedControl);
+      if(editor.selection().is_path())
+        value = editor.resized(SelectionHandleMode::Bounds,next->hit.index,point,
+            modifiers.shift || pathAspect_,modifiers.ctrl || pathCenter_,limits,ownedControl);
+      else
+        value = editor.resized(next->hit.index,
+            std::array<double,2>{std::clamp(point[0], 0., double(shape.x)), std::clamp(point[1], 0., double(shape.y))},
+            modifiers.shift,modifiers.ctrl,limits,ownedControl);
     } else if (next->hit.kind == SelectionHandleKind::Rotate) {
       double degrees = editor.rotation_degrees(next->down, point);
       if (modifiers.shift) degrees = std::round(degrees / 15) * 15;
@@ -176,7 +182,12 @@ void SavedRoiEdit::update_pointer(
         SavedRoiGeometryRequest(next->row, std::move(value)), next->limits, ownedControl);
     if (state_ != next || next->token->canceled()) throw OperationCancelled();
     next->candidate = admitted.replacement(); next->last = point;
-    next->working_bytes = admitted.estimate().working_bytes;
+    next->working_bytes = admitted.estimate().working_bytes; next->invalid = false; next->error.clear();
+  } catch (const std::invalid_argument &error) {
+    if(next && next->pointer && next->hit.kind==SelectionHandleKind::Resize && next->editor->selection().is_path()) {
+      next->invalid=true;next->error=error.what();return;
+    }
+    cancel();throw;
   } catch (...) { cancel(); throw; }
 }
 void SavedRoiEdit::stage_numeric(const Selection &selection, const ExecutionControl &control) {
@@ -230,6 +241,9 @@ PreparedSavedRoiGeometryEdit SavedRoiEdit::prepare(
     return prepared;
   } catch (...) { cancel(); throw; }
 }
+void SavedRoiEdit::working_limit(std::size_t cap) {
+  if(state_)state_->limits.max_working_bytes=std::min(state_->admitted_cap,cap);
+}
 void SavedRoiEdit::invalidate_preview() noexcept {
   if (!state_) return;
   if (state_->pointer) cancel();
@@ -258,6 +272,11 @@ const std::optional<SavedRoiCanvasTransform> &SavedRoiEdit::transform() const no
 }
 std::vector<SelectionHandle> SavedRoiEdit::handles(const ExecutionControl &control) const {
   require(); const auto next = state_;
+  if(pathTransform_ && next->editor->selection().is_path()) {
+    const auto shape=next->capture.source().data().dataset.shape();
+    return SelectionEditor(next->candidate?*next->candidate:next->editor->selection(),shape.x,shape.y,geometryLimits(next->limits))
+        .handles(SelectionHandleMode::Bounds,geometryLimits(next->limits),control);
+  }
   if (next->candidate) {
     const auto shape = next->capture.source().data().dataset.shape();
     const auto owned = draftControl(control, next->token);
@@ -269,6 +288,7 @@ std::vector<SelectionHandle> SavedRoiEdit::handles(const ExecutionControl &contr
 std::optional<SelectionHandle> SavedRoiEdit::rotation_handle(
     double distance, std::array<double, 2> metric) const {
   require(); const auto next = state_;
+  if(pathTransform_ && next->editor->selection().is_path())return {};
   if (next->candidate) {
     const auto shape = next->capture.source().data().dataset.shape();
     return SelectionEditor(*next->candidate, shape.x, shape.y, geometryLimits(next->limits),
@@ -280,6 +300,11 @@ std::optional<SelectionHandle> SavedRoiEdit::hit_test(
     std::array<double, 2> point, std::array<double, 2> tolerance,
     std::optional<SelectionHandle> rotation, const ExecutionControl &control) const {
   require(); const auto next = state_;
+  if(pathTransform_ && next->editor->selection().is_path()) {
+    const auto shape=next->capture.source().data().dataset.shape();
+    return SelectionEditor(next->candidate?*next->candidate:next->editor->selection(),shape.x,shape.y,geometryLimits(next->limits))
+        .hit_test(point,tolerance,{},SelectionHandleMode::Bounds,geometryLimits(next->limits),control);
+  }
   if (next->candidate) {
     const auto shape = next->capture.source().data().dataset.shape();
     const auto owned = draftControl(control, next->token);
@@ -289,6 +314,7 @@ std::optional<SelectionHandle> SavedRoiEdit::hit_test(
   return next->editor->hit_test(point, tolerance, rotation, geometryLimits(next->limits),
                                  draftControl(control, next->token));
 }
+bool SavedRoiEdit::pointer_valid() const noexcept {return state_ && !state_->invalid;}
 std::size_t SavedRoiEdit::retained_count() const noexcept { return state_ ? 1 : 0; }
 std::size_t SavedRoiEdit::retained_working_bytes() const noexcept {
   return state_ ? state_->working_bytes : 0;
@@ -297,6 +323,7 @@ Json SavedRoiEdit::diagnostics() const {
   Json result{{"active", active()}, {"pointer", pointer_active()},
               {"retained_count", retained_count()}, {"retained_working_bytes", retained_working_bytes()}};
   if (!active()) return result;
+  result["path_transform"]=pathTransform_;result["invalid"]=state_->invalid;result["error"]=state_->error;
   result["document_id"] = source().id(); result["row_index"] = row_index();
   result["original"] = selectionJson(original());
   result["candidate"] = candidate() ? selectionJson(*candidate()) : Json();

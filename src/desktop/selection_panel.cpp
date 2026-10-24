@@ -129,7 +129,7 @@ void SelectionPanel::initialize(
 bool SelectionPanel::matches(const DocumentSnapshot &current) const {
   return source_ && source_->same_document(current) &&
          source_->revisions().matches(current.revisions(), Change::Data) &&
-         (!geometryOnly_ ||
+         (!(geometryOnly_ || (source_->data().selection && source_->data().selection->is_path())) ||
           (source_->display().t == current.display().t &&
            source_->display().c == current.display().c &&
            source_->display().crosshair[2] == current.display().crosshair[2]));
@@ -213,6 +213,7 @@ void SelectionPanel::patch(const Json &values, const ExecutionControl &control) 
     throw std::invalid_argument(
         "Open selection properties before editing its draft");
   auto next = *this;
+  if(next.resizeControls_.active())throw std::invalid_argument("Apply or cancel the path resize before other edits");
   if (values.contains("path_edit")) {
     if (values.size() != 1 || !next.preview_ || !next.preview_->is_path())
       throw std::invalid_argument("Path staging requires one operation on a valid native draft");
@@ -357,7 +358,7 @@ void SelectionPanel::patch(const Json &values, const ExecutionControl &control) 
   }
 }
 void SelectionPanel::apply(const Apply &publish) {
-  if (!open_ || !preview_ || !error_.empty() || pathControls_.invalid())
+  if (!open_ || !preview_ || !error_.empty() || pathControls_.invalid() || resizeControls_.invalid())
     throw std::invalid_argument("Fix the selection draft before applying");
   if (geometryOnly_) {
     const auto selection = *preview_;
@@ -375,7 +376,7 @@ void SelectionPanel::cancel() {
   preview_.reset();
   savedRow_.reset();
   rawNumbers_.clear();
-  pathControls_.reset(); pathEdited_ = false;
+  pathControls_.reset(); resizeControls_.reset(); pathTransform_ = false; pathEdited_ = false;
   std::vector<std::array<double, 2>>().swap(points_);
 }
 void SelectionPanel::draw(const std::optional<DocumentSnapshot> &current,
@@ -444,7 +445,22 @@ void SelectionPanel::draw(const std::optional<DocumentSnapshot> &current,
                        position(row.c).c_str(), position(row.z).c_str());
   }
   ImGui::BeginDisabled(busy);
-  if (box_) {
+  if (editor_->selection().is_path()) {
+    ImGui::BeginDisabled(resizeControls_.active());
+    if (ImGui::RadioButton("Edit points", !pathTransform_)) pathTransform_ = false;
+    control("Edit points", resizeControls_.active()); ImGui::SameLine();
+    if (ImGui::RadioButton("Transform", pathTransform_)) pathTransform_ = true;
+    control("Transform", resizeControls_.active()); ImGui::EndDisabled();
+  }
+  if (pathTransform_ && preview_ && preview_->is_path()) {
+    const auto shape = source_->data().dataset.shape();
+    resizeControls_.draw(*preview_, shape.x, shape.y, 0, geometryLimits_, !busy,
+        [&](const Selection &value) {
+          if (geometryOnly_) (void)resolve_saved_roi_geometry(*source_,
+              SavedRoiGeometryRequest(*savedRow_, value), savedLimits_, execution);
+          preview_ = value; pathEdited_ = true;
+        }, [&](const std::string &name, bool enabled, float) { control(name.c_str(), !enabled); });
+  } else if (box_) {
     changed |= number("Center X", &center_[0]);
     changed |= number("Center Y", &center_[1]);
     changed |= number("Width", &size_[0]);
@@ -476,11 +492,11 @@ void SelectionPanel::draw(const std::optional<DocumentSnapshot> &current,
       cornerDiameter_ = parsed; cornerChanged_ = true; changed = true;
     }
   }
-  if (preview_ && preview_->is_path())
+  if (!pathTransform_ && preview_ && preview_->is_path())
     pathControls_.draw(*preview_, !busy,
         [&](const Json &request) { patch({{"path_edit", request}}, execution); },
         [&](const std::string &name, bool enabled, float) { control(name.c_str(), !enabled); });
-  ImGui::BeginDisabled(geometryOnly_);
+  ImGui::BeginDisabled(geometryOnly_ || resizeControls_.active());
   ImGui::BeginDisabled(!legacyWidthEnabled_);
   changed |= number("Line width", &width_, geometryOnly_ || !legacyWidthEnabled_);
   ImGui::SetItemTooltip(
@@ -551,7 +567,7 @@ void SelectionPanel::draw(const std::optional<DocumentSnapshot> &current,
   }
   if (!error_.empty())
     ImGui::TextWrapped("%s", error_.c_str());
-  const bool applyDisabled = !preview_ || !error_.empty() || pathControls_.invalid();
+  const bool applyDisabled = !preview_ || !error_.empty() || pathControls_.invalid() || resizeControls_.invalid();
   ImGui::BeginDisabled(applyDisabled);
   if (ImGui::Button("Apply")) {
     try {
@@ -587,6 +603,7 @@ Json SelectionPanel::diagnostics() const {
           {"saved_row_index", savedRow_ ? Json(*savedRow_) : Json()},
           {"path_edited",pathEdited_},
           {"segments",pathControls_.diagnostics()},
+          {"transform",pathTransform_},{"resize",resizeControls_.diagnostics()},
           {"numeric_text", rawNumbers_},
           {"control_states", controlStates_},
           {"box", box_},

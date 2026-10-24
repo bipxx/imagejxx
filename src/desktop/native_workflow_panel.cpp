@@ -930,6 +930,7 @@ struct NativeWorkflowPanel::State {
     next.parameters = proposal.parameters;
     next.filter_options = proposal.filter_options;
     next.selection_creation = proposal.selection_creation;
+    next.selection_creation_extent = proposal.selection_creation_extent;
     next.annotation_intent = proposal.annotation_intent;
     const auto program = make_native_workflow_program(
         {next}, desktop_workflow_program_limits(cap));
@@ -1060,6 +1061,7 @@ struct NativeWorkflowPanel::State {
                          std::max(clip.Min.y + 1, clip.Max.y - 1))
             : center_y;
     controls[key] = {
+        {"window_name",ImGui::GetCurrentWindowRead()->Name},{"clip_rect",{clip.Min.x,clip.Min.y,clip.Max.x,clip.Max.y}},
         {"id", ImGui::GetItemID()},
         {"enabled",
          enabled && !(ImGui::GetCurrentContext()->LastItemData.ItemFlags &

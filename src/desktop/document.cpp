@@ -340,6 +340,14 @@ DocumentData stateData(const State &state,
   data.metadata = session_metadata::infer_metadata(
       state.metadata, source ? &source->data().metadata : nullptr,
       source ? &priorMetadata : nullptr);
+  // Legacy wire inference owns these four presence groups, but cannot carry
+  // unrelated native layout fields. Preserve those opaque fields from the
+  // captured source while keeping the newly derived presence information.
+  if (source)
+    for (const auto &[key, value] : source->data().metadata.record_layout)
+      if (key != "root_fields" && key != "null_fields" &&
+          key != "calibration_fields" && key != "roi_slice_fields")
+        data.metadata.record_layout.emplace(key, value);
   const auto &overlays = get(state.metadata, "overlays");
   if (!overlays.is_null() && !overlays.is_array())
     throw std::invalid_argument("Invalid overlays");

@@ -909,6 +909,15 @@ if(BUILD_TESTING)
   add_executable(imagejxx_selection_history_tests tests/native/test_selection_history.cpp)
   target_link_libraries(imagejxx_selection_history_tests PRIVATE imagejxx::core)
   add_test(NAME native_selection_history COMMAND imagejxx_selection_history_tests)
+  foreach(packet IN ITEMS path_resize path_creation saved_path_resources)
+    add_executable(imagejxx_${packet}_tests tests/native/test_${packet}.cpp)
+    target_link_libraries(imagejxx_${packet}_tests PRIVATE imagejxx::core)
+    add_test(NAME native_${packet} COMMAND imagejxx_${packet}_tests)
+    set_tests_properties(native_${packet} PROPERTIES TIMEOUT 60)
+  endforeach()
+  add_executable(imagejxx_path_authoring_tests examples/cpp/path_authoring.cpp)
+  target_link_libraries(imagejxx_path_authoring_tests PRIVATE imagejxx::core)
+  add_test(NAME native_path_authoring COMMAND imagejxx_path_authoring_tests)
   add_executable(imagejxx_path_edit_tests tests/native/test_path_edit.cpp)
   target_link_libraries(imagejxx_path_edit_tests PRIVATE imagejxx::core)
   add_test(NAME native_path_edit COMMAND imagejxx_path_edit_tests)
@@ -1085,6 +1094,8 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     src/desktop/axis_range_spacing_ui_probe.cpp
     src/desktop/orthogonal_keyboard.cpp
     src/desktop/settings_io.cpp src/desktop/settings_panel.cpp src/desktop/startup_panel.cpp src/desktop/jobs_panel.cpp src/desktop/selection_panel.cpp src/desktop/path_segment_controls.cpp src/desktop/path_segment_ui_probe.cpp
+    src/desktop/path_authoring_controls.cpp src/desktop/path_authoring_ui_probe.cpp
+    src/desktop/path_authoring_edge_ui_probe.cpp
     src/desktop/shortcut_input.cpp src/desktop/shortcut_editor.cpp
     src/desktop/shortcuts_ui_probe.cpp src/desktop/shortcut_policy_observations.cpp
     src/desktop/history_settings_ui_probe.cpp
@@ -1314,6 +1325,18 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     target_include_directories(test_ieee_saved_geometry_host PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/desktop)
     target_link_libraries(test_ieee_saved_geometry_host PRIVATE imagejxx_desktop)
     add_test(NAME desktop_ieee_saved_geometry COMMAND test_ieee_saved_geometry_host)
+    add_executable(imagejxx_desktop_record_layout_tests tests/native/test_desktop_record_layout.cpp)
+    target_link_libraries(imagejxx_desktop_record_layout_tests PRIVATE imagejxx_desktop)
+    add_test(NAME desktop_record_layout COMMAND imagejxx_desktop_record_layout_tests)
+    set_tests_properties(desktop_record_layout PROPERTIES TIMEOUT 60)
+    add_executable(imagejxx_path_resize_control_tests tests/native/test_path_resize_controls.cpp)
+    target_link_libraries(imagejxx_path_resize_control_tests PRIVATE imagejxx_desktop)
+    add_test(NAME desktop_path_resize_controls COMMAND imagejxx_path_resize_control_tests)
+    set_tests_properties(desktop_path_resize_controls PROPERTIES TIMEOUT 60)
+    add_executable(imagejxx_path_authoring_control_tests tests/native/test_path_authoring_controls.cpp)
+    target_link_libraries(imagejxx_path_authoring_control_tests PRIVATE imagejxx_desktop)
+    add_test(NAME desktop_path_authoring_controls COMMAND imagejxx_path_authoring_control_tests)
+    set_tests_properties(desktop_path_authoring_controls PROPERTIES TIMEOUT 60)
     add_executable(imagejxx_path_segment_control_tests tests/native/test_path_segment_controls.cpp)
     target_link_libraries(imagejxx_path_segment_control_tests PRIVATE imagejxx_desktop)
     add_test(NAME desktop_path_segment_controls COMMAND imagejxx_path_segment_control_tests)

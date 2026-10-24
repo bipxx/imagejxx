@@ -55,6 +55,7 @@
 #include "rendering.hpp"
 #include "viewport_renderer.hpp"
 #include "selection_panel.hpp"
+#include "path_authoring_controls.hpp"
 #include "saved_roi_edit.hpp"
 #include "settings_io.hpp"
 #include "settings_panel.hpp"
@@ -141,6 +142,10 @@ SelectionCreationGeometry creationGeometry(const std::optional<MetadataObject> &
   if (original) {
     const auto found = original->find("version");
     if (found != original->end()) {
+      if (const auto v = std::get_if<std::int64_t>(&found->second); v && *v == 4)
+        return SelectionCreationGeometry::NativePathV4;
+      if (const auto v = std::get_if<std::uint64_t>(&found->second); v && *v == 4)
+        return SelectionCreationGeometry::NativePathV4;
       if (const auto v = std::get_if<std::int64_t>(&found->second); v && *v == 3)
         return SelectionCreationGeometry::FullRegionV3;
       if (const auto v = std::get_if<std::uint64_t>(&found->second); v && *v == 3)
@@ -935,6 +940,9 @@ struct Window::Impl {
     bool ordinaryImportActive=false,ordinaryImportReplace=false;
     std::string ordinaryImportError;
     Json savedRoiLayers = Json::array(), savedRoiHandles = Json::array();
+    Json selectionHandles = Json::array();
+    std::string selectionEditError,selectionEditNotice,savedRoiHandleError,savedRoiHandleNotice;
+    std::size_t selectionEditorCap=0;
     Json savedRoiInput = Json::object();
     Json overlayLayers = Json::array();
     std::vector<OverlayVisual> overlays;
@@ -967,6 +975,10 @@ struct Window::Impl {
       SelectionHandle handle;
       std::array<double, 2> down;
       std::optional<Selection> preview;
+      bool invalid = false;
+      ImVec2 origin{}, extent{};
+      float zoom=0, aspect=0;
+      PlanePosition position{};
     };
     std::optional<SelectionGesture> selectionGesture;
     struct CreationGesture {
@@ -1037,6 +1049,8 @@ struct Window::Impl {
   ImVec2 editMenuPoint{-1, -1}, preferencesMenuPoint{-1, -1};
   JobsPanel jobsPanel;
   SelectionPanel selectionPanel;
+  PathAuthoringControls pathAuthoring;
+  bool pathTransform = false, pathAspect = false, pathCenter = false;
   PlanarAnnotationRebind planarAnnotationRebind;
   RoiImportPanel roiImportPanel;
   NativeWorkflowPanel nativeWorkflowPanel;
@@ -1589,6 +1603,9 @@ struct Window::Impl {
     if(action=="enlarge_selection" || action=="grow_selection" || action=="shrink_selection" ||
        action=="show_selection_enlargement" || action=="replay_selection_enlargement")
       return !owner.busy() && owner.controller_->active_document_id()==source->id;
+    if((action=="show_selection_properties" || action=="selection_properties_draft" || action=="apply_selection_properties" || action=="cancel_selection_properties") &&
+        source->nativeSnapshot().data().selection && source->nativeSnapshot().data().selection->is_path())
+      return owner.controller_->active_document_id()==source->id;
     if(action=="select_all" || action=="select_none" || action=="restore_selection" || action=="invert_selection")
       return !owner.busy() && owner.controller_->active_document_id()==source->id;
     if (action == "combine_rois" || action == "create_roi" || action == "add_roi" || action == "select_roi" || action == "update_roi" ||
@@ -1962,7 +1979,7 @@ struct Window::Impl {
       context.gesture_active |= pane.dragging || pane.selectionGesture.has_value() ||
                                 pane.creation.has_value() || !pane.points.empty();
     }
-    context.gesture_active |= savedRoiEdit.pointer_active() ||
+    context.gesture_active |= pathAuthoring.active() || savedRoiEdit.pointer_active() ||
                               (canvas && ImGui::IsKeyDown(ImGuiKey_Space));
     if (settingsPanel.shortcutCaptureActive()) context.focus = ShortcutFocus::Capture;
     else if (modal) context.focus = ShortcutFocus::Modal;
@@ -2401,6 +2418,7 @@ struct Window::Impl {
         validate_saved_roi_geometry_record(savedRoiRebind->record, savedRoiGeometryLimits());
       if (!savedRoiEdit.active() || !savedRoiMatches(owner.nativeSnapshot()))
         throw RevisionConflict();
+      savedRoiEdit.working_limit(savedRoiGeometryLimits().max_working_bytes);
       savedRoiEdit.stage_numeric(value);
       const auto capture = savedRoiEdit.capture();
       const auto command = savedRoiCommand();
@@ -2416,6 +2434,7 @@ struct Window::Impl {
     } catch (...) { cancelSavedRoiGeometry("publication_failed"); throw; }
   }
   ResolvedSavedRoiGeometryCommand savedRoiCommand() {
+    savedRoiEdit.working_limit(savedRoiGeometryLimits().max_working_bytes);
     if (!savedRoiRebind) return savedRoiEdit.command();
     validate_saved_roi_geometry_record(savedRoiRebind->record, savedRoiGeometryLimits());
     if (!savedRoiEdit.candidate())
@@ -2524,6 +2543,7 @@ struct Window::Impl {
                          const SavedRoiCanvasTransform &transform) {
       try {
         if (!savedRoiMatches(owner.nativeSnapshot())) throw RevisionConflict();
+        savedRoiEdit.working_limit(savedRoiGeometryLimits().max_working_bytes);
         savedRoiEdit.update_pointer(point, modifiers, transform);
       } catch (...) { cancelSavedRoiGeometry("pointer_update_failed"); throw; }
     };
@@ -2531,6 +2551,7 @@ struct Window::Impl {
       try {
         if (!savedRoiEdit.pointer_active() || !savedRoiEdit.transform() ||
             !(*savedRoiEdit.transform() == transform)) throw RevisionConflict();
+        if (!savedRoiEdit.pointer_valid()) {cancelSavedRoiGeometry("invalid_resize");return;}
         if (savedRoiEdit.candidate()) {
           const auto capture = savedRoiEdit.capture();
           const auto command = savedRoiCommand();
@@ -2617,7 +2638,7 @@ struct Window::Impl {
           observed["phase"] = "released"; hooks.release(transform);
         }
         else if (ImGui::IsMouseDown(ImGuiMouseButton_Left) &&
-                 (io.MouseDelta.x || io.MouseDelta.y)) {
+                 (io.MouseDelta.x || io.MouseDelta.y || savedRoiEdit.path_transform())) {
           observed["phase"] = "updated";
           hooks.update(point, {io.KeyShift, io.KeyCtrl, io.KeyAlt}, transform);
         } else if (!ImGui::IsMouseDown(ImGuiMouseButton_Left)) {
@@ -2632,6 +2653,11 @@ struct Window::Impl {
       const auto shape = savedRoiEdit.source().data().dataset.shape();
       const auto &selection = savedRoiEdit.candidate()
           ? *savedRoiEdit.candidate() : savedRoiEdit.original();
+      const bool pointerRequest=hovered && ImGui::IsMouseClicked(ImGuiMouseButton_Left);
+      const bool keyRequest=keyboard && !context.ActiveId &&
+          (pressed(ImGuiKey_LeftArrow) || pressed(ImGuiKey_RightArrow) ||
+           pressed(ImGuiKey_UpArrow) || pressed(ImGuiKey_DownArrow) || pressed(ImGuiKey_Delete));
+      if(selection.is_path() && !pointerRequest && !keyRequest)return;
       const SelectionEditLimits limits{savedRoiEdit.limits().max_xy_pixels,
           savedRoiEdit.limits().max_vertices, savedRoiEdit.limits().max_working_bytes};
       SelectionEditor editor(selection, shape.x, shape.y, limits);
@@ -2678,7 +2704,9 @@ struct Window::Impl {
     } catch (...) { cancelSavedRoiGeometry("input_failed"); throw; }
   }
   void drawSavedRoiHandles(Pane &pane, ImDrawList *draw) {
+    pane.savedRoiHandleError.clear();
     if (!savedRoiEdit.active() || savedRoiEdit.source().id() != pane.doc->id) return;
+    try {
     auto handles = savedRoiEdit.handles();
     if (const auto rotate = savedRoiEdit.rotation_handle(
             24 * guiScale, {pane.zoom, pane.zoom * pane.aspectY})) handles.push_back(*rotate);
@@ -2702,7 +2730,12 @@ struct Window::Impl {
         pane.savedRoiHandles.push_back({{"kind", int(handle.kind)}, {"index", handle.index},
             {"image_point", handle.position}, {"screen_point", {p.x, p.y}},
             {"row_index", savedRoiEdit.row_index()}, {"canvas_id", pane.ordinaryCanvasId},
+            {"gui_scale",guiScale},{"radius_device",radius+(handle.kind==SelectionHandleKind::Rotate?1:0)},{"shape",handle.kind==SelectionHandleKind::Rotate?"circle":"square"},{"bounds_hit_tolerance_device",6*guiScale},
             {"selected", selected}});
+    }
+    } catch(const std::exception &error) {
+      if(!savedRoiEdit.active() || !savedRoiEdit.original().is_path())throw;
+      pane.savedRoiHandleError=error.what();
     }
   }
   void cancelCreation(Pane &pane, const char *reason) {
@@ -2713,7 +2746,19 @@ struct Window::Impl {
     creationLastCancel = reason;
   }
   void cancelCreations(const char *reason) {
+    pathAuthoring.cancel(reason);
     for (auto &pane : panes) cancelCreation(pane, reason);
+  }
+  void publishAuthoredPath(const DocumentSnapshot &source,const Selection &selection) {
+    const auto current=owner.nativeSnapshot();
+    if(owner.busy() || !source.same_document(current) || !source.revisions().matches(current.revisions(),Change::Data))
+      throw RevisionConflict();
+    if(owner.documentById(source.id())->scientific())scientificRoiCreationOwner=source.id();
+    const SelectionCreationRequest request{SelectionCreationOperation::Replace,selection,SelectionCreationGeometry::NativePathV4};
+    if(creationRebind) {
+      if(creationRebindOwner!=source.id())throw RevisionConflict();
+      owner.replaySelectionCreation(*creationRebind,request,source.id());creationRebind.reset();creationRebindOwner=0;
+    } else owner.applySelectionCreation(source,request);
   }
   void updateCreationPreview(Pane &pane) {
     auto &draft = *pane.creation;
@@ -2779,8 +2824,8 @@ struct Window::Impl {
     Pane::CreationGesture draft(source);
     draft.position = pane.doc->position(); draft.tool = tool;
     draft.operation = mode; draft.down = point;
-    draft.geometry = creationFullGeometry ? SelectionCreationGeometry::FullRegionV3
-                                          : creationGeometry(creationRebind);
+    draft.geometry = base && base->is_path()?SelectionCreationGeometry::NativePathV4:
+        creationFullGeometry ? SelectionCreationGeometry::FullRegionV3 : creationGeometry(creationRebind);
     draft.width = preferenceState.settings.number("line_width");
     draft.cornerDiameter = int(preferenceState.settings.integer("rounded_corner_diameter"));
     draft.origin = pane.origin; draft.extent = pane.extent;
@@ -6181,6 +6226,7 @@ void Window::action(const std::string &name, const Json &p) {
   }
   if (impl->savedRoiEdit.active() && name == "selection_properties_draft") {
     try {
+      impl->selectionPanel.working_limit(impl->selectionCreationLimits().max_working_bytes);
       impl->selectionPanel.patch(p);
       if (impl->selectionPanel.preview())
         impl->savedRoiEdit.stage_numeric(*impl->selectionPanel.preview());
@@ -6189,6 +6235,7 @@ void Window::action(const std::string &name, const Json &p) {
     return;
   }
   if (impl->savedRoiEdit.active() && name == "apply_selection_properties") {
+    impl->selectionPanel.working_limit(impl->selectionCreationLimits().max_working_bytes);
     impl->selectionPanel.apply([&](const Selection &value, const DocumentSnapshot &) {
       impl->applySavedRoiNumeric(value);
     });
@@ -7134,6 +7181,7 @@ void Window::action(const std::string &name, const Json &p) {
     return;
   }
   if (name == "selection_properties_draft") {
+    impl->selectionPanel.working_limit(impl->selectionCreationLimits().max_working_bytes);
     impl->selectionPanel.patch(p);
     return;
   }
@@ -7149,14 +7197,13 @@ void Window::action(const std::string &name, const Json &p) {
       impl->selectionPanel.cancel();
       throw RevisionConflict();
     }
+    impl->selectionPanel.working_limit(impl->selectionCreationLimits().max_working_bytes);
     impl->selectionPanel.apply(
         [&](const Selection &value, const DocumentSnapshot &source) {
           if (source.data().selection && value == *source.data().selection)
             return;
-          auto edit = source.begin_edit(Change::Data);
-          edit.select(value);
-          if(impl->selectionPanel.path_edited())edit.retain_selection_history();
-          commitEdit(edit);
+          if(impl->selectionPanel.path_edited())impl->publishAuthoredPath(source,value);
+          else {auto edit=source.begin_edit(Change::Data);edit.select(value);commitEdit(edit);}
         });
     return;
   }
@@ -9119,6 +9166,7 @@ void Window::Impl::tools() {
       {"rectangle", "Rectangle"},
       {"rounded_rectangle", "Rounded rectangle"},
       {"edit_roi", "Edit ROI"},
+      {"path", "Path"},
       {"ellipse", "Ellipse"},
       {"polygon", "Polygon"},
       {"freehand", "Freehand"},
@@ -9136,13 +9184,15 @@ void Window::Impl::tools() {
       {"zoom", "Zoom"}};
   for (auto [id, label] : tools) {
     const bool creationEnabled = !owner.documents_.empty() && scientificRoiCreationOwner == doc()->id;
-    const bool enabled = !readOnly || (creationEnabled && creationTool(id)) || std::string(id) == "hand" || std::string(id) == "zoom";
+    const bool pathEditable=!owner.documents_.empty() && doc()->nativeSnapshot().data().selection && doc()->nativeSnapshot().data().selection->is_path();
+    const bool enabled = !readOnly || (creationEnabled && creationTool(id)) || std::string(id)=="path" || (std::string(id)=="edit_roi" && pathEditable) || std::string(id) == "hand" || std::string(id) == "zoom";
     ImGui::BeginDisabled(!enabled);
-    const auto displayedTool = readOnly && !(creationEnabled && creationTool(tool)) && tool != "zoom" ? "hand" : tool;
+    const auto displayedTool = readOnly && !(creationEnabled && creationTool(tool)) && tool != "path" && !(tool=="edit_roi" && pathEditable) && tool != "zoom" ? "hand" : tool;
     if (ImGui::Selectable(label, displayedTool == id)) {
       cancelSavedRoiGeometry("tool_changed");
       cancelCreations("tool_changed");
       tool = id;
+      if(tool=="path" && !owner.documents_.empty())scientificRoiCreationOwner=doc()->id;
       if (!owner.documents_.empty() && doc()->view().orthogonal)
         doc()->setView({{"orthogonal", false}});
       for (auto &pane : panes) {
@@ -9194,9 +9244,31 @@ void Window::Impl::tools() {
     }
     observeControl("selection_creation.rebind.cancel");
   }
+  if(tool=="path" && !owner.documents_.empty()) {
+    pathAuthoring.sync(owner.nativeSnapshot(),!owner.busy(),selectionCreationLimits().max_working_bytes);
+    pathAuthoring.controls(!owner.busy(),[&](const DocumentSnapshot &source,const Selection &value,const PathAuthoringCanvas &){publishAuthoredPath(source,value);});
+  }
+  if((tool=="edit_roi" && !owner.documents_.empty() && doc()->nativeSnapshot().data().selection && doc()->nativeSnapshot().data().selection->is_path()) ||
+      (savedRoiEdit.active() && savedRoiEdit.original().is_path())) {
+    ImGui::BeginDisabled(owner.busy() || savedRoiEdit.pointer_active());
+    if(ImGui::RadioButton("Edit points",!pathTransform)){pathTransform=false;savedRoiEdit.path_transform(false);}
+    observeControl("path.points");
+    const float pathModeWidth=ImGui::CalcTextSize("Transform").x+ImGui::GetFrameHeight()+ImGui::GetStyle().ItemInnerSpacing.x;
+    if(ImGui::GetItemRectMax().x+ImGui::GetStyle().ItemSpacing.x+pathModeWidth<=ImGui::GetWindowPos().x+ImGui::GetWindowContentRegionMax().x)ImGui::SameLine();
+    if(ImGui::RadioButton("Transform",pathTransform)){pathTransform=true;savedRoiEdit.path_transform(true);}
+    observeControl("path.transform");
+    ImGui::Checkbox("Preserve aspect",&pathAspect);observeControl("path.aspect");
+    ImGui::Checkbox("From center",&pathCenter);observeControl("path.center");
+    savedRoiEdit.path_flags(pathAspect,pathCenter);ImGui::EndDisabled();
+    bool invalid=savedRoiEdit.pointer_active() && !savedRoiEdit.pointer_valid();
+    for(const auto &pane:panes)if(pane.selectionGesture)invalid|=pane.selectionGesture->invalid;
+    ImGui::Text("Anchor: %s",pathCenter || ImGui::GetIO().KeyCtrl?"center":"opposite");
+    ImGui::TextUnformatted(invalid?"Invalid resize":"Resize ready");
+  }
   if (tool == "edit_roi") {
     const bool path=!owner.documents_.empty() && doc()->nativeSnapshot().data().selection && doc()->nativeSnapshot().data().selection->is_path();
-    if(path)ImGui::TextWrapped("Drag inside to move; drag endpoints and curve controls. Shift constrains movement. Arrows nudge (Shift: 10 pixels). Escape cancels a drag.");
+    if(path && pathTransform)ImGui::TextWrapped("Drag a bound to resize. Shift preserves aspect; Ctrl resizes from the center. Release while invalid cancels the resize. Escape cancels a drag.");
+    else if(path)ImGui::TextWrapped("Drag inside to move; drag endpoints and curve controls. Shift constrains movement. Arrows nudge (Shift: 10 pixels). Escape cancels a drag.");
     else ImGui::TextWrapped(
         "Drag inside to move; drag handles to resize or edit vertices. Shift "
         "constrains movement/aspect; Ctrl resizes from center. Alt-click "
@@ -9204,9 +9276,10 @@ void Window::Impl::tools() {
         "(Shift: 10 pixels). Escape cancels a drag.");
     ImGui::TextWrapped(
         "Drag the round handle to rotate; Shift snaps to 15 degrees.");
-    ImGui::BeginDisabled(readOnly);
+    ImGui::BeginDisabled(readOnly && !path);
     if (ImGui::Button("Geometry / properties"))
       guard([&] { owner.action("show_selection_properties"); });
+    observeControl("path.properties",!readOnly || path);
     ImGui::EndDisabled();
   }
   if (tool == "rounded_rectangle") {
@@ -10264,14 +10337,16 @@ void Window::Impl::canvas(Pane &pane) {
   pane.styledLayers = Json::array();
   pane.savedRoiLayers = Json::array();
   pane.savedRoiHandles = Json::array();
+  pane.selectionHandles = Json::array();
   pane.savedRoiInput = Json::object();
   pane.overlayLayers = Json::array();
   pane.viewportSeen=true;
   auto d = pane.doc;
   const bool readOnly = d->scientific();
   const bool creationEnabled = !readOnly || scientificRoiCreationOwner == d->id;
-  const std::string tool = (roiImportPanel.visible() || roiExportPanel.visible() || displayAnnotationPanel.visible()) || (readOnly && !(creationEnabled && creationTool(this->tool)) && this->tool != "zoom") ? "hand" : this->tool;
-  if (readOnly && !(creationEnabled && creationTool(tool))) {
+  const bool nativePathTool=this->tool=="path" || (this->tool=="edit_roi" && d->nativeSnapshot().data().selection && d->nativeSnapshot().data().selection->is_path());
+  const std::string tool = (roiImportPanel.visible() || roiExportPanel.visible() || displayAnnotationPanel.visible()) || (readOnly && !nativePathTool && !(creationEnabled && creationTool(this->tool)) && this->tool != "zoom") ? "hand" : this->tool;
+  if (readOnly && !nativePathTool && !(creationEnabled && creationTool(tool))) {
     cancelCreation(pane, "scientific_read_only");
     pane.points = Json::array();
     pane.dragging = false;
@@ -10346,8 +10421,12 @@ void Window::Impl::canvas(Pane &pane) {
     input.active_document = owner.controller_->active_document_id() == d->id;
     input.input_enabled = !owner.busy() && !(context.CurrentItemFlags & ImGuiItemFlags_Disabled);
     input.keyboard_admitted = blocked.empty();
+    // The planar editor owns its modifier contract: legacy tools still reject
+    // Ctrl; native path Bounds uses it for from-center resize. Navigation keeps
+    // its stricter keyboard admission above.
     input.annotation_admitted = blocked.empty() ||
-        (blocked == "reserved_modifier" && io.KeyAlt && !io.KeyCtrl && !io.KeySuper);
+        (blocked == "reserved_modifier" && !io.KeySuper && (io.KeyAlt != io.KeyCtrl));
+    input.annotation_gui_scale=guiScale;
     input.annotation_max_working_bytes = static_cast<std::size_t>(
         preferenceState.settings.integer("processing_memory_mb"))*1024*1024;
     if(!input.annotation_max_working_bytes)input.annotation_max_working_bytes=256*1048576;
@@ -10435,22 +10514,35 @@ void Window::Impl::canvas(Pane &pane) {
   auto refreshSelection = [&](bool preserveVertex) {
     const auto source = d->nativeSnapshot();
     const auto shape = source.data().dataset.shape();
-    if (source.data().selection)
-      pane.selectionEditor = std::make_unique<SelectionEditor>(
-          *source.data().selection, shape.x, shape.y);
-    else
-      pane.selectionEditor.reset();
+    const bool path=source.data().selection && source.data().selection->is_path();
+    pane.selectionEditorCap=path?selectionCreationLimits().max_working_bytes:0;
+    pane.selectionEditError.clear();
+    try {
+      if (source.data().selection) {
+        SelectionEditLimits editLimits;
+        if(path)editLimits.max_working_bytes=pane.selectionEditorCap;
+        pane.selectionEditor = std::make_unique<SelectionEditor>(
+            *source.data().selection, shape.x, shape.y,editLimits);
+      } else pane.selectionEditor.reset();
+    } catch(const std::exception &error) {
+      if(!path)throw;
+      // Display preparation must not reopen an acknowledged edit-refusal modal.
+      // Keep the source immutable; retry admission when its budget changes.
+      pane.selectionEditor.reset();pane.selectionGesture.reset();
+      pane.selectionEditError=error.what();
+    }
     pane.selectionSource = source;
     pane.selectionRevision = source.revisions().selection;
     pane.selectionShape = {shape.y, shape.x};
     if (!preserveVertex || !pane.selectionEditor ||
         (pane.selectionVertex &&
-         *pane.selectionVertex >=
-             selectionControlPointCount(pane.selectionEditor->selection())))
+         *pane.selectionVertex >= selectionControlPointCount(pane.selectionEditor->selection())))
       pane.selectionVertex.reset();
   };
   if (!pane.selectionSource ||
-      !pane.selectionSource->revisions().matches(d->revisions(), Change::Data))
+      !pane.selectionSource->revisions().matches(d->revisions(), Change::Data) ||
+      (!pane.selectionEditor && !pane.selectionEditError.empty() &&
+       pane.selectionEditorCap!=selectionCreationLimits().max_working_bytes))
     refreshSelection(false);
   if (pane.selectionGesture &&
       (tool != "edit_roi" || owner.busy() ||
@@ -10461,9 +10553,8 @@ void Window::Impl::canvas(Pane &pane) {
                              const DocumentSnapshot &source) {
     if (source.data().selection && value == *source.data().selection)
       return;
-    auto edit = source.begin_edit(Change::Data);
-    edit.select(value);
-    d->commitNative(edit);
+    if(value.is_path() && pathTransform)publishAuthoredPath(source,value);
+    else {auto edit = source.begin_edit(Change::Data);edit.select(value);d->commitNative(edit);}
     refreshSelection(true);
   };
   auto available = ImGui::GetContentRegionAvail();
@@ -10634,6 +10725,13 @@ void Window::Impl::canvas(Pane &pane) {
       }
     }
   }
+  const PathAuthoringCanvas pathCanvas{pane.ordinaryCanvasId,0,currentPosition.z,f.width,f.height,
+      {pane.origin.x,pane.origin.y},{pane.zoom,pane.zoom*pane.aspectY},{canvasMin.x,canvasMin.y},{canvasMax.x,canvasMax.y}};
+  if(tool=="path" && !savedMode) {
+    auto style=Selection("rectangle");style.width=preferenceState.settings.number("line_width");
+    guard([&]{pathAuthoring.pointer(d->nativeSnapshot(),pathCanvas,!owner.busy(),hover,style,selectionCreationLimits().max_working_bytes);
+      pathAuthoring.draw(pathCanvas,draw,selectionCreationLimits().max_working_bytes);});
+  } else if(pathAuthoring.active())pathAuthoring.cancel("tool_changed");
   const auto &selected = get(d->state().metadata, "selection");
   if (pane.creation && pane.creation->preview)
     geometry(pane.creation->previewGeometry, pane,
@@ -10649,14 +10747,18 @@ void Window::Impl::canvas(Pane &pane) {
     geometry(selected, pane, IM_COL32(255, 213, 75, 255));
   drawSavedRoiHandles(pane, draw);
   if (!savedMode && tool == "edit_roi" && pane.selectionEditor) {
+    pane.selectionEditError.clear();
+    try {
     const SelectionEditor *editor = pane.selectionEditor.get();
     std::optional<SelectionEditor> preview;
+    SelectionEditLimits editLimits;
+    if(editor->selection().is_path())editLimits.max_working_bytes=selectionCreationLimits().max_working_bytes;
     if (pane.selectionGesture && pane.selectionGesture->preview) {
-      preview.emplace(*pane.selectionGesture->preview, f.width, f.height);
+      preview.emplace(*pane.selectionGesture->preview, f.width, f.height,editLimits);
       editor = &*preview;
     }
-    auto handles = editor->handles();
-    if (const auto rotation = editor->rotation_handle(
+    auto handles = editor->selection().is_path()?editor->handles(pathTransform?SelectionHandleMode::Bounds:SelectionHandleMode::ControlPoints,editLimits):editor->handles();
+    if (!(editor->selection().is_path() && pathTransform))if (const auto rotation = editor->rotation_handle(
             24 * guiScale, {pane.zoom, pane.zoom * pane.aspectY}))
       handles.push_back(*rotation);
     for (const auto &handle : handles) {
@@ -10664,6 +10766,8 @@ void Window::Impl::canvas(Pane &pane) {
                      pane.origin.y +
                          float(handle.position[1]) * pane.zoom * pane.aspectY};
       const float radius = 3 * guiScale;
+      pane.selectionHandles.push_back({{"kind",int(handle.kind)},{"index",handle.index},{"position",handle.position},{"point",{p.x,p.y}},
+          {"gui_scale",guiScale},{"radius_device",radius+(handle.kind==SelectionHandleKind::Rotate?1:0)},{"shape",handle.kind==SelectionHandleKind::Rotate?"circle":"square"},{"bounds_hit_tolerance_device",6*guiScale}});
       if (handle.kind == SelectionHandleKind::Rotate) {
         draw->AddCircleFilled(p, radius + 1, IM_COL32(20, 20, 20, 255));
         draw->AddCircle(p, radius + 1, IM_COL32(255, 213, 75, 255));
@@ -10679,6 +10783,10 @@ void Window::Impl::canvas(Pane &pane) {
                           IM_COL32(20, 20, 20, 255));
       draw->AddRect({p.x - radius, p.y - radius}, {p.x + radius, p.y + radius},
                     tint);
+    }
+    } catch(const std::exception &error) {
+      if(!pane.selectionEditor->selection().is_path())throw;
+      pane.selectionHandles=Json::array();pane.selectionEditError=error.what();
     }
   }
   if (!pane.points.empty())
@@ -10711,7 +10819,7 @@ void Window::Impl::canvas(Pane &pane) {
                     std::clamp(snappedY, 0.0, double(f.height))};
   const std::array<double, 2> position{{x, y}};
   std::optional<SelectionHandle> selectionHit;
-  if (!savedMode && tool == "edit_roi" && pane.selectionEditor && hover && !owner.busy() &&
+  if (!savedMode && tool == "edit_roi" && pane.selectionEditor && pane.selectionEditError.empty() && hover && !owner.busy() &&
       pane.selectionShape == std::array<int, 2>{{f.height, f.width}}) {
     std::array<double, 2> tolerance{
         {6 * guiScale / pane.zoom, 6 * guiScale / (pane.zoom * pane.aspectY)}};
@@ -10725,10 +10833,18 @@ void Window::Impl::canvas(Pane &pane) {
           tolerance[1], std::max((bounds[3] - bounds[1]) / 4,
                                  1.5 * guiScale / (pane.zoom * pane.aspectY)));
     }
-    selectionHit = pane.selectionEditor->hit_test(
-        position, tolerance,
-        pane.selectionEditor->rotation_handle(
-            24 * guiScale, {pane.zoom, pane.zoom * pane.aspectY}));
+    try {
+      const auto rotation=pane.selectionEditor->selection().is_path() && pathTransform?std::optional<SelectionHandle>{}:
+          pane.selectionEditor->rotation_handle(24 * guiScale,{pane.zoom,pane.zoom*pane.aspectY});
+      selectionHit = pane.selectionEditor->selection().is_path()
+          ? pane.selectionEditor->hit_test(position,tolerance,rotation,
+              pathTransform?SelectionHandleMode::Bounds:SelectionHandleMode::ControlPoints,
+              SelectionEditLimits{16777216,65536,selectionCreationLimits().max_working_bytes})
+          : pane.selectionEditor->hit_test(position,tolerance,rotation);
+    } catch(const std::exception &error) {
+      if(!pane.selectionEditor->selection().is_path())throw;
+      pane.selectionEditError=error.what();selectionHit.reset();
+    }
     if (selectionHit) {
       if (selectionHit->kind == SelectionHandleKind::Move)
         ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeAll);
@@ -10743,6 +10859,22 @@ void Window::Impl::canvas(Pane &pane) {
                                                  : ImGuiMouseCursor_ResizeNESW);
       }
     }
+  }
+  pane.selectionEditNotice=pane.selectionEditError.empty()?std::string():
+      "Path editing: "+pane.selectionEditError+". Adjust Processing memory in Preferences.";
+  pane.savedRoiHandleNotice=pane.savedRoiHandleError.empty()?std::string():
+      "Saved path editing: "+pane.savedRoiHandleError+". Adjust Processing memory in Preferences.";
+  const auto &editNotice=savedMode?pane.savedRoiHandleNotice:pane.selectionEditNotice;
+  if(!editNotice.empty())draw->AddText(ImGui::GetFont(),ImGui::GetFontSize(),
+      {canvasMin.x+8*guiScale,canvasMin.y+8*guiScale},IM_COL32(255,213,75,255),
+      editNotice.c_str(),nullptr,std::max(1.f,pane.extent.x-16*guiScale));
+  if(pane.selectionGesture && pane.selectionEditor && pane.selectionEditor->selection().is_path()) {
+    const auto &g=*pane.selectionGesture;
+    if(io.AppFocusLost || io.WantTextInput || !ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows) || ImGui::IsPopupOpen(nullptr,ImGuiPopupFlags_AnyPopupId|ImGuiPopupFlags_AnyPopupLevel) ||
+        io.MouseWheel || ImGui::IsMouseDown(ImGuiMouseButton_Middle) ||
+        g.origin.x!=pane.origin.x || g.origin.y!=pane.origin.y || g.extent.x!=pane.extent.x || g.extent.y!=pane.extent.y ||
+        g.zoom!=pane.zoom || g.aspect!=pane.aspectY || g.position.t!=currentPosition.t || g.position.c!=currentPosition.c || g.position.z!=currentPosition.z ||
+        (!ImGui::IsMouseDown(ImGuiMouseButton_Left) && !ImGui::IsMouseReleased(ImGuiMouseButton_Left)))pane.selectionGesture.reset();
   }
   if (pane.selectionGesture) {
     if (ImGui::IsKeyPressed(ImGuiKey_Escape))
@@ -10762,12 +10894,23 @@ void Window::Impl::canvas(Pane &pane) {
                 delta[0] = 0;
             }
             pane.selectionGesture->preview = editor.moved(delta, !io.KeyAlt);
-          } else if (gesture.handle.kind == SelectionHandleKind::Resize)
-            pane.selectionGesture->preview =
-                editor.resized(gesture.handle.index,
-                               {std::clamp(x, 0., double(f.width)),
-                                std::clamp(y, 0., double(f.height))},
-                               io.KeyShift, io.KeyCtrl);
+          } else if (gesture.handle.kind == SelectionHandleKind::Resize) {
+            try {
+              pane.selectionGesture->preview = editor.selection().is_path()
+                  ? editor.resized(SelectionHandleMode::Bounds,gesture.handle.index,position,
+                      io.KeyShift || pathAspect,io.KeyCtrl || pathCenter,
+                      SelectionEditLimits{16777216,65536,selectionCreationLimits().max_working_bytes})
+                  : editor.resized(gesture.handle.index,
+                  editor.selection().is_path()?position:std::array<double,2>{std::clamp(x,0.,double(f.width)),std::clamp(y,0.,double(f.height))},
+                  io.KeyShift || (editor.selection().is_path() && pathAspect),
+                  io.KeyCtrl || (editor.selection().is_path() && pathCenter),
+                  SelectionEditLimits{16777216,65536,selectionCreationLimits().max_working_bytes});
+              pane.selectionGesture->invalid=false;
+            } catch(const CollapsedSelectionResize &) {
+              if(!editor.selection().is_path())throw;
+              pane.selectionGesture->invalid=true;
+            }
+          }
           else if (gesture.handle.kind == SelectionHandleKind::Rotate) {
             double angle = editor.rotation_degrees(gesture.down, position);
             if (io.KeyShift)
@@ -10795,11 +10938,11 @@ void Window::Impl::canvas(Pane &pane) {
     } else if (ImGui::IsMouseReleased(ImGuiMouseButton_Left)) {
       auto gesture = std::move(*pane.selectionGesture);
       pane.selectionGesture.reset();
-      if (gesture.preview)
+      if (gesture.preview && !gesture.invalid)
         guard([&] { commitSelection(*gesture.preview, gesture.source); });
     }
   }
-  if (!savedMode && tool == "edit_roi" && pane.selectionEditor && hover && !owner.busy() &&
+  if (!savedMode && tool == "edit_roi" && pane.selectionEditor && pane.selectionEditError.empty() && hover && !owner.busy() &&
       !pane.selectionGesture && !io.WantTextInput &&
       !ImGui::IsAnyItemActive()) {
     const auto keyOwner = ImGui::GetID("selection_edit_keys");
@@ -10889,7 +11032,7 @@ void Window::Impl::canvas(Pane &pane) {
       pane.pan.x += io.MouseDelta.x;
       pane.pan.y += io.MouseDelta.y;
     }
-    if (!savedMode && (inside || (tool == "edit_roi" && selectionHit)) &&
+    if (!savedMode && tool!="path" && (inside || (tool == "edit_roi" && selectionHit)) &&
         ImGui::IsMouseClicked(ImGuiMouseButton_Left)) {
       if (tool == "edit_roi") {
         const auto selectedKind =
@@ -10912,8 +11055,9 @@ void Window::Impl::canvas(Pane &pane) {
             pane.selectionVertex = selectionHit->index;
           else
             pane.selectionVertex.reset();
-          pane.selectionGesture.emplace(Pane::SelectionGesture{
-              *pane.selectionSource, *selectionHit, position, {}});
+          pane.selectionGesture.emplace(Pane::SelectionGesture{*pane.selectionSource, *selectionHit, position, {}});
+          pane.selectionGesture->origin=pane.origin;pane.selectionGesture->extent=pane.extent;
+          pane.selectionGesture->zoom=pane.zoom;pane.selectionGesture->aspect=pane.aspectY;pane.selectionGesture->position=currentPosition;
         }
       } else if (creationTool(tool)) {
         if (creationBlocked.empty() && !creationNavigated &&
@@ -12009,6 +12153,7 @@ void Window::Impl::draw() {
   }
   if (savedRoiEdit.active()) {
     try {
+      savedRoiEdit.working_limit(savedRoiGeometryLimits().max_working_bytes);
       const auto current = owner.nativeSnapshot();
       if (owner.busy() || !savedRoiMatches(current) ||
           (savedRoiEdit.pointer_active() &&
@@ -12329,6 +12474,7 @@ void Window::Impl::draw() {
         owner.workflow.swap(program);
       },gl,headlessDiagnostics);
   });
+  selectionPanel.working_limit(selectionCreationLimits().max_working_bytes);
   selectionPanel.draw(
       owner.documents_.empty()
           ? std::optional<DocumentSnapshot>{}
@@ -12341,10 +12487,8 @@ void Window::Impl::draw() {
         }
         if (source.data().selection && value == *source.data().selection)
           return;
-        auto edit = source.begin_edit(Change::Data);
-        edit.select(value);
-        if(selectionPanel.path_edited())edit.retain_selection_history();
-        owner.commitEdit(edit);
+        if(selectionPanel.path_edited())publishAuthoredPath(source,value);
+        else {auto edit=source.begin_edit(Change::Data);edit.select(value);owner.commitEdit(edit);}
       });
   if (savedRoiEdit.active() && !savedRoiEdit.pointer_active()) {
     if (!selectionPanel.visible()) {
@@ -12660,6 +12804,8 @@ Json Window::Impl::headlessReport() {
         {"divisor", owner.controller_->auto_contrast_divisor()},
         {"recording_captured", autoRecording}};
     result["selection_creation"] = creationDiagnostics();
+    result["path_authoring"] = pathAuthoring.diagnostics();
+    result["path_transform"] = {{"enabled",pathTransform},{"aspect",pathAspect},{"center",pathCenter}};
     result["channel_display_rebind"] = channelDisplayRebind ? Json{
         {"record", metadataJson(*channelDisplayRebind)},
         {"document_id", channelDisplayRebindOwner ? Json(*channelDisplayRebindOwner) : Json(nullptr)}} : Json(nullptr);
@@ -12699,9 +12845,18 @@ Json Window::Impl::headlessReport() {
           {"focused", pane.ordinaryCanvasVisible && pane.ordinaryCanvasId != 0 &&
               ImGui::GetCurrentContext()->NavId == pane.ordinaryCanvasId},
           {"extent", {pane.extent.x, pane.extent.y}},
+          {"canvas_point", {pane.ordinaryCanvasPoint.x, pane.ordinaryCanvasPoint.y}},
           {"origin", {pane.origin.x, pane.origin.y}},
           {"scale", {pane.zoom, pane.zoom * pane.aspectY}}};
       result["ordinary_canvas"]["loading"]=pane.viewportPending;
+      result["ordinary_canvas"]["selection_handles"]=pane.selectionHandles;
+      result["ordinary_canvas"]["selection_edit_error"]=pane.selectionEditError;
+      result["ordinary_canvas"]["selection_edit_notice"]=pane.selectionEditNotice;
+      result["ordinary_canvas"]["saved_roi_handle_error"]=pane.savedRoiHandleError;
+      result["ordinary_canvas"]["saved_roi_handle_notice"]=pane.savedRoiHandleNotice;
+      result["ordinary_canvas"]["selection_gesture"]=pane.selectionGesture?Json{
+          {"handle",pane.selectionGesture->handle.index},{"kind",int(pane.selectionGesture->handle.kind)},{"invalid",pane.selectionGesture->invalid},
+          {"preview",pane.selectionGesture->preview?selectionJson(*pane.selectionGesture->preview):Json()}}:Json();
       result["ordinary_canvas"]["style_layers"] = pane.styledLayers;
       result["ordinary_canvas"]["display_annotations"]=pane.displayLayers;
       result["ordinary_canvas"]["native_planar_annotations"]=pane.nativePlanar.diagnostics();

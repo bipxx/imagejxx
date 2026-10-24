@@ -1,0 +1,1236 @@
+{
+  "id": "p13h.path-authoring.001",
+  "state": "scoped-qualified",
+  "packet_scope_qualified": true,
+  "full_ci_qualified": false,
+  "acceptance": false,
+  "complete_requirement_coverage": false,
+  "reviewed_utc": "2026-10-24T11:09:01.756218+00:00",
+  "baseline": "8d83fdf6711d96c5820f2ac376741a01f53fc98a",
+  "planning_head": "37548d5aca3f8f91651f4d409f2585f4e1bbc355",
+  "source_manifest": {
+    "path": "docs/parity/reviews/p13h-path-authoring001/source-manifest.json",
+    "bytes": 860455,
+    "sha256": "b3d079a9b4a56c60803873af5ee124338098da6947aad2a7be828642e548422d"
+  },
+  "selected_python_ids": {
+    "path": "docs/parity/reviews/p13h-path-authoring001/selected-python-ids.json",
+    "bytes": 510505,
+    "sha256": "3a4c669d5f5cd46215c50a5f6681c42b5d387f2b212db85af736ebd4928856d7"
+  },
+  "source_inputs": 6287,
+  "source_freeze": "source19; product/test inputs frozen; later docs/receipt edits are metadata-only",
+  "requirements": [
+    {
+      "ids": "H-GEO-01..17,H-BOUND-01..02",
+      "evidence": [
+        "tests/native/test_path_resize.cpp",
+        "tests/python/test_path_resize.py",
+        "examples/cpp/path_authoring.cpp"
+      ],
+      "scope": "all path bounds handles/flags/reflections/degeneracy/identity/tiny diagonal and old-mode refusal"
+    },
+    {
+      "ids": "H-CMD-01..06,H-HIST-01..06",
+      "evidence": [
+        "tests/native/test_path_creation.cpp",
+        "tests/python/test_path_creation.py",
+        "tests/python/test_path_authoring_workflow.py"
+      ],
+      "scope": "V4 creation, retained carriers, one-step history and composed Previous"
+    },
+    {
+      "ids": "H-STATE-01..06",
+      "evidence": [
+        "tests/native/test_saved_path_resources.cpp",
+        "tests/python/test_saved_roi_path_resources.py",
+        "tests/python/test_path_authoring_edge_ui.py"
+      ],
+      "scope": "admission, cancellation, callbacks, stale drafts, exact caps and recovery"
+    },
+    {
+      "ids": "H-UI-01..16",
+      "evidence": [
+        "tests/python/test_path_authoring_ui.py",
+        "tests/python/test_path_authoring_edge_ui.py",
+        "tests/native/test_path_authoring_controls.cpp",
+        "tests/native/test_path_resize_controls.cpp"
+      ],
+      "scope": "six primary and27edge routes in allfour platform/launch contexts; actualImGui input, not OS/GPU certification"
+    },
+    {
+      "ids": "H-WIRE-01..05",
+      "evidence": [
+        "tests/python/test_path_authoring_workflow.py",
+        "tests/python/test_path_authoring_ui.py",
+        "tests/python/test_path_authoring_edge_ui.py"
+      ],
+      "scope": "V8 closed grammar, disabled originals/extent rebind, V5 reopen and legacy regression"
+    },
+    {
+      "ids": "H-DIST-01..04",
+      "evidence": [
+        "examples/cpp/path_authoring.cpp",
+        "scripts/ci_python_suite.py"
+      ],
+      "scope": "installedheadlessSDK35, installedmoduleorigins, standalone strippedPythonenvironment and directdependencyboundary"
+    }
+  ],
+  "families_touched": [
+    "G013",
+    "G015",
+    "G017",
+    "G021",
+    "G022",
+    "G085",
+    "G089"
+  ],
+  "family_status_changes": [],
+  "inventory_counts": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  },
+  "contracts": {
+    "geometry": "nativeM/L/Q/C/Z binary64;no flattening",
+    "resize": "explicitmode-first C++ Bounds overload; required mode=SelectionHandleMode.BOUNDS Python overload; historical no-mode path refusal intact",
+    "creation": "NativePathV4/commandV4 Replace",
+    "workflow": "V8;explicit authored extent or validated original-only reference extent;closed earlier grammars",
+    "history": "oneatomic edit/workflow;A\u2192B\u2192C Previous A;netno-op preserves Previous/history"
+  },
+  "products": {
+    "windows": {
+      "imagejxx": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\__init__.py",
+        "bytes": 77906,
+        "sha256": "e4495d881affad9f50fbdccb1695a005b37ce3a88ea0c4c83e17b974a8804e1f"
+      },
+      "imagejxx._native": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+        "bytes": 7555072,
+        "sha256": "18c2096e67451bd7bcabbad4f137542eee89809a19fa796abe882d454cef6a6c"
+      },
+      "imagejxx._desktop": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+        "bytes": 17203712,
+        "sha256": "a91645eba2e3c5ca4c967bd50b67379c0335abab7a46bd48c7ef73599326bdcb"
+      },
+      "imagejxx._scientific_io": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_scientific_io.cp312-win_amd64.pyd",
+        "bytes": 591872,
+        "sha256": "d8d42adc7aeb89b1d19d2c9df87ec915e2bdcde968b3b387a3507740a70e1062"
+      },
+      "interpreter": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Scripts\\python.exe",
+        "bytes": 257536,
+        "sha256": "4025e2a6d8fc90d053a8405e81f008cbd8ee45b582e2d77480341501f4aeda73"
+      },
+      "application": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+        "bytes": 17334272,
+        "sha256": "787957b4d34f136214b8d7dba1b8b2cc064fcb341456cb813d15a24391f468c0"
+      },
+      "provider": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_imagejxx_test_saved_roi_source.cp312-win_amd64.pyd",
+        "bytes": 236544,
+        "sha256": "d79cde4f60e147db8871dda7089ccb147b05c5db46ba381556cbb157779bd8e6"
+      }
+    },
+    "linux": {
+      "imagejxx": {
+        "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-probe-env003/lib/python3.12/site-packages/imagejxx/__init__.py",
+        "bytes": 77906,
+        "sha256": "e4495d881affad9f50fbdccb1695a005b37ce3a88ea0c4c83e17b974a8804e1f"
+      },
+      "imagejxx._native": {
+        "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-probe-env003/lib/python3.12/site-packages/imagejxx/_native.cpython-312-x86_64-linux-gnu.so",
+        "bytes": 12588512,
+        "sha256": "d7c66f7ad33eb68fe98fbfc7241272416bc4abeb0276f51fc6f69af238114b13"
+      },
+      "imagejxx._desktop": {
+        "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-probe-env003/lib/python3.12/site-packages/imagejxx/_desktop.cpython-312-x86_64-linux-gnu.so",
+        "bytes": 33167704,
+        "sha256": "32ba9e23fd9935d2a131bda5a36f9f750b8f2b9212dc81eeba0c0b18636fafac"
+      },
+      "imagejxx._scientific_io": {
+        "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-probe-env003/lib/python3.12/site-packages/imagejxx/_scientific_io.cpython-312-x86_64-linux-gnu.so",
+        "bytes": 4439128,
+        "sha256": "7a6a7eb7efd0d46816d3162ed6a7972c048b8d24f48b181efd3fa8a14011c9b5"
+      },
+      "interpreter": {
+        "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-probe-env003/bin/python",
+        "bytes": 8020928,
+        "sha256": "e50d468e8b0adfb05733f5b87b3cff34829c4a8c1aea50c865aa8bdfe4bb150f"
+      },
+      "application": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/.tmp/p13g-verification/linux/app-installed/bin/imagejxx",
+        "bytes": 35329064,
+        "sha256": "d3010d932c951fb2e69504835d726fe95f96f2a1239b7ad3dbfe418fdca2943c"
+      },
+      "provider": {
+        "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001/_imagejxx_test_saved_roi_source.cpython-312-x86_64-linux-gnu.so",
+        "bytes": 2447040,
+        "sha256": "e296a60b16fd8d20dad291fee45b7a355905da6e3a455eb905a8aa62f16a36bd"
+      }
+    }
+  },
+  "runs": [
+    {
+      "platform": "windows",
+      "profile": "P13h-primary",
+      "state": "passed",
+      "counts": {
+        "cases": 262,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      },
+      "selected_count": 262,
+      "excluded": [],
+      "ui_routes": [
+        {
+          "group": "path-authoring",
+          "case": "active"
+        },
+        {
+          "group": "path-authoring",
+          "case": "scientific-active"
+        },
+        {
+          "group": "path-authoring",
+          "case": "saved"
+        },
+        {
+          "group": "path-authoring",
+          "case": "xy"
+        },
+        {
+          "group": "path-authoring",
+          "case": "xz"
+        },
+        {
+          "group": "path-authoring",
+          "case": "yz"
+        }
+      ],
+      "source_manifest_sha256": "b3d079a9b4a56c60803873af5ee124338098da6947aad2a7be828642e548422d",
+      "started": 1792836465.5498824,
+      "ended": 1792836517.9709103,
+      "terminal": true,
+      "live_handle_or_none": null,
+      "timeouts": {
+        "pytest": 1800,
+        "ui_case": 180
+      },
+      "report": {
+        "path": ".tmp/p13h-verification/windows/focused-primary004/receipt.json",
+        "bytes": 37524,
+        "sha256": "db7134abc887d0df4b3a19c549fa05b0f1493cc8d206c82f00de1fb9ff62b5d9"
+      },
+      "junit": {
+        "path": ".tmp/p13h-verification/windows/focused-primary004/pytest.xml",
+        "bytes": 37960,
+        "sha256": "9fabc2af8b26215ac95f81ac0fda496c1835ce80201f12f407545bad3060d171"
+      },
+      "collection": {
+        "path": ".tmp/p13h-verification/windows/focused-primary004/collection.json",
+        "bytes": 28781,
+        "sha256": "820189ac90e15924b6f884ad490183f6abeb09b304a6683f6ef8bb9093cbd6fe"
+      },
+      "original_repository": "C:\\Users\\HEQ\\Projects\\imagejxx",
+      "original_report_root": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13h-verification\\windows\\focused-primary004"
+    },
+    {
+      "platform": "windows",
+      "profile": "P13h-edges",
+      "state": "passed",
+      "counts": {
+        "cases": 54,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      },
+      "selected_count": 54,
+      "excluded": [],
+      "ui_routes": [
+        {
+          "group": "path-authoring-edges",
+          "case": "input-ownership.active"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "input-ownership.scientific-active"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "input-ownership.saved"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "input-ownership.xy"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "input-ownership.xz"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "input-ownership.yz"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "pointer-recovery-dpi.active"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "pointer-recovery-dpi.scientific-active"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "pointer-recovery-dpi.saved"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "pointer-recovery-dpi.xy"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "pointer-recovery-dpi.xz"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "pointer-recovery-dpi.yz"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "numeric-stale.active"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "numeric-stale.scientific-active"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "numeric-stale.saved"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "numeric-stale.xy"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "numeric-stale.xz"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "numeric-stale.yz"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "budget.active"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "budget.scientific-active"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "budget.saved"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "budget.xy"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "budget.xz"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "budget.yz"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "budget.saved-linked"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "extent-rebind.active"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "extent-rebind.scientific-active"
+        }
+      ],
+      "source_manifest_sha256": "b3d079a9b4a56c60803873af5ee124338098da6947aad2a7be828642e548422d",
+      "started": 1792836751.8006158,
+      "ended": 1792836903.292845,
+      "terminal": true,
+      "live_handle_or_none": null,
+      "timeouts": {
+        "pytest": 1800,
+        "ui_case": 180
+      },
+      "report": {
+        "path": ".tmp/p13h-verification/windows/focused-edges002/receipt.json",
+        "bytes": 16318,
+        "sha256": "8b5050b3e58b5bf746a0ab5e7490d65bef586e0c2de6e116c28c310c5036461c"
+      },
+      "junit": {
+        "path": ".tmp/p13h-verification/windows/focused-edges002/pytest.xml",
+        "bytes": 8615,
+        "sha256": "72bd25f38de1132783f2a0c1bdbae395a3ae9adca76a37280de43a19f906dba6"
+      },
+      "collection": {
+        "path": ".tmp/p13h-verification/windows/focused-edges002/collection.json",
+        "bytes": 6540,
+        "sha256": "1f481b8f2218a59577bfa5f854b6dffce0b091e87616745f3c230b6e96660dd1"
+      },
+      "original_repository": "C:\\Users\\HEQ\\Projects\\imagejxx",
+      "original_report_root": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13h-verification\\windows\\focused-edges002"
+    },
+    {
+      "platform": "windows",
+      "profile": "P13h-regression",
+      "state": "passed",
+      "counts": {
+        "cases": 4223,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      },
+      "selected_count": 4223,
+      "excluded": [
+        {
+          "id": "tests/python/test_desktop_owner.py::test_scientific_attachment_navigates_without_legacy_edits",
+          "reason": "Unchanged previously recorded scientific-owner guard; current supported action violates old assertion, original baseline binaries retired."
+        }
+      ],
+      "ui_routes": [
+        {
+          "group": "root-paths",
+          "case": "ordinary"
+        },
+        {
+          "group": "root-paths",
+          "case": "linked"
+        },
+        {
+          "group": "root-paths",
+          "case": "workflow"
+        },
+        {
+          "group": "path-segments",
+          "case": "active"
+        },
+        {
+          "group": "path-segments",
+          "case": "saved"
+        },
+        {
+          "group": "path-segments",
+          "case": "xy"
+        },
+        {
+          "group": "path-segments",
+          "case": "xz"
+        },
+        {
+          "group": "path-segments",
+          "case": "yz"
+        },
+        {
+          "group": "annotation-workflow",
+          "case": "legacy"
+        },
+        {
+          "group": "planar-path",
+          "case": "legacy"
+        },
+        {
+          "group": "native-bare-import",
+          "case": "legacy"
+        },
+        {
+          "group": "roi-import",
+          "case": "legacy"
+        },
+        {
+          "group": "selection",
+          "case": "Q04"
+        }
+      ],
+      "source_manifest_sha256": "b3d079a9b4a56c60803873af5ee124338098da6947aad2a7be828642e548422d",
+      "started": 1792836048.9310153,
+      "ended": 1792836090.4881582,
+      "terminal": true,
+      "live_handle_or_none": null,
+      "timeouts": {
+        "pytest": 1800,
+        "ui_case": 180
+      },
+      "report": {
+        "path": ".tmp/p13h-verification/windows/focused-regression003/receipt.json",
+        "bytes": 493156,
+        "sha256": "29c8e309ea39a7833a438fc9183afd482abf48f3ac11de60cd540d98ac10ffef"
+      },
+      "junit": {
+        "path": ".tmp/p13h-verification/windows/focused-regression003/pytest.xml",
+        "bytes": 609983,
+        "sha256": "592ff68dd8176c710a1c9fe8cbe1e6f4b2931ee9c042d923fef1983bcb589fe7"
+      },
+      "collection": {
+        "path": ".tmp/p13h-verification/windows/focused-regression003/collection.json",
+        "bytes": 465736,
+        "sha256": "7637498d7e0e5a6a957b17e61e4d63dec33280a288e3abf327ba3a0f698e239a"
+      },
+      "original_repository": "C:\\Users\\HEQ\\Projects\\imagejxx",
+      "original_report_root": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13h-verification\\windows\\focused-regression003"
+    },
+    {
+      "platform": "linux",
+      "profile": "P13h-primary",
+      "state": "passed",
+      "counts": {
+        "cases": 262,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      },
+      "selected_count": 262,
+      "excluded": [],
+      "ui_routes": [
+        {
+          "group": "path-authoring",
+          "case": "active"
+        },
+        {
+          "group": "path-authoring",
+          "case": "scientific-active"
+        },
+        {
+          "group": "path-authoring",
+          "case": "saved"
+        },
+        {
+          "group": "path-authoring",
+          "case": "xy"
+        },
+        {
+          "group": "path-authoring",
+          "case": "xz"
+        },
+        {
+          "group": "path-authoring",
+          "case": "yz"
+        }
+      ],
+      "source_manifest_sha256": "b3d079a9b4a56c60803873af5ee124338098da6947aad2a7be828642e548422d",
+      "started": 1792837390.7310429,
+      "ended": 1792837516.8052456,
+      "terminal": true,
+      "live_handle_or_none": null,
+      "timeouts": {
+        "pytest": 1800,
+        "ui_case": 180
+      },
+      "report": {
+        "path": ".tmp/p13h-verification/linux/focused-primary003/receipt.json",
+        "bytes": 37077,
+        "sha256": "928e127b07b284a7f03549fd44555352b8cc776e9df893823b936be06a346bc4"
+      },
+      "junit": {
+        "path": ".tmp/p13h-verification/linux/focused-primary003/pytest.xml",
+        "bytes": 37960,
+        "sha256": "7fcbed1191869b57bdbcc799cea15b94caaf59a305d283f701f794c2bd831e2d"
+      },
+      "collection": {
+        "path": ".tmp/p13h-verification/linux/focused-primary003/collection.json",
+        "bytes": 28517,
+        "sha256": "d4ba1f9d2334c920659460bbbd2874b7e9b7fa61d036c92fa68846dda0ec64b9"
+      },
+      "original_repository": "/mnt/c/Users/HEQ/Projects/imagejxx",
+      "original_report_root": "/mnt/c/Users/HEQ/Projects/imagejxx/.tmp/p13h-verification/linux/focused-primary003"
+    },
+    {
+      "platform": "linux",
+      "profile": "P13h-edges",
+      "state": "passed",
+      "counts": {
+        "cases": 54,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      },
+      "selected_count": 54,
+      "excluded": [],
+      "ui_routes": [
+        {
+          "group": "path-authoring-edges",
+          "case": "input-ownership.active"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "input-ownership.scientific-active"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "input-ownership.saved"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "input-ownership.xy"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "input-ownership.xz"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "input-ownership.yz"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "pointer-recovery-dpi.active"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "pointer-recovery-dpi.scientific-active"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "pointer-recovery-dpi.saved"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "pointer-recovery-dpi.xy"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "pointer-recovery-dpi.xz"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "pointer-recovery-dpi.yz"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "numeric-stale.active"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "numeric-stale.scientific-active"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "numeric-stale.saved"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "numeric-stale.xy"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "numeric-stale.xz"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "numeric-stale.yz"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "budget.active"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "budget.scientific-active"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "budget.saved"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "budget.xy"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "budget.xz"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "budget.yz"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "budget.saved-linked"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "extent-rebind.active"
+        },
+        {
+          "group": "path-authoring-edges",
+          "case": "extent-rebind.scientific-active"
+        }
+      ],
+      "source_manifest_sha256": "b3d079a9b4a56c60803873af5ee124338098da6947aad2a7be828642e548422d",
+      "started": 1792837700.3686938,
+      "ended": 1792837878.6935334,
+      "terminal": true,
+      "live_handle_or_none": null,
+      "timeouts": {
+        "pytest": 1800,
+        "ui_case": 180
+      },
+      "report": {
+        "path": ".tmp/p13h-verification/linux/focused-edges002/receipt.json",
+        "bytes": 16003,
+        "sha256": "949e1a2653ce2d9885d85bb307ec9a06af58c15dd16fef3a3369eeda7904964d"
+      },
+      "junit": {
+        "path": ".tmp/p13h-verification/linux/focused-edges002/pytest.xml",
+        "bytes": 8615,
+        "sha256": "82fb9aac01a70b1277dcd462d13a3e10899d00d128a886995fa34a20c338857d"
+      },
+      "collection": {
+        "path": ".tmp/p13h-verification/linux/focused-edges002/collection.json",
+        "bytes": 6484,
+        "sha256": "dcdee1f47f771533d6664e9864cb2df316f90c16308a0c98724050c13fd21b0a"
+      },
+      "original_repository": "/mnt/c/Users/HEQ/Projects/imagejxx",
+      "original_report_root": "/mnt/c/Users/HEQ/Projects/imagejxx/.tmp/p13h-verification/linux/focused-edges002"
+    },
+    {
+      "platform": "linux",
+      "profile": "P13h-regression",
+      "state": "passed",
+      "counts": {
+        "cases": 4223,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      },
+      "selected_count": 4223,
+      "excluded": [
+        {
+          "id": "tests/python/test_desktop_owner.py::test_scientific_attachment_navigates_without_legacy_edits",
+          "reason": "Unchanged previously recorded scientific-owner guard; current supported action violates old assertion, original baseline binaries retired."
+        }
+      ],
+      "ui_routes": [
+        {
+          "group": "root-paths",
+          "case": "ordinary"
+        },
+        {
+          "group": "root-paths",
+          "case": "linked"
+        },
+        {
+          "group": "root-paths",
+          "case": "workflow"
+        },
+        {
+          "group": "path-segments",
+          "case": "active"
+        },
+        {
+          "group": "path-segments",
+          "case": "saved"
+        },
+        {
+          "group": "path-segments",
+          "case": "xy"
+        },
+        {
+          "group": "path-segments",
+          "case": "xz"
+        },
+        {
+          "group": "path-segments",
+          "case": "yz"
+        },
+        {
+          "group": "annotation-workflow",
+          "case": "legacy"
+        },
+        {
+          "group": "planar-path",
+          "case": "legacy"
+        },
+        {
+          "group": "native-bare-import",
+          "case": "legacy"
+        },
+        {
+          "group": "roi-import",
+          "case": "legacy"
+        },
+        {
+          "group": "selection",
+          "case": "Q04"
+        }
+      ],
+      "source_manifest_sha256": "b3d079a9b4a56c60803873af5ee124338098da6947aad2a7be828642e548422d",
+      "started": 1792837037.3837829,
+      "ended": 1792837075.7650592,
+      "terminal": true,
+      "live_handle_or_none": null,
+      "timeouts": {
+        "pytest": 1800,
+        "ui_case": 180
+      },
+      "report": {
+        "path": ".tmp/p13h-verification/linux/focused-regression002-native/receipt.json",
+        "bytes": 488783,
+        "sha256": "0ad8475455eae380e331f111ba292baf373f38a2a7dd684a44bc8306d9184608"
+      },
+      "junit": {
+        "path": ".tmp/p13h-verification/linux/focused-regression002-native/pytest.xml",
+        "bytes": 609983,
+        "sha256": "9680ccc0c7698fce5a5bf78689b1abbf753deb8da7e39afd0192c2176795bbf6"
+      },
+      "collection": {
+        "path": ".tmp/p13h-verification/linux/focused-regression002-native/collection.json",
+        "bytes": 461511,
+        "sha256": "159d789a3b7366bc0f7cb3c3f6474f89c85c48ea595b7ff46d2166d384a01812"
+      },
+      "original_repository": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001",
+      "original_report_root": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/p13h-verification/focused-regression002"
+    }
+  ],
+  "native": [
+    {
+      "platform": "windows",
+      "groups": [
+        "desktop_record_layout",
+        "native_saved_roi_geometry",
+        "native_rounded_saved_resources",
+        "desktop_saved_roi_geometry_host",
+        "native_saved_path_resources",
+        "native_document",
+        "native_selection_edit",
+        "native_selection_history",
+        "native_path_edit",
+        "native_path_resize",
+        "native_path_creation",
+        "native_path_authoring",
+        "native_selection_creation",
+        "native_selection_creation_geometry",
+        "native_creation_workflow",
+        "native_workflow",
+        "native_annotation_workflow",
+        "native_path_selection",
+        "desktop_path_segment_controls",
+        "desktop_root_paths",
+        "desktop_path_authoring_controls",
+        "desktop_path_resize_controls",
+        "native_session_literal",
+        "native_session_axes",
+        "native_session_state",
+        "native_session_malformed",
+        "native_session_v2",
+        "native_session_admission",
+        "native_session_batch",
+        "native_session_io"
+      ],
+      "counts": {
+        "groups": 30,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      },
+      "junit": {
+        "path": ".tmp/p13h-verification/windows/attempt019/native.xml",
+        "bytes": 9829,
+        "sha256": "60c342fae466ebdcb89c4c85c970131190e3687197a9bdf5f80da469770375d5"
+      },
+      "log": {
+        "path": ".tmp/p13h-verification/windows/attempt019/native.log",
+        "bytes": 3800,
+        "sha256": "2b82098abb3375431ee79b71db3b4e5c985c07fd9800ea2d2a992a3be1dd13fb"
+      }
+    },
+    {
+      "platform": "linux",
+      "groups": [
+        "desktop_record_layout",
+        "native_saved_roi_geometry",
+        "native_rounded_saved_resources",
+        "desktop_saved_roi_geometry_host",
+        "native_saved_path_resources",
+        "native_document",
+        "native_selection_edit",
+        "native_selection_history",
+        "native_path_edit",
+        "native_path_resize",
+        "native_path_creation",
+        "native_path_authoring",
+        "native_selection_creation",
+        "native_selection_creation_geometry",
+        "native_creation_workflow",
+        "native_workflow",
+        "native_annotation_workflow",
+        "native_path_selection",
+        "desktop_path_segment_controls",
+        "desktop_root_paths",
+        "desktop_path_authoring_controls",
+        "desktop_path_resize_controls",
+        "native_session_literal",
+        "native_session_axes",
+        "native_session_state",
+        "native_session_malformed",
+        "native_session_v2",
+        "native_session_admission",
+        "native_session_batch",
+        "native_session_io"
+      ],
+      "counts": {
+        "groups": 30,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      },
+      "junit": {
+        "path": ".tmp/p13h-verification/linux/attempt019/native.xml",
+        "bytes": 9624,
+        "sha256": "76dd7985ae7c04172ee49acfa7d2282482a3c3ac21e0b277551b53e88270387b"
+      },
+      "log": {
+        "path": ".tmp/p13h-verification/linux/attempt019/native.log",
+        "bytes": 3800,
+        "sha256": "a811ea31a2372da5ba97e2816e1fbba42751f56da6cd3ab173ff9f7e0d8266b4"
+      }
+    }
+  ],
+  "sdk": [
+    {
+      "platform": "windows",
+      "checks": 35,
+      "installed_headers": 96,
+      "report": {
+        "path": ".tmp/p13h-verification/windows/sdk004/receipt.json",
+        "bytes": 11484,
+        "sha256": "1285a306d58e64460ef2a062de2744f007a8be02ca437f05f265b83fb296ddc0"
+      },
+      "core_library": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\lib\\imagejxx_core.lib",
+        "bytes": 54583402,
+        "sha256": "45c52ae76456cacb4e5edd7bed4a32aa399f8e55e508d31fa5f786551535426d"
+      },
+      "client_link_identity": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13h-verification\\windows\\sdk004\\client-project.xml",
+        "sha256": "d639516abdd32ad4699a679af12eaf0ebfaee9e5ac0689afead2d291dda987e0"
+      }
+    },
+    {
+      "platform": "linux",
+      "checks": 35,
+      "installed_headers": 96,
+      "report": {
+        "path": ".tmp/p13h-verification/linux/sdk004/receipt.json",
+        "bytes": 11342,
+        "sha256": "e990c9a5e8c29c988fa253e68043c6ffe0938ca3f78e4eadab0329a5cf7cf134"
+      },
+      "core_library": {
+        "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed/lib/libimagejxx_core.a",
+        "bytes": 18571378,
+        "sha256": "4d4798260a24ffc7b80b020ec57e6e543a731ee9372e995835d2ceefb591c8cb"
+      },
+      "client_link_identity": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/.tmp/p13h-verification/linux/sdk004/client-link.txt",
+        "sha256": "5bcfcdb9e925dff2ea38b72c5c0ce6e6002a3c5b16d805b6b2038e34ce6b3e75"
+      }
+    }
+  ],
+  "retained_archives": [
+    {
+      "archive": {
+        "path": ".tmp/p13h-verification/windows-focused-primary004-cpp-observations.tar.gz",
+        "bytes": 81561971,
+        "sha256": "61aa27d42caec2612fcd6ad616406d80e15404fbb7d750d8358c58cf0c1cf653"
+      },
+      "retention_receipt": {
+        "path": ".tmp/p13h-verification/windows-focused-primary004-cpp-observations-retention.json",
+        "bytes": 6010,
+        "sha256": "cb4e21a7c804e903309610694f9d2a2a45e336e5b44e5077163415f6d95ee0dd"
+      },
+      "members": 31,
+      "removed_regular_bytes": 378506426,
+      "retained_bytes": 81561971,
+      "availability": "local_retained_not_distributed",
+      "member_hashes_verified_before_removal": true
+    },
+    {
+      "archive": {
+        "path": ".tmp/p13h-verification/windows-focused-primary004-scratch.tar.gz",
+        "bytes": 40787890,
+        "sha256": "df9fa06efb00ea334df685c805b00e02bdacd51feb50cdb8c9f682ce70e853d2"
+      },
+      "retention_receipt": {
+        "path": ".tmp/p13h-verification/windows-focused-primary004-scratch-retention.json",
+        "bytes": 25221,
+        "sha256": "9adfdfb9f383f36aaf33902f2ea34111ccce17cd40bf7fff9ce538f8a99a8a15"
+      },
+      "members": 134,
+      "removed_regular_bytes": 189221995,
+      "retained_bytes": 40787890,
+      "availability": "local_retained_not_distributed",
+      "member_hashes_verified_before_removal": true
+    },
+    {
+      "archive": {
+        "path": ".tmp/p13h-verification/windows-focused-edges002-cpp-observations.tar.gz",
+        "bytes": 63145400,
+        "sha256": "b86034281bcdf983dcda900939fecb29b18907686ebfc17243b3b33c8f4a6744"
+      },
+      "retention_receipt": {
+        "path": ".tmp/p13h-verification/windows-focused-edges002-cpp-observations-retention.json",
+        "bytes": 18401,
+        "sha256": "9f942f24381242757d7a949f3d146f30056bf7278eed8bffedb531cdf4a01a8d"
+      },
+      "members": 89,
+      "removed_regular_bytes": 526976605,
+      "retained_bytes": 63145400,
+      "availability": "local_retained_not_distributed",
+      "member_hashes_verified_before_removal": true
+    },
+    {
+      "archive": {
+        "path": ".tmp/p13h-verification/windows-focused-edges002-scratch.tar.gz",
+        "bytes": 31560192,
+        "sha256": "f59a41c4858c010d221c05a010e1a5eddc7f79207170613e97b6e5edaac4185f"
+      },
+      "retention_receipt": {
+        "path": ".tmp/p13h-verification/windows-focused-edges002-scratch-retention.json",
+        "bytes": 6844,
+        "sha256": "71b205080cbe4b9829e2ca2d50804b19d10aa5421e2687d2173cb2f3ee703672"
+      },
+      "members": 34,
+      "removed_regular_bytes": 263473111,
+      "retained_bytes": 31560192,
+      "availability": "local_retained_not_distributed",
+      "member_hashes_verified_before_removal": true
+    },
+    {
+      "archive": {
+        "path": ".tmp/p13h-verification/windows-focused-regression003-cpp-observations.tar.gz",
+        "bytes": 88289475,
+        "sha256": "4fb779672ada3d3e8cac82581535dbe1d0716cc9f97bd8189d4719dcaf566210"
+      },
+      "retention_receipt": {
+        "path": ".tmp/p13h-verification/windows-focused-regression003-cpp-observations-retention.json",
+        "bytes": 14866,
+        "sha256": "fed6e367a1d5e0669c4b9cc93a8802349fc9376a81da6efc61b26372998a5b5d"
+      },
+      "members": 80,
+      "removed_regular_bytes": 641491519,
+      "retained_bytes": 88289475,
+      "availability": "local_retained_not_distributed",
+      "member_hashes_verified_before_removal": true
+    },
+    {
+      "archive": {
+        "path": ".tmp/p13h-verification/windows-focused-regression003-scratch.tar.gz",
+        "bytes": 45168988,
+        "sha256": "dbf3c3cfbc74594a28156c3cdf7ef39543c5f5a47c03fcca4668bf6c7cbf93c8"
+      },
+      "retention_receipt": {
+        "path": ".tmp/p13h-verification/windows-focused-regression003-scratch-retention.json",
+        "bytes": 88031,
+        "sha256": "99e6775c88b8a745d045f6ab135971c0adbcb5cb9484ffd0dcf576956de1bf65"
+      },
+      "members": 474,
+      "removed_regular_bytes": 325757844,
+      "retained_bytes": 45168988,
+      "availability": "local_retained_not_distributed",
+      "member_hashes_verified_before_removal": true
+    },
+    {
+      "archive": {
+        "path": ".tmp/p13h-verification/linux-focused-primary003-cpp-observations-native.tar.gz",
+        "bytes": 81504068,
+        "sha256": "085387b2c00ceec7a66a14396cd07f2903cd9140d7e1e2e88137720251ecd17c"
+      },
+      "retention_receipt": {
+        "path": ".tmp/p13h-verification/linux-focused-primary003-cpp-observations-native-retention.json",
+        "bytes": 6557,
+        "sha256": "8b480a4a26ea2f85ab0ef0cab1785fdd67fbf01bf0dd33e03f081d321686f338"
+      },
+      "members": 31,
+      "removed_regular_bytes": 378412592,
+      "retained_bytes": 81504068,
+      "availability": "local_retained_not_distributed",
+      "member_hashes_verified_before_removal": true
+    },
+    {
+      "archive": {
+        "path": ".tmp/p13h-verification/linux-focused-primary003-scratch-native.tar.gz",
+        "bytes": 40748195,
+        "sha256": "043a5dc58b01289a906f6cc1a4e508f7bd33cb0a6b2f5de7537c81ebf5595f35"
+      },
+      "retention_receipt": {
+        "path": ".tmp/p13h-verification/linux-focused-primary003-scratch-native-retention.json",
+        "bytes": 32033,
+        "sha256": "9b49de0a074c21bd2f6fb6631256522e94d67e26c7342e39ef4338cae334bbb2"
+      },
+      "members": 153,
+      "removed_regular_bytes": 189140399,
+      "retained_bytes": 40748195,
+      "availability": "local_retained_not_distributed",
+      "member_hashes_verified_before_removal": true
+    },
+    {
+      "archive": {
+        "path": ".tmp/p13h-verification/linux-focused-edges002-cpp-observations-native.tar.gz",
+        "bytes": 63119692,
+        "sha256": "9e5140a8611d3fb79ec4dc9359515a3e3afb5dff29c65e96049097b7043befce"
+      },
+      "retention_receipt": {
+        "path": ".tmp/p13h-verification/linux-focused-edges002-cpp-observations-native-retention.json",
+        "bytes": 20005,
+        "sha256": "837607871b4bb556f040cebf602b4ed4e92aa51d63e075cad7bbc6240598af29"
+      },
+      "members": 89,
+      "removed_regular_bytes": 526997067,
+      "retained_bytes": 63119692,
+      "availability": "local_retained_not_distributed",
+      "member_hashes_verified_before_removal": true
+    },
+    {
+      "archive": {
+        "path": ".tmp/p13h-verification/linux-focused-edges002-scratch-native.tar.gz",
+        "bytes": 31563099,
+        "sha256": "936e655f4e940b3600fcad6e9edc1a745a81ab25fc0f9a924fb0995d9fe896b8"
+      },
+      "retention_receipt": {
+        "path": ".tmp/p13h-verification/linux-focused-edges002-scratch-native-retention.json",
+        "bytes": 7746,
+        "sha256": "b7a75493d76b2b9b77120cfcae56c7f2da343e966a091ac625eb564e91361305"
+      },
+      "members": 35,
+      "removed_regular_bytes": 263501469,
+      "retained_bytes": 31563099,
+      "availability": "local_retained_not_distributed",
+      "member_hashes_verified_before_removal": true
+    },
+    {
+      "archive": {
+        "path": ".tmp/p13h-verification/focused-regression002-native.tar.gz",
+        "bytes": 134013004,
+        "sha256": "4ac2f05ebdecd0657f5f5e5ff7757d1b20d99b5eeb45f30f34c7ac4420c14922"
+      },
+      "retention_receipt": {
+        "path": ".tmp/p13h-verification/focused-regression002-native-retention.json",
+        "bytes": 148955,
+        "sha256": "a610d92300543f3c052bd05debcb8110283be4c15897f8545649419d33e02f6b"
+      },
+      "members": 676,
+      "removed_regular_bytes": 971129398,
+      "retained_bytes": 134013004,
+      "availability": "local_retained_not_distributed",
+      "member_hashes_verified_before_removal": true
+    },
+    {
+      "archive": {
+        "path": ".tmp/p13h-verification/windows-dependency-source019-no-python-capture.tar.gz",
+        "bytes": 7075829,
+        "sha256": "46658a5b08f76978331d810922a48edbf9eb99959d9585cb309709b69bc24fbe"
+      },
+      "retention_receipt": {
+        "path": ".tmp/p13h-verification/windows-dependency-source019-no-python-capture-retention.json",
+        "bytes": 630,
+        "sha256": "d86b4fb929a274a1aadec4480ad20809faa351312f9e29d9ba869daaf07e7fbc"
+      },
+      "members": 2,
+      "removed_regular_bytes": 31506336,
+      "retained_bytes": 7075829,
+      "availability": "local_retained_not_distributed",
+      "member_hashes_verified_before_removal": true
+    },
+    {
+      "archive": {
+        "path": ".tmp/p13h-verification/linux-dependency-source019-no-python-capture-native.tar.gz",
+        "bytes": 7071601,
+        "sha256": "83d8d5cc6865f460fd535ca9c89f39a034ae33eb8c106fe5c5a36cddddbbad4d"
+      },
+      "retention_receipt": {
+        "path": ".tmp/p13h-verification/linux-dependency-source019-no-python-capture-native-retention.json",
+        "bytes": 755,
+        "sha256": "6b4e3772f3d6a0588a39613c3e0a5c88f92e22b2be9d8231531368e095556cfa"
+      },
+      "members": 2,
+      "removed_regular_bytes": 31493027,
+      "retained_bytes": 7071601,
+      "availability": "local_retained_not_distributed",
+      "member_hashes_verified_before_removal": true
+    }
+  ],
+  "dependency_checks": [
+    {
+      "path": ".tmp/p13h-verification/windows/dependency-source019/receipt.json",
+      "bytes": 1875,
+      "sha256": "aec92f1b1ad4f1e52d80981667863e636f4fea59ee3060559e5b841a785c4a28"
+    },
+    {
+      "path": ".tmp/p13h-verification/linux/dependency-source019/receipt.json",
+      "bytes": 1222,
+      "sha256": "cb2d156ef83e4f8f7ef9479f5c1f7a88bbe54f06aea06e95a2218724c5f88075"
+    }
+  ],
+  "commercial_check": {
+    "path": ".tmp/p13h-verification/commercial-check-source019.log",
+    "bytes": 53,
+    "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+  },
+  "strict_plan_gate": {
+    "state": "unqualified_missing_historical_evidence",
+    "report": {
+      "path": ".tmp/p13h-verification/strict-plan-check-source017.log",
+      "bytes": 140,
+      "sha256": "9dedbfa4bc9750c0fbc3ad1cb04e86ace09d040566a92d60845dae6d59e63cfd"
+    },
+    "first_missing": "build/plan-implementation/p05e-roi-boolean-001/native-local-checkpoint-001.json",
+    "original_fingerprints_unchanged": true
+  },
+  "c0": {
+    "focused_profiles": "genuine selectedprofile runs passed; every platform exact4539-ID union, zero failures/errors/skips",
+    "evidence_inventory": "read-only availability/integrity distinction; retiredG016/olderAuto remainunresolved",
+    "verification_report_root_rule": "Linux no-replace publication tests use existing verified native-filesystem source mirror, with owned scratch inside declared repository; unsupported9P refusal retained"
+  },
+  "recipe_remaining_scenarios_reconciliation": {
+    "lost release without focus loss": "input-ownership sixcarriers/allfourcontexts",
+    "text and popup key exclusion": "input-ownership actualPreferences/popup focus",
+    "collapsed crossing recovery and identity": "pointer-recovery-dpi",
+    "numeric modifier toggles and all handles": "native authoring/resize component groups plus API matrices",
+    "DPI matrix": "pointer-recovery-dpi guiScale1.5 allsixcarriers;notOS-DPIcertification",
+    "lowered-budget UI refusal and large-path admission": "budget sevenroutes64\u21921\u219264MiB including saved-linked; unchangedworkload/caps",
+    "mismatched workflow extent explicit rebind": "extent-rebind twoactivecarriers/allfourcontexts",
+    "M12/W4 ordinary-path workflow form conversion (required follow-on)": "stillrequired broaderM12follow-on; unsupportedform choices disabledwithreason"
+  },
+  "limitations": [
+    "One unchanged historicalscientific-owner guard case explicitlyexcluded; no newexclusions.",
+    "No fullfamily, macOS, GPU/OS-input, accessibility or fullrelease qualification.",
+    "Native pen/modifier policy is explicit; no upstream-exact UIinteraction claim.",
+    "Raw evidence retained locally in verified archives; not redistributed or asserted as CIartifact availability.",
+    "P13i filtering, continuousBooleans, richer authored move/rotate/point intent and fullM0-M13/ImageJ/commercialFiji scope remain.",
+    "Prepared referenceJavaobserver uncompiled/unexecuted and excludedfromP13h source manifest/qualification."
+  ],
+  "storage": {
+    "roots": {
+      "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification": 1654221382,
+      "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification": 281979068,
+      "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13h-verification": 3106280640,
+      "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001": 1748570520,
+      "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-probe-env003": 50591698,
+      "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed": 19006692,
+      "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-client": 489,
+      "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/p13h-verification": 0
+    },
+    "bytes": 6860650489,
+    "limit_bytes": 8589934592,
+    "policy": "Current active caches/runtimes/evidence; no linked-directory traversal"
+  },
+  "next_packet": "P13i nativepath filter targets and sharedadmission; exactJava runtime/capture prerequisite pending"
+}

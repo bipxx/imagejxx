@@ -6,7 +6,7 @@
 namespace imagejxx {
 
 enum class SelectionCreationOperation { Replace, Add, Subtract, Intersect, Xor };
-enum class SelectionCreationGeometry { Automatic, CanvasV1, FullRegionV3 };
+enum class SelectionCreationGeometry { Automatic, CanvasV1, FullRegionV3, NativePathV4 };
 
 // A complete area candidate, independent of any pointer/modifier timeline.
 // Creation accepts rectangle/rounded_rectangle/ellipse/polygon/freehand; native area bases may
@@ -22,6 +22,9 @@ struct SelectionCreationLimits {
   std::size_t max_pixels = 16'777'216;
   std::size_t max_candidate_vertices = 65'536;
   std::size_t max_working_bytes = 268'435'456;
+  // Path-aware retained carriers are admitted even for an ordinary candidate.
+  std::size_t max_path_segments = 65'536;
+  std::size_t max_path_command_scalars = 1'048'576;
 };
 struct SelectionCreationEstimate {
   std::size_t pixels = 0, candidate_vertices = 0;
@@ -91,7 +94,8 @@ ResolvedSelectionCreationCommand resolve_selection_creation_command(
     const DocumentSnapshot &, const SelectionCreationRequest &,
     const SelectionCreationLimits & = {}, const ExecutionControl & = {});
 
-// Strict V1/V2 canvas and V3 full-region source/result validation, including recomputing
+// Strict V1/V2 canvas, V3 full-region and explicit replacement-only V4 native
+// path source/result validation, including recomputing
 // the original equation, completes before checking owner/revisions or rebinding.
 void validate_selection_creation_command_record(
     const MetadataObject &, const SelectionCreationLimits & = {},

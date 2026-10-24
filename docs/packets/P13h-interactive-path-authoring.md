@@ -2,11 +2,11 @@
 
 ## Current execution card
 
-**State:** specified, not implemented or qualified. **Baseline:**
+**State:** scoped-qualified; family/release acceptance remains open. **Baseline:**
 `8d83fdf6711d96c5820f2ac376741a01f53fc98a` (p13g), reviewed 2026-10-24.
 Use the [three-agent execution plan](../THREE_AGENT_EXECUTION.md) for scheduling,
-shared-file ownership, storage and integration rules. This card is the detailed
-next product specification; it does not close an original capability family.
+shared-file ownership, storage and integration rules. This card records the qualified
+product packet; it does not close an original capability family.
 
 **User-visible exit:** draw a native line/quadratic/cubic path, retain multiple
 open/closed contours, resize it without flattening, store/reselect a saved ROI,
@@ -26,18 +26,46 @@ rendering, saved/planar typed geometry commands, p13g segment controls,
 Reuse them. Do not introduce another geometry representation, Python processing
 implementation, renderer, command stack or UI framework.
 
+## Scoped execution exit (2026-10-24)
+
+[Source19 receipt](../parity/reviews/p13h-path-authoring001/receipt.json): each
+platform passes 4,539 selected Python IDs, 30 native groups and 35 installed SDK
+checks, without failures/errors/skips. The exact one historical scientific-owner
+exclusion is retained. Six primary and 27 edge recipes cover Windows/Linux and
+both launches; component controls and preserved regressions are additional.
+Standalone recipes also complete with Python search paths removed and no direct
+Python/Qt imports. Source/test/fixture/tool inputs are frozen in one 6,287-file
+manifest. Receipt/document-only changes do not invalidate those compiled inputs.
+
+Repairs include numeric-array separator admission, refusal-time ImGui scope
+cleanup, opaque Store ROI layout retention, and explicit Bounds API intent that
+preserves historical no-mode refusal. Original assertions, fixture fingerprints
+and production caps remain unchanged. Verified compressed retention removes
+owned success/failure scratch; measured current storage is 6.39 GiB across active
+caches/runtimes/evidence, below 8 GiB. No retired build generation was recreated.
+
+The recipe-local `remaining_scenarios` field predates supplemental edge/component
+qualification. The receipt maps its first seven entries to executed evidence;
+M12/W4 richer ordinary↔path workflow form conversion remains a required follow-on.
+This scoped exit does not qualify macOS, GPU/OS input, accessibility, whole
+families or full ImageJ/Fiji parity. The strict historical gate still refuses
+retired G016 evidence; earlier Auto issues remain unqualified. No family changes
+status. Resume [P13i](P13i-path-filter-targets.md), using the shared three-agent
+queue and its exact runtime/reference prerequisite.
+
 ## Frozen contract decisions
 
-The names/versions below are **proposed additions**, not available APIs. A owns
-their declarations; C records the final reviewed header/codec delta before B
-consumes it. Confirm no intervening code has consumed these version numbers.
-If a number is occupied, choose the next explicit version and update this card
-and its tests together; do not broaden an old closed grammar.
+The names/versions below are **implemented and frozen in the working tree**,
+not yet a landed or scoped-qualified release. A owns their declarations; C
+records the reviewed header/codec delta and exact source identity. Consumers
+already use NativePathV4, command V4, Bounds handles and workflow V8 with optional
+`selection_creation_extent`. Do not restart design, renumber these versions or
+broaden an older closed grammar during closeout.
 
 | ID | Decision |
 | --- | --- |
 | H01 | Keep M/L/Q/C/Z and all operands as native binary64. Preserve contour order, style, width, attributes and off-canvas geometry. Processing masks/display tessellation are views, never replacement geometry. |
-| H02 | Add a path handle mode to `SelectionEditor::handles`/`hit_test` via additive overloads. Existing signatures retain current control-point behavior. Proposed modes: `ControlPoints` and `Bounds`. Extend existing `resized()` overloads to paths. |
+| H02 | Add `ControlPoints` / `Bounds` handle modes. Existing no-mode handles/hit-test behavior and path-resize refusal remain compatible. Add C++ `resized(SelectionHandleMode, handle, point, ...)` overloads; native paths require explicit `Bounds`. Python adds `resized(handle, point, *, mode, ...)` with required mode on the new overload. The same affine implementation serves all new callers. |
 | H03 | Extend `SelectionCreationRequest` with explicit `SelectionCreationGeometry::NativePathV4` and command V4. V4 supports **Replace** only. It permits path↔ordinary, path→path and an explicitly requested ordinary→ordinary replacement. Ordinary requests never auto-upgrade solely because V4 exists. |
 | H04 | New workflow program **V8** carries the new path creation intent. V1–V7 keep their original closed grammars and serialization. Unrelated path-bearing state does not force a legacy request to upgrade its record version. |
 | H05 | Active drawing and the new Bounds resize mode use the admitted creation/publication pipeline, opt into selection history and retain portable intent. This packet's Transform mode supplies resize only. Existing move/rotate/control-point/numeric routes retain their current history policy; extending authored intent to those routes remains a named follow-on. Saved and planar edits reuse their existing typed commands. |
@@ -95,6 +123,18 @@ transform every endpoint/control operand with `q' = a + s * (q - a)`.
 Numeric resizing must express the same anchor/aspect/handle intent as pointer
 resizing. Do not implement a second affine equation in an ImGui callback or
 Python wrapper. Tests distinguish analytic bounds from the control hull.
+
+### A1 compatibility boundary
+
+The full source18 regression run preserved 4,222 cases but exposed one old
+expectation: a no-mode `SelectionEditor.resized(...)` call on a path must refuse.
+Do not exclude or rewrite that historical test. Explicit Bounds intent is the
+additive contract: C++ puts `SelectionHandleMode::Bounds` first; Python requires
+`mode=SelectionHandleMode.BOUNDS` on the new overload. Old overloads retain their
+primitive/control-point semantics. New geometry tests, SDK calls and the four
+path UI consumers opt in; expected coordinates, resource checks and V4/V8 records
+remain unchanged. Qualify the resulting source before using earlier positive
+path results as final compatibility evidence.
 
 ### A2. Explicit path creation command
 
@@ -161,6 +201,9 @@ ordinary. Preserve strict original capture, authored intent and rebind
 distinctions. Validate disabled steps' complete portable grammar/extent without
 executing them or matching a destination. Old program versions reject both the
 new intent and the new field; unrelated paths do not change old program bytes.
+An authored override retaining a V4 original must explicitly choose
+`NativePathV4`, even when its candidate is ordinary geometry. A legacy-mode
+override refuses rather than silently changing its history policy.
 
 Workflow preparation tracks whether an **executed, changed** step requires
 authored selection history, then forwards that policy through
@@ -219,7 +262,7 @@ admission rules. No CMake, central registration or desktop edits by A.
 
 ### B1. Creation state machine
 
-Introduce a small shared C++ path-authoring controller, proposed files
+The shared C++ path-authoring controller is implemented in
 `src/desktop/path_authoring_controls.hpp/.cpp`. Keep gesture state separate
 from document publication. Its states are **Idle → Collecting → Ready →
 Publishing**, with **Invalid** and cancellation transitions. Complete native
@@ -347,11 +390,43 @@ UI action. B supplies mode/field schemas and actual producer paths to C.
 Use observation contract `p13h.path-authoring.ui.001`, with explicit mode,
 platform/host/product identity, `state`, `error`, delivered events/frames, named
 scenario transitions, exact geometry/state outputs and session-member locators.
-The native-reader environment binding is proposed as
+The implemented native-reader environment binding is
 `IMAGEJXX_PATH_AUTHORING_CPP_REPORTS`, a JSON mode→report-path map. C registers
 all six modes in the observation runner and rejects a missing/mismatched mode,
 empty asserted event stream or producer identity mismatch. Observations keep
 `acceptance: false`; independent readers decide whether the scoped cases pass.
+
+### Bounded actual-observation transport
+
+Primary and edge success/failure writers serialize compact UTF-8 once and bound
+those exact stored bytes: strictly below 128 MiB primary / 64 MiB edge. They
+write atomically and check the resulting byte count. Pretty formatting must not
+bypass the limits. An over-limit result is a failed observation, never acceptance.
+
+Only `frames[*].rendered.linked_saved_handles` may use the existing lossless
+transport. Its whole actual array (at least 1024 serialized bytes) becomes
+`{"$actual_blob":"<sha256>"}`. Top-level `actual_blob_transport` has exactly
+`version: 1`, `encoding: "utf8-json"`, and `blobs`, mapping lowercase SHA-256 to
+exact compact JSON text. All events, frames, field values and array elements
+remain recoverable; no expectation or geometric projection supplies payloads.
+Existing interner limits remain 8192 blobs/references, depth 64 and 64 MiB unique
+payload. Reject missing/orphan blobs, hash mismatch and nested references.
+
+C's dedicated `path_authoring_observations.py` reader independently verifies
+identities and locations, parses each unique array once, and shares immutable
+values among its frame references. Wire/unique-payload bytes remain bounded;
+this is not an RSS guarantee or permission to relax another reader's expansion
+limit. Existing generic transport tests and semantics remain unchanged. Qualify
+both C++ file observations and the identical wire envelope returned to Python.
+
+Full retained-state diagnostics include metadata properties/extensions/layout,
+overlays, spectrum, sample policy and display state. Preservation checks retain
+all original assertions. Camera/revision/backing identity diagnostics do not
+mean value-equal content must reuse a backing allocation after restoration.
+Store ROI may derive the four known serialization-presence groups; unrelated
+opaque layout entries must survive Store, transforms, Undo/Redo and reopen.
+Seed supported display properties (`display_range`), not invented keys outside
+the desktop's closed admission contract.
 
 ## Agent C: independent acceptance and integration
 
@@ -376,6 +451,7 @@ expected values; A/B may supply fixtures/interfaces, not self-derived answers.
 | H-GEO-13..17 | Horizontal/vertical/point-only source bounds, collapsed destination, crossing/recovery, forbidden degenerate aspect, overflow/finite domain and exact admission boundaries. No image reads. |
 | H-CMD-01..06 | V4 path↔ordinary and path→path replacements, strict original equation, unchanged legacy versions, malformed/extra/partial payload rejection, explicit replay/rebind and unrelated retained paths in estimates. |
 | H-HIST-01..06 | Direct active, saved and planar Apply each gives one correct Undo/Redo; selection-only and mixed V8 workflow publication; disabled/failed/canceled/net-no-op history. Explicitly check A→B→C gives Previous A and A→B→A retains original Previous. Preserve existing point/move/rotate history policy. |
+| H-BOUND-01..02 | Invalid first/tail/disabled V4 workflow admission precedes checkpoint/progress/stage callbacks, including inherited scopes; cancellation and scope restoration survive. Tiny nonzero diagonal scales (`1e-200`) do not fail from determinant-product underflow; zero scales and general-affine controls retain their contract. |
 | H-STATE-01..06 | Cancel at coarse completion and during copies; callback exception/reassignment; stale/foreign revisions; reentrant canceled/replaced draft; lowered budget at admission and Apply. Failure leaves the owner unchanged, preserves preexisting reservations and releases newly acquired draft/job reservations. |
 | H-UI-01..06 | Each of six modes actually draws or stores/reselects a path, transforms it, cancels a draft, refuses/corrects an invalid draft, applies once, undoes/redoes and saves/reopens. All M/L/Q/C/Z types, open/closed contours and private pending point groups are represented. |
 | H-UI-07..12 | Text/popup input ownership; changing tool/owner/T/C/fixed plane/zoom; focus/capture loss and missing release; crossing collapse then release/recovery; numeric/pointer parity and both modifier toggles. |
@@ -431,7 +507,8 @@ must say **scoped-qualified**, `acceptance: false` and
 `complete_requirement_coverage: false` until the larger original acceptance
 requirements are actually fulfilled.
 
-Copyable task starts:
+Copyable task starts (construction reference only; current execution uses the
+closeout card linked above):
 
 - **A:** “Execute P13h A1–A3 within the frozen A file list. You are not alone in
   the codebase; preserve others' edits. Reuse native path/editor/creation/workflow

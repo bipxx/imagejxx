@@ -1,10 +1,12 @@
 #pragma once
 #include "desktop.hpp"
 #include "path_segment_controls.hpp"
+#include "path_authoring_controls.hpp"
 #include <imagejxx/selection_edit.hpp>
 #include <imagejxx/saved_roi_geometry.hpp>
 #include <imgui.h>
 #include <map>
+#include <algorithm>
 
 namespace imagejxx::desktop {
 class SelectionPanel {
@@ -26,6 +28,7 @@ public:
   const std::optional<Selection> &preview() const { return preview_; }
   bool geometry_only() const { return geometryOnly_; }
   bool path_edited() const { return pathEdited_; }
+  void working_limit(std::size_t cap) { geometryLimits_.max_working_bytes = std::min(savedLimits_.max_working_bytes, cap); }
   Json diagnostics() const;
 
 private:
@@ -34,6 +37,8 @@ private:
                   const ExecutionControl &);
   void rebuild(const ExecutionControl &control = {});
   PathSegmentControls pathControls_;
+  PathResizeControls resizeControls_;
+  bool pathTransform_ = false;
   bool pathEdited_ = false;
   bool geometryOnly_ = false;
   std::shared_ptr<const int> draftIdentity_;
