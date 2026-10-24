@@ -1,0 +1,457 @@
+{
+  "schema": "cfg1.superseded-captures.001",
+  "state": "retired",
+  "reason": "Final current-source Windowsci004/Linuxci003 all8readers and SDK readback supersede earlier observer/protocol attempts",
+  "effect": "Retired archive bytes become unavailable; original identities/member hashes and concise source/failure diagnostics remain",
+  "files": [
+    {
+      "archive": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\ui-windows001.tar.gz",
+      "bytes": 834334,
+      "sha256": "ca93629ad3e1f04f926a085c099ebc25d5272bd1a6f4007b0232d5913c7a1e93",
+      "members_verified": 15,
+      "retention_receipt": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\ui-windows001-retention.json",
+      "preserved_diagnostics": [
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows001/imgui_cpp/persisted-pair/wand-persist.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows001/imgui_cpp/persisted-pair/wand-reopen.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows001/imgui_cpp/wand-consume/wand-consume.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows001/imgui_cpp/wand-drafts/wand-drafts.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows001/imgui_python/wand-consume/wand-consume.log",
+          "sha256": "40d0ef30fb979de0d17fa2daeb8fd32545cef63fc6cf2d613cc1b7adbed9b94f"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows001/receipt.json",
+          "sha256": "b99befb0c00b25bf61c041b50bb902b1361faa6ba5f3c95299dc03f2834f8796"
+        }
+      ],
+      "state": "retired_unavailable"
+    },
+    {
+      "archive": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\ui-windows002.tar.gz",
+      "bytes": 1173520,
+      "sha256": "9f3f134d203bf778a406664057d2a06d8a68716ef73cef6b8cbfa3a0e06bbcf1",
+      "members_verified": 30,
+      "retention_receipt": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\ui-windows002-retention.json",
+      "preserved_diagnostics": [
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows002/imgui_cpp/persisted-pair/wand-persist.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows002/imgui_cpp/persisted-pair/wand-reopen.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows002/imgui_cpp/wand-consume/wand-consume.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows002/imgui_cpp/wand-drafts/wand-drafts.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows002/imgui_python/persisted-pair/wand-persist.log",
+          "sha256": "f3f76d1ab6a87485cc7b484416a433ccd5a5c45451d130e08dc1c9da673f1b48"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows002/imgui_python/persisted-pair/wand-reopen.log",
+          "sha256": "078c9c456c91f1ef2c6272f914dec9e5d17c974a45a4c4b3c7a7db67ba7ffb41"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows002/imgui_python/wand-consume/wand-consume.log",
+          "sha256": "58945858c1f474e38f806e76ee299780ba679cb26c1fb3ae3f448b8ed1118e29"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows002/imgui_python/wand-drafts/wand-drafts.log",
+          "sha256": "acd14986340fa6549cd36f1dbb6f5a3d001a8f5b7e8168045366d661c9b95808"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows002/reader-002.xml",
+          "sha256": "f64dd95fb7995af93c5c4d09bc67fbc728b2d0f490e2ebbad788353824d4d1a8"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows002/reader-003.xml",
+          "sha256": "50663c167477490b44d63a261831d053410161fc060e3fbdcae6eef753d932b4"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows002/reader-receipt-002.json",
+          "sha256": "15e841d6a79409a226d23afbdf14af1a6d2ee0e6884e12506a88ff859cb03ba6"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows002/reader-receipt-003.json",
+          "sha256": "0be482e03abbfd380509a97927582079fc545aa79456db7862ec94d0fc6989e8"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows002/reader-receipt.json",
+          "sha256": "44f6bb2c83dcbee26d639e33bbbd474651bfa3be754644dbca3c79a65d32e791"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows002/reader.xml",
+          "sha256": "4e5235cb5e4897c7379d6be482c95b5e8e02efa3501eaa12e99912e039a75704"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows002/receipt.json",
+          "sha256": "1d6126ff1925e5a6a5a5fddd8d0265d41898fc2e983951bce1032e47c106fe32"
+        }
+      ],
+      "state": "retired_unavailable"
+    },
+    {
+      "archive": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\ui-windows003.tar.gz",
+      "bytes": 1181114,
+      "sha256": "99c5e114de54b00da7a8145c158e4c6eb3f18ea8e293b0bc47ca2c08d6d6a9b9",
+      "members_verified": 26,
+      "retention_receipt": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\ui-windows003-retention.json",
+      "preserved_diagnostics": [
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows003/imgui_cpp/persisted-pair/wand-persist.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows003/imgui_cpp/persisted-pair/wand-reopen.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows003/imgui_cpp/wand-consume/wand-consume.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows003/imgui_cpp/wand-drafts/wand-drafts.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows003/imgui_python/persisted-pair/wand-persist.log",
+          "sha256": "c6f97a381dbdc2f10768ecf42d43f1f51ce2d83c5528265cc50a45b4665a1a4d"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows003/imgui_python/persisted-pair/wand-reopen.log",
+          "sha256": "2b6ca61c39e23b96f038108c4f36c0e80cb503112330931423a0a64413f91cae"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows003/imgui_python/wand-consume/wand-consume.log",
+          "sha256": "f4fbc548fcdd9dccbae3caff66acb3b77d3dd38f22d12a7d9d73db6186f21992"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows003/imgui_python/wand-drafts/wand-drafts.log",
+          "sha256": "0d19a4aa474c642ffc1961e12a0f6d12a599e75c92a6cc105f493dd0fcd43208"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows003/reader-001.xml",
+          "sha256": "2578fa90864b62a783d9df71aaa36050bde976bd3555426604f30a0b513dfe36"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows003/reader-receipt-001.json",
+          "sha256": "31e6031c4f377209ae388d8cb8c8b44326dbeb8d96317ded9754a5fb4bfbd3c7"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-windows003/receipt.json",
+          "sha256": "70efbac58a614b5156c10566684fa079d74bc1f407a687b20f6c6e396a79d2b2"
+        }
+      ],
+      "state": "retired_unavailable"
+    },
+    {
+      "archive": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\ci-windows001.tar.gz",
+      "bytes": 1168658,
+      "sha256": "26226b581d8418055292e84165f5eaf94d0470c637045cd0a5b5d62cb440b35d",
+      "members_verified": 18,
+      "retention_receipt": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\ci-windows001-retention.json",
+      "preserved_diagnostics": [
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows001/ci/private/settings-wand/persisted-pair/wand-persist.process.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows001/ci/private/settings-wand/persisted-pair/wand-reopen.process.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows001/ci/private/settings-wand/wand-consume/process.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows001/ci/private/settings-wand/wand-drafts/process.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows001/reader.xml",
+          "sha256": "559a6adc38c894cff85157b7e1625fd8aee9626474c1abc29aeefc21509bd6ab"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows001/receipt.json",
+          "sha256": "7718d6333941cc321ecd0323b81f21d36bd68c0af4746ec8ba067410ba4d279f"
+        }
+      ],
+      "state": "retired_unavailable"
+    },
+    {
+      "archive": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\ci-windows002.tar.gz",
+      "bytes": 1786967,
+      "sha256": "2d19daef7b01c4877fbac805e53c9fd1bcb990d19c25226a1ad82379444c5e3c",
+      "members_verified": 34,
+      "retention_receipt": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\ci-windows002-retention.json",
+      "preserved_diagnostics": [
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows002/ci/private/settings-wand/persisted-pair/wand-persist.process.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows002/ci/private/settings-wand/persisted-pair/wand-reopen.process.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows002/ci/private/settings-wand/wand-consume/process.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows002/ci/private/settings-wand/wand-drafts/process.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows002/reader-scratch/cfg1-python-ui0/persisted-pair/wand-persist.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows002/reader-scratch/cfg1-python-ui0/persisted-pair/wand-reopen.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows002/reader-scratch/cfg1-python-ui0/wand-consume/wand-consume.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows002/reader-scratch/cfg1-python-ui0/wand-drafts/wand-drafts.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows002/reader.xml",
+          "sha256": "d07131558377a5132e7133104cd570b9163c756c5ea12403d0790fbaea9abb0b"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows002/receipt.json",
+          "sha256": "5dae486d530fb420ac2f557b898d979b6e7a6e7124a5b3b15e3b2786836ef56f"
+        }
+      ],
+      "state": "retired_unavailable"
+    },
+    {
+      "archive": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\ci-windows003.tar.gz",
+      "bytes": 1768756,
+      "sha256": "1d1d7a9d4a4c14cea4bc75645140853bc24afc98bc3416fbe33cea20c3e76a20",
+      "members_verified": 37,
+      "retention_receipt": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\ci-windows003-retention.json",
+      "preserved_diagnostics": [
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows003/ci/private/settings-wand/persisted-pair/wand-persist.process.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows003/ci/private/settings-wand/persisted-pair/wand-reopen.process.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows003/ci/private/settings-wand/wand-consume/process.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows003/ci/private/settings-wand/wand-drafts/process.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows003/reader-scratch/cfg1-python-ui0/persisted-pair/wand-persist.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows003/reader-scratch/cfg1-python-ui0/persisted-pair/wand-reopen.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows003/reader-scratch/cfg1-python-ui0/wand-consume/wand-consume.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows003/reader-scratch/cfg1-python-ui0/wand-drafts/wand-drafts.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows003/reader.xml",
+          "sha256": "5a80fd21dc18ac5ed30444f0d8af1cf8f3804764a48b95a89efd9fa621e62137"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows003/receipt.json",
+          "sha256": "074e16beee310c1843e9d17d9fa0e09cb547ffc3f04aed4d7c607c9f7d01054c"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows003/SDK-imgui_cpp.log",
+          "sha256": "1ce69fae2b828d7442ff42a61f5356914db13ee587b3a3a0709b418b4d33cecf"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows003/SDK-imgui_python.log",
+          "sha256": "1ce69fae2b828d7442ff42a61f5356914db13ee587b3a3a0709b418b4d33cecf"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-windows003/SDK-readback.json",
+          "sha256": "fc658e40cd2256745a906358ee8991dc704245a912bff23f51d65e0bcf5d79c7"
+        }
+      ],
+      "state": "retired_unavailable"
+    },
+    {
+      "archive": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\cfg1-verification\\ui-linux001-native.tar.gz",
+      "bytes": 1173583,
+      "sha256": "3e40a5b015497e70cbeaa57e3a03febb29748dfd0b3a5ae99e32c2f42a15c5bb",
+      "members_verified": 26,
+      "retention_receipt": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\cfg1-verification\\ui-linux001-native-retention.json",
+      "preserved_diagnostics": [
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-linux001/reader-001.xml",
+          "sha256": "17dd004b4fcef88fa561758aff1190a960be98765784262bc8ba75035bc1ff70"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-linux001/receipt.json",
+          "sha256": "027141ce72d65686eb6f22a8bcd95737169b26ce12c53df415edcf037bc114f5"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-linux001/reader-receipt-001.json",
+          "sha256": "e9e419346bd5be0d3cc9f3565faf3100069768df8ae2b2291f077e000631165a"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-linux001/imgui_python/wand-consume/wand-consume.log",
+          "sha256": "8a8324499150d9edaa6df5fc91dbf9ceb3e1b497045b63d159ce7b548697b54c"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-linux001/imgui_python/persisted-pair/wand-persist.log",
+          "sha256": "28dff700afc7a7be29c439e2a6c36daef3b9d9a6492ae60a3f04ef11193c56a0"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-linux001/imgui_python/persisted-pair/wand-reopen.log",
+          "sha256": "4f94c49943cbadb281ddc1e88a97f48ccf468274a322a4a5b6aa744683a2c528"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-linux001/imgui_python/wand-drafts/wand-drafts.log",
+          "sha256": "02e7943adbf4ee068f397147360a6302a455d87d45f832bc357c6a24553bba09"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-linux001/imgui_cpp/wand-consume/wand-consume.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-linux001/imgui_cpp/persisted-pair/wand-persist.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-linux001/imgui_cpp/persisted-pair/wand-reopen.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ui-linux001/imgui_cpp/wand-drafts/wand-drafts.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "state": "retired_unavailable"
+    },
+    {
+      "archive": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\cfg1-verification\\ci-linux001-native.tar.gz",
+      "bytes": 1163732,
+      "sha256": "e6fb05a7cfa6ef35d7591a0aade82399a9f9e192c1e0d53f9e9b3dc9607d4624",
+      "members_verified": 18,
+      "retention_receipt": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\cfg1-verification\\ci-linux001-native-retention.json",
+      "preserved_diagnostics": [
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-linux001/receipt.json",
+          "sha256": "b0b05bec651b93ac90fd491cd9b5f72890a5d5f18168ab26c6b5b5d442714564"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-linux001/reader.xml",
+          "sha256": "1c5eb9abf5a34a72dce69a012f2b4476d65616e991f236feb29e9b53cf4ed91f"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-linux001/ci/private/settings-wand/wand-consume/process.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-linux001/ci/private/settings-wand/persisted-pair/wand-persist.process.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-linux001/ci/private/settings-wand/persisted-pair/wand-reopen.process.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-linux001/ci/private/settings-wand/wand-drafts/process.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "state": "retired_unavailable"
+    },
+    {
+      "archive": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\cfg1-verification\\ci-linux002-native.tar.gz",
+      "bytes": 1770885,
+      "sha256": "84ac936a4616433f1078127115d659d541c3558dd99f0e7bb0eec69f8881cfc4",
+      "members_verified": 36,
+      "retention_receipt": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\cfg1-verification\\ci-linux002-native-retention.json",
+      "preserved_diagnostics": [
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-linux002/receipt.json",
+          "sha256": "a3954f2a99892a237210212c9944b5718284d4c3952ef782f4decfecd0b6401c"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-linux002/SDK-readback.json",
+          "sha256": "78d2ee60ddf1ae34968cf478f0f1747113e734405c4d7d23b4d6652dd93394c8"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-linux002/reader.xml",
+          "sha256": "c2e3adbb423384c751b609725a24dcf31a765903836f62a7db52947e3ea64a39"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-linux002/reader-scratch/cfg1-python-ui0/wand-consume/wand-consume.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-linux002/reader-scratch/cfg1-python-ui0/persisted-pair/wand-persist.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-linux002/reader-scratch/cfg1-python-ui0/persisted-pair/wand-reopen.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-linux002/reader-scratch/cfg1-python-ui0/wand-drafts/wand-drafts.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-linux002/ci/private/settings-wand/wand-consume/process.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-linux002/ci/private/settings-wand/persisted-pair/wand-persist.process.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-linux002/ci/private/settings-wand/persisted-pair/wand-reopen.process.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/cfg1-verification/superseded-diagnostics001/ci-linux002/ci/private/settings-wand/wand-drafts/process.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "state": "retired_unavailable"
+    }
+  ],
+  "acceptance": false,
+  "removed_archive_bytes": 12021549,
+  "preserved_diagnostic_bytes": 115334
+}

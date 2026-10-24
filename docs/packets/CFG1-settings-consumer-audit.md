@@ -1,5 +1,11 @@
 # CFG1: Settings consumer audit and wand-preference delivery packet
 
+**Current result:** the selected two-key Wand consumer packet is now
+[scoped-qualified](../parity/reviews/cfg1-settings-wand001/receipt.json) on
+Windows/Linux. The [clause ledger](CFG1-qualification-ledger.md) owns executed
+proof. The source-audit matrix and input hashes below retain their original
+base/review meaning; they do not qualify all 61 keys or change family states.
+
 Reviewed 2026-10-24. **Source/document audit only: no build, test execution or family closure is claimed.** This subsequent packet is proposed while C closes P13i. It does not authorize edits to held product inputs; C must release named shared-file seams before implementation.
 
 The current native schema contains **61 keys in 13 groups**, not the historical 37-definition fixture. Every current key has a schema entry, a generic/specialized Preferences widget and a consumer in inspected source. This audit does not establish complete actual-input/persistence/consumer qualification for every key. Do not add placeholder settings without consumers.

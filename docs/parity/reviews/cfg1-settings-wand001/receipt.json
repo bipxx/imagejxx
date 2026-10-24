@@ -1,0 +1,398 @@
+{
+  "schema": "cfg1.scoped-qualification.001",
+  "state": "scoped-qualified",
+  "acceptance": false,
+  "packet_scope_qualified": true,
+  "complete_requirement_coverage": false,
+  "platforms": {
+    "windows": {
+      "CI_and_four_route_two_context_reader_cases": 8,
+      "genuine_CPP_capture_cases": 4,
+      "fresh_Python_launch_cases": 4,
+      "UI_evidence": {
+        "archive": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\ci-windows004.tar.gz",
+          "bytes": 1767167,
+          "sha256": "3cbfcf8412d3a91271d36b18a36ef214236c787a56be3b7e9a65ba4786e0f3b6",
+          "availability": "verified available"
+        },
+        "retention_receipt": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\ci-windows004-retention.json",
+          "bytes": 7348,
+          "sha256": "38531edf2f298998f26875c36a94549518945b1ec6b87ec1b86be2849aa55a45",
+          "availability": "verified available"
+        },
+        "members_verified": 37,
+        "raw_removed_bytes": 22848082
+      },
+      "new_native_groups": 7,
+      "new_native_checks": 303,
+      "existing_native_programs": [
+        "native_settings",
+        "native_preferences"
+      ],
+      "native_evidence": {
+        "archive": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\compiled-windows001.tar.gz",
+          "bytes": 312440,
+          "sha256": "6094baf993fe2902c78b58cb2c61871971984ee9f13ec506783b36a6072940f0",
+          "availability": "verified available"
+        },
+        "retention_receipt": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\compiled-windows001-retention.json",
+          "bytes": 3280,
+          "sha256": "304e29c43a0331628ad5f912af677ef198157707fc7641731a03d72911bc2b7b",
+          "availability": "verified available"
+        },
+        "members_verified": 17,
+        "raw_removed_bytes": 937980
+      },
+      "same_compiled_product_inputs": 728,
+      "headless_settings_preferences_API_cases": 92,
+      "API_evidence": {
+        "archive": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\api-windows001.tar.gz",
+          "bytes": 19789,
+          "sha256": "e73cb88d338f6b91fb7ea80e85fdbfc539f9c60d219fd353910a4e39d24158b2",
+          "availability": "verified available"
+        },
+        "retention_receipt": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\api-windows001-retention.json",
+          "bytes": 14506,
+          "sha256": "b2128d09d4a10fa18d98dcc9b6e64974f4d39f0ee959ca58ea6d68fde31863c8",
+          "availability": "verified available"
+        },
+        "members_verified": 74,
+        "raw_removed_bytes": 264236
+      },
+      "SDK_checks_per_actual_UI_file": 20,
+      "actual_UI_file_readbacks": 2,
+      "SDK_receipt": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\sdk-windows001\\receipt.json",
+        "bytes": 13485,
+        "sha256": "1f8a7050384582687e4825469c3bf61bf736990570ce66715cd4ff05c0346f45",
+        "availability": "verified available"
+      },
+      "SDK_binary": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\sdk-windows001\\settings_wand.exe",
+        "bytes": 431616,
+        "sha256": "5345b1da3661bc879c58dda5922d956bb3ef52a35261fdb9551e84d327ee3155",
+        "availability": "verified available"
+      },
+      "SDK_headers": 96,
+      "installed_Python_source_files": 12,
+      "transport_profile_and_process_cleanup_cases": 66,
+      "tools": [
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\profile-tools-windows002.tar.gz",
+            "bytes": 147677,
+            "sha256": "2d76fe7ccc8f18b5cd65940d34569d476fd8cd88580b5caa8fce92252d690408",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\profile-tools-windows002-retention.json",
+            "bytes": 38717,
+            "sha256": "b336092d9d9782318568fbd1ca136ec705a8afa396887aab33d067aa7ceb6ba1",
+            "availability": "verified available"
+          },
+          "members_verified": 189,
+          "raw_removed_bytes": 17488496
+        },
+        {
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\timeout-windows001.tar.gz",
+            "bytes": 2006,
+            "sha256": "e17f42e1b7b3f1b9ad33e3baa516e4135956702e96e3def21aa27907b1f5891c",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\timeout-windows001-retention.json",
+            "bytes": 3864,
+            "sha256": "5af7f7628897c9ea39d481e1b6841ac9759c5b49b1f87b1c21c366ff2bf902c8",
+            "availability": "verified available"
+          },
+          "members_verified": 19,
+          "raw_removed_bytes": 3412
+        }
+      ],
+      "licenses": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\licenses-windows001\\receipt.json",
+        "bytes": 744,
+        "sha256": "6bcf884eca147410b0c2a795b82db8ed22156f3d74300377e9b790f4f33a6a32",
+        "availability": "verified available"
+      },
+      "license_log": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\licenses-windows001\\check.log",
+        "bytes": 53,
+        "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915",
+        "availability": "verified available"
+      }
+    },
+    "linux": {
+      "CI_and_four_route_two_context_reader_cases": 8,
+      "genuine_CPP_capture_cases": 4,
+      "fresh_Python_launch_cases": 4,
+      "UI_evidence": {
+        "archive": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\cfg1-verification\\ci-linux003-native.tar.gz",
+          "bytes": 1768643,
+          "sha256": "ed84a5178167aae7b5d935dc770798cca6a05f56b9d1d10a6970e6c036cacd74",
+          "availability": "verified available"
+        },
+        "retention_receipt": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\cfg1-verification\\ci-linux003-native-retention.json",
+          "bytes": 8329,
+          "sha256": "b1785b1374dc82e46f74ddb11a4564fb258caf3eb69e57c0f2ccad3e5adac992",
+          "availability": "verified available"
+        },
+        "members_verified": 38,
+        "raw_removed_bytes": 22851447
+      },
+      "new_native_groups": 7,
+      "new_native_checks": 303,
+      "existing_native_programs": [
+        "native_settings",
+        "native_preferences"
+      ],
+      "native_evidence": {
+        "archive": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\cfg1-verification\\compiled-linux001-native.tar.gz",
+          "bytes": 311961,
+          "sha256": "8f317d12b576f8ff2fe80d0200f29052a970e3b534bb87e2a425f16bae61f983",
+          "availability": "verified available"
+        },
+        "retention_receipt": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\cfg1-verification\\compiled-linux001-native-retention.json",
+          "bytes": 3908,
+          "sha256": "3cf7f4a6e38f01ea12753694bc75c4408c8f7273f08f0a434f0c905dbed4fcbc",
+          "availability": "verified available"
+        },
+        "members_verified": 18,
+        "raw_removed_bytes": 930595
+      },
+      "same_compiled_product_inputs": 728,
+      "headless_settings_preferences_API_cases": 92,
+      "API_evidence": {
+        "archive": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\cfg1-verification\\api-linux001-native.tar.gz",
+          "bytes": 20887,
+          "sha256": "72504fc7dea4e9eeb2b6c9107ad1af9eb8b2bc7b882593b8331922d7e2ca4dcf",
+          "availability": "verified available"
+        },
+        "retention_receipt": {
+          "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\cfg1-verification\\api-linux001-native-retention.json",
+          "bytes": 23524,
+          "sha256": "74239c31b2519ee86653b98ce59d35aa2af88a82fe84944fc6a3d38b128e67c1",
+          "availability": "verified available"
+        },
+        "members_verified": 104,
+        "raw_removed_bytes": 263384
+      },
+      "SDK_checks_per_actual_UI_file": 20,
+      "actual_UI_file_readbacks": 2,
+      "SDK_receipt": {
+        "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\cfg1-verification\\sdk-linux001\\receipt.json",
+        "bytes": 13187,
+        "sha256": "0fa301cebdaf1d7f3356afe458784f41c105cfb0dff470049f372822ab6e0900",
+        "availability": "verified available"
+      },
+      "SDK_binary": {
+        "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\cfg1-verification\\sdk-linux001\\settings_wand",
+        "bytes": 2782096,
+        "sha256": "22ac4d561d5cb506df6689c40e94e3a0aeb937fccb1f52c1340618d578033d5f",
+        "availability": "verified available"
+      },
+      "SDK_headers": 96,
+      "installed_Python_source_files": 12,
+      "transport_profile_and_process_cleanup_cases": 66,
+      "tools": [
+        {
+          "archive": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\cfg1-verification\\profile-tools-linux003-native.tar.gz",
+            "bytes": 153246,
+            "sha256": "33e9885a2a27dd6f55f956f98c1532b63cf2308252d21123534519af0058f1d3",
+            "availability": "verified available"
+          },
+          "retention_receipt": {
+            "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\cfg1-verification\\profile-tools-linux003-native-retention.json",
+            "bytes": 51632,
+            "sha256": "e79cf5373e97b253d03435057e2376e400602129911ac9695f7a6ff6ee293246",
+            "availability": "verified available"
+          },
+          "members_verified": 229,
+          "raw_removed_bytes": 17489061
+        }
+      ],
+      "licenses": {
+        "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\cfg1-verification\\licenses-linux001\\receipt.json",
+        "bytes": 630,
+        "sha256": "5db2d41ced6c4f998d4eeca23f983e8e9ebb2326ff8cc8b6853441015af2cf1c",
+        "availability": "verified available"
+      },
+      "license_log": {
+        "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\cfg1-verification\\licenses-linux001\\check.log",
+        "bytes": 52,
+        "sha256": "6d57d04a19e91f366c3ad1f52e6feb4edba97e1bd76f08db19331d9bf3ff8f2f",
+        "availability": "verified available"
+      }
+    }
+  },
+  "current_inputs": {
+    "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\current-inputs004.json",
+    "bytes": 891319,
+    "sha256": "1194c0c5e0b49a5731fa12dd758962cf9c8e4e125ba684ef034cd2fa5c46de8d",
+    "availability": "verified available"
+  },
+  "dependency_boundary": {
+    "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\dependency-boundary001.json",
+    "bytes": 2154,
+    "sha256": "1fcee5982b7e2419ced02866933d90a2d0d24d163a481be054f80976bfd8cef6",
+    "availability": "verified available"
+  },
+  "limitations": [
+    "Scoped native consumer and headless UI acceptance only, not upstreamImageJ Wand family parity",
+    "Other59setting consumer chains and every original capabilityfamily remain open/partial",
+    "CG0 predicate/coincidence/output-topology/allocation guarantees remain unproved; CGAL/lib2geom source research is not dependency approval or product incorporation",
+    "Managed reservations/teststorage are not global RSS guarantees"
+  ],
+  "packet_id": "CFG1",
+  "reviewed_utc": "2026-10-24T21:26:24.322187+00:00",
+  "base_commit": "0323a731752a020d8f0913fc593036d71e4193b5",
+  "profile_scope_qualified": true,
+  "full_ci_qualified": false,
+  "source_manifest": {
+    "path": "docs/parity/reviews/cfg1-settings-wand001/qualified-inputs.json",
+    "entries": 6553,
+    "sha256": "1194c0c5e0b49a5731fa12dd758962cf9c8e4e125ba684ef034cd2fa5c46de8d",
+    "scope": "Exact current non-documentation inputs; compiled product closure identical on Windows/Linux, reader/harness addenda recorded separately"
+  },
+  "clause_ledger": {
+    "path": "docs/packets/CFG1-qualification-ledger.md",
+    "sha256": "b241d9569e9dd15082b03568d49d994d530a4d78ae5466ccac82dafb36350f3d"
+  },
+  "driver_sources": {
+    "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\qualified-drivers001.json",
+    "bytes": 3339,
+    "sha256": "0b19842e8e1127ad5df9ffa792a9cbd71de9a8465a8a656b04c25de785529256",
+    "availability": "verified available at final review"
+  },
+  "final_independent_audit": {
+    "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\final-audit001.json",
+    "bytes": 12602,
+    "sha256": "bf7d7d058a1136cbeef3a3c2c5e438f8dcddb556da2c15d15b3db61853f6318b",
+    "availability": "verified available at final review"
+  },
+  "source_addenda": [
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\input-addendum001.json",
+      "bytes": 462,
+      "sha256": "9ff04655f8c5208a3773de1aa02df7f421d65826ec12e0196f65ffc06fa46fce",
+      "availability": "verified available at final review"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\input-addendum002.json",
+      "bytes": 451,
+      "sha256": "17a9f190a179c90054a1025c13638908c8c53d92a4b4ee95dc21bb976bb54b62",
+      "availability": "verified available at final review"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\input-addendum003.json",
+      "bytes": 698,
+      "sha256": "e209b2bfc2502207d6f9d6a2f44a7eac26db5111ce82658befbd86e08cf5f816",
+      "availability": "verified available at final review"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\input-addendum004.json",
+      "bytes": 440,
+      "sha256": "062ac12839d0d5e34a35ac7e76b933dbb2f86987c2b13c107264efd05ea44e64",
+      "availability": "verified available at final review"
+    }
+  ],
+  "diagnostic_corrections": [
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\runtime-observer-correction001.json",
+      "bytes": 686,
+      "sha256": "399cd37910f5fd81b9731e70b97dafcf231249a87c472d7ab738b828efaa449a",
+      "availability": "verified available at final review"
+    },
+    {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification\\mask-format-reader-correction001.json",
+      "bytes": 674,
+      "sha256": "040ac814a82bbad905a8cb3b4f4c533b5ca1c7c12867899e3ce02c17c3ceb888",
+      "availability": "verified available at final review"
+    },
+    {
+      "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\cfg1-verification\\SDK-executable-mode-correction001.json",
+      "bytes": 617,
+      "sha256": "2c21dc32b974a0901da7c1972716ac1a7bd1d86c2aa1fe55110bb3bac60cfc8d",
+      "availability": "verified available at final review"
+    }
+  ],
+  "storage": {
+    "measurement": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13h-verification\\storage-cfg1-final002.json",
+      "bytes": 1198,
+      "sha256": "5c415bb6552de93af68f582d8cfe06ca541062155700c68cc2c31e9e4196554c",
+      "availability": "verified available at final review"
+    },
+    "bytes": 8520856465,
+    "normal_limit_bytes": 8589934592,
+    "includes_CFG1_and_previous_evidence_roots": true,
+    "terminal_scratch_hash_verified_then_removed": true,
+    "one_cache_runtime_per_platform": true,
+    "SDK_consumer_caches_stripped_without_archiving": true,
+    "retired_build_not_recreated": true,
+    "headroom_at_measurement_bytes": 69078127
+  },
+  "prior_P13i_GUI_product_availability_changes": [
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+      "prior_sha256": "2515893f3a3fb1ab932b0f5639af738245b38bfbfea807c32a3ea5fcf174ffe2",
+      "current_sha256": "e04901a92ab3b062491b05edbba76a842357bc920f9b4ef16ae5adf3d97fd0e5",
+      "prior_exact_binary_availability": "Overwritten installed bytes not separately retained; original source/capture identities unchanged"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+      "prior_sha256": "b9524c2abcf36cd833e91d4d140ff810f1c3890a03c2d64a91d2836c890005ab",
+      "current_sha256": "425c3d419bfc27b215f79cd9b6071c0be03a139dff5e10d0972270393b646e62",
+      "prior_exact_binary_availability": "Overwritten installed bytes not separately retained; original source/capture identities unchanged"
+    },
+    {
+      "path": "/mnt/c/Users/HEQ/Projects/imagejxx/.tmp/p13g-verification/linux/app-installed/bin/imagejxx",
+      "prior_sha256": "4bb8e1e241c1aa76647f8ec6b280f125f1ba8b2d348dc20604c2192df4e7921a",
+      "current_sha256": "45c4d7d171c900efee7ed477547a9123470e05d1ccd127d33b52a22047f8e990",
+      "prior_exact_binary_availability": "Overwritten installed bytes not separately retained; original source/capture identities unchanged"
+    },
+    {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-probe-env003/lib/python3.12/site-packages/imagejxx/_desktop.cpython-312-x86_64-linux-gnu.so",
+      "prior_sha256": "b3653d10c342605d321d04cc310635e98d6156f744e785d274f1ce2a78765373",
+      "current_sha256": "32874deb79b404b28ea52ef505a26c05558b6f5d64ce3f4d3d26862adefe89b4",
+      "prior_exact_binary_availability": "Overwritten installed bytes not separately retained; original source/capture identities unchanged"
+    }
+  ],
+  "inventory": {
+    "families": 99,
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0,
+    "sha256": "6a234b38cef8813d084b0f1ed14c50e9096fd50bdd94fbacbb4119adf583dae8",
+    "unchanged": true
+  },
+  "scope_notes": [
+    "Existing native settings, preference codec, Wand kernel, persisted version1 and public native APIs unchanged; new product code is two field observations and shared bounded UI probe/hooks",
+    "All4routes\u00d72launches\u00d72platforms pass. Current genuineCPP capture plus committed automatic freshPython harness is connected to normal required-test discovery",
+    "Headless92 profile explicitly leaves the original realOpenGL settings test unselected; no failing required case was excluded and no numerical expected masks changed",
+    "Current source states/Python public-wrapper hashes are bound; timeout tests prove owned launcher/interpreter/leaf stop even with partial/unbound diagnostic metadata",
+    "No new third-party dependency; Windows reviewed dev/io/build/desktop/TIFF graph and Linux runtime/io/test/desktop graph pass. Optional LinuxPythonwheel buildbackend remains unqualified",
+    "Historical scientific-owner exclusion remains unchanged; unavailableG016/Auto/macOS/realOSGPU/accessibility/fullCI/wheels/alllaterM0-M13 requirements remain open"
+  ],
+  "landing": "Reviewed git commit/push identity recorded separately",
+  "next_action": "Land CFG1; prepare bounded exact/analytic continuous-geometry reference and predicate/output certificates from CG0 cards without new unreviewed dependencies or retired builds",
+  "superseded_capture_retirement": {
+    "path": "docs/parity/reviews/cfg1-settings-wand001/superseded-retirement.json",
+    "sha256": "3e237d8603c826261695abca5a527a88383e07ffc0a605755a2824f0cd39fc30",
+    "removed_archive_bytes": 12021549,
+    "preserved_diagnostic_bytes": 115334
+  }
+}

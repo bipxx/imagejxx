@@ -1,6 +1,12 @@
 # Three-agent execution plan
 
-Reviewed **2026-10-24**. Current scoped milestone: **P13i**,
+Reviewed **2026-10-24**. Current scoped milestone: **CFG1**,
+[Wand settings-consumer qualification](parity/reviews/cfg1-settings-wand001/receipt.json).
+Windows/Linux each pass seven new native groups/303 checks, existing Settings
+and Preferences programs, 92 headless API cases, eight actual route readers,
+40 installed SDK readback checks and 66 transport/profile/cleanup cases.
+CPP capture and fresh Python counterparts are connected to normal CI discovery.
+Original 99-family states remain unchanged. Preceding milestone: **P13i**,
 [final qualification](parity/reviews/p13i-path-filter001/receipt.json), based on
 P13h `4a80b3570c59e547f2571c7fc2b95d85a5b66d0e`. Windows/Linux each pass
 24 native groups, 2,376 affected regression, 41 manual/synchronous API,
@@ -34,11 +40,14 @@ Read, in order:
 4. Only the selected requirement records and relevant historical evidence.
    Do not reload the entire progress history or rerun qualified unchanged inputs.
 
-**Next execution:** preserve P13i's checked sources and land the reviewed packet.
+**Next execution:** preserve CFG1's checked sources and land the reviewed packet.
 Then use [CG0 decisions](packets/CG0-continuous-geometry-decisions.md) for the
-continuous-geometry design/reference gates and the independent
-[CFG1 settings packet](packets/CFG1-settings-consumer-audit.md) for Wand
-preference→consumer→persistence acceptance. Exactly A/B/C remain the owners.
+continuous-geometry design/reference gates and the
+[predicate feasibility review](packets/CG0-predicate-feasibility.md) for the
+specific remaining exact-pair/coincidence, recoverable allocation and emitted
+binary64 topology certificates. No geometry dependency is approved or incorporated.
+CFG1 independently qualified two existing setting consumers; the other 59
+settings chains remain unclosed. Exactly A/B/C remain the owners.
 The following E1–E6 entries are historical slice evidence; the final receipt
 supersedes their pending-E7 scheduling, not their original identities.
 Use the [three-agent handoff](packets/P13i-three-agent-handoff.md) for contracts.
@@ -185,6 +194,7 @@ No estimate of total completion is implied by the number of waves.
 | **C0, scoped-qualified alongside P13h** | Portable current verification and retired-evidence visibility; consumes p13g receipt and storage rules. | C inventories missing evidence, separates integrity from availability, makes focused runner inputs explicit and writes omission/identity tests. A/B supply feature selectors. Strict historical/certification failures remain visible. |
 | **1 — P13h (scoped-qualified)** | Interactive path creation and affine resize, portable authoring/history. Depends on p13f/p13g geometry and V5 sessions; does not require continuous Booleans. G013/G015/G017/G021/G022/G085/G089. | A native resize + explicit creation/workflow versions; B one path controller for active/saved/planar editing and creation; C independent geometry/history/replay/UI/SDK matrix. Detailed [specification](packets/P13h-interactive-path-authoring.md). |
 | **2 — P13i (scoped-qualified)** | Typed Gaussian/rank consumption of path selections; shared resource admission, live budgets and targets. Consumes P13h portable intent. G010/G042/G044/G045/G088 remain partial families. | Shared planner, affected host admission, private display/lifecycle and 64 UI routes qualified by the [final receipt](parity/reviews/p13i-path-filter001/receipt.json). Preserve exact inputs and residual scope; do not restart this packet. |
+| **2a — CFG1 (independent, scoped-qualified)** | Existing Wand tolerance/connectivity Preferences→canvas consumer→fresh-launch persistence; G001/G002/G006 remain partial. Does not depend on continuous Booleans. | Two field observations, shared actual-input producer, atomic draft/recovery/defaults and installed file readback qualified in the [receipt](parity/reviews/cfg1-settings-wand001/receipt.json). No native settings/kernel behavior changed; this does not close the configuration wave. |
 | **3 — continuous geometry** | Curve-preserving union/intersection/difference/XOR; path+path and declared primitive promotion, holes, islands, self-intersections and off-canvas contours. G016/G018/G019. | A reviewed bounded arrangement/intersection algorithm or eligible dependency; B Boolean controls/modifiers and empty-result behavior; C analytic/pinned reference cases and numerical/resource boundaries. Do not pass raster masks off as continuous results. Freeze numerical topology policy before code. |
 | **4 — complete selection/pixel workflows** | Finish remaining tools, portable authored move/rotate/control-point/segment intent, fitting/conversion, ROI manager scope/positions/interchange, floating paste, clipboard, draw/fill/clear, text and overlays. G013–G025/G080. | A commands + pixel/geometry/history policies; B full tool/manager/paste/text interactions; C mixed geometry, positioned C/Z/T, encoding, platform clipboard and undo/reference matrix. Deliver one named tool/workflow per packet. |
 | **5 — configuration and linked viewing** | Finish G001–G012/G026–G038/G062/G065/G068 plus associated shell behavior. Reuse existing settings, XYZ sampler, scientific navigation, reslice and channel commands. | A validated settings/axes/calibration/derived-output policies; B all missing controls for XY/XZ/YZ, C/Z/T, stack/range/spacing/orientation/interpolation, projections/montage/animation; C asymmetric calibrated volumes, setting-consumer graph, migration and actual keyboard/pointer acceptance. Oblique/curved reslicing gets its own sampler/interaction packet. |
@@ -209,8 +219,9 @@ reference gates, UI lifecycle, case IDs and phased exit. Do not maintain a secon
 implementation specification here. P13h is scoped-qualified at
 `4a80b3570c59e547f2571c7fc2b95d85a5b66d0e`; do not restart its closeout.
 
-Current critical path: **scoped landing → CG0 contract/feasibility/reference
-gates, with independent CFG1 setting-consumer acceptance ready for dispatch**.
+Current critical path: **CFG1 scoped landing → CG0 contract/feasibility/reference
+gates**. CFG1's [clause ledger](packets/CFG1-qualification-ledger.md) owns its
+current selected scope; remaining settings chains are separate packets.
 E7 is scoped-qualified; its [clause ledger](packets/P13i-qualification-ledger.md)
 and final receipt own current results. E1–E6 have scoped
 passing receipts; preserve their contracts and rerun only invalidated inputs. Reference restoration and the initial

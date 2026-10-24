@@ -1044,6 +1044,17 @@ if(BUILD_TESTING)
   add_test(NAME native_playback COMMAND imagejxx_playback_tests)
   target_link_libraries(imagejxx_settings_tests PRIVATE imagejxx::core)
   add_test(NAME native_settings COMMAND imagejxx_settings_tests)
+  add_executable(imagejxx_settings_wand_consumer_tests tests/native/test_settings_wand_consumer.cpp)
+  target_link_libraries(imagejxx_settings_wand_consumer_tests PRIVATE imagejxx::core)
+  set(IMAGEJXX_SETTINGS_WAND_TEST_SCRATCH_ROOT
+    "${CMAKE_CURRENT_BINARY_DIR}/Testing/settings-wand-consumer"
+    CACHE PATH "Owned scratch parent for Wand settings-consumer file tests")
+  add_test(NAME native_settings_wand_consumer COMMAND ${CMAKE_COMMAND}
+    -DTEST_EXECUTABLE=$<TARGET_FILE:imagejxx_settings_wand_consumer_tests>
+    -DWORK_ROOT=${IMAGEJXX_SETTINGS_WAND_TEST_SCRATCH_ROOT}
+    -DTEST_TIMEOUT_SECONDS=30
+    -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/RunOwnedFixtureTest.cmake)
+  set_tests_properties(native_settings_wand_consumer PROPERTIES TIMEOUT 35)
   add_executable(imagejxx_preferences_tests tests/native/test_preferences.cpp)
   target_link_libraries(imagejxx_preferences_tests PRIVATE imagejxx::core)
   add_test(NAME native_preferences COMMAND ${CMAKE_COMMAND}
@@ -1119,6 +1130,7 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     src/desktop/axis_range_spacing_ui_probe.cpp
     src/desktop/orthogonal_keyboard.cpp
     src/desktop/settings_io.cpp src/desktop/settings_panel.cpp src/desktop/startup_panel.cpp src/desktop/jobs_panel.cpp src/desktop/selection_panel.cpp src/desktop/path_segment_controls.cpp src/desktop/path_segment_ui_probe.cpp
+    src/desktop/settings_wand_ui_probe.cpp
     src/desktop/path_authoring_controls.cpp src/desktop/path_authoring_ui_probe.cpp
     src/desktop/path_filter_ui_probe.cpp
     src/desktop/path_rank_filter_ui_probe.cpp

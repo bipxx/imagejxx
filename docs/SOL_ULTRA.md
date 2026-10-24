@@ -14,6 +14,10 @@ Resume reviewed landing and successor CG0/CFG1 gates, without replaying referenc
 restoration or old construction prompts. Use the [detailed three-agent delivery specifications](packets/THREE_AGENT_DELIVERY_SPECS.md)
 for dispatch, successor entry gates and remaining workflow acceptance.
 
+CFG1 now has [scoped Wand settings/UI qualification](parity/reviews/cfg1-settings-wand001/receipt.json).
+Resume its reviewed landing and the CG0 feasibility/reference gates; do not
+restart unchanged P13i or CFG1 checks. Full M0–M13 acceptance remains open.
+
 **Saved-area pointer-budget checkpoint, 2026-10-20 (work in progress):**
 new pointer gestures and no-movement draft recreation now read current resource
 settings. A saved-area panel opened under a higher budget previously admitted a

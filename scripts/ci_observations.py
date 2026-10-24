@@ -244,7 +244,69 @@ def path_authoring_edge_cases():
             yield case, carrier
 
 
+SETTINGS_WAND_CASES = ("wand-consume", "wand-drafts", "wand-persist", "wand-reopen")
+SETTINGS_WAND_STATES = {
+    "wand-consume": {"before", "default_selected", "eight_applied", "eight_selected",
+                     "tolerant_applied", "tolerant_selected", "four_selected"},
+    "wand-drafts": {"opened", "invalid_draft", "refused", "corrected", "reverted",
+                    "closed_reopened", "accepted", "defaults_draft", "defaults_applied"},
+    "wand-persist": {"draft", "saved", "closed"},
+    "wand-reopen": {"loaded", "selected", "shown"},
+}
+
+
+def settings_wand_preferences_fixture():
+    """Opaque source fixture only; UI readers own the independent expectations."""
+    return {
+        "format": "imagejxx-preferences", "version": 1,
+        "values": {"wand_tolerance": 0.0, "wand_connectivity": 4,
+                   "cfg1_future": {"items": [True, None, "λ", 2**64 - 1]}},
+        "extras": {"recent": [], "cfg1_extra": {"label": "μ", "values": [3, 1]}},
+        "cfg1_root": {"note": "root", "uint": 2**64 - 1},
+    }
+
+
+def settings_wand_observation(raw, case):
+    """Validate the bounded transport envelope, independently of mask acceptance."""
+    if not 0 < len(raw) < 16 * 1024 * 1024:
+        raise ValueError("Wand observation byte limit")
+    def unique(pairs):
+        value = {}
+        for key, item in pairs:
+            if key in value:
+                raise ValueError("Duplicate Wand observation key")
+            value[key] = item
+        return value
+    def invalid(token):
+        raise ValueError("Nonfinite Wand JSON token: " + token)
+    row = json.loads(raw, object_pairs_hook=unique, parse_constant=invalid)
+    pending, count = [(row, 0)], 0
+    while pending:
+        value, depth = pending.pop()
+        count += 1
+        if count > 500000 or depth > 64:
+            raise ValueError("Wand observation structure limit")
+        if isinstance(value, float) and not math.isfinite(value):
+            raise ValueError("Nonfinite Wand observation number")
+        if isinstance(value, dict):
+            pending.extend((item, depth + 1) for item in value.values())
+        elif isinstance(value, list):
+            pending.extend((item, depth + 1) for item in value)
+    if (not isinstance(row, dict) or row.get("schema") != "cfg1.settings-wand.ui.001"
+            or row.get("case_id") != case or row.get("context") != "imgui_cpp"
+            or row.get("status") != "observed" or row.get("error") != ""
+            or row.get("acceptance_claim") is not False
+            or not isinstance(row.get("states"), dict)
+            or set(row["states"]) != SETTINGS_WAND_STATES[case]
+            or not isinstance(row.get("frames"), list) or not 0 < len(row["frames"]) <= 750
+            or not row.get("events")):
+        raise ValueError("Unexpected Wand observation envelope")
+    return row
+
+
 def cases():
+    for case in SETTINGS_WAND_CASES:
+        yield "settings-wand", case, ["--settings-wand-ui-case", case]
     for case in PATH_FILTER_CASES:
         yield "path-filters", case, ["--path-filter-ui-case", case]
     for case, carrier in path_authoring_edge_cases():
@@ -406,6 +468,10 @@ def reader_environment(output):
         case: str(reports / "path-filters" / case / "case.json")
         for case in PATH_FILTER_CASES
     })
+    environment["IMAGEJXX_SETTINGS_WAND_CPP_REPORTS"] = json.dumps({
+        case: str(reports / "settings-wand" / case / "case.json")
+        for case in SETTINGS_WAND_CASES
+    })
     return {name: str(path) for name, path in environment.items()}
 
 
@@ -471,6 +537,10 @@ def select_cases(selected_cases=None):
         keys.append(tuple(row))
     if len(set(keys)) != len(keys):
         raise ValueError("Duplicate observation selector")
+    if ("settings-wand", "wand-reopen") in keys:
+        persist = ("settings-wand", "wand-persist")
+        if persist not in keys or keys.index(persist) > keys.index(("settings-wand", "wand-reopen")):
+            raise ValueError("Wand reopen requires the preceding persist process")
     index = {(group, case): (group, case, arguments)
              for group, case, arguments in available}
     if set(keys) - set(index):
@@ -511,15 +581,28 @@ def capture(output, executable, root, environment=None, *, selected_cases=None,
                 indexed_starts[group] = time.monotonic()
             # main.cpp places preferences next to the capture directory. Sharing
             # that parent across cases would leak settings between probes.
-            private = output / "private" / group / case
-            private.mkdir(parents=True)
+            wand_pair = group == "settings-wand" and case in ("wand-persist", "wand-reopen")
+            private = output / "private" / group / ("persisted-pair" if wand_pair else case)
+            private.mkdir(parents=True, exist_ok=wand_pair)
             tiff = group == "bigtiff" or group in TIFF_READERS
             nested = group == "bigtiff" or (group in TIFF_READERS and TIFF_READERS[group][1])
-            actual = private / ("capture001" if nested else "capture")
+            actual = private / ("persist_capture" if wand_pair and case == "wand-persist" else
+                                "reopen_capture" if wand_pair else
+                                "capture001" if nested else "capture")
             transport = output / "reports" / group / case
             if nested:
                 transport = transport / "capture001"
-            if tiff:
+            if group == "settings-wand":
+                preferences = private / "preferences.json"
+                preferences.parent.mkdir(parents=True, exist_ok=True)
+                if case == "wand-persist":
+                    with preferences.open("x", encoding="utf-8", newline="\n") as stream:
+                        stream.write(json.dumps(settings_wand_preferences_fixture(), ensure_ascii=False) + "\n")
+                elif case == "wand-reopen" and not preferences.is_file():
+                    raise ValueError("Wand reopen preferences are unavailable")
+                argv = [str(executable), *arguments, str(actual), str(preferences)]
+                preferences_before = pin(preferences) if preferences.exists() else None
+            elif tiff:
                 relative = "scientific-bigtiff/" + arguments[-1] if group == "bigtiff" else arguments[-1]
                 fixture = Path(root) / "tests/fixtures" / relative
                 manifest = fixture.parent / "SOURCE.json"
@@ -540,6 +623,9 @@ def capture(output, executable, root, environment=None, *, selected_cases=None,
                 argv = [str(executable), *arguments, str(actual)]
             item = {"group": group, "case": case, "argv": argv, "state": "running",
                     "actual": str(actual), "transport": str(transport)}
+            if group == "settings-wand":
+                item["preferences_path"] = str(preferences)
+                item["preferences_before"] = preferences_before
             if tiff:
                 item["inputs"] = [{"path": str(fixture), **fixture_pin},
                                   {"path": str(manifest), **pin(manifest)}]
@@ -547,19 +633,27 @@ def capture(output, executable, root, environment=None, *, selected_cases=None,
             save()
             started = time.monotonic()
             print(f"C++ observation: {group}/{case}", flush=True)
-            with (private / "process.log").open("wb") as log:
+            with (private / (case + ".process.log" if wand_pair else "process.log")).open("wb") as log:
                 process = subprocess.run(argv, cwd=root, env=environment, stdout=log,
-                                         stderr=subprocess.STDOUT, timeout=case_timeout, check=False)
+                                         stderr=subprocess.STDOUT,
+                                         timeout=min(case_timeout, 60) if group == "settings-wand" else case_timeout,
+                                         check=False)
             item.update(exit_code=process.returncode, elapsed_seconds=time.monotonic() - started)
             if process.returncode:
                 raise subprocess.CalledProcessError(process.returncode, argv)
             report = actual / ("report.json" if group == "ieee-viewing" else
                                "imgui-cpp.json" if group in ("headless-session", "selection-legacy") else "case.json")
             if (not report.is_file() or report.stat().st_size > 128 * 1024 * 1024
-                    or (group == "path-filters" and report.stat().st_size >= 16 * 1024 * 1024)):
+                    or (group in ("path-filters", "settings-wand") and report.stat().st_size >= 16 * 1024 * 1024)):
                 raise ValueError(f"Missing or oversized observation report: {report}")
-            observation = json.loads(report.read_bytes())
-            if group == "headless-session":
+            observation = (settings_wand_observation(report.read_bytes(), case)
+                           if group == "settings-wand" else json.loads(report.read_bytes()))
+            if group == "settings-wand":
+                item["settings_wand_schema"] = observation["schema"]
+                item["preferences_after"] = pin(preferences) if preferences.exists() else None
+                if case == "wand-reopen" and item["preferences_after"] != preferences_before:
+                    raise ValueError("Wand reopen changed the persisted preference bytes")
+            elif group == "headless-session":
                 rows = observation.get("cases")
                 if (observation.get("schema_version") != 1
                         or observation.get("contract_id") != "p02a.headless-session.001"

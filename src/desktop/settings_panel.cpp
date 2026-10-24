@@ -361,7 +361,8 @@ void SettingsPanel::draw(const Settings &current,
                          {"draft", std::get<std::int64_t>(v)},
                          {"point", {point.x, point.y}}};
       if ((d.name == "processing_memory_mb" || d.name == "history_limit" ||
-           d.name == "history_memory_mb") && !editorWindow->SkipItems) {
+           d.name == "history_memory_mb" || d.name == "wand_connectivity") &&
+          !editorWindow->SkipItems) {
         const auto a = ImGui::GetItemRectMin(), b = ImGui::GetItemRectMax();
         const auto &context = *ImGui::GetCurrentContext();
         auto &field = fields_[d.name];
@@ -374,7 +375,12 @@ void SettingsPanel::draw(const Settings &current,
         field["identity_source"] = "current_scoped_InputInt_text_label_id";
         field["geometry_source"] = "actual_InputInt_group_item_rect";
         field["rect_kind"] = "group_including_step_buttons_and_label";
-        if (d.name == "history_limit" || d.name == "history_memory_mb") {
+        if (d.name == "wand_connectivity") {
+          field["applied"] = current.integer(d.name);
+          field["hovered"] = context.HoveredId == editorId;
+        }
+        if (d.name == "history_limit" || d.name == "history_memory_mb" ||
+            d.name == "wand_connectivity") {
           field["visible"] = ImGui::IsItemVisible();
           field["clip_rect"] = {editorWindow->ClipRect.Min.x, editorWindow->ClipRect.Min.y,
                                 editorWindow->ClipRect.Max.x, editorWindow->ClipRect.Max.y};
@@ -382,8 +388,33 @@ void SettingsPanel::draw(const Settings &current,
       }
     } else if (d.kind == SettingKind::Number) {
       double n = std::get<double>(v);
+      const auto editorId = ImGui::GetID(d.label.c_str());
+      const auto *editorWindow = ImGui::GetCurrentWindowRead();
+      const bool editorEnabled =
+          !(ImGui::GetCurrentContext()->CurrentItemFlags &
+            ImGuiItemFlags_Disabled);
       if (ImGui::InputDouble(d.label.c_str(), &n, 0, 0, "%.8g"))
         v = n;
+      if (d.name == "wand_tolerance" && !editorWindow->SkipItems) {
+        const auto a = ImGui::GetItemRectMin(), b = ImGui::GetItemRectMax();
+        const auto &context = *ImGui::GetCurrentContext();
+        // A zero-step InputDouble has one editable InputText. Keep the point
+        // inside that text box, excluding its trailing visible label.
+        fields_[d.name] = {
+            {"name", d.name}, {"kind", "number"},
+            {"draft", std::get<double>(v)}, {"applied", current.number(d.name)},
+            {"id", editorId}, {"rect", {a.x, a.y, b.x, b.y}},
+            {"point", {a.x + 4 * font, (a.y + b.y) * .5f}},
+            {"enabled", editorEnabled}, {"active", context.ActiveId == editorId},
+            {"focused", context.NavWindow == editorWindow && context.NavId == editorId},
+            {"hovered", context.HoveredId == editorId},
+            {"visible", ImGui::IsItemVisible()},
+            {"clip_rect", {editorWindow->ClipRect.Min.x, editorWindow->ClipRect.Min.y,
+                           editorWindow->ClipRect.Max.x, editorWindow->ClipRect.Max.y}},
+            {"identity_source", "current_scoped_InputDouble_text_label_id"},
+            {"geometry_source", "actual_InputDouble_item_rect"},
+            {"rect_kind", "input_including_label"}};
+      }
     } else if (d.kind == SettingKind::Choice) {
       auto &text = std::get<std::string>(v);
       const bool observeChoice = d.name == "conversion_unsigned16_range" ||

@@ -17,6 +17,16 @@ API, 46 batch, 128 UI and four genuine profile readers, plus 414+35 SDK checks.
 Next: reviewed landing, CG0 design/reference gates and independent CFG1 Wand
 preference/consumer/persistence acceptance. Full-family/M13 acceptance remains open.
 
+**CFG1, current scoped checkpoint:** Wand preference/consumer/persistence
+acceptance now [passes on Windows/Linux](parity/reviews/cfg1-settings-wand001/receipt.json).
+Each platform passes seven new native groups/303 checks, existing Settings and
+Preferences programs, 92 headless API cases, eight actual CPP/Python route
+readers, 40 SDK readback checks and 66 transport/cleanup cases. Actual valid and
+rejected drafts, Revert/Close/Defaults, literal selection masks, opaque saved
+values and fresh-process reopen are covered. The kernel/settings/codec were
+already implemented and remain unchanged. Other 59 settings consumer chains,
+CG0 exact geometry, full families and release checks remain open.
+
 **Interactive path drawing and resize, 2026-10-24 (scoped P13h integration):**
 Native M/L/Q/C/Z click authoring and explicit Bounds resize now work through the
 shared ImGui desktop in both launches, including saved ROIs and XY/XZ/YZ paths.

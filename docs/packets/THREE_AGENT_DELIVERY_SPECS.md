@@ -12,6 +12,12 @@ regression. Q0 below is its preserved closeout contract. Complete reviewed
 landing, then dispatch CG0 gates and independent CFG1; neither successor is
 qualified by P13i's results.
 
+CFG1 subsequently [passed its scoped consumer/UI exit](../parity/reviews/cfg1-settings-wand001/receipt.json).
+Its [execution](CFG1-execution.md) and [clause ledger](CFG1-qualification-ledger.md)
+bind the two setting consumers; remaining configuration and geometry work stays
+open. The [CG0 feasibility review](CG0-predicate-feasibility.md) records concrete
+unresolved certificates; it does not approve a new product dependency.
+
 ## Review findings and scheduling decisions
 
 1. Close P13i qualification before changing its consumed product interfaces.
