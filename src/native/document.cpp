@@ -784,6 +784,9 @@ void DocumentTransaction::select(std::optional<Selection> selection) {
   staged_.selection = std::move(selection);
   selection_ = true;
 }
+void DocumentTransaction::retain_selection_history() {
+  require_active(); selectionHistory_ = true;
+}
 void DocumentTransaction::set_rois(std::vector<Roi> rois) {
   require_active();
   for (const auto &roi : rois)
@@ -1049,6 +1052,7 @@ void Document::commit_impl(DocumentTransaction &transaction,
     validate_constraints(*proposed, display);
     std::vector<HistoryEntry> undo;
     bool edit = includes(changed, Change::Pixels | Change::Metadata) ||
+        (transaction.selection_history() && includes(changed, Change::Selection)) ||
         (transaction.axis_remap_display() && !same_display(display, display_));
     if (edit) {
       if (saved_roi_guard) {

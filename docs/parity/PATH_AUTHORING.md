@@ -47,11 +47,12 @@ operands, signed zero, limits, grammar failures and cancellation. Existing path
 and selection-edit tests cover compatibility, including actual headless ImGui
 selection input. They do not establish new segment-authoring UI behavior.
 
-The authoring workflow remains incomplete. Next expose staged segment operations
-in the active/saved selection and planar-annotation panels, with exact numeric
-operands, explicit command indices, preview/cancel and a single atomic Apply.
-Then add interactive path drawing and bounded affine resizing, including a
-documented policy for collapsed bounds and handle crossings. Qualify all of those
-through C++ and Python ImGui hosts, history, session round trips, typed workflows,
-resource admission and failure rollback. Continuous Boolean operations and the
-remaining ImageJ/Fiji feature families are still separate open work.
+The [shared ImGui segment editor](PATH_SEGMENT_UI.md) now exposes these
+operations on active/saved selections and planar annotations, with private
+preview, Apply/Cancel and explicit active-selection Undo. See its scoped
+qualification receipt; the older figures above describe the core milestone.
+
+The authoring workflow remains incomplete. Next add interactive path drawing
+and bounded affine resizing, including collapsed bounds and handle crossings.
+Portable active-path intent, full typed filter/resource integration, continuous
+Booleans and original ImageJ/Fiji feature-family qualification remain open.

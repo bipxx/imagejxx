@@ -569,6 +569,7 @@ void bind_document(py::module_ &m) {
       .def("remove_extension", &DocumentTransaction::remove_extension)
       .def("select", &DocumentTransaction::select,
            py::arg("selection") = py::none())
+      .def("retain_selection_history", &DocumentTransaction::retain_selection_history)
       .def("set_rois", &DocumentTransaction::set_rois)
       .def("set_previous_selection",
            &DocumentTransaction::set_previous_selection,

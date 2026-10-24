@@ -1,5 +1,25 @@
 # Implementation progress
 
+**ImGui path segment authoring, 2026-10-24 (scoped integration):**
+Active selections, saved ROIs and XY/XZ/YZ annotations now share exact numeric
+M/L/Q/C/Z segment controls, composed private previews, Apply/Cancel and
+recoverable refusal. Active path authoring opts into one atomic Undo/Redo
+entry; ordinary transient selection history is unchanged. Both platforms
+pass 4,211 focused Python cases without skips, fifteen native groups and
+independent installed SDK consumers with 36 path-edit and 14 history checks.
+Fifty-two actual host/recipe runs include twenty new segment observations;
+ten additional native runs verify the shared CI capture integration.
+All 837 build/test inputs match both source trees. One active compiler cache
+per platform totals 3,252,775,221 bytes; 1,679,878,566 scratch bytes were removed,
+with 152,048,466 bytes of verified compressed evidence retained.
+Historical build generations were retired at user request. The complete
+plan gate now refuses missing historical G016 evidence; old fingerprints
+and assertions were not repinned. Original 99 requirement states remain
+unchanged and full parity is incomplete. Next: path drawing/resizing, typed
+filter/resource integration, continuous Booleans and portable full-family
+qualification. See [the contract](parity/PATH_SEGMENT_UI.md) and
+[scoped receipt](parity/reviews/p13g-path-segment-ui001.json).
+
 **Native path authoring core, 2026-10-23 (scoped milestone):**
 C++ and Python now provide immutable command insertion/replacement/removal
 and continuous line/quadratic/cubic/close-edge subdivision, with strict grammar,

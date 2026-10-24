@@ -76,7 +76,7 @@ void SelectionPanel::initialize(
   SelectionPanel next;
   next.source_ = std::make_shared<const DocumentSnapshot>(source);
   next.geometryOnly_ = geometryOnly;
-  next.draftIdentity_ = geometryOnly ? draftIdentity_ : nullptr;
+  next.draftIdentity_ = geometryOnly ? draftIdentity_ : std::make_shared<const int>(0);
   next.savedRow_ = row;
   next.savedLimits_ = limits;
   next.geometryLimits_ = {limits.max_xy_pixels, limits.max_vertices,
@@ -207,11 +207,33 @@ void SelectionPanel::rebuild(const ExecutionControl &control) {
   error_.clear();
 }
 void SelectionPanel::patch(const Json &values, const ExecutionControl &control) {
+  const auto capturedIdentity = draftIdentity_;
   try {
   if (!open_ || !values.is_object())
     throw std::invalid_argument(
         "Open selection properties before editing its draft");
   auto next = *this;
+  if (values.contains("path_edit")) {
+    if (values.size() != 1 || !next.preview_ || !next.preview_->is_path())
+      throw std::invalid_argument("Path staging requires one operation on a valid native draft");
+    for (const auto &entry : next.rawNumbers_) (void)parse_geometry_number(entry.second);
+    next.rebuild(control);
+    PathEditLimits limits;
+    limits.max_segments = next.geometryLimits_.max_vertices;
+    if (limits.max_segments < limits.max_command_scalars / 7) limits.max_command_scalars = limits.max_segments * 7;
+    limits.max_working_bytes = next.geometryLimits_.max_working_bytes;
+    auto replacement = editPathSegments(*next.preview_, values.at("path_edit"), limits, control);
+    const auto shape = next.source_->data().dataset.shape();
+    next.editor_.emplace(replacement, shape.x, shape.y, next.geometryLimits_, control);
+    next.points_ = planarControlPoints(replacement);
+    next.translation_ = {0,0}; next.rotation_ = 0; next.geometryChanged_ = false;
+    next.rawNumbers_.clear(); next.vertex_ = 0; next.pathEdited_ = true; next.pathControls_.clear_error();
+    next.rebuild(control);
+    if (!open_ || draftIdentity_ != next.draftIdentity_) throw OperationCancelled();
+    next.draftIdentity_ = std::make_shared<const int>(0);
+    *this = std::move(next);
+    return;
+  }
   for (const auto &entry : values.items()) {
     const auto &name = entry.key();
     const auto &value = entry.value();
@@ -319,22 +341,23 @@ void SelectionPanel::patch(const Json &values, const ExecutionControl &control) 
     for (const auto &entry : next.rawNumbers_) (void)parse_geometry_number(entry.second);
   }
   next.rebuild(control);
-  if (geometryOnly_ && (!open_ || draftIdentity_ != next.draftIdentity_))
+  if (!open_ || draftIdentity_ != next.draftIdentity_)
     throw OperationCancelled();
+  next.draftIdentity_ = std::make_shared<const int>(0);
   *this = std::move(next);
   } catch (const std::exception &e) {
-    if (geometryOnly_) {
-      preview_.reset();
+    if ((geometryOnly_ || values.contains("path_edit")) && draftIdentity_ == capturedIdentity) {
+      if (!values.contains("path_edit")) preview_.reset();
       error_ = e.what();
     }
     throw;
   } catch (...) {
-    if (geometryOnly_) { preview_.reset(); error_ = "Selection draft failed"; }
+    if (geometryOnly_ && draftIdentity_ == capturedIdentity) { preview_.reset(); error_ = "Selection draft failed"; }
     throw;
   }
 }
 void SelectionPanel::apply(const Apply &publish) {
-  if (!open_ || !preview_ || !error_.empty())
+  if (!open_ || !preview_ || !error_.empty() || pathControls_.invalid())
     throw std::invalid_argument("Fix the selection draft before applying");
   if (geometryOnly_) {
     const auto selection = *preview_;
@@ -352,6 +375,7 @@ void SelectionPanel::cancel() {
   preview_.reset();
   savedRow_.reset();
   rawNumbers_.clear();
+  pathControls_.reset(); pathEdited_ = false;
   std::vector<std::array<double, 2>>().swap(points_);
 }
 void SelectionPanel::draw(const std::optional<DocumentSnapshot> &current,
@@ -452,6 +476,10 @@ void SelectionPanel::draw(const std::optional<DocumentSnapshot> &current,
       cornerDiameter_ = parsed; cornerChanged_ = true; changed = true;
     }
   }
+  if (preview_ && preview_->is_path())
+    pathControls_.draw(*preview_, !busy,
+        [&](const Json &request) { patch({{"path_edit", request}}, execution); },
+        [&](const std::string &name, bool enabled, float) { control(name.c_str(), !enabled); });
   ImGui::BeginDisabled(geometryOnly_);
   ImGui::BeginDisabled(!legacyWidthEnabled_);
   changed |= number("Line width", &width_, geometryOnly_ || !legacyWidthEnabled_);
@@ -523,7 +551,7 @@ void SelectionPanel::draw(const std::optional<DocumentSnapshot> &current,
   }
   if (!error_.empty())
     ImGui::TextWrapped("%s", error_.c_str());
-  const bool applyDisabled = !preview_ || !error_.empty();
+  const bool applyDisabled = !preview_ || !error_.empty() || pathControls_.invalid();
   ImGui::BeginDisabled(applyDisabled);
   if (ImGui::Button("Apply")) {
     try {
@@ -557,6 +585,8 @@ Json SelectionPanel::diagnostics() const {
   return {{"open", open_},
           {"geometry_only", geometryOnly_},
           {"saved_row_index", savedRow_ ? Json(*savedRow_) : Json()},
+          {"path_edited",pathEdited_},
+          {"segments",pathControls_.diagnostics()},
           {"numeric_text", rawNumbers_},
           {"control_states", controlStates_},
           {"box", box_},

@@ -2,6 +2,7 @@
 #include "geometry_number.hpp"
 #include "planar_annotation_visual.hpp"
 #include "path_visual.hpp"
+#include "path_segment_controls.hpp"
 #include <imagejxx/planar_annotations.hpp>
 #include <imagejxx/planar_annotation_command.hpp>
 #include <imagejxx/selection_creation.hpp>
@@ -29,7 +30,7 @@ struct PlanarAnnotationPanel::State {
   bool pointer(Document &,const PlanarCanvas &,bool enabled,bool hovered,const PlanarAnnotationPublisher &);
   void draw(Document &,const PlanarCanvas &,ImDrawList *,bool show,bool editable);
   void cancel(const char *reason);
-  bool active() const {return draft_.has_value();}
+  bool active() const {return draft_.has_value() || pathDraft_.has_value();}
   Json diagnostics() const;
 
   enum class Mode {Navigate,Rectangle,Ellipse,Freehand,Line,Point,Edit,Polygon,Multipoint};
@@ -50,6 +51,9 @@ struct PlanarAnnotationPanel::State {
   std::optional<std::size_t> selected_;
   std::optional<PlanarAnnotation> selected_value_;
   std::optional<Draft> draft_;
+  struct PathDraft { DocumentSnapshot source; std::size_t row; PlanarAnnotation value; };
+  std::optional<PathDraft> pathDraft_;
+  PathSegmentControls pathControls_;
   struct Visual {Selection geometry;RoiVisual visual;int width,height;std::array<float,2> scale;};
   std::map<std::size_t,Visual> visuals_;
   std::array<std::array<float,2>,3> scales_{{{1,1},{1,1},{1,1}}};
@@ -85,12 +89,17 @@ void PlanarAnnotationPanel::State::observe(const std::string &name,bool enabled,
 void PlanarAnnotationPanel::State::cancel(const char *reason) {
   if(draft_)last_cancel_=reason;
   draft_.reset();
+  pathDraft_.reset(); pathControls_.reset();
   finish_requested_=false;
   vertices_requested_=false;
   visuals_.erase(std::numeric_limits<std::size_t>::max());
 }
 void PlanarAnnotationPanel::State::sync(Document &d) {
   const auto source=d.nativeSnapshot();
+  if (pathDraft_ && (!source.same_document(pathDraft_->source) ||
+      !source.revisions().matches(pathDraft_->source.revisions(), Change::All) ||
+      source.display().t != pathDraft_->source.display().t || source.display().c != pathDraft_->source.display().c ||
+      source.display().crosshair != pathDraft_->source.display().crosshair)) cancel("path_source_changed");
   if(owner_!=source.id()) {cancel("owner_changed");visuals_.clear();selected_.reset();selected_value_.reset();owner_=source.id();metadata_revision_=~std::uint64_t(0);}
   if(metadata_revision_!=source.revisions().metadata) {
     rows_=planar_annotations(source.data());metadata_revision_=source.revisions().metadata;admitted_cap_=0;
@@ -111,6 +120,7 @@ void PlanarAnnotationPanel::State::sync(Document &d) {
   }
 }
 void PlanarAnnotationPanel::State::select(std::size_t row) {
+  pathDraft_.reset(); pathControls_.reset();
   selected_=row;selected_value_=rows_.at(row);name_=selected_value_->name;
   const auto style=resolve_roi_style(selected_value_->selection,{64,210,240,255});
   stroke_=roi_color_string(style.stroke_color);fill_=roi_color_string(style.fill_color);width_=style.stroke_width;
@@ -234,6 +244,7 @@ void PlanarAnnotationPanel::State::controls(Document &d,bool enabled,std::size_t
       const auto row=rows_[*selected_];
       ImGui::Text("%s = %d | T %s | C %s",planeName(row.plane),row.coordinate,
           row.t?std::to_string(*row.t+1).c_str():"all",row.c?std::to_string(*row.c+1).c_str():"all");
+      ImGui::BeginDisabled(pathDraft_.has_value());
       const bool scope_open=ImGui::CollapsingHeader("Annotation scope");observe("scope",enabled);
       if(scope_open) {
       ImGui::SetNextItemWidth(100);
@@ -254,6 +265,7 @@ void PlanarAnnotationPanel::State::controls(Document &d,bool enabled,std::size_t
       });
       observe("scope_apply",enabled);
       }
+      ImGui::EndDisabled();
       const bool geometry_open=ImGui::CollapsingHeader("Annotation geometry");observe("geometry_section",enabled);
       if(geometry_open) {
         ImGui::TextUnformatted("Plane-local image-cell boundary coordinates; Apply commits once.");
@@ -278,6 +290,7 @@ void PlanarAnnotationPanel::State::controls(Document &d,bool enabled,std::size_t
           });
           observe("box_apply",enabled);
         } else if(row.selection.is_path() || (row.selection.kind!="mask" && !row.selection.points.empty())) {
+          ImGui::BeginDisabled(pathDraft_.has_value());
           const auto &controls=vertex_points_;
           if(row.selection.is_path())ImGui::TextUnformatted("Vertices index path endpoints and control points; curve commands are preserved.");
           ImGui::SetNextItemWidth(90);const auto vertex_id=ImGui::GetID("Vertex (1-based)");
@@ -306,10 +319,42 @@ void PlanarAnnotationPanel::State::controls(Document &d,bool enabled,std::size_t
           ImGui::BeginDisabled(row.selection.is_path());
           if(ImGui::Button("Remove vertex"))action([&]{vertex_action(2);});observe("vertex_remove",enabled && !row.selection.is_path());
           ImGui::EndDisabled();
-          if(row.selection.is_path())ImGui::TextUnformatted("Move endpoints and control points; adding or removing curve segments is not available yet.");
+          ImGui::EndDisabled();
+          if(row.selection.is_path()) {
+            // Staging changes only the private preview; the typed row command
+            // owns publication, history, workflow recording and stale guards.
+            const Selection visible = pathDraft_ ? pathDraft_->value.selection : row.selection;
+            pathControls_.draw(visible, enabled, [&](const Json &request) {
+              if (draft_) cancel("path_segment_staging");
+              PathEditLimits pathLimits; pathLimits.max_working_bytes = cap_;
+              auto candidate = pathDraft_ ? *pathDraft_ : PathDraft{d.nativeSnapshot(), *selected_, row};
+              candidate.value.selection = editPathSegments(candidate.value.selection, request, pathLimits);
+              // Admit complete root/annotation command retention before keeping
+              // the new private preview; this does not publish a transaction.
+              (void)resolve_planar_annotation_command(candidate.source,
+                  {PlanarAnnotationOperation::Update, candidate.row, candidate.value});
+              auto proposed = rows_; proposed.at(candidate.row) = candidate.value;
+              admit_planar_annotation_visuals(candidate.source.data().dataset.shape(), proposed, cap_);
+              pathDraft_ = std::move(candidate);
+            }, [&](const std::string &id, bool available, float width) { observe(id, available, width); });
+            ImGui::BeginDisabled(!pathDraft_ || pathControls_.invalid());
+            if (ImGui::Button("Apply path changes")) action([&] {
+              const auto candidate = *pathDraft_;
+              commit(d, candidate.source, candidate.row, candidate.value, publish);
+              pathDraft_.reset();
+            });
+            observe("path_apply", enabled && pathDraft_.has_value() && !pathControls_.invalid());
+            ImGui::EndDisabled();
+            ImGui::BeginDisabled(!pathDraft_);
+            ImGui::SameLine();
+            if (ImGui::Button("Cancel path changes")) cancel("path_canceled");
+            observe("path_cancel", enabled && pathDraft_.has_value());
+            ImGui::EndDisabled();
+          }
           else ImGui::TextUnformatted("Insertion at vertex count + 1 appends. Shape minimums are enforced.");
         } else ImGui::TextUnformatted("Masks retain their packed geometry; use move / rotation in properties.");
       }
+      ImGui::BeginDisabled(pathDraft_.has_value());
       const bool properties_open=ImGui::CollapsingHeader("Annotation properties");observe("properties_section",enabled);
       if(properties_open) {
       ImGui::SetNextItemWidth(160);ImGui::InputText("Name",&name_);observe("name",enabled,160);
@@ -335,13 +380,14 @@ void PlanarAnnotationPanel::State::controls(Document &d,bool enabled,std::size_t
       });
       observe("geometry",enabled);
       }
+      ImGui::EndDisabled();
     }
   }
   if(!error_.empty())ImGui::TextWrapped("Annotation: %s",error_.c_str());
   ImGui::EndDisabled();ImGui::PopID();
 }
 bool PlanarAnnotationPanel::State::pointer(Document &d,const PlanarCanvas &canvas,bool enabled,bool hovered,const PlanarAnnotationPublisher &publish) {
-  sync(d);auto &io=ImGui::GetIO();auto *context=ImGui::GetCurrentContext();
+  sync(d);if(pathDraft_)return false;auto &io=ImGui::GetIO();auto *context=ImGui::GetCurrentContext();
   const std::array<double,2> point{(io.MousePos.x-canvas.origin[0])/canvas.scale[0],(io.MousePos.y-canvas.origin[1])/canvas.scale[1]};
   const bool inside=point[0]>=0 && point[1]>=0 && point[0]<=canvas.width && point[1]<=canvas.height;
   bool completion_active=false;
@@ -492,7 +538,9 @@ void PlanarAnnotationPanel::State::draw(Document &d,const PlanarCanvas &canvas,I
     const auto &row=rows_[n];
     if(!planar_annotation_visible(row,canvas.plane,canvas.coordinate,source.display().t,source.display().c))continue;
     const bool preview=draft_ && draft_->row==n && draft_->candidate && draft_->canvas.plane==canvas.plane;
-    const auto &selection=preview?*draft_->candidate:row.selection;visual(selection,n,preview);
+    const bool path_preview = pathDraft_ && pathDraft_->row == n;
+    const auto &selection=path_preview?pathDraft_->value.selection:preview?*draft_->candidate:row.selection;
+    visual(selection,n,preview || path_preview);
     if(editable && (selected_==n || (draft_ && draft_->row==n)) && mode_==Mode::Edit) {
       SelectionEditor editor(selection,canvas.width,canvas.height,limits());auto handles=editor.handles();
       if(auto rotation=editor.rotation_handle(32,{canvas.scale[0],canvas.scale[1]}))handles.push_back(*rotation);
@@ -514,7 +562,7 @@ void PlanarAnnotationPanel::State::draw(Document &d,const PlanarCanvas &canvas,I
 }
 Json PlanarAnnotationPanel::State::diagnostics() const {
   return {{"mode",int(mode_)},{"active",active()},{"selected",selected_?Json(*selected_):Json()},{"visual_builds",visual_builds_},{"cached_visuals",visuals_.size()},
-      {"error",error_},{"draft_vertices",draft_?draft_->points.size():0},{"draft_name",name_},{"draft_fill",fill_},{"draft_stroke",stroke_},{"count",rows_.size()},{"controls",controls_},{"input",input_},{"layers",layers_},{"handles",handles_},{"last_cancel",last_cancel_}};
+      {"segments",pathControls_.diagnostics()},{"path_draft",pathDraft_?planarSelectionJson(pathDraft_->value.selection):Json()},{"error",error_},{"draft_vertices",draft_?draft_->points.size():0},{"draft_name",name_},{"draft_fill",fill_},{"draft_stroke",stroke_},{"count",rows_.size()},{"controls",controls_},{"input",input_},{"layers",layers_},{"handles",handles_},{"last_cancel",last_cancel_}};
 }
 
 PlanarAnnotationPanel::PlanarAnnotationPanel():state_(std::make_unique<State>()) {}

@@ -216,6 +216,12 @@ public:
   void set_extension(std::string name, MetadataValue value);
   void remove_extension(std::string name);
   void select(std::optional<Selection> selection);
+  // Explicit selection authoring may opt into one atomic undo/redo entry.
+  // Ordinary transient selection gestures keep their existing history policy.
+  // Only a changed Selection state creates an entry; pixel/metadata edits use
+  // their normal policy. The source dependencies and history limits still apply.
+  void retain_selection_history();
+  bool selection_history() const { return selectionHistory_; }
   void set_previous_selection(std::optional<Selection> selection);
   void set_rois(std::vector<Roi> rois);
   void set_overlays(std::vector<MetadataObject> overlays);
@@ -243,7 +249,7 @@ private:
   Change dependencies_;
   bool active_ = true, pixels_ = false, calibration_ = false, title_ = false,
        selection_ = false, rois_ = false, overlays_ = false, spectrum_ = false,
-       wholeDataset_ = false, recordLayout_ = false, previousSelection_ = false;
+       wholeDataset_ = false, recordLayout_ = false, previousSelection_ = false, selectionHistory_ = false;
   std::map<std::array<int, 3>, std::shared_ptr<const Image>> planes_;
   std::map<std::string, std::optional<MetadataValue>> properties_;
   std::map<std::string, std::optional<MetadataValue>> extensions_;

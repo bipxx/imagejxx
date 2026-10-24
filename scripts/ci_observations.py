@@ -197,7 +197,12 @@ def shadow_demo_cases():
             "overflow", "guard-stack", "guard-type", "guard-policy"]
 
 
+PATH_SEGMENT_MODES = ("active", "saved", "xy", "xz", "yz")
+
+
 def cases():
+    for mode in PATH_SEGMENT_MODES:
+        yield "path-segments", mode, ["--path-segment-ui-case", mode]
     groups = [
         ("rank", "--rank-ui-case", [f"R{i:02d}" for i in range(1, 60)]),
         ("selection", "--selection-creation-ui-case", ["R01", "R02", "R03", "Q01", "Q02", "Q03", "Q04"]),
@@ -329,6 +334,10 @@ def reader_environment(output):
     for name in ("NONBYTE", "THRESHOLD", "CHANNEL_VARIANCE", "DESPECKLE",
                  "OUTLIERS", "REMOVE_NANS", "TOPHAT", "IEEE_REMOVE_NANS"):
         environment[f"IMAGEJXX_{name}_CPP_DIR"] = reports / "rank"
+    environment["IMAGEJXX_PATH_SEGMENT_CPP_REPORTS"] = json.dumps({
+        mode: str(reports / "path-segments" / mode / "case.json")
+        for mode in PATH_SEGMENT_MODES
+    })
     return {name: str(path) for name, path in environment.items()}
 
 
@@ -491,6 +500,16 @@ def capture(output, executable, root, environment=None):
                             or observation.get("contract") != "scientific-process-review.ui.001"))):
                     raise ValueError(f"Legacy editor probe did not finish: {report}")
                 item["legacy_probe_envelope"] = True
+            elif group == "path-segments":
+                if (observation.get("contract") != "p13g.path-segments.ui.001"
+                        or observation.get("mode") != case
+                        or observation.get("context") != "imgui_cpp"
+                        or observation.get("state") != "observed"
+                        or observation.get("error") != ""
+                        or not observation.get("frames") or not observation.get("controls")
+                        or observation.get("acceptance_claim", False) is not False):
+                    raise ValueError(f"Unexpected path segment observation: {report}")
+                item["path_segment_contract"] = observation["contract"]
             else:
                 if observation.get("observation_state", observation.get("state")) != "observed":
                     raise ValueError(f"C++ observation did not finish: {report}")

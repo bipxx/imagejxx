@@ -1,5 +1,6 @@
 #pragma once
 #include "desktop.hpp"
+#include "path_segment_controls.hpp"
 #include <imagejxx/selection_edit.hpp>
 #include <imagejxx/saved_roi_geometry.hpp>
 #include <imgui.h>
@@ -24,6 +25,7 @@ public:
   bool matches(const DocumentSnapshot &current) const;
   const std::optional<Selection> &preview() const { return preview_; }
   bool geometry_only() const { return geometryOnly_; }
+  bool path_edited() const { return pathEdited_; }
   Json diagnostics() const;
 
 private:
@@ -31,6 +33,8 @@ private:
                   std::optional<std::size_t>, const SavedRoiGeometryLimits &,
                   const ExecutionControl &);
   void rebuild(const ExecutionControl &control = {});
+  PathSegmentControls pathControls_;
+  bool pathEdited_ = false;
   bool geometryOnly_ = false;
   std::shared_ptr<const int> draftIdentity_;
   std::optional<std::size_t> savedRow_;

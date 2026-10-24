@@ -7155,6 +7155,7 @@ void Window::action(const std::string &name, const Json &p) {
             return;
           auto edit = source.begin_edit(Change::Data);
           edit.select(value);
+          if(impl->selectionPanel.path_edited())edit.retain_selection_history();
           commitEdit(edit);
         });
     return;
@@ -12342,6 +12343,7 @@ void Window::Impl::draw() {
           return;
         auto edit = source.begin_edit(Change::Data);
         edit.select(value);
+        if(selectionPanel.path_edited())edit.retain_selection_history();
         owner.commitEdit(edit);
       });
   if (savedRoiEdit.active() && !savedRoiEdit.pointer_active()) {
