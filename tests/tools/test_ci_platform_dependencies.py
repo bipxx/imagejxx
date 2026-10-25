@@ -336,10 +336,11 @@ class ProfileContracts(unittest.TestCase):
                     target.unlink()
                 alias = prefix / "bin/libpng-config"
                 self.local_link(alias, raw)
+                original_link = os.readlink(alias)
                 with self.assertRaises((ValueError, FileNotFoundError)):
                     builder.normalize_static_prefix(prefix)
                 self.assertTrue(alias.is_symlink())
-                self.assertEqual(os.readlink(alias), raw)
+                self.assertEqual(os.readlink(alias), original_link)
                 self.assertEqual(outside.read_bytes(), b"unchanged outside target")
                 self.assertEqual(wrong.read_bytes(), b"unchanged wrong target")
                 if kind != "missing":

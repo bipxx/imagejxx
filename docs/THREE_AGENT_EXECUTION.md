@@ -12,8 +12,11 @@ runner, dependency-profile, CMake/SDK and workflow source candidate on
 source profiles remain unqualified until their actual hosted preparation and
 full installed cohorts pass. See the
 [latest cross-project actions](packets/COMPILEXX_CROSS_PROJECT_REVIEW.md#current-ci2-review-maintained-path-and-early-failure-controls).
-The published CI2 head is `fcfe0d4`; its first hosted run `40209451115` is
-terminal failure. Follow the [hosted checkpoint and repair boundary](packets/CI2-full-platform-profiles.md#first-hosted-candidate-and-repair-boundary)
+The published CI2 head is `c0082e4`; its hosted run `40214170090` is
+terminal failure. All three source producers, four Mac Python lifecycle gates
+and Linux/macOS headless native/core-SDK now pass; installed consumers remain
+blocked by the diagnosed Windows transport/Mac numeric portability issues.
+Follow the [hosted checkpoint and repair boundary](packets/CI2-full-platform-profiles.md#published-repair-and-current-hosted-findings)
 and [current compilexx review](../../compilexx/imagejxx-plan-inefficiencies.md#current-review-and-next-actions--2026-10-25)
 before older next-action prose. Local fixture/recipe/PNG-consumer repairs have
 supporting checks, not hosted acceptance. Both current Linux Python jobs refused

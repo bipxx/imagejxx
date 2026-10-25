@@ -9,9 +9,11 @@ supersedes historical scheduling below. It distinguishes confirmed local failure
 from conditional lessons, with owners, triggers and decisive proof. This is a
 source/documentation review, not another Astra run or measured optimization.
 
-CI2 `fcfe0d4` is published on `ci2-platform-integration`; its first hosted run
-`40209451115` is terminal failure. The
-[CI2 hosted checkpoint](CI2-full-platform-profiles.md#first-hosted-candidate-and-repair-boundary)
+CI2 repair `c0082e4` is published on `ci2-platform-integration`; its hosted run
+`40214170090` is terminal failure. All three source preparations and four Mac
+Python lifecycle gates now pass; Windows argument transport and Mac numeric
+portability still block installed consumers. The
+[CI2 hosted checkpoint](CI2-full-platform-profiles.md#published-repair-and-current-hosted-findings)
 records the exact failed gates and locally checked, unqualified successor.
 The new priorities are actual builder-to-consumer closure, canonical fixture
 paths, selected PNG target identity and independent cheap checks before the

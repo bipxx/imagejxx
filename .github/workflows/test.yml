@@ -28,6 +28,7 @@ jobs:
           python -I -B tests/tools/test_ci_platform_dependencies.py
           python -I -B tests/tools/test_ci_platform_runtime.py
           python -I -B tests/tools/test_ci_png_binding.py
+          python -I -B tests/tools/test_ci_platform_workflow.py
           python -I -B tests/tools/test_ci_python_diagnostics.py
           python -I -B tests/tools/test_ci_owned_process.py
           python -I -B tests/tools/test_ci_scientific_sdk.py

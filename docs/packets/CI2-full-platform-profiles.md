@@ -4,6 +4,42 @@ Active implementation, 2026-10-25. This is not hosted acceptance or a dependency
 approval. CFG3's focused Windows/Linux qualification does not close full CI.
 Keep optional package defaults and the existing headless profile unchanged.
 
+## Published repair and current hosted findings
+
+Repair head `c0082e4eab2bec560ceb2f205229eab0ea531185` is published on
+`ci2-platform-integration`. Its [run 40214170090](https://github.com/bipxx/imagejxx/actions/runs/40214170090)
+is terminal failure at retained `repair-hosted-poll005.json`; Linux and macOS
+headless native/core-SDK jobs passed. Preserve the first failed run below as a
+separate source/result. Do not dispatch another candidate until the coherent
+consumer repair is ready.
+All three source dependency producers now succeed. Their small original
+`hosted40214170090-{windows,arm64,intel}-source-evidence.zip` archives retain
+prepared receipts, actual selected files and command evidence without copying
+prefixes locally. Windows records `bin/zlib1.dll`; both Mac prefixes record
+regular canonical and alias PNG archives. These remain preparation proof,
+not full profile acceptance.
+
+All four Mac Python lanes passed the mandatory native Darwin lifecycle gate.
+Their install builds then failed at `execution.cpp:399`: floating `std::to_chars`
+is unavailable for the declared deployment target 11.0 (introduced in 13.3).
+Preserve the target and numeric contracts while reviewing a compatible path;
+do not suppress availability diagnostics or claim modern-host execution proves
+the older target. Build isolation also selected CMake4.4.4 despite host3.31.6.
+Windows consumers failed before compilation because PowerShell split unquoted
+`-Ccmake.define...` arguments; the retained real-shell argv predecessor reproduces
+that exact split. Linux now refuses unavailable references before preparation.
+
+Local next repair uses separately quoted `-C`/`KEY=VAL` Windows arguments and
+explicit `cmake.version===3.31.6` in both source-profile isolated builds, using
+the [pinned backend's version setting](https://github.com/scikit-build/scikit-build-core/blob/v0.11.6/src/scikit_build_core/settings/skbuild_model.py#L64).
+The two new workflow controls pass on Windows (including actual PowerShell
+native argv); Linux passes the configuration control and explicitly skips the
+Windows shell case. Another fixture-only correction compares the actual symlink
+value before/after refusal, since Windows `readlink()` adds an extended-path
+prefix. Linux24 passes; Windows24 reports nine host symlink skip events, so that
+privileged branch still requires hosted execution. No production link guard
+was relaxed. These local changes are not yet published or hosted-qualified.
+
 ## First hosted candidate and repair boundary
 
 Candidate `fcfe0d4bbab48f3eeffc1f89a0242cef0e565ea2`, published on
