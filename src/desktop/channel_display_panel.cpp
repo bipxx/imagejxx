@@ -1,4 +1,5 @@
 #include "channel_display_panel.hpp"
+#include "../native/floating_charconv.hpp"
 #include "rendering.hpp"
 
 #include <algorithm>
@@ -26,8 +27,8 @@ double bound(const std::string &text, const char *label) {
       throw std::invalid_argument(std::string(label) + " must have a single numeric sign");
   }
   double result = 0;
-  const auto parsed = std::from_chars(value.data(), value.data()+value.size(),
-                                     result, std::chars_format::general);
+  const auto parsed = detail::floating_from_chars(value.data(), value.data()+value.size(),
+                                                   result);
   if (value.empty() || parsed.ec != std::errc{} ||
       parsed.ptr != value.data()+value.size() || !std::isfinite(result))
     throw std::invalid_argument(std::string(label) + " must be a finite raw intensity");
@@ -35,8 +36,8 @@ double bound(const std::string &text, const char *label) {
 }
 std::string text(double value) {
   char buffer[64];
-  const auto converted = std::to_chars(buffer, buffer+sizeof(buffer), value,
-      std::chars_format::general, std::numeric_limits<double>::max_digits10);
+  const auto converted = detail::floating_to_chars_general17(
+      buffer, buffer+sizeof(buffer), value);
   if (converted.ec != std::errc{})
     throw std::runtime_error("Cannot format a channel display bound");
   return {buffer, converted.ptr};

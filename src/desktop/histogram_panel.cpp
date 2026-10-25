@@ -1,4 +1,5 @@
 #include "histogram_panel.hpp"
+#include "../native/floating_charconv.hpp"
 #include <imgui.h>
 #include <imgui_internal.h>
 #include <imgui_stdlib.h>
@@ -16,13 +17,18 @@ template<class T>T number(const std::string &text) {
   std::string_view s(text);while(!s.empty() && (s.front()==' '||s.front()=='\t'))s.remove_prefix(1);
   while(!s.empty() && (s.back()==' '||s.back()=='\t'))s.remove_suffix(1);
   if(!s.empty() && s.front()=='+'){s.remove_prefix(1);if(!s.empty() && (s.front()=='+'||s.front()=='-'))throw std::invalid_argument("Use a single numeric sign");}
-  T value{};const auto parsed=std::from_chars(s.data(),s.data()+s.size(),value);
+  T value{};const auto parsed=[&] {
+    if constexpr(std::is_same_v<T,double>)
+      return detail::floating_from_chars(s.data(),s.data()+s.size(),value);
+    else
+      return std::from_chars(s.data(),s.data()+s.size(),value);
+  }();
   if(s.empty() || parsed.ec!=std::errc{} || parsed.ptr!=s.data()+s.size())throw std::invalid_argument("Enter a complete number in every field");
   if constexpr(std::is_floating_point_v<T>)if(!std::isfinite(value))throw std::invalid_argument("Histogram bounds must be finite");
   return value;
 }
 std::string format(double value) {
-  char buffer[64];const auto p=std::to_chars(buffer,buffer+sizeof(buffer),value,std::chars_format::general,std::numeric_limits<double>::max_digits10);
+  char buffer[64];const auto p=detail::floating_to_chars_general17(buffer,buffer+sizeof(buffer),value);
   if(p.ec!=std::errc{})throw std::runtime_error("Cannot format histogram range");return {buffer,p.ptr};
 }
 Json optional(const std::optional<double> &v){return v?Json(*v):Json(nullptr);}

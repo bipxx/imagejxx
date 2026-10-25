@@ -22,7 +22,7 @@ cmake.version = ">=3.18"
 wheel.packages = ["src/imagejxx"]
 build-dir = "build/wheel/{wheel_tag}"
 sdist.exclude = ["/imgui.ini", ".venv/**", ".cache/**", ".tools/**", "build/**", "dist/**", "**/__pycache__/**", ".pytest_cache/**", ".ruff_cache/**", ".tmp/**"]
-sdist.include = ["/LICENSE", "/THIRD_PARTY_NOTICES.md", "/licenses/*.json", "/licenses/*.txt", "/third_party/nlohmann_json/**", "/third_party/zlib/**", "/third_party/imgui/**"]
+sdist.include = ["/LICENSE", "/THIRD_PARTY_NOTICES.md", "/licenses/*.json", "/licenses/*.txt", "/third_party/nlohmann_json/**", "/third_party/zlib/**", "/third_party/imgui/**", "/third_party/boost_charconv/**"]
 
 [tool.scikit-build.cmake.define]
 IMAGEJXX_BUILD_PYTHON = "ON"

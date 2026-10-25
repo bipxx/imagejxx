@@ -122,7 +122,7 @@ def check_native() -> list[str]:
             (ROOT / "licenses/native-dependencies.json").read_text(encoding="utf-8")
         )
         dependencies = inventory["dependencies"]
-        if set(dependencies) != {"nlohmann-json", "zlib"}:
+        if set(dependencies) != {"nlohmann-json", "zlib", "boost-charconv"}:
             return ["Unreviewed or missing native core dependency"]
         reviewed = (
             ("nlohmann-json", "JSON", "3.12.0", "MIT",
@@ -131,6 +131,9 @@ def check_native() -> list[str]:
             ("zlib", "zlib", "1.3.1", "Zlib",
              "https://www.zlib.net/zlib_license.html",
              "third_party/zlib/SOURCE.json", "zlib.txt", "LICENSE"),
+            ("boost-charconv", "Boost.Charconv", "1.92.0+git.ed350a0", "BSL-1.0",
+             "https://github.com/boostorg/charconv/blob/ed350a00fdc0dff8a7560d6569a2599c6942e58d/LICENSE",
+             "third_party/boost_charconv/SOURCE.json", "boost-charconv.txt", "charconv/LICENSE"),
         )
         for name, label, version, license_id, source, manifest_name, notice, vendor_notice in reviewed:
             entry = dependencies[name]

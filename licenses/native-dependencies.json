@@ -1,6 +1,6 @@
 {
-  "reviewed_on": "2026-10-15",
-  "scope": "Headless C++ core preferences and scientific session codecs. Reviewed JSON headers and zlib compression/decompression sources are privately compiled; neither is an exported installed SDK dependency or a new headless runtime DLL.",
+  "reviewed_on": "2026-10-25",
+  "scope": "Private native preferences and scientific session inputs, plus selected sources retained for binary64 portability qualification. Source and license review is separate from numeric, deployment and SDK acceptance; no general Boost distribution is included.",
   "dependencies": {
     "nlohmann-json": {
       "tested_version": "3.12.0",
@@ -23,6 +23,24 @@
       "vendor_manifest_sha256": "165f7bad405b23d0d73aa6fe9fbde44f317cc0670d7505d2dc15fa38e61a5db8",
       "scope": "Unmodified core compression/decompression sources and required internal headers from the pinned official 1.3.1 archive. Compiled privately with Z_PREFIX for native sessions; no gzip file API implementation, contrib/minizip, tools, public zlib types or exported SDK dependency.",
       "obligations": "Retain the copyright and license notice; do not misrepresent origin. Plainly mark altered source versions and retain this notice in source distributions. Review changed versions, sources or enabled components before redistribution."
+    },
+    "boost-charconv": {
+      "tested_version": "1.92.0+git.ed350a0",
+      "selected_license": "BSL-1.0",
+      "commercial_use": true,
+      "source": "https://github.com/boostorg/charconv/blob/ed350a00fdc0dff8a7560d6569a2599c6942e58d/LICENSE",
+      "notice": "boost-charconv.txt",
+      "vendor_manifest": "third_party/boost_charconv/SOURCE.json",
+      "vendor_manifest_sha256": "377d32a0ad5ace2af41bafae3684359a427218cdfde99917bd1033bb24e30e87",
+      "modules": {
+        "charconv": "ed350a00fdc0dff8a7560d6569a2599c6942e58d",
+        "config": "115e718e0fd72329e69fc776dac99811385d6f77",
+        "assert": "fc2a476cc7d9f42b65ec104e90d24bfd6290efdc",
+        "core": "a90a31934fe8bcb6e6be6dfea77b80492c7b6c81",
+        "throw_exception": "0924b53b40d1da33301f94fb97518f5a7df31e9b"
+      },
+      "scope": "Selected unchanged upstream develop snapshot ed350a00fdc0dff8a7560d6569a2599c6942e58d; base release1.92.0. Selected unmodified Boost.Charconv sources and required Boost.Config, Boost.Assert, Boost.Core and Boost.ThrowException headers, 128 files total. Retained for private binary64 compatibility qualification; this source and license registration does not qualify the numeric backend or macOS deployment. Windows/Linux production std conversions and all integer conversions remain unchanged.",
+      "obligations": "Retain the original copyright notices and Boost Software License 1.0 with source copies. Select the BSL-1.0 alternative for embedded Dragonbox/Floff; preserve the existing FastFloat and Ryu notices. Keep the exact five-module source manifest and review changed versions, selected files or build scope before redistribution."
     }
   },
   "optional_io_review": {

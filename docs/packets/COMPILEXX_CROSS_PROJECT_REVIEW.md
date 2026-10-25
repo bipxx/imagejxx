@@ -9,6 +9,17 @@ supersedes historical scheduling below. It distinguishes confirmed local failure
 from conditional lessons, with owners, triggers and decisive proof. This is a
 source/documentation review, not another Astra run or measured optimization.
 
+The numerical implementation follow-up is in the
+[portability packet](CI2-charconv-portability.md#current-checkpoint-focused-local-qualification-hosted-apple-pending).
+A release tag did not prevent wrong subnormal output; exact literal/differential
+and capacity checks caught it before migration. Preserving C++17 spelling also
+required explicit fixed/scientific selection rather than accepting an equivalent
+round trip. The private API covers all 12 original operations; broader backend
+diagnostics retain their failed results. Linux policy fixtures use the existing
+native-filesystem mirror after cross-filesystem I/O timed out. Per-case cleanup
+prevents retained dependency-copy generations. This is scoped source/tool proof,
+not release acceptance or a measured speedup.
+
 CI2 repair `c0082e4` is published on `ci2-platform-integration`; its hosted run
 `40214170090` is terminal failure. All three source preparations and four Mac
 Python lifecycle gates now pass; Windows argument transport and Mac numeric

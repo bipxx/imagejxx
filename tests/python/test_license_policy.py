@@ -4,9 +4,18 @@ import hashlib
 import json
 from pathlib import Path
 import shutil
+import tempfile
 from types import SimpleNamespace
 
 import pytest
+
+
+@pytest.fixture
+def native_policy_root(tmp_path):
+    # Each mutation owns a disposable source copy. Do not accumulate dozens of
+    # dependency trees in pytest's retained tmp_path generations.
+    with tempfile.TemporaryDirectory(prefix="native-policy-", dir=tmp_path) as directory:
+        yield Path(directory).resolve(strict=True)
 
 
 @pytest.mark.parametrize("change", [
@@ -50,8 +59,12 @@ def test_transitive_dependency_policy_rejects_restricted_or_unreviewed_entries(t
     "zlib_noncommercial", "zlib_wrong_version", "zlib_wrong_notice",
     "zlib_manifest_hash", "zlib_changed_header", "zlib_missing_header",
     "zlib_extra_header", "zlib_traversal", "zlib_archive_pin", "zlib_changed_notice",
+    "charconv_noncommercial", "charconv_wrong_version", "charconv_wrong_notice",
+    "charconv_manifest_hash", "charconv_changed_header", "charconv_missing_header",
+    "charconv_extra_header", "charconv_traversal", "charconv_changed_notice",
 ])
-def test_native_review_retains_complete_private_source_tree(tmp_path, monkeypatch, change):
+def test_native_review_retains_complete_private_source_tree(native_policy_root, monkeypatch, change):
+    tmp_path = native_policy_root
     root = Path(__file__).resolve().parents[2]
     spec = importlib.util.spec_from_file_location("native_license_policy", root / "scripts/check_licenses.py")
     gate = importlib.util.module_from_spec(spec)
@@ -59,10 +72,13 @@ def test_native_review_retains_complete_private_source_tree(tmp_path, monkeypatc
     (tmp_path / "licenses").mkdir()
     shutil.copyfile(root / "licenses/nlohmann-json.txt", tmp_path / "licenses/nlohmann-json.txt")
     shutil.copyfile(root / "licenses/zlib.txt", tmp_path / "licenses/zlib.txt")
+    shutil.copyfile(root / "licenses/boost-charconv.txt", tmp_path / "licenses/boost-charconv.txt")
     vendor = tmp_path / "third_party/nlohmann_json"
     shutil.copytree(root / "third_party/nlohmann_json", vendor)
     zlib_vendor = tmp_path / "third_party/zlib"
     shutil.copytree(root / "third_party/zlib", zlib_vendor)
+    charconv_vendor = tmp_path / "third_party/boost_charconv"
+    shutil.copytree(root / "third_party/boost_charconv", charconv_vendor)
     inventory = json.loads((root / "licenses/native-dependencies.json").read_text(encoding="utf-8"))
     entry = inventory["dependencies"]["nlohmann-json"]
     header = vendor / "include/nlohmann/json.hpp"
@@ -118,7 +134,33 @@ def test_native_review_retains_complete_private_source_tree(tmp_path, monkeypatc
             zlib["vendor_manifest_sha256"] = hashlib.sha256(payload).hexdigest()
         elif change == "zlib_changed_notice":
             (tmp_path / "licenses/zlib.txt").write_text("Different retained license\n", encoding="utf-8")
+    elif change.startswith("charconv_"):
+        charconv = inventory["dependencies"]["boost-charconv"]
+        header = charconv_vendor / "charconv/include/boost/charconv/from_chars.hpp"
+        if change == "charconv_noncommercial":
+            charconv["commercial_use"] = False
+        elif change == "charconv_wrong_version":
+            charconv["tested_version"] = "1.91.0"
+        elif change == "charconv_wrong_notice":
+            charconv["notice"] = "../outside.txt"
+        elif change == "charconv_manifest_hash":
+            charconv["vendor_manifest_sha256"] = "0" * 64
+        elif change == "charconv_changed_header":
+            header.write_bytes(header.read_bytes() + b"\n// unreviewed input\n")
+        elif change == "charconv_missing_header":
+            header.unlink()
+        elif change == "charconv_extra_header":
+            (header.parent / "unreviewed.hpp").write_text("// extra input\n", encoding="utf-8")
+        elif change == "charconv_traversal":
+            manifest_path = charconv_vendor / "SOURCE.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["files_sha256"]["../../outside.hpp"] = "0" * 64
+            payload = (json.dumps(manifest, indent=2) + "\n").encode("utf-8")
+            manifest_path.write_bytes(payload)
+            charconv["vendor_manifest_sha256"] = hashlib.sha256(payload).hexdigest()
+        elif change == "charconv_changed_notice":
+            (tmp_path / "licenses/boost-charconv.txt").write_text("Different retained license\n", encoding="utf-8")
     (tmp_path / "licenses/native-dependencies.json").write_text(json.dumps(inventory), encoding="utf-8")
     monkeypatch.setattr(gate, "ROOT", tmp_path)
     errors = gate.check_native()
-    assert not errors if change == "none" else errors
+    assert (not errors if change == "none" else errors), errors

@@ -28,6 +28,19 @@ and every retained input. `licenses/zlib.txt` preserves the same full notice.
 Gzip file API implementations, contrib/minizip and tools are excluded. The
 installed headless C++ SDK requires no external zlib package or zlib runtime DLL.
 
+Selected unmodified sources for **Boost.Charconv develop snapshot**
+(`1.92.0+git.ed350a0`, commit
+`ed350a00fdc0dff8a7560d6569a2599c6942e58d`) and its required
+**Boost.Config**, **Boost.Assert**, **Boost.Core** and **Boost.ThrowException**
+headers are retained under the **Boost Software License 1.0**. The bounded
+128-file source set is in `third_party/boost_charconv`; its `SOURCE.json` pins
+all five module commits and every retained input. Original copyright notices
+remain in the sources, and `licenses/boost-charconv.txt` preserves the unchanged
+license. The BSL alternative is selected for embedded Dragonbox/Floff; FastFloat
+and Ryu attribution remains in their original headers. The native dependency
+inventory records this source review. Numeric-backend and macOS-deployment
+qualification remain separate; this notice does not claim those checks passed.
+
 The optional desktop is **Dear ImGui 1.91.9 with docking**, under MIT, including its
 GLFW/OpenGL3 backends, embedded default font, and string helpers. **GLFW 3.4** uses
 the zlib/libpng license. **nlohmann/json 3.12.0** uses MIT. Selected **stb** headers

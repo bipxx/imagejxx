@@ -1,4 +1,5 @@
 #include "kernel_control.hpp"
+#include "floating_charconv.hpp"
 #include "target_mask_resources.hpp"
 #include "rank_display_internal.hpp"
 #include "rgb_dataset_internal.hpp"
@@ -396,7 +397,7 @@ double spacing_linear_value(double a, double b, double weight, PixelType type) {
 }
 std::string spacing_title_value(double value) {
   char buffer[64];
-  const auto result = std::to_chars(buffer, buffer + sizeof(buffer), value);
+  const auto result = detail::floating_to_chars(buffer, buffer + sizeof(buffer), value);
   if (result.ec != std::errc{})
     throw std::invalid_argument("Physical spacing title conversion failed");
   return std::string(buffer, result.ptr);

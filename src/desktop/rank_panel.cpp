@@ -1,4 +1,5 @@
 #include "rank_panel.hpp"
+#include "../native/floating_charconv.hpp"
 
 #include <algorithm>
 #include <charconv>
@@ -54,8 +55,8 @@ double parseRadius(const std::string &text) {
   if (value.empty())
     throw std::invalid_argument("Enter a finite, nonnegative radius");
   double radius = 0;
-  const auto parsed = std::from_chars(value.data(), value.data() + value.size(),
-                                      radius, std::chars_format::general);
+  const auto parsed = detail::floating_from_chars(value.data(), value.data() + value.size(),
+                                                   radius);
   if (parsed.ec != std::errc{} || parsed.ptr != value.data() + value.size() ||
       !std::isfinite(radius) || radius < 0)
     throw std::invalid_argument("Radius must be a finite, nonnegative number");
@@ -64,9 +65,8 @@ double parseRadius(const std::string &text) {
 
 std::string radiusText(double radius) {
   char buffer[64];
-  const auto formatted = std::to_chars(
-      buffer, buffer + sizeof(buffer), radius, std::chars_format::general,
-      std::numeric_limits<double>::max_digits10);
+  const auto formatted = detail::floating_to_chars_general17(
+      buffer, buffer + sizeof(buffer), radius);
   if (formatted.ec != std::errc{})
     throw std::runtime_error("Cannot format ImageJ rank radius");
   return {buffer, formatted.ptr};

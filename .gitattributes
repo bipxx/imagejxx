@@ -1,3 +1,5 @@
 # Reviewed fixtures and vendored sources carry byte-level SHA-256 pins.
 # Preserve their bytes on every checkout, including Windows.
 * -text
+# Unmodified upstream source has its own whitespace; preserve its exact pins.
+third_party/boost_charconv/** -text -whitespace

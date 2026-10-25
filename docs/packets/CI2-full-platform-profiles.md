@@ -4,6 +4,23 @@ Active implementation, 2026-10-25. This is not hosted acceptance or a dependency
 approval. CFG3's focused Windows/Linux qualification does not close full CI.
 Keep optional package defaults and the existing headless profile unchanged.
 
+## Numerical successor ready for hosted qualification
+
+The [private decimal portability packet](CI2-charconv-portability.md#current-checkpoint-focused-local-qualification-hosted-apple-pending)
+addresses the source-level macOS-11 floating-charconv blocker while preserving
+the 12 editor operations' input, spelling and integer paths. Required-editor
+witnesses pass on Windows/Linux; all seven callers pass both syntax modes, the
+active-cache standalone CTest passes, and 34 source/license policy controls pass
+per host. The five-module source closure uses BSL; failed raw-backend experiments
+remain separate. These results do not establish actual Apple product/SDK acceptance.
+
+Publish one coherent successor with the held Windows shell/alias fixes, then
+follow its exact hosted handles. Keep all three source producers, four Mac
+Python lifecycle lanes, mandatory SDK consumers and complete-suite requirements.
+Unavailable original references still fail readiness; native metadata-only
+repairs and CG0 files stay outside this packet. The next hosted result must
+establish actual Apple compile/link and installed delivery.
+
 ## Published repair and current hosted findings
 
 Repair head `c0082e4eab2bec560ceb2f205229eab0ea531185` is published on

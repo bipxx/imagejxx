@@ -16,6 +16,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install the pinned source-policy checker dependency
+        run: python -m pip install 'packaging==25.0'
+      - name: Check source dependency licenses before native preparation
+        run: python -I -B scripts/check_licenses.py
       - name: Check capture runner contracts
         shell: bash
         run: |

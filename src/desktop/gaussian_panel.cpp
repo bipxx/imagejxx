@@ -1,4 +1,5 @@
 #include "gaussian_panel.hpp"
+#include "../native/floating_charconv.hpp"
 
 #include <algorithm>
 #include <charconv>
@@ -30,8 +31,8 @@ double parseSigma(const std::string &text) {
   if (value.empty())
     throw std::invalid_argument("Enter a finite, nonnegative sigma");
   double sigma = 0;
-  const auto parsed = std::from_chars(value.data(), value.data() + value.size(),
-                                      sigma, std::chars_format::general);
+  const auto parsed = detail::floating_from_chars(value.data(), value.data() + value.size(),
+                                                   sigma);
   if (parsed.ec != std::errc{} || parsed.ptr != value.data() + value.size() ||
       !std::isfinite(sigma) || sigma < 0)
     throw std::invalid_argument("Sigma must be a finite, nonnegative number");
@@ -40,9 +41,8 @@ double parseSigma(const std::string &text) {
 
 std::string sigmaText(double sigma) {
   char buffer[64];
-  const auto formatted = std::to_chars(
-      buffer, buffer + sizeof(buffer), sigma, std::chars_format::general,
-      std::numeric_limits<double>::max_digits10);
+  const auto formatted = detail::floating_to_chars_general17(
+      buffer, buffer + sizeof(buffer), sigma);
   if (formatted.ec != std::errc{})
     throw std::runtime_error("Cannot format Gaussian sigma");
   return {buffer, formatted.ptr};

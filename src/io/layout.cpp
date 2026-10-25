@@ -1,4 +1,5 @@
 #include "internal.hpp"
+#include "../native/floating_charconv.hpp"
 #include <algorithm>
 #include <charconv>
 #include <cmath>
@@ -224,8 +225,7 @@ double number(std::string_view text) {
   auto begin = text.data();
   if (*begin == '+')
     ++begin;
-  auto parsed = std::from_chars(begin, text.data() + text.size(), result,
-                                std::chars_format::general);
+  auto parsed = detail::floating_from_chars(begin, text.data() + text.size(), result);
   require(parsed.ec == std::errc{} && parsed.ptr == text.data() + text.size() &&
               std::isfinite(result),
           "TIFF calibration number is not finite/addressable");

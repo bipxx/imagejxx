@@ -1,4 +1,5 @@
 #include "threshold_panel.hpp"
+#include "../native/floating_charconv.hpp"
 
 #include <algorithm>
 #include <cfloat>
@@ -30,8 +31,8 @@ double parseBound(const std::string &text, const char *name) {
                                   " must have a single numeric sign");
   }
   double bound = 0;
-  const auto parsed = std::from_chars(value.data(), value.data() + value.size(),
-                                      bound, std::chars_format::general);
+  const auto parsed = detail::floating_from_chars(value.data(), value.data() + value.size(),
+                                                   bound);
   if (value.empty() || parsed.ec != std::errc{} ||
       parsed.ptr != value.data() + value.size() || !std::isfinite(bound))
     throw std::invalid_argument(std::string(name) +
@@ -41,9 +42,8 @@ double parseBound(const std::string &text, const char *name) {
 
 std::string boundText(double value) {
   char buffer[64];
-  const auto result = std::to_chars(
-      buffer, buffer + sizeof(buffer), value, std::chars_format::general,
-      std::numeric_limits<double>::max_digits10);
+  const auto result = detail::floating_to_chars_general17(
+      buffer, buffer + sizeof(buffer), value);
   if (result.ec != std::errc{})
     throw std::runtime_error("Cannot format a threshold bound");
   return {buffer, result.ptr};

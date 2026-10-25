@@ -16,6 +16,13 @@ The published CI2 head is `c0082e4`; its hosted run `40214170090` is
 terminal failure. All three source producers, four Mac Python lifecycle gates
 and Linux/macOS headless native/core-SDK now pass; installed consumers remain
 blocked by the diagnosed Windows transport/Mac numeric portability issues.
+The [numerical successor](packets/CI2-charconv-portability.md#current-checkpoint-focused-local-qualification-hosted-apple-pending)
+is now source-integrated and locally scoped-qualified; the Windows transport
+repair is also prepared. Next publish the coherent successor and qualify actual
+Apple/installed SDK paths. Complete profiles and unavailable scientific
+references remain open. Root executes/publishes, A reviews dependency/CMake
+source, B reviews callers and the independent witness. No fourth worker or
+local cache/runtime is added.
 Follow the [hosted checkpoint and repair boundary](packets/CI2-full-platform-profiles.md#published-repair-and-current-hosted-findings)
 and [current compilexx review](../../compilexx/imagejxx-plan-inefficiencies.md#current-review-and-next-actions--2026-10-25)
 before older next-action prose. Local fixture/recipe/PNG-consumer repairs have
