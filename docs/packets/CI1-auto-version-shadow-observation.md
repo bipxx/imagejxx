@@ -1,6 +1,6 @@
 # CI1: Auto version compatibility and nullable shadow observations
 
-Scoped verification passed, landing pending, 2026-10-25. Preceding MW1 landed on `main` at
+Scoped verification passed and landed at `aed781f`, 2026-10-25. Preceding MW1 landed on `main` at
 `1fe5204cccd1a1d5868454c334791715bf0b69d4`; its hosted run is
 [40172838348](https://github.com/bipxx/imagejxx/actions/runs/40172838348).
 That run is not yet accepted. This packet addresses two concrete failures from

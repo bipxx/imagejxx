@@ -1,0 +1,128 @@
+{
+  "schema": "cfg2.superseded-intermediate-retirement.001",
+  "acceptance": false,
+  "reason": "Bounded retention of superseded passing component captures; final P13h cohort retains the named checks; historical bytes are not relabelled",
+  "final_p13h_receipt_sha256": "5f39ebd893a8cc39b0b9b5368a2834041101a7f29f354b19b47ef051e3d3a061",
+  "protected_final_archives": [
+    "focused-regression002-native.tar.gz",
+    "linux-dependency-source019-no-python-capture-native.tar.gz",
+    "linux-focused-edges002-cpp-observations-native.tar.gz",
+    "linux-focused-edges002-scratch-native.tar.gz",
+    "linux-focused-primary003-cpp-observations-native.tar.gz",
+    "linux-focused-primary003-scratch-native.tar.gz",
+    "windows-dependency-source019-no-python-capture.tar.gz",
+    "windows-focused-edges002-cpp-observations.tar.gz",
+    "windows-focused-edges002-scratch.tar.gz",
+    "windows-focused-primary004-cpp-observations.tar.gz",
+    "windows-focused-primary004-scratch.tar.gz",
+    "windows-focused-regression003-cpp-observations.tar.gz",
+    "windows-focused-regression003-scratch.tar.gz"
+  ],
+  "rows": [
+    {
+      "archive": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13h-verification\\windows-ui-reader009-scratch.tar.gz",
+      "bytes": 35656507,
+      "sha256": "ec33d303033cc0e05e86699555a0d73a882cd5d71e5a9c4dfeba5da57781a24e",
+      "members_verified": 6,
+      "original_retention": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13h-verification\\windows-ui-reader009-scratch-retention.json",
+      "matched_final_ids": [
+        "tests/python/test_path_authoring_ui.py::test_actual_path_drawing_resize_history_and_reopen[imgui_python-xy]",
+        "tests/python/test_path_authoring_ui.py::test_actual_path_drawing_resize_history_and_reopen[imgui_python-xz]",
+        "tests/python/test_path_authoring_ui.py::test_actual_path_drawing_resize_history_and_reopen[imgui_python-yz]"
+      ],
+      "preserved": [
+        {
+          "path": ".tmp\\manual-workflow-verification\\cfg2\\intermediate-diagnostics\\windows-ui-reader009-scratch\\test_actual_path_drawing_resiz0\\capture\\authored.ijx",
+          "bytes": 3796,
+          "sha256": "8583c8be636b14766cb3c8df87cc2e0f1fae6161bd109f573be39d20c0d5c03e"
+        },
+        {
+          "path": ".tmp\\manual-workflow-verification\\cfg2\\intermediate-diagnostics\\windows-ui-reader009-scratch\\test_actual_path_drawing_resiz1\\capture\\authored.ijx",
+          "bytes": 3796,
+          "sha256": "6a84ed9f1d73edef9566f546459b3536fc825970983a9739bef7aa7b021003f9"
+        },
+        {
+          "path": ".tmp\\manual-workflow-verification\\cfg2\\intermediate-diagnostics\\windows-ui-reader009-scratch\\test_actual_path_drawing_resiz2\\capture\\authored.ijx",
+          "bytes": 3796,
+          "sha256": "00afbc93c2374fd262ec57b9f6acbb8e7756790b428f0711468243379354983e"
+        },
+        {
+          "path": ".tmp\\manual-workflow-verification\\cfg2\\intermediate-diagnostics\\windows-ui-reader009-scratch\\run-collection.json",
+          "bytes": 347,
+          "sha256": "1229d96b1b77ce0f2572bd261fbb746268dea9b03e28db352359d8713d75bc22"
+        },
+        {
+          "path": ".tmp\\manual-workflow-verification\\cfg2\\intermediate-diagnostics\\windows-ui-reader009-scratch\\run-pytest.xml",
+          "bytes": 686,
+          "sha256": "8aa3b0ca3ed75a867e453f14de260b199c0706014ff26e87025897846e91307c"
+        }
+      ],
+      "availability": "retired-unavailable"
+    },
+    {
+      "archive": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13h-verification\\linux-ui-reader001-scratch-native.tar.gz",
+      "bytes": 68322149,
+      "sha256": "b86d1a37b3357f99a3cfeef574d8ca1702e00292e433c0b98cbdc3644ef868cd",
+      "members_verified": 13,
+      "original_retention": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13h-verification\\linux-ui-reader001-scratch-native-retention.json",
+      "matched_final_ids": [
+        "tests/python/test_path_authoring_ui.py::test_actual_path_drawing_resize_history_and_reopen[imgui_cpp-active]",
+        "tests/python/test_path_authoring_ui.py::test_actual_path_drawing_resize_history_and_reopen[imgui_cpp-saved]",
+        "tests/python/test_path_authoring_ui.py::test_actual_path_drawing_resize_history_and_reopen[imgui_cpp-scientific-active]",
+        "tests/python/test_path_authoring_ui.py::test_actual_path_drawing_resize_history_and_reopen[imgui_cpp-xy]",
+        "tests/python/test_path_authoring_ui.py::test_actual_path_drawing_resize_history_and_reopen[imgui_cpp-xz]",
+        "tests/python/test_path_authoring_ui.py::test_actual_path_drawing_resize_history_and_reopen[imgui_cpp-yz]",
+        "tests/python/test_path_authoring_ui.py::test_actual_path_drawing_resize_history_and_reopen[imgui_python-active]",
+        "tests/python/test_path_authoring_ui.py::test_actual_path_drawing_resize_history_and_reopen[imgui_python-saved]",
+        "tests/python/test_path_authoring_ui.py::test_actual_path_drawing_resize_history_and_reopen[imgui_python-scientific-active]",
+        "tests/python/test_path_authoring_ui.py::test_actual_path_drawing_resize_history_and_reopen[imgui_python-xy]",
+        "tests/python/test_path_authoring_ui.py::test_actual_path_drawing_resize_history_and_reopen[imgui_python-xz]",
+        "tests/python/test_path_authoring_ui.py::test_actual_path_drawing_resize_history_and_reopen[imgui_python-yz]"
+      ],
+      "preserved": [
+        {
+          "path": ".tmp\\manual-workflow-verification\\cfg2\\intermediate-diagnostics\\linux-ui-reader001-scratch-native\\test_actual_path_drawing_resiz10\\capture\\authored.ijx",
+          "bytes": 3797,
+          "sha256": "e0c99dcddd02883a5515b11af7441fce205de217a721fdaf1a24aacd85ab6319"
+        },
+        {
+          "path": ".tmp\\manual-workflow-verification\\cfg2\\intermediate-diagnostics\\linux-ui-reader001-scratch-native\\test_actual_path_drawing_resiz11\\capture\\authored.ijx",
+          "bytes": 3795,
+          "sha256": "062ba7b2eebb274b86e6d2414b20250b23ce651da5669437429e687cc70d65a0"
+        },
+        {
+          "path": ".tmp\\manual-workflow-verification\\cfg2\\intermediate-diagnostics\\linux-ui-reader001-scratch-native\\test_actual_path_drawing_resiz6\\capture\\authored.ijx",
+          "bytes": 3859,
+          "sha256": "42049c49df8a73cfd74f3cb65f255b3301a17d1e37168a67bc25dbd5c9432fef"
+        },
+        {
+          "path": ".tmp\\manual-workflow-verification\\cfg2\\intermediate-diagnostics\\linux-ui-reader001-scratch-native\\test_actual_path_drawing_resiz7\\capture\\authored.ijx",
+          "bytes": 11165,
+          "sha256": "06f47589aa075dbab63178ab91fda0bf8a2a3f1d59618666e23c2045fff75cc5"
+        },
+        {
+          "path": ".tmp\\manual-workflow-verification\\cfg2\\intermediate-diagnostics\\linux-ui-reader001-scratch-native\\test_actual_path_drawing_resiz8\\capture\\authored.ijx",
+          "bytes": 3719,
+          "sha256": "1456b2f1a4332d7ebc72a4d47d01c62f125d1bba86629f2e827930657f16467d"
+        },
+        {
+          "path": ".tmp\\manual-workflow-verification\\cfg2\\intermediate-diagnostics\\linux-ui-reader001-scratch-native\\test_actual_path_drawing_resiz9\\capture\\authored.ijx",
+          "bytes": 3796,
+          "sha256": "796d192b3b2c42fa413c31762511b287c8f31e42c28431c9ef50c9df5afc375c"
+        },
+        {
+          "path": ".tmp\\manual-workflow-verification\\cfg2\\intermediate-diagnostics\\linux-ui-reader001-scratch-native\\run-collection.json",
+          "bytes": 1385,
+          "sha256": "0c26505b1eb4acb668ef661bd7a00e476f96f36d68bd5d2d4dc45f52eda867c8"
+        },
+        {
+          "path": ".tmp\\manual-workflow-verification\\cfg2\\intermediate-diagnostics\\linux-ui-reader001-scratch-native\\run-pytest.xml",
+          "bytes": 2045,
+          "sha256": "c857f6f720ac0016c8b3626158f7ffbbab3408486fa99f3d69ec71f0a22d9a55"
+        }
+      ],
+      "availability": "retired-unavailable"
+    }
+  ],
+  "removed_bytes": 103978656
+}

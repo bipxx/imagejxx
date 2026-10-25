@@ -1,0 +1,24 @@
+{
+  "roots": {
+    "C:\\Users\\HEQ\\Projects\\imagejxx\\.venv": 436156589,
+    "C:\\Users\\HEQ\\Projects\\imagejxx\\.tools": 97453266,
+    "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification": 217740329,
+    "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13h-verification": 2443083728,
+    "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification": 284993477,
+    "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\cfg1-verification": 7352059,
+    "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification": 2128288817,
+    "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification": 68370686,
+    "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001": 637464176,
+    "/home/heq/.cache/imagejxx-build/p08k-001-5zn6rc00/python001": 232157751,
+    "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001": 1838091495,
+    "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-probe-env003": 52275901,
+    "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-client": 489,
+    "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed": 19215623
+  },
+  "bytes": 8462644386,
+  "limit_bytes": 8589934592,
+  "headroom_bytes": 127290206,
+  "seconds": 1.1261876999633387,
+  "policy": "Required roots; no links; Linux host-local; normalized unique nonnested roots",
+  "acceptance": false
+}

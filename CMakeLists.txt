@@ -1061,6 +1061,17 @@ if(BUILD_TESTING)
     -DTEST_TIMEOUT_SECONDS=30
     -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/RunOwnedFixtureTest.cmake)
   set_tests_properties(native_settings_wand_consumer PROPERTIES TIMEOUT 35)
+  add_executable(imagejxx_settings_enlargement_consumer_tests tests/native/test_settings_enlargement_consumer.cpp)
+  target_link_libraries(imagejxx_settings_enlargement_consumer_tests PRIVATE imagejxx::core)
+  set(IMAGEJXX_SETTINGS_ENLARGEMENT_TEST_SCRATCH_ROOT
+    "${CMAKE_CURRENT_BINARY_DIR}/Testing/settings-enlargement-consumer"
+    CACHE PATH "Owned scratch parent for enlargement settings-consumer file tests")
+  add_test(NAME native_settings_enlargement_consumer COMMAND ${CMAKE_COMMAND}
+    -DTEST_EXECUTABLE=$<TARGET_FILE:imagejxx_settings_enlargement_consumer_tests>
+    -DWORK_ROOT=${IMAGEJXX_SETTINGS_ENLARGEMENT_TEST_SCRATCH_ROOT}
+    -DTEST_TIMEOUT_SECONDS=30
+    -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/RunOwnedFixtureTest.cmake)
+  set_tests_properties(native_settings_enlargement_consumer PROPERTIES TIMEOUT 35)
   add_executable(imagejxx_preferences_tests tests/native/test_preferences.cpp)
   target_link_libraries(imagejxx_preferences_tests PRIVATE imagejxx::core)
   add_test(NAME native_preferences COMMAND ${CMAKE_COMMAND}
@@ -1159,6 +1170,7 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     src/desktop/native_workflow_batch_ui_probe.cpp
     src/desktop/native_workflow_ui_probe.cpp
     src/desktop/manual_threshold_workflow_ui_probe.cpp
+    src/desktop/settings_selection_ui_probe.cpp
     src/desktop/histogram_workflow_ui_probe.cpp
     src/desktop/native_workflow_panel.cpp
     src/desktop/native_workflow_parameters.cpp

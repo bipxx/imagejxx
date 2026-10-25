@@ -23,6 +23,7 @@
 #include "path_authoring_ui_probe.hpp"
 #include "path_authoring_edge_ui_probe.hpp"
 #include "settings_wand_ui_probe.hpp"
+#include "settings_selection_ui_probe.hpp"
 #include "manual_threshold_workflow_ui_probe.hpp"
 #include "path_filter_ui_probe.hpp"
 #include "native_bare_import_ui_probe.hpp"
@@ -407,6 +408,9 @@ PYBIND11_MODULE(_desktop, m) {
            })
       .def("_manual_threshold_workflow_ui_case", [](Window &window,const std::string &case_id,const std::string &directory) {
         py::gil_scoped_release release;return manualThresholdWorkflowUiCase(window,case_id,"imgui_python",directory).dump();
+      }, py::arg("case_id"), py::arg("directory"))
+      .def("_settings_selection_ui_case", [](Window &window,const std::string &case_id,const std::string &directory) {
+        py::gil_scoped_release release;return settingsSelectionUiCase(window,case_id,"imgui_python",directory).dump();
       }, py::arg("case_id"), py::arg("directory"))
       .def("_settings_wand_ui_case", [](Window &window,const std::string &case_id,const std::string &directory) {
         py::gil_scoped_release release;return settingsWandUiCase(window,case_id,"imgui_python",directory).dump();

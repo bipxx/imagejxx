@@ -1,7 +1,7 @@
 # CFG2: Preferences-driven selection enlargement
 
-Prepared handoff, 2026-10-25; no CFG2 implementation or acceptance yet. Start
-after [CI1](CI1-auto-version-shadow-observation.md) lands. This closes the actual
+Scoped verification passed, landing pending, 2026-10-25. CI1 is landed at
+`aed781f`. This closes the declared actual
 Preferences → command consumer → fresh-host chain for two existing settings,
 not a new enlargement algorithm or a complete settings family.
 
@@ -72,3 +72,44 @@ link peaks; capture paired contexts in bounded phases and retire verified
 terminal scratch. Exact installed products, reader inputs and named cohorts
 must be bound from the start. macOS/full CI, real OS/GPU/accessibility and all
 remaining families retain their own open requirements.
+
+## Scoped evidence and next action
+
+The [receipt](../parity/reviews/cfg2-settings-enlargement001/receipt.json) binds
+the same 1,417 exact passing case IDs on Windows/Linux, with zero skips/errors/
+failures. Each host passes eight native programs, including five new groups/
+9,668 checks, all four new routes and four existing Wand routes through both
+launchers, and public C++17 SDK consumption of both actual UI-written files
+(2,348 checks each). Two existing hidden-OpenGL checks actually execute;
+Linux uses software GL. This is not OS-input or GPU-performance certification.
+
+The source/producers were frozen during build and capture. Original before/
+after reader/fixture manifests and installed product hashes remain intact.
+Final review added four invariant assertions; the exact original reader source
+is preserved, and a current hash-bound comparator rechecks every full saved
+snapshot. No new GUI replay or retrospective source identity is claimed.
+
+Preserved attempts include the first Python shape-call signature mistake and
+a strict full-cohort refusal for two unenabled OpenGL checks. Correcting the
+call retained its oracle. Enabling the existing render profile allowed both
+checks and the complete cohort to pass without exclusions or assertion changes.
+
+Verified retirement removed103,978,656 bytes of superseded intermediate P13h
+captures; all13final P13h archives, original hashes and small result/session
+files remain. Final raw captures were losslessly archived/member-verified and
+retired; SDK consumer caches were removed after retaining exact executables and
+configuration. Generated storage is8,462,644,386 bytes,127,290,206 below8GiB.
+That dated measurement is not admission for the next run. The receipt records
+retired/unavailable artifacts rather than rewriting historical proof.
+
+Native enlargement behavior and the 61-key grammar were reused. Product changes
+are general read-only Number/Choice observations and bounded shared UI routes.
+No dependency, numerical kernel, optional Python processing fallback or Qt UI
+was added. Four of the61setting chains are now scoped-qualified (CFG1+CFG2);
+the other57 and all options outside that inventory remain required. All99
+family states remain47in progress/52open/0complete.
+
+Next prepared feature is [CFG3 measurement-name entry](CFG3-measurement-name-entry.md).
+Full Windows/macOS I/O/UI hosted profiles, retired G016 proof, genuine OS input,
+GPU/accessibility/macOS and complete release acceptance remain separate open
+obligations. Landing is recorded separately from this source-bound receipt.

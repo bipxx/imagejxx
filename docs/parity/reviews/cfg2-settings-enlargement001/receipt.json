@@ -1,0 +1,407 @@
+{
+  "schema": "cfg2.scoped-qualification.001",
+  "state": "scoped-qualified",
+  "acceptance": false,
+  "packet_scope_qualified": true,
+  "complete_requirement_coverage": false,
+  "full_ci_qualified": false,
+  "baseline_commit": "aed781ff4d2323eafc0cda5d9cfa54e6cac309f3",
+  "scope": "Actual Preferences distance/units \u2192 enlargement Cancel/Apply/Restore/override and distinct fresh-host consumption; ordinary/scientific sources through shared C++/Python ImGui, installed native/API/SDK",
+  "qualified_settings": [
+    "selection_enlargement_distance",
+    "selection_enlargement_units"
+  ],
+  "contract": {
+    "stored_distance": "Nonnegative pixel magnitude; calibrated dialog scales by captured X spacing only",
+    "publication": "Selection/Previous only; exact sample words, carriers, display, dirty and pixel history preserved",
+    "numerical_kernel_changed": false,
+    "new_dependencies": 0,
+    "ui_observability": "General Number/Choice diagnostics preserve old shapes; no new per-key setting grammar"
+  },
+  "platforms": {
+    "windows": {
+      "schema": "cfg2.host-audit.001",
+      "state": "passed",
+      "acceptance": false,
+      "host": "windows",
+      "api_and_ui_cases": 1417,
+      "full_cohort": {
+        "archive": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\cfg2-full-windows002.tar.gz",
+          "bytes": 1803613,
+          "sha256": "da3246c7499cab1b89ef8e205c16fd4e9ff43d8adab79cf80d3876c344975c76"
+        },
+        "retention": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\cfg2-full-windows002-retention.json",
+          "bytes": 27264,
+          "sha256": "ebf21f762064e66199b916ffd0e7b6d6d59bd5388dfb54b911fcb6eb341fcbbd"
+        },
+        "members_verified": 138,
+        "raw_retired_bytes": 15763346
+      },
+      "reader_manifest_sha256": "6ca4b983e2ff18034b0132bf3e4a9f5c0cef369d40daf35119fbfdf3ec033eaf",
+      "reader_count": 5381,
+      "reader_successor": {
+        "path": "tests/python/test_settings_selection_ui.py",
+        "original_sha256": "0daf7fbed03b6ade10c8d4c6aef07781f57474673c77cd57257de2fac775e703",
+        "current_sha256": "5a92cacbd3c08535c26a11d0cfe5d8ccbc0829d83430d132e2eeae55503ae47f",
+        "original_source": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\cfg2\\ui-reader-preimage.py",
+          "bytes": 18211,
+          "sha256": "0daf7fbed03b6ade10c8d4c6aef07781f57474673c77cd57257de2fac775e703"
+        },
+        "authority": "Four additive invariant assertions only; current comparator rechecks every original complete UI snapshot below, no new GUI observation implied"
+      },
+      "native_programs": [
+        "desktop_enlargement_dialog",
+        "native_preferences",
+        "native_region_enlargement_command",
+        "native_selection_enlargement",
+        "native_selection_enlargement_command",
+        "native_settings",
+        "native_settings_enlargement_consumer",
+        "native_settings_wand_consumer"
+      ],
+      "new_native_groups": 5,
+      "compiled_inputs": 738,
+      "compiled_manifest": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\cfg2\\windows-build001\\source-manifest.json",
+        "bytes": 83038,
+        "sha256": "ab3a49cb907dc0e63d966456aa3e5c7dd939efef27a89b65af73cbb63922de84"
+      },
+      "native_receipt": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\cfg2\\windows-build001\\receipt.json",
+        "bytes": 5574,
+        "sha256": "8bd1b18b4078e05e75379c8c4c18ef9dd39f3e1744d74e1966b5c56e13f2d877"
+      },
+      "native_xml": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\cfg2\\windows-build001\\native.xml",
+        "bytes": 3920,
+        "sha256": "33b47c3f77f848ac73d76fc006db23ee93c20e237873a5298b83bc0c2c55eadc"
+      },
+      "products": {
+        "imagejxx._native": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+          "sha256": "ebceb66c4d365a223b6f8c0708374256b5b71e76c90a0260f226be1ef5fc2342"
+        },
+        "imagejxx._desktop": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+          "sha256": "5d713ae93cbf3a2080f4de2844d1fcd4d73c87eec1fee3c4290c28aa2c442f10"
+        }
+      },
+      "application": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+        "bytes": 18248192,
+        "sha256": "3e05d37417a8de4bdfb8847b2684ed5bec52be5c1410e0c211945614ea00864c"
+      },
+      "settings_selection_cpp": {
+        "archive": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\cfg2-cpp-windows002.tar.gz",
+          "bytes": 1027685,
+          "sha256": "6965e001b445aa087d2a01bdae5a0897bf0d4bd6477fc299345728781f20c76a"
+        },
+        "retention": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\cfg2-cpp-windows002-retention.json",
+          "bytes": 5608,
+          "sha256": "bca70b081cbe4884480f3c355c7e32b469179e528cc6072b88e0f10f2f9de583"
+        },
+        "members_verified": 26,
+        "raw_retired_bytes": 11769490
+      },
+      "settings_wand_cpp": {
+        "archive": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\cfg2-legacy-cpp-windows001.tar.gz",
+          "bytes": 1699821,
+          "sha256": "76e283d6daf73126528af14015e3063d585b27af97914e78e63cc4ad5aff9bd1"
+        },
+        "retention": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\cfg2-legacy-cpp-windows001-retention.json",
+          "bytes": 3314,
+          "sha256": "c93b34cff11425e73f9d4b4295b4981eba14a08a94cbbbb8d63b4fce8521ac8b"
+        },
+        "members_verified": 16,
+        "raw_retired_bytes": 16046631
+      },
+      "settings_selection_contexts": 8,
+      "legacy_wand_contexts": 8,
+      "sdk": {
+        "receipt": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\cfg2\\sdk-windows001\\receipt.json",
+          "bytes": 4529,
+          "sha256": "2a32ef780727b6f0851cf1bc5f4703bc87507b1e64d23fd573b98571afaa3210"
+        },
+        "retirement": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\cfg2\\sdk-windows001\\cache-retirement.json",
+          "bytes": 1125,
+          "sha256": "79a80ef9d45220069d2a2009f944cfb1ddc8fecd552566aa3fe6463e7eb2ea3d"
+        },
+        "checks_per_file": 2348,
+        "ui_files": [
+          {
+            "context": "cpp",
+            "original": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\cfg2\\cpp-windows002\\cpp\\private\\settings-selection\\persisted-pair\\preferences.json",
+            "retained": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\cfg2\\ui-preferences-windows002\\cpp.json",
+            "sha256": "ce030d66121ef8c5c75ca100d5fc5ddd094adee00a405e70f3a12bb42b6d9d3c",
+            "exit_code": 0
+          },
+          {
+            "context": "python",
+            "original": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\cfg2\\full-windows002\\scratch\\cfg2-python-ui0\\persisted-pair\\preferences.json",
+            "retained": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\cfg2\\ui-preferences-windows002\\python.json",
+            "sha256": "ce030d66121ef8c5c75ca100d5fc5ddd094adee00a405e70f3a12bb42b6d9d3c",
+            "exit_code": 0
+          }
+        ],
+        "input_reuse": "Original SDK commands/pids and input hashes preserved; exact same immutable UI bytes join final files. No rebuild or fabricated historical command identity."
+      },
+      "rendering": "Two existing hidden-OpenGL checks actually executed; Linux softwareGL; no OS-input/GPU-performance/accessibility certification",
+      "limits": "Scoped consumer proof for two existing settings; no full capability-family/hosted-CI/macOS/release acceptance"
+    },
+    "linux": {
+      "schema": "cfg2.host-audit.001",
+      "state": "passed",
+      "acceptance": false,
+      "host": "linux",
+      "api_and_ui_cases": 1417,
+      "full_cohort": {
+        "archive": {
+          "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/cfg2-full-linux001.tar.gz",
+          "bytes": 1826506,
+          "sha256": "388b7687b4df021680b9ec55888da69dd05afbd06f8d5d453a0051b3859c5577"
+        },
+        "retention": {
+          "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/cfg2-full-linux001-retention.json",
+          "bytes": 26723,
+          "sha256": "4b3eade342268e405413a550b9003473f0a8534d764637aa1da544637b8f6189"
+        },
+        "members_verified": 139,
+        "raw_retired_bytes": 15773986
+      },
+      "reader_manifest_sha256": "ae21de363ebe8c4b3a8985a095703d1e218c87a05be264deb647322aa320a349",
+      "reader_count": 5381,
+      "reader_successor": {
+        "path": "tests/python/test_settings_selection_ui.py",
+        "original_sha256": "0daf7fbed03b6ade10c8d4c6aef07781f57474673c77cd57257de2fac775e703",
+        "current_sha256": "5a92cacbd3c08535c26a11d0cfe5d8ccbc0829d83430d132e2eeae55503ae47f",
+        "original_source": {
+          "locator": "/mnt/c/Users/HEQ/Projects/imagejxx/.tmp/manual-workflow-verification/cfg2/ui-reader-preimage.py",
+          "bytes": 18211,
+          "sha256": "0daf7fbed03b6ade10c8d4c6aef07781f57474673c77cd57257de2fac775e703"
+        },
+        "authority": "Four additive invariant assertions only; current comparator rechecks every original complete UI snapshot below, no new GUI observation implied"
+      },
+      "native_programs": [
+        "desktop_enlargement_dialog",
+        "native_preferences",
+        "native_region_enlargement_command",
+        "native_selection_enlargement",
+        "native_selection_enlargement_command",
+        "native_settings",
+        "native_settings_enlargement_consumer",
+        "native_settings_wand_consumer"
+      ],
+      "new_native_groups": 5,
+      "compiled_inputs": 738,
+      "compiled_manifest": {
+        "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/cfg2/linux-build001/source-manifest.json",
+        "bytes": 82298,
+        "sha256": "667863a4705c1360248278ded2d873e398544ffcc079579f0dd725be7321edaf"
+      },
+      "native_receipt": {
+        "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/cfg2/linux-build001/receipt.json",
+        "bytes": 4567,
+        "sha256": "866c3e825cd884cae5e25f9d5a9819334bb14cc6043759c9e095b287dc4a93d4"
+      },
+      "native_xml": {
+        "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/cfg2/linux-build001/native.xml",
+        "bytes": 3897,
+        "sha256": "3517f71457258e0094167c5ef9a88f95b09b48d7bcfb0bd9280ce4b127286842"
+      },
+      "products": {
+        "imagejxx._native": {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-probe-env003/lib/python3.12/site-packages/imagejxx/_native.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "18bd8b1d1bc857baa42ce12939d6d812153bb6a788b16702313ae5ce929b3499"
+        },
+        "imagejxx._desktop": {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-probe-env003/lib/python3.12/site-packages/imagejxx/_desktop.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "b5c76967ec22809bd920a93e5e042b3c4179c34829079db7f2e56a71c6503efc"
+        }
+      },
+      "application": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/.tmp/p13g-verification/linux/app-installed/bin/imagejxx",
+        "bytes": 36973320,
+        "sha256": "c794a815599bcc6f983f790aa1d14e4ae96395732d139cc92a6fbbce34792a16"
+      },
+      "settings_selection_cpp": {
+        "archive": {
+          "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/cfg2-cpp-linux001.tar.gz",
+          "bytes": 1026943,
+          "sha256": "fdca2c027ec4986b9ef065898367cb17a47420f293f1a54c66b3eb92a1303aba"
+        },
+        "retention": {
+          "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/cfg2-cpp-linux001-retention.json",
+          "bytes": 5464,
+          "sha256": "197973421a17d231d320f4dab863569009b2465475de8736ba2f7897d1232012"
+        },
+        "members_verified": 26,
+        "raw_retired_bytes": 11773273
+      },
+      "settings_wand_cpp": {
+        "archive": {
+          "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/cfg2-legacy-cpp-linux001.tar.gz",
+          "bytes": 1693735,
+          "sha256": "f97ef4fc2e207a0989f6bd147749d521ea3fd6174c9820cafdb08df81a9b925c"
+        },
+        "retention": {
+          "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/cfg2-legacy-cpp-linux001-retention.json",
+          "bytes": 3220,
+          "sha256": "0ca14e329f6dae7201f003a2c7775d0ada261a26680df77972ccfac9f2d2b9be"
+        },
+        "members_verified": 16,
+        "raw_retired_bytes": 16051652
+      },
+      "settings_selection_contexts": 8,
+      "legacy_wand_contexts": 8,
+      "sdk": {
+        "receipt": {
+          "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/cfg2/sdk-linux001/receipt.json",
+          "bytes": 4163,
+          "sha256": "f34509ea55b9b1924975f92eb5864008250d93ff05210a480273824b7952be26"
+        },
+        "retirement": {
+          "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/cfg2/sdk-linux001/cache-retirement.json",
+          "bytes": 1175,
+          "sha256": "cf090a8c51c91d8a6c5178e63985dae0ccc5c04740c9c3ce612fb3bfcb98b8f9"
+        },
+        "checks_per_file": 2348,
+        "ui_files": [
+          {
+            "context": "cpp",
+            "retained": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/cfg2/ui-preferences-linux001/cpp.json",
+            "sha256": "ce030d66121ef8c5c75ca100d5fc5ddd094adee00a405e70f3a12bb42b6d9d3c"
+          },
+          {
+            "context": "python",
+            "retained": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/cfg2/ui-preferences-linux001/python.json",
+            "sha256": "ce030d66121ef8c5c75ca100d5fc5ddd094adee00a405e70f3a12bb42b6d9d3c"
+          }
+        ],
+        "input_reuse": "Original SDK commands/pids and input hashes preserved; exact same immutable UI bytes join final files. No rebuild or fabricated historical command identity."
+      },
+      "rendering": "Two existing hidden-OpenGL checks actually executed; Linux softwareGL; no OS-input/GPU-performance/accessibility certification",
+      "limits": "Scoped consumer proof for two existing settings; no full capability-family/hosted-CI/macOS/release acceptance"
+    }
+  },
+  "compiled_inputs": {
+    "path": "docs/parity/reviews/cfg2-settings-enlargement001/compiled-inputs.json",
+    "bytes": 83038,
+    "sha256": "ab3a49cb907dc0e63d966456aa3e5c7dd939efef27a89b65af73cbb63922de84"
+  },
+  "named_cohort": {
+    "path": "docs/parity/reviews/cfg2-settings-enlargement001/affected-nodeids.json",
+    "bytes": 214427,
+    "sha256": "190c0d572a19ed2cbcbb62e3826ad7bde769a92764e788945be14e08d3c2a3a7"
+  },
+  "qualification_drivers": {
+    "path": "docs/parity/reviews/cfg2-settings-enlargement001/qualification-drivers.tar.gz",
+    "bytes": 13780,
+    "sha256": "920aefb64610f9ad1d9611b196182588f96113de3878293a27128907b4cfd196"
+  },
+  "retention_availability": {
+    "path": "docs/parity/reviews/cfg2-settings-enlargement001/intermediate-retirement.json",
+    "bytes": 8004,
+    "sha256": "bbea6c37f888ce98987e9dab3a47d84b381ef9372afba870aad9cf2534b00c38"
+  },
+  "storage": {
+    "path": "docs/parity/reviews/cfg2-settings-enlargement001/storage.json",
+    "bytes": 1384,
+    "sha256": "74134f03635539d42f9e5e805dc52449a9eab60b9db4139d357237be38d78751"
+  },
+  "native_new_groups": 5,
+  "native_new_checks": 9668,
+  "sdk_checks_per_actual_ui_file": 2348,
+  "transport_contract_tests": {
+    "windows": {
+      "tests": 19,
+      "scope": "Synthetic transport guards; not actual UI acceptance",
+      "receipt": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\cfg2\\tools-windows001\\receipt.json",
+        "bytes": 2603,
+        "sha256": "58d06fdc696041ba78c9a7b4f4601289ddb93dd64b24b87c8c7d2a2e94365d26"
+      },
+      "source_inputs": {
+        "C:/Users/HEQ/Projects/imagejxx/tests/tools/test_ci_observations.py": "ef717d78e48d3faf8db5fa602e8380155ed896b87f1a3a1e33d28409f27b06fc",
+        "C:/Users/HEQ/Projects/imagejxx/scripts/ci_observations.py": "756242fdc6690afd3fa99ba16fe2e4b741fede581cd7cc04349217b9eaf8eb5e"
+      }
+    },
+    "linux": {
+      "tests": 19,
+      "scope": "Synthetic transport guards; not actual UI acceptance",
+      "receipt": {
+        "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\manual-workflow-verification\\cfg2\\tools-linux001\\receipt.json",
+        "bytes": 2552,
+        "sha256": "9541d2b53a814e95d31f92463e4ae145a7ddcd4af2b0883062fcf01f0d45248a"
+      },
+      "source_inputs": {
+        "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/tests/tools/test_ci_observations.py": "ef717d78e48d3faf8db5fa602e8380155ed896b87f1a3a1e33d28409f27b06fc",
+        "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/scripts/ci_observations.py": "756242fdc6690afd3fa99ba16fe2e4b741fede581cd7cc04349217b9eaf8eb5e"
+      }
+    }
+  },
+  "reader_applicability": "1417 original exact case results retained under their original reader input maps. Four additive reader assertions are explicitly joined using the preserved preimage; current comparator rechecked every complete UI capture, with all other5380 reader/fixture inputs unchanged. No new GUI replay or retrospective source pin is implied.",
+  "source_review": "A/B nonauthor cross-reviews; C independent literals and host-local member/cohort/product audits. Their earlier reports retain original scopes.",
+  "attempt_history": [
+    "First29-case smoke called Selection.mask with two arguments instead of one shape tuple; original source and failed output retained; corrected API call preserves the literal oracle",
+    "Initial full Windows cohort had1415passes and2required hiddenOpenGL skips; qualification failed. Explicit rendering smoke passed, then complete1417 cohort passed with no exclusions/skips",
+    "System WindowsApps Python launcher could not resolve itself in synthetic capture tests; same18 tests passed under the existing absolute verification runtime; no product/checker weakening"
+  ],
+  "preceding_product_availability": {
+    "windows": {
+      "imagejxx._native": {
+        "preceding_sha256": "ebceb66c4d365a223b6f8c0708374256b5b71e76c90a0260f226be1ef5fc2342",
+        "current_sha256": "ebceb66c4d365a223b6f8c0708374256b5b71e76c90a0260f226be1ef5fc2342",
+        "original_bytes_still_at_locator": true
+      },
+      "imagejxx._desktop": {
+        "preceding_sha256": "00f478471e26ccffc674cab303ec2df624a6c923fb02fd7d70a9f36a48b12f38",
+        "current_sha256": "5d713ae93cbf3a2080f4de2844d1fcd4d73c87eec1fee3c4290c28aa2c442f10",
+        "original_bytes_still_at_locator": false
+      }
+    },
+    "linux": {
+      "imagejxx._native": {
+        "preceding_sha256": "18bd8b1d1bc857baa42ce12939d6d812153bb6a788b16702313ae5ce929b3499",
+        "current_sha256": "18bd8b1d1bc857baa42ce12939d6d812153bb6a788b16702313ae5ce929b3499",
+        "original_bytes_still_at_locator": true
+      },
+      "imagejxx._desktop": {
+        "preceding_sha256": "f4cce59127bd0c10b7fc40c4fa54c3fcac0e5f8c72f8fb667cde1bab6870a8c5",
+        "current_sha256": "b5c76967ec22809bd920a93e5e042b3c4179c34829079db7f2e56a71c6503efc",
+        "original_bytes_still_at_locator": false
+      }
+    }
+  },
+  "historical_evidence": "Original fingerprints/receipts unchanged; replaced installed products are historical, not asserted available at their old locators",
+  "remaining": [
+    "Other57of61setting consumer chains remain unclosed; all eligible ImageJ/Fiji options beyond this inventory remain required",
+    "Hidden OpenGL smoke is not genuine OS input, GPU-performance, accessibility, macOS or full release acceptance",
+    "Required Windows/macOS full IO/UI hosted profiles remain open; processing-only wheel success cannot substitute",
+    "Strict G016 checker still lacks retired historical checkpoint; Auto/geometry and every remaining requirement keep their original owners"
+  ],
+  "inventory": {
+    "families": 99,
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0,
+    "sha256": "6a234b38cef8813d084b0f1ed14c50e9096fd50bdd94fbacbb4119adf583dae8",
+    "unchanged": true
+  },
+  "protected_local_wip": {
+    "tests/reference/continuous_bezier_exact_reference.py": "9636659391cc3c4a5fab17f42b7497da8dfb383818a12a78d4967c5552bb382b",
+    "tests/reference/ObserveContinuousPathBooleans.java": "b3b64e67e4ded1a660af59d86bb4a8943c4d44d32264e232ea16c53d02d29182",
+    "docs/packets/CG0-analytic-reference-contract.md": "3e7da966e20d14756ea417f6d31580753038380157b55d2c311d02fe5122749a",
+    "docs/packets/CG0-imagej-observer-contract.md": "eb3eaacda74033a1e71ba52e8aa36cb341d6459144d6a397df2b628044d727bf"
+  },
+  "landing": "Commit/remote identity recorded separately; no self-hash/commit loop",
+  "next_action": "Prepared CFG3 actual measurement-name entry through native validation, Results and CSV; no backend/framework prerequisite"
+}

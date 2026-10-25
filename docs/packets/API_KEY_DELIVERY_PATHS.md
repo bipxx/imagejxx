@@ -4,7 +4,7 @@ Planning review, 2026-10-25. “API key” here means a named API, command or
 configuration key, not an authentication credential. This card supplements the
 [execution plan](../THREE_AGENT_EXECUTION.md) and [61-key source audit](CFG1-settings-consumer-audit.md).
 Implementation was paused during this review. Current execution has resumed;
-follow [MW1](MW1-manual-threshold-workflow.md) and the execution authority for
+follow [CFG2](CFG2-settings-selection-enlargement.md) and the execution authority for
 implementation/evidence status. The original review added no acceptance claim.
 All original eligible ImageJ/Fiji requirements remain required. “Shortest” means
 reuse the existing implementation and prove the missing behavior, not omit it.
@@ -72,8 +72,8 @@ qualification/repair batch, not a claim of missing implementation.
 | `point_size` | Existing point/multipoint creation; inspect point width/render extent | C3 draw |
 | `text_size` | Existing text dialog default; open after Apply, inspect value and a bounded text render; font provenance remains explicit | C3 draw |
 | `show_rois` | Existing ordinary/linked ROI render toggle; keep geometry unchanged while visibility changes | C4 selection |
-| `selection_enlargement_distance` | Existing enlargement command/dialog; open after Apply and verify captured value and literal enlarged region | C4 selection |
-| `selection_enlargement_units` | Same command with nonunit X calibration; compare pixels/calibrated results together with distance | C4 selection |
+| `selection_enlargement_distance` | CFG2 qualified actual Preferences→ordinary/scientific enlargement→Restore/override→fresh reopen; reuse its scoped receipt | Done scoped |
+| `selection_enlargement_units` | CFG2 proves stored pixel magnitude, calibrated X-spacing display and literal Expand/Shrink results through both launchers | Done scoped |
 | `wand_tolerance` | CFG1 qualified actual Preferences→canvas masks→fresh reopen; reuse its current receipt | Done scoped |
 | `wand_connectivity` | CFG1 qualified 4/8 masks, invalid 6 refusal and persistence; no duplicate implementation | Done scoped |
 | `animation_fps` | Existing playback clock; deterministic clock progression first, real scheduling smoke separately | C5 stack/view |

@@ -2,6 +2,7 @@
 import hashlib
 import importlib.util
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -261,6 +262,59 @@ class IndexedCaptureInputs(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Indexed report changed after capture"):
             capture.write_case_index(self.output, self.group, items, 0.5)
         self.assertFalse(index.exists())
+
+
+class SelectionSettingsPair(unittest.TestCase):
+    """Synthetic transport checks, separate from actual editor qualification."""
+    def test_reopen_requires_the_actual_preceding_persist(self):
+        reopen = ("settings-selection", "enlargement-reopen")
+        persist = ("settings-selection", "enlargement-persist")
+        for selected in ([reopen], [reopen, persist]):
+            with self.subTest(selected=selected), self.assertRaisesRegex(ValueError, "preceding persist"):
+                capture.select_cases(selected)
+
+    def pair(self, mutate=False, wrong_parent=False):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        root = Path(temporary.name)
+        output = root/"observations"
+        keys = [("settings-selection", case) for case in ("enlargement-persist", "enlargement-reopen")]
+        def observe(argv, **kwargs):
+            case = argv[-3]; actual, preferences = Path(argv[-2]), Path(argv[-1])
+            actual.mkdir()
+            if case == "enlargement-persist":
+                self.assertFalse(preferences.exists())
+                preferences.write_text('{"actual_ui_fixture":3}', encoding="utf-8")
+            else:
+                self.assertEqual(preferences.read_text(encoding="utf-8"), '{"actual_ui_fixture":3}')
+                if mutate:
+                    preferences.write_text('{"actual_ui_fixture":4}', encoding="utf-8")
+            parent = os.getpid()+1 if wrong_parent else os.getpid()
+            (actual/"case.json").write_text(json.dumps({"schema":"cfg2.settings-selection.ui.001",
+                "case_id":case,"context":"imgui_cpp","status":"observed","error":"",
+                "acceptance_claim":False,"states":{"fixture":{}},"events":[{}],"frames":[{}],
+                "fixture":{"runtime":{"process_id":17,"parent_process_id":parent}}}), encoding="utf-8")
+            (actual/"runtime.json").write_text(json.dumps({"process_id":17,"parent_process_id":parent}), encoding="utf-8")
+            return subprocess.CompletedProcess(argv, 0)
+        with patch.object(capture.subprocess, "run", side_effect=observe):
+            capture.capture(output, sys.executable, root, selected_cases=keys)
+        return json.loads((output/"receipt.json").read_bytes())
+
+    def test_persist_starts_absent_and_reopen_keeps_same_file(self):
+        row = self.pair()
+        self.assertEqual(row["state"], "observed")
+        persist, reopen = row["cases"]
+        self.assertIsNone(persist["preferences_before"])
+        self.assertEqual(persist["preferences_after"], reopen["preferences_before"])
+        self.assertEqual(reopen["preferences_before"], reopen["preferences_after"])
+
+    def test_reopen_rewrite_is_not_accepted(self):
+        with self.assertRaisesRegex(ValueError, "changed persisted preference bytes"):
+            self.pair(mutate=True)
+
+    def test_unrelated_runtime_parent_is_not_accepted(self):
+        with self.assertRaisesRegex(ValueError, "not the launched child"):
+            self.pair(wrong_parent=True)
 
 
 if __name__ == "__main__":

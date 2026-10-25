@@ -1,13 +1,13 @@
 # Three-agent execution plan
 
 **Current execution, 2026-10-25:** implementation has resumed with exactly
-three agents including root/C. MW1 is landed at `1fe5204`; the active packet is
-[CI1 Auto/version and shadow observation recovery](packets/CI1-auto-version-shadow-observation.md).
-A owns the native Auto compatibility test, B the shared shadow observer,
+three agents including root/C. MW1/CI1 are landed at `1fe5204`/`aed781f`; the active packet is
+[CFG2 enlargement preferences](packets/CFG2-settings-selection-enlargement.md).
+A owns native consumer contracts, B shared ImGui interaction/observations,
 C independent expectations and the sole build/install lock. The scoped packet
 cards and receipts take precedence over historical pause/resume paragraphs.
-CI1 is locally scoped-qualified with landing pending; the next prepared editor
-packet is [CFG2 enlargement preferences](packets/CFG2-settings-selection-enlargement.md).
+CFG2 is locally scoped-qualified with landing pending; next prepared editor
+feature is [CFG3 measurement-name entry](packets/CFG3-measurement-name-entry.md).
 Full Windows/macOS I/O/UI CI profiles remain a separate required open track.
 
 **Earlier planning amendment, 2026-10-25:** implementation was paused for review.
@@ -17,7 +17,7 @@ The user-authorized Astra max plan review produced the
 resume/serial-critical-path instructions below. P13i is pushed at `0323a73`;
 CFG1 is pushed at `6b6dfd150e0443fee05c356474c502547d2d9283`. Four uncommitted
 CG0 reference source/contracts are preserved and not independently qualified.
-The selected ready workflow is MW1; keep the
+The selected workflow at that review was MW1; keep the
 continuous-geometry backend/profile decision bounded and independent. No
 new dependency is authorized by that documentation review. MW1 uses existing code.
 
@@ -29,8 +29,9 @@ add early intake/direct-SDK domain review, affected producer/fixture checks,
 composed-stage controls and peak capture admission. Apply them at the existing
 packet/run owners; do not start a separate infrastructure campaign. Exactly
 three roles remain in the execution plan. MW1 is locally scoped-qualified and
-pushed; its hosted CI is pending. Address CI1's retained failures before CFG2's
-prepared selection-enlargement consumer proof.
+pushed; hosted acceptance remains separate. CFG2 now qualifies the next two
+consumer chains; proceed to CFG3 after landing, preserving every open platform
+and full-product requirement.
 
 Reviewed **2026-10-24**. Current scoped milestone: **CFG1**,
 [Wand settings-consumer qualification](parity/reviews/cfg1-settings-wand001/receipt.json).

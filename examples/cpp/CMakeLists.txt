@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.18)
 project(imagejxx_example LANGUAGES CXX)
 include(CTest)
 find_package(imagejxx CONFIG REQUIRED)
+# This read-only consumer requires an actual UI-written preferences file.
+# Its complete consumer check is run after the paired UI persistence recipe.
+add_executable(imagejxx_settings_selection_example settings_selection.cpp)
+target_link_libraries(imagejxx_settings_selection_example PRIVATE imagejxx::core)
 add_executable(imagejxx_manual_threshold_workflow_example manual_threshold_workflow.cpp)
 target_link_libraries(imagejxx_manual_threshold_workflow_example PRIVATE imagejxx::core)
 if(BUILD_TESTING)

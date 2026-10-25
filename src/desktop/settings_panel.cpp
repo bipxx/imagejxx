@@ -395,7 +395,7 @@ void SettingsPanel::draw(const Settings &current,
             ImGuiItemFlags_Disabled);
       if (ImGui::InputDouble(d.label.c_str(), &n, 0, 0, "%.8g"))
         v = n;
-      if (d.name == "wand_tolerance" && !editorWindow->SkipItems) {
+      if (!editorWindow->SkipItems) {
         const auto a = ImGui::GetItemRectMin(), b = ImGui::GetItemRectMax();
         const auto &context = *ImGui::GetCurrentContext();
         // A zero-step InputDouble has one editable InputText. Keep the point
@@ -417,26 +417,22 @@ void SettingsPanel::draw(const Settings &current,
       }
     } else if (d.kind == SettingKind::Choice) {
       auto &text = std::get<std::string>(v);
-      const bool observeChoice = d.name == "conversion_unsigned16_range" ||
-                                 d.name == "startup_mode";
       Json choiceControls = Json::object();
       Json comboControl;
       if (ImGui::BeginCombo(d.label.c_str(), text.c_str())) {
         for (const auto &choice : d.choices) {
           if (ImGui::Selectable(choice.c_str(), choice == text))
             text = choice;
-          if (observeChoice)
-            choiceControls[choice] = itemControl();
+          choiceControls[choice] = itemControl();
         }
         ImGui::EndCombo();
-      } else if (observeChoice) {
+      } else {
         comboControl = itemControl();
       }
-      if (observeChoice)
-        fields_[d.name] = {{"name", d.name}, {"kind", "choice"},
-                           {"draft", text}, {"applied", current.text(d.name)},
-                           {"combo", std::move(comboControl)},
-                           {"choices", std::move(choiceControls)}};
+      fields_[d.name] = {{"name", d.name}, {"kind", "choice"},
+                         {"draft", text}, {"applied", current.text(d.name)},
+                         {"combo", std::move(comboControl)},
+                         {"choices", std::move(choiceControls)}};
     } else if (d.kind == SettingKind::Text) {
       auto &text = std::get<std::string>(v);
       ImGui::InputText(d.label.c_str(), &text);
