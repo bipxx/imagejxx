@@ -227,7 +227,7 @@ inline std::size_t target_mask_workspace(const ResolvedTarget &target,
         const auto packed = pixels / 8 + (pixels % 8 != 0);
         if (packed > std::numeric_limits<std::size_t>::max() - 512 * 1024 ||
             packed + 512 * 1024 > max_workspace_bytes)
-          throw std::invalid_argument("Rounded target exceeds working-byte limit");
+          throw std::invalid_argument("Rounded target exceeds processing memory budget (working-byte limit)");
         const auto commands = selection.rounded_path(true);
         constexpr auto argument_bytes = sizeof(commands);
         const std::vector<double> path(commands.begin(), commands.end());

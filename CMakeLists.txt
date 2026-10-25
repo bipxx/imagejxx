@@ -1294,7 +1294,7 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     target_compile_definitions(imagejxx_desktop PRIVATE IMAGEJXX_HAS_TIFF=1)
   endif()
   find_package(Threads REQUIRED)
-  target_link_libraries(imagejxx_desktop PRIVATE Threads::Threads)
+  target_link_libraries(imagejxx_desktop PRIVATE Threads::Threads ${CMAKE_DL_LIBS})
   if(WIN32)
     target_link_libraries(imagejxx_desktop PRIVATE comdlg32 gdi32)
   endif()
@@ -1429,6 +1429,9 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     add_executable(imagejxx_rank_panel_tests
       tests/native/test_rank_panel.cpp src/desktop/rank_panel.cpp
       src/desktop/operation_target_panel.cpp src/desktop/metadata.cpp)
+    if(APPLE)
+      imagejxx_use_private_charconv(imagejxx_rank_panel_tests)
+    endif()
     target_link_libraries(imagejxx_rank_panel_tests PRIVATE
       imagejxx::core imgui::imgui nlohmann_json::nlohmann_json)
     add_executable(test_shortcut_window tests/native/test_shortcut_window.cpp)

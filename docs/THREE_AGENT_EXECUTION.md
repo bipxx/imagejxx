@@ -1,5 +1,43 @@
 # Three-agent execution plan
 
+**Latest additive checkpoint, 2026-10-25:** this paragraph supersedes older
+queued/pending-history/storage scheduling below. CI2 `540f5cb` run
+`40226035342` has passed all three headless/core-SDK jobs and all three source
+producers; the run is now terminal failure and installed consumers remain
+unaccepted. Held local fixes select
+Windows Ninja/Release and apply private Apple charconv settings to the duplicate
+rank-panel test compilation owner. Focused controls pass; actual hosted
+successor execution remains required. Preserve the original run handles.
+
+The existing Windows history build/install passes all eight original reader
+IDs, 13 metadata regressions, four native groups and five fresh headless
+children. Its source freeze predates the later Apple CMake/workflow edits;
+preserve that identity and explicitly review reuse before a combined successor.
+Linux's existing-cache eight-target build/install and the same eight reader IDs,
+13 metadata regressions, four native groups and five fresh headless children now
+pass. Sampled build growth was 12,300,472 bytes. A independently checked the
+1,222-row source freeze, listed dependencies and all installed products; B owns
+independent capture/reader evidence review. Root/C next publishes the coherent
+scoped successor after evidence retention, then follows its actual hosted CI
+and connects authentic before-build/terminal-build inputs to the existing
+paired history route. No new worker or cache is needed. SDK and Darwin remain
+separate required gates; local passes do not close full G010 or installed CI.
+
+Linux observation review is complete. Verified archive retention preserved 198
+files in 1.43 MB; 99 Linux capture/smoke files totaling 17.0 MB were retired
+after review, with original directories retained for restoration. Latest known
+storage is 8,546,497,041 bytes with 43,437,551 bytes upper-bound headroom; the
+unreadable-cache and future peak-admission limits still apply.
+
+Corrected whole-root storage is 8,542,096,363 known bytes after verified Linux
+retirement/compression, versus 21,329,115,503 before. Two unreadable Windows
+caches leave the budget unverified; the dated 47,838,229-byte upper-bound margin
+is not peak-build admission. Preserve blocked Windows cleanup targets and
+original scientific hashes. Details and easiest owner paths are in the
+[compilexx delta](../../compilexx/imagejxx-plan-inefficiencies.md#latest-delta-close-target-ownership-and-retire-storage-by-role).
+Full G010, Linux/macOS/SDK, scientific references and all release gates remain
+open; 99-family states remain 47 in progress / 52 open / zero complete.
+
 **Current execution, 2026-10-25:** implementation has resumed with exactly
 three roles including root/C. MW1/CI1 are landed at `1fe5204`/`aed781f`;
 [CFG2 enlargement preferences](packets/CFG2-settings-selection-enlargement.md)
@@ -12,17 +50,26 @@ runner, dependency-profile, CMake/SDK and workflow source candidate on
 source profiles remain unqualified until their actual hosted preparation and
 full installed cohorts pass. See the
 [latest cross-project actions](packets/COMPILEXX_CROSS_PROJECT_REVIEW.md#current-ci2-review-maintained-path-and-early-failure-controls).
-The published CI2 head is `c0082e4`; its hosted run `40214170090` is
-terminal failure. All three source producers, four Mac Python lifecycle gates
-and Linux/macOS headless native/core-SDK now pass; installed consumers remain
-blocked by the diagnosed Windows transport/Mac numeric portability issues.
+The published CI2 successor is `540f5cbe695e4b83201064a3838357503cdd64f9`;
+its [hosted run 40226035342](https://github.com/bipxx/imagejxx/actions/runs/40226035342)
+was observed queued during the current documentation review. Follow the same
+handle; do not republish for status edits. Predecessor `c0082e4` / run
+`40214170090` is terminal failure. On that predecessor, all three source
+producers, four Mac Python lifecycle gates and Linux/macOS headless
+native/core-SDK passed; installed consumers failed at the diagnosed Windows
+transport/Mac numeric portability issues.
 The [numerical successor](packets/CI2-charconv-portability.md#current-checkpoint-focused-local-qualification-hosted-apple-pending)
-is now source-integrated and locally scoped-qualified; the Windows transport
-repair is also prepared. Next publish the coherent successor and qualify actual
+is now published and locally scoped-qualified; the Windows transport
+repair is included. Next follow the existing run and qualify actual
 Apple/installed SDK paths. Complete profiles and unavailable scientific
 references remain open. Root executes/publishes, A reviews dependency/CMake
 source, B reviews callers and the independent witness. No fourth worker or
 local cache/runtime is added.
+The [seven-document follow-up](packets/COMPILEXX_CROSS_PROJECT_REVIEW.md#further-improvements-from-the-seven-document-review)
+defines the next bounded UI route: existing history HU01–HU04 in both launchers,
+after an authentic installed smoke and measured storage admission. Keep the
+held native metadata successor separate; do not expand to all 124 legacy UI IDs
+before closing this first integrated packet. This is planning, not dispatch.
 Follow the [hosted checkpoint and repair boundary](packets/CI2-full-platform-profiles.md#published-repair-and-current-hosted-findings)
 and [current compilexx review](../../compilexx/imagejxx-plan-inefficiencies.md#current-review-and-next-actions--2026-10-25)
 before older next-action prose. Local fixture/recipe/PNG-consumer repairs have

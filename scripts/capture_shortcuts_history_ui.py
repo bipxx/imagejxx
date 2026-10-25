@@ -6,13 +6,17 @@ Child uses the actual approved CPython engine and only selected installed sites.
 from __future__ import annotations
 
 import argparse
+import _thread
+from contextlib import contextmanager
 import ctypes
 import hashlib
+import importlib.util
 import json
 import os
 from pathlib import Path
 import stat
 import sys
+import threading
 import time
 
 sys.dont_write_bytecode = True
@@ -55,6 +59,8 @@ SPEC = {
                 "schema": "imagejxx.history-settings-ui-observations",
                 "roles": {"producer": "src/desktop/history_settings_ui_probe.cpp",
                           "producer_header": "src/desktop/history_settings_ui_probe.hpp",
+                          "process_helper": "scripts/ci_owned_process.py",
+                          "mac_process_helper": "scripts/ci_mac_process.py",
                           "document": "src/native/document.cpp",
                           "document_header": "include/imagejxx/document.hpp",
                           "application": "src/native/application.cpp",
@@ -165,7 +171,19 @@ def write(path, value):
         stream.write(raw)
 
 
-def engine():
+def engine(portable=False):
+    if os.name != "nt" and portable:
+        if sys.platform == "linux":
+            return Path("/proc/self/exe").resolve(strict=True)
+        require(sys.platform == "darwin", "Unsupported installed history capture platform")
+        function = ctypes.CDLL(None)._NSGetExecutablePath
+        function.argtypes = [ctypes.c_void_p, ctypes.POINTER(ctypes.c_uint32)]
+        function.restype = ctypes.c_int
+        size = ctypes.c_uint32(32768)
+        buffer = ctypes.create_string_buffer(size.value)
+        require(function(buffer, ctypes.byref(size)) == 0 and buffer.value,
+                "Cannot observe actual CPython executable")
+        return Path(os.fsdecode(buffer.value)).resolve(strict=True)
     require(os.name == "nt", "Windows-only installed capture; no fallback")
     kernel = ctypes.WinDLL("kernel32", use_last_error=True)
     function = kernel.GetModuleFileNameW
@@ -176,7 +194,7 @@ def engine():
     return Path(buffer.value).resolve(strict=True)
 
 
-def storage(root, limits=None):
+def storage(root, limits=None, *, live=False):
     limits = {} if limits is None else limits
     byte_limit = limits.get("stage_bytes", 128 * MIB)
     size = files = entries = logs = 0
@@ -185,7 +203,9 @@ def storage(root, limits=None):
         with os.scandir(pending.pop()) as iterator:
             for entry in iterator:
                 entries += 1
-                info = entry.stat(follow_symlinks=False)
+                # Directory enumeration can lag writes through an open Windows handle.
+                info = (os.stat(entry.path, follow_symlinks=False) if live else
+                        entry.stat(follow_symlinks=False))
                 require(entries <= 16384 and not entry.is_symlink() and
                         not getattr(info, "st_file_attributes", 0) & 0x400, "Owned output entry/reparse bound")
                 if stat.S_ISDIR(info.st_mode):
@@ -199,6 +219,125 @@ def storage(root, limits=None):
                 require(size <= byte_limit and files <= 8192 and logs <= 16 * MIB,
                         "Owned output exceeds byte/file/log bounds")
     return {"bytes": size, "files": files, "log_bytes": logs}
+
+
+def history_output(path):
+    """Fresh workspace scratch without the retired local build-root assumption."""
+    path = Path(path).absolute()
+    for ancestor in (*reversed(path.parents), path):
+        try:
+            info = ancestor.lstat()
+        except FileNotFoundError:
+            continue
+        require(not stat.S_ISLNK(info.st_mode) and
+                not getattr(info, "st_file_attributes", 0) & 0x400,
+                "History output has a linked/reparse ancestor")
+    path = path.resolve()
+    root = ROOT.resolve(strict=True)
+    require(path != root and path.is_relative_to(root) and path.parent.is_dir() and
+            not path.exists(), "Fresh history output must be an owned workspace child")
+    return path
+
+
+def history_owner():
+    name = "ci_mac_process" if sys.platform == "darwin" else "ci_owned_process"
+    path = ROOT / "scripts" / (name + ".py")
+    spec = importlib.util.spec_from_file_location("_history_capture_" + name, path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.run_mac_owned if sys.platform == "darwin" else module.run_owned
+
+
+@contextmanager
+def history_storage_watch(output, limits, row):
+    """Monitor only owned history scratch; existing owners perform cleanup."""
+    require(threading.current_thread() is threading.main_thread(),
+            "History ownership must run on the main thread")
+    stopped = threading.Event()
+    monitor = {"poll_seconds": .05, "checks": 0, "state": "running", "first_violation": None}
+    row["live_storage_monitor"] = monitor
+
+    def watch():
+        while not stopped.wait(.05):
+            try:
+                storage(output, limits, live=True)
+                monitor["checks"] += 1
+            except BaseException as error:
+                monitor["first_violation"] = {"type": type(error).__name__, "message": str(error)}
+                if not stopped.is_set():
+                    # Interrupt the owner, never signal a sampled product PID.
+                    _thread.interrupt_main()
+                return
+
+    worker = threading.Thread(target=watch, name="history-storage-monitor", daemon=True)
+    worker.start()
+    try:
+        yield
+    finally:
+        stopped.set()
+        join_deadline = time.monotonic() + 10.
+        interrupted = None
+        try:
+            worker.join(10.)
+        except KeyboardInterrupt as error:
+            # An already queued monitor interruption must not skip joining it.
+            interrupted = error
+            worker.join(max(0., join_deadline - time.monotonic()))
+        monitor["state"] = "unresolved" if worker.is_alive() else (
+            "failed" if monitor["first_violation"] is not None else "stopped")
+        require(not worker.is_alive(), "History storage monitor did not stop within10s")
+        if interrupted is not None:
+            raise interrupted
+    require(monitor["first_violation"] is None,
+            "Live history storage guard refused: " + str(monitor["first_violation"]))
+
+
+def run_history_owned(owner, argv, output, label, deadline, report):
+    """Current ownership, retaining the original history process/report bounds.
+
+    The existing storage guard runs before launch, every50ms while ownership is
+    active, and after resolved cleanup. The native producer retains its own
+    frame/time/report caps. Polling is not an OS disk quota. Every terminal
+    ownership receipt remains a separate file.
+    """
+    started = time.monotonic()
+    remaining = min(15., deadline - started)
+    require(remaining > 0, "Case/context/parent deadline exhausted")
+    row = {"argv": argv, "timeout_seconds": remaining, "state": "starting"}
+    report["processes"].append(row)
+    environment = os.environ.copy()
+    for name in ("PYTHONPATH", "PYTHONHOME", "IMAGEJXX_PREFERENCES", "IMAGEJXX_CONFIG_DIR"):
+        environment.pop(name, None)
+    environment["PYTHONDONTWRITEBYTECODE"] = "1"
+    process_path = output / (label + ".process.json")
+    stdout_path, stderr_path = output / (label + ".stdout"), output / (label + ".stderr")
+    try:
+        storage(output, report["limits"])
+        with stdout_path.open("xb") as stdout, stderr_path.open("xb") as stderr:
+            with history_storage_watch(output, report["limits"], row):
+                terminal = owner(argv, cwd=output, env=environment, timeout=remaining,
+                                 stdout=stdout, stderr=stderr, receipt_path=process_path)
+        require(read_json(process_path) == terminal, "Owned terminal receipt differs from returned result")
+        require(terminal.get("schema") == "imagejxx.owned-command.001" and
+                terminal.get("state") == "exited" and type(terminal.get("exit_code")) is int and
+                terminal["exit_code"] == 0 and
+                terminal.get("target_completed") is True and terminal.get("cleanup_complete") is True and
+                terminal.get("timed_out") is False and type(terminal.get("target_pid")) is int and
+                terminal["target_pid"] > 0, "History product lacks a successful resolved owned exit")
+        row.update(pid=terminal["target_pid"], exit_code=terminal["exit_code"], state="passed")
+        storage(output, report["limits"])
+    except BaseException as error:
+        row.update(state="failed", error={"type": type(error).__name__, "message": str(error)})
+        raise
+    finally:
+        row["elapsed_seconds"] = time.monotonic() - started
+        if process_path.exists():
+            row["owned_process_receipt"] = pin(process_path)
+        if stdout_path.exists():
+            row["stdout"] = pin(stdout_path, True)
+        if stderr_path.exists():
+            row["stderr"] = pin(stderr_path, True)
+    return row
 
 
 def run_owned(api, job_class, argv, output, label, deadline, report, case_directory=None):
@@ -271,7 +410,7 @@ def python_case(args):
     import numpy
     modules = {name: pin(Path(sys.modules[name].__file__)) for name in MODULES}
     numpy_origin = pin(Path(numpy.__file__))
-    actual_engine = pin(engine())
+    actual_engine = pin(engine(portable=args.kind == "history"))
     require(modules == launch["installed_modules"] and actual_engine == launch["python_engine"], "Wrong installed Python/engine origins")
     require(numpy_origin == launch["numpy"]["module"] and numpy.__version__ == launch["numpy"]["version"] == "2.2.6", "Wrong approved NumPy")
     require(all(Path(value["path"]).is_relative_to(site) for value in modules.values()) and
@@ -297,7 +436,7 @@ def python_case(args):
     finally:
         origin["modules_after"] = {name: pin(Path(sys.modules[name].__file__)) for name in MODULES}
         origin["numpy_after"] = pin(Path(numpy.__file__))
-        origin["engine_after"] = pin(engine())
+        origin["engine_after"] = pin(engine(portable=args.kind == "history"))
         if (origin["modules_before"] != origin["modules_after"] or
                 origin["numpy_before"] != origin["numpy_after"] or
                 origin["engine_before"] != origin["engine_after"]):
@@ -309,7 +448,7 @@ def python_case(args):
 
 
 def capture(args):
-    require(os.name == "nt", "Windows-only installed capture")
+    require(args.kind == "history" or os.name == "nt", "Windows-only installed capture")
     spec = SPEC[args.kind]
     selected_cases = spec["cases"]
     if args.case_ids is not None:
@@ -323,9 +462,12 @@ def capture(args):
     limits.update(spec.get("limits", {}))
     started = time.monotonic()
     deadline = started + limits["parent_seconds"]
-    output = args.output.absolute().resolve()
-    build_root = (ROOT / "build").resolve()
-    require(output != build_root and output.is_relative_to(build_root), "Fresh output must be a workspace build child")
+    if args.kind == "history":
+        output = history_output(args.output)
+    else:
+        output = args.output.absolute().resolve()
+        build_root = (ROOT / "build").resolve()
+        require(output != build_root and output.is_relative_to(build_root), "Fresh output must be a workspace build child")
     output.mkdir(exist_ok=False)
     sys.pycache_prefix = str(output / "unused-bytecode-cache")
     report = {"schema_version": 1, "kind": prefix + ".installed-ui-capture.001", "kind_selection": args.kind,
@@ -422,7 +564,7 @@ def capture(args):
                               ("imagejxx.ui.persistence", COMMON["python_preferences"])):
             require(all(bindings["installed_modules"][name][key] == frozen[logical][key] for key in ("bytes", "sha256")), "Installed Python source differs from freeze")
         python = verify(bindings["python_engine"])
-        require(python == pin(engine()) and products["imgui_python"]["executable"] == python and
+        require(python == pin(engine(portable=args.kind == "history")) and products["imgui_python"]["executable"] == python and
                 products["imgui_python"]["producer_artifact"] == products["imgui_python"]["native_artifact"] ==
                 bindings["installed_modules"]["imagejxx._desktop"], "Direct engine/actual desktop module binding differs")
         numpy = bindings["numpy"]
@@ -435,9 +577,12 @@ def capture(args):
                   "installed_modules": bindings["installed_modules"], "source_set_sha256": source_set}
         launch_path = output / "launch-inputs.json"
         write(launch_path, launch)
-        sys.path.insert(0, str(ROOT / "scripts"))
-        from capture_windows_platform_workload import Win32, JobProcess
-        api = Win32(None)  # Process containment only; no OS input/hooks/capture.
+        if args.kind == "history":
+            owner = history_owner()
+        else:
+            sys.path.insert(0, str(ROOT / "scripts"))
+            from capture_windows_platform_workload import Win32, JobProcess
+            api = Win32(None)  # Process containment only; no OS input/hooks/capture.
         provenance = {"schema_version": 1, "kind": spec.get("reader_kind", "p06h." + spec["stem"] + "-ui-reader-inputs.001"),
                       "sources": sources, "source_set_sha256": source_set, "contexts": {}, "cases": [],
                       **selection, **reference}
@@ -457,8 +602,12 @@ def capture(args):
                     remaining = limits["context_seconds"] - elapsed[context]
                     require(remaining > 0, "Actual context60s budget exhausted")
                     case_deadline = min(deadline, time.monotonic() + remaining)
-                process = run_owned(api, JobProcess, argv, output, context + "-" + case, case_deadline, report,
-                                    directory if "native_archive_bytes" in limits else None)
+                if args.kind == "history":
+                    process = run_history_owned(owner, argv, output, context + "-" + case,
+                                                case_deadline, report)
+                else:
+                    process = run_owned(api, JobProcess, argv, output, context + "-" + case, case_deadline, report,
+                                        directory if "native_archive_bytes" in limits else None)
                 elapsed[context] += process["elapsed_seconds"]
                 if "context_seconds" in limits:
                     require(elapsed[context] <= limits["context_seconds"], "Actual context elapsed exceeds60s")

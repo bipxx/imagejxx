@@ -1,3 +1,6 @@
+#if defined(__linux__) && !defined(_GNU_SOURCE)
+#define _GNU_SOURCE
+#endif
 #include "history_settings_ui_probe.hpp"
 #include "actual_observation_transport.hpp"
 #include "headless_session_internal.hpp"
@@ -24,6 +27,13 @@
 #ifdef _WIN32
 #define NOMINMAX
 #include <windows.h>
+#elif defined(__linux__) || defined(__APPLE__)
+#include <cstdint>
+#include <dlfcn.h>
+#include <unistd.h>
+#if defined(__APPLE__)
+#include <mach-o/dyld.h>
+#endif
 #endif
 
 namespace imagejxx::desktop {
@@ -82,9 +92,45 @@ Json runtimeIdentity() {
   static const int anchor = 0;
   value["producer_artifact"] = modulePin(reinterpret_cast<LPCWSTR>(&anchor));
   value["native_artifact"] = modulePin(reinterpret_cast<LPCWSTR>(&imagejxx::shortcut_commands));
+#elif defined(__linux__) || defined(__APPLE__)
+  const auto pid = ::getpid();
+  require(pid > 0,"Cannot observe history process identity");
+  value["process_id"] = static_cast<std::uint64_t>(pid);
+  const auto observedPin = [](const fs::path &observed) {
+    // Loader/OS paths can name an interpreter symlink or a relative image.
+    // Pin the actual canonical file, matching the external origin reader.
+    std::error_code error;
+    const auto resolved = fs::canonical(observed,error);
+    require(!error && resolved.is_absolute() && fs::is_regular_file(resolved,error) && !error,
+        "Cannot resolve observed history artifact to a regular file");
+    return pin(resolved);
+  };
+  std::array<char,32768> path{};
+#if defined(__APPLE__)
+  auto size = static_cast<std::uint32_t>(path.size());
+  require(_NSGetExecutablePath(path.data(),&size)==0 && path.front()!=0 &&
+      std::find(path.begin(),path.end(),char{})!=path.end(),
+      "Cannot observe bounded history executable path");
+  value["executable"] = observedPin(fs::u8path(path.data()));
 #else
-  value["product_identity_available"] = false;
-  value["product_identity_limitation"] = "Actual artifact observer is Windows-qualified only";
+  const auto count = ::readlink("/proc/self/exe",path.data(),path.size());
+  require(count>0 && static_cast<std::size_t>(count)<path.size(),
+      "Cannot observe bounded history executable path");
+  value["executable"] = observedPin(fs::u8path(
+      std::string(path.data(),static_cast<std::size_t>(count))));
+#endif
+  const auto modulePin = [&](const void *address) {
+    Dl_info module{};
+    require(::dladdr(address,&module)!=0 && module.dli_fname && *module.dli_fname,
+        "Cannot identify actual history artifact");
+    return observedPin(fs::u8path(module.dli_fname));
+  };
+  static const int anchor = 0;
+  value["producer_artifact"] = modulePin(&anchor);
+  value["native_artifact"] = modulePin(
+      reinterpret_cast<const void *>(&imagejxx::shortcut_commands));
+#else
+  throw std::runtime_error("History artifact origins require Windows, Linux or macOS");
 #endif
   return value;
 }

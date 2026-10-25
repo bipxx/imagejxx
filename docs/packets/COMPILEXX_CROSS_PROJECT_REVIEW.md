@@ -1,5 +1,52 @@
 # Additional efficiencies from the compilexx notes
 
+## Current delta: target ownership, real controls and full storage scope
+
+This card supersedes the older queued/pending-history and selected-root storage
+wording below. The updated
+[compilexx ImageJXX record](../../../compilexx/imagejxx-plan-inefficiencies.md#latest-delta-close-target-ownership-and-retire-storage-by-role)
+records the latest seven-document review, exact cleanup receipts, owners and
+smallest next actions. No new Astra review or measured speedup is claimed.
+
+- Audit compilation memberships, not just source filenames. Actual Mac11 CI
+  exposed `rank_panel.cpp` compiled by a standalone test without the private
+  charconv settings. The held Apple target fix has three source/configuration
+  controls and a distinguishing missing-owner negative; actual hosted proof is
+  still required. VisPy's SDK/full-build branch discrepancy is an applicable
+  precedent, not a new local renderer defect.
+- Exercise the real cheap boundary first. Held Windows Ninja/Release selection
+  has four controls, actual PowerShell argv and CMake metadata proof. Real
+  history children exposed stale Windows directory metadata that mocks missed;
+  the narrow fresh-stat fix passes both-host interruption/cleanup controls.
+- Preserve qualification identities across source freezes. Windows now passes
+  the original eight history reader IDs, 13 metadata cases, four native groups
+  and five fresh headless children on its authentic build. Later Apple-only
+  CMake/workflow edits require an explicit applicability join or renewed checks.
+  Linux now passes its own eight-target build/install and the same original
+  eight UI IDs, 13 metadata cases, four native groups and five fresh headless
+  children. Its source freeze and installed origins are separate from Windows.
+  macOS/SDK and full G010 remain open. Use saved complete reports for
+  observer-only changes where the existing owner permits reuse.
+- Inventory the whole Linux project root. Corrected known storage was
+  21,329,115,503 bytes, not the earlier selected-child total. Typed retirement
+  of obsolete binaries/cold tests and lossless retention of 702 historical data
+  files brought the recorded total to 8,542,096,363 bytes. Two Windows caches
+  remain unreadable; 47,838,229 bytes is only upper-bound headroom. Admit the
+  next simultaneous build/capture peak separately. Rejected Windows cleanup
+  targets remain untouched. Retired binaries are unavailable; archived original
+  data must be restored before its readers, with original hashes unchanged.
+
+CI2 `540f5cb` run `40226035342` has all three headless/core-SDK jobs and all
+three source producers passed; installed profiles remain unaccepted. Recorded
+failures identify Windows generator selection, Mac standalone rank-target
+settings and Linux missing original references. The last Intel Python3.10
+observation was queued; a subsequent terminal poll and its original log confirm
+the same rank-panel test-owner failure. The run is now terminal. Publish the
+reviewed coherent repair, follow its actual hosted handles and connect the
+missing authentic build inputs to paired history capture through the existing
+runner, rather than another infrastructure or API breadth wave.
+The live queue remains [the three-agent plan](../THREE_AGENT_EXECUTION.md).
+
 ## Current review: maintained producer and actual consumer
 
 The current review covers the six linked project notes and
@@ -20,8 +67,11 @@ native-filesystem mirror after cross-filesystem I/O timed out. Per-case cleanup
 prevents retained dependency-copy generations. This is scoped source/tool proof,
 not release acceptance or a measured speedup.
 
-CI2 repair `c0082e4` is published on `ci2-platform-integration`; its hosted run
-`40214170090` is terminal failure. All three source preparations and four Mac
+CI2 successor `540f5cbe695e4b83201064a3838357503cdd64f9` is published on
+`ci2-platform-integration`. Its [run 40226035342](https://github.com/bipxx/imagejxx/actions/runs/40226035342)
+was observed queued during this review; follow that handle without another push
+for these local status edits. Predecessor `c0082e4` / `40214170090` is terminal
+failure. On that predecessor, all three source preparations and four Mac
 Python lifecycle gates now pass; Windows argument transport and Mac numeric
 portability still block installed consumers. The
 [CI2 hosted checkpoint](CI2-full-platform-profiles.md#published-repair-and-current-hosted-findings)
@@ -40,6 +90,34 @@ receipts now confirm six unavailable reference inputs before reader launch.
 The successor moves that existing check before Linux product preparation,
 retains failure evidence and keeps SDK/Darwin lanes independent. Full family/platform/reference/release obligations and
 the unverified storage budget remain open. This edit creates no build assets.
+
+## Further improvements from the seven-document review
+
+The current reread includes the six project notebooks and `agents_basics.md`;
+the [compilexx ImageJXX card](../../../compilexx/imagejxx-plan-inefficiencies.md#further-improvements-from-the-seven-document-review)
+records the detailed evidence, applicability limits and exits. This is a
+coordinator review, not a fresh Astra audit or performance measurement. Apply
+the following changes at existing packet owners:
+
+| Owner / trigger | Smallest useful action | Exit and limit |
+| --- | --- | --- |
+| C / current CI2 campaign | Reconcile the live head/run pointers and poll the already-published `540f5cb` attempt. Separate queue time, preparation, compilation and installed consumer failures. | Actual terminal job evidence on `40226035342`; predecessor successes remain bound to their original head. No status-only push while the candidate runs. |
+| B author, A review, C execution / next legacy UI packet | Reuse the history producer, capture script and strict reader. Smoke HU01 in both installed launchers first, then complete HU01–HU04 × C++/Python: eight required IDs per platform. | Authentic passed-build/source-freeze/product binding plus real artifact origins. `history_settings_ui_probe.cpp::runtimeIdentity` currently has a non-Windows limitation; repair that seam before claiming non-Windows results. Full 124-ID integration remains open. |
+| Changed-field author + reviewer / before freeze | Audit the complete producer/transport/reader closure and siblings of a changed implementation pattern once. Test real parsing/refusal paths before broad observation. | All affected consumers agree on field meaning, source roles and physical origins. A shared helper is justified only by matching live semantics; no generic metadata framework. |
+| C / before expanding a parameterized cohort | Run one representative actual installed path through the reader with its selected dependencies, capability flags and companions. | The smoke reaches the intended native/UI branch. Classify missing imports, unsupported fixture APIs and observer failures before rebuilding. The `packaging` bootstrap repair is already included; no duplicate guard is needed. |
+| C + reviewer / observer-only change | Re-audit complete applicable retained reports with the successor reader; recapture only missing required information. | Exact original product/report identities and new reader identity are joined. Preserve failed attempts and missing pre-run evidence. Byte-addressed new payloads also need index/commit-byte verification at publication, already exercised for `540f5cb`. |
+| C / capture or relink admission | Compare simultaneous raw, transport/compression and build growth with current measured headroom. | Source010 has only 17,982,876 bytes upper-bound headroom; the history reader's 32 MiB aggregate evidence cap already exceeds that. Resolve admission before execution. Two unreadable caches remain unknown; a small final archive is not peak admission. |
+| C / next optimization decision | Summarize existing command durations and finish current consumer integration before another breadth wave. | A measured phase or repeated operation motivates any optimization. No new benchmark campaign, persistent PASS cache or universal runner. |
+
+QuPath's queued ARM completion, immutable fixture contracts and staged-byte
+checks; napachan's full-cohort/saved-comparison differences; scikit-imagexx's
+metadata/recursive-consumer audits; naparixx's real-provider readiness; and
+VisPy's installed dependency/companion origins motivate these transfers. Their
+incidents are not newly demonstrated ImageJXX defects. ImageJXX's confirmed
+findings are the stale publication pointers, history origin limitation, strict
+build-envelope requirement and dated storage constraint. Keep held native WIP,
+CG0, missing scientific originals and full platform/release obligations visible.
+These local documentation changes create no build or cleanup assets.
 
 ## Historical reviews and supporting observations
 

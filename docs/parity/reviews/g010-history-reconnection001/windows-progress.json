@@ -1,0 +1,206 @@
+{
+  "schema_version": 1,
+  "state": "windows_scoped_verified_other_contexts_open",
+  "acceptance_claim": false,
+  "scope": "existing HU01-HU04 x CPP/Python, original13native defect regression, four native programs and five original isolated headless IDs",
+  "base_commit": "540f5cbe695e4b83201064a3838357503cdd64f9",
+  "source_freeze": {
+    "path": ".tmp/manual-workflow-verification/history-windows-build002/source-freeze.json",
+    "bytes": 352472,
+    "sha256": "4a7e499b3edcc62a23e91733d02a91d7f72fd1a1a784a3e90096361ed7641ea3"
+  },
+  "build_receipt": {
+    "path": ".tmp/manual-workflow-verification/history-windows-build002/receipt.json",
+    "bytes": 19679,
+    "sha256": "c6882847f2228560b85737bf913b154ed62db279b93e1f41a5a58a401d7f6119"
+  },
+  "dependency_inputs": {
+    "path": ".tmp/manual-workflow-verification/history-windows-build002/dependency-inputs.json",
+    "bytes": 130574,
+    "sha256": "ab725c95300fb7720cabef8cbc1e3bef061828d678194eea6921e09cf5091206"
+  },
+  "product_bindings": {
+    "path": ".tmp/manual-workflow-verification/history-windows-build002/product-bindings.json",
+    "bytes": 5269,
+    "sha256": "82a4b2bacc7e10400e0713437c3d3504b30512dfe9075d7e5e7b7b0a7ced713f"
+  },
+  "products": {
+    "cpp": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\imagejxx.exe",
+      "bytes": 18368000,
+      "sha256": "54a955a1430a266c167caf01fe2ce8f2af8065b11900b283bc120907ef1189ca"
+    },
+    "_native": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_native.cp312-win_amd64.pyd",
+      "bytes": 7579136,
+      "sha256": "8e456d7c90a42e455fe5368a15d8dab1189a6c23b848e8cd1cc3dfe79202cfb0"
+    },
+    "_desktop": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_desktop.cp312-win_amd64.pyd",
+      "bytes": 18245120,
+      "sha256": "f2517d6998b11da8bcea12228e830c842cf5ff6f315c7d5df143c824e7de31fe"
+    }
+  },
+  "auxiliary_products": {
+    "_scientific_io": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_scientific_io.cp312-win_amd64.pyd",
+      "bytes": 591360,
+      "sha256": "4d5210b7e214286b433ef9322ae606e88c3c6ea0c648feb1e16ee3c0db5ed40d"
+    }
+  },
+  "paired_ui": {
+    "cases": 8,
+    "expected_ids": [
+      "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU01-imgui_cpp]",
+      "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU01-imgui_python]",
+      "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU02-imgui_cpp]",
+      "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU02-imgui_python]",
+      "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU03-imgui_cpp]",
+      "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU03-imgui_python]",
+      "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU04-imgui_cpp]",
+      "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU04-imgui_python]"
+    ],
+    "reader_sha256": "a07e86a94f61d33f0ceade4404acc9014b73b3ec99f799c814351a432c74d5e9",
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "raw_bytes": 9748278,
+    "elapsed_seconds": 22.89000000001397,
+    "receipt": {
+      "path": ".tmp/manual-workflow-verification/history-windows-reader001/receipt.json",
+      "bytes": 1098,
+      "sha256": "a0fb657a46e879eb1fd2ab5c5070f3421d96699bb962efe2e89a73407c30012e"
+    }
+  },
+  "original_native_defects": {
+    "baseline": {
+      "executed": 13,
+      "failures": 11,
+      "passes": 2,
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/ci2/tools001/native-baseline.xml",
+        "bytes": 11448,
+        "sha256": "4eeebc641dc54b99ed0dee8c3cbf4b3d9fe96b596c42f9234c781b1775f40867"
+      }
+    },
+    "successor": {
+      "executed": 13,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/history-native-windows001/receipt.json",
+        "bytes": 1651,
+        "sha256": "422c97d7149cf4dc045ba8cbcdd906ff9cf3b25b607580927d46d50cf379eae6"
+      }
+    }
+  },
+  "native_programs": {
+    "names": [
+      "native_history_policy_batch",
+      "native_selection_history",
+      "native_settings",
+      "native_preferences"
+    ],
+    "receipt": {
+      "path": ".tmp/manual-workflow-verification/history-native-ctest-windows001/receipt.json",
+      "bytes": 234,
+      "sha256": "2d60deb3fd06dc7e9ed15935eb5598dc6e23415908875a4e7e0f5a75bef2d132"
+    }
+  },
+  "headless": {
+    "ids": [
+      "tests/python/test_history_settings.py::test_history_step_policy_effects",
+      "tests/python/test_history_settings.py::test_history_pixel_budget_effects",
+      "tests/python/test_history_settings.py::test_history_persist_reopen_adopt",
+      "tests/python/test_history_settings.py::test_history_detached_settings_no_owner_effects",
+      "tests/python/test_shortcuts.py::test_A01_base_registry_no_desktop"
+    ],
+    "fresh_processes": 5,
+    "state": "passed",
+    "scope": "four history API cases plus existing shortcut registry case",
+    "receipt": {
+      "path": ".tmp/manual-workflow-verification/history-headless-windows001/receipt.json",
+      "bytes": 13116,
+      "sha256": "60d6058cf255b787de10585e8a61ad0c1795f3e17983a58bb0193d0361039f57"
+    },
+    "retention": {
+      "path": ".tmp/manual-workflow-verification/history-headless-windows001-retention.json",
+      "bytes": 14002,
+      "sha256": "4d52b8ce327dcf12c30ed33e65a244d9ad26625319f3d86f2b293a78ef76fa31"
+    }
+  },
+  "retention": {
+    "availability": "local_retained_not_distributed",
+    "archive": {
+      "path": ".tmp/manual-workflow-verification/history-windows-evidence001.zip",
+      "bytes": 1166564,
+      "sha256": "9486f9fbaa67f2dc367abbe84cd51caee746cf24334e72b22ea8ef9114d90430"
+    },
+    "manifest": {
+      "path": ".tmp/manual-workflow-verification/history-windows-retention001.json",
+      "bytes": 24023,
+      "sha256": "639d9b74eedb9bd17269afdf63b5312b259e6e06af495bca646917951207263f"
+    },
+    "raw_retirement": "automatic approval review rejected removal as blocked by policy; both raw trees and verified archive retained"
+  },
+  "storage": {
+    "sampled_build_growth_bytes": 18361004,
+    "temporary_reserve_bytes": 369098752,
+    "complete_budget_verified": false,
+    "reason": "two unreadable old caches remain unknown; actual post-capture total must be measured",
+    "known_bytes": 8597815009,
+    "normal_limit_bytes": 8589934592,
+    "known_overage_bytes": 7880417,
+    "inventory_path": ".tmp\\manual-workflow-verification\\history-storage-windows-final001.json",
+    "cleanup_rejections": ".tmp/manual-workflow-verification/history-cleanup-rejections001.json",
+    "historical_scope": "known_bytes and overage above describe the original selected-child Linux root set; not complete-root accounting",
+    "scope_correction": {
+      "inventory": {
+        "path": ".tmp/manual-workflow-verification/history-storage-lean-final001.json",
+        "bytes": 1462,
+        "sha256": "e9f5f7af473b24625f127ce9961e1e8ad6ff07d44a096826a214c5072d6bf625"
+      },
+      "known_bytes": 8542096363,
+      "headroom_upper_bound_bytes": 47838229,
+      "complete_budget_verified": false,
+      "unknown_subtrees": [
+        ".cache/pytest",
+        ".cache/pytest-ui"
+      ],
+      "pre_cleanup_complete_root_known_bytes": 21329115503,
+      "temporary_reserve_limit": "Original Windows reserve did not admit the later corrected full-root baseline",
+      "retirement_receipts": [
+        {
+          "path": ".tmp/manual-workflow-verification/history-linux-install-binary-retirement004.json",
+          "bytes": 2775,
+          "sha256": "2d194719827e4b484d7678945379d1f50a0c0d375536cf2e06ab913ffe198eaf"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/history-linux-data-retention001/retirement-summary.json",
+          "bytes": 18140,
+          "sha256": "b3604c947a94a9ca77c83dd92ac1bb4a6afcaaba103f0cba5abc5703044212cd"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/history-linux-cold-tests-retirement002.json",
+          "bytes": 2570,
+          "sha256": "1c3f50312fac6e8785fb4e8cb7f8760f16e8babdb3c3f9e89d1481fb340b435f"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/history-linux-old-runtimes-retirement003.json",
+          "bytes": 2606,
+          "sha256": "4198c2b0596ac961335fe943d65b8c3cf2bae4d468c68e69caf2666715a68431"
+        }
+      ],
+      "availability": "Retired binaries unavailable; historical scientific data losslessly archived with original hashes; active cache/runtime/SDK preserved; Windows policy-blocked cleanup targets retained",
+      "process_scope": "Application reader census clear; private OS service fields remain unknown"
+    }
+  },
+  "remaining": [
+    "same-candidate installed C++ SDK",
+    "Linux actual installed history and API qualification",
+    "Darwin actual history and broker ownership",
+    "maintained hosted capture producer/reader integration",
+    "full G010 and original99family/platform/scientific/release requirements"
+  ]
+}

@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "state": "linux_scoped_verified_other_contexts_open",
+  "acceptance_claim": false,
+  "scope": "original HU01-HU04 x CPP/Python, thirteen metadata regressions, four native groups and five isolated headless IDs",
+  "base_commit": "540f5cbe695e4b83201064a3838357503cdd64f9",
+  "source_dirty": true,
+  "source_freeze": {
+    "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/history-linux-build001/source-freeze.json",
+    "bytes": 372234,
+    "sha256": "16e43b2009a8e6ca1963785c52ab90ddb958af9aae2e42e25076010b32c23271"
+  },
+  "build_receipt": {
+    "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/history-linux-build001/receipt.json",
+    "bytes": 15889,
+    "sha256": "5c06b44bda87103a6cea3c969728ecaf1d02c438a01a784296cd381e4506a6c2"
+  },
+  "dependency_inputs": {
+    "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/history-linux-build001/dependency-inputs.json",
+    "bytes": 152475,
+    "sha256": "345f8b8a8bd238aa81013bd26eb1f8b4291ca35500b49b92b7c665c6292dd4c1"
+  },
+  "dependency_scope_limit": "listed pre-build inputs; supplementary pybind CMake/system linker/tool files were first observed after configure during compilation, then unchanged after build; no full pre-configure toolchain closure claimed",
+  "supplementary_dependencies": [
+    {
+      "path": "/mnt/c/Users/HEQ/Projects/imagejxx/.tmp/manual-workflow-verification/history-linux-extra-dependencies-during001.json",
+      "bytes": 9562,
+      "sha256": "5b8a939348436e6e101777339bbfe2dfa7ae01c61d305f5b13b6a2a77777271c"
+    },
+    {
+      "path": "/mnt/c/Users/HEQ/Projects/imagejxx/.tmp/manual-workflow-verification/history-linux-extra-dependencies-after001.json",
+      "bytes": 502,
+      "sha256": "705e441c3f96a7e5eed1318d4ee130d3a55ed577fd59617824df36027cbefb22"
+    }
+  ],
+  "product_bindings": {
+    "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/history-linux-build001/product-bindings.json",
+    "bytes": 5103,
+    "sha256": "e5724a6edf7dac945542441bdbc39d202bdcebdac5cbac4e849f45a02b64de05"
+  },
+  "products": {
+    "cpp": {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001/imagejxx",
+      "bytes": 37216904,
+      "sha256": "8fc0ff050a6f5245ed872c3d61c2d74765bcaddd75615f1e7fc0647eca172ebb"
+    },
+    "_native": {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001/_native.cpython-312-x86_64-linux-gnu.so",
+      "bytes": 12666432,
+      "sha256": "ef865cd16525ec4da7cfbbf42c87a1165bb192bcab346cc3a4a1baa1c25295f1"
+    },
+    "_desktop": {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001/_desktop.cpython-312-x86_64-linux-gnu.so",
+      "bytes": 34958360,
+      "sha256": "b8e54629b5027042644c2a3a0c269ab994d778be90fbf78b77fc5790ec63a4d8"
+    }
+  },
+  "qualification": {
+    "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/history-linux-qualification001/receipt.json",
+    "bytes": 16450,
+    "sha256": "88730432c7189665236b7ef6ffb83e55f4801dacd35a233e4ee606a47f316d34"
+  },
+  "reader": {
+    "receipt": {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/history-linux-reader001/receipt.json",
+      "bytes": 1079,
+      "sha256": "9e2b9fe26178b13f4d7f1f6d0a48f5e89a324440613367b3b71387e6c8d039de"
+    },
+    "ids": [
+      "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU01-imgui_cpp]",
+      "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU01-imgui_python]",
+      "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU02-imgui_cpp]",
+      "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU02-imgui_python]",
+      "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU03-imgui_cpp]",
+      "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU03-imgui_python]",
+      "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU04-imgui_cpp]",
+      "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU04-imgui_python]"
+    ],
+    "executed": 8,
+    "reader_sha256": "a07e86a94f61d33f0ceade4404acc9014b73b3ec99f799c814351a432c74d5e9"
+  },
+  "metadata": {
+    "receipt": {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/history-native-linux001/receipt.json",
+      "bytes": 1630,
+      "sha256": "fffb793b501068c337bdf2bcfff8077104962446b5ccc934092b255d67ef7c8a"
+    },
+    "executed": 13,
+    "ids": [
+      "tests/python/test_rounded_processing.py::test_budget_refuses_rounded_raster_before_source_reads[add]",
+      "tests/python/test_rounded_processing.py::test_budget_refuses_rounded_raster_before_source_reads[gaussian]",
+      "tests/python/test_rounded_processing.py::test_budget_refuses_rounded_raster_before_source_reads[min]",
+      "tests/python/test_rounded_processing.py::test_budget_refuses_rounded_raster_before_source_reads[max]",
+      "tests/python/test_rounded_processing.py::test_budget_refuses_rounded_raster_before_source_reads[mean]",
+      "tests/python/test_rounded_processing.py::test_budget_refuses_rounded_raster_before_source_reads[median]",
+      "tests/python/test_rounded_processing.py::test_budget_refuses_rounded_raster_before_source_reads[variance]",
+      "tests/python/test_rounded_processing.py::test_budget_refuses_rounded_raster_before_source_reads[outliers]",
+      "tests/python/test_rounded_processing.py::test_budget_refuses_rounded_raster_before_source_reads[top-hat]",
+      "tests/python/test_variance_editor.py::test_legacy_variance_empty_mask_keeps_owner[uint16]",
+      "tests/python/test_variance_editor.py::test_legacy_variance_empty_mask_keeps_owner[float32]",
+      "tests/python/test_variance_channel_legacy.py::test_legacy_channel_empty_mask_stays_read_free[uint16]",
+      "tests/python/test_variance_channel_legacy.py::test_legacy_channel_empty_mask_stays_read_free[float32]"
+    ]
+  },
+  "native": {
+    "junit": {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/history-linux-qualification001/native.xml",
+      "bytes": 1512,
+      "sha256": "297d8af24ade18a32fc7a7c2952a84cf02872f52b6eac5872cb3eb5892a36e07"
+    },
+    "names": [
+      "native_history_policy_batch",
+      "native_selection_history",
+      "native_settings",
+      "native_preferences"
+    ]
+  },
+  "headless": {
+    "receipt": {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/history-headless-linux001/receipt.json",
+      "bytes": 13921,
+      "sha256": "5bc29fbd1d3a943b8871dbe93b2eea30e7e6c47ac8e8711933a14f1e054e4a65"
+    },
+    "ids": [
+      "tests/python/test_history_settings.py::test_history_step_policy_effects",
+      "tests/python/test_history_settings.py::test_history_pixel_budget_effects",
+      "tests/python/test_history_settings.py::test_history_persist_reopen_adopt",
+      "tests/python/test_history_settings.py::test_history_detached_settings_no_owner_effects",
+      "tests/python/test_shortcuts.py::test_A01_base_registry_no_desktop"
+    ],
+    "fresh_processes": 5
+  },
+  "capture": {
+    "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/history-linux-capture001/capture.json",
+    "bytes": 19901,
+    "sha256": "e863f8d2ec5bf85aec29dcd1eed22747fd788f5965543a1c97778082a69c437c"
+  },
+  "retention": {
+    "manifest": {
+      "path": "/mnt/c/Users/HEQ/Projects/imagejxx/.tmp/manual-workflow-verification/history-linux-retention001.json",
+      "bytes": 73952,
+      "sha256": "9b0dae1278fb514af6f7b216172c52ef075dfc617eae87bfce6ad46c1214db0f"
+    },
+    "archive": {
+      "path": "/mnt/c/Users/HEQ/Projects/imagejxx/.tmp/manual-workflow-verification/history-linux-evidence001.zip",
+      "bytes": 1432644,
+      "sha256": "317f76adef513d364a90adf1746fcc3c694ccde37785a2eab17304b089a059cf"
+    },
+    "availability": "local_retained_not_distributed",
+    "raw_retirement": "99 Linux smoke/capture files retired only after verified archive and independent review; original directories retained as restore locators",
+    "retirement": {
+      "path": ".tmp/manual-workflow-verification/history-linux-capture-retirement001.json",
+      "bytes": 1117,
+      "sha256": "7b7393540e9cb53949ad890be60f13b1f85dcb1c6152271890e4da5b720dab72"
+    }
+  },
+  "storage": {
+    "sampled_build_growth_bytes": 12300472,
+    "temporary_growth_limit_bytes": 268435456,
+    "complete_budget_verified": false,
+    "unknown_subtrees": [
+      ".cache/pytest",
+      ".cache/pytest-ui"
+    ],
+    "final_inventory": {
+      "path": ".tmp/manual-workflow-verification/history-storage-linux-final001.json",
+      "bytes": 1463,
+      "sha256": "262e42da777cabba109904d9130f8948fb7315797cd92f84b7d8ad6caf749d1b"
+    },
+    "known_bytes": 8546497041,
+    "headroom_upper_bound_bytes": 43437551
+  },
+  "remaining": [
+    "same-candidate installed C++ SDK",
+    "Darwin actual history and broker ownership",
+    "authentic hosted before-build freeze/terminal build receipt wiring and paired history capture",
+    "full G010 and original99family/platform/scientific/accessibility/release requirements"
+  ],
+  "independent_review": {
+    "build": "A rehashed all1222 sources,683 original dependency pins, all installed manifest rows and four built-to-installed products; listed provenance clear with supplementary timing limits",
+    "observations": "B rehashed59 declared files and checked24 runtime-role joins, exact8/13/4 memberships and five singleton headless children; no blocking mismatch",
+    "scope": "local scoped evidence only, no Darwin/hosted/SDK/fullG010 acceptance"
+  }
+}

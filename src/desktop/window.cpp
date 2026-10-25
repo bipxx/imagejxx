@@ -3,6 +3,7 @@
 #include <imagejxx/playback.hpp>
 #include "shadow_demo.hpp"
 #include "legacy_target_resources.hpp"
+#include "command_metadata.hpp"
 #include "planar_annotation_rebind.hpp"
 #include "roi_import_panel.hpp"
 #include "native_workflow_panel.hpp"
@@ -4145,9 +4146,15 @@ struct Window::Impl {
     dialog.openedDocumentId = source.id();
   }
   Json operationDefaults(const Json &command, const Document &document) const {
-    const auto &image = document.frame();
-    auto values = defaults(command, image);
+    const auto source = document.nativeSnapshot();
+    const auto shape = source.data().dataset.shape();
+    const OperationDefaultContext context{
+        shape.x, shape.y, shape.s, source.data().dataset.pixel_type(), {}};
     const auto id = string(get(command, "id"));
+    // Ordinary form defaults depend only on the captured descriptor. Preserve
+    // the conversion lane's existing sample/display default policy.
+    auto values = id == "convert_image" || id == "invert_uint16"
+        ? defaults(command, document.frame()) : defaults(command, context);
     if (id == "binary_erode" || id == "binary_dilate" || id == "binary_open" ||
         id == "binary_close") {
       const auto options = owner.settings().binary_options();
@@ -4185,7 +4192,7 @@ struct Window::Impl {
             values["range_policy"] = "explicit";
             values["range_min"] = display[0];
             values["range_max"] = display[1];
-          } else if (image.type == PixelType::UInt16 &&
+          } else if (context.type == PixelType::UInt16 &&
                      options.unsigned16_bits) {
             values["range_policy"] = "explicit";
             values["range_min"] = 0.;
@@ -8652,7 +8659,10 @@ void Window::applyOperation(const std::string &id, const Json &params, bool all,
   // Only the asynchronous mode acquires a scheduler reservation.
   const auto source = d->nativeSnapshot();
   const auto memoryBudget = controller_->job_scheduler()->limits().memory_budget;
-  const auto extra = extraWorkspace(id, d->frame(), merged);
+  const auto shape = source.data().dataset.shape();
+  const OperationDefaultContext context{
+      shape.x, shape.y, shape.s, source.data().dataset.pixel_type(), {}};
+  const auto extra = extraWorkspace(id, context, merged);
   const auto workspace = legacy_operation_workspace(
       id, source, all, source.display().crosshair[2], extra, memoryBudget);
   if (asynchronous) {
@@ -11997,7 +12007,10 @@ void Window::Impl::dialogs() {
           const auto source = d->nativeSnapshot();
           const auto memoryBudget = owner.controller_->job_scheduler()->limits().memory_budget;
           const bool poolPreview=id=="auto_mask" && p.value("stack_histogram",false) && allSlices;
-          const auto extra = extraWorkspace(id, d->frame(), p);
+          const auto shape = source.data().dataset.shape();
+          const OperationDefaultContext context{
+              shape.x, shape.y, shape.s, source.data().dataset.pixel_type(), {}};
+          const auto extra = extraWorkspace(id, context, p);
           const auto workspace = legacy_operation_workspace(
               id, source, poolPreview, source.display().crosshair[2], extra, memoryBudget);
           start([source = d->snapshot(), id,

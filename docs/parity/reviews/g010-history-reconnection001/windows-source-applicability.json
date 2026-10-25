@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "state": "explicit_scoped_applicability_review",
+  "historical_freeze_sha256": "4a7e499b3edcc62a23e91733d02a91d7f72fd1a1a784a3e90096361ed7641ea3",
+  "frozen_rows": 1219,
+  "unchanged_rows": 1217,
+  "deltas": [
+    {
+      "logical_path": ".github/workflows/test.yml",
+      "historical_sha256": "e5d6ddbf684eef001d665ccf4f9b0279a4463130a52f1d403b07817a6257e6d1",
+      "current_sha256": "0e0ebd62462e9b598f52aa2a7f4d0e1bc7f6f24180755ed9fb75b17f85dd0097",
+      "exact_inverse_recovers_historical_bytes": true,
+      "applicability": "Registers a source/configuration guard; no local product build input change"
+    },
+    {
+      "logical_path": "CMakeLists.txt",
+      "historical_sha256": "b4f043873eda6c11457a6f1911cedf73e44e8c3a6cbf7ef02565ea8221dfcaab",
+      "current_sha256": "9ce91baccb3555f205ec557a474ea78236d6619178343c1cbaafc769628458c6",
+      "exact_inverse_recovers_historical_bytes": true,
+      "applicability": "Apple-only private configuration on standalone rank-panel test; no Windows/Linux product route change"
+    }
+  ],
+  "limit": "Original build/product/report identities retained. This is no fresh Windows build or hosted source-profile acceptance."
+}

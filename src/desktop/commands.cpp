@@ -1,5 +1,5 @@
 #include "../native/operation_internal.hpp"
-#include "desktop.hpp"
+#include "command_metadata.hpp"
 #include <algorithm>
 #include <type_traits>
 
@@ -133,9 +133,13 @@ Json catalog() {
   return result;
 }
 Json defaults(const Json &command, const Image &image) {
+  return defaults(command, OperationDefaultContext{
+      image.width, image.height, image.channels, image.type, {}});
+}
+Json defaults(const Json &command, const OperationDefaultContext &context) {
   Json result = Json::object();
   for (const auto &[key, value] : operation_defaults(
-           string(get(command, "id")), &image, DefaultProfile::DesktopUI))
+           string(get(command, "id")), context, DefaultProfile::DesktopUI))
     result[key] = valueJson(value);
   return result;
 }
@@ -151,8 +155,12 @@ void validateRecord(const std::string &id, const Json &p) {
 }
 std::size_t extraWorkspace(const std::string &id, const Image &image,
                            const Json &p) {
-  const OperationDefaultContext context{
-      image.width, image.height, image.channels, image.type, {}};
+  return extraWorkspace(id, OperationDefaultContext{
+      image.width, image.height, image.channels, image.type, {}}, p);
+}
+std::size_t extraWorkspace(const std::string &id,
+                           const OperationDefaultContext &context,
+                           const Json &p) {
   OperationParameters normalized;
   try {
     normalized = validate_operation(id, context, parametersFromJson(p));

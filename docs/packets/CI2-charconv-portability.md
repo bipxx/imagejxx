@@ -2,13 +2,32 @@
 
 ## Current checkpoint: focused local qualification, hosted Apple pending
 
+Published successor `540f5cbe695e4b83201064a3838357503cdd64f9` has actual
+macOS headless/core-SDK evidence from run `40226035342`, job `121267485715`:
+189 native and 65 installed SDK cases pass without skips, including
+`native_floating_charconv_editor`. The original 41,556-byte GitHub artifact
+`12611403789` is retained as `hosted40226035342-macos-headless.zip`; its
+SHA-256 is `454c213c90479fe8a047311fcec2705834eb90b61582641f6a4e09f583323f98`
+and matches the API digest/source head. This headless job does not explicitly
+set the macOS11 deployment target; full source-profile builds and installed
+IO/UI consumers still own that target/platform proof. Their original handles
+are now terminal failures: all four Mac consumers compiled the standalone
+rank-panel test without the private configuration applied to production. Actual
+commands retain `-mmacosx-version-min=11.0` but omit the private define/includes
+on that duplicate owner. The held successor applies the existing private helper
+to `imagejxx_rank_panel_tests` only on Apple. Three maintained owner controls
+and an exact missing-call negative pass locally; all seven migrated sources'
+eight compilation memberships were independently reviewed. Actual Mac11
+successor compilation/installed execution remains required. Original run
+`40226035342` is terminal; retain its failures and original source identity.
+
 All 12 declared floating calls are source-integrated through the private editor
 API described below. Input admission, diagnostics, 64-byte caller buffers and
 integer conversions remain unchanged. This is focused supporting qualification,
 not complete product/platform acceptance. Current retained evidence under
 `.tmp/manual-workflow-verification/ci2/` supplements the earlier experiments:
 
-- `charconv-cmake-windows002`: reuse of the active cache, standalone witness
+- `charconv-cmake-windows003`: reuse of the active cache, standalone witness
   build and one exact passing CTest. Strict FP flags affect only backend objects
   and witness; product kernels keep their original flags.
 - `charconv-syntax-linux001`: all seven callers pass std and forced-portable

@@ -6,6 +6,29 @@ Keep optional package defaults and the existing headless profile unchanged.
 
 ## Numerical successor ready for hosted qualification
 
+The coherent successor is published as
+`540f5cbe695e4b83201064a3838357503cdd64f9` on `ci2-platform-integration`.
+Its [run 40226035342](https://github.com/bipxx/imagejxx/actions/runs/40226035342)
+is terminal failure. All three headless/core-SDK jobs and all three source
+producers passed. Both Windows consumers selected Visual Studio and failed the
+single-config Release guard. All four Mac consumers failed the duplicate
+`rank_panel.cpp` compilation in `imagejxx_rank_panel_tests`, which lacked the
+private portability settings; the last Intel3.10 log confirms the same cause.
+Both Linux consumers refused unavailable original references at early readiness.
+The exact terminal snapshot and last Intel log are retained under
+`.tmp/manual-workflow-verification/ci2/charconv-hosted-terminal001.json` and
+`hosted40226035342-job121271084880-failure.log`. These failures do not negate
+the bounded headless/core-SDK successes or qualify full installed profiles.
+
+The local coherent successor selects Windows Ninja/Release/Ninja1.13.2 and
+applies Apple-private charconv settings to the standalone rank test. Four
+Windows recipe controls, three CMake owner controls and a distinguishing
+missing-owner negative support the fixes; actual hosted execution is required.
+The [history packet](G010-history-ui-reconnection.md) also has bounded actual
+Windows/Linux installed evidence. Before-build source/build authentication and
+paired history capture still need wiring through the maintained hosted owner;
+cache discovery alone is identity evidence, not a passed-build receipt.
+
 The [private decimal portability packet](CI2-charconv-portability.md#current-checkpoint-focused-local-qualification-hosted-apple-pending)
 addresses the source-level macOS-11 floating-charconv blocker while preserving
 the 12 editor operations' input, spelling and integer paths. Required-editor
@@ -14,8 +37,8 @@ active-cache standalone CTest passes, and 34 source/license policy controls pass
 per host. The five-module source closure uses BSL; failed raw-backend experiments
 remain separate. These results do not establish actual Apple product/SDK acceptance.
 
-Publish one coherent successor with the held Windows shell/alias fixes, then
-follow its exact hosted handles. Keep all three source producers, four Mac
+The published successor includes the Windows shell/alias fixes. Follow its
+existing hosted handles. Keep all three source producers, four Mac
 Python lifecycle lanes, mandatory SDK consumers and complete-suite requirements.
 Unavailable original references still fail readiness; native metadata-only
 repairs and CG0 files stay outside this packet. The next hosted result must
@@ -55,7 +78,8 @@ Windows shell case. Another fixture-only correction compares the actual symlink
 value before/after refusal, since Windows `readlink()` adds an extended-path
 prefix. Linux24 passes; Windows24 reports nine host symlink skip events, so that
 privileged branch still requires hosted execution. No production link guard
-was relaxed. These local changes are not yet published or hosted-qualified.
+was relaxed. Those changes are now included in `540f5cb`; their actual hosted
+qualification remains pending on its own run.
 
 ## First hosted candidate and repair boundary
 
