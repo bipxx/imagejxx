@@ -1,14 +1,24 @@
 # Three-agent execution plan
 
 **Current execution, 2026-10-25:** implementation has resumed with exactly
-three agents including root/C. MW1/CI1 are landed at `1fe5204`/`aed781f`; the active packet is
-[CFG2 enlargement preferences](packets/CFG2-settings-selection-enlargement.md).
+three roles including root/C. MW1/CI1 are landed at `1fe5204`/`aed781f`;
+[CFG2 enlargement preferences](packets/CFG2-settings-selection-enlargement.md)
+is scoped-qualified and pushed at `40130ba`. The active closeout packet is
+[CFG3 measurement-name entry](packets/CFG3-measurement-name-entry.md).
 A owns native consumer contracts, B shared ImGui interaction/observations,
 C independent expectations and the sole build/install lock. The scoped packet
 cards and receipts take precedence over historical pause/resume paragraphs.
-CFG2 is locally scoped-qualified with landing pending; next prepared editor
-feature is [CFG3 measurement-name entry](packets/CFG3-measurement-name-entry.md).
+CFG3 is locally scoped-qualified:
+[receipt](parity/reviews/cfg3-measurement-names001/receipt.json). Windows/Linux
+each pass the same 1,472 affected cases without skips, six native programs,
+actual C++/Python UI persistence and installed SDK reads (45 checks/file).
+Results cover all 1,024 names through 64-column pages, full CSV and multiline
+literal headers. The prepared successor is
+[CI2 installed platform profiles](packets/CI2-full-platform-profiles.md).
 Full Windows/macOS I/O/UI CI profiles remain a separate required open track.
+Complete storage-budget verification also remains open: two historical pytest
+caches deny read access. The [additive closeout](parity/reviews/cfg3-measurement-names001/closeout.json)
+records the retired uv cache and distinguishes known bytes from unknown sizes.
 
 **Earlier planning amendment, 2026-10-25:** implementation was paused for review.
 The user-authorized Astra max plan review produced the
@@ -29,11 +39,22 @@ add early intake/direct-SDK domain review, affected producer/fixture checks,
 composed-stage controls and peak capture admission. Apply them at the existing
 packet/run owners; do not start a separate infrastructure campaign. Exactly
 three roles remain in the execution plan. MW1 is locally scoped-qualified and
-pushed; hosted acceptance remains separate. CFG2 now qualifies the next two
-consumer chains; proceed to CFG3 after landing, preserving every open platform
-and full-product requirement.
+pushed; hosted acceptance remains separate. Preserve every open platform and
+full-product requirement while completing CFG3.
 
-Reviewed **2026-10-24**. Current scoped milestone: **CFG1**,
+The [latest compilexx delta](../../compilexx/imagejxx-plan-inefficiencies.md#latest-delta-close-the-consumer-boundary-before-building)
+was applied within CFG3: independent control IDs, pending-text Apply proof,
+normal CI/reader registration, peak admission and exact source/outcome joins.
+The late multiline counterexample was reproduced safely and fixed before the
+final frozen campaigns; earlier passing results retain their previous scope.
+
+Next: take CI2's small installed-discovery
+repair and explicit dependency/profile work. Keep Windows runtime pins and
+exact platform-applicability requirements. Missing dependency delivery blocks
+only its consumers, not independent editor tracks. Source-ready declarations
+precede qualification; accepted family states change only at their owning gates.
+
+Historical **2026-10-24** checkpoint: **CFG1**,
 [Wand settings-consumer qualification](parity/reviews/cfg1-settings-wand001/receipt.json).
 Windows/Linux each pass seven new native groups/303 checks, existing Settings
 and Preferences programs, 92 headless API cases, eight actual route readers,
@@ -255,7 +276,8 @@ reference gates, UI lifecycle, case IDs and phased exit. Do not maintain a secon
 implementation specification here. P13h is scoped-qualified at
 `4a80b3570c59e547f2571c7fc2b95d85a5b66d0e`; do not restart its closeout.
 
-Current state: **MW1 scoped Windows/Linux verification passed; landing pending**. The efficiency review
+Current state: **CFG3 scoped Windows/Linux verification passed**.
+MW1 is already pushed at `1fe5204`. The efficiency review
 replaces a global geometry critical path with independent ready workflow tracks.
 CG0's bounded backend/profile experiment blocks its geometry consumers only.
 CFG1's [clause ledger](packets/CFG1-qualification-ledger.md) owns its
@@ -396,17 +418,20 @@ storage budget; local sequential runs are the default.
 
 Measure generated storage before and after substantial runs. The latest recorded
 P13i measurement is **8,321,033,406 bytes (7.75 GiB)**, leaving 268,901,186 bytes
-below the normal limit. This is a historical measurement, not a current free-space
-check. E1/E2/E3 superseded UI archives have verified additive retirement receipts.
+below the limit within that selected root set. It is incomplete historical
+accounting, not complete budget proof or a current free-space check.
+E1/E2/E3 superseded UI archives have verified additive retirement receipts.
 Remeasure all caches, runtimes, dependencies, source mirrors, scratch and retained
 evidence before substantial runs. That older tally omitted SDK coverage; the
 later corrected local measurement is 8,517,273,203 bytes, including `.tools`,
-and is also historical. Do not infer current headroom from either value.
-E7 now has 64 routes/128 readers per platform, including six legacy stack-choice
-routes. The local Windows bounded-chunk ledger reports passed; canonical E7
-cross-platform qualification remains open. The complete raw capture set does
-not fit the remaining headroom. Retain and verify
-each terminal chunk before starting the next. Do not recreate caches or environments.
+and is also historical. Later review found omitted uv/public/auxiliary roots;
+two inaccessible pytest caches remain unknown. Do not infer current headroom
+or complete budget verification from either value.
+E7/P13i's scoped cross-platform qualification is recorded in its final receipt,
+with 64 routes/128 readers per platform including six legacy stack-choice routes.
+It does not close full families or release. When complete raw captures cannot fit
+admitted headroom, retain and verify each terminal chunk before the next.
+Do not recreate caches or environments.
 The normal combined working budget is **8 GiB** under [AGENTS.md](../AGENTS.md).
 Never recreate the retired `build/` generations. Leave protected retirement
 residue and unrelated projects/global caches alone. Reuse dependencies and

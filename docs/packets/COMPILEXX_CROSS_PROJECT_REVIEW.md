@@ -13,10 +13,66 @@ that the other projects' defects exist here. They extend the
 [Astra efficiency amendment](EXECUTION_EFFICIENCY_REVIEW.md) without replacing
 its per-key paths or creating another execution framework. The original review
 was documentation-only while implementation was paused. Implementation has
-since resumed: [MW1](MW1-manual-threshold-workflow.md) is locally scoped-qualified
-with landing pending. Its card and receipt supersede the historical proposed
-handoff below; Program V9 is now typed manual threshold. This review does not
+since resumed: [MW1](MW1-manual-threshold-workflow.md), CI1 and CFG2 are landed
+at `1fe5204`, `aed781f` and `40130ba`. CFG3 is now locally scoped-qualified; its [receipt](../parity/reviews/cfg3-measurement-names001/receipt.json)
+binds the final installed checks. Their cards and receipts supersede historical proposed
+handoffs below; Program V9 is now typed manual threshold. This review does not
 establish full-family, hosted-CI or release acceptance.
+Storage figures in the historical sections used selected roots. CFG3's final
+review found the omitted project-local uv cache and public/auxiliary artifacts;
+106 obsolete wheel copies were retired with installed bytes unchanged. Two
+historical pytest cache directories deny access and remain unknown. The additive
+closeout preserves old reports and explicitly leaves the complete budget
+unverified; none of the historical sums is upgraded to complete accounting.
+
+## Latest review: CFG3 consumer closure before compilation
+
+The 2026-10-25 reread includes the latest follow-ups in all six linked documents.
+The entry actions below have now been applied to CFG3; retain their original
+diagnoses rather than treat them as unfinished scheduling. Both final platforms
+pass the same 1,472 affected cases without skips and six native programs.
+The [updated ImageJXX notebook](../../../compilexx/imagejxx-plan-inefficiencies.md#latest-delta-close-the-consumer-boundary-before-building)
+records sources, limits, owners and distinguishing checks. The
+[live execution card](../THREE_AGENT_EXECUTION.md) owns dispatch; this review
+adds no jobs, build assets or acceptance. Apply these changes to existing owners:
+
+- **Trace the whole admitted domain into actual consumers.** QuPath's changed
+  sample-count assumptions and VisPy's second declaration generator reinforce
+  the local CFG3 finding: 1,024 valid names exceed one ImGui table's domain.
+  Qualify the authored 64-column pager and unchanged full CSV with actual
+  particles, all pages and reset cases; do not shrink the native validator.
+- **Check data/control identity and the specified branch.** Independent source
+  review found measurement names colliding with the Add/Input/All control IDs.
+  Scope every choice and test literal reserved-looking names through real input.
+  Add Apply with nonempty unadded text; the current Apply route empties it first.
+  These are bounded source/coverage findings, not runtime failures or new passes.
+- **Close cheap integration checks first.** QuPath's obsolete positive fixture
+  and scikit-imagexx's AST/configuration failures motivate one CFG3 checklist:
+  CMake probe/native registration, CLI/Python hooks, normal discovery, ordered
+  fresh pair, independent reader, positive/stale/missing-report controls and
+  effective Release checks. Syntax/collection/transport checks can precede native
+  compilation where they do not require the missing binary.
+- **Separate declaration from acceptance.** Scikit-imagexx's stale inventory
+  made a new candidate internally inconsistent. Keep source-ready entry/schema
+  declarations aligned before qualification, while accepted family states still
+  await their original proof. No equivalent ImageJXX inventory defect was shown.
+- **Admit the link peak and name exact evidence.** The dated CFG3 entry has
+  127,041,568 bytes headroom; its existing desktop archive is 266,941,336 bytes.
+  Re-measure and account for simultaneous outputs before relinking. Retire only
+  an invalidated, owned generated output with released readers if needed.
+  Evidence handoffs must identify successful attempts by exact log/XML/exit and
+  hashes, preserve failures and keep sealed reviews unchanged. A directory name
+  or old green summary cannot select a passing/current artifact.
+
+CFG3 completed the source/reader closure, installed smoke and required affected
+matrix. A late multiline-header counterexample was reproduced safely, fixed and
+qualified on the final source; earlier passing campaigns keep their original
+identities. Oversized reports were reduced by dropping unused frame diagnostics,
+with the original structural guard and full checkpoints retained. SDK binary
+identity reuse avoided another SDK build while final UI files were freshly read.
+The [updated notebook](../../../compilexx/imagejxx-plan-inefficiencies.md)
+records these lessons. C++ processing, commercial eligibility,
+the combined 8 GiB budget, preserved CG0 WIP and all open release gates remain.
 
 ## Additional findings grounded in this repository
 

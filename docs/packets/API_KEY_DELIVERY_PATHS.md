@@ -4,7 +4,7 @@ Planning review, 2026-10-25. “API key” here means a named API, command or
 configuration key, not an authentication credential. This card supplements the
 [execution plan](../THREE_AGENT_EXECUTION.md) and [61-key source audit](CFG1-settings-consumer-audit.md).
 Implementation was paused during this review. Current execution has resumed;
-follow [CFG2](CFG2-settings-selection-enlargement.md) and the execution authority for
+follow [CFG3](CFG3-measurement-name-entry.md) and the execution authority for
 implementation/evidence status. The original review added no acceptance claim.
 All original eligible ImageJ/Fiji requirements remain required. “Shortest” means
 reuse the existing implementation and prove the missing behavior, not omit it.
@@ -112,7 +112,7 @@ qualification/repair batch, not a claim of missing implementation.
 | `processing_workers` | Existing scheduler; deterministic barriers show concurrency ceiling, no sleeps as proof | C10 resources |
 | `processing_memory_mb` | Existing P13i per-job admission/recovery proof; reuse unchanged inputs, add only new consumer boundary | C10 resources |
 | `measurement_precision` | Existing table/CSV formatter; compare output decimals while raw measurements stay equal | C11 analysis/output |
-| `measurements` | Existing column checkboxes; known names and a preloaded valid custom name, deterministic order and CSV header. Arbitrary new-name entry remains a UI residual | C11 analysis/output |
+| `measurements` | CFG3 qualifies new-name Add/Enter, refusals/draft publication, literal control-name/## identities, full CSV, fresh hosts and bounded 1,024-column Results paging including multiline headers | Done scoped; remaining C11 analysis/output stays open |
 | `profile_samples` | Existing profile sampler; asymmetric line, automatic versus explicit sample count and calibrated coordinates | C11 analysis/output |
 | `print_dpi` | Existing PDF export defaults; inspect physical output size/resolution on a tiny calibrated image | C11 analysis/output |
 | `print_landscape` | Same export; inspect page orientation with non-square dimensions | C11 analysis/output |

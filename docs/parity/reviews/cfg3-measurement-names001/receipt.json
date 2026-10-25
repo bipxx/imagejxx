@@ -1,0 +1,383 @@
+{
+  "schema": "cfg3.scoped-qualification.001",
+  "state": "scoped-qualified",
+  "acceptance": false,
+  "packet_scope_qualified": true,
+  "complete_requirement_coverage": false,
+  "full_ci_qualified": false,
+  "baseline_commit": "40130ba5631a537a1bf4a3a55d9e549947c330d3",
+  "scope": "Actual measurement-name entry/validation/Apply-Cancel-Defaults-Revert, literal control-name identities, rendered Results/full CSV/fresh persisted hosts, 1024-column paging and multiline literal headers",
+  "qualified_settings": [
+    "measurements"
+  ],
+  "contract": {
+    "native_processing_kernel_changed": false,
+    "new_dependencies": 0,
+    "native_limits": "1024 exact distinct names,1..256 bytes; only all-space/tab/CR/LF refused; no trimming/case folding or new Settings UTF-8 restriction",
+    "publication": "Detached validated list changes draft; Apply alone saves; pending unadded text is ignored",
+    "results": "64-column pages preserve full ordered1024-name CSV; literal ## and multiline names retain raw keys",
+    "source_preservation": "Exact sample words, owners, carriers, revisions, display, history and raw particle results"
+  },
+  "platforms": {
+    "windows": {
+      "state": "passed",
+      "acceptance": false,
+      "scope": "CFG3 focused qualification identity join",
+      "host": "windows",
+      "cases": 1472,
+      "ordered_nodeids_sha256": "4caaced6626f0ad1e76de60b4e3499cff77aced0ce34986e7a6df18d650293b0",
+      "reader_inputs": 5386,
+      "reader_input_map_sha256": "3889c78d6e037714be2ef6a1ea31d983e837376a3d31e8a13f560998814e97ed",
+      "compiled_inputs": 744,
+      "compiled_input_map_sha256": "da2359ce1f53943e98ae70fbe34c7b4729997ffea3279e63625b2200fad62dfd",
+      "native_groups": [
+        "desktop_results_measurement_columns",
+        "native_preferences",
+        "native_settings",
+        "native_settings_enlargement_consumer",
+        "native_settings_measurement_names",
+        "native_settings_wand_consumer"
+      ],
+      "sdk_checks_each": 45,
+      "transport_tool_tests": 19,
+      "actual_measurement_process_ids": {
+        "imgui_cpp": [
+          119932,
+          62004
+        ],
+        "imgui_python": [
+          110368,
+          117060
+        ]
+      },
+      "products": {
+        "imagejxx._native": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+          "sha256": "ebceb66c4d365a223b6f8c0708374256b5b71e76c90a0260f226be1ef5fc2342"
+        },
+        "imagejxx._desktop": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+          "sha256": "8ffd53ed0374d1994836394008ad6987abb945c26a0a89d9887e5ab40c6cb7f0"
+        }
+      },
+      "application": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+        "bytes": 18367488,
+        "sha256": "764f4a6e62efe99d0d75b777be3afe68c9048c7d62bc0cafddf651a6d0950d2a"
+      },
+      "archives": {
+        "cfg3/windows-final-ui001": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\cfg3-windows-final-ui001.tar.gz",
+          "sha256": "5e8f56e14447d2ac1f7fd41eb4f5234e1a3f6ecb330553c4c68b1f8bde48f4ae",
+          "verified_members": 18,
+          "bytes": 812603
+        }
+      }
+    },
+    "linux": {
+      "state": "passed",
+      "acceptance": false,
+      "scope": "CFG3 focused qualification identity join",
+      "host": "linux",
+      "cases": 1472,
+      "ordered_nodeids_sha256": "4caaced6626f0ad1e76de60b4e3499cff77aced0ce34986e7a6df18d650293b0",
+      "reader_inputs": 5386,
+      "reader_input_map_sha256": "3889c78d6e037714be2ef6a1ea31d983e837376a3d31e8a13f560998814e97ed",
+      "compiled_inputs": 744,
+      "compiled_input_map_sha256": "da2359ce1f53943e98ae70fbe34c7b4729997ffea3279e63625b2200fad62dfd",
+      "native_groups": [
+        "desktop_results_measurement_columns",
+        "native_preferences",
+        "native_settings",
+        "native_settings_enlargement_consumer",
+        "native_settings_measurement_names",
+        "native_settings_wand_consumer"
+      ],
+      "sdk_checks_each": 45,
+      "transport_tool_tests": 19,
+      "actual_measurement_process_ids": {
+        "imgui_cpp": [
+          381,
+          384
+        ],
+        "imgui_python": [
+          453,
+          473
+        ]
+      },
+      "products": {
+        "imagejxx._native": {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-probe-env003/lib/python3.12/site-packages/imagejxx/_native.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "18bd8b1d1bc857baa42ce12939d6d812153bb6a788b16702313ae5ce929b3499"
+        },
+        "imagejxx._desktop": {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-probe-env003/lib/python3.12/site-packages/imagejxx/_desktop.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "9181ba06e8010cb1af9a0f7f5c55ee96f0903d1b480b6682dd8c23cf76bd8d0c"
+        }
+      },
+      "application": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/.tmp/p13g-verification/linux/app-installed/bin/imagejxx",
+        "bytes": 37211808,
+        "sha256": "e0509b50eefa1b1daa57d63752217c4d08a38582b5271a5c5acfc7768cee4d0e"
+      },
+      "archives": {
+        "cfg3/linux-final-ui001": {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/cfg3-linux-final-ui001.tar.gz",
+          "sha256": "05853a4c364131636599066854c9f1d62e69c56f317bc4eb74f4a204eb336cd8",
+          "verified_members": 18,
+          "bytes": 805590
+        }
+      }
+    }
+  },
+  "retained_final_archives": {
+    "windows": [
+      {
+        "name": "windows-final-cohort001",
+        "archive": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\cfg3-windows-final-cohort001.tar.gz",
+          "bytes": 2514336,
+          "sha256": "fc4eb92b129efd54b9232e0959c25df1ae8e0ca5ffac34bd2b4ee2051d28901f"
+        },
+        "retention_receipt": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\cfg3-windows-final-cohort001-retention.json",
+          "sha256": "f5e5576870f6425cebafd2d6dc923f2267f5575b8d8255f5b0f6ea986901dedf"
+        },
+        "verified_members": 277,
+        "raw_retired": true
+      },
+      {
+        "name": "windows-final-wand001",
+        "archive": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\cfg3-windows-final-wand001.tar.gz",
+          "bytes": 998217,
+          "sha256": "131d059f14c9e8458b9808001e5c0768d2552e54e0a07fb11234ceb890adb320"
+        },
+        "retention_receipt": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\cfg3-windows-final-wand001-retention.json",
+          "sha256": "f5c531f1e9637b52e3e9a3732375855d78b28982c7258fbf89c17a55f333bfff"
+        },
+        "verified_members": 6,
+        "raw_retired": true
+      },
+      {
+        "name": "windows-final-selection001",
+        "archive": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\cfg3-windows-final-selection001.tar.gz",
+          "bytes": 596061,
+          "sha256": "148e46245a75d05976fa3218378f92c11ecab42d3954463b4d25cb0a876d08ef"
+        },
+        "retention_receipt": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\cfg3-windows-final-selection001-retention.json",
+          "sha256": "c0ad6d353b2d94b63880e70c73aac69debe6fb47b6c3b9f76bd5940ec3ca93e9"
+        },
+        "verified_members": 10,
+        "raw_retired": true
+      },
+      {
+        "name": "windows-final-ui001",
+        "archive": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\cfg3-windows-final-ui001.tar.gz",
+          "bytes": 812603,
+          "sha256": "5e8f56e14447d2ac1f7fd41eb4f5234e1a3f6ecb330553c4c68b1f8bde48f4ae"
+        },
+        "retention_receipt": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\cfg3-windows-final-ui001-retention.json",
+          "sha256": "20eadd66545a1bf9d88d1f230e6f99ae2a422b8424d8653a92db388db65c6b9d"
+        },
+        "verified_members": 18,
+        "raw_retired": true
+      }
+    ],
+    "linux": [
+      {
+        "name": "linux-final-cohort001",
+        "archive": {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/cfg3-linux-final-cohort001.tar.gz",
+          "bytes": 2543075,
+          "sha256": "0b6481ddeaa2b356d3d55e5e12441a79ef76054756b483bc551cb6203bd17ad6"
+        },
+        "retention_receipt": {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/cfg3-linux-final-cohort001-retention.json",
+          "sha256": "01750a8846807925bcfd99d6226f38aba0ade5cda84de2457e413005acb2538e"
+        },
+        "verified_members": 278,
+        "raw_retired": true
+      },
+      {
+        "name": "linux-final-wand001",
+        "archive": {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/cfg3-linux-final-wand001.tar.gz",
+          "bytes": 1000806,
+          "sha256": "b55ec914094e4ad66b6b2905469b7fb1673a4ef264ebe7d4fdce2f0328f84f83"
+        },
+        "retention_receipt": {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/cfg3-linux-final-wand001-retention.json",
+          "sha256": "5e5e633a7aca65119e6552b30e82bfcfaa97596f625383b9cbe784d955f866b3"
+        },
+        "verified_members": 6,
+        "raw_retired": true
+      },
+      {
+        "name": "linux-final-selection001",
+        "archive": {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/cfg3-linux-final-selection001.tar.gz",
+          "bytes": 594544,
+          "sha256": "8039760372c9b845d330beae2fa3caa2082fe7fae5ebb518f78438a50cea5d6e"
+        },
+        "retention_receipt": {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/cfg3-linux-final-selection001-retention.json",
+          "sha256": "05674ccdc9467058eefdc263f1e4845a04e96ed192935d61a632289e137bd654"
+        },
+        "verified_members": 10,
+        "raw_retired": true
+      },
+      {
+        "name": "linux-final-ui001",
+        "archive": {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/cfg3-linux-final-ui001.tar.gz",
+          "bytes": 805590,
+          "sha256": "05853a4c364131636599066854c9f1d62e69c56f317bc4eb74f4a204eb336cd8"
+        },
+        "retention_receipt": {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/cfg3-linux-final-ui001-retention.json",
+          "sha256": "8ba8f8ba3cea3a8a023a50540e23217d3798fa0559c0910d638682c0110baa3e"
+        },
+        "verified_members": 18,
+        "raw_retired": true
+      }
+    ]
+  },
+  "compiled_inputs": {
+    "path": "compiled-inputs.json",
+    "sha256": "e7e6dd7fa0f00002055978d47631801e3eb24dcf9b630d8b0673e6a971407f50",
+    "entries": 744
+  },
+  "affected_nodeids": {
+    "path": "affected-nodeids.json",
+    "sha256": "8ef563c1bcfbb431a57519d38a420b40d4d7bf0f63bd3cfef212eeb6f84cafa3",
+    "count": 1472
+  },
+  "observer_sources": {
+    "scripts/ci_observations.py": "4ff41f09d0093777ab19c0b395a5f1a20c3e18a1f251877fe173c0a1c074aed3",
+    "tests/tools/test_ci_observations.py": "ef717d78e48d3faf8db5fa602e8380155ed896b87f1a3a1e33d28409f27b06fc",
+    "tests/python/test_settings_measurement_names.py": "00c3a605b68ef8d8f2c7fa6528e5d9dff38d32d8efd8cf94c388bd6795e227f9",
+    "tests/python/test_settings_measurement_ui.py": "c84f12d4fece333b78fd3920976864436f7c016948a1e90e84a445e55bfd4200",
+    "tests/python/test_settings_measurement_capture_profile.py": "a6983556ff15d0e21fef7e6fafec602d81d5936e8dd1097b0db5a33dedaab52d",
+    "tests/python/settings_measurement_ui_child.py": "74b3baa3d07b803f3f3f925fd2480e3500d475545fa878b44e49f75704b47581",
+    "tests/python/settings_measurement_ui_runner.py": "01a34436027028707d84135191ccfae86efa71ea2f961ee576fa6895b0764aaa",
+    "tests/python/test_settings_wand_ui.py": "5967efd3d0ac66f9dd7408a6d91c7f4b8b5f1509519b9db76d6d442ad53afc25",
+    "tests/python/settings_wand_ui_runner.py": "e7355d0ecdd09720b7b27fcc53716bfb2f4bf8044499f974fb788c2230797e45"
+  },
+  "qualification_drivers": {
+    "path": "qualification-drivers.tar.gz",
+    "sha256": "9efeecd808562befc40d0f1e9693201b9a442316a195fc003c547072fcd48cfa",
+    "bytes": 319463,
+    "members": {
+      "audit_final.py": "b19d72e34011c50d8cf1ed8b94e4fb7b138da0cdd74fb6d6449b1819c2450bdc",
+      "build-inputs.json": "c35c2922e92ad0130329a68f152529416560f7570fc7fab7a40c0fd0ad51d81f",
+      "build-inputs002.json": "b8d0e55767c232b17c8b8edce39471e39e4df73d28432acb06b2ddf9eb5da9c9",
+      "build-inputs003.json": "e7e6dd7fa0f00002055978d47631801e3eb24dcf9b630d8b0673e6a971407f50",
+      "build.py": "3ce077477ff6f18243849ff9f6c226a9406837d98858f0b3ebd49c874fbfca6e",
+      "build002.py": "e89441c527431f95856e05243abf8af267f39f2db55dfa8562ed4e4da552a167",
+      "build003.py": "6dd844e0710d441640f526cc6917026df0b7d6d41d8e5e7741acbc4c104d6d0f",
+      "build004.py": "507e5444fe43e2afddca3ff0f6390f82334688daa35850bfcc4b3773f0d0fee7",
+      "capture.py": "31d73996fdebaae971c6e98516792705a63efe6a62417c758e453ae699c928aa",
+      "capture_legacy.py": "4f8c6c7c374a4e20eee2cd64cac3053f9233ce05aa780e9542bc572ed294e1d3",
+      "full_tests.py": "366a1d1ee2d60c7ebb70dde289724e261fc7398998c8369e6162033ac191681b",
+      "full_tests_final.py": "d201b98db8deaf567caa2a87823773f05f951b2639bb279a98dd2831451844f9",
+      "install_development.py": "6c10a0a7e83b52c93f4fea3f26ae102d4b6f1a733f16fb4ea0207eb703b35184",
+      "linux-final-CMakeCache.txt": "0ba3afac8b89d28ab6ce2d540997353935c5c5ad00032212a6305491a327c76e",
+      "multiline_repro.py": "49fda456893f7f1c7076d505a5bc992bab30b6df5682e6417bf9fe9361bcd8fb",
+      "qualified002-preimages/test_results_measurement_columns.cpp": "b8aa00800439552e77147c3c36227e7d08763c753df1d508510dabc505800bd6",
+      "qualified002-preimages/window.cpp": "1160226a3962cc05f5ca272a4bd4fc9b5c843fd8ac144059e6fc0d4a9e01a099",
+      "reader001-preimage/test_settings_measurement_ui.py": "c84f12d4fece333b78fd3920976864436f7c016948a1e90e84a445e55bfd4200",
+      "record_final.py": "c85247429f9eeaa1f5e12491328de9448c9ffba4c79832eef0e0a9dd08b47480",
+      "retire_invalidated_archive.ps1": "3ed3cb4f48f4fc9512bb61556bcb36b1978b2d5e86de55994dc2b5de364a2c81",
+      "retire_sdk.py": "fdbab06c091b0010b24fcb8df985853d6a5753d42b253237beb447c2c9c65b18",
+      "sdk.py": "288a20dc0c4f3590f2ad43bd37f5be0c96a8ceca083f8d7d618e11ea006eeeef",
+      "sdk_read_final.py": "fd02e44321e526f8c7231e8247265ba5de8537aa9066966a76da58f8db59a5fe",
+      "seal_cpp.py": "5f8bcaa353ee0dd55c6ab25c4a7b36fa845685405e016f5e8d1760bb51f470bf",
+      "seal_reports.py": "cccc02f68d528fce49e2f889ae265cbf6e591187ee41e05d9f9d1b78d80900d5",
+      "tool_run.py": "b7be37c4952a8513e0e118ef08fd6dedefec57290ba97ee81a344691f9db3f8b",
+      "ui_smoke.py": "18af29250415944dd08cab492fd7c54b9b4bc5ef7377c90f50234af3f20d5314",
+      "windows-build001/source-preimages/settings_measurement_ui_probe.cpp": "cef8bf11e59d90c4599a0c7edc4c3b3e26a0251805948e6984bbdab04927fd95",
+      "windows-build001/source-preimages/test_results_measurement_columns.cpp": "8ae57c80f9de67a0e2269e4f30e38b2791be6647f55a4bff9666518eb067f591",
+      "windows-final-CMakeCache.txt": "f9e47b48ebcb9fa279b696eecd07eb05089c731cf0e5b805244ccd2c5ef89073"
+    }
+  },
+  "new_native_checks_each_platform": {
+    "settings_groups": 5,
+    "settings_checks": 163,
+    "results_groups": 4,
+    "results_checks": 11726,
+    "actual_results_frames": 373,
+    "actual_click_pairs": 38
+  },
+  "sdk": "Unchanged installed core/consumer bytes reused; fresh final actual CPP and Python UI preference files read in separate owned runs,45 checks each",
+  "failed_and_superseded_attempts": [
+    {
+      "attempt": "windows-build001",
+      "result": "Compiled;5 native programs passed, wide Results test failed exposing tail field with fixed one-way wheel steps",
+      "classification": "Observer helper",
+      "preservation": "Original native log/XML/manifest and source preimages retained; adaptive actual scrolling preserves all visibility/CSV assertions"
+    },
+    {
+      "attempt": "windows-ui-reader001",
+      "result": "2 reopen cases passed;4 edit/join cases refused579800-node report at unchanged500000-node guard",
+      "classification": "Observation payload",
+      "preservation": "Exact reader and original captures losslessly retained; only unused per-frame data projected out, full checkpoints/input retained"
+    },
+    {
+      "attempt": "projection-estimate001",
+      "result": "First prospective projection still506475nodes; no new product observation or acceptance",
+      "classification": "Development estimate"
+    },
+    {
+      "attempt": "windows-build002",
+      "result": "Peak admission refused before configure/build; refined from measured existing artifacts and serial links",
+      "classification": "Storage admission"
+    },
+    {
+      "attempt": "linux-reader-setup-failure001",
+      "result": "Missing shared runpy helper before pytest; exact existing helper synchronized",
+      "classification": "Harness setup"
+    },
+    {
+      "attempt": "linux-multiline-before001",
+      "result": "New additive test fails unchanged previous paged product:26px text in17px header; fixed final header30px with nonoverlapping data",
+      "classification": "Confirmed UI defect",
+      "preservation": "Original product/library hashes and exact old Window/new test identities retained; old generated library bytes are not retained"
+    },
+    {
+      "attempt": "qualified002",
+      "result": "Both1472-case cohorts passed before additive multiline defect was discovered; retained as previous-source proof only",
+      "classification": "Superseded qualification"
+    }
+  ],
+  "storage_policy": "One compiler cache/runtime per platform; verified lossless capture retention, invalidated generated archives retired before relink; no build/ generation or environment/SDK archive",
+  "protected_cg0_sources_unchanged": {
+    "tests/reference/continuous_bezier_exact_reference.py": "9636659391cc3c4a5fab17f42b7497da8dfb383818a12a78d4967c5552bb382b",
+    "tests/reference/ObserveContinuousPathBooleans.java": "b3b64e67e4ded1a660af59d86bb4a8943c4d44d32264e232ea16c53d02d29182",
+    "docs/packets/CG0-analytic-reference-contract.md": "3e7da966e20d14756ea417f6d31580753038380157b55d2c311d02fe5122749a",
+    "docs/packets/CG0-imagej-observer-contract.md": "eb3eaacda74033a1e71ba52e8aa36cb341d6459144d6a397df2b628044d727bf"
+  },
+  "remaining": {
+    "families": {
+      "total": 99,
+      "in_progress": 47,
+      "open": 52,
+      "complete": 0
+    },
+    "unqualified": [
+      "full hosted CI/platform profiles",
+      "macOS",
+      "genuine OS input",
+      "physical GPU/accessibility",
+      "full supported release",
+      "strict unavailable G016 historical evidence",
+      "remaining ImageJ/Fiji requirements"
+    ]
+  },
+  "next": "CI2 bounded installed-platform entry/profile work; dependency delivery blocks its consumers, not independent editor implementation"
+}

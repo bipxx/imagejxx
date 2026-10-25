@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <stdexcept>
 #include <utility>
+#include <type_traits>
 #include <imgui_internal.h>
 #include <imgui_stdlib.h>
 
@@ -18,6 +19,7 @@ void SettingsPanel::swap(SettingsPanel &other) noexcept {
   search_.swap(other.search_);
   group_.swap(other.group_);
   error_.swap(other.error_);
+  measurementName_.swap(other.measurementName_);
   toggleName_.swap(other.toggleName_);
   swap(toggleValue_, other.toggleValue_);
   swap(toggle_, other.toggle_);
@@ -61,6 +63,7 @@ void SettingsPanel::show(const Settings &settings, std::string search) {
   swap(shortcutEditor_, nextEditor);
   search_ = std::move(search);
   group_.clear();
+  measurementName_.clear();
   error_.clear();
   widgetControls_ = Json::object();
   focused_ = false;
@@ -151,6 +154,7 @@ void SettingsPanel::draw(const Settings &current,
     shortcutEditor_.cancelCapture(open_ ? "collapsed" : "close");
     ImGui::End();
     if (!open_) {
+      measurementName_.clear();
       draft_ = current.values();
       shortcutEditor_.synchronize(current.strings("shortcut_bindings"));
       shortcutEditor_.synchronizeApplied(current.strings("shortcut_bindings"));
@@ -229,6 +233,7 @@ void SettingsPanel::draw(const Settings &current,
       draft_.swap(nextDraft);
       using std::swap;
       swap(shortcutEditor_, nextEditor);
+      if (group_.empty() || group_ == "Measurements") measurementName_.clear();
       error_.clear();
     } catch (const std::exception &error) { error_ = error.what(); }
   }
@@ -243,6 +248,7 @@ void SettingsPanel::draw(const Settings &current,
       draft_.swap(nextDraft);
       using std::swap;
       swap(shortcutEditor_, nextEditor);
+      measurementName_.clear();
       error_.clear();
     } catch (const std::exception &error) { error_ = error.what(); }
   }
@@ -276,6 +282,7 @@ void SettingsPanel::draw(const Settings &current,
   const bool closeRequested = ImGui::Button("Close###preferences.close");
   widgetControls_["close_button"] = itemControl();
   if (closeRequested) {
+    measurementName_.clear();
     shortcutEditor_.cancelCapture("close");
     open_ = false;
     focused_ = false;
@@ -474,25 +481,85 @@ void SettingsPanel::draw(const Settings &current,
     } else {
       auto &columns = std::get<std::vector<std::string>>(v);
       ImGui::TextUnformatted(d.label.c_str());
+      Json controls = Json::object(), choiceControls = Json::object();
+      const auto observed = [&] {
+        auto item = itemControl();
+        const auto *owner = ImGui::GetCurrentWindowRead();
+        item["visible"] = ImGui::IsItemVisible();
+        item["clip_rect"] = {owner->ClipRect.Min.x, owner->ClipRect.Min.y,
+                              owner->ClipRect.Max.x, owner->ClipRect.Max.y};
+        item["window_name"] = owner->Name;
+        return item;
+      };
+      if (d.name == "measurements") {
+        ImGui::TextWrapped("Add a column name to this draft, then Apply to save. "
+                           "Names match result keys exactly. Missing values appear blank.");
+        const bool entered = ImGui::InputText("Column name", &measurementName_,
+                                              ImGuiInputTextFlags_EnterReturnsTrue);
+        controls["pending"] = observed();
+        ImGui::SameLine();
+        const bool added = ImGui::Button("Add");
+        controls["add"] = observed();
+        if (entered || added) {
+          try {
+            auto candidate = columns;
+            candidate.push_back(measurementName_);
+            auto validator = current;
+            validator.set("measurements", candidate);
+            columns.swap(candidate);
+            measurementName_.clear();
+            error_.clear();
+          } catch (const std::exception &error) {
+            error_ = error.what();
+          }
+        }
+      }
       bool all = columns.empty();
       if (ImGui::Checkbox("All available columns", &all))
         columns = all ? std::vector<std::string>{}
                       : std::vector<std::string>{d.choices[0]};
+      controls["all"] = observed();
+      controls["all"]["selected"] = columns.empty();
       auto choices = d.choices;
       for (const auto &column : columns)
         if (std::find(choices.begin(), choices.end(), column) == choices.end())
           choices.push_back(column);
-      if (!columns.empty())
-        for (const auto &choice : choices) {
+      if (!columns.empty()) {
+        // Column names are data and may equal any of the surrounding labels.
+        ImGui::PushID("measurement_choices");
+        for (std::size_t index = 0; index < choices.size(); ++index) {
+          ImGui::PushID(static_cast<int>(index));
+          const auto &choice = choices[index];
           auto found = std::find(columns.begin(), columns.end(), choice);
           bool selected = found != columns.end();
-          if (ImGui::Checkbox(choice.c_str(), &selected)) {
-            if (selected)
-              columns.push_back(choice);
-            else
-              columns.erase(found);
+          bool changed;
+          if (choice.find("##") != std::string::npos) {
+            // Authored names are data, not ImGui label/ID markup.
+            changed = ImGui::Checkbox("##column", &selected);
+            choiceControls[choice] = observed();
+            ImGui::SameLine();
+            ImGui::TextUnformatted(choice.data(), choice.data() + choice.size());
+            if (ImGui::IsItemClicked()) { selected = !selected; changed = true; }
+          } else {
+            changed = ImGui::Checkbox(choice.c_str(), &selected);
+            choiceControls[choice] = observed();
           }
+          if (changed) {
+            if (selected) columns.push_back(choice);
+            else columns.erase(found);
+          }
+          choiceControls[choice]["selected"] = selected;
+          choiceControls[choice]["label_text"] = choice;
+          choiceControls[choice]["label_text_source"] =
+              choice.find("##") != std::string::npos ? "TextUnformatted" : "Checkbox";
+          ImGui::PopID();
         }
+        ImGui::PopID();
+      }
+      fields_[d.name] = {{"name", d.name}, {"kind", "string_list"},
+          {"draft", columns}, {"applied", current.strings(d.name)},
+          {"pending_name", d.name == "measurements" ? measurementName_ : std::string()},
+          {"controls", std::move(controls)}, {"choices", std::move(choiceControls)}};
     }
     if (ImGui::IsItemHovered())
       ImGui::SetTooltip("%s", d.description.c_str());
@@ -506,6 +573,13 @@ void SettingsPanel::draw(const Settings &current,
   ImGui::End();
 }
 Json SettingsPanel::diagnostics() const {
+  Json draft = Json::object();
+  for (const auto &entry : draft_) {
+    draft[entry.first] = std::visit([](const auto &value) -> Json {
+      if constexpr (std::is_same_v<std::decay_t<decltype(value)>, std::monostate>) return Json();
+      else return Json(value);
+    }, entry.second);
+  }
   return {{"open", open_},
           {"group", group_},
           {"focused", focused_},
@@ -513,6 +587,8 @@ Json SettingsPanel::diagnostics() const {
           {"shortcut_editor", shortcutEditor_.diagnostics()},
           {"controls", visibleNames_},
           {"fields", fields_},
+          {"draft", std::move(draft)},
+          {"measurements_pending_name", measurementName_},
           {"widget_controls", widgetControls_},
           {"search", search_},
           {"search_point", {searchPoint_.x, searchPoint_.y}},

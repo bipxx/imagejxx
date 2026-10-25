@@ -1,0 +1,73 @@
+{
+  "schema": "cfg3.storage-scope-correction.001",
+  "state": "known-cache-retired;complete-budget-unverified",
+  "acceptance": false,
+  "qualified_code_receipt_sha256": "e849565e8c720af5205043da099a22157500935763f14d2095f99143a7dd7178",
+  "historical_measurements": "Original selected-root reports remain unchanged. They omitted project uv cache and auxiliary/public review roots; they do not prove the complete8GiB budget.",
+  "known_bytes_before_cleanup": 9895761299,
+  "normal_budget_exceeded_at_discovery": true,
+  "cache_retired": {
+    "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\uv",
+    "derived_wheel_copies": 106,
+    "logical_bytes": 1330821109,
+    "archived_manifest_and_checks": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\cfg3-uv-cache-retirement002.tar.gz",
+      "sha256": "4ccae520f5b6ee42c619b002632c8903bd38819eb3829a588cabbfe84f80a029",
+      "members": 7
+    },
+    "commands": [
+      {
+        "argv": [
+          "uv",
+          "cache",
+          "clean",
+          "imagejxx",
+          "--cache-dir",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\uv",
+          "--offline"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "uv",
+          "cache",
+          "clean",
+          "--cache-dir",
+          "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\uv",
+          "--offline"
+        ],
+        "exit_code": 0
+      }
+    ],
+    "force": false,
+    "installed_environments_byte_identical": true,
+    "post_cleanup_native_semantic_smoke": "passed",
+    "old_cache_bytes_available": false
+  },
+  "unavailable_subtrees": [
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest",
+      "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest'"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest-ui",
+      "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest-ui'"
+    }
+  ],
+  "budget_verified": false,
+  "within_budget": null,
+  "cleanup_drivers": {
+    "path": "cleanup-drivers.tar.gz",
+    "sha256": "f4a7a60ec8ca7c3601a268b2885ba70b2ce9476a858bc70017f8669a6018e335",
+    "members": {
+      "cfg3/cache_preflight.py": "5e0a37660d74ed0119f3cc92d4c4a1723076a8e0360bd0ea70628ac5a96adb65",
+      "cfg3/cache_verify.py": "21718890037cef702e0ee9a1a7ca597c85145d450ce290757540bf07d3945ba2",
+      "cfg3/cache_smoke.py": "bb43e554c7e13847d674a4ed2be69acced4fd69025d35d9509f80e409a87b631",
+      "measure_storage_cfg3_inventory.py": "c5c8bb92779379943fd46531ede2ef7eef8c6b78eb758026f5d35ddd54b169c6",
+      "cfg3/uv-cache-retirement/cache_preflight001.py": "006673f91cfa1281d8cf1d3dcf8c7439774174de4bbb896d23676982a705ca88"
+    }
+  },
+  "product_qualification": "No product/observer source or installed environment bytes changed;1472-case results retain original scope. This is not another test campaign.",
+  "next": "Keep all owned roots in inventory; unreadable pytest caches remain protected/unknown. Do not admit a substantial local campaign from historical partial counters."
+}

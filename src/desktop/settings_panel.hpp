@@ -32,6 +32,7 @@ private:
   ShortcutEditor shortcutEditor_;
   SettingsPatch draft_;
   std::string search_, group_, error_, toggleName_;
+  std::string measurementName_;
   bool toggleValue_ = false;
   ImVec2 toggle_{-1, -1}, apply_{-1, -1}, searchPoint_{-1, -1};
   ImVec2 closePoint_{-1, -1};

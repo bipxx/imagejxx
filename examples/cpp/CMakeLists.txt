@@ -6,6 +6,8 @@ find_package(imagejxx CONFIG REQUIRED)
 # Its complete consumer check is run after the paired UI persistence recipe.
 add_executable(imagejxx_settings_selection_example settings_selection.cpp)
 target_link_libraries(imagejxx_settings_selection_example PRIVATE imagejxx::core)
+add_executable(imagejxx_settings_measurements_example settings_measurements.cpp)
+target_link_libraries(imagejxx_settings_measurements_example PRIVATE imagejxx::core)
 add_executable(imagejxx_manual_threshold_workflow_example manual_threshold_workflow.cpp)
 target_link_libraries(imagejxx_manual_threshold_workflow_example PRIVATE imagejxx::core)
 if(BUILD_TESTING)

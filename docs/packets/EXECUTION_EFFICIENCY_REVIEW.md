@@ -1,9 +1,11 @@
 # Execution efficiency review
 
 Reviewed 2026-10-25 with an independent **GPT-6 Astra, max-effort** audit.
-This is a plan amendment only. Implementation remains paused, the four existing
-uncommitted CG0 reference files remain preserved, and no product qualification
-or original G-family status changes.
+This records the historical planning audit, which ran while implementation was
+paused. Implementation has since resumed: MW1/CI1/CFG2 are pushed and CFG3 is
+locally scoped-qualified. The [live execution card](../THREE_AGENT_EXECUTION.md) owns
+current scheduling. The four existing uncommitted CG0 reference files remain
+preserved; this review changes no original G-family status or qualification.
 
 This card owns scheduling/efficiency amendments; the
 [per-key delivery guide](API_KEY_DELIVERY_PATHS.md) owns the shortest proposed

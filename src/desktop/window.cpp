@@ -1009,6 +1009,9 @@ struct Window::Impl {
   std::deque<Pane> panes;
   Json documentTabs = Json::array();
   Json hostControls = Json::object(), workflowControls = Json::object();
+  Json resultsTableObservation = Json::object();
+  std::vector<std::string> resultsColumnNames;
+  std::size_t resultsColumnPage = 0;
   // An immutable staged snapshot has a non-throwing pointer swap after commit.
   // DocumentSnapshot's value swap is not noexcept on every supported STL.
   std::shared_ptr<const DocumentSnapshot> roiManagerSource;
@@ -9728,37 +9731,139 @@ void Window::Impl::rois() {
   ImGui::End();
 }
 void Window::Impl::resultTable() {
-  ImGui::Begin("Results");
+  const bool visible = ImGui::Begin("Results");
+  if (headlessDiagnostics)
+    resultsTableObservation = {{"visible", visible}, {"row_count", owner.results.size()},
+        {"column_count", 0}, {"begin_table", false}, {"headers", Json::array()},
+        {"cells", Json::array()}, {"controls", Json::object()}, {"truncated", false}};
+  const auto observed = [&](const char *name) {
+    observeControl(std::string("results.") + name);
+    if (headlessDiagnostics) {
+      auto &item = hostControls[std::string("results.") + name];
+      const auto *window = ImGui::GetCurrentWindowRead();
+      item["window_name"] = window->Name;
+      item["visible"] = ImGui::IsItemVisible();
+      item["clip_rect"] = {window->ClipRect.Min.x, window->ClipRect.Min.y,
+                            window->ClipRect.Max.x, window->ClipRect.Max.y};
+      resultsTableObservation["controls"][name] = item;
+    }
+  };
   ImGui::Text("%zu measurements", owner.results.size());
-  if (ImGui::Button("Save CSV"))
+  const bool save = ImGui::Button("Save CSV");
+  observed("save_csv");
+  if (save)
     file(
         "Save measurements", true,
         [this](std::string p) { owner.action("save_results", {{"path", p}}); },
         "results.csv");
   ImGui::SameLine();
-  if (ImGui::Button("Clear"))
+  const bool clear = ImGui::Button("Clear");
+  observed("clear");
+  if (clear) {
     owner.results = Json::array();
+    resultsColumnPage = 0;
+  }
   auto current = owner.settings();
   auto columns = resultColumns(owner.results, current);
-  if (!columns.empty() &&
-      ImGui::BeginTable("measurements", int(columns.size()),
+  if (columns != resultsColumnNames) {
+    resultsColumnNames = columns;
+    resultsColumnPage = 0;
+  }
+  constexpr std::size_t pageSize = 64;
+  const std::size_t pages = columns.empty() ? 0 : 1 + (columns.size() - 1) / pageSize;
+  resultsColumnPage = pages ? std::min(resultsColumnPage, pages - 1) : 0;
+  if (pages > 1) {
+    ImGui::BeginDisabled(resultsColumnPage == 0);
+    const bool previous = ImGui::Button("Previous columns");
+    observed("previous_columns");
+    ImGui::EndDisabled();
+    if (previous && resultsColumnPage) --resultsColumnPage;
+    ImGui::SameLine();
+    ImGui::BeginDisabled(resultsColumnPage + 1 >= pages);
+    const bool next = ImGui::Button("Next columns");
+    observed("next_columns");
+    ImGui::EndDisabled();
+    if (next && resultsColumnPage + 1 < pages) ++resultsColumnPage;
+    ImGui::Text("Columns %zu-%zu of %zu", resultsColumnPage * pageSize + 1,
+                std::min(columns.size(), (resultsColumnPage + 1) * pageSize), columns.size());
+  }
+  const auto firstColumn = resultsColumnPage * pageSize;
+  const auto endColumn = std::min(columns.size(), firstColumn + pageSize);
+  const auto shownColumns = endColumn - firstColumn;
+  const bool opened = shownColumns &&
+      ImGui::BeginTable("measurements", static_cast<int>(shownColumns),
                         ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY |
                             ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders |
-                            ImGuiTableFlags_Resizable)) {
-    for (const auto &c : columns)
-      ImGui::TableSetupColumn(c.c_str(), ImGuiTableColumnFlags_WidthFixed, 110);
+                            ImGuiTableFlags_Resizable);
+  if (headlessDiagnostics) {
+    resultsTableObservation["row_count"] = owner.results.size();
+    resultsTableObservation["column_count"] = columns.size();
+    resultsTableObservation["begin_table"] = opened;
+    resultsTableObservation["page"] = resultsColumnPage;
+    resultsTableObservation["page_count"] = pages;
+    resultsTableObservation["page_size"] = pageSize;
+    resultsTableObservation["first_column"] = firstColumn;
+    resultsTableObservation["end_column_exclusive"] = endColumn;
+  }
+  if (opened) {
+    for (auto c = firstColumn; c < endColumn; ++c)
+      ImGui::TableSetupColumn(columns[c].c_str(), ImGuiTableColumnFlags_WidthFixed, 110);
     ImGui::TableSetupScrollFreeze(1, 1);
-    ImGui::TableHeadersRow();
+    const bool literalHeaders = std::any_of(columns.begin() + firstColumn, columns.begin() + endColumn,
+        [](const std::string &name) { return name.find("##") != std::string::npos; });
+    if (literalHeaders) {
+      float headerHeight = ImGui::GetTextLineHeight();
+      for (auto c = firstColumn; c < endColumn; ++c)
+        headerHeight = std::max(headerHeight, ImGui::CalcTextSize(
+            columns[c].data(), columns[c].data() + columns[c].size(), false).y);
+      ImGui::TableNextRow(ImGuiTableRowFlags_Headers,
+                          headerHeight + 2 * ImGui::GetStyle().CellPadding.y);
+      for (auto c = firstColumn; c < endColumn; ++c) {
+        ImGui::TableSetColumnIndex(static_cast<int>(c - firstColumn));
+        ImGui::PushID(static_cast<int>(c - firstColumn));
+        if (columns[c].find("##") != std::string::npos) {
+          const auto position = ImGui::GetCursorScreenPos();
+          ImGui::TableHeader("##literal_column");
+          ImGui::GetWindowDrawList()->AddText(position, ImGui::GetColorU32(ImGuiCol_Text),
+              columns[c].data(), columns[c].data() + columns[c].size());
+        } else ImGui::TableHeader(columns[c].c_str());
+        ImGui::PopID();
+      }
+    } else ImGui::TableHeadersRow();
+    if (headlessDiagnostics) {
+      const auto *table = ImGui::GetCurrentTable();
+      for (std::size_t column = 0; column < shownColumns; ++column) {
+        const auto &geometry = table->Columns[static_cast<int>(column)];
+        const auto flags = ImGui::TableGetColumnFlags(static_cast<int>(column));
+        const bool shown = (flags & ImGuiTableColumnFlags_IsVisible) &&
+            table->RowPosY2 > table->InnerClipRect.Min.y && table->RowPosY1 < table->InnerClipRect.Max.y;
+        resultsTableObservation["headers"].push_back({{"column", firstColumn + column},
+            {"name", ImGui::TableGetColumnName(static_cast<int>(column))},
+            {"text", columns[firstColumn + column]},
+            {"text_source", columns[firstColumn + column].find("##") != std::string::npos
+                ? "AddText.literal" : literalHeaders ? "TableHeader" : "TableHeadersRow"},
+            {"visible", shown},
+            {"rect", {geometry.MinX, table->RowPosY1, geometry.MaxX, table->RowPosY2}}});
+      }
+    }
     ImGuiListClipper clip;
     clip.Begin(int(owner.results.size()));
     while (clip.Step())
       for (int row = clip.DisplayStart; row < clip.DisplayEnd; ++row) {
         ImGui::TableNextRow();
-        for (size_t c = 0; c < columns.size(); ++c) {
-          ImGui::TableSetColumnIndex(int(c));
+        for (auto c = firstColumn; c < endColumn; ++c) {
+          ImGui::TableSetColumnIndex(static_cast<int>(c - firstColumn));
           const auto &value = get(owner.results[row], columns[c].c_str());
           auto label = resultText(value, current);
           ImGui::TextUnformatted(label.c_str());
+          if (headlessDiagnostics) {
+            if (resultsTableObservation["cells"].size() < 256) {
+              const auto a = ImGui::GetItemRectMin(), b = ImGui::GetItemRectMax();
+              resultsTableObservation["cells"].push_back({{"row", row}, {"column", c},
+                  {"name", columns[c]}, {"text", label}, {"visible", ImGui::IsItemVisible()},
+                  {"rect", {a.x, a.y, b.x, b.y}}});
+            } else resultsTableObservation["truncated"] = true;
+          }
         }
       }
     ImGui::EndTable();
@@ -12865,6 +12970,7 @@ Json Window::Impl::headlessReport() {
         ImGui::GetStyle().Colors[ImGuiCol_WindowBg].z};
     result["plot_samples"] = plotX.size();
     result["results_columns"] = resultColumns(owner.results, owner.settings());
+    result["results_table"] = resultsTableObservation;
     result["shadow_demo"] = shadowDemo.diagnostics();
     result["operation_dialog"] = {
         {"id", dialog.id},

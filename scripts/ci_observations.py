@@ -249,6 +249,7 @@ MANUAL_WORKFLOW_CASES = ("manual-workflow-current-path", "manual-workflow-all-z-
                          "manual-workflow-refusal-recovery")
 SETTINGS_SELECTION_CASES = ("enlargement-consume-ordinary", "enlargement-consume-scientific",
                             "enlargement-persist", "enlargement-reopen")
+SETTINGS_MEASUREMENT_CASES = ("measurement-names-edit-persist", "measurement-names-reopen")
 SETTINGS_WAND_STATES = {
     "wand-consume": {"before", "default_selected", "eight_applied", "eight_selected",
                      "tolerant_applied", "tolerant_selected", "four_selected"},
@@ -309,6 +310,8 @@ def settings_wand_observation(raw, case):
 
 
 def cases():
+    for case in SETTINGS_MEASUREMENT_CASES:
+        yield "settings-measurements", case, ["--settings-measurement-ui-case", case]
     for case in SETTINGS_SELECTION_CASES:
         yield "settings-selection", case, ["--settings-selection-ui-case", case]
     for case in MANUAL_WORKFLOW_CASES:
@@ -488,6 +491,10 @@ def reader_environment(output):
         case: str(reports / "settings-selection" / case / "case.json")
         for case in SETTINGS_SELECTION_CASES
     })
+    environment["IMAGEJXX_SETTINGS_MEASUREMENT_CPP_REPORTS"] = json.dumps({
+        case: str(reports / "settings-measurements" / case / "case.json")
+        for case in SETTINGS_MEASUREMENT_CASES
+    })
     return {name: str(path) for name, path in environment.items()}
 
 
@@ -561,6 +568,10 @@ def select_cases(selected_cases=None):
         persist = ("settings-selection", "enlargement-persist")
         if persist not in keys or keys.index(persist) > keys.index(("settings-selection", "enlargement-reopen")):
             raise ValueError("Selection reopen requires the preceding persist process")
+    if ("settings-measurements", "measurement-names-reopen") in keys:
+        persist = ("settings-measurements", "measurement-names-edit-persist")
+        if persist not in keys or keys.index(persist) > keys.index(("settings-measurements", "measurement-names-reopen")):
+            raise ValueError("Measurement reopen requires the preceding persist process")
     index = {(group, case): (group, case, arguments)
              for group, case, arguments in available}
     if set(keys) - set(index):
@@ -603,12 +614,13 @@ def capture(output, executable, root, environment=None, *, selected_cases=None,
             # that parent across cases would leak settings between probes.
             wand_pair = group == "settings-wand" and case in ("wand-persist", "wand-reopen")
             selection_pair = group == "settings-selection" and case in ("enlargement-persist", "enlargement-reopen")
-            preferences_pair = wand_pair or selection_pair
+            measurement_pair = group == "settings-measurements"
+            preferences_pair = wand_pair or selection_pair or measurement_pair
             private = output / "private" / group / ("persisted-pair" if preferences_pair else case)
             private.mkdir(parents=True, exist_ok=preferences_pair)
             tiff = group == "bigtiff" or group in TIFF_READERS
             nested = group == "bigtiff" or (group in TIFF_READERS and TIFF_READERS[group][1])
-            actual = private / ("persist_capture" if preferences_pair and case in ("wand-persist", "enlargement-persist") else
+            actual = private / ("persist_capture" if preferences_pair and case in ("wand-persist", "enlargement-persist", "measurement-names-edit-persist") else
                                 "reopen_capture" if preferences_pair else
                                 "capture001" if nested else "capture")
             transport = output / "reports" / group / case
@@ -624,12 +636,12 @@ def capture(output, executable, root, environment=None, *, selected_cases=None,
                     raise ValueError("Wand reopen preferences are unavailable")
                 argv = [str(executable), *arguments, str(actual), str(preferences)]
                 preferences_before = pin(preferences) if preferences.exists() else None
-            elif group == "settings-selection":
+            elif group in ("settings-selection", "settings-measurements"):
                 preferences = private / "preferences.json"
-                if case == "enlargement-reopen" and not preferences.is_file():
-                    raise ValueError("Selection reopen preferences are unavailable")
-                if case == "enlargement-persist" and preferences.exists():
-                    raise ValueError("Selection persistence must start without a preference fixture")
+                if case in ("enlargement-reopen", "measurement-names-reopen") and not preferences.is_file():
+                    raise ValueError("Settings reopen preferences are unavailable")
+                if case in ("enlargement-persist", "measurement-names-edit-persist") and preferences.exists():
+                    raise ValueError("Settings persistence must start without a preference fixture")
                 argv = [str(executable), *arguments, str(actual), str(preferences)]
                 preferences_before = pin(preferences) if preferences.exists() else None
             elif tiff:
@@ -653,10 +665,10 @@ def capture(output, executable, root, environment=None, *, selected_cases=None,
                 argv = [str(executable), *arguments, str(actual)]
             item = {"group": group, "case": case, "argv": argv, "state": "running",
                     "actual": str(actual), "transport": str(transport)}
-            if group in ("settings-wand", "settings-selection"):
+            if group in ("settings-wand", "settings-selection", "settings-measurements"):
                 item["preferences_path"] = str(preferences)
                 item["preferences_before"] = preferences_before
-                if group == "settings-selection":
+                if group in ("settings-selection", "settings-measurements"):
                     item["capture_process_id"] = os.getpid()
             if tiff:
                 item["inputs"] = [{"path": str(fixture), **fixture_pin},
@@ -668,7 +680,7 @@ def capture(output, executable, root, environment=None, *, selected_cases=None,
             with (private / (case + ".process.log" if preferences_pair else "process.log")).open("wb") as log:
                 process = subprocess.run(argv, cwd=root, env=environment, stdout=log,
                                          stderr=subprocess.STDOUT,
-                                         timeout=min(case_timeout, 60) if group in ("settings-wand", "manual-workflow", "settings-selection") else case_timeout,
+                                         timeout=min(case_timeout, 60) if group in ("settings-wand", "manual-workflow", "settings-selection", "settings-measurements") else case_timeout,
                                          check=False)
             item.update(exit_code=process.returncode, elapsed_seconds=time.monotonic() - started)
             if process.returncode:
@@ -676,7 +688,7 @@ def capture(output, executable, root, environment=None, *, selected_cases=None,
             report = actual / ("report.json" if group == "ieee-viewing" else
                                "imgui-cpp.json" if group in ("headless-session", "selection-legacy") else "case.json")
             if (not report.is_file() or report.stat().st_size > 128 * 1024 * 1024
-                    or (group in ("path-filters", "settings-wand", "manual-workflow", "settings-selection") and report.stat().st_size >= 16 * 1024 * 1024)):
+                    or (group in ("path-filters", "settings-wand", "manual-workflow", "settings-selection", "settings-measurements") and report.stat().st_size >= 16 * 1024 * 1024)):
                 raise ValueError(f"Missing or oversized observation report: {report}")
             observation = (settings_wand_observation(report.read_bytes(), case)
                            if group == "settings-wand" else json.loads(report.read_bytes()))
@@ -685,27 +697,29 @@ def capture(output, executable, root, environment=None, *, selected_cases=None,
                 item["preferences_after"] = pin(preferences) if preferences.exists() else None
                 if case == "wand-reopen" and item["preferences_after"] != preferences_before:
                     raise ValueError("Wand reopen changed the persisted preference bytes")
-            elif group == "settings-selection":
-                if (observation.get("schema") != "cfg2.settings-selection.ui.001"
+            elif group in ("settings-selection", "settings-measurements"):
+                expected_schema = ("cfg3.measurement-names.ui.001" if group == "settings-measurements"
+                                   else "cfg2.settings-selection.ui.001")
+                if (observation.get("schema") != expected_schema
                         or observation.get("case_id") != case or observation.get("context") != "imgui_cpp"
                         or observation.get("status") != "observed" or observation.get("error") != ""
                         or observation.get("acceptance_claim") is not False
                         or not observation.get("states") or not observation.get("events")
                         or not 0 < len(observation.get("frames", [])) <= 750):
-                    raise ValueError(f"Unexpected selection settings observation: {report}")
-                item["settings_selection_schema"] = observation["schema"]
+                    raise ValueError(f"Unexpected settings observation: {report}")
+                item["settings_measurement_schema" if group == "settings-measurements" else "settings_selection_schema"] = observation["schema"]
                 runtime = actual / "runtime.json"
                 identity = json.loads(runtime.read_bytes())
                 if (identity != observation.get("fixture", {}).get("runtime")
                         or type(identity.get("process_id")) is not int or identity["process_id"] <= 0
                         or identity.get("parent_process_id") != item["capture_process_id"]):
-                    raise ValueError("Selection C++ runtime is not the launched child")
+                    raise ValueError("Settings C++ runtime is not the launched child")
                 item["runtime"] = {"path": str(runtime), **pin(runtime), **identity}
                 item["preferences_after"] = pin(preferences) if preferences.exists() else None
-                if case == "enlargement-reopen" and item["preferences_after"] != preferences_before:
-                    raise ValueError("Selection reopen changed persisted preference bytes")
-                if case == "enlargement-persist" and item["preferences_after"] is None:
-                    raise ValueError("Selection persistence did not save preferences")
+                if case in ("enlargement-reopen", "measurement-names-reopen") and item["preferences_after"] != preferences_before:
+                    raise ValueError("Settings reopen changed persisted preference bytes")
+                if case in ("enlargement-persist", "measurement-names-edit-persist") and item["preferences_after"] is None:
+                    raise ValueError("Settings persistence did not save preferences")
             elif group == "headless-session":
                 rows = observation.get("cases")
                 if (observation.get("schema_version") != 1

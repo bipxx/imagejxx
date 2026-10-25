@@ -1072,6 +1072,17 @@ if(BUILD_TESTING)
     -DTEST_TIMEOUT_SECONDS=30
     -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/RunOwnedFixtureTest.cmake)
   set_tests_properties(native_settings_enlargement_consumer PROPERTIES TIMEOUT 35)
+  add_executable(imagejxx_settings_measurement_names_tests tests/native/test_settings_measurement_names.cpp)
+  target_link_libraries(imagejxx_settings_measurement_names_tests PRIVATE imagejxx::core)
+  set(IMAGEJXX_SETTINGS_MEASUREMENT_TEST_SCRATCH_ROOT
+    "${CMAKE_CURRENT_BINARY_DIR}/Testing/settings-measurement-names"
+    CACHE PATH "Owned scratch parent for measurement-name settings tests")
+  add_test(NAME native_settings_measurement_names COMMAND ${CMAKE_COMMAND}
+    -DTEST_EXECUTABLE=$<TARGET_FILE:imagejxx_settings_measurement_names_tests>
+    -DWORK_ROOT=${IMAGEJXX_SETTINGS_MEASUREMENT_TEST_SCRATCH_ROOT}
+    -DTEST_TIMEOUT_SECONDS=30
+    -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/RunOwnedFixtureTest.cmake)
+  set_tests_properties(native_settings_measurement_names PROPERTIES TIMEOUT 35)
   add_executable(imagejxx_preferences_tests tests/native/test_preferences.cpp)
   target_link_libraries(imagejxx_preferences_tests PRIVATE imagejxx::core)
   add_test(NAME native_preferences COMMAND ${CMAKE_COMMAND}
@@ -1171,6 +1182,7 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     src/desktop/native_workflow_ui_probe.cpp
     src/desktop/manual_threshold_workflow_ui_probe.cpp
     src/desktop/settings_selection_ui_probe.cpp
+    src/desktop/settings_measurement_ui_probe.cpp
     src/desktop/histogram_workflow_ui_probe.cpp
     src/desktop/native_workflow_panel.cpp
     src/desktop/native_workflow_parameters.cpp
@@ -1253,6 +1265,14 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
   endif()
   if(BUILD_TESTING)
     add_executable(imagejxx_enlargement_dialog_tests tests/native/test_enlargement_dialog.cpp)
+    add_executable(imagejxx_results_measurement_columns_tests tests/native/test_results_measurement_columns.cpp)
+    target_link_libraries(imagejxx_results_measurement_columns_tests PRIVATE imagejxx_desktop)
+    add_test(NAME desktop_results_measurement_columns COMMAND ${CMAKE_COMMAND}
+      -DTEST_EXECUTABLE=$<TARGET_FILE:imagejxx_results_measurement_columns_tests>
+      -DWORK_ROOT=${CMAKE_CURRENT_BINARY_DIR}/Testing/results-measurement-columns
+      -DTEST_TIMEOUT_SECONDS=60
+      -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/RunOwnedFixtureTest.cmake)
+    set_tests_properties(desktop_results_measurement_columns PROPERTIES TIMEOUT 65)
     target_link_libraries(imagejxx_enlargement_dialog_tests PRIVATE imagejxx_desktop)
     add_test(NAME desktop_enlargement_dialog COMMAND ${CMAKE_COMMAND}
       -DTEST_EXECUTABLE=$<TARGET_FILE:imagejxx_enlargement_dialog_tests>

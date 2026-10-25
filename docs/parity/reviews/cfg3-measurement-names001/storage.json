@@ -1,0 +1,33 @@
+{
+  "roots_known_bytes": {
+    "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp": 3044702114,
+    "C:\\Users\\HEQ\\Projects\\imagejxx\\.venv": 436156589,
+    "C:\\Users\\HEQ\\Projects\\imagejxx\\.tools": 97453266,
+    "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache": 2147712539,
+    "C:\\Users\\HEQ\\Projects\\imagejxx\\docs\\parity\\reviews": 14212164,
+    "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001": 654663062,
+    "/home/heq/.cache/imagejxx-build/p08k-001-5zn6rc00/python001": 232157751,
+    "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001": 1864268736,
+    "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-probe-env003": 52509373,
+    "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-client": 489,
+    "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed": 19215623
+  },
+  "known_bytes": 8563051706,
+  "unavailable_subtrees": [
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest",
+      "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest'"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest-ui",
+      "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest-ui'"
+    }
+  ],
+  "limit_bytes": 8589934592,
+  "headroom_upper_bound_bytes": 26882886,
+  "within_budget": null,
+  "budget_verified": false,
+  "seconds": 2.9594898000359535,
+  "policy": "All project .cache/.tmp/public retained review roots plus existing dependency/runtime/Linux roots; normalized unique roots; no links; Linux host-local; inaccessible paths unknown",
+  "acceptance": false
+}

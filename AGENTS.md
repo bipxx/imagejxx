@@ -17,6 +17,13 @@
   focused work should stay within an 8 GiB working budget across active caches,
   scratch and retained local evidence. If a necessary check needs more, document why and clean its
   temporary data immediately afterward.
+- Inventory the complete project `.cache/` and `.tmp/` roots, public retained
+  review artifacts, and the existing Linux/dependency/runtime roots. Counting
+  only `.cache/native-verification/` omits obsolete uv wheel generations.
+  Normalize overlapping roots and count them once. An inaccessible subtree is
+  unknown, never zero; report the budget as unverified until it can be measured.
+  Preserve historical measurements and add a scope correction rather than
+  relabeling their old root sets as complete.
 - Keep local capture retention bounded. Retain concise receipts and hashes
   before retiring superseded bulky captures; record their retirement explicitly.
   Prefer CI artifact retention for historical full capture sets.

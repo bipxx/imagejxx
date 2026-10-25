@@ -1,0 +1,16 @@
+{
+  "schema": "cfg3.closeout.001",
+  "state": "scoped-code-qualified;storage-inventory-incomplete",
+  "code_qualified": true,
+  "complete_goal": false,
+  "full_ci_qualified": false,
+  "qualification_receipt_sha256": "e849565e8c720af5205043da099a22157500935763f14d2095f99143a7dd7178",
+  "storage_scope_correction_sha256": "68aa26da7b4f040aebbe004d664a428eb2ed7d7e8c00778be316723fd84eca90",
+  "storage_budget_verified": false,
+  "new_dependencies": 0,
+  "new_environments_or_compiler_caches": 0,
+  "protected_cg0_files": "Unchanged and excluded from staging",
+  "next_packet": "docs/packets/CI2-full-platform-profiles.md",
+  "landing": "Recorded separately in repository history; qualification binds exact source hashes",
+  "storage_snapshot_sha256": "7c1d293b7ea5ded95133c54b3c3d5f1f9c0da06b6a64b57dde474826db6971dc"
+}
