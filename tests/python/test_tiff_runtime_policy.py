@@ -1,5 +1,6 @@
 """Exact optional TIFF closure and fail-closed build/delivery checks."""
 from pathlib import Path
+import hashlib
 import importlib.util
 import json
 import os
@@ -47,10 +48,24 @@ def test_reviewed_closure_rejects_restricted_or_changed_inputs(policy,change):
 @pytest.fixture
 def prefix(tmp_path):
     record=json.loads((ROOT/'licenses/io-dependencies.json').read_bytes());prefix=tmp_path/'codec'
+    configured=os.environ.get('IMAGEJXX_REVIEWED_WINDOWS_TIFF_PREFIX')
+    if configured is not None and not configured:
+        pytest.fail('Configured reviewed Windows TIFF prefix must not be empty')
+    origin=Path(configured) if configured is not None else ROOT/'.tools/imgui-sdk'
+    verified=[]
     for row in record['files']:
-        source=ROOT/'.tools/imgui-sdk'/row['path']
-        if not source.is_file():pytest.skip('Exact reviewed Windows SDK artifacts are not available')
-        path=prefix/row['path'];path.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(source,path)
+        source=origin/row['path']
+        if not source.is_file():
+            if configured is not None:
+                pytest.fail(f'Configured reviewed Windows TIFF artifact is unavailable: {source}')
+            pytest.skip('Exact reviewed Windows SDK artifacts are not available')
+        raw=source.read_bytes()
+        if len(raw)!=row['bytes'] or hashlib.sha256(raw).hexdigest()!=row['sha256']:
+            pytest.fail(f'Reviewed Windows TIFF artifact identity differs: {source}')
+        verified.append((source,row['path']))
+    # Validate the whole original manifest before copying any fixture member.
+    for source,relative in verified:
+        path=prefix/relative;path.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(source,path)
     return prefix
 
 

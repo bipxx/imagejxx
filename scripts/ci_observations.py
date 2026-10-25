@@ -75,6 +75,7 @@ TIFF_READERS = {
     "lzw-float32": ("IMAGEJXX_LZW_FLOAT32_CPP_DIR", False),
     "floating-tiff": ("IMAGEJXX_FLOATING_TIFF_CPP_DIR", False),
     "tiled-tiff": ("IMAGEJXX_TILED_TIFF_CPP_DIR", True),
+    "tiled-layouts": ("IMAGEJXX_TILED_LAYOUTS_CPP_DIR", True),
     "deflate-tiles": ("IMAGEJXX_DEFLATE_TILES_CPP_DIR", True),
     "deflate-tiles-float": ("IMAGEJXX_DEFLATE_TILES_FLOAT_CPP_DIR", True),
     "packbits-lzw-tiles": ("IMAGEJXX_PACKBITS_LZW_TILES_CPP_DIR", True),
@@ -172,6 +173,13 @@ def tiff_cases():
             yield floating("floating-tiff", f"c{codec}/{preset}", preset,
                            "floating-float32-tiff-corpus", filename.replace(".tif", f"-c{codec}.tif"))
     fixtures = Path(__file__).resolve().parents[1] / "tests/fixtures"
+    folder = "scientific-tiff-tiled-layouts"
+    rows = json.loads((fixtures / folder / "SOURCE.json").read_bytes())["files"]
+    for row in rows:
+        if (row["valid"] and "-edges-" in row["file"]
+                and row["pattern"] == "finite" and row["padding"]):
+            yield scientific("tiled-layouts", "cpp-" + Path(row["file"]).stem + "001",
+                             folder, row["file"])
     for family in ("deflate", "packbits-lzw", "predicted"):
         folder = f"scientific-tiff-{family}-tiles"
         rows = json.loads((fixtures / folder / "SOURCE.json").read_bytes())["files"]
@@ -411,7 +419,6 @@ def reader_environment(output):
         "IMAGEJXX_ROUNDED_CPP_CASE": reports / "selection/R01",
         "IMAGEJXX_REGIONAL_CREATION_CPP_BASE": reports / "selection",
         "IMAGEJXX_CREATION_WORKFLOW_CPP_REPORT": reports / "selection/Q04/case.json",
-        "IMAGEJXX_SELECTION_CREATION_CPP_REPORT": reports / "selection-legacy/legacy/imgui-cpp.json",
         "IMAGEJXX_REGION_ROTATION_CPP_REPORT": reports / "regional-rotation/PX11/case.json",
         "IMAGEJXX_ROUNDED_SAVED_CPP_BASE": reports / "selection",
         "IMAGEJXX_ROUNDED_EXPORT_CPP_BASE": reports / "rounded-export",
@@ -447,9 +454,10 @@ def reader_environment(output):
         "IMAGEJXX_AUTOMATIC_DISPLAY_CPP_ROOT": reports / "automatic-display",
     }
     environment["IMAGEJXX_THRESHOLD_CPP_REPORT"] = reports / "scientific-threshold/T10/case.json"
-    # Session rows bind their absolute capture directory. Readers must use the
+    # Session and selection rows bind their absolute capture directory. Readers use
     # original root; retain byte-identical transport copies for archival only.
     environment["IMAGEJXX_SESSION_CPP_REPORT"] = Path(output).resolve() / "private/headless-session/legacy/capture/imgui-cpp.json"
+    environment["IMAGEJXX_SELECTION_CREATION_CPP_REPORT"] = Path(output).resolve() / "private/selection-legacy/legacy/capture/imgui-cpp.json"
     for group, (_, name, _, _) in INDEXED_READERS.items():
         environment[name] = Path(output).resolve() / (group + "-index.json")
     for group, (_, name) in EDITOR_READERS.items():

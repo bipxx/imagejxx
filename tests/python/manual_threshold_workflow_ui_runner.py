@@ -7,7 +7,7 @@ import subprocess
 import sys
 import time
 
-from settings_wand_ui_runner import terminate_process_tree
+from settings_wand_ui_runner import spawn_python_ui_child, terminate_process_tree
 
 CASES = ('manual-workflow-current-path', 'manual-workflow-all-z-path',
          'manual-workflow-refusal-recovery')
@@ -37,7 +37,7 @@ def produce_python_reports(root):
             receipt['runs'].append(entry)
             save()
             with (parent / 'process.log').open('xb') as log:
-                child = subprocess.Popen(argv, cwd=root, env=env, stdout=log, stderr=subprocess.STDOUT,
+                child = spawn_python_ui_child(argv, cwd=root, env=env, stdout=log, stderr=subprocess.STDOUT,
                                          start_new_session=os.name != 'nt')
                 entry['launcher_process_id'] = child.pid
                 save()

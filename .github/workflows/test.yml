@@ -17,7 +17,23 @@ jobs:
         with:
           python-version: '3.12'
       - name: Check capture runner contracts
-        run: python -I -B tests/tools/test_ci_observations.py
+        shell: bash
+        run: |
+          python -I -B tests/tools/test_ci_observations.py
+          python -I -B tests/tools/test_ci_current_observations.py
+          python -I -B tests/tools/test_ci_python_suite.py
+          python -I -B tests/tools/test_ci_reference_readiness.py
+          python -I -B tests/tools/test_ci_headless_origins.py
+          python -I -B tests/tools/test_ci_headless_suite.py
+          python -I -B tests/tools/test_ci_platform_dependencies.py
+          python -I -B tests/tools/test_ci_platform_runtime.py
+          python -I -B tests/tools/test_ci_python_diagnostics.py
+          python -I -B tests/tools/test_ci_owned_process.py
+          python -I -B tests/tools/test_ci_scientific_sdk.py
+          python -I -B tests/tools/test_ci_mac_process.py ProtocolMetadata PosixSocketTransport
+      - name: Prove native macOS process ownership
+        if: runner.os == 'macOS'
+        run: python -I -B tests/tools/test_ci_mac_process.py --require-darwin
       - name: Build, test and install all headless C++ targets
         run: python scripts/ci_native.py --output build/ci-native
       - name: Retain native and SDK results
@@ -100,7 +116,11 @@ jobs:
           -Ccmake.define.ZLIB_LIBRARY_RELEASE=${{ github.workspace }}/build/ci-prefix/lib/libz.a
           -Ccmake.define.PNG_LIBRARY_RELEASE=${{ github.workspace }}/build/ci-prefix/lib/libpng16.a
       - name: Test the complete installed Python suite under software OpenGL
-        run: xvfb-run -a python scripts/ci_python_suite.py --output build/ci-python
+        # This tool test invokes pytest against a synthetic project, without GL.
+        # Product/render qualification still runs through the installed runner.
+        run: |
+          python -I -X utf8 -B tests/tools/test_ci_python_suite_transport.py
+          xvfb-run -a python scripts/ci_python_suite.py --output build/ci-python
       - name: Check installed dependency inventory
         run: python scripts/check_licenses.py --installed --extras io,test --desktop
       - name: Run pipeline example
@@ -113,34 +133,38 @@ jobs:
           path: |
             build/ci-python/receipt.json
             build/ci-python/pytest.xml
+            build/ci-python/pytest.log
+            build/ci-python/process.json
+            build/ci-python/*-python-diagnostics.zip
+            build/ci-python/complete-collection.json
+            build/ci-python/active-test.json
+            build/ci-python/test-phases.jsonl
+            build/ci-python/installed-smoke/receipt.json
+            build/ci-python/installed-smoke/pytest.xml
+            build/ci-python/installed-smoke/pytest.log
+            build/ci-python/installed-smoke/process.json
+            build/ci-python/current-observations/receipt.json
+            build/ci-python/headless/receipt.json
+            build/ci-python/headless.zip
+            build/ci-python/current-observations.zip
             build/ci-python/cpp-observations/receipt.json
             build/ci-python/cpp-observations.zip
           if-no-files-found: warn
-  python:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [windows-latest, macos-latest]
-        python: ['3.10', '3.12']
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 45
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python }}
-      - name: Install Python wheel
-        run: python -m pip install '.[io,test]'
-      - name: Test the complete Python suite
-        run: python -m pytest --junitxml=build/ci-python.xml
-      - name: Check installed dependency inventory
-        run: python scripts/check_licenses.py --installed --extras io,test
-      - name: Run pipeline example
-        run: python examples/pipeline.py
-      - name: Retain Python results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: python-${{ matrix.os }}-${{ matrix.python }}
-          path: build/ci-python.xml
-          if-no-files-found: warn
+  windows-platform:
+    name: Windows source profile
+    uses: ./.github/workflows/source-platform.yml
+    with:
+      runner: windows-2022
+      profile: windows-x64-ci-dynamic-source-001
+  macos-arm64-platform:
+    name: macOS arm64 source profile
+    uses: ./.github/workflows/source-platform.yml
+    with:
+      runner: macos-latest
+      profile: macos-arm64-ci-static-source-001
+  macos-intel-platform:
+    name: macOS Intel source profile
+    uses: ./.github/workflows/source-platform.yml
+    with:
+      runner: macos-15-intel
+      profile: macos-x86_64-ci-static-source-001

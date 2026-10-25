@@ -3,8 +3,15 @@
 **Current execution, 2026-10-25:** implementation has resumed with exactly
 three roles including root/C. MW1/CI1 are landed at `1fe5204`/`aed781f`;
 [CFG2 enlargement preferences](packets/CFG2-settings-selection-enlargement.md)
-is scoped-qualified and pushed at `40130ba`. The active closeout packet is
-[CFG3 measurement-name entry](packets/CFG3-measurement-name-entry.md).
+is scoped-qualified and pushed at `40130ba`.
+[CFG3 measurement-name entry](packets/CFG3-measurement-name-entry.md) is landed
+at `7c78d10`. The active implementation packet is
+[CI2 installed platform profiles](packets/CI2-full-platform-profiles.md), with
+runner, dependency-profile, CMake/SDK and workflow source candidate on
+`ci2-platform-integration`. New
+source profiles remain unqualified until their actual hosted preparation and
+full installed cohorts pass. See the
+[latest cross-project actions](packets/COMPILEXX_CROSS_PROJECT_REVIEW.md#current-ci2-review-maintained-path-and-early-failure-controls).
 A owns native consumer contracts, B shared ImGui interaction/observations,
 C independent expectations and the sole build/install lock. The scoped packet
 cards and receipts take precedence over historical pause/resume paragraphs.
@@ -13,7 +20,7 @@ CFG3 is locally scoped-qualified:
 each pass the same 1,472 affected cases without skips, six native programs,
 actual C++/Python UI persistence and installed SDK reads (45 checks/file).
 Results cover all 1,024 names through 64-column pages, full CSV and multiline
-literal headers. The prepared successor is
+literal headers. The current implementation packet is
 [CI2 installed platform profiles](packets/CI2-full-platform-profiles.md).
 Full Windows/macOS I/O/UI CI profiles remain a separate required open track.
 Complete storage-budget verification also remains open: two historical pytest
@@ -48,11 +55,30 @@ normal CI/reader registration, peak admission and exact source/outcome joins.
 The late multiline counterexample was reproduced safely and fixed before the
 final frozen campaigns; earlier passing results retain their previous scope.
 
-Next: take CI2's small installed-discovery
-repair and explicit dependency/profile work. Keep Windows runtime pins and
-exact platform-applicability requirements. Missing dependency delivery blocks
-only its consumers, not independent editor tracks. Source-ready declarations
-precede qualification; accepted family states change only at their owning gates.
+Next: follow [CI2 readiness](packets/CI2-full-platform-profiles.md#readiness-before-the-next-full-campaign)
+before another broad campaign. The latest retained hosted run is terminal
+failure: Linux 3.10 completed with 377 failures/797 errors, while Linux 3.12
+separately timed out. Close fresh-producer wiring and authentic historical-input
+availability, qualify the prepared native repairs, and finish actual platform
+preparation/SDK delivery. Tool passes alone cannot accept the full suite.
+Keep the 2400-second deadline and original runtime/reference pins.
+
+Current capture wiring is source-ready: RGB504, Gaussian H1/R16 and six tiled
+layouts use the original readers/paths. Early reference availability refuses
+before product imports; actual captures and missing original references remain
+unqualified. The five headless history/shortcut IDs now pass in fresh isolated
+processes on both existing installed runtimes. Their exact schema002 full-profile
+join has supporting controls; actual full hosted execution remains open. See CI2 for current supporting checks and source004 storage.
+
+Current bounded dispatch: A owns SDK consumer controls and held native repairs;
+B owns held Mac lifecycle/spawn compatibility and independent workflow review;
+C/root owns runner/workflow integration, independent joins and the sole
+build/install lane. Each source profile's Python pair depends only on its own
+producer. Mandatory actual Darwin lifecycle tests must run in each Mac consumer
+lane; a separate arm64 headless job cannot prove Intel/Python3.10 ownership.
+Independent editor work waits only for its consumed inputs. Source-ready
+declarations precede qualification; accepted family states change only at their
+owning gates. See the [updated cross-project review](packets/COMPILEXX_CROSS_PROJECT_REVIEW.md#current-ci2-review-maintained-path-and-early-failure-controls).
 
 Historical **2026-10-24** checkpoint: **CFG1**,
 [Wand settings-consumer qualification](parity/reviews/cfg1-settings-wand001/receipt.json).

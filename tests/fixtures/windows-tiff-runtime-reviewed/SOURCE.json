@@ -1,0 +1,186 @@
+{
+  "schema": "imagejxx.reviewed-tiff-test-fixture.001",
+  "purpose": "Exact historical Windows runtime-policy controls only;not a replacement runtime or SDK",
+  "profile": "windows-x64-dynamic-release-001",
+  "original_manifest": "licenses/io-dependencies.json",
+  "original_manifest_sha256": "11440d29be831f541aca88d80180369cef3fa9dea3f6015b7178e87c0a496042",
+  "files": [
+    {
+      "path": "bin/tiff.dll",
+      "kind": "runtime",
+      "bytes": 468992,
+      "sha256": "cf4a9d2a74f3370983bef5aacb8bb93db00328906da8e2c26cfed8d744fd9b07"
+    },
+    {
+      "path": "bin/jpeg62.dll",
+      "kind": "runtime",
+      "bytes": 685568,
+      "sha256": "874283fd82bab9e0a572c78befea478827bfddacb0310f9bc23382bb7b8becba"
+    },
+    {
+      "path": "bin/liblzma.dll",
+      "kind": "runtime",
+      "bytes": 188928,
+      "sha256": "a9a275c360d80013b8304b5ebde3a05a82aee4c2ccdc41dd3ee9cf6acb3d433c"
+    },
+    {
+      "path": "bin/zlib1.dll",
+      "kind": "runtime",
+      "bytes": 90112,
+      "sha256": "0389d9547623b8b05e576f01229a2b37f1a0709fac02a8a50b2da723da5ca514"
+    },
+    {
+      "path": "lib/tiff.lib",
+      "kind": "link",
+      "bytes": 42590,
+      "sha256": "c95759a8456083da99b200f9d8a1632409c0c69ec8bb61329e88f29043ce82ff"
+    },
+    {
+      "path": "lib/zlib.lib",
+      "kind": "link",
+      "bytes": 16746,
+      "sha256": "e9952455e8d0773f2aa89eeea802b85af8b9f814fe10e6b8c892bf849f2a9a4b"
+    },
+    {
+      "path": "include/tiff.h",
+      "kind": "header",
+      "bytes": 59948,
+      "sha256": "ff8668357867cefdb31d7807a441fea04422bcff929303be09e16d99c7528fa6"
+    },
+    {
+      "path": "include/tiffio.h",
+      "kind": "header",
+      "bytes": 29438,
+      "sha256": "a277ca92dd3962012db24d1c38df68565e045290be43f0a84ad0edbfc8051ee1"
+    },
+    {
+      "path": "include/tiffconf.h",
+      "kind": "header",
+      "bytes": 4078,
+      "sha256": "96d58371f4dd3b7ab966cf284c00e4bb4fa2a2e6244ed8ef3c6014f31f0a58b7"
+    },
+    {
+      "path": "include/tiffvers.h",
+      "kind": "header",
+      "bytes": 1446,
+      "sha256": "ee044792a8d4fb9021a83094518ad9f09c132029d74b5a12f93840d15dac87f0"
+    }
+  ],
+  "dependencies": {
+    "tiff": {
+      "tested_version": "4.7.1",
+      "selected_license": "libtiff",
+      "commercial_use": true,
+      "scope": "Selected library runtime only; no tools, scripts, TurboJPEG or additional codecs.",
+      "source_archive": {
+        "port": "tiff",
+        "url": "https://gitlab.com/libtiff/libtiff/-/archive/v4.7.1/libtiff-v4.7.1.tar.gz",
+        "bytes": 2542874,
+        "sha512": "dcdabe2598db33a973d06f0009dd528aa1f38813bd6015e2595097b838a42240f9ccbe7524b5235ea2f4207a10d5d706339c7a6f4772b531e00a20281a00f67b",
+        "sha256": "6ab956415ddb6cae497faad18398ff0fd056d17d8bf7b5921cc194c55b0191fc"
+      },
+      "port_tree": "git+https://github.com/Microsoft/vcpkg@9391305288677bb3959bf22a08218a61ffec0be0",
+      "binary_abi": "559dbf885b49ccc95f7c52626a708ca40e48305319de0b032d49131ae60dbf0b",
+      "port_files": {
+        "FindCMath.patch": "65d9f0fbbbcce7b82695d45e60a5f13edc13dd01e6ac57403d13f8799fa55e2d",
+        "portfile.cmake": "46fe81ea83c5e11e5c0b8fc46409ea38681aa8743e0e8bfd2a6d9972b2e28af0",
+        "prefer-config.diff": "8a4fe79add129df0530e66c5e4507a099eef5ebe345ab0c80cbaad95b95037cd",
+        "usage": "dcd381c31423169c97bb5a109c91282657eb7b2b9cacadf7964c67dcd5495f1e",
+        "vcpkg-cmake-wrapper.cmake.in": "1a16c95aae11fa25f8593ce75a4334a7f55afbc580c4be6e1f88bb6afd07352f",
+        "vcpkg.json": "af8ad13451582a6018e435f48692c10d2361fa9e59410dbdbfde756af6cac5c3"
+      },
+      "notices": {
+        "libtiff.txt": "0e27c2382d7b8147972bbb746e04059a1152c8d0fda9d03ef1399d1a433c4ade"
+      }
+    },
+    "libjpeg-turbo": {
+      "tested_version": "3.1.3",
+      "selected_license": "BSD-3-Clause AND IJG AND Zlib",
+      "commercial_use": true,
+      "scope": "Selected library runtime only; no tools, scripts, TurboJPEG or additional codecs.",
+      "source_archive": {
+        "port": "libjpeg-turbo",
+        "url": "https://codeload.github.com/libjpeg-turbo/libjpeg-turbo/tar.gz/3.1.3",
+        "bytes": 2516606,
+        "sha512": "d95bf0689fb2862ad5ea9e902b73724098d911d9c312aa69157bec9de77f32e4d5ac7dfa105d844110cc66dbdb0336056ba7f96781fcbc848b72fd0661604d50",
+        "sha256": "3a13a5ba767dc8264bc40b185e41368a80d5d5f945944d1dbaa4b2fb0099f4e5"
+      },
+      "port_tree": "git+https://github.com/Microsoft/vcpkg@89f73b6dea674235727ec80355b894a688d06726",
+      "binary_abi": "f1d67828161e3f3426386b6b35db63268acf5e77e622346af09186283ea3e12b",
+      "port_files": {
+        "add-options-for-docs-headers.patch": "e060b710bf0abc174e8e680a9c8647f6fbcc54fbe445ea72c0eb602f08b27ba6",
+        "portfile.cmake": "132a10b4e737c326c77a0dabeaebdec4a8d77de22614aae2c67e6acc65c89c04",
+        "usage": "431d1fd99d23de6d01df171baa9ab0edcccea16484d7c4ba0691d4ebc474de2d",
+        "vcpkg-cmake-wrapper.cmake": "d257c0a541dd60c4b6eb6f46a5e9f128a64a6ec40f3b8b5bc8ab753e7a935c61",
+        "vcpkg.json": "04ae69a9e4d63106e18964eceb473a719cae15176c544db4964245c459a03dc2",
+        "workaround_cmake_system_processor.patch": "d81f3b6d054e080fa16e52b1900785cf255de771277fa63dbc2c7e8b55776b5c"
+      },
+      "notices": {
+        "libjpeg-turbo.txt": "2189dc45a8fe96204069f8124caa53a148dfdc193f50f584c6ca7849a6072872",
+        "libjpeg-IJG.txt": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6"
+      }
+    },
+    "liblzma": {
+      "tested_version": "5.8.2",
+      "selected_license": "0BSD",
+      "commercial_use": true,
+      "scope": "Selected library runtime only; no tools, scripts, TurboJPEG or additional codecs.",
+      "source_archive": {
+        "port": "liblzma",
+        "url": "https://codeload.github.com/tukaani-project/xz/tar.gz/v5.8.2",
+        "bytes": 1603572,
+        "sha512": "a14c9d0a118c611d1156cd9a605269c706b976a752c048db7f2eea956e2bf717ce595f46186d951a6c4493e35658e08fa3fe4b256898c6ca08e3695c0ee7b0e5",
+        "sha256": "f21fdf2c1ee004de30ca40377a273e3369186e6b7ab7b50a410eaa2e2bbefafb"
+      },
+      "port_tree": "git+https://github.com/Microsoft/vcpkg@d161ccfe43a06cdb2a32d7a9e9fcbf92d67eb7ab",
+      "binary_abi": "56ca35251d90c1edcf361cd8c52afc9cf43ba88fd403c458e3ac998bb2b284cf",
+      "port_files": {
+        "build-tools.patch": "a39d5e1cf991362bd503c9144d2d315d2756d642fdc542580386a1c6b9477df3",
+        "portfile.cmake": "5600860f24d317bcbc1d1d22074e7b29997c9d6c21c417b8a073c1bd3f248947",
+        "usage": "8e856626fcd7a0110736379543122b37484d658078c12a55596b0664f455286d",
+        "vcpkg-cmake-wrapper.cmake": "a4611673d837ec6e94f0f0f9a85a1859b85ef169e762b48a99946b9436647b39",
+        "vcpkg.json": "9aa6e78aa7cec6df9442528e948b0145811433592147faf17903df45b00d75f1"
+      },
+      "notices": {
+        "liblzma.txt": "616a3ad264ce29b8f1cb97e53037b139d406899ca8d1f799651e17bfa09830b8",
+        "liblzma-0bsd.txt": "0b01625d853911cd0e2e088dcfb743261034a091bb379246cb25a14cc4c74bf1"
+      }
+    },
+    "zlib": {
+      "tested_version": "1.3.1",
+      "selected_license": "Zlib",
+      "commercial_use": true,
+      "scope": "Selected library runtime only; no tools, scripts, TurboJPEG or additional codecs.",
+      "source_archive": {
+        "port": "zlib",
+        "url": "https://codeload.github.com/madler/zlib/tar.gz/v1.3.1",
+        "bytes": 1572744,
+        "sha512": "8c9642495bafd6fad4ab9fb67f09b268c69ff9af0f4f20cf15dfc18852ff1f312bd8ca41de761b3f8d8e90e77d79f2ccacd3d4c5b19e475ecf09d021fdfe9088",
+        "sha256": "17e88863f3600672ab49182f217281b6fc4d3c762bde361935e436a95214d05c"
+      },
+      "port_tree": "git+https://github.com/Microsoft/vcpkg@3f05e04b9aededb96786a911a16193cdb711f0c9",
+      "binary_abi": "3de348fede9dcd918192a0ced02c8ab2926df6b19986e131e455c25b69fc89c9",
+      "port_files": {
+        "0001-Prevent-invalid-inclusions-when-HAVE_-is-set-to-0.patch": "750b9542cb55e6328cca01d3ca997f1373b9530afa95e04213168676936e7bfa",
+        "0002-build-static-or-shared-not-both.patch": "dd4945e8af55d9feb65af706cb0254a6925dc4ac12789586c0d28acf323ad075",
+        "0003-android-and-mingw-fixes.patch": "63e62c9bae3952b8cca832e01aa96ef3b2696b21976c5031d6d6d79937d8d54c",
+        "portfile.cmake": "b14cee469c2da06e036e63293c0b6e6509924462e9b341b317986df46b281695",
+        "usage": "be22662327df993eebc437495add75acb365ab18d37c7e5de735d4ea4f5d3083",
+        "vcpkg-cmake-wrapper.cmake": "5d49ef2ee6448479c2aad0e5f732e2676eaba0411860f9bebabe6002d66f57d1",
+        "vcpkg.json": "8ad7072167e1bf56d2ed531e43ecc95026d5b305ed0393140d5ec78f5c6b6c00"
+      },
+      "notices": {
+        "zlib.txt": "845efc77857d485d91fb3e0b884aaa929368c717ae8186b66fe1ed2495753243"
+      }
+    }
+  },
+  "commercial_use": true,
+  "notices": {
+    "libtiff.txt": "0e27c2382d7b8147972bbb746e04059a1152c8d0fda9d03ef1399d1a433c4ade",
+    "libjpeg-turbo.txt": "2189dc45a8fe96204069f8124caa53a148dfdc193f50f584c6ca7849a6072872",
+    "libjpeg-IJG.txt": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6",
+    "liblzma.txt": "616a3ad264ce29b8f1cb97e53037b139d406899ca8d1f799651e17bfa09830b8",
+    "liblzma-0bsd.txt": "0b01625d853911cd0e2e088dcfb743261034a091bb379246cb25a14cc4c74bf1",
+    "zlib.txt": "845efc77857d485d91fb3e0b884aaa929368c717ae8186b66fe1ed2495753243"
+  }
+}

@@ -7,7 +7,7 @@ import subprocess
 import sys
 import time
 
-from settings_wand_ui_runner import terminate_process_tree
+from settings_wand_ui_runner import spawn_python_ui_child, terminate_process_tree
 
 CASES = ('enlargement-consume-ordinary', 'enlargement-consume-scientific',
          'enlargement-persist', 'enlargement-reopen')
@@ -45,7 +45,7 @@ def produce_python_reports(root):
             entry = {'case': case, 'argv': argv, 'state': 'running', 'started': time.time()}
             receipt['runs'].append(entry); save()
             with (parent/(case+'.log')).open('xb') as log:
-                child = subprocess.Popen(argv, cwd=root, env=environment, stdout=log,
+                child = spawn_python_ui_child(argv, cwd=root, env=environment, stdout=log,
                                          stderr=subprocess.STDOUT, start_new_session=os.name != 'nt')
                 entry['launcher_process_id'] = child.pid; save()
                 try:

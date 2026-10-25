@@ -81,6 +81,60 @@ class TiffCaptureInputs(unittest.TestCase):
         self.assertTrue((self.output / "reports/float32-tiff/case/case.json").is_file())
 
 
+class TiledLayoutsCaptureInputs(unittest.TestCase):
+    """Exact fixture membership and mocked transport only, never UI evidence."""
+    FILENAMES = (
+        "u8-edges-le-finite-poison.tif", "u8-edges-be-finite-poison.tif",
+        "rgb8-edges-le-finite-poison.tif", "rgb8-edges-be-finite-poison.tif",
+        "f32-edges-le-finite-poison.tif", "f32-edges-be-finite-poison.tif",
+    )
+
+    @classmethod
+    def expected_cases(cls):
+        return [("tiled-layouts", "cpp-" + Path(name).stem + "001",
+                 ["--scientific-tiff-ui-case", "scientific-tiff-tiled-layouts/" + name])
+                for name in cls.FILENAMES]
+
+    def test_exact_six_variants_match_the_existing_reader_paths(self):
+        actual = [row for row in capture.tiff_cases() if row[0] == "tiled-layouts"]
+        self.assertEqual(actual, self.expected_cases())
+        self.assertEqual(capture.TIFF_READERS["tiled-layouts"],
+                         ("IMAGEJXX_TILED_LAYOUTS_CPP_DIR", True))
+
+    def test_all_six_keep_input_paths_and_lossless_nested_transport(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory).resolve() / "observations"
+            raw = b'{"state":"observed","acceptance_claim":false}\n'
+            artifact = b"synthetic retained TIFF output\x00\xff"
+            expected = self.expected_cases()
+
+            def observer(argv, **kwargs):
+                actual = Path(argv[-2]); actual.mkdir()
+                (actual / "case.json").write_bytes(raw)
+                (actual / "edited.tif").write_bytes(artifact)
+                return subprocess.CompletedProcess(argv, 0)
+
+            with patch.object(capture, "cases", return_value=iter(expected)):
+                with patch.object(capture.subprocess, "run", side_effect=observer) as process:
+                    environment = capture.capture(output, sys.executable, ROOT)
+            self.assertEqual(process.call_count, 6)
+            self.assertEqual(environment["IMAGEJXX_TILED_LAYOUTS_CPP_DIR"],
+                             str(output / "reports/tiled-layouts"))
+            receipt = json.loads((output / "receipt.json").read_bytes())
+            self.assertEqual([row["case"] for row in receipt["cases"]],
+                             [case for _, case, _ in expected])
+            for call, (_, case, arguments) in zip(process.call_args_list, expected):
+                actual = output / "private/tiled-layouts" / case / "capture001"
+                copied = output / "reports/tiled-layouts" / case / "capture001"
+                fixture = ROOT / "tests/fixtures" / arguments[1]
+                self.assertEqual(call.args[0][1:],
+                                 ["--scientific-tiff-ui-case", str(actual), str(fixture)])
+                for folder in (actual, copied):
+                    self.assertEqual((folder / "case.json").read_bytes(), raw)
+                    self.assertEqual((folder / "edited.tif").read_bytes(), artifact)
+            self.assertFalse(receipt["acceptance_claim"])
+
+
 class LegacyEditorCaptureInputs(unittest.TestCase):
     """Transport/envelope checks only; these mocks supply no UI evidence."""
     def setUp(self):
@@ -196,6 +250,94 @@ class PersistentSessionCaptureInputs(unittest.TestCase):
                 report["cases"][0][field] = value
                 with self.assertRaisesRegex(ValueError, "Persistent session probe did not finish"):
                     self.invoke(root, report)
+
+
+class SelectionSessionCaptureInputs(unittest.TestCase):
+    """Synthetic absolute-path transport; no editor or session-format proof."""
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name).resolve()
+        self.output = self.root / "observations"
+        self.actual = self.output / "private/selection-legacy/legacy/capture"
+        self.copied = self.output / "reports/selection-legacy/legacy"
+        self.artifact = b"unchanged synthetic selection session artifact\x00\xff"
+
+    def invoke(self, *, failed=False):
+        def observer(argv, **kwargs):
+            self.assertEqual(argv[1:], ["--selection-creation-ui-test", str(self.actual)])
+            self.actual.mkdir()
+            report = dict(schema_version=1, contract_id="p05l.selection-creation-ui.001",
+                          context="imgui_cpp", observation_state="failed" if failed else "observed",
+                          acceptance_claim=False, elapsed_seconds=0.25, cases=[])
+            for number in range(1, 17):
+                name = f"case{number:02d}"
+                directory = self.actual / name
+                directory.mkdir()
+                row = dict(case_id=f"S{number:02d}", frames=[])
+                if number == 15:
+                    member = directory / "selection-creation.ijx"
+                    member.write_bytes(self.artifact)
+                    row["frames"] = [dict(label=label, requested_events=[
+                        dict(type="text", value=str(member))]) for label in
+                        ("session.save.path.text", "session.open.path.text")]
+                raw = (json.dumps(row, indent=2) + "\n").encode()
+                (directory / "case.json").write_bytes(raw)
+                report["cases"].append(dict(id=row["case_id"], case_id=row["case_id"],
+                    relative_path=name + "/case.json", byte_count=len(raw),
+                    sha256=hashlib.sha256(raw).hexdigest()))
+            report["case_count"] = len(report["cases"])
+            self.raw = (json.dumps(report, indent=2) + "\n").encode()
+            (self.actual / "imgui-cpp.json").write_bytes(self.raw)
+            return subprocess.CompletedProcess(argv, 7 if failed else 0)
+        with patch.object(capture, "cases", return_value=iter([
+                ("selection-legacy", "legacy", ["--selection-creation-ui-test"])])):
+            with patch.object(capture.subprocess, "run", side_effect=observer):
+                return capture.capture(self.output, sys.executable, self.root)
+
+    def test_reader_uses_original_absolute_paths_and_copy_keeps_all_bytes(self):
+        environment = self.invoke()
+        report = Path(environment["IMAGEJXX_SELECTION_CREATION_CPP_REPORT"])
+        self.assertEqual(report, self.actual / "imgui-cpp.json")
+        self.assertEqual(report.read_bytes(), self.raw)
+        self.assertEqual((self.copied / "imgui-cpp.json").read_bytes(), self.raw)
+        index = json.loads(report.read_bytes())
+        self.assertEqual([row["case_id"] for row in index["cases"]],
+                         [f"S{number:02d}" for number in range(1, 17)])
+        for entry in index["cases"]:
+            actual = report.parent / entry["relative_path"]
+            copied = self.copied / entry["relative_path"]
+            self.assertEqual(actual.read_bytes(), copied.read_bytes())
+            self.assertEqual(actual.stat().st_size, entry["byte_count"])
+            self.assertEqual(hashlib.sha256(actual.read_bytes()).hexdigest(), entry["sha256"])
+        row = json.loads((report.parent / "case15/case.json").read_bytes())
+        for frame in row["frames"]:
+            typed = Path(frame["requested_events"][0]["value"])
+            self.assertEqual(typed.resolve(strict=True), self.actual / "case15/selection-creation.ijx")
+            self.assertNotEqual(typed, self.copied / "case15/selection-creation.ijx")
+            self.assertEqual(typed.read_bytes(), self.artifact)
+        self.assertEqual((self.copied / "case15/selection-creation.ijx").read_bytes(), self.artifact)
+        receipt = json.loads((self.output / "receipt.json").read_bytes())
+        self.assertEqual(receipt["state"], "observed")
+        self.assertEqual(receipt["reader_environment"]["IMAGEJXX_SELECTION_CREATION_CPP_REPORT"], str(report))
+        self.assertEqual(receipt["cases"][0]["actual"], str(self.actual))
+        self.assertEqual(receipt["cases"][0]["transport"], str(self.copied))
+        self.assertFalse(receipt["acceptance_claim"])
+
+    def test_failed_capture_keeps_original_path_and_never_publishes_a_copy(self):
+        with self.assertRaises(subprocess.CalledProcessError) as failure:
+            self.invoke(failed=True)
+        self.assertEqual(failure.exception.returncode, 7)
+        receipt = json.loads((self.output / "receipt.json").read_bytes())
+        report = Path(receipt["reader_environment"]["IMAGEJXX_SELECTION_CREATION_CPP_REPORT"])
+        self.assertEqual(report, self.actual / "imgui-cpp.json")
+        self.assertEqual(report.read_bytes(), self.raw)
+        self.assertEqual(receipt["state"], "failed")
+        self.assertEqual(receipt["cases"][0]["state"], "failed")
+        self.assertEqual(receipt["cases"][0]["exit_code"], 7)
+        self.assertEqual(receipt["cases"][0]["actual"], str(self.actual))
+        self.assertEqual(receipt["cases"][0]["transport"], str(self.copied))
+        self.assertFalse(self.copied.exists())
 
 
 class IndexedCaptureInputs(unittest.TestCase):

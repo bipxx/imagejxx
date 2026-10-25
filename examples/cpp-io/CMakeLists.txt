@@ -1,0 +1,155 @@
+cmake_minimum_required(VERSION 3.21)
+project(imagejxx_scientific_sdk_consumer LANGUAGES CXX)
+include(CTest)
+
+# This is an installed-package consumer. It never adds the producer source tree
+# or builds a dependency, and Python is only the installed guard's interpreter.
+if(NOT CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_CONFIGURATION_TYPES OR NOT BUILD_TESTING)
+  message(FATAL_ERROR "The scientific SDK witness requires single-config Release and BUILD_TESTING=ON")
+endif()
+if(WIN32)
+  if(NOT CMAKE_GENERATOR STREQUAL "Ninja")
+    message(FATAL_ERROR "The Windows SDK witness requires Ninja")
+  endif()
+elseif(APPLE)
+  # Ninja's ordinary POSIX jobs create separate process groups. This small
+  # consumer instead uses the reviewed system Make route inside its owner PGID.
+  if(NOT CMAKE_GENERATOR STREQUAL "Unix Makefiles" OR NOT CMAKE_MAKE_PROGRAM STREQUAL "/usr/bin/make")
+    message(FATAL_ERROR "The macOS SDK witness requires /usr/bin/make and Unix Makefiles")
+  endif()
+else()
+  message(FATAL_ERROR "This source-profile SDK increment covers Windows/macOS only")
+endif()
+foreach(name IN ITEMS IMAGEJXX_SDK_PREFIX IMAGEJXX_SDK_DEPENDENCY_PREFIX
+                      IMAGEJXX_SDK_FIXTURE IMAGEJXX_SDK_OUTPUT)
+  if(NOT DEFINED ${name} OR NOT IS_ABSOLUTE "${${name}}")
+    message(FATAL_ERROR "${name} must name an explicit absolute path")
+  endif()
+endforeach()
+if(NOT EXISTS "${IMAGEJXX_SDK_FIXTURE}" OR IS_DIRECTORY "${IMAGEJXX_SDK_FIXTURE}" OR
+   IS_SYMLINK "${IMAGEJXX_SDK_FIXTURE}")
+  message(FATAL_ERROR "The original scientific TIFF carrier is unavailable")
+endif()
+file(SIZE "${IMAGEJXX_SDK_FIXTURE}" fixture_bytes)
+file(SHA256 "${IMAGEJXX_SDK_FIXTURE}" fixture_sha256)
+if(NOT fixture_bytes EQUAL 116 OR NOT fixture_sha256 STREQUAL
+   "c5865779efc1945ed75db444d28f0545f8669dec7828bac8c53239d24fabbb64")
+  message(FATAL_ERROR "The original scientific TIFF carrier fingerprint changed")
+endif()
+if(EXISTS "${IMAGEJXX_SDK_OUTPUT}")
+  message(FATAL_ERROR "The round-trip output must be fresh")
+endif()
+
+find_package(imagejxx CONFIG REQUIRED COMPONENTS io
+  PATHS "${IMAGEJXX_SDK_PREFIX}/lib/cmake/imagejxx" NO_DEFAULT_PATH)
+if(NOT imagejxx_DIR STREQUAL "${IMAGEJXX_SDK_PREFIX}/lib/cmake/imagejxx")
+  message(FATAL_ERROR "The consumer selected a different imagejxx package")
+endif()
+
+function(imported_link target output)
+  get_target_property(imported ${target} IMPORTED)
+  if(NOT imported)
+    message(FATAL_ERROR "The SDK witness requires an imported target: ${target}")
+  endif()
+  set(location "")
+  foreach(property IN ITEMS IMPORTED_IMPLIB_RELEASE IMPORTED_LOCATION_RELEASE
+                            IMPORTED_IMPLIB_NOCONFIG IMPORTED_LOCATION_NOCONFIG
+                            IMPORTED_IMPLIB IMPORTED_LOCATION)
+    if(NOT location)
+      get_target_property(location ${target} ${property})
+    endif()
+  endforeach()
+  if(NOT location OR NOT EXISTS "${location}" OR IS_SYMLINK "${location}")
+    message(FATAL_ERROR "Missing/non-regular SDK import: ${target}")
+  endif()
+  file(REAL_PATH "${location}" location)
+  set(${output} "${location}" PARENT_SCOPE)
+endfunction()
+
+imported_link(imagejxx::core core_link)
+imported_link(imagejxx::io io_link)
+get_target_property(core_includes imagejxx::core INTERFACE_INCLUDE_DIRECTORIES)
+get_target_property(io_includes imagejxx::io INTERFACE_INCLUDE_DIRECTORIES)
+if(NOT core_includes STREQUAL "${IMAGEJXX_SDK_PREFIX}/include" OR
+   NOT io_includes STREQUAL "${IMAGEJXX_SDK_PREFIX}/include")
+  message(FATAL_ERROR "The consumer selected public headers outside the installed SDK")
+endif()
+if(WIN32)
+  set(archive_prefix "")
+  set(archive_suffix ".lib")
+  set(tiff_name "tiff.lib")
+else()
+  set(archive_prefix "lib")
+  set(archive_suffix ".a")
+  set(tiff_name "libtiff.a")
+endif()
+if(NOT core_link STREQUAL "${IMAGEJXX_SDK_PREFIX}/lib/${archive_prefix}imagejxx_core${archive_suffix}" OR
+   NOT io_link STREQUAL "${IMAGEJXX_SDK_PREFIX}/lib/${archive_prefix}imagejxx_io${archive_suffix}")
+  message(FATAL_ERROR "The SDK consumer selected a producer-cache or foreign archive")
+endif()
+set(tiff_target TIFF::TIFF)
+get_target_property(tiff_kind ${tiff_target} TYPE)
+if(tiff_kind STREQUAL "INTERFACE_LIBRARY")
+  get_target_property(tiff_forward ${tiff_target} INTERFACE_LINK_LIBRARIES)
+  if(NOT tiff_forward STREQUAL "TIFF::tiff")
+    message(FATAL_ERROR "Unsupported TIFF imported wrapper")
+  endif()
+  set(tiff_target TIFF::tiff)
+endif()
+imported_link(${tiff_target} tiff_link)
+if(NOT tiff_link STREQUAL "${IMAGEJXX_SDK_DEPENDENCY_PREFIX}/lib/${tiff_name}")
+  message(FATAL_ERROR "The SDK consumer selected TIFF outside its delivered dependency prefix")
+endif()
+get_target_property(core_links imagejxx::core INTERFACE_LINK_LIBRARIES)
+get_target_property(io_links imagejxx::io INTERFACE_LINK_LIBRARIES)
+get_target_property(tiff_links ${tiff_target} INTERFACE_LINK_LIBRARIES)
+foreach(value IN ITEMS core_links io_links tiff_links)
+  if(NOT ${value})
+    set(${value} "")
+  endif()
+  string(TOLOWER "${${value}}" folded)
+  if(folded MATCHES "python")
+    message(FATAL_ERROR "A native SDK link interface contains Python: ${value}")
+  endif()
+endforeach()
+
+add_executable(imagejxx_scientific_sdk main.cpp)
+target_link_libraries(imagejxx_scientific_sdk PRIVATE imagejxx::io)
+target_compile_features(imagejxx_scientific_sdk PRIVATE cxx_std_17)
+set_target_properties(imagejxx_scientific_sdk PROPERTIES
+  RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
+if(IMAGEJXX_TIFF_RUNTIME_VERIFY_SCRIPT)
+  add_custom_target(imagejxx_scientific_sdk_dependencies
+    COMMAND "${CMAKE_COMMAND}" -P "${IMAGEJXX_TIFF_RUNTIME_VERIFY_SCRIPT}" VERBATIM)
+  add_dependencies(imagejxx_scientific_sdk imagejxx_scientific_sdk_dependencies)
+endif()
+if(IMAGEJXX_IO_RUNTIME_FILES)
+  add_custom_command(TARGET imagejxx_scientific_sdk POST_BUILD
+    COMMAND "${CMAKE_COMMAND}" -P "${IMAGEJXX_TIFF_RUNTIME_VERIFY_SCRIPT}"
+    COMMAND "${CMAKE_COMMAND}" -E copy_if_different ${IMAGEJXX_IO_RUNTIME_FILES}
+            "$<TARGET_FILE_DIR:imagejxx_scientific_sdk>"
+    COMMAND_EXPAND_LISTS VERBATIM)
+endif()
+
+# Record actual selected imported targets. The driver independently checks these
+# origins and retains this file with the installed archive/certificate hashes.
+function(json_string input output)
+  string(REPLACE "\\" "\\\\" value "${input}")
+  string(REPLACE "\"" "\\\"" value "${value}")
+  string(REPLACE "\n" "\\n" value "${value}")
+  string(REPLACE "\r" "\\r" value "${value}")
+  set(${output} "\"${value}\"" PARENT_SCOPE)
+endfunction()
+set(imports "{\n  \"schema\": \"imagejxx.scientific-sdk-imports.001\"")
+foreach(value IN ITEMS core_link io_link tiff_link core_includes io_includes core_links io_links tiff_links
+                      IMAGEJXX_IO_RUNTIME_FILES IMAGEJXX_CI_SOURCE_PROFILE
+                      Python3_EXECUTABLE CMAKE_CXX_COMPILER CMAKE_BUILD_TYPE CMAKE_GENERATOR)
+  json_string("${${value}}" quoted)
+  string(APPEND imports ",\n  \"${value}\": ${quoted}")
+endforeach()
+string(APPEND imports "\n}\n")
+file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/sdk-imports.json" "${imports}")
+
+add_test(NAME imagejxx_scientific_sdk_roundtrip COMMAND imagejxx_scientific_sdk
+  "${IMAGEJXX_SDK_FIXTURE}" "${IMAGEJXX_SDK_OUTPUT}")
+set_tests_properties(imagejxx_scientific_sdk_roundtrip PROPERTIES TIMEOUT 30)

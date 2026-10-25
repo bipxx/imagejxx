@@ -9,7 +9,7 @@ import time
 
 import pytest
 
-from settings_wand_ui_runner import terminate_process_tree
+from settings_wand_ui_runner import spawn_python_ui_child, terminate_process_tree
 
 
 def stopped(pid):
@@ -57,7 +57,7 @@ def test_timeout_cleanup_reaps_launcher_and_stops_actual_interpreter_tree(tmp_pa
         "Path(sys.argv[1]+'.ready').write_text('ready')\n"
         "time.sleep(30)\n", encoding="utf-8")
     with (tmp_path / "tree.log").open("xb") as log:
-        child = subprocess.Popen([sys.executable, "-I", str(script), str(runtime), runtime_kind],
+        child = spawn_python_ui_child([sys.executable, "-I", str(script), str(runtime), runtime_kind],
                                  stdout=log, stderr=subprocess.STDOUT,
                                  start_new_session=os.name != "nt")
         try:

@@ -12,6 +12,22 @@ import time
 CASES = ("wand-consume", "wand-drafts", "wand-persist", "wand-reopen")
 
 
+def spawn_python_ui_child(argv, **kwargs):
+    """Use the complete macOS lane's registered owner when it is active."""
+    required = os.environ.get("IMAGEJXX_REQUIRE_MAC_PROCESS_OWNER")
+    if sys.platform == "darwin" and required not in (None, "1"):
+        raise ValueError("Invalid required macOS process-owner mode")
+    if sys.platform == "darwin" and (required == "1" or any(name in os.environ for name in (
+            "IMAGEJXX_MAC_BROKER_SOCKET", "IMAGEJXX_MAC_BROKER_TOKEN"))):
+        import importlib.util
+        path = Path(__file__).resolve().parents[2] / "scripts/ci_mac_process.py"
+        spec = importlib.util.spec_from_file_location("ci_mac_ui_spawn", path)
+        owner = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(owner)
+        return owner.spawn_registered(argv, **kwargs)
+    return subprocess.Popen(argv, **kwargs)
+
+
 def terminate_process_tree(child, runtime_path):
     """Stop only this owned launch tree, including a Windows venv interpreter."""
     runtime, metadata_error = None, None
@@ -29,6 +45,10 @@ def terminate_process_tree(child, runtime_path):
         # A partially written diagnostic must never prevent cleanup of the
         # already-owned Popen tree. Never use an unvalidated PID as a target.
         runtime, metadata_error = None, str(error)
+    if callable(getattr(child, "terminate_tree", None)):
+        result = child.terminate_tree()
+        result["runtime_metadata_error"] = metadata_error
+        return result
     if os.name == "nt":
         import ctypes
         from ctypes import wintypes
@@ -107,7 +127,7 @@ def produce_python_reports(root):
             receipt["runs"].append(entry)
             save()
             with (parent / (case + ".log")).open("xb") as log:
-                child = subprocess.Popen(argv, cwd=root, env=environment, stdout=log,
+                child = spawn_python_ui_child(argv, cwd=root, env=environment, stdout=log,
                                          stderr=subprocess.STDOUT, start_new_session=os.name != "nt")
                 entry["launcher_process_id"] = child.pid
                 save()

@@ -14,7 +14,7 @@ that the other projects' defects exist here. They extend the
 its per-key paths or creating another execution framework. The original review
 was documentation-only while implementation was paused. Implementation has
 since resumed: [MW1](MW1-manual-threshold-workflow.md), CI1 and CFG2 are landed
-at `1fe5204`, `aed781f` and `40130ba`. CFG3 is now locally scoped-qualified; its [receipt](../parity/reviews/cfg3-measurement-names001/receipt.json)
+at `1fe5204`, `aed781f` and `40130ba`. CFG3 is pushed at `7c78d10` and locally scoped-qualified; its [receipt](../parity/reviews/cfg3-measurement-names001/receipt.json)
 binds the final installed checks. Their cards and receipts supersede historical proposed
 handoffs below; Program V9 is now typed manual threshold. This review does not
 establish full-family, hosted-CI or release acceptance.
@@ -73,6 +73,51 @@ identity reuse avoided another SDK build while final UI files were freshly read.
 The [updated notebook](../../../compilexx/imagejxx-plan-inefficiencies.md)
 records these lessons. C++ processing, commercial eligibility,
 the combined 8 GiB budget, preserved CG0 WIP and all open release gates remain.
+
+## Current CI2 review: maintained path and early failure controls
+
+Rechecked all six `../compilexx` documents and the current CI2 runner, workflow,
+verifier, checkout policy and retained failed-run receipt on 2026-10-25.
+The [updated Imagejxx notebook](../../../compilexx/imagejxx-plan-inefficiencies.md#current-review-finish-the-maintained-ci-path-before-another-campaign)
+records the findings, applicability limits, owners and decisive checks. This
+section supersedes older scheduling prose below; historical observations and
+sealed receipts retain their identities. CFG3 is landed at `7c78d10`; CI2 is
+a source candidate on `ci2-platform-integration`, with new source profiles still unqualified.
+
+The [latest notebook review](../../../compilexx/imagejxx-plan-inefficiencies.md#latest-review-classify-prerequisites-before-paying-for-qualification)
+now replaces the earlier timeout-only scheduling assumption. Retained terminal
+run `40188647024` at `7c78d10` shows Linux 3.10 completed with 377 failures and
+797 errors; Linux 3.12 separately timed out. The 1174 unique failed/error IDs
+classify as 652 fresh-capture/origin wiring, 120 Gaussian reference/contract,
+14 P05d contract, 361 other retired-reference dependencies and 27 current
+assertion/transport failures. These are not 1174 independent kernel defects.
+
+[CI2 readiness](CI2-full-platform-profiles.md#readiness-before-the-next-full-campaign)
+owns exact closure and dispatch. Preflight original inputs and producer/env/reader
+joins before another costly sweep. Restore unavailable history only from genuine
+matching bytes, preserving all required IDs and historical pins. Qualify the
+prepared native successor separately from the old binary and tool transport.
+
+Further applicable transfers from the reread: GitHub context validation beyond
+YAML parsing (VisPy); exact processing/domain identity before numerical fixes
+(QuPath); supported-version/launcher controls before harness integration
+(naparixx); actual producer/strict-consumer closure before download/build
+(scikit-imagexx); and actual UI state/selector diagnostics before product changes
+(napachan). Other projects' incidents are not asserted as local runtime defects.
+
+The WIP DAG now has three independent source-profile producers, each gating only
+its own two Python consumers. SDK execution/retention and the mandatory eight Darwin lifecycle cases are
+now wired into each relevant consumer; execute and validate the actual maintained
+entry points. Complete pytest/smoke now use bounded owned-command dispatch and
+post-drain diagnostics; other subprocess callers and actual Darwin remain open.
+No headless, synthetic certificate or tool-only pass is full hosted acceptance.
+
+Keep one cache/runtime per platform, one build/install owner and three total
+agents. The original Windows policy and commercial-only dependency boundary stay
+unchanged. Unknown pytest cache sizes prevent a complete budget proof; a dated
+known-byte headroom is not a future reservation. Denied cleanup must remain
+preserved rather than be retried through another mechanism. This review changes
+documentation only and claims no new measured speedup or family acceptance.
 
 ## Additional findings grounded in this repository
 

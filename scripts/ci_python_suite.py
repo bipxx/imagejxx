@@ -14,6 +14,7 @@ import importlib
 import importlib.metadata
 import importlib.util
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -283,6 +284,512 @@ def pin(path):
     return {"path": str(path), "bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}
 
 
+def installed_application(distribution, *, platform=None):
+    """Resolve the platform application only from the installed RECORD."""
+    platform = sys.platform if platform is None else platform
+    basename = "imagejxx.exe" if platform == "win32" else "imagejxx"
+    applications = [Path(distribution.locate_file(path)).resolve()
+                    for path in distribution.files or [] if path.name == basename]
+    applications = [path for path in applications if path.is_file() and os.access(path, os.X_OK)]
+    if len(applications) != 1:
+        raise ValueError(f"Expected one installed C++ desktop application, found {len(applications)}")
+    return applications[0]
+
+
+WINDOWS_RUNTIME_POLICY_REASON = "The exact reviewed delivery profile is Windows x64"
+WINDOWS_RUNTIME_POLICY_IDS = tuple(
+    "tests/python/test_tiff_runtime_policy.py::" + name
+    for name in (
+        *("test_cmake_fails_closed_for_runtime_header_and_linkage_changes[" + change + "]"
+          for change in ("none", "missing_dll", "changed_dll", "changed_header", "missing_link", "wrong_headers", "foreign_zlib")),
+        "test_recheck_refuses_changes_after_successful_configuration[bin/tiff.dll]",
+        "test_recheck_refuses_changes_after_successful_configuration[include/tiffio.h]",
+        "test_install_refuses_a_changed_dependency_before_copying_any_codec"))
+
+
+def platform_test_selection(collected_ids, *, platform=None):
+    """Exclude only the ten explicitly Windows-only delivery-policy controls."""
+    nonempty_unique(collected_ids, "Complete collected test IDs")
+    required = set(WINDOWS_RUNTIME_POLICY_IDS)
+    if not required <= set(collected_ids):
+        raise ValueError("Complete collection is missing required Windows runtime-policy IDs")
+    platform = sys.platform if platform is None else platform
+    excluded = [] if platform == "win32" else [
+        {"id": name, "reason": WINDOWS_RUNTIME_POLICY_REASON}
+        for name in collected_ids if name in required]
+    omitted = {row["id"] for row in excluded}
+    return [name for name in collected_ids if name not in omitted], excluded
+
+
+def junit_identity(nodeid):
+    """Match pytest's module/class naming while preserving opaque parameter IDs."""
+    prefix, bracket, parameters = nodeid.partition("[")
+    parts = prefix.split("::")
+    module = parts[0].replace("/", ".")
+    parts[0] = module[:-3] if module.endswith(".py") else module
+    parts[-1] += bracket + parameters
+    return ".".join(parts[:-1]), parts[-1]
+
+
+HEADLESS_TEST_IDS = (
+    "tests/python/test_history_settings.py::test_history_step_policy_effects",
+    "tests/python/test_history_settings.py::test_history_pixel_budget_effects",
+    "tests/python/test_history_settings.py::test_history_persist_reopen_adopt",
+    "tests/python/test_history_settings.py::test_history_detached_settings_no_owner_effects",
+    "tests/python/test_shortcuts.py::test_A01_base_registry_no_desktop",
+)
+
+
+def validate_selected_results(selected, junit_rows, phases):
+    """Exact execution outcomes shared by original and explicitly routed cohorts."""
+    expected = [junit_identity(name) for name in selected]
+    actual = [(row.get("classname"), row.get("name")) for row in junit_rows]
+    if (len(set(expected)) != len(expected) or actual != expected
+            or any(row.find(tag) is not None for row in junit_rows
+                   for tag in ("failure", "error", "skipped"))):
+        raise ValueError("Complete terminal test identities/outcomes differ from collection")
+    expected_phases = [(name, phase) for name in selected for phase in ("setup", "call", "teardown")]
+    if (not isinstance(phases, list) or len(phases) != len(expected_phases)
+            or any(not isinstance(row, dict) or set(row) != {"id", "phase", "outcome", "duration"}
+                   for row in phases)
+            or [(row["id"], row["phase"]) for row in phases] != expected_phases
+            or any(row["outcome"] != "passed" or type(row["duration"]) not in (int, float)
+                   or not math.isfinite(row["duration"]) or row["duration"] < 0 for row in phases)):
+        raise ValueError("Complete setup/call/teardown phases are missing or unacceptable")
+
+
+def validate_complete_results(collection, junit_rows, phases, *, platform=None):
+    platform = sys.platform if platform is None else platform
+    if (not isinstance(collection, dict)
+            or set(collection) != {"schema", "platform", "collected", "selected", "excluded"}
+            or collection["schema"] != "imagejxx.complete-collection.001"
+            or collection["platform"] != platform):
+        raise ValueError("Unknown or wrong-platform complete collection")
+    selected, excluded = platform_test_selection(collection["collected"], platform=platform)
+    if collection["selected"] != selected or collection["excluded"] != excluded:
+        raise ValueError("Complete platform collection changed")
+    validate_selected_results(selected, junit_rows, phases)
+
+
+def validate_headless_results(collection, junit_rows, phases, expected_id, *, platform=None):
+    platform = sys.platform if platform is None else platform
+    if (expected_id not in HEADLESS_TEST_IDS or not isinstance(collection, dict)
+            or set(collection) != {"schema", "platform", "collected", "selected", "excluded"}
+            or collection["schema"] != "imagejxx.headless-collection.001"
+            or collection["platform"] != platform or collection["collected"] != [expected_id]
+            or collection["selected"] != [expected_id] or collection["excluded"] != []):
+        raise ValueError("Headless child must collect exactly its original required test ID")
+    validate_selected_results([expected_id], junit_rows, phases)
+
+
+def routed_test_selection(collected_ids, *, platform=None):
+    selected, excluded = platform_test_selection(collected_ids, platform=platform)
+    required = set(HEADLESS_TEST_IDS)
+    if not required <= set(selected):
+        raise ValueError("Complete collection is missing required isolated headless IDs")
+    return ([name for name in selected if name not in required], excluded,
+            [name for name in selected if name in required])
+
+
+def validate_routed_results(collection, junit_rows, phases, headless_reports, *, platform=None):
+    platform = sys.platform if platform is None else platform
+    if (not isinstance(collection, dict)
+            or set(collection) != {"schema", "platform", "collected", "selected", "excluded", "routed"}
+            or collection["schema"] != "imagejxx.complete-collection.002"
+            or collection["platform"] != platform):
+        raise ValueError("Unknown routed complete collection")
+    selected, excluded, routed = routed_test_selection(collection["collected"], platform=platform)
+    if (collection["selected"] != selected or collection["excluded"] != excluded
+            or collection["routed"] != routed):
+        raise ValueError("Routed complete collection changed its original obligations")
+    validate_selected_results(selected, junit_rows, phases)
+    if (not isinstance(headless_reports, list) or len(headless_reports) != len(HEADLESS_TEST_IDS)
+            or any(not isinstance(row, dict) or set(row) != {
+                "id", "collection", "junit_rows", "phases", "process"} for row in headless_reports)
+            or [row["id"] for row in headless_reports] != list(HEADLESS_TEST_IDS)):
+        raise ValueError("Missing, substituted or duplicated isolated headless results")
+    for row in headless_reports:
+        proof = row["process"]
+        if (not isinstance(proof, dict) or proof.get("schema") != "imagejxx.owned-command.001"
+                or proof.get("state") != "exited" or type(proof.get("exit_code")) is not int or proof.get("exit_code") != 0
+                or proof.get("target_completed") is not True or proof.get("cleanup_complete") is not True):
+            raise ValueError("Isolated headless child has no successful resolved owned exit")
+        validate_headless_results(row["collection"], row["junit_rows"], row["phases"], row["id"], platform=platform)
+    original, _ = platform_test_selection(collection["collected"], platform=platform)
+    actual = selected + [row["id"] for row in headless_reports]
+    if len(actual) != len(set(actual)) or set(actual) != set(original) or set(routed) != set(HEADLESS_TEST_IDS):
+        raise ValueError("Broad and isolated results do not form the exact required disjoint union")
+
+
+class CompleteCollection:
+    """Keep exact collection, live-test and terminal phase evidence for CI."""
+    def __init__(self, output):
+        self.output = Path(output)
+        self.phases = []
+        self.selected = []
+
+    def pytest_collection_modifyitems(self, config, items):
+        collected = [item.nodeid for item in items]
+        self.selected, excluded = platform_test_selection(collected)
+        omitted = {row["id"] for row in excluded}
+        deselected = [item for item in items if item.nodeid in omitted]
+        items[:] = [item for item in items if item.nodeid not in omitted]
+        config.hook.pytest_deselected(items=deselected)
+        (self.output / "complete-collection.json").write_text(json.dumps({
+            "schema": "imagejxx.complete-collection.001", "platform": sys.platform, "collected": collected,
+            "selected": self.selected, "excluded": excluded}, indent=2) + "\n", encoding="utf-8")
+
+    def pytest_runtest_logstart(self, nodeid, location):
+        (self.output / "active-test.json").write_text(json.dumps({
+            "state": "running", "id": nodeid, "started": time.time()}) + "\n", encoding="utf-8")
+
+    def pytest_runtest_logreport(self, report):
+        row = {"id": report.nodeid, "phase": report.when,
+               "outcome": report.outcome, "duration": report.duration}
+        self.phases.append(row)
+        with (self.output / "test-phases.jsonl").open("a", encoding="utf-8") as stream:
+            stream.write(json.dumps(row) + "\n")
+
+    def pytest_runtest_logfinish(self, nodeid, location):
+        (self.output / "active-test.json").write_text(json.dumps({
+            "state": "finished", "id": nodeid, "ended": time.time()}) + "\n", encoding="utf-8")
+
+
+class RoutedCompleteCollection(CompleteCollection):
+    def pytest_collection_modifyitems(self, config, items):
+        collected = [item.nodeid for item in items]
+        self.selected, excluded, routed = routed_test_selection(collected)
+        execute = set(self.selected)
+        transferred = [item for item in items if item.nodeid not in execute]
+        items[:] = [item for item in items if item.nodeid in execute]
+        config.hook.pytest_deselected(items=transferred)
+        (self.output / "complete-collection.json").write_bytes((json.dumps({
+            "schema": "imagejxx.complete-collection.002", "platform": sys.platform,
+            "collected": collected, "selected": self.selected, "excluded": excluded,
+            "routed": routed}, indent=2) + "\n").encode("utf-8"))
+
+
+class HeadlessCollection(CompleteCollection):
+    def __init__(self, output, expected_id):
+        super().__init__(output)
+        if expected_id not in HEADLESS_TEST_IDS:
+            raise ValueError("Unknown isolated headless ID")
+        self.expected_id = expected_id
+
+    def pytest_collection_modifyitems(self, config, items):
+        if [item.nodeid for item in items] != [self.expected_id]:
+            raise ValueError("Headless collection differs from its literal original ID")
+        self.selected = [self.expected_id]
+        (self.output / "complete-collection.json").write_bytes((json.dumps({
+            "schema": "imagejxx.headless-collection.001", "platform": sys.platform,
+            "collected": self.selected, "selected": self.selected, "excluded": []}, indent=2) + "\n").encode("utf-8"))
+
+
+def complete_pytest_child(output, root, *, routed=False):
+    if sys.flags.optimize:
+        raise ValueError("Complete Python qualification requires enabled assertions")
+    unexpected = [name for name in ("PYTHONOPTIMIZE", "PYTEST_ADDOPTS", "PYTEST_PLUGINS")
+                  if os.environ.get(name)]
+    if unexpected:
+        raise ValueError("Complete Python child refuses inherited test overrides: " + ", ".join(unexpected))
+    os.environ["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] = "1"
+    os.chdir(root)
+    import pytest
+    collector = RoutedCompleteCollection(output) if routed else CompleteCollection(output)
+    return pytest.main(["tests/python", "--tb=short", "-p", "no:cacheprovider",
+        "--basetemp", str(output / "pytest-temp"), "--junitxml", str(output / "pytest.xml")],
+        plugins=[collector])
+
+
+def headless_pytest_child(output, root, expected_id, *, dependency_site=None, install_manifest=None):
+    if expected_id not in HEADLESS_TEST_IDS or sys.flags.optimize:
+        raise ValueError("Explicit original headless ID and enabled assertions are required")
+    if any(os.environ.get(name) for name in ("PYTHONOPTIMIZE", "PYTEST_ADDOPTS", "PYTEST_PLUGINS")):
+        raise ValueError("Headless child refuses inherited test overrides")
+    if "IMAGEJXX_SHORTCUTS_PYTHON_OBSERVATIONS" in os.environ:
+        raise ValueError("Optional shortcut observation mode requires a separate routing contract")
+    os.environ["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] = "1"
+    root = Path(root).resolve(strict=True)
+    output = Path(output).resolve()
+    os.chdir(root)
+    receipt_path = output / "headless-receipt.json"
+    if receipt_path.exists():
+        raise ValueError("Use a fresh isolated headless child output")
+    row = {"state": "running", "id": expected_id, "acceptance_claim": False,
+           "scope": "one original installed headless test; not full product acceptance"}
+    def save():
+        receipt_path.write_bytes((json.dumps(row, indent=2) + "\n").encode("utf-8"))
+    save()
+    try:
+        spec = importlib.util.spec_from_file_location(
+            "ci_headless_origins", Path(__file__).with_name("ci_headless_origins.py"))
+        helper = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(helper)
+        sources = [Path(__file__), Path(__file__).with_name("ci_headless_origins.py"),
+                   Path(root) / expected_id.split("::", 1)[0],
+                   Path(root) / "tests/python/shortcut_api_observations.py"]
+        row["sources_before"] = [pin(path) for path in sources]
+        manifest_before = None
+        if install_manifest is None:
+            original_distribution = importlib.metadata.distribution("imagejxx")
+            primary_package = Path(original_distribution.locate_file("imagejxx")).resolve(strict=True)
+        else:
+            # CMake installation is a separate explicit local delivery profile.
+            # Its primary runtime package never comes from the dependency site.
+            primary_package = (Path(sysconfig.get_path("purelib")) / "imagejxx").resolve(strict=True)
+            manifest_before = pin(install_manifest)
+            row["install_manifest"] = manifest_before
+        if dependency_site is not None:
+            site = Path(dependency_site).resolve(strict=True)
+            if not site.is_dir() or site.is_relative_to(root / "src"):
+                raise ValueError("An existing dependency site outside product source is required")
+            # Append only: the primary runtime must already own the product.
+            sys.path.append(str(site))
+            row["dependency_site"] = str(site)
+        package = importlib.import_module("imagejxx")
+        if Path(package.__file__).resolve().parent != primary_package:
+            raise ValueError("Dependency site substituted the primary installed product")
+        native = importlib.import_module("imagejxx._native")
+        numpy = importlib.import_module("numpy")
+        origins = helper.prepare(output / "origins", package, native, numpy, root,
+                                 install_manifest=install_manifest)
+        os.environ.update(origins)
+        row["origins"] = {name: pin(path) for name, path in origins.items()}
+        save()
+        import pytest
+        if pytest.__version__ != "8.4.2":
+            raise ValueError("Headless test dependency must be the reviewed pytest 8.4.2")
+        if dependency_site is not None and not Path(pytest.__file__).resolve().is_relative_to(site):
+            raise ValueError("Pytest did not load from the explicit existing dependency site")
+        row["pytest"] = pin(pytest.__file__)
+        code = int(pytest.main([expected_id, "--tb=short", "-p", "no:cacheprovider",
+            "--basetemp", str(output / "pytest-temp"), "--junitxml", str(output / "pytest.xml")],
+            plugins=[HeadlessCollection(output, expected_id)]))
+        row["exit_code"] = code
+        helper._headless_modules(package, native, numpy)
+        helper._load_validator(Path(root)).origins(
+            Path(origins["IMAGEJXX_SHORTCUTS_PYTHON_ORIGINS"]), "headless", loaded=True)
+        if manifest_before is not None and pin(install_manifest) != manifest_before:
+            raise ValueError("CMake installation manifest changed during headless execution")
+        row["sources_after"] = [pin(path) for path in sources]
+        if row["sources_after"] != row["sources_before"]:
+            raise ValueError("Headless source/observer inputs changed during execution")
+        if code:
+            row["state"] = "failed"
+        else:
+            collection = json.loads((output / "complete-collection.json").read_bytes())
+            phases = [json.loads(line) for line in (output / "test-phases.jsonl").read_text().splitlines()]
+            validate_headless_results(collection, ET.parse(output / "pytest.xml").getroot().findall(".//testcase"),
+                                      phases, expected_id)
+            row["state"] = "passed"
+        return code
+    except BaseException as error:
+        row.update(state="failed", error={"type": type(error).__name__, "message": str(error)})
+        raise
+    finally:
+        save()
+
+
+def run_headless_tests(output, root, environment, *, deadline=None, on_start=None, dependency_site=None, install_manifest=None):
+    """Five fresh children; each <=30s within the one complete-reader deadline."""
+    if "IMAGEJXX_SHORTCUTS_PYTHON_OBSERVATIONS" in environment:
+        raise ValueError("Optional shortcut observations are outside the five-ID routing contract")
+    root = Path(root).resolve(strict=True)
+    output = Path(output).resolve()
+    if dependency_site is not None:
+        dependency_site = Path(dependency_site).resolve(strict=True)
+    if install_manifest is not None:
+        install_manifest = Path(install_manifest).resolve(strict=True)
+    if output.exists():
+        raise ValueError("Use a fresh headless suite output")
+    output.mkdir(parents=True)
+    deadline = time.monotonic() + 2400 if deadline is None else deadline
+    if type(deadline) not in (int, float) or not math.isfinite(deadline):
+        raise ValueError("Headless suite requires a finite absolute reader deadline")
+    receipt = {"schema": "imagejxx.headless-suite.001", "state": "running",
+               "acceptance_claim": False, "ids": list(HEADLESS_TEST_IDS), "cases": []}
+    def save():
+        (output / "receipt.json").write_bytes((json.dumps(receipt, indent=2) + "\n").encode("utf-8"))
+    save()
+    reports = []
+    try:
+        for index, expected_id in enumerate(HEADLESS_TEST_IDS, 1):
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise TimeoutError("Complete reader deadline exhausted before isolated headless child")
+            directory = output / f"case-{index:02d}"
+            directory.mkdir()
+            argv = [sys.executable, "-I", "-X", "utf8", "-B", str(Path(__file__).resolve()),
+                    "--headless-pytest-child", str(directory), "--repository", str(root),
+                    "--headless-test-id", expected_id]
+            if dependency_site is not None:
+                argv.extend(["--headless-dependency-site", str(dependency_site)])
+            if install_manifest is not None:
+                argv.extend(["--headless-install-manifest", str(install_manifest)])
+            item = {"id": expected_id, "state": "running", "argv": argv,
+                    "timeout_seconds": min(30, remaining), "directory": directory.name}
+            receipt["cases"].append(item)
+            save()
+            cancel_admission = on_start(directory / "process.json") if on_start is not None else None
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                item["state"] = "not_launched_deadline"
+                if callable(cancel_admission):
+                    cancel_admission()
+                raise TimeoutError("Complete reader deadline exhausted during isolated admission")
+            item["timeout_seconds"] = min(30, remaining)
+            process = complete_command(argv, output=directory, root=root, environment=environment,
+                                       timeout=item["timeout_seconds"])
+            item["process"] = pin(directory / "process.json")
+            if process["exit_code"] != 0:
+                raise subprocess.CalledProcessError(process["exit_code"], argv)
+            child = json.loads((directory / "headless-receipt.json").read_bytes())
+            if child.get("state") != "passed" or child.get("id") != expected_id:
+                raise ValueError("Headless child did not finish its original required test")
+            report = {"id": expected_id,
+                      "collection": json.loads((directory / "complete-collection.json").read_bytes()),
+                      "junit_rows": ET.parse(directory / "pytest.xml").getroot().findall(".//testcase"),
+                      "phases": [json.loads(line) for line in (directory / "test-phases.jsonl").read_text().splitlines()],
+                      "process": json.loads((directory / "process.json").read_bytes())}
+            validate_headless_results(report["collection"], report["junit_rows"], report["phases"], expected_id)
+            proof = report["process"]
+            if (proof.get("schema") != "imagejxx.owned-command.001" or proof.get("state") != "exited"
+                    or type(proof.get("exit_code")) is not int or proof.get("exit_code") != 0 or proof.get("target_completed") is not True
+                    or proof.get("cleanup_complete") is not True):
+                raise ValueError("Headless child has no successful resolved owned exit")
+            for name in ("headless-receipt.json", "complete-collection.json", "pytest.xml", "test-phases.jsonl"):
+                item[name] = pin(directory / name)
+            item["state"] = "passed"
+            reports.append(report)
+            save()
+        receipt["state"] = "passed"
+        return reports
+    except BaseException as error:
+        receipt.update(state="failed", error={"type": type(error).__name__, "message": str(error)})
+        if receipt["cases"] and receipt["cases"][-1]["state"] == "running":
+            receipt["cases"][-1]["state"] = "failed"
+        raise
+    finally:
+        save()
+
+
+def retain_headless_output(output):
+    """Snapshot stopped original headless outputs; preserve explicit alias omissions.
+
+    The caller must first resolve every started reader process. Required payloads
+    are never selected by suffix: the existing retainer admits every regular file.
+    """
+    output = Path(output).resolve()
+    spec = importlib.util.spec_from_file_location(
+        "ci_headless_output_retention", Path(__file__).with_name("ci_python_diagnostics.py"))
+    helper = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(helper)
+    result = helper.retain_python_diagnostics(output, Path(str(output) + ".zip"), selection="headless-tests")
+    allowed_cases = {f"case-{index:02d}" for index in range(1, 5)}
+    for omission in result["omitted"]:
+        parts = omission["path"].split("/")
+        if (omission["reason"] != "linked_path" or len(parts) != 3
+                or parts[0] not in allowed_cases or parts[1] != "pytest-temp"
+                or not parts[2].endswith("current")):
+            raise ValueError("Headless output retention omitted a required payload or unexpected entry")
+    if (result["state"] not in {"complete", "incomplete"} or not result.get("archive")
+            or result["matched_files"] != len(result["members"])
+            or result["discovery"]["complete"] != (not result["omitted"])):
+        raise ValueError("Headless output did not retain every bounded regular payload")
+    return result
+
+
+INSTALLED_SMOKE_IDS = (
+    "tests/python/test_scientific_tiff_io.py::test_independent_carriers_and_admission[defaults.tif]",
+    "tests/python/test_settings.py::test_settings_in_hidden_opengl_and_recreated_context",
+)
+
+
+def complete_command(argv, *, output, root, environment, timeout):
+    """The complete lane owns command descendants before reading diagnostics.
+
+    Load this seam only for the complete lane; focused profiles retain their
+    original protocol. The Darwin backend requires registered first-party UI
+    spawns and never falls back to a raw subprocess.
+    """
+    name = "ci_mac_process" if sys.platform == "darwin" else "ci_owned_process"
+    spec = importlib.util.spec_from_file_location(name, Path(__file__).with_name(name + ".py"))
+    owner = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(owner)
+    execute = owner.run_mac_owned if sys.platform == "darwin" else owner.run_owned
+    if sys.platform == "darwin":
+        environment = dict(environment, IMAGEJXX_REQUIRE_MAC_PROCESS_OWNER="1")
+    with (output / "pytest.log").open("xb") as log:
+        row = execute(argv, cwd=root, env=environment, timeout=timeout,
+                      stdout=log, stderr=subprocess.STDOUT,
+                      receipt_path=output / "process.json")
+    if not row.get("cleanup_complete") or row.get("state") != "exited":
+        raise ValueError("Complete command has no resolved terminal process ownership")
+    return row
+
+
+def failed_python_diagnostics(output):
+    """Retain bounded diagnostics only after a terminal owned-process receipt."""
+    spec = importlib.util.spec_from_file_location(
+        "ci_python_diagnostics", Path(__file__).with_name("ci_python_diagnostics.py"))
+    diagnostics = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(diagnostics)
+    result = {}
+    candidates = [("installed-smoke", output / "installed-smoke"), ("complete", output)]
+    candidates.extend((f"headless-{index:02d}", output / "headless" / f"case-{index:02d}")
+                      for index in range(1, len(HEADLESS_TEST_IDS) + 1)
+                      if (output / "headless" / f"case-{index:02d}").is_dir())
+    for name, directory in candidates:
+        process = directory / "process.json"
+        try:
+            proof = json.loads(process.read_bytes())
+            if (proof.get("schema") != "imagejxx.owned-command.001"
+                    or proof.get("cleanup_complete") is not True
+                    or proof.get("state") in {"starting", "running"}):
+                result[name] = {"state": "unavailable", "reason": "process_cleanup_unresolved"}
+                continue
+            result[name] = diagnostics.retain_python_diagnostics(
+                directory / "pytest-temp", output / (name + "-python-diagnostics.zip"))
+        except FileNotFoundError:
+            result[name] = {"state": "unavailable", "reason": "process_report_missing"}
+        except Exception as error:
+            result[name] = {"state": "retention_failed", "error": {
+                "type": type(error).__name__, "message": str(error)}}
+    return result
+
+
+def installed_smoke(output, root, environment):
+    """Exercise the required codec and real hidden-GL routes before full capture."""
+    output.mkdir()
+    argv = [sys.executable, "-I", "-X", "utf8", "-B", "-m", "pytest", *INSTALLED_SMOKE_IDS,
+            "--tb=short", "-p", "no:cacheprovider", "--basetemp", str(output / "pytest-temp"),
+            "--junitxml", str(output / "pytest.xml")]
+    row = {"state": "running", "argv": argv, "selected": list(INSTALLED_SMOKE_IDS)}
+    receipt = output / "receipt.json"
+    def save():
+        receipt.write_bytes((json.dumps(row, indent=2) + "\n").encode("utf-8"))
+    save()
+    try:
+        result = complete_command(argv, output=output, root=root, environment=environment, timeout=120)
+        row.update(exit_code=result["exit_code"], process=pin(output / "process.json"))
+        if result["exit_code"]:
+            raise subprocess.CalledProcessError(result["exit_code"], argv)
+        report = output / "pytest.xml"
+        cases = ET.parse(report).getroot().findall(".//testcase")
+        if ([(case.get("classname"), case.get("name")) for case in cases]
+                != [junit_identity(name) for name in INSTALLED_SMOKE_IDS]
+                or any(case.find(tag) is not None for case in cases
+                       for tag in ("failure", "error", "skipped"))):
+            raise ValueError("Installed codec/render smoke requires both exact passing cases")
+        row.update(state="passed", junit=pin(report))
+    except BaseException as error:
+        row.update(state="failed", error={"type": type(error).__name__, "message": str(error)})
+        raise
+    finally:
+        save()
+    return pin(receipt)
+
+
 def audit_static_codecs(path):
     """Selected static C archives must not export interposable codec APIs."""
     symbols = subprocess.check_output(["nm", "-D", "--defined-only", str(path)], text=True)
@@ -302,19 +809,165 @@ def audit_static_codecs(path):
             "exposed_codec_symbols": 0, "direct_dependencies": needed}
 
 
+def current_capture_inventory(output):
+    """Bound the entire stopped output, including root logs and failed captures."""
+    spec = importlib.util.spec_from_file_location(
+        "ci_current_observation_inventory", Path(__file__).with_name("ci_current_observations.py"))
+    helper = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(helper)
+    return helper.inventory(output)
+
+
+def current_producer_cache(executable, root):
+    """Admit the hosted single-config cache, not a claim of build execution."""
+    root = Path(root).resolve(strict=True)
+    wheel = root / "build/wheel"
+    parents = [parent for parent in executable.parents if parent.is_relative_to(wheel)]
+    candidates = [parent / "CMakeCache.txt" for parent in parents if (parent / "CMakeCache.txt").is_file()]
+    if len(candidates) != 1 or candidates[0].is_symlink():
+        raise ValueError("RGB producer requires one regular containing primary CMake cache")
+    cache = candidates[0]
+    if cache.stat().st_size > 4 * 1024 * 1024:
+        raise ValueError("RGB producer cache exceeds its metadata bound")
+    validated_pin = pin(cache)
+    values = {}
+    for line in cache.read_text(encoding="utf-8").splitlines():
+        if not line or line.startswith(("#", "//")) or "=" not in line or ":" not in line.split("=", 1)[0]:
+            continue
+        key, value = line.split("=", 1)
+        key = key.split(":", 1)[0]
+        if key in values:
+            raise ValueError("Duplicate RGB producer cache field: " + key)
+        values[key] = value
+    expected = {"CMAKE_GENERATOR": "Ninja", "CMAKE_BUILD_TYPE": "Release", "BUILD_TESTING": "ON",
+                "IMAGEJXX_BUILD_PYTHON": "ON", "IMAGEJXX_BUILD_IO": "ON",
+                "IMAGEJXX_BUILD_CPP_UI": "ON", "IMAGEJXX_BUILD_PYTHON_UI": "ON"}
+    if any(values.get(name) != value for name, value in expected.items()):
+        raise ValueError("RGB producer cache is not the complete hosted Release profile")
+    for name, expected_path in (("CMAKE_HOME_DIRECTORY", root), ("CMAKE_CACHEFILE_DIR", cache.parent)):
+        if not values.get(name) or Path(values[name]).resolve(strict=True) != expected_path:
+            raise ValueError("RGB producer cache source/build directory differs: " + name)
+    if pin(cache) != validated_pin:
+        raise ValueError("RGB producer cache changed during configuration admission")
+    return cache, expected, validated_pin
+
+
+def capture_current_observations(output, application, root, environment):
+    """Run current producers using the one existing wheel-build native cache."""
+    name = "imagejxx_rgb_combined_input_tests" + (".exe" if sys.platform == "win32" else "")
+    candidates = list((Path(root) / "build/wheel").rglob(name))
+    if len(candidates) != 1:
+        raise ValueError(f"Expected one built RGB combined-input producer, found {len(candidates)}")
+    executable = candidates[0]
+    if executable.is_symlink() or not executable.is_file():
+        raise ValueError("RGB combined-input producer must be a regular existing build output")
+    cache, configuration, cache_before = current_producer_cache(executable, root)
+    spec = importlib.util.spec_from_file_location(
+        "ci_current_observations", Path(__file__).with_name("ci_current_observations.py"))
+    helper = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(helper)
+    result = helper.capture_current(application, executable, output, environment, root=root)
+    cache_after = pin(cache)
+    identity = {"scope": "containing hosted cache identity only; not build execution authentication",
+                "before": cache_before, "after": cache_after, "required_configuration": configuration}
+    with (Path(output) / "producer-cache.json").open("xb") as stream:
+        stream.write((json.dumps(identity, indent=2) + "\n").encode("utf-8"))
+    if cache_before != cache_after:
+        raise ValueError("RGB producer cache changed during current capture")
+    names = {"IMAGEJXX_RGB_COMBINED_INPUT_REPORT", "IMAGEJXX_H1_CPP_REPORT", "IMAGEJXX_R16_CPP_REPORT"}
+    if (result.get("state") != "captured" or result.get("acceptance_claim") is not False
+            or set(result.get("reader_environment", {})) != names):
+        raise ValueError("Current producers did not provide their exact original reader paths")
+    return result["reader_environment"]
+
+
+# Original independent readers own these identities. This early gate covers
+# known required reference inputs only; it is not exhaustive fixture acceptance.
+REQUIRED_REFERENCE_INPUTS = (
+    ("IMAGEJXX_GAUSSIAN_UI_CONTRACT_JSON", "IMAGEJXX_GAUSSIAN_UI_CONTRACT_SHA256", None,
+     "2652bcf1c0665e997fb1bbe55c7f616071359e6b99293b875b2b8555ff045255", None),
+    ("IMAGEJXX_GAUSSIAN_CONTRACT_JSON", "IMAGEJXX_GAUSSIAN_CONTRACT_SHA256", None,
+     "3b3f040e01b93642d2b0d3d84db9574f7a9ee525b3a7f29dac7ad21ea03ea6c3", None),
+    ("IMAGEJXX_GAUSSIAN_REFERENCE_JSONL", "IMAGEJXX_GAUSSIAN_REFERENCE_SHA256", None,
+     "8885c41ded23f51e56b1c42e28245bf4b9320108dacfa09da631e14fbe9bf762", None),
+    ("IMAGEJXX_XYZ_NUMERIC_ZOOM_CONTRACT_JSON", None, None,
+     "3b4c1840d00a773da7b3e5e7fffba08c2292dce00b395ab0dc18da124137480b", None),
+    (None, None, "build/plan-implementation/p05f-axis-plane-export-001/next-range-reference-preparation-001/capture-001/corpus.json",
+     "8ddde981534e0ccf55840316485c29c3dbcf61eef03dacee291b83477b4a8347", 7876991),
+    (None, None, "build/plan-implementation/p05f-axis-plane-export-001/next-range-reference-preparation-001/formula-verification-001.json",
+     "b88c4b86a14bf16f8db84adbfbe99dc1aee454f6ae739d123e4c897cdf79ae79", 15181),
+)
+
+
+def reference_readiness(root, environment):
+    """Read-only prerequisite inventory before product imports or bulk capture.
+
+    No fallback, generated replacement, hash migration or skipped test is admitted.
+    Successful bytes establish availability only; original readers still execute.
+    """
+    rows = []
+    for name, hash_name, relative, expected, size in REQUIRED_REFERENCE_INPUTS:
+        configured = environment.get(name) if name else str(Path(root) / relative)
+        row = {"environment": name, "original_path": relative,
+               "expected_sha256": expected, "state": "unavailable"}
+        rows.append(row)
+        if not configured:
+            row["reason"] = "required explicit reference path is not configured"
+            continue
+        row["path"] = str(configured)
+        if hash_name and environment.get(hash_name) != expected:
+            row.update(state="invalid", reason="required original hash setting is missing or changed")
+            continue
+        path = Path(configured)
+        if not path.is_absolute():
+            path = Path(root) / path
+        try:
+            if path.is_symlink() or not path.is_file():
+                row["reason"] = "required original is unavailable as a regular file"
+                continue
+            before = path.stat()
+            if before.st_size > 64 * 1024 * 1024 or (size is not None and before.st_size != size):
+                row.update(state="invalid", reason="reference size differs or exceeds the bounded read")
+                continue
+            observed = pin(path)
+            after = path.stat()
+            row["observed"] = observed
+            if ((before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns)
+                    != (after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns)):
+                row.update(state="invalid", reason="reference changed during inspection")
+            elif observed["sha256"] != expected:
+                row.update(state="invalid", reason="reference bytes differ from original reader pin")
+            else:
+                row.update(state="available", path=str(path.absolute()))
+        except OSError as error:
+            row["reason"] = str(error)
+    return {"state": "ready" if all(row["state"] == "available" for row in rows) else "unavailable",
+            "scope": "six known required original reference inputs; not exhaustive fixture acceptance",
+            "acceptance_claim": False, "inputs": rows}
+
+
 def run(output: Path, root: Path):
     output = output.resolve()
     if output.exists():
         raise ValueError(f"Use a fresh Python CI output directory: {output}")
     output.mkdir(parents=True)
     receipt = {"state": "running", "profile": "complete-installed-python-scientific-desktop",
-               "python": sys.executable, "modules": {}, "environment_contracts": []}
+               "python": sys.executable, "modules": {}, "environment_contracts": [],
+               "complete_reader_started": False, "reader_processes": []}
 
     def save():
         (output / "receipt.json").write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
 
     save()
     try:
+        if sys.flags.optimize:
+            raise ValueError("Complete Python qualification requires enabled assertions")
+        if "IMAGEJXX_SHORTCUTS_PYTHON_OBSERVATIONS" in os.environ:
+            raise ValueError("Optional shortcut observation mode requires a separate routing contract")
+        receipt["reference_readiness"] = reference_readiness(root, os.environ)
+        save()
+        if receipt["reference_readiness"]["state"] != "ready":
+            raise ValueError("Complete Python reference prerequisites are unavailable; see reference_readiness")
         distribution = importlib.metadata.distribution("imagejxx")
         expected_package = Path(distribution.locate_file("imagejxx")).resolve(strict=True)
         package = importlib.import_module("imagejxx")
@@ -328,6 +981,10 @@ def run(output: Path, root: Path):
             if sys.platform == "linux" and name != "imagejxx._native":
                 receipt["modules"][name]["static_codec_audit"] = audit_static_codecs(module.__file__)
         environment = os.environ.copy()
+        for name in ("PYTHONOPTIMIZE", "PYTEST_ADDOPTS", "PYTEST_PLUGINS",
+                     "IMAGEJXX_MAC_BROKER_SOCKET", "IMAGEJXX_MAC_BROKER_TOKEN",
+                     "IMAGEJXX_REQUIRE_MAC_PROCESS_OWNER"):
+            environment.pop(name, None)
         environment.update(IMAGEJXX_RENDER_TESTS="1", IMAGEJXX_REQUIRE_RENDER_TESTS="1",
                            PYTHONDONTWRITEBYTECODE="1", PYTEST_DISABLE_PLUGIN_AUTOLOAD="1")
         environment["IMAGEJXX_DESKTOP_MODULE_SHA256"] = receipt["modules"]["imagejxx._desktop"]["sha256"]
@@ -352,15 +1009,18 @@ def run(output: Path, root: Path):
         abi = f"{sizes['image']},{sizes['shared_const_image']}"
         environment["IMAGEJXX_AXIS_RANGE_SPACING_ABI_SIZES"] = abi
         environment["IMAGEJXX_AXIS_RANGE_SLICER_RESIZE_ABI_SIZES"] = abi
-        applications = [Path(distribution.locate_file(path)).resolve()
-                        for path in distribution.files or [] if path.name == "imagejxx"]
-        applications = [path for path in applications if path.is_file() and os.access(path, os.X_OK)]
-        if len(applications) != 1:
-            raise ValueError(f"Expected one installed C++ desktop application, found {len(applications)}")
-        receipt["cpp_application"] = pin(applications[0])
-        environment["IMAGEJXX_CPP_EXE"] = str(applications[0])
+        application = installed_application(distribution)
+        receipt["cpp_application"] = pin(application)
+        environment["IMAGEJXX_CPP_EXE"] = str(application)
         environment["IMAGEJXX_CPP_EXE_SHA256"] = receipt["cpp_application"]["sha256"]
-        environment.update(capture(output / "cpp-observations", applications[0], root, environment))
+        if sys.platform == "win32":
+            environment["IMAGEJXX_REVIEWED_WINDOWS_TIFF_PREFIX"] = str(root / "tests/fixtures/windows-tiff-runtime-reviewed")
+        receipt["installed_smoke"] = installed_smoke(output / "installed-smoke", root, environment)
+        save()
+        environment.update(capture_current_observations(output / "current-observations", application, root, environment))
+        receipt["current_observations"] = pin(output / "current-observations/receipt.json")
+        save()
+        environment.update(capture(output / "cpp-observations", application, root, environment))
         receipt["cpp_observations"] = str(output / "cpp-observations/receipt.json")
         tests = sorted((root / "tests/python").glob("test_*.py"))
         if not tests:
@@ -373,29 +1033,121 @@ def run(output: Path, root: Path):
             receipt["environment_contracts"].append({"module": path.relative_to(root).as_posix(),
                 "named_contracts": [{"name": name, "configured": name in environment} for name in names]})
         receipt["test_modules"] = len(tests)
-        argv = [sys.executable, "-B", "-m", "pytest", "tests/python", "--tb=short",
-                "-p", "no:cacheprovider", "--basetemp", str(output / "pytest-temp"),
-                "--junitxml", str(output / "pytest.xml")]
-        receipt["argv"] = argv; save()
-        result = subprocess.run(argv, cwd=root, env=environment, check=False, timeout=2400)
-        receipt["exit_code"] = result.returncode
+        reader_deadline = time.monotonic() + 2400
+        def reader_started(path):
+            receipt["reader_processes"].append(str(path))
+            save()
+            def cancel_admission():
+                receipt["reader_processes"].remove(str(path))
+                receipt.setdefault("reader_admission_refusals", []).append({
+                    "path": str(path), "reason": "absolute deadline elapsed before launch"})
+                if path == output / "process.json":
+                    receipt["complete_reader_started"] = False
+                save()
+            return cancel_admission
+        headless_reports = run_headless_tests(output / "headless", root, environment,
+                                             deadline=reader_deadline, on_start=reader_started)
+        receipt["headless_tests"] = pin(output / "headless/receipt.json")
+        argv = [sys.executable, "-I", "-X", "utf8", "-B", str(Path(__file__).resolve()),
+                "--routed-complete-pytest-child", str(output), "--repository", str(root)]
+        remaining = reader_deadline - time.monotonic()
+        if remaining <= 0:
+            raise TimeoutError("Complete reader deadline exhausted before broad cohort")
+        receipt["argv"] = argv
+        receipt["complete_reader_started"] = True
+        cancel_admission = reader_started(output / "process.json")
+        remaining = reader_deadline - time.monotonic()
+        if remaining <= 0:
+            cancel_admission()
+            raise TimeoutError("Complete reader deadline exhausted during broad admission")
+        result = complete_command(argv, output=output, root=root, environment=environment, timeout=remaining)
+        receipt.update(exit_code=result["exit_code"], process=pin(output / "process.json"))
         report = output / "pytest.xml"
         if report.exists():
             cases = ET.parse(report).getroot().findall(".//testcase")
             receipt["counts"] = {"cases": len(cases), **{tag: sum(case.find(tag) is not None for case in cases)
                 for tag in ("failure", "error", "skipped")}}
-        if result.returncode:
-            raise subprocess.CalledProcessError(result.returncode, argv)
+        if result["exit_code"]:
+            raise subprocess.CalledProcessError(result["exit_code"], argv)
         counts = receipt.get("counts", {})
         if not counts.get("cases") or any(counts[tag] for tag in ("failure", "error", "skipped")):
             raise ValueError("Complete Python acceptance requires nonempty tests with no failures, errors or skips")
+        collection = json.loads((output / "complete-collection.json").read_bytes())
+        phases = [json.loads(line) for line in (output / "test-phases.jsonl").read_text().splitlines()]
+        validate_routed_results(collection, cases, phases, headless_reports)
+        receipt["broad_counts"] = dict(receipt["counts"])
+        receipt["counts"]["cases"] += len(HEADLESS_TEST_IDS)
+        receipt["collection"] = pin(output / "complete-collection.json")
+        receipt["test_phases"] = pin(output / "test-phases.jsonl")
         receipt["state"] = "passed"
     except BaseException as error:
         receipt.update(state="failed", error={"type": type(error).__name__, "message": str(error)})
         raise
     finally:
+        if receipt["state"] != "passed":
+            try:
+                receipt["python_diagnostics"] = failed_python_diagnostics(output)
+            except Exception as error:
+                receipt["python_diagnostics"] = {"state": "retention_failed", "error": {
+                    "type": type(error).__name__, "message": str(error)}}
+        pending_error = sys.exc_info()[1]
+        retention_failure = None
+        readers_resolved = True
+        for process_path in receipt["reader_processes"]:
+            try:
+                path = Path(process_path)
+                if not path.resolve().is_relative_to(output):
+                    raise ValueError("Reader process proof is outside its owned output")
+                proof = json.loads(path.read_bytes())
+                resolved = (proof.get("schema") == "imagejxx.owned-command.001"
+                    and proof.get("cleanup_complete") is True
+                    and proof.get("state") in {"exited", "timed_out", "launch_failed",
+                                              "ownership_failed", "supervisor_failed", "unsupported"})
+                readers_resolved = readers_resolved and resolved
+            except (OSError, ValueError, TypeError):
+                readers_resolved = False
+        if not readers_resolved:
+            receipt["state"] = "failed"
+            retention_failure = ValueError("Complete reader processes are unresolved; capture archives withheld")
+        headless = output / "headless"
+        if headless.is_dir():
+            if not readers_resolved:
+                receipt["headless_observation_archive"] = {
+                    "state": "unavailable", "reason": "reader processes are unresolved"}
+            else:
+                try:
+                    receipt["headless_observation_archive"] = retain_headless_output(headless)
+                except Exception as error:
+                    receipt["state"] = "failed"
+                    receipt["headless_archive_error"] = {"type": type(error).__name__, "message": str(error)}
+                    retention_failure = error
+        current = output / "current-observations"
+        if current.is_dir():
+            try:
+                evidence = json.loads((current / "receipt.json").read_bytes())
+                if (not readers_resolved or evidence.get("state") not in ("captured", "failed")
+                        or any(command.get("cleanup_complete") is not True
+                               for command in evidence.get("commands", []))):
+                    receipt["current_observation_archive"] = {
+                        "state": "unavailable", "reason": "owned current-producer processes are unresolved"}
+                    receipt["state"] = "failed"
+                    retention_failure = ValueError("Current producer/reader processes are unresolved; archive withheld")
+                else:
+                    members = current_capture_inventory(current)
+                    receipt["current_observation_archive"] = archive(current)
+                    if current_capture_inventory(current) != members:
+                        raise ValueError("Current capture output changed during archival")
+            except Exception as error:
+                receipt["state"] = "failed"
+                receipt["current_observation_archive"] = {
+                    "state": "unavailable", "reason": "bounded no-follow inventory or archival failed"}
+                receipt["current_archive_error"] = {"type": type(error).__name__, "message": str(error)}
+                retention_failure = error
         captures = output / "cpp-observations"
-        if captures.is_dir():
+        if captures.is_dir() and not readers_resolved:
+            receipt["cpp_observation_archive"] = {
+                "state": "unavailable", "reason": "complete reader processes are unresolved"}
+        elif captures.is_dir():
             try:
                 receipt["cpp_observation_archive"] = archive(captures)
             except Exception as error:
@@ -404,6 +1156,8 @@ def run(output: Path, root: Path):
                 save()
                 raise
         save()
+        if retention_failure is not None and pending_error is None:
+            raise retention_failure
 
 
 def main():
@@ -412,8 +1166,50 @@ def main():
     selected = parser.add_mutually_exclusive_group()
     selected.add_argument("--profile-manifest", type=Path)
     selected.add_argument("--focused-pytest-child", type=Path, help=argparse.SUPPRESS)
+    selected.add_argument("--complete-pytest-child", type=Path, help=argparse.SUPPRESS)
+    selected.add_argument("--routed-complete-pytest-child", type=Path, help=argparse.SUPPRESS)
+    selected.add_argument("--headless-pytest-child", type=Path, help=argparse.SUPPRESS)
+    selected.add_argument("--headless-suite", action="store_true")
+    parser.add_argument("--headless-test-id", help=argparse.SUPPRESS)
+    parser.add_argument("--headless-dependency-site", type=Path, help=argparse.SUPPRESS)
+    parser.add_argument("--headless-install-manifest", type=Path, help=argparse.SUPPRESS)
+    parser.add_argument("--repository", type=Path, help=argparse.SUPPRESS)
     args = parser.parse_args()
-    if args.profile_manifest or args.focused_pytest_child:
+    if args.headless_pytest_child:
+        if args.output or args.repository is None or args.headless_test_id is None:
+            parser.error("Headless child requires only its directory, repository and literal ID")
+        raise SystemExit(headless_pytest_child(args.headless_pytest_child, args.repository, args.headless_test_id,
+                                             dependency_site=args.headless_dependency_site,
+                                             install_manifest=args.headless_install_manifest))
+    if args.headless_install_manifest is not None and not args.headless_suite:
+        parser.error("CMake installation manifests are allowed only for the isolated headless suite")
+    if args.headless_dependency_site is not None and not args.headless_suite:
+        parser.error("Explicit dependency sites are allowed only for the isolated headless suite")
+    if args.headless_test_id is not None:
+        parser.error("Headless test ID is valid only for an isolated child")
+    if args.headless_suite:
+        if args.output is None:
+            parser.error("Headless suite requires a fresh --output")
+        environment = os.environ.copy()
+        for name in ("PYTHONOPTIMIZE", "PYTEST_ADDOPTS", "PYTEST_PLUGINS",
+                     "IMAGEJXX_MAC_BROKER_SOCKET", "IMAGEJXX_MAC_BROKER_TOKEN", "IMAGEJXX_REQUIRE_MAC_PROCESS_OWNER"):
+            environment.pop(name, None)
+        run_headless_tests(args.output, args.repository or Path(__file__).resolve().parents[1], environment,
+                           dependency_site=args.headless_dependency_site,
+                           install_manifest=args.headless_install_manifest)
+        retained = retain_headless_output(args.output)
+        retention_path = Path(str(Path(args.output).resolve()) + "-retention.json")
+        with retention_path.open("xb") as stream:
+            stream.write((json.dumps(retained, indent=2) + "\n").encode("utf-8"))
+    elif args.routed_complete_pytest_child:
+        if args.output or args.repository is None:
+            parser.error("Routed complete child requires only its output and repository")
+        raise SystemExit(complete_pytest_child(args.routed_complete_pytest_child, args.repository, routed=True))
+    elif args.complete_pytest_child:
+        if args.output or args.repository is None:
+            parser.error("Complete child requires only its output and repository")
+        raise SystemExit(complete_pytest_child(args.complete_pytest_child, args.repository))
+    elif args.profile_manifest or args.focused_pytest_child:
         if args.output:
             parser.error("Focused output is declared in the profile, not --output")
         if args.focused_pytest_child:

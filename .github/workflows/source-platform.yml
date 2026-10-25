@@ -1,0 +1,174 @@
+name: Source-built installed platform
+on:
+  workflow_call:
+    inputs:
+      runner:
+        required: true
+        type: string
+      profile:
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  dependencies:
+    name: Source dependency preparation (${{ inputs.profile }})
+    runs-on: ${{ inputs.runner }}
+    timeout-minutes: 30
+    env:
+      IMAGEJXX_CI_DEPENDENCY_PROFILE: ${{ inputs.profile }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Select the dependency recipe CMake tool
+        # Use one selected CMake series across the native preparation hosts.
+        # Record this tool's actual bytes/version in the preparation receipt.
+        run: python -m pip install cmake==3.31.6
+      - name: Prepare native Windows dependency prefix
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $taskVswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          $taskVs = & $taskVswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+          if (-not $taskVs) { throw 'Native x64 MSVC installation unavailable' }
+          & "$taskVs\Common7\Tools\Launch-VsDevShell.ps1" -Arch amd64 -HostArch amd64 -SkipAutomaticLocation
+          if (-not (Get-Command nasm -ErrorAction SilentlyContinue)) {
+            $env:PATH = "$env:ProgramFiles\NASM;$env:PATH"
+          }
+          if (-not (Get-Command nasm -ErrorAction SilentlyContinue)) {
+            choco install nasm --yes --no-progress
+            if ($LASTEXITCODE -ne 0) { throw 'NASM installation failed' }
+            $env:PATH = "$env:ProgramFiles\NASM;$env:PATH"
+          }
+          python scripts/ci_platform_dependencies.py --profile $env:IMAGEJXX_CI_DEPENDENCY_PROFILE --output build/ci-platform-dependencies
+          if ($LASTEXITCODE -ne 0) { throw 'Dependency preparation failed' }
+      - name: Prepare native macOS dependency prefix
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          if [[ "$IMAGEJXX_CI_DEPENDENCY_PROFILE" == 'macos-x86_64-ci-static-source-001' ]] && ! command -v nasm; then brew install nasm; fi
+          python scripts/ci_platform_dependencies.py --profile "$IMAGEJXX_CI_DEPENDENCY_PROFILE" --output build/ci-platform-dependencies
+      - name: Retain prepared prefix and original notices
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-prefix-${{ inputs.profile }}
+          path: build/ci-platform-dependencies/prefix
+          if-no-files-found: error
+      - name: Retain dependency preparation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-evidence-${{ inputs.profile }}
+          path: |
+            build/ci-platform-dependencies/receipt.json
+            build/ci-platform-dependencies/logs
+          if-no-files-found: warn
+  python:
+    name: Complete installed Python (${{ inputs.runner }}, ${{ matrix.python }})
+    needs: dependencies
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.10', '3.12']
+    runs-on: ${{ inputs.runner }}
+    timeout-minutes: 90
+    env:
+      IMAGEJXX_CI_DEPENDENCY_PROFILE: ${{ inputs.profile }}
+      CMAKE_BUILD_PARALLEL_LEVEL: '2'
+      CMAKE_PREFIX_PATH: ${{ github.workspace }}/build/ci-prefix
+      PYTHONDONTWRITEBYTECODE: '1'
+      MACOSX_DEPLOYMENT_TARGET: '11.0'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Check mandatory native macOS process ownership
+        if: runner.os == 'macOS'
+        run: python -I -B tests/tools/test_ci_mac_process.py --require-darwin
+      - name: Select the consumer CMake and CTest series
+        run: python -m pip install cmake==3.31.6
+      - uses: actions/download-artifact@v4
+        with:
+          name: source-prefix-${{ inputs.profile }}
+          path: build/ci-prefix
+      - name: Install Windows IO and both desktop hosts
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $taskVswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          $taskVs = & $taskVswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+          if (-not $taskVs) { throw 'Native x64 MSVC installation unavailable' }
+          & "$taskVs\Common7\Tools\Launch-VsDevShell.ps1" -Arch amd64 -HostArch amd64 -SkipAutomaticLocation
+          python -m pip install '.[io,test]' -Ccmake.define.IMAGEJXX_BUILD_IO=ON -Ccmake.define.IMAGEJXX_BUILD_CPP_UI=ON -Ccmake.define.IMAGEJXX_BUILD_PYTHON_UI=ON -Ccmake.define.BUILD_TESTING=ON "-Ccmake.define.IMAGEJXX_CI_SOURCE_PROFILE=$env:IMAGEJXX_CI_DEPENDENCY_PROFILE"
+          if ($LASTEXITCODE -ne 0) { throw 'Full Windows install failed' }
+      - name: Install macOS IO and both desktop hosts
+        if: runner.os == 'macOS'
+        run: >-
+          python -m pip install '.[io,test]'
+          -Ccmake.define.IMAGEJXX_BUILD_IO=ON
+          -Ccmake.define.IMAGEJXX_BUILD_CPP_UI=ON
+          -Ccmake.define.IMAGEJXX_BUILD_PYTHON_UI=ON
+          -Ccmake.define.BUILD_TESTING=ON
+          -Ccmake.define.IMAGEJXX_CI_SOURCE_PROFILE="$IMAGEJXX_CI_DEPENDENCY_PROFILE"
+      - name: Check installed dependency inventory
+        run: python scripts/check_licenses.py --installed --extras io,test --desktop
+      - name: Run pipeline example
+        run: python examples/pipeline.py
+      - name: Qualify the installed Windows scientific SDK
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $taskVswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          $taskVs = & $taskVswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+          if (-not $taskVs) { throw 'Native x64 MSVC installation unavailable' }
+          & "$taskVs\Common7\Tools\Launch-VsDevShell.ps1" -Arch amd64 -HostArch amd64 -SkipAutomaticLocation
+          python scripts/ci_scientific_sdk.py --output build/ci-scientific-sdk --profile $env:IMAGEJXX_CI_DEPENDENCY_PROFILE --dependency-prefix build/ci-prefix
+          if ($LASTEXITCODE -ne 0) { throw 'Installed scientific SDK qualification failed' }
+      - name: Qualify the installed macOS scientific SDK
+        if: runner.os == 'macOS'
+        shell: bash
+        run: python scripts/ci_scientific_sdk.py --output build/ci-scientific-sdk --profile "$IMAGEJXX_CI_DEPENDENCY_PROFILE" --dependency-prefix build/ci-prefix
+      - name: Test the complete installed platform suite
+        shell: bash
+        run: |
+          python -I -X utf8 -B tests/tools/test_ci_python_suite_transport.py
+          python scripts/ci_python_suite.py --output build/ci-python
+      - name: Retain scientific SDK evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scientific-sdk-${{ inputs.runner }}-${{ matrix.python }}
+          path: |
+            build/ci-scientific-sdk/*.json
+            build/ci-scientific-sdk/*.log
+            build/ci-scientific-sdk/*.xml
+            build/ci-scientific-sdk/roundtrip.tif
+          if-no-files-found: warn
+      - name: Retain Python results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-${{ inputs.runner }}-${{ matrix.python }}
+          path: |
+            build/ci-python/receipt.json
+            build/ci-python/pytest.xml
+            build/ci-python/pytest.log
+            build/ci-python/process.json
+            build/ci-python/*-python-diagnostics.zip
+            build/ci-python/complete-collection.json
+            build/ci-python/active-test.json
+            build/ci-python/test-phases.jsonl
+            build/ci-python/installed-smoke/receipt.json
+            build/ci-python/installed-smoke/pytest.xml
+            build/ci-python/installed-smoke/pytest.log
+            build/ci-python/installed-smoke/process.json
+            build/ci-python/current-observations/receipt.json
+            build/ci-python/headless/receipt.json
+            build/ci-python/headless.zip
+            build/ci-python/current-observations.zip
+            build/ci-python/cpp-observations/receipt.json
+            build/ci-python/cpp-observations.zip
+          if-no-files-found: warn
