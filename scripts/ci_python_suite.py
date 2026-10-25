@@ -1170,6 +1170,8 @@ def main():
     selected.add_argument("--routed-complete-pytest-child", type=Path, help=argparse.SUPPRESS)
     selected.add_argument("--headless-pytest-child", type=Path, help=argparse.SUPPRESS)
     selected.add_argument("--headless-suite", action="store_true")
+    selected.add_argument("--reference-readiness-only", action="store_true",
+                          help="Check original reference availability before building; this is not acceptance")
     parser.add_argument("--headless-test-id", help=argparse.SUPPRESS)
     parser.add_argument("--headless-dependency-site", type=Path, help=argparse.SUPPRESS)
     parser.add_argument("--headless-install-manifest", type=Path, help=argparse.SUPPRESS)
@@ -1187,6 +1189,15 @@ def main():
         parser.error("Explicit dependency sites are allowed only for the isolated headless suite")
     if args.headless_test_id is not None:
         parser.error("Headless test ID is valid only for an isolated child")
+    if args.reference_readiness_only:
+        if args.output is None:
+            parser.error("Reference readiness requires a fresh --output directory")
+        repository = (args.repository or Path(__file__).resolve().parents[1]).resolve(strict=True)
+        report = reference_readiness(repository, os.environ)
+        args.output.mkdir(parents=True, exist_ok=False)
+        with (args.output / "reference-readiness.json").open("xb") as stream:
+            stream.write((json.dumps(report, indent=2) + "\n").encode("utf-8"))
+        raise SystemExit(0 if report["state"] == "ready" else 1)
     if args.headless_suite:
         if args.output is None:
             parser.error("Headless suite requires a fresh --output")

@@ -12,6 +12,14 @@ runner, dependency-profile, CMake/SDK and workflow source candidate on
 source profiles remain unqualified until their actual hosted preparation and
 full installed cohorts pass. See the
 [latest cross-project actions](packets/COMPILEXX_CROSS_PROJECT_REVIEW.md#current-ci2-review-maintained-path-and-early-failure-controls).
+The published CI2 head is `fcfe0d4`; its first hosted run `40209451115` is
+terminal failure. Follow the [hosted checkpoint and repair boundary](packets/CI2-full-platform-profiles.md#first-hosted-candidate-and-repair-boundary)
+and [current compilexx review](../../compilexx/imagejxx-plan-inefficiencies.md#current-review-and-next-actions--2026-10-25)
+before older next-action prose. Local fixture/recipe/PNG-consumer repairs have
+supporting checks, not hosted acceptance. Both current Linux Python jobs refused
+at the original-reference readiness gate after building; the successor moves
+that availability check before Linux product preparation and preserves the
+full-run recheck. Implementation uses three agents including root; C owns runs.
 A owns native consumer contracts, B shared ImGui interaction/observations,
 C independent expectations and the sole build/install lock. The scoped packet
 cards and receipts take precedence over historical pause/resume paragraphs.
@@ -56,7 +64,7 @@ The late multiline counterexample was reproduced safely and fixed before the
 final frozen campaigns; earlier passing results retain their previous scope.
 
 Next: follow [CI2 readiness](packets/CI2-full-platform-profiles.md#readiness-before-the-next-full-campaign)
-before another broad campaign. The latest retained hosted run is terminal
+before another broad campaign. The preceding run `40188647024` is terminal
 failure: Linux 3.10 completed with 377 failures/797 errors, while Linux 3.12
 separately timed out. Close fresh-producer wiring and authentic historical-input
 availability, qualify the prepared native repairs, and finish actual platform

@@ -1,5 +1,35 @@
 # Additional efficiencies from the compilexx notes
 
+## Current review: maintained producer and actual consumer
+
+The current review covers the six linked project notes and
+[agents_basics.md](../../../compilexx/agents_basics.md). The
+[updated compilexx imagejxx card](../../../compilexx/imagejxx-plan-inefficiencies.md#current-review-and-next-actions--2026-10-25)
+supersedes historical scheduling below. It distinguishes confirmed local failures
+from conditional lessons, with owners, triggers and decisive proof. This is a
+source/documentation review, not another Astra run or measured optimization.
+
+CI2 `fcfe0d4` is published on `ci2-platform-integration`; its first hosted run
+`40209451115` is terminal failure. The
+[CI2 hosted checkpoint](CI2-full-platform-profiles.md#first-hosted-candidate-and-repair-boundary)
+records the exact failed gates and locally checked, unqualified successor.
+The new priorities are actual builder-to-consumer closure, canonical fixture
+paths, selected PNG target identity and independent cheap checks before the
+broad suite. Repeating synthetic certificates or native builds cannot establish
+those missing consumer results.
+
+Apply other projects' intake, selector, companion-origin and report-migration
+lessons only at an affected local owner. Existing exact-ID/phase and inherited
+pytest-option guards already cover important transferred risks. Keep one live
+queue, one coherent repair freeze and one build/install owner; add no universal
+runner, cache or audit campaign. Both retained Linux logs and original artifact
+receipts now confirm six unavailable reference inputs before reader launch.
+The successor moves that existing check before Linux product preparation,
+retains failure evidence and keeps SDK/Darwin lanes independent. Full family/platform/reference/release obligations and
+the unverified storage budget remain open. This edit creates no build assets.
+
+## Historical reviews and supporting observations
+
 Reviewed 2026-10-25. All six Markdown documents in `../compilexx` were read:
 [imagejxx](../../../compilexx/imagejxx-plan-inefficiencies.md),
 [napachan](../../../compilexx/napachan-plan-inefficiencies.md),

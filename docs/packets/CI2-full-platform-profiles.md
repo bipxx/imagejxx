@@ -4,6 +4,65 @@ Active implementation, 2026-10-25. This is not hosted acceptance or a dependency
 approval. CFG3's focused Windows/Linux qualification does not close full CI.
 Keep optional package defaults and the existing headless profile unchanged.
 
+## First hosted candidate and repair boundary
+
+Candidate `fcfe0d4bbab48f3eeffc1f89a0242cef0e565ea2`, published on
+`ci2-platform-integration`, produced terminal failed
+[run 40209451115](https://github.com/bipxx/imagejxx/actions/runs/40209451115).
+Main remains `7c78d10`. The raw terminal snapshot is retained locally as
+`ci2/candidate-hosted-poll003.json` under `.tmp/manual-workflow-verification/`.
+This checkpoint supersedes older “next hosted evidence” wording below;
+historical receipts and run diagnoses retain their original scope.
+
+| Observed gate | Actual result / successor boundary |
+| --- | --- |
+| Linux dependency preparation and Linux headless/core-SDK | Passed; neither accepts the complete installed IO/UI profile |
+| Windows/macOS headless capture-runner tool gate | Failed because fixtures supplied noncanonical temporary roots (Windows short paths; Darwin `/var` aliases). Local successor canonicalizes fixtures and adds distinguishing controls; production containment stays strict |
+| Windows source dependency preparation | Failed selected zlib roles: upstream installed `zlib.dll`/`zlib.lib`. Successor requests `BUILD_SHARED_LIBS=ON` for the intended `zlib1.dll` contract, preserving original policy fixtures and pins |
+| Both Mac source dependency preparations | Failed closed-prefix link admission after libpng's default framework/alias installation. Successor disables `PNG_FRAMEWORK` and materializes only the three reviewed same-parent, one-hop aliases; unexpected links still refuse |
+| New Windows/macOS Python consumers | Skipped because their own producer failed; no Darwin lifecycle, installed product or scientific SDK acceptance follows |
+| Linux Python 3.10 and 3.12 | Both built and then refused at the six-original reference-readiness gate, before installed imports or reader launch. The two retained artifact receipts report all six inputs unavailable; this is neither another bulk pytest failure nor a timeout |
+
+Consumer source review also found FindPNG prefers the now-regular `libpng.a`
+alias over the selected `libpng16.a`. The local successor binds canonical PNG
+archive/header roles before discovery for the explicit Mac profiles, rejects
+conflicting overrides and retains actual imported-target checks. Ten real
+metadata-only configure/caller controls pass on Windows and Linux; these do not
+compile or execute the Mac SDK. Recipe, runtime, runner and SDK tool controls
+have affected local reruns with host skips explicit. The Linux license/example
+steps move before the broad suite so an unrelated suite failure cannot hide them.
+
+The two raw Linux logs are retained as `hosted40209451115-job121217636683-api.log`
+and `hosted40209451115-job121217636953-api.log`; the original 1,117-byte artifact
+ZIPs are `hosted40209451115-linux312-readiness.zip` and
+`hosted40209451115-linux310-readiness.zip`, all in the same local `ci2/` root.
+The successor exposes the existing six-input check through
+`--reference-readiness-only`: a fresh output contains availability evidence,
+exit one still fails the job when unavailable, and no product is imported.
+Linux invokes it before prefix download, apt and product compilation and always
+uploads the report. The complete installed runner retains its original recheck
+and required suite. Source-platform preparation/Darwin/SDK lanes stay independent.
+This avoids the two known-doomed Linux product builds, not the dependency producer.
+
+Repair controls are retained under `ci2/repair-guard-windows001` and
+`ci2/repair-guard-linux001`: eight programs/209 test methods per host with
+resolved owned exits and unchanged consumed inputs. Windows host symlink skips
+remain explicit; Linux has none in this affected set. After a fixture-only
+canonical-root correction and a relative-repository CLI correction, the readiness
+successor has 19 passing controls per host in `repair-readiness-windows003` and
+`repair-readiness-linux003`. Earlier receipts retain their exact source identity;
+the latter control set covers the changed entry branch, not a new full campaign.
+No build/install/environment or dependency download was needed. Source006
+storage records 8,565,996,710 known bytes/23,937,882 bytes upper-bound headroom;
+two unreadable caches still leave the complete budget unverified.
+
+These repairs are a source successor, not a repaired hosted result. Finish the
+coherent reviewed repair packet, then publish one successor and follow its exact
+run handles. Keep the prepared native metadata-only successor and protected CG0
+files outside that repair commit. Actual maintained preparation, prefix transfer,
+Darwin lifecycle, installed/UI/scientific SDK and full applicable cohorts remain
+required; tool counts and bounded five-ID headless proof cannot substitute.
+
 ## Current source and execution checkpoint
 
 The `ci2-platform-integration` source candidate includes distribution-owned `.exe` discovery, exact

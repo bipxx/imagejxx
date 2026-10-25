@@ -8,8 +8,10 @@ import hashlib
 import importlib.util
 import io
 import json
+import os
 from pathlib import Path
 import shutil
+import stat
 import tarfile
 import tempfile
 import unittest
@@ -263,6 +265,139 @@ class ProfileContracts(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Unexpected shared"):
             builder.normalize_static_prefix(self.root)
         self.assertTrue((self.root / "lib/foreign.dylib").is_file())
+
+    def test_windows_zlib_recipe_selects_the_declared_dll_suffix(self):
+        options = builder.dependency_definitions(builder.profile_definition(WINDOWS), self.root, "nasm")
+        self.assertEqual(options["zlib"], {"ZLIB_BUILD_EXAMPLES": "OFF", "BUILD_SHARED_LIBS": "ON"})
+        self.assertEqual(builder.library_layout(builder.profile_definition(WINDOWS))["zlib"],
+                         {"link": "lib/zlib.lib", "runtime": "bin/zlib1.dll"})
+        for profile in (ARM, INTEL):
+            options = builder.dependency_definitions(builder.profile_definition(profile), self.root, "nasm")
+            self.assertEqual(options["zlib"], {"ZLIB_BUILD_EXAMPLES": "OFF"})
+
+    def test_macos_png_recipe_disables_the_default_shared_framework(self):
+        for profile in (ARM, INTEL):
+            options = builder.dependency_definitions(builder.profile_definition(profile), self.root, "nasm")
+            self.assertEqual({key: options["png"][key] for key in
+                              ("PNG_SHARED", "PNG_STATIC", "PNG_FRAMEWORK", "PNG_TOOLS")},
+                             {"PNG_SHARED": "OFF", "PNG_STATIC": "ON", "PNG_FRAMEWORK": "OFF",
+                              "PNG_TOOLS": "OFF"})
+
+    def local_link(self, path, target, *, directory=False):
+        try:
+            path.symlink_to(target, target_is_directory=directory)
+        except OSError as error:
+            if os.name == "nt" and getattr(error, "winerror", None) == 1314:
+                self.skipTest("Host lacks permission to create the actual symlink fixture")
+            raise
+
+    def test_exact_reviewed_png_aliases_become_byte_and_mode_identical_regular_files(self):
+        cases = (("lib/libpng.a", "libpng16.a", b"synthetic static archive\x00\xff", 0o640),
+                 ("bin/libpng-config", "libpng16-config", b"#!/bin/sh\nprintf 'literal\\n'\n", 0o755),
+                 ("lib/pkgconfig/libpng.pc", "libpng16.pc", b"Name: synthetic libpng\n", 0o644))
+        for relative, target_name, data, mode in cases:
+            alias = self.root / relative
+            alias.parent.mkdir(parents=True, exist_ok=True)
+            target = alias.parent / target_name
+            target.write_bytes(data)
+            target.chmod(mode)
+            self.local_link(alias, target_name)
+        changes = builder.normalize_static_prefix(self.root)
+        self.assertEqual([row["path"] for row in changes], [row[0] for row in cases])
+        for row, (relative, target_name, data, mode) in zip(changes, cases):
+            alias = self.root / relative
+            target = alias.parent / target_name
+            self.assertFalse(alias.is_symlink())
+            self.assertTrue(alias.is_file())
+            self.assertEqual(alias.read_bytes(), data)
+            self.assertEqual(target.read_bytes(), data)
+            self.assertEqual(stat.S_IMODE(alias.stat().st_mode), stat.S_IMODE(target.stat().st_mode))
+            self.assertEqual(row["link_target"], target_name)
+            self.assertEqual(row["bytes"], len(data))
+            self.assertEqual(row["sha256"], hashlib.sha256(data).hexdigest())
+        self.assertEqual(len(builder.prefix_files(self.root)), 6)
+        self.assertEqual(builder.normalize_static_prefix(self.root), [])
+
+    def test_reviewed_png_alias_refuses_wrong_outside_absolute_and_missing_targets(self):
+        for kind in ("wrong", "outside", "absolute", "missing"):
+            with self.subTest(kind=kind):
+                prefix = self.root / kind
+                (prefix / "lib").mkdir(parents=True)
+                (prefix / "bin").mkdir()
+                target = prefix / "bin/libpng16-config"
+                target.write_bytes(b"unchanged reviewed target")
+                outside = self.root / (kind + "-outside")
+                outside.write_bytes(b"unchanged outside target")
+                wrong = prefix / "bin/other-config"
+                wrong.write_bytes(b"unchanged wrong target")
+                raw = {"wrong": "other-config", "outside": "../../" + outside.name,
+                       "absolute": str(target), "missing": "libpng16-config"}[kind]
+                if kind == "missing":
+                    target.unlink()
+                alias = prefix / "bin/libpng-config"
+                self.local_link(alias, raw)
+                with self.assertRaises((ValueError, FileNotFoundError)):
+                    builder.normalize_static_prefix(prefix)
+                self.assertTrue(alias.is_symlink())
+                self.assertEqual(os.readlink(alias), raw)
+                self.assertEqual(outside.read_bytes(), b"unchanged outside target")
+                self.assertEqual(wrong.read_bytes(), b"unchanged wrong target")
+                if kind != "missing":
+                    self.assertEqual(target.read_bytes(), b"unchanged reviewed target")
+
+    def test_reviewed_png_alias_target_chain_is_refused_before_materialization(self):
+        (self.root / "lib").mkdir()
+        (self.root / "bin").mkdir()
+        archive = self.root / "lib/libpng16.a"
+        archive.write_bytes(b"archive remains unchanged")
+        archive_alias = self.root / "lib/libpng.a"
+        self.local_link(archive_alias, archive.name)
+        actual = self.root / "bin/actual-config"
+        actual.write_bytes(b"target remains unchanged")
+        target = self.root / "bin/libpng16-config"
+        self.local_link(target, actual.name)
+        alias = self.root / "bin/libpng-config"
+        self.local_link(alias, target.name)
+        with self.assertRaisesRegex(ValueError, "regular, non-linked"):
+            builder.normalize_static_prefix(self.root)
+        self.assertTrue(archive_alias.is_symlink())
+        self.assertTrue(alias.is_symlink())
+        self.assertTrue(target.is_symlink())
+        self.assertEqual(actual.read_bytes(), b"target remains unchanged")
+
+    def test_reviewed_png_alias_linked_parent_is_refused_without_following(self):
+        prefix = self.root / "prefix"
+        (prefix / "lib").mkdir(parents=True)
+        outside = self.root / "outside-metadata"
+        outside.mkdir()
+        (outside / "libpng16.pc").write_bytes(b"outside metadata remains unchanged")
+        self.local_link(outside / "libpng.pc", "libpng16.pc")
+        self.local_link(prefix / "lib/pkgconfig", outside, directory=True)
+        with self.assertRaises(ValueError):
+            builder.normalize_static_prefix(prefix)
+        self.assertTrue((prefix / "lib/pkgconfig").is_symlink())
+        self.assertTrue((outside / "libpng.pc").is_symlink())
+        self.assertEqual((outside / "libpng16.pc").read_bytes(), b"outside metadata remains unchanged")
+
+    def test_unknown_static_and_metadata_aliases_remain_refused(self):
+        for relative, normalize_refuses in (("lib/unknown.a", True), ("bin/unknown-config", False)):
+            with self.subTest(relative=relative):
+                prefix = self.root / ("archive" if normalize_refuses else "metadata")
+                (prefix / "lib").mkdir(parents=True)
+                alias = prefix / relative
+                alias.parent.mkdir(exist_ok=True)
+                target = alias.parent / "regular-target"
+                target.write_bytes(b"unrelated target remains unchanged")
+                self.local_link(alias, target.name)
+                if normalize_refuses:
+                    with self.assertRaisesRegex(ValueError, "Unreviewed static"):
+                        builder.normalize_static_prefix(prefix)
+                else:
+                    self.assertEqual(builder.normalize_static_prefix(prefix), [])
+                    with self.assertRaisesRegex(ValueError, "regular, non-linked"):
+                        builder.prefix_files(prefix)
+                self.assertTrue(alias.is_symlink())
+                self.assertEqual(target.read_bytes(), b"unrelated target remains unchanged")
 
     def test_delivery_rejects_missing_roles_and_unselected_runtimes(self):
         for name in (WINDOWS, ARM):

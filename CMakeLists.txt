@@ -1129,6 +1129,16 @@ if(BUILD_TESTING)
 endif()
 
 if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
+  if(IMAGEJXX_CI_SOURCE_PROFILE)
+    # Full I/O profiles already verified this prefix. An explicit UI-only
+    # source profile must verify it before influencing dependency discovery.
+    if(NOT IMAGEJXX_CI_SOURCE_DEP_PREFIX)
+      find_package(TIFF 4.7.1 EXACT REQUIRED)
+      include(cmake/SourceTiffRuntime.cmake)
+      imagejxx_checked_selected_tiff_runtime(IMAGEJXX_SOURCE_DESKTOP_RUNTIME)
+    endif()
+    imagejxx_bind_source_png("${IMAGEJXX_CI_SOURCE_DEP_PREFIX}")
+  endif()
   find_package(glfw3 3.4.0 EXACT CONFIG REQUIRED)
   find_package(nlohmann_json 3.12.0 EXACT CONFIG REQUIRED)
   find_package(OpenGL REQUIRED)

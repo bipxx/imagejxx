@@ -84,6 +84,37 @@ function(imagejxx_checked_selected_tiff_runtime output)
   set(IMAGEJXX_CI_SOURCE_DEP_PREFIX "${IMAGEJXX_CI_SOURCE_DEP_PREFIX}" PARENT_SCOPE)
 endfunction()
 
+# FindPNG prefers the unversioned archive alias. These explicit Mac profiles
+# bind the canonical archive/header roles before discovery; the full target
+# origin checks below still validate the actual imported target afterward.
+function(imagejxx_bind_source_png prefix)
+  if(NOT IMAGEJXX_CI_SOURCE_PROFILE MATCHES "^macos-(arm64|x86_64)-ci-static-source-001$")
+    return()
+  endif()
+  set(expected "${prefix}/lib/libpng16.a")
+  set(headers "${prefix}/include")
+  if(NOT EXISTS "${expected}" OR IS_DIRECTORY "${expected}" OR IS_SYMLINK "${expected}" OR
+     NOT EXISTS "${headers}/png.h" OR IS_DIRECTORY "${headers}/png.h" OR IS_SYMLINK "${headers}/png.h")
+    message(FATAL_ERROR "Selected source PNG canonical archive/header is unavailable")
+  endif()
+  get_filename_component(actual "${expected}" REALPATH)
+  get_filename_component(actual_headers "${headers}" REALPATH)
+  if(NOT actual STREQUAL expected OR NOT actual_headers STREQUAL headers)
+    message(FATAL_ERROR "Selected source PNG canonical paths contain a linked ancestor")
+  endif()
+  foreach(variable IN ITEMS PNG_LIBRARY_RELEASE PNG_LIBRARY)
+    if(DEFINED ${variable} AND NOT "${${variable}}" STREQUAL "${expected}")
+      message(FATAL_ERROR "Selected source PNG library override differs: ${variable}")
+    endif()
+  endforeach()
+  if(DEFINED PNG_PNG_INCLUDE_DIR AND NOT PNG_PNG_INCLUDE_DIR STREQUAL headers)
+    message(FATAL_ERROR "Selected source PNG header override differs")
+  endif()
+  set(PNG_LIBRARY_RELEASE "${expected}" PARENT_SCOPE)
+  set(PNG_LIBRARY "${expected}" PARENT_SCOPE)
+  set(PNG_PNG_INCLUDE_DIR "${headers}" PARENT_SCOPE)
+endfunction()
+
 # Find modules may select an exact-version library outside CMAKE_PREFIX_PATH.
 # Bind the actual desktop targets and include paths to the verified delivery.
 function(imagejxx_check_source_desktop_dependencies prefix)

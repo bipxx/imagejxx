@@ -186,12 +186,16 @@ def dependency_definitions(profile: dict, prefix: Path, nasm: str | None) -> dic
             raise ValueError("The x86_64 JPEG SIMD source profile requires NASM")
         jpeg["CMAKE_ASM_NASM_COMPILER"] = nasm
     return {
-        "zlib": {"ZLIB_BUILD_EXAMPLES": "OFF"},
+        # zlib 1.3.1 always defines both library targets. On Windows this
+        # explicit option selects the reviewed zlib1.dll name (not zlib.dll).
+        "zlib": {"ZLIB_BUILD_EXAMPLES": "OFF",
+                 **({"BUILD_SHARED_LIBS": "ON"} if profile["system"] == "win32" else {})},
         "libjpeg-turbo": jpeg,
         "liblzma": {"BUILD_SHARED_LIBS": switch, "BUILD_TESTING": "OFF", "XZ_TOOL_XZ": "OFF",
                     "XZ_TOOL_XZDEC": "OFF", "XZ_TOOL_LZMADEC": "OFF", "XZ_TOOL_LZMAINFO": "OFF",
                     "XZ_TOOL_SCRIPTS": "OFF"},
-        "png": {"PNG_SHARED": switch, "PNG_STATIC": static, "PNG_TESTS": "OFF", "PNG_TOOLS": "OFF", **zlib},
+        "png": {"PNG_SHARED": switch, "PNG_STATIC": static, "PNG_TESTS": "OFF", "PNG_TOOLS": "OFF",
+                **({"PNG_FRAMEWORK": "OFF"} if profile["system"] == "darwin" else {}), **zlib},
         "glfw": {"BUILD_SHARED_LIBS": switch, "GLFW_BUILD_DOCS": "OFF", "GLFW_BUILD_TESTS": "OFF",
                  "GLFW_BUILD_EXAMPLES": "OFF", **({"GLFW_BUILD_COCOA": "ON"} if profile["system"] == "darwin" else {})},
         "tiff": {"BUILD_SHARED_LIBS": switch, "tiff-tools": "OFF", "tiff-tests": "OFF",
@@ -308,12 +312,13 @@ def check_delivery(profile: dict, files: list[dict]) -> None:
 
 
 def normalize_static_prefix(prefix: Path) -> list[dict]:
-    """Retire only unselected macOS shared zlib outputs and flatten local aliases.
+    """Retire unselected macOS shared zlib outputs and three known PNG aliases.
 
     Upstream zlib builds both variants. The static profile never delivers those
     dylibs. All removals are individual files in this freshly owned prefix; no
     recursive deletion or traversal through a link is performed.
     """
+    prefix = checked_path(prefix)
     changes = []
     library = prefix / "lib"
     if is_link(library) or not library.is_dir():
@@ -328,19 +333,40 @@ def normalize_static_prefix(prefix: Path) -> list[dict]:
             record.update({"link_target": os.readlink(path)} if is_link(path) else pin(path))
             path.unlink()
             changes.append(record)
-        elif is_link(path):
-            raw = os.readlink(path)
-            target = Path(os.path.abspath(path.parent / raw))
-            if target.parent != library or target == path:
-                raise ValueError("Static archive alias leaves its direct library directory")
-            regular(target)
-            if path.suffix != ".a" or target.suffix != ".a":
-                raise ValueError("Only local static archive aliases may be materialized")
-            record = {"path": path.relative_to(prefix).as_posix(), "action": "materialize-static-alias",
-                      "link_target": raw, **pin(target)}
-            path.unlink()
-            shutil.copyfile(target, path)
-            changes.append(record)
+        elif is_link(path) and path.name != "libpng.a":
+            raise ValueError(f"Unreviewed static archive alias: {path.name}")
+    # libpng 1.6.50 installs these same-directory, one-hop aliases even when
+    # PNG_TOOLS is OFF. Keep their bytes and mode without admitting any links
+    # into the sealed prefix. Its final inventory still rejects all other links.
+    aliases = (("lib/libpng.a", "libpng16.a"),
+               ("bin/libpng-config", "libpng16-config"),
+               ("lib/pkgconfig/libpng.pc", "libpng16.pc"))
+    materialize = []
+    for relative, target_name in aliases:
+        path = prefix / relative
+        parent = checked_path(path.parent)
+        if not parent.exists():
+            continue
+        if not parent.is_dir():
+            raise ValueError("Libpng alias parent must be a regular directory")
+        if not path.exists() and not path.is_symlink():
+            continue
+        if not is_link(path):
+            regular(path)
+            continue
+        raw = os.readlink(path)
+        if raw != target_name:
+            raise ValueError(f"Unreviewed libpng alias target: {relative}")
+        target = parent / target_name
+        regular(target)
+        action = "materialize-static-alias" if relative.endswith(".a") else "materialize-libpng-metadata-alias"
+        materialize.append((path, target, {"path": relative, "action": action,
+                                         "link_target": raw, **pin(target)}))
+    for path, target, record in materialize:
+        path.unlink()
+        shutil.copyfile(target, path)
+        shutil.copymode(target, path)
+        changes.append(record)
     return changes
 
 

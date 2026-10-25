@@ -140,12 +140,14 @@ class PrefixTransport(unittest.TestCase):
         if architecture == "x86_64":
             jpeg["CMAKE_ASM_NASM_COMPILER"] = toolchain["nasm"]["path"]
         options = {
-            "zlib": {"ZLIB_BUILD_EXAMPLES": "OFF"},
+            "zlib": {"ZLIB_BUILD_EXAMPLES": "OFF",
+                     **({"BUILD_SHARED_LIBS": "ON"} if system == "win32" else {})},
             "libjpeg-turbo": jpeg,
             "liblzma": {"BUILD_SHARED_LIBS": shared, "BUILD_TESTING": "OFF", "XZ_TOOL_XZ": "OFF",
                         "XZ_TOOL_XZDEC": "OFF", "XZ_TOOL_LZMADEC": "OFF", "XZ_TOOL_LZMAINFO": "OFF",
                         "XZ_TOOL_SCRIPTS": "OFF"},
-            "png": {"PNG_SHARED": shared, "PNG_STATIC": static, "PNG_TESTS": "OFF", "PNG_TOOLS": "OFF", **zlib},
+            "png": {"PNG_SHARED": shared, "PNG_STATIC": static, "PNG_TESTS": "OFF", "PNG_TOOLS": "OFF",
+                    **({"PNG_FRAMEWORK": "OFF"} if system == "darwin" else {}), **zlib},
             "glfw": {"BUILD_SHARED_LIBS": shared, "GLFW_BUILD_DOCS": "OFF", "GLFW_BUILD_TESTS": "OFF",
                      "GLFW_BUILD_EXAMPLES": "OFF", **({"GLFW_BUILD_COCOA": "ON"} if system == "darwin" else {})},
             "tiff": {"BUILD_SHARED_LIBS": shared, "tiff-tools": "OFF", "tiff-tests": "OFF",

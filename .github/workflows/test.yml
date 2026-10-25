@@ -27,6 +27,7 @@ jobs:
           python -I -B tests/tools/test_ci_headless_suite.py
           python -I -B tests/tools/test_ci_platform_dependencies.py
           python -I -B tests/tools/test_ci_platform_runtime.py
+          python -I -B tests/tools/test_ci_png_binding.py
           python -I -B tests/tools/test_ci_python_diagnostics.py
           python -I -B tests/tools/test_ci_owned_process.py
           python -I -B tests/tools/test_ci_scientific_sdk.py
@@ -97,6 +98,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
+      - name: Check original references before Linux product preparation
+        run: python -I -B scripts/ci_python_suite.py --reference-readiness-only --output build/ci-reference-readiness
       - uses: actions/download-artifact@v4
         with:
           name: linux-scientific-desktop-prefix
@@ -115,22 +118,23 @@ jobs:
           -Ccmake.define.ZLIB_USE_STATIC_LIBS=ON
           -Ccmake.define.ZLIB_LIBRARY_RELEASE=${{ github.workspace }}/build/ci-prefix/lib/libz.a
           -Ccmake.define.PNG_LIBRARY_RELEASE=${{ github.workspace }}/build/ci-prefix/lib/libpng16.a
+      - name: Check installed dependency inventory
+        run: python scripts/check_licenses.py --installed --extras io,test --desktop
+      - name: Run pipeline example
+        run: python examples/pipeline.py
       - name: Test the complete installed Python suite under software OpenGL
         # This tool test invokes pytest against a synthetic project, without GL.
         # Product/render qualification still runs through the installed runner.
         run: |
           python -I -X utf8 -B tests/tools/test_ci_python_suite_transport.py
           xvfb-run -a python scripts/ci_python_suite.py --output build/ci-python
-      - name: Check installed dependency inventory
-        run: python scripts/check_licenses.py --installed --extras io,test --desktop
-      - name: Run pipeline example
-        run: python examples/pipeline.py
       - name: Retain complete Python results and fixture-contract inventory
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: linux-python-${{ matrix.python }}
           path: |
+            build/ci-reference-readiness/reference-readiness.json
             build/ci-python/receipt.json
             build/ci-python/pytest.xml
             build/ci-python/pytest.log

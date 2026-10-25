@@ -2,9 +2,11 @@
 import ast
 import hashlib
 import importlib.util
+import json
 import os
 from pathlib import Path
 import tempfile
+import sys
 import unittest
 from unittest.mock import patch
 
@@ -18,7 +20,7 @@ class ReferenceReadiness(unittest.TestCase):
     def setUp(self):
         temp = tempfile.TemporaryDirectory(prefix="imagejxx-reference-readiness-")
         self.addCleanup(temp.cleanup)
-        self.root = Path(temp.name)
+        self.root = Path(temp.name).resolve(strict=True)
         self.file = self.root / "original.bin"
         self.file.write_bytes(b"synthetic immutable reference")
         self.sha = hashlib.sha256(self.file.read_bytes()).hexdigest()
@@ -129,6 +131,75 @@ class ReferenceReadiness(unittest.TestCase):
         self.assertEqual(receipt["state"], "failed")
         self.assertEqual(len(receipt["reference_readiness"]["inputs"]), 6)
         self.assertFalse((output / "cpp-observations").exists())
+
+    def readiness_cli(self, *extra):
+        with patch.object(sys, "argv", ["ci_python_suite.py", "--reference-readiness-only", *extra]):
+            with self.assertRaises(SystemExit) as stopped:
+                suite.main()
+        return stopped.exception.code
+
+    def test_readiness_cli_unavailable_retains_original_report_without_product_work(self):
+        output = self.root / "preparation"
+        with patch.object(suite.importlib.metadata, "distribution", side_effect=AssertionError("no product import")), \
+             patch.object(suite, "run", side_effect=AssertionError("no installed run")), \
+             patch.object(suite, "capture", side_effect=AssertionError("no capture")), \
+             patch.dict(os.environ, {}, clear=True):
+            self.assertEqual(self.readiness_cli("--output", str(output), "--repository", str(self.root)), 1)
+        report = json.loads((output / "reference-readiness.json").read_bytes())
+        self.assertEqual(report["state"], "unavailable")
+        self.assertIs(report["acceptance_claim"], False)
+        self.assertEqual(len(report["inputs"]), 6)
+        self.assertEqual([p.name for p in output.iterdir()], ["reference-readiness.json"])
+
+    def test_readiness_cli_ready_is_availability_only(self):
+        output = self.root / "ready-preparation"
+        with patch.object(suite, "REQUIRED_REFERENCE_INPUTS", self.rows), \
+             patch.dict(os.environ, self.environment, clear=True):
+            self.assertEqual(self.readiness_cli("--output", str(output), "--repository", str(self.root)), 0)
+        report = json.loads((output / "reference-readiness.json").read_bytes())
+        self.assertEqual(report["state"], "ready")
+        self.assertIs(report["acceptance_claim"], False)
+        self.assertEqual(report["inputs"][0]["observed"]["sha256"], self.sha)
+
+    def test_readiness_cli_preserves_existing_output(self):
+        output = self.root / "prior"
+        output.mkdir()
+        original = output / "reference-readiness.json"
+        original.write_bytes(b"prior evidence")
+        with self.assertRaises(FileExistsError):
+            self.readiness_cli("--output", str(output))
+        self.assertEqual(original.read_bytes(), b"prior evidence")
+
+    def test_readiness_cli_resolves_relative_repository_before_fixed_input_paths(self):
+        output = self.root / "relative-repository"
+        rows = ((None, None, "original.bin", self.sha, self.file.stat().st_size),)
+        previous = Path.cwd()
+        try:
+            os.chdir(self.root.parent)
+            with patch.object(suite, "REQUIRED_REFERENCE_INPUTS", rows):
+                self.assertEqual(self.readiness_cli("--output", str(output), "--repository", self.root.name), 0)
+        finally:
+            os.chdir(previous)
+        report = json.loads((output / "reference-readiness.json").read_bytes())
+        self.assertEqual(report["inputs"][0]["observed"]["path"], str(self.file))
+
+    def test_readiness_cli_requires_output_and_disallows_other_modes(self):
+        import contextlib
+        import io
+        with contextlib.redirect_stderr(io.StringIO()):
+            for extra in ((), ("--headless-suite",), ("--profile-manifest", "unused.json"),
+                          ("--headless-dependency-site", str(self.root))):
+                with self.subTest(extra=extra):
+                    self.assertEqual(self.readiness_cli(*extra), 2)
+
+    def test_linux_preparation_requires_readiness_and_retains_its_report(self):
+        workflow = (ROOT / ".github/workflows/test.yml").read_text(encoding="utf-8")
+        linux = workflow.split("  linux-python:", 1)[1].split("\n  windows-platform:", 1)[0]
+        gate = "scripts/ci_python_suite.py --reference-readiness-only --output build/ci-reference-readiness"
+        self.assertLess(linux.index(gate), linux.index("actions/download-artifact@"))
+        self.assertLess(linux.index(gate), linux.index("python -m pip install"))
+        self.assertIn("build/ci-reference-readiness/reference-readiness.json", linux)
+        self.assertNotIn("continue-on-error", linux)
 
 
 if __name__ == "__main__":

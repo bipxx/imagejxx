@@ -452,7 +452,7 @@ class CurrentProducerDiscovery(unittest.TestCase):
     def setUp(self):
         temporary = tempfile.TemporaryDirectory(prefix="imagejxx-current-discovery-")
         self.addCleanup(temporary.cleanup)
-        self.root = Path(temporary.name)
+        self.root = Path(temporary.name).resolve(strict=True)
         self.cache = self.root / "build/wheel/native"
         self.cache.mkdir(parents=True)
         self.cache_file = self.cache / "CMakeCache.txt"
@@ -464,6 +464,44 @@ class CurrentProducerDiscovery(unittest.TestCase):
         self.environment = {"SYNTHETIC": "transport"}
         self.paths = {name: str(self.root / name) for name in (
             "IMAGEJXX_RGB_COMBINED_INPUT_REPORT", "IMAGEJXX_H1_CPP_REPORT", "IMAGEJXX_R16_CPP_REPORT")}
+
+    def test_fixture_root_and_cache_have_canonical_directory_identity(self):
+        executable = self.cache / "imagejxx_rgb_combined_input_tests"
+        executable.write_bytes(b"synthetic producer, never executed")
+        self.assertEqual(self.root, self.root.resolve(strict=True))
+        cache, _, identity = suite.current_producer_cache(executable, self.root)
+        self.assertEqual(cache, self.cache_file)
+        self.assertEqual(cache, cache.resolve(strict=True))
+        self.assertEqual(identity, suite.pin(self.cache_file))
+        if suite.sys.platform == "darwin":
+            # Observe the native alias behind the hosted /var/folders fixture.
+            # This is path metadata, not producer execution qualification.
+            self.assertEqual(Path("/var").resolve(strict=True), Path("/private/var"))
+
+    def test_directory_alias_requires_canonical_fixture_paths(self):
+        executable = self.cache / "imagejxx_rgb_combined_input_tests"
+        executable.write_bytes(b"synthetic producer, never executed")
+        with tempfile.TemporaryDirectory(prefix="imagejxx-current-alias-") as temporary:
+            alias = Path(temporary).resolve(strict=True) / "source"
+            try:
+                alias.symlink_to(self.root, target_is_directory=True)
+            except OSError as error:
+                if error.errno in (1, 13, 38, 95) or getattr(error, "winerror", None) == 1314:
+                    self.skipTest("Directory symlinks unavailable for this fixture: " + str(error))
+                raise
+            self.assertTrue(alias.is_symlink())
+            self.assertNotEqual(alias, self.root)
+            self.assertEqual(alias.resolve(strict=True), self.root)
+            aliased_executable = alias / executable.relative_to(self.root)
+            self.assertTrue(aliased_executable.samefile(executable))
+            # Keep the production lexical-containment guard strict: resolving
+            # only root cannot admit an executable still spelled via an alias.
+            with self.assertRaisesRegex(ValueError, "one regular containing"):
+                suite.current_producer_cache(aliased_executable, alias)
+            cache, _, identity = suite.current_producer_cache(
+                aliased_executable.resolve(strict=True), alias.resolve(strict=True))
+            self.assertEqual(cache, self.cache_file)
+            self.assertEqual(identity, suite.pin(self.cache_file))
 
     def test_missing_or_ambiguous_native_producer_refuses_before_loading(self):
         with patch.object(suite.sys, "platform", "linux"), patch.object(
