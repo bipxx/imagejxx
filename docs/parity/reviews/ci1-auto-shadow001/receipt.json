@@ -1,0 +1,949 @@
+{
+  "schema": "ci1.scoped-qualification.001",
+  "state": "scoped-qualified",
+  "acceptance": false,
+  "full_ci_qualified": false,
+  "baseline_commit": "1fe5204cccd1a1d5868454c334791715bf0b69d4",
+  "scope": "Compatible outer Auto V2 test correction and nullable shadow source-change observation; no kernel/API/codec contract narrowed",
+  "platforms": {
+    "windows": {
+      "schema": "ci1.host-audit.001",
+      "state": "passed",
+      "acceptance": false,
+      "host": "windows",
+      "compiled_inputs": 731,
+      "compiled_manifest": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001\\windows-build002\\source-manifest.json",
+        "bytes": 82211,
+        "sha256": "a027b95eef1a94d951228ed5376139d20120bbe16d23342b5b99ce0761dbb1b9"
+      },
+      "native_programs": [
+        "native_auto_contrast",
+        "native_auto_contrast_display_reset",
+        "native_auto_contrast_jobs",
+        "native_auto_contrast_sdk_probe"
+      ],
+      "native_receipt": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001\\windows-build002\\receipt.json",
+        "bytes": 5204,
+        "sha256": "18db0fa75e32fcc36bba6283b70595384350bc7f2327fc50bca6487223d3c682"
+      },
+      "native_xml": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001\\windows-build002\\native.xml",
+        "bytes": 4585,
+        "sha256": "2088996769ca0023451acf6fdc088f1eefa201122a5f83d1ba345444028804e3"
+      },
+      "api_cases": 317,
+      "api": {
+        "archive": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-api-windows002.tar.gz",
+          "bytes": 289575,
+          "sha256": "98d7c111eea25c9d9048d3c89c5f4e4d9cd75cabb99444369e6b2886eb5094a7"
+        },
+        "retention": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-api-windows002-retention.json",
+          "bytes": 1555,
+          "sha256": "eeae0ed8a4429a9ac6925674d203c15331ceeea417f8033c17fb4421683b3ad9"
+        },
+        "members_verified": 7
+      },
+      "test_input_manifest_sha256": "dbacf39a9ce27e1982af3b2f3059a55e6e0a0fb9760a0c016e4b457a72e36938",
+      "products": {
+        "imagejxx._native": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+          "sha256": "ebceb66c4d365a223b6f8c0708374256b5b71e76c90a0260f226be1ef5fc2342"
+        },
+        "imagejxx._desktop": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+          "sha256": "00f478471e26ccffc674cab303ec2df624a6c923fb02fd7d70a9f36a48b12f38"
+        }
+      },
+      "application": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+        "sha256": "0996758f572f47c3e0a089f8f41098603e18fb61e41c3b62ba7219d08564309c"
+      },
+      "shadow_cells": 24,
+      "shadow": [
+        {
+          "case": "source",
+          "context": "imgui_python",
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows001-source-imgui_python.tar.gz",
+            "bytes": 6658,
+            "sha256": "0c73f9bfea6224988aa41b67ae9392929df2aed8db65e4c15eaedb5ff34e24c9"
+          },
+          "retention": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows001-source-imgui_python-retention.json",
+            "bytes": 999,
+            "sha256": "c4ba21b79398e18580762e32209103ff6e2bb579f337ec5c41b1d5a4ab8716b0"
+          },
+          "members_verified": 4
+        },
+        {
+          "case": "byte",
+          "context": "imgui_python",
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows001-byte-imgui_python.tar.gz",
+            "bytes": 30696,
+            "sha256": "f2fe19c87808ee2f0168554bf01837dd6673e8b01d2fdcbbdf6fd61f6f64e7a5"
+          },
+          "retention": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows001-byte-imgui_python-retention.json",
+            "bytes": 998,
+            "sha256": "d94cb00eab59034ba93e5f11756c9ad56b5743a47edf1b09522a33f366c4ad57"
+          },
+          "members_verified": 4
+        },
+        {
+          "case": "short",
+          "context": "imgui_python",
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows001-short-imgui_python.tar.gz",
+            "bytes": 38533,
+            "sha256": "cc1e8d616f3c0e1540b254b87a264c2d32b4072066eaaecd1fe42ed68ff9e5a3"
+          },
+          "retention": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows001-short-imgui_python-retention.json",
+            "bytes": 1000,
+            "sha256": "fe31767c06183a06b539a5b42d7c393c984edb0f9d490b1fb3719f8de1be709b"
+          },
+          "members_verified": 4
+        },
+        {
+          "case": "float",
+          "context": "imgui_python",
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows001-float-imgui_python.tar.gz",
+            "bytes": 66452,
+            "sha256": "ee2908750d14b834a98e5b605c690e8d5a4820396705b895a6b389e190e298cd"
+          },
+          "retention": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows001-float-imgui_python-retention.json",
+            "bytes": 1000,
+            "sha256": "b0c4c40333659a41f824f509d9545b7fe0ef112f6dab91565fffe47f800fe1c9"
+          },
+          "members_verified": 4
+        },
+        {
+          "case": "rgb",
+          "context": "imgui_python",
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows001-rgb-imgui_python.tar.gz",
+            "bytes": 40512,
+            "sha256": "ba43653ec3e58ca0c45febba2d85d1024b531b2b2bed587fe6edcd1973d55a0d"
+          },
+          "retention": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows001-rgb-imgui_python-retention.json",
+            "bytes": 996,
+            "sha256": "1c177c215a9153bbb2d982da41939ecdb2d0b495bacccbd353026c7f3d00d003"
+          },
+          "members_verified": 4
+        },
+        {
+          "case": "escape",
+          "context": "imgui_python",
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows001-escape-imgui_python.tar.gz",
+            "bytes": 6739,
+            "sha256": "7d98e98fa96a7e059b564dd66881e42e3955e0f45f9afe717547a11697995b21"
+          },
+          "retention": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows001-escape-imgui_python-retention.json",
+            "bytes": 999,
+            "sha256": "5acf50d5baa56523ac7e4f0fe5864ce62907f3845ae9ab4be9774eb231d5a2ba"
+          },
+          "members_verified": 4
+        },
+        {
+          "case": "stop",
+          "context": "imgui_python",
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows001-stop-imgui_python.tar.gz",
+            "bytes": 6875,
+            "sha256": "6a62eecc0e8cdfcd85a201dc56a17286ef191761ee78a862909e086e21f7d0e3"
+          },
+          "retention": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows001-stop-imgui_python-retention.json",
+            "bytes": 995,
+            "sha256": "e3206905590a52360e942569cf56c5af52596a894b1a613451d90b814ca77abf"
+          },
+          "members_verified": 4
+        },
+        {
+          "case": "budget",
+          "context": "imgui_python",
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows001-budget-imgui_python.tar.gz",
+            "bytes": 105086,
+            "sha256": "1820495cb1a5efa204bd29411c0d9e84f62c805e604e5480baad96b59ccb6e1b"
+          },
+          "retention": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows001-budget-imgui_python-retention.json",
+            "bytes": 1005,
+            "sha256": "742b5029b8ec4397c06558ddf2b3f1a3a302d4ff6f494d051d67d6bca44e0919"
+          },
+          "members_verified": 4
+        },
+        {
+          "case": "overflow",
+          "context": "imgui_python",
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows001-overflow-imgui_python.tar.gz",
+            "bytes": 3912,
+            "sha256": "4f129eeb2a28c16b4c525be02208ccfc3f24253edde5eff752bfb0903f605f47"
+          },
+          "retention": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows001-overflow-imgui_python-retention.json",
+            "bytes": 1003,
+            "sha256": "7a91c72ca45c11d64dcf354e7c97e22edbd10b411bb05e587f8e302c0768d6e1"
+          },
+          "members_verified": 4
+        },
+        {
+          "case": "guard-stack",
+          "context": "imgui_python",
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows001-guard-stack-imgui_python.tar.gz",
+            "bytes": 3888,
+            "sha256": "83fc11bcd75b17573f3c27c6dd77d8d286f740be8a44bfa7778199cb1d70dc16"
+          },
+          "retention": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows001-guard-stack-imgui_python-retention.json",
+            "bytes": 1009,
+            "sha256": "06e3771b921552aa2c1acbd65614ea367023773b258935cb34196705d0902020"
+          },
+          "members_verified": 4
+        },
+        {
+          "case": "guard-type",
+          "context": "imgui_python",
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows001-guard-type-imgui_python.tar.gz",
+            "bytes": 3901,
+            "sha256": "79056ae91b09eaf79f243e052927cda15b65a511f78810e4653dafcdc8e935e6"
+          },
+          "retention": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows001-guard-type-imgui_python-retention.json",
+            "bytes": 1007,
+            "sha256": "e077d9b2e437777fb98c1263d1315939eca108400ecd0fa2f490298accf4f088"
+          },
+          "members_verified": 4
+        },
+        {
+          "case": "guard-policy",
+          "context": "imgui_python",
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows001-guard-policy-imgui_python.tar.gz",
+            "bytes": 4168,
+            "sha256": "3dc86f3d2f4ffe4bfc39b7c703d497c2d00cfefed14c4262b60142c66314b297"
+          },
+          "retention": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows001-guard-policy-imgui_python-retention.json",
+            "bytes": 1011,
+            "sha256": "cc264d7d45c5fa03907273b49df8b7e67a6e8f30897dee7a3844f1082c277b53"
+          },
+          "members_verified": 4
+        },
+        {
+          "case": "source",
+          "context": "imgui_cpp",
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows002-source-imgui_cpp.tar.gz",
+            "bytes": 253107,
+            "sha256": "b88b8b4a62e8ea6fed15ad346fbacda27b9d74a2d3c75c6811bd87ad115137aa"
+          },
+          "retention": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows002-source-imgui_cpp-retention.json",
+            "bytes": 1266,
+            "sha256": "2b514598936b74b4d2fe2fe7e2c2bfd655563a87a6de546a93e64b69ae73e7d2"
+          },
+          "members_verified": 6
+        },
+        {
+          "case": "byte",
+          "context": "imgui_cpp",
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows002-byte-imgui_cpp.tar.gz",
+            "bytes": 276128,
+            "sha256": "d67a0993c9d26b07b79742c0c41ebbfecf265dfdcc4f181dcbbc6580343bc344"
+          },
+          "retention": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows002-byte-imgui_cpp-retention.json",
+            "bytes": 1262,
+            "sha256": "4cc553a374aa52d83ff240f2a42db85ef45cd5ffb13f62199bd8acc506d05718"
+          },
+          "members_verified": 6
+        },
+        {
+          "case": "short",
+          "context": "imgui_cpp",
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows002-short-imgui_cpp.tar.gz",
+            "bytes": 284857,
+            "sha256": "5f276e9eeb41d32a248d36f1718722b29d6fa5314cd38d329255a5c01ff6de52"
+          },
+          "retention": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows002-short-imgui_cpp-retention.json",
+            "bytes": 1265,
+            "sha256": "95060916b271ea8e66ff89f459c8b6842fcd00f5f58f14e04daab7cfe1ce6c42"
+          },
+          "members_verified": 6
+        },
+        {
+          "case": "float",
+          "context": "imgui_cpp",
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows002-float-imgui_cpp.tar.gz",
+            "bytes": 312954,
+            "sha256": "5ac69bfe6c6a7495a1ae450c346e39e08c3e183cf9ece1ba269583f63ffa781c"
+          },
+          "retention": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows002-float-imgui_cpp-retention.json",
+            "bytes": 1265,
+            "sha256": "8b409fd233594b68fbfc6bc49f003ddde991a83fdbc012dbe9d52ae3811b91f0"
+          },
+          "members_verified": 6
+        },
+        {
+          "case": "rgb",
+          "context": "imgui_cpp",
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows002-rgb-imgui_cpp.tar.gz",
+            "bytes": 285868,
+            "sha256": "48b2f7b61d583376835f6ee81743898b57298fc97b78c65a6853a4f8dadd6991"
+          },
+          "retention": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows002-rgb-imgui_cpp-retention.json",
+            "bytes": 1259,
+            "sha256": "0699c31d9feeb07b42c3fa9f6423f911756ef99d1ab24c51e1bb9d9d6c7447b9"
+          },
+          "members_verified": 6
+        },
+        {
+          "case": "escape",
+          "context": "imgui_cpp",
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows002-escape-imgui_cpp.tar.gz",
+            "bytes": 253077,
+            "sha256": "b16eee8edb714df83c6eef68dff49e5babcf0d21262fa18e5eb369cfe4390ab8"
+          },
+          "retention": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows002-escape-imgui_cpp-retention.json",
+            "bytes": 1266,
+            "sha256": "44a9d4f2afe594dd0cc075866045cb1361d077b5a242481ba1c04cf66ebc0478"
+          },
+          "members_verified": 6
+        },
+        {
+          "case": "stop",
+          "context": "imgui_cpp",
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows002-stop-imgui_cpp.tar.gz",
+            "bytes": 253380,
+            "sha256": "0f698e0ea4cc9bca691c11985ecbba08779fd28d2600d9884be41e178e5a8b9e"
+          },
+          "retention": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows002-stop-imgui_cpp-retention.json",
+            "bytes": 1260,
+            "sha256": "83df4b29feb616bea564cd51038f96ef5a2bb57efcce5cb6fa3fe8cac1e6d87a"
+          },
+          "members_verified": 6
+        },
+        {
+          "case": "budget",
+          "context": "imgui_cpp",
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows002-budget-imgui_cpp.tar.gz",
+            "bytes": 350979,
+            "sha256": "8fd4455312a51a1885568997fedae3dc38b859f2f6c285264e1705407bb0fe73"
+          },
+          "retention": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows002-budget-imgui_cpp-retention.json",
+            "bytes": 1269,
+            "sha256": "32fc08db06ed650ff62e567298e0bff55d7211f676d614290b8b1aa61f3baed5"
+          },
+          "members_verified": 6
+        },
+        {
+          "case": "overflow",
+          "context": "imgui_cpp",
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows002-overflow-imgui_cpp.tar.gz",
+            "bytes": 249989,
+            "sha256": "a88d9179f173a635088df18eeb9662983cebf59b45a581310b0e26650e5d3726"
+          },
+          "retention": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows002-overflow-imgui_cpp-retention.json",
+            "bytes": 1272,
+            "sha256": "4747cd1d8cc0e27cb2e292e41d746569dff7d4e82139a35169e0dd633e061c43"
+          },
+          "members_verified": 6
+        },
+        {
+          "case": "guard-stack",
+          "context": "imgui_cpp",
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows002-guard-stack-imgui_cpp.tar.gz",
+            "bytes": 250125,
+            "sha256": "35da55b2f706d33c2167096d67b790ac1450fd567099081dcb3043c22ae2f133"
+          },
+          "retention": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows002-guard-stack-imgui_cpp-retention.json",
+            "bytes": 1281,
+            "sha256": "d0aedabf5468e84cbc98e4e740e2f8ed4671106259d75157492cfd31c949de72"
+          },
+          "members_verified": 6
+        },
+        {
+          "case": "guard-type",
+          "context": "imgui_cpp",
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows002-guard-type-imgui_cpp.tar.gz",
+            "bytes": 250061,
+            "sha256": "ea0defa70f7b7953a8b4479390824dedd7152499957aee5af079621db1bb6238"
+          },
+          "retention": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows002-guard-type-imgui_cpp-retention.json",
+            "bytes": 1278,
+            "sha256": "6e8b900afd2e4ac56977bfb125c244dfb308bfaaee230107e7b0fc98758b0143"
+          },
+          "members_verified": 6
+        },
+        {
+          "case": "guard-policy",
+          "context": "imgui_cpp",
+          "archive": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows002-guard-policy-imgui_cpp.tar.gz",
+            "bytes": 250415,
+            "sha256": "935ecdffcf3f40b03845887c50cc5415d396a04af02b8a552f8e492ddf01265e"
+          },
+          "retention": {
+            "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001-shadow-windows002-guard-policy-imgui_cpp-retention.json",
+            "bytes": 1284,
+            "sha256": "575c6d78410367c4cf3979607aa6cdf66125b2d7cf329e633d41beda7b6df30b"
+          },
+          "members_verified": 6
+        }
+      ],
+      "original_cpp001": "Original path-bound captures preserved; final qualification uses002app-pre/post-hash-bound captures",
+      "saved_result_comparator": {
+        "path": "tests/python/test_shadow_demo_ui.py",
+        "sha256": "6cc62858fb4328fc150b2ad70fa21fca3d2229591bedfbb5f9118cdc7575f33b",
+        "authority": "Current hash-bound saved-result re-audit; original captures/readers keep original protocol; no new GUI capture implied"
+      },
+      "limits": "Scoped Windows/Linux Auto and headless/shared ImGui; not full hosted CI, OS/GPU/macOS or release acceptance"
+    },
+    "linux": {
+      "schema": "ci1.host-audit.001",
+      "state": "passed",
+      "acceptance": false,
+      "host": "linux",
+      "compiled_inputs": 731,
+      "compiled_manifest": {
+        "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001/linux-build001/source-manifest.json",
+        "bytes": 81478,
+        "sha256": "867482b7f14846158db4a518a04e9fac4b7c3d94815f606cbe5856a5f66755d3"
+      },
+      "native_programs": [
+        "native_auto_contrast",
+        "native_auto_contrast_display_reset",
+        "native_auto_contrast_jobs",
+        "native_auto_contrast_sdk_probe"
+      ],
+      "native_receipt": {
+        "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001/linux-build001/receipt.json",
+        "bytes": 4205,
+        "sha256": "309af64ede32eb8fbebd274bcdba52beadfbd8abb176dbb333721f6d584fd0f7"
+      },
+      "native_xml": {
+        "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001/linux-build001/native.xml",
+        "bytes": 4490,
+        "sha256": "a87104bdd123cb4f402ceb898acea4cfa5dfcea4d510cd1041c6b7f5b0982e91"
+      },
+      "api_cases": 317,
+      "api": {
+        "archive": {
+          "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-api-linux002.tar.gz",
+          "bytes": 302727,
+          "sha256": "033127e31c61f115a6198faa4400e68437b3c518b10001d73a1183b11442f604"
+        },
+        "retention": {
+          "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-api-linux002-retention.json",
+          "bytes": 1668,
+          "sha256": "39e56f8ffa1e11eba8411bcff1e1a0eaf93e00541c1dd979b9466f9fcc8f8a12"
+        },
+        "members_verified": 8
+      },
+      "test_input_manifest_sha256": "c829f8fa79468a9a698b4e8e2512809be4aa3ad0b8ecf59fec1d06a38a684bf5",
+      "products": {
+        "imagejxx._native": {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-probe-env003/lib/python3.12/site-packages/imagejxx/_native.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "18bd8b1d1bc857baa42ce12939d6d812153bb6a788b16702313ae5ce929b3499"
+        },
+        "imagejxx._desktop": {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-probe-env003/lib/python3.12/site-packages/imagejxx/_desktop.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "f4cce59127bd0c10b7fc40c4fa54c3fcac0e5f8c72f8fb667cde1bab6870a8c5"
+        }
+      },
+      "application": {
+        "path": "/mnt/c/Users/HEQ/Projects/imagejxx/.tmp/p13g-verification/linux/app-installed/bin/imagejxx",
+        "sha256": "372a903e72c282120067f9e7f374a99bb8f79e4804684a0b5a0aae683a6e598f"
+      },
+      "shadow_cells": 24,
+      "shadow": [
+        {
+          "case": "source",
+          "context": "imgui_python",
+          "archive": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux001-source-imgui_python.tar.gz",
+            "bytes": 6986,
+            "sha256": "57438afdea3a5e4a1e455821a3d9613cc8e5ee4faadbd2cb0c3b9af4d355ddf1"
+          },
+          "retention": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux001-source-imgui_python-retention.json",
+            "bytes": 1126,
+            "sha256": "25f1790fc1ef3d24f87dd41f7c48d1255965616b16de849e5416c6e652c6b47b"
+          },
+          "members_verified": 5
+        },
+        {
+          "case": "byte",
+          "context": "imgui_python",
+          "archive": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux001-byte-imgui_python.tar.gz",
+            "bytes": 31718,
+            "sha256": "fcb8c538ef60e548d43d40ae94eb0bd6dfcfa5b89c8e8d59b5239c6e064efc26"
+          },
+          "retention": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux001-byte-imgui_python-retention.json",
+            "bytes": 1125,
+            "sha256": "b7612fa88e565a8b97d030036108552ead5f06e33e80257d6da1238a00cbf133"
+          },
+          "members_verified": 5
+        },
+        {
+          "case": "short",
+          "context": "imgui_python",
+          "archive": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux001-short-imgui_python.tar.gz",
+            "bytes": 39534,
+            "sha256": "cad966c53990ac4576e0c77802a8ec1e9c5b7f0713e5dd2d782e0fcd67d17f18"
+          },
+          "retention": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux001-short-imgui_python-retention.json",
+            "bytes": 1127,
+            "sha256": "0a802fc508ed91b226dcb6c104d1855317bb3747edc025db5b8c6104329e8e9c"
+          },
+          "members_verified": 5
+        },
+        {
+          "case": "float",
+          "context": "imgui_python",
+          "archive": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux001-float-imgui_python.tar.gz",
+            "bytes": 67260,
+            "sha256": "7221835d52c1fb5b6a0347c4a2dbc93f795d670862f9494e5846bca9c46a41b0"
+          },
+          "retention": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux001-float-imgui_python-retention.json",
+            "bytes": 1127,
+            "sha256": "3d4cd866297909d0d79f8ed2eba516dd02a2667a7bfe4775f97bfd5100afbd5b"
+          },
+          "members_verified": 5
+        },
+        {
+          "case": "rgb",
+          "context": "imgui_python",
+          "archive": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux001-rgb-imgui_python.tar.gz",
+            "bytes": 41047,
+            "sha256": "df6f6459749256f2286a5b6925458f303558383c79e9f33ec7fa562d5ee79ce1"
+          },
+          "retention": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux001-rgb-imgui_python-retention.json",
+            "bytes": 1123,
+            "sha256": "3306fde4774e8d2632a9ad517a858beadc17c29f8514171d12a09d486cb72b6d"
+          },
+          "members_verified": 5
+        },
+        {
+          "case": "escape",
+          "context": "imgui_python",
+          "archive": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux001-escape-imgui_python.tar.gz",
+            "bytes": 6989,
+            "sha256": "70b712334e3a4a5f65d0fcf0fc1997aa45091ef44690016592a07143b9d04b9c"
+          },
+          "retention": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux001-escape-imgui_python-retention.json",
+            "bytes": 1126,
+            "sha256": "47ce3258699d31a3e95982aaf1cf1f1e9af1f68bf29445ec651775db579f2778"
+          },
+          "members_verified": 5
+        },
+        {
+          "case": "stop",
+          "context": "imgui_python",
+          "archive": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux001-stop-imgui_python.tar.gz",
+            "bytes": 7052,
+            "sha256": "efbdb3910868673fd9323071776f4141f01c7d5388331bf7a374a42475f822f1"
+          },
+          "retention": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux001-stop-imgui_python-retention.json",
+            "bytes": 1122,
+            "sha256": "6f0eb71c3dd3b8d1a5f2cb463242d6eb035a1a28c314b1102cea2fbfbf8c8d70"
+          },
+          "members_verified": 5
+        },
+        {
+          "case": "budget",
+          "context": "imgui_python",
+          "archive": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux001-budget-imgui_python.tar.gz",
+            "bytes": 103182,
+            "sha256": "7726478c22637981e042bd62ddefc59e5731c062384dac40beee87b3e8b95b65"
+          },
+          "retention": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux001-budget-imgui_python-retention.json",
+            "bytes": 1132,
+            "sha256": "ba8ebb65397f1d7102c5523c91de5bc2e9c9ecacf454c1089b6707cf94bafec9"
+          },
+          "members_verified": 5
+        },
+        {
+          "case": "overflow",
+          "context": "imgui_python",
+          "archive": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux001-overflow-imgui_python.tar.gz",
+            "bytes": 4088,
+            "sha256": "5a3422dbf2e28b18579c662299ff6155b81a8d1079093a439fb07df4e0f2c9b0"
+          },
+          "retention": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux001-overflow-imgui_python-retention.json",
+            "bytes": 1130,
+            "sha256": "cefcb978c23bddc1083761e582f304fa4e99704ea1ef8033eb4afa1861bae642"
+          },
+          "members_verified": 5
+        },
+        {
+          "case": "guard-stack",
+          "context": "imgui_python",
+          "archive": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux001-guard-stack-imgui_python.tar.gz",
+            "bytes": 4097,
+            "sha256": "d80259380ddd00103e45328c72263511367d92178cc1e9740ea609fb94fd83dd"
+          },
+          "retention": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux001-guard-stack-imgui_python-retention.json",
+            "bytes": 1136,
+            "sha256": "62608b6de49f5b792c5e6ebd43da977275931a61775233823b88038385d7a07a"
+          },
+          "members_verified": 5
+        },
+        {
+          "case": "guard-type",
+          "context": "imgui_python",
+          "archive": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux001-guard-type-imgui_python.tar.gz",
+            "bytes": 4020,
+            "sha256": "3aa704fcdc36e8a26816b9598189dfe4c8a996f0fef4f6989489a720a5f2f081"
+          },
+          "retention": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux001-guard-type-imgui_python-retention.json",
+            "bytes": 1134,
+            "sha256": "e80cb8d98591f99b56a42416fdeb184124e7b4ffbac7dbe2d26b60b37bc3f363"
+          },
+          "members_verified": 5
+        },
+        {
+          "case": "guard-policy",
+          "context": "imgui_python",
+          "archive": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux001-guard-policy-imgui_python.tar.gz",
+            "bytes": 4472,
+            "sha256": "8fec0775b427d158c3347acb9d3d18a8f62f014517949c11fdbafe783a15c017"
+          },
+          "retention": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux001-guard-policy-imgui_python-retention.json",
+            "bytes": 1138,
+            "sha256": "85a9b99c9284e8484743b0624357fc1c76fb1447e307386db773fd394afe9363"
+          },
+          "members_verified": 5
+        },
+        {
+          "case": "source",
+          "context": "imgui_cpp",
+          "archive": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux002-source-imgui_cpp.tar.gz",
+            "bytes": 265996,
+            "sha256": "192f44e7e320fbd38e7276ef8e56e89d12e3f90c4302ebcfc354e8d94b7ed7af"
+          },
+          "retention": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux002-source-imgui_cpp-retention.json",
+            "bytes": 1383,
+            "sha256": "251caef59cb76205b147d5c22a59931de90e622c5d2eb50416779be97f7460da"
+          },
+          "members_verified": 7
+        },
+        {
+          "case": "byte",
+          "context": "imgui_cpp",
+          "archive": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux002-byte-imgui_cpp.tar.gz",
+            "bytes": 289411,
+            "sha256": "f9552ba1f37007e12ae3296624cdc5d8f907cfb6a14f3a5be09f477d4cbfd1c2"
+          },
+          "retention": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux002-byte-imgui_cpp-retention.json",
+            "bytes": 1379,
+            "sha256": "867963a9e023cb88e0ba12ec6df33a33b009babb1d0edce54006e8b4f62334fe"
+          },
+          "members_verified": 7
+        },
+        {
+          "case": "short",
+          "context": "imgui_cpp",
+          "archive": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux002-short-imgui_cpp.tar.gz",
+            "bytes": 298323,
+            "sha256": "afb195f9cef700d87eb7587ce2449572516b7559ea94a1bfaa20b2cd44e8d806"
+          },
+          "retention": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux002-short-imgui_cpp-retention.json",
+            "bytes": 1382,
+            "sha256": "18072d3c86fb563fe2b66bbcb5676c6d283645fe95e1938a20d402df83d4dc9c"
+          },
+          "members_verified": 7
+        },
+        {
+          "case": "float",
+          "context": "imgui_cpp",
+          "archive": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux002-float-imgui_cpp.tar.gz",
+            "bytes": 326234,
+            "sha256": "d023dfb72c14e2a91321257ef9f0e73d9a4273782019f12cac2619a50494f019"
+          },
+          "retention": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux002-float-imgui_cpp-retention.json",
+            "bytes": 1382,
+            "sha256": "0c6540f802046e2c3cde25e14f065741e3b064a415726f8116af4fe6b20bd9d4"
+          },
+          "members_verified": 7
+        },
+        {
+          "case": "rgb",
+          "context": "imgui_cpp",
+          "archive": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux002-rgb-imgui_cpp.tar.gz",
+            "bytes": 299695,
+            "sha256": "0bb82adb9b1917b94835c338cb63f65acf7c73069364c9d87cb54a34d41a19c0"
+          },
+          "retention": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux002-rgb-imgui_cpp-retention.json",
+            "bytes": 1376,
+            "sha256": "6da14a27493d766da5c1c3635fa650e45b85dc9fc9ae15d8244867eed491fa59"
+          },
+          "members_verified": 7
+        },
+        {
+          "case": "escape",
+          "context": "imgui_cpp",
+          "archive": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux002-escape-imgui_cpp.tar.gz",
+            "bytes": 265996,
+            "sha256": "055ebbfffd79c9961ee527878ac8009135963b7eb5001231d6fe11728621d51c"
+          },
+          "retention": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux002-escape-imgui_cpp-retention.json",
+            "bytes": 1383,
+            "sha256": "8ceb00c31e4d7958bef71d7aac65121922c2a88e0195dfb6d064fca4224880a6"
+          },
+          "members_verified": 7
+        },
+        {
+          "case": "stop",
+          "context": "imgui_cpp",
+          "archive": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux002-stop-imgui_cpp.tar.gz",
+            "bytes": 266136,
+            "sha256": "a7722ce1a7502d3e5514bcc5e18384b0562cb33a78e1bd784c6d4661564ad599"
+          },
+          "retention": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux002-stop-imgui_cpp-retention.json",
+            "bytes": 1377,
+            "sha256": "5f76d2efe0b0bc5212e1ad2073f90cb746b9d9283f4813f7f116db91e7b145dc"
+          },
+          "members_verified": 7
+        },
+        {
+          "case": "budget",
+          "context": "imgui_cpp",
+          "archive": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux002-budget-imgui_cpp.tar.gz",
+            "bytes": 363318,
+            "sha256": "a0bebbe5ff46d798638ae01c072de95488eaa7f09cf4a16d6e547d4530af188b"
+          },
+          "retention": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux002-budget-imgui_cpp-retention.json",
+            "bytes": 1386,
+            "sha256": "28749cf1a43eb3a703278be8ac79370533191f2a0863bd9f6a97d8fde4745246"
+          },
+          "members_verified": 7
+        },
+        {
+          "case": "overflow",
+          "context": "imgui_cpp",
+          "archive": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux002-overflow-imgui_cpp.tar.gz",
+            "bytes": 262838,
+            "sha256": "7ea607a3d3977eaba7c2e8a26049ac6aea99fdd700edad17eb6962844c308e7a"
+          },
+          "retention": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux002-overflow-imgui_cpp-retention.json",
+            "bytes": 1389,
+            "sha256": "07d70b3cb0ea23483e3d85777a526e94be4bb159c2d5ce2d8adceaad879a9ae7"
+          },
+          "members_verified": 7
+        },
+        {
+          "case": "guard-stack",
+          "context": "imgui_cpp",
+          "archive": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux002-guard-stack-imgui_cpp.tar.gz",
+            "bytes": 262828,
+            "sha256": "5af9846a011e08ee9c2780aee693b80c81f300951e5323de50b8dcc98d27666e"
+          },
+          "retention": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux002-guard-stack-imgui_cpp-retention.json",
+            "bytes": 1398,
+            "sha256": "e3d18389e4a34a6fb4b8c88e0bdcb142397cb3f881702a8982204496c43f5834"
+          },
+          "members_verified": 7
+        },
+        {
+          "case": "guard-type",
+          "context": "imgui_cpp",
+          "archive": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux002-guard-type-imgui_cpp.tar.gz",
+            "bytes": 262792,
+            "sha256": "e1cedb01e253d6a3682d8b626230645a9e3ed33a9bddab8c397790b77ddadad7"
+          },
+          "retention": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux002-guard-type-imgui_cpp-retention.json",
+            "bytes": 1395,
+            "sha256": "1b5bc090d68d651e5de01055cf411fe32851ab8e19fe9fcde67842c53589be87"
+          },
+          "members_verified": 7
+        },
+        {
+          "case": "guard-policy",
+          "context": "imgui_cpp",
+          "archive": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux002-guard-policy-imgui_cpp.tar.gz",
+            "bytes": 263225,
+            "sha256": "94a0e3876330b8f239b9b2cf49fe73bc16d3662f82907c9d239ef37ef576ae4e"
+          },
+          "retention": {
+            "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/ci-recovery001-shadow-linux002-guard-policy-imgui_cpp-retention.json",
+            "bytes": 1401,
+            "sha256": "e441b2413cbc594138ef80700825ddb8329c2271843c5108592f76bb80bec904"
+          },
+          "members_verified": 7
+        }
+      ],
+      "original_cpp001": "Original path-bound captures preserved; final qualification uses002app-pre/post-hash-bound captures",
+      "saved_result_comparator": {
+        "path": "tests/python/test_shadow_demo_ui.py",
+        "sha256": "6cc62858fb4328fc150b2ad70fa21fca3d2229591bedfbb5f9118cdc7575f33b",
+        "authority": "Current hash-bound saved-result re-audit; original captures/readers keep original protocol; no new GUI capture implied"
+      },
+      "limits": "Scoped Windows/Linux Auto and headless/shared ImGui; not full hosted CI, OS/GPU/macOS or release acceptance"
+    }
+  },
+  "compiled_inputs": {
+    "path": "docs\\parity\\reviews\\ci1-auto-shadow001\\compiled-inputs.json",
+    "bytes": 82211,
+    "sha256": "a027b95eef1a94d951228ed5376139d20120bbe16d23342b5b99ce0761dbb1b9"
+  },
+  "named_api_cohort": {
+    "path": "docs\\parity\\reviews\\ci1-auto-shadow001\\affected-nodeids.json",
+    "bytes": 36002,
+    "sha256": "def8ca50c543f5b27d16c8f8ad2b283a9ef97cd57b1c535b46bed24acde3aedd"
+  },
+  "test_migration": {
+    "path": "docs\\parity\\reviews\\ci1-auto-shadow001\\auto-test-migration.json",
+    "bytes": 11771,
+    "sha256": "ce49841001e05866611ca52cbc366dc1f85169aae1a9f6b7650cd6a6af4fbe0d"
+  },
+  "qualification_drivers": {
+    "path": "docs\\parity\\reviews\\ci1-auto-shadow001\\qualification-drivers.tar.gz",
+    "bytes": 6302,
+    "sha256": "b47b445ebbfd241216a138daa7ca8172547ae5a2ff63926e01ee9290252a14a6"
+  },
+  "storage": {
+    "path": "docs\\parity\\reviews\\ci1-auto-shadow001\\storage.json",
+    "bytes": 1383,
+    "sha256": "813b4b22eb48c3b7ca5f2e6537523721f9917ad0e7d9f74ae62a84b5ece9b323"
+  },
+  "preceding_product_availability": {
+    "windows": {
+      "native": {
+        "previous_sha256": "ebceb66c4d365a223b6f8c0708374256b5b71e76c90a0260f226be1ef5fc2342",
+        "current_sha256": "ebceb66c4d365a223b6f8c0708374256b5b71e76c90a0260f226be1ef5fc2342",
+        "original_bytes_still_at_locator": true
+      },
+      "desktop": {
+        "previous_sha256": "023c67869068b6abe586955cd11691d9cf9afc11b43a29c04d7ece995411143a",
+        "current_sha256": "00f478471e26ccffc674cab303ec2df624a6c923fb02fd7d70a9f36a48b12f38",
+        "original_bytes_still_at_locator": false
+      },
+      "application": {
+        "previous_sha256": "0ea869f2d694c109727f00e876985a42d6f4fe2bf29068fe0ba7f93ce165df14",
+        "current_sha256": "0996758f572f47c3e0a089f8f41098603e18fb61e41c3b62ba7219d08564309c",
+        "original_bytes_still_at_locator": false
+      }
+    },
+    "linux": {
+      "native": {
+        "previous_sha256": "18bd8b1d1bc857baa42ce12939d6d812153bb6a788b16702313ae5ce929b3499",
+        "current_sha256": "18bd8b1d1bc857baa42ce12939d6d812153bb6a788b16702313ae5ce929b3499",
+        "original_bytes_still_at_locator": true
+      },
+      "desktop": {
+        "previous_sha256": "2d564c50e81b549f1a88a9a21be491edf4ce114e31fa0d41f8327bce087b707e",
+        "current_sha256": "f4cce59127bd0c10b7fc40c4fa54c3fcac0e5f8c72f8fb667cde1bab6870a8c5",
+        "original_bytes_still_at_locator": false
+      },
+      "application": {
+        "previous_sha256": "2f99ccbebf6734524af3ff0bbe12e8bec511a9beb465034ad3d04ab1436563c4",
+        "current_sha256": "372a903e72c282120067f9e7f374a99bb8f79e4804684a0b5a0aae683a6e598f",
+        "original_bytes_still_at_locator": false
+      }
+    }
+  },
+  "historical_products": "MW1 receipts and fingerprints remain unchanged; overwritten installed bytes are unavailable at their old locators. Original captures/source remain historical proof, not current binary qualification.",
+  "failed_attempts": {
+    "hosted_baseline_run": 40134945382,
+    "retained_logs": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci-recovery001\\retained-failures.json",
+    "windows_build001": "New replay witness used a fresh-command-only helper; original helper retained, new assertions corrected. Failure/source/migration retained unchanged.",
+    "api001": "Authentic317-case results lacked reader-source hashes; final002 reruns add contemporaneous before/after identities rather than invent provenance."
+  },
+  "capture_applicability": "Final shadow join uses002C++captures with application pre/post hashes and original001Python captures with native/desktop pre/post hashes. Original001C++ path-only captures remain historical; no retroactive product hash is claimed.",
+  "scope_limits": [
+    "Required Windows/macOS full I/O/UI dependency/profile cohorts remain incomplete; processing-only wheel collection failures are separate CI2 work",
+    "Hosted40172838348 is the preceding MW1 head and cannot accept this later source",
+    "Headless/shared ImGui does not establish genuine OS input, GPU/accessibility/macOS or full release acceptance",
+    "Generic runner terminal-phase/descendant guarantees are not upgraded by packet-local checks",
+    "G016 retired evidence and all original99-family obligations remain open;47in_progress/52open/0complete"
+  ],
+  "protected_local_wip": {
+    "tests/reference/continuous_bezier_exact_reference.py": "9636659391cc3c4a5fab17f42b7497da8dfb383818a12a78d4967c5552bb382b",
+    "tests/reference/ObserveContinuousPathBooleans.java": "b3b64e67e4ded1a660af59d86bb4a8943c4d44d32264e232ea16c53d02d29182",
+    "docs/packets/CG0-analytic-reference-contract.md": "3e7da966e20d14756ea417f6d31580753038380157b55d2c311d02fe5122749a",
+    "docs/packets/CG0-imagej-observer-contract.md": "eb3eaacda74033a1e71ba52e8aa36cb341d6459144d6a397df2b628044d727bf"
+  },
+  "new_dependencies": 0,
+  "landing": "Commit/remote identity recorded separately; no self-hash cycle",
+  "next_action": "Keep required full-platform CI obligations explicit; resume prepared CFG2 or another ready missing editor workflow without a generic infrastructure prerequisite"
+}

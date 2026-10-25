@@ -672,7 +672,7 @@ void records() {
     bad.push_back(replace_record(good,{group,"extra"},true));
   }
   const std::vector<std::pair<std::vector<std::string>,MetadataValue>> mutations{
-      {{"schema"},std::string("future")},{{"version"},true},{{"version"},1.0},{{"version"},2},
+      {{"schema"},std::string("future")},{{"version"},true},{{"version"},1.0},{{"version"},3},
       {{"scope"},std::string("all")},{{"unsigned16_bits"},true},{{"unsigned16_bits"},12.0},{{"unsigned16_bits"},13},
       {{"channels"},metadata_array({0,0})},{{"channels"},metadata_array({})},{{"channels"},metadata_array({0.0})},
       {{"channels"},std::vector<std::string>{"0"}},
@@ -731,6 +731,97 @@ void records() {
   }
   check(bad.size()>=100 && callbacks==0 && foreign.feed->reads==0 && foreign.feed->regions==0,
         "Deep original validation must not call destination providers or callbacks");
+
+  // P12m (5a508a1) adds the V2 region DTO without excluding legacy payloads.
+  // Its encoder still emits V1 for this mask; explicit V2 replay retains the
+  // supplied wire. Unsupported-version refusal above therefore uses V3.
+  const auto before=value.owner->snapshot();const auto history=value.owner->history();
+  const auto foreign_before=foreign.owner->snapshot();const auto foreign_history=foreign.owner->history();
+  const auto source_reads=value.feed->reads;value.feed->forbid=true;
+  check(std::get<std::int64_t>(good.at("version"))==1,
+        "Legacy Auto capture must keep its canonical V1 envelope");
+  auto legacy_v2=good;legacy_v2["version"]=std::int64_t(2);
+  validate_auto_contrast_command_record(legacy_v2);
+  const auto legacy_replay=auto_contrast_command_from_record(before,legacy_v2);
+  check(metadata_equal(legacy_replay.record(),legacy_v2) &&
+        legacy_replay.selection_provenance()==before.data().selection &&
+        !legacy_replay.requires_captured_state(),
+        "V2 must retain the supported legacy mask and exact supplied replay wire");
+  check(legacy_replay.resolved_range()==std::array<double,2>{18,19} &&
+        legacy_replay.applied_range()==std::array<double,2>{18,19} &&
+        legacy_replay.indices() && *legacy_replay.indices()==std::array<int,2>{18,19} &&
+        legacy_replay.candidate_range() && *legacy_replay.candidate_range()==std::array<double,2>{18,19},
+        "Legacy V2 replay must retain literal resolved/applied/candidate bounds and indices");
+  check(legacy_replay.outcome()==AutoContrastOutcome::HistogramBounds &&
+        legacy_replay.cycle().previous==0 && legacy_replay.cycle().used==5000 &&
+        legacy_replay.cycle().next==5000 && legacy_replay.channels()==std::vector<int>{0},
+        "Legacy V2 replay must retain literal outcome, cycle and target channel");
+  check(!legacy_replay.requires_captured_state() &&
+        legacy_replay.effect().action()==ChannelDisplayAction::Set && legacy_replay.effect().state() &&
+        legacy_replay.effect().state()->channels.size()==1 &&
+        legacy_replay.effect().state()->channels[0].range==std::array<double,2>{18,19},
+        "Legacy V2 replay must own the stored Set effect with replay source guards");
+
+  // Independent intrinsic storage: 104 set bits at origin(-2,0) cover the
+  // complete 100x1 source plus two off-image cells on each side. The literal
+  // base64 encodes 13 bytes of 0xff; there are no unused tail bits.
+  auto regional_v2=legacy_v2;
+  auto regional_roi=object(regional_v2.at("roi"));
+  const MetadataObject regional_wire{
+      {"kind",std::string("region")},{"points",metadata_array({})},{"width",1.},
+      {"attributes",metadata_object({{"retained",metadata_array({true,std::uint64_t(-1),std::string("exact")})}})},
+      {"shape",metadata_array({1,104})},{"mask",std::string("/////////////////w==")},
+      {"origin",metadata_array({-2,0})}};
+  regional_roi["selection"]=metadata_object(regional_wire);
+  regional_v2["roi"]=metadata_object(regional_roi);
+  validate_auto_contrast_command_record(regional_v2);
+  const auto regional_replay=auto_contrast_command_from_record(before,regional_v2);
+  const auto &provenance=regional_replay.selection_provenance();
+  check(provenance && provenance->is_region() && provenance->mask_width()==104 &&
+        provenance->mask_height()==1 && provenance->mask_origin()==std::array<int,2>{-2,0} &&
+        provenance->packed_mask()==std::vector<std::uint8_t>(13,0xff) &&
+        metadata_equal(provenance->attributes,selected.attributes) &&
+        metadata_equal(regional_replay.record(),regional_v2),
+        "V2 replay must preserve literal full regional storage and historical attributes");
+  check(regional_replay.resolved_range()==std::array<double,2>{18,19} &&
+        regional_replay.applied_range()==std::array<double,2>{18,19} &&
+        regional_replay.indices() && *regional_replay.indices()==std::array<int,2>{18,19} &&
+        regional_replay.candidate_range() && *regional_replay.candidate_range()==std::array<double,2>{18,19},
+        "Regional V2 replay must retain literal resolved/applied/candidate bounds and indices");
+  check(regional_replay.outcome()==AutoContrastOutcome::HistogramBounds &&
+        regional_replay.cycle().previous==0 && regional_replay.cycle().used==5000 &&
+        regional_replay.cycle().next==5000 && regional_replay.channels()==std::vector<int>{0},
+        "Regional V2 replay must retain literal outcome, cycle and target channel");
+  check(!regional_replay.requires_captured_state() &&
+        regional_replay.effect().action()==ChannelDisplayAction::Set && regional_replay.effect().state() &&
+        regional_replay.effect().state()->channels.size()==1 &&
+        regional_replay.effect().state()->channels[0].range==std::array<double,2>{18,19},
+        "Regional V2 replay must own the stored Set effect with replay source guards");
+
+  std::vector<MetadataObject> bad_regional;
+  bad_regional.push_back(replace_record(regional_v2,{"version"},std::int64_t(1)));
+  bad_regional.push_back(replace_record(regional_v2,{"roi","selection","origin"},{},true));
+  const std::vector<std::pair<std::string,MetadataValue>> regional_mutations{
+      {"origin",metadata_array({true,0})},{"origin",metadata_array({-2.0,0})},
+      {"origin",metadata_array({std::uint64_t(2147483648ULL),0})},
+      {"origin",metadata_array({1,0})}, // 99 visible members contradict captured100.
+      {"shape",metadata_array({1,103})}, // The unchanged packed tail is noncanonical.
+      {"points",metadata_array({metadata_array({-2.,0.})})},
+      {"attributes",true},{"extra",true},{"mask",std::string("?")},
+      {"mask",std::string("AAAAAAAAAAAAAAAAAA==")}}; // 13 zero bytes contradict counts.
+  for(const auto &mutation:regional_mutations)
+    bad_regional.push_back(replace_record(regional_v2,{"roi","selection",mutation.first},mutation.second));
+  for(const auto &record:bad_regional) {
+    const auto expected=invalid_message([&]{validate_auto_contrast_command_record(record);});
+    check(invalid_message([&]{auto_contrast_command_from_record(foreign_before,record);})==expected,
+          "Malformed V2 or downgraded region must refuse before foreign-source binding");
+    check(invalid_message([&]{rebind_auto_contrast_command(foreign_before,record,invalid,{},control);})==expected,
+          "Malformed V2 or downgraded region must refuse before replacement request/callbacks");
+  }
+  check(callbacks==0 && value.feed->reads==source_reads && value.feed->regions==0 &&
+        foreign.feed->reads==0 && foreign.feed->regions==0,
+        "V2 validation/replay/refusal must not acquire samples or dispatch callbacks");
+  unchanged(*value.owner,before,history);unchanged(*foreign.owner,foreign_before,foreign_history);
 }
 
 void binding() {

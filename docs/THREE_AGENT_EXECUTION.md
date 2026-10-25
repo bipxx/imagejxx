@@ -1,11 +1,14 @@
 # Three-agent execution plan
 
 **Current execution, 2026-10-25:** implementation has resumed with exactly
-three agents including root/C. The active packet is
-[MW1 manual-threshold workflow integration](packets/MW1-manual-threshold-workflow.md).
-A owns native behavior/codec, B the shared ImGui consumer, C independent
-expectations and the sole build/install lock. The scoped MW1 contract and receipt
-take precedence over historical pause/resume paragraphs in these documents.
+three agents including root/C. MW1 is landed at `1fe5204`; the active packet is
+[CI1 Auto/version and shadow observation recovery](packets/CI1-auto-version-shadow-observation.md).
+A owns the native Auto compatibility test, B the shared shadow observer,
+C independent expectations and the sole build/install lock. The scoped packet
+cards and receipts take precedence over historical pause/resume paragraphs.
+CI1 is locally scoped-qualified with landing pending; the next prepared editor
+packet is [CFG2 enlargement preferences](packets/CFG2-settings-selection-enlargement.md).
+Full Windows/macOS I/O/UI CI profiles remain a separate required open track.
 
 **Earlier planning amendment, 2026-10-25:** implementation was paused for review.
 The user-authorized Astra max plan review produced the
@@ -25,8 +28,9 @@ causal-failure loop. Its [current next-owner actions](packets/COMPILEXX_CROSS_PR
 add early intake/direct-SDK domain review, affected producer/fixture checks,
 composed-stage controls and peak capture admission. Apply them at the existing
 packet/run owners; do not start a separate infrastructure campaign. Exactly
-three roles remain in the execution plan. MW1 is locally scoped-qualified;
-finish landing before selecting the next ready missing user outcome.
+three roles remain in the execution plan. MW1 is locally scoped-qualified and
+pushed; its hosted CI is pending. Address CI1's retained failures before CFG2's
+prepared selection-enlargement consumer proof.
 
 Reviewed **2026-10-24**. Current scoped milestone: **CFG1**,
 [Wand settings-consumer qualification](parity/reviews/cfg1-settings-wand001/receipt.json).

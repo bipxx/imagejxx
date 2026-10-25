@@ -17,11 +17,15 @@ def check(report, case):
     assert all(f['events'] == f['rendered']['input_frame']['raw_inputs'] for f in report['frames'])
     assert all(c['control']['enabled'] and c['control']['id'] for c in report['controls'])
     before, after, final = report['before'], report['after'], report['final_demo']
+    assert before['selection'] is None
+    assert before['previous'] == {'kind': 'line', 'points': [[0, 0], [6, 4]], 'width': 1}
     assert before['undo'] == before['redo'] == 0 and len(before['workflow']) == 1
     for field in ['pixels', 'roi', 'attributes', 'undo', 'redo', 'workflow']:
         assert after[field] == before[field]
     if case == 'source':
         assert after['selection'] != before['selection'] and not after['shares_original']
+        assert after['selection'] == {'kind': 'point', 'points': [[1, 1]], 'width': 1}
+        assert after['previous'] is None
     else:
         assert after == before and after['shares_original']
     assert not final['active'] and not final['retained_preview']

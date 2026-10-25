@@ -1,6 +1,7 @@
 # MW1: manual-threshold workflow integration
 
-Scoped verification passed 2026-10-25; landing pending. No full acceptance claim. Baseline
+Scoped verification passed and landed 2026-10-25 at
+`1fe5204cccd1a1d5868454c334791715bf0b69d4`. No full acceptance claim. Baseline
 P13i/CFG1 are landed at `0323a73`/`6b6dfd1`. Full scope and all 99 family states
 remain unchanged. Exactly three agents: A native, B shared ImGui, root/C
 independent tests, registration, builds/install, retained evidence and landing.
@@ -174,8 +175,9 @@ The strict full-plan checker still reports the retired G016 checkpoint. No old
 fingerprint, expected value, assertion or failed case was removed to hide it.
 All99 family states remain47 in progress/52open/0complete.
 
-Current next action: land the scoped packet and choose the next ready missing
-user behavior from the delivery guide. Keep continuous-geometry research bounded
+Current next action: address the retained concrete CI failures in
+[CI1](CI1-auto-version-shadow-observation.md), then resume ready editor work
+from the delivery guide. Keep continuous-geometry research bounded
 and independent; its four candidate reference files remain local WIP.
 
 Final pre-landing generated storage is8,498,451,718 bytes, with91,482,874 bytes

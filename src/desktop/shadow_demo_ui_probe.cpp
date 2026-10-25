@@ -33,7 +33,7 @@ Json shadowDemoUiCase(Window &window,const std::string &id,const std::string &co
     const auto s=owner->snapshot();Json pixels=Json::array();const auto shape=s.data().dataset.shape();
     for(int z=0;z<shape.z;++z)pixels.push_back(s.data().dataset.plane({0,0,z})->pixels);
     return Json{{"pixels",pixels},{"selection",s.data().selection?selectionJson(*s.data().selection):Json()},
-        {"previous",selectionJson(*s.data().previous_selection)},{"roi",selectionJson(s.data().rois[0].selection)},
+        {"previous",s.data().previous_selection?selectionJson(*s.data().previous_selection):Json()},{"roi",selectionJson(s.data().rois[0].selection)},
         {"attributes",metadataJson(s.data().rois[0].attributes)},{"undo",owner->undo_steps()},{"redo",owner->redo_steps()},
         {"workflow",window.workflow},{"shares_original",s.shares_data(before)}};
   };

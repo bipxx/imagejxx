@@ -1,0 +1,71 @@
+{
+  "schema": "auto-contrast-v2-sentinel-migration.001",
+  "state": "source-complete-awaiting-requalification",
+  "original": {
+    "path": ".tmp\\manual-workflow-verification\\ci-recovery001\\original-test-auto-contrast.cpp",
+    "bytes": 70085,
+    "sha256": "f8d933880f638fdbfabc71d746648cb08c97fcb1e1228eff36e89f4f042ce80d"
+  },
+  "historical_adoption": "b4f2acd2999db66e",
+  "v2_introducing_commit": "5a508a178a6d422df0822b2dca4a2afceb49fa30",
+  "reason": "P12m added outer Auto version2 and retained legacy payload admission. The A18 version2 unsupported-version sentinel predates that additive codec. No product narrowing is authorized.",
+  "intended_diff": [
+    "Change only the existing unsupported-version mutation from2 to3.",
+    "Retain every other pre-existing assertion and the64 named scenario membership.",
+    "Add V2 legacy-mask validation and strict replay preserving original wire and no source reads.",
+    "Add valid regional V2 control, malformed regional V2 field/membership controls, and V1 regional downgrade refusal through original validation/replay/rebind."
+  ],
+  "executed_validation": "none; source-only migration awaiting root qualification",
+  "historical_expectations_or_fingerprints_changed": false,
+  "updated_test": {
+    "path": "tests\\native\\test_auto_contrast.cpp",
+    "bytes": 76819,
+    "sha256": "c0f842afb863adeba7554ba04601dd48371da592afc15e17264c15101f7b0606"
+  },
+  "actual_diff": {
+    "existing_expression": {
+      "from": "{{\"version\"},2}",
+      "to": "{{\"version\"},3}"
+    },
+    "added_checks": "V2 legacy mask strict validation/replay; literal104x1 full regional V2 at origin[-2,0];12 malformed regional/downgrade records validated before foreign binding/replacement callbacks; source/history/provider preservation",
+    "existing_assertions_removed": 0,
+    "named_scenarios_changed": false,
+    "product_files_changed": []
+  },
+  "original_preservation_verified": true,
+  "exact_diff": "--- a/tests/native/test_auto_contrast.cpp\n+++ b/tests/native/test_auto_contrast.cpp\n@@ -672,7 +672,7 @@\n     bad.push_back(replace_record(good,{group,\"extra\"},true));\n   }\n   const std::vector<std::pair<std::vector<std::string>,MetadataValue>> mutations{\n-      {{\"schema\"},std::string(\"future\")},{{\"version\"},true},{{\"version\"},1.0},{{\"version\"},2},\n+      {{\"schema\"},std::string(\"future\")},{{\"version\"},true},{{\"version\"},1.0},{{\"version\"},3},\n       {{\"scope\"},std::string(\"all\")},{{\"unsigned16_bits\"},true},{{\"unsigned16_bits\"},12.0},{{\"unsigned16_bits\"},13},\n       {{\"channels\"},metadata_array({0,0})},{{\"channels\"},metadata_array({})},{{\"channels\"},metadata_array({0.0})},\n       {{\"channels\"},std::vector<std::string>{\"0\"}},\n@@ -731,6 +731,97 @@\n   }\n   check(bad.size()>=100 && callbacks==0 && foreign.feed->reads==0 && foreign.feed->regions==0,\n         \"Deep original validation must not call destination providers or callbacks\");\n+\n+  // P12m (5a508a1) adds the V2 region DTO without excluding legacy payloads.\n+  // Its encoder still emits V1 for this mask; explicit V2 replay retains the\n+  // supplied wire. Unsupported-version refusal above therefore uses V3.\n+  const auto before=value.owner->snapshot();const auto history=value.owner->history();\n+  const auto foreign_before=foreign.owner->snapshot();const auto foreign_history=foreign.owner->history();\n+  const auto source_reads=value.feed->reads;value.feed->forbid=true;\n+  check(std::get<std::int64_t>(good.at(\"version\"))==1,\n+        \"Legacy Auto capture must keep its canonical V1 envelope\");\n+  auto legacy_v2=good;legacy_v2[\"version\"]=std::int64_t(2);\n+  validate_auto_contrast_command_record(legacy_v2);\n+  const auto legacy_replay=auto_contrast_command_from_record(before,legacy_v2);\n+  check(metadata_equal(legacy_replay.record(),legacy_v2) &&\n+        legacy_replay.selection_provenance()==before.data().selection &&\n+        !legacy_replay.requires_captured_state(),\n+        \"V2 must retain the supported legacy mask and exact supplied replay wire\");\n+  check(legacy_replay.resolved_range()==std::array<double,2>{18,19} &&\n+        legacy_replay.applied_range()==std::array<double,2>{18,19} &&\n+        legacy_replay.indices() && *legacy_replay.indices()==std::array<int,2>{18,19} &&\n+        legacy_replay.candidate_range() && *legacy_replay.candidate_range()==std::array<double,2>{18,19},\n+        \"Legacy V2 replay must retain literal resolved/applied/candidate bounds and indices\");\n+  check(legacy_replay.outcome()==AutoContrastOutcome::HistogramBounds &&\n+        legacy_replay.cycle().previous==0 && legacy_replay.cycle().used==5000 &&\n+        legacy_replay.cycle().next==5000 && legacy_replay.channels()==std::vector<int>{0},\n+        \"Legacy V2 replay must retain literal outcome, cycle and target channel\");\n+  check(!legacy_replay.requires_captured_state() &&\n+        legacy_replay.effect().action()==ChannelDisplayAction::Set && legacy_replay.effect().state() &&\n+        legacy_replay.effect().state()->channels.size()==1 &&\n+        legacy_replay.effect().state()->channels[0].range==std::array<double,2>{18,19},\n+        \"Legacy V2 replay must own the stored Set effect with replay source guards\");\n+\n+  // Independent intrinsic storage: 104 set bits at origin(-2,0) cover the\n+  // complete 100x1 source plus two off-image cells on each side. The literal\n+  // base64 encodes 13 bytes of 0xff; there are no unused tail bits.\n+  auto regional_v2=legacy_v2;\n+  auto regional_roi=object(regional_v2.at(\"roi\"));\n+  const MetadataObject regional_wire{\n+      {\"kind\",std::string(\"region\")},{\"points\",metadata_array({})},{\"width\",1.},\n+      {\"attributes\",metadata_object({{\"retained\",metadata_array({true,std::uint64_t(-1),std::string(\"exact\")})}})},\n+      {\"shape\",metadata_array({1,104})},{\"mask\",std::string(\"/////////////////w==\")},\n+      {\"origin\",metadata_array({-2,0})}};\n+  regional_roi[\"selection\"]=metadata_object(regional_wire);\n+  regional_v2[\"roi\"]=metadata_object(regional_roi);\n+  validate_auto_contrast_command_record(regional_v2);\n+  const auto regional_replay=auto_contrast_command_from_record(before,regional_v2);\n+  const auto &provenance=regional_replay.selection_provenance();\n+  check(provenance && provenance->is_region() && provenance->mask_width()==104 &&\n+        provenance->mask_height()==1 && provenance->mask_origin()==std::array<int,2>{-2,0} &&\n+        provenance->packed_mask()==std::vector<std::uint8_t>(13,0xff) &&\n+        metadata_equal(provenance->attributes,selected.attributes) &&\n+        metadata_equal(regional_replay.record(),regional_v2),\n+        \"V2 replay must preserve literal full regional storage and historical attributes\");\n+  check(regional_replay.resolved_range()==std::array<double,2>{18,19} &&\n+        regional_replay.applied_range()==std::array<double,2>{18,19} &&\n+        regional_replay.indices() && *regional_replay.indices()==std::array<int,2>{18,19} &&\n+        regional_replay.candidate_range() && *regional_replay.candidate_range()==std::array<double,2>{18,19},\n+        \"Regional V2 replay must retain literal resolved/applied/candidate bounds and indices\");\n+  check(regional_replay.outcome()==AutoContrastOutcome::HistogramBounds &&\n+        regional_replay.cycle().previous==0 && regional_replay.cycle().used==5000 &&\n+        regional_replay.cycle().next==5000 && regional_replay.channels()==std::vector<int>{0},\n+        \"Regional V2 replay must retain literal outcome, cycle and target channel\");\n+  check(!regional_replay.requires_captured_state() &&\n+        regional_replay.effect().action()==ChannelDisplayAction::Set && regional_replay.effect().state() &&\n+        regional_replay.effect().state()->channels.size()==1 &&\n+        regional_replay.effect().state()->channels[0].range==std::array<double,2>{18,19},\n+        \"Regional V2 replay must own the stored Set effect with replay source guards\");\n+\n+  std::vector<MetadataObject> bad_regional;\n+  bad_regional.push_back(replace_record(regional_v2,{\"version\"},std::int64_t(1)));\n+  bad_regional.push_back(replace_record(regional_v2,{\"roi\",\"selection\",\"origin\"},{},true));\n+  const std::vector<std::pair<std::string,MetadataValue>> regional_mutations{\n+      {\"origin\",metadata_array({true,0})},{\"origin\",metadata_array({-2.0,0})},\n+      {\"origin\",metadata_array({std::uint64_t(2147483648ULL),0})},\n+      {\"origin\",metadata_array({1,0})}, // 99 visible members contradict captured100.\n+      {\"shape\",metadata_array({1,103})}, // The unchanged packed tail is noncanonical.\n+      {\"points\",metadata_array({metadata_array({-2.,0.})})},\n+      {\"attributes\",true},{\"extra\",true},{\"mask\",std::string(\"?\")},\n+      {\"mask\",std::string(\"AAAAAAAAAAAAAAAAAA==\")}}; // 13 zero bytes contradict counts.\n+  for(const auto &mutation:regional_mutations)\n+    bad_regional.push_back(replace_record(regional_v2,{\"roi\",\"selection\",mutation.first},mutation.second));\n+  for(const auto &record:bad_regional) {\n+    const auto expected=invalid_message([&]{validate_auto_contrast_command_record(record);});\n+    check(invalid_message([&]{auto_contrast_command_from_record(foreign_before,record);})==expected,\n+          \"Malformed V2 or downgraded region must refuse before foreign-source binding\");\n+    check(invalid_message([&]{rebind_auto_contrast_command(foreign_before,record,invalid,{},control);})==expected,\n+          \"Malformed V2 or downgraded region must refuse before replacement request/callbacks\");\n+  }\n+  check(callbacks==0 && value.feed->reads==source_reads && value.feed->regions==0 &&\n+        foreign.feed->reads==0 && foreign.feed->regions==0,\n+        \"V2 validation/replay/refusal must not acquire samples or dispatch callbacks\");\n+  unchanged(*value.owner,before,history);unchanged(*foreign.owner,foreign_before,foreign_history);\n }\n \n void binding() {\n",
+  "static_checks": {
+    "original_sha256_verified": true,
+    "all_original_bytes_preserved_except_approved_sentinel": true,
+    "literal_base64_words_verified_with_stdlib": true,
+    "line_endings_preserved": "LF",
+    "product_execution_or_compilation": "not run"
+  },
+  "failure_addendum": {
+    "classification": "new-test expectation/helper mismatch; no product repair",
+    "run": "windows-build001",
+    "failure": "after1076 checks A18 Fresh Auto must own one captured-state Set effect",
+    "preimage": {
+      "path": ".tmp\\manual-workflow-verification\\ci-recovery001\\test-auto-contrast-replay-helper-preimage.cpp",
+      "bytes": 74753,
+      "sha256": "b943272be600373d397df114f36f05eea1f9480fa1d8a10b70dcfd1882e06574"
+    },
+    "native_log": {
+      "path": ".tmp\\manual-workflow-verification\\ci-recovery001\\windows-build001\\native.log",
+      "bytes": 10227,
+      "sha256": "887fa01348ee4694afaca1547aebf5f29e24cf0bc907e58aae0992a0625b4407"
+    },
+    "native_report": {
+      "path": ".tmp\\manual-workflow-verification\\ci-recovery001\\windows-build001\\native.xml",
+      "bytes": 5126,
+      "sha256": "837d2734032a4ce85dd978c4b032cf0f37f61ad0707de005cbedeff9dbbb520b"
+    },
+    "source_manifest": {
+      "path": ".tmp\\manual-workflow-verification\\ci-recovery001\\windows-build001\\source-manifest.json",
+      "bytes": 82211,
+      "sha256": "0e4201279a288cc5a96f1cbf2d035d433a70b8fce2362ec55d12530cd9c8eec7"
+    },
+    "correction": "Replace only the two newly added strict-replay calls to the historical fresh-command range helper with literal replay-specific range/indices/candidate/outcome/cycle/channel/Set effect assertions. Historical helper and all historical assertions remain unchanged.",
+    "executed_after_correction": "none"
+  }
+}
