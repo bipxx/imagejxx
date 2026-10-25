@@ -71,6 +71,67 @@ explicit relinking before a full local CTest. Rejected Windows cleanup targets
 remain untouched; the application census did not provide complete OS-service
 process visibility. No full-family or release acceptance follows from cleanup.
 
+## Hosted authentication successor under local verification
+
+The next source packet wraps the existing Windows/Linux pip recipe in
+`scripts/ci_history_build.py`. It freezes the tracked production/configuration,
+vendor/license, example and required history sources before the owned command;
+README is included because wheel METADATA consumes it. It rejects dry-run/help,
+alternate targets and backend settings that bypass the declared build. A real
+terminal owned build/install and unchanged source closure are required before
+it can publish a passed receipt.
+
+Raw linker outputs remain separate from the final installed outputs. The
+existing pinned backend strips Release installs, so their bytes may differ.
+Original RECORD hashes/sizes and noneditable local-source metadata identify the
+actual final pip outputs. Their relation to raw cache products is an authenticated
+pipeline association, not a bytewise strip-derivation proof. Stripping and
+original capture comparisons remain unchanged. Producer and consumer reuse one
+strict receipt validator at the serialized boundary.
+
+`ci_python_suite.py --history-suite` reuses installed smoke, the original
+`--kind history` paired capture and the unchanged eight literal reader IDs.
+It is an independent bounded packet, not complete-suite acceptance. The full
+runner's `--history-output` intake rechecks that packet and supplies the original
+reader environment, avoiding another UI capture. All full-suite IDs and the
+six-original readiness gate remain required. Source-platform SDK checks stay
+before the new bounded history stage. Linux still refuses its missing original
+inputs before product preparation; that genuine blocker is not bypassed.
+
+Capture/reader starts are recorded before launch. Every started owner must have
+a durable resolved receipt before archival; missing or unresolved readers keep
+raw evidence and withhold the archive. Failed controllers and the initial
+receipt-shape failure are retained locally. Final affected controls now cover
+170 methods per host: Windows has five explicit host skips and Linux one.
+The [source-control index](../parity/reviews/g010-history-reconnection001/hosted-auth-progress.json)
+pins the receipts and all 17 declared controller inputs, whose bytes match on
+both hosts. The shared validator also rejects a role-only source subset,
+no-build argv, wrong cache configuration and changed packaging metadata. One
+corrupt-RECORD failure exposed parsing before pin verification; the fix checks
+original pins first. The old failure and byte-exact source predecessor remain.
+These controls are synthetic contract proof, not actual hosted product builds.
+
+Darwin's existing pip path remains in place. The new authenticated wrapper
+explicitly refuses Darwin because native Ninja can create unregistered process
+groups outside the current cooperative broker. The required follow-up is a
+Mac-native normal/failure/timeout/owner-death containment control with an
+unrelated process intact; no new success or full-family closure is claimed.
+
+The published `c6ab2a5` run `40239829364` is now terminal failure. All three
+headless/core-SDK jobs and all three source producers passed. Both Windows
+consumers exposed C1128, and all four Mac consumers reached the same observer
+header failure; their original logs are retained. The run separately exposed Windows C1128 in
+`window.cpp` and unavailable floating conversion in three SDK observation
+headers. The source-only Windows repair adds `/bigobj` only to that MSVC
+translation unit. The independent example transport formatter remains required:
+`rank_observations.hpp`, `saved_roi_geometry_observations.hpp` and
+`shortcut_observations.hpp` reach two repository tests and four SDK executables.
+Do not use the processing formatter as their oracle or lower the macOS11
+target. First qualify a finite, standard-library transport candidate against
+frozen general17 literals, std differential cases, locale, capacity and all
+rounding modes, preserving ambient state and original suffix/exception rules.
+Complete this compilation closure before another coherent hosted push.
+
 ## Existing behavior and missing integration
 
 `src/desktop/history_settings_ui_probe.cpp` already drives Preferences,

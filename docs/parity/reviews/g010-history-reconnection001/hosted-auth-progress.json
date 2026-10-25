@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "state": "source_controls_verified_hosted_product_acceptance_open",
+  "acceptance_claim": false,
+  "base_commit": "c6ab2a51d65293bc299804d49560063ecf980d0b",
+  "source_dirty": true,
+  "scope": "authenticated Windows/Linux hosted-history source and affected controller contracts only; no new product build or installed-history observation",
+  "declared_controller_inputs": {
+    "scripts/ci_history_build.py": "7590d1a73c122fae47952deee86c5be3c75b7aa35600d271f2501c34ea166bdc",
+    "scripts/ci_python_suite.py": "5909c360961fca62f391191702e07666e40f68e15273dd5c985e3b8f92f7bfbb",
+    "scripts/ci_observations.py": "460f622a49f411fa0042b9953e70c465b5d44bc0c10701e2f6be52d4fe756471",
+    "scripts/ci_current_observations.py": "4201a81c5e795bfbe71f546266ffd87c4e9655c7362fc480469be4f72aee1c3b",
+    "scripts/ci_owned_process.py": "39ef83863d4cc672c044c314cd98a141590e4165cbd73605ac34b353d000f8d7",
+    "scripts/ci_mac_process.py": "7a9b103375cf11a1687c5db0fc91c50293012e1232b61aaad3f936175eca5c5d",
+    "scripts/capture_shortcuts_history_ui.py": "ee65888d3cb3389a60038961f21361102646c0af78cbcc54fee0b833afc3da6e",
+    "CMakeLists.txt": "ad68eb62b7dcbe90d724c679fa79c2598561ffb08ea1aeea3910cadfe72e1569",
+    ".github/workflows/test.yml": "adc1dcfd613ad3e92d070bd078e171a84e93700764c2759c16887d2d36ccd9f8",
+    ".github/workflows/source-platform.yml": "73ebce4140e8356ccc3c0985f15f38640ee2ff29b5fbc06200928c8fdd3711b8",
+    "tests/tools/test_ci_history_build.py": "8838edd6e01b542b98a84a4ab5b78cd280e4de9576be10d604b28bb22fe98fcc",
+    "tests/tools/test_ci_history_integration.py": "9afb2b9c28c8e5c43e6fa7c192fe9bc31b403a7c427319f3e734701101116b12",
+    "tests/tools/test_ci_platform_workflow.py": "ae76d046cf1586bd96cdc7c1a46adf726597d219c057f7f53bbd6ac43d6af73b",
+    "tests/tools/test_ci_python_suite.py": "0228235f19de27b598a0a8b77af24f69bb6b10ba988539353258cf0ed7be717a",
+    "tests/tools/test_ci_python_suite_transport.py": "03610ea629a87799acd53daa7c59aaa4548c041d1c92fb935ebb43d85c315254",
+    "tests/tools/test_ci_reference_readiness.py": "25dbbbe00b30052b10abc47fd9d4fd193f0241836ffbeeae4287e887921f9d3e",
+    "tests/tools/test_floating_charconv_cmake.py": "ba815f91de33cfcef66830a7da740f9dc516944fd2e74c25a657b91d4dd14479"
+  },
+  "controls": {
+    "methods_per_host": 170,
+    "programs": {
+      "test_ci_history_build.py": 47,
+      "test_ci_history_integration.py": 35,
+      "test_ci_platform_workflow.py": 5,
+      "test_ci_python_suite.py": 44,
+      "test_ci_python_suite_transport.py": 17,
+      "test_ci_reference_readiness.py": 19,
+      "test_floating_charconv_cmake.py": 3
+    },
+    "windows_receipts": [
+      {
+        "path": ".tmp/manual-workflow-verification/history-auth-final-windows002/receipt.json",
+        "bytes": 7144,
+        "sha256": "939b9077b0d6be977c9ca53b1830114424288e8a8b3bf806a19fffb949a053fa"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/history-auth-final-windows003/receipt.json",
+        "bytes": 15226,
+        "sha256": "945c0def314243df51011d7e6a9dbd36bd6796a7b0ffa0a6ac68e783b2234cd5"
+      }
+    ],
+    "linux_original_receipt_copy": {
+      "path": ".tmp/manual-workflow-verification/history-auth-final-linux001-receipt.json",
+      "bytes": 18247,
+      "sha256": "e838c45500c6f940234a490804c0c72b13d5bf1d0af60b4b8c6da142b39bf59e"
+    },
+    "windows_explicit_host_skips": 5,
+    "linux_explicit_host_skips": 1,
+    "cross_host_declared_source_bytes_equal": true
+  },
+  "build_products": "actual authenticated pip build/install required; final RECORD outputs distinguished from raw cache, no bytewise strip derivation claim",
+  "failures_preserved": [
+    "history-auth-integration-windows001: unavailable-archive field shape",
+    "history-auth-integration-linux001: existing transport could not start under system Python without pytest; corrected to existing dependency interpreter",
+    "history-auth-final-windows001: corrupted original RECORD parsed before its original pin check"
+  ],
+  "hosted_predecessor": {
+    "run_id": 40239829364,
+    "head": "c6ab2a51d65293bc299804d49560063ecf980d0b",
+    "state": "terminal_failure",
+    "headless_core_sdk_jobs_passed": 3,
+    "source_prefix_producers_passed": 3,
+    "windows_consumers": "C1128 window.cpp; source-only /bigobj fix held",
+    "mac_consumers": "unavailable std::to_chars in example rank observation header; all four original logs retained",
+    "linux_consumers": "original reference readiness failure, not replaced or skipped",
+    "terminal_snapshot": {
+      "path": ".tmp/manual-workflow-verification/ci2/history-successor-hosted-terminal001.json",
+      "bytes": 41672,
+      "sha256": "0e01bb458245731371572cce505f2ea5f8721bf9f9b34af185592efc4fca4cd2"
+    }
+  },
+  "remaining": [
+    "independent general17 SDK observation formatter across three headers/six compilation targets, with original semantics and frozen witness",
+    "Mac native Ninja normal/failure/timeout/owner-death process ownership qualification",
+    "actual hosted authenticated build+paired capture+unchanged reader execution",
+    "original reference recovery, full G010 and all99family/platform/scientific/accessibility/release requirements"
+  ],
+  "availability": "local control receipts retained; not distributed raw artifacts; CG0 unchanged and unstaged",
+  "storage": {
+    "known_bytes": 8548343253,
+    "headroom_upper_bound_bytes": 41591339,
+    "budget_verified": false,
+    "unknown_subtrees": [
+      ".cache/pytest",
+      ".cache/pytest-ui"
+    ],
+    "inventory": {
+      "path": ".tmp/manual-workflow-verification/history-auth-storage-final001.json",
+      "bytes": 1464,
+      "sha256": "84f9bcd04d10579e6ba236d5011ec4a82d63a6da70a149d706638ef4934e0d76"
+    },
+    "artifacts": "same compiler caches/runtimes unchanged; small controller receipts/logs and bounded source preimages only; no new product binary/SDK/environment"
+  }
+}

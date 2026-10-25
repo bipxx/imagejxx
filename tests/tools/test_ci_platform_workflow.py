@@ -17,9 +17,13 @@ def install_command(platform):
     section = text.split("      - name: Install " + platform + " IO and both desktop hosts\n", 1)[1]
     section = section.split("\n      - name:", 1)[0]
     if "run: >-" in section:
-        return " ".join(section.split("run: >-", 1)[1].split())
-    return next(line.strip().removeprefix("run: ") for line in section.splitlines()
-                if "python -m pip install '.[io,test]'" in line)
+        command = " ".join(section.split("run: >-", 1)[1].split())
+    else:
+        command = next(line.strip().removeprefix("run: ") for line in section.splitlines()
+                       if "python -m pip install '.[io,test]'" in line)
+    # These controls exercise the actual unchanged pip argv after its owner
+    # wrapper. Wrapper execution/source authentication has separate controls.
+    return command.partition(" -- ")[2] if " -- " in command else command
 
 
 def install_settings(platform):
@@ -41,6 +45,21 @@ def install_settings(platform):
 
 
 class PlatformInstallArguments(unittest.TestCase):
+    def test_authenticated_history_is_required_without_replacing_complete_readers(self):
+        root_workflow = (ROOT / ".github/workflows/test.yml").read_text(encoding="utf-8")
+        source_workflow = (ROOT / ".github/workflows/source-platform.yml").read_text(encoding="utf-8")
+        wrapper = "python -I -B scripts/ci_history_build.py --output build/ci-history-build -- python -m pip install"
+        self.assertIn(wrapper, root_workflow)
+        self.assertEqual(source_workflow.count(wrapper), 1)
+        for workflow in (root_workflow, source_workflow):
+            self.assertIn("--history-suite --output build/ci-history --history-build-receipt build/ci-history-build/receipt.json", workflow)
+            self.assertIn("--output build/ci-python --history-output build/ci-history", workflow)
+            self.assertIn("build/ci-history/capture.zip", workflow)
+            self.assertLess(workflow.index("--history-suite"), workflow.index("--output build/ci-python"))
+        mac_section = source_workflow.split("      - name: Install macOS IO and both desktop hosts\n", 1)[1].split("\n      - name:", 1)[0]
+        self.assertNotIn("ci_history_build.py", mac_section)
+        self.assertIn("python -m pip install", mac_section)
+
     def test_both_isolated_builds_select_the_declared_cmake_series(self):
         for platform in ("Windows", "macOS"):
             with self.subTest(platform=platform):

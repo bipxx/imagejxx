@@ -1744,6 +1744,9 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
   if(MSVC)
     target_compile_definitions(imagejxx_desktop PRIVATE _CRT_SECURE_NO_WARNINGS)
     target_compile_options(imagejxx_desktop PRIVATE /W4 /permissive- /utf-8)
+    # The full Ninja source profile exceeds COFF's ordinary section limit in
+    # this translation unit (C1128). Preserve optimization and FP policies.
+    set_property(SOURCE src/desktop/window.cpp APPEND PROPERTY COMPILE_OPTIONS /bigobj)
     if(TARGET imagejxx_app)
       target_compile_options(imagejxx_app PRIVATE /W4 /permissive- /utf-8)
     endif()

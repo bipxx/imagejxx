@@ -946,7 +946,209 @@ def reference_readiness(root, environment):
             "acceptance_claim": False, "inputs": rows}
 
 
-def run(output: Path, root: Path):
+HISTORY_IDS = tuple(
+    "tests/python/test_history_settings_ui.py::test_installed_history_settings[" + case + "-" + context + "]"
+    for case in ("HU01", "HU02", "HU03", "HU04") for context in ("imgui_cpp", "imgui_python"))
+
+
+def history_helper():
+    spec = importlib.util.spec_from_file_location(
+        "ci_installed_history_capture", Path(__file__).with_name("capture_shortcuts_history_ui.py"))
+    helper = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(helper)
+    return helper
+
+
+def history_builder():
+    spec = importlib.util.spec_from_file_location(
+        "ci_authenticated_history_build", Path(__file__).with_name("ci_history_build.py"))
+    builder = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(builder)
+    return builder
+
+
+def history_build_inputs(path, root):
+    """Reapply the producer's strict contract at the serialized receipt boundary."""
+    return history_builder().verify_receipt(path, root)
+
+
+def history_bindings(build_receipt, application, package, root):
+    """Join real installed objects to the existing strict capture contract."""
+    helper = history_helper()
+    build = history_build_inputs(build_receipt, root)
+    modules = {}
+    for name in helper.MODULES:
+        module = importlib.import_module(name)
+        actual = helper.pin(Path(module.__file__).resolve(strict=True))
+        if not Path(actual["path"]).is_relative_to(package):
+            raise ValueError("History imported a module outside the installed package: " + name)
+        modules[name] = actual
+    cpp = helper.pin(application)
+    for installed, compiled in ((cpp, build["built_products"]["cpp"]),
+                               (modules["imagejxx._native"], build["built_products"]["_native"]),
+                               (modules["imagejxx._desktop"], build["built_products"]["_desktop"])):
+        if any(installed[key] != compiled[key] for key in ("bytes", "sha256")):
+            raise ValueError("History installed product differs from the authenticated build")
+    numpy = importlib.import_module("numpy")
+    if numpy.__version__ != "2.2.6":
+        raise ValueError("History requires the existing pinned NumPy runtime")
+    numpy_module = helper.pin(Path(numpy.__file__).resolve(strict=True))
+    engine = helper.pin(helper.engine(portable=True))
+    return {"schema_version": 1, "kind": "p06h.installed-ui-capture-bindings.001", "kind_selection": "history",
+            "build_receipt": helper.pin(build_receipt), "source_freeze": build["source_freeze"],
+            "built_products": build["built_products"], "installed_modules": modules, "python_engine": engine,
+            "products": {"imgui_cpp": {role: cpp for role in helper.RUNTIME_ROLES},
+                         "imgui_python": {"executable": engine, "producer_artifact": modules["imagejxx._desktop"],
+                                          "native_artifact": modules["imagejxx._desktop"]}},
+            "numpy": {"version": numpy.__version__, "site_packages": str(Path(numpy_module["path"]).parent.parent),
+                      "module": numpy_module}}
+
+
+def validate_history_output(output, root, application, modules):
+    """Admit the completed current packet without replaying its UI producers."""
+    helper = history_helper()
+    output = Path(output).resolve(strict=True)
+    row = helper.read_json(output / "receipt.json")
+    if row.get("schema") != "imagejxx.history-suite.001" or row.get("state") != "passed":
+        raise ValueError("Required installed history packet has not passed")
+    bindings = helper.read_json(Path(helper.verify(row["product_bindings"])["path"]))
+    build = history_build_inputs(Path(helper.verify(bindings["build_receipt"])["path"]), root)
+    if bindings["source_freeze"] != build["source_freeze"] or bindings["built_products"] != build["built_products"]:
+        raise ValueError("History bindings differ from the original build")
+    for value in bindings["installed_modules"].values():
+        helper.verify(value)
+    if (bindings["products"]["imgui_cpp"]["executable"] != helper.pin(application)
+            or not {"imagejxx._native", "imagejxx._desktop"} <= set(modules)
+            or any(any(bindings["installed_modules"][name][key] != modules[name][key]
+                       for key in ("path", "bytes", "sha256"))
+                   for name in modules if name in bindings["installed_modules"])):
+        raise ValueError("History packet belongs to different installed products")
+    capture_path = Path(helper.verify(row["capture"])["path"])
+    if capture_path != output / "capture/capture.json":
+        raise ValueError("History capture is outside its owning packet")
+    capture_row = helper.read_json(capture_path)
+    expected = [(case, context) for case in ("HU01", "HU02", "HU03", "HU04")
+                for context in ("imgui_cpp", "imgui_python")]
+    if (capture_row.get("state") != "passed"
+            or [(case["id"], case["context"]) for case in capture_row["cases"]] != expected
+            or capture_row["inputs"]["product_bindings"] != row["product_bindings"]):
+        raise ValueError("History capture lacks the original complete paired membership")
+    for case in capture_row["cases"]:
+        helper.verify(case["raw"])
+        if case["context"] == "imgui_python":
+            helper.verify(case["launcher_origin"])
+    for process in capture_row["processes"]:
+        proof = helper.read_json(Path(helper.verify(process["owned_process_receipt"])["path"]))
+        if (proof.get("schema") != "imagejxx.owned-command.001" or proof.get("state") != "exited"
+                or proof.get("exit_code") != 0 or proof.get("target_completed") is not True
+                or proof.get("cleanup_complete") is not True):
+            raise ValueError("History producer ownership is unresolved")
+    if len(capture_row["processes"]) != 8:
+        raise ValueError("History requires eight resolved producers")
+    helper.verify(row["provenance"])
+    cases = ET.parse(helper.verify(row["reader_junit"])["path"]).getroot().findall(".//testcase")
+    if ([(c.get("classname"), c.get("name")) for c in cases] != [junit_identity(n) for n in HISTORY_IDS]
+            or any(c.find(tag) is not None for c in cases for tag in ("failure", "error", "skipped"))):
+        raise ValueError("History requires the unchanged eight passing reader identities")
+    for name in ("capture_process", "reader_process"):
+        proof = helper.read_json(Path(helper.verify(row[name])["path"]))
+        if (proof.get("schema") != "imagejxx.owned-command.001" or proof.get("state") != "exited"
+                or proof.get("exit_code") != 0 or proof.get("target_completed") is not True
+                or proof.get("cleanup_complete") is not True):
+            raise ValueError("History packet process ownership is unresolved")
+    return {"IMAGEJXX_HISTORY_SETTINGS_UI_CASE_ROOT": str(output / "capture")}
+
+
+def run_history_suite(output, root, build_receipt):
+    """Independent bounded packet; it cannot pass or replace the full suite."""
+    root, output = Path(root).resolve(strict=True), Path(output).resolve()
+    if output.exists() or not output.is_relative_to(root) or output == root:
+        raise ValueError("History suite needs a fresh owned repository output")
+    output.mkdir(parents=True)
+    row = {"schema": "imagejxx.history-suite.001", "state": "running", "acceptance_claim": False,
+           "started_stages": [],
+           "scope": "original eight paired history UI observations only; full platform/scientific/SDK gates remain required"}
+    helper = history_helper()
+    def save():
+        (output / "receipt.json").write_text(json.dumps(row, indent=2) + "\n", encoding="utf-8")
+    save()
+    try:
+        if sys.flags.optimize or any(os.environ.get(n) for n in ("PYTHONOPTIMIZE", "PYTEST_ADDOPTS", "PYTEST_PLUGINS")):
+            raise ValueError("History suite requires the original assertion and pytest profile")
+        distribution = importlib.metadata.distribution("imagejxx")
+        package = Path(distribution.locate_file("imagejxx")).resolve(strict=True)
+        application = installed_application(distribution)
+        bindings = history_bindings(build_receipt, application, package, root)
+        bindings_path = output / "product-bindings.json"
+        helper.write(bindings_path, bindings)
+        row["product_bindings"] = helper.pin(bindings_path)
+        environment = os.environ.copy()
+        environment.update(IMAGEJXX_RENDER_TESTS="1", IMAGEJXX_REQUIRE_RENDER_TESTS="1",
+                           PYTHONDONTWRITEBYTECODE="1", PYTEST_DISABLE_PLUGIN_AUTOLOAD="1")
+        for name in ("IMAGEJXX_MAC_BROKER_SOCKET", "IMAGEJXX_MAC_BROKER_TOKEN", "IMAGEJXX_REQUIRE_MAC_PROCESS_OWNER"):
+            environment.pop(name, None)
+        environment.pop("IMAGEJXX_HISTORY_SETTINGS_UI_CASE_ROOT", None)
+        row["installed_smoke"] = installed_smoke(output / "installed-smoke", root, environment)
+        command = output / "capture-owner"
+        command.mkdir()
+        argv = [sys.executable, "-I", "-X", "utf8", "-B", str(root / "scripts/capture_shortcuts_history_ui.py"),
+                "--kind", "history", "--output", str(output / "capture"), "--cpp-prefix", str(application.parent.parent),
+                "--python-site-packages", str(package.parent), "--numpy-site-packages", bindings["numpy"]["site_packages"],
+                "--build-receipt", str(build_receipt), "--source-freeze", bindings["source_freeze"]["path"],
+                "--product-bindings", str(bindings_path)]
+        row["started_stages"].append("capture-owner")
+        save()
+        proof = complete_command(argv, output=command, root=root, environment=environment, timeout=90)
+        row["capture_process"] = pin(command / "process.json")
+        if proof["exit_code"] != 0 or not proof["target_completed"] or not proof["cleanup_complete"]:
+            raise ValueError("Installed paired history capture failed")
+        row["capture"] = pin(output / "capture/capture.json")
+        row["provenance"] = pin(output / "capture/provenance.json")
+        environment["IMAGEJXX_HISTORY_SETTINGS_UI_CASE_ROOT"] = str(output / "capture")
+        command = output / "reader"
+        command.mkdir()
+        argv = [sys.executable, "-I", "-X", "utf8", "-B", "-m", "pytest", *HISTORY_IDS,
+                "--tb=short", "-p", "no:cacheprovider", "--basetemp", str(command / "pytest-temp"),
+                "--junitxml", str(command / "pytest.xml")]
+        row["started_stages"].append("reader")
+        save()
+        proof = complete_command(argv, output=command, root=root, environment=environment, timeout=120)
+        row["reader_process"] = pin(command / "process.json")
+        row["reader_junit"] = pin(command / "pytest.xml")
+        if proof["exit_code"] != 0 or not proof["target_completed"] or not proof["cleanup_complete"]:
+            raise ValueError("Original history reader failed")
+        row["state"] = "passed"
+        save()
+        validate_history_output(output, root, application, bindings["installed_modules"])
+    except BaseException as error:
+        row.update(state="failed", error={"type": type(error).__name__, "message": str(error)})
+        raise
+    finally:
+        pending_error = sys.exc_info()[1]
+        save()
+        capture_root = output / "capture"
+        if capture_root.exists():
+            try:
+                proofs = [helper.read_json(output / name / "process.json") for name in row["started_stages"]]
+                captures = helper.read_json(capture_root / "capture.json")
+                if (proofs and all(p.get("schema") == "imagejxx.owned-command.001"
+                                   and p.get("state") not in {"starting", "running"}
+                                   and p.get("cleanup_complete") is True for p in proofs) and all(
+                        helper.read_json(Path(helper.verify(p["owned_process_receipt"])["path"])).get("cleanup_complete") is True
+                        for p in captures["processes"])):
+                    row["capture_archive"] = archive(capture_root)
+                    save()
+                else:
+                    row["capture_archive_unavailable"] = "capture/reader ownership unresolved"
+                    save()
+            except BaseException as error:
+                row.update(state="failed", retention_error={"type": type(error).__name__, "message": str(error)})
+                save()
+                if pending_error is None:
+                    raise
+
+
+def run(output: Path, root: Path, *, history_output=None):
     output = output.resolve()
     if output.exists():
         raise ValueError(f"Use a fresh Python CI output directory: {output}")
@@ -1017,6 +1219,11 @@ def run(output: Path, root: Path):
             environment["IMAGEJXX_REVIEWED_WINDOWS_TIFF_PREFIX"] = str(root / "tests/fixtures/windows-tiff-runtime-reviewed")
         receipt["installed_smoke"] = installed_smoke(output / "installed-smoke", root, environment)
         save()
+        if history_output is not None:
+            environment.update(validate_history_output(history_output, root, application, receipt["modules"]))
+            receipt["history_packet"] = pin(Path(history_output) / "receipt.json")
+        else:
+            receipt["history_packet"] = {"state": "unavailable", "reason": "authentic paired history packet not supplied; original readers remain required"}
         environment.update(capture_current_observations(output / "current-observations", application, root, environment))
         receipt["current_observations"] = pin(output / "current-observations/receipt.json")
         save()
@@ -1170,13 +1377,24 @@ def main():
     selected.add_argument("--routed-complete-pytest-child", type=Path, help=argparse.SUPPRESS)
     selected.add_argument("--headless-pytest-child", type=Path, help=argparse.SUPPRESS)
     selected.add_argument("--headless-suite", action="store_true")
+    selected.add_argument("--history-suite", action="store_true",
+                          help="Qualify only the original paired history UI packet, independently of full-suite reference readiness")
     selected.add_argument("--reference-readiness-only", action="store_true",
                           help="Check original reference availability before building; this is not acceptance")
     parser.add_argument("--headless-test-id", help=argparse.SUPPRESS)
     parser.add_argument("--headless-dependency-site", type=Path, help=argparse.SUPPRESS)
     parser.add_argument("--headless-install-manifest", type=Path, help=argparse.SUPPRESS)
     parser.add_argument("--repository", type=Path, help=argparse.SUPPRESS)
+    parser.add_argument("--history-build-receipt", type=Path)
+    parser.add_argument("--history-output", type=Path)
     args = parser.parse_args()
+    if args.history_suite:
+        if args.output is None or args.history_build_receipt is None or args.history_output is not None:
+            parser.error("History suite requires fresh --output and --history-build-receipt")
+        run_history_suite(args.output, args.repository or Path(__file__).resolve().parents[1], args.history_build_receipt)
+        return
+    if args.history_build_receipt is not None:
+        parser.error("Build receipts are consumed only by --history-suite")
     if args.headless_pytest_child:
         if args.output or args.repository is None or args.headless_test_id is None:
             parser.error("Headless child requires only its directory, repository and literal ID")
@@ -1229,7 +1447,7 @@ def main():
     else:
         if args.output is None:
             parser.error("--output is required for the complete installed profile")
-        run(args.output, Path(__file__).resolve().parents[1])
+        run(args.output, Path(__file__).resolve().parents[1], history_output=args.history_output)
 
 
 if __name__ == "__main__":

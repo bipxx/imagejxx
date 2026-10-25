@@ -33,6 +33,8 @@ jobs:
           python -I -B tests/tools/test_ci_platform_runtime.py
           python -I -B tests/tools/test_ci_png_binding.py
           python -I -B tests/tools/test_ci_platform_workflow.py
+          python -I -B tests/tools/test_ci_history_build.py
+          python -I -B tests/tools/test_ci_history_integration.py
           python -I -B tests/tools/test_floating_charconv_cmake.py
           python -I -B tests/tools/test_ci_python_diagnostics.py
           python -I -B tests/tools/test_ci_owned_process.py
@@ -118,7 +120,7 @@ jobs:
           sudo apt-get install -y ninja-build libgl1-mesa-dev libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev xvfb xauth
       - name: Build and install Python IO and both desktop hosts
         run: >-
-          python -m pip install '.[io,test]'
+          python -I -B scripts/ci_history_build.py --output build/ci-history-build -- python -m pip install '.[io,test]'
           -Ccmake.define.IMAGEJXX_BUILD_IO=ON
           -Ccmake.define.IMAGEJXX_BUILD_CPP_UI=ON
           -Ccmake.define.IMAGEJXX_BUILD_PYTHON_UI=ON
@@ -130,18 +132,32 @@ jobs:
         run: python scripts/check_licenses.py --installed --extras io,test --desktop
       - name: Run pipeline example
         run: python examples/pipeline.py
+      - name: Qualify authenticated paired history UI under software OpenGL
+        run: xvfb-run -a python -I -B scripts/ci_python_suite.py --history-suite --output build/ci-history --history-build-receipt build/ci-history-build/receipt.json
       - name: Test the complete installed Python suite under software OpenGL
         # This tool test invokes pytest against a synthetic project, without GL.
         # Product/render qualification still runs through the installed runner.
         run: |
           python -I -X utf8 -B tests/tools/test_ci_python_suite_transport.py
-          xvfb-run -a python scripts/ci_python_suite.py --output build/ci-python
+          xvfb-run -a python scripts/ci_python_suite.py --output build/ci-python --history-output build/ci-history
       - name: Retain complete Python results and fixture-contract inventory
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: linux-python-${{ matrix.python }}
           path: |
+            build/ci-history-build/*.json
+            build/ci-history-build/*.log
+            build/ci-history/receipt.json
+            build/ci-history/product-bindings.json
+            build/ci-history/capture.zip
+            build/ci-history/installed-smoke/*.json
+            build/ci-history/installed-smoke/*.xml
+            build/ci-history/installed-smoke/*.log
+            build/ci-history/capture-owner/*
+            build/ci-history/reader/*.json
+            build/ci-history/reader/*.xml
+            build/ci-history/reader/*.log
             build/ci-reference-readiness/reference-readiness.json
             build/ci-python/receipt.json
             build/ci-python/pytest.xml

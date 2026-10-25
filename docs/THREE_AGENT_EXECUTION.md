@@ -1,5 +1,30 @@
 # Three-agent execution plan
 
+**Current source checkpoint, 2026-10-25:** published CI2 `c6ab2a5` run
+`40239829364` is terminal failure. All three headless/core-SDK jobs and all three
+source producers passed; Windows needs source-only `/bigobj` on `window.cpp`,
+Mac needs an independent general17 transport in three SDK observation headers,
+and Linux still refuses its original missing references. Original logs and
+run identities remain unchanged. No status-only successor was dispatched.
+
+Root plus A/B implemented the Windows/Linux hosted history authentication
+successor locally: genuine before-build freeze/owned pip receipt, distinct raw
+cache and final RECORD outputs, shared strict receipt validation, original paired
+capture and eight-ID reader, then reuse in the complete suite. The
+[control index](parity/reviews/g010-history-reconnection001/hosted-auth-progress.json)
+records 170 methods per host (Windows five host skips; Linux one). This is
+source/controller qualification, not actual new hosted build/UI acceptance.
+Root owns runs/publication; A owns the build helper/strict validator; B owns
+independent boundary tests. Existing caches/runtimes are reused.
+
+Next close the independent observer formatter across three headers/six targets
+with frozen std/general17/locale/capacity/fenv witnesses. Keep actual Mac native
+Ninja containment as a required normal/failure/timeout/owner-death packet; the
+new wrapper refuses that unsupported route explicitly. Preserve all full-suite
+reference/SDK/scientific/accessibility/release obligations and the original
+47-in-progress / 52-open / zero-complete family states. This card supersedes
+older queued/pending-source scheduling below.
+
 **Latest additive checkpoint, 2026-10-25:** this paragraph supersedes older
 queued/pending-history/storage scheduling below. CI2 `540f5cb` run
 `40226035342` has passed all three headless/core-SDK jobs and all three source

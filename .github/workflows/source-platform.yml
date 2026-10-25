@@ -102,7 +102,7 @@ jobs:
           $taskVs = & $taskVswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
           if (-not $taskVs) { throw 'Native x64 MSVC installation unavailable' }
           & "$taskVs\Common7\Tools\Launch-VsDevShell.ps1" -Arch amd64 -HostArch amd64 -SkipAutomaticLocation
-          python -m pip install '.[io,test]' -C 'cmake.version===3.31.6' -C 'cmake.args=-GNinja' -C 'cmake.build-type=Release' -C 'ninja.version===1.13.2' -C 'cmake.define.IMAGEJXX_BUILD_IO=ON' -C 'cmake.define.IMAGEJXX_BUILD_CPP_UI=ON' -C 'cmake.define.IMAGEJXX_BUILD_PYTHON_UI=ON' -C 'cmake.define.BUILD_TESTING=ON' -C "cmake.define.IMAGEJXX_CI_SOURCE_PROFILE=$env:IMAGEJXX_CI_DEPENDENCY_PROFILE"
+          python -I -B scripts/ci_history_build.py --output build/ci-history-build -- python -m pip install '.[io,test]' -C 'cmake.version===3.31.6' -C 'cmake.args=-GNinja' -C 'cmake.build-type=Release' -C 'ninja.version===1.13.2' -C 'cmake.define.IMAGEJXX_BUILD_IO=ON' -C 'cmake.define.IMAGEJXX_BUILD_CPP_UI=ON' -C 'cmake.define.IMAGEJXX_BUILD_PYTHON_UI=ON' -C 'cmake.define.BUILD_TESTING=ON' -C "cmake.define.IMAGEJXX_CI_SOURCE_PROFILE=$env:IMAGEJXX_CI_DEPENDENCY_PROFILE"
           if ($LASTEXITCODE -ne 0) { throw 'Full Windows install failed' }
       - name: Install macOS IO and both desktop hosts
         if: runner.os == 'macOS'
@@ -132,11 +132,20 @@ jobs:
         if: runner.os == 'macOS'
         shell: bash
         run: python scripts/ci_scientific_sdk.py --output build/ci-scientific-sdk --profile "$IMAGEJXX_CI_DEPENDENCY_PROFILE" --dependency-prefix build/ci-prefix
+      - name: Qualify authenticated paired history UI
+        # Native Ninja process groups need separate Darwin ownership qualification.
+        # Keep the Mac install and all original complete-suite readers required.
+        if: runner.os == 'Windows'
+        run: python -I -B scripts/ci_python_suite.py --history-suite --output build/ci-history --history-build-receipt build/ci-history-build/receipt.json
       - name: Test the complete installed platform suite
         shell: bash
         run: |
           python -I -X utf8 -B tests/tools/test_ci_python_suite_transport.py
-          python scripts/ci_python_suite.py --output build/ci-python
+          if [ "$RUNNER_OS" = Windows ]; then
+            python scripts/ci_python_suite.py --output build/ci-python --history-output build/ci-history
+          else
+            python scripts/ci_python_suite.py --output build/ci-python
+          fi
       - name: Retain scientific SDK evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -154,6 +163,18 @@ jobs:
         with:
           name: python-${{ inputs.runner }}-${{ matrix.python }}
           path: |
+            build/ci-history-build/*.json
+            build/ci-history-build/*.log
+            build/ci-history/receipt.json
+            build/ci-history/product-bindings.json
+            build/ci-history/capture.zip
+            build/ci-history/installed-smoke/*.json
+            build/ci-history/installed-smoke/*.xml
+            build/ci-history/installed-smoke/*.log
+            build/ci-history/capture-owner/*
+            build/ci-history/reader/*.json
+            build/ci-history/reader/*.xml
+            build/ci-history/reader/*.log
             build/ci-python/receipt.json
             build/ci-python/pytest.xml
             build/ci-python/pytest.log
