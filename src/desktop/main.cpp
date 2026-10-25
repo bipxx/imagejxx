@@ -31,6 +31,7 @@
 #include "path_authoring_ui_probe.hpp"
 #include "path_authoring_edge_ui_probe.hpp"
 #include "settings_wand_ui_probe.hpp"
+#include "manual_threshold_workflow_ui_probe.hpp"
 #include "path_filter_ui_probe.hpp"
 #include "native_bare_import_ui_probe.hpp"
 #include "planar_annotation_matrix.hpp"
@@ -431,6 +432,12 @@ int run(const std::vector<std::string> &arguments) {
     const auto output=std::filesystem::absolute(std::filesystem::u8path(arguments[1]));
     imagejxx::desktop::Window editor((output.parent_path()/"preferences.json").u8string());
     imagejxx::desktop::nativeBareImportUiCase(editor,"imgui_cpp",arguments[1]);return 0;
+  }
+  if (!arguments.empty() && arguments[0] == "--manual-threshold-workflow-ui-case") {
+    if(arguments.size()!=3)throw std::invalid_argument("--manual-threshold-workflow-ui-case CASE_ID FRESH_DIRECTORY");
+    const auto output=std::filesystem::absolute(std::filesystem::u8path(arguments[2]));
+    imagejxx::desktop::Window editor((output.parent_path()/"preferences.json").u8string());
+    imagejxx::desktop::manualThresholdWorkflowUiCase(editor,arguments[1],"imgui_cpp",arguments[2]);return 0;
   }
   if (!arguments.empty() && arguments[0] == "--settings-wand-ui-case") {
     if(arguments.size()!=4 || arguments[3].empty())

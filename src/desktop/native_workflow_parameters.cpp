@@ -73,7 +73,7 @@ struct NativeWorkflowParameters::State {
   Json root, controls = Json::object();
   std::vector<Field> fields;
   std::size_t cap, processing_cap;
-  bool open = true, focus = true, gaussian = false, rank = false, color_stack = false, creation = false;
+  bool open = true, focus = true, gaussian = false, rank = false, color_stack = false, creation = false, manual_threshold = false;
   bool creation_rebind_extent = false;
   Json creation_reference_extent;
   std::string error;
@@ -214,6 +214,9 @@ struct NativeWorkflowParameters::State {
       auto request=detail::indexed_rgb_workflow_request(result.parameters,*result.original);
       request.max_working_bytes=std::min(request.max_working_bytes,processing_cap);
       (void)resolve_indexed_rgb_command(source,request);
+    } else if(detail::native_manual_threshold_intent(result)) {
+      (void)resolve_manual_threshold_command(source,
+          detail::manual_threshold_workflow_range(result),result.target);
     } else if (result.filter_options) {
       std::visit(
           [&](const auto &options) {
@@ -319,7 +322,8 @@ NativeWorkflowParameters::NativeWorkflowParameters(
     }
     return;
   }
-  if (operation.operation!="rgb_contrast_apply" && operation.operation!="contrast_apply" && !operation.filter_options && operation.original &&
+  const bool manual=detail::native_manual_threshold_intent(operation);
+  if (!manual && operation.operation!="rgb_contrast_apply" && operation.operation!="contrast_apply" && !operation.filter_options && operation.original &&
       detail::native_workflow_bound_operation_original(*operation.original)) {
     const auto raw = metadataJson(operation.original->at("options"));
     if (operation.operation == "gaussian_blur_imagej")
@@ -336,7 +340,10 @@ NativeWorkflowParameters::NativeWorkflowParameters(
     if(operation.selection_creation->geometry==SelectionCreationGeometry::NativePathV4)
       operation.selection_creation_extent=extent;
   }
-  if(operation.operation=="rgb_contrast_apply") {
+  if(manual) {
+    operation.parameters=detail::manual_threshold_workflow_parameters(
+        detail::manual_threshold_workflow_range(operation));
+  } else if(operation.operation=="rgb_contrast_apply") {
     operation.parameters=detail::rgb_contrast_apply_workflow_parameters(detail::rgb_contrast_apply_workflow_options(operation));
   } else if(operation.operation=="contrast_apply") {
     operation.parameters=detail::contrast_apply_workflow_parameters(detail::contrast_apply_workflow_options(operation));
@@ -406,6 +413,7 @@ NativeWorkflowParameters::NativeWorkflowParameters(
       field.boolean = value.get<bool>();
     s.fields.push_back(std::move(field));
   };
+  s.manual_threshold=manual;
   s.color_stack=operation.operation=="color_stack";
   s.creation=operation.operation=="selection_creation";
   if(operation.operation=="selection_creation") {
@@ -440,6 +448,10 @@ NativeWorkflowParameters::NativeWorkflowParameters(
     }
     add("corner_diameter","Corner diameter (pixels)","int64",corner);
     add("attributes","Additional attributes","structured",std::move(attributes));
+  } else if(manual) {
+    const auto value=[&](const char *name){return step["parameters"].at(name).at("value");};
+    add("lower","Lower (inclusive raw value)","real",value("lower"));
+    add("upper","Upper (inclusive raw value)","real",value("upper"));
   } else if(operation.operation=="selection_enlargement") {
     const auto value=[&](const char *name){return step["parameters"].at(name).at("value");};
     add("distance","Signed distance (negative shrinks)","real",value("distance"));
@@ -529,6 +541,7 @@ void NativeWorkflowParameters::draw(
       "Edit this step on its private input. Keep replaces its parameters; "
       "the original capture and live image stay unchanged. Confirm this and "
       "later steps again.");
+  if(s.manual_threshold)ImGui::TextWrapped("Both bounds must be finite and Lower must not exceed Upper. These raw values are independent of display contrast. Keep authors new bounds while preserving the original capture.");
   if(s.color_stack)ImGui::TextWrapped("Preserving Z and time retains physical calibration. ImageJ layouts can turn time/channels into Z or consume Z as components; they require explicit calibration reset and, when needed, XZ/YZ annotation removal. Originals remain as provenance. Authored choices use the current stage view.");
   if(!s.creation_reference_extent.is_null()) {
     const auto shape=s.source.data().dataset.shape();
@@ -688,6 +701,6 @@ Json NativeWorkflowParameters::diagnostics() const {
   return {{"visible", s.open},      {"parameters", true}, {"fields", fields},
           {"controls", s.controls}, {"window", s.bounds}, {"error", s.error},
           {"creation_reference_extent",s.creation_reference_extent},{"creation_rebind_extent",s.creation_rebind_extent},
-          {"gaussian", s.gaussian}, {"rank", s.rank}, {"color_stack",s.color_stack},{"annotation",bool(s.annotation_step)}};
+          {"gaussian", s.gaussian}, {"rank", s.rank}, {"manual_threshold",s.manual_threshold}, {"color_stack",s.color_stack},{"annotation",bool(s.annotation_step)}};
 }
 } // namespace imagejxx::desktop

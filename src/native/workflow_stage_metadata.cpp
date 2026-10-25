@@ -14,10 +14,12 @@ namespace {
 class DescriptorSource final : public PlaneSource {
   DatasetShape shape_;
   PixelType type_;
-  bool pending_;
+  bool pending_,eager_;
 public:
-  DescriptorSource(DatasetShape shape,PixelType type,bool pending):shape_(shape),type_(type),pending_(pending){}
+  DescriptorSource(DatasetShape shape,PixelType type,bool pending,bool eager)
+      :shape_(shape),type_(type),pending_(pending),eager_(eager){}
   bool pending_palette()const{return pending_;}
+  bool eager_output()const{return eager_;}
   DatasetShape shape() const override{return shape_;}
   PixelType pixel_type() const override{return type_;}
   std::shared_ptr<const Image> read_plane(PlanePosition) const override {
@@ -26,8 +28,13 @@ public:
 };
 }
 Dataset workflow_metadata_dataset(DatasetShape shape,PixelType type,
-                                   const SpatialCalibration &calibration,bool pending) {
-  return Dataset(std::make_shared<DescriptorSource>(shape,type,pending),calibration);
+                                   const SpatialCalibration &calibration,bool pending,bool eager) {
+  return Dataset(std::make_shared<DescriptorSource>(shape,type,pending,eager),calibration);
+}
+bool workflow_metadata_eager_source(const Dataset &dataset) {
+  if(dataset.has_eager_planes())return true;
+  const auto *source=dynamic_cast<const DescriptorSource *>(ResourceAccess::source(dataset));
+  return source && source->eager_output();
 }
 bool workflow_pending_indexed_palette(const Dataset &dataset){const auto *s=dynamic_cast<const DescriptorSource *>(ResourceAccess::source(dataset));return s&&s->pending_palette();}
 DisplayState pair_numeric_conversion_metadata(const DocumentSnapshot &source,
@@ -51,7 +58,7 @@ DocumentSnapshot scalar_conversion_metadata_preview(const DocumentSnapshot &sour
   const auto &before=source.data().dataset;
   if(before.shape().s==1 && before.pixel_type()==type && !source.data().metadata.extensions.count(indexed_palette_extension))return source;
   auto shape=before.shape();shape.s=1;auto edit=source.begin_edit(Change::All);
-  edit.replace_dataset(workflow_metadata_dataset(shape,type,before.calibration()));
+  edit.replace_dataset(workflow_metadata_dataset(shape,type,before.calibration(),false,true));
   edit.set_spectrum({});pair_numeric_conversion_metadata(source,shape,edit,type);
   return edit.preview();
 }
@@ -66,7 +73,11 @@ template<class Command>DocumentSnapshot contrast_apply_metadata(const Command &c
   }
   if(affected.empty())return source;
   auto edit=source.begin_edit(Change::All);
-  edit.replace_dataset(workflow_metadata_dataset(input.shape(),input.pixel_type(),input.calibration()));
+  // Both Contrast Apply executors use Dataset::with_planes: reviewed eager
+  // tables remain eager; virtual inputs keep a lazy overlay even for full targets.
+  // Propagate only established provenance, never infer eagerness from coverage.
+  edit.replace_dataset(workflow_metadata_dataset(input.shape(),input.pixel_type(),input.calibration(),
+      false,workflow_metadata_eager_source(input)));
   edit.set_spectrum({});auto display=source.display();
 
   if(auto channels=recognized_channel_display(display,input)){
@@ -113,7 +124,7 @@ DocumentSnapshot workflow_filter_metadata_preview(const DocumentSnapshot &source
   if(!any)return source;
   if(!full || target.position_count()!=input.shape().plane_count())output=static_cast<PixelType>(std::max(int(output),int(input.pixel_type())));
   if(output==input.pixel_type())return source;
-  auto edit=source.begin_edit();edit.replace_dataset(workflow_metadata_dataset(input.shape(),output,input.calibration()));edit.set_spectrum({});
+  auto edit=source.begin_edit();edit.replace_dataset(workflow_metadata_dataset(input.shape(),output,input.calibration(),false,full && target.position_count()==input.shape().plane_count()));edit.set_spectrum({});
   (void)retire_indexed_filter_palette(source,edit.preview().data().dataset,operation,edit);
   auto preview=edit.preview();return preview.with_display(preview.display());
 }

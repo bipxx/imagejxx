@@ -1,8 +1,15 @@
 #pragma once
 #include <imagejxx/native_workflow.hpp>
+#include <imagejxx/manual_threshold_command.hpp>
 namespace imagejxx::detail {
 const std::string &native_workflow_original_schema(const MetadataObject &);
 bool native_workflow_bound_operation_original(const MetadataObject &);
+// Typed manual threshold is distinguished from the legacy registry operation by
+// its mandatory immutable V1/V2/V3 capture. Optional authored bounds use exactly
+// lower/upper; the explicit target always belongs to the destination stage.
+bool native_manual_threshold_intent(const NativeWorkflowOperation &);
+ManualThresholdRange manual_threshold_workflow_range(const NativeWorkflowOperation &);
+OperationParameters manual_threshold_workflow_parameters(const ManualThresholdRange &);
 void validate_native_workflow_operation_original(const std::string &,
                                                  const OperationParameters &,
                                                  const MetadataObject &);

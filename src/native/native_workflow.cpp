@@ -211,8 +211,8 @@ struct PreflightStepDispatch {
       :scope(value),previous(value.dispatching_callback) {scope.dispatching_callback=true;}
   ~PreflightStepDispatch(){scope.dispatching_callback=previous;}
 };
-// Path-aware workflows and explicitly capped working admission validate the
-// complete program before dispatching any user callback, including inherited
+// Path-aware/manual-threshold workflows and explicitly capped working admission
+// validate the complete program before dispatching any user callback, including inherited
 // scopes. Import/annotation stages can introduce a path into a later target.
 // Legacy unbounded workflows without these carriers retain their timing.
 template<class Function>
@@ -236,6 +236,7 @@ auto workflow_admission_callbacks(const DocumentSnapshot &source,
         kernel_checkpoint_periodic();
         if(const auto p=std::get_if<const NativeWorkflowOperation *>(&step)) {
           if(detail::native_path_creation_intent(**p) ||
+             detail::native_manual_threshold_intent(**p) ||
              ((*p)->enabled && detail::annotation_workflow_operation((*p)->operation)))return true;
         } else if(const auto p=std::get_if<const NativeWorkflowImport *>(&step)) {
           if((*p)->enabled)return true;
@@ -388,7 +389,19 @@ void preflight(const DocumentSnapshot &initial,
               budget.record(source.display().properties);
             const auto resolved=resolve_target(source, v.target, v.operation);
             std::optional<OperationParameters> normalized;
-            if(!v.filter_options && !(v.original && detail::native_workflow_bound_operation_original(*v.original)))
+            if(detail::native_manual_threshold_intent(v)) {
+              const auto range=detail::manual_threshold_workflow_range(v);
+              const auto &dataset=source.data().dataset;
+              // A descriptor is accepted only when its producer proved that
+              // the actual stage creates an eager table. Public command
+              // resolvers keep their unchanged real-source eager requirement.
+              require(dataset.shape().s==1 &&
+                          dataset.sample_policy()==FloatingSamplePolicy::FiniteOnly &&
+                          detail::workflow_metadata_eager_source(dataset),
+                      "Manual threshold requires eager finite-only scalar data");
+              normalized=validate_execution_parameters(v.operation,resolved,
+                  detail::manual_threshold_workflow_parameters(range),{});
+            } else if(!v.filter_options && !(v.original && detail::native_workflow_bound_operation_original(*v.original)))
               normalized=validate_execution_parameters(v.operation,resolved,v.parameters,{});
             // Reserve a conservative complete output backing before any kernel.
             budget.data(source);
@@ -739,6 +752,15 @@ PreparedNativeWorkflow detail::prepare_native_workflow_borrowed(
               auto command=workflow_indexed(current,v,limits.max_retained_bytes,detail::indexed_rgb_workflow_request,resolve_indexed_rgb_command);
               auto prepared=prepare_indexed_rgb(command,control,limits.max_retained_bytes);
               auto edit=prepared.begin_edit();paired_display=true;checkpoint(control);working.commit(edit);
+            } else if (detail::native_manual_threshold_intent(v)) {
+              const auto range=detail::manual_threshold_workflow_range(v);
+              const auto command=v.parameters.empty()
+                  ? rebind_manual_threshold_command(current,*v.original,v.target)
+                  : resolve_manual_threshold_command(current,range,v.target);
+              // Workflow publication retains its existing pixel-only/live
+              // display policy; the Threshold dialog's transient overlay reset
+              // is deliberately not a broad paired-display transaction.
+              execute(command.target(),command.parameters());
             } else if (v.filter_options) {
               std::visit(
                   [&](const auto &options) {

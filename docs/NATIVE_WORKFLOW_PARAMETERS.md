@@ -1,5 +1,17 @@
 # Workflow parameter authoring
 
+Saved manual threshold steps expose dedicated **Lower** and **Upper** fields.
+**Keep workflow parameters** validates the inclusive raw range against the private
+preceding stage and retains authored bounds separately from the unchanged saved
+V1/V2/V3 command. Invalid bounds leave the form and destination unchanged.
+The destination target remains an explicit choice; the captured selection is
+not restored. These steps serialize in [Program V9](NATIVE_WORKFLOW_PROGRAM.md#manual-threshold-programs-v9).
+
+During an idle workflow review, document tabs remain available. Switching tabs
+cancels the private review and releases its ready result before activating the
+other owner. Canvas editing and tab closing stay blocked while review is open;
+active processing and child work still block tab switching.
+
 Scalar `contrast_apply` accepts a complete saved command with empty parameters,
 or exactly `minimum`, `maximum` and integer `unsigned16_bits` authored parameters.
 The shared parameter editor exposes those three fields and preserves any original

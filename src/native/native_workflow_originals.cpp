@@ -93,6 +93,39 @@ const std::string &native_workflow_original_schema(const MetadataObject &r) {
 bool native_workflow_bound_operation_original(const MetadataObject &r) {
   return r.count("schema_version") != 0;
 }
+bool native_manual_threshold_intent(const NativeWorkflowOperation &v) {
+  return v.operation=="threshold" && v.original &&
+      native_workflow_bound_operation_original(*v.original);
+}
+ManualThresholdRange manual_threshold_workflow_range(const NativeWorkflowOperation &v) {
+  require(native_manual_threshold_intent(v) && !v.filter_options &&
+              !v.use_destination_calibration,
+          "Manual threshold workflow requires a captured command and raw bounds");
+  require(v.target.mode==ExecutionMode::Planes &&
+              v.target.destination==OutputDestination::InPlace,
+          "Manual threshold workflow requires in-place planes");
+  validate_manual_threshold_command_record(*v.original);
+  ManualThresholdRange result;
+  if(v.parameters.empty()) {
+    result={number_value(v.original->at("lower")),number_value(v.original->at("upper"))};
+  } else {
+    require(v.parameters.size()==2 && v.parameters.count("lower") && v.parameters.count("upper"),
+            "Manual threshold authored bounds require lower and upper only");
+    const auto scalar=[](const OperationValue &value)->MetadataValue {
+      return std::visit([](const auto &number)->MetadataValue {
+        using T=std::decay_t<decltype(number)>;
+        if constexpr(std::is_same_v<T,double> || std::is_same_v<T,std::int64_t> ||
+                     std::is_same_v<T,std::uint64_t>)return number;
+        else throw std::invalid_argument("Manual threshold bounds require exact numeric scalars");
+      },value);
+    };
+    result={number_value(scalar(v.parameters.at("lower"))),number_value(scalar(v.parameters.at("upper")))};
+  }
+  result.validate();return result;
+}
+OperationParameters manual_threshold_workflow_parameters(const ManualThresholdRange &range) {
+  range.validate();return {{"lower",range.lower},{"upper",range.upper}};
+}
 ContrastApplyOptions contrast_apply_workflow_options(const NativeWorkflowOperation &v) {
   require(v.operation=="contrast_apply" && !v.filter_options && !v.use_destination_calibration,
           "Contrast Apply workflow requires unscaled scalar mapping choices");
@@ -225,6 +258,11 @@ void validate_native_workflow_operation_original(
     validate_operation_record(id, parameters);
     return;
   }
+  if(id=="threshold") {
+    NativeWorkflowOperation operation;operation.operation=id;
+    operation.parameters=parameters;operation.original=r;
+    (void)manual_threshold_workflow_range(operation);return;
+  }
   require(parameters.empty(),
           "Captured workflow filters cannot override parameters");
   if (id == "gaussian_blur_imagej")
@@ -251,6 +289,7 @@ void validate_native_workflow_operation_intent(
   if(v.operation=="rgb_contrast_stack"){validate_rgb_contrast_stack_workflow_intent(v);return;}
   if(v.operation=="rgb_contrast_apply"){(void)rgb_contrast_apply_workflow_options(v);return;}
   if(v.operation=="contrast_apply"){(void)contrast_apply_workflow_options(v);return;}
+  if(native_manual_threshold_intent(v)){(void)manual_threshold_workflow_range(v);return;}
   if(v.operation=="rgb_dataset" || v.operation=="color_stack" || v.operation=="indexed_dataset" || v.operation=="indexed_rgb")
     require(v.original && (v.operation!="rgb_dataset" || v.parameters.empty()) && !v.filter_options && !v.use_destination_calibration,
             "Dataset conversion workflow requires a complete capture and whole-dataset target");

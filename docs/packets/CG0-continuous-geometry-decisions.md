@@ -1,5 +1,14 @@
 # CG0: continuous geometry decisions
 
+**2026-10-25 review amendment:** the
+[efficiency decision](EXECUTION_EFFICIENCY_REVIEW.md#required-product-behavior-versus-optional-guarantees)
+requires a backend/product-profile decision before ratifying the exact-native
+guarantees proposed below. These are not global prerequisites for unrelated
+editor work. Curve-preserving operations and all original geometry requirements
+remain in scope; neither raster substitution nor an implicit precision downgrade
+is allowed. This geometry profile remains unratified; independent MW1 editor
+work follows the current execution authority.
+
 Prepared 2026-10-24 by Agent A. **Design proposal; not a frozen API or a passed
 CG0 gate.** This file is the bounded native decision artifact requested by the
 [three-agent delivery specifications](THREE_AGENT_DELIVERY_SPECS.md#cg0-continuous-geometry-design-gate).
@@ -386,7 +395,9 @@ the selected new implementation/dependency decision before incorporation.
 ## 8. CG2/CG3 dependencies; no implementation authorization here
 
 Proposed names are `SelectionCreationGeometry::ContinuousPathV5`, creation
-command version5 and workflow program version9. C must reserve/freeze these at
+command version5 and a future workflow program version, unassigned until CG2.
+The earlier V9 proposal did not reserve that version: MW1 now uses Program V9
+for typed manual threshold. C must freeze the next available version at
 CG2 entry after checking concurrent version assignments. NativePathV4/V8
 Replace-only behavior and historical refusal assertions stay unchanged.
 
@@ -409,11 +420,11 @@ Validation recomputes the complete original equation and verifies canonical
 geometry/attributes before source/rebind checks. No authoring override may
 silently reinterpret a V5 original under a legacy mode.
 
-Proposed V9 retains V8's explicit `selection_creation_extent` rules, but is
+The proposed future program retains V8's explicit `selection_creation_extent` rules, but is
 selected by continuous creation intent/original, even if disabled. Original-only
 extent derives from the validated original; authored intent requires an explicit
 extent. Grid-changing prefixes and later invalid/over-budget steps are fully
-preflighted before provider reads or user callbacks. V1-V8 readers continue to
+preflighted before provider reads or user callbacks. Existing V1-V9 readers continue to
 reject the new profile. Mixed old/new programs retain the original legacy
 payloads and only use the new outer version where required.
 
@@ -480,7 +491,7 @@ Native groups and independent selectors share these stable IDs:
 | CG-10B | Explicit/inherited cancellation and all callback kinds throwing/replacing caller inputs. No user callback on admission/topology refusal; frozen result cannot be redirected; no dataset reads, mutation or leaked reservation. |
 | CG-10C | Native/Python malformed size/enum/profile/promotion requests, unchanged input words, result lifetime after source objects die, installed core-only SDK and default/header identities. |
 
-CG-11 (transactions/Previous/history/stale owner) and CG-12 (V5/V9 intent,
+CG-11 (transactions/Previous/history/stale owner) and CG-12 (V5/future-program intent,
 legacy refusal, explicit rebind, disabled originals, V5 session reopen and
 mixed-workflow later refusal) belong to CG2; planar/local-world cases belong to
 CG3. They are dependencies for those packets, not fictitious CG1 passes.

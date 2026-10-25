@@ -1,0 +1,315 @@
+{
+  "schema": "mw1.scoped-qualification.001",
+  "state": "scoped-qualified",
+  "acceptance": false,
+  "packet_scope_qualified": true,
+  "complete_requirement_coverage": false,
+  "baseline_commit": "6b6dfd150e0443fee05c356474c502547d2d9283",
+  "scope": "Saved manual threshold V1/V2/V3 in typed Program V9, explicit destination rebinding/authored bounds, shared Run/preview/history/session/batch and idle-review owner switch",
+  "platforms": {
+    "windows": {
+      "schema": "mw1.host-audit.001",
+      "state": "passed",
+      "acceptance": false,
+      "host": "windows",
+      "api_cases": 1133,
+      "api_evidence": {
+        "archive": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\core-api-windows003.tar.gz",
+          "bytes": 2247272,
+          "sha256": "cd66385b1dde07ba815c16a57ef36b31875a380cf9d850baf57ac8791e6830f0"
+        },
+        "retention": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\core-api-windows003-retention.json",
+          "bytes": 35104,
+          "sha256": "703d41a861d0a3b1de60c477561f1caa26dadaba915fe32f302d698f44188d1f"
+        },
+        "members_verified": 179,
+        "raw_removed_bytes": 16555479
+      },
+      "fresh_python_children": 3,
+      "legacy_ui_cases": 38,
+      "legacy_ui_evidence": {
+        "archive": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\legacy-ui-windows004.tar.gz",
+          "bytes": 10682926,
+          "sha256": "4de8e0057154f6605ccf1d9b7c426921bbf3712f985d117b4be652bf505a3f08"
+        },
+        "retention": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\legacy-ui-windows004-retention.json",
+          "bytes": 14594,
+          "sha256": "2b50b65a0032c797140875613773e61b9fa92f913f362d8c57652c1ce4f657e5"
+        },
+        "members_verified": 75,
+        "raw_removed_bytes": 72555257
+      },
+      "native_groups": [
+        "native_manual_threshold",
+        "native_manual_threshold_command",
+        "native_manual_threshold_path_command",
+        "native_manual_threshold_workflow",
+        "native_workflow"
+      ],
+      "new_native_groups": 10,
+      "new_native_checks": 114482,
+      "native_receipt": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\native-windows003\\receipt.json",
+        "bytes": 3092,
+        "sha256": "1a142eb96a67027e88abe75ac5a059e910780148ed38c1ea04404eb5c59baea2"
+      },
+      "native_report": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\native-windows003\\native.xml",
+        "bytes": 1963,
+        "sha256": "e6050deddeb774451eb0cf0bd92887d888c917fdf4ab1dc03ee2598e0105f422"
+      },
+      "compiled_inputs_rechecked": 727,
+      "compiled_manifest": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\desktop-windows005\\source-manifest.json",
+        "bytes": 81879,
+        "sha256": "d730ceb42dc6b723521ffea2485fe024baed753ca7380459833e900e39e15b72"
+      },
+      "sdk_checks": 11,
+      "sdk_receipt": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\sdk-windows003\\receipt.json",
+        "bytes": 3868,
+        "sha256": "68f3d563a50637d7770f0624a3aa25be152daf30a05614d41a55ae1af0c87496"
+      },
+      "sdk_report": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\sdk-windows003\\sdk.xml",
+        "bytes": 462,
+        "sha256": "9ed97265f296cf334ac8394fc6a0db2bfe545aafe00d8817a1c2af4b64b3e5a2"
+      },
+      "sdk_retention": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\sdk-windows003\\cache-retirement.json",
+        "bytes": 1202,
+        "sha256": "c3aadd2a736fa038a5984a65c1100cd7b3d34a738871453440036b1229b0ae19"
+      },
+      "tool_cases": 15,
+      "tool_report": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\tools-windows002.xml",
+        "bytes": 2611,
+        "sha256": "2ecbe9856a6737b930e9e4005b3b1589f633b430cc97f27a54cb6aba5ba80f8e"
+      },
+      "license_receipt": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\licenses-windows001\\receipt.json",
+        "bytes": 730,
+        "sha256": "b4ffd312f26c41252a09d1be38b752de1ace8fd31eec83ee01a742c8a41cace4"
+      },
+      "products": {
+        "native": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+          "bytes": 7578624,
+          "sha256": "ebceb66c4d365a223b6f8c0708374256b5b71e76c90a0260f226be1ef5fc2342"
+        },
+        "desktop": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+          "bytes": 18015744,
+          "sha256": "023c67869068b6abe586955cd11691d9cf9afc11b43a29c04d7ece995411143a"
+        },
+        "application": {
+          "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+          "bytes": 18142208,
+          "sha256": "0ea869f2d694c109727f00e876985a42d6f4fe2bf29068fe0ba7f93ce165df14"
+        }
+      },
+      "original_scope": "Headless/shared ImGui and installed APIs/SDK; not full inventory, hosted CI, OS input, GPU/platform release certification"
+    },
+    "linux": {
+      "schema": "mw1.host-audit.001",
+      "state": "passed",
+      "acceptance": false,
+      "host": "linux",
+      "api_cases": 1133,
+      "api_evidence": {
+        "archive": {
+          "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/core-api-linux003.tar.gz",
+          "bytes": 2260272,
+          "sha256": "a422b942a389aa0d099f8ab5e8b433e59a937f605b2d876aa6e2ddbde72b9d26"
+        },
+        "retention": {
+          "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/core-api-linux003-retention.json",
+          "bytes": 34357,
+          "sha256": "e8f0a3e807dc5f64545dbe32abaa0b977fc89db18f5c233cdd00746c8cfb3ebd"
+        },
+        "members_verified": 180,
+        "raw_removed_bytes": 16555530
+      },
+      "fresh_python_children": 3,
+      "legacy_ui_cases": 38,
+      "legacy_ui_evidence": {
+        "archive": {
+          "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/legacy-ui-linux002.tar.gz",
+          "bytes": 8867120,
+          "sha256": "cd6417244dd715fe1d98629b633fa8a26f20fe59507c8496912b2cbb41391e05"
+        },
+        "retention": {
+          "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/legacy-ui-linux002-retention.json",
+          "bytes": 14353,
+          "sha256": "570fd3fc197c244ff86bfcfa0120dbc4e4c63307918dcd30bd21df77965e7bcb"
+        },
+        "members_verified": 76,
+        "raw_removed_bytes": 70962551
+      },
+      "native_groups": [
+        "native_manual_threshold",
+        "native_manual_threshold_command",
+        "native_manual_threshold_path_command",
+        "native_manual_threshold_workflow",
+        "native_workflow"
+      ],
+      "new_native_groups": 10,
+      "new_native_checks": 114482,
+      "native_receipt": {
+        "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/linux-native002/receipt.json",
+        "bytes": 3978,
+        "sha256": "37fd143f59d57560f4f0c31a34d380bcc72e9ea07fd15fd80908ce0c722a49be"
+      },
+      "native_report": {
+        "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/linux-native002/native.xml",
+        "bytes": 1910,
+        "sha256": "321a100795ead536f6b43f63a2e6e152db8f8e7b544e4eaf18c293e0a9f93380"
+      },
+      "compiled_inputs_rechecked": 727,
+      "compiled_manifest": {
+        "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/linux-native002/source-manifest.json",
+        "bytes": 886261,
+        "sha256": "7745dfe00e0c6691e625987c6cd7c98415443377152b50a13f33ab1540df6ec0"
+      },
+      "sdk_checks": 11,
+      "sdk_receipt": {
+        "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/sdk-linux003/receipt.json",
+        "bytes": 3242,
+        "sha256": "46963c796233e6c79a51c5f31bd2c829817fdbc04dcef0072950e8c713f0f38a"
+      },
+      "sdk_report": {
+        "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/sdk-linux003/sdk.xml",
+        "bytes": 444,
+        "sha256": "ecc5f0db18b0d211712fdf68c5188c4ff8830535313b581d8a933aea8f9eeb36"
+      },
+      "sdk_retention": {
+        "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/sdk-linux003/cache-retirement.json",
+        "bytes": 1254,
+        "sha256": "67cea792a4bd128de7a156d6c9b6efccb674025e3ef237cb8fb78e02e954dfb0"
+      },
+      "tool_cases": 15,
+      "tool_report": {
+        "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/tools-linux001.xml",
+        "bytes": 2611,
+        "sha256": "390a43e71eec97199de95d105f4fb720cdd613744f1259cb4c6fc904c6954f35"
+      },
+      "license_receipt": {
+        "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/licenses-linux001/receipt.json",
+        "bytes": 630,
+        "sha256": "5db2d41ced6c4f998d4eeca23f983e8e9ebb2326ff8cc8b6853441015af2cf1c"
+      },
+      "products": {
+        "native": {
+          "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-probe-env003/lib/python3.12/site-packages/imagejxx/_native.cpython-312-x86_64-linux-gnu.so",
+          "bytes": 12666432,
+          "sha256": "18bd8b1d1bc857baa42ce12939d6d812153bb6a788b16702313ae5ce929b3499"
+        },
+        "desktop": {
+          "locator": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-probe-env003/lib/python3.12/site-packages/imagejxx/_desktop.cpython-312-x86_64-linux-gnu.so",
+          "bytes": 34503640,
+          "sha256": "2d564c50e81b549f1a88a9a21be491edf4ce114e31fa0d41f8327bce087b707e"
+        },
+        "application": {
+          "locator": "/mnt/c/Users/HEQ/Projects/imagejxx/.tmp/p13g-verification/linux/app-installed/bin/imagejxx",
+          "bytes": 36756448,
+          "sha256": "2f99ccbebf6734524af3ff0bbe12e8bec511a9beb465034ad3d04ab1436563c4"
+        }
+      },
+      "original_scope": "Headless/shared ImGui and installed APIs/SDK; not full inventory, hosted CI, OS input, GPU/platform release certification"
+    }
+  },
+  "current_input_manifest": {
+    "path": "docs\\parity\\reviews\\mw1-manual-threshold-workflow001\\source-inputs.json",
+    "bytes": 1363788,
+    "sha256": "0ab69461352a3228b0478b70b981c086e3f961e2d99736983407363aa15cf129"
+  },
+  "named_cohort": {
+    "path": "docs\\parity\\reviews\\mw1-manual-threshold-workflow001\\affected-nodeids.json",
+    "bytes": 149255,
+    "sha256": "55309119db726114a1ec89e196a487aa3d9304cfa9d2340e171f3255c92edd07"
+  },
+  "interface": {
+    "program_version": 9,
+    "operation_fields": "unchanged V8 set",
+    "original_manual_versions": [
+      1,
+      2,
+      3
+    ],
+    "legacy_program_versions_closed": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "new_public_options_fields": 0
+  },
+  "qualified_prefixes": [
+    "Existing eager finite scalar source",
+    "Full eager-producing scalar conversion",
+    "Full type-changing registry filter output",
+    "Contrast Apply preserves the trusted eager status of its input; lazy inputs remain refused before manual"
+  ],
+  "scope_limits": [
+    "Other descriptor-producing prefixes require their own provenance proof; no universal eager-source admission",
+    "Headless/shared ImGui and installed SDK/API proof does not establish macOS, real OS input, accessibility or complete GPU/release certification",
+    "No new dependency or commercial eligibility approval is inferred",
+    "All remaining eligible ImageJ/Fiji requirements remain open until their own complete evidence"
+  ],
+  "inventory": {
+    "families": 99,
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0,
+    "sha256": "6a234b38cef8813d084b0f1ed14c50e9096fd50bdd94fbacbb4119adf583dae8",
+    "unchanged": true
+  },
+  "historical_evidence": {
+    "strict_plan_checker": "still fails G016 missing build/plan-implementation/p05e-roi-boolean-001/native-local-checkpoint-001.json",
+    "Auto": "original unavailable/unresolved proof remains open",
+    "fingerprints_rewritten": false
+  },
+  "source_roles_and_reuse": [
+    "Final fresh1133 cohort includes4 added session/batch and contrast-prefix cases plus explicit XYZ/revision assertions",
+    "Prior114443/1129/38 runs are historical; final114482/1133/38 bind the current rebuilt products",
+    "Lossless gzip transports preserve original report bytes; raw retirement is additive and member/hash verified",
+    "SDK generated caches retired; exact final consumer executables and configuration retained"
+  ],
+  "storage": {
+    "normal_limit_bytes": 8589934592,
+    "recorded_transient_exception": {
+      "bytes": 8659163312,
+      "over_limit_bytes": 69228720,
+      "cause": "Unexpected duplicate65.9MB legacy JSON transport",
+      "response": "Stopped new captures, verified/retired147011849duplicate bytes; later legacy phases use serial lossless gzip"
+    },
+    "old_failed_p13h_capture": {
+      "raw_bytes": 98233352,
+      "lossless_archive_bytes": 13588442,
+      "raw_availability": "retired after full member/hash verification",
+      "archive": "C:/Users/HEQ/Projects/imagejxx/.tmp/p13h-verification/windows-regression002.tar.gz"
+    },
+    "final_measurement": {
+      "path": "docs\\parity\\reviews\\mw1-manual-threshold-workflow001\\storage.json",
+      "bytes": 1382,
+      "sha256": "e82c0413247c8880a7ff0929e9b7d83b9e0585e8d74f555b0a9d86aeb7fc86f2"
+    },
+    "final_bytes": 8498451718,
+    "final_headroom_bytes": 91482874
+  },
+  "landing": "Commit/head and remote identity are recorded separately; no receipt self-hash/commit cycle",
+  "next_action": "Land scoped MW1, then choose the next ready missing user behavior; continuous geometry research does not block independent editor work",
+  "retention_availability": {
+    "path": "docs\\parity\\reviews\\mw1-manual-threshold-workflow001\\retention-availability.json",
+    "bytes": 2320,
+    "sha256": "311a67faf54afb4bec1a302fe4a9cb961f94f4b944978720ff6a8b5dbd0f8397"
+  }
+}

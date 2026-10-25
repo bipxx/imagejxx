@@ -1,5 +1,6 @@
 """Shared Run review controls, staged files and atomic scientific publication."""
 import io
+import gzip
 import json
 import os
 from pathlib import Path
@@ -17,7 +18,11 @@ DISPLAY = 'imagejxx.planar_display_annotations'
 
 @pytest.fixture(scope='module')
 def reports(tmp_path_factory):
-    cpp = json.loads(Path(os.environ['IMAGEJXX_NATIVE_WORKFLOW_CPP_REPORT']).read_bytes())
+    cpp_path = Path(os.environ['IMAGEJXX_NATIVE_WORKFLOW_CPP_REPORT'])
+    cpp_bytes = cpp_path.read_bytes()
+    if cpp_path.suffix == '.gz':
+        cpp_bytes = gzip.decompress(cpp_bytes)
+    cpp = json.loads(cpp_bytes)
     directory = tmp_path_factory.mktemp('native-workflow-ui') / 'capture001'
     editor = _desktop.Editor(str(directory.parent / 'preferences.json'))
     python = json.loads(editor._native_workflow_ui_case(str(directory)))

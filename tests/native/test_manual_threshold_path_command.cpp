@@ -28,15 +28,6 @@ void refuses(Work work, const char *message) {
   try { work(); } catch (const Error &) { ++checks; return; }
   throw std::runtime_error(message);
 }
-template<class Work> void unsupported_workflow(Work work) {
-  try { work(); }
-  catch (const std::invalid_argument &error) {
-    check(std::string(error.what()) == "Unsupported captured workflow filter",
-          "Typed threshold workflow failed for a different admission reason");
-    return;
-  }
-  throw std::runtime_error("Typed manual threshold silently entered generic workflow execution");
-}
 Selection path(bool precise = false) {
   auto result = Selection::from_path({0., precise ? std::nextafter(2.2, 3.) : 2.2,
       precise ? -0. : 1.2, 1., 9.2, 1.2, 1., 2.2, 8.2, 4.});
@@ -249,8 +240,8 @@ void session_and_workflow_boundary() {
             codec::to_json(rebound.record()).at("schema_version") == 3,
         "Explicit reopened path rebind lost the V3 carrier");
 
-  // Typed manual-threshold integration in NativeWorkflowProgram/Run is the
-  // existing separate family gap (docs/DESKTOP.md), for V1/V2 as well as V3.
+  // V9 explicitly admits typed V1/V2/V3 manual captures. Earlier portable
+  // program grammars retain their closed refusal; direct codecs are unchanged.
   auto legacy = fixture(reads, Selection("rectangle", {{1, 1}, {5, 4}}));
   const std::array<MetadataObject, 3> records{
       resolve_manual_threshold_command(legacy->snapshot(), {101, 255}).record(),
@@ -259,11 +250,21 @@ void session_and_workflow_boundary() {
     validate_manual_threshold_command_record(original);
     NativeWorkflowOperation step;
     step.operation = "threshold"; step.original = original;
-    unsupported_workflow([&] { make_native_workflow_program({step}); });
-    unsupported_workflow([&] { prepare_native_workflow(before, {step}); });
+    const auto program=make_native_workflow_program({step});
+    check(codec::to_json(program.record()).at("version")==9 &&
+              metadata_equal(*std::get<NativeWorkflowOperation>(program.steps()[0]).original,original),
+          "V9 changed the original manual capture");
+    const auto prepared=prepare_native_workflow(before,program.steps());
+    check(prepared.completed_steps()==1 && prepared.preview().data().selection==before.data().selection,
+          "V9 failed to rebind the destination manual target");
+    auto old=codec::to_json(program.record());old["version"]=1;
+    for(const auto key:{"filter_options","enabled","selection_creation","annotation_intent","selection_creation_extent"})
+      old["steps"][0].erase(key);
+    refuses([&]{native_workflow_program_from_json(old.dump());},
+            "Legacy V1 program silently admitted a typed manual capture");
   }
   check(owner->snapshot().shares_data(before) && owner->undo_steps() == 0,
-        "Typed workflow refusal or session capture changed the source");
+        "Typed workflow preparation or session capture changed the source");
 }
 } // namespace
 

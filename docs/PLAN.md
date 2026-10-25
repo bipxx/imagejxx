@@ -1,5 +1,24 @@
 # ImageJ and Fiji gap closure plan
 
+**Current execution, 2026-10-25:** implementation resumed with three agents;
+[MW1](packets/MW1-manual-threshold-workflow.md) closes the typed manual-threshold
+workflow gap. The [execution authority](THREE_AGENT_EXECUTION.md) owns live state.
+No family is complete from this packet alone.
+
+**Earlier planning amendment, 2026-10-25:** implementation was paused. The
+[Astra max efficiency review](packets/EXECUTION_EFFICIENCY_REVIEW.md) updates
+dependency scheduling, geometry profile decisions, reuse and evidence scope.
+The [API/key delivery guide](packets/API_KEY_DELIVERY_PATHS.md) supplies a
+concrete shortest reuse/verification path for every one of the 61 settings keys,
+the shared API seams and all99 capability families. It preserves full scope and
+original acceptance states. CFG1 is already pushed at `6b6dfd1`; no new product
+implementation is claimed by this review.
+
+The [review of all compilexx notes](packets/COMPILEXX_CROSS_PROJECT_REVIEW.md)
+adds concrete tooling/qualification improvements and distinguishes confirmed
+local opportunities from lessons that do not apply here. It changes no product
+or acceptance-family state and leaves implementation paused.
+
 **Current execution plan, 2026-10-24:** use the
 [three-agent plan](THREE_AGENT_EXECUTION.md#authority-and-resume-card) and
 [P13i detailed specification](packets/P13i-path-filter-targets.md).
@@ -14,8 +33,9 @@ configuration, selection, filtering, XYZ/slicing and later delivery contracts.
 P13i is now [scoped-qualified](parity/reviews/p13i-path-filter001/receipt.json):
 each Windows/Linux platform passes 24 native groups, 2,376 regression, 41 affected
 API, 46 batch, 128 UI and four genuine profile readers, plus 414+35 SDK checks.
-Next: reviewed landing, CG0 design/reference gates and independent CFG1 Wand
-preference/consumer/persistence acceptance. Full-family/M13 acceptance remains open.
+P13i landing and the independent CFG1 acceptance below are complete within their
+scope. The efficiency amendment owns the next ready-work selection after resume.
+Full-family/M13 acceptance remains open.
 
 **CFG1, current scoped checkpoint:** Wand preference/consumer/persistence
 acceptance now [passes on Windows/Linux](parity/reviews/cfg1-settings-wand001/receipt.json).

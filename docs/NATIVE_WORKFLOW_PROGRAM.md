@@ -1,5 +1,35 @@
 # Portable native workflow programs
 
+## Manual threshold programs (V9)
+
+A saved manual-threshold V1/V2/V3 command can now run as a typed workflow step.
+Pass its unchanged record as `original`; an empty parameter map uses the
+captured inclusive bounds. To author new bounds, supply exactly numeric `lower`
+and `upper`. They must be finite, ordered and losslessly represented. Review
+the destination target explicitly: Run uses the destination selection, not the
+selection or document identity in the historical record.
+
+```python
+import imagejxx as ij
+
+captured = ij.resolve_manual_threshold_command(
+    document.snapshot(), ij.ManualThresholdRange(40, 120)).record()
+step = ij.NativeWorkflowOperation("threshold", {"lower": 50, "upper": 90},
+    ij.TargetRequest(ij.TargetScope.ALL_Z, roi=ij.RoiPolicy.ACTIVE_SELECTION),
+    original=captured)
+program = ij.NativeWorkflowProgram([step])
+```
+
+Typed manual intent selects closed Program V9, with the V8 operation field set;
+disabled steps count toward that choice and still undergo structural validation.
+V1–V8 reject typed manual steps. Ordinary registry `threshold` steps retain their
+existing behavior. Direct strict Replay still requires its original source;
+Run explicitly rebinds. Eager finite scalar U8/U16/F32/F64 sources are supported.
+Metadata preflight rejects unsupported lazy or partial-promotion prefixes before
+processing reads. Proven full eager-producing conversion/filter prefixes can be
+used. Pixel-only workflow publication preserves live display state and uses one
+atomic history entry. See [MW1's current qualification scope](packets/MW1-manual-threshold-workflow.md).
+
 Scalar `contrast_apply` accepts a complete saved command with empty parameters,
 or exactly `minimum`, `maximum` and integer `unsigned16_bits` authored parameters.
 The shared parameter editor exposes those three fields and preserves any original

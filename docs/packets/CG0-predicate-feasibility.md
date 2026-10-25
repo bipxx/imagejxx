@@ -1,5 +1,12 @@
 # CG0 G-A: exact predicates and output feasibility
 
+**2026-10-25 amendment:** this review evaluates the proposed exact-native
+profile, not the minimum universal editor contract. The
+[efficiency review](EXECUTION_EFFICIENCY_REVIEW.md#required-product-behavior-versus-optional-guarantees)
+requires comparing a documented reference-compatible continuous profile and
+eligible existing engines before choosing bespoke exact arithmetic. Its
+blockers do not block independent settings, XYZ, filtering or workflow work.
+
 Prepared 2026-10-24 by Agent A. **Source review and proposed decision, not an
 algorithm qualification or dependency approval.** The only change made by this
 task is this document. No library was cloned, installed, compiled or executed;

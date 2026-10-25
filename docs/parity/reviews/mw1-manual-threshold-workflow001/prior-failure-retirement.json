@@ -1,0 +1,294 @@
+{
+  "schema": "manual-workflow.previous-failure-retirement.001",
+  "state": "retired",
+  "reason": "Completed P13i final route archives supersede early observer/reader failure bulk; create bounded build headroom while preserving diagnostics",
+  "superseding_receipt_sha256": "b78a48d859f414b0f5e3ba1544e1a02a7ec6328b7d1016130269e282209db1e7",
+  "files": [
+    {
+      "archive": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\display-lifecycle-ui-windows001.tar.gz",
+      "bytes": 36687869,
+      "sha256": "b909e24ae38e568beb68564acdef6a9335356b73c254a2edc4bafe3e1eaa51e5",
+      "members_verified": 297,
+      "preserved": [
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-budget-gaussian.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-budget-rank-mean.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-draw-gaussian.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-lifecycle-gaussian-calibration-revision.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-lifecycle-gaussian-invalid-editor.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-lifecycle-gaussian-invalid-external.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-lifecycle-gaussian-owner-replace.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-lifecycle-gaussian-pixel-revision.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-lifecycle-gaussian-selection-revision.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-lifecycle-gaussian-supersede.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-lifecycle-rank-mean-calibration-revision.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-lifecycle-rank-mean-invalid-editor.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-lifecycle-rank-mean-owner-replace.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-lifecycle-rank-mean-pixel-revision.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-lifecycle-rank-mean-selection-revision.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-lifecycle-rank-mean-supersede.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-rank-maximum-in-place.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-rank-maximum-new-document.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-rank-mean-in-place.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-rank-mean-new-document.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-rank-median-in-place.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-rank-median-new-document.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-rank-minimum-in-place.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-rank-minimum-new-document.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-rank-variance-in-place.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-rank-variance-new-document.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-scientific-gaussian-active.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-scientific-gaussian-positioned.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-scientific-rank-mean-active.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-scientific-rank-mean-positioned.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-specialized-despeckle.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-specialized-outliers-bright-grays.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-specialized-outliers-bright-inverted.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-specialized-outliers-dark-grays.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-specialized-outliers-dark-inverted.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-specialized-remove-nans-finite.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-specialized-remove-nans-ieee.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-specialized-remove-nans-quiet.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-specialized-top-hat-dark-no-subtract-grays.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-specialized-top-hat-dark-no-subtract-inverted.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-specialized-top-hat-dark-subtract-grays.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-specialized-top-hat-dark-subtract-inverted.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-specialized-top-hat-light-no-subtract-grays.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-specialized-top-hat-light-no-subtract-inverted.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-specialized-top-hat-light-subtract-grays.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/cpp-specialized-top-hat-light-subtract-inverted.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/receipt.json",
+          "sha256": "269edabf5c19d283f968f5ca5f2486e98bd1250b0aae1afcb44cfe8047745718"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/display-lifecycle-ui-windows001/ui.xml",
+          "sha256": "d6e4c224eb617f78779e678536c765c42f6a385bad9baf01ee966cecebdfc30d"
+        }
+      ],
+      "state": "retired_unavailable"
+    },
+    {
+      "archive": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\budget-ui-windows001.tar.gz",
+      "bytes": 13551056,
+      "sha256": "7001c6cd37e7034cec12e9526f7654beb3bbbd84232c8851b34e6d6b4b58f71f",
+      "members_verified": 67,
+      "preserved": [
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/budget-ui-windows001/cpp-budget-gaussian.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/budget-ui-windows001/cpp-budget-rank-mean.log",
+          "sha256": "bee37e38fd9ccc7aa5258c6ed884f915ae74d41382d107f6650e63c0cef33b42"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/budget-ui-windows001/cpp-draw-gaussian.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/budget-ui-windows001/cpp-rank-maximum-in-place.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/budget-ui-windows001/cpp-rank-maximum-new-document.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/budget-ui-windows001/cpp-rank-mean-in-place.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/budget-ui-windows001/cpp-rank-mean-new-document.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/budget-ui-windows001/cpp-rank-median-in-place.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/budget-ui-windows001/cpp-rank-median-new-document.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/budget-ui-windows001/cpp-rank-minimum-in-place.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/budget-ui-windows001/cpp-rank-minimum-new-document.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/budget-ui-windows001/cpp-rank-variance-in-place.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/budget-ui-windows001/cpp-rank-variance-new-document.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/budget-ui-windows001/cpp-scientific-gaussian-active.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/budget-ui-windows001/cpp-scientific-gaussian-positioned.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/budget-ui-windows001/cpp-scientific-rank-mean-active.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/budget-ui-windows001/cpp-scientific-rank-mean-positioned.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/prior-failure-diagnostics001/budget-ui-windows001/receipt.json",
+          "sha256": "37730353e38f9c71064a75bbe18a17a51683bad951e5bbc6cf04c803fc1380dc"
+        }
+      ],
+      "state": "retired_unavailable"
+    }
+  ],
+  "protected": "AllfinalP13iandCFG1captures, latestE3E4passes, dedicatedTopHatfailure samples, allP13hfinalarchives, dirtysource",
+  "acceptance": false,
+  "removed_bytes": 50238925,
+  "preserved_bytes": 143315
+}

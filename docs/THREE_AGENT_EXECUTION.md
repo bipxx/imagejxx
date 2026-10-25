@@ -1,5 +1,33 @@
 # Three-agent execution plan
 
+**Current execution, 2026-10-25:** implementation has resumed with exactly
+three agents including root/C. The active packet is
+[MW1 manual-threshold workflow integration](packets/MW1-manual-threshold-workflow.md).
+A owns native behavior/codec, B the shared ImGui consumer, C independent
+expectations and the sole build/install lock. The scoped MW1 contract and receipt
+take precedence over historical pause/resume paragraphs in these documents.
+
+**Earlier planning amendment, 2026-10-25:** implementation was paused for review.
+The user-authorized Astra max plan review produced the
+[efficiency decisions](packets/EXECUTION_EFFICIENCY_REVIEW.md) and
+[API/key delivery paths](packets/API_KEY_DELIVERY_PATHS.md). They supersede stale
+resume/serial-critical-path instructions below. P13i is pushed at `0323a73`;
+CFG1 is pushed at `6b6dfd150e0443fee05c356474c502547d2d9283`. Four uncommitted
+CG0 reference source/contracts are preserved and not independently qualified.
+The selected ready workflow is MW1; keep the
+continuous-geometry backend/profile decision bounded and independent. No
+new dependency is authorized by that documentation review. MW1 uses existing code.
+
+The [compilexx cross-project addendum](packets/COMPILEXX_CROSS_PROJECT_REVIEW.md)
+adds original-protocol reuse, separate production/observer/profile identities,
+host-local evidence verification, one owning gate per assertion and a short
+causal-failure loop. Its [current next-owner actions](packets/COMPILEXX_CROSS_PROJECT_REVIEW.md#current-review-next-owner-actions-after-mw1)
+add early intake/direct-SDK domain review, affected producer/fixture checks,
+composed-stage controls and peak capture admission. Apply them at the existing
+packet/run owners; do not start a separate infrastructure campaign. Exactly
+three roles remain in the execution plan. MW1 is locally scoped-qualified;
+finish landing before selecting the next ready missing user outcome.
+
 Reviewed **2026-10-24**. Current scoped milestone: **CFG1**,
 [Wand settings-consumer qualification](parity/reviews/cfg1-settings-wand001/receipt.json).
 Windows/Linux each pass seven new native groups/303 checks, existing Settings
@@ -12,7 +40,7 @@ P13h `4a80b3570c59e547f2571c7fc2b95d85a5b66d0e`. Windows/Linux each pass
 24 native groups, 2,376 affected regression, 41 manual/synchronous API,
 46 batch, 128 UI and four selected genuine CI readers; installed SDK consumers
 pass 414+35 checks. This qualifies the declared packet, not a full capability
-family. Git landing is the final integration step.
+family. Both scoped packets are already committed and pushed.
 
 ## Authority and resume card
 
@@ -40,9 +68,10 @@ Read, in order:
 4. Only the selected requirement records and relevant historical evidence.
    Do not reload the entire progress history or rerun qualified unchanged inputs.
 
-**Next execution:** preserve CFG1's checked sources and land the reviewed packet.
-Then use [CG0 decisions](packets/CG0-continuous-geometry-decisions.md) for the
-continuous-geometry design/reference gates and the
+**Next execution after user resume:** reuse landed CFG1/P13i inputs. Use the
+efficiency review's ready queue rather than a mandatory CFG1→CG0 global chain.
+Use [CG0 decisions](packets/CG0-continuous-geometry-decisions.md) as unratified
+profile proposals and the
 [predicate feasibility review](packets/CG0-predicate-feasibility.md) for the
 specific remaining exact-pair/coincidence, recoverable allocation and emitted
 binary64 topology certificates. No geometry dependency is approved or incorporated.
@@ -153,8 +182,10 @@ unmerged branches or uncommitted work. C alone commits, pushes and prunes.
    successor explicitly does not consume its blocked contract.
 
 Only one integrated product packet is active. Prepare at most one successor's
-contracts/reference fixtures; use idle capacity for named missing evidence,
-not a second overlapping Window/core integration. Each handoff reports changed
+contracts, fixtures or source outside the frozen consumed-input closure under
+explicit nonoverlapping file ownership. Do not force A/B idle during C's
+verification, and do not start a second build/install or overlapping Window/core
+integration. Each handoff reports changed
 files, API/record deltas, executed checks, exact blockers, storage and next action.
 
 ## Completed baseline: P13h and C0
@@ -219,8 +250,10 @@ reference gates, UI lifecycle, case IDs and phased exit. Do not maintain a secon
 implementation specification here. P13h is scoped-qualified at
 `4a80b3570c59e547f2571c7fc2b95d85a5b66d0e`; do not restart its closeout.
 
-Current critical path: **CFG1 scoped landing → CG0 contract/feasibility/reference
-gates**. CFG1's [clause ledger](packets/CFG1-qualification-ledger.md) owns its
+Current state: **MW1 scoped Windows/Linux verification passed; landing pending**. The efficiency review
+replaces a global geometry critical path with independent ready workflow tracks.
+CG0's bounded backend/profile experiment blocks its geometry consumers only.
+CFG1's [clause ledger](packets/CFG1-qualification-ledger.md) owns its
 current selected scope; remaining settings chains are separate packets.
 E7 is scoped-qualified; its [clause ledger](packets/P13i-qualification-ledger.md)
 and final receipt own current results. E1–E6 have scoped

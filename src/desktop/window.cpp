@@ -12229,7 +12229,18 @@ void Window::Impl::draw() {
   plots();
   const bool imagesVisible = ImGui::Begin("Images");
   shortcutWorkspace = ImGui::GetCurrentWindow();
-  ImGui::BeginDisabled(owner.busy());
+  const bool imageEditingBlocked = owner.busy();
+  // An idle workflow review owns a private draft, not the document tabs.
+  // Activation already cancels that draft before switching its source. Keep
+  // processing/child jobs and every other existing busy cause blocking tabs.
+  const bool imageTabsBlocked = (!launchPublishing && !pendingLaunch.empty()) ||
+      workflowOtherBusy() || nativeWorkflowPanel.working()
+#ifdef IMAGEJXX_HAS_SCIENTIFIC_IO
+      || (!scientificIoPublishing && (startupTiffs || scientificIoPanel.visible() ||
+          scientificIoPanel.working() || !pendingFileOpens.empty()))
+#endif
+      ;
+  ImGui::BeginDisabled(imageTabsBlocked);
   if (!imagesVisible) {
     resetInputs();
   } else if (owner.documents_.empty()) {
@@ -12249,11 +12260,14 @@ void Window::Impl::draw() {
           pane.doc->title() + (pane.doc->dirty() ? " *" : "") + "###document";
       auto flags = force == int(i) ? ImGuiTabItemFlags_SetSelected
                                    : ImGuiTabItemFlags_None;
-      const bool visible = ImGui::BeginTabItem(title.c_str(), &open, flags);
+      const bool visible = ImGui::BeginTabItem(title.c_str(),
+          imageEditingBlocked ? nullptr : &open, flags);
       const auto tabMin = ImGui::GetItemRectMin(),
                  tabMax = ImGui::GetItemRectMax();
       documentTabs.push_back({{"document_id", pane.doc->id},
                               {"index", i},
+                              {"editing_blocked", imageEditingBlocked},
+                              {"close_enabled", !imageEditingBlocked},
                               {"id", ImGui::GetItemID()},
                               {"enabled", !(ImGui::GetCurrentContext()->LastItemData.ItemFlags & ImGuiItemFlags_Disabled)},
                               {"selected", visible}, {"visible", ImGui::IsItemVisible()},
@@ -12267,12 +12281,14 @@ void Window::Impl::draw() {
         // owner while a previous/default tab is still visible during setup.
         if (force < 0 || force == int(i)) {
           owner.setActiveIndex(int(i));
+          ImGui::BeginDisabled(imageEditingBlocked);
           guard([&] { canvas(pane); });
+          ImGui::EndDisabled();
         }
         ImGui::EndTabItem();
       } else if (pane.orthogonalWasVisible || pane.ordinaryCanvasVisible)
         resetInput(pane);
-      if (!open)
+      if (!imageEditingBlocked && !open)
         close = pane.doc;
       ImGui::PopID();
     }

@@ -1,5 +1,15 @@
 # Sol Ultra execution guide
 
+**Current execution, 2026-10-25:** implementation resumed; follow
+[MW1](packets/MW1-manual-threshold-workflow.md) and the three-agent execution
+authority. Historical pause statements below describe the earlier review.
+
+**Earlier plan amendment, 2026-10-25:** use the
+[Astra max efficiency decisions](packets/EXECUTION_EFFICIENCY_REVIEW.md) and
+[API/key delivery guide](packets/API_KEY_DELIVERY_PATHS.md) with the three-agent
+plan. Product implementation remains paused; P13i/CFG1 are landed. Historical
+resume instructions below do not override this state.
+
 **Current execution authority, 2026-10-24:** the
 [three-agent execution plan](THREE_AGENT_EXECUTION.md#authority-and-resume-card)
 and [P13i specification](packets/P13i-path-filter-targets.md) replace this

@@ -245,6 +245,8 @@ def path_authoring_edge_cases():
 
 
 SETTINGS_WAND_CASES = ("wand-consume", "wand-drafts", "wand-persist", "wand-reopen")
+MANUAL_WORKFLOW_CASES = ("manual-workflow-current-path", "manual-workflow-all-z-path",
+                         "manual-workflow-refusal-recovery")
 SETTINGS_WAND_STATES = {
     "wand-consume": {"before", "default_selected", "eight_applied", "eight_selected",
                      "tolerant_applied", "tolerant_selected", "four_selected"},
@@ -305,6 +307,8 @@ def settings_wand_observation(raw, case):
 
 
 def cases():
+    for case in MANUAL_WORKFLOW_CASES:
+        yield "manual-workflow", case, ["--manual-threshold-workflow-ui-case", case]
     for case in SETTINGS_WAND_CASES:
         yield "settings-wand", case, ["--settings-wand-ui-case", case]
     for case in PATH_FILTER_CASES:
@@ -472,6 +476,10 @@ def reader_environment(output):
         case: str(reports / "settings-wand" / case / "case.json")
         for case in SETTINGS_WAND_CASES
     })
+    environment["IMAGEJXX_MANUAL_WORKFLOW_CPP_REPORTS"] = json.dumps({
+        case: str(reports / "manual-workflow" / case / "case.json")
+        for case in MANUAL_WORKFLOW_CASES
+    })
     return {name: str(path) for name, path in environment.items()}
 
 
@@ -636,7 +644,7 @@ def capture(output, executable, root, environment=None, *, selected_cases=None,
             with (private / (case + ".process.log" if wand_pair else "process.log")).open("wb") as log:
                 process = subprocess.run(argv, cwd=root, env=environment, stdout=log,
                                          stderr=subprocess.STDOUT,
-                                         timeout=min(case_timeout, 60) if group == "settings-wand" else case_timeout,
+                                         timeout=min(case_timeout, 60) if group in ("settings-wand", "manual-workflow") else case_timeout,
                                          check=False)
             item.update(exit_code=process.returncode, elapsed_seconds=time.monotonic() - started)
             if process.returncode:
@@ -644,7 +652,7 @@ def capture(output, executable, root, environment=None, *, selected_cases=None,
             report = actual / ("report.json" if group == "ieee-viewing" else
                                "imgui-cpp.json" if group in ("headless-session", "selection-legacy") else "case.json")
             if (not report.is_file() or report.stat().st_size > 128 * 1024 * 1024
-                    or (group in ("path-filters", "settings-wand") and report.stat().st_size >= 16 * 1024 * 1024)):
+                    or (group in ("path-filters", "settings-wand", "manual-workflow") and report.stat().st_size >= 16 * 1024 * 1024)):
                 raise ValueError(f"Missing or oversized observation report: {report}")
             observation = (settings_wand_observation(report.read_bytes(), case)
                            if group == "settings-wand" else json.loads(report.read_bytes()))
@@ -741,6 +749,17 @@ def capture(output, executable, root, environment=None, *, selected_cases=None,
                         or len(observation["frames"]) > 750):
                     raise ValueError(f"Unexpected path filter observation: {report}")
                 item["path_filter_contract"] = observation["contract"]
+            elif group == "manual-workflow":
+                if (observation.get("schema") != "manual-threshold.workflow.ui.001"
+                        or observation.get("case_id") != case
+                        or observation.get("context") != "imgui_cpp"
+                        or observation.get("status") != "observed"
+                        or observation.get("error") != ""
+                        or observation.get("acceptance_claim") is not False
+                        or not observation.get("events") or not observation.get("states")
+                        or not 0 < len(observation.get("frames", [])) <= 750):
+                    raise ValueError(f"Unexpected manual workflow observation: {report}")
+                item["manual_workflow_schema"] = observation["schema"]
             elif group == "path-authoring":
                 if (observation.get("contract") != "p13h.path-authoring.ui.001"
                         or observation.get("mode") != case

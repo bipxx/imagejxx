@@ -781,6 +781,12 @@ if(BUILD_TESTING)
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party/nlohmann_json/include)
   add_test(NAME native_manual_threshold_path_command COMMAND imagejxx_manual_threshold_path_command_tests)
   set_tests_properties(native_manual_threshold_path_command PROPERTIES TIMEOUT 60)
+  add_executable(imagejxx_manual_threshold_workflow_tests tests/native/test_manual_threshold_workflow.cpp)
+  target_link_libraries(imagejxx_manual_threshold_workflow_tests PRIVATE imagejxx::core)
+  target_include_directories(imagejxx_manual_threshold_workflow_tests SYSTEM PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/nlohmann_json/include)
+  add_test(NAME native_manual_threshold_workflow COMMAND imagejxx_manual_threshold_workflow_tests)
+  set_tests_properties(native_manual_threshold_workflow PROPERTIES TIMEOUT 60)
   add_executable(imagejxx_z_subset_tests tests/native/test_z_subset.cpp)
   target_link_libraries(imagejxx_z_subset_tests PRIVATE imagejxx::core)
   add_test(NAME native_z_subset COMMAND imagejxx_z_subset_tests)
@@ -1152,6 +1158,7 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     src/desktop/gaussian_panel.cpp src/desktop/rank_panel.cpp src/desktop/operation_target_panel.cpp src/desktop/gaussian_jobs.cpp src/desktop/threshold_panel.cpp src/desktop/histogram_panel.cpp src/desktop/histogram_ui_probe.cpp src/desktop/histogram_defaults_ui_probe.cpp src/desktop/histogram_recorder_ui_probe.cpp src/desktop/histogram_async_ui_probe.cpp src/desktop/target_histogram_ui_probe.cpp src/desktop/manual_threshold_ui_probe.cpp src/desktop/z_subset_ui_probe.cpp src/desktop/axis_spacing_ui_probe.cpp src/desktop/slicer_resize_ui_probe.cpp src/desktop/path_visual.cpp src/desktop/planar_path_ui_probe.cpp src/desktop/annotation_workflow_ui_probe.cpp src/desktop/root_path_ui_probe.cpp src/desktop/native_bare_import_ui_probe.cpp src/desktop/planar_annotation_panel.cpp src/desktop/planar_annotation_ui_probe.cpp src/desktop/planar_annotation_rebind.cpp src/desktop/planar_annotation_matrix.cpp
     src/desktop/native_workflow_batch_ui_probe.cpp
     src/desktop/native_workflow_ui_probe.cpp
+    src/desktop/manual_threshold_workflow_ui_probe.cpp
     src/desktop/histogram_workflow_ui_probe.cpp
     src/desktop/native_workflow_panel.cpp
     src/desktop/native_workflow_parameters.cpp

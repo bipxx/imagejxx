@@ -1,16 +1,26 @@
 # Three-agent delivery specifications
 
+**Current execution, 2026-10-25:** implementation resumed with exactly three
+agents including root/C; [MW1](MW1-manual-threshold-workflow.md) is the frozen
+active packet. Historical pause statements below refer to the planning review.
+
+**Earlier 2026-10-25 amendment:** implementation was paused. The
+[efficiency review](EXECUTION_EFFICIENCY_REVIEW.md) owns current scheduling and
+separates unratified exact-native geometry guarantees from required product
+behavior. The [API/key guide](API_KEY_DELIVERY_PATHS.md) defines consumer batches
+and reuse paths. P13i/CFG1 are already landed; old pending-closeout text below
+is historical contract material, not a new task. No family scope is removed.
+
 Reviewed 2026-10-24. This is the detailed dispatch companion to the
 [execution plan](../THREE_AGENT_EXECUTION.md), not a replacement for the
 [M0–M13 requirements](../PLAN.md#scope-and-completion-rule). Exactly three
 agents include the coordinator. No additional worker or nested agent is needed.
 Existing product changes remain WIP until their scoped exit is verified.
 
-**Current checkpoint:** [P13i scoped qualification](../parity/reviews/p13i-path-filter001/receipt.json)
-now passes the final Windows/Linux matrix, including the later batch boundary
-regression. Q0 below is its preserved closeout contract. Complete reviewed
-landing, then dispatch CG0 gates and independent CFG1; neither successor is
-qualified by P13i's results.
+**Qualified baseline:** [P13i](../parity/reviews/p13i-path-filter001/receipt.json)
+and CFG1 below are landed. Q0 preserves P13i's executed closeout contract;
+do not repeat it. Current ready-work scheduling comes from the efficiency
+review; reference preparation does not qualify a geometry implementation.
 
 CFG1 subsequently [passed its scoped consumer/UI exit](../parity/reviews/cfg1-settings-wand001/receipt.json).
 Its [execution](CFG1-execution.md) and [clause ledger](CFG1-qualification-ledger.md)
@@ -20,12 +30,12 @@ unresolved certificates; it does not approve a new product dependency.
 
 ## Review findings and scheduling decisions
 
-1. Close P13i qualification before changing its consumed product interfaces.
-   E1–E6 receipts qualify their declared slices; they do not qualify E7.
+1. P13i qualification and landing are complete within the final receipt's scope.
+   E1–E6 receipts retain their narrower identities; the final receipt owns E7.
 2. The P13i catalog now has 64 routes, hence 128 standalone/Python reader cases
    per platform. The former 58/116 count predates six stack-choice routes.
-   The local Windows chunk ledger says `passed`; this review does not convert
-   it into canonical, independently re-audited cross-platform acceptance.
+   The final receipt independently audits both platforms; these route counts
+   do not establish full ImageJ/Fiji acceptance.
 3. Continuous Boolean geometry is distinct from the existing image-grid region
    Boolean implementation. Topology and numerical policy are an entry gate.
 4. Configuration, selections, filtering and XY/XZ/YZ viewing remain explicit
@@ -187,9 +197,9 @@ implementation. The execution-plan queue gives the default order; a blocked
 geometry reference need not block independent settings or viewing work.
 
 The [CFG1 settings-consumer audit](CFG1-settings-consumer-audit.md) inventories
-all 61 current keys and proposes a four-route Wand preference/consumer/persistence
-packet with literal mask oracles. It is source-audited preparation, not executed
-UI acceptance or a new settings implementation.
+all 61 current keys. Its four-route Wand preference/consumer/persistence packet
+has a scoped executed receipt; the remaining source-audit rows are not qualified
+by that result. The API/key guide groups those remaining consumers efficiently.
 
 | Track / bounded packet | A specification | B specification | C acceptance and dependency |
 | --- | --- | --- | --- |

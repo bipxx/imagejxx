@@ -1,0 +1,50 @@
+{
+  "schema": "mw1.retention-availability.001",
+  "acceptance": false,
+  "prior_failed_p13i_bulk": {
+    "availability": "retired-unavailable",
+    "record": {
+      "path": "docs\\parity\\reviews\\mw1-manual-threshold-workflow001\\prior-failure-retirement.json",
+      "bytes": 18510,
+      "sha256": "52895d906a8a26d44fbc4157c67e0ca27bd81f864f9b041cf532cbd1a852861d"
+    },
+    "removed_bytes": 50238925,
+    "preserved_diagnostics_bytes": 143315
+  },
+  "prior_failed_p13h_capture": {
+    "raw_availability": "retired",
+    "lossless_archive_available": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13h-verification\\windows-regression002.tar.gz",
+      "bytes": 13588442,
+      "sha256": "93114eb8d01ea44be1a2664806fd4d2e1ed5ec3eb320698671852c2c0550bbaf"
+    },
+    "original_member_retention": {
+      "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13h-verification\\windows-regression002-retention.json",
+      "bytes": 3715,
+      "sha256": "54b9317b6bf6ad3f351c842eaf8aa2fb5280e8b6b8579931b36e6417cc73ac4f"
+    },
+    "raw_removed_bytes": 98233352
+  },
+  "sdk": {
+    "windows": {
+      "generated_cache": "retired",
+      "original_retirement_record": {
+        "locator": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\sdk-windows003\\cache-retirement.json",
+        "bytes": 1202,
+        "sha256": "c3aadd2a736fa038a5984a65c1100cd7b3d34a738871453440036b1229b0ae19"
+      },
+      "final_consumer": "Executable and CMake configuration retained and verified by host audit"
+    },
+    "linux": {
+      "generated_cache": "retired",
+      "original_retirement_record": {
+        "locator": "\\\\wsl.localhost\\Ubuntu\\home\\heq\\.cache\\imagejxx-build\\p08m-001-2aqxi4ay\\source001\\.tmp\\manual-workflow-verification\\sdk-linux003\\cache-retirement.json",
+        "bytes": 1254,
+        "sha256": "67cea792a4bd128de7a156d6c9b6efccb674025e3ef237cb8fb78e02e954dfb0"
+      },
+      "final_consumer": "Executable and CMake configuration retained and verified by host audit"
+    }
+  },
+  "historical_receipts": "Original receipts/fingerprints unchanged; retirement does not create or upgrade acceptance",
+  "protected": "Original final P13h/P13i/CFG1 evidence and four unqualified CG0 source/contracts preserved"
+}

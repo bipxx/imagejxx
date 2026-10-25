@@ -29,8 +29,9 @@ private:
             std::move(steps))),
         limits_(limits) {}
 };
-// Closed V1..V8 portable intent; V8 adds extent-bound authored path creation.
-// V7 retains typed planar/saved annotation choices. Original captured records remain historical
+// Closed V1..V9 portable intent. V9 adds captured manual-threshold commands
+// with optional authored bounds; V1..V8 retain their earlier closed grammar.
+// V8 adds extent-bound authored path creation. V7 retains typed planar/saved annotation choices. Original captured records remain historical
 // evidence; typed choices/targets contain no destination document identity.
 // No pixel reads, execution, file paths, write consent or filesystem IO.
 NativeWorkflowProgram

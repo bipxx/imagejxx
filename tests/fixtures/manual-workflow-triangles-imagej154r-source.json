@@ -1,0 +1,82 @@
+{
+  "schema": "imagejxx.reference.manual-workflow-triangles.source",
+  "version": 1,
+  "acceptance_claim": false,
+  "reference": "ImageJ1.54r 62db90a269cccc1ac79f658e4602043214ed055b",
+  "observer": {
+    "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\tests\\reference\\ObservePathFilterTargets.java",
+    "bytes": 20064,
+    "sha256": "af638481ac8a2596dfadbabba462be3933fc5d568d14eda7275934e8922fb1ef"
+  },
+  "observer_classes": [
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\classes\\ObservePathFilterTargets$Config.class",
+      "bytes": 599,
+      "sha256": "aa982e6cd83d2ad29b2896cfb1f11a63319f5d6337b06b472d9dce003a4f5898"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\classes\\ObservePathFilterTargets$Json.class",
+      "bytes": 3059,
+      "sha256": "4412d5225735ae25dd43b9b371def56d92f17e3716b3396fb0ab145026391e63"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\classes\\ObservePathFilterTargets.class",
+      "bytes": 13359,
+      "sha256": "39ed070b1e445e71c47d61aee2142fffea72b418da798a2316e347a47d1f5504"
+    }
+  ],
+  "runtime": {
+    "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\reviewed-jdk21\\bin\\java.exe",
+    "bytes": 49696,
+    "sha256": "798ffec156ceb8cb1535bf68747d0ee3dfc1fc17dcd0b322f8027018404155c1"
+  },
+  "compiled_class_count": 475,
+  "compiled_class_manifest_sha256": "636d25f0454c260bf3e917f6af936941f8c3421db5dd4bd6e80e41f6ff9d4925",
+  "fixture": {
+    "path": "manual-workflow-triangles-imagej154r.json.gz",
+    "sha256": "44637456b538ec1ccb559835ca3f52224c486e162f2fe7c2148d69a673ebea6a"
+  },
+  "cases": [
+    {
+      "id": "captured",
+      "argv": [
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\reviewed-jdk21\\bin\\java.exe",
+        "-Xms16m",
+        "-Xmx128m",
+        "-Djava.awt.headless=true",
+        "-cp",
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\classes",
+        "ObservePathFilterTargets",
+        "captured",
+        "11",
+        "11",
+        "0,2,2,1,8,2,1,2,8,4",
+        "1",
+        "small-mask"
+      ],
+      "exit_code": 0,
+      "raw_report_sha256": "4369eef29823c01fcdb8416b90dafeae6219623dc656bf38cc5d3c727d9e2b8c"
+    },
+    {
+      "id": "destination",
+      "argv": [
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\reviewed-jdk21\\bin\\java.exe",
+        "-Xms16m",
+        "-Xmx128m",
+        "-Djava.awt.headless=true",
+        "-cp",
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\classes",
+        "ObservePathFilterTargets",
+        "destination",
+        "11",
+        "11",
+        "0,1,1,1,7,1,1,1,7,4",
+        "1",
+        "small-mask"
+      ],
+      "exit_code": 0,
+      "raw_report_sha256": "dbb2d6c5bbabc65aacc1b48c3d0271e0972098bc83beac68ca4761e16ff0b7ce"
+    }
+  ],
+  "scope": "Fresh pinned ImageJ mask observations; no GUI, general solver or whole-feature acceptance"
+}

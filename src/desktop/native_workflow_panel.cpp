@@ -192,7 +192,7 @@ std::vector<Entry> program_entries(const Json &record, std::size_t cap) {
     entry.authored = true;
     entry.enabled = std::visit([](const auto &v) { return v.enabled; }, step);
     if (const auto op = std::get_if<NativeWorkflowOperation>(&step)) {
-      entry.title = op->operation=="planar_annotation"?"Edit planar annotation":op->operation=="saved_roi_geometry"?"Edit saved ROI geometry":op->operation=="selection_creation"?"Create / combine selection":op->operation=="selection_enlargement"?"Enlarge / shrink selection":op->operation=="rgb_contrast_session"?"Apply RGB session history":op->operation=="rgb_contrast_stack"?"Apply RGB brightness/contrast to stack":op->operation=="rgb_contrast_apply"?"Apply RGB brightness/contrast":op->operation=="contrast_apply"?"Apply brightness/contrast":op->operation=="rgb_dataset"?"RGB dataset conversion":op->operation=="color_stack"?"RGB / HSB component stack":op->operation=="indexed_dataset"?"Indexed color dataset":op->operation=="indexed_rgb"?"Indexed palette to RGB":operation_spec(op->operation).title;
+      entry.title = detail::native_manual_threshold_intent(*op)?"Apply manual threshold":op->operation=="planar_annotation"?"Edit planar annotation":op->operation=="saved_roi_geometry"?"Edit saved ROI geometry":op->operation=="selection_creation"?"Create / combine selection":op->operation=="selection_enlargement"?"Enlarge / shrink selection":op->operation=="rgb_contrast_session"?"Apply RGB session history":op->operation=="rgb_contrast_stack"?"Apply RGB brightness/contrast to stack":op->operation=="rgb_contrast_apply"?"Apply RGB brightness/contrast":op->operation=="contrast_apply"?"Apply brightness/contrast":op->operation=="rgb_dataset"?"RGB dataset conversion":op->operation=="color_stack"?"RGB / HSB component stack":op->operation=="indexed_dataset"?"Indexed color dataset":op->operation=="indexed_rgb"?"Indexed palette to RGB":operation_spec(op->operation).title;
       entry.scope = int(op->target.scope);
       entry.roi = int(op->target.roi);
       entry.calibration = op->use_destination_calibration;
@@ -349,7 +349,9 @@ std::vector<Entry> compile(const Json &table, std::size_t cap) {
       NativeWorkflowOperation value;
       value.operation = string(get(raw, "operation"));
       if (raw.contains("schema_version")) {
-        if (value.operation == "gaussian_blur_imagej")
+        if (value.operation == "threshold")
+          validate_manual_threshold_command_record(record);
+        else if (value.operation == "gaussian_blur_imagej")
           validate_gaussian_command_record(record);
         else if ((value.operation == "rank_filter_imagej" || (value.operation == "remove_outliers_imagej" || value.operation == "top_hat_imagej" || value.operation == "remove_nans_imagej")))
           validate_rank_command_record(record);
@@ -388,7 +390,8 @@ std::vector<Entry> compile(const Json &table, std::size_t cap) {
               "Workflow geometry requires explicit native remap support");
       if (!raw.contains("schema_version"))
         value.original = record;
-      title = operation_spec(value.operation).title;
+      title = detail::native_manual_threshold_intent(value)
+                  ? "Apply manual threshold" : operation_spec(value.operation).title;
       step = std::move(value);
     }
     if (auto ex = std::get_if<NativeWorkflowExport>(&step))
@@ -520,14 +523,20 @@ NativeWorkflowProgramLimits desktop_workflow_program_limits(std::size_t cap) {
 bool needs_native_workflow_review(const Json &table) {
   return table.is_array() &&
          std::any_of(table.begin(), table.end(), [](const auto &step) {
-           return step.is_object() && step.contains("schema");
+           // Detection routes malformed typed captures to strict review too;
+           // compile() validates their complete grammar before retaining them.
+           return step.is_object() && (step.contains("schema") ||
+               (step.contains("schema_version") && step.contains("operation") &&
+                step.at("operation").is_string() && step.at("operation") == "threshold"));
          });
 }
 void validate_legacy_batch_workflow(const Json &table) {
   require(table.is_array() && !table.empty(), "Record or load a workflow");
   for (const auto &step : table) {
     require(step.is_object(), "Workflow step must be an object");
-    require(!step.contains("schema"),
+    require(!step.contains("schema") && !(step.contains("schema_version") &&
+                step.contains("operation") && step.at("operation").is_string() &&
+                step.at("operation")=="threshold"),
             "This workflow requires native workflow review; generic batch "
             "integration is pending");
     const auto name = string(get(step, "operation"));
@@ -1893,6 +1902,11 @@ void NativeWorkflowPanel::draw(
         op->operation.c_str());
     if(detail::annotation_workflow_operation(op->operation)) {
       ImGui::TextWrapped(op->operation=="planar_annotation"?"Edit a planar annotation on the preceding stage. Review its geometry, plane and row in annotation choices; pixels and navigation are preserved.":"Edit saved-row geometry on the preceding stage. Names, positions, style and other rows stay unchanged. Review its row and geometry in annotation choices.");
+    } else if(detail::native_manual_threshold_intent(*op)) {
+      const auto range=detail::manual_threshold_workflow_range(*op);
+      ImGui::Text("Inclusive raw bounds: %.17g to %.17g",range.lower,range.upper);
+      ImGui::TextWrapped("Retain the captured bounds or edit Lower and Upper. Choose this image's processing planes and region below. The original source and selection remain historical; they are not restored. Workflow publication changes pixels and preserves the live display.");
+      draw_target();
     } else if(op->operation=="selection_creation") {
       const auto request=detail::selection_creation_workflow_request(*op,s.cap);
       ImGui::Text("Candidate: %s; %zu vertices",request.candidate.kind.c_str(),request.candidate.points.size());
@@ -2595,6 +2609,16 @@ Json NativeWorkflowPanel::diagnostics() const {
                 {"positions_count", e.retained_target ? target.positions.size()
                     : e.scope == int(TargetScope::Positions) ? e.positions.size() : std::size_t(0)}};
     }
+    Json manual;
+    if (const auto *operation=std::get_if<NativeWorkflowOperation>(e.step.get());
+        operation && detail::native_manual_threshold_intent(*operation)) {
+      const auto range=detail::manual_threshold_workflow_range(*operation);
+      const auto &original=*operation->original;
+      manual={{"lower",range.lower},{"upper",range.upper},
+              {"authored",!operation->parameters.empty()},
+              {"captured_lower",metadataJson(original.at("lower"))},{"captured_upper",metadataJson(original.at("upper"))},
+              {"original_version",metadataJson(original.at("schema_version"))}};
+    }
     entries.push_back({{"title", e.title},
                        {"enabled", e.enabled},
                        {"confirmed", e.confirmed},
@@ -2603,7 +2627,8 @@ Json NativeWorkflowPanel::diagnostics() const {
                        {"histogram_authored",e.histogram_authored},
                        {"authored", e.authored},
                        {"choice_bytes", e.choice_bytes},
-                       {"chosen_target", std::move(chosen)}});
+                       {"chosen_target", std::move(chosen)},
+                       {"manual_threshold",std::move(manual)}});
   }
   if (s.ready)
     for (const auto &f : s.ready->files)
