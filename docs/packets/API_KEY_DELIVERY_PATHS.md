@@ -184,6 +184,14 @@ changing image.hpp. Use current per-packet evidence, not the unchanged original
 family status, to distinguish this implementation from the remaining scientific
 scope. Group size must divide selected depth; no partial tail is silently lost.
 
+The native resolved command now exists in dataset_projection_command.hpp:
+resolve/validate/from_record/rebind/execute share strict source/typed-request
+checks. Reuse it, and keep live document publication guards separate from
+captured numerical execution. Before choosing metadata/output display changes,
+qualify the pinned ImageJ numerical/type/nonfinite and overlay/calibration path;
+native Float64/population output is not the ImageJ default. Avoid a new Float64
+viewer version merely to accommodate an unqualified parity UI default.
+
 The finite native project_dataset_z reducer now shares the existing projection
 loop through borrowed immutable planes. Reuse it from the future resolved
 command; no whole-stack copy or Python kernel is needed. Keep max_working_bytes

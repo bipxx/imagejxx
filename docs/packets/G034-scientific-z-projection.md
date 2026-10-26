@@ -1,9 +1,9 @@
 # Scientific Z projection
 
 This packet extends the existing range/grouped projection workflow to scientific
-TCZYXS datasets. G034 remains in progress. The first implementation is the shared
-metadata descriptor plus the finite native reducer. The resolved command,
-publication and UI remain unfinished.
+TCZYXS datasets. G034 remains in progress. The current implementation includes the shared
+metadata descriptor, finite native reducer and strict source command.
+Prepared publication and UI remain unfinished.
 
 ## Implemented descriptor
 
@@ -91,14 +91,73 @@ group, plus cleanup on failure/bad samples, unsupported policy, memory refusal,
 pre/in-reduction cancellation, callback exception and finite output overflow.
 [Current source-bound reduction evidence](../parity/reviews/G034-scientific-reduction-progress001.json).
 
+## Implemented source command
+
+`dataset_projection_command.hpp` adds immutable resolution, strict record
+validation/replay, explicit rebind and `execute_dataset_z_projection`. Resolution
+and all record checks are metadata-only. V1 has an explicit native_finite profile
+and intended new_document destination; numerical execution returns only a Dataset.
+It does not publish a document, clear annotations or qualify output metadata.
+
+The closed record retains source owner, Pixels+Metadata revisions, complete
+TCZYXS shape/type/sample policy and spatial/time calibration. Every explicit
+T/C/Z/group/method/cap input survives, including otherwise inactive T/C indices
+and zero ordinary-group mode. Integer fields reject Boolean/float approximations;
+flags require Boolean values. Derived shape/type/calibration, source contributors
+and portable buffer sizes are recomputed from the original metadata. Missing,
+unknown, unsupported and contradictory fields fail before rebinding. Replay
+rejects owner, data revision and metadata drift; display/transient-selection
+changes do not retarget these numerical inputs. Execution also rechecks captured
+provider metadata before callbacks/reads. Captured snapshots still compute their
+original pixels after a live document edit; prepared publication must guard that
+live owner separately.
+
+Working charges contain ABI-sized ownership tables, so they are not serialized
+as portable claims. The original working cap remains an exact positive request;
+validation does not claim that a positive cap was admitted on this ABI. Binding
+and execution enforce it on the current platform. Explicit rebind validates the
+entire old grammar/portable claims, then uses the caller's complete new request
+and cap. Runtime admission can only tighten a resolved request and never edits
+its immutable record. Insufficient/zero execution allowance fails before reads
+or user callbacks.
+
+Final014 passes five source consumers: layout, numerical execution, unchanged
+legacy core, command and public SDK example. Tests cover closed nested fields,
+exact uint64 revisions, integer/flag refusal, malformed original rebind, owner
+and pixel/metadata revision conflicts, calibration checks, permitted display/
+selection drift, positive-but-insufficient proposals, captured request identity,
+provider metadata drift, cap tightening and unchanged source history. An
+unreadable provider proves metadata paths make zero pixel/region reads.
+[Current command evidence](../parity/reviews/G034-scientific-command-progress001.json).
+The new symbols still need installed-SDK/full-CMake/platform qualification.
+
+## Next decision before document/UI integration
+
+The pinned source review confirms that scalar Sum/SD use Float32, SD uses the
+sample denominator, and projection remaps overlays and copies channel LUTs with
+method-specific range handling. The current native Float64/population profile
+must stay separate. [Pinned ZProjector source](https://github.com/imagej/ImageJ/blob/62db90a269cccc1ac79f658e4602043214ed055b/ij/plugin/ZProjector.java).
+Grouped projection redirects hyperstacks to ordinary projection.
+[Pinned GroupedZProjector source](https://github.com/imagej/ImageJ/blob/62db90a269cccc1ac79f658e4602043214ed055b/ij/plugin/GroupedZProjector.java).
+
+Include one-Z time series and distinguish grouped UI dispatch from direct API
+behavior in the new reference cases.
+
+Next capture pinned runtime results for dtype/nonfinite, overlay/display and
+calibration behavior before choosing prepared metadata policy or adding a new
+Float64 channel-display version. Reuse the existing approved reference runtime
+and fresh owned driver scratch. This source review is not an output corpus or
+parity acceptance. New observations cannot replace the six missing original
+readiness inputs or relabel broader historical recovery tracking.
+
 ## Required remaining implementation, in dependency order
 
 1. **Resolved command and native reduction.** Reuse the existing strict axis
    command-record helpers and reduction implementation. Capture immutable source
    owner/revisions, shape/type/sample policy and full spatial/time calibration;
    record every explicit T/C/Z/group/method/limit field. Validate the entire
-   original record before replay/rebind. The finite reducer is implemented;
-   nonfinite/ImageJ-specific profiles remain required. Resolve layout once before provider
+   original record before replay/rebind. The finite reducer and strict native
+   command/replay/rebind are implemented; ImageJ-specific profiles remain required. Resolve layout once before provider
    reads. Reduce each T/C group through immutable plane references, reusing one
    group-sized scratch buffer; do not materialize/copy the whole dataset or
    introduce a Python kernel. Full working admission must include outputs,

@@ -1,5 +1,35 @@
 # Three-agent execution plan
 
+## Scientific source command — 2026-10-26
+
+Immutable native resolution, strict record validation/replay, explicit rebind
+and numerical command execution now reuse the existing checked private codec.
+Owner, Pixels+Metadata revisions, full shape/type/sample policy/calibration and
+all raw T/C/Z/group/method/cap intent are bound. Derived portable claims are
+recomputed; runtime caps can only tighten. Display/selection drift is allowed
+for numerical inputs, while pixel/metadata changes reject strict replay. Source
+snapshots do not silently retarget after live edits; prepared publication still
+needs its live-source guard. ABI working charges are recomputed at bind/execute,
+not persisted as portable derived claims. Positive budget proposals are distinct
+from successful current-platform admission.
+
+Final014 passes layout, scientific execution, unchanged legacy core, strict
+command and public example source consumers. Shared historical codec header
+bytes remain unchanged; projection-only declarations avoid namespace/rebuild
+spillover. Completed consumers are hash-verified and retired between links;
+scratch measured after each command reached3,784,135 bytes (not a continuous
+write monitor). Superseded011-013 success receipts/logs are retained
+in verified lossless archives; their raw paths are explicitly retired.
+[Current evidence](parity/reviews/G034-scientific-command-progress001.json).
+
+Next qualify pinned ImageJ dtype/nonfinite and output metadata behavior before
+selecting prepared metadata policy or expanding Float64 channel display. The
+source review identifies sample SD/Float32 and existing overlay/LUT handling;
+source inspection alone is not parity acceptance. Then finish document mapping,
+prepared publication and Python/shared ImGui integration. Full installed/platform
+acceptance, missing original references and all99 original requirements remain.
+[Detailed next path](packets/G034-scientific-z-projection.md).
+
 ## Scientific finite projection reducer — 2026-10-26
 
 `project_dataset_z` now reduces scientific T/C/Z groups through the existing

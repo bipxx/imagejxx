@@ -1,4 +1,4 @@
-#include <imagejxx/dataset_projection_execution.hpp>
+#include <imagejxx/dataset_projection_command.hpp>
 #include <stdexcept>
 
 // Installed SDK consumer: describe a grouped scientific projection without
@@ -35,4 +35,11 @@ int main() {
   if (result.shape().dimensions() != std::array<int, 6>{3, 2, 1, 1, 1, 1} ||
       result.plane({2, 1, 0})->pixels[0] != 211 || source.shape().z != 3)
     throw std::runtime_error("Installed finite projection changed scientific axes or source");
+  imagejxx::Document document(source);
+  const auto command = imagejxx::resolve_dataset_z_projection_command(document.snapshot(), whole);
+  imagejxx::validate_dataset_z_projection_command_record(command.record());
+  const auto replay = imagejxx::dataset_z_projection_command_from_record(document.snapshot(), command.record());
+  const auto executed = imagejxx::execute_dataset_z_projection(replay);
+  if (executed.plane({2, 1, 0})->pixels[0] != 211 || document.undo_steps() != 0)
+    throw std::runtime_error("Installed projection command replay changed values or source history");
 }

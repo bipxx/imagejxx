@@ -1,0 +1,871 @@
+{
+  "schema": "imagejxx.scientific-z-projection-command-progress.001",
+  "parent_source": "cd1781c087243b9867547144f70f2ef5b1c899d6",
+  "acceptance_claim": false,
+  "scope": "Native finite source command and pixel execution only. No prepared document metadata/publication, Python/ImGui, ImageJ numeric/nonfinite or full installed/platform acceptance",
+  "source_inputs": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 134361,
+      "sha256": "48912e2c9304a5f1b1763d299e7b26204280285004e4311d9f1138d3aaf4f330"
+    },
+    {
+      "path": "include/imagejxx/dataset_projection_command.hpp",
+      "bytes": 2282,
+      "sha256": "2944eab40a30e8023a50c211803688362a1ce54f0e736ec88afb56b0612b64fb"
+    },
+    {
+      "path": "src/native/dataset_projection_command.cpp",
+      "bytes": 9005,
+      "sha256": "cf699f2c9e2457b43fa9cce610feb6edd3151e585f459f151c21c1275bf3f7fe"
+    },
+    {
+      "path": "src/native/projection_record_internal.hpp",
+      "bytes": 519,
+      "sha256": "35efae1aa1c1f78d987d0696ed9d3277c8648781a4b2e55a682de30c1e16871a"
+    },
+    {
+      "path": "tests/native/test_dataset_projection_command.cpp",
+      "bytes": 10856,
+      "sha256": "2653a75c1dff5f661f7363f9927f51bfa2bf57d8930a5af61a50b677b06a6656"
+    },
+    {
+      "path": "examples/cpp/dataset_projection.cpp",
+      "bytes": 2496,
+      "sha256": "cdcfff557002846a32787120ee5462dd469f36e69dbdcc02e09aae21f8b3d379"
+    },
+    {
+      "path": "src/native/axis_command_record.hpp",
+      "bytes": 1667,
+      "sha256": "4bb83a0387225aa9c3daf224ac600b46b518c5cea55b72a751883a20bc4d6df4"
+    },
+    {
+      "path": "src/native/axis_command_record.cpp",
+      "bytes": 14604,
+      "sha256": "d7583f7b9b234e5265c8a83dc2e817fb34ef02c6bf085ded1307e47ffc138d12"
+    },
+    {
+      "path": "include/imagejxx/dataset_projection.hpp",
+      "bytes": 1881,
+      "sha256": "133d07b31f90082ee5cbffa9cc3052bf10f3b5e0e1db68de8edd7e632cab41ca"
+    },
+    {
+      "path": "include/imagejxx/dataset_projection_execution.hpp",
+      "bytes": 560,
+      "sha256": "d82160334cb5ebca750f8cc67f49bdfaaf692351d84bd7105549e49ba2789cf1"
+    },
+    {
+      "path": "src/native/dataset_projection.cpp",
+      "bytes": 8151,
+      "sha256": "7a9725a85ee948f14c9d555a55d157f2cfaf75f7af827ee2a2512d7e09b3a99d"
+    },
+    {
+      "path": "src/native/analysis.cpp",
+      "bytes": 19687,
+      "sha256": "93b14a11e722b5b90e4d838288a1132ab0f0fcaaedca928831591f5adb387854"
+    }
+  ],
+  "verification": {
+    "summary": {
+      "state": "passed",
+      "scope": "Development scientific projection, strict command and shared reducer sources linked to unchanged installed dependencies; not installed new API, full CMake, nonfinite, ImageJ numeric, document or UI acceptance",
+      "installed_core": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\lib\\imagejxx_core.lib",
+        "bytes": 55055894,
+        "sha256": "fa9f4ea2979dc3e16f3cd137ce0bf5ff2db3b1dbaff5af1eaf2c25e7678e0fcb"
+      },
+      "compiler": {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+        "bytes": 678000,
+        "sha256": "824f0234b667847befd7e3ff258822bfe557b540959ff042caaec6844b709a11"
+      },
+      "binaries": {
+        "test": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\test.exe",
+          "bytes": 64000,
+          "sha256": "e05891d95648d12066aa91167e36d0b0f448a931e64d66e486f606dacbb2d93a"
+        },
+        "execution": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\execution.exe",
+          "bytes": 115200,
+          "sha256": "97579bea4a22f5023eb9439a99431be116b8e185e0eb1b053675a952d255aa66"
+        },
+        "legacy": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\legacy.exe",
+          "bytes": 129024,
+          "sha256": "2b2a50febf62318832f0983bc4740d0e80f730fda99c4b5611ef11655d8bbab2"
+        },
+        "cmdtest": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\cmdtest.exe",
+          "bytes": 406016,
+          "sha256": "ce44d0510325fc5b6c7d209c6b0ebb2f5fe4737b516feae5814f1ffa0f766d3d"
+        },
+        "example": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\example.exe",
+          "bytes": 307712,
+          "sha256": "bb3fe580f27db39affbaab2fcc57aaa724c2628d4a6f9f5d675a871ace07c8f7"
+        }
+      },
+      "scratch_retirement": {
+        "state": "retired",
+        "files": [
+          {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\analysis.obj",
+            "bytes": 338191,
+            "sha256": "2ebd650267fea68e9b923039c3585dd455a12184156b418cee6c082e7ea6f947"
+          },
+          {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\commandlib.obj",
+            "bytes": 819472,
+            "sha256": "8fd8037bb93a37601ada3a40ea12e5e6f0206069971e226c46a6291467dc7c7a"
+          },
+          {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\resolver.obj",
+            "bytes": 186806,
+            "sha256": "2af5b241148d2ed51cfd391048e4f893aaaa3e0187b746012e29a98ff652e7eb"
+          }
+        ]
+      },
+      "completed_consumer_retirement": [
+        {
+          "state": "retired",
+          "files": [
+            {
+              "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\test.exe",
+              "bytes": 64000,
+              "sha256": "e05891d95648d12066aa91167e36d0b0f448a931e64d66e486f606dacbb2d93a"
+            },
+            {
+              "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\test.obj",
+              "bytes": 194060,
+              "sha256": "b599304de112e70dcecaccb0e77dccfe55725687e9b154fc9482ee361649977a"
+            }
+          ]
+        },
+        {
+          "state": "retired",
+          "files": [
+            {
+              "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\execution.exe",
+              "bytes": 115200,
+              "sha256": "97579bea4a22f5023eb9439a99431be116b8e185e0eb1b053675a952d255aa66"
+            },
+            {
+              "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\execution.obj",
+              "bytes": 462973,
+              "sha256": "f7cb86e87493d71628f1ff70f2b7d9d2fe57e109ff7df05225ee2b0295eb5ae5"
+            }
+          ]
+        },
+        {
+          "state": "retired",
+          "files": [
+            {
+              "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\legacy.exe",
+              "bytes": 129024,
+              "sha256": "2b2a50febf62318832f0983bc4740d0e80f730fda99c4b5611ef11655d8bbab2"
+            },
+            {
+              "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\legacy.obj",
+              "bytes": 161519,
+              "sha256": "e391994793b7a4abeaf801aa6ef7f54da739754149179e4f78fc33551619b310"
+            }
+          ]
+        },
+        {
+          "state": "retired",
+          "files": [
+            {
+              "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\cmdtest.exe",
+              "bytes": 406016,
+              "sha256": "ce44d0510325fc5b6c7d209c6b0ebb2f5fe4737b516feae5814f1ffa0f766d3d"
+            },
+            {
+              "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\cmdtest.obj",
+              "bytes": 1311434,
+              "sha256": "e7e74d7fa4f4b36587598290b794f462feddcfd52d085f051f9613d3c6e19542"
+            }
+          ]
+        },
+        {
+          "state": "retired",
+          "files": [
+            {
+              "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\example.exe",
+              "bytes": 307712,
+              "sha256": "bb3fe580f27db39affbaab2fcc57aaa724c2628d4a6f9f5d675a871ace07c8f7"
+            },
+            {
+              "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\example.obj",
+              "bytes": 245680,
+              "sha256": "524e3c4dbc30aa3e945f4c12b62e8f9efe5132b6a59aa75f1cecfeb21ab5f6c9"
+            }
+          ]
+        }
+      ],
+      "frozen_input_count": 175,
+      "frozen_input_manifest_sha256": "477bc1def7da5776c8ca8254d54fa090f6bccebba4a0c4ec0b55a2b03cd29afb",
+      "commands": [
+        {
+          "label": "commandlib",
+          "argv": [
+            "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+            "/nologo",
+            "/MD",
+            "/EHsc",
+            "/std:c++17",
+            "/O2",
+            "/W4",
+            "/showIncludes",
+            "/IC:\\Users\\HEQ\\Projects\\imagejxx\\include",
+            "/c",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\native\\dataset_projection_command.cpp",
+            "/Fo:C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\commandlib.obj"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "cmdtest",
+          "argv": [
+            "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+            "/nologo",
+            "/MD",
+            "/EHsc",
+            "/std:c++17",
+            "/O2",
+            "/W4",
+            "/showIncludes",
+            "/IC:\\Users\\HEQ\\Projects\\imagejxx\\include",
+            "/c",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\tests\\native\\test_dataset_projection_command.cpp",
+            "/Fo:C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\cmdtest.obj"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "analysis",
+          "argv": [
+            "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+            "/nologo",
+            "/MD",
+            "/EHsc",
+            "/std:c++17",
+            "/O2",
+            "/W4",
+            "/showIncludes",
+            "/IC:\\Users\\HEQ\\Projects\\imagejxx\\include",
+            "/c",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\native\\analysis.cpp",
+            "/Fo:C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\analysis.obj"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "resolver",
+          "argv": [
+            "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+            "/nologo",
+            "/MD",
+            "/EHsc",
+            "/std:c++17",
+            "/O2",
+            "/W4",
+            "/showIncludes",
+            "/IC:\\Users\\HEQ\\Projects\\imagejxx\\include",
+            "/c",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\native\\dataset_projection.cpp",
+            "/Fo:C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\resolver.obj"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "execution",
+          "argv": [
+            "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+            "/nologo",
+            "/MD",
+            "/EHsc",
+            "/std:c++17",
+            "/O2",
+            "/W4",
+            "/showIncludes",
+            "/IC:\\Users\\HEQ\\Projects\\imagejxx\\include",
+            "/c",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\tests\\native\\test_dataset_projection_execution.cpp",
+            "/Fo:C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\execution.obj"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "legacy",
+          "argv": [
+            "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+            "/nologo",
+            "/MD",
+            "/EHsc",
+            "/std:c++17",
+            "/O2",
+            "/W4",
+            "/showIncludes",
+            "/IC:\\Users\\HEQ\\Projects\\imagejxx\\include",
+            "/c",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\tests\\native\\test_core.cpp",
+            "/Fo:C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\legacy.obj"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "test",
+          "argv": [
+            "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+            "/nologo",
+            "/MD",
+            "/EHsc",
+            "/std:c++17",
+            "/O2",
+            "/W4",
+            "/showIncludes",
+            "/IC:\\Users\\HEQ\\Projects\\imagejxx\\include",
+            "/c",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\tests\\native\\test_dataset_projection.cpp",
+            "/Fo:C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\test.obj"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "example",
+          "argv": [
+            "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+            "/nologo",
+            "/MD",
+            "/EHsc",
+            "/std:c++17",
+            "/O2",
+            "/W4",
+            "/showIncludes",
+            "/IC:\\Users\\HEQ\\Projects\\imagejxx\\include",
+            "/c",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\examples\\cpp\\dataset_projection.cpp",
+            "/Fo:C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\example.obj"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "test-link",
+          "argv": [
+            "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+            "/nologo",
+            "/MD",
+            "/EHsc",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\analysis.obj",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\resolver.obj",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\commandlib.obj",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\test.obj",
+            "/Fe:C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\test.exe",
+            "/link",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\lib\\imagejxx_core.lib"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "test-consumer",
+          "argv": [
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\test.exe"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "execution-link",
+          "argv": [
+            "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+            "/nologo",
+            "/MD",
+            "/EHsc",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\analysis.obj",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\resolver.obj",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\commandlib.obj",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\execution.obj",
+            "/Fe:C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\execution.exe",
+            "/link",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\lib\\imagejxx_core.lib"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "execution-consumer",
+          "argv": [
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\execution.exe"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "legacy-link",
+          "argv": [
+            "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+            "/nologo",
+            "/MD",
+            "/EHsc",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\analysis.obj",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\resolver.obj",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\commandlib.obj",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\legacy.obj",
+            "/Fe:C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\legacy.exe",
+            "/link",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\lib\\imagejxx_core.lib"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "legacy-consumer",
+          "argv": [
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\legacy.exe"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "cmdtest-link",
+          "argv": [
+            "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+            "/nologo",
+            "/MD",
+            "/EHsc",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\analysis.obj",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\resolver.obj",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\commandlib.obj",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\cmdtest.obj",
+            "/Fe:C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\cmdtest.exe",
+            "/link",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\lib\\imagejxx_core.lib"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "cmdtest-consumer",
+          "argv": [
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\cmdtest.exe"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "example-link",
+          "argv": [
+            "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+            "/nologo",
+            "/MD",
+            "/EHsc",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\analysis.obj",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\resolver.obj",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\commandlib.obj",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\example.obj",
+            "/Fe:C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\example.exe",
+            "/link",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\lib\\imagejxx_core.lib"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "example-consumer",
+          "argv": [
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-command-windows014\\scratch\\example.exe"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        }
+      ]
+    },
+    "source_consumer_count": 5,
+    "consumers": [
+      "layout",
+      "finite scientific numerical execution",
+      "unchanged legacy core",
+      "strict source command",
+      "public SDK example"
+    ],
+    "metadata_paths_provider_plane_reads": 0,
+    "metadata_paths_provider_region_reads": 0,
+    "checks": [
+      "Complete closed nested grammar; exact integers/uint64 and Boolean flags; missing/unknown/type/derived contradictions refused",
+      "Wrong owner and pixel/metadata revision drift rejected; complete calibration compared; display/selection drift allowed for numerical inputs",
+      "Original malformed record rejected before explicit rebind; all raw intent and memory caps retained",
+      "Portable derived claims exclude ABI-sized working tables; positive working proposals still require actual admission at bind/execute",
+      "Runtime cap only tightens; insufficient/zero cap and changed provider metadata fail before callbacks/reads",
+      "Numerical execution retains its captured snapshot after live edits and does not publish or modify source history"
+    ],
+    "observed_after_command_scratch_bytes": 3784135,
+    "scratch_measurement_scope": "Measured after each subprocess; not continuous compiler/linker write monitoring. All generated objects/executables retired after verified terminal process proofs."
+  },
+  "retained": [
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/receipt.json",
+      "bytes": 93414,
+      "sha256": "c1815a7d136d17b134cf157b5381d857eea811cce613e24a81ae22c4f69ddc8d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows-source014.py",
+      "bytes": 5753,
+      "sha256": "21de7e43485757dfa4e654aff3a0fe2f96ad5e752f12374bb42ca7174a81eba8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows-launch014.ps1",
+      "bytes": 707,
+      "sha256": "8a7d55b4257e3177d42ef184e7a8673629173185b2171beb462f1909da9741ee"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/scientific-command-storage-before011.json",
+      "bytes": 1522,
+      "sha256": "d4c4c604a5779e8295198044338802cf3726fa9e77ba49a5ed0f7b612a2352c9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/scientific-command-license014/receipt.json",
+      "bytes": 226,
+      "sha256": "f2d88f6dc419680ae39cbfbe02024d82a7a1523c57984ddbcf8724b627dca7ea"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/scientific-command-pinned-source-review014.json",
+      "bytes": 2528,
+      "sha256": "718f2ebe1dd464c4120ec3dd27b717c611d950aa8b1596d27376ddf09804eaec"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/analysis.log",
+      "bytes": 18371,
+      "sha256": "18655df31cb9d1c49466e5c7c5605ac42714032c9e0d6d5dc2cfd9ece47315c0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/cmdtest-consumer.log",
+      "bytes": 70,
+      "sha256": "3c6fab8e545d19ca7a26a0a5556484a469291676ca8fc198f46e2a812c3db38e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/cmdtest-link.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/cmdtest.log",
+      "bytes": 18467,
+      "sha256": "740b636efbc6adb36669f6e38c5ec1bfc76f33bb56fdc8f0298f83cbbf668cf2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/commandlib.log",
+      "bytes": 18800,
+      "sha256": "3ad575c977119f04c9d518de32256d310d31b7f061f51ec6fcfda9ee22da4aee"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/example-consumer.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/example-link.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/example.log",
+      "bytes": 18210,
+      "sha256": "aab4fd0a0b0b8ef454bc743726c3f750ddb203d6878f41ad115f702cacbe7afa"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/execution-consumer.log",
+      "bytes": 81,
+      "sha256": "c68b81fb7ba59efd7c8e6edf926dc256adb831b0f10f2a1701f08518f16bd196"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/execution-link.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/execution.log",
+      "bytes": 18619,
+      "sha256": "8611bf974967dee14e3950aeaf167fc478ea531b210f54b6dee9e4573305fbb9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/legacy-consumer.log",
+      "bytes": 26,
+      "sha256": "dd29f580373590d19bc260a53856a4d1066f55e68b643336f99576451aca5585"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/legacy-link.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/legacy.log",
+      "bytes": 15377,
+      "sha256": "93dcf28dd0f7e988b722508652af05221febf0e6aeed79bdaecee2487f791948"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/resolver.log",
+      "bytes": 18538,
+      "sha256": "442d8e74826a8d35c8b083a0bc039067f0e9081f5ce4f858fae2c3e10876dbd3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/test-consumer.log",
+      "bytes": 61,
+      "sha256": "1297d1a44814841fb57d66d908c078d0cf25cfcc91aae25b5d3fecd0bdc25414"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/test-link.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/test.log",
+      "bytes": 15317,
+      "sha256": "e9debb002012d71112e564ff2ede61f078d2f1f716184908cb3612dbec6e5376"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/analysis.process.json",
+      "bytes": 2169,
+      "sha256": "1875c73d4ba73f308b6464f8a4a0c4dbbceb005047f6c3c5c00200528c790719"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/cmdtest-consumer.process.json",
+      "bytes": 1809,
+      "sha256": "ac2f0e4b0b3a82bc3accdff8eec7bc23c2c6ba0f8454f5404471fc09c82951e1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/cmdtest-link.process.json",
+      "bytes": 2610,
+      "sha256": "b0edf3444bf8f2060285f819e75e99a8cdf86a18b62acd4bc444015221855357"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/cmdtest.process.json",
+      "bytes": 2193,
+      "sha256": "7d72aab265a9796856bd1c25da2533c4afcbfbee1e04cc9a4d12fad198328fc3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/commandlib.process.json",
+      "bytes": 2190,
+      "sha256": "a01157f98f9df9ea8fab7db014a96000140fec230d8035cbb795a4c2fe36994d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/example-consumer.process.json",
+      "bytes": 1811,
+      "sha256": "3da9acd5bbd7564ba29c2ef12f73c4f502d8b9594f5feb4625bfb85ca85944a8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/example-link.process.json",
+      "bytes": 2609,
+      "sha256": "1cbafe25fa06b700de752b112b9279cbf45b2d4939f7b75bea0daab65452da52"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/example.process.json",
+      "bytes": 2178,
+      "sha256": "174fcfd176c320376e96ca3be9e215a189f60666a192126df0d235c909419279"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/execution-consumer.process.json",
+      "bytes": 1814,
+      "sha256": "7e846cf3c23b62b20c4eff155a01bd6a29859b5b5232686f13acf0fa7af6110f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/execution-link.process.json",
+      "bytes": 2612,
+      "sha256": "92a1fbbf1d133941f7af4148eaf0106bb14589ae7ecbbac11e605292ad77dac2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/execution.process.json",
+      "bytes": 2197,
+      "sha256": "a7634796d2cfd071c7e6ae01215f5280c4384bab1abf750ccb5b190b1f53e4aa"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/legacy-consumer.process.json",
+      "bytes": 1808,
+      "sha256": "2baf5b7eb633c657dc934f031b24b5a1c157ad3521a98dc67e14ebe3a2fafc45"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/legacy-link.process.json",
+      "bytes": 2607,
+      "sha256": "8cc3f74b9137fa307a6f683e77caf72ba1af6b0d00fe0019ff4997eaec7cfe6d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/legacy.process.json",
+      "bytes": 2171,
+      "sha256": "05af10739985f0e835ea53126bcdf2cd2f0ca8a5274ed3c95bb4929b62290398"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/resolver.process.json",
+      "bytes": 2179,
+      "sha256": "31189a60fc8a226b4f396eed686cdbbed0de5b1c226e5604507453eb0c4588fb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/test-consumer.process.json",
+      "bytes": 1805,
+      "sha256": "40058cb7fd5193a46b8cff2ef991a941fe0777b166e89c58df45e6b5f14878c7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/test-link.process.json",
+      "bytes": 2603,
+      "sha256": "8f82de7ba0e8fbfbf55833c2ba4d7d823c0b57c40c261bc84abb7c4277c6f1b7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows014/test.process.json",
+      "bytes": 2183,
+      "sha256": "90cf210415e618fb570a14daf43a1557b82cbb824ccc35c38c02047ade457978"
+    }
+  ],
+  "superseded_success_retention": [
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows011-retention.json",
+      "bytes": 10129,
+      "sha256": "79f0c46b6dd94593ac38ac6a35554edef940411e66e18cedf666f90a2f01807c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows012-retention.json",
+      "bytes": 10129,
+      "sha256": "dff012ad9b90b9d6e7fd378925d72327564b1c40fd2fd3667ad7a6b523e0ef8e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-command-windows013-retention.json",
+      "bytes": 10129,
+      "sha256": "c7ab5c4b7d380e616d956b0fbd988fd5ba9b47137ad50c132c686157134175b7"
+    }
+  ],
+  "pinned_source_review": {
+    "scope": "Read-only pinned source review; no ImageJ execution, output corpus, numerical or metadata equivalence acceptance",
+    "imagej_commit": "62db90a269cccc1ac79f658e4602043214ed055b",
+    "source_archive": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\source.zip",
+      "bytes": 6146010,
+      "sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665"
+    },
+    "files": [
+      {
+        "member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/plugin/ZProjector.java",
+        "bytes": 26767,
+        "sha256": "49ea0e2447fdab259b0c8293018e82732e5ee9d8f380af04cfcad0e29d954466",
+        "local_extraction_matches": true,
+        "landmarks": [
+          {
+            "line": 245,
+            "pattern": "method==SUM_METHOD"
+          },
+          {
+            "line": 262,
+            "pattern": "method==SUM_METHOD"
+          },
+          {
+            "line": 280,
+            "pattern": "method==SUM_METHOD"
+          },
+          {
+            "line": 360,
+            "pattern": "method==SUM_METHOD"
+          },
+          {
+            "line": 394,
+            "pattern": "setCalibration(imp.getCalibration())"
+          },
+          {
+            "line": 448,
+            "pattern": "copyLuts(imp)"
+          },
+          {
+            "line": 449,
+            "pattern": "method==SUM_METHOD"
+          },
+          {
+            "line": 450,
+            "pattern": "resetDisplayRanges()"
+          },
+          {
+            "line": 461,
+            "pattern": "projectHyperStackRois"
+          },
+          {
+            "line": 490,
+            "pattern": "projectHyperStackRois"
+          },
+          {
+            "line": 859,
+            "pattern": "stdDev/(n-1.0)"
+          }
+        ]
+      },
+      {
+        "member": "ImageJ-62db90a269cccc1ac79f658e4602043214ed055b/ij/plugin/GroupedZProjector.java",
+        "bytes": 2517,
+        "sha256": "aab0f2739d4fac889ebde3358ced7f95fd4db29a05d494fc3e49637fcd17868a",
+        "local_extraction_matches": true,
+        "landmarks": [
+          {
+            "line": 20,
+            "pattern": "if (imp.isHyperStack())"
+          },
+          {
+            "line": 27,
+            "pattern": "setCalibration(imp.getCalibration())"
+          }
+        ]
+      }
+    ],
+    "next_action": "Verify exact pinned runtime output method/type/nonfinite and overlay/display/calibration behavior before choosing prepared metadata policy or expanding Float64 channel display; preserve existing native_finite behavior and all original reference pins."
+  },
+  "invariants": {
+    "original_inventory_bytes_unchanged": true,
+    "historical_codec_header_and_definitions_unchanged": true,
+    "protected_originals_unchanged": true,
+    "original_family_statuses": {
+      "in_progress": 47,
+      "open": 52,
+      "complete": 0
+    },
+    "new_dependency_or_plugin": false,
+    "new_compiler_cache_or_runtime": false
+  },
+  "remaining": [
+    "Capture pinned ImageJ runtime dtype/nonfinite, overlay/display/calibration and one-Z time-series behavior before choosing prepared metadata policy",
+    "Add ImageJ-specific profiles without changing native_finite/history/reference expectations",
+    "Complete many-to-one annotation/label/channel policies and prepared publication with live-source guards",
+    "Python/shared ImGui interaction, source/history/session and full independent platform/original reference acceptance"
+  ],
+  "storage": {
+    "measurement": {
+      "path": ".tmp/manual-workflow-verification/scientific-command-storage-after014.json",
+      "bytes": 1523,
+      "sha256": "58fdf8bbd2ca0181ef1063ada302e21a36a1c4228c85a1e4d9c74837774a1fb1"
+    },
+    "known_bytes": 8585402066,
+    "increase_from_before011_bytes": 506659,
+    "unknown_subtrees": 2,
+    "budget_verified": false,
+    "scope": "Point-in-time normalized complete generated roots; final small receipt/publication edits are additional. Compiler objects/executables retired; superseded receipts/logs losslessly archived; no new cache/runtime generation."
+  }
+}
