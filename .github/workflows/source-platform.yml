@@ -134,6 +134,13 @@ jobs:
         with:
           name: source-prefix-${{ inputs.profile }}
           path: build/ci-prefix
+      - name: Check installed qualification contracts before compilation
+        shell: bash
+        run: |
+          python -I -X utf8 -B tests/tools/test_ci_history_integration.py
+          python -I -X utf8 -B tests/tools/test_ci_scientific_sdk.py
+          python -I -X utf8 -B tests/tools/test_ci_windows_gl.py
+          python -I -X utf8 -B tests/tools/test_ci_python_suite_transport.py
       - name: Install Windows IO and both desktop hosts
         if: runner.os == 'Windows'
         shell: pwsh
@@ -172,23 +179,31 @@ jobs:
         if: runner.os == 'macOS'
         shell: bash
         run: python scripts/ci_scientific_sdk.py --output build/ci-scientific-sdk --profile "$IMAGEJXX_CI_DEPENDENCY_PROFILE" --dependency-prefix build/ci-prefix
-      - name: Qualify authenticated paired history UI
-        # Native Ninja process groups need separate Darwin ownership qualification.
-        # Keep the Mac install and all original complete-suite readers required.
+      - name: Qualify Windows UI and complete suite with the disposable GL provider
         if: runner.os == 'Windows'
-        run: python -I -B scripts/ci_python_suite.py --history-suite --output build/ci-history --history-build-receipt build/ci-history-build/receipt.json
-      - name: Qualify authenticated paired appearance UI
-        if: runner.os == 'Windows'
-        run: python -I -B scripts/ci_python_suite.py --appearance-suite --output build/ci-appearance --appearance-build-receipt build/ci-history-build/receipt.json
-      - name: Test the complete installed platform suite
         shell: bash
-        run: |
-          python -I -X utf8 -B tests/tools/test_ci_python_suite_transport.py
-          if [ "$RUNNER_OS" = Windows ]; then
-            python scripts/ci_python_suite.py --output build/ci-python --history-output build/ci-history --appearance-output build/ci-appearance
-          else
-            python scripts/ci_python_suite.py --output build/ci-python
-          fi
+        run: >-
+          python -I -X utf8 -B scripts/ci_windows_gl.py
+          --output build/ci-windows-gl
+          --notices .github/ci-data/windows-gl-notices.zip
+          --notices-sha256 8600b81dfa22930629e6a60ee170582dacb238e90f011fd63360105730ed2b10
+          -- python -I -X utf8 -B scripts/ci_python_suite.py --windows-gl-suite
+          --output build/ci-python --history-build-receipt build/ci-history-build/receipt.json
+          --history-output build/ci-history --appearance-output build/ci-appearance
+      - name: Test the complete installed macOS platform suite
+        if: runner.os == 'macOS'
+        shell: bash
+        run: python -I -X utf8 -B scripts/ci_python_suite.py --output build/ci-python
+      - name: Retain disposable Windows GL diagnostics and notices
+        if: always() && runner.os == 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-gl-${{ inputs.runner }}-${{ matrix.python }}
+          path: |
+            build/ci-windows-gl/*.json
+            build/ci-windows-gl/*.log
+            build/ci-windows-gl/notices.zip
+          if-no-files-found: warn
       - name: Retain scientific SDK evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -198,6 +213,8 @@ jobs:
             build/ci-scientific-sdk/*.json
             build/ci-scientific-sdk/*.log
             build/ci-scientific-sdk/*.xml
+            build/ci-scientific-sdk/ranlib-diagnostic/*.json
+            build/ci-scientific-sdk/ranlib-diagnostic/*.log
             build/ci-scientific-sdk/roundtrip.tif
           if-no-files-found: warn
       - name: Retain Python results

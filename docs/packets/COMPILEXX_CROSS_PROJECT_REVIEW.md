@@ -1,6 +1,71 @@
 # Additional efficiencies from the compilexx notes
 
+## Review update — 2026-10-26
+
+Implementation follow-through: the remaining SDK source loader is repaired,
+Windows provider/workflow orchestration and failure-only Mac diagnostics are
+wired, and affected source/controller programs pass on Windows/Linux. See the
+[source/control receipt](../parity/reviews/g010-history-reconnection001/windows-gl-integration-progress.json).
+The findings below preserve the review-time state; their scheduling is superseded
+by the current execution card. Actual hosted compilation/provider/SDK acceptance
+is still required. No delivery speedup is inferred from passing controls.
+
+Reviewed all seven documents present in `../compilexx`: engineering judgment
+and the six project notebooks, including their later execution addenda. These
+are cross-project lessons checked at imagejxx owners, not fresh audits of those
+implementations or a new Astra invocation. The
+[execution card](../THREE_AGENT_EXECUTION.md#current-execution-card--2026-10-25)
+is the sole ordered queue. This review updates documentation only; existing
+uncommitted implementation and the four CG0 files are preserved.
+
+| Source | Relevant lesson / applicability here |
+| --- | --- |
+| [agents_basics](../../../compilexx/agents_basics.md) | Validate at real boundaries; add machinery only for concrete risks. Keep the SDK diagnostic bounded to the actual archive mismatch, not a new general archive/reuse system |
+| [imagejxx](../../../compilexx/imagejxx-plan-inefficiencies.md) | Keep C2's real consumer passes and storage failure separate. The current notebook still calls completed run40281326998 queued; correct that pointer, preserving its original observations below |
+| [napachan](../../../compilexx/napachan-plan-inefficiencies.md#2026-10-26-consolidate-downstream-cpu-failures-before-republishing) | Run eligible independent downstream CPU groups before another expensive publication. Apply to GL orchestration, SDK and workflow controls in the existing jobs; no new broad test framework |
+| [naparixx](../../../compilexx/naparixx-plan-inefficiencies.md#packet56-implementation-feedback-use-retained-runtime-evidence-before-tightening-guards) | Seed guards from actual retained installer/process records before asserting equality. Use the real Windows Python/base-executable topology and actual Mac install scripts; do not infer equal PIDs, byte equivalence or timestamp-only mutation |
+| [QuPath](../../../compilexx/qupathxx-build-inefficiencies.md#e4-implemented-keep-independent-installed-evidence-after-failure) | Collect independent post-install diagnostics while retaining strict overall failure. Keep prerequisite preparation fail-fast; a failed history gate may permit appearance diagnostics but cannot authorize complete-suite acceptance |
+| [scikit-imagexx](../../../compilexx/scikit-imagexx-plan-inefficiencies.md#2026-10-26-window-batch-and-precise-shared-test-selection) | Use fully qualified selectors and inspect actual post-deselection outcomes. Do not add a pre-collection hook or rebuild unchanged native code for a selector/metadata correction |
+| [VisPy/Vulkan](../../../compilexx/vispy-vulkan-plan-inefficiencies.md#exercise-the-real-result-decoder-before-freezing-observer-changes) | Drive actual exports through the final decoder before freezing; distinguish native production, observation and package identities. Its reduced parity scope does not reduce ImageJ/Fiji scope |
+
+**Confirmed local findings and smallest corrections:**
+
+| Finding | Evidence / current limit | Action and decisive check |
+| --- | --- | --- |
+| Stale live scheduling | The previous execution card still requested publication and Darwin Ninja proof. Retained `ci2/26687-hosted-results001/run.json` says completed/failure; all four original Mac jobs pass Ninja | Current card now records the published head and terminal gates. Keep queued/prior-head text historical; follow an existing handle rather than dispatch for status |
+| Source helper can still consult timestamp pyc | `scripts/ci_scientific_sdk.py::load_script` uses `spec.loader.exec_module`; `sys.dont_write_bytecode` suppresses writes, not reads. The main suite's `via_source_module` already compiles source bytes | Apply the existing source-execution pattern at this Python helper only. One equal-size/equal-mtime old-pyc control must first expose legacy execution and then require current bytes. No historical stale execution is established; native extension loading remains its own protocol |
+| GL helper proof stops before real workflow integration | New helper and 39 synthetic Windows methods exist, but `source-platform.yml` still calls the old separate selectors and has no provider wrapper. New orchestration and native module observation are unqualified WIP | Wire existing seams, update exact workflow guards and eligible-failure journal controls, run Linux portable controls, then incrementally compile the probe. Hosted runtime must prove both DLL hashes and actual GL identity while ordinary smoke/pixel/science requirements stay unchanged |
+| SDK diagnosis needs the actual archive boundary | All eight raw/installed core+IO comparisons in four original Mac jobs have equal sizes/different SHA256. Retained pinned generated scripts explicitly invoke post-copy ranlib. Original archive payloads were not retained | On the next required Mac producer, copy only the small existing IO archive into bounded owned scratch. Compare untouched/default-ranlib/ZERO_AR_DATE candidate and repeat, exact tool identity, member payloads and changed offsets. Retain JSON/logs, retire resolved scratch; keep original equality failure fatal. Do not normalize archives or change build policy from a hypothesis |
+| Newly retained notice input escapes the old storage scope | `.github/ci-data/windows-gl-notices.zip` adds 5,312,444 bytes outside the last measured root set. `pyproject.toml` declares an sdist exclusion, but declaration alone is not an archive audit | Preserve old measurements; add this root once in a corrected unique-root inventory. Check backend file selection without compilation and inspect products/uploads at their actual owners. Estimate producer plus reader plus compression peak, not just final ZIP bytes |
+| Repeated whole-notebook reviews consume the integration lane | Seven notebooks total roughly 615 KB; status, historical evidence and repeated cross-project advice coexist. Broad dumps obscure new decisions; source work is already waiting at a concrete handoff | This requested review covers the set. Future continuation starts at the one current card and changed addenda, then checks relevant source/evidence. Reopen a cross-project review for new evidence or user request. Keep historical text and avoid another parallel status inventory |
+
+**Integration order and reuse:** complete cheap workflow/reader/SDK controls on
+the coherent source before compiling. One normal-provider smoke checks the new
+observation export; existing C2 science/pixel equations stay independent. One
+necessary successor hosted run supplies real Windows provider and Mac archive
+observations. Preserve failed, not-run and cleanup states; do not convert
+diagnostic continuation into successful required-gate composition. Recheck
+saved final receipts, not just their in-memory initial construction.
+
+No new persistent PASS cache, whole-source snapshot, SDK generation, provider
+installation, benchmark or cleanup service is needed. Package-only edits may
+reuse exact unchanged native inputs through an existing proven boundary; this
+review does not invent that boundary or admit changed wheels by version alone.
+The broader CPU binary cache opportunity remains deferred until measurements
+identify repeated compilation as the bottleneck. Summarize existing command
+durations first; no measured delivery speedup is claimed.
+
+The historical 8,561,902,803-known-byte inventory has two inaccessible caches and
+excludes the new notice root. It is neither current total nor peak admission.
+Policy-blocked cleanup stays untouched. No test/build/dependency operation was
+run for this documentation update. Full owning C2/OS/SDK/scientific/accessibility,
+commercial product distribution, release and eligible Fiji requirements stay
+open; all 99 families retain 47 in progress / 52 open / 0 complete.
+
 ## Current delta: real consumers passed; keep the next prerequisite in scope
+
+Historical checkpoint before this terminal-CI review; its pending wording is
+superseded by the execution card and review update above.
 
 Updated 2026-10-26. The [execution card](../THREE_AGENT_EXECUTION.md) owns the
 queue; the [C2 receipt](../parity/reviews/cfg4-appearance001/receipt.json) owns

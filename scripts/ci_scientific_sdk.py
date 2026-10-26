@@ -41,6 +41,7 @@ CARRIER_PIN = {"bytes": 116,
 MAX_FILES = 16384
 MAX_TREE_BYTES = 4 * 1024**3
 MAX_INSTALL_SCRIPT_BYTES = 256 * 1024
+MAX_DIAGNOSTIC_ARCHIVE_BYTES = 2 * 1024 * 1024
 
 
 def regular(path):
@@ -84,7 +85,7 @@ def install_script_diagnostic(path, expected):
     return result
 
 
-def verify_installed_archives(cache, sdk, archives, cache_inputs, receipt):
+def verify_installed_archives(cache, sdk, archives, cache_inputs, receipt, *, diagnostic=None):
     # Observe both installed archives before the first comparison can refuse.
     # The raw pins are the already-recorded pre-install observations, not new
     # claims that an install operation preserved or transformed those bytes.
@@ -98,16 +99,228 @@ def verify_installed_archives(cache, sdk, archives, cache_inputs, receipt):
     if receipt["archive_comparisons"]["mismatches"]:
         receipt["archive_install_script"] = install_script_diagnostic(
             cache / "cmake_install.cmake", cache_inputs["cmake_install.cmake"])
+        if sys.platform == "darwin" and diagnostic is not None:
+            try:
+                receipt["archive_ranlib_diagnostic"] = diagnostic(receipt["archive_install_script"])
+            except BaseException as error:
+                receipt["archive_ranlib_diagnostic"] = {
+                    "state": "unavailable", "error": {"type": type(error).__name__, "message": str(error)}}
         raise ValueError("Installed SDK archive differs from the existing wheel build")
+
+
+def archive_member_summary(raw):
+    """Small ordinary BSD ar observation only; no extraction or equivalence rule."""
+    if not isinstance(raw, bytes) or len(raw) > MAX_DIAGNOSTIC_ARCHIVE_BYTES or not raw.startswith(b"!<arch>\n"):
+        raise ValueError("Unsupported or oversized diagnostic archive")
+    members, offset = [], 8
+    while offset < len(raw):
+        header = raw[offset:offset + 60]
+        if len(header) != 60 or header[58:] != b"`\n" or len(members) >= 256:
+            raise ValueError("Unsupported diagnostic archive header/member count")
+        try:
+            name = header[:16].decode("ascii").rstrip(" ")
+            fields = [header[a:b].decode("ascii").strip() for a, b in ((16, 28), (28, 34), (34, 40), (40, 48), (48, 58))]
+            if any(value and not re.fullmatch(r"[0-9]+", value) for value in fields) or not fields[-1]:
+                raise ValueError("Unsupported archive numeric field")
+            size = int(fields[-1])
+            start, end = offset + 60, offset + 60 + size
+            if end > len(raw):
+                raise ValueError("Truncated archive member")
+            if name.startswith("#1/"):
+                if not re.fullmatch(r"#1/[0-9]+", name):
+                    raise ValueError("Unsupported BSD name length")
+                length = int(name[3:])
+                if not 0 < length <= min(size, 1024):
+                    raise ValueError("Unsupported BSD extended name")
+                encoded = raw[start:start + length]
+                name = encoded.rstrip(b"\0").decode("utf-8")
+                start += length
+            else:
+                if name.startswith("/") or not name:
+                    raise ValueError("Unsupported GNU/empty archive name")
+                name = name.removesuffix("/")
+            if not name or "\0" in name:
+                raise ValueError("Unsupported archive member name")
+            if size % 2 and raw[end:end + 1] != b"\n":
+                raise ValueError("Unsupported archive alignment padding")
+        except (UnicodeError, ValueError) as error:
+            raise ValueError("Unsupported diagnostic BSD archive: " + str(error)) from error
+        members.append({"name": name, "header_offset": offset, "header_sha256": hashlib.sha256(header).hexdigest(),
+                        "date": fields[0], "uid": fields[1], "gid": fields[2], "mode": fields[3],
+                        "payload_bytes": end - start, "payload_sha256": hashlib.sha256(raw[start:end]).hexdigest()})
+        offset = end + size % 2
+    if not members:
+        raise ValueError("Empty diagnostic archive")
+    return members
+
+
+def archive_byte_diff(before, after):
+    if max(len(before), len(after)) > MAX_DIAGNOSTIC_ARCHIVE_BYTES:
+        raise ValueError("Diagnostic byte comparison exceeds bound")
+    ranges, count, total, start = [], 0, 0, None
+    for index in range(max(len(before), len(after)) + 1):
+        changed = index < max(len(before), len(after)) and (
+            index >= min(len(before), len(after)) or before[index] != after[index])
+        if changed:
+            total += 1
+            if start is None:
+                start = index
+        elif start is not None:
+            count += 1
+            if len(ranges) < 128:
+                ranges.append([start, index])
+            start = None
+    return {"changed_bytes": total, "ranges": ranges, "range_count": count, "ranges_complete": count <= 128}
+
+
+def diagnose_archive_ranlib(raw_archive, expected_pin, install_script, *, output, root, execute, environment):
+    """Failure-only evidence from copies; never changes the SDK equality policy."""
+    output, raw_archive, root = Path(output), Path(raw_archive), Path(root)
+    if output.exists() or output.is_symlink() or output.parent.resolve(strict=True) != output.parent:
+        raise ValueError("Ranlib diagnostic requires fresh owned output")
+    output.mkdir()
+    directory_identity = (output.stat().st_dev, output.stat().st_ino)
+    result = {"schema": "imagejxx.ranlib-diagnostic.001", "state": "running", "acceptance_claim": False,
+              "raw": {"path": str(raw_archive), **expected_pin}, "steps": [], "copies": [], "cleanup_complete": False}
+    def save():
+        if len(json.dumps(result)) > 1024 * 1024:
+            raise ValueError("Ranlib diagnostic metadata exceeds 1 MiB")
+        write_json(output / "receipt.json", result)
+    def owned_directory():
+        for directory in (output, *output.parents):
+            info = directory.lstat()
+            if not stat.S_ISDIR(info.st_mode) or getattr(info, "st_file_attributes", 0) & 0x400:
+                raise ValueError("Linked diagnostic cleanup directory")
+        if (output.stat().st_dev, output.stat().st_ino) != directory_identity:
+            raise ValueError("Diagnostic directory identity changed")
+    def read_archive(path):
+        regular(path)
+        if path.stat().st_size > MAX_DIAGNOSTIC_ARCHIVE_BYTES:
+            raise ValueError("Diagnostic archive exceeds 2 MiB")
+        with path.open("rb") as stream:
+            data = stream.read(MAX_DIAGNOSTIC_ARCHIVE_BYTES + 1)
+        if len(data) > MAX_DIAGNOSTIC_ARCHIVE_BYTES:
+            raise ValueError("Diagnostic archive grew beyond its bound")
+        return data
+    def summary(data):
+        return {"bytes": len(data), "sha256": hashlib.sha256(data).hexdigest(), "members": archive_member_summary(data)}
+    def closed(step):
+        proof = read_json(output / step["process_path"], 1024 * 1024)
+        if (proof.get("schema") != "imagejxx.owned-command.001" or proof.get("state") not in {
+                "exited", "timed_out", "launch_failed", "ownership_failed", "supervisor_failed", "unsupported"}
+                or proof.get("cleanup_complete") is not True or proof.get("argv") != step["argv"]
+                or proof.get("cwd") != str(root)):
+            raise ValueError("Ranlib diagnostic process ownership unresolved")
+        return proof
+    save()
+    try:
+        inherited = environment.get("ZERO_AR_DATE")
+        if inherited not in (None, "", "0", "1"):
+            raise ValueError("Unadmitted inherited ZERO_AR_DATE value")
+        result["inherited_ZERO_AR_DATE"] = inherited
+        raw = read_archive(raw_archive)
+        if pin(raw_archive) != expected_pin or {"bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()} != expected_pin:
+            raise ValueError("Raw archive differs from its pre-install pin")
+        result["baseline"] = summary(raw)
+        script = install_script.get("utf8", "").encode("utf-8")
+        source = install_script.get("source", {})
+        if (install_script.get("state") != "observed" or len(script) > MAX_INSTALL_SCRIPT_BYTES
+                or {"bytes": len(script), "sha256": hashlib.sha256(script).hexdigest()} !=
+                {key: source.get(key) for key in ("bytes", "sha256")} or install_script.get("observed") != source
+                or pin(Path(source["path"])) != {key: source[key] for key in ("bytes", "sha256")}):
+            raise ValueError("Exact generated install script is unavailable or changed")
+        matches = re.findall(r'^    execute_process\(COMMAND "([^"\r\n;$]+)" "\$ENV\{DESTDIR\}\$\{CMAKE_INSTALL_PREFIX\}/lib/libimagejxx_io\.a"\)\r?$',
+                             install_script["utf8"], re.MULTILINE)
+        if len(matches) != 1 or not Path(matches[0]).is_absolute() or Path(matches[0]).name != "ranlib":
+            raise ValueError("Expected one exact generated IO ranlib invocation")
+        tool = Path(matches[0])
+        resolved = tool.resolve(strict=True)
+        result["install_script"] = source
+        result["tool"] = {"invoked_path": str(tool), "resolved_path": str(resolved), **pin(resolved)}
+        for name in ("untouched.a", "default.a", "deterministic.a"):
+            path = output / name
+            with path.open("xb") as stream:
+                result["copies"].append({"path": name})
+                stream.write(raw)
+            if pin(path) != expected_pin:
+                raise ValueError("Diagnostic copy differs before tool execution")
+        for name, filename, overrides in (("default", "default.a", {}), ("zero-date", "deterministic.a", {"ZERO_AR_DATE": "1"}),
+                                           ("zero-date-repeat", "deterministic.a", {"ZERO_AR_DATE": "1"})):
+            path = output / filename
+            before = read_archive(path)
+            step = {"name": name, "argv": [str(tool), str(path)], "environment_override": overrides,
+                    "process_path": name + ".process.json", "log_path": name + ".log"}
+            result["steps"].append(step)
+            save()
+            with (output / step["log_path"]).open("xb") as log:
+                returned = execute(step["argv"], cwd=root, env=dict(environment, **overrides), timeout=30,
+                                   stdout=log, stderr=subprocess.STDOUT, receipt_path=output / step["process_path"])
+            proof = closed(step)
+            if (proof != returned or proof.get("state") != "exited" or proof.get("exit_code") != 0
+                    or proof.get("target_completed") is not True or proof.get("timed_out") is not False):
+                raise ValueError("Ranlib diagnostic command did not complete successfully")
+            if (output / step["log_path"]).stat().st_size > 1024 * 1024:
+                raise ValueError("Ranlib diagnostic log exceeds terminal 1 MiB bound")
+            after = read_archive(path)
+            step.update(after=summary(after), diff_from_raw=archive_byte_diff(raw, after),
+                        diff_from_previous=archive_byte_diff(before, after), matches_raw=after == raw,
+                        unchanged_by_command=after == before)
+            save()
+        if (pin(raw_archive) != expected_pin or pin(output / "untouched.a") != expected_pin
+                or tool.resolve(strict=True) != resolved or pin(resolved) !=
+                {key: result["tool"][key] for key in ("bytes", "sha256")}
+                or pin(Path(source["path"])) != {key: source[key] for key in ("bytes", "sha256")}):
+            raise ValueError("Diagnostic original/tool/script/untouched copy changed")
+        result.update(state="observed", inputs_unchanged=True)
+    except BaseException as error:
+        result.update(state="unavailable", error={"type": type(error).__name__, "message": str(error)})
+    finally:
+        try:
+            owned_directory()
+            result["raw_source_unchanged"] = pin(raw_archive) == expected_pin
+            if not result["raw_source_unchanged"]:
+                result["state"] = "unavailable"
+            for step in result["steps"]:
+                closed(step)
+                step["process"] = {"path": step["process_path"], **pin(output / step["process_path"])}
+                step["log"] = {"path": step["log_path"], **pin(output / step["log_path"])}
+            for copy in result["copies"]:
+                path = output / copy["path"]
+                data = read_archive(path)
+                copy.update(bytes=len(data), sha256=hashlib.sha256(data).hexdigest())
+                identity = path.lstat()
+                save()
+                owned_directory()
+                regular(path)
+                current = path.lstat()
+                if (current.st_dev, current.st_ino, current.st_size, current.st_mtime_ns) != (
+                        identity.st_dev, identity.st_ino, identity.st_size, identity.st_mtime_ns):
+                    raise ValueError("Diagnostic copy changed before retirement")
+                path.unlink()  # Exact fresh-copy names only; never the raw cache or installed SDK.
+                copy["retired"] = True
+                save()
+            result["cleanup_complete"] = True
+        except BaseException as error:
+            result.update(state="unavailable", cleanup_error={"type": type(error).__name__, "message": str(error)})
+        save()
+    return result
 
 
 def load_script(name):
     """Load only a named, source-controlled sibling; never a prefix helper."""
     path = ROOT / "scripts" / (name + ".py")
     regular(path)
+    before = pin(path)
+    source = path.read_bytes()
+    if ({"bytes": len(source), "sha256": hashlib.sha256(source).hexdigest()} != before
+            or pin(path) != before):
+        raise ValueError("SDK helper source changed while reading: " + name)
     spec = importlib.util.spec_from_file_location("imagejxx_sdk_" + name, path)
     module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
+    # -B prevents cache writes, not reads of timestamp-valid stale bytecode.
+    exec(compile(source, str(path), "exec", dont_inherit=True), module.__dict__)
+    if pin(path) != before:
+        raise ValueError("SDK helper source changed while loading: " + name)
     return module
 
 
@@ -422,7 +635,12 @@ def run_profile(output, profile, dependency_prefix):
         copied = verifier.validate_prefix(delivered, profile, catalog=catalog, builder=producer)
         if copied != certificate or tree_files(delivered) != dependency_before:
             raise ValueError("Installed SDK dependency closure differs from the admitted transfer")
-        verify_installed_archives(cache, sdk, archives, cache_inputs, receipt)
+        diagnostic = None
+        if sys.platform == "darwin":
+            diagnostic = lambda script: diagnose_archive_ranlib(
+                cache / "libimagejxx_io.a", cache_inputs["libimagejxx_io.a"], script,
+                output=output / "ranlib-diagnostic", root=ROOT, execute=execute, environment=environment)
+        verify_installed_archives(cache, sdk, archives, cache_inputs, receipt, diagnostic=diagnostic)
         package = sdk / "lib/cmake/imagejxx"
         helpers = {"SourceTiffRuntime.cmake": "cmake/SourceTiffRuntime.cmake",
                    "ReviewedTiffRuntime.cmake": "cmake/ReviewedTiffRuntime.cmake",

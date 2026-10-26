@@ -41,6 +41,7 @@ jobs:
           python -I -B tests/tools/test_capture_shortcuts_history_ui.py
           python -I -B tests/tools/test_capture_history_owner_integration.py
           python -I -B tests/tools/test_ci_scientific_sdk.py
+          python -I -B tests/tools/test_ci_windows_gl.py
           python -I -B tests/tools/test_ci_mac_process.py ProtocolMetadata PosixSocketTransport
       - name: Prove native macOS process ownership
         if: runner.os == 'macOS'

@@ -5,6 +5,17 @@ scope reviewed; actual provider staging/loaded-module/GL qualification pending.
 No provider has been installed locally and product redistribution is unadmitted.
 Keep the unchanged actual-GL gate required.
 
+Local successor: `ci_windows_gl.py` now wraps the maintained history, appearance
+and complete suite through one provider lifetime in the Windows source workflow.
+Exact workflow/transport/failure controls and the portable staging/runtime-data
+controls pass on Windows/Linux; see the
+[source/control receipt](../parity/reviews/g010-history-reconnection001/windows-gl-integration-progress.json).
+The native module observer has MSVC syntax proof only. Actual hosted build,
+loaded-module/GL identity and existing complete readers remain required. No
+provider was downloaded, staged or loaded locally. The CI notice input is
+excluded by the installed backend's file selection on a small owned fixture;
+this is not a production wheel/SDK/archive audit.
+
 The internal 216-member follow-up is complete and all 29 selected external
 source/notice documents were acquired in a single 267,163-byte verified ZIP.
 The SPIR-V Tools 2026.4.1 label is the pkg-config spelling of the exact selected

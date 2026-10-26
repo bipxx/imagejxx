@@ -1030,6 +1030,210 @@ class AppearanceIntegration(unittest.TestCase):
                 complete.assert_not_called()
 
 
+class WindowsGlIntegration(unittest.TestCase):
+    """One synthetic provider lifetime; original packet/file admission is real."""
+
+    def setUp(self):
+        fixture = AppearanceIntegration()
+        fixture.setUp()
+        self.addCleanup(fixture.doCleanups)
+        self.f = fixture.f
+        self.output = self.f.root / "build/ci-python"
+        self.history = self.f.root / "build/ci-history"
+        self.appearance = self.f.root / "build/ci-appearance"
+        self.provider_output = self.f.root / "build/ci-windows-gl"
+        self.journal_path = self.provider_output / "suite.json"
+        self.stage = {"fixture": "synthetic admitted stage; no DLLs or GL execution"}
+        self.stage_pin = self.f.save(self.provider_output / "stage.json", self.stage)
+        self.events = []
+        self.failure = None
+        self.change_raw = False
+        self.real_stage = suite.windows_gl_stage
+        provider = SimpleNamespace(verify_c2_runtime=self.runtime)
+        self.stage_call = self.f.start_patch(patch.object(
+            suite, "windows_gl_stage", return_value=(provider, self.stage, self.stage_pin)))
+        self.f.start_patch(patch.object(suite, "run_history_suite", side_effect=self.packet))
+        self.f.start_patch(patch.object(suite, "installed_application", return_value=self.f.application))
+        self.f.start_patch(patch.object(suite, "run", side_effect=self.complete))
+        # The actual lossless decoder is loaded from the reviewed test source;
+        # only the synthetic checkout's placeholder location is redirected.
+        decoder = suite._source_module("ci_gl_transport_control", ROOT / "tests/python/actual_observation_transport.py")
+        def source_module(name, path):
+            self.assertEqual((name, path), ("ci_gl_actual_transport", self.f.root / "tests/python/actual_observation_transport.py"))
+            return decoder
+        self.f.start_patch(patch.object(suite, "_source_module", side_effect=source_module))
+
+    def journal(self):
+        return self.f.read(self.journal_path)
+
+    def invoke(self, *, output=None, history=None, appearance=None):
+        return suite.run_windows_gl_suite(output or self.output, self.f.root, self.f.build_path,
+                                          history or self.history, appearance or self.appearance)
+
+    def packet(self, destination, root, build_receipt, *, kind):
+        self.assertEqual((root, build_receipt), (self.f.root, self.f.build_path))
+        self.assertEqual(destination, {"history": self.history, "appearance": self.appearance}[kind])
+        prior = [] if kind == "history" else ["history"]
+        self.assertEqual([row["kind"] for row in self.journal()["stages"]], prior)
+        self.assertEqual(self.journal()["state"], "running")
+        self.events.append(kind)
+        if self.failure == kind:
+            self.f.save(destination / "receipt.json", {"state": "failed", "fixture": "synthetic " + kind + " failure"})
+            raise RuntimeError("synthetic " + kind + " failure")
+        self.f.output = destination
+        row = self.f.make_packet(kind=kind)
+        capture = self.f.read(destination / "capture/capture.json")
+        for case in capture["cases"]:
+            raw = {"case_id": case["id"], "context": case["context"],
+                   "fixture": "synthetic decoded transport; not scientific acceptance"}
+            case["raw"] = self.f.save(case["raw"]["path"], raw)
+        row["capture"] = self.f.save(destination / "capture/capture.json", capture)
+        row["provenance"] = self.f.save(destination / "capture/provenance.json", {"cases": capture["cases"]})
+        self.f.save(destination / "receipt.json", row)
+        if kind == "appearance" and self.change_raw:
+            Path(capture["cases"][0]["raw"]["path"]).write_bytes(b"changed after the pinned packet\n")
+
+    def runtime(self, stage, reports):
+        self.assertEqual(self.events, ["history", "appearance"])
+        self.events.append("runtime")
+        self.assertEqual(stage, self.stage)
+        self.assertEqual([(row["case_id"], row["context"]) for row in reports],
+                         [(case, context) for case in ("appearance-persist", "appearance-reopen")
+                          for context in ("imgui_cpp", "imgui_python")])
+        self.assertEqual([row["kind"] for row in self.journal()["stages"]], ["history", "appearance"])
+        self.assertFalse((self.provider_output / "runtime-proof.json").exists())
+        if self.failure == "runtime":
+            raise ValueError("synthetic provider runtime failure")
+        return {"schema": "imagejxx.windows-gl-runtime.001", "state": "verified",
+                "fixture": "synthetic provider-proof callback; not actual GL qualification"}
+
+    def complete(self, output, root, *, history_output, appearance_output):
+        self.assertEqual(self.events, ["history", "appearance", "runtime"])
+        self.events.append("complete")
+        self.assertEqual((output, root, history_output, appearance_output),
+                         (self.output, self.f.root, self.history, self.appearance))
+        journal = self.journal()
+        self.assertEqual(journal["stages"][-1], {"kind": "complete", "state": "running"})
+        self.assertEqual(journal["runtime_proof"], pin(self.provider_output / "runtime-proof.json"))
+        # Complete receives the original qualified packet paths without replay.
+        for directory, kind, environment in (
+                (history_output, "history", "IMAGEJXX_HISTORY_SETTINGS_UI_CASE_ROOT"),
+                (appearance_output, "appearance", APPEARANCE_ENV)):
+            self.assertEqual(suite.validate_history_output(directory, root, self.f.application,
+                                                          self.f.modules, kind=kind),
+                             {environment: str(directory / "capture")})
+        self.f.save(output / "receipt.json", {"state": "failed" if self.failure == "complete" else "passed",
+                                             "fixture": "synthetic full-suite transport"})
+        if self.failure == "complete":
+            raise RuntimeError("synthetic complete failure")
+
+    def test_paired_packets_then_runtime_proof_then_full_have_real_ordered_journal(self):
+        self.invoke()
+        self.assertEqual(self.events, ["history", "appearance", "runtime", "complete"])
+        row = self.journal()
+        self.assertEqual((row["schema"], row["state"], row["acceptance_claim"]),
+                         ("imagejxx.windows-gl-suite.001", "passed", False))
+        self.assertEqual(row["stages"], [{"kind": kind, "state": "passed"} for kind in ("history", "appearance", "complete")])
+        self.assertEqual(row["stage"], self.stage_pin)
+        proof = self.f.read(self.provider_output / "runtime-proof.json")
+        self.assertEqual(proof["stage"], self.stage_pin)
+        self.assertEqual(proof["runtime"]["state"], "verified")
+        self.assertEqual(pin(self.provider_output / "stage.json"), self.stage_pin)
+
+    def test_history_failure_keeps_appearance_and_runtime_diagnostics_but_blocks_full(self):
+        self.failure = "history"
+        with self.assertRaisesRegex(ValueError, "paired UI qualification failed"):
+            self.invoke()
+        self.assertEqual(self.events, ["history", "appearance", "runtime"])
+        row = self.journal()
+        self.assertEqual([(r["kind"], r["state"]) for r in row["stages"]],
+                         [("history", "failed"), ("appearance", "passed"), ("complete", "not_run")])
+        self.assertIn("synthetic history failure", row["stages"][0]["error"]["message"])
+        self.assertEqual(row["runtime_proof"], pin(self.provider_output / "runtime-proof.json"))
+        self.assertEqual(self.f.read(self.history / "receipt.json")["state"], "failed")
+        self.assertEqual(row["state"], "failed")
+        self.assertFalse(self.output.exists())
+
+    def test_appearance_failure_blocks_runtime_and_full_without_hiding_history(self):
+        self.failure = "appearance"
+        with self.assertRaisesRegex(ValueError, "paired UI qualification failed"):
+            self.invoke()
+        self.assertEqual(self.events, ["history", "appearance"])
+        row = self.journal()
+        self.assertEqual([(r["kind"], r["state"]) for r in row["stages"]],
+                         [("history", "passed"), ("appearance", "failed"), ("complete", "not_run")])
+        self.assertEqual(row["runtime_proof"], {"state": "unavailable", "reason": "appearance packet failed"})
+        self.assertEqual(row["state"], "failed")
+        self.assertFalse(self.output.exists() or (self.provider_output / "runtime-proof.json").exists())
+
+    def test_provider_runtime_failure_is_retained_and_blocks_full(self):
+        self.failure = "runtime"
+        with self.assertRaisesRegex(ValueError, "synthetic provider runtime failure"):
+            self.invoke()
+        self.assertEqual(self.events, ["history", "appearance", "runtime"])
+        row = self.journal()
+        self.assertEqual((row["state"], row["stages"][-1]["state"]), ("failed", "not_run"))
+        self.assertIn("synthetic provider runtime failure", row["error"]["message"])
+        self.assertNotIn("runtime_proof", row)
+        self.assertFalse(self.output.exists())
+
+    def test_full_failure_keeps_runtime_proof_and_failed_full_stage(self):
+        self.failure = "complete"
+        with self.assertRaisesRegex(RuntimeError, "synthetic complete failure"):
+            self.invoke()
+        self.assertEqual(self.events, ["history", "appearance", "runtime", "complete"])
+        row = self.journal()
+        self.assertEqual((row["state"], row["stages"][-1]["state"]), ("failed", "failed"))
+        self.assertIn("synthetic complete failure", row["stages"][-1]["error"]["message"])
+        self.assertEqual(row["runtime_proof"], pin(self.provider_output / "runtime-proof.json"))
+        self.assertEqual(self.f.read(self.output / "receipt.json")["state"], "failed")
+
+    def test_only_exact_maintained_output_roots_are_admitted(self):
+        for argument in ("output", "history", "appearance"):
+            with self.subTest(argument=argument), self.assertRaisesRegex(ValueError, "three fresh maintained"):
+                self.invoke(**{argument: self.f.root / ("build/other-" + argument)})
+        self.stage_call.assert_not_called()
+        self.assertEqual(self.events, [])
+        self.assertFalse(self.journal_path.exists())
+
+    def test_each_preexisting_output_is_preserved_before_any_stage(self):
+        for directory in (self.output, self.history, self.appearance):
+            directory.mkdir()
+            marker = directory / "existing.txt"
+            marker.write_bytes(b"preserve previous owned output\n")
+            try:
+                with self.subTest(directory=directory), self.assertRaisesRegex(ValueError, "three fresh maintained"):
+                    self.invoke()
+                self.assertEqual(marker.read_bytes(), b"preserve previous owned output\n")
+            finally:
+                marker.unlink()  # Exact tiny fixture created by this method.
+                directory.rmdir()
+        self.stage_call.assert_not_called()
+        self.assertEqual(self.events, [])
+        self.assertFalse(self.journal_path.exists())
+
+    def test_missing_ci_or_stage_profile_refuses_before_any_packet(self):
+        for environment in ({}, {"GITHUB_ACTIONS": "true", "GALLIUM_DRIVER": "llvmpipe"}):
+            with self.subTest(environment=environment), patch.object(suite.sys, "platform", "win32"), \
+                    patch.dict(os.environ, environment, clear=True), \
+                    patch.object(suite, "windows_gl_stage", self.real_stage):
+                with self.assertRaisesRegex(ValueError, "disposable CI wrapper|stage identity"):
+                    self.invoke()
+        self.assertEqual(self.events, [])
+        self.assertFalse(self.journal_path.exists())
+        self.assertTrue(all(not directory.exists() for directory in (self.output, self.history, self.appearance)))
+
+    def test_changed_original_raw_blocks_runtime_callback_and_full(self):
+        self.change_raw = True
+        with self.assertRaisesRegex(RuntimeError, "Pinned identity differs"):
+            self.invoke()
+        self.assertEqual(self.events, ["history", "appearance"])
+        row = self.journal()
+        self.assertEqual((row["state"], row["stages"][-1]["state"]), ("failed", "not_run"))
+        self.assertFalse(self.output.exists() or (self.provider_output / "runtime-proof.json").exists())
+        self.assertEqual((self.appearance / "capture/0.json").read_bytes(), b"changed after the pinned packet\n")
+
+
 class HistorySuiteSourceLoading(unittest.TestCase):
     def source_loader_ignores_valid_stale_bytecode(self, loader_name, filename):
         # Only the script location is redirected. The actual loader function,

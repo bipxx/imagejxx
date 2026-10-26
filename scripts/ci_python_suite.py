@@ -1186,6 +1186,97 @@ def run_history_suite(output, root, build_receipt, *, kind="history"):
                     raise
 
 
+def windows_gl_stage(root):
+    """Authenticate the wrapper's immutable live stage before any GL child."""
+    if (sys.platform != "win32" or os.environ.get("GITHUB_ACTIONS") != "true"
+            or os.environ.get("GALLIUM_DRIVER") != "llvmpipe"):
+        raise ValueError("The staged Windows GL suite requires its disposable CI wrapper")
+    encoded = os.environ.get("IMAGEJXX_CI_WINDOWS_GL_STAGE", "")
+    if not 0 < len(encoded) < 16384:
+        raise ValueError("Missing bounded Windows GL stage identity")
+    descriptor = checked_pin(json.loads(encoded))
+    if Path(descriptor["path"]) != root / "build/ci-windows-gl/stage.json":
+        raise ValueError("Windows GL stage is outside its owning wrapper")
+    provider = _source_module("ci_windows_gl_provider", root / "scripts/ci_windows_gl.py")
+    stage = json.loads(Path(descriptor["path"]).read_bytes())
+    if (stage.get("schema") != "imagejxx.windows-gl-stage.001" or stage.get("state") != "staged"
+            or stage.get("asset") != provider.ASSET or stage.get("members") != provider.MEMBERS):
+        raise ValueError("Windows GL stage differs from the reviewed provider")
+    for artifact in stage["staged"]:
+        if provider._pin(artifact["path"]) != artifact:
+            raise ValueError("Windows GL staged file changed before qualification")
+    return provider, stage, descriptor
+
+
+def run_windows_gl_suite(output, root, build_receipt, history_output, appearance_output):
+    """One provider lifetime; retain independent UI failures and all full gates."""
+    root = Path(root).resolve(strict=True)
+    output, history_output, appearance_output = map(
+        lambda path: Path(path).resolve(), (output, history_output, appearance_output))
+    if ([history_output, appearance_output, output] !=
+            [root / "build/ci-history", root / "build/ci-appearance", root / "build/ci-python"]
+            or any(path.exists() for path in (output, history_output, appearance_output))):
+        raise ValueError("Windows GL suite requires the three fresh maintained output roots")
+    provider, stage, stage_pin = windows_gl_stage(root)
+    journal = {"schema": "imagejxx.windows-gl-suite.001", "state": "running",
+               "stage": stage_pin, "stages": [], "acceptance_claim": False}
+    journal_path = root / "build/ci-windows-gl/suite.json"
+
+    def save():
+        journal_path.write_text(json.dumps(journal, indent=2, allow_nan=False) + "\n", encoding="utf-8")
+
+    save()
+    failures = []
+    for kind, destination in (("history", history_output), ("appearance", appearance_output)):
+        try:
+            run_history_suite(destination, root, build_receipt, kind=kind)
+            journal["stages"].append({"kind": kind, "state": "passed"})
+        except Exception as error:
+            failures.append(error)
+            journal["stages"].append({"kind": kind, "state": "failed",
+                                      "error": {"type": type(error).__name__, "message": str(error)}})
+        save()
+    try:
+        if journal["stages"][1]["state"] == "passed":
+            distribution = importlib.metadata.distribution("imagejxx")
+            bindings = history_helper().read_json(appearance_output / "product-bindings.json")
+            validate_history_output(appearance_output, root, installed_application(distribution),
+                                    bindings["installed_modules"], kind="appearance")
+            helper = history_helper()
+            provenance = helper.read_json(appearance_output / "capture/provenance.json")
+            decoder = _source_module("ci_gl_actual_transport", root / "tests/python/actual_observation_transport.py")
+            reports = [decoder.decode_actual_observations(helper.read_json(
+                Path(helper.verify(case["raw"])["path"]), 16 * 1024 * 1024)) for case in provenance["cases"]]
+            proof = provider.verify_c2_runtime(stage, reports)
+            proof_path = root / "build/ci-windows-gl/runtime-proof.json"
+            proof_path.write_text(json.dumps({"stage": stage_pin, "runtime": proof}, indent=2) + "\n", encoding="utf-8")
+            journal["runtime_proof"] = pin(proof_path)
+        else:
+            journal["runtime_proof"] = {"state": "unavailable", "reason": "appearance packet failed"}
+        if failures:
+            journal["stages"].append({"kind": "complete", "state": "not_run",
+                                      "reason": "required paired UI packet failed"})
+            raise ValueError("Required Windows paired UI qualification failed") from failures[0]
+        complete = {"kind": "complete", "state": "running"}
+        journal["stages"].append(complete)
+        save()
+        try:
+            run(output, root, history_output=history_output, appearance_output=appearance_output)
+        except Exception as error:
+            complete.update(state="failed", error={"type": type(error).__name__, "message": str(error)})
+            raise
+        complete["state"] = "passed"
+        journal["state"] = "passed"
+    except Exception as error:
+        if not any(stage["kind"] == "complete" for stage in journal["stages"]):
+            journal["stages"].append({"kind": "complete", "state": "not_run",
+                                      "reason": "required provider runtime proof failed"})
+        journal.update(state="failed", error={"type": type(error).__name__, "message": str(error)})
+        raise
+    finally:
+        save()
+
+
 def run(output: Path, root: Path, *, history_output=None, appearance_output=None):
     output = output.resolve()
     if output.exists():
@@ -1424,6 +1515,8 @@ def main():
                           help="Qualify only the original paired history UI packet, independently of full-suite reference readiness")
     selected.add_argument("--appearance-suite", action="store_true",
                           help="Qualify only paired appearance preferences/GL observations using the maintained capture path")
+    selected.add_argument("--windows-gl-suite", action="store_true",
+                          help="Run the maintained paired/full Windows gates within the CI provider lifetime")
     selected.add_argument("--reference-readiness-only", action="store_true",
                           help="Check original reference availability before building; this is not acceptance")
     parser.add_argument("--headless-test-id", help=argparse.SUPPRESS)
@@ -1435,6 +1528,13 @@ def main():
     parser.add_argument("--appearance-build-receipt", type=Path)
     parser.add_argument("--appearance-output", type=Path)
     args = parser.parse_args()
+    if args.windows_gl_suite:
+        if (args.output is None or args.history_build_receipt is None or args.history_output is None
+                or args.appearance_output is None or args.appearance_build_receipt is not None):
+            parser.error("Windows GL suite requires output, authenticated build and both paired output roots")
+        run_windows_gl_suite(args.output, args.repository or Path(__file__).resolve().parents[1],
+                             args.history_build_receipt, args.history_output, args.appearance_output)
+        return
     if args.history_suite:
         if (args.output is None or args.history_build_receipt is None or args.history_output is not None
                 or args.appearance_build_receipt is not None or args.appearance_output is not None):

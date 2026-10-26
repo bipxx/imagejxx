@@ -2,6 +2,54 @@
 
 ## Current execution card — 2026-10-25
 
+Updated 2026-10-26 after terminal CI intake and the seven-document compilexx
+review. This card is the only ordered queue; the
+[review and applicability table](packets/COMPILEXX_CROSS_PROJECT_REVIEW.md#review-update--2026-10-26)
+records rationale. Earlier cards below are historical, including their queued,
+publish-next and Apple-Ninja-pending wording.
+
+**Published:** `26687af923a78dd95ac695780f8f63073c433e2f`, branch
+`ci2-platform-integration`. [Run 40281326998](https://github.com/bipxx/imagejxx/actions/runs/40281326998)
+is completed/failure. Three headless C++/SDK jobs and source preparations pass.
+All four Mac lanes pass the six Ninja cases, then fail strict installed SDK
+archive equality. Both Windows installed lanes fail actual GL initialization
+in history qualification. Linux installed lanes refuse seven missing original
+scientific payloads before product preparation. These are separate gates.
+
+**Local:** the [C2 receipt](parity/reviews/cfg4-appearance001/receipt.json) retains
+four reader IDs per Windows/Linux host, eight actual GL processes total,
+scale-1/3 native layout, seven navigation IDs per host and eight additional
+Windows path IDs. Full owning cohorts, macOS C2, hosted qualification and ledger
+admission remain open. All 99 families stay 47 in progress / 52 open / 0 complete.
+
+Implementation has resumed with the existing root+A/B roles. Root alone executes
+builds, installation, tests and publication; authors prepare/review exclusive
+files. The [successor source/control receipt](parity/reviews/g010-history-reconnection001/windows-gl-integration-progress.json)
+records local results; actual hosted provider/SDK qualification remains pending.
+
+| Order / owner | Exact seam and smallest next change | Exit / invalidation boundary |
+| --- | --- | --- |
+| Complete locally / Root integration; A GL helper; B independent controls | Existing Windows helper → `run_windows_gl_suite` → source workflow is wired, with exact guards and diagnostic-only uploads. Portable helper39, orchestration60, SDK40, workflow9 and transport17 methods pass on both hosts, with explicit host skips | Actual hosted provider remains unproved. Preserve history/appearance/full-suite failure semantics; synthetic controls do not qualify actual UI/module/GL behavior |
+| Complete source/controls; next actual Mac / A SDK driver, root execution | Checked Python-source loading and causal stale-pyc regression are implemented. Failure-only IO-copy/exact-ranlib/default-vs-ZERO_AR_DATE diagnostic is wired; bounded JSON/log retention excludes archives | No historical stale execution is alleged. Strict archive equality remains fatal. Actual Mac member/offset comparisons must precede any build-environment or install-policy repair |
+| Complete measurement/selection; actual archives open / Root | Corrected full-root inventory includes `.github/ci-data`; existing backend selection fixture excludes all three notice inputs. No provider acquired locally. Check actual wheel/SDK/upload boundaries on the hosted run | `windows-gl-storage-after001.json`: 8,568,250,231 known bytes, two inaccessible caches; budget unverified. Parent Linux root already includes dependencies; the rejected narrower-root successor is not admission evidence |
+| Complete syntax; hosted compile/runtime next / Root | MSVC C++17 syntax passes with cached Release include/define configuration. Avoid a local relink of the 273,756,344-byte desktop archive against only 21,684,361 bytes known upper headroom; use the necessary hosted successor for actual compilation and module witnesses | No local object/link/install, fresh capture or new C2 acceptance is claimed. Actual hosted build/module/reader results remain required. Original C2 receipts and binaries are not relabelled |
+| 5 / Root publication and hosted follow-up | Fetch/check base ancestry, consolidate ready source/fixture/workflow repairs, publish one coherent head, retain its run handle and inspect original failed-job artifacts as jobs finish | Actual Windows loaded-module hashes/llvmpipe identity, hidden-window smoke, both launchers/history/C2 and complete suite; actual Mac SDK diagnostics and strict consumer result. Synthetic tests and local NVIDIA GL cannot establish this exit. No status-only push or automatic retry |
+| Independent / Root original-reference recovery | Recover seven original payloads using the existing authenticated recovery contract | Exact original hashes; no substitute observations, new fingerprints or recreated historical build trees. This blocker does not stop independent Windows/Mac/source work |
+| Next product / A+B preparation outside frozen inputs | After this finite integration handoff, select the first reproduced missing consumer from C3 draw or C5 linked stack/view using the existing per-key guide. Name exact behavior, existing seam, oracle and owning gate before code | Implemented-but-unproved keys need consumer proof, not rewritten kernels. Preparation may overlap remote waiting only outside the frozen closure. Do not start another global audit or a second native build lane |
+
+The [per-key paths](packets/API_KEY_DELIVERY_PATHS.md) retain all 61 settings and
+99 families. C3 covers foreground/background, brush, rounded corner, line, point
+and text; C5 retains playback plus the linked-view gap inventory. C2 remains
+partial until its own remaining gates pass. Scientific, accessibility, eligible
+Fiji, commercial product distribution and release requirements remain required.
+
+Store concise receipts referencing immutable captures. Preserve policy-blocked
+cleanup targets without an alternate deletion method. Reuse one cache/runtime
+per platform; do not recreate historical `build/`. The broad checker still
+refuses unavailable retired G016 proof; leave that limitation explicit.
+
+## Historical execution card before terminal CI intake — 2026-10-26
+
 Updated 2026-10-26. Current C2 work is based on published `2577aba`; exact
 consumed source and product identities are in the
 [local progress receipt](parity/reviews/cfg4-appearance001/receipt.json).

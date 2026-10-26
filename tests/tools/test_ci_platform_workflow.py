@@ -83,11 +83,14 @@ class PlatformInstallArguments(unittest.TestCase):
         wrapper = "python -I -B scripts/ci_history_build.py --output build/ci-history-build -- python -m pip install"
         self.assertIn(wrapper, root_workflow)
         self.assertEqual(source_workflow.count(wrapper), 1)
+        self.assertIn("--history-suite --output build/ci-history --history-build-receipt build/ci-history-build/receipt.json", root_workflow)
+        self.assertIn("--output build/ci-python --history-output build/ci-history", root_workflow)
+        self.assertLess(root_workflow.index("--history-suite"), root_workflow.index("--output build/ci-python"))
+        self.assertIn("--windows-gl-suite", source_workflow)
+        self.assertIn("--history-build-receipt build/ci-history-build/receipt.json", source_workflow)
+        self.assertIn("--history-output build/ci-history --appearance-output build/ci-appearance", source_workflow)
         for workflow in (root_workflow, source_workflow):
-            self.assertIn("--history-suite --output build/ci-history --history-build-receipt build/ci-history-build/receipt.json", workflow)
-            self.assertIn("--output build/ci-python --history-output build/ci-history", workflow)
             self.assertIn("build/ci-history/capture.zip", workflow)
-            self.assertLess(workflow.index("--history-suite"), workflow.index("--output build/ci-python"))
         mac_section = source_workflow.split("      - name: Install macOS IO and both desktop hosts\n", 1)[1].split("\n      - name:", 1)[0]
         self.assertNotIn("ci_history_build.py", mac_section)
         self.assertIn("python -m pip install", mac_section)
@@ -168,12 +171,41 @@ class AppearanceWorkflow(unittest.TestCase):
         for name in ("source-platform.yml", "test.yml"):
             text = (ROOT / ".github/workflows" / name).read_text(encoding="utf8")
             with self.subTest(workflow=name):
-                self.assertIn("--appearance-suite --output build/ci-appearance --appearance-build-receipt build/ci-history-build/receipt.json", text)
                 self.assertIn("--history-output build/ci-history --appearance-output build/ci-appearance", text)
-                self.assertLess(text.index("--history-suite"), text.index("--appearance-suite"))
-                self.assertLess(text.index("--appearance-suite"), text.index("--appearance-output"))
+                if name == "test.yml":
+                    self.assertIn("--appearance-suite --output build/ci-appearance --appearance-build-receipt build/ci-history-build/receipt.json", text)
+                    self.assertLess(text.index("--history-suite"), text.index("--appearance-suite"))
+                    self.assertLess(text.index("--appearance-suite"), text.index("--appearance-output"))
+                else:
+                    self.assertIn("--windows-gl-suite", text)
+                    self.assertIn("--history-build-receipt build/ci-history-build/receipt.json", text)
                 for member in ("receipt.json", "product-bindings.json", "capture.zip", "reader/*.xml", "capture-owner/*"):
                     self.assertIn("build/ci-appearance/" + member, text)
+
+    def test_windows_provider_wraps_required_suite_after_sdk_and_retains_no_dlls(self):
+        text = (ROOT / ".github/workflows/source-platform.yml").read_text(encoding="utf8")
+        title = "Qualify Windows UI and complete suite with the disposable GL provider"
+        step = text.split("      - name: " + title + "\n", 1)[1].split("\n      - name:", 1)[0]
+        self.assertIn("if: runner.os == 'Windows'", step)
+        argv = shlex.split(" ".join(step.split("run: >-", 1)[1].split()))
+        self.assertEqual(argv[:5], ["python", "-I", "-X", "utf8", "-B"])
+        self.assertEqual(argv[5:12], ["scripts/ci_windows_gl.py", "--output", "build/ci-windows-gl",
+                                    "--notices", ".github/ci-data/windows-gl-notices.zip",
+                                    "--notices-sha256", "8600b81dfa22930629e6a60ee170582dacb238e90f011fd63360105730ed2b10"])
+        self.assertEqual(argv[12:], ["--", "python", "-I", "-X", "utf8", "-B",
+                                    "scripts/ci_python_suite.py", "--windows-gl-suite",
+                                    "--output", "build/ci-python", "--history-build-receipt", "build/ci-history-build/receipt.json",
+                                    "--history-output", "build/ci-history", "--appearance-output", "build/ci-appearance"])
+        self.assertLess(text.index("Qualify the installed Windows scientific SDK"), text.index(title))
+        self.assertLess(text.index("Check installed qualification contracts before compilation"),
+                        text.index("Install Windows IO and both desktop hosts"))
+        retained = text.split("      - name: Retain disposable Windows GL diagnostics and notices\n", 1)[1].split("\n      - name:", 1)[0]
+        self.assertIn("if: always() && runner.os == 'Windows'", retained)
+        paths = retained.split("path: |", 1)[1].split("if-no-files-found:", 1)[0].split()
+        self.assertEqual(paths, ["build/ci-windows-gl/*.json", "build/ci-windows-gl/*.log", "build/ci-windows-gl/notices.zip"])
+        self.assertNotIn("continue-on-error", step)
+        self.assertIn("python -I -B tests/tools/test_ci_windows_gl.py",
+                      (ROOT / ".github/workflows/test.yml").read_text(encoding="utf8"))
 
 
 if __name__ == "__main__":

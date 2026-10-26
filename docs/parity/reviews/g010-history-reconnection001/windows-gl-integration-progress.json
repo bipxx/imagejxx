@@ -1,0 +1,282 @@
+{
+  "schema": "imagejxx.windows-gl-integration-progress.001",
+  "state": "local_source_controls_passed_hosted_runtime_pending",
+  "base_commit": "26687af923a78dd95ac695780f8f63073c433e2f",
+  "source_pins": {
+    ".github/workflows/source-platform.yml": {
+      "bytes": 13509,
+      "sha256": "f379a2606409703ec40ab25ecb580815fd9709447addacdba144a77bcba9e46f"
+    },
+    ".github/workflows/test.yml": {
+      "bytes": 10148,
+      "sha256": "27aa1aea1db2725337edab5af55db992b9624dfb52c8aa780849c2c0b4e6fbc3"
+    },
+    "pyproject.toml": {
+      "bytes": 2133,
+      "sha256": "cd3a69db50e661a4270aded18ac247aedd530d90e36a80e88c923481346a7ef6"
+    },
+    "scripts/ci_python_suite.py": {
+      "bytes": 96261,
+      "sha256": "ec3b3d0c491fac093c37f8cc98362fced3039c5a60afddb65a04bd08e755be2a"
+    },
+    "scripts/ci_scientific_sdk.py": {
+      "bytes": 43520,
+      "sha256": "a2cf7bfa810715e053af90e54203dacb19d8742751c2e6fd918110ebd40a0d34"
+    },
+    "scripts/ci_windows_gl.py": {
+      "bytes": 28606,
+      "sha256": "806f15a4301ec26a4387f592d80bbc2fdea1e8ec660deb3448c9a642d77ab449"
+    },
+    "src/desktop/settings_appearance_ui_probe.cpp": {
+      "bytes": 43913,
+      "sha256": "f58cc8fc6a3aea5ecfbac87296ebb00c7a67ab19ca31cb6644b7fba887f8e753"
+    },
+    "tests/tools/test_ci_platform_workflow.py": {
+      "bytes": 13842,
+      "sha256": "1e3fa6fa57e2c98e287a7901f82f29d8777bfa322943806e5d6ea73dad606c7a"
+    },
+    "tests/tools/test_ci_history_integration.py": {
+      "bytes": 75840,
+      "sha256": "8add14457e13b0670d8cf381b88f48fbc4522e27a822765094cde2ea24697d9c"
+    },
+    "tests/tools/test_ci_scientific_sdk.py": {
+      "bytes": 41310,
+      "sha256": "7f0342ee659b5a6c7750c947e69aa50a49868f23769d2a9b242759c8f8a71225"
+    },
+    "tests/tools/test_ci_windows_gl.py": {
+      "bytes": 39852,
+      "sha256": "6202a8fdf33a67f5f73c824cb6c0eeb4c4fdbabbe21ceca142264155158b270e"
+    },
+    "tests/tools/test_ci_python_suite_transport.py": {
+      "bytes": 31967,
+      "sha256": "03610ea629a87799acd53daa7c59aaa4548c041d1c92fb935ebb43d85c315254"
+    },
+    ".github/ci-data/README.md": {
+      "bytes": 977,
+      "sha256": "ebf8998773b2933abf2d9b4ebea9bf94e1277e82f49efaa14e3d7f21f3c18c39"
+    },
+    ".github/ci-data/windows-gl-notices.json": {
+      "bytes": 1800,
+      "sha256": "ccff080e93102ed5cbe2609e692694974cf60efffe74b3d1a5a3d7ed811e45f5"
+    },
+    ".github/ci-data/windows-gl-notices.zip": {
+      "bytes": 5312444,
+      "sha256": "8600b81dfa22930629e6a60ee170582dacb238e90f011fd63360105730ed2b10"
+    },
+    "tests/tools/test_ci_python_suite.py": {
+      "bytes": 34092,
+      "sha256": "6e7a3c2363fa5962e55ed115080e02e807bc1a9eac73a40f10b681668a89f9f0"
+    }
+  },
+  "windows": {
+    "helper": {
+      "receipt": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\windows-gl-controls-windows001\\receipt.json",
+        "bytes": 2731,
+        "sha256": "7a7530ae42fd50ca1ee56ac4d4ae092da4e5f3b2fb676b3c60835ec13e7fadc6"
+      },
+      "state": "passed",
+      "scratch_empty_removed": true,
+      "methods": 39,
+      "explicit_host_skips": 2
+    },
+    "integration": {
+      "receipt": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\windows-gl-integration-windows001\\receipt.json",
+        "bytes": 13192,
+        "sha256": "542227e5ba94d29e2593abb2978d61b7f63af7c473e073097a7962ffc4ee631c"
+      },
+      "state": "passed",
+      "scratch_empty_removed": true,
+      "orchestration_methods": 60,
+      "sdk_methods": 40,
+      "sdk_explicit_host_skips": 1,
+      "transport_methods": 17,
+      "workflow_first_attempt_methods": 9,
+      "workflow_first_attempt_host_skips": 1
+    },
+    "workflow": {
+      "receipt": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\windows-gl-workflow-windows002\\receipt.json",
+        "bytes": 5479,
+        "sha256": "71f6d611dde7c2dd9fc518cdb1f7f50dc165c0aea54a7c1b23bd491ae7c51e3e"
+      },
+      "state": "passed",
+      "scratch_empty_removed": true,
+      "methods": 9,
+      "explicit_host_skips": 0,
+      "reason": "Expose the existing VS CMake tool, absent from initial PATH; no installation or product source change"
+    },
+    "native_syntax": {
+      "receipt": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\windows-gl-native-syntax001\\receipt.json",
+        "bytes": 3018,
+        "sha256": "28af15b4ccb4eaddc154bfd8e0fd3ac4d7adbcfb4c520989a145c8f21a1c1572"
+      },
+      "state": "passed",
+      "scratch_empty_removed": null
+    },
+    "sdist_selection": {
+      "receipt": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\windows-gl-sdist-selection001\\receipt.json",
+        "bytes": 621,
+        "sha256": "bfc07f063afe972342d640fdb68339823297af50fb5ef611e2a6fb5590eb0ba4"
+      },
+      "state": "passed",
+      "scratch_empty_removed": true
+    },
+    "source_license_check": {
+      "receipt": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\windows-gl-license-controls001\\receipt.json",
+        "bytes": 5414,
+        "sha256": "9fd71b319f09e4a29b1616e4d6958885613cac369cdc935692da5e7578896517"
+      },
+      "state": "passed",
+      "scratch_empty_removed": true
+    },
+    "runner": {
+      "receipt": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\windows-gl-runner-windows001\\receipt.json",
+        "bytes": 5886,
+        "sha256": "93e063d0d2c103cbefd1a865341b9941a703ec17121d3daa06ceb00ac4c832d8"
+      },
+      "methods": 44,
+      "explicit_host_skips": 1,
+      "state": "passed"
+    }
+  },
+  "linux": {
+    "helper": {
+      "receipt": {
+        "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/windows-gl-controls-linux001/receipt.json",
+        "bytes": 2547,
+        "sha256": "2e81bbee3722d50c250eb7d44e34e430ac462e141f5ea1dfe15acb2bc5342bf4"
+      },
+      "state": "passed",
+      "scratch_empty_removed": true,
+      "methods": 39,
+      "explicit_host_skips": 0
+    },
+    "controller_results": {
+      "receipt_path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/windows-gl-integration-linux001/receipt.json",
+      "overall_state": "failed",
+      "passed_groups": {
+        "workflow_methods": 9,
+        "workflow_explicit_host_skips": 1,
+        "orchestration_methods": 60,
+        "sdk_methods": 40
+      },
+      "failed_group": "transport interpreter lacked pytest; no product failure",
+      "original_attempt_preserved": true,
+      "original_evidence": [
+        {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/windows-gl-integration-linux001/receipt.json",
+          "bytes": 11953,
+          "sha256": "8a6b6b159f840d3af229e5331c1777802fa6d6eb065f4516ccd7f99d0e7452f0"
+        },
+        {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/windows-gl-integration-linux001/0.log",
+          "bytes": 119,
+          "sha256": "078d7f38e89f773708b7a480f5f00b63972334003cfecde3db029d2a73c0abcf"
+        },
+        {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/windows-gl-integration-linux001/1.log",
+          "bytes": 159,
+          "sha256": "b00c8de420c21748a7badde10a55779f3f6051ddfce50926f967f45cb59f63a8"
+        },
+        {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/windows-gl-integration-linux001/2.log",
+          "bytes": 139,
+          "sha256": "65f8fbe042ef4112cd482d947cf7e7b8e1d6809e12e7e2f37943ec723bdaa8c2"
+        },
+        {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/windows-gl-integration-linux001/3.log",
+          "bytes": 8493,
+          "sha256": "39217f2cf34df44de7c62bba3ad870a52e8c88238926176b945f01cf35577168"
+        }
+      ]
+    },
+    "transport": {
+      "receipt": {
+        "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/windows-gl-transport-linux002/receipt.json",
+        "bytes": 5318,
+        "sha256": "5b1788f5fdd95dc363f5358754509c68e581a429194c8cad0029de8b0115c49c"
+      },
+      "state": "passed",
+      "scratch_empty_removed": true,
+      "methods": 17,
+      "explicit_host_skips": 0,
+      "runtime": "/home/heq/.cache/imagejxx-build/p08k-001-5zn6rc00/python001/bin/python",
+      "reason": "Reuse existing configured interpreter with pytest; no environment creation/installation"
+    },
+    "runner": {
+      "receipt": {
+        "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/windows-gl-runner-linux001/receipt.json",
+        "bytes": 5277,
+        "sha256": "21f1b6dbce267441ad4c89bf0283596b7860d2c2295e7071479b988519abff26"
+      },
+      "methods": 44,
+      "explicit_host_skips": 0,
+      "state": "passed"
+    }
+  },
+  "storage": {
+    "receipt": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\windows-gl-storage-after001.json",
+      "bytes": 1524,
+      "sha256": "231be882d136408e38b974cb3f859cf39bb1db96a9d5214282164b851c9653bb"
+    },
+    "known_bytes": 8568250231,
+    "headroom_upper_bound_bytes": 21684361,
+    "unavailable_subtree_count": 2,
+    "budget_verified": false,
+    "scope": "complete .cache/.tmp/.tools/.venv/public review/CI-notice roots and whole existing Linux project build parent, without following links",
+    "rejected_scope_attempt": "windows-gl-storage-scope-review001.json; proposed two-child replacement would omit parent siblings, original parent already covers dependencies"
+  },
+  "native_verification_decision": {
+    "msvc_syntax_passed": true,
+    "local_object_link_install_performed": false,
+    "desktop_archive_bytes": 273756344,
+    "reason": "Avoid local archive rewrite above known upper headroom; required hosted successor must compile and observe actual loaded modules"
+  },
+  "actual_provider_downloaded_staged_or_loaded_locally": false,
+  "product_redistribution_admitted": false,
+  "hosted_successor_executed": false,
+  "sdk_archive_equality_guard_unchanged": true,
+  "full_family_counts": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  },
+  "acceptance_claim": false,
+  "remaining": [
+    "Actual hosted Windows build/provider module hashes/GL/hidden-window/history/C2/full suite",
+    "Actual Darwin failure-only ranlib observation and strict SDK acceptance; no timestamp-only or equivalence conclusion",
+    "Original seven scientific payload recovery with unchanged hashes",
+    "Full owning C2/macOS/accessibility/commercial/release and eligible ImageJ/Fiji scope"
+  ],
+  "independent_source_review": {
+    "reviewer": "existing B agent /root/plan_ui_backlog",
+    "state": "no_concrete_blocker_found",
+    "scope": "workflow/parser handoff, actual decoder interface, provider lifetime and upload/cleanup boundaries, native afterRender witness; read-only, no execution",
+    "sources": {
+      "scripts/ci_python_suite.py": {
+        "bytes": 96261,
+        "sha256": "ec3b3d0c491fac093c37f8cc98362fced3039c5a60afddb65a04bd08e755be2a"
+      },
+      "scripts/ci_windows_gl.py": {
+        "bytes": 28606,
+        "sha256": "806f15a4301ec26a4387f592d80bbc2fdea1e8ec660deb3448c9a642d77ab449"
+      },
+      "src/desktop/settings_appearance_ui_probe.cpp": {
+        "bytes": 43913,
+        "sha256": "f58cc8fc6a3aea5ecfbac87296ebb00c7a67ab19ca31cb6644b7fba887f8e753"
+      },
+      ".github/workflows/source-platform.yml": {
+        "bytes": 13509,
+        "sha256": "f379a2606409703ec40ab25ecb580815fd9709447addacdba144a77bcba9e46f"
+      }
+    },
+    "limits": "Not actual hosted build/module/GL/SDK acceptance"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "schema": "imagejxx.ci-notice-bundle-pin.001",
+  "path": ".github/ci-data/windows-gl-notices.zip",
+  "bytes": 5312444,
+  "sha256": "8600b81dfa22930629e6a60ee170582dacb238e90f011fd63360105730ed2b10",
+  "contents": {
+    "schema": "imagejxx.ci-windows-gl-notices.001",
+    "scope": "unmodified provider use on disposable CI only; not product distribution permission",
+    "provider": "pal1000/mesa-dist-win26.2.4 MSVC",
+    "provider_source_commit": "f02a557d84a1a1cf9470a37944d6d1d29a67fcd0",
+    "mesa_source_url": "https://archive.mesa3d.org/mesa-26.2.4.tar.xz",
+    "mesa_source_sha256": "bce5f7fbebb934373b86c999a064d52fb5065878dc57f287f95346648ec832e9",
+    "contents": [
+      {
+        "member": "mesa-leading-notices.zip",
+        "bytes": 3125867,
+        "sha256": "cb6ff6cab57f2d16ac37d2f5bf45aa5232a40cf799e9d037a060244c42bab002",
+        "scope": "original source/notice data, not linked code or a per-DLL object inventory"
+      },
+      {
+        "member": "mesa-notice-context.zip",
+        "bytes": 1917480,
+        "sha256": "a20c2b055f8ce3bd6a226c9b86aa42ea11bd2ff03fbe0dd4c47aaea48a3ab0be",
+        "scope": "original source/notice data, not linked code or a per-DLL object inventory"
+      },
+      {
+        "member": "external-notices.zip",
+        "bytes": 267163,
+        "sha256": "a1aeec74828ffa15773350a397299d000e48e4bae1e851deed708f15845b46ce",
+        "scope": "original source/notice data, not linked code or a per-DLL object inventory"
+      }
+    ],
+    "preservation": "original notice and source-context bytes retained to preserve attributions; no provider DLLs, binaries, SDK or complete source checkout; do not label entire corpus MIT",
+    "product_redistribution_admitted": false
+  },
+  "excluded_from_products": true
+}

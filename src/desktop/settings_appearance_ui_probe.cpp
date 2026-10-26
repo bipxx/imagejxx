@@ -129,6 +129,34 @@ Json runtimeIdentity() {
 #endif
   return value;
 }
+
+// Observe already-loaded files while the actual GL context is alive. This
+// never loads a library or selects a renderer, and runs only twice per probe.
+Json loadedGlModules() {
+#ifdef _WIN32
+  Json modules = Json::object();
+  for (const auto *name : {L"opengl32.dll", L"libgallium_wgl.dll"}) {
+    const auto module = GetModuleHandleW(name);
+    const std::string key = fs::path(name).u8string();
+    if (!module) {
+      modules[key] = {{"state", "not_loaded"}};
+      continue;
+    }
+    std::array<wchar_t, 32768> path{};
+    const auto count = GetModuleFileNameW(module, path.data(),
+                                        static_cast<DWORD>(path.size()));
+    require(count > 0 && count < path.size(), "Cannot observe loaded GL module");
+    const auto file = fs::path(std::wstring(path.data(), count));
+    const auto bytes = readBytes(file.u8string(), 128 * 1024 * 1024);
+    modules[key] = {{"state", "loaded"}, {"artifact", {
+        {"path", file.u8string()}, {"bytes", bytes.size()},
+        {"sha256", rankRuntimeSha256(bytes)}}}};
+  }
+  return {{"platform", "win32"}, {"modules", std::move(modules)}};
+#else
+  return {{"platform", "non_windows"}, {"state", "not_applicable"}};
+#endif
+}
 template<class Word> void appendWord(std::string &out, Word value) {
   constexpr char digits[] = "0123456789abcdef";
   for (std::size_t i = 0; i < sizeof(value); ++i) {
@@ -517,6 +545,7 @@ void SettingsAppearanceUiProbe::Impl::after(std::uint64_t frame, double actualDp
   require(last.at("appearance_runtime").at("actual_dpi") == actualDpi, "C2 actual backend DPI differs from callback");
   require(window.error().empty(), "C2 actual Window error: " + window.error());
   if (!initial) {
+    report["gl_modules_before"] = loadedGlModules();
     preferencesPath = fs::absolute(fs::u8path(last.at("preferences_path").get<std::string>())).lexically_normal();
     require(!preferencesPath.empty() && preferencesPath.parent_path() == directory.parent_path(), "C2 preference pairing must share the capture parent");
     require(fs::exists(preferencesPath) == (caseId == "appearance-reopen"), "C2 persist must start absent and reopen must load the saved file");
@@ -554,6 +583,7 @@ void SettingsAppearanceUiProbe::Impl::after(std::uint64_t frame, double actualDp
     report["events"].push_back({{"kind", "text_input"}, {"control", action.name}, {"text", action.text},
       {"input_id", action.control.at("id")}, {"frame_before", action.before}, {"frame_after", ordinal}}); ++next;
   }
+  if (next == actions.size()) report["gl_modules_after"] = loadedGlModules();
 }
 
 Json SettingsAppearanceUiProbe::Impl::sample(const std::string &name, const Json &geometry) {

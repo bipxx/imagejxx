@@ -9,7 +9,9 @@ import hashlib
 import importlib.util
 import io
 import json
+import os
 from pathlib import Path
+import py_compile
 import re
 import subprocess
 import sys
@@ -22,10 +24,14 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def source_module(name):
+    path = ROOT / "scripts" / (name + ".py")
+    before = path.read_bytes()
     spec = importlib.util.spec_from_file_location(
-        "sdk_control_" + name, ROOT / "scripts" / (name + ".py"))
+        "sdk_control_" + name, path)
     module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
+    exec(compile(before, str(path), "exec", dont_inherit=True), module.__dict__)
+    if path.read_bytes() != before:
+        raise ValueError("SDK control helper source changed while loading")
     return module
 
 
@@ -38,6 +44,40 @@ INTEL = "macos-x86_64-ci-static-source-001"
 LINUX = "linux-x86_64-ci-static-source-001"
 CASE = "imagejxx_scientific_sdk_roundtrip"
 CARRIER_SHA = "c5865779efc1945ed75db444d28f0545f8669dec7828bac8c53239d24fabbb64"
+
+
+class SourceLoadingControls(unittest.TestCase):
+    def test_both_source_loaders_bypass_a_real_timestamp_valid_stale_pyc(self):
+        with tempfile.TemporaryDirectory(prefix="imagejxx-sdk-source-control-") as temporary, \
+                patch.object(sys, "pycache_prefix", None), patch.object(sys, "dont_write_bytecode", True):
+            root = Path(temporary).resolve()
+            (root / "scripts").mkdir()
+            path = root / "scripts/marker.py"
+            old, current = b"VALUE = 'old'\n", b"VALUE = 'new'\n"
+            self.assertEqual(len(old), len(current))
+            path.write_bytes(old)
+            os.utime(path, (1600000000, 1600000000))
+            timestamp = path.stat().st_mtime_ns
+            cached = Path(py_compile.compile(str(path), doraise=True,
+                         invalidation_mode=py_compile.PycInvalidationMode.TIMESTAMP))
+            old_cache = cached.read_bytes()
+            path.write_bytes(current)
+            os.utime(path, ns=(timestamp, timestamp))
+            source_pin = hashlib.sha256(current).hexdigest()
+            with patch.object(sdk, "ROOT", root), patch.dict(globals(), {"ROOT": root}):
+                for label, loader in (("SDK", sdk.load_script), ("test harness", source_module)):
+                    with self.subTest(loader=label):
+                        legacy_spec = importlib.util.spec_from_file_location("sdk_legacy_control", path)
+                        legacy = importlib.util.module_from_spec(legacy_spec)
+                        legacy_spec.loader.exec_module(legacy)
+                        self.assertEqual(legacy.VALUE, "old", "Causal stale-bytecode control did not reproduce")
+                        loaded = loader("marker")
+                        self.assertEqual(loaded.VALUE, "new")
+                        self.assertEqual(loaded.__file__, str(path))
+                        self.assertEqual(loaded.__spec__.origin, str(path))
+                        self.assertEqual((path.stat().st_size, path.stat().st_mtime_ns), (len(current), timestamp))
+                        self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), source_pin)
+                        self.assertEqual(cached.read_bytes(), old_cache)
 
 
 class MetadataControls(unittest.TestCase):
@@ -456,6 +496,143 @@ class MetadataControls(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "linked directory"):
             sdk.wheel_cache(self.root, builder)
         self.assertEqual((outside / "keep.txt").read_bytes(), b"outside linked target")
+
+
+class RanlibDiagnosticControls(unittest.TestCase):
+    """Synthetic BSD bytes and stubbed process transport; no tool is executed."""
+    @staticmethod
+    def archive(name=b"tiny.o/", payload=b"object marker\n", date=b"0"):
+        header = (name.ljust(16, b" ") + date.ljust(12, b" ") + b"0".ljust(6, b" ") +
+                  b"0".ljust(6, b" ") + b"100644".ljust(8, b" ") + str(len(payload)).encode().ljust(10, b" ") + b"`\n")
+        return b"!<arch>\n" + header + payload + (b"\n" if len(payload) % 2 else b"")
+
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory(prefix="imagejxx-ranlib-metadata-")
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name).resolve()
+        self.raw = self.root / "libimagejxx_io.a"
+        self.raw.write_bytes(self.archive())
+        self.raw_pin = sdk.pin(self.raw)
+        self.tool = self.root / "ranlib"
+        self.tool.write_bytes(b"Not an executable; transport is stubbed.\n")
+        self.script = self.root / "cmake_install.cmake"
+        self.script.write_text('    execute_process(COMMAND "' + self.tool.as_posix() +
+            '" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libimagejxx_io.a")\n', encoding="utf-8")
+        self.install = sdk.install_script_diagnostic(self.script, sdk.pin(self.script))
+        self.output = self.root / "diagnostic"
+        self.calls = []
+        self.exit_code, self.cleanup = 0, True
+        self.process_guard = patch.object(subprocess, "Popen", side_effect=AssertionError("No real diagnostic process"))
+        self.process_guard.start()
+        self.addCleanup(self.process_guard.stop)
+
+    def execute(self, argv, *, cwd, env, timeout, stdout, stderr, receipt_path):
+        self.calls.append({"argv": argv, "environment": dict(env), "timeout": timeout})
+        target = Path(argv[1])
+        raw = target.read_bytes()
+        # Only the declared ar date's first byte changes; object payload stays literal.
+        target.write_bytes(raw[:24] + (b"0" if env.get("ZERO_AR_DATE") == "1" else b"1") + raw[25:])
+        proof = {"schema": "imagejxx.owned-command.001", "state": "exited", "exit_code": self.exit_code,
+                 "target_completed": True, "cleanup_complete": self.cleanup, "timed_out": False,
+                 "argv": argv, "cwd": str(cwd)}
+        Path(receipt_path).write_text(json.dumps(proof), encoding="utf-8")
+        return proof
+
+    def run_diagnostic(self, environment=None):
+        return sdk.diagnose_archive_ranlib(self.raw, self.raw_pin, self.install, output=self.output,
+            root=self.root, execute=self.execute, environment=environment or {"CONTROL_SECRET": "do-not-retain"})
+
+    def test_bsd_short_and_extended_members_have_literal_payload_hashes(self):
+        rows = sdk.archive_member_summary(self.archive())
+        self.assertEqual(len(rows), 1)
+        self.assertEqual((rows[0]["name"], rows[0]["header_offset"], rows[0]["date"], rows[0]["payload_bytes"]),
+                         ("tiny.o", 8, "0", 14))
+        self.assertEqual(rows[0]["payload_sha256"], hashlib.sha256(b"object marker\n").hexdigest())
+        extended = sdk.archive_member_summary(self.archive(b"#1/20", b"longer-name.o".ljust(20, b"\0") + b"abc"))
+        self.assertEqual((extended[0]["name"], extended[0]["payload_bytes"], extended[0]["payload_sha256"]),
+                         ("longer-name.o", 3, hashlib.sha256(b"abc").hexdigest()))
+
+    def test_unsupported_thin_gnu_truncated_and_unbounded_forms_refuse(self):
+        valid = self.archive()
+        inputs = (b"!<thin>\n", b"not an archive", valid[:-1], valid[:66] + b"xx" + valid[68:],
+                  self.archive(b"//"), self.archive(b"#1/99999"), self.archive(b"tiny.o/", b"a")[:-1])
+        for raw in inputs:
+            with self.subTest(raw=raw[:32]), self.assertRaises(ValueError):
+                sdk.archive_member_summary(raw)
+        with patch.object(sdk, "MAX_DIAGNOSTIC_ARCHIVE_BYTES", len(valid) - 1), self.assertRaises(ValueError):
+            sdk.archive_member_summary(valid)
+
+    def test_diff_offsets_are_exact_and_many_ranges_are_explicitly_bounded(self):
+        before, after = self.archive(), self.archive(date=b"1")
+        self.assertEqual(sdk.archive_byte_diff(before, after),
+                         {"changed_bytes": 1, "ranges": [[24, 25]], "range_count": 1, "ranges_complete": True})
+        many = sdk.archive_byte_diff(b"00" * 200, b"10" * 200)
+        self.assertEqual((many["changed_bytes"], many["range_count"], len(many["ranges"]), many["ranges_complete"]),
+                         (200, 200, 128, False))
+
+    def test_owned_diagnostic_records_three_steps_and_retires_only_its_copies(self):
+        original, tool = self.raw.read_bytes(), self.tool.read_bytes()
+        result = self.run_diagnostic()
+        self.assertEqual(result["state"], "observed")
+        self.assertTrue(result["cleanup_complete"] and result["raw_source_unchanged"])
+        self.assertFalse(result["acceptance_claim"])
+        self.assertEqual([row["matches_raw"] for row in result["steps"]], [False, True, True])
+        self.assertTrue(result["steps"][2]["unchanged_by_command"])
+        self.assertEqual(result["steps"][0]["diff_from_raw"]["ranges"], [[24, 25]])
+        for step in result["steps"]:
+            self.assertEqual(step["after"]["members"][0]["payload_sha256"], hashlib.sha256(b"object marker\n").hexdigest())
+            self.assertTrue((self.output / step["process"]["path"]).is_file())
+        self.assertEqual([row["environment"].get("ZERO_AR_DATE") for row in self.calls], [None, "1", "1"])
+        self.assertTrue(all(row["timeout"] == 30 and row["argv"][0] == str(self.tool) for row in self.calls))
+        self.assertTrue(all(row["retired"] for row in result["copies"]))
+        self.assertFalse(list(self.output.glob("*.a")))
+        self.assertEqual((self.raw.read_bytes(), self.tool.read_bytes()), (original, tool))
+        self.assertNotIn("do-not-retain", (self.output / "receipt.json").read_text())
+
+    def test_inherited_zero_date_is_recorded_without_changing_default_environment(self):
+        result = self.run_diagnostic({"ZERO_AR_DATE": "1"})
+        self.assertEqual(result["inherited_ZERO_AR_DATE"], "1")
+        self.assertEqual([step["matches_raw"] for step in result["steps"]], [True, True, True])
+        self.assertEqual(self.calls[0]["environment"], {"ZERO_AR_DATE": "1"})
+
+    def test_nonzero_tool_records_unavailable_and_resolved_cleanup(self):
+        self.exit_code = 7
+        result = self.run_diagnostic()
+        self.assertEqual((result["state"], len(self.calls)), ("unavailable", 1))
+        self.assertTrue(result["cleanup_complete"])
+        self.assertFalse(list(self.output.glob("*.a")))
+        self.assertEqual(sdk.pin(self.raw), self.raw_pin)
+
+    def test_unresolved_tool_preserves_copies_without_claiming_cleanup(self):
+        self.cleanup = False
+        result = self.run_diagnostic()
+        self.assertEqual(result["state"], "unavailable")
+        self.assertFalse(result["cleanup_complete"])
+        self.assertEqual(len(list(self.output.glob("*.a"))), 3)
+        self.assertIn("ownership unresolved", result["cleanup_error"]["message"])
+
+    def test_changed_script_refuses_before_any_tool(self):
+        self.script.write_text("changed source", encoding="utf-8")
+        result = self.run_diagnostic()
+        self.assertEqual((result["state"], self.calls), ("unavailable", []))
+        self.assertTrue(result["cleanup_complete"])
+        self.assertFalse(result["copies"])
+
+    def test_original_guard_remains_fatal_with_diagnostic_success_or_error(self):
+        installed = self.root / "sdk/lib"
+        installed.mkdir(parents=True)
+        (installed / self.raw.name).write_bytes(b"different installed bytes")
+        inputs = {self.raw.name: self.raw_pin, "cmake_install.cmake": sdk.pin(self.script)}
+        for platform, outcome in (("darwin", {"state": "observed"}), ("darwin", RuntimeError("diagnostic refused")),
+                                  ("win32", {"state": "must not run"})):
+            callback = Mock(side_effect=outcome) if isinstance(outcome, Exception) else Mock(return_value=outcome)
+            receipt = {}
+            with self.subTest(platform=platform, outcome=outcome), patch.object(sdk.sys, "platform", platform):
+                with self.assertRaisesRegex(ValueError, "^Installed SDK archive differs from the existing wheel build$"):
+                    sdk.verify_installed_archives(self.root, installed.parent, [self.raw.name], inputs, receipt,
+                                                  diagnostic=callback)
+            self.assertEqual(callback.call_count, 1 if platform == "darwin" else 0)
+            self.assertEqual(receipt["archive_comparisons"]["mismatches"], [self.raw.name])
 
 
 class StaticConsumerContract(unittest.TestCase):
