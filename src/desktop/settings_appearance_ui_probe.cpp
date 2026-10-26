@@ -417,7 +417,8 @@ Json SettingsAppearanceUiProbe::Impl::control(const std::string &name) const {
   };
   if (name.rfind("host.", 0) == 0) {
     item = last.at("host_controls").at(name.substr(5));
-    if (name.rfind("host.tools.", 0) == 0) owner = ImGui::FindWindowByName("Tools");
+    if (item.contains("window_name")) owner = ImGui::FindWindowByName(item.at("window_name").get<std::string>().c_str());
+    else if (name.rfind("host.tools.", 0) == 0) owner = ImGui::FindWindowByName("Tools");
     else if (name.rfind("host.browser.", 0) == 0) owner = popup();
   } else if (name.rfind("document.", 0) == 0) {
     const auto id = name == "document.step" ? stepId : volumeId;

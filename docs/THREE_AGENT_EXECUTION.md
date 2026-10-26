@@ -2,50 +2,91 @@
 
 ## Current execution card — 2026-10-26
 
-This is the only ordered queue. Earlier cards, source pins and expectations
-remain historical and retain their original scope.
+This is the only ordered queue. Earlier cards, source pins, failures, references
+and measurements remain historical and retain their original scopes.
 
-Published `a4778b2afd56937f4493e40924ffa7629d1a3072`, branch
-`ci2-platform-integration`: [run40344720115](https://github.com/bipxx/imagejxx/actions/runs/40344720115)
-is terminal failure. All source preparations pass. **All four actual macOS
-installed scientific SDK gates pass strict archive equality**, ARM/Intel and
-Python3.10/3.12. Matched deterministic archive policy now has this scoped proof;
-full macOS suites still stop on missing original scientific references.
-Windows3.12 passes eight history IDs. Its appearance capture gets beyond the
-old scientific-dialog failure, then records the Stacks menu item at y930..993
-on the actual1028x749 viewport at gui_scale3. The item observation lacks clip
-information. Windows headless also fails a normal-exit descendant assertion;
-the original log has no detailed ownership row, so its cause remains unknown.
-Original ZIPs, API hashes and logs: local `ci2/a4778b2-hosted-results001`.
+**Published:** `4c10def155feedb650f7f7ba001982696489d220`, branch
+`ci2-platform-integration`; [run40358542135](https://github.com/bipxx/imagejxx/actions/runs/40358542135)
+is live. All source preparations and Linux/Mac headless C++/SDK jobs pass.
+Windows headless repeats the normal-exit descendant assertion; its original
+retained row has no process image, so its specific member is not identified.
+Linux installed lanes still refuse seven missing original scientific payloads.
+No retry, cancellation or status-only publication is authorized by this card.
+
+Windows3.10 now compiles/installs both hosts including C3 and passes strict
+installed scientific SDK qualification and all eight paired history IDs. C2
+reaches the known offscreen Stacks item (y930..993, actual1028x749, gui3). C3's
+first actual capture stops after14 frames at a hidden, auto-sizing Preferences
+group popup. Original API-digest-verified artifact and failure reports:
+local `ci2/4c10def-hosted-results001`. Windows3.12 confirms the same two failures; its installation, SDK and history
+gates pass. Both ARM Mac SDK gates pass; full ARM suites stop on original
+reference readiness. Only Intel Mac installed jobs remain live.
+
+The earlier a4778b2/run40344720115 is terminal failure, with **all four actual
+Mac installed SDK gates passing strict archive equality** (ARM/Intel ×
+Python3.10/3.12). This scope does not establish current-head full platform/UI
+acceptance. Its original archives and fingerprints are preserved.
+
+**Held source candidate:** `c2-c3-console-candidate002.json` records five source
+pins and decisive checks. Prior preparation001 and failed experiments remain.
+
+- C2 records the actual parent popup clip before BeginMenu switches windows;
+  the driver keeps bounded physical wheel, item identity and hover/clip checks.
+  Both translation units pass cached-profile MSVC syntax. Actual changed-menu
+  GL input is still required; no scaled-down or direct-action workaround.
+- Local normal-exit reproduction identifies an unsignalled conhost.exe. Process
+  diagnostics now record executable identity and pre-cleanup signal/exit state.
+  DETACHED_PROCESS was rejected after venv-specific failures. The candidate
+  inherits an existing caller console, otherwise preserves no-window fallback.
+  Original argv, stream redirection, suspended Job assignment, kill ownership,
+  strict descendant reporting and all assertions stay intact. Twelve Windows
+  lifecycle methods pass, including both interpreter paths, real no-console
+  fallback and acknowledged surviving-child cleanup. Linux controls pass.
+- C3 adds one actual layout frame after opening the group combo. Existing
+  installed C2 baseline experiments reproduce the identical hidden release
+  geometry and prove visibility after one frame; original module pins are
+  unchanged. Four reports are losslessly compressed, hashes verified, empty
+  scratch removed. This supports popup timing only; the changed C3 producer,
+  paired persistence, native consumers and GL are not accepted. C3 syntax passes.
+
+Publication scheduling amendment: both Windows lanes now agree, and both ARM
+SDK gates pass. Intel installed jobs have90-minute bounds, so serializing the
+ready repair behind their completion adds avoidable latency. Publish the checked
+combined source while they continue; no old job is canceled or retried. The
+workflow has no concurrency-cancellation group. New source still needs all its
+own gates; predecessor successes are not transferred. The new
+[candidate receipt](parity/reviews/cfg5-drawing001/hosted-repair-progress.json)
+records exact source pins, controls, original intake and remaining limits.
 
 | Order / owner | Smallest next action | Decisive check / boundary |
 | --- | --- | --- |
-| 1 / Root integration | Finish C3 source controls and publish one coherent source head after fetch/base review | Existing four-ID capture/reader route; hosted compilation and actual persist/reopen input remain required. Run history/appearance/drawing independently before the full gate, preserving each failure |
-| 2 / Root C2 | Observe actual owning menu popup clipping and scroll the offscreen Stacks item with bounded real input | Preserve item identity, hover/clip checks, gui3, numerical assertions and time/frame bounds; both installed launchers through the original Windows GL route |
-| 3 / Root ownership | Retain the detailed normal-exit row if the hosted assertion recurs | Diagnostic-only assertion message is prepared. No cleanup-policy relaxation or invented cause; local lifecycle success does not resolve the hosted failure |
-| Independent / Root | Recover seven original scientific payloads through the authenticated recovery contract | Exact original hashes, no substitutes or recreated retired build trees |
+| 1 / Root integration | Publish the checked console/menu/popup fixes as one coherent source head; keep following the two live predecessor Intel jobs | Waiting for independent90-minute jobs is not a prerequisite for the next Windows observation. Preserve both run handles; every required acceptance gate remains fatal |
+| 2 / Root publication | Fetch/check base ancestry, verify candidate source pins and affected checks, publish one coherent head | Include console ownership, C2 menu clipping and C3 popup timing together. No status-only push or old-run retry; no local compiler generation |
+| 3 / Root verification | Follow the successor's exact run; inspect independent history/appearance/drawing packets before the full gate | Actual Windows console outcome, both installed launchers, C2 GL consumers and all four C3 persist/reopen IDs. Any packet failure stays fatal to full acceptance and must retain the others' diagnostics |
+| Independent / Root | Recover seven original scientific payloads through the authenticated recovery contract | Exact original hashes; no substitute observations or recreated retired build trees |
 | After C3 / Root+A/B ownership | Continue the next reproduced C5 linked stack/view consumer from the per-key guide | Name behavior, existing seam, independent oracle and owning gate before implementation |
 
-[C3 specification](packets/CFG5-drawing-consumers.md): producer/CLI/private
-binding, Integer observations, independent expectations/reader, actual four-ID
-pytest entry and shared capture/build/full-suite registration are source-ready.
-Windows controls pass66 integration,11 workflow (one host skip),44 suite
-(one skip), earlier54 build (four skips),3 drawing capture and29 reader methods.
-Actual pytest collection has exactly four IDs on Windows/Linux. All six Linux source-control programs pass in the existing runtime;54/66/11/44/3/29 methods, with host-specific skips. Producer verification remains
-MSVC syntax only: **no C3 native link, install or actual input run**. Existing
-rotated R011 reference bytes and numerical policy are unchanged.
+C3 source/control preparation retains54 build,66 integration,11 workflow,
+44 suite,3 drawing capture and29 independent-reader methods with explicit host
+skips; actual pytest collection has four IDs on Windows/Linux. The newer owner
+cohort has12 methods. Unchanged rotated R011 bytes and numerical policy remain.
+The [C3 specification](packets/CFG5-drawing-consumers.md) and its preparation
+receipt retain source-only scope; current installed execution adds the original
+first-case failure above, not successful consumer/persistence qualification.
 
-Storage `c3-routing-storage-before001.json`:8,582,767,352 known bytes,
-7,167,240 upper-bound headroom, two inaccessible caches. Full8GiB budget remains
-unverified; this does not admit local linking/capture. Reuse one cache/runtime;
-do not recreate `build/`, retry policy-blocked cleanup, or reconstruct retired
-G016 evidence. Historical measurements retain their original root scopes.
+Latest complete-root inventory `c3-popup-baseline-storage-after001.json`:
+8,587,614,323 known bytes;2,320,269 upper-bound headroom; two inaccessible
+caches keep the8GiB budget unverified. Earlier totals retain their root scopes.
+No local object/link/install or user preference file was created/replaced.
+Reuse one cache/runtime; do not recreate `build/`, retry policy-blocked cleanup,
+or reconstruct unavailable retired G016 evidence. Full capture history belongs
+in CI retention; keep local receipts and necessary compressed originals bounded.
 
 All99 families remain47 in progress /52 open /0 complete. Full owning cohorts,
-macOS UI, scientific references, accessibility, eligible Fiji and commercial
-release gates remain open. The [per-key guide](packets/API_KEY_DELIVERY_PATHS.md)
+Mac UI, scientific references, accessibility, eligible Fiji and commercial
+release gates remain required. The [per-key guide](packets/API_KEY_DELIVERY_PATHS.md)
 and [compilexx review](packets/COMPILEXX_CROSS_PROJECT_REVIEW.md#review-update--2026-10-26)
-retain the complete scope. No status-only push or old-run retry.
+retain the complete scope.
 
 ## Historical card before a4778b2 terminal intake — 2026-10-25
 

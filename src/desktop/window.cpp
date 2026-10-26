@@ -4335,10 +4335,19 @@ struct Window::Impl {
   }
   void observeControl(const std::string &name, bool enabled = true,
                       const char *shortcutHint = nullptr,
-                      const char *commandId = nullptr) {
+                      const char *commandId = nullptr,
+                      ImGuiWindow *itemWindow = nullptr) {
     if (!headlessDiagnostics)
       return;
     hostControls[name] = itemControl(enabled);
+    if (itemWindow) {
+      // BeginMenu may switch CurrentWindow to the opened submenu while its
+      // last item still belongs to the parent. Capture that parent explicitly.
+      const auto clip = itemWindow->InnerClipRect;
+      hostControls[name]["window_name"] = itemWindow->Name;
+      hostControls[name]["clip_rect"] = {clip.Min.x, clip.Min.y, clip.Max.x, clip.Max.y};
+      hostControls[name]["visible"] = ImGui::IsItemVisible();
+    }
     if (name.rfind("tools.zoom.", 0) == 0) {
       const auto clipMin = ImGui::GetWindowDrawList()->GetClipRectMin();
       const auto clipMax = ImGui::GetWindowDrawList()->GetClipRectMax();
@@ -9100,8 +9109,9 @@ void Window::Impl::menu() {
     }
     item("Split channels", "split_channels");
     item("Merge channels", "merge_channels");
+    auto *stacksItemWindow = ImGui::GetCurrentWindow();
     const bool stacksMenuOpen = ImGui::BeginMenu("Stacks");
-    observeControl("menu.Image.Stacks");
+    observeControl("menu.Image.Stacks", true, nullptr, nullptr, stacksItemWindow);
     if (stacksMenuOpen) {
       item("Images to stack", "images_to_stack");
       item("Stack to images", "stack_to_images");
@@ -9113,7 +9123,7 @@ void Window::Impl::menu() {
                             orthogonal, shortcutAvailable("view.orthogonal")))
           guard([&] { invokeShellCommand("view.orthogonal"); });
         observeControl("menu.action.view.orthogonal", shortcutAvailable("view.orthogonal"),
-                       shortcutLabel("view.orthogonal"), "view.orthogonal");
+                       shortcutLabel("view.orthogonal"), "view.orthogonal", ImGui::GetCurrentWindow());
       }
       item("Substack...", "show_z_subset");
       observeControl("menu.z_subset");

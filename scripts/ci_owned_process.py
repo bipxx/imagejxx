@@ -427,6 +427,8 @@ class _WindowsJob:
         proto("WaitForSingleObject", W.DWORD, [W.HANDLE, W.DWORD])
         proto("GetExitCodeProcess", W.BOOL, [W.HANDLE, C.POINTER(W.DWORD)])
         proto("GetProcessTimes", W.BOOL, [W.HANDLE] + [C.POINTER(W.FILETIME)] * 4)
+        proto("QueryFullProcessImageNameW", W.BOOL, [W.HANDLE, W.DWORD, W.LPWSTR, C.POINTER(W.DWORD)])
+        proto("GetConsoleCP", W.UINT, [])
         proto("OpenProcess", W.HANDLE, [W.DWORD, W.BOOL, W.DWORD])
         proto("CloseHandle", W.BOOL, [W.HANDLE])
         proto("GetCurrentProcess", W.HANDLE, [])
@@ -451,7 +453,14 @@ class _WindowsJob:
     def identity(self, handle, pid):
         values = [self.W.FILETIME() for _ in range(4)]
         self.require(self.kernel.GetProcessTimes(handle, *(ctypes.byref(value) for value in values)))
-        return {"pid": pid, "creation_filetime": (values[0].dwHighDateTime << 32) | values[0].dwLowDateTime}
+        result = {"pid": pid, "creation_filetime": (values[0].dwHighDateTime << 32) | values[0].dwLowDateTime}
+        image = ctypes.create_unicode_buffer(32768)
+        length = self.W.DWORD(len(image))
+        if self.kernel.QueryFullProcessImageNameW(handle, 0, image, ctypes.byref(length)):
+            result["image_path"] = image.value
+        else:
+            result["image_query_error"] = ctypes.get_last_error()
+        return result
 
     def launch(self, argv, cwd, env, stdout, stderr, row):
         import msvcrt
@@ -495,8 +504,15 @@ class _WindowsJob:
                 raise ValueError("Windows command line exceeds the native limit")
             environment = C.create_unicode_buffer("\0".join(
                 key + "=" + value for key, value in sorted(env.items(), key=lambda item: item[0].upper())) + "\0\0")
+            # Reuse an existing caller console without creating a per-command
+            # hidden host. Without one, retain the no-window launch policy.
+            # Redirected streams and suspended Job assignment are unchanged.
+            console_cp = int(k.GetConsoleCP())
+            console_flags = 0 if console_cp else 0x08000000
+            row["ownership"]["console_policy"] = "inherit_existing" if console_cp else "no_window"
+            row["ownership"]["caller_console_cp"] = console_cp
             self.require(k.CreateProcessW(argv[0], C.create_unicode_buffer(command), None, None, True,
-                                          0x4 | 0x400 | 0x08000000, environment, str(cwd),
+                                          0x4 | 0x400 | console_flags, environment, str(cwd),
                                           C.byref(info), C.byref(pi)))
             self.process, self.pid = pi.process, int(pi.pid)
             self.handles[self.pid] = self.process
@@ -551,7 +567,16 @@ class _WindowsJob:
             finally:
                 if pid not in self.handles:
                     self.kernel.CloseHandle(handle)
-        return self.identity(self.handles[pid], pid)
+        handle = self.handles[pid]
+        identity = self.identity(handle, pid)
+        wait = self.kernel.WaitForSingleObject(handle, 0)
+        if wait not in (0, 258):
+            raise ctypes.WinError(ctypes.get_last_error())
+        # Record liveness before TerminateJobObject. A final exit code alone
+        # cannot distinguish an already exited member from an owned survivor.
+        identity["signalled_before_cleanup"] = wait == 0
+        identity["exit_code_before_cleanup"] = self.exit_code(handle) if wait == 0 else None
+        return identity
 
     def cleanup(self, row):
         started = time.monotonic()

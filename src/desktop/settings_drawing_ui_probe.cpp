@@ -401,7 +401,11 @@ void Driver::text(const std::string &name, const std::string &value) {
 void Driver::preferences() {
   click("host.menu.Edit"); click("host.menu.Edit.Preferences");
   require(last_.at("preferences_panel").at("open").get<bool>(), "C3 actual Preferences did not open");
-  click("preferences.group"); click("group.Drawing"); frame("preferences.shown");
+  click("preferences.group");
+  // The combo opens on release. Its first frame measures a hidden auto-sized
+  // popup; submit another actual frame before resolving its selectable items.
+  frame("preferences.group.layout");
+  click("group.Drawing"); frame("preferences.shown");
 }
 void Driver::closePreferences() {
   click("preferences.close_button"); frame("preferences.closed");

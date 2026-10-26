@@ -1,0 +1,195 @@
+{
+  "schema": "imagejxx.c2-c3-hosted-repair-progress.001",
+  "state": "checked-candidate",
+  "acceptance_claim": false,
+  "source_pins": {
+    "src/desktop/window.cpp": {
+      "bytes": 756105,
+      "sha256": "a16d9bec92e6390b73d38d9dd3efbe4e28b1259442aa502bc1a450a95737e717"
+    },
+    "src/desktop/settings_appearance_ui_probe.cpp": {
+      "bytes": 44195,
+      "sha256": "12687488eb11bb598cb74a6ed4bb6cecb7df562f52a85aef69b8d281cc1699f3"
+    },
+    "scripts/ci_owned_process.py": {
+      "bytes": 32771,
+      "sha256": "960a6d76a70863d1227bcae16e2153b5c62c57100ea1b8c5924e7f177f5230fd"
+    },
+    "tests/tools/test_ci_owned_process.py": {
+      "bytes": 27852,
+      "sha256": "d6459a59709aa0f7c38cd5570d1b2e972b19f761990852e68d69d0003069e32b"
+    },
+    "src/desktop/settings_drawing_ui_probe.cpp": {
+      "bytes": 36086,
+      "sha256": "048ec466e9bc8433e500c799caf10b818f55a50bcf09756ca32772df897912a5"
+    }
+  },
+  "predecessor": {
+    "head": "4c10def155feedb650f7f7ba001982696489d220",
+    "run": 40358542135,
+    "run_url": "https://github.com/bipxx/imagejxx/actions/runs/40358542135",
+    "status_at_publication_preparation": "live; only Intel Mac installed jobs remain",
+    "windows": {
+      "versions": [
+        "3.10",
+        "3.12"
+      ],
+      "install_and_scientific_sdk": "passed",
+      "paired_history": "8 IDs passed per version",
+      "appearance": "417 frames; actual Stacks item outside749px viewport at gui3",
+      "drawing": "14 frames; group popup hidden during first auto-size frame"
+    },
+    "arm_mac": {
+      "versions": [
+        "3.10",
+        "3.12"
+      ],
+      "scientific_sdk": "passed strict installed archive comparison",
+      "complete_suite": "missing original scientific references"
+    },
+    "linux_installed": "missing original reference payloads before product preparation",
+    "windows_headless": "normal-exit descendant assertion; original member image unavailable"
+  },
+  "repairs": [
+    "Stacks item explicitly records parent popup clip before BeginMenu changes CurrentWindow; orthogonal action records its real popup clip",
+    "C2 driver resolves recorded owning window and uses existing bounded physical scroll; hover/scientific/scale/frame/time checks unchanged",
+    "Windows owner inherits an existing caller console; otherwise preserves previous no-window policy; explicit streams, original argv and suspended Job ownership unchanged",
+    "Retained process handles record image and pre-cleanup signal/exit state; descendant classification and termination policy unchanged",
+    "One actual C3 combo layout frame after release before resolving Drawing; owner/visibility/hover checks unchanged",
+    "New real nested no-console caller test verifies hidden fallback and full owned cleanup;12 Windows lifecycle methods pass"
+  ],
+  "controls": [
+    {
+      "path": ".tmp/manual-workflow-verification/owner-console-inheritance-controls-windows002/receipt.json",
+      "bytes": 5639,
+      "sha256": "b1d9b1236531a22ce24a0636c79d9bf2c99c037720a4bd3bd5aec74ec234c5e1",
+      "state": "passed",
+      "scratch_empty_removed": true
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/c2-console-final-controls-windows001/receipt.json",
+      "bytes": 10884,
+      "sha256": "77a02478fa29975046cf7a575792d0ed64e82ebf2c6fe913b919215f27eb6a25",
+      "state": "passed",
+      "scratch_empty_removed": true
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/c2-menu-window-syntax002/receipt.json",
+      "bytes": 2973,
+      "sha256": "4b7c28177bda37af9aed4cecfac563f33d31eadc711fe803c28c74f2b0d938eb",
+      "scope": "MSVC syntax only; no object/link/install"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/c2-menu-actor-syntax002/receipt.json",
+      "bytes": 3014,
+      "sha256": "8e9ef9988fc8f662cef100b74f35f2a311b54e8845e20d32d1abf906390ba823",
+      "scope": "MSVC syntax only; no object/link/install"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/c2-menu-owner-linux-controls001.json",
+      "bytes": 15071,
+      "sha256": "c6375b52678281546577d1293752b09852abafcf56c15cbfbb1d6c3d7d9fa7c1",
+      "source": "/home/heq/.cache/imagejxx-build/c2-menu-owner-controls001/receipt.json",
+      "programs": 5,
+      "state": "passed",
+      "scratch_empty_removed": true
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/owner-console-fallback-controls-windows001/receipt.json",
+      "bytes": 5639,
+      "sha256": "c45c9d0971f73f9023a7b2e5b9bb4932763e553c907319d81765f5d483933969"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/c3-native-syntax002/receipt.json",
+      "bytes": 3445,
+      "sha256": "884e52f35cc956665c97f60bf7ef86ce5200222dd9694281d51b25fc2a7ab3a8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/c3-popup-baseline001/receipt.json",
+      "bytes": 3699,
+      "sha256": "94385a50a04a5cb242fe95d45c7c8c8431ebe1dae20e11faf020c92543cafd49"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/c3-popup-baseline001/capture-hashes.json",
+      "bytes": 752,
+      "sha256": "d5266674d01d35308592021272051c09eb14ef3c330334d915d62281f3e0c8a0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/c3-popup-baseline001/scratch-retirement.json",
+      "bytes": 280,
+      "sha256": "3fc3ab519a05b05d094d20217832118ded1de27827d53b3453be21a112bfc31f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/c2-console-fallback-linux-controls001.json",
+      "bytes": 5833,
+      "sha256": "aaac973c197351d6819a848e290b44bd0cd83bb2e9ec23b0352ff0755277fbbc",
+      "source": "/home/heq/.cache/imagejxx-build/c2-console-fallback-controls001/receipt.json"
+    }
+  ],
+  "supporting_popup_observation": {
+    "state": "passed",
+    "installed_baseline": "existing C2 build007; original installed module pins unchanged",
+    "release_item_visible": false,
+    "one_extra_layout_frame_visible": true,
+    "scope": "real installed combo timing only; not changed C3 producer, persistence, scientific consumers or GL acceptance",
+    "compressed_capture_bytes": 65872,
+    "scratch": "empty owned scratch removed after hashes verified"
+  },
+  "rejected_experiment": {
+    "path": ".tmp/manual-workflow-verification/console-mode-comparison001/decision.json",
+    "reason": "DETACHED_PROCESS still allocates a console through a venv launcher; rejected after real CP936/unsignalled conhost observations; no console-free assertion promoted"
+  },
+  "intakes": {
+    "windows310-intake001.json": {
+      "path": ".tmp/manual-workflow-verification/ci2/4c10def-hosted-results001/windows310-intake001.json",
+      "bytes": 244,
+      "sha256": "03c119caad75694b34d91e2f991f68cdb8f495d2a1de3116e3cb8811f10e3a56"
+    },
+    "windows310-retention001.json": {
+      "path": ".tmp/manual-workflow-verification/ci2/4c10def-hosted-results001/windows310-retention001.json",
+      "bytes": 2503,
+      "sha256": "100bb7e20c72075e4b9dfbd6e30078ce28de824f0e74e0be04e53c79517fdd4c"
+    },
+    "windows310-retirement-rejected001.json": {
+      "path": ".tmp/manual-workflow-verification/ci2/4c10def-hosted-results001/windows310-retirement-rejected001.json",
+      "bytes": 312,
+      "sha256": "01f2bcde1d5dc58e20f2157862329e4d003d8cfcd9073515fef04e3e1b4ac1c2"
+    },
+    "windows312-intake001.json": {
+      "path": ".tmp/manual-workflow-verification/ci2/4c10def-hosted-results001/windows312-intake001.json",
+      "bytes": 3633,
+      "sha256": "8d83aa49f9e40d41bf3fdf1698d755ac40b296012d69f71b46060e6f184f625f"
+    },
+    "mac-arm-sdk-intake001.json": {
+      "path": ".tmp/manual-workflow-verification/ci2/4c10def-hosted-results001/mac-arm-sdk-intake001.json",
+      "bytes": 1127,
+      "sha256": "9fa615321e2745ba6a64f7397aa249da6b5ac6ece260e12bacc1c6f174695dbc"
+    }
+  },
+  "invariants": [
+    "strict descendant reporting/termination unchanged; no whitelist or grace period",
+    "original argv and stream redirection preserved; Job assignment still precedes resume",
+    "existing caller console inherited; actual hidden fallback verified for caller without one",
+    "C2 uses actual owning popup and bounded physical wheel; no direct-action or scale workaround",
+    "C3 uses one actual layout frame; identity/hover/visibility and750-frame/60-second bounds unchanged",
+    "rounded R011 bytes/tolerance and all original scientific expectations unchanged"
+  ],
+  "limits": [
+    "changed native menu/C3 producer not executed; actual successor input and paired readers remain required",
+    "old Mac Intel jobs continue; their results do not qualify the successor",
+    "99 families remain47 in progress/52 open/0 complete; full platform/scientific/accessibility/release gates remain open",
+    "full local8GiB budget unverified because two cache subtrees are inaccessible"
+  ],
+  "scheduling_decision": {
+    "finding": "serializing a checked Windows repair behind two independent90-minute Intel jobs delays the next real UI observation",
+    "action": "publish one coherent source update while predecessor jobs continue; retain both exact run handles",
+    "cancellation": "workflow has no concurrency cancellation group; no old run canceled/retried",
+    "acceptance": "every required platform gate remains fatal; no predecessor success transfers to changed source"
+  },
+  "cleanup": {
+    "windows310_full_archive": "deletion rejected by automatic approval review: blocked by policy; left unchanged; no alternate attempt",
+    "windows310_compact_archive": "necessary original bytes verified and retained alongside original",
+    "windows312": "full API digest verified in memory; only necessary original captures/metadata retained as104160-byte ZIP",
+    "supporting_popup": "65872-byte lossless ZIP; hashes and installed module identities verified; empty owned scratch removed"
+  }
+}

@@ -301,6 +301,78 @@ class OwnedCommandTests(unittest.TestCase):
         self.assertFalse(row["timed_out"])
         self.assert_cleanup(row)
 
+    @unittest.skipUnless(sys.platform == "win32", "Windows console attachment and redirected stream policy")
+    def test_windows_reuses_caller_console_without_rewriting_either_interpreter(self):
+        kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+        kernel.GetConsoleCP.restype = ctypes.c_uint
+        caller_cp = kernel.GetConsoleCP()
+        code = ("import ctypes,json,sys;"
+                "k=ctypes.WinDLL('kernel32',use_last_error=True);"
+                "k.GetConsoleWindow.restype=ctypes.c_void_p;"
+                "w=k.GetConsoleWindow();"
+                "u=ctypes.WinDLL('user32');u.IsWindowVisible.argtypes=[ctypes.c_void_p];"
+                "print(json.dumps({'console_cp':k.GetConsoleCP(),'visible':bool(u.IsWindowVisible(w))}));"
+                "print('console policy stderr',file=sys.stderr)")
+        for executable in dict.fromkeys((sys.executable, BASE_EXECUTABLE)):
+            with self.subTest(executable=executable):
+                row, out, err = self.case([executable, "-I", "-B", "-c", code])
+                actual = json.loads(out.read_bytes())
+                self.assertEqual(row["argv"][0], executable)
+                self.assertEqual(row["exit_code"], 0)
+                self.assertEqual(err.read_text(), "console policy stderr\n")
+                self.assertEqual(row["ownership"]["caller_console_cp"], caller_cp)
+                if caller_cp:
+                    self.assertEqual(row["ownership"]["console_policy"], "inherit_existing")
+                    self.assertEqual(actual["console_cp"], caller_cp)
+                    self.assertFalse(row["descendants_remained_after_target_completion"],
+                                     json.dumps(row, sort_keys=True))
+                else:
+                    self.assertEqual(row["ownership"]["console_policy"], "no_window")
+                    self.assertFalse(actual["visible"])
+                self.assert_cleanup(row)
+
+    @unittest.skipUnless(sys.platform == "win32", "Windows no-console caller and hidden fallback")
+    def test_windows_caller_without_console_keeps_hidden_fallback_and_owned_cleanup(self):
+        # Detach only this explicitly owned probe, leaving the test runner's
+        # existing console alone. Its nested command must remain hidden.
+        probe = self.root / "no-console-caller.py"
+        probe.write_text(r'''
+import ctypes, importlib.util, json, os, pathlib, sys
+kernel = ctypes.WinDLL('kernel32', use_last_error=True)
+kernel.FreeConsole()
+assert kernel.GetConsoleCP() == 0
+helper = pathlib.Path(sys.argv[1])
+spec = importlib.util.spec_from_file_location('no_console_owner', helper)
+owner = importlib.util.module_from_spec(spec)
+exec(compile(helper.read_bytes(), str(helper), 'exec', dont_inherit=True), owner.__dict__)
+root = pathlib.Path(sys.argv[3])
+code = ("import ctypes,json,sys;"
+        "k=ctypes.WinDLL('kernel32');k.GetConsoleWindow.restype=ctypes.c_void_p;"
+        "u=ctypes.WinDLL('user32');u.IsWindowVisible.argtypes=[ctypes.c_void_p];"
+        "print(json.dumps({'visible':bool(u.IsWindowVisible(k.GetConsoleWindow()))}));"
+        "print('hidden stderr',file=sys.stderr)")
+with (root/'hidden-out.json').open('xb') as out, (root/'hidden-err.txt').open('xb') as err:
+    row = owner.run_owned([sys.argv[2], '-I', '-B', '-c', code], cwd=root,
+                          env=dict(os.environ), timeout=10, stdout=out, stderr=err,
+                          receipt_path=root/'hidden-receipt.json')
+print(json.dumps({'inner':row, 'output':json.loads((root/'hidden-out.json').read_bytes()),
+                  'stderr':(root/'hidden-err.txt').read_text()}))
+''', encoding="utf-8")
+        row, out, err = self.case([BASE_EXECUTABLE, "-I", "-B", str(probe),
+                                   str(HELPER), sys.executable, str(self.root)])
+        self.assertEqual(row["exit_code"], 0, err.read_text())
+        actual = json.loads(out.read_bytes())
+        inner = actual["inner"]
+        self.assertEqual(inner["argv"][0], sys.executable)
+        self.assertEqual(inner["exit_code"], 0)
+        self.assertEqual(inner["ownership"]["caller_console_cp"], 0)
+        self.assertEqual(inner["ownership"]["console_policy"], "no_window")
+        self.assertEqual(actual["output"], {"visible": False})
+        self.assertEqual(actual["stderr"], "hidden stderr\n")
+        self.assert_cleanup(inner)
+        self.assertFalse(row["descendants_remained_after_target_completion"], json.dumps(row, sort_keys=True))
+        self.assert_cleanup(row)
+
     @unittest.skipUnless(sys.platform == "win32", "Suspended Job assignment is a Windows ownership primitive")
     def test_windows_assignment_failure_terminates_suspended_child_before_execution(self):
         original = owned._WindowsJob
@@ -349,6 +421,11 @@ class OwnedCommandTests(unittest.TestCase):
         self.assertTrue(row["descendants_remained_after_target_completion"])
         self.assertTrue(row["cleanup"]["actions"])
         self.assertIn(pid, [member["pid"] for member in row["cleanup"]["observed"]])
+        if sys.platform == "win32":
+            leaf, = [member for member in row["cleanup"]["observed"] if member["pid"] == pid]
+            self.assertFalse(leaf["signalled_before_cleanup"])
+            self.assertIsNone(leaf["exit_code_before_cleanup"])
+            self.assertTrue(Path(leaf["image_path"]).samefile(BASE_EXECUTABLE))
         self.assert_cleanup(row)
 
     def test_zero_exit_reports_and_removes_acknowledged_surviving_child(self):
