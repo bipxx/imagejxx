@@ -1,4 +1,5 @@
 #include "imagejxx/image.hpp"
+#include <imagejxx/stack_projection.hpp>
 #include <imagejxx/auto_threshold.hpp>
 #include <imagejxx/binary.hpp>
 #include <imagejxx/conversion.hpp>
@@ -120,22 +121,53 @@ Stack read_stack(const py::array& array) {
     }
     return out;
 }
+std::size_t projection_index(const py::object& value) {
+    if (PyBool_Check(value.ptr()) ||
+        py::isinstance(value, py::module_::import("numpy").attr("bool_")) ||
+        !PyIndex_Check(value.ptr()))
+        throw py::type_error("Projection indices and group size must be integers, not booleans");
+    auto integer = py::reinterpret_steal<py::object>(PyNumber_Index(value.ptr()));
+    if (!integer) throw py::error_already_set();
+    const auto result = integer.cast<py::ssize_t>();
+    if (result < 0) throw std::invalid_argument("Projection indices and group size must be nonnegative");
+    return static_cast<std::size_t>(result);
+}
+template<class T> void copy_pixels(const Image& image, T* destination) {
+    for (std::size_t i = 0; i < image.pixels.size(); ++i) {
+        double v = image.pixels[i];
+        if constexpr (std::is_integral_v<T>) {
+            if (std::isnan(v)) throw std::invalid_argument("Cannot represent NaN as an integer pixel");
+            v = std::floor(std::clamp(v, 0.0, static_cast<double>(std::numeric_limits<T>::max())) + 0.5);
+        }
+        destination[i] = static_cast<T>(v);
+    }
+}
 template<class T> py::array_t<T> typed_array(const Image& image) {
     std::vector<py::ssize_t> shape{image.height, image.width};
     if (image.channels != 1) shape.push_back(image.channels);
-    py::array_t<T> out(shape); T* destination = out.mutable_data();
-    {
-        py::gil_scoped_release release;
-        for (std::size_t i = 0; i < image.pixels.size(); ++i) {
-            double v = image.pixels[i];
-            if constexpr (std::is_integral_v<T>) {
-                if (std::isnan(v)) throw std::invalid_argument("Cannot represent NaN as an integer pixel");
-                v = std::floor(std::clamp(v, 0.0, static_cast<double>(std::numeric_limits<T>::max())) + 0.5);
-            }
-            destination[i] = static_cast<T>(v);
-        }
+    py::array_t<T> out(shape); auto* destination = out.mutable_data();
+    { py::gil_scoped_release release; copy_pixels(image, destination); }
+    return out;
+}
+template<class T> py::array_t<T> typed_stack_array(const Stack& stack) {
+    const auto& first = stack.front();
+    std::vector<py::ssize_t> shape{static_cast<py::ssize_t>(stack.size()), first.height, first.width};
+    if (first.channels != 1) shape.push_back(first.channels);
+    py::array_t<T> out(shape); auto* destination = out.mutable_data();
+    { py::gil_scoped_release release;
+      for (const auto& image : stack) {
+        copy_pixels(image, destination); destination += image.pixels.size();
+      }
     }
     return out;
+}
+py::array to_stack_array(const Stack& stack) {
+    switch (stack.front().type) {
+        case PixelType::UInt8: return typed_stack_array<std::uint8_t>(stack);
+        case PixelType::UInt16: return typed_stack_array<std::uint16_t>(stack);
+        case PixelType::Float32: return typed_stack_array<float>(stack);
+        default: return typed_stack_array<double>(stack);
+    }
 }
 py::array to_array(const Image& image) {
     switch (image.type) {
@@ -438,24 +470,25 @@ PYBIND11_MODULE(_native, m) {
     m.def("equalize_histogram", [](const py::array& a) { return image_call(a, [](const Image& i) { return equalize_histogram(i); }); });
     m.def("project", [](const py::array& a, const std::string& method,
                          const py::object& first, const py::object& last) {
-        const auto index = [](const py::object& value) -> std::size_t {
-            if (PyBool_Check(value.ptr()) ||
-                py::isinstance(value, py::module_::import("numpy").attr("bool_")) ||
-                !PyIndex_Check(value.ptr()))
-                throw py::type_error("Projection slice indices must be integers, not booleans");
-            auto integer = py::reinterpret_steal<py::object>(PyNumber_Index(value.ptr()));
-            if (!integer) throw py::error_already_set();
-            const auto result = integer.cast<py::ssize_t>();
-            if (result < 0) throw std::invalid_argument("Projection slice indices must be nonnegative");
-            return static_cast<std::size_t>(result);
-        };
-        const auto begin = index(first);
+        const auto begin = projection_index(first);
         auto stack = read_stack(a);
-        const auto end = last.is_none() ? stack.size() - 1 : index(last);
+        const auto end = last.is_none() ? stack.size() - 1 : projection_index(last);
         auto out = [&]() { py::gil_scoped_release release; return project(stack, method, begin, end); }();
         return to_array(out);
     }, py::arg("stack"), py::arg("method"), py::kw_only(),
        py::arg("first") = 0, py::arg("last") = py::none());
+    m.def("project_groups", [](const py::array& a, const py::object& size,
+                                const std::string& method, const py::object& first,
+                                const py::object& last) {
+        const auto group = projection_index(size), begin = projection_index(first);
+        if (!group) throw std::invalid_argument("Projection group size must be positive");
+        auto stack = read_stack(a);
+        const auto end = last.is_none() ? stack.size() - 1 : projection_index(last);
+        auto output = [&]() { py::gil_scoped_release release;
+            return project_groups(stack, method, group, begin, end); }();
+        return to_stack_array(output);
+    }, py::arg("stack"), py::arg("group_size"), py::arg("method") = "mean",
+       py::kw_only(), py::arg("first") = 0, py::arg("last") = py::none());
     m.def("gaussian_blur3d", [](const py::array& a, double sx, double sy, double sz, const std::string& border) {
         auto stack = read_stack(a); auto b = parse_border(border);
         auto blurred = [&]() { py::gil_scoped_release release; return gaussian_blur3d(stack, sx, sy, sz, b); }();

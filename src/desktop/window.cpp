@@ -1,4 +1,5 @@
 #include "window.hpp"
+#include <imagejxx/stack_projection.hpp>
 #include "path_visual.hpp"
 #include <imagejxx/playback.hpp>
 #include "shadow_demo.hpp"
@@ -8186,53 +8187,103 @@ void Window::action(const std::string &name, const Json &p) {
     d->commit(std::move(proposed));
     return;
   }
-  if (name == "show_z_projection") {
+  if (name == "show_z_projection" || name == "show_grouped_z_projection") {
     if (busy()) throw std::invalid_argument("Wait for the current edit");
     if (!p.is_object() || !p.empty())
       throw std::invalid_argument("Choose projection parameters in the dialog");
+    const bool grouped = name == "show_grouped_z_projection";
+    if (grouped && d->shape().z < 2)
+      throw std::invalid_argument("Grouped Z projection requires a stack");
     const auto captured = d->nativeSnapshot();
     impl->stopAnimation("z_projection");
-    impl->ask("Z Project", {{"method", "maximum"}, {"first", 1},
-                          {"last", d->shape().z}},
-        [this, captured](Json values) {
+    Json values{{"method", grouped ? "mean" : "maximum"}, {"first", 1}, {"last", d->shape().z}};
+    Json schema = Json::array({
+      {{"name", "first"}, {"label", "Start slice"}, {"kind", "int"}},
+      {{"name", "last"}, {"label", "Stop slice"}, {"kind", "int"}},
+      {{"name", "method"}, {"label", "Projection method"}, {"kind", "text"},
+       {"choices", {"maximum", "minimum", "mean", "sum", "median", "stddev"}}}
+    });
+    if (grouped) {
+      values["group_size"] = d->shape().z;
+      schema.insert(schema.begin() + 2,
+          Json{{"name", "group_size"}, {"label", "Group size"}, {"kind", "int"}});
+    }
+    impl->ask(grouped ? "Grouped Z Project" : "Z Project", std::move(values),
+        [this, captured, grouped](Json values) {
           const auto current = nativeSnapshot();
           if (!captured.same_document(current) ||
               !captured.revisions().matches(current.revisions(), Change::All))
             throw RevisionConflict();
-          action("project", values);
-        }, Json::array({
-          {{"name", "first"}, {"label", "Start slice"}, {"kind", "int"}},
-          {{"name", "last"}, {"label", "Stop slice"}, {"kind", "int"}},
-          {{"name", "method"}, {"label", "Projection method"}, {"kind", "text"},
-           {"choices", {"maximum", "minimum", "mean", "sum", "median", "stddev"}}}
-        }), "z_projection");
+          action(grouped ? "project_groups" : "project", values);
+        }, std::move(schema), grouped ? "grouped_z_projection" : "z_projection");
     return;
   }
-  if (name == "project") {
+  if (name == "project" || name == "project_groups") {
+    const bool grouped = name == "project_groups";
+    if (grouped && d->shape().z < 2)
+      throw std::invalid_argument("Grouped Z projection requires a stack");
     if (!p.is_object()) throw std::invalid_argument("Projection parameters must be an object");
     for (const auto &field : p.items())
-      if (field.key() != "method" && field.key() != "first" && field.key() != "last")
+      if (field.key() != "method" && field.key() != "first" && field.key() != "last" &&
+          !(grouped && field.key() == "group_size"))
         throw std::invalid_argument("Unknown projection parameter: " + field.key());
     const auto depth = d->shape().z;
+    if (grouped) for (const auto* key : {"first", "last"})
+      if (p.contains(key) && !p.at(key).is_number_integer())
+        throw std::invalid_argument("Projection slice bounds must be integers");
     const auto first = p.contains("first") ? integer(p.at("first")) : 1;
     const auto last = p.contains("last") ? integer(p.at("last")) : depth;
     if (first < 1 || first > last || last > depth)
       throw std::invalid_argument("Projection requires 1 <= Start slice <= Stop slice <= stack depth");
+    int group = 0;
+    auto calibration = d->spatialCalibration();
+    if (grouped) {
+      if (!p.contains("group_size") || !p.at("group_size").is_number_integer())
+        throw std::invalid_argument("Projection group size must be an integer");
+      group = integer(p.at("group_size"));
+      if (group < 1 || group > last - first + 1 || (last - first + 1) % group)
+        throw std::invalid_argument("Projection group size must divide the selected slice count exactly");
+      if (first != 1) calibration.origin = calibration.voxel_to_world({0, 0, double(first - 1)});
+      calibration.spacing[2] *= group;
+      calibration.validate();
+    }
+    std::size_t workspace = 0;
+    if (grouped) {
+      const auto maximum = std::numeric_limits<std::size_t>::max();
+      const auto multiply = [maximum](std::size_t a, std::size_t b) {
+        if (b && a > maximum / b) throw std::invalid_argument("Projection workspace exceeds addressable size");
+        return a * b;
+      };
+      const auto groups = std::size_t((last - first + 1) / group);
+      const auto output = multiply(multiply(frame.pixels.size(), sizeof(double)), groups);
+      const auto scratch = multiply(std::size_t(group), sizeof(double));
+      const auto objects = multiply(groups, sizeof(Image));
+      if (scratch > maximum - output || objects > maximum - output - scratch)
+        throw std::invalid_argument("Projection workspace exceeds addressable size");
+      workspace = output + scratch + objects;
+    }
     auto source = d->state();
-    auto method = string(get(p, "method"), "maximum");
+    auto method = string(get(p, "method"), grouped ? "mean" : "maximum");
     impl->start(
-        [source = std::move(source), method, first, last] {
+        [source = std::move(source), method, first, last, group, calibration] {
           State out;
-          out.frames = Stack{canonical(project(source.frames.materialize(), method,
-                                               first - 1, last - 1))};
+          const auto stack = source.frames.materialize();
+          auto projected = group ? project_groups(stack, method, group, first - 1, last - 1)
+                                 : Stack{project(stack, method, first - 1, last - 1)};
+          for (auto& image : projected) image = canonical(std::move(image));
+          out.frames = std::move(projected);
           out.metadata = source.metadata;
-          out.metadata["is_stack"] = false;
+          out.metadata["is_stack"] = out.frames.size() > 1;
           out.metadata["slice_index"] = 0;
           out.metadata["rois"] = Json::array();
           out.metadata["overlays"] = Json::array();
+          if (group) {
+            out.metadata["calibration"]["pixel_depth"] = calibration.spacing[2];
+            if (first != 1) out.metadata["calibration"]["origin"] = calibration.origin;
+          }
           return out;
         },
-        d, true, d->title() + " " + method);
+        d, true, d->title() + (grouped ? " grouped " : " ") + method, "", workspace);
     return;
   }
   if (name == "gaussian3d") {
@@ -8847,9 +8898,10 @@ void Window::applyOperation(const std::string &id, const Json &params, bool all,
 void Window::Impl::menu() {
   editMenuPoint = preferencesMenuPoint = {-1, -1};
   auto item = [&](const char *label, const char *action,
-                  const char *shortcut = "") {
+                  const char *shortcut = "", bool additionalEnabled = true) {
     const auto command = shortcutForAction(action);
-    const bool enabled = command ? shortcutAvailable(command) : actionAllowed(action);
+    const bool enabled = additionalEnabled &&
+        (command ? shortcutAvailable(command) : actionAllowed(action));
     const auto hint = command ? shortcutLabel(command) : shortcut;
     const bool selected = ImGui::MenuItem(label, hint, false, enabled);
     observeControl(std::string("menu.action.") + action, enabled, hint, command);
@@ -9165,6 +9217,7 @@ void Window::Impl::menu() {
       item("Substack...", "show_z_subset");
       observeControl("menu.z_subset");
       item("Z Project...", "show_z_projection");
+      item("Grouped Z Project...", "show_grouped_z_projection", "", doc()->shape().z > 1);
       if (ImGui::BeginMenu("Projection", actionAllowed("project"))) {
         for (auto method :
              {"maximum", "minimum", "mean", "sum", "median", "stddev"})
@@ -11578,6 +11631,39 @@ void Window::Impl::dialogs() {
   if (ImGui::BeginPopupModal(dialog.title.c_str(), &dialog.open,
                              ImGuiWindowFlags_AlwaysAutoResize)) {
     ImGui::BeginDisabled(owner.busy());
+    if (dialog.id == "grouped_z_projection") {
+      std::string hint = "Enter valid slice bounds";
+      Json factors = Json::array();
+      try {
+        const auto first = Json::parse(dialog.text.at("first"));
+        const auto last = Json::parse(dialog.text.at("last"));
+        if (first.is_number_integer() && last.is_number_integer() && first >= 1 &&
+            first <= last && last <= INT32_MAX) {
+          const auto count = integer(last) - integer(first) + 1;
+          std::vector<int> divisors;
+          for (int i = 1; i <= count / i; ++i) if (count % i == 0) {
+            divisors.push_back(i); if (i != count / i) divisors.push_back(count / i);
+          }
+          std::sort(divisors.begin(), divisors.end());
+          hint.clear();
+          for (std::size_t i = 0; i < std::min<std::size_t>(10, divisors.size()); ++i) {
+            hint += (i ? ", " : "") + std::to_string(divisors[i]);
+            factors.push_back(divisors[i]);
+          }
+          if (divisors.size() > 10) hint += ", ...";
+        }
+      } catch (const Json::exception&) {} catch (const std::invalid_argument&) {}
+      // A fixed-height, read-only field keeps controls stable while drafts are
+      // invalid and lets long divisor lists scroll horizontally at large fonts.
+      ImGui::SetNextItemWidth(390);
+      ImGui::InputText("Valid group sizes", &hint, ImGuiInputTextFlags_ReadOnly);
+      if (headlessDiagnostics) {
+        auto observed = itemControl(!owner.busy());
+        observed["text"] = hint; observed["values"] = std::move(factors);
+        observed["read_only"] = true;
+        dialog.controls["group_sizes"] = std::move(observed);
+      }
+    }
     for (const auto &p : dialog.schema) {
       auto name = string(get(p, "name")), label = string(get(p, "label"), name),
            kind = string(get(p, "kind"));
@@ -13031,7 +13117,7 @@ Json Window::Impl::headlessReport() {
         {"text", dialog.text}, {"axis_index_label", dialog.axisIndexLabel},
         {"schema", dialog.schema}, {"generation", dialog.generation},
         {"opened_document_id", dialog.openedDocumentId},
-        {"opened_document_id_semantics", (dialog.id == "z_projection" || dialog.id == "axis_plane_export" || dialog.id == "axis_range_reslice" || dialog.id == "axis_range_orientation" || dialog.id == "axis_range_spacing" || dialog.id == "axis_range_slicer_resize")
+        {"opened_document_id_semantics", (dialog.id == "grouped_z_projection" || dialog.id == "z_projection" || dialog.id == "axis_plane_export" || dialog.id == "axis_range_reslice" || dialog.id == "axis_range_orientation" || dialog.id == "axis_range_spacing" || dialog.id == "axis_range_slicer_resize")
              ? "captured_native_execution_source"
              : "observed_at_ask_not_a_captured_execution_source"},
         {"controls", dialog.controls}};

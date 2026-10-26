@@ -1539,10 +1539,13 @@
       "evidence": {
         "documentation": [
           "docs/packets/G034-z-projection-ranges.md",
-          "docs/parity/reviews/G034-inclusive-z-range-progress001.json"
+          "docs/parity/reviews/G034-inclusive-z-range-progress001.json",
+          "docs/packets/G034-grouped-z-projection.md",
+          "docs/parity/reviews/G034-grouped-z-projection-progress001.json"
         ],
         "implementation": [
           "include/imagejxx/image.hpp",
+          "include/imagejxx/stack_projection.hpp",
           "src/native/analysis.cpp",
           "src/native/bindings.cpp",
           "src/imagejxx/__init__.py",
@@ -1551,7 +1554,8 @@
         "tests": [
           "tests/native/test_core.cpp",
           "tests/native/test_desktop.cpp",
-          "tests/python/test_projection_range.py"
+          "tests/python/test_projection_range.py",
+          "tests/python/test_grouped_projection.py"
         ]
       },
       "id": "G034",
@@ -1561,8 +1565,8 @@
       ],
       "name": "Z projections",
       "remaining": [
-        "Inclusive legacy-Z ranges now have scoped Windows native/API/installed SDK/shared ImGui proof. Grouped projections, scientific C/T/all-time-frames targeting and complete metadata/channel/annotation rules remain required.",
-        "ImageJ numeric/dtype compatibility (including deviation policy), true resource/workflow/persistence coverage and all owning launch/platform/GL qualification remain open."
+        "Inclusive legacy-Z ranges and complete grouped projections now have scoped Windows native/API/installed SDK/shared ImGui proof, with calibrated grouped output/session reopen and reservation refusal. Scientific C/T/all-time-frames targeting, virtual sources and complete channel/annotation/label/provenance rules remain required.",
+        "ImageJ numeric/dtype compatibility (including deviation policy), dialog default memory, full typed workflow/replay/cancellation/resource and all owning launch/platform/GL qualification remain open."
       ],
       "required_work": "Partial: entire Z stack only; add inclusive ranges, grouped projections, C/T targeting and metadata rules",
       "status": "open",

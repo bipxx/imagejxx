@@ -176,6 +176,14 @@ Z Project dialog. Windows installed API/SDK/native interaction checks pass;
 [source-bound receipt](../parity/reviews/G034-inclusive-z-range-progress001.json)
 state exact scope. Reuse this range reduction; do not add a Python projection.
 
+Complete grouped reduction is now implemented in
+[the grouped packet](G034-grouped-z-projection.md): one validation pass, one
+reused group-sized scratch buffer, one native contiguous NumPy output and
+shared UI/metadata/session/resource checks. Its new focused header avoids
+changing image.hpp. Use current per-packet evidence, not the unchanged original
+family status, to distinguish this implementation from the remaining scientific
+scope. Group size must divide selected depth; no partial tail is silently lost.
+
 Next expand a typed Dataset command for explicit captured T/C selections,
 all-time-frames and grouped output. Resolve source/range/group policy once,
 validate divisibility and memory before reading, preserve T/C rather than

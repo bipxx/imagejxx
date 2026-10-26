@@ -1630,6 +1630,17 @@ def project(stack, method: str = "maximum", *, first: int = 0,
     return _native.project(_array(stack), method, first=first, last=last)
 
 
+def project_groups(stack, group_size: int, method: str = "mean", *,
+                   first: int = 0, last: int | None = None) -> np.ndarray:
+    """Project consecutive complete groups in an inclusive zero-based Z range.
+
+    Group size must divide the selected slice count. The returned array always
+    retains its Z axis, including one-group outputs. Method/dtype policies are
+    the same as :func:`project`; input pixels remain unchanged.
+    """
+    return _native.project_groups(_array(stack), group_size, method, first=first, last=last)
+
+
 def gaussian_blur3d(stack, sigma=1, *, border: str = "reflect") -> np.ndarray:
     """Separable volume blur; sigma is a scalar or (Z,Y,X), channels independent."""
     if np.isscalar(sigma):

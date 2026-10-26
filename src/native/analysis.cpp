@@ -1,4 +1,5 @@
 #include "imagejxx/image.hpp"
+#include <imagejxx/stack_projection.hpp>
 #include <imagejxx/auto_threshold.hpp>
 #include "kernel_control.hpp"
 #include "auto_threshold_internal.hpp"
@@ -221,19 +222,20 @@ Image equalize_histogram(const Image& image) {
     for (double& v : out.pixels) v = lookup[histogram_index(v, h)] * type_max(image.type) / (count - first);
     return out;
 }
-Image project(const Stack& stack, const std::string& method) {
-    return project(stack, method, 0, stack.empty() ? 0 : stack.size() - 1);
-}
-Image project(const Stack& stack, const std::string& method,
-              std::size_t first, std::size_t last) {
+namespace {
+void validate_projection(const Stack& stack, const std::string& method,
+                         std::size_t first, std::size_t last) {
     check_stack(stack);
     if (first > last || last >= stack.size())
         throw std::invalid_argument("Projection requires 0 <= first <= last < stack depth");
     if (method != "maximum" && method != "minimum" && method != "mean" && method != "sum" && method != "median" && method != "stddev")
         throw std::invalid_argument("Unknown projection method");
+}
+// Input stack/range/method validation is shared once, including for many groups.
+Image reduce_projection(const Stack& stack, const std::string& method,
+                        std::size_t first, std::size_t last, std::vector<double>& values) {
     Image out = stack[first];
     if (method != "maximum" && method != "minimum") out.type = PixelType::Float64;
-    std::vector<double> values(last - first + 1);
     KernelStage stage("Z projection", out.pixels.size());
     for (std::size_t i = 0; i < out.pixels.size(); ++i) {
         stage.periodic(i);
@@ -258,6 +260,37 @@ Image project(const Stack& stack, const std::string& method,
     }
     stage.finish();
     return out;
+}
+} // namespace
+Image project(const Stack& stack, const std::string& method) {
+    return project(stack, method, 0, stack.empty() ? 0 : stack.size() - 1);
+}
+Image project(const Stack& stack, const std::string& method,
+              std::size_t first, std::size_t last) {
+    validate_projection(stack, method, first, last);
+    std::vector<double> values(last - first + 1);
+    return reduce_projection(stack, method, first, last, values);
+}
+Stack project_groups(const Stack& stack, const std::string& method,
+                     std::size_t group_size) {
+    return project_groups(stack, method, group_size, 0, stack.empty() ? 0 : stack.size() - 1);
+}
+Stack project_groups(const Stack& stack, const std::string& method,
+                     std::size_t group_size, std::size_t first, std::size_t last) {
+    validate_projection(stack, method, first, last);
+    const auto count = last - first + 1;
+    if (!group_size || group_size > count || count % group_size)
+        throw std::invalid_argument("Projection group size must divide the selected slice count exactly");
+    Stack output;
+    output.reserve(count / group_size);
+    std::vector<double> values(group_size);
+    KernelStage stage("Grouped Z projection", count / group_size);
+    for (std::size_t start = first; start <= last; start += group_size) {
+        stage.checkpoint(output.size());
+        output.push_back(reduce_projection(stack, method, start, start + group_size - 1, values));
+    }
+    stage.finish();
+    return output;
 }
 Stack gaussian_blur3d(const Stack& stack, double sx, double sy, double sz, Border border) {
     check_stack(stack); require_finite(sz, "Z sigma");

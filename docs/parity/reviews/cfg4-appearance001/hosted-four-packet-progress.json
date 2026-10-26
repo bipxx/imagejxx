@@ -1,0 +1,235 @@
+{
+  "schema": "imagejxx.cfg-hosted-four-packet-progress.001",
+  "head": "59c0a129a76297bcdabfe879a73fea2efa85a509",
+  "run": 40397401042,
+  "state": "all_four_independent_ui_packets_pass_both_windows_python_lanes",
+  "lanes": [
+    {
+      "context": "Windows3.12",
+      "artifact": {
+        "artifact": 12689816189,
+        "artifact_bytes": 7608722,
+        "artifact_sha256": "e75d76b1e0a79b804c32c78af6e975ee0aec5f6cf241410b1978c69a860cfae9",
+        "selected_archive": {
+          "bytes": 1531793,
+          "sha256": "92211c4ea4ee45e7a326fe5b7e5ed4a525e28276b21a9dccdc8bb37c11d489d9"
+        }
+      },
+      "readers": [
+        {
+          "member": "ci-history/reader/pytest.xml",
+          "ids": [
+            "test_installed_history_settings[HU01-imgui_cpp]",
+            "test_installed_history_settings[HU01-imgui_python]",
+            "test_installed_history_settings[HU02-imgui_cpp]",
+            "test_installed_history_settings[HU02-imgui_python]",
+            "test_installed_history_settings[HU03-imgui_cpp]",
+            "test_installed_history_settings[HU03-imgui_python]",
+            "test_installed_history_settings[HU04-imgui_cpp]",
+            "test_installed_history_settings[HU04-imgui_python]"
+          ]
+        },
+        {
+          "member": "ci-appearance/reader/pytest.xml",
+          "ids": [
+            "test_installed_settings_appearance[appearance-persist-imgui_cpp]",
+            "test_installed_settings_appearance[appearance-persist-imgui_python]",
+            "test_installed_settings_appearance[appearance-reopen-imgui_cpp]",
+            "test_installed_settings_appearance[appearance-reopen-imgui_python]"
+          ]
+        },
+        {
+          "member": "ci-drawing/reader/pytest.xml",
+          "ids": [
+            "test_installed_settings_drawing[drawing-persist-imgui_cpp]",
+            "test_installed_settings_drawing[drawing-persist-imgui_python]",
+            "test_installed_settings_drawing[drawing-reopen-imgui_cpp]",
+            "test_installed_settings_drawing[drawing-reopen-imgui_python]"
+          ]
+        },
+        {
+          "member": "ci-playback/reader/pytest.xml",
+          "ids": [
+            "test_installed_settings_playback[playback-persist-imgui_cpp]",
+            "test_installed_settings_playback[playback-persist-imgui_python]",
+            "test_installed_settings_playback[playback-reopen-imgui_cpp]",
+            "test_installed_settings_playback[playback-reopen-imgui_python]"
+          ]
+        }
+      ],
+      "full_python_failure": {
+        "state": "failed",
+        "error": {
+          "type": "ValueError",
+          "message": "Complete Python reference prerequisites are unavailable; see reference_readiness"
+        },
+        "reference_readiness": {
+          "state": "unavailable",
+          "scope": "six known required original reference inputs; not exhaustive fixture acceptance",
+          "acceptance_claim": false,
+          "inputs": [
+            {
+              "environment": "IMAGEJXX_GAUSSIAN_UI_CONTRACT_JSON",
+              "original_path": null,
+              "expected_sha256": "2652bcf1c0665e997fb1bbe55c7f616071359e6b99293b875b2b8555ff045255",
+              "state": "unavailable",
+              "reason": "required explicit reference path is not configured"
+            },
+            {
+              "environment": "IMAGEJXX_GAUSSIAN_CONTRACT_JSON",
+              "original_path": null,
+              "expected_sha256": "3b3f040e01b93642d2b0d3d84db9574f7a9ee525b3a7f29dac7ad21ea03ea6c3",
+              "state": "unavailable",
+              "reason": "required explicit reference path is not configured"
+            },
+            {
+              "environment": "IMAGEJXX_GAUSSIAN_REFERENCE_JSONL",
+              "original_path": null,
+              "expected_sha256": "8885c41ded23f51e56b1c42e28245bf4b9320108dacfa09da631e14fbe9bf762",
+              "state": "unavailable",
+              "reason": "required explicit reference path is not configured"
+            },
+            {
+              "environment": "IMAGEJXX_XYZ_NUMERIC_ZOOM_CONTRACT_JSON",
+              "original_path": null,
+              "expected_sha256": "3b4c1840d00a773da7b3e5e7fffba08c2292dce00b395ab0dc18da124137480b",
+              "state": "unavailable",
+              "reason": "required explicit reference path is not configured"
+            },
+            {
+              "environment": null,
+              "original_path": "build/plan-implementation/p05f-axis-plane-export-001/next-range-reference-preparation-001/capture-001/corpus.json",
+              "expected_sha256": "8ddde981534e0ccf55840316485c29c3dbcf61eef03dacee291b83477b4a8347",
+              "state": "unavailable",
+              "path": "D:\\a\\imagejxx\\imagejxx\\build\\plan-implementation\\p05f-axis-plane-export-001\\next-range-reference-preparation-001\\capture-001\\corpus.json",
+              "reason": "required original is unavailable as a regular file"
+            },
+            {
+              "environment": null,
+              "original_path": "build/plan-implementation/p05f-axis-plane-export-001/next-range-reference-preparation-001/formula-verification-001.json",
+              "expected_sha256": "b88c4b86a14bf16f8db84adbfbe99dc1aee454f6ae739d123e4c897cdf79ae79",
+              "state": "unavailable",
+              "path": "D:\\a\\imagejxx\\imagejxx\\build\\plan-implementation\\p05f-axis-plane-export-001\\next-range-reference-preparation-001\\formula-verification-001.json",
+              "reason": "required original is unavailable as a regular file"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "context": "Windows3.10",
+      "artifact": {
+        "artifact": 12689725103,
+        "artifact_bytes": 7606495,
+        "artifact_sha256": "41725e842fda99b8273c8686ab0ce419cbb0921a768fc6beafca33e2c961dd47",
+        "selected_archive": {
+          "bytes": 11959,
+          "sha256": "198a386574ee7280380291812069bff7c2a8e09f85c8f47214782c7504d3ca49"
+        }
+      },
+      "readers": [
+        {
+          "member": "ci-history/reader/pytest.xml",
+          "ids": [
+            "test_installed_history_settings[HU01-imgui_cpp]",
+            "test_installed_history_settings[HU01-imgui_python]",
+            "test_installed_history_settings[HU02-imgui_cpp]",
+            "test_installed_history_settings[HU02-imgui_python]",
+            "test_installed_history_settings[HU03-imgui_cpp]",
+            "test_installed_history_settings[HU03-imgui_python]",
+            "test_installed_history_settings[HU04-imgui_cpp]",
+            "test_installed_history_settings[HU04-imgui_python]"
+          ]
+        },
+        {
+          "member": "ci-appearance/reader/pytest.xml",
+          "ids": [
+            "test_installed_settings_appearance[appearance-persist-imgui_cpp]",
+            "test_installed_settings_appearance[appearance-persist-imgui_python]",
+            "test_installed_settings_appearance[appearance-reopen-imgui_cpp]",
+            "test_installed_settings_appearance[appearance-reopen-imgui_python]"
+          ]
+        },
+        {
+          "member": "ci-drawing/reader/pytest.xml",
+          "ids": [
+            "test_installed_settings_drawing[drawing-persist-imgui_cpp]",
+            "test_installed_settings_drawing[drawing-persist-imgui_python]",
+            "test_installed_settings_drawing[drawing-reopen-imgui_cpp]",
+            "test_installed_settings_drawing[drawing-reopen-imgui_python]"
+          ]
+        },
+        {
+          "member": "ci-playback/reader/pytest.xml",
+          "ids": [
+            "test_installed_settings_playback[playback-persist-imgui_cpp]",
+            "test_installed_settings_playback[playback-persist-imgui_python]",
+            "test_installed_settings_playback[playback-reopen-imgui_cpp]",
+            "test_installed_settings_playback[playback-reopen-imgui_python]"
+          ]
+        }
+      ],
+      "full_python_failure": {
+        "state": "failed",
+        "error": {
+          "type": "ValueError",
+          "message": "Complete Python reference prerequisites are unavailable; see reference_readiness"
+        },
+        "reference_readiness": {
+          "state": "unavailable",
+          "scope": "six known required original reference inputs; not exhaustive fixture acceptance",
+          "acceptance_claim": false,
+          "inputs": [
+            {
+              "environment": "IMAGEJXX_GAUSSIAN_UI_CONTRACT_JSON",
+              "original_path": null,
+              "expected_sha256": "2652bcf1c0665e997fb1bbe55c7f616071359e6b99293b875b2b8555ff045255",
+              "state": "unavailable",
+              "reason": "required explicit reference path is not configured"
+            },
+            {
+              "environment": "IMAGEJXX_GAUSSIAN_CONTRACT_JSON",
+              "original_path": null,
+              "expected_sha256": "3b3f040e01b93642d2b0d3d84db9574f7a9ee525b3a7f29dac7ad21ea03ea6c3",
+              "state": "unavailable",
+              "reason": "required explicit reference path is not configured"
+            },
+            {
+              "environment": "IMAGEJXX_GAUSSIAN_REFERENCE_JSONL",
+              "original_path": null,
+              "expected_sha256": "8885c41ded23f51e56b1c42e28245bf4b9320108dacfa09da631e14fbe9bf762",
+              "state": "unavailable",
+              "reason": "required explicit reference path is not configured"
+            },
+            {
+              "environment": "IMAGEJXX_XYZ_NUMERIC_ZOOM_CONTRACT_JSON",
+              "original_path": null,
+              "expected_sha256": "3b4c1840d00a773da7b3e5e7fffba08c2292dce00b395ab0dc18da124137480b",
+              "state": "unavailable",
+              "reason": "required explicit reference path is not configured"
+            },
+            {
+              "environment": null,
+              "original_path": "build/plan-implementation/p05f-axis-plane-export-001/next-range-reference-preparation-001/capture-001/corpus.json",
+              "expected_sha256": "8ddde981534e0ccf55840316485c29c3dbcf61eef03dacee291b83477b4a8347",
+              "state": "unavailable",
+              "path": "D:\\a\\imagejxx\\imagejxx\\build\\plan-implementation\\p05f-axis-plane-export-001\\next-range-reference-preparation-001\\capture-001\\corpus.json",
+              "reason": "required original is unavailable as a regular file"
+            },
+            {
+              "environment": null,
+              "original_path": "build/plan-implementation/p05f-axis-plane-export-001/next-range-reference-preparation-001/formula-verification-001.json",
+              "expected_sha256": "b88c4b86a14bf16f8db84adbfbe99dc1aee454f6ae739d123e4c897cdf79ae79",
+              "state": "unavailable",
+              "path": "D:\\a\\imagejxx\\imagejxx\\build\\plan-implementation\\p05f-axis-plane-export-001\\next-range-reference-preparation-001\\formula-verification-001.json",
+              "reason": "required original is unavailable as a regular file"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "scope": "40 original installed reader IDs, including actual hosted small-window GL appearance samples and paired fresh reopen. Full Windows Python is still refused for unavailable original scientific references. No transfer to current grouped source, other operating systems or full ImageJ/Fiji acceptance.",
+  "source_inputs_unmodified": true,
+  "acceptance_claim": false
+}

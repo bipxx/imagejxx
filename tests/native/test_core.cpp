@@ -1,4 +1,5 @@
 #include "imagejxx/image.hpp"
+#include <imagejxx/stack_projection.hpp>
 #include <algorithm>
 #include <cmath>
 #include <iostream>
@@ -53,6 +54,29 @@ int main() {
             catch (const std::invalid_argument &) { refused = true; }
             check(refused, "C++ invalid projection bounds");
         }
+        Stack groups;
+        for (double v : {199., 2., 6., 10., 14., 188.}) {
+            Image plane(2, 1, 1, PixelType::UInt16);
+            std::fill(plane.pixels.begin(), plane.pixels.end(), v);
+            groups.push_back(std::move(plane));
+        }
+        for (const auto& method : {"maximum", "minimum", "mean", "sum", "median", "stddev"}) {
+            const auto result = project_groups(groups, method, 2, 1, 4);
+            const std::string kind(method);
+            const double first = kind == "maximum" ? 6. : kind == "minimum" || kind == "stddev" ? 2. : kind == "sum" ? 8. : 4.;
+            const double second = kind == "maximum" ? 14. : kind == "minimum" ? 10. : kind == "stddev" ? 2. : kind == "sum" ? 24. : 12.;
+            check(result.size() == 2 && result[0].pixels == std::vector<double>({first, first}) &&
+                  result[1].pixels == std::vector<double>({second, second}), "C++ consecutive complete Z groups");
+        }
+        check(project_groups(groups, "maximum", 1).size() == groups.size(), "C++ unit grouping");
+        check(project_groups(groups, "sum", 6).front().pixels[0] == 419., "C++ one complete group");
+        for (std::size_t size : {0u, 3u, 5u}) {
+            bool refused = false;
+            try { (void)project_groups(groups, "mean", size, 1, 4); }
+            catch (const std::invalid_argument&) { refused = true; }
+            check(refused, "C++ incomplete/invalid group refusal");
+        }
+        check(groups.front().pixels[0] == 199. && groups.back().pixels[0] == 188., "C++ grouped source unchanged");
         std::cout << "Native API checks passed\n";
         return 0;
     } catch (const std::exception& error) { std::cerr << error.what() << '\n'; return 1; }

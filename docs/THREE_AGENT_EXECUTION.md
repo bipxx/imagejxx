@@ -2,6 +2,58 @@
 
 ## Current execution card — 2026-10-26
 
+**Published baseline:** `59c0a129a76297bcdabfe879a73fea2efa85a509`;
+[run40397401042](https://github.com/bipxx/imagejxx/actions/runs/40397401042).
+Windows/Linux/macOS headless C++/SDK pass. Both Windows installed lanes now
+pass all four independent UI packets:8 history+4 appearance+4 drawing+4 playback
+IDs each,40 total across Python3.10/3.12 and both standalone/Python launchers.
+This verifies the source59c0a12 small-window GL canvas/menu fixes; no success
+transfers to the new grouped candidate. Full Python refuses unavailable original
+scientific references; Linux stops at the same prerequisite, Mac full source
+profiles remain queued. [Original hosted receipts](parity/reviews/cfg4-appearance001/hosted-four-packet-progress.json).
+
+**Grouped projection implementation checked locally:** focused public C++ header,
+Python project_groups and shared Grouped Z Project dialog use the existing native
+reduction. Complete consecutive groups only, explicit inclusive range, default
+Mean, first-ten-factor hints and single-image refusal. Stack validation happens
+once, one group-sized scratch vector is reused, and one contiguous native NumPy
+result avoids Python stacking. Grouped output reserves its buffers/objects and
+scratch before job submission. The UI retains origin/direction/XY/time, scales
+Z pitch and maps a selected first slice through voxel_to_world. Output/session
+and source/history preservation are independently checked. The source primitive
+header image.hpp remains unchanged, avoiding the previous broad rebuild.
+
+Final036 passes27 native desktop cases, core/layout/9 metadata groups,293
+installed checks (71 grouped,48 range,173 complete numeric,1 old editor), seven
+navigation and eight appearance/playback IDs. Installed C++ SDK035 is reused only
+with exact unchanged core-library/header/consumer identities. A fixed-height
+read-only hint prevents invalid-draft layout shifts. Source033 failure and all
+later count/cleanup diagnostics remain. [Source-bound grouped evidence](parity/reviews/G034-grouped-z-projection-progress001.json).
+No pinned ImageJ numeric/dtype equivalence, scientific projection or full G034
+acceptance is inferred. Population stddev remains the existing native policy.
+
+| Order / owner | Next action | Required boundary |
+| --- | --- | --- |
+| 1 / Root | Publish grouped kernel/APIs/dialog and final036 evidence |293 exact installed IDs, SDK reuse identities,27 native cases, independent UI checks and protected original expectations |
+| 2 / Root | Inspect exact successor's four packet gates and new core/SDK coverage | Original source/product membership;40 predecessor IDs cannot qualify the new source |
+| Next G034 / Root | Add typed scientific C/T/all-time-frame projection | Capture source and explicit T/C/range/group intent once; preserve TCZYXS; existing kernel and job publication, no Python processing |
+| Next G034 metadata / Root | Specify channel/annotation/label/provenance and reference numeric policy before that UI | Output Z pitch/origin, time origin/stride, contributor axes and explicit ambiguous annotation policy; asymmetric independent TCZYX oracle, source/history and save/reopen |
+| Independent / Root | Recover original reference payloads by unchanged byte hashes; finish platform gates | Current readiness explicitly lists six known required input files, not an exhaustive corpus inventory. Preserve the broader historical seven-item recovery tracking; no regenerated substitute or repinning |
+
+Storage stays in one cache and installed runtime/SDK. Final036 verified and
+retired27,185,863 raw appearance/playback bytes into1,062,892+984,897 lossless
+bytes; navigation retains927,401 bytes after14,845,343 raw bytes were verified
+and retired. Tiny paired session outputs were also verified/archived. A Windows
+ZIP lookup mismatch stopped before deletion; the unchanged existing ZIPs were
+then verified with POSIX member names before retiring originals. Superseded
+024/031/035 capture sets are explicitly unavailable after8,907,823 bytes of
+archives were retired;032 baseline/036 current remain, original failures stay.
+Known final storage8,581,395,351; two inaccessible cache trees keep the full
+8GiB budget unverified. No historical build/ or new compiler/runtime generation.
+All99 original requirement/status triples stay47 in progress/52 open/0 complete.
+
+## Historical card before grouped projection and four-packet hosted qualification — 2026-10-26
+
 **Published baseline:** `e0e4cedc3680cb0bb28f7e6ac66278b6abbf13fc`;
 [run40389405481](https://github.com/bipxx/imagejxx/actions/runs/40389405481)
 passes Windows/Linux/macOS headless C++/SDK. Linux installed lanes stop at

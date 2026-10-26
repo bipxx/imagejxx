@@ -237,7 +237,7 @@ void testOutlineSpans() {
   }
 }
 
-void testProjectionRangeDialog() {
+void testProjectionDialog(bool grouped) {
   namespace fs = std::filesystem;
   const auto root = fs::temp_directory_path() / ("imagejxx-projection-" +
       std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
@@ -247,13 +247,23 @@ void testProjectionRangeDialog() {
   Window window((root / "preferences.json").u8string());
   window.updateSettings({{"ui_scale", 1.}, {"auto_dpi", false}}, false);
   Stack planes;
-  for (double v : {999., 2., 6., 888.}) {
+  for (double v : grouped ? std::vector<double>{999., 2., 6., 10., 14., 888.}
+                          : std::vector<double>{999., 2., 6., 888.}) {
     Image image(3, 2, 1, PixelType::UInt16);
     std::fill(image.pixels.begin(), image.pixels.end(), v);
     planes.push_back(std::move(image));
   }
   auto source = std::make_shared<DesktopDocument>(planes, "Range source");
+  if (grouped) {
+    auto initial = source->state();
+    initial.metadata["calibration"] = {{"pixel_width", .5}, {"pixel_height", 2.},
+        {"pixel_depth", 3.}, {"unit", "um"}, {"origin", {10.,20.,30.}}};
+    source->commit(std::move(initial));
+  }
   window.addDocument(source);
+  const auto undo = source->undoSteps(), redo = source->redoSteps();
+  const auto show = grouped ? "show_grouped_z_projection" : "show_z_projection";
+  const auto menu = std::string("menu.action.") + show;
   const auto before = source->nativeSnapshot();
   HeadlessInputSession session(window);
   Json last; auto frame = [&] { last = session.frame(); };
@@ -278,28 +288,41 @@ void testProjectionRangeDialog() {
   click(last.at("host_controls").at("menu.Image"));
   const auto stacks = last.at("host_controls").at("menu.Image.Stacks").at("point").get<std::array<float,2>>();
   ImGui::GetIO().AddMousePosEvent(stacks[0], stacks[1]);
-  for (int i = 0; i < 30 && !last.at("host_controls").contains("menu.action.show_z_projection"); ++i) frame();
-  click(last.at("host_controls").at("menu.action.show_z_projection"));
+  for (int i = 0; i < 30 && !last.at("host_controls").contains(menu); ++i) frame();
+  click(last.at("host_controls").at(menu));
   check(last.at("dialog").at("values").at("first") == 1 &&
-        last.at("dialog").at("values").at("last") == 4,
+        last.at("dialog").at("values").at("last") == (grouped ? 6 : 4),
         "Z Project menu did not open full-range defaults");
-  field("first", "2"); field("last", "3");
+  field("first", "2"); field("last", grouped ? "5" : "3");
+  if (grouped) {
+    field("group_size", "2");
+    check(last.at("dialog").at("controls").at("group_sizes").at("values") == Json::array({1,2,4}),
+          "Grouped dialog did not render the selected range's valid divisors");
+  }
   click(last.at("dialog").at("controls").at("method"));
-  click(last.at("dialog").at("controls").at("method.choice.mean"));
+  click(last.at("dialog").at("controls").at(grouped ? "method.choice.maximum" : "method.choice.mean"));
   click(last.at("dialog").at("controls").at("apply"));
   window.wait(); frame();
-  check(window.documents().size() == 2 && window.document()->frame().type == PixelType::Float64,
+  check(window.documents().size() == 2 && window.document()->frame().type == (grouped ? PixelType::UInt16 : PixelType::Float64),
         "Range projection did not create a separate output");
-  for (double v : window.document()->frame().pixels)
-    check(v == 4., "Projection included an excluded endpoint slice");
+  check(window.document()->state().frames.size() == (grouped ? 2 : 1), "Wrong projected group count");
+  for (std::size_t z = 0; z < window.document()->state().frames.size(); ++z)
+    for (double v : window.document()->state().frames[z].pixels)
+      check(v == (grouped ? (z ? 14. : 6.) : 4.), "Projection mixed group boundaries or excluded slices");
+  if (grouped) {
+    const auto cal = window.document()->spatialCalibration();
+    check(cal.spacing == std::array<double,3>{.5,2.,6.} && cal.origin == std::array<double,3>{10.,20.,33.},
+          "Grouped output lost source pitch/origin mapping");
+  }
   const auto after = source->nativeSnapshot();
   check(after.shares_data(before) && after.revisions().matches(before.revisions(), Change::All) &&
-        source->undoSteps() == 0 && source->redoSteps() == 0,
+        source->undoSteps() == undo && source->redoSteps() == redo,
         "Range projection changed its source or history");
   window.setActiveIndex(0);
-  window.action("show_z_projection"); for (int i = 0; i < 3; ++i) frame();
+  window.action(show); for (int i = 0; i < 3; ++i) frame();
   field("first", "0"); click(last.at("dialog").at("controls").at("apply"));
-  check(window.documents().size() == 2 && !window.busy() && last.at("dialog").at("open") == true,
+  check(window.documents().size() == 2 && !window.busy() && last.at("dialog").at("open") == true &&
+        last.at("error_modal").at("open") == true,
         "Invalid range started a job or lost its draft");
   auto acknowledge = [&] {
     Json previous; int stable = 0;
@@ -321,9 +344,17 @@ void testProjectionRangeDialog() {
         {"error_modal",last.at("error_modal")}}.dump() << '\n';
   click(last.at("dialog").at("controls").at("cancel"));
   check(window.documents().size() == 2 && !window.busy(), "Cancel published a projection");
+  if (grouped) {
+    window.action(show); for (int i = 0; i < 3; ++i) frame();
+    field("first", "2"); field("last", "5"); field("group_size", "3");
+    click(last.at("dialog").at("controls").at("apply"));
+    check(window.documents().size() == 2 && !window.busy() && last.at("error_modal").at("open") == true,
+          "Incomplete group started a job or lost refusal");
+    acknowledge(); click(last.at("dialog").at("controls").at("cancel"));
+  }
   // An API-driven owner transition while this modal is open must not redirect
   // an Apply to the other document.
-  window.action("show_z_projection"); for (int i = 0; i < 3; ++i) frame();
+  window.action(show); for (int i = 0; i < 3; ++i) frame();
   window.setActiveIndex(1); for (int i = 0; i < 3; ++i) frame();
   click(last.at("dialog").at("controls").at("apply"));
   check(window.documents().size() == 2 && !window.busy() && last.at("error_modal").at("open") == true,
@@ -331,6 +362,8 @@ void testProjectionRangeDialog() {
   acknowledge(); click(last.at("dialog").at("controls").at("cancel"));
   session.close();
 }
+void testProjectionRangeDialog() { testProjectionDialog(false); }
+void testGroupedProjectionDialog() { testProjectionDialog(true); }
 void testDerivedStacks() {
   Window editor;
   Stack frames;
@@ -2451,6 +2484,7 @@ int main(int argc, char **argv) {
     run("outline spans", testOutlineSpans);
     run("derived stacks", testDerivedStacks);
     run("Z projection range dialog", testProjectionRangeDialog);
+    run("Grouped Z projection dialog", testGroupedProjectionDialog);
     run("volume filter selection", testVolumeFilterSelection);
     run("native records", testNativeRecords);
     run("shared native owner", testSharedNativeOwner);
