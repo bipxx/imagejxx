@@ -94,7 +94,12 @@ def _pin(value, *, allow_empty=False, maximum=MAX_INPUT_BYTES):
     identity = lambda row: (row.st_dev, row.st_ino, row.st_size, row.st_mtime_ns)
     _require(size == before.st_size and identity(before) == identity(after) == identity(final),
              "Input changed while being pinned: " + str(path))
-    return {"path": str(path), "bytes": size, "sha256": digest.hexdigest()}
+    # The capture pin uses resolve() too. On Windows the installed RECORD may
+    # spell lib/Lib differently even though the file identity is unchanged.
+    canonical = _checked_path(path.resolve(strict=True))
+    _require(identity(canonical.lstat()) == identity(final),
+             "Canonical input changed after being pinned: " + str(path))
+    return {"path": str(canonical), "bytes": size, "sha256": digest.hexdigest()}
 
 
 def _json(path):

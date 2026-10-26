@@ -45,6 +45,16 @@ def install_settings(platform):
 
 
 class PlatformInstallArguments(unittest.TestCase):
+    def test_mac_archive_date_policy_matches_build_and_sdk_install(self):
+        text = (ROOT / ".github/workflows/source-platform.yml").read_text(encoding="utf8")
+        for title in ("Install macOS IO and both desktop hosts", "Qualify the installed macOS scientific SDK"):
+            section = text.split("      - name: " + title + "\n", 1)[1].split("\n      - name:", 1)[0]
+            self.assertIn("if: runner.os == 'macOS'", section)
+            self.assertIn("env:\n          ZERO_AR_DATE: '1'", section)
+        for title in ("Install Windows IO and both desktop hosts", "Prepare native macOS dependency prefix"):
+            section = text.split("      - name: " + title + "\n", 1)[1].split("\n      - name:", 1)[0]
+            self.assertNotIn("ZERO_AR_DATE", section)
+
     def test_mac_ninja_experiment_is_explicit_and_keeps_full_install(self):
         text = (ROOT / ".github/workflows/source-platform.yml").read_text(encoding="utf-8")
         section = text.split("      - name: Check actual macOS Ninja console ownership\n", 1)[1].split("\n      - name:", 1)[0]

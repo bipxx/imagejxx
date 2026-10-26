@@ -866,6 +866,24 @@ class HistoryBuildRoleSelection(unittest.TestCase):
                          "scripts/ci_owned_process.py"} <= selected)
 
 
+class HistoryBuildCanonicalPin(unittest.TestCase):
+    @unittest.skipUnless(sys.platform == "win32", "Actual Windows case-preserving filesystem handoff")
+    def test_installed_lib_case_matches_the_real_capture_pin(self):
+        capture = build._load_script(ROOT, "capture_shortcuts_history_ui")
+        with tempfile.TemporaryDirectory(prefix="imagejxx-installed-pin-case-") as temporary:
+            root = Path(temporary).resolve(strict=True)
+            declared = root / "Lib/site-packages/fixture.pyd"
+            declared.parent.mkdir(parents=True)
+            declared.write_bytes(b"non-executable pin fixture\n")
+            alternate = root / "lib/site-packages/fixture.pyd"
+            self.assertNotEqual(str(declared), str(alternate))
+            self.assertTrue(declared.samefile(alternate))
+            expected = capture.pin(alternate)
+            self.assertEqual(build._pin(alternate), expected)
+            self.assertEqual(build._pin(declared), expected)
+            self.assertEqual(capture.verify(build._pin(alternate)), expected)
+
+
 class HistoryBuildSourceLoading(unittest.TestCase):
     def test_load_script_executes_source_despite_timestamp_valid_stale_bytecode(self):
         # Explicitly generated transport fixture, not a product/build invocation.

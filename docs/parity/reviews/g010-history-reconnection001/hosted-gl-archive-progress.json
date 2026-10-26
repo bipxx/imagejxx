@@ -1,0 +1,307 @@
+{
+  "schema": "imagejxx.ci2-hosted-successor.001",
+  "state": "original_failures_diagnosed_successor_locally_checked",
+  "original_head": "3868396bf22bc57bcdda984124455ee8e6267b2f",
+  "original_run": 40333158114,
+  "original_run_state": "completed_failure",
+  "headless_platform_jobs_passed": 3,
+  "windows312_history_exact_ids_passed": [
+    "test_installed_history_settings[HU01-imgui_cpp]",
+    "test_installed_history_settings[HU01-imgui_python]",
+    "test_installed_history_settings[HU02-imgui_cpp]",
+    "test_installed_history_settings[HU02-imgui_python]",
+    "test_installed_history_settings[HU03-imgui_cpp]",
+    "test_installed_history_settings[HU03-imgui_python]",
+    "test_installed_history_settings[HU04-imgui_cpp]",
+    "test_installed_history_settings[HU04-imgui_python]"
+  ],
+  "windows310_failure": "Producer emitted installed path lib while strict capture resolved Lib; bytes/SHA match. Creator now canonicalizes spelling after same-file/no-link/stability checks; strict consumer equality unchanged.",
+  "windows312_appearance": {
+    "archive": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci2\\3868396-hosted-results001\\python-windows-2022-3.12.zip",
+      "bytes": 2677324,
+      "sha256": "ffce7e0c713c0b5b53d984eedeedf0bdd9831a9ca4c03afb267adc258c2aac0c"
+    },
+    "state": "failed",
+    "error": "C2 cannot expose actual control: scientific.confirm_axes",
+    "frame_count": 337,
+    "actual_window": [
+      1028,
+      749
+    ],
+    "gui_scale": 3.0,
+    "font_size": 51.0,
+    "last_control": {
+      "control": "scientific.confirm_axes",
+      "item": {
+        "clip_rect": [
+          61.0,
+          141.0,
+          1028.0,
+          709.0
+        ],
+        "enabled": true,
+        "id": 845904934,
+        "point": [
+          447.0,
+          126.5
+        ],
+        "rect": [
+          84.0,
+          86.0,
+          810.0,
+          167.0
+        ],
+        "window_name": "Open scientific TIFF"
+      }
+    },
+    "last_ten_wheels": [
+      -3.0,
+      3.0,
+      -3.0,
+      3.0,
+      -3.0,
+      3.0,
+      -3.0,
+      3.0,
+      -3.0,
+      3.0
+    ],
+    "gl": {
+      "vendor": "Mesa",
+      "renderer": "llvmpipe (LLVM 23.1.2, 256 bits)",
+      "version": "4.6 (Compatibility Profile) Mesa 26.2.4 (git-9a0169f2a7)"
+    },
+    "loaded_provider_hashes_match_reviewed_members": true,
+    "full_C2_acceptance": false
+  },
+  "mac_io_archive_observations": [
+    {
+      "archive": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci2\\3868396-hosted-results001\\scientific-sdk-macos-15-intel-3.10.zip",
+        "bytes": 42460,
+        "sha256": "7b63111d02d6f148cde2e4ca1883153664d596d761a5cbded81fb16b67a01e2c"
+      },
+      "state": "failed",
+      "raw_installed_mismatches": [
+        "libimagejxx_core.a",
+        "libimagejxx_io.a"
+      ],
+      "inherited_ZERO_AR_DATE": null,
+      "steps": [
+        {
+          "name": "default",
+          "matches_raw": false,
+          "unchanged_by_command": false,
+          "changed_bytes_from_raw": 4,
+          "member_payloads_match_raw": true
+        },
+        {
+          "name": "zero-date",
+          "matches_raw": false,
+          "unchanged_by_command": false,
+          "changed_bytes_from_raw": 10,
+          "member_payloads_match_raw": true
+        },
+        {
+          "name": "zero-date-repeat",
+          "matches_raw": false,
+          "unchanged_by_command": true,
+          "changed_bytes_from_raw": 10,
+          "member_payloads_match_raw": true
+        }
+      ],
+      "cleanup_complete": true
+    },
+    {
+      "archive": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci2\\3868396-hosted-results001\\scientific-sdk-macos-15-intel-3.12.zip",
+        "bytes": 42813,
+        "sha256": "4913bf6121a9e60dd6a66707eacf32d02f77f8b334efa855f342a9a2a71531db"
+      },
+      "state": "failed",
+      "raw_installed_mismatches": [
+        "libimagejxx_core.a",
+        "libimagejxx_io.a"
+      ],
+      "inherited_ZERO_AR_DATE": null,
+      "steps": [
+        {
+          "name": "default",
+          "matches_raw": false,
+          "unchanged_by_command": false,
+          "changed_bytes_from_raw": 4,
+          "member_payloads_match_raw": true
+        },
+        {
+          "name": "zero-date",
+          "matches_raw": false,
+          "unchanged_by_command": false,
+          "changed_bytes_from_raw": 10,
+          "member_payloads_match_raw": true
+        },
+        {
+          "name": "zero-date-repeat",
+          "matches_raw": false,
+          "unchanged_by_command": true,
+          "changed_bytes_from_raw": 10,
+          "member_payloads_match_raw": true
+        }
+      ],
+      "cleanup_complete": true
+    },
+    {
+      "archive": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci2\\3868396-hosted-results001\\scientific-sdk-macos-latest-3.10.zip",
+        "bytes": 44314,
+        "sha256": "ba4b0588642c13e04c8a82a4112b4fe7e06fb6098b3c04d6acc51bf983b5c6be"
+      },
+      "state": "failed",
+      "raw_installed_mismatches": [
+        "libimagejxx_core.a",
+        "libimagejxx_io.a"
+      ],
+      "inherited_ZERO_AR_DATE": null,
+      "steps": [
+        {
+          "name": "default",
+          "matches_raw": false,
+          "unchanged_by_command": false,
+          "changed_bytes_from_raw": 4,
+          "member_payloads_match_raw": true
+        },
+        {
+          "name": "zero-date",
+          "matches_raw": false,
+          "unchanged_by_command": false,
+          "changed_bytes_from_raw": 165,
+          "member_payloads_match_raw": true
+        },
+        {
+          "name": "zero-date-repeat",
+          "matches_raw": false,
+          "unchanged_by_command": true,
+          "changed_bytes_from_raw": 165,
+          "member_payloads_match_raw": true
+        }
+      ],
+      "cleanup_complete": true
+    },
+    {
+      "archive": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci2\\3868396-hosted-results001\\scientific-sdk-macos-latest-3.12.zip",
+        "bytes": 44272,
+        "sha256": "16dfffb0cc2353bcfb1f20d780b15a119464512e6befec73474b7a862b52159d"
+      },
+      "state": "failed",
+      "raw_installed_mismatches": [
+        "libimagejxx_core.a",
+        "libimagejxx_io.a"
+      ],
+      "inherited_ZERO_AR_DATE": null,
+      "steps": [
+        {
+          "name": "default",
+          "matches_raw": false,
+          "unchanged_by_command": false,
+          "changed_bytes_from_raw": 4,
+          "member_payloads_match_raw": true
+        },
+        {
+          "name": "zero-date",
+          "matches_raw": false,
+          "unchanged_by_command": false,
+          "changed_bytes_from_raw": 165,
+          "member_payloads_match_raw": true
+        },
+        {
+          "name": "zero-date-repeat",
+          "matches_raw": false,
+          "unchanged_by_command": true,
+          "changed_bytes_from_raw": 165,
+          "member_payloads_match_raw": true
+        }
+      ],
+      "cleanup_complete": true
+    }
+  ],
+  "candidate_repairs": {
+    "windows_pin_creator": "resolved canonical path tied to already hashed file identity",
+    "C2_physical_wheel": ".5 notches instead of3; same45attempt/750frame/60s, rect/clip/hover/click and numerical guards",
+    "mac_archive_environment": "ZERO_AR_DATE=1 on BOTH actual pip producer and SDK installer; not source-prefix preparation; strict byte guard remains fatal"
+  },
+  "source_pins": {
+    ".github/workflows/source-platform.yml": {
+      "bytes": 13684,
+      "sha256": "b679e32509d4af3fb1af48cef4654cd33d65be5d8d84d632b01afa6e5642b284"
+    },
+    "scripts/ci_history_build.py": {
+      "bytes": 32151,
+      "sha256": "11951c032e91e69b6b27ab3f495305d02df2d9a215693faf4c8e6ef9ddd8ed9a"
+    },
+    "src/desktop/settings_appearance_ui_probe.cpp": {
+      "bytes": 44068,
+      "sha256": "47af80ca82118d6c08be3e455e638f5eb5cda02f852f3dc60e2981cbf4dd7317"
+    },
+    "tests/tools/test_ci_history_build.py": {
+      "bytes": 49471,
+      "sha256": "6d63a9aff424fdfeadaa9194fa3af08f7bebf3cc414946e79b177ecced73370e"
+    },
+    "tests/tools/test_ci_platform_workflow.py": {
+      "bytes": 15827,
+      "sha256": "18888b088d122ad93c4415c24880889ee04eead8d4c2ee6be093d6c37bf556d1"
+    }
+  },
+  "local_checks": {
+    "windows": {
+      "builder_methods": 53,
+      "builder_host_skips": 4,
+      "integration_methods": 60,
+      "workflow_methods": 11,
+      "receipt": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci2\\pin-date-controls-windows001\\receipt.json",
+        "bytes": 10316,
+        "sha256": "3113c90d3c5aaba878731514b65b1919def4bd887f55ff57bea148e5273cad70"
+      }
+    },
+    "linux": {
+      "builder_methods": 53,
+      "builder_host_skips": 2,
+      "integration_methods": 60,
+      "workflow_methods": 11,
+      "workflow_windows_only_skips": 1,
+      "receipt_path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/pin-date-controls-linux001/receipt.json",
+      "receipt": {
+        "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/pin-date-controls-linux001/receipt.json",
+        "bytes": 9850,
+        "sha256": "368bbbff31414dd89f70c0854af963c01ed6111896b8694c8c63dc02912ca335"
+      }
+    },
+    "native_C2_syntax": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\windows-gl-native-syntax002\\receipt.json",
+      "bytes": 3018,
+      "sha256": "d03f434014e147b2b1aac3a74c9ebad02a117be90ee076be01568625362ff622"
+    },
+    "independent_source_review": "A reviewed canonical pin, matched producer/installer env and original C2 failure + vendored ImGui wheel code; no concrete blocker; actual hosted execution required",
+    "native_C2_syntax_budget_note": "Syntax-only driver inherited an older22MB reserve string; current complete inventory is10,543,289 upper headroom with unknowns. Use inventory, never that old string, for admission."
+  },
+  "storage": {
+    "receipt": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\ci2-hosted-diagnostics-storage001.json",
+      "bytes": 1524,
+      "sha256": "746929fa182bec1201f6e09609f2978fe315b2f9785383b53217bf6d59fff88e"
+    },
+    "known_bytes": 8579391303,
+    "headroom_upper_bound_bytes": 10543289,
+    "inaccessible_cache_subtrees": 2,
+    "budget_verified": false
+  },
+  "candidate_hosted_acceptance": false,
+  "full_family_counts": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  },
+  "acceptance_claim": false,
+  "C3": "Independent local source preparation only; CLI/probe/oracles not part of this successor or runtime acceptance"
+}

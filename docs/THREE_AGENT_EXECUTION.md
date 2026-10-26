@@ -8,20 +8,27 @@ review. This card is the only ordered queue; the
 records rationale. Earlier cards below are historical, including their queued,
 publish-next and Apple-Ninja-pending wording.
 
-**Published baseline:** `31bc13f018bee01ee8d32473f17f0867813e4a6f`, branch
-`ci2-platform-integration`. [Run 40329829216](https://github.com/bipxx/imagejxx/actions/runs/40329829216)
-is completed/failure. Three headless C++/SDK jobs and all source preparations
-pass. Six Windows/Mac installed lanes stop before compilation: the new early
-transport check requires pytest, installed only by the later pip command.
-Original Windows/Intel Mac logs confirm this ordering defect. The narrow
-successor moves that check after both installs and before SDK/provider gates;
-ten workflow controls pass per local host (one Windows-only Linux skip).
-No product/reference assertions change. Keep the three stdlib controls early.
+**Published baseline:** `3868396bf22bc57bcdda984124455ee8e6267b2f`, branch
+`ci2-platform-integration`. [Run40333158114](https://github.com/bipxx/imagejxx/actions/runs/40333158114)
+is terminal failure. All three headless C++/SDK jobs and source preparations
+pass. The preflight ordering repair is confirmed. Windows3.12 passes all eight
+paired history reader IDs; hidden GL smoke and actual appearance failure data
+establish the pinned Mesa provider is loaded. Complete C2 remains unaccepted.
 
-Linux installed lanes still refuse seven missing original scientific payloads.
-Windows actual provider/GL and Mac archive diagnostics were not reached on31bc13f.
-The preceding 26687af run retains its independent GL initialization and strict
-SDK archive failures; none are closed by the newer preflight result.
+The [original diagnostics and candidate receipt](parity/reviews/g010-history-reconnection001/hosted-gl-archive-progress.json)
+record three precise next repairs: Windows3.10 producer pin spelling lib/Lib
+(same bytes/SHA); C2 physical-wheel overshoot at actual1028x749/gui3; and Mac
+archive creation/installation date policy. Canonical pin creation keeps strict
+consumer equality. Half-notch scrolling keeps all hit/clip/time/numerical checks.
+Mac ZERO_AR_DATE=1 is shared by pip and SDK install; its full-byte equality still
+needs actual successor proof. Four original IO diagnostics show unchanged member
+payloads and stable repeated deterministic mode, not equality to old raw bytes.
+Local53 producer,60 integration and11 workflow methods pass per host with
+documented host skips; C2 MSVC syntax passes. No local relink/provider install.
+
+Linux still refuses seven missing original scientific payloads. All predecessor
+failures and original references stay unchanged; no old result transfers to the
+changed successor. Follow the next coherent source run rather than rerun old jobs.
 
 **Local:** the [C2 receipt](parity/reviews/cfg4-appearance001/receipt.json) retains
 four reader IDs per Windows/Linux host, eight actual GL processes total,
@@ -36,10 +43,10 @@ records local results; actual hosted provider/SDK qualification remains pending.
 
 | Order / owner | Exact seam and smallest next change | Exit / invalidation boundary |
 | --- | --- | --- |
-| Complete locally / Root integration; A GL helper; B independent controls | Existing Windows helper → `run_windows_gl_suite` → source workflow is wired, with exact guards and diagnostic-only uploads. Portable helper39, orchestration60, SDK40, workflow9 and transport17 methods pass on both hosts, with explicit host skips | Actual hosted provider remains unproved. Preserve history/appearance/full-suite failure semantics; synthetic controls do not qualify actual UI/module/GL behavior |
-| Complete source/controls; next actual Mac / A SDK driver, root execution | Checked Python-source loading and causal stale-pyc regression are implemented. Failure-only IO-copy/exact-ranlib/default-vs-ZERO_AR_DATE diagnostic is wired; bounded JSON/log retention excludes archives | No historical stale execution is alleged. Strict archive equality remains fatal. Actual Mac member/offset comparisons must precede any build-environment or install-policy repair |
-| Complete measurement/selection; actual archives open / Root | Corrected full-root inventory includes `.github/ci-data`; existing backend selection fixture excludes all three notice inputs. No provider acquired locally. Check actual wheel/SDK/upload boundaries on the hosted run | `windows-gl-storage-after001.json`: 8,568,250,231 known bytes, two inaccessible caches; budget unverified. Parent Linux root already includes dependencies; the rejected narrower-root successor is not admission evidence |
-| Complete syntax; hosted compile/runtime next / Root | MSVC C++17 syntax passes with cached Release include/define configuration. Avoid a local relink of the 273,756,344-byte desktop archive against only 21,684,361 bytes known upper headroom; use the necessary hosted successor for actual compilation and module witnesses | No local object/link/install, fresh capture or new C2 acceptance is claimed. Actual hosted build/module/reader results remain required. Original C2 receipts and binaries are not relabelled |
+| Actual provider reached; complete gates open / Root integration | Hidden GL smoke passes; Windows3.12 actual C2 failure binds both loaded DLLs to reviewed hashes and Mesa26.2.4. History8 passes. Publish the narrow canonical-pin/scroll successor and follow its exact handle | C2 and full suite remain unaccepted. Keep all required failures fatal; do not turn partial provider/history evidence into full qualification |
+| Actual diagnostic complete; strict Mac SDK open / Root | Four IO-copy experiments finish with resolved processes and retired copies. Implement matched deterministic archive environment on producer and installer as the supported candidate | Original raw bytes differ; full core+IO equality must pass on the next actual host. No normalization, repinning or guard relaxation |
+| Measurement/selection complete; product boundaries open / Root | Full-root inventory includes CI notices and all Linux parent siblings; backend selection excludes notices. No provider acquired locally. Uploaded GL diagnostics contain no provider DLLs | `ci2-hosted-diagnostics-storage001.json`:8,579,391,303 known bytes, two inaccessible caches; budget unverified. Preserve the rejected narrower-root attempt as unusable for admission |
+| Candidate syntax complete; hosted route next / Root | New half-notch C2 actor passes MSVC syntax. Avoid rewriting the273,756,344-byte desktop archive against only10,543,289 known upper headroom | No local object/link/install or new actual C2 pass. Hosted candidate compilation and complete C2 reader remain required; original receipts are not relabelled |
 | 5 / Root publication and hosted follow-up | Fetch/check base ancestry, consolidate ready source/fixture/workflow repairs, publish one coherent head, retain its run handle and inspect original failed-job artifacts as jobs finish | Actual Windows loaded-module hashes/llvmpipe identity, hidden-window smoke, both launchers/history/C2 and complete suite; actual Mac SDK diagnostics and strict consumer result. Synthetic tests and local NVIDIA GL cannot establish this exit. No status-only push or automatic retry |
 | Independent / Root original-reference recovery | Recover seven original payloads using the existing authenticated recovery contract | Exact original hashes; no substitute observations, new fingerprints or recreated historical build trees. This blocker does not stop independent Windows/Mac/source work |
 | Next product / A+B preparation outside frozen inputs | After this finite integration handoff, select the first reproduced missing consumer from C3 draw or C5 linked stack/view using the existing per-key guide. Name exact behavior, existing seam, oracle and owning gate before code | Implemented-but-unproved keys need consumer proof, not rewritten kernels. Preparation may overlap remote waiting only outside the frozen closure. Do not start another global audit or a second native build lane |
@@ -49,6 +56,20 @@ The [per-key paths](packets/API_KEY_DELIVERY_PATHS.md) retain all 61 settings an
 and text; C5 retains playback plus the linked-view gap inventory. C2 remains
 partial until its own remaining gates pass. Scientific, accessibility, eligible
 Fiji, commercial product distribution and release requirements remain required.
+
+Independent preparation: [CFG5/C3 drawing](packets/CFG5-drawing-consumers.md)
+has held CLI/binding/probe/Integer-observer source and independent literal
+expectations. The probe passes MSVC syntax only; reader/capture registration,
+compiled products and actual four-ID per-host input/persistence evidence remain
+unimplemented or unexecuted. It is excluded from the current CI2 repair commit.
+Source review selected unchanged rotated R011 through actual Angle23 Properties
+input; unexecuted R003 draft/preimage and the reason are retained locally.
+
+Latest retained diagnostic inventory `ci2-hosted-diagnostics-storage001.json`
+measures8,579,391,303 known bytes, only10,543,289 upper-bound headroom and the
+same two inaccessible caches. Keep complete budget unverified; this is not
+admission for C3 linking/capture. Reuse the sole cache/runtime and admit peak
+growth before native work. No new local compiler generation was created.
 
 Store concise receipts referencing immutable captures. Preserve policy-blocked
 cleanup targets without an alternate deletion method. Reuse one cache/runtime

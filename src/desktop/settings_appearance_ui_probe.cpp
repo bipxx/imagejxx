@@ -490,7 +490,9 @@ void SettingsAppearanceUiProbe::Impl::before(std::uint64_t frame) {
       require(point[0] >= clip[0] && point[0] < clip[2], "C2 item is horizontally clipped: " + action.name);
       if (rect[1] < clip[1] || rect[3] > clip[3] || !item.value("visible", true)) {
         position({clip[0] + std::min(20.f, (clip[2]-clip[0])*.5f), (clip[1]+clip[3])*.5f});
-        const float wheel = rect[3] > clip[3] ? -3.f : 3.f;
+        // Coarse wheel steps oscillate past a target at large UI scale on a
+        // small actual viewport. Keep physical scrolling and all hit checks.
+        const float wheel = rect[3] > clip[3] ? -.5f : .5f;
         io.AddMouseWheelEvent(0, wheel); raw.push_back({{"kind", "wheel"}, {"x", 0}, {"y", wheel}});
         return;
       }
