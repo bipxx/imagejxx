@@ -1,8 +1,9 @@
-"""Synthetic history-build transport controls; never builds or imports a product.
+"""History-build transport and tiny Windows launch controls; no product builds.
 
 Only tracked-file discovery, the history role provider, and the process owner are
 stubbed. Source bytes, cache files, products, receipts and their hashes are real
 small temporary files. A successful fixture is not executed ImageJXX evidence.
+The separate Windows launch case runs only an isolated standard-library child.
 """
 from copy import deepcopy
 import base64
@@ -736,6 +737,117 @@ class HistoryBuildTransport(unittest.TestCase):
             self.symlink(product, target)
         self.after_install = replace_with_link
         self.failed()
+
+    def test_bare_python_alias_normalizes_the_actual_owned_argv_and_pin(self):
+        executable = str(Path(sys.executable).resolve(strict=True))
+        requested = ["python"] + self.argv[1:] + ["-C", "cmake.define.LITERAL_VALUE=space λ"]
+        original = list(requested)
+        with patch.object(build.shutil, "which", return_value=executable) as resolve:
+            normalized, executable_pin = build._command(requested)
+            self.assertEqual(normalized, [executable] + original[1:])
+            self.assertEqual(executable_pin, pin(executable))
+            self.assertEqual(requested, original)
+            self.assertIsNot(normalized, requested)
+            result = self.run_build(requested)
+        self.assertEqual(resolve.call_args_list, [unittest.mock.call("python")] * 2)
+        self.assertEqual(requested, original)
+        self.assertEqual(len(self.calls), 1)
+        self.assertEqual(self.calls[0][0], normalized)
+        self.assertEqual(result["argv"], normalized)
+        self.assertEqual(result["command_proof"]["argv"], normalized)
+        self.assertEqual(result["launch_executable"], executable_pin)
+        self.assertEqual(self.read_json(self.output / "process.json")["argv"], normalized)
+
+    def test_missing_or_foreign_python_alias_refuses_before_owner_and_output(self):
+        foreign = self.write("foreign-python.exe", b"Synthetic foreign interpreter; never executed\n")
+        requested = ["python"] + self.argv[1:]
+        for selected in (None, str(foreign)):
+            with self.subTest(selected=selected), patch.object(build.shutil, "which", return_value=selected):
+                with self.assertRaisesRegex(ValueError, "actual Python interpreter"):
+                    build.run_build(self.root, self.output, requested, timeout=17)
+                self.assertFalse(self.output.exists())
+        self.assertEqual(self.calls, [])
+        self.owner_loader.assert_not_called()
+
+
+@unittest.skipUnless(sys.platform == "win32", "Actual Windows native owner launch control; not a portable simulation")
+class HistoryBuildWindowsLaunch(unittest.TestCase):
+    def test_normalized_python_launches_harmless_child_after_bare_alias_refusal(self):
+        # Keep the exact small inputs/receipts for the root verifier, including
+        # failures. No pip, product, detached child, or test-authored PID signal.
+        parent = ROOT / ".tmp"
+        parent.mkdir(exist_ok=True)
+        info = parent.lstat()
+        self.assertFalse(parent.is_symlink() or getattr(info, "st_file_attributes", 0) & 0x400)
+        root = Path(tempfile.mkdtemp(prefix="history-python-launch-", dir=parent)).resolve(strict=True)
+        self.assertEqual(root.parent, parent.resolve(strict=True))
+        cwd = root / "empty-launch-directory"
+        cwd.mkdir()
+        child = root / "child.py"
+        child.write_text("import json,os,sys\nfrom pathlib import Path\n"
+                         "Path(sys.argv[1]).write_text(json.dumps({'pid':os.getpid(),'executable':sys.executable,'value':'normalized-python'}))\n"
+                         "print('owned-normalized-python')\n", encoding="utf-8")
+        executable = str(Path(sys.executable).resolve(strict=True))
+        requested = ["python", "-m", "pip", "install", ".[io,test]", "-Ccmake.build-type=Release"]
+        with patch.object(build.shutil, "which", return_value=executable):
+            normalized, executable_pin = build._command(requested)
+        self.assertEqual(normalized, [executable] + requested[1:])
+        self.assertEqual(executable_pin, pin(executable))
+        owned = build._load_script(ROOT, "ci_owned_process")
+        environment = os.environ.copy()
+        environment["PATH"] = str(cwd)
+        rows = {}
+        print("HISTORY_PYTHON_LAUNCH_SCRATCH=" + str(root), flush=True)
+        try:
+            bad_argv = [requested[0], "-I", "-B", str(child), str(root / "bare-child.json")]
+            with (root / "bare.log").open("xb") as log, self.assertRaises(owned.OwnedProcessError) as failed:
+                owned.run_owned(bad_argv, cwd=cwd, env=environment, timeout=10,
+                    stdout=log, stderr=subprocess.STDOUT, receipt_path=root / "bare-process.json")
+            bad = failed.exception.receipt
+            rows["bare"] = bad
+            self.assertEqual(json.loads((root / "bare-process.json").read_bytes()), bad)
+            self.assertEqual(bad["argv"], bad_argv)
+            self.assertEqual(bad["state"], "launch_failed")
+            self.assertIsNone(bad["target_pid"])
+            self.assertIsNone(bad["exit_code"])
+            self.assertIs(bad["target_completed"], False)
+            self.assertIs(bad["cleanup_complete"], True)
+            self.assertEqual(bad["cleanup"]["remaining"], [])
+            self.assertFalse((root / "bare-child.json").exists())
+            good_argv = [normalized[0], "-I", "-B", str(child), str(root / "child.json")]
+            with (root / "child.log").open("xb") as log:
+                good = owned.run_owned(good_argv, cwd=cwd, env=environment, timeout=10,
+                    stdout=log, stderr=subprocess.STDOUT, receipt_path=root / "process.json")
+            rows["normalized"] = good
+            self.assertEqual(json.loads((root / "process.json").read_bytes()), good)
+            self.assertEqual(good["argv"], good_argv)
+            self.assertEqual((good["state"], good["exit_code"]), ("exited", 0))
+            self.assertIs(good["target_completed"], True)
+            self.assertIs(good["cleanup_complete"], True)
+            self.assertIs(good["timed_out"], False)
+            self.assertEqual(good["cleanup"]["remaining"], [])
+            self.assertEqual(good["ownership"]["method"], "windows-job")
+            self.assertIs(good["ownership"]["assigned_before_resume"], True)
+            self.assertIs(good["ownership"]["handles_closed"], True)
+            self.assertEqual(good["cleanup"]["terminal_wait"], "job_empty_and_target_signalled")
+            observed = json.loads((root / "child.json").read_bytes())
+            self.assertEqual(observed["value"], "normalized-python")
+            self.assertTrue(Path(observed["executable"]).samefile(executable))
+            self.assertEqual((root / "child.log").read_text().strip(), "owned-normalized-python")
+            self.assertEqual(pin(executable), executable_pin)
+        finally:
+            # A Windows venv launcher and its interpreter can have different
+            # PIDs. The Job's terminal drain, not PID equality, proves cleanup.
+            evidence = {"scope": "actual Windows tiny Python launch only; no build", "acceptance_claim": False,
+                        "scratch_retained": str(root), "requested_build_argv": requested,
+                        "normalized_build_argv": normalized, "launch_executable": executable_pin,
+                        "owner_helper": pin(ROOT / "scripts/ci_owned_process.py"), "rows": rows}
+            for name in ("bare-process.json", "process.json"):
+                path = root / name
+                if path.is_file():
+                    evidence.setdefault("durable_receipts", {})[name] = json.loads(path.read_bytes())
+            (root / "result.json").write_text(json.dumps(evidence, indent=2) + "\n", encoding="utf-8")
+            print("HISTORY_PYTHON_LAUNCH_RESULT=" + json.dumps(evidence, sort_keys=True), flush=True)
 
 
 class HistoryBuildSourceLoading(unittest.TestCase):

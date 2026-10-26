@@ -1,5 +1,28 @@
 # Three-agent execution plan
 
+**Current successor, 2026-10-25:** published `379621f` run `40248817628`
+remains live. All dependency preparations and Linux headless/SDK passed; Linux
+installed lanes refuse missing originals. Windows installed lanes failed before
+pip because the admitted Python pin was not used as the launch executable. The
+held repair now launches that exact absolute path. An actual harmless Windows
+pair reproduces the old failure and corrected success; seven affected programs
+pass 179 methods per host (Windows five explicit skips, Linux two). Original
+failure artifacts remain unchanged. Intel/Python3.10 also passed the native
+standalone observer witness with the macOS11 deployment target; full installed
+and remaining platform lanes stay open.
+
+The [bounded Ninja experiment](packets/CI2-mac-ninja-console-controls.md) is
+source-ready with portable checks and an actual-Darwin-only hosted selector.
+It enables no product console profile. Root owns publication/runs; A owns the
+launcher contract and reference recovery; B owns independent launcher/Ninja
+controls. Follow the existing hosted handle, then qualify the coherent repair
+and six-case experiment. The [additive index](parity/reviews/g010-history-reconnection001/launch-ninja-progress.json)
+records exact inputs and evidence limits. Seven original payloads need authentic
+[backup recovery](packets/CI2-original-reference-recovery.md); six ready rows
+alone would miss the Gaussian declaration dependency. Full family/release
+requirements remain unchanged. Latest measured known storage is 8,535,140,824
+bytes with two unreadable cache subtrees; the complete budget stays unverified.
+
 **Newest local checkpoint, 2026-10-25:** `868e7ed` is local, not yet pushed.
 The independent observer repair now passes its exact standalone CTest and four
 source-owner controls in both existing Windows/Linux caches. Three observation

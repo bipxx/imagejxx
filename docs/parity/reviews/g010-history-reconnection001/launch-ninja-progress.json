@@ -1,0 +1,211 @@
+{
+  "schema_version": 1,
+  "state": "local_launch_repair_and_portable_ninja_controls_verified_native_experiment_pending",
+  "acceptance_claim": false,
+  "base_commit": "379621f1055c53bbcd4c26e585a5e4527886f4a4",
+  "scope": "Windows Python launch handoff plus bounded Darwin Ninja experiment; no new installed/full-platform acceptance",
+  "source_inputs": {
+    "scripts/ci_history_build.py": "14fc1f8b519cee7765aa37e6d2a5f3ff762868b7ae0515573a08978ef1f353a6",
+    "scripts/ci_python_suite.py": "809a4e37ece2d45a58dbdcf180ed0222f015c0ed6bb6e7f3863d02880f9d6119",
+    "scripts/ci_observations.py": "460f622a49f411fa0042b9953e70c465b5d44bc0c10701e2f6be52d4fe756471",
+    "scripts/ci_current_observations.py": "4201a81c5e795bfbe71f546266ffd87c4e9655c7362fc480469be4f72aee1c3b",
+    "scripts/ci_owned_process.py": "39ef83863d4cc672c044c314cd98a141590e4165cbd73605ac34b353d000f8d7",
+    "scripts/ci_mac_process.py": "7a9b103375cf11a1687c5db0fc91c50293012e1232b61aaad3f936175eca5c5d",
+    "scripts/capture_shortcuts_history_ui.py": "ee65888d3cb3389a60038961f21361102646c0af78cbcc54fee0b833afc3da6e",
+    "CMakeLists.txt": "1e6362d3fdd75f83f9c03820c733d33e58ad091ba8394dcbc00418d6d6861034",
+    ".github/workflows/test.yml": "adc1dcfd613ad3e92d070bd078e171a84e93700764c2759c16887d2d36ccd9f8",
+    ".github/workflows/source-platform.yml": "b867da3a2acbbea0bc25bb19f90dd2ddb6e8a13360aec23e1ccb19f73692404d",
+    "tests/tools/test_ci_history_build.py": "95c55b8f2ea40ef14ecf0190b8c6e90f5bb3b2f361f1d715ac21fb175e3c94ca",
+    "tests/tools/test_ci_history_integration.py": "b31533564b4c9e95101f5f463162f0cf5739cd17e924bf445019fa23e93ee69f",
+    "tests/tools/test_ci_platform_workflow.py": "27b5b794399c709f11cb6c45c203453afafeab00b7b69e0735d60cb0764a7889",
+    "tests/tools/test_ci_python_suite.py": "6e7a3c2363fa5962e55ed115080e02e807bc1a9eac73a40f10b681668a89f9f0",
+    "tests/tools/test_ci_python_suite_transport.py": "03610ea629a87799acd53daa7c59aaa4548c041d1c92fb935ebb43d85c315254",
+    "tests/tools/test_ci_reference_readiness.py": "25dbbbe00b30052b10abc47fd9d4fd193f0241836ffbeeae4287e887921f9d3e",
+    "tests/tools/test_floating_charconv_cmake.py": "e854b8a3737ebe2c2806ed13af603704e311cb701fcd11314fc25f1245bad767"
+  },
+  "hosts": {
+    "windows": {
+      "controller_receipt": {
+        "path": ".tmp/manual-workflow-verification/launch-repair-controls-windows001/receipt.json",
+        "bytes": 19864,
+        "sha256": "c2186a1395f43cdc4ec1874711def42b28cbdd3a4b18af6824a1e4d7525328ce"
+      },
+      "methods": 179,
+      "explicit_host_skips": 5,
+      "portable_ninja_receipt": {
+        "path": ".tmp/manual-workflow-verification/mac-ninja-portable-windows001/receipt.json",
+        "bytes": 5816,
+        "sha256": "4237dfee72a4a87eb964a856845fc7d4c6375d67e5128b60a7a859af20205a63"
+      },
+      "portable_protocol_methods": 21,
+      "portable_graph_methods": 2,
+      "portable_socket_skips": 4,
+      "workflow_receipt": {
+        "path": ".tmp/manual-workflow-verification/mac-ninja-workflow-windows001/receipt.json",
+        "bytes": 4729,
+        "sha256": "a93976b24ea3fe22d84e5ee94841ffe365f462032624a574b41396f6e9b7cd7e"
+      },
+      "workflow_methods_at_that_freeze": 7
+    },
+    "linux": {
+      "controller_receipt": {
+        "path": ".tmp/manual-workflow-verification/launch-repair-controls-linux001/receipt.json",
+        "bytes": 18383,
+        "sha256": "500ebd53c05d777398046b431de3aac8148d3c743454e841441bb310ba110eea"
+      },
+      "methods": 179,
+      "explicit_host_skips": 2,
+      "portable_ninja_receipt": {
+        "path": ".tmp/manual-workflow-verification/mac-ninja-portable-linux001/receipt.json",
+        "bytes": 5487,
+        "sha256": "6b32c82f70fb7f58b06c36c6ac7a19ada69f0d947dfe2ff8f1525e4dbaf474f9"
+      },
+      "portable_protocol_methods": 21,
+      "portable_graph_methods": 2,
+      "portable_socket_skips": 0,
+      "workflow_receipt": {
+        "path": ".tmp/manual-workflow-verification/mac-ninja-workflow-linux001/receipt.json",
+        "bytes": 4568,
+        "sha256": "b63fe5fdf50dd92c52d82970f2b0d2346f553f2448e85619cea098dbcf6b252d"
+      },
+      "workflow_methods_at_that_freeze": 7
+    }
+  },
+  "ninja_sources": {
+    "tests/tools/test_ci_mac_process.py": {
+      "path": "tests/tools/test_ci_mac_process.py",
+      "bytes": 43188,
+      "sha256": "f6a095b914d5d2167187efd398d9ff1f02389f4d96a58e202e7c526e7ba96539"
+    },
+    "tests/tools/test_ci_mac_ninja_process.py": {
+      "path": "tests/tools/test_ci_mac_ninja_process.py",
+      "bytes": 10371,
+      "sha256": "2a90422d2a2998a8fcb73bfa45ab8ad891f409ef876372a9ac98997eb2a4516a"
+    }
+  },
+  "windows_actual_harmless_launch": {
+    "scope": "bare alias launch_failed/no target; normalized same child exited0 with Windows Job cleanup; no pip/product",
+    "retention": "concise original receipts/logs and199-byte input retained locally; no compiled output",
+    "files": [
+      {
+        "path": ".tmp/history-python-launch-wz0v6m_j/bare-process.json",
+        "bytes": 1708,
+        "sha256": "7d3bf183754ab3398d262e485b08b126d67b19955c1ad3de371711493e6aa983"
+      },
+      {
+        "path": ".tmp/history-python-launch-wz0v6m_j/bare.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": ".tmp/history-python-launch-wz0v6m_j/child.json",
+        "bytes": 125,
+        "sha256": "eecd57043efe29d8a0bf68d71f886a76303b6781144d042cd3b2a4e011f6035a"
+      },
+      {
+        "path": ".tmp/history-python-launch-wz0v6m_j/child.log",
+        "bytes": 25,
+        "sha256": "8743ac42828466eb7d82279102aaf4a98faf5260e2b093bc81a8f189dd3d02b1"
+      },
+      {
+        "path": ".tmp/history-python-launch-wz0v6m_j/child.py",
+        "bytes": 199,
+        "sha256": "98871bd26bcbc1d6cd4e286f362770597a3d56c0a8ecd147be932d0253323e69"
+      },
+      {
+        "path": ".tmp/history-python-launch-wz0v6m_j/process.json",
+        "bytes": 1803,
+        "sha256": "b3c38f57c45d14b1012e7fc0b236bf7f74c3af663d6f44d085267b6bb5073527"
+      },
+      {
+        "path": ".tmp/history-python-launch-wz0v6m_j/result.json",
+        "bytes": 9268,
+        "sha256": "ae7d97b97c7fd098faef4775bb1e073acf627e60e40b8dc590721ffbb823b38f"
+      }
+    ]
+  },
+  "original_hosted_windows_failure": {
+    "run": 40248817628,
+    "job": 121338040210,
+    "archive": {
+      "path": ".tmp/manual-workflow-verification/ci2/observer-loader-windows312-evidence001.zip",
+      "bytes": 77246,
+      "sha256": "ba5ce6c44f72881909c60a28f1ab7085e223cece66cfae99e209468e6224599a"
+    },
+    "api_metadata": {
+      "path": ".tmp/manual-workflow-verification/ci2/observer-loader-windows312-evidence001.metadata.json",
+      "bytes": 930,
+      "sha256": "d7a3b18e5ba6da3f701e488a8af5e79d4fc82f7a8a57ba8d9e9a2fdf8fd8bd3c"
+    },
+    "archive_digest_matches_api": true,
+    "original_argv0": "python",
+    "state": "launch_failed",
+    "target_pid": null,
+    "cleanup_complete": true
+  },
+  "hosted_apple_observer": {
+    "run": 40248817628,
+    "job": 121337284246,
+    "artifact": 12620470235,
+    "archive": {
+      "path": ".tmp/manual-workflow-verification/ci2/observer-loader-intel310-decimal001.zip",
+      "bytes": 855,
+      "sha256": "45d064652ae4766d58889b2fefc89b33c762deb4547364b17a6071200d0ae180"
+    },
+    "api_metadata": {
+      "path": ".tmp/manual-workflow-verification/ci2/observer-loader-intel310-decimal001.metadata.json",
+      "bytes": 834,
+      "sha256": "67c9f9d23a916fbc83267461e954d3ca3fdaff911026fedc2fc5b9d29e0ca191"
+    },
+    "scope": "Apple clang17, explicit macOS11 deployment target, hosted Intel/Python3.10; not OS11 runtime or full installed acceptance",
+    "literals": 32,
+    "literal_attempts": 5120,
+    "wrapper_attempts": 256,
+    "nonfinite_attempts": 24,
+    "failures": 0,
+    "standard_differential_samples": 0,
+    "standard_oracle": "unavailable_on_apple"
+  },
+  "storage": {
+    "roots_known_bytes": {
+      "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp": 3257837089,
+      "C:\\Users\\HEQ\\Projects\\imagejxx\\.venv": 436156589,
+      "C:\\Users\\HEQ\\Projects\\imagejxx\\.tools": 97453266,
+      "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache": 2151158534,
+      "C:\\Users\\HEQ\\Projects\\imagejxx\\docs\\parity\\reviews": 14254914,
+      "/home/heq/.cache/imagejxx-build": 2578280432
+    },
+    "known_bytes": 8535140824,
+    "unavailable_subtrees": [
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest",
+        "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest'"
+      },
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest-ui",
+        "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest-ui'"
+      }
+    ],
+    "limit_bytes": 8589934592,
+    "headroom_upper_bound_bytes": 54793768,
+    "within_budget": null,
+    "budget_verified": false,
+    "seconds": 3.547000000020489,
+    "policy": "All project .cache/.tmp/public retained review roots plus existing dependency/runtime/Linux roots; normalized unique roots; no links; Linux host-local; inaccessible paths unknown",
+    "acceptance": false,
+    "scope_correction": "Replace selected Linux child roots with the complete project-owned Linux build root; preserve all prior selected-root measurements as historical",
+    "previous_inventory": "history-storage-windows-final001.json",
+    "inventory": {
+      "path": ".tmp/manual-workflow-verification/launch-repair-storage-final001.json",
+      "bytes": 1463,
+      "sha256": "2d8475b090ea4714273b70c37eb2e4f076d3802ec4d7b58498d4545ec031aae4"
+    }
+  },
+  "remaining": [
+    "Actual Darwin six-case Ninja selector execution",
+    "Generated CMake/try_compile/real pip process ownership and serialization timing",
+    "Actual hosted repaired Windows pip/build/install plus full UI/SDK suites",
+    "Authentic seven-file original reference recovery",
+    "All full99family/platform/scientific/accessibility/release requirements"
+  ]
+}

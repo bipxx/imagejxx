@@ -406,7 +406,13 @@ def _command(argv):
     selected = shutil.which(argv[0])
     _require(selected and Path(selected).resolve(strict=True).samefile(Path(sys.executable).resolve(strict=True)),
              "Pip must use this wrapper's actual Python interpreter")
-    return list(argv), _pin(Path(selected).resolve(strict=True))
+    executable = _pin(Path(selected).resolve(strict=True))
+    admitted = list(argv)
+    # Launch exactly the interpreter whose identity was admitted above.
+    # Windows CreateProcessW with lpApplicationName does not resolve a bare
+    # Python alias through PATH as shutil.which does.
+    admitted[0] = executable["path"]
+    return admitted, executable
 
 
 def verify_receipt(path, root):

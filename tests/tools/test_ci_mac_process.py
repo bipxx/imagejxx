@@ -437,14 +437,16 @@ class DarwinLifecycle(unittest.TestCase):
             time.sleep(.01)
         self.fail("Native fixture acknowledgment was not completed: " + path.name)
 
-    def independent_fixture(self):
+    def independent_fixture(self, *, launcher=None, timeout=30):
         state = {"owner": None, "control": None, "log": None, "witnesses": {}, "observations": {}}
+        state["payload_expected"] = launcher is not None
         self.independent_cleanup_complete = False
         self.addCleanup(self.cleanup_independent_fixture, state)
         witness_source = (
             "import json,os,sys,time\nfrom pathlib import Path\n"
             "root=Path(sys.argv[1]); role=sys.argv[2]\n"
-            "identity={'pid':os.getpid(),'parent_pid':os.getppid(),'pgid':os.getpgrp(),'role':role}\n"
+            "identity={'pid':os.getpid(),'parent_pid':os.getppid(),'pgid':os.getpgrp(),'role':role}\n" +
+            ("identity['sid']=os.getsid(0)\n" if launcher is not None else "") +
             "(root/(role+'.json')).write_text(json.dumps(identity))\n"
             "deadline=time.monotonic()+45\n"
             "while not (root/(role+'.ack')).exists():\n"
@@ -455,7 +457,9 @@ class DarwinLifecycle(unittest.TestCase):
             "raise SystemExit(92)\n")
         target_source = (
             "import json,os,subprocess,sys,time\nfrom pathlib import Path\n"
-            "root=Path(sys.argv[1])\n"
+            "root=Path(sys.argv[1])\n" + (
+                "(root/'payload-identity.json').write_text(json.dumps({'pid':os.getpid(),'parent_pid':os.getppid(),'pgid':os.getpgrp(),'sid':os.getsid(0)}))\n"
+                if launcher is not None else "") +
             "leaf=subprocess.Popen([sys.executable,'-I','-B',str(root/'witness.py'),str(root),'leaf'])\n"
             "deadline=time.monotonic()+35\n"
             "while not (root/'leaf-ack.json').exists():\n"
@@ -466,6 +470,9 @@ class DarwinLifecycle(unittest.TestCase):
             "while not (root/'release-target').exists():\n"
             " if time.monotonic()>deadline: raise SystemExit(95)\n"
             " time.sleep(.005)\n")
+        executable = str(Path(sys._base_executable).resolve(strict=True))
+        command = (repr(launcher([executable, "-I", "-B", str(self.root / "target.py"), str(self.root)]))
+                   if launcher is not None else "[sys.executable,'-I','-B',str(root/'target.py'),str(root)]")
         owner_source = (
             "import importlib.util,json,os,subprocess,sys\nfrom pathlib import Path\n"
             "root=Path(sys.argv[1])\n"
@@ -473,10 +480,9 @@ class DarwinLifecycle(unittest.TestCase):
             "spec=importlib.util.spec_from_file_location('independent_mac_owner',sys.argv[2])\n"
             "mac=importlib.util.module_from_spec(spec);spec.loader.exec_module(mac)\n"
             "with (root/'command.log').open('xb') as log:\n"
-            " mac.run_mac_owned([sys.executable,'-I','-B',str(root/'target.py'),str(root)],cwd=root,env=os.environ.copy(),timeout=30,stdout=log,stderr=subprocess.STDOUT,receipt_path=root/'owned.json')\n")
+            " mac.run_mac_owned(" + command + ",cwd=root,env=os.environ.copy(),timeout=" + repr(timeout) + ",stdout=log,stderr=subprocess.STDOUT,receipt_path=root/'owned.json')\n")
         for name, source in (("witness.py", witness_source), ("target.py", target_source), ("owner.py", owner_source)):
             (self.root / name).write_text(source, encoding="utf-8")
-        executable = str(Path(sys._base_executable).resolve(strict=True))
         state["control"] = subprocess.Popen([executable, "-I", "-B", str(self.root / "witness.py"), str(self.root), "control"],
             stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True)
         control = self.wait_json(self.root / "control.json")
@@ -497,13 +503,24 @@ class DarwinLifecycle(unittest.TestCase):
             state["witnesses"][role] = DarwinExitWitness(pid)
         self.assertEqual(running["ownership"]["caller_pid"], owner["pid"])
         self.assertEqual(running["target_pid"], group["pid"])
+        payload_pid, payload_parent = group["pid"], running["ownership"]["supervisor_pid"]
+        if launcher is not None:
+            payload = self.wait_json(self.root / "payload-identity.json")
+            state["witnesses"]["payload"] = DarwinExitWitness(payload["pid"])
+            self.assertNotEqual(payload["pid"], group["pid"])
+            self.assertEqual((payload["parent_pid"], payload["pgid"], payload["sid"]),
+                             (group["pid"], group["pid"], running["ownership"]["session_id"]))
+            payload_pid, payload_parent = payload["pid"], group["pid"]
+            state["observations"]["payload_identity"] = payload
         leaf = self.wait_json(self.root / "leaf.json")
         state["witnesses"]["leaf"] = DarwinExitWitness(leaf["pid"])
-        self.assertEqual((leaf["parent_pid"], leaf["pgid"]), (group["pid"], group["pid"]))
+        self.assertEqual((leaf["parent_pid"], leaf["pgid"]), (payload_pid, group["pid"]))
+        if launcher is not None:
+            self.assertEqual(leaf["sid"], running["ownership"]["session_id"])
         (self.root / "leaf.ack").write_text("kernel witness installed", encoding="utf-8")
         self.assertEqual(self.wait_json(self.root / "leaf-ack.json"), leaf)
         target = self.wait_json(self.root / "target-live.json")
-        self.assertEqual(target, {"pid": group["pid"], "parent_pid": running["ownership"]["supervisor_pid"], "leaf": leaf["pid"]})
+        self.assertEqual(target, {"pid": payload_pid, "parent_pid": payload_parent, "leaf": leaf["pid"]})
         self.assertFalse(state["witnesses"]["leaf"].exited())
         state["observations"].update(owner_identity=owner, leaf_identity=leaf, target_identity=target,
             running_ownership=running["ownership"], live_before_action=list(state["witnesses"]))
@@ -526,7 +543,8 @@ class DarwinLifecycle(unittest.TestCase):
             except BaseException as error:
                 failures.append("owner: " + str(error))
         deadline = time.monotonic() + 12
-        required = ("leaf", "target", "anchor", "broker") if owner is not None else ()
+        required = (("leaf", "payload", "target", "anchor", "broker") if state.get("payload_expected")
+                    else ("leaf", "target", "anchor", "broker")) if owner is not None else ()
         for role in required:
             witness = state["witnesses"].get(role)
             if witness is None:
@@ -563,7 +581,9 @@ class DarwinLifecycle(unittest.TestCase):
 
     def assert_independent_owned_exit(self, state):
         deadline = time.monotonic() + 12
-        for role in ("leaf", "target", "anchor", "broker"):
+        roles = (("leaf", "payload", "target", "anchor", "broker") if state.get("payload_expected")
+                 else ("leaf", "target", "anchor", "broker"))
+        for role in roles:
             self.assertTrue(state["witnesses"][role].exited(max(0, deadline - time.monotonic())),
                             "Kernel did not observe owned " + role + " exit")
         row = self.wait_json(self.receipt, lambda value: value.get("state") not in ("starting", "running"))
@@ -578,13 +598,16 @@ class DarwinLifecycle(unittest.TestCase):
         self.assert_independent_control_live(state)
         return row
 
-    def run_fixture(self, source, *, timeout=8, extra_env=None):
+    def run_fixture(self, source, *, timeout=8, extra_env=None, launcher=None):
         script = self.root / "target.py"
         script.write_text(source, encoding="utf-8")
         environment = os.environ.copy()
         environment.update(extra_env or {})
+        argv = [sys.executable, "-I", "-B", str(script), str(self.root), str(HELPER)]
+        if launcher is not None:
+            argv = launcher(argv)
         with (self.root / "command.log").open("xb") as log:
-            return mac.run_mac_owned([sys.executable, "-I", "-B", str(script), str(self.root), str(HELPER)],
+            return mac.run_mac_owned(argv,
                 cwd=self.root, env=environment, timeout=timeout, stdout=log, stderr=subprocess.STDOUT,
                 receipt_path=self.receipt)
 

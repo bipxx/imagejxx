@@ -45,6 +45,19 @@ def install_settings(platform):
 
 
 class PlatformInstallArguments(unittest.TestCase):
+    def test_mac_ninja_experiment_is_explicit_and_keeps_full_install(self):
+        text = (ROOT / ".github/workflows/source-platform.yml").read_text(encoding="utf-8")
+        section = text.split("      - name: Check actual macOS Ninja console ownership\n", 1)[1].split("\n      - name:", 1)[0]
+        self.assertIn("if: runner.os == 'macOS'", section)
+        self.assertIn("IMAGEJXX_NINJA_CONSOLE_CONTROL_EXE", section)
+        self.assertIn("tests/tools/test_ci_mac_ninja_process.py --require-darwin", section)
+        self.assertIn("python -m pip install ninja==1.13.2", text)
+        self.assertIn("if: always() && runner.os == 'macOS'", text)
+        self.assertIn("path: build/ci-ninja-console/control.log", text)
+        self.assertLess(text.index("Check actual macOS Ninja console ownership"),
+                        text.index("Install macOS IO and both desktop hosts"))
+        self.assertIn("python -m pip install", install_command("macOS"))
+
     def test_mac_observer_witness_precedes_full_build_with_original_target(self):
         text = (ROOT / ".github/workflows/source-platform.yml").read_text(encoding="utf-8")
         section = text.split("      - name: Check independent observations on the macOS11 target\n", 1)[1].split("\n      - name:", 1)[0]

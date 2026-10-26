@@ -2,6 +2,21 @@
 
 ## Independent observer successor: Windows/Linux scoped pass, Apple pending
 
+Additive hosted observation: run `40248817628`, head
+`379621f1055c53bbcd4c26e585a5e4527886f4a4`, Intel/Python3.10 job
+`121337284246` passed the standalone witness compiled with the explicit macOS11
+target on Apple clang17. Artifact `12620470235` is 855 bytes, with API/archive
+SHA256 `45d064652ae4766d58889b2fefc89b33c762deb4547364b17a6071200d0ae180`.
+Its original result reports 32 literals, 5,120 literal attempts, 256 wrapper
+attempts, 24 nonfinite checks and zero failures/restoration failures. The std
+differential oracle is unavailable on Apple and reports zero samples/calls;
+Windows/Linux differential evidence is separate. One unused-constant compiler
+warning is retained. The archive and original API metadata remain locally as
+`ci2/observer-loader-intel310-decimal001.zip` under
+`.tmp/manual-workflow-verification/`. This is native execution on the hosted
+macOS system with an 11.0 deployment target; it is not execution on macOS11 or
+full installed application/SDK acceptance. Other platform lanes remain open.
+
 The local successor to `868e7ed` repairs the three independent SDK observation
 headers after actual run `40239829364` exposed an unavailable floating
 `std::to_chars` call on the macOS11 profile. The new stdlib-only
