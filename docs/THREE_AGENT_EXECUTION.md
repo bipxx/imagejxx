@@ -2,6 +2,63 @@
 
 ## Current execution card — 2026-10-26
 
+**Published baseline:** `e0e4cedc3680cb0bb28f7e6ac66278b6abbf13fc`;
+[run40389405481](https://github.com/bipxx/imagejxx/actions/runs/40389405481)
+passes Windows/Linux/macOS headless C++/SDK. Linux installed lanes stop at
+original reference-readiness; Mac source profiles remain queued. Windows
+installed lanes are terminal failure; the original3.12 artifact passes8 history,
+4 drawing and4 playback reader IDs. Those source-specific successes do not
+establish full integration or transfer to this candidate.
+
+**G034 inclusive Z range implementation checked locally:** additive C++ overload
+and Python keyword-only first/last use zero-based inclusive indices; the shared
+Image→Stacks→Z Project dialog uses one-based Start/Stop, six methods and existing
+job publication. Whole-stack API/quick actions retain their behavior. Native
+physical input verifies the menu, typed2..3, Mean, literal output4 excluding
+999/888, invalid0 retained draft, Cancel and owner-switch refusal.55 installed
+Python checks and the public installed C++ SDK consumer pass. Grouping,
+scientific C/T targeting, metadata and ImageJ numeric/dtype compatibility stay
+open; population stddev remains the existing documented API policy.
+[Exact source/product evidence](parity/reviews/G034-inclusive-z-range-progress001.json).
+
+**Full desktop startup-cache defect repaired:** the26-case native cohort found
+XY image origin shifting between frames3/4. An exact a3e10e9 renderer control
+reproduces it, so this predates the published layout repair. The final focus
+request keeps native edge visibility instead of automatically centering an
+appearing child. All26 cases, core,9 metadata groups, original scale1/3 and
+actual1028x749/gui3 layout checks pass. Seven installed navigation and eight
+appearance/playback reader IDs pass against final032 binaries.
+
+**Hosted C2 advances:** e0e4ced records all three linked canvases visible/loaded
+with GL readbacks at1028x749/gui3, then tries Preferences atY847 below the actual
+749px viewport. C2's independent reader never executes after that capture
+failure; no numerical GL acceptance is claimed. The item lacked its popup clip
+metadata. The candidate supplies the actual owner/clip to the existing adapter,
+so existing physical-wheel exposure can run. A native small-window regression
+requires initial overflow, actual wheel input and final HoveredId ownership.
+[Original hosted evidence](parity/reviews/cfg4-appearance001/hosted-menu-progress.json).
+
+| Order / owner | Next action | Required boundary |
+| --- | --- | --- |
+| 1 / Root | Publish checked range APIs/dialog, focus repair and popup-clip observation | Final032 frozen sources;55 API, SDK, full native cohort, seven navigation and eight independent UI IDs |
+| 2 / Root | Inspect exact successor's C2 exposure and all four packet readers | Hosted1028x749/gui3, original hit/pixel checks and both launchers; no retries/cancellation/substitute observations |
+| Independent / Root | Recover seven original scientific inputs and finish platform gates | Original fingerprints, Linux reference-readiness stays fatal, Mac full source/desktop remains open |
+| Next G034 packet / Root | Add grouped projection and scientific C/T targeting at native resolved-command seam | Explicit range/group divisibility, output axes/calibration and metadata rules, independent numerical oracle, complete dialog/job/publication/history/session flow |
+
+One cache and installed runtime/SDK per platform reused. SDK031 was reused for
+final032 only after exact unchanged core library, header and consumer-source
+hashes matched. Final032 captures retain1,062,271 appearance and981,536 playback
+bytes after27,166,342 raw bytes were losslessly verified/retired. Three navigation
+report trees were compressed and retired with member hashes. Superseded C2
+008/009 and C5 019/020 archives are explicitly unavailable; original receipts
+and expectations stay unchanged. No historical `build/` was recreated.
+Final known storage8,580,909,396; two inaccessible cache subtrees keep the full
+8GiB budget unverified. A measured temporary diagnostic excess was corrected by
+compression. All99 original family requirement/status triples remain unchanged:
+47 in progress /52 open /0 complete; G034 full acceptance remains open.
+
+## Historical card before inclusive Z ranges and hosted menu diagnosis — 2026-10-26
+
 **Published baseline:** `5f8237ebe5971e4de4e95f4a989dfc904ee72a81`;
 [run40385374368](https://github.com/bipxx/imagejxx/actions/runs/40385374368).
 Windows/Linux headless C++/SDK pass; Linux installed lanes stop at original

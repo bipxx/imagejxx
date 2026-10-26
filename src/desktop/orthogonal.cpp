@@ -458,6 +458,10 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
         // Native navigation also reveals the canvas through a scrollable
         // Images workspace when scaled controls place it below the clip.
         ImGui::SetKeyboardFocusHere();
+        // Initial focus should reveal the item, without the appearing-window
+        // centering policy scrolling an already visible plane's contents.
+        context->NavMoveScrollFlags = ImGuiScrollFlags_KeepVisibleEdgeX |
+                                      ImGuiScrollFlags_KeepVisibleEdgeY;
       }
       // Navigation activation is intentionally ignored: Enter/Space must not
       // reuse pointer placement or change the scientific crosshair.

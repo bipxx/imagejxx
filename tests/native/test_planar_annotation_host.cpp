@@ -200,6 +200,36 @@ void small_workspace_layout() {
     check(plane.at("scale")==desktop::Json::array({32.,32.}) && origin[0]>=canvas.Min.x+2 && origin[1]>=canvas.Min.y+2 &&
         origin[0]+64<=canvas.Max.x-2 && origin[1]+64<=canvas.Max.y-2,"Small workspace lost fixed64px source or background margin");
   }
+  // The same captured large-font viewport must reach Preferences through its
+  // real scrolling menu; an unclipped item rectangle can lie below the screen.
+  const auto edit=report.at("host_controls").at("menu.Edit").at("point").get<std::array<float,2>>();
+  io.AddMousePosEvent(edit[0],edit[1]);report=session.frame();
+  io.AddMouseButtonEvent(0,true);report=session.frame();
+  io.AddMouseButtonEvent(0,false);report=session.frame();
+  for(int i=0;i<3;++i)report=session.frame();
+  auto preferences=report.at("host_controls").at("menu.Edit.Preferences");
+  check(preferences.contains("clip_rect") && preferences.contains("window_name"),
+        "Preferences menu omitted its actual owning popup clip");
+  const auto originalRect=preferences.at("rect").get<std::array<float,4>>();
+  const auto originalClip=preferences.at("clip_rect").get<std::array<float,4>>();
+  check(originalRect[3]>originalClip[3],"Small workspace did not exercise menu overflow");
+  int wheelFrames=0;
+  for(int i=0;i<24;++i){
+    const auto rect=preferences.at("rect").get<std::array<float,4>>();
+    const auto clip=preferences.at("clip_rect").get<std::array<float,4>>();
+    if(preferences.at("visible").get<bool>() && rect[1]>=clip[1] && rect[3]<=clip[3])break;
+    io.AddMousePosEvent(clip[0]+10,(clip[1]+clip[3])*.5f);report=session.frame();
+    io.AddMouseWheelEvent(0,-.5f);report=session.frame();report=session.frame();++wheelFrames;
+    preferences=report.at("host_controls").at("menu.Edit.Preferences");
+  }
+  const auto rect=preferences.at("rect").get<std::array<float,4>>();
+  const auto clip=preferences.at("clip_rect").get<std::array<float,4>>();
+  check(wheelFrames>0 && rect[1]>=clip[1] && rect[3]<=clip[3] && preferences.at("visible").get<bool>(),
+        "Actual menu scrolling could not expose Preferences");
+  const auto target=preferences.at("point").get<std::array<float,2>>();
+  io.AddMousePosEvent(target[0],target[1]);report=session.frame();
+  check(ImGui::GetCurrentContext()->HoveredId==preferences.at("id").get<ImGuiID>(),
+        "Exposed Preferences is not the actual hovered menu item");
   const auto after=volume->snapshot();
   check(after.shares_data(before) && after.revisions().matches(before.revisions(),Change::All) &&
         after.dirty()==before.dirty() && volume->undo_steps()==0 && volume->redo_steps()==0,

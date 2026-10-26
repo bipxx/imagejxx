@@ -1,0 +1,1476 @@
+{
+  "schema": "imagejxx.g034-inclusive-z-range-progress.001",
+  "state": "local_windows_api_sdk_and_shared_ui_checks_passed",
+  "predecessor": "e0e4cedc3680cb0bb28f7e6ac66278b6abbf13fc",
+  "source_pins": [
+    {
+      "path": "include\\imagejxx\\image.hpp",
+      "bytes": 8411,
+      "sha256": "4160f8c029d711c647410196367cd6cdc1221f9df394399305c42fc5b64eddc7"
+    },
+    {
+      "path": "src\\native\\analysis.cpp",
+      "bytes": 17049,
+      "sha256": "34a22101087f870c7b9b26d21bd684d01f3e7d8c17cc3edcf984ac2cd44c4221"
+    },
+    {
+      "path": "src\\native\\bindings.cpp",
+      "bytes": 36625,
+      "sha256": "3c9ada27bd052a452c930e663db2c741a848ed6b569e89ee4733e3a59cbfcafd"
+    },
+    {
+      "path": "src\\imagejxx\\__init__.py",
+      "bytes": 78146,
+      "sha256": "0d80ac4f24b8b2b7bfc766b5ccfce6f7fdaf72fd08f6c932b3a3c821d43a45ed"
+    },
+    {
+      "path": "src\\desktop\\window.cpp",
+      "bytes": 758434,
+      "sha256": "6f03d4e8dbb3a2d3fa6efb1addc98e4848c38282e2753357cf8001f75c23446c"
+    },
+    {
+      "path": "src\\desktop\\orthogonal.cpp",
+      "bytes": 70863,
+      "sha256": "5981b19d6f4d14379b090f9569e718e24e9fdb98212be6331eb39041b41c0bf2"
+    },
+    {
+      "path": "tests\\native\\test_core.cpp",
+      "bytes": 3641,
+      "sha256": "23dd33e7ea02a468f03de246716510ebb7de0d9c946b2c5f6b8faf8135e5e524"
+    },
+    {
+      "path": "tests\\native\\test_desktop.cpp",
+      "bytes": 125995,
+      "sha256": "7cc491af4650d54be89a277d24964de46af40d05e1560506d95fc78d7f36a1c8"
+    },
+    {
+      "path": "tests\\python\\test_projection_range.py",
+      "bytes": 3829,
+      "sha256": "ca52d6b946e7ec48957e27d23fda3033a5b6f91be10ff0889e7929a38fd535ec"
+    },
+    {
+      "path": "tests\\native\\test_planar_annotation_host.cpp",
+      "bytes": 26302,
+      "sha256": "a7949b3550e57b3de416a2ba8082e4961225b59ed335765e5bec4d897de9543a"
+    }
+  ],
+  "contract": {
+    "cpp": "Original project(stack,method) retained; additive inclusive zero-based first/last overload",
+    "python": "Keyword-only first=0,last=None; integer-index protocol, refusing Python/NumPy booleans, floats and strings",
+    "shared_editor": "Image > Stacks > Z Project; one-based inclusive Start/Stop, six choices; existing whole-stack quick actions retained",
+    "source_guard": "Captured owner and all revisions checked at actual Submit; separate derived output; no source/history edit",
+    "numeric_scope": "Existing method/dtype policies preserved, including population stddev. No ImageJ numeric equivalence claim."
+  },
+  "verification": {
+    "build": {
+      "path": ".tmp\\manual-workflow-verification\\c3-windows-build032\\receipt.json",
+      "bytes": 31856,
+      "sha256": "4a803158ebb95e3810791f8f8b06440a51a30e0dd14aad44fcd5ba8b12a0317e"
+    },
+    "source_freeze": {
+      "path": ".tmp\\manual-workflow-verification\\c3-windows-build032\\source-freeze.json",
+      "bytes": 362590,
+      "sha256": "5377f3c0fa17868b3377d349d63d8495fb365821ad98504aabdb570e2f313cdc"
+    },
+    "core": {
+      "path": ".tmp\\manual-workflow-verification\\c3-windows-build032\\core-regression.process.json",
+      "bytes": 1788,
+      "sha256": "a70ed724c41c5520bda125b42d484079a6844b7445012f2b4389e8e485033e03"
+    },
+    "native_desktop": {
+      "cases": [
+        "snapshot",
+        "shared history",
+        "views",
+        "selection fit",
+        "outline spans",
+        "derived stacks",
+        "Z projection range dialog",
+        "volume filter selection",
+        "native records",
+        "shared native owner",
+        "selection gestures",
+        "selection properties",
+        "busy selection properties",
+        "ROI style controls",
+        "ROI style frozen workflow",
+        "ROI style visual layers",
+        "reopened ROI style controls",
+        "ROI style view caches",
+        "closing active middle tab",
+        "ordered overlay styles and widths",
+        "mixed overlay draw vertices",
+        "nested ROI style records",
+        "binary option controls",
+        "conversion weights",
+        "conversion ranges",
+        "inversion controls"
+      ],
+      "process": {
+        "path": ".tmp\\manual-workflow-verification\\c3-windows-build032\\desktop-regression.process.json",
+        "bytes": 1793,
+        "sha256": "1fc92458dd48ae2e3ac7876b5e1d1834b2a6f35d6f48eb8a0492117cdbb48c89"
+      },
+      "physical_case": "Actual Image/Stacks/Z Project menu, typed2..3, Mean choice, literal4 output excluding999/888, stable actual error-item hover then acknowledgement, invalid0 draft retained, Cancel and active-owner transition refusal"
+    },
+    "native_layout": {
+      "path": ".tmp\\manual-workflow-verification\\c3-windows-build032\\layout-regression.process.json",
+      "bytes": 2063,
+      "sha256": "53c77be87d6f684cbaeb7a402253f6176b7f85bba03347a86b1ef577dda2a43b"
+    },
+    "metadata": {
+      "path": ".tmp\\manual-workflow-verification\\c3-windows-build032\\metadata-regression.process.json",
+      "bytes": 1812,
+      "sha256": "45304f0f47d423243b887a998e923b1031b011104edac74c403c4f996fe5b997"
+    },
+    "python": {
+      "tests": 55,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "report": {
+        "path": ".tmp\\manual-workflow-verification\\projection-range-windows032\\junit.xml",
+        "bytes": 7755,
+        "sha256": "e71c763caffcfaa8b617055096b379a11b0624d802360bb800af361a93e911bd"
+      }
+    },
+    "python_source_product_authentication": {
+      "path": ".tmp\\manual-workflow-verification\\projection-range-windows032\\receipt.json",
+      "bytes": 3476,
+      "sha256": "01d3f367698de4e9ae188415ca805d904ab3c4385da9f74f8247397d5219088a"
+    },
+    "sdk": {
+      "receipt": {
+        "path": ".tmp\\manual-workflow-verification\\projection-range-sdk031\\receipt.json",
+        "bytes": 10684,
+        "sha256": "48e5eb0890a0e399a05100a705521b4cabae1c778d0073734a085e39ea7e7f09"
+      },
+      "compiler": {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+        "bytes": 678000,
+        "sha256": "824f0234b667847befd7e3ff258822bfe557b540959ff042caaec6844b709a11"
+      },
+      "installed_header": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\include\\imagejxx\\image.hpp",
+        "bytes": 8411,
+        "sha256": "4160f8c029d711c647410196367cd6cdc1221f9df394399305c42fc5b64eddc7"
+      },
+      "installed_library": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\lib\\imagejxx_core.lib",
+        "bytes": 55041910,
+        "sha256": "8afdaf24a50eecd1582f09017f90781693373da6b44d564c91e0e84b73325eb9"
+      },
+      "consumer_binary": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\projection-range-sdk031\\scratch\\projection-sdk.exe",
+        "bytes": 123904,
+        "sha256": "e429ecaefd0da567712a19ab30e966a53c60f6dd43efb7ec93d36573e399f88b"
+      },
+      "generated_scratch": "retired_generated_object_and_executable_identities_retained",
+      "reuse_on_final032": {
+        "basis": "Only desktop menu diagnostics and its host test changed after031; unchanged exact core library, public header and SDK consumer source identities allow SDK031 reuse.",
+        "current_core_library": {
+          "path": ".cache\\native-verification\\windows\\Release\\imagejxx_core.lib",
+          "bytes": 55041910,
+          "sha256": "8afdaf24a50eecd1582f09017f90781693373da6b44d564c91e0e84b73325eb9"
+        },
+        "current_public_header": {
+          "path": "include\\imagejxx\\image.hpp",
+          "bytes": 8411,
+          "sha256": "4160f8c029d711c647410196367cd6cdc1221f9df394399305c42fc5b64eddc7"
+        },
+        "consumer_source": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\tests\\native\\test_core.cpp",
+          "bytes": 3641,
+          "sha256": "23dd33e7ea02a468f03de246716510ebb7de0d9c946b2c5f6b8faf8135e5e524"
+        }
+      }
+    },
+    "navigation": {
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "report": {
+        "path": ".tmp\\manual-workflow-verification\\appearance-navigation-windows032\\junit.xml",
+        "bytes": 1095,
+        "sha256": "505e37beb34c5038851735342ef86fbe64222b9fdcc887d55d036c5e96f64bce"
+      }
+    },
+    "navigation_reports": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\appearance-navigation-windows032\\reports.zip",
+      "bytes": 925171,
+      "sha256": "98c36bb36ea25b17bbacf8f08086f1a08378f15170adceb063b438aeda04807d"
+    },
+    "appearance": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "report": {
+        "path": ".tmp\\manual-workflow-verification\\appearance-reader-windows032\\junit.xml",
+        "bytes": 845,
+        "sha256": "65ca126952793825e33f7d7529df3a427a17815c501c8b01b9050cfe9a6cce0f"
+      }
+    },
+    "playback": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "report": {
+        "path": ".tmp\\manual-workflow-verification\\playback-reader-windows032\\pytest.xml",
+        "bytes": 821,
+        "sha256": "6c0451b8149f3334b481a3ecd377a3e69671e34e31868525ee3bb0ed859c3cae"
+      }
+    }
+  },
+  "focus_scroll_repair": {
+    "symptom": "Full desktop cohort found XY origin shifting from[260.5,323.5] at frame3 to[260.5,416.5] at frame4 while source/view size remained fixed",
+    "baseline_control": {
+      "path": ".tmp\\manual-workflow-verification\\projection-cache-baseline-control029.json",
+      "bytes": 864,
+      "sha256": "39fef954558e6d8e5a9b214fa520d60e862108bc6fb83375f5ac8228ce53b03f"
+    },
+    "baseline_conclusion": "Identical failure reproduced with exact a3e10e9 renderer; it predates e0e4ced. The attempted parent-only reveal028 did not repair it.",
+    "final_change": "After admitted SetKeyboardFocusHere, use native KeepVisibleEdgeX/Y rather than the appearing-child AlwaysCenterY policy. Native navigation still reveals an offscreen canvas through its parent.",
+    "outcome": "Original full desktop cache assertion and the actual1028x749/gui3 docked regression both pass; no oracle changed."
+  },
+  "retention": {
+    "appearance": {
+      "state": "archived_verified_and_raw_retired",
+      "raw_root": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\appearance-windows-capture032",
+      "archive": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\appearance-windows-capture032.zip",
+        "bytes": 1062271,
+        "sha256": "7a443292e4cf84329bf31b031e2d32c7de8f8e336aff956beee17f5a0d613103"
+      },
+      "members": [
+        {
+          "path": "capture.json",
+          "bytes": 10923,
+          "sha256": "a2679440e2ede8843087d3074e4992accf5f6fff1881becc92fdff56ac36ed41",
+          "dev": 15157005065845190331,
+          "ino": 1688849871375244,
+          "mtime_ns": 1793046830468837000
+        },
+        {
+          "path": "imgui_cpp-appearance-persist.process.json",
+          "bytes": 2047,
+          "sha256": "4e5e06eb1d9f674fa7cac58180e3dd2982774d382163baa6371716053aa560f1",
+          "dev": 15157005065845190331,
+          "ino": 1970324848100443,
+          "mtime_ns": 1793046812773773000
+        },
+        {
+          "path": "imgui_cpp-appearance-persist.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "dev": 15157005065845190331,
+          "ino": 1688849871389774,
+          "mtime_ns": 1793046804353918400
+        },
+        {
+          "path": "imgui_cpp-appearance-persist.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "dev": 15157005065845190331,
+          "ino": 2251799824811083,
+          "mtime_ns": 1793046804353918400
+        },
+        {
+          "path": "imgui_cpp-appearance-reopen.process.json",
+          "bytes": 2034,
+          "sha256": "6120f2779938c39fca7a00da71c5200e8ac6a2b22f1d21218c518aaf4551ca93",
+          "dev": 15157005065845190331,
+          "ino": 1407374894679279,
+          "mtime_ns": 1793046825768820300
+        },
+        {
+          "path": "imgui_cpp-appearance-reopen.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "dev": 15157005065845190331,
+          "ino": 2814749778232453,
+          "mtime_ns": 1793046821646671000
+        },
+        {
+          "path": "imgui_cpp-appearance-reopen.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "dev": 15157005065845190331,
+          "ino": 2251799824811107,
+          "mtime_ns": 1793046821645492800
+        },
+        {
+          "path": "imgui_python-appearance-persist.process.json",
+          "bytes": 2419,
+          "sha256": "9790a08b1d28baddc8df96e8a3c5ae099c7ea5eed4c687388d96bf7d570dd001",
+          "dev": 15157005065845190331,
+          "ino": 1407374894679179,
+          "mtime_ns": 1793046821597595100
+        },
+        {
+          "path": "imgui_python-appearance-persist.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "dev": 15157005065845190331,
+          "ino": 2251799824811104,
+          "mtime_ns": 1793046812807793700
+        },
+        {
+          "path": "imgui_python-appearance-persist.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "dev": 15157005065845190331,
+          "ino": 2533274801521758,
+          "mtime_ns": 1793046812807793700
+        },
+        {
+          "path": "imgui_python-appearance-reopen.process.json",
+          "bytes": 2418,
+          "sha256": "8b97bc6a43a322b4f51c279a96c873d80f336e79a6745cc27cc3e722e0972f10",
+          "dev": 15157005065845190331,
+          "ino": 1125899911491173,
+          "mtime_ns": 1793046830212306700
+        },
+        {
+          "path": "imgui_python-appearance-reopen.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "dev": 15157005065845190331,
+          "ino": 2251799824811263,
+          "mtime_ns": 1793046825804513600
+        },
+        {
+          "path": "imgui_python-appearance-reopen.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "dev": 15157005065845190331,
+          "ino": 1688849871389850,
+          "mtime_ns": 1793046825804513600
+        },
+        {
+          "path": "launch-inputs.json",
+          "bytes": 2232,
+          "sha256": "23b3f12d419a309ff79ab78b18af6a76ab0cec263d56472fcfc46aa2effebaec",
+          "dev": 15157005065845190331,
+          "ino": 1970324848100263,
+          "mtime_ns": 1793046804334418600
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 17180,
+          "sha256": "8013cbbe90ea3c4adb34d6b65a770511238256dfe58207b3fa9f0686984a11c6",
+          "dev": 15157005065845190331,
+          "ino": 1688849871375243,
+          "mtime_ns": 1793046830456836700
+        },
+        {
+          "path": "source-product-binding.json",
+          "bytes": 14755,
+          "sha256": "4934c28ae45829f925f076b8dac7451381724a271d3dec1f64a739ce4c7660e2",
+          "dev": 15157005065845190331,
+          "ino": 4503599638407944,
+          "mtime_ns": 1793046830445639500
+        },
+        {
+          "path": "imgui_cpp/preferences.json",
+          "bytes": 2350,
+          "sha256": "eef57acc7a68ad221ba442dd0429dcdea80e97852d34e9302bafbfe57918637c",
+          "dev": 15157005065845190331,
+          "ino": 2251799824811095,
+          "mtime_ns": 1793046811924146900
+        },
+        {
+          "path": "imgui_cpp/appearance-persist/case.json",
+          "bytes": 1377114,
+          "sha256": "78567e0998d2ed3c26b1d9c60b142842c17410f3ccd62c9c2904a398bec414a0",
+          "dev": 15157005065845190331,
+          "ino": 1970324848100441,
+          "mtime_ns": 1793046812672005400
+        },
+        {
+          "path": "imgui_cpp/appearance-persist/checker.tif",
+          "bytes": 586,
+          "sha256": "f12d96be773d10ed1cb4b00df7f2dfc695edaa7c555189ac52061fef6ef34d99",
+          "dev": 15157005065845190331,
+          "ino": 1407374894679123,
+          "mtime_ns": 1793046804749354900
+        },
+        {
+          "path": "imgui_cpp/appearance-persist/runtime.json",
+          "bytes": 48,
+          "sha256": "96abe1837c3eaed54c8dbffc8921a42eb907e6a237f22616c1f5714554f181ef",
+          "dev": 15157005065845190331,
+          "ino": 1407374894679122,
+          "mtime_ns": 1793046804450191000
+        },
+        {
+          "path": "imgui_cpp/appearance-reopen/case.json",
+          "bytes": 748326,
+          "sha256": "0affb1e0d0734d1f2a39876ceb3deea5a292048dc3c2f4508ed5c9dc8e33b4b4",
+          "dev": 15157005065845190331,
+          "ino": 3377699731653860,
+          "mtime_ns": 1793046825650674900
+        },
+        {
+          "path": "imgui_cpp/appearance-reopen/checker.tif",
+          "bytes": 586,
+          "sha256": "f12d96be773d10ed1cb4b00df7f2dfc695edaa7c555189ac52061fef6ef34d99",
+          "dev": 15157005065845190331,
+          "ino": 3096224754943191,
+          "mtime_ns": 1793046822010903600
+        },
+        {
+          "path": "imgui_cpp/appearance-reopen/runtime.json",
+          "bytes": 48,
+          "sha256": "01b5eba40b2173d7753f4d87db5fa0c02f67ef21a24824353ee53a2f95c3b38a",
+          "dev": 15157005065845190331,
+          "ino": 1688849871389907,
+          "mtime_ns": 1793046821700287200
+        },
+        {
+          "path": "imgui_python/appearance-persist-launcher-origin.json",
+          "bytes": 5747,
+          "sha256": "0c5b6aa524ea4bae6d6a150a017ff3900ce681faffebfaf76bf4e3c2ea1d381b",
+          "dev": 15157005065845190331,
+          "ino": 2533274801521795,
+          "mtime_ns": 1793046821479768300
+        },
+        {
+          "path": "imgui_python/appearance-reopen-launcher-origin.json",
+          "bytes": 5746,
+          "sha256": "c8836cc5b3fed12b3256d6878c33befb7a35fd988f589f86d9036fb6cf587451",
+          "dev": 15157005065845190331,
+          "ino": 5629499534878496,
+          "mtime_ns": 1793046830116352900
+        },
+        {
+          "path": "imgui_python/preferences.json",
+          "bytes": 2356,
+          "sha256": "124a7be138f54a73a6148269248d2d17ef4526ab9d855b5fee000df52a999271",
+          "dev": 15157005065845190331,
+          "ino": 2814749778232445,
+          "mtime_ns": 1793046820731564300
+        },
+        {
+          "path": "imgui_python/appearance-persist/case.json",
+          "bytes": 1377328,
+          "sha256": "5091e3012852a21b50f6b23bd5b7ea3baa7be4a69fabe61e1a0b8c2caf27d732",
+          "dev": 15157005065845190331,
+          "ino": 2814749778232446,
+          "mtime_ns": 1793046821400229200
+        },
+        {
+          "path": "imgui_python/appearance-persist/checker.tif",
+          "bytes": 586,
+          "sha256": "f12d96be773d10ed1cb4b00df7f2dfc695edaa7c555189ac52061fef6ef34d99",
+          "dev": 15157005065845190331,
+          "ino": 2533274801521769,
+          "mtime_ns": 1793046813547407800
+        },
+        {
+          "path": "imgui_python/appearance-persist/runtime.json",
+          "bytes": 48,
+          "sha256": "8e90d32d0486da37bdfdf6108f8a795e62707eefa4b64d2ba7c3effcb8e12d64",
+          "dev": 15157005065845190331,
+          "ino": 2533274801521767,
+          "mtime_ns": 1793046813313224200
+        },
+        {
+          "path": "imgui_python/appearance-reopen/case.json",
+          "bytes": 748556,
+          "sha256": "b9f4407b9f005acfc5812c0d2aed12d7c7e017c9fc3a4a69a2595bbb759aa633",
+          "dev": 15157005065845190331,
+          "ino": 162411061562201931,
+          "mtime_ns": 1793046830052225200
+        },
+        {
+          "path": "imgui_python/appearance-reopen/checker.tif",
+          "bytes": 586,
+          "sha256": "f12d96be773d10ed1cb4b00df7f2dfc695edaa7c555189ac52061fef6ef34d99",
+          "dev": 15157005065845190331,
+          "ino": 2533274801080003,
+          "mtime_ns": 1793046826475579100
+        },
+        {
+          "path": "imgui_python/appearance-reopen/runtime.json",
+          "bytes": 48,
+          "sha256": "666974d49ca91db473ef19a0110c0b202d0aaafea1dbf33effe3a32eab85ac91",
+          "dev": 15157005065845190331,
+          "ino": 2533274801521923,
+          "mtime_ns": 1793046826254898200
+        },
+        {
+          "path": "source/docs/parity/commands.json",
+          "bytes": 4939408,
+          "sha256": "4301987f5e5a1a32b669bdc2fe27bf43ae0e3d617fbd249a92404a0e63fb4ef5",
+          "dev": 15157005065845190331,
+          "ino": 1407374894678676,
+          "mtime_ns": 1793046803789473000
+        },
+        {
+          "path": "source/scripts/capture_shortcuts_history_ui.py",
+          "bytes": 50092,
+          "sha256": "9ebe97b8d2c23e2c65ca9213673d3ea349c061d0a8fb481e42a86912d21d21ac",
+          "dev": 15157005065845190331,
+          "ino": 844424941257408,
+          "mtime_ns": 1793046804015215900
+        },
+        {
+          "path": "source/scripts/ci_mac_process.py",
+          "bytes": 40903,
+          "sha256": "7a9b103375cf11a1687c5db0fc91c50293012e1232b61aaad3f936175eca5c5d",
+          "dev": 15157005065845190331,
+          "ino": 1407374894678689,
+          "mtime_ns": 1793046803833489200
+        },
+        {
+          "path": "source/scripts/ci_owned_process.py",
+          "bytes": 32771,
+          "sha256": "960a6d76a70863d1227bcae16e2153b5c62c57100ea1b8c5924e7f177f5230fd",
+          "dev": 15157005065845190331,
+          "ino": 562949964546749,
+          "mtime_ns": 1793046803983053900
+        },
+        {
+          "path": "source/src/desktop/actual_observation_transport.hpp",
+          "bytes": 8234,
+          "sha256": "95ec15363fbdd14efc7edf674d6117880426e848a3ab940a914cc203c1f1d47e",
+          "dev": 15157005065845190331,
+          "ino": 1407374894678694,
+          "mtime_ns": 1793046803879500200
+        },
+        {
+          "path": "source/src/desktop/headless_session_internal.hpp",
+          "bytes": 1283,
+          "sha256": "d6c5f1c4989b25eb54d064270e7359d0e5f402796ff5702e5ef0e48b872fb1c3",
+          "dev": 15157005065845190331,
+          "ino": 1407374894678687,
+          "mtime_ns": 1793046803828485100
+        },
+        {
+          "path": "source/src/desktop/orthogonal.cpp",
+          "bytes": 70863,
+          "sha256": "5981b19d6f4d14379b090f9569e718e24e9fdb98212be6331eb39041b41c0bf2",
+          "dev": 15157005065845190331,
+          "ino": 1407374894678695,
+          "mtime_ns": 1793046803889004000
+        },
+        {
+          "path": "source/src/desktop/orthogonal.hpp",
+          "bytes": 6212,
+          "sha256": "cf6fe7931e4e25a279e3bcdab6de4ee955dbbed15a66cdffcffb8e5fd22efe9f",
+          "dev": 15157005065845190331,
+          "ino": 1407374894678696,
+          "mtime_ns": 1793046803900745500
+        },
+        {
+          "path": "source/src/desktop/path_authoring_controls.cpp",
+          "bytes": 16350,
+          "sha256": "4628670610da0b94eb570c463d6beb45c58a688084db33e668053fc65d4f71cf",
+          "dev": 15157005065845190331,
+          "ino": 1407374894678698,
+          "mtime_ns": 1793046803911770300
+        },
+        {
+          "path": "source/src/desktop/path_authoring_edge_ui_probe.cpp",
+          "bytes": 44235,
+          "sha256": "d3557a8e2302c23667d7009c1f0a43e9f4890f92d362ff5c46b8214c81fe9b10",
+          "dev": 15157005065845190331,
+          "ino": 1407374894678699,
+          "mtime_ns": 1793046803924031900
+        },
+        {
+          "path": "source/src/desktop/path_authoring_ui_probe.cpp",
+          "bytes": 34291,
+          "sha256": "0e64c246dbf20f5cb29d3ca5a431fd0986a527355ebe4ee8d32cdeacbdffcbd3",
+          "dev": 15157005065845190331,
+          "ino": 1125899917968044,
+          "mtime_ns": 1793046803937033000
+        },
+        {
+          "path": "source/src/desktop/path_segment_ui_probe.cpp",
+          "bytes": 10605,
+          "sha256": "e3494b4cbe045a8f3e414721fea526e23e5573356685f21fa94255d65ac2ee9d",
+          "dev": 15157005065845190331,
+          "ino": 1125899917968045,
+          "mtime_ns": 1793046803952536400
+        },
+        {
+          "path": "source/src/desktop/planar_annotation_panel.cpp",
+          "bytes": 45872,
+          "sha256": "f5becc489f2cf9ff1aec5b109c458f59b0cd81cb3369861e2f4a0e7e335d736e",
+          "dev": 15157005065845190331,
+          "ino": 1688849871389353,
+          "mtime_ns": 1793046803966542400
+        },
+        {
+          "path": "source/src/desktop/planar_annotation_panel.hpp",
+          "bytes": 1713,
+          "sha256": "1d9c5ad63b0b50fb2c8210c8d9c340a12d1ab4d064d8cbc4adf27eed1bd66980",
+          "dev": 15157005065845190331,
+          "ino": 2814749778231989,
+          "mtime_ns": 1793046803979054300
+        },
+        {
+          "path": "source/src/desktop/python.cpp",
+          "bytes": 57922,
+          "sha256": "88ee3694de152d75ac625428ccf207a566d103ece3531d0d8be474dbe0da8b39",
+          "dev": 15157005065845190331,
+          "ino": 1407374894678683,
+          "mtime_ns": 1793046803811979900
+        },
+        {
+          "path": "source/src/desktop/rendering.cpp",
+          "bytes": 40389,
+          "sha256": "1a491658236fb9510608730709ef1dd96e4279760ecc12e0ab0e6fb0ffd9f148",
+          "dev": 15157005065845190331,
+          "ino": 1970324848100257,
+          "mtime_ns": 1793046804112710700
+        },
+        {
+          "path": "source/src/desktop/settings_appearance_ui_probe.cpp",
+          "bytes": 45189,
+          "sha256": "a6e794f2b069927199177e3cf864d7db63d0540a881671d0a8f62dc2c7a638b5",
+          "dev": 15157005065845190331,
+          "ino": 562949964546750,
+          "mtime_ns": 1793046803997207700
+        },
+        {
+          "path": "source/src/desktop/settings_appearance_ui_probe.hpp",
+          "bytes": 1652,
+          "sha256": "b0b35cae0744af972f70b6200ad0d18013579418c0d4b9388bc4e3331d50a5f2",
+          "dev": 15157005065845190331,
+          "ino": 844424941257407,
+          "mtime_ns": 1793046804010218700
+        },
+        {
+          "path": "source/src/desktop/settings_io.cpp",
+          "bytes": 3164,
+          "sha256": "565e21a5f5d6ca4cf00794873b6cfdf0e98c69cf9136aeb6d9a79ca873683b90",
+          "dev": 15157005065845190331,
+          "ino": 1125899917968290,
+          "mtime_ns": 1793046804125216800
+        },
+        {
+          "path": "source/src/desktop/settings_panel.cpp",
+          "bytes": 28054,
+          "sha256": "50345b880d3d767bf7e2d69209a6727335ce77a01b904c8489902fff0d6ac15b",
+          "dev": 15157005065845190331,
+          "ino": 1970324848100259,
+          "mtime_ns": 1793046804129215500
+        },
+        {
+          "path": "source/src/desktop/settings_panel.hpp",
+          "bytes": 1720,
+          "sha256": "9d03ab23118ba659914c173f65efe9c91836d80ea457ec381fdcf0cbb2546217",
+          "dev": 15157005065845190331,
+          "ino": 1407374894678948,
+          "mtime_ns": 1793046804143219000
+        },
+        {
+          "path": "source/src/desktop/window.cpp",
+          "bytes": 758434,
+          "sha256": "6f03d4e8dbb3a2d3fa6efb1addc98e4848c38282e2753357cf8001f75c23446c",
+          "dev": 15157005065845190331,
+          "ino": 1407374894678949,
+          "mtime_ns": 1793046804148218300
+        },
+        {
+          "path": "source/src/desktop/window.hpp",
+          "bytes": 15152,
+          "sha256": "87c15498d2f805ea8ab8ac3f0cfdbdc5b8a8181bb97a7c346208108ec94885f1",
+          "dev": 15157005065845190331,
+          "ino": 3096224754942886,
+          "mtime_ns": 1793046804162728200
+        },
+        {
+          "path": "source/src/imagejxx/__init__.py",
+          "bytes": 78146,
+          "sha256": "0d80ac4f24b8b2b7bfc766b5ccfce6f7fdaf72fd08f6c932b3a3c821d43a45ed",
+          "dev": 15157005065845190331,
+          "ino": 1688849871389515,
+          "mtime_ns": 1793046804032723700
+        },
+        {
+          "path": "source/src/imagejxx/ui/app.py",
+          "bytes": 31398,
+          "sha256": "727ade99067f0556e27deb62233d7b3d53cdae3944b9b61ac9992a11d1ee8664",
+          "dev": 15157005065845190331,
+          "ino": 2251799824810828,
+          "mtime_ns": 1793046804065258100
+        },
+        {
+          "path": "source/src/imagejxx/ui/persistence.py",
+          "bytes": 36248,
+          "sha256": "396d09a719bf31ee6c8e230f3b90ab820c55411a98622eb0806c8939c13a8497",
+          "dev": 15157005065845190331,
+          "ino": 1407374894678920,
+          "mtime_ns": 1793046804048835400
+        },
+        {
+          "path": "source/src/native/preferences.cpp",
+          "bytes": 12171,
+          "sha256": "b826da224f4ea3636db7b1aab24dd988c93f0a0424bbf16562c03626603df21a",
+          "dev": 15157005065845190331,
+          "ino": 1407374894678691,
+          "mtime_ns": 1793046803849992100
+        },
+        {
+          "path": "source/src/native/settings.cpp",
+          "bytes": 24834,
+          "sha256": "1584383b7f43bb3c2cc8429fa3ed3a96be2249a9ac47d556c27fa40ce8708957",
+          "dev": 15157005065845190331,
+          "ino": 1407374894678692,
+          "mtime_ns": 1793046803863995300
+        },
+        {
+          "path": "source/tests/python/actual_observation_transport.py",
+          "bytes": 3017,
+          "sha256": "022d5ce23c90b8e857d08eda56edf545b746f8c1ed9c5f6a4a71ced692aeda94",
+          "dev": 15157005065845190331,
+          "ino": 1407374894678693,
+          "mtime_ns": 1793046803875499400
+        },
+        {
+          "path": "source/tests/python/settings_appearance_expectations.py",
+          "bytes": 2822,
+          "sha256": "3dcf3348dd6ab7ffb3d1d5d1203f5cd70b66c63cd1b79cf181f4f26823006048",
+          "dev": 15157005065845190331,
+          "ino": 1407374894678686,
+          "mtime_ns": 1793046803825485100
+        },
+        {
+          "path": "source/tests/python/settings_appearance_reader.py",
+          "bytes": 26837,
+          "sha256": "d22cd5cc521176d59b7ec8b35e763545515828a996d2ec64cf8308a8f89c9914",
+          "dev": 15157005065845190331,
+          "ino": 1407374894678943,
+          "mtime_ns": 1793046804096200600
+        },
+        {
+          "path": "source/tests/python/test_settings_appearance_ui.py",
+          "bytes": 9269,
+          "sha256": "4fc504a02eb6c05645898ca86914c653ee8f2251f652d779b28fa3866e139193",
+          "dev": 15157005065845190331,
+          "ino": 2533274801521533,
+          "mtime_ns": 1793046804081190000
+        }
+      ],
+      "scope": "Original locally passing C2 source-bound capture; no comparator or provenance repinning; original binaries may be retired separately",
+      "acceptance_claim": false,
+      "raw_retired_bytes": 10803317
+    },
+    "playback": {
+      "state": "archived_verified_and_raw_retired",
+      "raw_root": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\playback-windows-capture032",
+      "archive": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\playback-windows-capture032.zip",
+        "bytes": 981536,
+        "sha256": "2b0d21c3132266480fe7dd4bc8e8a3e0d84b8f8ccd49441a84c1d5a7a87f1748"
+      },
+      "members": [
+        {
+          "path": "capture.json",
+          "bytes": 11079,
+          "sha256": "42c307610a99f5c5c030969abffb2bf7361f4597e68a6645b3225bf24566c3ae",
+          "dev": 15157005065845190331,
+          "ino": 6473924475384134,
+          "mtime_ns": 1793046878769456000
+        },
+        {
+          "path": "imgui_cpp-playback-persist.process.json",
+          "bytes": 2174,
+          "sha256": "e619bf3bc2170b972165dab529efea639df64ab24127df00758bd3069b6655f4",
+          "dev": 15157005065845190331,
+          "ino": 2533274801434057,
+          "mtime_ns": 1793046873500514100
+        },
+        {
+          "path": "imgui_cpp-playback-persist.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "dev": 15157005065845190331,
+          "ino": 844424941257405,
+          "mtime_ns": 1793046871833163200
+        },
+        {
+          "path": "imgui_cpp-playback-persist.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "dev": 15157005065845190331,
+          "ino": 3096224754942645,
+          "mtime_ns": 1793046871833163200
+        },
+        {
+          "path": "imgui_cpp-playback-reopen.process.json",
+          "bytes": 2168,
+          "sha256": "cafae00d951b4ec1ef6398eb9d0372e441e2081d27543199ee611e7b7a8511aa",
+          "dev": 15157005065845190331,
+          "ino": 3940649684988178,
+          "mtime_ns": 1793046876904168000
+        },
+        {
+          "path": "imgui_cpp-playback-reopen.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "dev": 15157005065845190331,
+          "ino": 2533274801434849,
+          "mtime_ns": 1793046875582822500
+        },
+        {
+          "path": "imgui_cpp-playback-reopen.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "dev": 15157005065845190331,
+          "ino": 4222124661698784,
+          "mtime_ns": 1793046875582822500
+        },
+        {
+          "path": "imgui_python-playback-persist.process.json",
+          "bytes": 2406,
+          "sha256": "cd4ccf046991f1ce33ed395393a422c9891b8f6ca66880a2bb7a2701d30e9f13",
+          "dev": 15157005065845190331,
+          "ino": 5629499545251623,
+          "mtime_ns": 1793046875507522700
+        },
+        {
+          "path": "imgui_python-playback-persist.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "dev": 15157005065845190331,
+          "ino": 6192449498673469,
+          "mtime_ns": 1793046873564771700
+        },
+        {
+          "path": "imgui_python-playback-persist.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "dev": 15157005065845190331,
+          "ino": 4503599638409491,
+          "mtime_ns": 1793046873564771700
+        },
+        {
+          "path": "imgui_python-playback-reopen.process.json",
+          "bytes": 2403,
+          "sha256": "81c0f95dc0a72b17af18da4db077eb4ed78e8591cdc2efbbdacb644cdf941952",
+          "dev": 15157005065845190331,
+          "ino": 10696049126043972,
+          "mtime_ns": 1793046878500131400
+        },
+        {
+          "path": "imgui_python-playback-reopen.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "dev": 15157005065845190331,
+          "ino": 4503599638409492,
+          "mtime_ns": 1793046876958953000
+        },
+        {
+          "path": "imgui_python-playback-reopen.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "dev": 15157005065845190331,
+          "ino": 7318349405516038,
+          "mtime_ns": 1793046876958953000
+        },
+        {
+          "path": "launch-inputs.json",
+          "bytes": 2232,
+          "sha256": "76d0fb58680a9eb5d56ebbc8d6ac798f4c228ede16e6d99d3a45c945d41ee4ed",
+          "dev": 15157005065845190331,
+          "ino": 1688849871389355,
+          "mtime_ns": 1793046871815155900
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 14663,
+          "sha256": "a3b8e70db020cff0b6d35a8f6e6e2a953b9509dc0a22002f6da536430f8db5e6",
+          "dev": 15157005065845190331,
+          "ino": 4503599638409541,
+          "mtime_ns": 1793046878755448800
+        },
+        {
+          "path": "source-product-binding.json",
+          "bytes": 12270,
+          "sha256": "282304ce4fcf43c4f5f0c23579111e0936391c4571deacda6327495f69200eda",
+          "dev": 15157005065845190331,
+          "ino": 4222124661698848,
+          "mtime_ns": 1793046878744932900
+        },
+        {
+          "path": "imgui_cpp/preferences.json",
+          "bytes": 2214,
+          "sha256": "823cf9db97a6e710d6ed3e2733a22cda8a8e7d9c5ec78084ef41c808134441ec",
+          "dev": 15157005065845190331,
+          "ino": 3940649684987315,
+          "mtime_ns": 1793046872637604300
+        },
+        {
+          "path": "imgui_cpp/playback-persist/case.json",
+          "bytes": 3311183,
+          "sha256": "621a76e6d16a1693775f4c0e7938b498ea79523ae183706b29a310936885c30a",
+          "dev": 15157005065845190331,
+          "ino": 3096224754855368,
+          "mtime_ns": 1793046873359382600
+        },
+        {
+          "path": "imgui_cpp/playback-persist/runtime.json",
+          "bytes": 56,
+          "sha256": "f66479c26eb645ee77dc0c2e29083a78a68e1b19e047a4f2492ea5eadfff3520",
+          "dev": 15157005065845190331,
+          "ino": 1125899917968064,
+          "mtime_ns": 1793046871897249600
+        },
+        {
+          "path": "imgui_cpp/playback-reopen/case.json",
+          "bytes": 1681809,
+          "sha256": "bd2ef11115fd71a7bd0ac62baa926f90f4d4a0af8522671c819e6496dd2cf757",
+          "dev": 15157005065845190331,
+          "ino": 5066549591830801,
+          "mtime_ns": 1793046876795668000
+        },
+        {
+          "path": "imgui_cpp/playback-reopen/runtime.json",
+          "bytes": 55,
+          "sha256": "93d716e3c7cc1f3e5e53181acccff0dedf408f01aaca752dd4fd6597b42d5d72",
+          "dev": 15157005065845190331,
+          "ino": 5066549591830791,
+          "mtime_ns": 1793046875785318000
+        },
+        {
+          "path": "imgui_python/playback-persist-launcher-origin.json",
+          "bytes": 5743,
+          "sha256": "e3aa3b72226e334c075c7cd7b95f830048d35a0c7a401b1c9d887c7dd73f72a6",
+          "dev": 15157005065845190331,
+          "ino": 3377699731566042,
+          "mtime_ns": 1793046875410092400
+        },
+        {
+          "path": "imgui_python/playback-reopen-launcher-origin.json",
+          "bytes": 5742,
+          "sha256": "f28b13d34e20a32c7571ba1768c8ac936e20f7059738b5819ad2ce15f7e2618c",
+          "dev": 15157005065845190331,
+          "ino": 7036874428805439,
+          "mtime_ns": 1793046878378366600
+        },
+        {
+          "path": "imgui_python/preferences.json",
+          "bytes": 2214,
+          "sha256": "823cf9db97a6e710d6ed3e2733a22cda8a8e7d9c5ec78084ef41c808134441ec",
+          "dev": 15157005065845190331,
+          "ino": 3940649684987352,
+          "mtime_ns": 1793046874728474900
+        },
+        {
+          "path": "imgui_python/playback-persist/case.json",
+          "bytes": 3311340,
+          "sha256": "9b821b1c086d5a0b50cefdb2c906dc5a647e0d8ff8a57969bf2ba194539de927",
+          "dev": 15157005065845190331,
+          "ino": 5629499545251287,
+          "mtime_ns": 1793046875279854500
+        },
+        {
+          "path": "imgui_python/playback-persist/runtime.json",
+          "bytes": 56,
+          "sha256": "4fd6acde556706bd46ec6ac35330addac43f35b8b6f4dbec90d24b9ffc4eedb7",
+          "dev": 15157005065845190331,
+          "ino": 2533274801434060,
+          "mtime_ns": 1793046874068808700
+        },
+        {
+          "path": "imgui_python/playback-reopen/case.json",
+          "bytes": 1681884,
+          "sha256": "5d65ef52d07ed1d819d6f365dafde807d7b4fbdd272a3a045d2b70f9c03056d2",
+          "dev": 15157005065845190331,
+          "ino": 6473924475384120,
+          "mtime_ns": 1793046878289172600
+        },
+        {
+          "path": "imgui_python/playback-reopen/runtime.json",
+          "bytes": 56,
+          "sha256": "b32af01099d2f7231a9f20e222a94c7a8daba9f7f9f607fc17181d11c9553249",
+          "dev": 15157005065845190331,
+          "ino": 3659174708277559,
+          "mtime_ns": 1793046877443899700
+        },
+        {
+          "path": "source/docs/parity/commands.json",
+          "bytes": 4939408,
+          "sha256": "4301987f5e5a1a32b669bdc2fe27bf43ae0e3d617fbd249a92404a0e63fb4ef5",
+          "dev": 15157005065845190331,
+          "ino": 4222124661784637,
+          "mtime_ns": 1793046871331480300
+        },
+        {
+          "path": "source/include/imagejxx/playback.hpp",
+          "bytes": 1658,
+          "sha256": "f67245c7eef6f5f987eea7b8e668de059cf3e4ccae2d8cab6958cec7c30fb841",
+          "dev": 15157005065845190331,
+          "ino": 1125899917967957,
+          "mtime_ns": 1793046871419549700
+        },
+        {
+          "path": "source/scripts/capture_shortcuts_history_ui.py",
+          "bytes": 50092,
+          "sha256": "9ebe97b8d2c23e2c65ca9213673d3ea349c061d0a8fb481e42a86912d21d21ac",
+          "dev": 15157005065845190331,
+          "ino": 1688849871389342,
+          "mtime_ns": 1793046871514871600
+        },
+        {
+          "path": "source/scripts/ci_mac_process.py",
+          "bytes": 40903,
+          "sha256": "7a9b103375cf11a1687c5db0fc91c50293012e1232b61aaad3f936175eca5c5d",
+          "dev": 15157005065845190331,
+          "ino": 2814749778231412,
+          "mtime_ns": 1793046871380123400
+        },
+        {
+          "path": "source/scripts/ci_owned_process.py",
+          "bytes": 32771,
+          "sha256": "960a6d76a70863d1227bcae16e2153b5c62c57100ea1b8c5924e7f177f5230fd",
+          "dev": 15157005065845190331,
+          "ino": 1688849871389339,
+          "mtime_ns": 1793046871483679500
+        },
+        {
+          "path": "source/src/desktop/actual_observation_transport.hpp",
+          "bytes": 8234,
+          "sha256": "95ec15363fbdd14efc7edf674d6117880426e848a3ab940a914cc203c1f1d47e",
+          "dev": 15157005065845190331,
+          "ino": 1407374894678677,
+          "mtime_ns": 1793046871455099000
+        },
+        {
+          "path": "source/src/desktop/headless_session_internal.hpp",
+          "bytes": 1283,
+          "sha256": "d6c5f1c4989b25eb54d064270e7359d0e5f402796ff5702e5ef0e48b872fb1c3",
+          "dev": 15157005065845190331,
+          "ino": 2814749778231410,
+          "mtime_ns": 1793046871375418300
+        },
+        {
+          "path": "source/src/desktop/orthogonal.cpp",
+          "bytes": 70863,
+          "sha256": "5981b19d6f4d14379b090f9569e718e24e9fdb98212be6331eb39041b41c0bf2",
+          "dev": 15157005065845190331,
+          "ino": 1688849871389338,
+          "mtime_ns": 1793046871468657600
+        },
+        {
+          "path": "source/src/desktop/python.cpp",
+          "bytes": 57922,
+          "sha256": "88ee3694de152d75ac625428ccf207a566d103ece3531d0d8be474dbe0da8b39",
+          "dev": 15157005065845190331,
+          "ino": 2814749778231390,
+          "mtime_ns": 1793046871361749000
+        },
+        {
+          "path": "source/src/desktop/settings_io.cpp",
+          "bytes": 3164,
+          "sha256": "565e21a5f5d6ca4cf00794873b6cfdf0e98c69cf9136aeb6d9a79ca873683b90",
+          "dev": 15157005065845190331,
+          "ino": 1688849871389350,
+          "mtime_ns": 1793046871612646000
+        },
+        {
+          "path": "source/src/desktop/settings_panel.cpp",
+          "bytes": 28054,
+          "sha256": "50345b880d3d767bf7e2d69209a6727335ce77a01b904c8489902fff0d6ac15b",
+          "dev": 15157005065845190331,
+          "ino": 1688849871389351,
+          "mtime_ns": 1793046871616652700
+        },
+        {
+          "path": "source/src/desktop/settings_panel.hpp",
+          "bytes": 1720,
+          "sha256": "9d03ab23118ba659914c173f65efe9c91836d80ea457ec381fdcf0cbb2546217",
+          "dev": 15157005065845190331,
+          "ino": 1688849871389352,
+          "mtime_ns": 1793046871629653000
+        },
+        {
+          "path": "source/src/desktop/settings_playback_ui_probe.cpp",
+          "bytes": 26851,
+          "sha256": "f5e39e80b586b8d04324fb3a416ee5263bf55f6d808f366c22c04ceba87b6b6f",
+          "dev": 15157005065845190331,
+          "ino": 1688849871389340,
+          "mtime_ns": 1793046871498791500
+        },
+        {
+          "path": "source/src/desktop/settings_playback_ui_probe.hpp",
+          "bytes": 426,
+          "sha256": "514c00bcb96b90fae79ee0c42a3dc98c8cdd4dbde9dba2eef10507738c156029",
+          "dev": 15157005065845190331,
+          "ino": 1688849871389341,
+          "mtime_ns": 1793046871510845500
+        },
+        {
+          "path": "source/src/desktop/window.cpp",
+          "bytes": 758434,
+          "sha256": "6f03d4e8dbb3a2d3fa6efb1addc98e4848c38282e2753357cf8001f75c23446c",
+          "dev": 15157005065845190331,
+          "ino": 1970324848100009,
+          "mtime_ns": 1793046871635174600
+        },
+        {
+          "path": "source/src/desktop/window.hpp",
+          "bytes": 15152,
+          "sha256": "87c15498d2f805ea8ab8ac3f0cfdbdc5b8a8181bb97a7c346208108ec94885f1",
+          "dev": 15157005065845190331,
+          "ino": 1688849871389354,
+          "mtime_ns": 1793046871647174300
+        },
+        {
+          "path": "source/src/imagejxx/__init__.py",
+          "bytes": 78146,
+          "sha256": "0d80ac4f24b8b2b7bfc766b5ccfce6f7fdaf72fd08f6c932b3a3c821d43a45ed",
+          "dev": 15157005065845190331,
+          "ino": 1688849871389344,
+          "mtime_ns": 1793046871532819700
+        },
+        {
+          "path": "source/src/imagejxx/ui/app.py",
+          "bytes": 31398,
+          "sha256": "727ade99067f0556e27deb62233d7b3d53cdae3944b9b61ac9992a11d1ee8664",
+          "dev": 15157005065845190331,
+          "ino": 1688849871389347,
+          "mtime_ns": 1793046871564856000
+        },
+        {
+          "path": "source/src/imagejxx/ui/persistence.py",
+          "bytes": 36248,
+          "sha256": "396d09a719bf31ee6c8e230f3b90ab820c55411a98622eb0806c8939c13a8497",
+          "dev": 15157005065845190331,
+          "ino": 1688849871389346,
+          "mtime_ns": 1793046871550327200
+        },
+        {
+          "path": "source/src/native/document.cpp",
+          "bytes": 58842,
+          "sha256": "c0691b6bf278186ae93808ee421ecc7ce4bb7606850658739762d3ac090e8aaf",
+          "dev": 15157005065845190331,
+          "ino": 1125899917967533,
+          "mtime_ns": 1793046871398605200
+        },
+        {
+          "path": "source/src/native/playback.cpp",
+          "bytes": 3791,
+          "sha256": "51d12714ee45480b21f8215dd9f3e3ef4b2f87fcf47516f0c6765917cc7752b2",
+          "dev": 15157005065845190331,
+          "ino": 1407374894678610,
+          "mtime_ns": 1793046871413547200
+        },
+        {
+          "path": "source/src/native/preferences.cpp",
+          "bytes": 12171,
+          "sha256": "b826da224f4ea3636db7b1aab24dd988c93f0a0424bbf16562c03626603df21a",
+          "dev": 15157005065845190331,
+          "ino": 1125899917967961,
+          "mtime_ns": 1793046871424548200
+        },
+        {
+          "path": "source/src/native/settings.cpp",
+          "bytes": 24834,
+          "sha256": "1584383b7f43bb3c2cc8429fa3ed3a96be2249a9ac47d556c27fa40ce8708957",
+          "dev": 15157005065845190331,
+          "ino": 2533274801521292,
+          "mtime_ns": 1793046871438073300
+        },
+        {
+          "path": "source/tests/python/actual_observation_transport.py",
+          "bytes": 3017,
+          "sha256": "022d5ce23c90b8e857d08eda56edf545b746f8c1ed9c5f6a4a71ced692aeda94",
+          "dev": 15157005065845190331,
+          "ino": 1688849871389332,
+          "mtime_ns": 1793046871450586600
+        },
+        {
+          "path": "source/tests/python/settings_playback_reader.py",
+          "bytes": 14211,
+          "sha256": "908fa3dcc8d5d4ac5f8a6c60d3dd362fb4b19b9bb0d5c572b38f3f5de4cab622",
+          "dev": 15157005065845190331,
+          "ino": 1688849871389349,
+          "mtime_ns": 1793046871598233300
+        },
+        {
+          "path": "source/tests/python/test_settings_playback_ui.py",
+          "bytes": 11685,
+          "sha256": "b5bd27085da1f8f8d6c4a048bde73e9abf320f027ca0b811bf6c32dc655177c8",
+          "dev": 15157005065845190331,
+          "ino": 1688849871389348,
+          "mtime_ns": 1793046871582367800
+        }
+      ],
+      "scope": "Original passing C5 four-ID source-bound capture; no comparator or provenance repinning; original binaries may be retired separately",
+      "acceptance_claim": false,
+      "raw_retired_bytes": 16363025
+    }
+  },
+  "storage": {
+    "before": {
+      "roots_known_bytes": {
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp": 3457932094,
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.venv": 436156589,
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.tools": 97453266,
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache": 2186022631,
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.github\\ci-data": 5315221,
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\docs\\parity\\reviews": 14435647,
+        "/home/heq/.cache/imagejxx-build": 2373428277
+      },
+      "known_bytes": 8570743725,
+      "unavailable_subtrees": [
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest",
+          "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest'"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest-ui",
+          "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest-ui'"
+        }
+      ],
+      "limit_bytes": 8589934592,
+      "headroom_upper_bound_bytes": 19190867,
+      "within_budget": null,
+      "budget_verified": false,
+      "seconds": 2.9380000000819564,
+      "policy": "All project .cache/.tmp/public retained review roots plus existing dependency/runtime/Linux roots; normalized unique roots; no links; Linux host-local; inaccessible paths unknown",
+      "acceptance": false,
+      "scope_correction": "Add public retained .github/ci-data notice inputs to the prior complete-history root scope; all previous totals retain their original scopes",
+      "previous_inventory": "appearance-final-storage001.json"
+    },
+    "raw_diagnostic_peak_after_capture": {
+      "roots_known_bytes": {
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp": 3476970499,
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.venv": 436156589,
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache": 2199928375,
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.tools": 97453266,
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.github\\ci-data": 5315221,
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\docs\\parity\\reviews": 14435647,
+        "/home/heq/.cache/imagejxx-build": 2373428277
+      },
+      "known_bytes": 8603687874,
+      "unavailable_subtrees": [
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest",
+          "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest'"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest-ui",
+          "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest-ui'"
+        }
+      ],
+      "limit_bytes": 8589934592,
+      "headroom_upper_bound_bytes": -13753282,
+      "within_budget": false,
+      "budget_verified": false,
+      "seconds": 4.313000000081956,
+      "policy": "All project .cache/.tmp/public retained review roots plus existing dependency/runtime/Linux roots; normalized unique roots; no links; Linux host-local; inaccessible paths unknown",
+      "acceptance": false,
+      "scope_correction": "Add public retained .github/ci-data notice inputs to the prior complete-history root scope; all previous totals retain their original scopes",
+      "previous_inventory": "appearance-final-storage001.json"
+    },
+    "final": {
+      "roots_known_bytes": {
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp": 3454072643,
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.venv": 436156589,
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.tools": 97453266,
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache": 2199986148,
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.github\\ci-data": 5315221,
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\docs\\parity\\reviews": 14497252,
+        "/home/heq/.cache/imagejxx-build": 2373428277
+      },
+      "known_bytes": 8580909396,
+      "unavailable_subtrees": [
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest",
+          "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest'"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest-ui",
+          "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest-ui'"
+        }
+      ],
+      "limit_bytes": 8589934592,
+      "headroom_upper_bound_bytes": 9025196,
+      "within_budget": null,
+      "budget_verified": false,
+      "seconds": 5.547000000020489,
+      "policy": "All project .cache/.tmp/public retained review roots plus existing dependency/runtime/Linux roots; normalized unique roots; no links; Linux host-local; inaccessible paths unknown",
+      "acceptance": false,
+      "scope_correction": "Add public retained .github/ci-data notice inputs to the prior complete-history root scope; all previous totals retain their original scopes",
+      "previous_inventory": "appearance-final-storage001.json"
+    },
+    "superseded_playback_archives": {
+      "state": "retired",
+      "targets": [
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\playback-windows-capture019.zip",
+          "bytes": 983699,
+          "sha256": "ae1e6296027e520cfff06cf6bf6172ea2e98447e8db99110dacc94b50d8731c1",
+          "identity": {
+            "dev": 15157005065845190331,
+            "ino": 2533274801318191,
+            "mtime_ns": 1793041249964052900
+          },
+          "state": "retired_original_archive_unavailable",
+          "reason": "Superseded local C5 captures; current024 source-bound capture and original receipts remain. Historical archive becomes unavailable; no original hash or expectation changes."
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\playback-windows-capture020.zip",
+          "bytes": 983758,
+          "sha256": "1e4f15982118a7d72d1ac0feedfd7414533b0ecee15985a5469dfa6ad7432bab",
+          "identity": {
+            "dev": 15157005065845190331,
+            "ino": 2251799824637778,
+            "mtime_ns": 1793041996455479800
+          },
+          "state": "retired_original_archive_unavailable",
+          "reason": "Superseded local C5 captures; current024 source-bound capture and original receipts remain. Historical archive becomes unavailable; no original hash or expectation changes."
+        }
+      ],
+      "retired_bytes": 1967457,
+      "acceptance_claim": false
+    },
+    "superseded_appearance_archives": {
+      "state": "retired",
+      "targets": [
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\appearance-windows-capture008.zip",
+          "bytes": 1054955,
+          "sha256": "3b1fc11fa29d6063c8cb06c7f95c52e7eb3270d35f91325364f61692f3346dfa",
+          "identity": {
+            "dev": 15157005065845190331,
+            "ino": 3096224754432933,
+            "mtime_ns": 1793038391732966400
+          },
+          "state": "retired_original_archive_unavailable",
+          "reason": "Superseded local C2 capture;024 baseline and031 current packet retention plus original receipts remain. Original archive becomes unavailable; no repinning."
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\appearance-windows-capture009.zip",
+          "bytes": 1057639,
+          "sha256": "d5b66a09ae7259b5f218743b302577ff40c028cfc4bf021a37e9ffbfb2e423ac",
+          "identity": {
+            "dev": 15157005065845190331,
+            "ino": 9007199265635968,
+            "mtime_ns": 1793038693936401800
+          },
+          "state": "retired_original_archive_unavailable",
+          "reason": "Superseded local C2 capture;024 baseline and031 current packet retention plus original receipts remain. Original archive becomes unavailable; no repinning."
+        }
+      ],
+      "retired_bytes": 2112594,
+      "acceptance_claim": false
+    },
+    "navigation024_retention": {
+      "path": ".tmp\\manual-workflow-verification\\appearance-navigation-windows024\\reports-retention.json",
+      "bytes": 11954,
+      "sha256": "d7967375a3caab2f463fffbc6ac8c840364a75f5612c8902e82f370e5fbf912d"
+    },
+    "navigation031_retention": {
+      "path": ".tmp\\manual-workflow-verification\\appearance-navigation-windows031\\reports-retention.json",
+      "bytes": 11952,
+      "sha256": "bca127828e36468025c88d1cb6e9c5558d0f73cbbface72163b96b9352434e2b"
+    },
+    "cold_linux_rank_test_retirement": {
+      "path": ".tmp\\manual-workflow-verification\\lean-linux-cold-projection-retirement001\\receipt.json",
+      "bytes": 1185,
+      "sha256": "094600799c646bb186abcb79c8793113c2cdf0a184b5f55e3647680a614d8711"
+    },
+    "policy": "One reused compiler cache and installed Python/app/SDK runtime; serial384MiB necessary build reserve and bounded40MiB/16MiB capture scratch; raw capture/navigation and SDK objects/executable retired after identity/process/hash proof. Superseded archives unavailable, original expectations/hashes unchanged. Two inaccessible cache trees keep full budget unverified.",
+    "after_range031_before_menu": {
+      "roots_known_bytes": {
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp": 3449148972,
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.venv": 436156589,
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.tools": 97453266,
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache": 2199928375,
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\.github\\ci-data": 5315221,
+        "C:\\Users\\HEQ\\Projects\\imagejxx\\docs\\parity\\reviews": 14435647,
+        "/home/heq/.cache/imagejxx-build": 2373428277
+      },
+      "known_bytes": 8575866347,
+      "unavailable_subtrees": [
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest",
+          "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest'"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest-ui",
+          "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest-ui'"
+        }
+      ],
+      "limit_bytes": 8589934592,
+      "headroom_upper_bound_bytes": 14068245,
+      "within_budget": null,
+      "budget_verified": false,
+      "seconds": 4.172000000020489,
+      "policy": "All project .cache/.tmp/public retained review roots plus existing dependency/runtime/Linux roots; normalized unique roots; no links; Linux host-local; inaccessible paths unknown",
+      "acceptance": false,
+      "scope_correction": "Add public retained .github/ci-data notice inputs to the prior complete-history root scope; all previous totals retain their original scopes",
+      "previous_inventory": "appearance-final-storage001.json"
+    },
+    "navigation032_retention": {
+      "path": ".tmp\\manual-workflow-verification\\appearance-navigation-windows032\\reports-retention.json",
+      "bytes": 11947,
+      "sha256": "558dfcbba61fcee44026a2b334f06ec5770482d7635d79d44264bf704f488a07"
+    }
+  },
+  "failed_diagnostics": [
+    "025: original new acknowledgement click missed the modal after initial layout",
+    "026: retained dialog/error diagnostics confirm refusal and draft preserved",
+    "027/028: full desktop startup-cache failure",
+    "029: exact earlier orthogonal source reproduces same failure",
+    "Python030: test used Editor.native_snapshot instead of public live_document().native_snapshot; corrected test adapter",
+    "SDK030: relative cl.exe launch refused/missing; explicit existing pinned compiler used031"
+  ],
+  "commercial_source_review": {
+    "decision": "eligible_repository_native_extension",
+    "new_third_party_code_assets_or_dependencies": false,
+    "license": {
+      "path": "LICENSE",
+      "bytes": 1079,
+      "sha256": "6496956d6060adfcd2617e553b7393c3b7fbea353a02f3c39d60051709d1ce5f"
+    },
+    "notices": {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "bytes": 6917,
+      "sha256": "c9251680493c1215ceb093a29572861568bb51c66396039e7248b0174fbfee46"
+    },
+    "consulted_contract": "https://imagej.net/imaging/z-functions",
+    "implementation": "Original changes to existing repository code, no external implementation copied; Fiji noncommercial exclusions unchanged."
+  },
+  "remaining": [
+    "Standalone/Python exact hosted projection-range capture and platform qualification, Linux installed CPP/Python/SDK and macOS",
+    "Grouped projections, scientific C/T/all-time-frames targeting and metadata/annotation/channel-display remapping",
+    "ImageJ method/dtype reference compatibility including deviation policy, true operation-wide resource/replay/persistence coverage",
+    "All99 family/full ImageJ/Fiji release obligations remain open; original47 in progress/52 open/0 complete counts not promoted"
+  ],
+  "acceptance_claim": false,
+  "prior_draft": {
+    "path": ".tmp\\manual-workflow-verification\\projection-range-progress-draft031.json",
+    "bytes": 58006,
+    "sha256": "95aa97196013d6e5f4513d98c8104b2ccd058c0c54d24d4bcbc704172a1324ee"
+  },
+  "preferences_menu_repair": {
+    "original_hosted_evidence": {
+      "path": "docs\\parity\\reviews\\cfg4-appearance001\\hosted-menu-progress.json",
+      "bytes": 5265,
+      "sha256": "28bcf2930e26c80818b7f02e4dd4d879d6cc82270ebf4255dda5b6653984c96f"
+    },
+    "failure_point": [
+      416.5,
+      847.5
+    ],
+    "actual_viewport": [
+      1028,
+      749
+    ],
+    "cause": "Preferences item diagnostics omitted its owning popup clip and window, so existing C2 physical-wheel exposure logic could not recognize clipping.",
+    "change": "Pass actual current popup to the existing observeControl adapter for Preferences; retain strict actual hover and hit assertions.",
+    "native_regression": "Whole-Window1028x749/gui3/51px fixture requires actual initial item overflow, wheel delivery until fully clipped-in and actual HoveredId ownership; source/view/history remain unchanged.",
+    "local": "Final032 C2 four IDs and full native cases pass; exact hosted menu/capture remains required."
+  }
+}

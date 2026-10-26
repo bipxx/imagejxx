@@ -1,0 +1,102 @@
+{
+  "schema": "imagejxx.c5-hosted-preferences-progress.001",
+  "state": "predecessor_windows312_four_playback_ids_passed",
+  "head": "5f8237ebe5971e4de4e95f4a989dfc904ee72a81",
+  "run": 40385374368,
+  "artifact": {
+    "artifact": 12681249280,
+    "artifact_bytes": 7250074,
+    "artifact_sha256": "80e00f78cffec4074a9beecd4f66ccdde660cc708742275e2d332e167b67edd8",
+    "selected_archive": {
+      "bytes": 1683490,
+      "sha256": "32fbb79bc474b64e1bc9fa1cc02ff46b01ca07a84549c8facde07a122317ad16"
+    }
+  },
+  "readers": [
+    {
+      "original_member": "ci-history/reader/pytest.xml",
+      "tests": 8,
+      "failures": 0,
+      "skips": 0
+    },
+    {
+      "original_member": "ci-drawing/reader/pytest.xml",
+      "tests": 4,
+      "failures": 0,
+      "skips": 0
+    },
+    {
+      "original_member": "ci-playback/reader/pytest.xml",
+      "tests": 4,
+      "failures": 0,
+      "skips": 0
+    }
+  ],
+  "paired_receipt": {
+    "schema": "imagejxx.playback-suite.001",
+    "state": "passed",
+    "acceptance_claim": false,
+    "started_stages": [
+      "capture-owner",
+      "reader"
+    ],
+    "scope": "four paired playback Preferences/native clock observations; GL/OS scheduling and full families remain separate",
+    "product_bindings": {
+      "path": "D:\\a\\imagejxx\\imagejxx\\build\\ci-playback\\product-bindings.json",
+      "bytes": 4825,
+      "sha256": "3740ccd0756e6b8f59e7b6c5ac7cd8c87cf247246065fc03a723db732f164133"
+    },
+    "installed_smoke": {
+      "path": "D:\\a\\imagejxx\\imagejxx\\build\\ci-playback\\installed-smoke\\receipt.json",
+      "bytes": 1272,
+      "sha256": "3c42580c213fe4d3a344b1025d92cbc143bfc439b5cae5ecd3c0b51cbc0b87f6"
+    },
+    "capture_process": {
+      "path": "D:\\a\\imagejxx\\imagejxx\\build\\ci-playback\\capture-owner\\process.json",
+      "bytes": 2476,
+      "sha256": "f39557873ab3c33f9311b5e2ba96f1f72983ce6f290da5851ef651c448bdfc27"
+    },
+    "capture": {
+      "path": "D:\\a\\imagejxx\\imagejxx\\build\\ci-playback\\capture\\capture.json",
+      "bytes": 9537,
+      "sha256": "a2df3f12f9c72d6e41d36bb36be10224a7e2b6bfbb77b8e6dc0f134876665786"
+    },
+    "provenance": {
+      "path": "D:\\a\\imagejxx\\imagejxx\\build\\ci-playback\\capture\\provenance.json",
+      "bytes": 12985,
+      "sha256": "a0f022c67c418c5af157214bf7b70a753155bfbdb6c32d62be79c3c1d7c8cfa9"
+    },
+    "reader_process": {
+      "path": "D:\\a\\imagejxx\\imagejxx\\build\\ci-playback\\reader\\process.json",
+      "bytes": 2419,
+      "sha256": "f40c1d5c23a452a5f006979dba793258fd7ee84d53fe84f68d3e32492c1b4c64"
+    },
+    "reader_junit": {
+      "path": "D:\\a\\imagejxx\\imagejxx\\build\\ci-playback\\reader\\pytest.xml",
+      "bytes": 829,
+      "sha256": "649cb60bd465d98a5808f46dad7258ff963d8acb28865e5fd7b266a42e21096e"
+    },
+    "capture_archive": {
+      "path": "D:\\a\\imagejxx\\imagejxx\\build\\ci-playback\\capture.zip",
+      "bytes": 1677344,
+      "sha256": "9add88506e3fbc8e52b42f7f0647dd08dfda4e6432790d9ac554f3e8c35eeab9"
+    }
+  },
+  "appearance_failure": {
+    "state": "failed",
+    "started_stages": [
+      "capture-owner"
+    ],
+    "error": {
+      "type": "ValueError",
+      "message": "Installed paired appearance capture failed"
+    },
+    "capture_archive": {
+      "path": "D:\\a\\imagejxx\\imagejxx\\build\\ci-appearance\\capture.zip",
+      "bytes": 1178676,
+      "sha256": "a1bf1bece586ebf7ae2a77bff95b506f53c252da4d2f5b9a41651f8496f3efdb"
+    }
+  },
+  "limitations": "Windows3.12 only; source5f8237e. No transfer to current range/focus source, Windows3.10, Linux/macOS, GL/full release.",
+  "acceptance_claim": false
+}

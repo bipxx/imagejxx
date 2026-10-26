@@ -1,5 +1,8 @@
 #include "selection_panel.hpp"
 #include "window.hpp"
+#include "headless_session_internal.hpp"
+#include <chrono>
+#include <imgui_internal.h>
 #include <algorithm>
 #include <cmath>
 #include <imagejxx/binary.hpp>
@@ -234,6 +237,100 @@ void testOutlineSpans() {
   }
 }
 
+void testProjectionRangeDialog() {
+  namespace fs = std::filesystem;
+  const auto root = fs::temp_directory_path() / ("imagejxx-projection-" +
+      std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
+  check(fs::create_directory(root), "Projection fixture requires fresh scratch");
+  struct Scratch { fs::path path; ~Scratch() { std::error_code e;
+    if (fs::is_empty(path, e) && !e) fs::remove(path, e); } } scratch{root};
+  Window window((root / "preferences.json").u8string());
+  window.updateSettings({{"ui_scale", 1.}, {"auto_dpi", false}}, false);
+  Stack planes;
+  for (double v : {999., 2., 6., 888.}) {
+    Image image(3, 2, 1, PixelType::UInt16);
+    std::fill(image.pixels.begin(), image.pixels.end(), v);
+    planes.push_back(std::move(image));
+  }
+  auto source = std::make_shared<DesktopDocument>(planes, "Range source");
+  window.addDocument(source);
+  const auto before = source->nativeSnapshot();
+  HeadlessInputSession session(window);
+  Json last; auto frame = [&] { last = session.frame(); };
+  for (int i = 0; i < 3; ++i) frame();
+  auto click = [&](const Json &control) {
+    check(control.at("enabled").get<bool>(), "Projection control is disabled");
+    const auto point = control.at("point").get<std::array<float,2>>();
+    auto &io = ImGui::GetIO(); io.AddMousePosEvent(point[0], point[1]); frame();
+    io.AddMouseButtonEvent(0, true); frame();
+    io.AddMouseButtonEvent(0, false); frame();
+    frame();
+  };
+  auto field = [&](const char *name, const char *value) {
+    click(last.at("dialog").at("controls").at(name));
+    auto &io = ImGui::GetIO();
+    io.AddKeyEvent(ImGuiMod_Ctrl, true); io.AddKeyEvent(ImGuiKey_A, true); frame();
+    io.AddKeyEvent(ImGuiKey_A, false); io.AddKeyEvent(ImGuiMod_Ctrl, false); frame();
+    io.AddInputCharactersUTF8(value); frame();
+    check(last.at("dialog").at("text").at(name) == value,
+          "Projection field did not consume actual text input");
+  };
+  click(last.at("host_controls").at("menu.Image"));
+  const auto stacks = last.at("host_controls").at("menu.Image.Stacks").at("point").get<std::array<float,2>>();
+  ImGui::GetIO().AddMousePosEvent(stacks[0], stacks[1]);
+  for (int i = 0; i < 30 && !last.at("host_controls").contains("menu.action.show_z_projection"); ++i) frame();
+  click(last.at("host_controls").at("menu.action.show_z_projection"));
+  check(last.at("dialog").at("values").at("first") == 1 &&
+        last.at("dialog").at("values").at("last") == 4,
+        "Z Project menu did not open full-range defaults");
+  field("first", "2"); field("last", "3");
+  click(last.at("dialog").at("controls").at("method"));
+  click(last.at("dialog").at("controls").at("method.choice.mean"));
+  click(last.at("dialog").at("controls").at("apply"));
+  window.wait(); frame();
+  check(window.documents().size() == 2 && window.document()->frame().type == PixelType::Float64,
+        "Range projection did not create a separate output");
+  for (double v : window.document()->frame().pixels)
+    check(v == 4., "Projection included an excluded endpoint slice");
+  const auto after = source->nativeSnapshot();
+  check(after.shares_data(before) && after.revisions().matches(before.revisions(), Change::All) &&
+        source->undoSteps() == 0 && source->redoSteps() == 0,
+        "Range projection changed its source or history");
+  window.setActiveIndex(0);
+  window.action("show_z_projection"); for (int i = 0; i < 3; ++i) frame();
+  field("first", "0"); click(last.at("dialog").at("controls").at("apply"));
+  check(window.documents().size() == 2 && !window.busy() && last.at("dialog").at("open") == true,
+        "Invalid range started a job or lost its draft");
+  auto acknowledge = [&] {
+    Json previous; int stable = 0;
+    for (int i = 0; i < 8 && stable < 2; ++i) {
+      frame(); const auto &current = last.at("error_modal").at("controls").at("ok");
+      stable = !previous.is_null() && current.at("rect") == previous.at("rect") ? stable + 1 : 0;
+      previous = current;
+    }
+    check(stable == 2, "Error acknowledgement geometry did not stabilize");
+    const auto point = previous.at("point").get<std::array<float,2>>();
+    ImGui::GetIO().AddMousePosEvent(point[0], point[1]); frame();
+    check(ImGui::GetCurrentContext()->HoveredId == previous.at("id").get<ImGuiID>(),
+          "Actual error acknowledgement pointer missed its current item");
+    click(previous); frame();
+  };
+  acknowledge();
+  if (!last.at("dialog").at("controls").contains("cancel"))
+    std::cerr << "Projection modal diagnostic " << Json{{"dialog",last.at("dialog")},
+        {"error_modal",last.at("error_modal")}}.dump() << '\n';
+  click(last.at("dialog").at("controls").at("cancel"));
+  check(window.documents().size() == 2 && !window.busy(), "Cancel published a projection");
+  // An API-driven owner transition while this modal is open must not redirect
+  // an Apply to the other document.
+  window.action("show_z_projection"); for (int i = 0; i < 3; ++i) frame();
+  window.setActiveIndex(1); for (int i = 0; i < 3; ++i) frame();
+  click(last.at("dialog").at("controls").at("apply"));
+  check(window.documents().size() == 2 && !window.busy() && last.at("error_modal").at("open") == true,
+        "Stale projection draft was redirected to another owner");
+  acknowledge(); click(last.at("dialog").at("controls").at("cancel"));
+  session.close();
+}
 void testDerivedStacks() {
   Window editor;
   Stack frames;
@@ -2353,6 +2450,7 @@ int main(int argc, char **argv) {
     run("selection fit", testSelectionFit);
     run("outline spans", testOutlineSpans);
     run("derived stacks", testDerivedStacks);
+    run("Z projection range dialog", testProjectionRangeDialog);
     run("volume filter selection", testVolumeFilterSelection);
     run("native records", testNativeRecords);
     run("shared native owner", testSharedNativeOwner);

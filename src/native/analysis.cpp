@@ -222,14 +222,25 @@ Image equalize_histogram(const Image& image) {
     return out;
 }
 Image project(const Stack& stack, const std::string& method) {
+    return project(stack, method, 0, stack.empty() ? 0 : stack.size() - 1);
+}
+Image project(const Stack& stack, const std::string& method,
+              std::size_t first, std::size_t last) {
     check_stack(stack);
+    if (first > last || last >= stack.size())
+        throw std::invalid_argument("Projection requires 0 <= first <= last < stack depth");
     if (method != "maximum" && method != "minimum" && method != "mean" && method != "sum" && method != "median" && method != "stddev")
         throw std::invalid_argument("Unknown projection method");
-    Image out = stack.front();
+    Image out = stack[first];
     if (method != "maximum" && method != "minimum") out.type = PixelType::Float64;
-    std::vector<double> values(stack.size());
+    std::vector<double> values(last - first + 1);
+    KernelStage stage("Z projection", out.pixels.size());
     for (std::size_t i = 0; i < out.pixels.size(); ++i) {
-        for (std::size_t z = 0; z < stack.size(); ++z) values[z] = stack[z].pixels[i];
+        stage.periodic(i);
+        for (std::size_t z = first; z <= last; ++z) {
+            stage.poll();
+            values[z - first] = stack[z].pixels[i];
+        }
         double value = 0;
         if (method == "maximum") value = *std::max_element(values.begin(), values.end());
         else if (method == "minimum") value = *std::min_element(values.begin(), values.end());
@@ -245,6 +256,7 @@ Image project(const Stack& stack, const std::string& method) {
         }
         out.pixels[i] = value;
     }
+    stage.finish();
     return out;
 }
 Stack gaussian_blur3d(const Stack& stack, double sx, double sy, double sz, Border border) {

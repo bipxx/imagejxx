@@ -120,6 +120,9 @@ double auto_threshold(const Image&, const std::string& method = "otsu", int bins
 Image auto_mask(const Image&, const std::string& method, bool bright, int bins = 0);
 Image equalize_histogram(const Image&);
 Image project(const Stack&, const std::string& method);
+// Inclusive zero-based Z range. The original overload projects every slice.
+Image project(const Stack&, const std::string& method,
+              std::size_t first, std::size_t last);
 Stack gaussian_blur3d(const Stack&, double sigma_x, double sigma_y, double sigma_z, Border border);
 
 Labels connected_components(const Image&, int connectivity = 8);

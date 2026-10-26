@@ -1620,9 +1620,14 @@ def binary_watershed(
     return _native.binary_watershed(_mask(mask), maxima_radius, connectivity)
 
 
-def project(stack, method: str = "maximum") -> np.ndarray:
-    """Z projection: maximum, minimum, mean, sum, median or population stddev."""
-    return _native.project(_array(stack), method)
+def project(stack, method: str = "maximum", *, first: int = 0,
+            last: int | None = None) -> np.ndarray:
+    """Project an inclusive, zero-based Z range; ``last=None`` uses the final slice.
+
+    Methods: maximum, minimum, mean, sum, median or population stddev.
+    The input is unchanged. Slice indices must be nonnegative integers.
+    """
+    return _native.project(_array(stack), method, first=first, last=last)
 
 
 def gaussian_blur3d(stack, sigma=1, *, border: str = "reflect") -> np.ndarray:

@@ -167,6 +167,25 @@ Do not assume these 61 settings are the full ImageJ/Fiji option inventory.
 Commands discovered through M0 receive stable child IDs and the same per-key
 row before their packet starts; unlisted options are not declared complete.
 
+## G034 current range entry and next missing options
+
+Inclusive legacy-Z projection ranges are implemented through the existing C++
+kernel, additive public C++ overload, Python first/last keywords and shared
+Z Project dialog. Windows installed API/SDK/native interaction checks pass;
+[the range packet](G034-z-projection-ranges.md) and
+[source-bound receipt](../parity/reviews/G034-inclusive-z-range-progress001.json)
+state exact scope. Reuse this range reduction; do not add a Python projection.
+
+Next expand a typed Dataset command for explicit captured T/C selections,
+all-time-frames and grouped output. Resolve source/range/group policy once,
+validate divisibility and memory before reading, preserve T/C rather than
+flattening them into Z, and define output calibration/channel/ROI metadata
+before UI work. Reuse existing job/derived-output publication. Independent
+asymmetric TCZYX values must expose incorrect C/T mixing and group boundaries.
+Existing population stddev is not a pinned ImageJ numerical-equivalence claim.
+Full legacy/scientific method/type/reference, replay/session, launch and platform
+acceptance remain required; G034 is not complete.
+
 ## Route for all 99 capability families
 
 This maps every original family to a reuse path. It does not claim those APIs

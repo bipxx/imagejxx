@@ -30,6 +30,29 @@ int main() {
         bool rejected = false;
         try { crop(image, 2, 0, 2, 2); } catch (const std::invalid_argument&) { rejected = true; }
         check(rejected, "C++ invalid ROI rejection");
+        Stack projection;
+        for (double v : {199., 2., 6., 188.}) {
+            Image plane(2, 1, 1, PixelType::UInt16);
+            std::fill(plane.pixels.begin(), plane.pixels.end(), v);
+            projection.push_back(std::move(plane));
+        }
+        for (const auto &method : {"maximum", "minimum", "mean", "sum", "median", "stddev"}) {
+            const double expected = std::string(method) == "maximum" ? 6. :
+                std::string(method) == "minimum" || std::string(method) == "stddev" ? 2. :
+                std::string(method) == "sum" ? 8. : 4.;
+            const auto result = project(projection, method, 1, 2);
+            check(result.pixels == std::vector<double>({expected, expected}), "C++ inclusive Z range");
+            check(project(projection, method).pixels == project(projection, method, 0, 3).pixels,
+                  "C++ original whole-stack overload");
+        }
+        check(projection.front().pixels[0] == 199. && projection.back().pixels[0] == 188.,
+              "C++ projection source unchanged");
+        for (const auto bounds : {std::pair<std::size_t, std::size_t>{2, 1}, {0, 4}}) {
+            bool refused = false;
+            try { (void)project(projection, "mean", bounds.first, bounds.second); }
+            catch (const std::invalid_argument &) { refused = true; }
+            check(refused, "C++ invalid projection bounds");
+        }
         std::cout << "Native API checks passed\n";
         return 0;
     } catch (const std::exception& error) { std::cerr << error.what() << '\n'; return 1; }

@@ -436,9 +436,26 @@ PYBIND11_MODULE(_native, m) {
     },py::arg("image"),py::arg("method"),py::arg("bins"),py::arg("ignore_black").noconvert()=false,py::arg("ignore_white").noconvert()=false);
     m.def("auto_mask", [](const py::array& a, const std::string& method, bool bright, int bins,bool ignore_black,bool ignore_white) { return image_call(a, [&](const Image& i) { return auto_mask(i, method, bright, bins,ignore_black,ignore_white); }); },py::arg("image"),py::arg("method"),py::arg("bright"),py::arg("bins"),py::arg("ignore_black").noconvert()=false,py::arg("ignore_white").noconvert()=false);
     m.def("equalize_histogram", [](const py::array& a) { return image_call(a, [](const Image& i) { return equalize_histogram(i); }); });
-    m.def("project", [](const py::array& a, const std::string& method) {
-        auto stack = read_stack(a); auto out = [&]() { py::gil_scoped_release release; return project(stack, method); }(); return to_array(out);
-    });
+    m.def("project", [](const py::array& a, const std::string& method,
+                         const py::object& first, const py::object& last) {
+        const auto index = [](const py::object& value) -> std::size_t {
+            if (PyBool_Check(value.ptr()) ||
+                py::isinstance(value, py::module_::import("numpy").attr("bool_")) ||
+                !PyIndex_Check(value.ptr()))
+                throw py::type_error("Projection slice indices must be integers, not booleans");
+            auto integer = py::reinterpret_steal<py::object>(PyNumber_Index(value.ptr()));
+            if (!integer) throw py::error_already_set();
+            const auto result = integer.cast<py::ssize_t>();
+            if (result < 0) throw std::invalid_argument("Projection slice indices must be nonnegative");
+            return static_cast<std::size_t>(result);
+        };
+        const auto begin = index(first);
+        auto stack = read_stack(a);
+        const auto end = last.is_none() ? stack.size() - 1 : index(last);
+        auto out = [&]() { py::gil_scoped_release release; return project(stack, method, begin, end); }();
+        return to_array(out);
+    }, py::arg("stack"), py::arg("method"), py::kw_only(),
+       py::arg("first") = 0, py::arg("last") = py::none());
     m.def("gaussian_blur3d", [](const py::array& a, double sx, double sy, double sz, const std::string& border) {
         auto stack = read_stack(a); auto b = parse_border(border);
         auto blurred = [&]() { py::gil_scoped_release release; return gaussian_blur3d(stack, sx, sy, sz, b); }();

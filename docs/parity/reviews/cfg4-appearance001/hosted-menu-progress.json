@@ -1,0 +1,242 @@
+{
+  "schema": "imagejxx.c2-hosted-layout-progress.001",
+  "head": "e0e4cedc3680cb0bb28f7e6ac66278b6abbf13fc",
+  "run": 40389405481,
+  "artifact": {
+    "artifact": 12686910074,
+    "artifact_bytes": 7258370,
+    "artifact_sha256": "d9f762a11078266a26b0bb3bab41e8a710d458eef3d2a54753a5bc5a4bfca928",
+    "selected_archive": {
+      "bytes": 1188081,
+      "sha256": "61ddb621e6482062081c08b822179c4db1f8c61cd656ac7e6c06691e15d0d269"
+    }
+  },
+  "other_readers": [
+    {
+      "member": "ci-history/reader/pytest.xml",
+      "tests": 8,
+      "failed": 0
+    },
+    {
+      "member": "ci-drawing/reader/pytest.xml",
+      "tests": 4,
+      "failed": 0
+    },
+    {
+      "member": "ci-playback/reader/pytest.xml",
+      "tests": 4,
+      "failed": 0
+    }
+  ],
+  "linked_nearest_geometry": [
+    {
+      "surface": "XY",
+      "geometry": {
+        "canvas_point": [
+          242.0,
+          471.0
+        ],
+        "canvas_rect": [
+          187.0,
+          420.0,
+          297.0,
+          522.0
+        ],
+        "contrast_source": "live",
+        "coordinate": 0,
+        "current_tcz": [
+          0,
+          0,
+          0
+        ],
+        "extent": [
+          110.0,
+          102.0
+        ],
+        "height": 2,
+        "image_rect": [
+          210.0,
+          439.0,
+          274.0,
+          503.0
+        ],
+        "loading": false,
+        "origin": [
+          210.0,
+          439.0
+        ],
+        "pixels_source": "live_document",
+        "plane": "XY",
+        "range": [
+          0.0,
+          255.0
+        ],
+        "range_policy": "live_document",
+        "sampler": {
+          "available": true,
+          "height": 2,
+          "mag_filter": 9728,
+          "min_filter": 9728,
+          "texture_id": 4,
+          "width": 2,
+          "wrap_s": 10497,
+          "wrap_t": 10497
+        },
+        "scale": [
+          32.0,
+          32.0
+        ],
+        "source_document_id": 570073067776224936,
+        "visible": true,
+        "width": 2
+      }
+    },
+    {
+      "surface": "XZ",
+      "geometry": {
+        "canvas_point": [
+          425.5,
+          471.0
+        ],
+        "canvas_rect": [
+          370.0,
+          420.0,
+          481.0,
+          522.0
+        ],
+        "contrast_source": "live",
+        "coordinate": 1,
+        "current_tcz": [
+          0,
+          0,
+          0
+        ],
+        "extent": [
+          111.0,
+          102.0
+        ],
+        "height": 2,
+        "image_rect": [
+          393.5,
+          439.0,
+          457.5,
+          503.0
+        ],
+        "loading": false,
+        "origin": [
+          393.5,
+          439.0
+        ],
+        "pixels_source": "live_document",
+        "plane": "XZ",
+        "range": [
+          0.0,
+          255.0
+        ],
+        "range_policy": "live_document",
+        "sampler": {
+          "available": true,
+          "height": 2,
+          "mag_filter": 9728,
+          "min_filter": 9728,
+          "texture_id": 5,
+          "width": 2,
+          "wrap_s": 10497,
+          "wrap_t": 10497
+        },
+        "scale": [
+          32.0,
+          32.0
+        ],
+        "source_document_id": 570073067776224936,
+        "visible": true,
+        "width": 2
+      }
+    },
+    {
+      "surface": "YZ",
+      "geometry": {
+        "canvas_point": [
+          609.5,
+          471.0
+        ],
+        "canvas_rect": [
+          554.0,
+          420.0,
+          665.0,
+          522.0
+        ],
+        "contrast_source": "live",
+        "coordinate": 1,
+        "current_tcz": [
+          0,
+          0,
+          0
+        ],
+        "extent": [
+          111.0,
+          102.0
+        ],
+        "height": 2,
+        "image_rect": [
+          577.5,
+          439.0,
+          641.5,
+          503.0
+        ],
+        "loading": false,
+        "origin": [
+          577.5,
+          439.0
+        ],
+        "pixels_source": "live_document",
+        "plane": "YZ",
+        "range": [
+          0.0,
+          255.0
+        ],
+        "range_policy": "live_document",
+        "sampler": {
+          "available": true,
+          "height": 2,
+          "mag_filter": 9728,
+          "min_filter": 9728,
+          "texture_id": 6,
+          "width": 2,
+          "wrap_s": 10497,
+          "wrap_t": 10497
+        },
+        "scale": [
+          32.0,
+          32.0
+        ],
+        "source_document_id": 570073067776224936,
+        "visible": true,
+        "width": 2
+      }
+    }
+  ],
+  "scope": "Original producer observed all three canvases visible/loaded and took GL readbacks at gui3 in actual1028x749. C2 capture then failed at the Preferences menu hit; independent C2 reader did not execute, so no full numerical GL qualification.",
+  "failure": "C2 control is not the actual hovered item: host.menu.Edit.Preferences",
+  "last_control": {
+    "control": "host.menu.Edit.Preferences",
+    "item": {
+      "active": false,
+      "enabled": true,
+      "focused": false,
+      "id": 4159138745,
+      "point": [
+        416.5,
+        847.5
+      ],
+      "rect": [
+        129.0,
+        816.0,
+        704.0,
+        879.0
+      ]
+    }
+  },
+  "remaining": "Fresh exact-source hosted C2 menu exposure and full four independent reader IDs. No transfer to current source.",
+  "acceptance_claim": false
+}

@@ -1537,9 +1537,22 @@
     },
     {
       "evidence": {
-        "documentation": [],
-        "implementation": [],
-        "tests": []
+        "documentation": [
+          "docs/packets/G034-z-projection-ranges.md",
+          "docs/parity/reviews/G034-inclusive-z-range-progress001.json"
+        ],
+        "implementation": [
+          "include/imagejxx/image.hpp",
+          "src/native/analysis.cpp",
+          "src/native/bindings.cpp",
+          "src/imagejxx/__init__.py",
+          "src/desktop/window.cpp"
+        ],
+        "tests": [
+          "tests/native/test_core.cpp",
+          "tests/native/test_desktop.cpp",
+          "tests/python/test_projection_range.py"
+        ]
       },
       "id": "G034",
       "milestones": [
@@ -1548,7 +1561,8 @@
       ],
       "name": "Z projections",
       "remaining": [
-        "Partial: entire Z stack only; add inclusive ranges, grouped projections, C/T targeting and metadata rules"
+        "Inclusive legacy-Z ranges now have scoped Windows native/API/installed SDK/shared ImGui proof. Grouped projections, scientific C/T/all-time-frames targeting and complete metadata/channel/annotation rules remain required.",
+        "ImageJ numeric/dtype compatibility (including deviation policy), true resource/workflow/persistence coverage and all owning launch/platform/GL qualification remain open."
       ],
       "required_work": "Partial: entire Z stack only; add inclusive ranges, grouped projections, C/T targeting and metadata rules",
       "status": "open",

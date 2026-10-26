@@ -8186,14 +8186,45 @@ void Window::action(const std::string &name, const Json &p) {
     d->commit(std::move(proposed));
     return;
   }
+  if (name == "show_z_projection") {
+    if (busy()) throw std::invalid_argument("Wait for the current edit");
+    if (!p.is_object() || !p.empty())
+      throw std::invalid_argument("Choose projection parameters in the dialog");
+    const auto captured = d->nativeSnapshot();
+    impl->stopAnimation("z_projection");
+    impl->ask("Z Project", {{"method", "maximum"}, {"first", 1},
+                          {"last", d->shape().z}},
+        [this, captured](Json values) {
+          const auto current = nativeSnapshot();
+          if (!captured.same_document(current) ||
+              !captured.revisions().matches(current.revisions(), Change::All))
+            throw RevisionConflict();
+          action("project", values);
+        }, Json::array({
+          {{"name", "first"}, {"label", "Start slice"}, {"kind", "int"}},
+          {{"name", "last"}, {"label", "Stop slice"}, {"kind", "int"}},
+          {{"name", "method"}, {"label", "Projection method"}, {"kind", "text"},
+           {"choices", {"maximum", "minimum", "mean", "sum", "median", "stddev"}}}
+        }), "z_projection");
+    return;
+  }
   if (name == "project") {
+    if (!p.is_object()) throw std::invalid_argument("Projection parameters must be an object");
+    for (const auto &field : p.items())
+      if (field.key() != "method" && field.key() != "first" && field.key() != "last")
+        throw std::invalid_argument("Unknown projection parameter: " + field.key());
+    const auto depth = d->shape().z;
+    const auto first = p.contains("first") ? integer(p.at("first")) : 1;
+    const auto last = p.contains("last") ? integer(p.at("last")) : depth;
+    if (first < 1 || first > last || last > depth)
+      throw std::invalid_argument("Projection requires 1 <= Start slice <= Stop slice <= stack depth");
     auto source = d->state();
     auto method = string(get(p, "method"), "maximum");
     impl->start(
-        [source = std::move(source), method] {
+        [source = std::move(source), method, first, last] {
           State out;
-          out.frames =
-              Stack{canonical(project(source.frames.materialize(), method))};
+          out.frames = Stack{canonical(project(source.frames.materialize(), method,
+                                               first - 1, last - 1))};
           out.metadata = source.metadata;
           out.metadata["is_stack"] = false;
           out.metadata["slice_index"] = 0;
@@ -9074,7 +9105,7 @@ void Window::Impl::menu() {
     ImGui::EndDisabled();
     ImGui::Separator();
     item("Preferences...", "show_preferences");
-    observeControl("menu.Edit.Preferences");
+    observeControl("menu.Edit.Preferences", true, nullptr, nullptr, ImGui::GetCurrentWindow());
     {
       const auto a = ImGui::GetItemRectMin(), b = ImGui::GetItemRectMax();
       preferencesMenuPoint = {(a.x + b.x) * .5f, (a.y + b.y) * .5f};
@@ -9133,6 +9164,7 @@ void Window::Impl::menu() {
       }
       item("Substack...", "show_z_subset");
       observeControl("menu.z_subset");
+      item("Z Project...", "show_z_projection");
       if (ImGui::BeginMenu("Projection", actionAllowed("project"))) {
         for (auto method :
              {"maximum", "minimum", "mean", "sum", "median", "stddev"})
@@ -12999,7 +13031,7 @@ Json Window::Impl::headlessReport() {
         {"text", dialog.text}, {"axis_index_label", dialog.axisIndexLabel},
         {"schema", dialog.schema}, {"generation", dialog.generation},
         {"opened_document_id", dialog.openedDocumentId},
-        {"opened_document_id_semantics", (dialog.id == "axis_plane_export" || dialog.id == "axis_range_reslice" || dialog.id == "axis_range_orientation" || dialog.id == "axis_range_spacing" || dialog.id == "axis_range_slicer_resize")
+        {"opened_document_id_semantics", (dialog.id == "z_projection" || dialog.id == "axis_plane_export" || dialog.id == "axis_range_reslice" || dialog.id == "axis_range_orientation" || dialog.id == "axis_range_spacing" || dialog.id == "axis_range_slicer_resize")
              ? "captured_native_execution_source"
              : "observed_at_ask_not_a_captured_execution_source"},
         {"controls", dialog.controls}};
