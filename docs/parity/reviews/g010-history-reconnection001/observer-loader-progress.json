@@ -1,0 +1,256 @@
+{
+  "schema_version": 1,
+  "state": "local_source_observer_and_loader_scoped_verified_hosted_pending",
+  "acceptance_claim": false,
+  "observer_commit": "d41b599",
+  "scope": "independent observation formatter and direct Python helper source-loading only; no new installed/UI/SDK acceptance",
+  "source_inputs": {
+    "scripts/ci_history_build.py": "a301f51dff723df34e981526534b77e9ee600a256de5480ba5674308d6789c3d",
+    "scripts/ci_python_suite.py": "809a4e37ece2d45a58dbdcf180ed0222f015c0ed6bb6e7f3863d02880f9d6119",
+    "scripts/ci_observations.py": "460f622a49f411fa0042b9953e70c465b5d44bc0c10701e2f6be52d4fe756471",
+    "scripts/ci_current_observations.py": "4201a81c5e795bfbe71f546266ffd87c4e9655c7362fc480469be4f72aee1c3b",
+    "scripts/ci_owned_process.py": "39ef83863d4cc672c044c314cd98a141590e4165cbd73605ac34b353d000f8d7",
+    "scripts/ci_mac_process.py": "7a9b103375cf11a1687c5db0fc91c50293012e1232b61aaad3f936175eca5c5d",
+    "scripts/capture_shortcuts_history_ui.py": "ee65888d3cb3389a60038961f21361102646c0af78cbcc54fee0b833afc3da6e",
+    "CMakeLists.txt": "1e6362d3fdd75f83f9c03820c733d33e58ad091ba8394dcbc00418d6d6861034",
+    ".github/workflows/test.yml": "adc1dcfd613ad3e92d070bd078e171a84e93700764c2759c16887d2d36ccd9f8",
+    ".github/workflows/source-platform.yml": "e78c1a17d7824adc7033aeff995b37810f6cfd02703208f62f0115cc8b6c7ba2",
+    "tests/tools/test_ci_history_build.py": "67f03ef271abcc5d576c191f367c0519bbc180970150fd1b38abdb6637e703c8",
+    "tests/tools/test_ci_history_integration.py": "b31533564b4c9e95101f5f463162f0cf5739cd17e924bf445019fa23e93ee69f",
+    "tests/tools/test_ci_platform_workflow.py": "bd8736181f48dd47212bcdc5cf4102bfd11c3e334410b2d6ea15c8e974a5da4e",
+    "tests/tools/test_ci_python_suite.py": "6e7a3c2363fa5962e55ed115080e02e807bc1a9eac73a40f10b681668a89f9f0",
+    "tests/tools/test_ci_python_suite_transport.py": "03610ea629a87799acd53daa7c59aaa4548c041d1c92fb935ebb43d85c315254",
+    "tests/tools/test_ci_reference_readiness.py": "25dbbbe00b30052b10abc47fd9d4fd193f0241836ffbeeae4287e887921f9d3e",
+    "tests/tools/test_floating_charconv_cmake.py": "e854b8a3737ebe2c2806ed13af603704e311cb701fcd11314fc25f1245bad767"
+  },
+  "hosts": {
+    "windows": {
+      "controls_receipt": {
+        "path": ".tmp/manual-workflow-verification/helper-source-controls-windows002/receipt.json",
+        "bytes": 19205,
+        "sha256": "bfab77434da85f30c58622ef316e77c690176bb76ba971855992b398fd3166b9"
+      },
+      "methods": 175,
+      "explicit_host_skips": 5,
+      "programs": [
+        {
+          "program": "test_ci_history_build.py",
+          "methods": 48,
+          "explicit_host_skips": 4,
+          "log": {
+            "path": ".tmp/manual-workflow-verification/helper-source-controls-windows002/test_ci_history_build.py.log",
+            "bytes": 165,
+            "sha256": "2c73e9841c8d61b9c2742bc78fad888fc6e94a193f600f995eed3588567e809d"
+          }
+        },
+        {
+          "program": "test_ci_history_integration.py",
+          "methods": 37,
+          "explicit_host_skips": 0,
+          "log": {
+            "path": ".tmp/manual-workflow-verification/helper-source-controls-windows002/test_ci_history_integration.py.log",
+            "bytes": 142,
+            "sha256": "16dc3ba1cd82da79853ebb6e6c8121aad2cf17faaa1911064d8c9998e0eae18e"
+          }
+        },
+        {
+          "program": "test_ci_platform_workflow.py",
+          "methods": 6,
+          "explicit_host_skips": 0,
+          "log": {
+            "path": ".tmp/manual-workflow-verification/helper-source-controls-windows002/test_ci_platform_workflow.py.log",
+            "bytes": 109,
+            "sha256": "b9d98cbc68821cc76084109bb603aeb35a0c45c9f2785a782bd3dfac03800a96"
+          }
+        },
+        {
+          "program": "test_ci_python_suite.py",
+          "methods": 44,
+          "explicit_host_skips": 1,
+          "log": {
+            "path": ".tmp/manual-workflow-verification/helper-source-controls-windows002/test_ci_python_suite.py.log",
+            "bytes": 160,
+            "sha256": "9b40b37e15d2e7687f65e5c39f17aa95f06472e62b8003232596673ee08f9ade"
+          }
+        },
+        {
+          "program": "test_ci_python_suite_transport.py",
+          "methods": 17,
+          "explicit_host_skips": 0,
+          "log": {
+            "path": ".tmp/manual-workflow-verification/helper-source-controls-windows002/test_ci_python_suite_transport.py.log",
+            "bytes": 122,
+            "sha256": "c9a75e32714819159d138180234b5605390424dd2ffdb23a8ca91c6b4162d7bc"
+          }
+        },
+        {
+          "program": "test_ci_reference_readiness.py",
+          "methods": 19,
+          "explicit_host_skips": 0,
+          "log": {
+            "path": ".tmp/manual-workflow-verification/helper-source-controls-windows002/test_ci_reference_readiness.py.log",
+            "bytes": 123,
+            "sha256": "e8383e46cdb608224133a95b81b1de19c4a762cac4d504a345d35484575a866f"
+          }
+        },
+        {
+          "program": "test_floating_charconv_cmake.py",
+          "methods": 4,
+          "explicit_host_skips": 0,
+          "log": {
+            "path": ".tmp/manual-workflow-verification/helper-source-controls-windows002/test_floating_charconv_cmake.py.log",
+            "bytes": 107,
+            "sha256": "5bc632e24f38a242ed39dac1a93ef9169712d117a8e8698a29559358c382c225"
+          }
+        }
+      ],
+      "observer_receipt": {
+        "path": ".tmp/manual-workflow-verification/observation-decimal-cache-windows001/receipt.json",
+        "bytes": 38544,
+        "sha256": "51a3fe6db354a87649e5946fe0a2c3e94e9ad62f86ec3bf6284370799305fde5"
+      },
+      "original_guard_receipt": {
+        "path": ".tmp/manual-workflow-verification/observation-decimal-guard-windows001/receipt.json",
+        "bytes": 200905,
+        "sha256": "18df292f678a3638e5b2e9456d093030670e468afcc6fceede84445839cca583"
+      }
+    },
+    "linux": {
+      "controls_receipt": {
+        "path": ".tmp/manual-workflow-verification/helper-source-controls-linux002/receipt.json",
+        "bytes": 18388,
+        "sha256": "5987b2d059beca78b41595efb5c4f8a70145e90f4fb71fc1cafc6bb6ecbaa389"
+      },
+      "methods": 175,
+      "explicit_host_skips": 1,
+      "programs": [
+        {
+          "program": "test_ci_history_build.py",
+          "methods": 48,
+          "explicit_host_skips": 0,
+          "log": {
+            "path": ".tmp/manual-workflow-verification/helper-source-controls-linux002/test_ci_history_build.py.log",
+            "bytes": 147,
+            "sha256": "21a90b9f1fb999a99c101999c1bbd26467495dbba20b09edc166230fe2802883"
+          }
+        },
+        {
+          "program": "test_ci_history_integration.py",
+          "methods": 37,
+          "explicit_host_skips": 0,
+          "log": {
+            "path": ".tmp/manual-workflow-verification/helper-source-controls-linux002/test_ci_history_integration.py.log",
+            "bytes": 136,
+            "sha256": "842505da4e5a2cd0a177d58ae8f25016ad977e8e38d6eb9b92b447b46aa2eee7"
+          }
+        },
+        {
+          "program": "test_ci_platform_workflow.py",
+          "methods": 6,
+          "explicit_host_skips": 1,
+          "log": {
+            "path": ".tmp/manual-workflow-verification/helper-source-controls-linux002/test_ci_platform_workflow.py.log",
+            "bytes": 116,
+            "sha256": "f69742050bbc8e60aba4df820cdc2bfb782f4e1d6082d423ddc54c6f576f6bc2"
+          }
+        },
+        {
+          "program": "test_ci_python_suite.py",
+          "methods": 44,
+          "explicit_host_skips": 0,
+          "log": {
+            "path": ".tmp/manual-workflow-verification/helper-source-controls-linux002/test_ci_python_suite.py.log",
+            "bytes": 143,
+            "sha256": "608783bc8b46ac2b3c4b098efe3a6957503df47c7fa35d4ccd13c3a6d3ba4adb"
+          }
+        },
+        {
+          "program": "test_ci_python_suite_transport.py",
+          "methods": 17,
+          "explicit_host_skips": 0,
+          "log": {
+            "path": ".tmp/manual-workflow-verification/helper-source-controls-linux002/test_ci_python_suite_transport.py.log",
+            "bytes": 117,
+            "sha256": "7d084caf6de9c32e16804bbee1098a8814d1bb766374dafb17216a74439c6928"
+          }
+        },
+        {
+          "program": "test_ci_reference_readiness.py",
+          "methods": 19,
+          "explicit_host_skips": 0,
+          "log": {
+            "path": ".tmp/manual-workflow-verification/helper-source-controls-linux002/test_ci_reference_readiness.py.log",
+            "bytes": 118,
+            "sha256": "8a93bcc8f80b7183a4a9cad404c8c044d5683ef16ced5f78bd25ac3825091091"
+          }
+        },
+        {
+          "program": "test_floating_charconv_cmake.py",
+          "methods": 4,
+          "explicit_host_skips": 0,
+          "log": {
+            "path": ".tmp/manual-workflow-verification/helper-source-controls-linux002/test_floating_charconv_cmake.py.log",
+            "bytes": 102,
+            "sha256": "7d3da46aae0667bb9b4bfe554a0da795843cb5a53495c19aa13bf37a333a3c9a"
+          }
+        }
+      ],
+      "observer_receipt": {
+        "path": ".tmp/manual-workflow-verification/observation-decimal-cache-linux001/receipt.json",
+        "bytes": 38609,
+        "sha256": "5a27fa15f3e74f8c7904791cd42f2063579b0ea392ebc0c987374b2ad1dbdca2"
+      },
+      "original_guard_receipt": {
+        "path": ".tmp/manual-workflow-verification/observation-decimal-guard-linux001/receipt.json",
+        "bytes": 195802,
+        "sha256": "8f7bf50bc0defad605fae2561b42ebda0e3939004c75dbde3618edc6c2b968e2"
+      }
+    }
+  },
+  "limitations": [
+    "Actual Apple compile/execution remains pending",
+    "Darwin native Ninja containment remains unqualified",
+    "Transitive Python imports retain existing policies",
+    "Original scientific references, full99families and release requirements remain open"
+  ],
+  "preserved_attempts": {
+    "windows001": "System Python alias/path and missing pytest; complete diagnostics retained, not qualification",
+    "linux001": "180s mounted-Windows-scratch timeout; cleanup complete, terminal audit additive, 84 synthetic files/92324B retained after cleanup policy rejection",
+    "linux002": "Same source/tests on Linux-local scratch, full pass"
+  },
+  "storage": {
+    "roots_known_bytes": {
+      "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp": 3257570091,
+      "C:\\Users\\HEQ\\Projects\\imagejxx\\.venv": 436156589,
+      "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache": 2151158534,
+      "C:\\Users\\HEQ\\Projects\\imagejxx\\.tools": 97453266,
+      "C:\\Users\\HEQ\\Projects\\imagejxx\\docs\\parity\\reviews": 14242678,
+      "/home/heq/.cache/imagejxx-build": 2578240810
+    },
+    "known_bytes": 8534821968,
+    "unavailable_subtrees": [
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest",
+        "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest'"
+      },
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest-ui",
+        "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest-ui'"
+      }
+    ],
+    "limit_bytes": 8589934592,
+    "headroom_upper_bound_bytes": 55112624,
+    "within_budget": null,
+    "budget_verified": false,
+    "seconds": 10.547000000020489,
+    "policy": "All project .cache/.tmp/public retained review roots plus existing dependency/runtime/Linux roots; normalized unique roots; no links; Linux host-local; inaccessible paths unknown",
+    "acceptance": false,
+    "scope_correction": "Replace selected Linux child roots with the complete project-owned Linux build root; preserve all prior selected-root measurements as historical",
+    "previous_inventory": "history-storage-windows-final001.json",
+    "inventory": {
+      "path": ".tmp/manual-workflow-verification/helper-source-storage-final001.json",
+      "bytes": 1464,
+      "sha256": "b71b8a17173014cd04ac320de98d1ff4c7ecf57c1f74ddc8bd9fc1fa13017257"
+    }
+  }
+}

@@ -16,6 +16,7 @@ import io
 import json
 import os
 from pathlib import Path
+import py_compile
 import subprocess
 import sys
 import sysconfig
@@ -795,6 +796,61 @@ class HistoryIntegration(unittest.TestCase):
                 self.assertEqual(caught.exception.code, 2)
                 history.assert_not_called()
                 complete.assert_not_called()
+
+
+class HistorySuiteSourceLoading(unittest.TestCase):
+    def source_loader_ignores_valid_stale_bytecode(self, loader_name, filename):
+        # Only the script location is redirected. The actual loader function,
+        # import machinery and timestamp-based cache validation remain real.
+        with tempfile.TemporaryDirectory(prefix="imagejxx-history-suite-cache-") as temporary, \
+                patch.object(sys, "dont_write_bytecode", True), \
+                patch.object(sys, "pycache_prefix", None):
+            root = Path(temporary).resolve(strict=True)
+            scripts = root / "scripts"
+            scripts.mkdir()
+            source = scripts / filename
+            stale = b"SOURCE_MARKER = 'stale'\n"
+            fresh = b"SOURCE_MARKER = 'fresh'\n"
+            self.assertEqual(len(stale), len(fresh))
+            timestamp = 1_700_000_000
+            source.write_bytes(stale)
+            os.utime(source, ns=(timestamp * 1_000_000_000,) * 2)
+            cache = Path(importlib.util.cache_from_source(str(source)))
+            py_compile.compile(str(source), cfile=str(cache), doraise=True,
+                               invalidation_mode=py_compile.PycInvalidationMode.TIMESTAMP)
+            cached_bytes = cache.read_bytes()
+            self.assertEqual(cached_bytes[:4], importlib.util.MAGIC_NUMBER)
+            self.assertEqual(int.from_bytes(cached_bytes[4:8], "little"), 0)
+            self.assertEqual(int.from_bytes(cached_bytes[8:12], "little"), timestamp)
+            self.assertEqual(int.from_bytes(cached_bytes[12:16], "little"), len(stale))
+            source.write_bytes(fresh)
+            os.utime(source, ns=(timestamp * 1_000_000_000,) * 2)
+            self.assertEqual(int(source.stat().st_mtime), timestamp)
+            self.assertEqual(source.stat().st_size, len(stale))
+            source_pin = pin(source)
+
+            spec = importlib.util.spec_from_file_location("suite_stale_cache_control", source)
+            legacy = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(legacy)
+            self.assertEqual(legacy.SOURCE_MARKER, "stale",
+                             "Fixture must expose the old timestamp-valid cache behavior")
+            self.assertEqual(pin(source), source_pin)
+
+            with patch.object(suite, "__file__", str(scripts / "ci_python_suite.py")):
+                current = getattr(suite, loader_name)()
+            self.assertEqual(current.SOURCE_MARKER, "fresh")
+            self.assertEqual(Path(current.__file__).resolve(strict=True), source)
+            self.assertEqual(pin(source), source_pin)
+            self.assertEqual(source.read_bytes(), fresh)
+            self.assertEqual(cache.read_bytes(), cached_bytes,
+                             "Loading source must leave the causal stale-cache fixture intact")
+
+    def test_history_helper_executes_source_despite_timestamp_valid_stale_bytecode(self):
+        self.source_loader_ignores_valid_stale_bytecode(
+            "history_helper", "capture_shortcuts_history_ui.py")
+
+    def test_history_builder_executes_source_despite_timestamp_valid_stale_bytecode(self):
+        self.source_loader_ignores_valid_stale_bytecode("history_builder", "ci_history_build.py")
 
 
 if __name__ == "__main__":

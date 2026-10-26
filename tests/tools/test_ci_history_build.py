@@ -13,6 +13,7 @@ import importlib.util
 import json
 import os
 from pathlib import Path
+import py_compile
 import subprocess
 import sys
 import sysconfig
@@ -735,6 +736,53 @@ class HistoryBuildTransport(unittest.TestCase):
             self.symlink(product, target)
         self.after_install = replace_with_link
         self.failed()
+
+
+class HistoryBuildSourceLoading(unittest.TestCase):
+    def test_load_script_executes_source_despite_timestamp_valid_stale_bytecode(self):
+        # Explicitly generated transport fixture, not a product/build invocation.
+        # -B prevents writes; it does not prevent a legacy loader reading pyc.
+        with tempfile.TemporaryDirectory(prefix="imagejxx-history-source-cache-") as temporary, \
+                patch.object(sys, "dont_write_bytecode", True), \
+                patch.object(sys, "pycache_prefix", None):
+            root = Path(temporary).resolve(strict=True)
+            source = root / "scripts/capture_shortcuts_history_ui.py"
+            source.parent.mkdir()
+            stale = b"SOURCE_MARKER = 'stale'\n"
+            fresh = b"SOURCE_MARKER = 'fresh'\n"
+            self.assertEqual(len(stale), len(fresh))
+            timestamp = 1_700_000_000
+            source.write_bytes(stale)
+            os.utime(source, ns=(timestamp * 1_000_000_000,) * 2)
+            cache = Path(importlib.util.cache_from_source(str(source)))
+            py_compile.compile(str(source), cfile=str(cache), doraise=True,
+                               invalidation_mode=py_compile.PycInvalidationMode.TIMESTAMP)
+            cached_bytes = cache.read_bytes()
+            self.assertEqual(cached_bytes[:4], importlib.util.MAGIC_NUMBER)
+            self.assertEqual(int.from_bytes(cached_bytes[4:8], "little"), 0)
+            self.assertEqual(int.from_bytes(cached_bytes[8:12], "little"), timestamp)
+            self.assertEqual(int.from_bytes(cached_bytes[12:16], "little"), len(stale))
+            source.write_bytes(fresh)
+            os.utime(source, ns=(timestamp * 1_000_000_000,) * 2)
+            self.assertEqual(int(source.stat().st_mtime), timestamp)
+            self.assertEqual(source.stat().st_size, len(stale))
+            source_pin = pin(source)
+
+            # Causal positive control: the former loader really executes the
+            # stale payload, despite the current source having different bytes.
+            spec = importlib.util.spec_from_file_location("history_stale_cache_control", source)
+            legacy = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(legacy)
+            self.assertEqual(legacy.SOURCE_MARKER, "stale")
+            self.assertEqual(pin(source), source_pin)
+
+            current = build._load_script(root, "capture_shortcuts_history_ui")
+            self.assertEqual(current.SOURCE_MARKER, "fresh")
+            self.assertEqual(Path(current.__file__).resolve(strict=True), source)
+            self.assertEqual(pin(source), source_pin)
+            self.assertEqual(source.read_bytes(), fresh)
+            self.assertEqual(cache.read_bytes(), cached_bytes,
+                             "The source-bound loader must not replace the stale-cache evidence")
 
 
 if __name__ == "__main__":

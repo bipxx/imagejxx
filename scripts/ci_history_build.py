@@ -127,9 +127,13 @@ def _save(path, value, *, exclusive=False):
 def _load_script(root, name):
     path = root / "scripts" / (name + ".py")
     before = _pin(path)
+    source = path.read_bytes()
+    _require(len(source) == before["bytes"] and hashlib.sha256(source).hexdigest() == before["sha256"],
+             "Source helper changed while reading")
     spec = importlib.util.spec_from_file_location("imagejxx_history_build_" + name, path)
     module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
+    # -B forbids cache writes, not reads. Execute exactly the pinned source bytes.
+    exec(compile(source, spec.origin, "exec", dont_inherit=True), module.__dict__)
     _require(_pin(path) == before, "Source helper changed while loading")
     return module
 

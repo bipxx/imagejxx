@@ -1,5 +1,36 @@
 # Three-agent execution plan
 
+**Newest local checkpoint, 2026-10-25:** `868e7ed` is local, not yet pushed.
+The independent observer repair now passes its exact standalone CTest and four
+source-owner controls in both existing Windows/Linux caches. Three observation
+headers and six original compilation owners are covered without linking the
+production formatter. See the [focused evidence and limits](packets/CI2-charconv-portability.md#independent-observer-successor-windowslinux-scoped-pass-apple-pending).
+This supersedes the pending-formatter wording below. Root owns publication and
+actual hosted follow-up; A reviews native/build contracts; B reviews independent
+observers/consumers. Qualify actual Apple/Windows successor execution next;
+retain Linux original-reference recovery and Darwin Ninja containment as open
+requirements. A console-pool containment profile is source-feasible only, needs
+native controls and timing, and is not implemented. No extra cache/runtime is
+authorized. The [compilexx notebook](../../compilexx/imagejxx-plan-inefficiencies.md#current-review-and-next-actions--2026-10-25)
+records the latest efficiency decisions and bounded probe retirement.
+
+The independent observer repair is committed locally as `d41b599`. The
+seven-document follow-up's stale-bytecode gap is also source-fixed: nine suite
+Python loaders and the history build loader execute checked source bytes;
+native-extension loading remains unchanged. Three new controls prove the former
+loader reads stale bytecode and the corrected loader reads current source.
+All seven affected programs pass 175 methods per host (Windows five explicit
+host skips; Linux one), with identical inputs and terminal cleanup. The
+[additive evidence index](parity/reviews/g010-history-reconnection001/observer-loader-progress.json)
+preserves scope and original failed attempts. No retained product result is
+proven to have used stale bytecode. The early macOS11 standalone witness is now
+wired before the full build, retaining installed gates; actual hosted execution
+remains next. Review large receipts through bounded projections. Linux fixture
+scratch must be host-local: the mounted-Windows attempt timed out at 180 s; the
+same two programs passed in 6.4 s / 4.0 s after relocation. Its 92 KB failed scratch
+remains because automatic review rejected cleanup. Latest measured known bytes
+are 8,534,821,968; two inaccessible caches still leave the budget unverified.
+
 **Current source checkpoint, 2026-10-25:** published CI2 `c6ab2a5` run
 `40239829364` is terminal failure. All three headless/core-SDK jobs and all three
 source producers passed; Windows needs source-only `/bigobj` on `window.cpp`,

@@ -45,6 +45,18 @@ def install_settings(platform):
 
 
 class PlatformInstallArguments(unittest.TestCase):
+    def test_mac_observer_witness_precedes_full_build_with_original_target(self):
+        text = (ROOT / ".github/workflows/source-platform.yml").read_text(encoding="utf-8")
+        section = text.split("      - name: Check independent observations on the macOS11 target\n", 1)[1].split("\n      - name:", 1)[0]
+        self.assertIn("if: runner.os == 'macOS'", section)
+        self.assertIn("-mmacosx-version-min=11.0", section)
+        self.assertIn("-std=c++17", section)
+        self.assertIn("tests/native/test_observation_decimal.cpp", section)
+        self.assertIn("build/ci-observation-decimal/witness >", section)
+        self.assertLess(text.index("Check independent observations on the macOS11 target"),
+                        text.index("Install macOS IO and both desktop hosts"))
+        self.assertIn("build/ci-observation-decimal/result.log", text)
+
     def test_authenticated_history_is_required_without_replacing_complete_readers(self):
         root_workflow = (ROOT / ".github/workflows/test.yml").read_text(encoding="utf-8")
         source_workflow = (ROOT / ".github/workflows/source-platform.yml").read_text(encoding="utf-8")

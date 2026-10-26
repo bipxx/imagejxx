@@ -24,10 +24,30 @@ import sysconfig
 import time
 import xml.etree.ElementTree as ET
 
-_observation_spec = importlib.util.spec_from_file_location(
+def pin(path):
+    path = Path(path).resolve(strict=True)
+    raw = path.read_bytes()
+    return {"path": str(path), "bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}
+
+
+def _source_module(name, path):
+    """Load current source bytes; callers still own frozen-source admission."""
+    path = Path(path)
+    before = pin(path)
+    source = path.read_bytes()
+    if len(source) != before["bytes"] or hashlib.sha256(source).hexdigest() != before["sha256"]:
+        raise ValueError("Source helper changed while reading: " + str(path))
+    spec = importlib.util.spec_from_file_location(name, path)
+    module = importlib.util.module_from_spec(spec)
+    # SourceFileLoader may read a timestamp-valid .pyc even when -B is enabled.
+    exec(compile(source, spec.origin, "exec", dont_inherit=True), module.__dict__)
+    if pin(path) != before:
+        raise ValueError("Source helper changed while loading: " + str(path))
+    return module
+
+
+_observations = _source_module(
     "imagejxx_ci_observations", Path(__file__).with_name("ci_observations.py"))
-_observations = importlib.util.module_from_spec(_observation_spec)
-_observation_spec.loader.exec_module(_observations)
 archive, capture, select_cases = _observations.archive, _observations.capture, _observations.select_cases
 
 
@@ -278,12 +298,6 @@ def add_dependency_paths(profile):
                 sys.path.append(str(path))
 
 
-def pin(path):
-    path = Path(path).resolve(strict=True)
-    raw = path.read_bytes()
-    return {"path": str(path), "bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}
-
-
 def installed_application(distribution, *, platform=None):
     """Resolve the platform application only from the installed RECORD."""
     platform = sys.platform if platform is None else platform
@@ -521,10 +535,8 @@ def headless_pytest_child(output, root, expected_id, *, dependency_site=None, in
         receipt_path.write_bytes((json.dumps(row, indent=2) + "\n").encode("utf-8"))
     save()
     try:
-        spec = importlib.util.spec_from_file_location(
+        helper = _source_module(
             "ci_headless_origins", Path(__file__).with_name("ci_headless_origins.py"))
-        helper = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(helper)
         sources = [Path(__file__), Path(__file__).with_name("ci_headless_origins.py"),
                    Path(root) / expected_id.split("::", 1)[0],
                    Path(root) / "tests/python/shortcut_api_observations.py"]
@@ -680,10 +692,8 @@ def retain_headless_output(output):
     are never selected by suffix: the existing retainer admits every regular file.
     """
     output = Path(output).resolve()
-    spec = importlib.util.spec_from_file_location(
+    helper = _source_module(
         "ci_headless_output_retention", Path(__file__).with_name("ci_python_diagnostics.py"))
-    helper = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(helper)
     result = helper.retain_python_diagnostics(output, Path(str(output) + ".zip"), selection="headless-tests")
     allowed_cases = {f"case-{index:02d}" for index in range(1, 5)}
     for omission in result["omitted"]:
@@ -713,9 +723,7 @@ def complete_command(argv, *, output, root, environment, timeout):
     spawns and never falls back to a raw subprocess.
     """
     name = "ci_mac_process" if sys.platform == "darwin" else "ci_owned_process"
-    spec = importlib.util.spec_from_file_location(name, Path(__file__).with_name(name + ".py"))
-    owner = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(owner)
+    owner = _source_module(name, Path(__file__).with_name(name + ".py"))
     execute = owner.run_mac_owned if sys.platform == "darwin" else owner.run_owned
     if sys.platform == "darwin":
         environment = dict(environment, IMAGEJXX_REQUIRE_MAC_PROCESS_OWNER="1")
@@ -730,10 +738,8 @@ def complete_command(argv, *, output, root, environment, timeout):
 
 def failed_python_diagnostics(output):
     """Retain bounded diagnostics only after a terminal owned-process receipt."""
-    spec = importlib.util.spec_from_file_location(
+    diagnostics = _source_module(
         "ci_python_diagnostics", Path(__file__).with_name("ci_python_diagnostics.py"))
-    diagnostics = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(diagnostics)
     result = {}
     candidates = [("installed-smoke", output / "installed-smoke"), ("complete", output)]
     candidates.extend((f"headless-{index:02d}", output / "headless" / f"case-{index:02d}")
@@ -811,10 +817,8 @@ def audit_static_codecs(path):
 
 def current_capture_inventory(output):
     """Bound the entire stopped output, including root logs and failed captures."""
-    spec = importlib.util.spec_from_file_location(
+    helper = _source_module(
         "ci_current_observation_inventory", Path(__file__).with_name("ci_current_observations.py"))
-    helper = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(helper)
     return helper.inventory(output)
 
 
@@ -862,10 +866,8 @@ def capture_current_observations(output, application, root, environment):
     if executable.is_symlink() or not executable.is_file():
         raise ValueError("RGB combined-input producer must be a regular existing build output")
     cache, configuration, cache_before = current_producer_cache(executable, root)
-    spec = importlib.util.spec_from_file_location(
+    helper = _source_module(
         "ci_current_observations", Path(__file__).with_name("ci_current_observations.py"))
-    helper = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(helper)
     result = helper.capture_current(application, executable, output, environment, root=root)
     cache_after = pin(cache)
     identity = {"scope": "containing hosted cache identity only; not build execution authentication",
@@ -952,19 +954,13 @@ HISTORY_IDS = tuple(
 
 
 def history_helper():
-    spec = importlib.util.spec_from_file_location(
+    return _source_module(
         "ci_installed_history_capture", Path(__file__).with_name("capture_shortcuts_history_ui.py"))
-    helper = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(helper)
-    return helper
 
 
 def history_builder():
-    spec = importlib.util.spec_from_file_location(
+    return _source_module(
         "ci_authenticated_history_build", Path(__file__).with_name("ci_history_build.py"))
-    builder = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(builder)
-    return builder
 
 
 def history_build_inputs(path, root):

@@ -88,6 +88,24 @@ jobs:
       - name: Check mandatory native macOS process ownership
         if: runner.os == 'macOS'
         run: python -I -B tests/tools/test_ci_mac_process.py --require-darwin
+      - name: Check independent observations on the macOS11 target
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          mkdir -p build/ci-observation-decimal
+          clang++ --version > build/ci-observation-decimal/compiler.txt
+          clang++ -std=c++17 -O2 -DNDEBUG -Wall -Wextra -Wpedantic -fno-fast-math -ffp-contract=off -mmacosx-version-min=11.0 -Iinclude tests/native/test_observation_decimal.cpp -o build/ci-observation-decimal/witness > build/ci-observation-decimal/compile.log 2>&1
+          build/ci-observation-decimal/witness > build/ci-observation-decimal/result.log 2>&1
+      - name: Retain early observation diagnostics
+        if: always() && runner.os == 'macOS'
+        uses: actions/upload-artifact@v4
+        with:
+          name: observation-decimal-${{ inputs.profile }}-${{ matrix.python }}
+          path: |
+            build/ci-observation-decimal/compiler.txt
+            build/ci-observation-decimal/compile.log
+            build/ci-observation-decimal/result.log
+          if-no-files-found: warn
       - name: Select the consumer CMake and CTest series
         run: python -m pip install cmake==3.31.6
       - uses: actions/download-artifact@v4

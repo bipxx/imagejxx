@@ -523,10 +523,8 @@ class CurrentProducerDiscovery(unittest.TestCase):
                     args[2].mkdir()
                     return {"state": "captured", "acceptance_claim": False, "reader_environment": self.paths}
                 helper = SimpleNamespace(capture_current=Mock(side_effect=captured))
-                spec = SimpleNamespace(loader=SimpleNamespace(exec_module=Mock()))
                 with patch.object(suite.sys, "platform", platform), \
-                     patch.object(suite.importlib.util, "spec_from_file_location", return_value=spec), \
-                     patch.object(suite.importlib.util, "module_from_spec", return_value=helper):
+                     patch.object(suite, "_source_module", return_value=helper):
                     result = suite.capture_current_observations(self.root / "output", self.root / "app", self.root, self.environment)
                 self.assertEqual(result, self.paths)
                 helper.capture_current.assert_called_once_with(self.root / "app", executable,
@@ -563,10 +561,8 @@ class CurrentProducerDiscovery(unittest.TestCase):
                 (args[2] / "producer-cache.json").unlink(missing_ok=True)
                 return result
             helper = SimpleNamespace(capture_current=Mock(side_effect=captured))
-            spec = SimpleNamespace(loader=SimpleNamespace(exec_module=Mock()))
             with self.subTest(result=result), patch.object(suite.sys, "platform", "linux"), \
-                 patch.object(suite.importlib.util, "spec_from_file_location", return_value=spec), \
-                 patch.object(suite.importlib.util, "module_from_spec", return_value=helper):
+                 patch.object(suite, "_source_module", return_value=helper):
                 with self.assertRaisesRegex(ValueError, "exact original reader paths"):
                     suite.capture_current_observations(self.root / "output", self.root / "app", self.root, {})
 
