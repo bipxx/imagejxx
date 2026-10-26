@@ -149,7 +149,10 @@ def _tracked_paths(root):
 
 def _history_paths(root):
     capture = _load_script(root, "capture_shortcuts_history_ui")
-    return set((capture.COMMON | capture.SPEC["history"]["roles"]).values())
+    # The same authenticated native build feeds both paired UI packets. Reader
+    # sources are outside SOURCE_PREFIXES, so admit their explicit role union.
+    return (set((capture.COMMON | capture.SPEC["history"]["roles"]).values()) |
+            set((capture.COMMON | capture.SPEC["appearance"]["roles"]).values()))
 
 
 def _logical_name(name):

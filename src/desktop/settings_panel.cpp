@@ -343,6 +343,15 @@ void SettingsPanel::draw(const Settings &current,
       bool b = std::get<bool>(v);
       if (ImGui::Checkbox(d.label.c_str(), &b))
         v = b;
+      auto observed = itemControl();
+      const auto *fieldWindow = ImGui::GetCurrentWindowRead();
+      observed["hovered"] = ImGui::IsItemHovered();
+      observed["visible"] = ImGui::IsItemVisible();
+      observed["clip_rect"] = {fieldWindow->ClipRect.Min.x, fieldWindow->ClipRect.Min.y,
+                                fieldWindow->ClipRect.Max.x, fieldWindow->ClipRect.Max.y};
+      fields_[d.name] = {{"name", d.name}, {"kind", "boolean"},
+                         {"draft", std::get<bool>(v)}, {"applied", current.boolean(d.name)},
+                         {"control", std::move(observed)}};
       if (toggle_.x < 0 || d.name == "auto_dpi") {
         toggle_ = center();
         toggleName_ = d.name;
@@ -466,6 +475,12 @@ void SettingsPanel::draw(const Settings &current,
     } else if (d.kind == SettingKind::Color) {
       auto &text = std::get<std::string>(v);
       ImGui::InputText(d.label.c_str(), &text);
+      auto editorControl = itemControl();
+      const auto *fieldWindow = ImGui::GetCurrentWindowRead();
+      editorControl["hovered"] = ImGui::IsItemHovered();
+      editorControl["visible"] = ImGui::IsItemVisible();
+      editorControl["clip_rect"] = {fieldWindow->ClipRect.Min.x, fieldWindow->ClipRect.Min.y,
+                                     fieldWindow->ClipRect.Max.x, fieldWindow->ClipRect.Max.y};
       ImGui::SameLine();
       unsigned int r = 255, g = 255, b = 255, a = 255;
       if (text.size() == 7 || text.size() == 9)
@@ -478,6 +493,9 @@ void SettingsPanel::draw(const Settings &current,
                       int(rgba[2] * 255 + .5), int(rgba[3] * 255 + .5));
         text = hex;
       }
+      fields_[d.name] = {{"name", d.name}, {"kind", "color"},
+                         {"draft", text}, {"applied", current.text(d.name)},
+                         {"editor", std::move(editorControl)}, {"picker", itemControl()}};
     } else {
       auto &columns = std::get<std::vector<std::string>>(v);
       ImGui::TextUnformatted(d.label.c_str());

@@ -295,6 +295,26 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
   const auto cal = d.spatialCalibration();
   const auto spacing = d.displaySpacing();
   auto cursor = d.view().crosshair;
+  const auto &style = ImGui::GetStyle();
+  const float planeChrome = 2 * style.WindowPadding.y +
+      ImGui::GetTextLineHeightWithSpacing() + ImGui::GetFrameHeightWithSpacing();
+  const float minimumCanvasHeight = std::max(64.f, 2 * ImGui::GetTextLineHeight());
+  const float controlsHeight = std::max(ImGui::GetFrameHeight(),
+      ImGui::GetContentRegionAvail().y - planeChrome - minimumCanvasHeight -
+          style.ItemSpacing.y - 2 * style.CellPadding.y);
+  ImDrawList *worldDraw = nullptr;
+  ImVec2 worldPoint;
+  ImRect worldClip;
+  {
+  // Let short controls use their natural height, but keep long/scaled annotation
+  // forms scrollable instead of consuming the linked images' entire viewport.
+  ImGui::SetNextWindowSizeConstraints({0, 0},
+      {std::numeric_limits<float>::max(), controlsHeight});
+  ImGui::BeginChild("orthogonal_controls", {0, 0},
+      ImGuiChildFlags_AutoResizeY | ImGuiChildFlags_AlwaysAutoResize |
+          ImGuiChildFlags_NavFlattened,
+      ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_NoBackground);
+  struct EndControls { ~EndControls() { ImGui::EndChild(); } } endControls;
   bool changed = false;
   ImGui::TextUnformatted("Voxel indices (zero based)");
   for (int i = 0; i < 3; ++i) {
@@ -323,9 +343,9 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
     d.setView({{"linked_zoom", linked}});
   }
   // Reserve the readout's layout now; draw it only after every plane input.
-  auto worldDraw = ImGui::GetWindowDrawList();
-  const auto worldPoint = ImGui::GetCursorScreenPos();
-  const auto worldClip = ImGui::GetCurrentWindowRead()->ClipRect;
+  worldDraw = ImGui::GetWindowDrawList();
+  worldPoint = ImGui::GetCursorScreenPos();
+  worldClip = ImGui::GetCurrentWindowRead()->ClipRect;
   ImGui::Dummy({0, ImGui::GetTextLineHeight()});
   ImGui::TextUnformatted("Click/drag: crosshair  |  Wheel: slice  |  "
                          "Ctrl-wheel: linked zoom  |  Middle drag: pan");
@@ -340,16 +360,19 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
   const bool importReview=input.import_preview && input.import_preview->matches(d.nativeSnapshot(),input.annotation_max_working_bytes);
   if (input.read_only) planar_.begin_draw(d,input.annotation_max_working_bytes);
   else planar_.controls(d,input.active_document && input.input_enabled && !savedOwner() && !importReview,input.annotation_max_working_bytes,input.planar_publish);
+  }
   auto available = ImGui::GetContentRegionAvail();
-  float height = std::max(64.f, available.y - 4);
+  const float height = std::max(planeChrome + minimumCanvasHeight,
+      available.y - 2 * style.CellPadding.y);
   double zoom = d.view().zoom;
   if (zoom == 0) {
     zoom = std::numeric_limits<double>::max();
     for (int i = 0; i < 3; ++i)
       zoom = std::min(
-          zoom, std::min(std::max(32.f, available.x / 3 - 18) /
+          zoom, std::min(std::max(16.f, available.x / 3 -
+                             2 * (style.WindowPadding.x + style.CellPadding.x)) /
                              (sizes[horizontal[i]] * spacing[horizontal[i]]),
-                         std::max(32.f, height - 46) /
+                         std::max(16.f, height - planeChrome) /
                              (sizes[vertical[i]] * spacing[vertical[i]])));
     zoom *= .94;
   }

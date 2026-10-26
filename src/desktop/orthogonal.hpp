@@ -12,6 +12,7 @@ namespace imagejxx::desktop {
 struct SavedRoiCanvasHooks;
 class RoiImportPreview;
 class ViewportJobs;
+class SettingsAppearanceUiProbeAccess;
 struct OrthogonalInputContext {
   ViewportJobs *viewport_jobs = nullptr;
   // Mapped RGB contrast pixels require a neutral display range.
@@ -69,6 +70,7 @@ public:
   ImVec2 screenPoint(int view, int horizontal, int vertical) const;
 
 private:
+  friend class SettingsAppearanceUiProbeAccess;
   std::shared_ptr<RenderMemory> memory_=std::make_shared<RenderMemory>();
   PlanarAnnotationPanel planar_;
   struct Cache {

@@ -369,7 +369,8 @@ class DarwinNinjaLifecycle(unittest.TestCase):
         self.assertNotEqual(edge["pid"], row["target_pid"])
         self.assertEqual((edge["parent_pid"], edge["pgid"], edge["sid"], edge["payload_exit"]),
             (row["target_pid"], row["target_pid"], row["ownership"]["session_id"], code))
-        self.assertEqual((row["state"], row["exit_code"], row["target_completed"]), ("exited", 0 if code == 0 else 1, True))
+        # Pinned 7659b3d8 build.cc:986-990 / ninja.cc:1766-1769 return the job's exact status.
+        self.assertEqual((row["state"], row["exit_code"], row["target_completed"]), ("exited", code, True))
         self.assertFalse(row["timed_out"])
         self.assertFalse(row["descendants_remained_after_target_completion"])
 
@@ -419,6 +420,62 @@ for name in ("retire_temporary", "failure_diagnostics", "wait_json", "independen
              "assert_independent_control_live", "cleanup_independent_fixture",
              "assert_independent_owned_exit", "run_fixture"):
     setattr(DarwinNinjaLifecycle, name, getattr(base.DarwinLifecycle, name))
+
+
+class ConsoleExitMetadata(unittest.TestCase):
+    """Synthetic rows exercise the actual assertions; no Darwin setup or process."""
+
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory(prefix="imagejxx-ninja-exit-metadata-")
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name).resolve(strict=True)
+
+    def invoke(self, code, *, observed_code=None, edge_changes=None):
+        fixture = DarwinNinjaLifecycle("test_console_normal_exit")
+        fixture.root = self.root
+        fixture.ninja = str(self.root / "synthetic-ninja")
+        fixture.receipt = self.root / "synthetic-owned.json"
+        fixture.nonconsole = False
+        row = {"state": "exited", "exit_code": code if observed_code is None else observed_code,
+               "target_pid": 101, "target_completed": True, "cleanup_complete": True,
+               "timed_out": False, "descendants_remained_after_target_completion": False,
+               "ownership": {"method": "macos-cooperative-broker", "session_id": 100,
+                             "supervisor_pid": 100, "untrusted_containment": False,
+                             "sigchld_default": True, "pending_bootstraps": [],
+                             "groups": [{"pid": 101, "anchor_pid": 102, "cleanup_complete": True,
+                                         "cleanup": {"terminal_wait": "group_drained_before_anchor_reap"}}]},
+               "cleanup": {"remaining": []}}
+        edge = {"pid": 103, "parent_pid": 101, "pgid": 101, "sid": 100, "payload_exit": code}
+        edge.update(edge_changes or {})
+
+        def synthetic_fixture(source, *, launcher):
+            self.assertIn("sys.exit(" + repr(code) + ")", source)
+            row["argv"] = launcher(["/synthetic/python", "-I", "/synthetic/payload.py"])
+            fixture.receipt.write_text(json.dumps(row), encoding="utf-8")
+            (self.root / "edge.json").write_text(json.dumps(edge), encoding="utf-8")
+            return row
+
+        with patch.object(fixture, "run_fixture", side_effect=synthetic_fixture) as launch:
+            try:
+                fixture.run_exit(code)
+            finally:
+                launch.assert_called_once()
+
+    def test_actual_run_exit_accepts_only_the_exact_zero_and_seven_rows(self):
+        for code in (0, 7):
+            with self.subTest(code=code):
+                self.invoke(code)
+
+    def test_actual_run_exit_refuses_one_for_zero_or_seven(self):
+        for code in (0, 7):
+            with self.subTest(code=code), self.assertRaises(AssertionError):
+                self.invoke(code, observed_code=1)
+
+    def test_actual_run_exit_refuses_changed_edge_identity(self):
+        for field, value in (("pid", 101), ("parent_pid", 104), ("pgid", 104),
+                             ("sid", 104), ("payload_exit", 1)):
+            with self.subTest(field=field), self.assertRaises(AssertionError):
+                self.invoke(7, edge_changes={field: value})
 
 
 if __name__ == "__main__":

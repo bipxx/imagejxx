@@ -134,12 +134,14 @@ jobs:
         run: python examples/pipeline.py
       - name: Qualify authenticated paired history UI under software OpenGL
         run: xvfb-run -a python -I -B scripts/ci_python_suite.py --history-suite --output build/ci-history --history-build-receipt build/ci-history-build/receipt.json
+      - name: Qualify authenticated paired appearance UI under software OpenGL
+        run: xvfb-run -a python -I -B scripts/ci_python_suite.py --appearance-suite --output build/ci-appearance --appearance-build-receipt build/ci-history-build/receipt.json
       - name: Test the complete installed Python suite under software OpenGL
         # This tool test invokes pytest against a synthetic project, without GL.
         # Product/render qualification still runs through the installed runner.
         run: |
           python -I -X utf8 -B tests/tools/test_ci_python_suite_transport.py
-          xvfb-run -a python scripts/ci_python_suite.py --output build/ci-python --history-output build/ci-history
+          xvfb-run -a python scripts/ci_python_suite.py --output build/ci-python --history-output build/ci-history --appearance-output build/ci-appearance
       - name: Retain complete Python results and fixture-contract inventory
         if: always()
         uses: actions/upload-artifact@v4
@@ -158,6 +160,16 @@ jobs:
             build/ci-history/reader/*.json
             build/ci-history/reader/*.xml
             build/ci-history/reader/*.log
+            build/ci-appearance/receipt.json
+            build/ci-appearance/product-bindings.json
+            build/ci-appearance/capture.zip
+            build/ci-appearance/installed-smoke/*.json
+            build/ci-appearance/installed-smoke/*.xml
+            build/ci-appearance/installed-smoke/*.log
+            build/ci-appearance/capture-owner/*
+            build/ci-appearance/reader/*.json
+            build/ci-appearance/reader/*.xml
+            build/ci-appearance/reader/*.log
             build/ci-reference-readiness/reference-readiness.json
             build/ci-python/receipt.json
             build/ci-python/pytest.xml

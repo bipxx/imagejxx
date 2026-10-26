@@ -163,5 +163,18 @@ class PlatformInstallArguments(unittest.TestCase):
                 "-C", "cmake.define.IMAGEJXX_CI_SOURCE_PROFILE=windows-x64-ci-dynamic-source-001"])
 
 
+class AppearanceWorkflow(unittest.TestCase):
+    def test_appearance_uses_authenticated_build_then_reuses_qualified_packet(self):
+        for name in ("source-platform.yml", "test.yml"):
+            text = (ROOT / ".github/workflows" / name).read_text(encoding="utf8")
+            with self.subTest(workflow=name):
+                self.assertIn("--appearance-suite --output build/ci-appearance --appearance-build-receipt build/ci-history-build/receipt.json", text)
+                self.assertIn("--history-output build/ci-history --appearance-output build/ci-appearance", text)
+                self.assertLess(text.index("--history-suite"), text.index("--appearance-suite"))
+                self.assertLess(text.index("--appearance-suite"), text.index("--appearance-output"))
+                for member in ("receipt.json", "product-bindings.json", "capture.zip", "reader/*.xml", "capture-owner/*"):
+                    self.assertIn("build/ci-appearance/" + member, text)
+
+
 if __name__ == "__main__":
     unittest.main()

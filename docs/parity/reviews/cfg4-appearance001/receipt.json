@@ -1,0 +1,483 @@
+{
+  "schema": "cfg4.local-consumer-progress.001",
+  "state": "windows_linux_actual_routes_passed_remaining_gates_open",
+  "acceptance": false,
+  "packet_scope_qualified": false,
+  "full_ci_qualified": false,
+  "complete_requirement_coverage": false,
+  "source_baseline": "2577aba0a57572636913998099d96b0d1727a90a",
+  "scope": "six appearance Preferences consumers through actual inputs, ordinary/XY/XZ/YZ sampler/framebuffer and fresh-process persistence; responsive linked layout repair",
+  "settings": [
+    "theme",
+    "ui_scale",
+    "auto_dpi",
+    "canvas_background",
+    "default_zoom",
+    "interpolation"
+  ],
+  "new_product_dependencies": 0,
+  "current_sources": [
+    {
+      "path": ".github/workflows/source-platform.yml",
+      "bytes": 12846,
+      "sha256": "b8e7a8daadb23d19d73c6dc5323ad159b03ca60da73f4be18c2dd5156c4c35fb"
+    },
+    {
+      "path": ".github/workflows/test.yml",
+      "bytes": 10090,
+      "sha256": "ae48c04ff7af3f158ffe0ea1c484b5ea276abe086ee211840190b5a9241fd276"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 133304,
+      "sha256": "c542ea917cd3644be48fdacdca28c71cb6a1cc8719f82867061e74e67b41daa2"
+    },
+    {
+      "path": "docs/packets/API_KEY_DELIVERY_PATHS.md",
+      "bytes": 22914,
+      "sha256": "fc1402a00cf67f86b7af90da6591c268f937b970174103920f2214ab509668a3"
+    },
+    {
+      "path": "docs/packets/CFG4-appearance-consumers.md",
+      "bytes": 10142,
+      "sha256": "bf727df780048540097fc1b84f67e0dfc511d07f69cc47f3e1a87e4c7a321df4"
+    },
+    {
+      "path": "scripts/capture_shortcuts_history_ui.py",
+      "bytes": 44647,
+      "sha256": "5a4bae286bcdac99962d95528338218eadca24234a94c6a5e12a1206e72ecb79"
+    },
+    {
+      "path": "scripts/ci_history_build.py",
+      "bytes": 31801,
+      "sha256": "fa6935b1f38aa4084e6f15ed892bce84c84303fc0fe2e198d910cd42bc2f773a"
+    },
+    {
+      "path": "scripts/ci_python_suite.py",
+      "bytes": 90101,
+      "sha256": "602eb228556fc5832aa643fbfbbd594345f442e111659b474f3d0240699d6c7e"
+    },
+    {
+      "path": "src/desktop/main.cpp",
+      "bytes": 55539,
+      "sha256": "68156b8d0d4f6415a66f8004ef2f04986e43be868fed35ea27011ffcdadab652"
+    },
+    {
+      "path": "src/desktop/orthogonal.cpp",
+      "bytes": 70481,
+      "sha256": "bfa88cf4aca01df5cddead85af2ac1b68b11fcf80874775cc7f8f2c15e0c5a02"
+    },
+    {
+      "path": "src/desktop/orthogonal.hpp",
+      "bytes": 6212,
+      "sha256": "cf6fe7931e4e25a279e3bcdab6de4ee955dbbed15a66cdffcffb8e5fd22efe9f"
+    },
+    {
+      "path": "src/desktop/path_authoring_controls.cpp",
+      "bytes": 16350,
+      "sha256": "4628670610da0b94eb570c463d6beb45c58a688084db33e668053fc65d4f71cf"
+    },
+    {
+      "path": "src/desktop/path_authoring_edge_ui_probe.cpp",
+      "bytes": 44235,
+      "sha256": "d3557a8e2302c23667d7009c1f0a43e9f4890f92d362ff5c46b8214c81fe9b10"
+    },
+    {
+      "path": "src/desktop/path_authoring_ui_probe.cpp",
+      "bytes": 34291,
+      "sha256": "0e64c246dbf20f5cb29d3ca5a431fd0986a527355ebe4ee8d32cdeacbdffcbd3"
+    },
+    {
+      "path": "src/desktop/path_segment_ui_probe.cpp",
+      "bytes": 10605,
+      "sha256": "e3494b4cbe045a8f3e414721fea526e23e5573356685f21fa94255d65ac2ee9d"
+    },
+    {
+      "path": "src/desktop/planar_annotation_panel.cpp",
+      "bytes": 45872,
+      "sha256": "f5becc489f2cf9ff1aec5b109c458f59b0cd81cb3369861e2f4a0e7e335d736e"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 57228,
+      "sha256": "557aa8059374f0f99299cd85965ab13f996859566c6dfa74e6602da69fc01b96"
+    },
+    {
+      "path": "src/desktop/settings_appearance_ui_probe.cpp",
+      "bytes": 42579,
+      "sha256": "6b3aa927d42e719f74a368481b83456b2a60d0dab2c3e955eecb47c9db7da377"
+    },
+    {
+      "path": "src/desktop/settings_appearance_ui_probe.hpp",
+      "bytes": 1652,
+      "sha256": "b0b35cae0744af972f70b6200ad0d18013579418c0d4b9388bc4e3331d50a5f2"
+    },
+    {
+      "path": "src/desktop/settings_panel.cpp",
+      "bytes": 28409,
+      "sha256": "2b0fdeaf7573a5efd9b9b1b6b13c129df219e3984c8ab68b084715d98ebb9367"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 755480,
+      "sha256": "1103cd1a1972b6f57202493feed5e004871804bd82660d94460b9b1fa6896e32"
+    },
+    {
+      "path": "src/desktop/window.hpp",
+      "bytes": 15152,
+      "sha256": "87c15498d2f805ea8ab8ac3f0cfdbdc5b8a8181bb97a7c346208108ec94885f1"
+    },
+    {
+      "path": "tests/native/test_planar_annotation_host.cpp",
+      "bytes": 19235,
+      "sha256": "956d8213534974df50f683c209e6005d1513118b35ecaa250994844c3395360f"
+    },
+    {
+      "path": "tests/python/settings_appearance_expectations.py",
+      "bytes": 2822,
+      "sha256": "3dcf3348dd6ab7ffb3d1d5d1203f5cd70b66c63cd1b79cf181f4f26823006048"
+    },
+    {
+      "path": "tests/python/settings_appearance_reader.py",
+      "bytes": 25914,
+      "sha256": "00021a2ee4f1388a8c593ea3e32abeccd2a8224ffdddc94eae10a5ea3851367f"
+    },
+    {
+      "path": "tests/python/test_orthogonal.py",
+      "bytes": 77966,
+      "sha256": "e7867d658587956d1e2381a0d2edbd777376163f23f118bffb01b5fb6d82bc35"
+    },
+    {
+      "path": "tests/python/test_settings_appearance_ui.py",
+      "bytes": 9269,
+      "sha256": "4fc504a02eb6c05645898ca86914c653ee8f2251f652d779b28fa3866e139193"
+    },
+    {
+      "path": "tests/tools/test_capture_settings_appearance_ui.py",
+      "bytes": 5023,
+      "sha256": "2615a81dd6b404dc868ee3c1ae570f35a5f981d4a1e3ef8758eb54a50f974ad7"
+    },
+    {
+      "path": "tests/tools/test_ci_history_build.py",
+      "bytes": 48415,
+      "sha256": "5bbf05846c28f9987e8e38f92f30eb6d76d30fa2f864b10f74c0b3f3c4a5511f"
+    },
+    {
+      "path": "tests/tools/test_ci_history_integration.py",
+      "bytes": 63246,
+      "sha256": "0a00a92c575143740c73618019e0b0712ef3cc412f417353e1bae861ea8a4653"
+    },
+    {
+      "path": "tests/tools/test_ci_mac_ninja_process.py",
+      "bytes": 25838,
+      "sha256": "f59819e0ecc31b96ccf45eae0c3d13046cccafdb3e14517b2ed4550e888346a6"
+    },
+    {
+      "path": "tests/tools/test_ci_platform_workflow.py",
+      "bytes": 11083,
+      "sha256": "c3ed42edeb231ec0187887b73ec0804f2afcf62632dd73af4902e25a4926ea35"
+    },
+    {
+      "path": "tests/tools/test_settings_appearance_expectations.py",
+      "bytes": 3351,
+      "sha256": "9576c263cefd5d1269e9ddd5d7f64223a6093dfe1eb2b9cf8b722ca9a8ff1ea9"
+    },
+    {
+      "path": "tests/tools/test_settings_appearance_reader.py",
+      "bytes": 25804,
+      "sha256": "6758d15aa45a89eede38307807561dea0e53cd0d6479cb7869a955114c83c807"
+    }
+  ],
+  "platforms": {
+    "windows": {
+      "state": "local_routes_passed",
+      "process_routes": 4,
+      "reader_ids": [
+        "test_installed_settings_appearance[appearance-persist-imgui_cpp]",
+        "test_installed_settings_appearance[appearance-persist-imgui_python]",
+        "test_installed_settings_appearance[appearance-reopen-imgui_cpp]",
+        "test_installed_settings_appearance[appearance-reopen-imgui_python]"
+      ],
+      "build_receipt": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\appearance-windows-build007\\receipt.json",
+        "bytes": 6536,
+        "sha256": "6871559694176c2e51a47e319381f8c05a939e2a23d5f24a84a9fcd369d2e26c"
+      },
+      "source_freeze": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\appearance-windows-build007\\source-freeze.json",
+        "bytes": 355695,
+        "sha256": "541b6696145cf2884f9a1227ad341eafa5178710a30f78aac69b60eceed1e0fa"
+      },
+      "compiled_source_rows": 1230,
+      "production_reuse": "Reader-only007 confirms byte-identical products and reuses passed installation006; no native compilation/reinstall",
+      "built_products": {
+        "cpp": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\imagejxx.exe",
+          "bytes": 18526208,
+          "sha256": "50cfbf42151bca2865bf2eb87601025c21407c00f6a983837db467910a9946ef"
+        },
+        "_native": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_native.cp312-win_amd64.pyd",
+          "bytes": 7579136,
+          "sha256": "8e456d7c90a42e455fe5368a15d8dab1189a6c23b848e8cd1cc3dfe79202cfb0"
+        },
+        "_desktop": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\windows\\Release\\_desktop.cp312-win_amd64.pyd",
+          "bytes": 18405888,
+          "sha256": "36bec4b4b2300d56e08c0e9c4b8957764b05b45db35fb50242d3e84b89535138"
+        }
+      },
+      "native_layout": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\appearance-windows-build006\\layout-native-output.log",
+        "bytes": 1083,
+        "sha256": "222021116283ec0aacf2b7991d9577e239f25575567eda6355df24757ea5b320"
+      },
+      "capture": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\appearance-windows-capture005\\capture.json",
+        "bytes": 10921,
+        "sha256": "236f342efb1bb2802b96eb599aa3831e89b37b1962027f627c1af76702e6b5fb"
+      },
+      "reader": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\appearance-windows-reader002\\receipt.json",
+        "bytes": 4455,
+        "sha256": "9b21e7e542bf924603f6cf3b0d89efa4d5c12c045e26dc0017aee28a02428b7d"
+      },
+      "junit": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\appearance-windows-reader002\\junit.xml",
+        "bytes": 845,
+        "sha256": "d1641870e59a478eca63bad6527c805b590e5e4a2846265681098d3af4b8e6c0"
+      },
+      "runtime": {
+        "gl": {
+          "vendor": "NVIDIA Corporation",
+          "renderer": "NVIDIA GeForce RTX 4090/PCIe/SSE2",
+          "version": "4.6.0 NVIDIA 610.88",
+          "shading_language_version": "4.60 NVIDIA",
+          "actual_dpi": 1.0,
+          "supplied_dpi": 2.0,
+          "window_size": [
+            2560,
+            1600
+          ],
+          "framebuffer_size": [
+            2560,
+            1600
+          ]
+        },
+        "linked_canvas_extents": [
+          [
+            436.0,
+            102.0
+          ],
+          [
+            436.0,
+            102.0
+          ],
+          [
+            436.0,
+            102.0
+          ]
+        ]
+      },
+      "navigation": {
+        "ids": 7,
+        "receipt": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\appearance-navigation-windows002\\receipt.json",
+          "bytes": 3232,
+          "sha256": "d3297fa5dcbaf3d366833ec391af605039f7f370ff717325ce3b1dc750e8690c"
+        }
+      },
+      "annotation_path": {
+        "ids": 8,
+        "archive": {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/appearance-windows-path-regression001.zip",
+          "bytes": 20696863,
+          "sha256": "6fa60c691ce9cc1ee519c7d01f4f70c1dd100554ca8d250cfd378aa0df7f730d"
+        },
+        "retention": {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/appearance-windows-path-regression001-retention.json",
+          "bytes": 7492,
+          "sha256": "3eba018f10c533df306a0f96cb2845fbbd59c4279c4f4f1ab5eae932beb86d82"
+        },
+        "scope": "four selected affected recipes per launcher, not whole owning suites",
+        "storage_limit": "128MiB scratch ceiling exceeded after reader; functional success remains separate from storage failure; all182812806 rawbytes archived/retired"
+      }
+    },
+    "linux": {
+      "state": "local_routes_passed",
+      "process_routes": 4,
+      "reader_ids": [
+        "test_installed_settings_appearance[appearance-persist-imgui_cpp]",
+        "test_installed_settings_appearance[appearance-persist-imgui_python]",
+        "test_installed_settings_appearance[appearance-reopen-imgui_cpp]",
+        "test_installed_settings_appearance[appearance-reopen-imgui_python]"
+      ],
+      "build_receipt": {
+        "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/appearance-linux-build001/receipt.json",
+        "bytes": 18093,
+        "sha256": "8da1d13d29e2946a0c28e560efff67f77ede74cf419a276bb7e61beabb80ec6b"
+      },
+      "source_freeze": {
+        "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/appearance-linux-build001/source-freeze.json",
+        "bytes": 375327,
+        "sha256": "055db617d39fec56b19e3b220bf43ea524e9a9695975873bb1abe7d3b662d3f1"
+      },
+      "built_products": {
+        "cpp": {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001/imagejxx",
+          "bytes": 37523184,
+          "sha256": "e3aef0ae839d79c616b2d2cca8d3c427d82764dea343ec0908f733fb558af111"
+        },
+        "_native": {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001/_native.cpython-312-x86_64-linux-gnu.so",
+          "bytes": 12666432,
+          "sha256": "ef865cd16525ec4da7cfbbf42c87a1165bb192bcab346cc3a4a1baa1c25295f1"
+        },
+        "_desktop": {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001/_desktop.cpython-312-x86_64-linux-gnu.so",
+          "bytes": 35265816,
+          "sha256": "6e6b859b4eaedc2170e9a519de7b72d91b63efd96dc662a517d594df593643aa"
+        }
+      },
+      "sampled_build_growth": {
+        "baseline_bytes": 990914172,
+        "max_additional_observed_bytes": 28670946,
+        "interval_seconds": 0.5,
+        "error": null
+      },
+      "capture_archive": {
+        "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/appearance-linux-capture001.zip",
+        "bytes": 1038627,
+        "sha256": "9e0cf6b97dfbf6451e4a27f501b879c98930436eba65ebcf4e085e93df895f35"
+      },
+      "capture_retention": {
+        "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/appearance-linux-capture001-retention001.json",
+        "bytes": 16976,
+        "sha256": "d632e6e90e33d42dd939d3cf825ece71420102389783246b49d5564c38c22962"
+      },
+      "reader": {
+        "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/appearance-linux-reader001/receipt.json",
+        "bytes": 4374,
+        "sha256": "cdf90f72e40d47d14e6134970e9bdb9cd331af90ecb73c5252c4e5b92210f939"
+      },
+      "junit": {
+        "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/appearance-linux-reader001/junit.xml",
+        "bytes": 845,
+        "sha256": "20c71550ff0f1188f4e6970a8ee7978de1b01a2e73685a99e6d63d5946013220"
+      },
+      "runtime": {
+        "gl": {
+          "vendor": "Mesa",
+          "renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+          "version": "4.5 (Compatibility Profile) Mesa 25.2.8-0ubuntu0.24.04.2",
+          "shading_language_version": "4.50",
+          "actual_dpi": 1.0,
+          "supplied_dpi": 2.0,
+          "window_size": [
+            2560,
+            1600
+          ],
+          "framebuffer_size": [
+            2560,
+            1600
+          ]
+        },
+        "linked_canvas_extents": [
+          [
+            436.0,
+            79.0
+          ],
+          [
+            436.0,
+            79.0
+          ],
+          [
+            436.0,
+            79.0
+          ]
+        ]
+      },
+      "native_layout_result": "passed desktop_planar_annotation_host in build001 owned command receipt",
+      "navigation": {
+        "ids": 7,
+        "archive": {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/appearance-navigation-linux001.zip",
+          "bytes": 917591,
+          "sha256": "cdf8f280d0585da80b41bd6e10c110240250a87ad352ff2013e7e76699123321"
+        }
+      },
+      "raw_availability": "losslessly archived; restore original absolute paths/memberhashes before raw readers; no compiler/runtime/SDK archives"
+    }
+  },
+  "controls": {
+    "complete_reader_methods_per_host": 17,
+    "exact_collection_ids_per_host": 4,
+    "reader_windows": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\appearance-full-reader-controls-windows003\\receipt.json",
+      "bytes": 6910,
+      "sha256": "80ba247a23f4bb471051764c1f03a4ea823e160b80bd29751a3c21c108b88bb2"
+    },
+    "reader_linux": {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/appearance-full-reader-controls-linux002/receipt.json",
+      "bytes": 6658,
+      "sha256": "ad20df6d751ba9f831354959eb8872bd4fa85726822c12e0d6d83533b48b402e"
+    },
+    "integration_methods_per_host": 51,
+    "builder_methods_per_host": 52,
+    "integration_windows": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\appearance-integration-controls-windows004\\receipt.json",
+      "bytes": 5914,
+      "sha256": "17e1874fa8d4a39e79a515084c8cfbc34779f542bfe517ed1f1c0f230e5b2aad"
+    },
+    "integration_linux": {
+      "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001/.tmp/manual-workflow-verification/appearance-integration-controls-linux003/receipt.json",
+      "bytes": 5276,
+      "sha256": "5d78b165888cf1000dec059cb14ab601d4b790325fc4218fe0a7c40e3370c574"
+    },
+    "existing_skips": "Windows builder4; Linux builder1; none in integration/reader/workflow",
+    "final_capture_transport_methods_per_host": 3,
+    "workflow_guard_methods_per_host": 1,
+    "ninja_portable_methods_per_host": 16
+  },
+  "preserved_failures": [
+    "capture001 unsupported TIFF write metadata before GL; fixed setup uses admitted empty metadata plus actual display-range input",
+    "capture002/003 actual linked canvas16px at scale3; original captures/hashes preserved",
+    "native004/005 used restored post-EndChild parentClipRect; actual InnerClipRect/delivered-wheel checks corrected fixture",
+    "reader001 expected fractional style padding; original failure unchanged; exact ImGui truncation and causal negative corrected",
+    "navigation-windows001 stale XY hitpoint; stable visible observation now precedes input",
+    "controller integration-windows003/linux002 lacked six new role paths; strict admission worked; literal fixture and new missing-role negative corrected",
+    "path diagnostic scratch ceiling exceeded after reader; functional success does not imply storage acceptance; rawdata archived/retired",
+    "Linux capture admission record setup NameError; live capture retained its cap/deadline, but pre-run receipt absent and additive afterlaunch limit retained"
+  ],
+  "remaining": [
+    "macOS C2 and supported actual process ownership; current-head hosted installed/SDK profiles",
+    "complete affected orthogonal/annotation/path owning cohorts and strict settings consumer-ledger admission",
+    "seven original scientific payloads; unchanged originalhashes; real monitor/OS input, accessibility, commercial product delivery and release",
+    "CI-only Windows softwareGL actual loaded module/driver/hiddenwindow/history/C2 trial; no provider installed locally",
+    "broad plancheck refuses unavailable G016 build/plan-implementation/p05e-roi-boolean-001/native-local-checkpoint-001.json; no repinning/recreation"
+  ],
+  "storage": {
+    "inventory": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\appearance-final-storage001.json",
+      "bytes": 1463,
+      "sha256": "bb83078f5f13b2570f5c7e1c0450d5957d32c0fc02848101d686d9710188058e"
+    },
+    "known_bytes": 8561902803,
+    "limit_bytes": 8589934592,
+    "headroom_upper_bound_bytes": 28031789,
+    "complete_budget_verified": false,
+    "unknown_subtrees": [
+      ".cache/pytest",
+      ".cache/pytest-ui"
+    ],
+    "cold_linux_executable_bytes_retired_this_continuation": 110430400,
+    "raw_linux_hosted_capture_bytes_retired": 207768131,
+    "blocked_windows_targets": "rawsources/notices/emptydirs and20MBduplicate auditreceipt preserved; automaticreview reasonblockedbypolicy; no alternate deletion",
+    "historical_availability": "retired binaries unavailable; originalfingerprints unchanged; rebuild before execution; restore raw paths before archived readers"
+  },
+  "family_statuses_unchanged": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  }
+}

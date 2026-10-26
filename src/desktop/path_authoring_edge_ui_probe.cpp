@@ -206,6 +206,7 @@ struct Driver {
       hit=control(name);require(hit.at("enabled").get<bool>(),"Unavailable edge control "+name);
       auto *w=hit.contains("window_name")?ImGui::FindWindowByName(hit.at("window_name").get<std::string>().c_str()):
         controlWindow(name)?ImGui::FindWindowByName(controlWindow(name)):nullptr;
+      require(!hit.contains("window_name") || w,"Edge control owner is unavailable "+name);
       if(!w)break;
       const auto x=std::floor(hit["point"][0].get<float>()),y=std::floor(hit["point"][1].get<float>());
       const auto clip=hit.contains("clip_rect")?hit.at("clip_rect").get<std::array<float,4>>():

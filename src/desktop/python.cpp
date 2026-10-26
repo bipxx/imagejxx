@@ -29,6 +29,7 @@
 #include "path_filter_ui_probe.hpp"
 #include "native_bare_import_ui_probe.hpp"
 #include "rank_runtime_probe.hpp"
+#include "settings_appearance_ui_probe.hpp"
 #include "rank_ui_probe.hpp"
 #include "roi_import_ui_probe.hpp"
 #include "saved_roi_geometry_ui_probe.hpp"
@@ -409,6 +410,10 @@ PYBIND11_MODULE(_desktop, m) {
            })
       .def("_manual_threshold_workflow_ui_case", [](Window &window,const std::string &case_id,const std::string &directory) {
         py::gil_scoped_release release;return manualThresholdWorkflowUiCase(window,case_id,"imgui_python",directory).dump();
+      }, py::arg("case_id"), py::arg("directory"))
+      .def("_settings_appearance_ui_case", [](Window &window, const std::string &case_id, const std::string &directory) {
+        py::gil_scoped_release release;
+        return settingsAppearanceUiCase(window, case_id, "imgui_python", directory).dump();
       }, py::arg("case_id"), py::arg("directory"))
       .def("_settings_measurement_ui_case", [](Window &window,const std::string &case_id,const std::string &directory) {
         py::gil_scoped_release release;return settingsMeasurementUiCase(window,case_id,"imgui_python",directory).dump();

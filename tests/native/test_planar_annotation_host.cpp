@@ -1,6 +1,7 @@
 #include "desktop.hpp"
 #include "planar_annotation_panel.hpp"
 #include "planar_annotation_visual.hpp"
+#include "orthogonal.hpp"
 #include "roi_import_preview.hpp"
 #include "roi_import_panel.hpp"
 #include "../../src/native/kernel_control.hpp"
@@ -8,6 +9,8 @@
 #include <imagejxx/planar_display_annotations.hpp>
 #include "display_annotation_renderer.hpp"
 #include <imagejxx/imagej_roi_import.hpp>
+#include <imgui_internal.h>
+#include <cmath>
 #include <iostream>
 #include <stdexcept>
 namespace {
@@ -16,6 +19,133 @@ void check(bool value,const char *message) {if(!value)throw std::runtime_error(m
 template<class F>void rejects(F action) {
   try {action();}catch(const std::exception &){return;}
   throw std::runtime_error("Expected restricted publication refusal");
+}
+void scaled_linked_layout(float scale) {
+  auto *context=ImGui::CreateContext();
+  struct Context {ImGuiContext *value;~Context(){ImGui::DestroyContext(value);}} guard{context};
+  auto &io=ImGui::GetIO();io.IniFilename=nullptr;io.LogFilename=nullptr;
+  io.DisplaySize={2560,1600};io.DeltaTime=1.f/60;
+  ImGui::StyleColorsLight();auto &style=ImGui::GetStyle();
+  style.FramePadding={7,5};style.ScaleAllSizes(scale);
+  // The observed Windows C2 failure used a51px font and style scale3.
+  ImFontConfig font;font.SizePixels=17*scale;io.Fonts->AddFontDefault(&font);
+  unsigned char *pixels=nullptr;int width=0,height=0;
+  io.Fonts->GetTexDataAsRGBA32(&pixels,&width,&height);io.Fonts->SetTexID(1);
+  check(pixels && width>0 && height>0,"Scaled layout font atlas unavailable");
+  SpatialCalibration calibration;calibration.spacing={.5,.5,.5};
+  Stack planes{Image(2,2,1,PixelType::UInt8),Image(2,2,1,PixelType::UInt8)};
+  planes[0].pixels={0,128,128,0};planes[1].pixels={128,0,0,128};
+  auto owner=std::make_shared<Document>(Dataset::from_planes({1,1,2,2,2,1},std::move(planes),calibration));
+  auto display=owner->snapshot().display();display.orthogonal=true;display.zoom=64;
+  display.properties["display_range"]=metadata_array({0.,255.});owner->set_display(display);
+  desktop::Document facade(owner);desktop::OrthogonalViews views;
+  desktop::OrthogonalInputContext input;input.active_document=true;input.input_enabled=true;
+  input.keyboard_admitted=true;input.annotation_gui_scale=scale;
+  const auto before=owner->snapshot();const auto history=owner->history();
+  desktop::Json report,hitFrames=desktop::Json::array();std::string status;int frames=0,wheelFrames=0;
+  auto frame=[&] {
+    check(++frames<=64,"Scaled linked layout exceeded bounded input frames");
+    ImGui::NewFrame();ImGui::SetNextWindowPos({20,20},ImGuiCond_Always);
+    // Capture003 had1502x751 available before linked controls. Keep that
+    // content area fixed; only the real font/style metrics differ across cases.
+    ImGui::SetNextWindowSize({1502+2*style.WindowPadding.x,751+2*style.WindowPadding.y},ImGuiCond_Always);
+    ImGui::Begin("Scaled linked layout",nullptr,ImGuiWindowFlags_NoDecoration|ImGuiWindowFlags_NoSavedSettings);
+    views.draw(facade,false,true,false,status,input);
+    const std::array<float,2> drawWheel{io.MouseWheelH,io.MouseWheel};
+    if(drawWheel[1]!=0)++wheelFrames;
+    ImGui::End();ImGui::Render();report=views.diagnostics();
+    // Retain only the last eight actual frames, without adding settling/input.
+    const auto &path=report[0].at("planar_annotations").at("controls").at("path");
+    auto *ownerWindow=ImGui::FindWindowByName(path.at("window_name").get<std::string>().c_str());
+    auto windowState=[](const ImGuiWindow *window)->desktop::Json {
+      if(!window)return nullptr;
+      return {{"name",window->Name},{"id",window->ID},{"active",window->Active},{"hidden",window->Hidden},
+          {"last_frame_active",window->LastFrameActive},{"skip_items",window->SkipItems},
+          {"position",{window->Pos.x,window->Pos.y}},{"size",{window->Size.x,window->Size.y}},
+          {"content_size",{window->ContentSize.x,window->ContentSize.y}},
+          {"clip",{window->ClipRect.Min.x,window->ClipRect.Min.y,window->ClipRect.Max.x,window->ClipRect.Max.y}},
+          {"inner_clip",{window->InnerClipRect.Min.x,window->InnerClipRect.Min.y,window->InnerClipRect.Max.x,window->InnerClipRect.Max.y}},
+          {"outer_clip",{window->OuterRectClipped.Min.x,window->OuterRectClipped.Min.y,window->OuterRectClipped.Max.x,window->OuterRectClipped.Max.y}},
+          {"scroll",{window->Scroll.x,window->Scroll.y}},{"scroll_max",{window->ScrollMax.x,window->ScrollMax.y}},
+          {"scroll_target",{window->ScrollTarget.x,window->ScrollTarget.y}},
+          {"scrollbars",{window->ScrollbarX,window->ScrollbarY}}};
+    };
+    hitFrames.push_back({{"frame",frames},{"imgui_frame",context->FrameCount},{"rendered_frame",context->FrameCountRendered},
+        {"mouse",{io.MousePos.x,io.MousePos.y}},{"mouse_delta",{io.MouseDelta.x,io.MouseDelta.y}},
+        {"draw_wheel",drawWheel},{"queued_events",context->InputEventsQueue.Size},{"processed_events",context->InputEventsTrail.Size},
+        {"path",path},{"controls",windowState(ownerWindow)},{"hovered_window",windowState(context->HoveredWindow)},
+        {"hovered_id",context->HoveredId},{"previous_hovered_id",context->HoveredIdPreviousFrame},
+        {"active_id",context->ActiveId},{"hover_disabled",context->HoveredIdIsDisabled},
+        {"nav_highlight_item",context->NavHighlightItemUnderNav},
+        {"wheeling_window",context->WheelingWindow?desktop::Json(context->WheelingWindow->Name):desktop::Json(nullptr)},
+        {"wheeling_scrolled_frame",context->WheelingWindowScrolledFrame},
+        {"wheel_remainder",{context->WheelingWindowWheelRemainder.x,context->WheelingWindowWheelRemainder.y}}});
+    if(hitFrames.size()>8)hitFrames.erase(hitFrames.begin());
+  };
+  for(int i=0;i<4;++i)frame();
+  auto *parent=ImGui::FindWindowByName("Scaled linked layout");
+  check(parent && report.size()==3,"Missing actual linked layout windows");
+  auto checkCanvases=[&] {
+    for(const auto &plane:report) {
+      const auto center=plane.at("canvas_point").get<std::array<float,2>>();
+      const auto extent=plane.at("extent").get<std::array<float,2>>();
+      const auto origin=plane.at("origin").get<std::array<float,2>>();
+      const auto spacing=plane.at("scale").get<std::array<float,2>>();
+      check(plane.at("visible").get<bool>() && spacing==std::array<float,2>{32,32},"Scaled linked canvas is not visible at fixed image zoom");
+      ImGuiWindow *child=nullptr;
+      for(auto *candidate:context->Windows)
+        if(candidate->ParentWindow==parent && candidate->Active && !candidate->Hidden &&
+           std::string(candidate->Name).find("/plane_")!=std::string::npos &&
+           candidate->InnerClipRect.Contains(ImVec2(center[0],center[1]))) {
+          check(!child,"Linked canvas matched multiple actual child clips");child=candidate;
+        }
+      check(child,"Linked canvas center is outside its actual child clip");
+      for(int axis=0;axis<2;++axis) {
+        const float low=center[axis]-extent[axis]/2,high=center[axis]+extent[axis]/2;
+        const float clipLow=axis?child->InnerClipRect.Min.y:child->InnerClipRect.Min.x;
+        const float clipHigh=axis?child->InnerClipRect.Max.y:child->InnerClipRect.Max.x;
+        if(!(low>=clipLow-1 && high<=clipHigh+1 && origin[axis]>=low+2 && origin[axis]+64<=high-2))
+          std::cerr<<"Scaled linked geometry "<<desktop::Json{{"scale",scale},{"plane",plane.at("plane")},
+              {"axis",axis},{"canvas",{low,high}},{"clip",{clipLow,clipHigh}},{"image",{origin[axis],origin[axis]+64}}}.dump()<<'\n';
+        check(low>=clipLow-1 && high<=clipHigh+1,"Linked canvas exceeds its actual child clip");
+        check(origin[axis]>=low+2 && origin[axis]+64<=high-2,"Scaled controls consumed the declared64px linked image canvas");
+      }
+    }
+  };
+  checkCanvases();
+  ImGuiWindow *controls=nullptr;
+  for(auto *candidate:context->Windows)
+    if(candidate->ParentWindow==parent && std::string(candidate->Name).find("/orthogonal_controls_")!=std::string::npos)
+      controls=candidate;
+  check(controls && controls->Active,"Missing actual scrollable linked controls");
+  auto pathVisible=[&] {
+    const auto &path=report[0].at("planar_annotations").at("controls").at("path");
+    const auto rect=path.at("rect").get<std::array<float,4>>();
+    return path.at("visible").get<bool>() && rect[0]>=controls->InnerClipRect.Min.x && rect[1]>=controls->InnerClipRect.Min.y &&
+        rect[2]<=controls->InnerClipRect.Max.x && rect[3]<=controls->InnerClipRect.Max.y;
+  };
+  if(scale==3)check(controls->ScrollMax.y>0,"Large-font fixture did not exercise real controls overflow");
+  io.AddMousePosEvent(controls->InnerClipRect.GetCenter().x,controls->InnerClipRect.GetCenter().y);frame();
+  for(int i=0;i<12 && !pathVisible();++i) {io.AddMouseWheelEvent(0,-2);frame();frame();}
+  check(pathVisible(),"Last annotation tool is unreachable through actual controls scrolling");
+  if(scale==3)check(wheelFrames>0 && controls->Scroll.y>0,"Large-font Path reachability did not deliver actual wheel input and scroll");
+  const auto path=report[0].at("planar_annotations").at("controls").at("path");
+  const auto point=path.at("point").get<std::array<float,2>>();
+  io.AddMousePosEvent(point[0],point[1]);frame();
+  if(!(context->HoveredWindow==controls && context->HoveredId==path.at("id").get<ImGuiID>()))
+    std::cerr<<"Scaled Path hit diagnostic "<<desktop::Json{{"scale",scale},{"stale_path",path},
+        {"requested_point",point},{"current_path",report[0].at("planar_annotations").at("controls").at("path")},
+        {"actual_frames",hitFrames}}.dump()<<'\n';
+  check(context->HoveredWindow==controls && context->HoveredId==path.at("id").get<ImGuiID>(),"Actual Path hitpoint does not belong to the displayed control");
+  io.AddMouseButtonEvent(0,true);frame();io.AddMouseButtonEvent(0,false);frame();
+  for(int i=0;i<3;++i)frame();
+  check(report[0].at("planar_annotations").at("mode")==9,"Actual annotation tool click was not accepted");
+  checkCanvases();
+  const auto after=owner->snapshot();
+  check(after.shares_data(before) && after.revisions().matches(before.revisions(),Change::All) && after.dirty()==before.dirty() &&
+        owner->history().undo_steps==history.undo_steps && owner->history().redo_steps==history.redo_steps,
+        "Layout or control scrolling changed source, display revisions or history");
+  std::cout<<"PASS real ImGui linked layout scale="<<scale<<" frames="<<frames<<" (no GL)\n";
 }
 void run() {
   Stack planes;for(int i=0;i<12;++i)planes.emplace_back(7,5,1,PixelType::UInt16);
@@ -124,6 +254,6 @@ void run() {
 }
 }
 int main() {
-  try {run();std::cout<<"PASS restricted planar annotation desktop publication\n";return 0;}
+  try {run();scaled_linked_layout(1);scaled_linked_layout(3);std::cout<<"PASS restricted planar annotation desktop publication\n";return 0;}
   catch(const std::exception &error) {std::cerr<<error.what()<<'\n';return 1;}
 }

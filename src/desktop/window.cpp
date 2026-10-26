@@ -40,6 +40,7 @@
 #include "gaussian_panel.hpp"
 #include "rank_panel.hpp"
 #include "rank_runtime_probe.hpp"
+#include "settings_appearance_ui_probe.hpp"
 #include "threshold_panel.hpp"
 #include "histogram_panel.hpp"
 #include "channel_display_panel.hpp"
@@ -864,6 +865,10 @@ struct Window::Impl {
     return true;
   }
   RankRuntimeProbe *rankProbe = nullptr;
+  SettingsAppearanceUiProbe *appearanceProbe = nullptr;
+  std::uint64_t appearanceFrame = 0;
+  double appearanceActualDpi = 1, appearanceSuppliedDpi = 1;
+  std::array<int, 2> appearanceFramebuffer{}, appearanceWindow{};
   std::uint64_t rankFrame = 0, rankUploadSerial = 0;
   Json rankConsumed = {{"valid", false}};
   std::map<std::uint64_t, std::pair<std::uint64_t, std::string>> rankSelectionHashes;
@@ -4787,6 +4792,114 @@ Json RankRuntimeProbeAccess::inspect(Window &window, bool viewBytes) {
       result["consumed"]["scalar_declared_hex"] = rankProbeHex(pane.rankScalarBytes);
       result["consumed"]["rgb_hex"] = rankProbeHex(pane.rankRgbBytes);
     }
+  }
+  return result;
+}
+Json SettingsAppearanceUiProbeAccess::inspect(Window &window) {
+  window.checkThread();
+  auto &state = *window.impl;
+  if (!state.appearanceProbe || !state.gl || !ImGui::GetCurrentContext())
+    throw std::logic_error("Appearance observations require the active OpenGL probe context");
+  const auto *draw = ImGui::GetDrawData();
+  if (!draw || !draw->Valid)
+    throw std::logic_error("Appearance observations require a rendered OpenGL probe frame");
+  auto result = state.headlessReport();
+  const auto &io = ImGui::GetIO();
+  const auto &style = ImGui::GetStyle();
+  const auto &background = style.Colors[ImGuiCol_WindowBg];
+  std::array<GLint, 4> viewport{};
+  std::array<GLfloat, 4> clearColor{};
+  glGetIntegerv(GL_VIEWPORT, viewport.data());
+  glGetFloatv(GL_COLOR_CLEAR_VALUE, clearColor.data());
+  const auto glString = [](GLenum name) {
+    const auto *value = glGetString(name);
+    if (!value)
+      throw std::runtime_error("Appearance observations require OpenGL identity strings");
+    return std::string(reinterpret_cast<const char *>(value));
+  };
+  // GL_SHADING_LANGUAGE_VERSION is absent from Windows OpenGL 1.1 headers.
+  constexpr GLenum shadingLanguageVersion = 0x8B8C;
+  result["appearance_runtime"] = {
+      {"frame", state.appearanceFrame},
+      {"vendor", glString(GL_VENDOR)},
+      {"renderer", glString(GL_RENDERER)},
+      {"version", glString(GL_VERSION)},
+      {"shading_language_version", glString(shadingLanguageVersion)},
+      {"actual_dpi", state.appearanceActualDpi},
+      {"supplied_dpi", state.appearanceSuppliedDpi},
+      {"framebuffer_size", state.appearanceFramebuffer},
+      {"window_size", state.appearanceWindow},
+      {"requested_window_size", {2560, 1600}},
+      {"viewport", viewport}, {"clear_color", clearColor},
+      {"display_pos", {draw->DisplayPos.x, draw->DisplayPos.y}},
+      {"display_size", {io.DisplaySize.x, io.DisplaySize.y}},
+      {"framebuffer_scale", {io.DisplayFramebufferScale.x, io.DisplayFramebufferScale.y}},
+      {"frame_padding", {style.FramePadding.x, style.FramePadding.y}},
+      {"window_background_rgba", {background.x, background.y, background.z, background.w}}};
+  // Query only already-created textures while the owning context is live.
+  // The returned values own no texture, document snapshot, lease or GL pointer.
+  const auto sampler = [](GLuint texture) -> Json {
+    if (!texture || !glIsTexture(texture))
+      return {{"available", false}, {"texture_id", texture}};
+    struct RestoreBinding {
+      GLint value = 0;
+      RestoreBinding() { glGetIntegerv(GL_TEXTURE_BINDING_2D, &value); }
+      ~RestoreBinding() { glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(value)); }
+    } binding;
+    glBindTexture(GL_TEXTURE_2D, texture);
+    GLint minimum = 0, maximum = 0, wrapS = 0, wrapT = 0, width = 0, height = 0;
+    glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, &minimum);
+    glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, &maximum);
+    glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, &wrapS);
+    glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, &wrapT);
+    glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &width);
+    glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &height);
+    return {{"available", true}, {"texture_id", texture},
+            {"min_filter", minimum}, {"mag_filter", maximum},
+            {"wrap_s", wrapS}, {"wrap_t", wrapT},
+            {"width", width}, {"height", height}};
+  };
+  const auto imageRect = [](ImVec2 origin, ImVec2 scale, int width, int height) {
+    return Json::array({origin.x, origin.y, origin.x + width * scale.x,
+                        origin.y + height * scale.y});
+  };
+  const auto canvasRect = [](ImVec2 center, ImVec2 extent) {
+    return Json::array({center.x - extent.x * .5f, center.y - extent.y * .5f,
+                        center.x + extent.x * .5f, center.y + extent.y * .5f});
+  };
+  result["source"] = nullptr;
+  if (window.documents_.empty()) return result;
+  const auto document = window.document();
+  const auto source = document->nativeSnapshot();
+  const auto &data = source.data();
+  const auto shape = data.dataset.shape();
+  const auto revisions = source.revisions();
+  result["source"] = {
+      {"id", source.id()}, {"data_identity", source.data_identity() ? Json(*source.data_identity()) : Json()},
+      {"shape", shape.dimensions()}, {"dtype", typeName(data.dataset.pixel_type())},
+      {"revisions", {{"pixels", revisions.pixels}, {"metadata", revisions.metadata},
+                     {"selection", revisions.selection}, {"display", revisions.display}}},
+      {"display", document->viewJson()}, {"dirty", source.dirty()},
+      {"undo_steps", document->undoSteps()}, {"redo_steps", document->redoSteps()},
+      {"selection", data.selection ? selectionJson(*data.selection) : Json()},
+      {"previous", data.previous_selection ? selectionJson(*data.previous_selection) : Json()},
+      {"metadata", {{"title", data.metadata.title},
+                    {"properties", metadataJson(data.metadata.properties)},
+                    {"extensions", metadataJson(data.metadata.extensions)},
+                    {"record_layout", metadataJson(data.metadata.record_layout)}}}};
+  const auto &pane = state.panes.at(window.activeIndex());
+  auto &ordinary = result["ordinary_canvas"];
+  ordinary["width"] = shape.x;
+  ordinary["height"] = shape.y;
+  ordinary["image_rect"] = imageRect(pane.origin, {pane.zoom, pane.zoom * pane.aspectY}, shape.x, shape.y);
+  ordinary["canvas_rect"] = canvasRect(pane.ordinaryCanvasPoint, pane.extent);
+  ordinary["sampler"] = sampler(pane.texture);
+  auto &planes = result["orthogonal_planes"];
+  for (std::size_t i = 0; i < pane.orthogonal.caches_.size(); ++i) {
+    const auto &cache = pane.orthogonal.caches_[i];
+    planes.at(i)["image_rect"] = imageRect(cache.origin, cache.scale, cache.width, cache.height);
+    planes.at(i)["canvas_rect"] = canvasRect(cache.canvasPoint, cache.extent);
+    planes.at(i)["sampler"] = sampler(cache.texture);
   }
   return result;
 }
@@ -13790,6 +13903,8 @@ int Window::run(const RunOptions &options) {
   checkThread();
   if (options.frames < 0)
     throw std::invalid_argument("Frame count must be nonnegative");
+  if (options.rank_probe && options.appearance_probe)
+    throw std::invalid_argument("Only one fixed OpenGL observation probe may run at a time");
   if (options.hidden && options.frames == 0)
     throw std::invalid_argument(
         "Hidden rendering requires a positive frame count");
@@ -13802,8 +13917,9 @@ int Window::run(const RunOptions &options) {
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
   glfwWindowHint(GLFW_VISIBLE, options.hidden ? GLFW_FALSE : GLFW_TRUE);
-  auto window =
-      glfwCreateWindow(1250, 820, "imagejxx | Dear ImGui", nullptr, nullptr);
+  auto window = glfwCreateWindow(options.appearance_probe ? 2560 : 1250,
+                                 options.appearance_probe ? 1600 : 820,
+                                 "imagejxx | Dear ImGui", nullptr, nullptr);
   if (!window) {
     glfwTerminate();
     throw std::runtime_error("Could not create an OpenGL desktop window");
@@ -13817,14 +13933,21 @@ int Window::run(const RunOptions &options) {
   impl->guiScale = 0;
   float dpiX = 1, dpiY = 1;
   glfwGetWindowContentScale(window, &dpiX, &dpiY);
-  impl->appearance(std::max(dpiX, dpiY), true);
+  impl->appearance(options.appearance_probe ? options.appearance_probe->suppliedDpi()
+                                           : std::max(dpiX, dpiY), true);
   impl->initializeLayout();
   impl->lastVisible = -1;
   impl->exit = false;
   impl->closingApp = false;
   bool platform = ImGui_ImplGlfw_InitForOpenGL(window, true),
        renderer = platform && ImGui_ImplOpenGL3_Init("#version 130");
+  const bool previousDiagnostics = impl->headlessDiagnostics;
   auto cleanup = [&] {
+    impl->appearanceProbe = nullptr;
+    impl->appearanceFrame = 0;
+    impl->appearanceFramebuffer = {};
+    impl->appearanceWindow = {};
+    impl->headlessDiagnostics = previousDiagnostics;
     if(impl->viewportJobs)impl->viewportJobs->cancelAll();
     for(auto &pane:impl->panes){pane.sampledSurface.reset();pane.sampleMemory.reset();pane.viewportPending=false;}
     impl->rankProbe = nullptr;
@@ -13864,6 +13987,8 @@ int Window::run(const RunOptions &options) {
   }
   impl->gl = true;
   impl->rankProbe = options.rank_probe;
+  impl->appearanceProbe = options.appearance_probe;
+  if (options.appearance_probe) impl->headlessDiagnostics = true;
   impl->rankFrame = impl->rankUploadSerial = 0;
   glfwSetWindowUserPointer(window, impl.get());
   glfwSetDropCallback(
@@ -13875,10 +14000,12 @@ int Window::run(const RunOptions &options) {
       });
   try {
     int frames = 0;
-    const auto probeDeadline = std::chrono::steady_clock::now() + std::chrono::seconds(30);
+    const auto probeDeadline = std::chrono::steady_clock::now() +
+        std::chrono::seconds(options.appearance_probe ? 60 : 30);
     while (!impl->exit) {
       // A minimized/zero framebuffer still consumes the private cell deadline.
-      if (options.rank_probe && std::chrono::steady_clock::now() >= probeDeadline)
+      if ((options.rank_probe || options.appearance_probe) &&
+          std::chrono::steady_clock::now() >= probeDeadline)
         break;
       glfwPollEvents();
       if (glfwWindowShouldClose(window)) {
@@ -13903,7 +14030,18 @@ int Window::run(const RunOptions &options) {
       ImGui_ImplOpenGL3_NewFrame();
       ImGui_ImplGlfw_NewFrame();
       glfwGetWindowContentScale(window, &dpiX, &dpiY);
-      impl->appearance(std::max(dpiX, dpiY), true);
+      const auto actualDpi = std::max(dpiX, dpiY);
+      const auto suppliedDpi = options.appearance_probe
+          ? options.appearance_probe->suppliedDpi() : actualDpi;
+      impl->appearance(suppliedDpi, true);
+      if (options.appearance_probe) {
+        impl->appearanceFrame = static_cast<std::uint64_t>(frames) + 1;
+        impl->appearanceActualDpi = actualDpi;
+        impl->appearanceSuppliedDpi = suppliedDpi;
+        impl->appearanceFramebuffer = {width, height};
+        glfwGetWindowSize(window, &impl->appearanceWindow[0], &impl->appearanceWindow[1]);
+        options.appearance_probe->beforeFrame(impl->appearanceFrame);
+      }
       if (options.rank_probe) {
         impl->rankFrame = static_cast<std::uint64_t>(frames) + 1;
         options.rank_probe->beforeFrame(impl->rankFrame);
@@ -13924,7 +14062,12 @@ int Window::run(const RunOptions &options) {
         options.rank_probe->afterRender(impl->rankFrame, renderSubmit);
         if (options.rank_probe->finished()) break;
       }
+      if (options.appearance_probe) {
+        options.appearance_probe->afterRender(impl->appearanceFrame, actualDpi);
+        if (options.appearance_probe->finished()) break;
+      }
       ++frames;
+      if (options.appearance_probe && frames >= 750) break;
       if (options.frames > 0 && frames >= options.frames) {
         if (!options.screenshot.empty()) {
           std::vector<unsigned char> pixels(size_t(width) * height * 3);
@@ -13942,7 +14085,7 @@ int Window::run(const RunOptions &options) {
       }
       glfwSwapBuffers(window);
     }
-    if (!options.hidden && !options.rank_probe) {
+    if (!options.hidden && !options.rank_probe && !options.appearance_probe) {
       impl->preferences["layout"] = ImGui::SaveIniSettingsToMemory();
       impl->savePreferences();
     }

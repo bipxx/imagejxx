@@ -59,7 +59,9 @@ Json pathSegmentUiCase(Window &window,const std::string &mode,const std::string 
     Json hit;
     for(int attempt=0;attempt<40;++attempt) {
       hit=control(name);require(hit.at("enabled").get<bool>(),"Unavailable segment UI control: "+name);
-      auto *w=name.rfind("host.",0)==0?nullptr:ImGui::FindWindowByName(planar?"Images":saved?"Saved area geometry":"Selection properties");
+      auto *w=hit.contains("window_name")?ImGui::FindWindowByName(hit.at("window_name").get<std::string>().c_str()):
+          name.rfind("host.",0)==0?nullptr:ImGui::FindWindowByName(planar?"Images":saved?"Saved area geometry":"Selection properties");
+      require(!hit.contains("window_name") || w,"Segment control owner is unavailable: "+name);
       if(!w)break;
       const auto clip=w->InnerClipRect;const auto rect=hit.at("rect").get<std::array<float,4>>();
       const ImVec2 physical{std::floor(hit["point"][0].get<float>()),std::floor(hit["point"][1].get<float>())};
@@ -74,7 +76,8 @@ Json pathSegmentUiCase(Window &window,const std::string &mode,const std::string 
     report["controls"].push_back({{"name",name},{"control",hit}});
     frame(Json::array({{{"type","position"},{"space","screen"},{"point",hit["point"]}}}));
     const auto *input=ImGui::GetCurrentContext();
-    auto *controlWindow=name.rfind("host.",0)==0?nullptr:ImGui::FindWindowByName(planar?"Images":saved?"Saved area geometry":"Selection properties");
+    auto *controlWindow=hit.contains("window_name")?ImGui::FindWindowByName(hit.at("window_name").get<std::string>().c_str()):
+        name.rfind("host.",0)==0?nullptr:ImGui::FindWindowByName(planar?"Images":saved?"Saved area geometry":"Selection properties");
     report["controls"].back()["hover"]={{"id",input->HoveredId},{"window",input->HoveredWindow?input->HoveredWindow->Name:""}};
     if(controlWindow)report["controls"].back()["clip"]={controlWindow->InnerClipRect.Min.x,controlWindow->InnerClipRect.Min.y,controlWindow->InnerClipRect.Max.x,controlWindow->InnerClipRect.Max.y};
     report["controls"].back()["physical_point"]={input->IO.MousePos.x,input->IO.MousePos.y};

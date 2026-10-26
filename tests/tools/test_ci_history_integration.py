@@ -1,4 +1,4 @@
-"""Synthetic admission/orchestration for the maintained eight-case history route.
+"""Synthetic admission/orchestration for fixed history and appearance routes.
 
 These controls execute no installed application, pytest child, pip or compiler.
 The independent identity list, file hashes, source membership and JUnit parsing
@@ -41,6 +41,11 @@ HISTORY_IDS = tuple(
     "tests/python/test_history_settings_ui.py::test_installed_history_settings[" + case + "-" + context + "]"
     for case in ("HU01", "HU02", "HU03", "HU04")
     for context in ("imgui_cpp", "imgui_python"))
+APPEARANCE_IDS = tuple(
+    "tests/python/test_settings_appearance_ui.py::test_installed_settings_appearance[" + case + "-" + context + "]"
+    for case in ("appearance-persist", "appearance-reopen")
+    for context in ("imgui_cpp", "imgui_python"))
+APPEARANCE_ENV = "IMAGEJXX_SETTINGS_APPEARANCE_UI_CASE_ROOT"
 HISTORY_ROLES = (
     "tests/python/actual_observation_transport.py", "src/desktop/actual_observation_transport.hpp",
     "src/desktop/window.cpp", "src/desktop/headless_session_internal.hpp",
@@ -54,6 +59,15 @@ HISTORY_ROLES = (
     "src/native/application.cpp", "include/imagejxx/application.hpp", "src/native/session.cpp",
     "include/imagejxx/session.hpp", "tests/python/test_history_settings_ui.py",
     "docs/parity/reviews/G010-history-settings-ownership-001.json",
+)
+APPEARANCE_EXTRA_ROLES = (
+    "src/desktop/settings_appearance_ui_probe.cpp", "src/desktop/settings_appearance_ui_probe.hpp",
+    "src/desktop/window.hpp", "src/desktop/orthogonal.cpp", "src/desktop/orthogonal.hpp",
+    "src/desktop/planar_annotation_panel.cpp", "src/desktop/planar_annotation_panel.hpp",
+    "src/desktop/path_authoring_controls.cpp", "src/desktop/path_authoring_edge_ui_probe.cpp",
+    "src/desktop/path_authoring_ui_probe.cpp", "src/desktop/path_segment_ui_probe.cpp",
+    "src/desktop/rendering.cpp", "src/desktop/settings_io.cpp", "tests/python/test_settings_appearance_ui.py",
+    "tests/python/settings_appearance_reader.py", "tests/python/settings_appearance_expectations.py",
 )
 MANDATORY_SOURCES = (
     "CMakeLists.txt", "pyproject.toml", "README.md", "LICENSE", "THIRD_PARTY_NOTICES.md",
@@ -251,10 +265,11 @@ class HistoryIntegration(unittest.TestCase):
         self.build_document["source_freeze"] = self.save(self.freeze_path, self.freeze_document)
         self.save(self.build_path, self.build_document)
 
-    def bindings(self):
+    def bindings(self, *, kind="history"):
         application = pin(self.application)
-        return {"schema_version": 1, "kind": "p06h.installed-ui-capture-bindings.001",
-                "kind_selection": "history", "build_receipt": pin(self.build_path),
+        prefix = "p06h" if kind == "history" else "c2"
+        return {"schema_version": 1, "kind": prefix + ".installed-ui-capture-bindings.001",
+                "kind_selection": kind, "build_receipt": pin(self.build_path),
                 "source_freeze": self.build_document["source_freeze"],
                 "built_products": self.build_document["built_products"],
                 "installed_modules": deepcopy(self.modules), "python_engine": pin(self.engine),
@@ -278,13 +293,13 @@ class HistoryIntegration(unittest.TestCase):
         ET.ElementTree(tree).write(path, encoding="utf-8", xml_declaration=True)
         return pin(path)
 
-    def emit_capture(self, bindings_pin):
+    def emit_capture(self, bindings_pin, *, kind="history"):
         directory = self.output / "capture"
         directory.mkdir()
         cases, processes = [], []
-        for number, nodeid in enumerate(HISTORY_IDS):
+        for number, nodeid in enumerate(HISTORY_IDS if kind == "history" else APPEARANCE_IDS):
             parameter = nodeid.split("[", 1)[1][:-1]
-            case, context = parameter.split("-", 1)
+            case, context = parameter.rsplit("-", 1)
             raw = directory / (str(number) + ".json")
             row = {"id": case, "context": context,
                    "raw": self.save(raw, {"fixture": "synthetic transport, not UI acceptance"})}
@@ -296,26 +311,29 @@ class HistoryIntegration(unittest.TestCase):
             processes.append({"owned_process_receipt": process_pin})
         capture = {"state": "passed", "acceptance_claim": False,
                    "inputs": {"product_bindings": bindings_pin}, "cases": cases, "processes": processes}
+        if kind == "appearance":
+            capture["kind_selection"] = kind
         self.save(directory / "capture.json", capture)
         self.save(directory / "provenance.json", {"fixture": "synthetic, not executed reader provenance"})
         return capture
 
-    def make_packet(self):
+    def make_packet(self, *, kind="history"):
         self.output.mkdir(parents=True)
-        bindings_pin = self.save(self.output / "product-bindings.json", self.bindings())
-        self.emit_capture(bindings_pin)
-        row = {"schema": "imagejxx.history-suite.001", "state": "passed", "acceptance_claim": False,
+        bindings_pin = self.save(self.output / "product-bindings.json", self.bindings(kind=kind))
+        self.emit_capture(bindings_pin, kind=kind)
+        row = {"schema": "imagejxx." + kind + "-suite.001", "state": "passed", "acceptance_claim": False,
                "product_bindings": bindings_pin,
                "capture": pin(self.output / "capture/capture.json"),
                "provenance": pin(self.output / "capture/provenance.json"),
-               "reader_junit": self.write_junit(self.output / "reader/pytest.xml"),
+               "reader_junit": self.write_junit(self.output / "reader/pytest.xml", HISTORY_IDS if kind == "history" else APPEARANCE_IDS),
                "capture_process": self.save(self.output / "capture-owner/process.json", self.process()),
                "reader_process": self.save(self.output / "reader/process.json", self.process())}
         self.save(self.output / "receipt.json", row)
         return row
 
-    def validate(self):
-        return suite.validate_history_output(self.output, self.root, self.application, self.modules)
+    def validate(self, *, kind="history"):
+        options = {} if kind == "history" else {"kind": kind}
+        return suite.validate_history_output(self.output, self.root, self.application, self.modules, **options)
 
     def rebind_capture(self, change):
         path = self.output / "capture/capture.json"
@@ -618,23 +636,25 @@ class HistoryIntegration(unittest.TestCase):
             raise ValueError("synthetic smoke failure")
         return {"fixture": "synthetic smoke only", "state": "passed"}
 
-    def get_bindings(self, build_receipt, application, package, root):
+    def get_bindings(self, build_receipt, application, package, root, *, kind="history"):
         self.events.append("bindings")
         self.assertEqual((build_receipt, application, package, root),
                          (self.build_path, self.application, self.package, self.root))
         if self.fail_stage == "bindings":
             raise ValueError("synthetic binding failure")
-        return self.bindings()
+        return self.bindings(kind=kind)
 
     def command(self, argv, *, output, root, environment, timeout, **kwargs):
         stage = "capture" if "--kind" in argv else "reader"
+        kind = argv[argv.index("--kind") + 1] if stage == "capture" else (
+            "appearance" if APPEARANCE_ENV in environment else "history")
         self.events.append(stage)
         self.commands.append((stage, list(argv), deepcopy(environment), timeout))
         self.assertEqual(root, self.root)
         self.assertEqual(environment["PYTEST_DISABLE_PLUGIN_AUTOLOAD"], "1")
         if self.fail_stage == stage + "-missing-receipt":
             if stage == "capture":
-                self.emit_capture(pin(self.output / "product-bindings.json"))
+                self.emit_capture(pin(self.output / "product-bindings.json"), kind=kind)
             raise RuntimeError("synthetic " + stage + " started with missing process receipt")
         proof = self.process(argv)
         if self.fail_stage == stage:
@@ -644,18 +664,19 @@ class HistoryIntegration(unittest.TestCase):
         proof.update(self.proof_override)
         self.save(Path(output) / "process.json", proof)
         if stage == "capture" and self.fail_stage not in ("capture", "capture-unresolved"):
-            self.emit_capture(pin(self.output / "product-bindings.json"))
+            self.emit_capture(pin(self.output / "product-bindings.json"), kind=kind)
         if stage == "reader":
-            self.write_junit(Path(output) / "pytest.xml")
+            self.write_junit(Path(output) / "pytest.xml", HISTORY_IDS if kind == "history" else APPEARANCE_IDS)
         return proof
 
-    def run_suite(self):
+    def run_suite(self, *, kind="history"):
         with patch.object(suite.importlib.metadata, "distribution", side_effect=self.installed_distribution), \
                 patch.object(suite, "installed_application", return_value=self.application), \
                 patch.object(suite, "history_bindings", side_effect=self.get_bindings), \
                 patch.object(suite, "installed_smoke", side_effect=self.smoke), \
                 patch.object(suite, "complete_command", side_effect=self.command):
-            return suite.run_history_suite(self.output, self.root, self.build_path)
+            options = {} if kind == "history" else {"kind": kind}
+            return suite.run_history_suite(self.output, self.root, self.build_path, **options)
 
     def test_orchestration_binds_smokes_captures_then_runs_exact_original_readers(self):
         self.run_suite()
@@ -795,6 +816,217 @@ class HistoryIntegration(unittest.TestCase):
                     suite.main()
                 self.assertEqual(caught.exception.code, 2)
                 history.assert_not_called()
+                complete.assert_not_called()
+
+
+class AppearanceIntegration(unittest.TestCase):
+    """Reuse only the synthetic fixture, never inherit/count history tests twice."""
+
+    def setUp(self):
+        self.f = HistoryIntegration()
+        self.f.setUp()
+        self.addCleanup(self.f.doCleanups)
+        f = self.f
+        f.output = f.root / "build/appearance-suite"
+        for logical in APPEARANCE_EXTRA_ROLES:
+            f.write(logical, ("synthetic frozen appearance source: " + logical + "\n").encode())
+        f.tracked.extend(APPEARANCE_EXTRA_ROLES)
+        f.source_names = sorted(set(f.source_names) | set(APPEARANCE_EXTRA_ROLES))
+        f.freeze_document["sources"] = [{"logical_path": n, **pin(f.root / n)} for n in f.source_names]
+        f.start_patch(patch.object(builder, "_history_paths", return_value=set(HISTORY_ROLES + APPEARANCE_EXTRA_ROLES)))
+        f.write_build()
+
+    def test_literal_four_ids_admit_only_appearance_environment_without_replay(self):
+        self.assertEqual(suite.HISTORY_IDS, HISTORY_IDS)
+        self.assertEqual(suite.APPEARANCE_IDS, APPEARANCE_IDS)
+        f = self.f
+        f.make_packet(kind="appearance")
+        with patch.object(suite, "complete_command", side_effect=AssertionError("No packet replay")), \
+                patch.object(suite, "run_history_suite", side_effect=AssertionError("No producer replay")):
+            self.assertEqual(f.validate(kind="appearance"), {APPEARANCE_ENV: str(f.output / "capture")})
+        self.assertEqual(f.events, [])
+
+    def test_real_binding_logic_preserves_actual_product_and_frozen_source_joins(self):
+        f = self.f
+        with patch.object(suite.importlib, "import_module", side_effect=f.imported_module):
+            actual = suite.history_bindings(f.build_path, f.application, f.package, f.root, kind="appearance")
+        self.assertEqual(actual, f.bindings(kind="appearance"))
+        self.assertEqual(actual["kind_selection"], "appearance")
+        self.assertEqual(actual["kind"], "c2.installed-ui-capture-bindings.001")
+
+    def test_missing_appearance_role_refuses_before_any_product_import(self):
+        f = self.f
+        missing = "tests/python/settings_appearance_reader.py"
+        f.tracked.remove(missing)
+        roles = set(HISTORY_ROLES + APPEARANCE_EXTRA_ROLES) - {missing}
+        f.freeze_document["sources"] = [r for r in f.freeze_document["sources"] if r["logical_path"] != missing]
+        f.write_build()
+        with patch.object(builder, "_history_paths", return_value=roles):
+            self.assertEqual(suite.history_build_inputs(f.build_path, f.root), f.build_document)
+            with patch.object(suite.importlib, "import_module", side_effect=AssertionError("No import before source admission")):
+                with self.assertRaisesRegex(ValueError, "missing frozen source roles.*settings_appearance_reader"):
+                    suite.history_bindings(f.build_path, f.application, f.package, f.root, kind="appearance")
+
+    def test_missing_new_planar_driver_role_refuses_before_any_product_import(self):
+        f = self.f
+        missing = "src/desktop/path_segment_ui_probe.cpp"
+        f.tracked.remove(missing)
+        roles = set(HISTORY_ROLES + APPEARANCE_EXTRA_ROLES) - {missing}
+        f.freeze_document["sources"] = [r for r in f.freeze_document["sources"] if r["logical_path"] != missing]
+        f.write_build()
+        with patch.object(builder, "_history_paths", return_value=roles):
+            self.assertEqual(suite.history_build_inputs(f.build_path, f.root), f.build_document)
+            with patch.object(suite.importlib, "import_module", side_effect=AssertionError("No import before source admission")):
+                with self.assertRaisesRegex(ValueError, "missing frozen source roles.*path_segment_ui_probe"):
+                    suite.history_bindings(f.build_path, f.application, f.package, f.root, kind="appearance")
+
+    def test_history_and_appearance_packets_cannot_substitute_for_one_another(self):
+        f = self.f
+        f.make_packet(kind="appearance")
+        with self.assertRaisesRegex(ValueError, "history packet has not passed"):
+            f.validate()
+        f.output = f.root / "build/original-history"
+        f.make_packet()
+        with self.assertRaisesRegex(ValueError, "appearance packet has not passed"):
+            f.validate(kind="appearance")
+
+    def test_four_capture_cases_require_exact_identity_order_and_owned_exits(self):
+        f = self.f
+        f.make_packet(kind="appearance")
+        original = f.read(f.output / "capture/capture.json")
+        variants = (
+            lambda c: c["cases"][0].update(id="HU01"),
+            lambda c: c["cases"].reverse(),
+            lambda c: c["processes"].pop(),
+            lambda c: c.update(kind_selection="history"),
+        )
+        for change in variants:
+            f.rebind_capture(lambda c: (c.clear(), c.update(deepcopy(original)), change(c)))
+            with self.subTest(change=change), self.assertRaises(ValueError):
+                f.validate(kind="appearance")
+
+    def test_four_reader_identities_refuse_same_count_wrong_ids_and_every_nonpass(self):
+        f = self.f
+        f.make_packet(kind="appearance")
+        variants = [(APPEARANCE_IDS[:-1] + (HISTORY_IDS[0],), None),
+                    (tuple(reversed(APPEARANCE_IDS)), None)]
+        variants += [(APPEARANCE_IDS, outcome) for outcome in ("skipped", "failure", "error")]
+        for ids, outcome in variants:
+            with self.subTest(ids=ids, outcome=outcome):
+                row = f.read(f.output / "receipt.json")
+                row["reader_junit"] = f.write_junit(f.output / "reader/pytest.xml", ids, outcome)
+                f.save(f.output / "receipt.json", row)
+                with self.assertRaisesRegex(ValueError, "unchanged four passing reader identities"):
+                    f.validate(kind="appearance")
+
+    def test_appearance_orchestration_uses_same_owner_and_exact_four_reader_ids(self):
+        f = self.f
+        with patch.dict(os.environ, {APPEARANCE_ENV: "unvalidated inherited capture"}):
+            f.run_suite(kind="appearance")
+        self.assertEqual(f.events, ["bindings", "smoke", "capture", "reader"])
+        receipt = f.read(f.output / "receipt.json")
+        self.assertEqual(receipt["schema"], "imagejxx.appearance-suite.001")
+        self.assertEqual(receipt["state"], "passed")
+        self.assertIs(receipt["acceptance_claim"], False)
+        self.assertEqual(receipt["started_stages"], ["capture-owner", "reader"])
+        capture_argv = f.commands[0][1]
+        self.assertEqual(capture_argv[capture_argv.index("--kind") + 1], "appearance")
+        self.assertEqual(capture_argv[capture_argv.index("--source-freeze") + 1], str(f.freeze_path))
+        self.assertEqual(f.commands[0][3], 330)
+        self.assertNotIn(APPEARANCE_ENV, f.commands[0][2])
+        reader_argv = f.commands[1][1]
+        first = reader_argv.index("pytest") + 1
+        self.assertEqual(tuple(reader_argv[first:first + 4]), APPEARANCE_IDS)
+        self.assertEqual(f.commands[1][3], 120)
+        self.assertEqual(f.commands[1][2][APPEARANCE_ENV], str(f.output / "capture"))
+        self.assertTrue(Path(receipt["capture_archive"]["path"]).is_file())
+        self.assertEqual(f.validate(kind="appearance"), {APPEARANCE_ENV: str(f.output / "capture")})
+
+    def test_failed_appearance_setup_stops_before_capture(self):
+        f = self.f
+        for stage, expected in (("bindings", ["bindings"]), ("smoke", ["bindings", "smoke"])):
+            with self.subTest(stage=stage):
+                f.output = f.root / ("build/appearance-failed-" + stage)
+                f.events = []
+                f.fail_stage = stage
+                with self.assertRaisesRegex(ValueError, "synthetic"):
+                    f.run_suite(kind="appearance")
+                self.assertEqual(f.events, expected)
+                self.assertEqual(f.read(f.output / "receipt.json")["state"], "failed")
+
+    def test_unresolved_or_missing_appearance_reader_keeps_raw_and_withholds_archive(self):
+        f = self.f
+        for stage in ("reader-unresolved", "reader-missing-receipt"):
+            with self.subTest(stage=stage):
+                f.output = f.root / ("build/appearance-" + stage)
+                f.events = []
+                f.fail_stage = stage
+                with self.assertRaises((ValueError, RuntimeError)):
+                    f.run_suite(kind="appearance")
+                receipt = f.read(f.output / "receipt.json")
+                self.assertEqual(receipt["state"], "failed")
+                self.assertEqual(len(f.read(f.output / "capture/capture.json")["cases"]), 4)
+                self.assertTrue((f.output / "capture/capture.json").is_file())
+                self.assertFalse((f.output / "capture.zip").exists())
+                self.assertNotIn("capture_archive", receipt)
+                with self.assertRaisesRegex(ValueError, "has not passed"):
+                    f.validate(kind="appearance")
+
+    def test_unknown_kind_refuses_before_output_or_any_source_product_admission(self):
+        f = self.f
+        for kind in ("shortcuts", "", None):
+            with self.subTest(kind=kind), patch.object(suite, "history_helper") as helper, \
+                    patch.object(suite, "history_builder") as build:
+                with self.assertRaisesRegex(ValueError, "fixed history or appearance"):
+                    suite.run_history_suite(f.output, f.root, f.build_path, kind=kind)
+                self.assertFalse(f.output.exists())
+                helper.assert_not_called()
+                build.assert_not_called()
+
+    def test_cli_appearance_entry_is_separate_and_does_not_run_complete_or_readiness(self):
+        f = self.f
+        argv = ["ci_python_suite.py", "--appearance-suite", "--output", str(f.output),
+                "--appearance-build-receipt", str(f.build_path), "--repository", str(f.root)]
+        with patch.object(sys, "argv", argv), patch.object(suite, "run_history_suite") as packet, \
+                patch.object(suite, "run") as complete, patch.object(suite, "reference_readiness") as readiness:
+            suite.main()
+        packet.assert_called_once_with(f.output, f.root, f.build_path, kind="appearance")
+        complete.assert_not_called()
+        readiness.assert_not_called()
+
+    def test_cli_complete_admits_both_existing_packets_without_capture_dispatch(self):
+        f = self.f
+        previous_history = f.root / "build/qualified-history"
+        complete_output = f.root / "build/complete"
+        argv = ["ci_python_suite.py", "--output", str(complete_output),
+                "--history-output", str(previous_history), "--appearance-output", str(f.output)]
+        with patch.object(sys, "argv", argv), patch.object(suite, "run_history_suite") as packet, \
+                patch.object(suite, "run") as complete:
+            suite.main()
+        packet.assert_not_called()
+        complete.assert_called_once_with(complete_output, ROOT, history_output=previous_history,
+                                         appearance_output=f.output)
+
+    def test_cli_missing_build_and_cross_profile_arguments_refuse_before_dispatch(self):
+        f = self.f
+        variants = (
+            ["--appearance-suite", "--output", str(f.output)],
+            ["--appearance-suite", "--output", str(f.output), "--history-build-receipt", str(f.build_path)],
+            ["--appearance-suite", "--output", str(f.output), "--appearance-build-receipt", str(f.build_path),
+             "--appearance-output", str(f.output)],
+            ["--history-suite", "--output", str(f.output), "--history-build-receipt", str(f.build_path),
+             "--appearance-build-receipt", str(f.build_path)],
+            ["--output", str(f.output), "--appearance-build-receipt", str(f.build_path)],
+            ["--headless-suite", "--output", str(f.output), "--appearance-output", str(f.output)],
+        )
+        for arguments in variants:
+            with self.subTest(arguments=arguments), patch.object(sys, "argv", ["ci_python_suite.py", *arguments]), \
+                    patch.object(suite, "run_history_suite") as packet, patch.object(suite, "run") as complete, \
+                    redirect_stderr(io.StringIO()):
+                with self.assertRaises(SystemExit) as caught:
+                    suite.main()
+                self.assertEqual(caught.exception.code, 2)
+                packet.assert_not_called()
                 complete.assert_not_called()
 
 

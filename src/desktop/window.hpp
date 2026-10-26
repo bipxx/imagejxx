@@ -23,6 +23,8 @@ class AxisRangeUiProbeAccess;
 class AxisRangeOrientationUiProbeAccess;
 class RankRuntimeProbe;
 class RankRuntimeProbeAccess;
+class SettingsAppearanceUiProbe;
+class SettingsAppearanceUiProbeAccess;
 class SavedRoiGeometryPythonAccess;
 class MovieExportUiProbeAccess;
 class HistogramAsyncUiProbeAccess;
@@ -31,6 +33,7 @@ struct RunOptions {
   int frames = 0;
   std::string screenshot;
   RankRuntimeProbe *rank_probe = nullptr;
+  SettingsAppearanceUiProbe *appearance_probe = nullptr;
 };
 class Window {
 public:
@@ -260,6 +263,7 @@ private:
   friend class AxisRangeUiProbeAccess;
   friend class AxisRangeOrientationUiProbeAccess;
   friend class RankRuntimeProbeAccess;
+  friend class SettingsAppearanceUiProbeAccess;
   friend class SavedRoiGeometryPythonAccess;
   friend class MovieExportUiProbeAccess;
   friend class HistogramAsyncUiProbeAccess;

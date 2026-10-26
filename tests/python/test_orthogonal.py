@@ -962,7 +962,14 @@ def test_xyz_actual_unassigned_navigation_keys_do_not_change_state(xyz_editor, t
 @pytest.mark.parametrize("plane", _XYZ_PLANES)
 def test_xyz_actual_slice_control_owns_its_keys(xyz_editor, tmp_path, plane):
     editor, live = xyz_editor
-    layout = editor.render_headless()
+    # Each render owns a fresh context; the auto-sized controls child must
+    # finish layout before this test captures a physical slice hitpoint.
+    layout = editor.render_headless(frames=5)
+    settled = [_xyz_panel(frame, plane) for frame in layout["input_frames"][-2:]]
+    assert all(frame["phase"] == "warmup" for frame in layout["input_frames"][-2:])
+    assert len(settled) == 2 and all(panel["visible"] for panel in settled)
+    assert settled[0]["slice_id"] == settled[1]["slice_id"] != 0
+    assert settled[0]["slice_point"] == settled[1]["slice_point"] != [0.0, 0.0]
     point = _xyz_panel(layout, plane)["slice_point"]
     # A plain pointer click leaves an inactive slider with only NavId focus.
     # Ctrl-click enters the actual numeric editor so it owns these arrows.

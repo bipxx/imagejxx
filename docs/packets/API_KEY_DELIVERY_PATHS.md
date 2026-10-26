@@ -120,6 +120,12 @@ qualification/repair batch, not a claim of missing implementation.
 | `startup_workspace` | Same loader; actual Browse/Apply and exact restored membership, missing-file recovery | C12 shell |
 | `shortcut_bindings` | Existing compiler/ShortcutEditor; bind one command, conflict refusal, actual key dispatch and fresh reopen | C12 shell |
 
+C2 now has actual Windows/Linux persist/reopen proof in both C++ and Python for
+these six appearance consumers; see the [scoped receipt](../parity/reviews/cfg4-appearance001/receipt.json).
+The responsive linked-view repair and focused regressions are included. macOS,
+full owning cohorts and strict consumer-ledger admission remain required; this
+does not qualify all 61 settings or complete a capability family.
+
 Defaults, ranges, scope and persistence meanings come from the source audit;
 this table does not replace them. The next settings batch is selected by missing
 evidence and dependency readiness; C2…C12 labels do not force sequential order.

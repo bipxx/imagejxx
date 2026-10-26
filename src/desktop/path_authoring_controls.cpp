@@ -37,6 +37,7 @@ void PathAuthoringControls::observe(const char *name,bool enabled) {
   controls_[name]={{"id",ImGui::GetItemID()},{"enabled",enabled},
       {"point",{(a.x+b.x)/2,(a.y+b.y)/2}},{"rect",{a.x,a.y,b.x,b.y}},
       {"visible",ImGui::IsItemVisible()},{"hovered",ImGui::IsItemHovered()},{"active",ImGui::IsItemActive()},
+      {"window_name",ImGui::GetCurrentWindowRead()->Name},
       {"clip_rect",{clip.Min.x,clip.Min.y,clip.Max.x,clip.Max.y}}};
 }
 void PathAuthoringControls::cancel(const char *reason) {

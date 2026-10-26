@@ -39,6 +39,7 @@
 #include "planar_annotation_matrix.hpp"
 #include "rank_ui_probe.hpp"
 #include "rank_runtime_probe.hpp"
+#include "settings_appearance_ui_probe.hpp"
 #include "saved_roi_geometry_ui_probe.hpp"
 #include "shortcuts_ui_probe.hpp"
 #include "history_settings_ui_probe.hpp"
@@ -440,6 +441,15 @@ int run(const std::vector<std::string> &arguments) {
     const auto output=std::filesystem::absolute(std::filesystem::u8path(arguments[2]));
     imagejxx::desktop::Window editor((output.parent_path()/"preferences.json").u8string());
     imagejxx::desktop::manualThresholdWorkflowUiCase(editor,arguments[1],"imgui_cpp",arguments[2]);return 0;
+  }
+  if (!arguments.empty() && arguments[0] == "--settings-appearance-ui-case") {
+    if (arguments.size() != 3 ||
+        (arguments[1] != "appearance-persist" && arguments[1] != "appearance-reopen"))
+      throw std::invalid_argument("Use --settings-appearance-ui-case appearance-persist|appearance-reopen FRESH_DIRECTORY");
+    const auto output = std::filesystem::absolute(std::filesystem::u8path(arguments[2]));
+    imagejxx::desktop::Window editor((output.parent_path() / "preferences.json").u8string());
+    imagejxx::desktop::settingsAppearanceUiCase(editor, arguments[1], "imgui_cpp", arguments[2]);
+    return 0;
   }
   if (!arguments.empty() && arguments[0] == "--settings-measurement-ui-case") {
     if(arguments.size()!=4 || arguments[3].empty())

@@ -1,5 +1,50 @@
 # Additional efficiencies from the compilexx notes
 
+## Current delta: real consumers passed; keep the next prerequisite in scope
+
+Updated 2026-10-26. The [execution card](../THREE_AGENT_EXECUTION.md) owns the
+queue; the [C2 receipt](../parity/reviews/cfg4-appearance001/receipt.json) owns
+local source/product/evidence identities. This is coordinator follow-through,
+not a fresh Astra review or measured speedup. Historical text below is unchanged.
+
+- The real consumer led to a product repair: linked XY collapsed to16px at
+  scale 3. Bounded scrolling controls and scaled plane chrome now pass actual
+  ordinary/XY/XZ/YZ GL routes in both launchers on Windows/Linux. Current four
+  reader IDs pass per host; seven navigation regressions pass per host and eight
+  Windows annotation/path IDs pass. Broader owning cohorts and macOS stay open.
+- Synthetic records repeated an incorrect untruncated style expectation. Real
+  output plus vendored ImGui semantics established exact [10,7], not[10.5,7.5],
+  at scale 1.5. Seventeen controls now reject the latter. Pixel equations and
+  tolerances did not change. Re-audit complete saved records before recapture;
+  the final source-bound protocol still needs a current-reader capture.
+- Capture authoritative geometry at the actual point of use. Post-EndChild
+  ClipRect is restored to the parent; InnerClipRect is the correct retained
+  control-window clip. A fresh headless context also needed observed stable
+  slice geometry before choosing a click. Preserve all original input/science
+  assertions and failed traces; do not mislabel these fixture defects as kernels.
+- Bind the actual control owner after introducing a scroll child. Three probe
+  paths now use observed window_name and preserve popup/hover identities and
+  bounded physical scrolling. No new driver framework was needed.
+- Budget the reader as well as the producer: the Windows path diagnostic's
+  raw output reached 183 MB after decoding, exceeding its 128 MiB scratch ceiling.
+  Its functional pass and storage failure remain separate. Fresh Linux-hosted
+  scratch was losslessly archived and retired immediately; blocked Windows
+  cleanup was not retried by another method. Keep final receipts concise.
+- Restart a completed worker with followup_task; send_message alone does not
+  resume it. Reuse root+A/B with exclusive ownership and one execution lane.
+- Keep rights checks tied to the intended action. The candidate renderer is a
+  disposable CI-use tool, excluded from packaging/uploads. Product redistribution
+  entitlement is a separate gate. Retain notices and actual runtime proof, but
+  do not make this CI trial wait on an unrelated release-distribution decision.
+
+These implement lessons from all seven compilexx notes at existing owners.
+No controlled speedup or full-parity claim follows. Missing original scientific
+inputs, Mac/SDK/ownership, full cohorts, commercial product delivery and release
+remain required. Two inaccessible caches keep complete storage unverified;
+retired G016 evidence remains unavailable to the broad plan checker.
+
+## Historical review checkpoints
+
 ## Current delta: target ownership, real controls and full storage scope
 
 This card supersedes the older queued/pending-history and selected-root storage

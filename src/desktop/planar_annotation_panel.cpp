@@ -90,8 +90,12 @@ void PlanarAnnotationPanel::State::observe(const std::string &name,bool enabled,
   const auto a=ImGui::GetItemRectMin(),b=ImGui::GetItemRectMax();
   const auto id=item_id?item_id:ImGui::GetItemID();
   const auto x=input_width>0?a.x+input_width/2:(a.x+b.x)/2;
+  const auto *window=ImGui::GetCurrentWindowRead();
+  const auto clip=window->ClipRect;
   controls_[name]={{"id",id},{"enabled",enabled},
-      {"rect",{a.x,a.y,b.x,b.y}},{"point",{x,(a.y+b.y)/2}}};
+      {"rect",{a.x,a.y,b.x,b.y}},{"point",{x,(a.y+b.y)/2}},
+      {"visible",ImGui::IsItemVisible()},{"window_name",window->Name},
+      {"clip_rect",{clip.Min.x,clip.Min.y,clip.Max.x,clip.Max.y}}};
 }
 void PlanarAnnotationPanel::State::cancel(const char *reason) {
   if(active() || pathResizeSource_)last_cancel_=reason;
@@ -207,9 +211,13 @@ void PlanarAnnotationPanel::State::controls(Document &d,bool enabled,std::size_t
   };
   const std::array<const char *,10> names{"Navigate","Rectangle","Ellipse","Freehand","Line","Point","Edit","Polygon","Multipoint","Path"};
   const std::array<const char *,10> ids{"navigate","rectangle","ellipse","freehand","line","point","edit","polygon","multipoint","path"};
-  ImGui::TextUnformatted("Plane annotations:");ImGui::SameLine();
+  ImGui::TextUnformatted("Plane annotations:");
+  const auto &style=ImGui::GetStyle();
+  const float right=ImGui::GetCursorScreenPos().x+ImGui::GetContentRegionAvail().x;
   for(int i=0;i<10;++i) {
-    if(i && ImGui::GetItemRectMax().x+ImGui::CalcTextSize(names[i]).x+50<ImGui::GetWindowPos().x+ImGui::GetWindowContentRegionMax().x)ImGui::SameLine();
+    const float width=ImGui::GetFrameHeight()+style.ItemInnerSpacing.x+
+        ImGui::CalcTextSize(names[i]).x;
+    if(ImGui::GetItemRectMax().x+style.ItemSpacing.x+width<=right)ImGui::SameLine();
     if(ImGui::RadioButton(names[i],mode_==Mode(i))) {cancel("tool_changed");mode_=Mode(i);}
     observe(ids[i],enabled);
   }

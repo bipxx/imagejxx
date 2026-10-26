@@ -177,12 +177,15 @@ jobs:
         # Keep the Mac install and all original complete-suite readers required.
         if: runner.os == 'Windows'
         run: python -I -B scripts/ci_python_suite.py --history-suite --output build/ci-history --history-build-receipt build/ci-history-build/receipt.json
+      - name: Qualify authenticated paired appearance UI
+        if: runner.os == 'Windows'
+        run: python -I -B scripts/ci_python_suite.py --appearance-suite --output build/ci-appearance --appearance-build-receipt build/ci-history-build/receipt.json
       - name: Test the complete installed platform suite
         shell: bash
         run: |
           python -I -X utf8 -B tests/tools/test_ci_python_suite_transport.py
           if [ "$RUNNER_OS" = Windows ]; then
-            python scripts/ci_python_suite.py --output build/ci-python --history-output build/ci-history
+            python scripts/ci_python_suite.py --output build/ci-python --history-output build/ci-history --appearance-output build/ci-appearance
           else
             python scripts/ci_python_suite.py --output build/ci-python
           fi
@@ -215,6 +218,16 @@ jobs:
             build/ci-history/reader/*.json
             build/ci-history/reader/*.xml
             build/ci-history/reader/*.log
+            build/ci-appearance/receipt.json
+            build/ci-appearance/product-bindings.json
+            build/ci-appearance/capture.zip
+            build/ci-appearance/installed-smoke/*.json
+            build/ci-appearance/installed-smoke/*.xml
+            build/ci-appearance/installed-smoke/*.log
+            build/ci-appearance/capture-owner/*
+            build/ci-appearance/reader/*.json
+            build/ci-appearance/reader/*.xml
+            build/ci-appearance/reader/*.log
             build/ci-python/receipt.json
             build/ci-python/pytest.xml
             build/ci-python/pytest.log

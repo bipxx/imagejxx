@@ -1269,7 +1269,8 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     src/desktop/selection_creation_ui_probe.cpp
     src/desktop/scientific_roi_manager_ui_probe.cpp
     src/desktop/ieee_viewing_ui_probe.cpp src/desktop/gaussian_replay_policy.cpp src/desktop/rank_ui_probe.cpp
-    src/desktop/rank_runtime_probe.cpp)
+    src/desktop/rank_runtime_probe.cpp
+    src/desktop/settings_appearance_ui_probe.cpp)
   target_sources(imagejxx_desktop PRIVATE src/desktop/indexed_color_panel.cpp src/desktop/color_stack_panel.cpp src/desktop/rgb_dataset_panel.cpp src/desktop/rgb_dataset_ui_probe.cpp)
   set_target_properties(imagejxx_desktop PROPERTIES POSITION_INDEPENDENT_CODE ON)
   if(APPLE)

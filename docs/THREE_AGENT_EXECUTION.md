@@ -1,5 +1,69 @@
 # Three-agent execution plan
 
+## Current execution card — 2026-10-25
+
+Updated 2026-10-26. Current C2 work is based on published `2577aba`; exact
+consumed source and product identities are in the
+[local progress receipt](parity/reviews/cfg4-appearance001/receipt.json).
+The last diagnosed hosted [run40264115322](https://github.com/bipxx/imagejxx/actions/runs/40264115322)
+is terminal failure at that baseline. Its three headless C++/SDK jobs and source
+preparations passed; Windows history, Linux original references and Apple Ninja
+nonzero-exit assertion failed. No current-head hosted acceptance is claimed.
+
+**Completed local evidence:** all four current C2 reader IDs pass on each of
+Windows and Linux: persist/reopen × C++/Python, eight actual GL processes total.
+The independent reader checks all six appearance consumers, ordinary/XY/XZ/YZ
+nearest/linear sampler and framebuffer witnesses, new-owner zoom, exact source/
+history preservation and fresh-process persistence. Both native layout tests
+pass at scales 1/3. Seven affected navigation IDs pass per host; eight additional
+Windows annotation/path IDs pass in both launchers. These are focused affected
+regressions, not the complete orthogonal/authoring/platform suites. Full family
+states stay 47 in progress / 52 open / zero complete.
+
+Actual capture exposed a 16px-high linked canvas at scale 3. Scaled controls now
+scroll within a bounded child, leaving usable plane space; actual Windows/Linux
+linked heights are 102/79px for 64px images. Annotation radios wrap using scaled
+metrics. Three path probes use their observed owning window for real scrolling.
+Two observer defects were corrected from source and traces: post-EndChild
+visibility uses InnerClipRect, and ImGui truncates scaled padding to [10,7] at 1.5.
+The XY numeric-control fixture requires two stable visible observations before
+choosing its hitpoint. Original failures and expectations remain recorded.
+
+Use root plus A/B; root remains the only build/install/run/publication owner:
+
+| Next owner | Smallest concrete action | Required exit |
+| --- | --- | --- |
+| Root, A source review, B controls | Publish the coherent checked C2/Ninja repair and follow its exact hosted handle; do not dispatch status-only jobs | Actual six Darwin Ninja cases on the successor; all required installed/SDK results remain distinct from local CMake evidence |
+| A implementation, B independent controls, root execution | Implement the bounded disposable Windows CI-only GL trial at the existing preparation/capture seams. Stage verified app-local DLLs after packaging, outside uploaded roots; preserve notices, refuse foreign files, remove owned copies after processes end | Actual loaded-module hashes and GL identity, unchanged hidden-window smoke, both installed launchers/history and C2. No local provider install, product redistribution or test skip |
+| Root / authentic-reference recovery | Recover the seven original scientific payloads from an authenticated original source | Original hashes unchanged; no substitute observations or new pins |
+| Root + owning reviewers / later complete cohorts | Finish macOS C2/ownership, remaining full affected suites, scientific/accessibility/commercial/release gates and consumer-ledger admission | Owning full-scope evidence; no family completion from these focused passes |
+
+The retained Runtime terms support installation/use for the CI-only trial;
+requiring a product redistribution grant for that task was an unnecessary barrier.
+Product redistribution remains unadmitted. The scope correction and exact
+notice/source records are described in the
+[Windows CI packet](packets/CI2-windows-software-gl.md). Actual trial admission
+and runtime qualification remain required. The exact Ninja payload 7 assertion
+is repaired with 16 portable controls per host; old five-of-six hosted results
+are unchanged and no product console profile is enabled.
+
+Latest cited inventory `appearance-final-storage001.json` measures 8,561,902,803
+known bytes, 28,031,789 upper-bound margin and two inaccessible caches; the full
+8GiB budget remains unverified. This turn retired 110,430,400 bytes of cold Linux
+test executables and 207,768,131 bytes of raw Linux-hosted captures, retaining
+verified lossless archives/receipts. Old binaries are unavailable and raw readers
+need original paths restored. The path diagnostic exceeded its 128 MiB scratch
+ceiling after the reader: functional assertions passed, storage control failed,
+and raw data was immediately archived/retired. Do not call that a storage pass.
+Preserve all policy-blocked Windows targets without alternate deletion. Keep one
+compiler cache/runtime per platform and never recreate historical `build/` trees.
+The broad plan checker still refuses retired G016 evidence; preserve that limit.
+
+## Historical execution checkpoints
+
+The checkpoints below retain their original observations and proposed next
+actions; the current card above supersedes their live/queued/held scheduling.
+
 **Current successor, 2026-10-25:** published `379621f` run `40248817628`
 remains live. All dependency preparations and Linux headless/SDK passed; Linux
 installed lanes refuse missing originals. Windows installed lanes failed before

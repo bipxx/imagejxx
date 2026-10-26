@@ -850,6 +850,22 @@ class HistoryBuildWindowsLaunch(unittest.TestCase):
             print("HISTORY_PYTHON_LAUNCH_RESULT=" + json.dumps(evidence, sort_keys=True), flush=True)
 
 
+class HistoryBuildRoleSelection(unittest.TestCase):
+    def test_actual_role_selector_preserves_both_packets_with_repeated_role_names(self):
+        # Exercise the real source-loaded selector; transport fixtures elsewhere
+        # intentionally replace this seam and cannot detect dict-key collisions.
+        selected = build._history_paths(ROOT)
+        self.assertTrue({"tests/python/test_history_settings_ui.py",
+                         "src/desktop/history_settings_ui_probe.cpp",
+                         "src/desktop/history_settings_ui_probe.hpp",
+                         "tests/python/test_settings_appearance_ui.py",
+                         "tests/python/settings_appearance_reader.py",
+                         "tests/python/settings_appearance_expectations.py",
+                         "src/desktop/settings_appearance_ui_probe.cpp",
+                         "src/desktop/settings_appearance_ui_probe.hpp",
+                         "scripts/ci_owned_process.py"} <= selected)
+
+
 class HistoryBuildSourceLoading(unittest.TestCase):
     def test_load_script_executes_source_despite_timestamp_valid_stale_bytecode(self):
         # Explicitly generated transport fixture, not a product/build invocation.

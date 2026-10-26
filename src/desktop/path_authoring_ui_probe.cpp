@@ -161,14 +161,18 @@ Json pathAuthoringUiCase(Window &window,const std::string &mode,const std::strin
           name.rfind("plane.",0)==0?"Images":name.rfind("prop.",0)==0?(saved?"Saved area geometry":"Selection properties"):
           name.rfind("host.roi_manager.",0)==0?"ROI Manager":name.rfind("host.workflow.",0)==0?"Workflow":
           name.rfind("host.navigation.",0)==0 || name.rfind("host.tools.",0)==0 || name.rfind("host.path.",0)==0?"Tools":nullptr;
-      auto *w=windowName?ImGui::FindWindowByName(windowName):nullptr;
+      auto *w=hit.contains("window_name")?ImGui::FindWindowByName(hit.at("window_name").get<std::string>().c_str()):
+          windowName?ImGui::FindWindowByName(windowName):nullptr;
+      require(!hit.contains("window_name") || w,"Path control owner is unavailable: "+name);
       if(!w)break;
       const auto x=hit["point"][0].get<float>(),y=hit["point"][1].get<float>();
-      require(x>=w->InnerRect.Min.x && x<w->InnerRect.Max.x,"Path control is horizontally clipped: "+name);
-      if(y>=w->InnerRect.Min.y && y<w->InnerRect.Max.y && hit.value("visible",true))break;
+      const auto clip=w->InnerClipRect;
+      require(x>=clip.Min.x && x<clip.Max.x,"Path control is horizontally clipped: "+name);
+      if(y>=clip.Min.y && y<clip.Max.y && hit.value("visible",true))break;
       require(attempt<44,"Path control cannot be exposed: "+name);
-      frame("scroll.position",Json::array({{{"type","position"},{"space","screen"},{"point",{w->InnerRect.Max.x-12,(w->InnerRect.Min.y+w->InnerRect.Max.y)/2}}}}));
-      frame("scroll",Json::array({{{"type","wheel"},{"x",0},{"y",hit["point"][1].get<float>()>w->InnerRect.Max.y?-3:3}}}));
+      frame("scroll.position",Json::array({{{"type","position"},{"space","screen"},{"point",{clip.Min.x+2,(clip.Min.y+clip.Max.y)/2}}}}));
+      require(ImGui::GetCurrentContext()->HoveredWindow==w,"Path scroll is not over the owning window: "+name);
+      frame("scroll",Json::array({{{"type","wheel"},{"x",0},{"y",hit["point"][1].get<float>()>clip.Max.y?-3:3}}}));
     }
     report["controls"].push_back({{"name",name},{"control",hit}});
     frame(name+".position",Json::array({{{"type","position"},{"space","screen"},{"point",hit["point"]}}}));

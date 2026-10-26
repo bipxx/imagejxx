@@ -107,6 +107,38 @@ SPEC["scientific-orientation"] = {
               "record_core_header": "src/native/axis_command_record.hpp",
               "reader": "tests/python/test_scientific_orientation_ui.py"},
 }
+SPEC["appearance"] = {
+    "stem": "settings-appearance", "prefix": "c2",
+    "cases": ("appearance-persist", "appearance-reopen"),
+    "flag": "--settings-appearance-ui-case", "method": "_settings_appearance_ui_case",
+    "schema": "c2.settings-appearance.ui.001",
+    "contract_field": "schema", "contract": "c2.settings-appearance.ui.001",
+    "state_field": "state", "raw_name": "case.json", "paired_preferences": True,
+    "reader_kind": "c2.settings-appearance-ui-reader-inputs.001",
+    "build_kind": "c2.settings-appearance-source-product-binding.001",
+    "python_origin_kind": "c2.settings-appearance-python-launcher-origin.001",
+    "limits": {"parent_seconds": 300, "case_process_seconds": 60,
+               "producer_seconds": 60, "frames": 750, "paired_raw_bytes": 64 * MIB,
+               "stage_bytes": 192 * MIB},
+    "roles": {"producer": "src/desktop/settings_appearance_ui_probe.cpp",
+              "producer_header": "src/desktop/settings_appearance_ui_probe.hpp",
+              "window_header": "src/desktop/window.hpp",
+              "orthogonal": "src/desktop/orthogonal.cpp",
+              "orthogonal_header": "src/desktop/orthogonal.hpp",
+              "planar_annotation_panel": "src/desktop/planar_annotation_panel.cpp",
+              "planar_annotation_panel_header": "src/desktop/planar_annotation_panel.hpp",
+              "path_authoring_controls": "src/desktop/path_authoring_controls.cpp",
+              "path_authoring_ui_probe": "src/desktop/path_authoring_ui_probe.cpp",
+              "path_authoring_edge_ui_probe": "src/desktop/path_authoring_edge_ui_probe.cpp",
+              "path_segment_ui_probe": "src/desktop/path_segment_ui_probe.cpp",
+              "rendering": "src/desktop/rendering.cpp",
+              "settings_io": "src/desktop/settings_io.cpp",
+              "process_helper": "scripts/ci_owned_process.py",
+              "mac_process_helper": "scripts/ci_mac_process.py",
+              "reader": "tests/python/test_settings_appearance_ui.py",
+              "reader_core": "tests/python/settings_appearance_reader.py",
+              "expectations": "tests/python/settings_appearance_expectations.py"},
+}
 ORIENTATION_CONTRACT = {
     "path": str(ROOT / "build/scientific-orientation-entry001/contract.json"),
     "bytes": 30672,
@@ -120,6 +152,10 @@ RUNTIME_ROLES = ("executable", "producer_artifact", "native_artifact")
 def require(condition, message):
     if not condition:
         raise RuntimeError(message)
+
+
+def portable_kind(kind):
+    return kind in ("history", "appearance")
 
 
 def read_json(path, limit=2 * MIB):
@@ -301,7 +337,7 @@ def run_history_owned(owner, argv, output, label, deadline, report):
     ownership receipt remains a separate file.
     """
     started = time.monotonic()
-    remaining = min(15., deadline - started)
+    remaining = min(report["limits"].get("case_process_seconds", 15.), deadline - started)
     require(remaining > 0, "Case/context/parent deadline exhausted")
     row = {"argv": argv, "timeout_seconds": remaining, "state": "starting"}
     report["processes"].append(row)
@@ -410,7 +446,7 @@ def python_case(args):
     import numpy
     modules = {name: pin(Path(sys.modules[name].__file__)) for name in MODULES}
     numpy_origin = pin(Path(numpy.__file__))
-    actual_engine = pin(engine(portable=args.kind == "history"))
+    actual_engine = pin(engine(portable=portable_kind(args.kind)))
     require(modules == launch["installed_modules"] and actual_engine == launch["python_engine"], "Wrong installed Python/engine origins")
     require(numpy_origin == launch["numpy"]["module"] and numpy.__version__ == launch["numpy"]["version"] == "2.2.6", "Wrong approved NumPy")
     require(all(Path(value["path"]).is_relative_to(site) for value in modules.values()) and
@@ -436,19 +472,20 @@ def python_case(args):
     finally:
         origin["modules_after"] = {name: pin(Path(sys.modules[name].__file__)) for name in MODULES}
         origin["numpy_after"] = pin(Path(numpy.__file__))
-        origin["engine_after"] = pin(engine(portable=args.kind == "history"))
+        origin["engine_after"] = pin(engine(portable=portable_kind(args.kind)))
         if (origin["modules_before"] != origin["modules_after"] or
                 origin["numpy_before"] != origin["numpy_after"] or
                 origin["engine_before"] != origin["engine_after"]):
             origin["observation_state"] = "failed"
-        write(args.directory.parent / "launcher-origin.json", origin)
+        origin_name = args.python_case + "-launcher-origin.json" if spec.get("paired_preferences") else "launcher-origin.json"
+        write(args.directory.parent / origin_name, origin)
     require(origin["modules_before"] == origin["modules_after"] and
             origin["numpy_before"] == origin["numpy_after"] and
             origin["engine_before"] == origin["engine_after"], "Imported module bytes changed")
 
 
 def capture(args):
-    require(args.kind == "history" or os.name == "nt", "Windows-only installed capture")
+    require(portable_kind(args.kind) or os.name == "nt", "Windows-only installed capture")
     spec = SPEC[args.kind]
     selected_cases = spec["cases"]
     if args.case_ids is not None:
@@ -462,7 +499,7 @@ def capture(args):
     limits.update(spec.get("limits", {}))
     started = time.monotonic()
     deadline = started + limits["parent_seconds"]
-    if args.kind == "history":
+    if portable_kind(args.kind):
         output = history_output(args.output)
     else:
         output = args.output.absolute().resolve()
@@ -564,7 +601,7 @@ def capture(args):
                               ("imagejxx.ui.persistence", COMMON["python_preferences"])):
             require(all(bindings["installed_modules"][name][key] == frozen[logical][key] for key in ("bytes", "sha256")), "Installed Python source differs from freeze")
         python = verify(bindings["python_engine"])
-        require(python == pin(engine(portable=args.kind == "history")) and products["imgui_python"]["executable"] == python and
+        require(python == pin(engine(portable=portable_kind(args.kind))) and products["imgui_python"]["executable"] == python and
                 products["imgui_python"]["producer_artifact"] == products["imgui_python"]["native_artifact"] ==
                 bindings["installed_modules"]["imagejxx._desktop"], "Direct engine/actual desktop module binding differs")
         numpy = bindings["numpy"]
@@ -577,7 +614,7 @@ def capture(args):
                   "installed_modules": bindings["installed_modules"], "source_set_sha256": source_set}
         launch_path = output / "launch-inputs.json"
         write(launch_path, launch)
-        if args.kind == "history":
+        if portable_kind(args.kind):
             owner = history_owner()
         else:
             sys.path.insert(0, str(ROOT / "scripts"))
@@ -590,8 +627,9 @@ def capture(args):
         total_raw = 0
         for case in selected_cases:
             for context in CONTEXTS:
-                directory = output / context / case / "run"
-                directory.parent.mkdir(parents=True, exist_ok=False)
+                paired = spec.get("paired_preferences", False)
+                directory = output / context / case if paired else output / context / case / "run"
+                directory.parent.mkdir(parents=True, exist_ok=paired and case != selected_cases[0])
                 if context == "imgui_cpp":
                     argv = [products[context]["executable"]["path"], spec["flag"], case, str(directory)]
                 else:
@@ -602,7 +640,7 @@ def capture(args):
                     remaining = limits["context_seconds"] - elapsed[context]
                     require(remaining > 0, "Actual context60s budget exhausted")
                     case_deadline = min(deadline, time.monotonic() + remaining)
-                if args.kind == "history":
+                if portable_kind(args.kind):
                     process = run_history_owned(owner, argv, output, context + "-" + case,
                                                 case_deadline, report)
                 else:
@@ -615,8 +653,8 @@ def capture(args):
                 raw = read_json(raw_path, 16 * MIB)  # Retain original bytes; no rewrite/semantic oracle.
                 require(raw["schema"] == spec["schema"] and raw[spec.get("contract_field", "contract")] ==
                         spec.get("contract", "p06h." + spec["stem"] + "-ui.001") and
-                        (raw["case_id"], raw["context"]) == (case, context) and raw["observation_state"] == "observed" and
-                        raw["acceptance_claim"] is False and 1 <= len(raw["frames"]) <= 180 and 0 < raw["elapsed_seconds"] <= 15,
+                        (raw["case_id"], raw["context"]) == (case, context) and raw[spec.get("state_field", "observation_state")] == "observed" and
+                        raw["acceptance_claim"] is False and 1 <= len(raw["frames"]) <= limits["frames"] and 0 < raw["elapsed_seconds"] <= limits["producer_seconds"],
                         "Actual producer envelope/caps differ")
                 require(raw["runtime_before"] == raw["runtime_after"] and raw["runtime_before"]["process_id"] == process["pid"], "Actual process/runtime identity differs")
                 for role in RUNTIME_ROLES:
@@ -640,7 +678,7 @@ def capture(args):
                         "Actual orientation producer limits differ")
                     storage(directory, {"stage_bytes": limits["native_archive_bytes"]})
                 if context == "imgui_python":
-                    origin_path = directory.parent / "launcher-origin.json"
+                    origin_path = directory.parent / (case + "-launcher-origin.json" if paired else "launcher-origin.json")
                     origin = read_json(origin_path, 128 * 1024)
                     require(origin["before"] == origin["after"] == products[context] and origin["process_id"] == process["pid"] and
                             origin["modules_before"] == origin["modules_after"] == bindings["installed_modules"], "Python launcher origins differ")
