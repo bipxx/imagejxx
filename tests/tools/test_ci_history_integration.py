@@ -50,7 +50,11 @@ DRAWING_IDS = tuple(
     "tests/python/test_settings_drawing_ui.py::test_installed_settings_drawing[" + case + "-" + context + "]"
     for case in ("drawing-persist", "drawing-reopen") for context in ("imgui_cpp", "imgui_python"))
 DRAWING_ENV = "IMAGEJXX_SETTINGS_DRAWING_UI_CASE_ROOT"
-PACKET_IDS = {"history": HISTORY_IDS, "appearance": APPEARANCE_IDS, "drawing": DRAWING_IDS}
+PLAYBACK_IDS = tuple(
+    "tests/python/test_settings_playback_ui.py::test_installed_settings_playback[" + case + "-" + context + "]"
+    for case in ("playback-persist", "playback-reopen") for context in ("imgui_cpp", "imgui_python"))
+PLAYBACK_ENV = "IMAGEJXX_SETTINGS_PLAYBACK_UI_CASE_ROOT"
+PACKET_IDS = {"history": HISTORY_IDS, "appearance": APPEARANCE_IDS, "drawing": DRAWING_IDS, "playback": PLAYBACK_IDS}
 HISTORY_ROLES = (
     "tests/python/actual_observation_transport.py", "src/desktop/actual_observation_transport.hpp",
     "src/desktop/window.cpp", "src/desktop/headless_session_internal.hpp",
@@ -82,6 +86,11 @@ DRAWING_EXTRA_ROLES = (
     "src/desktop/settings_io.cpp", "scripts/ci_owned_process.py", "scripts/ci_mac_process.py",
     "tests/python/test_settings_drawing_ui.py", "tests/python/settings_drawing_reader.py",
     "tests/python/settings_drawing_expectations.py", "tests/native/rounded_path_reference.inc",
+)
+PLAYBACK_EXTRA_ROLES = (
+    "src/desktop/settings_playback_ui_probe.cpp", "src/desktop/settings_playback_ui_probe.hpp",
+    "src/native/playback.cpp", "include/imagejxx/playback.hpp",
+    "tests/python/test_settings_playback_ui.py", "tests/python/settings_playback_reader.py",
 )
 MANDATORY_SOURCES = (
     "CMakeLists.txt", "pyproject.toml", "README.md", "LICENSE", "THIRD_PARTY_NOTICES.md",
@@ -281,7 +290,7 @@ class HistoryIntegration(unittest.TestCase):
 
     def bindings(self, *, kind="history"):
         application = pin(self.application)
-        prefix = {"history": "p06h", "appearance": "c2", "drawing": "c3"}[kind]
+        prefix = {"history": "p06h", "appearance": "c2", "drawing": "c3", "playback": "c5"}[kind]
         return {"schema_version": 1, "kind": prefix + ".installed-ui-capture-bindings.001",
                 "kind_selection": kind, "build_receipt": pin(self.build_path),
                 "source_freeze": self.build_document["source_freeze"],
@@ -325,7 +334,7 @@ class HistoryIntegration(unittest.TestCase):
             processes.append({"owned_process_receipt": process_pin})
         capture = {"state": "passed", "acceptance_claim": False,
                    "inputs": {"product_bindings": bindings_pin}, "cases": cases, "processes": processes}
-        if kind in ("appearance", "drawing"):
+        if kind in ("appearance", "drawing", "playback"):
             capture["kind_selection"] = kind
         self.save(directory / "capture.json", capture)
         self.save(directory / "provenance.json", {"fixture": "synthetic, not executed reader provenance"})
@@ -661,7 +670,8 @@ class HistoryIntegration(unittest.TestCase):
     def command(self, argv, *, output, root, environment, timeout, **kwargs):
         stage = "capture" if "--kind" in argv else "reader"
         kind = argv[argv.index("--kind") + 1] if stage == "capture" else (
-            "drawing" if DRAWING_ENV in environment else "appearance" if APPEARANCE_ENV in environment else "history")
+            "playback" if PLAYBACK_ENV in environment else "drawing" if DRAWING_ENV in environment
+            else "appearance" if APPEARANCE_ENV in environment else "history")
         self.events.append(stage)
         self.commands.append((stage, list(argv), deepcopy(environment), timeout))
         self.assertEqual(root, self.root)
@@ -991,7 +1001,7 @@ class AppearanceIntegration(unittest.TestCase):
         for kind in ("shortcuts", "", None):
             with self.subTest(kind=kind), patch.object(suite, "history_helper") as helper, \
                     patch.object(suite, "history_builder") as build:
-                with self.assertRaisesRegex(ValueError, "fixed history, appearance or drawing"):
+                with self.assertRaisesRegex(ValueError, "fixed history, appearance, drawing or playback"):
                     suite.run_history_suite(f.output, f.root, f.build_path, kind=kind)
                 self.assertFalse(f.output.exists())
                 helper.assert_not_called()
@@ -1124,11 +1134,91 @@ class DrawingIntegration(unittest.TestCase):
             packet.assert_not_called()
 
 
+class PlaybackIntegration(unittest.TestCase):
+    """Actual metadata joins for C5, with explicitly fake installed products."""
+    def setUp(self):
+        self.f = HistoryIntegration()
+        self.f.setUp()
+        self.addCleanup(self.f.doCleanups)
+        f = self.f
+        f.output = f.root / "build/playback-suite"
+        extra = set(APPEARANCE_EXTRA_ROLES + DRAWING_EXTRA_ROLES + PLAYBACK_EXTRA_ROLES)
+        for name in extra:
+            if not (f.root / name).exists():
+                f.write(name, ("synthetic frozen reader/consumer role: " + name + "\n").encode())
+        f.tracked.extend(extra - set(f.tracked))
+        f.source_names = sorted(set(f.source_names) | extra)
+        f.freeze_document["sources"] = [{"logical_path": n, **pin(f.root / n)} for n in f.source_names]
+        f.start_patch(patch.object(builder, "_history_paths", return_value=set(HISTORY_ROLES) | extra))
+        f.write_build()
+
+    def test_four_literal_ids_and_only_playback_environment_are_admitted(self):
+        self.assertEqual(suite.PLAYBACK_IDS, PLAYBACK_IDS)
+        f = self.f
+        f.make_packet(kind="playback")
+        with patch.object(suite, "complete_command", side_effect=AssertionError("No replay")):
+            self.assertEqual(f.validate(kind="playback"), {PLAYBACK_ENV: str(f.output / "capture")})
+        for kind in ("history", "appearance"):
+            with self.assertRaisesRegex(ValueError, "has not passed"):
+                f.validate(kind=kind)
+        self.assertEqual(f.events, [])
+
+    def test_real_binding_and_ordered_parent_keep_c5_contract(self):
+        f = self.f
+        with patch.object(suite.importlib, "import_module", side_effect=f.imported_module):
+            value = suite.history_bindings(f.build_path, f.application, f.package, f.root, kind="playback")
+        self.assertEqual(value, f.bindings(kind="playback"))
+        self.assertEqual(value["kind"], "c5.installed-ui-capture-bindings.001")
+        f.run_suite(kind="playback")
+        self.assertEqual(f.events, ["bindings", "smoke", "capture", "reader"])
+        self.assertEqual(f.validate(kind="playback"), {PLAYBACK_ENV: str(f.output / "capture")})
+        reader = f.commands[-1]
+        self.assertTrue(set(PLAYBACK_IDS) <= set(reader[1]))
+
+    def test_missing_independent_reference_refuses_before_product_import(self):
+        f = self.f
+        missing = "src/native/playback.cpp"
+        f.tracked.remove(missing)
+        f.freeze_document["sources"] = [row for row in f.freeze_document["sources"] if row["logical_path"] != missing]
+        f.write_build()
+        roles = set(HISTORY_ROLES + APPEARANCE_EXTRA_ROLES + DRAWING_EXTRA_ROLES + PLAYBACK_EXTRA_ROLES + PLAYBACK_EXTRA_ROLES) - {missing}
+        with patch.object(builder, "_history_paths", return_value=roles), \
+                patch.object(suite.importlib, "import_module", side_effect=AssertionError("No import")):
+            with self.assertRaisesRegex(ValueError, "Playback build is missing frozen source roles.*playback"):
+                suite.history_bindings(f.build_path, f.application, f.package, f.root, kind="playback")
+
+    def test_same_count_reader_substitution_is_rejected(self):
+        f = self.f
+        row = f.make_packet(kind="playback")
+        ids = list(PLAYBACK_IDS)
+        ids[-1] = ids[-1].replace("playback-reopen", "unreviewed-recipe")
+        row["reader_junit"] = f.write_junit(f.output / "reader/pytest.xml", ids)
+        f.save(f.output / "receipt.json", row)
+        with self.assertRaises(ValueError):
+            f.validate(kind="playback")
+
+    def test_cli_dispatches_only_playback_and_requires_its_build_input(self):
+        f = self.f
+        argv = ["ci_python_suite.py", "--playback-suite", "--output", str(f.output),
+                "--history-build-receipt", str(f.build_path), "--repository", str(f.root)]
+        with patch.object(sys, "argv", argv), patch.object(suite, "run_history_suite") as packet, \
+                patch.object(suite, "run") as complete, patch.object(suite, "reference_readiness") as readiness:
+            suite.main()
+        packet.assert_called_once_with(f.output, f.root, f.build_path, kind="playback")
+        complete.assert_not_called()
+        readiness.assert_not_called()
+        with patch.object(sys, "argv", ["ci_python_suite.py", "--playback-suite", "--output", str(f.output)]), \
+                redirect_stderr(io.StringIO()), patch.object(suite, "run_history_suite") as packet:
+            with self.assertRaises(SystemExit):
+                suite.main()
+            packet.assert_not_called()
+
+
 class WindowsGlIntegration(unittest.TestCase):
     """One synthetic provider lifetime; original packet/file admission is real."""
 
     def setUp(self):
-        fixture = DrawingIntegration()
+        fixture = PlaybackIntegration()
         fixture.setUp()
         self.addCleanup(fixture.doCleanups)
         self.f = fixture.f
@@ -1136,6 +1226,7 @@ class WindowsGlIntegration(unittest.TestCase):
         self.history = self.f.root / "build/ci-history"
         self.appearance = self.f.root / "build/ci-appearance"
         self.drawing = self.f.root / "build/ci-drawing"
+        self.playback = self.f.root / "build/ci-playback"
         self.provider_output = self.f.root / "build/ci-windows-gl"
         self.journal_path = self.provider_output / "suite.json"
         self.stage = {"fixture": "synthetic admitted stage; no DLLs or GL execution"}
@@ -1161,14 +1252,14 @@ class WindowsGlIntegration(unittest.TestCase):
     def journal(self):
         return self.f.read(self.journal_path)
 
-    def invoke(self, *, output=None, history=None, appearance=None, drawing=None):
+    def invoke(self, *, output=None, history=None, appearance=None, drawing=None, playback=None):
         return suite.run_windows_gl_suite(output or self.output, self.f.root, self.f.build_path,
-                                          history or self.history, appearance or self.appearance, drawing or self.drawing)
+                                          history or self.history, appearance or self.appearance, drawing or self.drawing, playback or self.playback)
 
     def packet(self, destination, root, build_receipt, *, kind):
         self.assertEqual((root, build_receipt), (self.f.root, self.f.build_path))
-        self.assertEqual(destination, {"history": self.history, "appearance": self.appearance, "drawing": self.drawing}[kind])
-        prior = {"history": [], "appearance": ["history"], "drawing": ["history", "appearance"]}[kind]
+        self.assertEqual(destination, {"history": self.history, "appearance": self.appearance, "drawing": self.drawing, "playback": self.playback}[kind])
+        prior = {"history": [], "appearance": ["history"], "drawing": ["history", "appearance"], "playback": ["history", "appearance", "drawing"]}[kind]
         self.assertEqual([row["kind"] for row in self.journal()["stages"]], prior)
         self.assertEqual(self.journal()["state"], "running")
         self.events.append(kind)
@@ -1189,24 +1280,24 @@ class WindowsGlIntegration(unittest.TestCase):
             Path(capture["cases"][0]["raw"]["path"]).write_bytes(b"changed after the pinned packet\n")
 
     def runtime(self, stage, reports):
-        self.assertEqual(self.events, ["history", "appearance", "drawing"])
+        self.assertEqual(self.events, ["history", "appearance", "drawing", "playback"])
         self.events.append("runtime")
         self.assertEqual(stage, self.stage)
         self.assertEqual([(row["case_id"], row["context"]) for row in reports],
                          [(case, context) for case in ("appearance-persist", "appearance-reopen")
                           for context in ("imgui_cpp", "imgui_python")])
-        self.assertEqual([row["kind"] for row in self.journal()["stages"]], ["history", "appearance", "drawing"])
+        self.assertEqual([row["kind"] for row in self.journal()["stages"]], ["history", "appearance", "drawing", "playback"])
         self.assertFalse((self.provider_output / "runtime-proof.json").exists())
         if self.failure == "runtime":
             raise ValueError("synthetic provider runtime failure")
         return {"schema": "imagejxx.windows-gl-runtime.001", "state": "verified",
                 "fixture": "synthetic provider-proof callback; not actual GL qualification"}
 
-    def complete(self, output, root, *, history_output, appearance_output, drawing_output):
-        self.assertEqual(self.events, ["history", "appearance", "drawing", "runtime"])
+    def complete(self, output, root, *, history_output, appearance_output, drawing_output, playback_output):
+        self.assertEqual(self.events, ["history", "appearance", "drawing", "playback", "runtime"])
         self.events.append("complete")
-        self.assertEqual((output, root, history_output, appearance_output, drawing_output),
-                         (self.output, self.f.root, self.history, self.appearance, self.drawing))
+        self.assertEqual((output, root, history_output, appearance_output, drawing_output, playback_output),
+                         (self.output, self.f.root, self.history, self.appearance, self.drawing, self.playback))
         journal = self.journal()
         self.assertEqual(journal["stages"][-1], {"kind": "complete", "state": "running"})
         self.assertEqual(journal["runtime_proof"], pin(self.provider_output / "runtime-proof.json"))
@@ -1214,7 +1305,8 @@ class WindowsGlIntegration(unittest.TestCase):
         for directory, kind, environment in (
                 (history_output, "history", "IMAGEJXX_HISTORY_SETTINGS_UI_CASE_ROOT"),
                 (appearance_output, "appearance", APPEARANCE_ENV),
-                (drawing_output, "drawing", DRAWING_ENV)):
+                (drawing_output, "drawing", DRAWING_ENV),
+                (playback_output, "playback", PLAYBACK_ENV)):
             self.assertEqual(suite.validate_history_output(directory, root, self.f.application,
                                                           self.f.modules, kind=kind),
                              {environment: str(directory / "capture")})
@@ -1225,11 +1317,11 @@ class WindowsGlIntegration(unittest.TestCase):
 
     def test_paired_packets_then_runtime_proof_then_full_have_real_ordered_journal(self):
         self.invoke()
-        self.assertEqual(self.events, ["history", "appearance", "drawing", "runtime", "complete"])
+        self.assertEqual(self.events, ["history", "appearance", "drawing", "playback", "runtime", "complete"])
         row = self.journal()
         self.assertEqual((row["schema"], row["state"], row["acceptance_claim"]),
                          ("imagejxx.windows-gl-suite.001", "passed", False))
-        self.assertEqual(row["stages"], [{"kind": kind, "state": "passed"} for kind in ("history", "appearance", "drawing", "complete")])
+        self.assertEqual(row["stages"], [{"kind": kind, "state": "passed"} for kind in ("history", "appearance", "drawing", "playback", "complete")])
         self.assertEqual(row["stage"], self.stage_pin)
         proof = self.f.read(self.provider_output / "runtime-proof.json")
         self.assertEqual(proof["stage"], self.stage_pin)
@@ -1240,10 +1332,10 @@ class WindowsGlIntegration(unittest.TestCase):
         self.failure = "history"
         with self.assertRaisesRegex(ValueError, "paired UI qualification failed"):
             self.invoke()
-        self.assertEqual(self.events, ["history", "appearance", "drawing", "runtime"])
+        self.assertEqual(self.events, ["history", "appearance", "drawing", "playback", "runtime"])
         row = self.journal()
         self.assertEqual([(r["kind"], r["state"]) for r in row["stages"]],
-                         [("history", "failed"), ("appearance", "passed"), ("drawing", "passed"), ("complete", "not_run")])
+                         [("history", "failed"), ("appearance", "passed"), ("drawing", "passed"), ("playback", "passed"), ("complete", "not_run")])
         self.assertIn("synthetic history failure", row["stages"][0]["error"]["message"])
         self.assertEqual(row["runtime_proof"], pin(self.provider_output / "runtime-proof.json"))
         self.assertEqual(self.f.read(self.history / "receipt.json")["state"], "failed")
@@ -1254,10 +1346,10 @@ class WindowsGlIntegration(unittest.TestCase):
         self.failure = "appearance"
         with self.assertRaisesRegex(ValueError, "paired UI qualification failed"):
             self.invoke()
-        self.assertEqual(self.events, ["history", "appearance", "drawing"])
+        self.assertEqual(self.events, ["history", "appearance", "drawing", "playback"])
         row = self.journal()
         self.assertEqual([(r["kind"], r["state"]) for r in row["stages"]],
-                         [("history", "passed"), ("appearance", "failed"), ("drawing", "passed"), ("complete", "not_run")])
+                         [("history", "passed"), ("appearance", "failed"), ("drawing", "passed"), ("playback", "passed"), ("complete", "not_run")])
         self.assertEqual(row["runtime_proof"], {"state": "unavailable", "reason": "appearance packet failed"})
         self.assertEqual(row["state"], "failed")
         self.assertFalse(self.output.exists() or (self.provider_output / "runtime-proof.json").exists())
@@ -1266,11 +1358,22 @@ class WindowsGlIntegration(unittest.TestCase):
         self.failure = "drawing"
         with self.assertRaisesRegex(ValueError, "paired UI qualification failed"):
             self.invoke()
-        self.assertEqual(self.events, ["history", "appearance", "drawing", "runtime"])
+        self.assertEqual(self.events, ["history", "appearance", "drawing", "playback", "runtime"])
         row = self.journal()
         self.assertEqual([(r["kind"], r["state"]) for r in row["stages"]],
                          [("history", "passed"), ("appearance", "passed"),
-                          ("drawing", "failed"), ("complete", "not_run")])
+                          ("drawing", "failed"), ("playback", "passed"), ("complete", "not_run")])
+        self.assertEqual(row["runtime_proof"], pin(self.provider_output / "runtime-proof.json"))
+        self.assertFalse(self.output.exists())
+
+    def test_playback_failure_keeps_other_packets_and_runtime_but_blocks_full(self):
+        self.failure = "playback"
+        with self.assertRaisesRegex(ValueError, "paired UI qualification failed"):
+            self.invoke()
+        row = self.journal()
+        self.assertEqual([(r["kind"], r["state"]) for r in row["stages"]],
+                         [("history", "passed"), ("appearance", "passed"), ("drawing", "passed"),
+                          ("playback", "failed"), ("complete", "not_run")])
         self.assertEqual(row["runtime_proof"], pin(self.provider_output / "runtime-proof.json"))
         self.assertFalse(self.output.exists())
 
@@ -1278,7 +1381,7 @@ class WindowsGlIntegration(unittest.TestCase):
         self.failure = "runtime"
         with self.assertRaisesRegex(ValueError, "synthetic provider runtime failure"):
             self.invoke()
-        self.assertEqual(self.events, ["history", "appearance", "drawing", "runtime"])
+        self.assertEqual(self.events, ["history", "appearance", "drawing", "playback", "runtime"])
         row = self.journal()
         self.assertEqual((row["state"], row["stages"][-1]["state"]), ("failed", "not_run"))
         self.assertIn("synthetic provider runtime failure", row["error"]["message"])
@@ -1289,7 +1392,7 @@ class WindowsGlIntegration(unittest.TestCase):
         self.failure = "complete"
         with self.assertRaisesRegex(RuntimeError, "synthetic complete failure"):
             self.invoke()
-        self.assertEqual(self.events, ["history", "appearance", "drawing", "runtime", "complete"])
+        self.assertEqual(self.events, ["history", "appearance", "drawing", "playback", "runtime", "complete"])
         row = self.journal()
         self.assertEqual((row["state"], row["stages"][-1]["state"]), ("failed", "failed"))
         self.assertIn("synthetic complete failure", row["stages"][-1]["error"]["message"])
@@ -1297,20 +1400,20 @@ class WindowsGlIntegration(unittest.TestCase):
         self.assertEqual(self.f.read(self.output / "receipt.json")["state"], "failed")
 
     def test_only_exact_maintained_output_roots_are_admitted(self):
-        for argument in ("output", "history", "appearance", "drawing"):
-            with self.subTest(argument=argument), self.assertRaisesRegex(ValueError, "four fresh maintained"):
+        for argument in ("output", "history", "appearance", "drawing", "playback"):
+            with self.subTest(argument=argument), self.assertRaisesRegex(ValueError, "five fresh maintained"):
                 self.invoke(**{argument: self.f.root / ("build/other-" + argument)})
         self.stage_call.assert_not_called()
         self.assertEqual(self.events, [])
         self.assertFalse(self.journal_path.exists())
 
     def test_each_preexisting_output_is_preserved_before_any_stage(self):
-        for directory in (self.output, self.history, self.appearance, self.drawing):
+        for directory in (self.output, self.history, self.appearance, self.drawing, self.playback):
             directory.mkdir()
             marker = directory / "existing.txt"
             marker.write_bytes(b"preserve previous owned output\n")
             try:
-                with self.subTest(directory=directory), self.assertRaisesRegex(ValueError, "four fresh maintained"):
+                with self.subTest(directory=directory), self.assertRaisesRegex(ValueError, "five fresh maintained"):
                     self.invoke()
                 self.assertEqual(marker.read_bytes(), b"preserve previous owned output\n")
             finally:
@@ -1329,13 +1432,13 @@ class WindowsGlIntegration(unittest.TestCase):
                     self.invoke()
         self.assertEqual(self.events, [])
         self.assertFalse(self.journal_path.exists())
-        self.assertTrue(all(not directory.exists() for directory in (self.output, self.history, self.appearance, self.drawing)))
+        self.assertTrue(all(not directory.exists() for directory in (self.output, self.history, self.appearance, self.drawing, self.playback)))
 
     def test_changed_original_raw_blocks_runtime_callback_and_full(self):
         self.change_raw = True
         with self.assertRaisesRegex(RuntimeError, "Pinned identity differs"):
             self.invoke()
-        self.assertEqual(self.events, ["history", "appearance", "drawing"])
+        self.assertEqual(self.events, ["history", "appearance", "drawing", "playback"])
         row = self.journal()
         self.assertEqual((row["state"], row["stages"][-1]["state"]), ("failed", "not_run"))
         self.assertFalse(self.output.exists() or (self.provider_output / "runtime-proof.json").exists())

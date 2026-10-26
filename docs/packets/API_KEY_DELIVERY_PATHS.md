@@ -76,7 +76,7 @@ qualification/repair batch, not a claim of missing implementation.
 | `selection_enlargement_units` | CFG2 proves stored pixel magnitude, calibrated X-spacing display and literal Expand/Shrink results through both launchers | Done scoped |
 | `wand_tolerance` | CFG1 qualified actual Preferences→canvas masks→fresh reopen; reuse its current receipt | Done scoped |
 | `wand_connectivity` | CFG1 qualified 4/8 masks, invalid 6 refusal and persistence; no duplicate implementation | Done scoped |
-| `animation_fps` | Existing playback clock; deterministic clock progression first, real scheduling smoke separately | C5 stack/view |
+| `animation_fps` | Existing playback clock; actual Preferences Apply/draft/refusal/defaults and fresh paired reopen now have local installed C++/Python proof; retain deterministic per-frame timing and separate real scheduling/GL/platform checks | C5 stack/view; scoped local chain |
 | `conversion_scale` | Existing `conversion_options()`; nontrivial range conversion with scale on/off | C6 conversion |
 | `conversion_weighted_rgb` | Same captured options; colored RGB pixel distinguishes weighted/unweighted conversion | C6 conversion |
 | `conversion_red_weight` | Set weighted RGB=true; distinguishable RGB channels, change red weight and independently calculate output | C6 conversion |
@@ -129,6 +129,13 @@ does not qualify all 61 settings or complete a capability family.
 Defaults, ranges, scope and persistence meanings come from the source audit;
 this table does not replace them. The next settings batch is selected by missing
 evidence and dependency readiness; C2…C12 labels do not force sequential order.
+
+C5 FPS has four local Windows installed Preferences→native clock→fresh reopen
+IDs, with unchanged source/selection/history and all linked TCZ planes. The
+[C5 receipt](../parity/reviews/cfg6-playback001/preferences-ui-progress.json)
+keeps the loaded-file baseline separate from actual Apply and its new required
+hosted packet. OS scheduling, GL, Mac and the remaining stack/view inventory in
+[CFG6](CFG6-settings-playback.md) remain open.
 
 ## API seams: reuse before extending
 

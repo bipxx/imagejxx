@@ -2,6 +2,52 @@
 
 ## Current execution card — 2026-10-26
 
+**Published baseline:** `67c9b2243175f7b7a98ab124c40b65430e8844b3`;
+[run40378778767](https://github.com/bipxx/imagejxx/actions/runs/40378778767)
+has Windows/Linux headless C++/SDK successes; installed Windows remains live,
+Mac lanes queued, Linux installed refuses original missing scientific inputs.
+
+**C5 actual Preferences chain qualified locally:** four installed C++/Python
+persist/reopen IDs pass.20/8 states and358/187 actual frames prove scoped text
+input/focus/clip, Close/cancelled-draft reopen, Revert, invalid0/121 refusal,
+Apply5→20, live playback while draft20 remains unapplied, Defaults draft8,
+calibrated timing, exact UI-saved file handoff and source release on Stop. The
+reader compares every checkpoint with its actual frame and checks per-frame
+clock/position, data/history and all linked planes. Full file/source/product
+pins are in the [C5 UI receipt](parity/reviews/cfg6-playback001/preferences-ui-progress.json).
+No new setting, timer or Python processor. Native methods remain unchanged.
+
+CI now uses four required paired packets in one authenticated build/provider
+lifetime.72 integration,3 capture,5 reader,11 workflow and44 suite methods pass
+(documented host skips), plus54 original build controls and3 focused role
+methods. Playback failure blocks full qualification without hiding the other
+packets. Metadata/layout regressions pass; own hosted C5 result remains pending.
+
+**New predecessor evidence:** a3e10e9/run40376892140 Windows Python3.12 passes
+eight history and four drawing reader IDs. C2 gets past the submenu, then fails
+at frame428: XY `loading=false`, sampler available, `visible=false`; canvas
+bottom753 in the actual1028x749 viewport at gui3. Do not add a readiness sleep
+for this geometric clipping or lower the tested scale. Original artifact digest
+and selected raw reports are retained; no success transfers to the candidate.
+
+| Order / owner | Next action | Required boundary |
+| --- | --- | --- |
+| 1 / Root | Publish the checked C5 chain and required CI admission | Four installed IDs, strict literal clocks/source/history and all existing fatal gates |
+| 2 / Root | Repair the reproduced C2 small-viewport linked canvas layout | Same actual1028x749/gui3 and32x magnification; fully visible canvases/background sample points, unchanged source/pixel/tolerance/hit oracles |
+| Independent / Root | Follow exact hosted C5/history/C2/C3 handles and recover seven original scientific payloads | Source-bound receipts, original hashes, no retries/cancellation/substitute observations |
+| After layout / Root | Continue reproduced linked stack/view consumers using CFG6 and the per-key guide | FPS evidence does not close axes/slicing/projection/montage/export/oblique or curved interaction |
+
+Capture020 was verified into983,758 lossless bytes before retiring16,351,093 raw
+bytes. Superseded017/018 archives were explicitly retired with original hashes;
+failed016 remains. The hosted intake accidentally duplicated9,946,319 frame-
+summary bytes: exact receipt was losslessly retained in292,273 bytes, and its
+new compact summary uses counts. Full-root final known storage8,579,325,734;
+two inaccessible cache trees keep the8GiB budget unverified. Necessary bounded
+capture reserve is documented; no new compiler/runtime generation or `build/`.
+All99 families remain47 in progress /52 open /0 complete; release remains open.
+
+## Historical card before C5 actual Preferences qualification — 2026-10-26
+
 **Published baseline:** `a3e10e9ffda032f682715c51be4e272b584a4d89`;
 [run40376892140](https://github.com/bipxx/imagejxx/actions/runs/40376892140)
 is live. Exact hosted C2 overlap qualification remains pending; no predecessor

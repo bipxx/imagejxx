@@ -221,9 +221,10 @@ class AppearanceWorkflow(unittest.TestCase):
                                     "scripts/ci_python_suite.py", "--windows-gl-suite",
                                     "--output", "build/ci-python", "--history-build-receipt", "build/ci-history-build/receipt.json",
                                     "--history-output", "build/ci-history", "--appearance-output", "build/ci-appearance",
-                                    "--drawing-output", "build/ci-drawing"])
+                                    "--drawing-output", "build/ci-drawing", "--playback-output", "build/ci-playback"])
         for member in ("receipt.json", "product-bindings.json", "capture.zip", "reader/*.xml", "capture-owner/*"):
             self.assertIn("build/ci-drawing/" + member, text)
+            self.assertIn("build/ci-playback/" + member, text)
         self.assertLess(text.index("Qualify the installed Windows scientific SDK"), text.index(title))
         self.assertLess(text.index("Check installed qualification contracts before compilation"),
                         text.index("Install Windows IO and both desktop hosts"))

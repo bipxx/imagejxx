@@ -1,0 +1,306 @@
+{
+  "schema": "imagejxx.c5-preferences-playback-progress.001",
+  "state": "four_local_installed_preferences_persist_reopen_ids_passed",
+  "published_predecessor": "67c9b2243175f7b7a98ab124c40b65430e8844b3",
+  "source_pins": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 133399,
+      "sha256": "0939be737c2d0910dfc1d505db09fd66e7776698d918fc9e6ed3702fd7300dd7"
+    },
+    {
+      "path": ".github\\workflows\\source-platform.yml",
+      "bytes": 15084,
+      "sha256": "be978008e7962a7e7ba12333aba92be042fa034c6c929588bfc05984a716e2a8"
+    },
+    {
+      "path": "scripts\\capture_shortcuts_history_ui.py",
+      "bytes": 50092,
+      "sha256": "9ebe97b8d2c23e2c65ca9213673d3ea349c061d0a8fb481e42a86912d21d21ac"
+    },
+    {
+      "path": "scripts\\ci_history_build.py",
+      "bytes": 32167,
+      "sha256": "33d59fc22a9655b998a2a3295e0dfa0891b77c84a3d65597015e68b54249a134"
+    },
+    {
+      "path": "scripts\\ci_python_suite.py",
+      "bytes": 101179,
+      "sha256": "ed1207d809215e3592b87cfcbbe983621aef38461cb9f33370badd3e1ffd24fe"
+    },
+    {
+      "path": "src\\desktop\\main.cpp",
+      "bytes": 56914,
+      "sha256": "865ef43dbb1f6e8c66c89012efb45b14612ed0376ea13345dbfbe0ac6af28d70"
+    },
+    {
+      "path": "src\\desktop\\python.cpp",
+      "bytes": 57922,
+      "sha256": "88ee3694de152d75ac625428ccf207a566d103ece3531d0d8be474dbe0da8b39"
+    },
+    {
+      "path": "src\\desktop\\settings_playback_ui_probe.cpp",
+      "bytes": 26851,
+      "sha256": "f5e39e80b586b8d04324fb3a416ee5263bf55f6d808f366c22c04ceba87b6b6f"
+    },
+    {
+      "path": "src\\desktop\\settings_playback_ui_probe.hpp",
+      "bytes": 426,
+      "sha256": "514c00bcb96b90fae79ee0c42a3dc98c8cdd4dbde9dba2eef10507738c156029"
+    },
+    {
+      "path": "tests\\python\\settings_playback_reader.py",
+      "bytes": 14211,
+      "sha256": "908fa3dcc8d5d4ac5f8a6c60d3dd362fb4b19b9bb0d5c572b38f3f5de4cab622"
+    },
+    {
+      "path": "tests\\python\\test_settings_playback_ui.py",
+      "bytes": 11685,
+      "sha256": "b5bd27085da1f8f8d6c4a048bde73e9abf320f027ca0b811bf6c32dc655177c8"
+    },
+    {
+      "path": "tests\\tools\\test_ci_history_build.py",
+      "bytes": 50552,
+      "sha256": "01d86232b12c84675228c177f84a737b004ab2356f581b9135589b23ac86ace6"
+    },
+    {
+      "path": "tests\\tools\\test_ci_history_integration.py",
+      "bytes": 89000,
+      "sha256": "34f56e0f0d5be1a4e66c79ca115fc4016416b1ff92d0dcfcccae9a3c73dd0fbe"
+    },
+    {
+      "path": "tests\\tools\\test_ci_platform_workflow.py",
+      "bytes": 16185,
+      "sha256": "c0c997df27d761054d033e06fd8a5165b1e0aa1d85781392568a12dddf8e710a"
+    },
+    {
+      "path": "tests\\tools\\test_capture_settings_playback_ui.py",
+      "bytes": 6383,
+      "sha256": "003b08c9c21e67b661d0d39337fab47296fecf5b625a5acf89b8de9f786aecfd"
+    },
+    {
+      "path": "tests\\tools\\test_settings_playback_reader.py",
+      "bytes": 4707,
+      "sha256": "de31937037f287f202d20e8ab7f021fb8491b8b29271e40f9d362771bdab0401"
+    }
+  ],
+  "verification": {
+    "cases": [
+      {
+        "case": "playback-persist",
+        "context": "imgui_cpp",
+        "frames": 358,
+        "states": 20,
+        "bytes": 3308795,
+        "sha256": "719a78642c3c948baf39bb513523748038d7bf06af9e13a7cab38ba576efb684"
+      },
+      {
+        "case": "playback-persist",
+        "context": "imgui_python",
+        "frames": 358,
+        "states": 20,
+        "bytes": 3308952,
+        "sha256": "6b2c7675f229cae6756e48cd9c4906ce43f5ffa1c6300aefcb59c7e66d01b20f"
+      },
+      {
+        "case": "playback-reopen",
+        "context": "imgui_cpp",
+        "frames": 187,
+        "states": 8,
+        "bytes": 1679517,
+        "sha256": "d0bb7e06cf24f26aa3df662e5c7147d63ff51fda60c7e24564d84c4d21fd9769"
+      },
+      {
+        "case": "playback-reopen",
+        "context": "imgui_python",
+        "frames": 187,
+        "states": 8,
+        "bytes": 1679638,
+        "sha256": "46de9102256a2520b40ba8cbc3d38b4b72e8e22e3d0f6c7c07f25d879f28a284"
+      }
+    ],
+    "pytest": {
+      "path": ".tmp\\manual-workflow-verification\\playback-reader-windows020\\pytest.xml",
+      "bytes": 821,
+      "sha256": "c5f6d76fdb3cd3607501ae255c662b842a9ba6653efdf88a10d8fe6bd50a5dfa"
+    },
+    "pytest_process": {
+      "path": ".tmp\\manual-workflow-verification\\playback-reader-windows020\\process.json",
+      "bytes": 2159,
+      "sha256": "7690611290dc6563d865992441a5519bb6ae4970e4190c1c9102a7bfd0639b21"
+    },
+    "build": {
+      "path": ".tmp\\manual-workflow-verification\\c3-windows-build020\\receipt.json",
+      "bytes": 25850,
+      "sha256": "c0b9ea1f5e007c2081e14038c87c3b4d5b93d078701a5a9200cc9fa9b4e1c72e"
+    },
+    "freeze": {
+      "path": ".tmp\\manual-workflow-verification\\c3-windows-build020\\source-freeze.json",
+      "bytes": 361787,
+      "sha256": "9e5aa75e1bd4b2739592b40bf684c8b30ebd8d8d3c8ea25772be97caa07399ee"
+    },
+    "controls": [
+      {
+        "kind": "integration",
+        "methods": 72,
+        "host_skips": 0,
+        "log": {
+          "path": ".tmp\\manual-workflow-verification\\c5-ci-controls004\\integration.log",
+          "bytes": 177,
+          "sha256": "9adea4ac090815d40c64eb835cbfa9ead231f7d783ed509acc48ded64904fa59"
+        }
+      },
+      {
+        "kind": "capture",
+        "methods": 3,
+        "host_skips": 0,
+        "log": {
+          "path": ".tmp\\manual-workflow-verification\\c5-capture-controls002\\controls.log",
+          "bytes": 106,
+          "sha256": "c9239a3bdc5ff551da059bfece9821b9db7072761c0ffcbf8a5855e037193d67"
+        }
+      },
+      {
+        "kind": "reader",
+        "methods": 5,
+        "host_skips": 0,
+        "log": {
+          "path": ".tmp\\manual-workflow-verification\\c5-reader-controls003\\controls.log",
+          "bytes": 108,
+          "sha256": "46a59d823d772c3809446eba836399e2612ba33924b6c71abe8e15b736b8f4b7"
+        }
+      },
+      {
+        "kind": "workflow",
+        "methods": 11,
+        "host_skips": 1,
+        "log": {
+          "path": ".tmp\\manual-workflow-verification\\c5-workflow-controls001\\controls.log",
+          "bytes": 127,
+          "sha256": "89d1f8edb9b34f4167075e47a79d75e5bb930864742863a76aee806eceb05d95"
+        }
+      },
+      {
+        "kind": "suite",
+        "methods": 44,
+        "host_skips": 1,
+        "log": {
+          "path": ".tmp\\manual-workflow-verification\\c5-suite-controls001\\controls.log",
+          "bytes": 160,
+          "sha256": "952ff76f178694fc4f885377a524dcffb0efab83e7bc935c7242bb3e4974a5e6"
+        }
+      },
+      {
+        "kind": "build_original",
+        "methods": 54,
+        "host_skips": 4,
+        "log": {
+          "path": ".tmp\\manual-workflow-verification\\c5-build-controls001\\controls.log",
+          "bytes": 8086,
+          "sha256": "aca01f0faec7beaaf3233d8028bc932b1399417065636b297ed3008b3605d470"
+        }
+      },
+      {
+        "kind": "build_role_selection",
+        "methods": 3,
+        "host_skips": 0,
+        "log": {
+          "path": ".tmp\\manual-workflow-verification\\c5-role-controls001\\controls.log",
+          "bytes": 106,
+          "sha256": "47b4ee3f34f6d5fabc496f893c6df25cf76edb3e54d0ea2ba1bd82ae98b045d1"
+        }
+      }
+    ],
+    "native_metadata_groups": 9,
+    "native_layout_tests": 1
+  },
+  "behavior": [
+    "Actual Preferences search/scoped FPS text input, hover/clip/focus and physical Apply",
+    "Close discards draft: explicit fresh dialog checkpoint before overwriting the reopened field; Revert and Defaults draft/applied checks",
+    "Invalid0/121 atomic refusal; accepted5 then20 save only on Apply; all60 unrelated settings and opaque future compartments retained",
+    "Playing draft remains5; Apply changes native FPS to20; per-frame observed clock and literal Z/T wrap checks preserve data/history and all three linked panes",
+    "Separate persist/reopen processes load the exact UI-written bytes; actual calibrated-time option and Stop release source"
+  ],
+  "ci": "Fourth required paired packet in the same authenticated native build and Windows provider lifetime; any packet failure blocks full qualification while retaining other packet diagnostics. Required hosted result pending.",
+  "retention": {
+    "current": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\playback-windows-capture020.zip",
+      "bytes": 983758,
+      "sha256": "1e4f15982118a7d72d1ac0feedfd7414533b0ecee15985a5469dfa6ad7432bab"
+    },
+    "manifest": {
+      "path": ".tmp\\manual-workflow-verification\\playback-windows-capture020-retention.json",
+      "bytes": 15983,
+      "sha256": "7beba8fa62d94838cdb7893c092cbedd9323f2293abf031224db6fb75ee6576d"
+    },
+    "raw_retired_bytes": 16351093,
+    "superseded": {
+      "path": ".tmp\\manual-workflow-verification\\c5-ui-superseded-retirement001.json",
+      "bytes": 35604,
+      "sha256": "315f1855a76ee6147756772c4222d5b61447ec4506d1dea7ac4739681e8c3294"
+    },
+    "failed_original": {
+      "path": ".tmp\\manual-workflow-verification\\playback-windows-capture016-retention.json",
+      "bytes": 10297,
+      "sha256": "1abd088271defedaf641e71d16e8914a95965572fae9bf1409c8f1c80e7f5dc0"
+    },
+    "failed_compile": {
+      "path": ".tmp\\manual-workflow-verification\\c3-windows-build013\\receipt.json",
+      "bytes": 7715,
+      "sha256": "d6ab51912379c061a1a54d9217f8e15b90da5cfee25052725d24f4d679257c3c"
+    },
+    "previous_strong_case_before_eof_cleanup": {
+      "path": ".tmp\\manual-workflow-verification\\playback-windows-capture019-retention.json",
+      "bytes": 15983,
+      "sha256": "4369f13f2dd44d23dca87885764e3de51557615951186ec7fad90499b1b4437f"
+    }
+  },
+  "storage": {
+    "before": {
+      "path": ".tmp\\manual-workflow-verification\\c5-ui-storage-before001.json",
+      "bytes": 1523,
+      "sha256": "f2ad4718e8b341da3999479da9b0cd4423b0701b1342329be2a820d7e56fe726"
+    },
+    "final": {
+      "path": ".tmp\\manual-workflow-verification\\c5-ui-storage-publish-final001.json",
+      "bytes": 1524,
+      "sha256": "669c743ea3681c0a13a9cf13594d739f79ea16e69da8966d2f36db8a70142ada"
+    },
+    "capture_reserve": {
+      "path": ".tmp\\manual-workflow-verification\\c5-ui-capture-storage-reserve001.json",
+      "bytes": 642,
+      "sha256": "b8db254ef5592d385552c94bab8d492b7cf9aaf141d18b9a450f5ddf3722df77"
+    },
+    "build_sampled_extra_peak_bytes": 95993,
+    "known_final_bytes": 8579325734,
+    "full_budget_verified": false,
+    "unknown_cache_subtrees": 2
+  },
+  "hosted_predecessor": {
+    "source": "a3e10e9ffda032f682715c51be4e272b584a4d89",
+    "run": 40376892140,
+    "context": "Windows Python3.12",
+    "artifact_id": 12678233315,
+    "artifact_sha256": "1b547534cca98664cf2e6842dd36a672be6e122ca80337ad8a199ea7eccadd23",
+    "history_reader_ids_passed": 8,
+    "drawing_reader_ids_passed": 4,
+    "appearance_failure": "Frame428 C2 XY canvas not ready: loading=false, sampler available, visible=false; canvas bottom753 at actual1028x749/gui3. Submenu hover reaches this later surface check.",
+    "original_intake": {
+      "path": ".tmp\\manual-workflow-verification\\a3e-ui-intake001\\compact-summary.json",
+      "bytes": 13783,
+      "sha256": "9e89a9e5e18dc3ba2830cd4feaef1d45d918bc18f431499ba1294afb5bb50b4f"
+    },
+    "intake_retention": {
+      "path": ".tmp\\manual-workflow-verification\\a3e-ui-intake001\\receipt-retention.json",
+      "bytes": 1038,
+      "sha256": "a7a236c359b0a55fee84eaf34831d4d5fc5adb009b551f6e1646b2d6abdedc34"
+    }
+  },
+  "limits": [
+    "Focused local Windows CMake install/headless ImGui; no wheel, GL, OS scheduling, Mac or full release acceptance",
+    "Hosted predecessor results are source-bound and do not transfer to this candidate",
+    "Seven original scientific payloads remain unavailable; all original fingerprints stay unchanged",
+    "Full99-family status remains47 in progress /52 open /0 complete"
+  ],
+  "full_acceptance_claim": false
+}

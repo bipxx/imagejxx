@@ -1,7 +1,11 @@
 # CFG6: persisted playback preferences and linked consumers (C5 batch)
 
-Status: additive loaded-file clock qualification is local Windows only. The
-complete Preferences→playback→fresh reopen chain below remains open. This packet
+Status: the actual Preferences→playback→fresh reopen chain now passes all four
+installed C++/Python IDs locally on Windows, with20 persist and8 reopen states.
+The [exact source/product/evidence receipt](../parity/reviews/cfg6-playback001/preferences-ui-progress.json)
+records358/187 actual frames per case. The required hosted fourth packet is
+wired but its own result remains pending. This is headless ImGui/CMake-installed
+scope, not GL, OS scheduling, macOS, wheel or full release acceptance. The packet
 does not complete ImageJ/Fiji stack viewing, animation export or any family.
 
 ## Existing behavior and smallest path
@@ -30,7 +34,7 @@ only before the first armed clock/tick. Require all XY/XZ/YZ panes, exact curren
 TCZ, source bits, identity, metadata, calibration, selection/Previous, ROI,
 history, dirty and workflow preservation. No production imports in the reader.
 
-## Full actual Preferences packet: exact next implementation
+## Actual Preferences packet: implementation and required contract
 
 Use a free-function probe beside the current settings drawing probe and the
 existing HeadlessInputSession. Keep processing/native clock code read-only
@@ -56,7 +60,10 @@ unless an executed independent check reproduces a defect.
 2. Open Edit→Preferences, Search `animation_fps`; prove actual InputDouble
    identity, editable rect, clip/hover/focus and delivered text input. A draft5
    changes neither live FPS nor file. Close cancels. Reopen and Revert another
-   draft; verify live/file invariants while paused.
+   draft; verify live/file invariants while paused. Capture `cancel_reopened`
+   before overwriting that field, and independently require draft8 at both that
+   checkpoint and Revert. Every checkpoint must match its actual frame's native
+   source, applied FPS and animation observation.
 3. Reject0 and121 with setting-specific errors; both live value and file stay
    unchanged. Correct to5; Apply publishes/persists exactly5, preserving all
    other60 settings and all unknown compartments. Do not seed known values to

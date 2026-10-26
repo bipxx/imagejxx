@@ -851,6 +851,14 @@ class HistoryBuildWindowsLaunch(unittest.TestCase):
 
 
 class HistoryBuildRoleSelection(unittest.TestCase):
+    def test_playback_producer_clock_and_independent_reader_enter_the_build_freeze(self):
+        selected = build._history_paths(ROOT)
+        self.assertTrue({"src/desktop/settings_playback_ui_probe.cpp",
+                         "src/desktop/settings_playback_ui_probe.hpp",
+                         "src/native/playback.cpp", "include/imagejxx/playback.hpp",
+                         "tests/python/test_settings_playback_ui.py",
+                         "tests/python/settings_playback_reader.py"} <= selected)
+
     def test_drawing_reader_oracles_and_native_producer_enter_the_build_freeze(self):
         selected = build._history_paths(ROOT)
         self.assertTrue({"src/desktop/settings_drawing_ui_probe.cpp",

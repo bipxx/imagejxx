@@ -26,6 +26,7 @@
 #include "settings_selection_ui_probe.hpp"
 #include "settings_measurement_ui_probe.hpp"
 #include "settings_drawing_ui_probe.hpp"
+#include "settings_playback_ui_probe.hpp"
 #include "manual_threshold_workflow_ui_probe.hpp"
 #include "path_filter_ui_probe.hpp"
 #include "native_bare_import_ui_probe.hpp"
@@ -415,6 +416,10 @@ PYBIND11_MODULE(_desktop, m) {
       .def("_settings_appearance_ui_case", [](Window &window, const std::string &case_id, const std::string &directory) {
         py::gil_scoped_release release;
         return settingsAppearanceUiCase(window, case_id, "imgui_python", directory).dump();
+      }, py::arg("case_id"), py::arg("directory"))
+      .def("_settings_playback_ui_case", [](Window &window, const std::string &case_id, const std::string &directory) {
+        py::gil_scoped_release release;
+        return settingsPlaybackUiCase(window, case_id, "imgui_python", directory).dump();
       }, py::arg("case_id"), py::arg("directory"))
       .def("_settings_drawing_ui_case", [](Window &window, const std::string &case_id, const std::string &directory) {
         py::gil_scoped_release release;

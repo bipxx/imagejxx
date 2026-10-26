@@ -957,6 +957,9 @@ APPEARANCE_IDS = tuple(
 DRAWING_IDS = tuple(
     "tests/python/test_settings_drawing_ui.py::test_installed_settings_drawing[" + case + "-" + context + "]"
     for case in ("drawing-persist", "drawing-reopen") for context in ("imgui_cpp", "imgui_python"))
+PLAYBACK_IDS = tuple(
+    "tests/python/test_settings_playback_ui.py::test_installed_settings_playback[" + case + "-" + context + "]"
+    for case in ("playback-persist", "playback-reopen") for context in ("imgui_cpp", "imgui_python"))
 
 
 def _ui_packet(kind):
@@ -975,7 +978,12 @@ def _ui_packet(kind):
                 "cases": ("drawing-persist", "drawing-reopen"), "ids": DRAWING_IDS, "count": "four",
                 "environment": "IMAGEJXX_SETTINGS_DRAWING_UI_CASE_ROOT", "capture_timeout": 330,
                 "scope": "four paired drawing settings/native consumer observations; OS/GL/font and full families remain separate"}
-    raise ValueError("Only the fixed history, appearance or drawing UI packet is supported")
+    if kind == "playback":
+        return {"title": "Playback", "prefix": "c5", "schema": "imagejxx.playback-suite.001",
+                "cases": ("playback-persist", "playback-reopen"), "ids": PLAYBACK_IDS, "count": "four",
+                "environment": "IMAGEJXX_SETTINGS_PLAYBACK_UI_CASE_ROOT", "capture_timeout": 330,
+                "scope": "four paired playback Preferences/native clock observations; GL/OS scheduling and full families remain separate"}
+    raise ValueError("Only the fixed history, appearance, drawing or playback UI packet is supported")
 
 
 def history_helper():
@@ -992,7 +1000,7 @@ def history_build_inputs(path, root, *, kind="history"):
     """Reapply the producer's strict contract at the serialized receipt boundary."""
     _ui_packet(kind)
     build = history_builder().verify_receipt(path, root)
-    if kind in ("appearance", "drawing"):
+    if kind in ("appearance", "drawing", "playback"):
         helper = history_helper()
         freeze = helper.read_json(Path(helper.verify(build["source_freeze"])["path"]))
         frozen = {r["logical_path"] for r in freeze["sources"]}
@@ -1048,7 +1056,7 @@ def validate_history_output(output, root, application, modules, *, kind="history
         raise ValueError("Required installed " + kind + " packet has not passed")
     bindings = helper.read_json(Path(helper.verify(row["product_bindings"])["path"]))
     options = {} if kind == "history" else {"kind": kind}
-    if kind in ("appearance", "drawing") and (row.get("acceptance_claim") is not False
+    if kind in ("appearance", "drawing", "playback") and (row.get("acceptance_claim") is not False
             or bindings.get("kind_selection") != kind
             or bindings.get("kind") != packet["prefix"] + ".installed-ui-capture-bindings.001"):
         raise ValueError(title + " packet binding contract differs")
@@ -1069,7 +1077,7 @@ def validate_history_output(output, root, application, modules, *, kind="history
     capture_row = helper.read_json(capture_path)
     expected = [(case, context) for case in packet["cases"]
                 for context in ("imgui_cpp", "imgui_python")]
-    if kind in ("appearance", "drawing") and (capture_row.get("kind_selection") != kind
+    if kind in ("appearance", "drawing", "playback") and (capture_row.get("kind_selection") != kind
                                 or capture_row.get("acceptance_claim") is not False):
         raise ValueError(title + " capture kind or acceptance boundary differs")
     if (capture_row.get("state") != "passed"
@@ -1216,15 +1224,15 @@ def windows_gl_stage(root):
     return provider, stage, descriptor
 
 
-def run_windows_gl_suite(output, root, build_receipt, history_output, appearance_output, drawing_output):
+def run_windows_gl_suite(output, root, build_receipt, history_output, appearance_output, drawing_output, playback_output):
     """One provider lifetime; retain independent UI failures and all full gates."""
     root = Path(root).resolve(strict=True)
-    output, history_output, appearance_output, drawing_output = map(
-        lambda path: Path(path).resolve(), (output, history_output, appearance_output, drawing_output))
-    if ([history_output, appearance_output, drawing_output, output] !=
-            [root / "build/ci-history", root / "build/ci-appearance", root / "build/ci-drawing", root / "build/ci-python"]
-            or any(path.exists() for path in (output, history_output, appearance_output, drawing_output))):
-        raise ValueError("Windows GL suite requires the four fresh maintained output roots")
+    output, history_output, appearance_output, drawing_output, playback_output = map(
+        lambda path: Path(path).resolve(), (output, history_output, appearance_output, drawing_output, playback_output))
+    if ([history_output, appearance_output, drawing_output, playback_output, output] !=
+            [root / "build/ci-history", root / "build/ci-appearance", root / "build/ci-drawing", root / "build/ci-playback", root / "build/ci-python"]
+            or any(path.exists() for path in (output, history_output, appearance_output, drawing_output, playback_output))):
+        raise ValueError("Windows GL suite requires the five fresh maintained output roots")
     provider, stage, stage_pin = windows_gl_stage(root)
     journal = {"schema": "imagejxx.windows-gl-suite.001", "state": "running",
                "stage": stage_pin, "stages": [], "acceptance_claim": False}
@@ -1236,7 +1244,7 @@ def run_windows_gl_suite(output, root, build_receipt, history_output, appearance
     save()
     failures = []
     for kind, destination in (("history", history_output), ("appearance", appearance_output),
-                              ("drawing", drawing_output)):
+                              ("drawing", drawing_output), ("playback", playback_output)):
         try:
             run_history_suite(destination, root, build_receipt, kind=kind)
             journal["stages"].append({"kind": kind, "state": "passed"})
@@ -1271,7 +1279,7 @@ def run_windows_gl_suite(output, root, build_receipt, history_output, appearance
         save()
         try:
             run(output, root, history_output=history_output, appearance_output=appearance_output,
-                drawing_output=drawing_output)
+                drawing_output=drawing_output, playback_output=playback_output)
         except Exception as error:
             complete.update(state="failed", error={"type": type(error).__name__, "message": str(error)})
             raise
@@ -1287,7 +1295,7 @@ def run_windows_gl_suite(output, root, build_receipt, history_output, appearance
         save()
 
 
-def run(output: Path, root: Path, *, history_output=None, appearance_output=None, drawing_output=None):
+def run(output: Path, root: Path, *, history_output=None, appearance_output=None, drawing_output=None, playback_output=None):
     output = output.resolve()
     if output.exists():
         raise ValueError(f"Use a fresh Python CI output directory: {output}")
@@ -1373,6 +1381,11 @@ def run(output: Path, root: Path, *, history_output=None, appearance_output=None
             receipt["drawing_packet"] = pin(Path(drawing_output) / "receipt.json")
         else:
             receipt["drawing_packet"] = {"state": "unavailable", "reason": "qualified paired drawing packet not supplied; drawing readers remain required"}
+        if playback_output is not None:
+            environment.update(validate_history_output(playback_output, root, application, receipt["modules"], kind="playback"))
+            receipt["playback_packet"] = pin(Path(playback_output) / "receipt.json")
+        else:
+            receipt["playback_packet"] = {"state": "unavailable", "reason": "qualified paired playback packet not supplied; playback readers remain required"}
         environment.update(capture_current_observations(output / "current-observations", application, root, environment))
         receipt["current_observations"] = pin(output / "current-observations/receipt.json")
         save()
@@ -1530,6 +1543,8 @@ def main():
                           help="Qualify only the original paired history UI packet, independently of full-suite reference readiness")
     selected.add_argument("--appearance-suite", action="store_true",
                           help="Qualify only paired appearance preferences/GL observations using the maintained capture path")
+    selected.add_argument("--playback-suite", action="store_true",
+                          help="Run only the fixed paired playback Preferences qualification")
     selected.add_argument("--drawing-suite", action="store_true",
                           help="Qualify paired drawing settings through existing native consumers")
     selected.add_argument("--windows-gl-suite", action="store_true",
@@ -1545,30 +1560,39 @@ def main():
     parser.add_argument("--appearance-build-receipt", type=Path)
     parser.add_argument("--appearance-output", type=Path)
     parser.add_argument("--drawing-output", type=Path)
+    parser.add_argument("--playback-output", type=Path)
     args = parser.parse_args()
     if args.windows_gl_suite:
         if (args.output is None or args.history_build_receipt is None or args.history_output is None
-                or args.appearance_output is None or args.drawing_output is None or args.appearance_build_receipt is not None):
-            parser.error("Windows GL suite requires output, authenticated build and all three paired output roots")
+                or args.appearance_output is None or args.drawing_output is None or args.playback_output is None or args.appearance_build_receipt is not None):
+            parser.error("Windows GL suite requires output, authenticated build and all four paired output roots")
         run_windows_gl_suite(args.output, args.repository or Path(__file__).resolve().parents[1],
-                             args.history_build_receipt, args.history_output, args.appearance_output, args.drawing_output)
+                             args.history_build_receipt, args.history_output, args.appearance_output, args.drawing_output, args.playback_output)
+        return
+    if args.playback_suite:
+        if (args.output is None or args.history_build_receipt is None or args.history_output is not None
+                or args.appearance_build_receipt is not None or args.appearance_output is not None
+                or args.drawing_output is not None or args.playback_output is not None):
+            parser.error("Playback suite requires fresh --output and --history-build-receipt")
+        run_history_suite(args.output, args.repository or Path(__file__).resolve().parents[1],
+                          args.history_build_receipt, kind="playback")
         return
     if args.drawing_suite:
         if (args.output is None or args.history_build_receipt is None or args.history_output is not None
-                or args.appearance_build_receipt is not None or args.appearance_output is not None or args.drawing_output is not None):
+                or args.appearance_build_receipt is not None or args.appearance_output is not None or args.drawing_output is not None or args.playback_output is not None):
             parser.error("Drawing suite requires fresh --output and --history-build-receipt")
         run_history_suite(args.output, args.repository or Path(__file__).resolve().parents[1],
                           args.history_build_receipt, kind="drawing")
         return
     if args.history_suite:
         if (args.output is None or args.history_build_receipt is None or args.history_output is not None
-                or args.appearance_build_receipt is not None or args.appearance_output is not None or args.drawing_output is not None):
+                or args.appearance_build_receipt is not None or args.appearance_output is not None or args.drawing_output is not None or args.playback_output is not None):
             parser.error("History suite requires fresh --output and --history-build-receipt")
         run_history_suite(args.output, args.repository or Path(__file__).resolve().parents[1], args.history_build_receipt)
         return
     if args.appearance_suite:
         if (args.output is None or args.appearance_build_receipt is None or args.appearance_output is not None
-                or args.history_build_receipt is not None or args.history_output is not None or args.drawing_output is not None):
+                or args.history_build_receipt is not None or args.history_output is not None or args.drawing_output is not None or args.playback_output is not None):
             parser.error("Appearance suite requires fresh --output and --appearance-build-receipt")
         run_history_suite(args.output, args.repository or Path(__file__).resolve().parents[1],
                           args.appearance_build_receipt, kind="appearance")
@@ -1577,7 +1601,7 @@ def main():
         parser.error("Build receipts are consumed only by --history-suite")
     if args.appearance_build_receipt is not None:
         parser.error("Appearance build receipts are consumed only by --appearance-suite")
-    if (args.appearance_output is not None or args.drawing_output is not None) and any((
+    if (args.appearance_output is not None or args.drawing_output is not None or args.playback_output is not None) and any((
             args.profile_manifest, args.focused_pytest_child, args.complete_pytest_child,
             args.routed_complete_pytest_child, args.headless_pytest_child, args.headless_suite,
             args.reference_readiness_only)):
@@ -1637,6 +1661,8 @@ def main():
         options = {} if args.appearance_output is None else {"appearance_output": args.appearance_output}
         if args.drawing_output is not None:
             options["drawing_output"] = args.drawing_output
+        if args.playback_output is not None:
+            options["playback_output"] = args.playback_output
         run(args.output, Path(__file__).resolve().parents[1], history_output=args.history_output, **options)
 
 

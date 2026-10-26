@@ -176,6 +176,37 @@ SPEC["drawing"] = {
               "expectations": "tests/python/settings_drawing_expectations.py",
               "rounded_reference": "tests/native/rounded_path_reference.inc"},
 }
+SPEC["playback"] = {
+    "stem": "settings-playback", "prefix": "c5",
+    "cases": ("playback-persist", "playback-reopen"),
+    "flag": "--settings-playback-ui-case", "method": "_settings_playback_ui_case",
+    "schema": "c5.settings-playback.ui.001",
+    "contract_field": "schema", "contract": "c5.settings-playback.ui.001",
+    "state_field": "state", "raw_name": "case.json", "paired_preferences": True,
+    "explicit_preferences_argument": True,
+    "preferences_seed": {"format": "imagejxx-preferences", "version": 1,
+                         "values": {"c5_future_value": {"raw": [1, "two", True]}},
+                         "c5_future_root": {"opaque": ["retain", 17]},
+                         "extras": {"c5": "retain extra"}},
+    "reader_kind": "c5.settings-playback-ui-reader-inputs.001",
+    "build_kind": "c5.settings-playback-source-product-binding.001",
+    "python_origin_kind": "c5.settings-playback-python-launcher-origin.001",
+    "limits": {"parent_seconds": 300, "case_process_seconds": 60,
+               "producer_seconds": 60, "frames": 750, "paired_raw_bytes": 64 * MIB,
+               "stage_bytes": 192 * MIB},
+    "roles": {"producer": "src/desktop/settings_playback_ui_probe.cpp",
+              "producer_header": "src/desktop/settings_playback_ui_probe.hpp",
+              "window_header": "src/desktop/window.hpp",
+              "native_playback": "src/native/playback.cpp",
+              "native_playback_header": "include/imagejxx/playback.hpp",
+              "native_document": "src/native/document.cpp",
+              "settings_io": "src/desktop/settings_io.cpp",
+              "orthogonal": "src/desktop/orthogonal.cpp",
+              "process_helper": "scripts/ci_owned_process.py",
+              "mac_process_helper": "scripts/ci_mac_process.py",
+              "reader": "tests/python/test_settings_playback_ui.py",
+              "reader_core": "tests/python/settings_playback_reader.py"},
+}
 ORIENTATION_CONTRACT = {
     "path": str(ROOT / "build/scientific-orientation-entry001/contract.json"),
     "bytes": 30672,
@@ -192,7 +223,7 @@ def require(condition, message):
 
 
 def portable_kind(kind):
-    return kind in ("history", "appearance", "drawing")
+    return kind in ("history", "appearance", "drawing", "playback")
 
 
 def read_json(path, limit=2 * MIB):
