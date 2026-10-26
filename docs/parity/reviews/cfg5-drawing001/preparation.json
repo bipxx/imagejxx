@@ -1,0 +1,243 @@
+{
+  "schema": "imagejxx.cfg5-drawing-preparation.001",
+  "state": "source-prepared",
+  "acceptance_claim": false,
+  "source_pins": {
+    "CMakeLists.txt": {
+      "bytes": 133351,
+      "sha256": "64ae6904a3cbb1640fc98b898209b17615b11292c352a2d6e1bb3debf34e0178"
+    },
+    "src/desktop/main.cpp": {
+      "bytes": 56223,
+      "sha256": "3fbaf7a4399a4d05ca54e9d1eb5b5f95ced1d0a28261c1c4c5e3dee37d95bc2a"
+    },
+    "src/desktop/python.cpp": {
+      "bytes": 57574,
+      "sha256": "201c84f9057c7d04ca36478003f688d915df20734592043ce40c08b3489de327"
+    },
+    "src/desktop/settings_panel.cpp": {
+      "bytes": 28054,
+      "sha256": "50345b880d3d767bf7e2d69209a6727335ce77a01b904c8489902fff0d6ac15b"
+    },
+    "src/desktop/settings_drawing_ui_probe.cpp": {
+      "bytes": 35890,
+      "sha256": "7ab4d6417783c1e47e0991371a93f3b0cb0eb0606820aafa2eda7696d9a78dc4"
+    },
+    "src/desktop/settings_drawing_ui_probe.hpp": {
+      "bytes": 1438,
+      "sha256": "75f542f419e92a808b2187956e54680fc1be68d9130e8a8e3885084733e4470d"
+    },
+    "scripts/capture_shortcuts_history_ui.py": {
+      "bytes": 47598,
+      "sha256": "689c4419c582ad7a9021fdcd2a9fe698581b197b89e9b10e095b4d8b0f5c5687"
+    },
+    "scripts/ci_history_build.py": {
+      "bytes": 32156,
+      "sha256": "303365e1fe29ef4d4be669ae5b028347ed57343f1869f253f6fa53ea454ede15"
+    },
+    "scripts/ci_python_suite.py": {
+      "bytes": 98690,
+      "sha256": "a8a3c2ce59ce29e1094f175194a25570dca1a55e25a9f934caa732a2be7ec2fb"
+    },
+    "tests/python/actual_observation_transport.py": {
+      "bytes": 3017,
+      "sha256": "022d5ce23c90b8e857d08eda56edf545b746f8c1ed9c5f6a4a71ced692aeda94"
+    },
+    "tests/python/settings_drawing_expectations.py": {
+      "bytes": 3795,
+      "sha256": "580b8ccfde85bf7c5715cb99b3a0a98dd4447851907f045be9e1a6645e4c7720"
+    },
+    "tests/python/settings_drawing_reader.py": {
+      "bytes": 36638,
+      "sha256": "0e9ca9891045713e539936551cb30761114e9ba0d1377d1d79b2f6284d0ec1ad"
+    },
+    "tests/python/test_settings_drawing_ui.py": {
+      "bytes": 12102,
+      "sha256": "7bc329d743e9b870222d9eb786bd0dc7121fda7ea3157008cc05434fa89a394e"
+    },
+    "tests/native/rounded_path_reference.inc": {
+      "bytes": 86352,
+      "sha256": "c240506730a694f8b0bf2861a8428dcaa11885ee028d69a76d99fb1836d831fa"
+    },
+    ".github/workflows/source-platform.yml": {
+      "bytes": 14342,
+      "sha256": "c01e656d70dfcb95d557df8139f2f09660e05f6efb8e72abcd277acdb327fc8a"
+    },
+    ".github/workflows/test.yml": {
+      "bytes": 10288,
+      "sha256": "70579793e9ef7e6d714b42e535693168d6f0fca5e090f382e75265c8a872e502"
+    },
+    "tests/tools/test_ci_history_build.py": {
+      "bytes": 50036,
+      "sha256": "4ff87aed36996cd9f41780fb154c4116c1b61300082225f5c2d3aa57621b058d"
+    },
+    "tests/tools/test_ci_history_integration.py": {
+      "bytes": 82558,
+      "sha256": "6723aea47c0cc39f23882a07893008c82312f4cd5ffec9f8272ba2cada644d7f"
+    },
+    "tests/tools/test_ci_platform_workflow.py": {
+      "bytes": 16080,
+      "sha256": "17fab1fc249f4bfb7b96c449f665f3d86cb69dd5e56efcad20e1059c0b2198af"
+    },
+    "tests/tools/test_ci_owned_process.py": {
+      "bytes": 23033,
+      "sha256": "12aab6a0cc1dd57f6e1f69d8598fc2213db8a79edae33dddb65bb650ce6b98ca"
+    },
+    "tests/tools/test_capture_settings_drawing_ui.py": {
+      "bytes": 6272,
+      "sha256": "35814e6c6053ce4b0047ec5953de828c748dcaa9c827a3bc209fe02bf156ac74"
+    },
+    "tests/tools/test_settings_drawing_reader.py": {
+      "bytes": 31500,
+      "sha256": "168fe071f52ee8f662f96f11fac0ffe10a26eb7899956c2f9bf0b6bc44a48081"
+    }
+  },
+  "windows_controls": [
+    {
+      "path": ".tmp/manual-workflow-verification/c3-integration-controls-windows001/receipt.json",
+      "bytes": 17655,
+      "sha256": "3de519d70dc71b34e28742a3733984a0098011ce8cd546ac08681291c8625de7",
+      "state": "failed",
+      "scope": "source/controller tests only; no installed product or GL qualification",
+      "scratch_empty_removed": true
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/c3-integration-controls-windows002/receipt.json",
+      "bytes": 5488,
+      "sha256": "8870d94cdebc75a412879dd86ad07e1999229af720f1ace990dfc3152f121cd8",
+      "state": "passed",
+      "scope": "source/controller tests only; no installed product or GL qualification",
+      "scratch_empty_removed": true
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/c3-routing-controls-windows001/receipt.json",
+      "bytes": 10321,
+      "sha256": "c95ce9ec983f6b06677ae9c55b33a0937e5fe4701bd08fb2573941c5008469fb",
+      "state": "passed",
+      "scope": "source/controller tests only; no installed product or GL qualification",
+      "scratch_empty_removed": true
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/c3-final-workflow-controls-windows001/receipt.json",
+      "bytes": 5480,
+      "sha256": "c7a39e63b6947099ad8ce3a7f2d939f5d872995be189c2a5b39137d736aa75bd",
+      "state": "passed",
+      "scope": "source/controller tests only; no installed product or GL qualification",
+      "scratch_empty_removed": true
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/normal-exit-diagnostic-controls-windows001/receipt.json",
+      "bytes": 5893,
+      "sha256": "2cf1b8d7489de8317bca74fdb5f8c051a7f008b9665a5ae26f4470943b0a6003",
+      "state": "passed",
+      "scope": "source/controller tests only; no installed product or GL qualification",
+      "scratch_empty_removed": true
+    }
+  ],
+  "linux_controls": {
+    "path": "/home/heq/.cache/imagejxx-build/c3-routing-controls002/receipt.json",
+    "state": "passed",
+    "methods": {
+      "build": 54,
+      "integration": 66,
+      "workflow": 11,
+      "suite": 44,
+      "capture": 3,
+      "reader": 29
+    },
+    "scratch_empty_removed": true,
+    "runtime": "existing p08k python001; existing p08m source001; no new compiler cache/environment"
+  },
+  "collection": {
+    "platforms": [
+      "Windows",
+      "Linux"
+    ],
+    "exact_ids": [
+      "test_installed_settings_drawing[drawing-persist-imgui_cpp]",
+      "test_installed_settings_drawing[drawing-persist-imgui_python]",
+      "test_installed_settings_drawing[drawing-reopen-imgui_cpp]",
+      "test_installed_settings_drawing[drawing-reopen-imgui_python]"
+    ],
+    "scope": "actual pytest collection only"
+  },
+  "native": "existing MSVC syntax-only receipt c3-native-syntax001; no C3 link/install/input acceptance",
+  "hosted_predecessor": {
+    "head": "a4778b2afd56937f4493e40924ffa7629d1a3072",
+    "run": 40344720115,
+    "state": "failure",
+    "mac_sdk": [
+      {
+        "archive": "scientific-sdk-macos-15-intel-3.10.zip",
+        "bytes": 80899,
+        "sha256": "c100400ed3d5d4a39b79447818ab24f8b30364f8284a90ae0b6f2273387548a2",
+        "state": "passed",
+        "scope": "strict installed scientific SDK only; full platform/UI remain open"
+      },
+      {
+        "archive": "scientific-sdk-macos-15-intel-3.12.zip",
+        "bytes": 81025,
+        "sha256": "9af42abdb844876b7d4ec663b65e0bacd86da1777b9775c3b63a8a44c37b18dd",
+        "state": "passed",
+        "scope": "strict installed scientific SDK only; full platform/UI remain open"
+      },
+      {
+        "archive": "scientific-sdk-macos-latest-3.10.zip",
+        "bytes": 80391,
+        "sha256": "5bbaab638f6840619977da04aeabf2802a56d995aed2e0b5215d8154688f7f3e",
+        "state": "passed",
+        "scope": "strict installed scientific SDK only; full platform/UI remain open"
+      },
+      {
+        "archive": "scientific-sdk-macos-latest-3.12.zip",
+        "bytes": 80376,
+        "sha256": "93f0b53af800d363813928a6e9984a2deb378764dfb1e5838ab66ffbd5db76ad",
+        "state": "passed",
+        "scope": "strict installed scientific SDK only; full platform/UI remain open"
+      }
+    ],
+    "remaining": [
+      "missing original scientific references",
+      "Windows appearance offscreen Stacks item at gui3",
+      "Windows headless normal-exit descendant assertion; cause unknown"
+    ]
+  },
+  "storage": {
+    "inventory": "c3-routing-storage-before001.json",
+    "known_bytes": 8582767352,
+    "budget_verified": false,
+    "unknown_subtrees": 2,
+    "local_link_admitted": false
+  },
+  "limits": [
+    "C3 actual four-case native input/persistence not executed",
+    "full99 families remain47 in progress/52 open/0 complete",
+    "historical retired evidence unavailable; no repinning"
+  ],
+  "cleanup": {
+    "mounted_linux_control_attempt": "timed out; durable owner cleanup complete; partial log and losslessly archived scratch SHA retained",
+    "retirement": "automatic approval review blocked deletion of c3-routing-controls-linux001/scratch; left unchanged; no alternate attempt",
+    "archive_sha256": "3c13631b95f957dadf576b2d872fcbcfeb41983dd04eb9bcc39b37201045b86e"
+  },
+  "linux_control_receipts": [
+    {
+      "path": ".tmp\\manual-workflow-verification\\c3-linux-control-receipts001\\routing.json",
+      "source": "/home/heq/.cache/imagejxx-build/c3-routing-controls002/receipt.json",
+      "sha256": "235e23995e7f8a381b747b21f8b71c42f2f589c087d2a44bb94e81a8e228bfd3",
+      "bytes": 16731
+    },
+    {
+      "path": ".tmp\\manual-workflow-verification\\c3-linux-control-receipts001\\collection.json",
+      "source": "/home/heq/.cache/imagejxx-build/c3-entry-collection003/receipt.json",
+      "sha256": "dcd18a5e10fff4b3f808ab1ae09552e7c07418afd0fc65bdabf277b6e7218f91",
+      "bytes": 5406
+    }
+  ],
+  "storage_after": {
+    "inventory": "c3-publication-storage-after001.json",
+    "known_bytes": 8583207949,
+    "headroom_upper_bound_bytes": 6726643,
+    "budget_verified": false,
+    "unknown_subtrees": 2
+  }
+}

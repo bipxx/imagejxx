@@ -139,6 +139,43 @@ SPEC["appearance"] = {
               "reader_core": "tests/python/settings_appearance_reader.py",
               "expectations": "tests/python/settings_appearance_expectations.py"},
 }
+SPEC["drawing"] = {
+    "stem": "settings-drawing", "prefix": "c3",
+    "cases": ("drawing-persist", "drawing-reopen"),
+    "flag": "--settings-drawing-ui-case", "method": "_settings_drawing_ui_case",
+    "schema": "c3.settings-drawing.ui.001",
+    "contract_field": "schema", "contract": "c3.settings-drawing.ui.001",
+    "state_field": "state", "raw_name": "case.json", "paired_preferences": True,
+    "explicit_preferences_argument": True,
+    "preferences_seed": {"format": "imagejxx-preferences", "version": 1,
+                         "values": {"c3_future_value": {"raw": [1, "two", True]}},
+                         "c3_future_root": {"opaque": ["retain", 17]},
+                         "extras": {"c3": "retain extra"}},
+    "reader_kind": "c3.settings-drawing-ui-reader-inputs.001",
+    "build_kind": "c3.settings-drawing-source-product-binding.001",
+    "python_origin_kind": "c3.settings-drawing-python-launcher-origin.001",
+    "limits": {"parent_seconds": 300, "case_process_seconds": 60,
+               "producer_seconds": 60, "frames": 750, "paired_raw_bytes": 64 * MIB,
+               "stage_bytes": 192 * MIB},
+    "roles": {"producer": "src/desktop/settings_drawing_ui_probe.cpp",
+              "producer_header": "src/desktop/settings_drawing_ui_probe.hpp",
+              "window_header": "src/desktop/window.hpp",
+              "selection_panel": "src/desktop/selection_panel.cpp",
+              "native_selection_edit": "src/native/selection_edit.cpp",
+              "native_roi_style": "src/native/roi_style.cpp",
+              "native_transforms": "src/native/transforms.cpp",
+              "native_document": "src/native/document.cpp",
+              "native_operations": "src/native/operations.cpp",
+              "operation_kernel": "src/native/operation_kernel.inc",
+              "rendering": "src/desktop/rendering.cpp",
+              "settings_io": "src/desktop/settings_io.cpp",
+              "process_helper": "scripts/ci_owned_process.py",
+              "mac_process_helper": "scripts/ci_mac_process.py",
+              "reader": "tests/python/test_settings_drawing_ui.py",
+              "reader_core": "tests/python/settings_drawing_reader.py",
+              "expectations": "tests/python/settings_drawing_expectations.py",
+              "rounded_reference": "tests/native/rounded_path_reference.inc"},
+}
 ORIENTATION_CONTRACT = {
     "path": str(ROOT / "build/scientific-orientation-entry001/contract.json"),
     "bytes": 30672,
@@ -155,7 +192,7 @@ def require(condition, message):
 
 
 def portable_kind(kind):
-    return kind in ("history", "appearance")
+    return kind in ("history", "appearance", "drawing")
 
 
 def read_json(path, limit=2 * MIB):
@@ -630,8 +667,16 @@ def capture(args):
                 paired = spec.get("paired_preferences", False)
                 directory = output / context / case if paired else output / context / case / "run"
                 directory.parent.mkdir(parents=True, exist_ok=paired and case != selected_cases[0])
+                preferences_path = directory.parent / "preferences.json"
+                if "preferences_seed" in spec and case == selected_cases[0]:
+                    # Fixture input only, before constructing either real host.
+                    # Subsequent changes belong exclusively to actual Apply.
+                    require(not preferences_path.exists(), "Drawing preference seed must be fresh")
+                    write(preferences_path, spec["preferences_seed"])
                 if context == "imgui_cpp":
                     argv = [products[context]["executable"]["path"], spec["flag"], case, str(directory)]
+                    if spec.get("explicit_preferences_argument"):
+                        argv.append(str(preferences_path))
                 else:
                     argv = [python["path"], "-I", "-X", "utf8", "-B", str(output / "source" / COMMON["python_launcher"]),
                             "--kind", args.kind, "--python-case", case, "--directory", str(directory), "--launch-inputs", str(launch_path)]

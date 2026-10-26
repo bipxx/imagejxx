@@ -287,7 +287,8 @@ class OwnedCommandTests(unittest.TestCase):
         self.assertEqual(row["state"], "exited")
         self.assertEqual(row["exit_code"], 0)
         self.assertTrue(row["target_completed"])
-        self.assertFalse(row["descendants_remained_after_target_completion"])
+        self.assertFalse(row["descendants_remained_after_target_completion"],
+                         "Normal-exit ownership receipt: " + json.dumps(row, sort_keys=True))
         self.assertEqual(out.read_text(), "owned stdout\n")
         self.assertEqual(err.read_text(), "owned stderr\n")
         self.assert_cleanup(row)

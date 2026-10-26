@@ -130,3 +130,16 @@ has _before/_after/_undo/_redo/_restored states. Persist also has thin_brush,
 thin_line, thin_point with those suffixes. Text has text_opened; rounded has
 the two construction/dialog states above. These are observations, never
 producer-computed expectations or acceptance verdicts.
+
+## Source integration checkpoint — 2026-10-26
+
+Independent expectations, strict reader, four-ID pytest entry and maintained
+capture registration now exist as source preparation. The shared build receipt
+freezes drawing readers and the original rounded reference. The complete suite
+accepts validated `--drawing-output`; the Windows provider runs drawing after
+history/appearance, retains failures independently, and blocks the full suite
+if any packet fails. No second capture framework or build runtime was added.
+Windows66 integration,3 drawing capture and29 reader controls pass. Actual
+pytest collection has four IDs on Windows/Linux. Synthetic product metadata
+controls and syntax verification establish no actual drawing input/persistence
+or rendering acceptance. Compiled host execution remains required.

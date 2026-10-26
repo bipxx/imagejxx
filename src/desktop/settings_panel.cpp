@@ -376,9 +376,7 @@ void SettingsPanel::draw(const Settings &current,
                          {"kind", "integer"},
                          {"draft", std::get<std::int64_t>(v)},
                          {"point", {point.x, point.y}}};
-      if ((d.name == "processing_memory_mb" || d.name == "history_limit" ||
-           d.name == "history_memory_mb" || d.name == "wand_connectivity") &&
-          !editorWindow->SkipItems) {
+      if (!editorWindow->SkipItems) {
         const auto a = ImGui::GetItemRectMin(), b = ImGui::GetItemRectMax();
         const auto &context = *ImGui::GetCurrentContext();
         auto &field = fields_[d.name];
@@ -391,16 +389,11 @@ void SettingsPanel::draw(const Settings &current,
         field["identity_source"] = "current_scoped_InputInt_text_label_id";
         field["geometry_source"] = "actual_InputInt_group_item_rect";
         field["rect_kind"] = "group_including_step_buttons_and_label";
-        if (d.name == "wand_connectivity") {
-          field["applied"] = current.integer(d.name);
-          field["hovered"] = context.HoveredId == editorId;
-        }
-        if (d.name == "history_limit" || d.name == "history_memory_mb" ||
-            d.name == "wand_connectivity") {
-          field["visible"] = ImGui::IsItemVisible();
-          field["clip_rect"] = {editorWindow->ClipRect.Min.x, editorWindow->ClipRect.Min.y,
-                                editorWindow->ClipRect.Max.x, editorWindow->ClipRect.Max.y};
-        }
+        field["applied"] = current.integer(d.name);
+        field["hovered"] = context.HoveredId == editorId;
+        field["visible"] = ImGui::IsItemVisible();
+        field["clip_rect"] = {editorWindow->ClipRect.Min.x, editorWindow->ClipRect.Min.y,
+                              editorWindow->ClipRect.Max.x, editorWindow->ClipRect.Max.y};
       }
     } else if (d.kind == SettingKind::Number) {
       double n = std::get<double>(v);

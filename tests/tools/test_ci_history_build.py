@@ -851,6 +851,15 @@ class HistoryBuildWindowsLaunch(unittest.TestCase):
 
 
 class HistoryBuildRoleSelection(unittest.TestCase):
+    def test_drawing_reader_oracles_and_native_producer_enter_the_build_freeze(self):
+        selected = build._history_paths(ROOT)
+        self.assertTrue({"src/desktop/settings_drawing_ui_probe.cpp",
+                         "src/desktop/settings_drawing_ui_probe.hpp",
+                         "tests/python/test_settings_drawing_ui.py",
+                         "tests/python/settings_drawing_reader.py",
+                         "tests/python/settings_drawing_expectations.py",
+                         "tests/native/rounded_path_reference.inc"} <= selected)
+
     def test_actual_role_selector_preserves_both_packets_with_repeated_role_names(self):
         # Exercise the real source-loaded selector; transport fixtures elsewhere
         # intentionally replace this seam and cannot detect dict-key collisions.

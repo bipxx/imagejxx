@@ -33,6 +33,7 @@
 #include "settings_wand_ui_probe.hpp"
 #include "settings_selection_ui_probe.hpp"
 #include "settings_measurement_ui_probe.hpp"
+#include "settings_drawing_ui_probe.hpp"
 #include "manual_threshold_workflow_ui_probe.hpp"
 #include "path_filter_ui_probe.hpp"
 #include "native_bare_import_ui_probe.hpp"
@@ -449,6 +450,15 @@ int run(const std::vector<std::string> &arguments) {
     const auto output = std::filesystem::absolute(std::filesystem::u8path(arguments[2]));
     imagejxx::desktop::Window editor((output.parent_path() / "preferences.json").u8string());
     imagejxx::desktop::settingsAppearanceUiCase(editor, arguments[1], "imgui_cpp", arguments[2]);
+    return 0;
+  }
+  if (!arguments.empty() && arguments[0] == "--settings-drawing-ui-case") {
+    if (arguments.size() != 4 || arguments[3].empty() ||
+        (arguments[1] != "drawing-persist" && arguments[1] != "drawing-reopen"))
+      throw std::invalid_argument("--settings-drawing-ui-case drawing-persist|drawing-reopen FRESH_DIRECTORY PREFERENCES_PATH");
+    const auto preferences = std::filesystem::absolute(std::filesystem::u8path(arguments[3])).lexically_normal();
+    imagejxx::desktop::Window editor(preferences.u8string());
+    imagejxx::desktop::settingsDrawingUiCase(editor, arguments[1], "imgui_cpp", arguments[2]);
     return 0;
   }
   if (!arguments.empty() && arguments[0] == "--settings-measurement-ui-case") {

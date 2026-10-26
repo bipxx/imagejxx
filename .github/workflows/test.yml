@@ -39,6 +39,8 @@ jobs:
           python -I -B tests/tools/test_ci_python_diagnostics.py
           python -I -B tests/tools/test_ci_owned_process.py
           python -I -B tests/tools/test_capture_shortcuts_history_ui.py
+          python -I -B tests/tools/test_capture_settings_drawing_ui.py
+          python -I -B tests/tools/test_settings_drawing_reader.py
           python -I -B tests/tools/test_capture_history_owner_integration.py
           python -I -B tests/tools/test_ci_scientific_sdk.py
           python -I -B tests/tools/test_ci_windows_gl.py

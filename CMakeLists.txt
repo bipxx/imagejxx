@@ -1226,6 +1226,7 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
     src/desktop/manual_threshold_workflow_ui_probe.cpp
     src/desktop/settings_selection_ui_probe.cpp
     src/desktop/settings_measurement_ui_probe.cpp
+    src/desktop/settings_drawing_ui_probe.cpp
     src/desktop/histogram_workflow_ui_probe.cpp
     src/desktop/native_workflow_panel.cpp
     src/desktop/native_workflow_parameters.cpp

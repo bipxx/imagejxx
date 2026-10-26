@@ -1,6 +1,53 @@
 # Three-agent execution plan
 
-## Current execution card — 2026-10-25
+## Current execution card — 2026-10-26
+
+This is the only ordered queue. Earlier cards, source pins and expectations
+remain historical and retain their original scope.
+
+Published `a4778b2afd56937f4493e40924ffa7629d1a3072`, branch
+`ci2-platform-integration`: [run40344720115](https://github.com/bipxx/imagejxx/actions/runs/40344720115)
+is terminal failure. All source preparations pass. **All four actual macOS
+installed scientific SDK gates pass strict archive equality**, ARM/Intel and
+Python3.10/3.12. Matched deterministic archive policy now has this scoped proof;
+full macOS suites still stop on missing original scientific references.
+Windows3.12 passes eight history IDs. Its appearance capture gets beyond the
+old scientific-dialog failure, then records the Stacks menu item at y930..993
+on the actual1028x749 viewport at gui_scale3. The item observation lacks clip
+information. Windows headless also fails a normal-exit descendant assertion;
+the original log has no detailed ownership row, so its cause remains unknown.
+Original ZIPs, API hashes and logs: local `ci2/a4778b2-hosted-results001`.
+
+| Order / owner | Smallest next action | Decisive check / boundary |
+| --- | --- | --- |
+| 1 / Root integration | Finish C3 source controls and publish one coherent source head after fetch/base review | Existing four-ID capture/reader route; hosted compilation and actual persist/reopen input remain required. Run history/appearance/drawing independently before the full gate, preserving each failure |
+| 2 / Root C2 | Observe actual owning menu popup clipping and scroll the offscreen Stacks item with bounded real input | Preserve item identity, hover/clip checks, gui3, numerical assertions and time/frame bounds; both installed launchers through the original Windows GL route |
+| 3 / Root ownership | Retain the detailed normal-exit row if the hosted assertion recurs | Diagnostic-only assertion message is prepared. No cleanup-policy relaxation or invented cause; local lifecycle success does not resolve the hosted failure |
+| Independent / Root | Recover seven original scientific payloads through the authenticated recovery contract | Exact original hashes, no substitutes or recreated retired build trees |
+| After C3 / Root+A/B ownership | Continue the next reproduced C5 linked stack/view consumer from the per-key guide | Name behavior, existing seam, independent oracle and owning gate before implementation |
+
+[C3 specification](packets/CFG5-drawing-consumers.md): producer/CLI/private
+binding, Integer observations, independent expectations/reader, actual four-ID
+pytest entry and shared capture/build/full-suite registration are source-ready.
+Windows controls pass66 integration,11 workflow (one host skip),44 suite
+(one skip), earlier54 build (four skips),3 drawing capture and29 reader methods.
+Actual pytest collection has exactly four IDs on Windows/Linux. All six Linux source-control programs pass in the existing runtime;54/66/11/44/3/29 methods, with host-specific skips. Producer verification remains
+MSVC syntax only: **no C3 native link, install or actual input run**. Existing
+rotated R011 reference bytes and numerical policy are unchanged.
+
+Storage `c3-routing-storage-before001.json`:8,582,767,352 known bytes,
+7,167,240 upper-bound headroom, two inaccessible caches. Full8GiB budget remains
+unverified; this does not admit local linking/capture. Reuse one cache/runtime;
+do not recreate `build/`, retry policy-blocked cleanup, or reconstruct retired
+G016 evidence. Historical measurements retain their original root scopes.
+
+All99 families remain47 in progress /52 open /0 complete. Full owning cohorts,
+macOS UI, scientific references, accessibility, eligible Fiji and commercial
+release gates remain open. The [per-key guide](packets/API_KEY_DELIVERY_PATHS.md)
+and [compilexx review](packets/COMPILEXX_CROSS_PROJECT_REVIEW.md#review-update--2026-10-26)
+retain the complete scope. No status-only push or old-run retry.
+
+## Historical card before a4778b2 terminal intake — 2026-10-25
 
 Updated 2026-10-26 after terminal CI intake and the seven-document compilexx
 review. This card is the only ordered queue; the
