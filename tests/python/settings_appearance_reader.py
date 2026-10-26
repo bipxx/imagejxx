@@ -174,13 +174,23 @@ def check_input(report):
         begin, end = event["frame_before"], event["frame_after"]
         require(type(begin) is int and type(end) is int and 0 <= begin < end < len(frames), "input frame interval")
         atoms = [atom for f in frames[begin:end+1] for atom in f["raw_inputs"]]
-        if event["kind"] == "control_click":
+        if event["kind"] in ("control_click", "control_hover"):
             item = event["actual_control"]
             require(type(item["id"]) is int and item["id"] > 0 and event["hovered_id"] == item["id"], "actual hovered item")
             require(inside(event["actual_mouse"], item["rect"]) and inside(event["actual_mouse"], event["actual_clip"]), "actual clickable bounds")
-            for down in (True, False):
-                require(any(a.get("kind") == "button" and a.get("button") == 0 and a.get("down") is down for a in atoms), "actual mouse press/release")
-            clicked.append(event["control"])
+            if event["kind"] == "control_click":
+                for down in (True, False):
+                    require(any(a.get("kind") == "button" and a.get("button") == 0 and a.get("down") is down for a in atoms), "actual mouse press/release")
+                clicked.append(event["control"])
+            else:
+                require(event["control"] == "host.menu.Image.Stacks", "fixed submenu hover route")
+                hover_atoms = [a for f in frames[begin+1:end+1] for a in f["raw_inputs"]]
+                require(not any(a.get("kind") == "button" for a in hover_atoms) and
+                        any(a.get("kind") == "position" and a.get("point") == event["actual_mouse"] for a in hover_atoms), "actual button-free submenu hover")
+                opened = event["opened_control"]
+                require(opened == frames[end]["report"]["host_controls"].get("menu.action.view.orthogonal") and
+                        type(opened["id"]) is int and opened["id"] > 0 and opened["visible"] is True and
+                        opened["window_name"] != event["hovered_window"], "actual child submenu observation")
         elif event["kind"] == "text_input":
             require(type(event["input_id"]) is int and event["input_id"] > 0, "actual input owner")
             if event["text"]:
@@ -205,7 +215,7 @@ def checkpoint_actions(report, before, after, required):
     """Require ordered actual controls in the interval that claims their effect."""
     first, last = report["states"][before]["frame"], report["states"][after]["frame"]
     events = sorted((e for e in report["events"] if first < e["frame_after"] <= last
-                     and e.get("kind") in ("control_click", "text_input")), key=lambda e: e["frame_after"])
+                     and e.get("kind") in ("control_click", "control_hover", "text_input")), key=lambda e: e["frame_after"])
     actual = [(e["control"], e.get("text")) for e in events]
     cursor = 0
     for wanted in required:

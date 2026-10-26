@@ -249,7 +249,7 @@ Json pixels(const Json &value) {
 } // namespace
 
 struct SettingsAppearanceUiProbe::Impl {
-  enum class Kind { Click, Text, State, Wait };
+  enum class Kind { Click, Hover, Text, State, Wait };
   struct Action {
     Kind kind; std::string name, text; int phase = 0, attempts = 0;
     std::size_t before = 0; Json control, hover;
@@ -301,7 +301,13 @@ struct SettingsAppearanceUiProbe::Impl {
   void choose(const std::string &name, const std::string &value) {
     search(name); click("field." + name); click("choice." + name + "." + value);
   }
-  void orthogonal() { click("host.menu.Image"); click("host.menu.Image.Stacks"); click("host.menu.action.view.orthogonal"); }
+  void orthogonal() {
+    click("host.menu.Image");
+    // A submenu can overlap its parent on a small viewport. Open it by the
+    // normal hover route so a release cannot activate an item underneath.
+    actions.push_back({Kind::Hover, "host.menu.Image.Stacks", {}});
+    click("host.menu.action.view.orthogonal");
+  }
   void openVolume();
   Json control(const std::string &name) const;
   void before(std::uint64_t frame);
@@ -476,6 +482,7 @@ void SettingsAppearanceUiProbe::Impl::before(std::uint64_t frame) {
   if (!initial || next == actions.size()) return;
   auto &action = actions[next];
   if (action.kind == Kind::State || action.kind == Kind::Wait) return;
+  if (action.kind == Kind::Hover && action.phase >= 2) return;
   auto &io = ImGui::GetIO();
   if (action.phase == 0) {
     if (!action.attempts) action.before = report.at("frames").size() - 1;
@@ -513,6 +520,7 @@ void SettingsAppearanceUiProbe::Impl::before(std::uint64_t frame) {
     action.hover = {{"hovered_id", ctx.HoveredId}, {"hovered_window", ctx.HoveredWindow->Name},
       {"actual_mouse", {ctx.IO.MousePos.x, ctx.IO.MousePos.y}},
       {"actual_clip", {clip.Min.x, clip.Min.y, clip.Max.x, clip.Max.y}}};
+    if (action.kind == Kind::Hover) { action.phase = 2; return; }
     io.AddMouseButtonEvent(0, true); raw.push_back({{"kind", "button"}, {"button", 0}, {"down", true}});
   } else if (action.phase == 2) {
     io.AddMouseButtonEvent(0, false); raw.push_back({{"kind", "button"}, {"button", 0}, {"down", false}});
@@ -574,6 +582,17 @@ void SettingsAppearanceUiProbe::Impl::after(std::uint64_t frame, double actualDp
       report["events"].push_back({{"kind", "wait_complete"}, {"condition", action.name}, {"frame_before", action.before}, {"frame_after", ordinal}});
       ++next;
     } else { if (!action.attempts++) action.before = ordinal; require(action.attempts < 120, "C2 wait did not complete: " + action.name); }
+  } else if (action.kind == Kind::Hover && action.phase == 2) {
+    const auto &controls = last.at("host_controls");
+    const auto child = controls.find("menu.action.view.orthogonal");
+    if (child == controls.end() || !child->value("visible", false)) {
+      require(++action.attempts <= 45, "C2 submenu did not become visible after actual hover");
+      return;
+    }
+    Json event{{"kind", "control_hover"}, {"control", action.name},
+      {"actual_control", action.control}, {"opened_control", *child},
+      {"frame_before", action.before}, {"frame_after", ordinal}};
+    event.update(action.hover); report["events"].push_back(std::move(event)); ++next;
   } else if (action.kind == Kind::State) {
     if (++action.phase >= 3) { report["states"][action.name] = state(action.name); ++next; }
   } else if (action.phase == 4) {

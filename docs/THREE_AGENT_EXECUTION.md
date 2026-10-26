@@ -2,6 +2,40 @@
 
 ## Current execution card — 2026-10-26
 
+**Published baseline:** `7673a50d0238bfd97c67824939f5251835f471c8`;
+[run40375915284](https://github.com/bipxx/imagejxx/actions/runs/40375915284)
+is live. Its bounded atomic-receipt scan fix is separate from the C2 input below.
+
+**Ready C2 submenu candidate:** hover over the actual Stacks item, observe its
+visible child, then physically click Orthogonal. This avoids release activating
+an overlapping child item on the retained423-frame hosted failure. The reader
+checks actual hover identity/bounds, position without buttons, and matching
+visible child observation in that frame; legacy click reports remain readable.
+All four installed C++/Python persist/reopen IDs and19 reader methods pass.
+Literal pixels, GL samples, numerical policy, frames/time and persistence
+expectations remain unchanged. A smaller1250x820 headless input experiment also
+reaches the three orthogonal planes with no export dialog; PageDown exposes its
+parent because the older helper rejects wheel events. This supports hover only,
+not exact hosted1028x749 GL acceptance.
+[Source/product/result pins](parity/reviews/cfg4-appearance001/submenu-hover-progress.json).
+
+| Order / owner | Next action | Required boundary |
+| --- | --- | --- |
+| 1 / Root | Publish the checked C2 hover batch | Four independent installed IDs,19 controls, unchanged references; preserve original failed captures |
+| 2 / Root | Follow the exact successor's independent history/C2/C3 artifacts | Exact hosted small-viewport GL, both launchers and all required platform gates remain pending/fatal |
+| Independent / Root | Recover seven original scientific payloads | Original recovery hashes only; no substitute observations |
+| After C2/C3 / Root | Continue C5 linked stack/view per-key consumer | Existing native seam, independent oracle and owning gate |
+
+The same-cache build's sampled extra peak259,540,230 bytes stayed within the
+documented necessary384MiB transient reserve; this is distinct from final
+known storage. Capture009 was losslessly compressed and verified before retiring
+10,789,545 raw bytes. Complete-root inventory `c2-hover-storage-after001.json`
+has8,559,351,231 known bytes; two inaccessible subtrees keep the8GiB budget
+unverified. No new cache/runtime or historical `build/` generation.
+All99 families remain47 in progress /52 open /0 complete; full release is open.
+
+## Historical card before C2 hover qualification — 2026-10-26
+
 **Published baseline:** `4be8d9433188c91a4b4595f900b3bfa292739e89`;
 [run40374991826](https://github.com/bipxx/imagejxx/actions/runs/40374991826)
 is live. Drawing has focused local four-ID acceptance; hosted successor pending.

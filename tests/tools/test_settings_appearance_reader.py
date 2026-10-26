@@ -313,6 +313,42 @@ class FramebufferReader(unittest.TestCase):
 
 
 class FullReportReader(unittest.TestCase):
+    def submenu_hover_report(self):
+        row = full_report()
+        event = next(e for e in row["events"] if e["control"] == "host.menu.Image.Stacks")
+        event.update(kind="control_hover", hovered_window="Image###Menu_00")
+        opened = {"id": 987, "visible": True, "window_name": "Stacks###Menu_01"}
+        event["opened_control"] = deepcopy(opened)
+        for frame in row["frames"][event["frame_before"]+1:event["frame_after"]+1]:
+            frame["raw_inputs"] = [{"kind": "position", "point": [30, 30]}]
+        row["frames"][event["frame_after"]]["report"]["host_controls"] = {
+            "menu.action.view.orthogonal": deepcopy(opened)}
+        return row, event
+
+    def test_actual_submenu_hover_with_observed_child_passes(self):
+        row, _ = self.submenu_hover_report()
+        reader.check_report(row)
+
+    def test_submenu_hover_requires_position_no_buttons_and_observed_child(self):
+        for mutation in ("button", "position", "hidden", "parent", "identity", "route"):
+            row, event = self.submenu_hover_report()
+            last = row["frames"][event["frame_after"]]
+            if mutation == "button":
+                last["raw_inputs"].append({"kind": "button", "button": 0, "down": False})
+            elif mutation == "position":
+                for frame in row["frames"][event["frame_before"]+1:event["frame_after"]+1]:
+                    frame["raw_inputs"] = []
+            elif mutation == "identity":
+                event["opened_control"]["id"] += 1
+            elif mutation == "route":
+                event["control"] = "host.menu.file.open"
+            else:
+                field, value = ("visible", False) if mutation == "hidden" else ("window_name", event["hovered_window"])
+                event["opened_control"][field] = value
+                last["report"]["host_controls"]["menu.action.view.orthogonal"][field] = value
+            with self.subTest(mutation=mutation), self.assertRaises(AssertionError):
+                reader.check_report(row)
+
     def test_complete_literal_reports_and_fresh_pair_pass_in_both_contexts(self):
         for context in ("imgui_cpp", "imgui_python"):
             with self.subTest(context=context):

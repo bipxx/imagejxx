@@ -1,0 +1,116 @@
+{
+  "schema": "imagejxx.c2-submenu-hover-progress.001",
+  "state": "focused_local_installed_four_ids_passed",
+  "published_predecessor": "7673a50d0238bfd97c67824939f5251835f471c8",
+  "source_pins": [
+    {
+      "path": "src\\desktop\\settings_appearance_ui_probe.cpp",
+      "bytes": 45189,
+      "sha256": "a6e794f2b069927199177e3cf864d7db63d0540a881671d0a8f62dc2c7a638b5"
+    },
+    {
+      "path": "tests\\python\\settings_appearance_reader.py",
+      "bytes": 26837,
+      "sha256": "d22cd5cc521176d59b7ec8b35e763545515828a996d2ec64cf8308a8f89c9914"
+    },
+    {
+      "path": "tests\\tools\\test_settings_appearance_reader.py",
+      "bytes": 27823,
+      "sha256": "a174f2c60959caa729852c290eba7bb8c8ee7a5c189dba951ce91f9b53f94c46"
+    }
+  ],
+  "diagnosis": {
+    "original_run": 40365913473,
+    "original_frames": 423,
+    "original_layout": "1028x749, gui scale3; Stacks release activates Export plane in the overlapping child menu",
+    "original_intake": {
+      "path": ".tmp\\manual-workflow-verification\\7d-ui-intake003\\receipt.json",
+      "bytes": 2271900,
+      "sha256": "cfffc583f4d9c731037c673568644142f7c873ccb3ad0b98c3814e44890b597f"
+    }
+  },
+  "change": "Open Stacks by actual hover, observe visible child, then physically click Orthogonal; independent reader validates hover identity/bounds, position without buttons, and exact child frame observation. Legacy click reports remain readable.",
+  "verification": {
+    "installed_ids": 4,
+    "contexts": [
+      "imgui_cpp",
+      "imgui_python"
+    ],
+    "cases": [
+      "appearance-persist",
+      "appearance-reopen"
+    ],
+    "independent_reader_methods": 19,
+    "reader_controls": {
+      "path": ".tmp\\manual-workflow-verification\\c2-hover-reader-controls001\\controls.log",
+      "bytes": 123,
+      "sha256": "7d1919201c7ef41fd18be76375e47f6fd537a5f9fdd10f9b9d6a7c764866234e"
+    },
+    "reader": {
+      "path": ".tmp\\manual-workflow-verification\\appearance-reader-windows009\\receipt.json",
+      "bytes": 4637,
+      "sha256": "260f9f31cc4ef8f4e1117494cac7d85b0dbe3e83e9bdbb96b940e7e5d4b32722"
+    },
+    "junit": {
+      "path": ".tmp\\manual-workflow-verification\\appearance-reader-windows009\\junit.xml",
+      "bytes": 845,
+      "sha256": "27ed46de950ff3f8722c6fd230f07eefbb9408038ebc28ad1b0fdecfc29f9cfa"
+    },
+    "build": {
+      "path": ".tmp\\manual-workflow-verification\\c3-windows-build009\\receipt.json",
+      "bytes": 27931,
+      "sha256": "0cd7ceb6c3175576411a4a3e3246c5b6a893b0e34f21515616ad8b2d75208538"
+    },
+    "source_freeze": {
+      "path": ".tmp\\manual-workflow-verification\\c3-windows-build009\\source-freeze.json",
+      "bytes": 358316,
+      "sha256": "4fcbe3a7763933b00755cd04e66dd8f727726df7356125f4f2372e21011b0e7e"
+    },
+    "smaller_headless_support": {
+      "path": ".tmp\\manual-workflow-verification\\c2-hover-small002\\receipt.json",
+      "bytes": 3154,
+      "sha256": "6d6be67b82db23087fa0b8a391685ae136985f4fe0c41149ada4eaccfdca3a71"
+    }
+  },
+  "capture": {
+    "archive": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\appearance-windows-capture009.zip",
+      "bytes": 1057639,
+      "sha256": "d5b66a09ae7259b5f218743b302577ff40c028cfc4bf021a37e9ffbfb2e423ac"
+    },
+    "retention": {
+      "path": ".tmp\\manual-workflow-verification\\appearance-windows-capture009-retention.json",
+      "bytes": 18997,
+      "sha256": "fd41e80c7ce5017d9d20624853b1883b6e32028b1ca7abf5ba9d32a23d4a28c8"
+    },
+    "raw_retired_bytes": 10789545,
+    "historical_reading": "Restore and verify original members to recorded paths before replay; no repinning"
+  },
+  "storage": {
+    "before": {
+      "path": ".tmp\\manual-workflow-verification\\c2-hover-storage-before001.json",
+      "bytes": 1509,
+      "sha256": "964ccd59f3367e981549bd69057d8d28233796036119a98326382fc1dae947dc"
+    },
+    "after": {
+      "path": ".tmp\\manual-workflow-verification\\c2-hover-storage-after001.json",
+      "bytes": 1523,
+      "sha256": "1d4bfd0a6e6102105e64788b897d1e6b7b96703f8b9f0b2343839292f741bca0"
+    },
+    "documented_transient_reserve_bytes": 402653184,
+    "measured_build_additional_peak_bytes": 259540230,
+    "budget_verified": false
+  },
+  "limits": [
+    "Exact hosted1028x749 GL overlap qualification remains pending",
+    "Small1250x820 support uses PageDown exposure because legacy render_headless rejects wheel events; no GL claim",
+    "No numerical, pixel, tolerance, source, frame/time, state membership or persistence expectations changed",
+    "Full platform/wheel, missing original scientific payloads, accessibility, eligible Fiji and release gates remain"
+  ],
+  "family_counts": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  },
+  "full_acceptance_claim": false
+}
