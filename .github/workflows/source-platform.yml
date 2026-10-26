@@ -110,20 +110,25 @@ jobs:
         run: python -m pip install cmake==3.31.6
       - name: Select Ninja for the bounded macOS console experiment
         if: runner.os == 'macOS'
-        run: python -m pip install ninja==1.13.2
+        shell: bash
+        run: |
+          mkdir -p build/ci-ninja-console
+          python -m pip install --force-reinstall --only-binary=:all: --no-deps --require-hashes -r .github/requirements/mac-ninja-controls.txt --report build/ci-ninja-console/install.json
       - name: Check actual macOS Ninja console ownership
         if: runner.os == 'macOS'
         shell: bash
         run: |
-          mkdir -p build/ci-ninja-console
-          export IMAGEJXX_NINJA_CONSOLE_CONTROL_EXE="$(python -I -B -c 'import pathlib,shutil; print(pathlib.Path(shutil.which("ninja")).resolve(strict=True))')"
+          task_ninja_tool="$(python -I -B tests/tools/test_ci_mac_ninja_process.py --print-tool)"
+          export IMAGEJXX_NINJA_CONSOLE_CONTROL_EXE="$task_ninja_tool"
           python -I -B tests/tools/test_ci_mac_ninja_process.py --require-darwin > build/ci-ninja-console/control.log 2>&1
       - name: Retain bounded Ninja ownership diagnostics
         if: always() && runner.os == 'macOS'
         uses: actions/upload-artifact@v4
         with:
           name: ninja-console-${{ inputs.profile }}-${{ matrix.python }}
-          path: build/ci-ninja-console/control.log
+          path: |
+            build/ci-ninja-console/control.log
+            build/ci-ninja-console/install.json
           if-no-files-found: warn
       - uses: actions/download-artifact@v4
         with:

@@ -1,0 +1,185 @@
+{
+  "schema": "imagejxx.ninja-exact-tool-progress.001",
+  "state": "portable_controls_passed_actual_darwin_pending",
+  "base_commit": "738a8222d2c432e0d1221bb2e207cac21d5362b3",
+  "acceptance_claim": false,
+  "current_sources": [
+    {
+      "path": "tests/tools/test_ci_mac_ninja_process.py",
+      "bytes": 22815,
+      "sha256": "7c5492d3c2fb07ab6b78cc9d2c7c43d1103b951120bfcf66cb5c3472646a37c2"
+    },
+    {
+      "path": "tests/tools/test_ci_platform_workflow.py",
+      "bytes": 10109,
+      "sha256": "5642f77ad37795f5eb0e4704e449f45083ae315e200d3756d120ad4933ca4093"
+    },
+    {
+      "path": ".github/workflows/source-platform.yml",
+      "bytes": 12060,
+      "sha256": "54a2c7e8e29a4bbc30429deffcf201172256b6beba4509c29436049096aea46a"
+    },
+    {
+      "path": ".github/requirements/mac-ninja-controls.txt",
+      "bytes": 244,
+      "sha256": "445de8dcee48c1b7ce685c8e772c42dd7bc0d1e9e0de6d3e87be5e33e18dc266"
+    },
+    {
+      "path": "scripts/ci_owned_process.py",
+      "bytes": 31280,
+      "sha256": "39ef83863d4cc672c044c314cd98a141590e4165cbd73605ac34b353d000f8d7"
+    },
+    {
+      "path": "scripts/ci_mac_process.py",
+      "bytes": 40903,
+      "sha256": "7a9b103375cf11a1687c5db0fc91c50293012e1232b61aaad3f936175eca5c5d"
+    },
+    {
+      "path": "tests/tools/test_ci_mac_process.py",
+      "bytes": 43188,
+      "sha256": "f6a095b914d5d2167187efd398d9ff1f02389f4d96a58e202e7c526e7ba96539"
+    }
+  ],
+  "prior_run": {
+    "id": 40251241886,
+    "head": "738a8222d2c432e0d1221bb2e207cac21d5362b3",
+    "state": "failure",
+    "cause": "exact packaged banner differed; no lifecycle graph executed",
+    "original_lanes": [
+      {
+        "artifact": 12621098399,
+        "label": "arm312",
+        "archive": ".tmp\\manual-workflow-verification\\ci2\\ninja-console-arm312-failure001.zip",
+        "sha256": "9e9ea062c7b2db9e90972d4ec49e8db4a12b2ffe23d12b5dc741fd2b1d5ed53d",
+        "bytes": 2632,
+        "observed_versions": [
+          "1.13.2.git.kitware.jobserver-pipe-1"
+        ],
+        "gate_failures": 6,
+        "graphs_executed": 0
+      },
+      {
+        "artifact": 12621900374,
+        "label": "arm310",
+        "archive": ".tmp\\manual-workflow-verification\\ci2\\ninja-console-arm310-failure001.zip",
+        "sha256": "daf5f88b720a523f96c86ec19143e4c89c4b8862d3623ecc37ae114b5b07e811",
+        "bytes": 2582,
+        "observed_versions": [
+          "1.13.2.git.kitware.jobserver-pipe-1"
+        ],
+        "gate_failures": 6,
+        "graphs_executed": 0
+      },
+      {
+        "artifact": 12621596166,
+        "label": "intel312",
+        "archive": ".tmp\\manual-workflow-verification\\ci2\\ninja-console-intel312-failure001.zip",
+        "sha256": "508f67d811e4102527fd5f2a8e6199fd187becd512c2bc75c76b303e2538aa4b",
+        "bytes": 2631,
+        "observed_versions": [
+          "1.13.2.git.kitware.jobserver-pipe-1"
+        ],
+        "gate_failures": 6,
+        "graphs_executed": 0
+      },
+      {
+        "artifact": 12620694018,
+        "label": "intel310",
+        "archive": ".tmp\\manual-workflow-verification\\ci2\\ninja-console-intel310-failure001.zip",
+        "sha256": "a04e49855a3d8b3d45a92fd4be94b3814bc5ec93efdf930493bf158b48c7ee5b",
+        "bytes": 2617,
+        "observed_versions": [
+          "1.13.2.git.kitware.jobserver-pipe-1"
+        ],
+        "gate_failures": 6,
+        "graphs_executed": 0
+      }
+    ]
+  },
+  "local_controls": [
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/ninja-profile-controls-windows003/receipt.json",
+        "bytes": 6324,
+        "sha256": "b17a34d5f4aecd0d56c80e13619862a0111b5d69e8fd605f7f42be12a9cc0fb5"
+      },
+      "scope": "metadata/graph",
+      "methods": 13,
+      "explicit_host_skips": 0,
+      "source_identities": {
+        "tests/tools/test_ci_mac_ninja_process.py": "7c5492d3c2fb07ab6b78cc9d2c7c43d1103b951120bfcf66cb5c3472646a37c2",
+        "tests/tools/test_ci_mac_process.py": "f6a095b914d5d2167187efd398d9ff1f02389f4d96a58e202e7c526e7ba96539",
+        "scripts/ci_owned_process.py": "39ef83863d4cc672c044c314cd98a141590e4165cbd73605ac34b353d000f8d7",
+        "scripts/ci_mac_process.py": "7a9b103375cf11a1687c5db0fc91c50293012e1232b61aaad3f936175eca5c5d",
+        ".github/requirements/mac-ninja-controls.txt": "445de8dcee48c1b7ce685c8e772c42dd7bc0d1e9e0de6d3e87be5e33e18dc266",
+        ".github/workflows/source-platform.yml": "5901fa1b25b357ba6058e33174834978830562d4e3aa7e5b349a024d09e94723",
+        "tests/tools/test_ci_platform_workflow.py": "fe6ab11074a31d50a3e43c7005f4bce21c9f4c7a219e70752aab458fd258d9d8"
+      },
+      "acceptance_claim": false
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/ninja-profile-controls-linux002/receipt.json",
+        "bytes": 6013,
+        "sha256": "cf07ec83bf3b7204b41f381023e740d75a49d2addc81314130e714dd0518d7b4"
+      },
+      "scope": "metadata/graph",
+      "methods": 13,
+      "explicit_host_skips": 0,
+      "source_identities": {
+        "tests/tools/test_ci_mac_ninja_process.py": "7c5492d3c2fb07ab6b78cc9d2c7c43d1103b951120bfcf66cb5c3472646a37c2",
+        "tests/tools/test_ci_mac_process.py": "f6a095b914d5d2167187efd398d9ff1f02389f4d96a58e202e7c526e7ba96539",
+        "scripts/ci_owned_process.py": "39ef83863d4cc672c044c314cd98a141590e4165cbd73605ac34b353d000f8d7",
+        "scripts/ci_mac_process.py": "7a9b103375cf11a1687c5db0fc91c50293012e1232b61aaad3f936175eca5c5d",
+        ".github/requirements/mac-ninja-controls.txt": "445de8dcee48c1b7ce685c8e772c42dd7bc0d1e9e0de6d3e87be5e33e18dc266",
+        ".github/workflows/source-platform.yml": "5901fa1b25b357ba6058e33174834978830562d4e3aa7e5b349a024d09e94723",
+        "tests/tools/test_ci_platform_workflow.py": "fe6ab11074a31d50a3e43c7005f4bce21c9f4c7a219e70752aab458fd258d9d8"
+      },
+      "acceptance_claim": false
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/ninja-wheel-workflow-windows001/receipt.json",
+        "bytes": 2984,
+        "sha256": "c1984c9f168e86330f359ff322df82060c68bbee888096b3e602830c84b2b693"
+      },
+      "scope": "workflow",
+      "methods": 7,
+      "explicit_host_skips": 0,
+      "source_identities": {
+        "tests/tools/test_ci_platform_workflow.py": "5642f77ad37795f5eb0e4704e449f45083ae315e200d3756d120ad4933ca4093",
+        ".github/workflows/source-platform.yml": "54a2c7e8e29a4bbc30429deffcf201172256b6beba4509c29436049096aea46a",
+        ".github/requirements/mac-ninja-controls.txt": "445de8dcee48c1b7ce685c8e772c42dd7bc0d1e9e0de6d3e87be5e33e18dc266",
+        "scripts/ci_owned_process.py": "39ef83863d4cc672c044c314cd98a141590e4165cbd73605ac34b353d000f8d7"
+      },
+      "acceptance_claim": false
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/ninja-wheel-workflow-linux001/receipt.json",
+        "bytes": 2846,
+        "sha256": "18f1b2721488b21e36e88b37524b1023ca449bf6b35df6a108a3bcda2c7c87c6"
+      },
+      "scope": "workflow",
+      "methods": 7,
+      "explicit_host_skips": 1,
+      "source_identities": {
+        "tests/tools/test_ci_platform_workflow.py": "5642f77ad37795f5eb0e4704e449f45083ae315e200d3756d120ad4933ca4093",
+        ".github/workflows/source-platform.yml": "54a2c7e8e29a4bbc30429deffcf201172256b6beba4509c29436049096aea46a",
+        ".github/requirements/mac-ninja-controls.txt": "445de8dcee48c1b7ce685c8e772c42dd7bc0d1e9e0de6d3e87be5e33e18dc266",
+        "scripts/ci_owned_process.py": "39ef83863d4cc672c044c314cd98a141590e4165cbd73605ac34b353d000f8d7"
+      },
+      "acceptance_claim": false
+    }
+  ],
+  "limits": [
+    "Metadata/graph controls retain their original workflow source; final workflow controls bind the successor force-reinstall/report wiring.",
+    "No actual Darwin lifecycle pass or product console profile is claimed.",
+    "Original local receipt paths identify retained evidence; they are not bundled compiler caches or installed runtimes."
+  ],
+  "required_next": [
+    "actual six-case Darwin selector on Intel/arm64 and both Python versions",
+    "generated CMake graph, try_compile, broker death and build ownership decision",
+    "unchanged installed IO/UI, direct SDK, full platform/scientific/release gates"
+  ]
+}

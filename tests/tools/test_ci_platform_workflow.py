@@ -51,9 +51,16 @@ class PlatformInstallArguments(unittest.TestCase):
         self.assertIn("if: runner.os == 'macOS'", section)
         self.assertIn("IMAGEJXX_NINJA_CONSOLE_CONTROL_EXE", section)
         self.assertIn("tests/tools/test_ci_mac_ninja_process.py --require-darwin", section)
-        self.assertIn("python -m pip install ninja==1.13.2", text)
+        self.assertIn("--only-binary=:all: --no-deps --require-hashes -r .github/requirements/mac-ninja-controls.txt", text)
+        self.assertIn("tests/tools/test_ci_mac_ninja_process.py --print-tool", section)
+        requirement = (ROOT / ".github/requirements/mac-ninja-controls.txt").read_text(encoding="utf-8")
+        self.assertIn("ninja==1.13.2 --hash=sha256:fd82e26c0706ad4ab88e5fdd26f3fab0a987a90f810160f6c322e752c6af298b", requirement)
         self.assertIn("if: always() && runner.os == 'macOS'", text)
-        self.assertIn("path: build/ci-ninja-console/control.log", text)
+        install = text.split("      - name: Select Ninja for the bounded macOS console experiment\n", 1)[1].split("\n      - name:", 1)[0]
+        self.assertIn("--force-reinstall", install)
+        self.assertIn("--report build/ci-ninja-console/install.json", install)
+        self.assertIn("build/ci-ninja-console/control.log", text)
+        self.assertIn("build/ci-ninja-console/install.json", text)
         self.assertLess(text.index("Check actual macOS Ninja console ownership"),
                         text.index("Install macOS IO and both desktop hosts"))
         self.assertIn("python -m pip install", install_command("macOS"))

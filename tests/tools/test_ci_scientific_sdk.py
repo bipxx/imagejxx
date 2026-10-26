@@ -300,6 +300,75 @@ class MetadataControls(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "absent or contain Python"):
                     sdk.runtime_libraries(self.write(str(index) + ".log", text), system)
 
+    def archive_fixture(self, *, mismatch):
+        """Plain text markers only; these files are not compiled archives."""
+        cache, installed = self.root / "cache", self.root / "sdk"
+        names = ("libimagejxx_core.a", "libimagejxx_io.a")
+        inputs = {}
+        for name, raw in zip(names, (b"synthetic-core\n", b"synthetic-io\n")):
+            inputs[name] = sdk.pin(self.write(Path("cache") / name, raw))
+            self.write(Path("sdk/lib") / name, b"different-core\n" if mismatch and name == names[0] else raw)
+        script = self.write("cache/cmake_install.cmake", '# Synthetic source only.\r\nmessage("literal \u03bb")\n')
+        inputs["cmake_install.cmake"] = sdk.pin(script)
+        return cache, installed, names, inputs, script
+
+    def test_matching_archives_retain_both_pins_without_install_script_read(self):
+        cache, installed, names, inputs, script = self.archive_fixture(mismatch=False)
+        receipt = {}
+        with patch.object(sdk, "pin", wraps=sdk.pin) as pins:
+            with patch.object(sdk, "install_script_diagnostic", side_effect=AssertionError("No mismatch text read")):
+                sdk.verify_installed_archives(cache, installed, names, inputs, receipt)
+        self.assertEqual([call.args[0] for call in pins.call_args_list], [installed / "lib" / n for n in names])
+        self.assertEqual(receipt["archive_comparisons"]["mismatches"], [])
+        self.assertEqual(set(receipt["archive_comparisons"]["installed_after_install"]), set(names))
+        self.assertNotIn("archive_install_script", receipt)
+        self.assertEqual(sdk.pin(script), inputs["cmake_install.cmake"])
+
+    def test_first_archive_mismatch_is_fatal_with_both_pins_and_exact_install_source(self):
+        cache, installed, names, inputs, script = self.archive_fixture(mismatch=True)
+        original = script.read_bytes()
+        receipt = {}
+        with self.assertRaisesRegex(ValueError, "^Installed SDK archive differs from the existing wheel build$"):
+            sdk.verify_installed_archives(cache, installed, names, inputs, receipt)
+        comparison = receipt["archive_comparisons"]
+        self.assertEqual(comparison["mismatches"], [names[0]])
+        for name in names:
+            self.assertEqual(comparison["raw_before_install"][name], {"path": str(cache/name), **inputs[name]})
+            path = installed / "lib" / name
+            self.assertEqual(comparison["installed_after_install"][name], {"path": str(path), **sdk.pin(path)})
+        diagnostic = receipt["archive_install_script"]
+        self.assertEqual(diagnostic["state"], "observed")
+        self.assertEqual(diagnostic["source"], diagnostic["observed"])
+        self.assertEqual(diagnostic["source"], {"path": str(script), **inputs["cmake_install.cmake"]})
+        self.assertEqual(diagnostic["utf8"].encode("utf-8"), original)
+        self.assertEqual(script.read_bytes(), original)
+
+    def test_unavailable_changed_or_oversized_install_source_never_masks_archive_refusal(self):
+        for problem in ("changed", "oversized", "missing"):
+            with self.subTest(problem=problem):
+                cache, installed, names, inputs, script = self.archive_fixture(mismatch=True)
+                if problem == "changed":
+                    script.write_bytes(script.read_bytes().replace(b"literal", b"altered"))
+                elif problem == "missing":
+                    script.unlink()
+                receipt = {}
+                with patch.object(sdk, "MAX_INSTALL_SCRIPT_BYTES", 8 if problem == "oversized" else 256*1024):
+                    with self.assertRaisesRegex(ValueError, "^Installed SDK archive differs from the existing wheel build$"):
+                        sdk.verify_installed_archives(cache, installed, names, inputs, receipt)
+                self.assertEqual(set(receipt["archive_comparisons"]["installed_after_install"]), set(names))
+                diagnostic = receipt["archive_install_script"]
+                self.assertEqual(diagnostic["state"], "unavailable")
+                self.assertEqual(diagnostic["source"], {"path": str(script), **inputs["cmake_install.cmake"]})
+                self.assertNotIn("utf8", diagnostic)
+                self.assertIn("error", diagnostic)
+                if problem == "changed":
+                    self.assertNotEqual(diagnostic["observed"], diagnostic["source"])
+                elif problem == "oversized":
+                    self.assertEqual(diagnostic["byte_limit"], 8)
+                    self.assertIn("byte bound", diagnostic["error"]["message"])
+                else:
+                    self.assertEqual(diagnostic["error"]["type"], "FileNotFoundError")
+
     def test_inventory_is_literal_sorted_and_bounded(self):
         self.write("tree/z.bin", b"z")
         self.write("tree/sub/a.bin", b"abc")

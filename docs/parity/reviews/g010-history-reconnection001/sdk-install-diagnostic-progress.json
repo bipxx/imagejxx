@@ -1,0 +1,77 @@
+{
+  "schema": "imagejxx.sdk-install-diagnostic-progress.001",
+  "state": "additive_metadata_controls_passed_actual_archive_cause_unproven",
+  "acceptance_claim": false,
+  "original_run": 40248817628,
+  "original_head": "379621f1055c53bbcd4c26e585a5e4527886f4a4",
+  "original_job": 121337284246,
+  "original_artifact": {
+    "id": 12620423140,
+    "archive": {
+      "path": ".tmp/manual-workflow-verification/ci2/apple-sdk379-intel310-001/artifact.zip",
+      "bytes": 29791,
+      "sha256": "e08427b3d5cfdab3e0904ee973dc193313ff67a72b09686729e13fd44fe69f9f"
+    },
+    "api_metadata": {
+      "path": ".tmp/manual-workflow-verification/ci2/apple-sdk379-intel310-001/artifact.metadata.json",
+      "bytes": 709,
+      "sha256": "80da33addef777acefac8d123fda8c682d285f41549a407ed47853264937e31e"
+    }
+  },
+  "original_job_log": {
+    "path": ".tmp/manual-workflow-verification/ci2/apple-sdk379-intel310-001/job.log",
+    "bytes": 53691,
+    "sha256": "ecb5d2702a6edb93fa2b16e0dcd60d2d70e4dea70321f1a811142d9d7e3f1cd4"
+  },
+  "confirmed": "Both SDK component installs exit0; first core archive byte comparison refuses before consumer configure/build/CTest. Installed archive hashes were not retained.",
+  "successor": "Retain both installed pins and original raw pins before first comparison; on mismatch retain bounded exact pre-install-pinned generated install source; inequality remains fatal.",
+  "sources": [
+    {
+      "path": "scripts/ci_scientific_sdk.py",
+      "bytes": 30350,
+      "sha256": "c373b9620e3993c05c61648b938fda371075f684e7e80cf1f4b2089ba7ab3f54"
+    },
+    {
+      "path": "tests/tools/test_ci_scientific_sdk.py",
+      "bytes": 30116,
+      "sha256": "16aacc042d3fe28e82faa6d83bfdc9d112fb54e01b438ccfe596ca38d14108e0"
+    }
+  ],
+  "controls": [
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/sdk-install-diagnostic-controls-windows001/receipt.json",
+        "bytes": 2752,
+        "sha256": "6fd70e1828a3c12254eaeade5d334ab240f8e5236e533ee2d082d9fb96adc0dc"
+      },
+      "methods": 30,
+      "explicit_host_skips": 1,
+      "source_identities": {
+        "scripts/ci_scientific_sdk.py": "c373b9620e3993c05c61648b938fda371075f684e7e80cf1f4b2089ba7ab3f54",
+        "tests/tools/test_ci_scientific_sdk.py": "16aacc042d3fe28e82faa6d83bfdc9d112fb54e01b438ccfe596ca38d14108e0",
+        "scripts/ci_owned_process.py": "39ef83863d4cc672c044c314cd98a141590e4165cbd73605ac34b353d000f8d7"
+      },
+      "scope": "additive installed-SDK mismatch diagnostics metadata controls only; fatal archive guard unchanged; no product or Apple acceptance"
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/sdk-install-diagnostic-controls-linux002/receipt.json",
+        "bytes": 2622,
+        "sha256": "2e8cf1abe5a51f32c74782a8d83ca05ec5646a9b981e1ef32adb9438007c99be"
+      },
+      "methods": 30,
+      "explicit_host_skips": 0,
+      "source_identities": {
+        "scripts/ci_scientific_sdk.py": "c373b9620e3993c05c61648b938fda371075f684e7e80cf1f4b2089ba7ab3f54",
+        "tests/tools/test_ci_scientific_sdk.py": "16aacc042d3fe28e82faa6d83bfdc9d112fb54e01b438ccfe596ca38d14108e0",
+        "scripts/ci_owned_process.py": "39ef83863d4cc672c044c314cd98a141590e4165cbd73605ac34b353d000f8d7"
+      },
+      "scope": "additive installed-SDK mismatch diagnostics metadata controls only; fatal archive guard unchanged; no product or Apple acceptance"
+    }
+  ],
+  "remaining": [
+    "Observe exact installed archive identities and generated ranlib route on a justified actual Apple attempt",
+    "Classify actual differing bytes before any equivalence change",
+    "Original installed SDK and all platform/scientific/release gates remain required"
+  ]
+}

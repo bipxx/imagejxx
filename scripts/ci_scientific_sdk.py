@@ -40,6 +40,7 @@ CARRIER_PIN = {"bytes": 116,
                "sha256": "c5865779efc1945ed75db444d28f0545f8669dec7828bac8c53239d24fabbb64"}
 MAX_FILES = 16384
 MAX_TREE_BYTES = 4 * 1024**3
+MAX_INSTALL_SCRIPT_BYTES = 256 * 1024
 
 
 def regular(path):
@@ -59,6 +60,45 @@ def pin(path):
             size += len(block)
             digest.update(block)
     return {"bytes": size, "sha256": digest.hexdigest()}
+
+
+def install_script_diagnostic(path, expected):
+    """Retain bounded exact source text only; never infer install equivalence."""
+    result = {"source": {"path": str(path), **expected}, "state": "unavailable",
+              "byte_limit": MAX_INSTALL_SCRIPT_BYTES}
+    try:
+        regular(path)
+        if path.stat().st_size > MAX_INSTALL_SCRIPT_BYTES:
+            raise ValueError("Generated install script exceeds the diagnostic byte bound")
+        with path.open("rb") as stream:
+            raw = stream.read(MAX_INSTALL_SCRIPT_BYTES + 1)
+        if len(raw) > MAX_INSTALL_SCRIPT_BYTES:
+            raise ValueError("Generated install script exceeds the diagnostic byte bound")
+        observed = {"bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}
+        result["observed"] = {"path": str(path), **observed}
+        if observed != expected:
+            raise ValueError("Generated install script differs from its pre-install source pin")
+        result.update(state="observed", utf8=raw.decode("utf-8"))
+    except (OSError, ValueError) as error:
+        result["error"] = {"type": type(error).__name__, "message": str(error)}
+    return result
+
+
+def verify_installed_archives(cache, sdk, archives, cache_inputs, receipt):
+    # Observe both installed archives before the first comparison can refuse.
+    # The raw pins are the already-recorded pre-install observations, not new
+    # claims that an install operation preserved or transformed those bytes.
+    installed = {name: pin(sdk / "lib" / name) for name in archives}
+    receipt["archive_comparisons"] = {
+        "raw_before_install": {name: {"path": str(cache / name), **cache_inputs[name]}
+                               for name in archives},
+        "installed_after_install": {name: {"path": str(sdk / "lib" / name), **installed[name]}
+                                    for name in archives},
+        "mismatches": [name for name in archives if installed[name] != cache_inputs[name]]}
+    if receipt["archive_comparisons"]["mismatches"]:
+        receipt["archive_install_script"] = install_script_diagnostic(
+            cache / "cmake_install.cmake", cache_inputs["cmake_install.cmake"])
+        raise ValueError("Installed SDK archive differs from the existing wheel build")
 
 
 def load_script(name):
@@ -382,9 +422,7 @@ def run_profile(output, profile, dependency_prefix):
         copied = verifier.validate_prefix(delivered, profile, catalog=catalog, builder=producer)
         if copied != certificate or tree_files(delivered) != dependency_before:
             raise ValueError("Installed SDK dependency closure differs from the admitted transfer")
-        for name in archives:
-            if pin(sdk / "lib" / name) != cache_inputs[name]:
-                raise ValueError("Installed SDK archive differs from the existing wheel build")
+        verify_installed_archives(cache, sdk, archives, cache_inputs, receipt)
         package = sdk / "lib/cmake/imagejxx"
         helpers = {"SourceTiffRuntime.cmake": "cmake/SourceTiffRuntime.cmake",
                    "ReviewedTiffRuntime.cmake": "cmake/ReviewedTiffRuntime.cmake",
