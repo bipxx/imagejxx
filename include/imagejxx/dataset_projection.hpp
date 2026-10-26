@@ -11,6 +11,9 @@ struct DatasetZProjectionRequest {
   std::string method = "mean";
   // Output pixel storage only, not total worker/provider/publication admission.
   std::size_t max_output_pixel_bytes = std::numeric_limits<std::size_t>::max();
+  // Native buffers/tables and one retained contributor group. Provider-private
+  // caches, allocator overhead and document publication have separate owners.
+  std::size_t max_working_bytes = std::numeric_limits<std::size_t>::max();
 };
 
 struct DatasetZProjectionLayout {
@@ -20,6 +23,7 @@ struct DatasetZProjectionLayout {
   int source_first_t = 0, source_first_c = 0, source_first_z = 0;
   int contributors_per_group = 0;
   std::size_t output_pixel_bytes = 0, reduction_scratch_bytes = 0;
+  std::size_t working_bytes = 0;
   // Inverse mapping to one contributor. Validates all output indices first.
   PlanePosition contributor(PlanePosition output, int within_group) const;
 };

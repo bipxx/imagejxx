@@ -1,0 +1,602 @@
+{
+  "schema": "imagejxx.scientific-z-projection-reduction-progress.001",
+  "parent_source": "0ea4a5f3878e6437bbc383e9249f387baed6d311",
+  "acceptance_claim": false,
+  "scope": "Finite native Dataset reduction only. No ImageJ-specific dtype/nonfinite, strict command/replay, document metadata/publication, Python/UI or new installed-SDK acceptance",
+  "source_inputs": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 134016,
+      "sha256": "157b0d29fa862717868ef39c10e118e10de2d49f349ff971b066e86a491255e0"
+    },
+    {
+      "path": "examples/cpp/CMakeLists.txt",
+      "bytes": 21127,
+      "sha256": "594188ae6e331882a90f997b4591b64cd84f9dfac076446cdfe4fbb62b658f81"
+    },
+    {
+      "path": "examples/cpp/dataset_projection.cpp",
+      "bytes": 1916,
+      "sha256": "d2c3434ef300c668a2d7889a4b0fccd07f162c30795bcd18f36d5a6d639f8cd5"
+    },
+    {
+      "path": "include/imagejxx/dataset_projection.hpp",
+      "bytes": 1881,
+      "sha256": "133d07b31f90082ee5cbffa9cc3052bf10f3b5e0e1db68de8edd7e632cab41ca"
+    },
+    {
+      "path": "include/imagejxx/dataset_projection_execution.hpp",
+      "bytes": 560,
+      "sha256": "d82160334cb5ebca750f8cc67f49bdfaaf692351d84bd7105549e49ba2789cf1"
+    },
+    {
+      "path": "src/native/analysis.cpp",
+      "bytes": 19687,
+      "sha256": "93b14a11e722b5b90e4d838288a1132ab0f0fcaaedca928831591f5adb387854"
+    },
+    {
+      "path": "src/native/projection_internal.hpp",
+      "bytes": 410,
+      "sha256": "79303bd16045159f850225a4b4cc2c1c3b3da13aa45616eec8b4a2d0e42322de"
+    },
+    {
+      "path": "src/native/dataset_projection.cpp",
+      "bytes": 8151,
+      "sha256": "7a9725a85ee948f14c9d555a55d157f2cfaf75f7af827ee2a2512d7e09b3a99d"
+    },
+    {
+      "path": "tests/native/test_dataset_projection_execution.cpp",
+      "bytes": 11657,
+      "sha256": "63d16d54380936858cc99e09c66e05c02d6ba434c8a05612f13b2d67911ef478"
+    },
+    {
+      "path": "tests/native/test_dataset_projection.cpp",
+      "bytes": 7139,
+      "sha256": "3935c80288f3253370ae6c6a02647036237fe21cc1f3115b1e73cc72ddfc3711"
+    },
+    {
+      "path": "tests/native/test_core.cpp",
+      "bytes": 5256,
+      "sha256": "2c3261677381bdd6d22f05b1553149558acf19ccfcfbfa54323732b2650a2e03"
+    }
+  ],
+  "verification": {
+    "summary": {
+      "state": "passed",
+      "scope": "Development finite scientific projection/shared reducer sources linked to unchanged installed dependencies; not installed new API, full CMake, nonfinite, ImageJ numeric, document or UI acceptance",
+      "installed_core": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\lib\\imagejxx_core.lib",
+        "bytes": 55055894,
+        "sha256": "fa9f4ea2979dc3e16f3cd137ce0bf5ff2db3b1dbaff5af1eaf2c25e7678e0fcb"
+      },
+      "compiler": {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+        "bytes": 678000,
+        "sha256": "824f0234b667847befd7e3ff258822bfe557b540959ff042caaec6844b709a11"
+      },
+      "binaries": {
+        "test": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\test.exe",
+          "bytes": 64000,
+          "sha256": "90d479cd261b2a3308690a754941d4dbe365c76431876b053eb6aef057be3b44"
+        },
+        "execution": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\execution.exe",
+          "bytes": 114688,
+          "sha256": "ba1ed5d44644e7d82e9d4381c2cc4c0ee80d438f76945956b788d067c54d737d"
+        },
+        "legacy": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\legacy.exe",
+          "bytes": 129024,
+          "sha256": "e7bcef0c956b6f6cd79496b430bbf2704e2a2e1226739e111c7f65a399b97e79"
+        },
+        "example": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\example.exe",
+          "bytes": 74752,
+          "sha256": "83d681e9e1ddf646c9a28c4a468dc303cf68b95a0dbabcac656b8ef8ff1b8518"
+        }
+      },
+      "scratch_retirement": {
+        "state": "retired",
+        "files": [
+          {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\analysis.obj",
+            "bytes": 338195,
+            "sha256": "342de926fcedda41e6d0651f96c45aff38a8db2d295353df43e247c926734474"
+          },
+          {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\example.exe",
+            "bytes": 74752,
+            "sha256": "83d681e9e1ddf646c9a28c4a468dc303cf68b95a0dbabcac656b8ef8ff1b8518"
+          },
+          {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\example.obj",
+            "bytes": 110646,
+            "sha256": "3acbbbaa3d61c87704607c148b40aad86c974e8368f22674f4666103140215ca"
+          },
+          {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\execution.exe",
+            "bytes": 114688,
+            "sha256": "ba1ed5d44644e7d82e9d4381c2cc4c0ee80d438f76945956b788d067c54d737d"
+          },
+          {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\execution.obj",
+            "bytes": 462977,
+            "sha256": "2f623fcec058c97d7e0357ac34301dbb26c9e65a1554df8023f7b26b4d403618"
+          },
+          {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\legacy.exe",
+            "bytes": 129024,
+            "sha256": "e7bcef0c956b6f6cd79496b430bbf2704e2a2e1226739e111c7f65a399b97e79"
+          },
+          {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\legacy.obj",
+            "bytes": 161523,
+            "sha256": "bbe23081969f70bcaa834e4b86939f589bf176ec5283216e271415a0cac11190"
+          },
+          {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\resolver.obj",
+            "bytes": 186810,
+            "sha256": "ddd2aaee647ce337ba72be19b1975b19dde51f0a4aebb41061e58ba89c27e490"
+          },
+          {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\test.exe",
+            "bytes": 64000,
+            "sha256": "90d479cd261b2a3308690a754941d4dbe365c76431876b053eb6aef057be3b44"
+          },
+          {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\test.obj",
+            "bytes": 194064,
+            "sha256": "2615a8c2c7475d06fc481cb556747f97b4f9990adc77c69a9142a3262f78eae9"
+          }
+        ]
+      },
+      "frozen_input_count": 170,
+      "frozen_input_manifest_sha256": "a9f17697fda119bb9ed4e2a0abcf629cca6084dfd645d8e2d547bc67f93386df",
+      "commands": [
+        {
+          "label": "analysis",
+          "argv": [
+            "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+            "/nologo",
+            "/MD",
+            "/EHsc",
+            "/std:c++17",
+            "/O2",
+            "/W4",
+            "/showIncludes",
+            "/IC:\\Users\\HEQ\\Projects\\imagejxx\\include",
+            "/c",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\native\\analysis.cpp",
+            "/Fo:C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\analysis.obj"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "resolver",
+          "argv": [
+            "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+            "/nologo",
+            "/MD",
+            "/EHsc",
+            "/std:c++17",
+            "/O2",
+            "/W4",
+            "/showIncludes",
+            "/IC:\\Users\\HEQ\\Projects\\imagejxx\\include",
+            "/c",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\src\\native\\dataset_projection.cpp",
+            "/Fo:C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\resolver.obj"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "execution",
+          "argv": [
+            "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+            "/nologo",
+            "/MD",
+            "/EHsc",
+            "/std:c++17",
+            "/O2",
+            "/W4",
+            "/showIncludes",
+            "/IC:\\Users\\HEQ\\Projects\\imagejxx\\include",
+            "/c",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\tests\\native\\test_dataset_projection_execution.cpp",
+            "/Fo:C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\execution.obj"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "legacy",
+          "argv": [
+            "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+            "/nologo",
+            "/MD",
+            "/EHsc",
+            "/std:c++17",
+            "/O2",
+            "/W4",
+            "/showIncludes",
+            "/IC:\\Users\\HEQ\\Projects\\imagejxx\\include",
+            "/c",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\tests\\native\\test_core.cpp",
+            "/Fo:C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\legacy.obj"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "test",
+          "argv": [
+            "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+            "/nologo",
+            "/MD",
+            "/EHsc",
+            "/std:c++17",
+            "/O2",
+            "/W4",
+            "/showIncludes",
+            "/IC:\\Users\\HEQ\\Projects\\imagejxx\\include",
+            "/c",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\tests\\native\\test_dataset_projection.cpp",
+            "/Fo:C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\test.obj"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "example",
+          "argv": [
+            "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+            "/nologo",
+            "/MD",
+            "/EHsc",
+            "/std:c++17",
+            "/O2",
+            "/W4",
+            "/showIncludes",
+            "/IC:\\Users\\HEQ\\Projects\\imagejxx\\include",
+            "/c",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\examples\\cpp\\dataset_projection.cpp",
+            "/Fo:C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\example.obj"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "test-link",
+          "argv": [
+            "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+            "/nologo",
+            "/MD",
+            "/EHsc",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\analysis.obj",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\resolver.obj",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\test.obj",
+            "/Fe:C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\test.exe",
+            "/link",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\lib\\imagejxx_core.lib"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "test-consumer",
+          "argv": [
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\test.exe"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "execution-link",
+          "argv": [
+            "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+            "/nologo",
+            "/MD",
+            "/EHsc",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\analysis.obj",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\resolver.obj",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\execution.obj",
+            "/Fe:C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\execution.exe",
+            "/link",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\lib\\imagejxx_core.lib"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "execution-consumer",
+          "argv": [
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\execution.exe"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "legacy-link",
+          "argv": [
+            "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+            "/nologo",
+            "/MD",
+            "/EHsc",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\analysis.obj",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\resolver.obj",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\legacy.obj",
+            "/Fe:C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\legacy.exe",
+            "/link",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\lib\\imagejxx_core.lib"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "legacy-consumer",
+          "argv": [
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\legacy.exe"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "example-link",
+          "argv": [
+            "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+            "/nologo",
+            "/MD",
+            "/EHsc",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\analysis.obj",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\resolver.obj",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\example.obj",
+            "/Fe:C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\example.exe",
+            "/link",
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\lib\\imagejxx_core.lib"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        },
+        {
+          "label": "example-consumer",
+          "argv": [
+            "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\g034-projection-windows010\\scratch\\example.exe"
+          ],
+          "exit_code": 0,
+          "target_completed": true,
+          "cleanup_complete": true
+        }
+      ]
+    },
+    "method_tc_combinations": 24,
+    "method_type_sample_combinations": 72,
+    "not_pytest_case_ids": true,
+    "owned_analytic_oracles_only": true,
+    "checks": [
+      "Separate T/C/S and selected Z/group mapping; six methods, four pixel types, S1/3/4",
+      "Population stddev, odd/even median and ordinary/grouped output with analytic expected values",
+      "Exact selected source reads and at most one live contributor group",
+      "Pre-read/callback memory refusal, unsupported-policy refusal and pre-cancellation",
+      "In-kernel cancellation, provider/callback exception, bad samples and finite output overflow release leases",
+      "Captured method cannot change through callback alias; changed provider type refused",
+      "One-Z time series remains T, source eager buffers/calibration unchanged",
+      "Unchanged original legacy core consumer passes against modified shared reducer",
+      "Generic progress0 through12 planes; cancellation in progress callback stops before next group",
+      "Trusted eager FiniteOnly admission reused without repeated input scans; virtual sample validation retained"
+    ],
+    "recipe_note": "Final010 describes six compiler objects and four source consumers accurately; older receipts retain their original captions and scope."
+  },
+  "retained": [
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/receipt.json",
+      "bytes": 79303,
+      "sha256": "e647c86cb7e6eef6efac5da79a41d90ed0fa673e583b625660ed15f09a1cd7da"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows-source010.py",
+      "bytes": 4697,
+      "sha256": "965f3ee926a4f8249ee2c552394172d08ca8d989c77076cba5abec8fa7d4f518"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows-launch010.ps1",
+      "bytes": 710,
+      "sha256": "ca0390f7f0822078de1de47ea8965a7eac54d2880c6c666adab326fe23f4749e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/scientific-projection-storage-before005.json",
+      "bytes": 1523,
+      "sha256": "dd5b640258b1f97722fa3491dbaa9432fb0101980c1526d96ec113e38cc94116"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/scientific-reduction-license008/receipt.json",
+      "bytes": 219,
+      "sha256": "1e4ed2563189fa8060b5a986bb5be1604309f68f9ac30638620c91fa115241e0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/analysis.log",
+      "bytes": 18371,
+      "sha256": "18655df31cb9d1c49466e5c7c5605ac42714032c9e0d6d5dc2cfd9ece47315c0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/example-consumer.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/example-link.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/example.log",
+      "bytes": 17964,
+      "sha256": "7cbe98aceae490f121f1afba98787702154d0051e2dffda5cc378235e7c9e223"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/execution-consumer.log",
+      "bytes": 81,
+      "sha256": "c68b81fb7ba59efd7c8e6edf926dc256adb831b0f10f2a1701f08518f16bd196"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/execution-link.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/execution.log",
+      "bytes": 18619,
+      "sha256": "8611bf974967dee14e3950aeaf167fc478ea531b210f54b6dee9e4573305fbb9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/legacy-consumer.log",
+      "bytes": 26,
+      "sha256": "dd29f580373590d19bc260a53856a4d1066f55e68b643336f99576451aca5585"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/legacy-link.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/legacy.log",
+      "bytes": 15377,
+      "sha256": "93dcf28dd0f7e988b722508652af05221febf0e6aeed79bdaecee2487f791948"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/resolver.log",
+      "bytes": 18538,
+      "sha256": "442d8e74826a8d35c8b083a0bc039067f0e9081f5ce4f858fae2c3e10876dbd3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/test-consumer.log",
+      "bytes": 61,
+      "sha256": "1297d1a44814841fb57d66d908c078d0cf25cfcc91aae25b5d3fecd0bdc25414"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/test-link.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/test.log",
+      "bytes": 15317,
+      "sha256": "e9debb002012d71112e564ff2ede61f078d2f1f716184908cb3612dbec6e5376"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/analysis.process.json",
+      "bytes": 2173,
+      "sha256": "81e463c584abc441eac5cdc3d2c2dc16e320da1d235c75f3f214c7b5135f5492"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/example-consumer.process.json",
+      "bytes": 1815,
+      "sha256": "4cfc3aa99b8da55f70a404d2c1615e15f992e907c7f70a1bc248df4388b21c84"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/example-link.process.json",
+      "bytes": 2492,
+      "sha256": "a2c9cce2c18b443db18ddc0162aaec11612da794580df446b2800a1845c05550"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/example.process.json",
+      "bytes": 2184,
+      "sha256": "f83325ecf64a5fb8907623b51c3b215094a4d29627cfdf325a1504f601c528af"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/execution-consumer.process.json",
+      "bytes": 1819,
+      "sha256": "3332ffbb8d058a41e6faa5000a20cd0bc987939c7b286fa30a38ac0ab0039500"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/execution-link.process.json",
+      "bytes": 2497,
+      "sha256": "5d26fe4fabaa54b1968207e99140cb220d4c5c0276ba22e188eee799cf304a75"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/execution.process.json",
+      "bytes": 2200,
+      "sha256": "85dd45368ba041a52334b2439411c4f659beebf6850f19a2b4aa8de43148253d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/legacy-consumer.process.json",
+      "bytes": 1815,
+      "sha256": "043f463c15cd7b9cb8f5449bcd6967893b00ad65e665007dd6c27823ede75db1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/legacy-link.process.json",
+      "bytes": 2489,
+      "sha256": "de57f6f18fe7e4b5d230d37963c99d738d67609a62150a3987dec67cfda69fe9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/legacy.process.json",
+      "bytes": 2174,
+      "sha256": "25359613f786c73236deb12e7de8297a26d570a7e501b5fce650e175fbb77480"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/resolver.process.json",
+      "bytes": 2179,
+      "sha256": "12b1555312ef955839a110481a1b64f0f7541cddcee2a0bbd6e4e136d14834d3"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/test-consumer.process.json",
+      "bytes": 1810,
+      "sha256": "ee9d6b7acd0a621c8061f6e52b2917d7b7716cb2eb8520ef23aa86f42683368a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/test-link.process.json",
+      "bytes": 2487,
+      "sha256": "0a560ed442f8fea05728eb2c0cb885c90d65acaee41218731bc66db6b7e26006"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/g034-projection-windows010/test.process.json",
+      "bytes": 2185,
+      "sha256": "64ec567d770fd017b5a7f3ee34c34de661354ff531b7e8198f08be9f41fea34e"
+    }
+  ],
+  "commercial_use_inventory": "passed",
+  "invariants": {
+    "original_inventory_bytes_unchanged": true,
+    "original_family_statuses": {
+      "in_progress": 47,
+      "open": 52,
+      "complete": 0
+    },
+    "protected_originals_unchanged": true,
+    "new_dependencies": false,
+    "new_compiler_cache_or_runtime": false
+  },
+  "remaining": [
+    "ImageJ-specific dtype/nonfinite profiles under original reference expectations",
+    "Strict source-bound resolved command/replay/rebind, full owned document-job admission",
+    "Many-to-one channel-display/annotation/label/threshold/Fourier/provenance policy and prepared publication",
+    "Python and shared ImGui workflow, actual interaction, history/save/reopen and full platform/reference acceptance"
+  ],
+  "storage": {
+    "measurement": {
+      "path": ".tmp/manual-workflow-verification/scientific-reduction-storage-after010.json",
+      "bytes": 1523,
+      "sha256": "3d56c3c877661634370e9fea4fef394e42b13a8f221fed18b7fca568f9bee4f6"
+    },
+    "known_bytes": 8584892585,
+    "increase_from_before005_bytes": 1346866,
+    "unknown_subtrees": 2,
+    "budget_verified": false,
+    "scope": "Point-in-time complete normalized owned roots. Small final receipt/publication edits are additional. All compiler object/executable scratch is retired; cache/runtime prefixes unchanged."
+  }
+}

@@ -1,5 +1,25 @@
 # Three-agent execution plan
 
+## Scientific finite projection reducer — 2026-10-26
+
+`project_dataset_z` now reduces scientific T/C/Z groups through the existing
+projection loop using immutable borrowed planes, one group table and one scratch
+vector. The descriptor enforces a native working charge before reads/callbacks.
+It captures method/metadata before callbacks, refuses unsupported sample policy,
+and aborts atomically on cancellation/provider/sample/output errors. Final010
+passes layout, scientific execution, unchanged legacy core and public example
+source consumers.24 method/T/C and72 method/type/sample combinations use analytic
+oracles; retained provider leases never exceed one group and reach zero on exit.
+[Current evidence](parity/reviews/G034-scientific-reduction-progress001.json).
+
+This is the finite native profile only. ImageJ-specific type/nonfinite profiles,
+strict resolved command/replay, many-to-one annotations/labels/channel display,
+prepared publication, Python and shared ImGui flow are still required. The
+installed new SDK and full CMake/platform qualification remain pending; local
+checks link new sources with unchanged installed dependencies. Original99 family
+requirements/statuses and reference expectations remain unchanged. Follow the
+[scientific packet](packets/G034-scientific-z-projection.md) in dependency order.
+
 ## Scientific projection layout — 2026-10-26
 
 The first typed scientific projection seam is implemented: metadata-only

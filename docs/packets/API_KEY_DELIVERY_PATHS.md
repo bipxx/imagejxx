@@ -184,6 +184,12 @@ changing image.hpp. Use current per-packet evidence, not the unchanged original
 family status, to distinguish this implementation from the remaining scientific
 scope. Group size must divide selected depth; no partial tail is silently lost.
 
+The finite native project_dataset_z reducer now shares the existing projection
+loop through borrowed immutable planes. Reuse it from the future resolved
+command; no whole-stack copy or Python kernel is needed. Keep max_working_bytes
+admission and method/source capture ahead of reads/callbacks. Nonfinite/ImageJ
+profiles and complete document metadata/publication admission are still open.
+
 The shared metadata descriptor now exists in dataset_projection.hpp. Use
 DatasetZProjectionRequest/describe_dataset_z_projection for T/C selection,
 contributor mapping, affine/time calibration and checked pixel/scratch sizes;

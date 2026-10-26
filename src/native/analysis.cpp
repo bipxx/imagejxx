@@ -3,6 +3,7 @@
 #include <imagejxx/auto_threshold.hpp>
 #include "kernel_control.hpp"
 #include "auto_threshold_internal.hpp"
+#include "projection_internal.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -232,7 +233,8 @@ void validate_projection(const Stack& stack, const std::string& method,
         throw std::invalid_argument("Unknown projection method");
 }
 // Input stack/range/method validation is shared once, including for many groups.
-Image reduce_projection(const Stack& stack, const std::string& method,
+template<class Planes>
+Image reduce_projection(const Planes& stack, const std::string& method,
                         std::size_t first, std::size_t last, std::vector<double>& values) {
     Image out = stack[first];
     if (method != "maximum" && method != "minimum") out.type = PixelType::Float64;
@@ -262,6 +264,24 @@ Image reduce_projection(const Stack& stack, const std::string& method,
     return out;
 }
 } // namespace
+namespace detail {
+Image reduce_projection_group(const std::vector<std::shared_ptr<const Image>>& planes,
+                              const std::string& method, std::vector<double>& values) {
+    if (planes.empty() || planes.size() != values.size())
+        throw std::invalid_argument("Projection contributor/scratch sizes differ");
+    for (const auto& plane : planes) {
+        if (!plane) throw std::invalid_argument("Null projection contributor");
+        require_same_shape(*planes.front(), *plane);
+        if (plane->type != planes.front()->type)
+            throw std::invalid_argument("Projection contributor dtypes differ");
+    }
+    struct BorrowedPlanes {
+        const std::vector<std::shared_ptr<const Image>>& planes;
+        const Image& operator[](std::size_t index) const { return *planes[index]; }
+    } borrowed{planes};
+    return reduce_projection(borrowed, method, 0, planes.size() - 1, values);
+}
+} // namespace detail
 Image project(const Stack& stack, const std::string& method) {
     return project(stack, method, 0, stack.empty() ? 0 : stack.size() - 1);
 }
