@@ -1,0 +1,367 @@
+{
+  "schema": "imagejxx.c5-loaded-fps-progress.001",
+  "state": "eight_local_installed_clock_cases_passed",
+  "published_predecessor": "a3e10e9ffda032f682715c51be4e272b584a4d89",
+  "source_pins": [
+    {
+      "path": "src\\desktop\\animation_ui_probe.cpp",
+      "bytes": 14785,
+      "sha256": "aa48b72b1325e8cf3d64abae3ee8d77a9f95f527c5230ef4570a23b34946e607"
+    },
+    {
+      "path": "tests\\python\\animation_preferences_reader.py",
+      "bytes": 5962,
+      "sha256": "ab7590bf025996ea6d6eca9c0bc8896ddd6f7f69a5ecf1c72928181424f0150b"
+    },
+    {
+      "path": "tests\\tools\\test_animation_preferences_reader.py",
+      "bytes": 5535,
+      "sha256": "cb48455d16fcc47ca7a5e3ac4f55100fcad5e54ce9f58d1ed107ae58c04edce9"
+    }
+  ],
+  "change": "Add fps-loaded/cal-loaded observation cases without overriding loaded FPS; original cases retain60-FPS fixture and fingerprints",
+  "verification": {
+    "cases": [
+      {
+        "case": "fps-loaded",
+        "fps": 5,
+        "context": "imgui_cpp",
+        "frames": 104,
+        "positions": [
+          2,
+          3,
+          0,
+          1,
+          2,
+          3,
+          0
+        ]
+      },
+      {
+        "case": "cal-loaded",
+        "fps": 5,
+        "context": "imgui_cpp",
+        "frames": 114,
+        "positions": [
+          2,
+          3,
+          4,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "case": "fps-loaded",
+        "fps": 5,
+        "context": "imgui_python",
+        "frames": 104,
+        "positions": [
+          2,
+          3,
+          0,
+          1,
+          2,
+          3,
+          0
+        ]
+      },
+      {
+        "case": "cal-loaded",
+        "fps": 5,
+        "context": "imgui_python",
+        "frames": 114,
+        "positions": [
+          2,
+          3,
+          4,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "case": "fps-loaded",
+        "fps": 20,
+        "context": "imgui_cpp",
+        "frames": 41,
+        "positions": [
+          2,
+          3,
+          0,
+          1,
+          2,
+          3,
+          0
+        ]
+      },
+      {
+        "case": "cal-loaded",
+        "fps": 20,
+        "context": "imgui_cpp",
+        "frames": 114,
+        "positions": [
+          2,
+          3,
+          4,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "case": "fps-loaded",
+        "fps": 20,
+        "context": "imgui_python",
+        "frames": 41,
+        "positions": [
+          2,
+          3,
+          0,
+          1,
+          2,
+          3,
+          0
+        ]
+      },
+      {
+        "case": "cal-loaded",
+        "fps": 20,
+        "context": "imgui_python",
+        "frames": 114,
+        "positions": [
+          2,
+          3,
+          4,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      }
+    ],
+    "reader_control_methods": 5,
+    "controls": {
+      "path": ".tmp\\manual-workflow-verification\\c5-loaded-reader-controls003.log",
+      "bytes": 108,
+      "sha256": "ccda05ddcf0e90894762427549a256e0f6d912494f6ee1bd0f7f564de21aa4fe"
+    },
+    "installed_capture": {
+      "path": ".tmp\\manual-workflow-verification\\c5-loaded-capture004\\receipt.json",
+      "bytes": 30826,
+      "sha256": "17224cf6f7fcb28d5584b5b6f8c253cb98b9be1c3b6c74949ce5dd767634b315"
+    },
+    "build": {
+      "path": ".tmp\\manual-workflow-verification\\c3-windows-build012\\receipt.json",
+      "bytes": 25842,
+      "sha256": "6ef208c8bb8fca8fb1cba028fbb068eafaa62093855d4ee187b4382c8641ded0"
+    },
+    "source_freeze": {
+      "path": ".tmp\\manual-workflow-verification\\c3-windows-build012\\source-freeze.json",
+      "bytes": 358910,
+      "sha256": "0a9d75a980f47e143e2b9acecbc270cf580e4bdf70739f8b09c3ab3f45603e3c"
+    },
+    "historical_failures": [
+      {
+        "path": ".tmp\\manual-workflow-verification\\c5-loaded-capture001\\receipt.json",
+        "bytes": 5249,
+        "sha256": "65cecbc2f97f8df31b844228b7fbf5378f94a4baba1f8a666eaa414a200efeeb"
+      },
+      {
+        "path": ".tmp\\manual-workflow-verification\\c5-loaded-capture002\\receipt.json",
+        "bytes": 10986,
+        "sha256": "5e8237491f48a709fd84ad068a6c8b6c25c5b12f42b86c0ed937b277acb00c62"
+      }
+    ],
+    "retentions": [
+      {
+        "archive": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\c5-loaded-capture004\\5\\imgui_cpp\\fps-loaded.zip",
+          "bytes": 201142,
+          "sha256": "9cad150c4e786d9c06ba884d58b2762306a1b3fbddee0ff71d0c9096dd406f91"
+        },
+        "members": [
+          {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\c5-loaded-capture004\\5\\imgui_cpp\\fps-loaded\\case.json",
+            "bytes": 5039578,
+            "sha256": "3d65f1f5f7122085ad9f1a1dc93dbce82e5090820503aa77288d5e80dec3f02b"
+          }
+        ],
+        "state": "archived_verified_and_raw_retired"
+      },
+      {
+        "archive": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\c5-loaded-capture004\\5\\imgui_cpp\\cal-loaded.zip",
+          "bytes": 260703,
+          "sha256": "e986fb84fa63417aaa1ff853cf5130be00939015582e41e5f37743e4cd5dd83d"
+        },
+        "members": [
+          {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\c5-loaded-capture004\\5\\imgui_cpp\\cal-loaded\\case.json",
+            "bytes": 5829433,
+            "sha256": "740999be94201b6385cdbd404dc26c368c07083632c462e004af9e9a6f362be2"
+          }
+        ],
+        "state": "archived_verified_and_raw_retired"
+      },
+      {
+        "archive": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\c5-loaded-capture004\\5\\imgui_python\\fps-loaded.zip",
+          "bytes": 200801,
+          "sha256": "fc27980657e5234c91fe0b63ae83bbb2849b3c90c1ce0ab80c39fc4c2a8a0275"
+        },
+        "members": [
+          {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\c5-loaded-capture004\\5\\imgui_python\\fps-loaded\\case.json",
+            "bytes": 5038345,
+            "sha256": "359fe68c1db51c02fc2c0416099b30d8e962fe316f8e651c82528fe6f7cb8f55"
+          }
+        ],
+        "state": "archived_verified_and_raw_retired"
+      },
+      {
+        "archive": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\c5-loaded-capture004\\5\\imgui_python\\cal-loaded.zip",
+          "bytes": 261103,
+          "sha256": "710f57a970e3657623ac1ba9e54ded1370a9173e354040fb0e10b3e73d8056fc"
+        },
+        "members": [
+          {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\c5-loaded-capture004\\5\\imgui_python\\cal-loaded\\case.json",
+            "bytes": 5830387,
+            "sha256": "95c6adc835847280d0d00f4b61cfef39ca9774f6d34641c6ea360ea339e1e68d"
+          }
+        ],
+        "state": "archived_verified_and_raw_retired"
+      },
+      {
+        "archive": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\c5-loaded-capture004\\20\\imgui_cpp\\fps-loaded.zip",
+          "bytes": 81607,
+          "sha256": "2189f51b877efbdbefdf239ed70595076cfad36cb07a0b1050cc7a59bc780c7d"
+        },
+        "members": [
+          {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\c5-loaded-capture004\\20\\imgui_cpp\\fps-loaded\\case.json",
+            "bytes": 1991376,
+            "sha256": "62ab8e8a1e7f46680576f63244fe2544d37456c55848924ab897cd179a673873"
+          }
+        ],
+        "state": "archived_verified_and_raw_retired"
+      },
+      {
+        "archive": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\c5-loaded-capture004\\20\\imgui_cpp\\cal-loaded.zip",
+          "bytes": 260447,
+          "sha256": "5351dd9f49f4c81655dd003a9667facd490183a49df46fdc16e4beb3310a3ab2"
+        },
+        "members": [
+          {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\c5-loaded-capture004\\20\\imgui_cpp\\cal-loaded\\case.json",
+            "bytes": 5830798,
+            "sha256": "12b9ce393ac5788adcb10ec51a137b0fb1faf1b209a6a4355c024d6bdbafc145"
+          }
+        ],
+        "state": "archived_verified_and_raw_retired"
+      },
+      {
+        "archive": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\c5-loaded-capture004\\20\\imgui_python\\fps-loaded.zip",
+          "bytes": 81601,
+          "sha256": "95a5706dee2126c2b520dad4e8a81ef0ec6ad080e7c13cf3c9f6ad69fe95d064"
+        },
+        "members": [
+          {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\c5-loaded-capture004\\20\\imgui_python\\fps-loaded\\case.json",
+            "bytes": 1992155,
+            "sha256": "3c50367f8370dd638337dc5e1edc5f812cb9d05126448287feb3d7f43d6a54dc"
+          }
+        ],
+        "state": "archived_verified_and_raw_retired"
+      },
+      {
+        "archive": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\c5-loaded-capture004\\20\\imgui_python\\cal-loaded.zip",
+          "bytes": 260992,
+          "sha256": "1ce6ffe80cde9edd12f98224a1ecb4d8bef8df38933b612a0cda0a4afc0a7341"
+        },
+        "members": [
+          {
+            "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\c5-loaded-capture004\\20\\imgui_python\\cal-loaded\\case.json",
+            "bytes": 5830575,
+            "sha256": "d00f599d622a0b34bf4faa96717e9cb02ba7e3afd2050e8a095f5cf12bfa2d46"
+          }
+        ],
+        "state": "archived_verified_and_raw_retired"
+      }
+    ],
+    "superseded_retirement": {
+      "path": ".tmp\\manual-workflow-verification\\c5-loaded-capture003\\superseded-capture-retirement.json",
+      "bytes": 5240,
+      "sha256": "efeff65b8d62e9bafdec8cf0ee997d7211ce02a68980b7139808665925eaff6a"
+    },
+    "historical_animation_regression": {
+      "passed_ids": 4,
+      "retention": {
+        "path": ".tmp\\manual-workflow-verification\\c5-existing-fps-regression001-retention.json",
+        "bytes": 3887,
+        "sha256": "f566393a5ff583d7f37b1ab99df43f47779aab4370a99f18eaad7aaca06410fe"
+      },
+      "archive": {
+        "path": ".tmp\\manual-workflow-verification\\c5-existing-fps-regression001.zip",
+        "bytes": 684494,
+        "sha256": "0c0143ae90de24bdd4ea34d6cad9665f1c267b48622b26361f502cba01c3e51a"
+      },
+      "readers": [
+        {
+          "path": "tests\\python\\test_animation_ui.py",
+          "bytes": 8306,
+          "sha256": "7868dd9e9b37143263c9924889c78b49e1263adf495e38cef2949f5773ec4b65"
+        },
+        {
+          "path": "tests\\python\\test_animation_timing_ui.py",
+          "bytes": 3786,
+          "sha256": "a01c4c6cb37cf5a1eec664ad9e1c181e221d13c846a68a6f2760cc5863fbb8d5"
+        }
+      ]
+    },
+    "retired_installed_identities": {
+      "path": ".tmp\\manual-workflow-verification\\c3-windows-build010\\receipt.json",
+      "bytes": 27934,
+      "sha256": "4afa46b667922f265c79bb6d7dd8f19845d303b3e567dfa7d16fb03935c8a902"
+    }
+  },
+  "storage": {
+    "before": {
+      "path": ".tmp\\manual-workflow-verification\\c5-loaded-storage-before001.json",
+      "bytes": 1523,
+      "sha256": "2153a3f88f2f445b380ebf68e31f1557ca184d07bfd2990e78ee4c9859acb8a5"
+    },
+    "after": {
+      "path": ".tmp\\manual-workflow-verification\\c5-loaded-storage-after001.json",
+      "bytes": 1523,
+      "sha256": "08b56a49b699e71f42dbb910f2cdfb1cd797e831d4bb89b92fed32a3e5800041"
+    },
+    "budget_verified": false,
+    "after_cleanup": {
+      "path": ".tmp\\manual-workflow-verification\\c5-loaded-storage-publish001.json",
+      "bytes": 1523,
+      "sha256": "9c5cd29137c1b602da6befedcd8531e52cc4ae0314636b3dc333f518e266fed3"
+    }
+  },
+  "next_contract": "docs/packets/CFG6-settings-playback.md",
+  "limits": [
+    "File-loaded FPS and actual Animation controls only; Preferences Apply and fresh paired reopen remain open",
+    "Local Windows CMake installation only; no wheel, GL, OS scheduling, full-platform or release claim",
+    "Five reader-control methods are synthetic protocol checks, not product execution",
+    "Original missing scientific payloads/fingerprints unchanged; family counts47/52/0"
+  ],
+  "full_acceptance_claim": false
+}

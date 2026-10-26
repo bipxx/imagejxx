@@ -32,7 +32,8 @@ Json animationUiCase(Window &window, const std::string &id,
       "edit","close","stop","fps","ieee","rgb","busy","range","reverse","ping",
       "range-offgrid","range-c","range-t","range-invalid","cal-s","cal-ms","cal-us",
       "cal-step","cal-fps","cal-invalid","cal-edit","cal-unit","cal-legacy",
-      "cal-legacy-step","cal-legacy-reverse","cal-legacy-ping","cal-legacy-edit","cal-legacy-unit"};
+      "cal-legacy-step","cal-legacy-reverse","cal-legacy-ping","cal-legacy-edit","cal-legacy-unit",
+      "fps-loaded","cal-loaded"};
   if (std::find(cases.begin(),cases.end(),id)==cases.end() ||
       (context!="imgui_cpp" && context!="imgui_python") || !window.documents().empty())
     throw std::invalid_argument("Animation observation requires a fresh editor and a known case/host");
@@ -79,7 +80,11 @@ Json animationUiCase(Window &window, const std::string &id,
   if(id=="range-offgrid")display.crosshair[2]=0;
   display.orthogonal=!legacy;display.zoom=1.25;display.planeZoom={1.25,1.75,2.25};display.linkedZoom=false;
   window.setNativeDisplay(display,source->id);
-  window.updateSettings({{"animation_fps",60.}},false);window.recording=true;
+  const bool loadedFps = id=="fps-loaded" || id=="cal-loaded";
+  // Existing cases keep their historical60 FPS fixture. These additive cases
+  // observe the separately constructed host's loaded value without replacing it.
+  if (!loadedFps) window.updateSettings({{"animation_fps",60.}},false);
+  window.recording=true;
   const auto original=source->snapshot();
   auto state=[&](bool pixels=false) {
     const auto snap=source->snapshot();const auto &d=snap.data();const auto &v=snap.display();
@@ -109,6 +114,7 @@ Json animationUiCase(Window &window, const std::string &id,
   Json report{{"contract_id","p09s.animation-ui.001"},{"case_id",id},{"context",context},
       {"observation_state","running"},{"acceptance_claim",false},{"shape",shape.dimensions()},
       {"frames",Json::array()},{"controls",Json::array()},{"api",Json::array()},{"before",state(true)}};
+  if (loadedFps) report["loaded_fps"] = window.settings().number("animation_fps");
   struct Failure {Json &r;std::filesystem::path p;bool done=false;~Failure(){if(!done)try{r["observation_state"]="failed";writeJson((p/"failure.json").u8string(),r);}catch(...){}}}failure{report,root};
   HeadlessInputSession session(window);Json last;
   const auto started=std::chrono::steady_clock::now();std::size_t frames=0;

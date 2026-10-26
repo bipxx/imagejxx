@@ -2,6 +2,46 @@
 
 ## Current execution card — 2026-10-26
 
+**Published baseline:** `a3e10e9ffda032f682715c51be4e272b584a4d89`;
+[run40376892140](https://github.com/bipxx/imagejxx/actions/runs/40376892140)
+is live. Exact hosted C2 overlap qualification remains pending; no predecessor
+job is retried or canceled.
+
+**C5 loaded-FPS evidence prepared:** existing animation probes force FPS60, so
+their success cannot prove Preferences-file consumption. Two additive routes
+retain the constructed host's loaded rate; original cases retain their fixture.
+Eight installed C++/Python cases pass at saved5/20 FPS in ordinary FPS and
+calibrated-time modes. Ordinary traces take104/41 frames; calibrated traces take
+114 at either rate. Five reader-control methods reject changed clocks, source
+bits/identity/history, incomplete linked views and API substitution. Source,
+calibration, selection/Previous, ROI, history and all three linked planes stay
+strict. An initial menu activation's existing−1 clock sentinel is distinguished
+from an armed clock; the original failed reader capture remains unchanged.
+Four unchanged historical fps/cal-fps regression IDs also pass on C++/Python;
+their15,479,896 raw bytes were verified into684,494 lossless bytes and retired.
+[Exact local evidence](parity/reviews/cfg6-playback001/loaded-fps-progress.json).
+
+| Order / owner | Next action | Required boundary |
+| --- | --- | --- |
+| 1 / Root | Publish the additive loaded-FPS cases, independent reader and exact next contract | Eight owned installed observations plus five synthetic refusal controls; file-loaded clock scope only |
+| 2 / Root | Implement the actual Preferences playback persist/reopen packet in [CFG6](packets/CFG6-settings-playback.md) | Reuse HeadlessInputSession, Playback group, native clock and existing portable paired capture; four canonical IDs, actual Apply, invalid/Cancel/Revert/Defaults and fresh process proof |
+| Parallel observation / Root | Follow exact C2/C3/history hosted handles | Local loaded-FPS checks do not discharge hosted UI or platform gates |
+| Independent / Root | Recover seven original scientific payloads | Original hashes only; no substitute observations |
+| After C5 chain / Root | Continue reproduced linked stack/view gaps | Existing per-key/native seams and independent oracles; no rewrite of already implemented playback kernels |
+
+The final capture's originals were compressed, hashes checked and raw case
+scratch removed after each owned exit. Superseded003 compressed captures were
+retired with their original member identities retained; historical bytes are now
+unavailable, not repinned. Inventory `c5-loaded-storage-after001.json` measured
+8,565,366,863 known bytes before that1,609,752-byte retirement; two inaccessible
+cache subtrees keep full8GiB budget unverified. One cache/runtime reused.
+Post-cleanup inventory `c5-loaded-storage-publish001.json` records8,564,474,268
+known bytes, with the same two inaccessible subtrees and unverified full budget.
+All99 families remain47 in progress /52 open /0 complete. Full Preferences UI,
+fresh persisted Apply/reopen, GL/OS scheduling, macOS and release remain open.
+
+## Historical card before C5 loaded-clock qualification — 2026-10-26
+
 **Published baseline:** `7673a50d0238bfd97c67824939f5251835f471c8`;
 [run40375915284](https://github.com/bipxx/imagejxx/actions/runs/40375915284)
 is live. Its bounded atomic-receipt scan fix is separate from the C2 input below.
