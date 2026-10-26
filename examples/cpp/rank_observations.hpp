@@ -1,6 +1,7 @@
 #pragma once
 // Local SDK example transport: public core types and the C++ standard library
 // only. Encoded strings never retain a job, snapshot, Dataset or resource guard.
+#include "observation_decimal.hpp"
 #include <imagejxx/dataset.hpp>
 #include <imagejxx/metadata.hpp>
 
@@ -33,8 +34,7 @@ inline std::string quote(const std::string &value) {
 inline std::string number(double value) {
   if (!std::isfinite(value)) throw std::invalid_argument("Raw observations require finite numbers");
   char buffer[128];
-  const auto encoded = std::to_chars(buffer, buffer + sizeof(buffer), value,
-      std::chars_format::general, std::numeric_limits<double>::max_digits10);
+  const auto encoded = observation_decimal::general17(buffer, buffer + sizeof(buffer), value);
   if (encoded.ec != std::errc{}) throw std::runtime_error("Cannot encode observed double");
   std::string result(buffer, encoded.ptr);
   // JSON consumers must see a floating value even for 2.0 and signed -0.0.

@@ -1,6 +1,7 @@
 #pragma once
 // Optional local transport, using only the C++ standard library. Observations
 // are detached scalar strings; no command, snapshot or resource owner is kept.
+#include "observation_decimal.hpp"
 #include <charconv>
 #include <cmath>
 #include <cstdint>
@@ -29,8 +30,7 @@ inline std::string quote(const std::string &value) {
 inline std::string decimal(double value) {
   if (!std::isfinite(value)) throw std::invalid_argument("Nonfinite scalar observation");
   char buffer[128];
-  const auto result = std::to_chars(buffer, buffer + sizeof buffer, value,
-      std::chars_format::general, std::numeric_limits<double>::max_digits10);
+  const auto result = observation_decimal::general17(buffer, buffer + sizeof buffer, value);
   if (result.ec != std::errc{}) throw std::runtime_error("Cannot format observed scalar");
   return {buffer, result.ptr};
 }

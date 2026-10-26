@@ -24,6 +24,42 @@ EXPECTED_OWNERS = {
 
 
 class FloatingCharconvCMakeTests(unittest.TestCase):
+    def test_example_observer_headers_and_all_literal_compilation_owners(self):
+        expected = {
+            "rank_observations.hpp": {"tests/native/test_rank_host.cpp", "examples/cpp/rank_command.cpp", "tests/native/test_observation_decimal.cpp"},
+            "saved_roi_geometry_observations.hpp": {"tests/native/test_saved_roi_geometry_host.cpp", "examples/cpp/saved_roi_geometry.cpp", "tests/native/test_observation_decimal.cpp"},
+            "shortcut_observations.hpp": {"examples/cpp/history_settings.cpp", "examples/cpp/shortcuts.cpp", "tests/native/test_observation_decimal.cpp"},
+        }
+        actual = {name: set() for name in expected}
+        for directory in (ROOT / "examples/cpp", ROOT / "tests/native"):
+            for path in directory.rglob("*.cpp"):
+                text = path.read_text(encoding="utf-8-sig")
+                for name in expected:
+                    if re.search(r'#\s*include\s+"[^"\n]*\b' + re.escape(name) + r'"', text):
+                        actual[name].add(path.relative_to(ROOT).as_posix())
+        self.assertEqual(actual, expected)
+        required = set().union(*expected.values())
+        owners = {name: set() for name in required}
+        for name in ("CMakeLists.txt", "examples/cpp/CMakeLists.txt"):
+            path = ROOT / name
+            text = re.sub(r"(?m)#.*$", "", path.read_text(encoding="utf-8"))
+            for target, arguments in re.findall(r"\badd_executable\(\s*(\w+)\b([^)]*)\)", text):
+                for source in re.findall(r"\b[^\s();\"]+\.cpp\b", arguments):
+                    logical = (path.parent / source).relative_to(ROOT).as_posix()
+                    if logical in owners:
+                        owners[logical].add(target)
+        self.assertTrue(all(len(targets) == 1 for targets in owners.values()), owners)
+        for name in expected:
+            text = (ROOT / "examples/cpp" / name).read_text(encoding="utf-8")
+            self.assertIn('#include "observation_decimal.hpp"', text)
+            self.assertIn("observation_decimal::general17(", text)
+            self.assertNotIn("std::to_chars(", text)
+        helper = (ROOT / "examples/cpp/observation_decimal.hpp").read_text(encoding="utf-8")
+        self.assertNotRegex(helper, r'#\s*include\s+"|#\s*include\s+<boost/')
+        cmake = (ROOT / "CMakeLists.txt").read_text(encoding="utf-8")
+        self.assertIn("add_test(NAME native_observation_decimal COMMAND imagejxx_observation_decimal_tests)", cmake)
+        self.assertNotRegex(cmake, r"target_link_libraries\(\s*imagejxx_observation_decimal_tests\b")
+
     def test_all_seven_consumers_and_eight_compilation_memberships_are_private(self):
         consumers = {
             path.relative_to(ROOT).as_posix()

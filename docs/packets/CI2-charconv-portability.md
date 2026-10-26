@@ -1,5 +1,44 @@
 # CI2: binary64 editor character-conversion portability
 
+## Independent observer successor: Windows/Linux scoped pass, Apple pending
+
+The local successor to `868e7ed` repairs the three independent SDK observation
+headers after actual run `40239829364` exposed an unavailable floating
+`std::to_chars` call on the macOS11 profile. The new stdlib-only
+`examples/cpp/observation_decimal.hpp` uses a classic-locale general17 fallback
+on Apple; other hosts retain the original std conversion. It does not link the
+production formatter. Original finite checks, diagnostic strings, buffers,
+decimal suffix and shortcut negative-zero behavior remain at their callers.
+
+Existing Windows/MSVC and Linux/GCC caches built only the standalone
+`imagejxx_observation_decimal_tests` target and passed its exact CTest. Each
+host exercised 32 frozen literals, 512 differential samples, 5,120 literal
+attempts, 16,384 differential calls, 256 actual-wrapper attempts and 24
+nonfinite/error checks, with zero failures. Checks cover capacity/guards,
+locale and floating environment under masked traps. Four maintained source
+controls per host cover three headers, their six original compilation owners
+and the new witness. No product library is linked by the witness; four existing
+product identities per host remain unchanged. No new SDK, runtime or product
+install was created.
+
+Exact source/product pins and owned process receipts remain under
+`.tmp/manual-workflow-verification/observation-decimal-cache-{windows,linux}001/`;
+source controls have separate `observation-decimal-guard-*001/` receipts.
+Pre-migration sources and the original standalone witness are retained in
+`observation-decimal-preimages001/`. The candidate helper SHA-256 is
+`604c44dadc71bb232f433eca58f0ee45a3801aca0be81c2d14702e5436a3dc07`;
+the integrated witness is
+`9b542a8d23e5e6fe685e2c528648c21b9b36eed21ad1be77f57ab3a70c89755d`.
+The original production witness remains
+`53c4bf665392e7d50c24605c560033e0cb897b56cedcb8b99e5591b50af8c600`.
+
+These are focused MSVC/GCC results. Actual Apple compile/execution,
+application/installed SDK acceptance, enabled traps and exceptional unwind
+execution are not established. Historical expectations and captures retain
+their original identities. Three superseded standalone compiler outputs
+(778,979 bytes) were retired after review; their hashes and explicit unavailable
+status remain in `observation-decimal-probe-retirement001.json`.
+
 ## Current checkpoint: focused local qualification, hosted Apple pending
 
 Published successor `540f5cbe695e4b83201064a3838357503cdd64f9` has actual

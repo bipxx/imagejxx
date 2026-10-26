@@ -1,6 +1,7 @@
 #pragma once
 // Example-local actual-value transport. Standard library only; no installed
 // private header, JSON library, GUI, Python or operating-system input API.
+#include "observation_decimal.hpp"
 #include <charconv>
 #include <cmath>
 #include <cstddef>
@@ -58,8 +59,7 @@ inline std::string number(double value) {
   if (!std::isfinite(value)) throw std::invalid_argument("Observation must be finite");
   if (value == 0 && std::signbit(value)) return "-0.0";
   char buffer[128];
-  const auto encoded = std::to_chars(buffer, buffer + sizeof(buffer), value,
-      std::chars_format::general, std::numeric_limits<double>::max_digits10);
+  const auto encoded = observation_decimal::general17(buffer, buffer + sizeof(buffer), value);
   if (encoded.ec != std::errc{}) throw std::runtime_error("Cannot encode actual double");
   std::string result(buffer, encoded.ptr);
   if (result.find_first_of(".eE") == std::string::npos) result += ".0";
