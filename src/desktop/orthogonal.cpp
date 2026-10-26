@@ -453,9 +453,10 @@ OrthogonalViews::draw(Document &d, bool gl, bool showRois,
       extent.x = std::max(16.f, extent.x);
       extent.y = std::max(16.f, extent.y);
       const bool requestFocus = i == 0 && xyFocusPending_ &&
-                                canvasAdmission(input, ImGui::GetID("image")) &&
-                                ImGui::IsRectVisible(extent);
+                                canvasAdmission(input, ImGui::GetID("image"));
       if (requestFocus) {
+        // Native navigation also reveals the canvas through a scrollable
+        // Images workspace when scaled controls place it below the clip.
         ImGui::SetKeyboardFocusHere();
       }
       // Navigation activation is intentionally ignored: Enter/Space must not

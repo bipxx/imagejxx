@@ -2,6 +2,8 @@
 #include "planar_annotation_panel.hpp"
 #include "planar_annotation_visual.hpp"
 #include "orthogonal.hpp"
+#include "window.hpp"
+#include "headless_session_internal.hpp"
 #include "roi_import_preview.hpp"
 #include "roi_import_panel.hpp"
 #include "../../src/native/kernel_control.hpp"
@@ -147,6 +149,63 @@ void scaled_linked_layout(float scale) {
         "Layout or control scrolling changed source, display revisions or history");
   std::cout<<"PASS real ImGui linked layout scale="<<scale<<" frames="<<frames<<" (no GL)\n";
 }
+void small_workspace_layout() {
+  namespace fs=std::filesystem;
+  const auto root=fs::temp_directory_path()/std::string("imagejxx-small-workspace-"+
+      std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
+  check(fs::create_directory(root),"Fresh workspace fixture directory required");
+  struct Scratch {fs::path root;~Scratch(){std::error_code error;if(fs::is_empty(root,error) && !error)fs::remove(root,error);}} scratch{root};
+  desktop::Window window((root/"preferences.json").u8string());
+  window.updateSettings({{"ui_scale",3.},{"auto_dpi",false}},false);
+  SpatialCalibration calibration;calibration.spacing={.5,.5,.5};
+  auto step=std::make_shared<Document>(Dataset::from_stack({Image(2,4,1,PixelType::UInt8)}),"Step");
+  window.addNativeDocument(step);
+  Stack images{Image(2,2,1,PixelType::UInt8),Image(2,2,1,PixelType::UInt8)};
+  images[0].pixels={0,128,128,0};images[1].pixels={128,0,0,128};
+  auto volume=std::make_shared<Document>(Dataset::from_planes({1,1,2,2,2,1},std::move(images),calibration),"Volume");
+  auto display=volume->snapshot().display();display.orthogonal=true;display.zoom=64;
+  display.properties["display_range"]=metadata_array({0.,255.});volume->set_display(display);
+  window.addNativeDocument(volume);const auto before=volume->snapshot();
+  desktop::HeadlessInputSession session(window);
+  auto &io=ImGui::GetIO();io.DisplaySize={1028,749};
+  // Match the captured51px font height while retaining headless ownership.
+  // This uses a default font, not the Windows Segoe glyphs or a GL renderer.
+  io.Fonts->Clear();ImFontConfig config;config.SizePixels=51;
+  io.Fonts->AddFontDefault(&config);unsigned char *pixels=nullptr;int width=0,height=0;
+  io.Fonts->GetTexDataAsRGBA32(&pixels,&width,&height);io.Fonts->SetTexID(1);
+  desktop::Json report;for(int i=0;i<8;++i)report=session.frame();
+  auto *parent=ImGui::FindWindowByName("Images");check(parent,"Images workspace missing");
+  check(ImGui::GetFontSize()==51 && ImGui::GetStyle().FramePadding.x==21 && ImGui::GetStyle().FramePadding.y==15,"Captured small-workspace metrics differ");
+  for(auto *child:ImGui::GetCurrentContext()->Windows)
+    if(child==parent || (child->ParentWindow==parent && std::string(child->Name).find("orthogonal_controls")!=std::string::npos))
+      std::cerr<<"Workspace window "<<desktop::Json{{"name",child->Name},{"position",{child->Pos.x,child->Pos.y}},
+        {"size",{child->Size.x,child->Size.y}},{"content_rect",{child->ContentRegionRect.Min.x,child->ContentRegionRect.Min.y,child->ContentRegionRect.Max.x,child->ContentRegionRect.Max.y}},
+        {"clip",{child->InnerClipRect.Min.x,child->InnerClipRect.Min.y,child->InnerClipRect.Max.x,child->InnerClipRect.Max.y}},
+        {"scroll",{child->Scroll.x,child->Scroll.y}},{"scroll_max",{child->ScrollMax.x,child->ScrollMax.y}}}.dump()<<'\n';
+  for(const auto &plane:report.at("orthogonal_planes")) {
+    ImGuiWindow *child=nullptr;
+    for(auto *candidate:ImGui::GetCurrentContext()->Windows)
+      if(candidate->ParentWindow==parent && candidate->GetID("image")==plane.at("canvas_id").get<ImGuiID>())child=candidate;
+    check(child,"Missing actual linked plane child");
+    const auto center=plane.at("canvas_point").get<std::array<float,2>>();
+    const auto extent=plane.at("extent").get<std::array<float,2>>();
+    const auto origin=plane.at("origin").get<std::array<float,2>>();
+    const ImRect canvas{{center[0]-extent[0]/2,center[1]-extent[1]/2},
+                        {center[0]+extent[0]/2,center[1]+extent[1]/2}};
+    std::cerr<<"Small workspace "<<desktop::Json{{"plane",plane.at("plane")},{"visible",plane.at("visible")},
+      {"parent_clip",{parent->InnerClipRect.Min.x,parent->InnerClipRect.Min.y,parent->InnerClipRect.Max.x,parent->InnerClipRect.Max.y}},
+      {"child_clip",{child->InnerClipRect.Min.x,child->InnerClipRect.Min.y,child->InnerClipRect.Max.x,child->InnerClipRect.Max.y}},
+      {"canvas",{canvas.Min.x,canvas.Min.y,canvas.Max.x,canvas.Max.y}},{"origin",origin},{"extent",extent}}.dump()<<'\n';
+    check(plane.at("visible").get<bool>() && child->InnerClipRect.Contains(canvas),"Small workspace clips linked canvas");
+    check(plane.at("scale")==desktop::Json::array({32.,32.}) && origin[0]>=canvas.Min.x+2 && origin[1]>=canvas.Min.y+2 &&
+        origin[0]+64<=canvas.Max.x-2 && origin[1]+64<=canvas.Max.y-2,"Small workspace lost fixed64px source or background margin");
+  }
+  const auto after=volume->snapshot();
+  check(after.shares_data(before) && after.revisions().matches(before.revisions(),Change::All) &&
+        after.dirty()==before.dirty() && volume->undo_steps()==0 && volume->redo_steps()==0,
+        "Workspace layout changed source/view/history");
+  session.close();std::cout<<"PASS actual docked1028x749/gui3 workspace geometry (no GL)\n";
+}
 void run() {
   Stack planes;for(int i=0;i<12;++i)planes.emplace_back(7,5,1,PixelType::UInt16);
   auto owner=std::make_shared<Document>(Dataset::from_planes({2,2,3,5,7,1},std::move(planes)));
@@ -254,6 +313,6 @@ void run() {
 }
 }
 int main() {
-  try {run();scaled_linked_layout(1);scaled_linked_layout(3);std::cout<<"PASS restricted planar annotation desktop publication\n";return 0;}
+  try {run();scaled_linked_layout(1);scaled_linked_layout(3);small_workspace_layout();std::cout<<"PASS restricted planar annotation desktop publication\n";return 0;}
   catch(const std::exception &error) {std::cerr<<error.what()<<'\n';return 1;}
 }

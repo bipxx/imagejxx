@@ -2,6 +2,47 @@
 
 ## Current execution card — 2026-10-26
 
+**Published baseline:** `5f8237ebe5971e4de4e95f4a989dfc904ee72a81`;
+[run40385374368](https://github.com/bipxx/imagejxx/actions/runs/40385374368).
+Windows/Linux headless C++/SDK pass; Linux installed lanes stop at original
+reference-readiness, Windows installed remains active, macOS queued.
+
+**C2 small-workspace repair qualified locally:** the whole native Window now
+has a regression at1028×749, gui3 and51px font metrics. It reproduces canvas
+Y651 against the actual child clip bottom533. This corrects the earlier
+viewport-bottom749 explanation: testing only an isolated large parent misses
+the docked workspace's document tabs, linked toggle and controls.
+
+Initial admitted XY focus now reaches the offscreen canvas; native ImGui
+navigation reveals it by scrolling the Images workspace. The pending request
+is consumed once visible. Input visibility/admission guards, user layouts,
+32× scale,64px source footprint, pixel oracles and source/history remain.
+The formerly red native fixture, existing scale1/3 layouts, nine metadata
+groups and seven actual installed navigation regressions pass. Four appearance
+and four playback independent installed C++/Python reader IDs pass.
+[Source-bound evidence](parity/reviews/cfg4-appearance001/small-workspace-progress.json).
+The native fixture uses matching font metrics without GL; local GL captures
+have a larger available display. Exact hosted small-window GL is still required.
+
+| Order / owner | Next action | Required boundary |
+| --- | --- | --- |
+| 1 / Root | Publish the checked C2 workspace fix | Same source hashes as native and eight installed reader IDs; no reference or tolerance changes |
+| 2 / Root | Inspect exact successor history/C2/C3/C5 captures | All four independent packet gates, both installed launchers and actual hosted geometry |
+| Independent / Root | Recover seven original scientific reference payloads; follow platform handles | Original fingerprints; keep missing-input failures fatal; macOS/full release remain open |
+| After layout / Root | Continue CFG6 linked axes/slicing/projection/montage/export consumers | Reuse existing native seams and explicit per-key oracles; no new processing implementation where one exists |
+
+Reused the active compiler cache and installed runtime. Verified lossless
+capture archives retain1,059,682 appearance bytes and983,799 playback bytes;
+27,137,383 raw bytes retired. One cold Linux test executable (17,304,168 bytes)
+was retired after process/identity checks; its historical binary is unavailable.
+Whole-root known storage8,588,073,741; two inaccessible cache subtrees keep the
+8GiB budget unverified. A mistakenly reused cfg3 inventory had an incomplete
+root scope; its original measurement remains and a separate correction points
+to the complete-root inventory. No historical `build/` was recreated.
+All99 families remain47 in progress /52 open /0 complete.
+
+## Historical card before small-workspace layout repair — 2026-10-26
+
 **Published baseline:** `67c9b2243175f7b7a98ab124c40b65430e8844b3`;
 [run40378778767](https://github.com/bipxx/imagejxx/actions/runs/40378778767)
 has Windows/Linux headless C++/SDK successes; installed Windows remains live,
