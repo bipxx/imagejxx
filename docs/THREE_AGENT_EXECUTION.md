@@ -1,5 +1,26 @@
 # Three-agent execution plan
 
+## Scientific projection layout — 2026-10-26
+
+The first typed scientific projection seam is implemented: metadata-only
+Dataset/shape overloads describe explicit T/C/Z/group intent, preserve separate
+TCZYXS axes, map contributors and calculate affine/time calibration plus checked
+pixel/scratch sizes. Current/all T and C are independent; a one-Z time series
+never becomes an implicit Z projection. Native tests with an unreadable observed
+provider prove zero pixel reads, and a separate public example is wired into
+installed-SDK CI. Local final004 compiles the new source against unchanged
+installed-core dependencies and passes both consumers; full installation,
+platform, processing and UI acceptance are still pending.
+
+[Detailed scientific contract and next implementation order](packets/G034-scientific-z-projection.md):
+strict resolved command/shared reduction, many-to-one metadata/channel-display
+policies, prepared operation/shared dialog, independent full acceptance. Reuse
+this descriptor in each layer; do not reimplement T/C mapping in Python/UI.
+Grouped source ce21772 now passes headless C++/SDK on all three operating
+systems; that result does not qualify the new descriptor source. Full Python
+reference prerequisites remain unavailable.
+All99 original requirement/status triples remain47 in progress/52 open/0 complete.
+
 ## Reference transport follow-up — 2026-10-26
 
 Grouped projection is published at `ce21772f234f23ba58b5c1132a23f3b9d26e25d0`;

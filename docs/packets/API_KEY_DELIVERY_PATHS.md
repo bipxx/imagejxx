@@ -184,6 +184,13 @@ changing image.hpp. Use current per-packet evidence, not the unchanged original
 family status, to distinguish this implementation from the remaining scientific
 scope. Group size must divide selected depth; no partial tail is silently lost.
 
+The shared metadata descriptor now exists in dataset_projection.hpp. Use
+DatasetZProjectionRequest/describe_dataset_z_projection for T/C selection,
+contributor mapping, affine/time calibration and checked pixel/scratch sizes;
+resolution reads no pixels. [Scientific implementation order](G034-scientific-z-projection.md)
+keeps the command, reduction, channel/annotation mapping, publication and UI
+requirements explicit. A pixel-buffer cap is not complete worker admission.
+
 Next expand a typed Dataset command for explicit captured T/C selections,
 all-time-frames and grouped output. Resolve source/range/group policy once,
 validate divisibility and memory before reading, preserve T/C rather than

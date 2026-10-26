@@ -2,6 +2,12 @@ cmake_minimum_required(VERSION 3.18)
 project(imagejxx_example LANGUAGES CXX)
 include(CTest)
 find_package(imagejxx CONFIG REQUIRED)
+add_executable(imagejxx_dataset_projection_example dataset_projection.cpp)
+target_link_libraries(imagejxx_dataset_projection_example PRIVATE imagejxx::core)
+if(BUILD_TESTING)
+  add_test(NAME imagejxx_dataset_projection_example COMMAND imagejxx_dataset_projection_example)
+  set_tests_properties(imagejxx_dataset_projection_example PROPERTIES TIMEOUT 30)
+endif()
 # This read-only consumer requires an actual UI-written preferences file.
 # Its complete consumer check is run after the paired UI persistence recipe.
 add_executable(imagejxx_settings_selection_example settings_selection.cpp)
