@@ -1,5 +1,31 @@
 # Three-agent execution plan
 
+## Reference transport follow-up — 2026-10-26
+
+Grouped projection is published at `ce21772f234f23ba58b5c1132a23f3b9d26e25d0`;
+its successor is [run40405933288](https://github.com/bipxx/imagejxx/actions/runs/40405933288).
+Windows/Linux headless C++/SDK and reviewed dependencies pass. Windows installed
+lanes are still running; macOS headless is running and source jobs queued.
+Linux full Python fails; no full acceptance follows.
+The earlier execution card below retains its original observation scope.
+
+The next prerequisite repair aligns all axis-range consumers with
+`IMAGEJXX_AXIS_RANGE_REFERENCE` and adds `IMAGEJXX_AXIS_RANGE_FORMULA_REFERENCE`.
+Both support an absolute path or repository-relative path; explicit empty,
+missing, wrong-size or changed bytes still fail. Original embedded historical
+capture paths and all required checksums remain unchanged. This allows exact
+originals to live outside the retired build/ tree without rewriting evidence.
+[Transport contract and recovery scope](packets/REF1-original-reference-transport.md).
+
+No matching original payload was found among all8,656 local Git blobs or3,541
+candidate retained regular files. Two inaccessible cache subtrees, archive
+members and Linux retained files remain outside that file-search result.
+Seven historical recovery items remain tracked; the readiness list still covers
+six known required inputs only. Do not recreate or repin missing originals.
+Next: finish exact successor intake, inspect retained archive/Linux candidates
+within existing storage limits, then resume the scientific T/C projection
+contract and implementation. All99 requirement/status triples remain unchanged.
+
 ## Current execution card — 2026-10-26
 
 **Published baseline:** `59c0a129a76297bcdabfe879a73fea2efa85a509`;

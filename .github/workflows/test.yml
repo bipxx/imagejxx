@@ -27,6 +27,7 @@ jobs:
           python -I -B tests/tools/test_ci_current_observations.py
           python -I -B tests/tools/test_ci_python_suite.py
           python -I -B tests/tools/test_ci_reference_readiness.py
+          python -I -B tests/tools/test_axis_reference_transport.py
           python -I -B tests/tools/test_ci_headless_origins.py
           python -I -B tests/tools/test_ci_headless_suite.py
           python -I -B tests/tools/test_ci_platform_dependencies.py

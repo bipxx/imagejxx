@@ -894,9 +894,9 @@ REQUIRED_REFERENCE_INPUTS = (
      "8885c41ded23f51e56b1c42e28245bf4b9320108dacfa09da631e14fbe9bf762", None),
     ("IMAGEJXX_XYZ_NUMERIC_ZOOM_CONTRACT_JSON", None, None,
      "3b4c1840d00a773da7b3e5e7fffba08c2292dce00b395ab0dc18da124137480b", None),
-    (None, None, "build/plan-implementation/p05f-axis-plane-export-001/next-range-reference-preparation-001/capture-001/corpus.json",
+    ("IMAGEJXX_AXIS_RANGE_REFERENCE", None, "build/plan-implementation/p05f-axis-plane-export-001/next-range-reference-preparation-001/capture-001/corpus.json",
      "8ddde981534e0ccf55840316485c29c3dbcf61eef03dacee291b83477b4a8347", 7876991),
-    (None, None, "build/plan-implementation/p05f-axis-plane-export-001/next-range-reference-preparation-001/formula-verification-001.json",
+    ("IMAGEJXX_AXIS_RANGE_FORMULA_REFERENCE", None, "build/plan-implementation/p05f-axis-plane-export-001/next-range-reference-preparation-001/formula-verification-001.json",
      "b88c4b86a14bf16f8db84adbfbe99dc1aee454f6ae739d123e4c897cdf79ae79", 15181),
 )
 
@@ -909,7 +909,8 @@ def reference_readiness(root, environment):
     """
     rows = []
     for name, hash_name, relative, expected, size in REQUIRED_REFERENCE_INPUTS:
-        configured = environment.get(name) if name else str(Path(root) / relative)
+        configured = (environment[name] if name is not None and name in environment else
+                      str(Path(root) / relative) if relative else None)
         row = {"environment": name, "original_path": relative,
                "expected_sha256": expected, "state": "unavailable"}
         rows.append(row)

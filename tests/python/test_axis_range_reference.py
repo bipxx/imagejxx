@@ -7,6 +7,7 @@ No ImageJ GUI, reference process or expected-output generation runs here.
 
 import hashlib
 import json
+import os
 from pathlib import Path
 
 import imagejxx as ij
@@ -62,10 +63,15 @@ def references():
              if (parent / "tests/fixtures/axis-plane-imagej154r.json").is_file()]
     assert len(roots) == 1
     root = roots[0]
-    preparation = root / "build/plan-implementation/p05f-axis-plane-export-001/next-range-reference-preparation-001"
-    corpus_path = preparation / "capture-001/corpus.json"
+    preparation = "build/plan-implementation/p05f-axis-plane-export-001/next-range-reference-preparation-001"
+    def location(name, historical):
+        configured = os.environ.get(name, historical)
+        assert configured, f"Empty original reference path: {name}"
+        return root / configured
+    corpus_path = location("IMAGEJXX_AXIS_RANGE_REFERENCE", preparation + "/capture-001/corpus.json")
     corpus = _load(corpus_path, CORPUS_PIN)
-    formula = _load(preparation / "formula-verification-001.json", FORMULA_PIN)
+    formula = _load(location("IMAGEJXX_AXIS_RANGE_FORMULA_REFERENCE",
+                             preparation + "/formula-verification-001.json"), FORMULA_PIN)
     singleton = _load(root / "tests/fixtures/axis-plane-imagej154r.json", SINGLETON_PIN)
     assert corpus["schema_version"] == 1 and corpus["imagej_version"] == "1.54r"
     assert corpus["imagej_commit"] == "62db90a269cccc1ac79f658e4602043214ed055b"
@@ -73,7 +79,8 @@ def references():
     assert tuple(row["case_id"] for row in corpus["cases"]) == CASE_IDS
     assert formula["state"] == "passed_independent48_reference_formula_verification"
     assert formula["observed_cases"] == 48 and formula["target_product_invoked"] is False
-    assert formula["corpus"] == {"path": corpus_path.relative_to(root).as_posix(),
+    # This is the original capture identity, independent of its transport path.
+    assert formula["corpus"] == {"path": preparation + "/capture-001/corpus.json",
                                  "sha256": CORPUS_PIN[1], "bytes": CORPUS_PIN[0]}
     assert tuple(row["case_id"] for row in formula["cases"]) == CASE_IDS
     assert tuple(singleton["exact_ordered_case_ids"]) == SINGLETON_IDS

@@ -1,0 +1,212 @@
+{
+  "schema": "imagejxx.original-reference-transport-progress.001",
+  "parent_source": "ce21772f234f23ba58b5c1132a23f3b9d26e25d0",
+  "acceptance_claim": false,
+  "scope": "Tooling transport repair; no scientific ImageJ/Fiji or family acceptance",
+  "inputs": [
+    {
+      "path": ".github\\workflows\\test.yml",
+      "bytes": 10357,
+      "sha256": "9aaf8e0bd5d248a7e941eaff9c68bd2e96e73e41b7ef2d708df2a946b9d232b7"
+    },
+    {
+      "path": "scripts\\ci_python_suite.py",
+      "bytes": 101320,
+      "sha256": "c4714af610240075bb6177c5fc346ab4e25463ff46785607b4f9603920a83e97"
+    },
+    {
+      "path": "tests\\python\\test_axis_range_reference.py",
+      "bytes": 11333,
+      "sha256": "4dbc32d63e852ed5b4e2a717002127e76fca1b1dd513256b95189bae455998bc"
+    },
+    {
+      "path": "tests\\python\\test_axis_range_reslice_ui.py",
+      "bytes": 59401,
+      "sha256": "334fde2e478744f8bde3dba91791304de7b6cb6bb09ee01741229e7c1390fc6e"
+    },
+    {
+      "path": "tests\\python\\test_parity_fixtures.py",
+      "bytes": 171175,
+      "sha256": "ae5b7961008964ad465a8964663503004a6d9f3cfffbcfd15fc6fc3fb02274d2"
+    },
+    {
+      "path": "tests\\tools\\test_axis_reference_transport.py",
+      "bytes": 7148,
+      "sha256": "cb31754c689aa454337d1b5d2a8963e95d7fb1bd144abd8571e7f5cb1be42606"
+    }
+  ],
+  "verification": {
+    "tests_run": 170,
+    "passed": 168,
+    "existing_skipped": 2,
+    "tooling_only": true,
+    "native_rebuild": false,
+    "failure_diagnostics_retained": true
+  },
+  "recovery_searches": [
+    {
+      "source_head": "ce21772f234f23ba58b5c1132a23f3b9d26e25d0",
+      "scope": "All local Git object-store blobs at or below64MiB, including unreachable objects. Does not inventory working-tree files, archives, other repositories, remote history or inaccessible trees.",
+      "objects": 10619,
+      "hashed_blobs": 8656,
+      "hashed_bytes": 1554263548,
+      "excluded_oversized_blobs": 0,
+      "target_sha256": [
+        "2652bcf1c0665e997fb1bbe55c7f616071359e6b99293b875b2b8555ff045255",
+        "3b3f040e01b93642d2b0d3d84db9574f7a9ee525b3a7f29dac7ad21ea03ea6c3",
+        "3b4c1840d00a773da7b3e5e7fffba08c2292dce00b395ab0dc18da124137480b",
+        "8885c41ded23f51e56b1c42e28245bf4b9320108dacfa09da631e14fbe9bf762",
+        "8ddde981534e0ccf55840316485c29c3dbcf61eef03dacee291b83477b4a8347",
+        "b88c4b86a14bf16f8db84adbfbe99dc1aee454f6ae739d123e4c897cdf79ae79"
+      ],
+      "matches": [],
+      "recovered_files_written": false,
+      "acceptance_claim": false
+    },
+    {
+      "roots": [
+        ".cache",
+        ".tmp",
+        "docs/parity/reviews",
+        ".github/ci-data",
+        "tests/reference",
+        "tests/fixtures"
+      ],
+      "scope": "Read-only regular .json/.jsonl files at or below64MiB, plus all regular files of the two pinned axis reference sizes. No archive members, Linux roots, unrelated projects or global caches searched. Links/reparse points excluded.",
+      "walked_files": 16642,
+      "hashed_files": 3541,
+      "hashed_bytes": 887018279,
+      "links_excluded": 4,
+      "unavailable": [
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest",
+          "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest'"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest-ui",
+          "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest-ui'"
+        }
+      ],
+      "matches": [],
+      "target_sha256": [
+        "2652bcf1c0665e997fb1bbe55c7f616071359e6b99293b875b2b8555ff045255",
+        "3b3f040e01b93642d2b0d3d84db9574f7a9ee525b3a7f29dac7ad21ea03ea6c3",
+        "3b4c1840d00a773da7b3e5e7fffba08c2292dce00b395ab0dc18da124137480b",
+        "8885c41ded23f51e56b1c42e28245bf4b9320108dacfa09da631e14fbe9bf762",
+        "8ddde981534e0ccf55840316485c29c3dbcf61eef03dacee291b83477b4a8347",
+        "b88c4b86a14bf16f8db84adbfbe99dc1aee454f6ae739d123e4c897cdf79ae79"
+      ],
+      "acceptance_claim": false
+    }
+  ],
+  "receipts": [
+    {
+      "path": ".tmp\\manual-workflow-verification\\reference-git-object-search001.json",
+      "bytes": 932,
+      "sha256": "c368bf05a1fb00ab044dd66d7902037b4bbe8ee41249656c5d32fc47a4842f9d"
+    },
+    {
+      "path": ".tmp\\manual-workflow-verification\\reference-retained-files-search001.json",
+      "bytes": 1439,
+      "sha256": "37d8961746f9d0d82843ce73598c30f0c787377b9bce7486f854304b5be2bfba"
+    },
+    {
+      "path": ".tmp\\manual-workflow-verification\\reference-transport-controls001\\receipt.json",
+      "bytes": 1975,
+      "sha256": "b0346037a71659039810b7caee1faad165f752e9c2c866ab469fc641d39ba0d7"
+    },
+    {
+      "path": ".tmp\\manual-workflow-verification\\reference-transport-controls002\\receipt.json",
+      "bytes": 2149,
+      "sha256": "e87829d5e3e15ad873629ae8f72a98fda0c17d9508ef68ea5fbe67f0000e4e12"
+    },
+    {
+      "path": ".tmp\\manual-workflow-verification\\reference-transport-controls003\\receipt.json",
+      "bytes": 299,
+      "sha256": "734b0635df183f25e49af5cb09c0dc7cac1f91a9a78fe488a59dcf6ba2ce60ba"
+    },
+    {
+      "path": ".tmp\\manual-workflow-verification\\reference-transport-readiness001\\reference-readiness.json",
+      "bytes": 2504,
+      "sha256": "37ddb417bc6ea88d98463c6d4391baea69be313fc7cc2e0c63c54cecb003ef43"
+    }
+  ],
+  "original_readiness": {
+    "state": "unavailable",
+    "scope": "six known required original reference inputs; not exhaustive fixture acceptance",
+    "acceptance_claim": false,
+    "inputs": [
+      {
+        "environment": "IMAGEJXX_GAUSSIAN_UI_CONTRACT_JSON",
+        "original_path": null,
+        "expected_sha256": "2652bcf1c0665e997fb1bbe55c7f616071359e6b99293b875b2b8555ff045255",
+        "state": "unavailable",
+        "reason": "required explicit reference path is not configured"
+      },
+      {
+        "environment": "IMAGEJXX_GAUSSIAN_CONTRACT_JSON",
+        "original_path": null,
+        "expected_sha256": "3b3f040e01b93642d2b0d3d84db9574f7a9ee525b3a7f29dac7ad21ea03ea6c3",
+        "state": "unavailable",
+        "reason": "required explicit reference path is not configured"
+      },
+      {
+        "environment": "IMAGEJXX_GAUSSIAN_REFERENCE_JSONL",
+        "original_path": null,
+        "expected_sha256": "8885c41ded23f51e56b1c42e28245bf4b9320108dacfa09da631e14fbe9bf762",
+        "state": "unavailable",
+        "reason": "required explicit reference path is not configured"
+      },
+      {
+        "environment": "IMAGEJXX_XYZ_NUMERIC_ZOOM_CONTRACT_JSON",
+        "original_path": null,
+        "expected_sha256": "3b4c1840d00a773da7b3e5e7fffba08c2292dce00b395ab0dc18da124137480b",
+        "state": "unavailable",
+        "reason": "required explicit reference path is not configured"
+      },
+      {
+        "environment": "IMAGEJXX_AXIS_RANGE_REFERENCE",
+        "original_path": "build/plan-implementation/p05f-axis-plane-export-001/next-range-reference-preparation-001/capture-001/corpus.json",
+        "expected_sha256": "8ddde981534e0ccf55840316485c29c3dbcf61eef03dacee291b83477b4a8347",
+        "state": "unavailable",
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\plan-implementation\\p05f-axis-plane-export-001\\next-range-reference-preparation-001\\capture-001\\corpus.json",
+        "reason": "required original is unavailable as a regular file"
+      },
+      {
+        "environment": "IMAGEJXX_AXIS_RANGE_FORMULA_REFERENCE",
+        "original_path": "build/plan-implementation/p05f-axis-plane-export-001/next-range-reference-preparation-001/formula-verification-001.json",
+        "expected_sha256": "b88c4b86a14bf16f8db84adbfbe99dc1aee454f6ae739d123e4c897cdf79ae79",
+        "state": "unavailable",
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\build\\plan-implementation\\p05f-axis-plane-export-001\\next-range-reference-preparation-001\\formula-verification-001.json",
+        "reason": "required original is unavailable as a regular file"
+      }
+    ]
+  },
+  "protected_sha256": {
+    "tests/reference/continuous_bezier_exact_reference.py": "9636659391cc3c4a5fab17f42b7497da8dfb383818a12a78d4967c5552bb382b",
+    "tests/reference/ObserveContinuousPathBooleans.java": "b3b64e67e4ded1a660af59d86bb4a8943c4d44d32264e232ea16c53d02d29182",
+    "docs/packets/CG0-analytic-reference-contract.md": "3e7da966e20d14756ea417f6d31580753038380157b55d2c311d02fe5122749a",
+    "docs/packets/CG0-imagej-observer-contract.md": "eb3eaacda74033a1e71ba52e8aa36cb341d6459144d6a397df2b628044d727bf",
+    "tests/native/rounded_path_reference.inc": "c240506730a694f8b0bf2861a8428dcaa11885ee028d69a76d99fb1836d831fa"
+  },
+  "inventory_unchanged": true,
+  "family_status_counts": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  },
+  "next": [
+    "Recover unchanged original reference inputs from archives/Linux within storage limits; six known readiness inputs are not the broader historical seven-item list",
+    "Inspect exact grouped successor40405933288; no transferred predecessor qualification",
+    "Specify scientific T/C projection channel-display/annotation/label/provenance and numeric policy before implementing UI"
+  ],
+  "storage_measurement": {
+    "path": ".tmp/manual-workflow-verification/reference-transport-storage001.json",
+    "sha256": "6ef851a6189562ff36fde2e2f85c86aa41d33901d8b78616ff2c912aa650ecf0",
+    "measured_known_bytes": 8583150543,
+    "increase_from_prior_publication_bytes": 122745,
+    "unknown_subtrees": 2,
+    "budget_verified": false,
+    "scope": "Point-in-time complete normalized owned-root inventory; small receipt/plan edits after measurement are additional. No new compiler cache/runtime or raw capture scratch."
+  }
+}

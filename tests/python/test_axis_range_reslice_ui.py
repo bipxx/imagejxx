@@ -710,8 +710,10 @@ def _calibration(value, plane=None, coordinate=0, *, step=1, changed_spacing=Fal
 @pytest.fixture(scope='module')
 def range_oracles():
     configured = os.environ.get('IMAGEJXX_AXIS_RANGE_REFERENCE')
-    if configured:
-        path = Path(configured).resolve(strict=True)
+    if configured is not None:
+        assert configured, 'Empty original range reference path'
+        path = Path(__file__).resolve().parents[2] / configured
+        assert path.is_file() and not path.is_symlink()
     else:
         candidates = [parent / 'build/plan-implementation/p05f-axis-plane-export-001/next-range-reference-preparation-001/capture-001/corpus.json'
                       for parent in tuple(Path(__file__).resolve().parents)[:8]]

@@ -11,6 +11,7 @@ import importlib.util
 import io
 import json
 import math
+import os
 from pathlib import Path
 from functools import lru_cache
 import zipfile
@@ -2192,7 +2193,10 @@ RANGE_SELECTORS = ("/source_before/raw_hex", "/source_after/raw_hex", "/output/s
 
 
 def range_corpus_and_fixture():
-    path = ROOT / "build/plan-implementation/p05f-axis-plane-export-001/next-range-reference-preparation-001/capture-001/corpus.json"
+    configured = os.environ.get("IMAGEJXX_AXIS_RANGE_REFERENCE",
+        "build/plan-implementation/p05f-axis-plane-export-001/next-range-reference-preparation-001/capture-001/corpus.json")
+    assert configured, "Empty original range reference path"
+    path = ROOT / configured
     payload = path.read_bytes()
     assert digest(payload) == "8ddde981534e0ccf55840316485c29c3dbcf61eef03dacee291b83477b4a8347"
     corpus = json.loads(payload)
