@@ -403,6 +403,18 @@ DocumentMetadata infer_metadata(const Json &metadata,
                           {"roi_slice_fields", roiSliceFields}};
   if (prior && prior->record_layout.empty())
     result.record_layout.clear();
+  else if (prior) {
+    // Opaque native layout fields do not imply that empty legacy presence
+    // groups were supplied. Keep those groups absent unless an edit needs one.
+    if (roots.empty() && !prior->record_layout.count("root_fields"))
+      result.record_layout.erase("root_fields");
+    if (nulls.empty() && !prior->record_layout.count("null_fields"))
+      result.record_layout.erase("null_fields");
+    if (calFields.empty() && !prior->record_layout.count("calibration_fields"))
+      result.record_layout.erase("calibration_fields");
+    if (roiSliceFields.empty() && !prior->record_layout.count("roi_slice_fields"))
+      result.record_layout.erase("roi_slice_fields");
+  }
   return result;
 }
 MetadataObject display_properties(const Json &metadata) {

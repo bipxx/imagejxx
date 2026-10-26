@@ -114,9 +114,15 @@ def preference_payload(value):
 
 
 def _opaque(payload, known):
-    require(type(payload) is dict and type(payload.get("values")) is dict, "preference object")
+    require(type(payload) is dict and type(payload.get("values")) is dict and
+            type(payload.get("extras")) is dict, "preference object")
+    extras = payload["extras"]
+    # Window adds this known default when exposing preferences. The fixture
+    # opens no files, so a populated/malformed list is still a failure.
+    require("recent" not in extras or (type(extras["recent"]) is list and not extras["recent"]),
+            "unexpected recent files in drawing-only workflow")
     return {"values": {k: v for k, v in payload["values"].items() if k not in known},
-            "extras": payload.get("extras"),
+            "extras": {k: v for k, v in extras.items() if k != "recent"},
             "root": {k: v for k, v in payload.items() if k not in ("format", "version", "values", "extras")}}
 
 

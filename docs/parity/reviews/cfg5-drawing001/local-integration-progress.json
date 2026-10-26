@@ -1,0 +1,160 @@
+{
+  "schema": "imagejxx.c3-local-integration-progress.001",
+  "state": "focused_windows_installed_four_ids_passed",
+  "published_predecessor": "7d9c9ce930c46323e303ddbda269e8fbd507ab11",
+  "source_pins": [
+    {
+      "path": "src\\desktop\\document.cpp",
+      "bytes": 77849,
+      "sha256": "6c5617e99ce51b608a03784e551bea6891e6c1f9aaa8e74c48df43d54f832a03"
+    },
+    {
+      "path": "src\\desktop\\window.cpp",
+      "bytes": 756452,
+      "sha256": "7db78830110cdd6d2598841c3335964e38f7612e7aa561e87b6b7b296d658054"
+    },
+    {
+      "path": "src\\native\\session_metadata.cpp",
+      "bytes": 41889,
+      "sha256": "ae1e67fd62743c7b0fd42d7493b6e283bd91646e6471105d5c99071426d6925f"
+    },
+    {
+      "path": "tests\\native\\test_session_metadata.cpp",
+      "bytes": 27103,
+      "sha256": "e0e22320a633d4a1242f549e72662a65a65cf02da32478568098774c58df0746"
+    },
+    {
+      "path": "tests\\python\\settings_drawing_reader.py",
+      "bytes": 37059,
+      "sha256": "f64ec08e47b856065375c3a6b8d8f0cd76b373d8f9d88bfa65a117bfa451c831"
+    },
+    {
+      "path": "tests\\tools\\test_settings_drawing_reader.py",
+      "bytes": 32436,
+      "sha256": "f8bfb7f1282c9f0d4b8d0952de5d5b56f418c953df5d0acad8210882dd3fef72"
+    }
+  ],
+  "changes": [
+    "Nested point coordinate array for actual point gesture",
+    "Preserve absent empty legacy layout groups, explicit groups and newly meaningful presence",
+    "Native text overlay append preserves unrelated metadata and display",
+    "Brush/eraser/fill/clear preserve contrast while invalidating derived spectrum",
+    "Reader recognizes only absent/empty reserved recent list; opaque future compartments remain strict"
+  ],
+  "verification": {
+    "installed_drawing_ids": 4,
+    "contexts": [
+      "imgui_cpp",
+      "imgui_python"
+    ],
+    "cases": [
+      "drawing-persist",
+      "drawing-reopen"
+    ],
+    "independent_reader_controls": 31,
+    "native_metadata_groups": 9,
+    "native_layout_tests": 1,
+    "build": {
+      "path": ".tmp\\manual-workflow-verification\\c3-windows-build006\\receipt.json",
+      "bytes": 27927,
+      "sha256": "c60bdcbb786d92513ff0d6afb06a3e9aa9fcb02074dd104a6431c58cdb61f5eb"
+    },
+    "freeze": {
+      "path": ".tmp\\manual-workflow-verification\\c3-windows-build006\\source-freeze.json",
+      "bytes": 358316,
+      "sha256": "f7e8ef13c485ed0e33e0b39fdffb1fe35c7364335e8a1bfcc9db1ef81d2cc0c8"
+    },
+    "pytest": {
+      "path": ".tmp\\manual-workflow-verification\\c3-reader-windows006\\pytest.xml",
+      "bytes": 809,
+      "sha256": "16f320c6b9791c438d18f364fb8cb021cd287839e48e9ea245007b584f2a93ce"
+    },
+    "pytest_process": {
+      "path": ".tmp\\manual-workflow-verification\\c3-reader-windows006\\process.json",
+      "bytes": 2146,
+      "sha256": "40f24e88e80e0196f9f99e4d0d8a786dbb74b9cf504d77f6672b6398f62a4772"
+    },
+    "reader_controls": {
+      "path": ".tmp\\manual-workflow-verification\\c3-reader-final-controls001.log",
+      "bytes": 135,
+      "sha256": "bf7f5e68804a31f98e2fb841d5328b940a0c1b45356a98002c297ecb9159f1b3"
+    }
+  },
+  "capture": {
+    "archive": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\c3-windows-capture006.zip",
+      "bytes": 1965176,
+      "sha256": "87f37087eec74601e4edb35c3f9037e6463a0172486957068548bc6f698a97f9"
+    },
+    "retention": {
+      "path": ".tmp\\manual-workflow-verification\\c3-windows-capture006-retention.json",
+      "bytes": 17683,
+      "sha256": "25807f9e04e354eac6c28a141d8a0fdd8636439da880a8e5f0ae4d902da3aaec"
+    },
+    "raw_retired_bytes": 24445842,
+    "historical_reading": "Restore original members to recorded paths and verify hashes before replay; no repinning"
+  },
+  "installed_products": {
+    "imagejxx": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\__init__.py",
+      "bytes": 77906,
+      "sha256": "e4495d881affad9f50fbdccb1695a005b37ce3a88ea0c4c83e17b974a8804e1f"
+    },
+    "imagejxx._native": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_native.cp312-win_amd64.pyd",
+      "bytes": 7579648,
+      "sha256": "f52448769e06f492772a656c4bf9ff6c6007a24809eb88ae9ab9bb90e3bb80fc"
+    },
+    "imagejxx._desktop": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\_desktop.cp312-win_amd64.pyd",
+      "bytes": 18546688,
+      "sha256": "827c47dc3eeae864518b2e82b486c50ce976a337750cfc1a8d0ca00bbd2f50ba"
+    },
+    "imagejxx.ui.app": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\ui\\app.py",
+      "bytes": 31398,
+      "sha256": "727ade99067f0556e27deb62233d7b3d53cdae3944b9b61ac9992a11d1ee8664"
+    },
+    "imagejxx.ui.persistence": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\runtime\\Lib\\site-packages\\imagejxx\\ui\\persistence.py",
+      "bytes": 36248,
+      "sha256": "396d09a719bf31ee6c8e230f3b90ab820c55411a98622eb0806c8939c13a8497"
+    }
+  },
+  "cpp": {
+    "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\app-installed\\bin\\imagejxx.exe",
+    "bytes": 18665472,
+    "sha256": "368df13ce77c102e6604449bb6f0ab621d7ec484f6f887d62630036107888b17"
+  },
+  "storage": {
+    "known_bytes": 8552862353,
+    "budget_verified": false,
+    "unknown_subtrees": [
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest",
+        "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest'"
+      },
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest-ui",
+        "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest-ui'"
+      }
+    ],
+    "receipt": {
+      "path": ".tmp\\manual-workflow-verification\\c3-qualified-storage-after001.json",
+      "bytes": 1524,
+      "sha256": "27f64e005d25101805b788ddf101ec61ee75675e542786aa3b795763023b7f93"
+    }
+  },
+  "limits": [
+    "Focused local Windows CMake install only; no wheel, full platform or commercial release acceptance",
+    "C2 installed UI still requires independent qualification",
+    "Seven original scientific payloads remain unavailable; historical fingerprints unchanged",
+    "Old installed binaries replaced in place and unavailable; original identities remain in build receipts"
+  ],
+  "family_counts": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  },
+  "full_acceptance_claim": false
+}

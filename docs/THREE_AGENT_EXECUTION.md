@@ -2,6 +2,47 @@
 
 ## Current execution card — 2026-10-26
 
+**Published baseline:** `7d9c9ce930c46323e303ddbda269e8fbd507ab11` on
+`ci2-platform-integration`. [Run40365913473](https://github.com/bipxx/imagejxx/actions/runs/40365913473)
+passes all three headless C++/SDK jobs, including the Windows process-owner
+contract. Installed Windows UI qualification fails; the original job log alone
+does not identify its nested packet. Source preparation/SDK success is separate
+from complete UI acceptance. Predecessor40358542135 is terminal failure.
+
+**Local C3 candidate qualified:** four maintained installed drawing IDs pass
+through the independent pytest entry: C++/Python × persist/reopen. All nine
+native metadata groups, one native layout test and31 reader controls pass.
+Actual gestures exposed and now regress: flat point coordinates, synthesized
+empty legacy layout groups, contrast loss during brush/fill and text's unrelated
+metadata changes. Text now appends through the native overlay transaction.
+The reader permits only absent/empty reserved `extras.recent`; all opaque future
+values remain strict. Seeds, literal pixel masks and R011 expectations unchanged.
+[Exact source/product/evidence pins](parity/reviews/cfg5-drawing001/local-integration-progress.json)
+bind this focused Windows CMake-installed result. No wheel/full-suite claim.
+
+| Order / owner | Next action | Required boundary |
+| --- | --- | --- |
+| 1 / Root | Publish the checked drawing preservation batch | Preserve failed originals and protected CG0/R011; no status-only push |
+| 2 / Root | Follow the exact successor and inspect independent C2/C3/history artifacts | Both installed launchers and all required platform gates remain fatal; do not transfer local success to CI |
+| Independent / Root | Recover seven original scientific payloads through the existing recovery contract | Original hashes only; no replacement observations |
+| After installed C3 / Root | Continue the next reproduced C5 linked stack/view consumer | Use existing per-key guide, native seam and independent oracle |
+
+Efficiency correction: reuse the single Windows cache/runtime for fast real
+input iteration. Retiring56,004,568 bytes of cold Linux test binaries enabled
+bounded serial incremental builds; those binaries require rebuild before reuse.
+The documented384MiB transient reserve is an estimate, not a measured peak.
+Capture002/005/006 originals were losslessly archived, member hashes verified,
+and raw scratch retired; the passing capture retains1,965,176 compressed bytes
+instead of24,445,842 raw bytes. Historical binary identities remain retired.
+
+Complete-root inventory `c3-qualified-storage-after001.json` records
+8,552,862,353 known bytes. Two inaccessible cache subtrees keep the8GiB budget
+unverified. Never recreate `build/` or retry previously rejected cleanup.
+All99 families remain47 in progress /52 open /0 complete. Mac UI, scientific
+references, accessibility, eligible Fiji and commercial release gates remain.
+
+## Historical card before local C3 integration — 2026-10-26
+
 This is the only ordered queue. Earlier cards, source pins, failures, references
 and measurements remain historical and retain their original scopes.
 

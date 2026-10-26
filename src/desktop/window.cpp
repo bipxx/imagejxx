@@ -8098,8 +8098,14 @@ void Window::action(const std::string &name, const Json &p) {
       o["font_path"] = string(get(p, "font_path"));
     o["slice_index"] =
         boolean(get(p, "all_slices")) ? Json() : Json(d->slice());
-    meta["overlays"].push_back(o);
-    d->commit(std::move(edited));
+    // Append to the typed collection without reinterpreting legacy field
+    // presence or changing the source display and opaque metadata.
+    const auto source = d->nativeSnapshot();
+    auto overlays = source.data().overlays;
+    overlays.push_back(metadataObjectFromJson(o));
+    auto edit = source.begin_edit(Change::Metadata);
+    edit.set_overlays(std::move(overlays));
+    d->commitNative(edit);
     return;
   }
   if (name == "clear_overlays") {
@@ -11375,7 +11381,7 @@ void Window::Impl::canvas(Pane &pane) {
           if (tool == "angle" && pane.points.size() == 3)
             finish(pane);
         } else if (tool == "point") {
-          d->select(selection(tool, {point},
+          d->select(selection(tool, Json::array({point}),
                               preferenceState.settings.number("point_size")));
         } else {
           pane.points = Json::array({point});

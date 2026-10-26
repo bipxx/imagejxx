@@ -455,6 +455,24 @@ class DrawingReaderControls(unittest.TestCase):
     def test_original_preference_bytes_are_hashed(self):
         self.refusal(lambda r: r["states"]["initial"]["preferences_file"].update(utf8=r["states"]["initial"]["preferences_file"]["utf8"]+" "))
 
+    def test_known_empty_recent_default_does_not_replace_unknown_extras(self):
+        value = report()
+        for state in value["states"].values():
+            state["preferences"]["extras"]["recent"] = []
+        value["setup_events"][1]["preferences"] = deepcopy(value["states"]["initial"]["preferences"])
+        reader.check_report(value)
+        value["states"]["thin_applied"]["preferences"]["extras"].pop("c3")
+        with self.assertRaises(AssertionError):
+            reader.check_report(value)
+
+    def test_recent_files_cannot_be_populated_or_malformed(self):
+        for recent in (["unexpected.tif"], {}, None, "", False):
+            with self.subTest(recent=recent):
+                value = report()
+                value["states"]["thin_applied"]["preferences"]["extras"]["recent"] = recent
+                with self.assertRaisesRegex(AssertionError, "recent files"):
+                    reader.check_report(value)
+
     def test_draft_cannot_appear_applied_before_actual_apply(self):
         self.refusal(lambda r: r["states"]["thin_draft"]["settings"].update(brush_width=1.))
 

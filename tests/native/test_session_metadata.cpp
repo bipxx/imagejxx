@@ -291,6 +291,21 @@ void sourceAware() {
   prior.record_layout.clear();
   inferred = codec::infer_metadata(changed, &prior, &original);
   check(inferred.record_layout.empty(), "Native empty-layout owner remains empty-layout");
+
+  prior.record_layout = {{"opaque_future", metadata_object({{"retained_elsewhere", true}})}};
+  inferred = codec::infer_metadata(original, &prior, &original);
+  check(inferred.record_layout.empty(),
+        "Opaque-only layout must not synthesize absent empty presence groups");
+  auto selected = original;
+  selected["selection"] = Json::object();
+  inferred = codec::infer_metadata(selected, &prior, &original);
+  layout = codec::to_json(inferred.record_layout);
+  check(layout == Json{{"root_fields", {"selection"}}},
+        "Changed absent root still acquires its presence group");
+  prior.record_layout.emplace("root_fields", std::vector<std::string>{});
+  inferred = codec::infer_metadata(original, &prior, &original);
+  check(codec::to_json(inferred.record_layout) == Json{{"root_fields", Json::array()}},
+        "Explicit empty presence group must remain present");
   rejects([&] { codec::infer_metadata(original, &prior); }, "Incomplete prior pair rejected");
   rejects([&] { codec::infer_metadata(original, nullptr, &original); }, "Incomplete prior wire pair rejected");
 }

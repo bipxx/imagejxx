@@ -945,7 +945,10 @@ State Document::compute(const std::string &name, const Json &p, bool all,
     proposed.metadata["rois"] = Json::array();
     proposed.metadata["overlays"] = Json::array();
   }
-  proposed.metadata.erase("display_range");
+  // Brush/eraser and fill/clear edits preserve contrast, while invalidating
+  // derived spectrum state below in synchronous and worker publication paths.
+  if (name != "paint_stroke" && name != "fill_color")
+    proposed.metadata.erase("display_range");
   proposed.metadata["labels"] = (name == "label" || name == "binary_watershed");
   proposed.spectrum.reset();
   proposed.metadata.erase("spectrum_shape");
