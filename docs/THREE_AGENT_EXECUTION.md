@@ -2,6 +2,36 @@
 
 ## Current execution card — 2026-10-26
 
+**Published baseline:** `4be8d9433188c91a4b4595f900b3bfa292739e89`;
+[run40374991826](https://github.com/bipxx/imagejxx/actions/runs/40374991826)
+is live. Drawing has focused local four-ID acceptance; hosted successor pending.
+
+**Ready repair:** live storage enumeration can observe a receipt's `.writing`
+name immediately before atomic replacement. The7d9c9ce Windows3.12 original
+HU02 failure proves this race. Tolerate only a vanished live entry, retain the
+enumeration bound, and keep permission errors, final scans and every byte/file/
+log limit fatal.25 transport controls pass (one host skip), including a real
+atomic rename, final receipt accounting and refusal controls. A fresh no-op
+verification in the same installed runtime also passes all four C2 reader IDs.
+[Original intake and exact checks](parity/reviews/cfg5-drawing001/live-receipt-rename-progress.json)
+remain scoped to their source and platform.
+
+| Order / owner | Next action | Decisive evidence |
+| --- | --- | --- |
+| 1 / Root | Publish the bounded live-receipt scan repair | Actual rename control passes; mandatory final accounting and permission refusal stay strict |
+| 2 / Root | Repair C2 submenu input on the hosted1028x749/gui3 layout | Original423-frame report shows Stacks release activates overlapping Export plane; use actual submenu hover, full hit/clip/identity checks and unchanged numerical/frame bounds |
+| 3 / Root | Qualify both installed launchers and follow exact successor runs | Local larger-viewport C2 success does not qualify the hosted overlap; no transfer of predecessor success |
+| Independent / Root | Recover seven original scientific payloads | Original recovery hashes only; no replacement or repinning |
+| After C3/C2 / Root | Continue C5 linked stack/view per-key consumer | Existing native seam plus independent oracle and owning gate |
+
+Fresh C2 capture008 retains1,054,955 lossless compressed bytes after verifying
+all members and retiring10,741,198 raw bytes. Complete-root inventory
+`receipt-rename-storage-after001.json`:8,557,595,179 known bytes; two
+inaccessible caches keep the8GiB budget unverified. The one cache/runtime is
+reused. Full99-family counts remain47 in progress /52 open /0 complete.
+
+## Historical card before live-receipt race intake — 2026-10-26
+
 **Published baseline:** `7d9c9ce930c46323e303ddbda269e8fbd507ab11` on
 `ci2-platform-integration`. [Run40365913473](https://github.com/bipxx/imagejxx/actions/runs/40365913473)
 passes all three headless C++/SDK jobs, including the Windows process-owner

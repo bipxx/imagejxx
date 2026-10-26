@@ -356,6 +356,40 @@ class HistoryOwnershipControls(unittest.TestCase):
         self.root = Path(scratch.name).resolve(strict=True)
         self.report = {"processes": [], "limits": {"stage_bytes": 1024 * 1024}}
 
+    def test_live_scan_survives_atomic_receipt_rename_and_final_scan_counts_it(self):
+        temporary = self.root / "case.process.json.writing"
+        terminal = self.root / "case.process.json"
+        temporary.write_bytes(b"receipt bytes")
+        original_stat = os.stat
+        renamed = []
+        def rename_before_stat(path, **options):
+            if Path(path) == temporary and not renamed:
+                os.replace(temporary, terminal)
+                renamed.append(True)
+            return original_stat(path, **options)
+        with mock.patch.object(capture.os, "stat", side_effect=rename_before_stat):
+            capture.storage(self.root, live=True)
+        self.assertEqual(renamed, [True])
+        self.assertEqual(capture.storage(self.root),
+                         {"bytes": 13, "files": 1, "log_bytes": 0})
+        with self.assertRaisesRegex(RuntimeError, "byte/file/log bounds"):
+            capture.storage(self.root, {"stage_bytes": 12})
+
+    def test_only_live_missing_entry_is_tolerated(self):
+        entry = mock.Mock(path=str(self.root / "vanished"))
+        entry.stat.side_effect = FileNotFoundError("synthetic vanished entry")
+        scan = mock.MagicMock()
+        scan.__enter__.return_value = [entry]
+        with mock.patch.object(capture.os, "scandir", return_value=scan), \
+                mock.patch.object(capture.os, "stat", side_effect=FileNotFoundError("synthetic vanished entry")):
+            self.assertEqual(capture.storage(self.root, live=True)["bytes"], 0)
+            with self.assertRaises(FileNotFoundError):
+                capture.storage(self.root)
+        with mock.patch.object(capture.os, "scandir", return_value=scan), \
+                mock.patch.object(capture.os, "stat", side_effect=PermissionError("synthetic denied entry")):
+            with self.assertRaises(PermissionError):
+                capture.storage(self.root, live=True)
+
     def test_live_violation_interrupts_owner_but_never_accepts_its_success(self):
         noticed = threading.Event()
         real_storage = capture.storage

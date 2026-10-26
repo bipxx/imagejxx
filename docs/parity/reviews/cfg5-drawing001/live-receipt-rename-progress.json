@@ -1,0 +1,75 @@
+{
+  "schema": "imagejxx.live-receipt-rename-progress.001",
+  "state": "focused_controls_and_local_c2_passed",
+  "published_predecessor": "4be8d9433188c91a4b4595f900b3bfa292739e89",
+  "source_pins": [
+    {
+      "path": "scripts\\capture_shortcuts_history_ui.py",
+      "bytes": 48148,
+      "sha256": "09cbecc2195a04444bec26a7ff001a0e7f8d16e1e90a6ba54a27bd7594900ec2"
+    },
+    {
+      "path": "tests\\tools\\test_capture_shortcuts_history_ui.py",
+      "bytes": 27224,
+      "sha256": "b7d8802905e75058f6563a7993ccaaf6cd96a4da2b8f3d6806a23e82453ed823"
+    }
+  ],
+  "diagnosis": {
+    "original_run": 40365913473,
+    "artifact_id": 12673350714,
+    "artifact_sha256": "ce8c432599714ed3869cbdf0d4428a9b618ee5c58bfe311fdd907cf001b1f16d",
+    "original_error": "Live history storage guard FileNotFoundError on imgui_cpp-HU02.process.json.writing",
+    "retained_originals": {
+      "path": ".tmp\\manual-workflow-verification\\7d-ui-intake003\\receipt.json",
+      "bytes": 2271900,
+      "sha256": "cfffc583f4d9c731037c673568644142f7c873ccb3ad0b98c3814e44890b597f"
+    }
+  },
+  "change": "Only FileNotFoundError during live entry stat is tolerated; enumerated entry count still bounded; permission/other errors and mandatory final scan remain fatal",
+  "verification": {
+    "transport_methods": 25,
+    "host_skips": 1,
+    "transport_log": {
+      "path": ".tmp\\manual-workflow-verification\\receipt-rename-controls001\\controls.log",
+      "bytes": 141,
+      "sha256": "fc25a0a79b5dca75798bd15b1dabd7284b57090ca417f17db2388292d7c655e2"
+    },
+    "local_c2_ids": 4,
+    "c2_reader": {
+      "path": ".tmp\\manual-workflow-verification\\appearance-reader-windows008\\receipt.json",
+      "bytes": 4636,
+      "sha256": "4db8d4851892fdbf7840ed2013afccbb018f37ac632d0000b0baf1543235ab67"
+    },
+    "build": {
+      "path": ".tmp\\manual-workflow-verification\\c3-windows-build008\\receipt.json",
+      "bytes": 25841,
+      "sha256": "f0946582323ed34bd17ac54e31ec8056666d3dbff4350556ae35cd1e3183b52d"
+    },
+    "source_freeze": {
+      "path": ".tmp\\manual-workflow-verification\\c3-windows-build008\\source-freeze.json",
+      "bytes": 358316,
+      "sha256": "a86258f987fe77dd8710651edada44d42fe465114c0ee90130f547a1817e3ada"
+    },
+    "c2_retention": {
+      "path": ".tmp\\manual-workflow-verification\\appearance-windows-capture008-retention.json",
+      "bytes": 18987,
+      "sha256": "80a7331b1b4d0b6ce609fcfa1f9fa802da245918598eb079cdb71d5bf184a812"
+    }
+  },
+  "remaining": {
+    "c2_hosted": "423-frame original failure: click release after Stacks hover activates overlapping Export plane dialog at actual1028x749/gui3. Local larger-viewport four-ID pass does not resolve this layout. Next: real submenu hover/input with strict hit/clip/identity and original numerical limits.",
+    "c3_hosted": "157-frame invalid point fixed in4be8d94; successor pending",
+    "scientific": "Seven original payloads missing; unchanged references"
+  },
+  "storage": {
+    "path": ".tmp\\manual-workflow-verification\\receipt-rename-storage-after001.json",
+    "bytes": 1509,
+    "sha256": "8b4168c277357e6d170d5a70f007d6ecb840170247bac9216f8dc6cd51132b70"
+  },
+  "full_acceptance_claim": false,
+  "family_counts": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  }
+}

@@ -276,9 +276,19 @@ def storage(root, limits=None, *, live=False):
         with os.scandir(pending.pop()) as iterator:
             for entry in iterator:
                 entries += 1
+                require(entries <= 16384, "Owned output entry/reparse bound")
                 # Directory enumeration can lag writes through an open Windows handle.
-                info = (os.stat(entry.path, follow_symlinks=False) if live else
-                        entry.stat(follow_symlinks=False))
+                try:
+                    info = (os.stat(entry.path, follow_symlinks=False) if live else
+                            entry.stat(follow_symlinks=False))
+                except FileNotFoundError:
+                    # Owned receipts are atomically renamed from *.writing.
+                    # A live enumeration may outlast that temporary name. The
+                    # mandatory post-owner scan remains strict and counts the
+                    # final receipt; permission and other errors stay fatal.
+                    if not live:
+                        raise
+                    continue
                 require(entries <= 16384 and not entry.is_symlink() and
                         not getattr(info, "st_file_attributes", 0) & 0x400, "Owned output entry/reparse bound")
                 if stat.S_ISDIR(info.st_mode):
