@@ -8,13 +8,20 @@ review. This card is the only ordered queue; the
 records rationale. Earlier cards below are historical, including their queued,
 publish-next and Apple-Ninja-pending wording.
 
-**Published:** `26687af923a78dd95ac695780f8f63073c433e2f`, branch
-`ci2-platform-integration`. [Run 40281326998](https://github.com/bipxx/imagejxx/actions/runs/40281326998)
-is completed/failure. Three headless C++/SDK jobs and source preparations pass.
-All four Mac lanes pass the six Ninja cases, then fail strict installed SDK
-archive equality. Both Windows installed lanes fail actual GL initialization
-in history qualification. Linux installed lanes refuse seven missing original
-scientific payloads before product preparation. These are separate gates.
+**Published baseline:** `31bc13f018bee01ee8d32473f17f0867813e4a6f`, branch
+`ci2-platform-integration`. [Run 40329829216](https://github.com/bipxx/imagejxx/actions/runs/40329829216)
+is completed/failure. Three headless C++/SDK jobs and all source preparations
+pass. Six Windows/Mac installed lanes stop before compilation: the new early
+transport check requires pytest, installed only by the later pip command.
+Original Windows/Intel Mac logs confirm this ordering defect. The narrow
+successor moves that check after both installs and before SDK/provider gates;
+ten workflow controls pass per local host (one Windows-only Linux skip).
+No product/reference assertions change. Keep the three stdlib controls early.
+
+Linux installed lanes still refuse seven missing original scientific payloads.
+Windows actual provider/GL and Mac archive diagnostics were not reached on31bc13f.
+The preceding 26687af run retains its independent GL initialization and strict
+SDK archive failures; none are closed by the newer preflight result.
 
 **Local:** the [C2 receipt](parity/reviews/cfg4-appearance001/receipt.json) retains
 four reader IDs per Windows/Linux host, eight actual GL processes total,

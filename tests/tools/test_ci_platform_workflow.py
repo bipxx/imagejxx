@@ -167,6 +167,21 @@ class PlatformInstallArguments(unittest.TestCase):
 
 
 class AppearanceWorkflow(unittest.TestCase):
+    def test_transport_checks_follow_installed_pytest_and_precede_sdk_qualification(self):
+        text = (ROOT / ".github/workflows/source-platform.yml").read_text(encoding="utf8")
+        early = text.split("      - name: Check installed qualification contracts before compilation\n", 1)[1].split("\n      - name:", 1)[0]
+        self.assertNotIn("test_ci_python_suite_transport.py", early)
+        for program in ("history_integration", "scientific_sdk", "windows_gl"):
+            self.assertIn("tests/tools/test_ci_" + program + ".py", early)
+        title = "Check installed suite transport after test dependencies"
+        step = text.split("      - name: " + title + "\n", 1)[1].split("\n      - name:", 1)[0]
+        self.assertIn("run: python -I -X utf8 -B tests/tools/test_ci_python_suite_transport.py", step)
+        self.assertNotIn("if:", step)
+        for platform in ("Windows", "macOS"):
+            self.assertIn(".[io,test]", install_command(platform))
+            self.assertLess(text.index("Install " + platform + " IO and both desktop hosts"), text.index(title))
+            self.assertLess(text.index(title), text.index("Qualify the installed " + platform + " scientific SDK"))
+
     def test_appearance_uses_authenticated_build_then_reuses_qualified_packet(self):
         for name in ("source-platform.yml", "test.yml"):
             text = (ROOT / ".github/workflows" / name).read_text(encoding="utf8")

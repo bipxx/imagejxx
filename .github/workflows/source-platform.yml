@@ -140,7 +140,6 @@ jobs:
           python -I -X utf8 -B tests/tools/test_ci_history_integration.py
           python -I -X utf8 -B tests/tools/test_ci_scientific_sdk.py
           python -I -X utf8 -B tests/tools/test_ci_windows_gl.py
-          python -I -X utf8 -B tests/tools/test_ci_python_suite_transport.py
       - name: Install Windows IO and both desktop hosts
         if: runner.os == 'Windows'
         shell: pwsh
@@ -161,6 +160,9 @@ jobs:
           -Ccmake.define.IMAGEJXX_BUILD_PYTHON_UI=ON
           -Ccmake.define.BUILD_TESTING=ON
           -Ccmake.define.IMAGEJXX_CI_SOURCE_PROFILE="$IMAGEJXX_CI_DEPENDENCY_PROFILE"
+      - name: Check installed suite transport after test dependencies
+        shell: bash
+        run: python -I -X utf8 -B tests/tools/test_ci_python_suite_transport.py
       - name: Check installed dependency inventory
         run: python scripts/check_licenses.py --installed --extras io,test --desktop
       - name: Run pipeline example
