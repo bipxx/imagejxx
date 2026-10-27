@@ -131,6 +131,25 @@ unreadable provider proves metadata paths make zero pixel/region reads.
 [Current command evidence](../parity/reviews/G034-scientific-command-progress001.json).
 The new symbols still need installed-SDK/full-CMake/platform qualification.
 
+## Pinned runtime observations now available
+
+[The reference corpus](../parity/reviews/G034-imagej-z-projection-reference001/README.md)
+contains324 ordered cases with300 successful results and24 exact ImageJ RGB
+hyperstack rejections; valid single-RGB-channel hyperstacks are also captured.
+Two independent observer invocations reproduce the same bytes. Only the observer
+is compiled; approved ImageJ/JDK classes are reused unchanged. The offline
+reader, analytic numeric checks and metadata checks require no Java or native
+processing package and are wired into CI.
+
+This resolves the reference-discovery step, not implementation parity. Next
+build an explicit ImageJ numeric/type/nonfinite profile; do not cast native
+Float64 results or add a new Float64 viewer solely to accommodate that profile.
+The matrix includes UInt16 median -> Float32 and signed16 median calibration,
+which static return-type assumptions missed. Preserve native_finite behavior.
+Grouped public API results and driver-reproduced plugin calibration steps have
+separate fields and no GUI-execution claim. Full document policy, independent
+UI/reference/platform gates and the original missing inputs are still required.
+
 ## Next decision before document/UI integration
 
 The pinned source review confirms that scalar Sum/SD use Float32, SD uses the
@@ -143,8 +162,8 @@ Grouped projection redirects hyperstacks to ordinary projection.
 Include one-Z time series and distinguish grouped UI dispatch from direct API
 behavior in the new reference cases.
 
-Next capture pinned runtime results for dtype/nonfinite, overlay/display and
-calibration behavior before choosing prepared metadata policy or adding a new
+The pinned runtime capture is now complete for the named matrix above. Use it
+and supplement uncovered regimes before choosing prepared metadata policy or adding a new
 Float64 channel-display version. Reuse the existing approved reference runtime
 and fresh owned driver scratch. This source review is not an output corpus or
 parity acceptance. New observations cannot replace the six missing original

@@ -184,6 +184,14 @@ changing image.hpp. Use current per-packet evidence, not the unchanged original
 family status, to distinguish this implementation from the remaining scientific
 scope. Group size must divide selected depth; no partial tail is silently lost.
 
+Pinned runtime reference data now exists for324 projection cases. Use the
+reference matrix to implement method-specific ImageJ behavior; UInt16 median is
+Float32, sum and average accumulation differ, and metadata/overlay dispatch has
+observable special cases. Reuse approved cached classes and the offline corpus;
+do not rebuild ImageJ, repeat capture for passing readers, or equate the owned
+native_finite profile with compatibility. Add new supplementary cases when needed
+without rewriting the pinned corpus.
+
 The native resolved command now exists in dataset_projection_command.hpp:
 resolve/validate/from_record/rebind/execute share strict source/typed-request
 checks. Reuse it, and keep live document publication guards separate from

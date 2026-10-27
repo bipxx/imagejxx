@@ -1,5 +1,32 @@
 # Three-agent execution plan
 
+## ImageJ projection reference captured — 2026-10-26
+
+The next compatibility decisions now have pinned runtime observations, not only
+source inspection:324 ordered cases (300 success,24 explicit ImageJ RGB-channel
+rejections), with identical raw/gzip hashes across two fresh observer runs. All
+468 ImageJ classes and581 reviewed JDK files remain unchanged; only the observer
+was compiled. No GUI or imagejxx implementation ran. All observed source states
+are unchanged. [Reference matrix and limitations](parity/reviews/G034-imagej-z-projection-reference001/README.md).
+
+Published command source f0e8da5/run40419049875 now passes headless C++/SDK
+on all three OSes. Both Windows installed lanes pass all four original settings
+packets:20 IDs each,40 total. Their full parent stops at original reference
+readiness; this does not establish new projection GUI or whole-editor parity.
+
+The independent offline reader passes10 tests; unchanged readiness/transport/
+workflow checks bring this packet to47 tests,46 pass/1 existing skip. The source
+commercial-use inventory passes. The capture exposes UInt16 median as Float32,
+float accumulation/rounding differences, sample SD, nonfinite sentinels, signed16,
+time dispatch, overlay/LUT and separate grouped calibration postprocessing.
+
+Next implement an explicit ImageJ profile against these observations before
+choosing prepared metadata/display behavior. Preserve native_finite semantics,
+strict records and existing broader/missing reference expectations. Then finish
+prepared publication and Python/shared ImGui; no whole-family acceptance follows
+from this reference packet. All99 requirement/status triples remain unchanged.
+[Source-bound progress](parity/reviews/G034-imagej-projection-reference-progress001.json).
+
 ## Scientific source command — 2026-10-26
 
 Immutable native resolution, strict record validation/replay, explicit rebind

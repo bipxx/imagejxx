@@ -1,0 +1,268 @@
+{
+  "schema": "imagejxx.imagej-projection-reference-progress.001",
+  "parent_source": "f0e8da51ae5bb03412c3ae7152a1a691bd24abf7",
+  "acceptance_claim": false,
+  "scope": "Pinned ImageJ API observations and offline reader only; no new processing, prepared metadata, new GUI or full ImageJ/Fiji acceptance",
+  "source_inputs": [
+    {
+      "path": ".github/workflows/test.yml",
+      "bytes": 10424,
+      "sha256": "957c372ffa00159629ff9b405ea36b84684a77f0c03cc1a5d7734c30b52b1ba7"
+    },
+    {
+      "path": "scripts/capture_z_projection_reference.py",
+      "bytes": 15796,
+      "sha256": "ef555f1d21fbe9485a09ac0a32de98f3ea9f30876750394a3597b5034e8fffe9"
+    },
+    {
+      "path": "tests/reference/ObserveScientificZProjection.java",
+      "bytes": 15317,
+      "sha256": "a4f174bfcfd308e58c13093b682f2e3ffd60cdc32e1e5988e423fa69e533f93e"
+    },
+    {
+      "path": "tests/tools/test_z_projection_reference.py",
+      "bytes": 9541,
+      "sha256": "fa9c78f0e8494d26778317fe4dffc289a9ebdbcdfd2ce2faed68ad8c1773475f"
+    },
+    {
+      "path": "docs/parity/reviews/G034-imagej-z-projection-reference001/observations.jsonl.gz",
+      "bytes": 37200,
+      "sha256": "a22ae856cac15d0f956f935dbe371136da455e428907590b3040d7c7996f7073"
+    },
+    {
+      "path": "docs/parity/reviews/G034-imagej-z-projection-reference001/contract.json",
+      "bytes": 13612,
+      "sha256": "3d41e33d57eb127bff85560150c737767f1cf8fab0a0cb119961ec0dceb28484"
+    }
+  ],
+  "capture": {
+    "case_count": 324,
+    "success": 300,
+    "explicit_rejections": 24,
+    "repeat_raw_identical": true,
+    "raw_bytes": 2111202,
+    "raw_sha256": "25e33266b96ec7932123345de8c60dc152adccc6f65a7ea617b763d697d9d8d0",
+    "gzip_bytes": 37200,
+    "gzip_sha256": "a22ae856cac15d0f956f935dbe371136da455e428907590b3040d7c7996f7073",
+    "existing_class_count": 468,
+    "existing_jdk_member_count": 581,
+    "verified_source_files": 352,
+    "inputs_unchanged": true,
+    "new_dependency_runtime_or_class_cache_generation": false,
+    "observer_compiled_in_owned_scratch_only": true,
+    "gui_executed": false
+  },
+  "offline_checks": {
+    "run": 47,
+    "passed": 46,
+    "existing_skip": 1,
+    "new_reference_tests": 10,
+    "commercial_use_inventory": "passed",
+    "no_java_or_native_required_in_ci_reader": true
+  },
+  "diagnostics": [
+    "Initial capture retained300 rows before the additional valid single-RGB-channel cases with24 genuine RGB-channel API exceptions; strict guard refused blanket success. New matrix retains explicit rejection type/message/ImageJ frames and adds valid RGB C1 hyperstacks. Original failure capture remains.",
+    "Initial new-reader expectation that UInt16 median preserved16-bit output failed. Pinned data/source confirm Float32; captured bytes unchanged and initial reader diagnostic retained."
+  ],
+  "storage_retention": "All observer class/raw/home scratch retired after terminal process and lossless gzip verification. Duplicate success gzip paths016/017 retired after verifying identical public transport; immutable receipts unchanged.",
+  "retained": [
+    {
+      "path": ".tmp/manual-workflow-verification/projection-reference015/receipt.json",
+      "bytes": 8920,
+      "sha256": "b482f7e1f5bd253870111c689c5346aac01a5e5279ce797569f468f823168da1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/projection-reference016/receipt.json",
+      "bytes": 20172,
+      "sha256": "f731b563df2992f2e67d9354e686598022306aa3b51f8ecccb4408bbe9b925b4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/projection-reference017/receipt.json",
+      "bytes": 20184,
+      "sha256": "60ff43f3ec764d53c6ea7c96901359ee485195577e2d9ddb34755bbe54d706c1"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/projection-reference-reader-initial018.json",
+      "bytes": 464,
+      "sha256": "c9670aeeeb188532dbfde1c83342cb86bb2a7b2d1379d4170002342518b0a999"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/projection-reference-offline-tests018/receipt.json",
+      "bytes": 1621,
+      "sha256": "2b87fb5ac5db102945aee9b989ab8951002d9d6842b590b0030f7aa000be5779"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/projection-reference-duplicate-retirement018.json",
+      "bytes": 1034,
+      "sha256": "90405c069223f1eaf75e3f9a67f8441bbcadb170169e8a31dfb558eee1bd8bc8"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/projection-reference-storage-before015.json",
+      "bytes": 1509,
+      "sha256": "149dbd524e8fce83e260ebc65015ec7400749c4dae898d61ed9e58696e215f59"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/projection-hosted-settings-intake018/receipt.json",
+      "bytes": 18462,
+      "sha256": "629689f7fb8551446f7a61dea681fe26570dc225e2fe0f629064ea05232e06c2"
+    }
+  ],
+  "hosted_predecessor": {
+    "head": "f0e8da51ae5bb03412c3ae7152a1a691bd24abf7",
+    "run": 40419049875,
+    "cpp_sdk": "Windows/Linux/macOS headless profile passed; original exact run checked",
+    "windows_packet_tests_passed": 40,
+    "scope": "8 history+4 appearance+4 drawing+4 playback per Python3.10/3.12 lane. Existing packets only, not new projection UI.",
+    "lanes": [
+      {
+        "name": "python-windows-2022-3.12",
+        "artifact": 12698421883,
+        "artifact_sha256": "892a7fb67db47e9f5ea9ae7e2206b9ea4908f961427851ed99a9ef68892dd33a",
+        "readers": [
+          {
+            "family": "history",
+            "ids": [
+              "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU01-imgui_cpp]",
+              "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU01-imgui_python]",
+              "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU02-imgui_cpp]",
+              "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU02-imgui_python]",
+              "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU03-imgui_cpp]",
+              "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU03-imgui_python]",
+              "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU04-imgui_cpp]",
+              "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU04-imgui_python]"
+            ],
+            "passed": 8
+          },
+          {
+            "family": "appearance",
+            "ids": [
+              "tests/python/test_settings_appearance_ui.py::test_installed_settings_appearance[appearance-persist-imgui_cpp]",
+              "tests/python/test_settings_appearance_ui.py::test_installed_settings_appearance[appearance-persist-imgui_python]",
+              "tests/python/test_settings_appearance_ui.py::test_installed_settings_appearance[appearance-reopen-imgui_cpp]",
+              "tests/python/test_settings_appearance_ui.py::test_installed_settings_appearance[appearance-reopen-imgui_python]"
+            ],
+            "passed": 4
+          },
+          {
+            "family": "drawing",
+            "ids": [
+              "tests/python/test_settings_drawing_ui.py::test_installed_settings_drawing[drawing-persist-imgui_cpp]",
+              "tests/python/test_settings_drawing_ui.py::test_installed_settings_drawing[drawing-persist-imgui_python]",
+              "tests/python/test_settings_drawing_ui.py::test_installed_settings_drawing[drawing-reopen-imgui_cpp]",
+              "tests/python/test_settings_drawing_ui.py::test_installed_settings_drawing[drawing-reopen-imgui_python]"
+            ],
+            "passed": 4
+          },
+          {
+            "family": "playback",
+            "ids": [
+              "tests/python/test_settings_playback_ui.py::test_installed_settings_playback[playback-persist-imgui_cpp]",
+              "tests/python/test_settings_playback_ui.py::test_installed_settings_playback[playback-persist-imgui_python]",
+              "tests/python/test_settings_playback_ui.py::test_installed_settings_playback[playback-reopen-imgui_cpp]",
+              "tests/python/test_settings_playback_ui.py::test_installed_settings_playback[playback-reopen-imgui_python]"
+            ],
+            "passed": 4
+          }
+        ],
+        "parent_state": "failed",
+        "parent_error": {
+          "type": "ValueError",
+          "message": "Complete Python reference prerequisites are unavailable; see reference_readiness"
+        },
+        "selected_archive": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\projection-hosted-settings-intake018\\python-windows-2022-3.12-selected.zip",
+          "bytes": 11983,
+          "sha256": "6f1ec02d054e5b209d05725f4190ea627de9083807d54f06a4ba50e8cc4f41bb"
+        }
+      },
+      {
+        "name": "python-windows-2022-3.10",
+        "artifact": 12696259868,
+        "artifact_sha256": "44adb82f6af44a894510dabacbf65dcb5f3e51e8b9877794ad2cc4e3f687b405",
+        "readers": [
+          {
+            "family": "history",
+            "ids": [
+              "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU01-imgui_cpp]",
+              "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU01-imgui_python]",
+              "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU02-imgui_cpp]",
+              "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU02-imgui_python]",
+              "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU03-imgui_cpp]",
+              "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU03-imgui_python]",
+              "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU04-imgui_cpp]",
+              "tests/python/test_history_settings_ui.py::test_installed_history_settings[HU04-imgui_python]"
+            ],
+            "passed": 8
+          },
+          {
+            "family": "appearance",
+            "ids": [
+              "tests/python/test_settings_appearance_ui.py::test_installed_settings_appearance[appearance-persist-imgui_cpp]",
+              "tests/python/test_settings_appearance_ui.py::test_installed_settings_appearance[appearance-persist-imgui_python]",
+              "tests/python/test_settings_appearance_ui.py::test_installed_settings_appearance[appearance-reopen-imgui_cpp]",
+              "tests/python/test_settings_appearance_ui.py::test_installed_settings_appearance[appearance-reopen-imgui_python]"
+            ],
+            "passed": 4
+          },
+          {
+            "family": "drawing",
+            "ids": [
+              "tests/python/test_settings_drawing_ui.py::test_installed_settings_drawing[drawing-persist-imgui_cpp]",
+              "tests/python/test_settings_drawing_ui.py::test_installed_settings_drawing[drawing-persist-imgui_python]",
+              "tests/python/test_settings_drawing_ui.py::test_installed_settings_drawing[drawing-reopen-imgui_cpp]",
+              "tests/python/test_settings_drawing_ui.py::test_installed_settings_drawing[drawing-reopen-imgui_python]"
+            ],
+            "passed": 4
+          },
+          {
+            "family": "playback",
+            "ids": [
+              "tests/python/test_settings_playback_ui.py::test_installed_settings_playback[playback-persist-imgui_cpp]",
+              "tests/python/test_settings_playback_ui.py::test_installed_settings_playback[playback-persist-imgui_python]",
+              "tests/python/test_settings_playback_ui.py::test_installed_settings_playback[playback-reopen-imgui_cpp]",
+              "tests/python/test_settings_playback_ui.py::test_installed_settings_playback[playback-reopen-imgui_python]"
+            ],
+            "passed": 4
+          }
+        ],
+        "parent_state": "failed",
+        "parent_error": {
+          "type": "ValueError",
+          "message": "Complete Python reference prerequisites are unavailable; see reference_readiness"
+        },
+        "selected_archive": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\projection-hosted-settings-intake018\\python-windows-2022-3.10-selected.zip",
+          "bytes": 11969,
+          "sha256": "ca7906c76f56d4f6dbb9f6fc4ebba848adc945ab351bdd54f3e368d466580695"
+        }
+      }
+    ],
+    "full_python": "Still fails original six-input reference readiness; no replacement/repinning. Mac source profiles remain queued."
+  },
+  "invariants": {
+    "original_inventory_bytes_unchanged": true,
+    "protected_originals_unchanged": true,
+    "original_family_statuses": {
+      "in_progress": 47,
+      "open": 52,
+      "complete": 0
+    }
+  },
+  "next": [
+    "Implement explicit ImageJ method/type/nonfinite and intensity-calibration profile from pinned observations; preserve native_finite behavior",
+    "Use observed overlay/LUT/calibration and time dispatch to define prepared metadata policy and live-source publication guards",
+    "Wire Python/shared ImGui; qualify actual interaction/history/session and all original references/platforms"
+  ],
+  "storage": {
+    "measurement": {
+      "path": ".tmp/manual-workflow-verification/projection-reference-storage-after018.json",
+      "bytes": 1522,
+      "sha256": "944217590ca4890b7ab7de6975ccc578fad66613b9ddd092f08ba5d8ad2078d9"
+    },
+    "known_bytes": 8585619488,
+    "increase_from_before015_bytes": 214594,
+    "budget_verified": false,
+    "unknown_subtrees": 2,
+    "scope": "Point-in-time normalized generated roots. Final small receipt/publication edits add bytes. No compiler cache/runtime generation; raw observer scratch retired and public capture losslessly compressed."
+  }
+}
