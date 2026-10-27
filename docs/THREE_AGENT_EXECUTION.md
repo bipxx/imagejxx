@@ -1,5 +1,54 @@
 # Three-agent execution plan
 
+## Projection channel/density policy implemented — 2026-10-26
+
+The bounded decision experiment is complete:252 ImageJ API observations capture
+C-only full/even/grouped dispatch and integer density tables. Two fresh captures
+match raw/gzip hashes; original corpora are unchanged. Both Windows/MSVC and
+Linux/GCC source consumers pass252 cases x2 tile layouts (2592 words exact),
+plus table admission/capture, odd/nonfinite/clamp and contributor checks. Existing
+336 scalar rays,228 scalar dataset cases x2,196 RGB cases x2/24 rejections and
+all three SDK-intended examples pass. Full CMake/install comes from successor CI.
+[Source-bound evidence](parity/reviews/G034-imagej-projection-policy-progress001.json).
+
+`ImageJProjectionAxis::Channels` appends to the existing enum. Default now resolves
+C-only T=Z=1/C>1 to Channels, otherwise retains existing Z/time behavior. Scalar
+explicit Channels supports an owned multi-axis extension; RGB accepts legacy
+C-only reduction/grouping while its earlier hyperstack rejections remain.
+`calibration_table` carries exact256/65536 Float32 words. Only median uses it;
+U8 clamps the calibrated median, U16 emits Float32. Signed16 sum correction is
+explicit, not inferred from table values. Table snapshots are charged/admitted
+before one owned copy, preventing callback retargeting. Result/layout expose
+`preserve_density_calibration`; floating output clears function intent, but
+publication must still handle value units. Function generation/UI are not done.
+
+Next is the prepared publication and shared UI milestone, using the existing
+observations rather than creating another numerical-reference framework:
+1. Use immutable `MetadataTree` source intensity records in DocumentMetadata's
+   existing properties. Metadata copies share nested nodes and equality short
+   circuits identical pointers. Avoid a mutable bulk table in DocumentData or
+   another metadata codec. Validate the reserved intensity namespace; preserve
+   full source records/units and bind effective table identity. Sampled fixture
+   cells alone are insufficient for metadata publication/function generation.
+2. Reuse core prepared new-document/source guards. Apply title, density/units,
+   channel mode/LUT/ranges, active-selection clearing and positioned/wildcard
+   overlays from captured source policy. Preserve the native finite command
+   schema; add distinct strict ImageJ profiles only after this mapping is fixed.
+3. Replace the scientific UI's route through `window.cpp`'s project handler:
+   it currently materializes source.frames, assumes Z bounds, copies source
+   metadata and clears ROIs/overlays. Use the complete Dataset result; do not
+   feed it through that stale-shape/flattening adapter. Reuse the existing ask
+   dialog/worker/facade staging, with all/current T/C, resolved axis and RGB clip.
+4. Grouped GUI hyperstacks forward to ordinary projection in ImageJ. Keep that
+   controller rule separate from the owned scientific grouping extension. Bind
+   Python and standalone C++ ImGui to the same prepared implementation.
+5. Update the one active verification runtime/cache when the UI integration
+   needs it, with an explicit temporary build reserve and immediate cleanup.
+   Verify actual dialog/apply/cancel, new-document pixels/metadata and history/
+   reopen. Reviewed virtual IEEE, downstream IEEE admission and original full
+   reference gates remain required.99-family statuses stay47 in progress/52 open.
+
+
 ## ImageJ RGB projection merge — 2026-10-26
 
 `imagej_rgb_projection.hpp` now exposes explicit RGB request/descriptor/execution

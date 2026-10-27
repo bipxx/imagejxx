@@ -1,0 +1,294 @@
+{
+  "schema": "imagejxx.scoped-progress",
+  "version": 1,
+  "source_base": "2c7bb03bc696df0cb5266d7dbabcab55b010f497",
+  "scope": "Channels/default C-only projection and supplied integer density-table processing/intent; not calibration-function generation, prepared publication, strict ImageJ records, bindings or UI acceptance",
+  "source_inputs": [
+    {
+      "path": "include/imagejxx/imagej_dataset_projection.hpp",
+      "bytes": 4432,
+      "sha256": "8050799f1cef4b75303825360ab629b19537779d957864742364c5b2100910d7"
+    },
+    {
+      "path": "include/imagejxx/imagej_rgb_projection.hpp",
+      "bytes": 1639,
+      "sha256": "a74c5ee46f0f611f9adabaed222a098390ac9f73e0e906991caaf64e43ec046c"
+    },
+    {
+      "path": "src/native/imagej_dataset_projection.cpp",
+      "bytes": 20169,
+      "sha256": "7d5588ef1628567176547eacd32563cc2bd5c72e1522d13f9a3bf393a67af1cd"
+    },
+    {
+      "path": "src/native/imagej_projection_numeric.cpp",
+      "bytes": 7164,
+      "sha256": "3a3d033426ec16c995b5bec10536b6dafb7182a7f63e3ff16802ae3a7bc9cc7e"
+    },
+    {
+      "path": "src/native/imagej_projection_numeric.hpp",
+      "bytes": 1835,
+      "sha256": "d144013d10a8665236bb92cdc73a3d7cd58416e2464159fe98df28d583712487"
+    },
+    {
+      "path": "tests/native/test_projection_policy.cpp",
+      "bytes": 10177,
+      "sha256": "4121d84d39ed245edefb5abc0923f94e0ae81bd7366eabcbaf176d1849128d18"
+    },
+    {
+      "path": "tests/native/imagej_projection_policy_reference.inc",
+      "bytes": 197689,
+      "sha256": "88bb4c247fda8761032e6be1cd0ded00389072b36e53d4f678789471b1935278"
+    },
+    {
+      "path": "tests/tools/test_projection_policy_reference.py",
+      "bytes": 3813,
+      "sha256": "00bcd0e45b8cd1f45e4ce0853e98736617631d787c182e7872f6f5fae4b467da"
+    },
+    {
+      "path": "tests/reference/ObserveProjectionPolicy.java",
+      "bytes": 5453,
+      "sha256": "36a60a3256623f5ffbdf835d082887ab0f9f9cb7b7a959ad97296bd17547c6c5"
+    },
+    {
+      "path": "scripts/capture_projection_policy_reference.py",
+      "bytes": 10165,
+      "sha256": "13bcda0e5eddddd122ddbc1ffca2ec2ebe201eb05c0269704473148503b97d97"
+    },
+    {
+      "path": "scripts/generate_projection_policy_fixture.py",
+      "bytes": 4299,
+      "sha256": "de354cc7361c18dee3324e3ae82623e3f552f1c7c2a543a92d5a2a3c85c41628"
+    },
+    {
+      "path": "examples/cpp/projection_policy.cpp",
+      "bytes": 1158,
+      "sha256": "a6844a355d48e8df2fe07bf0d04ff90e8f2783c03baf95d12a3a2c6303da3410"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 135830,
+      "sha256": "f8e166cab37ea778acd42c57a46930f80f92f8e770c51639c57b4291e8f2cd53"
+    },
+    {
+      "path": "examples/cpp/CMakeLists.txt",
+      "bytes": 22285,
+      "sha256": "c2bdef51fca5233c725adc9d1d8cd04bc004548250504dd2ee3f74940b4bde2e"
+    },
+    {
+      "path": ".github/workflows/test.yml",
+      "bytes": 10730,
+      "sha256": "7f257b03b9905fd093ab66c7c169f2f902ac82dc85c382802f7b95c8acb2654f"
+    }
+  ],
+  "reference_contract": {
+    "path": "docs/parity/reviews/G034-imagej-projection-policy-reference001/contract.json",
+    "bytes": 2540,
+    "sha256": "e4ecfa0b10975ae16943bad8115380466a8f91d88c00fc8cc842c3e2e810b584"
+  },
+  "reference_transport": {
+    "path": "docs/parity/reviews/G034-imagej-projection-policy-reference001/observations.jsonl.gz",
+    "bytes": 26286,
+    "sha256": "8071289ed0a18f8f93ff678694e0baab0ab143d7a6bcdde76dba7cbc6f606377"
+  },
+  "cases": 252,
+  "case_families": {
+    "channel_only": 96,
+    "density": 156
+  },
+  "tile_variants": 2,
+  "exact_words_per_lane": 2592,
+  "nan_class_outputs_in_pinned_matrix": 0,
+  "additional_tests": [
+    "odd/all-NaN/infinite lookup medians",
+    "Byte clamping",
+    "signed16/table overlap without duplicate bias",
+    "working cap/table size before callbacks/reads/copy",
+    "captured table after caller mutation",
+    "explicit multi-axis scalar channel mapping and contributor overflow"
+  ],
+  "local_lanes": [
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/imagej-policy-windows065/receipt.json",
+        "bytes": 121621,
+        "sha256": "1694c7e7275ee1460f43a810d8f22a2ac5725d0e35168ffd81fdcda845637df3"
+      },
+      "results": [
+        {
+          "path": ".tmp/manual-workflow-verification/imagej-policy-windows065/scalar-consumer.log",
+          "bytes": 86,
+          "sha256": "0db1db770590a42c094870ae708cedcefa24f97172ab84dde52c6d7502863d11"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/imagej-policy-windows065/test-consumer.log",
+          "bytes": 107,
+          "sha256": "2d83b63b1795e1149b2047da243333ac0783b3292610c1dfd91d1821e99f6f5a"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/imagej-policy-windows065/rgb-consumer.log",
+          "bytes": 136,
+          "sha256": "c41fb71432ad9ec31c16441faf5c52f42b27cada19446bb5e41a8462df644eda"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/imagej-policy-windows065/policy-consumer.log",
+          "bytes": 120,
+          "sha256": "4331f5cbbfe8f627ec60547c1f7a7095ad84d0f79b86bbb3444c3cf39cb8b34c"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/imagej-policy-windows065/example-consumer.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/imagej-policy-windows065/rgbexample-consumer.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/imagej-policy-windows065/policyexample-consumer.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "scope": "New source consumers linked to existing unchanged installed static dependencies; not full CMake or newly installed SDK",
+      "after_command_observed_scratch_bytes": 11000547,
+      "continuous_write_monitor": false,
+      "scratch_retired": true
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/imagej-policy-linux066/receipt.json",
+        "bytes": 121941,
+        "sha256": "36701f13e79a53c91404898ecaa3d4007842348395e2a478c0c809cbb5fe050f"
+      },
+      "results": [
+        {
+          "path": ".tmp/manual-workflow-verification/imagej-policy-linux066/scalar-consumer.log",
+          "bytes": 85,
+          "sha256": "c6ae23ab0ef860cdd5f453d3e70994bd6a985c95be41676fc1bb916bd3fb9b10"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/imagej-policy-linux066/test-consumer.log",
+          "bytes": 106,
+          "sha256": "c1d4185d892c96436f48ec9a3a7a6e7a1da527fab3e37efa11fd2a12ae05631e"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/imagej-policy-linux066/rgb-consumer.log",
+          "bytes": 135,
+          "sha256": "9074a758c8d7a08df6d47c8471765dc823911047f6ca9bf343c64e32d1b230b3"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/imagej-policy-linux066/policy-consumer.log",
+          "bytes": 119,
+          "sha256": "19574e3d771a4fe55d2a3cd503270005d5ea8a9a34be08d94caae87734cd8ca3"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/imagej-policy-linux066/example-consumer.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/imagej-policy-linux066/rgbexample-consumer.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/imagej-policy-linux066/policyexample-consumer.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "scope": "New source consumers linked to existing unchanged installed static dependencies; not full CMake or newly installed SDK",
+      "after_command_observed_scratch_bytes": 5602744,
+      "continuous_write_monitor": false,
+      "scratch_retired": true
+    }
+  ],
+  "full_acceptance": false,
+  "remaining": [
+    "Calibration-function generation and full immutable source intensity metadata",
+    "Prepared source-guarded title/intensity/units/LUT/range/overlay publication",
+    "Distinct strict ImageJ command profiles and source identity",
+    "Grouped GUI hyperstack forwarding and scientific UI route replacing whole-stack materialization",
+    "Python/shared ImGui dialogs/apply/cancel/history/reopen",
+    "Reviewed virtual and downstream IEEE handling",
+    "Original reference recovery and complete ImageJ/Fiji acceptance"
+  ],
+  "reference_repeats": [
+    {
+      "path": ".tmp/manual-workflow-verification/imagej-policy-reference061/receipt.json",
+      "bytes": 22498,
+      "sha256": "ecbfc120df787c843aa9867992ff9b4c9f9decfc7160210ac7cf236609c27180"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/imagej-policy-reference062/receipt.json",
+      "bytes": 22493,
+      "sha256": "f94a610010e5cb6c3ffe75da351125ee8b93c1f59161985c087973fa4e826182"
+    }
+  ],
+  "duplicate_transport_retirement": {
+    "path": ".tmp/manual-workflow-verification/imagej-policy-transport-retirement063.json",
+    "bytes": 735,
+    "sha256": "b630d04419fb047c9cebe78df6c58b87efcda3ca9a512aea90c359a782402a3f"
+  },
+  "fixture_scope": "Used source table entries transcribed; unused cells zero. This verifies pixel processing, not the full calibration generator or output-table metadata.",
+  "offline": {
+    "receipt": {
+      "path": ".tmp/manual-workflow-verification/imagej-policy-offline067/receipt.json",
+      "bytes": 17185,
+      "sha256": "8cbb6b652689c7d5a89d346fe5937ab618a12dc052be85107dd04bd0896dc8dc"
+    },
+    "tests": "34 passed, 1 existing skip across35 policy/RGB/original/workflow tests",
+    "original_fixture_and_source_desktop_license_checks": "passed"
+  },
+  "historical_expectations_whole_bytes_unchanged": [
+    "tests/native/test_imagej_dataset_projection.cpp",
+    "tests/native/imagej_dataset_projection_reference.inc",
+    "tests/native/test_imagej_projection_numeric.cpp",
+    "tests/native/imagej_projection_numeric_reference.inc",
+    "tests/native/test_imagej_rgb_projection.cpp",
+    "tests/native/imagej_rgb_projection_reference.inc",
+    "tests/reference/ObserveScientificZProjection.java",
+    "tests/reference/ObserveRGBProjection.java",
+    "scripts/capture_z_projection_reference.py",
+    "scripts/capture_rgb_projection_reference.py",
+    "docs/parity/inventory.json"
+  ],
+  "original99_status_counts": {
+    "in_progress": 47,
+    "open": 52
+  },
+  "protected_inputs_unchanged": [
+    "tests/reference/continuous_bezier_exact_reference.py",
+    "tests/reference/ObserveContinuousPathBooleans.java",
+    "docs/packets/CG0-analytic-reference-contract.md",
+    "docs/packets/CG0-imagej-observer-contract.md",
+    "tests/native/rounded_path_reference.inc"
+  ],
+  "storage": {
+    "previous_turn_baseline": {
+      "path": ".tmp/manual-workflow-verification/imagej-rgb-storage-final059.json",
+      "bytes": 1522,
+      "sha256": "322a355685e913e9d656fe794e71e52a8fa410add20a32a1f67394c0d1c57650"
+    },
+    "precompile": {
+      "path": ".tmp/manual-workflow-verification/imagej-policy-storage-precompile064.json",
+      "bytes": 1522,
+      "sha256": "b7c01c8455f60a52c52c5ef49b0534848606320a4cdf106f1b7a0ae0d1bd96e5"
+    },
+    "after": {
+      "path": ".tmp/manual-workflow-verification/imagej-policy-storage-after068.json",
+      "bytes": 1522,
+      "sha256": "2421dfed1248597502a7691ba4804c5abb76f6de2107114fd909c3663b80b960"
+    },
+    "budget_verified": false,
+    "limitation": "No fresh pre-reference inventory was recorded; previous-turn measurement retains its historical scope. Two denied cache subtrees keep the whole8GiB budget unverified. All reference/compiler scratch is retired; point-in-time inventories precede their own/final small receipts.",
+    "temporary_reserve_bytes": 33554432,
+    "reserve_reason": "Bounded raw reference capture and necessary serial compiler/link consumers; no new cache/runtime generation or dependency archive.",
+    "final": {
+      "path": ".tmp/manual-workflow-verification/imagej-policy-storage-final069.json",
+      "bytes": 1523,
+      "sha256": "2299eb8997120f03c024fcac6db515a30a9381726d3f74832030706fd43f2dc5"
+    }
+  }
+}

@@ -353,3 +353,54 @@ Private accumulator/range sizes enter scratch charges, so future strict records
 must exclude both working_bytes and ABI-dependent reduction_scratch_bytes from
 portable derived guarantees. Reviewed virtual IEEE and downstream IEEE admission,
 original reference readiness and full ImageJ/Fiji acceptance remain open.
+
+## Channel-only and supplied density-table policies
+
+The new Channels enumerator is appended, preserving existing enum values.
+ImageJDefault resolves Channels for T=Z=1/C>1, then Time for other one-Z data,
+otherwise Z. Channel reduction ignores all_channels but captures/validates its
+active index; all/current T remains meaningful for explicit multi-axis scalar C
+reduction, an owned extension. Output C is selected_count/group, T/Z remain
+independent. Contributor indices use checked64-bit arithmetic. Legacy RGB C-only
+T=Z=1 is admitted, including grouped output C>1; the previous RGB hyperstack
+C>1 cases remain rejected. Native finite and other existing APIs are unchanged.
+
+Optional calibration_table is exactly256/65536 raw IEEE Float32 words for scalar
+U8/U16. A nonempty table is rejected for Float32/RGB or wrong cardinality before
+callbacks/pixels. All Float32 patterns are legal lookup values. The descriptor
+charges the one execution snapshot even for methods that use raw codes. Only
+after complete admission does execution copy the caller's table. Median gathers
+mapped Float32 words; a supplied table already includes signed bias. U8 uses
+Java-compatible rounded/clamped conversion (NaN->0, positive infinity->255,
+negative values->0); U16 retains Float32/IEEE output. Other reducers continue
+using raw integer codes. Signed16 sum correction is still controlled by the
+separate flag, not detected from lookup values. Both may be specified without
+subtracting bias twice in median.
+
+Result/layout preserve_density_calibration is true for integer output when a
+source table or signed16 calibration is present. Dataset has no density/value
+unit fields, so this remains intent for a prepared metadata owner, not completed
+publication. ImageJ float output clears density but can retain the source value
+unit. The original signed16_density result remains available. Table-function
+generation, full output intensity records and analysis/UI consumers are separate.
+
+The252-case corpus observes96 C-only cases plus156 density cases. Two captures
+match hashes using unchanged reference cache/runtime bytes. C++ tests transcribe
+all pixel expectations and only table words actually used by source codes; unused
+fixture table entries are zero, not a claim of full generator parity. Both local
+platform lanes pass2592 words exactly across two tile layouts, with no NaNs in
+those captured outputs. Analytic tests additionally cover odd/all-NaN/infinite
+lookup results, signed16 overlap, cap-before-callback/read, explicit multi-axis
+C mapping and table mutation after admission. Old scalar/RGB fixtures and their
+original tests remain byte-identical. All three SDK-intended consumers pass as
+source consumers linked to unchanged installed dependencies, not new installed
+SDK or complete UI acceptance.
+
+The next UI route must use the captured Dataset and prepared publication. The
+current desktop handler uses source.frames.materialize(), assumes Z-only bounds,
+clones stale source metadata and clears all overlays; it cannot host scientific
+ImageJ policy correctly. Existing immutable MetadataTree property nodes can hold
+validated intensity records without adding mutable tables to DocumentData or
+forking metadata codecs. Fix metadata/title/LUT/overlay policy, strict source
+records and grouped GUI dispatch, then bind Python/shared ImGui and verify real
+interaction/history/reopen. The full ImageJ/Fiji goal remains unfinished.

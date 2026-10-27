@@ -4,7 +4,9 @@
 namespace imagejxx {
 // The scalar request/API retains its S1-only admission. This explicit RGB
 // profile shares axis, grouping, calibration, tile/cap and cancellation rules.
-// It accepts UInt8 S3 with C1; RGBA and multichannel RGB remain native extensions.
+// It accepts UInt8 S3 with C1, plus C-only legacy data reduced across Channels.
+// RGB hyperstacks with C>1 and RGBA retain their separate native extensions.
+// Intensity calibration tables are not admitted for RGB (ImageJ clears them).
 struct ImageJRGBProjectionRequest : ImageJDatasetProjectionRequest {
   // Only affects sum. False: Float32 shared-max scaling followed by independent
   // channel range conversion. True: round/clamp each channel sum to UInt8.
@@ -16,7 +18,8 @@ ImageJDatasetProjectionLayout describe_imagej_rgb_projection(
     const ImageJRGBProjectionRequest& request);
 ImageJDatasetProjectionLayout describe_imagej_rgb_projection(
     const Dataset& source, const ImageJRGBProjectionRequest& request);
-// Output is always UInt8 S3/C1, finite-only, with signed16_density=false.
+// Output is UInt8 S3, finite-only, with both density intents false. Grouped
+// C-only projection can retain multiple output C groups, as ImageJ does.
 // Sum/SD merge in the existing output buffer, with cancellable scan passes.
 // Does not publish documents or implement overlay/LUT/UI/strict-record policy.
 ImageJDatasetProjectionResult project_imagej_rgb_dataset(

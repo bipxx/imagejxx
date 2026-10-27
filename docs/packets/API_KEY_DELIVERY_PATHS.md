@@ -315,3 +315,17 @@ remain unsettled. Both working and accumulator scratch charges have host ABI
 components; persist portable contributor/type claims and original raw caps,
 not historical ABI admission. Full CMake/install and complete UI acceptance stay
 separate from the current passing source consumers.
+
+## Projection policy handoff — 2026-10-26
+
+Channels/default C-only dispatch, optional integer calibration_table and density
+preservation intent are implemented and source-verified. Use the existing common
+request/executor; no new per-method backend is needed. Next use an immutable
+MetadataTree intensity property and the prepared new-document/source-guard seam.
+The desktop project handler's materialized frames/Z-only/stale metadata adapter
+must be replaced for this workflow. Reuse ask/worker/facade staging; keep grouped
+GUI hyperstack forwarding separate. Persist effective table identity/source
+metadata in strict profiles, not host-sized working/scratch admission or duplicate
+derived tables. Then bind Python/shared ImGui and verify actual dialogs and
+history/reopen. Calibration-function generation/full metadata and original gates
+remain required; sampled lookup fixtures prove pixel processing only.

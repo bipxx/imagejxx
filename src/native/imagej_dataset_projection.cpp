@@ -129,14 +129,17 @@ PlanePosition ImageJDatasetProjectionLayout::contributor(
     PlanePosition output, int k) const {
   if (output.t < 0 || output.t >= shape.t || output.c < 0 || output.c >= shape.c ||
       output.z < 0 || output.z >= shape.z || k < 0 || k >= contributors_per_group ||
-      (axis != ImageJProjectionAxis::Z && axis != ImageJProjectionAxis::Time))
+      (axis != ImageJProjectionAxis::Z && axis != ImageJProjectionAxis::Time &&
+       axis != ImageJProjectionAxis::Channels))
     throw std::out_of_range("Invalid ImageJ projection contributor");
   const auto index = std::int64_t(source_first) +
-      std::int64_t(axis == ImageJProjectionAxis::Z ? output.z : output.t) *
+      std::int64_t(axis == ImageJProjectionAxis::Z ? output.z :
+                   axis == ImageJProjectionAxis::Time ? output.t : output.c) *
           contributors_per_group + k;
   const auto t = axis == ImageJProjectionAxis::Time ? index
       : std::int64_t(source_first_t) + output.t;
-  const auto c = std::int64_t(source_first_c) + output.c;
+  const auto c = axis == ImageJProjectionAxis::Channels ? index
+      : std::int64_t(source_first_c) + output.c;
   const auto z = axis == ImageJProjectionAxis::Z ? index : std::int64_t(output.z);
   const auto limit = std::numeric_limits<int>::max();
   if (t < 0 || t > limit || c < 0 || c > limit || z < 0 || z > limit)
@@ -156,19 +159,27 @@ ImageJDatasetProjectionLayout describe_projection(
     throw std::invalid_argument("ImageJ RGB profile requires UInt8 S3 source");
   if (!rgb && shape.s != 1)
     throw std::invalid_argument("ImageJ scalar profile requires S1; RGB merge is separate");
-  if (rgb && shape.c != 1)
-    throw std::invalid_argument("RGB stacks not supported");
   if (request.signed16_density && type != PixelType::UInt16)
     throw std::invalid_argument("Signed16 density requires UInt16 source");
+  if (!request.calibration_table.empty() &&
+      (rgb || (type != PixelType::UInt8 && type != PixelType::UInt16) ||
+       request.calibration_table.size() != (type == PixelType::UInt8 ? 256U : 65536U)))
+    throw std::invalid_argument("ImageJ density table requires exactly256/65536 scalar integer entries");
   if (request.active_t < 0 || request.active_t >= shape.t ||
       request.active_c < 0 || request.active_c >= shape.c)
     throw std::out_of_range("ImageJ projection active T/C is out of range");
   auto axis = request.axis;
   if (axis == ImageJProjectionAxis::ImageJDefault)
-    axis = shape.z == 1 ? ImageJProjectionAxis::Time : ImageJProjectionAxis::Z;
-  if (axis != ImageJProjectionAxis::Z && axis != ImageJProjectionAxis::Time)
+    axis = shape.t == 1 && shape.z == 1 && shape.c > 1 ? ImageJProjectionAxis::Channels
+        : shape.z == 1 ? ImageJProjectionAxis::Time : ImageJProjectionAxis::Z;
+  if (axis != ImageJProjectionAxis::Z && axis != ImageJProjectionAxis::Time &&
+      axis != ImageJProjectionAxis::Channels)
     throw std::invalid_argument("Invalid ImageJ projection axis");
-  const int axis_count = axis == ImageJProjectionAxis::Z ? shape.z : shape.t;
+  if (rgb && shape.c != 1 &&
+      !(axis == ImageJProjectionAxis::Channels && shape.t == 1 && shape.z == 1))
+    throw std::invalid_argument("RGB stacks not supported");
+  const int axis_count = axis == ImageJProjectionAxis::Z ? shape.z :
+      axis == ImageJProjectionAxis::Time ? shape.t : shape.c;
   if (request.first < 0 || request.first > request.last || request.last >= axis_count)
     throw std::out_of_range("ImageJ projection bounds are out of range");
   const int count = request.last - request.first + 1;
@@ -181,13 +192,16 @@ ImageJDatasetProjectionLayout describe_projection(
   result.shape = shape;
   result.axis = axis;
   result.source_first = request.first;
-  result.source_first_c = request.all_channels ? 0 : request.active_c;
-  result.shape.c = request.all_channels ? shape.c : 1;
-  if (axis == ImageJProjectionAxis::Z) {
-    result.shape.z = count / group;
+  if (axis == ImageJProjectionAxis::Channels) result.shape.c = count / group;
+  else {
+    result.source_first_c = request.all_channels ? 0 : request.active_c;
+    result.shape.c = request.all_channels ? shape.c : 1;
+  }
+  if (axis != ImageJProjectionAxis::Time) {
     result.shape.t = request.all_time_frames ? shape.t : 1;
     result.source_first_t = request.all_time_frames ? 0 : request.active_t;
   } else result.shape.t = count / group;
+  if (axis == ImageJProjectionAxis::Z) result.shape.z = count / group;
   result.contributors_per_group = group;
   result.tile_width = std::min(shape.x, request.tile_width);
   result.tile_height = std::min(shape.y, request.tile_height);
@@ -205,6 +219,9 @@ ImageJDatasetProjectionLayout describe_projection(
       method == M::StdDev || (type == PixelType::UInt16 && method == M::Median);
   result.pixel_type = !rgb && float_output ? PixelType::Float32 : type;
   result.signed16_density = request.signed16_density && result.pixel_type == PixelType::UInt16;
+  result.preserve_density_calibration =
+      (request.signed16_density || !request.calibration_table.empty()) &&
+      (result.pixel_type == PixelType::UInt8 || result.pixel_type == PixelType::UInt16);
   result.output_pixel_bytes = multiply(result.shape.pixel_count(), sizeof(double));
   if (result.output_pixel_bytes > request.max_output_pixel_bytes)
     throw std::invalid_argument("ImageJ projection exceeds output pixel allowance");
@@ -214,6 +231,8 @@ ImageJDatasetProjectionLayout describe_projection(
       : multiply(tile, sizeof(detail::ImageJProjectionAccumulator));
   if (rgb && (method == M::Sum || method == M::StdDev))
     result.reduction_scratch_bytes = add(result.reduction_scratch_bytes, sizeof(RGBProjectionRanges));
+  result.reduction_scratch_bytes = add(result.reduction_scratch_bytes,
+      multiply(request.calibration_table.size(), sizeof(std::uint32_t)));
   const auto tables = multiply(result.shape.plane_count(),
       2 * sizeof(Image) + 3 * sizeof(std::shared_ptr<const Image>));
   // Conservative default region adapter: one full decoded plane plus its crop.
@@ -256,10 +275,13 @@ ImageJDatasetProjectionResult project_dataset_profile(
   const Dataset source = input;
   const auto shape = source.shape();
   const auto type = source.pixel_type();
+  const auto layout = describe_projection(shape, type, source.calibration(), request, rgb);
+  // Density tables are captured only after their size and the complete working
+  // allowance have been admitted. No callback can retarget this owned copy.
   const auto captured = request;
-  const auto layout = describe_projection(shape, type, source.calibration(), captured, rgb);
   const auto method = scalar_method(captured.method);
   const auto numeric_type = scalar_type(type);
+  const bool calibrated_median = method == M::Median && !captured.calibration_table.empty();
   const auto policy = source.sample_policy();
   const auto output_policy = layout.pixel_type == PixelType::Float32
       ? FloatingSamplePolicy::PreserveIEEEFloat32 : FloatingSamplePolicy::FiniteOnly;
@@ -311,7 +333,8 @@ ImageJDatasetProjectionResult project_dataset_profile(
                 for (std::size_t i = 0; i < samples; ++i) {
                   if ((i & 1023) == 0) kernel_checkpoint();
                   const auto bits = source_word(region.pixels[i], type, policy);
-                  if (method == M::Median) rays[std::size_t(i) * group + k] = bits;
+                  if (method == M::Median)
+                    rays[i * group + k] = calibrated_median ? captured.calibration_table[bits] : bits;
                   else accumulators[i].push(bits);
                 }
               }
@@ -324,11 +347,16 @@ ImageJDatasetProjectionResult project_dataset_profile(
                 for (std::size_t column = 0; column < row_samples; ++column) {
                   const auto i = input_offset + column;
                   if ((i & 1023) == 0) kernel_checkpoint();
-                  const auto sample = method == M::Median
-                      ? detail::project_imagej_scalar_ray(numeric_type, method,
-                          rays.data() + i * group, group, captured.signed16_density,
+                  auto sample = method == M::Median
+                      ? detail::project_imagej_scalar_ray(calibrated_median ? T::Float32 : numeric_type, method,
+                          rays.data() + i * group, group, calibrated_median ? false : captured.signed16_density,
                           scratch.data(), scratch.size(), kernel_checkpoint)
                       : accumulators[i].finish();
+                  if (calibrated_median && type == PixelType::UInt8) {
+                    float value;
+                    std::memcpy(&value, &sample.bits, sizeof value);
+                    sample = {T::UInt8, rgb_byte(value + .5f)};
+                  }
                   plane.pixels[output_offset + column] = output_sample(sample);
                 }
               }
@@ -348,7 +376,7 @@ ImageJDatasetProjectionResult project_dataset_profile(
   execution_progress(layout.shape.plane_count(), layout.shape.plane_count());
   kernel_checkpoint();
   metadata_guard();
-  return {std::move(dataset), layout.signed16_density};
+  return {std::move(dataset), layout.signed16_density, layout.preserve_density_calibration};
 }
 } // namespace
 ImageJDatasetProjectionResult project_imagej_dataset(
