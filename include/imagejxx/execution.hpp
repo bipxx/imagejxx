@@ -8,6 +8,7 @@
 
 namespace imagejxx {
 class Document;
+struct ImageJProjectionDocumentRequest;
 class ResolvedZSubsetCommand;
 class ResolvedRgbDatasetCommand;
 class ResolvedColorStackCommand;
@@ -225,7 +226,7 @@ public:
   ExecutionOptions options() const;
   bool active() const;
   DocumentTransaction begin_edit() const;
-  // Fresh axis exports expose their exact unregistered output owner so a
+  // Fresh axis exports and scientific projections expose their output owner so a
   // frontend can stage its facade/tab before atomic publication. Rank returns
   // its candidate only after stage_new_document(); other operations return null.
   // Data edits to this candidate invalidate publication;
@@ -249,6 +250,9 @@ private:
                                              const OperationParameters &,
                                              ExecutionOptions,
                                              const ExecutionControl &);
+  friend PreparedOperation prepare_imagej_projection(
+      const DocumentSnapshot &, const ImageJProjectionDocumentRequest &,
+      const ExecutionControl &);
   friend PreparedOperation prepare_axis_plane_export(
       const DocumentSnapshot &, const AxisPlaneExportRequest &,
       const ExecutionControl &);

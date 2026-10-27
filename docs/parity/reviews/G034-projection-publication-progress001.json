@@ -1,0 +1,176 @@
+{
+  "schema": "imagejxx.scoped-progress",
+  "version": 1,
+  "source_base": "f3a4ea98664543c348c7d26784f02197a030c97b",
+  "scope": "Prepared whole-dataset projection into a detached output owner, atomic publication, intensity/channel presentation and ordinary overlay regressions; not strict command replay, Python or ImGui acceptance",
+  "source_inputs": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 136575,
+      "sha256": "c2064110afb5fd4ea6a4bc8c2378a32466a1a6f51c7548ba49da933d23aa38d1"
+    },
+    {
+      "path": "include/imagejxx/execution.hpp",
+      "bytes": 15055,
+      "sha256": "26f0eb9f3abde6d383e8395d2f7c38e2ae09210652df0090839759d0a0a3ba38"
+    },
+    {
+      "path": "include/imagejxx/imagej_projection_execution.hpp",
+      "bytes": 1648,
+      "sha256": "168dbc9a940abf9e565232faa1d973933d9f9bc766f9bd6cc83b88e97182a6da"
+    },
+    {
+      "path": "src/native/execution.cpp",
+      "bytes": 129337,
+      "sha256": "2cc067d8c671b5a389209505f0d0f3b0a3f7264f33c6fb6fe54bbe73deb16f89"
+    },
+    {
+      "path": "src/native/imagej_projection_document.hpp",
+      "bytes": 409,
+      "sha256": "01259c3d5083e44508f1ebdf6f7aad97aeafedc962ae9b2e4f02374284ee100b"
+    },
+    {
+      "path": "src/native/imagej_projection_document.cpp",
+      "bytes": 11674,
+      "sha256": "1559347dc7e5b69290b4dd65aac8f0df5f6f25e85a963af2658f8d103b583ed2"
+    },
+    {
+      "path": "tests/native/test_imagej_projection_execution.cpp",
+      "bytes": 12095,
+      "sha256": "c8593ce25e56610ca6b6d57777e81b895b8224251653c9a6c3749e0f57a50044"
+    }
+  ],
+  "verification": [
+    {
+      "platform": "Windows/MSVC",
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/projection-publication-windows083/receipt.json",
+        "bytes": 72702,
+        "sha256": "3898cc338eebf2152f41b5109f62e66a06ba4c508915a4de5a14dcf7e6d40176"
+      },
+      "logs": {
+        "path": ".tmp/manual-workflow-verification/projection-publication-windows083/logs.zip",
+        "bytes": 9503,
+        "sha256": "ca4463820249ea379465e6e70292a74a3a3fa58b7b386c6fc7078d8ebe1f94c8"
+      },
+      "peak_scratch_bytes": 10058942,
+      "temporary_reserve_bytes": 33554432,
+      "state": "passed",
+      "scratch_retired": true,
+      "scope": "Prepared projection publication/source guards with ordinary ImageJ overlay rules and owned native annotation extensions; linked to unchanged installed dependencies; not installed new API, full CMake or UI acceptance",
+      "diagnostic_exception": null
+    },
+    {
+      "platform": "Linux/GCC",
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/projection-publication-linux084/receipt.json",
+        "bytes": 78952,
+        "sha256": "2e161d938115e5c74a3dfc21beb2461ac5898d136a01327ef6d8c943aa61f645"
+      },
+      "logs": {
+        "path": ".tmp/manual-workflow-verification/projection-publication-linux084/logs.zip",
+        "bytes": 3066,
+        "sha256": "7ac1fd25241f8db56624c7855515f5fc08a7e76e68f2c263b85ce4430e9b2c7c"
+      },
+      "peak_scratch_bytes": 5704536,
+      "temporary_reserve_bytes": 33554432,
+      "state": "passed",
+      "scratch_retired": true,
+      "scope": "Prepared projection publication/source guards with ordinary ImageJ overlay rules and owned native annotation extensions; linked to unchanged installed dependencies; not installed new API, full CMake or UI acceptance",
+      "diagnostic_exception": "GCC13 -Wno-error=maybe-uninitialized only for existing execution.cpp initial_variance_range path; diagnostics retained, source path unchanged by this packet; all new translation units retain -Werror."
+    }
+  ],
+  "reference_inputs": {
+    "corpus": {
+      "path": "docs/parity/reviews/G034-imagej-z-projection-reference001/observations.jsonl.gz",
+      "bytes": 37200,
+      "sha256": "a22ae856cac15d0f956f935dbe371136da455e428907590b3040d7c7996f7073"
+    },
+    "source_archive": {
+      "path": ".cache/native-verification/references/imagej154r/source.zip",
+      "bytes": 6146010,
+      "sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665"
+    },
+    "source": {
+      "path": ".cache/native-verification/references/imagej154r/source/ij/plugin/ZProjector.java",
+      "bytes": 26767,
+      "sha256": "49ea0e2447fdab259b0c8293018e82732e5ee9d8f380af04cfcad0e29d954466"
+    },
+    "java_executed": false,
+    "note": "Literal metadata regressions informed by existing scalar.u8.range_even.max and hyper.u16.z4.allfalse.max/alltrue.max plus pinned source inspection. No full metadata differential corpus or GUI execution is claimed."
+  },
+  "existing_execution_paths_byte_unchanged_after_removing_addition": true,
+  "storage": {
+    "before": {
+      "path": ".tmp/manual-workflow-verification/projection-publication-storage-before076.json",
+      "bytes": 1522,
+      "sha256": "266183183be0a0fb7c79bed54ff3b3b4d7de7acfe96410d9a51b12ecdc435f2c"
+    },
+    "after": {
+      "path": ".tmp/manual-workflow-verification/projection-publication-storage-final086.json",
+      "bytes": 1521,
+      "sha256": "e1e72a7738754265fcfb1043e944d861ae4e271245d775f8ff4ab6be77777eb1"
+    },
+    "before_known_bytes": 8588725398,
+    "after_known_bytes": 8589187700,
+    "delta_known_bytes": 462302,
+    "budget_verified": false,
+    "unavailable_subtrees": [
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest",
+        "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest'"
+      },
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest-ui",
+        "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest-ui'"
+      }
+    ],
+    "temporary_policy": "32MiB necessary source-consumer reserve; serial platforms reuse unchanged installed dependencies. All scratch retired; no new compiler cache/runtime generation. Superseded/failed current-turn logs and receipts losslessly archived with verified hashes before raw retirement.",
+    "retention_pointers": [
+      {
+        "path": ".tmp/manual-workflow-verification/projection-publication-windows077-retention.json",
+        "bytes": 3017,
+        "sha256": "fb9987812688c4ae69d3f3fe29bb55042698ae59e75a2ec3fc417de7c0b6f37a"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/projection-publication-windows078-retention.json",
+        "bytes": 4067,
+        "sha256": "8c2fea98728529964053af24d34f4e63bf98974b6c2e5d7b72abb211ff1c29d1"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/projection-publication-windows079-retention.json",
+        "bytes": 5129,
+        "sha256": "7981279d39d0d81ce5e09acd6ddbe26bbfd30e1cda432d8ed7710f80e7e0a312"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/projection-publication-linux080-retention.json",
+        "bytes": 4598,
+        "sha256": "741262858f11c78eb6adfbed60dc696432a0c19da71946dd1c53ab4dad6fa067"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/projection-publication-windows081-retention.json",
+        "bytes": 5129,
+        "sha256": "9f0de0e7001255a3785fa4e5a69f0e839942680a55dc666c16984c9d77e24dbb"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/projection-publication-linux082-retention.json",
+        "bytes": 6728,
+        "sha256": "3a20cb2a9907e8f3cdb0c18d73bf2edc97fcc164d4b5cae1181d262193e7f694"
+      }
+    ]
+  },
+  "limitations": [
+    "Focused source consumers, not updated local installed SDK, full CMake/install or actual UI interaction.",
+    "Ordinary overlay regressions are not exhaustive metadata parity. Grouping, current-C and explicit multi-axis extensions use documented native contributor mapping. Grouped ImageJ GUI hyperstack forwarding remains controller work.",
+    "No strict ImageJ record/replay grammar; PreparedOperation parameters currently contain method as diagnostic information only. Native finite version1 command remains unchanged.",
+    "Legacy scalar integer named palettes beyond the canonical eight require the existing UI inheritedDisplayLut conversion to a custom table; do not duplicate the palette implementation.",
+    "Separate numerical/display caps are not full provider/job/publication/metadata admission. Source/candidate guards are atomic; full worker admission remains required.",
+    "Calibration function generation/fitting, bindings, shared ImGui route, comprehensive metadata differential checks, reviewed virtual IEEE/downstream admission and original reference/full acceptance gates remain open."
+  ],
+  "family_status": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  },
+  "full_acceptance": false
+}

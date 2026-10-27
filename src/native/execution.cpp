@@ -1,4 +1,5 @@
 #include "kernel_control.hpp"
+#include "imagej_projection_document.hpp"
 #include "floating_charconv.hpp"
 #include "target_mask_resources.hpp"
 #include "rank_display_internal.hpp"
@@ -1288,6 +1289,51 @@ AxisRangeSpacingResult reslice_spaced_axis_range(
   return {std::move(output), std::move(layout.output.geometry), request,
           layout.estimate.working_bytes, layout.estimate.source_vertical_spacing,
           layout.estimate.voxel_step, layout.estimate.vertical_count};
+}
+
+PreparedOperation prepare_imagej_projection(
+    const DocumentSnapshot& source_input, const ImageJProjectionDocumentRequest& request_input,
+    const ExecutionControl& control) {
+  if(request_input.projection.signed16_density || !request_input.projection.calibration_table.empty())
+    throw std::invalid_argument("Prepared projection density comes from the source document");
+  const auto source=source_input;
+  const auto request=request_input;
+  ExecutionScope scope(control);
+  kernel_checkpoint();
+  auto output=detail::project_imagej_document(source,request,{});
+  const auto& layout=output.layout;
+  TargetRequest ranges;
+  ranges.scope=TargetScope::Ranges;
+  ranges.roi=RoiPolicy::WholePlane;
+  ranges.destination=OutputDestination::NewDocument;
+  const auto source_shape=source.data().dataset.shape();
+  ranges.t=AxisRange{layout.axis==ImageJProjectionAxis::Time?layout.source_first:layout.source_first_t,
+      layout.axis==ImageJProjectionAxis::Time?request.projection.last+1:layout.source_first_t+layout.shape.t,1};
+  ranges.c=AxisRange{layout.axis==ImageJProjectionAxis::Channels?layout.source_first:layout.source_first_c,
+      layout.axis==ImageJProjectionAxis::Channels?request.projection.last+1:layout.source_first_c+layout.shape.c,1};
+  ranges.z=AxisRange{layout.axis==ImageJProjectionAxis::Z?layout.source_first:0,
+      layout.axis==ImageJProjectionAxis::Z?request.projection.last+1:source_shape.z,1};
+  auto target=resolve_target(source,ranges);
+  auto edit=source.begin_edit(Change::All);
+  edit.replace_dataset(output.data.dataset);
+  edit.set_title(output.data.metadata.title);
+  edit.select(std::nullopt);edit.set_previous_selection(std::nullopt);
+  edit.set_rois({});edit.set_overlays(std::move(output.data.overlays));
+  edit.set_spectrum(std::nullopt);edit.set_record_layout({});
+  for(const auto& item:source.data().metadata.properties) edit.remove_property(item.first);
+  for(const auto& item:source.data().metadata.extensions) edit.remove_extension(item.first);
+  for(const auto& item:output.data.metadata.properties) edit.set_property(item.first,item.second);
+  edit.set_axis_remap_display(output.display);
+  auto fresh=std::make_shared<Document>(edit.preview().data(),output.display);
+  auto baseline=fresh->snapshot();
+  OperationParameters parameters{{"method",request.projection.method}};
+  auto state=std::make_shared<PreparedOperation::State>(std::move(target),
+      "imagej_projection",std::move(parameters),std::move(edit),output.display,
+      ExecutionOptions{},std::vector<PlaneExecutionOutput>{},execution_cancellation());
+  state->fresh_document=std::move(fresh);
+  state->fresh_baseline=std::move(baseline);
+  kernel_checkpoint();
+  return PreparedOperation(std::move(state));
 }
 
 PreparedOperation prepare_axis_plane_export(

@@ -1,5 +1,49 @@
 # Three-agent execution plan
 
+## Prepared projection publication implemented — 2026-10-26
+
+`prepare_imagej_projection` now prepares the complete Dataset in a detached
+result owner and reuses `PreparedOperation` / `Application::publish`. Source and
+request values are captured before callbacks. Source All revisions, membership,
+retained cancellation and candidate data are checked before atomic adoption.
+Preparation/publication leave source data/history unchanged; the output starts
+with clean history and first-position navigation. Windows/MSVC and Linux/GCC
+source tests pass metadata, channel presentation, source/candidate refusal,
+cancellation, closure, callback retargeting and actual session roundtrip.
+[Scoped evidence](parity/reviews/G034-projection-publication-progress001.json).
+
+Intensity records/units follow the numerical result. Scalar channel outputs
+copy source LUTs/mode/visibility and preserve ranges except Sum/SD resets;
+missing channel records reuse existing color defaults. Float32 uses explicit V3.
+Ordinary overlays retain ImageJ stack/hyperstack wildcard behavior, including
+hidden legacy stack positions. Grouping/current-C/multi-axis extensions use
+native contributor mapping. Literal regressions and pinned source inspection
+are not an exhaustive metadata differential or actual GUI qualification.
+
+Next is one complete shared ImGui workflow, not another API-only checkpoint:
+1. Add the strict ImageJ scalar/RGB command profile and full worker admission
+   as part of the dialog/apply/cancel path. Keep native finite version1 replay
+   unchanged; current prepared method parameters are diagnostic, not replay.
+2. Replace the scientific UI route through legacy `State.frames.materialize`:
+   reuse the ask dialog and worker; stage facade/history/default zoom, map slot
+   and Pane before adoption, as rank/axis extraction already do. Use
+   `prepared_new_document`, never flatten the result back into State.frames.
+3. Reuse `inheritedDisplayLut` in window.cpp for legacy Inverted/Fire/Ice/Spectrum
+   to canonical custom tables; do not duplicate palette math. Bind Python and
+   standalone C++ ImGui to the same prepared implementation. Keep ordinary API,
+   desktop Grays, grouped GUI forwarding and owned grouping extensions distinct.
+4. Attach retained metadata differential assertions to this same workflow and
+   verify actual apply/cancel, all/current T/C, axis/RGB clip, rendered overlays
+   and reopen. Reuse the existing observations; add no numerical-reference
+   framework or separate API-only milestone before the UI consumer.
+
+Full CMake/install follows in CI; local active SDKs are unchanged. Terminal
+scratch was retired; failed/superseded diagnostics and final logs are losslessly
+compressed and hash-verified. Whole-root known storage8,589,187,700 bytes;
+two denied cache subtrees keep the full8GiB budget unverified. Original reference
+recovery, virtual/downstream IEEE and full acceptance remain open;99-family
+statuses remain47 in progress/52 open/0 complete.
+
 ## Immutable intensity metadata implemented — 2026-10-26
 
 The source intensity record now uses the existing immutable `MetadataTree`

@@ -1,0 +1,185 @@
+#include <imagejxx/imagej_projection_execution.hpp>
+#include <imagejxx/imagej_intensity_calibration.hpp>
+#include <imagejxx/application.hpp>
+#include <imagejxx/session.hpp>
+#include <iostream>
+#include <stdexcept>
+using namespace imagejxx;
+namespace {
+void check_impl(bool v,int line) { if(!v) throw std::runtime_error("Prepared projection assertion at line "+std::to_string(line)); }
+#define check(...) check_impl((__VA_ARGS__),__LINE__)
+template<class Error=std::invalid_argument,class F> void reject(F f) {
+  try { f(); } catch(const Error&) { return; }
+  throw std::runtime_error("Invalid prepared projection accepted");
+}
+std::shared_ptr<Document> source(int samples=1) {
+  DatasetShape shape{2,2,4,1,2,samples};
+  Stack planes;
+  for(int t=0;t<2;++t) for(int c=0;c<2;++c) for(int z=0;z<4;++z) {
+    Image image(2,1,samples,PixelType::UInt16);
+    for(int x=0;x<2;++x) for(int s=0;s<samples;++s) image.at(x,0,s)=100*t+10*c+z+x;
+    planes.push_back(std::move(image));
+  }
+  DocumentData data{Dataset::from_planes(shape,std::move(planes)),{},{},{},{},{},{}};
+  data.metadata.title="scientific";
+  data.metadata.properties["stale_note"]=std::string("source only");
+  data.overlays={{{"name",std::string("global")}},
+      {{"t",1},{"c",1},{"z",2},{"slice_index",2},{"name",std::string("in")}},
+      {{"z",0},{"name",std::string("out")}}};
+  data.selection=Selection("rectangle",{{0,0},{1,1}});
+  data.previous_selection=data.selection;
+  auto doc=std::make_shared<Document>(std::move(data));
+  auto display=doc->snapshot().display();
+  ChannelDisplayState state;state.channels.resize(2);
+  state.channels[0].lut.name="Red";state.channels[0].range={11,111};
+  state.channels[1].lut.name="Green";state.channels[1].range={22,222};
+  state.channels[1].visible=false;
+  display=with_channel_display(display,doc->snapshot().data().dataset,state);
+  display.t=1;display.c=1;display.crosshair[2]=2;
+  doc->set_display(display);
+  set_imagej_intensity_calibration(*doc,ImageJIntensityCalibration::signed16("mV"));
+  return doc;
+}
+ImageJProjectionDocumentRequest request() {
+  ImageJProjectionDocumentRequest r;r.projection.first=1;r.projection.last=3;
+  r.projection.active_t=1;r.projection.active_c=1;r.projection.method="maximum";
+  return r;
+}
+void unchanged(const DocumentSnapshot& before,const std::shared_ptr<Document>& doc) {
+  auto now=doc->snapshot();check(now.shares_data(before));
+  check(now.revisions().matches(before.revisions(),Change::All));
+}
+}
+int main() {
+  auto doc=source();Application app;app.adopt(doc);
+  const auto before=doc->snapshot();const auto history=doc->undo_steps();
+  auto r=request();auto prepared=prepare_imagej_projection(before,r);
+  auto candidate=prepared.prepared_new_document();check(bool(candidate));
+  check(prepared.active() && app.document_ids().size()==1);
+  const auto output=candidate->snapshot();
+  const auto outshape=output.data().dataset.shape();
+  check(outshape.t==2 && outshape.c==2 && outshape.z==1 && outshape.y==1 && outshape.x==2 && outshape.s==1);
+  check(output.data().metadata.title=="MAX_scientific");
+  check(!output.data().selection && !output.data().previous_selection && output.data().rois.empty());
+  check(output.data().metadata.properties.count("stale_note")==0);
+  check(output.data().dataset.plane({1,1,0})->pixels[0]==113);
+  check(output.display().t==0 && output.display().c==0 && output.display().crosshair[2]==0);
+  const auto channels=recognized_channel_display(output.display(),output.data().dataset);
+  check(channels && channels->channels[1].lut.name=="Green" && !channels->channels[1].visible);
+  check(channels->channels[1].range==std::array<double,2>{22,222});
+  check(read_imagej_intensity_calibration(output).shares_record(read_imagej_intensity_calibration(before)));
+  check(output.data().overlays.size()==2);
+  check(std::get<std::int64_t>(output.data().overlays[1].at("z"))==0);
+  check(candidate->undo_steps()==0 && !output.dirty());
+  unchanged(before,doc);check(doc->undo_steps()==history);
+  const auto published=app.publish(prepared);check(published.created && published.document==candidate);
+  check(!prepared.active() && app.document_ids().size()==2);
+  unchanged(before,doc);
+  reject([&]{app.publish(prepared);});
+  SessionCapture capture;capture.documents.push_back(candidate->snapshot());
+  auto reopened=decode_session(encode_session(capture));
+  check(reopened.documents.size()==1);
+  check(read_imagej_intensity_calibration(reopened.documents[0]->snapshot()).value_unit()=="mV");
+  check(recognized_channel_display(reopened.documents[0]->snapshot().display(),
+      reopened.documents[0]->snapshot().data().dataset)->channels[1].lut.name=="Green");
+  auto without_channels=source();
+  auto legacy_display=with_channel_display(without_channels->snapshot().display(),
+      without_channels->snapshot().data().dataset,std::nullopt);
+  without_channels->set_display(legacy_display);
+  auto defaults=prepare_imagej_projection(without_channels->snapshot(),request());
+  const auto defaults_out=defaults.prepared_new_document()->snapshot();
+  const auto defaults_state=recognized_channel_display(defaults_out.display(),defaults_out.data().dataset);
+  check(defaults_state->channels[0].lut.name=="Red" && defaults_state->channels[1].lut.name=="Green");
+  check(defaults_state->channels[0].range==std::array<double,2>{3,4});
+  check(defaults_state->channels[1].range==defaults_state->channels[0].range);
+  auto current=request();current.projection.all_time_frames=false;
+  auto current_result=prepare_imagej_projection(before,current);
+  const auto current_out=current_result.prepared_new_document()->snapshot();
+  // Pinned hyper.u16.z4.allfalse.max: wildcard C survives an out-of-range Z;
+  // an included current-frame ROI becomes channel-only, with no source T/Z.
+  check(current_out.data().overlays.size()==3);
+  check(current_out.data().overlays[1].count("c")==1);
+  check(current_out.data().overlays[1].count("t")==0 && current_out.data().overlays[1].count("z")==0);
+  check(current_out.data().overlays[2].count("z")==0);
+  Stack ordinary_planes;
+  for(int z=0;z<4;++z) { Image image(1,1,1,PixelType::UInt8);image.pixels={double(z)};
+    ordinary_planes.push_back(std::move(image)); }
+  DocumentData ordinary_data{Dataset::from_planes({1,1,4,1,1,1},std::move(ordinary_planes)),{},{},{},{},{},{}};
+  ordinary_data.overlays={{{"name",std::string("global")}},{{"slice_index",1}},{{"slice_index",0}}};
+  Document ordinary(std::move(ordinary_data));auto ordinary_request=request();
+  ordinary_request.projection.active_t=0;ordinary_request.projection.active_c=0;
+  auto ordinary_result=prepare_imagej_projection(ordinary.snapshot(),ordinary_request);
+  const auto ordinary_out=ordinary_result.prepared_new_document()->snapshot();
+  // Pinned scalar.u8.range_even.max: retain original flat2 on a one-plane
+  // output. It remains hidden rather than being remapped to visible plane1.
+  check(ordinary_out.data().overlays.size()==2);
+  check(std::get<std::int64_t>(ordinary_out.data().overlays[1].at("slice_index"))==1);
+  r.projection.method="sum";
+  auto sum=prepare_imagej_projection(before,r);
+  const auto sum_output=sum.prepared_new_document()->snapshot();
+  const auto sum_intensity=read_imagej_intensity_calibration(sum_output);
+  check(!sum_intensity.has_density() && sum_intensity.value_unit()=="mV");
+  auto sum_channels=recognized_channel_display(sum_output.display(),sum_output.data().dataset);
+  check(sum_channels->version==ChannelDisplayVersion::V3);
+  check(sum_channels->channels[0].range==std::array<double,2>{-98298,-98295});
+  check(sum_channels->channels[1].range==std::array<double,2>{-98268,-98265});
+  auto edit=doc->begin_edit();edit.set_property("changed",true);doc->commit(edit);
+  reject<RevisionConflict>([&]{app.publish(sum);});check(app.document_ids().size()==2 && sum.active());
+  auto candidate_edit=prepare_imagej_projection(doc->snapshot(),request());
+  auto changed=candidate_edit.prepared_new_document();auto tx=changed->begin_edit();
+  tx.set_title("changed");changed->commit(tx);
+  reject<RevisionConflict>([&]{app.publish(candidate_edit);});
+  auto display_edit=prepare_imagej_projection(doc->snapshot(),request());
+  auto display=doc->snapshot().display();display.c=0;doc->set_display(display);
+  reject<RevisionConflict>([&]{app.publish(display_edit);});
+  auto token=std::make_shared<CancellationToken>();ExecutionControl control;control.cancellation=token;
+  auto canceled=prepare_imagej_projection(doc->snapshot(),request(),control);token->cancel();
+  reject<OperationCancelled>([&]{app.publish(canceled);});
+  reject<OperationCancelled>([&]{prepare_imagej_projection(doc->snapshot(),request(),control);});
+  auto closed=prepare_imagej_projection(doc->snapshot(),request());app.close(doc->id,true);
+  reject<DocumentUnavailable>([&]{app.publish(closed);});
+  auto alias=source();auto captured=alias->snapshot();auto mutable_request=request();
+  bool once=false;ExecutionControl retarget;
+  retarget.checkpoint=[&]{if(!once){once=true;captured=candidate->snapshot();mutable_request.projection.last=0;
+    mutable_request.projection.method="sum";}};
+  const auto alias_id=alias->id;
+  auto isolated=prepare_imagej_projection(captured,mutable_request,retarget);
+  check(isolated.target().document_id()==alias_id);
+  check(isolated.prepared_new_document()->snapshot().data().metadata.title=="MAX_scientific");
+  check(isolated.target().ranges()[2].start==1 && isolated.target().ranges()[2].stop==4);
+  // Explicit nonzero Time/Channels bounds must bind exactly those source
+  // contributors, independently of captured display navigation.
+  for(auto axis:{ImageJProjectionAxis::Time,ImageJProjectionAxis::Channels}) {
+    auto a=request();a.projection.axis=axis;a.projection.first=1;a.projection.last=1;
+    auto projected=prepare_imagej_projection(alias->snapshot(),a);
+    const auto& ranges=projected.target().ranges();
+    const int reduced=axis==ImageJProjectionAxis::Time?0:1;
+    check(ranges[reduced].start==1 && ranges[reduced].stop==2);
+    const auto& items=projected.prepared_new_document()->snapshot().data().overlays;
+    check(items.size()==3);
+    check(std::get<std::int64_t>(items[1].at(reduced==0?"t":"c"))==0);
+  }
+  auto grouped=request();grouped.projection.first=0;grouped.projection.last=3;
+  grouped.projection.group_size=2;
+  auto group=prepare_imagej_projection(alias->snapshot(),grouped);
+  check(group.prepared_new_document()->snapshot().data().dataset.shape().z==2);
+  // RGB retains its interleaved sample axis and uses ordinary fresh RGB
+  // presentation, with no scalar density/channel-display interpretation.
+  Stack rgb_planes;
+  for(int z=0;z<2;++z) { Image image(1,1,3,PixelType::UInt8);
+    image.pixels={double(10+z),double(20+z),double(30+z)};rgb_planes.push_back(std::move(image)); }
+  Document rgb(Dataset::from_planes({1,1,2,1,1,3},std::move(rgb_planes)),"RGB");
+  auto rgb_request=request();rgb_request.projection.first=0;rgb_request.projection.last=1;
+  rgb_request.projection.active_t=0;rgb_request.projection.active_c=0;
+  auto rgb_result=prepare_imagej_projection(rgb.snapshot(),rgb_request);
+  const auto rgb_out=rgb_result.prepared_new_document()->snapshot();
+  check(rgb_out.data().dataset.shape().s==3 && rgb_out.data().dataset.plane()->pixels[2]==31);
+  check(rgb_out.display().properties.empty() && !read_imagej_intensity_calibration(rgb_out).has_density());
+  auto invalid=request();invalid.projection.signed16_density=true;
+  reject([&]{prepare_imagej_projection(alias->snapshot(),invalid);});
+  invalid=request();invalid.display_limits.max_pixels=1;
+  reject([&]{prepare_imagej_projection(alias->snapshot(),invalid);});
+  auto bad=alias->begin_edit();bad.set_overlays({{{"z",true}}});alias->commit(bad);
+  reject([&]{prepare_imagej_projection(alias->snapshot(),request());});
+  std::cout<<"Prepared scientific projection: metadata, channel display, source/candidate guards, cancellation, session and capture passed\n";
+}

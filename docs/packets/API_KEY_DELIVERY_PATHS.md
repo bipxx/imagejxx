@@ -341,3 +341,20 @@ intent. Windows/Linux source tests prove edit/Undo/session/projection bridges.
 Next reuse `PreparedOperation` new-document staging and atomic publication,
 then replace the legacy materializing scientific UI route. Channel display and
 overlay mapping must be explicit; an API-only checkpoint is not editor parity.
+
+### G034 prepared publication checkpoint — 2026-10-26
+
+Use `prepare_imagej_projection` → `prepared_new_document` → existing atomic
+`Application::publish`; do not add another output/publication framework. Source
+All revisions, membership, cancellation and candidate data are guarded. Output
+intensity/unit and channel presentation use existing immutable metadata, channel
+reset/defaults and V3 encoding. Ordinary overlay literal regressions pass;
+grouping/current-C/multi-axis native annotation extensions remain distinct.
+[Source evidence](../parity/reviews/G034-projection-publication-progress001.json).
+Next complete one shared ImGui workflow, including strict ImageJ records/full
+admission and retained metadata differentials in that same consumer patch. In
+window.cpp, rank staging near `stage_new_document` and
+`publishPreparedAxisExtraction` already stage facade/map/Pane before adoption;
+reuse that pattern. Reuse `inheritedDisplayLut` for legacy named palettes.
+Keep native finite command replay unchanged; prepared method parameters alone
+are diagnostic, not complete replay. Bind Python to the same core path.

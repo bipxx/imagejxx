@@ -439,3 +439,48 @@ Linux source consumers pass; the standalone example passes on both. See
 [scoped evidence](../parity/reviews/G034-intensity-metadata-progress001.json).
 Calibration-function generation/fitting, prepared publication, channel display/
 overlay policy, strict ImageJ commands and actual ImGui interaction remain open.
+
+## Prepared output and publication — 2026-10-26
+
+`imagej_projection_execution.hpp` introduces `ImageJProjectionDocumentRequest`
+and `prepare_imagej_projection(snapshot, request, control)`. It accepts the
+shared scalar/RGB numerical options, a desktop C-only Grays presentation flag,
+and separate channel-display limits. Density request fields must remain default:
+the immutable source intensity property supplies the exact table and signed flag.
+The source snapshot and request are copied before callbacks. No source mutation
+or membership change occurs until the existing atomic publication path adopts
+`prepared_new_document()`. Source All revisions and exact membership, cancellation
+and unchanged candidate data/history are guarded. Frontends may configure the
+candidate display/history policy before publication. The output title is frozen
+with the ImageJ method prefix; source metadata/selection/spectrum/ROI history is
+not copied indiscriminately. Output density/units and canonical channel state are
+rebuilt for the actual output shape/type. V3 is explicit for IEEE Float32.
+
+Ordinary stack overlays preserve the original flat position, even when hidden
+beyond the one-plane output. Ordinary hyperstack overlays follow ImageJ's
+current-frame and wildcard inclusion rules; native t/c/z encode their output
+meaning. Positive grouping, current-C and explicit multi-axis extensions use
+native contributor mapping with slice_index as a Z alias. They are not a claim
+of ImageJ grouped GUI overlay behavior. Scalar multi-channel outputs retain
+source LUTs/mode/visibility/ranges except Sum/SD range resets. Missing canonical
+channel state reuses existing defaults. Single-channel typed integer palettes
+use the canonical named/custom LUT forms; the UI must reuse its existing legacy
+palette conversion before calling this path for other legacy palette names.
+
+The native integration test covers detached ownership, unchanged source/history,
+atomic publication and repeated publication refusal, stale metadata/display,
+changed candidate, cancellation, closed source, callback alias capture, output
+axes/values/density/units/channel state, ordinary overlay regressions, native
+Time/Channels/group extensions, RGB and session save/reopen. Windows and Linux
+source consumers pass. Linux retains the existing GCC13 maybe-uninitialized
+warning from the byte-unchanged variance path; only that diagnostic was nonfatal
+for that existing translation unit. New units retain -Werror. Full CMake/install
+is delegated to successor CI, not claimed from these source consumers.
+[Evidence](../parity/reviews/G034-projection-publication-progress001.json).
+
+Still required: exhaustive retained metadata differential checks, strict ImageJ
+record/replay schema, full job/provider/metadata admission, Python and shared
+ImGui dialog/worker/facade publication, actual rendered overlays, grouped GUI
+hyperstack forwarding, calibration generation/fitting, downstream/virtual IEEE
+and original full acceptance. Prepared parameters currently expose only method
+as diagnostic information; callers must not serialize them as a complete command.
