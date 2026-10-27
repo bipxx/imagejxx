@@ -404,3 +404,38 @@ validated intensity records without adding mutable tables to DocumentData or
 forking metadata codecs. Fix metadata/title/LUT/overlay policy, strict source
 records and grouped GUI dispatch, then bind Python/shared ImGui and verify real
 interaction/history/reopen. The full ImageJ/Fiji goal remains unfinished.
+
+## Immutable intensity metadata contract — 2026-10-26
+
+`imagej_intensity_calibration.hpp` stores a version1 closed record at the reserved
+`imagejxx.intensity_calibration` property. It reuses ordinary nested metadata and
+the existing session codec. Snapshots/history share the immutable node; this
+avoids copying a full table on every metadata edit. Unknown/malformed records
+are rejected on consumption and left unchanged. The explicit setter replaces
+only this property and uses the source pixel/metadata revision guard.
+
+Every record has `schema="imagejxx.intensity-calibration"`, exact integer
+`version=1`, `mode` and UTF-8 `value_unit` (no NUL, at most1MiB). Modes `none` and
+`signed16` have exactly those four fields. `lookup` additionally requires:
+
+| Field | Contract |
+| --- | --- |
+| `bit_depth` | Exact integer8 or16, matching scalar integer storage |
+| `table_f32_hex` | Exactly256 or65536 IEEE Float32 words, each eight lowercase hexadecimal digits, most significant nibble first |
+| `source_parameters` | Opaque finite UTF-8 metadata object; never executed or treated as a generated table |
+| `signed16` | Exact Boolean; true only for16-bit lookup, independently selecting sum correction |
+
+Table bit patterns are lossless, including NaN payloads and infinities. The
+lookup is materialized only when requested; the projection executor separately
+admits and owns its immutable execution copy. Default uncalibrated Gray Value
+removes the property. Nondefault units remain representable without density.
+Projection preservation requires matching scalar integer storage and source
+density; Float32/64 clears density and retains units; RGB resets units.
+
+Tests cover strict record rejection, complete256-word bit equality, shared node
+identity, failed edits/no-op edits, Undo/Redo, actual session encode/decode, and
+an actual calibrated projection plus the output intensity bridge. Windows and
+Linux source consumers pass; the standalone example passes on both. See
+[scoped evidence](../parity/reviews/G034-intensity-metadata-progress001.json).
+Calibration-function generation/fitting, prepared publication, channel display/
+overlay policy, strict ImageJ commands and actual ImGui interaction remain open.

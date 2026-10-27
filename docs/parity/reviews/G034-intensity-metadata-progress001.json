@@ -1,0 +1,105 @@
+{
+  "schema": "imagejxx.scoped-progress",
+  "version": 1,
+  "source_base": "b5e3dd608f2f1eb3b2d0ea221db0f5113521623c",
+  "scope": "Immutable intensity metadata, document edit/Undo, session roundtrip and numerical projection bridge; not prepared output publication or UI acceptance",
+  "source_inputs": [
+    {
+      "path": "include/imagejxx/imagej_intensity_calibration.hpp",
+      "bytes": 3358,
+      "sha256": "676113b0aa86d06a4881c16a6a4c84d00a1f747bb8f3e91f0ff12abf51af7dcd"
+    },
+    {
+      "path": "src/native/imagej_intensity_calibration.cpp",
+      "bytes": 9732,
+      "sha256": "bbffedb87d3f0daa9f6e3c10bc1aec3db6961a79e47b4e99e1e4e0a97313bb22"
+    },
+    {
+      "path": "tests/native/test_imagej_intensity_calibration.cpp",
+      "bytes": 7765,
+      "sha256": "a3729a0041c4c424b402dcc82c409786f68b9e7bac1d161e149c8b4014952e7e"
+    },
+    {
+      "path": "examples/cpp/imagej_intensity_calibration.cpp",
+      "bytes": 1316,
+      "sha256": "21fe6c7c3d1e640966cfe261c2066372947d0764da6753ce163211c8f506a3a1"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 136246,
+      "sha256": "000ef8cf094186ff3745080436927dff4f4ab994c235055ea8c908241a619f00"
+    },
+    {
+      "path": "examples/cpp/CMakeLists.txt",
+      "bytes": 22678,
+      "sha256": "4567fd7b321b51728814771fa68b69ad4aa0ddcf2e750440655db7040c394fc7"
+    }
+  ],
+  "verification": [
+    {
+      "platform": "Windows/MSVC",
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/intensity-windows072/receipt.json",
+        "bytes": 72000,
+        "sha256": "91bbf636232b03b61f3d5390822ccd58c80af4a5a88d9af805edbeeed22668d0"
+      },
+      "peak_scratch_bytes": 4041824,
+      "temporary_reserve_bytes": 33554432,
+      "consumers": 2,
+      "scope": "Intensity immutable metadata linked to unchanged installed dependencies; not installed new API, full CMake, metadata publication or UI acceptance",
+      "scratch_retired": true
+    },
+    {
+      "platform": "Linux/GCC",
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/intensity-linux073/receipt.json",
+        "bytes": 76740,
+        "sha256": "f3b8d29e48368cb0d7802841605300ec9106331bdd6d5c4537544f41c26fb26a"
+      },
+      "peak_scratch_bytes": 3209712,
+      "temporary_reserve_bytes": 33554432,
+      "consumers": 2,
+      "scope": "Intensity immutable metadata linked to unchanged installed dependencies; not installed new API, full CMake, metadata publication or UI acceptance",
+      "scratch_retired": true
+    }
+  ],
+  "storage": {
+    "before": {
+      "path": ".tmp/manual-workflow-verification/intensity-storage-before071.json",
+      "bytes": 1522,
+      "sha256": "8edd0484831b042890f89cf1e01110e9eb9b75de0a4434f1bd6372df4f6d0e26"
+    },
+    "after": {
+      "path": ".tmp/manual-workflow-verification/intensity-storage-after074.json",
+      "bytes": 1523,
+      "sha256": "95fb12999692b2d6e1435007cde41f91934a6d6c66cb6ab48b3c223f76fc81ea"
+    },
+    "before_known_bytes": 8588412777,
+    "after_known_bytes": 8588718104,
+    "delta_known_bytes": 305327,
+    "budget_verified": false,
+    "unavailable_subtrees": [
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest",
+        "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest'"
+      },
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest-ui",
+        "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest-ui'"
+      }
+    ],
+    "note": "Full normalized root scope; denied subtrees remain unknown. Explicit32MiB temporary compiler reserve used and scratch retired. No new cache/runtime generation."
+  },
+  "limitations": [
+    "Source consumers link new objects against unchanged installed core dependencies; local installed SDK does not yet expose these APIs. Full CMake/install qualification follows in CI.",
+    "No calibration-function table generation or fitting. Source parameters are opaque metadata, never executed.",
+    "Prepared projection publication, title/channel LUT/range/overlay policy, strict ImageJ command and Python/shared ImGui workflow remain open.",
+    "Original historical reference recovery and full acceptance gates remain open."
+  ],
+  "family_status": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  },
+  "full_acceptance": false
+}

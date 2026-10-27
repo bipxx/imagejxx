@@ -1,5 +1,26 @@
 # Three-agent execution plan
 
+## Immutable intensity metadata implemented — 2026-10-26
+
+The source intensity record now uses the existing immutable `MetadataTree`
+property namespace. Full tables retain exact Float32 bits, including NaNs,
+without a new session codec or mutable bulk field. Document edits support
+ordinary Undo/Redo; session save/reopen preserves all table words and units.
+Windows/MSVC and Linux/GCC each pass the native test and SDK-intended example,
+linked against unchanged installed dependencies. Both owned scratch directories
+were retired after terminal process proof and hash verification. These are
+source-consumer checks; current installed API/full CMake qualification follows
+in CI. [Source-bound receipt](parity/reviews/G034-intensity-metadata-progress001.json).
+
+The request bridge validates storage before replacing density fields. Projection
+integer outputs preserve the shared record when requested; floating outputs
+clear density and retain the source unit. RGB clears density and resets units.
+Function generation/fitting is still open. The next implementation is prepared
+new-document publication, then the shared Python/C++ ImGui workflow, using the
+ordered publication/UI steps below. This API checkpoint does not complete G034.
+Whole-root known storage after verification is8,588,718,104 bytes; two denied
+cache trees leave the full8GiB budget unverified. No cache generation was added.
+
 ## Projection channel/density policy implemented — 2026-10-26
 
 The bounded decision experiment is complete:252 ImageJ API observations capture

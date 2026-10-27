@@ -329,3 +329,15 @@ metadata in strict profiles, not host-sized working/scratch admission or duplica
 derived tables. Then bind Python/shared ImGui and verify actual dialogs and
 history/reopen. Calibration-function generation/full metadata and original gates
 remain required; sampled lookup fixtures prove pixel processing only.
+
+### G034 intensity metadata checkpoint — 2026-10-26
+
+Use `read/set_imagej_intensity_calibration` and the existing metadata/session
+paths. Exact lookup tables live in shared immutable nodes; do not add a bulk
+mutable DocumentData field or another codec. `apply_imagej_intensity_calibration`
+binds the request; `projected_imagej_intensity_calibration` handles density/unit
+intent. Windows/Linux source tests prove edit/Undo/session/projection bridges.
+[Evidence](../parity/reviews/G034-intensity-metadata-progress001.json).
+Next reuse `PreparedOperation` new-document staging and atomic publication,
+then replace the legacy materializing scientific UI route. Channel display and
+overlay mapping must be explicit; an API-only checkpoint is not editor parity.
