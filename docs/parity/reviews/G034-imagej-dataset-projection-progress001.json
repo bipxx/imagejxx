@@ -1,0 +1,225 @@
+{
+  "schema": "imagejxx.scoped-progress",
+  "version": 1,
+  "source_base": "f18d75ca53e3ab1149cca9b1a9063fe8de57b79b",
+  "scope": "Separate ImageJ 1.54r scalar dataset descriptor and bounded executor; no RGB, metadata publication, strict ImageJ command, Python or UI acceptance",
+  "source_inputs": [
+    {
+      "path": "include/imagejxx/imagej_dataset_projection.hpp",
+      "bytes": 3354,
+      "sha256": "5fb28d408f9ce93a8f2fe3858e48ac8831b3aa0e09fc66ba83c18e59e4df4422"
+    },
+    {
+      "path": "src/native/imagej_dataset_projection.cpp",
+      "bytes": 12974,
+      "sha256": "dad90543fc6392c385c55d4fc638cbf46206a5ff9fab56540c4108f90af12eb2"
+    },
+    {
+      "path": "src/native/imagej_projection_numeric.hpp",
+      "bytes": 1835,
+      "sha256": "d144013d10a8665236bb92cdc73a3d7cd58416e2464159fe98df28d583712487"
+    },
+    {
+      "path": "src/native/imagej_projection_numeric.cpp",
+      "bytes": 7164,
+      "sha256": "3a3d033426ec16c995b5bec10536b6dafb7182a7f63e3ff16802ae3a7bc9cc7e"
+    },
+    {
+      "path": "tests/native/test_imagej_dataset_projection.cpp",
+      "bytes": 14714,
+      "sha256": "698f684b1aafd627407a92d24e116eff98a27574bee41ed5b36367601b7c0e6d"
+    },
+    {
+      "path": "tests/native/imagej_dataset_projection_reference.inc",
+      "bytes": 163354,
+      "sha256": "7752861529c5be885317fa132560bd046c671ffc6f50c2f5495ad0d4cb6141c4"
+    },
+    {
+      "path": "tests/native/test_imagej_projection_numeric.cpp",
+      "bytes": 2806,
+      "sha256": "c0b34bb68d775c1c11105dc0ef001309c2ba75a21bb76bc14916f18d37a49b19"
+    },
+    {
+      "path": "tests/native/imagej_projection_numeric_reference.inc",
+      "bytes": 47108,
+      "sha256": "6d8ac432d18200ad22d7d13a5df692da21af97447ed4b6021bcc7b4ff438c082"
+    },
+    {
+      "path": "scripts/generate_imagej_dataset_projection_fixture.py",
+      "bytes": 3777,
+      "sha256": "e216de9c22469f0ff3235b41c8d04bdc84026ba8a7e8a69cfa95c8a73efbaab1"
+    },
+    {
+      "path": "scripts/generate_projection_numeric_fixture.py",
+      "bytes": 2876,
+      "sha256": "ceeeb8a970d20051970425f0717375777d4838f572ff7c55ad34299c44b5b59b"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 135294,
+      "sha256": "085089a1c1409d5705e5f5192575532677807a465ef1980532b1ee3492ac73af"
+    },
+    {
+      "path": "examples/cpp/CMakeLists.txt",
+      "bytes": 21537,
+      "sha256": "3a5fdf70c65220a31b28ddf19d0393977ce74f7a754b1bb473f36bd0729c2658"
+    },
+    {
+      "path": "examples/cpp/imagej_dataset_projection.cpp",
+      "bytes": 1082,
+      "sha256": "6ff3ea96f3a6bc62fda4d309c209f8bf4cfb2c91311dfce27b2a6a2e05d108c1"
+    },
+    {
+      "path": ".github/workflows/test.yml",
+      "bytes": 10589,
+      "sha256": "0183439d0f08c7d936096ddc5ea3100893ecd98717042068a6d9a64afcc869d6"
+    }
+  ],
+  "reference_corpus": {
+    "path": "docs/parity/reviews/G034-imagej-z-projection-reference001/observations.jsonl.gz",
+    "bytes": 37200,
+    "sha256": "a22ae856cac15d0f956f935dbe371136da455e428907590b3040d7c7996f7073"
+  },
+  "cases": 228,
+  "tile_variants": 2,
+  "samples_per_lane": 3840,
+  "exact_non_nan_type_bits_per_lane": 3802,
+  "nan_class_only_per_lane": 38,
+  "additional_scalar_rays_per_lane": 336,
+  "local_lanes": [
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/imagej-dataset-windows039/receipt.json",
+        "bytes": 78026,
+        "sha256": "2d31c7ee224def664f473e9c9f51f3c770d3ef0a9ba39bce9671f5b24217fc14"
+      },
+      "dataset_result": {
+        "path": ".tmp/manual-workflow-verification/imagej-dataset-windows039/test-consumer.log",
+        "bytes": 107,
+        "sha256": "2d83b63b1795e1149b2047da243333ac0783b3292610c1dfd91d1821e99f6f5a"
+      },
+      "scalar_result": {
+        "path": ".tmp/manual-workflow-verification/imagej-dataset-windows039/scalar-consumer.log",
+        "bytes": 86,
+        "sha256": "0db1db770590a42c094870ae708cedcefa24f97172ab84dde52c6d7502863d11"
+      },
+      "example_result": {
+        "path": ".tmp/manual-workflow-verification/imagej-dataset-windows039/example-consumer.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "observed_after_command_scratch_bytes": 4517877,
+      "continuous_write_monitor": false,
+      "scratch_retired": true,
+      "scope": "New sources linked with existing installed static dependencies; not full CMake, newly installed SDK or UI acceptance"
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/imagej-dataset-linux040/receipt.json",
+        "bytes": 83991,
+        "sha256": "75e197a7e836fc192bc47c4025f7c71fb0035ade9e9e73f17879b113c19d0b9e"
+      },
+      "dataset_result": {
+        "path": ".tmp/manual-workflow-verification/imagej-dataset-linux040/test-consumer.log",
+        "bytes": 106,
+        "sha256": "c1d4185d892c96436f48ec9a3a7a6e7a1da527fab3e37efa11fd2a12ae05631e"
+      },
+      "scalar_result": {
+        "path": ".tmp/manual-workflow-verification/imagej-dataset-linux040/scalar-consumer.log",
+        "bytes": 85,
+        "sha256": "c6ae23ab0ef860cdd5f453d3e70994bd6a985c95be41676fc1bb916bd3fb9b10"
+      },
+      "example_result": {
+        "path": ".tmp/manual-workflow-verification/imagej-dataset-linux040/example-consumer.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "observed_after_command_scratch_bytes": 3762312,
+      "continuous_write_monitor": false,
+      "scratch_retired": true,
+      "scope": "New sources linked with existing installed static dependencies; not full CMake, newly installed SDK or UI acceptance"
+    }
+  ],
+  "full_acceptance": false,
+  "remaining": [
+    "RGB sum clip/global scaling and SD channel merge",
+    "GUI grouped hyperstack dispatch policy versus owned scientific grouping",
+    "Intensity/LUT/overlay and prepared publication with live owner/revision guards",
+    "Reviewed virtual IEEE source admission; unknown virtual sources remain finite-only",
+    "Explicit IEEE display/session/downstream operation integration",
+    "Distinct strict ImageJ profile/record, Python and shared ImGui controls",
+    "Actual UI interactions, history/reopen, original reference readiness and complete ImageJ/Fiji acceptance"
+  ],
+  "additional_checks": {
+    "path": ".tmp/manual-workflow-verification/imagej-dataset-offline-checks043.json",
+    "bytes": 924,
+    "sha256": "bb2062bda7330988ac8c993019462e56e10b10d6cf661c5a2840c7073adfe14b"
+  },
+  "original_inventory": {
+    "identity": {
+      "path": "docs/parity/inventory.json",
+      "bytes": 11023784,
+      "sha256": "109d5c555374b81cc4c1ed346da30f081ca857c498472ec2e1e0900637e769ba"
+    },
+    "counts": {
+      "in_progress": 47,
+      "open": 52
+    },
+    "whole_bytes_unchanged": true
+  },
+  "protected_inputs_unchanged": [
+    "tests/reference/continuous_bezier_exact_reference.py",
+    "tests/reference/ObserveContinuousPathBooleans.java",
+    "docs/packets/CG0-analytic-reference-contract.md",
+    "docs/packets/CG0-imagej-observer-contract.md",
+    "tests/native/rounded_path_reference.inc"
+  ],
+  "storage": {
+    "before": {
+      "path": ".tmp/manual-workflow-verification/imagej-dataset-storage-before031.json",
+      "bytes": 1522,
+      "sha256": "790d6db3273a0ab5ceed1943984323f4d6e7657d61354d61bc0ae33320594afd"
+    },
+    "after": {
+      "path": ".tmp/manual-workflow-verification/imagej-dataset-storage-after041.json",
+      "bytes": 1522,
+      "sha256": "dc5c49d935c9a3d6f9e019c70c8ba25cd729c731448e00427d70143f923deed5"
+    },
+    "budget_verified": false,
+    "reason": "Two denied cache subtrees; known total is a lower bound, point-in-time inventory precedes own/final small receipts",
+    "temporary_reserve_bytes": 33554432,
+    "reason_for_reserve": "Necessary cross-platform source consumers can briefly exceed narrow known headroom; serial links retire completed binaries before the next link. No cache/runtime generation. All final scratch retired.",
+    "intermediate_log_retention": [
+      {
+        "path": ".tmp/manual-workflow-verification/imagej-dataset-windows032/log-retirement.json",
+        "bytes": 2249,
+        "sha256": "a2c146b35d083a2b618be05798cbc34b96822a82087b21778b6d2a820c1673bc"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/imagej-dataset-windows033/log-retirement.json",
+        "bytes": 2249,
+        "sha256": "4049154807779959649cee6826c06626fd3e67d916bd495bbbe55648366d3bdd"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/imagej-dataset-windows035/log-retirement.json",
+        "bytes": 2249,
+        "sha256": "7bf6240b66667fc96896781caa73a4be234519a732d8cd30b7b995f710cec54a"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/imagej-dataset-linux034/log-retirement.json",
+        "bytes": 2724,
+        "sha256": "bcdef8a2881d8faefe96a04b389b7fb9b59efdede56242737e8ff67427cd0cf6"
+      },
+      {
+        "path": ".tmp/manual-workflow-verification/imagej-dataset-linux036/log-retirement.json",
+        "bytes": 2724,
+        "sha256": "fd9080b2fea24ea01d15e364f2ab8c0cce58c6f0e3a5d2c09f3793c372190eb7"
+      }
+    ],
+    "final": {
+      "path": ".tmp/manual-workflow-verification/imagej-dataset-storage-final044.json",
+      "bytes": 1523,
+      "sha256": "20ff6820627f54395c5b19c73403552b0b2bde2de082cd977d14add0093574b1"
+    }
+  }
+}

@@ -288,3 +288,15 @@ native request/record semantics. Only after RGB/metadata policy is verified
 should prepared publication, Python and shared ImGui consume that profile.
 See the current execution card for the ordered acceptance boundaries. A passing
 scalar kernel is not completed ImageJ dataset/editor behavior.
+
+## ImageJ dataset profile checkpoint — 2026-10-26
+
+The separate scalar dataset descriptor/executor is implemented and locally
+verified against228 captured cases. Reuse its resolved axis and rectangular
+streaming/tiled path. Next close RGB clip/global-scale behavior, then intensity,
+LUT/overlay and prepared publication, a distinct strict ImageJ record, Python
+and shared ImGui interaction. Keep legacy native_finite unchanged. Core
+scientific grouping must not silently stand in for the grouped GUI hyperstack
+dispatch. Legacy default region adapters can repeat full-plane decodes; tile
+height now avoids the earlier row-only amplification and the descriptor charges
+its scratch. Provider-private caching remains separately owned.

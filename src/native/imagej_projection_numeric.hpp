@@ -9,6 +9,22 @@ struct ImageJProjectionSample {
   ImageJProjectionType type;
   std::uint32_t bits;
 };
+// Streaming state for nonmedian methods; independent of contributor count in
+// memory. The checked ray adapter below uses the same arithmetic implementation.
+class ImageJProjectionAccumulator {
+public:
+  ImageJProjectionAccumulator(ImageJProjectionType type,
+                             ImageJProjectionMethod method, bool signed16);
+  void push(std::uint32_t bits);
+  ImageJProjectionSample finish() const;
+private:
+  ImageJProjectionType type_;
+  ImageJProjectionMethod method_;
+  bool signed16_;
+  float result_ = 0;
+  double sum_ = 0, squares_ = 0;
+  int count_ = 0, non_nan_count_ = 0;
+};
 // Private scalar-ray primitive for the pinned ImageJ 1.54r profile. Integer
 // samples are unsigned codes; Float32 samples are raw IEEE words. Signed16
 // density affects sum and median only. No dataset axes, RGB merge, metadata,
@@ -20,5 +36,6 @@ struct ImageJProjectionSample {
 ImageJProjectionSample project_imagej_scalar_ray(
     ImageJProjectionType type, ImageJProjectionMethod method,
     const std::uint32_t* samples, std::size_t count, bool signed16,
-    std::uint32_t* median_scratch = nullptr, std::size_t scratch_count = 0);
+    std::uint32_t* median_scratch = nullptr, std::size_t scratch_count = 0,
+    void (*poll)() = nullptr);
 } // namespace imagejxx::detail

@@ -234,3 +234,70 @@ Next reuse the primitive's rules in bounded streaming/tiled dataset execution;
 resolve ImageJ one-Z time dispatch explicitly, admit IEEE outputs, then complete
 RGB scaling and metadata before prepared publication, bindings and UI. The ray
 primitive alone does not establish those remaining behaviors or full G034.
+
+## Separate ImageJ scalar dataset execution
+
+`imagej_dataset_projection.hpp` adds a separate request, metadata descriptor and
+`project_imagej_dataset` result. It supports U8/U16/F32 S1 with the pinned scalar
+numerical profile; existing native_finite requests, records and processing are
+unchanged. `ImageJDefault` resolves Time exactly when Z==1; otherwise Z. Explicit
+Time retains all Z, an owned extension for multi-Z sources. Z projection retains
+all or current T; Time ignores `all_time_frames`, matching observed one-Z
+ImageJ dispatch. Scientific C remains independent, with all/current selection.
+Bounds are explicit inclusive zero-based coordinates on the resolved axis;
+positive groups divide the range exactly. Scientific grouped T/C behavior is
+an owned extension, not proof of the ImageJ grouped GUI hyperstack path.
+
+Input integers must be exact typed unsigned codes. Default finite Float32 source
+intermediates round to Float32 at ingestion; reviewed IEEE input words are
+decoded without changing source buffers. Float outputs retain IEEE admission,
+including sum/median overflow. The result carries signed16 density intent for
+integer outputs; Float32 results clear that intent. Publication must consume
+this field because Dataset has no density calibration member.
+
+Ordinary geometry copies the source without first-contributor or time-origin
+rebasing. Positive grouping multiplies Z pitch even for Time and retains voxel
+origin indices, represented here by the voxel index of world zero. Consequently
+world origin can change; copying world origin with a changed pitch would be
+incorrect for the pinned nonzero ImageJ voxel-origin cases. Affine extension
+checks preserve that same invariant. Grouped expected geometry comes from the
+observer's separately reproduced source-level calibration steps, not GUI input.
+
+The executor captures a Dataset value and request before callbacks. Reassigning
+caller aliases cannot retarget it. Metadata-only checked estimates admit output
+buffers, owner tables, one fallback decoded plane/region, and reducer scratch
+before callbacks or pixels. These exclude provider-private caches, allocator
+control overhead and document publication, and are not total heap bounds.
+`tile_width`/`tile_height` default1024/32 and clamp to XY. Each source region
+is released before the next contributor. Nonmedian state depends only on tile
+size; median stores one bounded pixel-by-contributor tile plus one ray scratch.
+Both paths poll cancellation, including validation/partition/sort inside long
+median work. Callback, reader and metadata-drift failures return no result.
+
+True tiled readers avoid fallback decodes. Legacy default region adapters may
+redecode a full plane for every tile; larger rectangles reduce this cost at the
+expense of explicitly charged scratch. No random-access cost capability exists
+on PlaneSource today, so no universal decode/performance guarantee is claimed.
+Do not replace this with whole-volume retention or a Python pixel loop.
+
+The fixture transcribes all228 non-RGB success rows from the immutable corpus,
+reorders Java t,z,c planes to native t,c,z explicitly, and uses captured output
+words as expectations. Two tile choices exercise partial XY rectangles. Each
+lane checks3840 output samples:3802 exact non-NaN type/bits and38 NaNs by class,
+plus exact source-word preservation. Provider tests cover finite/fallback/tiled
+paths, read counts, one lease, caps before callbacks/reads, invalid configuration,
+provider/callback failures, source/request alias capture, metadata drift,
+long-median cancellation and explicit multi-Z Time behavior. Existing336 scalar
+rays and the public SDK-intended example also pass locally. CMake registers the
+new test and SDK example; CI checks fixture regeneration. Local source consumers
+link unchanged installed dependencies, not a newly installed SDK. RGB merge,
+LUT/overlay metadata, prepared publication, strict ImageJ records, bindings and
+shared UI remain to do; full G034 and editor parity are not established.
+
+Reviewed IEEE source admission is currently eager-only under Dataset's existing
+policy. Unknown virtual readers remain FiniteOnly; this executor rejects their
+NaNs/infinities rather than bypassing that admission rule. Reviewed virtual IEEE
+provider admission is a remaining integration requirement before claiming
+nonfinite virtual-stack ImageJ parity. Likewise, downstream finite-only commands
+and older display/session metadata do not become IEEE-capable merely because
+this executor can return such pixels.

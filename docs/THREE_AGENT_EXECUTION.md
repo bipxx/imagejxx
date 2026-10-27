@@ -1,5 +1,56 @@
 # Three-agent execution plan
 
+## ImageJ scalar dataset executor — 2026-10-26
+
+The separate `imagej_dataset_projection.hpp` API now resolves default Z/time,
+explicit Z/Time, current/all T, independent C selection and complete groups.
+The existing native_finite API/record is unchanged. Typed U8/U16/F32 S1 execution
+uses fixed-per-pixel streaming state for nonmedian methods and bounded XY
+pixel-by-contributor storage for median. Source/request snapshots are captured
+before callbacks; provider metadata is checked around reads. Caps precede
+callbacks/pixels, and cancellation reaches median scratch/sort processing.
+[Source-bound evidence](parity/reviews/G034-imagej-dataset-projection-progress001.json).
+
+228 pinned scalar dataset cases each run with two rectangular tile choices:
+3840 output samples/lane,3802 exact non-NaN type/bits and38 NaNs by class. The
+unchanged336-ray fixture also passes. Source words remain unchanged. Local
+Windows/MSVC and Linux/GCC consumers link existing installed dependencies;
+these are not full CMake/install acceptance. The new public example is wired
+into installed-SDK CI, and CI verifies the hash-bound fixture transcription.
+Generated binaries are hashed/retired; no cache/runtime generation is added.
+
+The calibration descriptor copies ordinary projection geometry; grouped output
+keeps the voxel index of world zero while multiplying Z pitch, including for
+Time. This can change world origin. The result carries explicit signed16 density
+intent because Dataset has no density field. Float results use reviewed IEEE
+Float32 admission. No LUT/overlay/document publication is inferred. Explicit
+multi-Z Time and scientific T/C grouping are owned extensions; only the pinned
+scalar/grouped and hyperstack cases establish ImageJ observations. GUI grouped
+hyperstack dispatch still needs its separate policy.
+
+Next ordered delivery:
+1. RGB numerical merge: use the remaining72 successful RGB reference rows for
+   per-channel reductions, sum clip/global scaling and SD scaling. Preserve
+   ImageJ's24 explicit RGB-C2 rejections as reference facts; decide the UI profile
+   boundary without deleting native RGB-C extensions.
+2. Resolve grouped GUI hyperstack dispatch separately from the core scientific
+   grouping extension. The reference observer reproduced calibration steps;
+   it did not execute the GUI. Preserve that evidence boundary.
+3. Implement intensity, voxel-origin, LUT/range and positioned/wildcard overlay
+   policy in prepared new-document publication with live owner/revision guards.
+   Keep IEEE output admission explicit through display/session versions.
+   Reviewed virtual IEEE admission is still missing; unknown virtual readers
+   remain FiniteOnly. Do not infer nonfinite virtual-stack or downstream-command
+   support from this eager-IEEE-capable executor.
+4. Add a distinct strict ImageJ command schema/profile after RGB/metadata fields
+   are fixed. Reuse native command source binding and closed-grammar validation;
+   persist resolved axis/typed output/density and portable derived claims, not
+   ABI working-size admission as a historical guarantee.
+5. Bind Python and shared ImGui controls, then verify actual interaction,
+   replay/history/reopen. Full G034, all original99 family statuses and original
+   reference-readiness requirements remain open/unchanged.
+
+
 ## Scalar ImageJ projection kernel — 2026-10-26
 
 The private `imagej_projection_numeric` kernel now matches 336 scalar rays from
