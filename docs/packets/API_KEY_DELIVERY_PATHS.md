@@ -278,3 +278,13 @@ packet when a transitive source/tool/fixture closure and base commit suffice.
 Prepare one runnable selector manifest at entry; use the same harness locally
 and in CI. Resource measurements include every active generated root and peak
 raw plus compression workspace. Source-only plan reviews create no build assets.
+
+## Projection numerical delivery checkpoint — 2026-10-26
+
+Reuse the pinned336-ray private scalar oracle and existing native_finite
+command guards. Next add the separate ImageJ dataset profile with resolved
+axis, density and bounded streaming/tiled execution; do not revise historical
+native request/record semantics. Only after RGB/metadata policy is verified
+should prepared publication, Python and shared ImGui consume that profile.
+See the current execution card for the ordered acceptance boundaries. A passing
+scalar kernel is not completed ImageJ dataset/editor behavior.

@@ -208,3 +208,29 @@ No dependency or plugin was added. All99 original requirement/status triples,
 commercial-use constraints and the broader historical reference recovery scope
 remain unchanged. Compiler/runtime generations are reused; verification retains
 small receipts and generated identities, then retires terminal scratch.
+
+## Private ImageJ scalar numerical seam
+
+`src/native/imagej_projection_numeric.hpp/.cpp` is a private, allocation-free
+scalar primitive, not a new dataset API. Its caller supplies unsigned U8/U16
+codes or raw Float32 words and a method; signed16 is explicit and only valid for
+U16. It validates types, count, sample encoding and median scratch capacity and
+overlap before scratch writes. Sum and integer mean round each accumulation to
+Float32; Float32 mean skips NaNs with a double accumulator/count; SD is sample
+SD with separately rounded double products; min/max use finite sentinels;
+median sorts NaNs last and negative zero first, and preserves even-add overflow.
+U16 median returns Float32. Signed16 subtracts density bias for sum and median,
+while typed min/max/mean retain unsigned codes for later density metadata.
+
+The generated fixture transcribes84 scalar cases/336 rays from the immutable
+reference corpus. Windows MSVC strict and Linux GCC strict source consumers pass:
+317 non-NaN results exact type/bits,19 NaNs equivalent by class. Arithmetic NaN
+payload/sign parity is not claimed. The original Java observations and strict
+native_finite records remain unchanged. CMake registers the test and applies
+strict arithmetic flags; CI also verifies fixture transcription without Java.
+Local checks are standalone source consumers, not full CMake/install acceptance.
+
+Next reuse the primitive's rules in bounded streaming/tiled dataset execution;
+resolve ImageJ one-Z time dispatch explicitly, admit IEEE outputs, then complete
+RGB scaling and metadata before prepared publication, bindings and UI. The ray
+primitive alone does not establish those remaining behaviors or full G034.

@@ -1,0 +1,139 @@
+{
+  "schema": "imagejxx.scoped-progress",
+  "version": 1,
+  "scope": "Private ImageJ 1.54r scalar projection kernel; no dataset/RGB/metadata/UI acceptance",
+  "source_base": "6170fce381c53dfc9bf1a04f8fe4e7ac71305cec",
+  "source_inputs": [
+    {
+      "path": "src/native/imagej_projection_numeric.cpp",
+      "bytes": 5255,
+      "sha256": "206cf8222c0783c957b1c2d567c15e24d547131d404cd1d736fe8ee792422958"
+    },
+    {
+      "path": "src/native/imagej_projection_numeric.hpp",
+      "bytes": 1208,
+      "sha256": "bafc750bd4c8498c416e83950ab3802c14a2f1c2cb89a0f33b54169e997c1fb8"
+    },
+    {
+      "path": "tests/native/test_imagej_projection_numeric.cpp",
+      "bytes": 2806,
+      "sha256": "c0b34bb68d775c1c11105dc0ef001309c2ba75a21bb76bc14916f18d37a49b19"
+    },
+    {
+      "path": "tests/native/imagej_projection_numeric_reference.inc",
+      "bytes": 47108,
+      "sha256": "6d8ac432d18200ad22d7d13a5df692da21af97447ed4b6021bcc7b4ff438c082"
+    },
+    {
+      "path": "scripts/generate_projection_numeric_fixture.py",
+      "bytes": 2876,
+      "sha256": "ceeeb8a970d20051970425f0717375777d4838f572ff7c55ad34299c44b5b59b"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 134873,
+      "sha256": "eb8c6eaec71cca943439c8f3a22709425fa18be3fd3fcce732e34ce6d52e8dde"
+    },
+    {
+      "path": ".github/workflows/test.yml",
+      "bytes": 10503,
+      "sha256": "c0a82244f7042d5d4e0a3eff28326942b7c7ecf1b3ffc2da5459cfbb97442681"
+    }
+  ],
+  "corpus": {
+    "path": "docs/parity/reviews/G034-imagej-z-projection-reference001/observations.jsonl.gz",
+    "bytes": 37200,
+    "sha256": "a22ae856cac15d0f956f935dbe371136da455e428907590b3040d7c7996f7073"
+  },
+  "case_count": 84,
+  "ray_count": 336,
+  "exact_non_nan_type_bits": 317,
+  "nan_class_only": 19,
+  "methods": [
+    "mean",
+    "maximum",
+    "minimum",
+    "sum",
+    "stddev",
+    "median"
+  ],
+  "types": [
+    "UInt8",
+    "UInt16",
+    "Float32"
+  ],
+  "local_lanes": [
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/projection-numeric-windows027/receipt.json",
+        "bytes": 16217,
+        "sha256": "5a8747cc500694dba8432340ab9d7d2d4338c5b664f8e497050d82d018ea3af0"
+      },
+      "result": {
+        "path": ".tmp/manual-workflow-verification/projection-numeric-windows027/consumer.log",
+        "bytes": 86,
+        "sha256": "0db1db770590a42c094870ae708cedcefa24f97172ab84dde52c6d7502863d11"
+      },
+      "state": "passed",
+      "observed_after_command_peak_scratch_bytes": 255884,
+      "continuous_write_monitor": false,
+      "scratch_retired": true,
+      "scope": "Standalone source consumer; not full CMake or installed SDK"
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/projection-numeric-linux028/receipt.json",
+        "bytes": 10447,
+        "sha256": "50a5dc2247dbec0c23d3ea61ffb72813ccee8c121ccd11524eff139614002fdc"
+      },
+      "result": {
+        "path": ".tmp/manual-workflow-verification/projection-numeric-linux028/consumer.log",
+        "bytes": 85,
+        "sha256": "c6ae23ab0ef860cdd5f453d3e70994bd6a985c95be41676fc1bb916bd3fb9b10"
+      },
+      "state": "passed",
+      "observed_after_command_peak_scratch_bytes": 63776,
+      "continuous_write_monitor": false,
+      "scratch_retired": true,
+      "scope": "Standalone source consumer; not full CMake or installed SDK"
+    }
+  ],
+  "checks": {
+    "fixture_regeneration": "passed",
+    "reference_reader": "10 passed",
+    "workflow_contracts": "10 passed, 1 existing skip",
+    "commercial_dependency_inventory": "passed with existing tooling .venv; system Python lacks packaging"
+  },
+  "native_finite_behavior": "unchanged",
+  "full_acceptance": false,
+  "family_status_changes": 0,
+  "remaining": [
+    "Separate ImageJ dataset profile and explicit Z/time axis resolution",
+    "Bounded streaming/tiled execution, working admission, cancellation and IEEE output",
+    "RGB scaling and merge",
+    "Density/calibration/LUT/overlay policy and prepared publication",
+    "Python, shared ImGui, history/reopen and real interactions",
+    "Original reference prerequisite recovery and complete acceptance"
+  ],
+  "storage": {
+    "before": {
+      "path": ".tmp/manual-workflow-verification/projection-numeric-storage-before019.json",
+      "bytes": 1522,
+      "sha256": "7edd1b4f7d1d385bb2daba0d62543cbae89669cc724c1174eef77b6b0625d95e"
+    },
+    "after": {
+      "path": ".tmp/manual-workflow-verification/projection-numeric-storage-after026.json",
+      "bytes": 1523,
+      "sha256": "f672ddc8404b5bb6514ca10e63e5408ba9a735373e261b71d9b30d4ae546153d"
+    },
+    "complete_budget_verified": false,
+    "reason": "Two cache subtrees denied; known total is a lower bound; point-in-time inventory precedes its own receipt and final small publication receipts",
+    "temporary_reserve_bytes": 33554432,
+    "new_cache_runtime_generations": 0,
+    "final": {
+      "path": ".tmp/manual-workflow-verification/projection-numeric-storage-final029.json",
+      "bytes": 1523,
+      "sha256": "8538b415aa4cc14518711ed7b1e9abecec75ec96dc881f276f928e9fb552800d"
+    }
+  }
+}

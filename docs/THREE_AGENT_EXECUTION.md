@@ -1,5 +1,45 @@
 # Three-agent execution plan
 
+## Scalar ImageJ projection kernel — 2026-10-26
+
+The private `imagej_projection_numeric` kernel now matches 336 scalar rays from
+84 pinned ImageJ cases across UInt8, UInt16, Float32, six methods, selected
+ranges, signed16 density, rounding, infinities, NaNs and signed zero. Windows
+MSVC and Linux GCC source consumers pass:317 non-NaN results match exact type
+and bits;19 NaNs match class, with arithmetic payload/sign explicitly outside
+this scoped guarantee. No historical reference bytes or native_finite behavior
+changed. No new public API or editor completion is claimed.
+[Source-bound evidence](parity/reviews/G034-imagej-projection-numeric-progress001.json).
+
+The implementation performs no heap allocation. Median uses caller-owned,
+validated nonoverlapping scratch; other methods require no scratch. Strict
+floating-point compilation is configured per source. Fixture generation copies
+expected bytes from the hash-pinned corpus and CI verifies that transcription.
+Local verification used standalone source consumers, not a rebuilt installed
+SDK or full CMake run. Generated binaries were hashed and retired.
+
+Next ordered delivery:
+1. Dataset executor: introduce a separate ImageJ profile without changing the
+   native_finite request/record version. Resolve explicit Z/time/default axis
+   before pixels; default one-Z hyperstacks project time. Capture active T/C and
+   signed16 density. Describe typed output and checked working/output caps.
+2. Use bounded XY tiles and one current source plane/region lease. Nonmedian
+   reducers need streaming state; do not gather whole volumes or call a scalar
+   ray API through Python. Median uses a bounded tile-by-contributor buffer.
+   Charge fallback full-plane decode and output ownership; check cancellation
+   between tiles and provider reads. Permit reviewed IEEE Float32 outputs.
+3. RGB merge: independently verify sum clipping/global normalization and SD
+   channel scaling against the remaining reference rows. Keep native RGB-C
+   extensions separate from ImageJ's explicit multichannel RGB rejection.
+4. Decide density, voxel-origin, LUT/range and positioned/wildcard overlay policy
+   from the pinned observations, then implement prepared new-document publication
+   with live owner/revision guards. Do not inherit native world-origin rebasing
+   and label it ImageJ-equivalent.
+5. Bind Python and shared ImGui controls, record the explicit profile/axis,
+   replay/reopen and verify actual UI interactions. Full G034 and original99
+   family statuses remain unchanged; original reference readiness stays open.
+
+
 ## ImageJ projection reference captured — 2026-10-26
 
 The next compatibility decisions now have pinned runtime observations, not only
