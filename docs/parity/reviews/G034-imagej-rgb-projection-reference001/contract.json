@@ -1,0 +1,57 @@
+{
+  "schema": "imagejxx.rgb-projection-reference",
+  "version": 1,
+  "cases": 124,
+  "imagej_commit": "62db90a269cccc1ac79f658e4602043214ed055b",
+  "source_identities": [
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\tests\\reference\\ObserveRGBProjection.java",
+      "bytes": 3710,
+      "sha256": "5cda432649048d3b3050ebcba58477a5d4074fa7c6fe8b660f142cf9c337b825"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\tests\\reference\\ObserveScientificZProjection.java",
+      "bytes": 15317,
+      "sha256": "a4f174bfcfd308e58c13093b682f2e3ffd60cdc32e1e5988e423fa69e533f93e"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\scripts\\capture_rgb_projection_reference.py",
+      "bytes": 10310,
+      "sha256": "c8a6b0a3bf2e7b84f5984ab0832b108b405122f920935a9ed9f38757801c6cc5"
+    },
+    {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\scripts\\capture_z_projection_reference.py",
+      "bytes": 15796,
+      "sha256": "ef555f1d21fbe9485a09ac0a32de98f3ea9f30876750394a3597b5034e8fffe9"
+    }
+  ],
+  "raw_bytes": 1402018,
+  "raw_sha256": "ec0a4d16df5dca743af08a689c5c328263036bf22f1cf405347d6c845dfc7cf2",
+  "gzip_bytes": 290268,
+  "gzip_sha256": "6c91f2cea20644dd6ca5fdf390ad75a445731674e6a6d1398d7cfea37aa34dd8",
+  "reference_inputs": {
+    "class_receipt": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\prepare003\\receipt.json",
+      "bytes": 80285,
+      "sha256": "46e26b324f9b226b1f2d34c9c0c426e6dcd7c57295082e8f0d2de7d9260014e7"
+    },
+    "runtime_receipt": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13i-verification\\runtime-acquisition.json",
+      "bytes": 100166,
+      "sha256": "0d4f3f20f1c4d69faebe50afed4023d4ac7959e27cb5bd5547d7f7599766800d"
+    },
+    "source_archive": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\source.zip",
+      "bytes": 6146010,
+      "sha256": "09e31a88191d10c7f79c607cb6bb62342476bde733c5d932d5825fd553796665"
+    },
+    "class_count": 468,
+    "runtime_count": 581,
+    "verified_java_sources": 352,
+    "class_set_sha256": "cb466837306b5e14738d45de2f26e90640790a4699efe26fb9743662de9b18fe",
+    "runtime_set_sha256": "7445bedc0af85664b15784ee934bcc4b87084557955409de96354b197f2d0d9f"
+  },
+  "ui_executed": false,
+  "scope": "Headless RGB API pixels and unchanged source states; no target, GUI or full parity acceptance",
+  "independent_repeats": 2
+}

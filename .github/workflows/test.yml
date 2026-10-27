@@ -29,6 +29,7 @@ jobs:
           python -I -B tests/tools/test_ci_reference_readiness.py
           python -I -B tests/tools/test_axis_reference_transport.py
           python -I -B tests/tools/test_z_projection_reference.py
+          python -I -B tests/tools/test_rgb_projection_reference.py
           python -I -B scripts/generate_projection_numeric_fixture.py --check
           python -I -B scripts/generate_imagej_dataset_projection_fixture.py --check
           python -I -B tests/tools/test_ci_headless_origins.py

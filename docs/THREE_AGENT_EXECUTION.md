@@ -1,5 +1,58 @@
 # Three-agent execution plan
 
+## ImageJ RGB projection merge — 2026-10-26
+
+`imagej_rgb_projection.hpp` now exposes explicit RGB request/descriptor/execution
+entry points, sharing the existing bounded executor and scalar reducers. The
+scalar public header, request layout and all original scalar tests/fixtures are
+unchanged. The RGB profile accepts UInt8 S3/C1, returns finite UInt8 S3, and keeps
+native RGB-C/RGBA extensions separate. The clip flag affects RGB sum only.
+[Source-bound evidence](parity/reviews/G034-imagej-rgb-projection-progress001.json).
+
+196 pinned RGB successes (72 original plus124 supplemental) run with two tile
+layouts on Windows/MSVC and Linux/GCC:11176 packed words/lane exact, with24
+preflight rejection cases. Scalar336-ray and228-case dataset regressions and
+both SDK-intended examples pass locally. These source consumers link unchanged
+installed dependencies; full CMake/installed-SDK acceptance is still a CI gate.
+The new supplement has identical raw/gzip hashes across two fresh reference runs;
+it does not replace any historical reference or establish GUI execution.
+
+RGB regions are read once per contributor/tile, with all three components in the
+same region. There are no full split-channel stacks or extra merge pixel buffer.
+Float32 reductions normalize in place via shared maximum then per-channel range,
+or clip sum directly. Merge scans are cancellable. Descriptor charges include
+interleaved state, source fallback/region, output and range scratch. Contiguous
+row-span stores avoid per-component output coordinate division. No universal
+performance or full provider-cache/heap bound is claimed.
+
+Next ordered work, with a concrete UI workflow as the next integration milestone:
+1. Close source-mode/numeric policy before freezing command fields: source
+   inspection identifies simple-composite C-only dispatch, and scalar median
+   reads general intensity calibration tables. Current tests cover neither.
+   Capture these together in one bounded decision experiment, implement the
+   missing handling/admission, and retain old corpus/status expectations.
+2. Resolve grouped GUI hyperstack routing separately from scientific grouping.
+   The actual ImageJ grouped GUI forwards hyperstacks to ordinary projection;
+   source-level calibration reproduction is not GUI evidence. Do not silently
+   map the owned grouping extension to that original menu behavior.
+3. Reuse prepared new-document publication: title/typed intensity, LUT/range,
+   active-selection clearing and positioned/wildcard overlay policy must consume
+   one captured source snapshot. Guard live source owner/pixel/metadata state;
+   choose and verify display drift semantics instead of copying stale state.
+4. Add distinct scalar/RGB strict profiles with source binding and closed JSON.
+   Persist portable axes/type/density/clip/contributor claims. Current-host
+   working and reduction scratch use private ABI sizes; do not persist either
+   as portable admission guarantees. Raw caps remain replay-time proposals.
+5. Bind Python and the shared ImGui workflow. Update the one active installed
+   runtime/cache only when integration needs it, with a documented temporary
+   build reserve and prompt retirement. Verify actual dialogs, clipping,
+   current/all scopes, progress/cancel, new-document pixels/metadata and
+   history/reopen, not only direct API calls.
+6. Reviewed virtual IEEE admission, downstream IEEE display/session/commands and
+   original reference recovery remain required for complete acceptance. Original
+   inventory remains47 in progress/52 open/0 complete; full G034 is unfinished.
+
+
 ## ImageJ scalar dataset executor — 2026-10-26
 
 The separate `imagej_dataset_projection.hpp` API now resolves default Z/time,

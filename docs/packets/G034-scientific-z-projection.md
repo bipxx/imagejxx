@@ -301,3 +301,55 @@ provider admission is a remaining integration requirement before claiming
 nonfinite virtual-stack ImageJ parity. Likewise, downstream finite-only commands
 and older display/session metadata do not become IEEE-capable merely because
 this executor can return such pixels.
+
+## Explicit ImageJ RGB numerical profile
+
+`imagej_rgb_projection.hpp` adds `ImageJRGBProjectionRequest` (the existing scalar
+request fields plus `clip_when_summing`), `describe_imagej_rgb_projection` and
+`project_imagej_rgb_dataset`. A shared private descriptor/executor handles both
+profiles. The scalar API/header and its S1-only rejection test remain unchanged.
+RGB admission is UInt8 S3/C1; RGBA, UInt16/Float RGB and scientific multichannel
+RGB are not admitted by this reviewed profile. Existing native extensions retain
+their APIs/behavior. The24 captured C2 hyperstack errors are reproduced before
+callbacks/pixels; they are not evidence that all possible C2 legacy shapes fail
+in ImageJ. Simple-composite C-only dispatch still needs separate observation.
+
+The executor reduces each interleaved component using the same typed scalar
+arithmetic, reading one region for all three colors. No full split-channel stacks
+or extra output image are allocated. RGB sum/SD first hold Float32 reductions in
+the output double-backed buffer. Default merge follows ImageJ's Float32 shared
+maximum multiplication and subsequent independent channel min/max conversion;
+these stages must not be algebraically cancelled. Sum clipping instead adds
+0.5f and clamps each channel to255. Arithmetic NaNs arising from zero/constant
+ranges convert to zero using defined Java-compatible byte conversion, avoiding
+undefined native nonfinite casts. Other methods already produce UInt8 samples.
+The clip property is ignored outside RGB sum. Final output is finite UInt8 S3
+with signed16 density intent false.
+
+Output, fallback/region and reducer charges include S3. Range scratch is charged
+conservatively for sum/SD, including clipped sum. Maximum/scale/conversion/clip
+passes poll cancellation. Source/request snapshots and metadata drift guards
+are shared with scalar execution. Row-span output stores avoid extra per-sample
+coordinate divisions. Provider tests verify24 reads for the chosen grouped RGB
+geometry rather than three separate channel passes, a single fallback lease,
+cap-before-read/callback rejection, invalid typed components and clip alias
+capture. This proves access/count behavior, not decode throughput or total heap.
+
+The immutable RGB supplement adds124 varied/degenerate/rounding-stress cases;
+two fresh observations have identical hashes. Combining it with the original
+corpus gives196 RGB successes and24 explicit negative rows. Two tile layouts
+check11176 packed RGB words/lane exactly, plus unchanged source words and
+cancellation during scaling/conversion/clipping. Windows/MSVC and Linux/GCC
+source consumers pass, along with unchanged336 scalar rays,228 scalar dataset
+cases x2 tiles, and scalar/RGB SDK-intended examples. Actual full CMake/install
+qualification belongs to successor CI. No historical fixture or capability
+status changed. [Reference scope](../parity/reviews/G034-imagej-rgb-projection-reference001/README.md).
+
+Remaining before the UI milestone: simple-composite/default C-only dispatch,
+general density calibration (including scalar median pixel values), grouped GUI
+hyperstack routing, prepared metadata publication with source guards, strict
+profile records, Python/shared ImGui controls and actual history/reopen checks.
+Private accumulator/range sizes enter scratch charges, so future strict records
+must exclude both working_bytes and ABI-dependent reduction_scratch_bytes from
+portable derived guarantees. Reviewed virtual IEEE and downstream IEEE admission,
+original reference readiness and full ImageJ/Fiji acceptance remain open.

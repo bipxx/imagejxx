@@ -1,4 +1,4 @@
-#include <imagejxx/imagej_dataset_projection.hpp>
+#include <imagejxx/imagej_rgb_projection.hpp>
 #include "imagej_projection_numeric.hpp"
 #include "kernel_control.hpp"
 #include <algorithm>
@@ -61,6 +61,68 @@ double output_sample(detail::ImageJProjectionSample sample) {
       ? float32_source_sample(sample.bits, FloatingSamplePolicy::PreserveIEEEFloat32)
       : double(sample.bits);
 }
+struct RGBProjectionRanges {
+  std::array<float, 3> minimum, maximum;
+  std::array<double, 3> scale;
+};
+unsigned char rgb_byte(double rounded) {
+  // Java floating-to-integer conversion maps NaN to zero and saturates before
+  // the final byte clamp. Avoid undefined C++ casts for nonfinite values.
+  if (std::isnan(rounded) || rounded <= 0) return 0;
+  if (rounded >= 255) return 255;
+  return static_cast<unsigned char>(rounded);
+}
+void merge_rgb_projection(Image& image, M method, bool clip) {
+  if (method != M::Sum && method != M::StdDev) return;
+  if (method == M::Sum && clip) {
+    kernel_blocks("ImageJ RGB sum clipping", image.pixels.size(),
+        [&](std::size_t first, std::size_t last) {
+          for (auto i = first; i < last; ++i) {
+            const float rounded = static_cast<float>(image.pixels[i]) + .5f;
+            image.pixels[i] = rgb_byte(rounded);
+          }
+        });
+    return;
+  }
+  // ImageJ first scales the Float32 channel reductions by a shared maximum,
+  // then RGBStackMerge converts each channel through its own min/max range.
+  // Keep both rounding stages: algebraically cancelling them changes results.
+  float maximum = 0;
+  kernel_blocks("ImageJ RGB projection maximum", image.pixels.size(),
+      [&](std::size_t first, std::size_t last) {
+        for (auto i = first; i < last; ++i)
+          if (image.pixels[i] > maximum) maximum = static_cast<float>(image.pixels[i]);
+      });
+  const float global_scale = maximum == 0 ? std::numeric_limits<float>::infinity()
+      : static_cast<float>(255.0 / double(maximum));
+  RGBProjectionRanges ranges;
+  ranges.minimum.fill(std::numeric_limits<float>::quiet_NaN());
+  ranges.maximum = ranges.minimum;
+  kernel_blocks("ImageJ RGB projection scaling", image.pixels.size(),
+      [&](std::size_t first, std::size_t last) {
+        for (auto i = first; i < last; ++i) {
+          const float scaled = static_cast<float>(image.pixels[i]) * global_scale;
+          image.pixels[i] = scaled;
+          const auto channel = i % 3;
+          if (!std::isnan(scaled)) {
+            if (std::isnan(ranges.minimum[channel]))
+              ranges.minimum[channel] = ranges.maximum[channel] = scaled;
+            else if (scaled < ranges.minimum[channel]) ranges.minimum[channel] = scaled;
+            else if (scaled > ranges.maximum[channel]) ranges.maximum[channel] = scaled;
+          }
+        }
+      });
+  for (std::size_t c = 0; c < 3; ++c)
+    ranges.scale[c] = 255.0 / (double(ranges.maximum[c]) - double(ranges.minimum[c]));
+  kernel_blocks("ImageJ RGB channel conversion", image.pixels.size(),
+      [&](std::size_t first, std::size_t last) {
+        for (auto i = first; i < last; ++i) {
+          const auto channel = i % 3;
+          const double value = std::max(0.0, image.pixels[i] - double(ranges.minimum[channel]));
+          image.pixels[i] = rgb_byte(value * ranges.scale[channel] + .5);
+        }
+      });
+}
 } // namespace
 
 PlanePosition ImageJDatasetProjectionLayout::contributor(
@@ -82,15 +144,20 @@ PlanePosition ImageJDatasetProjectionLayout::contributor(
   return {int(t), int(c), int(z)};
 }
 
-ImageJDatasetProjectionLayout describe_imagej_dataset_projection(
+namespace {
+ImageJDatasetProjectionLayout describe_projection(
     DatasetShape shape, PixelType type, const SpatialCalibration& calibration,
-    const ImageJDatasetProjectionRequest& request) {
+    const ImageJDatasetProjectionRequest& request, bool rgb) {
   shape.validate();
   calibration.validate();
   (void)scalar_type(type);
   const auto method = scalar_method(request.method);
-  if (shape.s != 1)
+  if (rgb && (shape.s != 3 || type != PixelType::UInt8))
+    throw std::invalid_argument("ImageJ RGB profile requires UInt8 S3 source");
+  if (!rgb && shape.s != 1)
     throw std::invalid_argument("ImageJ scalar profile requires S1; RGB merge is separate");
+  if (rgb && shape.c != 1)
+    throw std::invalid_argument("RGB stacks not supported");
   if (request.signed16_density && type != PixelType::UInt16)
     throw std::invalid_argument("Signed16 density requires UInt16 source");
   if (request.active_t < 0 || request.active_t >= shape.t ||
@@ -134,27 +201,45 @@ ImageJDatasetProjectionLayout describe_imagej_dataset_projection(
     }
   }
   result.calibration.validate();
-  result.pixel_type = type == PixelType::Float32 || method == M::Sum ||
-      method == M::StdDev || (type == PixelType::UInt16 && method == M::Median)
-      ? PixelType::Float32 : type;
+  const bool float_output = type == PixelType::Float32 || method == M::Sum ||
+      method == M::StdDev || (type == PixelType::UInt16 && method == M::Median);
+  result.pixel_type = !rgb && float_output ? PixelType::Float32 : type;
   result.signed16_density = request.signed16_density && result.pixel_type == PixelType::UInt16;
   result.output_pixel_bytes = multiply(result.shape.pixel_count(), sizeof(double));
   if (result.output_pixel_bytes > request.max_output_pixel_bytes)
     throw std::invalid_argument("ImageJ projection exceeds output pixel allowance");
-  const auto tile = multiply(std::size_t(result.tile_width), result.tile_height);
+  const auto tile = multiply(multiply(std::size_t(result.tile_width), result.tile_height), shape.s);
   result.reduction_scratch_bytes = method == M::Median
       ? multiply(multiply(add(tile, 1), group), sizeof(std::uint32_t))
       : multiply(tile, sizeof(detail::ImageJProjectionAccumulator));
+  if (rgb && (method == M::Sum || method == M::StdDev))
+    result.reduction_scratch_bytes = add(result.reduction_scratch_bytes, sizeof(RGBProjectionRanges));
   const auto tables = multiply(result.shape.plane_count(),
       2 * sizeof(Image) + 3 * sizeof(std::shared_ptr<const Image>));
   // Conservative default region adapter: one full decoded plane plus its crop.
   // Provider-private caches and allocator/control-block overhead are excluded.
-  const auto fallback = multiply(multiply(std::size_t(shape.x), shape.y), sizeof(double));
+  const auto fallback = multiply(multiply(multiply(std::size_t(shape.x), shape.y), shape.s), sizeof(double));
   result.working_bytes = add(add(result.output_pixel_bytes, tables),
       add(result.reduction_scratch_bytes, add(fallback, multiply(tile, sizeof(double)))));
   if (result.working_bytes > request.max_working_bytes)
     throw std::invalid_argument("ImageJ projection exceeds working allowance");
   return result;
+}
+} // namespace
+ImageJDatasetProjectionLayout describe_imagej_dataset_projection(
+    DatasetShape shape, PixelType type, const SpatialCalibration& calibration,
+    const ImageJDatasetProjectionRequest& request) {
+  return describe_projection(shape, type, calibration, request, false);
+}
+ImageJDatasetProjectionLayout describe_imagej_rgb_projection(
+    DatasetShape shape, PixelType type, const SpatialCalibration& calibration,
+    const ImageJRGBProjectionRequest& request) {
+  return describe_projection(shape, type, calibration, request, true);
+}
+ImageJDatasetProjectionLayout describe_imagej_rgb_projection(
+    const Dataset& source, const ImageJRGBProjectionRequest& request) {
+  return describe_imagej_rgb_projection(source.shape(), source.pixel_type(),
+                                       source.calibration(), request);
 }
 ImageJDatasetProjectionLayout describe_imagej_dataset_projection(
     const Dataset& source, const ImageJDatasetProjectionRequest& request) {
@@ -162,17 +247,17 @@ ImageJDatasetProjectionLayout describe_imagej_dataset_projection(
                                             source.calibration(), request);
 }
 
-ImageJDatasetProjectionResult project_imagej_dataset(
+namespace {
+ImageJDatasetProjectionResult project_dataset_profile(
     const Dataset& input, const ImageJDatasetProjectionRequest& request,
-    const ExecutionControl& control) {
+    const ExecutionControl& control, bool rgb, bool clip) {
   ExecutionScope scope(control);
   detail::without_execution_callbacks([] { kernel_checkpoint(); });
   const Dataset source = input;
   const auto shape = source.shape();
   const auto type = source.pixel_type();
   const auto captured = request;
-  const auto layout = describe_imagej_dataset_projection(shape, type,
-                                                         source.calibration(), captured);
+  const auto layout = describe_projection(shape, type, source.calibration(), captured, rgb);
   const auto method = scalar_method(captured.method);
   const auto numeric_type = scalar_type(type);
   const auto policy = source.sample_policy();
@@ -186,7 +271,7 @@ ImageJDatasetProjectionResult project_imagej_dataset(
   Stack output;
   output.reserve(layout.shape.plane_count());
   {
-    const auto tile = multiply(std::size_t(layout.tile_width), layout.tile_height);
+    const auto tile = multiply(multiply(std::size_t(layout.tile_width), layout.tile_height), shape.s);
     const auto group = std::size_t(layout.contributors_per_group);
     std::vector<detail::ImageJProjectionAccumulator> accumulators;
     std::vector<std::uint32_t> rays, scratch;
@@ -201,13 +286,13 @@ ImageJDatasetProjectionResult project_imagej_dataset(
           execution_progress(output.size(), layout.shape.plane_count());
           kernel_checkpoint();
           metadata_guard();
-          Image plane(shape.x, shape.y, 1, layout.pixel_type);
+          Image plane(shape.x, shape.y, shape.s, layout.pixel_type);
           for (int y = 0; y < shape.y;) {
             const int height = std::min(layout.tile_height, shape.y - y);
             for (int x = 0; x < shape.x;) {
               kernel_checkpoint();
               const int width = std::min(layout.tile_width, shape.x - x);
-              const auto samples = multiply(std::size_t(width), height);
+              const auto samples = multiply(multiply(std::size_t(width), height), shape.s);
               accumulators.clear();
               if (method != M::Median)
                 for (std::size_t i = 0; i < samples; ++i) {
@@ -220,7 +305,7 @@ ImageJDatasetProjectionResult project_imagej_dataset(
                 const auto region = source.region(layout.contributor({t, c, z}, k),
                                                    x, y, width, height);
                 metadata_guard();
-                if (region.width != width || region.height != height || region.channels != 1 ||
+                if (region.width != width || region.height != height || region.channels != shape.s ||
                     region.type != type || region.pixels.size() != samples)
                   throw std::invalid_argument("ImageJ projection provider region changed");
                 for (std::size_t i = 0; i < samples; ++i) {
@@ -230,21 +315,28 @@ ImageJDatasetProjectionResult project_imagej_dataset(
                   else accumulators[i].push(bits);
                 }
               }
-              for (std::size_t i = 0; i < samples; ++i) {
-                if ((i & 1023) == 0) kernel_checkpoint();
-                const auto sample = method == M::Median
-                    ? detail::project_imagej_scalar_ray(numeric_type, method,
-                        rays.data() + std::size_t(i) * group, group,
-                        captured.signed16_density, scratch.data(), scratch.size(),
-                        kernel_checkpoint)
-                    : accumulators[i].finish();
-                plane.pixels[(std::size_t(y) + i / width) * shape.x + x + i % width] =
-                    output_sample(sample);
+              // Write contiguous row spans without per-component coordinate
+              // division, including partial tiles and interleaved RGB samples.
+              const auto row_samples = multiply(std::size_t(width), shape.s);
+              for (int row = 0; row < height; ++row) {
+                const auto input_offset = std::size_t(row) * row_samples;
+                const auto output_offset = ((std::size_t(y) + row) * shape.x + x) * shape.s;
+                for (std::size_t column = 0; column < row_samples; ++column) {
+                  const auto i = input_offset + column;
+                  if ((i & 1023) == 0) kernel_checkpoint();
+                  const auto sample = method == M::Median
+                      ? detail::project_imagej_scalar_ray(numeric_type, method,
+                          rays.data() + i * group, group, captured.signed16_density,
+                          scratch.data(), scratch.size(), kernel_checkpoint)
+                      : accumulators[i].finish();
+                  plane.pixels[output_offset + column] = output_sample(sample);
+                }
               }
               x += width;
             }
             y += height;
           }
+          if (rgb) merge_rgb_projection(plane, method, clip);
           output.push_back(std::move(plane));
         }
   } // Retire reduction scratch before immutable output ownership conversion.
@@ -257,5 +349,16 @@ ImageJDatasetProjectionResult project_imagej_dataset(
   kernel_checkpoint();
   metadata_guard();
   return {std::move(dataset), layout.signed16_density};
+}
+} // namespace
+ImageJDatasetProjectionResult project_imagej_dataset(
+    const Dataset& source, const ImageJDatasetProjectionRequest& request,
+    const ExecutionControl& control) {
+  return project_dataset_profile(source, request, control, false, false);
+}
+ImageJDatasetProjectionResult project_imagej_rgb_dataset(
+    const Dataset& source, const ImageJRGBProjectionRequest& request,
+    const ExecutionControl& control) {
+  return project_dataset_profile(source, request, control, true, request.clip_when_summing);
 }
 } // namespace imagejxx

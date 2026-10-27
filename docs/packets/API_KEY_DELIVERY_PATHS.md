@@ -300,3 +300,18 @@ scientific grouping must not silently stand in for the grouped GUI hyperstack
 dispatch. Legacy default region adapters can repeat full-plane decodes; tile
 height now avoids the earlier row-only amplification and the descriptor charges
 its scratch. Provider-private caching remains separately owned.
+
+## RGB profile delivery checkpoint — 2026-10-26
+
+Use `ImageJRGBProjectionRequest` -> `describe_imagej_rgb_projection` ->
+`project_imagej_rgb_dataset` for the explicit UInt8 S3/C1 profile. These reuse the
+scalar executor and keep scalar admission/tests unchanged. RGB clipping is a
+flag on this RGB request only. Both profiles must feed the same future prepared
+new-document/record/UI seam; avoid duplicate Python loops or channel stacks.
+Next close general density and C-only/default dispatch together, resolve grouped
+GUI hyperstack routing, then publish metadata and deliver actual shared ImGui
+interaction. Do not freeze a strict schema while those source/profile fields
+remain unsettled. Both working and accumulator scratch charges have host ABI
+components; persist portable contributor/type claims and original raw caps,
+not historical ABI admission. Full CMake/install and complete UI acceptance stay
+separate from the current passing source consumers.

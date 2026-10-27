@@ -1,0 +1,311 @@
+{
+  "schema": "imagejxx.scoped-progress",
+  "version": 1,
+  "source_base": "1c08af205ffa9c8bc5a619cbff3981bdc391c181",
+  "scope": "Explicit UInt8 S3/C1 ImageJ RGB numerical profile, bounded shared executor and clipping/merge; not full ImagePlus dispatch, metadata, strict record, Python or UI acceptance",
+  "source_inputs": [
+    {
+      "path": "include/imagejxx/imagej_rgb_projection.hpp",
+      "bytes": 1409,
+      "sha256": "ca553214a70ef78b192b931beea374be13a15a8633d187454c78e33fe68185d3"
+    },
+    {
+      "path": "include/imagejxx/imagej_dataset_projection.hpp",
+      "bytes": 3354,
+      "sha256": "5fb28d408f9ce93a8f2fe3858e48ac8831b3aa0e09fc66ba83c18e59e4df4422"
+    },
+    {
+      "path": "src/native/imagej_dataset_projection.cpp",
+      "bytes": 18275,
+      "sha256": "5460b6e0d1445aede383afdd5a5fb1ecf23a6e17ee7d5242a77c5a78c031b6fc"
+    },
+    {
+      "path": "src/native/imagej_projection_numeric.cpp",
+      "bytes": 7164,
+      "sha256": "3a3d033426ec16c995b5bec10536b6dafb7182a7f63e3ff16802ae3a7bc9cc7e"
+    },
+    {
+      "path": "src/native/imagej_projection_numeric.hpp",
+      "bytes": 1835,
+      "sha256": "d144013d10a8665236bb92cdc73a3d7cd58416e2464159fe98df28d583712487"
+    },
+    {
+      "path": "tests/native/test_imagej_rgb_projection.cpp",
+      "bytes": 10431,
+      "sha256": "315ef4ec74e2c4ed0eddf4d0e060a88830ee1cea2d0baa2db75547ed386db3c9"
+    },
+    {
+      "path": "tests/native/imagej_rgb_projection_reference.inc",
+      "bytes": 865094,
+      "sha256": "a3002f7bf32df9e06cbb0b2cbf3aec3c60bcb2fb96ebfdf2dd29f5dca5da6729"
+    },
+    {
+      "path": "tests/native/test_imagej_dataset_projection.cpp",
+      "bytes": 14714,
+      "sha256": "698f684b1aafd627407a92d24e116eff98a27574bee41ed5b36367601b7c0e6d"
+    },
+    {
+      "path": "tests/native/imagej_dataset_projection_reference.inc",
+      "bytes": 163354,
+      "sha256": "7752861529c5be885317fa132560bd046c671ffc6f50c2f5495ad0d4cb6141c4"
+    },
+    {
+      "path": "tests/native/test_imagej_projection_numeric.cpp",
+      "bytes": 2806,
+      "sha256": "c0b34bb68d775c1c11105dc0ef001309c2ba75a21bb76bc14916f18d37a49b19"
+    },
+    {
+      "path": "tests/native/imagej_projection_numeric_reference.inc",
+      "bytes": 47108,
+      "sha256": "6d8ac432d18200ad22d7d13a5df692da21af97447ed4b6021bcc7b4ff438c082"
+    },
+    {
+      "path": "examples/cpp/imagej_rgb_projection.cpp",
+      "bytes": 1252,
+      "sha256": "5f413c7bd014b615ad448b1111a30a547ee44a48fcdaf5b16af37b3b321419b9"
+    },
+    {
+      "path": "examples/cpp/imagej_dataset_projection.cpp",
+      "bytes": 1082,
+      "sha256": "6ff3ea96f3a6bc62fda4d309c209f8bf4cfb2c91311dfce27b2a6a2e05d108c1"
+    },
+    {
+      "path": "examples/cpp/CMakeLists.txt",
+      "bytes": 21923,
+      "sha256": "35f8eddf7f547a31852f530f5ddb42b4573992228d6bc07600d1a725e30625bd"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 135572,
+      "sha256": "a9a58fe121ea4a3898d02f1078c67966bc57aef8de90a62e4f13bf91ed338315"
+    },
+    {
+      "path": ".github/workflows/test.yml",
+      "bytes": 10658,
+      "sha256": "3f36ff6ff5ea16d61ddf42ef4c6f2cd5591021420aab6233b728dc1afb901930"
+    },
+    {
+      "path": "scripts/capture_rgb_projection_reference.py",
+      "bytes": 10310,
+      "sha256": "c8a6b0a3bf2e7b84f5984ab0832b108b405122f920935a9ed9f38757801c6cc5"
+    },
+    {
+      "path": "scripts/generate_imagej_rgb_projection_fixture.py",
+      "bytes": 5309,
+      "sha256": "2e1c0315bb7c94e259fa7f48e193aa1598408e5d3cc1dc792252d6ed6983edd0"
+    },
+    {
+      "path": "tests/reference/ObserveRGBProjection.java",
+      "bytes": 3710,
+      "sha256": "5cda432649048d3b3050ebcba58477a5d4074fa7c6fe8b660f142cf9c337b825"
+    },
+    {
+      "path": "tests/tools/test_rgb_projection_reference.py",
+      "bytes": 3372,
+      "sha256": "235141bb1ec9a5beba89b098edb899a0385fd9f9cac40fe1717ec24593ba2d49"
+    }
+  ],
+  "reference_contract": {
+    "path": "docs/parity/reviews/G034-imagej-rgb-projection-reference001/contract.json",
+    "bytes": 2509,
+    "sha256": "31db05de544ca8cb3d1e2879ab97a397d33f40f2e84c48419d85a4b544e18fe3"
+  },
+  "original_corpus": {
+    "path": "docs/parity/reviews/G034-imagej-z-projection-reference001/observations.jsonl.gz",
+    "bytes": 37200,
+    "sha256": "a22ae856cac15d0f956f935dbe371136da455e428907590b3040d7c7996f7073"
+  },
+  "rgb_success_cases": 196,
+  "rgb_rejection_cases": 24,
+  "tile_layouts": 2,
+  "packed_rgb_words_exact_per_lane": 11176,
+  "scalar_ray_regressions_per_lane": 336,
+  "scalar_dataset_regressions_per_lane": {
+    "cases": 228,
+    "tile_layouts": 2,
+    "samples": 3840,
+    "exact_non_nan": 3802,
+    "nan_class": 38
+  },
+  "local_lanes": [
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/imagej-rgb-windows054/receipt.json",
+        "bytes": 100863,
+        "sha256": "70edbd24a8675bdd18412bf91f62f879983d5cf529ac353c3c8eb9856f2e77c3"
+      },
+      "results": [
+        {
+          "path": ".tmp/manual-workflow-verification/imagej-rgb-windows054/scalar-consumer.log",
+          "bytes": 86,
+          "sha256": "0db1db770590a42c094870ae708cedcefa24f97172ab84dde52c6d7502863d11"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/imagej-rgb-windows054/test-consumer.log",
+          "bytes": 107,
+          "sha256": "2d83b63b1795e1149b2047da243333ac0783b3292610c1dfd91d1821e99f6f5a"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/imagej-rgb-windows054/rgb-consumer.log",
+          "bytes": 136,
+          "sha256": "c41fb71432ad9ec31c16441faf5c52f42b27cada19446bb5e41a8462df644eda"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/imagej-rgb-windows054/example-consumer.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/imagej-rgb-windows054/rgbexample-consumer.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "scope": "New source consumers linked to unchanged installed static dependencies; not full CMake or newly installed SDK",
+      "after_command_observed_scratch_bytes": 7819175,
+      "continuous_write_monitor": false,
+      "scratch_retired": true
+    },
+    {
+      "receipt": {
+        "path": ".tmp/manual-workflow-verification/imagej-rgb-linux055/receipt.json",
+        "bytes": 103087,
+        "sha256": "90f813210f55687acfe21d73d5ea8bb286cfb69592aaa00a1feff52eac8962aa"
+      },
+      "results": [
+        {
+          "path": ".tmp/manual-workflow-verification/imagej-rgb-linux055/scalar-consumer.log",
+          "bytes": 85,
+          "sha256": "c6ae23ab0ef860cdd5f453d3e70994bd6a985c95be41676fc1bb916bd3fb9b10"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/imagej-rgb-linux055/test-consumer.log",
+          "bytes": 106,
+          "sha256": "c1d4185d892c96436f48ec9a3a7a6e7a1da527fab3e37efa11fd2a12ae05631e"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/imagej-rgb-linux055/rgb-consumer.log",
+          "bytes": 135,
+          "sha256": "9074a758c8d7a08df6d47c8471765dc823911047f6ca9bf343c64e32d1b230b3"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/imagej-rgb-linux055/example-consumer.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": ".tmp/manual-workflow-verification/imagej-rgb-linux055/rgbexample-consumer.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "scope": "New source consumers linked to unchanged installed static dependencies; not full CMake or newly installed SDK",
+      "after_command_observed_scratch_bytes": 4698304,
+      "continuous_write_monitor": false,
+      "scratch_retired": true
+    }
+  ],
+  "full_acceptance": false,
+  "remaining": [
+    "Source-mode/default simple-composite C-only dispatch",
+    "General intensity calibration, including scalar median pixel values",
+    "Grouped GUI hyperstack routing versus owned scientific grouping",
+    "Prepared source-guarded new-document title/intensity/LUT/overlay publication",
+    "Distinct strict scalar/RGB profiles and portable derived record claims",
+    "Python/shared ImGui controls and actual interaction/history/reopen",
+    "Reviewed virtual IEEE and downstream display/session/command admission",
+    "Original reference recovery and complete ImageJ/Fiji acceptance"
+  ],
+  "reference_repeats": [
+    {
+      "path": ".tmp/manual-workflow-verification/imagej-rgb-reference048/receipt.json",
+      "bytes": 17002,
+      "sha256": "ba9e2c59044e5a0224f9722f57025ffe84d1a962acdb59c87ac968df3cac9bef"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/imagej-rgb-reference049/receipt.json",
+      "bytes": 17003,
+      "sha256": "7f131fe6409834a21ac9fd87597744304fefd5e8e116c3efd6dd24659015c2f7"
+    }
+  ],
+  "duplicate_transport_retirement": {
+    "path": ".tmp/manual-workflow-verification/imagej-rgb-reference-duplicates050.json",
+    "bytes": 828,
+    "sha256": "7c29f70184dbe556a0ee54d4669d4c5c7cc1fdce33bed823ced79152240f1aeb"
+  },
+  "intermediate_diagnostic_retention": [
+    {
+      "path": ".tmp/manual-workflow-verification/imagej-rgb-windows051-retention.json",
+      "bytes": 2931,
+      "sha256": "d95c2c182e22fee7f2cf2c31c68636646bf73120cef2fbda9711a71cda6acb01"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/imagej-rgb-windows052-retention.json",
+      "bytes": 9455,
+      "sha256": "588f37876fd33018b59527edf50b308fc23208340d0f4fc67e5a4d9a3d76906d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/imagej-rgb-linux053-retention.json",
+      "bytes": 10940,
+      "sha256": "839fa1df5801ed4f2eef6e64661b603567f81f51a841c8d2be6885a6e963a2e1"
+    }
+  ],
+  "local_harness_failure": "windows051: broad manifest text replacement malformed a compiler tuple; diagnostics preserved in verified archive, compile list fixed. No product numerical mismatch or reference repin.",
+  "offline_checks": {
+    "receipt": {
+      "path": ".tmp/manual-workflow-verification/imagej-rgb-offline056/receipt.json",
+      "bytes": 14748,
+      "sha256": "3fd723381690e7f08b2a9e479bec7d04516131fb399af758714a6a875e933836"
+    },
+    "tests": "27 pass, 1 existing workflow skip across7 RGB,10 original-reference and11 workflow tests",
+    "fixture_checks": "both unchanged scalar fixtures pass",
+    "commercial_source_and_desktop_inventory": "passed"
+  },
+  "historical_inputs_whole_bytes_unchanged": [
+    "include/imagejxx/imagej_dataset_projection.hpp",
+    "tests/native/test_imagej_dataset_projection.cpp",
+    "tests/native/imagej_dataset_projection_reference.inc",
+    "tests/native/test_imagej_projection_numeric.cpp",
+    "tests/native/imagej_projection_numeric_reference.inc",
+    "tests/reference/ObserveScientificZProjection.java",
+    "scripts/capture_z_projection_reference.py",
+    "docs/parity/inventory.json"
+  ],
+  "original99_status_counts": {
+    "in_progress": 47,
+    "open": 52
+  },
+  "protected_inputs_unchanged": [
+    "tests/reference/continuous_bezier_exact_reference.py",
+    "tests/reference/ObserveContinuousPathBooleans.java",
+    "docs/packets/CG0-analytic-reference-contract.md",
+    "docs/packets/CG0-imagej-observer-contract.md",
+    "tests/native/rounded_path_reference.inc"
+  ],
+  "storage": {
+    "before": {
+      "path": ".tmp/manual-workflow-verification/imagej-rgb-storage-before047.json",
+      "bytes": 1522,
+      "sha256": "49671173f7a16b81f4721e78b1ca104f09b865d0cb490a34757d64760147bb67"
+    },
+    "after": {
+      "path": ".tmp/manual-workflow-verification/imagej-rgb-storage-after057.json",
+      "bytes": 1523,
+      "sha256": "0e8d9601c885d55c8d472cf008dca5a03e968f850edfcf47cbfb53db8a3c47a9"
+    },
+    "after_retention": {
+      "path": ".tmp/manual-workflow-verification/imagej-rgb-storage-retained058.json",
+      "bytes": 1522,
+      "sha256": "f16a80db8a1aaa4298a7c262182409e1ebb10c8be9906ac74b2171bdd0d2157f"
+    },
+    "budget_verified": false,
+    "reason": "Two denied cache subtrees; known total lower bound only; point-in-time inventories precede their own/final small receipts",
+    "temporary_reserve_bytes": 33554432,
+    "reserve_reason": "Bounded reference raw capture plus necessary serial cross-platform object/link verification can exceed narrow known headroom. All terminal scratch retired; no new cache/runtime generation or dependency archive.",
+    "final": {
+      "path": ".tmp/manual-workflow-verification/imagej-rgb-storage-final059.json",
+      "bytes": 1522,
+      "sha256": "322a355685e913e9d656fe794e71e52a8fa410add20a32a1f67394c0d1c57650"
+    }
+  }
+}
