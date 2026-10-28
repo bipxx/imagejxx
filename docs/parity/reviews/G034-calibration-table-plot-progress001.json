@@ -1,0 +1,363 @@
+{
+  "schema": "imagejxx.scoped-progress",
+  "version": 1,
+  "source_base": "bb0b2a97f037776f935e8a93ac6d2a4162a67106",
+  "scope": "C++/Python calibration-table plot producer, shared explicit ImGui table view and physical CSV export of table/fitted plots in both Windows hosts",
+  "acceptance_claim": false,
+  "source_inputs": [
+    {
+      "path": "include/imagejxx/imagej_intensity_plot.hpp",
+      "bytes": 1884,
+      "sha256": "2a9069c3af34587dfab3585c63b7e65ae71e15cb466720cb5c664dd37ca51daa"
+    },
+    {
+      "path": "src/desktop/imagej_projection_ui_probe.cpp",
+      "bytes": 26395,
+      "sha256": "da791cf7b96622761f4d6bb79836d0005f79b502b237dda4ffb27b8f0089e9e8"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 801023,
+      "sha256": "b67e17d02302e6e417f388ddf9f94d29ce059065ff71511f865ec030c5be7ab7"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 79888,
+      "sha256": "5fe51aa662069e8400d310033a9a383242969884dcf88c84eb7e2d5f8cbf8c8b"
+    },
+    {
+      "path": "src/native/imagej_intensity_calibration.cpp",
+      "bytes": 38051,
+      "sha256": "534fa284eb69d5ef565bea9ddfcd531c98dd02f86d066238a5241bb5063d0008"
+    },
+    {
+      "path": "src/native/imagej_projection_bindings.cpp",
+      "bytes": 11270,
+      "sha256": "70d9e2eb8d68ec79301e501047c4909b827d2211500017775596c1de1ea869b8"
+    },
+    {
+      "path": "tests/native/test_imagej_projection_execution.cpp",
+      "bytes": 23543,
+      "sha256": "3c1d6536f91bbba4cdb7f59d47f0546666d3d6fb81e89bc97beaf380be4a3ede"
+    },
+    {
+      "path": "tests/python/test_intensity_calibration_editor.py",
+      "bytes": 41930,
+      "sha256": "ecfdc513d47a3d0d6b905882a2d6c3b0d706aaca5866292243a6b3439820f52a"
+    },
+    {
+      "path": "tests/reference/ObserveCalibrationTablePlots.java",
+      "bytes": 3554,
+      "sha256": "314b5b83c2fb621ef67d8b8f71563b4a42afd1d684b928a2aeb260eb587d0a38"
+    }
+  ],
+  "reference_fixture": {
+    "path": "docs/parity/reviews/G034-calibration-table-plots-reference001.jsonl.gz",
+    "bytes": 43333,
+    "sha256": "7629ecacdda4bd827e3144d179c755a5b5bdc79b60cb37da94803972abcce3c7"
+  },
+  "evidence": [
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-plot-csv-windows-build251/receipt.json",
+      "bytes": 23013,
+      "sha256": "d6f1f0d6c96ab60c2761871ec8306afbaf721995615f20d323e936ab627c462e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-plot-csv-windows-build251/source-freeze.json",
+      "bytes": 368533,
+      "sha256": "b7335fb452036d3333f1f08cc5e3ae4a68d26d1286fa422845722106525020b0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-plot-csv-windows-build251/dependency-inputs.json",
+      "bytes": 130574,
+      "sha256": "ab725c95300fb7720cabef8cbc1e3bef061828d678194eea6921e09cf5091206"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-plot-csv-installed252/receipt.json",
+      "bytes": 27750,
+      "sha256": "5c75e23884c92ef7e5ed03616ea2c40acbb5a1365fb53d2beffd878293c5bbb6"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-plot-csv-installed252/results.xml",
+      "bytes": 98571,
+      "sha256": "87e6edc2deafa6ba5c2588c9d966a65ed21892a8dbb1685989f0593efd7b047e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-plot-csv-installed252/captures.tar.xz",
+      "bytes": 774056,
+      "sha256": "162c3314b56c861a2aa287b7d6bf69de1df3b3a488b089fbd1258d79c49228af"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-table-plot-core-linux245/receipt.json",
+      "bytes": 80155,
+      "sha256": "a352bcf8d08e11f7ef2280445c779a3a400fae1e0a9b1a05cc9e4b5ec0461879"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-table-plot-reference242/receipt.json",
+      "bytes": 9123,
+      "sha256": "4503ead5badb97458d9323537b4b1c5014c6bdfaf52bfdf85cd2af1460ad3f07"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-table-plot-windows-build246/receipt.json",
+      "bytes": 23030,
+      "sha256": "fb5ceffd46705dff07817260d803d43d5353ca468a3598ad3fd3aa68d309079f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-table-plot-installed247/receipt.json",
+      "bytes": 26510,
+      "sha256": "256856ec1164444532c03a3e49d1c3aa0b3b8b553b2eed72aff0783feab2f4cb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-table-plot-retention248/receipt.json",
+      "bytes": 9844,
+      "sha256": "f2083e7aa05c280e45a73eeda2cfc62a8fc9c6755bc9a28f493aa000ed487337"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-table-plot-retention248/identity-and-logs.zip",
+      "bytes": 125743,
+      "sha256": "efe5370dc1378b51ca3195f016d4f4f101d01038a53345100fbaeb0087303453"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-plot-csv-retention253/receipt.json",
+      "bytes": 4177,
+      "sha256": "5cb0f8c51dcb89984bec6bfc4ab4708bc2fdc4067eaa683fbf582635a4cb3112"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-plot-csv-retention253/identity-and-logs.zip",
+      "bytes": 94807,
+      "sha256": "5da65b05a1ad266f5a251e26e4668622a34e4b770802b4be8eaf9e21e67f38f2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-table-capture-retention254/receipt.json",
+      "bytes": 5983,
+      "sha256": "22fb7396e1d8e7aa82ef7132bdd666006844ffda1b0e7b7ea001ec4a96bd76cc"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-table-capture-retention254/plot-and-csv-observations.json.gz",
+      "bytes": 10079,
+      "sha256": "726dc6c0e78f7bd65b57275da429506d2534e7acee5a08f812a6f50c5929720a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-auto-plot-storage-published240.json",
+      "bytes": 1522,
+      "sha256": "fbbba8d39f27c3aa89c97e7a49b558d57dc654ce5c5c9fca2dc0a52eae05ef5d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-table-plot-storage-final249.json",
+      "bytes": 1522,
+      "sha256": "50938c10f1ee7d6e9d06e6a92680e8d92d106767ce848e7f965ee2ca9ef254fb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-table-plot-storage-final255.json",
+      "bytes": 1521,
+      "sha256": "3b91fea2a1604f4a488a7004e956c18bef52f8a0e6a55969f93087debd607c7a"
+    }
+  ],
+  "verification": {
+    "focused_tests": 663,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "reference_table_profiles": 128,
+    "coordinates_and_words": "Exact sampled Float32 coordinates and UInt32 words; function generators use their declared canonical-NaN policy, arbitrary lookups preserve raw NaN payloads",
+    "native": "Current Windows and Linux source consumers pass; not installed SDK qualification",
+    "physical_hosts": "Actual Analyze menu, visible table, toolbar export, Unicode path entry/Save and Close in C++ application and Python editor; additional fitted measurement/curve CSV export in both",
+    "commercial_use_inventory": "scripts/check_licenses.py --desktop passed; no new dependency",
+    "diff_check": "git diff --check passed"
+  },
+  "physical_observations": [
+    {
+      "member": "intensity-cpp/case.json",
+      "context": "imgui_cpp",
+      "frame_count": 345,
+      "table_plot": {
+        "kind": "calibration_table",
+        "function": "signed16",
+        "value_unit": "HU",
+        "visible": true,
+        "finite_geometry": true,
+        "drawn_segments": 255,
+        "limits": [
+          0.0,
+          65535.0,
+          -32768.0,
+          32767.0
+        ]
+      },
+      "table_samples": 256,
+      "table_first": [
+        0.0,
+        -32768.0
+      ],
+      "table_last": [
+        65535.0,
+        32767.0
+      ],
+      "table_csv_rows": 256,
+      "fit_csv_measurement_rows": 3,
+      "fit_csv_curve_rows": 100,
+      "table_csv_sha256": "49a6fb9fc8144e0b8df1e93611ee70fa67dbe0df048be64029f82994eb0b25a7",
+      "fit_csv_sha256": "b8d11be34b42d3a3c07f3f7f3f3f3d00ba5d33830f603cc41c524c854f53359a",
+      "unicode_paths": [
+        true,
+        true
+      ],
+      "source_unchanged": true,
+      "closed": true,
+      "raw_inputs_verified": true
+    },
+    {
+      "member": "nonlinear-cpp/case.json",
+      "context": "imgui_cpp",
+      "frame_count": 345,
+      "table_plot": {
+        "kind": "calibration_table",
+        "function": "signed16",
+        "value_unit": "HU",
+        "visible": true,
+        "finite_geometry": true,
+        "drawn_segments": 255,
+        "limits": [
+          0.0,
+          65535.0,
+          -32768.0,
+          32767.0
+        ]
+      },
+      "table_samples": 256,
+      "table_first": [
+        0.0,
+        -32768.0
+      ],
+      "table_last": [
+        65535.0,
+        32767.0
+      ],
+      "table_csv_rows": 256,
+      "fit_csv_measurement_rows": 3,
+      "fit_csv_curve_rows": 100,
+      "table_csv_sha256": "49a6fb9fc8144e0b8df1e93611ee70fa67dbe0df048be64029f82994eb0b25a7",
+      "fit_csv_sha256": "1f7e84991fd1e714bee1939ee242f8122c459197736dacec0b6611b98747bacd",
+      "unicode_paths": [
+        true,
+        true
+      ],
+      "source_unchanged": true,
+      "closed": true,
+      "raw_inputs_verified": true
+    },
+    {
+      "member": "pytest/test_actual_intensity_calibrat1/capture/case.json",
+      "context": "imgui_python",
+      "frame_count": 345,
+      "table_plot": {
+        "kind": "calibration_table",
+        "function": "signed16",
+        "value_unit": "HU",
+        "visible": true,
+        "finite_geometry": true,
+        "drawn_segments": 255,
+        "limits": [
+          0.0,
+          65535.0,
+          -32768.0,
+          32767.0
+        ]
+      },
+      "table_samples": 256,
+      "table_first": [
+        0.0,
+        -32768.0
+      ],
+      "table_last": [
+        65535.0,
+        32767.0
+      ],
+      "table_csv_rows": 256,
+      "fit_csv_measurement_rows": 3,
+      "fit_csv_curve_rows": 100,
+      "table_csv_sha256": "49a6fb9fc8144e0b8df1e93611ee70fa67dbe0df048be64029f82994eb0b25a7",
+      "fit_csv_sha256": "b8d11be34b42d3a3c07f3f7f3f3f3d00ba5d33830f603cc41c524c854f53359a",
+      "unicode_paths": [
+        true,
+        true
+      ],
+      "source_unchanged": true,
+      "closed": true,
+      "raw_inputs_verified": true
+    },
+    {
+      "member": "pytest/test_actual_nonlinear_calibrat1/capture/case.json",
+      "context": "imgui_python",
+      "frame_count": 345,
+      "table_plot": {
+        "kind": "calibration_table",
+        "function": "signed16",
+        "value_unit": "HU",
+        "visible": true,
+        "finite_geometry": true,
+        "drawn_segments": 255,
+        "limits": [
+          0.0,
+          65535.0,
+          -32768.0,
+          32767.0
+        ]
+      },
+      "table_samples": 256,
+      "table_first": [
+        0.0,
+        -32768.0
+      ],
+      "table_last": [
+        65535.0,
+        32767.0
+      ],
+      "table_csv_rows": 256,
+      "fit_csv_measurement_rows": 3,
+      "fit_csv_curve_rows": 100,
+      "table_csv_sha256": "49a6fb9fc8144e0b8df1e93611ee70fa67dbe0df048be64029f82994eb0b25a7",
+      "fit_csv_sha256": "1f7e84991fd1e714bee1939ee242f8122c459197736dacec0b6611b98747bacd",
+      "unicode_paths": [
+        true,
+        true
+      ],
+      "source_unchanged": true,
+      "closed": true,
+      "raw_inputs_verified": true
+    }
+  ],
+  "implemented": [
+    "Separate ImageJIntensityCalibrationPlot and imagej_intensity_calibration_plot C++/Python APIs; existing fit-plot contract unchanged",
+    "256 Float32 positions over the complete integer raw range; truncated indices directly decode stored words",
+    "Signed16 implicit table supported without full table allocation; no model evaluation, interpolation, fake fit provenance or provider reads",
+    "Exact curve_words preserve NaN payloads/signed zero; finite range/has_finite_samples and0..1 empty finite fallback",
+    "Checked working-memory admission precedes copies/callbacks; native cancellation and callback failure tested",
+    "Analyze \u2192 Calibration Table Plot uses existing renderer/scalar revision binding/memory setting; stale views invalidate",
+    "Shared compact Close plot/Export CSV toolbar; series labels distinguish table from fitted samples",
+    "Physical table export256rows and fitted data3+curve100rows; Unicode paths, actual file bytes and unchanged source verified"
+  ],
+  "reference_scope": "Actual pinned ImageJ1.54r Calibration.getCTable values sampled by the inspected Calibrator.showPlot Float32/truncated-index policy. The private GUI method is not invoked. Finite display limits match selected reference profiles; non-finite fallback is bounded frontend behavior, not identical upstream invalid-domain UI qualification.",
+  "storage": {
+    "known_final_bytes": 8589087663,
+    "normal_limit_bytes": 8589934592,
+    "full_budget_verified": false,
+    "unknown_subtrees": [
+      ".cache/pytest",
+      ".cache/pytest-ui"
+    ],
+    "recovered_bytes": 5003578,
+    "retention": "Required full252 captures retained, compressed and member-hash verified before scratch removal. Exact identities/logs/Java observations recoverable in verified archives; raw paths retired. Stale2657280-byte native-workflow test executable retired with source/objects/target preserved. Preliminary247 tar/omitted frame/session bytes unavailable after compact numeric/CSV observations and member hashes retained. Historical pins unchanged."
+  },
+  "remaining": [
+    "Refresh one active installed Windows/Linux C++ SDK and verify actual consumers",
+    "Manual function/table dialog automatic Show plot integration and full plot annotation/interaction parity",
+    "Fitting settings/restarts/global calibration, table import/export, workflow/macro behavior and downstream measurement/histogram",
+    "Complete platform/original-reference and matched performance gates"
+  ],
+  "family_tracker": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  }
+}

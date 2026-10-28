@@ -184,7 +184,7 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   } failure{report,directory};
   HeadlessInputSession session(w);Json last;
   auto frame=[&](const Json& events=Json::array()) {
-    require(report["frames"].size()<320,"Calibration UI frame bound");last=session.frame(events);
+    require(report["frames"].size()<352,"Calibration UI frame bound");last=session.frame(events);
     report["frames"].push_back({{"events",events},{"rendered",{
       {"input_frame",last.at("input_frame")},{"dialog",last.at("dialog")},
       {"error_modal",last.at("error_modal")},{"window_error",last.at("window_error")}}}});
@@ -216,6 +216,19 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   frame();frame();report["before"]=state(w);menu("show_intensity_calibration");
   choose("mode","signed16");editText("value_unit","HU");
   click(last.at("dialog").at("controls").at("apply"),"calibration_apply");report["applied"]=state(w);
+  const auto tableSource=owner->snapshot();menu("show_intensity_calibration_plot");report["calibration_table_plot"]=last.at("fit_plot");
+  click(last.at("host_controls").at("fit_plot.export"),"table_plot_export");
+  report["table_csv_browser"]={{"open",last.at("file_browser").at("open")},{"save",last.at("file_browser").at("save")},{"title",last.at("file_browser").at("title")}};
+  click(last.at("file_browser").at("controls").at("path"),"table_csv_path");
+  for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",{{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}}}}}));
+  const auto csv=directory/fs::u8path("calibration-table-\xc2\xb5.csv");
+  frame(Json::array({{{"type","text"},{"value",csv.u8string()}}}));frame();
+  click(last.at("file_browser").at("controls").at("submit"),"table_csv_save");
+  const auto csvBytes=readBytes(csv.u8string());report["table_csv_path"]=csv.u8string();report["table_csv_text"]=std::string(csvBytes.begin(),csvBytes.end());
+  report["table_csv_browser_closed"]=!last.at("file_browser").at("open").get<bool>();
+  click(last.at("host_controls").at("fit_plot.close"),"table_plot_close");report["table_plot_closed"]=last.at("fit_plot").is_null();
+  report["table_plot_source_unchanged"]=owner->snapshot().shares_data(tableSource) && owner->snapshot().revisions().matches(tableSource.revisions(),Change::All);
+
   history("Undo");report["undone"]=state(w);history("Redo");report["redone"]=state(w);
   menu("show_intensity_calibration");report["reopened_dialog"]=last.at("dialog");editText("value_unit","discarded");
   click(last.at("dialog").at("controls").at("cancel"),"calibration_cancel");report["cancelled"]=state(w);
@@ -261,6 +274,14 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   report["fit_reserved_after_publish"]=GaussianCancellationAccess::scheduler(w)->usage().reserved_bytes;
   report["fit_status"]=last.at("status");report["auto_plot_disabled"]=last.at("fit_plot");
   menu("show_intensity_fit_plot");report["fit_plot"]=last.at("fit_plot");
+  const auto fitCsvSource=owner->snapshot();click(last.at("host_controls").at("fit_plot.export"),"fit_plot_export");
+  click(last.at("file_browser").at("controls").at("path"),"fit_csv_path");
+  for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",{{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}}}}}));
+  const auto fitCsv=directory/fs::u8path("calibration-fit-\xc2\xb5.csv");
+  frame(Json::array({{{"type","text"},{"value",fitCsv.u8string()}}}));frame();
+  click(last.at("file_browser").at("controls").at("submit"),"fit_csv_save");
+  const auto fitCsvBytes=readBytes(fitCsv.u8string());report["fit_csv_path"]=fitCsv.u8string();report["fit_csv_text"]=std::string(fitCsvBytes.begin(),fitCsvBytes.end());
+  report["fit_csv_source_unchanged"]=owner->snapshot().shares_data(fitCsvSource) && owner->snapshot().revisions().matches(fitCsvSource.revisions(),Change::All);
   menu(fitAction);report["fit_dialog"]=last.at("dialog");
   click(last.at("dialog").at("controls").at("cancel"),"fit_cancel");
   const auto fittedSnapshot=owner->snapshot();

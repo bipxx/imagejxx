@@ -1,5 +1,44 @@
 # Three-agent execution plan
 
+## Calibration table plots and physical CSV export — 2026-10-28
+
+C++/Python now expose ImageJIntensityCalibrationPlot through the separate
+imagej_intensity_calibration_plot producer. It samples256 Float32 positions
+over the full raw range and reads truncated table indices, including implicit
+signed16 and arbitrary lookup/OD data. Exact sampled IEEE words preserve NaN
+payloads/signed zero. No full16-bit table allocation, model re-evaluation or
+provider reads. Admission/cancellation and finite-range fallback are bounded.
+Analyze → Calibration Table Plot reuses the visible renderer, memory preference
+and scalar revision binding. Table values include their stored clipping policy;
+fit plots retain the mathematical model curve.
+
+128 profiles from actual pinned ImageJ tables match coordinates/words exactly.
+The sampler policy is audited against Calibrator.showPlot; this observer does
+not invoke its private GUI method. Arbitrary/non-finite tables and stale-source
+views pass. Both actual Windows hosts physically export256-row table CSV and
+measurement3/curve100-row fitted CSV through Unicode path entry/Save, verify
+file values, close the plot and preserve source revisions/history. Four cases
+use345 frames within352 cap. Final663 focused checks pass without skips, plus
+Windows/Linux native source consumers. [Scoped evidence](parity/reviews/G034-calibration-table-plot-progress001.json).
+
+Next priority is installed C++ SDK integration: update the one active Windows
+SDK in place using the existing cache's development component, then verify real
+consumers of the fit/plot/prepared APIs. Reuse the configured Linux cache/SDK
+for its corresponding refresh. Record identities and complete storage before/
+after; do not create another compiler cache, SDK copy or environment. Manual
+dialog automatic plots, full plot annotations/interactions, settings/restarts/
+global calibration, table import/export/replay and downstream behavior remain.
+Older cards preserve historical scopes; this block defines current next work.
+
+One cache/runtime reused. Required captures/logs compressed and hash-verified;
+scratch retired. Total5,003,578 bytes recovered through identity/log retention,
+one stale executable and superseded247 capture retirement. Its compact numeric/
+CSV values and member hashes remain; omitted full bytes are unavailable.
+Source/objects/target preserved. Known complete roots8,589,087,663B; two denied
+caches keep full8GiB budget unverified. Dependency commercial-use inventory
+passes. Tracker47 in progress/52 open/0 complete; no comparative speed claim.
+
+
 ## Automatic fit plots and visible dock lifecycle — 2026-10-28
 
 Polynomial/nonlinear dialogs now capture Show plot (interactive defaulttrue,

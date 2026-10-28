@@ -1187,6 +1187,7 @@ struct Window::Impl {
   std::atomic<bool> cancelled{false};
   bool fitShowPlot = true; // interactive session preference, never numeric provenance
   bool fitPlotFocusRequested = false;
+  bool fitPlotIsTable = false;
   std::optional<ImageJIntensityFitPlot> fitPlot;
   std::optional<FitPlotBinding> fitPlotSource;
   Json fitPlotObservation;
@@ -1620,7 +1621,7 @@ struct Window::Impl {
     if (action == "shadow_imagej" || (action == "show_operation" && operationId == "shadow_imagej"))
       return owner.controller_->active_document_id() == source->id &&
              scientific_operation_review_available("shadow_imagej", source->nativeSnapshot());
-    if(action=="show_intensity_function" || action=="show_intensity_polynomial_fit" || action=="show_intensity_nonlinear_fit" || action=="show_intensity_fit_plot") {
+    if(action=="show_intensity_function" || action=="show_intensity_polynomial_fit" || action=="show_intensity_nonlinear_fit" || action=="show_intensity_fit_plot" || action=="show_intensity_calibration_plot") {
       const auto& dataset=source->nativeSnapshot().data().dataset;
       return !owner.busy() && owner.controller_->active_document_id()==source->id && dataset.shape().s==1 &&
           (dataset.pixel_type()==PixelType::UInt8 || dataset.pixel_type()==PixelType::UInt16);
@@ -6592,16 +6593,23 @@ void Window::action(const std::string &name, const Json &p) {
   // not bypass its capability check before clipboard, files or jobs change.
   if (targetId && !targeted.count(name))
     impl->requireAction(name, 0, operationId);
-  if(name=="show_intensity_calibration" || name=="show_intensity_function" || name=="show_intensity_polynomial_fit" || name=="show_intensity_nonlinear_fit" || name=="show_intensity_fit_plot" || name=="set_intensity_calibration" || name=="fit_intensity_calibration") {
+  if(name=="show_intensity_calibration" || name=="show_intensity_function" || name=="show_intensity_polynomial_fit" || name=="show_intensity_nonlinear_fit" || name=="show_intensity_fit_plot" || name=="show_intensity_calibration_plot" || name=="set_intensity_calibration" || name=="fit_intensity_calibration") {
     if(busy())throw std::invalid_argument("Wait for the current edit");
     const auto source=nativeSnapshot();
     if(targetId && targetId!=source.id())throw std::invalid_argument("Calibration requires the active document");
-    if(name=="show_intensity_fit_plot") {
+    if(name=="show_intensity_fit_plot" || name=="show_intensity_calibration_plot") {
       for(const auto& field:p.items())if(field.key()!="document_id")throw std::invalid_argument("Unknown fit plot field: "+field.key());
       const auto calibration=read_imagej_intensity_calibration(source);
       auto bytes=std::size_t(4*1024*1024);const auto mb=impl->preferenceState.settings.integer("processing_memory_mb");
       if(mb>0)bytes=std::min(bytes,std::size_t(mb)*1024*1024);
-      auto plot=imagej_intensity_fit_plot(calibration,calibration.bit_depth()==8?256:100,bytes);
+      ImageJIntensityFitPlot plot;const bool table=name=="show_intensity_calibration_plot";
+      if(table) {
+        auto data=imagej_intensity_calibration_plot(calibration,bytes);
+        plot.function=std::move(data.mode);plot.value_unit=std::move(data.value_unit);
+        plot.curve_x=std::move(data.curve_x);plot.curve_y=std::move(data.curve_y);
+        plot.x_min=data.x_min;plot.x_max=data.x_max;plot.y_min=data.y_min;plot.y_max=data.y_max;
+      } else plot=imagej_intensity_fit_plot(calibration,calibration.bit_depth()==8?256:100,bytes);
+      impl->fitPlotIsTable=table;
       impl->fitPlotSource=Impl::FitPlotBinding{source.id(),source.revisions()};impl->fitPlot=std::move(plot);impl->fitPlotFocusRequested=true;return;
     }
     if(name=="fit_intensity_calibration") {
@@ -9137,7 +9145,7 @@ void Window::poll() {
           controller_->publish(*completed.prepared);
           if(completed.fit_plot) {
             impl->fitPlot.swap(completed.fit_plot);impl->fitPlotSource.swap(completed.fit_plot_source);
-            impl->fitPlotFocusRequested=true;
+            impl->fitPlotFocusRequested=true;impl->fitPlotIsTable=false;
           }
           impl->status.swap(completed.fit_status);return;
         }
@@ -9709,6 +9717,7 @@ void Window::Impl::menu() {
     item("Fit Polynomial Calibration...", "show_intensity_polynomial_fit");
     item("Fit Nonlinear Calibration...", "show_intensity_nonlinear_fit");
     item("Calibration Fit Plot", "show_intensity_fit_plot");
+    item("Calibration Table Plot", "show_intensity_calibration_plot");
     item("Measure", "measure", "M");
     item("Measure ROIs", "measure_rois");
     if(actionAllowed("show_histogram"))item("Histogram...", "show_histogram");
@@ -10933,17 +10942,19 @@ void Window::Impl::plots() {
   fitPlotFocusRequested=ImGui::IsWindowAppearing();
   if(fitPlot) {
     const auto& data=*fitPlot;
-    ImGui::Text("Calibration fit: %s",data.function.c_str());
-    if(ImGui::Button("Close fit plot")){fitPlot.reset();fitPlotSource.reset();ImGui::End();return;}
-    observeControl("fit_plot.close",true,nullptr,nullptr,ImGui::GetCurrentWindow());ImGui::SameLine();
-    if(ImGui::Button("Export fit plot CSV")) {
+    ImGui::Text(fitPlotIsTable?"Calibration table: %s":"Calibration fit: %s",data.function.c_str());
+    if(ImGui::Button("Close plot")){fitPlot.reset();fitPlotSource.reset();ImGui::End();return;}
+    observeControl("fit_plot.close",true,nullptr,nullptr,ImGui::GetCurrentWindow());
+    if(ImGui::GetContentRegionAvail().x>180.f*guiScale)ImGui::SameLine();
+    if(ImGui::Button("Export CSV")) {
       std::ostringstream stream;stream.precision(17);stream<<"series,x,y\n";
       for(std::size_t i=0;i<data.measured.size();++i)stream<<"data,"<<data.measured[i]<<','<<data.known[i]<<'\n';
-      for(std::size_t i=0;i<data.curve_x.size();++i){stream<<"fit,"<<data.curve_x[i]<<',';if(std::isfinite(data.curve_y[i]))stream<<data.curve_y[i];stream<<'\n';}
-      file("Export calibration fit plot",true,[text=stream.str()](std::string path){writeBytes(path,{text.begin(),text.end()});},"calibration-fit.csv");
+      for(std::size_t i=0;i<data.curve_x.size();++i){stream<<(fitPlotIsTable?"table,":"fit,")<<data.curve_x[i]<<',';if(std::isfinite(data.curve_y[i]))stream<<data.curve_y[i];stream<<'\n';}
+      file(fitPlotIsTable?"Export calibration table plot":"Export calibration fit plot",true,[text=stream.str()](std::string path){writeBytes(path,{text.begin(),text.end()});},fitPlotIsTable?"calibration-table.csv":"calibration-fit.csv");
     }
     observeControl("fit_plot.export",true,nullptr,nullptr,ImGui::GetCurrentWindow());
-    ImGui::TextUnformatted("Red points: measurements; blue line: fitted curve");
+    ImGui::TextUnformatted(fitPlotIsTable?"Blue line: calibrated table samples":"Red points: measurements; blue line: fitted curve");
+    if(fitPlotIsTable && std::none_of(data.curve_y.begin(),data.curve_y.end(),[](float v){return std::isfinite(v);}))ImGui::TextUnformatted("No finite calibrated samples.");
     ImGui::Text("X: pixel value | Y: %s",data.value_unit.c_str());
     if(data.objective=="measured_as_function_of_known")ImGui::TextWrapped("Fit error is measured in pixel values using measured(known).");
     const auto origin=ImGui::GetCursorScreenPos();
@@ -10978,7 +10989,7 @@ void Window::Impl::plots() {
     }
     draw->PopClipRect();
     ImGui::Text("X: %.6g to %.6g | Y: %.6g to %.6g",data.x_min,data.x_max,data.y_min,data.y_max);
-    if(headlessSessionActive)fitPlotObservation={{"function",data.function},{"value_unit",data.value_unit},{"objective",data.objective},
+    if(headlessSessionActive)fitPlotObservation={{"kind",fitPlotIsTable?"calibration_table":"fit"},{"function",data.function},{"value_unit",data.value_unit},{"objective",data.objective},
       {"measured",data.measured},{"known",data.known},{"curve_x",data.curve_x},{"curve_y",data.curve_y},
       {"limits",{data.x_min,data.x_max,data.y_min,data.y_max}},{"data_screen_points",std::move(points)},
       {"canvas_origin",{origin.x,origin.y}},{"canvas_size",{size.x,size.y}},{"source_id",fitPlotSource->id()},

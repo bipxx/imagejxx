@@ -425,6 +425,35 @@ ImageJIntensityFitPlot imagej_intensity_fit_plot(const ImageJIntensityCalibratio
   if(!std::isfinite(result.y_min) || !std::isfinite(result.y_max))throw std::invalid_argument("Fit plot limits exceed finite range");
   stage.finish();return result;
 }
+
+ImageJIntensityCalibrationPlot imagej_intensity_calibration_plot(
+    const ImageJIntensityCalibration& input,std::size_t max_working_bytes,
+    const ExecutionControl& control) {
+  const auto calibration=input;
+  if(!calibration.has_density())throw std::invalid_argument("Calibration table plot requires density calibration");
+  const auto raw_count=table_size(calibration.bit_depth());constexpr std::size_t count=256;
+  using detail::contrast_command_record::add;
+  const auto bytes=add(add(64*1024,calibration.value_unit().size()),count*(2*sizeof(float)+sizeof(std::uint32_t)));
+  if(bytes>max_working_bytes)throw std::invalid_argument("Calibration table plot exceeds working-memory budget");
+  ImageJIntensityCalibrationPlot result;result.mode=calibration.mode()==ImageJIntensityMode::Signed16?"signed16":"lookup";
+  result.value_unit=calibration.value_unit();result.x_max=double(raw_count-1);
+  const std::string* encoded=nullptr;
+  if(calibration.mode()==ImageJIntensityMode::Lookup)encoded=&text(object(calibration.record()).at("table_f32_hex"));
+  ExecutionScope scope(control);kernel_checkpoint();KernelStage stage("Calibration table plot",count);
+  result.curve_x.resize(count);result.curve_y.resize(count);result.curve_words.resize(count);
+  double low=std::numeric_limits<double>::infinity(),high=-low;
+  for(std::size_t i=0;i<count;++i) {
+    stage.periodic(i);result.curve_x[i]=static_cast<float>((double(i)/255.0)*result.x_max);
+    const auto index=static_cast<std::size_t>(result.curve_x[i]);std::uint32_t word=0;
+    if(encoded){for(unsigned j=0;j<8;++j)word=(word<<4)|nibble((*encoded)[index*8+j]);}
+    else {const auto value=static_cast<float>(double(index)-32768.0);std::memcpy(&word,&value,sizeof(word));}
+    result.curve_words[i]=word;std::memcpy(&result.curve_y[i],&word,sizeof(word));
+    if(std::isfinite(result.curve_y[i])){low=std::min(low,double(result.curve_y[i]));high=std::max(high,double(result.curve_y[i]));}
+  }
+  result.has_finite_samples=low<=high;
+  if(result.has_finite_samples){result.y_min=low;result.y_max=high;}
+  stage.finish();return result;
+}
 std::size_t estimate_imagej_intensity_fit(const DocumentSnapshot& source,const ImageJIntensityFitRequest& r) {
   using detail::contrast_command_record::add;using detail::contrast_command_record::mul;
   const auto& dataset=source.data().dataset;const auto count=table_size(depth(dataset.pixel_type()));

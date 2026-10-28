@@ -83,6 +83,8 @@ def test_actual_intensity_calibration_dialog(context,tmp_path):
     _assert_physical_fit_running_cancel(report)
     _assert_fit_plot_render(report)
     _assert_automatic_fit_plot(report)
+    _assert_calibration_table_plot_and_csv(report)
+    _assert_fit_csv(report)
 
     for name in ("function_applied","function_reopened"):
         record=report[name]["properties"][key]
@@ -282,6 +284,8 @@ def test_actual_nonlinear_calibration_dialog(context,tmp_path):
     _assert_physical_fit_running_cancel(report)
     _assert_fit_plot_render(report)
     _assert_automatic_fit_plot(report)
+    _assert_calibration_table_plot_and_csv(report)
+    _assert_fit_csv(report)
     assert {"show_intensity_nonlinear_fit","initial_coefficients","invalid_fit_apply","fit_error_ok","fit_apply","fit_cancel"}<={r["name"] for r in report["controls"]}
 
 
@@ -393,7 +397,7 @@ def _assert_physical_fit_running_cancel(report):
     control=case["control"]
     assert control["enabled"] and control["id"]>0
     assert {"fit_cancel_apply","fit_running_cancel"}<={r["name"] for r in report["controls"]}
-    assert len(report["frames"])<=320
+    assert len(report["frames"])<=352
 
 
 def _assert_fit_plot_render(report):
@@ -587,3 +591,94 @@ def test_fit_show_plot_requires_boolean(value,tmp_path):
     with pytest.raises((ValueError,RuntimeError),match="Boolean"):
         editor.action("fit_intensity_calibration",function="straight_line",measured=[0,1],known=[1,3],show_plot=value)
     assert not editor.busy and owner.snapshot().shares_data(before)
+
+
+def _assert_calibration_table_plot_and_csv(report):
+    import csv,io
+    plot=report["calibration_table_plot"]
+    assert plot["kind"]=="calibration_table" and plot["function"]=="signed16" and plot["value_unit"]=="HU"
+    assert plot["visible"] and plot["finite_geometry"] and plot["drawn_segments"]==255
+    assert plot["measured"]==plot["known"]==[]
+    x=257*np.arange(256)
+    np.testing.assert_array_equal(plot["curve_x"],x);np.testing.assert_array_equal(plot["curve_y"],x-32768)
+    assert report["table_csv_browser"]["open"] and report["table_csv_browser"]["save"]
+    assert report["table_csv_browser_closed"] and report["table_plot_closed"] and report["table_plot_source_unchanged"]
+    path=Path(report["table_csv_path"]);assert "µ" in path.name and path.read_text()==report["table_csv_text"]
+    rows=list(csv.DictReader(io.StringIO(report["table_csv_text"])))
+    assert len(rows)==256 and all(r["series"]=="table" for r in rows)
+    np.testing.assert_array_equal([float(r["x"]) for r in rows],x)
+    np.testing.assert_array_equal([float(r["y"]) for r in rows],x-32768)
+    assert {"show_intensity_calibration_plot","table_plot_export","table_csv_path","table_csv_save","table_plot_close"}<={c["name"] for c in report["controls"]}
+
+
+def _calibration_table_plot_cases():
+    import gzip
+    path=Path(__file__).parents[2]/"docs/parity/reviews/G034-calibration-table-plots-reference001.jsonl.gz"
+    return [json.loads(line) for line in gzip.decompress(path.read_bytes()).splitlines()]
+
+
+def _table_plot_calibration(case):
+    if case["kind"]=="function":
+        return ij.ImageJIntensityCalibration.function("uint"+str(case["bit_depth"]),case["function"],case["coefficients"],"unit",zero_clip=case["zero_clip"],inverted_lut=case["inverted_lut"])
+    if case["kind"]=="signed16":return ij.ImageJIntensityCalibration.signed16("unit")
+    pattern=case["pattern_words"];count=1<<case["bit_depth"]
+    return ij.ImageJIntensityCalibration.from_record({"schema":"imagejxx.intensity-calibration","version":1,"mode":"lookup","value_unit":"unit","bit_depth":case["bit_depth"],
+        "table_f32_hex":"".join(f"{pattern[i%len(pattern)]:08x}" for i in range(count)),"source_parameters":{},"signed16":False})
+
+
+@pytest.mark.parametrize("case",_calibration_table_plot_cases())
+def test_calibration_table_plot_matches_imagej_tables(case):
+    value=_table_plot_calibration(case);before=value.record
+    plot=ij.imagej_intensity_calibration_plot(value)
+    np.testing.assert_array_equal(plot.curve_x,case["curve_x"])
+    np.testing.assert_array_equal(plot.curve_words,case["curve_words"])
+    values=np.asarray(case["curve_words"],np.uint32).view(np.float32)
+    assert plot.has_finite_samples==bool(np.isfinite(values).any())
+    if all(v is not None for v in case["limits"]):np.testing.assert_array_equal([plot.y_min,plot.y_max],case["limits"])
+    assert plot.value_unit=="unit" and plot.x_min==0 and plot.x_max==(1<<case["bit_depth"])-1
+    assert value.record==before
+
+
+def test_calibration_table_plot_admission_cancel_and_callback():
+    value=ij.ImageJIntensityCalibration.signed16();calls=[]
+    with pytest.raises(ValueError,match="budget"):ij.imagej_intensity_calibration_plot(value,max_working_bytes=1,checkpoint=lambda:calls.append(True))
+    assert not calls
+    token=ij.CancellationToken()
+    with pytest.raises(RuntimeError,match="(?i)cancel"):ij.imagej_intensity_calibration_plot(value,cancellation=token,checkpoint=token.cancel)
+    def fail():raise LookupError("table plot callback")
+    with pytest.raises(LookupError,match="table plot callback"):ij.imagej_intensity_calibration_plot(value,checkpoint=fail)
+    with pytest.raises(ValueError):ij.imagej_intensity_calibration_plot(ij.ImageJIntensityCalibration.uncalibrated())
+
+
+@pytest.mark.parametrize("kind",["signed16","lookup","empty"])
+def test_editor_calibration_table_plot_and_stale_source(kind,tmp_path):
+    from imagejxx.ui.app import Editor
+    from imagejxx.ui.persistence import Preferences
+    if kind=="signed16":value=ij.ImageJIntensityCalibration.signed16()
+    else:
+        bits=8 if kind=="empty" else 16
+        case=next(c for c in _calibration_table_plot_cases() if c["kind"]=="lookup" and c["bit_depth"]==bits and (len(c["pattern_words"])==1)==(kind=="empty"))
+        value=_table_plot_calibration(case)
+    dtype=np.uint8 if value.bit_depth==8 else np.uint16
+    owner=ij.Document(ij.Dataset(np.zeros((2,3),dtype),axes="YX"),"table")
+    ij.set_imagej_intensity_calibration(owner,value);before=owner.snapshot();steps=owner.undo_steps
+    editor=Editor(preferences=Preferences(tmp_path/"preferences.json"));editor.add_native_document(owner);editor.action("show_intensity_calibration_plot")
+    plot=editor.render_headless(4)["fit_plot"]
+    assert plot["visible"] and plot["kind"]=="calibration_table" and plot["finite_geometry"]
+    if kind=="empty":assert plot["drawn_segments"]==0 and plot["limits"][2:]==[0,1]
+    assert owner.snapshot().shares_data(before) and owner.undo_steps==steps
+    view=owner.snapshot().display;view.zoom=2;owner.set_display(view)
+    assert editor.render_headless(4)["fit_plot"] is None
+
+
+def _assert_fit_csv(report):
+    import csv,io
+    path=Path(report["fit_csv_path"]);assert "µ" in path.name and path.read_text()==report["fit_csv_text"]
+    rows=list(csv.DictReader(io.StringIO(report["fit_csv_text"])))
+    data=[r for r in rows if r["series"]=="data"];fit=[r for r in rows if r["series"]=="fit"]
+    assert len(data)==3 and len(fit)==100 and len(rows)==103 and report["fit_csv_source_unchanged"]
+    plot=report["fit_plot"]
+    for group,x,y in [(data,plot["measured"],plot["known"]),(fit,plot["curve_x"],plot["curve_y"])]:
+        np.testing.assert_array_equal([float(r["x"]) for r in group],x)
+        np.testing.assert_array_equal([float(r["y"]) for r in group],y)
+    assert {"fit_plot_export","fit_csv_path","fit_csv_save"}<={c["name"] for c in report["controls"]}

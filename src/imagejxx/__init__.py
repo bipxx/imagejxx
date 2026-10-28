@@ -1742,6 +1742,8 @@ from ._native import (
     ImageJIntensityCalibration as ImageJIntensityCalibration,
     ImageJIntensityFitRequest as ImageJIntensityFitRequest,
     ImageJIntensityFitPlot as ImageJIntensityFitPlot,
+    ImageJIntensityCalibrationPlot as ImageJIntensityCalibrationPlot,
+    imagej_intensity_calibration_plot as imagej_intensity_calibration_plot,
     imagej_intensity_fit_plot as imagej_intensity_fit_plot,
     estimate_imagej_intensity_fit as estimate_imagej_intensity_fit,
     prepare_imagej_intensity_fit as prepare_imagej_intensity_fit,

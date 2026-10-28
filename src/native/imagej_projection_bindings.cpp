@@ -67,6 +67,23 @@ void bind_imagej_projection(py::module_& m) {
     py::gil_scoped_release release;return imagej_intensity_fit_plot(value,points,bytes,control);
   },py::arg("calibration"),py::arg("points")=100,py::arg("max_working_bytes")=4ULL*1024*1024,
     py::kw_only(),py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none());
+  py::class_<ImageJIntensityCalibrationPlot>(m,"ImageJIntensityCalibrationPlot")
+    .def_readonly("mode",&ImageJIntensityCalibrationPlot::mode)
+    .def_readonly("value_unit",&ImageJIntensityCalibrationPlot::value_unit)
+    .def_readonly("curve_x",&ImageJIntensityCalibrationPlot::curve_x)
+    .def_readonly("curve_y",&ImageJIntensityCalibrationPlot::curve_y)
+    .def_readonly("curve_words",&ImageJIntensityCalibrationPlot::curve_words)
+    .def_readonly("x_min",&ImageJIntensityCalibrationPlot::x_min)
+    .def_readonly("x_max",&ImageJIntensityCalibrationPlot::x_max)
+    .def_readonly("y_min",&ImageJIntensityCalibrationPlot::y_min)
+    .def_readonly("y_max",&ImageJIntensityCalibrationPlot::y_max)
+    .def_readonly("has_finite_samples",&ImageJIntensityCalibrationPlot::has_finite_samples);
+  m.def("imagej_intensity_calibration_plot",[](ImageJIntensityCalibration value,std::size_t bytes,
+      std::shared_ptr<CancellationToken> cancel,py::object progress,py::object checkpoint){
+    auto control=axis_range_python_control(std::move(cancel),std::move(progress),std::move(checkpoint));
+    py::gil_scoped_release release;return imagej_intensity_calibration_plot(value,bytes,control);
+  },py::arg("calibration"),py::arg("max_working_bytes")=4ULL*1024*1024,
+    py::kw_only(),py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none());
   py::class_<ImageJIntensityFitRequest>(m,"ImageJIntensityFitRequest")
     .def(py::init<>())
     .def_readwrite("function",&ImageJIntensityFitRequest::function)
