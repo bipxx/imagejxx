@@ -187,12 +187,12 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
       {"input_frame",last.at("input_frame")},{"dialog",last.at("dialog")},
       {"error_modal",last.at("error_modal")},{"window_error",last.at("window_error")}}}});
   };
-  auto click=[&](Json control,const std::string& name) {
+  auto click=[&](Json control,const std::string& name,bool after=true) {
     require(control.at("enabled").get<bool>() && control.at("id").get<std::uint64_t>()>0,"Calibration control unavailable");
     report["controls"].push_back({{"name",name},{"control",control}});
     frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));
     frame(Json::array({{{"type","button"},{"name","left"},{"down",true}}}));
-    frame(Json::array({{{"type","button"},{"name","left"},{"down",false}}}));frame();
+    frame(Json::array({{{"type","button"},{"name","left"},{"down",false}}}));if(after)frame();
   };
   auto menu=[&](const char* action){
     click(last.at("host_controls").at("menu.Analyze"),"menu.Analyze");
@@ -243,7 +243,19 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   report["invalid_fit"]={{"state",state(w)},{"error",last.at("error_modal")},{"busy",w.busy()}};
   frame();frame();click(last.at("error_modal").at("controls").at("ok"),"fit_error_ok");
   editText("known",nonlinear_fit?"[5,10,20]":"[1,4,9]");
-  click(last.at("dialog").at("controls").at("apply"),"fit_apply");report["fitted"]=state(w);
+  click(last.at("dialog").at("controls").at("apply"),"fit_apply",false);
+  const auto fitDeadline=std::chrono::steady_clock::now()+std::chrono::seconds(10);
+  while(w.jobInfo() && (w.jobInfo()->state==JobState::Queued || w.jobInfo()->state==JobState::Running)) {
+    require(std::chrono::steady_clock::now()<fitDeadline,"Fit worker timeout");std::this_thread::sleep_for(std::chrono::milliseconds(1));
+  }
+  const auto fitReady=w.jobInfo();require(bool(fitReady),"Fit job missing after physical Apply");
+  const auto fitUsage=GaussianCancellationAccess::scheduler(w)->usage();
+  report["fit_ready"]={{"state",int(fitReady->state)},{"resource_bytes",fitReady->resource_bytes},
+    {"retained_bytes",fitUsage.retained_bytes},{"stage",fitReady->stage},
+    {"stage_completed",fitReady->stage_completed},{"stage_total",fitReady->stage_total},
+    {"source_unchanged",owner->snapshot().shares_data(functionSnapshot)}};
+  w.wait();frame();frame();report["fitted"]=state(w);
+  report["fit_reserved_after_publish"]=GaussianCancellationAccess::scheduler(w)->usage().reserved_bytes;
   report["fit_status"]=last.at("status");
   menu(fitAction);report["fit_dialog"]=last.at("dialog");
   click(last.at("dialog").at("controls").at("cancel"),"fit_cancel");

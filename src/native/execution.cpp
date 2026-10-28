@@ -1,4 +1,5 @@
 #include "kernel_control.hpp"
+#include <imagejxx/imagej_intensity_execution.hpp>
 #include "imagej_projection_document.hpp"
 #include "floating_charconv.hpp"
 #include "target_mask_resources.hpp"
@@ -1289,6 +1290,23 @@ AxisRangeSpacingResult reslice_spaced_axis_range(
   return {std::move(output), std::move(layout.output.geometry), request,
           layout.estimate.working_bytes, layout.estimate.source_vertical_spacing,
           layout.estimate.voxel_step, layout.estimate.vertical_count};
+}
+
+PreparedOperation prepare_imagej_intensity_fit(const DocumentSnapshot& source_input,
+    const ImageJIntensityFitRequest& request_input,const ExecutionControl& control) {
+  const auto source=source_input;
+  (void)estimate_imagej_intensity_fit(source,request_input);
+  const auto request=request_input; // freeze caller inputs before callbacks
+  ExecutionScope scope(control);kernel_checkpoint();execution_progress(0,1);kernel_checkpoint();
+  const auto type=source.data().dataset.pixel_type();
+  const bool polynomial=request.function=="straight_line" || request.function=="poly2" || request.function=="poly3" || request.function=="poly4";
+  const auto calibration=polynomial?ImageJIntensityCalibration::fit_polynomial(type,request.function,request.measured,request.known,request.value_unit,request.zero_clip):
+      ImageJIntensityCalibration::fit_nonlinear(type,request.function,request.measured,request.known,request.value_unit,request.zero_clip,request.initial_coefficients,request.max_iterations,request.relative_tolerance);
+  kernel_checkpoint();TargetRequest target_request;target_request.roi=RoiPolicy::WholePlane;
+  auto target=resolve_target(source,target_request);
+  auto edit=source.begin_edit(Change::All);edit.set_property(imagej_intensity_property,calibration.record());
+  auto state=std::make_shared<PreparedOperation::State>(std::move(target),"imagej_intensity_fit",OperationParameters{},std::move(edit),source.display(),ExecutionOptions{},std::vector<PlaneExecutionOutput>{},execution_cancellation());
+  execution_progress(1,1);kernel_checkpoint();return PreparedOperation(std::move(state));
 }
 
 PreparedOperation prepare_imagej_projection(

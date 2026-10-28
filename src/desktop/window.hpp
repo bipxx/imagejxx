@@ -1,5 +1,6 @@
 #pragma once
 #include "desktop.hpp"
+#include <imagejxx/imagej_intensity_execution.hpp>
 #include <imagejxx/axis_extraction_command.hpp>
 #include <imagejxx/axis_orientation_command.hpp>
 #include <imagejxx/axis_spacing_command.hpp>
@@ -109,6 +110,7 @@ public:
   DocumentTransaction beginEdit(std::uint64_t id = 0,
                                 Change dependencies = Change::Data) const;
   void commitEdit(DocumentTransaction &transaction);
+  void fitIntensityCalibration(const DocumentSnapshot&,ImageJIntensityFitRequest);
   void closeDocument(std::uint64_t id = 0, bool discard = false);
   Settings settings() const;
   Json preferencesJson() const;

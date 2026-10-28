@@ -1,4 +1,6 @@
-#include <imagejxx/imagej_intensity_calibration.hpp>
+#include <imagejxx/imagej_intensity_execution.hpp>
+#include "kernel_control.hpp"
+#include "contrast_command_record.hpp"
 #include <imagejxx/document.hpp>
 #include <imagejxx/imagej_dataset_projection.hpp>
 #include "axis_command_record.hpp"
@@ -124,21 +126,29 @@ ImageJIntensityCalibration ImageJIntensityCalibration::lookup(PixelType type,
   return {metadata_object(std::move(record)), ImageJIntensityMode::Lookup, bits, signed16};
 }
 ImageJIntensityCalibration ImageJIntensityCalibration::function(PixelType type,
-    const std::string& name, const std::vector<double>& p, std::string unit,
+    const std::string& name_input, const std::vector<double>& p_input, std::string unit,
     bool zero_clip, bool inverted_lut) {
+  if(name_input.size()>64)throw std::invalid_argument("Invalid intensity function name");
+  const auto name=name_input;
+  if(p_input.size()>5)throw std::invalid_argument("Too many intensity coefficients");
+  const auto p=p_input;
+  kernel_checkpoint();
   const int bits=depth(type);const auto count=table_size(bits);validate_unit(unit);
   const int id=function_id(name);
   if(p.size()!=function_lengths[id])throw std::invalid_argument("Wrong intensity coefficient count");
   if(id==14 && bits!=8)throw std::invalid_argument("Uncalibrated OD requires UInt8 storage");
   for(double value:p)if(!std::isfinite(value))throw std::invalid_argument("Intensity coefficients must be finite");
   std::vector<std::uint32_t> words(count);
+  KernelStage table_stage("Calibration table",count);
   for(std::size_t i=0;i<count;++i) {
+    table_stage.periodic(i);
     double value=function_value(id,p,double(i),inverted_lut);
     if(bits==8 && id!=14 && zero_clip && value<0.0)value=0.0;
     const float converted=static_cast<float>(value);
     if(std::isnan(converted))words[i]=0x7fc00000U;
     else std::memcpy(&words[i],&converted,sizeof(converted));
   }
+  table_stage.finish();
   MetadataArray coefficients;for(double value:p)coefficients.emplace_back(value);
   MetadataObject parameters{{"producer",std::string("imagej154r.function")},{"version",std::int64_t(1)},
     {"function",name},{"coefficients",metadata_array(std::move(coefficients))},
@@ -147,8 +157,13 @@ ImageJIntensityCalibration ImageJIntensityCalibration::function(PixelType type,
   return lookup(type,words,std::move(unit),std::move(parameters),signed16);
 }
 ImageJIntensityCalibration ImageJIntensityCalibration::fit_polynomial(PixelType type,
-    const std::string& name,const std::vector<double>& x,const std::vector<double>& y,
+    const std::string& name_input,const std::vector<double>& x_input,const std::vector<double>& y_input,
     std::string unit,bool zero_clip) {
+  if(name_input.size()>64)throw std::invalid_argument("Invalid intensity function name");
+  const auto name=name_input;
+  if(x_input.size()>4096 || y_input.size()>4096)throw std::invalid_argument("Too many fit points");
+  const auto x=x_input,y=y_input;
+  kernel_checkpoint();
   const auto count=table_size(depth(type));validate_unit(unit);
   const int degree=name=="straight_line"?1:name=="poly2"?2:name=="poly3"?3:name=="poly4"?4:0;
   if(!degree)throw std::invalid_argument("Polynomial fit supports straight_line/poly2/poly3/poly4");
@@ -165,9 +180,11 @@ ImageJIntensityCalibration ImageJIntensityCalibration::fit_polynomial(PixelType 
   std::array<std::vector<double>,5> q;
   std::array<std::array<double,5>,5> r{};
   std::array<double,5> rhs{},a{},coefficients{},basis{};basis[0]=1;
+  KernelStage fit_stage("Calibration polynomial fit",m);
   for(std::size_t j=0;j<m;++j) {
+    fit_stage.checkpoint(j);
     auto& v=q[j];v.resize(n);
-    for(std::size_t i=0;i<n;++i){const double z=(x[i]-center)/scale;double power=1;for(std::size_t k=0;k<j;++k)power*=z;v[i]=power;}
+    for(std::size_t i=0;i<n;++i){kernel_checkpoint_periodic();const double z=(x[i]-center)/scale;double power=1;for(std::size_t k=0;k<j;++k)power*=z;v[i]=power;}
     // A second MGS pass controls loss of orthogonality for clustered samples.
     for(int pass=0;pass<2;++pass)for(std::size_t k=0;k<j;++k) {
       double dot=0;for(std::size_t i=0;i<n;++i)dot+=q[k][i]*v[i];r[k][j]+=dot;
@@ -178,6 +195,7 @@ ImageJIntensityCalibration ImageJIntensityCalibration::fit_polynomial(PixelType 
       throw std::invalid_argument("Fit measured values are rank deficient");
     r[j][j]=norm;for(std::size_t i=0;i<n;++i){v[i]/=norm;rhs[j]+=v[i]*(y[i]/yscale);}
   }
+  fit_stage.finish();
   for(int j=degree;j>=0;--j){double value=rhs[std::size_t(j)];for(std::size_t k=std::size_t(j)+1;k<m;++k)value-=r[std::size_t(j)][k]*a[k];a[std::size_t(j)]=value/r[std::size_t(j)][std::size_t(j)];}
   for(std::size_t j=0;j<m;++j) {
     for(std::size_t k=0;k<=j;++k)coefficients[k]+=a[j]*basis[k]*yscale;
@@ -219,9 +237,16 @@ ImageJIntensityCalibration ImageJIntensityCalibration::fit_polynomial(PixelType 
   return from_record(metadata_object(std::move(fields)));
 }
 ImageJIntensityCalibration ImageJIntensityCalibration::fit_nonlinear(PixelType type,
-    const std::string& name,const std::vector<double>& x,const std::vector<double>& y,
-    std::string unit,bool zero_clip,const std::vector<double>& initial,
+    const std::string& name_input,const std::vector<double>& x_input,const std::vector<double>& y_input,
+    std::string unit,bool zero_clip,const std::vector<double>& initial_input,
     std::size_t max_iterations,double tolerance) {
+  if(name_input.size()>64)throw std::invalid_argument("Invalid intensity function name");
+  const auto name=name_input;
+  if(x_input.size()>4096 || y_input.size()>4096)throw std::invalid_argument("Too many fit points");
+  const auto x=x_input,y=y_input;
+  if(initial_input.size()>4)throw std::invalid_argument("Too many starting coefficients");
+  const auto initial=initial_input;
+  kernel_checkpoint();
   const auto count=table_size(depth(type));validate_unit(unit);const int id=function_id(name);
   if(id<4 || id>13)throw std::invalid_argument("Nonlinear fitting requires a non-polynomial calibration model");
   const auto m=function_lengths[id],n=x.size();
@@ -265,7 +290,7 @@ ImageJIntensityCalibration ImageJIntensityCalibration::fit_nonlinear(PixelType t
   const auto target=[&](std::size_t i){return (id==10?x[i]:y[i])/yscale;};
   const auto evaluate=[&](const std::vector<double>& parameters,std::vector<double>& values){
     values.resize(n);double cost=0;
-    for(std::size_t i=0;i<n;++i){const double value=function_value(id==10?7:id,parameters,id==10?y[i]:x[i])/yscale;
+    for(std::size_t i=0;i<n;++i){kernel_checkpoint_periodic();const double value=function_value(id==10?7:id,parameters,id==10?y[i]:x[i])/yscale;
       if(!std::isfinite(value))return std::numeric_limits<double>::infinity();
       values[i]=value;const double r=target(i)-value;cost+=r*r;}
     return std::isfinite(cost)?cost:std::numeric_limits<double>::infinity();
@@ -284,7 +309,9 @@ ImageJIntensityCalibration ImageJIntensityCalibration::fit_nonlinear(PixelType t
   std::vector<double> values,plus,minus,candidate_values;double cost=evaluate(p,values),lambda=0.001;
   if(!std::isfinite(cost))throw std::invalid_argument("Initial model is not finite at the measured values");
   bool converged=false,small_reduction=false;std::string convergence_reason;std::size_t iterations=0;
+  KernelStage fit_stage("Calibration nonlinear fit",max_iterations);
   for(;iterations<max_iterations;++iterations) {
+    fit_stage.checkpoint(iterations);
     std::array<std::vector<double>,4> jacobian;Vector norm{},gradient{},delta{};Matrix gram{};
     for(std::size_t j=0;j<m;++j) {
       const double h=std::cbrt(std::numeric_limits<double>::epsilon())*std::max({std::abs(p[j]),std::abs(resolved[j]),1e-6});
@@ -319,6 +346,7 @@ ImageJIntensityCalibration ImageJIntensityCalibration::fit_nonlinear(PixelType t
     else {lambda*=10;if(lambda>1e16)break;}
   }
   if(!converged)throw std::invalid_argument("Nonlinear fit did not converge; adjust starting coefficients or iteration limit");
+  fit_stage.checkpoint(iterations);
   const double rmse=std::sqrt(cost/double(n))*yscale;
   if(!std::isfinite(rmse))throw std::invalid_argument("Fit residuals exceed the finite range");
   double mean=0,tss=0;for(std::size_t i=0;i<n;++i){mean+=target(i)/double(n);}
@@ -335,6 +363,26 @@ ImageJIntensityCalibration ImageJIntensityCalibration::fit_nonlinear(PixelType t
     {"convergence_reason",convergence_reason},
     {"rmse",rmse},{"r_squared",std::isfinite(r2)?MetadataValue(r2):MetadataValue(std::monostate{})}});
   fields["source_parameters"]=metadata_object(std::move(parameters));return from_record(metadata_object(std::move(fields)));
+}
+std::size_t estimate_imagej_intensity_fit(const DocumentSnapshot& source,const ImageJIntensityFitRequest& r) {
+  using detail::contrast_command_record::add;using detail::contrast_command_record::mul;
+  const auto& dataset=source.data().dataset;const auto count=table_size(depth(dataset.pixel_type()));
+  if(dataset.shape().s!=1)throw std::invalid_argument("Intensity fitting requires scalar storage");
+  const int id=function_id(r.function);if(id==14)throw std::invalid_argument("Optical density has no fitted coefficients");
+  const auto n=r.measured.size(),m=function_lengths[id];
+  if(n!=r.known.size() || n<m || n>4096)throw std::invalid_argument("Fit requires matching point counts from parameter count through4096");
+  if(!r.max_working_bytes || !r.max_iterations || r.max_iterations>1024 || !std::isfinite(r.relative_tolerance) || r.relative_tolerance<=0 || r.relative_tolerance>0.01)
+    throw std::invalid_argument("Invalid fitting iteration/tolerance/memory limits");
+  if(r.value_unit.size()>1024*1024 || r.value_unit.find('\0')!=std::string::npos)throw std::invalid_argument("Invalid fitting value unit");
+  if((id<4 && !r.initial_coefficients.empty()) || (!r.initial_coefficients.empty() && r.initial_coefficients.size()!=m))throw std::invalid_argument("Wrong fitting initial coefficient count");
+  for(std::size_t i=0;i<n;++i)if(!std::isfinite(r.measured[i]) || !std::isfinite(r.known[i]) || r.measured[i]<0 || r.measured[i]>double(count-1) || (id==6 && r.measured[i]<=0))
+    throw std::invalid_argument("Invalid finite/range/domain fit points");
+  for(double value:r.initial_coefficients)if(!std::isfinite(value))throw std::invalid_argument("Initial fit coefficients must be finite");
+  detail::contrast_command_record::Budget input{r.max_working_bytes};input.text(r.value_unit);input.text(r.function);
+  const auto metadata=detail::contrast_command_record::source_budget(source,r.max_working_bytes);
+  const auto bytes=add(add(8ULL*1024*1024,mul(count,64)),add(mul(n,512),mul(add(metadata,input.used),4)));
+  if(bytes>r.max_working_bytes)throw std::invalid_argument("Intensity fit exceeds working memory budget");
+  return bytes;
 }
 ImageJIntensityCalibration ImageJIntensityCalibration::from_record(const MetadataValue& value) {
   const auto& fields = object(value);

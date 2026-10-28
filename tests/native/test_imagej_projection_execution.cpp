@@ -1,6 +1,6 @@
 #include <imagejxx/imagej_projection_execution.hpp>
 #include <imagejxx/imagej_projection_command.hpp>
-#include <imagejxx/imagej_intensity_calibration.hpp>
+#include <imagejxx/imagej_intensity_execution.hpp>
 #include <imagejxx/application.hpp>
 #include <imagejxx/session.hpp>
 #include <cstring>
@@ -271,6 +271,25 @@ int main() try {
   }
   reject([&]{ImageJIntensityCalibration::fit_nonlinear(PixelType::UInt8,"log",{0,1},{1,2});});
   reject([&]{ImageJIntensityCalibration::fit_nonlinear(PixelType::UInt8,"exponential",{0,1,2},{5,10,20},"unit",false,{4,.5},1);});
+  auto fitOwner=source();Application fitApp;fitApp.adopt(fitOwner);const auto fitSource=fitOwner->snapshot();const auto fitHistory=fitOwner->undo_steps();
+  ImageJIntensityFitRequest fitRequest;fitRequest.function="exponential";fitRequest.measured={0,1,2};fitRequest.known={5,10,20};fitRequest.initial_coefficients={4,.5};
+  const auto fitBytes=estimate_imagej_intensity_fit(fitSource,fitRequest);check(fitBytes>0);
+  auto smallFit=fitRequest;smallFit.max_working_bytes=fitBytes-1;reject([&]{estimate_imagej_intensity_fit(fitSource,smallFit);});
+  bool fitStage=false;ExecutionControl fitControl;fitControl.stage_progress=[&](std::string_view stage,std::size_t done,std::size_t total){check(done<=total);if(stage=="Calibration nonlinear fit")fitStage=true;};
+  auto fitPrepared=prepare_imagej_intensity_fit(fitSource,fitRequest,fitControl);
+  check(fitStage && fitOwner->snapshot().shares_data(fitSource));check(!fitPrepared.prepared_new_document());
+  auto fitPublished=fitApp.publish(fitPrepared);check(!fitPublished.created && fitPublished.document==fitOwner);
+  check(fitOwner->undo_steps()==fitHistory+1 && fitOwner->snapshot().data().dataset.shares_pixels(fitSource.data().dataset));
+  fitOwner->undo();check(metadata_equal(read_imagej_intensity_calibration(fitOwner->snapshot()).record(),read_imagej_intensity_calibration(fitSource).record()));fitOwner->redo();
+  auto fitCancel=std::make_shared<CancellationToken>();ExecutionControl fitCancelled;fitCancelled.cancellation=fitCancel;
+  fitCancelled.stage_progress=[&](std::string_view stage,std::size_t,std::size_t){if(stage=="Calibration nonlinear fit")fitCancel->cancel();};
+  const auto beforeCancel=fitOwner->snapshot();reject<OperationCancelled>([&]{prepare_imagej_intensity_fit(beforeCancel,fitRequest,fitCancelled);});
+  check(fitOwner->snapshot().shares_data(beforeCancel));
+  auto fitStale=prepare_imagej_intensity_fit(beforeCancel,fitRequest);auto fitView=fitOwner->snapshot().display();fitView.zoom=2;fitOwner->set_display(fitView);
+  reject<RevisionConflict>([&]{fitApp.publish(fitStale);});
+  const auto beforeReadyCancel=fitOwner->snapshot();fitCancel=std::make_shared<CancellationToken>();fitCancelled={};fitCancelled.cancellation=fitCancel;
+  auto fitReadyCancel=prepare_imagej_intensity_fit(beforeReadyCancel,fitRequest,fitCancelled);fitCancel->cancel();
+  reject<OperationCancelled>([&]{fitApp.publish(fitReadyCancel);});check(fitOwner->snapshot().shares_data(beforeReadyCancel));
   std::cout<<"Prepared scientific projection: metadata, channel display, source/candidate guards, cancellation, session and capture passed\n";
 } catch(const std::exception& error) {
   std::cerr<<error.what()<<"\n";return 1;

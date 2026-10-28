@@ -1,0 +1,271 @@
+{
+  "schema": "imagejxx.scoped-progress",
+  "version": 1,
+  "source_base": "ad579a78004092f74170de3fb5807946cfbede50",
+  "scope": "Prepared metadata-only polynomial/nonlinear fitting, shared C++/Python ImGui owned-worker lifecycle, admission, progress, cancellation and atomic publication",
+  "acceptance_claim": false,
+  "source_inputs": [
+    {
+      "path": "include/imagejxx/execution.hpp",
+      "bytes": 15243,
+      "sha256": "fdc7883e0d61b94353cf8ef886a739d8eb253e67f98e57096440b870b8cde6f5"
+    },
+    {
+      "path": "src/desktop/imagej_projection_ui_probe.cpp",
+      "bytes": 19033,
+      "sha256": "9ecce4bbf478095e6306d8594f1327f72e9cf2093ace4752d0393ec00bfa4b98"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 790728,
+      "sha256": "e63218dfc22759636bd40d32a173b18eeaca4a82d9b86f5efd31aba641cd8f1a"
+    },
+    {
+      "path": "src/desktop/window.hpp",
+      "bytes": 15388,
+      "sha256": "20efb65133e172fa00733cfd2e68daacd13e7460318c95b4b4df8c82432e0dd0"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 79624,
+      "sha256": "f2a3e60eb7ec4768565cff3844d0b697ece82ac43b614f5170c20145023bf94d"
+    },
+    {
+      "path": "src/native/contrast_command_record.hpp",
+      "bytes": 4718,
+      "sha256": "3cad9256cfc2063dc0a4ddfb9f86d13e0cd8925bca4ec53d9c6ab290faf5c510"
+    },
+    {
+      "path": "src/native/execution.cpp",
+      "bytes": 131081,
+      "sha256": "33b55106f01497ad011de8c6c5cdc4420d41e3cf38eb99f9ad51dd144e48a026"
+    },
+    {
+      "path": "src/native/imagej_intensity_calibration.cpp",
+      "bytes": 31187,
+      "sha256": "1e2dbf9b36641fc06a9be4d85df95b474338175bc4ac033a81167a93e2819db0"
+    },
+    {
+      "path": "src/native/imagej_projection_bindings.cpp",
+      "bytes": 8454,
+      "sha256": "864f76fcf2d919a4e3d813504fd9f75d5214b193c822e11a93731ebd37d44573"
+    },
+    {
+      "path": "tests/native/test_imagej_projection_execution.cpp",
+      "bytes": 21288,
+      "sha256": "c5e0c00e079ad60923aa7405bd904fd7a9ac5d1b19dfe1004d16882bd5f297fb"
+    },
+    {
+      "path": "tests/python/test_intensity_calibration_editor.py",
+      "bytes": 22951,
+      "sha256": "0c3d4885966acb4d89190ce37d8989347714d381600afbf395bb59f2eaf1f3b3"
+    },
+    {
+      "path": "include/imagejxx/imagej_intensity_execution.hpp",
+      "bytes": 1146,
+      "sha256": "4176b3da5e57b2fcca59a4f07993423f7067edd54291490fa5e21393fbd6a4f5"
+    }
+  ],
+  "evidence": [
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-worker-windows-build186/receipt.json",
+      "bytes": 22340,
+      "sha256": "be408763a4f8ff441c55df8ed3219242e40d1509f3a8911dcad93b56e255c3ea"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-worker-installed187/receipt.json",
+      "bytes": 24273,
+      "sha256": "47cc36cfcc43bc5b2d5a4fba49df160e37eb590257488056d5272f2bfb7ac0ec"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-worker-installed187/results.xml",
+      "bytes": 62096,
+      "sha256": "7cdcad2bae89f03020dde1977e7e6a4637e19074e2c886d0ec6a2f08bc9ff481"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-worker-installed187/captures.tar.xz",
+      "bytes": 752048,
+      "sha256": "ecd992033b00df444184d73ac81ddfb3505465466cb5b7870c8b93ec0cd3c46f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-worker-core-linux181/receipt.json",
+      "bytes": 78740,
+      "sha256": "319865538d18876b7acefc6ae1de5afdb3d70f1224403eba96c10cc8c979bb29"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-worker-windows-build179/receipt.json",
+      "bytes": 8094,
+      "sha256": "6e3e3700cafef0a0ffb57934113a23ce4dc4a923506b6770fa3727d72cd4b504"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-worker-installed183/receipt.json",
+      "bytes": 12673,
+      "sha256": "de0bdcca23310c757cc3a8788a7eeb65c782d55c588a9a0dea6494bc0a2bb3bf"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-worker-installed183/captures.tar.xz",
+      "bytes": 40648,
+      "sha256": "003cf9663e1c9e70e2a0575a0743a4370526aa64905ce0abc39b470461fa08e2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-worker-retention189/receipt.json",
+      "bytes": 18497,
+      "sha256": "36a97a61f68ef95a3237887c84f1628be6ee777917e3cee144eaef6a0b00bd25"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-worker-retention189/identity-and-logs.zip",
+      "bytes": 386058,
+      "sha256": "106df3985ba2643d476bb1a2993924e660e53830a8ee581559ee75137c31cb21"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-worker-storage-before178.json",
+      "bytes": 1522,
+      "sha256": "9bad4ebff052c9896b502e7351ab676489f2d71f27a72b6b8cef4c6cbf0e2848"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-worker-storage-after188.json",
+      "bytes": 1524,
+      "sha256": "5f88a006f91b679bc46a3ee55900add9a1176a62dd5d112eb4acf65f2d73824a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-worker-storage-final190.json",
+      "bytes": 1507,
+      "sha256": "a67bae4d9a9e2761321b6c4b503702a939d8537bdb3b5343747cc760dc21b015"
+    }
+  ],
+  "verification": {
+    "windows_installed_focused": {
+      "tests": 420,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "windows_native": "passed",
+    "linux_native": "passed; source consumer against existing dependencies, not updated installed SDK",
+    "physical_hosts": "C++ application and Python editor: projection, polynomial calibration and nonlinear calibration cases",
+    "source_stability": "Final build source freeze checked before and after installed run",
+    "commercial_use_inventory": "scripts/check_licenses.py --desktop passed; no new dependency",
+    "diff_check": "git diff --check passed"
+  },
+  "implemented": [
+    "Descriptor-only metadata/input/solver/table admission before request copying and callbacks; checked sizes; no provider reads",
+    "Request and raw fit input freezing before callback entry",
+    "Existing owned scheduler and reserved result lifecycle, not a second pool or pixel-frame workspace",
+    "Stage progress and cancellation checkpoints in polynomial solver, nonlinear evaluations and lookup table generation",
+    "Prepared same-owner metadata edit; All-revision/membership/cancellation checks at creator-thread publication",
+    "Source pixels and history unchanged before publish; one undoable metadata edit; Undo/Redo",
+    "Strict editor action plus shared fit dialog submission and processing stage display",
+    "Python stage callback shared ownership safe when execution scope copies occur without GIL"
+  ],
+  "covered_refusals": [
+    "Budget rejection before callbacks",
+    "Cancellation inside nonlinear solver and table generation",
+    "Cancellation after Ready",
+    "Stale display or metadata revision",
+    "Closed source document",
+    "Input mutation from callbacks does not change frozen request",
+    "Stage callback exception leaves source unchanged"
+  ],
+  "failure_history": [
+    {
+      "run": 179,
+      "result": "compile failure: missing manual function lambda type capture; corrected; diagnostics preserved in identity-and-logs.zip",
+      "observation_timeout": false
+    },
+    {
+      "run": 183,
+      "result": "probe failure: processing.cancel observed on Apply release frame before processing window rendered; unsupported observation removed; failure capture retained"
+    }
+  ],
+  "storage": {
+    "known_final_bytes": 8588976282,
+    "normal_limit_bytes": 8589934592,
+    "full_budget_verified": false,
+    "unknown_subtrees": [
+      ".cache/pytest",
+      ".cache/pytest-ui"
+    ],
+    "retention": "Hash-verified identity/log archive; necessary full current and failure captures retained; stale 3963392-byte sync-path admission executable retired with source/objects/target preserved",
+    "retired_evidence": "Raw archived identity/log paths unavailable in place, original bytes retained in archive. Retired stale executable bytes unavailable. Historical expectations/fingerprints unchanged."
+  },
+  "limitations": [
+    "Declared working-memory admission is not an RSS/provider-cache/render/history-cache bound",
+    "Physical Cancel click while Running and timed responsiveness are not established by the Ready capture",
+    "Manual calibration function generation remains synchronous",
+    "No optimizer identity or global convergence qualification",
+    "No new installed C++ SDK, complete platform or original-reference qualification",
+    "Full calibration plots/settings/restarts/global behavior, table import/export, replay and downstream consumers remain open",
+    "No matched ImageJ/Fiji performance benchmark or comparative speed claim"
+  ],
+  "family_tracker": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  },
+  "physical_observations": [
+    {
+      "member": "intensity-cpp/case.json",
+      "context": "imgui_cpp",
+      "frame_count": 232,
+      "state": "observed",
+      "fit_ready": {
+        "resource_bytes": 25252312,
+        "retained_bytes": 25252312,
+        "source_unchanged": true,
+        "stage": "Calibration table",
+        "stage_completed": 65536,
+        "stage_total": 65536,
+        "state": 2
+      },
+      "fit_reserved_after_publish": 0
+    },
+    {
+      "member": "nonlinear-cpp/case.json",
+      "context": "imgui_cpp",
+      "frame_count": 232,
+      "state": "observed",
+      "fit_ready": {
+        "resource_bytes": 25252456,
+        "retained_bytes": 25252456,
+        "source_unchanged": true,
+        "stage": "Calibration table",
+        "stage_completed": 65536,
+        "stage_total": 65536,
+        "state": 2
+      },
+      "fit_reserved_after_publish": 0
+    },
+    {
+      "member": "pytest/test_actual_intensity_calibrat1/capture/case.json",
+      "context": "imgui_python",
+      "frame_count": 232,
+      "state": "observed",
+      "fit_ready": {
+        "resource_bytes": 25252312,
+        "retained_bytes": 25252312,
+        "source_unchanged": true,
+        "stage": "Calibration table",
+        "stage_completed": 65536,
+        "stage_total": 65536,
+        "state": 2
+      },
+      "fit_reserved_after_publish": 0
+    },
+    {
+      "member": "pytest/test_actual_nonlinear_calibrat1/capture/case.json",
+      "context": "imgui_python",
+      "frame_count": 232,
+      "state": "observed",
+      "fit_ready": {
+        "resource_bytes": 25252456,
+        "retained_bytes": 25252456,
+        "source_unchanged": true,
+        "stage": "Calibration table",
+        "stage_completed": 65536,
+        "stage_total": 65536,
+        "state": 2
+      },
+      "fit_reserved_after_publish": 0
+    }
+  ]
+}

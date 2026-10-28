@@ -1141,6 +1141,8 @@ struct Window::Impl {
     std::optional<PreparedOperation> prepared;
     MetadataObject record;
     bool recorded = false;
+    bool calibration_fit = false;
+    std::string fit_status;
     std::shared_ptr<const void> reservation;
     JobResult(PreparedOperation value, MetadataObject capture, bool recordStep)
         : prepared(std::move(value)), record(std::move(capture)), recorded(recordStep) {}
@@ -1609,7 +1611,7 @@ struct Window::Impl {
       return !owner.busy() && owner.controller_->active_document_id()==source->id && dataset.shape().s==1 &&
           (dataset.pixel_type()==PixelType::UInt8 || dataset.pixel_type()==PixelType::UInt16);
     }
-    if(action=="show_intensity_calibration" || action=="set_intensity_calibration")
+    if(action=="show_intensity_calibration" || action=="set_intensity_calibration" || action=="fit_intensity_calibration")
       return !owner.busy() && owner.controller_->active_document_id()==source->id;
     if (action=="show_imagej_projection" || action=="show_imagej_grouped_projection" ||
         action=="project_imagej" || action=="replay_imagej_projection") {
@@ -5726,6 +5728,26 @@ std::uint64_t Window::publishPreparedProjection(const MetadataObject& record,
   impl->roiManagerControls.swap(emptyControls);impl->roiManagerRows.swap(emptyRows);
   outputs->publish();return id;
 }
+void Window::fitIntensityCalibration(const DocumentSnapshot& source,ImageJIntensityFitRequest request) {
+  checkThread();if(busy())throw std::invalid_argument("Wait for the current edit");
+  const auto now=nativeSnapshot();
+  if(!source.same_document(now) || !source.revisions().matches(now.revisions(),Change::All))throw RevisionConflict();
+  const auto mb=impl->preferenceState.settings.integer("processing_memory_mb");
+  if(mb>0)request.max_working_bytes=std::min(request.max_working_bytes,std::size_t(mb)*1024*1024);
+  const auto bytes=estimate_imagej_intensity_fit(source,request);
+  auto owner=documentById(source.id());impl->stopAnimation("intensity_calibration");
+  impl->start([source,request] {
+    auto prepared=prepare_imagej_intensity_fit(source,request);
+    const auto calibration=read_imagej_intensity_calibration(prepared.preview());
+    const auto diagnostic=metadataJson(calibration.source_parameters()).at("fit");
+    auto status=std::string("Calibration fit RMSE: ")+diagnostic.at("rmse").dump()+"; R-squared: "+diagnostic.at("r_squared").dump();
+    if(diagnostic.contains("iterations"))status+="; iterations: "+diagnostic.at("iterations").dump();
+    if(request.function=="rodbard2")status+=" (RMSE in measured values)";
+    Impl::JobResult result(std::move(prepared),MetadataObject{},false);
+    result.calibration_fit=true;result.fit_status=std::move(status);return result;
+  },std::move(owner),false,"Calibration fit","Calibration fit",bytes,{},true);
+}
+
 std::shared_ptr<imagejxx::Document>
 Window::nativeDocument(std::uint64_t id) const {
   return documentById(id)->nativeOwner();
@@ -6525,10 +6547,29 @@ void Window::action(const std::string &name, const Json &p) {
   // not bypass its capability check before clipboard, files or jobs change.
   if (targetId && !targeted.count(name))
     impl->requireAction(name, 0, operationId);
-  if(name=="show_intensity_calibration" || name=="show_intensity_function" || name=="show_intensity_polynomial_fit" || name=="show_intensity_nonlinear_fit" || name=="set_intensity_calibration") {
+  if(name=="show_intensity_calibration" || name=="show_intensity_function" || name=="show_intensity_polynomial_fit" || name=="show_intensity_nonlinear_fit" || name=="set_intensity_calibration" || name=="fit_intensity_calibration") {
     if(busy())throw std::invalid_argument("Wait for the current edit");
     const auto source=nativeSnapshot();
     if(targetId && targetId!=source.id())throw std::invalid_argument("Calibration requires the active document");
+    if(name=="fit_intensity_calibration") {
+      ImageJIntensityFitRequest request;request.max_working_bytes=std::numeric_limits<std::size_t>::max();
+      for(const auto& field:p.items()) {
+        const auto& key=field.key();const auto& value=field.value();
+        if(key=="document_id")continue;
+        if(key=="function")request.function=value.get<std::string>();
+        else if(key=="value_unit")request.value_unit=value.get<std::string>();
+        else if(key=="zero_clip")request.zero_clip=value.get<bool>();
+        else if(key=="relative_tolerance")request.relative_tolerance=value.get<double>();
+        else if(key=="max_iterations") {if(!value.is_number_integer() || value<1 || value>1024)throw std::invalid_argument("Invalid maximum iterations");request.max_iterations=value.get<std::size_t>();}
+        else if(key=="measured" || key=="known" || key=="initial_coefficients") {
+          const auto limit=key=="initial_coefficients"?4U:4096U;
+          if(!value.is_array() || value.size()>limit)throw std::invalid_argument("Fit array exceeds its limit");
+          std::vector<double> numbers;for(const auto& item:value){if(!item.is_number())throw std::invalid_argument("Fit arrays require numbers");numbers.push_back(item.get<double>());}
+          if(key=="measured")request.measured=std::move(numbers);else if(key=="known")request.known=std::move(numbers);else request.initial_coefficients=std::move(numbers);
+        } else throw std::invalid_argument("Unknown fit field: "+key);
+      }
+      fitIntensityCalibration(source,std::move(request));return;
+    }
     if(name=="set_intensity_calibration") {
       for(const auto& field:p.items())if(field.key()!="record" && field.key()!="document_id")
         throw std::invalid_argument("Unknown calibration field: "+field.key());
@@ -6555,7 +6596,7 @@ void Window::action(const std::string &name, const Json &p) {
         }
       }
       impl->stopAnimation("intensity_calibration");
-      impl->ask("Fit Nonlinear Calibration",std::move(values),[this,source,type](Json fields) {
+      impl->ask("Fit Nonlinear Calibration",std::move(values),[this,source](Json fields) {
         const auto now=nativeSnapshot();
         if(!source.same_document(now) || !source.revisions().matches(now.revisions(),Change::All))throw RevisionConflict();
         const auto numbers=[&](const char* key,std::size_t limit){
@@ -6566,14 +6607,11 @@ void Window::action(const std::string &name, const Json &p) {
         const auto measured=numbers("measured",4096),known=numbers("known",4096),initial=numbers("initial_coefficients",4);
         if(!fields.at("max_iterations").is_number_integer() || fields.at("max_iterations")<1 || fields.at("max_iterations")>1024)
           throw std::invalid_argument("Maximum iterations must be1..1024");
-        const auto value=ImageJIntensityCalibration::fit_nonlinear(type,fields.at("function").get<std::string>(),measured,known,
-          fields.at("value_unit").get<std::string>(),fields.at("zero_clip").get<bool>(),initial,
-          fields.at("max_iterations").get<std::size_t>(),fields.at("relative_tolerance").get<double>());
-        const auto diagnostics=metadataJson(value.source_parameters()).at("fit");
-        auto message=std::string("Calibration fit RMSE: ")+diagnostics.at("rmse").dump()+
-          "; R-squared: "+diagnostics.at("r_squared").dump()+"; iterations: "+diagnostics.at("iterations").dump();
-        if(fields.at("function")=="rodbard2")message+=" (RMSE in measured values)";
-        action("set_intensity_calibration",{{"record",metadataJson(value.record())}});impl->status.swap(message);
+        ImageJIntensityFitRequest request;request.function=fields.at("function").get<std::string>();
+        request.measured=measured;request.known=known;request.initial_coefficients=initial;
+        request.value_unit=fields.at("value_unit").get<std::string>();request.zero_clip=fields.at("zero_clip").get<bool>();
+        request.max_iterations=fields.at("max_iterations").get<std::size_t>();request.relative_tolerance=fields.at("relative_tolerance").get<double>();
+        request.max_working_bytes=std::numeric_limits<std::size_t>::max();fitIntensityCalibration(source,std::move(request));
       },Json::array({{{"name","function"},{"label","Function"},{"kind","text"},
           {"choices",{"exponential","power","log","rodbard","gamma_variate","log2","rodbard2","exp_with_offset","gaussian","exp_recovery"}}},
         {{"name","measured"},{"label","Measured values [a,b,...]"},{"kind","text"}},
@@ -6601,7 +6639,7 @@ void Window::action(const std::string &name, const Json &p) {
         }
       }
       impl->stopAnimation("intensity_calibration");
-      impl->ask("Fit Polynomial Calibration",std::move(values),[this,source,type](Json fields) {
+      impl->ask("Fit Polynomial Calibration",std::move(values),[this,source](Json fields) {
         const auto now=nativeSnapshot();
         if(!source.same_document(now) || !source.revisions().matches(now.revisions(),Change::All))throw RevisionConflict();
         const auto points=[&](const char* key){
@@ -6610,13 +6648,9 @@ void Window::action(const std::string &name, const Json &p) {
           std::vector<double> result;for(const auto& v:values){if(!v.is_number())throw std::invalid_argument("Fit points must be numbers");result.push_back(v.get<double>());}return result;
         };
         const auto measured=points("measured"),known=points("known");
-        const auto value=ImageJIntensityCalibration::fit_polynomial(type,fields.at("function").get<std::string>(),measured,known,
-          fields.at("value_unit").get<std::string>(),fields.at("zero_clip").get<bool>());
-        const auto diagnostics=metadataJson(value.source_parameters()).at("fit");
-        auto message=std::string("Calibration fit RMSE: ")+diagnostics.at("rmse").dump()+
-          "; R-squared: "+diagnostics.at("r_squared").dump();
-        action("set_intensity_calibration",{{"record",metadataJson(value.record())}});
-        impl->status.swap(message);
+        ImageJIntensityFitRequest request;request.function=fields.at("function").get<std::string>();request.measured=measured;request.known=known;
+        request.value_unit=fields.at("value_unit").get<std::string>();request.zero_clip=fields.at("zero_clip").get<bool>();
+        request.max_working_bytes=std::numeric_limits<std::size_t>::max();fitIntensityCalibration(source,std::move(request));
       },Json::array({{{"name","function"},{"label","Function"},{"kind","text"},{"choices",{"straight_line","poly2","poly3","poly4"}}},
         {{"name","measured"},{"label","Measured values [a,b,...]"},{"kind","text"}},
         {{"name","known"},{"label","Known values [a,b,...]"},{"kind","text"}},
@@ -9037,6 +9071,10 @@ void Window::poll() {
       auto &completed = impl->jobResult->value();
       if (completed.prepared) {
         if (impl->cancelled) throw OperationCancelled();
+        if(completed.calibration_fit) {
+          if(documents_.empty() || document()->id!=completed.prepared->target().document_id())throw RevisionConflict();
+          controller_->publish(*completed.prepared);impl->status.swap(completed.fit_status);return;
+        }
         publishPreparedProjection(completed.record, *completed.prepared, completed.recorded);
         impl->status = "Projection complete";
         return;
@@ -13005,14 +13043,18 @@ void Window::Impl::draw() {
   if (const auto processingJob = owner.jobInfo()) {
     ImGui::SetNextWindowSize({360, 0}, ImGuiCond_Appearing);
     ImGui::Begin("Processing", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
-    ImGui::TextUnformatted("Processing image...");
+    ImGui::TextUnformatted(processingJob->label.c_str());
     const auto info = *processingJob;
     ImGui::TextUnformatted(info.state == JobState::Queued ? "Queued"
                                                           : "Running");
     ImGui::ProgressBar(info.total ? float(double(info.completed) / info.total)
                                   : 0.f);
-    if (ImGui::Button("Cancel"))
-      owner.cancel();
+    if(!info.stage.empty()) {
+      ImGui::TextUnformatted(info.stage.c_str());
+      ImGui::ProgressBar(info.stage_total?float(double(info.stage_completed)/info.stage_total):0.f);
+    }
+    if (ImGui::Button("Cancel"))owner.cancel();
+    observeControl("processing.cancel");
     ImGui::TextWrapped(
         "Cancellation stops at a safe processing checkpoint. "
         "An external reader or codec may finish its current call.");

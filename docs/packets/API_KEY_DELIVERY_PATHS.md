@@ -1,5 +1,37 @@
 # Shortest delivery paths by API and setting key
 
+## Background calibration fitting — 2026-10-28
+
+Polynomial and nonlinear fits now use the existing owned worker and prepared
+metadata publication in both ImGui hosts. Descriptor admission precedes input
+copying and callbacks; requests freeze before execution. Numerical/table stages
+report progress and check cancellation. Publication keeps the same document and
+pixels, refuses stale/closed/cancelled sources and creates one Undo/Redo edit.
+The existing scheduler retains the admitted result through Ready and releases
+its reservation after publication. Python callback ownership is safe across
+execution-scope copies without the GIL.
+
+Final 420 focused checks pass without skips, plus Windows and Linux native
+consumers. Both actual Windows hosts verify fit Apply, unchanged source and
+retained reservation at Ready, publication and session reopen. API tests cover
+in-solver/table cancellation, cancel-after-Ready, stale display/metadata, closed
+owners, callback failure and input freezing. This does not establish a physical
+Cancel click while Running, latency percentiles or an RSS/private-cache bound.
+[Scoped evidence](../parity/reviews/G034-intensity-fit-worker-progress001.json).
+
+Next: close the physical running-cancel gate, then fit plots/settings/restarts/
+global calibration, table import/export, replay and downstream consumers.
+Broader platform/SDK/original-reference gates and matched performance remain
+open. Family tracker stays 47 in progress / 52 open / 0 complete.
+
+One compiler cache/runtime reused. Necessary captures and logs are losslessly
+compressed and hash-verified; scratch retired. Preliminary compile/probe
+failures remain documented. Identity/log compaction and one stale test binary
+recovered 5,741,321 bytes; source/objects/target remain. Known whole-root storage
+is 8,588,976,282 bytes; two denied caches keep the full 8 GiB budget unverified.
+Commercial-use dependency inventory passes. No comparative speed claim.
+
+
 Nonlinear fit update,2026-10-28: fit_nonlinear covers all ten nonlinear models
 through the shared evaluator and immutable generator. Analyze dialog exposes
 starting coefficients ([] auto), iteration/tolerance and data/unit controls.

@@ -9,6 +9,7 @@
 namespace imagejxx {
 class Document;
 struct ImageJProjectionDocumentRequest;
+struct ImageJIntensityFitRequest;
 class ResolvedZSubsetCommand;
 class ResolvedRgbDatasetCommand;
 class ResolvedColorStackCommand;
@@ -250,6 +251,8 @@ private:
                                              const OperationParameters &,
                                              ExecutionOptions,
                                              const ExecutionControl &);
+  friend PreparedOperation prepare_imagej_intensity_fit(
+      const DocumentSnapshot &, const ImageJIntensityFitRequest &, const ExecutionControl &);
   friend PreparedOperation prepare_imagej_projection(
       const DocumentSnapshot &, const ImageJProjectionDocumentRequest &,
       const ExecutionControl &);

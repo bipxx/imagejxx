@@ -77,6 +77,9 @@ def test_actual_intensity_calibration_dialog(context,tmp_path):
     names={r["name"] for r in report["controls"]}
     assert {"show_intensity_calibration","mode.choice.signed16","calibration_apply","Undo","Redo","calibration_cancel","calibration_clear","projection_apply"}<=names
     assert report["lifecycle"]["open"] is False
+    assert report["fit_ready"]["state"]==2 and report["fit_ready"]["source_unchanged"]
+    assert report["fit_ready"]["resource_bytes"]==report["fit_ready"]["retained_bytes"]>0
+    assert report["fit_reserved_after_publish"]==0
 
     for name in ("function_applied","function_reopened"):
         record=report[name]["properties"][key]
@@ -268,4 +271,106 @@ def test_actual_nonlinear_calibration_dialog(context,tmp_path):
     assert values["function"]=="exponential" and json.loads(values["initial_coefficients"])==[4,.5]
     assert json.loads(values["known"])==[5,10,20] and values["max_iterations"]==256
     assert "iterations:" in report["fit_status"] and not report["lifecycle"]["open"]
+    assert report["fit_ready"]["state"]==2 and report["fit_ready"]["source_unchanged"]
+    assert report["fit_ready"]["resource_bytes"]==report["fit_ready"]["retained_bytes"]>0
+    assert report["fit_ready"]["stage"]=="Calibration table"
+    assert report["fit_ready"]["stage_completed"]==report["fit_ready"]["stage_total"]==65536
+    assert report["fit_reserved_after_publish"]==0
     assert {"show_intensity_nonlinear_fit","initial_coefficients","invalid_fit_apply","fit_error_ok","fit_apply","fit_cancel"}<={r["name"] for r in report["controls"]}
+
+
+
+def _fit_request(function="exponential"):
+    request=ij.ImageJIntensityFitRequest();request.function=function
+    request.measured=[0,1,2];request.known=[5,10,20] if function=="exponential" else [1,4,9]
+    request.initial_coefficients=[4,.5] if function=="exponential" else []
+    return request
+
+
+def _fit_owner():
+    return ij.Document(ij.Dataset(np.array([[[0,1,2]],[[3,4,5]]],np.uint16),axes="ZYX"),"fit")
+
+
+def test_prepared_fit_freezes_request_and_publishes_one_metadata_edit():
+    owner=_fit_owner();before=owner.snapshot();app=ij.Application();app.adopt(owner)
+    request=_fit_request("poly2");bytes_=ij.estimate_imagej_intensity_fit(before,request)
+    request.max_working_bytes=bytes_-1;rejected_callbacks=[]
+    with pytest.raises((ValueError,RuntimeError)):
+        ij.prepare_imagej_intensity_fit(before,request,checkpoint=lambda:rejected_callbacks.append(True))
+    assert not rejected_callbacks
+    request.max_working_bytes=bytes_;events=[];changed=False
+    def checkpoint():
+        nonlocal changed
+        if not changed:request.known=[100,100,100];changed=True
+    prepared=ij.prepare_imagej_intensity_fit(before,request,checkpoint=checkpoint,stage_progress=lambda name,done,total:events.append((name,done,total)))
+    assert owner.snapshot().shares_data(before) and owner.undo_steps==0
+    assert prepared.prepared_new_document() is None and any(e[0]=="Calibration polynomial fit" for e in events)
+    value=ij.read_imagej_intensity_calibration(prepared.preview)
+    np.testing.assert_allclose(value.record["source_parameters"]["coefficients"],[1,2,1],rtol=0,atol=1e-12)
+    app.publish(prepared);assert owner.undo_steps==1 and not prepared.active
+    np.testing.assert_array_equal(owner.snapshot().dataset.numpy(),before.dataset.numpy())
+    owner.undo();assert not ij.read_imagej_intensity_calibration(owner.snapshot()).has_density
+    owner.redo();assert ij.read_imagej_intensity_calibration(owner.snapshot()).has_density
+
+
+@pytest.mark.parametrize("stage",["Calibration nonlinear fit","Calibration table"])
+def test_fit_cancel_at_real_numerical_stage(stage):
+    owner=_fit_owner();before=owner.snapshot();token=ij.CancellationToken();seen=[]
+    def progress(name,done,total):
+        seen.append(name)
+        if name==stage:token.cancel()
+    with pytest.raises(RuntimeError,match="(?i)cancel"):
+        ij.prepare_imagej_intensity_fit(before,_fit_request(),cancellation=token,stage_progress=progress)
+    assert stage in seen and owner.snapshot().shares_data(before) and owner.undo_steps==0
+
+
+@pytest.mark.parametrize("change",["display","metadata","close","cancel_ready"])
+def test_prepared_fit_refuses_changed_closed_or_cancelled_source(change):
+    owner=_fit_owner();before=owner.snapshot();app=ij.Application();app.adopt(owner);token=ij.CancellationToken()
+    prepared=ij.prepare_imagej_intensity_fit(before,_fit_request(),cancellation=token)
+    if change=="display":view=owner.snapshot().display;view.zoom=2;owner.set_display(view)
+    elif change=="metadata":edit=owner.begin_edit();edit.set_property("changed",True);owner.commit(edit)
+    elif change=="close":app.close(owner.id,discard=True)
+    else:token.cancel()
+    current=owner.snapshot()
+    with pytest.raises((ValueError,RuntimeError)):
+        app.publish(prepared)
+    assert owner.snapshot().shares_data(current) and prepared.active
+    assert not ij.read_imagej_intensity_calibration(owner.snapshot()).has_density
+
+
+def test_editor_fit_worker_budget_cancel_and_success(tmp_path):
+    from imagejxx.ui.app import Editor
+    from imagejxx.ui.persistence import Preferences
+    editor=Editor(preferences=Preferences(tmp_path/"preferences.json"));owner=_fit_owner();editor.add_native_document(owner)
+    before=owner.snapshot();arguments=dict(function="exponential",measured=[0,1,2],known=[5,10,20],initial_coefficients=[4,.5])
+    editor.update_settings(processing_memory_mb=1,persist=False)
+    with pytest.raises((ValueError,RuntimeError),match="(?i)budget|memory"):
+        editor.action("fit_intensity_calibration",**arguments)
+    assert not editor.busy and owner.snapshot().shares_data(before)
+    editor.update_settings(processing_memory_mb=64,persist=False)
+    editor.action("fit_intensity_calibration",**arguments);assert editor.busy
+    editor.cancel();editor.wait();assert owner.snapshot().shares_data(before) and owner.undo_steps==0
+    editor.action("fit_intensity_calibration",**arguments);editor.wait()
+    assert not editor.busy and owner.undo_steps==1
+    np.testing.assert_allclose(ij.read_imagej_intensity_calibration(owner.snapshot()).record["source_parameters"]["coefficients"],[5,np.log(2)],rtol=1e-8)
+
+
+
+def test_fit_python_stage_exception_isolated():
+    owner=_fit_owner();before=owner.snapshot()
+    def stop(name,done,total):raise ValueError("intentional stage failure")
+    with pytest.raises(ValueError,match="intentional stage failure"):
+        ij.prepare_imagej_intensity_fit(before,_fit_request(),stage_progress=stop)
+    assert owner.snapshot().shares_data(before) and owner.undo_steps==0
+
+
+def test_editor_fit_rejects_view_changes_before_publication(tmp_path):
+    from imagejxx.ui.app import Editor
+    from imagejxx.ui.persistence import Preferences
+    editor=Editor(preferences=Preferences(tmp_path/"preferences.json"));owner=_fit_owner();editor.add_native_document(owner)
+    editor.action("fit_intensity_calibration",function="exponential",measured=[0,1,2],known=[5,10,20],initial_coefficients=[4,.5])
+    view=owner.snapshot().display;view.zoom=2;owner.set_display(view)
+    with pytest.raises(RuntimeError,match="(?i)changed"):
+        editor.wait()
+    assert not editor.busy and owner.undo_steps==0 and not ij.read_imagej_intensity_calibration(owner.snapshot()).has_density

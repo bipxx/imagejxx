@@ -17,11 +17,11 @@ struct Budget {
   void take(std::size_t n){if(n>remaining)invalid("Apply command metadata budget");remaining-=n;used=add(used,n);}
   void text(const std::string &s){take(add(64,mul(s.size(),6)));}
   void object(const MetadataObject &o,unsigned depth=0){
-    if(depth>128)invalid("Apply command metadata depth");take(64);
+    if(depth>128){invalid("Apply command metadata depth");}take(64);
     for(const auto &[k,v]:o){text(k);value(v,depth+1);}
   }
   void value(const MetadataValue &v,unsigned depth){
-    if(depth>128)invalid("Apply command metadata depth");take(64);
+    if(depth>128){invalid("Apply command metadata depth");}take(64);
     if(const auto p=std::get_if<double>(&v)){if(!std::isfinite(*p))invalid("Apply metadata must be finite");}
     else if(const auto p=std::get_if<std::string>(&v))text(*p);
     else if(const auto p=std::get_if<std::vector<std::string>>(&v)){for(const auto &s:*p)text(s);}
@@ -38,8 +38,8 @@ inline std::size_t source_budget(const DocumentSnapshot &s,std::size_t limit){
   Budget b{limit};b.take(16384);const auto &d=s.data();
   b.text(d.metadata.title);b.object(d.metadata.properties);b.object(d.metadata.extensions);b.object(d.metadata.record_layout);
   b.object(s.display().properties);b.text(d.dataset.calibration().unit);b.text(d.dataset.calibration().time_unit);
-  if(d.selection)b.selection(*d.selection);if(d.previous_selection)b.selection(*d.previous_selection);
-  for(const auto &r:d.rois)b.roi(r);for(const auto &o:d.overlays)b.object(o);
+  if(d.selection){b.selection(*d.selection);}if(d.previous_selection){b.selection(*d.previous_selection);}
+  for(const auto &r:d.rois){b.roi(r);}for(const auto &o:d.overlays){b.object(o);}
   return b.used;
 }
 inline bool regional_target(const ResolvedTarget &t){
