@@ -9,6 +9,7 @@
 #include "calibration_plot_annotation.hpp"
 #include "calibration_plot_payload.hpp"
 #include "calibration_plot_style.hpp"
+#include "calibration_plot_drawing.hpp"
 #include <imagejxx/playback.hpp>
 #include "shadow_demo.hpp"
 #include "legacy_target_resources.hpp"
@@ -1212,7 +1213,7 @@ struct Window::Impl {
   CalibrationPlotState livePlot;
   std::vector<std::unique_ptr<PlotSnapshot>> plotSnapshots;
   std::uint64_t nextPlotSnapshotId=1,nextPlotPayloadId=1;
-  Json fitPlotObservation,snapshotPlotObservations=Json::array();
+  Json fitPlotObservation,snapshotPlotObservations=Json::array(),plotImageExportObservation=nullptr;
   std::vector<float> plotX, plotY;
   std::string plotTitle;
   struct Dialog {
@@ -4757,6 +4758,31 @@ struct Window::Impl {
         {{"name","annotation_y"},{"label","Model position Y (0 top, 1 bottom)"},{"kind","float"}}}),"calibration_plot_style");
     dialog.independentPlot=plotId!=0;
   }
+  std::array<int,2> plotImageDimensions(const Json& fields) const {
+    std::array<int,2> dimensions{1024,640};const std::array<const char*,2> names{"width","height"};
+    for(std::size_t i=0;i<2;++i)if(fields.contains(names[i])) {
+      const auto& value=fields.at(names[i]);
+      if(!value.is_number_integer() || value<1 || value>4096)throw std::invalid_argument("Plot image dimensions require bounded integers");
+      dimensions[i]=value.get<int>();
+    }
+    return dimensions;
+  }
+  void showPlotImageExport(std::uint64_t plotId=0) {
+    auto& plot=requireCalibrationPlot(plotId);const auto generation=plot.generation;
+    ask("Export Plot PNG",{{"width",1024},{"height",640}},[this,plotId,generation](Json fields){
+      auto& current=requireCalibrationPlot(plotId);
+      if(current.generation!=generation)throw std::invalid_argument("The plotted data changed; reopen image export");
+      const auto dimensions=plotImageDimensions(fields);
+      calibrationPlotImageBytes(*current.payload,dimensions[0],dimensions[1]);
+      auto payload=current.payload;const auto view=current.view;const auto style=current.style;
+      file("Export plot PNG",true,[this,payload=std::move(payload),view,style,dimensions](std::string path){
+        auto result=exportCalibrationPlotPng(path,*payload,view,style,dimensions[0],dimensions[1],*renderMemory);
+        plotImageExportObservation.swap(result);
+      },"calibration-plot.png");
+    },Json::array({{{"name","width"},{"label","Width (256-4096 pixels)"},{"kind","int"}},
+      {{"name","height"},{"label","Height (192-4096 pixels; at most 4 MP)"},{"kind","int"}}}),"calibration_plot_image_export");
+    dialog.independentPlot=plotId!=0;
+  }
   void drawCalibrationPlot(CalibrationPlotState& plot,const char* title,std::uint64_t plotId,Json& observation,PlotSnapshot* snapshot=nullptr);
   void plots();
   void dialogs();
@@ -6489,7 +6515,7 @@ void Window::clearError() {
 }
 void Window::action(const std::string &name, const Json &p) {
   checkThread();
-  if(name=="show_intensity_plot_limits" || name=="set_intensity_plot_limits" || name=="zoom_intensity_plot_rectangle" || name=="keep_plot_snapshot" || name=="close_plot_snapshot" || name=="show_intensity_plot_style" || name=="set_intensity_plot_style") {
+  if(name=="show_intensity_plot_limits" || name=="set_intensity_plot_limits" || name=="zoom_intensity_plot_rectangle" || name=="keep_plot_snapshot" || name=="close_plot_snapshot" || name=="show_intensity_plot_style" || name=="set_intensity_plot_style" || name=="show_intensity_plot_image_export" || name=="export_intensity_plot_image") {
     if(!p.is_object())throw std::invalid_argument("Plot parameters must be an object");
     std::uint64_t id=0;
     if(p.contains("plot_id")){const auto& value=p.at("plot_id");if(!value.is_number_integer() || value<0)throw std::invalid_argument("Plot ID must be nonnegative");id=value.get<std::uint64_t>();}
@@ -6502,6 +6528,15 @@ void Window::action(const std::string &name, const Json &p) {
     if(p.contains("document_id")) {
       const auto& value=p.at("document_id");
       if(id || !value.is_number_integer() || value<0 || (value.get<std::uint64_t>()!=0 && value.get<std::uint64_t>()!=nativeSnapshot().id()))throw std::invalid_argument("Plot action requires its active source document");
+    }
+    if(name=="show_intensity_plot_image_export" || name=="export_intensity_plot_image") {
+      for(const auto& field:p.items())if(field.key()!="plot_id" && field.key()!="document_id" &&
+          !(name=="export_intensity_plot_image" && (field.key()=="path" || field.key()=="width" || field.key()=="height")))throw std::invalid_argument("Unknown plot image export field");
+      if(name=="show_intensity_plot_image_export"){impl->showPlotImageExport(id);return;}
+      if(!p.contains("path") || !p.at("path").is_string())throw std::invalid_argument("Plot image export requires a PNG path");
+      const auto dimensions=impl->plotImageDimensions(p);
+      auto result=exportCalibrationPlotPng(p.at("path").get<std::string>(),*plot.payload,plot.view,plot.style,dimensions[0],dimensions[1],*impl->renderMemory);
+      impl->plotImageExportObservation.swap(result);return;
     }
     if(name=="set_intensity_plot_style"){impl->applyPlotStyle(p,plot.generation,id);return;}
     if(name=="keep_plot_snapshot" || name=="show_intensity_plot_limits" || name=="show_intensity_plot_style") {
@@ -11180,7 +11215,6 @@ void Window::Impl::drawCalibrationPlot(CalibrationPlotState& plot,const char* ti
   const auto observePlotControl=[&](const char* suffix,bool enabled=true,const char* hint=nullptr,const char* command=nullptr,ImGuiWindow* window=nullptr){observeControl(prefix+suffix,enabled,hint,command,window);};
   if(fitPlot) {
     const auto& data=*fitPlot;const auto& style=plot.style;
-    const auto packedColor=[](std::uint32_t rgb){return IM_COL32((rgb>>16)&255,(rgb>>8)&255,rgb&255,255);};
     ImGui::Text(fitPlotIsTable?"Calibration table: %s":"Calibration fit: %s",data.function.c_str());
     ImGui::TextWrapped("Source: %s",plot.payload->source_title.empty()?"(untitled source)":plot.payload->source_title.c_str());
     if(ImGui::Button("Close plot")){plot.payload.reset();plot.source.reset();fitPlotDrag.reset();if(snapshot)snapshot->open=false;endPlot();return;}
@@ -11193,6 +11227,8 @@ void Window::Impl::drawCalibrationPlot(CalibrationPlotState& plot,const char* ti
       file(fitPlotIsTable?"Export calibration table plot":"Export calibration fit plot",true,[text=stream.str()](std::string path){writeBytes(path,{text.begin(),text.end()});},fitPlotIsTable?"calibration-table.csv":"calibration-fit.csv");
     }
     observePlotControl("export",true,nullptr,nullptr,ImGui::GetCurrentWindow());
+    ImGui::SameLine();if(ImGui::Button("Export PNG"))guard([&]{showPlotImageExport(plotId);});
+    observePlotControl("image_export");
     if(ImGui::Button(plotId?"Duplicate snapshot":"Keep snapshot"))guard([&]{keepPlotSnapshot(plotId);});
     observePlotControl("snapshot");
     if(ImGui::IsItemHovered())ImGui::SetTooltip("Open a session plot snapshot in this workspace. Uses the render-memory budget.");
@@ -11273,48 +11309,14 @@ void Window::Impl::drawCalibrationPlot(CalibrationPlotState& plot,const char* ti
     } else if(fitPlotDrag && (!ImGui::IsMouseDown(ImGuiMouseButton_Left) || !ImGui::IsItemActive()))fitPlotDrag.reset();
     const auto viewLimits=fitPlotView.limits(data);
     auto* draw=ImGui::GetWindowDrawList();const ImVec2 end{origin.x+size.x,origin.y+size.y};
-    draw->AddRect(origin,end,ImGui::GetColorU32(ImGuiCol_Border));draw->PushClipRect(origin,end,true);
-    if(fitPlotView.grid)for(int i=1;i<4;++i) {
-      const auto f=float(i)/4;
-      draw->AddLine({origin.x+f*size.x,origin.y},{origin.x+f*size.x,end.y},ImGui::GetColorU32(ImGuiCol_Separator));
-      draw->AddLine({origin.x,origin.y+f*size.y},{end.x,origin.y+f*size.y},ImGui::GetColorU32(ImGuiCol_Separator));
-    }
-    const auto position=[&](double x,double y) {
-      const auto nx=CalibrationPlotView::fraction(x,viewLimits[0],viewLimits[1],fitPlotView.log_x),
-          ny=CalibrationPlotView::fraction(y,viewLimits[2],viewLimits[3],fitPlotView.log_y);
-      return ImVec2{origin.x+float(nx*size.x),origin.y+size.y-float(ny*size.y)};
-    };
-    const auto representable=[&](double x,double y){return std::isfinite(x) && std::isfinite(y) && (!fitPlotView.log_x || x>0) && (!fitPlotView.log_y || y>0);};
-    std::size_t drawnSegments=0,maskedSegments=0;bool finiteGeometry=true;
-    for(std::size_t i=1;i<data.curve_x.size();++i) {
-      if(!representable(data.curve_x[i-1],data.curve_y[i-1]) || !representable(data.curve_x[i],data.curve_y[i])){++maskedSegments;continue;}
-      const auto a=position(data.curve_x[i-1],data.curve_y[i-1]),b=position(data.curve_x[i],data.curve_y[i]);
-      if(std::isfinite(a.x) && std::isfinite(a.y) && std::isfinite(b.x) && std::isfinite(b.y)) {
-        draw->AddLine(a,b,packedColor(style.curve_color),float(style.line_width)*guiScale);++drawnSegments;
-      } else finiteGeometry=false;
-    }
-    Json points=Json::array();
-    for(std::size_t i=0;i<data.measured.size();++i) {
-      if(!representable(data.measured[i],data.known[i])){if(headlessSessionActive)points.push_back(nullptr);continue;}
-      const auto point=position(data.measured[i],data.known[i]);
-      if(std::isfinite(point.x) && std::isfinite(point.y))draw->AddCircleFilled(point,float(style.point_radius)*guiScale,packedColor(style.point_color));
-      if(headlessSessionActive)points.push_back({point.x,point.y});
-    }
-    Json modelOverlay=nullptr;
-    if(style.annotation_visible && fitPlotAnnotation && !fitPlotAnnotation->canvas_text.empty()) {
-      const auto& text=fitPlotAnnotation->canvas_text;
-      const auto fontSize=ImGui::GetFontSize()*float(style.font_scale),padding=4.f*guiScale;
-      const auto wrap=std::max(1.f,size.x-2*padding);
-      const auto measured=ImGui::GetFont()->CalcTextSizeA(fontSize,std::numeric_limits<float>::max(),wrap,text.c_str());
-      const auto box=style.box(size.x,size.y,measured.x,measured.y,padding);
-      const ImVec2 a{origin.x+float(box[0]),origin.y+float(box[1])},b{a.x+float(box[2]),a.y+float(box[3])};
-      draw->AddRectFilled(a,b,IM_COL32(20,20,20,235));draw->AddRect(a,b,IM_COL32(210,210,210,255));
-      draw->PushClipRect(a,b,true);
-      draw->AddText(ImGui::GetFont(),fontSize,{a.x+padding,a.y+padding},IM_COL32(245,245,245,255),text.c_str(),nullptr,wrap);
-      draw->PopClipRect();
-      if(headlessSessionActive)modelOverlay={{"text",text},{"origin",{a.x,a.y}},{"size",{box[2],box[3]}},
-        {"text_size",{measured.x,measured.y}},{"font_size",fontSize},{"padding",padding},{"wrap_width",wrap}};
-    }
+    auto geometry=drawCalibrationPlotGeometry(draw,data,fitPlotAnnotation,fitPlotView,style,
+      {origin,size,widgetOrigin,widgetSize,ImGui::GetFont(),ImGui::GetFontSize(),guiScale,
+       ImGui::GetColorU32(ImGuiCol_Border),ImGui::GetColorU32(ImGuiCol_Separator),ImGui::GetColorU32(ImGuiCol_Text)},headlessSessionActive);
+    auto& points=geometry.points;auto& modelOverlay=geometry.model_overlay;
+    auto& xTicks=geometry.x_ticks;auto& yTicks=geometry.y_ticks;
+    const auto drawnSegments=geometry.drawn_segments,maskedSegments=geometry.masked_segments;
+    const auto finiteGeometry=geometry.finite_geometry;
+    draw->PushClipRect(origin,end,true);
     Json cursor=nullptr;
     if(hovered) {
       const auto x=CalibrationPlotView::axis_value(viewLimits[0],viewLimits[1],px,fitPlotView.log_x),
@@ -11331,26 +11333,6 @@ void Window::Impl::drawCalibrationPlot(CalibrationPlotState& plot,const char* ti
       if(headlessSessionActive)rectangleObservation={{"start",{start.x,start.y}},{"end",{finish.x,finish.y}}};
     }
     draw->PopClipRect();
-    Json xTicks=Json::array(),yTicks=Json::array();
-    if(fitPlotView.ticks)for(int i=0;i<=4;++i) {
-      const double f=double(i)/4;
-      const auto x=CalibrationPlotView::axis_value(viewLimits[0],viewLimits[1],f,fitPlotView.log_x),
-          y=CalibrationPlotView::axis_value(viewLimits[2],viewLimits[3],f,fitPlotView.log_y);
-      const ImVec2 xp{origin.x+float(f)*size.x,end.y},yp{origin.x,end.y-float(f)*size.y};
-      char label[48];ImVec2 textSize;
-      if(viewLimits[0]!=viewLimits[1] || i==2) {
-      ImFormatString(label,IM_ARRAYSIZE(label),"%.4g",x);textSize=ImGui::CalcTextSize(label);
-      draw->AddLine(xp,{xp.x,xp.y+3},ImGui::GetColorU32(ImGuiCol_Text));
-      draw->AddText({std::clamp(xp.x-textSize.x/2,widgetOrigin.x,widgetOrigin.x+widgetSize.x-textSize.x),xp.y+4},ImGui::GetColorU32(ImGuiCol_Text),label);
-      if(headlessSessionActive)xTicks.push_back({{"value",x},{"label",label},{"point",{xp.x,xp.y}}});
-      }
-      if(viewLimits[2]!=viewLimits[3] || i==2) {
-      ImFormatString(label,IM_ARRAYSIZE(label),"%.4g",y);textSize=ImGui::CalcTextSize(label);
-      draw->AddLine(yp,{yp.x-3,yp.y},ImGui::GetColorU32(ImGuiCol_Text));
-      draw->AddText({std::max(widgetOrigin.x,yp.x-textSize.x-5),std::clamp(yp.y-textSize.y/2,widgetOrigin.y,end.y-textSize.y)},ImGui::GetColorU32(ImGuiCol_Text),label);
-      if(headlessSessionActive)yTicks.push_back({{"value",y},{"label",label},{"point",{yp.x,yp.y}}});
-      }
-    }
     ImGui::Text("X: %.6g to %.6g | Y: %.6g to %.6g",viewLimits[0],viewLimits[1],viewLimits[2],viewLimits[3]);
     char logNotice[96]{};
     if(fitPlotView.log_x || fitPlotView.log_y) {
@@ -14131,6 +14113,7 @@ Json Window::Impl::headlessReport() {
         ImGui::GetStyle().Colors[ImGuiCol_WindowBg].z};
     result["plot_samples"] = plotX.size();
     result["fit_plot"] = fitPlotObservation;
+    result["plot_image_export"] = plotImageExportObservation;
     result["plot_snapshots"] = snapshotPlotObservations;
     result["results_columns"] = resultColumns(owner.results, owner.settings());
     result["results_table"] = resultsTableObservation;

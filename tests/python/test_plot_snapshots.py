@@ -132,6 +132,17 @@ def test_actual_floating_snapshot_lifecycle(context,tmp_path):
     np.testing.assert_array_equal([float(row["y"]) for row in rows],257*np.arange(256)-32768)
     assert len(report["after_second_close"])==1 and report["final_info"]==[]
     assert report["memory_one_left"]["retained_bytes"]==first["payload_bytes"]+first["window_bytes"]
+    exported=report["png_export"];pixels=read_plot_png(report["png_path"])
+    assert pixels.shape==(640,1024,3) and exported["encoded_bytes"]==Path(report["png_path"]).stat().st_size
+    assert exported["source_id"]==first["source_id"] and exported["view_limits"]==[100,200,-50,50]
+    box=exported["model_overlay"];assert box["text"]==overlay["text"]
+    origin=np.array(exported["canvas_origin"]);size=np.array(exported["canvas_size"])
+    expected=np.minimum(np.array(box["text_size"])+2*box["padding"],size)
+    np.testing.assert_allclose(box["origin"],origin+np.array([.75,.25])*(size-expected),atol=1e-4)
+    x,y=np.ceil(box["origin"]).astype(int);w,h=np.floor(box["size"]).astype(int)
+    region=pixels[y+2:y+h-2,x+2:x+w-2]
+    assert np.count_nonzero(np.all(region<80,axis=-1))>100
+    assert np.count_nonzero(np.all(region>220,axis=-1))>10
     assert report["memory_final"]["retained_bytes"]==report["memory_final"]["working_bytes"]==0
     assert report["lifecycle"]["open"] is False
 
@@ -207,3 +218,79 @@ def test_canvas_model_reports_undefined_fit_quality(tmp_path):
     plot=editor.render_headless(4)["fit_plot"]
     assert plot["annotation"]["r_squared_undefined"] and plot["model_overlay"]["text"].endswith("RMSE: 0\nR^2: undefined")
     assert owner.snapshot().shares_data(before) and owner.undo_steps==steps
+
+
+def read_plot_png(path):
+    """Independent standard-library PNG/CRC/filter reader; no product decoder."""
+    import struct
+    import zlib
+    encoded=Path(path).read_bytes();assert encoded[:8]==b"\x89PNG\r\n\x1a\n"
+    offset=8;compressed=bytearray();width=height=None
+    while offset<len(encoded):
+        size=struct.unpack_from(">I",encoded,offset)[0];kind=encoded[offset+4:offset+8]
+        data=encoded[offset+8:offset+8+size];crc=struct.unpack_from(">I",encoded,offset+8+size)[0]
+        assert zlib.crc32(kind+data)&0xffffffff==crc
+        if kind==b"IHDR":
+            width,height,depth,color,compression,filtering,interlace=struct.unpack(">IIBBBBB",data)
+            assert depth==8 and color==2 and compression==filtering==interlace==0
+        elif kind==b"IDAT":compressed.extend(data)
+        offset+=12+size
+        if kind==b"IEND":break
+    assert offset==len(encoded) and width and height
+    raw=zlib.decompress(compressed);stride=width*3;assert len(raw)==height*(stride+1)
+    prior=bytearray(stride);rows=[]
+    for y in range(height):
+        start=y*(stride+1);mode=raw[start];row=bytearray(raw[start+1:start+1+stride])
+        assert mode in range(5)
+        for x in range(stride):
+            a=row[x-3] if x>=3 else 0;b=prior[x];c=prior[x-3] if x>=3 else 0
+            if mode==1:predict=a
+            elif mode==2:predict=b
+            elif mode==3:predict=(a+b)//2
+            elif mode==4:
+                estimate=a+b-c;distances=[abs(estimate-a),abs(estimate-b),abs(estimate-c)]
+                predict=(a,b,c)[distances.index(min(distances))]
+            else:predict=0
+            row[x]=(row[x]+predict)&255
+        rows.append(bytes(row));prior=row
+    return np.frombuffer(b"".join(rows),np.uint8).reshape(height,width,3)
+
+
+@pytest.mark.parametrize("reverse",[False,True])
+def test_png_export_preserves_view_color_and_source_independent_payload(reverse,tmp_path):
+    owner,editor=editor_with_plot(tmp_path)
+    editor.action("set_intensity_plot_style",line_width=4,curve_color="#00ff00")
+    editor.action("set_intensity_plot_limits",limits=[65535,0,-32768,32767] if reverse else [0,65535,-32768,32767],grid=False,ticks=False)
+    editor.action("keep_plot_snapshot");plot_id=editor.plot_snapshots_info[0]["plot_id"]
+    before=owner.snapshot();steps=owner.undo_steps;memory=editor.render_memory_info["retained_bytes"]
+    first=tmp_path/"first-µ.png";second=tmp_path/"second-µ.png"
+    editor.action("export_intensity_plot_image",plot_id=plot_id,path=str(first),width=512,height=320)
+    assert owner.snapshot().shares_data(before) and owner.undo_steps==steps
+    assert editor.render_memory_info["retained_bytes"]==memory and editor.render_memory_info["working_bytes"]==0
+    editor.close_document(discard=True)
+    editor.action("export_intensity_plot_image",plot_id=plot_id,path=str(second),width=512,height=320)
+    assert first.read_bytes()==second.read_bytes()
+    pixels=read_plot_png(first);assert pixels.shape==(320,512,3)
+    # Canvas=(80,70)+(402,195); y=x-32768, independently map x at one quarter of visible width.
+    px=80+.25*402;py=70+(.25 if reverse else .75)*195
+    patch=pixels[int(py)-1:int(py)+2,int(px)-1:int(px)+2]
+    assert np.any(np.all(patch==[0,255,0],axis=-1))
+    assert np.count_nonzero(np.all(pixels==[0,255,0],axis=-1))>500
+
+
+@pytest.mark.parametrize("fields",[{"width":0},{"width":True},{"height":192.0},{"width":4096,"height":4096},{"unknown":1}])
+def test_invalid_png_export_preserves_existing_file_and_memory(fields,tmp_path):
+    _,editor=editor_with_plot(tmp_path);path=tmp_path/"keep.png";path.write_bytes(b"sentinel")
+    memory=editor.render_memory_info["retained_bytes"]
+    with pytest.raises((ValueError,RuntimeError)):
+        editor.action("export_intensity_plot_image",path=str(path),**fields)
+    assert path.read_bytes()==b"sentinel" and editor.render_memory_info["retained_bytes"]==memory
+    assert editor.render_memory_info["working_bytes"]==0
+
+
+def test_png_export_memory_refusal_precedes_output(tmp_path):
+    _,editor=editor_with_plot(tmp_path);editor.update_settings(render_memory_mb=1,persist=False)
+    path=tmp_path/"keep.png";path.write_bytes(b"sentinel")
+    with pytest.raises((ValueError,RuntimeError),match="memory"):
+        editor.action("export_intensity_plot_image",path=str(path),width=256,height=192)
+    assert path.read_bytes()==b"sentinel" and editor.render_memory_info["working_bytes"]==0

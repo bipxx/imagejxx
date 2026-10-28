@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "scope": "G034 shared calibration plot geometry and source-independent CPU PNG export",
+  "state": "focused_checks_passed",
+  "acceptance_claim": false,
+  "implementation": {
+    "shared_drawing": "Curve/point/grid/tick/model geometry extracted from Window renderer into private drawCalibrationPlotGeometry. UI and export share viewport transforms, log-domain masking, stroke/point style, normalized annotation layout/wrapping/clipping and labels. UI-only cursor/rectangle feedback remains outside export.",
+    "export": "Export PNG button opens width/height dialog then existing save/overwrite browser. show_intensity_plot_image_export and export_intensity_plot_image actions use optional plot_id with existing guarded-live/source-independent-snapshot semantics. Direct action accepts PNG path and optional width/height (defaults1024x640). Strict integer ranges width256..4096,height192..4096,at most4Mpixels.",
+    "lifetime": "Deferred save captures immutable payload plus value copies of view/style, not a document/provider or current window. After capture, source/current view changes cannot rebind exported data. Direct export works without an ImGui context and after source closure.",
+    "raster": "Dedicated built-in ImGui 13px font atlas and standalone draw list, CPU triangle coverage/interpolated vertex color and bilinear font alpha, existing stb PNG codec and atomic file replacement. Includes captured source/function/axis labels; white background. No GPU readback, workspace controls, new dependency or second plot data store.",
+    "memory": "Validate dimensions/path and acquire conservative managed working reservation before font/draw/output allocation or file mutation. Pixel/geometry/font/encoding estimates use overflow-checked counts; generated geometry/output/atlas also bounded. Lease releases on return/refusal/failure. Managed estimates are not measured total RSS or codec/allocator/GPU acceptance.",
+    "presentation_limits": "PNG only; fixed white background/built-in font rather than theme/system-font reproduction. Unsupported glyphs use fallback; captions limited to4096 UTF-8-boundary bytes and clipped to output. No SVG/PDF/transparent background/custom font or DPI metadata here."
+  },
+  "evidence": {
+    "calibration-plot-export-windows-build375": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-export-windows-build375\\receipt.json",
+      "bytes": 8600,
+      "sha256": "5b2ba122c7e55b1cdb90b0080d450fde9571e0ac3e9e03921f8c5a559bc852fb"
+    },
+    "calibration-plot-export-preimage377": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-export-preimage377\\receipt.json",
+      "bytes": 534,
+      "sha256": "d6358eaaf9e30d0673511edffab37da96ad9bef8c7f85aa8918d2f450f661899"
+    },
+    "calibration-plot-export-windows-build378": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-export-windows-build378\\receipt.json",
+      "bytes": 24961,
+      "sha256": "fccce860d5d33869a92f64e2378102b3f44b452b85dcec6331fd569b0e0b2845"
+    },
+    "calibration-plot-export-installed379": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-export-installed379\\receipt.json",
+      "bytes": 36014,
+      "sha256": "5370c37bd48829881ef0e8ad3ef4148f713f43c9f1495667a809f46f4c6c37c5"
+    },
+    "calibration-plot-export-linux380": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-export-linux380\\receipt.json",
+      "bytes": 19341,
+      "sha256": "9a659e2b8ff824f8b3e0cc694ccc2b0366f8da998d48de6f7a03302789fe3492"
+    },
+    "calibration-plot-export-preview381": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-export-preview381\\receipt.json",
+      "bytes": 3162,
+      "sha256": "7d2876299c0211e2794f254ab7d6874ec99f70892bc61cccc34aabdb7add5d1d"
+    },
+    "calibration-plot-export-retention383": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-export-retention383\\receipt.json",
+      "bytes": 5838,
+      "sha256": "559cd28d35742afa9bfe0a3d31d5b137abbf1cd41891d2acc0e41030072b5603"
+    }
+  },
+  "verification": {
+    "windows_installed_pytest": {
+      "tests": 778,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "actual_imgui_input": "Four installed C++ workflows and dedicated Python workflow pass. After source closure, both physically open PNG dimensions, apply defaults, enter Unicode output path and Save. Existing CSV/style/axes/last-owner release checks retained. Independent reader verifies PNG CRC/filter reconstruction, dimensions, model text/placement and dark/white annotation pixels.",
+    "artifact_oracles": "Independent standard-library PNG reader checks known green diagonal pixels and normal/reversed axes, source-close byte-identical output, invalid-size/type/unknown-field and quota refusal preserving existing sentinel file/history/reservations. Separate artifact audit verifies C++ and Python PNGs byte-identical and Linux fixture green pixels. Caption/model and curve artifacts visually inspected; raw previews retired against retained archive hashes.",
+    "native": "Windows projection/private viewport/annotation/payload/style consumers pass. Linux compiles current shared drawing and CPU PNG exporter with C++17 -Wall -Wextra -Werror and executes standalone consumer using existing pinned desktop/dependency archives and core SDK; working bytes return0 and last payload release0. No Linux UI/full installed SDK promotion.",
+    "snapshot_frames": 178,
+    "snapshot_frame_cap": 192,
+    "calibration_frames": 606,
+    "calibration_frame_cap": 608,
+    "commercial_use_inventory": "passed; existing ImGui/stb/atomic-file dependencies reused",
+    "diff_check": "passed",
+    "limits": "Focused installed/headless/artifact verification, not OS/GPU pixel equivalence, all DPI/fonts/workloads/full family or matched performance acceptance. Pending-save after intervening source/view changes is captured by implementation but not independently physically qualified here."
+  },
+  "harness_history": [
+    {
+      "run": "build375",
+      "state": "failed",
+      "cause": "Extracted renderer retained ImFormatString from Window.cpp internal ImGui includes. Replaced with standard snprintf to keep reusable drawing interface free of internal helper dependency. Failed source original SHA verified against producer freeze; preimage and compile diagnostics retained."
+    }
+  ],
+  "storage": {
+    "before_known_bytes": 8474795084,
+    "after_known_bytes": 8478179361,
+    "full_budget_verified": false,
+    "unknown_subtrees": [
+      ".cache/pytest",
+      ".cache/pytest-ui"
+    ],
+    "inventory": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-export-after384.json",
+      "bytes": 1524,
+      "sha256": "21a504213e0251e3185a8f68dfeeb3f346568730e679b90971a42d910c389dee"
+    },
+    "lossless_recovery_bytes": 859999,
+    "temporary_build_reserve_bytes": 536870912,
+    "capture_scratch_bound_bytes": 67108864,
+    "retention": "All packet-owned terminal compiler/consumer/preview scratch retired, including verified empty failed compiler scratch. Necessary captures/logs/producer manifests/failed source/superseded runners compressed and hash-verified. Linux generated objects/executable retired with identities; no cache/SDK/source checkout archive. Same active caches/runtime/SDK; original reference expectations/fingerprints unchanged."
+  },
+  "remaining": [
+    "Nice/minor ticks, formatting and generic histogram/profile shared renderer reuse",
+    "Additional image/vector formats, transparency, custom font/DPI and broader export qualification",
+    "Custom annotation text/direct manipulation, session persistence and independent OS-window backend/OS/GPU qualification",
+    "Broader calibration/settings/import/replay/downstream and Linux UI/macOS/IO SDK/original-reference gates",
+    "Matched ImageJ/Fiji end-to-end speed and memory benchmarks"
+  ],
+  "family_status": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  }
+}

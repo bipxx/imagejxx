@@ -1205,7 +1205,7 @@ if(IMAGEJXX_BUILD_CPP_UI OR IMAGEJXX_BUILD_PYTHON_UI)
   find_package(TIFF 4.7.1 EXACT QUIET)
   add_library(imagejxx_desktop STATIC src/desktop/util.cpp src/desktop/document.cpp src/desktop/session.cpp src/desktop/metadata.cpp
     src/desktop/commands.cpp src/desktop/io.cpp src/desktop/rendering.cpp src/desktop/viewport_jobs.cpp src/desktop/viewport_renderer.cpp src/desktop/contrast_panel.cpp src/desktop/contrast_rgb_preview.cpp
-    src/desktop/export.cpp src/desktop/window.cpp src/desktop/orthogonal.cpp src/desktop/smoke.cpp
+    src/desktop/export.cpp src/desktop/calibration_plot_drawing.cpp src/desktop/calibration_plot_image.cpp src/desktop/window.cpp src/desktop/orthogonal.cpp src/desktop/smoke.cpp
     src/desktop/binary_iterations_consumer.cpp
     src/desktop/binary_pad_edges_consumer.cpp
     src/desktop/gaussian_host_consumer.cpp

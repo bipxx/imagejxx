@@ -1,5 +1,50 @@
 # Three-agent execution plan
 
+## Shared plot drawing and source-independent PNG export — 2026-10-28
+
+Export PNG now uses the same curve/point/grid/tick/model drawing function as the
+UI, including viewport/log/reversed transforms, colors/sizes and annotation
+position/wrapping/clipping. Standalone ImGui drawing/font atlas is rasterized on
+CPU and encoded with existing stb PNG, then existing atomic replacement writes
+the file. No GPU readback, source-provider access or workspace controls. Source,
+function and unit captions are included. White background and built-in13px font
+are explicit output choices; unsupported glyphs fall back and captions are
+bounded/clipped. Other formats/transparency/custom font/DPI remain open.
+
+PNG dimensions dialog precedes the save browser. Deferred save captures immutable
+payload plus view/style copies. show_intensity_plot_image_export and
+export_intensity_plot_image accept optional plot_id; direct export requires PNG
+path and optional width/height, default1024x640. Strict integer bounds256..4096 X,
+192..4096 Y and4Mpixels maximum. Managed working memory is reserved before
+font/geometry/output allocation or file writes, with checked count/geometry/
+encoder bounds and release on failure. This is estimated managed memory, not RSS.
+
+Windows installed778 focused checks pass, zero failures/skips, plus native
+consumers. Both UI workflows physically save after source closure. Independent
+PNG CRC/filter/pixel readers verify dimensions, green curves/reversed axes,
+model placement/pixels, source-close identity, atomic refusal and memory release.
+C++/Python PNGs byte-identical. Caption/model and curve outputs visually checked.
+Dedicated case178/192 frames; calibration stays606/608. Current Linux shared
+drawing/export code compiles/executes against existing pinned archives/SDK and
+its PNG passes an independent green-pixel check. No Linux UI/full SDK or OS/GPU
+promotion. [Scoped evidence](parity/reviews/G034-calibration-plot-image-export-progress001.json).
+
+First compile exposed an extracted internal ImFormatString dependency; standard
+snprintf fixes the interface. Original-SHA-verified preimage/diagnostics retained.
+All owned terminal scratch/previews retired; lossless retention recovered
+859,999B. Known roots8,478,179,361B; two denied caches keep full8GiB
+budget unverified. Same cache/runtime/SDK, commercial inventory passes, original
+reference fingerprints unchanged. No measured speed advantage or family closure:
+47 in progress/52 open/0 complete.
+
+Next: add bounded nice/minor tick generation to the shared geometry path, with
+linear/log/reversed/extreme-range checks and label-overlap limits. Preserve
+existing defaults until separately qualified; cap generated ticks independently
+of axis span. Then adapt generic histogram/profile plots without manufacturing
+calibration provenance. Additional formats, annotation text/drag/persistence,
+independent OS windows and broader calibration/downstream/platform/reference/
+performance gates remain open.
+
 ## Per-window plot style and on-canvas model annotations — 2026-10-28
 
 Plot Style now controls curve width/color, measured-point radius/color and an

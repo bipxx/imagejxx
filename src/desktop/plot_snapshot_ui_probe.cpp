@@ -77,6 +77,14 @@ Json plotSnapshotUiCase(Window& window,const std::string& context,const std::str
   frame(Json::array({{{"type","text"},{"value",csv.u8string()}}}));frame();
   click(last.at("file_browser").at("controls").at("submit"),"snapshot_export_save");frame();frame();
   const auto bytes=readBytes(csv.u8string());report["csv_path"]=csv.u8string();report["csv_text"]=std::string(bytes.begin(),bytes.end());
+  click(last.at("host_controls").at("plot_snapshot."+std::to_string(second)+".image_export"),"snapshot_image_export");
+  click(last.at("dialog").at("controls").at("apply"),"snapshot_image_dimensions_apply");frame();frame();
+  click(last.at("file_browser").at("controls").at("path"),"snapshot_image_path");
+  for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",{{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}}}}}));
+  const auto png=directory/fs::u8path("plot-\xc2\xb5.png");
+  frame(Json::array({{{"type","text"},{"value",png.u8string()}}}));frame();
+  click(last.at("file_browser").at("controls").at("submit"),"snapshot_image_save");frame();frame();
+  report["png_export"]=last.at("plot_image_export");report["png_path"]=png.u8string();
   click(last.at("host_controls").at("plot_snapshot."+std::to_string(second)+".close"),"close_second");frame();frame();
   report["after_second_close"]=window.plotSnapshotsInfo();report["memory_one_left"]=window.renderMemoryInfo();
   click(last.at("host_controls").at("plot_snapshot."+std::to_string(first)+".close"),"close_first");frame();frame();
