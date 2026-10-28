@@ -358,3 +358,18 @@ window.cpp, rank staging near `stage_new_document` and
 reuse that pattern. Reuse `inheritedDisplayLut` for legacy named palettes.
 Keep native finite command replay unchanged; prepared method parameters alone
 are diagnostic, not complete replay. Bind Python to the same core path.
+
+### G034 shared consumer checkpoint — 2026-10-28
+
+The strict command, combined admission, Python interface and shared ImGui worker/
+facade/recorder path are implemented. Both Windows hosts pass the same physical
+Apply/Cancel/current-T/overlay/reopen flow.150 checks pass including legacy and
+transport controls; Linux core source checks pass. [Evidence](../parity/reviews/G034-imagej-projection-ui-progress001.json).
+Continue at existing consumers: broaden physical replay/rebind/axis/RGB/group
+interactions and retained metadata assertions, then calibrations/configuration.
+Do not create another projection backend, codec or producer framework. Keep
+native finite and ImageJ profiles distinct. Comparative performance remains
+unmeasured; use matched workloads after correctness checks, never test duration
+or reservation bytes as a speed/RSS surrogate. Full reference/platform gates and
+all99 families remain required. Historical G016 inventory evidence is unavailable;
+do not recreate retired build generations or repin expectations.

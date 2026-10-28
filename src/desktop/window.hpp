@@ -251,6 +251,7 @@ private:
                                               const MetadataObject &record,
                                               PreparedOperation &prepared,
                                               bool requireCapturedPosition);
+  std::uint64_t publishPreparedProjection(const MetadataObject&,PreparedOperation&,bool recorded);
   void addSessionDocuments(const Documents &documents);
   HistoryPolicyAdoption
   attachStartupDocuments(const Documents &documents,

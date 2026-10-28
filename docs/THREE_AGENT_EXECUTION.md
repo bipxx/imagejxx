@@ -1,5 +1,49 @@
 # Three-agent execution plan
 
+## Shared ImageJ projection workflow verified on Windows — 2026-10-28
+
+The shared ImGui editor now exposes ImageJ Z Project and Grouped Z Project,
+with axis/bounds, method, all/current T/C and RGB-sum clipping options. It sends
+the complete Dataset through the prepared core worker and stages the exact
+facade/Pane before atomic publication. It never reconstructs scientific axes
+from State.frames. Existing native finite APIs/menus remain separate. Python
+uses this same UI and also exposes the strict prepared core interface.
+
+The new version1 `imagejxx.imagej-projection-command` records complete raw intent,
+source/density/presentation dependencies and portable derived claims. Replay and
+explicit rebind validate the original grammar; runtime caps only tighten work.
+Working/scratch bytes depending on ABI are recomputed, not stored as admission
+claims. Combined admission reuses the existing metadata/selection/ROI estimator
+and charges numerical work, output channel state and publication/wire staging.
+A large-C descriptor test proves refusal before provider pixels are requested.
+The worker retains its declared reservation through Ready until publication.
+
+Final verification:150 passing checks, no skips (127 installed processing/editor/
+legacy checks plus23 mocked transport controls). Both actual Windows ImGui hosts
+use physical menu/field/Apply/Cancel inputs; independent assertions check output
+axes/pixels, source preservation, channel state, rendered overlay visibility,
+Ready reservation/release, grouped-hyperstack forwarding and session reopen.
+Native command/admission tests pass in the coherent Windows build and Linux
+source consumers. [Source-bound evidence](parity/reviews/G034-imagej-projection-ui-progress001.json).
+This is a focused UInt16 UI flow, not the complete UI/dtype/method/axis matrix.
+
+Next: extend physical replay/rebind, Time/Channels/RGB/grouping and invalid-field
+coverage; finish retained metadata differentials and calibration configuration.
+Then measure matched ImageJ/Fiji workloads on identical inputs/hardware, keeping
+correctness, kernel time, UI latency, RSS and declared reservations separate.
+No comparative speed advantage is established. Broader platform/SDK/UI gates,
+virtual/downstream IEEE and original references remain open.99-family statuses
+stay47 in progress/52 open/0 complete.
+
+License policy checks pass. The full inventory check still fails on retired
+G016 checkpoint build/plan-implementation/p05e-roi-boolean-001/native-local-checkpoint-001.json;
+its expectation is unchanged and build/ was not recreated. Test/compiler scratch
+is retired and captures/logs are losslessly hash-verified compressed evidence.
+Three stale executables older than the rebuilt libraries were retired (26,851,840
+bytes), retaining source/objects and identities; those old binary bytes are now
+unavailable. Known whole-root storage8,586,242,308 bytes is below8GiB, but two
+denied cache subtrees keep the complete budget unverified.
+
 ## Prepared projection publication implemented — 2026-10-26
 
 `prepare_imagej_projection` now prepares the complete Dataset in a detached

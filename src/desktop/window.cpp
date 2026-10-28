@@ -1,5 +1,6 @@
 #include "window.hpp"
 #include <imagejxx/stack_projection.hpp>
+#include <imagejxx/imagej_projection_command.hpp>
 #include "path_visual.hpp"
 #include <imagejxx/playback.hpp>
 #include "shadow_demo.hpp"
@@ -1136,6 +1137,12 @@ struct Window::Impl {
   struct JobResult {
     State state;
     ComponentCounts components;
+    std::optional<PreparedOperation> prepared;
+    MetadataObject record;
+    bool recorded = false;
+    std::shared_ptr<const void> reservation;
+    JobResult(PreparedOperation value, MetadataObject capture, bool recordStep)
+        : prepared(std::move(value)), record(std::move(capture)), recorded(recordStep) {}
     JobResult(State value, ComponentCounts counts = {})
         : state(std::move(value)), components(std::move(counts)) {}
   };
@@ -1596,6 +1603,17 @@ struct Window::Impl {
     if (action == "shadow_imagej" || (action == "show_operation" && operationId == "shadow_imagej"))
       return owner.controller_->active_document_id() == source->id &&
              scientific_operation_review_available("shadow_imagej", source->nativeSnapshot());
+    if (action=="show_imagej_projection" || action=="show_imagej_grouped_projection" ||
+        action=="project_imagej" || action=="replay_imagej_projection") {
+      const auto captured=source->nativeSnapshot();
+      const auto& data=captured.data().dataset;
+      const auto shape=data.shape();
+      return !owner.busy() && owner.controller_->active_document_id()==source->id &&
+          ((shape.s==1 && (data.pixel_type()==PixelType::UInt8 ||
+              data.pixel_type()==PixelType::UInt16 || data.pixel_type()==PixelType::Float32)) ||
+           (shape.s==3 && data.pixel_type()==PixelType::UInt8 &&
+              (shape.c==1 || (shape.t==1 && shape.z==1))));
+    }
     if (!source->scientific())
       return true;
     if(action=="show_display_annotations" || action=="replay_display_annotation")return owner.controller_->active_document_id()==source->id;
@@ -3859,8 +3877,9 @@ struct Window::Impl {
              std::shared_ptr<Document> target, bool newDocument = false,
              std::string title = "", std::string label = "",
              std::size_t extraWorkspace = 0,
-             std::shared_ptr<WorkflowReplayLineage> replayLineage = {}) {
-    if (target)
+             std::shared_ptr<WorkflowReplayLineage> replayLineage = {},
+             bool preparedTask = false) {
+    if (target && !preparedTask)
       target->requireLegacyEditable();
     if (owner.busy())
       throw std::invalid_argument("Wait for the current edit to finish");
@@ -3879,7 +3898,8 @@ struct Window::Impl {
     options.label = label.empty() ? (jobTitle.empty() ? "Image task" : jobTitle)
                                   : std::move(label);
     options.document_id = jobDocument ? jobDocument->id : 0;
-    if (jobDocument)
+    options.retain_result_resources = preparedTask;
+    if (jobDocument && !preparedTask)
       options.resource_bytes = legacy_job_base_workspace(jobDocument->nativeSnapshot());
     if (extraWorkspace >
         std::numeric_limits<std::size_t>::max() - options.resource_bytes)
@@ -3888,13 +3908,15 @@ struct Window::Impl {
     options.resource_bytes += extraWorkspace;
     auto gate = std::exchange(diagnosticWorkerGate, {});
     auto submitted = owner.controller_->job_scheduler()->submit(
-        [function = std::move(function), result, gate = std::move(gate)](const JobContext &context) {
+        [function = std::move(function), result, gate = std::move(gate), preparedTask](const JobContext &context) {
           // Establish the scope in the frontend's core module as well, so an
           // independently linked Python binding does not hide its cancellation.
           ExecutionScope scope(context.execution_control());
           if (gate)
             gate(context);
-          result->emplace(function());
+          auto completed = function();
+          if (preparedTask) completed.reservation = context.result_resource_guard();
+          result->emplace(std::move(completed));
         },
         std::move(options));
     if (replayLineage) {
@@ -5669,6 +5691,33 @@ std::uint64_t Window::publishPreparedAxisExtraction(
   observe("after_attach");
   return id;
 }
+std::uint64_t Window::publishPreparedProjection(const MetadataObject& record,
+    PreparedOperation& prepared,bool recorded) {
+  checkThread();
+  if(controller_->active_document_id()!=prepared.target().document_id())throw RevisionConflict();
+  auto candidate=prepared.prepared_new_document();
+  if(!candidate)throw std::invalid_argument("Projection has no prepared output");
+  auto facade=std::make_shared<Document>(candidate);
+  facade->setHistoryPolicy(impl->historyLimit,static_cast<std::size_t>(
+      impl->preferenceState.settings.integer("history_memory_mb"))*1024*1024);
+  const auto zoom=impl->preferenceState.settings.number("default_zoom");
+  if(zoom>0)facade->setView({{"zoom",zoom/facade->displaySpacing()[0]}});
+  Json emptyControls=Json::object(),emptyRows=Json::array();
+  documents_.reserve(documents_.size()+1);
+  const auto id=candidate->id;
+  if(!documentAdapters_.emplace(id,facade).second)
+    throw std::invalid_argument("Projection output is already attached");
+  std::optional<OutputPublication> outputs;bool pane=false;
+  try {
+    impl->panes.emplace_back();pane=true;impl->panes.back().doc=facade;
+    outputs.emplace(results,workflow,ComponentCounts{},"",recorded?metadataJson(record):Json(nullptr));
+    controller_->publish(prepared);
+  }catch(...) {if(pane)impl->panes.pop_back();documentAdapters_.erase(id);throw;}
+  facade->bindPublishedController(controller_);documents_.push_back(std::move(facade));
+  impl->roiManagerSource.reset();impl->roiSelectedIndices.clear();impl->roiRangeAnchor.reset();impl->roiIndex=-1;
+  impl->roiManagerControls.swap(emptyControls);impl->roiManagerRows.swap(emptyRows);
+  outputs->publish();return id;
+}
 std::shared_ptr<imagejxx::Document>
 Window::nativeDocument(std::uint64_t id) const {
   return documentById(id)->nativeOwner();
@@ -6468,6 +6517,95 @@ void Window::action(const std::string &name, const Json &p) {
   // not bypass its capability check before clipboard, files or jobs change.
   if (targetId && !targeted.count(name))
     impl->requireAction(name, 0, operationId);
+  if(name=="show_imagej_projection" || name=="show_imagej_grouped_projection" ||
+      name=="project_imagej" || name=="replay_imagej_projection") {
+    if(busy()) throw std::invalid_argument("Wait for the current edit");
+    if(!p.is_object()) throw std::invalid_argument("Projection parameters must be an object");
+    auto facade=documentById(targetId);const auto source=facade->nativeSnapshot();
+    const auto shape=source.data().dataset.shape();
+    const auto automatic=shape.t==1 && shape.z==1 && shape.c>1?ImageJProjectionAxis::Channels:
+        shape.z==1?ImageJProjectionAxis::Time:ImageJProjectionAxis::Z;
+    const auto extent=automatic==ImageJProjectionAxis::Channels?shape.c:
+        automatic==ImageJProjectionAxis::Time?shape.t:shape.z;
+    if(name=="show_imagej_projection" || name=="show_imagej_grouped_projection") {
+      for(const auto& item:p.items()) if(item.key()!="record" && item.key()!="document_id")
+        throw std::invalid_argument("Unknown projection dialog parameter: "+item.key());
+      std::optional<MetadataObject> original;
+      if(p.contains("record")) {original=metadataObjectFromJson(p.at("record"));validate_imagej_projection_command_record(*original);}
+      const bool hyper=(shape.c>1 && (shape.z>1 || shape.t>1)) || (shape.z>1 && shape.t>1);
+      std::optional<ImageJProjectionDocumentRequest> saved;
+      if(original)saved=imagej_projection_request_from_record(
+          metadataObjectFromJson(metadataJson(*original).at("request")));
+      const bool grouped=saved?saved->projection.group_size>0:
+          name=="show_imagej_grouped_projection" && !hyper;
+      if(grouped && extent<2) throw std::invalid_argument("Grouped projection requires a stack");
+      Json values{{"axis","automatic"},{"first",1},{"last",extent},
+        {"method",grouped?"mean":"maximum"},{"all_time_frames",true},{"all_channels",true},
+        {"clip_when_summing",false}};
+      Json schema=Json::array({
+        {{"name","axis"},{"label","Projection axis"},{"kind","text"},{"choices",{"automatic","z","time","channels"}}},
+        {{"name","first"},{"label","Start index"},{"kind","int"}},
+        {{"name","last"},{"label","Stop index"},{"kind","int"}},
+        {{"name","method"},{"label","Projection method"},{"kind","text"},{"choices",{"maximum","minimum","mean","sum","median","stddev"}}},
+        {{"name","all_time_frames"},{"label","All time frames"},{"kind","bool"}},
+        {{"name","all_channels"},{"label","All channels"},{"kind","bool"}},
+        {{"name","clip_when_summing"},{"label","Clip RGB sums"},{"kind","bool"}}});
+      if(saved) {
+        const auto old=metadataJson(imagej_projection_request_record(*saved));
+        for(const auto* key:{"axis","method","all_time_frames","all_channels","clip_when_summing"})values[key]=old.at(key);
+        values["first"]=saved->projection.first+1;values["last"]=saved->projection.last+1;
+      }
+      if(grouped) {values["group_size"]=saved?saved->projection.group_size:extent;schema.push_back({{"name","group_size"},{"label","Group size"},{"kind","int"}});}
+      impl->stopAnimation("imagej_projection");
+      impl->ask(original?"Rebind ImageJ projection":grouped?"ImageJ Grouped Z Project":"ImageJ Z Project",std::move(values),
+          [this,source,original](Json values) {
+            const auto now=nativeSnapshot();
+            if(!source.same_document(now) || !source.revisions().matches(now.revisions(),Change::All))throw RevisionConflict();
+            if(original) values["rebind_record"]=metadataJson(*original);
+            action("project_imagej",values);
+          },std::move(schema),"imagej_projection");
+      return;
+    }
+    const auto configured=static_cast<std::size_t>(impl->preferenceState.settings.integer("processing_memory_mb"))*1024*1024;
+    ImageJProjectionDocumentRequest request;
+    request.max_working_bytes=configured?configured:std::numeric_limits<std::size_t>::max();
+    request.projection.max_working_bytes=request.max_working_bytes;
+    request.projection.max_output_pixel_bytes=request.max_working_bytes;
+    request.projection.active_t=source.display().t;request.projection.active_c=source.display().c;
+    request.projection.last=extent-1;request.desktop_grays=true;
+    if(!recognized_channel_display(source.display(),source.data().dataset) && shape.s==1)
+      request.source_lut=inheritedDisplayLut(metadataJson(source.display().properties));
+    auto command=[&] {
+      if(name=="replay_imagej_projection") {
+        for(const auto& f:p.items()) if(f.key()!="record" && f.key()!="document_id")
+          throw std::invalid_argument("Unknown projection replay field: "+f.key());
+        if(!p.contains("record"))throw std::invalid_argument("Projection replay requires a record");
+        return imagej_projection_command_from_record(source,metadataObjectFromJson(p.at("record")));
+      }
+      auto raw=metadataJson(imagej_projection_request_record(request));
+      for(const auto& f:p.items()) {
+        if(f.key()=="rebind_record" || f.key()=="document_id")continue;
+        if(f.key()=="first" || f.key()=="last") {
+          if(!f.value().is_number_integer() || f.value()<1 || f.value()>std::numeric_limits<int>::max())throw std::invalid_argument("Projection bounds require positive native integer indices");
+          raw[f.key()]=f.value().get<int>()-1;
+        } else if(f.key()=="axis" || f.key()=="method" || f.key()=="all_time_frames" || f.key()=="all_channels" ||
+            f.key()=="group_size" || f.key()=="clip_when_summing") raw[f.key()]=f.value();
+        else throw std::invalid_argument("Unknown projection parameter: "+f.key());
+      }
+      request=imagej_projection_request_from_record(metadataObjectFromJson(raw));
+      return p.contains("rebind_record")?rebind_imagej_projection_command(source,
+          metadataObjectFromJson(p.at("rebind_record")),request):resolve_imagej_projection_command(source,request);
+    }();
+    if(configured && command.estimate().working_bytes>configured)
+      throw std::invalid_argument("Projection exceeds current processing memory budget");
+    const auto bytes=command.estimate().working_bytes;const auto recorded=recording;
+    impl->stopAnimation("imagej_projection");
+    impl->start([command,recorded,configured] {
+      auto prepared=prepare_imagej_projection(command,{},configured?configured:std::numeric_limits<std::size_t>::max());
+      return Impl::JobResult(std::move(prepared),command.record(),recorded);
+    },facade,false,"ImageJ projection","ImageJ projection",bytes,{},true);
+    return;
+  }
   if(ContrastPanel::handles(name)){
     if(targetId && (documents_.empty() || targetId!=document()->id))throw std::invalid_argument("Contrast controls require the active image");
     Json values=p;if(values.is_object())values.erase("document_id");
@@ -8735,6 +8873,12 @@ void Window::poll() {
     impl->job.rethrow();
     impl->job.complete([&] {
       auto &completed = impl->jobResult->value();
+      if (completed.prepared) {
+        if (impl->cancelled) throw OperationCancelled();
+        publishPreparedProjection(completed.record, *completed.prepared, completed.recorded);
+        impl->status = "Projection complete";
+        return;
+      }
       auto &proposed = completed.state;
       if (impl->cancelled) {
         impl->status = "Cancelled";
@@ -9217,6 +9361,8 @@ void Window::Impl::menu() {
       item("Substack...", "show_z_subset");
       observeControl("menu.z_subset");
       item("Z Project...", "show_z_projection");
+      item("ImageJ Z Project...", "show_imagej_projection");
+      item("ImageJ Grouped Z Project...", "show_imagej_grouped_projection");
       item("Grouped Z Project...", "show_grouped_z_projection", "", doc()->shape().z > 1);
       if (ImGui::BeginMenu("Projection", actionAllowed("project"))) {
         for (auto method :
@@ -10344,6 +10490,15 @@ void Window::Impl::recorder() {
         }
       });
       ImGui::EndDisabled(); ImGui::PopID();
+    }
+    if(get(step,"schema")=="imagejxx.imagej-projection-command") {
+      ImGui::PushID(static_cast<int>(i));
+      ImGui::BeginDisabled(owner.documents_.empty() || !actionAllowed("replay_imagej_projection"));
+      if(ImGui::Button("Replay projection"))guard([&]{owner.action("replay_imagej_projection",{{"record",step}});});
+      observeControl("workflow.projection."+std::to_string(i)+".replay");ImGui::SameLine();
+      if(ImGui::Button("Rebind projection..."))guard([&]{owner.action("show_imagej_projection",{{"record",step}});});
+      observeControl("workflow.projection."+std::to_string(i)+".rebind");
+      ImGui::EndDisabled();ImGui::PopID();continue;
     }
     if (get(step, "schema") == "imagejxx.axis-extraction-command") {
       const bool bilinear = get(step, "version") == 4 &&

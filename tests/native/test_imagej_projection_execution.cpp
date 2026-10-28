@@ -1,4 +1,5 @@
 #include <imagejxx/imagej_projection_execution.hpp>
+#include <imagejxx/imagej_projection_command.hpp>
 #include <imagejxx/imagej_intensity_calibration.hpp>
 #include <imagejxx/application.hpp>
 #include <imagejxx/session.hpp>
@@ -181,5 +182,57 @@ int main() {
   reject([&]{prepare_imagej_projection(alias->snapshot(),invalid);});
   auto bad=alias->begin_edit();bad.set_overlays({{{"z",true}}});alias->commit(bad);
   reject([&]{prepare_imagej_projection(alias->snapshot(),request());});
+  class MetadataOnlySource final:public PlaneSource {
+  public:
+    mutable int reads=0;
+    DatasetShape shape() const override {return {1,1024,2,1,1,1};}
+    PixelType pixel_type() const override {return PixelType::UInt16;}
+    std::shared_ptr<const Image> read_plane(PlanePosition) const override {
+      ++reads;throw std::runtime_error("Admission must not read provider pixels");
+    }
+  };
+  auto provider=std::make_shared<MetadataOnlySource>();
+  Document many_channels(Dataset(provider),"many channels");
+  auto bounded=request();bounded.projection.first=0;bounded.projection.last=1;
+  bounded.projection.active_t=0;bounded.projection.active_c=0;
+  bounded.max_working_bytes=16*1024*1024;
+  reject([&]{resolve_imagej_projection_command(many_channels.snapshot(),bounded);});
+  check(provider->reads==0);
+  bounded.max_working_bytes=32*1024*1024;
+  const auto admitted=resolve_imagej_projection_command(many_channels.snapshot(),bounded);
+  check(admitted.estimate().working_bytes>16*1024*1024 && provider->reads==0);
+  auto raw=imagej_projection_request_record(request());
+  auto strict_request=imagej_projection_request_from_record(raw);
+  const auto strict_source=without_channels->snapshot();
+  const auto command=resolve_imagej_projection_command(strict_source,strict_request);
+  validate_imagej_projection_command_record(command.record());
+  check(command.estimate().working_bytes>command.estimate().layout.working_bytes);
+  auto rebound=imagej_projection_command_from_record(strict_source,command.record());
+  check(metadata_equal(rebound.record(),command.record()));
+  auto low=strict_request;low.max_working_bytes=command.estimate().working_bytes-1;
+  reject([&]{resolve_imagej_projection_command(strict_source,low);});
+  auto malformed=raw;malformed["first"]=true;
+  reject([&]{imagej_projection_request_from_record(malformed);});
+  malformed=raw;malformed["max_working_bytes"]=0;
+  reject([&]{imagej_projection_request_from_record(malformed);});
+  auto corrupt=command.record();corrupt["version"]=true;
+  reject([&]{validate_imagej_projection_command_record(corrupt);});
+  reject([&]{rebind_imagej_projection_command(strict_source,corrupt,strict_request);});
+  corrupt=command.record();corrupt["derived"]=metadata_object({});
+  reject([&]{validate_imagej_projection_command_record(corrupt);});
+  auto limited=strict_request;limited.max_record_bytes=1;
+  reject([&]{resolve_imagej_projection_command(strict_source,limited);});
+  auto text_limited=raw;text_limited["max_record_bytes"]=64;
+  text_limited["output_title"]=std::string(1024,'x');
+  reject([&]{imagej_projection_request_from_record(text_limited);});
+  auto oversized=request();oversized.output_title=std::string(1024*1024+1,'x');
+  reject([&]{imagej_projection_request_record(oversized);});
+  auto named=ordinary_request;named.source_lut=ChannelDisplayLut{};named.source_lut->name="Green";
+  named.output_title="Named projection";
+  auto named_request=imagej_projection_request_from_record(imagej_projection_request_record(named));
+  auto named_command=resolve_imagej_projection_command(ordinary.snapshot(),named_request);
+  auto named_output=prepare_imagej_projection(named_command).prepared_new_document()->snapshot();
+  check(named_output.data().metadata.title=="Named projection");
+  check(recognized_channel_display(named_output.display(),named_output.data().dataset)->channels[0].lut.name=="Green");
   std::cout<<"Prepared scientific projection: metadata, channel display, source/candidate guards, cancellation, session and capture passed\n";
 }

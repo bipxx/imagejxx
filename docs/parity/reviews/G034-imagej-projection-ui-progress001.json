@@ -1,0 +1,253 @@
+{
+  "schema": "imagejxx.scoped-progress",
+  "version": 1,
+  "source_base": "be27f53f4de6898f76ad6c2026cc5d1d8577ad30",
+  "scope": "Strict ImageJ projection command, combined admission, Python interface and shared ImGui whole-Dataset worker/publication workflow; focused Windows host qualification and Linux core source checks, not full ImageJ/Fiji acceptance",
+  "source_inputs": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 136736,
+      "sha256": "a707ca5c8b1d1d945e0daf4f98b6006e3c9d05ab86ed7f40664cfbba85b03749"
+    },
+    {
+      "path": "include/imagejxx/imagej_projection_execution.hpp",
+      "bytes": 2445,
+      "sha256": "6b4d2fad54751f3ef7d9ed1ba8c218f095086a477c11ffc51afed48255401cc8"
+    },
+    {
+      "path": "include/imagejxx/imagej_projection_command.hpp",
+      "bytes": 1956,
+      "sha256": "40d36cbd7d035eb2456193bdbee6b01b636a665d77b7ff4956451af2f3ce008e"
+    },
+    {
+      "path": "src/native/imagej_projection_command.cpp",
+      "bytes": 14157,
+      "sha256": "d83199b01016e8192f43230c0ef20313e39b4e846eb7283e0194b0b19aecadee"
+    },
+    {
+      "path": "src/native/imagej_projection_bindings.cpp",
+      "bytes": 2487,
+      "sha256": "91dc3807a96967289fd7bb7a9bb9a71859b7eb157a37f23949feb7f56254a78a"
+    },
+    {
+      "path": "src/native/imagej_projection_document.cpp",
+      "bytes": 11780,
+      "sha256": "555667ba93ae4f3dba122f93c2d8a16abab3f022cfe0284f4c38458151cf4994"
+    },
+    {
+      "path": "src/native/execution.cpp",
+      "bytes": 129399,
+      "sha256": "c675abb9ef51b408364c5604ac311c07bb2b4f5f73f84e27ca927424306994fc"
+    },
+    {
+      "path": "src/native/bindings.cpp",
+      "bytes": 38546,
+      "sha256": "7c754e80a43085136ba6e787ef9c2d45ab2bfc54307591038f7de150d0c86cf4"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 774133,
+      "sha256": "0a3fc792f5c59d3f196bbac9452a5138b64364b2cd1c40111b9866591bab6b75"
+    },
+    {
+      "path": "src/desktop/window.hpp",
+      "bytes": 15252,
+      "sha256": "64263d9b86071649b6c6e52a04e46ddcdc18cd8ca2511061d6e5415f8a5ba2a9"
+    },
+    {
+      "path": "src/desktop/main.cpp",
+      "bytes": 57417,
+      "sha256": "3870c617a757e4c6632e7fdb96ea79ae88db6ef791670593539972878c3424d5"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 58177,
+      "sha256": "e9ad62db172b6643677705e90b74ec0ea86e00b26e37da67aa1f26952839c339"
+    },
+    {
+      "path": "src/desktop/imagej_projection_ui_probe.cpp",
+      "bytes": 7335,
+      "sha256": "9dc91b635b71f239236bc57b2b455b8d9ad14a521af8f4331c26e976294b30f5"
+    },
+    {
+      "path": "src/desktop/imagej_projection_ui_probe.hpp",
+      "bytes": 182,
+      "sha256": "78e84a52a1499f0e1c196003c5f489ef43656c2ecc0673d4c508da7285fb979d"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 79212,
+      "sha256": "9ec7a225b1533b59d0447318c4462f73190b62af9d4bd9e1ac2c6c2a211f6a7a"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 58061,
+      "sha256": "fd1520884a1c67c53976ffa5d93acfbd3d145793d0a176888b522bdffc49dd0c"
+    },
+    {
+      "path": "tests/native/test_imagej_projection_execution.cpp",
+      "bytes": 15580,
+      "sha256": "5811f8979f005666a2d15b7007f118f4b5c766619a4e7626cb9e7ff98b7f402b"
+    },
+    {
+      "path": "tests/python/test_imagej_projection_editor.py",
+      "bytes": 8638,
+      "sha256": "cfe78f7d663baf97f053e0b096f571c69bdc639884dea742a1aec28a62b435f7"
+    }
+  ],
+  "verification": {
+    "windows_build": {
+      "path": ".tmp/manual-workflow-verification/projection-ui-windows-build103/receipt.json",
+      "bytes": 24577,
+      "sha256": "d9baa7f6483b90793ce8c7225a10e2be042fe03135b7035d24f718e6e3632e55"
+    },
+    "source_freeze": {
+      "path": ".tmp/manual-workflow-verification/projection-ui-windows-build103/source-freeze.json",
+      "bytes": 367638,
+      "sha256": "4abd3cf5dd8b2972b171e0ef3d092d46546f72a4743d0485c0a4cbc61b6d2d0d"
+    },
+    "dependencies": {
+      "path": ".tmp/manual-workflow-verification/projection-ui-windows-build103/dependency-inputs.json",
+      "bytes": 130574,
+      "sha256": "ab725c95300fb7720cabef8cbc1e3bef061828d678194eea6921e09cf5091206"
+    },
+    "build_logs": {
+      "path": ".tmp/manual-workflow-verification/projection-ui-windows-build103/logs.zip",
+      "bytes": 3074,
+      "sha256": "eb31a2a64e835c451ce3927e24fc24688ed2aab1baf2ae990655b3e4cf52eceb"
+    },
+    "installed": {
+      "path": ".tmp/manual-workflow-verification/projection-ui-installed105/receipt.json",
+      "bytes": 12090,
+      "sha256": "36b8d93c4c73bd7f2b5eb484db24d54526321c010fdc2fbc1f2af96e3344af49"
+    },
+    "junit": {
+      "path": ".tmp/manual-workflow-verification/projection-ui-installed105/results.xml",
+      "bytes": 21720,
+      "sha256": "a81d2994b98a2c8ed32a20b1be6279f675773c7971ecec8c439aaabf8b3c3607"
+    },
+    "captures": {
+      "path": ".tmp/manual-workflow-verification/projection-ui-installed105/captures.zip",
+      "bytes": 1482059,
+      "sha256": "9e45fb16b057843ca368692ee012056ce01e8d1b24026b1df78db3d5e85b7388"
+    },
+    "tests": 150,
+    "failures": 0,
+    "skipped": 0,
+    "composition": "127 installed projection/Python/editor/legacy checks plus23 mocked capture-transport controls; two physical ImGui contexts are independently asserted within the installed projection checks.",
+    "physical_ui_cases": [
+      {
+        "context": "imgui_cpp",
+        "archive_member": "cpp/case.json",
+        "bytes": 6433298,
+        "sha256": "3278995c8227fd695d32729d9d456a1f6f58dfaca25d0d0fba7e1ce3feca36e5",
+        "physical_frames": 56,
+        "ready": {
+          "documents": 1,
+          "peak_reserved_bytes": 2217504,
+          "resource_bytes": 2217504,
+          "retained_bytes": 2217504,
+          "state": 2
+        },
+        "reserved_after_publication": 0,
+        "visible_overlay_indices": [
+          0,
+          2
+        ]
+      },
+      {
+        "context": "imgui_python",
+        "archive_member": "pytest/test_actual_imagej_projection_1/capture/case.json",
+        "bytes": 6437868,
+        "sha256": "56d879e496e603289aac0558df4920428f152c6b124a9a4823435bbc8029486f",
+        "physical_frames": 56,
+        "ready": {
+          "documents": 1,
+          "peak_reserved_bytes": 2217504,
+          "resource_bytes": 2217504,
+          "retained_bytes": 2217504,
+          "state": 2
+        },
+        "reserved_after_publication": 0,
+        "visible_overlay_indices": [
+          0,
+          2
+        ]
+      }
+    ],
+    "linux_core": {
+      "path": ".tmp/manual-workflow-verification/projection-ui-core-linux104/receipt.json",
+      "bytes": 79535,
+      "sha256": "68d3761c755fd53ac01abcaa0a2589262d0487fb79803e13788fbf27c493e61f"
+    },
+    "linux_logs": {
+      "path": ".tmp/manual-workflow-verification/projection-ui-core-linux104/logs.zip",
+      "bytes": 3742,
+      "sha256": "bab7c561070c524f90fe5a2782d3961d86d866b777e1243a8bfdc3f7efa9d0d3"
+    },
+    "linux_scope": "New source objects linked to unchanged installed SDK dependencies; no Linux installed UI or macOS UI qualification. Existing shared contrast-header misleading-indentation and variance-path maybe-uninitialized warnings remain nonfatal only in their existing scopes."
+  },
+  "policy": {
+    "licenses": "Declared/native/desktop policy check passed; no new dependencies added.",
+    "inventory": "Failed: unavailable historical build/plan-implementation/p05e-roi-boolean-001/native-local-checkpoint-001.json. No expectations changed or retired build generation recreated.",
+    "receipt": {
+      "path": ".tmp/manual-workflow-verification/projection-ui-static106/receipt.json",
+      "bytes": 4959,
+      "sha256": "5560e02c8e062905ca62032f540fbd66114244a22727e7e3fc91d0508f0bab17"
+    }
+  },
+  "storage": {
+    "before": {
+      "path": ".tmp/manual-workflow-verification/projection-ui-storage-before089.json",
+      "bytes": 1521,
+      "sha256": "8332a95f465c7cabb02a055e4ed404c600768a353ea8f24642f0639e8053c790"
+    },
+    "resume": {
+      "path": ".tmp/manual-workflow-verification/projection-ui-storage-resume095.json",
+      "bytes": 1525,
+      "sha256": "414dcce62a8d3e7071914c8069b4d12d07f70c2ffb36cece633a406957f70aaa"
+    },
+    "after": {
+      "path": ".tmp/manual-workflow-verification/projection-ui-storage-final109.json",
+      "bytes": 1510,
+      "sha256": "2c35e2e3a673caacdf6b05bd2bfdd4d23ebfd8f6536fe2ed027e94a63fa2bd66"
+    },
+    "known_bytes": 8586242308,
+    "budget_verified": false,
+    "unavailable_subtrees": [
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest",
+        "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest'"
+      },
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest-ui",
+        "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest-ui'"
+      }
+    ],
+    "build_temporary_reserve_bytes": 536870912,
+    "capture_temporary_reserve_bytes": 67108864,
+    "core_temporary_reserve_bytes": 33554432,
+    "note": "Single active compiler cache and installed verification runtime reused. Final compiler/test scratch retired; logs/captures losslessly compressed and hash-verified. Superseded run diagnostics archived, old capture bytes explicitly retired; no cache/environment/SDK/checkouts archived.",
+    "stale_test_executables_retired_bytes": 26851840,
+    "cache_retirement": {
+      "path": ".tmp/manual-workflow-verification/projection-ui-cache-retirement108.json",
+      "bytes": 1470,
+      "sha256": "0cb49dae0a26de78831396bae7cd65d53133efb2412f738dc22d3fedcb762962"
+    },
+    "historical_retired_binaries_available": false
+  },
+  "limitations": [
+    "Physical UI coverage is one asymmetric UInt16 current-T/all-C maximum-projection flow per Windows host, grouped-hyperstack forwarding/cancel, rendered overlay visibility and session reopen. Broader dtype/method/axis/clip/group field interactions and physical replay/rebind buttons remain required.",
+    "Core/Python API tests cover explicit Time/Channels, RGB clipping, sample SD, strict replay/rebind validation, memory refusal, cancellation and source preservation; they do not replace the remaining physical UI or metadata matrix.",
+    "Grouping/current-C/explicit multi-axis native annotation extensions remain distinct from ordinary ImageJ overlay rules. Calibration-function generation/fitting and exhaustive retained metadata differential coverage remain open.",
+    "Provider-private caches/allocator overhead/render caches and process RSS remain outside the declared processing reservation. Reservation observations are not heap or speed measurements.",
+    "Full installed SDK/platform/UI acceptance, reviewed virtual/downstream IEEE, original reference recovery and historical inventory gates remain open.",
+    "No comparative ImageJ/Fiji performance claim or benchmark pass."
+  ],
+  "family_status": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  },
+  "full_acceptance": false
+}

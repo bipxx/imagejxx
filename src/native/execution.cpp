@@ -1300,6 +1300,7 @@ PreparedOperation prepare_imagej_projection(
   const auto request=request_input;
   ExecutionScope scope(control);
   kernel_checkpoint();
+  (void)estimate_imagej_projection_document(source,request);
   auto output=detail::project_imagej_document(source,request,{});
   const auto& layout=output.layout;
   TargetRequest ranges;

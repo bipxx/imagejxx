@@ -1737,6 +1737,16 @@ from ._native import make_rgb_contrast_session_workflow_step, rgb_contrast_sessi
 
 from ._native import RgbContrastSessionEditor, RgbContrastSessionTransition
 
+# Shared prepared scientific projection; requests are complete strict mappings.
+from ._native import (
+    imagej_projection_defaults as imagej_projection_defaults,
+    resolve_imagej_projection_record as resolve_imagej_projection_record,
+    validate_imagej_projection_record as validate_imagej_projection_record,
+    prepare_imagej_projection as prepare_imagej_projection,
+    replay_imagej_projection as replay_imagej_projection,
+    rebind_imagej_projection_record as rebind_imagej_projection_record,
+)
+
 __all__ = [
     name
     for name, value in list(globals().items())

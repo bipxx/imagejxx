@@ -50,6 +50,7 @@
 #include "window.hpp"
 #include "rendering.hpp"
 #include "z_subset_ui_probe.hpp"
+#include "imagej_projection_ui_probe.hpp"
 #include <cmath>
 #include <cstring>
 #include <imagejxx/operations.hpp>
@@ -222,6 +223,9 @@ PYBIND11_MODULE(_desktop, m) {
              py::gil_scoped_release release;
              return zSubsetUiCase(window, "imgui_python", directory, true).dump();
            })
+      .def("_imagej_projection_ui_case",[](Window& window,const std::string& directory) {
+        py::gil_scoped_release release;return imagejProjectionUiCase(window,"imgui_python",directory).dump();
+      })
       .def("_z_subset_ui_case",
            [](Window &window, const std::string &directory) {
              py::gil_scoped_release release;

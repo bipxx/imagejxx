@@ -22,6 +22,7 @@
 #include "selection_creation_ui_probe.hpp"
 #include "scientific_roi_manager_ui_probe.hpp"
 #include "z_subset_ui_probe.hpp"
+#include "imagej_projection_ui_probe.hpp"
 #include "axis_spacing_ui_probe.hpp"
 #include "slicer_resize_ui_probe.hpp"
 #include "planar_annotation_ui_probe.hpp"
@@ -224,6 +225,12 @@ int run(const std::vector<std::string> &arguments) {
     imagejxx::desktop::Window editor((output.parent_path() / "preferences.json").u8string());
     imagejxx::desktop::scientificSessionUiCase(editor, arguments[1], "imgui_cpp", arguments[2]);
     return 0;
+  }
+  if(!arguments.empty() && arguments[0]=="--imagej-projection-ui-case") {
+    if(arguments.size()!=2)throw std::invalid_argument("Use --imagej-projection-ui-case FRESH_DIRECTORY");
+    const auto output=std::filesystem::absolute(std::filesystem::u8path(arguments[1]));
+    imagejxx::desktop::Window editor((output.parent_path()/"preferences.json").u8string());
+    imagejxx::desktop::imagejProjectionUiCase(editor,"imgui_cpp",arguments[1]);return 0;
   }
   if (!arguments.empty() && (arguments[0] == "--z-subset-ui-case" || arguments[0] == "--regional-z-subset-ui-case" || arguments[0] == "--display-z-subset-ui-case")) {
     if(arguments.size()!=2)throw std::invalid_argument("Use --z-subset-ui-case FRESH_DIRECTORY");

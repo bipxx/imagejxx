@@ -484,3 +484,50 @@ ImGui dialog/worker/facade publication, actual rendered overlays, grouped GUI
 hyperstack forwarding, calibration generation/fitting, downstream/virtual IEEE
 and original full acceptance. Prepared parameters currently expose only method
 as diagnostic information; callers must not serialize them as a complete command.
+
+## Strict command, Python and shared ImGui workflow — 2026-10-28
+
+`imagej_projection_command.hpp` now provides resolve/validate/replay/explicit
+rebind around version1 `imagejxx.imagej-projection-command`, profile `imagej154r`,
+operation `project_imagej`, destination `new_document`. It binds scientific
+source metadata, all four revisions, intensity and presentation. The derived
+record includes output shape/type/calibration, resolved axis/contributors and
+fixed output pixel bytes. Native working/scratch estimates are recomputed on
+replay and never serialized as portable admission. Native finite version1
+projection records are unchanged.
+
+Complete requests include axis, inclusive bounds, grouping, method, active T/C,
+all/current flags, RGB clipping, tile sizes, separate numerical/display limits,
+combined working limit, record limit, desktop Grays, optional source LUT and
+output title. Record allowance is positive and at most16MiB; title text is at
+most1MiB. Raw record traversal is bounded before cloning strings/tables. Combined
+admission reuses the existing escaped metadata/geometry budget and separately
+charges output channel metadata, one provider fallback/tile work, intensity table
+configuration, output/owner and publication/wire staging. Provider-private caches,
+allocator bookkeeping, render caches and RSS remain separate scopes.
+
+Python exports `imagej_projection_defaults`, `resolve_imagej_projection_record`,
+`validate_imagej_projection_record`, `prepare_imagej_projection`,
+`replay_imagej_projection` and `rebind_imagej_projection_record`. The raw mapping
+is complete and zero-based; the UI presents one-based start/stop indices.
+
+Image > Stacks > ImageJ Z Project uses the existing ask dialog and worker with
+an optional typed prepared result. It retains the scheduler reservation through
+Ready and releases it after publication/refusal/cancellation. Facade/history/view,
+map slot, Pane and recorder append are staged before native adoption. Grouped
+hyperstacks forward to ordinary projection; explicit native grouping extensions
+remain distinct. The frontend reuses inheritedDisplayLut for legacy palette
+conversion. Workflow Replay/Rebind controls use the strict core grammar; rebind
+drafts retain the historical options for explicit review.
+
+The final Windows build installs the same-source C++ app and Python modules.
+150 checks pass:127 installed projection/editor/legacy checks and23 mocked
+transport controls. Both physical shared-ImGui hosts exercise an asymmetric
+UInt16 maximum projection, bounds/current-T choice, Apply, grouped forwarding/
+Cancel, visible styled overlays, source preservation, reservation release and
+session save/reopen. Core Linux source consumers also pass; no Linux/macOS UI
+qualification follows. Remaining physical fields/methods/axes/RGB/replay/rebind,
+metadata matrices, calibration generation/configuration, virtual/downstream IEEE,
+full SDK/platform and original reference gates remain required. No benchmark or
+speed-superiority claim follows from correctness tests or declared reservation.
+[Evidence](../parity/reviews/G034-imagej-projection-ui-progress001.json).

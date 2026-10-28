@@ -167,7 +167,7 @@ ImageJProjectionDocument project_imagej_document(const DocumentSnapshot& source_
   const auto channels=recognized_channel_display(source.display(),dataset);
   const bool source_palette=!rgb && layout.shape.c==1 && layout.pixel_type!=PixelType::Float32 &&
       projection.method!="median";
-  auto lut=(source_palette && !channels)?legacy_lut(source.display()):ChannelDisplayLut{};
+  auto lut=(source_palette && !channels)?(request.source_lut?*request.source_lut:legacy_lut(source.display())):ChannelDisplayLut{};
   if(source_palette && channels) lut=channels->channels[projection.active_c].lut;
   if(!source_palette) lut=ChannelDisplayLut{};
   ExecutionScope scope(control);
@@ -179,7 +179,8 @@ ImageJProjectionDocument project_imagej_document(const DocumentSnapshot& source_
   kernel_checkpoint();
   ImageJProjectionDocument output{
       DocumentData{result.dataset,{},{},{},{},{},{}},{},layout};
-  output.data.metadata.title=std::string(prefix(projection.method))+source.data().metadata.title;
+  output.data.metadata.title=request.output_title.value_or(
+      std::string(prefix(projection.method))+source.data().metadata.title);
   output.data.overlays=std::move(output_overlays);
   const auto output_intensity=projected_imagej_intensity_calibration(intensity,
       result.dataset.pixel_type(),shape.s,result.preserve_density_calibration);
@@ -205,7 +206,7 @@ ImageJProjectionDocument project_imagej_document(const DocumentSnapshot& source_
         projection.method!="sum" && projection.method!="stddev";
     if(!preserve_ranges)
       state=reset_channel_display_ranges(result.dataset,state,0,0,{},request.display_limits).first;
-    if(layout.axis==ImageJProjectionAxis::Channels && request.desktop_grays)
+    if(layout.axis==ImageJProjectionAxis::Channels && !projection.group_size && request.desktop_grays)
       for(auto& channel:state.channels) channel.lut=ChannelDisplayLut{};
     output.display=with_channel_display(std::move(output.display),result.dataset,std::move(state));
   }
