@@ -1,5 +1,6 @@
 #include "binding_metadata.hpp"
 #include <imagejxx/imagej_projection_command.hpp>
+#include <imagejxx/imagej_intensity_calibration.hpp>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 namespace py=pybind11;
@@ -7,6 +8,20 @@ using namespace imagejxx;
 ExecutionControl axis_range_python_control(std::shared_ptr<CancellationToken>,py::object,py::object);
 void bind_imagej_projection(py::module_& m) {
   using namespace imagejxx::bindings;
+  py::class_<ImageJIntensityCalibration>(m,"ImageJIntensityCalibration")
+    .def_static("uncalibrated",&ImageJIntensityCalibration::uncalibrated,py::arg("value_unit")="Gray Value")
+    .def_static("signed16",&ImageJIntensityCalibration::signed16,py::arg("value_unit")="Gray Value")
+    .def_static("from_record",[](py::dict value){return ImageJIntensityCalibration::from_record(metadata_value(value));})
+    .def_property_readonly("record",[](const ImageJIntensityCalibration& value){return metadata_python(value.record());})
+    .def_property_readonly("value_unit",&ImageJIntensityCalibration::value_unit)
+    .def_property_readonly("bit_depth",&ImageJIntensityCalibration::bit_depth)
+    .def_property_readonly("has_density",&ImageJIntensityCalibration::has_density)
+    .def_property_readonly("signed16_density",&ImageJIntensityCalibration::signed16_density)
+    .def("table_words",&ImageJIntensityCalibration::table_words);
+  m.def("read_imagej_intensity_calibration",[](const DocumentSnapshot& source){return read_imagej_intensity_calibration(source);});
+  m.def("set_imagej_intensity_calibration",[](Document& owner,const ImageJIntensityCalibration& value){
+    py::gil_scoped_release release;set_imagej_intensity_calibration(owner,value);
+  },py::arg("document"),py::arg("calibration"));
   m.def("imagej_projection_defaults",[]{return metadata_python(imagej_projection_request_record({}));});
   m.def("resolve_imagej_projection_record",[](DocumentSnapshot source,py::dict request) {
     const auto r=imagej_projection_request_from_record(metadata_object_value(request));

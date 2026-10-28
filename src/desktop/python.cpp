@@ -223,6 +223,9 @@ PYBIND11_MODULE(_desktop, m) {
              py::gil_scoped_release release;
              return zSubsetUiCase(window, "imgui_python", directory, true).dump();
            })
+      .def("_intensity_calibration_ui_case",[](Window& window,const std::string& directory) {
+          py::gil_scoped_release release;return intensityCalibrationUiCase(window,"imgui_python",directory).dump();
+        })
       .def("_imagej_projection_ui_case",[](Window& window,const std::string& directory) {
         py::gil_scoped_release release;return imagejProjectionUiCase(window,"imgui_python",directory).dump();
       })

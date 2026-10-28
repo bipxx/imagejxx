@@ -1,6 +1,7 @@
 #include "window.hpp"
 #include <imagejxx/stack_projection.hpp>
 #include <imagejxx/imagej_projection_command.hpp>
+#include <imagejxx/imagej_intensity_calibration.hpp>
 #include "path_visual.hpp"
 #include <imagejxx/playback.hpp>
 #include "shadow_demo.hpp"
@@ -1603,6 +1604,8 @@ struct Window::Impl {
     if (action == "shadow_imagej" || (action == "show_operation" && operationId == "shadow_imagej"))
       return owner.controller_->active_document_id() == source->id &&
              scientific_operation_review_available("shadow_imagej", source->nativeSnapshot());
+    if(action=="show_intensity_calibration" || action=="set_intensity_calibration")
+      return !owner.busy() && owner.controller_->active_document_id()==source->id;
     if (action=="show_imagej_projection" || action=="show_imagej_grouped_projection" ||
         action=="project_imagej" || action=="replay_imagej_projection") {
       const auto captured=source->nativeSnapshot();
@@ -6517,6 +6520,40 @@ void Window::action(const std::string &name, const Json &p) {
   // not bypass its capability check before clipboard, files or jobs change.
   if (targetId && !targeted.count(name))
     impl->requireAction(name, 0, operationId);
+  if(name=="show_intensity_calibration" || name=="set_intensity_calibration") {
+    if(busy())throw std::invalid_argument("Wait for the current edit");
+    const auto source=nativeSnapshot();
+    if(targetId && targetId!=source.id())throw std::invalid_argument("Calibration requires the active document");
+    if(name=="set_intensity_calibration") {
+      for(const auto& field:p.items())if(field.key()!="record" && field.key()!="document_id")
+        throw std::invalid_argument("Unknown calibration field: "+field.key());
+      const auto value=ImageJIntensityCalibration::from_record(metadata_object(metadataObjectFromJson(p.at("record"))));
+      set_imagej_intensity_calibration(*nativeDocument(source.id()),value);return;
+    }
+    for(const auto& field:p.items())if(field.key()!="document_id")throw std::invalid_argument("Unknown calibration dialog field");
+    const auto calibration=read_imagej_intensity_calibration(source);
+    const auto record=metadataJson(calibration.record());
+    Json choices=Json::array({"none"});
+    if(source.data().dataset.pixel_type()==PixelType::UInt16 && source.data().dataset.shape().s==1)choices.push_back("signed16");
+    if(calibration.mode()==ImageJIntensityMode::Lookup)choices.push_back("lookup");
+    impl->stopAnimation("intensity_calibration");
+    impl->ask("Intensity Calibration",{{"mode",record.at("mode")},{"value_unit",calibration.value_unit()}},
+        [this,source,record](Json values) {
+          const auto now=nativeSnapshot();
+          if(!source.same_document(now) || !source.revisions().matches(now.revisions(),Change::All))throw RevisionConflict();
+          Json updated;
+          if(values.at("mode")=="lookup") {
+            if(record.at("mode")!="lookup")throw std::invalid_argument("No existing lookup table");
+            updated=record;updated["value_unit"]=values.at("value_unit");
+          } else {
+            updated={{"schema","imagejxx.intensity-calibration"},{"version",1},
+              {"mode",values.at("mode")},{"value_unit",values.at("value_unit")}};
+          }
+          action("set_intensity_calibration",{{"record",std::move(updated)}});
+        },Json::array({{{"name","mode"},{"label","Intensity calibration"},{"kind","text"},{"choices",choices}},
+          {{"name","value_unit"},{"label","Value unit"},{"kind","text"}}}),"intensity_calibration");
+    return;
+  }
   if(name=="show_imagej_projection" || name=="show_imagej_grouped_projection" ||
       name=="project_imagej" || name=="replay_imagej_projection") {
     if(busy()) throw std::invalid_argument("Wait for the current edit");
@@ -9440,6 +9477,7 @@ void Window::Impl::menu() {
   const bool analyzeMenuOpen = ImGui::BeginMenu("Analyze");
   observeControl("menu.Analyze");
   if (analyzeMenuOpen) {
+    item("Intensity Calibration...", "show_intensity_calibration");
     item("Measure", "measure", "M");
     item("Measure ROIs", "measure_rois");
     if(actionAllowed("show_histogram"))item("Histogram...", "show_histogram");

@@ -1,5 +1,39 @@
 # Three-agent execution plan
 
+## Intensity calibration shared consumer implemented — 2026-10-28
+
+Python now exposes ImageJIntensityCalibration factories/from_record, exact table
+words, snapshot read and document set. Analyze → Intensity Calibration shares
+one ImGui dialog between standalone C++ and Python hosts. It edits value units,
+clears calibration, applies scalar UInt16 signed16 and preserves an existing
+lookup table when changing its unit. Unsupported records/types fail before
+native mutation. Dialog execution captures active source and All revisions.
+Metadata edits reuse native Undo/Redo and the existing session codec.
+
+Both actual Windows hosts physically verify mode/unit/OK/Cancel, Undo/Redo,
+clear/Undo, signed16 Sum projection and session reopen. Pixels/revisions stay
+unchanged during calibration; Sum produces -65536,0,65534 and retains HU while
+clearing output density. Python also verifies exact lookup IEEE words and atomic
+incompatible-type refusal. All157 focused checks pass, no skips; prior projection
+coverage remains passing. [Scoped evidence](parity/reviews/G034-intensity-ui-progress001.json).
+Commercial-use dependency policy passes; no dependency added.
+
+Next: pinned ImageJ calibration function/table generation and fitting through
+this same immutable seam, table import/export and calibration workflow replay.
+Also qualify physical lookup unit edits, stale/malformed drafts and downstream
+measurement/histogram consumers. This initial mode workflow is not complete
+calibration parity. Broader platforms/original-reference gates and fair matched
+performance remain open;99-family status47 in progress/52 open/0 complete.
+
+One cache/runtime reused; compiler/test scratch retired and captures/logs
+losslessly hash-verified. Superseded raw source/dependency manifest paths from
+103/113/116/121 moved into a hash-verified identity-only archive. Original105
+full capture bytes retired and unavailable; compact input/dialog/state/render
+observations and session retained. Historical fingerprints unchanged. Current
+125 raw identities and126 captures remain. Known whole-root8,588,409,954B;
+two denied caches keep the complete8GiB budget unverified.
+
+
 ## Explicit axis and RGB projection controls verified — 2026-10-28
 
 Both installed Windows hosts physically select Time and Channels on a multi-axis

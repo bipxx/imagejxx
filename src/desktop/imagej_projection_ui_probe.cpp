@@ -165,4 +165,75 @@ Json imagejProjectionUiCase(Window& w,const std::string& context,const std::stri
   require(report.dump().size()<16*1024*1024,"Projection report byte limit");
   writeJson((directory/"case.json").u8string(),report);failure.done=true;return report;
 }
+Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::string& output) {
+  namespace fs=std::filesystem;const auto directory=fs::absolute(fs::u8path(output));
+  require(!fs::exists(directory),"Calibration UI output must be fresh");fs::create_directories(directory);
+  Stack planes;for(int z=0;z<2;++z){Image image(3,1,1,PixelType::UInt16);
+    image.pixels={0,32768,65535};planes.push_back(std::move(image));}
+  DocumentData data{Dataset::from_planes({1,1,2,1,3,1},std::move(planes)),{},{},{},{},{},{}};
+  data.metadata.title="intensity-ui";
+  auto owner=std::make_shared<imagejxx::Document>(std::move(data));w.addNativeDocument(owner);
+  const auto original=owner->snapshot();
+  Json report{{"contract","intensity-calibration-ui.001"},{"context",context},{"acceptance_claim",false},
+    {"frames",Json::array()},{"controls",Json::array()},
+    {"api_fixture_actions",{"source attachment","session Save/Open"}}};
+  struct FailureCapture {Json& report;const fs::path& directory;bool done=false;
+    ~FailureCapture(){if(!done)try{writeJson((directory/"failure.json").u8string(),report);}catch(...){}}
+  } failure{report,directory};
+  HeadlessInputSession session(w);Json last;
+  auto frame=[&](const Json& events=Json::array()) {
+    require(report["frames"].size()<240,"Calibration UI frame bound");last=session.frame(events);
+    report["frames"].push_back({{"events",events},{"rendered",{
+      {"input_frame",last.at("input_frame")},{"dialog",last.at("dialog")},
+      {"error_modal",last.at("error_modal")},{"window_error",last.at("window_error")}}}});
+  };
+  auto click=[&](Json control,const std::string& name) {
+    require(control.at("enabled").get<bool>() && control.at("id").get<std::uint64_t>()>0,"Calibration control unavailable");
+    report["controls"].push_back({{"name",name},{"control",control}});
+    frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));
+    frame(Json::array({{{"type","button"},{"name","left"},{"down",true}}}));
+    frame(Json::array({{{"type","button"},{"name","left"},{"down",false}}}));frame();
+  };
+  auto menu=[&](const char* action){
+    click(last.at("host_controls").at("menu.Analyze"),"menu.Analyze");
+    click(last.at("host_controls").at(std::string("menu.action.")+action),action);
+  };
+  auto choose=[&](const char* field,const char* option){
+    click(last.at("dialog").at("controls").at(field),field);
+    click(last.at("dialog").at("controls").at(std::string(field)+".choice."+option),std::string(field)+".choice."+option);
+  };
+  auto unit=[&](const char* value){
+    click(last.at("dialog").at("controls").at("value_unit"),"value_unit");
+    for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",{{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}}}}}));
+    frame(Json::array({{{"type","text"},{"value",value}}}));frame();
+  };
+  auto history=[&](const char* name){
+    click(last.at("host_controls").at("menu.Edit"),"menu.Edit");
+    click(last.at("host_controls").at(std::string("menu.Edit.")+name),name);
+  };
+  frame();frame();report["before"]=state(w);menu("show_intensity_calibration");
+  choose("mode","signed16");unit("HU");
+  click(last.at("dialog").at("controls").at("apply"),"calibration_apply");report["applied"]=state(w);
+  history("Undo");report["undone"]=state(w);history("Redo");report["redone"]=state(w);
+  menu("show_intensity_calibration");report["reopened_dialog"]=last.at("dialog");unit("discarded");
+  click(last.at("dialog").at("controls").at("cancel"),"calibration_cancel");report["cancelled"]=state(w);
+  menu("show_intensity_calibration");choose("mode","none");unit("Gray Value");
+  click(last.at("dialog").at("controls").at("apply"),"calibration_clear");report["cleared"]=state(w);
+  history("Undo");report["restored"]=state(w);
+  report["source_pixels_unchanged"]=owner->snapshot().data().dataset.shares_pixels(original.data().dataset) &&
+      owner->snapshot().revisions().pixels==original.revisions().pixels;
+  const auto calibrated=owner->snapshot();
+  click(last.at("host_controls").at("menu.Image"),"menu.Image");
+  click(last.at("host_controls").at("menu.Image.Stacks"),"menu.Image.Stacks");
+  click(last.at("host_controls").at("menu.action.show_imagej_projection"),"show_imagej_projection");
+  choose("method","sum");click(last.at("dialog").at("controls").at("apply"),"projection_apply");
+  w.wait();frame();frame();report["projected"]=state(w);
+  report["projection_source_unchanged"]=owner->snapshot().shares_data(calibrated);
+  session.close();report["lifecycle"]=session.lifecycle();
+  SessionCapture capture;capture.documents.push_back(owner->snapshot());
+  save_session((directory/"calibrated.ijx").u8string(),capture);w.openFile((directory/"calibrated.ijx").u8string());
+  report["reopened"]=state(w);report["state"]="observed";report["error"]=w.error();
+  require(report.dump().size()<16*1024*1024,"Calibration report byte limit");
+  writeJson((directory/"case.json").u8string(),report);failure.done=true;return report;
+}
 } // namespace imagejxx::desktop

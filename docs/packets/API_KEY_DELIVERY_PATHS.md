@@ -1,5 +1,14 @@
 # Shortest delivery paths by API and setting key
 
+Intensity API update,2026-10-28: ImageJIntensityCalibration.from_record,
+uncalibrated/signed16, read_imagej_intensity_calibration and
+set_imagej_intensity_calibration are bound to Python. Shared Analyze dialog
+uses the same native setter/metadata Undo/session seam; both Windows hosts pass
+physical controls and calibrated projection. Extend function/table generation
+and fitting here; preserve lookup words and do not add another metadata codec.
+[Evidence](../parity/reviews/G034-intensity-ui-progress001.json).
+
+
 Consumer follow-through,2026-10-28: physical Time/Channels selectors and RGB
 clipped Sum now pass both Windows hosts. Next expose existing immutable intensity
 read/set APIs through Python and a shared calibration dialog, retaining metadata

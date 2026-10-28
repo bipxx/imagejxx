@@ -1,5 +1,13 @@
 # Scientific Z projection
 
+Calibration consumer update,2026-10-28: immutable intensity read/set is now
+available in Python and Analyze → Intensity Calibration in both shared ImGui
+hosts. Physical signed16/unit/Cancel/clear/Undo/Redo/reopen and calibrated Sum
+pass; lookup IEEE words and incompatible-type atomic rejection pass in Python.
+[Evidence](../parity/reviews/G034-intensity-ui-progress001.json). Function/table
+generation, fitting, calibration replay and broad downstream parity remain open.
+
+
 Current consumer update,2026-10-28: physical explicit Time/Channels and RGB
 clipped sum now pass both installed Windows hosts, with independent axes/pixel,
 record and unchanged-source assertions. [Evidence](../parity/reviews/G034-projection-axis-rgb-ui-progress001.json).

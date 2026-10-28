@@ -1739,6 +1739,9 @@ from ._native import RgbContrastSessionEditor, RgbContrastSessionTransition
 
 # Shared prepared scientific projection; requests are complete strict mappings.
 from ._native import (
+    ImageJIntensityCalibration as ImageJIntensityCalibration,
+    read_imagej_intensity_calibration as read_imagej_intensity_calibration,
+    set_imagej_intensity_calibration as set_imagej_intensity_calibration,
     imagej_projection_defaults as imagej_projection_defaults,
     resolve_imagej_projection_record as resolve_imagej_projection_record,
     validate_imagej_projection_record as validate_imagej_projection_record,

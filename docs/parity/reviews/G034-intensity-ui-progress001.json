@@ -1,0 +1,130 @@
+{
+  "schema": "imagejxx.scoped-progress",
+  "version": 1,
+  "source_base": "e63fcc7a6950ba09cb7137c3da77def0fbc7fcf5",
+  "scope": "Immutable intensity calibration Python interface and shared ImGui unit/none/signed16/existing-lookup controls; focused installed Windows qualification",
+  "acceptance_claim": false,
+  "source_inputs": [
+    {
+      "path": "src/native/imagej_projection_bindings.cpp",
+      "bytes": 3851,
+      "sha256": "7f2dea457a14da6839eb1b5bded181f572234c9ad06555eddb7fee77568eddea"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 79427,
+      "sha256": "27a9245516972bf3add4b85c20865fb964cf23c35214081782e139ff96612e9f"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 777029,
+      "sha256": "23b8690255edd489dd94eb4b77ee4a3fb9f88daa6ac9c5d472817859a913c49a"
+    },
+    {
+      "path": "src/desktop/imagej_projection_ui_probe.cpp",
+      "bytes": 16009,
+      "sha256": "28d971b74d7d5c18a84e4170f96e9a467c17e61a351ccea445655faca589dc69"
+    },
+    {
+      "path": "src/desktop/imagej_projection_ui_probe.hpp",
+      "bytes": 281,
+      "sha256": "932bcd9ef0409e83b6956c43ae1f5f68c1384be7664b05e5598865a20f2a96b3"
+    },
+    {
+      "path": "src/desktop/main.cpp",
+      "bytes": 57889,
+      "sha256": "b699564becff08a1da767ca464328fba05f6f48752028a940941868d07eee450"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 58401,
+      "sha256": "52c02b4b765c2df59162eff6001671a2d541171c3a85520afa68e7d8448dd6ba"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 58161,
+      "sha256": "5c7e513d5f1fb3ec040ac34c475d7b56e06e09cbecc6f3c0e6410e010e75b50d"
+    },
+    {
+      "path": "tests/python/test_intensity_calibration_editor.py",
+      "bytes": 5059,
+      "sha256": "77e754089cc2bafdde746cd0e2505f8771a7e96c140718a318d136c342352b88"
+    }
+  ],
+  "verification": {
+    "build": {
+      "path": ".tmp/manual-workflow-verification/intensity-ui-windows-build125/receipt.json",
+      "bytes": 22994,
+      "sha256": "75c5c5b1463bd7cb693034883dd9eee2d7341d97e633829e0168aa95204afa51"
+    },
+    "installed": {
+      "path": ".tmp/manual-workflow-verification/intensity-ui-installed126/receipt.json",
+      "bytes": 16065,
+      "sha256": "6099f472fa711c5c70d7435977e03714a1604358ebc24c54eab0a94247d21fad"
+    },
+    "junit": {
+      "path": ".tmp/manual-workflow-verification/intensity-ui-installed126/results.xml",
+      "bytes": 22738,
+      "sha256": "a5ceffd2d59a3b0c6207e39c59dc91b90616396a5e59b31b0f105b90ce162cc0"
+    },
+    "captures": {
+      "path": ".tmp/manual-workflow-verification/intensity-ui-installed126/captures.zip",
+      "bytes": 89441,
+      "sha256": "9f4846d46ed64533eee4378b7451dcd9741c7eb1bf47a24412edc34fb87c4a44"
+    },
+    "static": {
+      "path": ".tmp/manual-workflow-verification/intensity-ui-static132.json",
+      "bytes": 1132,
+      "sha256": "af715ac85c93720ef1a1bcffb05a08c393c7d607333fb04201ed34a289e181e1"
+    },
+    "tests": 157,
+    "failures": 0,
+    "skips": 0,
+    "composition": "134 installed processing/editor checks plus23 mocked capture-transport controls. Physical projection229frames/context and calibration128frames/context in both Windows hosts.",
+    "calibration_case_bytes": {
+      "cpp": 480190,
+      "python": 480193
+    }
+  },
+  "implemented": [
+    "Python ImageJIntensityCalibration factories/from_record/read-only record/unit/type flags/table words, read snapshot and set document via existing native API.",
+    "Analyze Intensity Calibration dialog: value units, none, scalar UInt16 signed16 and preservation of an existing lookup table when editing its unit.",
+    "Strict desktop set record validation; active source and All-revision capture guard before dialog mutation; existing native metadata Undo/Redo/session persistence."
+  ],
+  "observed": [
+    "Actual menu/mode/unit/OK/Cancel and Undo/Redo inputs in both shared ImGui hosts.",
+    "Signed16 HU survives Undo/Redo, cancelled unit edit, clear/Undo and session reopen; source pixel storage/revision remains unchanged.",
+    "Subsequent physical Sum projection yields Float32 -65536,0,65534 and retains HU without density; source unchanged.",
+    "Python lookup records preserve all Float32 words including NaNs, infinity and signed zero. Incompatible signed16 UInt8/Float32/RGB sets reject atomically.",
+    "Previous projection axis/RGB/Replay/Rebind/grouped/render/reopen checks still pass."
+  ],
+  "remaining": [
+    "ImageJ calibration function/table generation and fitting, UI table import/export and calibration workflow record/replay.",
+    "Physical existing-lookup unit editing, malformed/stale-source UI rejection and broader type/unit/source lifecycle cases.",
+    "Calibrated measurement/histogram and other downstream consumer consistency and matched ImageJ GUI/numerical differentials.",
+    "Broader platform/SDK/UI gates and missing original references; no comparative speed claim."
+  ],
+  "storage": {
+    "path": ".tmp/manual-workflow-verification/intensity-ui-storage-final131.json",
+    "bytes": 1522,
+    "sha256": "a672be4c7afd1c36fa6dde12b5ca1ef8dd4629d6a3a0678b3486c30247fdd87b"
+  },
+  "retention": {
+    "manifests": {
+      "path": ".tmp/manual-workflow-verification/intensity-ui-manifest-retention128/receipt.json",
+      "bytes": 3578,
+      "sha256": "d19d72351d2c11314b4f31e7b894d3e0967ba5d7ba0206e1b00c74fa956680dd"
+    },
+    "capture": {
+      "path": ".tmp/manual-workflow-verification/intensity-ui-capture-retention130/receipt.json",
+      "bytes": 3669,
+      "sha256": "6c1f792757e5f550277e92b870a125659540c5788248762b51f3a09380119550"
+    },
+    "note": "One active cache/runtime reused.125/126 compiler/test scratch retired. Superseded103/113/116/121 raw source/dependency manifest paths retired; exact bytes in hash-verified128 archive. Original105 full capture bytes retired and unavailable; compact observations/session retained in130. Historical fingerprints unchanged. Current126 captures and125 raw identities retained."
+  },
+  "family_status": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  }
+}
