@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "scope": "G034 calibration plot rectangle zoom, cancellation and normalized Python UI action",
+  "state": "focused_checks_passed",
+  "acceptance_claim": false,
+  "implementation": {
+    "gesture": "Left drag draws clipped rectangle; release applies when both dimensions span at least4 GUI pixels. Tiny/degenerate drags leave view unchanged; double-click retains reset behavior.",
+    "coordinates": "Viewport fractions X left-to-right, Y bottom-to-top; endpoints clipped to current canvas and either drag direction accepted. Existing viewport composes selection in linear/logarithmic space and preserves reversed axes, style, model data and CSV samples.",
+    "lifecycle": "Gesture captures viewport, canvas geometry and plot generation. Escape/right-click, lost focus/hidden window, view/layout changes or plot replacement cancel. New plots/close/stale/histogram/profile clear gesture. Source/history untouched.",
+    "python_action": "zoom_intensity_plot_rectangle accepts rectangle=[x0,y0,x1,y1] of current visible plot fractions plus optional active document_id. Strict numeric shape/finite/nondegenerate/representability validation; same active plotted source and All-revision guards. UI pixel threshold does not apply to programmatic fractions.",
+    "reuse": "Private CalibrationPlotView.rectangle used by gesture and action; no new data store/provider reads/worker/dependency/public core SDK API"
+  },
+  "evidence": {
+    "calibration-plot-rectangle-windows-build332": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-rectangle-windows-build332\\receipt.json",
+      "bytes": 8391,
+      "sha256": "d01289d3a7ce6d4d694b5f28c6f02e66e8aadc7558533ad8cad59f3a69cb79ae"
+    },
+    "calibration-plot-rectangle-windows-build335": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-rectangle-windows-build335\\receipt.json",
+      "bytes": 25025,
+      "sha256": "3b0d51fa44fe2c3732119de572bbc4ef4b4f6222be4a757b4dc48732462f0dba"
+    },
+    "calibration-plot-rectangle-installed336": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-rectangle-installed336\\receipt.json",
+      "bytes": 28287,
+      "sha256": "eda3722cd558b62e860cd1643b4cd2f5a0f3486b6dadb18bd7120cda353a321d"
+    },
+    "calibration-plot-rectangle-linux334": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-rectangle-linux334\\receipt.json",
+      "bytes": 30091,
+      "sha256": "f370aad9d30c7f0162d426741d0e9dd1d047d554497e771ad1a2cb2363ef3a96"
+    },
+    "calibration-plot-rectangle-preimage337": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-rectangle-preimage337\\receipt.json",
+      "bytes": 484,
+      "sha256": "5be3f8c9cbc64aa0ea14318a3f5ff19be0893b5250191b9b0a66196067d15ad7"
+    },
+    "calibration-plot-rectangle-retention338": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-rectangle-retention338\\receipt.json",
+      "bytes": 6111,
+      "sha256": "e2be275b4e31d53679b28ebc79b2da4e179667285ef70fb88a0798fc0f25217b"
+    }
+  },
+  "verification": {
+    "windows_installed_pytest": {
+      "tests": 742,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "native": "Windows projection execution and private viewport/annotation consumers pass. Linux C++17 -Wall -Wextra -Werror private consumer linked to existing pinned core SDK archive passes; no Linux UI/full SDK promotion.",
+    "actual_imgui_input": "Three installed C++ cases pass. Both frontends exercise linear and reversed-log rectangle drags, overlay while held, tiny drag, Escape cancellation and explicitly labeled plot-replacement-during-drag diagnostic. Independent reader maps delivered screen endpoints to expected view bounds and checks source/data preservation.",
+    "physical_cancel_scope": "Escape and replacement exercised physically here; other focus/layout/right-click cancellation handlers are implemented without independent physical qualification in this packet.",
+    "api": "Ascending/reversed linear/log action coordinates, clipped outside bounds, malformed/nonnumeric/zero-area refusal, unchanged metadata/history and plot samples.",
+    "calibration_frames": 606,
+    "frame_bound": 608,
+    "new_scenario_frames": 38,
+    "frame_budget": "Existing608 frame cap retained. Initial compile-only failed draft declared672; corrected final instrumentation and readers retain original608 cap. Historical reference values/fingerprints unchanged.",
+    "commercial_use_inventory": "passed; no new dependency",
+    "diff_check": "passed",
+    "limits": "Headless actual input is not OS/GPU/full platform qualification; not whole-family or performance acceptance."
+  },
+  "harness_history": [
+    {
+      "run": "build332",
+      "state": "failed",
+      "cause": "Input/observation probe intentionally has no ImGui type dependency; new helper used ImVec2. Replace with standard array<float,2>, no renderer dependency added. Compile diagnostics and original-SHA-verified tiny source preimage retained."
+    }
+  ],
+  "storage": {
+    "before_known_bytes": 8461537013,
+    "after_known_bytes": 8463440471,
+    "full_budget_verified": false,
+    "unknown_subtrees": [
+      ".cache/pytest",
+      ".cache/pytest-ui"
+    ],
+    "temporary_build_reserve_bytes": 536870912,
+    "capture_scratch_bound_bytes": 67108864,
+    "lossless_recovery_bytes": 653908,
+    "retention": "All terminal owned Windows/Linux scratch retired, including failed compiler scratch. Necessary captures/logs/source identities/preimage losslessly compressed and hash-verified; superseded runners compressed. One active cache/runtime/SDK; no whole cache/SDK/environment archive."
+  },
+  "remaining": [
+    "Detached/multiple plot snapshots with explicit lifetime and memory admission; independent OS windows need backend/OS verification",
+    "On-canvas annotation placement/style, image export, nice/minor ticks and formatting",
+    "Generic histogram/profile viewport and annotation reuse",
+    "Fitting settings/restarts/global calibration, table import/export/replay/macro and downstream consumers",
+    "Linux Python/UI, installed IO SDK, macOS, original-reference and OS/GPU qualification",
+    "Matched ImageJ/Fiji speed/memory evidence"
+  ],
+  "family_status": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  }
+}

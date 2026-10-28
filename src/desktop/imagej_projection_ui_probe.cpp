@@ -10,6 +10,7 @@
 #include <thread>
 #include <condition_variable>
 #include <mutex>
+#include <array>
 namespace imagejxx::desktop {
 namespace {
 void require(bool v,const char* message){if(!v)throw std::runtime_error(message);}
@@ -209,6 +210,19 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
     for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",{{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}}}}}));
     frame(Json::array({{{"type","text"},{"value",value}}}));frame();
   };
+  auto plotRectangle=[&](const char* name,std::array<float,2> startFraction,std::array<float,2> endFraction,bool cancel=false,bool tiny=false,bool replace=false){
+    const auto before=last.at("fit_plot");const auto o=before.at("canvas_origin"),s=before.at("canvas_size");
+    const double sx=o[0].get<double>()+s[0].get<double>()*startFraction[0],sy=o[1].get<double>()+s[1].get<double>()*startFraction[1];
+    const double ex=tiny?sx+2:o[0].get<double>()+s[0].get<double>()*endFraction[0],ey=tiny?sy+2:o[1].get<double>()+s[1].get<double>()*endFraction[1];
+    frame(Json::array({{{"type","position"},{"space","screen"},{"point",{sx,sy}}}}));
+    frame(Json::array({{{"type","button"},{"name","left"},{"down",true}}}));
+    frame(Json::array({{{"type","position"},{"space","screen"},{"point",{ex,ey}}}}));frame();
+    report["plot_rectangle"][name]={{"before",before},{"held",last.at("fit_plot")}};
+    if(cancel){frame(Json::array({{{"type","keys"},{"keys",{{{"name","Escape"},{"down",true}}}}}}));frame(Json::array({{{"type","keys"},{"keys",{{{"name","Escape"},{"down",false}}}}}}));}
+    if(replace){w.action("show_intensity_calibration_plot");report["plot_rectangle"][name]["replacement_fixture_action"]="show_intensity_calibration_plot";frame();frame();}
+    frame(Json::array({{{"type","button"},{"name","left"},{"down",false}}}));frame();
+    report["plot_rectangle"][name]["after"]=last.at("fit_plot");
+  };
   auto history=[&](const char* name){
     click(last.at("host_controls").at("menu.Edit"),"menu.Edit");
     click(last.at("host_controls").at(std::string("menu.Edit.")+name),name);
@@ -246,6 +260,10 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   report["plot_interaction"]["pan"]=last.at("fit_plot");
   click(last.at("host_controls").at("fit_plot.reset"),"plot_reset_axes");
   report["plot_interaction"]["reset"]=last.at("fit_plot");
+  plotRectangle("linear",{.2f,.2f},{.8f,.8f});
+  click(last.at("host_controls").at("fit_plot.reset"),"plot_rectangle_reset");
+  plotRectangle("tiny",{.4f,.4f},{.4f,.4f},false,true);
+  plotRectangle("escape",{.7f,.7f},{.3f,.3f},true);
   report["plot_interaction"]["source_unchanged"]=owner->snapshot().shares_data(interactionSource) &&
       owner->snapshot().revisions().matches(interactionSource.revisions(),Change::All);
   click(last.at("host_controls").at("fit_plot.axes"),"plot_axes_open");
@@ -277,6 +295,8 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   click(last.at("dialog").at("controls").at("ticks"),"plot_ticks_on");
   click(last.at("dialog").at("controls").at("apply"),"plot_grid_apply");frame();frame();
   report["plot_log"]["visible"]=last.at("fit_plot");
+  plotRectangle("log_reversed",{.2f,.2f},{.8f,.8f});
+  plotRectangle("replaced",{.7f,.3f},{.3f,.7f},false,false,true);
   // Deliberate diagnostic fixture: replace the immutable plot while a limits
   // draft is open. Applying that draft must refuse the replacement generation.
   click(last.at("host_controls").at("fit_plot.axes"),"plot_axes_stale_open");

@@ -1193,6 +1193,8 @@ struct Window::Impl {
   bool fitPlotIsTable = false;
   CalibrationPlotView fitPlotView;
   std::uint64_t fitPlotGeneration=0;
+  struct PlotRectangleDrag {ImVec2 start,origin,size;CalibrationPlotView view;std::uint64_t generation;};
+  std::optional<PlotRectangleDrag> fitPlotDrag;
   std::optional<ImageJIntensityFitPlot> fitPlot;
   std::optional<CalibrationPlotAnnotation> fitPlotAnnotation;
   std::optional<FitPlotBinding> fitPlotSource;
@@ -1632,7 +1634,7 @@ struct Window::Impl {
       return !owner.busy() && owner.controller_->active_document_id()==source->id && dataset.shape().s==1 &&
           (dataset.pixel_type()==PixelType::UInt8 || dataset.pixel_type()==PixelType::UInt16);
     }
-    if(action=="show_intensity_plot_limits" || action=="set_intensity_plot_limits")
+    if(action=="show_intensity_plot_limits" || action=="set_intensity_plot_limits" || action=="zoom_intensity_plot_rectangle")
       return !owner.busy() && fitPlot && fitPlotSource && owner.controller_->active_document_id()==source->id &&
           fitPlotSource->same_document(source->nativeSnapshot()) && fitPlotSource->expected.matches(source->nativeSnapshot().revisions(),Change::All);
     if(action=="show_intensity_calibration" || action=="set_intensity_calibration" || action=="fit_intensity_calibration")
@@ -4611,7 +4613,7 @@ struct Window::Impl {
     // A successful Apply remembers the preference; Cancel and failures never do.
     fitShowPlot=show;
     static_assert(std::is_nothrow_swappable_v<decltype(annotation)>);
-    if(plot){fitPlot.swap(plot);fitPlotAnnotation.swap(annotation);fitPlotSource.swap(binding);fitPlotIsTable=true;fitPlotFocusRequested=true;fitPlotView={};++fitPlotGeneration;}
+    if(plot){fitPlot.swap(plot);fitPlotAnnotation.swap(annotation);fitPlotSource.swap(binding);fitPlotIsTable=true;fitPlotFocusRequested=true;fitPlotView={};fitPlotDrag.reset();++fitPlotGeneration;}
   }
   void requireCalibrationPlot() const {
     if(!fitPlot || !fitPlotSource || owner.documents_.empty())throw std::invalid_argument("Open a calibration plot first");
@@ -4623,7 +4625,7 @@ struct Window::Impl {
     if(generation!=fitPlotGeneration)throw std::invalid_argument("The plotted data changed; reopen axis limits");
     auto candidate=fitPlotView;candidate.log_x=logX;candidate.log_y=logY;candidate.grid=grid;candidate.ticks=ticks;
     if(!candidate.set_limits(values))throw std::invalid_argument("Axis limits must be finite and distinct; logarithmic limits must be positive and distinguishable");
-    fitPlotView=candidate;
+    fitPlotView=candidate;fitPlotDrag.reset();
   }
   void showPlotLimits() {
     requireCalibrationPlot();const auto limits=fitPlotView.limits(*fitPlot);
@@ -6673,11 +6675,20 @@ void Window::action(const std::string &name, const Json &p) {
   // not bypass its capability check before clipboard, files or jobs change.
   if (targetId && !targeted.count(name))
     impl->requireAction(name, 0, operationId);
-  if(name=="show_intensity_plot_limits" || name=="set_intensity_plot_limits") {
+  if(name=="show_intensity_plot_limits" || name=="set_intensity_plot_limits" || name=="zoom_intensity_plot_rectangle") {
     if(!p.is_object())throw std::invalid_argument("Axis parameters must be an object");
     if(busy())throw std::invalid_argument("Wait for the current edit");
     impl->requireCalibrationPlot();
     if(targetId && targetId!=nativeSnapshot().id())throw std::invalid_argument("Axis limits require the active plotted document");
+    if(name=="zoom_intensity_plot_rectangle") {
+      for(const auto& field:p.items())if(field.key()!="rectangle" && field.key()!="document_id")throw std::invalid_argument("Unknown plot rectangle field");
+      const auto& values=p.at("rectangle");if(!values.is_array() || values.size()!=4)throw std::invalid_argument("Plot rectangle requires four plot fractions");
+      std::array<double,4> bounds;
+      for(std::size_t i=0;i<4;++i){if(!values[i].is_number())throw std::invalid_argument("Plot rectangle requires numeric fractions");bounds[i]=values[i].get<double>();}
+      auto candidate=impl->fitPlotView;
+      if(!candidate.rectangle(*impl->fitPlot,bounds))throw std::invalid_argument("Plot rectangle has no representable area");
+      impl->fitPlotView=candidate;impl->fitPlotDrag.reset();return;
+    }
     for(const auto& field:p.items())if(field.key()!="document_id" && !(name=="set_intensity_plot_limits" &&
         (field.key()=="limits" || field.key()=="log_x" || field.key()=="log_y" || field.key()=="grid" || field.key()=="ticks")))throw std::invalid_argument("Unknown axis limits field");
     if(name=="show_intensity_plot_limits"){impl->showPlotLimits();return;}
@@ -6701,7 +6712,7 @@ void Window::action(const std::string &name, const Json &p) {
           imagej_intensity_fit_plot(calibration,calibration.bit_depth()==8?256:100,bytes-CalibrationPlotAnnotation::working_bytes);
       auto annotation=calibration_plot_annotation(calibration,table);
       impl->fitPlotAnnotation=std::move(annotation);
-      impl->fitPlotIsTable=table;impl->fitPlotView={};++impl->fitPlotGeneration;
+      impl->fitPlotIsTable=table;impl->fitPlotView={};impl->fitPlotDrag.reset();++impl->fitPlotGeneration;
       impl->fitPlotSource=Impl::FitPlotBinding{source.id(),source.revisions()};impl->fitPlot=std::move(plot);impl->fitPlotFocusRequested=true;return;
     }
     if(name=="fit_intensity_calibration") {
@@ -8930,7 +8941,7 @@ void Window::action(const std::string &name, const Json &p) {
       impl->plotX.push_back(float((h.edges[i] + h.edges[i + 1]) / 2));
       impl->plotY.push_back(float(h.counts[i]));
     }
-    impl->fitPlot.reset();impl->fitPlotSource.reset();impl->fitPlotAnnotation.reset();
+    impl->fitPlot.reset();impl->fitPlotSource.reset();impl->fitPlotAnnotation.reset();impl->fitPlotDrag.reset();
     impl->plotTitle = "Histogram";
     return;
   }
@@ -8960,7 +8971,7 @@ void Window::action(const std::string &name, const Json &p) {
       }
       distance += length;
     }
-    impl->fitPlot.reset();impl->fitPlotSource.reset();impl->fitPlotAnnotation.reset();
+    impl->fitPlot.reset();impl->fitPlotSource.reset();impl->fitPlotAnnotation.reset();impl->fitPlotDrag.reset();
     impl->plotTitle = "Line profile (" + string(get(cal, "unit"), "px") + ")";
     return;
   }
@@ -9244,7 +9255,7 @@ void Window::poll() {
           controller_->publish(*completed.prepared);
           if(completed.fit_plot) {
             impl->fitPlot.swap(completed.fit_plot);impl->fitPlotAnnotation.swap(completed.fit_plot_annotation);impl->fitPlotSource.swap(completed.fit_plot_source);
-            impl->fitPlotFocusRequested=true;impl->fitPlotIsTable=false;impl->fitPlotView={};++impl->fitPlotGeneration;
+            impl->fitPlotFocusRequested=true;impl->fitPlotIsTable=false;impl->fitPlotView={};impl->fitPlotDrag.reset();++impl->fitPlotGeneration;
           }
           impl->status.swap(completed.fit_status);return;
         }
@@ -11030,19 +11041,19 @@ void Window::Impl::plots() {
   if(fitPlot && fitPlotSource) {
     if(owner.documents_.empty() || !fitPlotSource->same_document(owner.nativeSnapshot()) ||
         !fitPlotSource->expected.matches(owner.nativeSnapshot().revisions(),Change::All)) {
-      fitPlot.reset();fitPlotSource.reset();fitPlotAnnotation.reset();
+      fitPlot.reset();fitPlotSource.reset();fitPlotAnnotation.reset();fitPlotDrag.reset();
     }
   }
   if(fitPlotFocusRequested && fitPlot){ImGui::SetNextWindowFocus();ImGui::SetNextWindowCollapsed(false);}
   const bool visible=ImGui::Begin("Plot");
-  if(!visible){ImGui::End();return;}
+  if(!visible){fitPlotDrag.reset();ImGui::End();return;}
   // A newly appearing/docking window may yield its tab selection on the
   // following frame. Consume focus only after it is visibly established.
   fitPlotFocusRequested=ImGui::IsWindowAppearing();
   if(fitPlot) {
     const auto& data=*fitPlot;
     ImGui::Text(fitPlotIsTable?"Calibration table: %s":"Calibration fit: %s",data.function.c_str());
-    if(ImGui::Button("Close plot")){fitPlot.reset();fitPlotSource.reset();fitPlotAnnotation.reset();ImGui::End();return;}
+    if(ImGui::Button("Close plot")){fitPlot.reset();fitPlotSource.reset();fitPlotAnnotation.reset();fitPlotDrag.reset();ImGui::End();return;}
     observeControl("fit_plot.close",true,nullptr,nullptr,ImGui::GetCurrentWindow());
     if(ImGui::GetContentRegionAvail().x>180.f*guiScale)ImGui::SameLine();
     if(ImGui::Button("Export CSV")) {
@@ -11110,6 +11121,21 @@ void Window::Impl::plots() {
     }
     if(ImGui::IsItemActive() && ImGui::IsMouseDragging(ImGuiMouseButton_Middle))
       fitPlotView.pan(data,-double(plotInput.MouseDelta.x)/size.x,double(plotInput.MouseDelta.y)/size.y);
+    const auto finish=ImVec2{std::clamp(plotInput.MousePos.x,origin.x,origin.x+size.x),std::clamp(plotInput.MousePos.y,origin.y,origin.y+size.y)};
+    if(fitPlotDrag && (fitPlotDrag->generation!=fitPlotGeneration || !fitPlotDrag->view.same_view(fitPlotView) ||
+        fitPlotDrag->origin.x!=origin.x || fitPlotDrag->origin.y!=origin.y || fitPlotDrag->size.x!=size.x || fitPlotDrag->size.y!=size.y ||
+        plotInput.AppFocusLost || !ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows) ||
+        ImGui::IsKeyPressed(ImGuiKey_Escape) || ImGui::IsMouseClicked(ImGuiMouseButton_Right)))fitPlotDrag.reset();
+    if(hovered && !plotInput.AppFocusLost && !ImGui::IsKeyDown(ImGuiKey_Escape) && !ImGui::IsMouseDown(ImGuiMouseButton_Right) && ImGui::IsMouseClicked(ImGuiMouseButton_Left) && !ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+      fitPlotDrag=PlotRectangleDrag{finish,origin,size,fitPlotView,fitPlotGeneration};
+    if(fitPlotDrag && ImGui::IsMouseReleased(ImGuiMouseButton_Left)) {
+      const auto drag=*fitPlotDrag;fitPlotDrag.reset();
+      if(std::abs(finish.x-drag.start.x)>=4.f*guiScale && std::abs(finish.y-drag.start.y)>=4.f*guiScale) {
+        auto candidate=drag.view;
+        if(candidate.rectangle(data,{double((drag.start.x-origin.x)/size.x),1.-double((drag.start.y-origin.y)/size.y),
+            double((finish.x-origin.x)/size.x),1.-double((finish.y-origin.y)/size.y)}))fitPlotView=candidate;
+      }
+    } else if(fitPlotDrag && (!ImGui::IsMouseDown(ImGuiMouseButton_Left) || !ImGui::IsItemActive()))fitPlotDrag.reset();
     const auto viewLimits=fitPlotView.limits(data);
     auto* draw=ImGui::GetWindowDrawList();const ImVec2 end{origin.x+size.x,origin.y+size.y};
     draw->AddRect(origin,end,ImGui::GetColorU32(ImGuiCol_Border));draw->PushClipRect(origin,end,true);
@@ -11145,8 +11171,14 @@ void Window::Impl::plots() {
           y=CalibrationPlotView::axis_value(viewLimits[2],viewLimits[3],py,fitPlotView.log_y);
       draw->AddLine({plotInput.MousePos.x,origin.y},{plotInput.MousePos.x,end.y},IM_COL32(150,150,150,130));
       draw->AddLine({origin.x,plotInput.MousePos.y},{end.x,plotInput.MousePos.y},IM_COL32(150,150,150,130));
-      ImGui::SetTooltip("X: %.9g\nY: %.9g %s\nCtrl/Shift+wheel: zoom; wheel: pan Y\nMiddle drag: pan; double-click: reset",x,y,data.value_unit.c_str());
+      ImGui::SetTooltip("X: %.9g\nY: %.9g %s\nCtrl/Shift+wheel: zoom; wheel: pan Y\nMiddle drag: pan; double-click: reset\nLeft drag: zoom rectangle; Esc/right-click: cancel",x,y,data.value_unit.c_str());
       if(headlessSessionActive)cursor={{"x",x},{"y",y}};
+    }
+    Json rectangleObservation=nullptr;
+    if(fitPlotDrag) {
+      const auto start=fitPlotDrag->start;const ImVec2 a{std::min(start.x,finish.x),std::min(start.y,finish.y)},b{std::max(start.x,finish.x),std::max(start.y,finish.y)};
+      draw->AddRectFilled(a,b,IM_COL32(100,180,255,35));draw->AddRect(a,b,IM_COL32(100,180,255,255));
+      if(headlessSessionActive)rectangleObservation={{"start",{start.x,start.y}},{"end",{finish.x,finish.y}}};
     }
     draw->PopClipRect();
     Json xTicks=Json::array(),yTicks=Json::array();
@@ -11182,7 +11214,7 @@ void Window::Impl::plots() {
       {"finite_geometry",finiteGeometry},{"drawn_segments",drawnSegments},{"visible",true},
       {"view_limits",viewLimits},{"viewport",fitPlotView.fractions},{"cursor",std::move(cursor)},
       {"log_x",fitPlotView.log_x},{"log_y",fitPlotView.log_y},{"grid",fitPlotView.grid},{"ticks",fitPlotView.ticks},
-      {"grid_lines",fitPlotView.grid?6:0},{"x_ticks",std::move(xTicks)},{"y_ticks",std::move(yTicks)},{"masked_segments",maskedSegments},{"log_notice",logNotice},{"annotation",std::move(annotationObservation)}};
+      {"grid_lines",fitPlotView.grid?6:0},{"x_ticks",std::move(xTicks)},{"y_ticks",std::move(yTicks)},{"masked_segments",maskedSegments},{"log_notice",logNotice},{"annotation",std::move(annotationObservation)},{"rectangle_drag",std::move(rectangleObservation)}};
     ImGui::End();return;
   }
 

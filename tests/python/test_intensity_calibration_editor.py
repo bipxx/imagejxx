@@ -95,6 +95,7 @@ def test_actual_intensity_calibration_dialog(context,tmp_path):
     _assert_plot_axes(report)
     _assert_plot_log(report)
     _assert_plot_annotation(report)
+    _assert_plot_rectangle(report)
 
     for name in ("function_applied","function_reopened"):
         record=report[name]["properties"][key]
@@ -306,6 +307,7 @@ def test_actual_nonlinear_calibration_dialog(context,tmp_path):
     _assert_plot_axes(report)
     _assert_plot_log(report)
     _assert_plot_annotation(report)
+    _assert_plot_rectangle(report)
     assert {"show_intensity_nonlinear_fit","initial_coefficients","invalid_fit_apply","fit_error_ok","fit_apply","fit_cancel"}<={r["name"] for r in report["controls"]}
 
 
@@ -996,3 +998,62 @@ def test_recorded_inverse_fit_annotation_preserves_metric_meaning(metric,tmp_pat
         assert annotation["r_squared_undefined"]==(metric=="null")
         assert annotation["r_squared"]==(-.5 if metric=="finite" else None)
     assert owner.snapshot().shares_data(before) and owner.undo_steps==steps
+
+
+def _assert_plot_rectangle(report):
+    cases=report["plot_rectangle"]
+    for name in ("linear","log_reversed"):
+        case=cases[name];before=case["before"];held=case["held"];after=case["after"]
+        drag=held["rectangle_drag"];assert drag is not None
+        origin=np.asarray(before["canvas_origin"],dtype=np.float32);size=np.asarray(before["canvas_size"],dtype=np.float32)
+        a=(np.asarray(drag["start"],dtype=np.float32)-origin)/size
+        b=(np.asarray(drag["end"],dtype=np.float32)-origin)/size
+        x0,x1=sorted([float(a[0]),float(b[0])]);y0,y1=sorted([1-float(a[1]),1-float(b[1])])
+        old=np.asarray(before["viewport"])
+        expected=[old[0]+(old[1]-old[0])*x0,old[0]+(old[1]-old[0])*x1,old[2]+(old[3]-old[2])*y0,old[2]+(old[3]-old[2])*y1]
+        np.testing.assert_allclose(after["viewport"],expected,rtol=0,atol=2e-6)
+        limits=before["view_limits"]
+        def value(low,high,fraction,log):
+            return 10**(np.log10(low)+(np.log10(high)-np.log10(low))*fraction) if log else low+(high-low)*fraction
+        expected_limits=[value(limits[0],limits[1],v,before["log_x"]) for v in (x0,x1)]+[value(limits[2],limits[3],v,before["log_y"]) for v in (y0,y1)]
+        np.testing.assert_allclose(after["view_limits"],expected_limits,rtol=1e-12,atol=1e-9)
+        assert after["rectangle_drag"] is None and after["finite_geometry"]
+        assert after["curve_x"]==before["curve_x"] and after["curve_y"]==before["curve_y"]
+    for name in ("tiny","escape"):
+        case=cases[name];assert case["held"]["rectangle_drag"] is not None
+        assert case["after"]["viewport"]==case["before"]["viewport"]
+        assert case["after"]["view_limits"]==case["before"]["view_limits"] and case["after"]["rectangle_drag"] is None
+    replacement=cases["replaced"]
+    assert replacement["held"]["rectangle_drag"] is not None
+    assert replacement["replacement_fixture_action"]=="show_intensity_calibration_plot"
+    assert replacement["after"]["view_limits"]==replacement["after"]["limits"]
+    assert replacement["after"]["rectangle_drag"] is None
+    assert report["plot_axes"]["source_unchanged"]
+
+
+@pytest.mark.parametrize("log,reversed",[(False,False),(False,True),(True,False),(True,True)])
+def test_plot_rectangle_action_keeps_axes_data_and_history(log,reversed,tmp_path):
+    owner,editor=_axis_editor(tmp_path)
+    limits=[1,1000,1,1000] if log else [0,100,-10,10]
+    if reversed:limits=[limits[1],limits[0],limits[3],limits[2]]
+    editor.action("set_intensity_plot_limits",limits=limits,log_x=log,log_y=log)
+    before=owner.snapshot();steps=owner.undo_steps
+    editor.action("zoom_intensity_plot_rectangle",rectangle=[.75,.75,.25,.25])
+    plot=editor.render_headless(4)["fit_plot"]
+    np.testing.assert_array_equal(plot["viewport"],[.25,.75,.25,.75])
+    expected=[]
+    for low,high in (limits[:2],limits[2:]):
+        expected.extend([10**(np.log10(low)+(np.log10(high)-np.log10(low))*f) if log else low+(high-low)*f for f in (.25,.75)])
+    np.testing.assert_allclose(plot["view_limits"],expected,rtol=1e-13,atol=1e-12)
+    assert plot["log_x"]==plot["log_y"]==log and plot["rectangle_drag"] is None
+    assert owner.snapshot().shares_data(before) and owner.undo_steps==steps
+    editor.action("zoom_intensity_plot_rectangle",rectangle=[-2,-2,2,2])
+    assert editor.render_headless(4)["fit_plot"]["view_limits"]==plot["view_limits"]
+
+
+@pytest.mark.parametrize("rectangle",[[0,0,0,1],[0,0,1,0],[-2,-2,-1,-1],[True,0,1,1],["0",0,1,1],[0,0,1],[0,0,1,1,2],None])
+def test_invalid_plot_rectangle_refuses_without_view_or_source_change(rectangle,tmp_path):
+    owner,editor=_axis_editor(tmp_path);before=owner.snapshot();previous=editor.render_headless(4)["fit_plot"]
+    with pytest.raises((ValueError,RuntimeError)):
+        editor.action("zoom_intensity_plot_rectangle",rectangle=rectangle)
+    assert editor.render_headless(4)["fit_plot"]==previous and owner.snapshot().shares_data(before)

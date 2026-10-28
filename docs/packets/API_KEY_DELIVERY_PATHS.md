@@ -1,5 +1,36 @@
 # Shortest delivery paths by API and setting key
 
+## Rectangle zoom through the existing viewport — 2026-10-28
+
+The shared C++/Python plot canvas supports left-drag rectangle zoom. API callers
+use the same implementation:
+
+```python
+editor.action("zoom_intensity_plot_rectangle", rectangle=[0.25, 0.25, 0.75, 0.75])
+```
+
+Coordinates are fractions of the current visible plot: X left-to-right and Y
+bottom-to-top. Either endpoint order works; outside values clip to [0,1]. Four
+finite numeric values and a representable nonzero area are required. Existing
+source/All revision guards apply; optional document_id must be active plotted
+owner. The4-GUI-pixel drag threshold applies to physical gestures, not this API.
+Linear/log and reversed axes keep their direction; source/history/samples/CSV
+remain unchanged. Gesture state captures viewport/geometry/generation and
+cancels on Escape/right-click, lost focus/hidden/layout/view change or replacement.
+
+742 Windows focused checks pass, with actual C++/Python rectangle input and
+Linux C++17 private consumer coverage. Current cases606/608 frames retain the
+existing cap. [Scoped evidence](../parity/reviews/G034-calibration-plot-rectangle-progress001.json).
+
+Shortest next path: factor a shared immutable prepared plot/annotation payload,
+then bounded detached/multiple snapshots with explicit lifetime and memory
+admission. Reuse CalibrationPlotView; do not clone source providers or decode
+provenance again. Specify in-host floating and OS-window behaviors separately;
+OS windows require backend/platform checks. Add a dedicated bounded snapshot UI
+case instead of extending the606-frame calibration trace. Nice/minor ticks,
+annotation placement/style/export, generic renderer reuse and full platform/
+reference/performance gates remain open.99-family status47/52/0 unchanged.
+
 ## Prepared calibration annotations reuse path — 2026-10-28
 
 Model and fit details now exposes recorded formulas, a-e coefficients, domain/

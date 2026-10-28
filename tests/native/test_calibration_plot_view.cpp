@@ -20,6 +20,15 @@ void verify_contracts() {
   // Panning beyond the original range is permitted, without mutating data.
   check(view.pan(data,2,2));check(view.limits(data)[0]>data.x_max);
   check(data.x_min==0 && data.x_max==100 && data.y_min==-10 && data.y_max==10);
+  const auto panView=view;
+  check(view.rectangle(data,{.8,.8,.2,.2}));
+  bounds=view.limits(data);
+  const auto original=panView.limits(data);
+  check(std::abs(bounds[0]-(original[0]+.2*(original[1]-original[0])))<1e-12);
+  const auto selected=view;
+  check(!view.rectangle(data,{.1,.1,.1,.9}));check(view.same_view(selected));
+  check(!view.rectangle(data,{0,0,std::numeric_limits<double>::quiet_NaN(),1}));check(view.same_view(selected));
+  check(view.rectangle(data,{-2,-2,2,2}));check(view.same_view(selected));
   const auto previous=view.fractions;
   check(!view.zoom(data,.5,.5,std::numeric_limits<double>::infinity()));
   check(view.fractions==previous);
@@ -54,6 +63,10 @@ void verify_contracts() {
   check(view.zoom(data,.5,.5,.5));bounds=view.limits(data);
   const std::array<double,4> logarithmic{10,1000,1000,10};
   for(int i=0;i<4;++i)check(std::abs(bounds[i]/logarithmic[i]-1)<1e-14);
+  const auto logBefore=view.limits(data);
+  check(view.rectangle(data,{.25,.25,.75,.75}));bounds=view.limits(data);
+  check(std::abs(std::log10(bounds[0])-(std::log10(logBefore[0])+.25*(std::log10(logBefore[1])-std::log10(logBefore[0]))))<1e-13);
+  check(bounds[2]>bounds[3]);
   const auto logged=view;
   check(!view.set_limits({0,1,1,10}));
   check(!view.set_limits({1,10,-1,1}));

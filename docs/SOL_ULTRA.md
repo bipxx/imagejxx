@@ -1,5 +1,46 @@
 # Sol Ultra execution guide
 
+## Calibration plot rectangle zoom and cancellation — 2026-10-28
+
+Left-drag rectangle zoom now reuses CalibrationPlotView for linear/logarithmic
+and reversed axes. A clipped overlay appears while held; release applies only
+when both dimensions span at least4 GUI pixels. Tiny drags preserve the view.
+Escape/right-click, focus/hidden/layout/view changes or plot replacement cancel
+captured gestures; close/new/stale plots clear them. Samples, CSV, source/history
+and annotations remain immutable. Double-click reset and existing pan/zoom stay.
+Python UI action zoom_intensity_plot_rectangle accepts rectangle=[x0,y0,x1,y1]
+of current visible fractions (X left-to-right, Y bottom-to-top), clips endpoints,
+and validates shape/types/representable area plus source/All revision guards.
+
+Windows installed742 focused checks pass with zero failures/skips, projection
+and private viewport/annotation native consumers, and three C++ ImGui cases.
+Both frontends physically verify linear/reversed-log rectangles, held overlay,
+tiny drag, Escape and a labeled replacement-during-drag diagnostic. Independent
+readers derive expected viewport/data bounds from delivered screen endpoints.
+606/608 frames adds38 scenario frames while retaining the existing cap. Other
+focus/layout/right-click cancellation handlers are not independently physically
+qualified here. Linux C++17 private consumer passes linked to existing pinned
+core SDK archive; no Linux UI/full SDK, OS/GPU or family promotion.
+[Scoped evidence](parity/reviews/G034-calibration-plot-rectangle-progress001.json).
+
+The first compile-only probe used ImVec2 despite its deliberately renderer-free
+input/observation boundary. Standard array<float,2> fixes that dependency;
+original-SHA-verified preimage/diagnostics retained. All owned terminal scratch
+retired after lossless capture verification; log/preimage/superseded-runner
+compression recovered653,908B. Same cache/runtime/SDK; known roots8,463,440,471B,
+two denied caches keep full8GiB budget unverified. Original reference fingerprints
+unchanged, commercial inventory passes. No matched speed advantage;47 families
+in progress/52 open/0 complete.
+
+Next: detach/multiple immutable plot snapshots, with explicit source-independent
+lifetime and memory admission. Share prepared data/annotation payloads and reuse
+this viewport rather than duplicating stores or holding image providers. Define
+in-host floating versus independent OS-window behavior explicitly; the latter
+needs backend/OS verification. Use a dedicated bounded UI case for the next
+workflow rather than growing the now606-frame calibration case. On-canvas
+annotation/style/export, nice/minor ticks, generic histogram/profile reuse and
+broader calibration/downstream/platform/reference gates remain open.
+
 ## Recorded calibration model and fit-quality details — 2026-10-28
 
 Shared calibration plots now have Model and fit details: recorded formula,

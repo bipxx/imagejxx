@@ -75,6 +75,20 @@ struct CalibrationPlotView {
     if(base[2]<base[3] ? !(values[2]<values[3]) : base[2]>base[3] && !(values[2]>values[3]))return false;
     fractions=next;return true;
   }
+  bool same_view(const CalibrationPlotView& other) const noexcept {
+    return fractions==other.fractions && manual_limits==other.manual_limits &&
+        log_x==other.log_x && log_y==other.log_y && grid==other.grid && ticks==other.ticks;
+  }
+  // Fractions refer to the current visible plot: X left-to-right, Y bottom-to-top.
+  // Clip releases outside the canvas; either drag direction keeps axis direction.
+  bool rectangle(const ImageJIntensityFitPlot& data,std::array<double,4> bounds) noexcept {
+    for(auto& value:bounds){if(!std::isfinite(value))return false;value=std::clamp(value,0.,1.);}
+    const auto left=std::min(bounds[0],bounds[2]),right=std::max(bounds[0],bounds[2]);
+    const auto bottom=std::min(bounds[1],bounds[3]),top=std::max(bounds[1],bounds[3]);
+    if(!(left<right) || !(bottom<top))return false;
+    return update(data,{interpolate(fractions[0],fractions[1],left),interpolate(fractions[0],fractions[1],right),
+        interpolate(fractions[2],fractions[3],bottom),interpolate(fractions[2],fractions[3],top)});
+  }
   bool zoom(const ImageJIntensityFitPlot& data,double x,double y,double factor) noexcept {
     if(!std::isfinite(factor) || factor<=0)return false;
     auto next=fractions;
