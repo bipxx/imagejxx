@@ -44,7 +44,7 @@ void HistogramPanel::show(const DocumentSnapshot &source,DatasetHistogramLimits 
   custom_=settings.boolean("histogram_custom");log_=settings.boolean("histogram_log");roi_=settings.boolean("histogram_use_roi");
   TargetRequest defaults;const auto &policy=settings.text("histogram_roi");defaults.roi=policy=="whole_plane"?RoiPolicy::WholePlane:policy=="positioned_rois"?RoiPolicy::PositionedRois:RoiPolicy::ActiveSelection;
   targetPanel_.configure(source,defaults);scientific_=settings.boolean("histogram_scientific");targetsOpen_=false;targetValid_=true;targetError_.clear();
-  result_.reset();resultTarget_=resultEstimate_=Json::object();resultPlaneCount_=0;resultScientific_=resultUsesRoi_=false;
+  result_.reset();resultSourceId_=0;resultSourceTitle_.clear();resultTarget_=resultEstimate_=Json::object();resultPlaneCount_=0;resultScientific_=resultUsesRoi_=false;
   heights_.clear();error_.clear();sourceError_.clear();actionError_.clear();draftChanged_=true;open_=focus_=true;
 }
 void HistogramPanel::loadOptions(const ResolvedHistogramCommand &captured) {
@@ -58,7 +58,7 @@ void HistogramPanel::showRebind(const DocumentSnapshot &source,const MetadataObj
   TargetRequest initial;initial.roi=RoiPolicy::WholePlane;
   const auto captured=rebind_histogram_command(source,record,initial,cap);
   HistogramPanel next;next.show(source,limits,settings);next.loadOptions(captured);
-  next.result_=result_;next.resultTarget_=resultTarget_;next.resultEstimate_=resultEstimate_;next.resultCommand_=resultCommand_;
+  next.result_=result_;next.resultSourceId_=resultSourceId_;next.resultSourceTitle_=resultSourceTitle_;next.resultTarget_=resultTarget_;next.resultEstimate_=resultEstimate_;next.resultCommand_=resultCommand_;
   next.resultPlaneCount_=resultPlaneCount_;next.resultScientific_=resultScientific_;next.resultUsesRoi_=resultUsesRoi_;next.resultRoiPolicy_=resultRoiPolicy_;
   next.rebindRecord_=std::make_shared<const MetadataObject>(record);next.scientific_=true;next.targetsOpen_=true;
   next.targetPanel_.configure(source,initial);
@@ -71,7 +71,7 @@ HistogramPanel HistogramPanel::replayDraft(const ResolvedHistogramCommand &captu
   if(target.scope==TargetScope::Positions)target.positions=captured.target().explicit_positions();
   else {target.scope=TargetScope::Ranges;const auto &r=captured.target().ranges();target.t=r[0];target.c=r[1];target.z=r[2];}
   next.frozenTarget_=std::move(target);next.scientific_=true;
-  next.result_=result_;next.resultTarget_=resultTarget_;next.resultEstimate_=resultEstimate_;next.resultCommand_=resultCommand_;
+  next.result_=result_;next.resultSourceId_=resultSourceId_;next.resultSourceTitle_=resultSourceTitle_;next.resultTarget_=resultTarget_;next.resultEstimate_=resultEstimate_;next.resultCommand_=resultCommand_;
   next.resultPlaneCount_=resultPlaneCount_;next.resultScientific_=resultScientific_;next.resultUsesRoi_=resultUsesRoi_;next.resultRoiPolicy_=resultRoiPolicy_;
   next.generation_=generation_+1;return next;
 }
@@ -212,12 +212,13 @@ void HistogramPanel::accept(const ResolvedHistogramCommand &captured,const Targe
   SettingsPatch defaults{{"histogram_custom",custom_},{"histogram_log",log_},{"histogram_scientific",scientific_}};
   if(scientific_)defaults.emplace("histogram_roi",roiPolicy);else defaults.emplace("histogram_use_roi",roi_);
   if(custom_) {defaults.emplace("histogram_bins",std::int64_t(configuration.bins));defaults.emplace("histogram_lower",(*configuration.range)[0]);defaults.emplace("histogram_upper",(*configuration.range)[1]);}
+  auto title=target.source().data().metadata.title;
   auto candidate=std::make_shared<const DatasetHistogramResult>(std::move(result));
   static_assert(std::is_nothrow_move_assignable_v<decltype(result_)>);
   static_assert(std::is_nothrow_move_assignable_v<Json>);
   if(remember)remember(defaults,record);
   lower_=std::move(lower);upper_=std::move(upper);result_=std::move(candidate);resultTarget_=std::move(provenance);resultEstimate_=std::move(estimate);
-  resultCommand_=std::move(recorded);
+  resultCommand_=std::move(recorded);resultSourceId_=target.document_id();resultSourceTitle_=std::move(title);
   resultPlaneCount_=planes;resultScientific_=scientific_;resultUsesRoi_=usesRoi;resultRoiPolicy_=std::move(roiPolicy);
   draftChanged_=false;error_.clear();actionError_.clear();
 }
@@ -225,13 +226,13 @@ std::string HistogramPanel::csv() const {
   if(!result_)throw std::invalid_argument("Calculate a histogram before exporting");return dataset_histogram_csv(*result_);
 }
 void HistogramPanel::sourceClosed(std::uint64_t id){if(id==sourceId_){++generation_;source_.reset();frozenTarget_.reset();rebindRecord_.reset();targetsOpen_=false;}}
-void HistogramPanel::cancel(){++generation_;open_=targetsOpen_=false;source_.reset();frozenTarget_.reset();rebindRecord_.reset();resultCommand_=Json::object();result_.reset();resultTarget_=resultEstimate_=Json::object();resultPlaneCount_=0;targetPanel_=OperationTargetPanel{};heights_.clear();controls_=states_=Json::object();}
+void HistogramPanel::cancel(){++generation_;open_=targetsOpen_=false;source_.reset();frozenTarget_.reset();rebindRecord_.reset();resultCommand_=Json::object();result_.reset();resultSourceId_=0;resultSourceTitle_.clear();resultTarget_=resultEstimate_=Json::object();resultPlaneCount_=0;targetPanel_=OperationTargetPanel{};heights_.clear();controls_=states_=Json::object();}
 void HistogramPanel::control(const char *name,bool enabled) {
   const auto a=ImGui::GetItemRectMin(),b=ImGui::GetItemRectMax();
   controls_[name]={(a.x+b.x)*.5f,(a.y+b.y)*.5f};
   states_[name]={{"id",ImGui::GetItemID()},{"enabled",enabled},{"rect",{a.x,a.y,b.x,b.y}}};
 }
-void HistogramPanel::draw(const std::optional<DocumentSnapshot> &current,bool busy,const std::function<void(std::string)> &export_csv,const std::function<void()> &calculateJob,const std::optional<JobInfo> &processing,const std::function<void()> &cancelJob) {
+void HistogramPanel::draw(const std::optional<DocumentSnapshot> &current,bool busy,const std::function<void(std::string)> &export_csv,const std::function<void()> &calculateJob,const std::optional<JobInfo> &processing,const std::function<void()> &cancelJob,const std::function<void()> &openPlot) {
   controls_=states_=Json::object();if(!open_)return;
   bool sourceValid=false,valid=false;sourceError_.clear();
   try{validateSource(current,busy);sourceValid=true;}catch(const std::exception &e){sourceError_=e.what();}
@@ -240,7 +241,7 @@ void HistogramPanel::draw(const std::optional<DocumentSnapshot> &current,bool bu
   try{validateDraft();valid=true;error_.clear();}catch(const std::exception &e){error_=e.what();}
   ImGui::SetNextWindowSize({550,660},ImGuiCond_FirstUseEver);
   if(focus_)ImGui::SetNextWindowFocus();focus_=false;
-  bool stay=true,calculateNow=false,exportNow=false,closeNow=false;
+  bool stay=true,calculateNow=false,exportNow=false,closeNow=false,plotNow=false;
   const bool contents=ImGui::Begin("Histogram###ImageJHistogramPanel",&stay,ImGuiWindowFlags_NoCollapse);
   if(contents && stay) {
     ImGui::Text("Captured document %llu",static_cast<unsigned long long>(sourceId_));
@@ -279,6 +280,7 @@ void HistogramPanel::draw(const std::optional<DocumentSnapshot> &current,bool bu
     if(!sourceError_.empty())ImGui::TextWrapped("%s",sourceError_.c_str());
     if(!actionError_.empty())ImGui::TextWrapped("%s",actionError_.c_str());
     ImGui::BeginDisabled(busy||bool(rebindRecord_));if(ImGui::Checkbox("Log count display (log1p)",&log_))++generation_;control("log",!busy&&!rebindRecord_);ImGui::EndDisabled();
+    if(openPlot){ImGui::BeginDisabled(!result_);if(ImGui::Button("Interactive plot"))plotNow=true;control("interactive_plot",bool(result_));ImGui::EndDisabled();}
     if(result_) {
       const auto &r=*result_;heights_.clear();heights_.reserve(r.histogram.counts.size());
       for(auto n:r.histogram.counts)heights_.push_back(float(log_?std::log1p(double(n)):double(n)));
@@ -314,7 +316,7 @@ void HistogramPanel::draw(const std::optional<DocumentSnapshot> &current,bool bu
   }
   ImGui::End();
   if(!stay||closeNow){if(processing && cancelJob)cancelJob();cancel();return;}
-  try{if(calculateNow && calculateJob)calculateJob();if(exportNow && export_csv)export_csv(csv());}catch(const std::exception &e){actionError_=e.what();}
+  try{if(calculateNow && calculateJob)calculateJob();if(exportNow && export_csv)export_csv(csv());if(plotNow && openPlot)openPlot();}catch(const std::exception &e){actionError_=e.what();}
 }
 Json HistogramPanel::diagnostics() const {
   Json out={{"open",open_},{"scientific_target",scientific_},{"targets_open",targetsOpen_},{"target_valid",targetValid_},{"target_error",targetError_},{"target_panel",targetPanel_.diagnostics()},{"source_id",sourceId_},{"has_source",bool(source_)},{"position",position_},{"bins",bins_},{"lower",lower_},{"upper",upper_},{"custom",custom_},{"roi",roi_},{"log",log_},{"draft_changed",draftChanged_},{"error",error_},{"action_error",actionError_},{"source_error",sourceError_},{"controls",controls_},{"control_states",states_},{"heights",heights_}};

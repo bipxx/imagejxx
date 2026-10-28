@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "scope": "G034/G054 histogram and profile reuse of shared interactive plot/snapshot/CSV/PNG lifecycle",
+  "state": "focused_checks_passed",
+  "acceptance_claim": false,
+  "implementation": {
+    "kind": "Private immutable payload now distinguishes calibration fit/table, histogram and profile with explicit axis captions. No calibration record/model is manufactured for generic plots; annotation/model controls are absent. Existing public core APIs/SDK unchanged.",
+    "histograms": "Legacy histogram command keeps its original raw bin producer/ROI path. Scientific panel adds Interactive plot, also show_histogram_plot, using its last immutable DatasetHistogramResult with source title/ID captured before preference/workflow publication. No recalculation/source read; original pooled target, raw counts and panel log1p thumbnail/statistics/replay remain unchanged. Interactive plot displays raw counts with independent axes.",
+    "precision": "Full producer double edges and uint64 counts retained; bars use double drawing coordinates. Exact counts are available in diagnostics and CSV, including counts above2^53. Legacy histogram display previously converted bins/counts to float; new display uses retained producer values. No raw histogram count recomputation.",
+    "profiles": "Original grayscale line/polyline sampling, physical scalar X/Y distance, configured sample count, float-rounded displayed samples and shared-junction omission preserved. Grayscale plane is now prepared once per profile instead of once per segment. Distance and raw value captions explicit; no new density-calibration interpretation.",
+    "csv": "Scientific histogram plots call existing dataset_histogram_csv byte-for-byte (bin/lower/upper/count). Legacy histogram retains x,y columns and bin capacity above65536 with exact decimal counts. Profiles retain x,y and round-trip precision for the existing float-rounded samples. Calibration series,x,y format and immutable file callbacks preserved.",
+    "interaction": "Legacy histogram/profile now use the same viewport, pan/zoom/rectangle, axes/ticks, applicable style, snapshot and PNG controls as calibration plots. Profile style exposes curve width/color; histogram exposes bar color. Generic aliases show/set_plot_limits, zoom_plot_rectangle, show/set_plot_style, show_plot_image_export/export_plot_image and export_plot_csv preserve original calibration action names. IDs and revision guards reused.",
+    "ownership": "Scientific plots open as source-independent snapshots. Reopening one calculated result reuses a single immutable payload/lease through one weak hint; per-window view/style/controller leases remain independent. Weak hint retains no data after last plot/export owner. Shared histogram result has no retained source selection/provider/document. Source/panel closure leaves plot usable; last managed owner releases lease.",
+    "diagnostics": "Generic live reports use plot; existing calibration fit_plot remains compatible. Profiles expose series_x/y; histograms expose exact counts/bin_edges without duplicate calibration sample vectors. plot_samples remains legacy generic count. Managed retained/output memory is not total RSS and excludes pre-existing panel results/source/provider/ImGui/driver/transport allocations."
+  },
+  "evidence": {
+    "generic-plot-windows-build404": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\generic-plot-windows-build404\\receipt.json",
+      "bytes": 24913,
+      "sha256": "3a690b03fe34e1f4c00823550d5536a09865aceef3a86c0bffac4c9eb6264cfa"
+    },
+    "generic-plot-installed406": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\generic-plot-installed406\\receipt.json",
+      "bytes": 107773,
+      "sha256": "d466a23c2b743dc525e36744aa9e176f33dda202eeff990b7cc7b21ba3229693"
+    },
+    "generic-plot-export-linux407": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\generic-plot-export-linux407\\receipt.json",
+      "bytes": 14065,
+      "sha256": "541ae32890b3fa741704a4c69698f330889fa7522d1aa8d0da8d3ff7f5f92b07"
+    },
+    "generic-plot-reader409": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\generic-plot-reader409\\receipt.json",
+      "bytes": 469,
+      "sha256": "a3321467be14cf1e0fa788bfbbeb15754f1617c0633015f17e5ac3a39b87091f"
+    },
+    "generic-plot-installed410": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\generic-plot-installed410\\receipt.json",
+      "bytes": 109289,
+      "sha256": "1dd41845f2d9a2009b677dc4ceedcaf40360eb8d8999eb19e884f1483e7dde1e"
+    },
+    "generic-plot-windows-build413": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\generic-plot-windows-build413\\receipt.json",
+      "bytes": 24901,
+      "sha256": "88631e77a45f0ca3e12db9c402f48a7b2eb919d548237531344c0bf6fea77b79"
+    },
+    "generic-plot-linux414": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\generic-plot-linux414\\receipt.json",
+      "bytes": 31122,
+      "sha256": "7b25fa7f346700d6d5805725e9da806b5893a5809270fc42b1a64a885e8b5cc0"
+    },
+    "generic-plot-export-linux416": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\generic-plot-export-linux416\\receipt.json",
+      "bytes": 20433,
+      "sha256": "ce43123000e3936b3baf504c55fc668ba378ee11607e0735e0a0a7be4dbec69d"
+    },
+    "generic-plot-windows-build418": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\generic-plot-windows-build418\\receipt.json",
+      "bytes": 24906,
+      "sha256": "1c33dfaa593ad609176829fa436f6175391fd818e27ea00fee54f44cb1f7a865"
+    },
+    "generic-plot-installed419": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\generic-plot-installed419\\receipt.json",
+      "bytes": 110836,
+      "sha256": "a2f0d0a47f937c70c0cff6a188be73fc109f8694e23ec2c2c7675b1ca0c075d7"
+    },
+    "generic-plot-artifacts420": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\generic-plot-artifacts420\\receipt.json",
+      "bytes": 3281,
+      "sha256": "5a4d91f2b7c83e44b4951b41521d96b4ea06e206f26c89a4ab026f28e1bea239"
+    },
+    "generic-plot-retention421": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\generic-plot-retention421\\receipt.json",
+      "bytes": 15589,
+      "sha256": "23ec98651922d6361d9d501c88510c8971162197cfc65efcad8ab2f747f38327"
+    },
+    "generic-plot-windows-build424": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\generic-plot-windows-build424\\receipt.json",
+      "bytes": 24896,
+      "sha256": "628e87813d02c81bfff89809d3590c1bf68356d9f8fefff3ed6825feed9e0394"
+    },
+    "generic-plot-installed425": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\generic-plot-installed425\\receipt.json",
+      "bytes": 110800,
+      "sha256": "15e1b672a27b677bbaa57ce766e91a5dfd80f3e4153e5e8d2f495370619e3b3a"
+    },
+    "generic-plot-artifacts426": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\generic-plot-artifacts426\\receipt.json",
+      "bytes": 3262,
+      "sha256": "ae4a56a871f7755bb9a6a7ccbe1def327821a0c12b101086e2e74fd95481c49a"
+    },
+    "generic-plot-retention427": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\generic-plot-retention427\\receipt.json",
+      "bytes": 4276,
+      "sha256": "11a72edeb245ee57fd704b970272c9aa7dbb1abac1fdc28d18f1ae5c5e1b4ecb"
+    }
+  },
+  "verification": {
+    "windows_installed_pytest": {
+      "collected": 915,
+      "passed": 914,
+      "failures": 0,
+      "errors": 0,
+      "skips": [
+        {
+          "class": "tests.python.test_settings",
+          "test": "test_settings_in_hidden_opengl_and_recreated_context",
+          "reason": "Set IMAGEJXX_RENDER_TESTS=1 for hidden OpenGL"
+        }
+      ]
+    },
+    "regression_scope": "Original783 focused cases still pass. Expanded suite includes9 generic editor cases plus settings and histogram desktop/target/async/recorder regressions. One explicitly gated hidden-OpenGL settings case skipped; not OS/GPU acceptance.",
+    "actual_imgui_input": "Five installed C++ cases pass. Dedicated generic case also runs through Python: Keep profile, Keep legacy histogram, physical scientific Interactive plot button, source/panel closure, scientific CSV save, profile applicable-style edits/PNG save and final managed memory0. Producer commands/config/calculation/closure are labeled fixtures rather than claimed physical input coverage.",
+    "numeric": "Line x=[0,2,4],y=[0,10,20]; polyline x=[0,2,4,7,10],y=[0,10,20,50,80]. Legacy4-bin UInt8 range[-.5,255.5] yields[7,2,0,0]; scientific custom[0,80] yields[2,2,2,3]. Tests distinguish these original producer conventions. CSV above65536 bins succeeds; shared histogram reopening charges only a controller, and opening/CSV/PNG cause no additional DatasetReadObserver plane reads. Quota failure preserves previous plots/history.",
+    "native": "Windows projection/private plot payload/math consumers pass. Linux final private factory/math consumer414 passes exact CSV count9007199254740993 and shared ownership. Current Linux drawing/PNG consumer416 passes both profile and histogram rendering against existing pinned archives/core SDK. No Linux UI/full SDK qualification.",
+    "artifacts": "Independent PNG CRC/filter/pixel reader verifies profile lines and histogram bars; C++/Python profile PNGs byte-identical. Final bytes match inspected profile/distance/raw-value and histogram/bar images from420; no calibration annotations/workspace chrome.",
+    "generic_frames": 118,
+    "generic_frame_cap": 160,
+    "snapshot_frames": 186,
+    "snapshot_frame_cap": 192,
+    "calibration_frames": 606,
+    "calibration_frame_cap": 608,
+    "commercial_use_inventory": "passed; no new dependency",
+    "diff_check": "passed",
+    "limits": "Focused checks, not full ImageJ/Fiji histogram/profile/calibration parity or original-reference/OS/GPU/performance acceptance."
+  },
+  "harness_history": [
+    {
+      "run": "installed406",
+      "state": "failed",
+      "cause": "Four new Python fixtures used set_selection instead of established transaction.select and failed before product paths. Corrected fixture; exact failed reader SHA/preimage retained. Physical workflow and other regressions passed."
+    },
+    {
+      "run": "Linux407",
+      "state": "failed compile-only consumer",
+      "cause": "Generated standalone main put an unbraced return and following declaration on one line, rejected by -Werror=misleading-indentation. Corrected generated consumer, retained diagnostic/source; no product change or disabled warning."
+    }
+  ],
+  "review_improvements": [
+    "Caught legacy histogram CSV capacity/schema mismatch before publishing: retain legacy x,y and full bin capacity instead of routing through scientific writer limit.",
+    "Reuse weak immutable histogram payload on repeated opens to prevent charging identical shared bins twice.",
+    "Prepare grayscale once per polyline and remove duplicated generic sample diagnostics; numerical regressions pass.",
+    "Inspect existing Python transaction names and all legacy output contracts before first build to avoid fixture retries and late rebuilds."
+  ],
+  "storage": {
+    "before_known_bytes": 8480333726,
+    "after_known_bytes": 8486548659,
+    "full_budget_verified": false,
+    "unknown_subtrees": [
+      ".cache/pytest",
+      ".cache/pytest-ui"
+    ],
+    "inventory": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\generic-plot-after428.json",
+      "bytes": 1525,
+      "sha256": "9ab36592617c83fb77562326d7a8e6c0791304e2c0359dd8fa9b55774f3083e1"
+    },
+    "recovered_bytes": 4991833,
+    "temporary_build_reserve_bytes": 536870912,
+    "capture_scratch_bound_bytes": 67108864,
+    "retention": "All owned terminal compiler/consumer scratch and raw previews retired. Necessary logs, producer identities, failed reader/source diagnostics and superseded runners losslessly compressed/member-hash verified. Full406 failed/410 and419 intermediate captures retired with identities; full contents unavailable evidence. Final425 and Linux414/416 evidence retained. One active cache/runtime/SDK per platform; no whole environment/cache/checkout archive; historical expectations/fingerprints unchanged."
+  },
+  "remaining": [
+    "Exact interactive histogram-bin/profile-point hover and richer captured target/T-C-Z/ROI captions",
+    "Full ImageJ profile widths/interpolation/calibrated-intensity/scientific-plane and histogram conventions/reference gates",
+    "Plot session persistence, macro/replay/recording, global calibration/settings/table import and downstream consumers",
+    "Additional export formats/transparency/font/DPI and independent OS windows",
+    "Linux UI/macOS/installed IO SDK and OS/GPU/original-reference qualification",
+    "Matched ImageJ/Fiji end-to-end speed/memory benchmarks"
+  ],
+  "family_status": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  }
+}

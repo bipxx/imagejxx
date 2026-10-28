@@ -1,5 +1,36 @@
 # ImageJ and Fiji gap closure plan
 
+## Shared histogram/profile plot workflow — 2026-10-28
+
+Legacy histogram/profile plots now reuse view/axes/ticks, applicable style,
+snapshots and PNG/CSV export. Scientific Histogram adds Interactive plot from
+its last immutable result, including after source closure. Exact bin/count CSV
+is reused; opening plots does not re-read source pixels. Reopening one result
+shares one payload lease via a weak hint, with independent per-window controls.
+Generic kinds/captions carry no invented calibration model. Profiles preserve
+existing sampled values/distances/junction behavior and prepare grayscale once.
+Legacy histogram retains x,y CSV/bin capacity; scientific CSV retains exact
+bin/lower/upper/count. Generic diagnostics avoid duplicate calibration vectors.
+
+Windows expanded915 collected:914 passed, one explicitly gated hidden-OpenGL
+settings check skipped. Original783 focused cases remain passing. Five C++ UI
+cases pass; new generic case118/160 through both hosts covers physical plot
+controls/exports after labeled producer/closure fixtures. Prior cases remain
+186/192 and606/608. Linux final math and current profile/histogram PNG consumers
+pass against existing archives/SDK, not Linux UI/full SDK. C++/Python PNGs are
+byte-identical and final bytes match visually inspected artifacts.
+[Scoped evidence](parity/reviews/G034-generic-plot-progress001.json).
+
+All owned scratch/previews retired; cleanup recovered4,991,833B. Necessary
+failed-reader/generated-consumer diagnostics retained. Superseded full captures
+retired with identities; full contents unavailable. Known roots8,486,548,659B,
+two denied caches keep full8GiB unverified. Same caches/runtime/SDK, commercial
+review passes, reference fingerprints unchanged. No speed/full-family promotion:
+47 in progress/52 open/0 complete. Next: exact bin/sample hover and captured
+target/plane/ROI captions, then calibration settings/import/global/replay and
+original-reference/downstream/platform gates. Plot persistence and OS windows
+remain open; do not interpret generic viewer reuse as complete ImageJ parity.
+
 ## Bounded automatic major/minor plot ticks — 2026-10-28
 
 Axes now offers opt-in nice_ticks/minor_ticks Boolean controls, also accepted by

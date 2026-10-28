@@ -3,6 +3,7 @@
 #include "../../src/desktop/calibration_plot_payload.hpp"
 #include "../../src/desktop/calibration_plot_style.hpp"
 #include "../../src/desktop/calibration_plot_ticks.hpp"
+#include "../../src/desktop/generic_plot_payload.hpp"
 #include <limits>
 #include <stdexcept>
 #include <cstdio>
@@ -141,6 +142,16 @@ void verify_contracts() {
   const auto retained=memory.retained();check(retained>0 && memory.working()==0 && payload->source_id==77 && payload->source_title=="Source \xc2\xb5");
   auto shared=payload;payload.reset();check(memory.retained()==retained && shared->data.curve_y[1]==2);
   shared.reset();check(memory.used()==0);
+  auto counts=std::make_shared<DatasetHistogramResult>();counts->histogram.counts={9007199254740993ULL,2};counts->histogram.edges={0,1,2};
+  auto histogramPlot=imagejxx::desktop::retain_histogram_plot(memory,counts,77,2,"histogram source");
+  check(!histogramPlot->calibration() && histogramPlot->histogram.get()==counts.get() && histogramPlot->curveSize()==2);
+  check(histogramPlot->genericCsv()==dataset_histogram_csv(*counts) && histogramPlot->genericCsv().find("9007199254740993")!=std::string::npos);
+  check(histogramPlot->annotation.canvas_text.empty() && histogramPlot->yLabel()=="Count");
+  histogramPlot.reset();check(memory.used()==0);
+  auto profilePlot=imagejxx::desktop::retain_profile_plot(memory,{0,2,4},{0,10,20},"Line profile","Distance (um)",77,3,"profile source");
+  check(!profilePlot->calibration() && profilePlot->curveX(1)==2 && profilePlot->curveY(1)==10);
+  check(profilePlot->csv()=="x,y\n0,0\n2,10\n4,20\n" && profilePlot->data.x_max==4 && profilePlot->data.y_max==20);
+  profilePlot.reset();check(memory.used()==0);
   imagejxx::desktop::RenderMemory denied(1);bool refused=false;
   try{imagejxx::desktop::retain_calibration_plot(denied,ImageJIntensityFitPlot{},imagejxx::desktop::CalibrationPlotAnnotation{},true,0);}
   catch(const std::invalid_argument&){refused=true;}

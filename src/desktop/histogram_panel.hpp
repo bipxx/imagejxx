@@ -30,11 +30,15 @@ public:
   void draw(const std::optional<DocumentSnapshot> &, bool busy,
             const std::function<void(std::string)> &export_csv,
             const std::function<void()> &calculate,
-            const std::optional<JobInfo> &,const std::function<void()> &cancel_job);
+            const std::optional<JobInfo> &,const std::function<void()> &cancel_job,
+            const std::function<void()> &open_plot = {});
   void sourceClosed(std::uint64_t);
   void cancel();
   bool visible() const { return open_; }
   std::string csv() const;
+  std::shared_ptr<const DatasetHistogramResult> plotResult() const {if(!result_)throw std::invalid_argument("Calculate a histogram before plotting");return result_;}
+  std::uint64_t plotSourceId() const {return resultSourceId_;}
+  const std::string& plotSourceTitle() const {return resultSourceTitle_;}
   Json diagnostics() const;
 private:
   void calculateImpl(const std::optional<DocumentSnapshot> &,bool,const Remember &);
@@ -63,6 +67,8 @@ private:
   std::array<std::string,3> position_;
   std::string bins_="256", lower_="0", upper_="1", error_, sourceError_, actionError_;
   std::shared_ptr<const DatasetHistogramResult> result_;
+  std::uint64_t resultSourceId_=0;
+  std::string resultSourceTitle_;
   std::vector<float> heights_;
   Json controls_=Json::object(), states_=Json::object();
 };

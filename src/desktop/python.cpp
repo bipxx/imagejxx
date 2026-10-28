@@ -52,6 +52,7 @@
 #include "z_subset_ui_probe.hpp"
 #include "imagej_projection_ui_probe.hpp"
 #include "plot_snapshot_ui_probe.hpp"
+#include "generic_plot_ui_probe.hpp"
 #include <cmath>
 #include <cstring>
 #include <imagejxx/operations.hpp>
@@ -230,6 +231,9 @@ PYBIND11_MODULE(_desktop, m) {
       .def("_intensity_calibration_ui_case",[](Window& window,const std::string& directory) {
           py::gil_scoped_release release;return intensityCalibrationUiCase(window,"imgui_python",directory).dump();
         })
+      .def("_generic_plot_ui_case",[](Window& window,const std::string& directory) {
+        py::gil_scoped_release release;return genericPlotUiCase(window,"imgui_python",directory).dump();
+      })
       .def("_plot_snapshots_ui_case",[](Window& window,const std::string& directory) {
         py::gil_scoped_release release;return plotSnapshotUiCase(window,"imgui_python",directory).dump();
       })

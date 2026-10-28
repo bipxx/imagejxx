@@ -8,7 +8,7 @@
 namespace imagejxx::desktop {
 CalibrationPlotDrawing drawCalibrationPlotGeometry(ImDrawList* draw,const ImageJIntensityFitPlot& data,
     const CalibrationPlotAnnotation* fitPlotAnnotation,const CalibrationPlotView& fitPlotView,
-    const CalibrationPlotStyle& style,const CalibrationPlotCanvas& canvas,bool headlessSessionActive) {
+    const CalibrationPlotStyle& style,const CalibrationPlotCanvas& canvas,bool headlessSessionActive,const CalibrationPlotPayload* payload) {
   CalibrationPlotDrawing result;
   const auto origin=canvas.origin,size=canvas.size,widgetOrigin=canvas.widget_origin,widgetSize=canvas.widget_size;
   const auto guiScale=canvas.scale;const ImVec2 end{origin.x+size.x,origin.y+size.y};
@@ -34,15 +34,31 @@ CalibrationPlotDrawing drawCalibrationPlotGeometry(ImDrawList* draw,const ImageJ
     };
     const auto representable=[&](double x,double y){return std::isfinite(x) && std::isfinite(y) && (!fitPlotView.log_x || x>0) && (!fitPlotView.log_y || y>0);};
     auto& drawnSegments=result.drawn_segments;auto& maskedSegments=result.masked_segments;auto& finiteGeometry=result.finite_geometry;
-    for(std::size_t i=1;i<data.curve_x.size();++i) {
-      if(!representable(data.curve_x[i-1],data.curve_y[i-1]) || !representable(data.curve_x[i],data.curve_y[i])){++maskedSegments;continue;}
-      const auto a=position(data.curve_x[i-1],data.curve_y[i-1]),b=position(data.curve_x[i],data.curve_y[i]);
+    const bool generic=payload && !payload->calibration();
+    const auto count=payload?payload->curveSize():data.curve_x.size();
+    const auto cx=[&](std::size_t i){return payload?payload->curveX(i):double(data.curve_x[i]);};
+    const auto cy=[&](std::size_t i){return payload?payload->curveY(i):double(data.curve_y[i]);};
+    if(payload && payload->histogram) {
+      const auto& edges=payload->histogram->histogram.edges;
+      for(std::size_t i=0;i<count;++i) {
+        auto left=edges[i];const auto right=edges[i+1],value=cy(i);
+        if(fitPlotView.log_x)left=std::max(left,std::min(viewLimits[0],viewLimits[1]));
+        const auto base=fitPlotView.log_y?std::min(viewLimits[2],viewLimits[3]):0.;
+        if(!representable(left,value) || !representable(right,value)){++maskedSegments;continue;}
+        const auto a=position(left,base),b=position(right,value);
+        if(std::isfinite(a.x) && std::isfinite(a.y) && std::isfinite(b.x) && std::isfinite(b.y)) {
+          draw->AddRectFilled({std::min(a.x,b.x),std::min(a.y,b.y)},{std::max(a.x,b.x),std::max(a.y,b.y)},packedColor(style.curve_color));++result.drawn_bars;
+        }else finiteGeometry=false;
+      }
+    } else for(std::size_t i=1;i<count;++i) {
+      if(!representable(cx(i-1),cy(i-1)) || !representable(cx(i),cy(i))){++maskedSegments;continue;}
+      const auto a=position(cx(i-1),cy(i-1)),b=position(cx(i),cy(i));
       if(std::isfinite(a.x) && std::isfinite(a.y) && std::isfinite(b.x) && std::isfinite(b.y)) {
         draw->AddLine(a,b,packedColor(style.curve_color),float(style.line_width)*guiScale);++drawnSegments;
       } else finiteGeometry=false;
     }
     auto& points=result.points;
-    for(std::size_t i=0;i<data.measured.size();++i) {
+    for(std::size_t i=0;!generic && i<data.measured.size();++i) {
       if(!representable(data.measured[i],data.known[i])){if(headlessSessionActive)points.push_back(nullptr);continue;}
       const auto point=position(data.measured[i],data.known[i]);
       if(std::isfinite(point.x) && std::isfinite(point.y))draw->AddCircleFilled(point,float(style.point_radius)*guiScale,packedColor(style.point_color));

@@ -15,12 +15,12 @@ struct CalibrationPlotCanvas {
 struct CalibrationPlotDrawing {
   Json points=Json::array(),x_ticks=Json::array(),y_ticks=Json::array(),model_overlay=nullptr;
   Json x_minor_ticks=Json::array(),y_minor_ticks=Json::array();
-  std::size_t drawn_segments=0,masked_segments=0,grid_lines=0;
+  std::size_t drawn_segments=0,drawn_bars=0,masked_segments=0,grid_lines=0;
   bool finite_geometry=true;
 };
 CalibrationPlotDrawing drawCalibrationPlotGeometry(ImDrawList*,const ImageJIntensityFitPlot&,
     const CalibrationPlotAnnotation*,const CalibrationPlotView&,const CalibrationPlotStyle&,
-    const CalibrationPlotCanvas&,bool observe);
+    const CalibrationPlotCanvas&,bool observe,const CalibrationPlotPayload* payload=nullptr);
 std::size_t calibrationPlotImageBytes(const CalibrationPlotPayload&,int width,int height);
 Json exportCalibrationPlotPng(const std::string&,const CalibrationPlotPayload&,
     const CalibrationPlotView&,const CalibrationPlotStyle&,int width,int height,RenderMemory&);

@@ -1,5 +1,54 @@
 # Shortest delivery paths by API and setting key
 
+## Shared histogram/profile plot workflow — 2026-10-28
+
+Legacy histogram/profile plots now reuse view/axes/ticks, applicable style,
+snapshots and PNG/CSV export. Scientific Histogram adds Interactive plot from
+its last immutable result, including after source closure. Exact bin/count CSV
+is reused; opening plots does not re-read source pixels. Reopening one result
+shares one payload lease via a weak hint, with independent per-window controls.
+Generic kinds/captions carry no invented calibration model. Profiles preserve
+existing sampled values/distances/junction behavior and prepare grayscale once.
+Legacy histogram retains x,y CSV/bin capacity; scientific CSV retains exact
+bin/lower/upper/count. Generic diagnostics avoid duplicate calibration vectors.
+
+Windows expanded915 collected:914 passed, one explicitly gated hidden-OpenGL
+settings check skipped. Original783 focused cases remain passing. Five C++ UI
+cases pass; new generic case118/160 through both hosts covers physical plot
+controls/exports after labeled producer/closure fixtures. Prior cases remain
+186/192 and606/608. Linux final math and current profile/histogram PNG consumers
+pass against existing archives/SDK, not Linux UI/full SDK. C++/Python PNGs are
+byte-identical and final bytes match visually inspected artifacts.
+[Scoped evidence](../parity/reviews/G034-generic-plot-progress001.json).
+
+All owned scratch/previews retired; cleanup recovered4,991,833B. Necessary
+failed-reader/generated-consumer diagnostics retained. Superseded full captures
+retired with identities; full contents unavailable. Known roots8,486,548,659B,
+two denied caches keep full8GiB unverified. Same caches/runtime/SDK, commercial
+review passes, reference fingerprints unchanged. No speed/full-family promotion:
+47 in progress/52 open/0 complete. Next: exact bin/sample hover and captured
+target/plane/ROI captions, then calibration settings/import/global/replay and
+original-reference/downstream/platform gates. Plot persistence and OS windows
+remain open; do not interpret generic viewer reuse as complete ImageJ parity.
+
+Generic APIs: keep_plot_snapshot/close_plot_snapshot retain logical-ID
+semantics. show/set_plot_limits, zoom_plot_rectangle, show/set_plot_style,
+show_plot_image_export/export_plot_image and export_plot_csv accept optional
+plot_id; live paths keep active source/All-revision guards. show_histogram_plot
+accepts no arguments and opens the last scientific result as a snapshot. Existing
+intensity plot action names remain supported. Profile style: line_width and
+curve_color; histogram: curve_color. Legacy generic root=plot, calibration
+root=fit_plot; raw histogram counts/edges remain exact in diagnostic/CSV output.
+
+Shortest next path: derive exact hovered bin from retained edges/counts and
+nearest profile sample from captured series, using shared view fractions and no
+provider reads. Prepare compact target/plane/ROI captions at producer publication,
+account their bytes with payload, preserve them after source close, and extend
+the118/160 generic case without growing the186-frame calibration snapshot case.
+Then audit G034 settings/import/global/replay/downstream keys against original
+requirements; source/display/memory compatibility and original reference gates
+remain distinct from this focused viewer result.
+
 ## Bounded automatic major/minor plot ticks — 2026-10-28
 
 Axes now offers opt-in nice_ticks/minor_ticks Boolean controls, also accepted by
@@ -15,7 +64,7 @@ Linux math and current PNG consumers pass against existing pinned archives/SDK;
 no Linux UI/full SDK promotion. Both UI hosts physically toggle after source
 closure and export. Artifact readers find16 minor stems per C++/Python/Linux PNG;
 C++/Python outputs are byte-identical and output was visually reviewed. Dedicated
-case186/192; calibration606/608. [Scoped evidence](parity/reviews/G034-calibration-plot-ticks-progress001.json).
+case186/192; calibration606/608. [Scoped evidence](../parity/reviews/G034-calibration-plot-ticks-progress001.json).
 
 Two attempts exposed old initial/reopened dialog assertions requiring exactly
 eight fields. Both original expected dictionaries are retained, with separate
@@ -64,7 +113,7 @@ C++/Python PNGs byte-identical. Caption/model and curve outputs visually checked
 Dedicated case178/192 frames; calibration stays606/608. Current Linux shared
 drawing/export code compiles/executes against existing pinned archives/SDK and
 its PNG passes an independent green-pixel check. No Linux UI/full SDK or OS/GPU
-promotion. [Scoped evidence](parity/reviews/G034-calibration-plot-image-export-progress001.json).
+promotion. [Scoped evidence](../parity/reviews/G034-calibration-plot-image-export-progress001.json).
 
 First compile exposed an extracted internal ImFormatString dependency; standard
 snprintf fixes the interface. Original-SHA-verified preimage/diagnostics retained.
@@ -105,7 +154,7 @@ readers derive annotation box position from delivered canvas/text geometry and
 verify exact text, sibling/data/history/memory invariants. Dedicated case now
 154/192 frames; calibration stays606/608. Linux private C++17 consumer passes
 against existing SDK; no Linux UI/full SDK, OS/GPU or whole-family promotion.
-[Scoped evidence](parity/reviews/G034-calibration-plot-style-progress001.json).
+[Scoped evidence](../parity/reviews/G034-calibration-plot-style-progress001.json).
 
 One new test mistook a hidden live-window observation for an always-present
 getter. It now closes floating windows before checking the unchanged live style;
@@ -140,7 +189,7 @@ Both UI lifecycle cases retain original Unicode captions through fixture rename
 and source closure; snapshot case remains92/192 frames, calibration606/608.
 Linux private C++17 payload consumer passes against existing SDK. No Linux UI,
 OS/GPU, whole-family or speed promotion; tracker47 in progress/52 open/0 complete.
-[Scoped evidence](parity/reviews/G034-calibration-plot-caption-progress001.json).
+[Scoped evidence](../parity/reviews/G034-calibration-plot-caption-progress001.json).
 
 All owned terminal scratch retired after lossless verification; compression
 recovered326,970B. Known roots8,471,863,221B, two denied caches keep full
@@ -174,7 +223,7 @@ and close snapshots; readers verify shared charging, independent views, unchange
 samples, expired source weak owner and final managed bytes zero. Dedicated case
 uses92/192 frames; original calibration stays606/608. Linux private C++17
 consumer passes against existing SDK; no Linux UI/full SDK or OS/GPU promotion.
-[Scoped evidence](parity/reviews/G034-calibration-plot-snapshots-progress001.json).
+[Scoped evidence](../parity/reviews/G034-calibration-plot-snapshots-progress001.json).
 
 One753-test run caught snapshot appearance stealing new live-plot focus; explicit
 focus priority fixes it, verified by two passing runs. Failed producer delta and

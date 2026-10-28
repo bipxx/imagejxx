@@ -11,8 +11,8 @@ std::size_t calibrationPlotImageBytes(const CalibrationPlotPayload& payload,int 
   if(width<256 || width>4096 || height<192 || height>4096 || std::uint64_t(width)*height>4*1024*1024)
     throw std::invalid_argument("Plot image dimensions require width256-4096, height192-4096 and at most4 megapixels");
   auto bytes=RenderMemory::add(RenderMemory::mul(std::size_t(width)*height,32),16*1024*1024);
-  bytes=RenderMemory::add(bytes,RenderMemory::mul(payload.data.curve_x.size(),512));
-  bytes=RenderMemory::add(bytes,RenderMemory::mul(payload.data.measured.size(),4096));
+  bytes=RenderMemory::add(bytes,RenderMemory::mul(payload.curveSize(),512));
+  bytes=RenderMemory::add(bytes,RenderMemory::mul(payload.calibration()?payload.data.measured.size():0,4096));
   return RenderMemory::add(bytes,RenderMemory::mul(payload.annotation.canvas_text.size()+16384,256));
 }
 namespace {
@@ -84,14 +84,14 @@ Json exportCalibrationPlotPng(const std::string& path,const CalibrationPlotPaylo
   shared.ClipRectFullscreen={0,0,float(width),float(height)};
   ImDrawList list(&shared);list._ResetForNewFrame();list.PushTextureID(1);list.PushClipRect({0,0},{float(width),float(height)});
   const ImU32 foreground=IM_COL32(25,25,25,255);
-  const auto heading=std::string(payload.table?"Calibration table: ":"Calibration fit: ")+boundedCaption(payload.data.function);
+  const auto heading=boundedCaption(payload.caption());
   const auto source=std::string("Source: ")+boundedCaption(payload.source_title.empty()?"(untitled source)":payload.source_title);
   list.PushClipRect({12,8},{float(width-12),55},true);
   list.AddText(font,13,{12,12},foreground,heading.c_str());list.AddText(font,13,{12,30},foreground,source.c_str());list.PopClipRect();
   const CalibrationPlotCanvas canvas{{80,70},{float(width-110),float(height-125)},{12,60},{float(width-24),float(height-90)},font,13,1,
     IM_COL32(80,80,80,255),IM_COL32(215,215,215,255),foreground};
-  auto geometry=drawCalibrationPlotGeometry(&list,payload.data,&payload.annotation,view,style,canvas,true);
-  auto axis=std::string("X: pixel value | Y: ")+boundedCaption(payload.data.value_unit);
+  auto geometry=drawCalibrationPlotGeometry(&list,payload.data,&payload.annotation,view,style,canvas,true,&payload);
+  auto axis=std::string("X: ")+boundedCaption(payload.x_axis)+" | Y: "+boundedCaption(payload.yLabel());
   list.AddText(font,13,{12,float(height-20)},foreground,axis.c_str());
   if(view.log_x || view.log_y)list.AddText(font,13,{12,float(height-38)},foreground,"Log axes: nonpositive values are omitted.");
   list.PopClipRect();list.PopTextureID();
@@ -112,7 +112,7 @@ Json exportCalibrationPlotPng(const std::string& path,const CalibrationPlotPaylo
     {"view_limits",view.limits(payload.data)},{"nice_ticks",view.nice_ticks},{"minor_ticks",view.minor_ticks},
     {"x_ticks",std::move(geometry.x_ticks)},{"y_ticks",std::move(geometry.y_ticks)},{"x_minor_ticks",std::move(geometry.x_minor_ticks)},{"y_minor_ticks",std::move(geometry.y_minor_ticks)},
     {"model_overlay",std::move(geometry.model_overlay)},
-    {"drawn_segments",geometry.drawn_segments},{"masked_segments",geometry.masked_segments},{"working_bytes",bytes},
+    {"kind",payload.kindName()},{"drawn_bars",geometry.drawn_bars},{"drawn_segments",geometry.drawn_segments},{"masked_segments",geometry.masked_segments},{"working_bytes",bytes},
     {"font","Dear ImGui built-in 13px; unsupported glyphs use fallback"},{"background","white"},{"encoded_bytes",encoded.bytes.size()}};
   writeBytes(path,encoded.bytes);return result;
 }
