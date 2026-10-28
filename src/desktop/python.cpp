@@ -51,6 +51,7 @@
 #include "rendering.hpp"
 #include "z_subset_ui_probe.hpp"
 #include "imagej_projection_ui_probe.hpp"
+#include "plot_snapshot_ui_probe.hpp"
 #include <cmath>
 #include <cstring>
 #include <imagejxx/operations.hpp>
@@ -229,6 +230,9 @@ PYBIND11_MODULE(_desktop, m) {
       .def("_intensity_calibration_ui_case",[](Window& window,const std::string& directory) {
           py::gil_scoped_release release;return intensityCalibrationUiCase(window,"imgui_python",directory).dump();
         })
+      .def("_plot_snapshots_ui_case",[](Window& window,const std::string& directory) {
+        py::gil_scoped_release release;return plotSnapshotUiCase(window,"imgui_python",directory).dump();
+      })
       .def("_imagej_projection_ui_case",[](Window& window,const std::string& directory) {
         py::gil_scoped_release release;return imagejProjectionUiCase(window,"imgui_python",directory).dump();
       })
@@ -919,6 +923,7 @@ PYBIND11_MODULE(_desktop, m) {
       .def("native_document", &Window::nativeDocument,
            py::arg("document_id") = 0)
       .def("render_memory_info",[](const Window &w){return w.renderMemoryInfo().dump();})
+      .def("plot_snapshots_info",[](const Window &w){return w.plotSnapshotsInfo().dump();})
       .def("virtual_view_cache_info",[](const Window &w){return w.virtualViewCacheInfo().dump();})
       .def("add_native_document", &Window::addNativeDocument,
            py::arg("document"))

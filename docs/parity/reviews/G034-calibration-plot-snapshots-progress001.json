@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "scope": "G034 calibration plot source-independent in-host floating snapshots, shared immutable payload admission and independent view controls",
+  "state": "focused_checks_passed",
+  "acceptance_claim": false,
+  "implementation": {
+    "payload": "One shared immutable calibration plot/annotation payload and one retained render-memory lease per distinct data set; no source document/provider/transaction pointer. Each window has its own view, drag, focus and controller lease.",
+    "publication": "All three live plot publication routes admit retained data before image commit/controller swap. Quota refusal preserves previous calibration, undo history and plot. Source mutation invalidates live plots only; closing source immediately clears live payload.",
+    "lifecycle": "Keep snapshot / Duplicate snapshot retain prepared data without copying sample vectors. Snapshots survive source mutation and closure. Axes, pan/zoom/rectangle, details and CSV reuse one renderer. Last owner releases managed payload; no second producer store or worker pool.",
+    "identity": "Monotonic public snapshot/payload IDs; internal ImGui slots reused by peak concurrency with scoped logical control IDs, cleared storage/input, no saved settings. Dialog callbacks resolve logical ID+generation; stale IDs cannot retarget replacement windows.",
+    "focus": "Latest explicit keep/live publication focus wins; snapshot appearance alone cannot steal it.",
+    "python": "Editor.plot_snapshots_info returns small identity/memory summaries. keep_plot_snapshot optionally duplicates plot_id; close_plot_snapshot requires positive ID. Existing show_intensity_plot_limits, set_intensity_plot_limits and zoom_intensity_plot_rectangle accept optional plot_id; omitted/zero selects guarded live plot. Snapshot actions work without source documents.",
+    "memory_scope": "Managed retained sample/annotation/controller allocations only; excludes total RSS, ImGui/driver/transport transient allocations and caller JSON objects.",
+    "window_scope": "Floating inside main application only, session lifetime; independent OS windows require backend platform-window implementation and OS/GPU qualification. No snapshot workspace persistence."
+  },
+  "evidence": {
+    "calibration-plot-snapshots-windows-build341": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-snapshots-windows-build341\\receipt.json",
+      "bytes": 25633,
+      "sha256": "da3940cad7d350ae34dfe34330089e2745fdf22b028e768e6ae2ad96cc9b415b"
+    },
+    "calibration-plot-snapshots-installed342": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-snapshots-installed342\\receipt.json",
+      "bytes": 32398,
+      "sha256": "79596b7c5e1556576a2216e6535514ba07e4568e87cdf041d2a49b9df81883ad"
+    },
+    "calibration-plot-snapshots-linux343": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-snapshots-linux343\\receipt.json",
+      "bytes": 30503,
+      "sha256": "95209654148a05a2cd67cb70cd01e02e1ccacff6ae86870c440c17cf4c4a37a3"
+    },
+    "calibration-plot-snapshots-focus344": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-snapshots-focus344\\receipt.json",
+      "bytes": 534,
+      "sha256": "5daefad8f4669b6f9f091ed1d335140ff01b2949b119c501bbf99f5e374f8411"
+    },
+    "calibration-plot-snapshots-windows-build345": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-snapshots-windows-build345\\receipt.json",
+      "bytes": 25665,
+      "sha256": "41948d8f2747e242493109b64a049b5e96b3b3ade731260f3593eaad94844e84"
+    },
+    "calibration-plot-snapshots-installed346": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-snapshots-installed346\\receipt.json",
+      "bytes": 32334,
+      "sha256": "8e7392cf34546ca8f1954b4f8a82400700d6e4ff11a191f381813f608224216d"
+    },
+    "calibration-plot-snapshots-windows-build347": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-snapshots-windows-build347\\receipt.json",
+      "bytes": 25636,
+      "sha256": "6648c1b49fb56087c04e5dd2dac8a6943b99aafdd68d4ff6082e715a6678b253"
+    },
+    "calibration-plot-snapshots-installed348": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-snapshots-installed348\\receipt.json",
+      "bytes": 32321,
+      "sha256": "94956415cf5c02d6658e4836ea86d0c082bbdf58c565afdbbc2c164b3911f929"
+    },
+    "calibration-plot-snapshots-retention349": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-snapshots-retention349\\receipt.json",
+      "bytes": 10903,
+      "sha256": "bdbacfc7d6a90ddf6446175fe88f5f1d529d9f14b2ed898bc4ae280f83c701d2"
+    }
+  },
+  "verification": {
+    "windows_installed_pytest": {
+      "tests": 753,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "native": "Windows projection execution/private viewport+annotation+payload checks pass. Linux C++17 private consumer linked to existing core SDK archive passes; not Linux UI/full SDK qualification.",
+    "actual_imgui_input": "Four installed C++ cases; snapshot workflow also through Python. Actual Keep/Duplicate, independent numeric axes after source closure, CSV export after closure and close controls. Source mutation/closure are labeled fixtures; independent reader checks old samples/unit/views, owner weak reference expiration, memory deltas and final managed bytes zero.",
+    "snapshot_frames": 92,
+    "snapshot_frame_cap": 192,
+    "calibration_frames": 606,
+    "calibration_frame_cap": 608,
+    "regressions": "Live replacement keeps old snapshot, render quota refusal precedes metadata/history commit, strict IDs, monotonic IDs through slot reuse, shared data charged once and released at last owner.",
+    "commercial_use_inventory": "passed; no dependency added",
+    "diff_check": "passed",
+    "limits": "Focused installed/headless checks do not prove full ImageJ/Fiji parity, OS/GPU behavior or comparative speed."
+  },
+  "harness_history": [
+    {
+      "run": "installed342",
+      "state": "failed",
+      "cause": "One of753 tests exposed appearance focus stealing a newly published live plot in a fresh UI context. Explicit focus priority fixed;753 pass in346 and348. Failed source delta against89308c3 preserved and original source SHA checked against build341 freeze."
+    },
+    {
+      "run": "retention349 first attempt",
+      "state": "stopped before deletion",
+      "cause": "ZIP members use POSIX separators; Windows member lookup corrected. Existing archive reused and all member hashes verified before any retirement."
+    }
+  ],
+  "storage": {
+    "before_known_bytes": 8463448637,
+    "after_known_bytes": 8470427987,
+    "full_budget_verified": false,
+    "unknown_subtrees": [
+      ".cache/pytest",
+      ".cache/pytest-ui"
+    ],
+    "temporary_build_reserve_bytes": 536870912,
+    "capture_scratch_bound_bytes": 67108864,
+    "lossless_recovery_bytes": 1038313,
+    "inventory": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-snapshots-after350.json",
+      "bytes": 1524,
+      "sha256": "1a3e78b2acd021aefdd9d60e977ba7b537b46ceb99f84cee47d3cf3dd510950a"
+    },
+    "retention": "All packet-owned Windows/Linux terminal scratch retired. Necessary captures/logs/producer manifests/failed delta compressed and hash-verified. Same compiler caches and installed runtimes/SDKs; no whole cache or checkout archive. Historical inventories retain original scopes."
+  },
+  "remaining": [
+    "Independent OS plot windows and platform/GPU acceptance",
+    "Source title captions, annotation placement/style/image export and nice/minor ticks",
+    "Generic histogram/profile renderer reuse and snapshot/session persistence",
+    "Calibration settings/restarts/global tables/import/replay/macro/downstream consumers",
+    "Linux Python/UI, installed IO SDK, macOS and original-reference gates",
+    "Matched ImageJ/Fiji end-to-end speed and memory comparisons"
+  ],
+  "family_status": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  }
+}

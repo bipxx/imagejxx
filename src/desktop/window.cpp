@@ -7,6 +7,7 @@
 #include "path_visual.hpp"
 #include "calibration_plot_view.hpp"
 #include "calibration_plot_annotation.hpp"
+#include "calibration_plot_payload.hpp"
 #include <imagejxx/playback.hpp>
 #include "shadow_demo.hpp"
 #include "legacy_target_resources.hpp"
@@ -1189,16 +1190,27 @@ struct Window::Impl {
   bool jobPreview = false, jobSkip = false;
   std::atomic<bool> cancelled{false};
   bool fitShowPlot = true; // interactive session preference, never numeric provenance
-  bool fitPlotFocusRequested = false;
-  bool fitPlotIsTable = false;
-  CalibrationPlotView fitPlotView;
-  std::uint64_t fitPlotGeneration=0;
   struct PlotRectangleDrag {ImVec2 start,origin,size;CalibrationPlotView view;std::uint64_t generation;};
-  std::optional<PlotRectangleDrag> fitPlotDrag;
-  std::optional<ImageJIntensityFitPlot> fitPlot;
-  std::optional<CalibrationPlotAnnotation> fitPlotAnnotation;
-  std::optional<FitPlotBinding> fitPlotSource;
-  Json fitPlotObservation;
+  struct CalibrationPlotState {
+    std::shared_ptr<const CalibrationPlotPayload> payload;
+    CalibrationPlotView view;
+    std::uint64_t generation=0;
+    bool focus=false;
+    std::optional<PlotRectangleDrag> drag;
+    std::optional<FitPlotBinding> source;
+  };
+  struct PlotSnapshot {
+    std::uint64_t id=0;
+    std::size_t renderSlot=0;
+    std::string title,controlId;
+    CalibrationPlotState state;
+    RenderMemory::Lease memory;
+    bool open=true,resetGuiStorage=true;
+  };
+  CalibrationPlotState livePlot;
+  std::vector<std::unique_ptr<PlotSnapshot>> plotSnapshots;
+  std::uint64_t nextPlotSnapshotId=1,nextPlotPayloadId=1;
+  Json fitPlotObservation,snapshotPlotObservations=Json::array();
   std::vector<float> plotX, plotY;
   std::string plotTitle;
   struct Dialog {
@@ -1208,7 +1220,7 @@ struct Window::Impl {
     std::map<std::string, std::string> text;
     Json controls = Json::object();
     std::function<void(Json)> submit;
-    bool open = false, operation = false;
+    bool open = false, operation = false, independentPlot = false;
     std::optional<DocumentSnapshot> enlargementSource;
     std::optional<DocumentSnapshot> axisPlaneSource;
     std::string axisIndexLabel;
@@ -1635,8 +1647,8 @@ struct Window::Impl {
           (dataset.pixel_type()==PixelType::UInt8 || dataset.pixel_type()==PixelType::UInt16);
     }
     if(action=="show_intensity_plot_limits" || action=="set_intensity_plot_limits" || action=="zoom_intensity_plot_rectangle")
-      return !owner.busy() && fitPlot && fitPlotSource && owner.controller_->active_document_id()==source->id &&
-          fitPlotSource->same_document(source->nativeSnapshot()) && fitPlotSource->expected.matches(source->nativeSnapshot().revisions(),Change::All);
+      return !owner.busy() && livePlot.payload && livePlot.source && owner.controller_->active_document_id()==source->id &&
+          livePlot.source->same_document(source->nativeSnapshot()) && livePlot.source->expected.matches(source->nativeSnapshot().revisions(),Change::All);
     if(action=="show_intensity_calibration" || action=="set_intensity_calibration" || action=="fit_intensity_calibration")
       return !owner.busy() && owner.controller_->active_document_id()==source->id;
     if (action=="show_imagej_projection" || action=="show_imagej_grouped_projection" ||
@@ -4001,6 +4013,7 @@ struct Window::Impl {
     mirrorGaussianIds();
     resetInput(panes[index]);
     owner.controller_->close(d->id, true);
+    if(livePlot.source && livePlot.source->id()==d->id){livePlot.payload.reset();livePlot.source.reset();livePlot.drag.reset();}
     if(viewportJobs)viewportJobs->cancelDocument(d->id);
     panes[index].sampledSurface.reset();panes[index].sampleMemory.reset();
     d->releaseFrontend();
@@ -4606,45 +4619,99 @@ struct Window::Impl {
     auto expected=source.revisions();expected.advance(document_changes(source.data(),edit.preview().data()));
     std::optional<FitPlotBinding> binding;
     if(plot)binding=FitPlotBinding{source.id(),expected};
+    std::shared_ptr<const CalibrationPlotPayload> payload;
+    if(plot)payload=retainPlot(std::move(*plot),std::move(*annotation),true,source.id());
     const auto facade=owner.documentById(source.id());
     if(facade->scientific())owner.controller_->commit(edit);else facade->commitNative(edit);
-    static_assert(std::is_nothrow_swappable_v<decltype(plot)>);
+    static_assert(std::is_nothrow_swappable_v<decltype(payload)>);
     static_assert(std::is_nothrow_swappable_v<decltype(binding)>);
     // A successful Apply remembers the preference; Cancel and failures never do.
     fitShowPlot=show;
-    static_assert(std::is_nothrow_swappable_v<decltype(annotation)>);
-    if(plot){fitPlot.swap(plot);fitPlotAnnotation.swap(annotation);fitPlotSource.swap(binding);fitPlotIsTable=true;fitPlotFocusRequested=true;fitPlotView={};fitPlotDrag.reset();++fitPlotGeneration;}
+    if(payload){livePlot.payload.swap(payload);livePlot.source.swap(binding);focusLivePlot();livePlot.view={};livePlot.drag.reset();++livePlot.generation;}
   }
-  void requireCalibrationPlot() const {
-    if(!fitPlot || !fitPlotSource || owner.documents_.empty())throw std::invalid_argument("Open a calibration plot first");
+  void focusLivePlot() noexcept {
+    livePlot.focus=true;for(auto& snapshot:plotSnapshots)snapshot->state.focus=false;
+  }
+  std::shared_ptr<const CalibrationPlotPayload> retainPlot(ImageJIntensityFitPlot data,CalibrationPlotAnnotation annotation,bool table,std::uint64_t sourceId) {
+    if(nextPlotPayloadId==std::numeric_limits<std::uint64_t>::max())throw std::overflow_error("Plot payload IDs exhausted");
+    auto payload=retain_calibration_plot(*renderMemory,std::move(data),std::move(annotation),table,sourceId,nextPlotPayloadId);
+    ++nextPlotPayloadId;return payload;
+  }
+  CalibrationPlotState& requireCalibrationPlot(std::uint64_t plotId=0) {
+    if(plotId) {
+      for(auto& snapshot:plotSnapshots)if(snapshot->id==plotId && snapshot->open && snapshot->state.payload)return snapshot->state;
+      throw std::invalid_argument("Plot snapshot is closed");
+    }
+    if(!livePlot.payload || !livePlot.source || owner.documents_.empty())throw std::invalid_argument("Open a calibration plot first");
     const auto current=owner.nativeSnapshot();
-    if(!fitPlotSource->same_document(current) || !fitPlotSource->expected.matches(current.revisions(),Change::All))throw RevisionConflict();
+    if(!livePlot.source->same_document(current) || !livePlot.source->expected.matches(current.revisions(),Change::All))throw RevisionConflict();
+    return livePlot;
   }
-  void applyPlotLimits(const std::array<double,4>& values,std::uint64_t generation,bool logX,bool logY,bool grid,bool ticks) {
-    requireCalibrationPlot();
-    if(generation!=fitPlotGeneration)throw std::invalid_argument("The plotted data changed; reopen axis limits");
-    auto candidate=fitPlotView;candidate.log_x=logX;candidate.log_y=logY;candidate.grid=grid;candidate.ticks=ticks;
+  std::uint64_t keepPlotSnapshot(std::uint64_t plotId=0) {
+    auto& source=requireCalibrationPlot(plotId);
+    if(nextPlotSnapshotId==std::numeric_limits<std::uint64_t>::max())throw std::overflow_error("Plot snapshot IDs exhausted");
+    auto snapshot=std::make_unique<PlotSnapshot>();snapshot->id=nextPlotSnapshotId;
+    // Reuse internal ImGui slots after close while public IDs never repeat.
+    // This bounds window-cache/ID growth by peak concurrently retained plots.
+    for(;;++snapshot->renderSlot) {
+      bool occupied=false;for(const auto& existing:plotSnapshots)if(existing->renderSlot==snapshot->renderSlot){occupied=true;break;}
+      if(!occupied)break;
+    }
+    snapshot->title="Plot snapshot "+std::to_string(snapshot->id)+"###PlotSnapshotSlot"+std::to_string(snapshot->renderSlot);
+    snapshot->controlId=std::to_string(snapshot->id);
+    const auto bytes=RenderMemory::add(sizeof(PlotSnapshot)+256,RenderMemory::add(snapshot->title.capacity()+1,snapshot->controlId.capacity()+1));
+    auto memory=renderMemory->acquire(bytes);
+    snapshot->state.payload=source.payload;snapshot->state.view=source.view;snapshot->state.source=source.source;
+    snapshot->state.generation=1;snapshot->state.focus=true;
+    snapshot->memory=memory.retain(bytes);
+    plotSnapshots.reserve(plotSnapshots.size()+1);
+    const auto id=snapshot->id;plotSnapshots.push_back(std::move(snapshot));++nextPlotSnapshotId;
+    livePlot.focus=false;for(auto& existing:plotSnapshots)existing->state.focus=existing->id==id;
+    return id;
+  }
+  void clearSnapshotInput(const PlotSnapshot& snapshot) {
+    if(!ImGui::GetCurrentContext())return;
+    auto* window=ImGui::FindWindowByName(snapshot.title.c_str());
+    if(window && GImGui->ActiveIdWindow==window)ImGui::ClearActiveID();
+    if(window && GImGui->NavWindow==window)ImGui::FocusWindow(nullptr);
+  }
+  void closePlotSnapshot(std::uint64_t id) {
+    for(auto it=plotSnapshots.begin();it!=plotSnapshots.end();++it)if((*it)->id==id){clearSnapshotInput(**it);plotSnapshots.erase(it);return;}
+    throw std::invalid_argument("Plot snapshot is closed");
+  }
+  Json plotSnapshotsInfo() const {
+    Json rows=Json::array();
+    for(const auto& snapshot:plotSnapshots)if(snapshot->open && snapshot->state.payload) {
+      const auto& payload=*snapshot->state.payload;
+      rows.push_back({{"plot_id",snapshot->id},{"payload_id",payload.payload_id},{"source_id",payload.source_id},{"function",payload.data.function},
+        {"kind",payload.table?"calibration_table":"fit"},{"payload_bytes",payload.memory.bytes()},{"window_bytes",snapshot->memory.bytes()}});
+    }
+    return rows;
+  }
+  void applyPlotLimits(const std::array<double,4>& values,std::uint64_t generation,bool logX,bool logY,bool grid,bool ticks,std::uint64_t plotId=0) {
+    auto& plot=requireCalibrationPlot(plotId);
+    if(generation!=plot.generation)throw std::invalid_argument("The plotted data changed; reopen axis limits");
+    auto candidate=plot.view;candidate.log_x=logX;candidate.log_y=logY;candidate.grid=grid;candidate.ticks=ticks;
     if(!candidate.set_limits(values))throw std::invalid_argument("Axis limits must be finite and distinct; logarithmic limits must be positive and distinguishable");
-    fitPlotView=candidate;fitPlotDrag.reset();
+    plot.view=candidate;plot.drag.reset();
   }
-  void showPlotLimits() {
-    requireCalibrationPlot();const auto limits=fitPlotView.limits(*fitPlot);
-    const auto generation=fitPlotGeneration;
+  void showPlotLimits(std::uint64_t plotId=0) {
+    auto& plot=requireCalibrationPlot(plotId);const auto limits=plot.view.limits(plot.payload->data);
+    const auto generation=plot.generation;
     ask("Plot Axis Limits",{{"x_min",limits[0]},{"x_max",limits[1]},{"y_min",limits[2]},{"y_max",limits[3]},
-        {"log_x",fitPlotView.log_x},{"log_y",fitPlotView.log_y},{"grid",fitPlotView.grid},{"ticks",fitPlotView.ticks}},
-        [this,generation](Json fields){
+        {"log_x",plot.view.log_x},{"log_y",plot.view.log_y},{"grid",plot.view.grid},{"ticks",plot.view.ticks}},
+        [this,generation,plotId](Json fields){
           std::array<double,4> values;const std::array<const char*,4> names{"x_min","x_max","y_min","y_max"};
           for(std::size_t i=0;i<4;++i){const auto& value=fields.at(names[i]);if(!value.is_number())throw std::invalid_argument("Axis limits require numbers");values[i]=value.get<double>();}
-          applyPlotLimits(values,generation,fields.at("log_x").get<bool>(),fields.at("log_y").get<bool>(),fields.at("grid").get<bool>(),fields.at("ticks").get<bool>());
+          applyPlotLimits(values,generation,fields.at("log_x").get<bool>(),fields.at("log_y").get<bool>(),fields.at("grid").get<bool>(),fields.at("ticks").get<bool>(),plotId);
         },Json::array({{{"name","x_min"},{"label","X from"},{"kind","float"}},
-          {{"name","x_max"},{"label","X to"},{"kind","float"}},
-          {{"name","y_min"},{"label","Y from"},{"kind","float"}},
-          {{"name","y_max"},{"label","Y to"},{"kind","float"}},
-          {{"name","log_x"},{"label","Logarithmic X (positive limits)"},{"kind","bool"}},
-          {{"name","log_y"},{"label","Logarithmic Y (positive limits)"},{"kind","bool"}},
-          {{"name","grid"},{"label","Grid lines"},{"kind","bool"}},
+          {{"name","x_max"},{"label","X to"},{"kind","float"}},{{"name","y_min"},{"label","Y from"},{"kind","float"}},
+          {{"name","y_max"},{"label","Y to"},{"kind","float"}},{{"name","log_x"},{"label","Logarithmic X (positive limits)"},{"kind","bool"}},
+          {{"name","log_y"},{"label","Logarithmic Y (positive limits)"},{"kind","bool"}},{{"name","grid"},{"label","Grid lines"},{"kind","bool"}},
           {{"name","ticks"},{"label","Ticks and labels"},{"kind","bool"}}}),"calibration_plot_limits");
+    dialog.independentPlot=plotId!=0;
   }
+  void drawCalibrationPlot(CalibrationPlotState& plot,const char* title,std::uint64_t plotId,Json& observation,PlotSnapshot* snapshot=nullptr);
   void plots();
   void dialogs();
   void canvas(Pane &pane);
@@ -5636,6 +5703,7 @@ Json Window::renderMemoryInfo() const {
   checkThread();const auto &m=*impl->renderMemory;
   return {{"limit_bytes",m.limit()},{"retained_bytes",m.retained()},{"working_bytes",m.working()},{"peak_reserved_bytes",m.peak()},{"denied_requests",m.denied()}};
 }
+Json Window::plotSnapshotsInfo() const {checkThread();return impl->plotSnapshotsInfo();}
 Json Window::virtualViewCacheInfo() const {
   checkThread();const auto &cache=*impl->viewCache;
   return {{"budget_bytes",cache.budget()},{"retained_bytes",cache.bytes()},{"entries",cache.entries()},{"evictions",cache.evictions()}};
@@ -6375,6 +6443,41 @@ void Window::clearError() {
 }
 void Window::action(const std::string &name, const Json &p) {
   checkThread();
+  if(name=="show_intensity_plot_limits" || name=="set_intensity_plot_limits" || name=="zoom_intensity_plot_rectangle" || name=="keep_plot_snapshot" || name=="close_plot_snapshot") {
+    if(!p.is_object())throw std::invalid_argument("Plot parameters must be an object");
+    std::uint64_t id=0;
+    if(p.contains("plot_id")){const auto& value=p.at("plot_id");if(!value.is_number_integer() || value<0)throw std::invalid_argument("Plot ID must be nonnegative");id=value.get<std::uint64_t>();}
+    if(name=="close_plot_snapshot") {
+      if(p.size()!=1 || !id)throw std::invalid_argument("Closing a snapshot requires only its positive plot_id");
+      impl->closePlotSnapshot(id);return;
+    }
+    auto& plot=impl->requireCalibrationPlot(id);
+    if(!id && busy() && name!="keep_plot_snapshot")throw std::invalid_argument("Wait for the current edit");
+    if(p.contains("document_id")) {
+      const auto& value=p.at("document_id");
+      if(id || !value.is_number_integer() || value<0 || (value.get<std::uint64_t>()!=0 && value.get<std::uint64_t>()!=nativeSnapshot().id()))throw std::invalid_argument("Plot action requires its active source document");
+    }
+    if(name=="keep_plot_snapshot" || name=="show_intensity_plot_limits") {
+      for(const auto& field:p.items())if(field.key()!="plot_id" && field.key()!="document_id")throw std::invalid_argument("Unknown plot field");
+      if(name=="keep_plot_snapshot")impl->keepPlotSnapshot(id);else impl->showPlotLimits(id);return;
+    }
+    if(name=="zoom_intensity_plot_rectangle") {
+      for(const auto& field:p.items())if(field.key()!="rectangle" && field.key()!="document_id" && field.key()!="plot_id")throw std::invalid_argument("Unknown plot rectangle field");
+      const auto& values=p.at("rectangle");if(!values.is_array() || values.size()!=4)throw std::invalid_argument("Plot rectangle requires four plot fractions");
+      std::array<double,4> bounds;
+      for(std::size_t i=0;i<4;++i){if(!values[i].is_number())throw std::invalid_argument("Plot rectangle requires numeric fractions");bounds[i]=values[i].get<double>();}
+      auto candidate=plot.view;
+      if(!candidate.rectangle(plot.payload->data,bounds))throw std::invalid_argument("Plot rectangle has no representable area");
+      plot.view=candidate;plot.drag.reset();return;
+    }
+    for(const auto& field:p.items())if(field.key()!="document_id" && field.key()!="plot_id" && field.key()!="limits" && field.key()!="log_x" && field.key()!="log_y" && field.key()!="grid" && field.key()!="ticks")throw std::invalid_argument("Unknown axis limits field");
+    const auto& limits=p.at("limits");if(!limits.is_array() || limits.size()!=4)throw std::invalid_argument("Axis limits require [x_min,x_max,y_min,y_max]");
+    std::array<double,4> values;
+    for(std::size_t i=0;i<4;++i){if(!limits[i].is_number())throw std::invalid_argument("Axis limits require numbers");values[i]=limits[i].get<double>();}
+    const auto option=[&](const char* key,bool current){if(!p.contains(key))return current;if(!p.at(key).is_boolean())throw std::invalid_argument("Axis options require Boolean");return p.at(key).get<bool>();};
+    impl->applyPlotLimits(values,plot.generation,option("log_x",plot.view.log_x),option("log_y",plot.view.log_y),option("grid",plot.view.grid),option("ticks",plot.view.ticks),id);return;
+  }
+
   if(name=="show_contrast_apply_rebind"){
     if(!p.is_object() || p.size()!=1 || !p.contains("record") || !p.at("record").is_object())throw std::invalid_argument("Rebind review requires only a command record");
     const auto record=metadataObjectFromJson(p.at("record"));const auto limits=impl->contrastApplyLimits();
@@ -6675,30 +6778,6 @@ void Window::action(const std::string &name, const Json &p) {
   // not bypass its capability check before clipboard, files or jobs change.
   if (targetId && !targeted.count(name))
     impl->requireAction(name, 0, operationId);
-  if(name=="show_intensity_plot_limits" || name=="set_intensity_plot_limits" || name=="zoom_intensity_plot_rectangle") {
-    if(!p.is_object())throw std::invalid_argument("Axis parameters must be an object");
-    if(busy())throw std::invalid_argument("Wait for the current edit");
-    impl->requireCalibrationPlot();
-    if(targetId && targetId!=nativeSnapshot().id())throw std::invalid_argument("Axis limits require the active plotted document");
-    if(name=="zoom_intensity_plot_rectangle") {
-      for(const auto& field:p.items())if(field.key()!="rectangle" && field.key()!="document_id")throw std::invalid_argument("Unknown plot rectangle field");
-      const auto& values=p.at("rectangle");if(!values.is_array() || values.size()!=4)throw std::invalid_argument("Plot rectangle requires four plot fractions");
-      std::array<double,4> bounds;
-      for(std::size_t i=0;i<4;++i){if(!values[i].is_number())throw std::invalid_argument("Plot rectangle requires numeric fractions");bounds[i]=values[i].get<double>();}
-      auto candidate=impl->fitPlotView;
-      if(!candidate.rectangle(*impl->fitPlot,bounds))throw std::invalid_argument("Plot rectangle has no representable area");
-      impl->fitPlotView=candidate;impl->fitPlotDrag.reset();return;
-    }
-    for(const auto& field:p.items())if(field.key()!="document_id" && !(name=="set_intensity_plot_limits" &&
-        (field.key()=="limits" || field.key()=="log_x" || field.key()=="log_y" || field.key()=="grid" || field.key()=="ticks")))throw std::invalid_argument("Unknown axis limits field");
-    if(name=="show_intensity_plot_limits"){impl->showPlotLimits();return;}
-    const auto& limits=p.at("limits");
-    if(!limits.is_array() || limits.size()!=4)throw std::invalid_argument("Axis limits require [x_min,x_max,y_min,y_max]");
-    std::array<double,4> values;
-    for(std::size_t i=0;i<4;++i){if(!limits[i].is_number())throw std::invalid_argument("Axis limits require numbers");values[i]=limits[i].get<double>();}
-    const auto option=[&](const char* key,bool current){if(!p.contains(key))return current;if(!p.at(key).is_boolean())throw std::invalid_argument("Axis options require Boolean");return p.at(key).get<bool>();};
-    impl->applyPlotLimits(values,impl->fitPlotGeneration,option("log_x",impl->fitPlotView.log_x),option("log_y",impl->fitPlotView.log_y),option("grid",impl->fitPlotView.grid),option("ticks",impl->fitPlotView.ticks));return;
-  }
   if(name=="show_intensity_calibration" || name=="show_intensity_function" || name=="show_intensity_polynomial_fit" || name=="show_intensity_nonlinear_fit" || name=="show_intensity_fit_plot" || name=="show_intensity_calibration_plot" || name=="set_intensity_calibration" || name=="fit_intensity_calibration") {
     if(busy())throw std::invalid_argument("Wait for the current edit");
     const auto source=nativeSnapshot();
@@ -6711,9 +6790,9 @@ void Window::action(const std::string &name, const Json &p) {
       auto plot=table?impl->calibrationTablePlot(calibration):
           imagej_intensity_fit_plot(calibration,calibration.bit_depth()==8?256:100,bytes-CalibrationPlotAnnotation::working_bytes);
       auto annotation=calibration_plot_annotation(calibration,table);
-      impl->fitPlotAnnotation=std::move(annotation);
-      impl->fitPlotIsTable=table;impl->fitPlotView={};impl->fitPlotDrag.reset();++impl->fitPlotGeneration;
-      impl->fitPlotSource=Impl::FitPlotBinding{source.id(),source.revisions()};impl->fitPlot=std::move(plot);impl->fitPlotFocusRequested=true;return;
+      auto payload=impl->retainPlot(std::move(plot),std::move(annotation),table,source.id());
+      impl->livePlot.view={};impl->livePlot.drag.reset();++impl->livePlot.generation;
+      impl->livePlot.source=Impl::FitPlotBinding{source.id(),source.revisions()};impl->livePlot.payload.swap(payload);impl->focusLivePlot();return;
     }
     if(name=="fit_intensity_calibration") {
       ImageJIntensityFitRequest request;request.max_working_bytes=std::numeric_limits<std::size_t>::max();
@@ -8941,7 +9020,7 @@ void Window::action(const std::string &name, const Json &p) {
       impl->plotX.push_back(float((h.edges[i] + h.edges[i + 1]) / 2));
       impl->plotY.push_back(float(h.counts[i]));
     }
-    impl->fitPlot.reset();impl->fitPlotSource.reset();impl->fitPlotAnnotation.reset();impl->fitPlotDrag.reset();
+    impl->livePlot.payload.reset();impl->livePlot.source.reset();impl->livePlot.drag.reset();
     impl->plotTitle = "Histogram";
     return;
   }
@@ -8971,7 +9050,7 @@ void Window::action(const std::string &name, const Json &p) {
       }
       distance += length;
     }
-    impl->fitPlot.reset();impl->fitPlotSource.reset();impl->fitPlotAnnotation.reset();impl->fitPlotDrag.reset();
+    impl->livePlot.payload.reset();impl->livePlot.source.reset();impl->livePlot.drag.reset();
     impl->plotTitle = "Line profile (" + string(get(cal, "unit"), "px") + ")";
     return;
   }
@@ -9249,13 +9328,14 @@ void Window::poll() {
         if (impl->cancelled) throw OperationCancelled();
         if(completed.calibration_fit) {
           if(documents_.empty() || document()->id!=completed.prepared->target().document_id())throw RevisionConflict();
-          static_assert(std::is_nothrow_swappable_v<decltype(impl->fitPlot)>);
-          static_assert(std::is_nothrow_swappable_v<decltype(impl->fitPlotSource)>);
-          static_assert(std::is_nothrow_swappable_v<decltype(impl->fitPlotAnnotation)>);
+          static_assert(std::is_nothrow_swappable_v<decltype(impl->livePlot.payload)>);
+          static_assert(std::is_nothrow_swappable_v<decltype(impl->livePlot.source)>);
+          std::shared_ptr<const CalibrationPlotPayload> payload;
+          if(completed.fit_plot)payload=impl->retainPlot(std::move(*completed.fit_plot),std::move(*completed.fit_plot_annotation),false,completed.fit_plot_source->id());
           controller_->publish(*completed.prepared);
-          if(completed.fit_plot) {
-            impl->fitPlot.swap(completed.fit_plot);impl->fitPlotAnnotation.swap(completed.fit_plot_annotation);impl->fitPlotSource.swap(completed.fit_plot_source);
-            impl->fitPlotFocusRequested=true;impl->fitPlotIsTable=false;impl->fitPlotView={};impl->fitPlotDrag.reset();++impl->fitPlotGeneration;
+          if(payload) {
+            impl->livePlot.payload.swap(payload);impl->livePlot.source.swap(completed.fit_plot_source);
+            impl->focusLivePlot();impl->livePlot.view={};impl->livePlot.drag.reset();++impl->livePlot.generation;
           }
           impl->status.swap(completed.fit_status);return;
         }
@@ -11036,25 +11116,26 @@ void Window::Impl::recorder() {
   ImGui::EndDisabled();
   ImGui::End();
 }
-void Window::Impl::plots() {
-  fitPlotObservation=nullptr;
-  if(fitPlot && fitPlotSource) {
-    if(owner.documents_.empty() || !fitPlotSource->same_document(owner.nativeSnapshot()) ||
-        !fitPlotSource->expected.matches(owner.nativeSnapshot().revisions(),Change::All)) {
-      fitPlot.reset();fitPlotSource.reset();fitPlotAnnotation.reset();fitPlotDrag.reset();
-    }
-  }
+void Window::Impl::drawCalibrationPlot(CalibrationPlotState& plot,const char* title,std::uint64_t plotId,Json& observation,PlotSnapshot* snapshot) {
+  observation=nullptr;
+  auto& fitPlotFocusRequested=plot.focus;auto& fitPlotView=plot.view;auto& fitPlotDrag=plot.drag;auto& fitPlotGeneration=plot.generation;auto& fitPlotSource=plot.source;
+  const auto* fitPlot=plot.payload?&plot.payload->data:nullptr;
+  const auto* fitPlotAnnotation=plot.payload?&plot.payload->annotation:nullptr;
+  const bool fitPlotIsTable=plot.payload && plot.payload->table;
+  if(snapshot){ImGui::SetNextWindowDockID(0,ImGuiCond_Appearing);ImGui::SetNextWindowSize({600.f*guiScale,430.f*guiScale},ImGuiCond_Appearing);}
   if(fitPlotFocusRequested && fitPlot){ImGui::SetNextWindowFocus();ImGui::SetNextWindowCollapsed(false);}
-  const bool visible=ImGui::Begin("Plot");
-  if(!visible){fitPlotDrag.reset();ImGui::End();return;}
-  // A newly appearing/docking window may yield its tab selection on the
-  // following frame. Consume focus only after it is visibly established.
-  fitPlotFocusRequested=ImGui::IsWindowAppearing();
+  const bool visible=ImGui::Begin(title,snapshot?&snapshot->open:nullptr,snapshot?(ImGuiWindowFlags_NoDocking|ImGuiWindowFlags_NoSavedSettings|ImGuiWindowFlags_NoFocusOnAppearing):ImGuiWindowFlags_None);
+  if(!visible || (snapshot && !snapshot->open)){fitPlotDrag.reset();ImGui::End();return;}
+  if(fitPlotFocusRequested)fitPlotFocusRequested=ImGui::IsWindowAppearing();
+  if(snapshot){if(snapshot->resetGuiStorage){ImGui::GetStateStorage()->Clear();snapshot->resetGuiStorage=false;}ImGui::PushID(snapshot->controlId.c_str());}
+  const auto endPlot=[&]{if(snapshot)ImGui::PopID();ImGui::End();};
+  const std::string prefix=plotId?"plot_snapshot."+std::to_string(plotId)+".":"fit_plot.";
+  const auto observePlotControl=[&](const char* suffix,bool enabled=true,const char* hint=nullptr,const char* command=nullptr,ImGuiWindow* window=nullptr){observeControl(prefix+suffix,enabled,hint,command,window);};
   if(fitPlot) {
     const auto& data=*fitPlot;
     ImGui::Text(fitPlotIsTable?"Calibration table: %s":"Calibration fit: %s",data.function.c_str());
-    if(ImGui::Button("Close plot")){fitPlot.reset();fitPlotSource.reset();fitPlotAnnotation.reset();fitPlotDrag.reset();ImGui::End();return;}
-    observeControl("fit_plot.close",true,nullptr,nullptr,ImGui::GetCurrentWindow());
+    if(ImGui::Button("Close plot")){plot.payload.reset();plot.source.reset();fitPlotDrag.reset();if(snapshot)snapshot->open=false;endPlot();return;}
+    observePlotControl("close",true,nullptr,nullptr,ImGui::GetCurrentWindow());
     if(ImGui::GetContentRegionAvail().x>180.f*guiScale)ImGui::SameLine();
     if(ImGui::Button("Export CSV")) {
       std::ostringstream stream;stream.precision(17);stream<<"series,x,y\n";
@@ -11062,20 +11143,23 @@ void Window::Impl::plots() {
       for(std::size_t i=0;i<data.curve_x.size();++i){stream<<(fitPlotIsTable?"table,":"fit,")<<data.curve_x[i]<<',';if(std::isfinite(data.curve_y[i]))stream<<data.curve_y[i];stream<<'\n';}
       file(fitPlotIsTable?"Export calibration table plot":"Export calibration fit plot",true,[text=stream.str()](std::string path){writeBytes(path,{text.begin(),text.end()});},fitPlotIsTable?"calibration-table.csv":"calibration-fit.csv");
     }
-    observeControl("fit_plot.export",true,nullptr,nullptr,ImGui::GetCurrentWindow());
+    observePlotControl("export",true,nullptr,nullptr,ImGui::GetCurrentWindow());
+    if(ImGui::Button(plotId?"Duplicate snapshot":"Keep snapshot"))guard([&]{keepPlotSnapshot(plotId);});
+    observePlotControl("snapshot");
+    if(ImGui::IsItemHovered())ImGui::SetTooltip("Open a session plot snapshot in this workspace. Uses the render-memory budget.");
     if(ImGui::Button("Reset axes"))fitPlotView={};
-    observeControl("fit_plot.reset");
+    observePlotControl("reset");
     ImGui::SameLine();if(ImGui::Button("+"))fitPlotView.zoom(data,.5,.5,std::pow(2.,-.2));
-    observeControl("fit_plot.zoom_in");
+    observePlotControl("zoom_in");
     ImGui::SameLine();if(ImGui::Button("-"))fitPlotView.zoom(data,.5,.5,std::pow(2.,.2));
-    observeControl("fit_plot.zoom_out");
+    observePlotControl("zoom_out");
     if(ImGui::GetContentRegionAvail().x>260.f*guiScale)ImGui::SameLine();
-    if(ImGui::Button("Axes..."))guard([&]{showPlotLimits();});
-    observeControl("fit_plot.axes");
+    if(ImGui::Button("Axes..."))guard([&]{showPlotLimits(plotId);});
+    observePlotControl("axes");
     Json annotationObservation=nullptr;
     if(fitPlotAnnotation) {
       const auto& annotation=*fitPlotAnnotation;
-      const bool expanded=ImGui::CollapsingHeader("Model and fit details");observeControl("fit_plot.details");
+      const bool expanded=ImGui::CollapsingHeader("Model and fit details");observePlotControl("details");
       if(expanded) {
         if(annotation.model){ImGui::TextUnformatted("Recorded model");ImGui::TextWrapped("%s",annotation.formula.c_str());}
         if(!annotation.coefficients.empty())ImGui::TextWrapped("%s",annotation.coefficients.c_str());
@@ -11103,7 +11187,7 @@ void Window::Impl::plots() {
         std::clamp(ImGui::GetContentRegionAvail().y-48.f*guiScale,100.f*guiScale,180.f*guiScale)};
     const ImVec2 origin{widgetOrigin.x+leftMargin,widgetOrigin.y+10.f*guiScale},size{widgetSize.x-leftMargin-rightMargin,widgetSize.y-36.f*guiScale};
     ImGui::InvisibleButton("##calibration_fit_canvas",widgetSize,ImGuiButtonFlags_MouseButtonLeft|ImGuiButtonFlags_MouseButtonMiddle);
-    observeControl("fit_plot.canvas");
+    observePlotControl("canvas");
     ImGui::SetItemKeyOwner(ImGuiKey_MouseWheelY);ImGui::SetItemKeyOwner(ImGuiKey_MouseWheelX);
     const auto& plotInput=ImGui::GetIO();const bool hovered=ImGui::IsItemHovered() &&
         plotInput.MousePos.x>=origin.x && plotInput.MousePos.x<=origin.x+size.x &&
@@ -11207,17 +11291,29 @@ void Window::Impl::plots() {
       ImFormatString(logNotice,IM_ARRAYSIZE(logNotice),"Log %s%s: nonpositive values are omitted.",fitPlotView.log_x?"X":"",fitPlotView.log_y?(fitPlotView.log_x?"/Y":"Y"):"");
       ImGui::TextWrapped("%s",logNotice);
     }
-    if(headlessSessionActive)fitPlotObservation={{"kind",fitPlotIsTable?"calibration_table":"fit"},{"function",data.function},{"value_unit",data.value_unit},{"objective",data.objective},
+    if(headlessSessionActive)observation={{"kind",fitPlotIsTable?"calibration_table":"fit"},{"function",data.function},{"value_unit",data.value_unit},{"objective",data.objective},
       {"measured",data.measured},{"known",data.known},{"curve_x",data.curve_x},{"curve_y",data.curve_y},
       {"limits",{data.x_min,data.x_max,data.y_min,data.y_max}},{"data_screen_points",std::move(points)},
       {"canvas_origin",{origin.x,origin.y}},{"canvas_size",{size.x,size.y}},{"source_id",fitPlotSource->id()},
       {"finite_geometry",finiteGeometry},{"drawn_segments",drawnSegments},{"visible",true},
       {"view_limits",viewLimits},{"viewport",fitPlotView.fractions},{"cursor",std::move(cursor)},
       {"log_x",fitPlotView.log_x},{"log_y",fitPlotView.log_y},{"grid",fitPlotView.grid},{"ticks",fitPlotView.ticks},
-      {"grid_lines",fitPlotView.grid?6:0},{"x_ticks",std::move(xTicks)},{"y_ticks",std::move(yTicks)},{"masked_segments",maskedSegments},{"log_notice",logNotice},{"annotation",std::move(annotationObservation)},{"rectangle_drag",std::move(rectangleObservation)}};
-    ImGui::End();return;
+      {"grid_lines",fitPlotView.grid?6:0},{"x_ticks",std::move(xTicks)},{"y_ticks",std::move(yTicks)},{"masked_segments",maskedSegments},{"log_notice",logNotice},{"annotation",std::move(annotationObservation)},{"rectangle_drag",std::move(rectangleObservation)},{"payload_id",plot.payload->payload_id}};
+    endPlot();return;
   }
 
+  endPlot();
+}
+void Window::Impl::plots() {
+  fitPlotObservation=nullptr;snapshotPlotObservations=Json::array();
+  if(livePlot.payload && livePlot.source && (owner.documents_.empty() || !livePlot.source->same_document(owner.nativeSnapshot()) ||
+      !livePlot.source->expected.matches(owner.nativeSnapshot().revisions(),Change::All))) {
+    livePlot.payload.reset();livePlot.source.reset();livePlot.drag.reset();
+  }
+  if(livePlot.payload)drawCalibrationPlot(livePlot,"Plot",0,fitPlotObservation);
+  else {
+    const bool visible=ImGui::Begin("Plot");
+    if(visible) {
   if (plotY.empty())
     ImGui::TextWrapped("Use Histogram or draw a line and choose Line profile.");
   else {
@@ -11241,8 +11337,18 @@ void Window::Impl::plots() {
           },
           "plot.csv");
   }
-  ImGui::End();
+    }
+    ImGui::End();
+  }
+  const auto count=plotSnapshots.size();
+  for(std::size_t i=0;i<count;++i) {
+    auto& snapshot=*plotSnapshots[i];Json observation;
+    if(snapshot.open && snapshot.state.payload)drawCalibrationPlot(snapshot.state,snapshot.title.c_str(),snapshot.id,observation,&snapshot);
+    if(headlessSessionActive && snapshot.open && snapshot.state.payload)snapshotPlotObservations.push_back({{"plot_id",snapshot.id},{"plot",std::move(observation)}});
+  }
+  plotSnapshots.erase(std::remove_if(plotSnapshots.begin(),plotSnapshots.end(),[this](const auto& snapshot){const bool closed=!snapshot->open || !snapshot->state.payload;if(closed)clearSnapshotInput(*snapshot);return closed;}),plotSnapshots.end());
 }
+
 void Window::Impl::geometry(const Json &o, Pane &pane, ImU32 tint, bool cache,
                             const char *role) {
   auto draw = ImGui::GetWindowDrawList();
@@ -12355,7 +12461,7 @@ void Window::Impl::dialogs() {
   ImGui::SetNextWindowSize({680, 0}, ImGuiCond_Appearing);
   if (ImGui::BeginPopupModal(dialog.title.c_str(), &dialog.open,
                              ImGuiWindowFlags_AlwaysAutoResize)) {
-    ImGui::BeginDisabled(owner.busy());
+    ImGui::BeginDisabled(owner.busy() && !dialog.independentPlot);
     if (dialog.id == "grouped_z_projection") {
       std::string hint = "Enter valid slice bounds";
       Json factors = Json::array();
@@ -13959,6 +14065,7 @@ Json Window::Impl::headlessReport() {
         ImGui::GetStyle().Colors[ImGuiCol_WindowBg].z};
     result["plot_samples"] = plotX.size();
     result["fit_plot"] = fitPlotObservation;
+    result["plot_snapshots"] = snapshotPlotObservations;
     result["results_columns"] = resultColumns(owner.results, owner.settings());
     result["results_table"] = resultsTableObservation;
     result["shadow_demo"] = shadowDemo.diagnostics();
@@ -14070,7 +14177,8 @@ HeadlessInputSession::HeadlessInputSession(Window &window, Probe probe) {
     window.impl->guiScale = 0;
     window.impl->appearance(1, false);
     window.impl->layout = false;
-    if(window.impl->fitPlot)window.impl->fitPlotFocusRequested=true;
+    if(window.impl->livePlot.payload)window.impl->livePlot.focus=true;
+
     window.impl->lastVisible = -1;
     window.impl->exit = false;
     auto &io = ImGui::GetIO();

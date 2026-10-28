@@ -1,5 +1,47 @@
 # Shortest delivery paths by API and setting key
 
+## Source-independent floating calibration plot snapshots — 2026-10-28
+
+Keep snapshot and Duplicate snapshot now retain immutable prepared plot data and
+annotations through one shared payload lease. Each floating window owns its view,
+drag/focus state and small managed controller lease. Source changes invalidate
+only live plots; snapshots retain their data after source closure, with axes,
+pan/zoom/rectangle/details and CSV through the shared renderer. Last owner releases
+the managed payload. Admission precedes image commit/publication, preserving the
+old plot/calibration/history on quota refusal. No source providers or documents
+are retained, no second plot store/worker pool or dependency is added.
+
+Python Editor.plot_snapshots_info reports IDs and managed bytes. Actions
+keep_plot_snapshot and close_plot_snapshot manage windows; optional plot_id on
+existing limits/rectangle actions selects a snapshot independently of documents.
+Omitted/zero plot_id keeps live owner/revision guards. Public IDs are monotonic;
+reused internal ImGui slots clear owned input/storage and scope logical controls.
+Dialog callbacks resolve ID+generation. Latest explicit focus request wins.
+
+Windows installed753 checks pass, zero failures/skips, plus native projection and
+private viewport/annotation/payload consumers. Four C++ UI cases pass. Both UI
+frontends physically Keep/Duplicate, edit axes after source closure, export CSV
+and close snapshots; readers verify shared charging, independent views, unchanged
+samples, expired source weak owner and final managed bytes zero. Dedicated case
+uses92/192 frames; original calibration stays606/608. Linux private C++17
+consumer passes against existing SDK; no Linux UI/full SDK or OS/GPU promotion.
+[Scoped evidence](parity/reviews/G034-calibration-plot-snapshots-progress001.json).
+
+One753-test run caught snapshot appearance stealing new live-plot focus; explicit
+focus priority fixes it, verified by two passing runs. Failed producer delta and
+diagnostics retained. Terminal scratch retired after capture hash verification;
+lossless retention recovered1,038,313B. Same cache/runtime/SDK; known roots
+8,470,427,987B, two denied caches keep full8GiB budget unverified. Managed plot
+bytes exclude ImGui/driver/transient allocations and total RSS. Historical
+expectations/fingerprints unchanged; commercial inventory passes. No measured
+speed advantage or family closure:47 in progress/52 open/0 complete.
+
+These are in-host floating windows, session-only. Independent OS windows require
+GLFW/OpenGL platform-window integration and OS/GPU evidence. Next: source-title
+captions, on-canvas annotation/style/image export and nice/minor ticks; reuse the
+renderer for histogram/profile. Snapshot persistence, broader calibration and
+downstream/reference/platform gates and matched performance remain open.
+
 ## Rectangle zoom through the existing viewport — 2026-10-28
 
 The shared C++/Python plot canvas supports left-drag rectangle zoom. API callers

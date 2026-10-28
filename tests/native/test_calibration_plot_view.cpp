@@ -1,5 +1,6 @@
 #include "../../src/desktop/calibration_plot_view.hpp"
 #include "../../src/desktop/calibration_plot_annotation.hpp"
+#include "../../src/desktop/calibration_plot_payload.hpp"
 #include <limits>
 #include <stdexcept>
 #include <cstdio>
@@ -102,6 +103,17 @@ void verify_contracts() {
   auto legacyOd=ImageJIntensityCalibration::lookup(PixelType::UInt8,od.table_words(),"OD",odParameters);
   annotation=calibration_plot_annotation(legacyOd,true);
   check(annotation.model && annotation.coefficients.empty() && annotation.formula=="y = 0.434294481*ln(255/(255-x))");
+
+  imagejxx::desktop::RenderMemory memory(1024*1024);
+  ImageJIntensityFitPlot payloadData;payloadData.curve_x={0,1};payloadData.curve_y={1,2};
+  auto payload=imagejxx::desktop::retain_calibration_plot(memory,std::move(payloadData),annotation,true,77);
+  const auto retained=memory.retained();check(retained>0 && memory.working()==0 && payload->source_id==77);
+  auto shared=payload;payload.reset();check(memory.retained()==retained && shared->data.curve_y[1]==2);
+  shared.reset();check(memory.used()==0);
+  imagejxx::desktop::RenderMemory denied(1);bool refused=false;
+  try{imagejxx::desktop::retain_calibration_plot(denied,ImageJIntensityFitPlot{},imagejxx::desktop::CalibrationPlotAnnotation{},true,0);}
+  catch(const std::invalid_argument&){refused=true;}
+  check(refused && denied.used()==0);
 
 }
 

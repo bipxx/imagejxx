@@ -114,6 +114,11 @@ class Editor:
         return json.loads(self._editor.render_memory_info())
 
     @property
+    def plot_snapshots_info(self):
+        """List retained plot IDs and logical shared-payload/window memory."""
+        return json.loads(self._editor.plot_snapshots_info())
+
+    @property
     def virtual_view_cache_info(self):
         """Detached decoded XY cache counters; external handles/render memory excluded."""
         return json.loads(self._editor.virtual_view_cache_info())
