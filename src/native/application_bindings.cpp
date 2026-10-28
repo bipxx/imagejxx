@@ -1,4 +1,7 @@
 #include <imagejxx/application.hpp>
+#include <imagejxx/imagej_projection_command.hpp>
+#include "binding_metadata.hpp"
+#include "calibration_preparation_internal.hpp"
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
@@ -221,6 +224,16 @@ void bind_application(py::module_ &m) {
           py::arg("options") = ExecutionOptions{},
           py::arg("cancellation") = py::none(),
           py::arg("progress") = py::none())
+      .def("prepare_imagej_projection",
+           [](const Application& application, py::dict request, std::uint64_t document_id,
+              std::shared_ptr<CancellationToken> cancel, py::object progress, py::object checkpoint) {
+             const auto frozen=imagej_projection_request_from_record(bindings::metadata_object_value(request));
+             const auto captured=application.resolve_target({},document_id);
+             const auto control=axis_range_python_control(std::move(cancel),std::move(progress),std::move(checkpoint));
+             py::gil_scoped_release release;
+             return detail::CalibrationPreparation::prepare_imagej_projection(captured,frozen,control);
+           },py::arg("request"),py::arg("document_id")=0,py::kw_only(),
+             py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none())
       .def("prepare_axis_plane_export",
            [](const Application &application, AxisPlaneExportRequest request,
               std::uint64_t document_id,
@@ -262,13 +275,13 @@ void bind_application(py::module_ &m) {
               std::shared_ptr<CancellationToken> cancellation,
               py::object progress, py::object checkpoint_callback) {
              const auto captured_request = request;
-             const auto captured_source = application.snapshot(document_id);
+             const auto captured_target = application.resolve_target({}, document_id);
              auto control = axis_range_python_control(std::move(cancellation),
                                                       std::move(progress),
                                                       std::move(checkpoint_callback));
              return [&] {
                py::gil_scoped_release release;
-               return prepare_axis_range_orientation(captured_source, captured_request, control);
+               return detail::CalibrationPreparation::prepare_axis_range_orientation(captured_target, captured_request, control);
              }();
            }, py::arg("request") = AxisRangeOrientationRequest{},
            py::arg("document_id") = 0, py::kw_only(),
@@ -279,10 +292,10 @@ void bind_application(py::module_ &m) {
            [](const Application &application, AxisRangeSpacingRequest request, std::uint64_t document_id,
               std::shared_ptr<CancellationToken> cancellation, py::object progress, py::object checkpoint_callback) {
              const auto captured_request = request;
-             const auto captured_source = application.snapshot(document_id);
+             const auto captured_target = application.resolve_target({}, document_id);
              auto control = axis_range_python_control(std::move(cancellation), std::move(progress), std::move(checkpoint_callback));
              return [&] { py::gil_scoped_release release;
-               return prepare_axis_range_spacing(captured_source, captured_request, control);
+               return detail::CalibrationPreparation::prepare_axis_range_spacing(captured_target, captured_request, control);
              }();
            }, py::arg("request") = AxisRangeSpacingRequest{}, py::arg("document_id") = 0, py::kw_only(),
            py::arg("cancellation") = py::none(), py::arg("progress") = py::none(), py::arg("checkpoint") = py::none(),
@@ -291,10 +304,10 @@ void bind_application(py::module_ &m) {
            [](const Application &application, AxisRangeSlicerResizeRequest request, std::uint64_t document_id,
               std::shared_ptr<CancellationToken> cancellation, py::object progress, py::object checkpoint_callback) {
              const auto captured_request = request;
-             const auto captured_source = application.snapshot(document_id);
+             const auto captured_target = application.resolve_target({}, document_id);
              auto control = axis_range_python_control(std::move(cancellation), std::move(progress), std::move(checkpoint_callback));
              return [&] { py::gil_scoped_release release;
-               return prepare_axis_range_slicer_resize(captured_source, captured_request, control);
+               return detail::CalibrationPreparation::prepare_axis_range_slicer_resize(captured_target, captured_request, control);
              }();
            }, py::arg("request") = AxisRangeSlicerResizeRequest{}, py::arg("document_id") = 0, py::kw_only(),
            py::arg("cancellation") = py::none(), py::arg("progress") = py::none(), py::arg("checkpoint") = py::none(),

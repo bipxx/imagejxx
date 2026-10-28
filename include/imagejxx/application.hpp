@@ -238,6 +238,9 @@ public:
                             const OperationParameters &parameters = {},
                             ExecutionOptions options = {},
                             const ExecutionControl &control = {}) const;
+  PreparedOperation prepare_imagej_projection(
+      const ImageJProjectionDocumentRequest& request, std::uint64_t id = 0,
+      const ExecutionControl& control = {}) const;
   PreparedOperation prepare_axis_plane_export(
       const AxisPlaneExportRequest &request = {}, std::uint64_t id = 0,
       const ExecutionControl &control = {}) const;

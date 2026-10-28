@@ -1,5 +1,16 @@
 # Shortest delivery paths by API and setting key
 
+## Dedicated calibration consumers — shortest API paths
+
+[PLAN's current card](../PLAN.md) owns verification status/counts. Existing
+Application.prepare_axis_* entrypoints now use the private captured factory;
+Application.prepare_imagej_projection takes the existing request type (Python:
+projection dictionary plus document_id/cancellation/progress/checkpoint).
+Pure snapshot functions and schema1 replay remain local. Do not call them from
+an Application binding when effective calibration is intended. Next: extend
+resolved command admission/record policy using the same captured input, then wire
+both ImGui hosts and cache generations. RGB Slicer remains a separate open gap.
+
 ## Effective calibration processing integration — verified scope, 2026-10-28
 
 Generic Application targets carry effective calibration and application/global/

@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-28",
+  "status": "scoped_verified",
+  "scope": "Application plane export, range reslice/orientation/physical spacing/scalar Slicer resize and new Application projection preparation. Pure snapshot APIs remain local; resolved command/replay/ImGui and frontend cache integration remain open.",
+  "implementation": [
+    "One private CalibrationPreparation adapter preserves original source snapshots/transactions/provenance and carries the existing calibration binding into exact contributor targets",
+    "Axis geometry/sampling uses a Dataset calibration view sharing the original pixel provider; effective density is attached only to derived output owners",
+    "Application.prepare_imagej_projection uses existing projection numerical/density/output policies; admission charges captured global density record/units before callbacks or plane reads",
+    "Python orientation/spacing/resize Application bindings now capture the application target before callback setup/GIL release rather than bypassing it through snapshot factories",
+    "Existing generic derived-density helper reused without changing its output policy; no synthetic source snapshot or extra public factory hierarchy"
+  ],
+  "verification": {
+    "installed_windows": {
+      "collected": 1811,
+      "passed": 1809,
+      "skipped": 2,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 19.038,
+      "optional_skips": [
+        "hidden OpenGL settings/context test",
+        "hidden OpenGL shared jobs-panel test"
+      ],
+      "new_consumer_cases": 67,
+      "new_case_scope": "Metadata/pixels/geometry/title, storage profiles, stale Set/Clear/bypass, callback capture, bypass, projection global-table budget, Z/T/C grouped and ungrouped projection. RGB Slicer is explicit unsupported refusal coverage.",
+      "xml": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-consumers-installed505\\results.xml",
+        "bytes": 273246,
+        "sha256": "164387ff949d9d787d535ff48aa7e31bd18d93885b9a9fc530fd82ca158f55d2"
+      },
+      "cpp_imgui_regressions": 6
+    },
+    "native_windows": {
+      "successful_control_invocations": 11,
+      "controls": [
+        "projection",
+        "calibration plot view",
+        "global calibration including dedicated consumers",
+        "application",
+        "axis plane export",
+        "axis range reslice",
+        "axis range orientation",
+        "axis physical spacing mappings",
+        "axis physical spacing validation",
+        "scalar Slicer mappings",
+        "scalar Slicer validation"
+      ]
+    },
+    "linux": "Existing cache/core SDK refreshed; current installed-header core/projection/global native consumers pass, including new Application plane/projection guards",
+    "installed_core_sdks": {
+      "windows": "4/4 CTest clients pass",
+      "linux": "4/4 CTest clients pass",
+      "table_profiles_each": 128,
+      "fit_dtype_cells_each": 86
+    },
+    "producer_inputs_rechecked": 1291,
+    "reader_pins_rechecked": 45,
+    "commercial_dependency_inventory": "passed with existing .venv interpreter",
+    "reference_expectations": "Original fingerprints, tolerances and fixture expectations unchanged",
+    "limits": [
+      "No Linux Python/full desktop/scientific-I/O SDK, macOS or GPU promotion",
+      "RGB Slicer resize remains unsupported; negative coverage does not close that feature gap",
+      "No full original global calibration/Calibrator UI or ImageJ/Fiji family acceptance"
+    ]
+  },
+  "verification_corrections": {
+    "built508": "60 pass/1 new reader failure: matrix requested RGB Slicer, rejected by the existing finite-scalar snapshot API before the application path",
+    "reader_fix": "Explicitly require the same atomic RGB refusal from snapshot and application routes; preserved preimage and failed XML. Built510 passes61; six additional scientific-axis cases make built514 pass67. No production source change.",
+    "windows504": "Coherent build succeeded in920.062s; new runner omitted required mappings/validation CLI modes for spacing/Slicer test executables",
+    "runner_fix": "Corrected arguments only. Same-cache incremental build9.141s; all11 native controls pass. Linux core603.073s passed without retry."
+  },
+  "receipts": {
+    "global-calibration-consumers-windows-build504": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-consumers-windows-build504\\receipt.json",
+      "bytes": 27873,
+      "sha256": "cc3a9e02ea2c2da996efdb546c4f51a91cbe885e5420ac96f4999cba03b445ed"
+    },
+    "global-calibration-consumers-windows-resume516": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-consumers-windows-resume516\\receipt.json",
+      "bytes": 49434,
+      "sha256": "eff3d7da55bd087592bb0171ecb7e19cbddeb4e7ff14bd8fccf036fcb280a8d4"
+    },
+    "global-calibration-consumers-linux507": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-consumers-linux507\\receipt.json",
+      "bytes": 196192,
+      "sha256": "7f75f4d273e862f6d106fb7dd8c59d17d82166b414c3b53ca4215c34cb533fc3"
+    },
+    "global-calibration-consumers-installed505": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-consumers-installed505\\receipt.json",
+      "bytes": 135461,
+      "sha256": "f93ab700b3f1e6aadb5ecffbd467d8ad29fb2c44b318d8492eb508ffdbf79be0"
+    },
+    "global-calibration-consumers-sdk-windows506": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-consumers-sdk-windows506\\receipt.json",
+      "bytes": 59642,
+      "sha256": "9d2981da2fdddd5b3ebc5b865b6b5f4d9811cee54064d2cb86097b452533563c"
+    },
+    "global-calibration-consumers-sdk-linux506": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-consumers-sdk-linux506\\receipt.json",
+      "bytes": 36598,
+      "sha256": "5571d4a9b39bb389c0b3ac3b3e5f38b2096a5d5745ca595a97baf8ab9e2465ef"
+    },
+    "global-calibration-consumers-built508": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-consumers-built508\\receipt.json",
+      "bytes": 3263,
+      "sha256": "3767abb4c6558f41557279a9ce5c9d93a008ed92c29d87fc860302c7df56f612"
+    },
+    "global-calibration-consumers-built510": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-consumers-built510\\receipt.json",
+      "bytes": 3674,
+      "sha256": "b89e98516ab5771cd0cb2c659a5483d59d4c13b64473941db8a159f20fd56917"
+    },
+    "global-calibration-consumers-built514": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-consumers-built514\\receipt.json",
+      "bytes": 3497,
+      "sha256": "25ac74f0d967b4075cf68e830dc9361d2754860a4f3f662922838f0eee8907a3"
+    },
+    "global-calibration-consumers-retention512": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-consumers-retention512\\receipt.json",
+      "bytes": 14032,
+      "sha256": "e587b2ed7a0aecf6e647d24a549054932e8aa995ca91fbd2b6810f8bc41f849d"
+    }
+  },
+  "retention": {
+    "state": "All owned scratch retired after terminal process proof; raw logs/freeze/dependencies/failed reader preimages/XML losslessly compressed and member-size/SHA verified before retirement",
+    "recovered_bytes": 1159671,
+    "diagnostics": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-consumers-retention512\\diagnostics.zip",
+      "bytes": 236495,
+      "sha256": "2677bd879d612133a06ed6e7025f0ad99a8956d924d664f63b557a34d03985ec"
+    },
+    "retained_final_capture": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-consumers-installed505\\captures.tar.xz",
+      "bytes": 1270436,
+      "sha256": "602b2cb05d9dcb47c96bfb85ebfb1cced1778f03e36f517b337dc04d363ca06c"
+    },
+    "historical_sdk_availability": "Replaced installed archive/header identities retained; old bytes unavailable. No full cache/runtime/SDK/checkout archive.",
+    "storage_snapshot": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-consumers-final513.json",
+      "bytes": 1523,
+      "sha256": "f7a35d76b9876816d2c8b826dcc8c9b5cbb23300161a3021bd93b624e018a2fd",
+      "known_bytes": 8532321927,
+      "headroom_upper_bound_bytes": 57612665,
+      "budget_verified": false,
+      "unavailable_subtrees": [
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest",
+          "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest'"
+        },
+        {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest-ui",
+          "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest-ui'"
+        }
+      ]
+    },
+    "budget": "Complete normalized roots measured; two denied pytest-cache subtrees remain unknown, so full8GiB is unverified. Same active caches/runtime/SDKs; documented512MiB build and64MiB client transient reserves reused."
+  },
+  "planning_efficiency": "PLAN has the canonical current status/count card; Sol/three-agent/API guides link to it and retain role-specific decisions. Historical cards preserved.",
+  "next": [
+    "Capture effective context on the caller/UI thread in resolved axis/projection commands, and align estimates/admission/derived record metadata with actual preparation",
+    "Define explicit effective-context serialization/replay provenance while preserving schema1 detached local behavior and original fingerprints",
+    "Wire both ImGui hosts and global/bypass generations through display/XYZ/distance/measurement/profile/histogram/live-plot caches before a Global toggle",
+    "Implement and qualify RGB Slicer support separately; retain scalar-only refusal until then",
+    "Complete original spatial/time/Calibrator UI, scientific-I/O/session, full platform and matched performance gates"
+  ],
+  "tracker": {
+    "in_progress": 47,
+    "open": 52,
+    "fully_certified_complete": 0
+  },
+  "performance_claim": "No matched ImageJ/Fiji speed or memory superiority established; compiler/test timing is not an image-processing benchmark."
+}

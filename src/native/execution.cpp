@@ -1,4 +1,5 @@
 #include "kernel_control.hpp"
+#include "calibration_preparation_internal.hpp"
 #include <imagejxx/imagej_intensity_execution.hpp>
 #include "imagej_projection_document.hpp"
 #include "floating_charconv.hpp"
@@ -771,6 +772,19 @@ struct PreparedOperation::State {
   }
 };
 namespace {
+void apply_captured_output_density(DocumentTransaction& edit,
+    const ResolvedTarget& captured, const Dataset& output) {
+  const auto context=captured.calibration_context();
+  if(!context)return;
+  auto density=context->intensity();
+  const auto type=output.pixel_type();const auto samples=output.shape().s;
+  if(samples!=1)density=ImageJIntensityCalibration::uncalibrated();
+  else if(type!=captured.source().data().dataset.pixel_type() || samples!=captured.source().data().dataset.shape().s)
+    density=ImageJIntensityCalibration::uncalibrated(type==PixelType::Float32 || type==PixelType::Float64?density.value_unit():"Gray Value");
+  density.validate_for(type,samples);
+  if(!density.has_density() && density.value_unit()=="Gray Value")edit.remove_property(imagej_intensity_property);
+  else edit.set_property(imagej_intensity_property,density.record());
+}
 std::shared_ptr<Document>
 make_operation_output(const ResolvedTarget &target,
                       const DocumentSnapshot &preview,
@@ -784,14 +798,7 @@ make_operation_output(const ResolvedTarget &target,
   auto edit = created->begin_edit();
   if(const auto context=target.calibration_context()) {
     edit.replace_dataset(data.dataset.with_calibration(context->spatial()));
-    const auto type=data.dataset.pixel_type();const auto samples=data.dataset.shape().s;
-    auto density=context->intensity();
-    if(samples!=1)density=ImageJIntensityCalibration::uncalibrated();
-    else if(type!=target.source().data().dataset.pixel_type() || samples!=target.source().data().dataset.shape().s)
-      density=ImageJIntensityCalibration::uncalibrated(type==PixelType::Float32 || type==PixelType::Float64?density.value_unit():"Gray Value");
-    density.validate_for(type,samples);
-    if(!density.has_density() && density.value_unit()=="Gray Value")edit.remove_property(imagej_intensity_property);
-    else edit.set_property(imagej_intensity_property,density.record());
+    apply_captured_output_density(edit, target, data.dataset);
   } else edit.replace_dataset(data.dataset);
   edit.set_title(data.metadata.title);
   edit.select(data.selection);
@@ -808,6 +815,12 @@ make_operation_output(const ResolvedTarget &target,
   return created;
 }
 } // namespace
+ResolvedTarget detail::CalibrationPreparation::target(
+    const ResolvedTarget& captured, const TargetRequest& request) {
+  auto resolved=resolve_target(captured.source(),request);
+  resolved.calibration_binding_=captured.calibration_binding_;
+  return resolved;
+}
 PreparedOperation::PreparedOperation(std::shared_ptr<State> state)
     : state_(std::move(state)) {}
 
@@ -1326,16 +1339,22 @@ PreparedOperation prepare_imagej_intensity_fit(const DocumentSnapshot& source_in
 }
 
 PreparedOperation prepare_imagej_projection(
-    const DocumentSnapshot& source_input, const ImageJProjectionDocumentRequest& request_input,
+    const DocumentSnapshot& source, const ImageJProjectionDocumentRequest& request,
+    const ExecutionControl& control) {
+  return detail::CalibrationPreparation::prepare_imagej_projection(resolve_target(source), request, control);
+}
+
+PreparedOperation detail::CalibrationPreparation::prepare_imagej_projection(
+    const ResolvedTarget& captured, const ImageJProjectionDocumentRequest& request_input,
     const ExecutionControl& control) {
   if(request_input.projection.signed16_density || !request_input.projection.calibration_table.empty())
     throw std::invalid_argument("Prepared projection density comes from the source document");
-  const auto source=source_input;
+  const auto source=captured.source();
   const auto request=request_input;
   ExecutionScope scope(control);
   kernel_checkpoint();
-  (void)estimate_imagej_projection_document(source,request);
-  auto output=detail::project_imagej_document(source,request,{});
+  (void)detail::estimate_calibrated_projection(source,captured.calibration_context(),request);
+  auto output=detail::project_imagej_document(source,request,{},captured.calibration_context());
   const auto& layout=output.layout;
   TargetRequest ranges;
   ranges.scope=TargetScope::Ranges;
@@ -1348,7 +1367,7 @@ PreparedOperation prepare_imagej_projection(
       layout.axis==ImageJProjectionAxis::Channels?request.projection.last+1:layout.source_first_c+layout.shape.c,1};
   ranges.z=AxisRange{layout.axis==ImageJProjectionAxis::Z?layout.source_first:0,
       layout.axis==ImageJProjectionAxis::Z?request.projection.last+1:source_shape.z,1};
-  auto target=resolve_target(source,ranges);
+  auto target=CalibrationPreparation::target(captured,ranges);
   auto edit=source.begin_edit(Change::All);
   edit.replace_dataset(output.data.dataset);
   edit.set_title(output.data.metadata.title);
@@ -1372,14 +1391,22 @@ PreparedOperation prepare_imagej_projection(
 }
 
 PreparedOperation prepare_axis_plane_export(
-    const DocumentSnapshot &source, const AxisPlaneExportRequest &request_input,
+    const DocumentSnapshot& source, const AxisPlaneExportRequest& request,
+    const ExecutionControl& control) {
+  return detail::CalibrationPreparation::prepare_axis_plane_export(resolve_target(source), request, control);
+}
+
+PreparedOperation detail::CalibrationPreparation::prepare_axis_plane_export(
+    const ResolvedTarget &captured, const AxisPlaneExportRequest &request_input,
     const ExecutionControl &control) {
+  const auto source = captured.source();
+  const auto dataset = source.data().dataset.with_calibration(captured.calibration());
   const auto request = request_input;
   ExecutionScope scope(control);
   kernel_checkpoint();
   // Resolve/admit metadata before a pixel read. Explicit ranges bind the
   // captured scientific T/C and either one XY Z or all contributing Z slices.
-  auto layout = export_layout(source.data().dataset, request);
+  auto layout = export_layout(dataset, request);
   TargetRequest target_request;
   target_request.scope = TargetScope::Ranges;
   target_request.roi = RoiPolicy::WholePlane;
@@ -1389,8 +1416,8 @@ PreparedOperation prepare_axis_plane_export(
   target_request.z = request.plane == Plane::XY
       ? AxisRange{request.coordinate, request.coordinate + 1, 1}
       : AxisRange{0, source.data().dataset.shape().z, 1};
-  auto target = resolve_target(source, target_request);
-  auto exported = export_axis_plane(source.data().dataset, request, {});
+  auto target = CalibrationPreparation::target(captured, target_request);
+  auto exported = export_axis_plane(dataset, request, {});
   kernel_checkpoint();
   const auto title = source.data().metadata.title + " " + layout.plane_name + " " +
                      std::to_string(request.coordinate + 1);
@@ -1420,6 +1447,7 @@ PreparedOperation prepare_axis_plane_export(
     (void)value; edit.remove_extension(name);
   }
   edit.set_extension("axis_plane_export", std::move(provenance));
+  apply_captured_output_density(edit, captured, edit.preview().data().dataset);
   auto fresh = std::make_shared<Document>(edit.preview().data());
   auto fresh_snapshot = fresh->snapshot();
   OperationParameters parameters{
@@ -1533,11 +1561,18 @@ AxisRangeSlicerResizeResult reslice_slicer_axis_range(
 }
 
 PreparedOperation prepare_axis_range_reslice(
-    const DocumentSnapshot &source_input, const AxisRangeResliceRequest &request_input,
+    const DocumentSnapshot& source, const AxisRangeResliceRequest& request,
+    const ExecutionControl& control) {
+  return detail::CalibrationPreparation::prepare_axis_range_reslice(resolve_target(source), request, control);
+}
+
+PreparedOperation detail::CalibrationPreparation::prepare_axis_range_reslice(
+    const ResolvedTarget &captured, const AxisRangeResliceRequest &request_input,
     const ExecutionControl &control) {
-  const auto source = source_input;
+  const auto source = captured.source();
+  const auto dataset = source.data().dataset.with_calibration(captured.calibration());
   const auto request = request_input;
-  auto layout = range_reslice_layout(source.data().dataset, request);
+  auto layout = range_reslice_layout(dataset, request);
   TargetRequest target_request;
   target_request.scope = TargetScope::Ranges;
   target_request.roi = RoiPolicy::WholePlane;
@@ -1547,10 +1582,10 @@ PreparedOperation prepare_axis_range_reslice(
   target_request.z = request.plane == Plane::XY
       ? AxisRange{request.first, request.last + 1, request.step}
       : AxisRange{0, source.data().dataset.shape().z, 1};
-  auto target = resolve_target(source, target_request);
+  auto target = CalibrationPreparation::target(captured, target_request);
   // Keep one controlled extraction scope so local orthogonal read checkpoints
   // report offsets within the checked complete emitted-stack work total.
-  auto resliced = reslice_axis_range(source.data().dataset, request, control);
+  auto resliced = reslice_axis_range(dataset, request, control);
   ExecutionScope scope(control);
   kernel_checkpoint();
   const auto title = source.data().metadata.title + " " + layout.plane_name + " " +
@@ -1584,6 +1619,7 @@ PreparedOperation prepare_axis_range_reslice(
     (void)value; edit.remove_extension(name);
   }
   edit.set_extension("axis_range_reslice", std::move(provenance));
+  apply_captured_output_density(edit, captured, edit.preview().data().dataset);
   auto fresh = std::make_shared<Document>(edit.preview().data());
   auto fresh_snapshot = fresh->snapshot();
   OperationParameters parameters{
@@ -1605,13 +1641,20 @@ PreparedOperation prepare_axis_range_reslice(
 }
 
 PreparedOperation prepare_axis_range_orientation(
-    const DocumentSnapshot &source_input,
+    const DocumentSnapshot& source, const AxisRangeOrientationRequest& request,
+    const ExecutionControl& control) {
+  return detail::CalibrationPreparation::prepare_axis_range_orientation(resolve_target(source), request, control);
+}
+
+PreparedOperation detail::CalibrationPreparation::prepare_axis_range_orientation(
+    const ResolvedTarget &captured,
     const AxisRangeOrientationRequest &request_input,
     const ExecutionControl &control) {
-  const auto source = source_input;
+  const auto source = captured.source();
+  const auto dataset = source.data().dataset.with_calibration(captured.calibration());
   const auto request = request_input;
   const auto &range = request.range;
-  auto layout = range_orientation_layout(source.data().dataset, request);
+  auto layout = range_orientation_layout(dataset, request);
   TargetRequest target_request;
   target_request.scope = TargetScope::Ranges;
   target_request.roi = RoiPolicy::WholePlane;
@@ -1621,8 +1664,8 @@ PreparedOperation prepare_axis_range_orientation(
   target_request.z = range.plane == Plane::XY
       ? AxisRange{range.first, range.last + 1, range.step}
       : AxisRange{0, source.data().dataset.shape().z, 1};
-  auto target = resolve_target(source, target_request);
-  auto oriented = reslice_oriented_axis_range(source.data().dataset, request, control);
+  auto target = CalibrationPreparation::target(captured, target_request);
+  auto oriented = reslice_oriented_axis_range(dataset, request, control);
   ExecutionScope scope(control);
   kernel_checkpoint();
   const auto last_selected = int(std::int64_t(range.first) +
@@ -1664,6 +1707,7 @@ PreparedOperation prepare_axis_range_orientation(
     (void)value; edit.remove_extension(name);
   }
   edit.set_extension("axis_range_orientation", std::move(provenance));
+  apply_captured_output_density(edit, captured, edit.preview().data().dataset);
   auto fresh = std::make_shared<Document>(edit.preview().data());
   auto fresh_snapshot = fresh->snapshot();
   OperationParameters parameters{
@@ -1688,12 +1732,19 @@ PreparedOperation prepare_axis_range_orientation(
 }
 
 PreparedOperation prepare_axis_range_spacing(
-    const DocumentSnapshot &source_input,
+    const DocumentSnapshot& source, const AxisRangeSpacingRequest& request,
+    const ExecutionControl& control) {
+  return detail::CalibrationPreparation::prepare_axis_range_spacing(resolve_target(source), request, control);
+}
+
+PreparedOperation detail::CalibrationPreparation::prepare_axis_range_spacing(
+    const ResolvedTarget &captured,
     const AxisRangeSpacingRequest &request_input,
     const ExecutionControl &control) {
-  const auto source = source_input;
+  const auto source = captured.source();
+  const auto dataset = source.data().dataset.with_calibration(captured.calibration());
   const auto request = request_input;
-  const auto layout = range_spacing_layout(source.data().dataset, request);
+  const auto layout = range_spacing_layout(dataset, request);
   const auto &orientation = request.orientation;
   const auto &range = orientation.range;
   TargetRequest target_request;
@@ -1703,15 +1754,15 @@ PreparedOperation prepare_axis_range_spacing(
   target_request.t = AxisRange{range.t, range.t + 1, 1};
   target_request.c = AxisRange{range.c, range.c + 1, 1};
   target_request.z = AxisRange{0, source.data().dataset.shape().z, 1};
-  auto target = resolve_target(source, target_request);
-  auto spaced = reslice_spaced_axis_range(source.data().dataset, request, control);
+  auto target = CalibrationPreparation::target(captured, target_request);
+  auto spaced = reslice_spaced_axis_range(dataset, request, control);
   ExecutionScope scope(control);
   kernel_checkpoint();
   const auto sampling = std::string(request.sampling == AxisRangeSampling::Nearest ? "nearest" : "linear");
   const auto title = source.data().metadata.title + " " + layout.output.plane_name + " " +
       std::to_string(range.first + 1) + "-" + std::to_string(range.last + 1) +
       " step " + std::to_string(range.step) + " Z spacing " +
-      spacing_title_value(request.physical_vertical_spacing) + " " + source.data().dataset.calibration().unit +
+      spacing_title_value(request.physical_vertical_spacing) + " " + dataset.calibration().unit +
       " " + sampling + " [R" + std::to_string(int(orientation.reverse_order)) +
       " F" + std::to_string(int(orientation.flip_vertical)) +
       " T" + std::to_string(int(orientation.transpose)) + "]";
@@ -1753,6 +1804,7 @@ PreparedOperation prepare_axis_range_spacing(
   }
   edit.set_extension("axis_range_spacing", std::move(provenance));
   kernel_checkpoint();
+  apply_captured_output_density(edit, captured, edit.preview().data().dataset);
   auto fresh = std::make_shared<Document>(edit.preview().data());
   auto fresh_snapshot = fresh->snapshot();
   OperationParameters parameters{
@@ -1792,12 +1844,19 @@ PreparedOperation prepare_axis_range_spacing(
 }
 
 PreparedOperation prepare_axis_range_slicer_resize(
-    const DocumentSnapshot &source_input,
+    const DocumentSnapshot& source, const AxisRangeSlicerResizeRequest& request,
+    const ExecutionControl& control) {
+  return detail::CalibrationPreparation::prepare_axis_range_slicer_resize(resolve_target(source), request, control);
+}
+
+PreparedOperation detail::CalibrationPreparation::prepare_axis_range_slicer_resize(
+    const ResolvedTarget &captured,
     const AxisRangeSlicerResizeRequest &request_input,
     const ExecutionControl &control) {
-  const auto source = source_input;
+  const auto source = captured.source();
+  const auto dataset = source.data().dataset.with_calibration(captured.calibration());
   const auto request = request_input;
-  const auto layout = range_slicer_resize_layout(source.data().dataset, request);
+  const auto layout = range_slicer_resize_layout(dataset, request);
   const auto &orientation = request.orientation;
   const auto &range = orientation.range;
   const auto &estimate = layout.estimate;
@@ -1808,8 +1867,8 @@ PreparedOperation prepare_axis_range_slicer_resize(
   target_request.t = AxisRange{range.t, range.t + 1, 1};
   target_request.c = AxisRange{range.c, range.c + 1, 1};
   target_request.z = AxisRange{0, source.data().dataset.shape().z, 1};
-  auto target = resolve_target(source, target_request);
-  auto resized = reslice_slicer_axis_range(source.data().dataset, request, control);
+  auto target = CalibrationPreparation::target(captured, target_request);
+  auto resized = reslice_slicer_axis_range(dataset, request, control);
   ExecutionScope scope(control);
   kernel_checkpoint();
   const std::string branch = slicer_branch_name(estimate.resize_branch);
@@ -1862,6 +1921,7 @@ PreparedOperation prepare_axis_range_slicer_resize(
   }
   edit.set_extension("axis_range_slicer_resize", std::move(provenance));
   kernel_checkpoint();
+  apply_captured_output_density(edit, captured, edit.preview().data().dataset);
   auto fresh = std::make_shared<Document>(edit.preview().data());
   auto fresh_snapshot = fresh->snapshot();
   OperationParameters parameters{

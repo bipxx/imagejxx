@@ -1,4 +1,5 @@
 #include <imagejxx/application.hpp>
+#include <imagejxx/imagej_projection_execution.hpp>
 #include <atomic>
 #include <cstring>
 #include <iostream>
@@ -82,6 +83,28 @@ void processing_guards() {
   Application foreign;foreign.adopt(owner);
   rejects<std::invalid_argument>([&]{foreign.prepare("add",target,{{"value",std::int64_t(1)}});});
 }
+void dedicated_consumers() {
+  Application app;
+  auto data=Dataset::from_planes({1,1,3,2,3,1},
+      {Image(3,2,1,PixelType::UInt8),Image(3,2,1,PixelType::UInt8),Image(3,2,1,PixelType::UInt8)});
+  auto owner=std::make_shared<Document>(data);app.adopt(owner);
+  const auto g=global();app.set_global_calibration(g);
+  AxisPlaneExportRequest request;request.plane=Plane::XZ;request.coordinate=1;
+  auto exported=app.prepare_axis_plane_export(request);
+  check(exported.target().source().id()==owner->id && exported.target().application_calibration_bound(),"Axis export lost original bound source");
+  const auto fresh=exported.prepared_new_document()->snapshot();
+  const auto expected=export_axis_plane(data.with_calibration(g.spatial()),request).dataset;
+  check(fresh.data().dataset.calibration().spacing==expected.calibration().spacing,"Axis export lost effective axis mapping");
+  check(read_imagej_intensity_calibration(fresh).shares_record(g.intensity()),"Axis export lost effective density");
+  app.set_global_calibration(global(.75));
+  rejects<RevisionConflict>([&]{app.publish(exported);});
+  ImageJProjectionDocumentRequest projection;projection.projection.first=0;projection.projection.last=2;
+  projection.projection.method="maximum";
+  auto prepared=app.prepare_imagej_projection(projection);
+  check(prepared.target().source().id()==owner->id && prepared.target().calibration().spacing[0]==.75,"Projection lost captured input");
+  app.clear_global_calibration();rejects<RevisionConflict>([&]{app.publish(prepared);});
+  check(owner->undo_steps()==0 && owner->snapshot().data().dataset.calibration().spacing[0]==1,"Dedicated processing mutated source history/calibration");
+}
 void detached_values_and_threads() {
   Application app;auto owner=std::make_shared<Document>(pixels());std::weak_ptr<Document> weak=owner;
   const auto id=app.adopt(owner);app.set_global_calibration(GlobalCalibration::from_snapshot(owner->snapshot()));
@@ -96,4 +119,4 @@ void detached_values_and_threads() {
   writer.join();reader.join();check(!failed,"Concurrent calibration values/generations tore");
 }
 }
-int main(){try{resolution();ownership_and_guards();processing_guards();detached_values_and_threads();std::cout<<"Global calibration native checks passed\n";return 0;}catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}
+int main(){try{resolution();ownership_and_guards();processing_guards();dedicated_consumers();detached_values_and_threads();std::cout<<"Global calibration native checks passed\n";return 0;}catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

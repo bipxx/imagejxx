@@ -1,5 +1,31 @@
 # ImageJ and Fiji gap closure plan
 
+## Dedicated calibration consumers — verified scope, 2026-10-28
+
+Application plane export, range reslice/orientation/physical spacing/scalar
+Slicer resize and the new Application.prepare_imagej_projection now retain the
+captured effective calibration and publication guard. Original source snapshots,
+local history and provenance stay intact. Existing axis geometry/sampling kernels
+use a calibrated Dataset view; projection keeps its existing numerical/density
+output policy and charges the captured global record during admission. Three
+Python slicing shortcuts now preserve the application capture.
+
+Installed Windows: 1,811 collected, 1,809 passed, two optional hidden-OpenGL checks
+skipped. All 67 new consumer cases, 11 native control invocations and six C++ ImGui
+regressions pass. Current core SDKs pass 4/4 CTest clients on each OS, including
+128 table and 86 fit cells each. 1,291 producer and 45 reader pins rechecked.
+One new reader wrongly requested unsupported RGB Slicer; corrected negative
+coverage preserves its scalar-only boundary. One runner omitted test CLI modes;
+argument-only retry reused unchanged products. Diagnostics/preimages retained.
+
+Next: caller-thread capture and effective admission/derived-record policy in the
+resolved axis/projection commands, then both ImGui routes and generation-aware
+display/XYZ/analysis caches. Global replay/session and original/platform gates
+remain open. RGB Slicer is still a separate feature gap. Tracker: 47 in progress,
+52 open, 0 fully certified; no measured speed superiority. Owned scratch retired;
+hashed lossless retention recovered 1,159,671 B. Two denied caches keep the full
+8 GiB budget unverified. [Scoped evidence](parity/reviews/G034-global-calibration-consumers-progress001.json).
+
 ## Effective calibration processing integration — verified scope, 2026-10-28
 
 Generic Application targets carry effective calibration and application/global/

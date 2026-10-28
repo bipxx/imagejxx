@@ -1,5 +1,13 @@
 # Sol Ultra execution guide
 
+## Dedicated calibration consumers — current execution guidance
+
+Use [PLAN's current card](PLAN.md) as the single status/count source and
+[the calibration contract](packets/G034-global-calibration-contract.md) for the
+next command/admission/record seam. Batch public command ABI changes before one
+build; reuse the private factory adapter and the active caches/SDKs. Preserve the
+scalar-only Slicer boundary until RGB support has original-reference evidence.
+
 ## Effective calibration processing integration — verified scope, 2026-10-28
 
 Generic Application targets carry effective calibration and application/global/

@@ -75,7 +75,7 @@ restores their current values. There is no new persistence/replay schema here.
 ## Remaining integration
 
 Follow [the global calibration contract](packets/G034-global-calibration-contract.md)
-for remaining dedicated prepared-command propagation, display/XYZ,
+for remaining resolved-command/admission/record integration, display/XYZ,
 measurements/profiles/histograms/projection, scientific I/O/session and shared UI
 integration. The existing projected_imagej_intensity_calibration helper is an
 output policy, not a global adapter. No full ImageJ/Fiji, supported-platform or
@@ -115,3 +115,33 @@ hidden-OpenGL checks skip. All19 new execution cases and six existing C++ UI
 regressions pass. Both installed core SDKs pass4/4 CTest clients. This does not
 certify the remaining global consumers, full platform matrix or performance.
 See [scoped evidence](parity/reviews/G034-global-calibration-execution-progress001.json).
+
+## Verified dedicated application consumers — 2026-10-28
+
+The existing Application.prepare_axis_plane_export, prepare_axis_range_reslice,
+prepare_axis_range_orientation, prepare_axis_range_spacing and
+prepare_axis_range_slicer_resize now capture the same generation binding as
+ordinary application targets. Application.prepare_imagej_projection(request,
+document_id, control) adds a dedicated projection entrypoint; Python takes the
+existing projection request dictionary and cancellation/progress/checkpoint
+keywords. Python's three former direct snapshot preparation shortcuts now carry
+an application target captured before callback setup and GIL release.
+
+A private adapter resolves each factory's exact contributor target against the
+original immutable source and retains its captured guard. Axis remapping and
+physical sampling receive Dataset.with_calibration(effective.spatial), which
+shares the original pixel provider. Source transactions and provenance keep the
+original owner/revisions/local calibration. Density is installed only on derived
+axis owners; projection retains its own existing calibrated numerical/output
+policy. Projection admission includes the captured global record and units in
+its metadata/working budget before callbacks or pixel reads.
+
+Pure snapshot overloads preserve local geometry, density policy and detached
+publication contract. Native command records/resolvers and current ImGui command
+routes have not yet adopted these factories, and no Global toggle is enabled.
+Installed Windows verification collects1,811 cases:1,809 pass, two optional
+hidden-OpenGL checks skip. All67 consumer cases and original axis/projection
+regressions pass; RGB Slicer is explicit unsupported-refusal coverage. All11
+native control invocations and six C++ UI regressions pass. Both installed core
+SDKs pass4/4 CTest clients. No full platform/family acceptance follows.
+See [scoped evidence](parity/reviews/G034-global-calibration-consumers-progress001.json).

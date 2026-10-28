@@ -1,4 +1,5 @@
 #include "imagej_projection_document.hpp"
+#include <imagejxx/global_calibration.hpp>
 #include "axis_command_record.hpp"
 #include "kernel_control.hpp"
 #include <imagejxx/imagej_intensity_calibration.hpp>
@@ -137,16 +138,17 @@ ChannelDisplayLut legacy_lut(const DisplayState& display) {
 }
 } // namespace
 ImageJProjectionDocument project_imagej_document(const DocumentSnapshot& source_input,
-    const ImageJProjectionDocumentRequest& input,const ExecutionControl& control) {
+    const ImageJProjectionDocumentRequest& input,const ExecutionControl& control,
+    const EffectiveCalibration* context) {
   const auto source=source_input;
   if(input.projection.signed16_density || !input.projection.calibration_table.empty())
     throw std::invalid_argument("Prepared projection density comes from the source document");
   const auto request=input;
   auto projection=request.projection;
-  const auto& dataset=source.data().dataset;
+  const auto dataset=context?source.data().dataset.with_calibration(context->spatial()):source.data().dataset;
   const auto shape=dataset.shape();
   const bool rgb=shape.s==3;
-  const auto intensity=read_imagej_intensity_calibration(source);
+  const auto intensity=context?context->intensity():read_imagej_intensity_calibration(source);
   apply_imagej_intensity_calibration(intensity,dataset.pixel_type(),shape.s,projection);
   const auto layout=rgb?describe_imagej_rgb_projection(dataset,projection):
       describe_imagej_dataset_projection(dataset,projection);

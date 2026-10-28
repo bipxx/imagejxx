@@ -1,7 +1,8 @@
 # Global calibration: observed semantics and implementation path
 
-Status: native metadata and generic target/job/publication/scaled Gaussian
-integration verified; dedicated consumers, shared UI and persistence remain open. See [the explicit core API](../GLOBAL_CALIBRATION.md).
+Status: native metadata, generic target/job/publication/scaled Gaussian and
+dedicated Application factory integration are scoped verified. Resolved command
+admission/records, shared UI/caches and persistence remain open. See [the explicit core API](../GLOBAL_CALIBRATION.md).
 The thirteen-case [reference](../parity/reviews/G034-global-calibration-reference002.json)
 comes from actual pinned ImageJ1.54r ImagePlus/Calibration execution. It does not
 invoke the private Calibrator dialog or qualify all calibration functions.
@@ -139,3 +140,45 @@ The remaining consumers and full global workflow are not yet certified.
 4. Only after these native consumers agree, add generation keys to display/XYZ,
    measurements/histograms/profile/live-plot caches. Retained independent plots
    keep captured values. Verify both actual ImGui hosts before exposing Global.
+
+## Dedicated consumer implementation and next command seam — 2026-10-28
+
+The working tree implements all five Application axis factories and a new
+Application.prepare_imagej_projection through one private captured-target adapter.
+Original source/transaction/provenance stays local; a calibrated Dataset view
+feeds existing axis geometry and sampling kernels. Complete contributor targets
+retain the original capture's guard. Projection keeps its existing density/output
+policy and charges global record/units before processing. Three Python axis
+bindings now preserve the application seam. Scoped runtime/installed SDK and
+original axis/projection regression verification now passes; see
+[consumer evidence](../parity/reviews/G034-global-calibration-consumers-progress001.json).
+
+The remaining command/UI work must use these factories without resolving current
+application state on worker threads. Current Window routes are separate:
+publishAxisExtraction/publishAxisOrientation/publishAxisSpacing/publishSlicerResize
+resolve source-only command records, and project_imagej resolves then queues a
+ResolvedImageJProjectionCommand. Their estimates, derived records and replay
+checks still describe local calibration. Passing global pixels through an old
+local-derived record would misstate geometry/admission and is not an acceptable
+shortcut. Keep schema1 snapshot replay local and preserve its fingerprints.
+
+| Next responsibility | Shortest path | Required checks |
+| --- | --- | --- |
+| Frozen command capture | Capture the Application target on the caller/UI thread before callbacks or enqueue; pass that immutable capture to the existing worker/factory. | Change global/bypass while queued and while processing; refuse publication without local history or membership mutation. |
+| Command estimates and output geometry | Reuse the same effective Dataset view and projection estimator as preparation. Batch command ABI seams in one public-header build. | Estimate/prepared shape, affine, units and caps agree for XZ/YZ, transpose/reverse/flip, scalar/RGB, spacing and Slicer resize. |
+| Serialized provenance and replay | Add an explicit effective-context record policy; retain original local source identity separately. Never serialize a live application identity or silently reinterpret schema1 as global. | Old records unchanged; detached replay remains local. New context records require deliberate live-context rebind/validation and lossless density words. |
+| Both shared ImGui hosts | Reuse controller queue, candidate staging and atomic Application publication. | Actual controls create/use/clear/bypass; cancellation, stale refusal and undo/derived-owner state agree in C++ and Python launches. |
+| Display and analysis consumers | Add captured calibration plus applicable generation keys to display/XYZ/distance, histogram/profile/measurement and live-plot caches. | Global changes work without local revision changes; ignored documents avoid unrelated invalidation; independent plot snapshots retain their values. |
+
+Do not enable Global until the command/admission/record and live consumer seams
+agree. Native Application factory support alone is not full ImGui integration,
+scientific I/O/session migration or original Calibrator UI equivalence. Existing
+full platform and matched speed/memory gates remain open.
+
+Built-module consumer diagnostic:61/61 pass after correcting one new reader
+assumption. Existing Slicer resize supports finite scalar storage only; RGB is
+still rejected in both snapshot and Application paths without source/history
+mutation. This is negative compatibility coverage, not RGB Slicer support. Keep
+RGB Slicer as an explicit feature gap and qualify it against the pinned original
+before claiming that family complete. The reader preimage/failure diagnostics
+are retained. No production source change or rebuild was needed for this fix.

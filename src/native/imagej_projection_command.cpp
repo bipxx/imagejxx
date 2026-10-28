@@ -1,4 +1,5 @@
 #include <imagejxx/imagej_projection_command.hpp>
+#include "calibration_preparation_internal.hpp"
 #include <imagejxx/imagej_intensity_calibration.hpp>
 #include "projection_record_internal.hpp"
 #include "contrast_command_record.hpp"
@@ -138,6 +139,11 @@ ImageJProjectionDocumentRequest imagej_projection_request_from_record(const Meta
 }
 ImageJProjectionDocumentEstimate estimate_imagej_projection_document(
     const DocumentSnapshot& source,const ImageJProjectionDocumentRequest& r) {
+  return detail::estimate_calibrated_projection(source,nullptr,r);
+}
+ImageJProjectionDocumentEstimate detail::estimate_calibrated_projection(
+    const DocumentSnapshot& source,const EffectiveCalibration* context,
+    const ImageJProjectionDocumentRequest& r) {
   density_defaults(r);
   ImageJProjectionDocumentEstimate e;
   e.metadata_bytes=detail::contrast_command_record::source_budget(source,std::min(r.max_record_bytes,r.max_working_bytes));
@@ -146,9 +152,15 @@ ImageJProjectionDocumentEstimate estimate_imagej_projection_document(
   if(r.output_title)extras.text(*r.output_title);
   if(r.source_lut)extras.text(r.source_lut->name);
   extras.object(imagej_projection_request_record(r));
+  const auto intensity=context?context->intensity():read_imagej_intensity_calibration(source);
+  if(context) {
+    extras.value(intensity.record(),0);
+    extras.text(context->spatial().unit);extras.text(context->spatial().time_unit);
+  }
   e.metadata_bytes=add(e.metadata_bytes,extras.used);
-  const auto intensity=read_imagej_intensity_calibration(source);
-  const auto s=source_metadata(source);presentation(source.display().properties,s);
+  auto s=source_metadata(source);
+  if(context)s.calibration=context->spatial();
+  presentation(source.display().properties,s);
   e.layout=layout(s,r,intensity);
   const auto pixels=mul(std::size_t(e.layout.shape.x),std::size_t(e.layout.shape.y));
   // Existing escaped-metadata/geometry bound covers transaction, preview,

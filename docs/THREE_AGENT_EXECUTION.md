@@ -1,5 +1,19 @@
 # Three-agent execution plan
 
+## Dedicated calibration consumers — execution ownership
+
+[PLAN's current card](PLAN.md) owns current status/counts. Next responsibilities:
+
+| Role | Owned work | Handoff |
+| --- | --- | --- |
+| Native | Command captures, effective admission/layout and explicit record/replay policy over the existing factories. | Freeze typed capture/record contract before frontend wiring. |
+| Frontend | Both shared ImGui routes, generation-aware display/XYZ/analysis caches and Global/bypass controls. | Use caller-thread captures; never resolve new application state inside workers. |
+| Validation | Original fixtures, stale/cancel/history/metadata cases, both actual hosts and current installed SDKs. | Preserve failed diagnostics, exact fingerprints and explicit unsupported RGB Slicer coverage. |
+
+These are ownership boundaries, not a claim that agents are currently running.
+Use [the exact command seam](packets/G034-global-calibration-contract.md) and keep
+full family/platform/performance gates open until their own evidence passes.
+
 ## Effective calibration processing integration — verified scope, 2026-10-28
 
 Generic Application targets carry effective calibration and application/global/

@@ -5,7 +5,7 @@
 
 namespace imagejxx {
 class Application;
-namespace detail { struct TargetCalibrationBinding; }
+namespace detail { struct TargetCalibrationBinding; struct CalibrationPreparation; }
 
 // Half-open voxel-index range [start, stop), with a positive sampling step.
 // An omitted stop resolves to the axis extent. Omitted request ranges use the
@@ -65,6 +65,7 @@ public:
 
 private:
   friend class Application;
+  friend struct detail::CalibrationPreparation;
   std::shared_ptr<const detail::TargetCalibrationBinding> calibration_binding_;
   friend ResolvedTarget resolve_target(const DocumentSnapshot &,
                                        const TargetRequest &,

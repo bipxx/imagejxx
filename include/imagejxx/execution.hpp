@@ -7,6 +7,7 @@
 #include <string_view>
 
 namespace imagejxx {
+namespace detail { struct CalibrationPreparation; }
 class Document;
 struct ImageJProjectionDocumentRequest;
 struct ImageJIntensityFitRequest;
@@ -245,6 +246,7 @@ public:
 
 private:
   friend class Application;
+  friend struct detail::CalibrationPreparation;
   friend PreparedOperation prepare_z_subset(const ResolvedZSubsetCommand &,const ExecutionControl &);
   friend PreparedOperation prepare_operation(const std::string &,
                                              const ResolvedTarget &,

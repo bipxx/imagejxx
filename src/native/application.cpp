@@ -1,4 +1,5 @@
 #include "target_calibration_internal.hpp"
+#include "calibration_preparation_internal.hpp"
 #include "operation_internal.hpp"
 #include "target_mask_resources.hpp"
 #include "operation_job_probe_internal.hpp"
@@ -488,39 +489,43 @@ PublishedOperation Application::publish(PreparedOperation &prepared,
                                         std::optional<std::string> title) {
   return prepared.publish(*this, std::move(title));
 }
+PreparedOperation Application::prepare_imagej_projection(
+    const ImageJProjectionDocumentRequest& request, std::uint64_t id,
+    const ExecutionControl& control) const {
+  const auto captured_request = request;
+  return detail::CalibrationPreparation::prepare_imagej_projection(
+      resolve_target({}, id), captured_request, control);
+}
 PreparedOperation Application::prepare_axis_plane_export(
     const AxisPlaneExportRequest &request, std::uint64_t id,
     const ExecutionControl &control) const {
-  return imagejxx::prepare_axis_plane_export(snapshot(id), request, control);
+  return detail::CalibrationPreparation::prepare_axis_plane_export(resolve_target({}, id), request, control);
 }
 PreparedOperation Application::prepare_axis_range_reslice(
     const AxisRangeResliceRequest &request, std::uint64_t id,
     const ExecutionControl &control) const {
-  return imagejxx::prepare_axis_range_reslice(snapshot(id), request, control);
+  return detail::CalibrationPreparation::prepare_axis_range_reslice(resolve_target({}, id), request, control);
 }
 PreparedOperation Application::prepare_axis_range_orientation(
     const AxisRangeOrientationRequest &request, std::uint64_t id,
     const ExecutionControl &control) const {
   const auto captured_request = request;
-  const auto captured_source = snapshot(id);
-  return imagejxx::prepare_axis_range_orientation(captured_source,
-                                                 captured_request, control);
+  return detail::CalibrationPreparation::prepare_axis_range_orientation(
+      resolve_target({}, id), captured_request, control);
 }
 PreparedOperation Application::prepare_axis_range_spacing(
     const AxisRangeSpacingRequest &request, std::uint64_t id,
     const ExecutionControl &control) const {
   const auto captured_request = request;
-  const auto captured_source = snapshot(id);
-  return imagejxx::prepare_axis_range_spacing(captured_source,
-                                             captured_request, control);
+  return detail::CalibrationPreparation::prepare_axis_range_spacing(
+      resolve_target({}, id), captured_request, control);
 }
 PreparedOperation Application::prepare_axis_range_slicer_resize(
     const AxisRangeSlicerResizeRequest &request, std::uint64_t id,
     const ExecutionControl &control) const {
   const auto captured_request = request;
-  const auto captured_source = snapshot(id);
-  return imagejxx::prepare_axis_range_slicer_resize(captured_source,
-                                                   captured_request, control);
+  return detail::CalibrationPreparation::prepare_axis_range_slicer_resize(
+      resolve_target({}, id), captured_request, control);
 }
 void Application::commit(DocumentTransaction &transaction,
                          std::optional<DisplayState> display,
