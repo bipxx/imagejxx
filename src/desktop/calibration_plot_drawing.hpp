@@ -14,7 +14,8 @@ struct CalibrationPlotCanvas {
 };
 struct CalibrationPlotDrawing {
   Json points=Json::array(),x_ticks=Json::array(),y_ticks=Json::array(),model_overlay=nullptr;
-  std::size_t drawn_segments=0,masked_segments=0;
+  Json x_minor_ticks=Json::array(),y_minor_ticks=Json::array();
+  std::size_t drawn_segments=0,masked_segments=0,grid_lines=0;
   bool finite_geometry=true;
 };
 CalibrationPlotDrawing drawCalibrationPlotGeometry(ImDrawList*,const ImageJIntensityFitPlot&,

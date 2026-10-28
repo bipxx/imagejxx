@@ -782,7 +782,9 @@ def _assert_plot_interaction(report):
 def _assert_plot_axes(report):
     case=report["plot_axes"]
     assert case["initial"]["title"]=="Plot Axis Limits"
-    assert case["initial"]["values"]=={"x_min":0,"x_max":65535,"y_min":-32768,"y_max":32767,"log_x":False,"log_y":False,"grid":True,"ticks":True}
+    defaults=dict(case["initial"]["values"])
+    assert defaults.pop("nice_ticks") is False and defaults.pop("minor_ticks") is False
+    assert defaults=={"x_min":0,"x_max":65535,"y_min":-32768,"y_max":32767,"log_x":False,"log_y":False,"grid":True,"ticks":True}
     assert case["error"]["open"] and "distinct" in case["error"]["message"]
     assert case["invalid_plot"]["view_limits"]==case["invalid_plot"]["limits"]
     for name in ("applied","cancelled"):
@@ -791,7 +793,9 @@ def _assert_plot_axes(report):
         assert plot["finite_geometry"] and plot["visible"]
         assert plot["curve_x"]==report["calibration_table_plot"]["curve_x"]
         assert plot["curve_y"]==report["calibration_table_plot"]["curve_y"]
-    assert case["reopened"]["values"]=={"x_min":200,"x_max":100,"y_min":1000,"y_max":-1000,"log_x":False,"log_y":False,"grid":True,"ticks":True}
+    reopened=dict(case["reopened"]["values"])
+    assert reopened.pop("nice_ticks") is False and reopened.pop("minor_ticks") is False
+    assert reopened=={"x_min":200,"x_max":100,"y_min":1000,"y_max":-1000,"log_x":False,"log_y":False,"grid":True,"ticks":True}
     assert case["replacement_fixture_action"]=="show_intensity_calibration_plot"
     assert case["stale_error"]["open"] and "plotted data changed" in case["stale_error"]["message"]
     assert case["replacement"]["view_limits"]==case["replacement"]["limits"]

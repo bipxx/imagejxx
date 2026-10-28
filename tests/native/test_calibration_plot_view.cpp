@@ -2,6 +2,7 @@
 #include "../../src/desktop/calibration_plot_annotation.hpp"
 #include "../../src/desktop/calibration_plot_payload.hpp"
 #include "../../src/desktop/calibration_plot_style.hpp"
+#include "../../src/desktop/calibration_plot_ticks.hpp"
 #include <limits>
 #include <stdexcept>
 #include <cstdio>
@@ -81,6 +82,23 @@ void verify_contracts() {
   check(data.x_min==7 && data.x_max==7);
   const auto nearMaximum=CalibrationPlotView::axis_value(largest/2,largest,1-1e-15,true);
   check(std::isfinite(nearMaximum) && nearMaximum>=largest/2 && nearMaximum<=largest);
+  using imagejxx::desktop::calibration_axis_ticks;
+  auto axisTicks=calibration_axis_ticks(0,100,false,true,true);
+  check(axisTicks.majors==5 && axisTicks.minors==16);
+  int majorIndex=0;for(const auto& tick:axisTicks)if(tick.major)check(tick.value==25*majorIndex++);
+  axisTicks=calibration_axis_ticks(1,10000,true,true,true);check(axisTicks.majors==5 && axisTicks.minors==32);
+  axisTicks=calibration_axis_ticks(0,0,false,true,true);check(axisTicks.size==1 && axisTicks.begin()->fraction==.5);
+  check(calibration_axis_ticks(0,1,true,true,true).size==0);
+  const std::array<std::array<double,2>,8> tickRanges{{{{-largest,largest}},{{1e300,std::nextafter(1e300,largest)}},
+    {{std::numeric_limits<double>::denorm_min(),4*std::numeric_limits<double>::denorm_min()}},{{1e-300,1e300}},
+    {{3,97}},{{-97,-3}},{{2,8}},{{1,10000}}}};
+  for(const auto& range:tickRanges)for(bool logarithmic:{false,true})for(bool reverse:{false,true}) {
+    if(logarithmic && range[0]<=0)continue;
+    const auto ticks=calibration_axis_ticks(range[reverse?1:0],range[reverse?0:1],logarithmic,true,true);
+    check(ticks.size<=ticks.capacity && ticks.majors<=ticks.major_limit && ticks.minors<=ticks.minor_limit && ticks.size>0);
+    double previous=-1;
+    for(const auto& tick:ticks){check(std::isfinite(tick.value) && tick.fraction>=0 && tick.fraction<=1 && tick.fraction>previous);previous=tick.fraction;}
+  }
   using imagejxx::desktop::calibration_plot_annotation;
   auto annotation=calibration_plot_annotation(ImageJIntensityCalibration::signed16("HU"),true);
   check(annotation.model && !annotation.fit && annotation.formula=="y = x - 32768");

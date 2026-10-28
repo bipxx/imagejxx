@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "scope": "G034 opt-in automatic major tick spacing and unlabeled minor ticks shared by UI/PNG export",
+  "state": "focused_checks_passed",
+  "acceptance_claim": false,
+  "implementation": {
+    "generator": "Private fixed-capacity axis tick generator, no span-dependent unbounded loop/storage. At most12 major/96 minor ticks in128 slots. Linear spacing uses1/2/2.5/5 times powers of10 with scale-normalized span estimates to avoid endpoint subtraction overflow. Log majors use bounded decade strides, with1/2/5 for sub-decade ranges; log minors2..9 only for spans at most12 decades.",
+    "robustness": "Finite/domain checks, unique value/fraction admission, normalized positions for reversed axes, singleton constant axes and endpoint fallback when rounded intervals are unrepresentable. Tested denormal endpoints, adjacent large doubles, opposite maximum finite endpoints and600-decade log ranges. Minor candidates that cannot be spaced at least3GUI pixels are omitted.",
+    "presentation": "Existing fixed-quarter/default appearance retained unless nice_ticks is enabled. Nice major ticks determine grid positions; minors are unlabeled. Nice labels start at6 significant digits and use17 when adjacent labels collide; overlap suppression uses measured bounds and4GUI-pixel gaps. Current numeric limits/data stay unchanged; no autoscale snapping.",
+    "api": "Optional Boolean nice_ticks/minor_ticks on set_intensity_plot_limits preserve omitted values, with existing live/source revision or snapshot-ID guards. Axes dialog adds two checkboxes defaultfalse. Snapshot view copies flags; reset axes restores default flags. Disabling ticks hides both major/minor marks while grid follows its own setting. PNG shares generator/layout and reports actual major/minor positions.",
+    "reuse": "No public core API/dependency/provider change; fixed small tick arrays and existing prepared payload, viewport and draw path. Not asserted to match original ImageJ tick conventions without original-reference acceptance."
+  },
+  "evidence": {
+    "calibration-plot-ticks-linux389": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-ticks-linux389\\receipt.json",
+      "bytes": 30894,
+      "sha256": "87952e8b8e37baea8638e5c56dd745d55e19e5c2a037b8cb6350e60f40cf9d0f"
+    },
+    "calibration-plot-ticks-windows-build390": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-ticks-windows-build390\\receipt.json",
+      "bytes": 24959,
+      "sha256": "6713cdf826b05ab7bbb47c0a45c469ede4afa614dca23d3003d4c5e17444ee91"
+    },
+    "calibration-plot-ticks-installed391": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-ticks-installed391\\receipt.json",
+      "bytes": 36052,
+      "sha256": "244e19b4fd7359aa5898d0b9f848bba6f7c962fc00717e76b2fe5e4beb84c46b"
+    },
+    "calibration-plot-ticks-export-linux392": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-ticks-export-linux392\\receipt.json",
+      "bytes": 19690,
+      "sha256": "0733ff71cc677b9267ebcc4d7f0dfc3f7dd8d0ba168e9ffcacb5c2eb85097f47"
+    },
+    "calibration-plot-ticks-readers393": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-ticks-readers393\\receipt.json",
+      "bytes": 990,
+      "sha256": "395069c41aeaccdd27f61059d562e798b01effe4c2c62515082bd59a964b075f"
+    },
+    "calibration-plot-ticks-installed394": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-ticks-installed394\\receipt.json",
+      "bytes": 36056,
+      "sha256": "d3edcc363b422fd4e7aa6e129705f377b366a63fb0e4ba367d9e4f9470d5b899"
+    },
+    "calibration-plot-ticks-installed395": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-ticks-installed395\\receipt.json",
+      "bytes": 35980,
+      "sha256": "2a38259f43c3161e2097ee33302b2edb7596a11f70240febb3ad3015a1a5fd68"
+    },
+    "calibration-plot-ticks-artifacts396": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-ticks-artifacts396\\receipt.json",
+      "bytes": 2659,
+      "sha256": "e34608e8841b687963f97952474e65f17182d623dcab7af727f40fcdbaf4088a"
+    },
+    "calibration-plot-ticks-retention397": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-ticks-retention397\\receipt.json",
+      "bytes": 8245,
+      "sha256": "2220dcae66ce05356b2f8e65c7ea711b5dd10776b57e398076a40c064ff7f4dc"
+    }
+  },
+  "verification": {
+    "windows_installed_pytest": {
+      "tests": 783,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "native": "Windows projection/private viewport+annotation+payload+style+ticks checks pass. Linux private C++17 consumer passes known major/minor fixtures and bounded/finite/monotonic invariants across linear/log/reversed/extreme ranges. Current Linux shared drawing/PNG consumer compiles/executes against pinned archives/SDK with5 majors/16 minors and memory release. No Linux UI/full SDK promotion.",
+    "actual_imgui_input": "Both frontends physically toggle nice/minor checkboxes in snapshot axes dialog after source close, then edit style and save CSV/PNG. Independent readers verify defaults/sibling independence, rounded/log/reversed positions, label separation, strict patch types, original data/history and resource lifecycle.",
+    "artifacts": "Independent PNG CRC/filter/pixel audit finds16 bottom minor stems in each C++, Python and Linux output. C++/Python PNGs byte-identical; exported model/grid/ticks visually inspected. Raw previews retired after hash checks against retained captures.",
+    "snapshot_frames": 186,
+    "snapshot_frame_cap": 192,
+    "calibration_frames": 606,
+    "calibration_frame_cap": 608,
+    "commercial_use_inventory": "passed; no dependency added",
+    "diff_check": "passed",
+    "limits": "Focused checks do not qualify all formatting/gutter/font/DPI combinations, OS/GPU behavior, original ImageJ tick parity, full family or matched speed."
+  },
+  "harness_history": [
+    {
+      "run": "installed391",
+      "state": "failed",
+      "cause": "Four existing UI checks expected exactly eight initial axes dialog fields. Two additive false defaults require separate validation. Original eight-field expected dictionary retained."
+    },
+    {
+      "run": "installed394",
+      "state": "failed",
+      "cause": "Same four checks then reached a second exact dictionary assertion for reopened dialog. Same additive validation applied there; original expected dictionary retained. Both failed reader preimages SHA verified and preserved. No product change between these runs and passing395; numerical/reference fingerprints unchanged."
+    }
+  ],
+  "storage": {
+    "before_known_bytes": 8478202722,
+    "after_known_bytes": 8480310796,
+    "full_budget_verified": false,
+    "unknown_subtrees": [
+      ".cache/pytest",
+      ".cache/pytest-ui"
+    ],
+    "inventory": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-ticks-after398.json",
+      "bytes": 1524,
+      "sha256": "61bff9e45c9c2cd5ced9e9d8250a18e80e3c3599efe5a46591e74f1e6588e6be"
+    },
+    "recovered_bytes": 2505476,
+    "temporary_build_reserve_bytes": 536870912,
+    "capture_scratch_bound_bytes": 67108864,
+    "retention": "All owned terminal Windows/Linux scratch and raw previews retired. Logs/producer identities/failed reader preimages/focused failed UI schema fields losslessly compressed and member-hash verified. Superseded full failed capture archives391/394 retired with identities and reduced necessary diagnostics; their full contents are unavailable evidence. Passing395 and Linux392 captures retained. Same caches/runtime/SDK; no whole cache/environment/checkout archives."
+  },
+  "remaining": [
+    "Generic histogram/profile shared renderer, interaction, snapshot and export lifecycle",
+    "Original-reference tick acceptance and configurable label/formatting/gutter polish",
+    "Additional export formats/transparency/custom font/DPI",
+    "Custom annotation text/direct manipulation, session persistence and independent OS windows",
+    "Broader calibration/settings/import/replay/downstream and Linux UI/macOS/IO SDK/original-reference gates",
+    "Matched ImageJ/Fiji speed/memory benchmarks"
+  ],
+  "family_status": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  }
+}

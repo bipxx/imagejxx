@@ -135,6 +135,10 @@ def test_actual_floating_snapshot_lifecycle(context,tmp_path):
     exported=report["png_export"];pixels=read_plot_png(report["png_path"])
     assert pixels.shape==(640,1024,3) and exported["encoded_bytes"]==Path(report["png_path"]).stat().st_size
     assert exported["source_id"]==first["source_id"] and exported["view_limits"]==[100,200,-50,50]
+    assert exported["nice_ticks"] and exported["minor_ticks"]
+    assert [t["value"] for t in exported["x_ticks"]]==[100,125,150,175,200]
+    assert exported["x_minor_ticks"] and exported["y_minor_ticks"]
+    assert report["independent_views"]["second"]["nice_ticks"] and not report["independent_views"]["first"]["nice_ticks"]
     box=exported["model_overlay"];assert box["text"]==overlay["text"]
     origin=np.array(exported["canvas_origin"]);size=np.array(exported["canvas_size"])
     expected=np.minimum(np.array(box["text_size"])+2*box["padding"],size)
@@ -294,3 +298,49 @@ def test_png_export_memory_refusal_precedes_output(tmp_path):
     with pytest.raises((ValueError,RuntimeError),match="memory"):
         editor.action("export_intensity_plot_image",path=str(path),width=256,height=192)
     assert path.read_bytes()==b"sentinel" and editor.render_memory_info["working_bytes"]==0
+
+
+@pytest.mark.parametrize("reverse",[False,True])
+def test_automatic_ticks_round_linear_values_and_preserve_snapshot_state(reverse,tmp_path):
+    owner,editor=editor_with_plot(tmp_path);before=owner.snapshot();steps=owner.undo_steps
+    default=editor.render_headless(4)["fit_plot"]
+    assert not default["nice_ticks"] and not default["minor_ticks"] and not default["x_minor_ticks"]
+    editor.action("set_intensity_plot_limits",limits=[97,3,0,100] if reverse else [3,97,0,100],nice_ticks=True,minor_ticks=True)
+    plot=editor.render_headless(4)["fit_plot"]
+    assert [t["value"] for t in plot["x_ticks"]]==([75,50,25] if reverse else [25,50,75])
+    assert [t["value"] for t in plot["y_ticks"]]==[0,25,50,75,100]
+    assert plot["x_minor_ticks"] and plot["y_minor_ticks"]
+    for axis in ("x","y"):
+        labels=[t["label_bounds"] for t in plot[axis+"_ticks"] if t["label_visible"]]
+        for a,b in zip(labels,labels[1:]):
+            assert b[0]>=a[2]+3.9 if axis=="x" else b[3]<=a[1]-3.9
+    editor.action("keep_plot_snapshot");plot_id=editor.plot_snapshots_info[0]["plot_id"]
+    editor.close_document(discard=True)
+    snapshot=observed_snapshot(editor.render_headless(4),plot_id)
+    assert snapshot["nice_ticks"] and snapshot["minor_ticks"]
+    editor.action("set_intensity_plot_limits",plot_id=plot_id,limits=[3,97,0,100],ticks=False)
+    snapshot=observed_snapshot(editor.render_headless(4),plot_id)
+    assert snapshot["nice_ticks"] and snapshot["minor_ticks"] and not snapshot["x_ticks"] and not snapshot["x_minor_ticks"]
+    assert owner.snapshot().shares_data(before) and owner.undo_steps==steps
+
+
+def test_automatic_log_ticks_and_extreme_ranges_are_bounded(tmp_path):
+    _,editor=editor_with_plot(tmp_path)
+    editor.action("set_intensity_plot_limits",limits=[1,10000,10000,1],nice_ticks=True,minor_ticks=True,log_x=True,log_y=True)
+    plot=editor.render_headless(4)["fit_plot"]
+    assert [t["value"] for t in plot["x_ticks"]]==[1,10,100,1000,10000]
+    assert [t["value"] for t in plot["y_ticks"]]==[10000,1000,100,10,1]
+    assert 0<len(plot["x_minor_ticks"])<=32 and 0<len(plot["y_minor_ticks"])<=32
+    editor.action("set_intensity_plot_limits",limits=[1e-300,1e300,1e300,1e-300])
+    plot=editor.render_headless(4)["fit_plot"]
+    assert len(plot["x_ticks"])<=12 and len(plot["y_ticks"])<=12 and not plot["x_minor_ticks"] and not plot["y_minor_ticks"]
+    assert plot["finite_geometry"]
+
+
+@pytest.mark.parametrize("field",["nice_ticks","minor_ticks"])
+def test_tick_flags_require_booleans(field,tmp_path):
+    _,editor=editor_with_plot(tmp_path);before=editor.render_headless(4)["fit_plot"]
+    with pytest.raises((ValueError,RuntimeError)):
+        editor.action("set_intensity_plot_limits",limits=[0,100,0,100],**{field:1})
+    after=editor.render_headless(4)["fit_plot"]
+    assert after["view_limits"]==before["view_limits"] and after[field]==before[field]

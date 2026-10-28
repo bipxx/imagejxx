@@ -14,7 +14,7 @@ namespace imagejxx::desktop {
 struct CalibrationPlotView {
   std::array<double,4> fractions{0,1,0,1};
   std::optional<std::array<double,4>> manual_limits;
-  bool log_x=false,log_y=false,grid=true,ticks=true;
+  bool log_x=false,log_y=false,grid=true,ticks=true,nice_ticks=false,minor_ticks=false;
 
   std::array<double,4> base_limits(const ImageJIntensityFitPlot& data) const noexcept {
     return manual_limits.value_or(std::array<double,4>{data.x_min,data.x_max,data.y_min,data.y_max});
@@ -77,7 +77,7 @@ struct CalibrationPlotView {
   }
   bool same_view(const CalibrationPlotView& other) const noexcept {
     return fractions==other.fractions && manual_limits==other.manual_limits &&
-        log_x==other.log_x && log_y==other.log_y && grid==other.grid && ticks==other.ticks;
+        log_x==other.log_x && log_y==other.log_y && grid==other.grid && ticks==other.ticks && nice_ticks==other.nice_ticks && minor_ticks==other.minor_ticks;
   }
   // Fractions refer to the current visible plot: X left-to-right, Y bottom-to-top.
   // Clip releases outside the canvas; either drag direction keeps axis direction.

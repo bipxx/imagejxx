@@ -60,6 +60,8 @@ Json plotSnapshotUiCase(Window& window,const std::string& context,const std::str
   report["source_document_released"]=weakSource.expired();
   click(last.at("host_controls").at("plot_snapshot."+std::to_string(second)+".axes"),"snapshot_axes");
   editText("x_min","100");editText("x_max","200");editText("y_min","-50");editText("y_max","50");
+  click(last.at("dialog").at("controls").at("nice_ticks"),"snapshot_nice_ticks");
+  click(last.at("dialog").at("controls").at("minor_ticks"),"snapshot_minor_ticks");
   click(last.at("dialog").at("controls").at("apply"),"snapshot_axes_apply");frame();frame();
   report["independent_views"]={{"first",snapshot(first)},{"second",snapshot(second)}};
   click(last.at("host_controls").at("plot_snapshot."+std::to_string(second)+".style"),"snapshot_style");

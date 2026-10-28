@@ -1,4 +1,5 @@
 #include "calibration_plot_drawing.hpp"
+#include "calibration_plot_ticks.hpp"
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
@@ -12,13 +13,19 @@ CalibrationPlotDrawing drawCalibrationPlotGeometry(ImDrawList* draw,const ImageJ
   const auto origin=canvas.origin,size=canvas.size,widgetOrigin=canvas.widget_origin,widgetSize=canvas.widget_size;
   const auto guiScale=canvas.scale;const ImVec2 end{origin.x+size.x,origin.y+size.y};
   const auto viewLimits=fitPlotView.limits(data);
+  const auto xAxis=calibration_axis_ticks(viewLimits[0],viewLimits[1],fitPlotView.log_x,fitPlotView.nice_ticks,fitPlotView.minor_ticks);
+  const auto yAxis=calibration_axis_ticks(viewLimits[2],viewLimits[3],fitPlotView.log_y,fitPlotView.nice_ticks,fitPlotView.minor_ticks);
   const auto packedColor=[](std::uint32_t rgb){return IM_COL32((rgb>>16)&255,(rgb>>8)&255,rgb&255,255);};
   const auto measureText=[&](const char* label){auto size=canvas.font->CalcTextSizeA(canvas.font_size,std::numeric_limits<float>::max(),0,label);size.x=std::floor(size.x+.99999f);return size;};
     draw->AddRect(origin,end,canvas.border);draw->PushClipRect(origin,end,true);
-    if(fitPlotView.grid)for(int i=1;i<4;++i) {
-      const auto f=float(i)/4;
+    if(fitPlotView.grid && !fitPlotView.nice_ticks)for(int i=1;i<4;++i) {
+      const auto f=float(i)/4;result.grid_lines+=2;
       draw->AddLine({origin.x+f*size.x,origin.y},{origin.x+f*size.x,end.y},canvas.grid);
       draw->AddLine({origin.x,origin.y+f*size.y},{end.x,origin.y+f*size.y},canvas.grid);
+    }
+    if(fitPlotView.grid && fitPlotView.nice_ticks) {
+      for(const auto& tick:xAxis)if(tick.major && tick.fraction>0 && tick.fraction<1){const auto x=origin.x+float(tick.fraction)*size.x;draw->AddLine({x,origin.y},{x,end.y},canvas.grid);++result.grid_lines;}
+      for(const auto& tick:yAxis)if(tick.major && tick.fraction>0 && tick.fraction<1){const auto y=end.y-float(tick.fraction)*size.y;draw->AddLine({origin.x,y},{end.x,y},canvas.grid);++result.grid_lines;}
     }
     const auto position=[&](double x,double y) {
       const auto nx=CalibrationPlotView::fraction(x,viewLimits[0],viewLimits[1],fitPlotView.log_x),
@@ -57,24 +64,35 @@ CalibrationPlotDrawing drawCalibrationPlotGeometry(ImDrawList* draw,const ImageJ
         {"text_size",{measured.x,measured.y}},{"font_size",fontSize},{"padding",padding},{"wrap_width",wrap}};
     }
     draw->PopClipRect();
-    auto& xTicks=result.x_ticks;auto& yTicks=result.y_ticks;
-    if(fitPlotView.ticks)for(int i=0;i<=4;++i) {
-      const double f=double(i)/4;
-      const auto x=CalibrationPlotView::axis_value(viewLimits[0],viewLimits[1],f,fitPlotView.log_x),
-          y=CalibrationPlotView::axis_value(viewLimits[2],viewLimits[3],f,fitPlotView.log_y);
-      const ImVec2 xp{origin.x+float(f)*size.x,end.y},yp{origin.x,end.y-float(f)*size.y};
-      char label[48];ImVec2 textSize;
-      if(viewLimits[0]!=viewLimits[1] || i==2) {
-      std::snprintf(label,sizeof(label),"%.4g",x);textSize=measureText(label);
-      draw->AddLine(xp,{xp.x,xp.y+3},canvas.text);
-      draw->AddText(canvas.font,canvas.font_size,{std::clamp(xp.x-textSize.x/2,widgetOrigin.x,widgetOrigin.x+widgetSize.x-textSize.x),xp.y+4},canvas.text,label);
-      if(headlessSessionActive)xTicks.push_back({{"value",x},{"label",label},{"point",{xp.x,xp.y}}});
+    if(fitPlotView.ticks)for(int axis=0;axis<2;++axis) {
+      const auto& ticks=axis==0?xAxis:yAxis;
+      auto& observed=axis==0?result.x_ticks:result.y_ticks;
+      auto& minorObserved=axis==0?result.x_minor_ticks:result.y_minor_ticks;
+      int precision=fitPlotView.nice_ticks?6:4;
+      if(fitPlotView.nice_ticks) {
+        char previous[48]{};
+        for(const auto& tick:ticks)if(tick.major){char label[48];std::snprintf(label,sizeof(label),"%.6g",tick.value);if(std::string(previous)==label){precision=17;break;}std::snprintf(previous,sizeof(previous),"%s",label);}
       }
-      if(viewLimits[2]!=viewLimits[3] || i==2) {
-      std::snprintf(label,sizeof(label),"%.4g",y);textSize=measureText(label);
-      draw->AddLine(yp,{yp.x-3,yp.y},canvas.text);
-      draw->AddText(canvas.font,canvas.font_size,{std::max(widgetOrigin.x,yp.x-textSize.x-5),std::clamp(yp.y-textSize.y/2,widgetOrigin.y,end.y-textSize.y)},canvas.text,label);
-      if(headlessSessionActive)yTicks.push_back({{"value",y},{"label",label},{"point",{yp.x,yp.y}}});
+      double lastLabel=axis==0?-std::numeric_limits<double>::infinity():std::numeric_limits<double>::infinity();
+      double lastMinor=-std::numeric_limits<double>::infinity();
+      for(const auto& tick:ticks) {
+        const ImVec2 point=axis==0?ImVec2{origin.x+float(tick.fraction)*size.x,end.y}:ImVec2{origin.x,end.y-float(tick.fraction)*size.y};
+        if(!tick.major) {
+          const auto coordinate=tick.fraction*(axis==0?size.x:size.y);
+          if(coordinate-lastMinor<3*guiScale)continue;
+          lastMinor=coordinate;
+          draw->AddLine(point,axis==0?ImVec2{point.x,point.y+2}:ImVec2{point.x-2,point.y},canvas.text);
+          if(headlessSessionActive)minorObserved.push_back({{"value",tick.value},{"point",{point.x,point.y}}});
+          continue;
+        }
+        char label[48];std::snprintf(label,sizeof(label),"%.*g",precision,tick.value);const auto textSize=measureText(label);
+        const ImVec2 text=axis==0?ImVec2{std::clamp(point.x-textSize.x/2,widgetOrigin.x,std::max(widgetOrigin.x,widgetOrigin.x+widgetSize.x-textSize.x)),point.y+4}:
+          ImVec2{std::max(widgetOrigin.x,point.x-textSize.x-5),std::clamp(point.y-textSize.y/2,widgetOrigin.y,end.y-textSize.y)};
+        const bool labelVisible=!fitPlotView.nice_ticks || (axis==0?text.x>=lastLabel+4*guiScale:text.y+textSize.y<=lastLabel-4*guiScale);
+        draw->AddLine(point,axis==0?ImVec2{point.x,point.y+3}:ImVec2{point.x-3,point.y},canvas.text);
+        if(labelVisible){draw->AddText(canvas.font,canvas.font_size,text,canvas.text,label);lastLabel=axis==0?text.x+textSize.x:text.y;}
+        if(headlessSessionActive)observed.push_back({{"value",tick.value},{"label",label},{"point",{point.x,point.y}},
+          {"label_visible",labelVisible},{"label_bounds",{text.x,text.y,text.x+textSize.x,text.y+textSize.y}}});
       }
     }
   return result;

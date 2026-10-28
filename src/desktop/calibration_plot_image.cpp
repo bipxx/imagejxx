@@ -109,7 +109,9 @@ Json exportCalibrationPlotPng(const std::string& path,const CalibrationPlotPaylo
   if(!stbi_write_png_to_func(append,&encoded,width,height,3,rgb.data(),width*3) || encoded.failed)throw std::runtime_error("Plot PNG encoding failed");
   Json result={{"path",path},{"width",width},{"height",height},{"source_id",payload.source_id},{"payload_id",payload.payload_id},
     {"canvas_origin",{canvas.origin.x,canvas.origin.y}},{"canvas_size",{canvas.size.x,canvas.size.y}},
-    {"view_limits",view.limits(payload.data)},{"model_overlay",std::move(geometry.model_overlay)},
+    {"view_limits",view.limits(payload.data)},{"nice_ticks",view.nice_ticks},{"minor_ticks",view.minor_ticks},
+    {"x_ticks",std::move(geometry.x_ticks)},{"y_ticks",std::move(geometry.y_ticks)},{"x_minor_ticks",std::move(geometry.x_minor_ticks)},{"y_minor_ticks",std::move(geometry.y_minor_ticks)},
+    {"model_overlay",std::move(geometry.model_overlay)},
     {"drawn_segments",geometry.drawn_segments},{"masked_segments",geometry.masked_segments},{"working_bytes",bytes},
     {"font","Dear ImGui built-in 13px; unsupported glyphs use fallback"},{"background","white"},{"encoded_bytes",encoded.bytes.size()}};
   writeBytes(path,encoded.bytes);return result;

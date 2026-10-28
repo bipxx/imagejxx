@@ -4691,10 +4691,10 @@ struct Window::Impl {
     }
     return rows;
   }
-  void applyPlotLimits(const std::array<double,4>& values,std::uint64_t generation,bool logX,bool logY,bool grid,bool ticks,std::uint64_t plotId=0) {
+  void applyPlotLimits(const std::array<double,4>& values,std::uint64_t generation,bool logX,bool logY,bool grid,bool ticks,bool niceTicks,bool minorTicks,std::uint64_t plotId=0) {
     auto& plot=requireCalibrationPlot(plotId);
     if(generation!=plot.generation)throw std::invalid_argument("The plotted data changed; reopen axis limits");
-    auto candidate=plot.view;candidate.log_x=logX;candidate.log_y=logY;candidate.grid=grid;candidate.ticks=ticks;
+    auto candidate=plot.view;candidate.log_x=logX;candidate.log_y=logY;candidate.grid=grid;candidate.ticks=ticks;candidate.nice_ticks=niceTicks;candidate.minor_ticks=minorTicks;
     if(!candidate.set_limits(values))throw std::invalid_argument("Axis limits must be finite and distinct; logarithmic limits must be positive and distinguishable");
     plot.view=candidate;plot.drag.reset();
   }
@@ -4702,16 +4702,18 @@ struct Window::Impl {
     auto& plot=requireCalibrationPlot(plotId);const auto limits=plot.view.limits(plot.payload->data);
     const auto generation=plot.generation;
     ask("Plot Axis Limits",{{"x_min",limits[0]},{"x_max",limits[1]},{"y_min",limits[2]},{"y_max",limits[3]},
-        {"log_x",plot.view.log_x},{"log_y",plot.view.log_y},{"grid",plot.view.grid},{"ticks",plot.view.ticks}},
+        {"log_x",plot.view.log_x},{"log_y",plot.view.log_y},{"grid",plot.view.grid},{"ticks",plot.view.ticks},{"nice_ticks",plot.view.nice_ticks},{"minor_ticks",plot.view.minor_ticks}},
         [this,generation,plotId](Json fields){
           std::array<double,4> values;const std::array<const char*,4> names{"x_min","x_max","y_min","y_max"};
           for(std::size_t i=0;i<4;++i){const auto& value=fields.at(names[i]);if(!value.is_number())throw std::invalid_argument("Axis limits require numbers");values[i]=value.get<double>();}
-          applyPlotLimits(values,generation,fields.at("log_x").get<bool>(),fields.at("log_y").get<bool>(),fields.at("grid").get<bool>(),fields.at("ticks").get<bool>(),plotId);
+          applyPlotLimits(values,generation,fields.at("log_x").get<bool>(),fields.at("log_y").get<bool>(),fields.at("grid").get<bool>(),fields.at("ticks").get<bool>(),fields.at("nice_ticks").get<bool>(),fields.at("minor_ticks").get<bool>(),plotId);
         },Json::array({{{"name","x_min"},{"label","X from"},{"kind","float"}},
           {{"name","x_max"},{"label","X to"},{"kind","float"}},{{"name","y_min"},{"label","Y from"},{"kind","float"}},
           {{"name","y_max"},{"label","Y to"},{"kind","float"}},{{"name","log_x"},{"label","Logarithmic X (positive limits)"},{"kind","bool"}},
           {{"name","log_y"},{"label","Logarithmic Y (positive limits)"},{"kind","bool"}},{{"name","grid"},{"label","Grid lines"},{"kind","bool"}},
-          {{"name","ticks"},{"label","Ticks and labels"},{"kind","bool"}}}),"calibration_plot_limits");
+          {{"name","ticks"},{"label","Ticks and labels"},{"kind","bool"}},
+          {{"name","nice_ticks"},{"label","Automatic nice tick spacing"},{"kind","bool"}},
+          {{"name","minor_ticks"},{"label","Minor ticks (unlabeled)"},{"kind","bool"}}}),"calibration_plot_limits");
     dialog.independentPlot=plotId!=0;
   }
   Json plotStyleInfo(const CalibrationPlotStyle& style) const {
@@ -6552,12 +6554,12 @@ void Window::action(const std::string &name, const Json &p) {
       if(!candidate.rectangle(plot.payload->data,bounds))throw std::invalid_argument("Plot rectangle has no representable area");
       plot.view=candidate;plot.drag.reset();return;
     }
-    for(const auto& field:p.items())if(field.key()!="document_id" && field.key()!="plot_id" && field.key()!="limits" && field.key()!="log_x" && field.key()!="log_y" && field.key()!="grid" && field.key()!="ticks")throw std::invalid_argument("Unknown axis limits field");
+    for(const auto& field:p.items())if(field.key()!="document_id" && field.key()!="plot_id" && field.key()!="limits" && field.key()!="log_x" && field.key()!="log_y" && field.key()!="grid" && field.key()!="ticks" && field.key()!="nice_ticks" && field.key()!="minor_ticks")throw std::invalid_argument("Unknown axis limits field");
     const auto& limits=p.at("limits");if(!limits.is_array() || limits.size()!=4)throw std::invalid_argument("Axis limits require [x_min,x_max,y_min,y_max]");
     std::array<double,4> values;
     for(std::size_t i=0;i<4;++i){if(!limits[i].is_number())throw std::invalid_argument("Axis limits require numbers");values[i]=limits[i].get<double>();}
     const auto option=[&](const char* key,bool current){if(!p.contains(key))return current;if(!p.at(key).is_boolean())throw std::invalid_argument("Axis options require Boolean");return p.at(key).get<bool>();};
-    impl->applyPlotLimits(values,plot.generation,option("log_x",plot.view.log_x),option("log_y",plot.view.log_y),option("grid",plot.view.grid),option("ticks",plot.view.ticks),id);return;
+    impl->applyPlotLimits(values,plot.generation,option("log_x",plot.view.log_x),option("log_y",plot.view.log_y),option("grid",plot.view.grid),option("ticks",plot.view.ticks),option("nice_ticks",plot.view.nice_ticks),option("minor_ticks",plot.view.minor_ticks),id);return;
   }
 
   if(name=="show_contrast_apply_rebind"){
@@ -11346,7 +11348,7 @@ void Window::Impl::drawCalibrationPlot(CalibrationPlotState& plot,const char* ti
       {"finite_geometry",finiteGeometry},{"drawn_segments",drawnSegments},{"visible",true},
       {"view_limits",viewLimits},{"viewport",fitPlotView.fractions},{"cursor",std::move(cursor)},
       {"log_x",fitPlotView.log_x},{"log_y",fitPlotView.log_y},{"grid",fitPlotView.grid},{"ticks",fitPlotView.ticks},
-      {"grid_lines",fitPlotView.grid?6:0},{"x_ticks",std::move(xTicks)},{"y_ticks",std::move(yTicks)},{"masked_segments",maskedSegments},{"log_notice",logNotice},{"annotation",std::move(annotationObservation)},{"rectangle_drag",std::move(rectangleObservation)},{"payload_id",plot.payload->payload_id},{"source_title",plot.payload->source_title},{"style",plotStyleInfo(style)},{"model_overlay",std::move(modelOverlay)}};
+      {"nice_ticks",fitPlotView.nice_ticks},{"minor_ticks",fitPlotView.minor_ticks},{"grid_lines",geometry.grid_lines},{"x_minor_ticks",std::move(geometry.x_minor_ticks)},{"y_minor_ticks",std::move(geometry.y_minor_ticks)},{"x_ticks",std::move(xTicks)},{"y_ticks",std::move(yTicks)},{"masked_segments",maskedSegments},{"log_notice",logNotice},{"annotation",std::move(annotationObservation)},{"rectangle_drag",std::move(rectangleObservation)},{"payload_id",plot.payload->payload_id},{"source_title",plot.payload->source_title},{"style",plotStyleInfo(style)},{"model_overlay",std::move(modelOverlay)}};
     endPlot();return;
   }
 

@@ -1,5 +1,33 @@
 # Sol Ultra execution guide
 
+## Bounded automatic major/minor plot ticks — 2026-10-28
+
+Axes now offers opt-in nice_ticks/minor_ticks Boolean controls, also accepted by
+set_intensity_plot_limits. Omitted fields preserve state; defaults remain false.
+The shared UI/PNG generator handles linear/log/reversed/constant/extreme ranges
+with fixed128-slot storage, at most12 major/96 minor ticks and bounded loops.
+Nice majors drive grids; minors are unlabeled and filtered for pixel spacing.
+Measured-label overlap suppression and adaptive precision keep nearby labels
+distinct. View limits, samples, source/history, style and CSV remain unchanged.
+
+Windows installed783 focused checks pass, zero failures/skips, plus native checks.
+Linux math and current PNG consumers pass against existing pinned archives/SDK;
+no Linux UI/full SDK promotion. Both UI hosts physically toggle after source
+closure and export. Artifact readers find16 minor stems per C++/Python/Linux PNG;
+C++/Python outputs are byte-identical and output was visually reviewed. Dedicated
+case186/192; calibration606/608. [Scoped evidence](parity/reviews/G034-calibration-plot-ticks-progress001.json).
+
+Two attempts exposed old initial/reopened dialog assertions requiring exactly
+eight fields. Both original expected dictionaries are retained, with separate
+checks for the two new false defaults; failed reader preimages/diagnostics kept.
+All owned scratch retired; cleanup recovered2,505,476B. Superseded full failed
+captures retired with hashes/reduced schema diagnostics; full contents unavailable.
+Known roots8,480,310,796B; two denied caches keep full8GiB unverified. Same
+caches/runtime/SDK, commercial review passes, original fingerprints unchanged.
+No ImageJ tick-convention/performance/full-family acceptance:47 in progress/52
+open/0 complete. Next: generic histogram/profile renderer reuse in a new bounded
+workflow case; do not extend the186-frame snapshot trace for that larger workflow.
+
 ## Shared plot drawing and source-independent PNG export — 2026-10-28
 
 Export PNG now uses the same curve/point/grid/tick/model drawing function as the
