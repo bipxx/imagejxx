@@ -84,6 +84,7 @@ public:
   Json virtualViewCacheInfo() const;
   Json renderMemoryInfo() const;
   Json plotSnapshotsInfo() const;
+  Json plotSampleAt(const Json& parameters) const;
   DocumentSnapshot nativeSnapshot(std::uint64_t id = 0) const;
   void setNativeDisplay(DisplayState display, std::uint64_t id = 0);
   void enableChannelDisplay(std::uint64_t documentId = 0);

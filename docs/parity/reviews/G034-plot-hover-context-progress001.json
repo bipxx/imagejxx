@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "scope": "Retained histogram/profile sample lookup and immutable compact source/target captions across shared ImGui and PNG output",
+  "state": "focused_checks_passed",
+  "acceptance_claim": false,
+  "implementation": {
+    "sample_lookup": "Editor.plot_sample_at(x, plot_id=0) and physical pointer hover query retained data in O(log N), with no source-provider reads, copies of sample arrays, processing jobs or history changes. x is finite data-space X; index is zero based. Live ID0 uses existing source/all-revision guard; positive snapshot IDs survive source closure. Calibration kind explicitly refuses this sample API.",
+    "histogram": "Half-open bins; interior edge selects right bin; final upper edge included; outside bounds returns null/None. Exact uint64 count and double lower/upper edges retained, including counts above2^53. Rendering y uses double and is not an exact integer representation for all uint64 values.",
+    "profile": "Nearest stored sample by X; ties and duplicate distances use first index. Out-of-range X clamps nearest endpoint. Capture validates finite nondecreasing distances. Existing float-rounded samples/sampling/calibration semantics preserved.",
+    "result_schema": "kind,index,x,y,source_id,payload_id,x_label,y_label,context_caption; histogram adds lower,upper,upper_inclusive,count. Boolean/nonfinite X, unknown fields, Boolean/fractional/negative IDs refuse.",
+    "context": "Prepared before publication and admitted with immutable payload memory. Captures one-based T/C/Z, selection kind, pooled target ranges/steps or explicit-order count/first position, and whole-plane/active-area/positioned-ROI-union policy. Preserved after navigation, retitle and source/panel closure. Compact summary does not reconstruct complete explicit target ordering or ROI geometry.",
+    "consumers": "Legacy histogram, line/polyline profile, scientific histogram and all three calibration plot publication routes. Calibration captions describe dataset calibration and captured view, not calibration sampling from that one plane. Scientific result context copied with retained result/rebind drafts.",
+    "display": "Live plot caption and third standalone PNG header line. Existing fixed white background, built-in13px font/fallback, bounded/clipped caption policy retained. Shared payload retains no source document/provider; no full target JSON serialized each frame.",
+    "api_boundary": "Private desktop interface plus Python convenience API. No public native core SDK API changes or installed core SDK refresh."
+  },
+  "verification": {
+    "windows": {
+      "collected": 926,
+      "passed": 925,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 1,
+      "skip": "Explicit IMAGEJXX_RENDER_TESTS=1 optional hidden-OpenGL settings test",
+      "cpp_cases": [
+        "projection",
+        "intensity",
+        "nonlinear",
+        "snapshots",
+        "generic"
+      ],
+      "generic_frames": "128/160",
+      "snapshot_frames": "186/192",
+      "calibration_frames": "606/608",
+      "original_focused_cases": 783
+    },
+    "linux": "Native private math/payload/hover/context consumer and current profile/histogram drawing/PNG consumer pass against existing pinned archives/SDK; no full Linux desktop/SDK or OS/GPU promotion.",
+    "artifacts": "Independent PNG CRC/filter/pixel checks and visual review passed; C++ and Python profile PNG bytes identical. Final439 and Linux434/437 captures retained.",
+    "source_freeze": "1283 first-party/configuration/vendored/native-control files rechecked against build435 freeze with zero mismatches before documentation/commit; consumer runners pin Python readers.",
+    "commercial_inventory": "scripts/check_licenses.py --desktop passed; git diff --check passed.",
+    "failed_reader": "Installed436 had one new reader assumption failure: empty positioned-ROI histogram retains original normalized0..1 edges, so lookup at6 returns None. Reader now uses0.25 and asserts original edges/count0/no reads. Product/backend/reference behavior unchanged. Exact failed reader preimage/log diagnostics retained losslessly; superseded full436 capture retired and unavailable."
+  },
+  "evidence": {
+    "plot-hover-context-windows-build435": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\plot-hover-context-windows-build435\\receipt.json",
+      "bytes": 24921,
+      "sha256": "c42a44a23147944670535758e5c81371eab82d0df348ebca8aa103eb73b4942e"
+    },
+    "plot-hover-context-linux434": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\plot-hover-context-linux434\\receipt.json",
+      "bytes": 31541,
+      "sha256": "25867fed24440e4ec2786a31219bece0fd0a7d968289d047f17b3ebcdb81cb74"
+    },
+    "plot-hover-context-installed436": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\plot-hover-context-installed436\\receipt.json",
+      "bytes": 113264,
+      "sha256": "780c46f2b488f837eedc482003eee3069c5afe7ae12dc28c06ed7c9a07e3d286"
+    },
+    "plot-hover-context-export-linux437": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\plot-hover-context-export-linux437\\receipt.json",
+      "bytes": 20978,
+      "sha256": "698ae877b7d5a24b4997890b14b8f88dbc9d5d761e2322f54444e2a85078c0d0"
+    },
+    "plot-hover-context-reader438": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\plot-hover-context-reader438\\receipt.json",
+      "bytes": 536,
+      "sha256": "58e4f0e38046af545e474ee76ed96e095403eaf3c460b180068d6f2aae8b6f73"
+    },
+    "plot-hover-context-installed439": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\plot-hover-context-installed439\\receipt.json",
+      "bytes": 113188,
+      "sha256": "be4871b0ba853833547fe52da41704865a10de2ce16cdd9c6c5a4b4db672705a"
+    },
+    "plot-hover-context-artifacts440": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\plot-hover-context-artifacts440\\receipt.json",
+      "bytes": 3407,
+      "sha256": "cf407c60d2474a68de7f39baf2483c9fff093202693b21c7e2d374da89467152"
+    },
+    "plot-hover-context-retention441": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\plot-hover-context-retention441\\receipt.json",
+      "bytes": 7267,
+      "sha256": "eded7aa1ddc1141a3b7bb061d086a7d17e04b8ebaeb4eb2cbd5971a060e5652d"
+    },
+    "storage_after442": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\plot-hover-context-after442.json",
+      "bytes": 1525,
+      "sha256": "e396f8f635e3fd1ece9f369463a3c60cf115c95ac79083b1a0f84d45b6e5d3b7"
+    }
+  },
+  "storage": {
+    "known_bytes": 8489781464,
+    "budget_bytes": 8589934592,
+    "budget_verified": false,
+    "unknown_subtrees": [
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest",
+        "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest'"
+      },
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest-ui",
+        "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest-ui'"
+      }
+    ],
+    "retention_recovered_bytes": 1730400,
+    "retention": "Terminal owned scratch/previews retired; diagnostics.zip member sizes/SHA256 verified before retirement. Same active compiler caches, installed runtime, SDKs; no whole cache/environment archives. Before430 known8486580843B; after442 includes necessary current capture/evidence growth. Temporary build/capture allowances documented by runners."
+  },
+  "efficiency": "One serial Windows build in reused cache; Window.hpp interface addition fanned out compilation and took517.219s. Group related desktop interface edits and keep implementation helpers private; do not avoid required API/scope merely to reduce rebuild time.",
+  "tracker": {
+    "in_progress": 47,
+    "open": 52,
+    "fully_certified_complete": 0
+  },
+  "remaining": [
+    "Full target/ROI provenance, snapshot persistence and macro/replay integration",
+    "Audit original calibration settings/global/table-import/downstream requirements; initial coefficients, max iterations and tolerance controls already exist",
+    "Original ImageJ/Fiji behavior references and full family acceptance",
+    "Independent OS windows, full supported-platform/UI/GPU qualification",
+    "Matched output-equivalent ImageJ/Fiji speed and memory benchmarks; no comparative speed advantage established"
+  ],
+  "historical_policy": "Historical reference expectations/fingerprints unchanged; focused checks do not certify full ImageJ/Fiji goal."
+}

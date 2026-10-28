@@ -11,6 +11,8 @@
 #include "calibration_plot_style.hpp"
 #include "calibration_plot_drawing.hpp"
 #include "generic_plot_payload.hpp"
+#include "plot_context.hpp"
+#include "plot_hover.hpp"
 #include <imagejxx/playback.hpp>
 #include "shadow_demo.hpp"
 #include "legacy_target_resources.hpp"
@@ -4623,7 +4625,7 @@ struct Window::Impl {
     std::optional<FitPlotBinding> binding;
     if(plot)binding=FitPlotBinding{source.id(),expected};
     std::shared_ptr<const CalibrationPlotPayload> payload;
-    if(plot)payload=retainPlot(std::move(*plot),std::move(*annotation),true,source.id(),source.data().metadata.title);
+    if(plot)payload=retainPlot(std::move(*plot),std::move(*annotation),true,source.id(),source.data().metadata.title,plot_plane_caption(source,"Dataset calibration; captured view"));
     const auto facade=owner.documentById(source.id());
     if(facade->scientific())owner.controller_->commit(edit);else facade->commitNative(edit);
     static_assert(std::is_nothrow_swappable_v<decltype(payload)>);
@@ -4635,9 +4637,9 @@ struct Window::Impl {
   void focusLivePlot() noexcept {
     livePlot.focus=true;for(auto& snapshot:plotSnapshots)snapshot->state.focus=false;
   }
-  std::shared_ptr<const CalibrationPlotPayload> retainPlot(ImageJIntensityFitPlot data,CalibrationPlotAnnotation annotation,bool table,std::uint64_t sourceId,std::string sourceTitle) {
+  std::shared_ptr<const CalibrationPlotPayload> retainPlot(ImageJIntensityFitPlot data,CalibrationPlotAnnotation annotation,bool table,std::uint64_t sourceId,std::string sourceTitle,std::string context) {
     if(nextPlotPayloadId==std::numeric_limits<std::uint64_t>::max())throw std::overflow_error("Plot payload IDs exhausted");
-    auto payload=retain_calibration_plot(*renderMemory,std::move(data),std::move(annotation),table,sourceId,nextPlotPayloadId,std::move(sourceTitle));
+    auto payload=retain_calibration_plot(*renderMemory,std::move(data),std::move(annotation),table,sourceId,nextPlotPayloadId,std::move(sourceTitle),std::move(context));
     ++nextPlotPayloadId;return payload;
   }
   CalibrationPlotState& requireCalibrationPlot(std::uint64_t plotId=0) {
@@ -4686,7 +4688,7 @@ struct Window::Impl {
   void openHistogramPlot() {
     auto result=histogramPanel.plotResult();
     auto payload=histogramPlotPayload.lock();const bool reuse=payload && payload->histogram.get()==result.get();
-    if(!reuse)payload=retain_histogram_plot(*renderMemory,std::move(result),histogramPanel.plotSourceId(),nextNumericPayloadId(),histogramPanel.plotSourceTitle());
+    if(!reuse)payload=retain_histogram_plot(*renderMemory,std::move(result),histogramPanel.plotSourceId(),nextNumericPayloadId(),histogramPanel.plotSourceTitle(),true,histogramPanel.plotContextCaption());
     CalibrationPlotState state;state.payload=payload;
     appendPlotSnapshot(state);histogramPlotPayload=payload;if(!reuse)++nextPlotPayloadId;
   }
@@ -4700,11 +4702,17 @@ struct Window::Impl {
     for(auto it=plotSnapshots.begin();it!=plotSnapshots.end();++it)if((*it)->id==id){clearSnapshotInput(**it);plotSnapshots.erase(it);return;}
     throw std::invalid_argument("Plot snapshot is closed");
   }
+  Json plotSampleInfo(const CalibrationPlotPayload& payload,const PlotHoverSample& sample) const {
+    Json info={{"kind",sample.histogram?"histogram_bin":"profile_sample"},{"index",sample.index},{"x",sample.x},{"y",sample.y},
+      {"source_id",payload.source_id},{"payload_id",payload.payload_id},{"x_label",payload.x_axis},{"y_label",payload.yLabel()},{"context_caption",payload.context_caption}};
+    if(sample.histogram){info["lower"]=sample.lower;info["upper"]=sample.upper;info["upper_inclusive"]=sample.upper_inclusive;info["count"]=sample.count;}
+    return info;
+  }
   Json plotSnapshotsInfo() const {
     Json rows=Json::array();
     for(const auto& snapshot:plotSnapshots)if(snapshot->open && snapshot->state.payload) {
       const auto& payload=*snapshot->state.payload;
-      rows.push_back({{"plot_id",snapshot->id},{"payload_id",payload.payload_id},{"source_id",payload.source_id},{"source_title",payload.source_title},{"function",payload.data.function},
+      rows.push_back({{"plot_id",snapshot->id},{"payload_id",payload.payload_id},{"source_id",payload.source_id},{"source_title",payload.source_title},{"context_caption",payload.context_caption},{"function",payload.data.function},
         {"kind",payload.kindName()},{"payload_bytes",payload.memory.bytes()},{"window_bytes",snapshot->memory.bytes()}});
     }
     return rows;
@@ -5802,6 +5810,19 @@ Json Window::renderMemoryInfo() const {
   return {{"limit_bytes",m.limit()},{"retained_bytes",m.retained()},{"working_bytes",m.working()},{"peak_reserved_bytes",m.peak()},{"denied_requests",m.denied()}};
 }
 Json Window::plotSnapshotsInfo() const {checkThread();return impl->plotSnapshotsInfo();}
+Json Window::plotSampleAt(const Json& parameters) const {
+  checkThread();
+  if(!parameters.is_object() || !parameters.contains("x"))throw std::invalid_argument("Plot sample lookup requires x and optional plot_id");
+  for(const auto& field:parameters.items())if(field.key()!="x" && field.key()!="plot_id")throw std::invalid_argument("Unknown plot sample field");
+  const auto& value=parameters.at("x");
+  if(!value.is_number() || !std::isfinite(value.get<double>()))throw std::invalid_argument("Plot sample x must be a finite number");
+  std::uint64_t id=0;
+  if(parameters.contains("plot_id")){const auto& key=parameters.at("plot_id");if(!key.is_number_integer() || key<0)throw std::invalid_argument("Plot ID must be nonnegative");id=key.get<std::uint64_t>();}
+  const auto& plot=impl->requireCalibrationPlot(id);
+  if(plot.payload->calibration())throw std::invalid_argument("Sample lookup requires a histogram or profile plot");
+  const auto sample=plot_hover_sample(*plot.payload,value.get<double>());
+  return sample?impl->plotSampleInfo(*plot.payload,*sample):Json(nullptr);
+}
 Json Window::virtualViewCacheInfo() const {
   checkThread();const auto &cache=*impl->viewCache;
   return {{"budget_bytes",cache.budget()},{"retained_bytes",cache.bytes()},{"entries",cache.entries()},{"evictions",cache.evictions()}};
@@ -6913,7 +6934,7 @@ void Window::action(const std::string &name, const Json &p) {
       auto plot=table?impl->calibrationTablePlot(calibration):
           imagej_intensity_fit_plot(calibration,calibration.bit_depth()==8?256:100,bytes-CalibrationPlotAnnotation::working_bytes);
       auto annotation=calibration_plot_annotation(calibration,table);
-      auto payload=impl->retainPlot(std::move(plot),std::move(annotation),table,source.id(),source.data().metadata.title);
+      auto payload=impl->retainPlot(std::move(plot),std::move(annotation),table,source.id(),source.data().metadata.title,plot_plane_caption(source,"Dataset calibration; captured view"));
       impl->livePlot.view={};impl->livePlot.drag.reset();++impl->livePlot.generation;
       impl->livePlot.source=Impl::FitPlotBinding{source.id(),source.revisions()};impl->livePlot.payload.swap(payload);impl->focusLivePlot();return;
     }
@@ -9139,7 +9160,7 @@ void Window::action(const std::string &name, const Json &p) {
     }
     auto h = histogram(image, integer(get(p, "bins"), 256));
     auto result=std::make_shared<DatasetHistogramResult>();result->histogram=std::move(h);
-    auto payload=retain_histogram_plot(*impl->renderMemory,std::move(result),source.id(),impl->nextNumericPayloadId(),source.data().metadata.title,false);
+    auto payload=retain_histogram_plot(*impl->renderMemory,std::move(result),source.id(),impl->nextNumericPayloadId(),source.data().metadata.title,false,plot_plane_caption(source,"XY histogram")+" | "+plot_selection_caption(source));
     impl->publishNumericPlot(std::move(payload),source);++impl->nextPlotPayloadId;
     return;
   }
@@ -9171,7 +9192,7 @@ void Window::action(const std::string &name, const Json &p) {
       distance += length;
     }
     const auto unit=string(get(cal,"unit"),"px");
-    auto payload=retain_profile_plot(*impl->renderMemory,std::move(plotX),std::move(plotY),"Line profile ("+unit+")","Distance ("+unit+")",source.id(),impl->nextNumericPayloadId(),source.data().metadata.title);
+    auto payload=retain_profile_plot(*impl->renderMemory,std::move(plotX),std::move(plotY),"Line profile ("+unit+")","Distance ("+unit+")",source.id(),impl->nextNumericPayloadId(),source.data().metadata.title,plot_plane_caption(source,"XY profile")+" | "+plot_selection_caption(source));
     impl->publishNumericPlot(std::move(payload),source);++impl->nextPlotPayloadId;
     return;
   }
@@ -9452,7 +9473,7 @@ void Window::poll() {
           static_assert(std::is_nothrow_swappable_v<decltype(impl->livePlot.payload)>);
           static_assert(std::is_nothrow_swappable_v<decltype(impl->livePlot.source)>);
           std::shared_ptr<const CalibrationPlotPayload> payload;
-          if(completed.fit_plot)payload=impl->retainPlot(std::move(*completed.fit_plot),std::move(*completed.fit_plot_annotation),false,completed.fit_plot_source->id(),completed.prepared->preview().data().metadata.title);
+          if(completed.fit_plot)payload=impl->retainPlot(std::move(*completed.fit_plot),std::move(*completed.fit_plot_annotation),false,completed.fit_plot_source->id(),completed.prepared->preview().data().metadata.title,plot_plane_caption(completed.prepared->preview(),"Dataset calibration; captured view"));
           controller_->publish(*completed.prepared);
           if(payload) {
             impl->livePlot.payload.swap(payload);impl->livePlot.source.swap(completed.fit_plot_source);
@@ -11256,6 +11277,7 @@ void Window::Impl::drawCalibrationPlot(CalibrationPlotState& plot,const char* ti
     const auto& data=*fitPlot;const auto& style=plot.style;
     ImGui::TextUnformatted(plot.payload->caption().c_str());
     ImGui::TextWrapped("Source: %s",plot.payload->source_title.empty()?"(untitled source)":plot.payload->source_title.c_str());
+    if(!plot.payload->context_caption.empty())ImGui::TextWrapped("%s",plot.payload->context_caption.c_str());
     if(ImGui::Button("Close plot")){plot.payload.reset();plot.source.reset();fitPlotDrag.reset();if(snapshot)snapshot->open=false;endPlot();return;}
     observePlotControl("close",true,nullptr,nullptr,ImGui::GetCurrentWindow());
     if(ImGui::GetContentRegionAvail().x>180.f*guiScale)ImGui::SameLine();
@@ -11361,8 +11383,16 @@ void Window::Impl::drawCalibrationPlot(CalibrationPlotState& plot,const char* ti
           y=CalibrationPlotView::axis_value(viewLimits[2],viewLimits[3],py,fitPlotView.log_y);
       draw->AddLine({plotInput.MousePos.x,origin.y},{plotInput.MousePos.x,end.y},IM_COL32(150,150,150,130));
       draw->AddLine({origin.x,plotInput.MousePos.y},{end.x,plotInput.MousePos.y},IM_COL32(150,150,150,130));
-      ImGui::SetTooltip("X: %.9g\nY: %.9g %s\nCtrl/Shift+wheel: zoom; wheel: pan Y\nMiddle drag: pan; double-click: reset\nLeft drag: zoom rectangle; Esc/right-click: cancel",x,y,data.value_unit.c_str());
-      if(headlessSessionActive)cursor={{"x",x},{"y",y}};
+      const auto sample=plot_hover_sample(*plot.payload,x);
+      ImGui::BeginTooltip();ImGui::Text("X: %.9g\nY: %.9g %s",x,y,plot.payload->yLabel().c_str());
+      if(sample) {
+        if(sample->histogram) {
+          ImGui::Text("Bin %llu: [%.17g, %.17g%s",static_cast<unsigned long long>(sample->index),sample->lower,sample->upper,sample->upper_inclusive?"]":")");
+          ImGui::Text("Raw count: %llu",static_cast<unsigned long long>(sample->count));
+        } else ImGui::Text("Nearest sample %llu: X %.17g, Y %.17g",static_cast<unsigned long long>(sample->index),sample->x,sample->y);
+      }
+      ImGui::TextUnformatted("Ctrl/Shift+wheel: zoom; wheel: pan Y\nMiddle drag: pan; double-click: reset\nLeft drag: zoom rectangle; Esc/right-click: cancel");ImGui::EndTooltip();
+      if(headlessSessionActive){cursor={{"x",x},{"y",y}};if(sample)cursor["sample"]=plotSampleInfo(*plot.payload,*sample);}
     }
     Json rectangleObservation=nullptr;
     if(fitPlotDrag) {
@@ -11384,7 +11414,7 @@ void Window::Impl::drawCalibrationPlot(CalibrationPlotState& plot,const char* ti
       {"finite_geometry",finiteGeometry},{"drawn_segments",drawnSegments},{"drawn_bars",geometry.drawn_bars},{"x_label",plot.payload->x_axis},{"y_label",plot.payload->yLabel()},{"visible",true},
       {"view_limits",viewLimits},{"viewport",fitPlotView.fractions},{"cursor",std::move(cursor)},
       {"log_x",fitPlotView.log_x},{"log_y",fitPlotView.log_y},{"grid",fitPlotView.grid},{"ticks",fitPlotView.ticks},
-      {"nice_ticks",fitPlotView.nice_ticks},{"minor_ticks",fitPlotView.minor_ticks},{"grid_lines",geometry.grid_lines},{"x_minor_ticks",std::move(geometry.x_minor_ticks)},{"y_minor_ticks",std::move(geometry.y_minor_ticks)},{"x_ticks",std::move(xTicks)},{"y_ticks",std::move(yTicks)},{"masked_segments",maskedSegments},{"log_notice",logNotice},{"annotation",std::move(annotationObservation)},{"rectangle_drag",std::move(rectangleObservation)},{"payload_id",plot.payload->payload_id},{"source_title",plot.payload->source_title},{"style",plotStyleInfo(style)},{"model_overlay",std::move(modelOverlay)}};
+      {"nice_ticks",fitPlotView.nice_ticks},{"minor_ticks",fitPlotView.minor_ticks},{"grid_lines",geometry.grid_lines},{"x_minor_ticks",std::move(geometry.x_minor_ticks)},{"y_minor_ticks",std::move(geometry.y_minor_ticks)},{"x_ticks",std::move(xTicks)},{"y_ticks",std::move(yTicks)},{"masked_segments",maskedSegments},{"log_notice",logNotice},{"annotation",std::move(annotationObservation)},{"rectangle_drag",std::move(rectangleObservation)},{"payload_id",plot.payload->payload_id},{"source_title",plot.payload->source_title},{"context_caption",plot.payload->context_caption},{"style",plotStyleInfo(style)},{"model_overlay",std::move(modelOverlay)}};
     if(headlessSessionActive && !plot.payload->calibration()) {
       for(const auto* key:{"measured","known","curve_x","curve_y","objective"})observation.erase(key);
       observation["value_unit"]=plot.payload->yLabel();

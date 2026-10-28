@@ -161,6 +161,7 @@ def test_source_caption_captured_by_every_publication_route(route,tmp_path):
     else:
         editor.action("fit_intensity_calibration",function="straight_line",measured=[0,1],known=[2,4],show_plot=True);editor.wait()
     assert editor.render_headless(4)["fit_plot"]["source_title"]==title
+    assert editor.render_headless(4)["fit_plot"]["context_caption"]=="Dataset calibration; captured view | T 1, C 1, Z 1"
     editor.action("keep_plot_snapshot");info=editor.plot_snapshots_info[0]
     assert info["source_title"]==title
     edit=owner.begin_edit();edit.set_title("Renamed");owner.commit(edit)

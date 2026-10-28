@@ -928,6 +928,7 @@ PYBIND11_MODULE(_desktop, m) {
            py::arg("document_id") = 0)
       .def("render_memory_info",[](const Window &w){return w.renderMemoryInfo().dump();})
       .def("plot_snapshots_info",[](const Window &w){return w.plotSnapshotsInfo().dump();})
+      .def("plot_sample_at",[](const Window& w,const std::string& parameters){return w.plotSampleAt(Json::parse(parameters)).dump();})
       .def("virtual_view_cache_info",[](const Window &w){return w.virtualViewCacheInfo().dump();})
       .def("add_native_document", &Window::addNativeDocument,
            py::arg("document"))

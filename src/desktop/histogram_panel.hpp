@@ -39,6 +39,7 @@ public:
   std::shared_ptr<const DatasetHistogramResult> plotResult() const {if(!result_)throw std::invalid_argument("Calculate a histogram before plotting");return result_;}
   std::uint64_t plotSourceId() const {return resultSourceId_;}
   const std::string& plotSourceTitle() const {return resultSourceTitle_;}
+  const std::string& plotContextCaption() const {return resultContext_;}
   Json diagnostics() const;
 private:
   void calculateImpl(const std::optional<DocumentSnapshot> &,bool,const Remember &);
@@ -68,7 +69,7 @@ private:
   std::string bins_="256", lower_="0", upper_="1", error_, sourceError_, actionError_;
   std::shared_ptr<const DatasetHistogramResult> result_;
   std::uint64_t resultSourceId_=0;
-  std::string resultSourceTitle_;
+  std::string resultSourceTitle_,resultContext_;
   std::vector<float> heights_;
   Json controls_=Json::object(), states_=Json::object();
 };

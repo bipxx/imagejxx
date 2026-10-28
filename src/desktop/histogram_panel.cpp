@@ -1,4 +1,5 @@
 #include "histogram_panel.hpp"
+#include "plot_context.hpp"
 #include "../native/floating_charconv.hpp"
 #include <imgui.h>
 #include <imgui_internal.h>
@@ -44,7 +45,7 @@ void HistogramPanel::show(const DocumentSnapshot &source,DatasetHistogramLimits 
   custom_=settings.boolean("histogram_custom");log_=settings.boolean("histogram_log");roi_=settings.boolean("histogram_use_roi");
   TargetRequest defaults;const auto &policy=settings.text("histogram_roi");defaults.roi=policy=="whole_plane"?RoiPolicy::WholePlane:policy=="positioned_rois"?RoiPolicy::PositionedRois:RoiPolicy::ActiveSelection;
   targetPanel_.configure(source,defaults);scientific_=settings.boolean("histogram_scientific");targetsOpen_=false;targetValid_=true;targetError_.clear();
-  result_.reset();resultSourceId_=0;resultSourceTitle_.clear();resultTarget_=resultEstimate_=Json::object();resultPlaneCount_=0;resultScientific_=resultUsesRoi_=false;
+  result_.reset();resultSourceId_=0;resultSourceTitle_.clear();resultContext_.clear();resultTarget_=resultEstimate_=Json::object();resultPlaneCount_=0;resultScientific_=resultUsesRoi_=false;
   heights_.clear();error_.clear();sourceError_.clear();actionError_.clear();draftChanged_=true;open_=focus_=true;
 }
 void HistogramPanel::loadOptions(const ResolvedHistogramCommand &captured) {
@@ -58,7 +59,7 @@ void HistogramPanel::showRebind(const DocumentSnapshot &source,const MetadataObj
   TargetRequest initial;initial.roi=RoiPolicy::WholePlane;
   const auto captured=rebind_histogram_command(source,record,initial,cap);
   HistogramPanel next;next.show(source,limits,settings);next.loadOptions(captured);
-  next.result_=result_;next.resultSourceId_=resultSourceId_;next.resultSourceTitle_=resultSourceTitle_;next.resultTarget_=resultTarget_;next.resultEstimate_=resultEstimate_;next.resultCommand_=resultCommand_;
+  next.result_=result_;next.resultSourceId_=resultSourceId_;next.resultSourceTitle_=resultSourceTitle_;next.resultContext_=resultContext_;next.resultTarget_=resultTarget_;next.resultEstimate_=resultEstimate_;next.resultCommand_=resultCommand_;
   next.resultPlaneCount_=resultPlaneCount_;next.resultScientific_=resultScientific_;next.resultUsesRoi_=resultUsesRoi_;next.resultRoiPolicy_=resultRoiPolicy_;
   next.rebindRecord_=std::make_shared<const MetadataObject>(record);next.scientific_=true;next.targetsOpen_=true;
   next.targetPanel_.configure(source,initial);
@@ -71,7 +72,7 @@ HistogramPanel HistogramPanel::replayDraft(const ResolvedHistogramCommand &captu
   if(target.scope==TargetScope::Positions)target.positions=captured.target().explicit_positions();
   else {target.scope=TargetScope::Ranges;const auto &r=captured.target().ranges();target.t=r[0];target.c=r[1];target.z=r[2];}
   next.frozenTarget_=std::move(target);next.scientific_=true;
-  next.result_=result_;next.resultSourceId_=resultSourceId_;next.resultSourceTitle_=resultSourceTitle_;next.resultTarget_=resultTarget_;next.resultEstimate_=resultEstimate_;next.resultCommand_=resultCommand_;
+  next.result_=result_;next.resultSourceId_=resultSourceId_;next.resultSourceTitle_=resultSourceTitle_;next.resultContext_=resultContext_;next.resultTarget_=resultTarget_;next.resultEstimate_=resultEstimate_;next.resultCommand_=resultCommand_;
   next.resultPlaneCount_=resultPlaneCount_;next.resultScientific_=resultScientific_;next.resultUsesRoi_=resultUsesRoi_;next.resultRoiPolicy_=resultRoiPolicy_;
   next.generation_=generation_+1;return next;
 }
@@ -212,13 +213,13 @@ void HistogramPanel::accept(const ResolvedHistogramCommand &captured,const Targe
   SettingsPatch defaults{{"histogram_custom",custom_},{"histogram_log",log_},{"histogram_scientific",scientific_}};
   if(scientific_)defaults.emplace("histogram_roi",roiPolicy);else defaults.emplace("histogram_use_roi",roi_);
   if(custom_) {defaults.emplace("histogram_bins",std::int64_t(configuration.bins));defaults.emplace("histogram_lower",(*configuration.range)[0]);defaults.emplace("histogram_upper",(*configuration.range)[1]);}
-  auto title=target.source().data().metadata.title;
+  auto title=target.source().data().metadata.title;auto context=plot_target_caption(target);
   auto candidate=std::make_shared<const DatasetHistogramResult>(std::move(result));
   static_assert(std::is_nothrow_move_assignable_v<decltype(result_)>);
   static_assert(std::is_nothrow_move_assignable_v<Json>);
   if(remember)remember(defaults,record);
   lower_=std::move(lower);upper_=std::move(upper);result_=std::move(candidate);resultTarget_=std::move(provenance);resultEstimate_=std::move(estimate);
-  resultCommand_=std::move(recorded);resultSourceId_=target.document_id();resultSourceTitle_=std::move(title);
+  resultCommand_=std::move(recorded);resultSourceId_=target.document_id();resultSourceTitle_=std::move(title);resultContext_=std::move(context);
   resultPlaneCount_=planes;resultScientific_=scientific_;resultUsesRoi_=usesRoi;resultRoiPolicy_=std::move(roiPolicy);
   draftChanged_=false;error_.clear();actionError_.clear();
 }
@@ -226,7 +227,7 @@ std::string HistogramPanel::csv() const {
   if(!result_)throw std::invalid_argument("Calculate a histogram before exporting");return dataset_histogram_csv(*result_);
 }
 void HistogramPanel::sourceClosed(std::uint64_t id){if(id==sourceId_){++generation_;source_.reset();frozenTarget_.reset();rebindRecord_.reset();targetsOpen_=false;}}
-void HistogramPanel::cancel(){++generation_;open_=targetsOpen_=false;source_.reset();frozenTarget_.reset();rebindRecord_.reset();resultCommand_=Json::object();result_.reset();resultSourceId_=0;resultSourceTitle_.clear();resultTarget_=resultEstimate_=Json::object();resultPlaneCount_=0;targetPanel_=OperationTargetPanel{};heights_.clear();controls_=states_=Json::object();}
+void HistogramPanel::cancel(){++generation_;open_=targetsOpen_=false;source_.reset();frozenTarget_.reset();rebindRecord_.reset();resultCommand_=Json::object();result_.reset();resultSourceId_=0;resultSourceTitle_.clear();resultContext_.clear();resultTarget_=resultEstimate_=Json::object();resultPlaneCount_=0;targetPanel_=OperationTargetPanel{};heights_.clear();controls_=states_=Json::object();}
 void HistogramPanel::control(const char *name,bool enabled) {
   const auto a=ImGui::GetItemRectMin(),b=ImGui::GetItemRectMax();
   controls_[name]={(a.x+b.x)*.5f,(a.y+b.y)*.5f};

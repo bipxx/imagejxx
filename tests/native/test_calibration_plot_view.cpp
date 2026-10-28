@@ -4,6 +4,8 @@
 #include "../../src/desktop/calibration_plot_style.hpp"
 #include "../../src/desktop/calibration_plot_ticks.hpp"
 #include "../../src/desktop/generic_plot_payload.hpp"
+#include "../../src/desktop/plot_context.hpp"
+#include "../../src/desktop/plot_hover.hpp"
 #include <limits>
 #include <stdexcept>
 #include <cstdio>
@@ -147,11 +149,40 @@ void verify_contracts() {
   check(!histogramPlot->calibration() && histogramPlot->histogram.get()==counts.get() && histogramPlot->curveSize()==2);
   check(histogramPlot->genericCsv()==dataset_histogram_csv(*counts) && histogramPlot->genericCsv().find("9007199254740993")!=std::string::npos);
   check(histogramPlot->annotation.canvas_text.empty() && histogramPlot->yLabel()=="Count");
+  using imagejxx::desktop::plot_hover_sample;
+  auto hovered=plot_hover_sample(*histogramPlot,0);
+  check(hovered && hovered->index==0 && hovered->count==9007199254740993ULL && !hovered->upper_inclusive);
+  hovered=plot_hover_sample(*histogramPlot,1);check(hovered && hovered->index==1 && hovered->count==2);
+  hovered=plot_hover_sample(*histogramPlot,2);check(hovered && hovered->index==1 && hovered->upper_inclusive);
+  check(!plot_hover_sample(*histogramPlot,-1) && !plot_hover_sample(*histogramPlot,3));
+  check(!plot_hover_sample(*histogramPlot,std::numeric_limits<double>::quiet_NaN()));
   histogramPlot.reset();check(memory.used()==0);
   auto profilePlot=imagejxx::desktop::retain_profile_plot(memory,{0,2,4},{0,10,20},"Line profile","Distance (um)",77,3,"profile source");
   check(!profilePlot->calibration() && profilePlot->curveX(1)==2 && profilePlot->curveY(1)==10);
   check(profilePlot->csv()=="x,y\n0,0\n2,10\n4,20\n" && profilePlot->data.x_max==4 && profilePlot->data.y_max==20);
+  hovered=plot_hover_sample(*profilePlot,1);check(hovered && hovered->index==0 && hovered->x==0);
+  hovered=plot_hover_sample(*profilePlot,1.1);check(hovered && hovered->index==1 && hovered->y==10);
   profilePlot.reset();check(memory.used()==0);
+  profilePlot=imagejxx::desktop::retain_profile_plot(memory,{0,1,1,2},{10,20,30,40},"Profile","Distance",77,4,"source","captured context");
+  check(profilePlot->context_caption=="captured context");
+  check(plot_hover_sample(*profilePlot,1)->index==1 && plot_hover_sample(*profilePlot,1.5)->index==1);
+  check(plot_hover_sample(*profilePlot,largest)->index==3 && plot_hover_sample(*profilePlot,-largest)->index==0);
+  profilePlot.reset();
+  profilePlot=imagejxx::desktop::retain_profile_plot(memory,{-largest,-largest/2},{0,1},"Profile","Distance",77,5,"source");
+  check(plot_hover_sample(*profilePlot,largest)->index==1);profilePlot.reset();check(memory.used()==0);
+  bool unordered=false;try{imagejxx::desktop::retain_profile_plot(memory,{2,1},{1,2},"Profile","Distance",77,6,"source");}catch(const std::invalid_argument&){unordered=true;}
+  check(unordered && memory.used()==0);
+  imagejxx::desktop::RenderMemory contextBudget(4096);bool contextRefused=false;
+  try{imagejxx::desktop::retain_profile_plot(contextBudget,{0,1},{0,1},"Profile","Distance",77,7,"source",std::string(16384,'x'));}catch(const std::invalid_argument&){contextRefused=true;}
+  check(contextRefused && contextBudget.used()==0);
+  Stack contextPlanes(12,Image(1,1,1,PixelType::UInt8));
+  imagejxx::Document contextSource(Dataset::from_planes({2,2,3,1,1,1},std::move(contextPlanes)));
+  auto display=contextSource.snapshot().display();display.t=display.c=1;display.crosshair[2]=2;contextSource.set_display(display);
+  check(imagejxx::desktop::plot_plane_caption(contextSource.snapshot(),"XY profile")=="XY profile | T 2, C 2, Z 3");
+  TargetRequest target;target.scope=TargetScope::Ranges;target.t=AxisRange{0,2,1};target.c=AxisRange{1,2,1};target.z=AxisRange{0,3,2};target.roi=RoiPolicy::PositionedRois;
+  check(imagejxx::desktop::plot_target_caption(resolve_target(contextSource.snapshot(),target))=="4 XY planes | T 1..2 step 1, C 2..2 step 1, Z 1..3 step 2 | positioned ROI unions");
+  target={};target.scope=TargetScope::Positions;target.positions={{1,1,2},{0,0,0}};target.roi=RoiPolicy::WholePlane;
+  check(imagejxx::desktop::plot_target_caption(resolve_target(contextSource.snapshot(),target))=="2 XY planes | explicit order; first T 2, C 2, Z 3 | whole plane");
   imagejxx::desktop::RenderMemory denied(1);bool refused=false;
   try{imagejxx::desktop::retain_calibration_plot(denied,ImageJIntensityFitPlot{},imagejxx::desktop::CalibrationPlotAnnotation{},true,0);}
   catch(const std::invalid_argument&){refused=true;}

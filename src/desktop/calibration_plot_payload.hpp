@@ -17,15 +17,15 @@ enum class PlotKind { Fit, CalibrationTable, Histogram, Profile };
 struct CalibrationPlotPayload {
   ImageJIntensityFitPlot data;
   CalibrationPlotAnnotation annotation;
-  std::string source_title,x_axis="pixel value",y_axis;
+  std::string source_title,x_axis="pixel value",y_axis,context_caption;
   PlotKind kind=PlotKind::Fit;
   std::shared_ptr<const DatasetHistogramResult> histogram;
   bool table=false,histogram_raw_csv=true;
   std::uint64_t source_id=0,payload_id=0;
   RenderMemory::Lease memory;
   CalibrationPlotPayload(ImageJIntensityFitPlot plot,CalibrationPlotAnnotation notes,
-                         bool isTable,std::uint64_t source,std::string sourceTitle)
-      :data(std::move(plot)),annotation(std::move(notes)),source_title(std::move(sourceTitle)),table(isTable),source_id(source){kind=isTable?PlotKind::CalibrationTable:PlotKind::Fit;}
+                         bool isTable,std::uint64_t source,std::string sourceTitle,std::string context={})
+      :data(std::move(plot)),annotation(std::move(notes)),source_title(std::move(sourceTitle)),context_caption(std::move(context)),table(isTable),source_id(source){kind=isTable?PlotKind::CalibrationTable:PlotKind::Fit;}
 
   bool calibration() const noexcept {return kind==PlotKind::Fit || kind==PlotKind::CalibrationTable;}
   const char* kindName() const noexcept {return kind==PlotKind::Fit?"fit":kind==PlotKind::CalibrationTable?"calibration_table":kind==PlotKind::Histogram?"histogram":"profile";}
@@ -48,7 +48,7 @@ struct CalibrationPlotPayload {
     return stream.str();
   }
   static std::size_t bytes(const ImageJIntensityFitPlot& data,
-                           const CalibrationPlotAnnotation& annotation,const std::string& sourceTitle) {
+                           const CalibrationPlotAnnotation& annotation,const std::string& sourceTitle,const std::string& context={}) {
     auto total=RenderMemory::add(sizeof(CalibrationPlotPayload),256);
     for(const auto* values:{&data.measured,&data.known})
       total=RenderMemory::add(total,RenderMemory::mul(values->capacity(),sizeof(double)));
@@ -57,17 +57,17 @@ struct CalibrationPlotPayload {
     for(const auto* text:{&data.function,&data.value_unit,&data.objective,
                          &annotation.formula,&annotation.coefficients,&annotation.detail,&annotation.objective,&annotation.canvas_text})
       total=RenderMemory::add(total,RenderMemory::add(text->capacity(),1));
-    return RenderMemory::add(total,RenderMemory::add(sourceTitle.capacity(),1));
+    return RenderMemory::add(RenderMemory::add(total,RenderMemory::add(sourceTitle.capacity(),1)),RenderMemory::add(context.capacity(),1));
   }
 };
 
 inline std::shared_ptr<const CalibrationPlotPayload> retain_calibration_plot(
     RenderMemory& memory,ImageJIntensityFitPlot data,CalibrationPlotAnnotation annotation,
-    bool table,std::uint64_t source,std::uint64_t payloadId=0,std::string sourceTitle={}) {
+    bool table,std::uint64_t source,std::uint64_t payloadId=0,std::string sourceTitle={},std::string context={}) {
   annotation.canvas_text=calibration_plot_canvas_text(annotation);
-  const auto bytes=CalibrationPlotPayload::bytes(data,annotation,sourceTitle);
+  const auto bytes=CalibrationPlotPayload::bytes(data,annotation,sourceTitle,context);
   auto working=memory.acquire(bytes);
-  auto result=std::make_shared<CalibrationPlotPayload>(std::move(data),std::move(annotation),table,source,std::move(sourceTitle));
+  auto result=std::make_shared<CalibrationPlotPayload>(std::move(data),std::move(annotation),table,source,std::move(sourceTitle),std::move(context));
   result->payload_id=payloadId;
   result->memory=working.retain(bytes);
   return result;

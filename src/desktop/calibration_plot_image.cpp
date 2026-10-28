@@ -86,8 +86,10 @@ Json exportCalibrationPlotPng(const std::string& path,const CalibrationPlotPaylo
   const ImU32 foreground=IM_COL32(25,25,25,255);
   const auto heading=boundedCaption(payload.caption());
   const auto source=std::string("Source: ")+boundedCaption(payload.source_title.empty()?"(untitled source)":payload.source_title);
-  list.PushClipRect({12,8},{float(width-12),55},true);
-  list.AddText(font,13,{12,12},foreground,heading.c_str());list.AddText(font,13,{12,30},foreground,source.c_str());list.PopClipRect();
+  list.PushClipRect({12,8},{float(width-12),65},true);
+  list.AddText(font,13,{12,12},foreground,heading.c_str());list.AddText(font,13,{12,30},foreground,source.c_str());
+  if(!payload.context_caption.empty()){const auto context=boundedCaption(payload.context_caption);list.AddText(font,13,{12,48},foreground,context.c_str());}
+  list.PopClipRect();
   const CalibrationPlotCanvas canvas{{80,70},{float(width-110),float(height-125)},{12,60},{float(width-24),float(height-90)},font,13,1,
     IM_COL32(80,80,80,255),IM_COL32(215,215,215,255),foreground};
   auto geometry=drawCalibrationPlotGeometry(&list,payload.data,&payload.annotation,view,style,canvas,true,&payload);
@@ -107,7 +109,7 @@ Json exportCalibrationPlotPng(const std::string& path,const CalibrationPlotPaylo
     try{const auto* first=static_cast<const unsigned char*>(data);out.bytes.insert(out.bytes.end(),first,first+size);}catch(...){out.failed=true;}
   };
   if(!stbi_write_png_to_func(append,&encoded,width,height,3,rgb.data(),width*3) || encoded.failed)throw std::runtime_error("Plot PNG encoding failed");
-  Json result={{"path",path},{"width",width},{"height",height},{"source_id",payload.source_id},{"payload_id",payload.payload_id},
+  Json result={{"path",path},{"width",width},{"height",height},{"source_id",payload.source_id},{"payload_id",payload.payload_id},{"context_caption",payload.context_caption},
     {"canvas_origin",{canvas.origin.x,canvas.origin.y}},{"canvas_size",{canvas.size.x,canvas.size.y}},
     {"view_limits",view.limits(payload.data)},{"nice_ticks",view.nice_ticks},{"minor_ticks",view.minor_ticks},
     {"x_ticks",std::move(geometry.x_ticks)},{"y_ticks",std::move(geometry.y_ticks)},{"x_minor_ticks",std::move(geometry.x_minor_ticks)},{"y_minor_ticks",std::move(geometry.y_minor_ticks)},

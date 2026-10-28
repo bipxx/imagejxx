@@ -1,5 +1,45 @@
 # Shortest delivery paths by API and setting key
 
+## Retained sample hover and captured context — 2026-10-28
+
+Histogram/profile hover now reports exact retained bins/counts or nearest stored
+samples. Editor.plot_sample_at(x, plot_id=0) exposes the same read-only lookup:
+finite data X, zero-based indices; interior histogram edges choose the right bin,
+final edge is closed, outside returns None. Profile ties/duplicates choose the
+first index; outside clamps to an endpoint. Live plots use the existing all-revision
+guard; frozen snapshots survive source closure. Calibration sample lookup refuses.
+No source-provider reads, processing jobs or history changes; O(log N) lookup.
+
+Plot payloads capture one-based plane coordinates and compact target/ROI policy
+with immutable, admitted storage. Legacy/scientific histograms, profiles and all
+three calibration publication routes show it in UI and PNG. Explicit target
+order is summarized by count/first position, not full reconstructable provenance.
+
+Windows926 collected:925 passed, one explicitly optional hidden-OpenGL check
+skipped. Original783 focused cases pass; five C++ UI cases pass. Generic physical
+case128/160 frames; snapshot186/192 and calibration606/608 unchanged. Linux native
+math/hover/context and current PNG consumers pass; no full Linux UI/SDK claim.
+C++/Python PNGs byte-identical; independent pixels and visual review pass.
+[Scoped evidence](../parity/reviews/G034-plot-hover-context-progress001.json).
+
+One failed reader assumed empty positioned-ROI histogram used raw integer edges;
+existing normalized0..1 behavior is preserved and the reader now queries its
+actual domain. Failed preimage/logs retained. Owned terminal scratch/previews
+retired; lossless cleanup recovered1,730,400B. Full failed436 capture retired
+with identity and is unavailable; final439/Linux evidence retained. Complete
+known-root inventory8,489,781,464B; two denied caches leave full8GiB unverified.
+Same compiler caches/runtime/SDK; commercial inventory passes and reference
+fingerprints unchanged. One coherent serial build took517.219s after Window.hpp
+fanout: group related interface edits; keep implementation helpers private.
+
+Next: audit original calibration settings/global/table-import/downstream keys
+before choosing the next missing behavior. Initial coefficients, max iterations
+and relative tolerance already have controls; do not list them as absent. Full
+provenance, persistence/replay, independent OS windows, original-reference and
+platform gates remain open. Matched speed/memory benchmarks remain unmeasured;
+no speed superiority or family completion claim:47 in progress/52 open/0 complete.
+
+
 ## Shared histogram/profile plot workflow — 2026-10-28
 
 Legacy histogram/profile plots now reuse view/axes/ticks, applicable style,

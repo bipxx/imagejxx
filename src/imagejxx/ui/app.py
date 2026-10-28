@@ -417,6 +417,15 @@ class Editor:
             record, rebind_request=rebind_request, document_id=document_id
         )
 
+    def plot_sample_at(self, x, *, plot_id=0):
+        """Return the retained histogram bin or nearest profile sample at data x.
+
+        Indices are zero-based; profile ties choose the first sample. Histogram
+        intervals are half-open except the closed final edge. Returns None
+        outside histogram bounds. Snapshots need no open source document.
+        """
+        return json.loads(self._editor.plot_sample_at(_json(dict(x=x, plot_id=plot_id))))
+
     def action(self, command=None, /, **parameters):
         """Dispatch a command with separate ``action`` and ``name`` parameters.
 
