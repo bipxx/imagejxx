@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "scope": "Native global/effective calibration metadata foundation and Application-owned capture API; processing/publication/frontend integration remains open",
+  "state": "focused_checks_passed",
+  "acceptance_claim": false,
+  "implementation": {
+    "types": "GlobalCalibration stores validated native spatial/intensity values and known source storage information without document/provider/pixel ownership. EffectiveCalibration stores resolved values plus source ID/revisions, uses/ignore flags, global/per-document generations and weak application identity for minted captures. Python spatial/array getters do not expose mutable native aliases.",
+    "resolution": "Metadata-only ImageJ known-source density adaptation: matching integer depth preserves immutable record/IEEE words; mismatched integer depth resets density/unit; Float32 clears density but retains global value unit; RGB clears density/unit; locally signed16 UInt16 overrides global density/unit while global spatial values remain. Native Float64/RGBA extend Float32/RGB semantics. Known source depth is retained even for None records.",
+    "application": "Set/Clear/query global state, local/effective capture and per-document bypass under existing registry mutex. Values copied/staged before swap; retired global values released outside lock. Each explicit Set increments global generation; Clear with no global is a no-op. Each document has its own bypass generation; redundant bypass is a no-op and another document change does not stale unrelated captures. Close retires its bypass state.",
+    "validation": "Application identity, live membership, source Pixels+Metadata, own bypass generation and applicable global generation. Ignored captures do not depend on global changes; display/selection/activation alone do not stale this calibration-only value. Detached pure results cannot forge application captures. This is a read-only validation, not atomic publication or job cancellation integration.",
+    "api": "GlobalCalibration, EffectiveCalibration, resolve_effective_calibration; Application global_calibration/global_calibration_generation, set/clear_global_calibration, local/effective_calibration, ignores/set_ignore_global_calibration, validate_effective_calibration. C++ public header and native Python bindings; no Python processing implementation/new dependency.",
+    "integration_boundary": "Ordinary snapshots and existing processing/target/prepare/publish APIs still consume local calibration. No shared ImGui Global control or automatic processing effect is enabled. Typed context propagation, atomic publication and frontend cache invalidation are the next required packet, not completed by this foundation."
+  },
+  "original_reference": {
+    "initial": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\docs\\parity\\reviews\\G034-global-calibration-reference002.json",
+      "bytes": 11078,
+      "sha256": "ecc5526a4ec4bc6368b2daaeb811056552d66652ccf6a70d10ef7a6c3fa2ef08"
+    },
+    "variants": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\docs\\parity\\reviews\\G034-global-calibration-reference003.json",
+      "bytes": 12165,
+      "sha256": "f90ee55f7b3cdafad52e1cb7791c40c68fbb3feb70b7b3d6011947459aaec1e8"
+    },
+    "cases": 38,
+    "variant_cases": 25,
+    "variants_scope": "Actual pinned ImagePlus/Calibration APIs: source8/16 None with units,16-bit straight line,8/16 custom Float32 tables (payload NaN/infinity/negative zero), each applied to UInt8/UInt16/Float32/RGB/local signed16. ASCII-escaped Unicode JSON preserves original micro-sign unit. No private Calibrator/Set Scale GUI/full spatial/time/unknown-depth acceptance."
+  },
+  "verification": {
+    "windows": {
+      "collected": 1031,
+      "passed": 1030,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "skip": "Explicit optional IMAGEJXX_RENDER_TESTS=1 hidden-OpenGL settings check",
+      "global_api_cases": 52,
+      "existing_application_cases": 22,
+      "prior_packet_cases": 957,
+      "original_focused_cases": 783,
+      "cpp_ui_regression_cases": 6,
+      "physical_case_bounds": "points84/160, generic128/160, snapshots186/192, calibration606/608 unchanged"
+    },
+    "native": "Windows producer global/application/projection/private plot controls pass. Linux current core rebuilt in the same cache and installed in place; actual installed-header core/projection/global C++ clients compile and pass with source-header fallback refused.",
+    "installed_sdk": {
+      "windows": "4/4 CTest clients",
+      "linux": "4/4 CTest clients",
+      "profile_cells": 428,
+      "profile_scope": "128 exact calibration table profiles and86 fitted dtype cells per platform; historical fingerprints/tolerances unchanged. Fresh carrier regenerated from pinned references, then compressed/retired with owned client scratch.",
+      "windows_archive": {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\lib\\imagejxx_core.lib",
+        "bytes": 57317442,
+        "sha256": "1f33c7a723be42f6711b745cee3f95b947c5550b81f699891ea732f6b48d80a0"
+      },
+      "linux_archive": {
+        "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001/libimagejxx_core.a",
+        "bytes": 19716380,
+        "sha256": "a3d371085323c38386b1d7663cf92e0e333726288a8a7c3fecd292b1b7ee0292"
+      },
+      "boundary": "Current core SDKs only; no Linux Python/desktop/GPU/macOS/installed IO SDK promotion."
+    },
+    "ownership": "Concurrent C++/Python set/read values remain coherent. Source closure does not retain Document via calibration values; no provider reads or local metadata/pixels/history mutation. Explicit source changes, global updates and bypass round trips invalidate relevant captures.",
+    "source_freeze": "1289 producer/native-control inputs rehashed unchanged; SDK fixture/reader inputs independently pinned; final33 reader/reference pins rechecked unchanged.",
+    "reader_failure": "Initial479 had41 new helper failures because SpatialCalibration properties are already immutable. Exact reader preimage retained. Correct helper uses existing constructor, detached arrays and explicit replacement; expectations/original references/native code unchanged, no native rebuild.",
+    "commercial_inventory": "scripts/check_licenses.py --desktop and git diff --check pass."
+  },
+  "evidence": {
+    "global-calibration-windows-build478": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-windows-build478\\receipt.json",
+      "bytes": 33475,
+      "sha256": "6c93abbe98cf0851812cb6144448392683b03020ee6c537ffc5a56c2c6cb9f04"
+    },
+    "global-calibration-installed479": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-installed479\\receipt.json",
+      "bytes": 128688,
+      "sha256": "83221bb160431ff6374366e3755e136eeeafc759a081cdcd62ab30bb24c73a1a"
+    },
+    "global-calibration-sdk-windows480": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-sdk-windows480\\receipt.json",
+      "bytes": 56856,
+      "sha256": "f121fc65258150e5965ab4589c8d614becd358fc4a8d83508445ce80ac64919b"
+    },
+    "global-calibration-linux481": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-linux481\\receipt.json",
+      "bytes": 194377,
+      "sha256": "e678343c59d132dacc083ea9f343afc8b99b5183df606a2e6c169e0aacb4a645"
+    },
+    "global-calibration-sdk-linux480": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-sdk-linux480\\receipt.json",
+      "bytes": 35668,
+      "sha256": "911247b08e2c90b88cd10929f00caab889da8c060aaaff2057fd8e485abf8703"
+    },
+    "global-calibration-reference483": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-reference483\\receipt.json",
+      "bytes": 7797,
+      "sha256": "0bac3a39cc7e08469daeabcabdf5fd1bc1bf3865cc9156b577e4f686b464f2b9"
+    },
+    "global-calibration-reader484": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-reader484\\receipt.json",
+      "bytes": 583,
+      "sha256": "4459c8367380f8ed0100e5d4fa1468e3bbab88df977a54d9e511f655ff030e5f"
+    },
+    "global-calibration-installed485": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-installed485\\receipt.json",
+      "bytes": 128606,
+      "sha256": "27012939da553ad4e6524a47a7849d48a5a165cb19111971794eb0c27f6e735b"
+    },
+    "global-calibration-retention486": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-retention486\\receipt.json",
+      "bytes": 18672,
+      "sha256": "bea6dc13ed14f9ae59ba996b5edab566cd0cb2ef1c0a2bebd34f1b67f3b351ea"
+    },
+    "storage_after487": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\global-calibration-after487.json",
+      "bytes": 1523,
+      "sha256": "70babde043f785ca75f41ec5ce1f839bc72e3f658b8c42ccd3455dc701a28394"
+    }
+  },
+  "storage": {
+    "before_known_bytes": 8496406795,
+    "after_known_bytes": 8514134395,
+    "limit_bytes": 8589934592,
+    "budget_verified": false,
+    "unknown_subtrees": [
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest",
+        "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest'"
+      },
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest-ui",
+        "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest-ui'"
+      }
+    ],
+    "cleanup_recovered_bytes": 2147866,
+    "policy": "Complete normalized project/generated/public/Linux roots counted once. One active compiler cache/runtime/core SDK per platform. Native ABI/header update uses documented temporary serial reserve512MiB; runtime/installed-client scratch reserves64MiB each, retired after terminal proof. Old replaced SDK archive/header identities retained; old bytes unavailable. No cache/environment/SDK/checkout archive.",
+    "retention": "Raw terminal logs/source/dependency identities and failed reader preimage losslessly compressed/member-hash verified before retirement. Failed479 full capture retired with identity and unavailable full contents. Final485/reference483 and installed-client diagnostics retained."
+  },
+  "efficiency": {
+    "windows_serial_build_seconds": 792.0779999999795,
+    "lesson": "One coherent public Application/header rebuild; helper-only reader correction used the same binaries. Batch subsequent public context/ABI seams, preserve local snapshots, and reuse typed metadata captures by revision/generation instead of table decoding/JSON per frame."
+  },
+  "next": {
+    "contract": "docs/packets/G034-global-calibration-contract.md",
+    "core": "Carry EffectiveCalibration through ResolvedTarget/prepared operation/job state and validate generations under the same App publication lock; existing source/activation guards remain. In-place edits preserve local calibration; derived outputs use explicit effective output policy.",
+    "frontend": "Global/bypass generations must enter display/XYZ/measurement/plot cache keys even though document revisions do not change. Wire consumers before a functional Global toggle. Independent plot snapshots retain captured data.",
+    "remaining_original": "Complete original spatial/time/invert-origin/unknown-source/calibrator UI variants, downstream outputs, persistence/replay/macros and supported-platform gates."
+  },
+  "tracker": {
+    "in_progress": 47,
+    "open": 52,
+    "fully_certified_complete": 0
+  },
+  "performance_claim": "No matched ImageJ/Fiji speed or memory superiority established; build/test timing is not an image-processing benchmark."
+}

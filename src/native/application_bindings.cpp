@@ -52,6 +52,20 @@ void bind_application(py::module_ &m) {
                                               PyExc_RuntimeError);
   py::class_<Application>(m, "Application")
       .def(py::init<>())
+      .def_property_readonly("global_calibration",[](const Application& app)->py::object {
+        const auto value=[&]{py::gil_scoped_release release;return app.global_calibration();}();
+        if(!value)return py::none();return py::cast(GlobalCalibration(*value));
+      })
+      .def_property_readonly("global_calibration_generation",[](const Application& app){py::gil_scoped_release release;return app.global_calibration_generation();})
+      .def("set_global_calibration",&Application::set_global_calibration,py::arg("calibration"),py::call_guard<py::gil_scoped_release>())
+      .def("clear_global_calibration",&Application::clear_global_calibration,py::call_guard<py::gil_scoped_release>())
+      .def("local_calibration",&Application::local_calibration,py::arg("document_id")=0,py::call_guard<py::gil_scoped_release>())
+      .def("effective_calibration",&Application::effective_calibration,py::arg("document_id")=0,py::call_guard<py::gil_scoped_release>())
+      .def("ignores_global_calibration",&Application::ignores_global_calibration,py::arg("document_id")=0,py::call_guard<py::gil_scoped_release>())
+      .def("set_ignore_global_calibration",[](Application& app,py::bool_ ignore,std::uint64_t id) {
+        const bool bypass=ignore.cast<bool>();py::gil_scoped_release release;app.set_ignore_global_calibration(bypass,id);
+      },py::arg("ignore").noconvert(),py::arg("document_id")=0)
+      .def("validate_effective_calibration",&Application::validate_effective_calibration,py::arg("capture"),py::call_guard<py::gil_scoped_release>())
       .def("create", &Application::create, py::arg("dataset"),
            py::arg("title") = "Untitled",
            py::call_guard<py::gil_scoped_release>())

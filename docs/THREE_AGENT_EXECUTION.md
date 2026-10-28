@@ -1,5 +1,45 @@
 # Three-agent execution plan
 
+## Native global/effective calibration metadata foundation — 2026-10-28
+
+GlobalCalibration/EffectiveCalibration and Application-owned Set/Clear/local/
+effective/bypass/capture validation are implemented in C++ and Python bindings.
+They preserve local documents, carry immutable values without provider ownership
+and apply known-source dtype/signed16 density/unit policy. Own bypass generations
+avoid invalidation from another document; ignored captures do not depend on
+global changes. Standalone validation is read-only, not atomic publication.
+[API scope](GLOBAL_CALIBRATION.md); [evidence](parity/reviews/G034-global-calibration-core-progress001.json).
+
+Existing snapshots/processing/target/prepare/publish still use local calibration.
+No functional Global ImGui toggle or automatic processing effect is enabled.
+Next: propagate minted context through targets/preparations/jobs; validate it
+under the App publication lock, preserve local calibration for in-place edits
+and use explicit effective output policy for derived documents. Add generation
+keys to display/XYZ/measurement/plot caches before shared UI controls.
+[Exact next contract](packets/G034-global-calibration-contract.md).
+
+Windows1031 collected:1030 passed, one explicitly optional hidden-OpenGL settings
+check skipped.52 global API cases include38 actual pinned ImageJ metadata cases;
+22 existing App cases and prior957 cases pass. Six C++ UI regressions pass with
+existing caps unchanged. Current core SDKs refreshed in place on Windows/Linux;
+4/4 installed CTest clients each pass, including global API, plus428 historical
+table/fit profile cells. Native source/installed consumers pass. No Linux
+Python/full desktop/IO SDK/macOS/GPU promotion.1289 producer inputs and33 reader
+pins rechecked unchanged. Original fingerprints/tolerances remain intact.
+
+One public-header rebuild took792.078s in the active cache.41 new reader helper
+failures assumed immutable SpatialCalibration had setters; constructor/detached
+array/replacement checks fix the reader without native changes or another build.
+Original preimage/logs retained. Owned terminal scratch retired; lossless cleanup
+recovered2,147,866B. Failed479 full capture retired with identity; full contents
+unavailable. Final/reference/SDK diagnostic captures retained. Known generated
+roots8,514,134,395B; two denied caches leave full8GiB unverified. Same caches/
+runtimes/SDKs; old replaced SDK identities retained, old bytes unavailable.
+Commercial inventory passes. Remaining original spatial/time/UI, downstream,
+persistence/replay/platform and matched-performance gates stay open.
+Tracker47 in progress/52 open/0 fully certified; no speed superiority claim.
+
+
 ## Session fitting standards and original global-calibration contract — 2026-10-28
 
 Both fitting dialogs reuse the last admitted measured/known standards across

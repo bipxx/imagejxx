@@ -1,0 +1,496 @@
+{
+  "schema_version": 1,
+  "reference": "ImageJ1.54r actual known-source none/16-bit function/custom table global adaptation",
+  "cases": [
+    {
+      "id": "none8_u8",
+      "kind": "none8",
+      "source_bits": 8,
+      "destination": "u8",
+      "destination_bits": 8,
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "\u00b5m",
+        "value_unit": "unit-none8",
+        "density": false,
+        "signed16": false,
+        "first_words": null
+      }
+    },
+    {
+      "id": "none8_u16",
+      "kind": "none8",
+      "source_bits": 8,
+      "destination": "u16",
+      "destination_bits": 16,
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "\u00b5m",
+        "value_unit": "Gray Value",
+        "density": false,
+        "signed16": false,
+        "first_words": null
+      }
+    },
+    {
+      "id": "none8_f32",
+      "kind": "none8",
+      "source_bits": 8,
+      "destination": "f32",
+      "destination_bits": 32,
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "\u00b5m",
+        "value_unit": "unit-none8",
+        "density": false,
+        "signed16": false,
+        "first_words": null
+      }
+    },
+    {
+      "id": "none8_rgb",
+      "kind": "none8",
+      "source_bits": 8,
+      "destination": "rgb",
+      "destination_bits": 24,
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "\u00b5m",
+        "value_unit": "Gray Value",
+        "density": false,
+        "signed16": false,
+        "first_words": null
+      }
+    },
+    {
+      "id": "none8_signed16",
+      "kind": "none8",
+      "source_bits": 8,
+      "destination": "signed16",
+      "destination_bits": 16,
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "\u00b5m",
+        "value_unit": "Gray Value",
+        "density": true,
+        "signed16": true,
+        "first_words": [
+          3338665984,
+          3338665472,
+          3338664960,
+          3338664448
+        ]
+      }
+    },
+    {
+      "id": "none16_u8",
+      "kind": "none16",
+      "source_bits": 16,
+      "destination": "u8",
+      "destination_bits": 8,
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "\u00b5m",
+        "value_unit": "Gray Value",
+        "density": false,
+        "signed16": false,
+        "first_words": null
+      }
+    },
+    {
+      "id": "none16_u16",
+      "kind": "none16",
+      "source_bits": 16,
+      "destination": "u16",
+      "destination_bits": 16,
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "\u00b5m",
+        "value_unit": "unit-none16",
+        "density": false,
+        "signed16": false,
+        "first_words": null
+      }
+    },
+    {
+      "id": "none16_f32",
+      "kind": "none16",
+      "source_bits": 16,
+      "destination": "f32",
+      "destination_bits": 32,
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "\u00b5m",
+        "value_unit": "unit-none16",
+        "density": false,
+        "signed16": false,
+        "first_words": null
+      }
+    },
+    {
+      "id": "none16_rgb",
+      "kind": "none16",
+      "source_bits": 16,
+      "destination": "rgb",
+      "destination_bits": 24,
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "\u00b5m",
+        "value_unit": "Gray Value",
+        "density": false,
+        "signed16": false,
+        "first_words": null
+      }
+    },
+    {
+      "id": "none16_signed16",
+      "kind": "none16",
+      "source_bits": 16,
+      "destination": "signed16",
+      "destination_bits": 16,
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "\u00b5m",
+        "value_unit": "Gray Value",
+        "density": true,
+        "signed16": true,
+        "first_words": [
+          3338665984,
+          3338665472,
+          3338664960,
+          3338664448
+        ]
+      }
+    },
+    {
+      "id": "line16_u8",
+      "kind": "line16",
+      "source_bits": 16,
+      "destination": "u8",
+      "destination_bits": 8,
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "\u00b5m",
+        "value_unit": "Gray Value",
+        "density": false,
+        "signed16": false,
+        "first_words": null
+      }
+    },
+    {
+      "id": "line16_u16",
+      "kind": "line16",
+      "source_bits": 16,
+      "destination": "u16",
+      "destination_bits": 16,
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "\u00b5m",
+        "value_unit": "unit-line16",
+        "density": true,
+        "signed16": false,
+        "first_words": [
+          1092616192,
+          1094713344,
+          1096810496,
+          1098907648
+        ]
+      }
+    },
+    {
+      "id": "line16_f32",
+      "kind": "line16",
+      "source_bits": 16,
+      "destination": "f32",
+      "destination_bits": 32,
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "\u00b5m",
+        "value_unit": "unit-line16",
+        "density": false,
+        "signed16": false,
+        "first_words": null
+      }
+    },
+    {
+      "id": "line16_rgb",
+      "kind": "line16",
+      "source_bits": 16,
+      "destination": "rgb",
+      "destination_bits": 24,
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "\u00b5m",
+        "value_unit": "Gray Value",
+        "density": false,
+        "signed16": false,
+        "first_words": null
+      }
+    },
+    {
+      "id": "line16_signed16",
+      "kind": "line16",
+      "source_bits": 16,
+      "destination": "signed16",
+      "destination_bits": 16,
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "\u00b5m",
+        "value_unit": "Gray Value",
+        "density": true,
+        "signed16": true,
+        "first_words": [
+          3338665984,
+          3338665472,
+          3338664960,
+          3338664448
+        ]
+      }
+    },
+    {
+      "id": "table8_u8",
+      "kind": "table8",
+      "source_bits": 8,
+      "destination": "u8",
+      "destination_bits": 8,
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "\u00b5m",
+        "value_unit": "unit-table8",
+        "density": true,
+        "signed16": false,
+        "first_words": [
+          1048576000,
+          2143363909,
+          2139095040,
+          2147483648
+        ]
+      }
+    },
+    {
+      "id": "table8_u16",
+      "kind": "table8",
+      "source_bits": 8,
+      "destination": "u16",
+      "destination_bits": 16,
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "\u00b5m",
+        "value_unit": "Gray Value",
+        "density": false,
+        "signed16": false,
+        "first_words": null
+      }
+    },
+    {
+      "id": "table8_f32",
+      "kind": "table8",
+      "source_bits": 8,
+      "destination": "f32",
+      "destination_bits": 32,
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "\u00b5m",
+        "value_unit": "unit-table8",
+        "density": false,
+        "signed16": false,
+        "first_words": null
+      }
+    },
+    {
+      "id": "table8_rgb",
+      "kind": "table8",
+      "source_bits": 8,
+      "destination": "rgb",
+      "destination_bits": 24,
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "\u00b5m",
+        "value_unit": "Gray Value",
+        "density": false,
+        "signed16": false,
+        "first_words": null
+      }
+    },
+    {
+      "id": "table8_signed16",
+      "kind": "table8",
+      "source_bits": 8,
+      "destination": "signed16",
+      "destination_bits": 16,
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "\u00b5m",
+        "value_unit": "Gray Value",
+        "density": true,
+        "signed16": true,
+        "first_words": [
+          3338665984,
+          3338665472,
+          3338664960,
+          3338664448
+        ]
+      }
+    },
+    {
+      "id": "table16_u8",
+      "kind": "table16",
+      "source_bits": 16,
+      "destination": "u8",
+      "destination_bits": 8,
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "\u00b5m",
+        "value_unit": "Gray Value",
+        "density": false,
+        "signed16": false,
+        "first_words": null
+      }
+    },
+    {
+      "id": "table16_u16",
+      "kind": "table16",
+      "source_bits": 16,
+      "destination": "u16",
+      "destination_bits": 16,
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "\u00b5m",
+        "value_unit": "unit-table16",
+        "density": true,
+        "signed16": false,
+        "first_words": [
+          1048576000,
+          2143363909,
+          2139095040,
+          2147483648
+        ]
+      }
+    },
+    {
+      "id": "table16_f32",
+      "kind": "table16",
+      "source_bits": 16,
+      "destination": "f32",
+      "destination_bits": 32,
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "\u00b5m",
+        "value_unit": "unit-table16",
+        "density": false,
+        "signed16": false,
+        "first_words": null
+      }
+    },
+    {
+      "id": "table16_rgb",
+      "kind": "table16",
+      "source_bits": 16,
+      "destination": "rgb",
+      "destination_bits": 24,
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "\u00b5m",
+        "value_unit": "Gray Value",
+        "density": false,
+        "signed16": false,
+        "first_words": null
+      }
+    },
+    {
+      "id": "table16_signed16",
+      "kind": "table16",
+      "source_bits": 16,
+      "destination": "signed16",
+      "destination_bits": 16,
+      "effective": {
+        "pixel_width": 0.5,
+        "pixel_height": 0.75,
+        "pixel_depth": 2.0,
+        "x_origin": 7.0,
+        "unit": "\u00b5m",
+        "value_unit": "Gray Value",
+        "density": true,
+        "signed16": true,
+        "first_words": [
+          3338665984,
+          3338665472,
+          3338664960,
+          3338664448
+        ]
+      }
+    }
+  ]
+}

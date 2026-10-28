@@ -35,6 +35,7 @@ target_sources(imagejxx_core PRIVATE
   src/native/atomic_file.cpp src/native/session.cpp src/native/session_io.cpp
   src/native/selection_codec.cpp src/native/saved_roi_geometry.cpp
   src/native/saved_roi_geometry_application.cpp
+  src/native/global_calibration.cpp src/native/global_calibration_application.cpp
   src/native/float32_display.cpp
   src/native/channel_display.cpp src/native/channel_display_command.cpp
   src/native/dataset_histogram.cpp src/native/rgb_histogram.cpp src/native/histogram_command.cpp src/native/histogram_job.cpp
@@ -129,6 +130,7 @@ if(IMAGEJXX_BUILD_PYTHON)
   target_sources(_native PRIVATE src/native/axis_extraction_command_bindings.cpp)
   target_sources(_native PRIVATE src/native/axis_orientation_command_bindings.cpp)
   target_sources(_native PRIVATE src/native/imagej_projection_bindings.cpp)
+  target_sources(_native PRIVATE src/native/global_calibration_bindings.cpp)
   target_sources(_native PRIVATE src/native/channel_display_bindings.cpp src/native/float32_display_bindings.cpp)
   target_sources(_native PRIVATE src/native/selection_creation_bindings.cpp)
   target_sources(_native PRIVATE src/native/roi_manager_bindings.cpp)
@@ -711,6 +713,9 @@ if(BUILD_TESTING)
   add_executable(imagejxx_calibration_plot_view_tests tests/native/test_calibration_plot_view.cpp)
   target_link_libraries(imagejxx_calibration_plot_view_tests PRIVATE imagejxx::core)
   add_test(NAME native_calibration_plot_view COMMAND imagejxx_calibration_plot_view_tests)
+  add_executable(imagejxx_global_calibration_tests tests/native/test_global_calibration.cpp)
+  target_link_libraries(imagejxx_global_calibration_tests PRIVATE imagejxx::core)
+  add_test(NAME native_global_calibration COMMAND imagejxx_global_calibration_tests)
   add_executable(imagejxx_intensity_calibration_tests tests/native/test_imagej_intensity_calibration.cpp)
   target_link_libraries(imagejxx_intensity_calibration_tests PRIVATE imagejxx::core)
   target_include_directories(imagejxx_intensity_calibration_tests PRIVATE src/native)

@@ -435,6 +435,7 @@ void Application::close(std::uint64_t id, bool discard) {
         ? std::make_shared<const int>(0) : activation_identity_;
     closed_.insert(id);
     documents_.erase(id);
+    calibration_bypass_.erase(id);
     order_.erase(found);
     active_ = next_active;
     activation_identity_ = std::move(next_activation);

@@ -42,6 +42,7 @@ void bind_auto_threshold(py::module_& module);
 void bind_jobs(py::module_& module);
 void bind_gaussian_command(py::module_& module);
 void bind_imagej_projection(py::module_& module);
+void bind_global_calibration(py::module_& module);
 void bind_rank_command(py::module_& module);
 void bind_axis_extraction_command(py::module_& module);
 void bind_axis_orientation_command(py::module_& module);
@@ -251,6 +252,7 @@ PYBIND11_MODULE(_native, m) {
     bind_float32_display(m);
     bind_channel_display(m);
     bind_imagej_projection(m);
+    bind_global_calibration(m);
     bind_selection_creation(m);
     bind_roi_manager(m);
     bind_manual_threshold(m);

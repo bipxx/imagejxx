@@ -1,6 +1,7 @@
 # Global calibration: observed semantics and implementation path
 
-Status: original API behavior observed; native global calibration remains open.
+Status: native metadata values/resolver/Application state implemented; processing,
+publication and shared UI integration remain open. See [the explicit core API](../GLOBAL_CALIBRATION.md).
 The thirteen-case [reference](../parity/reviews/G034-global-calibration-reference002.json)
 comes from actual pinned ImageJ1.54r ImagePlus/Calibration execution. It does not
 invoke the private Calibrator dialog or qualify all calibration functions.
@@ -34,6 +35,34 @@ clearing returns local widths2 and3 for the two existing integer images. Spatial
 and density adaptation are separate. Do not approximate global with a metadata
 edit applied to every open document, or merely add a checkbox to the current
 per-document intensity dialog.
+
+## Current foundation and next integration seam
+
+GlobalCalibration/EffectiveCalibration and Application Set/Clear/local/effective/
+ignore/capture validation are implemented in the native core and Python binding.
+The resolver matches the13 initial cases and25 additional known-source None,
+16-bit function and custom-table cases in
+[reference003](../parity/reviews/G034-global-calibration-reference003.json).
+Existing ordinary snapshots/processing APIs still consume local calibration.
+No functional Global UI toggle or automatic processing change is claimed.
+
+The next packet must carry the minted effective capture through ResolvedTarget
+and prepared-operation/job state, without changing the original source snapshot.
+At Application publication, check its app identity/global generation/own bypass
+generation under the same registry lock as existing owner/revision publication.
+The standalone validator is read-only and is not a check-then-commit substitute.
+In-place pixel edits preserve local calibration; derived outputs need the
+operation's explicit effective-calibration output policy. Do not copy a synthetic
+overlaid snapshot back to local history or reuse projection policy for every
+conversion/operation.
+
+Frontend caches need global/bypass generations in addition to local metadata
+revisions, because global Set/Clear deliberately advances no document revision.
+Cache a typed capture per relevant revision/generation rather than decode tables
+or serialize full calibration on every frame. Wire display/XYZ/world distances,
+measurements/profiles/histograms/projection and scientific IO before enabling the
+shared control. Live source-bound plots need effective-context invalidation;
+retained independent plot snapshots keep their captured data/context.
 
 ## Native core implementation order
 

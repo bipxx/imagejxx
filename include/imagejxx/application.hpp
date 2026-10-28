@@ -1,6 +1,7 @@
 #pragma once
 
 #include <imagejxx/document.hpp>
+#include <imagejxx/global_calibration.hpp>
 #include <imagejxx/execution.hpp>
 #include <imagejxx/jobs.hpp>
 #include <imagejxx/auto_contrast_job.hpp>
@@ -211,6 +212,21 @@ public:
   bool contains(std::uint64_t id) const;
   void close(std::uint64_t id = 0, bool discard = false);
   DocumentSnapshot snapshot(std::uint64_t id = 0) const;
+  // Global/effective calibration is separate from local snapshots/history.
+  // These captures are explicit foundations; existing processing APIs keep
+  // their local-snapshot contract until their effective context is integrated.
+  std::shared_ptr<const GlobalCalibration> global_calibration() const;
+  std::uint64_t global_calibration_generation() const;
+  void set_global_calibration(const GlobalCalibration& value);
+  void clear_global_calibration();
+  GlobalCalibration local_calibration(std::uint64_t id = 0) const;
+  bool ignores_global_calibration(std::uint64_t id = 0) const;
+  void set_ignore_global_calibration(bool ignore, std::uint64_t id = 0);
+  EffectiveCalibration effective_calibration(std::uint64_t id = 0) const;
+  // Membership, application identity, local Pixels+Metadata and applicable
+  // global/per-document generations. No publication is implied by this check.
+  void validate_effective_calibration(const EffectiveCalibration& captured) const;
+
   DocumentTransaction begin_edit(std::uint64_t id = 0,
                                  Change dependencies = Change::Data) const;
   ResolvedTarget resolve_target(const TargetRequest &request = {},
@@ -280,6 +296,10 @@ private:
   std::unordered_map<std::uint64_t, std::shared_ptr<Document>> documents_;
   std::vector<std::uint64_t> order_;
   std::unordered_set<std::uint64_t> closed_;
+  struct CalibrationBypass { bool ignore; std::uint64_t generation; };
+  std::shared_ptr<const GlobalCalibration> global_calibration_;
+  std::uint64_t global_calibration_generation_ = 0;
+  std::unordered_map<std::uint64_t,CalibrationBypass> calibration_bypass_;
   std::uint64_t active_ = 0;
   std::shared_ptr<const int> activation_identity_ = std::make_shared<const int>(0);
   std::shared_ptr<detail::AutoContrastControllerState> auto_contrast_;
