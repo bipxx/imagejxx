@@ -2,6 +2,7 @@
 #include <imagejxx/stack_projection.hpp>
 #include <imagejxx/imagej_projection_command.hpp>
 #include <imagejxx/imagej_intensity_calibration.hpp>
+#include <imagejxx/imagej_intensity_plot.hpp>
 #include "path_visual.hpp"
 #include <imagejxx/playback.hpp>
 #include "shadow_demo.hpp"
@@ -1176,6 +1177,9 @@ struct Window::Impl {
   Json jobStep;
   bool jobPreview = false, jobSkip = false;
   std::atomic<bool> cancelled{false};
+  std::optional<ImageJIntensityFitPlot> fitPlot;
+  std::optional<DocumentSnapshot> fitPlotSource;
+  Json fitPlotObservation;
   std::vector<float> plotX, plotY;
   std::string plotTitle;
   struct Dialog {
@@ -1606,7 +1610,7 @@ struct Window::Impl {
     if (action == "shadow_imagej" || (action == "show_operation" && operationId == "shadow_imagej"))
       return owner.controller_->active_document_id() == source->id &&
              scientific_operation_review_available("shadow_imagej", source->nativeSnapshot());
-    if(action=="show_intensity_function" || action=="show_intensity_polynomial_fit" || action=="show_intensity_nonlinear_fit") {
+    if(action=="show_intensity_function" || action=="show_intensity_polynomial_fit" || action=="show_intensity_nonlinear_fit" || action=="show_intensity_fit_plot") {
       const auto& dataset=source->nativeSnapshot().data().dataset;
       return !owner.busy() && owner.controller_->active_document_id()==source->id && dataset.shape().s==1 &&
           (dataset.pixel_type()==PixelType::UInt8 || dataset.pixel_type()==PixelType::UInt16);
@@ -6556,10 +6560,18 @@ void Window::action(const std::string &name, const Json &p) {
   // not bypass its capability check before clipboard, files or jobs change.
   if (targetId && !targeted.count(name))
     impl->requireAction(name, 0, operationId);
-  if(name=="show_intensity_calibration" || name=="show_intensity_function" || name=="show_intensity_polynomial_fit" || name=="show_intensity_nonlinear_fit" || name=="set_intensity_calibration" || name=="fit_intensity_calibration") {
+  if(name=="show_intensity_calibration" || name=="show_intensity_function" || name=="show_intensity_polynomial_fit" || name=="show_intensity_nonlinear_fit" || name=="show_intensity_fit_plot" || name=="set_intensity_calibration" || name=="fit_intensity_calibration") {
     if(busy())throw std::invalid_argument("Wait for the current edit");
     const auto source=nativeSnapshot();
     if(targetId && targetId!=source.id())throw std::invalid_argument("Calibration requires the active document");
+    if(name=="show_intensity_fit_plot") {
+      for(const auto& field:p.items())if(field.key()!="document_id")throw std::invalid_argument("Unknown fit plot field: "+field.key());
+      const auto calibration=read_imagej_intensity_calibration(source);
+      auto bytes=std::size_t(4*1024*1024);const auto mb=impl->preferenceState.settings.integer("processing_memory_mb");
+      if(mb>0)bytes=std::min(bytes,std::size_t(mb)*1024*1024);
+      auto plot=imagej_intensity_fit_plot(calibration,calibration.bit_depth()==8?256:100,bytes);
+      impl->fitPlotSource=source;impl->fitPlot=std::move(plot);return;
+    }
     if(name=="fit_intensity_calibration") {
       ImageJIntensityFitRequest request;request.max_working_bytes=std::numeric_limits<std::size_t>::max();
       for(const auto& field:p.items()) {
@@ -8776,6 +8788,7 @@ void Window::action(const std::string &name, const Json &p) {
       impl->plotX.push_back(float((h.edges[i] + h.edges[i + 1]) / 2));
       impl->plotY.push_back(float(h.counts[i]));
     }
+    impl->fitPlot.reset();impl->fitPlotSource.reset();
     impl->plotTitle = "Histogram";
     return;
   }
@@ -8805,6 +8818,7 @@ void Window::action(const std::string &name, const Json &p) {
       }
       distance += length;
     }
+    impl->fitPlot.reset();impl->fitPlotSource.reset();
     impl->plotTitle = "Line profile (" + string(get(cal, "unit"), "px") + ")";
     return;
   }
@@ -9651,6 +9665,7 @@ void Window::Impl::menu() {
     item("Calibration Function...", "show_intensity_function");
     item("Fit Polynomial Calibration...", "show_intensity_polynomial_fit");
     item("Fit Nonlinear Calibration...", "show_intensity_nonlinear_fit");
+    item("Calibration Fit Plot", "show_intensity_fit_plot");
     item("Measure", "measure", "M");
     item("Measure ROIs", "measure_rois");
     if(actionAllowed("show_histogram"))item("Histogram...", "show_histogram");
@@ -10861,6 +10876,67 @@ void Window::Impl::recorder() {
 }
 void Window::Impl::plots() {
   ImGui::Begin("Plot");
+  fitPlotObservation=nullptr;
+  if(fitPlot && fitPlotSource) {
+    if(owner.documents_.empty() || !fitPlotSource->same_document(owner.nativeSnapshot()) ||
+        !fitPlotSource->revisions().matches(owner.nativeSnapshot().revisions(),Change::All)) {
+      fitPlot.reset();fitPlotSource.reset();
+    }
+  }
+  if(fitPlot) {
+    const auto& data=*fitPlot;
+    ImGui::Text("Calibration fit: %s",data.function.c_str());
+    ImGui::TextUnformatted("Red points: measurements; blue line: fitted curve");
+    ImGui::Text("X: pixel value | Y: %s",data.value_unit.c_str());
+    if(data.objective=="measured_as_function_of_known")ImGui::TextWrapped("Fit error is measured in pixel values using measured(known).");
+    const auto origin=ImGui::GetCursorScreenPos();
+    const ImVec2 size{std::max(120.f,ImGui::GetContentRegionAvail().x),160.f};
+    ImGui::InvisibleButton("##calibration_fit_canvas",size);observeControl("fit_plot.canvas");
+    auto* draw=ImGui::GetWindowDrawList();const ImVec2 end{origin.x+size.x,origin.y+size.y};
+    draw->AddRect(origin,end,ImGui::GetColorU32(ImGuiCol_Border));draw->PushClipRect(origin,end,true);
+    const auto fraction=[](double value,double low,double high) {
+      if(low==high)return .5;
+      // Scaling avoids overflowing finite opposite limits. Bound off-canvas
+      // coordinates before float conversion/ImGui tessellation; clipping still
+      // controls visibility. Non-finite model samples never enter this path.
+      const auto scale=std::max(std::abs(low),std::abs(high));
+      return std::clamp((value/scale-low/scale)/(high/scale-low/scale),-10000.,10000.);
+    };
+    const auto position=[&](double x,double y) {
+      const auto nx=fraction(x,data.x_min,data.x_max),ny=fraction(y,data.y_min,data.y_max);
+      return ImVec2{origin.x+float(nx*size.x),origin.y+size.y-float(ny*size.y)};
+    };
+    std::size_t drawnSegments=0;bool finiteGeometry=true;
+    for(std::size_t i=1;i<data.curve_x.size();++i)if(std::isfinite(data.curve_y[i-1]) && std::isfinite(data.curve_y[i])) {
+      const auto a=position(data.curve_x[i-1],data.curve_y[i-1]),b=position(data.curve_x[i],data.curve_y[i]);
+      if(std::isfinite(a.x) && std::isfinite(a.y) && std::isfinite(b.x) && std::isfinite(b.y)) {
+        draw->AddLine(a,b,IM_COL32(70,140,255,255),1.5f);++drawnSegments;
+      } else finiteGeometry=false;
+    }
+    Json points=Json::array();
+    for(std::size_t i=0;i<data.measured.size();++i) {
+      const auto point=position(data.measured[i],data.known[i]);
+      if(std::isfinite(point.x) && std::isfinite(point.y))draw->AddCircleFilled(point,3.f,IM_COL32(255,90,90,255));
+      if(headlessSessionActive)points.push_back({point.x,point.y});
+    }
+    draw->PopClipRect();
+    ImGui::Text("X: %.6g to %.6g | Y: %.6g to %.6g",data.x_min,data.x_max,data.y_min,data.y_max);
+    if(headlessSessionActive)fitPlotObservation={{"function",data.function},{"value_unit",data.value_unit},{"objective",data.objective},
+      {"measured",data.measured},{"known",data.known},{"curve_x",data.curve_x},{"curve_y",data.curve_y},
+      {"limits",{data.x_min,data.x_max,data.y_min,data.y_max}},{"data_screen_points",std::move(points)},
+      {"canvas_origin",{origin.x,origin.y}},{"canvas_size",{size.x,size.y}},{"source_id",fitPlotSource->id()},
+      {"finite_geometry",finiteGeometry},{"drawn_segments",drawnSegments}};
+    if(ImGui::Button("Export fit plot CSV")) {
+      std::ostringstream stream;stream.precision(17);stream<<"series,x,y\n";
+      for(std::size_t i=0;i<data.measured.size();++i)stream<<"data,"<<data.measured[i]<<','<<data.known[i]<<'\n';
+      for(std::size_t i=0;i<data.curve_x.size();++i){stream<<"fit,"<<data.curve_x[i]<<',';if(std::isfinite(data.curve_y[i]))stream<<data.curve_y[i];stream<<'\n';}
+      file("Export calibration fit plot",true,[text=stream.str()](std::string path){writeBytes(path,{text.begin(),text.end()});},"calibration-fit.csv");
+    }
+    observeControl("fit_plot.export");ImGui::SameLine();
+    if(ImGui::Button("Close fit plot")){fitPlot.reset();fitPlotSource.reset();}
+    observeControl("fit_plot.close");ImGui::End();return;
+  }
+
   if (plotY.empty())
     ImGui::TextWrapped("Use Histogram or draw a line and choose Line profile.");
   else {
@@ -13601,6 +13677,7 @@ Json Window::Impl::headlessReport() {
         ImGui::GetStyle().Colors[ImGuiCol_WindowBg].y,
         ImGui::GetStyle().Colors[ImGuiCol_WindowBg].z};
     result["plot_samples"] = plotX.size();
+    result["fit_plot"] = fitPlotObservation;
     result["results_columns"] = resultColumns(owner.results, owner.settings());
     result["results_table"] = resultsTableObservation;
     result["shadow_demo"] = shadowDemo.diagnostics();

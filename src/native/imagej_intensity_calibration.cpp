@@ -1,4 +1,5 @@
 #include <imagejxx/imagej_intensity_execution.hpp>
+#include <imagejxx/imagej_intensity_plot.hpp>
 #include "kernel_control.hpp"
 #include "contrast_command_record.hpp"
 #include <imagejxx/document.hpp>
@@ -363,6 +364,66 @@ ImageJIntensityCalibration ImageJIntensityCalibration::fit_nonlinear(PixelType t
     {"convergence_reason",convergence_reason},
     {"rmse",rmse},{"r_squared",std::isfinite(r2)?MetadataValue(r2):MetadataValue(std::monostate{})}});
   fields["source_parameters"]=metadata_object(std::move(parameters));return from_record(metadata_object(std::move(fields)));
+}
+
+ImageJIntensityFitPlot imagej_intensity_fit_plot(const ImageJIntensityCalibration& input,
+    std::size_t points,std::size_t max_working_bytes,const ExecutionControl& control) {
+  const auto calibration=input; // immutable record owner retained across callbacks
+  if(points<2 || points>1000)throw std::invalid_argument("Fit plot points must be2..1000");
+  if(calibration.mode()!=ImageJIntensityMode::Lookup)throw std::invalid_argument("Fit plot requires fitted function provenance");
+  const auto& provenance=calibration.source_parameters();
+  const auto field=[](const MetadataObject& fields,const char* name)->const MetadataValue& {
+    const auto it=fields.find(name);if(it==fields.end())throw std::invalid_argument(std::string("Missing fit plot field: ")+name);
+    return it->second;
+  };
+  if(text(field(provenance,"producer"))!="imagej154r.function" || wire::unsigned_value(field(provenance,"version"))!=1)
+    throw std::invalid_argument("Fit plot requires supported function provenance");
+  const auto& name=text(field(provenance,"function"));
+  if(name.size()>64)throw std::invalid_argument("Invalid fit plot function");
+  const auto id=function_id(name);if(id==14)throw std::invalid_argument("Fit plot requires a fitted numeric function");
+  const auto& coefficients=wire::array_value(field(provenance,"coefficients"));
+  const auto& fit=object(field(provenance,"fit"));
+  const auto& measured=wire::array_value(field(fit,"measured"));const auto& known=wire::array_value(field(fit,"known"));
+  const auto n=measured.size();
+  if(coefficients.size()!=function_lengths[id] || n!=known.size() || n<function_lengths[id] || n>4096)
+    throw std::invalid_argument("Invalid fit plot coefficient or paired-data count");
+  const auto count=points==256?256:std::min<std::size_t>(1000,std::max(points,n));
+  using detail::contrast_command_record::add;using detail::contrast_command_record::mul;
+  const auto bytes=add(add(64*1024,calibration.value_unit().size()),add(mul(n,2*sizeof(double)),mul(count,2*sizeof(float))));
+  if(bytes>max_working_bytes)throw std::invalid_argument("Fit plot exceeds working-memory budget");
+  ImageJIntensityFitPlot result;result.function=name;result.value_unit=calibration.value_unit();
+  result.objective=id==10?"measured_as_function_of_known":"known_as_function_of_measured";
+  std::vector<double> parameters;parameters.reserve(coefficients.size());
+  for(const auto& v:coefficients){const auto number=wire::number_value(v);if(!std::isfinite(number))throw std::invalid_argument("Fit plot coefficients must be finite");parameters.push_back(number);}
+  result.measured.reserve(n);result.known.reserve(n);
+  const double raw_max=double(table_size(calibration.bit_depth())-1);
+  for(std::size_t i=0;i<n;++i) {
+    const auto x=wire::number_value(measured[i]),y=wire::number_value(known[i]);
+    if(!std::isfinite(x) || !std::isfinite(y) || x<0 || x>raw_max)throw std::invalid_argument("Fit plot requires finite in-range paired data");
+    result.measured.push_back(x);result.known.push_back(y);
+  }
+  const auto xr=std::minmax_element(result.measured.begin(),result.measured.end());
+  const auto yr=std::minmax_element(result.known.begin(),result.known.end());
+  result.x_min=points==256?0:*xr.first;result.x_max=points==256?255:*xr.second;
+  result.y_min=*yr.first;result.y_max=*yr.second;
+  if(result.x_min==result.x_max)throw std::invalid_argument("Fit plot measured range is degenerate");
+  const auto range=result.y_max-result.y_min;
+  if(!std::isfinite(range))throw std::invalid_argument("Fit plot data range exceeds finite limits");
+  ExecutionScope scope(control);kernel_checkpoint();KernelStage stage("Calibration fit plot",count);
+  result.curve_x.resize(count);result.curve_y.resize(count);
+  const auto increment=(result.x_max-result.x_min)/double(count-1);double x=result.x_min;
+  double curve_min=std::numeric_limits<double>::infinity(),curve_max=-curve_min;
+  for(std::size_t i=0;i<count;++i) {
+    stage.periodic(i);result.curve_x[i]=static_cast<float>(x);x+=increment;
+    result.curve_y[i]=static_cast<float>(function_value(id,parameters,double(result.curve_x[i])));
+    if(std::isfinite(result.curve_y[i])){curve_min=std::min(curve_min,double(result.curve_y[i]));curve_max=std::max(curve_max,double(result.curve_y[i]));}
+  }
+  if(curve_min<=curve_max) {
+    result.y_min=std::max(result.y_min-range,std::min(result.y_min,curve_min));
+    result.y_max=std::min(result.y_max+range,std::max(result.y_max,curve_max));
+  }
+  if(!std::isfinite(result.y_min) || !std::isfinite(result.y_max))throw std::invalid_argument("Fit plot limits exceed finite range");
+  stage.finish();return result;
 }
 std::size_t estimate_imagej_intensity_fit(const DocumentSnapshot& source,const ImageJIntensityFitRequest& r) {
   using detail::contrast_command_record::add;using detail::contrast_command_record::mul;

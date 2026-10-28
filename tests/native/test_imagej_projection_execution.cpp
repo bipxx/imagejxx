@@ -1,6 +1,7 @@
 #include <imagejxx/imagej_projection_execution.hpp>
 #include <imagejxx/imagej_projection_command.hpp>
 #include <imagejxx/imagej_intensity_execution.hpp>
+#include <imagejxx/imagej_intensity_plot.hpp>
 #include <imagejxx/application.hpp>
 #include <imagejxx/session.hpp>
 #include <cstring>
@@ -252,6 +253,17 @@ int main() try {
   check(fitSigned.signed16_density());
   auto quadratic=ImageJIntensityCalibration::fit_polynomial(PixelType::UInt8,"poly2",{0,1,2,3},{1,4,9,16});
   check(quadratic.table_words()[1]==0x40800000U);
+  auto fitPlot=imagej_intensity_fit_plot(quadratic,100);
+  check(fitPlot.curve_x.size()==100 && fitPlot.curve_y.size()==100 && fitPlot.x_min==0 && fitPlot.x_max==3);
+  check(fitPlot.measured==std::vector<double>({0,1,2,3}) && fitPlot.known==std::vector<double>({1,4,9,16}));
+  check(fitPlot.curve_y.front()==1 && fitPlot.curve_y.back()==16 && fitPlot.objective=="known_as_function_of_measured");
+  auto bytePlot=imagej_intensity_fit_plot(quadratic,256);check(bytePlot.curve_x.size()==256 && bytePlot.x_max==255 && bytePlot.curve_y.back()==65536);
+  reject([&]{imagej_intensity_fit_plot(quadratic,1);});reject([&]{imagej_intensity_fit_plot(quadratic,1001);});
+  bool plotCallback=false;ExecutionControl plotBudget;plotBudget.checkpoint=[&]{plotCallback=true;};
+  reject([&]{imagej_intensity_fit_plot(quadratic,100,1,plotBudget);});check(!plotCallback);
+  ExecutionControl plotCancel;plotCancel.cancellation=std::make_shared<CancellationToken>();
+  plotCancel.checkpoint=[&]{plotCancel.cancellation->cancel();};
+  reject<OperationCancelled>([&]{imagej_intensity_fit_plot(quadratic,100,4*1024*1024,plotCancel);});
   reject([&]{ImageJIntensityCalibration::fit_polynomial(PixelType::UInt8,"poly2",{1,1,1},{1,2,3});});
   reject([&]{ImageJIntensityCalibration::fit_polynomial(PixelType::UInt8,"straight_line",{0,256},{0,1});});
   reject([&]{ImageJIntensityCalibration::fit_polynomial(PixelType::UInt8,"straight_line",{0,1},{0});});

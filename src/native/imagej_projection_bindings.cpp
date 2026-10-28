@@ -1,6 +1,7 @@
 #include "binding_metadata.hpp"
 #include <imagejxx/imagej_projection_command.hpp>
 #include <imagejxx/imagej_intensity_execution.hpp>
+#include <imagejxx/imagej_intensity_plot.hpp>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 namespace py=pybind11;
@@ -48,6 +49,24 @@ void bind_imagej_projection(py::module_& m) {
   m.def("set_imagej_intensity_calibration",[](Document& owner,const ImageJIntensityCalibration& value){
     py::gil_scoped_release release;set_imagej_intensity_calibration(owner,value);
   },py::arg("document"),py::arg("calibration"));
+  py::class_<ImageJIntensityFitPlot>(m,"ImageJIntensityFitPlot")
+    .def_readonly("function",&ImageJIntensityFitPlot::function)
+    .def_readonly("value_unit",&ImageJIntensityFitPlot::value_unit)
+    .def_readonly("objective",&ImageJIntensityFitPlot::objective)
+    .def_readonly("measured",&ImageJIntensityFitPlot::measured)
+    .def_readonly("known",&ImageJIntensityFitPlot::known)
+    .def_readonly("curve_x",&ImageJIntensityFitPlot::curve_x)
+    .def_readonly("curve_y",&ImageJIntensityFitPlot::curve_y)
+    .def_readonly("x_min",&ImageJIntensityFitPlot::x_min)
+    .def_readonly("x_max",&ImageJIntensityFitPlot::x_max)
+    .def_readonly("y_min",&ImageJIntensityFitPlot::y_min)
+    .def_readonly("y_max",&ImageJIntensityFitPlot::y_max);
+  m.def("imagej_intensity_fit_plot",[](ImageJIntensityCalibration value,std::size_t points,std::size_t bytes,
+      std::shared_ptr<CancellationToken> cancel,py::object progress,py::object checkpoint){
+    auto control=axis_range_python_control(std::move(cancel),std::move(progress),std::move(checkpoint));
+    py::gil_scoped_release release;return imagej_intensity_fit_plot(value,points,bytes,control);
+  },py::arg("calibration"),py::arg("points")=100,py::arg("max_working_bytes")=4ULL*1024*1024,
+    py::kw_only(),py::arg("cancellation")=nullptr,py::arg("progress")=py::none(),py::arg("checkpoint")=py::none());
   py::class_<ImageJIntensityFitRequest>(m,"ImageJIntensityFitRequest")
     .def(py::init<>())
     .def_readwrite("function",&ImageJIntensityFitRequest::function)

@@ -259,6 +259,7 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   w.wait();frame();frame();report["fitted"]=state(w);
   report["fit_reserved_after_publish"]=GaussianCancellationAccess::scheduler(w)->usage().reserved_bytes;
   report["fit_status"]=last.at("status");
+  menu("show_intensity_fit_plot");report["fit_plot"]=last.at("fit_plot");
   menu(fitAction);report["fit_dialog"]=last.at("dialog");
   click(last.at("dialog").at("controls").at("cancel"),"fit_cancel");
   const auto fittedSnapshot=owner->snapshot();

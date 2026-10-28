@@ -81,6 +81,7 @@ def test_actual_intensity_calibration_dialog(context,tmp_path):
     assert report["fit_ready"]["resource_bytes"]==report["fit_ready"]["retained_bytes"]>0
     assert report["fit_reserved_after_publish"]==0
     _assert_physical_fit_running_cancel(report)
+    _assert_fit_plot_render(report)
 
     for name in ("function_applied","function_reopened"):
         record=report[name]["properties"][key]
@@ -278,6 +279,7 @@ def test_actual_nonlinear_calibration_dialog(context,tmp_path):
     assert report["fit_ready"]["stage_completed"]==report["fit_ready"]["stage_total"]==65536
     assert report["fit_reserved_after_publish"]==0
     _assert_physical_fit_running_cancel(report)
+    _assert_fit_plot_render(report)
     assert {"show_intensity_nonlinear_fit","initial_coefficients","invalid_fit_apply","fit_error_ok","fit_apply","fit_cancel"}<={r["name"] for r in report["controls"]}
 
 
@@ -390,3 +392,124 @@ def _assert_physical_fit_running_cancel(report):
     assert control["enabled"] and control["id"]>0
     assert {"fit_cancel_apply","fit_running_cancel"}<={r["name"] for r in report["controls"]}
     assert len(report["frames"])<=256
+
+
+def _assert_fit_plot_render(report):
+    plot=report["fit_plot"];fit=report["fitted"]["properties"]["imagejxx.intensity_calibration"]["source_parameters"]
+    assert plot["function"]==fit["function"] and plot["value_unit"]=="HU"
+    assert plot["measured"]==fit["fit"]["measured"] and plot["known"]==fit["fit"]["known"]
+    assert len(plot["curve_x"])==len(plot["curve_y"])==100
+    assert plot["curve_x"][0]==0 and plot["curve_x"][-1]==2
+    assert plot["objective"]=="known_as_function_of_measured"
+    origin=np.asarray(plot["canvas_origin"]);size=np.asarray(plot["canvas_size"])
+    limits=plot["limits"]
+    expected_x=origin[0]+(np.asarray(plot["measured"])-limits[0])/(limits[1]-limits[0])*size[0]
+    np.testing.assert_allclose(np.asarray(plot["data_screen_points"])[:,0],expected_x,rtol=0,atol=1e-4)
+    curve=np.asarray(plot["curve_x"])
+    expected=5*np.power(2.,curve) if plot["function"]=="exponential" else (curve+1)**2
+    np.testing.assert_allclose(plot["curve_y"],expected,rtol=3e-6,atol=1e-5)
+    assert "show_intensity_fit_plot" in {c["name"] for c in report["controls"]}
+
+
+def _plot_from_reference(case,pixel_type):
+    value=ij.ImageJIntensityCalibration.function(pixel_type,case["function"],case["coefficients"],"unit")
+    record=value.record
+    record["source_parameters"]["fit"]={"measured":case["measured"],"known":case["known"]}
+    return ij.ImageJIntensityCalibration.from_record(record)
+
+
+def _fit_plot_cases():
+    import gzip
+    path=Path(__file__).parents[2]/"docs/parity/reviews/G034-intensity-fit-plots-reference001.jsonl.gz"
+    return [json.loads(line) for line in gzip.decompress(path.read_bytes()).splitlines()]
+
+
+@pytest.mark.parametrize("case",_fit_plot_cases())
+@pytest.mark.parametrize("pixel_type",["uint8","uint16"])
+def test_fit_plot_matches_imagej_samples_and_limits(case,pixel_type):
+    value=_plot_from_reference(case,pixel_type)
+    plot=ij.imagej_intensity_fit_plot(value,case["points"])
+    np.testing.assert_array_equal(plot.curve_x,case["curve_x"])
+    expected=np.asarray([np.nan if v is None else v for v in case["curve_y"]])
+    np.testing.assert_allclose(plot.curve_y,expected,rtol=3e-6,atol=1e-6,equal_nan=True)
+    np.testing.assert_allclose([plot.x_min,plot.x_max,plot.y_min,plot.y_max],case["limits"],rtol=3e-6,atol=1e-6)
+    assert plot.measured==case["measured"] and plot.known==case["known"]
+    assert plot.objective==("measured_as_function_of_known" if case["function"]=="rodbard2" else "known_as_function_of_measured")
+    assert plot.value_unit=="unit" and plot.function==case["function"]
+
+
+@pytest.mark.parametrize("points",[0,1,1001])
+def test_fit_plot_refuses_invalid_sample_bounds(points):
+    value=ij.ImageJIntensityCalibration.fit_polynomial("uint16","straight_line",[0,1],[1,3])
+    with pytest.raises(ValueError):ij.imagej_intensity_fit_plot(value,points)
+
+
+def test_fit_plot_budget_cancellation_and_callback_failure():
+    value=ij.ImageJIntensityCalibration.fit_polynomial("uint16","straight_line",[0,1],[1,3])
+    calls=[]
+    with pytest.raises(ValueError,match="budget"):
+        ij.imagej_intensity_fit_plot(value,max_working_bytes=1,checkpoint=lambda:calls.append(True))
+    assert not calls
+    token=ij.CancellationToken()
+    with pytest.raises(RuntimeError,match="(?i)cancel"):
+        ij.imagej_intensity_fit_plot(value,cancellation=token,checkpoint=token.cancel)
+    def fail():raise LookupError("plot callback failure")
+    with pytest.raises(LookupError,match="plot callback failure"):ij.imagej_intensity_fit_plot(value,checkpoint=fail)
+
+
+@pytest.mark.parametrize("change",["missing_fit","mismatch","out_of_range","bad_coefficients","unknown_model","constant_x"])
+def test_fit_plot_refuses_malformed_provenance(change):
+    value=ij.ImageJIntensityCalibration.fit_polynomial("uint8","straight_line",[0,1],[1,3]);record=value.record
+    p=record["source_parameters"]
+    if change=="missing_fit":p.pop("fit")
+    elif change=="mismatch":p["fit"]["known"]=[1]
+    elif change=="out_of_range":p["fit"]["measured"]=[0,256]
+    elif change=="bad_coefficients":p["coefficients"]=[1]
+    elif change=="unknown_model":p["function"]="unknown"
+    else:p["fit"]["measured"]=[1,1]
+    with pytest.raises(ValueError):ij.imagej_intensity_fit_plot(ij.ImageJIntensityCalibration.from_record(record))
+
+
+def test_fit_plot_rejects_uncalibrated_and_arbitrary_lookup():
+    for value in [ij.ImageJIntensityCalibration.uncalibrated(),ij.ImageJIntensityCalibration.signed16(),
+                  ij.ImageJIntensityCalibration.function("uint8","straight_line",[1,2])]:
+        with pytest.raises(ValueError):ij.imagej_intensity_fit_plot(value)
+
+
+@pytest.mark.parametrize("case",["extreme","nonfinite","irregular"])
+def test_fit_plot_headless_geometry_and_stale_source(case,tmp_path):
+    from imagejxx.ui.app import Editor
+    from imagejxx.ui.persistence import Preferences
+    coefficients=[1,2] if case=="irregular" else [1e38,1e38]
+    measured=[0,1,4] if case=="irregular" else [0,1] if case=="extreme" else [0,5]
+    known=[1,3,9] if case=="irregular" else [0,1e-300] if case=="extreme" else [0,1]
+    value=ij.ImageJIntensityCalibration.function("uint16","straight_line",coefficients)
+    record=value.record;record["source_parameters"]["fit"]={"measured":measured,"known":known}
+    owner=_fit_owner();ij.set_imagej_intensity_calibration(owner,ij.ImageJIntensityCalibration.from_record(record));before=owner.snapshot();steps=owner.undo_steps
+    editor=Editor(preferences=Preferences(tmp_path/"preferences.json"));editor.add_native_document(owner)
+    editor.action("show_intensity_fit_plot");render=editor.render_headless(2);plot=render["fit_plot"]
+    assert plot is not None and plot["finite_geometry"] and plot["drawn_segments"]>0
+    assert np.isfinite(plot["data_screen_points"]).all()
+    if case=="nonfinite":assert any(v is None for v in plot["curve_y"])
+    if case=="irregular":
+        x=np.asarray(plot["data_screen_points"])[:,0]
+        np.testing.assert_allclose((x-x[0])/(x[-1]-x[0]),[0,.25,1],atol=1e-6)
+    assert owner.snapshot().shares_data(before) and owner.undo_steps==steps
+    view=owner.snapshot().display;view.zoom=2;owner.set_display(view)
+    assert editor.render_headless(2)["fit_plot"] is None
+
+
+def test_fit_plot_editor_honors_memory_preference(tmp_path):
+    from imagejxx.ui.app import Editor
+    from imagejxx.ui.persistence import Preferences
+    owner=_fit_owner();value=ij.ImageJIntensityCalibration.fit_polynomial("uint16","straight_line",[0,1],[1,3],"u"*1048576)
+    ij.set_imagej_intensity_calibration(owner,value);before=owner.snapshot()
+    editor=Editor(preferences=Preferences(tmp_path/"preferences.json"));editor.add_native_document(owner);editor.update_settings(processing_memory_mb=1,persist=False)
+    with pytest.raises((ValueError,RuntimeError),match="(?i)budget|memory"):editor.action("show_intensity_fit_plot")
+    assert owner.snapshot().shares_data(before)
+
+
+def test_fit_plot_uses_model_curve_before_uint8_zero_clip():
+    value=ij.ImageJIntensityCalibration.fit_polynomial("uint8","straight_line",[0,20],[-10,10],zero_clip=True)
+    assert np.array(value.table_words(),np.uint32).view(np.float32)[0]==0
+    assert ij.imagej_intensity_fit_plot(value,256).curve_y[0]==-10

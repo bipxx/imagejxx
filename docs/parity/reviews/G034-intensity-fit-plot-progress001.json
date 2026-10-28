@@ -1,0 +1,427 @@
+{
+  "schema": "imagejxx.scoped-progress",
+  "version": 1,
+  "source_base": "8c61138c7c30be1842fca52414941ff456718faa",
+  "scope": "Bounded ImageJ CurveFitter-style fit plot data in C++/Python and explicit Analyze menu consumer in both shared Windows ImGui hosts",
+  "acceptance_claim": false,
+  "source_inputs": [
+    {
+      "path": "src/desktop/imagej_projection_ui_probe.cpp",
+      "bytes": 22211,
+      "sha256": "9500636cf3dfd60dcb5699df9a241463310d0b169d6bac3484a6368f74701bdd"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 796459,
+      "sha256": "706085dc4de8f5cf59ee9ce4e37f363951f08e12c225f068500cb63b3319a602"
+    },
+    {
+      "path": "src/imagejxx/__init__.py",
+      "bytes": 79740,
+      "sha256": "372166d2539650979ababeafccb7b22ccdd20e473bb5a3957237fe8cb8d429f5"
+    },
+    {
+      "path": "src/native/imagej_intensity_calibration.cpp",
+      "bytes": 35930,
+      "sha256": "dee0da4c0bccc0ac05ffe17be25528f9e2e1b9088f7d761192f7cf09f715e51e"
+    },
+    {
+      "path": "src/native/imagej_projection_bindings.cpp",
+      "bytes": 9875,
+      "sha256": "5b33b1a996fa857d5b97ab36424f8737ce9a0ead64315eb7980bd39313ec1acd"
+    },
+    {
+      "path": "tests/native/test_imagej_projection_execution.cpp",
+      "bytes": 22457,
+      "sha256": "eeca84aea30b44ca7b478cc525602fcd2836b4907a6d9be279818d08a6b019a1"
+    },
+    {
+      "path": "tests/python/test_intensity_calibration_editor.py",
+      "bytes": 31183,
+      "sha256": "adfbb537ac26e552aa3fb6a1d374f03a2edcc2ea7cb805b0240d9d4fca641160"
+    },
+    {
+      "path": "include/imagejxx/imagej_intensity_plot.hpp",
+      "bytes": 996,
+      "sha256": "27c8d6b448db1f9f19eae57dcf6e5fb7f6dd98e661113317a3b3186a2716f074"
+    },
+    {
+      "path": "tests/reference/ObserveIntensityFitPlots.java",
+      "bytes": 1957,
+      "sha256": "45f2b7a10c4f9c83e070f59810cc25dde90042d23452f3515f320cc4d6a0c775"
+    }
+  ],
+  "reference_fixture": {
+    "path": "docs/parity/reviews/G034-intensity-fit-plots-reference001.jsonl.gz",
+    "bytes": 56526,
+    "sha256": "b515b0f371e7b0bd32eced75f42c1cc6039d759537f1b368364bb9bba230a071"
+  },
+  "evidence": [
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-plot-windows-build211/receipt.json",
+      "bytes": 23045,
+      "sha256": "1405863aad97c8d5119a076f1628b2dfef8dee37212f906f925ad99eedb6cce4"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-plot-windows-build211/source-freeze.json",
+      "bytes": 368531,
+      "sha256": "e335c7dab90b4af6ea9ee87a07e89b1c997a8d9a50a5f8a91f0f3bd77c1e1e63"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-plot-windows-build211/dependency-inputs.json",
+      "bytes": 130574,
+      "sha256": "ab725c95300fb7720cabef8cbc1e3bef061828d678194eea6921e09cf5091206"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-plot-installed212/receipt.json",
+      "bytes": 24682,
+      "sha256": "e1edc2e6869e8be858f842a9960999e8ab93ad8c5445d2165c68c2e64d2804f2"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-plot-installed212/results.xml",
+      "bytes": 77606,
+      "sha256": "393715ab913f5bfc47eb08496e5e6077eb9cb3a2b88476ba217ec0992586bc38"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-plot-installed212/captures.tar.xz",
+      "bytes": 767464,
+      "sha256": "062cbd57baca784fbfacc63ab129e95d569fa021364f0acdda3fe8d9d385d198"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-plot-core-linux206/receipt.json",
+      "bytes": 81742,
+      "sha256": "47ff9c73a4cbd47b1d12607be13e7f0bcbf907a38dec1eefe2ceb724413d0956"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-plot-reference204/receipt.json",
+      "bytes": 9612,
+      "sha256": "8c73fda17778a210dde511385fa0ca6f2c72b4175f098a51bbed4ba6e3492f0d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-plot-reference203/receipt.json",
+      "bytes": 2873,
+      "sha256": "49412476e35711abe84e8a9bbeb61d32d6c0ba0bfd194711dd6451aada267a90"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-plot-windows-build207/receipt.json",
+      "bytes": 23020,
+      "sha256": "f5cce41a8383025cc344a28b0fd2cce4b6b4991ac6d81c8ccd326cc3079fd431"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-plot-installed208/receipt.json",
+      "bytes": 24681,
+      "sha256": "f9abd4fd2b2b15ed6941c7f71bcbd70f3d3712ad7fb18b5202eafd4331973500"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-plot-retention213/receipt.json",
+      "bytes": 13395,
+      "sha256": "04cfd23960324b5c2381b9eccc44c3539fadce4c12ccb596ed326d05fc9a027c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-plot-retention213/identity-and-logs.zip",
+      "bytes": 236980,
+      "sha256": "1bd8e3d7170873dd2cff050aba3f6c81780960e7aa028712f2175cb1341d409e"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-cancel-storage-published200.json",
+      "bytes": 1522,
+      "sha256": "0afe9247278ae7423cdec831caed7a551b57145b6c5086d3c71c31b8755598c0"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-plot-storage-final214.json",
+      "bytes": 1522,
+      "sha256": "e78da7319926d4814ec4cfbfb7f07c9c33fc24657db680aa7481ae0f7a844052"
+    }
+  ],
+  "verification": {
+    "focused_tests": 522,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "imagej_plot_profiles": 43,
+    "dtype_profile_comparisons": 86,
+    "curve_x": "Exact Float32 sample coordinates",
+    "curve_y_and_limits_tolerance": {
+      "relative": 3e-06,
+      "absolute": 1e-06
+    },
+    "reference_isolation": "Reference CurveFitter fits produce coefficients; tests feed those coefficients and original pairs to our plot producer. This isolates plot semantics from optimizer differences.",
+    "native": "Current Windows and Linux source consumers pass; not updated installed C++ SDK qualification",
+    "physical_hosts": "Actual pointer menu selection in C++ application and Python editor; existing projection/fit/cancel/session checks retained",
+    "additional_render_cases": [
+      "Irregular X spacing",
+      "Non-finite curve gaps",
+      "Extreme finite curve coordinates",
+      "Stale display invalidation",
+      "Processing-memory preference refusal"
+    ],
+    "commercial_use_inventory": "scripts/check_licenses.py --desktop passed; no new dependency",
+    "diff_check": "git diff --check passed"
+  },
+  "physical_observations": [
+    {
+      "member": "intensity-cpp/case.json",
+      "context": "imgui_cpp",
+      "frame_count": 256,
+      "function": "poly2",
+      "value_unit": "HU",
+      "objective": "known_as_function_of_measured",
+      "measured": [
+        0.0,
+        1.0,
+        2.0
+      ],
+      "known": [
+        1.0,
+        4.0,
+        9.0
+      ],
+      "limits": [
+        0.0,
+        2.0,
+        1.0,
+        9.0
+      ],
+      "data_screen_points": [
+        [
+          932.0,
+          597.0
+        ],
+        [
+          1087.0,
+          537.0
+        ],
+        [
+          1242.0,
+          437.0
+        ]
+      ],
+      "canvas_origin": [
+        932.0,
+        437.0
+      ],
+      "canvas_size": [
+        310.0,
+        160.0
+      ],
+      "finite_geometry": true,
+      "drawn_segments": 99,
+      "curve_samples": 100,
+      "raw_inputs_verified": true,
+      "menu_control": "show_intensity_fit_plot",
+      "fit_ready_source_unchanged": true,
+      "fit_reserved_after_publish": 0,
+      "running_cancel_terminal_state": 6
+    },
+    {
+      "member": "nonlinear-cpp/case.json",
+      "context": "imgui_cpp",
+      "frame_count": 256,
+      "function": "exponential",
+      "value_unit": "HU",
+      "objective": "known_as_function_of_measured",
+      "measured": [
+        0.0,
+        1.0,
+        2.0
+      ],
+      "known": [
+        5.0,
+        10.0,
+        20.0
+      ],
+      "limits": [
+        0.0,
+        2.0,
+        5.0,
+        20.0
+      ],
+      "data_screen_points": [
+        [
+          932.0,
+          597.0
+        ],
+        [
+          1087.0,
+          543.6666870117188
+        ],
+        [
+          1242.0,
+          437.0
+        ]
+      ],
+      "canvas_origin": [
+        932.0,
+        437.0
+      ],
+      "canvas_size": [
+        310.0,
+        160.0
+      ],
+      "finite_geometry": true,
+      "drawn_segments": 99,
+      "curve_samples": 100,
+      "raw_inputs_verified": true,
+      "menu_control": "show_intensity_fit_plot",
+      "fit_ready_source_unchanged": true,
+      "fit_reserved_after_publish": 0,
+      "running_cancel_terminal_state": 6
+    },
+    {
+      "member": "pytest/test_actual_intensity_calibrat1/capture/case.json",
+      "context": "imgui_python",
+      "frame_count": 256,
+      "function": "poly2",
+      "value_unit": "HU",
+      "objective": "known_as_function_of_measured",
+      "measured": [
+        0.0,
+        1.0,
+        2.0
+      ],
+      "known": [
+        1.0,
+        4.0,
+        9.0
+      ],
+      "limits": [
+        0.0,
+        2.0,
+        1.0,
+        9.0
+      ],
+      "data_screen_points": [
+        [
+          932.0,
+          597.0
+        ],
+        [
+          1087.0,
+          537.0
+        ],
+        [
+          1242.0,
+          437.0
+        ]
+      ],
+      "canvas_origin": [
+        932.0,
+        437.0
+      ],
+      "canvas_size": [
+        310.0,
+        160.0
+      ],
+      "finite_geometry": true,
+      "drawn_segments": 99,
+      "curve_samples": 100,
+      "raw_inputs_verified": true,
+      "menu_control": "show_intensity_fit_plot",
+      "fit_ready_source_unchanged": true,
+      "fit_reserved_after_publish": 0,
+      "running_cancel_terminal_state": 6
+    },
+    {
+      "member": "pytest/test_actual_nonlinear_calibrat1/capture/case.json",
+      "context": "imgui_python",
+      "frame_count": 256,
+      "function": "exponential",
+      "value_unit": "HU",
+      "objective": "known_as_function_of_measured",
+      "measured": [
+        0.0,
+        1.0,
+        2.0
+      ],
+      "known": [
+        5.0,
+        10.0,
+        20.0
+      ],
+      "limits": [
+        0.0,
+        2.0,
+        5.0,
+        20.0
+      ],
+      "data_screen_points": [
+        [
+          932.0,
+          597.0
+        ],
+        [
+          1087.0,
+          543.6666870117188
+        ],
+        [
+          1242.0,
+          437.0
+        ]
+      ],
+      "canvas_origin": [
+        932.0,
+        437.0
+      ],
+      "canvas_size": [
+        310.0,
+        160.0
+      ],
+      "finite_geometry": true,
+      "drawn_segments": 99,
+      "curve_samples": 100,
+      "raw_inputs_verified": true,
+      "menu_control": "show_intensity_fit_plot",
+      "fit_ready_source_unchanged": true,
+      "fit_reserved_after_publish": 0,
+      "running_cancel_terminal_state": 6
+    }
+  ],
+  "implemented": [
+    "Single native evaluator reused; no duplicated formulas or lookup interpolation",
+    "ImageJ getPlot sampling: requested/pair count and1000 cap; request256 forces0..255; Float32 sample coordinates/model values",
+    "Original measured/known axes for NIH Image Rodbard inverse curve; explicit swapped-error objective label",
+    "Immutable fitted provenance validation; bounded pairs/coefficient/points and working-memory admission before copies/callbacks",
+    "Cancellable native plot-data generation, exposed as ImageJIntensityFitPlot and imagej_intensity_fit_plot in Python",
+    "Read-only explicit Analyze \u2192 Calibration Fit Plot consumer; actual X-coordinate scatter and fitted curve in existing Plot panel",
+    "Scaled/bounded drawing coordinates, non-finite model gaps and source All-revision invalidation",
+    "Existing processing-memory preference honored; CSV data/curve export and Close controls implemented"
+  ],
+  "upstream_sources": [
+    "ij/measure/CurveFitter.java:getPlot",
+    "ij/plugin/frame/Fitter.java:plot",
+    "ij/plugin/filter/Calibrator.java:showPlot/calibrate"
+  ],
+  "upstream_distinctions": [
+    "Fit plots evaluate model curves before UInt8 zero clipping; this is separate from calibration lookup-table rendering",
+    "Manual calibration function/table plots use Calibrator.showPlot and remain a separate next consumer",
+    "Finite reference profiles are numerically checked; non-finite display gaps and finite fallback limits are bounded frontend behavior, not identical upstream invalid-domain UI qualification"
+  ],
+  "helper_history": [
+    "Reference helper203 failed before spawning javac because env was missing; no product run occurred. Receipt retained and empty scratch retired.",
+    "Reference204 captured the43 profiles; initial cleanup assumed only files and found an empty hsperfdata directory. Corrected terminal-proof cleanup retired all scratch without changing fixture bytes.",
+    "Initial207/208 passed517 checks; renderer review added extreme-coordinate bounds, preference admission and five additional tests. Final211/212 passes522."
+  ],
+  "storage": {
+    "known_bytes": 8588489486,
+    "normal_limit_bytes": 8589934592,
+    "full_budget_verified": false,
+    "unknown_subtrees": [
+      ".cache/pytest",
+      ".cache/pytest-ui"
+    ],
+    "recovered_bytes": 3727680,
+    "retention": "All current/preliminary full UI captures retained in verified solid archives. Necessary raw identities/logs/Java observations losslessly archived with original hashes before raw paths retired. Stale2684416-byte path-filter admission executable retired; source/objects/CMake target preserved. Historical fingerprints unchanged; retired executable bytes unavailable."
+  },
+  "limitations": [
+    "Explicit menu consumer only; automatic Show plot settings and plot-on-fit publication remain open",
+    "Manual calibration/OD/arbitrary lookup plots remain open",
+    "CSV export/Close are implemented but have no new physical-input acceptance gate here",
+    "No new installed C++ SDK, complete platform or original-reference qualification",
+    "No matched speed, global optimizer or full-family completion claim"
+  ],
+  "family_tracker": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  }
+}

@@ -1741,6 +1741,8 @@ from ._native import RgbContrastSessionEditor, RgbContrastSessionTransition
 from ._native import (
     ImageJIntensityCalibration as ImageJIntensityCalibration,
     ImageJIntensityFitRequest as ImageJIntensityFitRequest,
+    ImageJIntensityFitPlot as ImageJIntensityFitPlot,
+    imagej_intensity_fit_plot as imagej_intensity_fit_plot,
     estimate_imagej_intensity_fit as estimate_imagej_intensity_fit,
     prepare_imagej_intensity_fit as prepare_imagej_intensity_fit,
     read_imagej_intensity_calibration as read_imagej_intensity_calibration,

@@ -1,5 +1,41 @@
 # Three-agent execution plan
 
+## Shared fit-plot data and ImGui consumer — 2026-10-28
+
+C++/Python now expose bounded ImageJIntensityFitPlot data through the existing
+native evaluator and immutable fit provenance. Analyze → Calibration Fit Plot
+draws measured points and fitted curves in the existing Plot panel with actual
+X spacing. It honors processing-memory settings, invalidates stale sources,
+skips non-finite curve segments and bounds drawing coordinates. CSV export and
+Close controls are implemented; their physical-input gates remain open.
+
+43 pinned ImageJ getPlot profiles produce86 dtype comparisons across all14
+fitted functions, irregular measurements, request256 domain0..255 and1000
+sample cap. Curve X coordinates match exactly; curve Y/limits use declared
+3e-6 relative/1e-6 absolute tolerances. Reference coefficients isolate plotting
+from optimizer differences. NIH Rodbard keeps original plot axes and labels its
+swapped fitting-error objective. Plot curves precede UInt8 table zero clipping.
+Final522 focused checks pass, no skips, plus Windows/Linux native consumers.
+Both actual hosts physically select the menu and render the expected curve/
+scatter; previous fit, Ready, Cancel and session cases remain within256frames.
+[Scoped evidence](parity/reviews/G034-intensity-fit-plot-progress001.json).
+
+Next: capture the interactive Show plot option and construct its plot data on
+the existing fitting worker, then publish it with the successful metadata edit.
+Preserve failure/cancel atomicity and charge the additional declared resources.
+Manual calibration/OD/lookup plots require the separate upstream table-sampling
+policy; do not substitute the fitted-model producer. Then settings/restarts/
+global calibration, table import/export, replay and downstream consumers. Batch
+the installed C++ SDK refresh after these public calibration contracts settle.
+
+Same cache/runtime reused. Java/compiler/UI scratch retired; required logs and
+captures compressed/hash-verified. Identity/log compaction and one stale path-
+filter admission executable recovered3,727,680 bytes; source/objects/target
+remain. Known whole-root8,588,489,486 bytes; denied pytest trees keep the full
+8GiB budget unverified. Commercial-use inventory passes. Tracker47 in progress/
+52 open/0 complete; no comparative speed claim.
+
+
 ## Physical cancellation of running calibration fits — 2026-10-28
 
 Both actual Windows hosts now submit polynomial/nonlinear fits through the

@@ -1,5 +1,41 @@
 # Scientific Z projection
 
+## Shared fit-plot data and ImGui consumer — 2026-10-28
+
+C++/Python now expose bounded ImageJIntensityFitPlot data through the existing
+native evaluator and immutable fit provenance. Analyze → Calibration Fit Plot
+draws measured points and fitted curves in the existing Plot panel with actual
+X spacing. It honors processing-memory settings, invalidates stale sources,
+skips non-finite curve segments and bounds drawing coordinates. CSV export and
+Close controls are implemented; their physical-input gates remain open.
+
+43 pinned ImageJ getPlot profiles produce86 dtype comparisons across all14
+fitted functions, irregular measurements, request256 domain0..255 and1000
+sample cap. Curve X coordinates match exactly; curve Y/limits use declared
+3e-6 relative/1e-6 absolute tolerances. Reference coefficients isolate plotting
+from optimizer differences. NIH Rodbard keeps original plot axes and labels its
+swapped fitting-error objective. Plot curves precede UInt8 table zero clipping.
+Final522 focused checks pass, no skips, plus Windows/Linux native consumers.
+Both actual hosts physically select the menu and render the expected curve/
+scatter; previous fit, Ready, Cancel and session cases remain within256frames.
+[Scoped evidence](../parity/reviews/G034-intensity-fit-plot-progress001.json).
+
+Next: capture the interactive Show plot option and construct its plot data on
+the existing fitting worker, then publish it with the successful metadata edit.
+Preserve failure/cancel atomicity and charge the additional declared resources.
+Manual calibration/OD/lookup plots require the separate upstream table-sampling
+policy; do not substitute the fitted-model producer. Then settings/restarts/
+global calibration, table import/export, replay and downstream consumers. Batch
+the installed C++ SDK refresh after these public calibration contracts settle.
+
+Same cache/runtime reused. Java/compiler/UI scratch retired; required logs and
+captures compressed/hash-verified. Identity/log compaction and one stale path-
+filter admission executable recovered3,727,680 bytes; source/objects/target
+remain. Known whole-root8,588,489,486 bytes; denied pytest trees keep the full
+8GiB budget unverified. Commercial-use inventory passes. Tracker47 in progress/
+52 open/0 complete; no comparative speed claim.
+
+
 ## Physical cancellation of running calibration fits — 2026-10-28
 
 Both actual Windows hosts now submit polynomial/nonlinear fits through the
@@ -643,3 +679,33 @@ metadata matrices, calibration generation/configuration, virtual/downstream IEEE
 full SDK/platform and original reference gates remain required. No benchmark or
 speed-superiority claim follows from correctness tests or declared reservation.
 [Evidence](../parity/reviews/G034-imagej-projection-ui-progress001.json).
+
+## Next calibration plot/settings slice specification
+
+1. **Show plot (`show_plot`)**: use upstream interactive defaulttrue and capture
+   the draft at Apply. Keep presentation preferences out of the core numeric
+   fit record. Direct editor action accepts a strict Boolean. Capture the flag
+   before submitting the existing job; never read mutable UI settings on workers.
+2. **Prepared plot output**: call imagej_intensity_fit_plot on the newly fitted
+   immutable calibration in that same worker, with256 samples forUInt8 and100
+   forUInt16. Include its bounded work/result bytes in admission and retain the
+   plot through Ready. Reuse cancellation/stage callbacks; no extra pool or fit.
+3. **Publication**: prepare all plot/status allocations before source mutation;
+   publish metadata only after existing membership/All-revision/cancel guards.
+   Move the staged plot into the panel only after successful publication and
+   bind its source to the resulting revision. Failure/cancel keeps both source
+   and previous plot intact. Verify one Undo step and no extra document/pixels.
+4. **Manual function/table view**: add a separate native calibration-plot
+   producer for upstream Calibrator.showPlot semantics:256 Float32 X positions
+   across the entire raw type range and values from integer-indexed calibration
+   table entries. Support signed16/OD/lookup without inventing fit provenance.
+   Do not use fractional fitted-curve evaluation for this consumer. Validate
+   non-finite words, labels and bounded reads before exposing Python/shared UI.
+5. **Consumer evidence**: preserve current explicit menu and Cancel scenarios.
+   Physically toggle Show plot false/true in both hosts; verify Ready retention,
+   successful plot appearance, stale/cancel refusal and session-derived reopen.
+   Add owned CSV export/Close evidence without changing existing pinned cases.
+6. **Following gates**: inspect pinned ImageJ settings/restart/global-calibration
+   behavior before extending contracts. Reuse typed settings/Application source
+   ownership; avoid another calibration store. Refresh the one active installed
+   SDK and qualify actual C++ consumers after the public contracts settle.
