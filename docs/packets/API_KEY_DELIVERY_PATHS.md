@@ -1,5 +1,10 @@
 # Shortest delivery paths by API and setting key
 
+Projection consumer update,2026-10-28: physical Replay/Rebind and grouped-zero
+rejection/recovery now pass both installed Windows hosts. Reuse this same
+producer/reader for explicit Time/RGB/method/axis cases; do not rebuild the
+command/publication machinery. [Evidence](../parity/reviews/G034-projection-replay-ui-progress001.json).
+
 Planning review, 2026-10-25. “API key” here means a named API, command or
 configuration key, not an authentication credential. This card supplements the
 [execution plan](../THREE_AGENT_EXECUTION.md) and [61-key source audit](CFG1-settings-consumer-audit.md).

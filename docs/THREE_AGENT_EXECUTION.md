@@ -1,5 +1,28 @@
 # Three-agent execution plan
 
+## Projection Replay/Rebind and invalid draft recovery — 2026-10-28
+
+Both installed Windows ImGui hosts now physically exercise Replay and Rebind.
+Rebind retains the old request for review, accepts corrected bounds on a new
+C-only source, preserves that source and the original workflow record, and
+publishes exact independently asserted output. Grouped drafts reject zero
+before scheduling; error acknowledgement and correction to group size2 succeed.
+Raw core group_size0 still means ordinary projection. All150 focused checks
+pass, no skips;130 physical frames/context. [Scoped evidence](parity/reviews/G034-projection-replay-ui-progress001.json).
+
+Per-frame captures retain physical input/form/error observations instead of
+repeating full host diagnostics; each final case is about0.86MB. Selected actual
+controls, final render/state, session reopen and failures remain retained.
+Compiler/test scratch retired; necessary logs/captures losslessly hash-verified.
+Known whole-root8,587,740,810B; two denied cache subtrees keep full budget
+unverified. No new cache/runtime or historical expectation changes.
+
+Next: explicit Time/RGB/method/axis physical cases and calibration configuration,
+then retained metadata differentials and matched performance. CI40649242310
+passed Linux headless C++/SDK; Linux Python lanes failed before product
+preparation on six unavailable original references. Other lanes remain pending
+qualification.99-family status47 in progress/52 open/0 complete; no speed claim.
+
 ## Shared ImageJ projection workflow verified on Windows — 2026-10-28
 
 The shared ImGui editor now exposes ImageJ Z Project and Grouped Z Project,

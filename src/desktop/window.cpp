@@ -6558,7 +6558,9 @@ void Window::action(const std::string &name, const Json &p) {
       if(grouped) {values["group_size"]=saved?saved->projection.group_size:extent;schema.push_back({{"name","group_size"},{"label","Group size"},{"kind","int"}});}
       impl->stopAnimation("imagej_projection");
       impl->ask(original?"Rebind ImageJ projection":grouped?"ImageJ Grouped Z Project":"ImageJ Z Project",std::move(values),
-          [this,source,original](Json values) {
+          [this,source,original,grouped](Json values) {
+            if(grouped && (!values.at("group_size").is_number_integer() || values.at("group_size")<1))
+              throw std::invalid_argument("Grouped projection requires a positive group size");
             const auto now=nativeSnapshot();
             if(!source.same_document(now) || !source.revisions().matches(now.revisions(),Change::All))throw RevisionConflict();
             if(original) values["rebind_record"]=metadataJson(*original);

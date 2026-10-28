@@ -1,0 +1,88 @@
+{
+  "schema": "imagejxx.scoped-progress",
+  "version": 1,
+  "source_base": "3b7b9f9bb66dec799fcd1b0d029863b07aedb495",
+  "scope": "Shared ImGui physical projection Replay/Rebind and invalid grouped draft recovery on both installed Windows hosts",
+  "acceptance_claim": false,
+  "source_inputs": [
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 774342,
+      "sha256": "aec77619bf3993bb66459ab85ee06050110e00da444c245afc844f57ea14e728"
+    },
+    {
+      "path": "src/desktop/imagej_projection_ui_probe.cpp",
+      "bytes": 9121,
+      "sha256": "96193203f4ea5a6967488ce2b59ecd273ba66f6712b4d155ece54443bcb83ece"
+    },
+    {
+      "path": "tests/python/test_imagej_projection_editor.py",
+      "bytes": 10131,
+      "sha256": "1433ad3ea3030ae67f1715bc880b2ace1d86589e1fcff64c523d5747d747116f"
+    }
+  ],
+  "verification": {
+    "build": {
+      "path": ".tmp/manual-workflow-verification/projection-ui-windows-build116/receipt.json",
+      "bytes": 23005,
+      "sha256": "0bc3959873ca682f19e32828283a2dcc70c8d5ecb9d2e179db7247a4664297a6"
+    },
+    "installed": {
+      "path": ".tmp/manual-workflow-verification/projection-ui-installed117/receipt.json",
+      "bytes": 12092,
+      "sha256": "2f571ac9e23e5ccde832eb98f8b55dbd2f0744f8bc828e4c7c793659eabe299b"
+    },
+    "junit": {
+      "path": ".tmp/manual-workflow-verification/projection-ui-installed117/results.xml",
+      "bytes": 21720,
+      "sha256": "ff0fc6f6e70e9eb2673adb48a8040692c10756716677c1c343256b199f019149"
+    },
+    "captures": {
+      "path": ".tmp/manual-workflow-verification/projection-ui-installed117/captures.zip",
+      "bytes": 42089,
+      "sha256": "e8ed87b77bf85c8179c6762ccfe05c611373416c290249864f1cd0c6c3accaf9"
+    },
+    "tests": 150,
+    "failures": 0,
+    "skips": 0,
+    "frames_per_host": 130,
+    "capture_bytes": {
+      "cpp": 856334,
+      "python": 856338
+    }
+  },
+  "observed": [
+    "Physical Replay from the original source reproduces exact UInt16 axes and pixels and appends one output/record.",
+    "Physical Rebind retains old axis, bounds, method and T/C options; corrected bounds reduce the new C-only source, retain the original record and preserve new source data.",
+    "Grouped dialog rejects zero before scheduling/adoption/recording; physical error acknowledgement and corrected group size2 then succeed.",
+    "Initial projected output and workflow still save/reopen through the same session path."
+  ],
+  "fix": "Grouped dialog requires positive group size. Raw core group_size0 retains its ordinary-projection meaning.",
+  "capture_retention": "Compact per-frame physical inputs, dialog/error state plus selected controls and final render/state retained; failure.json retained on producer exception. Failed114 popup-layout diagnostic and final117 captures are lossless hash-verified archives; raw scratch retired. Build113/116 logs compressed and hash verified; compiler scratch retired.",
+  "failed_attempt": {
+    "path": ".tmp/manual-workflow-verification/projection-ui-installed114/receipt.json",
+    "bytes": 7476,
+    "sha256": "979801d4ff5461752de9b1cc067a51e16b2237d5227917379421b3cd9860096c"
+  },
+  "ci_reference_failure": {
+    "path": ".tmp/manual-workflow-verification/projection-ui-ci-reference115/receipt.json",
+    "bytes": 692,
+    "sha256": "06886b892ef12338f47164cb36c53e4e5970582cb7c36950ec2dbbd5196245b5"
+  },
+  "storage": {
+    "path": ".tmp/manual-workflow-verification/projection-ui-storage-after118.json",
+    "bytes": 1522,
+    "sha256": "40b950d747a3d7646ccf4db7e01f105714471059d1f8cac05ac3b13a249c1f27"
+  },
+  "remaining": [
+    "Broader dtype/method/Time/RGB/axis GUI matrix and matched ImageJ GUI differentials.",
+    "Calibration configuration and retained metadata differentials.",
+    "Full platform and original-reference gates; CI Linux Python preparation fails on six unavailable original inputs.",
+    "Matched performance benchmarks; no comparative speed advantage established."
+  ],
+  "family_status": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  }
+}

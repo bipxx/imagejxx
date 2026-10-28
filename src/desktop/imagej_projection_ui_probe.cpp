@@ -55,10 +55,18 @@ Json imagejProjectionUiCase(Window& w,const std::string& context,const std::stri
   Json report{{"contract","g034.imagej-projection-ui.001"},{"context",context},{"acceptance_claim",false},
     {"frames",Json::array()},{"controls",Json::array()},
     {"api_fixture_actions",{"source attachment","tab navigation","session Save/Open"}}};
+  struct FailureCapture {
+    Json& report;const fs::path& directory;bool done=false;
+    ~FailureCapture(){if(!done)try{writeJson((directory/"failure.json").u8string(),report);}catch(...){}}
+  } failure{report,directory};
   HeadlessInputSession session(w);Json last;
   auto frame=[&](const Json& events=Json::array()) {
     require(report["frames"].size()<240,"Projection UI frame bound");last=session.frame(events);
-    report["frames"].push_back({{"events",events},{"rendered",last}});
+    // Keep physical input and form/error observations; avoid repeating full
+    // texture/host diagnostics in every frame. Final render is retained below.
+    Json observed{{"input_frame",last.at("input_frame")},{"dialog",last.at("dialog")},
+      {"error_modal",last.at("error_modal")},{"window_error",last.at("window_error")}};
+    report["frames"].push_back({{"events",events},{"rendered",std::move(observed)}});
   };
   auto click=[&](const Json& control,const std::string& name,bool after=true) {
     require(control.at("enabled").get<bool>() && control.at("id").get<std::uint64_t>()>0,"Projection control unavailable");
@@ -100,12 +108,30 @@ Json imagejProjectionUiCase(Window& w,const std::string& context,const std::stri
   w.setActiveIndex(0);frame();menu("show_imagej_grouped_projection");
   report["grouped_hyperstack_dialog"]=last.at("dialog");
   click(last.at("dialog").at("controls").at("cancel"),"cancel");report["after_cancel"]=state(w);
+  click(last.at("host_controls").at("workflow.projection.0.replay"),"replay",false);
+  w.wait();frame();frame();report["replayed"]=state(w);
+  const auto reboundSource=w.nativeSnapshot();
+  click(last.at("host_controls").at("workflow.projection.0.rebind"),"rebind");
+  report["rebind_dialog"]=last.at("dialog");
+  edit("first","1");edit("last","2");
+  click(last.at("dialog").at("controls").at("apply"),"rebind_apply",false);
+  w.wait();frame();frame();report["rebound"]=state(w);
+  report["rebind_source_unchanged"]=w.nativeDocument(reboundSource.id())->snapshot().shares_data(reboundSource);
+  w.setActiveIndex(2);frame();menu("show_imagej_grouped_projection");
+  edit("group_size","0");
+  click(last.at("dialog").at("controls").at("apply"),"invalid_group_apply");
+  report["invalid_group"]={{"state",state(w)},{"error",last.at("error_modal")},{"busy",w.busy()}};
+  frame();frame(); // Let the newly opened error popup finish its initial layout.
+  click(last.at("error_modal").at("controls").at("ok"),"error_ok");
+  edit("group_size","2");
+  click(last.at("dialog").at("controls").at("apply"),"group_apply",false);
+  w.wait();frame();frame();report["grouped"]=state(w);
   session.close();report["lifecycle"]=session.lifecycle();
   w.setActiveIndex(1);SessionCapture capture;capture.documents.push_back(w.nativeSnapshot());
   for(const auto& step:w.workflow)capture.workflow.push_back(metadata_object(metadataObjectFromJson(step)));
   save_session((directory/"result.ijx").u8string(),capture);w.openFile((directory/"result.ijx").u8string());
   report["reopened"]=state(w);report["error"]=w.error();report["state"]="observed";
   require(report.dump().size()<16*1024*1024,"Projection report byte limit");
-  writeJson((directory/"case.json").u8string(),report);return report;
+  writeJson((directory/"case.json").u8string(),report);failure.done=true;return report;
 }
 } // namespace imagejxx::desktop

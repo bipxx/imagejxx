@@ -3,7 +3,10 @@
 This packet extends the existing range/grouped projection workflow to scientific
 TCZYXS datasets. G034 remains in progress. The current implementation includes the shared
 metadata descriptor, finite native reducer and strict source command.
-Prepared publication and UI remain unfinished.
+Prepared ImageJ publication and the shared ImGui projection workflow are now
+implemented with focused Windows qualification; broader parity remains open.
+Physical Replay/Rebind and invalid grouped draft recovery are verified in both
+Windows hosts. [Current evidence](../parity/reviews/G034-projection-replay-ui-progress001.json).
 
 ## Implemented descriptor
 

@@ -147,3 +147,27 @@ def test_actual_imagej_projection_dialog(context,tmp_path):
     assert "group_size" not in report["grouped_hyperstack_dialog"]["controls"]
     assert [r["index"] for r in report["applied_render"]["overlay_layers"]]==[0,2]
     assert report["lifecycle"]["open"] is False
+
+    replayed=report["replayed"]
+    assert replayed["shape"]==[1,2,1,3,4,1] and replayed["pixels"]==expected
+    assert replayed["document_count"]==3 and len(replayed["workflow"])==2
+    dialog=report["rebind_dialog"]
+    assert dialog["values"]["first"]==2 and dialog["values"]["last"]==4
+    assert dialog["values"]["method"]=="maximum" and dialog["values"]["axis"]=="automatic"
+    assert dialog["values"]["all_time_frames"] is False and dialog["values"]["all_channels"] is True
+    rebound=report["rebound"]
+    assert rebound["shape"]==[1,1,1,3,4,1]
+    assert rebound["pixels"]==[[116+x+y for y in range(3) for x in range(4)]]
+    assert rebound["title"]=="MAX_MAX_projection-ui" and rebound["document_count"]==4
+    assert len(rebound["workflow"])==3 and report["rebind_source_unchanged"]
+    assert rebound["workflow"][0]==replayed["workflow"][0]
+    assert rebound["workflow"][2]["source"]!=rebound["workflow"][0]["source"]
+    invalid=report["invalid_group"]
+    assert not invalid["busy"] and invalid["state"]["document_count"]==4
+    assert len(invalid["state"]["workflow"])==3
+    assert invalid["error"]["open"] and "positive group size" in invalid["error"]["message"]
+    grouped=report["grouped"]
+    assert grouped["shape"]==[1,1,1,3,4,1]
+    assert grouped["pixels"]==[[111+x+y for y in range(3) for x in range(4)]]
+    assert grouped["document_count"]==5 and len(grouped["workflow"])==4
+    assert grouped["workflow"][3]["request"]["group_size"]==2
