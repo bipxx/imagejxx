@@ -1,5 +1,14 @@
 # Scientific Z projection
 
+Function generation update,2026-10-28: all14 ImageJ numeric calibration functions
+and UInt8 optical density now have C++/Python/shared ImGui consumers.124 pinned
+ImageJ configurations compare all-code table hashes (NaNs canonical, other bits
+exact); Windows287 focused checks and Linux native literals pass. Both Windows
+hosts physically verify coefficient entry and complete table session reopen.
+[Evidence](../parity/reviews/G034-intensity-function-progress001.json). Fitting,
+table import/export, calibration replay and downstream consumers remain open.
+
+
 Calibration consumer update,2026-10-28: immutable intensity read/set is now
 available in Python and Analyze → Intensity Calibration in both shared ImGui
 hosts. Physical signed16/unit/Cancel/clear/Undo/Redo/reopen and calibrated Sum

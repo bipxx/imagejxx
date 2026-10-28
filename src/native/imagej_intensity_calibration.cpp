@@ -3,6 +3,9 @@
 #include <imagejxx/imagej_dataset_projection.hpp>
 #include "axis_command_record.hpp"
 #include "session_metadata.hpp"
+#include <cmath>
+#include <cstring>
+#include <limits>
 #include <stdexcept>
 
 namespace imagejxx {
@@ -81,6 +84,60 @@ ImageJIntensityCalibration ImageJIntensityCalibration::lookup(PixelType type,
   record.emplace("source_parameters", std::move(provenance));
   record.emplace("signed16", signed16);
   return {metadata_object(std::move(record)), ImageJIntensityMode::Lookup, bits, signed16};
+}
+ImageJIntensityCalibration ImageJIntensityCalibration::function(PixelType type,
+    const std::string& name, const std::vector<double>& p, std::string unit,
+    bool zero_clip, bool inverted_lut) {
+  const int bits=depth(type);const auto count=table_size(bits);validate_unit(unit);
+  static const char* names[]={"straight_line","poly2","poly3","poly4","exponential",
+    "power","log","rodbard","gamma_variate","log2","rodbard2","exp_with_offset",
+    "gaussian","exp_recovery","uncalibrated_od"};
+  static const std::size_t lengths[]={2,3,4,5,2,2,2,4,4,3,4,3,4,3,0};
+  int id=-1;for(int i=0;i<15;++i)if(name==names[i]){id=i;break;}
+  if(id<0 || p.size()!=lengths[id])throw std::invalid_argument("Unknown intensity function or wrong coefficient count");
+  if(id==14 && bits!=8)throw std::invalid_argument("Uncalibrated OD requires UInt8 storage");
+  for(double value:p)if(!std::isfinite(value))throw std::invalid_argument("Intensity coefficients must be finite");
+  const auto evaluate=[&](double x) {
+    switch(id) {
+    case 0:return p[0]+x*p[1];
+    case 1:return p[0]+x*(p[1]+x*p[2]);
+    case 2:return p[0]+x*(p[1]+x*(p[2]+x*p[3]));
+    case 3:return p[0]+x*(p[1]+x*(p[2]+x*(p[3]+x*p[4])));
+    case 4:return p[0]*std::exp(p[1]*x);
+    case 5:return p[0]*std::pow(x,p[1]);
+    case 6:return x==0.0?-1000*p[0]:p[0]*std::log(p[1]*x);
+    case 7:return p[3]+(p[0]-p[3])/(1.0+std::pow(x/p[2],p[1]));
+    case 8:
+      if(p[0]>=x)return 0.0;
+      if(p[1]<=0 || p[2]<=0 || p[3]<=0)return std::numeric_limits<double>::quiet_NaN();
+      return p[1]*std::pow(x-p[0],p[2])*std::exp((-(x-p[0]))/p[3]);
+    case 9:return x-p[2]<=0?std::numeric_limits<double>::quiet_NaN():p[0]+p[1]*std::log(x-p[2]);
+    case 10:
+      if(p[3]-x<2*std::numeric_limits<double>::denorm_min() || x<p[0])return 0.0;
+      return std::pow((x-p[0])/(p[3]-x),1.0/p[1])*p[2];
+    case 11:return p[0]*std::exp(-p[1]*x)+p[2];
+    case 12:return p[0]+(p[1]-p[0])*std::exp(-(x-p[2])*(x-p[2])/(2.0*p[3]*p[3]));
+    case 13:return p[0]*(1-std::exp(-p[1]*x))+p[2];
+    default:
+      if(inverted_lut){if(x==255.0)x=254.5;return 0.434294481*std::log(255.0/(255.0-x));}
+      if(x==0.0)x=0.5;
+      return 0.434294481*std::log(255.0/x);
+    }
+  };
+  std::vector<std::uint32_t> words(count);
+  for(std::size_t i=0;i<count;++i) {
+    double value=evaluate(double(i));
+    if(bits==8 && id!=14 && zero_clip && value<0.0)value=0.0;
+    const float converted=static_cast<float>(value);
+    if(std::isnan(converted))words[i]=0x7fc00000U;
+    else std::memcpy(&words[i],&converted,sizeof(converted));
+  }
+  MetadataArray coefficients;for(double value:p)coefficients.emplace_back(value);
+  MetadataObject parameters{{"producer",std::string("imagej154r.function")},{"version",std::int64_t(1)},
+    {"function",name},{"coefficients",metadata_array(std::move(coefficients))},
+    {"zero_clip",zero_clip},{"inverted_lut",inverted_lut},{"canonical_nan",true}};
+  const bool signed16=bits==16 && p.size()>=2 && p[0]==-32768.0 && p[1]==1.0;
+  return lookup(type,words,std::move(unit),std::move(parameters),signed16);
 }
 ImageJIntensityCalibration ImageJIntensityCalibration::from_record(const MetadataValue& value) {
   const auto& fields = object(value);

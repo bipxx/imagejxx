@@ -1,5 +1,14 @@
 # Shortest delivery paths by API and setting key
 
+Function producer update,2026-10-28: use ImageJIntensityCalibration::function /
+Python ImageJIntensityCalibration.function and Analyze → Calibration Function.
+All14 numeric built-ins and UInt8 OD reuse immutable lookup/provenance; no new
+store/codec.124 pinned all-code configurations pass on Windows, with physical
+coefficient/draft/reopen proof. Extend fitting by supplying coefficients to this
+same generator; retain ImageJ8/16-bit clipping and signed16 detection rules.
+[Evidence](../parity/reviews/G034-intensity-function-progress001.json).
+
+
 Intensity API update,2026-10-28: ImageJIntensityCalibration.from_record,
 uncalibrated/signed16, read_imagej_intensity_calibration and
 set_imagej_intensity_calibration are bound to Python. Shared Analyze dialog

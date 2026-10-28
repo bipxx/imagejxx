@@ -21,6 +21,13 @@ public:
   static ImageJIntensityCalibration lookup(PixelType type,
       const std::vector<std::uint32_t>& words, std::string value_unit = "Gray Value",
       MetadataObject source_parameters = {}, bool signed16_sum_correction = false);
+  // ImageJ1.54r built-in function -> bounded integer Float32 table. Coefficients
+  // are finite doubles; generated NaNs use canonical0x7fc00000.8-bit zero_clip
+  // and OD inversion follow ImageJ;16-bit table generation ignores zero_clip.
+  static ImageJIntensityCalibration function(PixelType type,
+      const std::string& name, const std::vector<double>& coefficients,
+      std::string value_unit = "Gray Value", bool zero_clip = false,
+      bool inverted_lut = false);
   static ImageJIntensityCalibration from_record(const MetadataValue& value);
   const MetadataValue& record() const { return record_; }
   ImageJIntensityMode mode() const { return mode_; }

@@ -234,5 +234,16 @@ int main() {
   auto named_output=prepare_imagej_projection(named_command).prepared_new_document()->snapshot();
   check(named_output.data().metadata.title=="Named projection");
   check(recognized_channel_display(named_output.display(),named_output.data().dataset)->channels[0].lut.name=="Green");
+  auto generated8=ImageJIntensityCalibration::function(PixelType::UInt8,"straight_line",{-7,2},"unit",true);
+  check(generated8.table_words()[0]==0 && generated8.table_words()[4]==0x3f800000U);
+  auto generated16=ImageJIntensityCalibration::function(PixelType::UInt16,"straight_line",{-7,2},"unit",true);
+  check(generated16.table_words()[0]==0xc0e00000U);
+  auto nonlinear=ImageJIntensityCalibration::function(PixelType::UInt16,"poly2",{-32768,1,0.001});
+  check(nonlinear.signed16_density());
+  auto domain=ImageJIntensityCalibration::function(PixelType::UInt8,"log2",{2,3,10});
+  check(domain.table_words()[0]==0x7fc00000U);
+  reject([&]{ImageJIntensityCalibration::function(PixelType::Float32,"straight_line",{0,1});});
+  reject([&]{ImageJIntensityCalibration::function(PixelType::UInt16,"uncalibrated_od",{});});
+  reject([&]{ImageJIntensityCalibration::function(PixelType::UInt8,"poly2",{0,1});});
   std::cout<<"Prepared scientific projection: metadata, channel display, source/candidate guards, cancellation, session and capture passed\n";
 }

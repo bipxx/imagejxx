@@ -77,3 +77,45 @@ def test_actual_intensity_calibration_dialog(context,tmp_path):
     names={r["name"] for r in report["controls"]}
     assert {"show_intensity_calibration","mode.choice.signed16","calibration_apply","Undo","Redo","calibration_cancel","calibration_clear","projection_apply"}<=names
     assert report["lifecycle"]["open"] is False
+
+    for name in ("function_applied","function_reopened"):
+        record=report[name]["properties"][key]
+        assert record["mode"]=="lookup" and record["bit_depth"]==16 and not record["signed16"]
+        assert record["value_unit"]=="HU"
+        words=np.array([int(record["table_f32_hex"][i:i+8],16) for i in range(0,len(record["table_f32_hex"]),8)],dtype=np.uint32).view(np.float32)
+        np.testing.assert_array_equal(words,5+2*np.arange(65536,dtype=np.float32))
+        assert record["source_parameters"]["function"]=="straight_line"
+        assert record["source_parameters"]["coefficients"]==[5.,2.]
+        assert record["source_parameters"]["zero_clip"] is True
+    draft=report["function_dialog"]["values"]
+    assert draft["function"]=="straight_line" and json.loads(draft["coefficients"])==[5.,2.]
+    assert draft["zero_clip"] is True and draft["value_unit"]=="HU"
+
+
+import gzip
+import hashlib
+_FUNCTION_FIXTURE=Path(__file__).resolve().parents[2]/"docs/parity/reviews/G034-intensity-functions-reference001.jsonl.gz"
+_FUNCTION_CASES=[json.loads(line) for line in gzip.decompress(_FUNCTION_FIXTURE.read_bytes()).splitlines()]
+
+
+@pytest.mark.parametrize("case",_FUNCTION_CASES)
+def test_generated_full_table_against_imagej(case):
+    value=ij.ImageJIntensityCalibration.function("uint"+str(case["bit_depth"]),case["function"],case["coefficients"],"unit",
+        zero_clip=case["zero_clip"],inverted_lut=case["inverted_lut"])
+    words=value.table_words()
+    assert len(words)==2**case["bit_depth"]
+    assert hashlib.sha256(np.asarray(words,dtype=">u4").tobytes()).hexdigest()==case["canonical_sha256"]
+    for index,raw in case["samples"]:
+        expected=0x7fc00000 if raw&0x7f800000==0x7f800000 and raw&0x7fffff else raw
+        assert words[index]==expected
+    assert value.signed16_density==case["signed16"] and value.value_unit=="unit"
+
+
+@pytest.mark.parametrize("kind,name,coefficients",[
+    ("float32","straight_line",[0,1]),("uint16","uncalibrated_od",[]),
+    ("uint8","poly2",[0,1]),("uint8","unknown",[]),
+    ("uint8","straight_line",[0,float("nan")]),("uint8","straight_line",[float("inf"),1]),
+])
+def test_function_invalid_configuration(kind,name,coefficients):
+    with pytest.raises((ValueError,RuntimeError)):
+        ij.ImageJIntensityCalibration.function(kind,name,coefficients)

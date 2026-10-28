@@ -176,7 +176,7 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   const auto original=owner->snapshot();
   Json report{{"contract","intensity-calibration-ui.001"},{"context",context},{"acceptance_claim",false},
     {"frames",Json::array()},{"controls",Json::array()},
-    {"api_fixture_actions",{"source attachment","session Save/Open"}}};
+    {"api_fixture_actions",{"source attachment","tab navigation","session Save/Open"}}};
   struct FailureCapture {Json& report;const fs::path& directory;bool done=false;
     ~FailureCapture(){if(!done)try{writeJson((directory/"failure.json").u8string(),report);}catch(...){}}
   } failure{report,directory};
@@ -202,8 +202,8 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
     click(last.at("dialog").at("controls").at(field),field);
     click(last.at("dialog").at("controls").at(std::string(field)+".choice."+option),std::string(field)+".choice."+option);
   };
-  auto unit=[&](const char* value){
-    click(last.at("dialog").at("controls").at("value_unit"),"value_unit");
+  auto editText=[&](const char* field,const char* value){
+    click(last.at("dialog").at("controls").at(field),field);
     for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",{{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}}}}}));
     frame(Json::array({{{"type","text"},{"value",value}}}));frame();
   };
@@ -212,12 +212,12 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
     click(last.at("host_controls").at(std::string("menu.Edit.")+name),name);
   };
   frame();frame();report["before"]=state(w);menu("show_intensity_calibration");
-  choose("mode","signed16");unit("HU");
+  choose("mode","signed16");editText("value_unit","HU");
   click(last.at("dialog").at("controls").at("apply"),"calibration_apply");report["applied"]=state(w);
   history("Undo");report["undone"]=state(w);history("Redo");report["redone"]=state(w);
-  menu("show_intensity_calibration");report["reopened_dialog"]=last.at("dialog");unit("discarded");
+  menu("show_intensity_calibration");report["reopened_dialog"]=last.at("dialog");editText("value_unit","discarded");
   click(last.at("dialog").at("controls").at("cancel"),"calibration_cancel");report["cancelled"]=state(w);
-  menu("show_intensity_calibration");choose("mode","none");unit("Gray Value");
+  menu("show_intensity_calibration");choose("mode","none");editText("value_unit","Gray Value");
   click(last.at("dialog").at("controls").at("apply"),"calibration_clear");report["cleared"]=state(w);
   history("Undo");report["restored"]=state(w);
   report["source_pixels_unchanged"]=owner->snapshot().data().dataset.shares_pixels(original.data().dataset) &&
@@ -229,10 +229,20 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   choose("method","sum");click(last.at("dialog").at("controls").at("apply"),"projection_apply");
   w.wait();frame();frame();report["projected"]=state(w);
   report["projection_source_unchanged"]=owner->snapshot().shares_data(calibrated);
+  w.setActiveIndex(0);frame();menu("show_intensity_function");editText("coefficients","[5,2]");
+  click(last.at("dialog").at("controls").at("zero_clip"),"zero_clip");
+  click(last.at("dialog").at("controls").at("apply"),"function_apply");report["function_applied"]=state(w);
+  menu("show_intensity_function");report["function_dialog"]=last.at("dialog");
+  click(last.at("dialog").at("controls").at("cancel"),"function_cancel");
+  const auto functionSnapshot=owner->snapshot();
+
   session.close();report["lifecycle"]=session.lifecycle();
-  SessionCapture capture;capture.documents.push_back(owner->snapshot());
+  SessionCapture capture;capture.documents.push_back(calibrated);
   save_session((directory/"calibrated.ijx").u8string(),capture);w.openFile((directory/"calibrated.ijx").u8string());
-  report["reopened"]=state(w);report["state"]="observed";report["error"]=w.error();
+  report["reopened"]=state(w);
+  SessionCapture functionCapture;functionCapture.documents.push_back(functionSnapshot);
+  save_session((directory/"function.ijx").u8string(),functionCapture);w.openFile((directory/"function.ijx").u8string());
+  report["function_reopened"]=state(w);report["state"]="observed";report["error"]=w.error();
   require(report.dump().size()<16*1024*1024,"Calibration report byte limit");
   writeJson((directory/"case.json").u8string(),report);failure.done=true;return report;
 }

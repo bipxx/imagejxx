@@ -1,0 +1,151 @@
+{
+  "schema": "imagejxx.scoped-progress",
+  "version": 1,
+  "source_base": "e6bb06a6d112d74cdb46d5893bc51e2b313d20ac",
+  "scope": "ImageJ1.54r intensity function table generation, Python binding and shared ImGui coefficient/configuration workflow",
+  "acceptance_claim": false,
+  "source_inputs": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 136824,
+      "sha256": "eab720a49aed87fb11a5a1d08f4eb890b2a9149a82266ebd41d67d402f7fe120"
+    },
+    {
+      "path": "include/imagejxx/imagej_intensity_calibration.hpp",
+      "bytes": 3842,
+      "sha256": "7c350bed5d8584deedf39148dcccd7881e06b9cafd1a94aa650ee9e2f9c19ec7"
+    },
+    {
+      "path": "src/native/imagej_intensity_calibration.cpp",
+      "bytes": 12909,
+      "sha256": "e7843975ce1dc84466d4f49690ef06c89540a8641421d9a551d27c8bf273200f"
+    },
+    {
+      "path": "src/native/imagej_projection_bindings.cpp",
+      "bytes": 4582,
+      "sha256": "3bca91ba928e655b6419c533550c7579a92bf05d241941c138c8456646be9bb0"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 780112,
+      "sha256": "4489416febe21d26d367a8d6877c6221cfb0e4dbf3070c9bb1eb4657843a9d85"
+    },
+    {
+      "path": "src/desktop/imagej_projection_ui_probe.cpp",
+      "bytes": 16815,
+      "sha256": "bb6b06e3e7bbc2aca9c6f7e5dcc7d9f906761bd853ab3d07301b8b3a7c2e2264"
+    },
+    {
+      "path": "tests/native/test_imagej_projection_execution.cpp",
+      "bytes": 16495,
+      "sha256": "badc47b16b6efe9e03e8694adff699c954e1e89929e0d52215732ae094415f29"
+    },
+    {
+      "path": "tests/python/test_intensity_calibration_editor.py",
+      "bytes": 7422,
+      "sha256": "d4ca9cca7519a5a91b6aa179ca47fe5393ba497330a4ff285b25dd82391963d6"
+    },
+    {
+      "path": "tests/reference/ObserveIntensityFunctions.java",
+      "bytes": 2629,
+      "sha256": "5ee0564fec9d6b1d8f587335236c9a9f7ba3b18209d75f94046b698f0c60408f"
+    },
+    {
+      "path": "docs/parity/reviews/G034-intensity-functions-reference001.jsonl.gz",
+      "bytes": 4475,
+      "sha256": "cb50ccffae298c64503e3c91e220ae350a610466070c5f61674c47eb26966afe"
+    }
+  ],
+  "reference": {
+    "receipt": {
+      "path": ".tmp/manual-workflow-verification/intensity-function-reference133/receipt.json",
+      "bytes": 3838,
+      "sha256": "de7cca77f22d52fd336502aa207a1e17c830efcafb8d0c577a1a34173ffe5903"
+    },
+    "fixture": {
+      "path": "docs/parity/reviews/G034-intensity-functions-reference001.jsonl.gz",
+      "bytes": 4475,
+      "sha256": "cb50ccffae298c64503e3c91e220ae350a610466070c5f61674c47eb26966afe"
+    },
+    "cases": 124,
+    "all_code_entries": 3948544,
+    "comparison": "All-code big-endian Float32 table SHA; NaNs canonicalized, all other word bits exact. Original Java raw hashes and sampled raw words retained separately. No raw generated-NaN-payload equivalence claim."
+  },
+  "verification": {
+    "windows_build": {
+      "path": ".tmp/manual-workflow-verification/intensity-function-windows-build138/receipt.json",
+      "bytes": 22331,
+      "sha256": "9dd5a1cc51dabe7ea1359b4071579bdcbb970a830497ecddce6da827a346b9c3"
+    },
+    "installed": {
+      "path": ".tmp/manual-workflow-verification/intensity-function-installed139/receipt.json",
+      "bytes": 17233,
+      "sha256": "2b1ad1495f140b20ecb5652ad3d1588bff8346664d05c07dc389994f35d1c37b"
+    },
+    "junit": {
+      "path": ".tmp/manual-workflow-verification/intensity-function-installed139/results.xml",
+      "bytes": 41075,
+      "sha256": "7af306ecef0ff1f34bb36e1203ab4e5c0de88899919a138afaa1797e30b0a4b4"
+    },
+    "captures": {
+      "path": ".tmp/manual-workflow-verification/intensity-function-installed139/captures.zip",
+      "bytes": 659917,
+      "sha256": "7406e846ebd8ba1bba13945a51d0f8b210b5e241aac5f0659ca1a8e9f55f5693"
+    },
+    "linux_source": {
+      "path": ".tmp/manual-workflow-verification/intensity-function-core-linux137/receipt.json",
+      "bytes": 78397,
+      "sha256": "63445f91ed1daf9c75992220ee3b1dc8fd50f124f1f6d8707d6581a6abd09802"
+    },
+    "tests": 287,
+    "failures": 0,
+    "skips": 0,
+    "composition": "264 installed processing/editor checks including124 full-table ImageJ configurations plus23 mocked capture-transport controls. Both Windows ImGui contexts have229 projection frames and165 calibration/function frames.",
+    "license_log": {
+      "path": ".tmp/manual-workflow-verification/intensity-function-license145.log",
+      "bytes": 53,
+      "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+    }
+  },
+  "implemented": [
+    "C++ ImageJIntensityCalibration::function generates all14 numeric built-ins and UInt8 uncalibrated optical density, using existing immutable lookup record/provenance.",
+    "Strict-FP compilation and finite coefficient/type/arity validation. NaN results canonical0x7fc00000; explicit lookup imports still retain arbitrary original IEEE words.",
+    "ImageJ8-bit-only zero clipping, optical density inversion/endpoints, and coefficient-based signed16 detection including nonlinear functions.",
+    "Python function factory and shared Analyze Calibration Function dialog: function, coefficients, units,8-bit zero clip and OD inversion. Existing function provenance prefills editable drafts; unsupported source menu disabled.",
+    "Physical UInt16 coefficient5,2/zero_clip entry, draft prefill/cancel and exact full-table session reopen in both hosts. Existing calibration Undo/Redo and projection workflows still pass."
+  ],
+  "limits": [
+    "124 selected coefficient/flag configurations do not cover every mathematical coefficient/domain or other platforms.",
+    "Linux native literals/validation/source consumers pass; full-table oracle and physical UI qualification currently Windows only. Local installed C++ SDK unchanged; broader installed/platform CI gates remain required.",
+    "Full fitting, calibration table import/export, workflow replay and calibrated downstream measurement/histogram remain open.",
+    "Original missing reference and inventory gates remain open; no comparative speed claim."
+  ],
+  "storage": {
+    "path": ".tmp/manual-workflow-verification/intensity-function-storage-final144.json",
+    "bytes": 1522,
+    "sha256": "9f5c17552406aa3780e2a809b7f383a3b41b9039291d451145daad0d39ba7d0c"
+  },
+  "retention": {
+    "identities": {
+      "path": ".tmp/manual-workflow-verification/intensity-function-manifest-retention140/receipt.json",
+      "bytes": 2007,
+      "sha256": "d2d8d9829edb352d596e9e9475f4cbdce772ad99a47cae989483780ffbdaeeda"
+    },
+    "preliminary_capture": {
+      "path": ".tmp/manual-workflow-verification/intensity-function-capture-retention141.json",
+      "bytes": 3240,
+      "sha256": "b9a6ea31056af0c7d1c0ef4db00de5586e47b5d1af394c9b3bce70bbee16473f"
+    },
+    "stale_binary": {
+      "path": ".tmp/manual-workflow-verification/intensity-function-cache-retirement143.json",
+      "bytes": 596,
+      "sha256": "d72439895eedfe86fe20c136e710b845016fa0a153646e5498abbd4465b2aeaa"
+    },
+    "note": "One active compiler cache/runtime reused. Current138 source/dependency identities and139 captures retained. Superseded125/135 raw identity paths retired with exact bytes in verified archive. Preliminary136 full capture bytes unavailable after retirement; historical pins unchanged. One stale path-authoring test executable predating rebuilt core retired; source/objects/projects preserved. Java/compiler/Linux/test scratch retired after terminal proof; necessary reference/log/capture archives losslessly hash-verified."
+  },
+  "family_status": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  }
+}

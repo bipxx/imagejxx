@@ -1604,6 +1604,11 @@ struct Window::Impl {
     if (action == "shadow_imagej" || (action == "show_operation" && operationId == "shadow_imagej"))
       return owner.controller_->active_document_id() == source->id &&
              scientific_operation_review_available("shadow_imagej", source->nativeSnapshot());
+    if(action=="show_intensity_function") {
+      const auto& dataset=source->nativeSnapshot().data().dataset;
+      return !owner.busy() && owner.controller_->active_document_id()==source->id && dataset.shape().s==1 &&
+          (dataset.pixel_type()==PixelType::UInt8 || dataset.pixel_type()==PixelType::UInt16);
+    }
     if(action=="show_intensity_calibration" || action=="set_intensity_calibration")
       return !owner.busy() && owner.controller_->active_document_id()==source->id;
     if (action=="show_imagej_projection" || action=="show_imagej_grouped_projection" ||
@@ -6520,7 +6525,7 @@ void Window::action(const std::string &name, const Json &p) {
   // not bypass its capability check before clipboard, files or jobs change.
   if (targetId && !targeted.count(name))
     impl->requireAction(name, 0, operationId);
-  if(name=="show_intensity_calibration" || name=="set_intensity_calibration") {
+  if(name=="show_intensity_calibration" || name=="show_intensity_function" || name=="set_intensity_calibration") {
     if(busy())throw std::invalid_argument("Wait for the current edit");
     const auto source=nativeSnapshot();
     if(targetId && targetId!=source.id())throw std::invalid_argument("Calibration requires the active document");
@@ -6533,6 +6538,38 @@ void Window::action(const std::string &name, const Json &p) {
     for(const auto& field:p.items())if(field.key()!="document_id")throw std::invalid_argument("Unknown calibration dialog field");
     const auto calibration=read_imagej_intensity_calibration(source);
     const auto record=metadataJson(calibration.record());
+    if(name=="show_intensity_function") {
+      const auto type=source.data().dataset.pixel_type();
+      if(source.data().dataset.shape().s!=1 || (type!=PixelType::UInt8 && type!=PixelType::UInt16))
+        throw std::invalid_argument("Calibration functions require scalar UInt8/UInt16");
+      Json functions=Json::array({"straight_line","poly2","poly3","poly4","exponential","power",
+        "log","rodbard","gamma_variate","log2","rodbard2","exp_with_offset","gaussian","exp_recovery"});
+      if(type==PixelType::UInt8)functions.push_back("uncalibrated_od");
+      Json values{{"function","straight_line"},{"coefficients","[0,1]"},
+        {"value_unit",calibration.value_unit()},{"zero_clip",false},{"inverted_lut",false}};
+      const auto parameters=metadataJson(calibration.source_parameters());
+      if(parameters.value("producer",std::string())=="imagej154r.function") {
+        for(const auto* key:{"function","zero_clip","inverted_lut"})values[key]=parameters.at(key);
+        values["coefficients"]=parameters.at("coefficients").dump();
+      }
+      impl->stopAnimation("intensity_calibration");
+      impl->ask("Calibration Function",std::move(values),[this,source,type](Json fields) {
+        const auto now=nativeSnapshot();
+        if(!source.same_document(now) || !source.revisions().matches(now.revisions(),Change::All))throw RevisionConflict();
+        const auto coefficients=Json::parse(fields.at("coefficients").get<std::string>());
+        if(!coefficients.is_array() || coefficients.size()>5)throw std::invalid_argument("Enter at most5 coefficients in [a,b,...] form");
+        std::vector<double> numbers;
+        for(const auto& value:coefficients){if(!value.is_number())throw std::invalid_argument("Coefficients must be numbers");numbers.push_back(value.get<double>());}
+        const auto value=ImageJIntensityCalibration::function(type,fields.at("function").get<std::string>(),numbers,
+            fields.at("value_unit").get<std::string>(),fields.at("zero_clip").get<bool>(),fields.at("inverted_lut").get<bool>());
+        action("set_intensity_calibration",{{"record",metadataJson(value.record())}});
+      },Json::array({{{"name","function"},{"label","Function"},{"kind","text"},{"choices",functions}},
+        {{"name","coefficients"},{"label","Coefficients [a,b,...]"},{"kind","text"}},
+        {{"name","value_unit"},{"label","Value unit"},{"kind","text"}},
+        {{"name","zero_clip"},{"label","Clip negatives (8-bit tables)"},{"kind","bool"}},
+        {{"name","inverted_lut"},{"label","Inverted LUT (optical density)"},{"kind","bool"}}}),"intensity_function");
+      return;
+    }
     Json choices=Json::array({"none"});
     if(source.data().dataset.pixel_type()==PixelType::UInt16 && source.data().dataset.shape().s==1)choices.push_back("signed16");
     if(calibration.mode()==ImageJIntensityMode::Lookup)choices.push_back("lookup");
@@ -9478,6 +9515,7 @@ void Window::Impl::menu() {
   observeControl("menu.Analyze");
   if (analyzeMenuOpen) {
     item("Intensity Calibration...", "show_intensity_calibration");
+    item("Calibration Function...", "show_intensity_function");
     item("Measure", "measure", "M");
     item("Measure ROIs", "measure_rois");
     if(actionAllowed("show_histogram"))item("Histogram...", "show_histogram");

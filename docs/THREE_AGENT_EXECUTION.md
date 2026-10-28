@@ -1,5 +1,43 @@
 # Three-agent execution plan
 
+## Calibration functions through the shared consumer — 2026-10-28
+
+C++ ImageJIntensityCalibration::function now generates all14 ImageJ numeric
+calibration built-ins and UInt8 optical density through existing immutable
+lookup/provenance records. Python exposes the same factory. Analyze → Calibration
+Function shares one editable function/coefficients/unit/zero-clip/inversion
+dialog; existing generated settings prefill drafts. Unsupported source menus
+are disabled. Generation uses strict FP and validates type, arity and finite
+coefficients before publishing metadata.
+
+Pinned ImageJ 1.54r capture supplies 124 configurations of bit depth, flags and coefficients:
+3,948,544 total table entries compare by full-table Float32 hash, with NaNs
+canonicalized and all other bits exact. Java raw hashes/sampled words remain;
+raw generated-NaN payload parity is not claimed. ImageJ16-bit table generation
+ignores zero_clip, and signed16 detection depends on the first two coefficients
+even for nonlinear functions. Both rules are independently exercised.
+
+Final Windows installed287 checks pass, no skips; both ImGui hosts physically
+edit coefficients5,2/zero_clip, reopen the draft and preserve the full table
+through session reopen. Earlier calibration/history/projection cases still pass.
+Linux strict-FP native literal/type/domain/source-consumer checks pass; its
+full-table/UI/installed SDK qualification remains open. Commercial-use policy
+passes. [Source-bound evidence](parity/reviews/G034-intensity-function-progress001.json).
+
+Next: complete calibration fitting through this same generator/immutable seam,
+then table import/export, workflow replay and downstream measurement/histogram.
+Broader platform/original-reference gates and matched performance remain open.
+99-family status47 in progress/52 open/0 complete; no comparative speed claim.
+
+One cache/runtime reused. Java/compiler/test/Linux scratch retired, necessary
+reference/log/captures losslessly compressed/hash-verified. Superseded125/135 raw
+identity paths moved to an identity-only archive; preliminary136 full capture
+bytes retired and unavailable. A stale path-authoring test executable predating
+current core was retired (2,539,520B); source/objects/projects remain. Historical
+fingerprints unchanged; current138 identities/139 captures retained. Known
+whole-root8,588,288,723B; two denied caches keep full8GiB budget unverified.
+
+
 ## Intensity calibration shared consumer implemented — 2026-10-28
 
 Python now exposes ImageJIntensityCalibration factories/from_record, exact table
