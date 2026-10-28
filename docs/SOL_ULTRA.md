@@ -1,5 +1,48 @@
 # Sol Ultra execution guide
 
+## Calibration fitting-point Open/Save — 2026-10-28
+
+Polynomial/nonlinear dialogs now exchange measured/known standards through
+Open points/Save points. Pinned Calibrator source confirms these are fitting
+points, not lookup tables. One column replaces known only; two replace both.
+Original TextReader Float32 conversion, optional header and blank-line behavior
+are verified against twelve actual Java cases. Native parser supports signed,
+exponent/hex spellings;1MiB/4096-row finite fitting bounds and prepare-before-swap
+keep failed imports atomic. Save preserves empty columns and zero-pads shorter
+nonempty columns with round-trip numeric text. Strict malformed-row refusal and
+JSON numeric drafts differ from original truncation/getData stripping quirks;
+no complete text-format compatibility claim.
+
+Editor.action import_intensity_points(path), export_intensity_points(path), and
+browse_intensity_points(save=Boolean) reuse the C++ draft and browser. Source
+all-revision/generation guards precede reads/writes; no provider reads, document
+mutation or job until fit OK. Browser cancel resumes the same draft. No public
+core SDK change. [Scoped evidence](parity/reviews/G034-calibration-point-exchange-progress001.json).
+
+Final Windows951 collected:950 passed, one explicitly optional hidden-OpenGL
+settings check skipped; original783 cases pass. Six C++ UI cases pass. Both hosts
+physically cancel Open, load two/one-column Unicode files, Save and fit imported
+points in64/160 frames; exact saved bytes, coefficients[2,2], one history step
+and unchanged pixels independently asserted. Prior generic128/160, snapshot
+186/192, calibration606/608 bounds unchanged. Windows/Linux native checks pass;
+no full Linux UI/SDK/platform or speed acceptance. Final source freeze1284 files
+rechecked unchanged. Commercial inventory passes; historical fingerprints unchanged.
+
+Harness failures are preserved: accidental pytest identity-file arguments,
+oversized test IDs, wrong legacy input driver, and source-codepage/filesystem
+Unicode conversions in the new probe. Use short IDs, persistent input sessions,
+explicit UTF-8 bytes and u8path before compiling the physical consumer. All
+builds reused one cache/runtime; terminal scratch retired. Lossless diagnostics
+retention recovered11,734,879B; superseded failed full captures retired with
+identities and unavailable full contents. Final/reference/Linux captures remain.
+Known generated roots8,493,858,561B; two denied caches keep full8GiB unverified.
+
+Next: global calibration/effective-owner semantics, remembered standards/measured
+means, calibration replay/macro/downstream and full original/platform gates.
+Initial coefficients/iteration/tolerance already exist. Matched speed/memory
+benchmarks remain unmeasured. Tracker47 in progress/52 open/0 complete.
+
+
 ## Retained sample hover and captured context — 2026-10-28
 
 Histogram/profile hover now reports exact retained bins/counts or nearest stored

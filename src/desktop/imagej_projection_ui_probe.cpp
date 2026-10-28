@@ -449,4 +449,47 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   require(report.dump().size()<16*1024*1024,"Calibration report byte limit");
   writeJson((directory/"case.json").u8string(),report);failure.done=true;return report;
 }
+Json calibrationPointsUiCase(Window& w,const std::string& context,const std::string& output) {
+  namespace fs=std::filesystem;const auto directory=fs::absolute(fs::u8path(output));
+  require(!fs::exists(directory),"Calibration points UI output must be fresh");fs::create_directories(directory);
+  auto owner=std::make_shared<imagejxx::Document>(Dataset::from_planes({1,1,1,1,3,1},{Image(3,1,1,PixelType::UInt8)}));
+  w.addNativeDocument(owner);Json report{{"context",context},{"acceptance_claim",false},{"frames",Json::array()},{"controls",Json::array()},
+    {"api_fixture_actions",{"source attachment","open polynomial fitting dialog"}},{"before",state(w)}};
+  struct Capture {Json& report;const fs::path& path;bool done=false;~Capture(){if(!done)try{writeJson((path/"failure.json").u8string(),report);}catch(...){}}} capture{report,directory};
+  const std::string pairs="Measured,Known\n0,1\n1,3\n2,5\n",single="Known\n2\n4\n6\n";
+  writeBytes((directory/fs::u8path("pairs-\xc2\xb5.txt")).u8string(),{pairs.begin(),pairs.end()});
+  writeBytes((directory/fs::u8path("known-\xc2\xb5.txt")).u8string(),{single.begin(),single.end()});
+  HeadlessInputSession session(w);Json last;
+  auto frame=[&](const Json& events=Json::array()) {
+    require(report["frames"].size()<160,"Calibration points UI frame bound");last=session.frame(events);
+    report["frames"].push_back({{"events",events},{"dialog",last.at("dialog")},{"browser",last.at("file_browser")},{"error",last.at("window_error")}});
+  };
+  auto click=[&](Json control,const char* name) {
+    require(control.at("enabled").get<bool>() && control.at("id").get<std::uint64_t>()>0,"Calibration points control unavailable");
+    report["controls"].push_back({{"name",name},{"control",control}});
+    frame(Json::array({{{"type","position"},{"space","screen"},{"point",control.at("point")}}}));
+    frame(Json::array({{{"type","button"},{"name","left"},{"down",true}}}));
+    frame(Json::array({{{"type","button"},{"name","left"},{"down",false}}}));frame();
+  };
+  auto path=[&](const fs::path& value) {
+    click(last.at("file_browser").at("controls").at("path"),"points_path");
+    for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",{{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}}}}}));
+    frame(Json::array({{{"type","text"},{"value",value.u8string()}}}));frame();
+  };
+  w.action("show_intensity_polynomial_fit");frame();frame();report["initial_draft"]=last.at("dialog").at("values");
+  click(last.at("dialog").at("controls").at("open_points"),"open_points_cancel");
+  click(last.at("file_browser").at("controls").at("cancel"),"cancel_points_browser");
+  report["after_cancel"]=last.at("dialog").at("values");
+  click(last.at("dialog").at("controls").at("open_points"),"open_pairs");path(directory/fs::u8path("pairs-\xc2\xb5.txt"));
+  click(last.at("file_browser").at("controls").at("submit"),"load_pairs");report["pairs_draft"]=last.at("dialog").at("values");
+  click(last.at("dialog").at("controls").at("open_points"),"open_known");path(directory/fs::u8path("known-\xc2\xb5.txt"));
+  click(last.at("file_browser").at("controls").at("submit"),"load_known");report["known_draft"]=last.at("dialog").at("values");
+  report["before_fit"]=state(w);
+  click(last.at("dialog").at("controls").at("save_points"),"save_points");path(directory/fs::u8path("saved-\xc2\xb5.txt"));
+  click(last.at("file_browser").at("controls").at("submit"),"save_points_file");
+  click(last.at("dialog").at("controls").at("apply"),"fit_imported_points");w.wait();frame();frame();
+  report["fitted"]=state(w);report["error"]=w.error();report["frame_count"]=report["frames"].size();
+  require(report.dump().size()<8*1024*1024,"Calibration points report byte limit");
+  writeJson((directory/"case.json").u8string(),report);capture.done=true;return report;
+}
 } // namespace imagejxx::desktop

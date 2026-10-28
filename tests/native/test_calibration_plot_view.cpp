@@ -6,6 +6,7 @@
 #include "../../src/desktop/generic_plot_payload.hpp"
 #include "../../src/desktop/plot_context.hpp"
 #include "../../src/desktop/plot_hover.hpp"
+#include "../../src/desktop/calibration_points_io.hpp"
 #include <limits>
 #include <stdexcept>
 #include <cstdio>
@@ -15,6 +16,18 @@ using imagejxx::desktop::CalibrationPlotView;
 void check_impl(bool value,int line) { if(!value)throw std::runtime_error("Calibration plot view contract at line "+std::to_string(line)); }
 #define check(...) check_impl((__VA_ARGS__),__LINE__)
 void verify_contracts() {
+  using namespace imagejxx::desktop;
+  const auto points=parse_calibration_points("Measured,Known\r\n16777217,0.1\r\n+0x1.8p1f,-0\n");
+  check(points.two_columns && points.measured==std::vector<double>({16777216,3}));
+  check(points.known[0]==double(.1f) && std::signbit(points.known[1]));
+  check(parse_calibration_points("Known\n1\n2").known==std::vector<double>({1,2}));
+  check(parse_calibration_points("1e-9999\n-1e-9999").known[0]==0);
+  check(calibration_points_text({1,2},{3})=="1\t3\n2\t0\n");
+  check(calibration_points_text({},{1,2})=="\t1\n\t2\n");
+  for(const auto text:{"1\n", "1 2 3\n4 5 6", "1 2\n3", "NaN\n1\n2", "1e9999\n1\n2", "1\ninvalid\n2"}) {
+    bool rejected=false;try{parse_calibration_points(text);}catch(const std::invalid_argument&){rejected=true;}check(rejected);
+  }
+  bool oversized=false;try{parse_calibration_points(std::string(1024*1024+1,' '));}catch(const std::invalid_argument&){oversized=true;}check(oversized);
   ImageJIntensityFitPlot data;data.x_min=0;data.x_max=100;data.y_min=-10;data.y_max=10;
   CalibrationPlotView view;
   check(view.zoom(data,.25,.75,.5));

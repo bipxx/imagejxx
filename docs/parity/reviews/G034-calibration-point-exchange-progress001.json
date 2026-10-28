@@ -1,0 +1,208 @@
+{
+  "schema_version": 1,
+  "scope": "Calibration fitting-standard file exchange in existing polynomial/nonlinear dialogs, C++ implementations and optional Python editor actions",
+  "state": "focused_checks_passed",
+  "acceptance_claim": false,
+  "spec": "docs/packets/G034-calibration-point-exchange.md",
+  "original_behavior": {
+    "source": "Pinned local ImageJ1.54r Calibrator.java Open/Save and TextReader.java audit; actual original TextReader executed headlessly, not private GUI methods. Open/Save exchanges measured/known standards, not a density lookup table.",
+    "reference": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\docs\\parity\\reviews\\G034-calibration-points-reference001.json",
+      "bytes": 3177,
+      "sha256": "f2fedd20365f4893f3bd4515f08f1c3bed937db4e827c1428b6b22c2c9e4e13c"
+    },
+    "reference_cases": 12,
+    "reference_sources": [
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\tests\\reference\\ObserveCalibrationPointFiles.java",
+        "bytes": 1965,
+        "sha256": "81ae96ffe940b0dd4f77ecb3f5b0162a272b709dd95729a99b200cf4ffa05d11"
+      },
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\source\\ij\\plugin\\filter\\Calibrator.java",
+        "bytes": 14347,
+        "sha256": "570c17b59722ef219856fbad5c6160b722de5d41f61ca6143b03dad2ee227c9a"
+      },
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\source\\ij\\plugin\\TextReader.java",
+        "bytes": 5543,
+        "sha256": "d80c5acaaed458790ff6d525770cb83305e8add2919399326b0eb311c100da2e"
+      },
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\native-verification\\references\\imagej154r\\classes\\ij\\plugin\\TextReader.class",
+        "bytes": 4332,
+        "sha256": "3a3052dbf2ba507bc48472a41927dfadc73ef452ee54a721a363c4980d44c313"
+      }
+    ]
+  },
+  "implementation": {
+    "import": "One column replaces known only; two columns replace both; optional nonnumeric first header, blank lines and original ASCII tokenizer separators. Java-style decimal/hex/suffix parsing then Float32 storage with negative-zero preservation. Complete bounded parse/copy precedes no-throw draft swaps.",
+    "bounds": "At most1MiB input,4096 finite data rows, minimum2. Nonfinite original-reader data and unequal row widths refuse before draft mutation. Existing source dtype/fit range validation remains at fitting submission.",
+    "save": "Tab-separated measured/known numeric draft. Empty column remains empty; shorter nonempty column pads0. Locale-independent round-trip double spelling; existing atomic writeBytes/file-browser replacement reused.",
+    "ui": "Open points/Save points in polynomial and nonlinear dialogs. Browser suspends/resumes same draft; cancel preserves values. Source/all-revision binding and draft generation guard deferred callbacks; active owner and idle host required. Save text captured before choosing a path. No pixel reads/jobs/history change until normal fit OK.",
+    "api": "Existing Editor.action accepts import_intensity_points(path), export_intensity_points(path), browse_intensity_points(save=Boolean), with optional active document_id. New C++ private parser/formatter used by UI and Python host; no Python processing implementation or public native core SDK change.",
+    "compatibility_limits": [
+      "Numeric JSON drafts do not reproduce Calibrator.getData lossy character stripping or Java byte-for-byte output spelling",
+      "Strict row-width validation refuses malformed partial final rows that TextReader can silently truncate without terminal newline",
+      "Full Calibrate consolidation, remembered standards/measured means, global calibration, replay/macro/downstream behavior remain open"
+    ]
+  },
+  "verification": {
+    "windows": {
+      "collected": 951,
+      "passed": 950,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "skip": "Explicit optional IMAGEJXX_RENDER_TESTS=1 hidden-OpenGL settings check",
+      "original_focused_cases": 783,
+      "cpp_cases": 6,
+      "new_physical_case_frames": {
+        "imgui_cpp": "64/160",
+        "imgui_python": "64/160"
+      },
+      "prior_case_bounds": "generic128/160, snapshots186/192, calibration606/608 unchanged"
+    },
+    "native": "Windows native projection and private plot/math/payload/hover/context/point parser controls pass; existing Linux private consumer against installed core SDK passes. No Linux full UI/SDK/macOS/GPU promotion.",
+    "independent_assertions": "Original Float32 word comparisons; one-column preservation, nonfinite/oversize/refusal atomicity, unchanged provider reads on point I/O, stale-source refusal before writes. Both actual shared-ImGui hosts cancel browser, physically load two then one columns, physically export exact Unicode file path, press OK and produce coefficients[2,2], one undo step, unchanged source pixels.",
+    "freeze": "1284 production/configuration/vendored/native-control files rechecked against final build456 with zero mismatches; Python/reference readers separately pinned by installed runner.",
+    "commercial_inventory": "scripts/check_licenses.py --desktop passed; git diff --check passed."
+  },
+  "attempts": [
+    "447 launcher accidentally passed JSON/Java identity inputs to pytest instead of only pinning them; diagnostic preserved",
+    "448 reader used gigantic automatic IDs exceeding Windows environment limits and unsupported legacy render_headless input for fitting dialogs. Concise IDs and existing persistent HeadlessInputSession replace those harness paths; original assertions preserved",
+    "451 isolated a new probe UTF-8 source literal decoded by local codepage; explicit bytes fixed source spelling",
+    "454 further isolated Windows filesystem narrow component decoding; fs::u8path fixes probe path construction, with exact Unicode assertions unchanged",
+    "Final456 build/457 installed suite pass. All updates reused one active compiler cache/runtime, with separate owned receipts/scratch; no build/environment generations"
+  ],
+  "evidence": {
+    "calibration-points-linux444": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-points-linux444\\receipt.json",
+      "bytes": 31961,
+      "sha256": "0df6b5f6fff1566d5894c4e4d650aab661d3162529f49fb45c007778ebdcf5f4"
+    },
+    "calibration-points-windows-build445": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-points-windows-build445\\receipt.json",
+      "bytes": 24933,
+      "sha256": "c27edf56c6f29329f77f1186266af5a99fc830f10767c57e33b4fc4162b91b6c"
+    },
+    "calibration-points-reference446": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-points-reference446\\receipt.json",
+      "bytes": 10871,
+      "sha256": "a253fb3551274d8e3616edd8655999994956511f35a6dd419780901b50e6c6b9"
+    },
+    "calibration-points-installed447": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-points-installed447\\receipt.json",
+      "bytes": 32876,
+      "sha256": "3d53017e409cf66083aa5604f5b68d625bb98517b28083e2396120f764c0a79c"
+    },
+    "calibration-points-installed448": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-points-installed448\\receipt.json",
+      "bytes": 117844,
+      "sha256": "8e4e5a6a262c8b074fe409466c7e81192fbac9182adf645d8912d9e3321060c0"
+    },
+    "calibration-points-windows-build450": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-points-windows-build450\\receipt.json",
+      "bytes": 24921,
+      "sha256": "90b30b082d98ba3de53b5a57dd37f34e958fbd9f16446148e1ac7cc9b9dea096"
+    },
+    "calibration-points-installed451": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-points-installed451\\receipt.json",
+      "bytes": 126829,
+      "sha256": "fc465bec66b97be4f588a170fdb6e44f3010fb1cd9c7e8a910300a32e69b3327"
+    },
+    "calibration-points-windows-build453": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-points-windows-build453\\receipt.json",
+      "bytes": 24904,
+      "sha256": "f5b04e5bc1bfe13841a213214040710ca9f98ffdeeca17f24d125dd703668963"
+    },
+    "calibration-points-installed454": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-points-installed454\\receipt.json",
+      "bytes": 126829,
+      "sha256": "55de398a6d9c50c420f9a5668955be5a8a81a39371826fa76ed01d690da4adc0"
+    },
+    "calibration-points-windows-build456": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-points-windows-build456\\receipt.json",
+      "bytes": 24942,
+      "sha256": "d72b7feca738230217dd8d2c4dbc44483a17e20e7d2ee2f415be40d57f8daf4a"
+    },
+    "calibration-points-installed457": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-points-installed457\\receipt.json",
+      "bytes": 126763,
+      "sha256": "60d4b6ef844aea02dfff1a1daa4f69480ffd650c418974d8563e3d4df304b29c"
+    },
+    "calibration-points-retention458": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-points-retention458\\receipt.json",
+      "bytes": 21173,
+      "sha256": "b790fc5a7ef7da1f2c8251df0972fc1a413e0003487faebe692ab1adfc97c907"
+    },
+    "storage_after459": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-points-after459.json",
+      "bytes": 1523,
+      "sha256": "be9ec95620c6e825dcbe1bd6c08640d55f48d0c9011ff79e8bddf0d0c24f68c0"
+    }
+  },
+  "retention": {
+    "state": "retired",
+    "recovered_bytes": 11734879,
+    "archive": {
+      "path": "calibration-points-retention458/diagnostics.zip",
+      "bytes": 442290,
+      "sha256": "45c2f32d6568fd7a0bb2962cd864c53a10d094b0b959727f88fdb0b5512f7f49"
+    },
+    "retired_failed_full_captures": [
+      {
+        "path": "calibration-points-installed447/captures.tar.xz",
+        "bytes": 473272,
+        "sha256": "5fcdf053cbd8956c2a20df8387bf9872137ac3e343d3f5b8702c732c57e4d2f9"
+      },
+      {
+        "path": "calibration-points-installed448/captures.tar.xz",
+        "bytes": 1258520,
+        "sha256": "111644252b79e0b3be01233a3afd20c1982f7ad11e247b2e2e7afeaaa82c0bc0"
+      },
+      {
+        "path": "calibration-points-installed451/captures.tar.xz",
+        "bytes": 1263208,
+        "sha256": "0c714dbee723cc6015faf0b93e5672fd38862c300c4981ecc5ab7d1d017dbda9"
+      },
+      {
+        "path": "calibration-points-installed454/captures.tar.xz",
+        "bytes": 1272080,
+        "sha256": "62bdb92d1fbef9e56b56441a321d787384991396d697752a845684e751d5ad54"
+      }
+    ],
+    "policy": "Member hashes/sizes verified before terminal owned raw diagnostics/preimages retirement. Failed full captures retired with identities; their complete contents are unavailable. Final457, original446 and Linux444 captures retained. No cache/runtime/SDK/checkout archive."
+  },
+  "storage": {
+    "before_known_bytes": 8489807772,
+    "after_known_bytes": 8493858561,
+    "limit_bytes": 8589934592,
+    "budget_verified": false,
+    "unknown_subtrees": [
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest",
+        "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest'"
+      },
+      {
+        "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.cache\\pytest-ui",
+        "error": "[WinError 5] Access is denied: 'C:\\\\Users\\\\HEQ\\\\Projects\\\\imagejxx\\\\.cache\\\\pytest-ui'"
+      }
+    ],
+    "policy": "Full normalized project/generated/public evidence/Linux roots; temporary build512MiB and capture64MiB reserves documented. Inaccessible trees unknown, not zero."
+  },
+  "tracker": {
+    "in_progress": 47,
+    "open": 52,
+    "fully_certified_complete": 0
+  },
+  "remaining": [
+    "Global calibration/effective-owner semantics and full Calibrate workflow",
+    "Remembered/session point standards and measured means",
+    "Calibration replay/macro and downstream consumers",
+    "Remaining original-reference/platform/UI acceptance",
+    "Matched ImageJ/Fiji speed and peak-memory benchmarks"
+  ],
+  "performance_claim": "None. Architecture, test timing and compilation time are not comparative ImageJ/Fiji speed evidence.",
+  "historical_policy": "Existing reference fingerprints/expectations unchanged; new original-reader reference added. No full-family or full-goal certification."
+}

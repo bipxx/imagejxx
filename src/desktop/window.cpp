@@ -13,6 +13,7 @@
 #include "generic_plot_payload.hpp"
 #include "plot_context.hpp"
 #include "plot_hover.hpp"
+#include "calibration_points_io.hpp"
 #include <imagejxx/playback.hpp>
 #include "shadow_demo.hpp"
 #include "legacy_target_resources.hpp"
@@ -1226,6 +1227,8 @@ struct Window::Impl {
     Json controls = Json::object();
     std::function<void(Json)> submit;
     bool open = false, operation = false, independentPlot = false;
+    std::optional<FitPlotBinding> calibrationPointsSource;
+    bool calibrationPointsBrowsing=false;
     std::optional<DocumentSnapshot> enlargementSource;
     std::optional<DocumentSnapshot> axisPlaneSource;
     std::string axisIndexLabel;
@@ -1646,6 +1649,8 @@ struct Window::Impl {
     if (action == "shadow_imagej" || (action == "show_operation" && operationId == "shadow_imagej"))
       return owner.controller_->active_document_id() == source->id &&
              scientific_operation_review_available("shadow_imagej", source->nativeSnapshot());
+    if(action=="import_intensity_points" || action=="export_intensity_points" || action=="browse_intensity_points")
+      return !owner.busy() && owner.controller_->active_document_id()==source->id;
     if(action=="show_intensity_function" || action=="show_intensity_polynomial_fit" || action=="show_intensity_nonlinear_fit" || action=="show_intensity_fit_plot" || action=="show_intensity_calibration_plot") {
       const auto& dataset=source->nativeSnapshot().data().dataset;
       return !owner.busy() && owner.controller_->active_document_id()==source->id && dataset.shape().s==1 &&
@@ -4117,6 +4122,50 @@ struct Window::Impl {
     browser.prompt="Choose an ImageJ ROI (.roi) or ROI archive (.zip)";
     browser.extensions={".roi",".zip"};
     browser.current=[this,request,current]{return roiImportPanel.browse_current(request,current());};
+  }
+  void requireCalibrationPointsDraft() const {
+    if(owner.busy() || !dialog.calibrationPointsSource ||
+       (dialog.id!="intensity_polynomial_fit" && dialog.id!="intensity_nonlinear_fit") ||
+       (!dialog.open && !dialog.calibrationPointsBrowsing))throw std::invalid_argument("Open a calibration fitting dialog first");
+    const auto current=owner.nativeSnapshot();
+    if(!dialog.calibrationPointsSource->same_document(current) ||
+       !dialog.calibrationPointsSource->expected.matches(current.revisions(),Change::All))throw RevisionConflict();
+  }
+  void importCalibrationPoints(const std::string& path) {
+    requireCalibrationPointsDraft();
+    const auto bytes=readBytes(path,1024*1024);
+    const auto points=parse_calibration_points(std::string_view(reinterpret_cast<const char*>(bytes.data()),bytes.size()));
+    auto values=dialog.values;auto text=dialog.text;
+    if(points.two_columns){text["measured"]=Json(points.measured).dump();values["measured"]=text.at("measured");}
+    text["known"]=Json(points.known).dump();values["known"]=text.at("known");
+    // No draft mutation until the complete parse, finite checks and copies pass.
+    dialog.values.swap(values);dialog.text.swap(text);
+  }
+  std::string calibrationPointsText() const {
+    requireCalibrationPointsDraft();
+    auto column=[&](const char* name) {
+      const auto& text=dialog.text.at(name);
+      if(text.size()>1024*1024)throw std::invalid_argument("Calibration column exceeds1MiB");
+      const auto values=Json::parse(text);
+      if(!values.is_array() || values.size()>4096)throw std::invalid_argument("Calibration column requires at most4096 numbers");
+      std::vector<double> numbers;
+      for(const auto& value:values){if(!value.is_number())throw std::invalid_argument("Calibration points require numbers");numbers.push_back(value.get<double>());}
+      return numbers;
+    };
+    return calibration_points_text(column("measured"),column("known"));
+  }
+  void browseCalibrationPoints(bool save) {
+    requireCalibrationPointsDraft();const auto generation=dialog.generation;
+    const auto text=save?calibrationPointsText():std::string{};
+    file(save?"Save calibration points":"Open calibration points",save,
+      [this,generation,save,text](std::string path) {
+        if(dialog.generation!=generation)throw std::invalid_argument("Calibration draft changed");
+        requireCalibrationPointsDraft();
+        if(save)writeBytes(path,{text.begin(),text.end()});else importCalibrationPoints(path);
+      },save?"calibration.txt":"");
+    browser.prompt=save?"Save measured/known fitting points as tab-separated text":"Open one-column known values or two-column measured/known fitting points";
+    browser.current=[this,generation]{if(dialog.generation!=generation)return false;try{requireCalibrationPointsDraft();return true;}catch(const std::exception&){return false;}};
+    dialog.calibrationPointsBrowsing=true;dialog.open=false;
   }
   void ask(std::string title, Json values, std::function<void(Json)> submit,
            Json schema = Json::array(), std::string id = "") {
@@ -6922,6 +6971,19 @@ void Window::action(const std::string &name, const Json &p) {
   // not bypass its capability check before clipboard, files or jobs change.
   if (targetId && !targeted.count(name))
     impl->requireAction(name, 0, operationId);
+  if(name=="import_intensity_points" || name=="export_intensity_points" || name=="browse_intensity_points") {
+    for(const auto& field:p.items())if(field.key()!="document_id" && field.key()!=(name=="browse_intensity_points"?"save":"path"))throw std::invalid_argument("Unknown calibration points field");
+    if(targetId && targetId!=nativeSnapshot().id())throw std::invalid_argument("Calibration requires the active document");
+    if(name=="browse_intensity_points") {
+      if(!p.contains("save") || !p.at("save").is_boolean())throw std::invalid_argument("Calibration browse requires Boolean save");
+      impl->browseCalibrationPoints(p.at("save").get<bool>());
+    } else {
+      const auto path=p.at("path").get<std::string>();
+      if(name=="import_intensity_points")impl->importCalibrationPoints(path);
+      else {const auto text=impl->calibrationPointsText();writeBytes(path,{text.begin(),text.end()});}
+    }
+    return;
+  }
   if(name=="show_intensity_calibration" || name=="show_intensity_function" || name=="show_intensity_polynomial_fit" || name=="show_intensity_nonlinear_fit" || name=="show_intensity_fit_plot" || name=="show_intensity_calibration_plot" || name=="set_intensity_calibration" || name=="fit_intensity_calibration") {
     if(busy())throw std::invalid_argument("Wait for the current edit");
     const auto source=nativeSnapshot();
@@ -7014,6 +7076,7 @@ void Window::action(const std::string &name, const Json &p) {
         {{"name","max_iterations"},{"label","Maximum iterations"},{"kind","int"}},
         {{"name","relative_tolerance"},{"label","Relative tolerance"},{"kind","float"}},
         {{"name","show_plot"},{"label","Show plot"},{"kind","bool"}}}),"intensity_nonlinear_fit");
+      impl->dialog.calibrationPointsSource=Impl::FitPlotBinding{source.id(),source.revisions()};
       return;
     }
     if(name=="show_intensity_polynomial_fit") {
@@ -7050,6 +7113,7 @@ void Window::action(const std::string &name, const Json &p) {
         {{"name","value_unit"},{"label","Value unit"},{"kind","text"}},
         {{"name","zero_clip"},{"label","Clip negatives (8-bit tables)"},{"kind","bool"}},
         {{"name","show_plot"},{"label","Show plot"},{"kind","bool"}}}),"intensity_polynomial_fit");
+      impl->dialog.calibrationPointsSource=Impl::FitPlotBinding{source.id(),source.revisions()};
       return;
     }
     if(name=="show_intensity_function") {
@@ -13152,6 +13216,12 @@ void Window::Impl::dialogs() {
         dialog.controls["anisotropy_warning"]=itemControl(false);
       }
     }
+    if(dialog.calibrationPointsSource) {
+      const bool openPoints=ImGui::Button("Open points...");dialog.controls["open_points"]=itemControl();
+      ImGui::SameLine();const bool savePoints=ImGui::Button("Save points...");dialog.controls["save_points"]=itemControl();
+      if(openPoints || savePoints)guard([&]{browseCalibrationPoints(savePoints);ImGui::CloseCurrentPopup();});
+      ImGui::TextWrapped("Open replaces fitting points only; apply OK to fit the calibration.");
+    }
     if(dialog.id=="selection_enlargement"){
       const bool valid=dialog.values.at("distance").is_number();
       if(!valid)ImGui::TextWrapped("Enter a finite numeric distance.");
@@ -13263,7 +13333,7 @@ void Window::Impl::dialogs() {
   }
   if(browser.open && browser.current && !browser.current()) {
     browser.open=false;browser.expired=true;
-    status="ROI import file choice discarded because the destination or draft changed";
+    status="File choice discarded because the destination or draft changed";
   }
   browser.entries=Json::array();
   if (browser.open)
@@ -13384,7 +13454,10 @@ void Window::Impl::dialogs() {
     }
     ImGui::EndPopup();
   }
-  if(!browser.open && !browser.overwrite) {browser.submit={};browser.current={};}
+  if(!browser.open && !browser.overwrite) {
+    browser.submit={};browser.current={};
+    if(dialog.calibrationPointsBrowsing){dialog.calibrationPointsBrowsing=false;dialog.open=true;}
+  }
   if (pendingClose && !browser.open)
     ImGui::OpenPopup("Save changes?");
   if (ImGui::BeginPopupModal("Save changes?", nullptr,

@@ -225,6 +225,9 @@ PYBIND11_MODULE(_desktop, m) {
              py::gil_scoped_release release;
              return zSubsetUiCase(window, "imgui_python", directory, true).dump();
            })
+      .def("_calibration_points_ui_case",[](Window& window,const std::string& directory) {
+          py::gil_scoped_release release;return calibrationPointsUiCase(window,"imgui_python",directory).dump();
+        })
       .def("_intensity_nonlinear_ui_case",[](Window& window,const std::string& directory) {
           py::gil_scoped_release release;return intensityCalibrationUiCase(window,"imgui_python",directory,true).dump();
         })

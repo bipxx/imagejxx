@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "reference": "ImageJ1.54r pinned TextReader; Calibrator.open column mapping inspected",
+  "cases": [
+    {
+      "id": "two",
+      "text": "1\t2\n3\t4\n",
+      "image": {
+        "columns": 2,
+        "rows": 2,
+        "words": [
+          1065353216,
+          1073741824,
+          1077936128,
+          1082130432
+        ]
+      },
+      "error": null
+    },
+    {
+      "id": "single",
+      "text": "5\n7",
+      "image": {
+        "columns": 1,
+        "rows": 2,
+        "words": [
+          1084227584,
+          1088421888
+        ]
+      },
+      "error": null
+    },
+    {
+      "id": "header",
+      "text": "Measured,Known\r\n1,2\r\n3,4\r\n",
+      "image": {
+        "columns": 2,
+        "rows": 2,
+        "words": [
+          1065353216,
+          1073741824,
+          1077936128,
+          1082130432
+        ]
+      },
+      "error": null
+    },
+    {
+      "id": "rounding",
+      "text": "16777217,0.1\n+0x1.8p1f,-0\n",
+      "image": {
+        "columns": 2,
+        "rows": 2,
+        "words": [
+          1266679808,
+          1036831949,
+          1077936128,
+          2147483648
+        ]
+      },
+      "error": null
+    },
+    {
+      "id": "blank",
+      "text": "\n1 2\n\n3 4\n",
+      "image": {
+        "columns": 2,
+        "rows": 2,
+        "words": [
+          1065353216,
+          1073741824,
+          1077936128,
+          1082130432
+        ]
+      },
+      "error": null
+    },
+    {
+      "id": "tiny",
+      "text": "1e-9999\n-1e-9999",
+      "image": {
+        "columns": 1,
+        "rows": 2,
+        "words": [
+          0,
+          2147483648
+        ]
+      },
+      "error": null
+    },
+    {
+      "id": "overflow",
+      "text": "1e9999\n1\n2",
+      "image": {
+        "columns": 1,
+        "rows": 3,
+        "words": [
+          2139095040,
+          1065353216,
+          1073741824
+        ]
+      },
+      "error": null
+    },
+    {
+      "id": "nan",
+      "text": "NaN\n1\n2",
+      "image": {
+        "columns": 1,
+        "rows": 3,
+        "words": [
+          2143289344,
+          1065353216,
+          1073741824
+        ]
+      },
+      "error": null
+    },
+    {
+      "id": "bad_interior",
+      "text": "1\ninvalid\n2",
+      "image": {
+        "columns": 1,
+        "rows": 3,
+        "words": [
+          1065353216,
+          2143289344,
+          1073741824
+        ]
+      },
+      "error": null
+    },
+    {
+      "id": "jagged",
+      "text": "1 2\n3",
+      "image": {
+        "columns": 2,
+        "rows": 1,
+        "words": [
+          1065353216,
+          1073741824
+        ]
+      },
+      "error": null
+    },
+    {
+      "id": "one_row",
+      "text": "1\n",
+      "image": {
+        "columns": 1,
+        "rows": 1,
+        "words": [
+          1065353216
+        ]
+      },
+      "error": null
+    },
+    {
+      "id": "all_header",
+      "text": "Measured Known\n",
+      "image": {
+        "columns": 2,
+        "rows": 0,
+        "words": []
+      },
+      "error": null
+    }
+  ]
+}
