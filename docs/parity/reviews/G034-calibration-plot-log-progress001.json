@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "scope": "G034 shared calibration plot grid/ticks and logarithmic axes; private C++17 viewport on Windows/Linux",
+  "state": "focused_checks_passed",
+  "acceptance_claim": false,
+  "implementation": {
+    "controls": "Plot Axis Limits adds strict Boolean log_x/log_y/grid/ticks; optional API setter fields preserve omitted values. Defaults per new/reset plot: linear axes, grid and ticks enabled.",
+    "log_domain": "Finite positive distinguishable endpoints required on log axes, including reversed ranges. View interpolation/pan/zoom operates in logarithmic space; cursor/ticks remain original units. Nonpositive/nonfinite samples are gaps, never connected across; original samples/CSV/source/history unchanged. Visible notice identifies log axes and omissions.",
+    "ticks": "Five uniformly spaced screen ticks per nonconstant axis; constant axis has one centered label. Interior grid lines independently toggled. Font-measured margins reserve numeric labels; canvas responds to available area. Automatic nice/minor tick/style options remain open.",
+    "numerics": "Private sign-aware C++17 interpolation and scaled fractions; positive/ordered actual log bounds checked atomically. Near max_double, pow(log10(endpoint)) may overflow through rounding: clamp interpolation within its finite endpoints; extrapolation overflow still refuses.",
+    "api": "set_intensity_plot_limits requires limits array; optional log_x/log_y/grid/ticks are Boolean only. Same source/All revision and captured dialog plot-generation guards. No public core SDK or dependency change."
+  },
+  "evidence": {
+    "calibration-plot-log-windows-build305": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-log-windows-build305\\receipt.json",
+      "bytes": 24946,
+      "sha256": "b1c8fa8eb7500960f416bd72d7111d90a0a4d09254e43dc03f309f087e933439"
+    },
+    "calibration-plot-log-windows-build310": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-log-windows-build310\\receipt.json",
+      "bytes": 24922,
+      "sha256": "21f768d15965299a12f2ff388ea05c5eec29ed8c5cc31516f1b5efaf22578522"
+    },
+    "calibration-plot-log-windows-build313": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-log-windows-build313\\receipt.json",
+      "bytes": 24940,
+      "sha256": "58cd1782235b25228bf252dbf73ac25bf763936b257aaf655eabf392afbdff8d"
+    },
+    "calibration-plot-log-installed314": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-log-installed314\\receipt.json",
+      "bytes": 28087,
+      "sha256": "a6476a90fbb2b6dc0dedafd7871af813f51707b5537c525b002a391525926946"
+    },
+    "calibration-plot-log-linux312": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-log-linux312\\receipt.json",
+      "bytes": 29411,
+      "sha256": "777feb88a0cdb74d0a797150ba452c81efa886cdac28f38fa766728f76a6c8f4"
+    },
+    "calibration-plot-log-retention315": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-log-retention315\\receipt.json",
+      "bytes": 10559,
+      "sha256": "9612713dd48dec7c8176290045c1b849e8094f967b869d521fc8f7866f57952c"
+    }
+  },
+  "verification": {
+    "windows_installed_pytest": {
+      "tests": 707,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "native": "Windows projection execution and viewport consumers pass; final Linux C++17 -Wall -Wextra -Werror viewport consumer passes.",
+    "actual_imgui_input": "Three installed C++ cases pass; C++/Python calibration cases physically toggle log axes, recover nonpositive-domain error, apply reversed positive ranges, turn grid/ticks off/on, verify tick values and log notice, then refuse stale dialog. Headless actual ImGui input, not an OS/GPU gate.",
+    "independent_geometry": "Positive measured fit points map to expected logarithmic screen positions; zero-valued measured point is absent. Signed16 table preserves all256 values, masks128 segments and renders127; grid/ticks toggles independent.",
+    "numeric_edges": "Reversed log interpolation, zero/negative/indistinguishable-domain refusal, underflow/overflow refusal, finite ticks near max_double.",
+    "calibration_frames": 558,
+    "frame_bound": 608,
+    "new_scenario_frames": 88,
+    "frame_budget_amendment": "New log/grid/tick scenario adds88 to previous470;608 explicit cap. Historical reference values/fingerprints unchanged.",
+    "commercial_use_inventory": "passed; no new dependency",
+    "diff_check": "passed",
+    "limits": "Five-tick policy is not full ImageJ tick styling. Linux arithmetic gives no Linux UI/SDK acceptance; no full platform/family or comparative speed claim."
+  },
+  "verification_efficiency": {
+    "producer_boundary": "Local builder freezes all compiled/native-probe inputs plus first-party runtime/configuration/vendored sources. Uncompiled Python test readers/conftest are omitted from producer freeze and independently pinned before/after installed consumer run. Native tests and src/imagejxx runtime Python remain frozen.",
+    "observed_amendment": "Reader-only float32 pointer delivery correction and added regression assertions made while final producer ran, with no reconfigure/recompile for those reader changes. Final runner pins itself and all consumer readers. This is local runner behavior; CI-wide adoption remains open.",
+    "superseded_builds": "Early builds passed before review added extreme-bound clamp and visible log notice. Final313 products and final314 consumers are authoritative for this change."
+  },
+  "storage": {
+    "before_known_bytes": 8455771560,
+    "after_known_bytes": 8457940813,
+    "full_budget_verified": false,
+    "unknown_subtrees": [
+      ".cache/pytest",
+      ".cache/pytest-ui"
+    ],
+    "temporary_build_reserve_bytes": 536870912,
+    "capture_scratch_bound_bytes": 67108864,
+    "lossless_recovery_bytes": 970879,
+    "retention": "All owned terminal Windows/Linux scratch retired; necessary captures/logs/source identities hash-verified lossless compression. Superseded runners compressed; final runners retained. Same active cache/runtime; no new compiler/environment/SDK clone or whole cache archive."
+  },
+  "remaining": [
+    "Automatic nice/minor ticks, label formatting, style controls and rectangle zoom",
+    "Formula/coefficient/R-squared annotations from immutable provenance",
+    "Detached/multiple plot snapshot lifecycle and generic histogram/profile viewport reuse",
+    "Fitting settings/restarts/global calibration, table import/export/replay/macro and downstream measurement/histogram",
+    "Linux Python/UI, installed IO SDK, macOS, full original-reference and OS/GPU qualification",
+    "Matched ImageJ/Fiji speed/memory evidence"
+  ],
+  "family_status": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  }
+}

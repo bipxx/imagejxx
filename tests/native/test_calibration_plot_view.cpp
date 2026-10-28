@@ -43,5 +43,26 @@ int main() {
   check(!view.set_limits({0,1,0,std::numeric_limits<double>::infinity()}));
   check(view.fractions==reversed.fractions && view.manual_limits==reversed.manual_limits);
   view={};check(!view.manual_limits);check(view.limits(data)[0]==7);
+  view.log_x=view.log_y=true;
+  check(view.set_limits({1,10000,10000,1}));
+  check(std::abs(CalibrationPlotView::fraction(100,1,10000,true)-.5)<1e-14);
+  check(std::abs(CalibrationPlotView::fraction(100,10000,1,true)-.5)<1e-14);
+  check(std::isnan(CalibrationPlotView::fraction(0,1,10000,true)));
+  check(view.zoom(data,.5,.5,.5));bounds=view.limits(data);
+  const std::array<double,4> logarithmic{10,1000,1000,10};
+  for(int i=0;i<4;++i)check(std::abs(bounds[i]/logarithmic[i]-1)<1e-14);
+  const auto logged=view;
+  check(!view.set_limits({0,1,1,10}));
+  check(!view.set_limits({1,10,-1,1}));
+  check(!view.set_limits({1e300,std::nextafter(1e300,largest),1,10}));
+  check(view.fractions==logged.fractions && view.manual_limits==logged.manual_limits);
+  check(view.set_limits({1e-300,1e300,1e300,1e-300}));
+  const auto wide=view;
+  check(!view.zoom(data,.5,.5,2));
+  check(view.fractions==wide.fractions && view.manual_limits==wide.manual_limits);
+  check(data.x_min==7 && data.x_max==7);
+  const auto nearMaximum=CalibrationPlotView::axis_value(largest/2,largest,1-1e-15,true);
+  check(std::isfinite(nearMaximum) && nearMaximum>=largest/2 && nearMaximum<=largest);
+
 
 }

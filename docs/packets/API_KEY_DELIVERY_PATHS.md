@@ -1,5 +1,33 @@
 # Shortest delivery paths by API and setting key
 
+## Calibration plot grid/tick/log options — 2026-10-28
+
+The existing numeric-axis action now accepts optional Boolean log_x, log_y,
+grid and ticks. Omitted options preserve the current plot configuration:
+
+```python
+editor.action("set_intensity_plot_limits", limits=[1, 65535, 1, 32767],
+              log_x=True, log_y=True, grid=True, ticks=True)
+```
+
+Select positive limits appropriate to the plotted data. Both endpoints must be
+finite, positive and distinguishable on a log axis; reversed limits are allowed.
+Nonpositive samples appear as gaps, with a visible notice. Readouts/ticks retain
+original units; CSV and source/history are unchanged. New plot/reset restores
+linear axes and default grid/ticks. The shared Axis Limits dialog exposes the
+same options with its existing generation/All-source guards. No new core SDK API.
+
+707 Windows focused checks pass, including actual ImGui log/grid/tick input in
+both consumers and independent screen-coordinate assertions. Final Linux C++17
+private viewport arithmetic passes. Scope excludes OS/GPU, Linux UI/SDK and full
+ImageJ tick-style qualification. [Scoped evidence](../parity/reviews/G034-calibration-plot-log-progress001.json).
+
+Next shortest path: stage immutable function/fit formula, coefficients, objective
+and finite/null R-squared annotations before publication; reuse the viewport for
+rectangle zoom, then nice/minor tick/style options and generic histogram/profile
+rendering. Detached/multiple plot snapshots need their own explicit lifecycle.
+Full calibration/platform/reference and matched speed gates remain open.
+
 ## Current calibration plot API path — 2026-10-28
 
 Manual calibration/function dialogs now have automatic Show plot (17c7cab), and

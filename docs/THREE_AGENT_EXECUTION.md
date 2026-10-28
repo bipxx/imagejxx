@@ -1,5 +1,44 @@
 # Three-agent execution plan
 
+## Calibration plot grids, ticks and logarithmic axes — 2026-10-28
+
+Plot Axis Limits now includes Logarithmic X/Y, Grid lines, and Ticks and labels.
+Optional Boolean log_x/log_y/grid/ticks fields on set_intensity_plot_limits
+preserve omitted options. New/reset plots default to linear axes with grid/ticks.
+Log endpoints must be positive, finite and distinguishable; reversed ranges
+work. Pan/zoom interpolates logarithmic space while ticks and cursor show original
+units. Nonpositive/nonfinite samples are gaps, with a visible log-domain notice.
+Source/history, original samples and CSV stay unchanged. Numeric label margins
+follow font measurements. Five screen-spaced ticks per nonconstant axis (one
+centered label for a constant axis) and grid toggles are the current policy;
+full nice/minor tick/format/style parity remains open.
+
+Windows installed verification passes707 focused tests, zero failures/skips,
+projection/viewport native consumers and three C++ ImGui input cases. C++/Python
+cases physically toggle/reject/apply log ranges and grid/ticks; independent
+readers verify geometric tick values, log-domain gaps, notices and unchanged
+samples. Fit measurements independently map to log screen coordinates. Cases
+use558/608 frames, adding88 new scenario frames to prior470. Final Linux C++17
+viewport tests pass, including finite interpolation near max_double: rounded
+log10 endpoint exponentiation is clamped inside finite interpolation bounds;
+overflowing extrapolation still refuses. Headless actual input gives no OS/GPU
+or Linux UI/SDK acceptance. [Scoped evidence](parity/reviews/G034-calibration-plot-log-progress001.json).
+
+Local verification now separates immutable compiled/runtime inputs from Python
+verification reader pins. Reader-only corrections/additions were attached to the
+same final producer without another build; compiled probes/native tests and
+runtime Python remain frozen. CI-wide adoption is still open. All terminal
+scratch retired after hash-verified lossless retention; log/identity/superseded-
+runner compression recovered970,879B. Same active cache/runtime, known roots
+8,457,940,813B; two denied pytest caches keep full8GiB budget unverified. Original
+reference fingerprints unchanged; commercial inventory passes.
+
+Next: formula/coefficients/objective/R-squared annotations staged once from
+immutable provenance, rectangle zoom and tick/style refinement; then detached/
+multiple snapshot lifecycle and generic histogram/profile viewport reuse.
+Remaining calibration/downstream/platform/reference gates continue. No matched
+speed advantage or family completion; tracker47 in progress/52 open/0 complete.
+
 ## Numeric calibration plot axes and reversed ranges — 2026-10-28
 
 Axes... now opens the shared Plot Axis Limits dialog. Finite distinct X/Y

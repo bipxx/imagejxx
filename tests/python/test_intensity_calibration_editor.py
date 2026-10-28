@@ -93,6 +93,7 @@ def test_actual_intensity_calibration_dialog(context,tmp_path):
     _assert_fit_csv(report)
     _assert_plot_interaction(report)
     _assert_plot_axes(report)
+    _assert_plot_log(report)
 
     for name in ("function_applied","function_reopened"):
         record=report[name]["properties"][key]
@@ -302,6 +303,7 @@ def test_actual_nonlinear_calibration_dialog(context,tmp_path):
     _assert_fit_csv(report)
     _assert_plot_interaction(report)
     _assert_plot_axes(report)
+    _assert_plot_log(report)
     assert {"show_intensity_nonlinear_fit","initial_coefficients","invalid_fit_apply","fit_error_ok","fit_apply","fit_cancel"}<={r["name"] for r in report["controls"]}
 
 
@@ -413,7 +415,7 @@ def _assert_physical_fit_running_cancel(report):
     control=case["control"]
     assert control["enabled"] and control["id"]>0
     assert {"fit_cancel_apply","fit_running_cancel"}<={r["name"] for r in report["controls"]}
-    assert len(report["frames"])<=512
+    assert len(report["frames"])<=608
 
 
 def _assert_fit_plot_render(report):
@@ -754,12 +756,12 @@ def _assert_plot_interaction(report):
     ax=(cursor["x"]-base[0])/(base[1]-base[0]);ay=(cursor["y"]-base[2])/(base[3]-base[2])
     origin=np.asarray(case["hover"]["canvas_origin"]);size=np.asarray(case["hover"]["canvas_size"])
     # ImGui AddMousePosEvent floors screen positions to whole pixels.
-    mouse=np.floor(origin+size*.25);normalized=(mouse-origin)/size
+    mouse=np.floor(np.asarray(origin+size*.25,dtype=np.float32)).astype(float);normalized=(mouse-origin)/size
     np.testing.assert_allclose([ax,ay],[normalized[0],1-normalized[1]],rtol=0,atol=2e-6)
     factor=2**(-.2*2)
     expected=np.array([ax*(1-factor),ax+(1-ax)*factor,ay*(1-factor),ay+(1-ay)*factor])
     np.testing.assert_allclose(case["zoom"]["viewport"],expected,rtol=0,atol=2e-6)
-    delta=(np.floor(origin+size*.35)-mouse)/size
+    delta=(np.floor(np.asarray(origin+size*.35,dtype=np.float32))-mouse)/size
     pan=expected+np.array([-delta[0]*factor,-delta[0]*factor,delta[1]*factor,delta[1]*factor])
     np.testing.assert_allclose(case["pan"]["viewport"],pan,rtol=0,atol=2e-6)
     assert case["reset"]["viewport"]==[0,1,0,1]
@@ -776,7 +778,7 @@ def _assert_plot_interaction(report):
 def _assert_plot_axes(report):
     case=report["plot_axes"]
     assert case["initial"]["title"]=="Plot Axis Limits"
-    assert case["initial"]["values"]=={"x_min":0,"x_max":65535,"y_min":-32768,"y_max":32767}
+    assert case["initial"]["values"]=={"x_min":0,"x_max":65535,"y_min":-32768,"y_max":32767,"log_x":False,"log_y":False,"grid":True,"ticks":True}
     assert case["error"]["open"] and "distinct" in case["error"]["message"]
     assert case["invalid_plot"]["view_limits"]==case["invalid_plot"]["limits"]
     for name in ("applied","cancelled"):
@@ -785,7 +787,7 @@ def _assert_plot_axes(report):
         assert plot["finite_geometry"] and plot["visible"]
         assert plot["curve_x"]==report["calibration_table_plot"]["curve_x"]
         assert plot["curve_y"]==report["calibration_table_plot"]["curve_y"]
-    assert case["reopened"]["values"]=={"x_min":200,"x_max":100,"y_min":1000,"y_max":-1000}
+    assert case["reopened"]["values"]=={"x_min":200,"x_max":100,"y_min":1000,"y_max":-1000,"log_x":False,"log_y":False,"grid":True,"ticks":True}
     assert case["replacement_fixture_action"]=="show_intensity_calibration_plot"
     assert case["stale_error"]["open"] and "plotted data changed" in case["stale_error"]["message"]
     assert case["replacement"]["view_limits"]==case["replacement"]["limits"]
@@ -833,3 +835,84 @@ def test_plot_axis_limits_refuse_stale_source(tmp_path):
         editor.action("set_intensity_plot_limits",limits=[0,1,0,1])
     assert owner.snapshot().shares_data(before)
     assert editor.render_headless(4)["fit_plot"] is None
+
+
+def _assert_plot_log(report):
+    case=report["plot_log"]
+    assert case["error"]["open"] and "positive" in case["error"]["message"]
+    assert not case["invalid_plot"]["log_x"] and not case["invalid_plot"]["log_y"]
+    for name in ("hidden","visible"):
+        plot=case[name]
+        assert plot["log_x"] and plot["log_y"] and plot["view_limits"]==[1000,1,1000,1]
+        assert plot["log_notice"]=="Log X/Y: nonpositive values are omitted."
+        assert plot["finite_geometry"] and plot["masked_segments"]==128 and plot["drawn_segments"]==127
+        assert plot["curve_x"]==report["calibration_table_plot"]["curve_x"]
+        assert plot["curve_y"]==report["calibration_table_plot"]["curve_y"]
+    assert not case["hidden"]["grid"] and not case["hidden"]["ticks"]
+    assert case["hidden"]["grid_lines"]==0 and case["hidden"]["x_ticks"]==case["hidden"]["y_ticks"]==[]
+    shown=case["visible"];assert shown["grid"] and shown["ticks"] and shown["grid_lines"]==6
+    for axis in ("x_ticks","y_ticks"):
+        np.testing.assert_allclose([v["value"] for v in shown[axis]],10.**np.linspace(3,0,5),rtol=1e-13)
+        assert all(v["label"] for v in shown[axis])
+    assert not report["plot_axes"]["replacement"]["log_x"] and not report["plot_axes"]["replacement"]["log_y"]
+
+
+@pytest.mark.parametrize("grid,ticks",[(True,True),(True,False),(False,True),(False,False)])
+def test_log_plot_grid_ticks_and_data_are_independent(grid,ticks,tmp_path):
+    owner,editor=_axis_editor(tmp_path);before=owner.snapshot();steps=owner.undo_steps
+    editor.action("set_intensity_plot_limits",limits=[1,1000,1000,1],log_x=True,log_y=True,grid=grid,ticks=ticks)
+    plot=editor.render_headless(4)["fit_plot"]
+    assert plot["log_x"] and plot["log_y"] and plot["finite_geometry"]
+    assert plot["grid"]==grid and plot["ticks"]==ticks and plot["grid_lines"]==(6 if grid else 0)
+    assert len(plot["x_ticks"])==len(plot["y_ticks"])==(5 if ticks else 0)
+    if ticks:
+        np.testing.assert_allclose([v["value"] for v in plot["x_ticks"]],10.**np.linspace(0,3,5),rtol=1e-13)
+        np.testing.assert_allclose([v["value"] for v in plot["y_ticks"]],10.**np.linspace(3,0,5),rtol=1e-13)
+    assert plot["masked_segments"]==128 and plot["drawn_segments"]==127
+    np.testing.assert_array_equal(plot["curve_y"],257*np.arange(256)-32768)
+    assert owner.snapshot().shares_data(before) and owner.undo_steps==steps
+    # Omitted options preserve this plot's configuration.
+    editor.action("set_intensity_plot_limits",limits=[1,100,100,1])
+    updated=editor.render_headless(4)["fit_plot"]
+    assert updated["log_x"] and updated["log_y"] and updated["grid"]==grid and updated["ticks"]==ticks
+
+
+@pytest.mark.parametrize("key",["log_x","log_y","grid","ticks"])
+@pytest.mark.parametrize("value",[0,1,"true",None])
+def test_plot_axis_options_require_boolean(key,value,tmp_path):
+    owner,editor=_axis_editor(tmp_path);before=owner.snapshot();previous=editor.render_headless(4)["fit_plot"]
+    with pytest.raises((ValueError,RuntimeError),match="Boolean"):
+        editor.action("set_intensity_plot_limits",limits=[1,1000,1,1000],**{key:value})
+    assert editor.render_headless(4)["fit_plot"]==previous and owner.snapshot().shares_data(before)
+
+
+@pytest.mark.parametrize("limits",[[0,10,1,10],[-1,10,1,10],[1,10,-1,10],[1e300,float(np.nextafter(1e300,np.inf)),1,10]])
+def test_log_plot_refuses_nonpositive_or_indistinguishable_limits(limits,tmp_path):
+    owner,editor=_axis_editor(tmp_path);before=owner.snapshot();previous=editor.render_headless(4)["fit_plot"]
+    with pytest.raises((ValueError,RuntimeError),match="positive"):
+        editor.action("set_intensity_plot_limits",limits=limits,log_x=True,log_y=True)
+    assert editor.render_headless(4)["fit_plot"]==previous and owner.snapshot().shares_data(before)
+
+
+def test_log_plot_ticks_stay_finite_near_double_maximum(tmp_path):
+    owner,editor=_axis_editor(tmp_path);before=owner.snapshot();maximum=float(np.finfo(float).max)
+    editor.action("set_intensity_plot_limits",limits=[maximum/2,maximum,maximum,maximum/2],log_x=True,log_y=True)
+    plot=editor.render_headless(4)["fit_plot"]
+    assert plot["finite_geometry"] and owner.snapshot().shares_data(before)
+    for axis in ("x_ticks","y_ticks"):
+        assert all(np.isfinite(v["value"]) and maximum/2<=v["value"]<=maximum for v in plot[axis])
+
+
+def test_log_fit_measurements_use_logarithmic_screen_positions(tmp_path):
+    owner,editor=_axis_editor(tmp_path)
+    editor.action("fit_intensity_calibration",function="poly2",measured=[0,1,3],known=[1,4,16],show_plot=True)
+    editor.wait();before=owner.snapshot();steps=owner.undo_steps
+    editor.action("set_intensity_plot_limits",limits=[1,3,1,16],log_x=True,log_y=True)
+    plot=editor.render_headless(4)["fit_plot"]
+    assert plot["data_screen_points"][0] is None
+    origin=np.asarray(plot["canvas_origin"]);size=np.asarray(plot["canvas_size"])
+    measured=np.asarray(plot["measured"])[1:];known=np.asarray(plot["known"])[1:]
+    expected=np.column_stack((origin[0]+np.log(measured)/np.log(3)*size[0],origin[1]+(1-np.log(known)/np.log(16))*size[1]))
+    np.testing.assert_allclose(plot["data_screen_points"][1:],expected,rtol=0,atol=1e-4)
+    assert plot["masked_segments"]==1 and plot["drawn_segments"]==98
+    assert owner.snapshot().shares_data(before) and owner.undo_steps==steps

@@ -184,7 +184,7 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   } failure{report,directory};
   HeadlessInputSession session(w);Json last;
   auto frame=[&](const Json& events=Json::array()) {
-    require(report["frames"].size()<512,"Calibration UI frame bound");last=session.frame(events);
+    require(report["frames"].size()<608,"Calibration UI frame bound");last=session.frame(events);
     report["frames"].push_back({{"events",events},{"rendered",{
       {"input_frame",last.at("input_frame")},{"dialog",last.at("dialog")},
       {"error_modal",last.at("error_modal")},{"window_error",last.at("window_error")}}}});
@@ -261,6 +261,22 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   report["plot_axes"]["reopened"]=last.at("dialog");editText("y_min","500");
   click(last.at("dialog").at("controls").at("cancel"),"plot_axes_cancel");frame();frame();
   report["plot_axes"]["cancelled"]=last.at("fit_plot");
+  click(last.at("host_controls").at("fit_plot.axes"),"plot_log_open");
+  click(last.at("dialog").at("controls").at("log_x"),"plot_log_x");
+  click(last.at("dialog").at("controls").at("log_y"),"plot_log_y");
+  click(last.at("dialog").at("controls").at("apply"),"plot_log_invalid");
+  report["plot_log"]["error"]=last.at("error_modal");report["plot_log"]["invalid_plot"]=last.at("fit_plot");
+  frame();frame();click(last.at("error_modal").at("controls").at("ok"),"plot_log_error_ok");frame();frame();
+  editText("x_min","1000");editText("x_max","1");editText("y_min","1000");editText("y_max","1");
+  click(last.at("dialog").at("controls").at("grid"),"plot_grid_off");
+  click(last.at("dialog").at("controls").at("ticks"),"plot_ticks_off");
+  click(last.at("dialog").at("controls").at("apply"),"plot_log_apply");frame();frame();
+  report["plot_log"]["hidden"]=last.at("fit_plot");
+  click(last.at("host_controls").at("fit_plot.axes"),"plot_grid_reopen");
+  click(last.at("dialog").at("controls").at("grid"),"plot_grid_on");
+  click(last.at("dialog").at("controls").at("ticks"),"plot_ticks_on");
+  click(last.at("dialog").at("controls").at("apply"),"plot_grid_apply");frame();frame();
+  report["plot_log"]["visible"]=last.at("fit_plot");
   // Deliberate diagnostic fixture: replace the immutable plot while a limits
   // draft is open. Applying that draft must refuse the replacement generation.
   click(last.at("host_controls").at("fit_plot.axes"),"plot_axes_stale_open");

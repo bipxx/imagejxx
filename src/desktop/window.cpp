@@ -4613,25 +4613,30 @@ struct Window::Impl {
     const auto current=owner.nativeSnapshot();
     if(!fitPlotSource->same_document(current) || !fitPlotSource->expected.matches(current.revisions(),Change::All))throw RevisionConflict();
   }
-  void applyPlotLimits(const std::array<double,4>& values,std::uint64_t generation) {
+  void applyPlotLimits(const std::array<double,4>& values,std::uint64_t generation,bool logX,bool logY,bool grid,bool ticks) {
     requireCalibrationPlot();
     if(generation!=fitPlotGeneration)throw std::invalid_argument("The plotted data changed; reopen axis limits");
-    auto candidate=fitPlotView;
-    if(!candidate.set_limits(values))throw std::invalid_argument("Axis limits must be finite and distinct on each axis");
+    auto candidate=fitPlotView;candidate.log_x=logX;candidate.log_y=logY;candidate.grid=grid;candidate.ticks=ticks;
+    if(!candidate.set_limits(values))throw std::invalid_argument("Axis limits must be finite and distinct; logarithmic limits must be positive and distinguishable");
     fitPlotView=candidate;
   }
   void showPlotLimits() {
     requireCalibrationPlot();const auto limits=fitPlotView.limits(*fitPlot);
     const auto generation=fitPlotGeneration;
-    ask("Plot Axis Limits",{{"x_min",limits[0]},{"x_max",limits[1]},{"y_min",limits[2]},{"y_max",limits[3]}},
+    ask("Plot Axis Limits",{{"x_min",limits[0]},{"x_max",limits[1]},{"y_min",limits[2]},{"y_max",limits[3]},
+        {"log_x",fitPlotView.log_x},{"log_y",fitPlotView.log_y},{"grid",fitPlotView.grid},{"ticks",fitPlotView.ticks}},
         [this,generation](Json fields){
           std::array<double,4> values;const std::array<const char*,4> names{"x_min","x_max","y_min","y_max"};
           for(std::size_t i=0;i<4;++i){const auto& value=fields.at(names[i]);if(!value.is_number())throw std::invalid_argument("Axis limits require numbers");values[i]=value.get<double>();}
-          applyPlotLimits(values,generation);
+          applyPlotLimits(values,generation,fields.at("log_x").get<bool>(),fields.at("log_y").get<bool>(),fields.at("grid").get<bool>(),fields.at("ticks").get<bool>());
         },Json::array({{{"name","x_min"},{"label","X from"},{"kind","float"}},
           {{"name","x_max"},{"label","X to"},{"kind","float"}},
           {{"name","y_min"},{"label","Y from"},{"kind","float"}},
-          {{"name","y_max"},{"label","Y to"},{"kind","float"}}}),"calibration_plot_limits");
+          {{"name","y_max"},{"label","Y to"},{"kind","float"}},
+          {{"name","log_x"},{"label","Logarithmic X (positive limits)"},{"kind","bool"}},
+          {{"name","log_y"},{"label","Logarithmic Y (positive limits)"},{"kind","bool"}},
+          {{"name","grid"},{"label","Grid lines"},{"kind","bool"}},
+          {{"name","ticks"},{"label","Ticks and labels"},{"kind","bool"}}}),"calibration_plot_limits");
   }
   void plots();
   void dialogs();
@@ -6666,13 +6671,15 @@ void Window::action(const std::string &name, const Json &p) {
     if(busy())throw std::invalid_argument("Wait for the current edit");
     impl->requireCalibrationPlot();
     if(targetId && targetId!=nativeSnapshot().id())throw std::invalid_argument("Axis limits require the active plotted document");
-    for(const auto& field:p.items())if(field.key()!="document_id" && !(name=="set_intensity_plot_limits" && field.key()=="limits"))throw std::invalid_argument("Unknown axis limits field");
+    for(const auto& field:p.items())if(field.key()!="document_id" && !(name=="set_intensity_plot_limits" &&
+        (field.key()=="limits" || field.key()=="log_x" || field.key()=="log_y" || field.key()=="grid" || field.key()=="ticks")))throw std::invalid_argument("Unknown axis limits field");
     if(name=="show_intensity_plot_limits"){impl->showPlotLimits();return;}
     const auto& limits=p.at("limits");
     if(!limits.is_array() || limits.size()!=4)throw std::invalid_argument("Axis limits require [x_min,x_max,y_min,y_max]");
     std::array<double,4> values;
     for(std::size_t i=0;i<4;++i){if(!limits[i].is_number())throw std::invalid_argument("Axis limits require numbers");values[i]=limits[i].get<double>();}
-    impl->applyPlotLimits(values,impl->fitPlotGeneration);return;
+    const auto option=[&](const char* key,bool current){if(!p.contains(key))return current;if(!p.at(key).is_boolean())throw std::invalid_argument("Axis options require Boolean");return p.at(key).get<bool>();};
+    impl->applyPlotLimits(values,impl->fitPlotGeneration,option("log_x",impl->fitPlotView.log_x),option("log_y",impl->fitPlotView.log_y),option("grid",impl->fitPlotView.grid),option("ticks",impl->fitPlotView.ticks));return;
   }
   if(name=="show_intensity_calibration" || name=="show_intensity_function" || name=="show_intensity_polynomial_fit" || name=="show_intensity_nonlinear_fit" || name=="show_intensity_fit_plot" || name=="show_intensity_calibration_plot" || name=="set_intensity_calibration" || name=="fit_intensity_calibration") {
     if(busy())throw std::invalid_argument("Wait for the current edit");
@@ -11048,13 +11055,18 @@ void Window::Impl::plots() {
     if(fitPlotIsTable && std::none_of(data.curve_y.begin(),data.curve_y.end(),[](float v){return std::isfinite(v);}))ImGui::TextUnformatted("No finite calibrated samples.");
     ImGui::Text("X: pixel value | Y: %s",data.value_unit.c_str());
     if(data.objective=="measured_as_function_of_known")ImGui::TextWrapped("Fit error is measured in pixel values using measured(known).");
-    const auto origin=ImGui::GetCursorScreenPos();
-    const ImVec2 size{std::max(120.f,ImGui::GetContentRegionAvail().x),
-        std::clamp(ImGui::GetContentRegionAvail().y-48.f,80.f,160.f)};
-    ImGui::InvisibleButton("##calibration_fit_canvas",size,ImGuiButtonFlags_MouseButtonLeft|ImGuiButtonFlags_MouseButtonMiddle);
+    const auto widgetOrigin=ImGui::GetCursorScreenPos();
+    const auto labelWidth=std::max(ImGui::CalcTextSize("-8.888e-888").x,ImGui::CalcTextSize("-8.888e+888").x);
+    const auto leftMargin=std::max(64.f*guiScale,labelWidth+8.f*guiScale),rightMargin=std::max(24.f*guiScale,labelWidth/2+4.f*guiScale);
+    const ImVec2 widgetSize{std::max(leftMargin+rightMargin+32.f*guiScale,ImGui::GetContentRegionAvail().x),
+        std::clamp(ImGui::GetContentRegionAvail().y-48.f*guiScale,100.f*guiScale,180.f*guiScale)};
+    const ImVec2 origin{widgetOrigin.x+leftMargin,widgetOrigin.y+10.f*guiScale},size{widgetSize.x-leftMargin-rightMargin,widgetSize.y-36.f*guiScale};
+    ImGui::InvisibleButton("##calibration_fit_canvas",widgetSize,ImGuiButtonFlags_MouseButtonLeft|ImGuiButtonFlags_MouseButtonMiddle);
     observeControl("fit_plot.canvas");
     ImGui::SetItemKeyOwner(ImGuiKey_MouseWheelY);ImGui::SetItemKeyOwner(ImGuiKey_MouseWheelX);
-    const auto& plotInput=ImGui::GetIO();const bool hovered=ImGui::IsItemHovered();
+    const auto& plotInput=ImGui::GetIO();const bool hovered=ImGui::IsItemHovered() &&
+        plotInput.MousePos.x>=origin.x && plotInput.MousePos.x<=origin.x+size.x &&
+        plotInput.MousePos.y>=origin.y && plotInput.MousePos.y<=origin.y+size.y;
     const auto px=std::clamp(double((plotInput.MousePos.x-origin.x)/size.x),0.,1.);
     const auto py=std::clamp(1.-double((plotInput.MousePos.y-origin.y)/size.y),0.,1.);
     if(hovered) {
@@ -11071,23 +11083,20 @@ void Window::Impl::plots() {
     const auto viewLimits=fitPlotView.limits(data);
     auto* draw=ImGui::GetWindowDrawList();const ImVec2 end{origin.x+size.x,origin.y+size.y};
     draw->AddRect(origin,end,ImGui::GetColorU32(ImGuiCol_Border));draw->PushClipRect(origin,end,true);
-    const auto fraction=[](double value,double low,double high) {
-      if(low==high)return .5;
-      // Scaling avoids overflowing finite opposite limits. Bound off-canvas
-      // coordinates before float conversion/ImGui tessellation; clipping still
-      // controls visibility. Non-finite model samples never enter this path.
-      const auto scale=std::max(std::abs(low),std::abs(high));
-      const auto span=high-low,delta=value-low;
-      const auto denominator=std::isfinite(span)?span/scale:high/scale-low/scale;
-      const auto numerator=std::isfinite(delta)?delta/scale:value/scale-low/scale;
-      return std::clamp(numerator/denominator,-10000.,10000.);
-    };
+    if(fitPlotView.grid)for(int i=1;i<4;++i) {
+      const auto f=float(i)/4;
+      draw->AddLine({origin.x+f*size.x,origin.y},{origin.x+f*size.x,end.y},ImGui::GetColorU32(ImGuiCol_Separator));
+      draw->AddLine({origin.x,origin.y+f*size.y},{end.x,origin.y+f*size.y},ImGui::GetColorU32(ImGuiCol_Separator));
+    }
     const auto position=[&](double x,double y) {
-      const auto nx=fraction(x,viewLimits[0],viewLimits[1]),ny=fraction(y,viewLimits[2],viewLimits[3]);
+      const auto nx=CalibrationPlotView::fraction(x,viewLimits[0],viewLimits[1],fitPlotView.log_x),
+          ny=CalibrationPlotView::fraction(y,viewLimits[2],viewLimits[3],fitPlotView.log_y);
       return ImVec2{origin.x+float(nx*size.x),origin.y+size.y-float(ny*size.y)};
     };
-    std::size_t drawnSegments=0;bool finiteGeometry=true;
-    for(std::size_t i=1;i<data.curve_x.size();++i)if(std::isfinite(data.curve_y[i-1]) && std::isfinite(data.curve_y[i])) {
+    const auto representable=[&](double x,double y){return std::isfinite(x) && std::isfinite(y) && (!fitPlotView.log_x || x>0) && (!fitPlotView.log_y || y>0);};
+    std::size_t drawnSegments=0,maskedSegments=0;bool finiteGeometry=true;
+    for(std::size_t i=1;i<data.curve_x.size();++i) {
+      if(!representable(data.curve_x[i-1],data.curve_y[i-1]) || !representable(data.curve_x[i],data.curve_y[i])){++maskedSegments;continue;}
       const auto a=position(data.curve_x[i-1],data.curve_y[i-1]),b=position(data.curve_x[i],data.curve_y[i]);
       if(std::isfinite(a.x) && std::isfinite(a.y) && std::isfinite(b.x) && std::isfinite(b.y)) {
         draw->AddLine(a,b,IM_COL32(70,140,255,255),1.5f);++drawnSegments;
@@ -11095,26 +11104,55 @@ void Window::Impl::plots() {
     }
     Json points=Json::array();
     for(std::size_t i=0;i<data.measured.size();++i) {
+      if(!representable(data.measured[i],data.known[i])){if(headlessSessionActive)points.push_back(nullptr);continue;}
       const auto point=position(data.measured[i],data.known[i]);
       if(std::isfinite(point.x) && std::isfinite(point.y))draw->AddCircleFilled(point,3.f,IM_COL32(255,90,90,255));
       if(headlessSessionActive)points.push_back({point.x,point.y});
     }
     Json cursor=nullptr;
     if(hovered) {
-      const auto x=CalibrationPlotView::interpolate(viewLimits[0],viewLimits[1],px),y=CalibrationPlotView::interpolate(viewLimits[2],viewLimits[3],py);
+      const auto x=CalibrationPlotView::axis_value(viewLimits[0],viewLimits[1],px,fitPlotView.log_x),
+          y=CalibrationPlotView::axis_value(viewLimits[2],viewLimits[3],py,fitPlotView.log_y);
       draw->AddLine({plotInput.MousePos.x,origin.y},{plotInput.MousePos.x,end.y},IM_COL32(150,150,150,130));
       draw->AddLine({origin.x,plotInput.MousePos.y},{end.x,plotInput.MousePos.y},IM_COL32(150,150,150,130));
       ImGui::SetTooltip("X: %.9g\nY: %.9g %s\nCtrl/Shift+wheel: zoom; wheel: pan Y\nMiddle drag: pan; double-click: reset",x,y,data.value_unit.c_str());
       if(headlessSessionActive)cursor={{"x",x},{"y",y}};
     }
     draw->PopClipRect();
+    Json xTicks=Json::array(),yTicks=Json::array();
+    if(fitPlotView.ticks)for(int i=0;i<=4;++i) {
+      const double f=double(i)/4;
+      const auto x=CalibrationPlotView::axis_value(viewLimits[0],viewLimits[1],f,fitPlotView.log_x),
+          y=CalibrationPlotView::axis_value(viewLimits[2],viewLimits[3],f,fitPlotView.log_y);
+      const ImVec2 xp{origin.x+float(f)*size.x,end.y},yp{origin.x,end.y-float(f)*size.y};
+      char label[48];ImVec2 textSize;
+      if(viewLimits[0]!=viewLimits[1] || i==2) {
+      ImFormatString(label,IM_ARRAYSIZE(label),"%.4g",x);textSize=ImGui::CalcTextSize(label);
+      draw->AddLine(xp,{xp.x,xp.y+3},ImGui::GetColorU32(ImGuiCol_Text));
+      draw->AddText({std::clamp(xp.x-textSize.x/2,widgetOrigin.x,widgetOrigin.x+widgetSize.x-textSize.x),xp.y+4},ImGui::GetColorU32(ImGuiCol_Text),label);
+      if(headlessSessionActive)xTicks.push_back({{"value",x},{"label",label},{"point",{xp.x,xp.y}}});
+      }
+      if(viewLimits[2]!=viewLimits[3] || i==2) {
+      ImFormatString(label,IM_ARRAYSIZE(label),"%.4g",y);textSize=ImGui::CalcTextSize(label);
+      draw->AddLine(yp,{yp.x-3,yp.y},ImGui::GetColorU32(ImGuiCol_Text));
+      draw->AddText({std::max(widgetOrigin.x,yp.x-textSize.x-5),std::clamp(yp.y-textSize.y/2,widgetOrigin.y,end.y-textSize.y)},ImGui::GetColorU32(ImGuiCol_Text),label);
+      if(headlessSessionActive)yTicks.push_back({{"value",y},{"label",label},{"point",{yp.x,yp.y}}});
+      }
+    }
     ImGui::Text("X: %.6g to %.6g | Y: %.6g to %.6g",viewLimits[0],viewLimits[1],viewLimits[2],viewLimits[3]);
+    char logNotice[96]{};
+    if(fitPlotView.log_x || fitPlotView.log_y) {
+      ImFormatString(logNotice,IM_ARRAYSIZE(logNotice),"Log %s%s: nonpositive values are omitted.",fitPlotView.log_x?"X":"",fitPlotView.log_y?(fitPlotView.log_x?"/Y":"Y"):"");
+      ImGui::TextWrapped("%s",logNotice);
+    }
     if(headlessSessionActive)fitPlotObservation={{"kind",fitPlotIsTable?"calibration_table":"fit"},{"function",data.function},{"value_unit",data.value_unit},{"objective",data.objective},
       {"measured",data.measured},{"known",data.known},{"curve_x",data.curve_x},{"curve_y",data.curve_y},
       {"limits",{data.x_min,data.x_max,data.y_min,data.y_max}},{"data_screen_points",std::move(points)},
       {"canvas_origin",{origin.x,origin.y}},{"canvas_size",{size.x,size.y}},{"source_id",fitPlotSource->id()},
       {"finite_geometry",finiteGeometry},{"drawn_segments",drawnSegments},{"visible",true},
-      {"view_limits",viewLimits},{"viewport",fitPlotView.fractions},{"cursor",std::move(cursor)}};
+      {"view_limits",viewLimits},{"viewport",fitPlotView.fractions},{"cursor",std::move(cursor)},
+      {"log_x",fitPlotView.log_x},{"log_y",fitPlotView.log_y},{"grid",fitPlotView.grid},{"ticks",fitPlotView.ticks},
+      {"grid_lines",fitPlotView.grid?6:0},{"x_ticks",std::move(xTicks)},{"y_ticks",std::move(yTicks)},{"masked_segments",maskedSegments},{"log_notice",logNotice}};
     ImGui::End();return;
   }
 
