@@ -1,5 +1,45 @@
 # Three-agent execution plan
 
+## Polynomial calibration fitting consumer — 2026-10-28
+
+C++/Python ImageJIntensityCalibration.fit_polynomial and shared Analyze → Fit
+Polynomial Calibration now fit straight lines and degrees 2–4. Points must be
+finite, paired, within the raw source range, and number degree+1 through 4096.
+Straight lines follow ImageJ direct regression; higher degrees use scaled,
+twice-reorthogonalized QR. Deficient rank or unstable original-coordinate
+coefficients fail before mutation. Fitted data/coefficients/RMSE/R-squared use
+existing immutable function provenance and table generation; no new codec.
+
+Both Windows hosts physically enter a quadratic, reject mismatched counts,
+acknowledge/correct the draft, report RMSE/R-squared, reopen the paired values
+and preserve the exact fitted record/table through session reopen. All 315
+focused checks pass, no skips. Eight pinned ImageJ exact/noisy polynomial cases
+are checked on both integer types with explicit numerical tolerances and an
+independent NumPy least-squares oracle. Two signed-line cases check exact
+ImageJ coefficients/classification. Linux native literals/refusals pass.
+[Scoped evidence](parity/reviews/G034-intensity-polynomial-fit-progress001.json).
+
+A new unpublished test incorrectly expected three-point signed-line fitting to
+produce exact [-32768,1]. Independent ImageJ observation instead produces tiny
+coefficient differences and unsigned classification; two endpoints are exact
+and signed. Source behavior already matched; the new assumption was corrected,
+both cases retained, and failure diagnostics preserved. Historical pins unchanged.
+
+Next required fitting work: the ten nonlinear models, automatic initialization/
+settings/convergence and fit plots/global-calibration behavior. This polynomial
+path is not complete ImageJ fitting parity. Table import/export, calibration
+replay, downstream measurement/histogram, broader platforms/original references
+and fair performance remain open. Family counts stay 47 in progress/52 open/
+0 complete. Commercial-use inventory passes; no new dependency/environment.
+
+Scratch is retired. Current capture members are losslessly verified in a solid
+tar.xz (384,292 B versus ZIP 2,305,092 B). Original ZIP container bytes are retired;
+all capture member bytes remain exact. Original receipt/pins unchanged. Raw
+superseded identity paths archived; older full139 capture bytes unavailable.
+Current153 identities/154 capture contents retained. Known whole-root
+8,589,843,586 B; two denied caches keep the full 8 GiB budget unverified.
+
+
 ## Calibration functions through the shared consumer — 2026-10-28
 
 C++ ImageJIntensityCalibration::function now generates all14 ImageJ numeric

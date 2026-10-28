@@ -19,6 +19,14 @@ void bind_imagej_projection(py::module_& m) {
       return ImageJIntensityCalibration::function(type,name,coefficients,std::move(unit),zero_clip,inverted_lut);
     },py::arg("pixel_type"),py::arg("name"),py::arg("coefficients"),py::arg("value_unit")="Gray Value",
       py::kw_only(),py::arg("zero_clip")=false,py::arg("inverted_lut")=false)
+    .def_static("fit_polynomial",[](const std::string& pixel_type,const std::string& name,
+        const std::vector<double>& measured,const std::vector<double>& known,std::string unit,bool zero_clip){
+      if(pixel_type!="uint8" && pixel_type!="uint16")throw std::invalid_argument("Intensity fits require uint8/uint16");
+      const auto type=pixel_type=="uint8"?PixelType::UInt8:PixelType::UInt16;
+      py::gil_scoped_release release;
+      return ImageJIntensityCalibration::fit_polynomial(type,name,measured,known,std::move(unit),zero_clip);
+    },py::arg("pixel_type"),py::arg("name"),py::arg("measured"),py::arg("known"),py::arg("value_unit")="Gray Value",
+      py::kw_only(),py::arg("zero_clip")=false)
     .def_static("from_record",[](py::dict value){return ImageJIntensityCalibration::from_record(metadata_value(value));})
     .def_property_readonly("record",[](const ImageJIntensityCalibration& value){return metadata_python(value.record());})
     .def_property_readonly("value_unit",&ImageJIntensityCalibration::value_unit)

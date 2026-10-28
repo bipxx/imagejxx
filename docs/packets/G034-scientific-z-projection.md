@@ -1,5 +1,15 @@
 # Scientific Z projection
 
+Fitting update, 2026-10-28: straight-line and polynomial degrees 2–4 now have
+C++/Python/shared ImGui consumers through the existing immutable generator.
+Both hosts physically verify invalid paired-count recovery, quadratic fitting,
+diagnostics/draft reopen and exact fitted record/table session persistence.
+315 focused checks pass; pinned ImageJ and independent least-squares checks are
+scoped numerical evidence, not identical polynomial minimizer qualification.
+[Evidence](../parity/reviews/G034-intensity-polynomial-fit-progress001.json).
+Ten nonlinear fits, fitting UI parity, table import/export and replay remain open.
+
+
 Function generation update,2026-10-28: all14 ImageJ numeric calibration functions
 and UInt8 optical density now have C++/Python/shared ImGui consumers.124 pinned
 ImageJ configurations compare all-code table hashes (NaNs canonical, other bits

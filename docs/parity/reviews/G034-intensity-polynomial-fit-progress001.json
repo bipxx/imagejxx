@@ -1,0 +1,160 @@
+{
+  "schema": "imagejxx.scoped-progress",
+  "version": 1,
+  "source_base": "03e683c8ddf9c5619303f676a28acf99edbc09f0",
+  "scope": "Straight-line and polynomial degree2-4 calibration fitting through C++, Python, shared ImGui and existing immutable table/history/session seam",
+  "acceptance_claim": false,
+  "source_inputs": [
+    {
+      "path": "include/imagejxx/imagej_intensity_calibration.hpp",
+      "bytes": 4487,
+      "sha256": "3e14e3540f1915253e0a3e4973eb33817f59b7df76d2811be5db1f76b60b6610"
+    },
+    {
+      "path": "src/native/imagej_intensity_calibration.cpp",
+      "bytes": 17885,
+      "sha256": "17259c8709b70471afb124abaf4b0d3becd0756b3a0c7507c673fbc09ca53fbd"
+    },
+    {
+      "path": "src/native/imagej_projection_bindings.cpp",
+      "bytes": 5303,
+      "sha256": "70e6b784bf88e17350fcade229feeb2e32070e3685583491cdeeaf3e94d1b057"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 783251,
+      "sha256": "908a3be31054fbc401efd5bbdd3cd192dad593f916e9b725bacfc85489230f1c"
+    },
+    {
+      "path": "src/desktop/imagej_projection_ui_probe.cpp",
+      "bytes": 17798,
+      "sha256": "19b52babb58c11dcbc105fb5bf2d4c2906e9b9c9dfa8477127bbac47174bf344"
+    },
+    {
+      "path": "tests/native/test_imagej_projection_execution.cpp",
+      "bytes": 17426,
+      "sha256": "95b44545d7f0498032ff5f57ffffde12bf1bb280ab94737c9882c8b27480d44c"
+    },
+    {
+      "path": "tests/python/test_intensity_calibration_editor.py",
+      "bytes": 11179,
+      "sha256": "60e92672b11c7b6da7bc0ad885ab890f7b1e7897faa0453012027aef4ac130c9"
+    },
+    {
+      "path": "tests/reference/ObserveIntensityPolynomialFits.java",
+      "bytes": 1234,
+      "sha256": "51a2137d23d1ed02c357a2636559f241e14e031cdc625c8beb147f29607c90a4"
+    },
+    {
+      "path": "tests/reference/ObserveIntensitySignedLinearFits.java",
+      "bytes": 834,
+      "sha256": "29308b2b50024eeac02c1fdd17b262b20e66b6ce3f007cbd789ddbc2696c6cd1"
+    },
+    {
+      "path": "docs/parity/reviews/G034-intensity-polynomial-fits-reference001.jsonl.gz",
+      "bytes": 667,
+      "sha256": "f84a7b049cba16a5f6218642cc17fb339074e12f247b219924ff293a5a419eb2"
+    },
+    {
+      "path": "docs/parity/reviews/G034-intensity-signed-linear-fits-reference001.jsonl.gz",
+      "bytes": 128,
+      "sha256": "dc29b89bda9aa3cb11f54a7efb2c294671e7d6ec15a9f7aac0b093b4902e0110"
+    }
+  ],
+  "reference": {
+    "polynomial": {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-reference146/receipt.json",
+      "bytes": 3062,
+      "sha256": "4ed271acce942dc4555184c7ed1d6d83dc906808cec0c18254a4ff22a915fca8"
+    },
+    "signed_line": {
+      "path": ".tmp/manual-workflow-verification/intensity-signed-fit-reference152/receipt.json",
+      "bytes": 3373,
+      "sha256": "d9d9ddb82c311be5fb80822892b5ae47a69dc461db04cf787dceebe16b1f243d"
+    },
+    "comparison": "Eight exact/noisy ImageJ cases for four functions, checked on UInt8/UInt16 with toleranced parameters and R-squared; independent NumPy least-squares coefficients/all-code Float32 predictions also checked. Two signed-line cases check exact ImageJ coefficients/classification. Not identical polynomial minimizer or table-bit claims."
+  },
+  "verification": {
+    "windows_build": {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-windows-build153/receipt.json",
+      "bytes": 22359,
+      "sha256": "341c1b27fee4221d888ea0635a0e77d9aded19e1d707675431b7ccec6989c297"
+    },
+    "installed": {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-installed154/receipt.json",
+      "bytes": 18718,
+      "sha256": "d170f31207e8015fce5de885345cfb08278d9b180a233b3cd44d75ca08499dc3"
+    },
+    "junit": {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-installed154/results.xml",
+      "bytes": 45499,
+      "sha256": "f9980f0df8830dd0cee2db9fda027d434e78fbab95de853c5a91cfdf41d87d8f"
+    },
+    "current_capture_archive": {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-capture-compaction159/captures.tar.xz",
+      "bytes": 384292,
+      "sha256": "b8aba0cb2fe650e23dad5dd203fe64dd1892177b7ae103817c4b6474885c791c"
+    },
+    "capture_compaction": {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-capture-compaction159/receipt.json",
+      "bytes": 3893,
+      "sha256": "14f8ba94c6fa4c6905c91189b2c26790e10e0862dd4ae071130d3b1486fbf37a"
+    },
+    "linux_source": {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-core-linux150/receipt.json",
+      "bytes": 79813,
+      "sha256": "9112416b1d849f175c5d3725e9fb36c28dbf9964eeca009f1f3df53037c0ddb3"
+    },
+    "tests": 315,
+    "failures": 0,
+    "skips": 0,
+    "composition": "292 installed processing/editor checks plus23 mocked capture-transport controls; both Windows hosts physically exercise231 calibration/function/fitting frames and229 projection frames.",
+    "license_log": {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-license161.log",
+      "bytes": 53,
+      "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+    }
+  },
+  "implemented": [
+    "Native fit_polynomial supports straight_line/poly2/poly3/poly4, matching finite measured/known pairs, source raw range and degree+1..4096 count.",
+    "Direct ImageJ unweighted regression for straight lines; scaled twice-reorthogonalized QR for higher degrees. Reject rank deficiency and unstable original-coordinate reconstruction.",
+    "Fit coefficients/raw data/RMSE/R-squared stored in existing immutable function provenance; constant-known R-squared is null. Existing generator produces the table.",
+    "Python factory and shared Analyze Fit Polynomial Calibration dialog with function/data/unit/8-bit zero-clip; RMSE/R-squared in visible status, paired-data prefill on reopen.",
+    "Actual quadratic data entry, mismatched-count refusal before history/data mutation, error acknowledgement/correction, draft Cancel and fitted record/table session reopen in both hosts."
+  ],
+  "failure_resolution": "148 native test aborted on a new unpublished assumption that a three-point signed line would have exact[-32768,1] coefficients;151 caught/printed assertion. Pinned ImageJ152 shows three-point[-32768.00000000001,1.0000000000000002] is unsigned, while two endpoints are exact/signed. Implementation matched source; incorrect new test corrected and both observations independently retained. Historical expectations unchanged.",
+  "remaining": [
+    "Ten nonlinear ImageJ models still require fitting, automatic initialization/settings and convergence handling; this API is explicitly polynomial.",
+    "Fit plot/goodness UI parity, global calibration behavior, exact acceptance/failure semantics and coefficient-bit-sensitive downstream parity beyond selected cases remain open.",
+    "Calibration table import/export, workflow replay and downstream measurement/histogram remain open.",
+    "Full installed SDK/platform/reference gates and matched performance remain open. Local installed C++ SDK unchanged; Linux source consumers are not installed SDK/UI or full differential qualification."
+  ],
+  "storage": {
+    "path": ".tmp/manual-workflow-verification/intensity-fit-storage-final160.json",
+    "bytes": 1520,
+    "sha256": "b353f70f31a3b1e63caf3ff28e6f341a38340cf602fd1dbae15af3d5a962a64b"
+  },
+  "retention": {
+    "logs_failures_scratch": {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-retention155/receipt.json",
+      "bytes": 10364,
+      "sha256": "7a7645917e8255ebb8d83102b608b794f771896f51219c475f074a730024d6ab"
+    },
+    "identity_manifests": {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-manifest-retention156/receipt.json",
+      "bytes": 2682,
+      "sha256": "3ff46dde26c5874d1fe2ab5ee5146e11c29a71713cc72ce3f73adf6135ff7e9c"
+    },
+    "superseded_capture": {
+      "path": ".tmp/manual-workflow-verification/intensity-fit-capture-retention157.json",
+      "bytes": 3264,
+      "sha256": "728aa8006ec1accf1a02f9c33425f1712c7e69ac325c3a58f7ced21e3ef41e70"
+    },
+    "note": "Same active cache/runtime. Current153 raw identities and all154 capture member bytes retained in hash-verified solid tar.xz. Original154 ZIP container bytes retired/unavailable; original receipt/pins unchanged. Superseded138/148/151 raw identity paths archived exactly. Original139 full captures retired/unavailable. Failure/compiler/Java/Linux/test scratch retired after terminal proof and necessary lossless diagnostics retained."
+  },
+  "family_status": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  }
+}

@@ -235,6 +235,16 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   menu("show_intensity_function");report["function_dialog"]=last.at("dialog");
   click(last.at("dialog").at("controls").at("cancel"),"function_cancel");
   const auto functionSnapshot=owner->snapshot();
+  menu("show_intensity_polynomial_fit");choose("function","poly2");editText("measured","[0,1,2]");editText("known","[5,7]");
+  click(last.at("dialog").at("controls").at("apply"),"invalid_fit_apply");
+  report["invalid_fit"]={{"state",state(w)},{"error",last.at("error_modal")},{"busy",w.busy()}};
+  frame();frame();click(last.at("error_modal").at("controls").at("ok"),"fit_error_ok");
+  editText("known","[1,4,9]");
+  click(last.at("dialog").at("controls").at("apply"),"fit_apply");report["fitted"]=state(w);
+  report["fit_status"]=last.at("status");
+  menu("show_intensity_polynomial_fit");report["fit_dialog"]=last.at("dialog");
+  click(last.at("dialog").at("controls").at("cancel"),"fit_cancel");
+  const auto fittedSnapshot=owner->snapshot();
 
   session.close();report["lifecycle"]=session.lifecycle();
   SessionCapture capture;capture.documents.push_back(calibrated);
@@ -242,7 +252,10 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   report["reopened"]=state(w);
   SessionCapture functionCapture;functionCapture.documents.push_back(functionSnapshot);
   save_session((directory/"function.ijx").u8string(),functionCapture);w.openFile((directory/"function.ijx").u8string());
-  report["function_reopened"]=state(w);report["state"]="observed";report["error"]=w.error();
+  report["function_reopened"]=state(w);
+  SessionCapture fitCapture;fitCapture.documents.push_back(fittedSnapshot);
+  save_session((directory/"fitted.ijx").u8string(),fitCapture);w.openFile((directory/"fitted.ijx").u8string());
+  report["fit_reopened"]=state(w);report["state"]="observed";report["error"]=w.error();
   require(report.dump().size()<16*1024*1024,"Calibration report byte limit");
   writeJson((directory/"case.json").u8string(),report);failure.done=true;return report;
 }

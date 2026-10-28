@@ -51,7 +51,7 @@ void unchanged(const DocumentSnapshot& before,const std::shared_ptr<Document>& d
   check(now.revisions().matches(before.revisions(),Change::All));
 }
 }
-int main() {
+int main() try {
   auto doc=source();Application app;app.adopt(doc);
   const auto before=doc->snapshot();const auto history=doc->undo_steps();
   auto r=request();auto prepared=prepare_imagej_projection(before,r);
@@ -245,5 +245,16 @@ int main() {
   reject([&]{ImageJIntensityCalibration::function(PixelType::Float32,"straight_line",{0,1});});
   reject([&]{ImageJIntensityCalibration::function(PixelType::UInt16,"uncalibrated_od",{});});
   reject([&]{ImageJIntensityCalibration::function(PixelType::UInt8,"poly2",{0,1});});
+  auto fitted=ImageJIntensityCalibration::fit_polynomial(PixelType::UInt16,"straight_line",{0,1,2},{5,7,9},"unit");
+  check(fitted.table_words()[0]==0x40a00000U && fitted.table_words()[1]==0x40e00000U);
+  auto fitSigned=ImageJIntensityCalibration::fit_polynomial(PixelType::UInt16,"straight_line",{0,65535},{-32768,32767});
+  check(fitSigned.signed16_density());
+  auto quadratic=ImageJIntensityCalibration::fit_polynomial(PixelType::UInt8,"poly2",{0,1,2,3},{1,4,9,16});
+  check(quadratic.table_words()[1]==0x40800000U);
+  reject([&]{ImageJIntensityCalibration::fit_polynomial(PixelType::UInt8,"poly2",{1,1,1},{1,2,3});});
+  reject([&]{ImageJIntensityCalibration::fit_polynomial(PixelType::UInt8,"straight_line",{0,256},{0,1});});
+  reject([&]{ImageJIntensityCalibration::fit_polynomial(PixelType::UInt8,"straight_line",{0,1},{0});});
   std::cout<<"Prepared scientific projection: metadata, channel display, source/candidate guards, cancellation, session and capture passed\n";
+} catch(const std::exception& error) {
+  std::cerr<<error.what()<<"\n";return 1;
 }

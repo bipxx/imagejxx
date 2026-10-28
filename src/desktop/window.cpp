@@ -1604,7 +1604,7 @@ struct Window::Impl {
     if (action == "shadow_imagej" || (action == "show_operation" && operationId == "shadow_imagej"))
       return owner.controller_->active_document_id() == source->id &&
              scientific_operation_review_available("shadow_imagej", source->nativeSnapshot());
-    if(action=="show_intensity_function") {
+    if(action=="show_intensity_function" || action=="show_intensity_polynomial_fit") {
       const auto& dataset=source->nativeSnapshot().data().dataset;
       return !owner.busy() && owner.controller_->active_document_id()==source->id && dataset.shape().s==1 &&
           (dataset.pixel_type()==PixelType::UInt8 || dataset.pixel_type()==PixelType::UInt16);
@@ -6525,7 +6525,7 @@ void Window::action(const std::string &name, const Json &p) {
   // not bypass its capability check before clipboard, files or jobs change.
   if (targetId && !targeted.count(name))
     impl->requireAction(name, 0, operationId);
-  if(name=="show_intensity_calibration" || name=="show_intensity_function" || name=="set_intensity_calibration") {
+  if(name=="show_intensity_calibration" || name=="show_intensity_function" || name=="show_intensity_polynomial_fit" || name=="set_intensity_calibration") {
     if(busy())throw std::invalid_argument("Wait for the current edit");
     const auto source=nativeSnapshot();
     if(targetId && targetId!=source.id())throw std::invalid_argument("Calibration requires the active document");
@@ -6538,6 +6538,45 @@ void Window::action(const std::string &name, const Json &p) {
     for(const auto& field:p.items())if(field.key()!="document_id")throw std::invalid_argument("Unknown calibration dialog field");
     const auto calibration=read_imagej_intensity_calibration(source);
     const auto record=metadataJson(calibration.record());
+    if(name=="show_intensity_polynomial_fit") {
+      const auto type=source.data().dataset.pixel_type();
+      if(source.data().dataset.shape().s!=1 || (type!=PixelType::UInt8 && type!=PixelType::UInt16))
+        throw std::invalid_argument("Calibration fitting requires scalar UInt8/UInt16");
+      Json values{{"function","straight_line"},{"measured","[0,1]"},{"known","[0,1]"},
+        {"value_unit",calibration.value_unit()},{"zero_clip",false}};
+      const auto parameters=metadataJson(calibration.source_parameters());
+      if(parameters.contains("fit") && parameters.at("fit").is_object()) {
+        const auto& fit=parameters.at("fit");
+        const auto method=fit.value("method",std::string());
+        if(method=="scaled_reorthogonalized_qr" || method=="imagej_linear_regression") {
+          values["function"]=parameters.at("function");values["zero_clip"]=parameters.at("zero_clip");
+          values["measured"]=fit.at("measured").dump();values["known"]=fit.at("known").dump();
+        }
+      }
+      impl->stopAnimation("intensity_calibration");
+      impl->ask("Fit Polynomial Calibration",std::move(values),[this,source,type](Json fields) {
+        const auto now=nativeSnapshot();
+        if(!source.same_document(now) || !source.revisions().matches(now.revisions(),Change::All))throw RevisionConflict();
+        const auto points=[&](const char* key){
+          const auto values=Json::parse(fields.at(key).get<std::string>());
+          if(!values.is_array() || values.size()>4096)throw std::invalid_argument("Enter at most4096 values in [a,b,...] form");
+          std::vector<double> result;for(const auto& v:values){if(!v.is_number())throw std::invalid_argument("Fit points must be numbers");result.push_back(v.get<double>());}return result;
+        };
+        const auto measured=points("measured"),known=points("known");
+        const auto value=ImageJIntensityCalibration::fit_polynomial(type,fields.at("function").get<std::string>(),measured,known,
+          fields.at("value_unit").get<std::string>(),fields.at("zero_clip").get<bool>());
+        const auto diagnostics=metadataJson(value.source_parameters()).at("fit");
+        auto message=std::string("Calibration fit RMSE: ")+diagnostics.at("rmse").dump()+
+          "; R-squared: "+diagnostics.at("r_squared").dump();
+        action("set_intensity_calibration",{{"record",metadataJson(value.record())}});
+        impl->status.swap(message);
+      },Json::array({{{"name","function"},{"label","Function"},{"kind","text"},{"choices",{"straight_line","poly2","poly3","poly4"}}},
+        {{"name","measured"},{"label","Measured values [a,b,...]"},{"kind","text"}},
+        {{"name","known"},{"label","Known values [a,b,...]"},{"kind","text"}},
+        {{"name","value_unit"},{"label","Value unit"},{"kind","text"}},
+        {{"name","zero_clip"},{"label","Clip negatives (8-bit tables)"},{"kind","bool"}}}),"intensity_polynomial_fit");
+      return;
+    }
     if(name=="show_intensity_function") {
       const auto type=source.data().dataset.pixel_type();
       if(source.data().dataset.shape().s!=1 || (type!=PixelType::UInt8 && type!=PixelType::UInt16))
@@ -9516,6 +9555,7 @@ void Window::Impl::menu() {
   if (analyzeMenuOpen) {
     item("Intensity Calibration...", "show_intensity_calibration");
     item("Calibration Function...", "show_intensity_function");
+    item("Fit Polynomial Calibration...", "show_intensity_polynomial_fit");
     item("Measure", "measure", "M");
     item("Measure ROIs", "measure_rois");
     if(actionAllowed("show_histogram"))item("Histogram...", "show_histogram");

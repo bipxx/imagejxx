@@ -3,6 +3,8 @@
 #include <imagejxx/imagej_dataset_projection.hpp>
 #include "axis_command_record.hpp"
 #include "session_metadata.hpp"
+#include <algorithm>
+#include <array>
 #include <cmath>
 #include <cstring>
 #include <limits>
@@ -138,6 +140,78 @@ ImageJIntensityCalibration ImageJIntensityCalibration::function(PixelType type,
     {"zero_clip",zero_clip},{"inverted_lut",inverted_lut},{"canonical_nan",true}};
   const bool signed16=bits==16 && p.size()>=2 && p[0]==-32768.0 && p[1]==1.0;
   return lookup(type,words,std::move(unit),std::move(parameters),signed16);
+}
+ImageJIntensityCalibration ImageJIntensityCalibration::fit_polynomial(PixelType type,
+    const std::string& name,const std::vector<double>& x,const std::vector<double>& y,
+    std::string unit,bool zero_clip) {
+  const auto count=table_size(depth(type));validate_unit(unit);
+  const int degree=name=="straight_line"?1:name=="poly2"?2:name=="poly3"?3:name=="poly4"?4:0;
+  if(!degree)throw std::invalid_argument("Polynomial fit supports straight_line/poly2/poly3/poly4");
+  const auto m=std::size_t(degree+1),n=x.size();
+  if(n!=y.size() || n<m || n>4096)throw std::invalid_argument("Fit requires matching point counts from degree+1 through4096");
+  double lo=x[0],hi=x[0],yscale=1;
+  for(std::size_t i=0;i<n;++i) {
+    if(!std::isfinite(x[i]) || !std::isfinite(y[i]) || x[i]<0 || x[i]>double(count-1))
+      throw std::invalid_argument("Fit points require finite values and measured values in the source range");
+    lo=std::min(lo,x[i]);hi=std::max(hi,x[i]);yscale=std::max(yscale,std::abs(y[i]));
+  }
+  const double center=lo+(hi-lo)/2,scale=(hi-lo)/2;
+  if(scale==0)throw std::invalid_argument("Fit measured values are rank deficient");
+  std::array<std::vector<double>,5> q;
+  std::array<std::array<double,5>,5> r{};
+  std::array<double,5> rhs{},a{},coefficients{},basis{};basis[0]=1;
+  for(std::size_t j=0;j<m;++j) {
+    auto& v=q[j];v.resize(n);
+    for(std::size_t i=0;i<n;++i){const double z=(x[i]-center)/scale;double power=1;for(std::size_t k=0;k<j;++k)power*=z;v[i]=power;}
+    // A second MGS pass controls loss of orthogonality for clustered samples.
+    for(int pass=0;pass<2;++pass)for(std::size_t k=0;k<j;++k) {
+      double dot=0;for(std::size_t i=0;i<n;++i)dot+=q[k][i]*v[i];r[k][j]+=dot;
+      for(std::size_t i=0;i<n;++i)v[i]-=dot*q[k][i];
+    }
+    double norm=0;for(double value:v)norm=std::hypot(norm,value);
+    if(norm<=std::numeric_limits<double>::epsilon()*double(n)*std::sqrt(double(n)))
+      throw std::invalid_argument("Fit measured values are rank deficient");
+    r[j][j]=norm;for(std::size_t i=0;i<n;++i){v[i]/=norm;rhs[j]+=v[i]*(y[i]/yscale);}
+  }
+  for(int j=degree;j>=0;--j){double value=rhs[std::size_t(j)];for(std::size_t k=std::size_t(j)+1;k<m;++k)value-=r[std::size_t(j)][k]*a[k];a[std::size_t(j)]=value/r[std::size_t(j)][std::size_t(j)];}
+  for(std::size_t j=0;j<m;++j) {
+    for(std::size_t k=0;k<=j;++k)coefficients[k]+=a[j]*basis[k]*yscale;
+    std::array<double,5> next{};
+    for(std::size_t k=0;k<=j;++k){next[k]-=basis[k]*(center/scale);if(k<4)next[k+1]+=basis[k]/scale;}
+    basis=next;
+  }
+  // Match ImageJ's direct unweighted line regression (not its nonlinear
+  // minimizer); exact coefficient comparisons affect signed16 detection.
+  if(degree==1) {
+    double sx=0,sxx=0,sxy=0,sy=0;
+    for(std::size_t i=0;i<n;++i){sx+=x[i];sxx+=x[i]*x[i];sxy+=x[i]*y[i];sy+=y[i];}
+    const double denominator=sxx-sx*sx/double(n);
+    if(!(denominator>0) || !std::isfinite(denominator))throw std::invalid_argument("Line fit coordinates are numerically singular");
+    coefficients[1]=(sxy-sx*sy/double(n))/denominator;
+    coefficients[0]=(sy-coefficients[1]*sx)/double(n);
+  }
+  double sse=0,mean=0;for(double value:y)mean+=(value/yscale)/double(n);
+  double tss=0;MetadataArray measured,known;
+  for(std::size_t i=0;i<n;++i) {
+    double prediction=coefficients[std::size_t(degree)];for(int j=degree-1;j>=0;--j)prediction=prediction*x[i]+coefficients[std::size_t(j)];
+    const double z=(x[i]-center)/scale;
+    double normalized=a[std::size_t(degree)];for(int j=degree-1;j>=0;--j)normalized=normalized*z+a[std::size_t(j)];
+    if(!std::isfinite(prediction) || std::abs(prediction/yscale-normalized)>1e-8*std::max(1.0,std::abs(normalized)))
+      throw std::invalid_argument("Fit coefficients are unstable in original coordinates; use a wider measured range");
+    const double residual=prediction/yscale-y[i]/yscale;sse+=residual*residual;
+    const double centered=y[i]/yscale-mean;tss+=centered*centered;
+    measured.emplace_back(x[i]);known.emplace_back(y[i]);
+  }
+  const double rmse=std::sqrt(sse/double(n))*yscale;
+  if(!std::isfinite(rmse))throw std::invalid_argument("Fit residuals exceed the finite range");
+  auto result=function(type,name,std::vector<double>(coefficients.begin(),coefficients.begin()+degree+1),std::move(unit),zero_clip);
+  auto fields=object(result.record());auto parameters=result.source_parameters();
+  parameters["fit"]=metadata_object({{"method",std::string(degree==1?"imagej_linear_regression":"scaled_reorthogonalized_qr")},
+    {"version",std::int64_t(1)},{"measured",metadata_array(std::move(measured))},
+    {"known",metadata_array(std::move(known))},{"rmse",rmse},
+    {"r_squared",tss>0?MetadataValue(1-sse/tss):MetadataValue(std::monostate{})}});
+  fields["source_parameters"]=metadata_object(std::move(parameters));
+  return from_record(metadata_object(std::move(fields)));
 }
 ImageJIntensityCalibration ImageJIntensityCalibration::from_record(const MetadataValue& value) {
   const auto& fields = object(value);

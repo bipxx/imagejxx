@@ -1,5 +1,14 @@
 # Shortest delivery paths by API and setting key
 
+Polynomial fit update, 2026-10-28: fit_polynomial supplies coefficients and
+bounded raw-pair/residual provenance to the same immutable function generator.
+Shared Analyze dialog reuses native set/Undo/session and reports fit quality.
+Keep exact ImageJ line regression because coefficient bits control signed16;
+higher polynomial QR is a numerically checked solver, not the ImageJ minimizer.
+Next extend nonlinear fitting through this same producer/consumer seam.
+[Evidence](../parity/reviews/G034-intensity-polynomial-fit-progress001.json).
+
+
 Function producer update,2026-10-28: use ImageJIntensityCalibration::function /
 Python ImageJIntensityCalibration.function and Analyze → Calibration Function.
 All14 numeric built-ins and UInt8 OD reuse immutable lookup/provenance; no new

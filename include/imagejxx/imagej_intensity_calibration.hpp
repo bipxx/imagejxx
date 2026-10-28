@@ -28,6 +28,15 @@ public:
       const std::string& name, const std::vector<double>& coefficients,
       std::string value_unit = "Gray Value", bool zero_clip = false,
       bool inverted_lut = false);
+  // Least-squares straight_line/poly2/poly3/poly4 fit. Bounded to4096 finite
+  // measured/known pairs; measured values must lie in the integer type range.
+  // ImageJ direct line regression; higher degrees use reorthogonalized QR on
+  // scaled coordinates, rejecting deficient rank/unstable conversion. Fitted
+  // coefficients/data/residual diagnostics use existing function provenance.
+  static ImageJIntensityCalibration fit_polynomial(PixelType type,
+      const std::string& name, const std::vector<double>& measured,
+      const std::vector<double>& known, std::string value_unit = "Gray Value",
+      bool zero_clip = false);
   static ImageJIntensityCalibration from_record(const MetadataValue& value);
   const MetadataValue& record() const { return record_; }
   ImageJIntensityMode mode() const { return mode_; }
