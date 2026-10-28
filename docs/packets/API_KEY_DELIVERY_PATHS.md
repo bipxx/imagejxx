@@ -1,5 +1,31 @@
 # Shortest delivery paths by API and setting key
 
+## Captured source captions on calibration plots — 2026-10-28
+
+Live and retained calibration plots now display the source title captured when
+their shared immutable payload was prepared. Manual Apply, explicit table/fit
+plots and asynchronous fitted publication all capture metadata before commit.
+Snapshots preserve the original title after rename/closure without retaining a
+document/provider or looking up current metadata during rendering. The payload
+lease charges title string capacity once; Python snapshot summaries expose exact
+source_title. Empty titles display an untitled-source placeholder; CSV unchanged.
+
+Windows installed757 focused checks pass with zero failures/skips, plus native
+consumers. New checks cover all three publication routes, Unicode/literal ID and
+format text, rename/close retention and large-title quota refusal before commit.
+Both UI lifecycle cases retain original Unicode captions through fixture rename
+and source closure; snapshot case remains92/192 frames, calibration606/608.
+Linux private C++17 payload consumer passes against existing SDK. No Linux UI,
+OS/GPU, whole-family or speed promotion; tracker47 in progress/52 open/0 complete.
+[Scoped evidence](parity/reviews/G034-calibration-plot-caption-progress001.json).
+
+All owned terminal scratch retired after lossless verification; compression
+recovered326,970B. Known roots8,471,863,221B, two denied caches keep full
+8GiB budget unverified. Same caches/runtime/SDK, no new dependencies or reference
+fingerprint changes. Next: on-canvas annotation placement/style and image export;
+nice/minor ticks and generic plot reuse. Persistence, independent OS windows and
+broader calibration/downstream/platform/reference/performance gates stay open.
+
 ## Source-independent floating calibration plot snapshots — 2026-10-28
 
 Keep snapshot and Duplicate snapshot now retain immutable prepared plot data and

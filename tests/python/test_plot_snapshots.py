@@ -104,6 +104,7 @@ def test_actual_floating_snapshot_lifecycle(context,tmp_path):
     for frame in report["frames"]:assert frame["events"]==frame["input_frame"]["raw_inputs"]
     first=report["first_info"][0];second=report["second_info"][1]
     assert first["payload_id"]==second["payload_id"]==report["live"]["payload_id"]
+    assert first["source_title"]==second["source_title"]==report["live"]["source_title"]=="Snapshot source µ #1"
     baseline=report["memory_before"]["retained_bytes"]
     assert report["memory_first"]["retained_bytes"]==baseline+first["window_bytes"]
     assert report["memory_second"]["retained_bytes"]==baseline+first["window_bytes"]+second["window_bytes"]
@@ -113,6 +114,7 @@ def test_actual_floating_snapshot_lifecycle(context,tmp_path):
         for name in ("first","second"):
             plot=report[key][name]
             assert plot["value_unit"]=="HU snapshot" and plot["annotation"]["formula"]=="y = x - 32768"
+            assert plot["source_title"]=="Snapshot source µ #1"
             np.testing.assert_array_equal(plot["curve_y"],257*np.arange(256)-32768)
     assert report["independent_views"]["first"]["view_limits"]==report["live"]["limits"]
     assert report["independent_views"]["second"]["view_limits"]==[100,200,-50,50]
@@ -125,3 +127,34 @@ def test_actual_floating_snapshot_lifecycle(context,tmp_path):
     assert report["memory_one_left"]["retained_bytes"]==first["payload_bytes"]+first["window_bytes"]
     assert report["memory_final"]["retained_bytes"]==report["memory_final"]["working_bytes"]==0
     assert report["lifecycle"]["open"] is False
+
+
+@pytest.mark.parametrize("route",["manual","table","fit"])
+def test_source_caption_captured_by_every_publication_route(route,tmp_path):
+    owner,editor=editor_with_plot(tmp_path)
+    title="Source µ ###stable %s"
+    edit=owner.begin_edit();edit.set_title(title);owner.commit(edit)
+    if route=="manual":editor.action("set_intensity_calibration",record=ij.ImageJIntensityCalibration.signed16("HU").record,show_plot=True)
+    elif route=="table":editor.action("show_intensity_calibration_plot")
+    else:
+        editor.action("fit_intensity_calibration",function="straight_line",measured=[0,1],known=[2,4],show_plot=True);editor.wait()
+    assert editor.render_headless(4)["fit_plot"]["source_title"]==title
+    editor.action("keep_plot_snapshot");info=editor.plot_snapshots_info[0]
+    assert info["source_title"]==title
+    edit=owner.begin_edit();edit.set_title("Renamed");owner.commit(edit)
+    report=editor.render_headless(4)
+    assert report["fit_plot"] is None and observed_snapshot(report,info["plot_id"])["source_title"]==title
+    editor.close_document(discard=True)
+    assert observed_snapshot(editor.render_headless(4),info["plot_id"])["source_title"]==title
+
+
+def test_source_caption_budget_refusal_preserves_calibration_and_snapshot(tmp_path):
+    owner,editor=editor_with_plot(tmp_path)
+    editor.action("keep_plot_snapshot");info=editor.plot_snapshots_info
+    edit=owner.begin_edit();edit.set_title("s"*(1024*1024));owner.commit(edit)
+    editor.update_settings(render_memory_mb=1,persist=False)
+    before=owner.snapshot();steps=owner.undo_steps;memory=editor.render_memory_info["retained_bytes"]
+    with pytest.raises((ValueError,RuntimeError),match="memory"):
+        editor.action("set_intensity_calibration",record=ij.ImageJIntensityCalibration.signed16("new unit").record,show_plot=True)
+    assert owner.snapshot().shares_data(before) and owner.undo_steps==steps
+    assert editor.plot_snapshots_info==info and editor.render_memory_info["retained_bytes"]==memory

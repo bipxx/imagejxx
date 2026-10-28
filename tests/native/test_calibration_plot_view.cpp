@@ -106,8 +106,8 @@ void verify_contracts() {
 
   imagejxx::desktop::RenderMemory memory(1024*1024);
   ImageJIntensityFitPlot payloadData;payloadData.curve_x={0,1};payloadData.curve_y={1,2};
-  auto payload=imagejxx::desktop::retain_calibration_plot(memory,std::move(payloadData),annotation,true,77);
-  const auto retained=memory.retained();check(retained>0 && memory.working()==0 && payload->source_id==77);
+  auto payload=imagejxx::desktop::retain_calibration_plot(memory,std::move(payloadData),annotation,true,77,1,"Source \xc2\xb5");
+  const auto retained=memory.retained();check(retained>0 && memory.working()==0 && payload->source_id==77 && payload->source_title=="Source \xc2\xb5");
   auto shared=payload;payload.reset();check(memory.retained()==retained && shared->data.curve_y[1]==2);
   shared.reset();check(memory.used()==0);
   imagejxx::desktop::RenderMemory denied(1);bool refused=false;

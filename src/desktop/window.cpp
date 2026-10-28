@@ -4620,7 +4620,7 @@ struct Window::Impl {
     std::optional<FitPlotBinding> binding;
     if(plot)binding=FitPlotBinding{source.id(),expected};
     std::shared_ptr<const CalibrationPlotPayload> payload;
-    if(plot)payload=retainPlot(std::move(*plot),std::move(*annotation),true,source.id());
+    if(plot)payload=retainPlot(std::move(*plot),std::move(*annotation),true,source.id(),source.data().metadata.title);
     const auto facade=owner.documentById(source.id());
     if(facade->scientific())owner.controller_->commit(edit);else facade->commitNative(edit);
     static_assert(std::is_nothrow_swappable_v<decltype(payload)>);
@@ -4632,9 +4632,9 @@ struct Window::Impl {
   void focusLivePlot() noexcept {
     livePlot.focus=true;for(auto& snapshot:plotSnapshots)snapshot->state.focus=false;
   }
-  std::shared_ptr<const CalibrationPlotPayload> retainPlot(ImageJIntensityFitPlot data,CalibrationPlotAnnotation annotation,bool table,std::uint64_t sourceId) {
+  std::shared_ptr<const CalibrationPlotPayload> retainPlot(ImageJIntensityFitPlot data,CalibrationPlotAnnotation annotation,bool table,std::uint64_t sourceId,std::string sourceTitle) {
     if(nextPlotPayloadId==std::numeric_limits<std::uint64_t>::max())throw std::overflow_error("Plot payload IDs exhausted");
-    auto payload=retain_calibration_plot(*renderMemory,std::move(data),std::move(annotation),table,sourceId,nextPlotPayloadId);
+    auto payload=retain_calibration_plot(*renderMemory,std::move(data),std::move(annotation),table,sourceId,nextPlotPayloadId,std::move(sourceTitle));
     ++nextPlotPayloadId;return payload;
   }
   CalibrationPlotState& requireCalibrationPlot(std::uint64_t plotId=0) {
@@ -4683,7 +4683,7 @@ struct Window::Impl {
     Json rows=Json::array();
     for(const auto& snapshot:plotSnapshots)if(snapshot->open && snapshot->state.payload) {
       const auto& payload=*snapshot->state.payload;
-      rows.push_back({{"plot_id",snapshot->id},{"payload_id",payload.payload_id},{"source_id",payload.source_id},{"function",payload.data.function},
+      rows.push_back({{"plot_id",snapshot->id},{"payload_id",payload.payload_id},{"source_id",payload.source_id},{"source_title",payload.source_title},{"function",payload.data.function},
         {"kind",payload.table?"calibration_table":"fit"},{"payload_bytes",payload.memory.bytes()},{"window_bytes",snapshot->memory.bytes()}});
     }
     return rows;
@@ -6790,7 +6790,7 @@ void Window::action(const std::string &name, const Json &p) {
       auto plot=table?impl->calibrationTablePlot(calibration):
           imagej_intensity_fit_plot(calibration,calibration.bit_depth()==8?256:100,bytes-CalibrationPlotAnnotation::working_bytes);
       auto annotation=calibration_plot_annotation(calibration,table);
-      auto payload=impl->retainPlot(std::move(plot),std::move(annotation),table,source.id());
+      auto payload=impl->retainPlot(std::move(plot),std::move(annotation),table,source.id(),source.data().metadata.title);
       impl->livePlot.view={};impl->livePlot.drag.reset();++impl->livePlot.generation;
       impl->livePlot.source=Impl::FitPlotBinding{source.id(),source.revisions()};impl->livePlot.payload.swap(payload);impl->focusLivePlot();return;
     }
@@ -9331,7 +9331,7 @@ void Window::poll() {
           static_assert(std::is_nothrow_swappable_v<decltype(impl->livePlot.payload)>);
           static_assert(std::is_nothrow_swappable_v<decltype(impl->livePlot.source)>);
           std::shared_ptr<const CalibrationPlotPayload> payload;
-          if(completed.fit_plot)payload=impl->retainPlot(std::move(*completed.fit_plot),std::move(*completed.fit_plot_annotation),false,completed.fit_plot_source->id());
+          if(completed.fit_plot)payload=impl->retainPlot(std::move(*completed.fit_plot),std::move(*completed.fit_plot_annotation),false,completed.fit_plot_source->id(),completed.prepared->preview().data().metadata.title);
           controller_->publish(*completed.prepared);
           if(payload) {
             impl->livePlot.payload.swap(payload);impl->livePlot.source.swap(completed.fit_plot_source);
@@ -11134,6 +11134,7 @@ void Window::Impl::drawCalibrationPlot(CalibrationPlotState& plot,const char* ti
   if(fitPlot) {
     const auto& data=*fitPlot;
     ImGui::Text(fitPlotIsTable?"Calibration table: %s":"Calibration fit: %s",data.function.c_str());
+    ImGui::TextWrapped("Source: %s",plot.payload->source_title.empty()?"(untitled source)":plot.payload->source_title.c_str());
     if(ImGui::Button("Close plot")){plot.payload.reset();plot.source.reset();fitPlotDrag.reset();if(snapshot)snapshot->open=false;endPlot();return;}
     observePlotControl("close",true,nullptr,nullptr,ImGui::GetCurrentWindow());
     if(ImGui::GetContentRegionAvail().x>180.f*guiScale)ImGui::SameLine();
@@ -11298,7 +11299,7 @@ void Window::Impl::drawCalibrationPlot(CalibrationPlotState& plot,const char* ti
       {"finite_geometry",finiteGeometry},{"drawn_segments",drawnSegments},{"visible",true},
       {"view_limits",viewLimits},{"viewport",fitPlotView.fractions},{"cursor",std::move(cursor)},
       {"log_x",fitPlotView.log_x},{"log_y",fitPlotView.log_y},{"grid",fitPlotView.grid},{"ticks",fitPlotView.ticks},
-      {"grid_lines",fitPlotView.grid?6:0},{"x_ticks",std::move(xTicks)},{"y_ticks",std::move(yTicks)},{"masked_segments",maskedSegments},{"log_notice",logNotice},{"annotation",std::move(annotationObservation)},{"rectangle_drag",std::move(rectangleObservation)},{"payload_id",plot.payload->payload_id}};
+      {"grid_lines",fitPlotView.grid?6:0},{"x_ticks",std::move(xTicks)},{"y_ticks",std::move(yTicks)},{"masked_segments",maskedSegments},{"log_notice",logNotice},{"annotation",std::move(annotationObservation)},{"rectangle_drag",std::move(rectangleObservation)},{"payload_id",plot.payload->payload_id},{"source_title",plot.payload->source_title}};
     endPlot();return;
   }
 

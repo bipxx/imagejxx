@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "scope": "G034 immutable source-title captions on live calibration plots and retained snapshots",
+  "state": "focused_checks_passed",
+  "acceptance_claim": false,
+  "implementation": {
+    "capture": "Source title is captured in the same immutable retained payload as plot data and annotations. Manual calibration and explicit plots use captured source metadata; fitted publication uses prepared preview metadata before commit. No source lookup in rendering or retained document/provider added.",
+    "presentation": "Shared renderer displays Source: captured title, with (untitled source) for an empty title. Report/Editor.plot_snapshots_info exposes exact source_title. Unicode and literal ###/% text remain title content, separate from stable window IDs. CSV sample format is unchanged.",
+    "memory": "Title string capacity is charged once with the shared payload before metadata commit/publication. Snapshots share it; source rename/closure cannot alter it. This is managed retained-memory accounting, not total RSS or transient/driver allocation measurement."
+  },
+  "evidence": {
+    "calibration-plot-caption-windows-build354": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-caption-windows-build354\\receipt.json",
+      "bytes": 24957,
+      "sha256": "9f80bbbf468666b6f81949a288a6999367ccded138f9272dacc3bd4b4794c08f"
+    },
+    "calibration-plot-caption-installed355": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-caption-installed355\\receipt.json",
+      "bytes": 32224,
+      "sha256": "c6ef5cb52572110d468fbf57e261c4b5f2788b177897f2171eec0a77adcd44f7"
+    },
+    "calibration-plot-caption-linux356": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-caption-linux356\\receipt.json",
+      "bytes": 30503,
+      "sha256": "62493dc65cb57149e35af5a67465865075e7bfb771d42c40c36855551f9ff9d0"
+    },
+    "calibration-plot-caption-retention357": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-caption-retention357\\receipt.json",
+      "bytes": 3769,
+      "sha256": "96abcd7ea8108d19063d5c12d85bc221bf3459ee9efe0c4e919837221c2a4d6e"
+    }
+  },
+  "verification": {
+    "windows_installed_pytest": {
+      "tests": 757,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "api": "All three plot publication routes preserve Unicode/ID-like/format-like title text. Rename invalidates live plot while snapshot keeps original title through source close. A1MiB source title under a1MiB render budget refuses before calibration/history commit and preserves prior snapshot/managed bytes.",
+    "actual_imgui_input": "Existing dedicated C++ and Python lifecycle case now uses Unicode source title, then fixture rename and closure. Readers verify captured captions along with existing actual Keep/Duplicate/axes-after-close/CSV/close input and lifetime/memory invariants.",
+    "native": "Windows projection and private viewport/annotation/payload consumers pass. Linux C++17 private payload consumer passes against existing pinned SDK archive; no Linux UI/full SDK promotion.",
+    "snapshot_frames": 92,
+    "snapshot_frame_cap": 192,
+    "calibration_frames": 606,
+    "calibration_frame_cap": 608,
+    "commercial_use_inventory": "passed; no new dependency",
+    "diff_check": "passed",
+    "limits": "Focused headless and installed checks; no independent empty-caption visual, OS/GPU, full-family or comparative-performance acceptance."
+  },
+  "storage": {
+    "before_known_bytes": 8470456386,
+    "after_known_bytes": 8471863221,
+    "full_budget_verified": false,
+    "unknown_subtrees": [
+      ".cache/pytest",
+      ".cache/pytest-ui"
+    ],
+    "inventory": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-caption-after358.json",
+      "bytes": 1525,
+      "sha256": "e1fdb4448a0933ba4c167dd0305901609713d070b1682fc3c71a3194fd19ffae"
+    },
+    "lossless_recovery_bytes": 326970,
+    "temporary_build_reserve_bytes": 536870912,
+    "capture_scratch_bound_bytes": 67108864,
+    "retention": "All owned terminal compiler/consumer scratch retired. Necessary logs/producer freeze/captures compressed and member-hash verified. One active cache/runtime/SDK per platform, no whole cache/checkout archive. Historical scopes/fingerprints unchanged."
+  },
+  "remaining": [
+    "On-canvas annotation placement/style and image export",
+    "Nice/minor ticks and generic histogram/profile renderer reuse",
+    "Snapshot/session persistence and independent OS-window backend/OS/GPU qualification",
+    "Broader calibration/settings/import/replay/downstream and Linux UI/macOS/IO SDK/original-reference gates",
+    "Matched ImageJ/Fiji speed/memory benchmarks"
+  ],
+  "family_status": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  }
+}

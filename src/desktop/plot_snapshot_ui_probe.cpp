@@ -12,6 +12,7 @@ Json plotSnapshotUiCase(Window& window,const std::string& context,const std::str
   fs::create_directories(directory);
   Image image(3,1,1,PixelType::UInt16);image.pixels={0,32768,65535};
   DocumentData data{Dataset::from_planes({1,1,1,1,3,1},Stack{image}),{},{},{},{},{},{}};
+  data.metadata.title="Snapshot source \xc2\xb5 #1";
   auto source=std::make_shared<imagejxx::Document>(std::move(data));window.addNativeDocument(source);
   const auto calibration=ImageJIntensityCalibration::signed16("HU snapshot");
   window.action("set_intensity_calibration",{{"record",metadataJson(calibration.record())},{"show_plot",true}});
@@ -51,7 +52,8 @@ Json plotSnapshotUiCase(Window& window,const std::string& context,const std::str
   report["second_info"]=window.plotSnapshotsInfo();const auto second=report["second_info"][1]["plot_id"].get<std::uint64_t>();
   report["memory_second"]=window.renderMemoryInfo();
   report["source_unchanged_after_keep"]=source->snapshot().shares_data(original) && source->snapshot().revisions().matches(original.revisions(),Change::All) && source->undo_steps()==undo;
-  set_imagej_intensity_calibration(*source,ImageJIntensityCalibration::signed16("edited source"));frame();frame();
+  set_imagej_intensity_calibration(*source,ImageJIntensityCalibration::signed16("edited source"));
+  auto renamed=source->begin_edit();renamed.set_title("Renamed source");source->commit(renamed);frame();frame();
   report["after_source_edit"]={{"first",snapshot(first)},{"second",snapshot(second)},{"live",last.at("fit_plot")}};
   std::weak_ptr<imagejxx::Document> weakSource=source;
   window.closeDocument(source->snapshot().id(),true);source.reset();frame();frame();
