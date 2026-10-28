@@ -1,0 +1,72 @@
+{
+  "schema": "imagejxx.scoped-progress",
+  "version": 1,
+  "source_base": "ef7d16aba8a932f7df42411d98886b2e05510070",
+  "scope": "Physical shared ImGui projection axis selectors and RGB clipped-sum consumer in both installed Windows hosts",
+  "acceptance_claim": false,
+  "source_inputs": [
+    {
+      "path": "src/desktop/imagej_projection_ui_probe.cpp",
+      "bytes": 10923,
+      "sha256": "237b63499f105c1f23ec4c29adcf45921c1c01916750cae18a4b2e8c539985b4"
+    },
+    {
+      "path": "tests/python/test_imagej_projection_editor.py",
+      "bytes": 11487,
+      "sha256": "cafdf71a8376078cd4f7acada02a118b2520f92fcc7bcd8150d4a173ac88938b"
+    }
+  ],
+  "verification": {
+    "build": {
+      "path": ".tmp/manual-workflow-verification/projection-ui-windows-build121/receipt.json",
+      "bytes": 23026,
+      "sha256": "d0d9ac8b2d09617db25077c5801c891f39ac3b4941b9cbf1f725ec43abc4729c"
+    },
+    "installed": {
+      "path": ".tmp/manual-workflow-verification/projection-ui-installed122/receipt.json",
+      "bytes": 12081,
+      "sha256": "a3a8bd03aa42b6ad209044c51dbe0039a19f15b5f64dbf666e26e441dd8df0b2"
+    },
+    "junit": {
+      "path": ".tmp/manual-workflow-verification/projection-ui-installed122/results.xml",
+      "bytes": 21720,
+      "sha256": "a0fe34d62884b47b84495eed27173407c02734569a63188de90567ced1e9b9da"
+    },
+    "captures": {
+      "path": ".tmp/manual-workflow-verification/projection-ui-installed122/captures.zip",
+      "bytes": 66798,
+      "sha256": "5485d965d42897ab4bdb06c2a6a9ded4ed4e23f076833ab6e7d6c5ae72d72bcc"
+    },
+    "tests": 150,
+    "failures": 0,
+    "skips": 0,
+    "frames_per_host": 229,
+    "case_bytes": {
+      "cpp": 1559560,
+      "python": 1559564
+    }
+  },
+  "observed": [
+    "Physical axis combo selects Time on the original2T/2C/4Z source; Stop index2 produces exact1T/2C/4Z pixels and an explicit time command.",
+    "Physical axis combo selects Channels on the same source; Stop index2 produces exact2T/1C/4Z pixels and an explicit channels command.",
+    "Physical method combo selects sum on UInt8 RGB2Z fixture; physical Clip RGB sums toggle produces255,200,40 and retains S3.",
+    "Original scientific and RGB source data/revisions remain unchanged; initial workflow, Replay/Rebind, grouped rejection/recovery and session reopen checks still pass."
+  ],
+  "scope_limits": [
+    "Explicit axes on a multi-axis source are owned extensions; these captures are not an ImageJ GUI differential.",
+    "One UInt16 maximum case per explicit axis and one UInt8 clipped RGB sum do not cover all methods/types/flags.",
+    "Windows focused checks only; broader Linux/macOS/SDK/UI and original-reference gates remain open.",
+    "No matched performance measurements or comparative speed claim."
+  ],
+  "retention": "One existing cache/runtime, no new producer framework. Build compiler scratch and final test scratch retired after terminal proof; logs/captures lossless hash-verified archives. Frame240/report16MiB/capture64MiB limits unchanged.",
+  "storage": {
+    "path": ".tmp/manual-workflow-verification/projection-ui-storage-after123.json",
+    "bytes": 1522,
+    "sha256": "c1b0dcec97a40cc104a1095102ffbb44bcf08c9117966194962814887d8ae6c7"
+  },
+  "family_status": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  }
+}

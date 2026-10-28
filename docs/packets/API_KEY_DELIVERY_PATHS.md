@@ -1,5 +1,12 @@
 # Shortest delivery paths by API and setting key
 
+Consumer follow-through,2026-10-28: physical Time/Channels selectors and RGB
+clipped Sum now pass both Windows hosts. Next expose existing immutable intensity
+read/set APIs through Python and a shared calibration dialog, retaining metadata
+Undo/session machinery; function generation/fitting remains required afterward.
+[Evidence](../parity/reviews/G034-projection-axis-rgb-ui-progress001.json).
+
+
 Projection consumer update,2026-10-28: physical Replay/Rebind and grouped-zero
 rejection/recovery now pass both installed Windows hosts. Reuse this same
 producer/reader for explicit Time/RGB/method/axis cases; do not rebuild the

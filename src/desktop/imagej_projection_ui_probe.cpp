@@ -81,6 +81,11 @@ Json imagejProjectionUiCase(Window& w,const std::string& context,const std::stri
     for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",{{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}}}}}));
     frame(Json::array({{{"type","text"},{"value",text}}}));frame();
   };
+  auto choose=[&](const char* field,const char* option) {
+    click(last.at("dialog").at("controls").at(field),field);
+    click(last.at("dialog").at("controls").at(std::string(field)+".choice."+option),
+        std::string(field)+".choice."+option);
+  };
   auto menu=[&](const char* action) {
     click(last.at("host_controls").at("menu.Image"),"menu.Image");
     click(last.at("host_controls").at("menu.Image.Stacks"),"menu.Image.Stacks");
@@ -126,6 +131,32 @@ Json imagejProjectionUiCase(Window& w,const std::string& context,const std::stri
   edit("group_size","2");
   click(last.at("dialog").at("controls").at("apply"),"group_apply",false);
   w.wait();frame();frame();report["grouped"]=state(w);
+  for(const auto* axis:{"time","channels"}) {
+    w.setActiveIndex(0);frame();menu("show_imagej_projection");
+    choose("axis",axis);edit("last","2");
+    report[std::string(axis)+"_dialog"]=last.at("dialog");
+    click(last.at("dialog").at("controls").at("apply"),std::string(axis)+"_apply",false);
+    w.wait();frame();frame();report[std::string(axis)+"_output"]=state(w);
+  }
+  report["axis_source_unchanged"]=owner->snapshot().shares_data(source) &&
+      owner->snapshot().revisions().matches(source.revisions(),Change::All);
+  Stack rgbPlanes;
+  for(int z=0;z<2;++z){
+    Image image(1,1,3,PixelType::UInt8);
+    image.at(0,0,0)=200;image.at(0,0,1)=100;image.at(0,0,2)=20;
+    rgbPlanes.push_back(std::move(image));
+  }
+  DocumentData rgbData{Dataset::from_planes({1,1,2,1,1,3},std::move(rgbPlanes)),{},{},{},{},{},{}};
+  rgbData.metadata.title="rgb-projection";
+  auto rgbOwner=std::make_shared<imagejxx::Document>(std::move(rgbData));
+  const auto rgbSource=rgbOwner->snapshot();w.addNativeDocument(rgbOwner);frame();frame();
+  menu("show_imagej_projection");choose("method","sum");
+  click(last.at("dialog").at("controls").at("clip_when_summing"),"clip_when_summing");
+  report["rgb_dialog"]=last.at("dialog");
+  click(last.at("dialog").at("controls").at("apply"),"rgb_apply",false);
+  w.wait();frame();frame();report["rgb_output"]=state(w);
+  report["rgb_source_unchanged"]=rgbOwner->snapshot().shares_data(rgbSource) &&
+      rgbOwner->snapshot().revisions().matches(rgbSource.revisions(),Change::All);
   session.close();report["lifecycle"]=session.lifecycle();
   w.setActiveIndex(1);SessionCapture capture;capture.documents.push_back(w.nativeSnapshot());
   for(const auto& step:w.workflow)capture.workflow.push_back(metadata_object(metadataObjectFromJson(step)));

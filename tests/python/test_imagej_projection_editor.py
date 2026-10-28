@@ -171,3 +171,25 @@ def test_actual_imagej_projection_dialog(context,tmp_path):
     assert grouped["pixels"]==[[111+x+y for y in range(3) for x in range(4)]]
     assert grouped["document_count"]==5 and len(grouped["workflow"])==4
     assert grouped["workflow"][3]["request"]["group_size"]==2
+
+    for axis,shape,planes in (
+        ("time",[1,2,4,3,4,1],[[100+10*c+2*z+x+y for y in range(3) for x in range(4)] for c in range(2) for z in range(4)]),
+        ("channels",[2,1,4,3,4,1],[[100*t+10+2*z+x+y for y in range(3) for x in range(4)] for t in range(2) for z in range(4)]),
+    ):
+        dialog=report[axis+"_dialog"]
+        assert dialog["values"]["axis"]==axis and dialog["text"]["last"]=="2"
+        row=report[axis+"_output"]
+        assert row["shape"]==shape and row["pixels"]==planes
+        assert row["workflow"][-1]["request"]["axis"]==axis
+        assert row["workflow"][-1]["request"]["last"]==1
+        assert row["workflow"][-1]["source"]==report["applied"]["workflow"][0]["source"]
+    assert report["axis_source_unchanged"]
+    rgb=report["rgb_output"]
+    assert rgb["shape"]==[1,1,1,1,1,3] and rgb["pixels"]==[[255.,200.,40.]]
+    assert rgb["workflow"][-1]["request"]["method"]=="sum"
+    assert rgb["workflow"][-1]["request"]["clip_when_summing"] is True
+    assert report["rgb_dialog"]["values"]["clip_when_summing"] is True
+    assert report["rgb_source_unchanged"]
+    assert rgb["document_count"]==9 and len(rgb["workflow"])==7
+    names={row["name"] for row in report["controls"]}
+    assert {"axis.choice.time","axis.choice.channels","method.choice.sum","clip_when_summing","rgb_apply"}<=names

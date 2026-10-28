@@ -1,5 +1,12 @@
 # Scientific Z projection
 
+Current consumer update,2026-10-28: physical explicit Time/Channels and RGB
+clipped sum now pass both installed Windows hosts, with independent axes/pixel,
+record and unchanged-source assertions. [Evidence](../parity/reviews/G034-projection-axis-rgb-ui-progress001.json).
+The multi-axis explicit selectors are owned extensions; broader method/type and
+matched ImageJ GUI coverage remain open.
+
+
 This packet extends the existing range/grouped projection workflow to scientific
 TCZYXS datasets. G034 remains in progress. The current implementation includes the shared
 metadata descriptor, finite native reducer and strict source command.

@@ -1,5 +1,32 @@
 # Three-agent execution plan
 
+## Explicit axis and RGB projection controls verified — 2026-10-28
+
+Both installed Windows hosts physically select Time and Channels on a multi-axis
+UInt16 source and apply corrected bounds, independently asserting exact output
+axes/pixels and strict recorded intent. A fresh UInt8 RGB stack physically
+selects Sum and toggles Clip RGB sums; output is255,200,40 with S3 preserved.
+Scientific and RGB source data/revisions stay unchanged. These explicit axis
+choices are owned extensions, not a matched ImageJ GUI differential.
+
+All150 focused checks pass, no skips, including earlier Apply/Cancel, Replay/
+Rebind, invalid grouped recovery, render and reopen assertions. Each context
+uses229frames and about1.56MB, within unchanged240frame/16MiB report bounds.
+[Source-bound evidence](parity/reviews/G034-projection-axis-rgb-ui-progress001.json).
+Same cache/runtime reused; compiler/test scratch retired, logs/captures compressed
+and losslessly hash-verified. Known whole-root8,588,579,536B is below8GiB;
+two denied caches keep complete budget unverified.
+
+Next consumer implementation: expose the existing immutable intensity read/set
+API through Python and one shared calibration dialog. Reuse metadata edits for
+Undo/Redo and session persistence; reject unsupported type/mode combinations
+before edits. Include value units, clear calibration and signed16 first, then
+complete ImageJ function/table generation and fitting against pinned reference
+values; do not count the first modes as full calibration parity. Keep later
+physical method/dtype/RGB-unclipped cases and retained metadata differentials
+open.99-family status stays47 in progress/52 open/0 complete; no speed claim.
+
+
 ## Projection Replay/Rebind and invalid draft recovery — 2026-10-28
 
 Both installed Windows ImGui hosts now physically exercise Replay and Rebind.
