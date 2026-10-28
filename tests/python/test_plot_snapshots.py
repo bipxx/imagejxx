@@ -116,6 +116,13 @@ def test_actual_floating_snapshot_lifecycle(context,tmp_path):
             assert plot["value_unit"]=="HU snapshot" and plot["annotation"]["formula"]=="y = x - 32768"
             assert plot["source_title"]=="Snapshot source µ #1"
             np.testing.assert_array_equal(plot["curve_y"],257*np.arange(256)-32768)
+    first_style=report["styled"]["first"];styled=report["styled"]["second"]
+    assert first_style["model_overlay"] is None and not first_style["style"]["annotation_visible"]
+    assert styled["style"]==dict(line_width=3,point_radius=5,font_scale=1.2,annotation_x=.75,annotation_y=.25,annotation_visible=True,curve_color="#00ff00",point_color="#ff5a5a")
+    overlay=styled["model_overlay"];assert overlay["text"]=="y = x - 32768\na=-32768; b=1"
+    canvas=np.array(styled["canvas_size"]);box=np.minimum(np.array(overlay["text_size"])+2*overlay["padding"],canvas)
+    np.testing.assert_allclose(overlay["size"],box,atol=1e-5)
+    np.testing.assert_allclose(overlay["origin"],np.array(styled["canvas_origin"])+np.array([.75,.25])*(canvas-box),atol=1e-4)
     assert report["independent_views"]["first"]["view_limits"]==report["live"]["limits"]
     assert report["independent_views"]["second"]["view_limits"]==[100,200,-50,50]
     assert report["memory_source_closed"]["retained_bytes"]==first["payload_bytes"]+first["window_bytes"]+second["window_bytes"]
@@ -158,3 +165,45 @@ def test_source_caption_budget_refusal_preserves_calibration_and_snapshot(tmp_pa
         editor.action("set_intensity_calibration",record=ij.ImageJIntensityCalibration.signed16("new unit").record,show_plot=True)
     assert owner.snapshot().shares_data(before) and owner.undo_steps==steps
     assert editor.plot_snapshots_info==info and editor.render_memory_info["retained_bytes"]==memory
+
+
+def test_plot_style_is_independent_of_axes_data_and_other_windows(tmp_path):
+    owner,editor=editor_with_plot(tmp_path);before=owner.snapshot();steps=owner.undo_steps
+    editor.action("set_intensity_plot_style",annotation_visible=True,annotation_x=.75,annotation_y=.25,line_width=3,point_radius=5,curve_color="#00FF00",font_scale=1.2)
+    live=editor.render_headless(4)["fit_plot"]
+    assert live["style"]["curve_color"]=="#00ff00" and live["model_overlay"]["text"]=="y = x - 32768\na=-32768; b=1"
+    editor.action("keep_plot_snapshot");first=editor.plot_snapshots_info[0]["plot_id"]
+    editor.action("keep_plot_snapshot",plot_id=first);second=editor.plot_snapshots_info[1]["plot_id"]
+    editor.action("set_intensity_plot_style",plot_id=second,annotation_x=0,annotation_y=1,curve_color="#abcdef")
+    editor.action("set_intensity_plot_limits",plot_id=first,limits=[1,100,1,100],log_x=True,log_y=True)
+    result=editor.render_headless(4)
+    assert observed_snapshot(result,first)["style"]==live["style"]
+    assert observed_snapshot(result,second)["style"]["curve_color"]=="#abcdef"
+    editor.action("close_plot_snapshot",plot_id=second);editor.action("close_plot_snapshot",plot_id=first)
+    assert editor.render_headless(4)["fit_plot"]["style"]==live["style"]
+    editor.action("keep_plot_snapshot");first=editor.plot_snapshots_info[0]["plot_id"]
+    assert owner.snapshot().shares_data(before) and owner.undo_steps==steps
+    editor.close_document(discard=True)
+    editor.action("set_intensity_plot_style",plot_id=first,annotation_visible=False)
+    assert observed_snapshot(editor.render_headless(4),first)["model_overlay"] is None
+
+
+@pytest.mark.parametrize("fields",[
+    {"line_width":0},{"line_width":True},{"point_radius":13},{"font_scale":2.01},
+    {"annotation_x":-.01},{"annotation_y":1.01},{"annotation_visible":1},
+    {"curve_color":"red"},{"point_color":"#12345678"},{"curve_color":123},{"unknown":True},
+])
+def test_invalid_plot_style_is_atomic(fields,tmp_path):
+    _,editor=editor_with_plot(tmp_path);before=editor.render_headless(4)["fit_plot"]["style"]
+    with pytest.raises((ValueError,RuntimeError)):editor.action("set_intensity_plot_style",**fields)
+    assert editor.render_headless(4)["fit_plot"]["style"]==before
+
+
+def test_canvas_model_reports_undefined_fit_quality(tmp_path):
+    owner,editor=editor_with_plot(tmp_path)
+    editor.action("fit_intensity_calibration",function="straight_line",measured=[0,1],known=[2,2],show_plot=True);editor.wait()
+    before=owner.snapshot();steps=owner.undo_steps
+    editor.action("set_intensity_plot_style",annotation_visible=True)
+    plot=editor.render_headless(4)["fit_plot"]
+    assert plot["annotation"]["r_squared_undefined"] and plot["model_overlay"]["text"].endswith("RMSE: 0\nR^2: undefined")
+    assert owner.snapshot().shares_data(before) and owner.undo_steps==steps

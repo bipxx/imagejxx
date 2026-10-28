@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "scope": "G034 per-window curve/point style and prepared on-canvas model annotation placement",
+  "state": "focused_checks_passed",
+  "acceptance_claim": false,
+  "implementation": {
+    "state": "Private CalibrationPlotStyle belongs to each live/snapshot controller, separate from viewport. Snapshot creation copies style by value; subsequent changes are independent. Axis reset changes viewport only; existing live style persists across live data replacement.",
+    "controls": "Style dialog and show_intensity_plot_style / set_intensity_plot_style actions. Optional plot_id follows live-source revision guards or source-independent snapshot lifetime; document_id only for live. Patches preserve omitted fields. Strict Boolean/numeric/#RRGGBB validation and candidate-before-publish preserve old style on refusal.",
+    "ranges": "line_width0.5..8, point_radius1..12, font_scale0.5..2; annotation_x/y0..1 locate its box in available canvas space, X rightwards/Y downwards. RGB colors canonical lowercase in observations; no alpha input.",
+    "annotation": "Model/formula, round-trip coefficients and available fit objective/RMSE/R-squared prepared once with immutable payload. Undefined versus unavailable quality remains explicit. Unsupported model uses literal detail without asserting a formula. Additional text capacity counted in the same payload lease.",
+    "renderer": "Existing shared renderer applies curve color/width and measured-point color/radius. Model annotation is opt-in, wrapped to canvas width, positioned in remaining box space, with high-contrast background and canvas/box clipping. View/source/history/sample/CSV data unchanged; no provider read/re-fit/new producer store/dependency.",
+    "lifecycle": "Dialog callbacks resolve logical plot ID+generation; live revision checks retained. Snapshot style dialogs remain usable after source closure. Session-only; no custom annotation text/drag/persistence or image export in this packet."
+  },
+  "evidence": {
+    "calibration-plot-style-windows-build363": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-style-windows-build363\\receipt.json",
+      "bytes": 24953,
+      "sha256": "f2d88f3783d3050cf2e3c2620908e2dc4991c41113efdf3335af27aad3091aea"
+    },
+    "calibration-plot-style-installed364": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-style-installed364\\receipt.json",
+      "bytes": 32230,
+      "sha256": "bb4f4be27764d5b21abdcc38def4f23e3583041c5e3b4c03c71257073ded7b0f"
+    },
+    "calibration-plot-style-linux365": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-style-linux365\\receipt.json",
+      "bytes": 30720,
+      "sha256": "9a29d19179a82947abc00195fc4df74d4f5f91974d9ef5e7179f514e45ad377f"
+    },
+    "calibration-plot-style-reader366": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-style-reader366\\receipt.json",
+      "bytes": 482,
+      "sha256": "0ee246fd320d3ce4ad12824e96ae17abec4d26b0c38566d4c3d0b9cea5bfb53f"
+    },
+    "calibration-plot-style-installed367": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-style-installed367\\receipt.json",
+      "bytes": 32136,
+      "sha256": "45297769815848deaf1b765e6d95b603f53859dc338d3b26c2b743608cd91b77"
+    },
+    "calibration-plot-style-retention368": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-style-retention368\\receipt.json",
+      "bytes": 5050,
+      "sha256": "7db9f6263649bad88c4851165bba5ec693e17abbac4786e0f2bba7eb6c0fd83b"
+    }
+  },
+  "verification": {
+    "windows_installed_pytest": {
+      "tests": 770,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "actual_imgui_input": "Four C++ workflows pass. Dedicated snapshot case also runs through Python: after source closure physically opens Style, toggles model, edits line width/point radius/text scale/anchor/RGB then applies. Independent reader derives box dimensions/anchor from delivered canvas/text geometry and validates exact text, sibling independence, data/history and final memory invariants.",
+    "api": "Snapshot copies style, edits remain independent from siblings/live/axes/source; snapshot style works after source closure. Invalid fields/types/ranges/colors are atomic. Constant fit annotation reports R-squared undefined and RMSE0. Live state observed after closing floating windows, not inferred from hidden-window report.",
+    "native": "Windows projection and private viewport/annotation/payload/style consumers pass. Linux C++17 -Wall -Wextra -Werror private consumer passes against pinned existing core SDK archive; no Linux UI/full SDK qualification.",
+    "snapshot_frames": 154,
+    "snapshot_frame_cap": 192,
+    "calibration_frames": 606,
+    "calibration_frame_cap": 608,
+    "commercial_use_inventory": "passed; no new dependency",
+    "diff_check": "passed",
+    "limits": "Focused installed/headless checks. Does not qualify independent OS/GPU pixels, all style combinations, physical reset/stale-dialog paths, full-family or comparative speed."
+  },
+  "harness_history": [
+    {
+      "run": "installed364",
+      "state": "failed",
+      "cause": "One of770 tests treated fit_plot (visible-window observation) as an always-present live-state getter while floating snapshots hid the live window. Physical style workflow and769 tests passed. Test now closes floating windows before observing unchanged live style. Failed reader original SHA verified before preserving/compressing preimage; product unchanged, full770 pass in367."
+    }
+  ],
+  "storage": {
+    "before_known_bytes": 8471878641,
+    "after_known_bytes": 8474770010,
+    "full_budget_verified": false,
+    "unknown_subtrees": [
+      ".cache/pytest",
+      ".cache/pytest-ui"
+    ],
+    "inventory": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-style-after369.json",
+      "bytes": 1525,
+      "sha256": "cb5edbe08b1c50b7f0285dc2755cf6b0ee1e6164cb947fd7d41f2e192ff82561"
+    },
+    "lossless_recovery_bytes": 343830,
+    "temporary_build_reserve_bytes": 536870912,
+    "capture_scratch_bound_bytes": 67108864,
+    "retention": "All owned terminal scratch retired, including failed-run captures after member hash verification. Logs/producer freeze/failed reader preimage/superseded runner compressed and hash-verified. Same active caches/runtime/SDK; no whole cache/checkout archive. Managed memory accounting excludes total RSS/ImGui/driver/transient allocations; historical scopes/fingerprints unchanged."
+  },
+  "remaining": [
+    "Plot image export preserving current viewport/style/model layout",
+    "Nice/minor ticks and generic histogram/profile renderer reuse",
+    "Custom annotation text/direct manipulation, persistence and independent OS-window backend/OS/GPU qualification",
+    "Broader calibration/settings/import/replay/downstream and Linux UI/macOS/IO SDK/original-reference gates",
+    "Matched ImageJ/Fiji speed/memory benchmarks"
+  ],
+  "family_status": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  }
+}

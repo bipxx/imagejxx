@@ -1,6 +1,7 @@
 #include "../../src/desktop/calibration_plot_view.hpp"
 #include "../../src/desktop/calibration_plot_annotation.hpp"
 #include "../../src/desktop/calibration_plot_payload.hpp"
+#include "../../src/desktop/calibration_plot_style.hpp"
 #include <limits>
 #include <stdexcept>
 #include <cstdio>
@@ -103,6 +104,18 @@ void verify_contracts() {
   auto legacyOd=ImageJIntensityCalibration::lookup(PixelType::UInt8,od.table_words(),"OD",odParameters);
   annotation=calibration_plot_annotation(legacyOd,true);
   check(annotation.model && annotation.coefficients.empty() && annotation.formula=="y = 0.434294481*ln(255/(255-x))");
+
+  imagejxx::desktop::CalibrationPlotStyle style;
+  check(style.valid() && !style.annotation_visible);
+  check(style.parse_color("#00Af09")==0x00af09 && style.color_text(0x00af09)=="#00af09");
+  check(!style.parse_color("red") && !style.parse_color("#12345678") && !style.parse_color("#zz0000"));
+  style.annotation_x=.75;style.annotation_y=.25;
+  check(style.box(100,80,20,10,4)==std::array<double,4>{54,15.5,28,18});
+  check(style.box(10,8,200,100,4)==std::array<double,4>{0,0,10,8});
+  style.line_width=std::numeric_limits<double>::quiet_NaN();check(!style.valid());
+  style.line_width=1.5;style.font_scale=2.1;check(!style.valid());
+  style.font_scale=1;style.annotation_x=-.1;check(!style.valid());
+  check(imagejxx::desktop::calibration_plot_canvas_text(annotation)==annotation.formula);
 
   imagejxx::desktop::RenderMemory memory(1024*1024);
   ImageJIntensityFitPlot payloadData;payloadData.curve_x={0,1};payloadData.curve_y={1,2};

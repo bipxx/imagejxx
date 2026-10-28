@@ -12,7 +12,7 @@ namespace imagejxx::desktop {
 struct CalibrationPlotAnnotation {
   static constexpr std::size_t working_bytes=8192;
   bool model=false,fit=false,r_squared_undefined=false;
-  std::string formula,coefficients,detail,objective;
+  std::string formula,coefficients,detail,objective,canvas_text;
   std::optional<double> rmse,r_squared;
 };
 
@@ -45,6 +45,20 @@ inline void append_number(std::string& out,double value) {
   if(result.ec==std::errc{})out.append(buffer,result.ptr);
 }
 } // namespace calibration_annotation_detail
+
+// Prepare once with the retained payload; do not rebuild text in the renderer.
+inline std::string calibration_plot_canvas_text(const CalibrationPlotAnnotation& annotation) {
+  std::string text=annotation.model?annotation.formula:annotation.detail;
+  if(!annotation.coefficients.empty())text+="\n"+annotation.coefficients;
+  if(annotation.fit) {
+    text+="\n"+annotation.objective+"\nRMSE: ";
+    if(annotation.rmse)calibration_annotation_detail::append_number(text,*annotation.rmse);else text+="unavailable";
+    text+="\nR^2: ";
+    if(annotation.r_squared)calibration_annotation_detail::append_number(text,*annotation.r_squared);
+    else text+=annotation.r_squared_undefined?"undefined":"unavailable";
+  }
+  return text;
+}
 
 // Inspect only bounded, named provenance fields. Never serialize arbitrary
 // nested metadata or materialize the stored lookup table for a UI annotation.

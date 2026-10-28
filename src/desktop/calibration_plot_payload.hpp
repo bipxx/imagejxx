@@ -28,7 +28,7 @@ struct CalibrationPlotPayload {
     for(const auto* values:{&data.curve_x,&data.curve_y})
       total=RenderMemory::add(total,RenderMemory::mul(values->capacity(),sizeof(float)));
     for(const auto* text:{&data.function,&data.value_unit,&data.objective,
-                         &annotation.formula,&annotation.coefficients,&annotation.detail,&annotation.objective})
+                         &annotation.formula,&annotation.coefficients,&annotation.detail,&annotation.objective,&annotation.canvas_text})
       total=RenderMemory::add(total,RenderMemory::add(text->capacity(),1));
     return RenderMemory::add(total,RenderMemory::add(sourceTitle.capacity(),1));
   }
@@ -37,6 +37,7 @@ struct CalibrationPlotPayload {
 inline std::shared_ptr<const CalibrationPlotPayload> retain_calibration_plot(
     RenderMemory& memory,ImageJIntensityFitPlot data,CalibrationPlotAnnotation annotation,
     bool table,std::uint64_t source,std::uint64_t payloadId=0,std::string sourceTitle={}) {
+  annotation.canvas_text=calibration_plot_canvas_text(annotation);
   const auto bytes=CalibrationPlotPayload::bytes(data,annotation,sourceTitle);
   auto working=memory.acquire(bytes);
   auto result=std::make_shared<CalibrationPlotPayload>(std::move(data),std::move(annotation),table,source,std::move(sourceTitle));

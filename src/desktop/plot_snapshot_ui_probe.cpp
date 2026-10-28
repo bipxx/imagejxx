@@ -62,6 +62,12 @@ Json plotSnapshotUiCase(Window& window,const std::string& context,const std::str
   editText("x_min","100");editText("x_max","200");editText("y_min","-50");editText("y_max","50");
   click(last.at("dialog").at("controls").at("apply"),"snapshot_axes_apply");frame();frame();
   report["independent_views"]={{"first",snapshot(first)},{"second",snapshot(second)}};
+  click(last.at("host_controls").at("plot_snapshot."+std::to_string(second)+".style"),"snapshot_style");
+  click(last.at("dialog").at("controls").at("annotation_visible"),"snapshot_model_visible");
+  editText("line_width","3");editText("point_radius","5");editText("font_scale","1.2");
+  editText("annotation_x","0.75");editText("annotation_y","0.25");editText("curve_color","#00ff00");
+  click(last.at("dialog").at("controls").at("apply"),"snapshot_style_apply");frame();frame();
+  report["styled"]={{"first",snapshot(first)},{"second",snapshot(second)}};
   report["after_source_close"]={{"first",snapshot(first)},{"second",snapshot(second)},{"live",last.at("fit_plot")}};
   report["memory_source_closed"]=window.renderMemoryInfo();
   click(last.at("host_controls").at("plot_snapshot."+std::to_string(second)+".export"),"snapshot_export");

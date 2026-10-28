@@ -8,6 +8,7 @@
 #include "calibration_plot_view.hpp"
 #include "calibration_plot_annotation.hpp"
 #include "calibration_plot_payload.hpp"
+#include "calibration_plot_style.hpp"
 #include <imagejxx/playback.hpp>
 #include "shadow_demo.hpp"
 #include "legacy_target_resources.hpp"
@@ -1194,6 +1195,7 @@ struct Window::Impl {
   struct CalibrationPlotState {
     std::shared_ptr<const CalibrationPlotPayload> payload;
     CalibrationPlotView view;
+    CalibrationPlotStyle style;
     std::uint64_t generation=0;
     bool focus=false;
     std::optional<PlotRectangleDrag> drag;
@@ -4661,7 +4663,7 @@ struct Window::Impl {
     snapshot->controlId=std::to_string(snapshot->id);
     const auto bytes=RenderMemory::add(sizeof(PlotSnapshot)+256,RenderMemory::add(snapshot->title.capacity()+1,snapshot->controlId.capacity()+1));
     auto memory=renderMemory->acquire(bytes);
-    snapshot->state.payload=source.payload;snapshot->state.view=source.view;snapshot->state.source=source.source;
+    snapshot->state.payload=source.payload;snapshot->state.view=source.view;snapshot->state.style=source.style;snapshot->state.source=source.source;
     snapshot->state.generation=1;snapshot->state.focus=true;
     snapshot->memory=memory.retain(bytes);
     plotSnapshots.reserve(plotSnapshots.size()+1);
@@ -4709,6 +4711,50 @@ struct Window::Impl {
           {{"name","y_max"},{"label","Y to"},{"kind","float"}},{{"name","log_x"},{"label","Logarithmic X (positive limits)"},{"kind","bool"}},
           {{"name","log_y"},{"label","Logarithmic Y (positive limits)"},{"kind","bool"}},{{"name","grid"},{"label","Grid lines"},{"kind","bool"}},
           {{"name","ticks"},{"label","Ticks and labels"},{"kind","bool"}}}),"calibration_plot_limits");
+    dialog.independentPlot=plotId!=0;
+  }
+  Json plotStyleInfo(const CalibrationPlotStyle& style) const {
+    return {{"line_width",style.line_width},{"point_radius",style.point_radius},{"font_scale",style.font_scale},
+      {"annotation_visible",style.annotation_visible},{"annotation_x",style.annotation_x},{"annotation_y",style.annotation_y},
+      {"curve_color",CalibrationPlotStyle::color_text(style.curve_color)},{"point_color",CalibrationPlotStyle::color_text(style.point_color)}};
+  }
+  void applyPlotStyle(const Json& fields,std::uint64_t generation,std::uint64_t plotId=0) {
+    auto& plot=requireCalibrationPlot(plotId);
+    if(generation!=plot.generation)throw std::invalid_argument("The plotted data changed; reopen plot style");
+    auto candidate=plot.style;
+    for(const auto& field:fields.items()) {
+      const auto& key=field.key();const auto& value=field.value();
+      if(key=="plot_id" || key=="document_id")continue;
+      if(key=="annotation_visible") {
+        if(!value.is_boolean())throw std::invalid_argument("Annotation visibility requires a Boolean");
+        candidate.annotation_visible=value.get<bool>();
+      } else if(key=="curve_color" || key=="point_color") {
+        if(!value.is_string())throw std::invalid_argument("Plot colors require #RRGGBB");
+        const auto color=CalibrationPlotStyle::parse_color(value.get<std::string>());
+        if(!color)throw std::invalid_argument("Plot colors require #RRGGBB");
+        (key=="curve_color"?candidate.curve_color:candidate.point_color)=*color;
+      } else {
+        double* target=key=="line_width"?&candidate.line_width:key=="point_radius"?&candidate.point_radius:
+            key=="font_scale"?&candidate.font_scale:key=="annotation_x"?&candidate.annotation_x:key=="annotation_y"?&candidate.annotation_y:nullptr;
+        if(!target)throw std::invalid_argument("Unknown plot style field");
+        if(!value.is_number())throw std::invalid_argument("Plot style requires numbers");
+        *target=value.get<double>();
+      }
+    }
+    if(!candidate.valid())throw std::invalid_argument("Plot style ranges: line width0.5-8, point radius1-12, text scale0.5-2, annotation X/Y0-1");
+    plot.style=candidate;plot.drag.reset();
+  }
+  void showPlotStyle(std::uint64_t plotId=0) {
+    auto& plot=requireCalibrationPlot(plotId);const auto generation=plot.generation;
+    ask("Plot Style",plotStyleInfo(plot.style),[this,generation,plotId](Json values){applyPlotStyle(values,generation,plotId);},
+      Json::array({{{"name","line_width"},{"label","Curve width (0.5-8)"},{"kind","float"}},
+        {{"name","point_radius"},{"label","Point radius (1-12)"},{"kind","float"}},
+        {{"name","curve_color"},{"label","Curve color (#RRGGBB)"},{"kind","text"}},
+        {{"name","point_color"},{"label","Point color (#RRGGBB)"},{"kind","text"}},
+        {{"name","annotation_visible"},{"label","Show model on canvas"},{"kind","bool"}},
+        {{"name","font_scale"},{"label","Model text scale (0.5-2)"},{"kind","float"}},
+        {{"name","annotation_x"},{"label","Model position X (0 left, 1 right)"},{"kind","float"}},
+        {{"name","annotation_y"},{"label","Model position Y (0 top, 1 bottom)"},{"kind","float"}}}),"calibration_plot_style");
     dialog.independentPlot=plotId!=0;
   }
   void drawCalibrationPlot(CalibrationPlotState& plot,const char* title,std::uint64_t plotId,Json& observation,PlotSnapshot* snapshot=nullptr);
@@ -6443,7 +6489,7 @@ void Window::clearError() {
 }
 void Window::action(const std::string &name, const Json &p) {
   checkThread();
-  if(name=="show_intensity_plot_limits" || name=="set_intensity_plot_limits" || name=="zoom_intensity_plot_rectangle" || name=="keep_plot_snapshot" || name=="close_plot_snapshot") {
+  if(name=="show_intensity_plot_limits" || name=="set_intensity_plot_limits" || name=="zoom_intensity_plot_rectangle" || name=="keep_plot_snapshot" || name=="close_plot_snapshot" || name=="show_intensity_plot_style" || name=="set_intensity_plot_style") {
     if(!p.is_object())throw std::invalid_argument("Plot parameters must be an object");
     std::uint64_t id=0;
     if(p.contains("plot_id")){const auto& value=p.at("plot_id");if(!value.is_number_integer() || value<0)throw std::invalid_argument("Plot ID must be nonnegative");id=value.get<std::uint64_t>();}
@@ -6457,9 +6503,10 @@ void Window::action(const std::string &name, const Json &p) {
       const auto& value=p.at("document_id");
       if(id || !value.is_number_integer() || value<0 || (value.get<std::uint64_t>()!=0 && value.get<std::uint64_t>()!=nativeSnapshot().id()))throw std::invalid_argument("Plot action requires its active source document");
     }
-    if(name=="keep_plot_snapshot" || name=="show_intensity_plot_limits") {
+    if(name=="set_intensity_plot_style"){impl->applyPlotStyle(p,plot.generation,id);return;}
+    if(name=="keep_plot_snapshot" || name=="show_intensity_plot_limits" || name=="show_intensity_plot_style") {
       for(const auto& field:p.items())if(field.key()!="plot_id" && field.key()!="document_id")throw std::invalid_argument("Unknown plot field");
-      if(name=="keep_plot_snapshot")impl->keepPlotSnapshot(id);else impl->showPlotLimits(id);return;
+      if(name=="keep_plot_snapshot")impl->keepPlotSnapshot(id);else if(name=="show_intensity_plot_style")impl->showPlotStyle(id);else impl->showPlotLimits(id);return;
     }
     if(name=="zoom_intensity_plot_rectangle") {
       for(const auto& field:p.items())if(field.key()!="rectangle" && field.key()!="document_id" && field.key()!="plot_id")throw std::invalid_argument("Unknown plot rectangle field");
@@ -11132,7 +11179,8 @@ void Window::Impl::drawCalibrationPlot(CalibrationPlotState& plot,const char* ti
   const std::string prefix=plotId?"plot_snapshot."+std::to_string(plotId)+".":"fit_plot.";
   const auto observePlotControl=[&](const char* suffix,bool enabled=true,const char* hint=nullptr,const char* command=nullptr,ImGuiWindow* window=nullptr){observeControl(prefix+suffix,enabled,hint,command,window);};
   if(fitPlot) {
-    const auto& data=*fitPlot;
+    const auto& data=*fitPlot;const auto& style=plot.style;
+    const auto packedColor=[](std::uint32_t rgb){return IM_COL32((rgb>>16)&255,(rgb>>8)&255,rgb&255,255);};
     ImGui::Text(fitPlotIsTable?"Calibration table: %s":"Calibration fit: %s",data.function.c_str());
     ImGui::TextWrapped("Source: %s",plot.payload->source_title.empty()?"(untitled source)":plot.payload->source_title.c_str());
     if(ImGui::Button("Close plot")){plot.payload.reset();plot.source.reset();fitPlotDrag.reset();if(snapshot)snapshot->open=false;endPlot();return;}
@@ -11157,6 +11205,8 @@ void Window::Impl::drawCalibrationPlot(CalibrationPlotState& plot,const char* ti
     if(ImGui::GetContentRegionAvail().x>260.f*guiScale)ImGui::SameLine();
     if(ImGui::Button("Axes..."))guard([&]{showPlotLimits(plotId);});
     observePlotControl("axes");
+    ImGui::SameLine();if(ImGui::Button("Style..."))guard([&]{showPlotStyle(plotId);});
+    observePlotControl("style");
     Json annotationObservation=nullptr;
     if(fitPlotAnnotation) {
       const auto& annotation=*fitPlotAnnotation;
@@ -11177,7 +11227,7 @@ void Window::Impl::drawCalibrationPlot(CalibrationPlotState& plot,const char* ti
         {"rmse",annotation.rmse?Json(*annotation.rmse):Json(nullptr)},{"r_squared",annotation.r_squared?Json(*annotation.r_squared):Json(nullptr)},
         {"r_squared_undefined",annotation.r_squared_undefined},{"details_visible",expanded}};
     }
-    ImGui::TextUnformatted(fitPlotIsTable?"Blue line: calibrated table samples":"Red points: measurements; blue line: fitted curve");
+    ImGui::TextUnformatted(fitPlotIsTable?"Line: calibrated table samples":"Points: measurements; line: fitted curve");
     if(fitPlotIsTable && std::none_of(data.curve_y.begin(),data.curve_y.end(),[](float v){return std::isfinite(v);}))ImGui::TextUnformatted("No finite calibrated samples.");
     ImGui::Text("X: pixel value | Y: %s",data.value_unit.c_str());
     if(data.objective=="measured_as_function_of_known")ImGui::TextWrapped("Fit error is measured in pixel values using measured(known).");
@@ -11240,15 +11290,30 @@ void Window::Impl::drawCalibrationPlot(CalibrationPlotState& plot,const char* ti
       if(!representable(data.curve_x[i-1],data.curve_y[i-1]) || !representable(data.curve_x[i],data.curve_y[i])){++maskedSegments;continue;}
       const auto a=position(data.curve_x[i-1],data.curve_y[i-1]),b=position(data.curve_x[i],data.curve_y[i]);
       if(std::isfinite(a.x) && std::isfinite(a.y) && std::isfinite(b.x) && std::isfinite(b.y)) {
-        draw->AddLine(a,b,IM_COL32(70,140,255,255),1.5f);++drawnSegments;
+        draw->AddLine(a,b,packedColor(style.curve_color),float(style.line_width)*guiScale);++drawnSegments;
       } else finiteGeometry=false;
     }
     Json points=Json::array();
     for(std::size_t i=0;i<data.measured.size();++i) {
       if(!representable(data.measured[i],data.known[i])){if(headlessSessionActive)points.push_back(nullptr);continue;}
       const auto point=position(data.measured[i],data.known[i]);
-      if(std::isfinite(point.x) && std::isfinite(point.y))draw->AddCircleFilled(point,3.f,IM_COL32(255,90,90,255));
+      if(std::isfinite(point.x) && std::isfinite(point.y))draw->AddCircleFilled(point,float(style.point_radius)*guiScale,packedColor(style.point_color));
       if(headlessSessionActive)points.push_back({point.x,point.y});
+    }
+    Json modelOverlay=nullptr;
+    if(style.annotation_visible && fitPlotAnnotation && !fitPlotAnnotation->canvas_text.empty()) {
+      const auto& text=fitPlotAnnotation->canvas_text;
+      const auto fontSize=ImGui::GetFontSize()*float(style.font_scale),padding=4.f*guiScale;
+      const auto wrap=std::max(1.f,size.x-2*padding);
+      const auto measured=ImGui::GetFont()->CalcTextSizeA(fontSize,std::numeric_limits<float>::max(),wrap,text.c_str());
+      const auto box=style.box(size.x,size.y,measured.x,measured.y,padding);
+      const ImVec2 a{origin.x+float(box[0]),origin.y+float(box[1])},b{a.x+float(box[2]),a.y+float(box[3])};
+      draw->AddRectFilled(a,b,IM_COL32(20,20,20,235));draw->AddRect(a,b,IM_COL32(210,210,210,255));
+      draw->PushClipRect(a,b,true);
+      draw->AddText(ImGui::GetFont(),fontSize,{a.x+padding,a.y+padding},IM_COL32(245,245,245,255),text.c_str(),nullptr,wrap);
+      draw->PopClipRect();
+      if(headlessSessionActive)modelOverlay={{"text",text},{"origin",{a.x,a.y}},{"size",{box[2],box[3]}},
+        {"text_size",{measured.x,measured.y}},{"font_size",fontSize},{"padding",padding},{"wrap_width",wrap}};
     }
     Json cursor=nullptr;
     if(hovered) {
@@ -11299,7 +11364,7 @@ void Window::Impl::drawCalibrationPlot(CalibrationPlotState& plot,const char* ti
       {"finite_geometry",finiteGeometry},{"drawn_segments",drawnSegments},{"visible",true},
       {"view_limits",viewLimits},{"viewport",fitPlotView.fractions},{"cursor",std::move(cursor)},
       {"log_x",fitPlotView.log_x},{"log_y",fitPlotView.log_y},{"grid",fitPlotView.grid},{"ticks",fitPlotView.ticks},
-      {"grid_lines",fitPlotView.grid?6:0},{"x_ticks",std::move(xTicks)},{"y_ticks",std::move(yTicks)},{"masked_segments",maskedSegments},{"log_notice",logNotice},{"annotation",std::move(annotationObservation)},{"rectangle_drag",std::move(rectangleObservation)},{"payload_id",plot.payload->payload_id},{"source_title",plot.payload->source_title}};
+      {"grid_lines",fitPlotView.grid?6:0},{"x_ticks",std::move(xTicks)},{"y_ticks",std::move(yTicks)},{"masked_segments",maskedSegments},{"log_notice",logNotice},{"annotation",std::move(annotationObservation)},{"rectangle_drag",std::move(rectangleObservation)},{"payload_id",plot.payload->payload_id},{"source_title",plot.payload->source_title},{"style",plotStyleInfo(style)},{"model_overlay",std::move(modelOverlay)}};
     endPlot();return;
   }
 

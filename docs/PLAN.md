@@ -1,5 +1,46 @@
 # ImageJ and Fiji gap closure plan
 
+## Per-window plot style and on-canvas model annotations — 2026-10-28
+
+Plot Style now controls curve width/color, measured-point radius/color and an
+optional prepared model annotation. Text scale and normalized X/Y place its box
+inside available canvas space (X rightwards/Y downwards); wrapping/clipping keeps
+it bounded. Formula, coefficients, objective and fit quality reuse immutable
+provenance, preserving undefined/unavailable metrics. Text is prepared once and
+charged with the existing payload lease; no render-time provenance read/re-fit.
+
+Style belongs to each window, separate from axes. Snapshots copy it then edit
+independently; axis reset preserves it. show_intensity_plot_style and
+set_intensity_plot_style accept optional plot_id, with guarded live or independent
+snapshot semantics. Patch fields: line_width[0.5,8], point_radius[1,12],
+font_scale[0.5,2], annotation_visible Boolean, annotation_x/y[0,1], curve_color and
+point_color #RRGGBB. Validation stages a candidate; invalid patches preserve state.
+Dialog callbacks resolve ID+generation and work after source close for snapshots.
+
+Windows installed770 checks pass, zero failures/skips, plus native consumers.
+Both UI workflows physically edit/apply style after source closure; independent
+readers derive annotation box position from delivered canvas/text geometry and
+verify exact text, sibling/data/history/memory invariants. Dedicated case now
+154/192 frames; calibration stays606/608. Linux private C++17 consumer passes
+against existing SDK; no Linux UI/full SDK, OS/GPU or whole-family promotion.
+[Scoped evidence](parity/reviews/G034-calibration-plot-style-progress001.json).
+
+One new test mistook a hidden live-window observation for an always-present
+getter. It now closes floating windows before checking the unchanged live style;
+failed reader preimage/diagnostics retained, product unchanged. All terminal
+scratch retired; lossless compression recovered343,830B. Known roots
+8,474,770,010B; two denied caches keep full8GiB budget unverified. Same active
+caches/runtime/SDK, commercial inventory passes, original fingerprints unchanged.
+No matched speed advantage; tracker47 in progress/52 open/0 complete.
+
+Next: image export using the same prepared data/viewport/style/model layout.
+Prepare a bounded independent output target, preserve source-closed snapshots,
+reserve output memory before writing, and verify dimensions/colors/geometry from
+exported artifacts. Avoid capturing workspace controls or re-reading/re-fitting
+source data. Nice/minor ticks, generic histogram/profile reuse, custom annotation
+text/drag/persistence, independent OS windows and broader calibration/downstream/
+platform/reference/performance gates remain open.
+
 ## Captured source captions on calibration plots — 2026-10-28
 
 Live and retained calibration plots now display the source title captured when
