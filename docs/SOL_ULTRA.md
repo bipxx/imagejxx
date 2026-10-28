@@ -1,5 +1,38 @@
 # Sol Ultra execution guide
 
+## Manual calibration dialogs automatically show plots — 2026-10-28
+
+Intensity Calibration and Calibration Function now expose Show plot, sharing
+its interactive-session preference with fitting. Successful Apply prepares the
+bounded table plot and metadata edit before committing, then publishes the plot
+with a no-throw swap. Validation/budget failures preserve source, history and
+previous plot; Cancel does not remember drafts. No-density calibration skips the
+automatic plot. Explicit set_intensity_calibration accepts a strict Boolean
+show_plot; omitting it preserves the existing setter behavior. The same native
+producer and ImGui renderer serve both frontends; no public core API or new
+dependency was added.
+
+Windows installed verification passes670 focused checks, zero failures/skips,
+the native projection consumer and three physical C++ UI cases. Both C++ and
+Python physical calibration cases observe visible signed16/function automatic
+plots and exact256 sampled values;349 frames remain within the352-frame cap.
+The first physical run reached the plot but its next menu click overlapped plot
+focus settling; two idle render frames corrected the probe. Failed diagnostics
+are retained compressed, with scratch retired. Original reference fingerprints
+are unchanged. [Scoped evidence](parity/reviews/G034-manual-calibration-auto-plot-progress001.json).
+
+Next: plot annotations/interaction/detached-window behavior, then fitting
+settings/restarts/global calibration, table import/export/replay/macro and
+downstream measurement/histogram. Linux Python/UI, installed IO, macOS and full
+original-reference gates remain open. No matched speed advantage is established.
+Tracker stays47 in progress/52 open/0 complete.
+
+The same active compiler cache/runtime was reused. All terminal scratch was
+retired after hash-verified compression, including the failed capture. Logs and
+duplicate source identities recovered942,330B through lossless compression.
+Known generated roots8,450,323,255B; denied pytest caches keep full8GiB budget
+unverified. Commercial-use inventory passes.
+
 **Current execution, 2026-10-25:** implementation resumed; follow
 [MW1](packets/MW1-manual-threshold-workflow.md) and the three-agent execution
 authority. Historical pause statements below describe the earlier review.

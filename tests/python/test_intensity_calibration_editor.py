@@ -69,7 +69,7 @@ def test_actual_intensity_calibration_dialog(context,tmp_path):
     for name in ("undone","cleared"):
         assert key not in report[name]["properties"]
     assert report["applied"]["undo"]==1 and report["cancelled"]["undo"]==1
-    assert report["reopened_dialog"]["values"]=={"mode":"signed16","value_unit":"HU"}
+    assert report["reopened_dialog"]["values"]=={"mode":"signed16","value_unit":"HU","show_plot":True}
     assert report["source_pixels_unchanged"] and report["projection_source_unchanged"]
     projected=report["projected"]
     assert projected["shape"]==[1,1,1,1,3,1] and projected["pixels"]==[[-65536.,0.,65534.]]
@@ -84,6 +84,12 @@ def test_actual_intensity_calibration_dialog(context,tmp_path):
     _assert_fit_plot_render(report)
     _assert_automatic_fit_plot(report)
     _assert_calibration_table_plot_and_csv(report)
+    for name in ("manual_automatic_plot","function_automatic_plot"):
+        plot=report[name]
+        assert plot["kind"]=="calibration_table" and plot["visible"] and plot["finite_geometry"]
+        assert len(plot["curve_x"])==len(plot["curve_y"])==256
+    np.testing.assert_array_equal(report["manual_automatic_plot"]["curve_y"],257*np.arange(256)-32768)
+    np.testing.assert_array_equal(report["function_automatic_plot"]["curve_y"],5+2*257*np.arange(256))
     _assert_fit_csv(report)
 
     for name in ("function_applied","function_reopened"):
@@ -285,6 +291,12 @@ def test_actual_nonlinear_calibration_dialog(context,tmp_path):
     _assert_fit_plot_render(report)
     _assert_automatic_fit_plot(report)
     _assert_calibration_table_plot_and_csv(report)
+    for name in ("manual_automatic_plot","function_automatic_plot"):
+        plot=report[name]
+        assert plot["kind"]=="calibration_table" and plot["visible"] and plot["finite_geometry"]
+        assert len(plot["curve_x"])==len(plot["curve_y"])==256
+    np.testing.assert_array_equal(report["manual_automatic_plot"]["curve_y"],257*np.arange(256)-32768)
+    np.testing.assert_array_equal(report["function_automatic_plot"]["curve_y"],5+2*257*np.arange(256))
     _assert_fit_csv(report)
     assert {"show_intensity_nonlinear_fit","initial_coefficients","invalid_fit_apply","fit_error_ok","fit_apply","fit_cancel"}<={r["name"] for r in report["controls"]}
 
@@ -682,3 +694,51 @@ def _assert_fit_csv(report):
         np.testing.assert_array_equal([float(r["x"]) for r in group],x)
         np.testing.assert_array_equal([float(r["y"]) for r in group],y)
     assert {"fit_plot_export","fit_csv_path","fit_csv_save"}<={c["name"] for c in report["controls"]}
+
+
+@pytest.mark.parametrize("show",[False,True])
+def test_manual_calibration_automatic_plot_and_noop(show,tmp_path):
+    from imagejxx.ui.app import Editor
+    from imagejxx.ui.persistence import Preferences
+    owner=ij.Document(ij.Dataset(np.zeros((2,3),np.uint16),axes="YX"),"manual")
+    editor=Editor(preferences=Preferences(tmp_path/"preferences.json"));editor.add_native_document(owner)
+    before=owner.snapshot();record=ij.ImageJIntensityCalibration.signed16("HU").record
+    for _ in range(2):
+        editor.action("set_intensity_calibration",record=record,show_plot=show)
+        plot=editor.render_headless(4)["fit_plot"]
+        assert (plot is not None)==show
+        if show:
+            assert plot["kind"]=="calibration_table" and plot["visible"]
+            np.testing.assert_array_equal(plot["curve_y"],257*np.arange(256)-32768)
+        assert owner.undo_steps==1 and owner.snapshot().revisions.pixels==before.revisions.pixels
+    editor.action("show_intensity_function")
+    assert editor.render_headless(4)["dialog"]["values"]["show_plot"]==show
+
+
+@pytest.mark.parametrize("value",[0,1,"true",None])
+def test_manual_show_plot_requires_boolean(value,tmp_path):
+    from imagejxx.ui.app import Editor
+    from imagejxx.ui.persistence import Preferences
+    owner=_fit_owner();editor=Editor(preferences=Preferences(tmp_path/"preferences.json"));editor.add_native_document(owner)
+    before=owner.snapshot()
+    with pytest.raises((ValueError,RuntimeError),match="Boolean"):
+        editor.action("set_intensity_calibration",record=ij.ImageJIntensityCalibration.uncalibrated().record,show_plot=value)
+    assert owner.snapshot().shares_data(before) and owner.undo_steps==0
+
+
+def test_manual_plot_budget_failure_preserves_previous_plot_and_preference(tmp_path):
+    from imagejxx.ui.app import Editor
+    from imagejxx.ui.persistence import Preferences
+    owner=_fit_owner();editor=Editor(preferences=Preferences(tmp_path/"preferences.json"));editor.add_native_document(owner)
+    record=ij.ImageJIntensityCalibration.function("uint16","straight_line",[1,2],"HU").record
+    editor.action("set_intensity_calibration",record=record,show_plot=True)
+    previous=editor.render_headless(4)["fit_plot"];before=owner.snapshot();steps=owner.undo_steps
+    editor.update_settings(processing_memory_mb=1,persist=False)
+    # A large, valid unit exceeds the plot producer's declared budget.
+    oversized=dict(record,value_unit="u"*(1024*1024))
+    with pytest.raises((ValueError,RuntimeError)):
+        editor.action("set_intensity_calibration",record=oversized,show_plot=True)
+    assert owner.snapshot().shares_data(before) and owner.undo_steps==steps
+    assert editor.render_headless(4)["fit_plot"]==previous
+    editor.action("show_intensity_calibration")
+    assert editor.render_headless(4)["dialog"]["values"]["show_plot"] is True

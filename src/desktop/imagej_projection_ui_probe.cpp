@@ -215,7 +215,7 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   };
   frame();frame();report["before"]=state(w);menu("show_intensity_calibration");
   choose("mode","signed16");editText("value_unit","HU");
-  click(last.at("dialog").at("controls").at("apply"),"calibration_apply");report["applied"]=state(w);
+  click(last.at("dialog").at("controls").at("apply"),"calibration_apply");frame();frame();report["applied"]=state(w);report["manual_automatic_plot"]=last.at("fit_plot");
   const auto tableSource=owner->snapshot();menu("show_intensity_calibration_plot");report["calibration_table_plot"]=last.at("fit_plot");
   click(last.at("host_controls").at("fit_plot.export"),"table_plot_export");
   report["table_csv_browser"]={{"open",last.at("file_browser").at("open")},{"save",last.at("file_browser").at("save")},{"title",last.at("file_browser").at("title")}};
@@ -246,7 +246,7 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   report["projection_source_unchanged"]=owner->snapshot().shares_data(calibrated);
   w.setActiveIndex(0);frame();menu("show_intensity_function");editText("coefficients","[5,2]");
   click(last.at("dialog").at("controls").at("zero_clip"),"zero_clip");
-  click(last.at("dialog").at("controls").at("apply"),"function_apply");report["function_applied"]=state(w);
+  click(last.at("dialog").at("controls").at("apply"),"function_apply");frame();frame();report["function_applied"]=state(w);report["function_automatic_plot"]=last.at("fit_plot");
   menu("show_intensity_function");report["function_dialog"]=last.at("dialog");
   click(last.at("dialog").at("controls").at("cancel"),"function_cancel");
   const auto functionSnapshot=owner->snapshot();

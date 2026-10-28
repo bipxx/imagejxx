@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "scope": "G034 manual calibration/function automatic table plots in shared ImGui C++ and Python consumers",
+  "state": "focused_checks_passed",
+  "acceptance_claim": false,
+  "implementation": {
+    "dialogs": [
+      "Intensity Calibration",
+      "Calibration Function"
+    ],
+    "preference": "Per-window interactive session Show plot, shared with fitting; remembered only after successful manual Apply; Cancel leaves it unchanged; no numeric provenance or disk preference added",
+    "publication": "Captured owner and All revisions checked; validate calibration, stage bounded table plot, metadata transaction, expected revision and scalar binding before commit; no-throw plot swap after commit",
+    "none": "No automatic plot for calibration without density",
+    "reuse": "Same table plot producer, memory limit and renderer as explicit plot; no public header/core API/dependency change",
+    "action": "set_intensity_calibration accepts optional strict Boolean show_plot; omitted option retains existing setter behavior"
+  },
+  "evidence": {
+    "manual-calibration-plot-windows-build280": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\manual-calibration-plot-windows-build280\\receipt.json",
+      "bytes": 22375,
+      "sha256": "dd3b7fa1bb1c9e4e27290aaac34fbc9c2a9c32415305ece17c44a29fc6000464"
+    },
+    "manual-calibration-plot-installed279": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\manual-calibration-plot-installed279\\receipt.json",
+      "bytes": 13642,
+      "sha256": "f0928d46fa50ccb6e931bf116646f93c3a626145823aa52bea0d2da2bdb7fb52"
+    },
+    "manual-calibration-plot-installed281": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\manual-calibration-plot-installed281\\receipt.json",
+      "bytes": 27946,
+      "sha256": "960f7a4b52a6b3f054b2fb7bdd00db62aa6dfe5a28081081734a885a9e9c21c0"
+    },
+    "manual-calibration-plot-retention282": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\manual-calibration-plot-retention282\\receipt.json",
+      "bytes": 8602,
+      "sha256": "384a5686c6bb413c37e85de8d7267424d5bdaeb53cbc58422472b944936fc86d"
+    }
+  },
+  "verification": {
+    "platform": "Windows installed Release C++ app and Python modules",
+    "pytest_tests": 670,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "native_projection_consumer": "passed",
+    "physical_cases": [
+      "projection",
+      "intensity calibration and polynomial fitting",
+      "intensity calibration and nonlinear fitting"
+    ],
+    "calibration_case_frames": 349,
+    "frame_limit": 352,
+    "checks": [
+      "Actual automatic signed16 and function table plot visibility and exact 256 samples in both frontends",
+      "Single metadata undo step, unchanged pixel revision and metadata-identical no-op",
+      "Explicit true/false plot preference propagation into function dialog",
+      "Non-Boolean show_plot rejected atomically",
+      "Plot budget failure preserves source/history and previous plot",
+      "Existing CSV physical export, running fit cancellation, projection, numeric reference and CI observation controls"
+    ],
+    "commercial_use_inventory": "passed; no new dependency",
+    "diff_check": "passed"
+  },
+  "harness_history": [
+    {
+      "run": "installed279",
+      "state": "failed",
+      "cause": "Automatic plot correctly appeared but retained focus request crossed the immediate next menu click in physical probe; add two idle render frames after each manual Apply. No reference outputs or historical fingerprints changed.",
+      "diagnostics": "Failed captures losslessly compressed and verified; scratch retired."
+    },
+    {
+      "run": "build276/build278",
+      "state": "passed",
+      "cause": "Test-only correction from UInt8 table to UInt16 owner before final focused verification; same active compiler cache/runtime reused."
+    }
+  ],
+  "storage": {
+    "before_known_bytes": 8448357917,
+    "after_known_bytes": 8450323255,
+    "full_budget_verified": false,
+    "unknown_subtrees": [
+      ".cache/pytest",
+      ".cache/pytest-ui"
+    ],
+    "temporary_reserve_bytes": 536870912,
+    "reason": "Necessary serial rebuild/install in the one active Windows cache/runtime; bounded UI scratch64MiB; no cache/env clones",
+    "log_identity_compression_recovered_bytes": 942330,
+    "retention": "Successful and failed captures, large logs and source identities losslessly compressed/hash-verified before raw retirement; receipts/XML retained; no whole caches/SDKs/envs archived"
+  },
+  "remaining": [
+    "Plot annotations, interaction and detached-window behavior",
+    "Fitting settings/restarts/global calibration, table import/export, workflow replay/macro and downstream measurement/histogram",
+    "Linux Python/UI, installed IO SDK, macOS and original-reference qualification",
+    "Matched ImageJ/Fiji speed and memory benchmarks"
+  ],
+  "family_status": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  }
+}

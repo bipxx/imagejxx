@@ -4565,6 +4565,43 @@ struct Window::Impl {
     try {owner.fitIntensityCalibration(source,std::move(request));}
     catch(...){fitShowPlot=previous;throw;}
   }
+  std::size_t intensityPlotBudget() const {
+    auto bytes=std::size_t(4*1024*1024);
+    const auto mb=preferenceState.settings.integer("processing_memory_mb");
+    if(mb>0)bytes=std::min(bytes,std::size_t(mb)*1024*1024);
+    return bytes;
+  }
+  ImageJIntensityFitPlot calibrationTablePlot(const ImageJIntensityCalibration& calibration) const {
+    auto data=imagej_intensity_calibration_plot(calibration,intensityPlotBudget());
+    ImageJIntensityFitPlot plot;
+    plot.function=std::move(data.mode);plot.value_unit=std::move(data.value_unit);
+    plot.curve_x=std::move(data.curve_x);plot.curve_y=std::move(data.curve_y);
+    plot.x_min=data.x_min;plot.x_max=data.x_max;plot.y_min=data.y_min;plot.y_max=data.y_max;
+    return plot;
+  }
+  void applyIntensityCalibration(const DocumentSnapshot& source,
+      const ImageJIntensityCalibration& calibration,bool show) {
+    if(owner.busy())throw std::invalid_argument("Wait for the current edit");
+    const auto current=owner.nativeSnapshot();
+    if(!source.same_document(current) || !source.revisions().matches(current.revisions(),Change::All))throw RevisionConflict();
+    calibration.validate_for(source.data().dataset.pixel_type(),source.data().dataset.shape().s);
+    // Stage all potentially throwing plot/metadata work before committing the edit.
+    std::optional<ImageJIntensityFitPlot> plot;
+    if(show && calibration.has_density())plot=calibrationTablePlot(calibration);
+    auto edit=source.begin_edit(Change::All);
+    if(!calibration.has_density() && calibration.value_unit()=="Gray Value")edit.remove_property(imagej_intensity_property);
+    else edit.set_property(imagej_intensity_property,calibration.record());
+    auto expected=source.revisions();expected.advance(document_changes(source.data(),edit.preview().data()));
+    std::optional<FitPlotBinding> binding;
+    if(plot)binding=FitPlotBinding{source.id(),expected};
+    const auto facade=owner.documentById(source.id());
+    if(facade->scientific())owner.controller_->commit(edit);else facade->commitNative(edit);
+    static_assert(std::is_nothrow_swappable_v<decltype(plot)>);
+    static_assert(std::is_nothrow_swappable_v<decltype(binding)>);
+    // A successful Apply remembers the preference; Cancel and failures never do.
+    fitShowPlot=show;
+    if(plot){fitPlot.swap(plot);fitPlotSource.swap(binding);fitPlotIsTable=true;fitPlotFocusRequested=true;}
+  }
   void plots();
   void dialogs();
   void canvas(Pane &pane);
@@ -6600,15 +6637,10 @@ void Window::action(const std::string &name, const Json &p) {
     if(name=="show_intensity_fit_plot" || name=="show_intensity_calibration_plot") {
       for(const auto& field:p.items())if(field.key()!="document_id")throw std::invalid_argument("Unknown fit plot field: "+field.key());
       const auto calibration=read_imagej_intensity_calibration(source);
-      auto bytes=std::size_t(4*1024*1024);const auto mb=impl->preferenceState.settings.integer("processing_memory_mb");
-      if(mb>0)bytes=std::min(bytes,std::size_t(mb)*1024*1024);
-      ImageJIntensityFitPlot plot;const bool table=name=="show_intensity_calibration_plot";
-      if(table) {
-        auto data=imagej_intensity_calibration_plot(calibration,bytes);
-        plot.function=std::move(data.mode);plot.value_unit=std::move(data.value_unit);
-        plot.curve_x=std::move(data.curve_x);plot.curve_y=std::move(data.curve_y);
-        plot.x_min=data.x_min;plot.x_max=data.x_max;plot.y_min=data.y_min;plot.y_max=data.y_max;
-      } else plot=imagej_intensity_fit_plot(calibration,calibration.bit_depth()==8?256:100,bytes);
+      const auto bytes=impl->intensityPlotBudget();
+      const bool table=name=="show_intensity_calibration_plot";
+      auto plot=table?impl->calibrationTablePlot(calibration):
+          imagej_intensity_fit_plot(calibration,calibration.bit_depth()==8?256:100,bytes);
       impl->fitPlotIsTable=table;
       impl->fitPlotSource=Impl::FitPlotBinding{source.id(),source.revisions()};impl->fitPlot=std::move(plot);impl->fitPlotFocusRequested=true;return;
     }
@@ -6634,10 +6666,13 @@ void Window::action(const std::string &name, const Json &p) {
       impl->submitIntensityFit(source,std::move(request),showPlot);return;
     }
     if(name=="set_intensity_calibration") {
-      for(const auto& field:p.items())if(field.key()!="record" && field.key()!="document_id")
+      for(const auto& field:p.items())if(field.key()!="record" && field.key()!="document_id" && field.key()!="show_plot")
         throw std::invalid_argument("Unknown calibration field: "+field.key());
+      if(p.contains("show_plot") && !p.at("show_plot").is_boolean())throw std::invalid_argument("Show plot requires Boolean");
       const auto value=ImageJIntensityCalibration::from_record(metadata_object(metadataObjectFromJson(p.at("record"))));
-      set_imagej_intensity_calibration(*nativeDocument(source.id()),value);return;
+      if(p.contains("show_plot"))impl->applyIntensityCalibration(source,value,p.at("show_plot").get<bool>());
+      else set_imagej_intensity_calibration(*nativeDocument(source.id()),value);
+      return;
     }
     for(const auto& field:p.items())if(field.key()!="document_id")throw std::invalid_argument("Unknown calibration dialog field");
     const auto calibration=read_imagej_intensity_calibration(source);
@@ -6731,7 +6766,7 @@ void Window::action(const std::string &name, const Json &p) {
         "log","rodbard","gamma_variate","log2","rodbard2","exp_with_offset","gaussian","exp_recovery"});
       if(type==PixelType::UInt8)functions.push_back("uncalibrated_od");
       Json values{{"function","straight_line"},{"coefficients","[0,1]"},
-        {"value_unit",calibration.value_unit()},{"zero_clip",false},{"inverted_lut",false}};
+        {"value_unit",calibration.value_unit()},{"zero_clip",false},{"inverted_lut",false},{"show_plot",impl->fitShowPlot}};
       const auto parameters=metadataJson(calibration.source_parameters());
       if(parameters.value("producer",std::string())=="imagej154r.function") {
         for(const auto* key:{"function","zero_clip","inverted_lut"})values[key]=parameters.at(key);
@@ -6747,19 +6782,20 @@ void Window::action(const std::string &name, const Json &p) {
         for(const auto& value:coefficients){if(!value.is_number())throw std::invalid_argument("Coefficients must be numbers");numbers.push_back(value.get<double>());}
         const auto value=ImageJIntensityCalibration::function(type,fields.at("function").get<std::string>(),numbers,
             fields.at("value_unit").get<std::string>(),fields.at("zero_clip").get<bool>(),fields.at("inverted_lut").get<bool>());
-        action("set_intensity_calibration",{{"record",metadataJson(value.record())}});
+        impl->applyIntensityCalibration(source,value,fields.at("show_plot").get<bool>());
       },Json::array({{{"name","function"},{"label","Function"},{"kind","text"},{"choices",functions}},
         {{"name","coefficients"},{"label","Coefficients [a,b,...]"},{"kind","text"}},
         {{"name","value_unit"},{"label","Value unit"},{"kind","text"}},
         {{"name","zero_clip"},{"label","Clip negatives (8-bit tables)"},{"kind","bool"}},
-        {{"name","inverted_lut"},{"label","Inverted LUT (optical density)"},{"kind","bool"}}}),"intensity_function");
+        {{"name","inverted_lut"},{"label","Inverted LUT (optical density)"},{"kind","bool"}},
+        {{"name","show_plot"},{"label","Show plot"},{"kind","bool"}}}),"intensity_function");
       return;
     }
     Json choices=Json::array({"none"});
     if(source.data().dataset.pixel_type()==PixelType::UInt16 && source.data().dataset.shape().s==1)choices.push_back("signed16");
     if(calibration.mode()==ImageJIntensityMode::Lookup)choices.push_back("lookup");
     impl->stopAnimation("intensity_calibration");
-    impl->ask("Intensity Calibration",{{"mode",record.at("mode")},{"value_unit",calibration.value_unit()}},
+    impl->ask("Intensity Calibration",{{"mode",record.at("mode")},{"value_unit",calibration.value_unit()},{"show_plot",impl->fitShowPlot}},
         [this,source,record](Json values) {
           const auto now=nativeSnapshot();
           if(!source.same_document(now) || !source.revisions().matches(now.revisions(),Change::All))throw RevisionConflict();
@@ -6771,9 +6807,11 @@ void Window::action(const std::string &name, const Json &p) {
             updated={{"schema","imagejxx.intensity-calibration"},{"version",1},
               {"mode",values.at("mode")},{"value_unit",values.at("value_unit")}};
           }
-          action("set_intensity_calibration",{{"record",std::move(updated)}});
+          const auto value=ImageJIntensityCalibration::from_record(metadata_object(metadataObjectFromJson(updated)));
+          impl->applyIntensityCalibration(source,value,values.at("show_plot").get<bool>());
         },Json::array({{{"name","mode"},{"label","Intensity calibration"},{"kind","text"},{"choices",choices}},
-          {{"name","value_unit"},{"label","Value unit"},{"kind","text"}}}),"intensity_calibration");
+          {{"name","value_unit"},{"label","Value unit"},{"kind","text"}},
+          {{"name","show_plot"},{"label","Show plot"},{"kind","bool"}}}),"intensity_calibration");
     return;
   }
   if(name=="show_imagej_projection" || name=="show_imagej_grouped_projection" ||
