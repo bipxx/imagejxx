@@ -1,0 +1,306 @@
+{
+  "schema": "imagejxx.scoped-progress",
+  "version": 1,
+  "source_base": "57db2289efb2151606a779e018f7dc788e0e02af",
+  "scope": "Locally refreshed Release installed core C++ SDKs on Windows and Linux, public-header consumers and exported imagejxx::core CMake fixture; no full platform/IO/Python/UI qualification",
+  "acceptance_claim": false,
+  "source_inputs": [
+    {
+      "path": "scripts/calibration_sdk_profiles.py",
+      "bytes": 3125,
+      "sha256": "6192c3c965adece34b04a6713fd6f4a70613a83bdfea70a983c0ec1ece7fbccf"
+    },
+    {
+      "path": "tests/native/test_calibration_sdk_profiles.cpp",
+      "bytes": 4594,
+      "sha256": "b412c23aa58e136d4fb92e7054470a0fbdf0e3369d91b8a38bd0f24918fc81fa"
+    },
+    {
+      "path": "tests/installed_core/CMakeLists.txt",
+      "bytes": 1926,
+      "sha256": "2a7c522dcad035823b8573e1eeda5bb447634e22685022f24bcc0c1ba577b511"
+    },
+    {
+      "path": "tests/installed_core/README.md",
+      "bytes": 1545,
+      "sha256": "8543264956bf1942e80b3ce802aea6533a8b73978063cf75e717d5077432c214"
+    },
+    {
+      "path": "tests/native/test_core.cpp",
+      "bytes": 5256,
+      "sha256": "2c3261677381bdd6d22f05b1553149558acf19ccfcfbfa54323732b2650a2e03"
+    },
+    {
+      "path": "tests/native/test_imagej_projection_execution.cpp",
+      "bytes": 23543,
+      "sha256": "3c1d6536f91bbba4cdb7f59d47f0546666d3d6fb81e89bc97beaf380be4a3ede"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 136824,
+      "sha256": "eab720a49aed87fb11a5a1d08f4eb890b2a9149a82266ebd41d67d402f7fe120"
+    },
+    {
+      "path": "cmake/imagejxxConfig.cmake.in",
+      "bytes": 1712,
+      "sha256": "fb577433f31fc93751298466e7ccd1d9b990abaf09e372520345088ccd7b1b58"
+    },
+    {
+      "path": "include/imagejxx/imagej_intensity_execution.hpp",
+      "bytes": 1146,
+      "sha256": "4176b3da5e57b2fcca59a4f07993423f7067edd54291490fa5e21393fbd6a4f5"
+    },
+    {
+      "path": "include/imagejxx/imagej_intensity_plot.hpp",
+      "bytes": 1884,
+      "sha256": "2a9069c3af34587dfab3585c63b7e65ae71e15cb466720cb5c664dd37ca51daa"
+    }
+  ],
+  "evidence": [
+    {
+      "path": ".tmp/manual-workflow-verification/calibration-sdk-windows258/receipt.json",
+      "bytes": 110789,
+      "sha256": "14b5db54e53fa020482afd81214ca4fe753412aef090057bff7a11a58bd3c1e7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/calibration-sdk-linux264/receipt.json",
+      "bytes": 178251,
+      "sha256": "554b9f76eb45766c1c3aaae4e6c0ba05c0a43b91643c93d872c24163fb18a608"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/calibration-sdk-package-windows266/receipt.json",
+      "bytes": 31538,
+      "sha256": "40e45ae2945dc1a7680075b468d24d2ee7f0816deec201b62191067cb0ab9b8d"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/calibration-sdk-package-linux266/receipt.json",
+      "bytes": 17716,
+      "sha256": "cc87ad2e0b32252ae972b63b6d9e03a459ba4eb03f816af9ac57d5d099da7465"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/calibration-sdk-profile-windows268/receipt.json",
+      "bytes": 32009,
+      "sha256": "c45e3961ed5dd85b7b52f7775ddfc35dd7165bcc5404fed45b4083f55bed628b"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/calibration-sdk-profile-linux268/receipt.json",
+      "bytes": 18196,
+      "sha256": "dff5bf88839dce2beea2616cbf11e10819e42041a1aeaa6ae8e6cf19a53e8c0a"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/calibration-sdk-fixture-windows270/receipt.json",
+      "bytes": 46633,
+      "sha256": "8bdbac4e382de67dd35625933622350e6a0fecb33f28a2d0aff252841e94a8e5"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/calibration-sdk-fixture-linux270/receipt.json",
+      "bytes": 26070,
+      "sha256": "405e739f9d0c2869426579969ed99709e900d31c1d5662969003e1b240082442"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/calibration-sdk-fixture-windows270/results.xml",
+      "bytes": 1192,
+      "sha256": "3896f621af8ddb294483d654a91a0b665e97c152face54d6e2647be2b674c73c"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/calibration-sdk-fixture-linux270/results.xml",
+      "bytes": 1159,
+      "sha256": "62ce05e16e69c5b835bcaa86053992f06cfb8a7f81b5d91ffc23d28e742f8996"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/calibration-sdk-package-windows265/receipt.json",
+      "bytes": 14294,
+      "sha256": "9ef5ec0bc9f569f1c950f8df9855e230be1454ce499a9b3991ecda4f22a3d7d7"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/calibration-sdk-linux-audit259/receipt.json",
+      "bytes": 2944,
+      "sha256": "cf318d56c5e4350e1cafbf2228f605e70ffafae59da6489fca810a16eebebece"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/calibration-sdk-linux-audit261/receipt.json",
+      "bytes": 3166,
+      "sha256": "6fe865d518f7defab839269bbd75d1e2707cc04de9baaf387ad75f00fd44de81"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/calibration-sdk-linux-audit262/receipt.json",
+      "bytes": 2912,
+      "sha256": "d27cf8a8a0710363d0d8373df0f76eaef564a84ed80853f06f87d7e3b7530810"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/calibration-sdk-linux-audit262/obsolete-prefix-identities.json.gz",
+      "bytes": 32682,
+      "sha256": "4cd91fab528c5e438638042ec1b1fcab180e9a4f764b59ff46878f11e9946511"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/calibration-sdk-linux-retire263/receipt.json",
+      "bytes": 1351,
+      "sha256": "46123ec1bd3ceaf53952c4c7fe6cefa5621e72229e14b85a0d0765a3c56ed1d9"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/calibration-sdk-retention271/receipt.json",
+      "bytes": 7271,
+      "sha256": "0f65f1bbdd962a9a09ce7445e80b15041138b9ae19b4e0640df2c3c7614cf9ad"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/calibration-sdk-retention271/logs-and-profile-carrier.zip",
+      "bytes": 120803,
+      "sha256": "3405c043f9ef096604ca216043f7635194a9c04ba1c6389be3f1c2aa4223c1eb"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/intensity-table-plot-storage-published257.json",
+      "bytes": 1507,
+      "sha256": "90cbdec04c9924e7c76185e7d90e6d5e3538736016a8600c0c86c7bad6d2ad4f"
+    },
+    {
+      "path": ".tmp/manual-workflow-verification/calibration-sdk-storage-final272.json",
+      "bytes": 1524,
+      "sha256": "b02b24b4ea78e3b96e5c2936f8e2f1804e6ac69ae71d52e5167f79d9261db813"
+    }
+  ],
+  "platforms": [
+    {
+      "platform": "windows",
+      "prefix": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed",
+      "archive_before": {
+        "bytes": 55055894,
+        "sha256": "fa9f4ea2979dc3e16f3cd137ce0bf5ff2db3b1dbaff5af1eaf2c25e7678e0fcb"
+      },
+      "archive_after": {
+        "bytes": 57123090,
+        "sha256": "78d63995ea0fb354dad6ab3204db559774f55be92c5bbcff405aa01a63d4d9cd"
+      },
+      "direct_consumers": [
+        "calibration",
+        "core"
+      ],
+      "exported_target": {
+        "archive": {
+          "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\p13g-verification\\windows\\sdk-installed\\lib\\imagejxx_core.lib",
+          "bytes": 57123090,
+          "sha256": "78d63995ea0fb354dad6ab3204db559774f55be92c5bbcff405aa01a63d4d9cd"
+        },
+        "includes": [
+          "C:/Users/HEQ/Projects/imagejxx/.tmp/p13g-verification/windows/sdk-installed/include"
+        ]
+      },
+      "ctest": {
+        "tests": 3,
+        "failures": 0,
+        "names": [
+          "installed_core_api",
+          "installed_calibration_api",
+          "installed_calibration_profiles"
+        ]
+      },
+      "table_profiles": 128,
+      "fit_dtype_cells": 86
+    },
+    {
+      "platform": "linux",
+      "prefix": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed",
+      "archive_before": {
+        "bytes": 18775118,
+        "sha256": "3d7c28b0149b73ddee20564e5591858a0eb21323222a2dd65e19aaa71da8b576"
+      },
+      "archive_after": {
+        "bytes": 19638014,
+        "sha256": "5001b10fe4f72747465147e1b0c52447b8ff9fea94e3afd0d10b589359226a75"
+      },
+      "direct_consumers": [
+        "calibration",
+        "core"
+      ],
+      "exported_target": {
+        "archive": {
+          "path": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed/lib/libimagejxx_core.a",
+          "bytes": 19638014,
+          "sha256": "5001b10fe4f72747465147e1b0c52447b8ff9fea94e3afd0d10b589359226a75"
+        },
+        "includes": [
+          "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/p13g-resumed-sdk-installed/include"
+        ]
+      },
+      "ctest": {
+        "tests": 3,
+        "failures": 0,
+        "names": [
+          "installed_core_api",
+          "installed_calibration_api",
+          "installed_calibration_profiles"
+        ]
+      },
+      "table_profiles": 128,
+      "fit_dtype_cells": 86
+    }
+  ],
+  "verification": {
+    "ctest_tests_per_platform": 3,
+    "failures": 0,
+    "profile_cells_per_platform": 214,
+    "unique_platform_profile_cells": 428,
+    "table_profile_contract": "128 exact Float32 coordinates/IEEE sample words, including lookup payloads and signed zero",
+    "fit_plot_contract": "43 profiles on UInt8/UInt16; reference coefficients isolate plotting from optimizer differences;3e-6 relative/1e-6 absolute Y/limit tolerances",
+    "header_and_archive_identity": "All installed public source headers match workspace; each installed archive matches its active compiler cache; direct consumers record installed header closure",
+    "export_contract": "Actual find_package(imagejxx CONFIG REQUIRED COMPONENTS core), imported imagejxx::core archive/include paths checked against explicit SDK prefix",
+    "license_inventory": "scripts/check_licenses.py --desktop passed; no new dependency",
+    "prior_windows_ui": "663 focused checks remain separate prior evidence; not rerun or relabeled as SDK tests",
+    "diff_check": "git diff --check passed"
+  },
+  "linux_cache_reuse": {
+    "cache": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/cache-native001",
+    "source_before": "/home/heq/.cache/imagejxx-build/p08m-001-2aqxi4ay/source001",
+    "source_after": "/mnt/c/Users/HEQ/Projects/imagejxx",
+    "method": "Reconfigure the existing cache against current workspace with explicit internal source-home override, rebuild imagejxx_core, install development in the existing prefix",
+    "previous_checkout": "Preserved untouched; no new checkout created",
+    "python_ui_runtime": "Unchanged; separate qualification remains open"
+  },
+  "installed_sdk_retirement": "Old archive/header identities retained before in-place replacement; replaced old bytes unavailable. No whole SDK/compiler cache/environment was archived.",
+  "repeatability": {
+    "generator": "scripts/calibration_sdk_profiles.py refuses changed pinned references and an existing output file",
+    "fixture": "tests/installed_core selects the explicit SDK root, forces imagejxx_DIR and links only the imported target; no producer/private include directories",
+    "temporary_clients": "External-client CMake configuration/object/executable scratch is transient and retired, not a second retained product cache"
+  },
+  "harness_history": [
+    {
+      "run": "package-windows265",
+      "state": "failed",
+      "cause": "Consumer harness passed a backslash Windows source path into a CMake variable; invalid escape \\U. Normalize paths with as_posix. SDK discovery had succeeded; no product defect inferred. Configuration diagnostics retained."
+    },
+    {
+      "run": "audit259/261",
+      "cause": "Same-user WSL process maps had denied reads; no retirement permitted from those partial audits. Read-only root audit262 checked uid1000 process references without retaining environment values; no references or unknown uid1000 processes remained."
+    }
+  ],
+  "storage": {
+    "known_final_bytes": 8448328095,
+    "normal_limit_bytes": 8589934592,
+    "full_budget_verified": false,
+    "unknown_subtrees": [
+      ".cache/pytest",
+      ".cache/pytest-ui"
+    ],
+    "obsolete_staged_install_bytes_retired": 135033093,
+    "compressed_log_carrier_recovery_bytes": 1170845,
+    "retired_targets": [
+      "install-p08n001",
+      "install-p08o001",
+      "install-p08p001",
+      "install-p08q001"
+    ],
+    "retirement_audit_scope": "Exact candidate identities/paths and active cache/SDK/runtime references verified; read-only uid1000 process reference audit completed; other users not audited. Four owned obsolete staging roots retired without following links. Active caches/SDK/runtime/source checkout preserved.",
+    "retained": "Small receipts/XML/output and exact identity manifests; large logs/diagnostics and carrier losslessly compressed/hash-verified before raw retirement; old staged package binaries unavailable. Historical expectations/fingerprints unchanged."
+  },
+  "remaining": [
+    "Manual calibration/function dialogs automatic Show plot and full plot interaction/annotation/detached-window behavior",
+    "Fitting settings/restarts/global calibration, table import/export and workflow/macro integration",
+    "Downstream measurement/histogram semantics",
+    "Installed IO SDK, Linux Python/UI, macOS and original-reference/full-platform gates",
+    "Matched ImageJ/Fiji performance benchmarks"
+  ],
+  "family_tracker": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  }
+}

@@ -1,5 +1,40 @@
 # Three-agent execution plan
 
+## Installed calibration SDKs qualified on Windows/Linux — 2026-10-28
+
+Both existing Release core SDK prefixes are refreshed in place. Actual consumers
+compile against installed public headers/libraries; archive/header identities
+match their producer caches. The Linux cache now builds the current workspace
+instead of its historical source copy, with no new cache or checkout. That copy
+is preserved. Linux Python/UI and installed IO SDK qualification remain separate.
+
+The checked-in tests/installed_core fixture uses find_package/core imported
+targets and an explicit SDK root. Three CTest clients pass on each platform:
+core API, prepared calibration/projection API and pinned plot profiles. Each
+platform passes128 exact table profiles plus86 fitted-plot dtype cells (428
+unique platform/profile cells total). Fitted tolerances remain3e-6 relative/
+1e-6 absolute; reference coefficients isolate plotting from optimizer behavior.
+The carrier generator guards original reference fingerprints and fresh output.
+Temporary client configuration/objects/executables are retired, not retained
+product caches. [Scoped evidence](parity/reviews/G034-installed-calibration-sdk-progress001.json).
+
+Next: manual calibration/function dialogs automatic Show plot and remaining
+plot annotation/interaction/detached-window behavior; then fitting settings/
+restarts/global calibration, table import/export/replay/macro and downstream
+measurement/histogram. Installed IO, Linux Python/UI, macOS and original-
+reference gates remain open. Prior663 Windows focused checks retain their own
+scope. No performance comparison or full-family completion is established.
+
+Read-only identity/reference audits preceded retirement of four obsolete Linux
+staging installs, recovering135,033,093 logical bytes; compressed necessary logs/
+carrier recovered1,170,845 more. Active SDK/runtime/caches and source changes
+preserved. Old replaced SDK/staged binaries are unavailable, with identities
+retained; no whole cache/SDK/environment archive. One Windows CMake client-harness
+path-escaping failure is documented and corrected. Known complete generated
+roots8,448,328,095B; two denied caches keep full8GiB budget unverified. Commercial-
+use inventory passes. Tracker47 in progress/52 open/0 complete.
+
+
 ## Calibration table plots and physical CSV export — 2026-10-28
 
 C++/Python now expose ImageJIntensityCalibrationPlot through the separate
