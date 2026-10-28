@@ -165,7 +165,7 @@ Json imagejProjectionUiCase(Window& w,const std::string& context,const std::stri
   require(report.dump().size()<16*1024*1024,"Projection report byte limit");
   writeJson((directory/"case.json").u8string(),report);failure.done=true;return report;
 }
-Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::string& output) {
+Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::string& output,bool nonlinear_fit) {
   namespace fs=std::filesystem;const auto directory=fs::absolute(fs::u8path(output));
   require(!fs::exists(directory),"Calibration UI output must be fresh");fs::create_directories(directory);
   Stack planes;for(int z=0;z<2;++z){Image image(3,1,1,PixelType::UInt16);
@@ -174,7 +174,7 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   data.metadata.title="intensity-ui";
   auto owner=std::make_shared<imagejxx::Document>(std::move(data));w.addNativeDocument(owner);
   const auto original=owner->snapshot();
-  Json report{{"contract","intensity-calibration-ui.001"},{"context",context},{"acceptance_claim",false},
+  Json report{{"contract",nonlinear_fit?"intensity-nonlinear-ui.001":"intensity-calibration-ui.001"},{"context",context},{"acceptance_claim",false},
     {"frames",Json::array()},{"controls",Json::array()},
     {"api_fixture_actions",{"source attachment","tab navigation","session Save/Open"}}};
   struct FailureCapture {Json& report;const fs::path& directory;bool done=false;
@@ -235,14 +235,17 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   menu("show_intensity_function");report["function_dialog"]=last.at("dialog");
   click(last.at("dialog").at("controls").at("cancel"),"function_cancel");
   const auto functionSnapshot=owner->snapshot();
-  menu("show_intensity_polynomial_fit");choose("function","poly2");editText("measured","[0,1,2]");editText("known","[5,7]");
+  const auto fitAction=nonlinear_fit?"show_intensity_nonlinear_fit":"show_intensity_polynomial_fit";
+  menu(fitAction);
+  if(nonlinear_fit)editText("initial_coefficients","[4,0.5]");else choose("function","poly2");
+  editText("measured","[0,1,2]");editText("known","[5,7]");
   click(last.at("dialog").at("controls").at("apply"),"invalid_fit_apply");
   report["invalid_fit"]={{"state",state(w)},{"error",last.at("error_modal")},{"busy",w.busy()}};
   frame();frame();click(last.at("error_modal").at("controls").at("ok"),"fit_error_ok");
-  editText("known","[1,4,9]");
+  editText("known",nonlinear_fit?"[5,10,20]":"[1,4,9]");
   click(last.at("dialog").at("controls").at("apply"),"fit_apply");report["fitted"]=state(w);
   report["fit_status"]=last.at("status");
-  menu("show_intensity_polynomial_fit");report["fit_dialog"]=last.at("dialog");
+  menu(fitAction);report["fit_dialog"]=last.at("dialog");
   click(last.at("dialog").at("controls").at("cancel"),"fit_cancel");
   const auto fittedSnapshot=owner->snapshot();
 

@@ -37,6 +37,15 @@ public:
       const std::string& name, const std::vector<double>& measured,
       const std::vector<double>& known, std::string value_unit = "Gray Value",
       bool zero_clip = false);
+  // Bounded damped nonlinear least squares for the ten non-polynomial models.
+  // Empty initial coefficients select automatic model-specific starting values.
+  // Failure/non-convergence throws before any document mutation.4096 points,
+  // at most1024 iterations; diagnostics and requested/resolved settings retained.
+  static ImageJIntensityCalibration fit_nonlinear(PixelType type,
+      const std::string& name, const std::vector<double>& measured,
+      const std::vector<double>& known, std::string value_unit = "Gray Value",
+      bool zero_clip = false, const std::vector<double>& initial_coefficients = {},
+      std::size_t max_iterations = 256, double relative_tolerance = 1e-10);
   static ImageJIntensityCalibration from_record(const MetadataValue& value);
   const MetadataValue& record() const { return record_; }
   ImageJIntensityMode mode() const { return mode_; }

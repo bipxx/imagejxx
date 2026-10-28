@@ -1,5 +1,15 @@
 # Shortest delivery paths by API and setting key
 
+Nonlinear fit update,2026-10-28: fit_nonlinear covers all ten nonlinear models
+through the shared evaluator and immutable generator. Analyze dialog exposes
+starting coefficients ([] auto), iteration/tolerance and data/unit controls.
+Rodbard NIH Image uses measured(known) objective. Next reuse existing owned jobs
+and guarded prepared metadata publication for progress/cancel; synchronous
+bounded callbacks are not full fitting lifecycle parity. No alternative store,
+codec, worker pool or solver backend needed.
+[Evidence](../parity/reviews/G034-intensity-nonlinear-fit-progress001.json).
+
+
 Polynomial fit update, 2026-10-28: fit_polynomial supplies coefficients and
 bounded raw-pair/residual provenance to the same immutable function generator.
 Shared Analyze dialog reuses native set/Undo/session and reports fit quality.

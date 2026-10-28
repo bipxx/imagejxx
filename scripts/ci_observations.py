@@ -132,6 +132,7 @@ EDITOR_READERS = {
     "z-subset": ("--z-subset-ui-case", "IMAGEJXX_Z_SUBSET_CPP_REPORT"),
     "imagej-projection": ("--imagej-projection-ui-case", "IMAGEJXX_PROJECTION_CPP_REPORT"),
     "intensity-calibration": ("--intensity-calibration-ui-case", "IMAGEJXX_INTENSITY_CPP_REPORT"),
+    "intensity-nonlinear": ("--intensity-nonlinear-ui-case", "IMAGEJXX_INTENSITY_NONLINEAR_CPP_REPORT"),
     "planar-region": ("--regional-z-subset-ui-case", "IMAGEJXX_PLANAR_REGION_CPP_REPORT"),
     "display-remap": ("--display-z-subset-ui-case", "IMAGEJXX_DISPLAY_REMAP_CPP_REPORT"),
     "axis-spacing": ("--axis-spacing-ui-case", "IMAGEJXX_SPACING_CPP_REPORT"),

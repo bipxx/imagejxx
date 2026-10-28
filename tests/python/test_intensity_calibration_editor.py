@@ -179,3 +179,93 @@ def test_signed_fit_exact_imagej_coefficients_and_classification(case):
     value=ij.ImageJIntensityCalibration.fit_polynomial("uint16","straight_line",case["measured"],case["known"])
     assert value.record["source_parameters"]["coefficients"]==case["coefficients"]
     assert value.signed16_density==case["signed16"]
+
+
+_NONLINEAR_FIXTURE=Path(__file__).resolve().parents[2]/"docs/parity/reviews/G034-intensity-nonlinear-fits-reference001.jsonl.gz"
+_NONLINEAR_CASES=[json.loads(line) for line in gzip.decompress(_NONLINEAR_FIXTURE.read_bytes()).splitlines()]
+
+
+def _nonlinear_value(name,p,x):
+    a,b=p[:2]
+    if name=="exponential":return a*np.exp(b*x)
+    if name=="power":return a*np.power(x,b)
+    if name=="log":return a*np.log(b*x)
+    if name=="rodbard":return p[3]+(a-p[3])/(1+np.power(x/p[2],b))
+    if name=="gamma_variate":
+        d=np.maximum(x-a,0);return b*np.power(d,p[2])*np.exp(-d/p[3])
+    if name=="log2":return a+b*np.log(x-p[2])
+    if name=="exp_with_offset":return a*np.exp(-b*x)+p[2]
+    if name=="gaussian":return a+(b-a)*np.exp(-(x-p[2])**2/(2*p[3]**2))
+    if name=="exp_recovery":return a*(1-np.exp(-b*x))+p[2]
+    raise AssertionError(name)
+
+
+@pytest.mark.parametrize("case",_NONLINEAR_CASES)
+@pytest.mark.parametrize("kind",["uint8","uint16"])
+@pytest.mark.parametrize("starting",["automatic","explicit"])
+def test_nonlinear_models_against_pinned_imagej(case,kind,starting):
+    initial=[] if starting=="automatic" else [v*f for v,f in zip(case["true_coefficients"],[1.1,.9,1.05,.95])]
+    value=ij.ImageJIntensityCalibration.fit_nonlinear(kind,case["function"],case["measured"],case["known"],"unit",initial_coefficients=initial)
+    parameters=value.record["source_parameters"];p=np.asarray(parameters["coefficients"])
+    x=np.asarray(case["measured"]);y=np.asarray(case["known"])
+    if case["function"]=="rodbard2":
+        prediction=_nonlinear_value("rodbard",p,y);target=x
+        assert parameters["fit"]["objective"]=="measured_as_function_of_known"
+    else:prediction=_nonlinear_value(case["function"],p,x);target=y
+    sse=np.sum((prediction-target)**2);scale=max(1,np.max(np.abs(target)))
+    assert np.isfinite(p).all() and case["status"]==0
+    assert sse<=case["sse"]*1.02+1e-10*scale**2
+    if not case["noisy"]:
+        compare=p.copy()
+        if case["function"]=="gaussian":compare[3]=abs(compare[3])
+        np.testing.assert_allclose(compare,case["true_coefficients"],rtol=1e-3,atol=1e-4)
+    fit=parameters["fit"]
+    assert fit["initial_coefficients"]==initial and len(fit["resolved_initial_coefficients"])==len(p)
+    assert fit["iterations"]<fit["max_iterations"]==256
+    assert fit["method"]=="scaled_damped_least_squares"
+    np.testing.assert_allclose(fit["rmse"],np.sqrt(sse/len(target)),rtol=1e-5,atol=1e-12)
+
+
+@pytest.mark.parametrize("configuration",[
+    {"name":"unknown"},{"name":"poly2"},{"measured":[]},{"known":[1]},
+    {"measured":[1,1,1]},{"initial_coefficients":[1]},
+    {"initial_coefficients":[0,0]},{"initial_coefficients":[float("inf"),1]},
+    {"max_iterations":0},{"max_iterations":1025},{"relative_tolerance":0},
+    {"relative_tolerance":float("nan")},{"max_iterations":1},
+])
+def test_nonlinear_invalid_or_nonconvergent_configuration(configuration):
+    args=dict(pixel_type="uint8",name="exponential",measured=[0,1,2],known=[5,10,20],initial_coefficients=[4,.5])
+    args.update(configuration)
+    with pytest.raises((ValueError,RuntimeError)):
+        ij.ImageJIntensityCalibration.fit_nonlinear(**args)
+
+
+@pytest.mark.parametrize("context",["imgui_cpp","imgui_python"])
+def test_actual_nonlinear_calibration_dialog(context,tmp_path):
+    if context=="imgui_cpp":
+        path=Path(os.environ["IMAGEJXX_INTENSITY_NONLINEAR_CPP_REPORT"])
+        assert 0<path.stat().st_size<16*1024*1024;report=json.loads(path.read_bytes())
+    else:
+        from imagejxx import _desktop
+        editor=_desktop.Editor(str(tmp_path/"preferences.json"))
+        report=json.loads(editor._intensity_nonlinear_ui_case(str(tmp_path/"capture")))
+    assert report["contract"]=="intensity-nonlinear-ui.001" and report["context"]==context
+    assert report["state"]=="observed" and not report["error"] and not report["acceptance_claim"]
+    for frame in report["frames"]:assert frame["events"]==frame["rendered"]["input_frame"]["raw_inputs"]
+    key="imagejxx.intensity_calibration"
+    invalid=report["invalid_fit"]
+    assert not invalid["busy"] and invalid["error"]["open"]
+    assert invalid["state"]["properties"][key]==report["function_applied"]["properties"][key]
+    record=report["fitted"]["properties"][key]
+    assert record==report["fit_reopened"]["properties"][key]
+    assert record["source_parameters"]["function"]=="exponential" and record["value_unit"]=="HU"
+    fit=record["source_parameters"]["fit"]
+    assert fit["known"]==[5,10,20] and fit["measured"]==[0,1,2]
+    assert fit["initial_coefficients"]==[4,.5] and fit["iterations"]>0
+    assert fit["rmse"]<1e-8 and fit["r_squared"]>1-1e-12
+    np.testing.assert_allclose(record["source_parameters"]["coefficients"],[5,np.log(2)],rtol=1e-8)
+    values=report["fit_dialog"]["values"]
+    assert values["function"]=="exponential" and json.loads(values["initial_coefficients"])==[4,.5]
+    assert json.loads(values["known"])==[5,10,20] and values["max_iterations"]==256
+    assert "iterations:" in report["fit_status"] and not report["lifecycle"]["open"]
+    assert {"show_intensity_nonlinear_fit","initial_coefficients","invalid_fit_apply","fit_error_ok","fit_apply","fit_cancel"}<={r["name"] for r in report["controls"]}

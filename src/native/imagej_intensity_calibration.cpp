@@ -50,6 +50,42 @@ MetadataObject base(const char* mode, std::string unit) {
   return {{"schema", std::string(schema)}, {"version", std::int64_t(1)},
           {"mode", std::string(mode)}, {"value_unit", std::move(unit)}};
 }
+constexpr const char* function_names[]={"straight_line","poly2","poly3","poly4","exponential",
+    "power","log","rodbard","gamma_variate","log2","rodbard2","exp_with_offset",
+    "gaussian","exp_recovery","uncalibrated_od"};
+constexpr std::size_t function_lengths[]={2,3,4,5,2,2,2,4,4,3,4,3,4,3,0};
+
+int function_id(const std::string& name) {
+  for(int i=0;i<15;++i)if(name==function_names[i])return i;
+  throw std::invalid_argument("Unknown intensity function");
+}
+double function_value(int id,const std::vector<double>& p,double x,bool inverted_lut=false) {
+    switch(id) {
+    case 0:return p[0]+x*p[1];
+    case 1:return p[0]+x*(p[1]+x*p[2]);
+    case 2:return p[0]+x*(p[1]+x*(p[2]+x*p[3]));
+    case 3:return p[0]+x*(p[1]+x*(p[2]+x*(p[3]+x*p[4])));
+    case 4:return p[0]*std::exp(p[1]*x);
+    case 5:return p[0]*std::pow(x,p[1]);
+    case 6:return x==0.0?-1000*p[0]:p[0]*std::log(p[1]*x);
+    case 7:return p[3]+(p[0]-p[3])/(1.0+std::pow(x/p[2],p[1]));
+    case 8:
+      if(p[0]>=x)return 0.0;
+      if(p[1]<=0 || p[2]<=0 || p[3]<=0)return std::numeric_limits<double>::quiet_NaN();
+      return p[1]*std::pow(x-p[0],p[2])*std::exp((-(x-p[0]))/p[3]);
+    case 9:return x-p[2]<=0?std::numeric_limits<double>::quiet_NaN():p[0]+p[1]*std::log(x-p[2]);
+    case 10:
+      if(p[3]-x<2*std::numeric_limits<double>::denorm_min() || x<p[0])return 0.0;
+      return std::pow((x-p[0])/(p[3]-x),1.0/p[1])*p[2];
+    case 11:return p[0]*std::exp(-p[1]*x)+p[2];
+    case 12:return p[0]+(p[1]-p[0])*std::exp(-(x-p[2])*(x-p[2])/(2.0*p[3]*p[3]));
+    case 13:return p[0]*(1-std::exp(-p[1]*x))+p[2];
+    default:
+      if(inverted_lut){if(x==255.0)x=254.5;return 0.434294481*std::log(255.0/(255.0-x));}
+      if(x==0.0)x=0.5;
+      return 0.434294481*std::log(255.0/x);
+    }
+}
 } // namespace
 
 ImageJIntensityCalibration::ImageJIntensityCalibration(MetadataValue record,
@@ -91,44 +127,13 @@ ImageJIntensityCalibration ImageJIntensityCalibration::function(PixelType type,
     const std::string& name, const std::vector<double>& p, std::string unit,
     bool zero_clip, bool inverted_lut) {
   const int bits=depth(type);const auto count=table_size(bits);validate_unit(unit);
-  static const char* names[]={"straight_line","poly2","poly3","poly4","exponential",
-    "power","log","rodbard","gamma_variate","log2","rodbard2","exp_with_offset",
-    "gaussian","exp_recovery","uncalibrated_od"};
-  static const std::size_t lengths[]={2,3,4,5,2,2,2,4,4,3,4,3,4,3,0};
-  int id=-1;for(int i=0;i<15;++i)if(name==names[i]){id=i;break;}
-  if(id<0 || p.size()!=lengths[id])throw std::invalid_argument("Unknown intensity function or wrong coefficient count");
+  const int id=function_id(name);
+  if(p.size()!=function_lengths[id])throw std::invalid_argument("Wrong intensity coefficient count");
   if(id==14 && bits!=8)throw std::invalid_argument("Uncalibrated OD requires UInt8 storage");
   for(double value:p)if(!std::isfinite(value))throw std::invalid_argument("Intensity coefficients must be finite");
-  const auto evaluate=[&](double x) {
-    switch(id) {
-    case 0:return p[0]+x*p[1];
-    case 1:return p[0]+x*(p[1]+x*p[2]);
-    case 2:return p[0]+x*(p[1]+x*(p[2]+x*p[3]));
-    case 3:return p[0]+x*(p[1]+x*(p[2]+x*(p[3]+x*p[4])));
-    case 4:return p[0]*std::exp(p[1]*x);
-    case 5:return p[0]*std::pow(x,p[1]);
-    case 6:return x==0.0?-1000*p[0]:p[0]*std::log(p[1]*x);
-    case 7:return p[3]+(p[0]-p[3])/(1.0+std::pow(x/p[2],p[1]));
-    case 8:
-      if(p[0]>=x)return 0.0;
-      if(p[1]<=0 || p[2]<=0 || p[3]<=0)return std::numeric_limits<double>::quiet_NaN();
-      return p[1]*std::pow(x-p[0],p[2])*std::exp((-(x-p[0]))/p[3]);
-    case 9:return x-p[2]<=0?std::numeric_limits<double>::quiet_NaN():p[0]+p[1]*std::log(x-p[2]);
-    case 10:
-      if(p[3]-x<2*std::numeric_limits<double>::denorm_min() || x<p[0])return 0.0;
-      return std::pow((x-p[0])/(p[3]-x),1.0/p[1])*p[2];
-    case 11:return p[0]*std::exp(-p[1]*x)+p[2];
-    case 12:return p[0]+(p[1]-p[0])*std::exp(-(x-p[2])*(x-p[2])/(2.0*p[3]*p[3]));
-    case 13:return p[0]*(1-std::exp(-p[1]*x))+p[2];
-    default:
-      if(inverted_lut){if(x==255.0)x=254.5;return 0.434294481*std::log(255.0/(255.0-x));}
-      if(x==0.0)x=0.5;
-      return 0.434294481*std::log(255.0/x);
-    }
-  };
   std::vector<std::uint32_t> words(count);
   for(std::size_t i=0;i<count;++i) {
-    double value=evaluate(double(i));
+    double value=function_value(id,p,double(i),inverted_lut);
     if(bits==8 && id!=14 && zero_clip && value<0.0)value=0.0;
     const float converted=static_cast<float>(value);
     if(std::isnan(converted))words[i]=0x7fc00000U;
@@ -212,6 +217,124 @@ ImageJIntensityCalibration ImageJIntensityCalibration::fit_polynomial(PixelType 
     {"r_squared",tss>0?MetadataValue(1-sse/tss):MetadataValue(std::monostate{})}});
   fields["source_parameters"]=metadata_object(std::move(parameters));
   return from_record(metadata_object(std::move(fields)));
+}
+ImageJIntensityCalibration ImageJIntensityCalibration::fit_nonlinear(PixelType type,
+    const std::string& name,const std::vector<double>& x,const std::vector<double>& y,
+    std::string unit,bool zero_clip,const std::vector<double>& initial,
+    std::size_t max_iterations,double tolerance) {
+  const auto count=table_size(depth(type));validate_unit(unit);const int id=function_id(name);
+  if(id<4 || id>13)throw std::invalid_argument("Nonlinear fitting requires a non-polynomial calibration model");
+  const auto m=function_lengths[id],n=x.size();
+  if(n!=y.size() || n<m || n>4096)throw std::invalid_argument("Fit requires matching point counts from parameter count through4096");
+  if(!max_iterations || max_iterations>1024 || !std::isfinite(tolerance) || tolerance<=0 || tolerance>0.01)
+    throw std::invalid_argument("Fit requires1..1024 iterations and finite tolerance in(0,0.01]");
+  double xmin=x[0],xmax=x[0],ymin=y[0],ymax=y[0],yscale=1;std::size_t low=0,high=0,peak=0,trough=0;
+  for(std::size_t i=0;i<n;++i) {
+    if(!std::isfinite(x[i]) || !std::isfinite(y[i]) || x[i]<0 || x[i]>double(count-1))
+      throw std::invalid_argument("Fit points require finite values and measured values in the source range");
+    if(id==6 && x[i]<=0)throw std::invalid_argument("Log fitting requires positive measured values");
+    if(x[i]<xmin){xmin=x[i];low=i;}if(x[i]>xmax){xmax=x[i];high=i;}
+    if(y[i]<ymin){ymin=y[i];trough=i;}if(y[i]>ymax){ymax=y[i];peak=i;}
+    yscale=std::max(yscale,std::abs(y[i]));
+  }
+  const double span=xmax-xmin;if(span==0)throw std::invalid_argument("Fit measured values are rank deficient");
+  std::vector<double> p=initial;
+  if(p.empty()) {
+    double mean=0,xmean=0;for(std::size_t i=0;i<n;++i){mean+=(y[i]/yscale)/double(n);xmean+=x[i]/double(n);}mean*=yscale;
+    const double rate=1/span,first=y[low],last=y[high];
+    switch(id) {
+    case 4:{const double rate0=(last>=first?1.0:-1.0)*(mean>=0?1.0:-1.0)/span;p={mean/std::exp(rate0*xmean),rate0};break;}
+    case 5:p={mean/std::max(1.0,xmean),1};break;
+    case 6:p={mean!=0?mean:1, std::exp(1.0)/xmax};break;
+    case 7:p={first,1,xmin+span/2,last};break;
+    case 8:{const double cd=std::max(x[peak]-xmin,0.1*span),shape=std::sqrt(cd);
+      p={xmin,ymax/(std::pow(cd,shape)*std::exp(-cd/shape)),shape,shape};break;}
+    case 9:p={mean,(ymax-ymin)/span,std::min(0.0,-xmin-0.1*span)};break;
+    case 10:p={xmin-0.1*span,last>=first?1.0:-1.0,ymax,xmax+span};break;
+    case 11:case 13:{const double amplitude=(id==11?first-last:last-first)/(std::exp(-rate*xmin)-std::exp(-rate*xmax));
+      p={amplitude,rate,first-amplitude*(id==11?std::exp(-rate*xmin):1-std::exp(-rate*xmin))};break;}
+    default:{const double baseline=(first+last)/2;const bool positive=ymax-baseline>=baseline-ymin;
+      p={positive?ymin:ymax,positive?ymax:ymin,x[positive?peak:trough],span/4};break;}
+    }
+  }
+  if(p.size()!=m)throw std::invalid_argument("Wrong initial coefficient count");
+  for(double value:p)if(!std::isfinite(value))throw std::invalid_argument("Initial coefficients must be finite");
+  const auto resolved=p;
+  // NIH Image Rodbard fits measured(known), then publishes the inverse.
+  if(id==10)yscale=std::max(1.0,xmax);
+  const auto target=[&](std::size_t i){return (id==10?x[i]:y[i])/yscale;};
+  const auto evaluate=[&](const std::vector<double>& parameters,std::vector<double>& values){
+    values.resize(n);double cost=0;
+    for(std::size_t i=0;i<n;++i){const double value=function_value(id==10?7:id,parameters,id==10?y[i]:x[i])/yscale;
+      if(!std::isfinite(value))return std::numeric_limits<double>::infinity();
+      values[i]=value;const double r=target(i)-value;cost+=r*r;}
+    return std::isfinite(cost)?cost:std::numeric_limits<double>::infinity();
+  };
+  using Matrix=std::array<std::array<double,4>,4>;using Vector=std::array<double,4>;
+  const auto solve=[&](Matrix a,Vector rhs,Vector& delta,double damping){
+    for(std::size_t j=0;j<m;++j)a[j][j]+=damping;
+    for(std::size_t j=0;j<m;++j){std::size_t pivot=j;for(std::size_t k=j+1;k<m;++k)if(std::abs(a[k][j])>std::abs(a[pivot][j]))pivot=k;
+      if(!std::isfinite(a[pivot][j]) || std::abs(a[pivot][j])<1e-12)return false;
+      std::swap(a[j],a[pivot]);std::swap(rhs[j],rhs[pivot]);const double d=a[j][j];
+      for(std::size_t k=j;k<m;++k){a[j][k]/=d;}rhs[j]/=d;
+      for(std::size_t row=0;row<m;++row)if(row!=j){const double factor=a[row][j];for(std::size_t k=j;k<m;++k)a[row][k]-=factor*a[j][k];rhs[row]-=factor*rhs[j];}
+    }
+    delta=rhs;return true;
+  };
+  std::vector<double> values,plus,minus,candidate_values;double cost=evaluate(p,values),lambda=0.001;
+  if(!std::isfinite(cost))throw std::invalid_argument("Initial model is not finite at the measured values");
+  bool converged=false,small_reduction=false;std::string convergence_reason;std::size_t iterations=0;
+  for(;iterations<max_iterations;++iterations) {
+    std::array<std::vector<double>,4> jacobian;Vector norm{},gradient{},delta{};Matrix gram{};
+    for(std::size_t j=0;j<m;++j) {
+      const double h=std::cbrt(std::numeric_limits<double>::epsilon())*std::max({std::abs(p[j]),std::abs(resolved[j]),1e-6});
+      auto perturbed=p;perturbed[j]+=h;const bool positive=std::isfinite(evaluate(perturbed,plus));
+      perturbed=p;perturbed[j]-=h;const bool negative=std::isfinite(evaluate(perturbed,minus));
+      if(!positive && !negative)throw std::invalid_argument("Cannot evaluate finite fit derivatives; adjust starting coefficients");
+      auto& column=jacobian[j];column.resize(n);
+      for(std::size_t i=0;i<n;++i){column[i]=positive&&negative?(plus[i]-minus[i])/(2*h):positive?(plus[i]-values[i])/h:(values[i]-minus[i])/h;norm[j]=std::hypot(norm[j],column[i]);}
+      if(!(norm[j]>0) || !std::isfinite(norm[j]))throw std::invalid_argument("Fit has an insensitive parameter; adjust starting coefficients or data");
+      for(std::size_t i=0;i<n;++i){column[i]/=norm[j];gradient[j]+=column[i]*(target(i)-values[i]);}
+    }
+    for(std::size_t j=0;j<m;++j)for(std::size_t k=0;k<m;++k)for(std::size_t i=0;i<n;++i)gram[j][k]+=jacobian[j][i]*jacobian[k][i];
+    double gmax=0;for(std::size_t j=0;j<m;++j)gmax=std::max(gmax,std::abs(gradient[j]));
+    const bool small_residual=cost<=double(n)*tolerance*tolerance;
+    const bool small_gradient=gmax<=tolerance*std::max(1.0,std::sqrt(cost));
+    if(small_residual || small_gradient || small_reduction) {
+      if(!solve(gram,gradient,delta,0))throw std::invalid_argument("Fit parameters are not identifiable from the supplied data");
+      convergence_reason=small_residual?"residual":small_gradient?"gradient":"cost_reduction";
+      converged=true;break;
+    }
+    if(!solve(gram,gradient,delta,lambda))throw std::invalid_argument("Fit linear step is singular");
+    auto candidate=p;for(std::size_t j=0;j<m;++j)candidate[j]+=delta[j]/norm[j];
+    const double next=evaluate(candidate,candidate_values);
+    // Standard function-tolerance termination: require both actual and model
+    // reductions to be small. Exclude tiny steps forced by excessive damping,
+    // keep the better parameters, and recheck rank at the next iteration.
+    double predicted=0;
+    for(std::size_t j=0;j<m;++j){predicted+=2*gradient[j]*delta[j];for(std::size_t k=0;k<m;++k)predicted-=delta[j]*gram[j][k]*delta[k];}
+    small_reduction=lambda<=1 && std::isfinite(next) && std::abs(next-cost)<=tolerance*cost &&
+        std::abs(predicted)<=tolerance*cost;
+    if(next<cost){p=std::move(candidate);values.swap(candidate_values);cost=next;lambda=std::max(1e-12,lambda/3);}
+    else {lambda*=10;if(lambda>1e16)break;}
+  }
+  if(!converged)throw std::invalid_argument("Nonlinear fit did not converge; adjust starting coefficients or iteration limit");
+  const double rmse=std::sqrt(cost/double(n))*yscale;
+  if(!std::isfinite(rmse))throw std::invalid_argument("Fit residuals exceed the finite range");
+  double mean=0,tss=0;for(std::size_t i=0;i<n;++i){mean+=target(i)/double(n);}
+  MetadataArray measured,known,requested,start;
+  for(std::size_t i=0;i<n;++i){const double d=target(i)-mean;tss+=d*d;measured.emplace_back(x[i]);known.emplace_back(y[i]);}
+  for(double value:initial){requested.emplace_back(value);}for(double value:resolved){start.emplace_back(value);}
+  auto result=function(type,name,p,std::move(unit),zero_clip);auto fields=object(result.record());auto parameters=result.source_parameters();
+  const double r2=tss>0?1-cost/tss:std::numeric_limits<double>::quiet_NaN();
+  parameters["fit"]=metadata_object({{"method",std::string("scaled_damped_least_squares")},{"version",std::int64_t(1)},
+    {"objective",std::string(id==10?"measured_as_function_of_known":"known_as_function_of_measured")},
+    {"measured",metadata_array(std::move(measured))},{"known",metadata_array(std::move(known))},
+    {"initial_coefficients",metadata_array(std::move(requested))},{"resolved_initial_coefficients",metadata_array(std::move(start))},
+    {"max_iterations",std::uint64_t(max_iterations)},{"relative_tolerance",tolerance},{"iterations",std::uint64_t(iterations)},
+    {"convergence_reason",convergence_reason},
+    {"rmse",rmse},{"r_squared",std::isfinite(r2)?MetadataValue(r2):MetadataValue(std::monostate{})}});
+  fields["source_parameters"]=metadata_object(std::move(parameters));return from_record(metadata_object(std::move(fields)));
 }
 ImageJIntensityCalibration ImageJIntensityCalibration::from_record(const MetadataValue& value) {
   const auto& fields = object(value);

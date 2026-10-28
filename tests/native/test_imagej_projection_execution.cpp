@@ -3,6 +3,7 @@
 #include <imagejxx/imagej_intensity_calibration.hpp>
 #include <imagejxx/application.hpp>
 #include <imagejxx/session.hpp>
+#include <cstring>
 #include <iostream>
 #include <stdexcept>
 using namespace imagejxx;
@@ -254,6 +255,22 @@ int main() try {
   reject([&]{ImageJIntensityCalibration::fit_polynomial(PixelType::UInt8,"poly2",{1,1,1},{1,2,3});});
   reject([&]{ImageJIntensityCalibration::fit_polynomial(PixelType::UInt8,"straight_line",{0,256},{0,1});});
   reject([&]{ImageJIntensityCalibration::fit_polynomial(PixelType::UInt8,"straight_line",{0,1},{0});});
+  const std::vector<std::pair<std::string,std::vector<double>>> models={
+    {"exponential",{3,.08}},{"power",{2,.7}},{"log",{2,.3}},{"rodbard",{20,1.7,7,2}},
+    {"gamma_variate",{1,2,2,3}},{"log2",{2,3,1}},{"rodbard2",{1,1.6,3,30}},
+    {"exp_with_offset",{10,.2,2}},{"gaussian",{1,10,10,3}},{"exp_recovery",{10,.2,2}}};
+  for(const auto& model:models) {
+    std::cerr<<"Nonlinear fit "<<model.first<<"\n";
+    const auto words=ImageJIntensityCalibration::function(PixelType::UInt16,model.first,model.second).table_words();
+    const int offset=model.first=="power" || model.first=="log"?1:model.first=="log2" || model.first=="rodbard2"?2:0;
+    std::vector<double> x,y;
+    for(int i=0;i<21;++i){x.push_back(i+offset);float value;const auto word=words[std::size_t(i+offset)];std::memcpy(&value,&word,4);y.push_back(value);}
+    const auto fit=ImageJIntensityCalibration::fit_nonlinear(PixelType::UInt16,model.first,x,y);
+    const auto& diagnostic=std::get<MetadataObject>(std::get<std::shared_ptr<const MetadataTree>>(fit.source_parameters().at("fit"))->value);
+    check(std::get<double>(diagnostic.at("rmse"))<1e-4);
+  }
+  reject([&]{ImageJIntensityCalibration::fit_nonlinear(PixelType::UInt8,"log",{0,1},{1,2});});
+  reject([&]{ImageJIntensityCalibration::fit_nonlinear(PixelType::UInt8,"exponential",{0,1,2},{5,10,20},"unit",false,{4,.5},1);});
   std::cout<<"Prepared scientific projection: metadata, channel display, source/candidate guards, cancellation, session and capture passed\n";
 } catch(const std::exception& error) {
   std::cerr<<error.what()<<"\n";return 1;

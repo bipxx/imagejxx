@@ -1,5 +1,49 @@
 # Three-agent execution plan
 
+## Nonlinear calibration models and shared consumer — 2026-10-28
+
+All ten nonlinear models now have C++/Python fit_nonlinear and a shared Analyze
+→ Fit Nonlinear Calibration dialog. The generator and fitter reuse one forward
+evaluator; previous full-table profiles still pass. Automatic/explicit starting
+coefficients, finite paired data, iteration/tolerance limits, objective and
+convergence diagnostics use existing immutable function provenance. Finite-
+difference damped steps enforce domain/sensitivity/identifiability checks.
+Rodbard NIH Image preserves measured(known) fitting and inverse output; RMSE
+uses measured values and the UI labels that distinction.
+
+Final 410 focused checks pass, no skips:20 pinned ImageJ exact/noisy cases on
+both integer types with both starting modes (80 cells), full earlier calibration/
+projection checks and both actual Windows UI hosts. Nonlinear controls physically
+verify explicit start, mismatched-count recovery, diagnostics, draft Cancel and
+exact table/record reopen. Linux native consumers exercise all ten models.
+[Scoped evidence](parity/reviews/G034-intensity-nonlinear-fit-progress001.json).
+These selected cases do not establish optimizer identity or global convergence.
+
+The initial noisy Gaussian explicit-start case stalled at1e-10 despite1024
+iterations, while nearby tolerances reached the same RMSE in4steps. Standard
+actual-and-predicted small-cost-reduction termination fixes this precision
+plateau, excludes excessive damping and rechecks rank. Original accuracy oracles
+unchanged; failed source/diagnostics/JUnit retained and final410 pass.
+
+Next required integration: move long fitting off the UI callback using existing
+owned jobs/admission and prepared metadata publication. Capture data/settings/
+source revisions, add progress/cancellation, and refuse stale/closed owners
+before creator-thread metadata mutation. Reuse the existing scheduler and
+publication guard; do not create another calibration store or mutate source on
+workers. Current fitting is bounded but synchronous. Then complete fit plots,
+restart/initial-variation/global calibration behavior, table import/export,
+workflow replay and downstream measurement/histogram. Broader original-reference/
+platform gates and matched performance remain open; no family or speed claim.
+
+One cache/runtime reused; all scratch retired, necessary logs/captures solid-
+compressed and hash-verified. Superseded raw identity paths archived; preliminary
+165 captures unavailable, failure receipts/JUnit/source retained. A stale8,759,808B
+enlargement-dialog test executable predating current core retired; source/objects/
+CMake target remain. Current168/169 identities and captures retained. Known
+whole-root8,588,163,314B; two denied caches keep the full8GiB budget unverified.
+Commercial-use inventory passes. Family status47 in progress/52 open/0 complete.
+
+
 ## Polynomial calibration fitting consumer — 2026-10-28
 
 C++/Python ImageJIntensityCalibration.fit_polynomial and shared Analyze → Fit

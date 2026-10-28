@@ -1,0 +1,184 @@
+{
+  "schema": "imagejxx.scoped-progress",
+  "version": 1,
+  "source_base": "e75b453717fb5ac43d5c73d23ff2ec9381abf89d",
+  "scope": "Ten nonlinear intensity calibration models through shared native evaluator, C++/Python fitting and bounded synchronous ImGui configuration workflow",
+  "acceptance_claim": false,
+  "source_inputs": [
+    {
+      "path": "include/imagejxx/imagej_intensity_calibration.hpp",
+      "bytes": 5190,
+      "sha256": "f5f51608cff27ea769ba0d3d627df2bbf4cf8a0525935a533a40f71e24d0de28"
+    },
+    {
+      "path": "src/native/imagej_intensity_calibration.cpp",
+      "bytes": 27519,
+      "sha256": "01ab92f7a7e8b8c2b1bc848421d6ad159d60c8ac063090c3c4be0f339b09cefb"
+    },
+    {
+      "path": "src/native/imagej_projection_bindings.cpp",
+      "bytes": 6264,
+      "sha256": "30bb957746a1cc73e8e541969f0f3289d59492128a466e3b8e6ed64e68955f37"
+    },
+    {
+      "path": "src/desktop/window.cpp",
+      "bytes": 787399,
+      "sha256": "ac6b196bd2f15ec67240ff16b48705088b625aeb01d91a44c291cc36188657d2"
+    },
+    {
+      "path": "src/desktop/imagej_projection_ui_probe.cpp",
+      "bytes": 18017,
+      "sha256": "9e5fad0dcbdeb36e1c79b6ce805f19fe1f938e3fdff4b71c564fd0dc09b84340"
+    },
+    {
+      "path": "src/desktop/imagej_projection_ui_probe.hpp",
+      "bytes": 306,
+      "sha256": "ff6b81af16eb007b62c91a57b22cf1942e1dd3e247c527a4e3340e34a4b88818"
+    },
+    {
+      "path": "src/desktop/main.cpp",
+      "bytes": 58362,
+      "sha256": "1ac461775485c80fbb4a771e5127be70029571053a6d1e5b9798c48c2302005d"
+    },
+    {
+      "path": "src/desktop/python.cpp",
+      "bytes": 58628,
+      "sha256": "c5d4b6fd0f0da4a6e1e025adfa44f54fdb40a717b4c5a8d81f2ad54fdf4c6618"
+    },
+    {
+      "path": "scripts/ci_observations.py",
+      "bytes": 58266,
+      "sha256": "aae3f60718ad6f8fe34732414df4a5070ef5156bba592308e3b6a8553f821d82"
+    },
+    {
+      "path": "tests/native/test_imagej_projection_execution.cpp",
+      "bytes": 18815,
+      "sha256": "cb6be4b76b9b56a43b62ad19f3bdc9d76f56fff1a295f61bb568e46f5dd25a36"
+    },
+    {
+      "path": "tests/python/test_intensity_calibration_editor.py",
+      "bytes": 16507,
+      "sha256": "6e4daee34c300826190e534e8fe8ea403e437e74a9d0af5c05c11d1b0366f29d"
+    },
+    {
+      "path": "tests/reference/ObserveIntensityNonlinearFits.java",
+      "bytes": 1869,
+      "sha256": "d5fc43f600641e213615b1ee6f33a2f4e30b92cab56291fab1b08bfe6ae81e0e"
+    },
+    {
+      "path": "docs/parity/reviews/G034-intensity-nonlinear-fits-reference001.jsonl.gz",
+      "bytes": 4731,
+      "sha256": "a7e9c53d4831a1f4301ecbbb94a78f5354dcf0f1ad5028e7335ee74081794387"
+    }
+  ],
+  "reference": {
+    "receipt": {
+      "path": ".tmp/manual-workflow-verification/intensity-nonlinear-reference162/receipt.json",
+      "bytes": 3342,
+      "sha256": "5542850927e2b8e39292705abdb0d34d4d208e9f60bcfd611d8e1900e00a24ec"
+    },
+    "cases": 20,
+    "matrix": "All ten models, exact/noisy observations, UInt8/UInt16 and automatic/explicit starts:80 cases. Independent NumPy formula/objective calculations and pinned ImageJ SSE; not identical minimizer/initialization or global optimum claims.",
+    "special_rule": "Rodbard NIH Image minimizes measured(known) using forward Rodbard, then publishes inverse calibration. RMSE/R-squared use measured-value objective; UI labels these units."
+  },
+  "verification": {
+    "windows_build": {
+      "path": ".tmp/manual-workflow-verification/intensity-nonlinear-windows-build168/receipt.json",
+      "bytes": 22342,
+      "sha256": "0680734af3ee3656405994fd8d30f1d13aaa3db0219d2d2b31179f66284db66f"
+    },
+    "installed": {
+      "path": ".tmp/manual-workflow-verification/intensity-nonlinear-installed169/receipt.json",
+      "bytes": 24252,
+      "sha256": "cc3db7198c04f407aa80b6734a0f7a4a21d30169382fd4768ddeee5677235a4b"
+    },
+    "junit": {
+      "path": ".tmp/manual-workflow-verification/intensity-nonlinear-installed169/results.xml",
+      "bytes": 60564,
+      "sha256": "8ee5de0ddba285a4a4d49d8120c8548735193c4a780dd0b8d3f837c7814a5c5e"
+    },
+    "captures": {
+      "path": ".tmp/manual-workflow-verification/intensity-nonlinear-installed169/captures.tar.xz",
+      "bytes": 762272,
+      "sha256": "1b034ca5dc2602a6fa9f05f274c6c3948b5b72128ea577f53731d1bcd45f9dcf"
+    },
+    "linux_source": {
+      "path": ".tmp/manual-workflow-verification/intensity-nonlinear-core-linux170/receipt.json",
+      "bytes": 79892,
+      "sha256": "efe0f1942380076e433217cee6b115d550a810c5928c688182c3eeebd4884a0c"
+    },
+    "tests": 410,
+    "failures": 0,
+    "skips": 0,
+    "composition": "387 installed processing/editor checks plus23 mocked capture-transport controls. Three physical cases in each Windows host:229 projection frames,231 polynomial and231 nonlinear frames.",
+    "nonlinear_case_bytes": {
+      "cpp": 3756170,
+      "python": 3756173
+    },
+    "license_log": {
+      "path": ".tmp/manual-workflow-verification/intensity-nonlinear-license177.log",
+      "bytes": 53,
+      "sha256": "ecb71baa1cf849bb827cb4e57a1ff9d5ffb1b92b02cc2261166c0138b3a93915"
+    }
+  },
+  "implemented": [
+    "Shared private forward evaluator reused by table generation and nonlinear fitting; previous124 full-table numerical profiles still pass.",
+    "Native/Python fit_nonlinear for exponential,power,log,rodbard,gamma_variate,log2,rodbard2,exp_with_offset,gaussian,exp_recovery.",
+    "At most4096 paired finite points and1024 iterations; finite parameter/domain validation, normalized finite-difference Jacobian/damped steps, convergence and identifiability checks before mutation.",
+    "Automatic model-specific or explicit starting coefficients; raw/resolved initial values, settings, iterations, convergence reason, objective, residual diagnostics retained in existing immutable function provenance.",
+    "Shared Analyze Fit Nonlinear Calibration dialog with model/data/unit/zero clip/starting values/iteration/tolerance settings; source All-revision guard and existing metadata setter/history/session machinery.",
+    "Physical explicit exponential start, paired-count rejection/recovery, diagnostics, prefill/Cancel and exact fitted record/table reopen in both Windows hosts."
+  ],
+  "failure_resolution": {
+    "preliminary": {
+      "path": ".tmp/manual-workflow-verification/intensity-nonlinear-installed165/receipt.json",
+      "bytes": 24345,
+      "sha256": "17c7d7869cefa1db828bcf5f218b9e9c77409092a6aeb8f35f2bdfb0fd9c9ac2"
+    },
+    "controlled_diagnostic": {
+      "path": ".tmp/manual-workflow-verification/intensity-nonlinear-convergence167/receipt.json",
+      "bytes": 5656,
+      "sha256": "215a820ba1fa7c391639582d24f0d75083f1c9f5848b77712d98f1571c6dd4a5"
+    },
+    "description": "Initial410 checks had two explicit-start noisy Gaussian refusals. Increasing iteration cap to1024 did not fix the1e-10 plateau;1e-8/1e-9 reached identical RMSE in4steps. Added standard actual-and-predicted small-cost-reduction criterion, excluding excessive damping, retaining better parameters and rechecking rank. Accuracy expectations/fixtures unchanged; final410 pass. Exact failed164 numerical source retained as gzip matching original freeze."
+  },
+  "remaining": [
+    "Long fits still run synchronously in the UI callback. Reuse existing job/admission/prepared publication lifecycle for responsive progress/cancel and stale/closed-source refusal before calling metadata setter; no worker-thread source mutation.",
+    "Fit plots, restarts/initial-variation parity, global calibration and additional pathological-domain/identifiability cases remain required. This solver is not ImageJ minimizer identity or exhaustive fitting parity.",
+    "Calibration table import/export, workflow replay, measurement/histogram downstream behavior and original-reference/platform/full installed SDK gates remain open. Local installed C++ SDK unchanged; Linux evidence is native source consumers, not installed/full UI qualification.",
+    "Matched performance comparisons remain open; no speed advantage claimed."
+  ],
+  "storage": {
+    "path": ".tmp/manual-workflow-verification/intensity-nonlinear-storage-final176.json",
+    "bytes": 1522,
+    "sha256": "d057bc5d2a688de5e31623f0d74337499285737160bbbd4cc4b5343e5241eee2"
+  },
+  "retention": {
+    "logs": {
+      "path": ".tmp/manual-workflow-verification/intensity-nonlinear-retention171/receipt.json",
+      "bytes": 12863,
+      "sha256": "e73e9c3e276f37afc95959188ea344dce3cbdccdf2ec496a3bcd5f6fd80e4d41"
+    },
+    "identities": {
+      "path": ".tmp/manual-workflow-verification/intensity-nonlinear-manifest-retention172/receipt.json",
+      "bytes": 2016,
+      "sha256": "3952185805b5e1f01d5d7aafffab210364aa63112bb16f1b3146667815657014"
+    },
+    "preliminary_capture": {
+      "path": ".tmp/manual-workflow-verification/intensity-nonlinear-capture-retirement173.json",
+      "bytes": 5177,
+      "sha256": "60c1d7f47235feba50a188cf1c1cecf5b1a0297cf16d7df2cafb549fb207488c"
+    },
+    "stale_binary": {
+      "path": ".tmp/manual-workflow-verification/intensity-nonlinear-cache-retirement175.json",
+      "bytes": 605,
+      "sha256": "917dec24553ac0cd07ac2140a143c8ac206fc4f0097ec331c331e455ad431719"
+    },
+    "note": "One active cache/runtime reused. Current168 identities/169 solid captures retained; all scratch retired after owned terminal proof and hash-verified compression. Superseded153/164 raw identity paths archived exactly; original165 capture bytes retired/unavailable, while failure JUnit/logs/source/diagnostic retained. A stale enlargement-dialog executable predating current core retired8,759,808B, source/objects/target preserved. Original pins unchanged."
+  },
+  "family_status": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  }
+}

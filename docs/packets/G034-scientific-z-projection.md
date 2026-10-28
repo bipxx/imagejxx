@@ -1,5 +1,15 @@
 # Scientific Z projection
 
+Nonlinear fitting update,2026-10-28: all ten models now use one native evaluator
+with C++/Python/shared ImGui consumers, automatic/explicit starts and bounded
+convergence checks.20 retained ImageJ exact/noisy cases become80 dtype/start
+comparisons; final410 focused checks and Linux native models pass. Physical
+paired-count recovery, settings prefill/Cancel and exact fitted session reopen
+pass in both Windows hosts. [Evidence](../parity/reviews/G034-intensity-nonlinear-fit-progress001.json).
+Long fits remain synchronous; worker/progress/cancel, plot/settings/global parity,
+table import/export, calibration replay and downstream behavior remain open.
+
+
 Fitting update, 2026-10-28: straight-line and polynomial degrees 2–4 now have
 C++/Python/shared ImGui consumers through the existing immutable generator.
 Both hosts physically verify invalid paired-count recovery, quadratic fitting,
