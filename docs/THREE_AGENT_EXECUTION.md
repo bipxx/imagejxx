@@ -1,5 +1,48 @@
 # Three-agent execution plan
 
+## Recorded calibration model and fit-quality details — 2026-10-28
+
+Shared calibration plots now have Model and fit details: recorded formula,
+round-trip a-e coefficients, domain/conversion/clipping notes, fit objective,
+RMSE and R-squared. Null R-squared is undefined; missing/invalid metrics are
+unavailable. All15 built-ins, implicit signed16, OD inversion/endpoints and NIH
+inverse objectives are handled. Unsupported/malformed provenance remains a
+literal table with no asserted model. These describe recorded provenance, not
+re-fitting or proof that an arbitrary table matches its declared model.
+
+A private bounded annotation DTO is prepared once before manual commit, explicit
+plot replacement or worker publication, with an8192-byte reserve inside existing
+plot admission. No metadata serialization/table materialization in rendering;
+no-throw swaps publish annotation/plot/binding together. Close/stale/histogram/
+profile clear matching annotations; cancellation/failure retains the prior plot.
+No public core API, new dependency, worker pool or installed SDK refresh needed.
+
+Windows installed730 focused checks pass with zero failures/skips, projection
+and viewport/annotation native consumers, and three C++ ImGui cases. Both
+frontends physically expand/close details and check formulas/coefficients/fit
+metrics against captured provenance without source/history changes.568/608
+frames adds10 new frames. Final Linux C++17 private consumer passes linked to the
+existing pinned core SDK archive; no Linux UI/full SDK or OS/GPU promotion.
+[Scoped evidence](parity/reviews/G034-calibration-plot-annotation-progress001.json).
+
+Preserved failures: a new native wording assertion searched clips instead of
+clipped; one Python OD case exposed empty [] represented by the metadata bridge
+as a legacy string list. Empty legacy coefficients are now accepted only for a
+zero-arity model. Source-line diagnostics and clean native test failure exits
+avoid abort artifacts. Two tiny failed-input preimages were reconstructed and
+verified against original SHA256 before lossless retention. All owned scratch
+retired; failed Linux binary/dependency2,852,306B retired with identities/logs;
+log/preimage/superseded-runner compression recovered962,417B. Known generated
+roots8,461,527,091B; two denied caches keep full8GiB budget unverified. Same active
+cache/runtime/SDK, original reference fingerprints unchanged, commercial review
+passes. No matched speed advantage or family closure (47 in progress/52 open/0).
+
+Next: rectangle zoom, on-canvas annotation placement/style/image export and nice/
+minor tick controls; then detached/multiple snapshot lifecycle and generic
+histogram/profile viewport reuse. Full calibration/downstream/platform/reference
+gates remain open. Reuse the bounded prepared annotation DTO for export/snapshot
+work rather than decoding provenance per frame or adding another producer store.
+
 ## Calibration plot grids, ticks and logarithmic axes — 2026-10-28
 
 Plot Axis Limits now includes Logarithmic X/Y, Grid lines, and Ticks and labels.

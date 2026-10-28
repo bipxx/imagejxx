@@ -1,11 +1,14 @@
 #include "../../src/desktop/calibration_plot_view.hpp"
+#include "../../src/desktop/calibration_plot_annotation.hpp"
 #include <limits>
 #include <stdexcept>
+#include <cstdio>
 
 using namespace imagejxx;
 using imagejxx::desktop::CalibrationPlotView;
-void check(bool value) { if(!value)throw std::runtime_error("Calibration plot view contract"); }
-int main() {
+void check_impl(bool value,int line) { if(!value)throw std::runtime_error("Calibration plot view contract at line "+std::to_string(line)); }
+#define check(...) check_impl((__VA_ARGS__),__LINE__)
+void verify_contracts() {
   ImageJIntensityFitPlot data;data.x_min=0;data.x_max=100;data.y_min=-10;data.y_max=10;
   CalibrationPlotView view;
   check(view.zoom(data,.25,.75,.5));
@@ -63,6 +66,33 @@ int main() {
   check(data.x_min==7 && data.x_max==7);
   const auto nearMaximum=CalibrationPlotView::axis_value(largest/2,largest,1-1e-15,true);
   check(std::isfinite(nearMaximum) && nearMaximum>=largest/2 && nearMaximum<=largest);
+  using imagejxx::desktop::calibration_plot_annotation;
+  auto annotation=calibration_plot_annotation(ImageJIntensityCalibration::signed16("HU"),true);
+  check(annotation.model && !annotation.fit && annotation.formula=="y = x - 32768");
+  auto calibration=ImageJIntensityCalibration::fit_polynomial(PixelType::UInt8,"straight_line",{0,1},{2,2});
+  annotation=calibration_plot_annotation(calibration,false);
+  check(annotation.model && annotation.fit && annotation.r_squared_undefined && !annotation.r_squared);
+  check(annotation.rmse && *annotation.rmse==0 && annotation.objective=="Fit objective: known(measured)");
+  calibration=ImageJIntensityCalibration::function(PixelType::UInt8,"straight_line",{-0.,1},"unit",true);
+  annotation=calibration_plot_annotation(calibration,true);
+  check(annotation.coefficients=="a=-0; b=1" && annotation.detail.find("clipped")!=std::string::npos);
+  std::vector<std::uint32_t> words(256,0);
+  auto arbitrary=ImageJIntensityCalibration::lookup(PixelType::UInt8,words,"unit",{{"arbitrary",metadata_array({metadata_object({{"nested",std::string(1024,'x')}})})}});
+  annotation=calibration_plot_annotation(arbitrary,true);check(!annotation.model && !annotation.fit);
+  arbitrary=ImageJIntensityCalibration::lookup(PixelType::UInt8,words,"unit",{{"producer",std::string("imagej154r.function")},{"version",1},{"function",std::string("straight_line")},{"coefficients",metadata_array({true,1})}});
+  annotation=calibration_plot_annotation(arbitrary,true);check(!annotation.model && !annotation.fit);
 
 
+
+  auto od=ImageJIntensityCalibration::function(PixelType::UInt8,"uncalibrated_od",{},"OD",false,true);
+  auto odParameters=od.source_parameters();odParameters["coefficients"]=std::vector<std::string>{};
+  auto legacyOd=ImageJIntensityCalibration::lookup(PixelType::UInt8,od.table_words(),"OD",odParameters);
+  annotation=calibration_plot_annotation(legacyOd,true);
+  check(annotation.model && annotation.coefficients.empty() && annotation.formula=="y = 0.434294481*ln(255/(255-x))");
+
+}
+
+int main() {
+  try {verify_contracts();return 0;}
+  catch(const std::exception& error){std::fprintf(stderr,"%s\n",error.what());return 1;}
 }

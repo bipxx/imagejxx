@@ -94,6 +94,7 @@ def test_actual_intensity_calibration_dialog(context,tmp_path):
     _assert_plot_interaction(report)
     _assert_plot_axes(report)
     _assert_plot_log(report)
+    _assert_plot_annotation(report)
 
     for name in ("function_applied","function_reopened"):
         record=report[name]["properties"][key]
@@ -304,6 +305,7 @@ def test_actual_nonlinear_calibration_dialog(context,tmp_path):
     _assert_plot_interaction(report)
     _assert_plot_axes(report)
     _assert_plot_log(report)
+    _assert_plot_annotation(report)
     assert {"show_intensity_nonlinear_fit","initial_coefficients","invalid_fit_apply","fit_error_ok","fit_apply","fit_cancel"}<={r["name"] for r in report["controls"]}
 
 
@@ -915,4 +917,82 @@ def test_log_fit_measurements_use_logarithmic_screen_positions(tmp_path):
     expected=np.column_stack((origin[0]+np.log(measured)/np.log(3)*size[0],origin[1]+(1-np.log(known)/np.log(16))*size[1]))
     np.testing.assert_allclose(plot["data_screen_points"][1:],expected,rtol=0,atol=1e-4)
     assert plot["masked_segments"]==1 and plot["drawn_segments"]==98
+    assert owner.snapshot().shares_data(before) and owner.undo_steps==steps
+
+
+def _annotation_coefficients(annotation):
+    return [float(value.split("=",1)[1]) for value in annotation["coefficients"].split("; ")] if annotation["coefficients"] else []
+
+
+def _assert_plot_annotation(report):
+    annotation=report["fit_details"]["annotation"]
+    provenance=report["fitted"]["properties"]["imagejxx.intensity_calibration"]["source_parameters"]
+    assert annotation["details_visible"] and annotation["model"] and annotation["fit"]
+    assert annotation["formula"]==("y = a*exp(b*x)" if provenance["function"]=="exponential" else "y = a + b*x + c*x^2")
+    assert _annotation_coefficients(annotation)==provenance["coefficients"]
+    assert annotation["rmse"]==provenance["fit"]["rmse"] and annotation["r_squared"]==provenance["fit"]["r_squared"]
+    assert annotation["objective"]=="Fit objective: known(measured)"
+    assert report["fit_details_source_unchanged"]
+    assert {"fit_details_open","fit_details_close"}<={c["name"] for c in report["controls"]}
+    implicit=report["manual_automatic_plot"]["annotation"]
+    assert implicit["formula"]=="y = x - 32768" and not implicit["fit"]
+    manual=report["function_automatic_plot"]["annotation"]
+    assert manual["formula"]=="y = a + b*x" and _annotation_coefficients(manual)==[5,2]
+    assert not manual["fit"]
+
+
+@pytest.mark.parametrize("name",sorted({case["function"] for case in _FUNCTION_CASES}))
+def test_recorded_builtin_model_annotations(name,tmp_path):
+    case=next(case for case in _FUNCTION_CASES if case["function"]==name)
+    pixel_type="uint"+str(case["bit_depth"])
+    calibration=ij.ImageJIntensityCalibration.function(pixel_type,name,case["coefficients"],"unit",zero_clip=case["zero_clip"],inverted_lut=case["inverted_lut"])
+    from imagejxx.ui.app import Editor
+    from imagejxx.ui.persistence import Preferences
+    owner=ij.Document(ij.Dataset(np.zeros((2,3),dtype=pixel_type),axes="YX"),name)
+    editor=Editor(preferences=Preferences(tmp_path/"preferences.json"));editor.add_native_document(owner)
+    editor.action("set_intensity_calibration",record=calibration.record,show_plot=True)
+    annotation=editor.render_headless(4)["fit_plot"]["annotation"]
+    assert annotation["model"] and not annotation["fit"] and annotation["formula"].startswith("y = ")
+    assert _annotation_coefficients(annotation)==case["coefficients"]
+    assert len(annotation["formula"])+len(annotation["coefficients"])+len(annotation["detail"])<2048
+
+
+def test_undefined_fit_quality_is_explicit_and_view_only(tmp_path):
+    owner,editor=_axis_editor(tmp_path)
+    editor.action("fit_intensity_calibration",function="straight_line",measured=[0,1],known=[2,2],show_plot=True);editor.wait()
+    before=owner.snapshot();steps=owner.undo_steps
+    annotation=editor.render_headless(4)["fit_plot"]["annotation"]
+    assert annotation["fit"] and annotation["rmse"]==0 and annotation["r_squared"] is None and annotation["r_squared_undefined"]
+    assert owner.snapshot().shares_data(before) and owner.undo_steps==steps
+
+
+@pytest.mark.parametrize("bad",[{}, {"producer":"imagej154r.function","version":1,"function":"straight_line","coefficients":[True,1]},
+    {"producer":"imagej154r.function","version":1,"function":"poly2","coefficients":[1,2]}])
+def test_arbitrary_lookup_provenance_is_not_presented_as_a_model(bad,tmp_path):
+    owner,editor=_axis_editor(tmp_path)
+    calibration=ij.ImageJIntensityCalibration.from_record({"schema":"imagejxx.intensity-calibration","version":1,"mode":"lookup","value_unit":"unit","bit_depth":16,"table_f32_hex":"00000000"*65536,"source_parameters":bad,"signed16":False})
+    editor.action("set_intensity_calibration",record=calibration.record,show_plot=True)
+    plot=editor.render_headless(4)["fit_plot"]
+    assert not plot["annotation"]["model"] and not plot["annotation"]["fit"]
+    assert plot["curve_y"]==[0]*256
+
+
+@pytest.mark.parametrize("metric",["missing","null","finite","wrong_objective"])
+def test_recorded_inverse_fit_annotation_preserves_metric_meaning(metric,tmp_path):
+    owner,editor=_axis_editor(tmp_path)
+    record=ij.ImageJIntensityCalibration.function("uint16","rodbard2",[0,2,10,100],"unit").record
+    fit={"method":"scaled_damped_least_squares","version":1,"objective":"measured_as_function_of_known","rmse":.25}
+    if metric=="null":fit["r_squared"]=None
+    if metric=="finite":fit["r_squared"]=-.5
+    if metric=="wrong_objective":fit["objective"]="known_as_function_of_measured"
+    record["source_parameters"]["fit"]=fit
+    editor.action("set_intensity_calibration",record=record,show_plot=True)
+    before=owner.snapshot();steps=owner.undo_steps
+    annotation=editor.render_headless(4)["fit_plot"]["annotation"]
+    assert annotation["model"] and annotation["formula"]=="y = c*((x-a)/(d-x))^(1/b)"
+    assert annotation["fit"]==(metric!="wrong_objective")
+    if annotation["fit"]:
+        assert annotation["objective"]=="Fit objective: measured(known)" and annotation["rmse"]==.25
+        assert annotation["r_squared_undefined"]==(metric=="null")
+        assert annotation["r_squared"]==(-.5 if metric=="finite" else None)
     assert owner.snapshot().shares_data(before) and owner.undo_steps==steps

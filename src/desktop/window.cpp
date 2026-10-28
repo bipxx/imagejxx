@@ -6,6 +6,7 @@
 #include <type_traits>
 #include "path_visual.hpp"
 #include "calibration_plot_view.hpp"
+#include "calibration_plot_annotation.hpp"
 #include <imagejxx/playback.hpp>
 #include "shadow_demo.hpp"
 #include "legacy_target_resources.hpp"
@@ -1152,6 +1153,7 @@ struct Window::Impl {
     bool calibration_fit = false;
     std::string fit_status;
     std::optional<ImageJIntensityFitPlot> fit_plot;
+    std::optional<CalibrationPlotAnnotation> fit_plot_annotation;
     std::optional<FitPlotBinding> fit_plot_source;
     std::shared_ptr<const void> reservation;
     JobResult(PreparedOperation value, MetadataObject capture, bool recordStep)
@@ -1192,6 +1194,7 @@ struct Window::Impl {
   CalibrationPlotView fitPlotView;
   std::uint64_t fitPlotGeneration=0;
   std::optional<ImageJIntensityFitPlot> fitPlot;
+  std::optional<CalibrationPlotAnnotation> fitPlotAnnotation;
   std::optional<FitPlotBinding> fitPlotSource;
   Json fitPlotObservation;
   std::vector<float> plotX, plotY;
@@ -4578,7 +4581,7 @@ struct Window::Impl {
     return bytes;
   }
   ImageJIntensityFitPlot calibrationTablePlot(const ImageJIntensityCalibration& calibration) const {
-    auto data=imagej_intensity_calibration_plot(calibration,intensityPlotBudget());
+    auto data=imagej_intensity_calibration_plot(calibration,intensityPlotBudget()-CalibrationPlotAnnotation::working_bytes);
     ImageJIntensityFitPlot plot;
     plot.function=std::move(data.mode);plot.value_unit=std::move(data.value_unit);
     plot.curve_x=std::move(data.curve_x);plot.curve_y=std::move(data.curve_y);
@@ -4593,7 +4596,8 @@ struct Window::Impl {
     calibration.validate_for(source.data().dataset.pixel_type(),source.data().dataset.shape().s);
     // Stage all potentially throwing plot/metadata work before committing the edit.
     std::optional<ImageJIntensityFitPlot> plot;
-    if(show && calibration.has_density())plot=calibrationTablePlot(calibration);
+    std::optional<CalibrationPlotAnnotation> annotation;
+    if(show && calibration.has_density()){plot=calibrationTablePlot(calibration);annotation=calibration_plot_annotation(calibration,true);}
     auto edit=source.begin_edit(Change::All);
     if(!calibration.has_density() && calibration.value_unit()=="Gray Value")edit.remove_property(imagej_intensity_property);
     else edit.set_property(imagej_intensity_property,calibration.record());
@@ -4606,7 +4610,8 @@ struct Window::Impl {
     static_assert(std::is_nothrow_swappable_v<decltype(binding)>);
     // A successful Apply remembers the preference; Cancel and failures never do.
     fitShowPlot=show;
-    if(plot){fitPlot.swap(plot);fitPlotSource.swap(binding);fitPlotIsTable=true;fitPlotFocusRequested=true;fitPlotView={};++fitPlotGeneration;}
+    static_assert(std::is_nothrow_swappable_v<decltype(annotation)>);
+    if(plot){fitPlot.swap(plot);fitPlotAnnotation.swap(annotation);fitPlotSource.swap(binding);fitPlotIsTable=true;fitPlotFocusRequested=true;fitPlotView={};++fitPlotGeneration;}
   }
   void requireCalibrationPlot() const {
     if(!fitPlot || !fitPlotSource || owner.documents_.empty())throw std::invalid_argument("Open a calibration plot first");
@@ -5852,9 +5857,11 @@ void Window::fitIntensityCalibration(const DocumentSnapshot& source,ImageJIntens
     if(diagnostic.contains("iterations"))status+="; iterations: "+diagnostic.at("iterations").dump();
     if(request.function=="rodbard2")status+=" (RMSE in measured values)";
     std::optional<ImageJIntensityFitPlot> plot;
+    std::optional<CalibrationPlotAnnotation> annotation;
     auto expected=source.revisions();
     if(showPlot) {
-      plot=imagej_intensity_fit_plot(calibration,calibration.bit_depth()==8?256:100,plotBytes);
+      plot=imagej_intensity_fit_plot(calibration,calibration.bit_depth()==8?256:100,plotBytes-CalibrationPlotAnnotation::working_bytes);
+      annotation=calibration_plot_annotation(calibration,false);
       // The typed producer changes metadata only and preserves the guarded
       // display. Use the same change classifier/advance operation as commit,
       // staging this binding before publication instead of copying a snapshot
@@ -5862,7 +5869,7 @@ void Window::fitIntensityCalibration(const DocumentSnapshot& source,ImageJIntens
       expected.advance(document_changes(source.data(),prepared.preview().data()));
     }
     Impl::JobResult result(std::move(prepared),MetadataObject{},false);
-    if(showPlot){result.fit_plot=std::move(plot);result.fit_plot_source=Impl::FitPlotBinding{source.id(),expected};}
+    if(showPlot){result.fit_plot=std::move(plot);result.fit_plot_annotation=std::move(annotation);result.fit_plot_source=Impl::FitPlotBinding{source.id(),expected};}
     result.calibration_fit=true;result.fit_status=std::move(status);return result;
   },std::move(owner),false,"Calibration fit","Calibration fit",bytes,{},true);
 }
@@ -6691,7 +6698,9 @@ void Window::action(const std::string &name, const Json &p) {
       const auto bytes=impl->intensityPlotBudget();
       const bool table=name=="show_intensity_calibration_plot";
       auto plot=table?impl->calibrationTablePlot(calibration):
-          imagej_intensity_fit_plot(calibration,calibration.bit_depth()==8?256:100,bytes);
+          imagej_intensity_fit_plot(calibration,calibration.bit_depth()==8?256:100,bytes-CalibrationPlotAnnotation::working_bytes);
+      auto annotation=calibration_plot_annotation(calibration,table);
+      impl->fitPlotAnnotation=std::move(annotation);
       impl->fitPlotIsTable=table;impl->fitPlotView={};++impl->fitPlotGeneration;
       impl->fitPlotSource=Impl::FitPlotBinding{source.id(),source.revisions()};impl->fitPlot=std::move(plot);impl->fitPlotFocusRequested=true;return;
     }
@@ -8921,7 +8930,7 @@ void Window::action(const std::string &name, const Json &p) {
       impl->plotX.push_back(float((h.edges[i] + h.edges[i + 1]) / 2));
       impl->plotY.push_back(float(h.counts[i]));
     }
-    impl->fitPlot.reset();impl->fitPlotSource.reset();
+    impl->fitPlot.reset();impl->fitPlotSource.reset();impl->fitPlotAnnotation.reset();
     impl->plotTitle = "Histogram";
     return;
   }
@@ -8951,7 +8960,7 @@ void Window::action(const std::string &name, const Json &p) {
       }
       distance += length;
     }
-    impl->fitPlot.reset();impl->fitPlotSource.reset();
+    impl->fitPlot.reset();impl->fitPlotSource.reset();impl->fitPlotAnnotation.reset();
     impl->plotTitle = "Line profile (" + string(get(cal, "unit"), "px") + ")";
     return;
   }
@@ -9231,9 +9240,10 @@ void Window::poll() {
           if(documents_.empty() || document()->id!=completed.prepared->target().document_id())throw RevisionConflict();
           static_assert(std::is_nothrow_swappable_v<decltype(impl->fitPlot)>);
           static_assert(std::is_nothrow_swappable_v<decltype(impl->fitPlotSource)>);
+          static_assert(std::is_nothrow_swappable_v<decltype(impl->fitPlotAnnotation)>);
           controller_->publish(*completed.prepared);
           if(completed.fit_plot) {
-            impl->fitPlot.swap(completed.fit_plot);impl->fitPlotSource.swap(completed.fit_plot_source);
+            impl->fitPlot.swap(completed.fit_plot);impl->fitPlotAnnotation.swap(completed.fit_plot_annotation);impl->fitPlotSource.swap(completed.fit_plot_source);
             impl->fitPlotFocusRequested=true;impl->fitPlotIsTable=false;impl->fitPlotView={};++impl->fitPlotGeneration;
           }
           impl->status.swap(completed.fit_status);return;
@@ -11020,7 +11030,7 @@ void Window::Impl::plots() {
   if(fitPlot && fitPlotSource) {
     if(owner.documents_.empty() || !fitPlotSource->same_document(owner.nativeSnapshot()) ||
         !fitPlotSource->expected.matches(owner.nativeSnapshot().revisions(),Change::All)) {
-      fitPlot.reset();fitPlotSource.reset();
+      fitPlot.reset();fitPlotSource.reset();fitPlotAnnotation.reset();
     }
   }
   if(fitPlotFocusRequested && fitPlot){ImGui::SetNextWindowFocus();ImGui::SetNextWindowCollapsed(false);}
@@ -11032,7 +11042,7 @@ void Window::Impl::plots() {
   if(fitPlot) {
     const auto& data=*fitPlot;
     ImGui::Text(fitPlotIsTable?"Calibration table: %s":"Calibration fit: %s",data.function.c_str());
-    if(ImGui::Button("Close plot")){fitPlot.reset();fitPlotSource.reset();ImGui::End();return;}
+    if(ImGui::Button("Close plot")){fitPlot.reset();fitPlotSource.reset();fitPlotAnnotation.reset();ImGui::End();return;}
     observeControl("fit_plot.close",true,nullptr,nullptr,ImGui::GetCurrentWindow());
     if(ImGui::GetContentRegionAvail().x>180.f*guiScale)ImGui::SameLine();
     if(ImGui::Button("Export CSV")) {
@@ -11051,6 +11061,26 @@ void Window::Impl::plots() {
     if(ImGui::GetContentRegionAvail().x>260.f*guiScale)ImGui::SameLine();
     if(ImGui::Button("Axes..."))guard([&]{showPlotLimits();});
     observeControl("fit_plot.axes");
+    Json annotationObservation=nullptr;
+    if(fitPlotAnnotation) {
+      const auto& annotation=*fitPlotAnnotation;
+      const bool expanded=ImGui::CollapsingHeader("Model and fit details");observeControl("fit_plot.details");
+      if(expanded) {
+        if(annotation.model){ImGui::TextUnformatted("Recorded model");ImGui::TextWrapped("%s",annotation.formula.c_str());}
+        if(!annotation.coefficients.empty())ImGui::TextWrapped("%s",annotation.coefficients.c_str());
+        if(!annotation.detail.empty())ImGui::TextWrapped("%s",annotation.detail.c_str());
+        if(annotation.fit) {
+          ImGui::TextWrapped("%s",annotation.objective.c_str());
+          if(annotation.rmse)ImGui::Text("RMSE: %.9g",*annotation.rmse);else ImGui::TextUnformatted("RMSE: unavailable");
+          if(annotation.r_squared)ImGui::Text("R^2: %.9g",*annotation.r_squared);
+          else ImGui::TextUnformatted(annotation.r_squared_undefined?"R^2: undefined":"R^2: unavailable");
+        }
+      }
+      if(headlessSessionActive)annotationObservation={{"model",annotation.model},{"formula",annotation.formula},{"coefficients",annotation.coefficients},
+        {"detail",annotation.detail},{"fit",annotation.fit},{"objective",annotation.objective},
+        {"rmse",annotation.rmse?Json(*annotation.rmse):Json(nullptr)},{"r_squared",annotation.r_squared?Json(*annotation.r_squared):Json(nullptr)},
+        {"r_squared_undefined",annotation.r_squared_undefined},{"details_visible",expanded}};
+    }
     ImGui::TextUnformatted(fitPlotIsTable?"Blue line: calibrated table samples":"Red points: measurements; blue line: fitted curve");
     if(fitPlotIsTable && std::none_of(data.curve_y.begin(),data.curve_y.end(),[](float v){return std::isfinite(v);}))ImGui::TextUnformatted("No finite calibrated samples.");
     ImGui::Text("X: pixel value | Y: %s",data.value_unit.c_str());
@@ -11152,7 +11182,7 @@ void Window::Impl::plots() {
       {"finite_geometry",finiteGeometry},{"drawn_segments",drawnSegments},{"visible",true},
       {"view_limits",viewLimits},{"viewport",fitPlotView.fractions},{"cursor",std::move(cursor)},
       {"log_x",fitPlotView.log_x},{"log_y",fitPlotView.log_y},{"grid",fitPlotView.grid},{"ticks",fitPlotView.ticks},
-      {"grid_lines",fitPlotView.grid?6:0},{"x_ticks",std::move(xTicks)},{"y_ticks",std::move(yTicks)},{"masked_segments",maskedSegments},{"log_notice",logNotice}};
+      {"grid_lines",fitPlotView.grid?6:0},{"x_ticks",std::move(xTicks)},{"y_ticks",std::move(yTicks)},{"masked_segments",maskedSegments},{"log_notice",logNotice},{"annotation",std::move(annotationObservation)}};
     ImGui::End();return;
   }
 

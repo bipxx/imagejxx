@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "scope": "G034 recorded calibration model and fit-quality annotations in shared C++/Python ImGui details panel",
+  "state": "focused_checks_passed",
+  "acceptance_claim": false,
+  "implementation": {
+    "ui": "Model and fit details expands recorded formula, a-e coefficients, domain/table/clipping notes, fit objective, RMSE and R-squared. Null R-squared is explicitly undefined; missing/invalid metric is unavailable.",
+    "models": "15 built-in models plus implicit signed16 and identity; OD inversion/endpoints, gamma/log domains, NIH inverse objective and UInt8 table clipping distinguished from unclipped fit curve. Arbitrary/malformed provenance never becomes an asserted model. Labels describe recorded provenance, not re-fitting or proof of table consistency.",
+    "preparation": "Private CalibrationPlotAnnotation examines bounded named metadata fields without serializing nested provenance or materializing the lookup table. Text prepared once before manual commit, explicit plot replacement or worker publication. Coefficients use locale-independent round-trip formatting.",
+    "admission": "8192-byte annotation reserve subtracted from existing 4MiB/tightened plot producer allowance; fitting retains same combined admission/resource lease. No second worker/store/public core API/dependency.",
+    "publication": "No-throw optional annotation swaps with plot/source binding after successful image commit; close/stale/histogram/profile clear matching annotation. Failed/cancelled fits retain previous immutable plot and annotation.",
+    "compatibility": "Empty coefficient [] may be legacy vector<string> after metadata JSON round trip; accepted only when empty and the recognized model has zero arity (OD). Other wrong-shaped/typed coefficients refuse model annotation without rejecting literal table display."
+  },
+  "evidence": {
+    "calibration-plot-annotations-windows-build318": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-annotations-windows-build318\\receipt.json",
+      "bytes": 13043,
+      "sha256": "8ce1199483fa274e8d996e3163db3ec058f5f056a4e9ca389ad9464ef15de9c2"
+    },
+    "calibration-plot-annotations-windows-build321": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-annotations-windows-build321\\receipt.json",
+      "bytes": 25001,
+      "sha256": "7f0a509d43089917c8891cd7484c89d02983c6b0d49264c41aa39b82e670af09"
+    },
+    "calibration-plot-annotations-windows-build324": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-annotations-windows-build324\\receipt.json",
+      "bytes": 24982,
+      "sha256": "ae08f33ff4f342386f73eb5794ccac5d3edee6cc5657790e2a483c1d149d2790"
+    },
+    "calibration-plot-annotations-installed322": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-annotations-installed322\\receipt.json",
+      "bytes": 28461,
+      "sha256": "4d61fe5a82cbb7e6905c4f76fb18878a7685f178e1b20e0b230caad29b7309c6"
+    },
+    "calibration-plot-annotations-installed325": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-annotations-installed325\\receipt.json",
+      "bytes": 28368,
+      "sha256": "ec2deca4aec84b8030581dad0d256e9f72a47e268361d33a366207db20ac0a5a"
+    },
+    "calibration-plot-annotations-linux326": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-annotations-linux326\\receipt.json",
+      "bytes": 30102,
+      "sha256": "0e810f3632865eb2709de6afaf0a106745e22849e97671db90c1fa7e64c0791a"
+    },
+    "calibration-plot-annotations-preimages327": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-annotations-preimages327\\receipt.json",
+      "bytes": 593,
+      "sha256": "bd1228cb8e069f241c7a467a9d2a075069d10a255aa2a5fd17086b971b094448"
+    },
+    "calibration-plot-annotations-failure-retire328": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-annotations-failure-retire328\\receipt.json",
+      "bytes": 1482,
+      "sha256": "0f3e45da19831486350a70b33eddd1899e34e0d3d61f7e2944e2484b9b388a96"
+    },
+    "calibration-plot-annotations-retention329": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-annotations-retention329\\receipt.json",
+      "bytes": 14179,
+      "sha256": "13426acf037f75de6e39d7db5ed695057896b4cb36b11c2920ee694aa720dac6"
+    }
+  },
+  "verification": {
+    "windows_installed_pytest": {
+      "tests": 730,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "native": "Windows projection execution and viewport/annotation tests pass; Linux C++17 -Wall -Wextra -Werror private consumer links existing pinned core SDK archive and passes. No full Linux UI/SDK promotion.",
+    "actual_imgui_input": "Three installed C++ cases pass. C++/Python calibration cases physically expand/close details, verify formula/coefficients/metrics against captured source provenance, preserve All source revisions/history and keep previous plot on running-fit cancellation. Headless actual input, not OS/GPU acceptance.",
+    "models_and_edges": "All15 function annotations, signed16, inverse NIH objective, negative/undefined/missing R-squared, negative-zero coefficient formatting, invalid/arbitrary lookup provenance, OD legacy-empty-array compatibility; existing reference/table/log/CSV/history/cancel controls retained.",
+    "calibration_frames": 568,
+    "frame_bound": 608,
+    "new_scenario_frames": 10,
+    "commercial_use_inventory": "passed; no new dependency",
+    "diff_check": "passed",
+    "reference_scope": "Original numeric/reference values and fingerprints unchanged. Annotations are recorded model data; on-canvas placement/style/export and full ImageJ plot editing remain open."
+  },
+  "harness_history": [
+    {
+      "runs": "Windows318/Linux320",
+      "state": "failed",
+      "cause": "New test searched for clips while the table annotation said clipped; correct test wording. Native contract now reports source line and returns cleanly instead of aborting on assertion. Failed logs retained."
+    },
+    {
+      "run": "installed322",
+      "state": "failed",
+      "cause": "One of726 tests failed: OD annotation unavailable after JSON bridge represented empty coefficients as legacy string list. Product helper now accepts that empty zero-arity representation; dedicated native compatibility check added."
+    },
+    {
+      "preimages": "Two tiny failed header/test inputs reconstructed and verified against original frozen SHA256; retained losslessly with diagnostics. Failed binary identity retained before retirement; old Windows failure executable bytes unavailable after in-place cache replacement."
+    }
+  ],
+  "storage": {
+    "before_known_bytes": 8457949458,
+    "after_known_bytes": 8461527091,
+    "full_budget_verified": false,
+    "unknown_subtrees": [
+      ".cache/pytest",
+      ".cache/pytest-ui"
+    ],
+    "temporary_build_reserve_bytes": 536870912,
+    "capture_scratch_bound_bytes": 67108864,
+    "lossless_recovery_bytes": 962417,
+    "failed_linux_scratch_bytes_retired": 2852306,
+    "retention": "All terminal owned Windows/Linux scratch retired after proof/identity checks; failed/successful captures and necessary logs/preimages hash-verified lossless archives. Superseded runners compressed; active compiler cache/runtime/SDK reused. No whole cache/SDK/environment archive."
+  },
+  "remaining": [
+    "On-canvas annotation placement/style and plot image export",
+    "Rectangle zoom, nice/minor ticks and label/style controls",
+    "Detached/multiple plot snapshot lifecycle and generic histogram/profile viewport reuse",
+    "Fitting settings/restarts/global calibration, table import/export/replay/macro and downstream measurement/histogram",
+    "Linux Python/UI, installed IO SDK, macOS, full original-reference and OS/GPU qualification",
+    "Matched ImageJ/Fiji speed/memory evidence"
+  ],
+  "family_status": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  }
+}

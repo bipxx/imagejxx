@@ -336,6 +336,10 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   report["fit_reserved_after_publish"]=GaussianCancellationAccess::scheduler(w)->usage().reserved_bytes;
   report["fit_status"]=last.at("status");report["auto_plot_disabled"]=last.at("fit_plot");
   menu("show_intensity_fit_plot");report["fit_plot"]=last.at("fit_plot");
+  const auto detailsSource=owner->snapshot();
+  click(last.at("host_controls").at("fit_plot.details"),"fit_details_open");report["fit_details"]=last.at("fit_plot");
+  click(last.at("host_controls").at("fit_plot.details"),"fit_details_close");frame();frame();
+  report["fit_details_source_unchanged"]=owner->snapshot().shares_data(detailsSource) && owner->snapshot().revisions().matches(detailsSource.revisions(),Change::All);
   const auto fitCsvSource=owner->snapshot();click(last.at("host_controls").at("fit_plot.export"),"fit_plot_export");
   click(last.at("file_browser").at("controls").at("path"),"fit_csv_path");
   for(bool down:{true,false})frame(Json::array({{{"type","keys"},{"keys",{{{"name","Ctrl"},{"down",down}},{{"name","A"},{"down",down}}}}}}));

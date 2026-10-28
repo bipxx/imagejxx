@@ -1,5 +1,33 @@
 # Shortest delivery paths by API and setting key
 
+## Prepared calibration annotations reuse path — 2026-10-28
+
+Model and fit details now exposes recorded formulas, a-e coefficients, domain/
+clipping notes, objective and fit diagnostics in both ImGui consumers. Private
+CalibrationPlotAnnotation reads only bounded named fields and prepares text once
+before plot publication. Its8192-byte reserve is included in existing plot
+admission; rendering performs no provenance decode or table materialization.
+Reuse this immutable DTO for future on-canvas annotation placement and image
+export; do not add a parallel metadata cache/store or recompute fits.
+
+Null R-squared is undefined; missing/invalid metric is unavailable. NIH inverse
+fits label measured(known), separately from their displayed inverse calibration
+formula. Coefficients use locale-independent round-trip text. Unsupported model
+provenance leaves literal lookup plotting available. Empty [] round trips can use
+legacy string-list storage: accept that representation only when empty and the
+recognized model has zero coefficients (OD), preserving strict numeric parsing.
+
+730 Windows checks pass, including all15 models, annotation panel interaction,
+source/history preservation, quality edge cases and legacy OD compatibility.
+Linux C++17 private tests link the existing pinned core SDK archive and pass;
+this is no full Linux UI/SDK or OS/GPU promotion. [Scoped evidence](../parity/reviews/G034-calibration-plot-annotation-progress001.json).
+
+Next: reuse CalibrationPlotView for rectangle zoom; then annotation placement/
+style/image export and automatic nice/minor ticks. Detached/multiple snapshots
+need explicit lifetime/admission independent of the active document; generic
+histogram/profile rendering should share these components. Broader calibration,
+platform/reference and matched speed gates remain open;99-family47/52/0 unchanged.
+
 ## Calibration plot grid/tick/log options — 2026-10-28
 
 The existing numeric-axis action now accepts optional Boolean log_x, log_y,
