@@ -1,5 +1,40 @@
 # Sol Ultra execution guide
 
+## Numeric calibration plot axes and reversed ranges — 2026-10-28
+
+Axes... now opens the shared Plot Axis Limits dialog. Finite distinct X/Y
+endpoints can ascend or descend, and a custom range can expand a constant axis.
+Pan/zoom retains the manual basis and direction; reset/new plot restores data
+bounds. Equal/nonfinite limits fail atomically; Cancel preserves the current
+view. Dialog Apply captures plot generation plus source identity/All revisions,
+so replacement on the same unchanged document cannot retarget an old draft.
+The image, undo history, raw plot samples and CSV stay unchanged.
+
+Python Editor actions show_intensity_plot_limits and set_intensity_plot_limits
+route to the same native implementation. The setter accepts only limits:
+[x_from,x_to,y_from,y_to], plus optional active document_id. Strict types/shape
+and current plotted-source validation apply. No public core SDK/dependency change.
+
+Windows installed verification passes681 focused tests with zero failures/skips,
+the projection and viewport native consumers, and three C++ UI cases. Both
+frontends physically edit/reject/apply reversed limits, cancel reopened drafts,
+and refuse a stale dialog after a labeled read-only plot replacement diagnostic.
+Numeric-axis coverage adds104 frames to prior366;470/512 bounded frames per
+calibration case. Separate Linux C++17 viewport arithmetic passes, giving no
+Linux UI/SDK promotion. [Scoped evidence](parity/reviews/G034-calibration-plot-axes-progress001.json).
+
+Next: grid/ticks/log/style and rectangle zoom; then stage formula/coefficients/
+R-squared annotations from frozen provenance before publication. Continue
+snapshot lifecycle for detached/multiple windows and generic histogram/profile
+viewport reuse, followed by remaining calibration/downstream/platform gates.
+Matched speed evidence remains absent. Tracker47 in progress/52 open/0 complete.
+
+Same active cache/runtime reused; all terminal owned scratch retired after
+hash-verified lossless capture retention. Log/identity/superseded-runner
+compression recovered642,953B. Known generated roots8,455,764,607B; two denied
+pytest caches keep full8GiB budget unverified. Original reference fingerprints
+unchanged; commercial-use inventory passes.
+
 ## Calibration plots support cursor inspection and viewport controls — 2026-10-28
 
 The shared calibration renderer now has crosshair X/Y unit readout, anchored

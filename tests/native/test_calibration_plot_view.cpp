@@ -32,4 +32,16 @@ int main() {
   // Constant axes retain their value while the other axis remains usable.
   data.x_min=data.x_max=7;view={};check(view.zoom(data,.5,.5,.5));
   bounds=view.limits(data);check(bounds[0]==7 && bounds[1]==7 && bounds[2]<bounds[3]);
+  // Explicit limits expand constant axes, accept reversed directions and remain
+  // the basis for later pan/zoom without modifying the plotted data bounds.
+  check(view.set_limits({200,100,1000,-1000}));
+  check(view.limits(data)==std::array<double,4>{200,100,1000,-1000});
+  check(view.zoom(data,.5,.5,.5));
+  check(view.limits(data)==std::array<double,4>{175,125,500,-500});
+  const auto reversed=view;
+  check(!view.set_limits({1,1,0,1}));
+  check(!view.set_limits({0,1,0,std::numeric_limits<double>::infinity()}));
+  check(view.fractions==reversed.fractions && view.manual_limits==reversed.manual_limits);
+  view={};check(!view.manual_limits);check(view.limits(data)[0]==7);
+
 }

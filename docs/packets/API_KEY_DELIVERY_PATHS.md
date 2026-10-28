@@ -1,5 +1,38 @@
 # Shortest delivery paths by API and setting key
 
+## Current calibration plot API path — 2026-10-28
+
+Manual calibration/function dialogs now have automatic Show plot (17c7cab), and
+shared calibration plots have cursor readout, pan/zoom/reset (d4e3f37). Numeric
+axes now use the same private viewport and renderer, including reversed ranges:
+
+```python
+editor.action("show_intensity_plot_limits")
+editor.action("set_intensity_plot_limits", limits=[200, 100, 1000, -1000])
+```
+
+Open a calibration plot first. Optional document_id must identify its active
+source; stale source revisions and stale dialog plot generations refuse. These
+actions change view only; CSV samples and image history remain unchanged. New
+plots/reset restore original axes. set_intensity_calibration also accepts an
+explicit Boolean show_plot; omitted option preserves its earlier setter behavior.
+Show plot is an interactive-session preference, not numeric provenance.
+
+Shortest next path: reuse CalibrationPlotView for grid/tick/log/style and
+rectangle zoom, with positive-log admission and original CSV units preserved.
+Stage annotation text once from owned immutable function/fit provenance before
+plot publication: formula, coefficients, objective and finite/null R-squared;
+avoid repeated record decoding in draw(). Then separate detached/multiple plot
+snapshot lifecycle from active source edits, and reuse the viewport for generic
+histogram/profile rendering. Their fixed-view renderer remains open work.
+
+681 Windows focused checks pass, including physical numeric-axis/reversed/Cancel/
+stale-draft cases in both frontends. Linux private C++17 arithmetic passes;
+current core SDK qualification remains separate from new UI work. Broader
+platform/reference/downstream gates and matched performance remain open.
+[Scoped evidence](../parity/reviews/G034-calibration-plot-axes-progress001.json).
+No99-family status promotion (47 in progress/52 open/0 complete).
+
 ## Installed calibration SDKs qualified on Windows/Linux — 2026-10-28
 
 Both existing Release core SDK prefixes are refreshed in place. Actual consumers

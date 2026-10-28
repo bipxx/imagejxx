@@ -3,6 +3,7 @@
 #include <imagejxx/imagej_intensity_plot.hpp>
 #include <array>
 #include <cmath>
+#include <optional>
 
 namespace imagejxx::desktop {
 
@@ -10,6 +11,16 @@ namespace imagejxx::desktop {
 // can extend past the data bounds; reject only unrepresentable axis ranges.
 struct CalibrationPlotView {
   std::array<double,4> fractions{0,1,0,1};
+  std::optional<std::array<double,4>> manual_limits;
+
+  std::array<double,4> base_limits(const ImageJIntensityFitPlot& data) const noexcept {
+    return manual_limits.value_or(std::array<double,4>{data.x_min,data.x_max,data.y_min,data.y_max});
+  }
+  bool set_limits(const std::array<double,4>& values) noexcept {
+    for(auto value:values)if(!std::isfinite(value))return false;
+    if(values[0]==values[1] || values[2]==values[3])return false;
+    manual_limits=values;fractions={0,1,0,1};return true;
+  }
 
   // C++17 interpolation: opposite signs use weighted endpoints so their
   // difference cannot overflow. Callers validate extrapolated bounds.
@@ -21,19 +32,21 @@ struct CalibrationPlotView {
   }
 
   std::array<double,4> limits(const ImageJIntensityFitPlot& data) const noexcept {
-    return {interpolate(data.x_min,data.x_max,fractions[0]),
-            interpolate(data.x_min,data.x_max,fractions[1]),
-            interpolate(data.y_min,data.y_max,fractions[2]),
-            interpolate(data.y_min,data.y_max,fractions[3])};
+    const auto base=base_limits(data);
+    return {interpolate(base[0],base[1],fractions[0]),
+            interpolate(base[0],base[1],fractions[1]),
+            interpolate(base[2],base[3],fractions[2]),
+            interpolate(base[2],base[3],fractions[3])};
   }
   bool update(const ImageJIntensityFitPlot& data,
               const std::array<double,4>& next) noexcept {
     for(auto value:next)if(!std::isfinite(value))return false;
     if(!(next[0]<next[1]) || !(next[2]<next[3]))return false;
-    CalibrationPlotView candidate{next};const auto values=candidate.limits(data);
+    auto candidate=*this;candidate.fractions=next;const auto values=candidate.limits(data);
+    const auto base=base_limits(data);
     for(auto value:values)if(!std::isfinite(value))return false;
-    if(data.x_min!=data.x_max && !(values[0]<values[1]))return false;
-    if(data.y_min!=data.y_max && !(values[2]<values[3]))return false;
+    if(base[0]<base[1] ? !(values[0]<values[1]) : base[0]>base[1] && !(values[0]>values[1]))return false;
+    if(base[2]<base[3] ? !(values[2]<values[3]) : base[2]>base[3] && !(values[2]>values[3]))return false;
     fractions=next;return true;
   }
   bool zoom(const ImageJIntensityFitPlot& data,double x,double y,double factor) noexcept {

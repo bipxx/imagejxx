@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "scope": "G034 numeric calibration plot axis limits, reversed axes and stale draft protection in shared ImGui C++/Python",
+  "state": "focused_checks_passed",
+  "acceptance_claim": false,
+  "implementation": {
+    "dialog": "Axes... opens Plot Axis Limits with X/Y from/to values; success changes view only, Cancel leaves view unchanged; equal/nonfinite values rejected with recoverable draft",
+    "reverse_and_constant": "Finite distinct endpoints may ascend or descend. Explicit limits provide a separate viewport basis, including formerly constant axes. Pan/zoom preserves the chosen axis direction; reset/new plot clears manual basis.",
+    "generation_guard": "Dialog captures immutable plot generation; replacement on same unchanged source refuses old Apply. Current source identity and All revisions are checked too.",
+    "python_actions": {
+      "show_intensity_plot_limits": "No options except optional active document_id; opens same native dialog",
+      "set_intensity_plot_limits": "Exact limits array [x_from,x_to,y_from,y_to], optional active document_id; numeric finite distinct pairs; atomic failure"
+    },
+    "immutability": "Plot samples/CSV, source pixels/metadata/selection/display revisions and undo history unchanged; no public core SDK header or dependency change"
+  },
+  "evidence": {
+    "calibration-plot-axes-windows-build297": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-axes-windows-build297\\receipt.json",
+      "bytes": 24695,
+      "sha256": "ae9f9e744f4d8916119a52517acd7285cfcbe0be8937ef991da3cef8d1997209"
+    },
+    "calibration-plot-axes-windows-build300": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-axes-windows-build300\\receipt.json",
+      "bytes": 24665,
+      "sha256": "af66e68467d467ea56773c445dcb2446d13ecf683c5cb7d6527d8f4f8fef45d8"
+    },
+    "calibration-plot-axes-installed301": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-axes-installed301\\receipt.json",
+      "bytes": 27885,
+      "sha256": "0694d19fd9b823ce39f9d8b36a4a581ac4b80d1c513c2b81d19c203a637e3cb5"
+    },
+    "calibration-plot-axes-linux299": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-axes-linux299\\receipt.json",
+      "bytes": 29423,
+      "sha256": "67657bd9ec30a9f7819e11a3b586d36ddaa041e3f376cc2150550eed36124d2a"
+    },
+    "calibration-plot-axes-retention302": {
+      "path": "C:\\Users\\HEQ\\Projects\\imagejxx\\.tmp\\manual-workflow-verification\\calibration-plot-axes-retention302\\receipt.json",
+      "bytes": 7156,
+      "sha256": "397fafb485bd0c8c13bb345c308d4e2319a3d165abe45dbe67e41581f538234d"
+    }
+  },
+  "verification": {
+    "windows_installed_pytest": {
+      "tests": 681,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "native": "Windows projection execution and viewport consumers pass; Linux C++17 -Wall -Wextra -Werror viewport consumer passes",
+    "physical": "Three installed C++ cases pass. Both C++ and Python calibration cases physically edit limits, recover equal-limit error, apply reversed axes, reopen/cancel draft and physically refuse stale Apply after explicitly labeled read-only plot replacement fixture.",
+    "calibration_frames": 470,
+    "frame_bound": 512,
+    "new_scenario_frames": 104,
+    "frame_budget_amendment": "New numeric-axis scenario adds104 frames to previous366; explicit512-frame allowance. Original upstream values/fingerprints unchanged.",
+    "api_cases": "Ascending/reversed/extreme finite view-only bounds, unchanged All revisions/history, reset on new plot, strict invalid shapes/types/equal pairs, stale source refusal.",
+    "source_snapshot": "Final producer/consumer freeze stable; one reader metadata assertion corrected before UI verification, final producer binaries identical to initial build: True",
+    "commercial_use_inventory": "passed; no dependency added",
+    "diff_check": "passed",
+    "linux_scope": "Private arithmetic only; no Linux UI or installed SDK promotion"
+  },
+  "storage": {
+    "before_known_bytes": 8453896675,
+    "after_known_bytes": 8455764607,
+    "full_budget_verified": false,
+    "unknown_subtrees": [
+      ".cache/pytest",
+      ".cache/pytest-ui"
+    ],
+    "temporary_reserve_bytes": 536870912,
+    "lossless_recovery_bytes": 642953,
+    "retention": "Windows/Linux owned scratch retired after terminal ownership checks; necessary captures/logs/identities hash-verified lossless archives. Superseded local runners compressed; final runners retained. No new cache/runtime/checkout or whole SDK/cache archive."
+  },
+  "remaining": [
+    "Grid/tick/log/style controls and rectangle zoom",
+    "Formula/coefficient/R-squared annotations from immutable provenance",
+    "Detached/multiple plot snapshot lifecycle and generic histogram/profile viewport reuse",
+    "Fitting settings/restarts/global calibration, table import/export/replay/macro and downstream measurement/histogram",
+    "Linux Python/UI, installed IO SDK, macOS and original-reference qualification",
+    "Matched ImageJ/Fiji speed/memory benchmark evidence"
+  ],
+  "family_status": {
+    "in_progress": 47,
+    "open": 52,
+    "complete": 0
+  }
+}

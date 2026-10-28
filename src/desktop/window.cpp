@@ -1190,6 +1190,7 @@ struct Window::Impl {
   bool fitPlotFocusRequested = false;
   bool fitPlotIsTable = false;
   CalibrationPlotView fitPlotView;
+  std::uint64_t fitPlotGeneration=0;
   std::optional<ImageJIntensityFitPlot> fitPlot;
   std::optional<FitPlotBinding> fitPlotSource;
   Json fitPlotObservation;
@@ -1628,6 +1629,9 @@ struct Window::Impl {
       return !owner.busy() && owner.controller_->active_document_id()==source->id && dataset.shape().s==1 &&
           (dataset.pixel_type()==PixelType::UInt8 || dataset.pixel_type()==PixelType::UInt16);
     }
+    if(action=="show_intensity_plot_limits" || action=="set_intensity_plot_limits")
+      return !owner.busy() && fitPlot && fitPlotSource && owner.controller_->active_document_id()==source->id &&
+          fitPlotSource->same_document(source->nativeSnapshot()) && fitPlotSource->expected.matches(source->nativeSnapshot().revisions(),Change::All);
     if(action=="show_intensity_calibration" || action=="set_intensity_calibration" || action=="fit_intensity_calibration")
       return !owner.busy() && owner.controller_->active_document_id()==source->id;
     if (action=="show_imagej_projection" || action=="show_imagej_grouped_projection" ||
@@ -4602,7 +4606,32 @@ struct Window::Impl {
     static_assert(std::is_nothrow_swappable_v<decltype(binding)>);
     // A successful Apply remembers the preference; Cancel and failures never do.
     fitShowPlot=show;
-    if(plot){fitPlot.swap(plot);fitPlotSource.swap(binding);fitPlotIsTable=true;fitPlotFocusRequested=true;fitPlotView={};}
+    if(plot){fitPlot.swap(plot);fitPlotSource.swap(binding);fitPlotIsTable=true;fitPlotFocusRequested=true;fitPlotView={};++fitPlotGeneration;}
+  }
+  void requireCalibrationPlot() const {
+    if(!fitPlot || !fitPlotSource || owner.documents_.empty())throw std::invalid_argument("Open a calibration plot first");
+    const auto current=owner.nativeSnapshot();
+    if(!fitPlotSource->same_document(current) || !fitPlotSource->expected.matches(current.revisions(),Change::All))throw RevisionConflict();
+  }
+  void applyPlotLimits(const std::array<double,4>& values,std::uint64_t generation) {
+    requireCalibrationPlot();
+    if(generation!=fitPlotGeneration)throw std::invalid_argument("The plotted data changed; reopen axis limits");
+    auto candidate=fitPlotView;
+    if(!candidate.set_limits(values))throw std::invalid_argument("Axis limits must be finite and distinct on each axis");
+    fitPlotView=candidate;
+  }
+  void showPlotLimits() {
+    requireCalibrationPlot();const auto limits=fitPlotView.limits(*fitPlot);
+    const auto generation=fitPlotGeneration;
+    ask("Plot Axis Limits",{{"x_min",limits[0]},{"x_max",limits[1]},{"y_min",limits[2]},{"y_max",limits[3]}},
+        [this,generation](Json fields){
+          std::array<double,4> values;const std::array<const char*,4> names{"x_min","x_max","y_min","y_max"};
+          for(std::size_t i=0;i<4;++i){const auto& value=fields.at(names[i]);if(!value.is_number())throw std::invalid_argument("Axis limits require numbers");values[i]=value.get<double>();}
+          applyPlotLimits(values,generation);
+        },Json::array({{{"name","x_min"},{"label","X from"},{"kind","float"}},
+          {{"name","x_max"},{"label","X to"},{"kind","float"}},
+          {{"name","y_min"},{"label","Y from"},{"kind","float"}},
+          {{"name","y_max"},{"label","Y to"},{"kind","float"}}}),"calibration_plot_limits");
   }
   void plots();
   void dialogs();
@@ -6632,6 +6661,19 @@ void Window::action(const std::string &name, const Json &p) {
   // not bypass its capability check before clipboard, files or jobs change.
   if (targetId && !targeted.count(name))
     impl->requireAction(name, 0, operationId);
+  if(name=="show_intensity_plot_limits" || name=="set_intensity_plot_limits") {
+    if(!p.is_object())throw std::invalid_argument("Axis parameters must be an object");
+    if(busy())throw std::invalid_argument("Wait for the current edit");
+    impl->requireCalibrationPlot();
+    if(targetId && targetId!=nativeSnapshot().id())throw std::invalid_argument("Axis limits require the active plotted document");
+    for(const auto& field:p.items())if(field.key()!="document_id" && !(name=="set_intensity_plot_limits" && field.key()=="limits"))throw std::invalid_argument("Unknown axis limits field");
+    if(name=="show_intensity_plot_limits"){impl->showPlotLimits();return;}
+    const auto& limits=p.at("limits");
+    if(!limits.is_array() || limits.size()!=4)throw std::invalid_argument("Axis limits require [x_min,x_max,y_min,y_max]");
+    std::array<double,4> values;
+    for(std::size_t i=0;i<4;++i){if(!limits[i].is_number())throw std::invalid_argument("Axis limits require numbers");values[i]=limits[i].get<double>();}
+    impl->applyPlotLimits(values,impl->fitPlotGeneration);return;
+  }
   if(name=="show_intensity_calibration" || name=="show_intensity_function" || name=="show_intensity_polynomial_fit" || name=="show_intensity_nonlinear_fit" || name=="show_intensity_fit_plot" || name=="show_intensity_calibration_plot" || name=="set_intensity_calibration" || name=="fit_intensity_calibration") {
     if(busy())throw std::invalid_argument("Wait for the current edit");
     const auto source=nativeSnapshot();
@@ -6643,7 +6685,7 @@ void Window::action(const std::string &name, const Json &p) {
       const bool table=name=="show_intensity_calibration_plot";
       auto plot=table?impl->calibrationTablePlot(calibration):
           imagej_intensity_fit_plot(calibration,calibration.bit_depth()==8?256:100,bytes);
-      impl->fitPlotIsTable=table;impl->fitPlotView={};
+      impl->fitPlotIsTable=table;impl->fitPlotView={};++impl->fitPlotGeneration;
       impl->fitPlotSource=Impl::FitPlotBinding{source.id(),source.revisions()};impl->fitPlot=std::move(plot);impl->fitPlotFocusRequested=true;return;
     }
     if(name=="fit_intensity_calibration") {
@@ -9185,7 +9227,7 @@ void Window::poll() {
           controller_->publish(*completed.prepared);
           if(completed.fit_plot) {
             impl->fitPlot.swap(completed.fit_plot);impl->fitPlotSource.swap(completed.fit_plot_source);
-            impl->fitPlotFocusRequested=true;impl->fitPlotIsTable=false;impl->fitPlotView={};
+            impl->fitPlotFocusRequested=true;impl->fitPlotIsTable=false;impl->fitPlotView={};++impl->fitPlotGeneration;
           }
           impl->status.swap(completed.fit_status);return;
         }
@@ -10999,6 +11041,9 @@ void Window::Impl::plots() {
     observeControl("fit_plot.zoom_in");
     ImGui::SameLine();if(ImGui::Button("-"))fitPlotView.zoom(data,.5,.5,std::pow(2.,.2));
     observeControl("fit_plot.zoom_out");
+    if(ImGui::GetContentRegionAvail().x>260.f*guiScale)ImGui::SameLine();
+    if(ImGui::Button("Axes..."))guard([&]{showPlotLimits();});
+    observeControl("fit_plot.axes");
     ImGui::TextUnformatted(fitPlotIsTable?"Blue line: calibrated table samples":"Red points: measurements; blue line: fitted curve");
     if(fitPlotIsTable && std::none_of(data.curve_y.begin(),data.curve_y.end(),[](float v){return std::isfinite(v);}))ImGui::TextUnformatted("No finite calibrated samples.");
     ImGui::Text("X: pixel value | Y: %s",data.value_unit.c_str());

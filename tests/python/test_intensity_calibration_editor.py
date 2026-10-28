@@ -92,6 +92,7 @@ def test_actual_intensity_calibration_dialog(context,tmp_path):
     np.testing.assert_array_equal(report["function_automatic_plot"]["curve_y"],5+2*257*np.arange(256))
     _assert_fit_csv(report)
     _assert_plot_interaction(report)
+    _assert_plot_axes(report)
 
     for name in ("function_applied","function_reopened"):
         record=report[name]["properties"][key]
@@ -300,6 +301,7 @@ def test_actual_nonlinear_calibration_dialog(context,tmp_path):
     np.testing.assert_array_equal(report["function_automatic_plot"]["curve_y"],5+2*257*np.arange(256))
     _assert_fit_csv(report)
     _assert_plot_interaction(report)
+    _assert_plot_axes(report)
     assert {"show_intensity_nonlinear_fit","initial_coefficients","invalid_fit_apply","fit_error_ok","fit_apply","fit_cancel"}<={r["name"] for r in report["controls"]}
 
 
@@ -411,7 +413,7 @@ def _assert_physical_fit_running_cancel(report):
     control=case["control"]
     assert control["enabled"] and control["id"]>0
     assert {"fit_cancel_apply","fit_running_cancel"}<={r["name"] for r in report["controls"]}
-    assert len(report["frames"])<=400
+    assert len(report["frames"])<=512
 
 
 def _assert_fit_plot_render(report):
@@ -769,3 +771,65 @@ def _assert_plot_interaction(report):
         assert state["curve_y"]==case["hover"]["curve_y"]
     assert case["source_unchanged"]
     assert "plot_reset_axes" in {c["name"] for c in report["controls"]}
+
+
+def _assert_plot_axes(report):
+    case=report["plot_axes"]
+    assert case["initial"]["title"]=="Plot Axis Limits"
+    assert case["initial"]["values"]=={"x_min":0,"x_max":65535,"y_min":-32768,"y_max":32767}
+    assert case["error"]["open"] and "distinct" in case["error"]["message"]
+    assert case["invalid_plot"]["view_limits"]==case["invalid_plot"]["limits"]
+    for name in ("applied","cancelled"):
+        plot=case[name]
+        assert plot["view_limits"]==[200,100,1000,-1000]
+        assert plot["finite_geometry"] and plot["visible"]
+        assert plot["curve_x"]==report["calibration_table_plot"]["curve_x"]
+        assert plot["curve_y"]==report["calibration_table_plot"]["curve_y"]
+    assert case["reopened"]["values"]=={"x_min":200,"x_max":100,"y_min":1000,"y_max":-1000}
+    assert case["replacement_fixture_action"]=="show_intensity_calibration_plot"
+    assert case["stale_error"]["open"] and "plotted data changed" in case["stale_error"]["message"]
+    assert case["replacement"]["view_limits"]==case["replacement"]["limits"]
+    assert case["source_unchanged"]
+
+
+def _axis_editor(tmp_path):
+    from imagejxx.ui.app import Editor
+    from imagejxx.ui.persistence import Preferences
+    owner=_fit_owner();editor=Editor(preferences=Preferences(tmp_path/"preferences.json"));editor.add_native_document(owner)
+    editor.action("set_intensity_calibration",record=ij.ImageJIntensityCalibration.signed16("HU").record,show_plot=True)
+    editor.render_headless(4)
+    return owner,editor
+
+
+@pytest.mark.parametrize("limits",[[100,200,-1000,1000],[200,100,1000,-1000],[-1e308,1e308,1e308,-1e308]])
+def test_editor_numeric_plot_limits_are_view_only(limits,tmp_path):
+    owner,editor=_axis_editor(tmp_path);before=owner.snapshot();steps=owner.undo_steps
+    editor.action("set_intensity_plot_limits",limits=limits)
+    plot=editor.render_headless(4)["fit_plot"]
+    assert plot["view_limits"]==limits and plot["finite_geometry"]
+    assert owner.snapshot().shares_data(before) and owner.undo_steps==steps
+    assert all(getattr(owner.snapshot().revisions,k)==getattr(before.revisions,k) for k in ("pixels","metadata","selection","display"))
+    editor.action("show_intensity_calibration_plot")
+    plot=editor.render_headless(4)["fit_plot"]
+    assert plot["view_limits"]==plot["limits"]
+
+
+@pytest.mark.parametrize("limits",[[0,0,0,1],[0,1,2,2],[True,1,0,1],["0",1,0,1],[0,1,0],[0,1,0,1,2],None])
+def test_invalid_plot_limits_preserve_view_and_source(limits,tmp_path):
+    owner,editor=_axis_editor(tmp_path);before=owner.snapshot();steps=owner.undo_steps
+    editor.action("set_intensity_plot_limits",limits=[200,100,1000,-1000])
+    previous=editor.render_headless(4)["fit_plot"]
+    with pytest.raises((ValueError,RuntimeError)):
+        editor.action("set_intensity_plot_limits",limits=limits)
+    assert editor.render_headless(4)["fit_plot"]==previous
+    assert owner.snapshot().shares_data(before) and owner.undo_steps==steps
+
+
+def test_plot_axis_limits_refuse_stale_source(tmp_path):
+    owner,editor=_axis_editor(tmp_path)
+    view=owner.snapshot().display;view.zoom=2;owner.set_display(view)
+    before=owner.snapshot()
+    with pytest.raises((ValueError,RuntimeError)):
+        editor.action("set_intensity_plot_limits",limits=[0,1,0,1])
+    assert owner.snapshot().shares_data(before)
+    assert editor.render_headless(4)["fit_plot"] is None

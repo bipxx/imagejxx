@@ -184,7 +184,7 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   } failure{report,directory};
   HeadlessInputSession session(w);Json last;
   auto frame=[&](const Json& events=Json::array()) {
-    require(report["frames"].size()<400,"Calibration UI frame bound");last=session.frame(events);
+    require(report["frames"].size()<512,"Calibration UI frame bound");last=session.frame(events);
     report["frames"].push_back({{"events",events},{"rendered",{
       {"input_frame",last.at("input_frame")},{"dialog",last.at("dialog")},
       {"error_modal",last.at("error_modal")},{"window_error",last.at("window_error")}}}});
@@ -247,6 +247,30 @@ Json intensityCalibrationUiCase(Window& w,const std::string& context,const std::
   click(last.at("host_controls").at("fit_plot.reset"),"plot_reset_axes");
   report["plot_interaction"]["reset"]=last.at("fit_plot");
   report["plot_interaction"]["source_unchanged"]=owner->snapshot().shares_data(interactionSource) &&
+      owner->snapshot().revisions().matches(interactionSource.revisions(),Change::All);
+  click(last.at("host_controls").at("fit_plot.axes"),"plot_axes_open");
+  report["plot_axes"]["initial"]=last.at("dialog");
+  editText("x_min","100");editText("x_max","100");editText("y_min","1000");editText("y_max","-1000");
+  click(last.at("dialog").at("controls").at("apply"),"plot_axes_invalid");
+  report["plot_axes"]["invalid_plot"]=last.at("fit_plot");report["plot_axes"]["error"]=last.at("error_modal");
+  frame();frame();click(last.at("error_modal").at("controls").at("ok"),"plot_axes_error_ok");
+  frame();frame();editText("x_min","200");
+  click(last.at("dialog").at("controls").at("apply"),"plot_axes_apply");frame();frame();
+  report["plot_axes"]["applied"]=last.at("fit_plot");
+  click(last.at("host_controls").at("fit_plot.axes"),"plot_axes_reopen");
+  report["plot_axes"]["reopened"]=last.at("dialog");editText("y_min","500");
+  click(last.at("dialog").at("controls").at("cancel"),"plot_axes_cancel");frame();frame();
+  report["plot_axes"]["cancelled"]=last.at("fit_plot");
+  // Deliberate diagnostic fixture: replace the immutable plot while a limits
+  // draft is open. Applying that draft must refuse the replacement generation.
+  click(last.at("host_controls").at("fit_plot.axes"),"plot_axes_stale_open");
+  w.action("show_intensity_calibration_plot");report["plot_axes"]["replacement_fixture_action"]="show_intensity_calibration_plot";
+  frame();frame();click(last.at("dialog").at("controls").at("apply"),"plot_axes_stale_apply");
+  report["plot_axes"]["stale_error"]=last.at("error_modal");
+  report["plot_axes"]["replacement"]=last.at("fit_plot");
+  frame();frame();click(last.at("error_modal").at("controls").at("ok"),"plot_axes_stale_error_ok");
+  frame();frame();click(last.at("dialog").at("controls").at("cancel"),"plot_axes_stale_cancel");frame();frame();
+  report["plot_axes"]["source_unchanged"]=owner->snapshot().shares_data(interactionSource) &&
       owner->snapshot().revisions().matches(interactionSource.revisions(),Change::All);
   click(last.at("host_controls").at("fit_plot.close"),"table_plot_close");report["table_plot_closed"]=last.at("fit_plot").is_null();
   report["table_plot_source_unchanged"]=owner->snapshot().shares_data(tableSource) && owner->snapshot().revisions().matches(tableSource.revisions(),Change::All);
